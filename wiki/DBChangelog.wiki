@@ -1,0 +1,15 @@
+#summary This page tries to hold the corrections and improvements occurred in the database.
+
+== Introduction ==
+
+When registering any changelog here, please keep in mind the following suggestions:
+
+  * Each registered change should have the date in which it was done (please follow this format: YYYY-MM-DD).
+  * Each changelog should have a brief explanation of the change/improvement made.
+  * Please use bullets for each changelog.
+  * Last changelog added must be in the first line.
+
+== Changelogs ==
+
+  *
+  *
