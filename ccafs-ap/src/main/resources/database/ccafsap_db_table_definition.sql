@@ -467,6 +467,7 @@ SHOW WARNINGS;
 -- -----------------------------------------------------
 CREATE  TABLE IF NOT EXISTS `partner_types` (
   `id` INT NOT NULL AUTO_INCREMENT ,
+  `acronym` VARCHAR(20) NOT NULL ,
   `name` TEXT NOT NULL ,
   PRIMARY KEY (`id`) )
 ENGINE = InnoDB;
