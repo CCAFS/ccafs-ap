@@ -212,6 +212,17 @@ ENGINE = InnoDB;
 SHOW WARNINGS;
 
 -- -----------------------------------------------------
+-- Table `deliverable_formats`
+-- -----------------------------------------------------
+CREATE  TABLE IF NOT EXISTS `deliverable_formats` (
+  `id` INT NOT NULL AUTO_INCREMENT ,
+  `name` TEXT NOT NULL ,
+  PRIMARY KEY (`id`) )
+ENGINE = InnoDB;
+
+SHOW WARNINGS;
+
+-- -----------------------------------------------------
 -- Table `deliverables`
 -- -----------------------------------------------------
 CREATE  TABLE IF NOT EXISTS `deliverables` (
@@ -222,6 +233,7 @@ CREATE  TABLE IF NOT EXISTS `deliverables` (
   `deliverable_type_id` INT NOT NULL ,
   `is_expected` TINYINT(1) NOT NULL ,
   `deliverable_status_id` INT NOT NULL ,
+  `deliverable_format_id` INT NOT NULL ,
   PRIMARY KEY (`id`) ,
   CONSTRAINT `activity_fk2`
     FOREIGN KEY (`activity_id` )
@@ -237,7 +249,12 @@ CREATE  TABLE IF NOT EXISTS `deliverables` (
     FOREIGN KEY (`deliverable_status_id` )
     REFERENCES `deliverable_status` (`id` )
     ON DELETE RESTRICT
-    ON UPDATE RESTRICT)
+    ON UPDATE RESTRICT,
+  CONSTRAINT `deliverable_format_fk2`
+    FOREIGN KEY (`deliverable_format_id` )
+    REFERENCES `deliverable_formats` (`id` )
+    ON DELETE SET NULL
+    ON UPDATE SET NULL)
 ENGINE = InnoDB;
 
 SHOW WARNINGS;
@@ -536,23 +553,6 @@ CREATE  TABLE IF NOT EXISTS `other_sites` (
   CONSTRAINT `os_country_fk`
     FOREIGN KEY (`country_iso2` )
     REFERENCES `countries` (`iso2` )
-    ON DELETE RESTRICT
-    ON UPDATE RESTRICT)
-ENGINE = InnoDB;
-
-SHOW WARNINGS;
-
--- -----------------------------------------------------
--- Table `deliverable_formats`
--- -----------------------------------------------------
-CREATE  TABLE IF NOT EXISTS `deliverable_formats` (
-  `id` INT NOT NULL AUTO_INCREMENT ,
-  `name` TEXT NOT NULL ,
-  `deliverable_id` INT NULL ,
-  PRIMARY KEY (`id`) ,
-  CONSTRAINT `deliverable_id`
-    FOREIGN KEY (`deliverable_id` )
-    REFERENCES `deliverables` (`id` )
     ON DELETE RESTRICT
     ON UPDATE RESTRICT)
 ENGINE = InnoDB;
