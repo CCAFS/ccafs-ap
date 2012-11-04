@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE struts PUBLIC
+	"-//Apache Software Foundation//DTD Struts Configuration 2.3//EN"
+	"http://struts.apache.org/dtds/struts-2.3.dtd">
+<struts>
+  <!--  constant name="struts.enable.DynamicMethodInvocation" value="false"/ -->
+  <constant name="struts.devMode" value="true"/>
+  
+  <!-- Add addition packages and configuration here. -->
+  <package name="default" namespace="/" extends="struts-default">
+  	
+  	<action name="Ejemplo" class="org.cgiar.ccafs.Ejemplo">
+  		<result name="success">/WEB-INF/resultado.jsp</result>
+  		<result name="input">/home.jsp</result>
+  	</action>
+  	
+  </package>
+</struts>
