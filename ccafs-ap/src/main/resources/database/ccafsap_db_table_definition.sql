@@ -253,8 +253,8 @@ CREATE  TABLE IF NOT EXISTS `deliverables` (
   CONSTRAINT `deliverable_format_fk2`
     FOREIGN KEY (`deliverable_format_id` )
     REFERENCES `deliverable_formats` (`id` )
-    ON DELETE SET NULL
-    ON UPDATE SET NULL)
+    ON DELETE RESTRICT
+    ON UPDATE RESTRICT)
 ENGINE = InnoDB;
 
 SHOW WARNINGS;
@@ -350,6 +350,7 @@ SHOW WARNINGS;
 -- -----------------------------------------------------
 CREATE  TABLE IF NOT EXISTS `benchmark_sites` (
   `id` INT NOT NULL AUTO_INCREMENT ,
+  `bs_id` TEXT NOT NULL ,
   `name` TEXT NOT NULL ,
   `country_iso2` VARCHAR(2) NOT NULL ,
   `longitude` DOUBLE NOT NULL ,
