@@ -37,3 +37,11 @@
   * Activity 58: "Modelling climate-sensitive pest and diseases for potato- and sweet potato-based systems"
    * Missing start date and end date.
    * Missing description.
+
+  * Activity 59: "Develop an Online/ offline mapping tool for rapid risk and impact assessment of CC effects on LB - validation of look up tables"
+   * Missing start date and end date.
+   * Missing description.
+
+  * Activity 60: "Develop precise submodels for T and RH on LB development using current SAS based simulation model"
+   * Missing start date and end date.
+   * Missing description.
