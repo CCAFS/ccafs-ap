@@ -11,7 +11,8 @@ USE `ccafsap_db` ;
 -- -----------------------------------------------------
 CREATE  TABLE IF NOT EXISTS `logframes` (
   `id` INT NOT NULL AUTO_INCREMENT ,
-  `name` VARCHAR(45) NULL ,
+  `year` INT(4) NOT NULL ,
+  `name` VARCHAR(255) NOT NULL ,
   PRIMARY KEY (`id`) )
 ENGINE = InnoDB;
 
