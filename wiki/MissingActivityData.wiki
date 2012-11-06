@@ -66,3 +66,15 @@
    
   * Activity 56: "Case studies on informal seed systems conducted, identifying bottlenecks for climate change adaptation."
    * Missing start date, end date and description.
+
+== ICRAF  ==
+  * Activity 80: "Identify seed sources better adapted to drought for climate change adaptation planning in Burkina Faso, Mali and Niger"
+   * Start date, end date have bad format (Jan 12 - Dec 13).
+   
+  * Activity 86: "National level backstopping of science and policy through the development of methodologies, tools and incentive schemes."
+   * Missing start date and end date.
+   * Missing description.
+   
+  * Activity 87: "(1) international experiences with Payments for Environmental Services (carbon) in different systems, including capacity building at national and local levels; (2) Assessment of biocarbon project costs and institutions"
+   * Missing start date and end date.
+   * Missing description.
