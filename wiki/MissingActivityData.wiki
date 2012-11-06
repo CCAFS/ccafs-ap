@@ -21,3 +21,8 @@
   * Activity 42: "On-farm trials on strategies to increase system productivity, soil quality and carbon sequestration in East Africa."
    * Start date and End date are missing.
    * Description is missing.
+
+== CIP ==
+  * Activity 43: "Optimizing the value of historic breeding trials to model adaptability of  potato and sweet potato clones (proof of concept)"
+   * Missing start date and end date.
+   * Missing description.
