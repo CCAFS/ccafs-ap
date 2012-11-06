@@ -29,3 +29,7 @@
   * Activity 44: "Developing methods to jointly model geo-spatial climate covariates such as topography, soil fertility and pests"
    * Missing start date and end date.
    * Missing description.
+
+  * Activity 57: "Formalizing local perceptions of climate risk"
+   * Missing start date and end date.
+   * Missing description.
