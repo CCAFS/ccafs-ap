@@ -1,5 +1,4 @@
-#summary The following is a report of the missing data from all the activity excel files.
-
+#summary The following is a report of the missing data. Planning step (Activities 2012).
 
 
 = Missing Data =
@@ -24,5 +23,9 @@
 
 == CIP ==
   * Activity 43: "Optimizing the value of historic breeding trials to model adaptability of  potato and sweet potato clones (proof of concept)"
+   * Missing start date and end date.
+   * Missing description.
+
+  * Activity 44: "Developing methods to jointly model geo-spatial climate covariates such as topography, soil fertility and pests"
    * Missing start date and end date.
    * Missing description.
