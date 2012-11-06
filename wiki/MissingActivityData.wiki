@@ -78,3 +78,52 @@
   * Activity 87: "(1) international experiences with Payments for Environmental Services (carbon) in different systems, including capacity building at national and local levels; (2) Assessment of biocarbon project costs and institutions"
    * Missing start date and end date.
    * Missing description.
+
+== ILRI  ==
+  * Activity 97: "Modelling of household level adaptation strategies in agro-pastoral systems of East Africa (Genesis reversed)"
+   * Start date and end date have bad format (2011 - 2012).
+   
+  * Activity 98: "Review of potential contribution of livestock breeding strategies to climate change mitigation and adaptation"
+   * Missing start date and end date.   
+   
+  * Activity 99: "Quantification of the costs of adaptation of livestock systems to climate change"
+   * Missing start date and end date.  
+   
+  * Activity 100: "Development and/or adaptation of suitable household models for studying risk management in farming systems"
+   * Missing start date and end date.
+   
+  * Activity 101: "Implement IBLI pilot in Borana"
+   * Missing start date and end date.
+   
+  * Activity 102: "GHG inventory training courses for countries in the CCAFS regions"
+   * Start date and end date have bad format (2011 - 2012).
+   
+  * Activity 103: "Integrated assesment of scenarios of alternantive global terrestial mitigation practices."
+   * Start date and end date have bad format (2011 - 2012).
+   
+  * Activity 104: "Review of PES for livestock."
+   * Start date and end date have bad format (2011 - 2012).
+   
+  * Activity 105: "Establishment of a protocol for measuring and monitoring GHG emissions in smallholder systems."
+   * Start date and end date have bad format (2011 - 2012).
+   * Missing description
+ 
+  * Activity 106: "Household-level data collection in CCAFS benchmark sites for studying adaptation and mitigation strategies. This include detailed descriptions of household assets, infra-structure, crop and livestock yields, labour profiels, input use, management practcies and others to parameterise household models to study the impacts of adaptation/mitigation strageties on household well being and the trade-offs arising in the ue of farm and other resources."
+   * Missing start and end date
+   
+  * Activity 107: "Refinement of global assessment tools for climate change studies. This activity aims to improve existing global assessment models like Globiom, IMPACT, LPj and others to be able to provide better information on impacts on livelihoods, agriculture and natural resources under alternative climate change and socio-economic scenarios"
+   * Start date and end date have bad format (2011 - 2012).
+   
+  * Activity 108: "Development of improved agricultural systems classification for global and regional integrated assessment. This will include a better definition of the types of production systems in particular regions, improved spatial allocation of where different livestock species are located, improved definition of cropland areas and others. This is essential to improved regional integrated assessmernts and to assert the impacts of differnet adapation and mitigation strategies on particular regions"
+   * Start date and end date have bad format (2011 - 2012).
+  
+  * Activity 109: "Policy workshop and outreach East Africa.  Scenario development W. Africa, including the modelling and quantification of the impacts of each scenario on selected livelihoods, food security  and environmental variables for the regions under study.   Assess vulnerability thresholds at lower levels of resolution."
+   * Start date and end date have bad format (2011 - 2012).
+   * Misssing description
+   
+  * Activity 110: "A framework for upscaling climate change adapatation and mitigation options."
+   * Start date and end date have bad format (2011 - 2012).   
+   
+  * Activity 111: "Development and/or refinement of household level models for climate change studies"
+   * Missing start and end date
+   
