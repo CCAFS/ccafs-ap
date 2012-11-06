@@ -33,3 +33,7 @@
   * Activity 57: "Formalizing local perceptions of climate risk"
    * Missing start date and end date.
    * Missing description.
+
+  * Activity 58: "Modelling climate-sensitive pest and diseases for potato- and sweet potato-based systems"
+   * Missing start date and end date.
+   * Missing description.
