@@ -45,3 +45,11 @@
   * Activity 60: "Develop precise submodels for T and RH on LB development using current SAS based simulation model"
    * Missing start date and end date.
    * Missing description.
+
+  * Activity 70: "Develop a climate downscaling methodology based on wavelets, multifractals and neural networks"
+   * Missing start date and end date.
+   * Missing description.
+
+  * Activity 71: "User-friendly geospatial potato & Sweet potato models"
+   * Missing start date and end date.
+   * Missing description.
