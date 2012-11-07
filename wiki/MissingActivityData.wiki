@@ -267,3 +267,7 @@
   * Activity 244: "Develop methods for improving CGIAR modeling capability in agroforestry and other natural resource management internvention areas. This may involve the direct enhancement of global models like IMPACT or the enhancement of othe rmodels that could be linked up (e.g. DSSAT), 2012 funds."
    * Missing start date and end date
    * Missing activity description   
+
+  * Activity 245: "Continue work on methods for improving CGIAR modeling capability in agro-forestry  and other natural resource management internvention areas that improve climate change resilience. This may involve the direct enhancement of global models like IMPACT or the enhancement of other models that could be linked up (e.g. DSSAT), 2012 funds."
+   * Missing start date and end date
+   * Missing activity description  
