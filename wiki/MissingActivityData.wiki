@@ -4,6 +4,27 @@
 = Missing Data =
 
 == CIMMYT  ==
+  * Activity 1: "Communication of successful strategies, approaches, policies, and investments contributing to improved science-informed CC-ag development-food security policies and decision making in rice-wheat systems and maize-legume systems in view of main- streaming adaptation strategies."
+   * Missing contact person email (Mike Listman, Jon Hellin)
+
+  * Activity 3: "Assembling and development of data and parameters to integrate maize and wheat systems information into global models, including calibration of selected benchmark cultivars for target environments."
+   * Missing contact person email (Shiferaw, Bekele, Uran Chung)
+
+  * Activity 4: "Integrated assessments for estimating future impacts and identifying policy options for adaptation to and mitigation of climate change."
+   * Missing contact person email (Shiferaw, Bekele; Chung, Uran)
+
+  * Activity 8: "Collection of agronomic & management data for past & current on-farm research sites in IGP (rice-wheat-maize based systems, CSISA, RWC) and prioritize filling the gaps (short and long term data collection + reviewing long term trials)."
+   * Missing contact person email (Bruno, M. Devare, M. Gathala, T. Krupnik)
+
+  * Activity 11: "Matching of historical maize & wheat germplasm evaluation data with GIS data and current weather data"
+   * Missing contact person email (Uran Chung)
+
+  * Activity 14: "Data compilation to identify coping and adaptation strategies of farmers and the poor to manage future climate outcomes"
+   * Missing contact person email (Songporne, Kassie, Menale & Shiferaw, Bekele)
+
+  * Activity 24: "Identify and evaluate differential role and impact of risk management strategies in maize-legume systems on women and men using farm household bioeconomic models"
+   * Missing contact person email (Songporne, Shiferaw, Bekele,Mulu, Yohannes,Jaleta, Moti, Kassie, Menale, Sika)
+
   * Activity 25: "Participatory experimentation with risk management strategies in maize-legume-based systems in EA."
    * Missing end date.
 
@@ -12,9 +33,17 @@
 
   * Activity 35: "Analysis of the economic incentives and benefits to farmers from adoption of conservation agriculture for adaptation to and mitigating climate change"
    * End date has a wrong year (1202-12).
+   * Missing contact person email (Jeetendra Prakash, Hellin, Jon, Shiferaw, Bekele)
 
   * Activity 36: "Identify promising incentives, institutions and market-based mechanisms and policies for adoption of conservation agriculture by smallholder farmers in EA"
    * Missing end date and start date.
+   * Missing contact person email (Songporne, Shiferaw, Bekele & Kassie, Menale)
+
+  * Activity 37: "Design and implementation of protocols to assess C sequestration under different management practices at field and landscape scale and identification of data gaps in the various systems of the two regions and acquisition of field equipment. Collection of primary and secondary data on soil carbon dynamics under a range of management practices."
+   * Missing contact person email (Santiago Lopez Ridaura, Bruno)
+
+  * Activity 38: "Review of state of the art  in assessing GHG (N volatilization and CO2) and development of protocols + acquisition of field and lab equipment. Implementation of regional trials to estimate GHG under a range of management practices in IGP irrigated agroecologies"
+   * Missing contact person email (Sapkota, Tek,  Bruno)
 
 == CIFOR ==
   * Activity 42: "On-farm trials on strategies to increase system productivity, soil quality and carbon sequestration in East Africa."
@@ -27,12 +56,33 @@
    
   * Activity 46: "Case studies of at least 6 crops to use enhanced version of AgTrials."
    * Missing start date, end date and description.
+
+  * Activity 52: "Collating and sharing information on the use of indigenous/local technical knowledge in deploying crop diversity (especially NUS) for strengthening adaptation and resilience of production systems to climate change in 5 countries (PNG, Malaysia, Bolivia, Nepal and India)."
+   * Missing contact person email (Adam Drucker)
    
   * Activity 53: "Analysis of gender disaggregated  data about  perceptions, crops/varieties, uses and management practices and their relation to climate change adaptation in Nepal, India, Bolivia, Sarawak"
    * Missing start date and end date.
+   * Missing contact person email (Adam Drucker)
+
+  * Activity 55: "Systematic review of literature on the use of agricultural biodiversity for risk management and adaptation to climate change"
+   * Missing contact person email (Adam Drucker)
    
   * Activity 56: "Case studies on informal seed systems conducted, identifying bottlenecks for climate change adaptation."
    * Missing start date, end date and description.
+
+== CIAT ==
+  * Activity 7: "Assessing the potential of tropical forage options to mitigate climate change through reducing nitrous oxide emissions and enhancing carbon sequestration"
+   * Missing contact person email (Michael Peters, Idupulapati Rao, Aracely Castro, Glenn Hyman)
+
+  * Activity 17: "Planning and initiation of assessments of farm practices affecting GHG emissions in extensive and intensive Fruit Production Systems"
+   * Missing contact person email (Alonso Gonzalez)
+
+  * Activity 21: "Identifying crop wild relatives (CWR) collecting gaps for 80 genepools for climate change adaptation pre-breeding"
+   * Missing contact person email (Colin Khoury)
+
+  * Activity 22: "Multi-site evaluation of Brachiaria grasses (germplasm accessions and hybrids) and tropical forage legumes (species and germplasm accessions) for drought and waterlogging to respond to increased vulnerability due to climate change"
+   * Missing contact person email (Michael Peters, Idupulapati Rao, John Miles)
+
 
 == ICRAF  ==
   * Activity 80: "Identify seed sources better adapted to drought for climate change adaptation planning in Burkina Faso, Mali and Niger"
