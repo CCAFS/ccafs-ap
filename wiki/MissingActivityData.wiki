@@ -276,6 +276,7 @@
    
   * Activity 224: "Institutional Analysis and Capacity-Building of  Agricultural Carbon Projects in Africa, Phase 2 "
    * Start an end date have wrong format (2011 - 2014)
+   * More than one contact person. Used only "Sara Scherr" and omitted "Seth Shames" and "Louise Buck."
    
   * Activity 225: "Governing Mitigation Trade-Offs"
    * Start an end date have wrong format (2011 - 20123)
