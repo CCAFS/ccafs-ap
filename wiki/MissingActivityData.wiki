@@ -251,3 +251,7 @@
   * Activity 240: "Model Intercomparisons of major global models using ARC RCPs and SSPs as drivers."
    * Missing start date and end date
    * Missing activity description
+
+  * Activity 241: "Follow-up workshop on developing virtual crop varietiesin the context of crop modeling software."
+   * Missing start date and end date
+   * Missing activity description
