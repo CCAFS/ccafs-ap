@@ -246,3 +246,28 @@
 
 == TL Theme 2 ==
   * Excel file is empty - no data have been entered.
+
+== TL Theme 3 ==
+  * Activity 218: "Pressures on agriculture from increased bioenergy demand: intermodel comparison"
+   * Has a note under Milestone (LINKED TO THEME 4.2)
+   
+  * Activity 219: "Incentives and energy-food security trade-offs for mitigation options and links to global models"
+   * Has a note under Milestone (LINKED TO THEME 4.1)
+
+  * Activity 223: "Incentives for adoption of agroforestry (with Theme 4)"
+   * Has a note under Milestone (LINKED TO THEME 4.1)
+   
+  * Activity 224: "Institutional Analysis and Capacity-Building of  Agricultural Carbon Projects in Africa, Phase 2 "
+   * Start an end date have wrong format (2011 - 2014)
+   
+  * Activity 225: "Governing Mitigation Trade-Offs"
+   * Start an end date have wrong format (2011 - 20123)
+   * End date is wrong (20123)
+   
+  * Activity 10: Has the title "This project was canceled" -> this activity was not inserted in db
+  
+  * Activity 232: "Review of GHG quantification in West Africa"
+   * Start an end date have wrong format (2012 - 2012)
+   
+  * Activity 233: "FAO-CCAFS workshop on national mitigation priorities"
+   * Start an end date are the same 2012-07 -> This activity was stored 2012-07-01, 2012-07-31 
