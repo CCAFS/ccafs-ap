@@ -240,3 +240,6 @@
    
   * Activity 189: "Assessing vulnerability to climate change in Ethiopia."
    * Missing start and end date.
+
+== TL Theme 1 ==
+  * At the end of Theme 1 Obj3 sheet there are several blank activities charts 
