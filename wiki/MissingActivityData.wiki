@@ -315,6 +315,10 @@
    * Missing start and end date
    * Contact person email incomplete. Corrected as "p.kristjanson@cgiar.org"
 
+== TL Theme 4.2 ==
+  *Activity 253: "Regional reports evaluating different climate models for the new target regions, from the perspective of agricultural impacts modeling."
+   *End date entered as "TBD." Changed to "2012-12-01"
+
 == TL Theme 4.3 ==
   * Activity 239: "Development of virtual cultivars/animals/pasture systems that are resilient to climate change (in conjunction with Global Futures project work)."
    * Missing activity description
