@@ -279,3 +279,7 @@
   * Activity 247: "Completion of national and regional studies complementary to the CFS global study."
    * Missing start date and end date
    * Missing activity description  
+
+  * Activity 248: "Training and workshops on modeling tools in collaborating centers and NARES."
+   * Missing start date and end date
+   * Missing activity description  
