@@ -271,3 +271,7 @@
   * Activity 245: "Continue work on methods for improving CGIAR modeling capability in agro-forestry  and other natural resource management internvention areas that improve climate change resilience. This may involve the direct enhancement of global models like IMPACT or the enhancement of other models that could be linked up (e.g. DSSAT), 2012 funds."
    * Missing start date and end date
    * Missing activity description  
+
+  * Activity 246: "Report for the United Nations Committee on Food Security (CFS) ON Food Security and Climate Change and related reports with subregional results."
+   * Missing start date and end date
+   * Missing activity description     
