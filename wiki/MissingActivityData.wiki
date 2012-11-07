@@ -70,6 +70,14 @@
   * Activity 56: "Case studies on informal seed systems conducted, identifying bottlenecks for climate change adaptation."
    * Missing start date, end date and description.
 
+== CIP ==
+  * Activity 59: "Develop an Online/ offline mapping tool for rapid risk and impact assessment of CC effects on LB - validation of look up tables "
+   * Missing contact person email (G. Forbes)
+   
+  * Activity 60: "Develop precise submodels for T and RH on LB development using current SAS based simulation model"
+   * Missing contact person email (G. Forbes)
+
+
 == CIAT ==
   * Activity 7: "Assessing the potential of tropical forage options to mitigate climate change through reducing nitrous oxide emissions and enhancing carbon sequestration"
    * Missing contact person email (Michael Peters, Idupulapati Rao, Aracely Castro, Glenn Hyman)
