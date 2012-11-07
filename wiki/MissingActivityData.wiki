@@ -243,3 +243,6 @@
 
 == TL Theme 1 ==
   * At the end of Theme 1 Obj3 sheet there are several blank activities charts 
+
+== TL Theme 2 ==
+  * Excel file is empty - no data have been entered.
