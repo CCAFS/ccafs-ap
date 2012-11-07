@@ -112,21 +112,27 @@
 == ILRI  ==
   * Activity 97: "Modelling of household level adaptation strategies in agro-pastoral systems of East Africa (Genesis reversed)"
    * Start date and end date have bad format (2011 - 2012).
+   * Missing contact person email (Mario Herrero, Philip Thornton)
    
   * Activity 98: "Review of potential contribution of livestock breeding strategies to climate change mitigation and adaptation"
    * Missing start date and end date.   
+   * Missing contact person email (Steve Kemp)
    
   * Activity 99: "Quantification of the costs of adaptation of livestock systems to climate change"
    * Missing start date and end date.  
+   * Missing contact person email (Mario Herrero)
    
   * Activity 100: "Development and/or adaptation of suitable household models for studying risk management in farming systems"
    * Missing start date and end date.
+   * Missing contact person email (Mark van Wijk)
    
   * Activity 101: "Implement IBLI pilot in Borana"
    * Missing start date and end date.
+   * Missing contact person email (Andrew Mude)
    
   * Activity 102: "GHG inventory training courses for countries in the CCAFS regions"
    * Start date and end date have bad format (2011 - 2012).
+   * Missing contact person email (Silvia Silvestri, Mariana Rufino)
    
   * Activity 103: "Integrated assesment of scenarios of alternantive global terrestial mitigation practices."
    * Start date and end date have bad format (2011 - 2012).
@@ -137,6 +143,7 @@
   * Activity 105: "Establishment of a protocol for measuring and monitoring GHG emissions in smallholder systems."
    * Start date and end date have bad format (2011 - 2012).
    * Missing description
+   * Missing contact person email (Mario Herrero, An Notenbaert)
  
   * Activity 106: "Household-level data collection in CCAFS benchmark sites for studying adaptation and mitigation strategies. This include detailed descriptions of household assets, infra-structure, crop and livestock yields, labour profiels, input use, management practcies and others to parameterise household models to study the impacts of adaptation/mitigation strageties on household well being and the trade-offs arising in the ue of farm and other resources."
    * Missing start and end date
