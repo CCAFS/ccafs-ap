@@ -143,7 +143,7 @@ CREATE  TABLE IF NOT EXISTS `activities` (
   `milestone_id` INT NOT NULL ,
   `activity_leader_id` INT NOT NULL ,
   `is_global` TINYINT(1) NOT NULL ,
-  `continuous_activity_id` INT NOT NULL ,
+  `continuous_activity_id` INT NULL ,
   `is_planning` TINYINT(1) NULL ,
   `activity_status_id` INT NULL ,
   `status_description` TEXT NULL ,
