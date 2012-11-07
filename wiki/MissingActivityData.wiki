@@ -280,3 +280,7 @@
   * Activity 166: "Development of modeling tools to handle aggregation, landuse, non-traded goods, and trade policies."
    * Missing start date and end date
    * Missing activity description
+
+  * Activity 240: "Model Intercomparisons of major global models using ARC RCPs and SSPs as drivers."
+   * Missing start date and end date
+   * Missing activity description
