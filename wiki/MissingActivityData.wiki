@@ -188,3 +188,15 @@
   * Activity 144: "Assessment of cocoa and coffee based agricultural systems for carbon sequestration potential to mitigate risk of climate change and enhance food security"
    * Missing start date and end date.
    * Missing description.
+
+== WORLDFISH ==
+  * Activity 149: "Evaluation of water resources adequacy to meet demands from aquaculture integrated  with small-scale irrigation in drought-prone areas in Malawi, Zambia and Mozambique, under present and future climate change scenarios"
+   * Missing start date and end date.
+   * Missing description.
+
+  * Activity 152: "Develop and implement basin-wide climate change adaptations in Lake Chilwa, Malawi, in support of the NAPA by enhancing the capacity of communities to adopt sustainable livelihood and natural resource management practices"
+   * Missing start date and end date.
+
+  * Activity 153: "Refinement of assessment methodology for economics of adaptation of aquaculture to climate change impacts to inform and support policy analysis and formulation based on case studies in the Mekong delta in Vietnam."
+   * Missing start date and end date.
+   * Missing description.
