@@ -200,3 +200,11 @@
   * Activity 153: "Refinement of assessment methodology for economics of adaptation of aquaculture to climate change impacts to inform and support policy analysis and formulation based on case studies in the Mekong delta in Vietnam."
    * Missing start date and end date.
    * Missing description.
+
+== IPFRI ==
+  * Activity 158: "Develop and apply a farm-level "structural model" for ex-ante evaluation of index-based insurance ."
+   * End date has wrong format (2012-31).
+   
+  * Activity 166: "Development of modeling tools to handle aggregation, landuse, non-traded goods, and trade policies."
+   * End date has wrong format (2012-31).
+   * Missing description.
