@@ -21,39 +21,6 @@
    * Start date and End date are missing.
    * Description is missing.
 
-== CIP ==
-  * Activity 43: "Optimizing the value of historic breeding trials to model adaptability of  potato and sweet potato clones (proof of concept)"
-   * Missing start date and end date.
-   * Missing description.
-
-  * Activity 44: "Developing methods to jointly model geo-spatial climate covariates such as topography, soil fertility and pests"
-   * Missing start date and end date.
-   * Missing description.
-
-  * Activity 57: "Formalizing local perceptions of climate risk"
-   * Missing start date and end date.
-   * Missing description.
-
-  * Activity 58: "Modelling climate-sensitive pest and diseases for potato- and sweet potato-based systems"
-   * Missing start date and end date.
-   * Missing description.
-
-  * Activity 59: "Develop an Online/ offline mapping tool for rapid risk and impact assessment of CC effects on LB - validation of look up tables"
-   * Missing start date and end date.
-   * Missing description.
-
-  * Activity 60: "Develop precise submodels for T and RH on LB development using current SAS based simulation model"
-   * Missing start date and end date.
-   * Missing description.
-
-  * Activity 70: "Develop a climate downscaling methodology based on wavelets, multifractals and neural networks"
-   * Missing start date and end date.
-   * Missing description.
-
-  * Activity 71: "User-friendly geospatial potato & Sweet potato models"
-   * Missing start date and end date.
-   * Missing description.
-
 == BIOVERSITY  ==
   * Activity 45: "Defining the critical information and information sources needed by breeders and other researchers in order to produce varieties adapted to climate change and testing  Crop Trait ontology-based dynamic services on  the Platform  for multi-location trials of technologies and genotypes for GxE interactions, to support the collection of metadata,  trait based queries on  evaluation sites and enabling integration of the critical information for breeders, such as GENESYS, GCP integrated breeding platform and other important data sources."
    * Missing start date, end date and description.
