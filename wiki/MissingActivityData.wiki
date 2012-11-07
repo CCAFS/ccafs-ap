@@ -303,6 +303,11 @@
   * Activity 233: "FAO-CCAFS workshop on national mitigation priorities"
    * Start an end date are the same 2012-07 -> This activity was stored 2012-07-01, 2012-07-31 
 
+== TL Theme 4.1 ==
+  * Activity 250: "Engagement and communication approaches, knowledge networks and farmers'and regional partner organizations strengthened."
+   * Missing start and end date
+   * Contact person email incomplete. Corrected as "p.kristjanson@cgiar.org"
+
 == TL Theme 4.3 ==
   * Activity 239: "Development of virtual cultivars/animals/pasture systems that are resilient to climate change (in conjunction with Global Futures project work)."
    * Missing activity description
