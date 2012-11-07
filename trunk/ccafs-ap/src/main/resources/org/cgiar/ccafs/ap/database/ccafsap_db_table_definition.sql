@@ -144,8 +144,8 @@ CREATE  TABLE IF NOT EXISTS `activities` (
   `activity_leader_id` INT NOT NULL ,
   `is_global` TINYINT(1) NOT NULL ,
   `continuous_activity_id` INT NULL ,
-  `is_planning` TINYINT(1) NULL ,
-  `activity_status_id` INT NULL ,
+  `is_planning` TINYINT(1) NOT NULL ,
+  `activity_status_id` INT NOT NULL ,
   `status_description` TEXT NULL ,
   PRIMARY KEY (`id`) ,
   CONSTRAINT `milestone_fk`

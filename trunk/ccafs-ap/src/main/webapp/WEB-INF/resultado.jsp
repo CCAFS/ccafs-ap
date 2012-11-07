@@ -2,10 +2,10 @@
 <%@ taglib prefix="s" uri="/struts-tags" %>
 <html>
 	<head>
-		<title>Home</title>
+		<title>Resultado</title>
 	</head>
 	<body>
-		<h3><s:property value="mensaje" /></h4>		
+		<h3>Este fue tu correo: <s:property value="email" /></h3>		
 		
 	</body>
 </html>
