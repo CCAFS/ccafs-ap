@@ -275,3 +275,7 @@
   * Activity 246: "Report for the United Nations Committee on Food Security (CFS) ON Food Security and Climate Change and related reports with subregional results."
    * Missing start date and end date
    * Missing activity description     
+
+  * Activity 247: "Completion of national and regional studies complementary to the CFS global study."
+   * Missing start date and end date
+   * Missing activity description  
