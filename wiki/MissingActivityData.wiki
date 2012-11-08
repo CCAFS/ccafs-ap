@@ -413,6 +413,9 @@
   * Activity 269: "Science meeting on systems analysis tools."
    * Missing start and end date.
 
+  * Activity 270: "Household modelling development and application using the Impact-Lite databases in the CCAFS sites."
+   * Missing end date.
+
 == TL Theme 4.3 ==
   * Activity 239: "Development of virtual cultivars/animals/pasture systems that are resilient to climate change (in conjunction with Global Futures project work)."
    * Missing activity description
