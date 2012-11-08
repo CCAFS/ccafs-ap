@@ -316,6 +316,41 @@
   * Activity 189: "Assessing vulnerability to climate change in Ethiopia."
    * Missing start and end date.
 
+== RPL SAs ==
+
+ * Activity 190: "Implementing farmer exchange programs linked to climate analogues in Rupandehi, Nepal and Climate analogue linked germplasm  evaluation"
+   * Missing contact person email (Prem Mathur, Gopal D Bhatta)
+   
+ * Activity 192: "Climate change adaptation innovation threads in South Asia and Indigenous knowledge to climate change adaptation "
+   * Missing contact person email (	Gopal D Bhatta)
+   
+ * Activity 193: "Analysis of weather effects on components of food security (e.g. production, prices, and trade) for India and Nepal "
+   * Missing contact person email ( Gopal D Bhatta)
+   
+ * Activity 195: "South-South knowledge exchange"
+   * Missing contact person email ( Gopal D Bhatta)
+   
+ * Activity 196: "Baseline GHG emissions in key sites in South Asia"
+   * Missing contact person email ( JK Ladha)
+   
+ * Activity 197: "Linking knowledge to action through scenario building at the regional level in South Asia"
+   * Missing contact person email ( Gopal D Bhatta)
+
+ * Activity 198: "Partnership development and strengthening; establishment of participatory action research activities with key partners in CCAFS regions/sites (climate smart villages)"
+   * Missing contact person email ( Gopal D Bhatta)
+   
+ * Activity 199: "Empowering rural women to adapt for food security in South Asia"
+   * Missing contact person email ( Gopal D Bhatta)
+   
+ * Activity 200: "Enhancing regional engagement and communication"
+   * Missing contact person email ( Gopal D Bhatta)
+   
+ * Activity 201: "Completing baseline surveys in CCAFS sites"
+   * Missing contact person email ( Gopal D Bhatta)
+   
+ * Activity 204: "Impact assessment of cimate change on specific crops in South Asia"
+   * Missing contact person email ( Amit Srivastava, Gopal D Bhatta)
+
 == TL Theme 1 ==
   * At the end of Theme 1 Obj3 sheet there are several blank activities charts 
 
