@@ -49,6 +49,7 @@
   * Activity 42: "On-farm trials on strategies to increase system productivity, soil quality and carbon sequestration in East Africa."
    * Start date and End date are missing.
    * Description is missing.
+   * There are no objectives
 
 == BIOVERSITY  ==
   * Activity 45: "Defining the critical information and information sources needed by breeders and other researchers in order to produce varieties adapted to climate change and testing  Crop Trait ontology-based dynamic services on  the Platform  for multi-location trials of technologies and genotypes for GxE interactions, to support the collection of metadata,  trait based queries on  evaluation sites and enabling integration of the critical information for breeders, such as GENESYS, GCP integrated breeding platform and other important data sources."
@@ -56,6 +57,7 @@
    
   * Activity 46: "Case studies of at least 6 crops to use enhanced version of AgTrials."
    * Missing start date, end date and description.
+   * There are no objectives
 
   * Activity 52: "Collating and sharing information on the use of indigenous/local technical knowledge in deploying crop diversity (especially NUS) for strengthening adaptation and resilience of production systems to climate change in 5 countries (PNG, Malaysia, Bolivia, Nepal and India)."
    * Missing contact person email (Adam Drucker)
@@ -69,6 +71,7 @@
    
   * Activity 56: "Case studies on informal seed systems conducted, identifying bottlenecks for climate change adaptation."
    * Missing start date, end date and description.
+   * There are no objectives
 
 == CIP ==
   * Activity 59: "Develop an Online/ offline mapping tool for rapid risk and impact assessment of CC effects on LB - validation of look up tables "
@@ -91,6 +94,9 @@
   * Activity 22: "Multi-site evaluation of Brachiaria grasses (germplasm accessions and hybrids) and tropical forage legumes (species and germplasm accessions) for drought and waterlogging to respond to increased vulnerability due to climate change"
    * Missing contact person email (Michael Peters, Idupulapati Rao, John Miles)
 
+ * Activity 32: "Evaluation of cost-benefit of adaptation measures in at least four production systems initially in Colombia and in at least the rice and livestock sectors"
+   * There are no objectives
+
 
 == ICRAF  ==
   * Activity 80: "Identify seed sources better adapted to drought for climate change adaptation planning in Burkina Faso, Mali and Niger"
@@ -100,11 +106,13 @@
    * Missing start date and end date.
    * Missing description.
    * Missing contact person email (Peter Minang)
+   * There are no objectives
    
   * Activity 87: "(1) international experiences with Payments for Environmental Services (carbon) in different systems, including capacity building at national and local levels; (2) Assessment of biocarbon project costs and institutions"
    * Missing start date and end date.
    * Missing description.
    * Missing contact person email (Sarah Namirembe, Meine van Noordwijk, Andy & Jianchu; Henry Neufeldt)
+   * There are no objectives
    
   * Activity 88: "Analysis of mitigation biophysical and socioeconomic feasibility for different agricultural practices and regions, and impacts on emissions, livelihoods and food security (2012-13)"
    * Missing contact person email (Frank Place)
@@ -182,11 +190,13 @@
    * Missing start date and end date.
    * Missing description.
    * Missing contact person email (Pierre Sibiry Traore)
+   * There are no objectives
 
   * Activity 94: "On-station experiments to quantify GxE interactions and calibrate crop models to simulate the response of target cereals and legumes to differences in environmental condtions at different locations in Kenya, Zimbabwe and southern India"
    * Missing start date and end date.
    * Missing description.
    * Missing contact person email (Dave Harris)
+   * There are no objectives
 
   * Activity 95: "Characterising of historical & current climate risks and impact on livelihoods & livelihood options in drylands of India; assessing past & present adaptation practices, gender and social differentiation aspects, and indigenous knowledge"
    * Start date and end date are missing.
@@ -194,6 +204,7 @@
   * Activity 96: "Participatory testing of low cost and high impact technologies (e.g. micro-dosing, seed priming) for reduced risk and improved productivity (links to CRP1.1)"
    * Start date and end date are missing.
    * Missing contact person email (Dave Harris)
+   * There are no objectives
 
   * *Activity 112*: "Organising & conducting training courses for staff from National Met. Services (NMS) and NARES in use of climate data and dialogues with farmers to increase awareness of farmers needs (links to activities in 2.1 in India)"
    * *Milestone is missing*.
@@ -233,25 +244,29 @@
   * Activity 141: "Develop new germplasm catalogues on existing and released cassava germplasm"
    * Missing start date and end date.
    * Missing description.
+   * There are no objectives
 
   * Activity 142: "Assess risks and test strategies for adaptation to significant crop biotic threats due to climate change"
    * Missing start date and end date.
    * Missing description.
-
+   * There are no objectives
 
   * Activity 143: "Develop new knowledge and tools to assess potential emission reductions from various crop systems and technology options to improve productivity and enhance food security"
    * Missing start date and end date.
    * Missing description.
+   * There are no objectives
 
   * Activity 144: "Assessment of cocoa and coffee based agricultural systems for carbon sequestration potential to mitigate risk of climate change and enhance food security"
    * Missing start date and end date.
    * Missing description.
+   * There are no objectives
 
 == WORLDFISH ==
   * Activity 149: "Evaluation of water resources adequacy to meet demands from aquaculture integrated  with small-scale irrigation in drought-prone areas in Malawi, Zambia and Mozambique, under present and future climate change scenarios"
    * Missing start date and end date.
    * Missing description.
    * Missing contact person email (Daniel Jamu)
+   * There are no objectives
 
  * Activity 150: "Managing climate risks and building resilient livelihoods in tropical aquatic agricultural systems"
    * Missing contact person email (Melody Braun; Kevin Kamp; Paula Kantor)
@@ -262,17 +277,21 @@
   * Activity 152: "Develop and implement basin-wide climate change adaptations in Lake Chilwa, Malawi, in support of the NAPA by enhancing the capacity of communities to adopt sustainable livelihood and natural resource management practices"
    * Missing start date and end date.
    * Missing contact person email (Daniel Jamu)
+   * There are no objectives
 
   * Activity 153: "Refinement of assessment methodology for economics of adaptation of aquaculture to climate change impacts to inform and support policy analysis and formulation based on case studies in the Mekong delta in Vietnam."
    * Missing start date and end date.
    * Missing description.
    * Missing contact person email (Michael Phillips, Joelle Albert,  Eddie Allison, Anne-Maree Schwarz)
+   * There are no objectives
 
  * Activity 154: "Improve government and community capacity to identify and implement gender sensitive climate change adaptation in the context of ecosystem-based resource management in CTI countries and South-West Bangladesh."
    * Missing contact person email (Simon Attwood; Jennifer King; Eddie Allison; David Mills; Kirsten Abernethy.)
+   * There are no objectives
    
  * Activity 155: "Refinement of assessment methodology for economics of adaptation of aquaculture to climate change impacts to inform and support policy analysis and formulation based on case studies in the Mekong delta in Vietnam."
    * Missing contact person email (Simon Attwood; Jennifer King; Eddie Allison; David Mills; Kirsten Abernethy.)
+   * There are no objectives
 
 == IPFRI ==
   * Activity 158: "Develop and apply a farm-level "structural model" for ex-ante evaluation of index-based insurance ."
