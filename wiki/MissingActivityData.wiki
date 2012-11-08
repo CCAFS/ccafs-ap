@@ -268,11 +268,21 @@
    * Missing description.
 
 == RPL EA ==
+ * Activity 168: "Regional capacity building on using Climate Scenarios and Analogues for designing adaptation strategies in agriculture."
+   * Missing contact person email (Tom Ouna and Catherine Mungai)
+   
+ * Activity 169: "Understanding social and cultural barriers to adaptation"
+   * Missing contact person email (CCAFS East Africa Fellow (TBC))
+
   * Activity 170: "Video testimonials on gender-specific farmer adaptation and mitigation strategies in East Africa."
    * *Milestone is missing*
+   * Missing contact person email (Catherine Mungai )
    
   * Activity 171: "Evaluation of baseline national adaptation policy and plans in Kenya and Ethiopia."
    * *Milestone is missing*
+
+  * Activity 172: "Using Climate Scenarios and Spatial Analogues in Designing Adaptation Strategies in Agriculture in East Africa"
+   * Missing contact person email (Catherine Mungai )   
       
   * Activity 173: "Synthesis of knowledge gaps in risk management."
    * Start and end date have wrong format (2012 - 2012).
@@ -283,12 +293,19 @@
    
   * Activity 177: "Provision of information on stress tolerance and adaptation of maize cultivars to support farmers' risk management strategies in areas vulnerable to climate change."
    * Missing start and end date.
+
+ * Activity 178: "Training of decision makers in inventories and use of appropriate tools and data"
+   * Missing contact person email (Catherine Mungai )
+   
+ * Activity 184: "Linking existing and future climate change-related research and science to farmer organizations at regional (EAFF), national (EAFF member organizations) and sub-national levels"
+   * Missing contact person email (Mainza Mugoya )
    
   * Activity 185: "Household and village baseline surveys for CCAFS site in Wote, Eastern Kenya."
    * Missing start and end date.
    
   * Activity 186: "Regional site characterization and gender-disaggregated baseline data collection at household, village and institution levelsKenya."
    * Missing start and end date.
+   * Missing contact person email (Joash Mango)
    
   * Activity 187: "Developing a strategy for engagement with National Met Services, data and tool collation, and capacity building."
    * Missing start and end date.
