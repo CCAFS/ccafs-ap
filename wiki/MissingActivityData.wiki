@@ -157,6 +157,7 @@
   * Activity 109: "Policy workshop and outreach East Africa.  Scenario development W. Africa, including the modelling and quantification of the impacts of each scenario on selected livelihoods, food security  and environmental variables for the regions under study.   Assess vulnerability thresholds at lower levels of resolution."
    * Start date and end date have bad format (2011 - 2012).
    * Misssing description
+   * Missing contact person email (Polly Ericksen)
    
   * Activity 110: "A framework for upscaling climate change adapatation and mitigation options."
    * Start date and end date have bad format (2011 - 2012).   
