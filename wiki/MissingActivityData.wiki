@@ -213,7 +213,20 @@
 
 == IWMI  ==
   * Activity 131: "Synthesis of groundwater assessments from over 10 countries throughout Africa; Evaluating prospects and constraints of Managed Aquifer Recharge (MAR) for augmenting water supplies for poor farming communities in South Asia; Hydro-economic assessment of the potential for flood water harvesting in selected regions of SEA."
-   * Missing start date and end date.   
+   * Missing start date and end date.
+   * Missing contact person email ( Prathapar Sanmugam)
+
+ * Activity 136: "Evaluation of impacts of future climate on water balance of two major African cities (Accra and Addis Abeba), and designing adaptation strategies in the context of basin water resources planning through  stakeholder paltforms"
+   * Missing contact person email ( Liqa Rashid) 
+   
+ * Activity 138: "Analysing climate-related risks for agriculture and livelihoods, and trends in current climates  "
+   * Missing contact person email (Guillame Lacombe) 
+   
+ * Activity 139: "Assessing the needs and priorities of female and male farmers for climate-related information and its  dissemination through mobile phones; developing the web-based services to provide this information in Sudan, Egypt and Ethiopia"
+   * Missing contact person email (Lisa-Maria Rebelo) 
+
+ * Activity 140: "Developing new tools and climate-related datasets for river basin modelling and yield assessment under current and future climates."
+   * Missing contact person email (Charlotte MacAlister)
 
 == IITA ==
 
