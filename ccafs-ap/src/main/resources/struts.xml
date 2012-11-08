@@ -1,23 +1,43 @@
 <?xml version="1.0" encoding="UTF-8" ?>
-<!DOCTYPE struts PUBLIC
-	"-//Apache Software Foundation//DTD Struts Configuration 2.3//EN"
-	"http://struts.apache.org/dtds/struts-2.3.dtd">
+<!DOCTYPE struts PUBLIC "-//Apache Software Foundation//DTD Struts Configuration 2.3//EN" "http://struts.apache.org/dtds/struts-2.3.dtd">
 <struts>
-	<!-- constant name="struts.enable.DynamicMethodInvocation" value="false"/ -->
-	<constant name="struts.devMode" value="true" />
+  <!-- constant name="struts.enable.DynamicMethodInvocation" value="false"/ -->
+  <constant name="struts.devMode" value="true" />
 
-	<!-- Add addition packages and configuration here. -->
-	<package name="default" namespace="/" extends="struts-default">
-		<result-types>
-			<result-type name="freemarker"
-				class="org.apache.struts2.views.freemarker.FreemarkerResult"
-				default="true" />
-		</result-types>
-		<default-action-ref name="Login" />
+  <!-- Add addition packages and configuration here. -->
+  <package name="ccafsap-default" namespace="/" extends="struts-default">
+    <result-types>
+      <result-type name="freemarker" class="org.apache.struts2.views.freemarker.FreemarkerResult"
+        default="true" />
+    </result-types>    
+    
+    <default-action-ref name="login" />
+    <action name="login" class="org.cgiar.ccafs.ap.action.LoginAction">
+      <result>/WEB-INF/home/pages/login.ftl</result>
+    </action>
 
-		<action name="Login" class="org.cgiar.ccafs.ap.action.Login">
-			<result>index.ftl</result>			
-		</action>
-
-	</package>
+    <!-- global-results>
+      <result name="404">
+      <param name="location">/WEB-INF/pages/error/404.ftl</param>
+      </result>
+      <result name="401">
+      <param name="location">/WEB-INF/pages/error/401.ftl</param>
+      </result>
+      <result name="error">
+      <param name="location">/WEB-INF/pages/error/error.ftl</param>
+      </result>
+      <result name="login" type="redirect">/login.do</result>
+      </global-results -->
+  </package>
+  
+   <!--
+     Home is in the namespace="/"
+     Planning is in the namespace="/planning"
+     Reporting is in the namespace="/reporting"
+     Summaries is in the namespace="/summaries"
+     Admin is in the namespace="/admin"
+   -->
+  <include file="struts-home.xml"/>
+  
+  
 </struts>
