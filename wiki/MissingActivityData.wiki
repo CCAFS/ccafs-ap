@@ -292,6 +292,7 @@
   * Activity 170: "Video testimonials on gender-specific farmer adaptation and mitigation strategies in East Africa."
    * *Milestone is missing*
    * Missing contact person email (Catherine Mungai )
+   * Missing activity objectives
    
   * Activity 171: "Evaluation of baseline national adaptation policy and plans in Kenya and Ethiopia."
    * *Milestone is missing*
