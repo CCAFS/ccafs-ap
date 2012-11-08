@@ -251,13 +251,28 @@
   * Activity 149: "Evaluation of water resources adequacy to meet demands from aquaculture integrated  with small-scale irrigation in drought-prone areas in Malawi, Zambia and Mozambique, under present and future climate change scenarios"
    * Missing start date and end date.
    * Missing description.
+   * Missing contact person email (Daniel Jamu)
+
+ * Activity 150: "Managing climate risks and building resilient livelihoods in tropical aquatic agricultural systems"
+   * Missing contact person email (Melody Braun; Kevin Kamp; Paula Kantor)
+   
+ * Activity 151: "Participatory Action research at farmer/village level for climate risk management in South-Western Bangladesh."
+   * Missing contact person email (Melody Braun; Kevin Kamp;)
 
   * Activity 152: "Develop and implement basin-wide climate change adaptations in Lake Chilwa, Malawi, in support of the NAPA by enhancing the capacity of communities to adopt sustainable livelihood and natural resource management practices"
    * Missing start date and end date.
+   * Missing contact person email (Daniel Jamu)
 
   * Activity 153: "Refinement of assessment methodology for economics of adaptation of aquaculture to climate change impacts to inform and support policy analysis and formulation based on case studies in the Mekong delta in Vietnam."
    * Missing start date and end date.
    * Missing description.
+   * Missing contact person email (Michael Phillips, Joelle Albert,  Eddie Allison, Anne-Maree Schwarz)
+
+ * Activity 154: "Improve government and community capacity to identify and implement gender sensitive climate change adaptation in the context of ecosystem-based resource management in CTI countries and South-West Bangladesh."
+   * Missing contact person email (Simon Attwood; Jennifer King; Eddie Allison; David Mills; Kirsten Abernethy.)
+   
+ * Activity 155: "Refinement of assessment methodology for economics of adaptation of aquaculture to climate change impacts to inform and support policy analysis and formulation based on case studies in the Mekong delta in Vietnam."
+   * Missing contact person email (Simon Attwood; Jennifer King; Eddie Allison; David Mills; Kirsten Abernethy.)
 
 == IPFRI ==
   * Activity 158: "Develop and apply a farm-level "structural model" for ex-ante evaluation of index-based insurance ."
