@@ -484,6 +484,9 @@
   * Activity 265: "Quantification of regional scenarios using global integrated models."
    * Missing years for all expected deliverables. Years entered as 2012.
 
+  * Activity 266: "Review of climate change communications and social learning in climate change."
+   * Missing years for all expected deliverables. Years entered as 2012.
+
   * Activity 269: "Science meeting on systems analysis tools."
    * Missing start and end date.
 
