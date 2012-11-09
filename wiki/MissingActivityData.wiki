@@ -404,6 +404,9 @@
   * Activity 224: "Institutional Analysis and Capacity-Building of  Agricultural Carbon Projects in Africa, Phase 2."
    * Range of dates (2012-2014) reported for expected deliverable "Additional reports, presentations, and assistance." Only 2012 entered.
 
+  * Activity 225: "Governing Mitigation Trade-Offs."
+   * Missing years for all expected deliverables. All years entered as 2012.
+
 == TL Theme 2 ==
   * Excel file is empty - no data have been entered.
 
