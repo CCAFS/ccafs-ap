@@ -466,6 +466,9 @@
   * Activity 259: "Livestock production model intercomparison and improvement."
    * Title says "no contract signed yet," all data except for milestone, title and budget are currently missing.
 
+  * Activity 260: "Data management strategy, support tools, and creating and maintaining data portals."
+   * Missing years for all expected deliverables. Years entered as 2012.
+
   * Activity 269: "Science meeting on systems analysis tools."
    * Missing start and end date.
 
