@@ -364,10 +364,14 @@
 
   * Activity 181: "Measurement and mitigation of greenhouse gases in African livestock systems: Building capability to meet the challenge."
    * Nothing checked and no description for gender integration 
+
+  * Activity 183: "Building strategic partnerships at national and regional levels, including Africa-wide engagements with multiple stakeholders."
+   * Nothing checked and no description for gender integration 
    
  * Activity 184: "Linking existing and future climate change-related research and science to farmer organizations at regional (EAFF), national (EAFF member organizations) and sub-national levels"
    * Missing contact person email (Mainza Mugoya )
    * There aren't expected deliverables.
+   * Nothing checked and no description for gender integration 
    
   * Activity 185: "Household and village baseline surveys for CCAFS site in Wote, Eastern Kenya."
    * Missing start and end date.
