@@ -4,7 +4,7 @@
 <title>Home</title>
 </head>
 <body>
-	<h4>Enter your Name:</h4>
+	<h4>Enter your Email:</h4>
 	[@s.form action="Login.action"]
 		[@s.textfield name="email" label="Ingrese su correo" /]
 		[@s.submit value="Submit" /]
