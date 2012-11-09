@@ -440,6 +440,7 @@
    
   * Activity 219: "Incentives and energy-food security trade-offs for mitigation options and links to global models"
    * Has a note under Milestone (LINKED TO THEME 4.1)
+   * Gender integration - included description but "yes" not checked.
 
   * Activity 223: "Incentives for adoption of agroforestry (with Theme 4)"
    * Has a note under Milestone (LINKED TO THEME 4.1)
