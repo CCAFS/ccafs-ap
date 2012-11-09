@@ -451,6 +451,9 @@
   * Activity 253: "Regional reports evaluating different climate models for the new target regions, from the perspective of agricultural impacts modeling."
    * End date entered as "TBD." Changed to "2012-12-01"
 
+  * Activity 254: "Soil profile characteristics database development and refinement, for use in agricultural impact modeling work."
+   * Missing years for all expected deliverables. Year entered as 2012.
+
   * Activity 259: "Livestock production model intercomparison and improvement."
    * Title says "no contract signed yet," all data except for milestone, title and budget are currently missing.
 
