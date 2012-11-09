@@ -401,6 +401,7 @@
    
  * Activity 193: "Analysis of weather effects on components of food security (e.g. production, prices, and trade) for India and Nepal "
    * Missing contact person email ( Gopal D Bhatta)
+   * Nothing checked and no description for gender integration
    
  * Activity 195: "South-South knowledge exchange"
    * Missing contact person email ( Gopal D Bhatta)
