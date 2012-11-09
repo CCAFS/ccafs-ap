@@ -351,6 +351,7 @@
    
   * Activity 177: "Provision of information on stress tolerance and adaptation of maize cultivars to support farmers' risk management strategies in areas vulnerable to climate change."
    * Missing start and end date.
+   * Nothing checked and no description for gender integration 
 
  * Activity 178: "Training of decision makers in inventories and use of appropriate tools and data"
    * Missing contact person email (Catherine Mungai )
