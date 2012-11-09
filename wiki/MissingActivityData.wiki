@@ -355,6 +355,9 @@
 
  * Activity 178: "Training of decision makers in inventories and use of appropriate tools and data"
    * Missing contact person email (Catherine Mungai )
+
+  * Activity 179: "Quantification of GHG emissions to inform mitigation interventions in East African agricultural systems."
+   * Nothing checked and no description for gender integration 
    
  * Activity 184: "Linking existing and future climate change-related research and science to farmer organizations at regional (EAFF), national (EAFF member organizations) and sub-national levels"
    * Missing contact person email (Mainza Mugoya )
