@@ -487,6 +487,9 @@
   * Activity 266: "Review of climate change communications and social learning in climate change."
    * Missing years for all expected deliverables. Years entered as 2012.
 
+  * Activity 267: "Agricultural land cover data for Latin America and southeast Asia in 2005 (GEOSHARE)."
+   * Missing years for all expected deliverables. Years entered as 2012.
+
   * Activity 269: "Science meeting on systems analysis tools."
    * Missing start and end date.
 
