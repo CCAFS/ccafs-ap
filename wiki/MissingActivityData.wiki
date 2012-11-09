@@ -426,6 +426,9 @@
    
  * Activity 201: "Completing baseline surveys in CCAFS sites"
    * Missing contact person email ( Gopal D Bhatta)
+
+  * Activity 202: "Mapping Flood Inundation in Indo-Gangetic plain using Multi-temporal MODIS Images."
+   * Nothing checked and no description for gender integration.
    
  * Activity 204: "Impact assessment of cimate change on specific crops in South Asia"
    * Missing contact person email ( Amit Srivastava, Gopal D Bhatta)
