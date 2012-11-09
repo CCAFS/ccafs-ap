@@ -394,6 +394,10 @@
    * Expected deliverable "CMIP3 climate data fully available" has two years: 2012/2013. Only 2012 was entered.
    * Expected deliverable "CMIP5 RCP4.5 data downscaled and provided online" has two years: 2013/2014. Only 2013 was entered.
 
+  * Activity 215: "Collaborative project on vulnerability analysis with the Trust."
+   * Expected deliverable "Crop vulnerability analyses plugged into AMKN" has two dates: 2012/2013. ONly 2012 entered.
+   * Expected deliverable "CCAFS working paper with results of vulnerability analysis" has two dates: 2013/2014. Only 2013 entered.
+
 == TL Theme 2 ==
   * Excel file is empty - no data have been entered.
 
