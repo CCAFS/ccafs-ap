@@ -54,6 +54,7 @@
 == BIOVERSITY  ==
   * Activity 45: "Defining the critical information and information sources needed by breeders and other researchers in order to produce varieties adapted to climate change and testing  Crop Trait ontology-based dynamic services on  the Platform  for multi-location trials of technologies and genotypes for GxE interactions, to support the collection of metadata,  trait based queries on  evaluation sites and enabling integration of the critical information for breeders, such as GENESYS, GCP integrated breeding platform and other important data sources."
    * Missing start date, end date and description.
+   * There isn't year in the expected deliverables.
    
   * Activity 46: "Case studies of at least 6 crops to use enhanced version of AgTrials."
    * Missing start date, end date and description.
@@ -116,6 +117,9 @@
    
   * Activity 88: "Analysis of mitigation biophysical and socioeconomic feasibility for different agricultural practices and regions, and impacts on emissions, livelihoods and food security (2012-13)"
    * Missing contact person email (Frank Place)
+
+  * Activity 90: "Tools, measurement and monitoring protocols for GHG flux measurements and C-sequestration in complex agro-ecological landscapes with and without trees; including biochar effects on emissions, algorithms for remote sensing above-ground biomass and carbon"
+   * There isn't year in the expected deliverables.
 
 == ILRI  ==
   * Activity 97: "Modelling of household level adaptation strategies in agro-pastoral systems of East Africa (Genesis reversed)"
@@ -181,30 +185,38 @@
   * Activity 79: "Testing adaptation options (crop and varietal choice, crop management technologies) using analogue locations in Kenya, Zambia, Zimbabwe and southern India (links to 2.3)"
    * Start date and end date are missing.
    * Missing contact person email (Dave Harris)
+   * Expected deliverables don't have type. They wasn't stored.
 
   * Activity 92: "Household surveys in analogue locations in Kenya and Zimbabwe to understand current adaptation alternatives to warmer temperatures and gender and social differentiation aspects of adaptation and impacts of climate change"
    * Start date and end date are missing.
    * Missing contact person email (Dave Harris)
+   * Expected deliverables don't have type. They wasn't stored.
 
   * Activity 93: "Climatic determinants of genotypic adaptation characterized for contrasted historical normal periods (wet, dry, current) across the entire WA SAT; Updated agroclimatic metrics produced"
    * Missing start date and end date.
    * Missing description.
    * Missing contact person email (Pierre Sibiry Traore)
    * There are no objectives
+   * There isn't year in the expected deliverables. 
 
   * Activity 94: "On-station experiments to quantify GxE interactions and calibrate crop models to simulate the response of target cereals and legumes to differences in environmental condtions at different locations in Kenya, Zimbabwe and southern India"
    * Missing start date and end date.
    * Missing description.
    * Missing contact person email (Dave Harris)
    * There are no objectives
+   * There isn't year in the expected deliverables. 
 
   * Activity 95: "Characterising of historical & current climate risks and impact on livelihoods & livelihood options in drylands of India; assessing past & present adaptation practices, gender and social differentiation aspects, and indigenous knowledge"
    * Start date and end date are missing.
+   * Expected deliverables don't have type. They wasn't stored.
 
   * Activity 96: "Participatory testing of low cost and high impact technologies (e.g. micro-dosing, seed priming) for reduced risk and improved productivity (links to CRP1.1)"
    * Start date and end date are missing.
    * Missing contact person email (Dave Harris)
    * There are no objectives
+
+  * Activity 97: "Organising & conducting training courses for staff from National Met. Services (NMS) and NARES in use of climate data and dialogues with farmers to increase awareness of farmers needs (links to activities in 2.1 in India)"
+   * Expected deliverables don't have type. They wasn't stored.
 
   * *Activity 112*: "Organising & conducting training courses for staff from National Met. Services (NMS) and NARES in use of climate data and dialogues with farmers to increase awareness of farmers needs (links to activities in 2.1 in India)"
    * *Milestone is missing*.
@@ -245,21 +257,25 @@
    * Missing start date and end date.
    * Missing description.
    * There are no objectives
+   * Expected deliverables don't have type. They wasn't stored.
 
   * Activity 142: "Assess risks and test strategies for adaptation to significant crop biotic threats due to climate change"
    * Missing start date and end date.
    * Missing description.
    * There are no objectives
+   * Expected deliverables don't have type. They wasn't stored.
 
   * Activity 143: "Develop new knowledge and tools to assess potential emission reductions from various crop systems and technology options to improve productivity and enhance food security"
    * Missing start date and end date.
    * Missing description.
    * There are no objectives
+   * Expected deliverables don't have type. They wasn't stored.
 
   * Activity 144: "Assessment of cocoa and coffee based agricultural systems for carbon sequestration potential to mitigate risk of climate change and enhance food security"
    * Missing start date and end date.
    * Missing description.
    * There are no objectives
+   * Expected deliverables don't have type. They wasn't stored.
 
 == WORLDFISH ==
   * Activity 149: "Evaluation of water resources adequacy to meet demands from aquaculture integrated  with small-scale irrigation in drought-prone areas in Malawi, Zambia and Mozambique, under present and future climate change scenarios"
@@ -335,6 +351,7 @@
    
  * Activity 184: "Linking existing and future climate change-related research and science to farmer organizations at regional (EAFF), national (EAFF member organizations) and sub-national levels"
    * Missing contact person email (Mainza Mugoya )
+   * There aren't expected deliverables.
    
   * Activity 185: "Household and village baseline surveys for CCAFS site in Wote, Eastern Kenya."
    * Missing start and end date.
