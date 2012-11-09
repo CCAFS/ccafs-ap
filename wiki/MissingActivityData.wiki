@@ -501,6 +501,9 @@
    * Missing end date.
    * Missing years for all expected deliverables. Years entered as 2012.
 
+  * Activity 271: "Implementing a cassava model in DSSAT, and prelmiminary work on expanding DSSAT to include crops for pigeonpea and yam; initial work on integrating MarkSimGCM into the DSSAT."
+   * Missing years for all expected deliverables. Years entered as 2012.
+
 == TL Theme 4.3 ==
   * Activity 239: "Development of virtual cultivars/animals/pasture systems that are resilient to climate change (in conjunction with Global Futures project work)."
    * Missing activity description
