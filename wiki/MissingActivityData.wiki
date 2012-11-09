@@ -475,6 +475,9 @@
   * Activity 262: "G-Range (global rangeland model) development and testing."
    * Missing years for all expected deliverables. Years entered as 2012.
 
+  * Activity 263: "Demonstrating a generic framework and tools for modeling resilience of farm households to climate related risk."
+   * Missing years for all expected deliverables. Years entered as 2012.
+
   * Activity 269: "Science meeting on systems analysis tools."
    * Missing start and end date.
 
