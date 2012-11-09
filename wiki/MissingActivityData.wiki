@@ -469,6 +469,9 @@
   * Activity 260: "Data management strategy, support tools, and creating and maintaining data portals."
    * Missing years for all expected deliverables. Years entered as 2012.
 
+  * Activity 261: "CCAFS Near-Term Climate Project." 
+   * Missing years for all expected deliverables. Years entered as 2012.
+
   * Activity 269: "Science meeting on systems analysis tools."
    * Missing start and end date.
 
