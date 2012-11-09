@@ -213,17 +213,6 @@ ENGINE = InnoDB;
 SHOW WARNINGS;
 
 -- -----------------------------------------------------
--- Table `deliverable_formats`
--- -----------------------------------------------------
-CREATE  TABLE IF NOT EXISTS `deliverable_formats` (
-  `id` INT NOT NULL AUTO_INCREMENT ,
-  `name` TEXT NOT NULL ,
-  PRIMARY KEY (`id`) )
-ENGINE = InnoDB;
-
-SHOW WARNINGS;
-
--- -----------------------------------------------------
 -- Table `deliverables`
 -- -----------------------------------------------------
 CREATE  TABLE IF NOT EXISTS `deliverables` (
@@ -234,7 +223,6 @@ CREATE  TABLE IF NOT EXISTS `deliverables` (
   `deliverable_type_id` INT NOT NULL ,
   `is_expected` TINYINT(1) NOT NULL ,
   `deliverable_status_id` INT NOT NULL ,
-  `deliverable_format_id` INT NOT NULL ,
   PRIMARY KEY (`id`) ,
   CONSTRAINT `activity_fk2`
     FOREIGN KEY (`activity_id` )
@@ -249,11 +237,6 @@ CREATE  TABLE IF NOT EXISTS `deliverables` (
   CONSTRAINT `deliverable_status_fk2`
     FOREIGN KEY (`deliverable_status_id` )
     REFERENCES `deliverable_status` (`id` )
-    ON DELETE RESTRICT
-    ON UPDATE RESTRICT,
-  CONSTRAINT `deliverable_format_fk2`
-    FOREIGN KEY (`deliverable_format_id` )
-    REFERENCES `deliverable_formats` (`id` )
     ON DELETE RESTRICT
     ON UPDATE RESTRICT)
 ENGINE = InnoDB;
@@ -557,6 +540,18 @@ CREATE  TABLE IF NOT EXISTS `other_sites` (
     REFERENCES `countries` (`iso2` )
     ON DELETE RESTRICT
     ON UPDATE RESTRICT)
+ENGINE = InnoDB;
+
+SHOW WARNINGS;
+
+-- -----------------------------------------------------
+-- Table `file_formats`
+-- -----------------------------------------------------
+CREATE  TABLE IF NOT EXISTS `file_formats` (
+  `id` INT NOT NULL AUTO_INCREMENT ,
+  `name` TEXT NOT NULL ,
+  `deliverable_id` INT NOT NULL ,
+  PRIMARY KEY (`id`) )
 ENGINE = InnoDB;
 
 SHOW WARNINGS;
@@ -879,6 +874,28 @@ CREATE  TABLE IF NOT EXISTS `activity_partner_roles` (
   CONSTRAINT `partner_role_fk`
     FOREIGN KEY (`partner_role_id` )
     REFERENCES `partner_roles` (`id` )
+    ON DELETE RESTRICT
+    ON UPDATE RESTRICT)
+ENGINE = InnoDB;
+
+SHOW WARNINGS;
+
+-- -----------------------------------------------------
+-- Table `deliverable_formats`
+-- -----------------------------------------------------
+CREATE  TABLE IF NOT EXISTS `deliverable_formats` (
+  `id` INT NOT NULL AUTO_INCREMENT ,
+  `deliverable_id` INT NOT NULL ,
+  `file_format_id` INT NOT NULL ,
+  PRIMARY KEY (`id`) ,
+  CONSTRAINT `df_file_format_fk`
+    FOREIGN KEY (`file_format_id` )
+    REFERENCES `file_formats` (`id` )
+    ON DELETE RESTRICT
+    ON UPDATE RESTRICT,
+  CONSTRAINT `df_deliverable_fk`
+    FOREIGN KEY (`deliverable_id` )
+    REFERENCES `deliverables` (`id` )
     ON DELETE RESTRICT
     ON UPDATE RESTRICT)
 ENGINE = InnoDB;
