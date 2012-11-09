@@ -332,6 +332,7 @@
    
   * Activity 171: "Evaluation of baseline national adaptation policy and plans in Kenya and Ethiopia."
    * *Milestone is missing*
+   * Nothing checked and no description for gender integration
 
   * Activity 172: "Using Climate Scenarios and Spatial Analogues in Designing Adaptation Strategies in Agriculture in East Africa"
    * Missing contact person email (Catherine Mungai )   
