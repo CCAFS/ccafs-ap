@@ -495,6 +495,7 @@
 
   * Activity 269: "Science meeting on systems analysis tools."
    * Missing start and end date.
+   * Missing years for all expected deliverables. Years entered as 2012.
 
   * Activity 270: "Household modelling development and application using the Impact-Lite databases in the CCAFS sites."
    * Missing end date.
