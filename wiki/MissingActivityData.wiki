@@ -386,6 +386,7 @@
   * Activity 188: "Development of an assessment toolkit to analyze likely effects of specific adaptation and mitigation options in the region, with a focus on rangelands, vulnerability assessment at sub-national levels. "
    * Have the same start and end date.
    * Missing objectives
+   * Nothing checked and no description for gender integration 
    
   * Activity 189: "Assessing vulnerability to climate change in Ethiopia."
    * Missing start and end date.
