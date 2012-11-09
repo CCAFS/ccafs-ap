@@ -441,6 +441,9 @@
    * Missing start and end date
    * Contact person email incomplete. Corrected as "p.kristjanson@cgiar.org"
 
+  * Activity 251: "Landhealth and local adaptive capacity."
+   * Missing year for expected deliverable "Improved methods for analysis of landhealth and socioeconomic data." Year entered as 2012. 
+
 == TL Theme 4.2 ==
   * Activity 253: "Regional reports evaluating different climate models for the new target regions, from the perspective of agricultural impacts modeling."
    * End date entered as "TBD." Changed to "2012-12-01"
