@@ -496,6 +496,9 @@
   * Activity 225: "Governing Mitigation Trade-Offs"
    * Start an end date have wrong format (2011 - 20123)
    * End date is wrong (20123)
+
+  * Activity 226: "Climate Finance scientist position."
+   * No partners listed.
    
   * Activity 10: Has the title "This project was canceled" -> this activity was not inserted in db
   
