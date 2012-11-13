@@ -28,6 +28,9 @@
   * Activity 25: "Participatory experimentation with risk management strategies in maize-legume-based systems in EA."
    * Missing end date.
 
+  * Activity 26: "Participatory experimentation with risk management strategies in rice-wheat-based systems in the IGP."
+   * There isn't description for gender integration.
+
   * Activities 29 and 30: "Evaluation of historic maize  data and analysis of GIS data to identify climate analogues and support farmers' risk management strategies under climate variability."
    * They have the same title.
 
@@ -60,6 +63,9 @@
    * Missing start date, end date and description.
    * There are no objectives
 
+  * Activity 47: "Multilocation participatory trials of durum wheat in Ethiopia  carried out in analogue sites for present and future adaptation to climate change"
+   * There isn't description for gender integration.
+
   * Activity 52: "Collating and sharing information on the use of indigenous/local technical knowledge in deploying crop diversity (especially NUS) for strengthening adaptation and resilience of production systems to climate change in 5 countries (PNG, Malaysia, Bolivia, Nepal and India)."
    * Missing contact person email (Adam Drucker)
    
@@ -75,6 +81,9 @@
    * There are no objectives
 
 == CIP ==
+  * Activity 58: "Modelling climate-sensitive pest and diseases for potato- and sweet potato-based systems"
+   * There isn't description for gender integration.
+
   * Activity 59: "Develop an Online/ offline mapping tool for rapid risk and impact assessment of CC effects on LB - validation of look up tables "
    * Missing contact person email (G. Forbes)
    
@@ -98,6 +107,9 @@
  * Activity 32: "Evaluation of cost-benefit of adaptation measures in at least four production systems initially in Colombia and in at least the rice and livestock sectors"
    * There are no objectives
 
+== ICARDA  ==
+  * Activity 73: "The use of the Focused Identification of Germplasm Strategy (FIGS) to select best bets for adaptation to climate change"
+   * There isn't description for gender integration.
 
 == ICRAF  ==
   * Activity 80: "Identify seed sources better adapted to drought for climate change adaptation planning in Burkina Faso, Mali and Niger"
