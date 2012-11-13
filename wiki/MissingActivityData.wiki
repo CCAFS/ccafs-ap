@@ -499,6 +499,9 @@
 
   * Activity 226: "Climate Finance scientist position."
    * No partners listed.
+
+  * Activity 228: "Reducing the GHG impacts of sustainable intensification - South Asia."
+   * No partners listed.
    
   * Activity 10: Has the title "This project was canceled" -> this activity was not inserted in db
   
