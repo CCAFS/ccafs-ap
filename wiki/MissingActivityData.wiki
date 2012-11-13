@@ -58,13 +58,20 @@
   * Activity 45: "Defining the critical information and information sources needed by breeders and other researchers in order to produce varieties adapted to climate change and testing  Crop Trait ontology-based dynamic services on  the Platform  for multi-location trials of technologies and genotypes for GxE interactions, to support the collection of metadata,  trait based queries on  evaluation sites and enabling integration of the critical information for breeders, such as GENESYS, GCP integrated breeding platform and other important data sources."
    * Missing start date, end date and description.
    * There isn't year in the expected deliverables.
+   * Some partners are not specified (NARES, Other Ari institutions).
+
    
   * Activity 46: "Case studies of at least 6 crops to use enhanced version of AgTrials."
    * Missing start date, end date and description.
    * There are no objectives
+   * Some partners are not specified (NARES, Other Ari institutions).
+
 
   * Activity 47: "Multilocation participatory trials of durum wheat in Ethiopia  carried out in analogue sites for present and future adaptation to climate change"
    * There isn't description for gender integration.
+
+  * Activity 51: "Collecting mission for Musa in identified area; gender-differentiated information about materials and their traits integrated into Musa Germplasm Information system, Musa Knowledge Resources Centre, MusaNet and ProMusa through meetings/workshops; start developing a phenotypic method to screen the Musa biodiversity for drought tolerance." 
+   * Partners aren't valid, there are personal names must be institutional names.
 
   * Activity 52: "Collating and sharing information on the use of indigenous/local technical knowledge in deploying crop diversity (especially NUS) for strengthening adaptation and resilience of production systems to climate change in 5 countries (PNG, Malaysia, Bolivia, Nepal and India)."
    * Missing contact person email (Adam Drucker)
