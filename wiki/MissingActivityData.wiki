@@ -509,6 +509,9 @@
 
   * Activity 228: "Reducing the GHG impacts of sustainable intensification - South Asia."
    * No partners listed.
+
+  * Activity 229: "Reducing the GHG impacts of sustainable intensification - East Africa."
+   * Some partners not specified, only "Ministries of Agriculture, Livestock and Fisheries," "Development NGOs," and "Farmer associations."
    
   * Activity 10: Has the title "This project was canceled" -> this activity was not inserted in db
   
