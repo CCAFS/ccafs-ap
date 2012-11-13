@@ -450,6 +450,7 @@
 
   * Activity 205: "A Systemic Framework for Integrated Adaptation Planning."
    * Checked "yes" for gender involvement, but no description included.
+   * No partner type selected for partner HIMCCA.
 
   * Activity 206: "Discussion paper analyzing the role of rural institutions in enabling adaptation to climate change in the agricultural sector (SEI)."
    * Gender integration nothing checked, no description.
