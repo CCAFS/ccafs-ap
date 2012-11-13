@@ -17,6 +17,7 @@
     <jsp-api.version>2.0</jsp-api.version>
     <jetty.version>6.1.21</jetty.version>
     <guice.version>3.0</guice.version>
+    <mysql.version>5.1.21</mysql.version>
   </properties>
 
   <developers>
@@ -55,7 +56,7 @@
       <version>${guice.version}</version>
       <scope>compile</scope>
       <exclusions>
-        <!-- clashes with newer version included in struts2.1.6  -->
+        <!-- clashes with newer version included in struts2.1.6 -->
         <exclusion>
           <groupId>opensymphony</groupId>
           <artifactId>xwork</artifactId>
@@ -75,6 +76,12 @@
       <groupId>com.google.inject.extensions</groupId>
       <artifactId>guice-servlet</artifactId>
       <version>${guice.version}</version>
+    </dependency>
+
+    <dependency>
+      <groupId>mysql</groupId>
+      <artifactId>mysql-connector-java</artifactId>
+      <version>${mysql.version}</version>
     </dependency>
 
     <dependency>

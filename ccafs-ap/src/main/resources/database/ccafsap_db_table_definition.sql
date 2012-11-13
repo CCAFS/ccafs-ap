@@ -483,15 +483,21 @@ CREATE  TABLE IF NOT EXISTS `partners` (
   `id` INT NOT NULL AUTO_INCREMENT ,
   `name` TEXT NOT NULL ,
   `acronym` TEXT NULL ,
-  `country_iso2` VARCHAR(2) NOT NULL ,
-  `city` TEXT NOT NULL ,
+  `country_iso2` VARCHAR(2) NULL ,
+  `city` TEXT NULL ,
   `partner_type_id` INT NOT NULL ,
+  `partnerscol` VARCHAR(45) NULL ,
   PRIMARY KEY (`id`) ,
   CONSTRAINT `type_fk`
     FOREIGN KEY (`partner_type_id` )
     REFERENCES `partner_types` (`id` )
     ON DELETE RESTRICT
-    ON UPDATE RESTRICT)
+    ON UPDATE RESTRICT,
+  CONSTRAINT `p_country_fk`
+    FOREIGN KEY (`country_iso2` )
+    REFERENCES `countries` (`iso2` )
+    ON DELETE SET NULL
+    ON UPDATE SET NULL)
 ENGINE = InnoDB;
 
 SHOW WARNINGS;
