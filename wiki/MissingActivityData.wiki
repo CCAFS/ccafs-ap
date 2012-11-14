@@ -455,6 +455,7 @@
 
  * Activity 198: "Partnership development and strengthening; establishment of participatory action research activities with key partners in CCAFS regions/sites (climate smart villages)"
    * Missing contact person email ( Gopal D Bhatta)
+   * partners: IKSL and TOKIO are listed but are actually part of IFFCO which has already been entered. IFFCO is listed twice.
    
  * Activity 199: "Empowering rural women to adapt for food security in South Asia"
    * Missing contact person email ( Gopal D Bhatta)
