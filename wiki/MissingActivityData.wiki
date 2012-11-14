@@ -392,6 +392,7 @@
 
   * Activity 180: "Identification, testing and documentation of  options for low climate impact sustainable agricultural intensification."
    * Nothing checked and no description for gender integration 
+   * some partners not specified: "Ministries of agriculture, livestock and fisheries," "farmer associations."
 
   * Activity 181: "Measurement and mitigation of greenhouse gases in African livestock systems: Building capability to meet the challenge."
    * Nothing checked and no description for gender integration 
