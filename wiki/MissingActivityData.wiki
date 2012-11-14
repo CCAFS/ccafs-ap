@@ -358,7 +358,8 @@
    * *Milestone is missing*
    * Missing contact person email (Catherine Mungai )
    * Missing activity objectives
-   
+   * Missing partners
+
   * Activity 171: "Evaluation of baseline national adaptation policy and plans in Kenya and Ethiopia."
    * *Milestone is missing*
    * Nothing checked and no description for gender integration
