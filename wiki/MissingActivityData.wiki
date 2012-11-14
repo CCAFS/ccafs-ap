@@ -551,6 +551,7 @@
    * AFSIS included as partner, but this is actually an ongoing research project at CIAT. Not entered into database.
    * partners - Not sure what IFFKO refers to, entered as IFFCO (Indian Farmers Fertiliser Cooperative Limited) instead
    * some partners not listed specifically - "local research orgs/scientists," "government agencies in target regions/countries."
+   * partner UBC (university british columbia) listed as ARI when actually is AI. Entered as AI in database.
 
   * Activity 251: "Landhealth and local adaptive capacity."
    * Missing year for expected deliverable "Improved methods for analysis of landhealth and socioeconomic data." Year entered as 2012. 
