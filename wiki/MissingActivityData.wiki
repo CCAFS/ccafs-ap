@@ -675,6 +675,7 @@
    * Missing start date and end date
    * Missing activity description    
    * Missing objectives 
+   * Some partners - NARES, CGIAR centers - not specified
 
   * Activity 247: "Completion of national and regional studies complementary to the CFS global study."
    * Missing start date and end date
