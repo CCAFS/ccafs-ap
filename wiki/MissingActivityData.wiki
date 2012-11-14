@@ -623,6 +623,7 @@
 
   * Activity 272: "Development work on a DSSAT cassava model in consultation with scientists at CIAT."
    * Missing years for all expected deliverables. Years entered as 2012.
+   * Partners - listed "Dr. Tony Hunt" as independent consultant, not an applicable category. Nothing entered in database. 
 
   * Activity 273: "Initiation of a case study at one CCAFS site on developing approaches to support smallholder decision making, to link with both the met service work and the household modelling work."
    * Missing years for all expected deliverables. Years entered as 2012.
