@@ -530,6 +530,9 @@
 
 == TL Theme 4.1 ==
 
+  * Activity 198: "Partnership development and strengthening; establishment of participatory action research activities with key partners in CCAFS regions/sites." 
+   * Some partners not listed specifically
+
   * Activity 216: "Linking Knowledge with Action through Regional Scenario Building." 
    * Partners - USAID listed as DO when is actually GO. Changed accordingly in the database.
    * Partners - Society for International Development listed as RO when is actually NGO-DO. Changed accordingly in the database.
