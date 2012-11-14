@@ -348,6 +348,7 @@
 == RPL EA ==
  * Activity 168: "Regional capacity building on using Climate Scenarios and Analogues for designing adaptation strategies in agriculture."
    * Missing contact person email (Tom Ouna and Catherine Mungai)
+   * partners - unclear to what "EPA" refers
    
  * Activity 169: "Understanding social and cultural barriers to adaptation"
    * Missing contact person email (CCAFS East Africa Fellow (TBC))
