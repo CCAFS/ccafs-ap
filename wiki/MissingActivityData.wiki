@@ -557,6 +557,10 @@
    * Missing year for expected deliverable "Improved methods for analysis of landhealth and socioeconomic data." Year entered as 2012. 
 
 == TL Theme 4.2 ==
+
+  * Activity 217: "CCAFS baselines and site characterizations--existing and new regions." 
+   * partners - only "uganda" and "tanzania" specified for NARES
+
   * Activity 252: "MarkSim version 2 and associated tools, development and testing; revision of MarkSim GCM with CMIP5 data." 
    * Missing years for all expected deliverables. Entered as 2012.
 
