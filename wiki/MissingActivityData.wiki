@@ -569,6 +569,7 @@
 
   * Activity 254: "Soil profile characteristics database development and refinement, for use in agricultural impact modeling work."
    * Missing years for all expected deliverables. Year entered as 2012.
+   * AfSIS entered as partner, which is actually ongoing research program at CIAT. Partner entered as CIAT in database.
 
   * Activity 255: "Global Mapping of Intensive Livestock Production Systems."
    * Missing year for all expected deliverables. Year entered as 2012.
