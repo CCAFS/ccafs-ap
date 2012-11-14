@@ -540,6 +540,7 @@
   * Activity 250: "Engagement and communication approaches, knowledge networks and farmers'and regional partner organizations strengthened."
    * Missing start and end date
    * Contact person email incomplete. Corrected as "p.kristjanson@cgiar.org"
+   * AFSIS included as partner, but this is actually an ongoing research project at CIAT. Not entered into database.
 
   * Activity 251: "Landhealth and local adaptive capacity."
    * Missing year for expected deliverable "Improved methods for analysis of landhealth and socioeconomic data." Year entered as 2012. 
