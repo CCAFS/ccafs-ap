@@ -352,6 +352,7 @@
    
  * Activity 169: "Understanding social and cultural barriers to adaptation"
    * Missing contact person email (CCAFS East Africa Fellow (TBC))
+   * No partners listed except for "consultant" which is not an applicable category.
 
   * Activity 170: "Video testimonials on gender-specific farmer adaptation and mitigation strategies in East Africa."
    * *Milestone is missing*
