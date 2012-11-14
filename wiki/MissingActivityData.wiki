@@ -398,7 +398,8 @@
    * Nothing checked and no description for gender integration 
 
   * Activity 183: "Building strategic partnerships at national and regional levels, including Africa-wide engagements with multiple stakeholders."
-   * Nothing checked and no description for gender integration 
+   * Nothing checked and no description for gender integration
+   * partners - entered UNFCCC National Focal Points as simply UNFCC, and categorized as "other," as it is an international org rather than a government org. 
    
  * Activity 184: "Linking existing and future climate change-related research and science to farmer organizations at regional (EAFF), national (EAFF member organizations) and sub-national levels"
    * Missing contact person email (Mainza Mugoya )
