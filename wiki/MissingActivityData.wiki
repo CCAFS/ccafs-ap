@@ -529,6 +529,10 @@
    * partner - not clear what INI refers to, and no partner type indicated. Not entered in database.
 
 == TL Theme 4.1 ==
+
+  * Activity 216: "Linking Knowledge with Action through Regional Scenario Building." 
+   * Partners - USAID listed as DO when is actually GO. Changed accordingly in the database.
+
   * Activity 250: "Engagement and communication approaches, knowledge networks and farmers'and regional partner organizations strengthened."
    * Missing start and end date
    * Contact person email incomplete. Corrected as "p.kristjanson@cgiar.org"
