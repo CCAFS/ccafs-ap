@@ -440,6 +440,8 @@
 
   * Activity 194: "Crop production forecasting using seasonal weather forecasts and crop models."
    * Expected deliverable year in wrong format (2012-13)
+   * some partners not specified: "NARS in Nepal, Pakistan, Bangladesh, Sri Lanka."
+   * Partners - IRI Columbia listed as type AI but is actually ARI. Entered in database as ARI.
    
  * Activity 195: "South-South knowledge exchange"
    * Missing contact person email ( Gopal D Bhatta)
