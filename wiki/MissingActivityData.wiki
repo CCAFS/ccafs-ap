@@ -405,6 +405,7 @@
    * Missing contact person email (Mainza Mugoya )
    * There aren't expected deliverables.
    * Nothing checked and no description for gender integration 
+   * no type for partner EAFF - assigned as RO
    
   * Activity 185: "Household and village baseline surveys for CCAFS site in Wote, Eastern Kenya."
    * Missing start and end date.
