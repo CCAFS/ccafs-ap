@@ -424,6 +424,7 @@
    
   * Activity 189: "Assessing vulnerability to climate change in Ethiopia."
    * Missing start and end date.
+   * Partner "Climate Change Forum - Ethiopia" listed as type "NGO" but is actually "GO." Entered as GO in database.
 
 == RPL SAs ==
 
