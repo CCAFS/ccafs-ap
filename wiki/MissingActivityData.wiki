@@ -688,3 +688,4 @@
    * Missing start date and end date
    * Missing activity description 
    * Missing objectives 
+   * partners not specified, only says "several CGIAR centers" and "NARES."
