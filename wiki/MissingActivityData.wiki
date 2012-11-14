@@ -633,6 +633,7 @@
    * Missing activity description
    * Missing start date and end date
    * Missing objectives
+   * Three partner types selected, but no names included.
 
   * Activity 166: "Development of modeling tools to handle aggregation, landuse, non-traded goods, and trade policies."
    * Missing start date and end date
