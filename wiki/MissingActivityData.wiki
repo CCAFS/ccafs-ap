@@ -667,6 +667,7 @@
 
   * Activity 262: "G-Range (global rangeland model) development and testing."
    * Missing years for all expected deliverables. Years entered as 2012.
+   *Budget written in wrong format and multiple years given: "23k (2010); 23k (2012)." Only year 2012 entered as 23000.00.
 
   * Activity 263: "Demonstrating a generic framework and tools for modeling resilience of farm households to climate related risk."
    * Missing years for all expected deliverables. Years entered as 2012.
