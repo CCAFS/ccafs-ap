@@ -320,6 +320,7 @@
    * Missing description.
    * There are no objectives
    * Expected deliverables don't have type. They wasn't stored.
+   * Partners - MLURI is now the James Hutton Institute - entered in the database as James Hutton Institute
 
 == IRRI ==
   * Activity 145: "Assessing climate change impacts and adaptation pathways in major rice growing areas with specific vulnerabilities.
