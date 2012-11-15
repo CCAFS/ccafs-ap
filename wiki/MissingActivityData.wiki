@@ -310,6 +310,7 @@
    * Missing description.
    * Missing contact person email (Daniel Jamu)
    * There are no objectives
+   * partner type BMZ listed as DO when is actually GO. Entered in database as GO.
 
  * Activity 150: "Managing climate risks and building resilient livelihoods in tropical aquatic agricultural systems"
    * Missing contact person email (Melody Braun; Kevin Kamp; Paula Kantor)
