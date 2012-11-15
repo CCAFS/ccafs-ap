@@ -383,6 +383,7 @@
   * Activity 166: "Development of modeling tools to handle aggregation, landuse, non-traded goods, and trade policies."
    * End date has wrong format (2012-31).
    * Missing description.
+   * No partners listed.
 
 == RPL EA ==
  * Activity 168: "Regional capacity building on using Climate Scenarios and Analogues for designing adaptation strategies in agriculture."
