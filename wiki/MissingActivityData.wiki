@@ -309,6 +309,15 @@
   * Activity 145: "Assessing climate change impacts and adaptation pathways in major rice growing areas with specific vulnerabilities.
    * Partners not listed specifically - "NARES in SA and SEA."
 
+  * Activity 146: "Quantifying region-specific losses in rice production caused by cyclones/ typhoons."
+   * Partners not listed specifically - "NARES in SA and SEA."
+
+  * Activity 147: "Promoting mitigation projects in rice-based production systems in South and Southeast Asia (preparation phase)."
+   * Partners not listed specifically - "NARES in SA and SEA." 
+
+  * Activity 148: "Validation of simulation models on yields and emissions in rice production systems."
+   * Partners not listed specifically - "NARES in SA and SEA."      
+
 == WORLDFISH ==
   * Activity 149: "Evaluation of water resources adequacy to meet demands from aquaculture integrated  with small-scale irrigation in drought-prone areas in Malawi, Zambia and Mozambique, under present and future climate change scenarios"
    * Missing start date and end date.
