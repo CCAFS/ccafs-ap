@@ -4,6 +4,8 @@ import org.cgiar.ccafs.ap.util.PropertiesManager;
 
 import com.google.inject.Inject;
 import com.google.inject.Singleton;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 @Singleton
 public class APConfig {
@@ -14,6 +16,9 @@ public class APConfig {
   public static final String MYSQL_DATABASE = "mysql.database";
   public static final String MYSQL_PORT = "mysql.port";
   public static final String BASE_URL = "ccafsap.baseUrl";
+
+  // Logging.
+  private static final Logger LOG = LoggerFactory.getLogger(APConfig.class);
 
   private PropertiesManager properties;
 
@@ -29,6 +34,10 @@ public class APConfig {
    */
   public String getBaseUrl() {
     String base = properties.getPropertiesAsString(BASE_URL);
+    if (base == null) {
+      LOG.error("There is not a base url configured");
+      return null;
+    }
     while (base != null && base.endsWith("/")) {
       base = base.substring(0, base.length() - 1);
     }
