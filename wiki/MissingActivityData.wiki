@@ -579,7 +579,10 @@
    * Some partners not specified, only "Ministries of Agriculture, Livestock and Fisheries," "Development NGOs," and "Farmer associations."
 
   * Activity 230: "Reducing the GHG impacts of sustainable intensification - West Africa." 
-   * One partner not specified - only says "NGOs." 
+   * One partner not specified - only says "NGOs."
+
+  * Activity 231: "Quantify agricultural greenhouse gases in developing countries." 
+   * Missing budget info.
    
   * Activity 10: Has the title "This project was canceled" -> this activity was not inserted in db
   
