@@ -372,9 +372,10 @@
    * Missing contact person email (Simon Attwood; Jennifer King; Eddie Allison; David Mills; Kirsten Abernethy.)
    * There are no objectives
 
-== IPFRI ==
+== IFPRI ==
   * Activity 158: "Develop and apply a farm-level "structural model" for ex-ante evaluation of index-based insurance ."
    * End date has wrong format (2012-31).
+   * No partners listed.
    
   * Activity 166: "Development of modeling tools to handle aggregation, landuse, non-traded goods, and trade policies."
    * End date has wrong format (2012-31).
