@@ -305,7 +305,7 @@
    * There are no objectives
    * Expected deliverables don't have type. They wasn't stored.
 
-== IPFRI ==
+== IRRI ==
   * Activity 145: "Assessing climate change impacts and adaptation pathways in major rice growing areas with specific vulnerabilities.
    * Partners not listed specifically - "NARES in SA and SEA."
 
