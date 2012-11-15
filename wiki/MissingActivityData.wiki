@@ -265,6 +265,7 @@
   * Activity 131: "Synthesis of groundwater assessments from over 10 countries throughout Africa; Evaluating prospects and constraints of Managed Aquifer Recharge (MAR) for augmenting water supplies for poor farming communities in South Asia; Hydro-economic assessment of the potential for flood water harvesting in selected regions of SEA."
    * Missing start date and end date.
    * Missing contact person email ( Prathapar Sanmugam)
+   * Some partners not specified: "Many NARES in 12 countries of Africa."
 
  * Activity 136: "Evaluation of impacts of future climate on water balance of two major African cities (Accra and Addis Abeba), and designing adaptation strategies in the context of basin water resources planning through  stakeholder paltforms"
    * Missing contact person email ( Liqa Rashid) 
