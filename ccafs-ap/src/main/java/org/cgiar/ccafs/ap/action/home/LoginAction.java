@@ -1,5 +1,6 @@
-package org.cgiar.ccafs.ap.action;
+package org.cgiar.ccafs.ap.action.home;
 
+import org.cgiar.ccafs.ap.config.APConfig;
 import org.cgiar.ccafs.ap.data.manager.ActivityManager;
 
 import com.google.inject.Inject;
@@ -12,17 +13,19 @@ public class LoginAction extends ActionSupport {
   private String password;
 
   private ActivityManager activityManager;
+  private APConfig config;
 
   @Inject
-  public LoginAction(ActivityManager activityController) {
+  public LoginAction(ActivityManager activityController, APConfig config) {
     this.activityManager = activityController;
+    this.config = config;
   }
 
   @Override
   public String execute() throws Exception {
     System.out.println(activityManager.getActivities().length + " activities");
-    System.out.println(getEmail());
-    System.out.println();
+    System.out.println("Email: " + getEmail());
+    System.out.println(config.getBaseUrl());
     return SUCCESS;
   }
 

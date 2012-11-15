@@ -1,5 +1,6 @@
 package org.cgiar.ccafs.ap.data.dao.mysql;
 
+import org.cgiar.ccafs.ap.config.APConfig;
 import org.cgiar.ccafs.ap.data.dao.DAOManager;
 import org.cgiar.ccafs.ap.util.PropertiesManager;
 
@@ -21,10 +22,10 @@ public class MySQLDAOManager extends DAOManager {
 
   @Override
   public Connection getConnection() {
-    return openConnection(this.getProperties().getPropertiesAsString("mysql.user"), this.getProperties()
-      .getPropertiesAsString("mysql.password"), this.getProperties().getPropertiesAsString("mysql.host"), this
-      .getProperties().getPropertiesAsString("mysql.port"), this.getProperties()
-      .getPropertiesAsString("mysql.database"));
+    return openConnection(this.getProperties().getPropertiesAsString(APConfig.MYSQL_USER), this.getProperties()
+      .getPropertiesAsString(APConfig.MYSQL_PASSWORD), this.getProperties().getPropertiesAsString(APConfig.MYSQL_HOST),
+      this.getProperties().getPropertiesAsString(APConfig.MYSQL_PORT),
+      this.getProperties().getPropertiesAsString(APConfig.MYSQL_DATABASE));
   }
 
   @Override
