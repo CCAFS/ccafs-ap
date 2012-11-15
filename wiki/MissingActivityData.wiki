@@ -708,6 +708,7 @@
 
   * Activity 273: "Initiation of a case study at one CCAFS site on developing approaches to support smallholder decision making, to link with both the met service work and the household modelling work."
    * Missing years for all expected deliverables. Years entered as 2012.
+   * Budget in wrong format and for multiple years: "63k (2012); 100k(2013); 100k (2014)." ONly year 2012 entered, as 63000.00
 
 == TL Theme 4.3 ==
   * Activity 239: "Development of virtual cultivars/animals/pasture systems that are resilient to climate change (in conjunction with Global Futures project work)."
