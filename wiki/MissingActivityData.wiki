@@ -759,6 +759,7 @@
    * Missing activity description    
    * Missing objectives 
    * Some partners - NARES, CGIAR centers - not specified
+   * No budget give even though CG fund checked and percentages given
 
   * Activity 247: "Completion of national and regional studies complementary to the CFS global study."
    * Missing start date and end date
