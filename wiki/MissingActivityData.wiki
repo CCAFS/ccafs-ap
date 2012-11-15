@@ -199,6 +199,7 @@
  
   * Activity 106: "Household-level data collection in CCAFS benchmark sites for studying adaptation and mitigation strategies. This include detailed descriptions of household assets, infra-structure, crop and livestock yields, labour profiels, input use, management practcies and others to parameterise household models to study the impacts of adaptation/mitigation strageties on household well being and the trade-offs arising in the ue of farm and other resources."
    * Missing start and end date
+   * Some partners not specified: "CCAFS regional offices" and "Local partners in the CCAFS regions."
    
   * Activity 107: "Refinement of global assessment tools for climate change studies. This activity aims to improve existing global assessment models like Globiom, IMPACT, LPj and others to be able to provide better information on impacts on livelihoods, agriculture and natural resources under alternative climate change and socio-economic scenarios"
    * Start date and end date have bad format (2011 - 2012).
