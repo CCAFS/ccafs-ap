@@ -675,6 +675,7 @@
 
   * Activity 264: "Vulnerability assessments at sub-national level for selected countries in at least 2 CCAFS regions."
    * Missing year for expected deliverable "Journal article providing a review of the consequences of climate change for the less well-studied components of food security." Year entered as 2012.
+   *Budget written in wrong format and multiple years given: "45k (2010); 40k (2012)." Only year 2012 entered, as 40000.00.
 
   * Activity 265: "Quantification of regional scenarios using global integrated models."
    * Missing years for all expected deliverables. Years entered as 2012.
