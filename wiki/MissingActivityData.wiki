@@ -699,6 +699,7 @@
 
   * Activity 271: "Implementing a cassava model in DSSAT, and prelmiminary work on expanding DSSAT to include crops for pigeonpea and yam; initial work on integrating MarkSimGCM into the DSSAT."
    * Missing years for all expected deliverables. Years entered as 2012.
+   * Budget written in wrong format: "45k (Th4.2); 45k (Th1)" Entered in database as 90000.00.
 
   * Activity 272: "Development work on a DSSAT cassava model in consultation with scientists at CIAT."
    * Missing years for all expected deliverables. Years entered as 2012.
