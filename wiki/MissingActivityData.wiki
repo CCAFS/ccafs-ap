@@ -671,6 +671,7 @@
 
   * Activity 263: "Demonstrating a generic framework and tools for modeling resilience of farm households to climate related risk."
    * Missing years for all expected deliverables. Years entered as 2012.
+   *Budget written in wrong format and multiple years given: "32k (2011); 60k (2012)." ONly year 2012 given as 60000.00.
 
   * Activity 264: "Vulnerability assessments at sub-national level for selected countries in at least 2 CCAFS regions."
    * Missing year for expected deliverable "Journal article providing a review of the consequences of climate change for the less well-studied components of food security." Year entered as 2012.
