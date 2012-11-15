@@ -625,6 +625,7 @@
 
   * Activity 217: "CCAFS baselines and site characterizations--existing and new regions." 
    * partners - only "uganda" and "tanzania" specified for NARES
+   * Budget written in wrong format: "275k + 55k (SA regional budget)." Entered in database a 330000.00.
 
   * Activity 252: "MarkSim version 2 and associated tools, development and testing; revision of MarkSim GCM with CMIP5 data." 
    * Missing years for all expected deliverables. Entered as 2012.
