@@ -211,6 +211,7 @@
    * Start date and end date have bad format (2011 - 2012).
    * Misssing description
    * Missing contact person email (Polly Ericksen)
+   * Some partners not specified: "local partners."
    
   * Activity 110: "A framework for upscaling climate change adapatation and mitigation options."
    * Start date and end date have bad format (2011 - 2012).   
