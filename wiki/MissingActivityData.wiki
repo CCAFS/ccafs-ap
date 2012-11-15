@@ -652,6 +652,7 @@
 
   * Activity 258: "Impact model wiki design, development and testing (AgriMod.org)."
    * Missing years for all expected deliverables. Years entered as 2012.
+   * Budget written in wrong format and multiple years given: "80k (2011); 10k (2012)." Only year 2012 entered as 10000.00.
 
   * Activity 259: "Livestock production model intercomparison and improvement."
    * Title says "no contract signed yet," all data except for milestone, title and budget are currently missing.
