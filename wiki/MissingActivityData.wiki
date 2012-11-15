@@ -335,6 +335,7 @@
    * Missing contact person email (Simon Attwood; Jennifer King; Eddie Allison; David Mills; Kirsten Abernethy.)
    * There are no objectives
    * Missing years for expected deliverables "ADB Policy Briefing aimed at communicating key findings to Pacific regional organisations and stakeholders;" and "Specific review of coastal resource management in Timor Leste, to include the production of a vulnerability map, analysis of climate change adaptation and review of policy coherence and data collection for building a basis scenario." Years entered as 2012.
+   * partners - unclear to what the acronyms "NEP" "NHI" and "BAR" refer.
    
  * Activity 155: "Refinement of assessment methodology for economics of adaptation of aquaculture to climate change impacts to inform and support policy analysis and formulation based on case studies in the Mekong delta in Vietnam."
    * Missing contact person email (Simon Attwood; Jennifer King; Eddie Allison; David Mills; Kirsten Abernethy.)
