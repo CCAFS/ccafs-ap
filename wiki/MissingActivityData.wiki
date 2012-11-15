@@ -648,6 +648,7 @@
 
   * Activity 257: "Developing generic tools for characterizing agricultural systems for climate and global change studies (Impact Lite)."
    * Missing years for all expected deliverables. Years entered as 2012.
+   * Budget written in wrong format and multiple years given: "150k (2011); 156k (2012)." ONly year 2012 entered as 156000.00.
 
   * Activity 258: "Impact model wiki design, development and testing (AgriMod.org)."
    * Missing years for all expected deliverables. Years entered as 2012.
