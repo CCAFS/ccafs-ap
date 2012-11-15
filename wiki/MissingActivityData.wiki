@@ -305,6 +305,10 @@
    * There are no objectives
    * Expected deliverables don't have type. They wasn't stored.
 
+== IPFRI ==
+  * Activity 145: "Assessing climate change impacts and adaptation pathways in major rice growing areas with specific vulnerabilities.
+   * Partners not listed specifically - "NARES in SA and SEA."
+
 == WORLDFISH ==
   * Activity 149: "Evaluation of water resources adequacy to meet demands from aquaculture integrated  with small-scale irrigation in drought-prone areas in Malawi, Zambia and Mozambique, under present and future climate change scenarios"
    * Missing start date and end date.
