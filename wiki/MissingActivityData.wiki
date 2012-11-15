@@ -183,6 +183,7 @@
   * Activity 102: "GHG inventory training courses for countries in the CCAFS regions"
    * Start date and end date have bad format (2011 - 2012).
    * Missing contact person email (Silvia Silvestri, Mariana Rufino)
+   * Some partners not specified: "ccafs regional offices," "ministries of environment and agriculture," "universities in the ccafs regions."
    
   * Activity 103: "Integrated assesment of scenarios of alternantive global terrestial mitigation practices."
    * Start date and end date have bad format (2011 - 2012).
