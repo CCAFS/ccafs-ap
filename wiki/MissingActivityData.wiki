@@ -240,6 +240,7 @@
    * Missing contact person email (Pierre Sibiry Traore)
    * There are no objectives
    * There isn't year in the expected deliverables. 
+   * Partner name no clear(NHMS).
 
   * Activity 94: "On-station experiments to quantify GxE interactions and calibrate crop models to simulate the response of target cereals and legumes to differences in environmental condtions at different locations in Kenya, Zimbabwe and southern India"
    * Missing start date and end date.
@@ -251,6 +252,7 @@
   * Activity 95: "Characterising of historical & current climate risks and impact on livelihoods & livelihood options in drylands of India; assessing past & present adaptation practices, gender and social differentiation aspects, and indigenous knowledge"
    * Start date and end date are missing.
    * Expected deliverables don't have type. They wasn't stored.
+   * Partners names is not well defined.
 
   * Activity 96: "Participatory testing of low cost and high impact technologies (e.g. micro-dosing, seed priming) for reduced risk and improved productivity (links to CRP1.1)"
    * Start date and end date are missing.
