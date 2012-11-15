@@ -551,6 +551,7 @@
 == TL Theme 3 ==
   * Activity 218: "Pressures on agriculture from increased bioenergy demand: intermodel comparison"
    * Has a note under Milestone (LINKED TO THEME 4.2)
+   * Budget listed as 0, although CG fund checked. Nothing entered in database.
    
   * Activity 219: "Incentives and energy-food security trade-offs for mitigation options and links to global models"
    * Has a note under Milestone (LINKED TO THEME 4.1)
