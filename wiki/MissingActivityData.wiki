@@ -643,6 +643,9 @@
    * Missing year for all expected deliverables. Year entered as 2012.
    * Budget written in wrong format and multiple years given: "50k (2010); 50k (2011); NCE (2012)." Nothing entered in database.
 
+  * Activity 256: "Refinement of global cropland extent data layers."
+   * Budget written in wrong format and multiple years given: "87k (2010); 23k (2011); 25k (2012)." Entered only year 2012 as 25000.00.
+
   * Activity 257: "Developing generic tools for characterizing agricultural systems for climate and global change studies (Impact Lite)."
    * Missing years for all expected deliverables. Years entered as 2012.
 
