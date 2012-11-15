@@ -1,5 +1,7 @@
 [#ftl]
+[#assign title = "Login to CCAFS Activity Planning" /]
 [#assign jsIncludes = ["jquery"] /]
+
 [#include "/WEB-INF/global/pages/header.ftl" /]
 [#include "/WEB-INF/global/pages/main-menu.ftl" /]
 
