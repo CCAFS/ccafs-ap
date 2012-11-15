@@ -629,6 +629,7 @@
 
   * Activity 252: "MarkSim version 2 and associated tools, development and testing; revision of MarkSim GCM with CMIP5 data." 
    * Missing years for all expected deliverables. Entered as 2012.
+   * Budget written in wrong format and more than one year given: "30k (2010); 70k (2011); 75k (2012)." Only entered year 2012 as 75000.00.
 
   * Activity 253: "Regional reports evaluating different climate models for the new target regions, from the perspective of agricultural impacts modeling."
    * End date entered as "TBD." Changed to "2012-12-01"
