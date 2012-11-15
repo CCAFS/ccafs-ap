@@ -313,6 +313,7 @@
    * Missing description.
    * There are no objectives
    * Expected deliverables don't have type. They wasn't stored.
+   * Unclear what the acronym "STCP" is referring to.
 
   * Activity 144: "Assessment of cocoa and coffee based agricultural systems for carbon sequestration potential to mitigate risk of climate change and enhance food security"
    * Missing start date and end date.
