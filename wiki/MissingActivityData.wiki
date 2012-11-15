@@ -323,6 +323,7 @@
    * Missing start date and end date.
    * Missing contact person email (Daniel Jamu)
    * There are no objectives
+   * partners - not clear what CCB refers to.
 
   * Activity 153: "Refinement of assessment methodology for economics of adaptation of aquaculture to climate change impacts to inform and support policy analysis and formulation based on case studies in the Mekong delta in Vietnam."
    * Missing start date and end date.
