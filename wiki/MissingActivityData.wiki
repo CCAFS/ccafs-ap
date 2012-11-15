@@ -178,6 +178,7 @@
   * Activity 101: "Implement IBLI pilot in Borana"
    * Missing start date and end date.
    * Missing contact person email (Andrew Mude)
+   * Some partners not specified: "local institutes in Borana."
    
   * Activity 102: "GHG inventory training courses for countries in the CCAFS regions"
    * Start date and end date have bad format (2011 - 2012).
