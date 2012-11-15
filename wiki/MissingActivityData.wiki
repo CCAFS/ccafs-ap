@@ -195,6 +195,7 @@
    * Start date and end date have bad format (2011 - 2012).
    * Missing description
    * Missing contact person email (Mario Herrero, An Notenbaert)
+   * Some partners no specified: "several universities."
  
   * Activity 106: "Household-level data collection in CCAFS benchmark sites for studying adaptation and mitigation strategies. This include detailed descriptions of household assets, infra-structure, crop and livestock yields, labour profiels, input use, management practcies and others to parameterise household models to study the impacts of adaptation/mitigation strageties on household well being and the trade-offs arising in the ue of farm and other resources."
    * Missing start and end date
