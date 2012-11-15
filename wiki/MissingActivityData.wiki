@@ -376,6 +376,9 @@
   * Activity 158: "Develop and apply a farm-level "structural model" for ex-ante evaluation of index-based insurance ."
    * End date has wrong format (2012-31).
    * No partners listed.
+
+  * Activity 162: "New international scientist postion "Climate Finnace and incentives and institutions for mitigation."
+   * No partners listed.
    
   * Activity 166: "Development of modeling tools to handle aggregation, landuse, non-traded goods, and trade policies."
    * End date has wrong format (2012-31).
