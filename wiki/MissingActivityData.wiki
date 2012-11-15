@@ -314,6 +314,7 @@
 
  * Activity 150: "Managing climate risks and building resilient livelihoods in tropical aquatic agricultural systems"
    * Missing contact person email (Melody Braun; Kevin Kamp; Paula Kantor)
+   * partners - unclear what "ECU" refers to.
    
  * Activity 151: "Participatory Action research at farmer/village level for climate risk management in South-Western Bangladesh."
    * Missing contact person email (Melody Braun; Kevin Kamp;)
