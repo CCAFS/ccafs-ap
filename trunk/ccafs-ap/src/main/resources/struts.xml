@@ -12,7 +12,7 @@
     </result-types>    
     
     <default-action-ref name="login" />
-    <action name="login" class="org.cgiar.ccafs.ap.action.LoginAction">
+    <action name="login" class="org.cgiar.ccafs.ap.action.home.LoginAction">
       <result>/WEB-INF/home/pages/login.ftl</result>
     </action>
 
