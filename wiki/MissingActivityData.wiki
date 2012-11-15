@@ -663,6 +663,7 @@
 
   * Activity 261: "CCAFS Near-Term Climate Project." 
    * Missing years for all expected deliverables. Years entered as 2012.
+   *Budget written in wrong format and multiple years given: "100k (2012); 70k (2013); 70k (2014)." Only entered year 2012 as 70000.00.
 
   * Activity 262: "G-Range (global rangeland model) development and testing."
    * Missing years for all expected deliverables. Years entered as 2012.
