@@ -161,6 +161,7 @@
   * Activity 97: "Modelling of household level adaptation strategies in agro-pastoral systems of East Africa (Genesis reversed)"
    * Start date and end date have bad format (2011 - 2012).
    * Missing contact person email (Mario Herrero, Philip Thornton)
+   * only partner listed is ILRI
    
   * Activity 98: "Review of potential contribution of livestock breeding strategies to climate change mitigation and adaptation"
    * Missing start date and end date.   
