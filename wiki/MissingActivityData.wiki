@@ -29,6 +29,7 @@
 
   * Activity 24: "Identify and evaluate differential role and impact of risk management strategies in maize-legume systems on women and men using farm household bioeconomic models"
    * Missing contact person email (Songporne, Shiferaw, Bekele,Mulu, Yohannes,Jaleta, Moti, Kassie, Menale, Sika)
+   * Missing keywords
 
   * Activity 25: "Participatory experimentation with risk management strategies in maize-legume-based systems in EA."
    * Missing end date.
