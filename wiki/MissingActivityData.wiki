@@ -210,16 +210,19 @@
    
   * Activity 103: "Integrated assesment of scenarios of alternantive global terrestial mitigation practices."
    * Start date and end date have bad format (2011 - 2012).
-   * Percentage distribution is not specified for the budget. 
+   * Percentage distribution is not specified for the budget.
+   * Missing keywords 
    
   * Activity 104: "Review of PES for livestock."
    * Start date and end date have bad format (2011 - 2012).
+   * Missing keywords
    
   * Activity 105: "Establishment of a protocol for measuring and monitoring GHG emissions in smallholder systems."
    * Start date and end date have bad format (2011 - 2012).
    * Missing description
    * Missing contact person email (Mario Herrero, An Notenbaert)
    * Some partners no specified: "several universities."
+   * Missing keywords
  
   * Activity 106: "Household-level data collection in CCAFS benchmark sites for studying adaptation and mitigation strategies. This include detailed descriptions of household assets, infra-structure, crop and livestock yields, labour profiels, input use, management practcies and others to parameterise household models to study the impacts of adaptation/mitigation strageties on household well being and the trade-offs arising in the ue of farm and other resources."
    * Missing start and end date
