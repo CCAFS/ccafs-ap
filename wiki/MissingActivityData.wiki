@@ -227,14 +227,17 @@
   * Activity 106: "Household-level data collection in CCAFS benchmark sites for studying adaptation and mitigation strategies. This include detailed descriptions of household assets, infra-structure, crop and livestock yields, labour profiels, input use, management practcies and others to parameterise household models to study the impacts of adaptation/mitigation strageties on household well being and the trade-offs arising in the ue of farm and other resources."
    * Missing start and end date
    * Some partners not specified: "CCAFS regional offices" and "Local partners in the CCAFS regions."
-   * Percentage distribution is not specified for the budget. 
+   * Percentage distribution is not specified for the budget.
+   * Missing keywords 
 
   * Activity 107: "Refinement of global assessment tools for climate change studies. This activity aims to improve existing global assessment models like Globiom, IMPACT, LPj and others to be able to provide better information on impacts on livelihoods, agriculture and natural resources under alternative climate change and socio-economic scenarios"
    * Start date and end date have bad format (2011 - 2012).
    * Percentage distribution is not specified for the budget. 
+   * Missing keywords
    
   * Activity 108: "Development of improved agricultural systems classification for global and regional integrated assessment. This will include a better definition of the types of production systems in particular regions, improved spatial allocation of where different livestock species are located, improved definition of cropland areas and others. This is essential to improved regional integrated assessmernts and to assert the impacts of differnet adapation and mitigation strategies on particular regions"
    * Start date and end date have bad format (2011 - 2012).
+   * MIssing keywords
   
   * Activity 109: "Policy workshop and outreach East Africa.  Scenario development W. Africa, including the modelling and quantification of the impacts of each scenario on selected livelihoods, food security  and environmental variables for the regions under study.   Assess vulnerability thresholds at lower levels of resolution."
    * Start date and end date have bad format (2011 - 2012).
@@ -242,13 +245,16 @@
    * Missing contact person email (Polly Ericksen)
    * Some partners not specified: "local partners."
    * There is not budget or the budget value is 0.
+   * MIssing keywords
    
   * Activity 110: "A framework for upscaling climate change adapatation and mitigation options."
-   * Start date and end date have bad format (2011 - 2012).   
+   * Start date and end date have bad format (2011 - 2012).
+   * Missing keywords   
    
   * Activity 111: "Development and/or refinement of household level models for climate change studies"
    * Missing start and end date
    * There is not budget or the budget value is 0.
+   * Missing keywords
 
 == ICRISAT ==
   * Activity 78: "Identify & characterise analogue sites in WA, EA and SAsia suitable for testing breeding lines & as potential sources of climate change adapted germplasm ;      Phenotype and model traits ICRISAT mandate crops for/with contrasting responses to potential stresses created by climate change, especially temperature (links to CRP3.5 & 3.6)"
