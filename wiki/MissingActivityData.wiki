@@ -304,11 +304,13 @@
    * Start date and end date are missing.
    * Missing contact person email (Dave Harris)
    * Expected deliverables don't have type. They wasn't stored.
+   * MIssing keywords
 
   * Activity 92: "Household surveys in analogue locations in Kenya and Zimbabwe to understand current adaptation alternatives to warmer temperatures and gender and social differentiation aspects of adaptation and impacts of climate change"
    * Start date and end date are missing.
    * Missing contact person email (Dave Harris)
    * Expected deliverables don't have type. They wasn't stored.
+   * Missing keywords
 
   * Activity 93: "Climatic determinants of genotypic adaptation characterized for contrasted historical normal periods (wet, dry, current) across the entire WA SAT; Updated agroclimatic metrics produced"
    * Missing start date and end date.
@@ -317,6 +319,7 @@
    * There are no objectives
    * There isn't year in the expected deliverables. 
    * Partner name no clear(NHMS).
+   * Missing keywords
 
   * Activity 94: "On-station experiments to quantify GxE interactions and calibrate crop models to simulate the response of target cereals and legumes to differences in environmental condtions at different locations in Kenya, Zimbabwe and southern India"
    * Missing start date and end date.
@@ -325,6 +328,7 @@
    * There are no objectives
    * There isn't year in the expected deliverables. 
    * Percentage distribution is not specified for the budget.
+   * Missing keywords
 
   * Activity 95: "Characterising of historical & current climate risks and impact on livelihoods & livelihood options in drylands of India; assessing past & present adaptation practices, gender and social differentiation aspects, and indigenous knowledge"
    * Start date and end date are missing.
