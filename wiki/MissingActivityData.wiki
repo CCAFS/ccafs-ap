@@ -787,22 +787,26 @@
    * Missing start date and end date
    * Missing activity description
    * Missing objectives
+   * Missing keywords
 
   * Activity 243: "Development of new virtual crop parameters for assessment of potential invetsments to improve resilience to climate change for potato and sweet potato, 2012 funds." 
    * Missing start date and end date
    * Missing activity description
    * Missing objectives
    * Missing budget info
+   * Missing keywords
 
   * Activity 244: "Develop methods for improving CGIAR modeling capability in agroforestry and other natural resource management internvention areas. This may involve the direct enhancement of global models like IMPACT or the enhancement of othe rmodels that could be linked up (e.g. DSSAT), 2012 funds."
    * Missing start date and end date
    * Missing activity description   
    * Missing objectives
+   * Missing keywords
 
   * Activity 245: "Continue work on methods for improving CGIAR modeling capability in agro-forestry  and other natural resource management internvention areas that improve climate change resilience. This may involve the direct enhancement of global models like IMPACT or the enhancement of other models that could be linked up (e.g. DSSAT), 2012 funds."
    * Missing start date and end date
    * Missing activity description  
    * Missing objectives
+   * Missing keywords
 
   * Activity 246: "Report for the United Nations Committee on Food Security (CFS) ON Food Security and Climate Change and related reports with subregional results."
    * Missing start date and end date
@@ -810,6 +814,7 @@
    * Missing objectives 
    * Some partners - NARES, CGIAR centers - not specified
    * No budget give even though CG fund checked and percentages given
+   * Missing keywords
 
   * Activity 247: "Completion of national and regional studies complementary to the CFS global study."
    * Missing start date and end date
@@ -817,9 +822,11 @@
    * Missing objectives
    * One partner listed as FANRAN - actually FANRPAN? Entered in database as FANRPAN.
    * partners - "national country authors" but nothing specific entered.
+   * Missing keywords
 
   * Activity 248: "Training and workshops on modeling tools in collaborating centers and NARES."
    * Missing start date and end date
    * Missing activity description 
    * Missing objectives 
    * partners not specified, only says "several CGIAR centers" and "NARES."
+   * Missing keywords
