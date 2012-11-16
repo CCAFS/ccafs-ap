@@ -343,6 +343,7 @@
    * There are no objectives
    * Expected deliverables don't have type. They wasn't stored.
    * There is not budget or the budget value is 0.
+   * Missing keywords
 
   * Activity 142: "Assess risks and test strategies for adaptation to significant crop biotic threats due to climate change"
    * Missing start date and end date.
@@ -350,6 +351,7 @@
    * There are no objectives
    * Expected deliverables don't have type. They wasn't stored.
    * There is not budget or the budget value is 0.
+   * Missing keywords
 
   * Activity 143: "Develop new knowledge and tools to assess potential emission reductions from various crop systems and technology options to improve productivity and enhance food security"
    * Missing start date and end date.
@@ -358,6 +360,7 @@
    * Expected deliverables don't have type. They wasn't stored.
    * Unclear what the acronym "STCP" is referring to.
    * There is not budget or the budget value is 0.
+   * Missing keywords
 
   * Activity 144: "Assessment of cocoa and coffee based agricultural systems for carbon sequestration potential to mitigate risk of climate change and enhance food security"
    * Missing start date and end date.
@@ -366,6 +369,7 @@
    * Expected deliverables don't have type. They wasn't stored.
    * Partners - MLURI is now the James Hutton Institute - entered in the database as James Hutton Institute
    * There is not budget or the budget value is 0.
+   * Missing keywords
 
 == IRRI ==
   * Activity 145: "Assessing climate change impacts and adaptation pathways in major rice growing areas with specific vulnerabilities.
