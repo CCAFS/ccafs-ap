@@ -768,6 +768,7 @@
    * Missing start date and end date
    * Missing activity description
    * Missing objectives
+   * Missing keywords
 
   * Activity 240: "Model Intercomparisons of major global models using ARC RCPs and SSPs as drivers."
    * Missing start date and end date
