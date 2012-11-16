@@ -1,4 +1,5 @@
  [#ftl]
+      <footer>FOOTER</footer>
+    </div> <!-- end container -->
   </body>
-  <footer>FOOTER</footer>
 </html>

@@ -1,1 +1,93 @@
 @import url("./reset.css");
+
+/* 
+---------------[Content]---------------
+--- 1. GENERAL
+--- 2. HEADER
+--- 3. MAIN MENU
+--- 4. BODY
+--- 5. FOOTER
+---------------------------------------
+*/
+
+/************* 1. GENERAL ***************/
+.clearfix:after { content: "."; display: block; clear: both; visibility: hidden; line-height: 0; height: 0; }
+.clearfix { display: inline-block; *zoom: 1; }
+html[xmlns] .clearfix { display: block; }
+* html .clearfix { height: 1%; }
+a, a:active, a:visited, a:hover { color: black; text-decoration: none; }
+ 
+
+/************* 2. HEADER ***************/
+body {
+	text-align: center;
+}
+
+.container {
+	background-image: url("../../images/global/header-background.png");
+	display: inline-block;
+	margin-top: 30px;
+	height: 270px;
+	width: 1100px;
+}
+
+#userInfo {
+	color: white;
+	font-size: 15px;
+	font-weight: bold;
+	margin-right: 30px;
+	margin-top: 10px;
+	margin-bottom: 10px;
+	text-align: right;
+}
+
+#mainLogo {
+	float: left;
+}
+
+#ccafsLogo {
+	float: left;
+}
+
+
+/************* 3. MAIN MENU ***************/
+nav#mainMenu {
+	clear: both;
+	list-style-type: none;
+}
+
+
+nav#mainMenu ul a {
+  color: white;
+  display: inline-block;
+  text-align: center;
+  width: 130px;
+}
+
+nav#mainMenu ul a li {
+	-moz-border-bottom-colors: none;
+  -moz-border-left-colors: none;
+  -moz-border-right-colors: none;
+  -moz-border-top-colors: none;
+  background-color: green;
+  border-color: #BDBDBD #ACACAC #949494;
+  border-image: none;
+  border-left: 1px solid #ACACAC;
+  border-radius: 0.214em 0.214em 0.214em 0.214em;
+  border-right: 1px solid #ACACAC;
+  border-style: solid;
+  border-width: 1px;
+  box-shadow: 0 1px 0 #FFFFFF inset;
+  cursor: pointer;
+  font-family: Arial;
+  font-size: 14px;
+  font-weight: bold;
+  letter-spacing: -1px;
+  margin: 0 0.5em 0.5em;
+  padding: 0.5em 1.5em;
+  position: relative;
+  text-shadow: 0 1px 1px #000000;
+  transition: all 0.2s ease-in-out 0s;
+}
+
+

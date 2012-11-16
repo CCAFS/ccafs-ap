@@ -23,15 +23,33 @@
     <title>${title!"CCAFS Activity Planning"}</title>
     
     [#-- First, import external libraries and CSS. --]
-    [#list jsIncludes as libraryName]
-      [#if libraryName="jquery"]
-        <script src="${baseUrl}/js/libs/jquery/jquery-1.8.2.min.js"></script>
-      [/#if]
-  	[/#list]
+    <!-- Support for lower versions of IE 9 -->
+    <!--[if lt IE 9]>
+      <script src="${baseUrl}/js/libs/html5shiv/html5shiv.js"></script>
+    <![endif]-->
+    
+    [#if globalLibs??]
+     [#list globalLibs as libraryName]
+        [#if libraryName="jquery"]
+          <script src="${baseUrl}/js/libs/jquery/jquery-1.8.2.min.js"></script>
+        [/#if]
+  	 [/#list]
+  	[/#if]
     [#-- Second, import global template. --]
     <link rel="stylesheet" type="text/css" href="${baseUrl}/css/global/global.css" />
+     <!--[if lte IE 7]> 
+     <style type="text/css" href="${baseUrl}/css/global/ie7.css"/> 
+     <![endif]-->
     
-    [#-- Last, import the custom CSS --]
-    
-    
+    [#-- Last, import the custom JS and CSS --]
+    [#if customJS??]
+      [#list customJS as js]
+        <script src="${js}"></script>
+      [/#list]
+    [/#if]
+    [#if customCSS??]
+      [#list customCSS as css]
+        <link rel="stylesheet" type="text/css" href="${css}" />
+      [/#list]
+    [/#if]
   </head>
