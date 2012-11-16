@@ -340,12 +340,14 @@
    * Missing contact person email (Dave Harris)
    * There are no objectives
    * There is not budget or the budget value is 0.
+   * Missing keywords
 
   * Activity 97: "Organising & conducting training courses for staff from National Met. Services (NMS) and NARES in use of climate data and dialogues with farmers to increase awareness of farmers needs (links to activities in 2.1 in India)"
    * Expected deliverables don't have type. They wasn't stored.
 
   * *Activity 112*: "Organising & conducting training courses for staff from National Met. Services (NMS) and NARES in use of climate data and dialogues with farmers to increase awareness of farmers needs (links to activities in 2.1 in India)"
    * *Milestone is missing*.
+   * Missing keywords
 
   * Activity 113: "Validating seasonal forecasts linked to best bet management options in Zimbabwe; Assessing needs and potential value of climate information/ services to agricultural input delivery systems that support risk management options in Zimbabwe; Assessing current use of weather advisories and capacity to deliver climate and risk management information in southern India;"
    * Start date and end date are missing.
