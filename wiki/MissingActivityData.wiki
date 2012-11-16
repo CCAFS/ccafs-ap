@@ -438,6 +438,7 @@
 
   * Activity 162: "New international scientist postion "Climate Finnace and incentives and institutions for mitigation."
    * No partners listed.
+   * Missing keywords
 
   * Activity 165: "Assessing the impact of appropriate risk management financial packages on household’s asset portfolios in Bangladesh"
    * Percentage distribution is not specified for the budget.   
