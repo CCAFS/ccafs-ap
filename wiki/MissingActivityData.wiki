@@ -175,8 +175,24 @@
   * Activity 88: "Analysis of mitigation biophysical and socioeconomic feasibility for different agricultural practices and regions, and impacts on emissions, livelihoods and food security (2012-13)"
    * Missing contact person email (Frank Place)
 
+  * Activity 89: "Mitigation of climate change in agriculture, including development of land health information systems and capacity building (2012-13)."
+   * Missing keywords
+
   * Activity 90: "Tools, measurement and monitoring protocols for GHG flux measurements and C-sequestration in complex agro-ecological landscapes with and without trees; including biochar effects on emissions, algorithms for remote sensing above-ground biomass and carbon"
    * There isn't year in the expected deliverables.
+   * Missing keywords
+
+  * Activity 91: "(1) Spatial and Statistical Diversity in Agricultural Patterns and Practices: Implications for Agricultural Mitigation in Southwest China; (2) Development of toolbox for carbon benefits in NRM projects." 
+   * Missing keywords
+
+  * Activity 92: "Development of global agroforestry suitability maps in a changed climate." 
+   * Missing keywords
+
+  * Activity 93: "Climate change impact projection and adaptation planning framework."
+   * Missing keywords
+
+  * Activity 94: "Response of grassland growth to climate change on the Tibetan Plateau (TP)."
+   * Missing keywords
 
   * Activity 276: "Development of global agroforestry suitability maps in a changed climate"
    * There aren't partners.
