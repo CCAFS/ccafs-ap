@@ -775,6 +775,7 @@
    * Missing activity description
    * Missing objectives
    * Missing partners
+   * Missing keywords
 
   * Activity 241: "Follow-up workshop on developing virtual crop varietiesin the context of crop modeling software."
    * Missing start date and end date
