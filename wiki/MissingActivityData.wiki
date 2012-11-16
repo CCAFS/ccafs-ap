@@ -140,8 +140,18 @@
   * Activity 80: "Identify seed sources better adapted to drought for climate change adaptation planning in Burkina Faso, Mali and Niger"
    * Start date, end date have bad format (Jan 12 - Dec 13).
 
+  * Activity 81: "Select  highly climate vulnerable communities in UK, UP and Rajasthan, map them, assess their climate vulnerability  and characterize main sources of livelihoods. ." 
+   * Missing keywords
+ 
+  * Activity 82: "Analysis of smallholders' adaptation strategies to climate change and the role of tree crops in local adaptations to climate variability in mountain region." 
+   * Missing keywords
+
+  * Activity 83: "Adaptation benefits of AF systems compared to conventional management; Analysis of effects of different interventions in agroforestry systems on mitigating the effects of extreme events; e.g. effects of inter-annual variation in rainfall and occurrence of extreme events on water use efficiency, role of fertilizer trees."
+   * Missing keywords
+
   * Activity 84: "Adapting to extreme events in Southeast Asia through sustainable land management systems (2012-14)"
    * Percentage distribution is not specified for the budget.
+   * Missing keywords
 
   * Activity 85: "Exploring resilience to climate variability of  Faidherbia albida to enable informed decision in promoting Evergreen Agriculture in the face of climate changes in Malawi "
    * Percentage distribution is not specified for the budget.
