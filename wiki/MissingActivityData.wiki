@@ -194,12 +194,14 @@
   * Activity 100: "Development and/or adaptation of suitable household models for studying risk management in farming systems"
    * Missing start date and end date.
    * Missing contact person email (Mark van Wijk)
+   * Missing keywords
    
   * Activity 101: "Implement IBLI pilot in Borana"
    * Missing start date and end date.
    * Missing contact person email (Andrew Mude)
    * Some partners not specified: "local institutes in Borana."
    * There is not budget or the budget value is 0.
+   * Missing keywords
    
   * Activity 102: "GHG inventory training courses for countries in the CCAFS regions"
    * Start date and end date have bad format (2011 - 2012).
