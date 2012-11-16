@@ -162,6 +162,7 @@
    * Missing contact person email (Peter Minang)
    * There are no objectives
    * There is not budget or the budget value is 0.
+   * Missing keywords
    
   * Activity 87: "(1) international experiences with Payments for Environmental Services (carbon) in different systems, including capacity building at national and local levels; (2) Assessment of biocarbon project costs and institutions"
    * Missing start date and end date.
@@ -169,6 +170,7 @@
    * Missing contact person email (Sarah Namirembe, Meine van Noordwijk, Andy & Jianchu; Henry Neufeldt)
    * There are no objectives
    * There is not budget or the budget value is 0.
+   * Missing keywords
    
   * Activity 88: "Analysis of mitigation biophysical and socioeconomic feasibility for different agricultural practices and regions, and impacts on emissions, livelihoods and food security (2012-13)"
    * Missing contact person email (Frank Place)
