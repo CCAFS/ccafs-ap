@@ -1,0 +1,4 @@
+/* Main Menu */
+nav#mainMenu ul a li {
+  *display: inline; 
+}
