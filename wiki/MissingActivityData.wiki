@@ -447,6 +447,7 @@
    * End date has wrong format (2012-31).
    * Missing description.
    * No partners listed.
+   * Missing keywords
 
 == RPL EA ==
  * Activity 168: "Regional capacity building on using Climate Scenarios and Analogues for designing adaptation strategies in agriculture."
