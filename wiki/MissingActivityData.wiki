@@ -144,6 +144,7 @@
  * Activity 32: "Evaluation of cost-benefit of adaptation measures in at least four production systems initially in Colombia and in at least the rice and livestock sectors"
    * There are no objectives
    * Percentage distribution is not specified for the budget.
+   * Keywords missing
 
 == ICARDA  ==
   * Activity 73: "The use of the Focused Identification of Germplasm Strategy (FIGS) to select best bets for adaptation to climate change"
