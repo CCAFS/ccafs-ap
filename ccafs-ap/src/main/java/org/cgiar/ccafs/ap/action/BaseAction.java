@@ -2,6 +2,8 @@ package org.cgiar.ccafs.ap.action;
 
 import org.cgiar.ccafs.ap.config.APConfig;
 
+import java.util.Locale;
+
 import com.google.inject.Inject;
 import com.opensymphony.xwork2.ActionSupport;
 
@@ -24,5 +26,15 @@ public class BaseAction extends ActionSupport {
   public String getBaseUrl() {
     return config.getBaseUrl();
   }
+
+
+  /**
+   * Define default locale for the application while we decide to support other languajes in the future.
+   */
+  @Override
+  public Locale getLocale() {
+    return Locale.ENGLISH;
+  }
+
 
 }

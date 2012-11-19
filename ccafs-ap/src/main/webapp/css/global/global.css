@@ -15,6 +15,7 @@ a, a:active, a:visited, a:hover { color: black; text-decoration: none; }
 .clearfix:before, .clearfix:after { content: ""; display: table; }
 .clearfix:after { clear: both; }
 .clearfix { *zoom: 1; }
+.red {color: red; }
 
 /************* 2. HEADER ***************/
 body {
