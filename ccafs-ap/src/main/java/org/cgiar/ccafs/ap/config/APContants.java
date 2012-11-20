@@ -1,0 +1,12 @@
+package org.cgiar.ccafs.ap.config;
+
+/**
+ * All Constants shoud be here.
+ * 
+ * @author hftobon
+ */
+public final class APContants {
+
+  public static final String SESSION_USER = "current_user";
+
+}

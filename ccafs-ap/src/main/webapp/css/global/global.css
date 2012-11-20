@@ -17,6 +17,13 @@ a, a:active, a:visited, a:hover { color: black; text-decoration: none; }
 .clearfix { *zoom: 1; }
 .red {color: red; }
 
+ul.fieldError li {
+	color: red;
+	list-style-type: none;
+	text-align: right;
+}
+
+
 /************* 2. HEADER ***************/
 body {
 	text-align: center;

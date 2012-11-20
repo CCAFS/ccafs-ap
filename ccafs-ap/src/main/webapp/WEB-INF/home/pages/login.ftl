@@ -16,9 +16,9 @@
     </p>
     <div id="loginFormContainer">
   	<form class="loginForm" action="Login.do" method="POST">
-      [@form.input name="email" i18nkey="home.login.email" required=true /]
-  		[@form.input type="password" name="password" i18nkey="home.login.password" required=true /]
-  		[@s.submit value="Login" /]
+      [@form.input name="user.email" i18nkey="home.login.email" required=true /]
+  		[@form.input name="user.password" i18nkey="home.login.password" required=true type="password" /]
+  		[@s.submit key="home.login.button" name="submit" /]
   	</form>
   	</div>
   	
