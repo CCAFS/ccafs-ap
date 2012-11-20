@@ -29,7 +29,7 @@ public class BaseAction extends ActionSupport {
 
 
   /**
-   * Define default locale for the application while we decide to support other languajes in the future.
+   * Define default locale while we decide to support other languages in the future.
    */
   @Override
   public Locale getLocale() {
