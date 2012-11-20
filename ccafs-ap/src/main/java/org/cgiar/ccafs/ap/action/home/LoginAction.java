@@ -36,8 +36,7 @@ public class LoginAction extends BaseAction implements ServletRequestAware {
     System.out.println(activityManager.getActivities().length + " activities");
     System.out.println("Email: " + getEmail());
     System.out.println(this.getBaseUrl());
-    String contextPath = request.getContextPath();
-    System.out.println("Context Path " + contextPath);
+    System.out.println("Login Title: " + getText("home.login.title"));
     LOG.debug("LoginAction executed");
     return SUCCESS;
   }
@@ -62,6 +61,16 @@ public class LoginAction extends BaseAction implements ServletRequestAware {
   public void setServletRequest(HttpServletRequest request) {
     this.request = request;
 
+  }
+
+  @Override
+  public void validate() {
+    if (password != null && !password.equals("12345")) {
+      System.out.println("Error de inicio de sesión - validate()");
+      addFieldError("email", "Nombre de usuario errado");
+      addFieldError("password", "Mal password");
+      addActionError("Error general (addActionError)");
+    }
   }
 
 
