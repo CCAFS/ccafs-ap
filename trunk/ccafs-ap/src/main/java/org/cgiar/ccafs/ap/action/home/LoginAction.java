@@ -3,6 +3,7 @@ package org.cgiar.ccafs.ap.action.home;
 import org.cgiar.ccafs.ap.action.BaseAction;
 import org.cgiar.ccafs.ap.config.APConfig;
 import org.cgiar.ccafs.ap.data.manager.ActivityManager;
+import org.cgiar.ccafs.ap.data.model.User;
 
 import javax.servlet.http.HttpServletRequest;
 
@@ -20,8 +21,7 @@ public class LoginAction extends BaseAction implements ServletRequestAware {
 
   private static final long serialVersionUID = -890122014241894430L;
 
-  private String email;
-  private String password;
+  private User user;
 
   private ActivityManager activityManager;
 
@@ -33,42 +33,37 @@ public class LoginAction extends BaseAction implements ServletRequestAware {
 
   @Override
   public String execute() throws Exception {
-    System.out.println(activityManager.getActivities().length + " activities");
-    System.out.println("Email: " + getEmail());
-    System.out.println(this.getBaseUrl());
-    System.out.println("Login Title: " + getText("home.login.title"));
-    LOG.debug("LoginAction executed");
+    LOG.info(activityManager.getActivities().length + " activities");
+    LOG.info("Email: " + (user != null ? user.getEmail() : ""));
+    LOG.info("Password: " + (user != null ? user.getPassword() : ""));
+    LOG.info("LoginAction executed");
     return SUCCESS;
   }
 
-  public String getEmail() {
-    return email;
+
+  public User getUser() {
+    return user;
   }
 
-  public String getPassword() {
-    return password;
-  }
-
-  public void setEmail(String email) {
-    this.email = email;
-  }
-
-  public void setPassword(String password) {
-    this.password = password;
-  }
 
   @Override
   public void setServletRequest(HttpServletRequest request) {
     this.request = request;
+  }
 
+  public void setUser(User user) {
+    this.user = user;
   }
 
   @Override
   public void validate() {
-    if (password != null && !password.equals("12345")) {
+    LOG.info("Email: " + (user != null ? user.getEmail() : ""));
+    LOG.info("Password: " + (user != null ? user.getPassword() : ""));
+    LOG.info("validate executed");
+    if (user != null && user.getPassword() != null && !user.getPassword().equals("12345")) {
       System.out.println("Error de inicio de sesión - validate()");
-      addFieldError("email", "Nombre de usuario errado");
-      addFieldError("password", "Mal password");
+      addFieldError("user.email", "Nombre de usuario errado");
+      addFieldError("user.password", "Mal password");
       addActionError("Error general (addActionError)");
     }
   }
