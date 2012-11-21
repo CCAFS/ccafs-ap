@@ -38,14 +38,24 @@ body {
 	text-align: left;
 }
 
-#userInfo {
-	color: white;
-	font-size: 15px;
-	font-weight: bold;
+#userInfo {	
 	margin-right: 30px;
 	margin-top: 10px;
 	margin-bottom: 10px;
 	text-align: right;
+}
+#userInfo .email {
+	color: white;
+  font-size: 15px;
+  font-weight: bold;
+}
+#userInfo .logout {
+	background-color: green;
+  margin-left: 15px;
+  padding: 3px 10px;
+}
+#userInfo .logout a {
+	color: white;
 }
 
 #mainLogo {
@@ -92,4 +102,12 @@ nav#mainMenu ul a li {
   margin-bottom: 10px;
 }
 
+/*************** FOOTER ****************/
+#footerContainer {
+	background-color: #EEEEEE;
+  height: 100px;
+	margin-top: 30px;
+	margin-bottom: 30px;
+	text-align: center;
+} 
 

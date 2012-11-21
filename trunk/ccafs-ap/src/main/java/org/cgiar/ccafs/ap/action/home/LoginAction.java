@@ -2,8 +2,12 @@ package org.cgiar.ccafs.ap.action.home;
 
 import org.cgiar.ccafs.ap.action.BaseAction;
 import org.cgiar.ccafs.ap.config.APConfig;
+import org.cgiar.ccafs.ap.config.APContants;
 import org.cgiar.ccafs.ap.data.manager.ActivityManager;
+import org.cgiar.ccafs.ap.data.manager.UserManager;
 import org.cgiar.ccafs.ap.data.model.User;
+
+import java.util.Date;
 
 import javax.servlet.http.HttpServletRequest;
 
@@ -24,25 +28,46 @@ public class LoginAction extends BaseAction implements ServletRequestAware {
   private User user;
 
   private ActivityManager activityManager;
+  private UserManager userManager;
 
   @Inject
-  public LoginAction(ActivityManager activityController, APConfig config) {
+  public LoginAction(ActivityManager activityController, UserManager userManager, APConfig config) {
     super(config);
     this.activityManager = activityController;
+    this.userManager = userManager;
   }
 
   @Override
   public String execute() throws Exception {
-    LOG.info(activityManager.getActivities().length + " activities");
-    LOG.info("Email: " + (user != null ? user.getEmail() : ""));
-    LOG.info("Password: " + (user != null ? user.getPassword() : ""));
-    LOG.info("LoginAction executed");
+    LOG.trace("Running execute() method.");
+    return SUCCESS;
+  }
+
+  public User getUser() {
+    return user;
+  }
+
+  public String login() {
+    LOG.trace("Running login() method.");
+    // validate if user is just visiting the login page at first time.
+    if (user != null) {
+      User loggedUser = userManager.login(user.getEmail(), user.getPassword());
+      if (loggedUser != null) {
+        loggedUser.setLastLogin(new Date());
+        sessionParams.put(APContants.SESSION_USER, loggedUser);
+        LOG.info("User " + user.getEmail() + " logged in successfully.");
+        System.out.println("isLogged(): " + this.isLogged());
+      } else {
+        LOG.info("User " + user.getEmail() + " tried to logged in but failed.");
+      }
+    }
     return SUCCESS;
   }
 
 
-  public User getUser() {
-    return user;
+  public String logout() {
+    sessionParams.clear();
+    return SUCCESS;
   }
 
 
@@ -60,12 +85,14 @@ public class LoginAction extends BaseAction implements ServletRequestAware {
     LOG.info("Email: " + (user != null ? user.getEmail() : ""));
     LOG.info("Password: " + (user != null ? user.getPassword() : ""));
     LOG.info("validate executed");
-    if (user != null && user.getPassword() != null && !user.getPassword().equals("12345")) {
-      System.out.println("Error de inicio de sesión - validate()");
-      addFieldError("user.email", "Nombre de usuario errado");
-      addFieldError("user.password", "Mal password");
-      addActionError("Error general (addActionError)");
-    }
+    /*
+     * if (user != null && user.getPassword() != null && !user.getPassword().equals("12345")) {
+     * System.out.println("Error de inicio de sesión - validate()");
+     * addFieldError("user.email", "Nombre de usuario errado");
+     * addFieldError("user.password", "Mal password");
+     * addActionError("Error general (addActionError)");
+     * }
+     */
   }
 
 

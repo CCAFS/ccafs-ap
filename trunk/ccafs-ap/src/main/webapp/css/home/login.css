@@ -23,3 +23,13 @@
 #loginFormContainer .loginForm div input {
 	width: 98%;
 }
+
+#loginFormContainer .alreadyLogged {
+	font-size: 20px;
+}
+
+#loginFormContainer .alreadyLoggedEmail {
+	color: grey;
+  font-size: 15px;
+  font-weight: bold;
+}
