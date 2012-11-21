@@ -88,6 +88,12 @@
   * Activity 47: "Multilocation participatory trials of durum wheat in Ethiopia  carried out in analogue sites for present and future adaptation to climate change"
    * There isn't description for gender integration.
 
+  * Activity 49: "Development and evaluation of methodologies for surveys of communities in three countries about climate change and the relative tolerances of traditional crops including NUS to cope with climate change conditions (Nepal, India, Bolivia)"
+   * Some details in region to be conducted are not well defined
+     ((Tamil Nadu State)  E 76.00’- 77.56’; N 10.12'-11°7'; Mandla block, Mandla District (Madhya Pradesh State); E 80.18'- 81.50', N 22º 2' -23º 22';  Bageshwar district (Uttarakhand State) E 79 °77’, N 29 º84’; Almora district (Uttarakhand State), E 79° 30', N 29 ° 36';  NEPAL:  Bara District E 85° 16', N 26° .88'; Dolakha E 86°10' 
+N 27°64'; Jumla E 82°12' N 29.29; Kaski E 83°84', N 28°28'.)
+It was stored the countries only.
+
   * Activity 51: "Collecting mission for Musa in identified area; gender-differentiated information about materials and their traits integrated into Musa Germplasm Information system, Musa Knowledge Resources Centre, MusaNet and ProMusa through meetings/workshops; start developing a phenotypic method to screen the Musa biodiversity for drought tolerance." 
    * Partners aren't valid, there are personal names must be institutional names.
 
@@ -104,8 +110,16 @@
   * Activity 56: "Case studies on informal seed systems conducted, identifying bottlenecks for climate change adaptation."
    * Missing start date, end date and description.
    * There are no objectives
+   * There are countries selected in the regions (Bolivia), the global flag was changed to false.
+   * In other region list there are a details description (CA) no identified
+
+  * Activity 61: "Tools for stakeholder adaptation planning for Musa and its pests and diseases, cocoa and coconut"
+   * There are countries or regions selected, the global flag was changed to false.
 
 == CIP ==
+  * Activity 43: "Optimizing the value of historic breeding trials to model adaptability of  potato and sweet potato clones (proof of concept)"
+     * There are countries or regions selected, the global flag was changed to false.
+
   * Activity 58: "Modelling climate-sensitive pest and diseases for potato- and sweet potato-based systems"
    * There isn't description for gender integration.
 
@@ -117,6 +131,9 @@
 
 
 == CIAT ==
+  * Activity 2: "Continued improvement of downscaled climate information for the globe, including testing of RCMs"
+   * There are countries or regions selected, the global flag was changed to false.
+
   * Activity 7: "Assessing the potential of tropical forage options to mitigate climate change through reducing nitrous oxide emissions and enhancing carbon sequestration"
    * Missing contact person email (Michael Peters, Idupulapati Rao, Aracely Castro, Glenn Hyman)
 
@@ -204,6 +221,7 @@
 
   * Activity 93: "Climate change impact projection and adaptation planning framework."
    * Missing keywords
+   * There are countries or regions selected, the global flag was changed to false.
 
   * Activity 94: "Response of grassland growth to climate change on the Tibetan Plateau (TP)."
    * Missing keywords
@@ -276,10 +294,12 @@
    * Start date and end date have bad format (2011 - 2012).
    * Percentage distribution is not specified for the budget. 
    * Missing keywords
+   * There are countries or regions selected, the global flag was changed to false.
    
   * Activity 108: "Development of improved agricultural systems classification for global and regional integrated assessment. This will include a better definition of the types of production systems in particular regions, improved spatial allocation of where different livestock species are located, improved definition of cropland areas and others. This is essential to improved regional integrated assessmernts and to assert the impacts of differnet adapation and mitigation strategies on particular regions"
    * Start date and end date have bad format (2011 - 2012).
    * MIssing keywords
+   * There are countries or regions selected, the global flag was changed to false.
   
   * Activity 109: "Policy workshop and outreach East Africa.  Scenario development W. Africa, including the modelling and quantification of the impacts of each scenario on selected livelihoods, food security  and environmental variables for the regions under study.   Assess vulnerability thresholds at lower levels of resolution."
    * Start date and end date have bad format (2011 - 2012).
@@ -351,6 +371,7 @@
   * *Activity 112*: "Organising & conducting training courses for staff from National Met. Services (NMS) and NARES in use of climate data and dialogues with farmers to increase awareness of farmers needs (links to activities in 2.1 in India)"
    * *Milestone is missing*.
    * Missing keywords
+   * The lists of regions are empty.
 
   * Activity 113: "Validating seasonal forecasts linked to best bet management options in Zimbabwe; Assessing needs and potential value of climate information/ services to agricultural input delivery systems that support risk management options in Zimbabwe; Assessing current use of weather advisories and capacity to deliver climate and risk management information in southern India;"
    * Start date and end date are missing.
@@ -370,6 +391,18 @@
    * Missing start date and end date.
    * Missing contact person email ( Prathapar Sanmugam)
    * Some partners not specified: "Many NARES in 12 countries of Africa."
+
+  * Activity 132: "Synthesys of IWMI previous work in the Volta and Blue Nile Basins on water storage evaluation under future climates, and examination of techical, socio-economic and environmental criteria for evaluation of various storage options; Analysis of prospects and constraints of water storage development under current and future water availability/ use in Nepal"
+   * Can't locate River's Basins whitout specific positions. The entire country was stored.
+	 
+  * Activity 133: "Comprehensive analysis of literature,  existing statistical data and inventories of glaciers spread in countries and major river basins of South, Central and South East Asia. Review and analysis of existing information on the impacts of changing climate (at present and in the future) on glacial charateristics and impacts on water availability in major agricultural basins of Asia (macro scale); Detailed assessment of recent snow cover changes in four small sub-basins in HKH region (micro scale)"
+   * Can't locate River's Basins whitout specific positions. The entire country was stored.
+	 
+  * Activity 134: " 	Reviewing information on current and projected climate changes for Pakistan and Indus Basin; Simulation of water availability, use in agriculture and allocations scenarious in Indis Basin under current and future climates- using the set of hydrology and water resources planning models"
+   * Can't locate River's Basins whitout specific positions. The entire country was stored.
+	 
+  * Activity 135: "Synthesis of previous and current research on adapation to climate change in Godavari and Krishna River basins, India "
+   * Can't locate River's Basins whitout specific positions. The entire country was stored.
 
  * Activity 136: "Evaluation of impacts of future climate on water balance of two major African cities (Accra and Addis Abeba), and designing adaptation strategies in the context of basin water resources planning through  stakeholder paltforms"
    * Missing contact person email ( Liqa Rashid) 
@@ -392,6 +425,7 @@
    * Expected deliverables don't have type. They wasn't stored.
    * There is not budget or the budget value is 0.
    * Missing keywords
+   * "ESA" in the details list of other region field was not stored. Not known "ESA"
 
   * Activity 142: "Assess risks and test strategies for adaptation to significant crop biotic threats due to climate change"
    * Missing start date and end date.
@@ -465,6 +499,7 @@
    * There are no objectives
    * Missing years for expected deliverables "ADB Policy Briefing aimed at communicating key findings to Pacific regional organisations and stakeholders;" and "Specific review of coastal resource management in Timor Leste, to include the production of a vulnerability map, analysis of climate change adaptation and review of policy coherence and data collection for building a basis scenario." Years entered as 2012.
    * partners - unclear to what the acronyms "NEP" "NHI" and "BAR" refer.
+   * "PACIFIC" in the details list of other region field was not stored. We don't know which countries must store.
    
  * Activity 155: "Refinement of assessment methodology for economics of adaptation of aquaculture to climate change impacts to inform and support policy analysis and formulation based on case studies in the Mekong delta in Vietnam."
    * Missing contact person email (Simon Attwood; Jennifer King; Eddie Allison; David Mills; Kirsten Abernethy.)
@@ -644,10 +679,12 @@
   * Activity 214: "Further development of CCAFS-climate portal."
    * Expected deliverable "CMIP3 climate data fully available" has two years: 2012/2013. Only 2012 was entered.
    * Expected deliverable "CMIP5 RCP4.5 data downscaled and provided online" has two years: 2013/2014. Only 2013 was entered.
+   * There are countries or regions selected, the global flag was changed to false.
 
   * Activity 215: "Collaborative project on vulnerability analysis with the Trust."
    * Expected deliverable "Crop vulnerability analyses plugged into AMKN" has two dates: 2012/2013. ONly 2012 entered.
    * Expected deliverable "CCAFS working paper with results of vulnerability analysis" has two dates: 2013/2014. Only 2013 entered.
+   * There are countries or regions selected, the global flag was changed to false.
 
   * Activity 221: "Gender strategy for Theme 3 and framework for analysis of mitigation innovations based on women and marginalized groups as drivers of change."
    * Missing year for expected deliverable "Framework on women's innovation." Year entered as 2012. 
@@ -670,6 +707,7 @@
    * Has a note under Milestone (LINKED TO THEME 4.1)
    * Gender integration - included description but "yes" not checked.
    * Missing keywords
+   * There isn't countries or regions selected.
 
   * Activity 223: "Incentives for adoption of agroforestry (with Theme 4)"
    * Has a note under Milestone (LINKED TO THEME 4.1)
@@ -770,6 +808,7 @@
 
   * Activity 259: "Livestock production model intercomparison and improvement."
    * Title says "no contract signed yet," all data except for milestone, title and budget are currently missing.
+   * There isn't countries or regions selected.
 
   * Activity 260: "Data management strategy, support tools, and creating and maintaining data portals."
    * Missing years for all expected deliverables. Years entered as 2012.
