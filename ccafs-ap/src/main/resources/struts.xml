@@ -10,9 +10,13 @@
       <result-type name="freemarker" class="org.apache.struts2.views.freemarker.FreemarkerResult"
         default="true" />
     </result-types>
-    
-    <default-action-ref name="login" />
-    
+
+    <default-action-ref name="defaultAction" />
+    <action name="defaultAction" class="org.cgiar.ccafs.ap.action.home.LoginAction">
+      <result name="success">/WEB-INF/home/pages/login.ftl</result>
+      <result name="input">/WEB-INF/home/pages/login.ftl</result>
+    </action>
+
 
     <!-- global-results>
       <result name="404">
@@ -27,15 +31,15 @@
       <result name="login" type="redirect">/login.do</result>
       </global-results -->
   </package>
-  
-   <!--
-     Home is in the namespace="/"
-     Planning is in the namespace="/planning"
-     Reporting is in the namespace="/reporting"
-     Summaries is in the namespace="/summaries"
-     Admin is in the namespace="/admin"
-   -->
-  <include file="struts-home.xml"/>
-  
-  
+
+  <!--
+    Home is in the namespace="/"
+    Planning is in the namespace="/planning"
+    Reporting is in the namespace="/reporting"
+    Summaries is in the namespace="/summaries"
+    Admin is in the namespace="/admin"
+  -->
+  <include file="struts-home.xml" />
+
+
 </struts>

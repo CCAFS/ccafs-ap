@@ -24,8 +24,8 @@ public class BaseAction extends ActionSupport implements Preparable, SessionAwar
   private static final long serialVersionUID = -740360140511380630L;
   private static final Logger LOG = LoggerFactory.getLogger(BaseAction.class);
 
-  private Map<String, Object> sessionParams;
-  private APConfig config;
+  protected Map<String, Object> sessionParams;
+  protected APConfig config;
 
   @Inject
   public BaseAction(APConfig config) {
@@ -36,6 +36,11 @@ public class BaseAction extends ActionSupport implements Preparable, SessionAwar
     return config.getBaseUrl();
   }
 
+  /**
+   * Get the user that is currently saved in the session.
+   * 
+   * @return a user object or null if no user was found.
+   */
   public User getCurrentUser() {
     User u = null;
     try {
@@ -46,13 +51,24 @@ public class BaseAction extends ActionSupport implements Preparable, SessionAwar
     return u;
   }
 
-
   /**
    * Define default locale while we decide to support other languages in the future.
    */
   @Override
   public Locale getLocale() {
     return Locale.ENGLISH;
+  }
+
+  /**
+   * Validate if the user is already logged in or not.
+   * 
+   * @return true if the user is logged in, false otherwise.
+   */
+  public boolean isLogged() {
+    if (this.getCurrentUser() == null) {
+      return false;
+    }
+    return true;
   }
 
   @Override

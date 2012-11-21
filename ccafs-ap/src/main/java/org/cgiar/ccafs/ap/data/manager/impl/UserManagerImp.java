@@ -2,7 +2,6 @@ package org.cgiar.ccafs.ap.data.manager.impl;
 
 import org.cgiar.ccafs.ap.data.manager.UserManager;
 import org.cgiar.ccafs.ap.data.model.User;
-import org.cgiar.ccafs.ap.util.MD5Convert;
 
 
 public class UserManagerImp implements UserManager {
@@ -40,7 +39,7 @@ public class UserManagerImp implements UserManager {
     if (email != null && password != null) {
       User userFound = this.getUser(email);
       if (userFound != null) {
-        if (userFound.getPassword().equals(MD5Convert.stringToMD5(password))) {
+        if (userFound.getPassword().equals(password)) {
           return userFound;
         }
       }

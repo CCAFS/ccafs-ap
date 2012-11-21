@@ -5,9 +5,12 @@
   <!-- Add addition packages and configuration here. -->
   <package name="home" namespace="/" extends="ccafsap-default">
 
-    <action name="login" class="org.cgiar.ccafs.ap.action.home.LoginAction">
+    <action name="login" class="org.cgiar.ccafs.ap.action.home.LoginAction" method="login">
       <result name="success">/WEB-INF/home/pages/login.ftl</result>
       <result name="input">/WEB-INF/home/pages/login.ftl</result>
+    </action>
+    <action name="logout" class="org.cgiar.ccafs.ap.action.home.LoginAction" method="logout">
+      <result name="success">/WEB-INF/home/pages/login.ftl</result>
     </action>
     
 

@@ -1,8 +1,11 @@
 package org.cgiar.ccafs.ap.data.manager;
 
+import org.cgiar.ccafs.ap.data.manager.impl.UserManagerImp;
 import org.cgiar.ccafs.ap.data.model.User;
 
+import com.google.inject.ImplementedBy;
 
+@ImplementedBy(UserManagerImp.class)
 public interface UserManager {
 
   /**
