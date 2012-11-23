@@ -455,10 +455,11 @@ It was stored the countries only.
    * Missing start date and end date.
    * Missing description.
    * There are no objectives
-   * Expected deliverables don't have type. They wasn't stored.
-   * There is not budget or the budget value is 0.
+   * Expected deliverables don't have type and year. They weren't stored.
+   * There is not budget provided.
    * Missing keywords
    * "ESA" in the details list of other region field was not stored. Not known "ESA"
+   * The gender section was not filled.
 
   * Activity 142: "Assess risks and test strategies for adaptation to significant crop biotic threats due to climate change"
    * Missing start date and end date.
@@ -467,12 +468,13 @@ It was stored the countries only.
    * Expected deliverables don't have type. They wasn't stored.
    * There is not budget or the budget value is 0.
    * Missing keywords
+   * The gender section was not filled.
 
   * Activity 143: "Develop new knowledge and tools to assess potential emission reductions from various crop systems and technology options to improve productivity and enhance food security"
    * Missing start date and end date.
    * Missing description.
    * There are no objectives
-   * Expected deliverables don't have type. They wasn't stored.
+   * Expected deliverables don't have type and year. They weren't stored.
    * Unclear what the acronym "STCP" is referring to.
    * There is not budget or the budget value is 0.
    * Missing keywords
@@ -481,7 +483,7 @@ It was stored the countries only.
    * Missing start date and end date.
    * Missing description.
    * There are no objectives
-   * Expected deliverables don't have type. They wasn't stored.
+   * Expected deliverables don't have type and year. They weren't stored.
    * Partners - MLURI is now the James Hutton Institute - entered in the database as James Hutton Institute
    * There is not budget or the budget value is 0.
    * Missing keywords
