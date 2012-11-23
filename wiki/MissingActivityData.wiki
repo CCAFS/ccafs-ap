@@ -590,6 +590,9 @@ It was stored the countries only.
    * Percentage distributions are not specified for the budget (CG fund and Bilateral). Keep in mind that if the checkbox is checked it means a range must be selected.
 
 == RPL EA ==
+ * Activity 167: "Mapping risks and opportunities for targeting appropriate crop and livestock adaptation strategies in East Africa"
+   * Missing contact person.
+   
  * Activity 168: "Regional capacity building on using Climate Scenarios and Analogues for designing adaptation strategies in agriculture."
    * Missing contact person email (Tom Ouna and Catherine Mungai)
    * partners - unclear to what "EPA" refers
