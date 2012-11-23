@@ -194,7 +194,6 @@ It was stored the countries only.
    * Bilateral budget is selected but is not specified its percentage.
 
 == ICRAF  ==
-== ICRAF  ==
   * Activity 80: "Identify seed sources better adapted to drought for climate change adaptation planning in Burkina Faso, Mali and Niger"
    * Start date, end date have bad format (Jan 12 - Dec 13).
    * Email is missing.
@@ -273,7 +272,9 @@ It was stored the countries only.
   * Activity 98: "Review of potential contribution of livestock breeding strategies to climate change mitigation and adaptation"
    * Missing start date and end date.   
    * Missing contact person email (Steve Kemp)
+   * Missing gender integration.
    * There is not budget or the budget value is 0.
+   * As there are some regions selected, the global ooption changed to false.
    
   * Activity 99: "Quantification of the costs of adaptation of livestock systems to climate change"
    * Missing start date and end date.  
@@ -283,31 +284,35 @@ It was stored the countries only.
   * Activity 100: "Development and/or adaptation of suitable household models for studying risk management in farming systems"
    * Missing start date and end date.
    * Missing contact person email (Mark van Wijk)
+   * Missing gender integration
    * Missing keywords
    
   * Activity 101: "Implement IBLI pilot in Borana"
    * Missing start date and end date.
    * Missing contact person email (Andrew Mude)
-   * Some partners not specified: "local institutes in Borana."
+   * Missing gender integration.
+   * Some partners not well specified: "local institutes in Borana."
    * There is not budget or the budget value is 0.
    * Missing keywords
    
   * Activity 102: "GHG inventory training courses for countries in the CCAFS regions"
    * Start date and end date have bad format (2011 - 2012).
    * Missing contact person email (Silvia Silvestri, Mariana Rufino)
-   * Some partners not specified: "ccafs regional offices," "ministries of environment and agriculture," "universities in the ccafs regions."
+   * Some partners not specified: "ccafs regional offices," "ministries of environment and agriculture",  "universities in the ccafs regions."
    
   * Activity 103: "Integrated assesment of scenarios of alternantive global terrestial mitigation practices."
    * Start date and end date have bad format (2011 - 2012).
    * Percentage distribution is not specified for the budget.
+   * Eastern africa region is selected, the global flag changed to false.
    * Missing keywords 
    
   * Activity 104: "Review of PES for livestock."
    * Start date and end date have bad format (2011 - 2012).
+   * Eastern africa region is selected, the global flag changed to false.
    * Missing keywords
    
   * Activity 105: "Establishment of a protocol for measuring and monitoring GHG emissions in smallholder systems."
-   * Start date and end date have bad format (2011 - 2012).
+   * Start date and end date have bad format (2012 - 2014).
    * Missing description
    * Missing contact person email (Mario Herrero, An Notenbaert)
    * Some partners no specified: "several universities."
@@ -328,6 +333,7 @@ It was stored the countries only.
   * Activity 108: "Development of improved agricultural systems classification for global and regional integrated assessment. This will include a better definition of the types of production systems in particular regions, improved spatial allocation of where different livestock species are located, improved definition of cropland areas and others. This is essential to improved regional integrated assessmernts and to assert the impacts of differnet adapation and mitigation strategies on particular regions"
    * Start date and end date have bad format (2011 - 2012).
    * MIssing keywords
+   * Some partners are not well specified: "JRC and others"
    * There are countries or regions selected, the global flag was changed to false.
   
   * Activity 109: "Policy workshop and outreach East Africa.  Scenario development W. Africa, including the modelling and quantification of the impacts of each scenario on selected livelihoods, food security  and environmental variables for the regions under study.   Assess vulnerability thresholds at lower levels of resolution."
@@ -336,15 +342,19 @@ It was stored the countries only.
    * Missing contact person email (Polly Ericksen)
    * Some partners not specified: "local partners."
    * There is not budget or the budget value is 0.
+   * The CG fund is seleected but its percentage is not specified
    * MIssing keywords
    
   * Activity 110: "A framework for upscaling climate change adapatation and mitigation options."
    * Start date and end date have bad format (2011 - 2012).
+   * Partners type is not specified
    * Missing keywords   
    
   * Activity 111: "Development and/or refinement of household level models for climate change studies"
    * Missing start and end date
+   * Some partners not specified: "University ... and others"
    * There is not budget or the budget value is 0.
+   * The CG fund is seleected but its percentage is not specified
    * Missing keywords
 
 == ICRISAT ==
