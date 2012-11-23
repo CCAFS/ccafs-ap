@@ -935,6 +935,7 @@ It was stored the countries only.
   * Activity 239: "Development of virtual cultivars/animals/pasture systems that are resilient to climate change (in conjunction with Global Futures project work)."
    * Missing activity description
    * Missing start date and end date
+   * Budget hass bad format. It must be an integer number.
    * Missing objectives
    * Three partner types selected, but no names included.
 
@@ -942,12 +943,14 @@ It was stored the countries only.
    * Missing start date and end date
    * Missing activity description
    * Missing objectives
+   * Budget hass bad format. It must be an integer number.
    * Missing keywords
 
   * Activity 240: "Model Intercomparisons of major global models using ARC RCPs and SSPs as drivers."
    * Missing start date and end date
    * Missing activity description
    * Missing objectives
+   * Budget hass bad format. It must be an integer number.
    * Missing partners
    * Missing keywords
 
@@ -955,12 +958,14 @@ It was stored the countries only.
    * Missing start date and end date
    * Missing activity description
    * Missing objectives
+   * Budget hass bad format. It must be an integer number.
    * Missing keywords
 
   * Activity 242: "Merging of various modeling components influencing agricultural research internventions on potato and sweet potato, 2011 funds." 
    * Missing start date and end date
    * Missing activity description
    * Missing objectives
+   * Budget hass bad format. It must be an integer number.
    * Missing keywords
 
   * Activity 243: "Development of new virtual crop parameters for assessment of potential invetsments to improve resilience to climate change for potato and sweet potato, 2012 funds." 
@@ -968,18 +973,21 @@ It was stored the countries only.
    * Missing activity description
    * Missing objectives
    * Missing budget info
+   * Budget hass bad format. It must be an integer number.
    * Missing keywords
 
   * Activity 244: "Develop methods for improving CGIAR modeling capability in agroforestry and other natural resource management internvention areas. This may involve the direct enhancement of global models like IMPACT or the enhancement of othe rmodels that could be linked up (e.g. DSSAT), 2012 funds."
    * Missing start date and end date
    * Missing activity description   
    * Missing objectives
+   * Budget hass bad format. It must be an integer number.
    * Missing keywords
 
   * Activity 245: "Continue work on methods for improving CGIAR modeling capability in agro-forestry  and other natural resource management internvention areas that improve climate change resilience. This may involve the direct enhancement of global models like IMPACT or the enhancement of other models that could be linked up (e.g. DSSAT), 2012 funds."
    * Missing start date and end date
    * Missing activity description  
    * Missing objectives
+   * Budget hass bad format. It must be an integer number.
    * Missing keywords
 
   * Activity 246: "Report for the United Nations Committee on Food Security (CFS) ON Food Security and Climate Change and related reports with subregional results."
@@ -1002,5 +1010,6 @@ It was stored the countries only.
    * Missing start date and end date
    * Missing activity description 
    * Missing objectives 
+   * Budget hass bad format. It must be an integer number.
    * partners not specified, only says "several CGIAR centers" and "NARES."
    * Missing keywords
