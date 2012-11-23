@@ -540,27 +540,31 @@ It was stored the countries only.
    * Percentage distribution is not specified for the budget.
 
   * Activity 157: "Assessing the impact of appropriate risk management financial packages on household’s asset portfolios in Bangladesh"
-   * Percentage distribution is not specified for the budget. 
+   * Percentage distributions are not specified for the budget (CG fund and Bilateral). Keep in mind that if the checkbox is checked it means a range must be selected.
 
   * Activity 158: "Develop and apply a farm-level "structural model" for ex-ante evaluation of index-based insurance ."
-   * End date has wrong format (2012-31).
+   * End date has wrong format (2012-31? what month?).
    * No partners listed.
+   * Percentage distributions are not specified for the budget (CG fund and Bilateral). Keep in mind that if the checkbox is checked it means a range must be selected.
 
   * Activity 161: "Assessing the impact of appropriate risk management financial packages on household’s asset portfolios in Bangladesh"
-   * Percentage distribution is not specified for the budget.
+   * Percentage distributions are not specified for the budget (CG fund and Bilateral). Keep in mind that if the checkbox is checked it means a range must be selected.
 
   * Activity 162: "New international scientist postion "Climate Finnace and incentives and institutions for mitigation."
    * No partners listed.
    * Missing keywords
+   * Percentage distributions are not specified for the budget (CG fund and Bilateral). Keep in mind that if the checkbox is checked it means a range must be selected.
 
   * Activity 165: "Assessing the impact of appropriate risk management financial packages on household’s asset portfolios in Bangladesh"
-   * Percentage distribution is not specified for the budget.   
+   * Percentage distributions are not specified for the budget (CG fund and Bilateral). Keep in mind that if the checkbox is checked it means a range must be selected.  
    
   * Activity 166: "Development of modeling tools to handle aggregation, landuse, non-traded goods, and trade policies."
    * End date has wrong format (2012-31).
    * Missing description.
+   * Missing objective(s).
    * No partners listed.
    * Missing keywords
+   * Percentage distributions are not specified for the budget (CG fund and Bilateral). Keep in mind that if the checkbox is checked it means a range must be selected.
 
 == RPL EA ==
  * Activity 168: "Regional capacity building on using Climate Scenarios and Analogues for designing adaptation strategies in agriculture."
