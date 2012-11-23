@@ -59,9 +59,7 @@
    * Missing contact person emails (Sapkota, Tek,  Bruno).
 
 == CIFOR ==
-  * Activity 42: "On-farm trials on strategies to increase system productivity, soil 
-
-quality and carbon sequestration in East Africa."
+  * Activity 42: "On-farm trials on strategies to increase system productivity, soil quality and carbon sequestration in East Africa."
    * Start date and End date are missing.
    * Missing contact person email
    * Description is missing.
@@ -72,9 +70,7 @@ quality and carbon sequestration in East Africa."
    * There is not budget or the budget value is 0.
    * MIssing keywords
 
-  * Activity 279: "Studies on management effects on GHG emissions, especially nitrous 
-
-oxide, in Indonesia." 
+  * Activity 279: "Studies on management effects on GHG emissions, especially nitrous oxide, in Indonesia." 
    * Missing start and end date
    * Missing contact person email
    * Missing activity description
@@ -84,9 +80,7 @@ oxide, in Indonesia."
    * Missing budget info
    * Missing keywords
 
-  * Activity 283: "On-farm trials on strategies to increase system productivity, soil 
-
-quality and carbon sequestration in East Africa."
+  * Activity 283: "On-farm trials on strategies to increase system productivity, soil quality and carbon sequestration in East Africa."
    * Start date and End date are missing.
    * Missing contact person email
    * Description is missing.
@@ -190,8 +184,14 @@ It was stored the countries only.
    * Keywords missing
 
 == ICARDA  ==
+  * Activity 72: "Methodology development and data collection (data needed for drought indices/modeling)"
+   * Gender integration is not specified.
+
   * Activity 73: "The use of the Focused Identification of Germplasm Strategy (FIGS) to select best bets for adaptation to climate change"
    * There isn't description for gender integration.
+
+  * Activity 74: "Community-based identification and evaluation of rangeland and forage species for tolerance to drought, cold and salinity, as potential sources of climate change adapted germplasm "
+   * Bilateral budget is selected but is not specified its percentage.
 
 == ICRAF  ==
   * Activity 80: "Identify seed sources better adapted to drought for climate change adaptation planning in Burkina Faso, Mali and Niger"
