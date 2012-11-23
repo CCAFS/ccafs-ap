@@ -76,7 +76,7 @@
    * Missing activity description
    * Missing objectives
    * missing type and year for expected deliverable.
-   * MIssing gender integration
+   * Gender integration is not selected.
    * Missing budget info
    * Missing keywords
 
