@@ -59,22 +59,43 @@
    * Missing contact person emails (Sapkota, Tek,  Bruno).
 
 == CIFOR ==
-  * Activity 42: "On-farm trials on strategies to increase system productivity, soil quality and carbon sequestration in East Africa."
+  * Activity 42: "On-farm trials on strategies to increase system productivity, soil 
+
+quality and carbon sequestration in East Africa."
    * Start date and End date are missing.
+   * Missing contact person email
    * Description is missing.
+   * missing type and year for expected deliverable.
    * There are no objectives
+   * There are not partner types.
+   * Missing gender integration
    * There is not budget or the budget value is 0.
    * MIssing keywords
 
-  * Activity 279: "Studies on management effects on GHG emissions, especially nitrous oxide, in Indonesia." 
+  * Activity 279: "Studies on management effects on GHG emissions, especially nitrous 
+
+oxide, in Indonesia." 
    * Missing start and end date
    * Missing contact person email
    * Missing activity description
    * Missing objectives
-   * missing type and year for expected deliverable "One paper submitted on N2O emissions and land-use change and one paper submitted on peatland conversion to plantation agriculture."
+   * missing type and year for expected deliverable.
    * MIssing gender integration
    * Missing budget info
    * Missing keywords
+
+  * Activity 283: "On-farm trials on strategies to increase system productivity, soil 
+
+quality and carbon sequestration in East Africa."
+   * Start date and End date are missing.
+   * Missing contact person email
+   * Description is missing.
+   * There aren't objectives
+   * missing type and year for expected deliverable.
+   * There are not partner types.
+   * Missing gender integration
+   * There is not budget or the budget value is 0.
+   * MIssing keywords
 
 == BIOVERSITY  ==
   * Activity 45: "Defining the critical information and information sources needed by breeders and other researchers in order to produce varieties adapted to climate change and testing  Crop Trait ontology-based dynamic services on  the Platform  for multi-location trials of technologies and genotypes for GxE interactions, to support the collection of metadata,  trait based queries on  evaluation sites and enabling integration of the critical information for breeders, such as GENESYS, GCP integrated breeding platform and other important data sources."
