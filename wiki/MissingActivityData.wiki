@@ -754,6 +754,12 @@ It was stored the countries only.
 
   * Activity 225: "Governing Mitigation Trade-Offs."
    * Missing years for all expected deliverables. All years entered as 2012.
+   
+  * Activity 280: "cfor climate change analysis - Phase III"
+   * Missing types for some partners.
+  
+  * Activity 209: "Modeling climate impacts on pests and diseases (Banana weewil)"
+   * Missing type for some partners.
 
 == TL Theme 2 ==
   * Excel file is empty - no data have been entered.
