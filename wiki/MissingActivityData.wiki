@@ -16,12 +16,14 @@
 
   * Activity 8: "Collection of agronomic & management data for past & current on-farm research sites in IGP (rice-wheat-maize based systems, CSISA, RWC) and prioritize filling the gaps (short and long term data collection + reviewing long term trials)."
    * Missing contact person emails (Bruno, M. Devare, M. Gathala, T. Krupnik).
+   * There is range selected in the bilateral budget option list, however the checkbox was not checked and it is not clear if the activity is using or not bilateral funds.
 
   * Activity 10: "Curation and analysis of historical wheat germplasm evaluation data."
    * No partners listed.
 
   * Activity 11: "Matching of historical maize & wheat germplasm evaluation data with GIS data and current weather data"
    * Missing contact person email (Uran Chung).
+   * Bilateral budget was checked but no range was selected.
 
   * Activity 14: "Data compilation to identify coping and adaptation strategies of farmers and the poor to manage future climate outcomes"
    * Missing contact person emails (Songporne, Kassie, Menale & Shiferaw, Bekele)
@@ -30,6 +32,7 @@
   * Activity 24: "Identify and evaluate differential role and impact of risk management strategies in maize-legume systems on women and men using farm household bioeconomic models"
    * Missing contact person emails (Songporne, Shiferaw, Bekele,Mulu, Yohannes,Jaleta, Moti, Kassie, Menale, Sika)
    * Missing keywords.
+   * Bilateral option is checked but no range was selected. It is not clear if the activity is using or not bilateral funds.
 
   * Activity 25: "Participatory experimentation with risk management strategies in maize-legume-based systems in EA."
    * Missing end date.
@@ -47,6 +50,7 @@
   * Activity 36: "Identify promising incentives, institutions and market-based mechanisms and policies for adoption of conservation agriculture by smallholder farmers in EA"
    * Missing end date and start date.
    * Missing contact person emails (Songporne, Shiferaw, Bekele & Kassie, Menale).
+   * Bilateral option is checked but no range was selected. It is not clear if the activity is using or not bilateral funds.
 
   * Activity 37: "Design and implementation of protocols to assess C sequestration under different management practices at field and landscape scale and identification of data gaps in the various systems of the two regions and acquisition of field equipment. Collection of primary and secondary data on soil carbon dynamics under a range of management practices."
    * Missing contact person emails (Santiago Lopez Ridaura, Bruno).
