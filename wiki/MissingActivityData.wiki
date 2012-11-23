@@ -540,10 +540,10 @@ It was stored the countries only.
    * Missing contact person email (Daniel Jamu)
    * There are no objectives
    * partners - not clear what CCB refers to.
+   * CG Fund budget option is checked but there is not a range selected. It is not clear if the activity is using or not CG Fund funds.
 
   * Activity 153: "Refinement of assessment methodology for economics of adaptation of aquaculture to climate change impacts to inform and support policy analysis and formulation based on case studies in the Mekong delta in Vietnam."
-   * Missing start date and end date.
-   * Missing description.
+   * Missing month in the start date (2011-31).
    * Missing contact person email (Michael Phillips, Joelle Albert,  Eddie Allison, Anne-Maree Schwarz)
    * There are no objectives
 
@@ -556,7 +556,7 @@ It was stored the countries only.
    
  * Activity 155: "Refinement of assessment methodology for economics of adaptation of aquaculture to climate change impacts to inform and support policy analysis and formulation based on case studies in the Mekong delta in Vietnam."
    * Missing contact person email (Simon Attwood; Jennifer King; Eddie Allison; David Mills; Kirsten Abernethy.)
-   * There are no objectives
+   * There is not description.
 
 == IFPRI ==
   * Activity 156: "Assessing the impact of appropriate risk management financial packages on household’s asset portfolios in Bangladesh"
