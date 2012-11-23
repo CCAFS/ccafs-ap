@@ -5,54 +5,54 @@
 
 == CIMMYT  ==
   * Activity 1: "Communication of successful strategies, approaches, policies, and investments contributing to improved science-informed CC-ag development-food security policies and decision making in rice-wheat systems and maize-legume systems in view of main- streaming adaptation strategies."
-   * Missing contact person email (Mike Listman, Jon Hellin)
-   * There aren't partners.
+   * Missing contact person emails (Mike Listman, Jon Hellin).
+   * No partners listed.
 
   * Activity 3: "Assembling and development of data and parameters to integrate maize and wheat systems information into global models, including calibration of selected benchmark cultivars for target environments."
-   * Missing contact person email (Shiferaw, Bekele, Uran Chung)
+   * Missing contact person emails (Shiferaw, Bekele, Uran Chung).
 
   * Activity 4: "Integrated assessments for estimating future impacts and identifying policy options for adaptation to and mitigation of climate change."
-   * Missing contact person email (Shiferaw, Bekele; Chung, Uran)
+   * Missing contact person emails (Shiferaw, Bekele; Chung, Uran).
 
   * Activity 8: "Collection of agronomic & management data for past & current on-farm research sites in IGP (rice-wheat-maize based systems, CSISA, RWC) and prioritize filling the gaps (short and long term data collection + reviewing long term trials)."
-   * Missing contact person email (Bruno, M. Devare, M. Gathala, T. Krupnik)
+   * Missing contact person emails (Bruno, M. Devare, M. Gathala, T. Krupnik).
 
   * Activity 10: "Curation and analysis of historical wheat germplasm evaluation data."
-   * There aren't partners.
+   * No partners listed.
 
   * Activity 11: "Matching of historical maize & wheat germplasm evaluation data with GIS data and current weather data"
-   * Missing contact person email (Uran Chung)
+   * Missing contact person email (Uran Chung).
 
   * Activity 14: "Data compilation to identify coping and adaptation strategies of farmers and the poor to manage future climate outcomes"
-   * Missing contact person email (Songporne, Kassie, Menale & Shiferaw, Bekele)
-   * Missing keywords
+   * Missing contact person emails (Songporne, Kassie, Menale & Shiferaw, Bekele)
+   * Missing keywords.
 
   * Activity 24: "Identify and evaluate differential role and impact of risk management strategies in maize-legume systems on women and men using farm household bioeconomic models"
-   * Missing contact person email (Songporne, Shiferaw, Bekele,Mulu, Yohannes,Jaleta, Moti, Kassie, Menale, Sika)
-   * Missing keywords
+   * Missing contact person emails (Songporne, Shiferaw, Bekele,Mulu, Yohannes,Jaleta, Moti, Kassie, Menale, Sika)
+   * Missing keywords.
 
   * Activity 25: "Participatory experimentation with risk management strategies in maize-legume-based systems in EA."
    * Missing end date.
 
   * Activity 26: "Participatory experimentation with risk management strategies in rice-wheat-based systems in the IGP."
-   * There isn't description for gender integration.
+   * Missing description for gender integration.
 
   * Activities 29 and 30: "Evaluation of historic maize  data and analysis of GIS data to identify climate analogues and support farmers' risk management strategies under climate variability."
-   * They have the same title.
+   * Activities 29 and 30 have the same title.
 
   * Activity 35: "Analysis of the economic incentives and benefits to farmers from adoption of conservation agriculture for adaptation to and mitigating climate change"
-   * End date has a wrong year (1202-12).
-   * Missing contact person email (Jeetendra Prakash, Hellin, Jon, Shiferaw, Bekele)
+   * End date year entered incorrectly (1202-12). Should be 2012?
+   * Missing contact person emails (Jeetendra Prakash, Hellin, Jon, Shiferaw, Bekele).
 
   * Activity 36: "Identify promising incentives, institutions and market-based mechanisms and policies for adoption of conservation agriculture by smallholder farmers in EA"
    * Missing end date and start date.
-   * Missing contact person email (Songporne, Shiferaw, Bekele & Kassie, Menale)
+   * Missing contact person emails (Songporne, Shiferaw, Bekele & Kassie, Menale).
 
   * Activity 37: "Design and implementation of protocols to assess C sequestration under different management practices at field and landscape scale and identification of data gaps in the various systems of the two regions and acquisition of field equipment. Collection of primary and secondary data on soil carbon dynamics under a range of management practices."
-   * Missing contact person email (Santiago Lopez Ridaura, Bruno)
+   * Missing contact person emails (Santiago Lopez Ridaura, Bruno).
 
   * Activity 38: "Review of state of the art  in assessing GHG (N volatilization and CO2) and development of protocols + acquisition of field and lab equipment. Implementation of regional trials to estimate GHG under a range of management practices in IGP irrigated agroecologies"
-   * Missing contact person email (Sapkota, Tek,  Bruno)
+   * Missing contact person emails (Sapkota, Tek,  Bruno).
 
 == CIFOR ==
   * Activity 42: "On-farm trials on strategies to increase system productivity, soil quality and carbon sequestration in East Africa."
