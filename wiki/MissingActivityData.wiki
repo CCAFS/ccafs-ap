@@ -146,17 +146,17 @@ It was stored the countries only.
 
 == CIP ==
   * Activity 43: "Optimizing the value of historic breeding trials to model adaptability of  potato and sweet potato clones (proof of concept)"
-     * There are countries or regions selected, the global flag was changed to false.
+     * As there are countries or regions selected, the global flag was unchecked.
 
   * Activity 58: "Modelling climate-sensitive pest and diseases for potato- and sweet potato-based systems"
    * There isn't description for gender integration.
+   * As there are countries or regions selected, the global flag was unchecked.
 
   * Activity 59: "Develop an Online/ offline mapping tool for rapid risk and impact assessment of CC effects on LB - validation of look up tables "
    * Missing contact person email (G. Forbes)
    
   * Activity 60: "Develop precise submodels for T and RH on LB development using current SAS based simulation model"
    * Missing contact person email (G. Forbes)
-
 
 == CIAT ==
   * Activity 2: "Continued improvement of downscaled climate information for the globe, including testing of RCMs"
