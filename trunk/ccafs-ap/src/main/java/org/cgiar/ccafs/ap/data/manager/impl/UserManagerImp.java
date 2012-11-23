@@ -22,7 +22,7 @@ public class UserManagerImp implements UserManager {
     User hcarvajal = new User();
     hcarvajal.setEmail("carvajal.hernandavid@gmail.com");
     hcarvajal.setPassword("maalmu");
-    hcarvajal.setRole(User.UserRole.ContactPoint);
+    hcarvajal.setRole(User.UserRole.CP);
 
     if (email != null) {
       if (email.equals(htobon.getEmail())) {
