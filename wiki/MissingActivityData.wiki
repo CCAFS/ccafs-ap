@@ -74,6 +74,7 @@
 
 == BIOVERSITY  ==
   * Activity 45: "Defining the critical information and information sources needed by breeders and other researchers in order to produce varieties adapted to climate change and testing  Crop Trait ontology-based dynamic services on  the Platform  for multi-location trials of technologies and genotypes for GxE interactions, to support the collection of metadata,  trait based queries on  evaluation sites and enabling integration of the critical information for breeders, such as GENESYS, GCP integrated breeding platform and other important data sources."
+   * Missing activity objectives.
    * Missing start date, end date and description.
    * There isn't year in the expected deliverables.
    * Some partners are not specified (NARES, Other Ari institutions).
@@ -83,6 +84,7 @@
    * Missing start date, end date and description.
    * There are no objectives
    * Some partners are not specified (NARES, Other Ari institutions).
+   * Gender question was not answered.
 
 
   * Activity 47: "Multilocation participatory trials of durum wheat in Ethiopia  carried out in analogue sites for present and future adaptation to climate change"
@@ -105,16 +107,17 @@ It was stored the countries only.
    * Missing contact person email (Adam Drucker)
 
   * Activity 55: "Systematic review of literature on the use of agricultural biodiversity for risk management and adaptation to climate change"
-   * Missing contact person email (Adam Drucker)
+   * Missing contact person email (Fabrice de Clerck)
    
   * Activity 56: "Case studies on informal seed systems conducted, identifying bottlenecks for climate change adaptation."
    * Missing start date, end date and description.
    * There are no objectives
-   * There are countries selected in the regions (Bolivia), the global flag was changed to false.
+   * Missing gender description.
+   * As there are countries selected in the regions (Bolivia), the global flag was unchecked.
    * In other region list there are a details description (CA) no identified
 
   * Activity 61: "Tools for stakeholder adaptation planning for Musa and its pests and diseases, cocoa and coconut"
-   * There are countries or regions selected, the global flag was changed to false.
+   * As there are countries or regions selected, the global flag was unchecked.
 
 == CIP ==
   * Activity 43: "Optimizing the value of historic breeding trials to model adaptability of  potato and sweet potato clones (proof of concept)"
