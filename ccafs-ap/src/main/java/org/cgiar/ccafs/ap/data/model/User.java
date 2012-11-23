@@ -12,7 +12,7 @@ public class User {
    * process.
    */
   public enum UserRole {
-    ContactPoint, TL, RPL, Admin
+    CP, TL, RPL, Admin
   }
 
   private String email;
@@ -38,13 +38,52 @@ public class User {
     return lastLogin;
   }
 
-
+  /**
+   * @return the password previously codified using MD5 algorithm.
+   */
   public String getPassword() {
     return password;
   }
 
+
   public UserRole getRole() {
     return role;
+  }
+
+  /**
+   * Validate if the current user is an Administrator.
+   * 
+   * @return true if the user is actually an Administrator, or false otherwise.
+   */
+  public boolean isAdmin() {
+    return this.role == UserRole.Admin;
+  }
+
+  /**
+   * Validate if the current user is a Contact Point.
+   * 
+   * @return true if the user is actually a Contact Point, or false otherwise.
+   */
+  public boolean isCP() {
+    return this.role == UserRole.CP;
+  }
+
+  /**
+   * Validate if the current user is a Regional Program Leader.
+   * 
+   * @return true if the user is actually a Regional Program Leader, or false otherwise.
+   */
+  public boolean isRPL() {
+    return this.role == UserRole.RPL;
+  }
+
+  /**
+   * Validate if the current user is a Theme Leader.
+   * 
+   * @return true if the user is actually a Theme Leader, or false otherwise.
+   */
+  public boolean isTL() {
+    return this.role == UserRole.TL;
   }
 
   public void setEmail(String email) {
