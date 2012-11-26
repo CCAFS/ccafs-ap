@@ -31,9 +31,12 @@ public class MySQLActivityDAO implements ActivityDAO {
     List<Map<String, String>> activities = new ArrayList<>();
     try (Connection con = databaseManager.getConnection()) {
       String query =
-        "SELECT a.*" + "FROM activities a, milestones m, outputs ou, objectives ob, themes th, logframes lo "
+        "SELECT a.id, a.title, a.start_date, a.end_date, a.description, m.id as 'milestone_id', m.code as 'milestone_code', "
+          + "th.id as 'theme_id', th.code as 'theme_code', al.id as 'leader_id', al.name as 'leader_name'"
+          + "FROM activities a, milestones m, outputs ou, objectives ob, themes th, logframes lo, activity_leaders al "
           + "WHERE a.milestone_id = m.id " + "AND m.output_id = ou.id " + "AND ou.objective_id = ob.id "
-          + "AND ob.theme_id = th.id " + "AND th.logframe_id = lo.id " + "AND lo.year = " + year;
+          + "AND ob.theme_id = th.id " + "AND th.logframe_id = lo.id " + "AND a.activity_leader_id = al.id "
+          + "AND lo.year = " + year;
       ResultSet rs = databaseManager.makeQuery(query, con);
       while (rs.next()) {
         Map<String, String> activity = new HashMap<>();
@@ -42,6 +45,12 @@ public class MySQLActivityDAO implements ActivityDAO {
         activity.put("start_date", rs.getString("start_date"));
         activity.put("end_date", rs.getString("end_date"));
         activity.put("description", rs.getString("description"));
+        activity.put("milestone_id", rs.getString("milestone_id"));
+        activity.put("milestone_code", rs.getString("milestone_code"));
+        activity.put("theme_id", rs.getString("theme_id"));
+        activity.put("theme_code", rs.getString("theme_code"));
+        activity.put("leader_id", rs.getString("leader_id"));
+        activity.put("leader_name", rs.getString("leader_name"));
         activities.add(activity);
       }
     } catch (SQLException e) {
@@ -57,7 +66,8 @@ public class MySQLActivityDAO implements ActivityDAO {
     List<Map<String, String>> activities = new ArrayList<>();
     try (Connection con = databaseManager.getConnection()) {
       String query =
-        "SELECT a.* "
+        "SELECT a.id, a.title, a.start_date, a.end_date, a.description, m.id as 'milestone_id', m.code as 'milestone_code', "
+          + "th.id as 'theme_id', th.code as 'theme_code', al.id as 'leader_id', al.name as 'leader_name'"
           + "FROM activities a, milestones m, outputs ou, objectives ob, themes th, logframes lo, activity_leaders al "
           + "WHERE a.milestone_id = m.id " + "AND m.output_id = ou.id " + "AND ou.objective_id = ob.id "
           + "AND ob.theme_id = th.id " + "AND th.logframe_id = lo.id " + "AND a.activity_leader_id = al.id "
@@ -70,6 +80,12 @@ public class MySQLActivityDAO implements ActivityDAO {
         activity.put("start_date", rs.getString("start_date"));
         activity.put("end_date", rs.getString("end_date"));
         activity.put("description", rs.getString("description"));
+        activity.put("milestone_id", rs.getString("milestone_id"));
+        activity.put("milestone_code", rs.getString("milestone_code"));
+        activity.put("theme_id", rs.getString("theme_id"));
+        activity.put("theme_code", rs.getString("theme_code"));
+        activity.put("leader_id", rs.getString("leader_id"));
+        activity.put("leader_name", rs.getString("leader_name"));
         activities.add(activity);
       }
     } catch (SQLException e) {

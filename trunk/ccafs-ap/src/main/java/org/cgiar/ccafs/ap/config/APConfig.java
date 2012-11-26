@@ -16,6 +16,7 @@ public class APConfig {
   public static final String MYSQL_DATABASE = "mysql.database";
   public static final String MYSQL_PORT = "mysql.port";
   public static final String BASE_URL = "ccafsap.baseUrl";
+  public static final String CURRENT_YEAR = "ccafsap.currentYear";
 
   // Logging.
   private static final Logger LOG = LoggerFactory.getLogger(APConfig.class);
@@ -52,6 +53,20 @@ public class APConfig {
       return base;
     }
     return base;
+  }
+
+  /**
+   * Get the current year value that is in the configuration file.
+   * 
+   * @return an integer identifying the current year.
+   */
+  public int getCurrentYear() {
+    try {
+      return properties.getPropertiesAsInt("ccafsap.currentYear");
+    } catch (Exception e) {
+      LOG.error("There is not a current year configured");
+    }
+    return -1;
   }
 
 }

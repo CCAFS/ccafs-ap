@@ -2,6 +2,8 @@ package org.cgiar.ccafs.ap.action;
 
 import org.cgiar.ccafs.ap.config.APConfig;
 import org.cgiar.ccafs.ap.config.APContants;
+import org.cgiar.ccafs.ap.data.manager.LogframeManager;
+import org.cgiar.ccafs.ap.data.model.Logframe;
 import org.cgiar.ccafs.ap.data.model.User;
 
 import java.util.Locale;
@@ -26,15 +28,28 @@ public class BaseAction extends ActionSupport implements Preparable, SessionAwar
 
   protected Map<String, Object> sessionParams;
   protected APConfig config;
+  protected LogframeManager logframeManager;
+
 
   @Inject
-  public BaseAction(APConfig config) {
+  public BaseAction(APConfig config, LogframeManager logframeManager) {
     this.config = config;
+    this.logframeManager = logframeManager;
   }
 
   public String getBaseUrl() {
     return config.getBaseUrl();
   }
+
+  /**
+   * Get the current logframe based on the variable ccafsap.currentYear which is in the configuration file.
+   * 
+   * @return a Logframe object or null if no logframe is found.
+   */
+  public Logframe getCurrentLogframe() {
+    return logframeManager.getLogframe(config.getCurrentYear());
+  }
+
 
   /**
    * Get the user that is currently saved in the session.

@@ -3,6 +3,7 @@ package org.cgiar.ccafs.ap.action.reporting.activities;
 import org.cgiar.ccafs.ap.action.BaseAction;
 import org.cgiar.ccafs.ap.config.APConfig;
 import org.cgiar.ccafs.ap.data.manager.ActivityManager;
+import org.cgiar.ccafs.ap.data.manager.LogframeManager;
 import org.cgiar.ccafs.ap.data.model.Activity;
 
 import com.google.inject.Inject;
@@ -16,8 +17,8 @@ public class ActivitiesReportingAction extends BaseAction {
   private Activity[] currentActivities;
 
   @Inject
-  public ActivitiesReportingAction(APConfig config, ActivityManager activityManager) {
-    super(config);
+  public ActivitiesReportingAction(APConfig config, ActivityManager activityManager, LogframeManager logframeManager) {
+    super(config, logframeManager);
     this.activityManager = activityManager;
   }
 
@@ -26,10 +27,8 @@ public class ActivitiesReportingAction extends BaseAction {
   }
 
   @Override
-  public void prepare() throws Exception {
-    // TODO - Get current year from the application config.
-    int currentYear = 2012;
-    currentActivities = activityManager.getActivities(currentYear, getCurrentUser().getLeader());
+  public void prepare() {
+    currentActivities = activityManager.getActivities(config.getCurrentYear(), this.getCurrentUser().getLeader());
   }
 
   public void setCurrentActivities(Activity[] currentActivities) {

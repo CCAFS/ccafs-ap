@@ -5,8 +5,9 @@
 --- 1. GENERAL
 --- 2. HEADER
 --- 3. MAIN MENU
---- 4. BODY
---- 5. FOOTER
+--- 4. SECONDARY MENU
+--- 5. BODY
+--- 6. FOOTER
 ---------------------------------------
 */
 
@@ -86,6 +87,32 @@ nav#mainMenu ul a li {
   padding: 10px;
   margin-bottom: 20px;
   margin-top: 20px;
+}
+
+/*************** SECONDARY MENU ***********/
+nav#secondaryMenu {
+	background-color: lightgray;
+  float: left;
+  margin-right: 20px;
+  padding: 20px;
+  width: 190px;
+}
+nav#secondaryMenu ul {
+	
+}
+
+nav#secondaryMenu ul a {
+  border: 1px solid;
+  display: list-item;
+  margin-bottom: 5px;
+  margin-top: 5px;
+  padding-bottom: 5px;
+  padding-left: 10px;
+  padding-top: 5px;
+}
+
+nav#secondaryMenu ul a li {
+	
 }
 
 /*************** BODY ****************/
