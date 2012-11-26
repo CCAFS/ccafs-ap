@@ -19,6 +19,7 @@ public class User {
   private String password;
   private UserRole role;
   private Date lastLogin;
+  private Leader leader;
 
 
   @Override
@@ -30,12 +31,17 @@ public class User {
     return false;
   }
 
+
   public String getEmail() {
     return email;
   }
 
   public Date getLastLogin() {
     return lastLogin;
+  }
+
+  public Leader getLeader() {
+    return leader;
   }
 
   /**
@@ -45,10 +51,10 @@ public class User {
     return password;
   }
 
-
   public UserRole getRole() {
     return role;
   }
+
 
   /**
    * Validate if the current user is an Administrator.
@@ -90,9 +96,13 @@ public class User {
     this.email = email;
   }
 
-
   public void setLastLogin(Date lastLogin) {
     this.lastLogin = lastLogin;
+  }
+
+
+  public void setLeader(Leader leader) {
+    this.leader = leader;
   }
 
   /**

@@ -3,6 +3,7 @@ package org.cgiar.ccafs.ap.data.manager.impl;
 import org.cgiar.ccafs.ap.data.dao.ActivityDAO;
 import org.cgiar.ccafs.ap.data.manager.ActivityManager;
 import org.cgiar.ccafs.ap.data.model.Activity;
+import org.cgiar.ccafs.ap.data.model.Leader;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -22,8 +23,15 @@ public class ActivityManagerImpl implements ActivityManager {
   }
 
   @Override
-  public Activity[] getActivities() {
-    List<Map<String, String>> activitiesDAO = activityDAO.getAllActivities();
+  public Activity[] getActivities(int year, Leader leader) {
+    List<Map<String, String>> activitiesDAO;
+    // if leader is null the user must be an admin.
+    if (leader == null) {
+      activitiesDAO = activityDAO.getActivities(year);
+    } else {
+      // get all activities added by the specified leader.
+      activitiesDAO = activityDAO.getActivities(year, leader.getCode());
+    }
     Activity[] activities = new Activity[activitiesDAO.size()];
     for (int c = 0; c < activitiesDAO.size(); c++) {
       Activity activity = new Activity();

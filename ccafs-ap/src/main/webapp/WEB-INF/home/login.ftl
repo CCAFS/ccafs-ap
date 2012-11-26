@@ -1,5 +1,5 @@
 [#ftl]
-[#assign title = "Login to CCAFS Activity Planning" /]
+[#assign title = "Welcome to CCAFS Activity Planning" /]
 [#assign jsIncludes = ["jquery"] /]
 [#assign customCSS = ["${baseUrl}/css/home/login.css"] /]
 

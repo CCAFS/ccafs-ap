@@ -147,6 +147,7 @@ CREATE  TABLE IF NOT EXISTS `activities` (
   `is_planning` TINYINT(1) NOT NULL ,
   `activity_status_id` INT NOT NULL ,
   `status_description` TEXT NULL ,
+  `date_added` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP ,
   PRIMARY KEY (`id`) ,
   CONSTRAINT `milestone_fk`
     FOREIGN KEY (`milestone_id` )
