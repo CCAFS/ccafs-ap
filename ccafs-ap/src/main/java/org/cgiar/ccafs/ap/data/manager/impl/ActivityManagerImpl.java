@@ -4,6 +4,10 @@ import org.cgiar.ccafs.ap.data.dao.ActivityDAO;
 import org.cgiar.ccafs.ap.data.manager.ActivityManager;
 import org.cgiar.ccafs.ap.data.model.Activity;
 import org.cgiar.ccafs.ap.data.model.Leader;
+import org.cgiar.ccafs.ap.data.model.Milestone;
+import org.cgiar.ccafs.ap.data.model.Objective;
+import org.cgiar.ccafs.ap.data.model.Output;
+import org.cgiar.ccafs.ap.data.model.Theme;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -24,7 +28,9 @@ public class ActivityManagerImpl implements ActivityManager {
 
   @Override
   public Activity[] getActivities(int year, Leader leader) {
+    SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM");
     List<Map<String, String>> activitiesDAO;
+
     // if leader is null the user must be an admin.
     if (leader == null) {
       activitiesDAO = activityDAO.getActivities(year);
@@ -38,7 +44,6 @@ public class ActivityManagerImpl implements ActivityManager {
       activity.setId(Integer.parseInt(activitiesDAO.get(c).get("id")));
       activity.setTitle(activitiesDAO.get(c).get("title"));
       activity.setDescription(activitiesDAO.get(c).get("description"));
-      SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
       try {
         activity.setStartDate(dateFormat.parse(activitiesDAO.get(c).get("start_date")));
       } catch (ParseException e) {
@@ -51,6 +56,30 @@ public class ActivityManagerImpl implements ActivityManager {
         // TODO Auto-generated catch block
         e.printStackTrace();
       }
+
+      Theme theme = new Theme(Integer.parseInt(activitiesDAO.get(c).get("theme_id")));
+      theme.setCode(activitiesDAO.get(c).get("theme_code"));
+
+      // Creating fake objects just to save correctly the Theme data of the current activity.
+      Objective objective = new Objective(-1);
+      objective.setTheme(theme);
+
+      Output output = new Output(-1);
+      output.setObjective(objective);
+      // end fakeObjects
+
+      Milestone milestone = new Milestone(Integer.parseInt(activitiesDAO.get(c).get("milestone_id")));
+      milestone.setCode(activitiesDAO.get(c).get("milestone_code"));
+      milestone.setOutput(output);
+
+      activity.setMilestone(milestone);
+
+      Leader activityLeader = new Leader();
+      activityLeader.setCode(Integer.parseInt(activitiesDAO.get(c).get("leader_id")));
+      activityLeader.setName(activitiesDAO.get(c).get("leader_name"));
+
+      activity.setLeader(activityLeader);
+
       activities[c] = activity;
     }
     return activities;

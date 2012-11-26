@@ -1,7 +1,7 @@
 [#ftl]
 <nav id="mainMenu">
   <ul>
-    <a href=""><li>Home</li></a>
+    <a href="${baseUrl}/"><li>Home</li></a>
     [#if logged]
       [#if currentUser.isCP() || currentUser.isTL() || currentUser.isRPL() || currentUser.isAdmin()]
         <a href="${baseUrl}/"><li>Planning</li></a>

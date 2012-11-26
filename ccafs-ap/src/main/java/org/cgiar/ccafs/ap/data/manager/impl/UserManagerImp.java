@@ -29,6 +29,7 @@ public class UserManagerImp implements UserManager {
     leader.setCode(3);
     leader.setName("CIAT - Centro Internacional de Agricultura Tropical");
     leader.setLeaderType(new LeaderType(1, "CCAFS Center Led Activities"));
+    hcarvajal.setLeader(leader);
 
     if (email != null) {
       if (email.equals(htobon.getEmail())) {

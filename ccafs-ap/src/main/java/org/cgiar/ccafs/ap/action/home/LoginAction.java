@@ -3,6 +3,7 @@ package org.cgiar.ccafs.ap.action.home;
 import org.cgiar.ccafs.ap.action.BaseAction;
 import org.cgiar.ccafs.ap.config.APConfig;
 import org.cgiar.ccafs.ap.config.APContants;
+import org.cgiar.ccafs.ap.data.manager.LogframeManager;
 import org.cgiar.ccafs.ap.data.manager.UserManager;
 import org.cgiar.ccafs.ap.data.model.User;
 
@@ -29,8 +30,8 @@ public class LoginAction extends BaseAction implements ServletRequestAware {
   private UserManager userManager;
 
   @Inject
-  public LoginAction(APConfig config, UserManager userManager) {
-    super(config);
+  public LoginAction(APConfig config, LogframeManager logframeManager, UserManager userManager) {
+    super(config, logframeManager);
     this.userManager = userManager;
   }
 
