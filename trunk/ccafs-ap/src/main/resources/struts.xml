@@ -13,8 +13,8 @@
 
     <default-action-ref name="defaultAction" />
     <action name="defaultAction" class="org.cgiar.ccafs.ap.action.home.LoginAction">
-      <result name="success">/WEB-INF/home/pages/login.ftl</result>
-      <result name="input">/WEB-INF/home/pages/login.ftl</result>
+      <result name="success">/WEB-INF/home/login.ftl</result>
+      <result name="input">/WEB-INF/home/login.ftl</result>
     </action>
 
 
@@ -40,6 +40,7 @@
     Admin is in the namespace="/admin"
   -->
   <include file="struts-home.xml" />
+  <include file="struts-reporting.xml" />
 
 
 </struts>

@@ -12,10 +12,13 @@ import java.util.List;
 import java.util.Map;
 
 import com.google.inject.Inject;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 
 public class MySQLActivityDAO implements ActivityDAO {
 
+  private static final Logger LOG = LoggerFactory.getLogger(MySQLActivityDAO.class);
   private DAOManager databaseManager;
 
   @Inject
@@ -24,10 +27,14 @@ public class MySQLActivityDAO implements ActivityDAO {
   }
 
   @Override
-  public List<Map<String, String>> getAllActivities() {
+  public List<Map<String, String>> getActivities(int year) {
     List<Map<String, String>> activities = new ArrayList<>();
     try (Connection con = databaseManager.getConnection()) {
-      ResultSet rs = databaseManager.makeQuery("SELECT * FROM activities", con);
+      String query =
+        "SELECT a.*" + "FROM activities a, milestones m, outputs ou, objectives ob, themes th, logframes lo "
+          + "WHERE a.milestone_id = m.id " + "AND m.output_id = ou.id " + "AND ou.objective_id = ob.id "
+          + "AND ob.theme_id = th.id " + "AND th.logframe_id = lo.id " + "AND lo.year = " + year;
+      ResultSet rs = databaseManager.makeQuery(query, con);
       while (rs.next()) {
         Map<String, String> activity = new HashMap<>();
         activity.put("id", rs.getString("id"));
@@ -37,12 +44,40 @@ public class MySQLActivityDAO implements ActivityDAO {
         activity.put("description", rs.getString("description"));
         activities.add(activity);
       }
-      return activities;
     } catch (SQLException e) {
       // TODO Auto-generated catch block
       e.printStackTrace();
       return null;
     }
+    return activities;
   }
+
+  @Override
+  public List<Map<String, String>> getActivities(int year, int leaderTypeCode) {
+    List<Map<String, String>> activities = new ArrayList<>();
+    try (Connection con = databaseManager.getConnection()) {
+      String query =
+        "SELECT a.* "
+          + "FROM activities a, milestones m, outputs ou, objectives ob, themes th, logframes lo, activity_leaders al "
+          + "WHERE a.milestone_id = m.id " + "AND m.output_id = ou.id " + "AND ou.objective_id = ob.id "
+          + "AND ob.theme_id = th.id " + "AND th.logframe_id = lo.id " + "AND a.activity_leader_id = al.id "
+          + "AND lo.year = " + year + " " + "AND al.id = " + leaderTypeCode;
+      ResultSet rs = databaseManager.makeQuery(query, con);
+      while (rs.next()) {
+        Map<String, String> activity = new HashMap<>();
+        activity.put("id", rs.getString("id"));
+        activity.put("title", rs.getString("title"));
+        activity.put("start_date", rs.getString("start_date"));
+        activity.put("end_date", rs.getString("end_date"));
+        activity.put("description", rs.getString("description"));
+        activities.add(activity);
+      }
+    } catch (SQLException e) {
+      // TODO Auto-generated catch block
+      e.printStackTrace();
+    }
+    return activities;
+  }
+
 
 }

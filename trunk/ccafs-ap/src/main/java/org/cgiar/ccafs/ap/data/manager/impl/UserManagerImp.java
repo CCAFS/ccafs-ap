@@ -1,6 +1,8 @@
 package org.cgiar.ccafs.ap.data.manager.impl;
 
 import org.cgiar.ccafs.ap.data.manager.UserManager;
+import org.cgiar.ccafs.ap.data.model.Leader;
+import org.cgiar.ccafs.ap.data.model.LeaderType;
 import org.cgiar.ccafs.ap.data.model.User;
 
 
@@ -23,6 +25,10 @@ public class UserManagerImp implements UserManager {
     hcarvajal.setEmail("carvajal.hernandavid@gmail.com");
     hcarvajal.setPassword("maalmu");
     hcarvajal.setRole(User.UserRole.CP);
+    Leader leader = new Leader();
+    leader.setCode(3);
+    leader.setName("CIAT - Centro Internacional de Agricultura Tropical");
+    leader.setLeaderType(new LeaderType(1, "CCAFS Center Led Activities"));
 
     if (email != null) {
       if (email.equals(htobon.getEmail())) {

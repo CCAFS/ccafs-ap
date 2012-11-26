@@ -3,7 +3,6 @@ package org.cgiar.ccafs.ap.action.home;
 import org.cgiar.ccafs.ap.action.BaseAction;
 import org.cgiar.ccafs.ap.config.APConfig;
 import org.cgiar.ccafs.ap.config.APContants;
-import org.cgiar.ccafs.ap.data.manager.ActivityManager;
 import org.cgiar.ccafs.ap.data.manager.UserManager;
 import org.cgiar.ccafs.ap.data.model.User;
 
@@ -27,13 +26,11 @@ public class LoginAction extends BaseAction implements ServletRequestAware {
 
   private User user;
 
-  private ActivityManager activityManager;
   private UserManager userManager;
 
   @Inject
-  public LoginAction(ActivityManager activityController, UserManager userManager, APConfig config) {
+  public LoginAction(APConfig config, UserManager userManager) {
     super(config);
-    this.activityManager = activityController;
     this.userManager = userManager;
   }
 
@@ -82,17 +79,7 @@ public class LoginAction extends BaseAction implements ServletRequestAware {
 
   @Override
   public void validate() {
-    LOG.info("Email: " + (user != null ? user.getEmail() : ""));
-    LOG.info("Password: " + (user != null ? user.getPassword() : ""));
-    LOG.info("validate executed");
-    /*
-     * if (user != null && user.getPassword() != null && !user.getPassword().equals("12345")) {
-     * System.out.println("Error de inicio de sesión - validate()");
-     * addFieldError("user.email", "Nombre de usuario errado");
-     * addFieldError("user.password", "Mal password");
-     * addActionError("Error general (addActionError)");
-     * }
-     */
+
   }
 
 

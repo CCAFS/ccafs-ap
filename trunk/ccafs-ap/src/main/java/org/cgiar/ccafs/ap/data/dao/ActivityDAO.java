@@ -11,9 +11,22 @@ import com.google.inject.ImplementedBy;
 public interface ActivityDAO {
 
   /**
-   * Method explanation.
+   * Get all the activities in a given year. This method is generally used to return the activities of a user who has
+   * administration privileges so he can view all activities added in the database.
    * 
-   * @return
+   * @param year
+   * @return a List with Map of activities.
    */
-  public List<Map<String, String>> getAllActivities();
+  public List<Map<String, String>> getActivities(int year);
+
+  /**
+   * Get all the activities in a given year added by the leader type supplied. This method is generally used to return
+   * the activities of a user who has CP, TL or RPL privileges so he can view all activities added by him.
+   * 
+   * @param year
+   * @return a List with Map of activities.
+   */
+  public List<Map<String, String>> getActivities(int year, int leaderTypeCode);
+
+
 }
