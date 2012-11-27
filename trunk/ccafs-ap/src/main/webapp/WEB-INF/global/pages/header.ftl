@@ -7,7 +7,7 @@
       [#if logged]
         <div id="userInfo">
           <span class="email">${currentUser.email}</span>
-          <span class="logout"><a href="[@s.url action="logout.do"/]">Logout</a></span>
+          <span class="logout"><a href="[@s.url action="logout" namespace="/" /]">Logout</a></span>
         </div>
       [/#if]
       <div id="mainLogo"><img src="${baseUrl}/images/global/logo-ap.png" alt="CCAFS Activity Planning Logo"></img></div>

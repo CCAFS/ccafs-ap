@@ -3,8 +3,9 @@
 <struts>
 
   <!-- Add addition packages and configuration here. -->
-  <package name="reporting" namespace="/reporting" extends="ccafsap-default">
-
+  <package name="reporting" namespace="/reporting" extends="ccafsap-default">    
+    <default-interceptor-ref name="reportingStack" />
+    
     <action name="activities" class="org.cgiar.ccafs.ap.action.reporting.activities.ActivitiesReportingAction">
       <result name="success">/WEB-INF/reporting/activities.ftl</result>
     </action>
