@@ -1,0 +1,20 @@
+
+#activityList #id {
+  width: 60px;
+}
+
+#activityList #activity {
+  width: 440px;
+}
+
+#activityList #leaderName {  
+  width: 100px;
+}
+
+#activityList #theme {
+  width: 60px;
+}
+
+#activityList #lastModified {
+  width: 80px;
+}

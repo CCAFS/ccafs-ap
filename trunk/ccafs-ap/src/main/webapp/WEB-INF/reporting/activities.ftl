@@ -1,52 +1,55 @@
 [#ftl]
 [#assign title = "Activity List" /]
-[#assign jsIncludes = ["jquery"] /]
-[#assign customCSS = ["${baseUrl}/css/reporting/activity-list.css"] /]
+[#assign globalLibs = ["jquery", "dataTable"] /]
+[#assign customJS = ["${baseUrl}/js/reporting/activity-list.js"] /]
+[#assign customCSS = ["${baseUrl}/css/reporting/activity-list.css", "${baseUrl}/css/libs/dataTables/jquery.dataTables.css", "${baseUrl}/css/reporting/customDataTable.css"] /]
 
 [#include "/WEB-INF/global/pages/header.ftl" /]
 [#include "/WEB-INF/global/pages/main-menu.ftl" /]
 
-[#import "/WEB-INF/global/macros/forms.ftl" as customForm /]
-<article>
+    
+  <section >
   [#include "/WEB-INF/global/pages/reporting-secondary-menu.ftl" /]
-  <div class="content">
+  
+  <article class="halfContent">
     <h1>[#if currentUser.leader??]${currentUser.leader.name}[/#if] Activities ${currentLogframe.year?c} = ${currentActivities?size}</h1>  
     
     <table id="activityList">
       <thead>
         <tr>
-          <td>ID</td>
-          <td>Activity</td>
-          <td>Leader Name</td>
-          <td>Theme</td>
-          <td>Last Modified</td>
+          <th id="id">[@s.text name="reporting.activityList.id" /]</th>
+          <th id="activity">[@s.text name="reporting.activityList.activity" /]</th>
+          <th id="leaderName">[@s.text name="reporting.activityList.leaderName" /]</th>
+          <th id="theme">[@s.text name="reporting.activityList.theme" /]</th>
+          <th id="lastModified">[@s.text name="reporting.activityList.lastModified" /]</th>
         </tr>
       </thead>
       <tbody>
         [#list currentActivities as activity]
           <tr>
-            <td>${activity.id}</td>
+            <td class="center">${activity.id}</td>
             <td>
               <a href="
               [@s.url action='status' includeParams='get']
                 [@s.param name='${activityRequestParameter}']${activity.id}[/@s.param]
               [/@s.url]
-              ">${activity.title?substring(20)}</a>
+              ">              
+                [#if activity.title?length < 80]
+                  ${activity.title}</a>
+                [#else]
+                  ${activity.title?substring(0, 80)}...</a>
+                [/#if]
             </td>
-            <td>${activity.leader.name}</td>
-            <td>${activity.milestone.output.objective.theme.code}</td>
-            <td>{Last Modified}</td>
+            <td class="center">${activity.leader.name?substring(0, 10)}</td>
+            <td class="center">${activity.milestone.output.objective.theme.code}</td>
+            <td class="center">{Last Modified}</td>
           </tr>
         [/#list]  
       </tbody>
-    <ul>
-      
+	<ul>
     </ul>
     </table>
     
-    
-    
-    
-  </div>
-</article>
+  </article>
+  </section>
 [#include "/WEB-INF/global/pages/footer.ftl"]
