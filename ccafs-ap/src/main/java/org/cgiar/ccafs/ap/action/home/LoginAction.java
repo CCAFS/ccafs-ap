@@ -2,7 +2,7 @@ package org.cgiar.ccafs.ap.action.home;
 
 import org.cgiar.ccafs.ap.action.BaseAction;
 import org.cgiar.ccafs.ap.config.APConfig;
-import org.cgiar.ccafs.ap.config.APContants;
+import org.cgiar.ccafs.ap.config.APConstants;
 import org.cgiar.ccafs.ap.data.manager.LogframeManager;
 import org.cgiar.ccafs.ap.data.manager.UserManager;
 import org.cgiar.ccafs.ap.data.model.User;
@@ -52,7 +52,7 @@ public class LoginAction extends BaseAction implements ServletRequestAware {
       User loggedUser = userManager.login(user.getEmail(), user.getPassword());
       if (loggedUser != null) {
         loggedUser.setLastLogin(new Date());
-        session.put(APContants.SESSION_USER, loggedUser);
+        session.put(APConstants.SESSION_USER, loggedUser);
         LOG.info("User " + user.getEmail() + " logged in successfully.");
         System.out.println("isLogged(): " + this.isLogged());
       } else {

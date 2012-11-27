@@ -1,7 +1,7 @@
 package org.cgiar.ccafs.ap.interceptor;
 
 import org.cgiar.ccafs.ap.action.BaseAction;
-import org.cgiar.ccafs.ap.config.APContants;
+import org.cgiar.ccafs.ap.config.APConstants;
 import org.cgiar.ccafs.ap.data.model.User;
 
 import java.util.Map;
@@ -23,7 +23,7 @@ public class RequireUserInterceptor extends AbstractInterceptor {
   @Override
   public String intercept(ActionInvocation invocation) throws Exception {
     Map<String, Object> session = invocation.getInvocationContext().getSession();
-    User user = (User) session.get(APContants.SESSION_USER);
+    User user = (User) session.get(APConstants.SESSION_USER);
     if (user != null) {
       return invocation.invoke();
     }

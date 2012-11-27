@@ -5,7 +5,7 @@ package org.cgiar.ccafs.ap.config;
  * 
  * @author hftobon
  */
-public final class APContants {
+public final class APConstants {
 
   public static final String SESSION_USER = "current_user";
   public static final String ACTIVITY_REQUEST_ID = "activityID";

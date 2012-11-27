@@ -26,7 +26,13 @@
         [#list currentActivities as activity]
           <tr>
             <td>${activity.id}</td>
-            <td>${activity.title?substring(20)}</td>
+            <td>
+              <a href="
+              [@s.url action='status' includeParams='get']
+                [@s.param name='${activityRequestParameter}']${activity.id}[/@s.param]
+              [/@s.url]
+              ">${activity.title?substring(20)}</a>
+            </td>
             <td>${activity.leader.name}</td>
             <td>${activity.milestone.output.objective.theme.code}</td>
             <td>{Last Modified}</td>

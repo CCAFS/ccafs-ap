@@ -1,7 +1,7 @@
 package org.cgiar.ccafs.ap.action;
 
 import org.cgiar.ccafs.ap.config.APConfig;
-import org.cgiar.ccafs.ap.config.APContants;
+import org.cgiar.ccafs.ap.config.APConstants;
 import org.cgiar.ccafs.ap.data.manager.LogframeManager;
 import org.cgiar.ccafs.ap.data.model.Logframe;
 import org.cgiar.ccafs.ap.data.model.User;
@@ -61,7 +61,7 @@ public class BaseAction extends ActionSupport implements Preparable, SessionAwar
   public User getCurrentUser() {
     User u = null;
     try {
-      u = (User) session.get(APContants.SESSION_USER);
+      u = (User) session.get(APConstants.SESSION_USER);
     } catch (Exception e) {
       LOG.warn("There was a problem trying to find the user in the session.");
     }
