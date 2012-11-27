@@ -2,6 +2,7 @@ package org.cgiar.ccafs.ap.action.reporting.activities;
 
 import org.cgiar.ccafs.ap.action.BaseAction;
 import org.cgiar.ccafs.ap.config.APConfig;
+import org.cgiar.ccafs.ap.config.APConstants;
 import org.cgiar.ccafs.ap.data.manager.ActivityManager;
 import org.cgiar.ccafs.ap.data.manager.LogframeManager;
 import org.cgiar.ccafs.ap.data.model.Activity;
@@ -20,6 +21,10 @@ public class ActivitiesReportingAction extends BaseAction {
   public ActivitiesReportingAction(APConfig config, ActivityManager activityManager, LogframeManager logframeManager) {
     super(config, logframeManager);
     this.activityManager = activityManager;
+  }
+
+  public String getActivityRequestParameter() {
+    return APConstants.ACTIVITY_REQUEST_ID;
   }
 
   public Activity[] getCurrentActivities() {
