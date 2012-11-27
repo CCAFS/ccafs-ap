@@ -31,7 +31,11 @@
     [#if globalLibs??]
      [#list globalLibs as libraryName]
         [#if libraryName="jquery"]
-          <script src="${baseUrl}/js/libs/jquery/jquery-1.8.2.min.js"></script>
+          <script src="${baseUrl}/js/libs/jquery/jquery-1.8.2.min.js"></script>          
+        [/#if]
+        
+        [#if libraryName="dataTable"]
+          <script src="${baseUrl}/js/libs/dataTables/jquery.dataTables.min.js"></script>
         [/#if]
   	 [/#list]
   	[/#if]

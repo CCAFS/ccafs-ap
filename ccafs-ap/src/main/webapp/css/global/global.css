@@ -12,67 +12,86 @@
 */
 
 /************* 1. GENERAL ***************/
-a, a:active, a:visited, a:hover { color: black; text-decoration: none; }
-.clearfix:before, .clearfix:after { content: ""; display: table; }
-.clearfix:after { clear: both; }
-.clearfix { *zoom: 1; }
-.red {color: red; }
+a,a:active,a:visited,a:hover {
+  color: black;
+  text-decoration: none;
+}
+
+.clearfix:before,.clearfix:after {
+  content: "";
+  display: table;
+}
+
+.clearfix:after {
+  clear: both;
+}
+
+.clearfix {
+  *zoom: 1;
+}
+
+.red {
+  color: red;
+}
 
 ul.fieldError li {
-	color: red;
-	list-style-type: none;
-	text-align: right;
+  color: red;
+  list-style-type: none;
+  text-align: right;
 }
 
 
 /************* 2. HEADER ***************/
 body {
-	text-align: center;
+  text-align: center;
 }
 
 .container {
-	background-image: url("../../images/global/header-background.png");
-	display: inline-block;
-	margin-top: 30px;
-	height: 270px;
-	width: 1100px;
-	text-align: left;
+  background-image: url("../../images/global/header-background.png");
+  background-repeat: no-repeat; display : inline-block;
+  margin-top: 30px;
+  height: 270px;
+  width: 1100px;
+  text-align: left;
+  display: inline-block;
 }
 
-#userInfo {	
-	margin-right: 30px;
-	margin-top: 10px;
-	margin-bottom: 10px;
-	text-align: right;
+#userInfo {
+  margin-right: 30px;
+  margin-top: 10px;
+  margin-bottom: 10px;
+  text-align: right;
 }
+
 #userInfo .email {
-	color: white;
+  color: white;
   font-size: 15px;
   font-weight: bold;
 }
+
 #userInfo .logout {
-	background-color: green;
+  background-color: green;
   margin-left: 15px;
   padding: 3px 10px;
 }
+
 #userInfo .logout a {
-	color: white;
+  color: white;
 }
 
 #mainLogo {
-	float: left;
+  float: left;
 }
 
 #ccafsLogo {
-	float: left;
+  float: left;
 }
-
 
 /************* 3. MAIN MENU ***************/
 nav#mainMenu {
-	clear: both;
-	list-style-type: none;
-	text-align: center;
+  clear: both;
+  list-style-type: none;
+  text-align: center;
 }
 
 nav#mainMenu ul a {
@@ -91,14 +110,16 @@ nav#mainMenu ul a li {
 
 /*************** SECONDARY MENU ***********/
 nav#secondaryMenu {
-	background-color: lightgray;
+  background-color: lightgray;
   float: left;
   margin-right: 20px;
-  padding: 20px;
+  margin-top: 20px; padding : 20px;
   width: 190px;
+  padding: 20px;
 }
+
 nav#secondaryMenu ul {
-	
+  
 }
 
 nav#secondaryMenu ul a {
@@ -112,13 +133,23 @@ nav#secondaryMenu ul a {
 }
 
 nav#secondaryMenu ul a li {
-	
+  
 }
 
 /*************** BODY ****************/
 .content {
+  width: 1060px;
   margin-top: 20px;
-  padding: 0 30px;
+  margin-bottom: 20px;
+  padding: 20px;
+}
+
+.halfContent {
+  float: right;
+  width: 830px;
+  margin-top: 20px;
+  margin-bottom: 20px;
+  padding: 10px;
 }
 
 .content h1 {
@@ -129,12 +160,30 @@ nav#secondaryMenu ul a li {
   margin-bottom: 10px;
 }
 
+.halfContent h1 {
+  border-bottom: 2px solid #663300;
+  color: #663300;
+  font-size: 25px;
+  font-weight: normal;
+  margin-bottom: 10px;
+}
+
+.content a, .halfContent a{
+  color: #366506;
+  text-decoration: underline;
+}
+
+.content a:hover, .halfContent a:hover{
+  color: #366506;
+  text-decoration: underline;
+}
+
 /*************** FOOTER ****************/
 #footerContainer {
-	background-color: #EEEEEE;
+  background-color: #EEEEEE;
   height: 100px;
-	margin-top: 30px;
-	margin-bottom: 30px;
-	text-align: center;
-} 
-
+  margin-top: 30px;
+  margin-bottom: 30px;
+  text-align: center;
+  clear: both;
+}
