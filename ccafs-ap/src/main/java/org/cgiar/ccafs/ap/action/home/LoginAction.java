@@ -52,7 +52,7 @@ public class LoginAction extends BaseAction implements ServletRequestAware {
       User loggedUser = userManager.login(user.getEmail(), user.getPassword());
       if (loggedUser != null) {
         loggedUser.setLastLogin(new Date());
-        sessionParams.put(APContants.SESSION_USER, loggedUser);
+        session.put(APContants.SESSION_USER, loggedUser);
         LOG.info("User " + user.getEmail() + " logged in successfully.");
         System.out.println("isLogged(): " + this.isLogged());
       } else {
@@ -64,7 +64,7 @@ public class LoginAction extends BaseAction implements ServletRequestAware {
 
 
   public String logout() {
-    sessionParams.clear();
+    session.clear();
     return SUCCESS;
   }
 

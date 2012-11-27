@@ -23,10 +23,12 @@ import org.slf4j.LoggerFactory;
  */
 public class BaseAction extends ActionSupport implements Preparable, SessionAware {
 
+  public static final String NOT_LOGGED = "401";
+
   private static final long serialVersionUID = -740360140511380630L;
   private static final Logger LOG = LoggerFactory.getLogger(BaseAction.class);
 
-  protected Map<String, Object> sessionParams;
+  protected Map<String, Object> session;
   protected APConfig config;
   protected LogframeManager logframeManager;
 
@@ -59,7 +61,7 @@ public class BaseAction extends ActionSupport implements Preparable, SessionAwar
   public User getCurrentUser() {
     User u = null;
     try {
-      u = (User) sessionParams.get(APContants.SESSION_USER);
+      u = (User) session.get(APContants.SESSION_USER);
     } catch (Exception e) {
       LOG.warn("There was a problem trying to find the user in the session.");
     }
@@ -88,14 +90,12 @@ public class BaseAction extends ActionSupport implements Preparable, SessionAwar
 
   @Override
   public void prepare() throws Exception {
-    // TODO Auto-generated method stub
-
+    // So far, do nothing here!
   }
 
   @Override
   public void setSession(Map<String, Object> session) {
-    this.sessionParams = session;
-
+    this.session = session;
   }
 
 

@@ -27,7 +27,8 @@ public class ActivitiesReportingAction extends BaseAction {
   }
 
   @Override
-  public void prepare() {
+  public void prepare() throws Exception {
+    super.prepare();
     currentActivities = activityManager.getActivities(config.getCurrentYear(), this.getCurrentUser().getLeader());
   }
 
