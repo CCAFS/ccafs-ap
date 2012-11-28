@@ -35,7 +35,7 @@
         [/#if]
         
         [#if libraryName="dataTable"]
-          <script src="${baseUrl}/js/libs/dataTables/jquery.dataTables.min.js"></script>
+          <script src="${baseUrl}/js/libs/dataTables/jquery.dataTables-1.9.4.min.js"></script>
         [/#if]
   	 [/#list]
   	[/#if]

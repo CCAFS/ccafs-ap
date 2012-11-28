@@ -2,11 +2,12 @@
 [#assign title = "Welcome to CCAFS Activity Planning" /]
 [#assign jsIncludes = ["jquery"] /]
 [#assign customCSS = ["${baseUrl}/css/home/login.css"] /]
+[#assign currentSection = "home" /]
 
 [#include "/WEB-INF/global/pages/header.ftl" /]
 [#include "/WEB-INF/global/pages/main-menu.ftl" /]
-
 [#import "/WEB-INF/global/macros/forms.ftl" as customForm /]
+
 <article>
   <div class="content">
     <h1>[@s.text name="home.login.title" /]</h1>
