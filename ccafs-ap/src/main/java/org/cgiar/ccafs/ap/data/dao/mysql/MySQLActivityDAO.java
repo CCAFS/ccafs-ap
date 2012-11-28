@@ -26,8 +26,13 @@ public class MySQLActivityDAO implements ActivityDAO {
     this.databaseManager = databaseManager;
   }
 
+
   @Override
   public List<Map<String, String>> getActivities(int year) {
+    /*
+     * TODO - Validate if the list of activities correspond to the planning section or to the reporting section
+     * (is_planning)
+     */
     List<Map<String, String>> activities = new ArrayList<>();
     try (Connection con = databaseManager.getConnection()) {
       String query =
@@ -63,6 +68,10 @@ public class MySQLActivityDAO implements ActivityDAO {
 
   @Override
   public List<Map<String, String>> getActivities(int year, int leaderTypeCode) {
+    /*
+     * TODO - Validate if the list of activities correspond to the planning section or to the reporting section
+     * (is_planning)
+     */
     List<Map<String, String>> activities = new ArrayList<>();
     try (Connection con = databaseManager.getConnection()) {
       String query =
@@ -93,6 +102,38 @@ public class MySQLActivityDAO implements ActivityDAO {
       e.printStackTrace();
     }
     return activities;
+  }
+
+  @Override
+  public Map<String, String> getActivity(int id) {
+    Map<String, String> activity = new HashMap<>();
+    try (Connection con = databaseManager.getConnection()) {
+      String query =
+        "SELECT a.title, a.start_date, a.end_date, a.description, a.status_description, astatus.id as status_id, astatus.name as status_name "
+          + "FROM activities a, activity_status astatus "
+          + "WHERE astatus.id = a.activity_status_id "
+          + "AND a.id = "
+          + id;
+      ResultSet rs = databaseManager.makeQuery(query, con);
+      if (rs.next()) {
+        activity.put("title", rs.getString("title"));
+        activity.put("start_date", rs.getString("start_date"));
+        activity.put("end_date", rs.getString("end_date"));
+        activity.put("description", rs.getString("description"));
+        activity.put("status_description", rs.getString("status_description"));
+        activity.put("status_id", rs.getString("status_id"));
+        activity.put("status_name", rs.getString("status_name"));
+      }
+    } catch (SQLException e) {
+      // TODO Auto-generated catch block
+      e.printStackTrace();
+    }
+
+    if (activity.isEmpty()) {
+      return null;
+    } else {
+      return activity;
+    }
   }
 
 

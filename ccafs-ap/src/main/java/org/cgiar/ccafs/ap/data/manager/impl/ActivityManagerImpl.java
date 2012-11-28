@@ -7,6 +7,7 @@ import org.cgiar.ccafs.ap.data.model.Leader;
 import org.cgiar.ccafs.ap.data.model.Milestone;
 import org.cgiar.ccafs.ap.data.model.Objective;
 import org.cgiar.ccafs.ap.data.model.Output;
+import org.cgiar.ccafs.ap.data.model.Status;
 import org.cgiar.ccafs.ap.data.model.Theme;
 
 import java.text.ParseException;
@@ -85,4 +86,33 @@ public class ActivityManagerImpl implements ActivityManager {
     return activities;
   }
 
+  @Override
+  public Activity getActivityStatusInfo(int id) {
+    Map<String, String> activityDB = activityDAO.getActivity(id);
+    if (activityDB != null) {
+      SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM");
+      Activity activity = new Activity();
+      activity.setId(id);
+      activity.setTitle(activityDB.get("title"));
+      try {
+        activity.setStartDate(dateFormat.parse(activityDB.get("start_date")));
+      } catch (ParseException e) {
+        // TODO Auto-generated catch block
+        e.printStackTrace();
+      }
+      try {
+        activity.setEndDate(dateFormat.parse(activityDB.get("end_date")));
+      } catch (ParseException e) {
+        // TODO Auto-generated catch block
+        e.printStackTrace();
+      }
+      activity.setDescription(activityDB.get("description"));
+      Status status = new Status();
+      status.setId(Integer.parseInt(activityDB.get("status_id")));
+      status.setName(activityDB.get("status_name"));
+      activity.setStatus(status);
+      return activity;
+    }
+    return null;
+  }
 }

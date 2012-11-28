@@ -13,21 +13,15 @@ public class Activity {
   private Leader leader;
   private boolean isPlanning;
   private boolean isGlobal;
+  private ContactPerson[] contactPersons;
+  private String genderIntegrationsDescription;
+  private Status status;
 
   public Activity() {
   }
 
-  public Activity(int id, String title, Date startDate, Date endDate, String description, Milestone milestone,
-    Leader leader, boolean isPlanning, boolean isGlobal) {
-    this.id = id;
-    this.title = title;
-    this.startDate = startDate;
-    this.endDate = endDate;
-    this.description = description;
-    this.milestone = milestone;
-    this.leader = leader;
-    this.isPlanning = isPlanning;
-    this.isGlobal = isGlobal;
+  public ContactPerson[] getContactPersons() {
+    return contactPersons;
   }
 
   public String getDescription() {
@@ -37,6 +31,11 @@ public class Activity {
   public Date getEndDate() {
     return endDate;
   }
+
+  public String getGenderIntegrationsDescription() {
+    return genderIntegrationsDescription;
+  }
+
 
   public int getId() {
     return id;
@@ -54,6 +53,10 @@ public class Activity {
     return startDate;
   }
 
+  public Status getStatus() {
+    return status;
+  }
+
   public String getTitle() {
     return title;
   }
@@ -66,12 +69,20 @@ public class Activity {
     return isPlanning;
   }
 
+  public void setContactPersons(ContactPerson[] contactPersons) {
+    this.contactPersons = contactPersons;
+  }
+
   public void setDescription(String description) {
     this.description = description;
   }
 
   public void setEndDate(Date endDate) {
     this.endDate = endDate;
+  }
+
+  public void setGenderIntegrationsDescription(String genderIntegrationsDescription) {
+    this.genderIntegrationsDescription = genderIntegrationsDescription;
   }
 
   public void setGlobal(boolean isGlobal) {
@@ -96,6 +107,10 @@ public class Activity {
 
   public void setStartDate(Date startDate) {
     this.startDate = startDate;
+  }
+
+  public void setStatus(Status status) {
+    this.status = status;
   }
 
   public void setTitle(String title) {
