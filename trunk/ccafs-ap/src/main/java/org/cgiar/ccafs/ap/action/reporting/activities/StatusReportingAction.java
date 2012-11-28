@@ -4,8 +4,10 @@ import org.cgiar.ccafs.ap.action.BaseAction;
 import org.cgiar.ccafs.ap.config.APConfig;
 import org.cgiar.ccafs.ap.config.APConstants;
 import org.cgiar.ccafs.ap.data.manager.ActivityManager;
+import org.cgiar.ccafs.ap.data.manager.ContactPersonManager;
 import org.cgiar.ccafs.ap.data.manager.LogframeManager;
 import org.cgiar.ccafs.ap.data.model.Activity;
+import org.cgiar.ccafs.ap.data.model.ContactPerson;
 
 import com.google.inject.Inject;
 import org.apache.commons.lang3.StringUtils;
@@ -22,15 +24,18 @@ public class StatusReportingAction extends BaseAction {
 
   // Managers
   private ActivityManager activityManager;
+  private ContactPersonManager contactPersonManager;
 
   // Model
   protected Activity activity;
   protected int activityID;
 
   @Inject
-  public StatusReportingAction(APConfig config, LogframeManager logframeManager, ActivityManager activityManager) {
+  public StatusReportingAction(APConfig config, LogframeManager logframeManager, ActivityManager activityManager,
+    ContactPersonManager contactPersonManager) {
     super(config, logframeManager);
     this.activityManager = activityManager;
+    this.contactPersonManager = contactPersonManager;
   }
 
   @Override
@@ -51,6 +56,8 @@ public class StatusReportingAction extends BaseAction {
     // exists in the database.
     activityID = Integer.parseInt(StringUtils.trim(this.getRequest().getParameter(APConstants.ACTIVITY_REQUEST_ID)));
     activity = activityManager.getActivityStatusInfo(activityID);
+    ContactPerson[] contactPersons = contactPersonManager.getContactPersons(activityID);
+    activity.setContactPersons(contactPersons);
   }
 
   public void setActivity(Activity activity) {
