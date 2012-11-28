@@ -28,5 +28,13 @@ public interface ActivityDAO {
    */
   public List<Map<String, String>> getActivities(int year, int leaderTypeCode);
 
+  /**
+   * Get an an activity identified with the given year.
+   * 
+   * @param id - identifier.
+   * @return a Map with the activity information.
+   */
+  public Map<String, String> getActivity(int id);
+
 
 }

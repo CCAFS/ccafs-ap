@@ -9,16 +9,11 @@ import org.cgiar.ccafs.ap.data.model.User;
 
 import java.util.Date;
 
-import javax.servlet.http.HttpServletRequest;
-
 import com.google.inject.Inject;
-import org.apache.struts2.interceptor.ServletRequestAware;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-public class LoginAction extends BaseAction implements ServletRequestAware {
-
-  private HttpServletRequest request;
+public class LoginAction extends BaseAction {
 
   // Logging
   private static final Logger LOG = LoggerFactory.getLogger(LoginAction.class);
@@ -52,7 +47,7 @@ public class LoginAction extends BaseAction implements ServletRequestAware {
       User loggedUser = userManager.login(user.getEmail(), user.getPassword());
       if (loggedUser != null) {
         loggedUser.setLastLogin(new Date());
-        session.put(APConstants.SESSION_USER, loggedUser);
+        this.getSession().put(APConstants.SESSION_USER, loggedUser);
         LOG.info("User " + user.getEmail() + " logged in successfully.");
         System.out.println("isLogged(): " + this.isLogged());
       } else {
@@ -62,16 +57,9 @@ public class LoginAction extends BaseAction implements ServletRequestAware {
     return SUCCESS;
   }
 
-
   public String logout() {
-    session.clear();
+    this.getSession().clear();
     return SUCCESS;
-  }
-
-
-  @Override
-  public void setServletRequest(HttpServletRequest request) {
-    this.request = request;
   }
 
   public void setUser(User user) {

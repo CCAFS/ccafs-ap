@@ -18,4 +18,12 @@ public interface ActivityManager {
    * @return
    */
   public Activity[] getActivities(int year, Leader leader);
+
+  /**
+   * Get an activity identified with the given id.
+   * 
+   * @param id
+   * @return an Activity object or null if no activity was found.
+   */
+  public Activity getActivityStatusInfo(int id);
 }

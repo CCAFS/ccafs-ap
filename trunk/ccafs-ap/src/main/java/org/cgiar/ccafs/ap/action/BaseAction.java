@@ -9,9 +9,12 @@ import org.cgiar.ccafs.ap.data.model.User;
 import java.util.Locale;
 import java.util.Map;
 
+import javax.servlet.http.HttpServletRequest;
+
 import com.google.inject.Inject;
 import com.opensymphony.xwork2.ActionSupport;
 import com.opensymphony.xwork2.Preparable;
+import org.apache.struts2.interceptor.ServletRequestAware;
 import org.apache.struts2.interceptor.SessionAware;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -21,23 +24,29 @@ import org.slf4j.LoggerFactory;
  * 
  * @author hftobon
  */
-public class BaseAction extends ActionSupport implements Preparable, SessionAware {
+public class BaseAction extends ActionSupport implements Preparable, SessionAware, ServletRequestAware {
 
   public static final String NOT_LOGGED = "401";
 
   private static final long serialVersionUID = -740360140511380630L;
+  // Loggin
   private static final Logger LOG = LoggerFactory.getLogger(BaseAction.class);
 
-  protected Map<String, Object> session;
-  protected APConfig config;
-  protected LogframeManager logframeManager;
+  private Map<String, Object> session;
+  private HttpServletRequest request;
 
+  // Config
+  protected APConfig config;
+
+  // Managers
+  protected LogframeManager logframeManager;
 
   @Inject
   public BaseAction(APConfig config, LogframeManager logframeManager) {
     this.config = config;
     this.logframeManager = logframeManager;
   }
+
 
   public String getBaseUrl() {
     return config.getBaseUrl();
@@ -51,7 +60,6 @@ public class BaseAction extends ActionSupport implements Preparable, SessionAwar
   public Logframe getCurrentLogframe() {
     return logframeManager.getLogframe(config.getCurrentYear());
   }
-
 
   /**
    * Get the user that is currently saved in the session.
@@ -76,6 +84,14 @@ public class BaseAction extends ActionSupport implements Preparable, SessionAwar
     return Locale.ENGLISH;
   }
 
+  public HttpServletRequest getRequest() {
+    return request;
+  }
+
+  public Map<String, Object> getSession() {
+    return session;
+  }
+
   /**
    * Validate if the user is already logged in or not.
    * 
@@ -91,6 +107,12 @@ public class BaseAction extends ActionSupport implements Preparable, SessionAwar
   @Override
   public void prepare() throws Exception {
     // So far, do nothing here!
+  }
+
+  @Override
+  public void setServletRequest(HttpServletRequest request) {
+    this.request = request;
+
   }
 
   @Override

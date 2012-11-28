@@ -13,12 +13,15 @@ import com.google.inject.Inject;
 public class ActivitiesReportingAction extends BaseAction {
 
   private static final long serialVersionUID = 9001775749549472317L;
-  private ActivityManager activityManager;
 
+  // Managers
+  protected ActivityManager activityManager;
+
+  // Model
   private Activity[] currentActivities;
 
   @Inject
-  public ActivitiesReportingAction(APConfig config, ActivityManager activityManager, LogframeManager logframeManager) {
+  public ActivitiesReportingAction(APConfig config, LogframeManager logframeManager, ActivityManager activityManager) {
     super(config, logframeManager);
     this.activityManager = activityManager;
   }
