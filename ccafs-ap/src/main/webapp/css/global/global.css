@@ -40,7 +40,6 @@ ul.fieldError li {
   text-align: right;
 }
 
-
 /************* 2. HEADER ***************/
 body {
   text-align: center;
@@ -48,9 +47,11 @@ body {
 
 .container {
   background-image: url("../../images/global/header-background.png");
-  background-repeat: no-repeat; display : inline-block;
+  background-repeat: no-repeat;
+  display: inline-block;
   margin-top: 30px;
-  height: 270px;
+  margin-bottom: 15px;
+  height: 279px;
   width: 1100px;
   text-align: left;
   display: inline-block;
@@ -98,24 +99,31 @@ nav#mainMenu ul a {
   color: white;
   display: inline-block;
   text-align: center;
-  width: 130px;
+  width: 150px;
 }
 
 nav#mainMenu ul a li {
-  background-color: #2E702D;
+  color: #7F7F7F;
+  background-color: #F2F2F2;
   padding: 10px;
   margin-bottom: 20px;
   margin-top: 20px;
+  font-weight: bold;
+}
+
+nav#mainMenu ul a li.currentSection{
+  color: white;
+  background-color: #A6A6A6; 
 }
 
 /*************** SECONDARY MENU ***********/
 nav#secondaryMenu {
-  background-color: lightgray;
+  background-color: #F2F2F2;
   float: left;
-  margin-right: 20px;
-  margin-top: 20px; padding : 20px;
-  width: 190px;
-  padding: 20px;
+  margin-left: 10px;
+  margin-top: 20px;
+  padding: 10px;
+  width: 190px;  
 }
 
 nav#secondaryMenu ul {
@@ -123,13 +131,22 @@ nav#secondaryMenu ul {
 }
 
 nav#secondaryMenu ul a {
-  border: 1px solid;
+  height: 35px;  
+  font-weight: bold;
   display: list-item;
   margin-bottom: 5px;
   margin-top: 5px;
   padding-bottom: 5px;
   padding-left: 10px;
   padding-top: 5px;
+    
+}
+
+nav#secondaryMenu ul a.currentReportingSection{
+  color: white;
+  background-image: url("../../images/global/reportingMenuMarker.png");
+  background-repeat : no-repeat; 
+
 }
 
 nav#secondaryMenu ul a li {
@@ -168,15 +185,9 @@ nav#secondaryMenu ul a li {
   margin-bottom: 10px;
 }
 
-.content a, .halfContent a{
-  color: #366506;
-  text-decoration: underline;
-}
+.content a, .halfContent a {    color: #366506; }
 
-.content a:hover, .halfContent a:hover{
-  color: #366506;
-  text-decoration: underline;
-}
+.content a:hover, .halfContent a:hover {  color: #366506; }
 
 /*************** FOOTER ****************/
 #footerContainer {

@@ -1,20 +1,13 @@
+#activityList #id {   width: 60px; }
 
-#activityList #id {
-  width: 60px;
-}
+#activityList #activity {  width: 440px; }
 
-#activityList #activity {
-  width: 440px;
-}
+#activityList #leaderName {  width: 100px;  }
 
-#activityList #leaderName {  
-  width: 100px;
-}
+#activityList #theme {  width: 60px;  }
 
-#activityList #theme {
-  width: 60px;
-}
+#activityList #lastModified { width: 80px;  text-align: center; }
 
-#activityList #lastModified {
-  width: 80px;
-}
+#activityList td{ text-align: center;  }
+
+#activityList td.left{ text-align: left;  }

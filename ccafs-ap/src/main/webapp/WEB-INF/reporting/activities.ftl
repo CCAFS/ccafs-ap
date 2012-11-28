@@ -2,11 +2,15 @@
 [#assign title = "Activity List" /]
 [#assign globalLibs = ["jquery", "dataTable"] /]
 [#assign customJS = ["${baseUrl}/js/reporting/activity-list.js"] /]
-[#assign customCSS = ["${baseUrl}/css/reporting/activity-list.css", "${baseUrl}/css/libs/dataTables/jquery.dataTables.css", "${baseUrl}/css/reporting/customDataTable.css"] /]
+[#assign customCSS = ["${baseUrl}/css/reporting/activity-list.css", "${baseUrl}/css/libs/dataTables/jquery.dataTables-1.9.4.css", "${baseUrl}/css/reporting/customDataTable.css"] /]
+[#assign currentSection = "reporting" /]
+[#assign currentReportingSection = "activities" /]
+[#assign currentStage = "status" /]
+
 
 [#include "/WEB-INF/global/pages/header.ftl" /]
 [#include "/WEB-INF/global/pages/main-menu.ftl" /]
-
+[#import "/WEB-INF/global/macros/utils.ftl" as utilities/]
     
   <section >
   [#include "/WEB-INF/global/pages/reporting-secondary-menu.ftl" /]
@@ -27,22 +31,18 @@
       <tbody>
         [#list currentActivities as activity]
           <tr>
-            <td class="center">${activity.id}</td>
-            <td>
+            <td>${activity.id}</td>
+            <td class="left">
               <a href="
               [@s.url action='status' includeParams='get']
                 [@s.param name='${activityRequestParameter}']${activity.id}[/@s.param]
               [/@s.url]
-              ">              
-                [#if activity.title?length < 80]
-                  ${activity.title}</a>
-                [#else]
-                  ${activity.title?substring(0, 80)}...</a>
-                [/#if]
+              ">
+                [#if activity.title?length < 80] ${activity.title}</a> [#else] [@utilities.wordCutter string=activity.title maxPos=70 /]...</a> [/#if]
             </td>
-            <td class="center">${activity.leader.name?substring(0, 10)}</td>
-            <td class="center">${activity.milestone.output.objective.theme.code}</td>
-            <td class="center">{Last Modified}</td>
+            <td>${activity.leader.name?substring(0, 10)}</td>
+            <td>${activity.milestone.output.objective.theme.code}</td>
+            <td>2012</td>
           </tr>
         [/#list]  
       </tbody>

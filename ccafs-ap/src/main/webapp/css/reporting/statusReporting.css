@@ -1,0 +1,26 @@
+.halfContent .infoBox{
+  width: 200px;
+  float:left;
+  margin: 10px 40px 0px 20px;  
+}
+
+.halfContent .infoBoxLarge{
+  width: 720px;
+  float:left;
+  margin: 10px 40px 0px 20px;  
+}
+
+.halfContent .infoBox .title{
+  float: left;
+  font-weight: bold;
+  margin-right: 10px; 
+}
+
+.halfContent .infoBoxLarge .title{
+  float: left;
+  font-weight: bold;
+  margin-right: 10px;  
+}
+
+.halfContent .infoBox .value{  float: right; }
+.halfContent .infoBoxLarge .value{  float: left; }
