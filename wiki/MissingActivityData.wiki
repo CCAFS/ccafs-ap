@@ -734,6 +734,7 @@ It was stored the countries only.
 
   * Activity 289: "Involving national stakeholders in the regional platform for exchange between researchers and policy-makers on agriculture adaptation to climate change in West Africa."
    * Nothing checked for gender integration and no description.
+   * Partner not named specifically: "Public institutions in charge of CCA issues in the five pilot countries."
 
   * Activity 290: "Developing community-based climate smart agriculture through participatory action research in benchmark sites in West Africa."
    * Gender integration checked "yes" but no description included.
