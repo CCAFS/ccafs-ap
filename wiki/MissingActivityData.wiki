@@ -726,6 +726,7 @@ It was stored the countries only.
 
   * Activity 288: "Development of green house gas quantification methods at farming systems levels."
    * Missing contact person emails (Kalifa Traore, Jesse Naab, Samuel Adiku, Zacharia Gnankambary, Pierre Akponikpe, Check Mbow).
+   * Missing description for expected deliverable.
 
   * Activity 291: "Household detailed characterization: IMPACT lite."
    * Missing contact person emails (Jesse naab, Leopold Some, Moussa Boureima, Lamissa Diakite, Yacine Ndour).
