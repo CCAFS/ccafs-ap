@@ -723,6 +723,9 @@ It was stored the countries only.
   * Activity 286: "Tailoring Climate information to the needs of West African Farmers."
    * Missing contact person emails (Ousmane Ndiaye, Abdou Ali).
 
+  * Activity 288: "Development of green house gas quantification methods at farming systems levels."
+   * Missing contact person emails (Kalifa Traore, Jesse Naab, Samuel Adiku, Zacharia Gnankambary, Pierre Akponikpe, Check Mbow).
+
 == TL Theme 1 ==
   * At the end of Theme 1 Obj3 sheet there are several blank activities charts 
 
