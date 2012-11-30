@@ -720,6 +720,9 @@ It was stored the countries only.
    * There is not budget or the budget value is 0.
 
 == RPL WA ==
+  * Activity 284: "Farms of the future approach: Understanding social and cultural barriers to climate change adaption through farmer exchanges." 
+   * Partner not named specifically: "Communication consultant for video's production."
+
   * Activity 286: "Tailoring Climate information to the needs of West African Farmers."
    * Missing contact person emails (Ousmane Ndiaye, Abdou Ali).
    * Missing year for expected deliverable "communicating seasonal forecasting workshops."
