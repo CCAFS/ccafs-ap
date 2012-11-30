@@ -731,6 +731,9 @@ It was stored the countries only.
   * Activity 289: "Involving national stakeholders in the regional platform for exchange between researchers and policy-makers on agriculture adaptation to climate change in West Africa."
    * Nothing checked for gender integration and no description.
 
+  * Activity 290: "Developing community-based climate smart agriculture through participatory action research in benchmark sites in West Africa."
+   * Gender integration checked "yes" but no description included.
+
   * Activity 291: "Household detailed characterization: IMPACT lite."
    * Missing contact person emails (Jesse naab, Leopold Some, Moussa Boureima, Lamissa Diakite, Yacine Ndour).
 
