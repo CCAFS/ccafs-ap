@@ -728,6 +728,9 @@ It was stored the countries only.
    * Missing contact person emails (Kalifa Traore, Jesse Naab, Samuel Adiku, Zacharia Gnankambary, Pierre Akponikpe, Check Mbow).
    * Missing description for expected deliverable.
 
+  * Activity 289: "Involving national stakeholders in the regional platform for exchange between researchers and policy-makers on agriculture adaptation to climate change in West Africa."
+   * Nothing checked for gender integration and no description.
+
   * Activity 291: "Household detailed characterization: IMPACT lite."
    * Missing contact person emails (Jesse naab, Leopold Some, Moussa Boureima, Lamissa Diakite, Yacine Ndour).
 
