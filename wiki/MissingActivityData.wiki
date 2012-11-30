@@ -736,6 +736,7 @@ It was stored the countries only.
 
   * Activity 291: "Household detailed characterization: IMPACT lite."
    * Missing contact person emails (Jesse naab, Leopold Some, Moussa Boureima, Lamissa Diakite, Yacine Ndour).
+   * Gender integration checked "yes" but no description included.
 
 == TL Theme 1 ==
   * At the end of Theme 1 Obj3 sheet there are several blank activities charts 
