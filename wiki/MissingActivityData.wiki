@@ -722,6 +722,7 @@ It was stored the countries only.
 == RPL WA ==
   * Activity 286: "Tailoring Climate information to the needs of West African Farmers."
    * Missing contact person emails (Ousmane Ndiaye, Abdou Ali).
+   * Missing year for expected deliverable "communicating seasonal forecasting workshops."
 
   * Activity 288: "Development of green house gas quantification methods at farming systems levels."
    * Missing contact person emails (Kalifa Traore, Jesse Naab, Samuel Adiku, Zacharia Gnankambary, Pierre Akponikpe, Check Mbow).
