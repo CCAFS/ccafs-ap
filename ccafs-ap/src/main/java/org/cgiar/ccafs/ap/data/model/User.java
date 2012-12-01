@@ -4,6 +4,8 @@ import org.cgiar.ccafs.ap.util.MD5Convert;
 
 import java.util.Date;
 
+import org.apache.commons.lang3.builder.ToStringBuilder;
+
 
 public class User {
 
@@ -31,7 +33,6 @@ public class User {
     return false;
   }
 
-
   public String getEmail() {
     return email;
   }
@@ -54,7 +55,6 @@ public class User {
   public UserRole getRole() {
     return role;
   }
-
 
   /**
    * Validate if the current user is an Administrator.
@@ -118,5 +118,9 @@ public class User {
     this.role = role;
   }
 
+  @Override
+  public String toString() {
+    return ToStringBuilder.reflectionToString(this);
+  }
 
 }

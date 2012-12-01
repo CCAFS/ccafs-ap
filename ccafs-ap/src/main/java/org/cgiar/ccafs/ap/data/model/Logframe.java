@@ -1,5 +1,7 @@
 package org.cgiar.ccafs.ap.data.model;
 
+import org.apache.commons.lang3.builder.ToStringBuilder;
+
 
 public class Logframe {
 
@@ -41,5 +43,9 @@ public class Logframe {
     this.year = year;
   }
 
+  @Override
+  public String toString() {
+    return ToStringBuilder.reflectionToString(this);
+  }
 
 }

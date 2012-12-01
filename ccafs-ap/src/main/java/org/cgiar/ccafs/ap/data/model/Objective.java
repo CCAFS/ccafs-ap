@@ -1,5 +1,7 @@
 package org.cgiar.ccafs.ap.data.model;
 
+import org.apache.commons.lang3.builder.ToStringBuilder;
+
 
 public class Objective {
 
@@ -56,6 +58,11 @@ public class Objective {
 
   public void setTheme(Theme theme) {
     this.theme = theme;
+  }
+
+  @Override
+  public String toString() {
+    return ToStringBuilder.reflectionToString(this);
   }
 
 }

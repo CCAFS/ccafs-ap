@@ -1,5 +1,7 @@
 package org.cgiar.ccafs.ap.data.model;
 
+import org.apache.commons.lang3.builder.ToStringBuilder;
+
 
 public class Output {
 
@@ -45,6 +47,11 @@ public class Output {
 
   public void setObjective(Objective objective) {
     this.objective = objective;
+  }
+
+  @Override
+  public String toString() {
+    return ToStringBuilder.reflectionToString(this);
   }
 
 }

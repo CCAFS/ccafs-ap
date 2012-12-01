@@ -2,6 +2,8 @@ package org.cgiar.ccafs.ap.data.model;
 
 import java.util.Date;
 
+import org.apache.commons.lang3.builder.ToStringBuilder;
+
 public class Activity {
 
   private int id;
@@ -16,8 +18,13 @@ public class Activity {
   private ContactPerson[] contactPersons;
   private String genderIntegrationsDescription;
   private Status status;
+  private Budget budget;
 
   public Activity() {
+  }
+
+  public Budget getBudget() {
+    return budget;
   }
 
   public ContactPerson[] getContactPersons() {
@@ -35,7 +42,6 @@ public class Activity {
   public String getGenderIntegrationsDescription() {
     return genderIntegrationsDescription;
   }
-
 
   public int getId() {
     return id;
@@ -67,6 +73,10 @@ public class Activity {
 
   public boolean isPlanning() {
     return isPlanning;
+  }
+
+  public void setBudget(Budget budget) {
+    this.budget = budget;
   }
 
   public void setContactPersons(ContactPerson[] contactPersons) {
@@ -115,6 +125,11 @@ public class Activity {
 
   public void setTitle(String title) {
     this.title = title;
+  }
+
+  @Override
+  public String toString() {
+    return ToStringBuilder.reflectionToString(this);
   }
 
 
