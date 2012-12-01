@@ -1,5 +1,7 @@
 package org.cgiar.ccafs.ap.data.model;
 
+import org.apache.commons.lang3.builder.ToStringBuilder;
+
 
 public class Theme {
 
@@ -46,6 +48,11 @@ public class Theme {
 
   public void setLogframe(Logframe logframe) {
     this.logframe = logframe;
+  }
+
+  @Override
+  public String toString() {
+    return ToStringBuilder.reflectionToString(this);
   }
 
 }
