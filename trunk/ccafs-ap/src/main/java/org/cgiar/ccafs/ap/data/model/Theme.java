@@ -10,16 +10,11 @@ public class Theme {
   private String description;
   private Logframe logframe;
 
-  public Theme(int id) {
-    this.id = id;
+  public Theme() {
   }
 
-  public Theme(int id, String code, String description, Logframe logframe) {
-    super();
+  public Theme(int id) {
     this.id = id;
-    this.code = code;
-    this.description = description;
-    this.logframe = logframe;
   }
 
   public String getCode() {
@@ -44,6 +39,10 @@ public class Theme {
 
   public void setDescription(String description) {
     this.description = description;
+  }
+
+  public void setId(int id) {
+    this.id = id;
   }
 
   public void setLogframe(Logframe logframe) {

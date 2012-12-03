@@ -13,16 +13,11 @@ public class Milestone {
   private String description;
   private Output output;
 
-  public Milestone(int id) {
-    this.id = id;
+  public Milestone() {
   }
 
-  public Milestone(int id, String code, int year, String description, Output output) {
+  public Milestone(int id) {
     this.id = id;
-    this.code = code;
-    this.year = year;
-    this.description = description;
-    this.output = output;
   }
 
   public String getCode() {
@@ -51,6 +46,10 @@ public class Milestone {
 
   public void setDescription(String description) {
     this.description = description;
+  }
+
+  public void setId(int id) {
+    this.id = id;
   }
 
   public void setOutput(Output output) {

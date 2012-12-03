@@ -13,7 +13,6 @@ public class Logframe {
   }
 
   public Logframe(int id, int year, String name) {
-    super();
     this.id = id;
     this.year = year;
     this.name = name;

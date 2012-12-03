@@ -105,15 +105,14 @@ public class MySQLActivityDAO implements ActivityDAO {
   }
 
   @Override
-  public Map<String, String> getActivity(int id) {
+  public Map<String, String> getActivityStatusInfo(int id) {
     Map<String, String> activity = new HashMap<>();
     try (Connection con = databaseManager.getConnection()) {
       String query =
-        "SELECT a.title, a.start_date, a.end_date, a.description, a.status_description, astatus.id as status_id, astatus.name as status_name "
-          + "FROM activities a, activity_status astatus "
-          + "WHERE astatus.id = a.activity_status_id "
-          + "AND a.id = "
-          + id;
+        "SELECT a.title, a.start_date, a.end_date, a.description, a.status_description, astatus.id as status_id, astatus.name as status_name, "
+          + "a.milestone_id, m.code as milestone_code "
+          + "FROM activities a, milestones m, activity_status astatus "
+          + "WHERE astatus.id = a.activity_status_id " + "AND m.id = a.milestone_id AND a.id = " + id;
       ResultSet rs = databaseManager.makeQuery(query, con);
       if (rs.next()) {
         activity.put("title", rs.getString("title"));
@@ -123,6 +122,8 @@ public class MySQLActivityDAO implements ActivityDAO {
         activity.put("status_description", rs.getString("status_description"));
         activity.put("status_id", rs.getString("status_id"));
         activity.put("status_name", rs.getString("status_name"));
+        activity.put("milestone_id", rs.getString("milestone_id"));
+        activity.put("milestone_code", rs.getString("milestone_code"));
       }
     } catch (SQLException e) {
       // TODO Auto-generated catch block

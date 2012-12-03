@@ -88,7 +88,7 @@ public class ActivityManagerImpl implements ActivityManager {
 
   @Override
   public Activity getActivityStatusInfo(int id) {
-    Map<String, String> activityDB = activityDAO.getActivity(id);
+    Map<String, String> activityDB = activityDAO.getActivityStatusInfo(id);
     if (activityDB != null) {
       SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM");
       Activity activity = new Activity();
@@ -107,10 +107,17 @@ public class ActivityManagerImpl implements ActivityManager {
         e.printStackTrace();
       }
       activity.setDescription(activityDB.get("description"));
+      // Status
       Status status = new Status();
       status.setId(Integer.parseInt(activityDB.get("status_id")));
       status.setName(activityDB.get("status_name"));
       activity.setStatus(status);
+      // Milestone
+      Milestone milestone = new Milestone();
+      milestone.setId(Integer.parseInt(activityDB.get("milestone_id")));
+      milestone.setCode(activityDB.get("milestone_code"));
+      activity.setMilestone(milestone);
+
       return activity;
     }
     return null;
