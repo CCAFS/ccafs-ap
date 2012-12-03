@@ -10,15 +10,11 @@ public class Output {
   private String code;
   private String description;
 
-  public Output(int id) {
-    this.id = id;
+  public Output() {
   }
 
-  public Output(int id, Objective objective, String code, String description) {
+  public Output(int id) {
     this.id = id;
-    this.objective = objective;
-    this.code = code;
-    this.description = description;
   }
 
   public String getCode() {
@@ -43,6 +39,10 @@ public class Output {
 
   public void setDescription(String description) {
     this.description = description;
+  }
+
+  public void setId(int id) {
+    this.id = id;
   }
 
   public void setObjective(Objective objective) {

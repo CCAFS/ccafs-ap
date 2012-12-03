@@ -11,17 +11,11 @@ public class Objective {
   private String outcomeDescription;
   private Theme theme;
 
-  public Objective(int id) {
-    this.id = id;
+  public Objective() {
   }
 
-  public Objective(int id, String code, String description, String outcomeDescription, Theme theme) {
-    super();
+  public Objective(int id) {
     this.id = id;
-    this.code = code;
-    this.description = description;
-    this.outcomeDescription = outcomeDescription;
-    this.theme = theme;
   }
 
   public String getCode() {
@@ -50,6 +44,10 @@ public class Objective {
 
   public void setDescription(String description) {
     this.description = description;
+  }
+
+  public void setId(int id) {
+    this.id = id;
   }
 
   public void setOutcomeDescription(String outcomeDescription) {

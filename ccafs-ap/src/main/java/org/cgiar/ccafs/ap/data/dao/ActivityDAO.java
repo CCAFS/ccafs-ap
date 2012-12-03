@@ -34,7 +34,7 @@ public interface ActivityDAO {
    * @param id - identifier.
    * @return a Map with the activity information.
    */
-  public Map<String, String> getActivity(int id);
+  public Map<String, String> getActivityStatusInfo(int id);
 
 
 }
