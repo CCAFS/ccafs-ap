@@ -19,6 +19,7 @@ public class Activity {
   private String genderIntegrationsDescription;
   private Status status;
   private Budget budget;
+  private String statusDescription;
 
   public Activity() {
   }
@@ -130,6 +131,14 @@ public class Activity {
   @Override
   public String toString() {
     return ToStringBuilder.reflectionToString(this);
+  }
+
+  public String getStatusDescription() {
+    return statusDescription;
+  }
+
+  public void setStatusDescription(String statusDescription) {
+    this.statusDescription = statusDescription;
   }
 
 

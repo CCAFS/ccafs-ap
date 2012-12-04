@@ -76,7 +76,7 @@ public class MySQLActivityDAO implements ActivityDAO {
     try (Connection con = databaseManager.getConnection()) {
       String query =
         "SELECT a.id, a.title, a.start_date, a.end_date, a.description, m.id as 'milestone_id', m.code as 'milestone_code', "
-          + "th.id as 'theme_id', th.code as 'theme_code', al.id as 'leader_id', al.name as 'leader_name'"
+          + "th.id as 'theme_id', th.code as 'theme_code', al.id as 'leader_id', al.name as 'leader_name', a.status_description "
           + "FROM activities a, milestones m, outputs ou, objectives ob, themes th, logframes lo, activity_leaders al "
           + "WHERE a.milestone_id = m.id " + "AND m.output_id = ou.id " + "AND ou.objective_id = ob.id "
           + "AND ob.theme_id = th.id " + "AND th.logframe_id = lo.id " + "AND a.activity_leader_id = al.id "
@@ -95,8 +95,10 @@ public class MySQLActivityDAO implements ActivityDAO {
         activity.put("theme_code", rs.getString("theme_code"));
         activity.put("leader_id", rs.getString("leader_id"));
         activity.put("leader_name", rs.getString("leader_name"));
+        activity.put("status_description", rs.getString("status_description"));
         activities.add(activity);
       }
+      rs.close();
     } catch (SQLException e) {
       // TODO Auto-generated catch block
       e.printStackTrace();
@@ -125,6 +127,7 @@ public class MySQLActivityDAO implements ActivityDAO {
         activity.put("milestone_id", rs.getString("milestone_id"));
         activity.put("milestone_code", rs.getString("milestone_code"));
       }
+      rs.close();
     } catch (SQLException e) {
       // TODO Auto-generated catch block
       e.printStackTrace();
