@@ -1,8 +1,5 @@
 package org.cgiar.ccafs.ap.data.dao.mysql;
 
-import org.cgiar.ccafs.ap.data.dao.ActivityDAO;
-import org.cgiar.ccafs.ap.data.dao.DAOManager;
-
 import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -11,9 +8,12 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import com.google.inject.Inject;
+import org.cgiar.ccafs.ap.data.dao.ActivityDAO;
+import org.cgiar.ccafs.ap.data.dao.DAOManager;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+
+import com.google.inject.Inject;
 
 
 public class MySQLActivityDAO implements ActivityDAO {
@@ -112,9 +112,11 @@ public class MySQLActivityDAO implements ActivityDAO {
     try (Connection con = databaseManager.getConnection()) {
       String query =
         "SELECT a.title, a.start_date, a.end_date, a.description, a.status_description, astatus.id as status_id, astatus.name as status_name, "
-          + "a.milestone_id, m.code as milestone_code "
-          + "FROM activities a, milestones m, activity_status astatus "
-          + "WHERE astatus.id = a.activity_status_id " + "AND m.id = a.milestone_id AND a.id = " + id;
+          + "a.milestone_id, m.code as milestone_code, al.id as 'leader_id', al.name as 'leader_name' "
+          + "FROM activities a, milestones m, activity_status astatus, activity_leaders al "
+          + "WHERE astatus.id = a.activity_status_id "
+          + "AND m.id = a.milestone_id "
+          + "AND a.activity_leader_id = al.id " + " AND a.id = " + id;
       ResultSet rs = databaseManager.makeQuery(query, con);
       if (rs.next()) {
         activity.put("title", rs.getString("title"));
@@ -126,6 +128,8 @@ public class MySQLActivityDAO implements ActivityDAO {
         activity.put("status_name", rs.getString("status_name"));
         activity.put("milestone_id", rs.getString("milestone_id"));
         activity.put("milestone_code", rs.getString("milestone_code"));
+        activity.put("leader_id", rs.getString("leader_id"));
+        activity.put("leader_name", rs.getString("leader_name"));
       }
       rs.close();
     } catch (SQLException e) {
