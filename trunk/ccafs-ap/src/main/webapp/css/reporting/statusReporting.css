@@ -56,3 +56,13 @@
   padding: 0.3em 0.5em;  
 }
 
+.generalInformation{
+  width: 800px;
+  margin-left: 20px;  
+}
+
+.generalInformation td{
+  width: 150px;
+  text-align: left;  
+  padding: 5px;
+}

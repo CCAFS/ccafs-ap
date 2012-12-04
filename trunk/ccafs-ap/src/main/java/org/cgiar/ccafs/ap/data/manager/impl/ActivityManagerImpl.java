@@ -1,5 +1,10 @@
 package org.cgiar.ccafs.ap.data.manager.impl;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.List;
+import java.util.Map;
+
 import org.cgiar.ccafs.ap.data.dao.ActivityDAO;
 import org.cgiar.ccafs.ap.data.manager.ActivityManager;
 import org.cgiar.ccafs.ap.data.model.Activity;
@@ -9,11 +14,6 @@ import org.cgiar.ccafs.ap.data.model.Objective;
 import org.cgiar.ccafs.ap.data.model.Output;
 import org.cgiar.ccafs.ap.data.model.Status;
 import org.cgiar.ccafs.ap.data.model.Theme;
-
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
-import java.util.List;
-import java.util.Map;
 
 import com.google.inject.Inject;
 
@@ -121,6 +121,13 @@ public class ActivityManagerImpl implements ActivityManager {
       milestone.setId(Integer.parseInt(activityDB.get("milestone_id")));
       milestone.setCode(activityDB.get("milestone_code"));
       activity.setMilestone(milestone);
+
+      // Activity leader
+      Leader activityLeader = new Leader();
+      activityLeader.setCode(Integer.parseInt(activityDB.get("leader_id")));
+      activityLeader.setName(activityDB.get("leader_name"));
+
+      activity.setLeader(activityLeader);
 
       return activity;
     }

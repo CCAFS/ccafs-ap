@@ -9,5 +9,5 @@ public final class APConstants {
 
   public static final String SESSION_USER = "current_user";
   public static final String ACTIVITY_REQUEST_ID = "activityID";
-
+  public static final String MILESTONE_REQUEST_ID = "milestoneID";
 }

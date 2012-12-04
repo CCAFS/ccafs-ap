@@ -40,7 +40,7 @@
               ">
                 [#if activity.title?length < 80] ${activity.title}</a> [#else] [@utilities.wordCutter string=activity.title maxPos=70 /]...</a> [/#if]
             </td>
-            <td>${activity.leader.name?substring(0, 10)}</td>
+            <td>${activity.leader.name?substring(0, activity.leader.name?index_of(" ") )}</td>
             <td>${activity.milestone.output.objective.theme.code}</td>
             <td>2012</td>
           </tr>

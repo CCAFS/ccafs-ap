@@ -17,24 +17,35 @@
   
   <article class="halfContent">
     <h1>
-      ${activity.id} - [#if activity.title?length < 60] ${activity.title}</a> [#else] [@utilities.wordCutter string=activity.title maxPos=60 /]...</a> [/#if]
+      ${activity.leader.name?substring(0, activity.leader.name?index_of(" ") )} - [@s.text name="reporting.activityList.activity" /] ${activity.id}      
     </h1>
     
-    <span class="infoBox"><span class="title">Description:</span> </span>
+    <h6>[@s.text name="reporting.activityStatus.title" /]</h6>
+    <p> ${activity.title} </p>
+    
+    <h6>[@s.text name="reporting.activityStatus.description" /]</h6>
     <p> ${activity.description} </p>
     
-    <span class="infoBox"> <span class="title">[@s.text name="reporting.activityStatus.startDate" /]</span> <span class="value">${activity.startDate?string("MM/dd/yyyy")}</span> </span>
-    <span class="infoBox"> <span class="title">[@s.text name="reporting.activityStatus.budget" /]</span> <span class="value"> Falta budget</span> </span>
+    <table class="generalInformation">
+      <tr>
+        <td> <b> [@s.text name="reporting.activityStatus.startDate" /] </b> </td><td> ${activity.startDate?string("MM/dd/yyyy")} </td>
+        <td> <b> [@s.text name="reporting.activityStatus.budget" /] </b> </td><td> ${activity.budget.usd} </td>
+      </tr>
+      <tr>
+        <td> <b> [@s.text name="reporting.activityStatus.endDate" /] </b> </td><td>  ${activity.endDate?string("MM/dd/yyyy")} </td>
+        <td> <b> [@s.text name="reporting.activityStatus.milestone" /] </b> </td><td> ${activity.milestone.code} </td>
+      </tr>
+      <tr>
+        <td> <b> [@s.text name="reporting.activityStatus.contactPerson" /] </b> </td>
+        <td colspan="3">
+           ${activity.contactPersons[0].name} (<a href="mailto: ${activity.contactPersons[0].email} ">${activity.contactPersons[0].email}</a>)</span> 
+           [#if activity.contactPersons?size > 1] <a id="viewMoreContacts" href="">, show others..</a> [/#if]
+        </td>        
+      </tr>
+    </table>
     
-    <span class="infoBox"> <span class="title">[@s.text name="reporting.activityStatus.endDate" /]</span> <span class="value"> ${activity.endDate?string("MM/dd/yyyy")}</span> </span>
-    <span class="infoBox"> <span class="title">[@s.text name="reporting.activityStatus.milestone" /]</span> <span class="value"> milestone</span> </span>
+    <br />
     
-    <span class="infoBoxLarge"> 
-      <span class="title">[@s.text name="reporting.activityStatus.contactPerson" /]</span> 
-      <span class="value"> ${activity.contactPersons[0].name} (<a href="mailto: ${activity.contactPersons[0].email} ">${activity.contactPersons[0].email}</a>)</span> 
-        [#if activity.contactPersons?size > 1] <a id="viewMoreContacts" href="">, show others..</a> [/#if]
-    </span>
-         
     <span class="infoBoxLarge"> 
       <span class="title">Activity status</span> 
       <section class="status">
@@ -43,10 +54,16 @@
         [#else]
           [@customForm.radioButton name="activity.status" i18nkey="reporting.activityStatus.statusComplete" value="Completed" /] 
         [/#if]
-        [#if activity.status == "Partially completed"][@customForm.radioButton name="activity.status" i18nkey="reporting.activityStatus.statusPartiallyComplete" value="PartiallyCompleted" checked=true /] [#else]
-          [@customForm.radioButton name="activity.status" i18nkey="reporting.activityStatus.statusPartiallyComplete" value="PartiallyCompleted" checked=true /][/#if]
-        [#if activity.status == "Uncompleted"][@customForm.radioButton name="activity.status" i18nkey="reporting.activityStatus.statusUncompleted" value="3" checked=true /] [#else]
-          [@customForm.radioButton name="activity.status" i18nkey="reporting.activityStatus.statusUncompleted" value="3" checked=true /][/#if]
+        [#if activity.status == "Partially completed"]
+          [@customForm.radioButton name="activity.status" i18nkey="reporting.activityStatus.statusPartiallyComplete" value="PartiallyCompleted" checked=true /] 
+        [#else]
+          [@customForm.radioButton name="activity.status" i18nkey="reporting.activityStatus.statusPartiallyComplete" value="PartiallyCompleted" checked=true /]
+        [/#if]
+        [#if activity.status == "Uncompleted"]
+          [@customForm.radioButton name="activity.status" i18nkey="reporting.activityStatus.statusUncompleted" value="3" checked=true /] 
+        [#else]
+          [@customForm.radioButton name="activity.status" i18nkey="reporting.activityStatus.statusUncompleted" value="3" checked=true /]
+        [/#if]
       </section>
     </span>
     
@@ -62,22 +79,6 @@
     
     <span class="infoBox"><span class="title">Gender integration description:</span> </span>
     <p> Esta es la descripcion del gender integration </p>
-    
-    <span class="infoBox"><span class="title">Keywords:</span> </span>
-    <p> Keywords used </p>
-  
-     <div id="contactPersons" title="Contact persons">
-      <table id="contactPersonsTable">
-        <thead>
-          <tr> <th>Name</th> <th>Email</th></tr>
-        </thead>
-        <tbody>
-          [#list activity.contactPersons as contactPerson]
-            <tr> <td> ${contactPerson.name} </td> <td> ${contactPerson.email} </td></tr>
-          [/#list]
-        </tbody>
-      </table>
-    </div>
     
       
     [#include "/WEB-INF/reporting/reportingStepSubMenu.ftl" /]  

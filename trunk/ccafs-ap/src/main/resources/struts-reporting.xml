@@ -14,7 +14,9 @@
     <action name="status" class="org.cgiar.ccafs.ap.action.reporting.activities.StatusReportingAction">
       <result name="login">/WEB-INF/reporting/statusReporting.ftl</result>
     </action>
-    
+    <action name="milestone" class="org.cgiar.ccafs.ap.action.reporting.activities.MilestoneReportingAction">
+      <result>/WEB-INF/reporting/milestone.ftl</result>
+    </action>
 
   </package>
 </struts>
