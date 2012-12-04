@@ -112,6 +112,10 @@ public class ActivityManagerImpl implements ActivityManager {
       status.setId(Integer.parseInt(activityDB.get("status_id")));
       status.setName(activityDB.get("status_name"));
       activity.setStatus(status);
+
+      // Status Description
+      activity.setStatusDescription(activityDB.get("status_description"));
+
       // Milestone
       Milestone milestone = new Milestone();
       milestone.setId(Integer.parseInt(activityDB.get("milestone_id")));
