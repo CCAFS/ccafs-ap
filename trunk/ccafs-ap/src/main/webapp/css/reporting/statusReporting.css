@@ -1,26 +1,58 @@
 .halfContent .infoBox{
-  width: 200px;
+  width: 300px;
   float:left;
   margin: 10px 40px 0px 20px;  
 }
 
 .halfContent .infoBoxLarge{
-  width: 720px;
+  width: 600px;
   float:left;
-  margin: 10px 40px 0px 20px;  
+  margin: 10px 40px 20px 20px;  
 }
 
 .halfContent .infoBox .title{
   float: left;
   font-weight: bold;
-  margin-right: 10px; 
+  margin-right: 70px; 
 }
 
 .halfContent .infoBoxLarge .title{
   float: left;
   font-weight: bold;
-  margin-right: 10px;  
+  margin-right: 36px;  
 }
 
-.halfContent .infoBox .value{  float: right; }
+.halfContent .infoBox .value{  float: left; }
 .halfContent .infoBoxLarge .value{  float: left; }
+
+.halfContent p{ clear: left; margin: 0 20px 20px 20px; text-align: justify;}
+
+.halfContent .status{
+  margin-top: 20 px;
+  float: left;  
+}
+
+.halfContent .status label{  margin-right: 40px; }
+
+.halfContent .textArea{ clear: left; margin: 10px 10px 10px 20px;}
+.halfContent .textArea label{ display: block;  font-weight: bold; margin-bottom: 10px;  }
+
+#stageMenu{ clear:left; display: block;}
+
+#stageMenu a li{display: inline; }
+
+#contactPersons{ display: none;  }
+
+#contactPersonsTable th{
+  background-color: #A6A6A6;
+  border: 1px solid;
+  padding: 0.2em;
+  text-align: center;
+}
+
+#contactPersonsTable td{
+  background-color: white;
+  border: 1px solid;
+  padding: 0.3em 0.5em;  
+}
+

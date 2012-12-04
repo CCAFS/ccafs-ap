@@ -37,6 +37,10 @@
         [#if libraryName="dataTable"]
           <script src="${baseUrl}/js/libs/dataTables/jquery.dataTables-1.9.4.min.js"></script>
         [/#if]
+        
+        [#if libraryName="jqueryUI"]
+          <script src="${baseUrl}/js/libs/jqueryUI/jquery-ui-1.9.2.custom.js"></script>
+        [/#if]
   	 [/#list]
   	[/#if]
     [#-- Second, import global template. --]

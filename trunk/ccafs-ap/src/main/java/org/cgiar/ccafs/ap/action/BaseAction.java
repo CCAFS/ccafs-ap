@@ -47,7 +47,6 @@ public class BaseAction extends ActionSupport implements Preparable, SessionAwar
     this.logframeManager = logframeManager;
   }
 
-
   public String getBaseUrl() {
     return config.getBaseUrl();
   }

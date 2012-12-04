@@ -16,7 +16,7 @@
   [#include "/WEB-INF/global/pages/reporting-secondary-menu.ftl" /]
   
   <article class="halfContent">
-    <h1>[#if currentUser.leader??]${currentUser.leader.name}[/#if] Activities ${currentLogframe.year?c} = ${currentActivities?size}</h1>  
+    <h1>[#if currentUser.leader??]${currentUser.leader.name}[/#if] [@s.text name="reporting.activityList.activities" /] ${currentLogframe.year?c} = ${currentActivities?size}</h1>  
     
     <table id="activityList">
       <thead>
