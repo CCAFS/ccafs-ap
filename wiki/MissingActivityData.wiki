@@ -615,6 +615,7 @@ It was stored the countries only.
       
   * Activity 173: "Synthesis of knowledge gaps in risk management."
    * Start and end date have wrong format (2012 - 2012).
+   * Missing contact person email (Maren Radeny).
    
   * Activity 175: "Support the national partners in Ethiopia and Kenya through the NMHs (National Meteorological and Hydrological Stations) to develop tools for agricultural application"
    * Start date have wrong format (2012).
@@ -642,6 +643,7 @@ It was stored the countries only.
    * Nothing checked and no description for gender integration 
 
   * Activity 183: "Building strategic partnerships at national and regional levels, including Africa-wide engagements with multiple stakeholders."
+   * Missing contact person email (Maren Radeny)
    * Nothing checked and no description for gender integration
    * partners - entered UNFCCC National Focal Points as simply UNFCC, and categorized as "other," as it is an international org rather than a government org. 
    
