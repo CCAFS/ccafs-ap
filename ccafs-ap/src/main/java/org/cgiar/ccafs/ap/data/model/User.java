@@ -1,11 +1,9 @@
 package org.cgiar.ccafs.ap.data.model;
 
-import org.cgiar.ccafs.ap.util.MD5Convert;
-
 import java.util.Date;
 
 import org.apache.commons.lang3.builder.ToStringBuilder;
-
+import org.cgiar.ccafs.ap.util.MD5Convert;
 
 public class User {
 
@@ -33,6 +31,7 @@ public class User {
     return false;
   }
 
+
   public String getEmail() {
     return email;
   }
@@ -55,6 +54,7 @@ public class User {
   public UserRole getRole() {
     return role;
   }
+
 
   /**
    * Validate if the current user is an Administrator.
@@ -111,7 +111,11 @@ public class User {
    * @param password normal String.
    */
   public void setPassword(String password) {
-    this.password = MD5Convert.stringToMD5(password);
+    if (password != null) {
+      this.password = MD5Convert.stringToMD5(password);
+    } else {
+      this.password = password;
+    }
   }
 
   public void setRole(UserRole role) {
