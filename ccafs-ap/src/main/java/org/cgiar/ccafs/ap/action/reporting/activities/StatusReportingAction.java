@@ -70,6 +70,10 @@ public class StatusReportingAction extends BaseAction {
     return activity;
   }
 
+  public String getMilestoneRequestParameter() {
+    return APConstants.MILESTONE_REQUEST_ID;
+  }
+
   public List<Status> getStatusList() {
     return statusList;
   }

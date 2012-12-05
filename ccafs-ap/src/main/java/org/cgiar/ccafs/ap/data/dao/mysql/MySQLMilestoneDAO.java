@@ -30,10 +30,10 @@ public class MySQLMilestoneDAO implements MilestoneDAO {
         "SELECT m.id, m.code, m.year, m.description, op.code as 'output_code', "
           + "op.description as 'output_description', obj.code as 'objective_code', "
           + "obj.description as 'objective_description', obj.outcome_description as 'objective_outcome_description', "
-          + "th.code as 'theme_code', th.description as 'theme_description' "
-          + "FROM milestones m, outputs op, objectives obj, themes th "
-          + "WHERE m.output_id = op.id AND op.objective_id = obj.id AND obj.theme_id = th.id " + "AND m.id="
-          + milestoneID;
+          + "th.code as 'theme_code', th.description as 'theme_description', lf.name as 'logframe_name' "
+          + "FROM milestones m, outputs op, objectives obj, themes th, logframes lf "
+          + "WHERE m.output_id = op.id AND op.objective_id = obj.id AND obj.theme_id = th.id "
+          + "AND th.logframe_id = lf.id " + "AND m.id=" + milestoneID;
       ResultSet rs = databaseManager.makeQuery(query, con);
       if (rs.next()) {
         milestone.put("id", rs.getString("id"));
@@ -47,6 +47,7 @@ public class MySQLMilestoneDAO implements MilestoneDAO {
         milestone.put("outcome_description", rs.getString("objective_outcome_description"));
         milestone.put("theme_code", rs.getString("theme_code"));
         milestone.put("theme_description", rs.getString("theme_description"));
+        milestone.put("logframe_name", rs.getString("logframe_name"));
       }
       rs.close();
 

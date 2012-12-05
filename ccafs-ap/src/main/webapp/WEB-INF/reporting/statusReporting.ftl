@@ -1,7 +1,7 @@
 [#ftl]
 [#assign title = "Activity Status Report" /]
 [#assign globalLibs = ["jquery", "jqueryUI"] /]
-[#assign customJS = ["${baseUrl}/js/reporting/statusReporting.js"] /]
+[#assign customJS = ["${baseUrl}/js/reporting/statusReporting.js", "${baseUrl}/js/global/utils.js"] /]
 [#assign customCSS = ["${baseUrl}/css/reporting/statusReporting.css", "${baseUrl}/css/libs/jqueryUI/jquery-ui-1.9.2.custom.css", ""] /]
 [#assign currentSection = "reporting" /]
 [#assign currentReportingSection = "activities" /]
@@ -32,7 +32,12 @@
       </tr>
       <tr>
         <td> <b> [@s.text name="reporting.activityStatus.endDate" /] </b> </td><td>  ${activity.endDate?string("MM/dd/yyyy")} </td>
-        <td> <b> [@s.text name="reporting.activityStatus.milestone" /] </b> </td><td> ${activity.milestone.code} </td>
+        <td> <b> [@s.text name="reporting.activityStatus.milestone" /] </b> </td><td>
+          <a class="popup" href="[@s.url action='milestone' ]
+                    [@s.param name='${milestoneRequestParameter}']${activity.milestone.id}[/@s.param]
+                   [/@s.url]">${activity.milestone.code}
+          </a> 
+        </td>
       </tr>
       <tr>
         <td> <b> [@s.text name="reporting.activityStatus.contactPerson" /] </b> </td>
@@ -68,6 +73,19 @@
     <span class="infoBox"><span class="title">Gender integration description:</span> </span>
     <p> Esta es la descripcion del gender integration </p>
     
+    
+    <div id="contactPersons" title="Contact persons">     
+      <table id="contactPersonsTable">    
+        <thead>     
+          <tr> <th>Name</th> <th>Email</th></tr>    
+        </thead>    
+        <tbody>     
+          [#list activity.contactPersons as contactPerson]    
+            <tr> <td> ${contactPerson.name} </td> <td> ${contactPerson.email} </td></tr>    
+          [/#list]    
+        </tbody>    
+      </table>    
+    </div>
     <!-- internal parameter -->
     <input name="activityID" type="hidden" value="${activity.id}" />
     [@s.submit type="button" name="save"]SAVE[/@s.submit]
