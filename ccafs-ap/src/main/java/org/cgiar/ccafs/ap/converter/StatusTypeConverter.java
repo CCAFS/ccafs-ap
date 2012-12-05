@@ -1,22 +1,28 @@
 package org.cgiar.ccafs.ap.converter;
 
+import org.cgiar.ccafs.ap.data.manager.StatusManager;
 import org.cgiar.ccafs.ap.data.model.Status;
 
 import java.util.Map;
 
+import com.google.inject.Inject;
 import org.apache.struts2.util.StrutsTypeConverter;
 
 
 public class StatusTypeConverter extends StrutsTypeConverter {
 
+  private StatusManager statusManager;
+
+  @Inject
+  public StatusTypeConverter(StatusManager statusManager) {
+    this.statusManager = statusManager;
+  }
+
   @Override
   public Object convertFromString(Map context, String[] values, Class toClass) {
     if (toClass == Status.class) {
-      String value = values[0];
-      Status status = new Status();
-      status.setId(Integer.parseInt(value));
-      status.setName("NONE");
-      return status;
+      String id = values[0];
+      return statusManager.getStatus(id);
     }
     return null;
   }

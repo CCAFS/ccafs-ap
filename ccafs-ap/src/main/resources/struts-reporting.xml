@@ -15,6 +15,7 @@
     <action name="status" class="org.cgiar.ccafs.ap.action.reporting.activities.StatusReportingAction" method="input">
       <result name="input">/WEB-INF/reporting/statusReporting.ftl</result>
       <result name="success" type="redirect">
+        <!-- Temporal Action meanwhile the next action is developed -->
         <param name="location">login.do</param>
         <param name="activityID">${activity.id}</param>
       </result>
