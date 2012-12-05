@@ -787,7 +787,7 @@ It was stored the countries only.
    * Has a note under Milestone (LINKED TO THEME 4.1)
    * Gender integration - included description but "yes" not checked.
    * Missing keywords
-   * There isn't countries or regions selected.
+   * There aren't countries or regions selected.
 
   * Activity 221: "Gender strategy for Theme 3 and framework for analysis of mitigation innovations based on women and marginalized groups as drivers of change."
    * Missing year for expected deliverable "Framework on women's innovation." Year entered as 2012. 
