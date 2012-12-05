@@ -8,9 +8,11 @@
  * */
 
 function popups() {
-  $("a.popup").click(function(event) {
-    event.preventDefault();
-    var caracteristicas = "scrollTo,resizable=1,scrollbars=1,location=0";
-    nueva = window.open(this.href, '', caracteristicas);
-  });
+  $("a.popup")
+      .click(
+          function(event) {
+            event.preventDefault();
+            var caracteristicas = "width=700,height=450scrollTo,resizable=1,scrollbars=1,location=0";
+            nueva = window.open(this.href, '', caracteristicas);
+          });
 }

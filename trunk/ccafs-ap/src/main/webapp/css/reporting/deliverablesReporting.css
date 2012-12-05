@@ -1,0 +1,16 @@
+fieldset {
+  padding: 0 20px 20px;
+  margin: 0 0 30px ;
+  border: 1px solid silver;  
+}
+
+legend {
+  text-align: center;
+  padding: 5px;
+  margin: 0; 
+  
+ }
+ 
+ #stageMenu{ clear:left; display: block;}
+
+#stageMenu a li{display: inline; }

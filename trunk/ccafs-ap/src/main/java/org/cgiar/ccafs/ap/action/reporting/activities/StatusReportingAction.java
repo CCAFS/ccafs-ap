@@ -1,5 +1,6 @@
 package org.cgiar.ccafs.ap.action.reporting.activities;
 
+import org.apache.commons.lang3.StringUtils;
 import org.cgiar.ccafs.ap.action.BaseAction;
 import org.cgiar.ccafs.ap.config.APConfig;
 import org.cgiar.ccafs.ap.config.APConstants;
@@ -12,11 +13,10 @@ import org.cgiar.ccafs.ap.data.model.Activity;
 import org.cgiar.ccafs.ap.data.model.Budget;
 import org.cgiar.ccafs.ap.data.model.ContactPerson;
 import org.cgiar.ccafs.ap.data.model.Status;
-
-import com.google.inject.Inject;
-import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+
+import com.google.inject.Inject;
 
 
 public class StatusReportingAction extends BaseAction {
@@ -62,6 +62,10 @@ public class StatusReportingAction extends BaseAction {
 
   public Activity getActivity() {
     return activity;
+  }
+
+  public String getActivityRequestParameter() {
+    return APConstants.ACTIVITY_REQUEST_ID;
   }
 
   public String getMilestoneRequestParameter() {

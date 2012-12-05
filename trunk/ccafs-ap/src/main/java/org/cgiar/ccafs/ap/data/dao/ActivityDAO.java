@@ -1,9 +1,9 @@
 package org.cgiar.ccafs.ap.data.dao;
 
-import org.cgiar.ccafs.ap.data.dao.mysql.MySQLActivityDAO;
-
 import java.util.List;
 import java.util.Map;
+
+import org.cgiar.ccafs.ap.data.dao.mysql.MySQLActivityDAO;
 
 import com.google.inject.ImplementedBy;
 
@@ -27,6 +27,14 @@ public interface ActivityDAO {
    * @return a List with Map of activities.
    */
   public List<Map<String, String>> getActivities(int year, int leaderTypeCode);
+
+  /**
+   * Get an an activity identified with the given year.
+   * 
+   * @param id - identifier.
+   * @return a Map with the activity information.
+   */
+  public Map<String, String> getActivityDeliverablesInfo(int id);
 
   /**
    * Get an an activity identified with the given year.

@@ -1,16 +1,9 @@
 [#ftl]
-[#assign title = "Activity List" /]
-[#assign globalLibs = ["", ""] /]
-[#assign customJS = [""] /]
-[#assign customCSS = ["", "", ""] /]
-[#assign currentSection = "reporting" /]
-[#assign currentReportingSection = "activities" /]
-[#assign currentStage = "status" /]
-
+[#assign title = "Milestone details" /]
+[#assign avoidHeader = true /]
+[#assign customCSS = ["${baseUrl}/css/reporting/milestone.css"] /]
 
 [#include "/WEB-INF/global/pages/header.ftl" /]
-[#include "/WEB-INF/global/pages/main-menu.ftl" /]
-    
   <section >
   
   <article class="content">
@@ -28,4 +21,4 @@
     
   </article>
   </section>
-[#include "/WEB-INF/global/pages/footer.ftl"]
+</body>
