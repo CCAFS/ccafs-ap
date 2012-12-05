@@ -11,10 +11,9 @@
 [#include "/WEB-INF/global/pages/main-menu.ftl" /]
 [#import "/WEB-INF/global/macros/forms.ftl" as customForm /]
 [#import "/WEB-INF/global/macros/utils.ftl" as utilities/]
-    
-  <section>
+<section>
   [#include "/WEB-INF/global/pages/reporting-secondary-menu.ftl" /]
-  
+  [@s.form action="status!save"]
   <article class="halfContent">
     <h1>
       ${activity.leader.name?substring(0, activity.leader.name?index_of(" ") )} - [@s.text name="reporting.activityList.activity" /] ${activity.id}      
@@ -47,43 +46,36 @@
     <br />
     
     <span class="infoBoxLarge"> 
-      <span class="title">Activity status</span> 
+      <!-- span class="title">Activity status</span --> 
       <section class="status">
-        [#if activity.status == "Completed"]
-          [@customForm.radioButton name="activity.status" i18nkey="reporting.activityStatus.statusComplete" value="Completed" checked=true /]
-        [#else]
-          [@customForm.radioButton name="activity.status" i18nkey="reporting.activityStatus.statusComplete" value="Completed" /] 
-        [/#if]
-        [#if activity.status == "Partially completed"]
-          [@customForm.radioButton name="activity.status" i18nkey="reporting.activityStatus.statusPartiallyComplete" value="PartiallyCompleted" checked=true /] 
-        [#else]
-          [@customForm.radioButton name="activity.status" i18nkey="reporting.activityStatus.statusPartiallyComplete" value="PartiallyCompleted" checked=true /]
-        [/#if]
-        [#if activity.status == "Uncompleted"]
-          [@customForm.radioButton name="activity.status" i18nkey="reporting.activityStatus.statusUncompleted" value="3" checked=true /] 
-        [#else]
-          [@customForm.radioButton name="activity.status" i18nkey="reporting.activityStatus.statusUncompleted" value="3" checked=true /]
-        [/#if]
+        [@s.radio name="activity.status" list="statusList" listKey="id" listValue="name" value="${activity.status.id}" /]       
+        [#-- @customForm.radioButtonGroup labelName="Activity Status" name="activity.status" listOfValues="statusList" keyField="id" displayField="name" defaultValue="${activity.status.id}" / --]        
       </section>
     </span>
+    
+    
     
     [@customForm.textArea name="activity.statusDescription" i18nkey="reporting.activityStatus.statusDescription" rows=5 cols=100 required=true /]
     
     <span class="infoBoxLarge"> 
       <span class="title">Gender integration: </span> 
       <section class="status">
-        [@customForm.radioButton name="activity.status" i18nkey="Yes" value="y" /] 
-        [@customForm.radioButton name="activity.status" i18nkey="No" value="n" /]        
+        [!-- @customForm.radioButton name="activity.status" i18nkey="Yes" value="y" / --] 
+        [!-- @customForm.radioButton name="activity.status" i18nkey="No" value="n" / --]        
       </section>      
     </span>
     
     <span class="infoBox"><span class="title">Gender integration description:</span> </span>
     <p> Esta es la descripcion del gender integration </p>
     
+    <!-- internal parameter -->
+    <input name="activityID" type="hidden" value="${activity.id}" />
+    [@s.submit type="button" name="save"]SAVE[/@s.submit]
       
     [#include "/WEB-INF/reporting/reportingStepSubMenu.ftl" /]  
   </article>
   
+  [/@s.form]
   </section>
   
 [#include "/WEB-INF/global/pages/footer.ftl"]

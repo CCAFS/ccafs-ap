@@ -10,6 +10,10 @@ import org.cgiar.ccafs.ap.data.manager.LogframeManager;
 import org.cgiar.ccafs.ap.data.model.Activity;
 import org.cgiar.ccafs.ap.data.model.Budget;
 import org.cgiar.ccafs.ap.data.model.ContactPerson;
+import org.cgiar.ccafs.ap.data.model.Status;
+
+import java.util.ArrayList;
+import java.util.List;
 
 import com.google.inject.Inject;
 import org.apache.commons.lang3.StringUtils;
@@ -30,8 +34,10 @@ public class StatusReportingAction extends BaseAction {
   private BudgetManager budgetManager;
 
   // Model
-  protected Activity activity;
-  protected int activityID;
+  private Activity activity;
+  private int activityID;
+  private List<Status> statusList;
+
 
   @Inject
   public StatusReportingAction(APConfig config, LogframeManager logframeManager, ActivityManager activityManager,
@@ -40,22 +46,38 @@ public class StatusReportingAction extends BaseAction {
     this.activityManager = activityManager;
     this.contactPersonManager = contactPersonManager;
     this.budgetManager = budgetManager;
+
+    // TODO - populate the statusList variable directly from the database.
+    statusList = new ArrayList<>();
+    statusList.add(new Status(1, "Completed"));
+    statusList.add(new Status(2, "Partially completed"));
+    statusList.add(new Status(3, "Uncompleted"));
+    // --------------------------------------------------------------------
+
   }
+
 
   @Override
   public String execute() throws Exception {
-    return LOGIN;
+    System.out.println("--------EXCECUTE----------");
+    System.out.println(activity);
+    System.out.println("-------------------------");
+    return SUCCESS;
   }
+
 
   public Activity getActivity() {
     return activity;
   }
 
+  public List<Status> getStatusList() {
+    return statusList;
+  }
+
   @Override
   public void prepare() throws Exception {
     super.prepare();
-    // TODO - get the activity id requested.
-    // Also we need to create another interceptor in order to validate if the current activity exists in the database
+    // TODO - we need to create another interceptor in order to validate if the current activity exists in the database
     // and validate if the current user has enough privileges to see it.
     activityID = Integer.parseInt(StringUtils.trim(this.getRequest().getParameter(APConstants.ACTIVITY_REQUEST_ID)));
     // get main activity information based on the status form.
@@ -66,6 +88,13 @@ public class StatusReportingAction extends BaseAction {
     // get activity budget.
     Budget budget = budgetManager.getBudget(activityID);
     activity.setBudget(budget);
+  }
+
+  public String save() {
+    // TODO Auto-generated method stub
+    System.out.println("-------------SAVING-----------");
+    System.out.println("------------------------------");
+    return SUCCESS;
   }
 
   public void setActivity(Activity activity) {
