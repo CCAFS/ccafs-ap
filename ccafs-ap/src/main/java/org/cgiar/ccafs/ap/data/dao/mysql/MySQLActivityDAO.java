@@ -107,6 +107,33 @@ public class MySQLActivityDAO implements ActivityDAO {
   }
 
   @Override
+  public Map<String, String> getActivityDeliverablesInfo(int id) {
+    Map<String, String> activity = new HashMap<>();
+    try (Connection con = databaseManager.getConnection()) {
+      String query =
+        "SELECT a.title, a.id, al.name as 'activity_leader_name' FROM activities a, activity_leaders al "
+          + "WHERE a.activity_leader_id = al.id AND id = " + id;
+      ResultSet rs = databaseManager.makeQuery(query, con);
+      if (rs.next()) {
+        activity.put("title", rs.getString("title"));
+        activity.put("id", rs.getString("id"));
+        activity.put("activity_leader_name", rs.getString("activity_leader_name"));
+      }
+      rs.close();
+    } catch (SQLException e) {
+      // TODO Auto-generated catch block
+      e.printStackTrace();
+    }
+
+    if (activity.isEmpty()) {
+      return null;
+    } else {
+      return activity;
+    }
+  }
+
+
+  @Override
   public Map<String, String> getActivityStatusInfo(int id) {
     Map<String, String> activity = new HashMap<>();
     try (Connection con = databaseManager.getConnection()) {

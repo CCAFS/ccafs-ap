@@ -87,6 +87,23 @@ public class ActivityManagerImpl implements ActivityManager {
   }
 
   @Override
+  public Activity getActivityDeliverableInfo(int id) {
+    Map<String, String> activityDB = activityDAO.getActivityStatusInfo(id);
+    if (activityDB != null) {
+      Activity activity = new Activity();
+      activity.setId(id);
+      activity.setTitle(activityDB.get("title"));
+
+      Leader activityLeader = new Leader();
+      activityLeader.setName(activityDB.get("leader_name"));
+      activity.setLeader(activityLeader);
+
+      return activity;
+    }
+    return null;
+  }
+
+  @Override
   public Activity getActivityStatusInfo(int id) {
     Map<String, String> activityDB = activityDAO.getActivityStatusInfo(id);
     if (activityDB != null) {
@@ -133,4 +150,6 @@ public class ActivityManagerImpl implements ActivityManager {
     }
     return null;
   }
+
+
 }

@@ -20,6 +20,10 @@
         <param name="activityID">${activity.id}</param>
       </result>
     </action>
+    
+    <action name="deliverables" class="org.cgiar.ccafs.ap.action.reporting.activities.DeliverablesReportingAction">
+      <result>/WEB-INF/reporting/deliverablesReporting.ftl</result>
+    </action>
 
     <action name="milestone" class="org.cgiar.ccafs.ap.action.reporting.activities.MilestoneReportingAction">
       <result>/WEB-INF/reporting/milestone.ftl</result>

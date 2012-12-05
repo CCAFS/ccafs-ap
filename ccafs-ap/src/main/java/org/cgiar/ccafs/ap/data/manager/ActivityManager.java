@@ -25,5 +25,13 @@ public interface ActivityManager {
    * @param id
    * @return an Activity object or null if no activity was found.
    */
+  public Activity getActivityDeliverableInfo(int id);
+
+  /**
+   * Get an activity identified with the given id.
+   * 
+   * @param id
+   * @return an Activity object or null if no activity was found.
+   */
   public Activity getActivityStatusInfo(int id);
 }
