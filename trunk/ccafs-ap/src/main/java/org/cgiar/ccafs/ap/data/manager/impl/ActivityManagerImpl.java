@@ -1,10 +1,5 @@
 package org.cgiar.ccafs.ap.data.manager.impl;
 
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
-import java.util.List;
-import java.util.Map;
-
 import org.cgiar.ccafs.ap.data.dao.ActivityDAO;
 import org.cgiar.ccafs.ap.data.manager.ActivityManager;
 import org.cgiar.ccafs.ap.data.model.Activity;
@@ -14,6 +9,11 @@ import org.cgiar.ccafs.ap.data.model.Objective;
 import org.cgiar.ccafs.ap.data.model.Output;
 import org.cgiar.ccafs.ap.data.model.Status;
 import org.cgiar.ccafs.ap.data.model.Theme;
+
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.List;
+import java.util.Map;
 
 import com.google.inject.Inject;
 
@@ -37,7 +37,7 @@ public class ActivityManagerImpl implements ActivityManager {
       activitiesDAO = activityDAO.getActivities(year);
     } else {
       // get all activities added by the specified leader.
-      activitiesDAO = activityDAO.getActivities(year, leader.getCode());
+      activitiesDAO = activityDAO.getActivities(year, leader.getId());
     }
     Activity[] activities = new Activity[activitiesDAO.size()];
     for (int c = 0; c < activitiesDAO.size(); c++) {
@@ -76,7 +76,7 @@ public class ActivityManagerImpl implements ActivityManager {
       activity.setMilestone(milestone);
 
       Leader activityLeader = new Leader();
-      activityLeader.setCode(Integer.parseInt(activitiesDAO.get(c).get("leader_id")));
+      activityLeader.setId(Integer.parseInt(activitiesDAO.get(c).get("leader_id")));
       activityLeader.setName(activitiesDAO.get(c).get("leader_name"));
 
       activity.setLeader(activityLeader);
@@ -141,7 +141,7 @@ public class ActivityManagerImpl implements ActivityManager {
 
       // Activity leader
       Leader activityLeader = new Leader();
-      activityLeader.setCode(Integer.parseInt(activityDB.get("leader_id")));
+      activityLeader.setId(Integer.parseInt(activityDB.get("leader_id")));
       activityLeader.setName(activityDB.get("leader_name"));
 
       activity.setLeader(activityLeader);
@@ -151,5 +151,9 @@ public class ActivityManagerImpl implements ActivityManager {
     return null;
   }
 
+  @Override
+  public boolean isValidId(int id) {
+    return activityDAO.isValidId(id);
+  }
 
 }

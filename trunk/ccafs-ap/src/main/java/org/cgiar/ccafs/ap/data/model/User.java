@@ -1,9 +1,10 @@
 package org.cgiar.ccafs.ap.data.model;
 
+import org.cgiar.ccafs.ap.util.MD5Convert;
+
 import java.util.Date;
 
 import org.apache.commons.lang3.builder.ToStringBuilder;
-import org.cgiar.ccafs.ap.util.MD5Convert;
 
 public class User {
 
@@ -15,6 +16,7 @@ public class User {
     CP, TL, RPL, Admin
   }
 
+  private int id;
   private String email;
   private String password;
   private UserRole role;
@@ -36,6 +38,10 @@ public class User {
     return email;
   }
 
+  public int getId() {
+    return id;
+  }
+
   public Date getLastLogin() {
     return lastLogin;
   }
@@ -51,10 +57,10 @@ public class User {
     return password;
   }
 
+
   public UserRole getRole() {
     return role;
   }
-
 
   /**
    * Validate if the current user is an Administrator.
@@ -96,10 +102,14 @@ public class User {
     this.email = email;
   }
 
+
+  public void setId(int id) {
+    this.id = id;
+  }
+
   public void setLastLogin(Date lastLogin) {
     this.lastLogin = lastLogin;
   }
-
 
   public void setLeader(Leader leader) {
     this.leader = leader;
@@ -118,9 +128,11 @@ public class User {
     }
   }
 
+
   public void setRole(UserRole role) {
     this.role = role;
   }
+
 
   @Override
   public String toString() {

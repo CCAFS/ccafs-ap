@@ -16,17 +16,19 @@ public class UserManagerImp implements UserManager {
 
     // Admin
     User htobon = new User();
+    htobon.setId(1);
     htobon.setEmail("htobon@gmail.com");
     htobon.setPassword("12345");
     htobon.setRole(User.UserRole.Admin);
 
     // Contact Point
     User hcarvajal = new User();
+    hcarvajal.setId(2);
     hcarvajal.setEmail("carvajal.hernandavid@gmail.com");
     hcarvajal.setPassword("maalmu");
     hcarvajal.setRole(User.UserRole.CP);
     Leader leader = new Leader();
-    leader.setCode(3);
+    leader.setId(3);
     leader.setName("CIAT - Centro Internacional de Agricultura Tropical");
     leader.setLeaderType(new LeaderType(1, "CCAFS Center Led Activities"));
     hcarvajal.setLeader(leader);

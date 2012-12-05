@@ -1,5 +1,8 @@
 package org.cgiar.ccafs.ap.data.dao.mysql;
 
+import org.cgiar.ccafs.ap.data.dao.ActivityDAO;
+import org.cgiar.ccafs.ap.data.dao.DAOManager;
+
 import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -8,12 +11,9 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import org.cgiar.ccafs.ap.data.dao.ActivityDAO;
-import org.cgiar.ccafs.ap.data.dao.DAOManager;
+import com.google.inject.Inject;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-
-import com.google.inject.Inject;
 
 
 public class MySQLActivityDAO implements ActivityDAO {
@@ -169,6 +169,21 @@ public class MySQLActivityDAO implements ActivityDAO {
     } else {
       return activity;
     }
+  }
+
+  @Override
+  public boolean isValidId(int id) {
+    boolean isValid = false;
+    try (Connection con = databaseManager.getConnection()) {
+      String query = "SELECT id FROM activities WHERE id = " + id;
+      ResultSet rs = databaseManager.makeQuery(query, con);
+      isValid = rs.next();
+      rs.close();
+    } catch (SQLException e) {
+      // TODO Auto-generated catch block
+      e.printStackTrace();
+    }
+    return isValid;
   }
 
 

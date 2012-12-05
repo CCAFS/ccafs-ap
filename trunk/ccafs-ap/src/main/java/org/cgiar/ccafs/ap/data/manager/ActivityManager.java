@@ -34,4 +34,12 @@ public interface ActivityManager {
    * @return an Activity object or null if no activity was found.
    */
   public Activity getActivityStatusInfo(int id);
+
+  /**
+   * Validate if the given id actually exist in the current list of activities.
+   * 
+   * @param id - activity identifier.
+   * @return true if the activity exists or false otherwise.
+   */
+  public boolean isValidId(int id);
 }

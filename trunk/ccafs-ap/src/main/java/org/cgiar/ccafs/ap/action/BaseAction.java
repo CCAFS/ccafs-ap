@@ -27,6 +27,8 @@ import org.slf4j.LoggerFactory;
 public class BaseAction extends ActionSupport implements Preparable, SessionAware, ServletRequestAware {
 
   public static final String NOT_LOGGED = "401";
+  public static final String NOT_AUTHORIZED = "403";
+  public static final String NOT_FOUND = "404";
 
   private static final long serialVersionUID = -740360140511380630L;
   // Loggin

@@ -5,28 +5,28 @@ import org.apache.commons.lang3.builder.ToStringBuilder;
 
 public class LeaderType {
 
-  private int code;
+  private int id;
   private String name;
 
   public LeaderType() {
 
   }
 
-  public LeaderType(int code, String name) {
-    this.code = code;
+  public LeaderType(int id, String name) {
+    this.id = id;
     this.name = name;
   }
 
-  public int getCode() {
-    return code;
+  public int getId() {
+    return id;
   }
 
   public String getName() {
     return name;
   }
 
-  public void setCode(int code) {
-    this.code = code;
+  public void setId(int id) {
+    this.id = id;
   }
 
   public void setName(String name) {
