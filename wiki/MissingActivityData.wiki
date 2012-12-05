@@ -1023,6 +1023,7 @@ It was stored the countries only.
    * Missing objectives
    * One partner listed as FANRAN - actually FANRPAN? Entered in database as FANRPAN.
    * partners - "national country authors" but nothing specific entered.
+   * Budget hass bad format. It must be an integer number.
    * Missing keywords
 
   * Activity 248: "Training and workshops on modeling tools in collaborating centers and NARES."
