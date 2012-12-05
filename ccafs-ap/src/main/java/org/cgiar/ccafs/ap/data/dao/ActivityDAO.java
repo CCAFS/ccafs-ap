@@ -44,5 +44,13 @@ public interface ActivityDAO {
    */
   public Map<String, String> getActivityStatusInfo(int id);
 
+  /**
+   * Validate if the given id actually exist in the current list of activities.
+   * 
+   * @param id - activity identifier.
+   * @return true if the activity exists or false otherwise.
+   */
+  public boolean isValidId(int id);
+
 
 }

@@ -5,26 +5,35 @@ import org.apache.commons.lang3.builder.ToStringBuilder;
 
 public class Leader {
 
-  private int code;
+  private int id;
   private String name;
   private LeaderType leaderType;
 
   public Leader() {
   }
 
-  public Leader(int code, String name) {
-    this.code = code;
+  public Leader(int id, String name) {
+    this.id = id;
     this.name = name;
   }
 
-  public Leader(int code, String name, LeaderType leaderType) {
-    this.code = code;
+  public Leader(int id, String name, LeaderType leaderType) {
+    this.id = id;
     this.name = name;
     this.leaderType = leaderType;
   }
 
-  public int getCode() {
-    return code;
+  @Override
+  public boolean equals(Object obj) {
+    if (obj instanceof Leader) {
+      Leader leader = (Leader) obj;
+      return leader.getId() == this.getId();
+    }
+    return false;
+  }
+
+  public int getId() {
+    return id;
   }
 
   public LeaderType getLeaderType() {
@@ -35,8 +44,8 @@ public class Leader {
     return name;
   }
 
-  public void setCode(int code) {
-    this.code = code;
+  public void setId(int id) {
+    this.id = id;
   }
 
   public void setLeaderType(LeaderType leaderType) {
