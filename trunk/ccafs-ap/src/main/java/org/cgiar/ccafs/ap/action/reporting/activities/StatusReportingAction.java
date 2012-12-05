@@ -7,13 +7,11 @@ import org.cgiar.ccafs.ap.data.manager.ActivityManager;
 import org.cgiar.ccafs.ap.data.manager.BudgetManager;
 import org.cgiar.ccafs.ap.data.manager.ContactPersonManager;
 import org.cgiar.ccafs.ap.data.manager.LogframeManager;
+import org.cgiar.ccafs.ap.data.manager.StatusManager;
 import org.cgiar.ccafs.ap.data.model.Activity;
 import org.cgiar.ccafs.ap.data.model.Budget;
 import org.cgiar.ccafs.ap.data.model.ContactPerson;
 import org.cgiar.ccafs.ap.data.model.Status;
-
-import java.util.ArrayList;
-import java.util.List;
 
 import com.google.inject.Inject;
 import org.apache.commons.lang3.StringUtils;
@@ -32,28 +30,24 @@ public class StatusReportingAction extends BaseAction {
   private ActivityManager activityManager;
   private ContactPersonManager contactPersonManager;
   private BudgetManager budgetManager;
+  private StatusManager statusManager;
 
   // Model
   private Activity activity;
   private int activityID;
-  private List<Status> statusList;
+  private Status[] statusList;
 
 
   @Inject
   public StatusReportingAction(APConfig config, LogframeManager logframeManager, ActivityManager activityManager,
-    ContactPersonManager contactPersonManager, BudgetManager budgetManager) {
+    ContactPersonManager contactPersonManager, BudgetManager budgetManager, StatusManager statusManager) {
     super(config, logframeManager);
     this.activityManager = activityManager;
     this.contactPersonManager = contactPersonManager;
     this.budgetManager = budgetManager;
+    this.statusManager = statusManager;
 
-    // TODO - populate the statusList variable directly from the database.
-    statusList = new ArrayList<>();
-    statusList.add(new Status(1, "Completed"));
-    statusList.add(new Status(2, "Partially completed"));
-    statusList.add(new Status(3, "Uncompleted"));
-    // --------------------------------------------------------------------
-
+    statusList = statusManager.getStatusList();
   }
 
 
@@ -74,7 +68,7 @@ public class StatusReportingAction extends BaseAction {
     return APConstants.MILESTONE_REQUEST_ID;
   }
 
-  public List<Status> getStatusList() {
+  public Status[] getStatusList() {
     return statusList;
   }
 
@@ -97,6 +91,7 @@ public class StatusReportingAction extends BaseAction {
   public String save() {
     // TODO Auto-generated method stub
     System.out.println("-------------SAVING-----------");
+    System.out.println(activity.getStatus());
     System.out.println("------------------------------");
     return SUCCESS;
   }
