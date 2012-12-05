@@ -64,6 +64,10 @@ public class Activity {
     return status;
   }
 
+  public String getStatusDescription() {
+    return statusDescription;
+  }
+
   public String getTitle() {
     return title;
   }
@@ -124,6 +128,10 @@ public class Activity {
     this.status = status;
   }
 
+  public void setStatusDescription(String statusDescription) {
+    this.statusDescription = statusDescription;
+  }
+
   public void setTitle(String title) {
     this.title = title;
   }
@@ -131,14 +139,6 @@ public class Activity {
   @Override
   public String toString() {
     return ToStringBuilder.reflectionToString(this);
-  }
-
-  public String getStatusDescription() {
-    return statusDescription;
-  }
-
-  public void setStatusDescription(String statusDescription) {
-    this.statusDescription = statusDescription;
   }
 
 
