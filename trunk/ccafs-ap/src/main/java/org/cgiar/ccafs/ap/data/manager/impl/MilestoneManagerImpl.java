@@ -4,6 +4,7 @@ import java.util.Map;
 
 import org.cgiar.ccafs.ap.data.dao.MilestoneDAO;
 import org.cgiar.ccafs.ap.data.manager.MilestoneManager;
+import org.cgiar.ccafs.ap.data.model.Logframe;
 import org.cgiar.ccafs.ap.data.model.Milestone;
 import org.cgiar.ccafs.ap.data.model.Objective;
 import org.cgiar.ccafs.ap.data.model.Output;
@@ -27,16 +28,15 @@ public class MilestoneManagerImpl implements MilestoneManager {
 
     if (milestoneDB != null) {
 
-      Milestone milestone = new Milestone();
-      milestone.setId(milestoneID);
-      milestone.setCode(milestoneDB.get("code"));
-      milestone.setYear(Integer.parseInt(milestoneDB.get("year")));
-      milestone.setDescription(milestoneDB.get("description"));
+      // Logframe
+      Logframe logframe = new Logframe();
+      logframe.setName(milestoneDB.get("logframe_name"));
 
       // Theme
       Theme theme = new Theme();
       theme.setCode(milestoneDB.get("theme_code"));
       theme.setDescription(milestoneDB.get("theme_description"));
+      theme.setLogframe(logframe);
 
       // Objective
       Objective objective = new Objective();
@@ -51,6 +51,12 @@ public class MilestoneManagerImpl implements MilestoneManager {
       output.setDescription(milestoneDB.get("output_description"));
       output.setObjective(objective);
 
+      // Milestone
+      Milestone milestone = new Milestone();
+      milestone.setId(milestoneID);
+      milestone.setCode(milestoneDB.get("code"));
+      milestone.setYear(Integer.parseInt(milestoneDB.get("year")));
+      milestone.setDescription(milestoneDB.get("description"));
       milestone.setOutput(output);
 
       return milestone;

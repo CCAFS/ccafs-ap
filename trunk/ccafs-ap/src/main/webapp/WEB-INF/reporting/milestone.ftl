@@ -1,8 +1,8 @@
 [#ftl]
 [#assign title = "Activity List" /]
-[#assign globalLibs = ["jquery", "dataTable"] /]
-[#assign customJS = ["${baseUrl}/js/reporting/activity-list.js"] /]
-[#assign customCSS = ["${baseUrl}/css/reporting/activity-list.css", "${baseUrl}/css/libs/dataTables/jquery.dataTables-1.9.4.css", "${baseUrl}/css/reporting/customDataTable.css"] /]
+[#assign globalLibs = ["", ""] /]
+[#assign customJS = [""] /]
+[#assign customCSS = ["", "", ""] /]
 [#assign currentSection = "reporting" /]
 [#assign currentReportingSection = "activities" /]
 [#assign currentStage = "status" /]
@@ -10,17 +10,21 @@
 
 [#include "/WEB-INF/global/pages/header.ftl" /]
 [#include "/WEB-INF/global/pages/main-menu.ftl" /]
-[#import "/WEB-INF/global/macros/utils.ftl" as utilities/]
     
   <section >
-  [#include "/WEB-INF/global/pages/reporting-secondary-menu.ftl" /]
   
-  <article class="halfContent">
-    <h1>${milestone.code}</h1>
-    
-    <p>${milestone.description}</p>  
-    
-    
+  <article class="content">
+    <h1>[@s.text name="reporting.activityMilestone.theme" /] ${milestone.output.objective.theme.code}</h1>    
+    <p>${milestone.output.objective.theme.description}</p>  
+    <br /><br />
+    <h6>[@s.text name="reporting.activityMilestone.objective" /] ${milestone.output.objective.code}</h6>
+    <p>${milestone.output.objective.description}</p>
+    <br /><br />
+    <h6>[@s.text name="reporting.activityMilestone.output" /] ${milestone.output.code}</h6>
+    <p>milestone.output.description</p>
+    <br /><br />
+    <h6>[@s.text name="reporting.activityMilestone.milestone" /] ${milestone.code}</h6>
+    <p>${milestone.description}</p>
     
   </article>
   </section>
