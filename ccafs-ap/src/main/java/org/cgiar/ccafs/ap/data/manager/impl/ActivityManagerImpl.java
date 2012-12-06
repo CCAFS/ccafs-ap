@@ -9,6 +9,7 @@ import org.cgiar.ccafs.ap.data.model.Objective;
 import org.cgiar.ccafs.ap.data.model.Output;
 import org.cgiar.ccafs.ap.data.model.Status;
 import org.cgiar.ccafs.ap.data.model.Theme;
+import org.cgiar.ccafs.ap.data.model.User;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -28,16 +29,16 @@ public class ActivityManagerImpl implements ActivityManager {
   }
 
   @Override
-  public Activity[] getActivities(int year, Leader leader) {
+  public Activity[] getActivities(int year, User user) {
     SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM");
     List<Map<String, String>> activitiesDAO;
 
     // if leader is null the user must be an admin.
-    if (leader == null) {
+    if (user.getRole() == User.UserRole.Admin) {
       activitiesDAO = activityDAO.getActivities(year);
     } else {
       // get all activities added by the specified leader.
-      activitiesDAO = activityDAO.getActivities(year, leader.getId());
+      activitiesDAO = activityDAO.getActivities(year, user.getLeader().getId());
     }
     Activity[] activities = new Activity[activitiesDAO.size()];
     for (int c = 0; c < activitiesDAO.size(); c++) {
