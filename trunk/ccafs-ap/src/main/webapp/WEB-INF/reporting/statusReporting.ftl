@@ -52,21 +52,16 @@
     
     <span class="infoBoxLarge"> 
       <!-- span class="title">Activity status</span --> 
-      <section class="status">
-        [@s.radio name="activity.status" list="statusList" listKey="id" listValue="name" value="${activity.status.id}" /]       
-        [#-- @customForm.radioButtonGroup labelName="Activity Status" name="activity.status" listOfValues="statusList" keyField="id" displayField="name" defaultValue="${activity.status.id}" / --]        
+      <section class="status">        
+        [@customForm.radioButtonGroup label="Activity Status" name="activity.status" listName="statusList" keyFieldName="id" displayFieldName="name" value="${activity.status.id}" /]
       </section>
     </span>
     
+     [@customForm.textArea name="activity.statusDescription" i18nkey="reporting.activityStatus.statusDescription" rows=5 cols=100 required=true /]
     
-    
-    [@customForm.textArea name="activity.statusDescription" i18nkey="reporting.activityStatus.statusDescription" rows=5 cols=100 required=true /]
-    
-    <span class="infoBoxLarge"> 
-      <span class="title">Gender integration: </span> 
+    <span class="infoBoxLarge">       
       <section class="status">
-        [!-- @customForm.radioButton name="activity.status" i18nkey="Yes" value="y" / --] 
-        [!-- @customForm.radioButton name="activity.status" i18nkey="No" value="n" / --]        
+        [@customForm.radioButtonGroup label="Gender Integration" name="genderIntegration" listName="genderOptions" value="${hasGender}" /]
       </section>      
     </span>
     
@@ -78,7 +73,7 @@
       <table id="contactPersonsTable">    
         <thead>     
           <tr> <th>Name</th> <th>Email</th></tr>    
-        </thead>    
+        </thead>
         <tbody>     
           [#list activity.contactPersons as contactPerson]    
             <tr> <td> ${contactPerson.name} </td> <td> ${contactPerson.email} </td></tr>    
