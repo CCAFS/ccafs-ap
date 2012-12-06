@@ -47,7 +47,9 @@ public class UserManagerImp implements UserManager {
     if (email != null && password != null) {
       User userFound = this.getUser(email);
       if (userFound != null) {
-        if (userFound.getPassword().equals(password)) {
+        User temp = new User();
+        temp.setPassword(password);
+        if (userFound.getPassword().equals(temp.getPassword())) {
           return userFound;
         }
       }
