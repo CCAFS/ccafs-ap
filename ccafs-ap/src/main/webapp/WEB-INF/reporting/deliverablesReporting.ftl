@@ -10,14 +10,13 @@
 [#include "/WEB-INF/global/pages/header.ftl" /]
 [#include "/WEB-INF/global/pages/main-menu.ftl" /]
 [#import "/WEB-INF/global/macros/forms.ftl" as customForm /]
-[#import "/WEB-INF/global/macros/utils.ftl" as utilities/]
     
   <section>
   [#include "/WEB-INF/global/pages/reporting-secondary-menu.ftl" /]
   
   <article class="halfContent">
     <h1>
-      ${activity.leader.name?substring(0, activity.leader.name?index_of(" ") )} - [@s.text name="reporting.activityList.activity" /] ${activity.id}      
+      ${activity.leader.acronym} - [@s.text name="reporting.activityList.activity" /] ${activity.id}      
     </h1>
     
     <h6>[@s.text name="reporting.activityStatus.title" /]</h6>
@@ -26,20 +25,13 @@
     <fieldset>
       <legend> <h5> [@s.text name="reporting.activityDeliverables.plannedDeliverables" /] </h5> </legend>
       
-      <div>
-        <span class="infoBox"> 
-          <span class="title">[@s.text name="reporting.activityDeliverables.type" /]</span>  <span class="value"> Type</span> </span>
-        </span>      
-        <span class="infobox">
-          <span class="title">[@s.text name="reporting.activityDeliverables.description" /]</span>  <span class="value"> Description </span> </span>
-        </span>      
-        <span class="infobox">
-          <span class="title">[@s.text name="reporting.activityDeliverables.year" /]</span>  <span class="value"> 2012 </span> </span>
-        </span>
-        <span class="infobox">
-          <span class="title">[@s.text name="reporting.activityDeliverables.status" /]</span>  <span class="value"> 2012 </span> </span>
-        </span>
-      </div>
+      [#if deliverables??]
+        <div>
+          [@s.select label="What's your favor search engine?" list="deliverableTypesList" listKey="id" listValue="name" name="selectedDeliverableType" /]
+        </div>
+      [#else]
+        <p> There is no planned deliverables </p>
+      [/#if]
       
     </fieldset>
       
