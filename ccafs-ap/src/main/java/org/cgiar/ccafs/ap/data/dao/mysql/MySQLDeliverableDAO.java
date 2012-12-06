@@ -1,5 +1,8 @@
 package org.cgiar.ccafs.ap.data.dao.mysql;
 
+import org.cgiar.ccafs.ap.data.dao.DAOManager;
+import org.cgiar.ccafs.ap.data.dao.DeliverableDAO;
+
 import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -8,12 +11,9 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import org.cgiar.ccafs.ap.data.dao.DAOManager;
-import org.cgiar.ccafs.ap.data.dao.DeliverableDAO;
+import com.google.inject.Inject;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-
-import com.google.inject.Inject;
 
 
 public class MySQLDeliverableDAO implements DeliverableDAO {
@@ -30,7 +30,6 @@ public class MySQLDeliverableDAO implements DeliverableDAO {
   @Override
   public List<Map<String, String>> getDeliverables(int activityID) {
     List<Map<String, String>> deliverables = new ArrayList<>();
-
     try (Connection con = databaseManager.getConnection()) {
       String query =
         "SELECT de.id, de.description, de.year, de.is_expected, ff.name as 'file_format_name', "
@@ -52,6 +51,7 @@ public class MySQLDeliverableDAO implements DeliverableDAO {
         deliverable.put("deliverable_type_name", rs.getString("deliverable_type_name"));
         deliverables.add(deliverable);
       }
+      rs.close();
     } catch (SQLException e) {
       // TODO Auto-generated catch block
       e.printStackTrace();

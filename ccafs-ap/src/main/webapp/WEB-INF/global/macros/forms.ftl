@@ -27,6 +27,28 @@
   </div>
 [/#macro]
 
+[#macro radioButtonGroup label name listName displayFieldName="" keyFieldName="" value="-NULL" i18nkey="" disabled=false required=false errorField="" checked=false]
+  <div class="radio">
+    <h6>[#if i18nkey==""]${label}[#else][@s.text name="${i18nkey}" /][/#if][#if required]<span class="red">*</span>[/#if]:</h6>
+    [#if errorField==""][@s.fielderror cssClass="fieldError" fieldName="${name}"/][#else][@s.fielderror cssClass="fieldError" fieldName="${errorfield}"/][/#if]
+    <div class="radiosList">
+    [#if value=="-NULL"]
+      [#assign customValue][@s.property value="${name}" /][/#assign]
+    [#else]
+      [#assign customValue]${value}[/#assign]
+    [/#if]
+    [#if keyFieldName == ""]
+      [@s.radio name="${name}" list="${listName}" value="${customValue}" disabled="${disabled?string}" /]
+    [#else]
+      [@s.radio name="${name}" list="${listName}" listKey="${keyFieldName}" listValue="${displayFieldName}" value="${customValue}" disabled="${disabled?string}" /]
+    [/#if]
+    </div>    
+  </div> 
+[/#macro]
+
+
+[#-- The following macros aren't tested yet. --]
+
 [#macro radioButton name value="-NULL" i18nkey="" disabled=false checked=false]
   <div class="radio">
     <input type="radio" name="${name}" value="[#if value=="-NULL"][@s.property value="${name}"/][#else]${value}[/#if]" [#if checked]checked="true"[/#if] id="${name}">
@@ -57,14 +79,5 @@
       </select>
     </div>
   </div>
-[/#macro]
-
-[!-- We must check the radio button macro --]
-
-[#macro radioButtonGroup labelName name listOfValues keyField displayField defaultValue="" i18nkey="" disabled=false required=false errorField="" checked=false]
-  <div class="radio">    
-    [@s.radio name="${name}" list="${listOfValues}" listKey="${keyField}" listValue="${displayField}" value="${defaultValue}" /]
-  </div>
- 
 [/#macro]
 
