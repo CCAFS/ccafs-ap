@@ -565,17 +565,6 @@ ENGINE = InnoDB;
 SHOW WARNINGS;
 
 -- -----------------------------------------------------
--- Table `user_roles`
--- -----------------------------------------------------
-CREATE  TABLE IF NOT EXISTS `user_roles` (
-  `id` INT NOT NULL AUTO_INCREMENT ,
-  `name` VARCHAR(255) NULL ,
-  PRIMARY KEY (`id`) )
-ENGINE = InnoDB;
-
-SHOW WARNINGS;
-
--- -----------------------------------------------------
 -- Table `users`
 -- -----------------------------------------------------
 CREATE  TABLE IF NOT EXISTS `users` (
@@ -583,16 +572,12 @@ CREATE  TABLE IF NOT EXISTS `users` (
   `email` VARCHAR(255) NOT NULL ,
   `password` VARCHAR(255) NOT NULL ,
   `activity_leader_id` INT NOT NULL ,
-  `role_id` INT NOT NULL ,
+  `role` ENUM('Admin','CP','TL','RPL') NOT NULL ,
+  `last_login` DATETIME NULL ,
   PRIMARY KEY (`id`) ,
   CONSTRAINT `u_activity_leader_fk`
     FOREIGN KEY (`activity_leader_id` )
     REFERENCES `activity_leaders` (`id` )
-    ON DELETE RESTRICT
-    ON UPDATE RESTRICT,
-  CONSTRAINT `u_role_fk`
-    FOREIGN KEY (`role_id` )
-    REFERENCES `user_roles` (`id` )
     ON DELETE RESTRICT
     ON UPDATE RESTRICT)
 ENGINE = InnoDB;

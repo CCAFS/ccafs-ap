@@ -1,45 +1,43 @@
 package org.cgiar.ccafs.ap.data.manager.impl;
 
+import org.cgiar.ccafs.ap.data.dao.UserDAO;
 import org.cgiar.ccafs.ap.data.manager.UserManager;
 import org.cgiar.ccafs.ap.data.model.Leader;
 import org.cgiar.ccafs.ap.data.model.LeaderType;
 import org.cgiar.ccafs.ap.data.model.User;
 
+import java.util.Map;
+
+import com.google.inject.Inject;
+
 
 public class UserManagerImp implements UserManager {
 
+  private UserDAO userDAO;
+
+  @Inject
+  public UserManagerImp(UserDAO userDAO) {
+    this.userDAO = userDAO;
+  }
+
   @Override
   public User getUser(String email) {
-    // TODO Find the user into the database using the UserDAO interface which is not currently created.
-
-    // Let's simulate two users.
-
-    // Admin
-    User htobon = new User();
-    htobon.setId(1);
-    htobon.setEmail("htobon@gmail.com");
-    htobon.setPassword("12345");
-    htobon.setRole(User.UserRole.Admin);
-
-    // Contact Point
-    User hcarvajal = new User();
-    hcarvajal.setId(2);
-    hcarvajal.setEmail("carvajal.hernandavid@gmail.com");
-    hcarvajal.setPassword("maalmu");
-    hcarvajal.setRole(User.UserRole.CP);
-    Leader leader = new Leader();
-    leader.setId(3);
-    leader.setAcronym("CIAT");
-    leader.setName("Centro Internacional de Agricultura Tropical");
-    leader.setLeaderType(new LeaderType(1, "CCAFS Center Led Activities"));
-    hcarvajal.setLeader(leader);
-
-    if (email != null) {
-      if (email.equals(htobon.getEmail())) {
-        return htobon;
-      } else if (email.equals(hcarvajal.getEmail())) {
-        return hcarvajal;
-      }
+    Map<String, String> userData = userDAO.getUser(email);
+    if (!userData.isEmpty()) {
+      User user = new User();
+      user.setId(Integer.parseInt(userData.get("id")));
+      user.setEmail(email);
+      user.setPassword(userData.get("password"));
+      user.setRole(userData.get("role"));
+      Leader leader = new Leader();
+      leader.setId(Integer.parseInt(userData.get("leader_id")));
+      leader.setName(userData.get("leader_name"));
+      LeaderType leaderType = new LeaderType();
+      leaderType.setId(Integer.parseInt(userData.get("leader_type_id")));
+      leaderType.setName(userData.get("leader_type_name"));
+      leader.setLeaderType(leaderType);
+      user.setLeader(leader);
+      return user;
     }
     return null;
   }

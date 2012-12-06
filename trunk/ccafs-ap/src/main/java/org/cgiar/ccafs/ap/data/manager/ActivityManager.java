@@ -2,7 +2,7 @@ package org.cgiar.ccafs.ap.data.manager;
 
 import org.cgiar.ccafs.ap.data.manager.impl.ActivityManagerImpl;
 import org.cgiar.ccafs.ap.data.model.Activity;
-import org.cgiar.ccafs.ap.data.model.Leader;
+import org.cgiar.ccafs.ap.data.model.User;
 
 import com.google.inject.ImplementedBy;
 
@@ -11,13 +11,14 @@ public interface ActivityManager {
 
 
   /**
-   * Get a list of activities.
+   * Get a list of activities that belongs to the given user in the given year.
    * 
    * @param year
-   * @param leader
-   * @return
+   * @param user
+   * @return A list of activities. If the user is an administrator, the method will return all the activities of the
+   *         given year.
    */
-  public Activity[] getActivities(int year, Leader leader);
+  public Activity[] getActivities(int year, User user);
 
   /**
    * Get an activity identified with the given id.

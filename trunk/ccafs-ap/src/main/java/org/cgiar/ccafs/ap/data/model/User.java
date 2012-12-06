@@ -8,10 +8,6 @@ import org.apache.commons.lang3.builder.ToStringBuilder;
 
 public class User {
 
-  /*
-   * TODO - This enum could be used as another class. Please take into consideration in the future of the development
-   * process.
-   */
   public enum UserRole {
     CP, TL, RPL, Admin
   }
@@ -23,7 +19,6 @@ public class User {
   private Date lastLogin;
   private Leader leader;
 
-
   @Override
   public boolean equals(Object obj) {
     if (obj instanceof User) {
@@ -32,7 +27,6 @@ public class User {
     }
     return false;
   }
-
 
   public String getEmail() {
     return email;
@@ -128,11 +122,28 @@ public class User {
     }
   }
 
+  public void setRole(String roleString) {
+    switch (roleString) {
+      case "Admin":
+        this.role = UserRole.Admin;
+        break;
+      case "CP":
+        this.role = UserRole.CP;
+        break;
+      case "TL":
+        this.role = UserRole.TL;
+        break;
+      case "RPL":
+        this.role = UserRole.RPL;
+        break;
+      default:
+        break;
+    }
+  }
 
   public void setRole(UserRole role) {
     this.role = role;
   }
-
 
   @Override
   public String toString() {
