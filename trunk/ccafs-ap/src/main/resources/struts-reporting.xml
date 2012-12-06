@@ -4,11 +4,12 @@
 
   <!-- Add addition packages and configuration here. -->
   <package name="reporting" namespace="/reporting" extends="ccafsap-default">    
-    <default-interceptor-ref name="reportingStack" />
+    <!-- default-interceptor-ref name="reportingStack" /-->
     
     <default-action-ref name="activities" />
     
     <action name="activities" class="org.cgiar.ccafs.ap.action.reporting.activities.ActivitiesReportingAction">
+      <interceptor-ref name="reportingStack" />
       <result>/WEB-INF/reporting/activities.ftl</result>
     </action>
     
@@ -24,10 +25,12 @@
     </action>
     
     <action name="deliverables" class="org.cgiar.ccafs.ap.action.reporting.activities.DeliverablesReportingAction">
+      <interceptor-ref name="reportingStack" />
       <result>/WEB-INF/reporting/deliverablesReporting.ftl</result>
     </action>
 
     <action name="milestone" class="org.cgiar.ccafs.ap.action.reporting.activities.MilestoneReportingAction">
+      <interceptor-ref name="reportingStack" />
       <result>/WEB-INF/reporting/milestone.ftl</result>
     </action>
 

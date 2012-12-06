@@ -77,6 +77,7 @@ public class ActivityManagerImpl implements ActivityManager {
 
       Leader activityLeader = new Leader();
       activityLeader.setId(Integer.parseInt(activitiesDAO.get(c).get("leader_id")));
+      activityLeader.setAcronym(activitiesDAO.get(c).get("leader_acronym"));
       activityLeader.setName(activitiesDAO.get(c).get("leader_name"));
 
       activity.setLeader(activityLeader);
@@ -142,6 +143,7 @@ public class ActivityManagerImpl implements ActivityManager {
       // Activity leader
       Leader activityLeader = new Leader();
       activityLeader.setId(Integer.parseInt(activityDB.get("leader_id")));
+      activityLeader.setAcronym(activityDB.get("leader_acronym"));
       activityLeader.setName(activityDB.get("leader_name"));
 
       activity.setLeader(activityLeader);

@@ -7,20 +7,22 @@ public class Leader {
 
   private int id;
   private String name;
+  private String acronym;
   private LeaderType leaderType;
 
   public Leader() {
-  }
-
-  public Leader(int id, String name) {
-    this.id = id;
-    this.name = name;
   }
 
   public Leader(int id, String name, LeaderType leaderType) {
     this.id = id;
     this.name = name;
     this.leaderType = leaderType;
+  }
+
+  public Leader(int id, String acronym, String name) {
+    this.id = id;
+    this.name = name;
+    this.acronym = acronym;
   }
 
   @Override
@@ -30,6 +32,10 @@ public class Leader {
       return leader.getId() == this.getId();
     }
     return false;
+  }
+
+  public String getAcronym() {
+    return acronym;
   }
 
   public int getId() {
@@ -42,6 +48,10 @@ public class Leader {
 
   public String getName() {
     return name;
+  }
+
+  public void setAcronym(String acronym) {
+    this.acronym = acronym;
   }
 
   public void setId(int id) {

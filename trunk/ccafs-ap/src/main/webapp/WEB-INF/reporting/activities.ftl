@@ -16,7 +16,7 @@
   [#include "/WEB-INF/global/pages/reporting-secondary-menu.ftl" /]
   
   <article class="halfContent">
-    <h1>[#if currentUser.leader??]${currentUser.leader.name}[/#if] [@s.text name="reporting.activityList.activities" /] ${currentLogframe.year?c} = ${currentActivities?size}</h1>  
+    <h1>[#if currentUser.leader??]${currentUser.leader.name}[/#if] ([@s.text name="reporting.activityList.activities" /] ${currentLogframe.year?c})</h1>  
     
     <table id="activityList">
       <thead>
@@ -40,7 +40,7 @@
               ">
                 [#if activity.title?length < 80] ${activity.title}</a> [#else] [@utilities.wordCutter string=activity.title maxPos=70 /]...</a> [/#if]
             </td>
-            <td>${activity.leader.name?substring(0, activity.leader.name?index_of(" ") )}</td>
+            <td>${activity.leader.acronym}</td>
             <td>${activity.milestone.output.objective.theme.code}</td>
             <td>2012</td>
           </tr>
