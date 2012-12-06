@@ -1,6 +1,6 @@
 package org.cgiar.ccafs.ap.data.manager.impl;
 
-import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
@@ -24,12 +24,11 @@ public class DeliverableManagerImpl implements DeliverableManager {
   }
 
   @Override
-  public Deliverable[] getDeliverables(int activityId) {
-    SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM");
+  public List<Deliverable> getDeliverables(int activityId) {
     List<Map<String, String>> deliverablesDB = deliverableDAO.getDeliverables(activityId);
 
     if (deliverablesDB != null) {
-      Deliverable[] deliverables = new Deliverable[deliverablesDB.size()];
+      List<Deliverable> deliverables = new ArrayList<Deliverable>();
       for (int c = 0; c < deliverablesDB.size(); c++) {
 
         Deliverable deliverable = new Deliverable();
@@ -40,20 +39,28 @@ public class DeliverableManagerImpl implements DeliverableManager {
 
         // DeliverableStatus
         DeliverableStatus status = new DeliverableStatus();
+        status.setId(Integer.parseInt(deliverablesDB.get(c).get("deliverable_status_id")));
         status.setName(deliverablesDB.get(c).get("deliverable_status_name"));
         deliverable.setStatus(status);
 
         // DeliverableType
         DeliverableType type = new DeliverableType();
+        type.setId(Integer.parseInt(deliverablesDB.get(c).get("deliverable_type_id")));
         type.setName(deliverablesDB.get(c).get("deliverable_type_name"));
         deliverable.setType(type);
 
         // Deliverable Format
         DeliverableFormat deliverableFormat = new DeliverableFormat();
-        deliverableFormat.setName(deliverablesDB.get(c).get("deliverable_type_name"));
-        deliverable.setDeliverableFormat(deliverableFormat);
 
-        deliverables[c] = deliverable;
+        if (deliverablesDB.get(c).get("deliverable_type_id") != null
+          && deliverablesDB.get(c).get("deliverable_type_name") != null) {
+
+          deliverableFormat.setCode(Integer.parseInt(deliverablesDB.get(c).get("deliverable_type_id")));
+          deliverableFormat.setName(deliverablesDB.get(c).get("deliverable_type_name"));
+          deliverable.setDeliverableFormat(deliverableFormat);
+        }
+
+        deliverables.add(deliverable);
       }
 
       return deliverables;

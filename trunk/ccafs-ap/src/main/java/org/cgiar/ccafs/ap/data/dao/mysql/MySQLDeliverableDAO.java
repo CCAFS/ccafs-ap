@@ -32,23 +32,26 @@ public class MySQLDeliverableDAO implements DeliverableDAO {
     List<Map<String, String>> deliverables = new ArrayList<>();
     try (Connection con = databaseManager.getConnection()) {
       String query =
-        "SELECT de.id, de.description, de.year, de.is_expected, ff.name as 'file_format_name', "
-          + "ds.name as 'deliverable_status_name', dt.name as 'deliverable_type_name' "
-          + "FROM activities ac, deliverables de, deliverable_formats df, file_formats ff, deliverable_types dt, "
-          + "deliverable_status ds "
-          + "WHERE ac.id = de.activity_id AND de.deliverable_type_id = dt.id AND de.id = df.deliverable_id "
-          + "AND df.file_format_id = ff.id AND de.deliverable_status_id = ds.id AND ac.id=" + activityID;
+        "SELECT de.id, de.description, de.year, de.is_expected, ds.id as 'deliverable_status_id', "
+          + "ds.name as 'deliverable_status_name', dt.id as 'deliverable_type_id', dt.name as 'deliverable_type_name', "
+          + "ff.id as 'file_format_id', ff.name as 'file_format_name' " + "FROM deliverables de "
+          + "INNER JOIN deliverable_types dt ON de.deliverable_type_id = dt.id "
+          + "INNER JOIN deliverable_status ds ON de.deliverable_status_id = ds.id "
+          + "LEFT OUTER JOIN deliverable_formats df ON de.id = df.deliverable_id "
+          + "LEFT OUTER JOIN file_formats ff ON df.file_format_id = ff.id " + "WHERE de.activity_id=" + activityID;
       ResultSet rs = databaseManager.makeQuery(query, con);
-
       while (rs.next()) {
         Map<String, String> deliverable = new HashMap<>();
         deliverable.put("id", rs.getString("id"));
         deliverable.put("description", rs.getString("description"));
         deliverable.put("year", rs.getString("year"));
         deliverable.put("is_expected", rs.getString("is_expected"));
-        deliverable.put("file_format_name", rs.getString("file_format_name"));
+        deliverable.put("deliverable_status_id", rs.getString("deliverable_status_id"));
         deliverable.put("deliverable_status_name", rs.getString("deliverable_status_name"));
+        deliverable.put("deliverable_type_id", rs.getString("deliverable_type_id"));
         deliverable.put("deliverable_type_name", rs.getString("deliverable_type_name"));
+        deliverable.put("file_format_id", rs.getString("file_format_id"));
+        deliverable.put("file_format_name", rs.getString("file_format_name"));
         deliverables.add(deliverable);
       }
       rs.close();

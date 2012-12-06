@@ -1,14 +1,18 @@
 package org.cgiar.ccafs.ap.action.reporting.activities;
 
+import java.util.List;
+
 import org.apache.commons.lang3.StringUtils;
 import org.cgiar.ccafs.ap.action.BaseAction;
 import org.cgiar.ccafs.ap.config.APConfig;
 import org.cgiar.ccafs.ap.config.APConstants;
 import org.cgiar.ccafs.ap.data.manager.ActivityManager;
 import org.cgiar.ccafs.ap.data.manager.DeliverableManager;
+import org.cgiar.ccafs.ap.data.manager.DeliverableTypeManager;
 import org.cgiar.ccafs.ap.data.manager.LogframeManager;
 import org.cgiar.ccafs.ap.data.model.Activity;
 import org.cgiar.ccafs.ap.data.model.Deliverable;
+import org.cgiar.ccafs.ap.data.model.DeliverableType;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -24,10 +28,12 @@ public class DeliverablesReportingAction extends BaseAction {
 
   // Managers
   private DeliverableManager deliverableManager;
+  private DeliverableTypeManager deliverableTypeManager;
   private ActivityManager activityManager;
 
   // Model
-  private Deliverable[] deliverables;
+  private List<Deliverable> deliverables;
+  private DeliverableType[] deliverableTypesList;
   private Activity activity;
 
   private int activityID;
@@ -35,10 +41,13 @@ public class DeliverablesReportingAction extends BaseAction {
 
   @Inject
   public DeliverablesReportingAction(APConfig config, LogframeManager logframeManager,
-    DeliverableManager deliverableManager, ActivityManager activityManager) {
+    DeliverableManager deliverableManager, ActivityManager activityManager,
+    DeliverableTypeManager deliverableTypeManager) {
+
     super(config, logframeManager);
     this.deliverableManager = deliverableManager;
     this.activityManager = activityManager;
+    this.deliverableTypeManager = deliverableTypeManager;
   }
 
   @Override
@@ -46,7 +55,6 @@ public class DeliverablesReportingAction extends BaseAction {
     System.out.println("--------EXCECUTE----------");
     return SUCCESS;
   }
-
 
   public Activity getActivity() {
     return activity;
@@ -58,8 +66,13 @@ public class DeliverablesReportingAction extends BaseAction {
   }
 
 
-  public Deliverable[] getDeliverables() {
+  public List<Deliverable> getDeliverables() {
     return deliverables;
+  }
+
+
+  public DeliverableType[] getDeliverableTypesList() {
+    return deliverableTypesList;
   }
 
   @Override
@@ -70,6 +83,7 @@ public class DeliverablesReportingAction extends BaseAction {
     activityID = Integer.parseInt(StringUtils.trim(this.getRequest().getParameter(APConstants.ACTIVITY_REQUEST_ID)));
     // get information of deliverables that belong to the activity whit activityID
     deliverables = deliverableManager.getDeliverables(activityID);
+    deliverableTypesList = deliverableTypeManager.getDeliverableTypes();
 
     activity = activityManager.getActivityDeliverableInfo(activityID);
   }
@@ -84,7 +98,7 @@ public class DeliverablesReportingAction extends BaseAction {
     this.activity = activity;
   }
 
-  public void setDeliverables(Deliverable[] deliverables) {
+  public void setDeliverables(List<Deliverable> deliverables) {
     this.deliverables = deliverables;
   }
 

@@ -1,5 +1,7 @@
 package org.cgiar.ccafs.ap.data.manager;
 
+import java.util.List;
+
 import org.cgiar.ccafs.ap.data.manager.impl.DeliverableManagerImpl;
 import org.cgiar.ccafs.ap.data.model.Deliverable;
 
@@ -16,5 +18,5 @@ public interface DeliverableManager {
    * @param id
    * @return a Deliverables array or null if no deliverables was found.
    */
-  public Deliverable[] getDeliverables(int activityId);
+  public List<Deliverable> getDeliverables(int activityId);
 }
