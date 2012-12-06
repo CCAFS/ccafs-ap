@@ -16,7 +16,7 @@
   [@s.form action="status!save"]
   <article class="halfContent">
     <h1>
-      ${activity.leader.name?substring(0, activity.leader.name?index_of(" ") )} - [@s.text name="reporting.activityList.activity" /] ${activity.id}      
+      ${activity.leader.acronym} - [@s.text name="reporting.activityList.activity" /] ${activity.id}  
     </h1>
     
     <h6>[@s.text name="reporting.activityStatus.title" /]</h6>

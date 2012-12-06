@@ -108,6 +108,7 @@ SHOW WARNINGS;
 -- -----------------------------------------------------
 CREATE  TABLE IF NOT EXISTS `activity_leaders` (
   `id` INT NOT NULL AUTO_INCREMENT ,
+  `acronym` VARCHAR(20) NOT NULL ,
   `name` TEXT NOT NULL ,
   `led_activity_id` INT NOT NULL ,
   PRIMARY KEY (`id`) ,

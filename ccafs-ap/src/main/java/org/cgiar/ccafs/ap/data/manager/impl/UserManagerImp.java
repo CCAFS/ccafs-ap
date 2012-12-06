@@ -29,7 +29,8 @@ public class UserManagerImp implements UserManager {
     hcarvajal.setRole(User.UserRole.CP);
     Leader leader = new Leader();
     leader.setId(3);
-    leader.setName("CIAT - Centro Internacional de Agricultura Tropical");
+    leader.setAcronym("CIAT");
+    leader.setName("Centro Internacional de Agricultura Tropical");
     leader.setLeaderType(new LeaderType(1, "CCAFS Center Led Activities"));
     hcarvajal.setLeader(leader);
 
