@@ -9,13 +9,15 @@
 </div>
 [/#macro]
 
-[#macro textArea name value="-NULL" i18nkey="" rows=10 cols=10 disabled=false required=false errorfield=""]
+[#macro textArea name value="-NULL" i18nkey="" disabled=false required=false errorfield=""]
   <div class="textArea">
-    <label for="${name}">[#if i18nkey==""][@s.text name="${name}"/][#else][@s.text name="${i18nkey}"/][/#if] 
+    <h6>
+      <label for="${name}">[#if i18nkey==""][@s.text name="${name}"/][#else][@s.text name="${i18nkey}"/][/#if]
       [#if required]<span class="red">*</span>[/#if]      
-    </label>      
+      </label>
+    </h6>
     [#if errorfield==""][@s.fielderror cssClass="fieldError" fieldName="${name}"/][#else][@s.fielderror cssClass="fieldError" fieldName="${errorfield}"/][/#if]
-    <textarea name="${name}" cols="${cols}" rows="${rows}" id="${name}" [#if disabled]readonly="readonly"[/#if] />[#if value=="-NULL"][@s.property value="${name}"/][#else]${value}[/#if]</textarea>
+    <textarea name="${name}" id="${name}" [#if disabled]readonly="readonly"[/#if] />[#if value=="-NULL"][@s.property value="${name}"/][#else]${value}[/#if]</textarea>
   </div>
 [/#macro]
 
@@ -28,7 +30,7 @@
 [/#macro]
 
 [#macro radioButtonGroup label name listName displayFieldName="" keyFieldName="" value="-NULL" i18nkey="" disabled=false required=false errorField="" checked=false]
-  <div class="radio">
+  <div class="radioGroup">
     <h6>[#if i18nkey==""]${label}[#else][@s.text name="${i18nkey}" /][/#if][#if required]<span class="red">*</span>[/#if]:</h6>
     [#if errorField==""][@s.fielderror cssClass="fieldError" fieldName="${name}"/][#else][@s.fielderror cssClass="fieldError" fieldName="${errorfield}"/][/#if]
     <div class="radiosList">

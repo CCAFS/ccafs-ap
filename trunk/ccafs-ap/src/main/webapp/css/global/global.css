@@ -37,7 +37,12 @@ a,a:active,a:visited,a:hover {
 ul.fieldError li {
   color: red;
   list-style-type: none;
-  text-align: right;
+  text-align: left;
+}
+
+textarea {
+  width: 95%;
+  height: 70px;
 }
 
 /************* 2. HEADER ***************/
@@ -111,9 +116,9 @@ nav#mainMenu ul a li {
   font-weight: bold;
 }
 
-nav#mainMenu ul a li.currentSection{
+nav#mainMenu ul a li.currentSection {
   color: white;
-  background-color: #A6A6A6; 
+  background-color: #A6A6A6;
 }
 
 /*************** SECONDARY MENU ***********/
@@ -123,7 +128,7 @@ nav#secondaryMenu {
   margin-left: 10px;
   margin-top: 20px;
   padding: 10px;
-  width: 190px;  
+  width: 190px;
 }
 
 nav#secondaryMenu ul {
@@ -131,7 +136,7 @@ nav#secondaryMenu ul {
 }
 
 nav#secondaryMenu ul a {
-  height: 35px;  
+  height: 35px;
   font-weight: bold;
   display: list-item;
   margin-bottom: 5px;
@@ -139,14 +144,12 @@ nav#secondaryMenu ul a {
   padding-bottom: 5px;
   padding-left: 10px;
   padding-top: 5px;
-    
 }
 
-nav#secondaryMenu ul a.currentReportingSection{
+nav#secondaryMenu ul a.currentReportingSection {
   color: white;
   background-image: url("../../images/global/reportingMenuMarker.png");
-  background-repeat : no-repeat; 
-
+  background-repeat: no-repeat;
 }
 
 nav#secondaryMenu ul a li {
@@ -169,6 +172,10 @@ nav#secondaryMenu ul a li {
   padding: 10px;
 }
 
+.content a,.halfContent a,.content a:hover,.halfContent a:hover {
+  color: #366506;
+}
+
 .content h1 {
   border-bottom: 2px solid #663300;
   color: #663300;
@@ -185,9 +192,48 @@ nav#secondaryMenu ul a li {
   margin-bottom: 10px;
 }
 
-.content a, .halfContent a {    color: #366506; }
+.halfContent h6 + * {
+  margin-left: 15px;
+}
 
-.content a:hover, .halfContent a:hover {  color: #366506; }
+.fullBlock {
+    display: block;
+    padding: 5px;
+    width: 100%;
+}
+
+.buttons {
+  margin: 10px;
+  text-align: right;
+}
+
+.buttons button {
+  padding: 3px 10px;
+}
+
+/********* Activity Reporting Sub Menu **********/
+#stageMenu {
+  display: block;
+  text-align: center;
+}
+
+#stageMenu a {
+  background-color: #EBEBEB;
+  border: 1px solid black;
+  color: black;
+  margin: 0 5px;
+  padding: 5px;
+}
+
+#stageMenu a.currentReportingSection {
+  background-color: #919191;
+  font-weight: bold;
+}
+
+#stageMenu a li {
+  display: inline;
+}
+
 
 /*************** FOOTER ****************/
 #footerContainer {
