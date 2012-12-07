@@ -46,9 +46,9 @@
   	[/#if]
     [#-- Second, import global template. --]
     <link rel="stylesheet" type="text/css" href="${baseUrl}/css/global/global.css" />
-     <!--[if lte IE 7]> 
-     <style type="text/css" href="${baseUrl}/css/global/ie7.css"/> 
-     <![endif]-->
+    <!--[if lte IE 7]>
+      <link rel="stylesheet" type="text/css" href="${baseUrl}/css/global/ie7.css"/> 
+    <![endif]-->
     
     [#-- Last, import the custom JS and CSS --]
     [#if customJS??]

@@ -53,7 +53,7 @@ public class StatusReportingAction extends BaseAction {
 
     this.genderOptions = new LinkedHashMap<>();
     genderOptions.put("1", "Yes");
-    genderOptions.put("2", "No");
+    genderOptions.put("0", "No");
   }
 
   @Override
@@ -77,12 +77,8 @@ public class StatusReportingAction extends BaseAction {
     return genderOptions;
   }
 
-  public String getHasGender() {
-    if (this.getActivity().getGenderIntegrationsDescription() != null) {
-      return "1";
-    } else {
-      return "2";
-    }
+  public boolean getHasGender() {
+    return this.getActivity().getGenderIntegrationsDescription() != null;
   }
 
   public String getMilestoneRequestParameter() {
@@ -108,6 +104,10 @@ public class StatusReportingAction extends BaseAction {
     // get activity budget.
     Budget budget = budgetManager.getBudget(activityID);
     activity.setBudget(budget);
+
+    // Error messages test
+    addFieldError("activity.statusDescription", "Test: Error message!");
+    addFieldError("activity.status", "Test: Error message!");
   }
 
   public String save() {

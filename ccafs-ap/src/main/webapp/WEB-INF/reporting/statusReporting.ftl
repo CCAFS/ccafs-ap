@@ -15,75 +15,101 @@
   [#include "/WEB-INF/global/pages/reporting-secondary-menu.ftl" /]
   [@s.form action="status!save"]
   <article class="halfContent">
-    <h1>
-      ${activity.leader.acronym} - [@s.text name="reporting.activityList.activity" /] ${activity.id}  
-    </h1>
     
-    <h6>[@s.text name="reporting.activityStatus.title" /]</h6>
-    <p> ${activity.title} </p>
+    <h1>${activity.leader.acronym} - [@s.text name="reporting.activityList.activity" /] ${activity.id}</h1>
     
-    <h6>[@s.text name="reporting.activityStatus.description" /]</h6>
-    <p> ${activity.description} </p>
+    <div id="activityTitle" class="fullBlock">
+      <h6>[@s.text name="reporting.activityStatus.title" /]</h6>
+      <p>${activity.title}</p>
+    </div>
     
-    <table class="generalInformation">
+    <div id="activityDescription" class="fullBlock">
+      <h6>[@s.text name="reporting.activityStatus.description" /]</h6>
+      <p>${activity.description}</p>
+    </div>
+    
+    <table id="generalInformation"  class="fullBlock">
       <tr>
-        <td> <b> [@s.text name="reporting.activityStatus.startDate" /] </b> </td><td> ${activity.startDate?string("MM/dd/yyyy")} </td>
-        <td> <b> [@s.text name="reporting.activityStatus.budget" /] </b> </td><td> ${activity.budget.usd} </td>
+        <td>[@s.text name="reporting.activityStatus.startDate" /]</td>
+        <td>${activity.startDate?string("MM/dd/yyyy")}</td>
+        <td>[@s.text name="reporting.activityStatus.budget" /]</td>
+        <td>${activity.budget.usd}</td>
       </tr>
       <tr>
-        <td> <b> [@s.text name="reporting.activityStatus.endDate" /] </b> </td><td>  ${activity.endDate?string("MM/dd/yyyy")} </td>
-        <td> <b> [@s.text name="reporting.activityStatus.milestone" /] </b> </td><td>
-          <a class="popup" href="[@s.url action='milestone' ]
-                    [@s.param name='${milestoneRequestParameter}']${activity.milestone.id}[/@s.param]
-                   [/@s.url]">${activity.milestone.code}
-          </a> 
+        <td>[@s.text name="reporting.activityStatus.endDate" /]</td>
+        <td>${activity.endDate?string("MM/dd/yyyy")}</td>
+        <td>[@s.text name="reporting.activityStatus.milestone" /]</td>
+        <td>
+          <a class="popup" href="[@s.url action='milestone'][@s.param name='${milestoneRequestParameter}']${activity.milestone.id}[/@s.param][/@s.url]">
+            ${activity.milestone.code}
+          </a>
         </td>
       </tr>
-      <tr>
-        <td> <b> [@s.text name="reporting.activityStatus.contactPerson" /] </b> </td>
-        <td colspan="3">
-           ${activity.contactPersons[0].name} (<a href="mailto: ${activity.contactPersons[0].email} ">${activity.contactPersons[0].email}</a>)</span> 
-           [#if activity.contactPersons?size > 1] <a id="viewMoreContacts" href="">, show others..</a> [/#if]
-        </td>        
-      </tr>
+      [#if activity.contactPersons??]
+        <tr>
+          <td>[@s.text name="reporting.activityStatus.contactPerson" /]</td>
+          <td colspan="3">
+             ${activity.contactPersons[0].name} 
+            (<a id="contactEmail" href="mailto: ${activity.contactPersons[0].email} ">${activity.contactPersons[0].email}</a>)
+            [#if activity.contactPersons?size > 1] <a id="viewMoreContacts" href="">, show others..</a> [/#if]
+          </td>        
+        </tr>
+      [/#if]
     </table>
     
-    <br />
-    
-    <span class="infoBoxLarge"> 
-      <!-- span class="title">Activity status</span --> 
-      <section class="status">        
-        [@customForm.radioButtonGroup label="Activity Status" name="activity.status" listName="statusList" keyFieldName="id" displayFieldName="name" value="${activity.status.id}" /]
-      </section>
-    </span>
-    
-     [@customForm.textArea name="activity.statusDescription" i18nkey="reporting.activityStatus.statusDescription" rows=5 cols=100 required=true /]
-    
-    <span class="infoBoxLarge">       
-      <section class="status">
-        [@customForm.radioButtonGroup label="Gender Integration" name="genderIntegration" listName="genderOptions" value="${hasGender}" /]
-      </section>      
-    </span>
-    
-    <span class="infoBox"><span class="title">Gender integration description:</span> </span>
-    <p> Esta es la descripcion del gender integration </p>
-    
-    
-    <div id="contactPersons" title="Contact persons">     
-      <table id="contactPersonsTable">    
-        <thead>     
-          <tr> <th>Name</th> <th>Email</th></tr>    
-        </thead>
-        <tbody>     
-          [#list activity.contactPersons as contactPerson]    
-            <tr> <td> ${contactPerson.name} </td> <td> ${contactPerson.email} </td></tr>    
-          [/#list]    
-        </tbody>    
-      </table>    
+    <div id="statusOptions" class="fullBlock">
+      [@customForm.radioButtonGroup label="Activity Status" name="activity.status" listName="statusList" keyFieldName="id" displayFieldName="name" value="${activity.status.id}" /]        
     </div>
-    <!-- internal parameter -->
-    <input name="activityID" type="hidden" value="${activity.id}" />
-    [@s.submit type="button" name="save"]SAVE[/@s.submit]
+    
+    <div id="statusDescription" class="fullBlock">
+      [@customForm.textArea name="activity.statusDescription" i18nkey="reporting.activityStatus.statusDescription" required=true /]
+    </div>
+    
+    <div id="gender">
+      [#-- if the activity has gender integration the user won't be able to retract --]
+      [#if hasGender]
+        <div class="fullBlock">
+          [@customForm.radioButtonGroup label="Gender Integration" name="genderIntegration" listName="genderOptions" disabled=true value="${hasGender?string('1', '0')}" /]
+        </div>
+        <div class="fullBlock">
+          [@customForm.textArea name="activity.genderIntegrationsDescription" i18nkey="reporting.activityStatus.genderIntegrationDescription" required=true /]
+        </div>
+      [#else]
+        <div class="fullBlock"> 
+          [@customForm.radioButtonGroup label="Gender Integration" name="genderIntegration" listName="genderOptions" value="${hasGender?string('1', '0')}" /]
+        </div>
+        <div class="fullBlock">
+          [#assign genderMessage][@s.text name = 'reporting.activityStatus.genderIntegrationDescription.notFound' /][/#assign]
+          [@customForm.textArea name="activity.genderIntegrationsDescription" i18nkey="reporting.activityStatus.genderIntegrationDescription" disabled=true value="${genderMessage}" /]
+        </div>
+      [/#if]
+    </div>
+    
+    <div id="contactPersons" title="Contact persons">
+      <table id="contactPersonsTable">
+        <thead>
+          <tr>
+            <th>Name</th>
+            <th>Email</th>
+          </tr>
+        </thead>
+        <tbody>
+          [#list activity.contactPersons as contactPerson]    
+            <tr>
+              <td>${contactPerson.name}</td>
+              <td> ${contactPerson.email}</td>
+            </tr>
+          [/#list]    
+        </tbody>
+      </table>
+    </div>
+    
+    <!-- internal parameter -->    
+    <input name="${activityIdParameter}" type="hidden" value="${activity.id}" />
+    
+    <div class="buttons">
+      [@s.submit type="button" name="save"]SAVE[/@s.submit]
+    </div>
       
     [#include "/WEB-INF/reporting/reportingStepSubMenu.ftl" /]  
   </article>

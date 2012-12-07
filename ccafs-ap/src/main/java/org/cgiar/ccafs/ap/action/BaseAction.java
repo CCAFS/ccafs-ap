@@ -49,6 +49,10 @@ public class BaseAction extends ActionSupport implements Preparable, SessionAwar
     this.logframeManager = logframeManager;
   }
 
+  public String getActivityIdParameter() {
+    return APConstants.ACTIVITY_REQUEST_ID;
+  }
+
   public String getBaseUrl() {
     return config.getBaseUrl();
   }
