@@ -29,32 +29,34 @@
     </div>
     
     <table id="generalInformation"  class="fullBlock">
-      <tr>
-        <td>[@s.text name="reporting.activityStatus.startDate" /]</td>
-        <td>${activity.startDate?string("MM/dd/yyyy")}</td>
-        <td>[@s.text name="reporting.activityStatus.budget" /]</td>
-        <td>${activity.budget.usd}</td>
-      </tr>
-      <tr>
-        <td>[@s.text name="reporting.activityStatus.endDate" /]</td>
-        <td>${activity.endDate?string("MM/dd/yyyy")}</td>
-        <td>[@s.text name="reporting.activityStatus.milestone" /]</td>
-        <td>
-          <a class="popup" href="[@s.url action='milestone'][@s.param name='${milestoneRequestParameter}']${activity.milestone.id}[/@s.param][/@s.url]">
-            ${activity.milestone.code}
-          </a>
-        </td>
-      </tr>
-      [#if activity.contactPersons??]
+      <tbody>
         <tr>
-          <td>[@s.text name="reporting.activityStatus.contactPerson" /]</td>
-          <td colspan="3">
-             ${activity.contactPersons[0].name} 
-            (<a id="contactEmail" href="mailto: ${activity.contactPersons[0].email} ">${activity.contactPersons[0].email}</a>)
-            [#if activity.contactPersons?size > 1] <a id="viewMoreContacts" href="">, show others..</a> [/#if]
-          </td>        
+          <td class="title">[@s.text name="reporting.activityStatus.startDate" /]</td>
+          <td>${activity.startDate?string("MM/dd/yyyy")}</td>
+          <td class="title">[@s.text name="reporting.activityStatus.budget" /]</td>
+          <td>${activity.budget.usd}</td>
         </tr>
-      [/#if]
+        <tr>
+          <td class="title">[@s.text name="reporting.activityStatus.endDate" /]</td>
+          <td>${activity.endDate?string("MM/dd/yyyy")}</td>
+          <td class="title">[@s.text name="reporting.activityStatus.milestone" /]</td>
+          <td>
+            <a class="popup" href="[@s.url action='milestone'][@s.param name='${milestoneRequestParameter}']${activity.milestone.id}[/@s.param][/@s.url]">
+              ${activity.milestone.code}
+            </a>
+          </td>
+        </tr>
+        [#if activity.contactPersons??]
+          <tr>
+            <td class="title">[@s.text name="reporting.activityStatus.contactPerson" /]</td>
+            <td colspan="3">
+               ${activity.contactPersons[0].name} 
+              (<a id="contactEmail" href="mailto: ${activity.contactPersons[0].email} ">${activity.contactPersons[0].email}</a>)
+              [#if activity.contactPersons?size > 1] <a id="viewMoreContacts" href="">, show others..</a> [/#if]
+            </td>        
+          </tr>
+        [/#if]
+      </tbody>
     </table>
     
     <div id="statusOptions" class="fullBlock">
@@ -66,21 +68,20 @@
     </div>
     
     <div id="gender">
-      [#-- if the activity has gender integration the user won't be able to retract --]
       [#if hasGender]
         <div class="fullBlock">
+          [#-- if the activity has gender integration the user won't be able to retract (All gender section must be disabled) --]
           [@customForm.radioButtonGroup label="Gender Integration" name="genderIntegration" listName="genderOptions" disabled=true value="${hasGender?string('1', '0')}" /]
         </div>
         <div class="fullBlock">
-          [@customForm.textArea name="activity.genderIntegrationsDescription" i18nkey="reporting.activityStatus.genderIntegrationDescription" required=true /]
+          [@customForm.textArea name="activity.genderIntegrationsDescription" i18nkey="reporting.activityStatus.genderIntegrationDescription" required=true disabled=true /]
         </div>
       [#else]
         <div class="fullBlock"> 
           [@customForm.radioButtonGroup label="Gender Integration" name="genderIntegration" listName="genderOptions" value="${hasGender?string('1', '0')}" /]
         </div>
-        <div class="fullBlock">
-          [#assign genderMessage][@s.text name = 'reporting.activityStatus.genderIntegrationDescription.notFound' /][/#assign]
-          [@customForm.textArea name="activity.genderIntegrationsDescription" i18nkey="reporting.activityStatus.genderIntegrationDescription" disabled=true value="${genderMessage}" /]
+        <div id="genderIntegrationDescription" class="fullBlock" style="display: none; ">
+          [@customForm.textArea name="activity.genderIntegrationsDescription" i18nkey="reporting.activityStatus.genderIntegrationDescription" /]
         </div>
       [/#if]
     </div>

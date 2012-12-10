@@ -105,9 +105,6 @@ public class StatusReportingAction extends BaseAction {
     Budget budget = budgetManager.getBudget(activityID);
     activity.setBudget(budget);
 
-    // Error messages test
-    addFieldError("activity.statusDescription", "Test: Error message!");
-    addFieldError("activity.status", "Test: Error message!");
   }
 
   public String save() {

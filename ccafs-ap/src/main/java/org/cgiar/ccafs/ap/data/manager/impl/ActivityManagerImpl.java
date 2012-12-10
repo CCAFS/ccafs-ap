@@ -1,10 +1,5 @@
 package org.cgiar.ccafs.ap.data.manager.impl;
 
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
-import java.util.List;
-import java.util.Map;
-
 import org.cgiar.ccafs.ap.data.dao.ActivityDAO;
 import org.cgiar.ccafs.ap.data.manager.ActivityManager;
 import org.cgiar.ccafs.ap.data.model.Activity;
@@ -15,6 +10,11 @@ import org.cgiar.ccafs.ap.data.model.Output;
 import org.cgiar.ccafs.ap.data.model.Status;
 import org.cgiar.ccafs.ap.data.model.Theme;
 import org.cgiar.ccafs.ap.data.model.User;
+
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.List;
+import java.util.Map;
 
 import com.google.inject.Inject;
 
@@ -150,6 +150,9 @@ public class ActivityManagerImpl implements ActivityManager {
       activityLeader.setName(activityDB.get("leader_name"));
 
       activity.setLeader(activityLeader);
+
+      // Gender Integration
+      activity.setGenderIntegrationsDescription(activityDB.get("gender_description"));
 
       return activity;
     }
