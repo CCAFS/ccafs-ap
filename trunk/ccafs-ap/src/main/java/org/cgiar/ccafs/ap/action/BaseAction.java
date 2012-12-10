@@ -26,11 +26,18 @@ import org.slf4j.LoggerFactory;
  */
 public class BaseAction extends ActionSupport implements Preparable, SessionAware, ServletRequestAware {
 
+  private static final long serialVersionUID = -740360140511380630L;
+
+  public static final String CANCEL = "cancel";
   public static final String NOT_LOGGED = "401";
   public static final String NOT_AUTHORIZED = "403";
   public static final String NOT_FOUND = "404";
 
-  private static final long serialVersionUID = -740360140511380630L;
+  // button actions
+  protected boolean save;
+  protected boolean delete;
+  protected boolean cancel;
+
   // Loggin
   private static final Logger LOG = LoggerFactory.getLogger(BaseAction.class);
 
@@ -47,6 +54,29 @@ public class BaseAction extends ActionSupport implements Preparable, SessionAwar
   public BaseAction(APConfig config, LogframeManager logframeManager) {
     this.config = config;
     this.logframeManager = logframeManager;
+  }
+
+  /* Override this method depending of the cancel action. */
+  public String cancel() {
+    return CANCEL;
+  }
+
+
+  /* Override this method depending of the delete action. */
+  public String delete() {
+    return SUCCESS;
+  }
+
+  @Override
+  public String execute() throws Exception {
+    if (save) {
+      return save();
+    } else if (delete) {
+      return delete();
+    } else if (cancel) {
+      return cancel();
+    }
+    return INPUT;
   }
 
   public String getActivityIdParameter() {
@@ -109,9 +139,27 @@ public class BaseAction extends ActionSupport implements Preparable, SessionAwar
     return true;
   }
 
+
   @Override
   public void prepare() throws Exception {
     // So far, do nothing here!
+  }
+
+  /* Override this method depending of the save action. */
+  public String save() {
+    return SUCCESS;
+  }
+
+  public void setCancel(boolean cancel) {
+    this.cancel = true;
+  }
+
+  public void setDelete(boolean delete) {
+    this.delete = delete;
+  }
+
+  public void setSave(boolean save) {
+    this.save = true;
   }
 
   @Override
@@ -124,6 +172,5 @@ public class BaseAction extends ActionSupport implements Preparable, SessionAwar
   public void setSession(Map<String, Object> session) {
     this.session = session;
   }
-
 
 }

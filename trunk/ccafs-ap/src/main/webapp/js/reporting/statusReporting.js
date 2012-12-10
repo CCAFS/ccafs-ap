@@ -8,7 +8,7 @@ $(document).ready(function() {
   // Call the needed function to open a link in a popup
   popups();
 
-  $(".genderIntegration").on("change", function() {
+  $(".genderIntegrationOption").on("change", function() {
     if ($(".genderIntegration:checked").val() == 0) {      
       $("#genderIntegrationDescription").hide("slow");
     } else {      
