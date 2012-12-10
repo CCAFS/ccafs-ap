@@ -1,5 +1,8 @@
 package org.cgiar.ccafs.ap.data.dao.mysql;
 
+import org.cgiar.ccafs.ap.data.dao.ActivityDAO;
+import org.cgiar.ccafs.ap.data.dao.DAOManager;
+
 import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -8,12 +11,9 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import org.cgiar.ccafs.ap.data.dao.ActivityDAO;
-import org.cgiar.ccafs.ap.data.dao.DAOManager;
+import com.google.inject.Inject;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-
-import com.google.inject.Inject;
 
 
 public class MySQLActivityDAO implements ActivityDAO {
@@ -143,11 +143,12 @@ public class MySQLActivityDAO implements ActivityDAO {
     try (Connection con = databaseManager.getConnection()) {
       String query =
         "SELECT a.title, a.start_date, a.end_date, a.description, a.status_description, astatus.id as status_id, astatus.name as status_name, "
-          + "a.milestone_id, m.code as milestone_code, al.id as 'leader_id', al.acronym as 'leader_acronym', al.name as 'leader_name' "
-          + "FROM activities a, milestones m, activity_status astatus, activity_leaders al "
-          + "WHERE astatus.id = a.activity_status_id "
-          + "AND m.id = a.milestone_id "
-          + "AND a.activity_leader_id = al.id " + " AND a.id = " + id;
+          + "a.milestone_id, m.code as milestone_code, al.id as 'leader_id', al.acronym as 'leader_acronym', al.name as 'leader_name', "
+          + "g.id as 'gender_id', g.description as 'gender_description' "
+          + "FROM activities a INNER JOIN milestones m ON a.milestone_id = m.id "
+          + "INNER JOIN activity_status astatus ON a.activity_status_id = astatus.id "
+          + "INNER JOIN activity_leaders al ON a.activity_leader_id = al.id "
+          + "LEFT OUTER JOIN gender_integrations g ON g.activity_id = a.id WHERE a.id = " + id;
       ResultSet rs = databaseManager.makeQuery(query, con);
       if (rs.next()) {
         activity.put("title", rs.getString("title"));
@@ -162,6 +163,8 @@ public class MySQLActivityDAO implements ActivityDAO {
         activity.put("leader_id", rs.getString("leader_id"));
         activity.put("leader_acronym", rs.getString("leader_acronym"));
         activity.put("leader_name", rs.getString("leader_name"));
+        activity.put("gender_id", rs.getString("gender_id"));
+        activity.put("gender_description", rs.getString("gender_description"));
       }
       rs.close();
     } catch (SQLException e) {

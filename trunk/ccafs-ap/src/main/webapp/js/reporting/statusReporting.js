@@ -1,5 +1,5 @@
 $(document).ready(function() {
-  // Add the full contacts dialog
+  // contacts dialog
   $("#viewMoreContacts").click(function(event) {
     event.preventDefault();
     $("#contactPersons").dialog();
@@ -7,4 +7,12 @@ $(document).ready(function() {
 
   // Call the needed function to open a link in a popup
   popups();
+
+  $(".genderIntegration").on("change", function() {
+    if ($(".genderIntegration:checked").val() == 0) {      
+      $("#genderIntegrationDescription").hide("slow");
+    } else {      
+      $("#genderIntegrationDescription").show("slow");
+    }
+  });
 });

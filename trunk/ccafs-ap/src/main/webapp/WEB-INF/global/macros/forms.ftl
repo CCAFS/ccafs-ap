@@ -5,7 +5,7 @@
     [#if required]<span class="red">*</span>[/#if]
   </label>
   [#if errorField==""][@s.fielderror cssClass="fieldError" fieldName="${name}"/][#else][@s.fielderror cssClass="fieldError" fieldName="${errorfield}"/][/#if]
-  <input type="${type}" id="${name}" name="${name}" value="[#if value=="-NULL"][@s.property value="${name}"/][#else]${value}[/#if]" [#if disabled]readonly="readonly"[/#if] />
+  <input type="${type}" id="${name}" name="${name}" value="[#if value=="-NULL"][@s.property value="${name}"/][#else]${value}[/#if]" [#if disabled]disabled="disabled"[/#if] />
 </div>
 [/#macro]
 
@@ -17,7 +17,7 @@
       </label>
     </h6>
     [#if errorfield==""][@s.fielderror cssClass="fieldError" fieldName="${name}"/][#else][@s.fielderror cssClass="fieldError" fieldName="${errorfield}"/][/#if]
-    <textarea name="${name}" id="${name}" [#if disabled]readonly="readonly"[/#if] />[#if value=="-NULL"][@s.property value="${name}"/][#else]${value}[/#if]</textarea>
+    <textarea name="${name}" id="${name}" [#if disabled]disabled="disabled"[/#if] />[#if value=="-NULL"][@s.property value="${name}"/][#else]${value}[/#if]</textarea>
   </div>
 [/#macro]
 
@@ -29,23 +29,20 @@
   </div>
 [/#macro]
 
-[#macro radioButtonGroup label name listName displayFieldName="" keyFieldName="" value="-NULL" i18nkey="" disabled=false required=false errorField="" checked=false]
+[#macro radioButtonGroup label name listName class="" displayFieldName="" keyFieldName="" value="-NULL" i18nkey="" disabled=false required=false errorField="" checked=false]
   <div class="radioGroup">
     <h6>[#if i18nkey==""]${label}[#else][@s.text name="${i18nkey}" /][/#if][#if required]<span class="red">*</span>[/#if]:</h6>
     [#if errorField==""][@s.fielderror cssClass="fieldError" fieldName="${name}"/][#else][@s.fielderror cssClass="fieldError" fieldName="${errorfield}"/][/#if]
     <div class="radiosList">
-    [#if value=="-NULL"]
-      [#assign customValue][@s.property value="${name}" /][/#assign]
-    [#else]
-      [#assign customValue]${value}[/#assign]
-    [/#if]
+    [#if value=="-NULL"][#assign customValue][@s.property value="${name}" /][/#assign][#else][#assign customValue]${value}[/#assign][/#if]
+    [#if class==""][#assign className="${name}"][#else][#assign className="${class}"][/#if]
     [#if keyFieldName == ""]
-      [@s.radio name="${name}" list="${listName}" value="${customValue}" disabled="${disabled?string}" /]
+      [@s.radio name="${name}" cssClass="${className}" list="${listName}" value="${customValue}" disabled="${disabled?string}" /]
     [#else]
-      [@s.radio name="${name}" list="${listName}" listKey="${keyFieldName}" listValue="${displayFieldName}" value="${customValue}" disabled="${disabled?string}" /]
+      [@s.radio name="${name}" cssClass="${className}" list="${listName}" listKey="${keyFieldName}" listValue="${displayFieldName}" value="${customValue}" disabled="${disabled?string}" /]
     [/#if]
-    </div>    
-  </div> 
+    </div>
+  </div>
 [/#macro]
 
 

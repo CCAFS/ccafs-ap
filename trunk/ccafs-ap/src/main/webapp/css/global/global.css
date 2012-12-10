@@ -40,9 +40,16 @@ ul.fieldError li {
   text-align: left;
 }
 
+/* Forms */
+
 textarea {
   width: 95%;
   height: 70px;
+}
+
+input[type="radio"] {
+  margin-left: 15px;
+    margin-right: 3px;
 }
 
 /************* 2. HEADER ***************/

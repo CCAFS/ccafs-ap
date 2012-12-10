@@ -1,7 +1,22 @@
-.halfContent .status {
-  margin-top: 20 px;
-  float: left;
+#activityTitle p {
+  text-align: justify;
 }
+
+#activityDescription p {
+  text-align: justify;
+}
+
+
+#generalInformation .title {
+  font-weight: bold;
+}
+
+#generalInformation td {
+  width: 160px;
+  padding: 3px;
+}
+
+/*** Contact Persons (popup) ***/
 
 #contactPersons {
   display: none;
