@@ -10,23 +10,23 @@
     
     <action name="activities" class="org.cgiar.ccafs.ap.action.reporting.activities.ActivitiesReportingAction">
       <interceptor-ref name="reportingStack" />
-      <result>/WEB-INF/reporting/activities.ftl</result>
+      <result name="input">/WEB-INF/reporting/activities.ftl</result>
     </action>
     
-    <action name="status" class="org.cgiar.ccafs.ap.action.reporting.activities.StatusReportingAction" method="input">
+    <action name="status" class="org.cgiar.ccafs.ap.action.reporting.activities.StatusReportingAction">
       <interceptor-ref name="reportingStack" />
-      <interceptor-ref name="accessibleActivity" />
+      <interceptor-ref name="accessibleActivity" />     
+      <result name="cancel" type="redirectAction">activities</result>
       <result name="input">/WEB-INF/reporting/statusReporting.ftl</result>
-      <result name="success" type="redirect">
-        <!-- Temporal Action meanwhile the next action is developed -->
-        <param name="location">deliverables.do</param>
+      <result name="success" type="redirectAction">
+        <param name="actionName">deliverables</param>
         <param name="activityID">${activity.id}</param>
       </result>
     </action>
     
     <action name="deliverables" class="org.cgiar.ccafs.ap.action.reporting.activities.DeliverablesReportingAction">
       <interceptor-ref name="reportingStack" />
-      <result>/WEB-INF/reporting/deliverablesReporting.ftl</result>
+      <result name="input">/WEB-INF/reporting/deliverablesReporting.ftl</result>
     </action>
 
     <action name="milestone" class="org.cgiar.ccafs.ap.action.reporting.activities.MilestoneReportingAction">

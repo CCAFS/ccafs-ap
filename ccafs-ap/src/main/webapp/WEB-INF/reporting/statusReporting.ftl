@@ -13,7 +13,7 @@
 [#import "/WEB-INF/global/macros/utils.ftl" as utilities/]
 <section>
   [#include "/WEB-INF/global/pages/reporting-secondary-menu.ftl" /]
-  [@s.form action="status!save"]
+  [@s.form action="status"]
   <article class="halfContent">
     
     <h1>${activity.leader.acronym} - [@s.text name="reporting.activityList.activity" /] ${activity.id}</h1>
@@ -71,14 +71,14 @@
       [#if hasGender]
         <div class="fullBlock">
           [#-- if the activity has gender integration the user won't be able to retract (All gender section must be disabled) --]
-          [@customForm.radioButtonGroup label="Gender Integration" name="genderIntegration" listName="genderOptions" disabled=true value="${hasGender?string('1', '0')}" /]
+          [@customForm.radioButtonGroup label="Gender Integration" name="genderIntegrationOption" listName="genderOptions" disabled=true value="${hasGender?string('1', '0')}" /]
         </div>
         <div class="fullBlock">
           [@customForm.textArea name="activity.genderIntegrationsDescription" i18nkey="reporting.activityStatus.genderIntegrationDescription" required=true disabled=true /]
         </div>
       [#else]
         <div class="fullBlock"> 
-          [@customForm.radioButtonGroup label="Gender Integration" name="genderIntegration" listName="genderOptions" value="${hasGender?string('1', '0')}" /]
+          [@customForm.radioButtonGroup label="Gender Integration" name="genderIntegrationOption" listName="genderOptions" value="${hasGender?string('1', '0')}" /]
         </div>
         <div id="genderIntegrationDescription" class="fullBlock" style="display: none; ">
           [@customForm.textArea name="activity.genderIntegrationsDescription" i18nkey="reporting.activityStatus.genderIntegrationDescription" /]
@@ -98,7 +98,7 @@
           [#list activity.contactPersons as contactPerson]    
             <tr>
               <td>${contactPerson.name}</td>
-              <td> ${contactPerson.email}</td>
+              <td>${contactPerson.email}</td>
             </tr>
           [/#list]    
         </tbody>
@@ -110,6 +110,7 @@
     
     <div class="buttons">
       [@s.submit type="button" name="save"]SAVE[/@s.submit]
+      [@s.submit type="button" name="cancel"]CANCEL[/@s.submit]
     </div>
       
     [#include "/WEB-INF/reporting/reportingStepSubMenu.ftl" /]  

@@ -40,6 +40,7 @@ public class StatusReportingAction extends BaseAction {
   private int activityID;
   private Status[] statusList;
   private Map<String, String> genderOptions;
+  private String genderIntegrationOption;
 
 
   @Inject
@@ -56,14 +57,6 @@ public class StatusReportingAction extends BaseAction {
     genderOptions.put("0", "No");
   }
 
-  @Override
-  public String execute() throws Exception {
-    System.out.println("--------EXCECUTE----------");
-    System.out.println(activity);
-    System.out.println("-------------------------");
-    return SUCCESS;
-  }
-
   public Activity getActivity() {
     return activity;
   }
@@ -71,6 +64,11 @@ public class StatusReportingAction extends BaseAction {
 
   public String getActivityRequestParameter() {
     return APConstants.ACTIVITY_REQUEST_ID;
+  }
+
+
+  public String getGenderIntegrationOption() {
+    return genderIntegrationOption;
   }
 
   public Map<String, String> getGenderOptions() {
@@ -88,6 +86,7 @@ public class StatusReportingAction extends BaseAction {
   public Status[] getStatusList() {
     return statusList;
   }
+
 
   @Override
   public void prepare() throws Exception {
@@ -107,15 +106,39 @@ public class StatusReportingAction extends BaseAction {
 
   }
 
+  @Override
   public String save() {
     // TODO Auto-generated method stub
     System.out.println("-------------SAVING-----------");
-    System.out.println(activity.getStatus());
+    System.out.println(activity != null ? activity.getStatus() : "NULL Activity");
+    System.out.println("save: " + save);
     System.out.println("------------------------------");
     return SUCCESS;
   }
 
   public void setActivity(Activity activity) {
     this.activity = activity;
+  }
+
+  public void setGenderIntegrationOption(String genderIntegrationOption) {
+    this.genderIntegrationOption = genderIntegrationOption;
+  }
+
+
+  @Override
+  public void validate() {
+    super.validate();
+    if (save) {
+      if (activity.getStatusDescription().isEmpty()) {
+        addFieldError("activity.statusDescription",
+          getText("validation.required", new String[] {getText("validation.field.required")}));
+      }
+      if (this.getGenderIntegrationOption() != null && this.getGenderIntegrationOption().equals("1")
+        && activity.getGenderIntegrationsDescription().isEmpty()) {
+        addFieldError("activity.genderIntegrationsDescription",
+          getText("validation.required", new String[] {getText("validation.field.required")}));
+      }
+    }
+
   }
 }

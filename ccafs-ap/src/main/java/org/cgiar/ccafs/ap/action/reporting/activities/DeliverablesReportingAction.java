@@ -1,8 +1,5 @@
 package org.cgiar.ccafs.ap.action.reporting.activities;
 
-import java.util.List;
-
-import org.apache.commons.lang3.StringUtils;
 import org.cgiar.ccafs.ap.action.BaseAction;
 import org.cgiar.ccafs.ap.config.APConfig;
 import org.cgiar.ccafs.ap.config.APConstants;
@@ -13,10 +10,13 @@ import org.cgiar.ccafs.ap.data.manager.LogframeManager;
 import org.cgiar.ccafs.ap.data.model.Activity;
 import org.cgiar.ccafs.ap.data.model.Deliverable;
 import org.cgiar.ccafs.ap.data.model.DeliverableType;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+
+import java.util.List;
 
 import com.google.inject.Inject;
+import org.apache.commons.lang3.StringUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 
 public class DeliverablesReportingAction extends BaseAction {
@@ -48,12 +48,6 @@ public class DeliverablesReportingAction extends BaseAction {
     this.deliverableManager = deliverableManager;
     this.activityManager = activityManager;
     this.deliverableTypeManager = deliverableTypeManager;
-  }
-
-  @Override
-  public String execute() throws Exception {
-    System.out.println("--------EXCECUTE----------");
-    return SUCCESS;
   }
 
   public Activity getActivity() {
@@ -88,6 +82,7 @@ public class DeliverablesReportingAction extends BaseAction {
     activity = activityManager.getActivityDeliverableInfo(activityID);
   }
 
+  @Override
   public String save() {
     // TODO Auto-generated method stub
     System.out.println("-------------SAVING-----------");
