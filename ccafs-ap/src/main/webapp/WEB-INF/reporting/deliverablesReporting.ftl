@@ -1,7 +1,7 @@
 [#ftl]
 [#assign title = "Activity deliverables Report" /]
 [#assign globalLibs = ["jquery", "noty"] /]
-[#assign customJS = [""] /]
+[#assign customJS = ["${baseUrl}/js/reporting/deliverablesReporting.js"] /]
 [#assign customCSS = ["${baseUrl}/css/reporting/deliverablesReporting.css"] /]
 [#assign currentSection = "reporting" /]
 [#assign currentReportingSection = "activities" /]
@@ -34,11 +34,14 @@
         [@s.iterator value="plannedDeliverables" var="deliverable"]
           <div>
             <div>
+              <a href="" class="removeDeliverable">Remove deliverable</a>
+            </div>
+            <div>
               <h6>[@s.text name="reporting.activityDeliverables.type" /]</h6>
               <p>${deliverable.type.name}</p>
             </div>
             <div>
-              <h6>[@s.text name="reporting.activityDeliverables.deliverableTitle" /]</h6>
+              <h6>[@s.text name="reporting.activityDeliverables.description" /]</h6>
               <p>${deliverable.description}</p>
             </div>
             <div>
@@ -66,9 +69,12 @@
       
       [#if newDeliverables.size() > 0]
         [@s.iterator value="newDeliverables" var="deliverable" status="stat"]
-          <div id="reportingDeliverable${stat.count}">
+          <div id="reportingDeliverable${stat.count}" class="cloned">
+            <div>
+              <a href="" class="removeDeliverable">Remove deliverable</a>
+            </div>
             [@customForm.select name="selectedType" label="" i18nkey="reporting.activityDeliverables.type" listName="deliverableTypesList" headerValue="Select a deliverable type" keyFieldName="id"  displayFieldName="name"  /]
-            [@customForm.input name="selectedDeliverable" value="${deliverable.description}" type="text" i18nkey="reporting.activityDeliverables.deliverableTitle" disabled=true  /]
+            [@customForm.input name="selectedDeliverable" value="${deliverable.description}" type="text" i18nkey="reporting.activityDeliverables.description" disabled=true  /]
             [@customForm.input name="selectedYear" value="${deliverable.year?c}" type="text" i18nkey="reporting.activityDeliverables.deliverableYear" disabled=true  /]
             [@customForm.select name="selectedStatus" label="" i18nkey="reporting.activityDeliverables.deliverableStatus" listName="deliverableStatusList" headerValue="${statusSelectHeadValue}" keyFieldName="id"  displayFieldName="name"  /]
             <input name="expected" type="hidden" value="0" />
@@ -78,21 +84,23 @@
           </div>
         [/@s.iterator]
       [#else]
-        <div id="reportingDeliverable1">
+        <div id="reportingDeliverable1" class="cloned">
+          [@customForm.input name="selectedDeliverable" value="" type="text" i18nkey="reporting.activityDeliverables.description" /]
           [@customForm.select name="selectedType" label="The fucking" i18nkey="reporting.activityDeliverables.type" listName="deliverableTypesList" headerValue="Select a deliverable type" keyFieldName="id"  displayFieldName="name"  /]
-          [@customForm.input name="selectedDeliverable" value="" type="text" i18nkey="reporting.activityDeliverables.deliverableTitle" disabled=true  /]
-          [@customForm.input name="selectedYear" value="" type="text" i18nkey="reporting.activityDeliverables.deliverableYear" disabled=true  /]
+          [@customForm.input name="selectedYear" value="" type="text" i18nkey="reporting.activityDeliverables.deliverableYear" /]
           [@customForm.select name="selectedStatus" label="" i18nkey="reporting.activityDeliverables.deliverableStatus" listName="deliverableStatusList" headerValue="${statusSelectHeadValue}" keyFieldName="id"  displayFieldName="name"  /]
           <input name="expected" type="hidden" value="0" />
           [@customForm.checkboxGroup label="" name="selectedFormat" listName="fileFormatsList" displayFieldName="name" keyFieldName="id" i18nkey="reporting.activityDeliverables.formatFiles" /]          
         </div>
       [/#if]
-      
+      <div>
+        <a href="" class="addDeliverable">Add deliverable</a>
+      </div>
     </fieldset>
     
     <div id="reportingDeliverable">
       [@customForm.select name="selectedType" label="" i18nkey="reporting.activityDeliverables.type" listName="deliverableTypesList" headerValue="Select a deliverable type" keyFieldName="id"  displayFieldName="name"  /]
-      [@customForm.input name="selectedDeliverable" value="deliverable.description" type="text" i18nkey="reporting.activityDeliverables.deliverableTitle" disabled=true  /]
+      [@customForm.input name="selectedDeliverable" value="deliverable.description" type="text" i18nkey="reporting.activityDeliverables.description" disabled=true  /]
       [@customForm.input name="selectedYear" type="text" i18nkey="reporting.activityDeliverables.deliverableYear" disabled=true  /]
       [@customForm.select name="selectedStatus" label="" i18nkey="reporting.activityDeliverables.deliverableStatus" listName="deliverableStatusList" headerValue="${statusSelectHeadValue}" keyFieldName="id"  displayFieldName="name"  /]
       <input name="expected" type="hidden" value="0" />

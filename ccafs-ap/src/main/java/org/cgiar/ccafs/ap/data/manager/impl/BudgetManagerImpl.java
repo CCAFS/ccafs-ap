@@ -1,13 +1,12 @@
 package org.cgiar.ccafs.ap.data.manager.impl;
 
+import java.util.Map;
+
+import com.google.inject.Inject;
 import org.cgiar.ccafs.ap.data.dao.BudgetDAO;
 import org.cgiar.ccafs.ap.data.manager.BudgetManager;
 import org.cgiar.ccafs.ap.data.model.Budget;
 import org.cgiar.ccafs.ap.data.model.BudgetPercentage;
-
-import java.util.Map;
-
-import com.google.inject.Inject;
 
 
 public class BudgetManagerImpl implements BudgetManager {
@@ -22,6 +21,17 @@ public class BudgetManagerImpl implements BudgetManager {
   @Override
   public Budget getBudget(int activityID) {
     Map<String, String> budgetDB = budgetDAO.getBudget(activityID);
+
+    /*
+     * If there is no budget stored in the DB
+     * creates a budget object whit identifier 0
+     * and usd 0
+     */
+    if (budgetDB == null) {
+      Budget budget = new Budget(0, 0);
+      return budget;
+    }
+
     Budget budget = new Budget();
     budget.setId(Integer.parseInt(budgetDB.get("id")));
     budget.setUsd(Double.parseDouble(budgetDB.get("usd")));
@@ -37,9 +47,8 @@ public class BudgetManagerImpl implements BudgetManager {
       bilateral.setPercentage(budgetDB.get("bilateral_percentage"));
       budget.setBilateral(bilateral);
     }
-    if (budgetDB.size() == 0) {
-      return null;
-    }
+
+
     return budget;
   }
 
