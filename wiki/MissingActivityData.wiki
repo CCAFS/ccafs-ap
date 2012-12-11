@@ -518,7 +518,6 @@ It was stored the countries only.
 
 == WORLDFISH ==
  * Activity 150: "Managing climate risks and building resilient livelihoods in tropical aquatic agricultural systems"
-   * Missing contact person email (Melody Braun; Kevin Kamp; Paula Kantor)
    * partners - unclear what "ECU" refers to.
    * Missing keywords
    
