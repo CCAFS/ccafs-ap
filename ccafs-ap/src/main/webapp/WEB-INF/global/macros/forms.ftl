@@ -29,6 +29,25 @@
   </div>
 [/#macro]
 
+[#macro checkboxGroup label name listName displayFieldName="" keyFieldName="" value="-NULL" i18nkey="" disabled=false required=false errorField="" checked=false]
+  <div class="checkbox">
+    <h6>[#if i18nkey==""]${label}[#else][@s.text name="${i18nkey}" /][/#if][#if required]<span class="red">*</span>[/#if]:</h6>
+    [#if errorField==""][@s.fielderror cssClass="fieldError" fieldName="${name}"/][#else][@s.fielderror cssClass="fieldError" fieldName="${errorfield}"/][/#if]
+    <div class="checkboxList">
+    [#if value=="-NULL"]
+      [#assign customValue][@s.property value="${name}" /][/#assign]
+    [#else]
+      [#assign customValue]${value}[/#assign]
+    [/#if]
+    [#if keyFieldName == ""]
+      [@s.checkboxlist name="${name}" list="${listName}" value="${customValue}" disabled="${disabled?string}" /]
+    [#else]
+      [@s.checkboxlist name="${name}" list="${listName}" listKey="${keyFieldName}" listValue="${displayFieldName}" value="${customValue}" disabled="${disabled?string}" /]
+    [/#if]
+    </div>    
+  </div> 
+[/#macro]
+
 [#macro radioButtonGroup label name listName class="" displayFieldName="" keyFieldName="" value="-NULL" i18nkey="" disabled=false required=false errorField="" checked=false]
   <div class="radioGroup">
     <h6>[#if i18nkey==""]${label}[#else][@s.text name="${i18nkey}" /][/#if][#if required]<span class="red">*</span>[/#if]:</h6>
@@ -45,6 +64,24 @@
   </div>
 [/#macro]
 
+[#macro select name listName label headerKey="-1" headerValue=" -- Select -- " keyFieldName="" displayFieldName="" value="-NULL" i18nkey="" disabled=false required=false errorField="" selected=false]
+  <div class="select">
+    <h6>[#if i18nkey==""]${label}[#else][@s.text name="${i18nkey}" /][/#if][#if required]<span class="red">*</span>[/#if]:</h6>
+    [#if errorField==""][@s.fielderror cssClass="fieldError" fieldName="${name}"/][#else][@s.fielderror cssClass="fieldError" fieldName="${errorfield}"/][/#if]
+    <div class="selectList">
+      [#if value=="-NULL"]
+        [#assign customValue][@s.property value="${name}" /][/#assign]
+      [#else]
+        [#assign customValue]${value}[/#assign]
+      [/#if]
+      [#if keyFieldName == ""]
+        [@s.select name="${name}" list="${listName}" value="${customValue}" headerKey="${headerKey}" headerValue="${headerValue}" disabled="${disabled?string}" /]
+      [#else]
+        [@s.select name="${name}" list="${listName}" headerKey="${headerKey}" headerValue="${headerValue}" listKey="${keyFieldName}" listValue="${displayFieldName}" value="${customValue}" disabled="${disabled?string}" /]
+      [/#if]
+    </div>
+  </div>  
+[/#macro]
 
 [#-- The following macros aren't tested yet. --]
 

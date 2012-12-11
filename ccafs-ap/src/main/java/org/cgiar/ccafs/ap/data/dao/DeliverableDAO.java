@@ -3,9 +3,8 @@ package org.cgiar.ccafs.ap.data.dao;
 import java.util.List;
 import java.util.Map;
 
-import org.cgiar.ccafs.ap.data.dao.mysql.MySQLDeliverableDAO;
-
 import com.google.inject.ImplementedBy;
+import org.cgiar.ccafs.ap.data.dao.mysql.MySQLDeliverableDAO;
 
 @ImplementedBy(MySQLDeliverableDAO.class)
 public interface DeliverableDAO {
