@@ -51,7 +51,7 @@
           <tr>
             <td class="title">[@s.text name="reporting.activityStatus.contactPerson" /]</td>
             <td colspan="3">
-               ${activity.contactPersons[0].name} 
+               ${activity.contactPersons[0].name}
               (<a id="contactEmail" href="mailto: ${activity.contactPersons[0].email} ">${activity.contactPersons[0].email}</a>)
               [#if activity.contactPersons?size > 1] <a id="viewMoreContacts" href="">, show others..</a> [/#if]
             </td>        
@@ -78,7 +78,7 @@
           [@customForm.textArea name="activity.genderIntegrationsDescription" i18nkey="reporting.activityStatus.genderIntegrationDescription" required=true /]
         </div>
       [#else]
-        <div class="fullBlock"> 
+        <div class="fullBlock">
           [@customForm.radioButtonGroup label="Gender Integration" name="genderIntegrationOption" listName="genderOptions" value="${hasGender?string('1', '0')}" /]
         </div>
         <div id="genderIntegrationDescription" class="fullBlock" style="display: none; ">

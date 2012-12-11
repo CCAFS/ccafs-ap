@@ -1,5 +1,11 @@
 package org.cgiar.ccafs.ap.data.manager.impl;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.List;
+import java.util.Map;
+
+import com.google.inject.Inject;
 import org.cgiar.ccafs.ap.data.dao.ActivityDAO;
 import org.cgiar.ccafs.ap.data.manager.ActivityManager;
 import org.cgiar.ccafs.ap.data.model.Activity;
@@ -10,13 +16,6 @@ import org.cgiar.ccafs.ap.data.model.Output;
 import org.cgiar.ccafs.ap.data.model.Status;
 import org.cgiar.ccafs.ap.data.model.Theme;
 import org.cgiar.ccafs.ap.data.model.User;
-
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
-import java.util.List;
-import java.util.Map;
-
-import com.google.inject.Inject;
 
 
 public class ActivityManagerImpl implements ActivityManager {
@@ -90,6 +89,25 @@ public class ActivityManagerImpl implements ActivityManager {
 
   @Override
   public Activity getActivityDeliverableInfo(int id) {
+    Map<String, String> activityDB = activityDAO.getActivityDeliverablesInfo(id);
+    if (activityDB != null) {
+      Activity activity = new Activity();
+      activity.setId(id);
+      activity.setTitle(activityDB.get("title"));
+
+      Leader activityLeader = new Leader();
+      activityLeader.setId(Integer.parseInt(activityDB.get("leader_id")));
+      activityLeader.setName(activityDB.get("leader_name"));
+      activityLeader.setAcronym(activityDB.get("leader_acronym"));
+      activity.setLeader(activityLeader);
+
+      return activity;
+    }
+    return null;
+  }
+
+  @Override
+  public Activity getActivityPartnersInfo(int id) {
     Map<String, String> activityDB = activityDAO.getActivityDeliverablesInfo(id);
     if (activityDB != null) {
       Activity activity = new Activity();
