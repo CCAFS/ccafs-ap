@@ -517,13 +517,6 @@ It was stored the countries only.
    * Partners not listed specifically - "NARES in SA and SEA."      
 
 == WORLDFISH ==
-  * Activity 149: "Evaluation of water resources adequacy to meet demands from aquaculture integrated  with small-scale irrigation in drought-prone areas in Malawi, Zambia and Mozambique, under present and future climate change scenarios"
-   * Missing start date and end date.
-   * Missing description.
-   * Missing contact person email (Daniel Jamu)
-   * There are no objectives
-   * partner type BMZ listed as DO when is actually GO. Entered in database as GO.
-
  * Activity 150: "Managing climate risks and building resilient livelihoods in tropical aquatic agricultural systems"
    * Missing contact person email (Melody Braun; Kevin Kamp; Paula Kantor)
    * partners - unclear what "ECU" refers to.
