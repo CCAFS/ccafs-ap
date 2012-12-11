@@ -1,8 +1,5 @@
 package org.cgiar.ccafs.ap.data.dao.mysql;
 
-import org.cgiar.ccafs.ap.data.dao.DAOManager;
-import org.cgiar.ccafs.ap.data.dao.DeliverableDAO;
-
 import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -12,6 +9,8 @@ import java.util.List;
 import java.util.Map;
 
 import com.google.inject.Inject;
+import org.cgiar.ccafs.ap.data.dao.DAOManager;
+import org.cgiar.ccafs.ap.data.dao.DeliverableDAO;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -33,12 +32,10 @@ public class MySQLDeliverableDAO implements DeliverableDAO {
     try (Connection con = databaseManager.getConnection()) {
       String query =
         "SELECT de.id, de.description, de.year, de.is_expected, ds.id as 'deliverable_status_id', "
-          + "ds.name as 'deliverable_status_name', dt.id as 'deliverable_type_id', dt.name as 'deliverable_type_name', "
-          + "ff.id as 'file_format_id', ff.name as 'file_format_name' " + "FROM deliverables de "
-          + "INNER JOIN deliverable_types dt ON de.deliverable_type_id = dt.id "
-          + "INNER JOIN deliverable_status ds ON de.deliverable_status_id = ds.id "
-          + "LEFT OUTER JOIN deliverable_formats df ON de.id = df.deliverable_id "
-          + "LEFT OUTER JOIN file_formats ff ON df.file_format_id = ff.id " + "WHERE de.activity_id=" + activityID;
+          + "ds.name as 'deliverable_status_name', dt.id as 'deliverable_type_id', dt.name as 'deliverable_type_name' "
+          + "FROM deliverables de " + "INNER JOIN deliverable_types dt ON de.deliverable_type_id = dt.id "
+          + "INNER JOIN deliverable_status ds ON de.deliverable_status_id = ds.id " + "WHERE de.activity_id="
+          + activityID + " ORDER BY is_expected DESC";
       ResultSet rs = databaseManager.makeQuery(query, con);
       while (rs.next()) {
         Map<String, String> deliverable = new HashMap<>();
@@ -50,8 +47,6 @@ public class MySQLDeliverableDAO implements DeliverableDAO {
         deliverable.put("deliverable_status_name", rs.getString("deliverable_status_name"));
         deliverable.put("deliverable_type_id", rs.getString("deliverable_type_id"));
         deliverable.put("deliverable_type_name", rs.getString("deliverable_type_name"));
-        deliverable.put("file_format_id", rs.getString("file_format_id"));
-        deliverable.put("file_format_name", rs.getString("file_format_name"));
         deliverables.add(deliverable);
       }
       rs.close();

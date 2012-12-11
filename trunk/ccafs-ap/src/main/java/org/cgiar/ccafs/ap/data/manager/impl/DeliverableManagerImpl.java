@@ -4,27 +4,30 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
+import com.google.inject.Inject;
 import org.cgiar.ccafs.ap.data.dao.DeliverableDAO;
+import org.cgiar.ccafs.ap.data.dao.FileFormatDAO;
 import org.cgiar.ccafs.ap.data.manager.DeliverableManager;
 import org.cgiar.ccafs.ap.data.model.Deliverable;
-import org.cgiar.ccafs.ap.data.model.DeliverableFormat;
 import org.cgiar.ccafs.ap.data.model.DeliverableStatus;
 import org.cgiar.ccafs.ap.data.model.DeliverableType;
-
-import com.google.inject.Inject;
+import org.cgiar.ccafs.ap.data.model.FileFormat;
 
 
 public class DeliverableManagerImpl implements DeliverableManager {
 
   private DeliverableDAO deliverableDAO;
+  private FileFormatDAO fileFormatDAO;
 
   @Inject
-  public DeliverableManagerImpl(DeliverableDAO deliverableDAO) {
+  public DeliverableManagerImpl(DeliverableDAO deliverableDAO, FileFormatDAO fileFormatDAO) {
     this.deliverableDAO = deliverableDAO;
+    this.fileFormatDAO = fileFormatDAO;
   }
 
   @Override
   public List<Deliverable> getDeliverables(int activityId) {
+    List<Map<String, String>> fileFormatsDB;
     List<Map<String, String>> deliverablesDB = deliverableDAO.getDeliverables(activityId);
 
     if (deliverablesDB != null) {
@@ -49,16 +52,21 @@ public class DeliverableManagerImpl implements DeliverableManager {
         type.setName(deliverablesDB.get(c).get("deliverable_type_name"));
         deliverable.setType(type);
 
-        // Deliverable Format
-        DeliverableFormat deliverableFormat = new DeliverableFormat();
+        // File Format
+        fileFormatsDB = fileFormatDAO.getFileFormats(deliverable.getCode());
 
-        if (deliverablesDB.get(c).get("deliverable_type_id") != null
-          && deliverablesDB.get(c).get("deliverable_type_name") != null) {
+        if (fileFormatsDB != null) {
+          FileFormat[] fileFormats = new FileFormat[fileFormatsDB.size()];
 
-          deliverableFormat.setCode(Integer.parseInt(deliverablesDB.get(c).get("deliverable_type_id")));
-          deliverableFormat.setName(deliverablesDB.get(c).get("deliverable_type_name"));
-          deliverable.setDeliverableFormat(deliverableFormat);
+          for (int i = 0; i < fileFormatsDB.size(); i++) {
+            fileFormats[i] =
+              new FileFormat(Integer.parseInt(fileFormatsDB.get(i).get("id")), fileFormatsDB.get(i).get("name"));
+          }
+          deliverable.setFileFormats(fileFormats);
+        } else {
+          deliverable.setFileFormats(null);
         }
+
 
         deliverables.add(deliverable);
       }

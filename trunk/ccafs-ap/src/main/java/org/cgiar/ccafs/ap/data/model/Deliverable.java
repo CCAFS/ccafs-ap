@@ -10,7 +10,7 @@ public class Deliverable {
   private int year;
   private DeliverableStatus status;
   private DeliverableType type;
-  private DeliverableFormat deliverableFormat;
+  private FileFormat[] fileFormats;
 
 
   public Deliverable() {
@@ -27,13 +27,13 @@ public class Deliverable {
   }
 
 
-  public DeliverableFormat getDeliverableFormat() {
-    return deliverableFormat;
+  public String getDescription() {
+    return description;
   }
 
 
-  public String getDescription() {
-    return description;
+  public FileFormat[] getFileFormats() {
+    return fileFormats;
   }
 
 
@@ -62,17 +62,17 @@ public class Deliverable {
   }
 
 
-  public void setDeliverableFormat(DeliverableFormat deliverableFormat) {
-    this.deliverableFormat = deliverableFormat;
-  }
-
-
   public void setDescription(String description) {
     this.description = description;
   }
 
+
   public void setExpected(boolean isExpected) {
     this.isExpected = isExpected;
+  }
+
+  public void setFileFormats(FileFormat[] fileFormats) {
+    this.fileFormats = fileFormats;
   }
 
   public void setStatus(DeliverableStatus status) {

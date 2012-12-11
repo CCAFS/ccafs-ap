@@ -40,7 +40,18 @@ ul.fieldError li {
   text-align: left;
 }
 
-/* Forms */
+fieldset {
+  padding: 0 20px 20px;
+  margin: 0 0 30px ;
+  border: 1px solid silver;  
+}
+
+legend {
+  text-align: center;
+  padding: 5px;
+  margin: 0; 
+  
+ }
 
 textarea {
   width: 95%;
@@ -59,7 +70,6 @@ input[type="radio"] {
 #generalMessages ul {
   width: 80%;
 }
-
 
 /************* 2. HEADER ***************/
 body {
@@ -171,6 +181,12 @@ nav#secondaryMenu ul a.currentReportingSection {
 nav#secondaryMenu ul a li {
   
 }
+
+/*************** REPORTING STEP MENU ****************/
+
+#stageMenu{ clear:left; display: block;}
+
+#stageMenu a li{display: inline; }
 
 /*************** BODY ****************/
 .content {

@@ -14,6 +14,7 @@
   <section>
   [#include "/WEB-INF/global/pages/reporting-secondary-menu.ftl" /]
   
+  [@s.form action="deliverables!save"]
   <article class="halfContent">
     <h1>
       ${activity.leader.acronym} - [@s.text name="reporting.activityList.activity" /] ${activity.id}      
@@ -23,21 +24,88 @@
     <p> ${activity.title} </p>
     
     <fieldset>
-      <legend> <h5> [@s.text name="reporting.activityDeliverables.plannedDeliverables" /] </h5> </legend>
+      <legend> <h5> [@s.text name="reporting.activityDeliverables.expectedDeliverables" /] </h5> </legend>
       
-      [#if deliverables??]
-        <div>
-          [@s.select label="What's your favor search engine?" list="deliverableTypesList" listKey="id" listValue="name" name="selectedDeliverableType" /]
-        </div>
+      [#assign statusSelectHeadValue ] [@s.text name="reporting.activityDeliverables.statusSelect" /] [/#assign]
+      
+      [@s.set var="plannedDeliverables" value="deliverables.{?#this.expected == 1}" /]
+      
+      [#if plannedDeliverables.size() > 0]
+        [@s.iterator value="plannedDeliverables" var="deliverable"]
+          <div>
+            <div>
+              <h6>[@s.text name="reporting.activityDeliverables.type" /]</h6>
+              <p>${deliverable.type.name}</p>
+            </div>
+            <div>
+              <h6>[@s.text name="reporting.activityDeliverables.deliverableTitle" /]</h6>
+              <p>${deliverable.description}</p>
+            </div>
+            <div>
+              <h6>[@s.text name="reporting.activityDeliverables.year" /]</h6>
+              
+              <p>${deliverable.year?c}</p>
+            </div>            
+            [@customForm.select name="selectedStatus" label="" i18nkey="reporting.activityDeliverables.deliverableStatus" listName="deliverableStatusList" headerValue="${statusSelectHeadValue}" keyFieldName="id"  displayFieldName="name" value="${deliverable.status.id}" /]
+            [@s.if test="%{ #deliverable.type.id in typesFileFormatNeeded}"]
+              [#if deliverable.fileFormats??]                
+                [@customForm.checkboxGroup label="" name="selectedFormat" listName="fileFormatsList" value="deliverable.fileFormats.{? #this.id}" displayFieldName="name" keyFieldName="id" i18nkey="reporting.activityDeliverables.formatFiles" /]
+              [/#if]
+            [/@s.if]
+          </div>
+        [/@s.iterator]
       [#else]
-        <p> There is no planned deliverables </p>
+        <p> [@s.text name="reporting.activityDeliverables.noPlannedDeliverables" /] </p>
+      [/#if]      
+    </fieldset>
+    
+    <fieldset>
+      <legend> <h5> New deliverables </h5> </legend>
+      
+      [@s.set var="newDeliverables" value="deliverables.{?#this.expected == 0}" /]
+      
+      [#if newDeliverables.size() > 0]
+        [@s.iterator value="newDeliverables" var="deliverable" status="stat"]
+          <div id="reportingDeliverable${stat.count}">
+            [@customForm.select name="selectedType" label="" i18nkey="reporting.activityDeliverables.type" listName="deliverableTypesList" headerValue="Select a deliverable type" keyFieldName="id"  displayFieldName="name"  /]
+            [@customForm.input name="selectedDeliverable" value="${deliverable.description}" type="text" i18nkey="reporting.activityDeliverables.deliverableTitle" disabled=true  /]
+            [@customForm.input name="selectedYear" value="${deliverable.year?c}" type="text" i18nkey="reporting.activityDeliverables.deliverableYear" disabled=true  /]
+            [@customForm.select name="selectedStatus" label="" i18nkey="reporting.activityDeliverables.deliverableStatus" listName="deliverableStatusList" headerValue="${statusSelectHeadValue}" keyFieldName="id"  displayFieldName="name"  /]
+            <input name="expected" type="hidden" value="0" />
+            [@s.if test="%{ #deliverable.type.id in typesFileFormatNeeded}"]            
+              [@customForm.checkboxGroup label="" name="selectedFormat" listName="fileFormatsList" displayFieldName="name" keyFieldName="id" i18nkey="reporting.activityDeliverables.formatFiles" /]
+            [/@s.if]
+          </div>
+        [/@s.iterator]
+      [#else]
+        <div id="reportingDeliverable1">
+          [@customForm.select name="selectedType" label="The fucking" i18nkey="reporting.activityDeliverables.type" listName="deliverableTypesList" headerValue="Select a deliverable type" keyFieldName="id"  displayFieldName="name"  /]
+          [@customForm.input name="selectedDeliverable" value="" type="text" i18nkey="reporting.activityDeliverables.deliverableTitle" disabled=true  /]
+          [@customForm.input name="selectedYear" value="" type="text" i18nkey="reporting.activityDeliverables.deliverableYear" disabled=true  /]
+          [@customForm.select name="selectedStatus" label="" i18nkey="reporting.activityDeliverables.deliverableStatus" listName="deliverableStatusList" headerValue="${statusSelectHeadValue}" keyFieldName="id"  displayFieldName="name"  /]
+          <input name="expected" type="hidden" value="0" />
+          [@customForm.checkboxGroup label="" name="selectedFormat" listName="fileFormatsList" displayFieldName="name" keyFieldName="id" i18nkey="reporting.activityDeliverables.formatFiles" /]          
+        </div>
       [/#if]
       
     </fieldset>
-      
+    
+    <div id="reportingDeliverable">
+      [@customForm.select name="selectedType" label="" i18nkey="reporting.activityDeliverables.type" listName="deliverableTypesList" headerValue="Select a deliverable type" keyFieldName="id"  displayFieldName="name"  /]
+      [@customForm.input name="selectedDeliverable" value="deliverable.description" type="text" i18nkey="reporting.activityDeliverables.deliverableTitle" disabled=true  /]
+      [@customForm.input name="selectedYear" type="text" i18nkey="reporting.activityDeliverables.deliverableYear" disabled=true  /]
+      [@customForm.select name="selectedStatus" label="" i18nkey="reporting.activityDeliverables.deliverableStatus" listName="deliverableStatusList" headerValue="${statusSelectHeadValue}" keyFieldName="id"  displayFieldName="name"  /]
+      <input name="expected" type="hidden" value="0" />
+      [@customForm.checkboxGroup label="" name="selectedFormat" listName="fileFormatsList" displayFieldName="name" keyFieldName="id" i18nkey="reporting.activityDeliverables.formatFiles" /]      
+    </div>    
+    <!-- internal parameter -->
+    <input name="activityID" type="hidden" value="${activity.id}" />
+    [@s.submit type="button" name="save"]SAVE[/@s.submit]
+         
     [#include "/WEB-INF/reporting/reportingStepSubMenu.ftl" /]  
-  </article>
-  
+    </article>
+  [/@s.form]
+ 
   </section>
   
 [#include "/WEB-INF/global/pages/footer.ftl"]
