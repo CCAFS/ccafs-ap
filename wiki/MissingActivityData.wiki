@@ -527,10 +527,6 @@ It was stored the countries only.
  * Activity 154: "Improve government and community capacity to identify and implement gender sensitive climate change adaptation in the context of ecosystem-based resource management in CTI countries and South-West Bangladesh."
    * partners - unclear to what the acronym "NEP" refers.
 
- * Activity 155: "Refinement of assessment methodology for economics of adaptation of aquaculture to climate change impacts to inform and support policy analysis and formulation based on case studies in the Mekong delta in Vietnam."
-   * Missing contact person email (Simon Attwood; Jennifer King; Eddie Allison; David Mills; Kirsten Abernethy.)
-   * There is not description.
-
 == IFPRI ==
   * Activity 156: "Assessing the impact of appropriate risk management financial packages on household’s asset portfolios in Bangladesh"
    * Percentage distribution is not specified for the budget.
