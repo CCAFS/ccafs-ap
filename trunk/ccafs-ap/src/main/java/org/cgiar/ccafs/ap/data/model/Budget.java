@@ -13,6 +13,11 @@ public class Budget {
   public Budget() {
   }
 
+  public Budget(int id, int usd) {
+    this.id = id;
+    this.usd = usd;
+  }
+
   public BudgetPercentage getBilateral() {
     return bilateral;
   }

@@ -1,8 +1,5 @@
 package org.cgiar.ccafs.ap.data.dao.mysql;
 
-import org.cgiar.ccafs.ap.data.dao.BudgetDAO;
-import org.cgiar.ccafs.ap.data.dao.DAOManager;
-
 import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -10,6 +7,8 @@ import java.util.HashMap;
 import java.util.Map;
 
 import com.google.inject.Inject;
+import org.cgiar.ccafs.ap.data.dao.BudgetDAO;
+import org.cgiar.ccafs.ap.data.dao.DAOManager;
 
 
 public class MySQLBudgetDAO implements BudgetDAO {
@@ -55,7 +54,12 @@ public class MySQLBudgetDAO implements BudgetDAO {
     } catch (SQLException e) {
       // TODO Auto-generated catch block
       e.printStackTrace();
+      return null;
     }
+    if (budgetData.isEmpty()) {
+      return null;
+    }
+
     return budgetData;
   }
 }
