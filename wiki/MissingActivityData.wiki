@@ -521,9 +521,6 @@ It was stored the countries only.
    * partners - unclear what "ECU" refers to.
    * Missing keywords
    
- * Activity 151: "Participatory Action research at farmer/village level for climate risk management in South-Western Bangladesh."
-   * Missing contact person email (Melody Braun; Kevin Kamp;)
-
   * Activity 152: "Develop and implement basin-wide climate change adaptations in Lake Chilwa, Malawi, in support of the NAPA by enhancing the capacity of communities to adopt sustainable livelihood and natural resource management practices"
    * Missing start date and end date.
    * Missing contact person email (Daniel Jamu)
