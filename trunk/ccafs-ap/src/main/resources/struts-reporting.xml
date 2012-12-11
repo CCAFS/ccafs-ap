@@ -3,19 +3,19 @@
 <struts>
 
   <!-- Add addition packages and configuration here. -->
-  <package name="reporting" namespace="/reporting" extends="ccafsap-default">    
-    <!-- default-interceptor-ref name="reportingStack" /-->
-    
+  <package name="reporting" namespace="/reporting" extends="ccafsap-default">
+    <!-- default-interceptor-ref name="reportingStack" / -->
+
     <default-action-ref name="activities" />
-    
+
     <action name="activities" class="org.cgiar.ccafs.ap.action.reporting.activities.ActivitiesReportingAction">
       <interceptor-ref name="reportingStack" />
       <result name="input">/WEB-INF/reporting/activities.ftl</result>
     </action>
-    
+
     <action name="status" class="org.cgiar.ccafs.ap.action.reporting.activities.StatusReportingAction">
       <interceptor-ref name="reportingStack" />
-      <interceptor-ref name="accessibleActivity" />     
+      <interceptor-ref name="accessibleActivity" />
       <result name="cancel" type="redirectAction">activities</result>
       <result name="input">/WEB-INF/reporting/statusReporting.ftl</result>
       <result name="success" type="redirectAction">
@@ -23,7 +23,7 @@
         <param name="activityID">${activity.id}</param>
       </result>
     </action>
-    
+
     <action name="deliverables" class="org.cgiar.ccafs.ap.action.reporting.activities.DeliverablesReportingAction">
       <interceptor-ref name="reportingStack" />
       <result name="input">/WEB-INF/reporting/deliverablesReporting.ftl</result>

@@ -43,4 +43,12 @@ public interface ActivityManager {
    * @return true if the activity exists or false otherwise.
    */
   public boolean isValidId(int id);
+
+  /**
+   * Save the activity status information into the DAO.
+   * 
+   * @param activity - Activity object with the information populated on it.
+   * @return true if the information was saved, or false otherwise.
+   */
+  public boolean saveStatus(Activity activity);
 }

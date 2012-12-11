@@ -49,8 +49,17 @@ textarea {
 
 input[type="radio"] {
   margin-left: 15px;
-    margin-right: 3px;
+  margin-right: 3px;
 }
+
+/* General Messages */
+#generalMessages {
+  text-align: center;
+}
+#generalMessages ul {
+  width: 80%;
+}
+
 
 /************* 2. HEADER ***************/
 body {

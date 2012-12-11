@@ -2,3 +2,7 @@
 nav#mainMenu ul a li {
   *display: inline; 
 }
+
+#generalMessages {
+  *margin-top: 50px;
+}
