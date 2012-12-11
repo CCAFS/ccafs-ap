@@ -17,6 +17,18 @@ $(document).ready(function() {
     $('#reportingDeliverable' + num).after(newElem);
 
     $(newElem).show("slow");
+
+    $(newElem).click(function(event) {
+      event.preventDefault();
+      var num = $('.cloned').length; // how many "duplicatable" input fields we currently have
+
+      if (num > 1) {
+        $(event.target).parent().parent().hide("slow", function() {
+          $(this).remove(); // remove the element
+        });
+      }
+    });
+
     // enable the "remove" button
     //  $('#btnDel').attr('disabled', '');
   });
@@ -25,9 +37,11 @@ $(document).ready(function() {
     event.preventDefault();
     var num = $('.cloned').length; // how many "duplicatable" input fields we currently have
 
-    $(event.target).parent().parent().hide("slow", function() {
-      $(this).remove(); // remove the element
-    });
+    if (num > 1) {
+      $(event.target).parent().parent().hide("slow", function() {
+        $(this).remove(); // remove the element
+      });
+    }
 
   });
 

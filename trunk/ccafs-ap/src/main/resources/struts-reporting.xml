@@ -28,6 +28,11 @@
       <interceptor-ref name="reportingStack" />
       <result name="input">/WEB-INF/reporting/deliverablesReporting.ftl</result>
     </action>
+    
+    <action name="partners" class="org.cgiar.ccafs.ap.action.reporting.activities.PartnersReportingAction">
+      <interceptor-ref name="reportingStack" />
+      <result name="input">/WEB-INF/reporting/partnersReporting.ftl</result>
+    </action>
 
     <action name="milestone" class="org.cgiar.ccafs.ap.action.reporting.activities.MilestoneReportingAction">
       <interceptor-ref name="reportingStack" />

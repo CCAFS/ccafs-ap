@@ -1,10 +1,9 @@
 package org.cgiar.ccafs.ap.data.manager;
 
+import com.google.inject.ImplementedBy;
 import org.cgiar.ccafs.ap.data.manager.impl.ActivityManagerImpl;
 import org.cgiar.ccafs.ap.data.model.Activity;
 import org.cgiar.ccafs.ap.data.model.User;
-
-import com.google.inject.ImplementedBy;
 
 @ImplementedBy(ActivityManagerImpl.class)
 public interface ActivityManager {
@@ -27,6 +26,14 @@ public interface ActivityManager {
    * @return an Activity object or null if no activity was found.
    */
   public Activity getActivityDeliverableInfo(int id);
+
+  /**
+   * Get an activity identified with the given id.
+   * 
+   * @param id
+   * @return an Activity object or null if no activity was found.
+   */
+  public Activity getActivityPartnersInfo(int id);
 
   /**
    * Get an activity identified with the given id.

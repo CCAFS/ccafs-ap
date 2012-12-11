@@ -85,6 +85,9 @@
         [/@s.iterator]
       [#else]
         <div id="reportingDeliverable1" class="cloned">
+          <div>
+            <a href="" class="removeDeliverable">Remove deliverable</a>
+          </div>
           [@customForm.input name="selectedDeliverable" value="" type="text" i18nkey="reporting.activityDeliverables.description" /]
           [@customForm.select name="selectedType" label="The fucking" i18nkey="reporting.activityDeliverables.type" listName="deliverableTypesList" headerValue="Select a deliverable type" keyFieldName="id"  displayFieldName="name"  /]
           [@customForm.input name="selectedYear" value="" type="text" i18nkey="reporting.activityDeliverables.deliverableYear" /]
@@ -99,6 +102,9 @@
     </fieldset>
     
     <div id="reportingDeliverable">
+      <div>
+        <a href="" class="removeDeliverable">Remove deliverable</a>
+      </div>
       [@customForm.select name="selectedType" label="" i18nkey="reporting.activityDeliverables.type" listName="deliverableTypesList" headerValue="Select a deliverable type" keyFieldName="id"  displayFieldName="name"  /]
       [@customForm.input name="selectedDeliverable" value="deliverable.description" type="text" i18nkey="reporting.activityDeliverables.description" disabled=true  /]
       [@customForm.input name="selectedYear" type="text" i18nkey="reporting.activityDeliverables.deliverableYear" disabled=true  /]
