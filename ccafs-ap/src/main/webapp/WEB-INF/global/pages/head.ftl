@@ -39,16 +39,24 @@
           <script src="${baseUrl}/js/libs/dataTables/jquery.dataTables-1.9.4.min.js"></script>
         [/#if]
         
-        [#if libraryName="jqueryUI"]
-          <script src="${baseUrl}/js/libs/jqueryUI/jquery-ui-1.9.2.custom.js"></script>
+        [#if libraryName="noty"]
+          [#-- Additional information visit: http://needim.github.com/noty/ --]
+          [#-- Style can be found on /noty/layouts/inline.js and /noty/themes/default.js --]
+          <script type="text/javascript" src="${baseUrl}/js/libs/noty/jquery.noty.js"></script>
+          <script type="text/javascript" src="${baseUrl}/js/libs/noty/layouts/inline.js"></script>
+          <script type="text/javascript" src="${baseUrl}/js/libs/noty/themes/default.js"></script>
         [/#if]
+        
   	 [/#list]
   	[/#if]
-    [#-- Second, import global template. --]
+  	
+    [#-- Second, import global javascripts and templates. --]
     <link rel="stylesheet" type="text/css" href="${baseUrl}/css/global/global.css" />
     <!--[if lte IE 7]>
       <link rel="stylesheet" type="text/css" href="${baseUrl}/css/global/ie7.css"/> 
     <![endif]-->
+    
+    <script type="text/javascript" src="${baseUrl}/js/global/global.js" ></script>
     
     [#-- Last, import the custom JS and CSS --]
     [#if customJS??]
@@ -61,4 +69,7 @@
         <link rel="stylesheet" type="text/css" href="${css}" />
       [/#list]
     [/#if]
+    
+    
+    
   </head>

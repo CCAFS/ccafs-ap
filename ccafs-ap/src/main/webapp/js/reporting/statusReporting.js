@@ -9,10 +9,14 @@ $(document).ready(function() {
   popups();
 
   $(".genderIntegrationOption").on("change", function() {
-    if ($(".genderIntegration:checked").val() == 0) {      
+    if ($(".genderIntegrationOption:checked").val() == 0) {
       $("#genderIntegrationDescription").hide("slow");
     } else {      
       $("#genderIntegrationDescription").show("slow");
-    }
+    }    
   });
+  
+  
+  
 });
+

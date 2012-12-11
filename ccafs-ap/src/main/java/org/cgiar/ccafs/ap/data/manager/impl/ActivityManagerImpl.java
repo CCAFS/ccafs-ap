@@ -164,4 +164,10 @@ public class ActivityManagerImpl implements ActivityManager {
     return activityDAO.isValidId(id);
   }
 
+  @Override
+  public boolean saveStatus(Activity activity) {
+    // TODO Auto-generated method stub
+    return true;
+  }
+
 }

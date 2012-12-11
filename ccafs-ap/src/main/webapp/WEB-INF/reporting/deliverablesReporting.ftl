@@ -1,6 +1,6 @@
 [#ftl]
 [#assign title = "Activity deliverables Report" /]
-[#assign globalLibs = ["", ""] /]
+[#assign globalLibs = ["jquery", "noty"] /]
 [#assign customJS = [""] /]
 [#assign customCSS = ["${baseUrl}/css/reporting/deliverablesReporting.css"] /]
 [#assign currentSection = "reporting" /]

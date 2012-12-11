@@ -54,16 +54,13 @@ public class DeliverablesReportingAction extends BaseAction {
     return activity;
   }
 
-
   public String getActivityRequestParameter() {
     return APConstants.ACTIVITY_REQUEST_ID;
   }
 
-
   public List<Deliverable> getDeliverables() {
     return deliverables;
   }
-
 
   public DeliverableType[] getDeliverableTypesList() {
     return deliverableTypesList;

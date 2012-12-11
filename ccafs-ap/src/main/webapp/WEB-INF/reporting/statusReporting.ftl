@@ -1,6 +1,6 @@
 [#ftl]
 [#assign title = "Activity Status Report" /]
-[#assign globalLibs = ["jquery", "jqueryUI"] /]
+[#assign globalLibs = ["jquery", "jqueryUI", "noty"] /]
 [#assign customJS = ["${baseUrl}/js/reporting/statusReporting.js", "${baseUrl}/js/global/utils.js"] /]
 [#assign customCSS = ["${baseUrl}/css/reporting/statusReporting.css", "${baseUrl}/css/libs/jqueryUI/jquery-ui-1.9.2.custom.css", ""] /]
 [#assign currentSection = "reporting" /]
@@ -9,8 +9,9 @@
 
 [#include "/WEB-INF/global/pages/header.ftl" /]
 [#include "/WEB-INF/global/pages/main-menu.ftl" /]
+
+
 [#import "/WEB-INF/global/macros/forms.ftl" as customForm /]
-[#import "/WEB-INF/global/macros/utils.ftl" as utilities/]
 <section>
   [#include "/WEB-INF/global/pages/reporting-secondary-menu.ftl" /]
   [@s.form action="status"]
@@ -74,7 +75,7 @@
           [@customForm.radioButtonGroup label="Gender Integration" name="genderIntegrationOption" listName="genderOptions" disabled=true value="${hasGender?string('1', '0')}" /]
         </div>
         <div class="fullBlock">
-          [@customForm.textArea name="activity.genderIntegrationsDescription" i18nkey="reporting.activityStatus.genderIntegrationDescription" required=true disabled=true /]
+          [@customForm.textArea name="activity.genderIntegrationsDescription" i18nkey="reporting.activityStatus.genderIntegrationDescription" required=true /]
         </div>
       [#else]
         <div class="fullBlock"> 

@@ -61,7 +61,6 @@ public class StatusReportingAction extends BaseAction {
     return activity;
   }
 
-
   public String getActivityRequestParameter() {
     return APConstants.ACTIVITY_REQUEST_ID;
   }
@@ -70,6 +69,7 @@ public class StatusReportingAction extends BaseAction {
   public String getGenderIntegrationOption() {
     return genderIntegrationOption;
   }
+
 
   public Map<String, String> getGenderOptions() {
     return genderOptions;
@@ -87,7 +87,6 @@ public class StatusReportingAction extends BaseAction {
     return statusList;
   }
 
-
   @Override
   public void prepare() throws Exception {
     super.prepare();
@@ -104,16 +103,25 @@ public class StatusReportingAction extends BaseAction {
     Budget budget = budgetManager.getBudget(activityID);
     activity.setBudget(budget);
 
+    // TEMP
+    // addActionError("Action Error 1");
+    // addActionError("Action Error 2");
+    // addActionMessage("Information Message 1");
+    // addActionMessage("Information Message 2");
   }
+
 
   @Override
   public String save() {
-    // TODO Auto-generated method stub
-    System.out.println("-------------SAVING-----------");
-    System.out.println(activity != null ? activity.getStatus() : "NULL Activity");
-    System.out.println("save: " + save);
-    System.out.println("------------------------------");
-    return SUCCESS;
+    if (activityManager.saveStatus(activity)) {
+      clearMessages();
+      addActionMessage("SUCCESS SAVED!");
+      return SUCCESS;
+    } else {
+      addActionError("There was a problem trying save the information into the database. If the problem persist, please contact to some admin staff.");
+      return INPUT;
+    }
+
   }
 
   public void setActivity(Activity activity) {
@@ -130,13 +138,11 @@ public class StatusReportingAction extends BaseAction {
     super.validate();
     if (save) {
       if (activity.getStatusDescription().isEmpty()) {
-        addFieldError("activity.statusDescription",
-          getText("validation.required", new String[] {getText("validation.field.required")}));
+        addFieldError("activity.statusDescription", getText("validation.field.required"));
       }
       if (this.getGenderIntegrationOption() != null && this.getGenderIntegrationOption().equals("1")
         && activity.getGenderIntegrationsDescription().isEmpty()) {
-        addFieldError("activity.genderIntegrationsDescription",
-          getText("validation.required", new String[] {getText("validation.field.required")}));
+        addFieldError("activity.genderIntegrationsDescription", getText("validation.field.required"));
       }
     }
 
