@@ -7,6 +7,7 @@ import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -195,4 +196,82 @@ public class MySQLActivityDAO implements ActivityDAO {
   }
 
 
+  @Override
+  public boolean saveStatus(Map<String, String> activityData) {
+    boolean problem = false;
+    try (Connection connection = databaseManager.getConnection()) {
+      // Update activity.
+      Object[] values = new Object[3];
+      values[0] = activityData.get("activity_status_id");
+      values[1] = activityData.get("status_description");
+      values[2] = activityData.get("activity_id");
+      String activityQueryPrepared =
+        "UPDATE activities SET activity_status_id = ?, status_description = ? WHERE id = ?";
+      int activityUpdatedResult = databaseManager.makeChangeSecure(connection, activityQueryPrepared, values);
+      // Reporting errors in the previous update.
+      if (activityUpdatedResult < 0) {
+        problem = true;
+        LOG.error("There was an error trying to update te status of an activity:");
+        LOG.error("  Query: " + activityQueryPrepared);
+        LOG.error("  Values: " + Arrays.toString(values));
+      }
+
+      // Check if user wants to add/update gender integration
+      if (!activityData.get("gender_integrations_description").isEmpty()) {
+
+        // Check if the gender integration records already exist.
+        String countQuery =
+          "SELECT count(id) FROM gender_integrations WHERE activity_id = " + activityData.get("activity_id");
+        ResultSet rs = databaseManager.makeQuery(countQuery, connection);
+        if (rs.next()) {
+          int genderExistence = rs.getInt(1);
+          if (genderExistence == 1) {
+            // if gender exists there must be an update statement.
+            String genderUpdatePrepared = "UPDATE gender_integrations SET description = ? WHERE activity_id = ?";
+            values = new Object[2];
+            values[0] = activityData.get("gender_integrations_description");
+            values[1] = activityData.get("activity_id");
+            int insertedGenderRows = databaseManager.makeChangeSecure(connection, genderUpdatePrepared, values);
+            if (insertedGenderRows == 1) {
+              // record updated
+              LOG.debug("Activity " + activityData.get("activity_id")
+                + ": Gender integration description successfully updated.");
+            } else {
+              // problem.
+              problem = true;
+              LOG.error("Activity " + activityData.get("activity_id")
+                + ": Problem trying to update the gender description.");
+              LOG.error("  Query: " + genderUpdatePrepared);
+              LOG.error("  Values: " + Arrays.toString(values));
+            }
+          } else {
+            // if gender doesn't exists there must an insert statement.
+            String genderInsertPrepared = "INSERT INTO gender_integrations(description, activity_id) VALUES(?, ?)";
+            values = new Object[2];
+            values[0] = activityData.get("gender_integrations_description");
+            values[1] = activityData.get("activity_id");
+            int insertedGenderRows = databaseManager.makeChangeSecure(connection, genderInsertPrepared, values);
+            if (insertedGenderRows == 1) {
+              // record added
+              LOG.debug("Activity " + activityData.get("activity_id")
+                + ": Gender integration description successfully added.");
+            } else {
+              // problem.
+              problem = true;
+              LOG.error("Activity " + activityData.get("activity_id")
+                + ": Problem trying to add the gender description.");
+              LOG.error("  Query: " + genderInsertPrepared);
+              LOG.error("  Values: " + Arrays.toString(values));
+            }
+          }
+        }
+        rs.close();
+      }
+
+    } catch (SQLException e) {
+      // TODO Auto-generated catch block
+      e.printStackTrace();
+    }
+    return !problem;
+  }
 }

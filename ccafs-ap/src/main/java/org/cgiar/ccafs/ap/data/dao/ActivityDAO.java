@@ -1,9 +1,9 @@
 package org.cgiar.ccafs.ap.data.dao;
 
+import org.cgiar.ccafs.ap.data.dao.mysql.MySQLActivityDAO;
+
 import java.util.List;
 import java.util.Map;
-
-import org.cgiar.ccafs.ap.data.dao.mysql.MySQLActivityDAO;
 
 import com.google.inject.ImplementedBy;
 
@@ -52,5 +52,12 @@ public interface ActivityDAO {
    */
   public boolean isValidId(int id);
 
+  /**
+   * Save the status reporting information of the given activity.
+   * 
+   * @param activityData - Map with the data to be saved.
+   * @return true if the data was saved successfully, or false otherwise.
+   */
+  public boolean saveStatus(Map<String, String> activityData);
 
 }
