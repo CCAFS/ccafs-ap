@@ -1,11 +1,5 @@
 package org.cgiar.ccafs.ap.data.manager.impl;
 
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
-import java.util.List;
-import java.util.Map;
-
-import com.google.inject.Inject;
 import org.cgiar.ccafs.ap.data.dao.ActivityDAO;
 import org.cgiar.ccafs.ap.data.manager.ActivityManager;
 import org.cgiar.ccafs.ap.data.model.Activity;
@@ -17,6 +11,13 @@ import org.cgiar.ccafs.ap.data.model.Status;
 import org.cgiar.ccafs.ap.data.model.Theme;
 import org.cgiar.ccafs.ap.data.model.User;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
+import com.google.inject.Inject;
 
 public class ActivityManagerImpl implements ActivityManager {
 
@@ -184,8 +185,11 @@ public class ActivityManagerImpl implements ActivityManager {
 
   @Override
   public boolean saveStatus(Activity activity) {
-    // TODO Auto-generated method stub
-    return true;
+    Map<String, String> activityData = new HashMap<>();
+    activityData.put("activity_id", "" + activity.getId());
+    activityData.put("activity_status_id", "" + activity.getStatus().getId());
+    activityData.put("status_description", activity.getStatusDescription());
+    activityData.put("gender_integrations_description", activity.getGenderIntegrationsDescription());
+    return activityDAO.saveStatus(activityData);
   }
-
 }

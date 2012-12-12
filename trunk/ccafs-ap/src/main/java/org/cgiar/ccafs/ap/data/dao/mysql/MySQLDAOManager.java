@@ -6,6 +6,7 @@ import org.cgiar.ccafs.ap.util.PropertiesManager;
 
 import java.sql.Connection;
 import java.sql.DriverManager;
+import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
@@ -34,9 +35,31 @@ public class MySQLDAOManager extends DAOManager {
       Statement stm = conn.createStatement();
       return stm.executeUpdate(updateQuery);
     } catch (SQLException e) {
+      // TODO Auto-generated catch block
       e.printStackTrace();
       return -1;
     }
+  }
+
+  public int makeChangeSecure(Connection conn, String preparedUpdateQuery, Object[] values) {
+    try (PreparedStatement stm = conn.prepareStatement(preparedUpdateQuery)) {
+      for (int c = 0; c < values.length; c++) {
+        if (values[c] instanceof String) {
+          stm.setString((c + 1), (String) values[c]);
+        } else if (values[c] instanceof Integer) {
+          stm.setInt((c + 1), (int) values[c]);
+        } else if (values[c] instanceof Boolean) {
+          stm.setBoolean((c + 1), (boolean) values[c]);
+        } else {
+          stm.setObject((c + 1), values[c]);
+        }
+      }
+      return stm.executeUpdate();
+    } catch (SQLException e) {
+      // TODO Auto-generated catch block
+      e.printStackTrace();
+    }
+    return -1;
   }
 
   @Override
@@ -58,6 +81,7 @@ public class MySQLDAOManager extends DAOManager {
         DriverManager.getConnection("jdbc:mysql://" + ip + ":" + port + "/" + databaseName, user, password);
       return conexion;
     } catch (SQLException e) {
+      // TODO Auto-generated catch block
       e.printStackTrace();
       return null;
     }
@@ -68,13 +92,14 @@ public class MySQLDAOManager extends DAOManager {
     try {
       Class.forName("com.mysql.jdbc.Driver").newInstance();
     } catch (ClassNotFoundException e) {
+      // TODO Auto-generated catch block
       e.printStackTrace();
       return false;
     } catch (InstantiationException e) {
-
+      // TODO Auto-generated catch block
       e.printStackTrace();
     } catch (IllegalAccessException e) {
-
+      // TODO Auto-generated catch block
       e.printStackTrace();
     }
     return true;

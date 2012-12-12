@@ -114,11 +114,10 @@ public class StatusReportingAction extends BaseAction {
   @Override
   public String save() {
     if (activityManager.saveStatus(activity)) {
-      clearMessages();
-      addActionMessage("SUCCESS SAVED!");
+      addActionMessage(getText("reporting.activityStatus.saved"));
       return SUCCESS;
     } else {
-      addActionError("There was a problem trying save the information into the database. If the problem persist, please contact to some admin staff.");
+      addActionError(getText("reporting.activityStatus.problem"));
       return INPUT;
     }
 
