@@ -42,16 +42,15 @@ ul.fieldError li {
 
 fieldset {
   padding: 0 20px 20px;
-  margin: 0 0 30px ;
-  border: 1px solid silver;  
+  margin: 0 0 30px;
+  border: 1px solid silver;
 }
 
 legend {
   text-align: center;
   padding: 5px;
-  margin: 0; 
-  
- }
+  margin: 0;
+}
 
 textarea {
   width: 95%;
@@ -67,6 +66,7 @@ input[type="radio"] {
 #generalMessages {
   text-align: center;
 }
+
 #generalMessages ul {
   width: 80%;
 }
@@ -183,10 +183,14 @@ nav#secondaryMenu ul a li {
 }
 
 /*************** REPORTING STEP MENU ****************/
+#stageMenu {
+  clear: left;
+  display: block;
+}
 
-#stageMenu{ clear:left; display: block;}
-
-#stageMenu a li{display: inline; }
+#stageMenu a li {
+  display: inline;
+}
 
 /*************** BODY ****************/
 .content {
@@ -224,14 +228,20 @@ nav#secondaryMenu ul a li {
   margin-bottom: 10px;
 }
 
-.halfContent h6 + * {
+.halfContent h6+* {
   margin-left: 15px;
 }
 
 .fullBlock {
-    display: block;
-    padding: 5px;
-    width: 100%;
+  display: block;
+  padding: 5px;
+  width: 100%;
+}
+
+.thirdPartBlock {
+  display: inline-block;
+  padding: 5px;
+  width: 30%;  
 }
 
 .buttons {
@@ -265,7 +275,6 @@ nav#secondaryMenu ul a li {
 #stageMenu a li {
   display: inline;
 }
-
 
 /*************** FOOTER ****************/
 #footerContainer {
