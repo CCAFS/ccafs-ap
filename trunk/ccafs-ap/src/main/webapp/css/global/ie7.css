@@ -6,3 +6,27 @@ nav#mainMenu ul a li {
 #generalMessages {
   *margin-top: 50px;
 }
+
+/*************** BODY ****************/
+
+.thirdPartBlock {
+  zomm: 1;
+  *display: inline;
+  padding: 5px;
+  width: 30%;  
+}
+
+
+/*------- Reporting section -------*/
+
+ /*-- Deliverables subSection -- */
+ 
+ #expectedDeliverables .checkboxGroup .checkbox,
+ #newDeliverables .checkboxGroup .checkbox,{
+  zoom: 1;
+  *display: inline;  
+  width: 30%;
+  padding : 5px;   
+}
+ 
+ 
