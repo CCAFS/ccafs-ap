@@ -23,7 +23,7 @@
    * Missing keywords.
 
   * Activity 24: "Identify and evaluate differential role and impact of risk management strategies in maize-legume systems on women and men using farm household bioeconomic models"
-   * Missing contact person emails (Songporne, Shiferaw, Bekele,Mulu, Yohannes,Jaleta, Moti, Kassie, Menale, Sika)
+   * Missing contact person emails (Mulu, Yohannes, & Jaleta, Moti)
    * Missing keywords.
    * Bilateral option is checked but no range was selected. It is not clear if the activity is using or not bilateral funds.
 
