@@ -157,6 +157,8 @@ It was stored the countries only.
 == ICRAF  ==
   * Activity 87: "(1) international experiences with Payments for Environmental Services (carbon) in different systems, including capacity building at national and local levels; (2) Assessment of biocarbon project costs and institutions"
    * Missing contact person email and complete names (Sarah Namirembe, Andy & Jianchu)
+
+THESE ACTIVITIES DONT BELONG TO ICRAF:
    
   * Activity 276: "Development of global agroforestry suitability maps in a changed climate"
    * There aren't partners.
