@@ -23,9 +23,6 @@
   * Activity 26: "Participatory experimentation with risk management strategies in rice-wheat-based systems in the IGP."
    * Nothing checked for gender integration.
 
-  * Activity 37: "Design and implementation of protocols to assess C sequestration under different management practices at field and landscape scale and identification of data gaps in the various systems of the two regions and acquisition of field equipment. Collection of primary and secondary data on soil carbon dynamics under a range of management practices."
-   * Missing contact person emails (Santiago Lopez Ridaura, Bruno).
-
   * Activity 38: "Review of state of the art  in assessing GHG (N volatilization and CO2) and development of protocols + acquisition of field and lab equipment. Implementation of regional trials to estimate GHG under a range of management practices in IGP irrigated agroecologies"
    * Missing contact person emails (Sapkota, Tek,  Bruno).
 
