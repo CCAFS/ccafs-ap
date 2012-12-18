@@ -5,7 +5,6 @@
 
 == CIMMYT  ==
   * Activity 1: "Communication of successful strategies, approaches, policies, and investments contributing to improved science-informed CC-ag development-food security policies and decision making in rice-wheat systems and maize-legume systems in view of main- streaming adaptation strategies."
-   * Missing contact person emails (Mike Listman, Jon Hellin).
    * No partners listed.
 
   * Activity 3: "Assembling and development of data and parameters to integrate maize and wheat systems information into global models, including calibration of selected benchmark cultivars for target environments."
