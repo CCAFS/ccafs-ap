@@ -1,9 +1,10 @@
 package org.cgiar.ccafs.ap.data.manager;
 
-import com.google.inject.ImplementedBy;
 import org.cgiar.ccafs.ap.data.manager.impl.ActivityManagerImpl;
 import org.cgiar.ccafs.ap.data.model.Activity;
 import org.cgiar.ccafs.ap.data.model.User;
+
+import com.google.inject.ImplementedBy;
 
 @ImplementedBy(ActivityManagerImpl.class)
 public interface ActivityManager {
@@ -20,28 +21,20 @@ public interface ActivityManager {
   public Activity[] getActivities(int year, User user);
 
   /**
-   * Get an activity identified with the given id.
-   * 
-   * @param id
-   * @return an Activity object or null if no activity was found.
-   */
-  public Activity getActivityDeliverableInfo(int id);
-
-  /**
-   * Get an activity identified with the given id.
-   * 
-   * @param id
-   * @return an Activity object or null if no activity was found.
-   */
-  public Activity getActivityPartnersInfo(int id);
-
-  /**
-   * Get an activity identified with the given id.
+   * Get an activity identified with the given id populated only with the data showed in the status reporting interface.
    * 
    * @param id
    * @return an Activity object or null if no activity was found.
    */
   public Activity getActivityStatusInfo(int id);
+
+  /**
+   * Get an activity with its basic information (ID, Title, Leader)
+   * 
+   * @param id - identifier
+   * @return an Activity object or null if no activity was found with the given id.
+   */
+  public Activity getSimpleActivity(int id);
 
   /**
    * Validate if the given id actually exist in the current list of activities.

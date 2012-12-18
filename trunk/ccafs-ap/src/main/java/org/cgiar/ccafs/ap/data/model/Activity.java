@@ -1,6 +1,7 @@
 package org.cgiar.ccafs.ap.data.model;
 
 import java.util.Date;
+import java.util.List;
 
 import org.apache.commons.lang3.builder.ToStringBuilder;
 
@@ -20,6 +21,8 @@ public class Activity {
   private Status status;
   private Budget budget;
   private String statusDescription;
+  private List<Deliverable> deliverables;
+  private List<Partner> partners;
 
   public Activity() {
   }
@@ -30,6 +33,10 @@ public class Activity {
 
   public ContactPerson[] getContactPersons() {
     return contactPersons;
+  }
+
+  public List<Deliverable> getDeliverables() {
+    return deliverables;
   }
 
   public String getDescription() {
@@ -54,6 +61,10 @@ public class Activity {
 
   public Milestone getMilestone() {
     return milestone;
+  }
+
+  public List<Partner> getPartners() {
+    return partners;
   }
 
   public Date getStartDate() {
@@ -88,6 +99,10 @@ public class Activity {
     this.contactPersons = contactPersons;
   }
 
+  public void setDeliverables(List<Deliverable> deliverables) {
+    this.deliverables = deliverables;
+  }
+
   public void setDescription(String description) {
     this.description = description;
   }
@@ -114,6 +129,10 @@ public class Activity {
 
   public void setMilestone(Milestone milestone) {
     this.milestone = milestone;
+  }
+
+  public void setPartners(List<Partner> partners) {
+    this.partners = partners;
   }
 
   public void setPlanning(boolean isPlanning) {

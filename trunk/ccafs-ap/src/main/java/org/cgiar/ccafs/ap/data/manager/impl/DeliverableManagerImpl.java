@@ -1,10 +1,5 @@
 package org.cgiar.ccafs.ap.data.manager.impl;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
-
-import com.google.inject.Inject;
 import org.cgiar.ccafs.ap.data.dao.DeliverableDAO;
 import org.cgiar.ccafs.ap.data.dao.FileFormatDAO;
 import org.cgiar.ccafs.ap.data.manager.DeliverableManager;
@@ -12,6 +7,12 @@ import org.cgiar.ccafs.ap.data.model.Deliverable;
 import org.cgiar.ccafs.ap.data.model.DeliverableStatus;
 import org.cgiar.ccafs.ap.data.model.DeliverableType;
 import org.cgiar.ccafs.ap.data.model.FileFormat;
+
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
+
+import com.google.inject.Inject;
 
 
 public class DeliverableManagerImpl implements DeliverableManager {
@@ -35,7 +36,7 @@ public class DeliverableManagerImpl implements DeliverableManager {
       for (int c = 0; c < deliverablesDB.size(); c++) {
 
         Deliverable deliverable = new Deliverable();
-        deliverable.setCode(Integer.parseInt(deliverablesDB.get(c).get("id")));
+        deliverable.setId(Integer.parseInt(deliverablesDB.get(c).get("id")));
         deliverable.setDescription(deliverablesDB.get(c).get("description"));
         deliverable.setYear(Integer.parseInt(deliverablesDB.get(c).get("year")));
         deliverable.setExpected(Integer.parseInt(deliverablesDB.get(c).get("is_expected")) == 1);
@@ -53,14 +54,13 @@ public class DeliverableManagerImpl implements DeliverableManager {
         deliverable.setType(type);
 
         // File Format
-        fileFormatsDB = fileFormatDAO.getFileFormats(deliverable.getCode());
+        fileFormatsDB = fileFormatDAO.getFileFormats(deliverable.getId());
 
         if (fileFormatsDB != null) {
-          FileFormat[] fileFormats = new FileFormat[fileFormatsDB.size()];
-
+          List<FileFormat> fileFormats = new ArrayList<>();
           for (int i = 0; i < fileFormatsDB.size(); i++) {
-            fileFormats[i] =
-              new FileFormat(Integer.parseInt(fileFormatsDB.get(i).get("id")), fileFormatsDB.get(i).get("name"));
+            fileFormats.add(new FileFormat(Integer.parseInt(fileFormatsDB.get(i).get("id")), fileFormatsDB.get(i).get(
+              "name")));
           }
           deliverable.setFileFormats(fileFormats);
         } else {
