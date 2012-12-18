@@ -313,7 +313,6 @@ THESE ACTIVITIES DONT BELONG TO ICRAF:
   * Activity 131: "Synthesis of groundwater assessments from over 10 countries throughout Africa; Evaluating prospects and constraints of Managed Aquifer Recharge (MAR) for augmenting water supplies for poor farming communities in South Asia; Hydro-economic assessment of the potential for flood water harvesting in selected regions of SEA."
    * Missing start date and end date.
    * Missing contact person email ( Prathapar Sanmugam)
-   * Some partners not specified: "Many NARES in 12 countries of Africa."
 
   * Activity 132: "Synthesys of IWMI previous work in the Volta and Blue Nile Basins on water storage evaluation under future climates, and examination of techical, socio-economic and environmental criteria for evaluation of various storage options; Analysis of prospects and constraints of water storage development under current and future water availability/ use in Nepal"
    * Can't locate River's Basins whitout specific positions. The entire country was stored.
