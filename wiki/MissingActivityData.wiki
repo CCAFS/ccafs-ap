@@ -24,7 +24,7 @@
    * Missing contact person emails (Mulu, Yohannes, & Jaleta, Moti)
    
   * Activity 26: "Participatory experimentation with risk management strategies in rice-wheat-based systems in the IGP."
-   * Missing description for gender integration.
+   * Nothing checked for gender integration.
 
   * Activities 29 and 30: "Evaluation of historic maize  data and analysis of GIS data to identify climate analogues and support farmers' risk management strategies under climate variability."
    * Activities 29 and 30 have the same title.
