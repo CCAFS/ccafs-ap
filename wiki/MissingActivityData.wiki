@@ -7,14 +7,8 @@
   * Activity 1: "Communication of successful strategies, approaches, policies, and investments contributing to improved science-informed CC-ag development-food security policies and decision making in rice-wheat systems and maize-legume systems in view of main- streaming adaptation strategies."
    * No partners listed.
 
-  * Activity 3: "Assembling and development of data and parameters to integrate maize and wheat systems information into global models, including calibration of selected benchmark cultivars for target environments."
-   * Missing contact person emails (Shiferaw, Bekele, Uran Chung).
-
-  * Activity 4: "Integrated assessments for estimating future impacts and identifying policy options for adaptation to and mitigation of climate change."
-   * Missing contact person emails (Shiferaw, Bekele; Chung, Uran).
-
-  * Activity 8: "Collection of agronomic & management data for past & current on-farm research sites in IGP (rice-wheat-maize based systems, CSISA, RWC) and prioritize filling the gaps (short and long term data collection + reviewing long term trials)."
-   * Missing contact person emails (Bruno, M. Devare, M. Gathala, T. Krupnik).
+   * Activity 8: "Collection of agronomic & management data for past & current on-farm research sites in IGP (rice-wheat-maize based systems, CSISA, RWC) and prioritize filling the gaps (short and long term data collection + reviewing long term trials)."
+   * Missing contact person emails (M. Devare, M. Gathala, T. Krupnik).
    * There is range selected in the bilateral budget option list, however the checkbox was not checked and it is not clear if the activity is using or not bilateral funds.
 
   * Activity 10: "Curation and analysis of historical wheat germplasm evaluation data."
