@@ -19,7 +19,7 @@
    * Bilateral budget was checked but no range was selected.
 
   * Activity 14: "Data compilation to identify coping and adaptation strategies of farmers and the poor to manage future climate outcomes"
-   * Missing contact person emails (Songporne, Kassie, Menale & Shiferaw, Bekele)
+   * Missing contact person emails (Kassie, Menale & Shiferaw, Bekele)
    * Missing keywords.
 
   * Activity 24: "Identify and evaluate differential role and impact of risk management strategies in maize-legume systems on women and men using farm household bioeconomic models"
