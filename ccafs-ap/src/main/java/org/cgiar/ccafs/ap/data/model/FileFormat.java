@@ -16,12 +16,26 @@ public class FileFormat {
     this.name = name;
   }
 
+  @Override
+  public boolean equals(Object obj) {
+    if (obj instanceof FileFormat) {
+      FileFormat ff = (FileFormat) obj;
+      return ff.getId() == this.getId() && ff.getName().equals(this.getName());
+    }
+    return super.equals(obj);
+  }
+
   public int getId() {
     return id;
   }
 
   public String getName() {
     return name;
+  }
+
+  @Override
+  public int hashCode() {
+    return this.getId() + this.getName().hashCode();
   }
 
   public void setId(int id) {

@@ -34,15 +34,15 @@ public interface ActivityDAO {
    * @param id - identifier.
    * @return a Map with the activity information.
    */
-  public Map<String, String> getActivityDeliverablesInfo(int id);
+  public Map<String, String> getActivityStatusInfo(int id);
 
   /**
-   * Get an an activity identified with the given year.
+   * Get the basic main information of an activity identified with the given integer.
    * 
-   * @param id - identifier.
+   * @param id - Activity identifier.
    * @return a Map with the activity information.
    */
-  public Map<String, String> getActivityStatusInfo(int id);
+  public Map<String, String> getSimpleActivity(int id);
 
   /**
    * Validate if the given id actually exist in the current list of activities.

@@ -110,35 +110,6 @@ public class MySQLActivityDAO implements ActivityDAO {
   }
 
   @Override
-  public Map<String, String> getActivityDeliverablesInfo(int id) {
-    Map<String, String> activity = new HashMap<>();
-    try (Connection con = databaseManager.getConnection()) {
-      String query =
-        "SELECT a.title, a.id, al.id as 'leader_id', 'al.name' as 'leader_name', al.acronym as 'leader_acronym' "
-          + "FROM activities a, activity_leaders al " + "WHERE a.activity_leader_id = al.id AND a.id = " + id;
-      ResultSet rs = databaseManager.makeQuery(query, con);
-      if (rs.next()) {
-        activity.put("title", rs.getString("title"));
-        activity.put("id", rs.getString("id"));
-        activity.put("leader_id", rs.getString("leader_id"));
-        activity.put("leader_name", rs.getString("leader_name"));
-        activity.put("leader_acronym", rs.getString("leader_acronym"));
-      }
-      rs.close();
-    } catch (SQLException e) {
-      // TODO Auto-generated catch block
-      e.printStackTrace();
-    }
-
-    if (activity.isEmpty()) {
-      return null;
-    } else {
-      return activity;
-    }
-  }
-
-
-  @Override
   public Map<String, String> getActivityStatusInfo(int id) {
     Map<String, String> activity = new HashMap<>();
     try (Connection con = databaseManager.getConnection()) {
@@ -179,6 +150,35 @@ public class MySQLActivityDAO implements ActivityDAO {
       return activity;
     }
   }
+
+  @Override
+  public Map<String, String> getSimpleActivity(int id) {
+    Map<String, String> activity = new HashMap<>();
+    try (Connection con = databaseManager.getConnection()) {
+      String query =
+        "SELECT a.title, a.id, al.id as 'leader_id', 'al.name' as 'leader_name', al.acronym as 'leader_acronym' "
+          + "FROM activities a, activity_leaders al " + "WHERE a.activity_leader_id = al.id AND a.id = " + id;
+      ResultSet rs = databaseManager.makeQuery(query, con);
+      if (rs.next()) {
+        activity.put("title", rs.getString("title"));
+        activity.put("id", rs.getString("id"));
+        activity.put("leader_id", rs.getString("leader_id"));
+        activity.put("leader_name", rs.getString("leader_name"));
+        activity.put("leader_acronym", rs.getString("leader_acronym"));
+      }
+      rs.close();
+    } catch (SQLException e) {
+      // TODO Auto-generated catch block
+      e.printStackTrace();
+    }
+
+    if (activity.isEmpty()) {
+      return null;
+    } else {
+      return activity;
+    }
+  }
+
 
   @Override
   public boolean isValidId(int id) {

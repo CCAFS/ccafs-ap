@@ -1,9 +1,5 @@
 package org.cgiar.ccafs.ap.action.reporting.activities;
 
-import java.util.List;
-
-import com.google.inject.Inject;
-import org.apache.commons.lang3.StringUtils;
 import org.cgiar.ccafs.ap.action.BaseAction;
 import org.cgiar.ccafs.ap.config.APConfig;
 import org.cgiar.ccafs.ap.config.APConstants;
@@ -14,10 +10,12 @@ import org.cgiar.ccafs.ap.data.manager.DeliverableTypeManager;
 import org.cgiar.ccafs.ap.data.manager.FileFormatManager;
 import org.cgiar.ccafs.ap.data.manager.LogframeManager;
 import org.cgiar.ccafs.ap.data.model.Activity;
-import org.cgiar.ccafs.ap.data.model.Deliverable;
 import org.cgiar.ccafs.ap.data.model.DeliverableStatus;
 import org.cgiar.ccafs.ap.data.model.DeliverableType;
 import org.cgiar.ccafs.ap.data.model.FileFormat;
+
+import com.google.inject.Inject;
+import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -37,20 +35,14 @@ public class DeliverablesReportingAction extends BaseAction {
   private ActivityManager activityManager;
 
   // Model
-  private List<Deliverable> deliverables;
   private DeliverableType[] deliverableTypesList;
   private DeliverableStatus[] deliverableStatusList;
   private FileFormat[] fileFormatsList;
-
-  // This list contains the deliverables types which need specify
-  // a format file
-
-  private int[] typesFileFormatNeeded;
-
+  private int[] deliverableTypeIdsNeeded;
+  private int[] fileFormatIds;
   private Activity activity;
-
-
   private int activityID;
+
 
   @Inject
   public DeliverablesReportingAction(APConfig config, LogframeManager logframeManager,
@@ -74,12 +66,13 @@ public class DeliverablesReportingAction extends BaseAction {
     return APConstants.ACTIVITY_REQUEST_ID;
   }
 
-  public List<Deliverable> getDeliverables() {
-    return deliverables;
-  }
-
   public DeliverableStatus[] getDeliverableStatusList() {
     return deliverableStatusList;
+  }
+
+
+  public int[] getDeliverableTypeIdsNeeded() {
+    return deliverableTypeIdsNeeded;
   }
 
 
@@ -87,38 +80,45 @@ public class DeliverablesReportingAction extends BaseAction {
     return deliverableTypesList;
   }
 
+  public int[] getFileFormatIds() {
+    return fileFormatIds;
+  }
+
 
   public FileFormat[] getFileFormatsList() {
     return fileFormatsList;
   }
 
-  public int[] getTypesFileFormatNeeded() {
-    return typesFileFormatNeeded;
-  }
-
-
   @Override
   public void prepare() throws Exception {
     super.prepare();
     activityID = Integer.parseInt(StringUtils.trim(this.getRequest().getParameter(APConstants.ACTIVITY_REQUEST_ID)));
-    // get information of deliverables that belong to the activity whit activityID
-    deliverables = deliverableManager.getDeliverables(activityID);
+
     deliverableTypesList = deliverableTypeManager.getDeliverableTypes();
     deliverableStatusList = deliverableStatusManager.getDeliverableStatus();
     // get information of files format
     fileFormatsList = fileFormatManager.getFileFormats();
-    activity = activityManager.getActivityDeliverableInfo(activityID);
+    // getting file format list of ids to chech in the interface all those already checked file formats.
+    fileFormatIds = new int[fileFormatsList.length];
+    for (int c = 0; c < fileFormatsList.length; c++) {
+      fileFormatIds[c] = fileFormatsList[c].getId();
+    }
+    activity = activityManager.getSimpleActivity(activityID);
 
-    // The deliverables types that need a file format specification are:
-    // 1 - Data
-    // 4 - Models tools and software
+    // get information of deliverables that belong to the activity whit activityID
+    activity.setDeliverables(deliverableManager.getDeliverables(activityID));
 
-    typesFileFormatNeeded = new int[2];
-    typesFileFormatNeeded[0] = deliverableTypesList[0].getId();
-    typesFileFormatNeeded[1] = deliverableTypesList[3].getId();
+    // Deliverables types that need a file format specification:
+    // ID = 1 - Data
+    // ID = 4 - Models tools and software
+    deliverableTypeIdsNeeded = new int[2];
+    deliverableTypeIdsNeeded[0] = deliverableTypesList[0].getId();
+    deliverableTypeIdsNeeded[1] = deliverableTypesList[3].getId();
+
+
   }
 
-	@Override
+  @Override
   public String save() {
     // TODO Auto-generated method stub
     System.out.println("-------------SAVING-----------");
@@ -129,10 +129,6 @@ public class DeliverablesReportingAction extends BaseAction {
     this.activity = activity;
   }
 
-  public void setDeliverables(List<Deliverable> deliverables) {
-    this.deliverables = deliverables;
-  }
-
   public void setDeliverableStatusList(DeliverableStatus[] deliverableStatusList) {
     this.deliverableStatusList = deliverableStatusList;
   }
@@ -140,6 +136,5 @@ public class DeliverablesReportingAction extends BaseAction {
   public void setFileFormatsList(FileFormat[] fileFormatsList) {
     this.fileFormatsList = fileFormatsList;
   }
-
 
 }

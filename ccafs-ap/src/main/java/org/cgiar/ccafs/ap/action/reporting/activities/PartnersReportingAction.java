@@ -1,9 +1,5 @@
 package org.cgiar.ccafs.ap.action.reporting.activities;
 
-import java.util.List;
-
-import com.google.inject.Inject;
-import org.apache.commons.lang3.StringUtils;
 import org.cgiar.ccafs.ap.action.BaseAction;
 import org.cgiar.ccafs.ap.config.APConfig;
 import org.cgiar.ccafs.ap.config.APConstants;
@@ -12,8 +8,10 @@ import org.cgiar.ccafs.ap.data.manager.LogframeManager;
 import org.cgiar.ccafs.ap.data.manager.PartnerManager;
 import org.cgiar.ccafs.ap.data.manager.PartnerTypeManager;
 import org.cgiar.ccafs.ap.data.model.Activity;
-import org.cgiar.ccafs.ap.data.model.Partner;
 import org.cgiar.ccafs.ap.data.model.PartnerType;
+
+import com.google.inject.Inject;
+import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -22,17 +20,15 @@ public class PartnersReportingAction extends BaseAction {
 
   private static final long serialVersionUID = 1380416261959252826L;
 
-  // Loggin
+  // Logger
   private static final Logger LOG = LoggerFactory.getLogger(PartnersReportingAction.class);
 
   // Managers
-  private LogframeManager logframeManager;
   private PartnerManager partnerManager;
   private ActivityManager activityManager;
   private PartnerTypeManager partnerTypeManager;
 
   // Model
-  private List<Partner> partners;
   private PartnerType[] partnerTypes;
   private Activity activity;
 
@@ -58,10 +54,6 @@ public class PartnersReportingAction extends BaseAction {
   }
 
 
-  public List<Partner> getPartners() {
-    return partners;
-  }
-
   public PartnerType[] getPartnerTypes() {
     return partnerTypes;
   }
@@ -71,9 +63,9 @@ public class PartnersReportingAction extends BaseAction {
   public void prepare() throws Exception {
     super.prepare();
     activityID = Integer.parseInt(StringUtils.trim(this.getRequest().getParameter(APConstants.ACTIVITY_REQUEST_ID)));
-    activity = activityManager.getActivityPartnersInfo(activityID);
+    activity = activityManager.getSimpleActivity(activityID);
 
-    partners = partnerManager.getPartners(activityID);
+    activity.setPartners(partnerManager.getPartners(activityID));
     partnerTypes = partnerTypeManager.getPartnerTypeList();
   }
 
@@ -88,12 +80,6 @@ public class PartnersReportingAction extends BaseAction {
   public void setActivity(Activity activity) {
     this.activity = activity;
   }
-
-
-  public void setPartners(List<Partner> partners) {
-    this.partners = partners;
-  }
-
 
   public void setPartnerTypes(PartnerType[] partnerTypes) {
     this.partnerTypes = partnerTypes;

@@ -1,15 +1,19 @@
-#expectedDeliverables{  margin-top: 15px; }
-
-/* Style to expected deliverable blocks */
-
-.removeLink { float: right; clear: both;}
-
-.fullBlock h6 , .thirdPartBlock h6 {  margin-bottom: 5px}
-
-.checkboxGroup .checkbox{  
-  display: inline-block;
-  width: 30%;
-  padding : 5px;    
+#expectedDeliverablesGroup {
+  margin-top: 15px;
 }
 
-#reportingDeliverable{  display: none;  }
+/* Style to expected deliverable blocks */
+.removeLink {
+  float: right;
+  clear: both;
+}
+
+.fullBlock h6,.thirdPartBlock h6 {
+  margin-bottom: 5px
+}
+
+.checkboxGroup .checkbox {
+  display: inline-block;
+  width: 30%;
+  padding: 5px;
+}

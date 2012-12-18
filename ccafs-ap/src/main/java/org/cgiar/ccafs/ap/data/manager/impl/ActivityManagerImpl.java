@@ -89,44 +89,6 @@ public class ActivityManagerImpl implements ActivityManager {
   }
 
   @Override
-  public Activity getActivityDeliverableInfo(int id) {
-    Map<String, String> activityDB = activityDAO.getActivityDeliverablesInfo(id);
-    if (activityDB != null) {
-      Activity activity = new Activity();
-      activity.setId(id);
-      activity.setTitle(activityDB.get("title"));
-
-      Leader activityLeader = new Leader();
-      activityLeader.setId(Integer.parseInt(activityDB.get("leader_id")));
-      activityLeader.setName(activityDB.get("leader_name"));
-      activityLeader.setAcronym(activityDB.get("leader_acronym"));
-      activity.setLeader(activityLeader);
-
-      return activity;
-    }
-    return null;
-  }
-
-  @Override
-  public Activity getActivityPartnersInfo(int id) {
-    Map<String, String> activityDB = activityDAO.getActivityDeliverablesInfo(id);
-    if (activityDB != null) {
-      Activity activity = new Activity();
-      activity.setId(id);
-      activity.setTitle(activityDB.get("title"));
-
-      Leader activityLeader = new Leader();
-      activityLeader.setId(Integer.parseInt(activityDB.get("leader_id")));
-      activityLeader.setName(activityDB.get("leader_name"));
-      activityLeader.setAcronym(activityDB.get("leader_acronym"));
-      activity.setLeader(activityLeader);
-
-      return activity;
-    }
-    return null;
-  }
-
-  @Override
   public Activity getActivityStatusInfo(int id) {
     Map<String, String> activityDB = activityDAO.getActivityStatusInfo(id);
     if (activityDB != null) {
@@ -172,6 +134,25 @@ public class ActivityManagerImpl implements ActivityManager {
 
       // Gender Integration
       activity.setGenderIntegrationsDescription(activityDB.get("gender_description"));
+
+      return activity;
+    }
+    return null;
+  }
+
+  @Override
+  public Activity getSimpleActivity(int id) {
+    Map<String, String> activityDB = activityDAO.getSimpleActivity(id);
+    if (activityDB != null) {
+      Activity activity = new Activity();
+      activity.setId(id);
+      activity.setTitle(activityDB.get("title"));
+
+      Leader activityLeader = new Leader();
+      activityLeader.setId(Integer.parseInt(activityDB.get("leader_id")));
+      activityLeader.setName(activityDB.get("leader_name"));
+      activityLeader.setAcronym(activityDB.get("leader_acronym"));
+      activity.setLeader(activityLeader);
 
       return activity;
     }
