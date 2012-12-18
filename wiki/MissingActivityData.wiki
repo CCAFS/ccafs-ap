@@ -26,11 +26,6 @@
   * Activity 26: "Participatory experimentation with risk management strategies in rice-wheat-based systems in the IGP."
    * Nothing checked for gender integration.
 
-  * Activity 36: "Identify promising incentives, institutions and market-based mechanisms and policies for adoption of conservation agriculture by smallholder farmers in EA"
-   * Missing end date and start date.
-   * Missing contact person emails (Songporne, Shiferaw, Bekele & Kassie, Menale).
-   * Bilateral option is checked but no range was selected. It is not clear if the activity is using or not bilateral funds.
-
   * Activity 37: "Design and implementation of protocols to assess C sequestration under different management practices at field and landscape scale and identification of data gaps in the various systems of the two regions and acquisition of field equipment. Collection of primary and secondary data on soil carbon dynamics under a range of management practices."
    * Missing contact person emails (Santiago Lopez Ridaura, Bruno).
 
