@@ -303,43 +303,6 @@ THESE ACTIVITIES DONT BELONG TO ICRAF:
    * Start date and end date are missing.
    * Missing all years for the specified expected deliverables.
 
-== IWMI  ==
-  * Activity 129: "Evaluation of the potential for sustainable higher water and land productivity and the resulting livelihood benefits for rural poor women and men from aquaculture integrated with small-scale irrigation - under changing climates."
-   * The CG fund is selected but it hasn't percentage specified.
-   
-  * Activity 130: "Assessing the combined impact of watershed interventions and projected climatic changes on surface and groundwater availability for agriculture and food security of vulnerable rural men and women in selected watersheds in India; Identification and prioritization of watersheds in the mid-hills and mountains of Nepal that are significantly vulnerable to Climate Change; Evaluating the impact of watershed management interventions in two vulnerable watersheds in Nepal through simulation modelling and participatory surveys"
-   * The CG fund is selected but it hasn't percentage specified.
-
-  * Activity 131: "Synthesis of groundwater assessments from over 10 countries throughout Africa; Evaluating prospects and constraints of Managed Aquifer Recharge (MAR) for augmenting water supplies for poor farming communities in South Asia; Hydro-economic assessment of the potential for flood water harvesting in selected regions of SEA."
-   * Missing start date and end date.
-   * Missing contact person email ( Prathapar Sanmugam)
-
-  * Activity 132: "Synthesys of IWMI previous work in the Volta and Blue Nile Basins on water storage evaluation under future climates, and examination of techical, socio-economic and environmental criteria for evaluation of various storage options; Analysis of prospects and constraints of water storage development under current and future water availability/ use in Nepal"
-   * Can't locate River's Basins whitout specific positions. The entire country was stored.
-	 
-  * Activity 133: "Comprehensive analysis of literature,  existing statistical data and inventories of glaciers spread in countries and major river basins of South, Central and South East Asia. Review and analysis of existing information on the impacts of changing climate (at present and in the future) on glacial charateristics and impacts on water availability in major agricultural basins of Asia (macro scale); Detailed assessment of recent snow cover changes in four small sub-basins in HKH region (micro scale)"
-   * Can't locate River's Basins whitout specific positions. The entire country was stored.
-   * The Bilateral fund is selected but it hasn't percentage specified.
-	 
-  * Activity 134: " 	Reviewing information on current and projected climate changes for Pakistan and Indus Basin; Simulation of water availability, use in agriculture and allocations scenarious in Indis Basin under current and future climates- using the set of hydrology and water resources planning models"
-   * Can't locate River's Basins whitout specific positions. The entire country was stored.
-	 
-  * Activity 135: "Synthesis of previous and current research on adapation to climate change in Godavari and Krishna River basins, India "
-   * Can't locate River's Basins whitout specific positions. The entire country was stored.
-
- * Activity 136: "Evaluation of impacts of future climate on water balance of two major African cities (Accra and Addis Abeba), and designing adaptation strategies in the context of basin water resources planning through  stakeholder paltforms"
-   * Missing contact person email ( Liqa Rashid) 
-   
- * Activity 138: "Analysing climate-related risks for agriculture and livelihoods, and trends in current climates  "
-   * Missing contact person email (Guillame Lacombe) 
-   
- * Activity 139: "Assessing the needs and priorities of female and male farmers for climate-related information and its  dissemination through mobile phones; developing the web-based services to provide this information in Sudan, Egypt and Ethiopia"
-   * Missing contact person email (Lisa-Maria Rebelo) 
-
- * Activity 140: "Developing new tools and climate-related datasets for river basin modelling and yield assessment under current and future climates."
-   * Missing contact person email (Charlotte MacAlister)
-   * As there are some regions selected then the global flag changed to false.
-
 == IITA ==
 
   * Activity 141: "Develop new germplasm catalogues on existing and released cassava germplasm"
