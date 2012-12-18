@@ -26,9 +26,6 @@
   * Activity 26: "Participatory experimentation with risk management strategies in rice-wheat-based systems in the IGP."
    * Nothing checked for gender integration.
 
-  * Activities 29 and 30: "Evaluation of historic maize  data and analysis of GIS data to identify climate analogues and support farmers' risk management strategies under climate variability."
-   * Activities 29 and 30 have the same title.
-
   * Activity 35: "Analysis of the economic incentives and benefits to farmers from adoption of conservation agriculture for adaptation to and mitigating climate change"
    * End date year entered incorrectly (1202-12). Should be 2012?
    * Missing contact person emails (Jeetendra Prakash, Hellin, Jon, Shiferaw, Bekele).
