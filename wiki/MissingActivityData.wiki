@@ -155,66 +155,9 @@ It was stored the countries only.
    * Bilateral budget is selected but is not specified its percentage.
 
 == ICRAF  ==
-  * Activity 80: "Identify seed sources better adapted to drought for climate change adaptation planning in Burkina Faso, Mali and Niger"
-   * Start date, end date have bad format (Jan 12 - Dec 13).
-   * Email is missing.
-
-  * Activity 81: "Select  highly climate vulnerable communities in UK, UP and Rajasthan, map them, assess their climate vulnerability  and characterize main sources of livelihoods. ." 
-   * Missing keywords
- 
-  * Activity 82: "Analysis of smallholders' adaptation strategies to climate change and the role of tree crops in local adaptations to climate variability in mountain region." 
-   * Missing keywords
-
-  * Activity 83: "Adaptation benefits of AF systems compared to conventional management; Analysis of effects of different interventions in agroforestry systems on mitigating the effects of extreme events; e.g. effects of inter-annual variation in rainfall and occurrence of extreme events on water use efficiency, role of fertilizer trees."
-   * Missing keywords
-   * Gender integration isn't specified.
-   * CG fund budget is selected but is not specified the percentage.
-
-  * Activity 84: "Adapting to extreme events in Southeast Asia through sustainable land management systems (2012-14)"
-   * Percentage distribution is not specified for the budget.
-   * Missing keywords
-
-  * Activity 85: "Exploring resilience to climate variability of  Faidherbia albida to enable informed decision in promoting Evergreen Agriculture in the face of climate changes in Malawi "
-   * Percentage distribution is not specified for the budget.
-   * There is a gender integrations description but is selected the negative option.
-   
-  * Activity 86: "National level backstopping of science and policy through the development of methodologies, tools and incentive schemes."
-   * Missing start date and end date.
-   * Missing description.
-   * Missing contact person email (Peter Minang)
-   * There are no objectives
-   * Missing year of expected deliverable.
-   * Gender integration is not specified.
-   * The budget value is 0 and isn't specified the percentage.
-   * Missing keywords
-   
   * Activity 87: "(1) international experiences with Payments for Environmental Services (carbon) in different systems, including capacity building at national and local levels; (2) Assessment of biocarbon project costs and institutions"
-   * Missing start date and end date.
-   * Missing description.
-   * Missing contact person email (Sarah Namirembe, Meine van Noordwijk, Andy & Jianchu; Henry Neufeldt)
-   * There are no objectives
-   * There is not budget or the budget value is 0.
-   * Gender integration is not specified.
-   * Missing keywords
+   * Missing contact person email and complete names (Sarah Namirembe, Andy & Jianchu)
    
-  * Activity 88: "Analysis of mitigation biophysical and socioeconomic feasibility for different agricultural practices and regions, and impacts on emissions, livelihoods and food security (2012-13)"
-   * Missing contact person email (Frank Place)
-   * Bilateral founds is selected but the percentage is not specified 
-
-  * Activity 89: "Mitigation of climate change in agriculture, including development of land health information systems and capacity building (2012-13)."
-   * Missing keywords
-   * Gender integration is not specified
-   * Bilateral founds is selected but the percentage is not specified 
-
-  * Activity 90: "Tools, measurement and monitoring protocols for GHG flux measurements and C-sequestration in complex agro-ecological landscapes with and without trees; including biochar effects on emissions, algorithms for remote sensing above-ground biomass and carbon"
-   * There isn't year in the expected deliverables.
-   * Gender integration is not specified
-   * Missing keywords
-
-  * Activity 94: "Response of grassland growth to climate change on the Tibetan Plateau (TP)."
-   * CG founds is selected but the percentage is not specified 
-   * Missing keywords
-
   * Activity 276: "Development of global agroforestry suitability maps in a changed climate"
    * There aren't partners.
 
