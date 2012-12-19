@@ -1,11 +1,11 @@
 package org.cgiar.ccafs.ap.data.manager.impl;
 
-import java.util.List;
-import java.util.Map;
-
 import org.cgiar.ccafs.ap.data.dao.DeliverableTypeDAO;
 import org.cgiar.ccafs.ap.data.manager.DeliverableTypeManager;
 import org.cgiar.ccafs.ap.data.model.DeliverableType;
+
+import java.util.List;
+import java.util.Map;
 
 import com.google.inject.Inject;
 
@@ -17,6 +17,16 @@ public class DeliverableTypeManagerImpl implements DeliverableTypeManager {
   @Inject
   public DeliverableTypeManagerImpl(DeliverableTypeDAO deliverableTypeDAO) {
     this.deliverableTypeDAO = deliverableTypeDAO;
+  }
+
+  @Override
+  public Object getDeliverableType(String id) {
+    for (DeliverableType dType : getDeliverableTypes()) {
+      if (Integer.parseInt(id) == dType.getId()) {
+        return dType;
+      }
+    }
+    return null;
   }
 
   @Override

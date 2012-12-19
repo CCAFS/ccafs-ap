@@ -26,8 +26,10 @@
 
 [#macro checkbox name value="-NULL" i18nkey="" disabled=false checked=false]
   <div class="checkbox">
-    <input type="checkbox" id="${name}" name="${name}" value="[#if value=="-NULL"][@s.property value="${name}"/][#else]${value}[/#if]" [#if checked]checked="true"[/#if] />
-    <label for="${name}">[#if i18nkey==""][@s.text name="${name}"/][#else][@s.text name="${i18nkey}"/][/#if]</label>
+    <input type="checkbox" id="${name}" name="${name}" value="[#if value=="-NULL"][@s.property value="${name}"/][#else]${value}[/#if]" [#if checked]checked="true"[/#if]>
+      [#if value=="-NULL"][@s.property value="${name}"/][#else]${value}[/#if]
+    </input>
+    <!-- label for="${name}">[#if i18nkey==""]${name}[#else][@s.text name="${i18nkey}"/][/#if]</label -->
   </div>
 [/#macro]
 

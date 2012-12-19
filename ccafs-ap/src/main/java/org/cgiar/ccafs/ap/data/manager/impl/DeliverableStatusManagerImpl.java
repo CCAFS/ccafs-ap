@@ -1,12 +1,13 @@
 package org.cgiar.ccafs.ap.data.manager.impl;
 
+import org.cgiar.ccafs.ap.data.dao.DeliverableStatusDAO;
+import org.cgiar.ccafs.ap.data.manager.DeliverableStatusManager;
+import org.cgiar.ccafs.ap.data.model.DeliverableStatus;
+
 import java.util.List;
 import java.util.Map;
 
 import com.google.inject.Inject;
-import org.cgiar.ccafs.ap.data.dao.DeliverableStatusDAO;
-import org.cgiar.ccafs.ap.data.manager.DeliverableStatusManager;
-import org.cgiar.ccafs.ap.data.model.DeliverableStatus;
 
 
 public class DeliverableStatusManagerImpl implements DeliverableStatusManager {
@@ -34,6 +35,16 @@ public class DeliverableStatusManagerImpl implements DeliverableStatusManager {
       return deliverableStatus;
     }
 
+    return null;
+  }
+
+  @Override
+  public DeliverableStatus getDeliverableStatus(String id) {
+    for (DeliverableStatus deliverableStatus : getDeliverableStatus()) {
+      if (deliverableStatus.getId() == Integer.parseInt(id)) {
+        return deliverableStatus;
+      }
+    }
     return null;
   }
 }

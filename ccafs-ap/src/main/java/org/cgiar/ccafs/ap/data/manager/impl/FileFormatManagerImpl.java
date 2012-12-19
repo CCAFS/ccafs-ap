@@ -1,12 +1,14 @@
 package org.cgiar.ccafs.ap.data.manager.impl;
 
+import org.cgiar.ccafs.ap.data.dao.FileFormatDAO;
+import org.cgiar.ccafs.ap.data.manager.FileFormatManager;
+import org.cgiar.ccafs.ap.data.model.FileFormat;
+
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
 import com.google.inject.Inject;
-import org.cgiar.ccafs.ap.data.dao.FileFormatDAO;
-import org.cgiar.ccafs.ap.data.manager.FileFormatManager;
-import org.cgiar.ccafs.ap.data.model.FileFormat;
 
 
 public class FileFormatManagerImpl implements FileFormatManager {
@@ -16,6 +18,19 @@ public class FileFormatManagerImpl implements FileFormatManager {
   @Inject
   public FileFormatManagerImpl(FileFormatDAO fileFormatDAO) {
     this.fileFormatDAO = fileFormatDAO;
+  }
+
+  @Override
+  public List<FileFormat> getFileFormat(String[] ids) {
+    List<FileFormat> formats = new ArrayList<>();
+    for (FileFormat fileFormat : getFileFormats()) {
+      for (String id : ids) {
+        if (Integer.parseInt(id) == fileFormat.getId()) {
+          formats.add(fileFormat);
+        }
+      }
+    }
+    return formats;
   }
 
   @Override
