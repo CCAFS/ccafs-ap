@@ -25,11 +25,11 @@
         
         [#-- Description --]
         <div class="fullBlock">
-          <h6>[@s.text name="reporting.activityDeliverables.description" /]</h6>
           [#if deliverable.expected]
+            <h6>[@s.text name="reporting.activityDeliverables.description" /]</h6>
             <p>${activity.deliverables[deliverable_index].description}</p>
           [#else]
-            [@customForm.input name="selectedDeliverable" value="${deliverable.description}" type="text" i18nkey="reporting.activityDeliverables.description" /]                
+            [@customForm.input name="activity.deliverables[${deliverable_index}].description" value="${deliverable.description}" type="text" i18nkey="reporting.activityDeliverables.description" /]                
           [/#if]    
         </div>
         
@@ -39,7 +39,7 @@
             <h6>[@s.text name="reporting.activityDeliverables.type" /]</h6>
             <p>${activity.deliverables[deliverable_index].type.name}</p>
           [#else]
-            [@customForm.select name="selectedType" label="" i18nkey="reporting.activityDeliverables.type" listName="deliverableTypesList" headerValue="Select a deliverable type" keyFieldName="id"  displayFieldName="name" /]
+            [@customForm.select name="activity.deliverables[${deliverable_index}].type" label="" i18nkey="reporting.activityDeliverables.type" listName="deliverableTypesList" headerValue="Select a deliverable type" keyFieldName="id"  displayFieldName="name" /]
           [/#if]
         </div>
         
@@ -49,27 +49,21 @@
             <h6>[@s.text name="reporting.activityDeliverables.year" /]</h6>
             <p>${activity.deliverables[deliverable_index].year?c}</p>
           [#else]
-            [@customForm.input name="selectedYear" type="text" i18nkey="reporting.activityDeliverables.year" disabled=true  /]
+            [@customForm.input name="activity.deliverables[${deliverable_index}].year" type="text" i18nkey="reporting.activityDeliverables.year" disabled=true  /]
           [/#if]
         </div>
         
         [#-- Status --]
         <div class="thirdPartBlock">
-          [@customForm.select name="selectedStatus" label="" i18nkey="reporting.activityDeliverables.deliverableStatus" listName="deliverableStatusList" keyFieldName="id"  displayFieldName="name" value="${activity.deliverables[deliverable_index].status.id}" /]
+          [@customForm.select name="activity.deliverables[${deliverable_index}].status" label="" i18nkey="reporting.activityDeliverables.deliverableStatus" listName="deliverableStatusList" keyFieldName="id"  displayFieldName="name" value="${activity.deliverables[deliverable_index].status.id}" /]
         </div>
         
         [#-- Formats --]
         [#if deliverableTypeIdsNeeded?seq_contains(activity.deliverables[deliverable_index].type.id)]              
           <div class="fullBlock">
             <h6>[@s.text name="reporting.activityDeliverables.formatFiles" /]</h6>
-            <div class="checkboxGroup">
-              [#list fileFormatsList as fileFormat]
-                [#if activity.deliverables[deliverable_index].fileFormatsIds?seq_contains(fileFormat.id)]
-                  [@customForm.checkbox name="${fileFormat.id}" i18nkey="${fileFormat.name}" checked=true /]
-                [#else]
-                  [@customForm.checkbox name="${fileFormat.id}" i18nkey="${fileFormat.name}" /]
-                [/#if]
-              [/#list]
+            <div class="checkboxGroup">            
+              [@s.checkboxlist name="activity.deliverables[${deliverable_index}].fileFormats" list="fileFormatsList" listKey="id" listValue="name" value="activity.deliverables[${deliverable_index}].fileFormatsIds" cssClass="checkbox" /]
             </div>
           </div>
         [/#if]
@@ -82,7 +76,7 @@
   <section>
   [#include "/WEB-INF/global/pages/reporting-secondary-menu.ftl" /]
   
-  [@s.form action="deliverables!save"]
+  [@s.form action="deliverables"]
   <article class="halfContent">
     <h1>
       ${activity.leader.acronym} - [@s.text name="reporting.activityList.activity" /] ${activity.id}      
@@ -112,38 +106,14 @@
       </div>
     </fieldset>
     
-    <h1>----------------------------------------------</h1>
+    <h1>----------------------------------------------</h1>    
     <div id="deliverableTemplate">
-    <!-- div id="deliverableTemplate" style="display: none" -->
-      <div class="removeLink">
-        <a href="" class="removeDeliverable">Remove deliverable</a>
-      </div>
-      <div class="fullBlock">
-        [@customForm.input name="selectedDeliverable" value="deliverable.description" type="text" i18nkey="reporting.activityDeliverables.description" disabled=true  /]
-      </div>
-      <div class="thirdPartBlock">
-        [@customForm.select name="selectedType" label="" i18nkey="reporting.activityDeliverables.type" listName="deliverableTypesList" headerValue="Select a deliverable type" keyFieldName="id"  displayFieldName="name"  /]
-      </div>
-      <div class="thirdPartBlock">
-        [@customForm.input name="selectedYear" type="text" i18nkey="reporting.activityDeliverables.deliverableYear" disabled=true  /]
-      </div>
-      <div class="thirdPartBlock">
-        [@customForm.select name="selectedStatus" label="" i18nkey="reporting.activityDeliverables.deliverableStatus" listName="deliverableStatusList" keyFieldName="id"  displayFieldName="name"  /]
-      </div>
-      <input name="expected" type="hidden" value="0" />
-      <div class="fullBlock">
-            <h6>[@s.text name="reporting.activityDeliverables.formatFiles" /]</h6>
-            <div class="checkboxGroup">
-              [@s.iterator value="fileFormatsList" var="fileFormat"]
-                [@customForm.checkbox name="${fileFormat.id}" i18nkey="${fileFormat.name}" /]
-              [/@s.iterator]
-            </div>
-          </div>
-      <hr />
     </div>
+    
     <!-- internal parameter -->
     <input name="activityID" type="hidden" value="${activity.id}" />
     [@s.submit type="button" name="save"]SAVE[/@s.submit]
+    [@s.submit type="button" name="cancel"]CANCEL[/@s.submit]
          
     [#include "/WEB-INF/reporting/reportingStepSubMenu.ftl" /]  
     </article>

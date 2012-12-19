@@ -30,10 +30,10 @@ public class Deliverable {
     }
   }
 
-  public int[] getFileFormatsIds() {
-    int[] ids = new int[this.getFileFormats().size()];
-    for (int c = 0; c < ids.length; c++) {
-      ids[c] = getFileFormats().get(c).getId();
+  public ArrayList<String> getFileFormatsIds() {
+    ArrayList<String> ids = new ArrayList<>();
+    for (int c = 0; c < getFileFormats().size(); c++) {
+      ids.add(getFileFormats().get(c).getId() + "");
     }
     return ids;
   }

@@ -121,7 +121,13 @@ public class DeliverablesReportingAction extends BaseAction {
   @Override
   public String save() {
     // TODO Auto-generated method stub
-    System.out.println("-------------SAVING-----------");
+    for (int c = 0; c < activity.getDeliverables().size(); c++) {
+      if (!activity.getDeliverables().get(c).isExpected()) {
+        System.out.println(activity.getDeliverables().get(c).getDescription());
+        System.out.println(activity.getDeliverables().get(c));
+        System.out.println("-------------------------------------");
+      }
+    }
     return SUCCESS;
   }
 
