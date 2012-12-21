@@ -60,13 +60,6 @@
    * MIssing keywords
 
 == BIOVERSITY  ==
-  * Activity 46: "Case studies of at least 6 crops to use enhanced version of AgTrials."
-   * Missing start date, end date and description.
-   * There are no objectives
-   * Some partners are not specified (NARES, Other Ari institutions).
-   * Gender question was not answered.
-
-
   * Activity 47: "Multilocation participatory trials of durum wheat in Ethiopia  carried out in analogue sites for present and future adaptation to climate change"
    * There isn't description for gender integration.
 
