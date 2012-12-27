@@ -122,11 +122,11 @@ public class DeliverablesReportingAction extends BaseAction {
   public String save() {
     // TODO Auto-generated method stub
     for (int c = 0; c < activity.getDeliverables().size(); c++) {
-      if (!activity.getDeliverables().get(c).isExpected()) {
-        System.out.println(activity.getDeliverables().get(c).getDescription());
-        System.out.println(activity.getDeliverables().get(c));
-        System.out.println("-------------------------------------");
-      }
+      // if (!activity.getDeliverables().get(c).isExpected()) {
+      System.out.println("Is expected: " + activity.getDeliverables().get(c).isExpected());
+      // System.out.println(activity.getDeliverables().get(c));
+      System.out.println("-------------------------------------");
+      // }
     }
     return SUCCESS;
   }
