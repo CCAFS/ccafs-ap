@@ -12,6 +12,10 @@
   margin-bottom: 5px
 }
 
+.checkboxGroup input {
+  margin-left: 0px;
+}
+
 .checkboxGroup .checkboxLabel {
   display: inline-block;
   width: 30%;
