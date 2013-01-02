@@ -1,10 +1,11 @@
 package org.cgiar.ccafs.ap.data.dao;
 
+import org.cgiar.ccafs.ap.data.dao.mysql.MySQLDeliverableStatusDAO;
+
 import java.util.List;
 import java.util.Map;
 
 import com.google.inject.ImplementedBy;
-import org.cgiar.ccafs.ap.data.dao.mysql.MySQLDeliverableStatusDAO;
 
 @ImplementedBy(MySQLDeliverableStatusDAO.class)
 public interface DeliverableStatusDAO {
@@ -15,4 +16,13 @@ public interface DeliverableStatusDAO {
    * @return a Map whit the status of deliverables.
    */
   public List<Map<String, String>> getDeliverableStatus();
+
+  /**
+   * Update the status of the deliverable identified with the given id.
+   * 
+   * @param deliverableId - deliverable identifier.
+   * @param statusId - status id.
+   * @return true if the status was successfully update, false if any problem occur.
+   */
+  public boolean setDeliverableStatus(int deliverableId, int statusId);
 }

@@ -1,5 +1,8 @@
 package org.cgiar.ccafs.ap.data.dao.mysql;
 
+import org.cgiar.ccafs.ap.data.dao.DAOManager;
+import org.cgiar.ccafs.ap.data.dao.DeliverableStatusDAO;
+
 import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -9,8 +12,6 @@ import java.util.List;
 import java.util.Map;
 
 import com.google.inject.Inject;
-import org.cgiar.ccafs.ap.data.dao.DAOManager;
-import org.cgiar.ccafs.ap.data.dao.DeliverableStatusDAO;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -44,5 +45,20 @@ public class MySQLDeliverableStatusDAO implements DeliverableStatusDAO {
       e.printStackTrace();
     }
     return deliverableTypesList;
+  }
+
+  @Override
+  public boolean setDeliverableStatus(int deliverableId, int statusId) {
+    try (Connection connection = databaseManager.getConnection()) {
+      String preparedUpdateQuery = "UPDATE deliverables SET deliverable_status_id = ? WHERE id = ?";
+      int rowsUpdated =
+        databaseManager.makeChangeSecure(connection, preparedUpdateQuery, new Object[] {statusId, deliverableId});
+      return (rowsUpdated > 0);
+
+    } catch (SQLException e) {
+      // TODO Auto-generated catch block
+      e.printStackTrace();
+    }
+    return false;
   }
 }

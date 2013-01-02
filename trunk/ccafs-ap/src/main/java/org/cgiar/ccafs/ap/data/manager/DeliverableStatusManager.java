@@ -24,4 +24,13 @@ public interface DeliverableStatusManager {
    */
   public DeliverableStatus getDeliverableStatus(String id);
 
+  /**
+   * Update the status of the deliverable identified with the given id.
+   * 
+   * @param id - deliverable id.
+   * @param status - new status to be updated.
+   * @return true if the update was successfully made, false if any problem appear.
+   */
+  public boolean setDeliverableStatus(int id, DeliverableStatus status);
+
 }

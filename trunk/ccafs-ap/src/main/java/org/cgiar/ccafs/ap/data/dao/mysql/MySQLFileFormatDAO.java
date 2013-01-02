@@ -1,5 +1,8 @@
 package org.cgiar.ccafs.ap.data.dao.mysql;
 
+import org.cgiar.ccafs.ap.data.dao.DAOManager;
+import org.cgiar.ccafs.ap.data.dao.FileFormatDAO;
+
 import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -9,8 +12,6 @@ import java.util.List;
 import java.util.Map;
 
 import com.google.inject.Inject;
-import org.cgiar.ccafs.ap.data.dao.DAOManager;
-import org.cgiar.ccafs.ap.data.dao.FileFormatDAO;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -73,5 +74,31 @@ public class MySQLFileFormatDAO implements FileFormatDAO {
     } else {
       return fileFormatsList;
     }
+  }
+
+  @Override
+  public boolean setFileFormats(int deliverableId, int[] fileFormatIds) {
+    boolean problem = false;
+    try (Connection connection = databaseManager.getConnection()) {
+      String preparedRemoveQuery = "DELETE FROM deliverable_formats WHERE deliverable_id = ?";
+      int rowsDeleted = databaseManager.makeChangeSecure(connection, preparedRemoveQuery, new Object[] {deliverableId});
+      if (rowsDeleted >= 0) {
+        for (int c = 0; c < fileFormatIds.length; c++) {
+          String preparedInsertQuery = "INSERT INTO deliverable_formats (deliverable_id, file_format_id) VALUES (?, ?)";
+          int rowsInserted =
+            databaseManager.makeChangeSecure(connection, preparedInsertQuery, new Object[] {deliverableId,
+              fileFormatIds[c]});
+          if (rowsInserted < 0) {
+            problem = true;
+          }
+        }
+      } else {
+        problem = true;
+      }
+    } catch (SQLException e) {
+      // TODO Auto-generated catch block
+      e.printStackTrace();
+    }
+    return !problem;
   }
 }

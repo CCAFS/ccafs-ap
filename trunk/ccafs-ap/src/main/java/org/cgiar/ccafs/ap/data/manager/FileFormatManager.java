@@ -25,4 +25,13 @@ public interface FileFormatManager {
    * @return a List whit all the file formats.
    */
   public FileFormat[] getFileFormats();
+
+  /**
+   * Add the given file format list to the deliverable identified with the given id.
+   * 
+   * @param deliverableId - deliverable id.
+   * @param fileFormats - File format list.
+   * @return true if all the file formats were successfully added, or false otherwise.
+   */
+  public boolean setFileFormats(int deliverableId, List<FileFormat> fileFormats);
 }

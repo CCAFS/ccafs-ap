@@ -21,3 +21,8 @@
   width: 30%;
   padding: 3px;
 }
+
+.addDeliverable {
+  display: block;
+  margin-bottom: 20px;
+}
