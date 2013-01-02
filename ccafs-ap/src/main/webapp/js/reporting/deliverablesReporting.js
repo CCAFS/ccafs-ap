@@ -48,7 +48,9 @@ $(document).ready(function() {
     // Getting the id.
     var removeId = $(event.target).attr("id").split("-")[1];
     $("#deliverable-"+removeId).fadeOut("slow");
+    // removing division line.
     $("#deliverable-"+removeId).next("hr").remove();
+    // removing div.
     $("#deliverable-"+removeId).remove();
     renameDeliverables();
   });

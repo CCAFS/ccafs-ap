@@ -47,4 +47,9 @@ public class DeliverableStatusManagerImpl implements DeliverableStatusManager {
     }
     return null;
   }
+
+  @Override
+  public boolean setDeliverableStatus(int id, DeliverableStatus status) {
+    return deliverableStatusDAO.setDeliverableStatus(id, status.getId());
+  }
 }

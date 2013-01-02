@@ -10,9 +10,12 @@ import org.cgiar.ccafs.ap.data.manager.DeliverableTypeManager;
 import org.cgiar.ccafs.ap.data.manager.FileFormatManager;
 import org.cgiar.ccafs.ap.data.manager.LogframeManager;
 import org.cgiar.ccafs.ap.data.model.Activity;
+import org.cgiar.ccafs.ap.data.model.Deliverable;
 import org.cgiar.ccafs.ap.data.model.DeliverableStatus;
 import org.cgiar.ccafs.ap.data.model.DeliverableType;
 import org.cgiar.ccafs.ap.data.model.FileFormat;
+
+import java.util.Arrays;
 
 import com.google.inject.Inject;
 import org.apache.commons.lang3.StringUtils;
@@ -114,21 +117,44 @@ public class DeliverablesReportingAction extends BaseAction {
     deliverableTypeIdsNeeded = new int[2];
     deliverableTypeIdsNeeded[0] = deliverableTypesList[0].getId();
     deliverableTypeIdsNeeded[1] = deliverableTypesList[3].getId();
-
-
   }
 
   @Override
   public String save() {
-    // TODO Auto-generated method stub
+    boolean problem = false;
     for (int c = 0; c < activity.getDeliverables().size(); c++) {
-      // if (!activity.getDeliverables().get(c).isExpected()) {
-      System.out.println("Is expected: " + activity.getDeliverables().get(c).isExpected());
-      // System.out.println(activity.getDeliverables().get(c));
-      System.out.println("-------------------------------------");
-      // }
+      Deliverable deliverable = activity.getDeliverables().get(c);
+      // If is an expected deliverable, we must only save its status and its file formats.
+      if (deliverable.isExpected()) {
+        boolean statusUpdated =
+          deliverableStatusManager.setDeliverableStatus(deliverable.getId(), deliverable.getStatus());
+        // Any problem?
+        if (!statusUpdated) {
+          problem = true;
+        }
+        // if the deliverable type need a file format specification.
+        Arrays.sort(deliverableTypeIdsNeeded);
+        if (Arrays.binarySearch(deliverableTypeIdsNeeded, deliverable.getType().getId()) >= 0) {
+          boolean fileFormatsUpdated =
+            fileFormatManager.setFileFormats(deliverable.getId(), deliverable.getFileFormats());
+          if (!fileFormatsUpdated) {
+            problem = true;
+          }
+        }
+      } else {
+        // Saving here those not expected deliverables.
+        // First, remove all not expected deliverables.
+        // Second, add again the
+        // deliverableManager.addDeliverable(deliverable);
+      }
     }
-    return SUCCESS;
+    if (!problem) {
+      addActionMessage(getText("reporting.activityDeliverables.saved"));
+      return SUCCESS;
+    } else {
+      addActionError(getText("reporting.activityDeliverables.problem"));
+      return INPUT;
+    }
   }
 
   public void setActivity(Activity activity) {

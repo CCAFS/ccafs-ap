@@ -50,4 +50,14 @@ public class FileFormatManagerImpl implements FileFormatManager {
 
     return null;
   }
+
+  @Override
+  public boolean setFileFormats(int deliverableId, List<FileFormat> fileFormats) {
+    int[] fileFormatIds = new int[fileFormats.size()];
+    for (int c = 0; c < fileFormats.size(); c++) {
+      fileFormatIds[c] = fileFormats.get(c).getId();
+    }
+
+    return fileFormatDAO.setFileFormats(deliverableId, fileFormatIds);
+  }
 }
