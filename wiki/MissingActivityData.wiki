@@ -486,28 +486,11 @@ THESE ACTIVITIES DONT BELONG TO ICRAF:
    * There is not budget or the budget value is 0.
 
 == RPL WA ==
-  * Activity 284: "Farms of the future approach: Understanding social and cultural barriers to climate change adaption through farmer exchanges." 
-   * Partner not named specifically: "Communication consultant for video's production."
 
-  * Activity 286: "Tailoring Climate information to the needs of West African Farmers."
-   * Missing contact person emails (Ousmane Ndiaye, Abdou Ali).
-   * Missing year for expected deliverable "communicating seasonal forecasting workshops."
-   * Specific partners not named in some cases: "National meteorological and hydrological services" and "Agricultural extension services."
-
-  * Activity 288: "Development of green house gas quantification methods at farming systems levels."
-   * Missing contact person emails (Kalifa Traore, Jesse Naab, Samuel Adiku, Zacharia Gnankambary, Pierre Akponikpe, Check Mbow).
-   * Missing description for expected deliverable.
-
-  * Activity 289: "Involving national stakeholders in the regional platform for exchange between researchers and policy-makers on agriculture adaptation to climate change in West Africa."
-   * Nothing checked for gender integration and no description.
-   * Partner not named specifically: "Public institutions in charge of CCA issues in the five pilot countries."
-
-  * Activity 290: "Developing community-based climate smart agriculture through participatory action research in benchmark sites in West Africa."
-   * Gender integration checked "yes" but no description included.
-
-  * Activity 291: "Household detailed characterization: IMPACT lite."
-   * Missing contact person emails (Jesse naab, Leopold Some, Moussa Boureima, Lamissa Diakite, Yacine Ndour).
-   * Gender integration checked "yes" but no description included.
+ * Activity 288: "Development of green house gas quantification methods at farming systems levels."
+   * Expected deliverable "Data collected" has two years: 2012/2013. Only 2012 was entered.
+   * Expected deliverable "Data collected" has two years: 2012/2013. Only 2012 was entered.
+   * Expected deliverable "1 networking among GHG experts established" has two years: 2012/2013. Only 2012 was entered.
 
 == TL Theme 1 ==
   * At the end of Theme 1 Obj3 sheet there are several blank activities charts 
