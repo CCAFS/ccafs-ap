@@ -30,8 +30,8 @@ CREATE  TABLE IF NOT EXISTS `themes` (
   CONSTRAINT `logframe_fk`
     FOREIGN KEY (`logframe_id` )
     REFERENCES `logframes` (`id` )
-    ON DELETE RESTRICT
-    ON UPDATE RESTRICT)
+    ON DELETE CASCADE
+    ON UPDATE CASCADE)
 ENGINE = InnoDB;
 
 SHOW WARNINGS;
@@ -49,8 +49,8 @@ CREATE  TABLE IF NOT EXISTS `objectives` (
   CONSTRAINT `theme_fk`
     FOREIGN KEY (`theme_id` )
     REFERENCES `themes` (`id` )
-    ON DELETE RESTRICT
-    ON UPDATE RESTRICT)
+    ON DELETE CASCADE
+    ON UPDATE CASCADE)
 ENGINE = InnoDB;
 
 SHOW WARNINGS;
@@ -67,8 +67,8 @@ CREATE  TABLE IF NOT EXISTS `outputs` (
   CONSTRAINT `objective_fk`
     FOREIGN KEY (`objective_id` )
     REFERENCES `objectives` (`id` )
-    ON DELETE RESTRICT
-    ON UPDATE RESTRICT)
+    ON DELETE CASCADE
+    ON UPDATE CASCADE)
 ENGINE = InnoDB;
 
 SHOW WARNINGS;
@@ -86,8 +86,8 @@ CREATE  TABLE IF NOT EXISTS `milestones` (
   CONSTRAINT `output_fk`
     FOREIGN KEY (`output_id` )
     REFERENCES `outputs` (`id` )
-    ON DELETE RESTRICT
-    ON UPDATE RESTRICT)
+    ON DELETE CASCADE
+    ON UPDATE CASCADE)
 ENGINE = InnoDB;
 
 SHOW WARNINGS;
@@ -115,8 +115,8 @@ CREATE  TABLE IF NOT EXISTS `activity_leaders` (
   CONSTRAINT `led_activity_fk`
     FOREIGN KEY (`led_activity_id` )
     REFERENCES `leader_types` (`id` )
-    ON DELETE RESTRICT
-    ON UPDATE RESTRICT)
+    ON DELETE CASCADE
+    ON UPDATE CASCADE)
 ENGINE = InnoDB;
 
 SHOW WARNINGS;
@@ -153,13 +153,13 @@ CREATE  TABLE IF NOT EXISTS `activities` (
   CONSTRAINT `milestone_fk`
     FOREIGN KEY (`milestone_id` )
     REFERENCES `milestones` (`id` )
-    ON DELETE RESTRICT
-    ON UPDATE RESTRICT,
+    ON DELETE CASCADE
+    ON UPDATE CASCADE,
   CONSTRAINT `activity_leader_fk`
     FOREIGN KEY (`activity_leader_id` )
     REFERENCES `activity_leaders` (`id` )
-    ON DELETE RESTRICT
-    ON UPDATE RESTRICT,
+    ON DELETE CASCADE
+    ON UPDATE CASCADE,
   CONSTRAINT `continous_activity_fk`
     FOREIGN KEY (`continuous_activity_id` )
     REFERENCES `activities` (`id` )
@@ -168,8 +168,8 @@ CREATE  TABLE IF NOT EXISTS `activities` (
   CONSTRAINT `status_fk`
     FOREIGN KEY (`activity_status_id` )
     REFERENCES `activity_status` (`id` )
-    ON DELETE RESTRICT
-    ON UPDATE RESTRICT)
+    ON DELETE CASCADE
+    ON UPDATE CASCADE)
 ENGINE = InnoDB
 PACK_KEYS = 1;
 
@@ -186,8 +186,8 @@ CREATE  TABLE IF NOT EXISTS `activity_objectives` (
   CONSTRAINT `activity_fk`
     FOREIGN KEY (`activity_id` )
     REFERENCES `activities` (`id` )
-    ON DELETE RESTRICT
-    ON UPDATE RESTRICT)
+    ON DELETE CASCADE
+    ON UPDATE CASCADE)
 ENGINE = InnoDB;
 
 SHOW WARNINGS;
@@ -229,18 +229,18 @@ CREATE  TABLE IF NOT EXISTS `deliverables` (
   CONSTRAINT `activity_fk2`
     FOREIGN KEY (`activity_id` )
     REFERENCES `activities` (`id` )
-    ON DELETE RESTRICT
-    ON UPDATE RESTRICT,
+    ON DELETE CASCADE
+    ON UPDATE CASCADE,
   CONSTRAINT `deliverable_type_fk2`
     FOREIGN KEY (`deliverable_type_id` )
     REFERENCES `deliverable_types` (`id` )
-    ON DELETE RESTRICT
-    ON UPDATE RESTRICT,
+    ON DELETE CASCADE
+    ON UPDATE CASCADE,
   CONSTRAINT `deliverable_status_fk2`
     FOREIGN KEY (`deliverable_status_id` )
     REFERENCES `deliverable_status` (`id` )
-    ON DELETE RESTRICT
-    ON UPDATE RESTRICT)
+    ON DELETE CASCADE
+    ON UPDATE CASCADE)
 ENGINE = InnoDB;
 
 SHOW WARNINGS;
@@ -256,8 +256,8 @@ CREATE  TABLE IF NOT EXISTS `gender_integrations` (
   CONSTRAINT `gi_activity_fk`
     FOREIGN KEY (`activity_id` )
     REFERENCES `activities` (`id` )
-    ON DELETE RESTRICT
-    ON UPDATE RESTRICT)
+    ON DELETE CASCADE
+    ON UPDATE CASCADE)
 ENGINE = InnoDB;
 
 SHOW WARNINGS;
@@ -286,18 +286,18 @@ CREATE  TABLE IF NOT EXISTS `activity_budgets` (
   CONSTRAINT `cg_funds_fk`
     FOREIGN KEY (`cg_funds` )
     REFERENCES `budget_percentages` (`id` )
-    ON DELETE RESTRICT
-    ON UPDATE RESTRICT,
+    ON DELETE CASCADE
+    ON UPDATE CASCADE,
   CONSTRAINT `bilateral_fk`
     FOREIGN KEY (`bilateral` )
     REFERENCES `budget_percentages` (`id` )
-    ON DELETE RESTRICT
-    ON UPDATE RESTRICT,
+    ON DELETE CASCADE
+    ON UPDATE CASCADE,
   CONSTRAINT `budgets_activity_fk`
     FOREIGN KEY (`activity_id` )
     REFERENCES `activities` (`id` )
-    ON DELETE RESTRICT
-    ON UPDATE RESTRICT)
+    ON DELETE CASCADE
+    ON UPDATE CASCADE)
 ENGINE = InnoDB;
 
 SHOW WARNINGS;
@@ -325,8 +325,8 @@ CREATE  TABLE IF NOT EXISTS `countries` (
   CONSTRAINT `region_fk`
     FOREIGN KEY (`region_id` )
     REFERENCES `regions` (`id` )
-    ON DELETE RESTRICT
-    ON UPDATE RESTRICT)
+    ON DELETE CASCADE
+    ON UPDATE CASCADE)
 ENGINE = InnoDB;
 
 SHOW WARNINGS;
@@ -345,8 +345,8 @@ CREATE  TABLE IF NOT EXISTS `benchmark_sites` (
   CONSTRAINT `country_fk`
     FOREIGN KEY (`country_iso2` )
     REFERENCES `countries` (`iso2` )
-    ON DELETE RESTRICT
-    ON UPDATE RESTRICT)
+    ON DELETE CASCADE
+    ON UPDATE CASCADE)
 ENGINE = InnoDB;
 
 SHOW WARNINGS;
@@ -374,13 +374,13 @@ CREATE  TABLE IF NOT EXISTS `activity_keywords` (
   CONSTRAINT `ak_activity_fk`
     FOREIGN KEY (`activity_id` )
     REFERENCES `activities` (`id` )
-    ON DELETE RESTRICT
-    ON UPDATE RESTRICT,
+    ON DELETE CASCADE
+    ON UPDATE CASCADE,
   CONSTRAINT `ak_keyword_fk`
     FOREIGN KEY (`keyword_id` )
     REFERENCES `keywords` (`id` )
-    ON DELETE RESTRICT
-    ON UPDATE RESTRICT)
+    ON DELETE CASCADE
+    ON UPDATE CASCADE)
 ENGINE = InnoDB;
 
 SHOW WARNINGS;
@@ -396,8 +396,8 @@ CREATE  TABLE IF NOT EXISTS `resources` (
   CONSTRAINT `res_activity_fk`
     FOREIGN KEY (`activity_id` )
     REFERENCES `activities` (`id` )
-    ON DELETE RESTRICT
-    ON UPDATE RESTRICT)
+    ON DELETE CASCADE
+    ON UPDATE CASCADE)
 ENGINE = InnoDB;
 
 SHOW WARNINGS;
@@ -414,8 +414,8 @@ CREATE  TABLE IF NOT EXISTS `contact_person` (
   CONSTRAINT `cp_activity_fk`
     FOREIGN KEY (`activity_id` )
     REFERENCES `activities` (`id` )
-    ON DELETE RESTRICT
-    ON UPDATE RESTRICT)
+    ON DELETE CASCADE
+    ON UPDATE CASCADE)
 ENGINE = InnoDB;
 
 SHOW WARNINGS;
@@ -432,13 +432,13 @@ CREATE  TABLE IF NOT EXISTS `bs_locations` (
   CONSTRAINT `bs_fk`
     FOREIGN KEY (`bs_id` )
     REFERENCES `benchmark_sites` (`id` )
-    ON DELETE RESTRICT
-    ON UPDATE RESTRICT,
+    ON DELETE CASCADE
+    ON UPDATE CASCADE,
   CONSTRAINT `activity_id`
     FOREIGN KEY (`activity_id` )
     REFERENCES `activities` (`id` )
-    ON DELETE RESTRICT
-    ON UPDATE RESTRICT)
+    ON DELETE CASCADE
+    ON UPDATE CASCADE)
 ENGINE = InnoDB;
 
 SHOW WARNINGS;
@@ -455,13 +455,13 @@ CREATE  TABLE IF NOT EXISTS `country_locations` (
   CONSTRAINT `cl_country_fk`
     FOREIGN KEY (`country_iso2` )
     REFERENCES `countries` (`iso2` )
-    ON DELETE RESTRICT
-    ON UPDATE RESTRICT,
+    ON DELETE CASCADE
+    ON UPDATE CASCADE,
   CONSTRAINT `cl_activity_fk`
     FOREIGN KEY (`activity_id` )
     REFERENCES `activities` (`id` )
-    ON DELETE RESTRICT
-    ON UPDATE RESTRICT)
+    ON DELETE CASCADE
+    ON UPDATE CASCADE)
 ENGINE = InnoDB;
 
 SHOW WARNINGS;
@@ -493,13 +493,13 @@ CREATE  TABLE IF NOT EXISTS `partners` (
   CONSTRAINT `type_fk`
     FOREIGN KEY (`partner_type_id` )
     REFERENCES `partner_types` (`id` )
-    ON DELETE RESTRICT
-    ON UPDATE RESTRICT,
+    ON DELETE CASCADE
+    ON UPDATE CASCADE,
   CONSTRAINT `p_country_fk`
     FOREIGN KEY (`country_iso2` )
     REFERENCES `countries` (`iso2` )
-    ON DELETE SET NULL
-    ON UPDATE SET NULL)
+    ON DELETE CASCADE
+    ON UPDATE CASCADE)
 ENGINE = InnoDB;
 
 SHOW WARNINGS;
@@ -517,13 +517,13 @@ CREATE  TABLE IF NOT EXISTS `activity_partners` (
   CONSTRAINT `ap_partner_fk`
     FOREIGN KEY (`partner_id` )
     REFERENCES `partners` (`id` )
-    ON DELETE RESTRICT
-    ON UPDATE RESTRICT,
+    ON DELETE CASCADE
+    ON UPDATE CASCADE,
   CONSTRAINT `ap_activity_fk`
     FOREIGN KEY (`activity_id` )
     REFERENCES `activities` (`id` )
-    ON DELETE RESTRICT
-    ON UPDATE RESTRICT)
+    ON DELETE CASCADE
+    ON UPDATE CASCADE)
 ENGINE = InnoDB;
 
 SHOW WARNINGS;
@@ -541,13 +541,13 @@ CREATE  TABLE IF NOT EXISTS `other_sites` (
   CONSTRAINT `os_activity_fk`
     FOREIGN KEY (`id` )
     REFERENCES `activities` (`id` )
-    ON DELETE RESTRICT
-    ON UPDATE RESTRICT,
+    ON DELETE CASCADE
+    ON UPDATE CASCADE,
   CONSTRAINT `os_country_fk`
     FOREIGN KEY (`country_iso2` )
     REFERENCES `countries` (`iso2` )
-    ON DELETE RESTRICT
-    ON UPDATE RESTRICT)
+    ON DELETE CASCADE
+    ON UPDATE CASCADE)
 ENGINE = InnoDB;
 
 SHOW WARNINGS;
@@ -578,8 +578,8 @@ CREATE  TABLE IF NOT EXISTS `users` (
   CONSTRAINT `u_activity_leader_fk`
     FOREIGN KEY (`activity_leader_id` )
     REFERENCES `activity_leaders` (`id` )
-    ON DELETE RESTRICT
-    ON UPDATE RESTRICT)
+    ON DELETE CASCADE
+    ON UPDATE CASCADE)
 ENGINE = InnoDB;
 
 SHOW WARNINGS;
@@ -596,13 +596,13 @@ CREATE  TABLE IF NOT EXISTS `output_summaries` (
   CONSTRAINT `os_output_fk`
     FOREIGN KEY (`output_id` )
     REFERENCES `outputs` (`id` )
-    ON DELETE RESTRICT
-    ON UPDATE RESTRICT,
+    ON DELETE CASCADE
+    ON UPDATE CASCADE,
   CONSTRAINT `os_activity_leader_fk`
     FOREIGN KEY (`activity_leader_id` )
     REFERENCES `activity_leaders` (`id` )
-    ON DELETE RESTRICT
-    ON UPDATE RESTRICT)
+    ON DELETE CASCADE
+    ON UPDATE CASCADE)
 ENGINE = InnoDB;
 
 SHOW WARNINGS;
@@ -632,18 +632,18 @@ CREATE  TABLE IF NOT EXISTS `publications` (
   CONSTRAINT `p_publication_type_fk`
     FOREIGN KEY (`publication_type_id` )
     REFERENCES `publication_types` (`id` )
-    ON DELETE RESTRICT
-    ON UPDATE RESTRICT,
+    ON DELETE CASCADE
+    ON UPDATE CASCADE,
   CONSTRAINT `p_logframe_fk`
     FOREIGN KEY (`logframe_id` )
     REFERENCES `logframes` (`id` )
-    ON DELETE RESTRICT
-    ON UPDATE RESTRICT,
+    ON DELETE CASCADE
+    ON UPDATE CASCADE,
   CONSTRAINT `p_activity_leader_fk`
     FOREIGN KEY (`activity_leader_id` )
     REFERENCES `activity_leaders` (`id` )
-    ON DELETE RESTRICT
-    ON UPDATE RESTRICT)
+    ON DELETE CASCADE
+    ON UPDATE CASCADE)
 ENGINE = InnoDB;
 
 SHOW WARNINGS;
@@ -669,13 +669,13 @@ CREATE  TABLE IF NOT EXISTS `case_studies` (
   CONSTRAINT `cs_logframe_fk`
     FOREIGN KEY (`logframe_id` )
     REFERENCES `logframes` (`id` )
-    ON DELETE RESTRICT
-    ON UPDATE RESTRICT,
+    ON DELETE CASCADE
+    ON UPDATE CASCADE,
   CONSTRAINT `cs_activity_leader`
     FOREIGN KEY (`activity_leader_id` )
     REFERENCES `activity_leaders` (`id` )
-    ON DELETE RESTRICT
-    ON UPDATE RESTRICT)
+    ON DELETE CASCADE
+    ON UPDATE CASCADE)
 ENGINE = InnoDB;
 
 SHOW WARNINGS;
@@ -691,13 +691,13 @@ CREATE  TABLE IF NOT EXISTS `case_study_countries` (
   CONSTRAINT `csc_case_study_fk`
     FOREIGN KEY (`case_study_id` )
     REFERENCES `case_studies` (`id` )
-    ON DELETE RESTRICT
-    ON UPDATE RESTRICT,
+    ON DELETE CASCADE
+    ON UPDATE CASCADE,
   CONSTRAINT `csc_country_fk`
     FOREIGN KEY (`country_iso2` )
     REFERENCES `countries` (`iso2` )
-    ON DELETE RESTRICT
-    ON UPDATE RESTRICT)
+    ON DELETE CASCADE
+    ON UPDATE CASCADE)
 ENGINE = InnoDB;
 
 SHOW WARNINGS;
@@ -719,13 +719,13 @@ CREATE  TABLE IF NOT EXISTS `outcomes` (
   CONSTRAINT `out_logframe_fk`
     FOREIGN KEY (`logframe_id` )
     REFERENCES `logframes` (`id` )
-    ON DELETE RESTRICT
-    ON UPDATE RESTRICT,
+    ON DELETE CASCADE
+    ON UPDATE CASCADE,
   CONSTRAINT `out_activity_leader_fk`
     FOREIGN KEY (`activity_leader_id` )
     REFERENCES `activity_leaders` (`id` )
-    ON DELETE RESTRICT
-    ON UPDATE RESTRICT)
+    ON DELETE CASCADE
+    ON UPDATE CASCADE)
 ENGINE = InnoDB;
 
 SHOW WARNINGS;
@@ -745,13 +745,13 @@ CREATE  TABLE IF NOT EXISTS `leverages` (
   CONSTRAINT `lev_theme_fk`
     FOREIGN KEY (`theme_id` )
     REFERENCES `themes` (`id` )
-    ON DELETE RESTRICT
-    ON UPDATE RESTRICT,
+    ON DELETE CASCADE
+    ON UPDATE CASCADE,
   CONSTRAINT `lev_activity_leader_fk`
     FOREIGN KEY (`activity_leader_id` )
     REFERENCES `activity_leaders` (`id` )
-    ON DELETE RESTRICT
-    ON UPDATE RESTRICT)
+    ON DELETE CASCADE
+    ON UPDATE CASCADE)
 ENGINE = InnoDB;
 
 SHOW WARNINGS;
@@ -768,13 +768,13 @@ CREATE  TABLE IF NOT EXISTS `tl_output_summaries` (
   CONSTRAINT `tlos_output_fk`
     FOREIGN KEY (`output_id` )
     REFERENCES `outputs` (`id` )
-    ON DELETE RESTRICT
-    ON UPDATE RESTRICT,
+    ON DELETE CASCADE
+    ON UPDATE CASCADE,
   CONSTRAINT `tlos_activity_leader_fk`
     FOREIGN KEY (`activity_leader_id` )
     REFERENCES `activity_leaders` (`id` )
-    ON DELETE RESTRICT
-    ON UPDATE RESTRICT)
+    ON DELETE CASCADE
+    ON UPDATE CASCADE)
 ENGINE = InnoDB;
 
 SHOW WARNINGS;
@@ -794,13 +794,13 @@ CREATE  TABLE IF NOT EXISTS `rpl_shynthesis_reports` (
   CONSTRAINT `rplsr_activity_leader_fk`
     FOREIGN KEY (`activity_leader_id` )
     REFERENCES `activity_leaders` (`id` )
-    ON DELETE RESTRICT
-    ON UPDATE RESTRICT,
+    ON DELETE CASCADE
+    ON UPDATE CASCADE,
   CONSTRAINT `rplsr_logframe_fk`
     FOREIGN KEY (`logframe_id` )
     REFERENCES `logframes` (`id` )
-    ON DELETE RESTRICT
-    ON UPDATE RESTRICT)
+    ON DELETE CASCADE
+    ON UPDATE CASCADE)
 ENGINE = InnoDB;
 
 SHOW WARNINGS;
@@ -829,13 +829,13 @@ CREATE  TABLE IF NOT EXISTS `milestone_reports` (
   CONSTRAINT `mr_milestone_fk`
     FOREIGN KEY (`milestone_id` )
     REFERENCES `milestones` (`id` )
-    ON DELETE RESTRICT
-    ON UPDATE RESTRICT,
+    ON DELETE CASCADE
+    ON UPDATE CASCADE,
   CONSTRAINT `mr_milestone_status_fk`
     FOREIGN KEY (`milestone_status_id` )
     REFERENCES `milestone_status` (`id` )
-    ON DELETE RESTRICT
-    ON UPDATE RESTRICT)
+    ON DELETE CASCADE
+    ON UPDATE CASCADE)
 ENGINE = InnoDB;
 
 SHOW WARNINGS;
@@ -862,13 +862,13 @@ CREATE  TABLE IF NOT EXISTS `activity_partner_roles` (
   CONSTRAINT `activity_partner_fk`
     FOREIGN KEY (`activity_partner_id` )
     REFERENCES `activity_partners` (`id` )
-    ON DELETE RESTRICT
-    ON UPDATE RESTRICT,
+    ON DELETE CASCADE
+    ON UPDATE CASCADE,
   CONSTRAINT `partner_role_fk`
     FOREIGN KEY (`partner_role_id` )
     REFERENCES `partner_roles` (`id` )
-    ON DELETE RESTRICT
-    ON UPDATE RESTRICT)
+    ON DELETE CASCADE
+    ON UPDATE CASCADE)
 ENGINE = InnoDB;
 
 SHOW WARNINGS;
@@ -884,13 +884,13 @@ CREATE  TABLE IF NOT EXISTS `deliverable_formats` (
   CONSTRAINT `df_file_format_fk`
     FOREIGN KEY (`file_format_id` )
     REFERENCES `file_formats` (`id` )
-    ON DELETE RESTRICT
-    ON UPDATE RESTRICT,
+    ON DELETE CASCADE
+    ON UPDATE CASCADE,
   CONSTRAINT `df_deliverable_fk`
     FOREIGN KEY (`deliverable_id` )
     REFERENCES `deliverables` (`id` )
-    ON DELETE RESTRICT
-    ON UPDATE RESTRICT)
+    ON DELETE CASCADE
+    ON UPDATE CASCADE)
 ENGINE = InnoDB;
 
 SHOW WARNINGS;
