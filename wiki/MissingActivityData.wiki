@@ -685,85 +685,8 @@ THESE ACTIVITIES DONT BELONG TO ICRAF:
    * Budget in wrong format and for multiple years: "63k (2012); 100k(2013); 100k (2014)." ONly year 2012 entered, as 63000.00
 
 == TL Theme 4.3 ==
-  * Activity 239: "Development of virtual cultivars/animals/pasture systems that are resilient to climate change (in conjunction with Global Futures project work)."
-   * Missing activity description
-   * Missing start date and end date
-   * Budget hass bad format. It must be an integer number.
-   * Missing objectives
-   * Three partner types selected, but no names included.
-
-  * Activity 166: "Development of modeling tools to handle aggregation, landuse, non-traded goods, and trade policies."
-   * Missing start date and end date
-   * Missing activity description
-   * Missing objectives
-   * Budget hass bad format. It must be an integer number.
-   * Missing keywords
-
-  * Activity 240: "Model Intercomparisons of major global models using ARC RCPs and SSPs as drivers."
-   * Missing start date and end date
-   * Missing activity description
-   * Missing objectives
-   * Budget hass bad format. It must be an integer number.
-   * Missing partners
-   * Missing keywords
-
-  * Activity 241: "Follow-up workshop on developing virtual crop varietiesin the context of crop modeling software."
-   * Missing start date and end date
-   * Missing activity description
-   * Missing objectives
-   * Budget hass bad format. It must be an integer number.
-   * Missing keywords
-
-  * Activity 242: "Merging of various modeling components influencing agricultural research internventions on potato and sweet potato, 2011 funds." 
-   * Missing start date and end date
-   * Missing activity description
-   * Missing objectives
-   * Budget hass bad format. It must be an integer number.
-   * Missing keywords
-
-  * Activity 243: "Development of new virtual crop parameters for assessment of potential invetsments to improve resilience to climate change for potato and sweet potato, 2012 funds." 
-   * Missing start date and end date
-   * Missing activity description
-   * Missing objectives
-   * Missing budget info
-   * Budget hass bad format. It must be an integer number.
-   * Missing keywords
-
-  * Activity 244: "Develop methods for improving CGIAR modeling capability in agroforestry and other natural resource management internvention areas. This may involve the direct enhancement of global models like IMPACT or the enhancement of othe rmodels that could be linked up (e.g. DSSAT), 2012 funds."
-   * Missing start date and end date
-   * Missing activity description   
-   * Missing objectives
-   * Budget hass bad format. It must be an integer number.
-   * Missing keywords
-
-  * Activity 245: "Continue work on methods for improving CGIAR modeling capability in agro-forestry  and other natural resource management internvention areas that improve climate change resilience. This may involve the direct enhancement of global models like IMPACT or the enhancement of other models that could be linked up (e.g. DSSAT), 2012 funds."
-   * Missing start date and end date
-   * Missing activity description  
-   * Missing objectives
-   * Budget hass bad format. It must be an integer number.
-   * Missing keywords
-
   * Activity 246: "Report for the United Nations Committee on Food Security (CFS) ON Food Security and Climate Change and related reports with subregional results."
-   * Missing start date and end date
-   * Missing activity description    
-   * Missing objectives 
-   * Some partners - NARES, CGIAR centers - not specified
    * No budget give even though CG fund checked and percentages given
-   * Missing keywords
-
-  * Activity 247: "Completion of national and regional studies complementary to the CFS global study."
-   * Missing start date and end date
-   * Missing activity description  
-   * Missing objectives
-   * One partner listed as FANRAN - actually FANRPAN? Entered in database as FANRPAN.
-   * partners - "national country authors" but nothing specific entered.
-   * Budget hass bad format. It must be an integer number.
-   * Missing keywords
-
+   
   * Activity 248: "Training and workshops on modeling tools in collaborating centers and NARES."
-   * Missing start date and end date
-   * Missing activity description 
-   * Missing objectives 
-   * Budget hass bad format. It must be an integer number.
-   * partners not specified, only says "several CGIAR centers" and "NARES."
-   * Missing keywords
+   * partners not specified, only says "several CGIAR centers" and "NARES."   
