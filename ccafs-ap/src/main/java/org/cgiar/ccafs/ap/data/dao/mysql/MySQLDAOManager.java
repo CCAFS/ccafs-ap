@@ -41,7 +41,9 @@ public class MySQLDAOManager extends DAOManager {
     }
   }
 
+  @Override
   public int makeChangeSecure(Connection conn, String preparedUpdateQuery, Object[] values) {
+    int rowsChanged = -1;
     try (PreparedStatement stm = conn.prepareStatement(preparedUpdateQuery)) {
       for (int c = 0; c < values.length; c++) {
         if (values[c] instanceof String) {
@@ -54,12 +56,12 @@ public class MySQLDAOManager extends DAOManager {
           stm.setObject((c + 1), values[c]);
         }
       }
-      return stm.executeUpdate();
+      rowsChanged = stm.executeUpdate();
     } catch (SQLException e) {
       // TODO Auto-generated catch block
       e.printStackTrace();
     }
-    return -1;
+    return rowsChanged;
   }
 
   @Override

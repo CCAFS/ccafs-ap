@@ -9,6 +9,7 @@ import org.cgiar.ccafs.ap.data.model.DeliverableType;
 import org.cgiar.ccafs.ap.data.model.FileFormat;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -24,6 +25,29 @@ public class DeliverableManagerImpl implements DeliverableManager {
   public DeliverableManagerImpl(DeliverableDAO deliverableDAO, FileFormatDAO fileFormatDAO) {
     this.deliverableDAO = deliverableDAO;
     this.fileFormatDAO = fileFormatDAO;
+  }
+
+  @Override
+  public boolean addDeliverable(Deliverable deliverable, int activityID, boolean isExpected) {
+    Map<String, Object> deliverableData = new HashMap<>();
+    deliverableData.put("description", deliverable.getDescription());
+    deliverableData.put("year", deliverable.getYear());
+    deliverableData.put("activity_id", activityID);
+    deliverableData.put("deliverable_type_id", deliverable.getType().getId());
+    deliverableData.put("is_expected", isExpected ? 1 : 0);
+    deliverableData.put("deliverable_status_id", deliverable.getStatus().getId());
+
+    deliverableData.put("file_format_ids", deliverable.getFileFormatsIds());
+
+    int deliverableId = deliverableDAO.addDeliverable(deliverableData);
+    if (deliverableId >= 0) {
+      // lets add the file format list.
+      boolean fileFormatsAdded = fileFormatDAO.addFileFormats(deliverableId, deliverable.getFileFormatsIds());
+      if (!fileFormatsAdded) {
+        return false;
+      }
+    }
+    return true;
   }
 
   @Override
@@ -66,15 +90,17 @@ public class DeliverableManagerImpl implements DeliverableManager {
         } else {
           deliverable.setFileFormats(null);
         }
-
-
         deliverables.add(deliverable);
       }
-
       return deliverables;
     } else {
       return null;
     }
+  }
+
+  @Override
+  public boolean removeNotExpected(int activityID) {
+    return deliverableDAO.removeNotExpected(activityID);
   }
 
 }

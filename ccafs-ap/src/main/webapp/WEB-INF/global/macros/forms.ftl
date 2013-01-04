@@ -68,7 +68,7 @@
   </div>
 [/#macro]
 
-[#macro select name listName label="" headerKey="-1" headerValue=" -- Select -- " keyFieldName="" displayFieldName="" value="-NULL" i18nkey="" disabled=false required=false errorField="" selected=false]
+[#macro select name listName label="" keyFieldName="" displayFieldName="" value="-NULL" i18nkey="" disabled=false required=false errorField="" selected=false]
   <div class="select">
     <h6>[#if i18nkey==""]${label}[#else][@s.text name="${i18nkey}" /][/#if][#if required]<span class="red">*</span>[/#if]:</h6>
     [#if errorField==""][@s.fielderror cssClass="fieldError" fieldName="${name}"/][#else][@s.fielderror cssClass="fieldError" fieldName="${errorfield}"/][/#if]
@@ -79,9 +79,9 @@
         [#assign customValue]${value}[/#assign]
       [/#if]
       [#if keyFieldName == ""]
-        [@s.select name="${name}" list="${listName}" value="${customValue}" headerKey="${headerKey}" headerValue="${headerValue}" disabled="${disabled?string}" /]
+        [@s.select name="${name}" list="${listName}" value="${customValue}" disabled="${disabled?string}" /]
       [#else]
-        [@s.select name="${name}" list="${listName}" headerKey="${headerKey}" headerValue="${headerValue}" listKey="${keyFieldName}" listValue="${displayFieldName}" value="${customValue}" disabled="${disabled?string}" /]
+        [@s.select name="${name}" list="${listName}" listKey="${keyFieldName}" listValue="${displayFieldName}" value="${customValue}" disabled="${disabled?string}" /]
       [/#if]
     </div>
   </div>  

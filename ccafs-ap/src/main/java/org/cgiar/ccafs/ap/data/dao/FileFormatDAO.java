@@ -2,6 +2,7 @@ package org.cgiar.ccafs.ap.data.dao;
 
 import org.cgiar.ccafs.ap.data.dao.mysql.MySQLFileFormatDAO;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
@@ -9,6 +10,15 @@ import com.google.inject.ImplementedBy;
 
 @ImplementedBy(MySQLFileFormatDAO.class)
 public interface FileFormatDAO {
+
+  /**
+   * Add a set of file formats related to a given deliverable.
+   * 
+   * @param deliverableId - Deliverable identifier to which the set of file formats belongs.
+   * @param fileFormatsIds
+   * @return
+   */
+  public boolean addFileFormats(int deliverableId, ArrayList<String> fileFormatsIds);
 
   /**
    * Get a list whit all file formats
