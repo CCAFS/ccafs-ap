@@ -60,38 +60,21 @@
    * MIssing keywords
 
 == BIOVERSITY  ==
-  * Activity 47: "Multilocation participatory trials of durum wheat in Ethiopia  carried out in analogue sites for present and future adaptation to climate change"
-   * There isn't description for gender integration.
-
   * Activity 49: "Development and evaluation of methodologies for surveys of communities in three countries about climate change and the relative tolerances of traditional crops including NUS to cope with climate change conditions (Nepal, India, Bolivia)"
    * Some details in region to be conducted are not well defined
      ((Tamil Nadu State)  E 76.00’- 77.56’; N 10.12'-11°7'; Mandla block, Mandla District (Madhya Pradesh State); E 80.18'- 81.50', N 22º 2' -23º 22';  Bageshwar district (Uttarakhand State) E 79 °77’, N 29 º84’; Almora district (Uttarakhand State), E 79° 30', N 29 ° 36';  NEPAL:  Bara District E 85° 16', N 26° .88'; Dolakha E 86°10' 
 N 27°64'; Jumla E 82°12' N 29.29; Kaski E 83°84', N 28°28'.)
 It was stored the countries only.
 
-  * Activity 51: "Collecting mission for Musa in identified area; gender-differentiated information about materials and their traits integrated into Musa Germplasm Information system, Musa Knowledge Resources Centre, MusaNet and ProMusa through meetings/workshops; start developing a phenotypic method to screen the Musa biodiversity for drought tolerance." 
-   * Partners aren't valid, there are personal names must be institutional names.
-
-  * Activity 52: "Collating and sharing information on the use of indigenous/local technical knowledge in deploying crop diversity (especially NUS) for strengthening adaptation and resilience of production systems to climate change in 5 countries (PNG, Malaysia, Bolivia, Nepal and India)."
-   * Missing contact person email (Adam Drucker)
-   
   * Activity 53: "Analysis of gender disaggregated  data about  perceptions, crops/varieties, uses and management practices and their relation to climate change adaptation in Nepal, India, Bolivia, Sarawak"
    * Missing start date and end date.
-   * Missing contact person email (Adam Drucker)
-
+  
   * Activity 55: "Systematic review of literature on the use of agricultural biodiversity for risk management and adaptation to climate change"
    * Missing contact person email (Fabrice de Clerck)
    
   * Activity 56: "Case studies on informal seed systems conducted, identifying bottlenecks for climate change adaptation."
-   * Missing start date, end date and description.
-   * There are no objectives
-   * Missing gender description.
-   * As there are countries selected in the regions (Bolivia), the global flag was unchecked.
    * In other region list there are a details description (CA) no identified
-
-  * Activity 61: "Tools for stakeholder adaptation planning for Musa and its pests and diseases, cocoa and coconut"
-   * As there are countries or regions selected, the global flag was unchecked.
-
+  
 == CIAT ==
   * Activity 17: "Planning and initiation of assessments of farm practices affecting GHG emissions in extensive and intensive Fruit Production Systems"
    * There aren't partners.
