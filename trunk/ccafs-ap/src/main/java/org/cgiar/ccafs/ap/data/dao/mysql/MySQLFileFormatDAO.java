@@ -28,6 +28,35 @@ public class MySQLFileFormatDAO implements FileFormatDAO {
   }
 
   @Override
+  public boolean addFileFormats(int deliverableId, ArrayList<String> fileFormatsIds) {
+    boolean problem = false;
+    try (Connection connection = databaseManager.getConnection()) {
+      String addQuery = "INSERT INTO deliverable_formats (deliverable_id, file_format_id) VALUES ";
+      boolean isFirst = true;
+      for (String fileformatId : fileFormatsIds) {
+        if (isFirst) {
+          isFirst = false;
+        } else {
+          addQuery += ", ";
+        }
+        addQuery += "(" + deliverableId + ", ?)";
+      }
+      Object[] values = new Object[fileFormatsIds.size()];
+      for (int c = 0; c < values.length; c++) {
+        values[c] = fileFormatsIds.get(c);
+      }
+      int rows = databaseManager.makeChangeSecure(connection, addQuery, values);
+      if (rows <= 0) {
+        problem = true;
+      }
+    } catch (SQLException e) {
+      // TODO Auto-generated catch block
+      e.printStackTrace();
+    }
+    return !problem;
+  }
+
+  @Override
   public List<Map<String, String>> getFileFormats() {
     List<Map<String, String>> fileFormatsList = new ArrayList<>();
     try (Connection con = databaseManager.getConnection()) {

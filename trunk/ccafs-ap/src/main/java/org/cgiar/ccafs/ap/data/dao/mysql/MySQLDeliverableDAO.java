@@ -1,5 +1,8 @@
 package org.cgiar.ccafs.ap.data.dao.mysql;
 
+import org.cgiar.ccafs.ap.data.dao.DAOManager;
+import org.cgiar.ccafs.ap.data.dao.DeliverableDAO;
+
 import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -9,8 +12,6 @@ import java.util.List;
 import java.util.Map;
 
 import com.google.inject.Inject;
-import org.cgiar.ccafs.ap.data.dao.DAOManager;
-import org.cgiar.ccafs.ap.data.dao.DeliverableDAO;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -24,6 +25,35 @@ public class MySQLDeliverableDAO implements DeliverableDAO {
   @Inject
   public MySQLDeliverableDAO(DAOManager databaseManager) {
     this.databaseManager = databaseManager;
+  }
+
+  @Override
+  public int addDeliverable(Map<String, Object> deliverableData) {
+    int generatedId = -1;
+    try (Connection connection = databaseManager.getConnection()) {
+      String addDeliveryQuery =
+        "INSERT INTO deliverables (description, year, activity_id, deliverable_type_id, is_expected, deliverable_status_id) VALUES (?, ?, ?, ?, ?, ?)";
+      Object[] values = new Object[6];
+      values[0] = deliverableData.get("description");
+      values[1] = deliverableData.get("year");
+      values[2] = deliverableData.get("activity_id");
+      values[3] = deliverableData.get("deliverable_type_id");
+      values[4] = deliverableData.get("is_expected");
+      values[5] = deliverableData.get("deliverable_status_id");
+      int deliverableAdded = databaseManager.makeChangeSecure(connection, addDeliveryQuery, values);
+      if (deliverableAdded > 0) {
+        // get the id assigned to this new record.
+        ResultSet rs = databaseManager.makeQuery("SELECT LAST_INSERT_ID()", connection);
+        if (rs.next()) {
+          generatedId = rs.getInt(1);
+        }
+        rs.close();
+      }
+    } catch (SQLException e) {
+      // TODO Auto-generated catch block
+      e.printStackTrace();
+    }
+    return generatedId;
   }
 
   @Override
@@ -62,5 +92,20 @@ public class MySQLDeliverableDAO implements DeliverableDAO {
       return deliverables;
     }
 
+  }
+
+  @Override
+  public boolean removeNotExpected(int activityID) {
+    try (Connection connection = databaseManager.getConnection()) {
+      String deleteDeliverableQuery = "DELETE FROM deliverables WHERE is_expected = 0 AND activity_id = ?";
+      int rowsDeleted = databaseManager.makeChangeSecure(connection, deleteDeliverableQuery, new Object[] {activityID});
+      if (rowsDeleted >= 0) {
+        return true;
+      }
+    } catch (SQLException e) {
+      // TODO Auto-generated catch block
+      e.printStackTrace();
+    }
+    return false;
   }
 }

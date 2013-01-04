@@ -46,7 +46,6 @@ public class DeliverablesReportingAction extends BaseAction {
   private Activity activity;
   private int activityID;
 
-
   @Inject
   public DeliverablesReportingAction(APConfig config, LogframeManager logframeManager,
     DeliverableManager deliverableManager, ActivityManager activityManager,
@@ -73,7 +72,6 @@ public class DeliverablesReportingAction extends BaseAction {
     return deliverableStatusList;
   }
 
-
   public int[] getDeliverableTypeIdsNeeded() {
     return deliverableTypeIdsNeeded;
   }
@@ -83,14 +81,15 @@ public class DeliverablesReportingAction extends BaseAction {
     return deliverableTypesList;
   }
 
+
   public int[] getFileFormatIds() {
     return fileFormatIds;
   }
 
-
   public FileFormat[] getFileFormatsList() {
     return fileFormatsList;
   }
+
 
   @Override
   public void prepare() throws Exception {
@@ -122,6 +121,7 @@ public class DeliverablesReportingAction extends BaseAction {
   @Override
   public String save() {
     boolean problem = false;
+    boolean notExpectedDeleted = false;
     for (int c = 0; c < activity.getDeliverables().size(); c++) {
       Deliverable deliverable = activity.getDeliverables().get(c);
       // If is an expected deliverable, we must only save its status and its file formats.
@@ -143,9 +143,20 @@ public class DeliverablesReportingAction extends BaseAction {
         }
       } else {
         // Saving here those not expected deliverables.
-        // First, remove all not expected deliverables.
-        // Second, add again the
-        // deliverableManager.addDeliverable(deliverable);
+        // But first, we have to remove all those not expected deliverables since we don't know exactly what
+        // deliverables have been changed.
+        if (!notExpectedDeleted) {
+          notExpectedDeleted = true;
+          boolean deleted = deliverableManager.removeNotExpected(activityID);
+          if (!deleted) {
+            problem = true;
+          }
+        }
+        // Second, add again all the not expected deliverables.
+        boolean deliverableAdded = deliverableManager.addDeliverable(deliverable, activityID, false);
+        if (!deliverableAdded) {
+          problem = true;
+        }
       }
     }
     if (!problem) {
@@ -167,6 +178,19 @@ public class DeliverablesReportingAction extends BaseAction {
 
   public void setFileFormatsList(FileFormat[] fileFormatsList) {
     this.fileFormatsList = fileFormatsList;
+  }
+
+  @Override
+  public void validate() {
+    Deliverable deliverable = null;
+    for (int c = 0; c < activity.getDeliverables().size(); c++) {
+      deliverable = activity.getDeliverables().get(c);
+      if (deliverable.isExpected()) {
+        // TODO
+
+      }
+    }
+    super.validate();
   }
 
 }

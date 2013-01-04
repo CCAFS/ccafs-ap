@@ -1,13 +1,22 @@
 package org.cgiar.ccafs.ap.data.dao;
 
+import org.cgiar.ccafs.ap.data.dao.mysql.MySQLDeliverableDAO;
+
 import java.util.List;
 import java.util.Map;
 
 import com.google.inject.ImplementedBy;
-import org.cgiar.ccafs.ap.data.dao.mysql.MySQLDeliverableDAO;
 
 @ImplementedBy(MySQLDeliverableDAO.class)
 public interface DeliverableDAO {
+
+  /**
+   * Add a new deliverable into the DAO.
+   * 
+   * @param deliverableData - a Map of objects with the information.
+   * @return the identifier assigned to the new record.
+   */
+  public int addDeliverable(Map<String, Object> deliverableData);
 
   /**
    * Get a list of deliverables that belongs to the activity
@@ -17,4 +26,12 @@ public interface DeliverableDAO {
    * @return a list whit Map of deliverables.
    */
   public List<Map<String, String>> getDeliverables(int activityID);
+
+  /**
+   * Remove all not expected deliverables that belongs of a given activity.
+   * 
+   * @param activityID - activity identifier.
+   * @return true if all deliverables were successfully deleted, false otherwise.
+   */
+  public boolean removeNotExpected(int activityID);
 }

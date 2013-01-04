@@ -84,12 +84,12 @@ public abstract class DAOManager {
   /**
    * Execute an update statement in a secure way avoiding SQL Injections and other vulnerabilities.
    * 
-   * @param conn - a SQL Connection object which represents the connection to the DAO.
+   * @param connection - a SQL Connection object which represents the connection to the DAO.
    * @param preparedUpdateQuery - Secure query without values defined on it.
    * @param values - An array of Objects values.
    * @return an integer representing the number of affected rows or -1 if any problem appear.
    */
-  public int makeChangeSecure(Connection conn, String preparedUpdateQuery, Object[] values) {
+  public int makeChangeSecure(Connection connection, String preparedUpdateQuery, Object[] values) {
     return -1;
   }
 

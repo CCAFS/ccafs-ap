@@ -39,7 +39,7 @@
             <h6>[@s.text name="reporting.activityDeliverables.type" /]</h6>
             <p>${activity.deliverables[deliverable_index].type.name}</p>
           [#else]
-            [@customForm.select name="activity.deliverables[${deliverable_index}].type" label="" i18nkey="reporting.activityDeliverables.type" listName="deliverableTypesList" headerValue="Select a deliverable type" keyFieldName="id"  displayFieldName="name" /]
+            [@customForm.select name="activity.deliverables[${deliverable_index}].type" label="" i18nkey="reporting.activityDeliverables.type" listName="deliverableTypesList" keyFieldName="id"  displayFieldName="name" /]
           [/#if]
         </div>
         
@@ -120,7 +120,7 @@
         
         [#-- Type --]
         <div class="thirdPartBlock">        
-          [@customForm.select name="type" i18nkey="reporting.activityDeliverables.type" listName="deliverableTypesList" headerValue="Select a deliverable type" keyFieldName="id"  displayFieldName="name" /]
+          [@customForm.select name="type" i18nkey="reporting.activityDeliverables.type" listName="deliverableTypesList" keyFieldName="id"  displayFieldName="name" /]
         </div>
         
         [#-- Year --]
