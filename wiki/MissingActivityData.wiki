@@ -321,91 +321,10 @@ THESE ACTIVITIES DONT BELONG TO ICRAF:
    * No partners listed.
 
 == RPL EA ==
- * Activity 167: "Mapping risks and opportunities for targeting appropriate crop and livestock adaptation strategies in East Africa"
-   * Missing contact person.
-   
- * Activity 168: "Regional capacity building on using Climate Scenarios and Analogues for designing adaptation strategies in agriculture."
-   * Missing contact person email (Tom Ouna and Catherine Mungai)
-   * partners - unclear to what "EPA" refers
-   
  * Activity 169: "Understanding social and cultural barriers to adaptation"
-   * Missing contact person email (CCAFS East Africa Fellow (TBC))
-   * No partners listed except for "consultant" which is not an applicable category.
-
-  * Activity 170: "Video testimonials on gender-specific farmer adaptation and mitigation strategies in East Africa."
-   * *Milestone is missing*
-   * Missing contact person email (Catherine Mungai )
-   * Missing activity objectives
-   * Missing partners
-
-  * Activity 171: "Evaluation of baseline national adaptation policy and plans in Kenya and Ethiopia."
-   * *Milestone is missing*
-   * Nothing checked and no description for gender integration
-   * Missing partners
-
-  * Activity 172: "Using Climate Scenarios and Spatial Analogues in Designing Adaptation Strategies in Agriculture in East Africa"
-   * Missing contact person email (Catherine Mungai )
-   * Nothing checked and no description for gender integration   
-      
-  * Activity 173: "Synthesis of knowledge gaps in risk management."
-   * Start and end date have wrong format (2012 - 2012).
-   * Missing contact person email (Maren Radeny).
-   
-  * Activity 175: "Support the national partners in Ethiopia and Kenya through the NMHs (National Meteorological and Hydrological Stations) to develop tools for agricultural application"
-   * Start date have wrong format (2012).
-   * Missing end date.
-   * Nothing checked and no description for gender integration
-
-  * Activity 176: "Using improved downscaled seasonal forecasts for managing climate risks."
-   * Nothing checked and no description for gender integration 
-   
-  * Activity 177: "Provision of information on stress tolerance and adaptation of maize cultivars to support farmers' risk management strategies in areas vulnerable to climate change."
-   * Missing start and end date.
-   * Nothing checked and no description for gender integration 
-
- * Activity 178: "Training of decision makers in inventories and use of appropriate tools and data"
-   * Missing contact person email (Catherine Mungai )
-
-  * Activity 179: "Quantification of GHG emissions to inform mitigation interventions in East African agricultural systems."
-   * Nothing checked and no description for gender integration 
-
-  * Activity 180: "Identification, testing and documentation of  options for low climate impact sustainable agricultural intensification."
-   * Nothing checked and no description for gender integration 
-   * some partners not specified: "Ministries of agriculture, livestock and fisheries," "farmer associations."
-
-  * Activity 181: "Measurement and mitigation of greenhouse gases in African livestock systems: Building capability to meet the challenge."
-   * Nothing checked and no description for gender integration 
-
-  * Activity 183: "Building strategic partnerships at national and regional levels, including Africa-wide engagements with multiple stakeholders."
-   * Missing contact person email (Maren Radeny)
-   * Nothing checked and no description for gender integration
-   * partners - entered UNFCCC National Focal Points as simply UNFCC, and categorized as "other," as it is an international org rather than a government org. 
-   
- * Activity 184: "Linking existing and future climate change-related research and science to farmer organizations at regional (EAFF), national (EAFF member organizations) and sub-national levels"
-   * Missing contact person email (Mainza Mugoya )
-   * There aren't expected deliverables.
-   * Nothing checked and no description for gender integration 
-   * no type for partner EAFF - assigned as RO
-   * Missing keywords
-   
-  * Activity 185: "Household and village baseline surveys for CCAFS site in Wote, Eastern Kenya."
-   * Missing start and end date.
-   
-  * Activity 186: "Regional site characterization and gender-disaggregated baseline data collection at household, village and institution levelsKenya."
-   * Missing start and end date.
-   * Missing contact person email (Joash Mango)
-   
-  * Activity 187: "Developing a strategy for engagement with National Met Services, data and tool collation, and capacity building."
-   * Missing start and end date.
-
-  * Activity 188: "Development of an assessment toolkit to analyze likely effects of specific adaptation and mitigation options in the region, with a focus on rangelands, vulnerability assessment at sub-national levels. "
-   * Have the same start and end date.
-   * Missing objectives
-   * Nothing checked and no description for gender integration 
-   
-  * Activity 189: "Assessing vulnerability to climate change in Ethiopia."
-   * Missing start and end date.
-   * Partner "Climate Change Forum - Ethiopia" listed as type "NGO" but is actually "GO." Entered as GO in database.
+   * Missing contact person email (CCAFS East Africa Fellow (TBC)) - Carried over to 2013
+   * No partners listed except for "consultant" which is not an applicable category. - Carried over to 2013
+ 
 
 == RPL SAs ==
 
