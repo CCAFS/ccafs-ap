@@ -381,35 +381,6 @@ THESE ACTIVITIES DONT BELONG TO ICRAF:
    * Expected deliverable "Data collected" has two years: 2012/2013. Only 2012 was entered.
    * Expected deliverable "1 networking among GHG experts established" has two years: 2012/2013. Only 2012 was entered.
 
-== TL Theme 1 ==
-  * At the end of Theme 1 Obj3 sheet there are several blank activities charts 
-
-  * Activity 205: "A Systemic Framework for Integrated Adaptation Planning."
-   * Checked "yes" for gender involvement, but no description included.
-   * No partner type selected for partner HIMCCA.
-
-  * Activity 206: "Discussion paper analyzing the role of rural institutions in enabling adaptation to climate change in the agricultural sector (SEI)."
-   * Gender integration nothing checked, no description.
-
-  * Activity 213: "Pest and diseases modelling  Workshop and insect pest research project (KSU)."
-   * No partners listed.
-   * Budget - CG Fund checked, but no percentage given.
-
-  * Activity 214: "Further development of CCAFS-climate portal."
-   * Expected deliverable "CMIP3 climate data fully available" has two years: 2012/2013. Only 2012 was entered.
-   * Expected deliverable "CMIP5 RCP4.5 data downscaled and provided online" has two years: 2013/2014. Only 2013 was entered.
-   * There are countries or regions selected, the global flag was changed to false.
-
-  * Activity 215: "Collaborative project on vulnerability analysis with the Trust."
-   * Expected deliverable "Crop vulnerability analyses plugged into AMKN" has two dates: 2012/2013. ONly 2012 entered.
-   * Expected deliverable "CCAFS working paper with results of vulnerability analysis" has two dates: 2013/2014. Only 2013 entered.
-   * There are countries or regions selected, the global flag was changed to false.
-
-  * Activity 280: "cfor climate change analysis - Phase III"
-   * Missing types for some partners.
-  
-  * Activity 209: "Modeling climate impacts on pests and diseases (Banana weewil)"
-   * Missing type for some partners.
 
 == TL Theme 2 ==
   * Excel file is empty - no data have been entered.
