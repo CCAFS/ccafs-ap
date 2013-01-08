@@ -1,12 +1,13 @@
 package org.cgiar.ccafs.ap.data.manager.impl;
 
+import org.cgiar.ccafs.ap.data.dao.PartnerTypeDAO;
+import org.cgiar.ccafs.ap.data.manager.PartnerTypeManager;
+import org.cgiar.ccafs.ap.data.model.PartnerType;
+
 import java.util.List;
 import java.util.Map;
 
 import com.google.inject.Inject;
-import org.cgiar.ccafs.ap.data.dao.PartnerTypeDAO;
-import org.cgiar.ccafs.ap.data.manager.PartnerTypeManager;
-import org.cgiar.ccafs.ap.data.model.PartnerType;
 
 
 public class PartnerTypeManagerImpl implements PartnerTypeManager {
@@ -30,7 +31,9 @@ public class PartnerTypeManagerImpl implements PartnerTypeManager {
     PartnerType[] partnerTypeList = new PartnerType[partnerTypeDataList.size()];
     for (int c = 0; c < partnerTypeDataList.size(); c++) {
       partnerTypeData = partnerTypeDataList.get(c);
-      partnerTypeList[c] = new PartnerType(Integer.parseInt(partnerTypeData.get("id")), partnerTypeData.get("acronym"));
+      partnerTypeList[c] = new PartnerType();
+      partnerTypeList[c].setId(Integer.parseInt(partnerTypeData.get("id")));
+      partnerTypeList[c].setName(partnerTypeData.get("acronym"));
     }
     if (partnerTypeDataList.size() > 0) {
       return partnerTypeList;

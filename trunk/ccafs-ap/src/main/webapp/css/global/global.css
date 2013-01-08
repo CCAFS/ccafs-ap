@@ -244,6 +244,16 @@ nav#secondaryMenu ul a li {
   width: 30%;  
 }
 
+.halfPartBlock {
+  display: inline-block;
+  padding: 5px;
+  width: 45%;
+}
+
+.halfPartBlock input {
+  width: 80%;
+}
+
 .buttons {
   margin: 10px;
   text-align: right;

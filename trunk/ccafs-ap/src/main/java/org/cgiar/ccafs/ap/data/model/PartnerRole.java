@@ -1,14 +1,14 @@
 package org.cgiar.ccafs.ap.data.model;
 
-import org.apache.commons.lang3.builder.ToStringBuilder;
 
-
-public class PartnerType {
+public class PartnerRole {
 
   private int id;
   private String name;
 
-  public PartnerType() {
+  public PartnerRole(int id, String name) {
+    this.id = id;
+    this.name = name;
   }
 
   public int getId() {
@@ -26,10 +26,4 @@ public class PartnerType {
   public void setName(String name) {
     this.name = name;
   }
-
-  @Override
-  public String toString() {
-    return ToStringBuilder.reflectionToString(this);
-  }
-
 }

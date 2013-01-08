@@ -72,7 +72,7 @@
     [/#if]
   [/#list]
 [/#macro]
-  <section>
+<section>
   [#include "/WEB-INF/global/pages/reporting-secondary-menu.ftl" /]
   
   [@s.form action="deliverables"]

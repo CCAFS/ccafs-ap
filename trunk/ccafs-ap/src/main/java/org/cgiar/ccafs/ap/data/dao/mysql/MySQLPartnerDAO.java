@@ -1,5 +1,8 @@
 package org.cgiar.ccafs.ap.data.dao.mysql;
 
+import org.cgiar.ccafs.ap.data.dao.DAOManager;
+import org.cgiar.ccafs.ap.data.dao.PartnerDAO;
+
 import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -9,8 +12,6 @@ import java.util.List;
 import java.util.Map;
 
 import com.google.inject.Inject;
-import org.cgiar.ccafs.ap.data.dao.DAOManager;
-import org.cgiar.ccafs.ap.data.dao.PartnerDAO;
 
 
 public class MySQLPartnerDAO implements PartnerDAO {
@@ -20,6 +21,32 @@ public class MySQLPartnerDAO implements PartnerDAO {
   @Inject
   public MySQLPartnerDAO(DAOManager databaseManager) {
     this.databaseManager = databaseManager;
+  }
+
+  @Override
+  public List<Map<String, String>> getAllPartners() {
+    List<Map<String, String>> partners = new ArrayList<>();
+    try (Connection connection = databaseManager.getConnection()) {
+      String query =
+        "SELECT p.id, p.acronym, p.name, pt.id as 'partner_type_id', pt.acronym as 'partner_type_acronym' "
+          + "FROM partners p " + "INNER JOIN partner_types pt ON pt.id = p.partner_type_id " + "ORDER BY p.name";
+      ResultSet rs = databaseManager.makeQuery(query, connection);
+      while (rs.next()) {
+        Map<String, String> partnerData = new HashMap<>();
+        partnerData.put("id", rs.getString("id"));
+        partnerData.put("acronym", rs.getString("acronym"));
+        partnerData.put("name", rs.getString("name"));
+        partnerData.put("partner_type_id", rs.getString("partner_type_id"));
+        partnerData.put("partner_type_acronym", rs.getString("partner_type_acronym"));
+
+        partners.add(partnerData);
+      }
+      rs.close();
+    } catch (SQLException e) {
+      // TODO Auto-generated catch block
+      e.printStackTrace();
+    }
+    return partners;
   }
 
   @Override

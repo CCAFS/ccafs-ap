@@ -6,40 +6,52 @@ import org.apache.commons.lang3.builder.ToStringBuilder;
 public class ActivityPartner {
 
   private int id;
-  private String name;
-  private String email;
-
+  private String contactName;
+  private String contactEmail;
+  private Partner partner;
+  private PartnerRole role;
 
   public ActivityPartner() {
   }
 
-  public ActivityPartner(int id, String name) {
-    this.id = id;
-    this.name = name;
+  public String getContactEmail() {
+    return contactEmail;
   }
 
-  public String getEmail() {
-    return email;
+  public String getContactName() {
+    return contactName;
   }
 
   public int getId() {
     return id;
   }
 
-  public String getName() {
-    return name;
+  public Partner getPartner() {
+    return partner;
   }
 
-  public void setEmail(String email) {
-    this.email = email;
+  public PartnerRole getRole() {
+    return role;
+  }
+
+  public void setContactEmail(String contactEmail) {
+    this.contactEmail = contactEmail;
+  }
+
+  public void setContactName(String contactName) {
+    this.contactName = contactName;
   }
 
   public void setId(int id) {
     this.id = id;
   }
 
-  public void setName(String name) {
-    this.name = name;
+  public void setPartner(Partner partner) {
+    this.partner = partner;
+  }
+
+  public void setRole(PartnerRole role) {
+    this.role = role;
   }
 
   @Override

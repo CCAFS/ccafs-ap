@@ -22,9 +22,13 @@ public class Activity {
   private Budget budget;
   private String statusDescription;
   private List<Deliverable> deliverables;
-  private List<Partner> partners;
+  private List<ActivityPartner> activityPartners;
 
   public Activity() {
+  }
+
+  public List<ActivityPartner> getActivityPartners() {
+    return activityPartners;
   }
 
   public Budget getBudget() {
@@ -63,10 +67,6 @@ public class Activity {
     return milestone;
   }
 
-  public List<Partner> getPartners() {
-    return partners;
-  }
-
   public Date getStartDate() {
     return startDate;
   }
@@ -89,6 +89,10 @@ public class Activity {
 
   public boolean isPlanning() {
     return isPlanning;
+  }
+
+  public void setActivityPartners(List<ActivityPartner> activityPartners) {
+    this.activityPartners = activityPartners;
   }
 
   public void setBudget(Budget budget) {
@@ -129,10 +133,6 @@ public class Activity {
 
   public void setMilestone(Milestone milestone) {
     this.milestone = milestone;
-  }
-
-  public void setPartners(List<Partner> partners) {
-    this.partners = partners;
   }
 
   public void setPlanning(boolean isPlanning) {
