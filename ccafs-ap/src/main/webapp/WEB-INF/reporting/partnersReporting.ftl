@@ -1,8 +1,8 @@
 [#ftl]
 [#assign title = "Activity Partners Report" /]
 [#assign globalLibs = ["jquery", "noty"] /]
-[#assign customJS = [""] /]
-[#assign customCSS = [""] /]
+[#assign customJS = ["${baseUrl}/js/reporting/partnersReporting.js"] /]
+[#assign customCSS = ["${baseUrl}/css/reporting/partnersReporting.css"] /]
 [#assign currentSection = "reporting" /]
 [#assign currentReportingSection = "activities" /]
 [#assign currentStage = "partners" /]
@@ -10,11 +10,38 @@
 [#include "/WEB-INF/global/pages/header.ftl" /]
 [#include "/WEB-INF/global/pages/main-menu.ftl" /]
 [#import "/WEB-INF/global/macros/forms.ftl" as customForm /]
-    
-  <section>
+
+[#macro partnerSection]
+  [#list activity.activityPartners as ap]
+    <div id="activityPartner-${ap_index}" class="activityPartner">
+      <input name="activity.activityPartners[${ap_index}].id" type="hidden" value="${ap.id}" />
+      [#-- Remove link for all partners --]
+      <div class="removeLink">
+        <a id="removeActivityPartner-${ap_index}" href="" class="removePartner">Remove partner</a>
+      </div>
+      
+      [#-- Partner Name --]
+      <div class="fullBlock">
+        [@customForm.select name="activity.activityPartners[${ap_index}].partner" label="" i18nkey="reporting.activityPartners.partner.name" listName="partners" keyFieldName="id"  displayFieldName="name" /]
+      </div>
+      
+      [#-- Contact Name --]
+      <div class="halfPartBlock">
+        [@customForm.input name="activity.activityPartners[${ap_index}].contactName" type="text" i18nkey="reporting.activityPartners.contactPersonName" /]
+      </div>
+      
+      [#-- Contact Email --]
+      <div class="halfPartBlock">
+        [@customForm.input name="activity.activityPartners[${ap_index}].contactEmail" type="text" i18nkey="reporting.activityPartners.contactPersonEmail" /]
+      </div>      
+    </div> <!-- End activityPartner-${ap_index} -->
+    <hr />
+  [/#list]
+[/#macro]
+
+<section>
   [#include "/WEB-INF/global/pages/reporting-secondary-menu.ftl" /]
-  
-  [@s.form action="deliverables!save"]
+  [@s.form action="partners!save"]
   <article class="halfContent">
     <h1>
       ${activity.leader.acronym} - [@s.text name="reporting.activityPartners.activity" /] ${activity.id}      
@@ -25,29 +52,13 @@
     
     [#assign typeSelectHeadValue ] [@s.text name="reporting.activityPartners.selectPartnerType" /] [/#assign]
     
-    [#if partners?? ] 
-    
-      <fieldset>
-        <legend>[@s.text name="reporting.activityDeliverables.expectedDeliverables" /]</legend>
-        
-        [@s.iterator value="partners" var="partner"]
-          [@customForm.select name="selectedPartnerType" label="" i18nkey="reporting.activityPartners.partnerType" listName="partnerTypes" value="${partner.type.id}" headerValue="${typeSelectHeadValue}" keyFieldName="id"  displayFieldName="name"  /]
-          [@customForm.input name="selectedPartner" value="${partner.name}" type="text" i18nkey="reporting.activityPartners.partnerName" disabled=true  /]
-          [#if partner.contactPoints ?? ]
-            [@s.iterator value="partner.contactPoints" var="contactPoint"]
-              [@customForm.input name="selectedPartner" value="${contactPoint.name}" type="text" i18nkey="reporting.activityPartners.contactPersonName" disabled=true  /]
-              [@customForm.input name="selectedPartner" value="${contactPoint.email}" type="text" i18nkey="reporting.activityPartners.contactPersonEmail" disabled=true  /]
-            [/@s.iterator]
-          [/#if]
-          <hr />
-        [/@s.iterator]
-      </fieldset>
-    [#else]
-      <div id="activityDescription" class="fullBlock">
-        <h6>[@s.text name="reporting.activityPartners.noPartners" /]</h6>        
-      </div>
-       
-    [/#if]
+    <fieldset>
+      <legend>[@s.text name="reporting.activityPartners.partners" /]</legend>
+      [@partnerSection /]
+    </fieldset>
+    <div>
+      <a href="" class="addActivityPartner">Add new partner</a>
+    </div>   
     
     
     <!-- internal parameter -->

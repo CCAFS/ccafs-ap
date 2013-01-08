@@ -1,13 +1,21 @@
 package org.cgiar.ccafs.ap.data.dao;
 
+import org.cgiar.ccafs.ap.data.dao.mysql.MySQLPartnerDAO;
+
 import java.util.List;
 import java.util.Map;
 
 import com.google.inject.ImplementedBy;
-import org.cgiar.ccafs.ap.data.dao.mysql.MySQLPartnerDAO;
 
 @ImplementedBy(MySQLPartnerDAO.class)
 public interface PartnerDAO {
+
+  /**
+   * Get a list of all Partners.
+   * 
+   * @return a List of Map of partner data.
+   */
+  public List<Map<String, String>> getAllPartners();
 
   /**
    * Get all partners of the activity identified

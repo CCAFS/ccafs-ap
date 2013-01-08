@@ -1,13 +1,21 @@
 package org.cgiar.ccafs.ap.data.manager;
 
-import java.util.ArrayList;
-
-import com.google.inject.ImplementedBy;
 import org.cgiar.ccafs.ap.data.manager.impl.PartnerManagerImpl;
 import org.cgiar.ccafs.ap.data.model.Partner;
 
+import java.util.ArrayList;
+
+import com.google.inject.ImplementedBy;
+
 @ImplementedBy(PartnerManagerImpl.class)
 public interface PartnerManager {
+
+  /**
+   * Get all partners.
+   * 
+   * @return an array of Partner objects, or null if there are no partners.
+   */
+  public Partner[] getAllPartners();
 
   /**
    * Find the partners of the activity identified with the

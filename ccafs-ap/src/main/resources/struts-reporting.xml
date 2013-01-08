@@ -27,11 +27,10 @@
     <action name="deliverables" class="org.cgiar.ccafs.ap.action.reporting.activities.DeliverablesReportingAction">
       <interceptor-ref name="reportingStack" />
       <interceptor-ref name="accessibleActivity" />
-       <result name="cancel" type="redirectAction">activities</result>
+      <result name="cancel" type="redirectAction">activities</result>
       <result name="input">/WEB-INF/reporting/deliverablesReporting.ftl</result>
-      <result name="success" type="redirectAction">
-        <!-- Temporal redirect to itself -->
-        <param name="actionName">deliverables</param>
+      <result name="success" type="redirectAction">       
+        <param name="actionName">partners</param>
         <param name="activityID">${activity.id}</param>
       </result>
     </action>

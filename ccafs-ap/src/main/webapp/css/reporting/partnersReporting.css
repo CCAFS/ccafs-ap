@@ -1,0 +1,28 @@
+#expectedDeliverablesGroup {
+  margin-top: 15px;
+}
+
+/* Style to expected deliverable blocks */
+.removeLink {
+  float: right;
+  clear: both;
+}
+
+.fullBlock h6,.thirdPartBlock h6 {
+  margin-bottom: 5px
+}
+
+.checkboxGroup input {
+  margin-left: 0px;
+}
+
+.checkboxGroup .checkboxLabel {
+  display: inline-block;
+  width: 30%;
+  padding: 3px;
+}
+
+.addDeliverable {
+  display: block;
+  margin-bottom: 20px;
+}

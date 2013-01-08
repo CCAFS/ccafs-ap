@@ -1,20 +1,22 @@
 package org.cgiar.ccafs.ap.data.manager;
 
-import java.util.ArrayList;
-
-import com.google.inject.ImplementedBy;
 import org.cgiar.ccafs.ap.data.manager.impl.ActivityPartnerManagerImpl;
 import org.cgiar.ccafs.ap.data.model.ActivityPartner;
+
+import java.util.List;
+
+import com.google.inject.ImplementedBy;
 
 @ImplementedBy(ActivityPartnerManagerImpl.class)
 public interface ActivityPartnerManager {
 
 
   /**
-   * Get the status list.
+   * Get a list of activity partners that belong to a specified activity.
    * 
-   * @return an array of Status objects or null if no data found.
+   * @param activityID - activity identifier.
+   * @return a list of ActivityPartner objects.
    */
-  public ArrayList<ActivityPartner> getActivityPartnersList(int activityID, int partnerID);
+  public List<ActivityPartner> getActivityPartners(int activityID);
 
 }
