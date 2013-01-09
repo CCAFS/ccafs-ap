@@ -17,11 +17,11 @@
       <input name="activity.activityPartners[${ap_index}].id" type="hidden" value="${ap.id}" />
       [#-- Remove link for all partners --]
       <div class="removeLink">
-        <a id="removeActivityPartner-${ap_index}" href="" class="removePartner">Remove partner</a>
+        <a id="removeActivityPartner-${ap_index}" href="" class="removeActivityPartner">Remove partner</a>
       </div>
       
       [#-- Partner Name --]
-      <div class="fullBlock">
+      <div class="fullBlock partnerName">
         [@customForm.select name="activity.activityPartners[${ap_index}].partner" label="" i18nkey="reporting.activityPartners.partner.name" listName="partners" keyFieldName="id"  displayFieldName="name" /]
       </div>
       
@@ -33,7 +33,7 @@
       [#-- Contact Email --]
       <div class="halfPartBlock">
         [@customForm.input name="activity.activityPartners[${ap_index}].contactEmail" type="text" i18nkey="reporting.activityPartners.contactPersonEmail" /]
-      </div>      
+      </div> 
     </div> <!-- End activityPartner-${ap_index} -->
     <hr />
   [/#list]
@@ -52,14 +52,40 @@
     
     [#assign typeSelectHeadValue ] [@s.text name="reporting.activityPartners.selectPartnerType" /] [/#assign]
     
-    <fieldset>
-      <legend>[@s.text name="reporting.activityPartners.partners" /]</legend>
-      [@partnerSection /]
-    </fieldset>
-    <div>
-      <a href="" class="addActivityPartner">Add new partner</a>
-    </div>   
+    <div id="items">      
+      <fieldset id="activityPartnerGroup">
+        <legend>[@s.text name="reporting.activityPartners.partners" /]</legend>
+        [@partnerSection /]
+      </fieldset>
+      <div>
+        <a href="" class="addActivityPartner">Add new partner</a>
+      </div>   
+    </div>
     
+    <!-- PARTNERS TEMPLATE -->
+    <div id="template">
+      <div id="activityPartner-9999" class="activityPartner" style="display: none;">      
+        [#-- remove link --]
+        <div class="removeLink">
+          <a id="removeActivityPartner-9999" href="" class="removePartner">Remove partner</a>
+        </div>
+        
+        [#-- Partner Name --]
+        <div class="fullBlock partnerName">
+          [@customForm.select name="__partner" label="" i18nkey="reporting.activityPartners.partner.name" listName="partners" keyFieldName="id"  displayFieldName="name" /]
+        </div>
+        
+        [#-- Contact Name --]
+        <div class="halfPartBlock">
+          [@customForm.input name="contactName" type="text" i18nkey="reporting.activityPartners.contactPersonName" /]
+        </div>
+      
+        [#-- Contact Email --]
+        <div class="halfPartBlock">
+          [@customForm.input name="contactEmail" type="text" i18nkey="reporting.activityPartners.contactPersonEmail" /]
+        </div>
+      </div> <!-- End partner template -->
+    </div> <!-- End template -->
     
     <!-- internal parameter -->
     <input name="activityID" type="hidden" value="${activity.id}" />

@@ -50,6 +50,28 @@ public class MySQLPartnerDAO implements PartnerDAO {
   }
 
   @Override
+  public Map<String, String> getPartner(int id) {
+    Map<String, String> partnerData = new HashMap<>();
+    try (Connection connection = databaseManager.getConnection()) {
+      String query = "SELECT id, acronym, name FROM partners WHERE id = " + id;
+      ResultSet rs = databaseManager.makeQuery(query, connection);
+      if (rs.next()) {
+        partnerData.put("id", rs.getString("id"));
+        partnerData.put("acronym", rs.getString("acronym"));
+        partnerData.put("name", rs.getString("name"));
+      }
+      rs.close();
+    } catch (SQLException e) {
+      // TODO Auto-generated catch block
+      e.printStackTrace();
+    }
+    if (partnerData.size() > 0) {
+      return partnerData;
+    }
+    return null;
+  }
+
+  @Override
   public List<Map<String, String>> getPartnersList(int activityID) {
     List<Map<String, String>> statusList = new ArrayList<>();
     try (Connection con = databaseManager.getConnection()) {

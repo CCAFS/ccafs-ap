@@ -134,7 +134,6 @@ public class DeliverablesReportingAction extends BaseAction {
     boolean notExpectedDeleted = false;
     for (int c = 0; c < activity.getDeliverables().size(); c++) {
       Deliverable deliverable = activity.getDeliverables().get(c);
-      System.out.println(deliverable.getDescription());
       // If is an expected deliverable, we must only save its status and its file formats.
       if (deliverable.isExpected()) {
         boolean statusUpdated =
@@ -170,7 +169,6 @@ public class DeliverablesReportingAction extends BaseAction {
         }
       }
     }
-    System.out.println("********************");
     if (!problem) {
       addActionMessage(getText("reporting.activityDeliverables.saved"));
       return SUCCESS;
