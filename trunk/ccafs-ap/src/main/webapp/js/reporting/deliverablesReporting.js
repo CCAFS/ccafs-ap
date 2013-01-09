@@ -35,7 +35,7 @@ $(document).ready(function() {
   }
   $(".addDeliverable").click(function(event) {
     event.preventDefault();
-    // Cloning tempalte.
+    // Cloning template.
     var $newDeliverable = $("#deliverable-9999").clone(true);
     $("#newDeliverablesGroup").append($newDeliverable);
     $("#newDeliverablesGroup").append("<hr />");

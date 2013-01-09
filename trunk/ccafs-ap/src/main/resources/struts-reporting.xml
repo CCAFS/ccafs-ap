@@ -35,9 +35,16 @@
       </result>
     </action>
     
-    <action name="partners" class="org.cgiar.ccafs.ap.action.reporting.activities.PartnersReportingAction">
+    <action name="partners" class="org.cgiar.ccafs.ap.action.reporting.activities.PartnersReportingAction">      
       <interceptor-ref name="reportingStack" />
+      <interceptor-ref name="accessibleActivity" />
+      <result name="cancel" type="redirectAction">activities</result>      
       <result name="input">/WEB-INF/reporting/partnersReporting.ftl</result>
+      <!-- Temporal redirect -->
+      <result name="success" type="redirectAction">       
+        <param name="actionName">partners</param>
+        <param name="activityID">${activity.id}</param>
+      </result>
     </action>
 
     <action name="milestone" class="org.cgiar.ccafs.ap.action.reporting.activities.MilestoneReportingAction">

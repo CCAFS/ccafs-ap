@@ -18,6 +18,14 @@ public interface PartnerManager {
   public Partner[] getAllPartners();
 
   /**
+   * Get the partner identified with the given id.
+   * 
+   * @param id - identifier.
+   * @return a Partner object or null if no partner were found.
+   */
+  public Partner getPartner(int id);
+
+  /**
    * Find the partners of the activity identified with the
    * given identifier.
    * 

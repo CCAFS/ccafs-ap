@@ -83,6 +83,7 @@ public class PartnersReportingAction extends BaseAction {
   public String save() {
     // TODO Auto-generated method stub
     System.out.println("-------------SAVING-----------");
+    System.out.println(activity.getActivityPartners());
     return SUCCESS;
   }
 

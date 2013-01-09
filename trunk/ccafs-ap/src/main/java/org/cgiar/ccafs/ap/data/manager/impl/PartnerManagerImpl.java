@@ -50,6 +50,20 @@ public class PartnerManagerImpl implements PartnerManager {
 
 
   @Override
+  public Partner getPartner(int id) {
+    Map<String, String> partnerData = partnerDAO.getPartner(id);
+    if (partnerData != null) {
+      Partner partner = new Partner();
+      partner.setId(id);
+      partner.setAcronym(partnerData.get("acronym"));
+      partner.setName(partnerData.get("name"));
+      return partner;
+    }
+    return null;
+  }
+
+
+  @Override
   public ArrayList<Partner> getPartners(int activityID) {
     // TODO Since the model changed, this method must be rewritten.
 
