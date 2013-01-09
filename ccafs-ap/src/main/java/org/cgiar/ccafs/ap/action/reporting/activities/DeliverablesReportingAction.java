@@ -131,44 +131,45 @@ public class DeliverablesReportingAction extends BaseAction {
   @Override
   public String save() {
     boolean problem = false;
-    boolean notExpectedDeleted = false;
-    for (int c = 0; c < activity.getDeliverables().size(); c++) {
-      Deliverable deliverable = activity.getDeliverables().get(c);
-      // If is an expected deliverable, we must only save its status and its file formats.
-      if (deliverable.isExpected()) {
-        boolean statusUpdated =
-          deliverableStatusManager.setDeliverableStatus(deliverable.getId(), deliverable.getStatus());
-        // Any problem?
-        if (!statusUpdated) {
-          problem = true;
-        }
-        // if the deliverable type need a file format specification.
-        Arrays.sort(deliverableTypeIdsNeeded);
-        if (Arrays.binarySearch(deliverableTypeIdsNeeded, deliverable.getType().getId()) >= 0) {
-          boolean fileFormatsUpdated =
-            fileFormatManager.setFileFormats(deliverable.getId(), deliverable.getFileFormats());
-          if (!fileFormatsUpdated) {
+
+    // Remove all those not expected deliverables since we don't know exactly what
+    // deliverables have been changed.
+    boolean deleted = deliverableManager.removeNotExpected(activityID);
+    if (!deleted) {
+      problem = true;
+    } else {
+      for (int c = 0; c < activity.getDeliverables().size(); c++) {
+        Deliverable deliverable = activity.getDeliverables().get(c);
+
+        // If is an expected deliverable, we must only save its status and its file formats.
+        if (deliverable.isExpected()) {
+          boolean statusUpdated =
+            deliverableStatusManager.setDeliverableStatus(deliverable.getId(), deliverable.getStatus());
+          // Any problem?
+          if (!statusUpdated) {
             problem = true;
           }
-        }
-      } else {
-        // Saving here those not expected deliverables.
-        // But first, we have to remove all those not expected deliverables since we don't know exactly what
-        // deliverables have been changed.
-        if (!notExpectedDeleted) {
-          notExpectedDeleted = true;
-          boolean deleted = deliverableManager.removeNotExpected(activityID);
-          if (!deleted) {
+          // if the deliverable type need a file format specification.
+          Arrays.sort(deliverableTypeIdsNeeded);
+          if (Arrays.binarySearch(deliverableTypeIdsNeeded, deliverable.getType().getId()) >= 0) {
+            boolean fileFormatsUpdated =
+              fileFormatManager.setFileFormats(deliverable.getId(), deliverable.getFileFormats());
+            if (!fileFormatsUpdated) {
+              problem = true;
+            }
+          }
+        } else {
+          // Saving here those not expected deliverables.
+
+          // Add again all the not expected deliverables.
+          boolean deliverableAdded = deliverableManager.addDeliverable(deliverable, activityID, false);
+          if (!deliverableAdded) {
             problem = true;
           }
-        }
-        // Second, add again all the not expected deliverables.
-        boolean deliverableAdded = deliverableManager.addDeliverable(deliverable, activityID, false);
-        if (!deliverableAdded) {
-          problem = true;
         }
       }
     }
+
     if (!problem) {
       addActionMessage(getText("reporting.activityDeliverables.saved"));
       return SUCCESS;
@@ -193,13 +194,69 @@ public class DeliverablesReportingAction extends BaseAction {
   @Override
   public void validate() {
     Deliverable deliverable = null;
+    boolean fileFormatNeeded;
+    boolean anyError = false;
+
     for (int c = 0; c < activity.getDeliverables().size(); c++) {
       deliverable = activity.getDeliverables().get(c);
-      if (deliverable.isExpected()) {
-        // TODO
+      fileFormatNeeded = false;
 
+      // Check if the deliverable type selected needs a file format
+      for (int deliverableTypeId : deliverableTypeIdsNeeded) {
+        if (deliverable.getType().getId() == deliverableTypeId) {
+          fileFormatNeeded = true;
+          break;
+        }
+      }
+
+      // If the deliverable needs a file format check if the user select at least one
+      if (fileFormatNeeded) {
+        if (deliverable.getFileFormats().isEmpty()) {
+          anyError = true;
+          addFieldError("activity.deliverables[" + c + "].fileFormats",
+            getText("reporting.activityDeliverables.fileFormatValidate"));
+        }
+      }
+
+      if (!deliverable.isExpected()) {
+        if (deliverable.getDescription().isEmpty()) {
+          anyError = true;
+          addFieldError("activity.deliverables[" + c + "].description",
+            getText("reporting.activityDeliverables.descriptionValidate"));
+        }
+
+        // Check if the deliverable year is valid. When the user set a invalid value (empty or NaN)
+        // the deliverable converter set the year whit 0
+        if (deliverable.getYear() == 0) {
+          anyError = true;
+          addFieldError("activity.deliverables[" + c + "].year",
+            getText("reporting.activityDeliverables.yearInvalidValidate"));
+        }
+
+        // TODO - Check if always the application will show the activities for
+        // current year only, in another way the validation of deliverable year must
+        // be check
+
+        // Check if the deliverable year is not from past years
+        else if (deliverable.getYear() < getCurrentLogframe().getYear()) {
+          anyError = true;
+          addFieldError("activity.deliverables[" + c + "].year",
+            getText("reporting.activityDeliverables.smallYearValidate") + getCurrentLogframe().getYear());
+        }
+
+        // Check if the deliverable year is not bigger than ccafs end
+        else if (deliverable.getYear() > config.getEndYear()) {
+          anyError = true;
+          addFieldError("activity.deliverables[" + c + "].year",
+            getText("reporting.activityDeliverables.bigYearValidate") + config.getEndYear());
+        }
       }
     }
+
+    if (anyError) {
+      addActionError(getText("reporting.activityDeliverables.error"));
+    }
+
     super.validate();
   }
 

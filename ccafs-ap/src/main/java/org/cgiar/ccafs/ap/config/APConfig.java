@@ -17,6 +17,7 @@ public class APConfig {
   public static final String MYSQL_PORT = "mysql.port";
   public static final String BASE_URL = "ccafsap.baseUrl";
   public static final String CURRENT_YEAR = "ccafsap.currentYear";
+  public static final String END_YEAR = "ccafsap.endYear";
 
   // Logging.
   private static final Logger LOG = LoggerFactory.getLogger(APConfig.class);
@@ -65,6 +66,20 @@ public class APConfig {
       return properties.getPropertiesAsInt("ccafsap.currentYear");
     } catch (Exception e) {
       LOG.error("There is not a current year configured");
+    }
+    return -1;
+  }
+
+  /**
+   * Get the end year value that is in the configuration file.
+   * 
+   * @return an integer identifying the end year.
+   */
+  public int getEndYear() {
+    try {
+      return properties.getPropertiesAsInt("ccafsap.endYear");
+    } catch (Exception e) {
+      LOG.error("there is not a end  year configured.");
     }
     return -1;
   }

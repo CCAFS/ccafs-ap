@@ -41,10 +41,13 @@ public class DeliverableManagerImpl implements DeliverableManager {
 
     int deliverableId = deliverableDAO.addDeliverable(deliverableData);
     if (deliverableId >= 0) {
-      // lets add the file format list.
-      boolean fileFormatsAdded = fileFormatDAO.addFileFormats(deliverableId, deliverable.getFileFormatsIds());
-      if (!fileFormatsAdded) {
-        return false;
+      // Check if the deliverable has file formats
+      if (!deliverable.getFileFormatsIds().isEmpty()) {
+        // lets add the file format list.
+        boolean fileFormatsAdded = fileFormatDAO.addFileFormats(deliverableId, deliverable.getFileFormatsIds());
+        if (!fileFormatsAdded) {
+          return false;
+        }
       }
     }
     return true;

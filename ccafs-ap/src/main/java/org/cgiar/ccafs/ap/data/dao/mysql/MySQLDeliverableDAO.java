@@ -65,7 +65,7 @@ public class MySQLDeliverableDAO implements DeliverableDAO {
           + "ds.name as 'deliverable_status_name', dt.id as 'deliverable_type_id', dt.name as 'deliverable_type_name' "
           + "FROM deliverables de " + "INNER JOIN deliverable_types dt ON de.deliverable_type_id = dt.id "
           + "INNER JOIN deliverable_status ds ON de.deliverable_status_id = ds.id " + "WHERE de.activity_id="
-          + activityID + " ORDER BY is_expected DESC";
+          + activityID + " ORDER BY de.id";
       ResultSet rs = databaseManager.makeQuery(query, con);
       while (rs.next()) {
         Map<String, String> deliverable = new HashMap<>();
