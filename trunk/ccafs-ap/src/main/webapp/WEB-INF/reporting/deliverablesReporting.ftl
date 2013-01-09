@@ -15,7 +15,9 @@
   [#list activity.deliverables as deliverable]
     [#if deliverable.expected == isExpected]
       <div id="deliverable-${deliverable_index}" class="deliverable">
-        <input name="activity.deliverables[${deliverable_index}].id" type="hidden" value="${deliverable.id}" />
+        [#-- This line is not used yet, it is commented to prevent the invalid convertion warning --]
+        [#-- <input name="activity.deliverables[${deliverable_index}].id" type="hidden" value="${deliverable.id}" /> --]
+        
         [#-- Adding remove link only for new deliverables --]
         [#if !deliverable.expected]
           <div class="removeLink">
@@ -39,7 +41,7 @@
             <h6>[@s.text name="reporting.activityDeliverables.type" /]</h6>
             <p>${activity.deliverables[deliverable_index].type.name}</p>
           [#else]
-            [@customForm.select name="activity.deliverables[${deliverable_index}].type" label="" i18nkey="reporting.activityDeliverables.type" listName="deliverableTypesList" keyFieldName="id"  displayFieldName="name" /]
+            [@customForm.select name="activity.deliverables[${deliverable_index}].type" label="" i18nkey="reporting.activityDeliverables.type" listName="deliverableTypesList" keyFieldName="id"  displayFieldName="name" className="deliverableType" /]
           [/#if]
         </div>
         
@@ -62,7 +64,8 @@
         [#if deliverableTypeIdsNeeded?seq_contains(activity.deliverables[deliverable_index].type.id)]              
           <div class="fullBlock">
             <h6>[@s.text name="reporting.activityDeliverables.formatFiles" /]</h6>
-            <div class="checkboxGroup">            
+            <div class="checkboxGroup">
+              [@s.fielderror cssClass="fieldError" fieldName="activity.deliverables[${deliverable_index}].fileFormats"/]
               [@s.checkboxlist name="activity.deliverables[${deliverable_index}].fileFormats" list="fileFormatsList" listKey="id" listValue="name" value="activity.deliverables[${deliverable_index}].fileFormatsIds" cssClass="checkbox" /]
             </div>
           </div>
@@ -99,10 +102,12 @@
         </legend>             
         [#-- Listing new deliverables (see macro above) --]
         [@deliverableSection isExpected=false /]
+      
+        <div id="addDeliverableBlock">
+          <a href="" class="addDeliverable" >Add deliverable</a>
+        </div>
+              
       </fieldset>
-      <div>
-        <a href="" class="addDeliverable">Add deliverable</a>
-      </div>
     </div> <!-- End deliverables -->
     
     <!-- DELIVERABLE TEMPLATE -->
@@ -120,7 +125,7 @@
         
         [#-- Type --]
         <div class="thirdPartBlock">        
-          [@customForm.select name="type" i18nkey="reporting.activityDeliverables.type" listName="deliverableTypesList" keyFieldName="id"  displayFieldName="name" /]
+          [@customForm.select name="type" i18nkey="reporting.activityDeliverables.type" listName="deliverableTypesList" keyFieldName="id"  displayFieldName="name" className="deliverableType" /]
         </div>
         
         [#-- Year --]
@@ -134,9 +139,9 @@
         </div>
         
         [#-- Formats --]                    
-        <div class="fullBlock">          
-          <div class="checkboxGroup">
-            <h6>[@s.text name="reporting.activityDeliverables.formatFiles" /]</h6>
+        <div class="fullBlock">
+          <h6>[@s.text name="reporting.activityDeliverables.formatFiles" /]</h6>          
+          <div class="checkboxGroup">                        
             [@s.checkboxlist name="fileFormats" list="fileFormatsList" listKey="id" listValue="name" cssClass="checkbox" /]
           </div>
         </div>      

@@ -22,7 +22,6 @@
   padding: 3px;
 }
 
-.addDeliverable {
-  display: block;
-  margin-bottom: 20px;
+#addDeliverableBlock {
+  display: block;  
 }
