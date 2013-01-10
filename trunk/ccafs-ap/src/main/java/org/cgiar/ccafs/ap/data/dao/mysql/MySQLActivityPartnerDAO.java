@@ -57,4 +57,45 @@ public class MySQLActivityPartnerDAO implements ActivityPartnerDAO {
     return activityPartnerList;
   }
 
+  @Override
+  public boolean removeActivityPartners(int activityID) {
+    boolean problem = false;
+    try (Connection connection = databaseManager.getConnection()) {
+      String removeQuery = "DELETE FROM activity_partners WHERE activity_id = " + activityID;
+      int rows = databaseManager.makeChange(removeQuery, connection);
+      if (rows < 0) {
+        problem = true;
+      }
+    } catch (SQLException e) {
+      // TODO Auto-generated catch block
+      e.printStackTrace();
+    }
+    return !problem;
+  }
+
+  @Override
+  public boolean saveActivityPartnerList(List<Map<String, Object>> activityPartnersData) {
+    boolean problem = false;
+    try (Connection connection = databaseManager.getConnection()) {
+      for (Map<String, Object> cpData : activityPartnersData) {
+        String preparedQuery =
+          "INSERT INTO activity_partners (partner_id, activity_id, contact_name, contact_email) VALUES (?, ?, ?, ?)";
+        Object[] data = new Object[4];
+        data[0] = cpData.get("partner_id");
+        data[1] = cpData.get("activity_id");
+        data[2] = cpData.get("contact_name");
+        data[3] = cpData.get("contact_email");
+        int rows = databaseManager.makeChangeSecure(connection, preparedQuery, data);
+        if (rows < 0) {
+          problem = true;
+          // TODO - Add log about the problem?
+        }
+      }
+    } catch (SQLException e) {
+      // TODO Auto-generated catch block
+      e.printStackTrace();
+    }
+    return !problem;
+  }
+
 }

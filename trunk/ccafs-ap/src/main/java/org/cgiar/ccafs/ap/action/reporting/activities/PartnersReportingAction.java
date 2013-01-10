@@ -77,14 +77,26 @@ public class PartnersReportingAction extends BaseAction {
     activity.setActivityPartners(activityPartnerManager.getActivityPartners(activityID));
     partnerTypes = partnerTypeManager.getPartnerTypeList();
     partners = partnerManager.getAllPartners();
+    // Remove all partners so they can be added again in the save method.
+    if (this.getRequest().getMethod().equalsIgnoreCase("post")) {
+      activity.getActivityPartners().clear();
+    }
   }
 
   @Override
   public String save() {
-    // TODO Auto-generated method stub
-    System.out.println("-------------SAVING-----------");
-    System.out.println(activity.getActivityPartners());
-    return SUCCESS;
+    if (activity.getActivityPartners().size() > 0) {
+      // Remove all activity partners from the database.
+      boolean removed = activityPartnerManager.removeActivityPartners(activityID);
+      if (removed) {
+        boolean added = activityPartnerManager.saveActivityPartners(activity.getActivityPartners(), activityID);
+        if (added) {
+          return SUCCESS;
+        }
+      }
+    }
+
+    return INPUT;
   }
 
   public void setActivity(Activity activity) {

@@ -14,7 +14,7 @@
 [#macro partnerSection]
   [#list activity.activityPartners as ap]
     <div id="activityPartner-${ap_index}" class="activityPartner">
-      <input name="activity.activityPartners[${ap_index}].id" type="hidden" value="${ap.id}" />
+      
       [#-- Remove link for all partners --]
       <div class="removeLink">
         <a id="removeActivityPartner-${ap_index}" href="" class="removeActivityPartner">Remove partner</a>
