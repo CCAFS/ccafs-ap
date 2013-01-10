@@ -6,6 +6,7 @@ import org.cgiar.ccafs.ap.data.model.ActivityPartner;
 import org.cgiar.ccafs.ap.data.model.Partner;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -45,6 +46,27 @@ public class ActivityPartnerManagerImpl implements ActivityPartnerManager {
       return activityPartnerList;
     }
     return null;
+  }
+
+  @Override
+  public boolean removeActivityPartners(int activityID) {
+    return activityPartnerDAO.removeActivityPartners(activityID);
+  }
+
+  @Override
+  public boolean saveActivityPartners(List<ActivityPartner> activityPartners, int activityID) {
+    boolean problem = false;
+    List<Map<String, Object>> activityPartnersData = new ArrayList<>();
+    for (ActivityPartner cp : activityPartners) {
+      Map<String, Object> cpData = new HashMap<>();
+      cpData.put("partner_id", cp.getPartner().getId());
+      cpData.put("activity_id", activityID);
+      cpData.put("contact_name", cp.getContactName());
+      cpData.put("contact_email", cp.getContactEmail());
+      activityPartnersData.add(cpData);
+    }
+    problem = !activityPartnerDAO.saveActivityPartnerList(activityPartnersData);
+    return !problem;
   }
 
 }
