@@ -33,7 +33,8 @@ public class PartnerTypeManagerImpl implements PartnerTypeManager {
       partnerTypeData = partnerTypeDataList.get(c);
       partnerTypeList[c] = new PartnerType();
       partnerTypeList[c].setId(Integer.parseInt(partnerTypeData.get("id")));
-      partnerTypeList[c].setName(partnerTypeData.get("acronym"));
+      partnerTypeList[c].setName(partnerTypeData.get("name"));
+      partnerTypeList[c].setAcronym(partnerTypeData.get("acronym"));
     }
     if (partnerTypeDataList.size() > 0) {
       return partnerTypeList;

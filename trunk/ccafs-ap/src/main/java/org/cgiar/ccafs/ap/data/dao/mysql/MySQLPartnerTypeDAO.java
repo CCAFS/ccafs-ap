@@ -1,5 +1,8 @@
 package org.cgiar.ccafs.ap.data.dao.mysql;
 
+import org.cgiar.ccafs.ap.data.dao.DAOManager;
+import org.cgiar.ccafs.ap.data.dao.PartnerTypeDAO;
+
 import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -9,8 +12,6 @@ import java.util.List;
 import java.util.Map;
 
 import com.google.inject.Inject;
-import org.cgiar.ccafs.ap.data.dao.DAOManager;
-import org.cgiar.ccafs.ap.data.dao.PartnerTypeDAO;
 
 
 public class MySQLPartnerTypeDAO implements PartnerTypeDAO {
@@ -26,12 +27,13 @@ public class MySQLPartnerTypeDAO implements PartnerTypeDAO {
   public List<Map<String, String>> getPartnerTypeList() {
     List<Map<String, String>> partnerTypeList = new ArrayList<>();
     try (Connection con = databaseManager.getConnection()) {
-      String query = "SELECT id, acronym FROM partner_types";
+      String query = "SELECT * FROM partner_types";
       ResultSet rs = databaseManager.makeQuery(query, con);
       while (rs.next()) {
         Map<String, String> partnerTypeData = new HashMap();
         partnerTypeData.put("id", rs.getString("id"));
         partnerTypeData.put("acronym", rs.getString("acronym"));
+        partnerTypeData.put("name", rs.getString("name"));
         partnerTypeList.add(partnerTypeData);
       }
       rs.close();

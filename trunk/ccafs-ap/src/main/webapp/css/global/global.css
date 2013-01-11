@@ -88,6 +88,25 @@ body {
   display: inline-block;
 }
 
+.popup_container{
+  width: 600px;
+  text-align: center;
+}
+
+.popup_container .header{
+  text-align: center;
+  margin: 0px;  
+}
+
+.popup_container .content{
+  width: 570px;
+  padding-top: 0;  
+}
+
+.popup_container h1{
+  text-align: left;
+}
+
 #userInfo {
   margin-right: 30px;
   margin-top: 10px;

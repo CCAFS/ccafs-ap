@@ -26,3 +26,16 @@
   display: block;
   margin-bottom: 20px;
 }
+
+/*
+  The styles below are applied in the pop up window
+*/
+.fullBlock p{
+  text-align: left;
+  margin-bottom: 10px;
+}
+
+.fullBlock input{
+  width:  500px;
+  margin-bottom: 5px
+}

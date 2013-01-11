@@ -12,7 +12,7 @@ function popups() {
       .click(
           function(event) {
             event.preventDefault();
-            var options = "width=700,height=450scrollTo,resizable=1,scrollbars=1,location=0";
+            var options = "width=600,height=450scrollTo,resizable=1,scrollbars=1,location=0";
             nueva = window.open(this.href, '', options);
           });
 }

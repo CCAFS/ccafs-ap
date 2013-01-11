@@ -9,8 +9,10 @@ import org.cgiar.ccafs.ap.data.manager.LogframeManager;
 import org.cgiar.ccafs.ap.data.manager.PartnerManager;
 import org.cgiar.ccafs.ap.data.manager.PartnerTypeManager;
 import org.cgiar.ccafs.ap.data.model.Activity;
+import org.cgiar.ccafs.ap.data.model.ActivityPartner;
 import org.cgiar.ccafs.ap.data.model.Partner;
 import org.cgiar.ccafs.ap.data.model.PartnerType;
+import org.cgiar.ccafs.ap.util.EmailValidator;
 
 import com.google.inject.Inject;
 import org.apache.commons.lang3.StringUtils;
@@ -55,6 +57,11 @@ public class PartnersReportingAction extends BaseAction {
     return activity;
   }
 
+  public int getActivityID() {
+    return activityID;
+  }
+
+
   public String getActivityRequestParameter() {
     return APConstants.ACTIVITY_REQUEST_ID;
   }
@@ -64,10 +71,10 @@ public class PartnersReportingAction extends BaseAction {
     return partners;
   }
 
-
   public PartnerType[] getPartnerTypes() {
     return partnerTypes;
   }
+
 
   @Override
   public void prepare() throws Exception {
@@ -105,6 +112,47 @@ public class PartnersReportingAction extends BaseAction {
 
   public void setPartnerTypes(PartnerType[] partnerTypes) {
     this.partnerTypes = partnerTypes;
+  }
+
+  @Override
+  public void validate() {
+    ActivityPartner activityPartner = null;
+    boolean anyError = false;
+
+    // If the page is loading dont validate
+    if (getRequest().getMethod().equalsIgnoreCase("post")) {
+
+      for (int i = 0; i < activity.getActivityPartners().size(); i++) {
+        activityPartner = activity.getActivityPartners().get(i);
+
+        // Check if contact name is empty
+        if (activityPartner.getContactName().isEmpty()) {
+          addFieldError("activity.activityPartners[" + i + "].contactName",
+            getText("reporting.activityPartners.nameValidate"));
+          anyError = true;
+        }
+
+        // Check if contact email is empty
+        if (activityPartner.getContactEmail().isEmpty()) {
+          addFieldError("activity.activityPartners[" + i + "].contactEmail",
+            getText("reporting.activityPartners.emptyEmailValidate"));
+          anyError = true;
+        }
+
+        // Check if contact email is valid
+        else if (!EmailValidator.isValidEmail(activityPartner.getContactEmail())) {
+          addFieldError("activity.activityPartners[" + i + "].contactEmail",
+            getText("reporting.activityPartners.validEmailValidate"));
+          anyError = true;
+        }
+      }
+
+      if (anyError) {
+        addActionError(getText("reporting.activityPartners.error"));
+      }
+    }
+
+    super.validate();
   }
 
 }

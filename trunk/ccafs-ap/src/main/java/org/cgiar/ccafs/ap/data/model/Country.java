@@ -9,8 +9,11 @@ public class Country {
   private String name;
   private Region region;
 
+
+  public Country() {
+  }
+
   public Country(String id, String name) {
-    super();
     this.id = id;
     this.name = name;
   }
