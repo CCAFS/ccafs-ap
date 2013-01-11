@@ -7,8 +7,15 @@ public class PartnerType {
 
   private int id;
   private String name;
+  private String acronym;
+
 
   public PartnerType() {
+  }
+
+
+  public String getAcronym() {
+    return acronym;
   }
 
   public int getId() {
@@ -17,6 +24,10 @@ public class PartnerType {
 
   public String getName() {
     return name;
+  }
+
+  public void setAcronym(String acronym) {
+    this.acronym = acronym;
   }
 
   public void setId(int id) {

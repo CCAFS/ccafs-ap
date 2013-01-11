@@ -1,19 +1,18 @@
 package org.cgiar.ccafs.ap.action.home;
 
-import java.util.Date;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
-
 import org.cgiar.ccafs.ap.action.BaseAction;
 import org.cgiar.ccafs.ap.config.APConfig;
 import org.cgiar.ccafs.ap.config.APConstants;
 import org.cgiar.ccafs.ap.data.manager.LogframeManager;
 import org.cgiar.ccafs.ap.data.manager.UserManager;
 import org.cgiar.ccafs.ap.data.model.User;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import org.cgiar.ccafs.ap.util.EmailValidator;
+
+import java.util.Date;
 
 import com.google.inject.Inject;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 public class LoginAction extends BaseAction {
 
@@ -72,26 +71,14 @@ public class LoginAction extends BaseAction {
   public void validate() {
     // If is the first time the user is loading the page
     if (user != null) {
-      Pattern pattern;
-      Matcher matcher;
-
-      // Pattern to validate email
-      String emailPattern =
-        "^[_A-Za-z0-9-\\+]+(\\.[_A-Za-z0-9-]+)*@" + "[A-Za-z0-9-]+(\\.[A-Za-z0-9]+)*(\\.[A-Za-z]{2,})$";
-
-
-      pattern = Pattern.compile(emailPattern);
-      matcher = pattern.matcher(user.getEmail());
-
       if (user.getEmail().isEmpty()) {
         addFieldError("user.email", "User email is required");
         user.setPassword(null);
-      } else if (!matcher.matches()) {
+      } else if (!EmailValidator.isValidEmail(user.getEmail())) {
         addFieldError("user.email", "Email is invalid");
         user.setPassword(null);
       }
     }
 
   }
-
 }

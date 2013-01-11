@@ -1,9 +1,8 @@
 [#ftl]
 [#assign title = "Milestone details" /]
-[#assign avoidHeader = true /]
 [#assign customCSS = ["${baseUrl}/css/reporting/milestone.css"] /]
 
-[#include "/WEB-INF/global/pages/header.ftl" /]
+[#include "/WEB-INF/global/pages/popup-header.ftl" /]
   <section >
   
   <article class="content">

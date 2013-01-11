@@ -1,7 +1,7 @@
 [#ftl]
 [#assign title = "Activity Partners Report" /]
 [#assign globalLibs = ["jquery", "noty"] /]
-[#assign customJS = ["${baseUrl}/js/reporting/partnersReporting.js"] /]
+[#assign customJS = ["${baseUrl}/js/reporting/partnersReporting.js", "${baseUrl}/js/global/utils.js"] /]
 [#assign customCSS = ["${baseUrl}/css/reporting/partnersReporting.css"] /]
 [#assign currentSection = "reporting" /]
 [#assign currentReportingSection = "activities" /]
@@ -61,6 +61,14 @@
         <a href="" class="addActivityPartner">Add new partner</a>
       </div>   
     </div>
+    
+    <p>
+      If you don't find the partner what are u looking for 
+      <a class="popup" href="[@s.url action='partnerSave'][@s.param name='${activityRequestParameter}']${activityID}[/@s.param][/@s.url]">
+        add it here.
+      </a>
+       
+    </p>
     
     <!-- PARTNERS TEMPLATE -->
     <div id="template">
