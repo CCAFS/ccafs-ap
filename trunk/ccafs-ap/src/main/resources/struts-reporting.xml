@@ -5,9 +5,10 @@
   <!-- Add addition packages and configuration here. -->
   <package name="reporting" namespace="/reporting" extends="ccafsap-default">
     <!-- default-interceptor-ref name="reportingStack" / -->
-
     <default-action-ref name="activities" />
 
+    <!-- Sections -->
+    
     <action name="activities" class="org.cgiar.ccafs.ap.action.reporting.activities.ActivitiesReportingAction">
       <interceptor-ref name="reportingStack" />
       <result name="input">/WEB-INF/reporting/activities.ftl</result>
@@ -29,42 +30,48 @@
       <interceptor-ref name="accessibleActivity" />
       <result name="cancel" type="redirectAction">activities</result>
       <result name="input">/WEB-INF/reporting/deliverablesReporting.ftl</result>
-      <result name="success" type="redirectAction">       
-        <param name="actionName">partners</param>
-        <param name="activityID">${activity.id}</param>
-      </result>
-    </action>
-    
-    <action name="partners" class="org.cgiar.ccafs.ap.action.reporting.activities.PartnersReportingAction">      
-      <interceptor-ref name="reportingStack" />
-      <interceptor-ref name="accessibleActivity" />
-      <result name="cancel" type="redirectAction">activities</result>      
-      <result name="input">/WEB-INF/reporting/partnersReporting.ftl</result>
-      <!-- Temporal redirect -->
-      <result name="success" type="redirectAction">       
+      <result name="success" type="redirectAction">
         <param name="actionName">partners</param>
         <param name="activityID">${activity.id}</param>
       </result>
     </action>
 
+    <action name="partners" class="org.cgiar.ccafs.ap.action.reporting.activities.PartnersReportingAction">
+      <interceptor-ref name="reportingStack" />
+      <interceptor-ref name="accessibleActivity" />
+      <result name="cancel" type="redirectAction">activities</result>
+      <result name="input">/WEB-INF/reporting/partnersReporting.ftl</result>
+      <!-- Temporal redirect -->
+      <result name="success" type="redirectAction">
+        <param name="actionName">outputSummary</param>
+      </result>
+    </action>
+
+    <action name="outputSummary" class="org.cgiar.ccafs.ap.action.reporting.summaries.OutputSummaryAction">
+      <interceptor-ref name="reportingStack" />
+      <result name="input">/WEB-INF/reporting/outputSummary.ftl</result>
+      <result name="success" type="redirectAction">
+        <param name="actionName">publications</param>
+      </result>
+    </action>
+
+    <action name="publications" class="org.cgiar.ccafs.ap.action.reporting.publications.PublicationsReportingAction">
+      <interceptor-ref name="reportingStack" />
+      <result name="input">/WEB-INF/reporting/publicationsReporting.ftl</result>
+    </action>
+    
+    <!-- Others -->
+        
     <action name="milestone" class="org.cgiar.ccafs.ap.action.reporting.activities.MilestoneReportingAction">
       <interceptor-ref name="reportingStack" />
       <result>/WEB-INF/reporting/milestone.ftl</result>
     </action>
-    
+
     <action name="partnerSave" class="org.cgiar.ccafs.ap.action.reporting.activities.PartnersSaveReportingAction">
       <interceptor-ref name="reportingStack" />
       <result name="input">/WEB-INF/reporting/partnersSaveReporting.ftl</result>
-      <result name="success" type="redirectAction">       
-        <param name="actionName">partnerSave</param>        
-      </result>
-    </action>
-    
-    <action name="outputSummary" class="org.cgiar.ccafs.ap.action.reporting.summaries.OutputSummaryAction">
-      <interceptor-ref name="reportingStack" />
-      <result name="input">/WEB-INF/reporting/outputSummary.ftl</result>
-      <result name="success" type="redirectAction">       
-        <param name="actionName">outputSummary</param>        
+      <result name="success" type="redirectAction">
+        <param name="actionName">partnerSave</param>
       </result>
     </action>
 
