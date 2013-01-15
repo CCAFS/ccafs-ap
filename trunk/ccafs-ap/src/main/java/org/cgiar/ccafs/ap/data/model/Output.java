@@ -10,8 +10,10 @@ public class Output {
   private String code;
   private String description;
 
+
   public Output() {
   }
+
 
   public Output(int id) {
     this.id = id;

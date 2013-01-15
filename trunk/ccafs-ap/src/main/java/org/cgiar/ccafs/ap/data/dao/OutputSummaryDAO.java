@@ -11,11 +11,28 @@ import com.google.inject.ImplementedBy;
 public interface OutputSummaryDAO {
 
   /**
-   * Get all the summaries by outputs from the DAO.
+   * Get the summary of the output identified with outputId made
+   * by the activity leader identified by activityLeaderId
    * 
-   * @param activityLeaderId - The activity leader identifier
-   * @return a list of maps with the information
+   * @param outputId The output identifier
+   * @param activityLeaderId the activity leader identifier
+   * @return A map with the information
    */
-  public List<Map<String, String>> getOutputSummariesList(int activityLeaderId);
+  public Map<String, String> getOutputSummary(int outputId, int activityLeaderId);
 
+  /**
+   * Save all the outputs summary into the database
+   * 
+   * @param outputsSummaryData - List of maps with the information of each summary by output to be added
+   * @return true if all the information was successfully saved. False otherwise
+   */
+  public boolean saveOutputsSummaryList(List<Map<String, Object>> outputsSummaryData);
+
+  /**
+   * Update all the outputs summary into the database
+   * 
+   * @param outputsSummaryData - List of maps with the information of each summary by output to be updated
+   * @return true if all the information was successfully saved. False otherwise
+   */
+  public boolean updateOutputsSummaryList(List<Map<String, Object>> outputsSummaryData);
 }

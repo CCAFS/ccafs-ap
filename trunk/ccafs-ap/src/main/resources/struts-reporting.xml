@@ -59,6 +59,14 @@
         <param name="actionName">partnerSave</param>        
       </result>
     </action>
+    
+    <action name="outputSummary" class="org.cgiar.ccafs.ap.action.reporting.summaries.OutputSummaryAction">
+      <interceptor-ref name="reportingStack" />
+      <result name="input">/WEB-INF/reporting/outputSummary.ftl</result>
+      <result name="success" type="redirectAction">       
+        <param name="actionName">outputSummary</param>        
+      </result>
+    </action>
 
   </package>
 </struts>

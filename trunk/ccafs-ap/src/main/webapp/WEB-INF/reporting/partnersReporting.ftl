@@ -63,7 +63,7 @@
     </div>
     
     <p>
-      If you don't find the partner what are u looking for 
+      If you don't find the partner what are you looking for 
       <a class="popup" href="[@s.url action='partnerSave'][@s.param name='${activityRequestParameter}']${activityID}[/@s.param][/@s.url]">
         add it here.
       </a>
