@@ -1,5 +1,7 @@
 package org.cgiar.ccafs.ap.util;
 
+import org.cgiar.ccafs.ap.config.APConfig;
+
 import java.util.Date;
 import java.util.Properties;
 
@@ -12,18 +14,33 @@ import javax.mail.Transport;
 import javax.mail.internet.InternetAddress;
 import javax.mail.internet.MimeMessage;
 
+import com.google.inject.Inject;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 
 public class SendMail {
 
+  // Managers
+  private APConfig config;
 
-  public static void send(String toEmail, String subject, String messageContent) {
+  // LOG
+  private static final Logger LOG = LoggerFactory.getLogger(SendMail.class);
+
+  @Inject
+  public SendMail(APConfig config) {
+    this.config = config;
+  }
+
+
+  public void send(String toEmail, String subject, String messageContent) {
 
     // Get a Properties object
     Properties properties = System.getProperties();
 
-    properties.setProperty("proxySet", "true");
-    properties.setProperty("socksProxyHost", "proxy4.ciat.cgiar.org");
-    properties.setProperty("socksProxyPort", "8080");
+    // properties.setProperty("proxySet", "true");
+    // properties.setProperty("socksProxyHost", "proxy4.ciat.cgiar.org");
+    // properties.setProperty("socksProxyPort", "8080");
 
     properties.put("mail.smtp.host", "smtp.gmail.com");
     properties.put("mail.smtp.socketFactory.port", "465");
@@ -33,29 +50,27 @@ public class SendMail {
 
     properties.put("mail.debug", "true");
 
-    final String username = "mail@gmail.com";
-    final String password = "password";
-
     Session session = Session.getDefaultInstance(properties, new Authenticator() {
 
       @Override
       protected PasswordAuthentication getPasswordAuthentication() {
-        return new PasswordAuthentication(username, password);
+        return new PasswordAuthentication(config.getGmailUsername(), config.getGmailPassword());
       }
     });
 
-    // -- Create a new message --
+    // Create a new message
     Message msg = new MimeMessage(session);
 
-    // -- Set the FROM and TO fields --
+    // Set the FROM and TO fields
     try {
-      msg.setFrom(new InternetAddress("carvajal.hernandavid@gmail.com"));
-      msg.setRecipients(Message.RecipientType.TO, InternetAddress.parse("carvajal.hernandavid@gmail.com", false));
-      msg.setSubject("Hello");
-      msg.setText("How are you");
+      msg.setFrom(new InternetAddress(config.getGmailUsername().contains("@") ? config.getGmailUsername() : config
+        .getGmailUsername() + "@gmail.com"));
+      msg.setRecipients(Message.RecipientType.TO, InternetAddress.parse(toEmail, false));
+      msg.setSubject(subject);
+      msg.setText(messageContent);
       msg.setSentDate(new Date());
       Transport.send(msg);
-      System.out.println("Message sent.");
+      LOG.info("Message sent.");
 
     } catch (MessagingException e) {
       e.printStackTrace();

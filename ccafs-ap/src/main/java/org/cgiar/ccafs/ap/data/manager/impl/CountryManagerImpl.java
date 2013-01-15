@@ -4,7 +4,6 @@ import org.cgiar.ccafs.ap.data.dao.CountryDAO;
 import org.cgiar.ccafs.ap.data.manager.CountryManager;
 import org.cgiar.ccafs.ap.data.model.Country;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
@@ -39,19 +38,6 @@ public class CountryManagerImpl implements CountryManager {
       return countriesList;
     }
     return null;
-  }
-
-  @Override
-  public List<Country> getCountriesList(String[] ids) {
-    List<Country> countries = new ArrayList<>();
-    for (Country country : getCountriesList()) {
-      for (String id : ids) {
-        if (country.getId().equals(id)) {
-          countries.add(country);
-        }
-      }
-    }
-    return countries;
   }
 
   @Override

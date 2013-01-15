@@ -84,4 +84,22 @@ public class APConfig {
     return -1;
   }
 
+  public String getGmailPassword() {
+    try {
+      return properties.getPropertiesAsString("gmail.password");
+    } catch (Exception e) {
+      LOG.error("there is not a Gmail password configured.");
+    }
+    return null;
+  }
+
+  public String getGmailUsername() {
+    try {
+      return properties.getPropertiesAsString("gmail.user");
+    } catch (Exception e) {
+      LOG.error("there is not a Gmail user configured.");
+    }
+    return null;
+  }
+
 }

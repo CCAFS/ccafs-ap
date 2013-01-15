@@ -17,6 +17,13 @@ public interface CountryDAO {
    */
   public List<Map<String, String>> getCountriesList();
 
+  /**
+   * Get the country information of the given country identifier.
+   * 
+   * @param id - identifier
+   * @return
+   */
   public Map<String, String> getCountryInformation(String id);
+
 
 }
