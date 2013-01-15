@@ -1,52 +1,54 @@
 [#ftl]
 [#assign title = "Insert a partner" /]
+[#assign globalLibs = ["jquery", "jqueryUI", "noty"] /]
 [#assign customCSS = ["${baseUrl}/css/reporting/partnersReporting.css"] /]
+[#assign customJS = ["${baseUrl}/js/reporting/partnerSaveReporting.js"] /]
 
 [#import "/WEB-INF/global/macros/forms.ftl" as customForm /]
 
 [#include "/WEB-INF/global/pages/popup-header.ftl" /]
   <section>
-    <article class="content">    
+    <article class="content">
       <h1>Add a partner</h1>
       [@s.form action="partnerSave!save"]
       
       [#-- Partner Name --]
       <div class="halfPartBlock">
-        [@customForm.input name="activity.activityPartners[0].partner.name" type="text" i18nkey="reporting.PartnersSave.name" /]
+        [@customForm.input name="activityPartner.partner.name" type="text" i18nkey="reporting.PartnersSave.name" /]
       </div>
       
       [#-- Partner Acronym --]
       <div class="halfPartBlock">
-        [@customForm.input name="activity.activityPartners[0].partner.acronym" type="text" i18nkey="reporting.PartnersSave.acronym" /]
+        [@customForm.input name="activityPartner.partner.acronym" type="text" i18nkey="reporting.PartnersSave.acronym" /]
       </div>
       
       [#-- Partner types list --]
       <div class="halfPartBlock">
-        [@customForm.select name="activity.activityPartners[0].partner.type.id" label="" i18nkey="reporting.PartnersSave.partnerType" listName="partnerTypesList" keyFieldName="id"  displayFieldName="acronym" /]
+        [@customForm.select name="activityPartner.partner.type.id" label="" i18nkey="reporting.PartnersSave.partnerType" listName="partnerTypesList" keyFieldName="id"  displayFieldName="acronym" /]
       </div>
       
       [#-- Countries list --]
       <div class="halfPartBlock">
-        [@customForm.select name="activity.activityPartners[0].partner.country.id" label="" i18nkey="reporting.PartnersSave.country" listName="countriesList" keyFieldName="id"  displayFieldName="name" /]        
+        [@customForm.select name="activityPartner.partner.country" label="" i18nkey="reporting.PartnersSave.country" listName="countriesList" keyFieldName="id"  displayFieldName="name" /]        
       </div>
       
       [#-- City of location --]
       <div class="halfPartBlock">
-        [@customForm.input name="activity.activityPartners[0].partner.city" type="text" i18nkey="reporting.PartnersSave.city" /]
+        [@customForm.input name="activityPartner.partner.city" type="text" i18nkey="reporting.PartnersSave.city" /]
       </div>
       
       [#-- Empty space --]
-      <div class="halfPartBlock">                
+      <div class="halfPartBlock">
       </div>
       
       [#-- Contact point name --]
       <div class="halfPartBlock">
-        [@customForm.input name="activity.activityPartners[0].contactName" type="text" i18nkey="reporting.PartnersSave.contactName" /]
+        [@customForm.input name="activityPartner.contactName" type="text" i18nkey="reporting.PartnersSave.contactName" /]
       </div>
       
       [#-- Contact point email --]
       <div class="halfPartBlock">
-        [@customForm.input name="activity.activityPartners[0].contactEmail" type="text" i18nkey="reporting.PartnersSave.contactEmail" /]
+        [@customForm.input name="activityPartner.contactEmail" type="text" i18nkey="reporting.PartnersSave.contactEmail" /]
       </div>
       
       [#-- Web page link --]
@@ -57,7 +59,7 @@
             
       <!-- internal parameter -->
       <input name="activityID" type="hidden" value="${activityID}" />
-      [@s.submit type="button" name="save"]SAVE[/@s.submit]
+      [@s.submit type="button" name="save"]REQUEST ADD NEW PARTNER[/@s.submit]
       [/@s.form]
     </article>
   </section>  
