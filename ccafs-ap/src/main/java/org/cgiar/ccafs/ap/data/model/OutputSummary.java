@@ -5,10 +5,13 @@ public class OutputSummary {
 
   private int id;
   private String description;
+  private Output output;
+  private Leader leader;
 
 
   public OutputSummary() {
   }
+
 
   public OutputSummary(int id, String description) {
     super();
@@ -26,6 +29,14 @@ public class OutputSummary {
     return id;
   }
 
+  public Leader getLeader() {
+    return leader;
+  }
+
+  public Output getOutput() {
+    return output;
+  }
+
 
   public void setDescription(String description) {
     this.description = description;
@@ -34,5 +45,15 @@ public class OutputSummary {
 
   public void setId(int id) {
     this.id = id;
+  }
+
+
+  public void setLeader(Leader leader) {
+    this.leader = leader;
+  }
+
+
+  public void setOutput(Output output) {
+    this.output = output;
   }
 }
