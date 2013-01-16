@@ -201,77 +201,12 @@ THESE ACTIVITIES DONT BELONG TO ICRAF:
    * Missing keywords
 
 == ICRISAT ==
-  * Activity 78: "Identify & characterise analogue sites in WA, EA and SAsia suitable for testing breeding lines & as potential sources of climate change adapted germplasm ;      Phenotype and model traits ICRISAT mandate crops for/with contrasting responses to potential stresses created by climate change, especially temperature (links to CRP3.5 & 3.6)"
-   * Start date and end date are missing.
-   * Missing contact person email (Vincent Vadez & Jana Kholova)
-   * Bilateral budget option is checked but there is not a range selected. It is not clear if the activity is using or not bilateral funds.
-
-  * Activity 79: "Testing adaptation options (crop and varietal choice, crop management technologies) using analogue locations in Kenya, Zambia, Zimbabwe and southern India (links to 2.3)"
-   * Start date and end date are missing.
-   * Missing contact person email (Dave Harris)
-   * Expected deliverables don't have type. They wasn't stored.
-   * MIssing keywords
-
-  * Activity 92: "Household surveys in analogue locations in Kenya and Zimbabwe to understand current adaptation alternatives to warmer temperatures and gender and social differentiation aspects of adaptation and impacts of climate change"
-   * Start date and end date are missing.
-   * Missing contact person email (Dave Harris)
-   * Expected deliverables don't have type. They wasn't stored.
-   * Missing keywords
-
-  * Activity 93: "Climatic determinants of genotypic adaptation characterized for contrasted historical normal periods (wet, dry, current) across the entire WA SAT; Updated agroclimatic metrics produced"
-   * Missing start date and end date.
-   * Missing description.
-   * Missing contact person email (Pierre Sibiry Traore)
-   * There are no objectives
-   * There isn't year in the expected deliverables. 
-   * Partner name no clear(NHMS).
-   * Missing keywords
-
   * Activity 94: "On-station experiments to quantify GxE interactions and calibrate crop models to simulate the response of target cereals and legumes to differences in environmental condtions at different locations in Kenya, Zimbabwe and southern India"
-   * Missing start date and end date.
-   * Missing description.
-   * Missing contact person email (Dave Harris)
    * There are no objectives
-   * There isn't year in the expected deliverables. 
-   * Percentage distribution is not specified for the budget.
-   * Missing keywords
-
+   
   * Activity 95: "Characterising of historical & current climate risks and impact on livelihoods & livelihood options in drylands of India; assessing past & present adaptation practices, gender and social differentiation aspects, and indigenous knowledge"
-   * Start date and end date are missing.
-   * Expected deliverables don't have type. They wasn't stored.
    * Partners names is not well defined.
-   * CG Fund option was checked but no range was selected. It is not clear if is using or not CG Funds.
-
-  * Activity 96: "Participatory testing of low cost and high impact technologies (e.g. micro-dosing, seed priming) for reduced risk and improved productivity (links to CRP1.1)"
-   * Start date and end date are missing.
-   * Missing contact person email (Dave Harris)
-   * There are no objectives
-   * There is not budget or is the budget value 0?
-   * Missing keywords
-
-  * Activity 97: "Organising & conducting training courses for staff from National Met. Services (NMS) and NARES in use of climate data and dialogues with farmers to increase awareness of farmers needs (links to activities in 2.1 in India)"
-   * Expected deliverables don't have type. They wasn't stored.
-
-  * *Activity 112*: "Organising & conducting training courses for staff from National Met. Services (NMS) and NARES in use of climate data and dialogues with farmers to increase awareness of farmers needs (links to activities in 2.1 in India)"
-   * Héctor: (All dropdowns were damaged. All they are working now).
-   * Validate milestone because it was missed before.
-   * Missing keywords
-   * Validate regions since all the lists were empty before.
-
-  * Activity 113: "Validating seasonal forecasts linked to best bet management options in Zimbabwe; Assessing needs and potential value of climate information/ services to agricultural input delivery systems that support risk management options in Zimbabwe; Assessing current use of weather advisories and capacity to deliver climate and risk management information in southern India;"
-   * Start date and end date are missing.
-   * Missing contact person email (Kizito Mazvimavi & Peter Craufurd)
-
-  * Activity 114: "Monitoring of C-seq from long-term cropping system and watershed experiments  (linked to CRP1.1, 5 activities);measuring effect of tillage/CA on C and N2O; measuring effect fertilizer on CO2 and N2O fluxes in sorghum  at ICRISAT"
-   * Start date and end date are missing.
-
-  * Activity 115: "Conversion of all-India observed gridded climate data from binary format to text format, georeferencing and gap filling of data. Developing a database and computer programs for climate analyses"
-   * Start date and end date are missing.
-
-  * Activity 116: "Collect bio-physical and household data from BM sites, ICRISAT CCAFS sites, ICRISAT village level studies in India and WA, and SLP project sites for integrated assessment of climate change and adaptation with Tradeoff Analysis model (linked to activities 1.1 & 2.1)"
-   * Start date and end date are missing.
-   * Missing all years for the specified expected deliverables.
-
+   
 == IITA ==
 
   * Activity 143: "Develop new knowledge and tools to assess potential emission reductions from various crop systems and technology options to improve productivity and enhance food security"
