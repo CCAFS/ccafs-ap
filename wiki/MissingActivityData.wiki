@@ -281,63 +281,11 @@ THESE ACTIVITIES DONT BELONG TO ICRAF:
   * Excel file is empty - no data have been entered.
 
 == TL Theme 3 ==
-  * Activity 218: "Pressures on agriculture from increased bioenergy demand: intermodel comparison"
-   * Has a note under Milestone (LINKED TO THEME 4.2)
-   * Budget listed as 0, although CG fund checked. Nothing entered in database.
-   
-  * Activity 219: "Incentives and energy-food security trade-offs for mitigation options and links to global models"
-   * Has a note under Milestone (LINKED TO THEME 4.1)
-   * Gender integration - included description but "yes" not checked.
-   * Missing keywords
-   * There aren't countries or regions selected.
-
-  * Activity 221: "Gender strategy for Theme 3 and framework for analysis of mitigation innovations based on women and marginalized groups as drivers of change."
-   * Missing year for expected deliverable "Framework on women's innovation." Year entered as 2012. 
-
-  * Activity 223: "Incentives for adoption of agroforestry (with Theme 4)"
-   * Has a note under Milestone (LINKED TO THEME 4.1)
-   * Missing budget info.
-
-  * Activity 224: "Institutional Analysis and Capacity-Building of  Agricultural Carbon Projects in Africa, Phase 2 "
-   * Start an end date have wrong format (2011 - 2014)
-   * More than one contact person. Used only "Sara Scherr" and omitted "Seth Shames" and "Louise Buck."
-   * Range of dates (2012-2014) reported for expected deliverable "Additional reports, presentations, and assistance." Only 2012 entered.
-   
-  * Activity 225: "Governing Mitigation Trade-Offs"
-   * Start an end date have wrong format (2011 - 20123)
-   * End date is wrong (20123)
-   * Missing years for all expected deliverables. All years entered as 2012.
-
-  * Activity 226: "Climate Finance scientist position."
-   * No partners listed.
-
-  * Activity 228: "Reducing the GHG impacts of sustainable intensification - South Asia."
-   * No partners listed.
-
   * Activity 229: "Reducing the GHG impacts of sustainable intensification - East Africa."
    * Some partners not specified, only "Ministries of Agriculture, Livestock and Fisheries," "Development NGOs," and "Farmer associations."
 
   * Activity 230: "Reducing the GHG impacts of sustainable intensification - West Africa." 
    * One partner not specified - only says "NGOs."
-
-  * Activity 231: "Quantify agricultural greenhouse gases in developing countries." 
-   * Missing budget info.
-   
-  * Activity 10: Has the title "This project was canceled" -> this activity was not inserted in db
-  
-  * Activity 232: "Review of GHG quantification in West Africa"
-   * Start an end date have wrong format (2012 - 2012)
-   * Nothing checked and no description for gender integration
-   
-  * Activity 233: "FAO-CCAFS workshop on national mitigation priorities"
-   * Start an end date are the same 2012-07 -> This activity was stored 2012-07-01, 2012-07-31 
-   * Budget - CG fund checked but no percentage selected.
-
-  * Activity 234: "Whole farm and landscape GHG accounting in smallholder conditions."
-   * Budget - CG fund checked but no percentage selected.
-
-  * Activity 235: "Perennial Tropical Systems:  Trade-offs and Synergies for Climate Change Adaptation and Mitigation."
-   * partner - not clear what INI refers to, and no partner type indicated. Not entered in database.
 
 == TL Theme 4.1 ==
 
