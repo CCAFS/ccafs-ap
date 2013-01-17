@@ -26,6 +26,12 @@
   * Activity 38: "Review of state of the art  in assessing GHG (N volatilization and CO2) and development of protocols + acquisition of field and lab equipment. Implementation of regional trials to estimate GHG under a range of management practices in IGP irrigated agroecologies"
    * Missing contact person emails (Sapkota, Tek,  Bruno).
 
+
+== CIP ==
+  * Activity 243: "Development of new virtual crop parameters for assessment of potential invetsments to improve resilience to climate change for potato and sweet potato, 2012 funds"
+   * Missing objectives
+   * Missing partners
+
 == CIFOR ==
   * Activity 42: "On-farm trials on strategies to increase system productivity, soil quality and carbon sequestration in East Africa."
    * Start date and End date are missing.
@@ -95,8 +101,6 @@ It was stored the countries only.
   * Activity 87: "(1) international experiences with Payments for Environmental Services (carbon) in different systems, including capacity building at national and local levels; (2) Assessment of biocarbon project costs and institutions"
    * Missing contact person email and complete names (Sarah Namirembe, Andy & Jianchu)
 
-THESE ACTIVITIES DONT BELONG TO ICRAF:
-   
   * Activity 276: "Development of global agroforestry suitability maps in a changed climate"
    * There aren't partners.
 
@@ -105,6 +109,10 @@ THESE ACTIVITIES DONT BELONG TO ICRAF:
    
   * Activity 278: "Response of grassland growth to climate change on the Tibetan Plateau (TP)"
    * Some partners aren't valid, they aren't institution's names. 
+
+  * Activity 245: "Continue work on methods for improving CGIAR modeling capability in agro-forestry  and other natural resource management internvention areas that improve climate change resilience. This may involve the direct enhancement of global models like IMPACT or the enhancement of other models that could be linked up (e.g. DSSAT), 2012 funds"
+   * Missing objectives.
+   * Missing partners.
 
 == ILRI  ==
   * Activity 97: "Modelling of household level adaptation strategies in agro-pastoral systems of East Africa (Genesis reversed)"
