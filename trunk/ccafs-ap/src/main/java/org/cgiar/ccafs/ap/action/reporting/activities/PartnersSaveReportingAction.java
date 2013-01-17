@@ -75,13 +75,8 @@ public class PartnersSaveReportingAction extends BaseAction {
     super.prepare();
     // Take the activity id only the first time the page loads
 
-    // TODO - when the request parameter is null the window must be closed
     if (this.getRequest().getParameter(APConstants.ACTIVITY_REQUEST_ID) != null) {
       activityID = Integer.parseInt(StringUtils.trim(this.getRequest().getParameter(APConstants.ACTIVITY_REQUEST_ID)));
-    }
-
-    if (this.getRequest().getMethod().equalsIgnoreCase("post")) {
-      activityID = -9999;
     }
 
     this.countriesList = countryManager.getCountriesList();
@@ -116,7 +111,7 @@ public class PartnersSaveReportingAction extends BaseAction {
       }
     }
     // message subject
-    subject = "Partner verification";
+    subject = "Partner verification - " + partnerName;
     // Message content
     message.append("The user in charge of \"" + getCurrentUser().getLeader().getName()
       + "\" is requesting to add the following partner information:");
@@ -201,7 +196,7 @@ public class PartnersSaveReportingAction extends BaseAction {
       }
 
       if (anyError) {
-        addActionError(getText("reporting.activityPartners.error"));
+        addActionError(getText("saving.fields.required"));
       }
     }
     super.validate();

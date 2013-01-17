@@ -58,6 +58,9 @@
     <action name="publications" class="org.cgiar.ccafs.ap.action.reporting.publications.PublicationsReportingAction">
       <interceptor-ref name="reportingStack" />
       <result name="input">/WEB-INF/reporting/publicationsReporting.ftl</result>
+      <result name="success" type="redirectAction">
+        <param name="actionName">publications</param>
+      </result>
     </action>
     
     <!-- Others -->

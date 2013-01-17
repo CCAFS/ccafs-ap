@@ -9,11 +9,18 @@ import com.google.inject.ImplementedBy;
 public interface LogframeManager {
 
   /**
+   * Get a logframe object based on the given id.
+   * 
+   * @param id - identifier.
+   * @return a Logframe object.
+   */
+  public Logframe getLogframe(int id);
+
+  /**
    * Get a logframe object based on the given year.
    * 
    * @param year of the logframe.
    * @return a Logframe object.
    */
-  public Logframe getLogframe(int year);
-
+  public Logframe getLogframeByYear(int year);
 }

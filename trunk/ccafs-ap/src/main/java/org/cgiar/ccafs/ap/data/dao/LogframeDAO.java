@@ -10,10 +10,18 @@ import com.google.inject.ImplementedBy;
 public interface LogframeDAO {
 
   /**
+   * Get a logframe identified with the given id.
+   * 
+   * @param id - identifier.
+   * @return a Map with all the logframe data.
+   */
+  public Map<String, String> getLogframe(int id);
+
+  /**
    * Get a logframe that represent the given year.
    * 
    * @param year
    * @return a Map with all the logframe data.
    */
-  public Map<String, String> getLogframe(int year);
+  public Map<String, String> getLogframeByYear(int year);
 }

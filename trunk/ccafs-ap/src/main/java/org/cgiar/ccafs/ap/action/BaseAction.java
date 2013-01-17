@@ -93,7 +93,7 @@ public class BaseAction extends ActionSupport implements Preparable, SessionAwar
    * @return a Logframe object or null if no logframe is found.
    */
   public Logframe getCurrentLogframe() {
-    return logframeManager.getLogframe(config.getCurrentYear());
+    return logframeManager.getLogframeByYear(config.getCurrentYear());
   }
 
   /**

@@ -19,8 +19,20 @@ public class LogframeManagerImpl implements LogframeManager {
   }
 
   @Override
-  public Logframe getLogframe(int year) {
-    Map<String, String> logframeDB = logframeDAO.getLogframe(year);
+  public Logframe getLogframe(int id) {
+    Map<String, String> logframeDB = logframeDAO.getLogframe(id);
+    if (logframeDB != null) {
+      Logframe logframe = new Logframe();
+      logframe.setId(Integer.parseInt(logframeDB.get("id")));
+      logframe.setYear(Integer.parseInt(logframeDB.get("year")));
+      return logframe;
+    }
+    return null;
+  }
+
+  @Override
+  public Logframe getLogframeByYear(int year) {
+    Map<String, String> logframeDB = logframeDAO.getLogframeByYear(year);
     return new Logframe(Integer.parseInt(logframeDB.get("id")), Integer.parseInt(logframeDB.get("year")),
       logframeDB.get("name"));
   }
