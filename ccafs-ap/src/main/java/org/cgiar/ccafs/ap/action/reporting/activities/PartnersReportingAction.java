@@ -116,6 +116,7 @@ public class PartnersReportingAction extends BaseAction {
 
   @Override
   public void validate() {
+    super.validate();
     ActivityPartner activityPartner = null;
     boolean anyError = false;
 
@@ -148,11 +149,10 @@ public class PartnersReportingAction extends BaseAction {
       }
 
       if (anyError) {
-        addActionError(getText("reporting.activityPartners.error"));
+        addActionError(getText("saving.fields.required"));
       }
     }
 
-    super.validate();
   }
 
 }

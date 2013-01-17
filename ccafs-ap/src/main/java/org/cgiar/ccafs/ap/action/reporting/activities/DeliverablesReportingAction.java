@@ -172,10 +172,10 @@ public class DeliverablesReportingAction extends BaseAction {
     }
 
     if (!problem) {
-      addActionMessage(getText("reporting.activityDeliverables.saved"));
+      addActionMessage(getText("saving.sucess", new String[] {getText("reporting.activityDeliverables")}));
       return SUCCESS;
     } else {
-      addActionError(getText("reporting.activityDeliverables.problem"));
+      addActionError(getText("saving.problem"));
       return INPUT;
     }
   }
@@ -255,7 +255,7 @@ public class DeliverablesReportingAction extends BaseAction {
     }
 
     if (anyError) {
-      addActionError(getText("reporting.activityDeliverables.error"));
+      addActionError(getText("saving.fields.required"));
     }
 
     super.validate();

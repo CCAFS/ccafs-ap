@@ -103,21 +103,16 @@ public class StatusReportingAction extends BaseAction {
     Budget budget = budgetManager.getBudget(activityID);
     activity.setBudget(budget);
 
-    // TEMP
-    // addActionError("Action Error 1");
-    // addActionError("Action Error 2");
-    // addActionMessage("Information Message 1");
-    // addActionMessage("Information Message 2");
   }
 
 
   @Override
   public String save() {
     if (activityManager.saveStatus(activity)) {
-      addActionMessage(getText("reporting.activityStatus.saved"));
+      addActionMessage(getText("saving.success", new String[] {getText("reporting.activityStatus")}));
       return SUCCESS;
     } else {
-      addActionError(getText("reporting.activityStatus.problem"));
+      addActionError(getText("saving.problem"));
       return INPUT;
     }
 

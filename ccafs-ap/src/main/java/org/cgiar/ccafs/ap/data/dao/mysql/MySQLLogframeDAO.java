@@ -26,7 +26,27 @@ public class MySQLLogframeDAO implements LogframeDAO {
   }
 
   @Override
-  public Map<String, String> getLogframe(int year) {
+  public Map<String, String> getLogframe(int id) {
+    Map<String, String> logframe = new HashMap<>();
+
+    try (Connection con = databaseManager.getConnection()) {
+      String query = "SELECT * FROM logframes WHERE id = " + id;
+      ResultSet rs = databaseManager.makeQuery(query, con);
+      if (rs.next()) {
+        logframe.put("id", rs.getString("id"));
+        logframe.put("year", rs.getString("year"));
+        logframe.put("name", rs.getString("name"));
+      }
+    } catch (SQLException e) {
+      // TODO Auto-generated catch block
+      e.printStackTrace();
+      return null;
+    }
+    return logframe;
+  }
+
+  @Override
+  public Map<String, String> getLogframeByYear(int year) {
     Map<String, String> logframe = new HashMap<>();
 
     try (Connection con = databaseManager.getConnection()) {
