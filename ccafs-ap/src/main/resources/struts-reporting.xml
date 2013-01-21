@@ -63,6 +63,14 @@
       </result>
     </action>
     
+    <action name="outcomes" class="org.cgiar.ccafs.ap.action.reporting.outcomes.OutcomesReportingAction">
+      <interceptor-ref name="reportingStack" />
+      <result name="input">/WEB-INF/reporting/outcomesReporting.ftl</result>
+      <result name="success" type="redirectAction">
+        <param name="actionName">outcomes</param>
+      </result>
+    </action>
+    
     <!-- Others -->
         
     <action name="milestone" class="org.cgiar.ccafs.ap.action.reporting.activities.MilestoneReportingAction">
