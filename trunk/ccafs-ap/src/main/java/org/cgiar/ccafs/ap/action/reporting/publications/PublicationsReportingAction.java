@@ -65,6 +65,7 @@ public class PublicationsReportingAction extends BaseAction {
           publicationManager.savePublications(publications, this.getCurrentLogframe(), this.getCurrentUser()
             .getLeader());
         if (added) {
+          addActionMessage(getText("saving.success", new String[] {getText("reporting.publications.publication")}));
           return SUCCESS;
         }
       }
@@ -105,8 +106,6 @@ public class PublicationsReportingAction extends BaseAction {
 
       if (problem) {
         addActionError(getText("saving.fields.required"));
-      } else {
-        addActionMessage(getText("saving.success", new String[] {getText("reporting.publications.publication")}));
       }
     }
   }

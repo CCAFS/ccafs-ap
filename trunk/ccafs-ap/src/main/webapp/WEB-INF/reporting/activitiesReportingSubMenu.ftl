@@ -1,8 +1,6 @@
 [#ftl]
 <nav id="stageMenu">
   <ul>
-         
-  
     <a [#if currentStage == "status"] class="currentReportingSection" [/#if] href="
         [@s.url action='status' includeParams='get'][/@s.url]
       "><li>Status</li>
@@ -14,6 +12,6 @@
     <a [#if currentStage == "partners"] class="currentReportingSection" [/#if] href="
         [@s.url action='partners' includeParams='get'][/@s.url]
       "><li>Partners</li>
-    </a>            
+    </a>
   </ul>
 </nav>

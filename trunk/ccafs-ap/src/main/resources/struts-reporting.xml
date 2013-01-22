@@ -79,6 +79,14 @@
       </result>
     </action>
     
+    <action name="tlOutputs" class="org.cgiar.ccafs.ap.action.reporting.tlrpl.TLOutputSummaryReportingAction">
+      <interceptor-ref name="reportingStack" />
+      <result name="input">/WEB-INF/reporting/tlOutputsReporting.ftl</result>
+      <result name="success" type="redirectAction">
+        <param name="actionName">tlOutputs</param>
+      </result>
+    </action>
+    
     <!-- Others -->
         
     <action name="milestone" class="org.cgiar.ccafs.ap.action.reporting.activities.MilestoneReportingAction">
