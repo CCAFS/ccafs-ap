@@ -5,6 +5,7 @@ import org.cgiar.ccafs.ap.config.APConfig;
 import org.cgiar.ccafs.ap.data.manager.LogframeManager;
 import org.cgiar.ccafs.ap.data.manager.OutputManager;
 import org.cgiar.ccafs.ap.data.manager.OutputSummaryManager;
+import org.cgiar.ccafs.ap.data.model.Leader;
 import org.cgiar.ccafs.ap.data.model.Output;
 import org.cgiar.ccafs.ap.data.model.OutputSummary;
 
@@ -75,8 +76,9 @@ public class OutputSummaryAction extends BaseAction {
         outputSummaries[i] = new OutputSummary();
       }
 
-      // Second, set the output object
+      // Second, set the output and leader objects
       outputSummaries[i].setOutput(outputs[i]);
+      outputSummaries[i].setLeader(new Leader(activityLeaderID));
     }
 
   }
@@ -86,7 +88,7 @@ public class OutputSummaryAction extends BaseAction {
   public String save() {
     boolean added = false;
 
-    // Create lists of objects to make only one call to the
+    // Create lists of objects to make only one call to the manager
     ArrayList<OutputSummary> outputSummariesToSave = new ArrayList<>();
     ArrayList<OutputSummary> outputSummariesToUpdate = new ArrayList<>();
 
@@ -108,6 +110,7 @@ public class OutputSummaryAction extends BaseAction {
     if (!outputSummariesToSave.isEmpty()) {
       added = outputSummaryManager.saveOutputSummary(outputSummariesToSave);
       if (!added) {
+        addActionError(getText("reporting.outputSummary.error"));
         LOG.error("There was a problem storing the output summaries to save");
         return INPUT;
       }
@@ -116,10 +119,13 @@ public class OutputSummaryAction extends BaseAction {
     if (!outputSummariesToUpdate.isEmpty()) {
       added = outputSummaryManager.updateOutputSummary(outputSummariesToUpdate);
       if (!added) {
+        addActionError(getText("reporting.outputSummary.error"));
         LOG.error("There was a problem storing the output summaries to update");
         return INPUT;
       }
     }
+
+    addActionError(getText("reporting.outputSummary.saved"));
     return SUCCESS;
   }
 

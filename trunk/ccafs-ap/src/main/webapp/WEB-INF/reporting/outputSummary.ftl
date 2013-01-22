@@ -21,12 +21,6 @@
         
         [#list outputSummaries as outputSummary]
           <div id="outputSummary-${outputSummary_index}">
-            [#-- Output summary identifier --]
-            <input name="outputSummaries[${outputSummary_index}].id" type="hidden" value="${outputSummary.id}" />
-          
-            [#-- Activity leader identifier --]
-            <input name="outputSummaries[${outputSummary_index}].leader.id" type="hidden" value="${activityLeaderID}">
-            
             [#-- Title --]
             <div class="outputTitle">
               [@s.text name="reporting.outputSummary.output" /] ${outputSummary.output.objective.theme.code}.${outputSummary.output.objective.code}.${outputSummary.output.code}

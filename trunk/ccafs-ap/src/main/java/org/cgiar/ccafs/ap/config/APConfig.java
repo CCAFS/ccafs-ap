@@ -84,6 +84,20 @@ public class APConfig {
     return -1;
   }
 
+  /**
+   * Get the maximun file size allowed
+   * 
+   * @return an integer with the value
+   */
+  public int getFileMaxSize() {
+    try {
+      return properties.getPropertiesAsInt("file.maxSize");
+    } catch (Exception e) {
+      LOG.error("there is not a maximun file size configured.");
+    }
+    return -1;
+  }
+
   public String getGmailPassword() {
     try {
       return properties.getPropertiesAsString("gmail.password");
@@ -98,6 +112,20 @@ public class APConfig {
       return properties.getPropertiesAsString("gmail.user");
     } catch (Exception e) {
       LOG.error("there is not a Gmail user configured.");
+    }
+    return null;
+  }
+
+  /**
+   * Get the path where are stored the user images
+   * 
+   * @return a string with the path
+   */
+  public String getUserImagesPath() {
+    try {
+      return properties.getPropertiesAsString("file.userImagePath");
+    } catch (Exception e) {
+      LOG.error("there is not a path for the user images configured.");
     }
     return null;
   }

@@ -1,0 +1,35 @@
+#template{
+  display: none;
+}
+
+.removeLink {
+  float: right;
+  clear: both;
+}
+
+.fullBlock h6,.thirdPartBlock h6 {
+  margin-bottom: 5px
+}
+
+#addDeliverableBlock {
+  display: block;  
+}
+
+.countriesBlock select{
+  height: 200px;
+  border: 1px solid #E5E5E5;
+}
+
+.photoBlock div[id$='photo']{
+  border: 1px solid #E5E5E5;
+  background-color: #fafafa;
+  height: 160px;
+  text-align: center;
+}
+
+.photoBlock div[id$='photo'] img{
+  height: 160px;
+  max-height: 160px;
+  width:auto;
+  max-width: 100%;
+}

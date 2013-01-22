@@ -90,7 +90,6 @@ function renameDeliverables() {
   $("#items .deliverable")
       .each(
           function(index, deliverable) {
-            console.log("index: " + index + ", deliverable: " + deliverable);
             // Do nothing with expected deliverables.
             if (index >= expectedDeliverablesCount) {
               // Changing attributes of each component in order to match with the array order.
