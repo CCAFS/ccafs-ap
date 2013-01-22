@@ -63,6 +63,14 @@
       </result>
     </action>
     
+    <action name="casesStudies" class="org.cgiar.ccafs.ap.action.reporting.cases_studies.CasesStudiesAction">
+      <interceptor-ref name="reportingStack" />
+      <result name="input">/WEB-INF/reporting/casesStudiesReporting.ftl</result>
+      <result name="success" type="redirectAction">
+        <param name="actionName">casesStudies</param>        
+      </result>
+    </action>
+    
     <action name="outcomes" class="org.cgiar.ccafs.ap.action.reporting.outcomes.OutcomesReportingAction">
       <interceptor-ref name="reportingStack" />
       <result name="input">/WEB-INF/reporting/outcomesReporting.ftl</result>

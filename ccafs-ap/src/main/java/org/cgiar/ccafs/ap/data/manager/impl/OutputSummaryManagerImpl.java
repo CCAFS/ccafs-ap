@@ -56,7 +56,8 @@ public class OutputSummaryManagerImpl implements OutputSummaryManager {
     for (OutputSummary outputSummary : outputSummaries) {
       Map<String, Object> osData = new HashMap<>();
       osData.put("description", outputSummary.getDescription());
-      osData.put("id", outputSummary.getId());
+      osData.put("output_id", outputSummary.getOutput().getId());
+      osData.put("activity_leader_id", outputSummary.getLeader().getId());
       outputSummaryData.add(osData);
     }
     problem = !outputSummaryDAO.updateOutputsSummaryList(outputSummaryData);

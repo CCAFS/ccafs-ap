@@ -76,10 +76,12 @@ public class MySQLOutputSummaryDAO implements OutputSummaryDAO {
     boolean problem = false;
     try (Connection con = databaseManager.getConnection()) {
       for (Map<String, Object> osData : outputsSummaryData) {
-        String preparedQuery = "UPDATE output_summaries SET description = ? WHERE id = ?";
-        Object[] data = new Object[2];
+        String preparedQuery =
+          "UPDATE output_summaries SET description = ? WHERE output_id = ? AND activity_leader_id = ?";
+        Object[] data = new Object[3];
         data[0] = osData.get("description");
-        data[1] = osData.get("id");
+        data[1] = osData.get("output_id");
+        data[2] = osData.get("activity_leader_id");
         int rows = databaseManager.makeChangeSecure(con, preparedQuery, data);
         if (rows < 0) {
           problem = true;

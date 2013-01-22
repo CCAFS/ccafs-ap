@@ -3,6 +3,8 @@ package org.cgiar.ccafs.ap.data.manager;
 import org.cgiar.ccafs.ap.data.manager.impl.CountryManagerImpl;
 import org.cgiar.ccafs.ap.data.model.Country;
 
+import java.util.List;
+
 import com.google.inject.ImplementedBy;
 
 @ImplementedBy(CountryManagerImpl.class)
@@ -15,6 +17,14 @@ public interface CountryManager {
    */
   public Country[] getCountriesList();
 
+
+  /**
+   * Get a list of countries object corresponding to the given array of ids
+   * 
+   * @param ids - Array of ids
+   * @return a list of Country objects
+   */
+  public List<Country> getCountriesList(String[] ids);
 
   /**
    * Get the country object corresponding to the given id

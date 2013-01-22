@@ -13,6 +13,10 @@ public class Leader {
   public Leader() {
   }
 
+  public Leader(int id) {
+    this.id = id;
+  }
+
   public Leader(int id, String name, LeaderType leaderType) {
     this.id = id;
     this.name = name;
