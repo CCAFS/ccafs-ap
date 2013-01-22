@@ -99,7 +99,7 @@
     <input name="activityID" type="hidden" value="${activity.id}" />
     [@s.submit type="button" name="save"]SAVE[/@s.submit]
          
-    [#include "/WEB-INF/reporting/reportingStepSubMenu.ftl" /]  
+    [#include "/WEB-INF/reporting/activitiesReportingSubMenu.ftl" /]  
     </article>
   [/@s.form]
  

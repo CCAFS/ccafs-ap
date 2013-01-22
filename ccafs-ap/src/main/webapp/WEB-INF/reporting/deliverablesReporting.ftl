@@ -120,7 +120,7 @@
         
         [#-- Description --]
         <div class="fullBlock">                      
-          [@customForm.textArea name="description" i18nkey="reporting.activityDeliverables.description" /]        
+          [@customForm.textArea name="description" i18nkey="reporting.activityDeliverables.description" /]
         </div>
         
         [#-- Type --]
@@ -153,7 +153,7 @@
     [@s.submit type="button" name="save"]SAVE[/@s.submit]
     [@s.submit type="button" name="cancel"]CANCEL[/@s.submit]
          
-    [#include "/WEB-INF/reporting/reportingStepSubMenu.ftl" /]  
+    [#include "/WEB-INF/reporting/activitiesReportingSubMenu.ftl" /]  
     </article>
   [/@s.form]
  

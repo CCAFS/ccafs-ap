@@ -114,7 +114,7 @@
       [@s.submit type="button" name="cancel"]CANCEL[/@s.submit]
     </div>
       
-    [#include "/WEB-INF/reporting/reportingStepSubMenu.ftl" /]  
+    [#include "/WEB-INF/reporting/activitiesReportingSubMenu.ftl" /]  
   </article>
   
   [/@s.form]
