@@ -11,14 +11,14 @@ import com.google.inject.ImplementedBy;
 public interface OutputSummaryDAO {
 
   /**
-   * Get the summary of the output identified with outputId made
-   * by the activity leader identified by activityLeaderId
+   * Get a list with all the output summaries that belongs to the activity
+   * leader which are related to the logframeId
    * 
-   * @param outputId The output identifier
    * @param activityLeaderId the activity leader identifier
-   * @return A map with the information
+   * @param logframeId the logframe identifier
+   * @return a list of maps with all the information
    */
-  public Map<String, String> getOutputSummary(int outputId, int activityLeaderId);
+  public List<Map<String, String>> getOutputSummariesList(int activityLeaderId, int logframeId);
 
   /**
    * Save all the outputs summary into the database

@@ -79,7 +79,7 @@ public class PartnersSaveReportingAction extends BaseAction {
       activityID = Integer.parseInt(StringUtils.trim(this.getRequest().getParameter(APConstants.ACTIVITY_REQUEST_ID)));
     }
 
-    this.countriesList = countryManager.getCountriesList();
+    this.countriesList = countryManager.getCountryList();
     this.partnerTypesList = partnerTypeManager.getPartnerTypeList();
   }
 

@@ -1,8 +1,8 @@
 [#ftl]
 [#assign title = "Case Studies" /]
 [#assign globalLibs = ["jquery", "noty"] /]
-[#assign customJS = ["${baseUrl}/js/reporting/casesStudiesReporting.js"] /]
-[#assign customCSS = ["${baseUrl}/css/reporting/casesStudiesReporting.css"] /]
+[#assign customJS = ["${baseUrl}/js/reporting/caseStudiesReporting.js"] /]
+[#assign customCSS = ["${baseUrl}/css/reporting/caseStudiesReporting.css"] /]
 [#assign currentSection = "reporting" /]
 [#assign currentReportingSection = "caseStudies" /]
 
@@ -14,17 +14,17 @@
   <section >
     [#include "/WEB-INF/global/pages/reporting-secondary-menu.ftl" /]  
     <article class="halfContent">
-      [@s.form action="casesStudies" enctype="multipart/form-data"]
+      [@s.form action="caseStudies" enctype="multipart/form-data"]
         <h1>
-          [@s.text name="reporting.casesStudies.casesStudies" /] - [#-- ${activityLeaderAcronym} --] 
+          [@s.text name="reporting.caseStudies.caseStudies" /] - ${currentUser.leader.acronym} 
         </h1>
         
-        <div id="casesStudiesBlock">
+        <div id="caseStudiesBlock">
         [#-- Saved cases studies --]        
-        [#list casesStudies as caseStudy]
+        [#list caseStudies as caseStudy]
           <div id="caseStudy-${caseStudy_index}" class="caseStudy">
             [#-- CaseStudy identifier --]
-            <input name="casesStudies[${caseStudy_index}].id" type="hidden" value="${caseStudy.id}">
+            <input name="caseStudies[${caseStudy_index}].id" type="hidden" value="${caseStudy.id}">
           
             [#-- Remove link --]
             <div class="removeLink">
@@ -35,7 +35,7 @@
           
             [#-- Title --]
             <div class="fullBlock">
-              [@customForm.input name="casesStudies[${caseStudy_index}].title" type="text" i18nkey="reporting.casesStudies.title" /]
+              [@customForm.input name="caseStudies[${caseStudy_index}].title" type="text" i18nkey="reporting.caseStudies.title" /]
             </div>
             
             [#-- Type --]
@@ -43,65 +43,65 @@
             
             [#-- Author --]
             <div class="halfPartBlock">
-              [@customForm.input name="casesStudies[${caseStudy_index}].author" type="text" i18nkey="reporting.casesStudies.author" /]              
+              [@customForm.input name="caseStudies[${caseStudy_index}].author" type="text" i18nkey="reporting.caseStudies.author" /]              
             </div>
             
             [#-- Date --]
             <div class="halfPartBlock">
-              [@customForm.input name="casesStudies[${caseStudy_index}].date" type="text" i18nkey="reporting.casesStudies.date" /]
+              [@customForm.input name="caseStudies[${caseStudy_index}].date" type="text" i18nkey="reporting.caseStudies.date" /]
             </div>
             
             [#-- Countries --]
             <div class="halfPartBlock countriesBlock">
-              [@customForm.select name="casesStudies[${caseStudy_index}].countries" label="" i18nkey="reporting.casesStudies.country" listName="countriesList" keyFieldName="id"  displayFieldName="name" value="casesStudies[${caseStudy_index}].countriesIds" multiple=true /]              
+              [@customForm.select name="caseStudies[${caseStudy_index}].countries" label="" i18nkey="reporting.caseStudies.country" listName="countryList" keyFieldName="id"  displayFieldName="name" value="caseStudies[${caseStudy_index}].countriesIds" multiple=true /]              
             </div>
             
-            [#-- Photo url --]
-            <div class="halfPartBlock photoBlock">
-              [#if caseStudy.photoFileName??]
-                <div id="photo">
-                  <img src="${baseUrl}/${photoPath}${caseStudy.photoFileName}" width="100%">
+            [#-- image --]
+            <div class="halfPartBlock imageBlock">
+              [#if caseStudy.imageFileName??]
+                <div id="image">
+                  <img src="${caseStudiesImagesUrl}/${caseStudy.imageFileName}" width="100%">
                 </div>
                 <div>
-                  [@customForm.input name="casesStudies[${caseStudy_index}].photo" type="file" i18nkey="reporting.casesStudies.photo" /]
+                  [@customForm.input name="caseStudies[${caseStudy_index}].image" type="file" i18nkey="reporting.caseStudies.image" /]
                 </div>
               [#else]
-                <div id="casesStudies[${caseStudy_index}].photo"></div>
+                <div id="caseStudies[${caseStudy_index}].image"></div>
                 <div>
-                  [@customForm.input name="casesStudies[${caseStudy_index}].photo" type="file" i18nkey="reporting.casesStudies.photo" /]
+                  [@customForm.input name="caseStudies[${caseStudy_index}].image" type="file" i18nkey="reporting.caseStudies.image" /]
                 </div>    
               [/#if]
             </div>
             
             [#-- Keywords --]
             <div class="halfPartBlock">
-              [@customForm.input name="casesStudies[${caseStudy_index}].keywords" type="text" i18nkey="reporting.casesStudies.keywords" /]
+              [@customForm.input name="caseStudies[${caseStudy_index}].keywords" type="text" i18nkey="reporting.caseStudies.keywords" /]
             </div>
             
             
             [#-- Objectives --]
             <div class="fullBlock">
-              [@customForm.textArea name="casesStudies[${caseStudy_index}].objectives" i18nkey="reporting.casesStudies.objectives" /]
+              [@customForm.textArea name="caseStudies[${caseStudy_index}].objectives" i18nkey="reporting.caseStudies.objectives" /]
             </div>
             
             [#-- Description --]
             <div class="fullBlock">
-              [@customForm.textArea name="casesStudies[${caseStudy_index}].description" i18nkey="reporting.casesStudies.descripition" /]
+              [@customForm.textArea name="caseStudies[${caseStudy_index}].description" i18nkey="reporting.caseStudies.descripition" /]
             </div>
             
             [#-- Result --]
             <div class="fullBlock">
-              [@customForm.textArea name="casesStudies[${caseStudy_index}].results" i18nkey="reporting.casesStudies.results" /]
+              [@customForm.textArea name="caseStudies[${caseStudy_index}].results" i18nkey="reporting.caseStudies.results" /]
             </div>
             
             [#-- Partners --]
             <div class="fullBlock">
-              [@customForm.textArea name="casesStudies[${caseStudy_index}].partners" i18nkey="reporting.casesStudies.partners" /]
+              [@customForm.textArea name="caseStudies[${caseStudy_index}].partners" i18nkey="reporting.caseStudies.partners" /]
             </div>
             
             [#-- Links / resources --]
             <div class="fullBlock">
-              [@customForm.textArea name="casesStudies[${caseStudy_index}].links" i18nkey="reporting.casesStudies.links" /]
+              [@customForm.textArea name="caseStudies[${caseStudy_index}].links" i18nkey="reporting.caseStudies.links" /]
             </div>
             
             [#-- separator --]
@@ -132,7 +132,7 @@
           
             [#-- Title --]
             <div class="fullBlock">
-              [@customForm.input name="title" type="text" i18nkey="reporting.casesStudies.title" /]
+              [@customForm.input name="title" type="text" i18nkey="reporting.caseStudies.title" /]
             </div>
             
             [#-- Type --]
@@ -140,55 +140,55 @@
             
             [#-- Author --]
             <div class="halfPartBlock">
-              [@customForm.input name="author" type="text" i18nkey="reporting.casesStudies.author" /]              
+              [@customForm.input name="author" type="text" i18nkey="reporting.caseStudies.author" /]              
             </div>
             
             [#-- Date --]
             <div class="halfPartBlock">
-              [@customForm.input name="date" type="text" i18nkey="reporting.casesStudies.date" /]
+              [@customForm.input name="date" type="text" i18nkey="reporting.caseStudies.date" /]
             </div>            
             
             [#-- Countries --]
             <div class="halfPartBlock countriesBlock">
-              [@customForm.select name="countries" label="" i18nkey="reporting.casesStudies.country" listName="countriesList" keyFieldName="id"  displayFieldName="name" value="" multiple=true /]              
+              [@customForm.select name="countries" label="" i18nkey="reporting.caseStudies.country" listName="countryList" keyFieldName="id"  displayFieldName="name" value="" multiple=true /]              
             </div>
             
-            [#-- Photo url --]
-            <div class="halfPartBlock photoBlock">
-              <div id="photo"></div>
+            [#-- image url --]
+            <div class="halfPartBlock imageBlock">
+              <div id="image"></div>
               <div>
-                [@customForm.input name="photo" type="file" i18nkey="reporting.casesStudies.photo" /]
+                [@customForm.input name="image" type="file" i18nkey="reporting.caseStudies.image" /]
               </div>
             </div>
             
             [#-- Keywords --]
             <div class="halfPartBlock">
-              [@customForm.input name="keywords" type="text" i18nkey="reporting.casesStudies.keywords" /]
+              [@customForm.input name="keywords" type="text" i18nkey="reporting.caseStudies.keywords" /]
             </div>            
             
             [#-- Objectives --]
             <div class="fullBlock">
-              [@customForm.textArea name="objectives" i18nkey="reporting.casesStudies.objectives" /]
+              [@customForm.textArea name="objectives" i18nkey="reporting.caseStudies.objectives" /]
             </div>
             
             [#-- Description --]
             <div class="fullBlock">
-              [@customForm.textArea name="description" i18nkey="reporting.casesStudies.descripition" /]
+              [@customForm.textArea name="description" i18nkey="reporting.caseStudies.descripition" /]
             </div>
             
             [#-- Result --]
             <div class="fullBlock">
-              [@customForm.textArea name="results" i18nkey="reporting.casesStudies.results" /]
+              [@customForm.textArea name="results" i18nkey="reporting.caseStudies.results" /]
             </div>
             
             [#-- Partners --]
             <div class="fullBlock">
-              [@customForm.textArea name="partners" i18nkey="reporting.casesStudies.partners" /]
+              [@customForm.textArea name="partners" i18nkey="reporting.caseStudies.partners" /]
             </div>
             
             [#-- Links / resources --]
             <div class="fullBlock">
-              [@customForm.textArea name="links" i18nkey="reporting.casesStudies.links" /]
+              [@customForm.textArea name="links" i18nkey="reporting.caseStudies.links" /]
             </div>
             
             [#-- separator --]

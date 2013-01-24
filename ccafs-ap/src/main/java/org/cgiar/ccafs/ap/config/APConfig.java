@@ -57,6 +57,29 @@ public class APConfig {
   }
 
   /**
+   * Get the path where are stored the case studies user images
+   * 
+   * @return a string with the path
+   */
+  public String getCaseStudiesImagesPath() {
+    try {
+      return properties.getPropertiesAsString("file.caseStudiesImagesPath");
+    } catch (Exception e) {
+      LOG.error("there is not a path for the user images configured.");
+    }
+    return null;
+  }
+
+  public String getCaseStudiesImagesUrl() {
+    try {
+      return properties.getPropertiesAsString("file.caseStudiesImagesUrl");
+    } catch (Exception e) {
+      LOG.error("there is not a path for the user images configured.");
+    }
+    return null;
+  }
+
+  /**
    * Get the current year value that is in the configuration file.
    * 
    * @return an integer identifying the current year.
@@ -91,7 +114,7 @@ public class APConfig {
    */
   public int getFileMaxSize() {
     try {
-      return properties.getPropertiesAsInt("file.maxSize");
+      return properties.getPropertiesAsInt("file.maxSizeAllowed.bytes");
     } catch (Exception e) {
       LOG.error("there is not a maximun file size configured.");
     }
@@ -112,20 +135,6 @@ public class APConfig {
       return properties.getPropertiesAsString("gmail.user");
     } catch (Exception e) {
       LOG.error("there is not a Gmail user configured.");
-    }
-    return null;
-  }
-
-  /**
-   * Get the path where are stored the user images
-   * 
-   * @return a string with the path
-   */
-  public String getUserImagesPath() {
-    try {
-      return properties.getPropertiesAsString("file.userImagePath");
-    } catch (Exception e) {
-      LOG.error("there is not a path for the user images configured.");
     }
     return null;
   }

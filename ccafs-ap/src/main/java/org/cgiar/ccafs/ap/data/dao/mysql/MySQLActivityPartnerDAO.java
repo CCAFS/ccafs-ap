@@ -35,7 +35,7 @@ public class MySQLActivityPartnerDAO implements ActivityPartnerDAO {
           + activityID;
       ResultSet rs = databaseManager.makeQuery(query, con);
       while (rs.next()) {
-        Map<String, String> activityPartnerData = new HashMap();
+        Map<String, String> activityPartnerData = new HashMap<>();
         activityPartnerData.put("id", rs.getString("id"));
         activityPartnerData.put("contact_name", rs.getString("contact_name"));
         activityPartnerData.put("contact_email", rs.getString("contact_email"));

@@ -16,7 +16,7 @@
     <article class="halfContent">
       [@s.form action="outputSummary"]
         <h1>
-          [@s.text name="reporting.outputSummary.outputSummary" /] - [#-- ${activityLeaderAcronym} --] 
+          [@s.text name="reporting.outputSummary.outputSummary" /] - ${currentUser.leader.acronym} 
         </h1>
         
         [#list outputSummaries as outputSummary]

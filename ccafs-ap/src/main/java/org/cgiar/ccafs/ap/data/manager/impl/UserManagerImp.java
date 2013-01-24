@@ -32,6 +32,7 @@ public class UserManagerImp implements UserManager {
       Leader leader = new Leader();
       leader.setId(Integer.parseInt(userData.get("leader_id")));
       leader.setName(userData.get("leader_name"));
+      leader.setAcronym(userData.get("leader_acronym"));
       LeaderType leaderType = new LeaderType();
       leaderType.setId(Integer.parseInt(userData.get("leader_type_id")));
       leaderType.setName(userData.get("leader_type_name"));
