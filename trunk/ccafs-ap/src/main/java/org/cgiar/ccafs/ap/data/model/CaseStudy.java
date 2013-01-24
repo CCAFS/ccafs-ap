@@ -8,15 +8,15 @@ import java.util.List;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 
 
-public class CasesStudy {
+public class CaseStudy {
 
   private int id;
   private String title;
   private String author;
   private Date date;
-  private File photo;
-  private String photoContentType;
-  private String photoFileName;
+  private File image;
+  private String imageContentType;
+  private String imageFileName;
   private String objectives;
   private String description;
   private String results;
@@ -24,20 +24,15 @@ public class CasesStudy {
   private String links;
   private String keywords;
   private List<Country> countries;
-
   private Logframe logframe;
-
-
   private Leader leader;
 
-  public CasesStudy() {
-
+  public CaseStudy() {
   }
 
-  public CasesStudy(int id) {
+  public CaseStudy(int id) {
     this.id = id;
   }
-
 
   public String getAuthor() {
     return author;
@@ -67,6 +62,18 @@ public class CasesStudy {
     return id;
   }
 
+  public File getImage() {
+    return image;
+  }
+
+  public String getImageContentType() {
+    return imageContentType;
+  }
+
+  public String getImageFileName() {
+    return imageFileName;
+  }
+
   public String getKeywords() {
     return keywords;
   }
@@ -90,20 +97,6 @@ public class CasesStudy {
   public String getPartners() {
     return partners;
   }
-
-  public File getPhoto() {
-    return photo;
-  }
-
-  public String getPhotoContentType() {
-    return photoContentType;
-  }
-
-
-  public String getPhotoFileName() {
-    return photoFileName;
-  }
-
 
   public String getResults() {
     return results;
@@ -133,6 +126,18 @@ public class CasesStudy {
     this.id = id;
   }
 
+  public void setImage(File image) {
+    this.image = image;
+  }
+
+  public void setImageContentType(String photoContentType) {
+    this.imageContentType = photoContentType;
+  }
+
+  public void setImageFileName(String photoFileName) {
+    this.imageFileName = photoFileName;
+  }
+
   public void setKeywords(String keywords) {
     this.keywords = keywords;
   }
@@ -149,29 +154,12 @@ public class CasesStudy {
     this.logframe = logframe;
   }
 
-
   public void setObjectives(String objectives) {
     this.objectives = objectives;
   }
 
-
   public void setPartners(String partners) {
     this.partners = partners;
-  }
-
-
-  public void setPhoto(File photo) {
-    this.photo = photo;
-  }
-
-
-  public void setPhotoContentType(String photoContentType) {
-    this.photoContentType = photoContentType;
-  }
-
-
-  public void setPhotoFileName(String photoFileName) {
-    this.photoFileName = photoFileName;
   }
 
   public void setResults(String results) {

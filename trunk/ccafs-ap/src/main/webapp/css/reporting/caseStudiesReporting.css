@@ -20,14 +20,14 @@
   border: 1px solid #E5E5E5;
 }
 
-.photoBlock div[id$='photo']{
+.imageBlock div[id$='image']{
   border: 1px solid #E5E5E5;
   background-color: #fafafa;
   height: 160px;
   text-align: center;
 }
 
-.photoBlock div[id$='photo'] img{
+.imageBlock div[id$='image'] img{
   height: 160px;
   max-height: 160px;
   width:auto;

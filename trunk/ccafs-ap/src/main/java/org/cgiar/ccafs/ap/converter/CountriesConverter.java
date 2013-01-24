@@ -23,7 +23,7 @@ public class CountriesConverter extends StrutsTypeConverter {
   @Override
   public Object convertFromString(Map context, String[] values, Class toClass) {
     if (toClass == List.class) {
-      return countryManager.getCountriesList(values);
+      return countryManager.getCountryList(values);
     }
     return null;
   }

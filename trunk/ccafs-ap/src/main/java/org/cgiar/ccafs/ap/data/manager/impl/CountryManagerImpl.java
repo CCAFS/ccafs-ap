@@ -21,7 +21,7 @@ public class CountryManagerImpl implements CountryManager {
   }
 
   @Override
-  public Country[] getCountriesList() {
+  public Country[] getCountryList() {
     List<Map<String, String>> countryDataList = countryDAO.getCountriesList();
     Map<String, String> countryData;
 
@@ -29,22 +29,22 @@ public class CountryManagerImpl implements CountryManager {
       return null;
     }
 
-    Country[] countriesList = new Country[countryDataList.size()];
+    Country[] countryList = new Country[countryDataList.size()];
     for (int c = 0; c < countryDataList.size(); c++) {
       countryData = countryDataList.get(c);
-      countriesList[c] = new Country(countryData.get("id"), countryData.get("name"));
+      countryList[c] = new Country(countryData.get("id"), countryData.get("name"));
     }
 
     if (countryDataList.size() > 0) {
-      return countriesList;
+      return countryList;
     }
     return null;
   }
 
   @Override
-  public List<Country> getCountriesList(String[] ids) {
+  public List<Country> getCountryList(String[] ids) {
     List<Country> countries = new ArrayList<>();
-    for (Country country : getCountriesList()) {
+    for (Country country : getCountryList()) {
       for (String id : ids) {
         if (country.getId().equals(id)) {
           countries.add(country);

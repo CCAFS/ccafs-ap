@@ -1,6 +1,8 @@
 package org.cgiar.ccafs.ap.data.manager;
 
 import org.cgiar.ccafs.ap.data.manager.impl.OutputSummaryManagerImpl;
+import org.cgiar.ccafs.ap.data.model.Leader;
+import org.cgiar.ccafs.ap.data.model.Logframe;
 import org.cgiar.ccafs.ap.data.model.OutputSummary;
 
 import java.util.List;
@@ -11,13 +13,13 @@ import com.google.inject.ImplementedBy;
 public interface OutputSummaryManager {
 
   /**
-   * Get the summary of output made by the activity leader.
+   * Get a list of Summaries by Output that belongs to a specific activity leader and a specific logframe.
    * 
-   * @param outputID the output identifier
-   * @param activityLeaderId The activity leader identifier
-   * @return an outputSummary object with the information
+   * @param leader - Leader object.
+   * @param logframe - Logframe object.
+   * @return a List of OutputSummary objects.
    */
-  public OutputSummary getOutputSummary(int outputID, int activityLeaderId);
+  public OutputSummary[] getOutputSummaries(Leader activityLeader, Logframe logframe);
 
   /**
    * Save into the DAO the outputs summary information

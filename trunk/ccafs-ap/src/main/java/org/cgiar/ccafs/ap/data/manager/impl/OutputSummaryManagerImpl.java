@@ -2,7 +2,12 @@ package org.cgiar.ccafs.ap.data.manager.impl;
 
 import org.cgiar.ccafs.ap.data.dao.OutputSummaryDAO;
 import org.cgiar.ccafs.ap.data.manager.OutputSummaryManager;
+import org.cgiar.ccafs.ap.data.model.Leader;
+import org.cgiar.ccafs.ap.data.model.Logframe;
+import org.cgiar.ccafs.ap.data.model.Objective;
+import org.cgiar.ccafs.ap.data.model.Output;
 import org.cgiar.ccafs.ap.data.model.OutputSummary;
+import org.cgiar.ccafs.ap.data.model.Theme;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -22,15 +27,43 @@ public class OutputSummaryManagerImpl implements OutputSummaryManager {
   }
 
   @Override
-  public OutputSummary getOutputSummary(int outputID, int activityLeaderId) {
+  public OutputSummary[] getOutputSummaries(Leader activityLeader, Logframe logframe) {
+    List<Map<String, String>> outputSummaryDataList =
+      outputSummaryDAO.getOutputSummariesList(activityLeader.getId(), logframe.getId());
+    OutputSummary[] outputSummaries = new OutputSummary[outputSummaryDataList.size()];
 
-    Map<String, String> outputSummaryData = outputSummaryDAO.getOutputSummary(outputID, activityLeaderId);
+    for (int c = 0; c < outputSummaryDataList.size(); c++) {
+      outputSummaries[c] = new OutputSummary();
+      if (outputSummaryDataList.get(c).get("id") != null) {
+        outputSummaries[c].setId(Integer.parseInt(outputSummaryDataList.get(c).get("id")));
+      }
+      if (outputSummaryDataList.get(c).get("description") != null) {
+        outputSummaries[c].setDescription(outputSummaryDataList.get(c).get("description"));
+      }
 
-    if (outputSummaryData == null) {
-      return null;
+      // Temporal output object
+      Output op = new Output();
+      op.setId(Integer.parseInt(outputSummaryDataList.get(c).get("output_id")));
+      op.setCode(outputSummaryDataList.get(c).get("output_code"));
+      op.setDescription(outputSummaryDataList.get(c).get("output_description"));
+
+      // Temporal objective object
+      Objective obj = new Objective();
+      obj.setId(Integer.parseInt(outputSummaryDataList.get(c).get("objective_id")));
+      obj.setCode(outputSummaryDataList.get(c).get("objective_code"));
+
+      // Temporal theme object
+      Theme th = new Theme();
+      th.setId(Integer.parseInt(outputSummaryDataList.get(c).get("theme_id")));
+      th.setCode(outputSummaryDataList.get(c).get("theme_code"));
+
+      // Assign objects
+      obj.setTheme(th);
+      op.setObjective(obj);
+      outputSummaries[c].setOutput(op);
+      outputSummaries[c].setLeader(activityLeader);
     }
-
-    return new OutputSummary(Integer.parseInt(outputSummaryData.get("id")), outputSummaryData.get("description"));
+    return outputSummaries;
   }
 
   @Override

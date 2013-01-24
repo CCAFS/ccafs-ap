@@ -6,6 +6,7 @@ import org.cgiar.ccafs.ap.data.dao.OutputSummaryDAO;
 import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -23,16 +24,35 @@ public class MySQLOutputSummaryDAO implements OutputSummaryDAO {
   }
 
   @Override
-  public Map<String, String> getOutputSummary(int outputId, int activityLeaderId) {
-    Map<String, String> outputSummaryData = new HashMap<>();
+  public List<Map<String, String>> getOutputSummariesList(int activityLeaderId, int logframeId) {
+    List<Map<String, String>> outputSummaryDataList = new ArrayList<>();
+
     try (Connection con = databaseManager.getConnection()) {
       String query =
-        "SELECT id, description FROM output_summaries WHERE output_id=" + outputId + " AND activity_leader_id="
-          + activityLeaderId;
+        "SELECT os.id, os.description, m.code, o.id as 'output_id', o.code as 'output_code', "
+          + "o.description as 'output_description', obj.id as 'objective_id', obj.code as 'objective_code',"
+          + "th.id as 'theme_id', th.code as 'theme_code' FROM `output_summaries` os "
+          + "RIGHT JOIN outputs o on os.output_id = o.id " + "INNER JOIN milestones m on o.id = m.output_id "
+          + "INNER JOIN activities a on m.id = a.milestone_id "
+          + "INNER JOIN activity_leaders al on a.activity_leader_id = al.id "
+          + "INNER JOIN objectives obj on o.objective_id = obj.id " + "INNER JOIN themes th on obj.theme_id = th.id "
+          + "INNER JOIN logframes l on th.logframe_id = l.id " + "WHERE al.id = " + activityLeaderId + " and l.id ="
+          + logframeId + " GROUP BY o.id ORDER BY th.code, obj.code, o.code";
+
       ResultSet rs = databaseManager.makeQuery(query, con);
-      if (rs.next()) {
+      while (rs.next()) {
+        Map<String, String> outputSummaryData = new HashMap<>();
         outputSummaryData.put("id", rs.getString("id"));
         outputSummaryData.put("description", rs.getString("description"));
+        outputSummaryData.put("code", rs.getString("code"));
+        outputSummaryData.put("output_id", rs.getString("output_id"));
+        outputSummaryData.put("output_code", rs.getString("output_code"));
+        outputSummaryData.put("output_description", rs.getString("output_description"));
+        outputSummaryData.put("objective_id", rs.getString("objective_id"));
+        outputSummaryData.put("objective_code", rs.getString("objective_code"));
+        outputSummaryData.put("theme_id", rs.getString("theme_id"));
+        outputSummaryData.put("theme_code", rs.getString("theme_code"));
+        outputSummaryDataList.add(outputSummaryData);
       }
       rs.close();
     } catch (SQLException e) {
@@ -40,11 +60,8 @@ public class MySQLOutputSummaryDAO implements OutputSummaryDAO {
       e.printStackTrace();
     }
 
-    if (outputSummaryData.isEmpty()) {
-      return null;
-    } else {
-      return outputSummaryData;
-    }
+    return outputSummaryDataList;
+
   }
 
   @Override

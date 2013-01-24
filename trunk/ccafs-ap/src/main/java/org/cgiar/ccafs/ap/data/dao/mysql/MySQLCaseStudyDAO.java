@@ -1,6 +1,6 @@
 package org.cgiar.ccafs.ap.data.dao.mysql;
 
-import org.cgiar.ccafs.ap.data.dao.CasesStudiesDAO;
+import org.cgiar.ccafs.ap.data.dao.CaseStudyDAO;
 import org.cgiar.ccafs.ap.data.dao.DAOManager;
 
 import java.sql.Connection;
@@ -14,18 +14,18 @@ import java.util.Map;
 import com.google.inject.Inject;
 
 
-public class MySQLCasesStudiesDAO implements CasesStudiesDAO {
+public class MySQLCaseStudyDAO implements CaseStudyDAO {
 
   private DAOManager databaseManager;
 
   @Inject
-  public MySQLCasesStudiesDAO(DAOManager databaseManager) {
+  public MySQLCaseStudyDAO(DAOManager databaseManager) {
     this.databaseManager = databaseManager;
   }
 
   @Override
-  public List<Map<String, String>> getCasesStudiesList(int activityLeaderId, int logframeId) {
-    List<Map<String, String>> casesStudiesDataList = new ArrayList<>();
+  public List<Map<String, String>> getCaseStudyList(int activityLeaderId, int logframeId) {
+    List<Map<String, String>> caseStudyDataList = new ArrayList<>();
     try (Connection con = databaseManager.getConnection()) {
       String query =
         "SELECT cs.id, cs.title, cs.author, cs.date, cs.photo, cs.objectives, cs.description, cs.results, cs.partners, "
@@ -33,35 +33,31 @@ public class MySQLCasesStudiesDAO implements CasesStudiesDAO {
           + activityLeaderId + " AND logframe_id=" + logframeId;
       ResultSet rs = databaseManager.makeQuery(query, con);
       while (rs.next()) {
-        Map<String, String> casesStudiesData = new HashMap<String, String>();
-        casesStudiesData.put("id", rs.getString("id"));
-        casesStudiesData.put("title", rs.getString("title"));
-        casesStudiesData.put("author", rs.getString("author"));
-        casesStudiesData.put("date", rs.getString("date"));
-        casesStudiesData.put("photo", rs.getString("photo"));
-        casesStudiesData.put("objectives", rs.getString("objectives"));
-        casesStudiesData.put("description", rs.getString("description"));
-        casesStudiesData.put("results", rs.getString("results"));
-        casesStudiesData.put("partners", rs.getString("partners"));
-        casesStudiesData.put("links", rs.getString("links"));
-        casesStudiesData.put("keywords", rs.getString("keywords"));
-        casesStudiesData.put("logframe_id", rs.getString("logframe_id"));
-        casesStudiesDataList.add(casesStudiesData);
+        Map<String, String> caseStudyData = new HashMap<String, String>();
+        caseStudyData.put("id", rs.getString("id"));
+        caseStudyData.put("title", rs.getString("title"));
+        caseStudyData.put("author", rs.getString("author"));
+        caseStudyData.put("date", rs.getString("date"));
+        caseStudyData.put("photo", rs.getString("photo"));
+        caseStudyData.put("objectives", rs.getString("objectives"));
+        caseStudyData.put("description", rs.getString("description"));
+        caseStudyData.put("results", rs.getString("results"));
+        caseStudyData.put("partners", rs.getString("partners"));
+        caseStudyData.put("links", rs.getString("links"));
+        caseStudyData.put("keywords", rs.getString("keywords"));
+        caseStudyData.put("logframe_id", rs.getString("logframe_id"));
+        caseStudyDataList.add(caseStudyData);
       }
       rs.close();
     } catch (SQLException e) {
       // TODO auto generated try catch block
       e.printStackTrace();
     }
-    if (casesStudiesDataList.isEmpty()) {
-      return null;
-    }
-
-    return casesStudiesDataList;
+    return caseStudyDataList;
   }
 
   @Override
-  public boolean removeAllStudyCases(int activityLeaderId, int logframeId) {
+  public boolean removeAllCaseStudies(int activityLeaderId, int logframeId) {
     try (Connection connection = databaseManager.getConnection()) {
       String deleteDeliverableQuery = "DELETE FROM case_studies WHERE activity_leader_id = ? AND logframe_id = ?";
       int rowsDeleted =
@@ -78,29 +74,27 @@ public class MySQLCasesStudiesDAO implements CasesStudiesDAO {
   }
 
   @Override
-  public int saveCaseStudies(Map<String, Object> casesStudiesData) {
+  public int saveCaseStudy(Map<String, Object> caseStudyData) {
     int generatedId = -1;
-    boolean problem = false;
     try (Connection con = databaseManager.getConnection()) {
-
       String preparedQuery =
         "INSERT INTO `case_studies` (`title`, `author`, `date`, `photo`, `objectives`, `description`, "
           + "`results`, `partners`, `links`, `keywords`, `logframe_id`, `activity_leader_id`) "
           + "VALUES ( ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
 
       Object[] data = new Object[12];
-      data[0] = casesStudiesData.get("title");
-      data[1] = casesStudiesData.get("author");
-      data[2] = casesStudiesData.get("date");
-      data[3] = casesStudiesData.get("photo");
-      data[4] = casesStudiesData.get("objectives");
-      data[5] = casesStudiesData.get("description");
-      data[6] = casesStudiesData.get("results");
-      data[7] = casesStudiesData.get("partners");
-      data[8] = casesStudiesData.get("links");
-      data[9] = casesStudiesData.get("keywords");
-      data[10] = casesStudiesData.get("logframe_id");
-      data[11] = casesStudiesData.get("activity_leader_id");
+      data[0] = caseStudyData.get("title");
+      data[1] = caseStudyData.get("author");
+      data[2] = caseStudyData.get("date");
+      data[3] = caseStudyData.get("photo");
+      data[4] = caseStudyData.get("objectives");
+      data[5] = caseStudyData.get("description");
+      data[6] = caseStudyData.get("results");
+      data[7] = caseStudyData.get("partners");
+      data[8] = caseStudyData.get("links");
+      data[9] = caseStudyData.get("keywords");
+      data[10] = caseStudyData.get("logframe_id");
+      data[11] = caseStudyData.get("activity_leader_id");
       int rows = databaseManager.makeChangeSecure(con, preparedQuery, data);
       if (rows > 0) {
         // get the id assigned to the new record
