@@ -87,7 +87,15 @@
       <interceptor-ref name="reportingStack" />
       <result name="input">/WEB-INF/reporting/tlOutputsReporting.ftl</result>
       <result name="success" type="redirectAction">
-        <param name="actionName">tlOutputs</param>
+        <param name="actionName">rplSynthesis</param>
+      </result>
+    </action>
+    
+    <action name="rplSynthesis" class="org.cgiar.ccafs.ap.action.reporting.tlrpl.RPLSynthesisReportingAction">
+      <interceptor-ref name="reportingStack" />
+      <result name="input">/WEB-INF/reporting/rplSynthesisReporting.ftl</result>
+      <result name="success" type="redirectAction">
+        <param name="actionName">rplSynthesis</param>
       </result>
     </action>
     
