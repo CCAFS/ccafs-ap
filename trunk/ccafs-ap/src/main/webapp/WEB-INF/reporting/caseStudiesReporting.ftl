@@ -2,7 +2,6 @@
 [#assign title = "Case Studies" /]
 [#assign globalLibs = ["jquery", "noty"] /]
 [#assign customJS = ["${baseUrl}/js/reporting/caseStudiesReporting.js"] /]
-[#assign customCSS = ["${baseUrl}/css/reporting/caseStudiesReporting.css"] /]
 [#assign currentSection = "reporting" /]
 [#assign currentReportingSection = "caseStudies" /]
 
@@ -118,7 +117,7 @@
         </div>
         
         [#-- Case Study Template --]
-        <div id="template">
+        <div id="template" style="display: none;">
           <div id="caseStudy-999" class="caseStudy">
             [#-- CaseStudy identifier --]
             <input name="id" type="hidden" value="0">

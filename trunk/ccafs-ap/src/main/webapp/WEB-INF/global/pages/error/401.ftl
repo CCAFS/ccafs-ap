@@ -1,6 +1,5 @@
 [#ftl]
 [#assign title = "Permission denied!" /]
-[#-- #assign customCSS = ["${baseUrl}/css/reporting/activity-list.css"] / --]
 
 [#include "/WEB-INF/global/pages/header.ftl" /]
 [#include "/WEB-INF/global/pages/main-menu.ftl" /]

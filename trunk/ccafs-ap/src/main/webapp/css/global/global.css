@@ -7,7 +7,8 @@
 --- 3. MAIN MENU
 --- 4. SECONDARY MENU
 --- 5. BODY
---- 6. FOOTER
+--- 6. SECTIONS
+--- 7. FOOTER
 ---------------------------------------
 */
 
@@ -62,6 +63,20 @@ input[type="radio"] {
   margin-right: 3px;
 }
 
+.checkboxGroup input {
+  margin-left: 0px;
+}
+
+.checkboxGroup .checkboxLabel {
+  display: inline-block;
+  width: 30%;
+  padding: 3px;
+}
+
+.radiosList input {
+  
+}
+
 /* General Messages */
 #generalMessages {
   text-align: center;
@@ -88,22 +103,22 @@ body {
   display: inline-block;
 }
 
-.popup_container{
+.popup_container {
   width: 600px;
   text-align: center;
 }
 
-.popup_container .header{
+.popup_container .header {
   text-align: center;
-  margin: 0px;  
+  margin: 0px;
 }
 
-.popup_container .content{
+.popup_container .content {
   width: 570px;
-  padding-top: 0;  
+  padding-top: 0;
 }
 
-.popup_container h1{
+.popup_container h1 {
   text-align: left;
 }
 
@@ -173,7 +188,7 @@ nav#secondaryMenu {
   margin-left: 10px;
   margin-top: 20px;
   padding: 10px;
-  width: 190px;
+  width: 150px;
 }
 
 nav#secondaryMenu ul {
@@ -181,15 +196,15 @@ nav#secondaryMenu ul {
 }
 
 nav#secondaryMenu ul a {
-  height: 35px;
-  font-weight: bold;
   display: list-item;
-  margin-bottom: 5px;
-  margin-top: 5px;
+  font-weight: bold;
+  height: 35px;
+  margin-left: -17px;
   padding-bottom: 5px;
-  padding-left: 10px;
+  padding-left: 25px;
   padding-top: 5px;
 }
+
 
 nav#secondaryMenu ul a.currentReportingSection {
   color: white;
@@ -260,7 +275,7 @@ nav#secondaryMenu ul a li {
 .thirdPartBlock {
   display: inline-block;
   padding: 5px;
-  width: 30%;  
+  width: 30%;
 }
 
 .halfPartBlock {
@@ -273,18 +288,42 @@ nav#secondaryMenu ul a li {
   width: 80%;
 }
 
+.countriesBlock select {
+  height: 200px;
+  border: 1px solid #E5E5E5;
+}
+
+.imageBlock div[id$='image'] {
+  border: 1px solid #E5E5E5;
+  background-color: #fafafa;
+  height: 160px;
+  text-align: center;
+}
+
+.imageBlock div[id$='image'] img {
+  height: 160px;
+  max-height: 160px;
+  width: auto;
+  max-width: 100%;
+}
+
 .buttons {
+  float: right;
   margin: 10px;
   text-align: right;
+  width: 200px;
 }
 
 .buttons button {
   padding: 3px 10px;
+  margin-left: 20px;
 }
 
 /********* Activity Reporting Sub Menu **********/
 #stageMenu {
   display: block;
+  float: left;
+  margin: 12px;
   text-align: center;
 }
 
@@ -304,6 +343,79 @@ nav#secondaryMenu ul a li {
 #stageMenu a li {
   display: inline;
 }
+
+/************ ACTIVITIES ***************/
+/* Activity List */
+#activityList #id {
+  width: 60px;
+}
+
+#activityList #activity {
+  width: 440px;
+}
+
+#activityList #leaderName {
+  width: 100px;
+}
+
+#activityList #theme {
+  width: 60px;
+}
+
+#activityList #lastModified {
+  width: 80px;
+  text-align: center;
+}
+
+#activityList td {
+  text-align: center;
+}
+
+#activityList td.left {
+  text-align: left;
+}
+
+/** Activity Status **/
+#activityTitle p {
+  text-align: justify;
+}
+
+#activityDescription p {
+  text-align: justify;
+}
+
+#generalInformation .title {
+  font-weight: bold;
+}
+
+#generalInformation td {
+  width: 160px;
+  padding: 3px;
+}
+
+/*** Contact Persons (popup) ***/
+#contactPersons {
+  display: none;
+}
+
+#contactPersonsTable th {
+  background-color: #A6A6A6;
+  border: 1px solid;
+  padding: 0.2em;
+  text-align: center;
+}
+
+#contactPersonsTable td {
+  background-color: white;
+  border: 1px solid;
+  padding: 0.3em 0.5em;
+}
+
+/******** SUMMARY BY OUTPUTS ***********/
+/*********** PUBLICATIONS **************/
+/*********** CASE STUDIES **************/
+/************* OUTCOMES ****************/
+/************ TL/RPL ONLY **************/
 
 /*************** FOOTER ****************/
 #footerContainer {
