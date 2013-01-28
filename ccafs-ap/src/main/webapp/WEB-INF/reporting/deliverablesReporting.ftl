@@ -2,7 +2,6 @@
 [#assign title = "Activity deliverables Report" /]
 [#assign globalLibs = ["jquery", "noty"] /]
 [#assign customJS = ["${baseUrl}/js/reporting/deliverablesReporting.js"] /]
-[#assign customCSS = ["${baseUrl}/css/reporting/deliverablesReporting.css"] /]
 [#assign currentSection = "reporting" /]
 [#assign currentReportingSection = "activities" /]
 [#assign currentStage = "deliverables" /]
@@ -150,8 +149,10 @@
     
     <!-- internal parameter -->
     <input name="activityID" type="hidden" value="${activity.id}" />
-    [@s.submit type="button" name="save"]SAVE[/@s.submit]
-    [@s.submit type="button" name="cancel"]CANCEL[/@s.submit]
+    <div class="buttons">
+      [@s.submit type="button" name="save"]SAVE[/@s.submit]
+      [@s.submit type="button" name="cancel"]CANCEL[/@s.submit]
+    </div>
          
     [#include "/WEB-INF/reporting/activitiesReportingSubMenu.ftl" /]  
     </article>
