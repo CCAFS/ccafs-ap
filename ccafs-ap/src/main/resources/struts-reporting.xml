@@ -62,7 +62,7 @@
         <param name="actionName">publications</param>
       </result>
     </action>
-    
+
     <action name="caseStudies" class="org.cgiar.ccafs.ap.action.reporting.casestudies.CaseStudiesAction">
       <interceptor-ref name="reportingStack" />
       <interceptor-ref name="fileUpload">
@@ -74,7 +74,7 @@
         <param name="actionName">caseStudies</param>        
       </result>
     </action>
-    
+
     <action name="outcomes" class="org.cgiar.ccafs.ap.action.reporting.outcomes.OutcomesReportingAction">
       <interceptor-ref name="reportingStack" />
       <result name="input">/WEB-INF/reporting/outcomesReporting.ftl</result>
@@ -82,23 +82,34 @@
         <param name="actionName">outcomes</param>
       </result>
     </action>
-    
+
     <action name="tlOutputs" class="org.cgiar.ccafs.ap.action.reporting.tlrpl.TLOutputSummaryReportingAction">
       <interceptor-ref name="reportingStack" />
+      <interceptor-ref name="TLRPLauthorizedUsers" />
       <result name="input">/WEB-INF/reporting/tlOutputsReporting.ftl</result>
       <result name="success" type="redirectAction">
         <param name="actionName">rplSynthesis</param>
       </result>
     </action>
-    
+
     <action name="rplSynthesis" class="org.cgiar.ccafs.ap.action.reporting.tlrpl.RPLSynthesisReportingAction">
       <interceptor-ref name="reportingStack" />
+      <interceptor-ref name="TLRPLauthorizedUsers" />
       <result name="input">/WEB-INF/reporting/rplSynthesisReporting.ftl</result>
       <result name="success" type="redirectAction">
-        <param name="actionName">rplSynthesis</param>
+        <param name="actionName">tlRplMilestones</param>
       </result>
     </action>
     
+    <action name="tlRplMilestones" class="org.cgiar.ccafs.ap.action.reporting.tlrpl.TLRPLMilestoneReportingAction">
+      <interceptor-ref name="reportingStack" />
+      <interceptor-ref name="TLRPLauthorizedUsers" />
+      <result name="input">/WEB-INF/reporting/tlRplMilestoneReporting.ftl</result>
+      <result name="success" type="redirectAction">
+        <param name="actionName">tlRplMilestones</param>
+      </result>
+    </action>
+
     <!-- Others -->
         
     <action name="milestone" class="org.cgiar.ccafs.ap.action.reporting.activities.MilestoneReportingAction">

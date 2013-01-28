@@ -15,6 +15,9 @@
       <interceptor name="requireUser" class="org.cgiar.ccafs.ap.interceptor.RequireUserInterceptor" />
       <interceptor name="accessibleActivity" class="org.cgiar.ccafs.ap.interceptor.AccessibleActivityInterceptor" />
       
+      <!-- custom interceptor to prevent the unauthorized access to TL/RPL reporting section-->
+      <interceptor name="TLRPLauthorizedUsers" class="org.cgiar.ccafs.ap.interceptor.TLRPLSectionInterceptor"/>
+      
       <!-- custom interceptor to preserve action messages across redirects -->
       <interceptor name="keepRedirectMessages" class="org.cgiar.ccafs.ap.interceptor.RedirectMessageInterceptor"/>
 
