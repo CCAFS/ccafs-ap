@@ -10,7 +10,7 @@
       "><li>RPL synthesis report</li>
     </a>
     <a [#if currentStage == "TLRPLMilestoneReport"] class="currentReportingSection" [/#if] href="
-        [@s.url action='partners' includeParams='get'][/@s.url]
+        [@s.url action='tlRplMilestones' includeParams='get'][/@s.url]
       "><li>TL/RPL Milestone report</li>
     </a>
   </ul>
