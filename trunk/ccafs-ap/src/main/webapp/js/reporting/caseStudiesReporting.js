@@ -30,7 +30,26 @@ $(document).ready(function() {
     setTimeout(renameCaseStudies, 600);
   });
 
+  addDatepicker();
 });
+
+// Attach the datepicker plugin to the date inputs
+function addDatepicker() {
+  $("[id$='date']").each(function() {
+    // Check if its the template date field or
+    // if the element has the datepicker attached
+    if ($(this).attr("id") != 'date' && !$(this).hasClass('hasDatepicker')) {
+      // Add readonly attribute to prevent inappropriate user input
+      $(this).attr('readonly', true);
+      $(this).datepicker({
+        dateFormat : "yy-mm-dd",
+        changeMonth : true,
+        changeYear : true,
+        defaultDate : null
+      });
+    }
+  });
+}
 
 function renameCaseStudies() {
   // getting the number of expected deliverables.
@@ -69,6 +88,8 @@ function renameCaseStudies() {
             "caseStudies[" + index + "].date");
         $(this).find("[name$='date']").attr("name",
             "caseStudies[" + index + "].date");
+        // Add the datepicker event
+        addDatepicker();
         // Countries.
         $(this).find("[id$='countries']").attr("id",
             "caseStudies[" + index + "].countries");

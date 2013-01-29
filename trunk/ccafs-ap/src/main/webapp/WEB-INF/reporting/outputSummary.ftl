@@ -1,6 +1,6 @@
 [#ftl]
 [#assign title = "Summary by outputs" /]
-[#assign globalLibs = [""] /]
+[#assign globalLibs = ["jquery", "noty"] /]
 [#assign customJS = [""] /]
 [#assign customCSS = [""] /]
 [#assign currentSection = "reporting" /]

@@ -1,7 +1,8 @@
 [#ftl]
 [#assign title = "Case Studies" /]
-[#assign globalLibs = ["jquery", "noty"] /]
+[#assign globalLibs = ["jquery", "noty", "jqueryUI"] /]
 [#assign customJS = ["${baseUrl}/js/reporting/caseStudiesReporting.js"] /]
+[#assign customCSS = ["${baseUrl}/css/libs/jqueryUI/jquery-ui-1.9.2.custom.css", ""] /]
 [#assign currentSection = "reporting" /]
 [#assign currentReportingSection = "caseStudies" /]
 

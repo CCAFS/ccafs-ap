@@ -42,7 +42,7 @@ public class TLOutputSummaryReportingAction extends BaseAction {
   @Override
   public String save() {
     boolean problem = false;
-    problem = !tlOutputManager.saveTLOutputSummaries(tlOutputSummaries, this.getCurrentUser().getLeader());
+    problem = tlOutputManager.saveTLOutputSummaries(tlOutputSummaries, this.getCurrentUser().getLeader());
     if (problem) {
       addActionError(getText("saving.problem"));
       return INPUT;

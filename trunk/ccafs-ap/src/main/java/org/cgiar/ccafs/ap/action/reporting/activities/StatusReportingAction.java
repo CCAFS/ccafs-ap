@@ -130,13 +130,20 @@ public class StatusReportingAction extends BaseAction {
   @Override
   public void validate() {
     super.validate();
+    boolean problem = false;
     if (save) {
       if (activity.getStatusDescription().isEmpty()) {
         addFieldError("activity.statusDescription", getText("validation.field.required"));
+        problem = true;
       }
       if (this.getGenderIntegrationOption() != null && this.getGenderIntegrationOption().equals("1")
         && activity.getGenderIntegrationsDescription().isEmpty()) {
         addFieldError("activity.genderIntegrationsDescription", getText("validation.field.required"));
+        problem = true;
+      }
+
+      if (problem) {
+        addActionError(getText("saving.fields.required"));
       }
     }
 

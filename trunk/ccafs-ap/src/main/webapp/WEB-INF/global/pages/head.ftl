@@ -30,12 +30,16 @@
     
     [#if globalLibs??]
      [#list globalLibs as libraryName]
+        [#if libraryName="dataTable"]
+          <script src="${baseUrl}/js/libs/dataTables/jquery.dataTables-1.9.4.min.js"></script>
+        [/#if]
+        
         [#if libraryName="jquery"]
           <script src="${baseUrl}/js/libs/jquery/jquery-1.8.2.min.js"></script>          
         [/#if]
         
-        [#if libraryName="dataTable"]
-          <script src="${baseUrl}/js/libs/dataTables/jquery.dataTables-1.9.4.min.js"></script>
+        [#if libraryName="jqueryUI"]
+          <script src="${baseUrl}/js/libs/jqueryUI/jquery-ui-1.9.2.custom.js"></script>          
         [/#if]
         
         [#if libraryName="noty"]
