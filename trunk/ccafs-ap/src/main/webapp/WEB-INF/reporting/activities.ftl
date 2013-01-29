@@ -12,7 +12,7 @@
 [#include "/WEB-INF/global/pages/main-menu.ftl" /]
 [#import "/WEB-INF/global/macros/utils.ftl" as utilities/]
     
-  <section >
+  <section class="content">
   [#include "/WEB-INF/global/pages/reporting-secondary-menu.ftl" /]
   
   <article class="halfContent">
@@ -25,7 +25,6 @@
           <th id="activity">[@s.text name="reporting.activityList.activity" /]</th>
           <th id="leaderName">[@s.text name="reporting.activityList.leaderName" /]</th>
           <th id="theme">[@s.text name="reporting.activityList.theme" /]</th>
-          <th id="lastModified">[@s.text name="reporting.activityList.lastModified" /]</th>
         </tr>
       </thead>
       <tbody>
@@ -37,12 +36,11 @@
               [@s.url action='status' includeParams='get']
                 [@s.param name='${activityRequestParameter}']${activity.id}[/@s.param]
               [/@s.url]
-              ">
-                [#if activity.title?length < 80] ${activity.title}</a> [#else] [@utilities.wordCutter string=activity.title maxPos=70 /]...</a> [/#if]
+              " title="${activity.title}">
+                [#if activity.title?length < 60] ${activity.title}</a> [#else] [@utilities.wordCutter string=activity.title maxPos=60 /]...</a> [/#if]
             </td>
             <td>${activity.leader.acronym}</td>
             <td>${activity.milestone.output.objective.theme.code}</td>
-            <td>2012</td>
           </tr>
         [/#list]  
       </tbody>

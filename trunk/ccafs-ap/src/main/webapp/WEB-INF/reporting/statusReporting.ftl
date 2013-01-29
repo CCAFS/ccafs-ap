@@ -12,7 +12,7 @@
 
 
 [#import "/WEB-INF/global/macros/forms.ftl" as customForm /]
-<section>
+<section class="content">
   [#include "/WEB-INF/global/pages/reporting-secondary-menu.ftl" /]
   [@s.form action="status"]
   <article class="halfContent">
