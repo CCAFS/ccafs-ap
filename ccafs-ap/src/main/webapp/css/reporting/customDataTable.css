@@ -1,36 +1,91 @@
+/* Search Bar */
+.dataTables_filter {
+  margin-top: 20px;
+}
 
-table.dataTable tr.odd { background-color: #F1D023; }
-table.dataTable tr.even { background-color: white; }
+/* Table */
+table.dataTable tr.odd {
+  background-color: #F1D023;
+}
 
-table.dataTable tr.odd td.sorting_1 { background-color: #F1D023; }
-table.dataTable tr.odd td.sorting_2 { background-color: #F1D023; }
-table.dataTable tr.odd td.sorting_3 { background-color: #F1D023; }
-table.dataTable tr.even td.sorting_1 { background-color: white; }
-table.dataTable tr.even td.sorting_2 { background-color: white; }
-table.dataTable tr.even td.sorting_3 { background-color: white; }
+table.dataTable tr.even {
+  background-color: white;
+}
+
+table.dataTable tr.odd td.sorting_1 {
+  background-color: #F1D023;
+}
+
+table.dataTable tr.odd td.sorting_2 {
+  background-color: #F1D023;
+}
+
+table.dataTable tr.odd td.sorting_3 {
+  background-color: #F1D023;
+}
+
+table.dataTable tr.even td.sorting_1 {
+  background-color: white;
+}
+
+table.dataTable tr.even td.sorting_2 {
+  background-color: white;
+}
+
+table.dataTable tr.even td.sorting_3 {
+  background-color: white;
+}
 
 table.dataTable thead th {
   text-align: center;
+  border: 1px solid #000000;
+  font-size: 13px;
+  vertical-align: middle;
 }
 
-table.dataTable td {  border: 1px solid black; }
+table.dataTable td {
+  border: 1px solid black;
+}
 
 /*
  * Pagination
  */
+.dataTables_paginate {
+  border-bottom: 1px solid black;
+}
 
-.paginate_enabled_previous { background: url('../../images/libs/dataTables/back_enabled.png') no-repeat top left; }
-.paginate_enabled_previous:hover { background: url('../../images/libs/dataTables/back_enabled.png') no-repeat top left; }
-.paginate_disabled_previous { background: url('../../images/libs/dataTables/back_disabled.png') no-repeat top left; }
+.paginate_enabled_previous {
+  background: url('../../images/libs/dataTables/back_enabled.png')
+    no-repeat top left;
+}
 
-.paginate_enabled_next { background: url('../../images/libs/dataTables/forward_enabled.png') no-repeat top right; }
-.paginate_enabled_next:hover { background: url('../../images/libs/dataTables/forward_enabled.png') no-repeat top right; }
-.paginate_disabled_next { background: url('../../images/libs/dataTables/forward_disabled.png') no-repeat top right; }
+.paginate_enabled_previous:hover {
+  background: url('../../images/libs/dataTables/back_enabled.png')
+    no-repeat top left;
+}
+
+.paginate_disabled_previous {
+  background: url('../../images/libs/dataTables/back_disabled.png')
+    no-repeat top left;
+}
+
+.paginate_enabled_next {
+  background: url('../../images/libs/dataTables/forward_enabled.png')
+    no-repeat top right;
+}
+
+.paginate_enabled_next:hover {
+  background: url('../../images/libs/dataTables/forward_enabled.png')
+    no-repeat top right;
+}
+
+.paginate_disabled_next {
+  background: url('../../images/libs/dataTables/forward_disabled.png')
+    no-repeat top right;
+}
 
 /* Two button pagination - previous / next */
-
-.paginate_enabled_previous,
-.paginate_enabled_next {
+.paginate_enabled_previous,.paginate_enabled_next {
   height: 19px;
   float: left;
   cursor: pointer;
@@ -38,24 +93,44 @@ table.dataTable td {  border: 1px solid black; }
   color: #366506 !important;
 }
 
-.paginate_disabled_previous,
-.paginate_disabled_next{
+.paginate_disabled_previous,.paginate_disabled_next {
   height: 19px;
   float: left;
-  cursor: pointer !important;  
+  cursor: pointer !important;
   *cursor: pointer;
-  color: #111 !important;
-  text-decoration: none !important;  
+  color: #666666 !important;
+  text-decoration: none !important;
 }
-
 
 /*
  * Sorting
  */
-.sorting { background: url('../../images/libs/dataTables/sort_both.png') no-repeat center right; }
-.sorting_asc { background: url('../../images/libs/dataTables/sort_asc.png') no-repeat center right; }
-.sorting_desc { background: url('../../images/libs/dataTables/sort_desc.png') no-repeat center right; }
+.sorting {
+  background: url('../../images/libs/dataTables/sort_both.png') no-repeat
+    center right;
+}
 
-.sorting_asc_disabled { background: url('../../images/libs/dataTables/sort_asc_disabled.png') no-repeat center right; }
-.sorting_desc_disabled { background: url('../../images/libs/dataTables/sort_desc_disabled.png') no-repeat center right; }
+.sorting_asc {
+  background: url('../../images/libs/dataTables/sort_asc.png') no-repeat
+    center right;
+}
 
+.sorting_desc {
+  background: url('../../images/libs/dataTables/sort_desc.png') no-repeat
+    center right;
+}
+
+.sorting_asc_disabled {
+  background: url('../../images/libs/dataTables/sort_asc_disabled.png')
+    no-repeat center right;
+}
+
+.sorting_desc_disabled {
+  background: url('../../images/libs/dataTables/sort_desc_disabled.png')
+    no-repeat center right;
+}
+
+/* Info */
+.dataTables_info {
+  font-style: italic;
+}

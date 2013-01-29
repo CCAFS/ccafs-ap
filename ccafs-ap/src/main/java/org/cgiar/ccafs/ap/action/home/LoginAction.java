@@ -53,6 +53,7 @@ public class LoginAction extends BaseAction {
         System.out.println("isLogged(): " + this.isLogged());
       } else {
         LOG.info("User " + user.getEmail() + " tried to logged in but failed.");
+        return INPUT;
       }
     }
     return SUCCESS;
