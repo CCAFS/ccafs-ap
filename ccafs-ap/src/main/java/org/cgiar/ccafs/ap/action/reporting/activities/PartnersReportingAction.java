@@ -92,17 +92,17 @@ public class PartnersReportingAction extends BaseAction {
 
   @Override
   public String save() {
-    if (activity.getActivityPartners().size() > 0) {
-      // Remove all activity partners from the database.
-      boolean removed = activityPartnerManager.removeActivityPartners(activityID);
-      if (removed) {
-        boolean added = activityPartnerManager.saveActivityPartners(activity.getActivityPartners(), activityID);
-        if (added) {
-          return SUCCESS;
-        }
+
+    // Remove all activity partners from the database.
+    boolean removed = activityPartnerManager.removeActivityPartners(activityID);
+    if (removed) {
+      boolean added = activityPartnerManager.saveActivityPartners(activity.getActivityPartners(), activityID);
+      if (added) {
+        addActionMessage(getText("saving.success", new String[] {getText("reporting.activityPartners.partners")}));
+        return SUCCESS;
       }
     }
-
+    addActionError(getText("saving.problem"));
     return INPUT;
   }
 
@@ -121,7 +121,7 @@ public class PartnersReportingAction extends BaseAction {
     boolean anyError = false;
 
     // If the page is loading dont validate
-    if (getRequest().getMethod().equalsIgnoreCase("post")) {
+    if (save) {
 
       for (int i = 0; i < activity.getActivityPartners().size(); i++) {
         activityPartner = activity.getActivityPartners().get(i);

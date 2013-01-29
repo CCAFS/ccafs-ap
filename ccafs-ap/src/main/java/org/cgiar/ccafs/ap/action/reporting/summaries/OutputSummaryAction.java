@@ -90,13 +90,17 @@ public class OutputSummaryAction extends BaseAction {
 
   @Override
   public void validate() {
+    boolean problem = false;
     // If the page is loading dont validate
-    if (getRequest().getMethod().equalsIgnoreCase("post")) {
+    if (save) {
       for (int i = 0; i < outputSummaries.length; i++) {
         if (outputSummaries[i].getDescription().isEmpty()) {
-          // Check if the summary field will be required or it will be optional
           addFieldError("outputSummaries[" + i + "].description", getText("validation.field.required"));
+          problem = true;
         }
+      }
+      if (problem) {
+        addActionError(getText("saving.fields.required"));
       }
     }
   }

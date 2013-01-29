@@ -34,7 +34,7 @@
               </div>
               
               <div class="fullBlock">
-                [@customForm.textArea name="tlOutputSummaries[${tlOutputSummary_index}].description"  /]
+                [@customForm.textArea name="tlOutputSummaries[${tlOutputSummary_index}].description" i18nkey="reporting.tlOutputSummaries.description" /]
               </div>
               
               [#-- separator --]

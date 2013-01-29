@@ -198,66 +198,67 @@ public class DeliverablesReportingAction extends BaseAction {
     boolean fileFormatNeeded;
     boolean anyError = false;
 
-    for (int c = 0; c < activity.getDeliverables().size(); c++) {
-      deliverable = activity.getDeliverables().get(c);
-      fileFormatNeeded = false;
+    if (save) {
+      for (int c = 0; c < activity.getDeliverables().size(); c++) {
+        deliverable = activity.getDeliverables().get(c);
+        fileFormatNeeded = false;
 
-      // Check if the deliverable type selected needs a file format
-      for (int deliverableTypeId : deliverableTypeIdsNeeded) {
-        if (deliverable.getType().getId() == deliverableTypeId) {
-          fileFormatNeeded = true;
-          break;
+        // Check if the deliverable type selected needs a file format
+        for (int deliverableTypeId : deliverableTypeIdsNeeded) {
+          if (deliverable.getType().getId() == deliverableTypeId) {
+            fileFormatNeeded = true;
+            break;
+          }
+        }
+
+        // If the deliverable needs a file format check if the user select at least one
+        if (fileFormatNeeded) {
+          if (deliverable.getFileFormats().isEmpty()) {
+            anyError = true;
+            addFieldError("activity.deliverables[" + c + "].fileFormats",
+              getText("reporting.activityDeliverables.fileFormatValidate"));
+          }
+        }
+
+        if (!deliverable.isExpected()) {
+          if (deliverable.getDescription().isEmpty()) {
+            anyError = true;
+            addFieldError("activity.deliverables[" + c + "].description",
+              getText("reporting.activityDeliverables.descriptionValidate"));
+          }
+
+          // Check if the deliverable year is valid. When the user set a invalid value (empty or NaN)
+          // the deliverable converter set the year whit 0
+          if (deliverable.getYear() == 0) {
+            anyError = true;
+            addFieldError("activity.deliverables[" + c + "].year",
+              getText("reporting.activityDeliverables.yearInvalidValidate"));
+          }
+
+          // TODO - Check if always the application will show the activities for
+          // current year only, in another way the validation of deliverable year must
+          // be check
+
+          // Check if the deliverable year is not from past years
+          else if (deliverable.getYear() < getCurrentLogframe().getYear()) {
+            anyError = true;
+            addFieldError("activity.deliverables[" + c + "].year",
+              getText("reporting.activityDeliverables.smallYearValidate") + getCurrentLogframe().getYear());
+          }
+
+          // Check if the deliverable year is not bigger than ccafs end
+          else if (deliverable.getYear() > config.getEndYear()) {
+            anyError = true;
+            addFieldError("activity.deliverables[" + c + "].year",
+              getText("reporting.activityDeliverables.bigYearValidate") + config.getEndYear());
+          }
         }
       }
 
-      // If the deliverable needs a file format check if the user select at least one
-      if (fileFormatNeeded) {
-        if (deliverable.getFileFormats().isEmpty()) {
-          anyError = true;
-          addFieldError("activity.deliverables[" + c + "].fileFormats",
-            getText("reporting.activityDeliverables.fileFormatValidate"));
-        }
-      }
-
-      if (!deliverable.isExpected()) {
-        if (deliverable.getDescription().isEmpty()) {
-          anyError = true;
-          addFieldError("activity.deliverables[" + c + "].description",
-            getText("reporting.activityDeliverables.descriptionValidate"));
-        }
-
-        // Check if the deliverable year is valid. When the user set a invalid value (empty or NaN)
-        // the deliverable converter set the year whit 0
-        if (deliverable.getYear() == 0) {
-          anyError = true;
-          addFieldError("activity.deliverables[" + c + "].year",
-            getText("reporting.activityDeliverables.yearInvalidValidate"));
-        }
-
-        // TODO - Check if always the application will show the activities for
-        // current year only, in another way the validation of deliverable year must
-        // be check
-
-        // Check if the deliverable year is not from past years
-        else if (deliverable.getYear() < getCurrentLogframe().getYear()) {
-          anyError = true;
-          addFieldError("activity.deliverables[" + c + "].year",
-            getText("reporting.activityDeliverables.smallYearValidate") + getCurrentLogframe().getYear());
-        }
-
-        // Check if the deliverable year is not bigger than ccafs end
-        else if (deliverable.getYear() > config.getEndYear()) {
-          anyError = true;
-          addFieldError("activity.deliverables[" + c + "].year",
-            getText("reporting.activityDeliverables.bigYearValidate") + config.getEndYear());
-        }
+      if (anyError) {
+        addActionError(getText("saving.fields.required"));
       }
     }
-
-    if (anyError) {
-      addActionError(getText("saving.fields.required"));
-    }
-
     super.validate();
   }
 

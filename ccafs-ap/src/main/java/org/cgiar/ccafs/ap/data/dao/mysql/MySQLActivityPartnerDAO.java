@@ -50,10 +50,6 @@ public class MySQLActivityPartnerDAO implements ActivityPartnerDAO {
       e.printStackTrace();
       return null;
     }
-
-    if (activityPartnerList.size() == 0) {
-      return null;
-    }
     return activityPartnerList;
   }
 

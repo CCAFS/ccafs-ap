@@ -56,6 +56,7 @@ public class OutcomesReportingAction extends BaseAction {
         }
       }
     }
+    addActionError(getText("saving.problem"));
     return INPUT;
   }
 
@@ -67,7 +68,7 @@ public class OutcomesReportingAction extends BaseAction {
   public void validate() {
     super.validate();
     // Validate only when user click on save button
-    if (getRequest().getMethod().equalsIgnoreCase("post")) {
+    if (save) {
       boolean problem = false;
       int c = 0;
       for (Outcome outcome : outcomes) {
@@ -98,7 +99,7 @@ public class OutcomesReportingAction extends BaseAction {
         c++;
       }
       if (problem) {
-        addActionError(getText("saving.problem"));
+        addActionError(getText("saving.fields.required"));
       }
     }
   }

@@ -42,10 +42,8 @@ public class ActivityPartnerManagerImpl implements ActivityPartnerManager {
       activityPartner.setPartner(partner);
       activityPartnerList.add(activityPartner);
     }
-    if (activityPartnerDataList.size() > 0) {
-      return activityPartnerList;
-    }
-    return null;
+
+    return activityPartnerList;
   }
 
   @Override
