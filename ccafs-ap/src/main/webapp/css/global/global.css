@@ -450,3 +450,26 @@ nav#secondaryMenu ul a li {
   text-align: center;
   clear: both;
 }
+
+#footerContainer #principalLogo {
+  float: left;
+  margin-left: 50px;
+}
+
+#footerContainer #secondaryLogos {
+  float: right;
+}
+
+#footerContainer #rowOne {
+  margin-right: 250px;  
+}
+
+#footerContainer #rowTwo {
+  margin-right: 340px;
+  margin-top: 10px;
+}
+
+#footerContainer #rowThree {
+  margin-right: 430px;
+  margin-top: 10px;
+}
