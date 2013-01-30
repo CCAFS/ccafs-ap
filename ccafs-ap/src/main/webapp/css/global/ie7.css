@@ -1,6 +1,23 @@
-/* Main Menu */
-nav#mainMenu ul a li {
+.container {
+  background-image: url("../../images/global/header-background.png");
+  background-repeat: no-repeat;
+  margin-top: 30px;
+  margin-bottom: 15px;
+  height: 279px;
+  width: 1100px;
+  text-align: left;
+  zoom: 1;
   *display: inline; 
+}
+
+/* Main Menu */
+
+nav#mainMenu ul a {
+  zomm: 1;
+  *display: inline;
+  color: white;
+  text-align: center;
+  width: 150px;  
 }
 
 #generalMessages {
@@ -16,17 +33,25 @@ nav#mainMenu ul a li {
   width: 30%;  
 }
 
+.halfPartBlock {
+  zomm: 1;
+  *display: inline;
+  padding: 5px;
+  width: 45%;
+}
 
 /*------- Reporting section -------*/
 
  /*-- Deliverables subSection -- */
  
- #expectedDeliverables .checkboxGroup .checkbox,
- #newDeliverables .checkboxGroup .checkbox,{
-  zoom: 1;
-  *display: inline;  
-  width: 30%;
-  padding : 5px;   
+.checkboxGroup input {
+  margin-left: 0px;
 }
- 
+
+.checkboxGroup .checkboxLabel {
+  zomm: 1;
+  *display: inline;
+  width: 29%;
+  padding: 3px;
+}
  

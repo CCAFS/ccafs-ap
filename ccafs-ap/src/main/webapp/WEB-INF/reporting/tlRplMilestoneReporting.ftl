@@ -13,7 +13,7 @@
 
 [#-- number of theme in the legend of fieldset--]
 [#assign theme = -1 /]
-<section>
+<section class="content">
   [#include "/WEB-INF/global/pages/reporting-secondary-menu.ftl" /]
   [@s.form action="tlRplMilestones"]
     <article class="halfContent">

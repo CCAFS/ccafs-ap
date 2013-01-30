@@ -119,7 +119,7 @@ public class DeliverablesReportingAction extends BaseAction {
     deliverableTypeIdsNeeded[1] = deliverableTypesList[3].getId();
 
     // Remove all expected deliverables in case user clicked on submit button
-    if (this.getRequest().getMethod().equalsIgnoreCase("post")) {
+    if (save) {
       Iterator<Deliverable> iter = activity.getDeliverables().iterator();
       while (iter.hasNext()) {
         if (!iter.next().isExpected()) {
@@ -141,38 +141,24 @@ public class DeliverablesReportingAction extends BaseAction {
     } else {
       for (int c = 0; c < activity.getDeliverables().size(); c++) {
         Deliverable deliverable = activity.getDeliverables().get(c);
-
-        // If is an expected deliverable, we must only save its status and its file formats.
-        if (deliverable.isExpected()) {
-          boolean statusUpdated =
-            deliverableStatusManager.setDeliverableStatus(deliverable.getId(), deliverable.getStatus());
-          // Any problem?
-          if (!statusUpdated) {
+        boolean deliverableAdded = deliverableManager.addDeliverable(deliverable, activityID);
+        // if the deliverable type need a file format specification.
+        Arrays.sort(deliverableTypeIdsNeeded);
+        if (Arrays.binarySearch(deliverableTypeIdsNeeded, deliverable.getType().getId()) >= 0) {
+          boolean fileFormatsUpdated =
+            fileFormatManager.setFileFormats(deliverable.getId(), deliverable.getFileFormats());
+          if (!fileFormatsUpdated) {
             problem = true;
           }
-          // if the deliverable type need a file format specification.
-          Arrays.sort(deliverableTypeIdsNeeded);
-          if (Arrays.binarySearch(deliverableTypeIdsNeeded, deliverable.getType().getId()) >= 0) {
-            boolean fileFormatsUpdated =
-              fileFormatManager.setFileFormats(deliverable.getId(), deliverable.getFileFormats());
-            if (!fileFormatsUpdated) {
-              problem = true;
-            }
-          }
-        } else {
-          // Saving here those not expected deliverables.
-
-          // Add again all the not expected deliverables.
-          boolean deliverableAdded = deliverableManager.addDeliverable(deliverable, activityID, false);
-          if (!deliverableAdded) {
-            problem = true;
-          }
+        }
+        if (!deliverableAdded) {
+          problem = true;
         }
       }
     }
 
     if (!problem) {
-      addActionMessage(getText("saving.sucess", new String[] {getText("reporting.activityDeliverables")}));
+      addActionMessage(getText("saving.success", new String[] {getText("reporting.activityDeliverables")}));
       return SUCCESS;
     } else {
       addActionError(getText("saving.problem"));

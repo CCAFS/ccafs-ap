@@ -38,10 +38,13 @@
   [/#list]
 [/#macro]
 
-<section>
+<section class="content">
   [#include "/WEB-INF/global/pages/reporting-secondary-menu.ftl" /]
   [@s.form action="publications!save"]
     <article class="halfContent">
+      <h1 class="contentTitle">
+        [@s.text name="reporting.publications.publication" /] - ${currentUser.leader.acronym} 
+      </h1>
       <div id="items">      
         <fieldset id="publicationGroup">
           <legend>[@s.text name="reporting.publications.publication" /]</legend>

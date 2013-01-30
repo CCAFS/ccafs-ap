@@ -28,14 +28,16 @@ public class DeliverableManagerImpl implements DeliverableManager {
   }
 
   @Override
-  public boolean addDeliverable(Deliverable deliverable, int activityID, boolean isExpected) {
+  public boolean addDeliverable(Deliverable deliverable, int activityID) {
     Map<String, Object> deliverableData = new HashMap<>();
+    deliverableData.put("id", deliverable.getId());
     deliverableData.put("description", deliverable.getDescription());
     deliverableData.put("year", deliverable.getYear());
     deliverableData.put("activity_id", activityID);
     deliverableData.put("deliverable_type_id", deliverable.getType().getId());
-    deliverableData.put("is_expected", isExpected ? 1 : 0);
+    deliverableData.put("is_expected", deliverable.isExpected());
     deliverableData.put("deliverable_status_id", deliverable.getStatus().getId());
+    deliverableData.put("filename", deliverable.getFileName());
 
     deliverableData.put("file_format_ids", deliverable.getFileFormatsIds());
 
@@ -66,6 +68,7 @@ public class DeliverableManagerImpl implements DeliverableManager {
         deliverable.setId(Integer.parseInt(deliverablesDB.get(c).get("id")));
         deliverable.setDescription(deliverablesDB.get(c).get("description"));
         deliverable.setYear(Integer.parseInt(deliverablesDB.get(c).get("year")));
+        deliverable.setFileName(deliverablesDB.get(c).get("filename"));
         deliverable.setExpected(Integer.parseInt(deliverablesDB.get(c).get("is_expected")) == 1);
 
         // DeliverableStatus

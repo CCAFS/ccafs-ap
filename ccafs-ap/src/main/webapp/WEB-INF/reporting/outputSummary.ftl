@@ -6,16 +6,15 @@
 [#assign currentSection = "reporting" /]
 [#assign currentReportingSection = "outputs" /]
 
-
 [#include "/WEB-INF/global/pages/header.ftl" /]
 [#include "/WEB-INF/global/pages/main-menu.ftl" /]
 [#import "/WEB-INF/global/macros/forms.ftl" as customForm/]
     
-  <section >
+  <section class="content">
     [#include "/WEB-INF/global/pages/reporting-secondary-menu.ftl" /]  
     <article class="halfContent">
       [@s.form action="outputSummary"]
-        <h1>
+        <h1 class="contentTitle">
           [@s.text name="reporting.outputSummary.outputSummary" /] - ${currentUser.leader.acronym} 
         </h1>
         
