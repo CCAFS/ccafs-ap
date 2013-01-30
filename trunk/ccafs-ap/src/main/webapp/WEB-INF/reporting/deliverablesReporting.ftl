@@ -14,8 +14,8 @@
   [#list activity.deliverables as deliverable]
     [#if deliverable.expected == isExpected]
       <div id="deliverable-${deliverable_index}" class="deliverable">
-        [#-- This line is not used yet, it is commented to prevent the invalid convertion warning --]
-        [#-- <input name="activity.deliverables[${deliverable_index}].id" type="hidden" value="${deliverable.id}" /> --]
+        [#-- identifier --]
+        <input name="activity.deliverables[${deliverable_index}].id" type="hidden" value="${deliverable.id?c}" />
         
         [#-- Adding remove link only for new deliverables --]
         [#if !deliverable.expected]
@@ -56,7 +56,7 @@
         
         [#-- Status --]
         <div class="thirdPartBlock">
-          [@customForm.select name="activity.deliverables[${deliverable_index}].status" label="" i18nkey="reporting.activityDeliverables.deliverableStatus" listName="deliverableStatusList" keyFieldName="id"  displayFieldName="name" value="${activity.deliverables[deliverable_index].status.id}" /]
+          [@customForm.select name="activity.deliverables[${deliverable_index}].status" label="" i18nkey="reporting.activityDeliverables.deliverableStatus" listName="deliverableStatusList" keyFieldName="id"  displayFieldName="name" value="${activity.deliverables[deliverable_index].status.id}"/]
         </div>
         
         [#-- Formats --]
@@ -69,17 +69,24 @@
             </div>
           </div>
         [/#if]
+        
+        [#-- File name --]
+        <div class="fullBlock">
+          [@customForm.input name="activity.deliverables[${deliverable_index}].fileName" type="text" i18nkey="reporting.activityDeliverables.filename" /]
+        </div>
+        
       </div> <!-- End deliverable-${deliverable_index} -->
       <hr />
     [/#if]
   [/#list]
 [/#macro]
-<section>
+
+<section class="content">
   [#include "/WEB-INF/global/pages/reporting-secondary-menu.ftl" /]
   
   [@s.form action="deliverables"]
   <article class="halfContent">
-    <h1>
+    <h1 class="contentTitle">
       ${activity.leader.acronym} - [@s.text name="reporting.activityList.activity" /] ${activity.id}      
     </h1>
     
@@ -117,6 +124,9 @@
             <a id="removeDeliverable-9999" href="" class="removeDeliverable">Remove deliverable</a>
         </div>
         
+        [#-- identifier --]
+        <input name="id" type="hidden" value="-1" />
+        
         [#-- Description --]
         <div class="fullBlock">                      
           [@customForm.textArea name="description" i18nkey="reporting.activityDeliverables.description" /]
@@ -143,7 +153,13 @@
           <div class="checkboxGroup">                        
             [@s.checkboxlist name="fileFormats" list="fileFormatsList" listKey="id" listValue="name" cssClass="checkbox" /]
           </div>
-        </div>      
+        </div>
+        
+        [#-- File name --]
+        <div class="fullBlock">
+          [@customForm.input name="fileName" type="text" i18nkey="reporting.activityDeliverables.filename" /]
+        </div>
+              
       </div> <!-- End deliverable template -->
     </div> <!-- End template -->
     

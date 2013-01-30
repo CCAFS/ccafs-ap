@@ -8,9 +8,10 @@ import org.apache.commons.lang3.builder.ToStringBuilder;
 public class Deliverable {
 
   private int id;
-  private String description;
-  private boolean isExpected;
   private int year;
+  private boolean isExpected;
+  private String description;
+  private String fileName;
   private DeliverableStatus status;
   private DeliverableType type;
   private List<FileFormat> fileFormats;
@@ -36,6 +37,10 @@ public class Deliverable {
       ids.add(getFileFormats().get(c).getId() + "");
     }
     return ids;
+  }
+
+  public String getFileName() {
+    return fileName;
   }
 
   public int getId() {
@@ -68,6 +73,10 @@ public class Deliverable {
 
   public void setFileFormats(List<FileFormat> fileFormats) {
     this.fileFormats = fileFormats;
+  }
+
+  public void setFileName(String fileName) {
+    this.fileName = fileName;
   }
 
   public void setId(int id) {

@@ -11,12 +11,13 @@
 [#include "/WEB-INF/global/pages/main-menu.ftl" /]
 [#import "/WEB-INF/global/macros/forms.ftl" as customForm/]
     
-  <section >
-    [#include "/WEB-INF/global/pages/reporting-secondary-menu.ftl" /]  
-    <article class="halfContent">
-      [@s.form action="caseStudies" enctype="multipart/form-data"]
+  <section class="content">
+    [#include "/WEB-INF/global/pages/reporting-secondary-menu.ftl" /]
+    
+    [@s.form action="caseStudies" enctype="multipart/form-data"]  
+    <article class="halfContent">      
         <h1>
-          [@s.text name="reporting.caseStudies.caseStudies" /] - ${currentUser.leader.acronym} 
+          ${currentUser.leader.acronym} - [@s.text name="reporting.caseStudies.caseStudies" /]  
         </h1>
         
         <div id="caseStudiesBlock">

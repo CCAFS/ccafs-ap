@@ -1,4 +1,4 @@
-[#ftl]
+ [#ftl]
 [#assign title = "Regional Program Leader Synthesis Report" /]
 [#assign globalLibs = ["jquery", "noty"] /]
 [#-- assign customJS = ["${baseUrl}/js/reporting/outcomesReporting.js", "${baseUrl}/js/global/utils.js"] / --]
@@ -12,10 +12,13 @@
 [#import "/WEB-INF/global/macros/forms.ftl" as customForm /]
 
 
-<section>
+<section class="content">
   [#include "/WEB-INF/global/pages/reporting-secondary-menu.ftl" /]
   [@s.form action="rplSynthesis"]
     <article class="halfContent">
+      <h1 class="contentTitle">
+        [@s.text name="reporting.rplSynthesisreport" /] - ${currentUser.leader.acronym} 
+      </h1>
       <div id="items">
         <fieldset id="rplSynthesisGroup">
           <legend>[@s.text name="reporting.rplSynthesisreport" /]</legend>

@@ -12,10 +12,13 @@
 [#import "/WEB-INF/global/macros/forms.ftl" as customForm /]
 
 
-<section>
+<section class="content">
   [#include "/WEB-INF/global/pages/reporting-secondary-menu.ftl" /]
   [@s.form action="tlOutputs"]
     <article class="halfContent">
+      <h1 class="contentTitle">
+          [@s.text name="reporting.tlOutputSummaries" /] - ${currentUser.leader.acronym} 
+        </h1>
       <div id="items">      
         <fieldset id="outcomeGroup">
           <legend>[@s.text name="reporting.tlOutputSummaries" /]</legend>

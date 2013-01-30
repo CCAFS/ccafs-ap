@@ -54,7 +54,7 @@
   [/#list]
 [/#macro]
 
-<section>
+<section class="content">
   [#include "/WEB-INF/global/pages/reporting-secondary-menu.ftl" /]
   [@s.form action="outcomes"]
     <article class="halfContent">

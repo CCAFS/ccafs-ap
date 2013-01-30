@@ -16,10 +16,9 @@ public interface DeliverableManager {
    * 
    * @param deliverable - Deliverable object.
    * @param activityID - Activity identifier in which the deliverable belongs to.
-   * @param isExpected - Is the deliverable marked as expeted or not?
    * @return true y the deliverable was successfully added, false otherwise.
    */
-  public boolean addDeliverable(Deliverable deliverable, int activityID, boolean isExpected);
+  public boolean addDeliverable(Deliverable deliverable, int activityID);
 
   /**
    * Get all the deliverables objects belongs to an activity identified

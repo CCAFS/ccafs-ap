@@ -31,23 +31,45 @@ public class MySQLDeliverableDAO implements DeliverableDAO {
   public int addDeliverable(Map<String, Object> deliverableData) {
     int generatedId = -1;
     try (Connection connection = databaseManager.getConnection()) {
-      String addDeliveryQuery =
-        "INSERT INTO deliverables (description, year, activity_id, deliverable_type_id, is_expected, deliverable_status_id) VALUES (?, ?, ?, ?, ?, ?)";
-      Object[] values = new Object[6];
-      values[0] = deliverableData.get("description");
-      values[1] = deliverableData.get("year");
-      values[2] = deliverableData.get("activity_id");
-      values[3] = deliverableData.get("deliverable_type_id");
-      values[4] = deliverableData.get("is_expected");
-      values[5] = deliverableData.get("deliverable_status_id");
-      int deliverableAdded = databaseManager.makeChangeSecure(connection, addDeliveryQuery, values);
-      if (deliverableAdded > 0) {
-        // get the id assigned to this new record.
-        ResultSet rs = databaseManager.makeQuery("SELECT LAST_INSERT_ID()", connection);
-        if (rs.next()) {
-          generatedId = rs.getInt(1);
+      // If there is not an id defined, just add as a new record. Otherwise, update it.
+      if (((int) deliverableData.get("id")) == -1) {
+        String addDeliveryQuery =
+          "INSERT INTO deliverables (description, year, activity_id, deliverable_type_id, is_expected, deliverable_status_id, filename) VALUES (?, ?, ?, ?, ?, ?, ?)";
+        Object[] values = new Object[7];
+        values[0] = deliverableData.get("description");
+        values[1] = deliverableData.get("year");
+        values[2] = deliverableData.get("activity_id");
+        values[3] = deliverableData.get("deliverable_type_id");
+        values[4] = deliverableData.get("is_expected");
+        values[5] = deliverableData.get("deliverable_status_id");
+        values[6] = deliverableData.get("filename");
+        int deliverableAdded = databaseManager.makeChangeSecure(connection, addDeliveryQuery, values);
+        if (deliverableAdded > 0) {
+          // get the id assigned to this new record.
+          ResultSet rs = databaseManager.makeQuery("SELECT LAST_INSERT_ID()", connection);
+          if (rs.next()) {
+            generatedId = rs.getInt(1);
+          }
+          rs.close();
         }
-        rs.close();
+      } else {
+        String addDeliveryQuery =
+          "INSERT INTO deliverables (id, description, year, activity_id, deliverable_type_id, is_expected, deliverable_status_id, filename) VALUES (?, ?, ?, ?, ?, ?, ?, ?) "
+            + "ON DUPLICATE KEY UPDATE description = VALUES(description), year = VALUES(year), activity_id = VALUES(activity_id), "
+            + "deliverable_type_id = VALUES(deliverable_type_id), is_expected = VALUES(is_expected), deliverable_status_id = VALUES(deliverable_status_id), filename = VALUES(filename)";
+        Object[] values = new Object[8];
+        values[0] = deliverableData.get("id");
+        values[1] = deliverableData.get("description");
+        values[2] = deliverableData.get("year");
+        values[3] = deliverableData.get("activity_id");
+        values[4] = deliverableData.get("deliverable_type_id");
+        values[5] = deliverableData.get("is_expected");
+        values[6] = deliverableData.get("deliverable_status_id");
+        values[7] = deliverableData.get("filename");
+        int deliverableUpdated = databaseManager.makeChangeSecure(connection, addDeliveryQuery, values);
+        if (deliverableUpdated > 0) {
+          generatedId = ((int) deliverableData.get("id"));
+        }
       }
     } catch (SQLException e) {
       // TODO Auto-generated catch block
@@ -61,7 +83,7 @@ public class MySQLDeliverableDAO implements DeliverableDAO {
     List<Map<String, String>> deliverables = new ArrayList<>();
     try (Connection con = databaseManager.getConnection()) {
       String query =
-        "SELECT de.id, de.description, de.year, de.is_expected, ds.id as 'deliverable_status_id', "
+        "SELECT de.id, de.description, de.year, de.is_expected, de.filename, ds.id as 'deliverable_status_id', "
           + "ds.name as 'deliverable_status_name', dt.id as 'deliverable_type_id', dt.name as 'deliverable_type_name' "
           + "FROM deliverables de " + "INNER JOIN deliverable_types dt ON de.deliverable_type_id = dt.id "
           + "INNER JOIN deliverable_status ds ON de.deliverable_status_id = ds.id " + "WHERE de.activity_id="
@@ -73,6 +95,7 @@ public class MySQLDeliverableDAO implements DeliverableDAO {
         deliverable.put("description", rs.getString("description"));
         deliverable.put("year", rs.getString("year"));
         deliverable.put("is_expected", rs.getString("is_expected"));
+        deliverable.put("filename", rs.getString("filename"));
         deliverable.put("deliverable_status_id", rs.getString("deliverable_status_id"));
         deliverable.put("deliverable_status_name", rs.getString("deliverable_status_name"));
         deliverable.put("deliverable_type_id", rs.getString("deliverable_type_id"));

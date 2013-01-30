@@ -2,7 +2,7 @@
 [#assign title = "Activity Partners Report" /]
 [#assign globalLibs = ["jquery", "noty"] /]
 [#assign customJS = ["${baseUrl}/js/reporting/partnersReporting.js", "${baseUrl}/js/global/utils.js"] /]
-[#assign customCSS = ["${baseUrl}/css/reporting/partnersReporting.css"] /]
+[#assign customCSS = [""] /]
 [#assign currentSection = "reporting" /]
 [#assign currentReportingSection = "activities" /]
 [#assign currentStage = "partners" /]
@@ -39,11 +39,11 @@
   [/#list]
 [/#macro]
 
-<section>
+<section class="content">
   [#include "/WEB-INF/global/pages/reporting-secondary-menu.ftl" /]
   [@s.form action="partners!save"]
   <article class="halfContent">
-    <h1>
+    <h1 class="contentTitle">
       ${activity.leader.acronym} - [@s.text name="reporting.activityPartners.activity" /] ${activity.id}      
     </h1>
     
@@ -53,7 +53,7 @@
     [#assign typeSelectHeadValue ] [@s.text name="reporting.activityPartners.selectPartnerType" /] [/#assign]
     
     <div id="items">      
-      <fieldset id="activityPartnerGroup">
+      <fieldset id="activityPartnerGroup" class="group">
         <legend>[@s.text name="reporting.activityPartners.partners" /]</legend>
         [@partnerSection /]
       </fieldset>
