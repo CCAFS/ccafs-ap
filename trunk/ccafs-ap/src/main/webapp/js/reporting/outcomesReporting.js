@@ -48,8 +48,8 @@ $(document).ready(function() {
     event.preventDefault();
     // Cloning template.
     var $newOutcome = $("#outcome-9999").clone(true);
-    $("#outcomeGroup").append($newOutcome);
-    $("#outcomeGroup").append("<hr />");
+    $(".addLink").before($newOutcome);
+    $(".addLink").before("<hr />");
     renameOutcomes();
     $newOutcome.fadeIn("slow");
   });

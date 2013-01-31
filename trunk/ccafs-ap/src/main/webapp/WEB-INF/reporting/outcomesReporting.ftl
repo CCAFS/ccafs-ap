@@ -16,6 +16,7 @@
       
       [#-- Remove link for an outcome --]
       <div class="removeLink">
+        <img src="${baseUrl}/images/global/icon-remove.png" />
         <a id="removeOutcome-${outcome_index}" href="" class="removeOutcome">Remove outcome</a>
       </div>
       
@@ -65,10 +66,11 @@
         <fieldset id="outcomeGroup">
           <legend>[@s.text name="reporting.outcomes" /]</legend>
           [@outcomeSection /]
+          <div class="addLink">
+            <img src="${baseUrl}/images/global/icon-add.png" />
+            <a href="" class="addOutcome">Add new outcome</a>
+          </div>
         </fieldset>
-        <div>
-          <a href="" class="addOutcome">Add new outcome</a>
-        </div>   
       </div>
       
       <!-- OUTCOME TEMPLATE -->
@@ -76,6 +78,7 @@
         <div id="outcome-9999" class="outcome" style="display: none;">      
           [#-- Remove link for an outcome --]
           <div class="removeLink">
+            <img src="${baseUrl}/images/global/icon-remove.png" />
             <a id="removeOutcome-9999" href="" class="removeOutcome">Remove outcome</a>
           </div>
           
@@ -114,7 +117,10 @@
         </div> <!-- End outcome template -->
       </div> <!-- End template -->
       
-      [@s.submit type="button" name="save"]SAVE[/@s.submit]
+      <div class="buttons">
+        [@s.submit type="button" name="save"]SAVE[/@s.submit]
+        [@s.submit type="button" name="cancel"]CANCEL[/@s.submit]
+      </div>
     </article>
   [/@s.form]
  
