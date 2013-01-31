@@ -9,7 +9,9 @@ $(document).ready(function() {
           // Main div.
           $(this).attr("id", "publication-" + index);
           // Remove link.
-          $(this).find("[id^='removePublication-']").attr("id","removePublication-" + index);         
+          $(this).find("[id^='removePublication-']").attr("id","removePublication-" + index);
+          // Publication id.
+          $(this).find("[name$='id']").attr("name","publications[" + index + "].id");
           // Publication Type.
           $(this).find("[id$='type']").attr("id", "publications_publications_" + index + "__type");
           $(this).find("[name$='type']").attr("name", "publications[" + index + "].type");

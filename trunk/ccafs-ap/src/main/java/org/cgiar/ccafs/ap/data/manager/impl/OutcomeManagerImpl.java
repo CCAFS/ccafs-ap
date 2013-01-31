@@ -29,7 +29,11 @@ public class OutcomeManagerImpl implements OutcomeManager {
     Map<String, String> outcomeData;
     for (Outcome outcome : newOutcomes) {
       outcomeData = new HashMap<>();
-      outcomeData.put("id", outcome.getId() + "");
+      if (outcome.getId() != -1) {
+        outcomeData.put("id", outcome.getId() + "");
+      } else {
+        outcomeData.put("id", null);
+      }
       outcomeData.put("outcome", outcome.getOutcome());
       outcomeData.put("outputs", outcome.getOutputs());
       outcomeData.put("partners", outcome.getPartners());

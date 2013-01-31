@@ -55,7 +55,11 @@ public class PublicationManagerImpl implements PublicationManager {
     List<Map<String, String>> publicationsData = new ArrayList<>();
     for (Publication publication : publications) {
       Map<String, String> pubData = new HashMap<>();
-      pubData.put("id", publication.getId() + "");
+      if (publication.getId() != -1) {
+        pubData.put("id", publication.getId() + "");
+      } else {
+        pubData.put("id", null);
+      }
       pubData.put("publication_type_id", publication.getType().getId() + "");
       pubData.put("identifier", publication.getIdentifier());
       pubData.put("citation", publication.getCitation());

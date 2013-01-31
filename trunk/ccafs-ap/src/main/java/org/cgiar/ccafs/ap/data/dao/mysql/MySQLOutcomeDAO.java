@@ -31,16 +31,17 @@ public class MySQLOutcomeDAO implements OutcomeDAO {
       Object[] values;
       for (Map<String, String> outcomeData : newOutcomes) {
         preparedQuery =
-          "INSERT INTO outcomes (outcome, outputs, partners, output_user, how_used, evidence, logframe_id, activity_leader_id) VALUES (?,?,?,?,?,?,?,?)";
-        values = new Object[8];
-        values[0] = outcomeData.get("outcome"); // outcome
-        values[1] = outcomeData.get("outputs"); // outputs
-        values[2] = outcomeData.get("partners"); // partners
-        values[3] = outcomeData.get("output_user"); // output_user
-        values[4] = outcomeData.get("how_used"); // how_used
-        values[5] = outcomeData.get("evidence"); // evidence
-        values[6] = outcomeData.get("logframe_id"); // logframe_id
-        values[7] = outcomeData.get("activity_leader_id"); // activity_leader_id
+          "INSERT INTO outcomes (id, outcome, outputs, partners, output_user, how_used, evidence, logframe_id, activity_leader_id) VALUES (?,?,?,?,?,?,?,?,?)";
+        values = new Object[9];
+        values[0] = outcomeData.get("id"); // identifier
+        values[1] = outcomeData.get("outcome"); // outcome
+        values[2] = outcomeData.get("outputs"); // outputs
+        values[3] = outcomeData.get("partners"); // partners
+        values[4] = outcomeData.get("output_user"); // output_user
+        values[5] = outcomeData.get("how_used"); // how_used
+        values[6] = outcomeData.get("evidence"); // evidence
+        values[7] = outcomeData.get("logframe_id"); // logframe_id
+        values[8] = outcomeData.get("activity_leader_id"); // activity_leader_id
         int rows = dbManager.makeChangeSecure(connection, preparedQuery, values);
         if (rows < 1) {
           // TODO Generate log about the problem generated.

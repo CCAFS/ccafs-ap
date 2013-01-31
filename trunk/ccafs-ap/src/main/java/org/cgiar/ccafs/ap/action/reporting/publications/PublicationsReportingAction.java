@@ -57,7 +57,7 @@ public class PublicationsReportingAction extends BaseAction {
   @Override
   public String save() {
     if (publications.size() > 0) {
-      // Remove all activity partners from the database.
+      // Remove all publication from the database.
       boolean removed =
         publicationManager.removeAllPublications(this.getCurrentUser().getLeader(), this.getCurrentLogframe());
       if (removed) {

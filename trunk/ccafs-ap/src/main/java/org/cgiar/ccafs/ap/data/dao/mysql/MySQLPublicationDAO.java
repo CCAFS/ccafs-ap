@@ -75,13 +75,15 @@ public class MySQLPublicationDAO implements PublicationDAO {
       Object[] values;
       for (Map<String, String> publicationData : publications) {
         addQueryPrepared =
-          "INSERT INTO publications (publication_type_id, identifier, citation, logframe_id, activity_leader_id) VALUES (?, ?, ?, ?, ?)";
-        values = new Object[5];
-        values[0] = publicationData.get("publication_type_id");
-        values[1] = publicationData.get("identifier");
-        values[2] = publicationData.get("citation");
-        values[3] = publicationData.get("logframe_id");
-        values[4] = publicationData.get("activity_leader_id");
+          "INSERT INTO publications (id, publication_type_id, identifier, citation, logframe_id, "
+            + "activity_leader_id) VALUES (?, ?, ?, ?, ?, ?)";
+        values = new Object[6];
+        values[0] = publicationData.get("id");
+        values[1] = publicationData.get("publication_type_id");
+        values[2] = publicationData.get("identifier");
+        values[3] = publicationData.get("citation");
+        values[4] = publicationData.get("logframe_id");
+        values[5] = publicationData.get("activity_leader_id");
 
         int rows = dbManager.makeChangeSecure(connection, addQueryPrepared, values);
         if (rows < 0) {

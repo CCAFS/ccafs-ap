@@ -19,6 +19,9 @@
         <a id="removeOutcome-${outcome_index}" href="" class="removeOutcome">Remove outcome</a>
       </div>
       
+      [#-- Identifier --]
+      <input type="hidden" name="outcomes[${outcome_index}].id" value="${outcome.id}" />
+      
       [#-- Outcome --]
       <div class="fullBlock">
         [@customForm.textArea name="outcomes[${outcome_index}].outcome" i18nkey="reporting.outcomes.outcome" /]
@@ -75,6 +78,9 @@
           <div class="removeLink">
             <a id="removeOutcome-9999" href="" class="removeOutcome">Remove outcome</a>
           </div>
+          
+          [#-- Identifier --]
+          <input type="hidden" name="id" value="-1" />
           
           [#-- Outcome --]
           <div class="fullBlock">

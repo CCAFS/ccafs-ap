@@ -57,6 +57,11 @@ public class ActivityPartnerManagerImpl implements ActivityPartnerManager {
     List<Map<String, Object>> activityPartnersData = new ArrayList<>();
     for (ActivityPartner cp : activityPartners) {
       Map<String, Object> cpData = new HashMap<>();
+      if (cp.getId() != -1) {
+        cpData.put("id", cp.getId());
+      } else {
+        cpData.put("id", null);
+      }
       cpData.put("partner_id", cp.getPartner().getId());
       cpData.put("activity_id", activityID);
       cpData.put("contact_name", cp.getContactName());
@@ -66,5 +71,4 @@ public class ActivityPartnerManagerImpl implements ActivityPartnerManager {
     problem = !activityPartnerDAO.saveActivityPartnerList(activityPartnersData);
     return !problem;
   }
-
 }

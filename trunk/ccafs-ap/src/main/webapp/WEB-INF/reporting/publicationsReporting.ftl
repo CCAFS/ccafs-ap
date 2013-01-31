@@ -19,6 +19,9 @@
         <a id="removePublication-${publication_index}" href="" class="removePublication">Remove publication</a>
       </div>
       
+      [#-- Publication identifier --]
+      <input type="hidden" name="publications[${publication_index}].id" value="${publication.id?c}" />
+      
       [#-- Publication type --]
       <div class="halfPartBlock">
         [@customForm.select name="publications[${publication_index}].type" label="" i18nkey="reporting.publications.type.name" listName="publicationTypes" keyFieldName="id"  displayFieldName="name" /]
@@ -63,7 +66,10 @@
             <a id="removePublication-9999" href="" class="removePublication">Remove publication</a>
           </div>
           
-           [#-- Publication type --]
+          [#-- Publication identifier --]
+          <input type="hidden" name="id" value="-1" />
+          
+          [#-- Publication type --]
           <div class="halfPartBlock">
             [@customForm.select name="type" label="" i18nkey="reporting.publications.type.name" listName="publicationTypes" keyFieldName="id"  displayFieldName="name" /]
           </div>

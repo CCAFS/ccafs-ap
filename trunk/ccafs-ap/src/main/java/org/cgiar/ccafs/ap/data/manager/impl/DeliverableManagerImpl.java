@@ -30,7 +30,11 @@ public class DeliverableManagerImpl implements DeliverableManager {
   @Override
   public boolean addDeliverable(Deliverable deliverable, int activityID) {
     Map<String, Object> deliverableData = new HashMap<>();
-    deliverableData.put("id", deliverable.getId());
+    if (deliverable.getId() != -1) {
+      deliverableData.put("id", deliverable.getId());
+    } else {
+      deliverableData.put("id", null);
+    }
     deliverableData.put("description", deliverable.getDescription());
     deliverableData.put("year", deliverable.getYear());
     deliverableData.put("activity_id", activityID);
@@ -42,6 +46,9 @@ public class DeliverableManagerImpl implements DeliverableManager {
     deliverableData.put("file_format_ids", deliverable.getFileFormatsIds());
 
     int deliverableId = deliverableDAO.addDeliverable(deliverableData);
+    // If deliverable has an id the addDeliverable function return 0 as id,
+    // so, the id must be set to its original value
+    deliverableId = (deliverable.getId() != -1) ? deliverable.getId() : deliverableId;
     if (deliverableId >= 0) {
       // Check if the deliverable has file formats
       if (!deliverable.getFileFormatsIds().isEmpty()) {
