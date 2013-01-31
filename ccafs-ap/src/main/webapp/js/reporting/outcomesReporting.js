@@ -10,6 +10,8 @@ $(document).ready(function() {
           $(this).attr("id", "outcome-" + index);
           // Remove link.
           $(this).find("[id^='removeOutcome-']").attr("id","removeOutcome-" + index);
+          // Identifier
+          $(this).find("[name$='id']").attr("name", "outcomes[" + index + "].id");
           // Outcome.
           $(this).find("[id$='outcome']").attr("id", "outcomes[" + index + "].outcome");
           $(this).find("[name$='outcome']").attr("name", "outcomes[" + index + "].outcome");

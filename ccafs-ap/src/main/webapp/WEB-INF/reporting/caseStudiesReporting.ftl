@@ -25,7 +25,7 @@
         [#list caseStudies as caseStudy]
           <div id="caseStudy-${caseStudy_index}" class="caseStudy">
             [#-- CaseStudy identifier --]
-            <input name="caseStudies[${caseStudy_index}].id" type="hidden" value="${caseStudy.id}">
+            <input name="caseStudies[${caseStudy_index}].id" type="hidden" value="${caseStudy.id?c}">
           
             [#-- Remove link --]
             <div class="removeLink">
@@ -122,7 +122,7 @@
         <div id="template" style="display: none;">
           <div id="caseStudy-999" class="caseStudy">
             [#-- CaseStudy identifier --]
-            <input name="id" type="hidden" value="0">
+            <input name="id" type="hidden" value="-1">
             
             [#-- Remove link --]
             <div class="removeLink">

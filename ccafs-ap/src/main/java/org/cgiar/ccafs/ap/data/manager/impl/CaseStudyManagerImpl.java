@@ -75,7 +75,11 @@ public class CaseStudyManagerImpl implements CaseStudyManager {
 
     Map<String, Object> csData;
     csData = new HashMap<>();
-    csData.put("id", caseStudy.getId());
+    if (caseStudy.getId() != -1) {
+      csData.put("id", caseStudy.getId());
+    } else {
+      csData.put("id", null);
+    }
     csData.put("title", caseStudy.getTitle());
     csData.put("author", caseStudy.getAuthor());
     // Convert the date to string
@@ -91,7 +95,12 @@ public class CaseStudyManagerImpl implements CaseStudyManager {
     csData.put("logframe_id", logframeId);
 
     int caseStudyId = caseStudyDAO.saveCaseStudy(csData);
-    // if the case study was successfully saved, save the countries related
+
+    // If the case study id is not equal to -1, the database return zero as identifier
+    // after the record insertion, so, set caseStudyId with its original value
+    caseStudyId = (caseStudy.getId() != -1) ? caseStudy.getId() : caseStudyId;
+
+    // if the case study was successfully saved, save the countries related.
     if (caseStudyId >= 0) {
       ArrayList<String> countriesIds = (ArrayList<String>) caseStudy.getCountriesIds();
       boolean caseStudyCountriesAdded = caseStudyCountriesDAO.saveCaseStudyCountries(caseStudyId, countriesIds);

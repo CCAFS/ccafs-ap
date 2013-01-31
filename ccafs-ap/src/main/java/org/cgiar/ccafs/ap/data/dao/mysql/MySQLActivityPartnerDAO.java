@@ -75,12 +75,13 @@ public class MySQLActivityPartnerDAO implements ActivityPartnerDAO {
     try (Connection connection = databaseManager.getConnection()) {
       for (Map<String, Object> cpData : activityPartnersData) {
         String preparedQuery =
-          "INSERT INTO activity_partners (partner_id, activity_id, contact_name, contact_email) VALUES (?, ?, ?, ?)";
-        Object[] data = new Object[4];
-        data[0] = cpData.get("partner_id");
-        data[1] = cpData.get("activity_id");
-        data[2] = cpData.get("contact_name");
-        data[3] = cpData.get("contact_email");
+          "INSERT INTO activity_partners (id, partner_id, activity_id, contact_name, contact_email) VALUES (?, ?, ?, ?, ?)";
+        Object[] data = new Object[5];
+        data[0] = cpData.get("id");
+        data[1] = cpData.get("partner_id");
+        data[2] = cpData.get("activity_id");
+        data[3] = cpData.get("contact_name");
+        data[4] = cpData.get("contact_email");
         int rows = databaseManager.makeChangeSecure(connection, preparedQuery, data);
         if (rows < 0) {
           problem = true;

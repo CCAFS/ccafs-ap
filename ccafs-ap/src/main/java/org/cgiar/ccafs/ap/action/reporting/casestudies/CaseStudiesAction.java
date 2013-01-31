@@ -150,8 +150,7 @@ public class CaseStudiesAction extends BaseAction {
             caseStudies.get(c).setImageFileName(imageNameMap.get(caseStudies.get(c).getId()));
           }
         } else {
-          // If there is an upload image append the activity identifier to the file name
-          caseStudies.get(c).setImageFileName(caseStudies.get(c).getId() + caseStudies.get(c).getImageFileName());
+          caseStudies.get(c).setImageFileName(caseStudies.get(c).getImageFileName());
         }
 
         boolean added =

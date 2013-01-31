@@ -14,6 +14,8 @@
 [#macro partnerSection]
   [#list activity.activityPartners as ap]
     <div id="activityPartner-${ap_index}" class="activityPartner">
+      [#-- Partner identifier --]
+      <input type="hidden" name="activity.activityPartners[${ap_index}].id" value="${ap.id?c}" />
       
       [#-- Remove link for all partners --]
       <div class="removeLink">
@@ -78,6 +80,9 @@
           <a id="removeActivityPartner-9999" href="" class="removePartner">Remove partner</a>
         </div>
         
+        [#-- Partner identifier --]
+        <input type="hidden" name="id" value="-1">
+      
         [#-- Partner Name --]
         <div class="fullBlock partnerName">
           [@customForm.select name="__partner" label="" i18nkey="reporting.activityPartners.partner.name" listName="partners" keyFieldName="id"  displayFieldName="name" /]

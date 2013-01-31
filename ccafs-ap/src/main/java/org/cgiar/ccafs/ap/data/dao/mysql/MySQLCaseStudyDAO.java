@@ -78,23 +78,24 @@ public class MySQLCaseStudyDAO implements CaseStudyDAO {
     int generatedId = -1;
     try (Connection con = databaseManager.getConnection()) {
       String preparedQuery =
-        "INSERT INTO `case_studies` (`title`, `author`, `date`, `photo`, `objectives`, `description`, "
-          + "`results`, `partners`, `links`, `keywords`, `logframe_id`, `activity_leader_id`) "
-          + "VALUES ( ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
+        "INSERT INTO case_studies (id, title, author, date, photo, objectives, description, "
+          + "results, partners, links, keywords, logframe_id, activity_leader_id) "
+          + "VALUES ( ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
 
-      Object[] data = new Object[12];
-      data[0] = caseStudyData.get("title");
-      data[1] = caseStudyData.get("author");
-      data[2] = caseStudyData.get("date");
-      data[3] = caseStudyData.get("photo");
-      data[4] = caseStudyData.get("objectives");
-      data[5] = caseStudyData.get("description");
-      data[6] = caseStudyData.get("results");
-      data[7] = caseStudyData.get("partners");
-      data[8] = caseStudyData.get("links");
-      data[9] = caseStudyData.get("keywords");
-      data[10] = caseStudyData.get("logframe_id");
-      data[11] = caseStudyData.get("activity_leader_id");
+      Object[] data = new Object[13];
+      data[0] = caseStudyData.get("id");
+      data[1] = caseStudyData.get("title");
+      data[2] = caseStudyData.get("author");
+      data[3] = caseStudyData.get("date");
+      data[4] = caseStudyData.get("photo");
+      data[5] = caseStudyData.get("objectives");
+      data[6] = caseStudyData.get("description");
+      data[7] = caseStudyData.get("results");
+      data[8] = caseStudyData.get("partners");
+      data[9] = caseStudyData.get("links");
+      data[10] = caseStudyData.get("keywords");
+      data[11] = caseStudyData.get("logframe_id");
+      data[12] = caseStudyData.get("activity_leader_id");
       int rows = databaseManager.makeChangeSecure(con, preparedQuery, data);
       if (rows > 0) {
         // get the id assigned to the new record
@@ -104,10 +105,10 @@ public class MySQLCaseStudyDAO implements CaseStudyDAO {
         }
         rs.close();
       }
-
     } catch (SQLException e) {
       // TODO Auto generated catch block
       e.printStackTrace();
+      return -1;
     }
     return generatedId;
   }
