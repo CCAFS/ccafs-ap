@@ -18,6 +18,10 @@ a,a:active,a:visited,a:hover {
   text-decoration: none;
 }
 
+select {
+   width: 100%;
+}
+
 .clearfix:before,.clearfix:after {
   content: "";
   display: table;
@@ -65,16 +69,31 @@ input[type="radio"] {
 
 .checkboxGroup input {
   margin-left: 0px;
+  width: 14px;
 }
 
 .checkboxGroup .checkboxLabel {
   display: inline-block;
+  font-size: 11px;
   width: 30%;
-  padding: 3px;
+  width: 29%\0/; /*hack for IE8 & IE9*/
 }
 
 .radiosList input {
   
+}
+
+.removeLink {
+  display: block;
+  text-align: right;
+}
+
+.removeLink img, .removeLink a {
+  vertical-align: middle;
+}
+
+.addLink img, .addLink a {
+  vertical-align: middle;
 }
 
 /* General Messages */
@@ -240,7 +259,6 @@ nav#secondaryMenu ul a li {
 
 /*************** REPORTING STEP MENU ****************/
 #stageMenu {
-  clear: left;
   display: block;
 }
 
@@ -282,11 +300,13 @@ nav#secondaryMenu ul a li {
 
 .halfContent h6+* {
   margin-left: 15px;
+  margin-right: 15px;
 }
 
 .fullBlock {
   display: block;
   padding: 5px;
+  margin-bottom: 10px;
   width: 100%;
 }
 
@@ -346,20 +366,23 @@ nav#secondaryMenu ul a li {
 }
 
 #stageMenu a {
-  background-color: #EBEBEB;
-  border: 1px solid black;
+  background-image: url("../../images/global/sub-menu.png"); 
+  background-repeat: no-repeat;
+  display: inline-block; 
   color: black;
-  margin: 0 5px;
   padding: 5px;
+  height: 34px;
+  width: 145px;
 }
 
 #stageMenu a.currentReportingSection {
-  background-color: #919191;
+  background-image: url("../../images/global/sub-menu-selected.png"); 
   font-weight: bold;
 }
 
 #stageMenu a li {
-  display: inline;
+  display: inline-block;
+  margin-top: 9px;
 }
 
 /************ ACTIVITIES ***************/
@@ -434,6 +457,11 @@ nav#secondaryMenu ul a li {
   padding: 0.3em 0.5em;
 }
 
+/* Partners */
+#addPartnerText a {
+  font-weight: bold;
+}
+
 /******** SUMMARY BY OUTPUTS ***********/
 /*********** PUBLICATIONS **************/
 /*********** CASE STUDIES **************/
@@ -443,12 +471,12 @@ nav#secondaryMenu ul a li {
 /*************** FOOTER ****************/
 #footerContainer {
   background-image: url("../../images/global/footer-background.png");
-  background-position: right center;
+  background-position: right bottom;
   background-repeat: no-repeat;
-  height: 200px;
-  margin-top: 30px;
-  text-align: center;
   clear: both;
+  height: 200px;
+  padding-top: 50px;
+  text-align: center;
 }
 
 #footerContainer #principalLogo {

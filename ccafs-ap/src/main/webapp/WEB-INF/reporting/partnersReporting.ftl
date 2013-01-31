@@ -19,6 +19,7 @@
       
       [#-- Remove link for all partners --]
       <div class="removeLink">
+        <img src="${baseUrl}/images/global/icon-remove.png" />
         <a id="removeActivityPartner-${ap_index}" href="" class="removeActivityPartner">Remove partner</a>
       </div>
       
@@ -54,22 +55,22 @@
     
     [#assign typeSelectHeadValue ] [@s.text name="reporting.activityPartners.selectPartnerType" /] [/#assign]
     
-    <div id="items">      
+    <div id="items">
       <fieldset id="activityPartnerGroup" class="group">
         <legend>[@s.text name="reporting.activityPartners.partners" /]</legend>
         [@partnerSection /]
-      </fieldset>
-      <div>
+      <div class="addLink">
+        <img src="${baseUrl}/images/global/icon-add.png" />
         <a href="" class="addActivityPartner">Add new partner</a>
       </div>   
+      </fieldset>
     </div>
     
-    <p>
+    <p id="addPartnerText">
       If you don't find the partner what are you looking for 
       <a class="popup" href="[@s.url action='partnerSave'][@s.param name='${activityRequestParameter}']${activityID}[/@s.param][/@s.url]">
         add it here.
-      </a>
-       
+      </a>       
     </p>
     
     <!-- PARTNERS TEMPLATE -->
@@ -77,6 +78,7 @@
       <div id="activityPartner-9999" class="activityPartner" style="display: none;">      
         [#-- remove link --]
         <div class="removeLink">
+          <img src="${baseUrl}/images/global/icon-remove.png" />
           <a id="removeActivityPartner-9999" href="" class="removePartner">Remove partner</a>
         </div>
         
@@ -102,7 +104,10 @@
     
     <!-- internal parameter -->
     <input name="activityID" type="hidden" value="${activity.id}" />
-    [@s.submit type="button" name="save"]SAVE[/@s.submit]
+    <div class="buttons">
+      [@s.submit type="button" name="save"]SAVE[/@s.submit]
+      [@s.submit type="button" name="cancel"]CANCEL[/@s.submit]
+    </div>
          
     [#include "/WEB-INF/reporting/activitiesReportingSubMenu.ftl" /]  
     </article>
