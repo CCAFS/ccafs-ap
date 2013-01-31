@@ -5,7 +5,7 @@
 
 /* Table */
 table.dataTable tr.odd {
-  background-color: #F1D023;
+  background-color: #FFF2B5;
 }
 
 table.dataTable tr.even {
@@ -13,7 +13,7 @@ table.dataTable tr.even {
 }
 
 table.dataTable tr.odd td.sorting_1 {
-  background-color: #F1D023;
+  background-color: #FFF2B5;
 }
 
 table.dataTable tr.odd td.sorting_2 {

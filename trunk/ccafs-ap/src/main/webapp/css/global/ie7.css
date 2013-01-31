@@ -1,23 +1,7 @@
-.container {
-  background-image: url("../../images/global/header-background.png");
-  background-repeat: no-repeat;
-  margin-top: 30px;
-  margin-bottom: 15px;
-  height: 279px;
-  width: 1100px;
-  text-align: left;
-  zoom: 1;
-  *display: inline; 
-}
-
 /* Main Menu */
 
-nav#mainMenu ul a {
-  zomm: 1;
+nav#mainMenu ul a li {
   *display: inline;
-  color: white;
-  text-align: center;
-  width: 150px;  
 }
 
 #generalMessages {
@@ -49,9 +33,6 @@ nav#mainMenu ul a {
 }
 
 .checkboxGroup .checkboxLabel {
-  zomm: 1;
   *display: inline;
-  width: 29%;
-  padding: 3px;
 }
  

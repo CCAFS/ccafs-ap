@@ -20,7 +20,10 @@
         [#-- Adding remove link only for new deliverables --]
         [#if !deliverable.expected]
           <div class="removeLink">
-              <a id="removeDeliverable-${deliverable_index}" href="" class="removeDeliverable">Remove deliverable</a>
+              <img src="${baseUrl}/images/global/icon-remove.png" />
+              <a id="removeDeliverable-${deliverable_index}" href="" class="removeDeliverable">
+                Remove deliverable
+              </a>
           </div>
         [/#if]
         
@@ -56,7 +59,7 @@
         
         [#-- Status --]
         <div class="thirdPartBlock">
-          [@customForm.select name="activity.deliverables[${deliverable_index}].status" label="" i18nkey="reporting.activityDeliverables.deliverableStatus" listName="deliverableStatusList" keyFieldName="id"  displayFieldName="name" value="${activity.deliverables[deliverable_index].status.id}"/]
+          [@customForm.select name="activity.deliverables[${deliverable_index}].status" label="" i18nkey="reporting.activityDeliverables.deliverableStatus" listName="deliverableStatusList" keyFieldName="id"  displayFieldName="name" value="${activity.deliverables[deliverable_index].status.id}" /]
         </div>
         
         [#-- Formats --]
@@ -69,18 +72,11 @@
             </div>
           </div>
         [/#if]
-        
-        [#-- File name --]
-        <div class="fullBlock">
-          [@customForm.input name="activity.deliverables[${deliverable_index}].fileName" type="text" i18nkey="reporting.activityDeliverables.filename" /]
-        </div>
-        
       </div> <!-- End deliverable-${deliverable_index} -->
       <hr />
     [/#if]
   [/#list]
 [/#macro]
-
 <section class="content">
   [#include "/WEB-INF/global/pages/reporting-secondary-menu.ftl" /]
   
@@ -109,19 +105,23 @@
         [#-- Listing new deliverables (see macro above) --]
         [@deliverableSection isExpected=false /]
       
-        <div id="addDeliverableBlock">
+        <div id="addDeliverableBlock" class="addLink">
+          <img src="${baseUrl}/images/global/icon-add.png" />
           <a href="" class="addDeliverable" >Add deliverable</a>
         </div>
               
       </fieldset>
-    </div> <!-- End deliverables -->
+    </div> <!-- End items -->
     
     <!-- DELIVERABLE TEMPLATE -->
     <div id="template">
       <div id="deliverable-9999" class="deliverable" style="display: none;">      
         [#-- remove link --]      
-        <div class="removeLink">
-            <a id="removeDeliverable-9999" href="" class="removeDeliverable">Remove deliverable</a>
+        <div class="removeLink">            
+            <img src="${baseUrl}/images/global/icon-remove.png" />
+            <a id="removeDeliverable-9999" href="" class="removeDeliverable">
+              Remove deliverable
+            </a>
         </div>
         
         [#-- identifier --]
