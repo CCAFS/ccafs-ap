@@ -463,6 +463,19 @@ nav#secondaryMenu ul a li {
 }
 
 /******** SUMMARY BY OUTPUTS ***********/
+.outputTitle {
+  font-weight: bold;
+  font-size: 14px;
+  margin-bottom: 5px;
+}
+
+.outputDescription {
+  margin-bottom: 10px;
+}
+
+#outputSummary .outputSummary .textArea h6 {
+  display: none;
+}
 /*********** PUBLICATIONS **************/
 /*********** CASE STUDIES **************/
 /************* OUTCOMES ****************/

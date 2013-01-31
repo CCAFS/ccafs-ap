@@ -44,7 +44,7 @@
 
 <section class="content">
   [#include "/WEB-INF/global/pages/reporting-secondary-menu.ftl" /]
-  [@s.form action="partners!save"]
+  [@s.form action="partners"]
   <article class="halfContent">
     <h1 class="contentTitle">
       ${activity.leader.acronym} - [@s.text name="reporting.activityPartners.activity" /] ${activity.id}      
@@ -79,7 +79,7 @@
         [#-- remove link --]
         <div class="removeLink">
           <img src="${baseUrl}/images/global/icon-remove.png" />
-          <a id="removeActivityPartner-9999" href="" class="removePartner">Remove partner</a>
+          <a id="removeActivityPartner-9999" href="" class="removeActivityPartner">Remove partner</a>
         </div>
         
         [#-- Partner identifier --]

@@ -40,7 +40,10 @@
             
           </div>
         [/#list]
-        [@s.submit type="button" name="save"]SAVE[/@s.submit]
+        <div class="buttons">
+          [@s.submit type="button" name="save"]SAVE[/@s.submit]
+          [@s.submit type="button" name="cancel"]CANCEL[/@s.submit]
+        </div>
       [/@s.form]
     </article>
   </section>

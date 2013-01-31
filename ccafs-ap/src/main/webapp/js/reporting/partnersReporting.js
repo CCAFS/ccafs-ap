@@ -47,8 +47,8 @@ $(document).ready(function() {
     event.preventDefault();
     // Cloning template.
     var $newActivityPartner = $("#activityPartner-9999").clone(true);
-    $("#activityPartnerGroup").append($newActivityPartner);
-    $("#activityPartnerGroup").append("<hr />");
+    $(".addLink").before($newActivityPartner);
+    $(".addLink").before("<hr />");
     renameActivityPartners();
     $newActivityPartner.fadeIn("slow");
   });
