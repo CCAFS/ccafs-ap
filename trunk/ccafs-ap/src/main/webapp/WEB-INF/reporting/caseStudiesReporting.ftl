@@ -19,7 +19,6 @@
         <h1>
           ${currentUser.leader.acronym} - [@s.text name="reporting.caseStudies.caseStudies" /]  
         </h1>
-        
         <div id="caseStudiesBlock">
         [#-- Saved cases studies --]        
         [#list caseStudies as caseStudy]
@@ -29,8 +28,9 @@
           
             [#-- Remove link --]
             <div class="removeLink">
+              <img src="${baseUrl}/images/global/icon-remove.png" />
               <a id="removeCaseStudy-${caseStudy_index}" href="" class="removeCaseStudy">
-                Remove case studies
+                Remove case study
               </a>
             </div>
           
@@ -113,8 +113,9 @@
         
           [#-- In this section appear the new case studies after press the add link --]
           
-          <div id="addCaseStudiesBlock">
-            <a href="" class="addCaseStudies">Add Case Studies </a>
+          <div id="addCaseStudiesBlock" class="addLink">
+            <img src="${baseUrl}/images/global/icon-add.png" />
+            <a href="" class="addCaseStudies">Add a new case study</a>
           </div>
         </div>
         
@@ -126,8 +127,9 @@
             
             [#-- Remove link --]
             <div class="removeLink">
+              <img src="${baseUrl}/images/global/icon-remove.png" />
               <a id="removeCaseStudy-999" href="" class="removeCaseStudy">
-                Remove case studies
+                Remove case study
               </a>
             </div>
           
@@ -197,7 +199,10 @@
           </div>
         </div>
         [#-- Here endes Case Study Template --]
-        [@s.submit type="button" name="save"]SAVE[/@s.submit]
+        <div class="buttons">
+          [@s.submit type="button" name="save"]SAVE[/@s.submit]
+          [@s.submit type="button" name="cancel"]CANCEL[/@s.submit]
+        </div>
       [/@s.form]
     </article>
   </section>

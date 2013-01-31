@@ -31,8 +31,8 @@ $(document).ready(function() {
     event.preventDefault();
     // Cloning template.
     var $newPublication = $("#publication-9999").clone(true);
-    $("#publicationGroup").append($newPublication);
-    $("#publicationGroup").append("<hr />");
+    $(".addLink").before($newPublication);
+    $(".addLink").before("<hr />");
     renamePublications();
     $newPublication.fadeIn("slow");
   });

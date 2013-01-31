@@ -16,6 +16,7 @@
       
       [#-- Remove link for a publications --]
       <div class="removeLink">
+        <img src="${baseUrl}/images/global/icon-remove.png" />
         <a id="removePublication-${publication_index}" href="" class="removePublication">Remove publication</a>
       </div>
       
@@ -52,10 +53,11 @@
         <fieldset id="publicationGroup">
           <legend>[@s.text name="reporting.publications.publication" /]</legend>
           [@publicationSection /]
+          <div class="addLink">
+            <img src="${baseUrl}/images/global/icon-add.png" />        
+            <a href="" class="addPublication">Add new publication</a>
+          </div>
         </fieldset>
-        <div>
-          <a href="" class="addPublication">Add new publication</a>
-        </div>   
       </div>
       
       <!-- PUBLICATION TEMPLATE -->
@@ -63,6 +65,7 @@
         <div id="publication-9999" class="publication" style="display: none;">      
           [#-- remove link --]
           <div class="removeLink">
+            <img src="${baseUrl}/images/global/icon-remove.png" />
             <a id="removePublication-9999" href="" class="removePublication">Remove publication</a>
           </div>
           
@@ -86,7 +89,10 @@
         </div> <!-- End publication template -->
       </div> <!-- End template -->
       
-      [@s.submit type="button" name="save"]SAVE[/@s.submit]
+      <div class="buttons">
+        [@s.submit type="button" name="save"]SAVE[/@s.submit]
+        [@s.submit type="button" name="cancel"]CANCEL[/@s.submit]
+      </div>
     </article>
   [/@s.form]
  
