@@ -53,7 +53,7 @@ function addDatepicker() {
 
 function renameCaseStudies() {
   // getting the number of expected deliverables.
-  $("#caseStudiesBlock .caseStudy").each(
+  $("#caseStudiesGroup .caseStudy").each(
       function(index, caseStudy) {
         // Changing attributes of each component in order to match with the array order.
         // Main div.

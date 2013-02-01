@@ -5,6 +5,7 @@
 [#-- assign customCSS = ["${baseUrl}/css/reporting/partnersReporting.css"] / --]
 [#assign currentSection = "reporting" /]
 [#assign currentReportingSection = "publications" /]
+[#assign userRole = "${currentUser.role}"]
 
 [#include "/WEB-INF/global/pages/header.ftl" /]
 [#include "/WEB-INF/global/pages/main-menu.ftl" /]
@@ -44,7 +45,7 @@
 
 <section class="content">
   [#include "/WEB-INF/global/pages/reporting-secondary-menu.ftl" /]
-  [@s.form action="publications!save"]
+  [@s.form action="publications"]
     <article class="halfContent">
       <h1 class="contentTitle">
         [@s.text name="reporting.publications.publication" /] - ${currentUser.leader.acronym} 

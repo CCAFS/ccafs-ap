@@ -50,9 +50,11 @@ public class LoginAction extends BaseAction {
         loggedUser.setLastLogin(new Date());
         this.getSession().put(APConstants.SESSION_USER, loggedUser);
         LOG.info("User " + user.getEmail() + " logged in successfully.");
-        System.out.println("isLogged(): " + this.isLogged());
       } else {
+        // user = new User();
         LOG.info("User " + user.getEmail() + " tried to logged in but failed.");
+        user.setPassword(null);
+        addFieldError("loginMesage", getText("home.login.error"));
         return INPUT;
       }
     }

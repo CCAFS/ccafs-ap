@@ -119,7 +119,7 @@ public class DeliverablesReportingAction extends BaseAction {
     deliverableTypeIdsNeeded[1] = deliverableTypesList[3].getId();
 
     // Remove all expected deliverables in case user clicked on submit button
-    if (save) {
+    if (this.getRequest().getMethod().equalsIgnoreCase("post")) {
       Iterator<Deliverable> iter = activity.getDeliverables().iterator();
       while (iter.hasNext()) {
         if (!iter.next().isExpected()) {
