@@ -10,6 +10,7 @@ import org.cgiar.ccafs.ap.data.model.CaseStudy;
 import org.cgiar.ccafs.ap.data.model.Country;
 import org.cgiar.ccafs.ap.util.FileManager;
 
+import java.io.File;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.List;
@@ -78,7 +79,7 @@ public class CaseStudiesAction extends BaseAction {
    * @return the url where images are
    */
   public String getCaseStudiesImagesUrl() {
-    return config.getCaseStudiesImagesUrl() + getCurrentLogframe().getYear() + "/"
+    return config.getCaseStudiesImagesUrl() + "/" + getCurrentLogframe().getYear() + "/"
       + getCurrentUser().getLeader().getAcronym() + "/";
   }
 
@@ -95,8 +96,8 @@ public class CaseStudiesAction extends BaseAction {
    * @return complete path where the image is stored
    */
   private String getFolderPath(String imageName) {
-    return config.getCaseStudiesImagesPath() + getCurrentLogframe().getYear() + "/"
-      + getCurrentUser().getLeader().getAcronym() + "/" + imageName;
+    return config.getCaseStudiesImagesPath() + File.separator + getCurrentLogframe().getYear() + File.separator
+      + getCurrentUser().getLeader().getAcronym() + File.separator + imageName;
   }
 
   @Override
@@ -218,7 +219,7 @@ public class CaseStudiesAction extends BaseAction {
           // Check if the file type is an image
           if (!type.equalsIgnoreCase("image")) {
             addFieldError("caseStudies[" + c + "].image",
-              getText("validation.badFormatFile", new String[] {"an image"}));
+              getText("validation.file.badFormat", new String[] {"an image"}));
             anyError = true;
           }
           // TODO - check the maximum size allowed because, the tomcat has a max size defined too
@@ -228,7 +229,7 @@ public class CaseStudiesAction extends BaseAction {
           // Check the file size
           if (caseStudies.get(c).getImage().length() > config.getFileMaxSize()) {
             addFieldError("caseStudies[" + c + "].image",
-              getText("validation.FileTooLarge", new String[] {config.getFileMaxSize() + ""}));
+              getText("validation.file.tooLarge", new String[] {config.getFileMaxSize() + ""}));
             anyError = true;
           }
 
