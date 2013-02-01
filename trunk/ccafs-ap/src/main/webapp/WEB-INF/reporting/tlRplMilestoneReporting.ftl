@@ -6,6 +6,7 @@
 [#assign currentSection = "reporting" /]
 [#assign currentReportingSection = "tlRpl" /]
 [#assign currentStage = "TLRPLMilestoneReport" /]
+[#assign userRole = "${currentUser.role}"]
 
 [#include "/WEB-INF/global/pages/header.ftl" /]
 [#include "/WEB-INF/global/pages/main-menu.ftl" /]
@@ -17,14 +18,17 @@
   [#include "/WEB-INF/global/pages/reporting-secondary-menu.ftl" /]
   [@s.form action="tlRplMilestones"]
     <article class="halfContent">
-      <h1>[@s.text name="reporting.tlRplMilestoneReport.milestoneReport" /] - ${currentUser.leader.acronym}</h1>
+      <h1 class="contentTitle">
+        [@s.text name="reporting.tlRplMilestoneReport.milestoneReport" /] - ${currentUser.leader.acronym}
+      </h1>
 
+      <div id="items">
         [#list milestoneReports as milestoneReport]
           [#-- Open a fieldset every time the theme code changes --]
           [#if milestoneReport.milestone.output.objective.theme.code?number != theme]
             [#assign theme =  milestoneReport.milestone.output.objective.theme.code?number /]  
-            <fieldset>
-              <legend>[@s.text name="reporting.tlRplMilestoneReport.theme" /] ${theme}</legend>
+            <fieldset class="milestoneReportGroup">
+              <legend>[@s.text name="reporting.tlRplMilestoneReport.milestonesTheme" /] ${theme}</legend>
           [/#if]
           
           <div class="milestoneReport-${milestoneReport_index}">
@@ -46,24 +50,31 @@
           
             [#-- Milestone status --]
             [#-- Only the TL can set the milestone status --]
-            [#if currentUser.TL]
+            [#if currentUser.TL || currentUser.admin]
               <div class="milestoneReportStatus">
                 [@customForm.radioButtonGroup name="milestoneReports[${milestoneReport_index}].status.id" label="" i18nkey="reporting.tlRplMilestoneReport.milestoneStatus" listName="milestoneStatusList" keyFieldName="id" displayFieldName="name" value="${milestoneReport.status.id}" /]
               </div>  
             [/#if]
             
             [#-- TL/RPL Milestone description --]
-            <div>
-              [#if currentUser.RPL]
-                [#-- Theme leader description field disabled --]
+            [#if currentUser.RPL || currentUser.admin]
+              [#-- Theme leader description field disabled --]
+              <div class="tlDescription disabled">
                 [@customForm.textArea value="${milestoneReport.themeLeaderDescription}" name="milestoneReports[${milestoneReport_index}].themeLeaderDescription" i18nkey="reporting.tlRplMilestoneReport.TLdescription" disabled=true /]
+              </div>
+              <div class="rplDescription">
                 [@customForm.textArea value="${milestoneReport.regionalLeaderDescription}" name="milestoneReports[${milestoneReport_index}].regionalLeaderDescription" i18nkey="reporting.tlRplMilestoneReport.RPLdescription" required=true /]
-              [#elseif currentUser.TL]
+              </div>
+            [#elseif currentUser.TL || currentUser.admin]
+              <div class="tlDescription">
                 [@customForm.textArea value="${milestoneReport.themeLeaderDescription}" name="milestoneReports[${milestoneReport_index}].themeLeaderDescription" i18nkey="reporting.tlRplMilestoneReport.TLdescription" required=true /]
-                [#-- Regional program leader description field disabled --]
+              </div>
+              [#-- Regional program leader description field disabled --]
+              <div class="rplDescription disabled">
                 [@customForm.textArea value="${milestoneReport.regionalLeaderDescription}" name="milestoneReports[${milestoneReport_index}].regionalLeaderDescription" i18nkey="reporting.tlRplMilestoneReport.RPLdescription" disabled=true /]
-              [/#if]              
-            </div>
+              </div>
+            [/#if]              
+            
             
             [#-- Separator --]
             <hr />
@@ -78,7 +89,11 @@
             [/#if]
           [/#if]
         [/#list]
-      [@s.submit type="button" name="save"]SAVE[/@s.submit]
+      </div>
+      
+      <div class="buttons">
+        [@s.submit type="button" name="save"]SAVE[/@s.submit]
+      </div>
       
       [#include "/WEB-INF/reporting/tlRplSubMenu.ftl" /]  
     </article>

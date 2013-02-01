@@ -1,6 +1,6 @@
 [#ftl]
 [#assign title = "Welcome to CCAFS Activity Planning" /]
-[#assign jsIncludes = ["jquery"] /]
+[#assign jsIncludes = [""] /]
 [#assign customCSS = ["${baseUrl}/css/home/login.css"] /]
 [#assign currentSection = "home" /]
 
@@ -19,8 +19,9 @@
     [#if logged]
       <p class="alreadyLogged">You are already logged in as</p>
       <span class="alreadyLoggedEmail">${currentUser.email}</span>
-    [#else]
-      [@s.form method="POST" action="login" cssClass="loginForm"]    	
+    [#else]      
+      [@s.form method="POST" action="login" cssClass="loginForm"]
+        [@s.fielderror cssClass="fieldError" fieldName="loginMesage"/]    	
         [@customForm.input name="user.email" i18nkey="home.login.email" required=true /]
         [@customForm.input name="user.password" i18nkey="home.login.password" required=true type="password" /]
         [@s.submit key="home.login.button" name="login" /]    	

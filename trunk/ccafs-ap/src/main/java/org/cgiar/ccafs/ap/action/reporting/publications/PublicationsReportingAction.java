@@ -56,20 +56,18 @@ public class PublicationsReportingAction extends BaseAction {
 
   @Override
   public String save() {
-    if (publications.size() > 0) {
-      // Remove all publication from the database.
-      boolean removed =
-        publicationManager.removeAllPublications(this.getCurrentUser().getLeader(), this.getCurrentLogframe());
-      if (removed) {
-        boolean added =
-          publicationManager.savePublications(publications, this.getCurrentLogframe(), this.getCurrentUser()
-            .getLeader());
-        if (added) {
-          addActionMessage(getText("saving.success", new String[] {getText("reporting.publications.publication")}));
-          return SUCCESS;
-        }
+    // Remove all publication from the database.
+    boolean removed =
+      publicationManager.removeAllPublications(this.getCurrentUser().getLeader(), this.getCurrentLogframe());
+    if (removed) {
+      boolean added =
+        publicationManager.savePublications(publications, this.getCurrentLogframe(), this.getCurrentUser().getLeader());
+      if (added) {
+        addActionMessage(getText("saving.success", new String[] {getText("reporting.publications.publication")}));
+        return SUCCESS;
       }
     }
+
     addActionError(getText("saving.problem"));
     return INPUT;
   }
@@ -85,7 +83,7 @@ public class PublicationsReportingAction extends BaseAction {
   @Override
   public void validate() {
     super.validate();
-    // If the page is loading dont validate
+    // If the page is loading don't validate
     if (getRequest().getMethod().equalsIgnoreCase("post")) {
       boolean problem = false;
       int c = 0;

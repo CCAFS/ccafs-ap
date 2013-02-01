@@ -47,7 +47,7 @@ public class TLOutputSummaryReportingAction extends BaseAction {
       addActionError(getText("saving.problem"));
       return INPUT;
     } else {
-      addActionMessage(getText("saving.success", new String[] {getText("reporting.publications.publication")}));
+      addActionMessage(getText("saving.success", new String[] {getText("reporting.tlOutputSummaries")}));
       return SUCCESS;
     }
   }
@@ -59,7 +59,7 @@ public class TLOutputSummaryReportingAction extends BaseAction {
   @Override
   public void validate() {
     super.validate();
-    // If the page is loading dont validate
+    // If the page is loading don't validate
     if (getRequest().getMethod().equalsIgnoreCase("post")) {
       boolean problem = false;
       int c = 0;

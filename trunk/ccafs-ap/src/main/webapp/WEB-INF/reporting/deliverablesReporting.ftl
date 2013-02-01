@@ -5,6 +5,7 @@
 [#assign currentSection = "reporting" /]
 [#assign currentReportingSection = "activities" /]
 [#assign currentStage = "deliverables" /]
+[#assign userRole = "${currentUser.role}"]
 
 [#include "/WEB-INF/global/pages/header.ftl" /]
 [#include "/WEB-INF/global/pages/main-menu.ftl" /]

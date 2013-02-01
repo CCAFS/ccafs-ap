@@ -98,6 +98,7 @@ input[type="radio"] {
 
 /* General Messages */
 #generalMessages {
+  margin-top: 20px;
   text-align: center;
 }
 
@@ -497,6 +498,28 @@ nav#secondaryMenu ul a li {
 /* TL/RPL Synthesis Report */
 #synthesisReport .textArea h6 {
   font-weight: normal;
+}
+/* TL/RPL Milestone Report*/
+.milestoneReportTitle {
+  font-weight: bold;
+  font-size: 14px;
+  margin-bottom: 5px;
+}
+
+.milestoneReportDescription {
+  margin-bottom: 10px;
+}
+
+.milestoneReportStatus {
+  margin-bottom: 10px;
+}
+
+.tlDescription {
+  margin-bottom: 10px;
+}
+
+.rplDescription {
+  margin-bottom: 10px;
 }
 
 /*************** FOOTER ****************/

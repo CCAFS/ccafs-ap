@@ -5,6 +5,7 @@
 [#-- assign customCSS = ["${baseUrl}/css/reporting/partnersReporting.css"] / --]
 [#assign currentSection = "reporting" /]
 [#assign currentReportingSection = "outcomes" /]
+[#assign userRole = "${currentUser.role}"]
 
 [#include "/WEB-INF/global/pages/header.ftl" /]
 [#include "/WEB-INF/global/pages/main-menu.ftl" /]
