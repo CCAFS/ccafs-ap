@@ -9,7 +9,7 @@ import org.apache.commons.lang3.builder.ToStringBuilder;
 public class User {
 
   public enum UserRole {
-    CP, TL, RPL, Admin
+    PI, CP, TL, RPL, Admin
   }
 
   private int id;
@@ -75,6 +75,15 @@ public class User {
   }
 
   /**
+   * Validate if the current user is a Principal Investigator.
+   * 
+   * @return true if the user is actually a Principal Investigator, or false otherwise.
+   */
+  public boolean isPI() {
+    return this.role == UserRole.PI;
+  }
+
+  /**
    * Validate if the current user is a Regional Program Leader.
    * 
    * @return true if the user is actually a Regional Program Leader, or false otherwise.
@@ -135,6 +144,9 @@ public class User {
         break;
       case "RPL":
         this.role = UserRole.RPL;
+        break;
+      case "PI":
+        this.role = UserRole.PI;
         break;
       default:
         break;
