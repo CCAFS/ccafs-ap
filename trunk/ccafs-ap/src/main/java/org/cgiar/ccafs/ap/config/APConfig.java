@@ -71,12 +71,19 @@ public class APConfig {
   }
 
   public String getCaseStudiesImagesUrl() {
-    try {
-      return properties.getPropertiesAsString("file.caseStudiesImagesUrl");
-    } catch (Exception e) {
-      LOG.error("there is not a path for the user images configured.");
+    String url = properties.getPropertiesAsString("file.caseStudiesImagesUrl");
+    if (url == null) {
+      LOG.error("There is not a url for case studies images configured");
+      return null;
     }
-    return null;
+    while (url != null && url.endsWith("/")) {
+      url = url.substring(0, url.length() - 1);
+    }
+    if (!url.startsWith("http://")) {
+      url = "http://" + url;
+      return url;
+    }
+    return url;
   }
 
   /**
