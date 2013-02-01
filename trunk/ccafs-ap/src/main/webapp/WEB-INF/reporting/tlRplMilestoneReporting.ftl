@@ -80,7 +80,7 @@
         [/#list]
       [@s.submit type="button" name="save"]SAVE[/@s.submit]
       
-      [#include "/WEB-INF/reporting/TLRPLSubMenu.ftl" /]  
+      [#include "/WEB-INF/reporting/tlRplSubMenu.ftl" /]  
     </article>
   [/@s.form]
  

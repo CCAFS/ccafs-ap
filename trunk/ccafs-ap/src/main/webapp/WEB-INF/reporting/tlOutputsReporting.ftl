@@ -20,7 +20,7 @@
           [@s.text name="reporting.tlOutputSummaries" /] - ${currentUser.leader.acronym} 
         </h1>
       <div id="items">      
-        <fieldset id="outcomeGroup">
+        <fieldset id="outputsGroup">
           <legend>[@s.text name="reporting.tlOutputSummaries" /]</legend>
           [#list tlOutputSummaries as tlOutputSummary]
             <div id="tlOutputSummary-${tlOutputSummary_index}">
@@ -47,9 +47,12 @@
         </fieldset>        
       </div>      
       
-      [@s.submit type="button" name="save"]SAVE[/@s.submit]
+      <div class="buttons">
+        [@s.submit type="button" name="save"]SAVE[/@s.submit]
+        [@s.submit type="button" name="cancel"]CANCEL[/@s.submit]
+      </div>
       
-      [#include "/WEB-INF/reporting/TLRPLSubMenu.ftl" /]  
+      [#include "/WEB-INF/reporting/tlRplSubMenu.ftl" /]  
     </article>
   [/@s.form]
  

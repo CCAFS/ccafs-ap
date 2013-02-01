@@ -479,7 +479,25 @@ nav#secondaryMenu ul a li {
 /*********** PUBLICATIONS **************/
 /*********** CASE STUDIES **************/
 /************* OUTCOMES ****************/
+.outcome .textArea h6 {
+  font-weight: normal;
+}
 /************ TL/RPL ONLY **************/
+/* TL/RPL Sub-Menu */
+#stageMenu.tlRplSubMenu ul a li {
+   font-size: 12px;
+   margin-top: 2px;
+   width: 110px;
+}
+
+/* TL Outputs */
+#outputsGroup .textArea h6 {
+  display: none;
+}
+/* TL/RPL Synthesis Report */
+#synthesisReport .textArea h6 {
+  font-weight: normal;
+}
 
 /*************** FOOTER ****************/
 #footerContainer {
