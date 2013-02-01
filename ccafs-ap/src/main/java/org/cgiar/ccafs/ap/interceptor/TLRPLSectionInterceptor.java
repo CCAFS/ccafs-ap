@@ -23,7 +23,7 @@ public class TLRPLSectionInterceptor extends AbstractInterceptor {
   public String intercept(ActionInvocation invocation) throws Exception {
     Map<String, Object> session = invocation.getInvocationContext().getSession();
     User user = (User) session.get(APConstants.SESSION_USER);
-    if (user.isTL() || user.isRPL()) {
+    if (user.isTL() || user.isRPL() || user.isAdmin()) {
       return invocation.invoke();
     }
 

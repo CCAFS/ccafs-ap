@@ -1,5 +1,5 @@
 [#ftl]
-<nav id="stageMenu">
+<nav id="stageMenu" class="tlRplSubMenu">
   <ul>
     <a [#if currentStage == "tlOutputSummary"] class="currentReportingSection" [/#if] href="
         [@s.url action='tlOutputs' includeParams='get'][/@s.url]
