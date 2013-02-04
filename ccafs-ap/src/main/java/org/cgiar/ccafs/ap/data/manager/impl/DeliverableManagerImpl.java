@@ -49,7 +49,9 @@ public class DeliverableManagerImpl implements DeliverableManager {
     // If deliverable has an id the addDeliverable function return 0 as id,
     // so, the id must be set to its original value
     deliverableId = (deliverable.getId() != -1) ? deliverable.getId() : deliverableId;
-    if (deliverableId >= 0) {
+
+    // If it is a new deliverable insert the file formats
+    if (deliverable.getId() == -1) {
       // Check if the deliverable has file formats
       if (!deliverable.getFileFormatsIds().isEmpty()) {
         // lets add the file format list.

@@ -145,10 +145,13 @@ public class DeliverablesReportingAction extends BaseAction {
         // if the deliverable type need a file format specification.
         Arrays.sort(deliverableTypeIdsNeeded);
         if (Arrays.binarySearch(deliverableTypeIdsNeeded, deliverable.getType().getId()) >= 0) {
-          boolean fileFormatsUpdated =
-            fileFormatManager.setFileFormats(deliverable.getId(), deliverable.getFileFormats());
-          if (!fileFormatsUpdated) {
-            problem = true;
+          // If it is a saved deliverable set the file formats
+          if (deliverable.getId() != -1) {
+            boolean fileFormatsUpdated =
+              fileFormatManager.setFileFormats(deliverable.getId(), deliverable.getFileFormats());
+            if (!fileFormatsUpdated) {
+              problem = true;
+            }
           }
         }
         if (!deliverableAdded) {

@@ -31,6 +31,8 @@ $(document).ready(function() {
   });
 
   addDatepicker();
+  // Activate the chosen plugin to the existing case studies  
+  addChosen();
 });
 
 // Attach the datepicker plugin to the date inputs
@@ -47,6 +49,16 @@ function addDatepicker() {
         changeYear : true,
         defaultDate : null
       });
+    }
+  });
+}
+
+// Activate the chosen plugin to the countries inputs
+function addChosen() {
+  $("select[name$='countries']").each(function() {
+    // Check if its not the template countries field
+    if ($(this).attr("name") != 'countries') {
+      $(this).chosen();
     }
   });
 }
@@ -83,6 +95,7 @@ function renameCaseStudies() {
             "caseStudies[" + index + "].image");
         $(this).find("[for$='image']").attr("for",
             "caseStudies[" + index + "].image");
+
         // Date.
         $(this).find("[id$='date']").attr("id",
             "caseStudies[" + index + "].date");
@@ -90,11 +103,13 @@ function renameCaseStudies() {
             "caseStudies[" + index + "].date");
         // Add the datepicker event
         addDatepicker();
-        // Countries.
+        // Countries.        
         $(this).find("[id$='countries']").attr("id",
             "caseStudies[" + index + "].countries");
-        $(this).find("[name$='countries']").attr("name",
+        $(this).find("[id$='countries']").attr("name",
             "caseStudies[" + index + "].countries");
+        // Activate the chosen plugin
+        $(this).find("select[id$='countries']").chosen();
         // Keywords.
         $(this).find("[id$='keywords']").attr("id",
             "caseStudies[" + index + "].keywords");
