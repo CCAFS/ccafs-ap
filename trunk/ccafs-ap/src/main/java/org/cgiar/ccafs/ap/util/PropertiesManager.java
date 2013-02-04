@@ -18,7 +18,7 @@ public class PropertiesManager {
     try {
       properties.load(new FileInputStream(PROPERTIES_FILE));
     } catch (IOException e) {
-      System.err.println("The indicated file has not been found, file needed: \""
+      System.out.println("The indicated file has not been found, file needed: \""
         + new File(PROPERTIES_FILE).getAbsolutePath() + "\"");
       e.getLocalizedMessage();
       System.exit(-1);
