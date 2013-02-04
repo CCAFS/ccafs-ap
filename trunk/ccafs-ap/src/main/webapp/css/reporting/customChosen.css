@@ -1,0 +1,28 @@
+@import url("../libs/chosen/chosen.css");
+
+.chzn-container .chzn-results .highlighted {
+  background-color: #3C771C;
+  filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#3C771C', endColorstr='#4E892E', GradientType=0 );  
+  background-image: -webkit-gradient(linear, 0 0, 0 100%, color-stop(20%, #3C771C), color-stop(90%, #4E892E));
+  background-image: -webkit-linear-gradient(top, #3C771C 20%, #4E892E 90%);
+  background-image: -moz-linear-gradient(top, #3C771C 20%, #4E892E 90%);
+  background-image: -o-linear-gradient(top, #3C771C 20%, #4E892E 90%);
+  background-image: linear-gradient(#3C771C 20%, #4E892E 90%);
+  color: #fff;
+}
+
+.chzn-container-active .chzn-single {
+    border: 1px solid #427D22;
+}
+
+.chzn-container-active .chzn-choices {
+    border: 1px solid #427D22;
+}
+
+.chzn-container .chzn-drop {
+    width: 100% !important;
+}
+
+.chzn-container-multi .chzn-choices {
+    width: 614px;
+}

@@ -76,7 +76,12 @@ public class StatusReportingAction extends BaseAction {
   }
 
   public boolean getHasGender() {
-    return this.getActivity().getGenderIntegrationsDescription() != null;
+    if (this.getActivity().getGenderIntegrationsDescription() != null) {
+      if (this.getGenderIntegrationOption() == null || this.getGenderIntegrationOption().equals("1")) {
+        return true;
+      }
+    }
+    return false;
   }
 
   public String getMilestoneRequestParameter() {
@@ -136,8 +141,7 @@ public class StatusReportingAction extends BaseAction {
         addFieldError("activity.statusDescription", getText("validation.field.required"));
         problem = true;
       }
-      if (this.getGenderIntegrationOption() != null && this.getGenderIntegrationOption().equals("1")
-        && activity.getGenderIntegrationsDescription().isEmpty()) {
+      if (this.getHasGender() && activity.getGenderIntegrationsDescription().isEmpty()) {
         addFieldError("activity.genderIntegrationsDescription", getText("validation.field.required"));
         problem = true;
       }

@@ -2,7 +2,7 @@
 [#assign title = "Case Studies" /]
 [#assign globalLibs = ["jquery", "noty", "jqueryUI", "chosen"] /]
 [#assign customJS = ["${baseUrl}/js/reporting/caseStudiesReporting.js"] /]
-[#assign customCSS = ["${baseUrl}/css/libs/jqueryUI/jquery-ui-1.9.2.custom.css", "${baseUrl}/css/libs/chosen/chosen.css"] /]
+[#assign customCSS = ["${baseUrl}/css/libs/jqueryUI/jquery-ui-1.9.2.custom.css", "${baseUrl}/css/reporting/customChosen.css"] /]
 [#assign currentSection = "reporting" /]
 [#assign currentReportingSection = "caseStudies" /]
 [#assign userRole = "${currentUser.role}"]
@@ -59,33 +59,34 @@
             [@customForm.input name="caseStudies[${caseStudy_index}].date" type="text" i18nkey="reporting.caseStudies.date" /]
           </div>
           
-          [#-- Countries --]
-          <div class="halfPartBlock countriesBlock">
-            [@customForm.select name="caseStudies[${caseStudy_index}].countries" label="" i18nkey="reporting.caseStudies.country" listName="countryList" keyFieldName="id"  displayFieldName="name" value="caseStudies[${caseStudy_index}].countriesIds" multiple=true /]              
-          </div>
           
           [#-- image --]
-          <div class="halfPartBlock imageBlock">
+          <div class="fullBlock imageBlock">
             [#if caseStudy.imageFileName??]
-              <div id="image">
+              <div id="caseStudies[${caseStudy_index}].image" class="halfPartBlock image">
                 <img src="${caseStudiesImagesUrl}/${caseStudy.imageFileName}" width="100%">
               </div>
-              <div>
+              <div class="halfPartBlock browseInput">
                 [@customForm.input name="caseStudies[${caseStudy_index}].image" type="file" i18nkey="reporting.caseStudies.image" /]
-              </div>
+              </div>                            
             [#else]
-              <div id="caseStudies[${caseStudy_index}].image"></div>
-              <div>
+              <div id="caseStudies[${caseStudy_index}].image" class="halfPartBlock image"></div>
+              <div class="halfPartBlock browseInput">
                 [@customForm.input name="caseStudies[${caseStudy_index}].image" type="file" i18nkey="reporting.caseStudies.image" /]
-              </div>    
+              </div>                                
             [/#if]
+            <div class="clear"> </div>
+          </div>
+          
+          [#-- Countries --]
+          <div class="fullBlock countriesBlock">
+            [@customForm.select name="caseStudies[${caseStudy_index}].countries" label="" i18nkey="reporting.caseStudies.countries" listName="countryList" keyFieldName="id"  displayFieldName="name" value="caseStudies[${caseStudy_index}].countriesIds" multiple=true /]              
           </div>
           
           [#-- Keywords --]
-          <div class="halfPartBlock">
+          <div class="fullBlock">
             [@customForm.input name="caseStudies[${caseStudy_index}].keywords" type="text" i18nkey="reporting.caseStudies.keywords" /]
           </div>
-          
           
           [#-- Objectives --]
           <div class="fullBlock">
@@ -160,21 +161,21 @@
           [@customForm.input name="date" type="text" i18nkey="reporting.caseStudies.date" /]
         </div>            
         
-        [#-- Countries --]
-        <div class="halfPartBlock countriesBlock">
-          [@customForm.select name="countries" label="" i18nkey="reporting.caseStudies.country" listName="countryList" keyFieldName="id"  displayFieldName="name" value="" multiple=true /]              
-        </div>
-        
         [#-- image url --]
-        <div class="halfPartBlock imageBlock">
-          <div id="image"></div>
-          <div>
+        <div class="fullBlock imageBlock">
+          <div class="halfPartBlock browseInput">
             [@customForm.input name="image" type="file" i18nkey="reporting.caseStudies.image" /]
           </div>
+          <div id="image" class="halfPartBlock image"></div>
+        </div>
+        
+        [#-- Countries --]
+        <div class="fullBlock countriesBlock">
+          [@customForm.select name="countries" label="" i18nkey="reporting.caseStudies.countries" listName="countryList" keyFieldName="id"  displayFieldName="name" value="" multiple=true /]              
         </div>
         
         [#-- Keywords --]
-        <div class="halfPartBlock">
+        <div class="fullBlock">
           [@customForm.input name="keywords" type="text" i18nkey="reporting.caseStudies.keywords" /]
         </div>            
         

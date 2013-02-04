@@ -73,6 +73,11 @@
             </div>
           </div>
         [/#if]
+        
+        [#-- File name --]
+        <div class="fullBlock">
+          [@customForm.input name="activity.deliverables[${deliverable_index}].fileName" type="text" i18nkey="reporting.activityDeliverables.filename" /]
+        </div>
       </div> <!-- End deliverable-${deliverable_index} -->
       <hr />
     [/#if]
