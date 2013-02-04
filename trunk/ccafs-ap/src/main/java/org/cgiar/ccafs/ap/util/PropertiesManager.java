@@ -1,5 +1,6 @@
 package org.cgiar.ccafs.ap.util;
 
+import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.util.Properties;
@@ -17,7 +18,8 @@ public class PropertiesManager {
     try {
       properties.load(new FileInputStream(PROPERTIES_FILE));
     } catch (IOException e) {
-      System.out.println("The indicated file has not been found, file needed: \"ccafsap.properties\"");
+      System.err.println("The indicated file has not been found, file needed: \""
+        + new File(PROPERTIES_FILE).getAbsolutePath() + "\"");
       e.getLocalizedMessage();
       System.exit(-1);
     }
