@@ -93,6 +93,7 @@
       
       <div class="buttons">
         [@s.submit type="button" name="save"]SAVE[/@s.submit]
+        [@s.submit type="button" name="cancel"]CANCEL[/@s.submit]
       </div>
       
       [#include "/WEB-INF/reporting/tlRplSubMenu.ftl" /]  
