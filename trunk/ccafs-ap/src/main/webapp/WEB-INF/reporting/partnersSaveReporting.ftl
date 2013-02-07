@@ -1,6 +1,6 @@
 [#ftl]
 [#assign title = "Insert a partner" /]
-[#assign globalLibs = ["jquery", "jqueryUI", "noty"] /]
+[#assign globalLibs = ["jquery", "noty"] /]
 [#assign customCSS = ["${baseUrl}/css/reporting/partnersReporting.css"] /]
 [#assign customJS = ["${baseUrl}/js/reporting/partnerSaveReporting.js"] /]
 

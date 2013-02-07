@@ -41,10 +41,19 @@
         [/#if]
         
         [#if libraryName="jquery"]
-          <script src="${baseUrl}/js/libs/jquery/jquery-1.8.2.min.js"></script>          
+          [#-- JQuery Core --]
+          <script src="${baseUrl}/js/libs/jquery/jquery-1.8.2.min.js"></script>
+          [#-- JQuery UI --]
+          <script src="${baseUrl}/js/libs/jqueryUI/jquery-ui-1.10.0.custom.min.js"></script>
+          <link rel="stylesheet" type="text/css" href="${baseUrl}/css/libs/jqueryUI/smoothness/jquery-ui-1.10.0.custom.min.css" />
         [/#if]
         
         [#if libraryName="jqueryUI"]
+          <script src="${baseUrl}/js/libs/jqueryUI/jquery-ui-1.10.0.custom.min.js"></script>
+          <link rel="stylesheet" type="text/css" href="${baseUrl}/css/libs/jqueryUI/smoothness/jquery-ui-1.10.0.custom.min.css" />
+        [/#if]
+        
+        [#if libraryName="jqueryAndUI"]          
           <script src="${baseUrl}/js/libs/jqueryUI/jquery-ui-1.10.0.custom.min.js"></script>
           <link rel="stylesheet" type="text/css" href="${baseUrl}/css/libs/jqueryUI/smoothness/jquery-ui-1.10.0.custom.min.css" />
         [/#if]
