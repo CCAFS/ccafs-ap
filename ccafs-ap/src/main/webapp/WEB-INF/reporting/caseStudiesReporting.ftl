@@ -2,7 +2,6 @@
 [#assign title = "Case Studies" /]
 [#assign globalLibs = ["jquery", "noty", "jqueryUI", "chosen"] /]
 [#assign customJS = ["${baseUrl}/js/reporting/caseStudiesReporting.js"] /]
-[#assign customCSS = ["${baseUrl}/css/libs/jqueryUI/jquery-ui-1.9.2.custom.css", "${baseUrl}/css/reporting/customChosen.css"] /]
 [#assign currentSection = "reporting" /]
 [#assign currentReportingSection = "caseStudies" /]
 [#assign userRole = "${currentUser.role}"]
@@ -23,7 +22,7 @@
     <div id="items">
       <fieldset id="caseStudiesGroup">
         <legend>
-          <h5>[@s.text name="reporting.caseStudies.caseStudies" /] </h5>
+          <h5>[@s.text name="reporting.caseStudies.caseStudies" /]</h5>
         </legend>
       
         [#-- Saved cases studies --]        

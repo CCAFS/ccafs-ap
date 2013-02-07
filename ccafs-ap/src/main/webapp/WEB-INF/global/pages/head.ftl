@@ -32,6 +32,8 @@
      [#list globalLibs as libraryName]
         [#if libraryName="chosen"]
           <script src="${baseUrl}/js/libs/chosen/chosen-0.9.11.jquery.min.js"></script>
+          <link rel="stylesheet" type="text/css" href="${baseUrl}/css/libs/chosen/chosen.css" />
+          <link rel="stylesheet" type="text/css" href="${baseUrl}/css/reporting/customChosen.css" />
         [/#if]
         
         [#if libraryName="dataTable"]
@@ -43,7 +45,8 @@
         [/#if]
         
         [#if libraryName="jqueryUI"]
-          <script src="${baseUrl}/js/libs/jqueryUI/jquery-ui-1.9.2.custom.js"></script>          
+          <script src="${baseUrl}/js/libs/jqueryUI/jquery-ui-1.10.0.custom.min.js"></script>
+          <link rel="stylesheet" type="text/css" href="${baseUrl}/css/libs/jqueryUI/smoothness/jquery-ui-1.10.0.custom.min.css" />
         [/#if]
         
         [#if libraryName="noty"]

@@ -8,6 +8,12 @@ $(document).ready(function() {
         type: $(this).attr("class"), 
         text: $(this).text()
       });
-  });
+    });
   }
+  
+  /* Tooltips with JQuery UI*/
+  $(document).tooltip({
+    track: true
+  });
+  
 });
