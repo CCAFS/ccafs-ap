@@ -1,5 +1,8 @@
 [#ftl]
-<nav id="secondaryMenu">
+<div id="arrowDown">
+  <img src="${baseUrl}/images/global/complete-arrow.png" />
+</div>
+<nav id="secondaryMenu">  
   <ul>
     <a [#if currentReportingSection == "activities"] class="currentReportingSection" [/#if] href="${baseUrl}/reporting/activities.do"><li>Activities</li></a>
     <a [#if currentReportingSection == "outputs"] class="currentReportingSection" [/#if] href="${baseUrl}/reporting/outputSummary.do"><li>Summary by outputs</li></a>
