@@ -11,9 +11,10 @@ $(document).ready(function() {
     });
   }
   
-  /* Tooltips with JQuery UI*/
-  $(document).tooltip({
+  /* Tooltips with JQuery UI*/  
+  $(this).tooltip({
     track: true
   });
+  
   
 });

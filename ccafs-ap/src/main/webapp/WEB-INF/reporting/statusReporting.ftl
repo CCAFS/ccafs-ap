@@ -1,6 +1,6 @@
 [#ftl]
 [#assign title = "Activity Status Report" /]
-[#assign globalLibs = ["jquery", "jqueryUI", "noty"] /]
+[#assign globalLibs = ["jquery", "noty"] /]
 [#assign customJS = ["${baseUrl}/js/reporting/statusReporting.js", "${baseUrl}/js/global/utils.js"] /]
 [#assign customCSS = ["${baseUrl}/css/libs/jqueryUI/jquery-ui-1.9.2.custom.css", ""] /]
 [#assign currentSection = "reporting" /]
