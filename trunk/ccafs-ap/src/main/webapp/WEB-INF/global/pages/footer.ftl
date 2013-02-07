@@ -4,6 +4,7 @@
           <div id="principalLogo">
             <img src="${baseUrl}/images/global/logo-ccafs.png" alt="CCAFS Logo" width="350px" />
             <p>&#64; Copyright 2013</p>
+            <p><b>Report an issue <a href="https://code.google.com/p/ccafs-ap/issues/entry?template=Defect%20report%20from%20user">here</a></b></p>
           </div>
           <div id="secondaryLogos">
             <div id="rowOne">
