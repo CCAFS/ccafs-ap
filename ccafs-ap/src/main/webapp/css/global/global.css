@@ -258,6 +258,12 @@ nav#secondaryMenu ul a li {
   
 }
 
+#arrowDown {
+  float: left;
+  margin-left: -40px;
+  margin-top: 40px;
+}
+
 /*************** REPORTING STEP MENU ****************/
 #stageMenu {
   display: block;
