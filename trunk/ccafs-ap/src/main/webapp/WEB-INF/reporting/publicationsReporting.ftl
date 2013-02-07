@@ -31,7 +31,7 @@
       
       [#-- Publication identifier --]
       <div class="halfPartBlock">
-        [@customForm.input name="publications[${publication_index}].identifier" type="text" i18nkey="reporting.publications.identifier" /]
+        [@customForm.input name="publications[${publication_index}].identifier" type="text" i18nkey="reporting.publications.identifier" help="reporting.publications.identifier.help" /]
       </div>
       
       [#-- Publication ciation --]
@@ -80,7 +80,7 @@
       
           [#-- Publication identifier --]
           <div class="halfPartBlock">
-            [@customForm.input name="identifier" type="text" i18nkey="reporting.publications.identifier" /]
+            [@customForm.input name="identifier" type="text" i18nkey="reporting.publications.identifier" help="reporting.publications.identifier.help" /]
           </div>
       
           [#-- Publication ciation --]

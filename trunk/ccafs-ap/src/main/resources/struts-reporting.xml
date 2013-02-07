@@ -43,7 +43,7 @@
       <result name="input">/WEB-INF/reporting/partnersReporting.ftl</result>
       <!-- Temporal redirect -->
       <result name="success" type="redirectAction">
-        <param name="actionName">outputSummary</param>
+        <param name="actionName">activities</param>
       </result>
     </action>
 
@@ -59,7 +59,7 @@
       <interceptor-ref name="reportingStack" />
       <result name="input">/WEB-INF/reporting/publicationsReporting.ftl</result>
       <result name="success" type="redirectAction">
-        <param name="actionName">publications</param>
+        <param name="actionName">caseStudies</param>
       </result>
     </action>
 
