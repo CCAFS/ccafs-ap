@@ -61,7 +61,11 @@ public class PublicationManagerImpl implements PublicationManager {
         pubData.put("id", null);
       }
       pubData.put("publication_type_id", publication.getType().getId() + "");
-      pubData.put("identifier", publication.getIdentifier());
+      if (publication.getIdentifier().isEmpty()) {
+        pubData.put("identifier", null);
+      } else {
+        pubData.put("identifier", publication.getIdentifier());
+      }
       pubData.put("citation", publication.getCitation());
       pubData.put("logframe_id", logframe.getId() + "");
       pubData.put("activity_leader_id", leader.getId() + "");

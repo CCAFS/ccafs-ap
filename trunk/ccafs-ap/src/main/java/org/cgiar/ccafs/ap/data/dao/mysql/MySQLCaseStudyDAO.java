@@ -28,7 +28,7 @@ public class MySQLCaseStudyDAO implements CaseStudyDAO {
     List<Map<String, String>> caseStudyDataList = new ArrayList<>();
     try (Connection con = databaseManager.getConnection()) {
       String query =
-        "SELECT cs.id, cs.title, cs.author, cs.date, cs.photo, cs.objectives, cs.description, cs.results, cs.partners, "
+        "SELECT cs.id, cs.title, cs.author, cs.start_date, cs.end_date, cs.photo, cs.objectives, cs.description, cs.results, cs.partners, "
           + "cs.links, cs.keywords, cs.logframe_id " + "FROM case_studies cs " + "WHERE cs.activity_leader_id="
           + activityLeaderId + " AND logframe_id=" + logframeId;
       ResultSet rs = databaseManager.makeQuery(query, con);
@@ -37,7 +37,8 @@ public class MySQLCaseStudyDAO implements CaseStudyDAO {
         caseStudyData.put("id", rs.getString("id"));
         caseStudyData.put("title", rs.getString("title"));
         caseStudyData.put("author", rs.getString("author"));
-        caseStudyData.put("date", rs.getString("date"));
+        caseStudyData.put("start_date", rs.getString("start_date"));
+        caseStudyData.put("end_date", rs.getString("end_date"));
         caseStudyData.put("photo", rs.getString("photo"));
         caseStudyData.put("objectives", rs.getString("objectives"));
         caseStudyData.put("description", rs.getString("description"));
@@ -78,24 +79,25 @@ public class MySQLCaseStudyDAO implements CaseStudyDAO {
     int generatedId = -1;
     try (Connection con = databaseManager.getConnection()) {
       String preparedQuery =
-        "INSERT INTO case_studies (id, title, author, date, photo, objectives, description, "
+        "INSERT INTO case_studies (id, title, author, start_date, end_date, photo, objectives, description, "
           + "results, partners, links, keywords, logframe_id, activity_leader_id) "
-          + "VALUES ( ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
+          + "VALUES ( ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
 
-      Object[] data = new Object[13];
+      Object[] data = new Object[14];
       data[0] = caseStudyData.get("id");
       data[1] = caseStudyData.get("title");
       data[2] = caseStudyData.get("author");
-      data[3] = caseStudyData.get("date");
-      data[4] = caseStudyData.get("photo");
-      data[5] = caseStudyData.get("objectives");
-      data[6] = caseStudyData.get("description");
-      data[7] = caseStudyData.get("results");
-      data[8] = caseStudyData.get("partners");
-      data[9] = caseStudyData.get("links");
-      data[10] = caseStudyData.get("keywords");
-      data[11] = caseStudyData.get("logframe_id");
-      data[12] = caseStudyData.get("activity_leader_id");
+      data[3] = caseStudyData.get("start_date");
+      data[4] = caseStudyData.get("end_date");
+      data[5] = caseStudyData.get("photo");
+      data[6] = caseStudyData.get("objectives");
+      data[7] = caseStudyData.get("description");
+      data[8] = caseStudyData.get("results");
+      data[9] = caseStudyData.get("partners");
+      data[10] = caseStudyData.get("links");
+      data[11] = caseStudyData.get("keywords");
+      data[12] = caseStudyData.get("logframe_id");
+      data[13] = caseStudyData.get("activity_leader_id");
       int rows = databaseManager.makeChangeSecure(con, preparedQuery, data);
       if (rows > 0) {
         // get the id assigned to the new record

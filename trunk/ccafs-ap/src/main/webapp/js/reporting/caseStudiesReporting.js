@@ -37,17 +37,60 @@ $(document).ready(function() {
 
 // Attach the datepicker plugin to the date inputs
 function addDatepicker() {
-  $("[id$='date']").each(function() {
+  
+  // Start date calendar
+  $("[id$='startDate']").each(function() {
     // Check if its the template date field or
     // if the element has the datepicker attached
-    if ($(this).attr("id") != 'date' && !$(this).hasClass('hasDatepicker')) {
+    if ($(this).attr("id") != 'startDate' && !$(this).hasClass('hasDatepicker')) {
+      //Getting the id.    
+      var elementId = $(this).attr("id").split("[")[1];
+      elementId = elementId.split("]")[0];
+      var maxDateValue = "+5y";
+      if( $( "#caseStudies\\[" + elementId + "\\]\\.endDate" ).val().length != 0){        
+        maxDateValue = $( "#caseStudies\\[" + elementId + "\\]\\.endDate" ).val();
+      }
+      console.log(maxDateValue);
       // Add readonly attribute to prevent inappropriate user input
       $(this).attr('readonly', true);
       $(this).datepicker({
         dateFormat : "yy-mm-dd",
+        minDate : "-5y",
+        maxDate : maxDateValue,
         changeMonth : true,
         changeYear : true,
-        defaultDate : null
+        defaultDate : null,
+        onClose: function( selectedDate ) {
+          $( "#caseStudies\\[" + elementId + "\\]\\.endDate" ).datepicker( "option", "minDate", selectedDate );
+        }
+      });
+    }
+  });
+
+  // End date calendar
+  $("[id$='endDate']").each(function() {
+    // Check if its the template date field or
+    // if the element has the datepicker attached
+    if ($(this).attr("id") != 'endDate' && !$(this).hasClass('hasDatepicker')) {
+      //Getting the id.
+      var elementId = $(this).attr("id").split("[")[1];
+      elementId = elementId.split("]")[0];
+      var minDateValue = "-5y";
+      if($( "#caseStudies\\[" + elementId + "\\]\\.startDate" ).val() != 0){        
+        minDateValue = $( "#caseStudies\\[" + elementId + "\\]\\.startDate" ).val();
+      }
+      // Add readonly attribute to prevent inappropriate user input
+      $(this).attr('readonly', true);
+      $(this).datepicker({
+        dateFormat : "yy-mm-dd",
+        minDate : minDateValue,
+        maxDate : "+5y",
+        changeMonth : true,
+        changeYear : true,
+        defaultDate : null,
+        onClose: function( selectedDate ) {
+          $( "#caseStudies\\[" + elementId + "\\]\\.startDate" ).datepicker( "option", "maxDate", selectedDate );
+        }
       });
     }
   });
@@ -96,11 +139,16 @@ function renameCaseStudies() {
         $(this).find("[for$='image']").attr("for",
             "caseStudies[" + index + "].image");
 
-        // Date.
-        $(this).find("[id$='date']").attr("id",
-            "caseStudies[" + index + "].date");
-        $(this).find("[name$='date']").attr("name",
-            "caseStudies[" + index + "].date");
+        // Start Date.
+        $(this).find("[id$='startDate']").attr("id",
+            "caseStudies[" + index + "].startDate");
+        $(this).find("[name$='startDate']").attr("name",
+            "caseStudies[" + index + "].startDate");
+        // End Date.
+        $(this).find("[id$='endDate']").attr("id",
+            "caseStudies[" + index + "].endDate");
+        $(this).find("[name$='endDate']").attr("name",
+            "caseStudies[" + index + "].endDate");
         // Add the datepicker event
         addDatepicker();
         // Countries.        
