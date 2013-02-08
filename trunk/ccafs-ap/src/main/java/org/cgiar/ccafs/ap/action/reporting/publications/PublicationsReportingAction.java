@@ -88,12 +88,6 @@ public class PublicationsReportingAction extends BaseAction {
       boolean problem = false;
       int c = 0;
       for (Publication publication : publications) {
-        if (publication.getIdentifier().isEmpty()) {
-          problem = true;
-          addFieldError("publications[" + c + "].identifier",
-            getText("validation.required", new String[] {getText("reporting.publications.identifier")}));
-        }
-
         if (publication.getCitation().isEmpty()) {
           problem = true;
           addFieldError("publications[" + c + "].citation",
