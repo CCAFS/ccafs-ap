@@ -64,8 +64,16 @@ public class ActivityPartnerManagerImpl implements ActivityPartnerManager {
       }
       cpData.put("partner_id", cp.getPartner().getId());
       cpData.put("activity_id", activityID);
-      cpData.put("contact_name", cp.getContactName());
-      cpData.put("contact_email", cp.getContactEmail());
+      if (cp.getContactName().isEmpty()) {
+        cpData.put("contact_name", null);
+      } else {
+        cpData.put("contact_name", cp.getContactName());
+      }
+      if (cp.getContactEmail().isEmpty()) {
+        cpData.put("contact_email", null);
+      } else {
+        cpData.put("contact_email", cp.getContactEmail());
+      }
       activityPartnersData.add(cpData);
     }
     problem = !activityPartnerDAO.saveActivityPartnerList(activityPartnersData);

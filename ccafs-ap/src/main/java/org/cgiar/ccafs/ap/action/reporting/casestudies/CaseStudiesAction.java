@@ -235,9 +235,14 @@ public class CaseStudiesAction extends BaseAction {
 
         }
 
-        // Date, if the user don't enter a value, the object is null
-        if (caseStudies.get(c).getDate() == null) {
-          addFieldError("caseStudies[" + c + "].date", getText("validation.field.required"));
+        // Start date, if the user don't enter a value, the object is null
+        if (caseStudies.get(c).getStartDate() == null) {
+          addFieldError("caseStudies[" + c + "].startDate", getText("validation.field.required"));
+          anyError = true;
+        }
+        // End date, if the user don't enter a value, the object is null
+        if (caseStudies.get(c).getEndDate() == null) {
+          addFieldError("caseStudies[" + c + "].endDate", getText("validation.field.required"));
           anyError = true;
         }
         // Keywords

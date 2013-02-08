@@ -43,7 +43,8 @@ public class CaseStudyManagerImpl implements CaseStudyManager {
       temporalCaseStudy.setAuthor(caseStudyData.get("author"));
       try {
         // Parse from string to Date object
-        temporalCaseStudy.setDate(dateFormat.parse(caseStudyData.get("date")));
+        temporalCaseStudy.setStartDate(dateFormat.parse(caseStudyData.get("start_date")));
+        temporalCaseStudy.setEndDate(dateFormat.parse(caseStudyData.get("end_date")));
       } catch (ParseException e) {
         // TODO Auto-generated catch block
         e.printStackTrace();
@@ -83,13 +84,18 @@ public class CaseStudyManagerImpl implements CaseStudyManager {
     csData.put("title", caseStudy.getTitle());
     csData.put("author", caseStudy.getAuthor());
     // Convert the date to string
-    csData.put("date", sdf.format(caseStudy.getDate()));
+    csData.put("start_date", sdf.format(caseStudy.getStartDate()));
+    csData.put("end_date", sdf.format(caseStudy.getEndDate()));
     csData.put("photo", caseStudy.getImageFileName());
     csData.put("objectives", caseStudy.getObjectives());
     csData.put("description", caseStudy.getDescription());
     csData.put("results", caseStudy.getResults());
     csData.put("partners", caseStudy.getPartners());
-    csData.put("links", caseStudy.getLinks());
+    if (caseStudy.getLinks().isEmpty()) {
+      csData.put("links", null);
+    } else {
+      csData.put("links", caseStudy.getLinks());
+    }
     csData.put("keywords", caseStudy.getKeywords());
     csData.put("activity_leader_id", activityLeaderId);
     csData.put("logframe_id", logframeId);

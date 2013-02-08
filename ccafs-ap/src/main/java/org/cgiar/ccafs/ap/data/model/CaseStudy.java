@@ -13,7 +13,8 @@ public class CaseStudy {
   private int id;
   private String title;
   private String author;
-  private Date date;
+  private Date startDate;
+  private Date endDate;
   private File image;
   private String imageContentType;
   private String imageFileName;
@@ -50,12 +51,12 @@ public class CaseStudy {
     return ids;
   }
 
-  public Date getDate() {
-    return date;
-  }
-
   public String getDescription() {
     return description;
+  }
+
+  public Date getEndDate() {
+    return endDate;
   }
 
   public int getId() {
@@ -102,6 +103,10 @@ public class CaseStudy {
     return results;
   }
 
+  public Date getStartDate() {
+    return startDate;
+  }
+
   public String getTitle() {
     return title;
   }
@@ -110,17 +115,21 @@ public class CaseStudy {
     this.author = author;
   }
 
+
   public void setCountries(List<Country> countries) {
     this.countries = countries;
   }
 
-  public void setDate(Date date) {
-    this.date = date;
-  }
 
   public void setDescription(String description) {
     this.description = description;
   }
+
+
+  public void setEndDate(Date endDate) {
+    this.endDate = endDate;
+  }
+
 
   public void setId(int id) {
     this.id = id;
@@ -164,6 +173,10 @@ public class CaseStudy {
 
   public void setResults(String results) {
     this.results = results;
+  }
+
+  public void setStartDate(Date startDate) {
+    this.startDate = startDate;
   }
 
   public void setTitle(String title) {

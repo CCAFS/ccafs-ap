@@ -49,16 +49,20 @@
           [#-- This section is missing because there is not a associated table in the db --]
           
           [#-- Author --]
-          <div class="halfPartBlock">
+          <div class="fullBlock">
             [@customForm.input name="caseStudies[${caseStudy_index}].author" type="text" i18nkey="reporting.caseStudies.author" /]              
           </div>
           
-          [#-- Date --]
+          [#-- Start Date --]
           <div class="halfPartBlock">
-            [@customForm.input name="caseStudies[${caseStudy_index}].date" type="text" i18nkey="reporting.caseStudies.date" /]
+            [@customForm.input name="caseStudies[${caseStudy_index}].startDate" type="text" i18nkey="reporting.caseStudies.startDate" /]
           </div>
           
-          
+          [#-- End Date --]
+          <div class="halfPartBlock">
+            [@customForm.input name="caseStudies[${caseStudy_index}].endDate" type="text" i18nkey="reporting.caseStudies.endDate" /]
+          </div>
+                    
           [#-- image --]
           <div class="fullBlock imageBlock">
             [#if caseStudy.imageFileName??]
@@ -151,13 +155,18 @@
         [#-- This section is missing because there is not a associated table in the db --]
         
         [#-- Author --]
-        <div class="halfPartBlock">
+        <div class="fullBlock">
           [@customForm.input name="author" type="text" i18nkey="reporting.caseStudies.author" /]              
         </div>
         
-        [#-- Date --]
+        [#-- Start Date --]
         <div class="halfPartBlock">
-          [@customForm.input name="date" type="text" i18nkey="reporting.caseStudies.date" /]
+          [@customForm.input name="startDate" type="text" i18nkey="reporting.caseStudies.startDate" /]
+        </div>
+        
+        [#-- End Date --]
+        <div class="halfPartBlock">
+          [@customForm.input name="endDate" type="text" i18nkey="reporting.caseStudies.endDate" /]
         </div>            
         
         [#-- image url --]

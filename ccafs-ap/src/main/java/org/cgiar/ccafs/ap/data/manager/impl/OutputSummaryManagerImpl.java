@@ -72,7 +72,11 @@ public class OutputSummaryManagerImpl implements OutputSummaryManager {
     List<Map<String, Object>> outputSummaryData = new ArrayList<>();
     for (OutputSummary outputSummary : outputSummaries) {
       Map<String, Object> osData = new HashMap<>();
-      osData.put("description", outputSummary.getDescription());
+      if (outputSummary.getDescription().isEmpty()) {
+        osData.put("description", null);
+      } else {
+        osData.put("description", outputSummary.getDescription());
+      }
       osData.put("output_id", outputSummary.getOutput().getId());
       osData.put("activity_leader_id", outputSummary.getLeader().getId());
       outputSummaryData.add(osData);
