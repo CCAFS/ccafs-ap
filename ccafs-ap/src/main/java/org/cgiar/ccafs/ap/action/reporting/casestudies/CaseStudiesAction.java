@@ -265,11 +265,6 @@ public class CaseStudiesAction extends BaseAction {
           addFieldError("caseStudies[" + c + "].partners", getText("validation.field.required"));
           anyError = true;
         }
-        // Links
-        if (caseStudies.get(c).getLinks().isEmpty()) {
-          addFieldError("caseStudies[" + c + "].links", getText("validation.field.required"));
-          anyError = true;
-        }
       }
     }
 

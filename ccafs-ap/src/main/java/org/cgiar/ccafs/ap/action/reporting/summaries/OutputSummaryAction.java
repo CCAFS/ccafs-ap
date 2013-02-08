@@ -87,21 +87,4 @@ public class OutputSummaryAction extends BaseAction {
   public void setOutputSummaries(OutputSummary[] outputSummaries) {
     this.outputSummaries = outputSummaries;
   }
-
-  @Override
-  public void validate() {
-    boolean problem = false;
-    // If the page is loading dont validate
-    if (save) {
-      for (int i = 0; i < outputSummaries.length; i++) {
-        if (outputSummaries[i].getDescription().isEmpty()) {
-          addFieldError("outputSummaries[" + i + "].description", getText("validation.field.required"));
-          problem = true;
-        }
-      }
-      if (problem) {
-        addActionError(getText("saving.fields.required"));
-      }
-    }
-  }
 }
