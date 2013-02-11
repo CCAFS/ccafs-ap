@@ -50,8 +50,8 @@
       </div>      
       
       <div class="buttons">
-        [@s.submit type="button" name="save"]SAVE[/@s.submit]
-        [@s.submit type="button" name="cancel"]CANCEL[/@s.submit]
+        [@s.submit type="button" name="save"][@s.text name="form.buttons.save" /][/@s.submit]
+        [@s.submit type="button" name="cancel"][@s.text name="form.buttons.cancel" /][/@s.submit]
       </div>
       
       [#include "/WEB-INF/reporting/tlRplSubMenu.ftl" /]  

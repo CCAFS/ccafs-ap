@@ -18,7 +18,7 @@
       [#-- Remove link for an outcome --]
       <div class="removeLink">
         <img src="${baseUrl}/images/global/icon-remove.png" />
-        <a id="removeOutcome-${outcome_index}" href="" class="removeOutcome">Remove outcome</a>
+        <a id="removeOutcome-${outcome_index}" href="" class="removeOutcome">[@s.text name="reporting.outcomes.removeOutcome" /]</a>
       </div>
       
       [#-- Identifier --]
@@ -69,7 +69,7 @@
           [@outcomeSection /]
           <div class="addLink">
             <img src="${baseUrl}/images/global/icon-add.png" />
-            <a href="" class="addOutcome">Add new outcome</a>
+            <a href="" class="addOutcome">[@s.text name="reporting.outcomes.addNewOutcome" /]</a>
           </div>
         </fieldset>
       </div>
@@ -80,7 +80,7 @@
           [#-- Remove link for an outcome --]
           <div class="removeLink">
             <img src="${baseUrl}/images/global/icon-remove.png" />
-            <a id="removeOutcome-9999" href="" class="removeOutcome">Remove outcome</a>
+            <a id="removeOutcome-9999" href="" class="removeOutcome">[@s.text name="reporting.outcomes.removeOutcome" /]</a>
           </div>
           
           [#-- Identifier --]
@@ -119,8 +119,8 @@
       </div> <!-- End template -->
       
       <div class="buttons">
-        [@s.submit type="button" name="save"]SAVE[/@s.submit]
-        [@s.submit type="button" name="cancel"]CANCEL[/@s.submit]
+        [@s.submit type="button" name="save"][@s.text name="form.buttons.save" /][/@s.submit]
+        [@s.submit type="button" name="cancel"][@s.text name="form.buttons.cancel" /][/@s.submit]
       </div>
     </article>
   [/@s.form]

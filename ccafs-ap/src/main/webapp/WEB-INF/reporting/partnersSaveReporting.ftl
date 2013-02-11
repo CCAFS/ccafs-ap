@@ -9,7 +9,7 @@
 [#include "/WEB-INF/global/pages/popup-header.ftl" /]
   <section>
     <article class="content">
-      <h1>Add a partner</h1>
+      <h1>[@s.text name="reporting.activityPartners.addPartner" /]</h1>
       [@s.form action="partnerSave!save"]
       
       [#-- Partner Name --]
@@ -53,13 +53,15 @@
       
       [#-- Web page link --]
       <div class="fullBlock">
-        <p>If you know the partner web page please enter the link below:</p>
         [@customForm.input name="partnerWebPage" type="text" i18nkey="reporting.PartnersSave.webPage" /]
       </div>
+      
+      [#-- Hidden input with message of success --]
+      <input type="hidden" id="message.success" value="[@s.text name="reporting.PartnersSave.successMessage" /]"/>
             
       <!-- internal parameter -->
       <input name="activityID" type="hidden" value="${activityID}" />
-      [@s.submit type="button" name="save"]REQUEST ADD NEW PARTNER[/@s.submit]
+      [@s.submit type="button" name="save"][@s.text name="form.buttons.savePartner.request" /][/@s.submit]
       [/@s.form]
     </article>
   </section>  

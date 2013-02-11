@@ -18,7 +18,7 @@
       [#-- Remove link for a publications --]
       <div class="removeLink">
         <img src="${baseUrl}/images/global/icon-remove.png" />
-        <a id="removePublication-${publication_index}" href="" class="removePublication">Remove publication</a>
+        <a id="removePublication-${publication_index}" href="" class="removePublication">[@s.text name="reporting.publications.removePublication" /]</a>
       </div>
       
       [#-- Publication identifier --]
@@ -56,7 +56,7 @@
           [@publicationSection /]
           <div class="addLink">
             <img src="${baseUrl}/images/global/icon-add.png" />        
-            <a href="" class="addPublication">Add new publication</a>
+            <a href="" class="addPublication">[@s.text name="reporting.publications.addNewPublication" /]</a>
           </div>
         </fieldset>
       </div>
@@ -67,7 +67,7 @@
           [#-- remove link --]
           <div class="removeLink">
             <img src="${baseUrl}/images/global/icon-remove.png" />
-            <a id="removePublication-9999" href="" class="removePublication">Remove publication</a>
+            <a id="removePublication-9999" href="" class="removePublication">[@s.text name="reporting.publications.removePublication" /]</a>
           </div>
           
           [#-- Publication identifier --]
@@ -91,8 +91,8 @@
       </div> <!-- End template -->
       
       <div class="buttons">
-        [@s.submit type="button" name="save"]SAVE[/@s.submit]
-        [@s.submit type="button" name="cancel"]CANCEL[/@s.submit]
+        [@s.submit type="button" name="save"][@s.text name="form.buttons.save" /][/@s.submit]
+        [@s.submit type="button" name="cancel"][@s.text name="form.buttons.cancel" /][/@s.submit]
       </div>
     </article>
   [/@s.form]

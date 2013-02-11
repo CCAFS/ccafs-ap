@@ -75,10 +75,10 @@ public class LoginAction extends BaseAction {
     // If is the first time the user is loading the page
     if (user != null) {
       if (user.getEmail().isEmpty()) {
-        addFieldError("user.email", "User email is required");
+        addFieldError("user.email", getText("validation.field.required"));
         user.setPassword(null);
       } else if (!EmailValidator.isValidEmail(user.getEmail())) {
-        addFieldError("user.email", "Email is invalid");
+        addFieldError("user.email", getText("validation.invalid", new String[] {getText("home.login.email")}));
         user.setPassword(null);
       }
     }

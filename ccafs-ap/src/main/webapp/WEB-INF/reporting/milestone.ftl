@@ -13,7 +13,7 @@
     <p>${milestone.output.objective.description}</p>
     <br /><br />
     <h6>[@s.text name="reporting.activityMilestone.output" /] ${milestone.output.code}</h6>
-    <p>milestone.output.description</p>
+    <p>${milestone.output.description}</p>
     <br /><br />
     <h6>[@s.text name="reporting.activityMilestone.milestone" /] ${milestone.code}</h6>
     <p>${milestone.description}</p>

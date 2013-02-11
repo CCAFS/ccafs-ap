@@ -17,7 +17,7 @@
     </p>
     <div id="loginFormContainer">
     [#if logged]
-      <p class="alreadyLogged">You are already logged in as</p>
+      <p class="alreadyLogged">[@s.text name="home.login.alreadyLogged" /]</p>
       <span class="alreadyLoggedEmail">${currentUser.email}</span>
     [#else]      
       [@s.form method="POST" action="login" cssClass="loginForm"]
