@@ -216,7 +216,12 @@
         <hr />
       </div>
     </div>
-    [#-- Here endes Case Study Template --]
+    [#-- Here ends Case Study Template --]
+    
+    [#-- Minimum and maximun values to the datepicker --]    
+    <input type="hidden" id="minDateValue" value="${currentYear?c}-01-01"/>
+    <input type="hidden" id="maxDateValue" value="${endYear?c}-12-31"/>
+    
     <div class="buttons">
       [@s.submit type="button" name="save"][@s.text name="form.buttons.save" /][/@s.submit]
       [@s.submit type="button" name="cancel"][@s.text name="form.buttons.cancel" /][/@s.submit]
