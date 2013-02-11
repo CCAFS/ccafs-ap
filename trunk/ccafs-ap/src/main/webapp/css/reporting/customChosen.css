@@ -25,3 +25,15 @@
 .chzn-container-multi .chzn-choices {
     width: 614px;
 }
+
+.chzn-container-single {
+    width: 100% !important;    
+}
+
+.chzn-drop .chzn-search{
+    width: 100% !important; 
+}
+
+.chzn-drop .chzn-search input{
+    width: 581px !important; 
+}

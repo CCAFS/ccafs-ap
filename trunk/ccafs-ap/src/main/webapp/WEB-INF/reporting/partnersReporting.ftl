@@ -1,6 +1,6 @@
 [#ftl]
 [#assign title = "Activity Partners Report" /]
-[#assign globalLibs = ["jquery", "noty"] /]
+[#assign globalLibs = ["jquery", "noty", "chosen"] /]
 [#assign customJS = ["${baseUrl}/js/reporting/partnersReporting.js", "${baseUrl}/js/global/utils.js"] /]
 [#assign customCSS = [""] /]
 [#assign currentSection = "reporting" /]
