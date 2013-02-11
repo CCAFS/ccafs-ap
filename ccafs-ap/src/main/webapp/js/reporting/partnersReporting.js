@@ -51,6 +51,8 @@ $(document).ready(function() {
     $(".addLink").before("<hr />");
     renameActivityPartners();
     $newActivityPartner.fadeIn("slow");
+    // Activate the chosen plugin
+    $newActivityPartner.find("select[name$='partner']").chosen();
   });
 
   $('.removeActivityPartner').click(function(event) {
@@ -63,5 +65,18 @@ $(document).ready(function() {
     // removing div.
     $("#activityPartner-" + removeId).remove();
     renameActivityPartners();
-  });  
+  });
+  
+  //Activate the chosen plugin to the existing case studies  
+  addChosen();
 });
+
+//Activate the chosen plugin to the countries inputs
+function addChosen() {
+  $("select[name$='partner']").each(function() {
+    // Check if its not the template countries field
+    if ($(this).attr("name") != '__partner') {
+      $(this).chosen();
+    }
+  });
+}
