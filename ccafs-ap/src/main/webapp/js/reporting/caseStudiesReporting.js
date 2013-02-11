@@ -37,7 +37,11 @@ $(document).ready(function() {
 
 // Attach the datepicker plugin to the date inputs
 function addDatepicker() {
-  
+  var defaultMinDateValue = $("#minDateValue").val();
+  var defaultMaxDateValue = $("#maxDateValue").val();
+  var minDateValue = 0;
+  var maxDateValue = 0;
+
   // Start date calendar
   $("[id$='startDate']").each(function() {
     // Check if its the template date field or
@@ -46,17 +50,15 @@ function addDatepicker() {
       //Getting the id.    
       var elementId = $(this).attr("id").split("[")[1];
       elementId = elementId.split("]")[0];
-      var maxDateValue = "+5y";
       if( $( "#caseStudies\\[" + elementId + "\\]\\.endDate" ).val().length != 0){        
         maxDateValue = $( "#caseStudies\\[" + elementId + "\\]\\.endDate" ).val();
-      }
-      console.log(maxDateValue);
+      }      
       // Add readonly attribute to prevent inappropriate user input
       $(this).attr('readonly', true);
       $(this).datepicker({
         dateFormat : "yy-mm-dd",
-        minDate : "-5y",
-        maxDate : maxDateValue,
+        minDate : defaultMinDateValue,
+        maxDate : (maxDateValue != 0)? maxDateValue : defaultMaxDateValue,
         changeMonth : true,
         changeYear : true,
         defaultDate : null,
@@ -75,7 +77,6 @@ function addDatepicker() {
       //Getting the id.
       var elementId = $(this).attr("id").split("[")[1];
       elementId = elementId.split("]")[0];
-      var minDateValue = "-5y";
       if($( "#caseStudies\\[" + elementId + "\\]\\.startDate" ).val() != 0){        
         minDateValue = $( "#caseStudies\\[" + elementId + "\\]\\.startDate" ).val();
       }
@@ -83,8 +84,8 @@ function addDatepicker() {
       $(this).attr('readonly', true);
       $(this).datepicker({
         dateFormat : "yy-mm-dd",
-        minDate : minDateValue,
-        maxDate : "+5y",
+        minDate : (minDateValue != 0)? minDateValue : defaultMinDateValue,
+        maxDate : defaultMaxDateValue,
         changeMonth : true,
         changeYear : true,
         defaultDate : null,

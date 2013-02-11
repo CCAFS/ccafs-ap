@@ -87,6 +87,14 @@ public class CaseStudiesAction extends BaseAction {
     return countryList;
   }
 
+  public int getCurrentYear() {
+    return config.getCurrentYear();
+  }
+
+  public int getEndYear() {
+    return config.getEndYear();
+  }
+
   /**
    * Join the path to the folder of cases studies images, the organization
    * folders path and the image name to return the complete path
