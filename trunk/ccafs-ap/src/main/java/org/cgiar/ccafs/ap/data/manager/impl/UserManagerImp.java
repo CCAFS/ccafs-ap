@@ -27,7 +27,7 @@ public class UserManagerImp implements UserManager {
       User user = new User();
       user.setId(Integer.parseInt(userData.get("id")));
       user.setEmail(email);
-      user.setPassword(userData.get("password"));
+      user.setMD5Password(userData.get("password"));
       user.setRole(userData.get("role"));
       Leader leader = new Leader();
       leader.setId(Integer.parseInt(userData.get("leader_id")));
@@ -49,7 +49,7 @@ public class UserManagerImp implements UserManager {
       User userFound = this.getUser(email);
       if (userFound != null) {
         User temp = new User();
-        temp.setPassword(password);
+        temp.setMD5Password(password);
         if (userFound.getPassword().equals(temp.getPassword())) {
           return userFound;
         }

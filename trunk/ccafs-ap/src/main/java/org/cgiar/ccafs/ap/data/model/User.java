@@ -118,6 +118,10 @@ public class User {
     this.leader = leader;
   }
 
+  public void setMD5Password(String password) {
+    this.password = password;
+  }
+
   /**
    * This method will calculate the MD5 of the provided parameter.
    * 
@@ -127,7 +131,7 @@ public class User {
     if (password != null) {
       this.password = MD5Convert.stringToMD5(password);
     } else {
-      this.password = password;
+      this.password = null;
     }
   }
 
