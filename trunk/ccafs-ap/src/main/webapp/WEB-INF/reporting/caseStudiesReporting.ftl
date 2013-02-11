@@ -36,7 +36,7 @@
           <div class="removeLink">
             <img src="${baseUrl}/images/global/icon-remove.png" />
             <a id="removeCaseStudy-${caseStudy_index}" href="" class="removeCaseStudy">
-              Remove case study
+              [@s.text name="reporting.caseStudies.removeCaseStudy" /]
             </a>
           </div>
         
@@ -126,7 +126,7 @@
       
       <div id="addCaseStudiesBlock" class="addLink">
         <img src="${baseUrl}/images/global/icon-add.png" />
-        <a href="" class="addCaseStudies">Add a new case study</a>
+        <a href="" class="addCaseStudies">[@s.text name="reporting.caseStudies.addCaseStudy" /]</a>
       </div>
       
      </fieldset>
@@ -142,7 +142,7 @@
         <div class="removeLink">
           <img src="${baseUrl}/images/global/icon-remove.png" />
           <a id="removeCaseStudy-999" href="" class="removeCaseStudy">
-            Remove case study
+            [@s.text name="reporting.caseStudies.removeCaseStudy" /]
           </a>
         </div>
       
@@ -218,8 +218,8 @@
     </div>
     [#-- Here endes Case Study Template --]
     <div class="buttons">
-      [@s.submit type="button" name="save"]SAVE[/@s.submit]
-      [@s.submit type="button" name="cancel"]CANCEL[/@s.submit]
+      [@s.submit type="button" name="save"][@s.text name="form.buttons.save" /][/@s.submit]
+      [@s.submit type="button" name="cancel"][@s.text name="form.buttons.cancel" /][/@s.submit]
     </div>
       
   </article>

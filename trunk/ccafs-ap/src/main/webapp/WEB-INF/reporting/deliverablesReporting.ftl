@@ -23,7 +23,7 @@
           <div class="removeLink">
               <img src="${baseUrl}/images/global/icon-remove.png" />
               <a id="removeDeliverable-${deliverable_index}" href="" class="removeDeliverable">
-                Remove deliverable
+                [@s.text name="reporting.activityDeliverables.removeDeliverable" /]
               </a>
           </div>
         [/#if]
@@ -106,14 +106,14 @@
       
       <fieldset id="newDeliverablesGroup">
         <legend>
-          <h5>New deliverables</h5>
+          <h5>[@s.text name="reporting.activityDeliverables.newDeliverable" /]</h5>
         </legend>             
         [#-- Listing new deliverables (see macro above) --]
         [@deliverableSection isExpected=false /]
       
         <div id="addDeliverableBlock" class="addLink">
           <img src="${baseUrl}/images/global/icon-add.png" />
-          <a href="" class="addDeliverable" >Add deliverable</a>
+          <a href="" class="addDeliverable" >[@s.text name="reporting.activityDeliverables.addDeliverable" /]</a>
         </div>
               
       </fieldset>
@@ -126,7 +126,7 @@
         <div class="removeLink">            
             <img src="${baseUrl}/images/global/icon-remove.png" />
             <a id="removeDeliverable-9999" href="" class="removeDeliverable">
-              Remove deliverable
+              [@s.text name="reporting.activityDeliverables.removeDeliverable" /]
             </a>
         </div>
         
@@ -172,8 +172,8 @@
     <!-- internal parameter -->
     <input name="activityID" type="hidden" value="${activity.id}" />
     <div class="buttons">
-      [@s.submit type="button" name="save"]SAVE[/@s.submit]
-      [@s.submit type="button" name="cancel"]CANCEL[/@s.submit]
+      [@s.submit type="button" name="save"][@s.text name="form.buttons.save" /][/@s.submit]
+      [@s.submit type="button" name="cancel"][@s.text name="form.buttons.cancel" /][/@s.submit]
     </div>
          
     [#include "/WEB-INF/reporting/activitiesReportingSubMenu.ftl" /]  

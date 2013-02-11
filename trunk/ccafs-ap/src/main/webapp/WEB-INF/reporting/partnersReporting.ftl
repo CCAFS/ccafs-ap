@@ -21,7 +21,7 @@
       [#-- Remove link for all partners --]
       <div class="removeLink">
         <img src="${baseUrl}/images/global/icon-remove.png" />
-        <a id="removeActivityPartner-${ap_index}" href="" class="removeActivityPartner">Remove partner</a>
+        <a id="removeActivityPartner-${ap_index}" href="" class="removeActivityPartner">[@s.text name="reporting.activityPartners.removePartner" /]</a>
       </div>
       
       [#-- Partner Name --]
@@ -62,15 +62,15 @@
         [@partnerSection /]
       <div class="addLink">
         <img src="${baseUrl}/images/global/icon-add.png" />
-        <a href="" class="addActivityPartner">Add new partner</a>
+        <a href="" class="addActivityPartner">[@s.text name="reporting.activityPartners.addNewPartner" /]</a>
       </div>   
       </fieldset>
     </div>
     
     <p id="addPartnerText">
-      If you don't find the partner what are you looking for 
+      [@s.text name="reporting.activityPartners.addPartnerMessage.first" /]
       <a class="popup" href="[@s.url action='partnerSave'][@s.param name='${activityRequestParameter}']${activityID}[/@s.param][/@s.url]">
-        add it here.
+        [@s.text name="reporting.activityPartners.addPartnerMessage.second" /]
       </a>       
     </p>
     
@@ -80,7 +80,7 @@
         [#-- remove link --]
         <div class="removeLink">
           <img src="${baseUrl}/images/global/icon-remove.png" />
-          <a id="removeActivityPartner-9999" href="" class="removeActivityPartner">Remove partner</a>
+          <a id="removeActivityPartner-9999" href="" class="removeActivityPartner">[@s.text name="reporting.activityPartners.removePartner" /]</a>
         </div>
         
         [#-- Partner identifier --]
@@ -106,8 +106,8 @@
     <!-- internal parameter -->
     <input name="activityID" type="hidden" value="${activity.id}" />
     <div class="buttons">
-      [@s.submit type="button" name="save"]SAVE[/@s.submit]
-      [@s.submit type="button" name="cancel"]CANCEL[/@s.submit]
+      [@s.submit type="button" name="save"][@s.text name="form.buttons.save" /][/@s.submit]
+      [@s.submit type="button" name="cancel"][@s.text name="form.buttons.cancel" /][/@s.submit]
     </div>
          
     [#include "/WEB-INF/reporting/activitiesReportingSubMenu.ftl" /]  

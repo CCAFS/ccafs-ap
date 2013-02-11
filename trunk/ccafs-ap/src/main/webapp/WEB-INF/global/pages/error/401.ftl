@@ -6,7 +6,7 @@
 
 <article>  
   <div class="content">
-    <p>You are not authorized to load this page. Please login first.</p>
+    <p>[@s.text name="server.error.401" /]</p>
   </div>
 </article>
 [#include "/WEB-INF/global/pages/footer.ftl"]

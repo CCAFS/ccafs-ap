@@ -54,7 +54,7 @@
             <td colspan="3">
                ${activity.contactPersons[0].name}
               (<a id="contactEmail" href="mailto: ${activity.contactPersons[0].email} ">${activity.contactPersons[0].email}</a>)
-              [#if activity.contactPersons?size > 1] <a id="viewMoreContacts" href="">, show others..</a> [/#if]
+              [#if activity.contactPersons?size > 1] <a id="viewMoreContacts" href="">, [@s.text name="reporting.activityStatus.contactPerson.showTable" /]</a> [/#if]
             </td>        
           </tr>
         [/#if]
@@ -88,12 +88,12 @@
       [/#if]
     </div>
     
-    <div id="contactPersons" title="Contact persons">
+    <div id="contactPersons" title="[@s.text name="reporting.activityStatus.contactPerson.table.title" /]">
       <table id="contactPersonsTable">
         <thead>
           <tr>
-            <th>Name</th>
-            <th>Email</th>
+            <th>[@s.text name="reporting.activityStatus.contactPerson.table.name" /]</th>
+            <th>[@s.text name="reporting.activityStatus.contactPerson.table.email" /]</th>
           </tr>
         </thead>
         <tbody>
@@ -111,8 +111,8 @@
     <input name="${activityIdParameter}" type="hidden" value="${activity.id}" />
     
     <div class="buttons">
-      [@s.submit type="button" name="save"]SAVE[/@s.submit]
-      [@s.submit type="button" name="cancel"]CANCEL[/@s.submit]
+      [@s.submit type="button" name="save"][@s.text name="form.buttons.save" /][/@s.submit]
+      [@s.submit type="button" name="cancel"][@s.text name="form.buttons.cancel" /][/@s.submit]
     </div>
       
     [#include "/WEB-INF/reporting/activitiesReportingSubMenu.ftl" /]  
