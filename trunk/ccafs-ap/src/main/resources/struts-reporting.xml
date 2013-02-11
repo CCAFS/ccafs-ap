@@ -49,6 +49,7 @@
 
     <action name="outputSummary" class="org.cgiar.ccafs.ap.action.reporting.summaries.OutputSummaryAction">
       <interceptor-ref name="reportingStack" />
+      <result name="cancel" type="redirectAction">activities</result>
       <result name="input">/WEB-INF/reporting/outputSummary.ftl</result>
       <result name="success" type="redirectAction">
         <param name="actionName">publications</param>
@@ -57,6 +58,7 @@
 
     <action name="publications" class="org.cgiar.ccafs.ap.action.reporting.publications.PublicationsReportingAction">
       <interceptor-ref name="reportingStack" />
+      <result name="cancel" type="redirectAction">activities</result>
       <result name="input">/WEB-INF/reporting/publicationsReporting.ftl</result>
       <result name="success" type="redirectAction">
         <param name="actionName">caseStudies</param>
@@ -69,6 +71,7 @@
         <param name="allowedTypes">image/bmp,image/gif,image/jpeg,image/png</param>
         <param name="maximumSize">10485760</param>
       </interceptor-ref> 
+      <result name="cancel" type="redirectAction">activities</result>
       <result name="input">/WEB-INF/reporting/caseStudiesReporting.ftl</result>
       <result name="success" type="redirectAction">
         <param name="actionName">caseStudies</param>        
@@ -77,6 +80,7 @@
 
     <action name="outcomes" class="org.cgiar.ccafs.ap.action.reporting.outcomes.OutcomesReportingAction">
       <interceptor-ref name="reportingStack" />
+      <result name="cancel" type="redirectAction">activities</result>
       <result name="input">/WEB-INF/reporting/outcomesReporting.ftl</result>
       <result name="success" type="redirectAction">
         <param name="actionName">outcomes</param>
@@ -86,6 +90,7 @@
     <action name="tlOutputs" class="org.cgiar.ccafs.ap.action.reporting.tlrpl.TLOutputSummaryReportingAction">
       <interceptor-ref name="reportingStack" />
       <interceptor-ref name="tlRplAuthorizedUsers" />
+      <result name="cancel" type="redirectAction">activities</result>
       <result name="input">/WEB-INF/reporting/tlOutputsReporting.ftl</result>
       <result name="success" type="redirectAction">
         <param name="actionName">rplSynthesis</param>
@@ -95,6 +100,7 @@
     <action name="rplSynthesis" class="org.cgiar.ccafs.ap.action.reporting.tlrpl.RPLSynthesisReportingAction">
       <interceptor-ref name="reportingStack" />
       <interceptor-ref name="tlRplAuthorizedUsers" />
+      <result name="cancel" type="redirectAction">activities</result>
       <result name="input">/WEB-INF/reporting/rplSynthesisReporting.ftl</result>
       <result name="success" type="redirectAction">
         <param name="actionName">tlRplMilestones</param>
@@ -104,6 +110,7 @@
     <action name="tlRplMilestones" class="org.cgiar.ccafs.ap.action.reporting.tlrpl.TLRPLMilestoneReportingAction">
       <interceptor-ref name="reportingStack" />
       <interceptor-ref name="tlRplAuthorizedUsers" />
+      <result name="cancel" type="redirectAction">activities</result>
       <result name="input">/WEB-INF/reporting/tlRplMilestoneReporting.ftl</result>
       <result name="success" type="redirectAction">
         <param name="actionName">tlRplMilestones</param>

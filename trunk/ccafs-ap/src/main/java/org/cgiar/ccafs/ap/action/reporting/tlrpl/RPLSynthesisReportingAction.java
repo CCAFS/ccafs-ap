@@ -54,7 +54,7 @@ public class RPLSynthesisReportingAction extends BaseAction {
   @Override
   public void validate() {
     super.validate();
-    if (getRequest().getMethod().equalsIgnoreCase("post")) {
+    if (save) {
       boolean problem = false;
       if (synthesisReport.getCcafsSites().isEmpty()) {
         problem = true;

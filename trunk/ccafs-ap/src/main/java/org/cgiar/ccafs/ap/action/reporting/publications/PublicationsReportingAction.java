@@ -84,7 +84,7 @@ public class PublicationsReportingAction extends BaseAction {
   public void validate() {
     super.validate();
     // If the page is loading don't validate
-    if (getRequest().getMethod().equalsIgnoreCase("post")) {
+    if (save) {
       boolean problem = false;
       int c = 0;
       for (Publication publication : publications) {
