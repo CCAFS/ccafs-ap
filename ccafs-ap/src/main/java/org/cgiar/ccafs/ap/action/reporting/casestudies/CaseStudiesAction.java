@@ -207,7 +207,7 @@ public class CaseStudiesAction extends BaseAction {
     boolean anyError = false;
 
     // Validations
-    if (getRequest().getMethod().equalsIgnoreCase("post")) {
+    if (save) {
       for (int c = 0; c < caseStudies.size(); c++) {
         // Title
         if (caseStudies.get(c).getTitle().isEmpty()) {

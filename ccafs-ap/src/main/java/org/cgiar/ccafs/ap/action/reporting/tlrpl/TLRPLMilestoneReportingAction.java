@@ -71,7 +71,7 @@ public class TLRPLMilestoneReportingAction extends BaseAction {
   public void validate() {
     boolean anyProblem = false;
     // Validate only when the user click on save
-    if (getRequest().getMethod().equalsIgnoreCase("post")) {
+    if (save) {
       for (int c = 0; c < milestoneReports.length; c++) {
         // Status
         if (milestoneReports[c].getStatus().getId() == -1) {
