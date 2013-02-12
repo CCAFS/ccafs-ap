@@ -40,7 +40,7 @@
                 [@s.param name='${activityRequestParameter}']${activity.id}[/@s.param]
               [/@s.url]
               " title="${activity.title}">
-                [#if activity.title?length < 60] ${activity.title}</a> [#else] [@utilities.wordCutter string=activity.title maxPos=60 /]...</a> [/#if]
+                [#if activity.title?length < 50] ${activity.title}</a> [#else] [@utilities.wordCutter string=activity.title maxPos=50 /]...</a> [/#if]
             </td>
             <td>${activity.leader.acronym}</td>
             <td>${activity.milestone.output.objective.theme.code}</td>
