@@ -101,6 +101,23 @@ public class MySQLDeliverableDAO implements DeliverableDAO {
   }
 
   @Override
+  public int getDeliverablesCount(int activityID) {
+    int deliverableCount = 0;
+    try (Connection connection = databaseManager.getConnection()) {
+      String query = "SELECT COUNT(id) FROM deliverables WHERE activity_id = " + activityID;
+      ResultSet rs = databaseManager.makeQuery(query, connection);
+      if (rs.next()) {
+        deliverableCount = rs.getInt(1);
+      }
+      rs.close();
+    } catch (SQLException e) {
+      // TODO Auto-generated catch block
+      e.printStackTrace();
+    }
+    return deliverableCount;
+  }
+
+  @Override
   public boolean removeNotExpected(int activityID) {
     try (Connection connection = databaseManager.getConnection()) {
       String deleteDeliverableQuery = "DELETE FROM deliverables WHERE is_expected = 0 AND activity_id = ?";

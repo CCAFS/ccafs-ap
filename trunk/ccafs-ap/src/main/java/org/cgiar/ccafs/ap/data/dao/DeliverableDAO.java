@@ -28,6 +28,14 @@ public interface DeliverableDAO {
   public List<Map<String, String>> getDeliverables(int activityID);
 
   /**
+   * Get the number of deliverables that has a specific activity.
+   * 
+   * @param activityID - Activity identifier
+   * @return an integer representing the number of deliverables that has the specified activity.
+   */
+  public int getDeliverablesCount(int activityID);
+
+  /**
    * Remove all not expected deliverables that belongs of a given activity.
    * 
    * @param activityID - activity identifier.

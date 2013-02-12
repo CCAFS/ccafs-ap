@@ -17,7 +17,8 @@
   [#include "/WEB-INF/global/pages/reporting-secondary-menu.ftl" /]
   
   <article class="halfContent">
-    <h1>[#if currentUser.leader??]${currentUser.leader.name}[/#if] ([@s.text name="reporting.activityList.activities" /] ${currentLogframe.year?c})</h1>  
+    <h1>[#if currentUser.leader??]${currentUser.leader.name}[/#if] ([@s.text name="reporting.activityList.activities" /] ${currentLogframe.year?c})</h1>
+    
     
     <table id="activityList">
       <thead>
@@ -26,6 +27,7 @@
           <th id="activity">[@s.text name="reporting.activityList.activity" /]</th>
           <th id="leaderName">[@s.text name="reporting.activityList.leaderName" /]</th>
           <th id="theme">[@s.text name="reporting.activityList.theme" /]</th>
+          <th id="theme">Status</th>
         </tr>
       </thead>
       <tbody>
@@ -42,6 +44,14 @@
             </td>
             <td>${activity.leader.acronym}</td>
             <td>${activity.milestone.output.objective.theme.code}</td>
+            <td>
+              [#if activityStatuses[activity_index]?has_content]
+                [#assign problemDescription=activityStatuses[activity_index]]
+                <img src="${baseUrl}/images/global/icon-incomplete.png" alt="Activity Incomplete" title="${problemDescription}" />
+              [#else]
+                <img src="${baseUrl}/images/global/icon-complete.png" alt="Activity Completed" />
+              [/#if]
+              </td>
           </tr>
         [/#list]  
       </tbody>

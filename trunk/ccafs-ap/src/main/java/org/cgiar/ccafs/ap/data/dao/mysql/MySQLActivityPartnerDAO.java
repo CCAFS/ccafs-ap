@@ -54,6 +54,22 @@ public class MySQLActivityPartnerDAO implements ActivityPartnerDAO {
   }
 
   @Override
+  public int getPartnersCount(int activityID) {
+    int partnersCount = 0;
+    try (Connection connection = databaseManager.getConnection()) {
+      String query = "SELECT COUNT(id) FROM activity_partners WHERE activity_id = " + activityID;
+      ResultSet rs = databaseManager.makeQuery(query, connection);
+      if (rs.next()) {
+        partnersCount = rs.getInt(1);
+      }
+    } catch (SQLException e) {
+      // TODO Auto-generated catch block
+      e.printStackTrace();
+    }
+    return partnersCount;
+  }
+
+  @Override
   public boolean removeActivityPartners(int activityID) {
     boolean problem = false;
     try (Connection connection = databaseManager.getConnection()) {

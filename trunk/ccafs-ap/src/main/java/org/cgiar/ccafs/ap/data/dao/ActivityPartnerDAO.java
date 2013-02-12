@@ -22,6 +22,14 @@ public interface ActivityPartnerDAO {
   public List<Map<String, String>> getActivityPartnersList(int activityID);
 
   /**
+   * Get the number of activity partners that has a specific activity.
+   * 
+   * @param activityID - Activity identifier
+   * @return an integer representing the number of partners that has the specified activity.
+   */
+  public int getPartnersCount(int activityID);
+
+  /**
    * Remove all the activity parters that belongs to a given activity.
    * 
    * @param activityID - activity identifier.
@@ -36,6 +44,5 @@ public interface ActivityPartnerDAO {
    * @return true if all the information was successfully saved. False otherwise.
    */
   public boolean saveActivityPartnerList(List<Map<String, Object>> activityPartnersData);
-
 
 }
