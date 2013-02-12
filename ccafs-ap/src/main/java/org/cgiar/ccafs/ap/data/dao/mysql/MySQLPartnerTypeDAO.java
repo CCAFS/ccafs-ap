@@ -34,6 +34,7 @@ public class MySQLPartnerTypeDAO implements PartnerTypeDAO {
         partnerTypeData.put("id", rs.getString("id"));
         partnerTypeData.put("acronym", rs.getString("acronym"));
         partnerTypeData.put("name", rs.getString("name"));
+        partnerTypeData.put("description", rs.getString("description"));
         partnerTypeList.add(partnerTypeData);
       }
       rs.close();

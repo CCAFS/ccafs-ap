@@ -24,7 +24,7 @@
       
       [#-- Partner types list --]
       <div class="halfPartBlock">
-        [@customForm.select name="activityPartner.partner.type.id" label="" i18nkey="reporting.PartnersSave.partnerType" listName="partnerTypesList" keyFieldName="id"  displayFieldName="acronym" /]
+        [@customForm.select name="activityPartner.partner.type.id" label="" i18nkey="reporting.PartnersSave.partnerType" listName="partnerTypesList" keyFieldName="id"  displayFieldName="name" /]
       </div>
       
       [#-- Countries list --]
