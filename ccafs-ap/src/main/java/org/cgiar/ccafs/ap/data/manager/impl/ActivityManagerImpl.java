@@ -2,6 +2,8 @@ package org.cgiar.ccafs.ap.data.manager.impl;
 
 import org.cgiar.ccafs.ap.data.dao.ActivityDAO;
 import org.cgiar.ccafs.ap.data.manager.ActivityManager;
+import org.cgiar.ccafs.ap.data.manager.ActivityPartnerManager;
+import org.cgiar.ccafs.ap.data.manager.DeliverableManager;
 import org.cgiar.ccafs.ap.data.model.Activity;
 import org.cgiar.ccafs.ap.data.model.Leader;
 import org.cgiar.ccafs.ap.data.model.Milestone;
@@ -23,9 +25,15 @@ public class ActivityManagerImpl implements ActivityManager {
 
   private ActivityDAO activityDAO;
 
+  private DeliverableManager deliverableManager;
+  private ActivityPartnerManager activityPartnerManager;
+
   @Inject
-  public ActivityManagerImpl(ActivityDAO activityDAO) {
+  public ActivityManagerImpl(ActivityDAO activityDAO, DeliverableManager deliverableManager,
+    ActivityPartnerManager activityPartnerManager) {
     this.activityDAO = activityDAO;
+    this.deliverableManager = deliverableManager;
+    this.activityPartnerManager = activityPartnerManager;
   }
 
   @Override
@@ -43,6 +51,7 @@ public class ActivityManagerImpl implements ActivityManager {
     Activity[] activities = new Activity[activitiesDAO.size()];
     for (int c = 0; c < activitiesDAO.size(); c++) {
       Activity activity = new Activity();
+      /* --- MAIN INFORMATION --- */
       activity.setId(Integer.parseInt(activitiesDAO.get(c).get("id")));
       activity.setTitle(activitiesDAO.get(c).get("title"));
       activity.setDescription(activitiesDAO.get(c).get("description"));
@@ -58,30 +67,41 @@ public class ActivityManagerImpl implements ActivityManager {
         // TODO Auto-generated catch block
         e.printStackTrace();
       }
-
       Theme theme = new Theme(Integer.parseInt(activitiesDAO.get(c).get("theme_id")));
       theme.setCode(activitiesDAO.get(c).get("theme_code"));
-
       // Creating fake objects just to save correctly the Theme data of the current activity.
       Objective objective = new Objective(-1);
       objective.setTheme(theme);
-
       Output output = new Output(-1);
       output.setObjective(objective);
       // end fakeObjects
-
       Milestone milestone = new Milestone(Integer.parseInt(activitiesDAO.get(c).get("milestone_id")));
       milestone.setCode(activitiesDAO.get(c).get("milestone_code"));
       milestone.setOutput(output);
-
       activity.setMilestone(milestone);
-
       Leader activityLeader = new Leader();
       activityLeader.setId(Integer.parseInt(activitiesDAO.get(c).get("leader_id")));
       activityLeader.setAcronym(activitiesDAO.get(c).get("leader_acronym"));
       activityLeader.setName(activitiesDAO.get(c).get("leader_name"));
-
       activity.setLeader(activityLeader);
+
+      /* --- ACTIVITY STATUS --- */
+      Map<String, String> statusInfo = activityDAO.getActivityStatusInfo(activity.getId());
+      Status status = new Status();
+      status.setId(Integer.parseInt(statusInfo.get("status_id")));
+      status.setName(statusInfo.get("status_name"));
+      activity.setStatus(status);
+      // Status Description
+      activity.setStatusDescription(statusInfo.get("status_description"));
+      // Gender Integration
+      activity.setGenderIntegrationsDescription(statusInfo.get("gender_description"));
+
+      /* --- DELIVERABLES --- */
+      activity.setDeliverables(deliverableManager.getDeliverables(activity.getId()));
+
+      /* --- PARTNERS --- */
+      activity.setActivityPartners(activityPartnerManager.getActivityPartners(activity.getId()));
+
 
       activities[c] = activity;
     }
