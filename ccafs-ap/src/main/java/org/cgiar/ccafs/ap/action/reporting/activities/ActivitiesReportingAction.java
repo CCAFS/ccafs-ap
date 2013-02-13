@@ -98,20 +98,7 @@ public class ActivitiesReportingAction extends BaseAction {
     // Calculate the status of each activity.
     for (int c = 0; c < currentActivities.length; c++) {
       activityStatuses[c] = calculateStatus(currentActivities[c]);
-      System.out.println(currentActivities[c].getId() + " - " + activityStatuses[c]);
-
     }
-
-    // populating "ids" array depending on the currentActivities array.
-    /*
-     * int[] ids = new int[currentActivities.length];
-     * for (int c = 0; c < ids.length; c++) {
-     * ids[c] = currentActivities[c].getId();
-     * }
-     */
-    // TODO
-    // activityStatuses = activityManager.getActivityStatuses(ids);
-
   }
 
   public void setCurrentActivities(Activity[] currentActivities) {
