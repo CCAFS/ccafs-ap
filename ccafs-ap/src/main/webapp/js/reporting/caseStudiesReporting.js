@@ -9,8 +9,7 @@ $(document).ready(function() {
     // Jquery needs a second to update the dom, if you dont give
     // that time the rename function dont take the remove change
     // the smaller time to take the change is 578
-    setTimeout(renameCaseStudies, 600);
-
+    setTimeout(renameCaseStudies, 600);    
     $newCaseStudy.fadeIn("slow");
   });
 
@@ -108,12 +107,15 @@ function addChosen() {
 }
 
 function renameCaseStudies() {
-  // getting the number of expected deliverables.
+  //getting the text of the index element.
+  var itemText = $("#template").find(".itemIndex").text();
   $("#caseStudiesGroup .caseStudy").each(
       function(index, caseStudy) {
         // Changing attributes of each component in order to match with the array order.
         // Main div.
         $(this).attr("id", "caseStudy-" + index);
+        //Item index
+        $(this).find(".itemIndex").text(itemText + " " + (index+1));
         // Remove link.
         $(this).find("[id^='removeCaseStudy-']").attr("id",
             "removeCaseStudy-" + index);

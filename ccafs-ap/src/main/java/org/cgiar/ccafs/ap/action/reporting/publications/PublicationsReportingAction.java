@@ -63,7 +63,7 @@ public class PublicationsReportingAction extends BaseAction {
       boolean added =
         publicationManager.savePublications(publications, this.getCurrentLogframe(), this.getCurrentUser().getLeader());
       if (added) {
-        addActionMessage(getText("saving.success", new String[] {getText("reporting.publications.publication")}));
+        addActionMessage(getText("saving.success", new String[] {getText("reporting.publications")}));
         return SUCCESS;
       }
     }

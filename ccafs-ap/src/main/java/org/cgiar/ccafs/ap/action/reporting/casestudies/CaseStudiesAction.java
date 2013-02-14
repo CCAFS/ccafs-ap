@@ -190,7 +190,7 @@ public class CaseStudiesAction extends BaseAction {
     deleteUnusedImages();
 
     if (!problem) {
-      addActionMessage(getText("saving.success", new String[] {getText("reporting.caseStudies.caseStudies")}));
+      addActionMessage(getText("saving.success", new String[] {getText("reporting.caseStudies")}));
       return SUCCESS;
     } else {
       addActionError(getText("saving.problem"));

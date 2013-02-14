@@ -46,7 +46,7 @@ ul.fieldError li {
 }
 
 fieldset {
-  padding: 0 20px 20px;
+  padding: 10px 20px 20px;
   margin: 0 0 30px;
   border: 1px solid silver;
 }
@@ -335,6 +335,14 @@ nav#secondaryMenu ul a li {
 
 .halfPartBlock input {
   width: 80%;
+}
+
+.itemIndex{
+  font-size: 15px;
+  font-weight: normal;
+  color: #663300;
+  text-align: center;
+  text-decoration: underline;
 }
 
 .countriesBlock select {
