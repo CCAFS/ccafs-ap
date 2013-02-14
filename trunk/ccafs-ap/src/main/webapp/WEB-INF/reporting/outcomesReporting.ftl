@@ -15,6 +15,11 @@
   [#list outcomes as outcome]
     <div id="outcome-${outcome_index}" class="outcome">
       
+      [#-- Item index --]
+      <div class="itemIndex">
+        [@s.text name="reporting.outcomes.outcomeTitle" /] ${publication_index +1}
+      </div>
+      
       [#-- Remove link for an outcome --]
       <div class="removeLink">
         <img src="${baseUrl}/images/global/icon-remove.png" />
@@ -63,9 +68,12 @@
   [#include "/WEB-INF/global/pages/reporting-secondary-menu.ftl" /]
   [@s.form action="outcomes"]
     <article class="halfContent">
+      <h1 class="contentTitle">
+        [@s.text name="reporting.outcomes" /] - ${currentUser.leader.acronym} 
+      </h1>
       <div id="items">      
         <fieldset id="outcomeGroup">
-          <legend>[@s.text name="reporting.outcomes" /]</legend>
+          
           [@outcomeSection /]
           <div class="addLink">
             <img src="${baseUrl}/images/global/icon-add.png" />
@@ -76,7 +84,13 @@
       
       <!-- OUTCOME TEMPLATE -->
       <div id="template">
-        <div id="outcome-9999" class="outcome" style="display: none;">      
+        <div id="outcome-9999" class="outcome" style="display: none;">
+          
+          [#-- Item index --]
+          <div class="itemIndex">
+            [@s.text name="reporting.outcomes.outcomeTitle" /]
+          </div>
+          
           [#-- Remove link for an outcome --]
           <div class="removeLink">
             <img src="${baseUrl}/images/global/icon-remove.png" />

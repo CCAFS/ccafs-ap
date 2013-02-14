@@ -1,13 +1,15 @@
 $(document).ready(function() {  
   
   function renamePublications() {
-    // getting the number of expected deliverables.
-    var expectedDeliverablesCount = $("#publicationGroup .publication").length;
+    // getting the text of the index element.
+    var itemText = $("#template").find(".itemIndex").text()
     $("#items .publication").each(function(index, activityPartner) {
           // Changing attributes of each component in order to match
           // with the array order.
           // Main div.
           $(this).attr("id", "publication-" + index);
+          //Item index
+          $(this).find(".itemIndex").text(itemText + " " + (index+1));
           // Remove link.
           $(this).find("[id^='removePublication-']").attr("id","removePublication-" + index);
           // Publication id.

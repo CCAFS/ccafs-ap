@@ -16,22 +16,21 @@
   [@s.form action="caseStudies" enctype="multipart/form-data"]  
   <article class="halfContent">      
     <h1 class="contentTitle">
-      ${currentUser.leader.acronym} - [@s.text name="reporting.caseStudies.caseStudies" /]  
+      ${currentUser.leader.acronym} - [@s.text name="reporting.caseStudies" /]  
     </h1>
     
     <div id="items">
       <fieldset id="caseStudiesGroup">
-        <legend>
-          <h5>[@s.text name="reporting.caseStudies.caseStudies" /]</h5>
-        </legend>
-      
+        
         [#-- Saved cases studies --]        
         [#list caseStudies as caseStudy]
               
         <div id="caseStudy-${caseStudy_index}" class="caseStudy">
-          [#-- CaseStudy identifier --]
-          <input name="caseStudies[${caseStudy_index}].id" type="hidden" value="${caseStudy.id?c}">
-        
+          [#-- Item index --]
+          <div class="itemIndex">
+            [@s.text name="reporting.caseStudies.caseStudy" /] ${caseStudy_index +1}
+          </div>
+      
           [#-- Remove link --]
           <div class="removeLink">
             <img src="${baseUrl}/images/global/icon-remove.png" />
@@ -138,6 +137,11 @@
         [#-- CaseStudy identifier --]
         <input name="id" type="hidden" value="-1">
         
+        [#-- Item index --]
+        <div class="itemIndex">
+          [@s.text name="reporting.caseStudies.caseStudy" /]
+        </div>
+            
         [#-- Remove link --]
         <div class="removeLink">
           <img src="${baseUrl}/images/global/icon-remove.png" />

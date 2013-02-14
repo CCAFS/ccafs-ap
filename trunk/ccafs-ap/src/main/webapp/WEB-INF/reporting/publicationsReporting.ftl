@@ -15,6 +15,11 @@
   [#list publications as publication]
     <div id="publication-${publication_index}" class="publication">
       
+      [#-- Item index --]
+      <div class="itemIndex">
+        [@s.text name="reporting.publications.publication" /] ${publication_index +1}
+      </div>
+      
       [#-- Remove link for a publications --]
       <div class="removeLink">
         <img src="${baseUrl}/images/global/icon-remove.png" />
@@ -48,11 +53,11 @@
   [@s.form action="publications"]
     <article class="halfContent">
       <h1 class="contentTitle">
-        [@s.text name="reporting.publications.publication" /] - ${currentUser.leader.acronym} 
+        [@s.text name="reporting.publications" /] - ${currentUser.leader.acronym} 
       </h1>
       <div id="items">      
         <fieldset id="publicationGroup">
-          <legend>[@s.text name="reporting.publications.publication" /]</legend>
+          
           [@publicationSection /]
           <div class="addLink">
             <img src="${baseUrl}/images/global/icon-add.png" />        
@@ -63,7 +68,12 @@
       
       <!-- PUBLICATION TEMPLATE -->
       <div id="template">
-        <div id="publication-9999" class="publication" style="display: none;">      
+        <div id="publication-9999" class="publication" style="display: none;">
+          [#-- Item index --]
+          <div class="itemIndex">
+            [@s.text name="reporting.publications.publication" /] 
+          </div>
+          
           [#-- remove link --]
           <div class="removeLink">
             <img src="${baseUrl}/images/global/icon-remove.png" />

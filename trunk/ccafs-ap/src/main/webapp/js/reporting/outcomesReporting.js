@@ -1,13 +1,15 @@
 $(document).ready(function() {  
   
   function renameOutcomes() {
-    // getting the number of expected deliverables.
-    var outcomesCount = $("#outcomeGroup .outcome").length;
+    //getting the text of the index element.
+    var itemText = $("#template").find(".itemIndex").text()
     $("#items .outcome").each(function(index, outcome) {
           // Changing attributes of each component in order to match
           // with the array order.
           // Main div.
           $(this).attr("id", "outcome-" + index);
+          //Item index
+          $(this).find(".itemIndex").text(itemText + " " + (index+1));
           // Remove link.
           $(this).find("[id^='removeOutcome-']").attr("id","removeOutcome-" + index);
           // Identifier
