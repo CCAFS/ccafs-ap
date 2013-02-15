@@ -3,6 +3,8 @@
 <html lang="en">
   <head>
     <meta charset="utf-8" />
+    [#-- Favicon --]
+    <link rel="shortcut icon" href="${baseUrl}/images/global/favicon.ico" />
     [#-- Keywords --]
     [#if pageKeywords??]
       <meta name="keywords" content="${pageKeywords}" />
