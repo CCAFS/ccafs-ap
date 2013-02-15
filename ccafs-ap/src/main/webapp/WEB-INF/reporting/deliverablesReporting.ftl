@@ -74,6 +74,11 @@
           </div>
         [/#if]
         
+        [#-- Achievements --]
+        <div class="fullBlock">
+          [@customForm.textArea name="activity.deliverables[${deliverable_index}].achievements" i18nkey="reporting.activityDeliverables.achievements" help="reporting.activityDeliverables.achievements.help" /]          
+        </div>
+        
         [#-- File name --]
         <div class="fullBlock">
           [@customForm.input name="activity.deliverables[${deliverable_index}].fileName" type="text" i18nkey="reporting.activityDeliverables.filename" help="reporting.activityDeliverables.filename.help" /]
@@ -166,9 +171,14 @@
           </div>
         </div>
         
+        [#-- Achievements --]
+        <div class="fullBlock">
+          [@customForm.textArea name="achievements" i18nkey="reporting.activityDeliverables.achievements" help="reporting.activityDeliverables.achievements.help" /]          
+        </div>
+        
         [#-- File name --]
         <div class="fullBlock">
-          [@customForm.input name="fileName" type="text" i18nkey="reporting.activityDeliverables.filename" /]
+          [@customForm.input name="fileName" type="text" i18nkey="reporting.activityDeliverables.filename" help="reporting.activityDeliverables.filename.help"/]
         </div>
               
       </div> <!-- End deliverable template -->

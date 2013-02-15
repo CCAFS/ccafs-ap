@@ -140,6 +140,11 @@ function renameDeliverables() {
                   "activity.deliverables[" + index + "].fileName");
               $(this).find("[name$='fileName']").attr("name",
                   "activity.deliverables[" + index + "].fileName");
+              // Achievements
+              $(this).find("[id$='achievements']").attr("id",
+                  "activity.deliverables[" + index + "].achievements");
+              $(this).find("[name$='achievements']").attr("name",
+                  "activity.deliverables[" + index + "].achievements");
               // Input hide that appears with file formats
               $(this).find("[id^='__multiselect_deliverables']").attr(
                   "name",
