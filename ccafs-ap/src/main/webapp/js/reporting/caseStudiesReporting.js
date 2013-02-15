@@ -4,12 +4,8 @@ $(document).ready(function() {
     event.preventDefault();
     // Cloning tempalte.
     var $newCaseStudy = $("#caseStudy-999").clone(true);
-    $("#addCaseStudiesBlock").before($newCaseStudy);
-
-    // Jquery needs a second to update the dom, if you dont give
-    // that time the rename function dont take the remove change
-    // the smaller time to take the change is 578
-    setTimeout(renameCaseStudies, 600);    
+    $("#addCaseStudiesBlock").before($newCaseStudy);   
+    renameCaseStudies();
     $newCaseStudy.fadeIn("slow");
   });
 
@@ -21,12 +17,8 @@ $(document).ready(function() {
     // removing div.
     $("#caseStudy-" + removeId).hide("slow", function() {
       $(this).remove();
+      renameCaseStudies();
     });
-
-    // Jquery needs a second to update the dom, if dont give
-    // that time the rename function dont take the remove change
-    // the smaller time to take the change is 578
-    setTimeout(renameCaseStudies, 600);
   });
 
   addDatepicker();

@@ -14,12 +14,15 @@
 
 [#import "/WEB-INF/global/macros/forms.ftl" as customForm /]
 <section class="content">
+  <div class="helpMessage">
+    <img src="${baseUrl}/images/global/icon-help.png" />
+    <p>[@s.text name="reporting.activityStatus.help" /]</p>
+  </div>    
   [#include "/WEB-INF/global/pages/reporting-secondary-menu.ftl" /]
   [@s.form action="status"]
   <article class="halfContent">
-    
+    [#include "/WEB-INF/reporting/activitiesReportingSubMenu.ftl" /]
     <h1>${activity.leader.acronym} - [@s.text name="reporting.activityList.activity" /] ${activity.id}</h1>
-    
     <div id="activityTitle" class="fullBlock">
       <h6>[@s.text name="reporting.activityStatus.title" /]</h6>
       <p>${activity.title}</p>
@@ -115,7 +118,6 @@
       [@s.submit type="button" name="cancel"][@s.text name="form.buttons.cancel" /][/@s.submit]
     </div>
       
-    [#include "/WEB-INF/reporting/activitiesReportingSubMenu.ftl" /]  
   </article>
   
   [/@s.form]

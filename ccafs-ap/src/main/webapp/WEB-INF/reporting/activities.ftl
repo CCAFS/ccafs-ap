@@ -13,13 +13,16 @@
 [#include "/WEB-INF/global/pages/main-menu.ftl" /]
 [#import "/WEB-INF/global/macros/utils.ftl" as utilities/]
     
-  <section class="content">
+<section class="content">
+  <div class="helpMessage">
+    <img src="${baseUrl}/images/global/icon-help.png" />
+    <p>[@s.text name="reporting.activityList.help" /]</p>
+  </div>
+  
   [#include "/WEB-INF/global/pages/reporting-secondary-menu.ftl" /]
   
   <article class="halfContent">
-    <h1>[#if currentUser.leader??]${currentUser.leader.name}[/#if] ([@s.text name="reporting.activityList.activities" /] ${currentLogframe.year?c})</h1>
-    
-    
+    <h1>[#if currentUser.leader??]${currentUser.leader.name}[/#if] ([@s.text name="reporting.activityList.activities" /] ${currentLogframe.year?c})</h1>    
     <table id="activityList">
       <thead>
         <tr>
@@ -27,7 +30,7 @@
           <th id="activity">[@s.text name="reporting.activityList.activity" /]</th>
           <th id="leaderName">[@s.text name="reporting.activityList.leaderName" /]</th>
           <th id="theme">[@s.text name="reporting.activityList.theme" /]</th>
-          <th id="theme">Status</th>
+          <th id="theme">[@s.text name="reporting.activityList.reportingStatus" /]</th>
         </tr>
       </thead>
       <tbody>

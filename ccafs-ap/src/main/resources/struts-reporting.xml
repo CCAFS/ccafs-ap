@@ -74,7 +74,7 @@
       <result name="cancel" type="redirectAction">activities</result>
       <result name="input">/WEB-INF/reporting/caseStudiesReporting.ftl</result>
       <result name="success" type="redirectAction">
-        <param name="actionName">caseStudies</param>        
+        <param name="actionName">outcomes</param>        
       </result>
     </action>
 

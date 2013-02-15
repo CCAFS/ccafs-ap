@@ -381,10 +381,9 @@ nav#secondaryMenu ul a li {
 }
 
 .buttons {
-  float: right;
+  display: block;
   margin: 10px;
   text-align: right;
-  width: 200px;
 }
 
 .buttons button {
@@ -392,10 +391,23 @@ nav#secondaryMenu ul a li {
   margin-left: 20px;
 }
 
+.helpMessage {
+  background-color: #F2F2F2;
+  color: #29336F;
+}
+
+.helpMessage img {
+  float: left;
+  padding: 5px;
+}
+
+.helpMessage p {
+  padding: 10px;
+}
+
 /********* Activity Reporting Sub Menu **********/
 #stageMenu {
   display: block;
-  float: left;
   margin: 12px;
   text-align: center;
 }
@@ -405,7 +417,7 @@ nav#secondaryMenu ul a li {
   background-repeat: no-repeat;
   display: inline-block; 
   color: black;
-  padding: 5px;
+  padding: 5px 3px;
   height: 34px;
   width: 145px;
 }
@@ -418,6 +430,59 @@ nav#secondaryMenu ul a li {
 #stageMenu a li {
   display: inline-block;
   margin-top: 9px;
+}
+
+/************* LOGIN *****************/
+#loginFormContainer {
+  margin: 10px 0;
+  text-align: center;
+}
+
+#loginFormContainer .loginForm {
+  background-color: #D5EAD5;
+  margin: auto;
+  padding: 10px;
+  width: 250px;
+}
+
+#loginFormContainer .loginForm div {
+  margin-bottom: 10px;
+  margin: 15px 0;
+  text-align: left;
+}
+
+#loginFormContainer .loginForm div label {
+  display: block;
+}
+
+#loginFormContainer .loginForm div input {
+  width: 98%;
+}
+
+#loginFormContainer .alreadyLogged {
+  font-size: 20px;
+}
+
+#loginFormContainer .alreadyLoggedEmail {
+  color: grey;
+  font-size: 15px;
+  font-weight: bold;
+}
+
+#reportComponent {
+  margin: 5px;
+}
+
+#reportComponent thead {
+  border-bottom: 2px solid;  
+}
+
+#reportComponent td, #reportComponent th {
+  padding: 5px;
+  width: 160px;
+}
+#reportComponent tbody tr {
+  border-bottom: 1px solid #9D9D9D;
 }
 
 /************ ACTIVITIES ***************/

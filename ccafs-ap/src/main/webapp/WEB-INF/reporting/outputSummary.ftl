@@ -12,9 +12,13 @@
 [#import "/WEB-INF/global/macros/forms.ftl" as customForm/]
     
   <section class="content">
+    <div class="helpMessage">
+      <img src="${baseUrl}/images/global/icon-help.png" />
+      <p>[@s.text name="reporting.outputSummary.help" /]</p>
+    </div>
     [#include "/WEB-INF/global/pages/reporting-secondary-menu.ftl" /]  
+    [@s.form action="outputSummary"]
     <article class="halfContent">
-      [@s.form action="outputSummary"]
         <h1 class="contentTitle">
           [@s.text name="reporting.outputSummary.outputSummary" /] - ${currentUser.leader.acronym} 
         </h1>

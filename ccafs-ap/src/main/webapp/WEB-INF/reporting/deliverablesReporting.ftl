@@ -76,7 +76,7 @@
         
         [#-- File name --]
         <div class="fullBlock">
-          [@customForm.input name="activity.deliverables[${deliverable_index}].fileName" type="text" i18nkey="reporting.activityDeliverables.filename" /]
+          [@customForm.input name="activity.deliverables[${deliverable_index}].fileName" type="text" i18nkey="reporting.activityDeliverables.filename" help="reporting.activityDeliverables.filename.help" /]
         </div>
       </div> <!-- End deliverable-${deliverable_index} -->
       <hr />
@@ -84,10 +84,15 @@
   [/#list]
 [/#macro]
 <section class="content">
+  <div class="helpMessage">
+    <img src="${baseUrl}/images/global/icon-help.png" />
+    <p>[@s.text name="reporting.activityDeliverables.help" /]</p>
+  </div>
   [#include "/WEB-INF/global/pages/reporting-secondary-menu.ftl" /]
   
   [@s.form action="deliverables"]
   <article class="halfContent">
+    [#include "/WEB-INF/reporting/activitiesReportingSubMenu.ftl" /]
     <h1 class="contentTitle">
       ${activity.leader.acronym} - [@s.text name="reporting.activityList.activity" /] ${activity.id}      
     </h1>
@@ -175,8 +180,7 @@
       [@s.submit type="button" name="save"][@s.text name="form.buttons.save" /][/@s.submit]
       [@s.submit type="button" name="cancel"][@s.text name="form.buttons.cancel" /][/@s.submit]
     </div>
-         
-    [#include "/WEB-INF/reporting/activitiesReportingSubMenu.ftl" /]  
+
     </article>
   [/@s.form]
  

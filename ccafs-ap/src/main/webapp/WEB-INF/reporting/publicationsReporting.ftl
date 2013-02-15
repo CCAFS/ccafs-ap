@@ -41,7 +41,7 @@
       
       [#-- Publication ciation --]
       <div class="fullBlock">
-        [@customForm.textArea name="publications[${publication_index}].citation" i18nkey="reporting.publications.citation" /]
+        [@customForm.textArea name="publications[${publication_index}].citation" i18nkey="reporting.publications.citation" help="reporting.publications.citation.help" /]
       </div> 
     </div> <!-- End publications-${publication_index} -->
     <hr />
@@ -49,6 +49,10 @@
 [/#macro]
 
 <section class="content">
+  <div class="helpMessage">
+    <img src="${baseUrl}/images/global/icon-help.png" />
+    <p>[@s.text name="reporting.publications.help" /]</p>
+  </div>
   [#include "/WEB-INF/global/pages/reporting-secondary-menu.ftl" /]
   [@s.form action="publications"]
     <article class="halfContent">
@@ -95,7 +99,7 @@
       
           [#-- Publication ciation --]
           <div class="fullBlock">
-            [@customForm.textArea name="citation" i18nkey="reporting.publications.citation" /]
+            [@customForm.textArea name="citation" i18nkey="reporting.publications.citation" help="reporting.publications.citation.help" /]
           </div>
         </div> <!-- End publication template -->
       </div> <!-- End template -->
