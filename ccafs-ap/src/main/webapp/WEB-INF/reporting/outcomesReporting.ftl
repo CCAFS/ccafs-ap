@@ -17,7 +17,7 @@
       
       [#-- Item index --]
       <div class="itemIndex">
-        [@s.text name="reporting.outcomes.outcomeTitle" /] ${publication_index +1}
+        [@s.text name="reporting.outcomes.outcomeTitle" /] ${outcome_index +1}
       </div>
       
       [#-- Remove link for an outcome --]
