@@ -11,10 +11,14 @@
 [#import "/WEB-INF/global/macros/forms.ftl" as customForm/]
     
 <section class="content">
+  <div class="helpMessage">
+    <img src="${baseUrl}/images/global/icon-help.png" />
+    <p>[@s.text name="reporting.caseStudies.help" /]</p>
+  </div>
   [#include "/WEB-INF/global/pages/reporting-secondary-menu.ftl" /]
   
   [@s.form action="caseStudies" enctype="multipart/form-data"]  
-  <article class="halfContent">      
+  <article class="halfContent">
     <h1 class="contentTitle">
       ${currentUser.leader.acronym} - [@s.text name="reporting.caseStudies" /]  
     </h1>

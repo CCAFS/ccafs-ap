@@ -44,9 +44,14 @@
 [/#macro]
 
 <section class="content">
+  <div class="helpMessage">
+    <img src="${baseUrl}/images/global/icon-help.png" />
+    <p>[@s.text name="reporting.activityPartners.help" /]</p>
+  </div>
   [#include "/WEB-INF/global/pages/reporting-secondary-menu.ftl" /]
   [@s.form action="partners"]
   <article class="halfContent">
+    [#include "/WEB-INF/reporting/activitiesReportingSubMenu.ftl" /]
     <h1 class="contentTitle">
       ${activity.leader.acronym} - [@s.text name="reporting.activityPartners.activity" /] ${activity.id}      
     </h1>
@@ -109,8 +114,7 @@
       [@s.submit type="button" name="save"][@s.text name="form.buttons.save" /][/@s.submit]
       [@s.submit type="button" name="cancel"][@s.text name="form.buttons.cancel" /][/@s.submit]
     </div>
-         
-    [#include "/WEB-INF/reporting/activitiesReportingSubMenu.ftl" /]  
+        
     </article>
   [/@s.form]
  
