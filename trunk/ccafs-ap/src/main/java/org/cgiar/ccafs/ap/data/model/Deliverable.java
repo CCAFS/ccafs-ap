@@ -12,11 +12,16 @@ public class Deliverable {
   private boolean isExpected;
   private String description;
   private String fileName;
+  private String achievements;
   private DeliverableStatus status;
   private DeliverableType type;
   private List<FileFormat> fileFormats;
 
   public Deliverable() {
+  }
+
+  public String getAchievements() {
+    return achievements;
   }
 
   public String getDescription() {
@@ -61,6 +66,10 @@ public class Deliverable {
 
   public boolean isExpected() {
     return isExpected;
+  }
+
+  public void setAchievements(String achievements) {
+    this.achievements = achievements;
   }
 
   public void setDescription(String description) {
