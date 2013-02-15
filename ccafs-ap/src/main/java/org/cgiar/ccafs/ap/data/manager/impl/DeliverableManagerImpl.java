@@ -46,12 +46,16 @@ public class DeliverableManagerImpl implements DeliverableManager {
     } else {
       deliverableData.put("filename", deliverable.getFileName());
     }
-    if (deliverable.getDescriptionUpdate().isEmpty()) {
+    // When deliverable is new, the attribute descriptionUpdate is null
+    if (deliverable.getDescriptionUpdate() == null) {
       deliverableData.put("description_update", null);
     } else {
-      deliverableData.put("description_update", deliverable.getDescriptionUpdate());
+      if (deliverable.getDescriptionUpdate().isEmpty()) {
+        deliverableData.put("description_update", null);
+      } else {
+        deliverableData.put("description_update", deliverable.getDescriptionUpdate());
+      }
     }
-
     deliverableData.put("file_format_ids", deliverable.getFileFormatsIds());
 
     int deliverableId = deliverableDAO.addDeliverable(deliverableData);
