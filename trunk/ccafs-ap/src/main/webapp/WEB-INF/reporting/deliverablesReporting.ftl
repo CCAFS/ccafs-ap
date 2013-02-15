@@ -74,10 +74,12 @@
           </div>
         [/#if]
         
-        [#-- Achievements --]
-        <div class="fullBlock">
-          [@customForm.textArea name="activity.deliverables[${deliverable_index}].achievements" i18nkey="reporting.activityDeliverables.achievements" help="reporting.activityDeliverables.achievements.help" /]          
-        </div>
+        [#-- Description Update --]
+        [#if deliverable.expected]
+          <div class="fullBlock">
+            [@customForm.textArea name="activity.deliverables[${deliverable_index}].descriptionUpdate" i18nkey="reporting.activityDeliverables.descriptionUpdate" help="reporting.activityDeliverables.descriptionUpdate.help" /]          
+          </div>
+        [/#if]
         
         [#-- File name --]
         <div class="fullBlock">
@@ -169,11 +171,6 @@
           <div class="checkboxGroup">                        
             [@s.checkboxlist name="fileFormats" list="fileFormatsList" listKey="id" listValue="name" cssClass="checkbox" /]
           </div>
-        </div>
-        
-        [#-- Achievements --]
-        <div class="fullBlock">
-          [@customForm.textArea name="achievements" i18nkey="reporting.activityDeliverables.achievements" help="reporting.activityDeliverables.achievements.help" /]          
         </div>
         
         [#-- File name --]

@@ -46,10 +46,10 @@ public class DeliverableManagerImpl implements DeliverableManager {
     } else {
       deliverableData.put("filename", deliverable.getFileName());
     }
-    if (deliverable.getAchievements().isEmpty()) {
-      deliverableData.put("achievements", null);
+    if (deliverable.getDescriptionUpdate().isEmpty()) {
+      deliverableData.put("description_update", null);
     } else {
-      deliverableData.put("achievements", deliverable.getAchievements());
+      deliverableData.put("description_update", deliverable.getDescriptionUpdate());
     }
 
     deliverableData.put("file_format_ids", deliverable.getFileFormatsIds());
@@ -87,7 +87,7 @@ public class DeliverableManagerImpl implements DeliverableManager {
         deliverable.setDescription(deliverablesDB.get(c).get("description"));
         deliverable.setYear(Integer.parseInt(deliverablesDB.get(c).get("year")));
         deliverable.setFileName(deliverablesDB.get(c).get("filename"));
-        deliverable.setAchievements(deliverablesDB.get(c).get("achievements"));
+        deliverable.setDescriptionUpdate(deliverablesDB.get(c).get("description_update"));
         deliverable.setExpected(Integer.parseInt(deliverablesDB.get(c).get("is_expected")) == 1);
 
         // DeliverableStatus
