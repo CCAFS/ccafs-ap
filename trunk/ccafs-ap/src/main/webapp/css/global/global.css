@@ -631,28 +631,29 @@ nav#secondaryMenu ul a li {
   clear: both;
   height: 200px;
   padding-top: 50px;
-  text-align: center;
+  text-align: left;
 }
 
-#footerContainer #principalLogo {
-  float: left;
-  margin-left: 50px;
+#footerContainer #centres-logos {
+  margin-left: 40px;  
+}
+
+#footerContainer #centres-logos img {
+  margin-left: 5px;
 }
 
 #footerContainer #secondaryLogos {
   float: right;
 }
 
-#footerContainer #rowOne {
-  margin-right: 250px;  
-}
-
 #footerContainer #rowTwo {
-  margin-right: 340px;
-  margin-top: 10px;
+  margin-top: 30px;
 }
 
-#footerContainer #rowThree {
-  margin-right: 430px;
-  margin-top: 10px;
+#footerContainer #copyright {
+  font-weight: bold;
+  margin-right: 10px;
+  margin-top: 15px;
+  text-align: right;
 }
+
