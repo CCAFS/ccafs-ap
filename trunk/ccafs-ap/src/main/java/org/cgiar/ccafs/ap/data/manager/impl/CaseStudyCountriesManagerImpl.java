@@ -28,10 +28,6 @@ public class CaseStudyCountriesManagerImpl implements CaseStudyCountriesManager 
     Map<String, String> caseStudyCountriesData;
     List<Country> caseStudyCountries = new ArrayList<>();
 
-    if (caseStudyCountriesDataList == null) {
-      return caseStudyCountries;
-    }
-
     for (int c = 0; c < caseStudyCountriesDataList.size(); c++) {
       caseStudyCountriesData = caseStudyCountriesDataList.get(c);
 

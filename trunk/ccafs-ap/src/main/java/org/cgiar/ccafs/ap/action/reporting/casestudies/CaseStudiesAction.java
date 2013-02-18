@@ -253,6 +253,17 @@ public class CaseStudiesAction extends BaseAction {
           addFieldError("caseStudies[" + c + "].endDate", getText("validation.field.required"));
           anyError = true;
         }
+        // Countries
+        // If the case study is not global check if there are countries
+        if (!caseStudies.get(c).isGlobal()) {
+          if (caseStudies.get(c).getCountries() == null) {
+            addFieldError("caseStudies[" + c + "].countries", getText("validation.field.required"));
+            anyError = true;
+          } else if (caseStudies.get(c).getCountries().size() == 0) {
+            addFieldError("caseStudies[" + c + "].countries", getText("validation.field.required"));
+            anyError = true;
+          }
+        }
         // Keywords
         if (caseStudies.get(c).getKeywords().isEmpty()) {
           addFieldError("caseStudies[" + c + "].keywords", getText("validation.field.required"));

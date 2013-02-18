@@ -30,6 +30,9 @@
         [#list caseStudies as caseStudy]
               
         <div id="caseStudy-${caseStudy_index}" class="caseStudy">
+          [#-- CaseStudy identifier --]
+          <input name="caseStudies[${caseStudy_index}].id" type="hidden" value="${caseStudy.id?c}">
+          
           [#-- Item index --]
           <div class="itemIndex">
             [@s.text name="reporting.caseStudies.caseStudy" /] ${caseStudy_index +1}
@@ -84,9 +87,14 @@
             <div class="clear"> </div>
           </div>
           
+          [#-- Is global --]
+          <div class="halfPartBlock countriesBlock">            
+            [@customForm.checkbox  name="caseStudies[${caseStudy_index}].global" i18nkey="reporting.caseStudies.isGlobal" checked="${caseStudy.global?string('1', '0')}" /]              
+          </div>
+          
           [#-- Countries --]
           <div class="fullBlock countriesBlock">
-            [@customForm.select name="caseStudies[${caseStudy_index}].countries" label="" i18nkey="reporting.caseStudies.countries" listName="countryList" keyFieldName="id"  displayFieldName="name" value="caseStudies[${caseStudy_index}].countriesIds" multiple=true /]              
+            [@customForm.select name="caseStudies[${caseStudy_index}].countries" label="" i18nkey="reporting.caseStudies.countries" listName="countryList" keyFieldName="id"  displayFieldName="name" value="caseStudies[${caseStudy_index}].countriesIds" multiple=true disabled="${caseStudy.global?string('1', '0')}" help="reporting.caseStudies.countries.help"/]              
           </div>
           
           [#-- Keywords --]
@@ -185,9 +193,14 @@
           <div id="image" class="halfPartBlock image"></div>
         </div>
         
+        [#-- Is global --]
+        <div class="halfPartBlock countriesBlock">            
+          [@customForm.checkbox  name="global" i18nkey="reporting.caseStudies.isGlobal" checked="0"/]              
+        </div>
+        
         [#-- Countries --]
         <div class="fullBlock countriesBlock">
-          [@customForm.select name="countries" label="" i18nkey="reporting.caseStudies.countries" listName="countryList" keyFieldName="id"  displayFieldName="name" value="" multiple=true /]              
+          [@customForm.select name="countries" label="" i18nkey="reporting.caseStudies.countries" listName="countryList" keyFieldName="id"  displayFieldName="name" value="" multiple=true help="reporting.caseStudies.countries.help" /]              
         </div>
         
         [#-- Keywords --]

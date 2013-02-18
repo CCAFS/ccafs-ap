@@ -43,9 +43,6 @@ public class MySQLCaseStudyCountriesDAO implements CaseStudyCountriesDAO {
       // TODO Auto generated try catch block
       e.printStackTrace();
     }
-    if (caseStudyCountriesDataList.isEmpty()) {
-      return null;
-    }
     return caseStudyCountriesDataList;
   }
 

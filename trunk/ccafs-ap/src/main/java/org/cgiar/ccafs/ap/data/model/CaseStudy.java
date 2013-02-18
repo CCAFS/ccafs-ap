@@ -27,6 +27,7 @@ public class CaseStudy {
   private List<Country> countries;
   private Logframe logframe;
   private Leader leader;
+  private boolean isGlobal;
 
   public CaseStudy() {
   }
@@ -111,10 +112,13 @@ public class CaseStudy {
     return title;
   }
 
+  public boolean isGlobal() {
+    return isGlobal;
+  }
+
   public void setAuthor(String author) {
     this.author = author;
   }
-
 
   public void setCountries(List<Country> countries) {
     this.countries = countries;
@@ -128,6 +132,11 @@ public class CaseStudy {
 
   public void setEndDate(Date endDate) {
     this.endDate = endDate;
+  }
+
+
+  public void setGlobal(boolean isGlobal) {
+    this.isGlobal = isGlobal;
   }
 
 
