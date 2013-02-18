@@ -56,6 +56,7 @@ public class CaseStudyManagerImpl implements CaseStudyManager {
       temporalCaseStudy.setPartners(caseStudyData.get("partners"));
       temporalCaseStudy.setLinks(caseStudyData.get("links"));
       temporalCaseStudy.setKeywords(caseStudyData.get("keywords"));
+      temporalCaseStudy.setGlobal(Integer.parseInt(caseStudyData.get("is_global")) == 1);
 
       // Add the object to the list
       caseStudies.add(temporalCaseStudy);
@@ -99,6 +100,7 @@ public class CaseStudyManagerImpl implements CaseStudyManager {
     csData.put("keywords", caseStudy.getKeywords());
     csData.put("activity_leader_id", activityLeaderId);
     csData.put("logframe_id", logframeId);
+    csData.put("is_global", caseStudy.isGlobal());
 
     int caseStudyId = caseStudyDAO.saveCaseStudy(csData);
 
@@ -108,10 +110,12 @@ public class CaseStudyManagerImpl implements CaseStudyManager {
 
     // if the case study was successfully saved, save the countries related.
     if (caseStudyId >= 0) {
-      ArrayList<String> countriesIds = (ArrayList<String>) caseStudy.getCountriesIds();
-      boolean caseStudyCountriesAdded = caseStudyCountriesDAO.saveCaseStudyCountries(caseStudyId, countriesIds);
-      if (!caseStudyCountriesAdded) {
-        return false;
+      if (!caseStudy.isGlobal()) {
+        ArrayList<String> countriesIds = (ArrayList<String>) caseStudy.getCountriesIds();
+        boolean caseStudyCountriesAdded = caseStudyCountriesDAO.saveCaseStudyCountries(caseStudyId, countriesIds);
+        if (!caseStudyCountriesAdded) {
+          return false;
+        }
       }
     }
 

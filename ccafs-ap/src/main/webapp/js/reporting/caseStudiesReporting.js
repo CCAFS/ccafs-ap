@@ -20,6 +20,22 @@ $(document).ready(function() {
       renameCaseStudies();
     });
   });
+  
+  $('.checkbox input').change(function(event){
+    console.log("change event");
+    event.preventDefault();
+    // Getting the id.
+    var elementId = $(event.target).attr("id").split("[")[1];
+    elementId = elementId.split("]")[0];
+    //Remove all the selected options
+    $("#caseStudies_caseStudies_" + elementId + "__countries option").prop('selected', false);
+    //Enable or unable the corresponding select
+    if ($(event.target).attr('checked') == "checked" ){
+      $("#caseStudies_caseStudies_" + elementId + "__countries").attr('disabled', true).trigger("liszt:updated");
+    }else{
+      $("#caseStudies_caseStudies_" + elementId + "__countries").attr('disabled', false).trigger("liszt:updated");      
+    }
+  });
 
   addDatepicker();
   // Activate the chosen plugin to the existing case studies  
@@ -133,7 +149,6 @@ function renameCaseStudies() {
             "caseStudies[" + index + "].image");
         $(this).find("[for$='image']").attr("for",
             "caseStudies[" + index + "].image");
-
         // Start Date.
         $(this).find("[id$='startDate']").attr("id",
             "caseStudies[" + index + "].startDate");
@@ -146,9 +161,14 @@ function renameCaseStudies() {
             "caseStudies[" + index + "].endDate");
         // Add the datepicker event
         addDatepicker();
+        // is global checkbox
+        $(this).find("[name$='global']").attr("id",
+            "caseStudies[" + index + "].global");
+        $(this).find("[name$='global']").attr("name",
+            "caseStudies[" + index + "].global");
         // Countries.        
         $(this).find("[id$='countries']").attr("id",
-            "caseStudies[" + index + "].countries");
+            "caseStudies_caseStudies_" + index + "__countries");
         $(this).find("[id$='countries']").attr("name",
             "caseStudies[" + index + "].countries");
         // Activate the chosen plugin

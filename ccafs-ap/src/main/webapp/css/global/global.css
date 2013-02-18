@@ -67,6 +67,17 @@ input[type="radio"] {
   margin-right: 3px;
 }
 
+.halfPartBlock .checkbox input{
+  width: 15px;
+  margin-left: 20px;
+}
+
+.halfPartBlock .checkbox h6{
+  display: inline;
+  width: 30%;
+  width: 29%\0/; /*hack for IE8 & IE9*/
+}
+
 .checkboxGroup input {
   margin-left: 0px;
   width: 14px;

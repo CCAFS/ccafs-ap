@@ -29,7 +29,7 @@ public class MySQLCaseStudyDAO implements CaseStudyDAO {
     try (Connection con = databaseManager.getConnection()) {
       String query =
         "SELECT cs.id, cs.title, cs.author, cs.start_date, cs.end_date, cs.photo, cs.objectives, cs.description, cs.results, cs.partners, "
-          + "cs.links, cs.keywords, cs.logframe_id " + "FROM case_studies cs " + "WHERE cs.activity_leader_id="
+          + "cs.links, cs.keywords, cs.logframe_id, cs.is_global " + "FROM case_studies cs " + "WHERE cs.activity_leader_id="
           + activityLeaderId + " AND logframe_id=" + logframeId;
       ResultSet rs = databaseManager.makeQuery(query, con);
       while (rs.next()) {
@@ -47,6 +47,7 @@ public class MySQLCaseStudyDAO implements CaseStudyDAO {
         caseStudyData.put("links", rs.getString("links"));
         caseStudyData.put("keywords", rs.getString("keywords"));
         caseStudyData.put("logframe_id", rs.getString("logframe_id"));
+        caseStudyData.put("is_global", rs.getString("is_global"));
         caseStudyDataList.add(caseStudyData);
       }
       rs.close();
@@ -80,10 +81,10 @@ public class MySQLCaseStudyDAO implements CaseStudyDAO {
     try (Connection con = databaseManager.getConnection()) {
       String preparedQuery =
         "INSERT INTO case_studies (id, title, author, start_date, end_date, photo, objectives, description, "
-          + "results, partners, links, keywords, logframe_id, activity_leader_id) "
-          + "VALUES ( ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
+          + "results, partners, links, keywords, logframe_id, activity_leader_id, is_global) "
+          + "VALUES ( ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
 
-      Object[] data = new Object[14];
+      Object[] data = new Object[15];
       data[0] = caseStudyData.get("id");
       data[1] = caseStudyData.get("title");
       data[2] = caseStudyData.get("author");
@@ -98,6 +99,7 @@ public class MySQLCaseStudyDAO implements CaseStudyDAO {
       data[11] = caseStudyData.get("keywords");
       data[12] = caseStudyData.get("logframe_id");
       data[13] = caseStudyData.get("activity_leader_id");
+      data[14] = caseStudyData.get("is_global");
       int rows = databaseManager.makeChangeSecure(con, preparedQuery, data);
       if (rows > 0) {
         // get the id assigned to the new record
