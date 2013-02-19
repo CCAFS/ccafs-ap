@@ -2,6 +2,7 @@ package org.cgiar.ccafs.ap.data.manager.impl;
 
 import org.cgiar.ccafs.ap.data.dao.CaseStudyCountriesDAO;
 import org.cgiar.ccafs.ap.data.dao.CaseStudyDAO;
+import org.cgiar.ccafs.ap.data.dao.CaseStudyTypeDAO;
 import org.cgiar.ccafs.ap.data.manager.CaseStudyManager;
 import org.cgiar.ccafs.ap.data.model.CaseStudy;
 import org.cgiar.ccafs.ap.data.model.Leader;
@@ -21,11 +22,14 @@ public class CaseStudyManagerImpl implements CaseStudyManager {
 
   private CaseStudyDAO caseStudyDAO;
   private CaseStudyCountriesDAO caseStudyCountriesDAO;
+  private CaseStudyTypeDAO caseStudyTypeDAO;
 
   @Inject
-  public CaseStudyManagerImpl(CaseStudyDAO caseStudyDAO, CaseStudyCountriesDAO caseStudyCountriesDAO) {
+  public CaseStudyManagerImpl(CaseStudyDAO caseStudyDAO, CaseStudyCountriesDAO caseStudyCountriesDAO,
+    CaseStudyTypeDAO caseStudyTypeDAO) {
     this.caseStudyDAO = caseStudyDAO;
     this.caseStudyCountriesDAO = caseStudyCountriesDAO;
+    this.caseStudyTypeDAO = caseStudyTypeDAO;
   }
 
   @Override
@@ -108,14 +112,26 @@ public class CaseStudyManagerImpl implements CaseStudyManager {
     // after the record insertion, so, set caseStudyId with its original value
     caseStudyId = (caseStudy.getId() != -1) ? caseStudy.getId() : caseStudyId;
 
-    // if the case study was successfully saved, save the countries related.
+    // if the case study was successfully saved, save the countries related and the case study types.
     if (caseStudyId >= 0) {
+      // Save the countries
       if (!caseStudy.isGlobal()) {
         ArrayList<String> countriesIds = (ArrayList<String>) caseStudy.getCountriesIds();
         boolean caseStudyCountriesAdded = caseStudyCountriesDAO.saveCaseStudyCountries(caseStudyId, countriesIds);
         if (!caseStudyCountriesAdded) {
           return false;
         }
+      }
+
+      // Save the types
+      ArrayList<String> typesIds = (ArrayList<String>) caseStudy.getTypesIds();
+      int[] typesIdsArray = new int[typesIds.size()];
+      for (int c = 0; c < typesIds.size(); c++) {
+        typesIdsArray[c] = Integer.parseInt(typesIds.get(c));
+      }
+      boolean problemSavingTypes = caseStudyTypeDAO.saveCaseStudyTypes(caseStudyId, typesIdsArray);
+      if (problemSavingTypes) {
+        return false;
       }
     }
 

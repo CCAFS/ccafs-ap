@@ -47,11 +47,14 @@ $(document).ready(function() {
 // Hide countries field when the case study is global after the page load
 function hideCountries(){
   $('.checkbox input').each(function(){
-    var elementId = $(this).attr("id").split("[")[1];
-    elementId = elementId.split("]")[0];
-    if ($(this).attr('checked') == "checked" ){
-      // Hide the countries field
-      $("#caseStudies_caseStudies_" + elementId + "__countries").parent().parent().parent().fadeOut("slow");   
+    // Check if the element is not the template
+    if($(this).attr("id") == "caseStudies_types") {
+      var elementId = $(this).attr("id").split("[")[1];
+      elementId = elementId.split("]")[0];
+      if ($(this).attr('checked') == "checked" ){
+        // Hide the countries field
+        $("#caseStudies_caseStudies_" + elementId + "__countries").parent().parent().parent().fadeOut("slow");   
+      }
     }
   });
 } 
@@ -156,6 +159,11 @@ function renameCaseStudies() {
             "caseStudies[" + index + "].author");
         $(this).find("[name$='author']").attr("name",
             "caseStudies[" + index + "].author");
+        // Type.
+        $(this).find("[name$='types']").attr("id",
+            "caseStudies[" + index + "].types");
+        $(this).find("[name$='types']").attr("name",
+            "caseStudies[" + index + "].types");
         // Image.
         $(this).find("[id$='image']").attr("id",
             "caseStudies[" + index + "].image");

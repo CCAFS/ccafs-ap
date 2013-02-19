@@ -4,9 +4,11 @@ import org.cgiar.ccafs.ap.action.BaseAction;
 import org.cgiar.ccafs.ap.config.APConfig;
 import org.cgiar.ccafs.ap.data.manager.CaseStudyCountriesManager;
 import org.cgiar.ccafs.ap.data.manager.CaseStudyManager;
+import org.cgiar.ccafs.ap.data.manager.CaseStudyTypeManager;
 import org.cgiar.ccafs.ap.data.manager.CountryManager;
 import org.cgiar.ccafs.ap.data.manager.LogframeManager;
 import org.cgiar.ccafs.ap.data.model.CaseStudy;
+import org.cgiar.ccafs.ap.data.model.CaseStudyType;
 import org.cgiar.ccafs.ap.data.model.Country;
 import org.cgiar.ccafs.ap.util.FileManager;
 
@@ -31,19 +33,23 @@ public class CaseStudiesAction extends BaseAction {
   // Managers
   private CaseStudyManager caseStudyManager;
   private CaseStudyCountriesManager caseStudyCountriesManager;
+  private CaseStudyTypeManager caseStudyTypeManager;
   private CountryManager countryManager;
 
   // Model
   private List<CaseStudy> caseStudies;
   private Country[] countryList;
   private Map<Integer, String> imageNameMap;
+  private CaseStudyType[] caseStudyTypeList;
 
   @Inject
   public CaseStudiesAction(APConfig config, LogframeManager logframeManager, CaseStudyManager caseStudyManager,
-    CountryManager countryManager, CaseStudyCountriesManager caseStudyCountriesManager) {
+    CaseStudyTypeManager caseStudyTypeManager, CountryManager countryManager,
+    CaseStudyCountriesManager caseStudyCountriesManager) {
     super(config, logframeManager);
     this.caseStudyManager = caseStudyManager;
     this.countryManager = countryManager;
+    this.caseStudyTypeManager = caseStudyTypeManager;
     this.caseStudyCountriesManager = caseStudyCountriesManager;
   }
 
@@ -67,6 +73,7 @@ public class CaseStudiesAction extends BaseAction {
     }
   }
 
+
   public List<CaseStudy> getCaseStudies() {
     return caseStudies;
   }
@@ -81,6 +88,10 @@ public class CaseStudiesAction extends BaseAction {
   public String getCaseStudiesImagesUrl() {
     return config.getCaseStudiesImagesUrl() + "/" + getCurrentLogframe().getYear() + "/"
       + getCurrentUser().getLeader().getAcronym() + "/";
+  }
+
+  public CaseStudyType[] getCaseStudyTypeList() {
+    return caseStudyTypeList;
   }
 
   public Country[] getCountryList() {
@@ -114,16 +125,22 @@ public class CaseStudiesAction extends BaseAction {
 
     caseStudies = caseStudyManager.getCaseStudyList(getCurrentUser().getLeader(), getCurrentLogframe());
     countryList = countryManager.getCountryList();
+    caseStudyTypeList = caseStudyTypeManager.getCaseStudyTypes();
 
     // Initialize the map of image's names
     imageNameMap = new HashMap<>();
 
     // If there are elements in the case study list, iterate it to store
-    // the corresponding list of countries
+    // the corresponding list of countries and the list of types
     List<Country> temporalCountryList;
+    List<CaseStudyType> temporalTypeList;
     for (int c = 0; c < caseStudies.size(); c++) {
       temporalCountryList = caseStudyCountriesManager.getCaseStudyCountriesList(caseStudies.get(c));
       caseStudies.get(c).setCountries(temporalCountryList);
+
+      temporalTypeList = caseStudyTypeManager.getCaseStudyTypes(caseStudies.get(c));
+      caseStudies.get(c).setTypes(temporalTypeList);
+
       // If the case study has an image name, store it into the image names map
       // Key -> caseStudy.id ,Value -> image name
       if (caseStudies.get(c).getImageFileName() != null) {
@@ -219,8 +236,16 @@ public class CaseStudiesAction extends BaseAction {
           addFieldError("caseStudies[" + c + "].author", getText("validation.field.required"));
           anyError = true;
         }
+        // Type
+        // If a new case study don't select a type the attribute is null
+        if (caseStudies.get(c).getTypes() == null) {
+          addFieldError("caseStudies[" + c + "].types", getText("validation.field.required"));
+          anyError = true;
+        } else if (caseStudies.get(c).getTypes().size() == 0) {
+          addFieldError("caseStudies[" + c + "].types", getText("validation.field.required"));
+          anyError = true;
+        }
         // Photo
-
         if (caseStudies.get(c).getImage() != null) {
           String type = caseStudies.get(c).getImageContentType().split("/")[0];
 
@@ -240,7 +265,6 @@ public class CaseStudiesAction extends BaseAction {
               getText("validation.file.tooLarge", new String[] {config.getFileMaxSize() + ""}));
             anyError = true;
           }
-
         }
 
         // Start date, if the user don't enter a value, the object is null

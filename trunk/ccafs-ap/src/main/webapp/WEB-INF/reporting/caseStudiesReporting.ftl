@@ -55,8 +55,13 @@
           [#-- This section is missing because there is not a associated table in the db --]
           
           [#-- Author --]
-          <div class="fullBlock">
+          <div class="halfPartBlock authorBlock">
             [@customForm.input name="caseStudies[${caseStudy_index}].author" type="text" i18nkey="reporting.caseStudies.author" /]              
+          </div>
+          
+          [#-- Types --]
+          <div class="halfPartBlock">
+            [@customForm.select name="caseStudies[${caseStudy_index}].types" label="" i18nkey="reporting.caseStudies.types" listName="caseStudyTypeList" keyFieldName="id"  displayFieldName="name" value="caseStudies[${caseStudy_index}].typesIds" multiple=true /]              
           </div>
           
           [#-- Start Date --]
@@ -72,17 +77,17 @@
           [#-- image --]
           <div class="fullBlock imageBlock">
             [#if caseStudy.imageFileName??]
-              <div id="caseStudies[${caseStudy_index}].image" class="halfPartBlock image">
-                <img src="${caseStudiesImagesUrl}/${caseStudy.imageFileName}" width="100%">
-              </div>
               <div class="halfPartBlock browseInput">
                 [@customForm.input name="caseStudies[${caseStudy_index}].image" type="file" i18nkey="reporting.caseStudies.image" /]
               </div>                            
+              <div id="caseStudies[${caseStudy_index}].image" class="halfPartBlock image">
+                <img src="${caseStudiesImagesUrl}/${caseStudy.imageFileName}" width="100%">
+              </div>
             [#else]
-              <div id="caseStudies[${caseStudy_index}].image" class="halfPartBlock image"></div>
               <div class="halfPartBlock browseInput">
                 [@customForm.input name="caseStudies[${caseStudy_index}].image" type="file" i18nkey="reporting.caseStudies.image" /]
               </div>                                
+              <div id="caseStudies[${caseStudy_index}].image" class="halfPartBlock image"></div>
             [/#if]
             <div class="clear"> </div>
           </div>
@@ -171,8 +176,13 @@
         [#-- This section is missing because there is not a associated table in the db --]
         
         [#-- Author --]
-        <div class="fullBlock">
+        <div class="halfPartBlock authorBlock">
           [@customForm.input name="author" type="text" i18nkey="reporting.caseStudies.author" /]              
+        </div>
+        
+        [#-- Types --]
+        <div class="halfPartBlock">
+          [@customForm.select name="types" label="" i18nkey="reporting.caseStudies.types" listName="caseStudyTypeList" keyFieldName="id"  displayFieldName="name" value="" multiple=true /]              
         </div>
         
         [#-- Start Date --]
