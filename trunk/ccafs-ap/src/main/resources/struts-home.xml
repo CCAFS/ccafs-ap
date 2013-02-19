@@ -13,6 +13,9 @@
       <result name="success">/WEB-INF/home/login.ftl</result>
     </action>
     
+    <action name="rss" class="org.cgiar.ccafs.ap.action.home.RSSAction">
+      <result name="input">/WEB-INF/home/rss.ftl</result>
+    </action> 
 
   </package>
 </struts>

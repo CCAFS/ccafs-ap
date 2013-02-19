@@ -23,12 +23,17 @@ public class Activity {
   private String statusDescription;
   private List<Deliverable> deliverables;
   private List<ActivityPartner> activityPartners;
+  private Date dateAdded;
 
   public Activity() {
   }
 
   public List<ActivityPartner> getActivityPartners() {
     return activityPartners;
+  }
+
+  public Date getDateAdded() {
+    return dateAdded;
   }
 
   public Budget getBudget() {
@@ -93,6 +98,10 @@ public class Activity {
 
   public void setActivityPartners(List<ActivityPartner> activityPartners) {
     this.activityPartners = activityPartners;
+  }
+
+  public void setDateAdded(Date dateAdded) {
+    this.dateAdded = dateAdded;
   }
 
   public void setBudget(Budget budget) {

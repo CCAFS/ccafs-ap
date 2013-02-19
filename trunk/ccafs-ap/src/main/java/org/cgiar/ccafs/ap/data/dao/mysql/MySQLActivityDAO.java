@@ -110,6 +110,42 @@ public class MySQLActivityDAO implements ActivityDAO {
   }
 
   @Override
+  public List<Map<String, String>> getActivitiesForRSS(int year, int limit) {
+    List<Map<String, String>> activities = new ArrayList<>();
+    try (Connection con = databaseManager.getConnection()) {
+      StringBuilder query = new StringBuilder();
+      query.append("SELECT a.id, a.title, a.start_date, a.end_date, a.description, a.date_added ");
+      query.append("FROM activities a ");
+      query.append("INNER JOIN milestones m ON m.id = a.milestone_id ");
+      query.append("INNER JOIN outputs o ON o.id = m.output_id ");
+      query.append("INNER JOIN objectives obj ON obj.id = o.objective_id ");
+      query.append("INNER JOIN themes t ON t.id = obj.theme_id ");
+      query.append("INNER JOIN logframes l on l.id = t.logframe_id " + "WHERE l.year = ");
+      query.append(year);
+      if (limit > 0) {
+        query.append(" LIMIT ");
+        query.append(limit);
+      }
+      ResultSet rs = databaseManager.makeQuery(query.toString(), con);
+      while (rs.next()) {
+        Map<String, String> activity = new HashMap<>();
+        activity.put("id", rs.getString("id"));
+        activity.put("title", rs.getString("title"));
+        activity.put("start_date", rs.getString("start_date"));
+        activity.put("end_date", rs.getString("end_date"));
+        activity.put("description", rs.getString("description"));
+        activity.put("date_added", rs.getString("date_added"));
+        activities.add(activity);
+      }
+      rs.close();
+    } catch (SQLException e) {
+      // TODO Auto-generated catch block
+      e.printStackTrace();
+    }
+    return activities;
+  }
+
+  @Override
   public Map<String, String> getActivityStatusInfo(int id) {
     Map<String, String> activity = new HashMap<>();
     try (Connection con = databaseManager.getConnection()) {
@@ -150,6 +186,7 @@ public class MySQLActivityDAO implements ActivityDAO {
       return activity;
     }
   }
+
 
   @Override
   public Map<String, String> getSimpleActivity(int id) {

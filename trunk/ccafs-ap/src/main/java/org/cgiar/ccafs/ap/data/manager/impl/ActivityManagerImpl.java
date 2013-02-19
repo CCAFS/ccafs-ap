@@ -109,6 +109,44 @@ public class ActivityManagerImpl implements ActivityManager {
   }
 
   @Override
+  public Activity[] getActivitiesForRSS(int year, int limit) {
+    List<Map<String, String>> activitiesDB = activityDAO.getActivitiesForRSS(year, limit);
+    if (activitiesDB.size() > 0) {
+      Activity[] activities = new Activity[activitiesDB.size()];
+      SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM");
+      int c = 0;
+      for (Map<String, String> activityDB : activitiesDB) {
+        Activity activity = new Activity();
+        activity.setId(Integer.parseInt(activityDB.get("id")));
+        activity.setTitle(activityDB.get("title"));
+        try {
+          activity.setStartDate(dateFormat.parse(activityDB.get("start_date")));
+        } catch (ParseException e) {
+          // TODO Auto-generated catch block
+          e.printStackTrace();
+        }
+        try {
+          activity.setEndDate(dateFormat.parse(activityDB.get("end_date")));
+        } catch (ParseException e) {
+          // TODO Auto-generated catch block
+          e.printStackTrace();
+        }
+        activity.setDescription(activityDB.get("description"));
+        try {
+          activity.setDateAdded(dateFormat.parse(activityDB.get("date_added")));
+        } catch (ParseException e) {
+          // TODO Auto-generated catch block
+          e.printStackTrace();
+        }
+        activities[c] = activity;
+        c++;
+      }
+      return activities;
+    }
+    return null;
+  }
+
+  @Override
   public Activity getActivityStatusInfo(int id) {
     Map<String, String> activityDB = activityDAO.getActivityStatusInfo(id);
     if (activityDB != null) {

@@ -21,6 +21,15 @@ public interface ActivityManager {
   public Activity[] getActivities(int year, User user);
 
   /**
+   * Get a list of activities that belong to a specific year.
+   * 
+   * @param year - (Integer) Year
+   * @param limit - Number of activities that will be returned.
+   * @return a list of activities ordered by date added.
+   */
+  public Activity[] getActivitiesForRSS(int year, int limit);
+
+  /**
    * Get an activity identified with the given id populated only with the data showed in the status reporting interface.
    * 
    * @param id
