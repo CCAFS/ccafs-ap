@@ -22,17 +22,18 @@ $(document).ready(function() {
   });
   
   $('.checkbox input').change(function(event){
-    console.log("change event");
     event.preventDefault();
     // Getting the id.
     var elementId = $(event.target).attr("id").split("[")[1];
     elementId = elementId.split("]")[0];
-    //Remove all the selected options
-    $("#caseStudies_caseStudies_" + elementId + "__countries option").prop('selected', false);
     //Enable or unable the corresponding select
     if ($(event.target).attr('checked') == "checked" ){
+      // Hide the countries field
+      $("#caseStudies_caseStudies_" + elementId + "__countries").parent().parent().parent().fadeOut("slow");
       $("#caseStudies_caseStudies_" + elementId + "__countries").attr('disabled', true).trigger("liszt:updated");
     }else{
+      // Show the countries field
+      $("#caseStudies_caseStudies_" + elementId + "__countries").parent().parent().parent().fadeIn("slow");
       $("#caseStudies_caseStudies_" + elementId + "__countries").attr('disabled', false).trigger("liszt:updated");      
     }
   });
@@ -40,7 +41,20 @@ $(document).ready(function() {
   addDatepicker();
   // Activate the chosen plugin to the existing case studies  
   addChosen();
+  hideCountries();
 });
+
+// Hide countries field when the case study is global after the page load
+function hideCountries(){
+  $('.checkbox input').each(function(){
+    var elementId = $(this).attr("id").split("[")[1];
+    elementId = elementId.split("]")[0];
+    if ($(this).attr('checked') == "checked" ){
+      // Hide the countries field
+      $("#caseStudies_caseStudies_" + elementId + "__countries").parent().parent().parent().fadeOut("slow");   
+    }
+  });
+} 
 
 // Attach the datepicker plugin to the date inputs
 function addDatepicker() {

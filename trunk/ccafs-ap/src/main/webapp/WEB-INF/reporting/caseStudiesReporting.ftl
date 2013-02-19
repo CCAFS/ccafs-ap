@@ -94,7 +94,7 @@
           
           [#-- Countries --]
           <div class="fullBlock countriesBlock">
-            [@customForm.select name="caseStudies[${caseStudy_index}].countries" label="" i18nkey="reporting.caseStudies.countries" listName="countryList" keyFieldName="id"  displayFieldName="name" value="caseStudies[${caseStudy_index}].countriesIds" multiple=true disabled="${caseStudy.global?string('1', '0')}" help="reporting.caseStudies.countries.help"/]              
+            [@customForm.select name="caseStudies[${caseStudy_index}].countries" label="" i18nkey="reporting.caseStudies.countries" listName="countryList" keyFieldName="id"  displayFieldName="name" value="caseStudies[${caseStudy_index}].countriesIds" multiple=true disabled="${caseStudy.global?string('1', '0')}"/]              
           </div>
           
           [#-- Keywords --]
@@ -200,7 +200,7 @@
         
         [#-- Countries --]
         <div class="fullBlock countriesBlock">
-          [@customForm.select name="countries" label="" i18nkey="reporting.caseStudies.countries" listName="countryList" keyFieldName="id"  displayFieldName="name" value="" multiple=true help="reporting.caseStudies.countries.help" /]              
+          [@customForm.select name="countries" label="" i18nkey="reporting.caseStudies.countries" listName="countryList" keyFieldName="id"  displayFieldName="name" value="" multiple=true /]              
         </div>
         
         [#-- Keywords --]
