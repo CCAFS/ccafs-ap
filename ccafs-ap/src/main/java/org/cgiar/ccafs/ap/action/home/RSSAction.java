@@ -75,8 +75,6 @@ public class RSSAction extends BaseAction {
     if (activities == null) {
       activities = new Activity[0];
     }
-    System.out.println(activities.length);
-    System.out.println("*******************");
   }
 
 
