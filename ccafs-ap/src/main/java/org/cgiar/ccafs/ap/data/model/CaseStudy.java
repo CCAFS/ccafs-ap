@@ -28,6 +28,8 @@ public class CaseStudy {
   private Logframe logframe;
   private Leader leader;
   private boolean isGlobal;
+  private List<CaseStudyType> types;
+
 
   public CaseStudy() {
   }
@@ -112,6 +114,18 @@ public class CaseStudy {
     return title;
   }
 
+  public List<CaseStudyType> getTypes() {
+    return types;
+  }
+
+  public List<String> getTypesIds() {
+    ArrayList<String> ids = new ArrayList<>();
+    for (int c = 0; c < getTypes().size(); c++) {
+      ids.add(getTypes().get(c).getId() + "");
+    }
+    return ids;
+  }
+
   public boolean isGlobal() {
     return isGlobal;
   }
@@ -123,7 +137,6 @@ public class CaseStudy {
   public void setCountries(List<Country> countries) {
     this.countries = countries;
   }
-
 
   public void setDescription(String description) {
     this.description = description;
@@ -143,6 +156,7 @@ public class CaseStudy {
   public void setId(int id) {
     this.id = id;
   }
+
 
   public void setImage(File image) {
     this.image = image;
@@ -190,6 +204,10 @@ public class CaseStudy {
 
   public void setTitle(String title) {
     this.title = title;
+  }
+
+  public void setTypes(List<CaseStudyType> types) {
+    this.types = types;
   }
 
   @Override

@@ -593,6 +593,10 @@ nav#secondaryMenu ul a li {
 .outcome .textArea h6 {
   font-weight: normal;
 }
+
+.halfPartBlock.authorBlock{
+  vertical-align: top;
+}
 /************ TL/RPL ONLY **************/
 /* TL/RPL Sub-Menu */
 #stageMenu.tlRplSubMenu ul a li {

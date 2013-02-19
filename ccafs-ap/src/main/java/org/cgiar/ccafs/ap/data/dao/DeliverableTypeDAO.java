@@ -1,9 +1,9 @@
 package org.cgiar.ccafs.ap.data.dao;
 
+import org.cgiar.ccafs.ap.data.dao.mysql.MySQLDeliverableTypeDAO;
+
 import java.util.List;
 import java.util.Map;
-
-import org.cgiar.ccafs.ap.data.dao.mysql.MySQLDeliverableTypeDAO;
 
 import com.google.inject.ImplementedBy;
 
@@ -11,9 +11,9 @@ import com.google.inject.ImplementedBy;
 public interface DeliverableTypeDAO {
 
   /**
-   * Get a list whit all the deliverables types
+   * Get a list with all the deliverables types
    * 
-   * @return a Map whit the types of deliverables.
+   * @return a Map with the types of deliverables.
    */
   public List<Map<String, String>> getDeliverableTypes();
 }
