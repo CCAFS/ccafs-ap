@@ -14,7 +14,8 @@
     </action>
     
     <action name="rss" class="org.cgiar.ccafs.ap.action.home.RSSAction">
-      <result name="input">/WEB-INF/home/rss.ftl</result>
+      <result name="input" type="freemarker">/WEB-INF/home/rss.ftl</result>
+      <param name="contentType">text/xml</param>
     </action> 
 
   </package>
