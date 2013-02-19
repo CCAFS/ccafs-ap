@@ -2,7 +2,7 @@ $(document).ready(function() {
 
   $(".addCaseStudies").click(function(event) {
     event.preventDefault();
-    // Cloning tempalte.
+    // Cloning template.
     var $newCaseStudy = $("#caseStudy-999").clone(true);
     $("#addCaseStudiesBlock").before($newCaseStudy);   
     renameCaseStudies();

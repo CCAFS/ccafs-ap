@@ -29,6 +29,15 @@ public interface ActivityDAO {
   public List<Map<String, String>> getActivities(int year, int leaderTypeCode);
 
   /**
+   * Get a list of activities to be showed in the RSS system.
+   * 
+   * @param year - Year in which the activities were added.
+   * @param limit - Number of activities to be showed. If limit is -1 all the activities will be showed.
+   * @return a List of Maps with the information of each activity took from the DAO.
+   */
+  public List<Map<String, String>> getActivitiesForRSS(int year, int limit);
+
+  /**
    * Get an an activity identified with the given year.
    * 
    * @param id - identifier.
