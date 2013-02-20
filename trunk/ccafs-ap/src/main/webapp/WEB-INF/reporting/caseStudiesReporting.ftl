@@ -55,13 +55,17 @@
           [#-- This section is missing because there is not a associated table in the db --]
           
           [#-- Author --]
-          <div class="halfPartBlock authorBlock">
+          <div class="fullBlock authorBlock">
             [@customForm.input name="caseStudies[${caseStudy_index}].author" type="text" i18nkey="reporting.caseStudies.author" /]              
           </div>
           
           [#-- Types --]
-          <div class="halfPartBlock">
-            [@customForm.select name="caseStudies[${caseStudy_index}].types" label="" i18nkey="reporting.caseStudies.types" listName="caseStudyTypeList" keyFieldName="id"  displayFieldName="name" value="caseStudies[${caseStudy_index}].typesIds" multiple=true /]              
+          <div class="fullBlock">
+            <h6>[@s.text name="reporting.caseStudies.types" /]</h6>
+            <div class="checkboxGroup">
+              [@s.fielderror cssClass="fieldError" fieldName="caseStudies[${caseStudy_index}].types"/]
+              [@s.checkboxlist name="caseStudies[${caseStudy_index}].types" list="caseStudyTypeList" listKey="id" listValue="name" value="caseStudies[${caseStudy_index}].typesIds" cssClass="checkbox" /]
+            </div>                          
           </div>
           
           [#-- Start Date --]
