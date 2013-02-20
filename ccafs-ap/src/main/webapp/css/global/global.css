@@ -574,9 +574,20 @@ nav#secondaryMenu ul a li {
 }
 
 /* Partners */
+#addPartnerText {
+  background-color: #F2F2F2;
+  border: 1px solid #29336F;
+  padding: 10px;
+  color: #29336F;
+}
 #addPartnerText a {
   font-weight: bold;
 }
+#addPartnerText a:hover {
+  text-decoration: underline;
+}
+
+
 
 /******** SUMMARY BY OUTPUTS ***********/
 .outputTitle {
