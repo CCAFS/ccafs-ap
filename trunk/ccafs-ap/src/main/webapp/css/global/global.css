@@ -533,6 +533,10 @@ nav#secondaryMenu ul a li {
   text-align: left;
 }
 
+#activityList a:HOVER {
+  text-decoration: underline;
+}
+
 /** Activity Status **/
 #activityTitle p {
   text-align: justify;
