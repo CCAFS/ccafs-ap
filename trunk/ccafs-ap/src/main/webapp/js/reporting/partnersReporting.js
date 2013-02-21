@@ -57,12 +57,13 @@ $(document).ready(function() {
     event.preventDefault();
     // Getting the id.
     var removeId = $(event.target).attr("id").split("-")[1];
-    $("#activityPartner-" + removeId).fadeOut("slow");
-    // removing division line.
-    $("#activityPartner-" + removeId).next("hr").remove();
-    // removing div.
-    $("#activityPartner-" + removeId).remove();
-    renameActivityPartners();
+    $("#activityPartner-" + removeId).hide("slow", function() {
+      // removing division line.
+      $(this).next("hr").remove();
+      // removing div.
+      $(this).remove();
+      renameActivityPartners();
+    });
   });
   
   //Activate the chosen plugin to the existing case studies  

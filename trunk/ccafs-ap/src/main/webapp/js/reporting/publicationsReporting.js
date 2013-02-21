@@ -43,11 +43,12 @@ $(document).ready(function() {
     event.preventDefault();
     // Getting the id.
     var removeId = $(event.target).attr("id").split("-")[1];
-    $("#publication-" + removeId).fadeOut("slow");
-    // removing division line.
-    $("#publication-" + removeId).next("hr").remove();
-    // removing div.
-    $("#publication-" + removeId).remove();
-    renamePublications();
+    $("#publication-" + removeId).hide("slow", function() {
+      // removing division line.
+      $(this).next("hr").remove();
+      // removing div.
+      $(this).remove();
+      renamePublications();
+    });
   });  
 });
