@@ -60,11 +60,12 @@ $(document).ready(function() {
     event.preventDefault();
     // Getting the id.
     var removeId = $(event.target).attr("id").split("-")[1];
-    $("#outcome-" + removeId).fadeOut("slow");
-    // removing division line.
-    $("#outcome-" + removeId).next("hr").remove();
-    // removing div.
-    $("#outcome-" + removeId).remove();
-    renameOutcomes();
+    $("#outcome-" + removeId).hide("slow", function() {
+      // removing division line.
+      $(this).next("hr").remove();
+      // removing div.
+      $(this).remove();
+      renameOutcomes();
+    });
   });  
 });
