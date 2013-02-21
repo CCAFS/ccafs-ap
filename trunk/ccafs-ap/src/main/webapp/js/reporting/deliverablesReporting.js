@@ -85,6 +85,8 @@ $(document).ready(
     });
 
 function renameDeliverables() {
+  //getting the text of the index element.
+  var itemText = $("#template").find(".itemIndex").text();
   // getting the number of expected deliverables.
   var expectedDeliverablesCount = $("#expectedDeliverablesGroup .deliverable").length;
   $("#items .deliverable")
@@ -101,6 +103,8 @@ function renameDeliverables() {
               // Id
               $(this).find("[name$='id']").attr("name",
                   "activity.deliverables[" + index + "].id");
+              //Item index
+              $(this).find(".itemIndex").text(itemText + " " + (index + 1));
               // Description.
               $(this).find("[id$='description']").attr("id",
                   "activity.deliverables[" + index + "].description");

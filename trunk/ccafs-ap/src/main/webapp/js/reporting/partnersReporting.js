@@ -3,8 +3,6 @@ $(document).ready(function() {
   popups();
   
   function renameActivityPartners() {
-    // getting the number of expected deliverables.
-    var expectedDeliverablesCount = $("#activityPartnerGroup .activityPartner").length;
     $("#items .activityPartner").each(
         function(index, activityPartner) {
           // Changing attributes of each component in order to match

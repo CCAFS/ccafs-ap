@@ -2,7 +2,7 @@ $(document).ready(function() {
   
   function renameOutcomes() {
     //getting the text of the index element.
-    var itemText = $("#template").find(".itemIndex").text()
+    var itemText = $("#template").find(".itemIndex").text();
     $("#items .outcome").each(function(index, outcome) {
           // Changing attributes of each component in order to match
           // with the array order.
