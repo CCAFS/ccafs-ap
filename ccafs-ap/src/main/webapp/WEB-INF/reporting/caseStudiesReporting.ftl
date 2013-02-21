@@ -111,14 +111,14 @@
             [@customForm.input name="caseStudies[${caseStudy_index}].keywords" type="text" i18nkey="reporting.caseStudies.keywords" /]
           </div>
           
-          [#-- Objectives --]
-          <div class="fullBlock">
-            [@customForm.textArea name="caseStudies[${caseStudy_index}].objectives" i18nkey="reporting.caseStudies.objectives" /]
-          </div>
-          
           [#-- Description --]
           <div class="fullBlock">
             [@customForm.textArea name="caseStudies[${caseStudy_index}].description" i18nkey="reporting.caseStudies.descripition" /]
+          </div>
+          
+          [#-- Objectives --]
+          <div class="fullBlock">
+            [@customForm.textArea name="caseStudies[${caseStudy_index}].objectives" i18nkey="reporting.caseStudies.objectives" /]
           </div>
           
           [#-- Result --]
@@ -222,14 +222,14 @@
           [@customForm.input name="keywords" type="text" i18nkey="reporting.caseStudies.keywords" /]
         </div>            
         
-        [#-- Objectives --]
-        <div class="fullBlock">
-          [@customForm.textArea name="objectives" i18nkey="reporting.caseStudies.objectives" /]
-        </div>
-        
         [#-- Description --]
         <div class="fullBlock">
           [@customForm.textArea name="description" i18nkey="reporting.caseStudies.descripition" /]
+        </div>
+        
+        [#-- Objectives --]
+        <div class="fullBlock">
+          [@customForm.textArea name="objectives" i18nkey="reporting.caseStudies.objectives" /]
         </div>
         
         [#-- Result --]
