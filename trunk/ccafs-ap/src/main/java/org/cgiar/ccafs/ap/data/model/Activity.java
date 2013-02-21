@@ -24,6 +24,9 @@ public class Activity {
   private List<Deliverable> deliverables;
   private List<ActivityPartner> activityPartners;
   private Date dateAdded;
+  private ActivityObjective[] objectives;
+  private List<Resource> resources;
+
 
   public Activity() {
   }
@@ -32,16 +35,16 @@ public class Activity {
     return activityPartners;
   }
 
-  public Date getDateAdded() {
-    return dateAdded;
-  }
-
   public Budget getBudget() {
     return budget;
   }
 
   public ContactPerson[] getContactPersons() {
     return contactPersons;
+  }
+
+  public Date getDateAdded() {
+    return dateAdded;
   }
 
   public List<Deliverable> getDeliverables() {
@@ -72,6 +75,14 @@ public class Activity {
     return milestone;
   }
 
+  public ActivityObjective[] getObjectives() {
+    return objectives;
+  }
+
+  public List<Resource> getResources() {
+    return resources;
+  }
+
   public Date getStartDate() {
     return startDate;
   }
@@ -100,16 +111,16 @@ public class Activity {
     this.activityPartners = activityPartners;
   }
 
-  public void setDateAdded(Date dateAdded) {
-    this.dateAdded = dateAdded;
-  }
-
   public void setBudget(Budget budget) {
     this.budget = budget;
   }
 
   public void setContactPersons(ContactPerson[] contactPersons) {
     this.contactPersons = contactPersons;
+  }
+
+  public void setDateAdded(Date dateAdded) {
+    this.dateAdded = dateAdded;
   }
 
   public void setDeliverables(List<Deliverable> deliverables) {
@@ -144,8 +155,16 @@ public class Activity {
     this.milestone = milestone;
   }
 
+  public void setObjectives(ActivityObjective[] objectives) {
+    this.objectives = objectives;
+  }
+
   public void setPlanning(boolean isPlanning) {
     this.isPlanning = isPlanning;
+  }
+
+  public void setResources(List<Resource> resources) {
+    this.resources = resources;
   }
 
   public void setStartDate(Date startDate) {
@@ -168,6 +187,4 @@ public class Activity {
   public String toString() {
     return ToStringBuilder.reflectionToString(this);
   }
-
-
 }
