@@ -13,6 +13,12 @@
       <result name="success">/WEB-INF/home/login.ftl</result>
     </action>
     
+    <action name="activity" class="org.cgiar.ccafs.ap.action.home.ActivityAction">
+      <result name="input" type="freemarker">/WEB-INF/home/activity.ftl</result>
+      <result name="success" type="freemarker">/WEB-INF/home/activity.ftl</result>
+      <param name="contentType">text/xml</param>
+    </action>
+    
     <action name="rss" class="org.cgiar.ccafs.ap.action.home.RSSAction">
       <result name="input" type="freemarker">/WEB-INF/home/rss.ftl</result>
       <param name="contentType">text/xml</param>
