@@ -28,6 +28,11 @@
           </div>
         [/#if]
         
+        [#-- Item index --]
+        <div class="itemIndex">
+          [@s.text name="reporting.activityDeliverables.deliverable" /] ${deliverable_index +1}
+        </div>
+        
         [#-- Description --]
         <div class="fullBlock">
           [#if deliverable.expected]
@@ -144,6 +149,11 @@
         
         [#-- identifier --]
         <input name="id" type="hidden" value="-1" />
+        
+        [#-- Item index --]
+        <div class="itemIndex">
+          [@s.text name="reporting.activityDeliverables.deliverable" /]
+        </div>
         
         [#-- Description --]
         <div class="fullBlock">                      
