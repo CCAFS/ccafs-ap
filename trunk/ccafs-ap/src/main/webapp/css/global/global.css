@@ -417,6 +417,7 @@ nav#secondaryMenu ul a li {
   padding: 10px;
 }
 
+
 /********* Activity Reporting Sub Menu **********/
 #stageMenu {
   display: block;
@@ -495,6 +496,31 @@ nav#secondaryMenu ul a li {
 }
 #reportComponent tbody tr {
   border-bottom: 1px solid #9D9D9D;
+}
+
+/*************** HOME ****************/
+
+/* Activities */
+.activityInformation .fullBlock.name{
+  margin-bottom: 0px;
+  padding: 2px 5px;
+}
+
+.activityInformation  .halfPartBlock{
+  padding: 2px 5px;
+}
+
+.activityInformation .label{
+  padding: 2px 5px;
+  font-weight: bold;
+}
+
+.activityInformation ol{
+  margin-top: 10px;
+}
+
+.activityInformation ol li{
+  margin-bottom: 15px;
 }
 
 /************ ACTIVITIES ***************/

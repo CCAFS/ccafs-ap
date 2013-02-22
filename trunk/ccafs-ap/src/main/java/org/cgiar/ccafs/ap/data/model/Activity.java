@@ -26,7 +26,7 @@ public class Activity {
   private Date dateAdded;
   private ActivityObjective[] objectives;
   private List<Resource> resources;
-
+  private List<ActivityKeyword> keywords;
 
   public Activity() {
   }
@@ -65,6 +65,10 @@ public class Activity {
 
   public int getId() {
     return id;
+  }
+
+  public List<ActivityKeyword> getKeywords() {
+    return keywords;
   }
 
   public Leader getLeader() {
@@ -145,6 +149,10 @@ public class Activity {
 
   public void setId(int id) {
     this.id = id;
+  }
+
+  public void setKeywords(List<ActivityKeyword> keywords) {
+    this.keywords = keywords;
   }
 
   public void setLeader(Leader leader) {

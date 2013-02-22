@@ -4,6 +4,7 @@ import org.cgiar.ccafs.ap.action.BaseAction;
 import org.cgiar.ccafs.ap.action.reporting.activities.DeliverablesReportingAction;
 import org.cgiar.ccafs.ap.config.APConfig;
 import org.cgiar.ccafs.ap.config.APConstants;
+import org.cgiar.ccafs.ap.data.manager.ActivityKeywordManager;
 import org.cgiar.ccafs.ap.data.manager.ActivityManager;
 import org.cgiar.ccafs.ap.data.manager.ActivityObjectiveManager;
 import org.cgiar.ccafs.ap.data.manager.ActivityPartnerManager;
@@ -35,6 +36,7 @@ public class ActivityAction extends BaseAction {
   private BudgetManager budgetManager;
   private ActivityObjectiveManager activityObjectiveManager;
   private ResourceManager resourceManager;
+  private ActivityKeywordManager keywordManager;
 
   // Model
   private Activity activity;
@@ -43,7 +45,7 @@ public class ActivityAction extends BaseAction {
   @Inject
   public ActivityAction(APConfig config, LogframeManager logframeManager, ActivityManager activityManager,
     DeliverableManager deliverableManager, ActivityPartnerManager activityPartnerManager,
-    ContactPersonManager contactPersonManager, BudgetManager budgetManager,
+    ContactPersonManager contactPersonManager, BudgetManager budgetManager, ActivityKeywordManager keywordManager,
     ActivityObjectiveManager activityObjectiveManager, ResourceManager resourceManager) {
     super(config, logframeManager);
     this.activityManager = activityManager;
@@ -53,6 +55,7 @@ public class ActivityAction extends BaseAction {
     this.budgetManager = budgetManager;
     this.activityObjectiveManager = activityObjectiveManager;
     this.resourceManager = resourceManager;
+    this.keywordManager = keywordManager;
   }
 
   @Override
@@ -82,6 +85,8 @@ public class ActivityAction extends BaseAction {
     activity.setObjectives(activityObjectiveManager.getActivityObjectives(activityID));
     // Set the activity resources
     activity.setResources(resourceManager.getResources(activityID));
+    // Set the activity keywords
+    activity.setKeywords(keywordManager.getKeywordList(activityID));
     return SUCCESS;
   }
 
@@ -102,14 +107,14 @@ public class ActivityAction extends BaseAction {
     super.prepare();
 
     // Verify if there is a activityID parameter
-    if (this.getRequest().getParameter(APConstants.ACTIVITY_REQUEST_ID) == null) {
+    if (this.getRequest().getParameter(APConstants.PUBLIC_ACTIVITY_ID) == null) {
       activityID = -1;
       return;
     }
 
     try {
       // If there is a parameter take its values
-      activityID = Integer.parseInt(StringUtils.trim(this.getRequest().getParameter(APConstants.ACTIVITY_REQUEST_ID)));
+      activityID = Integer.parseInt(StringUtils.trim(this.getRequest().getParameter(APConstants.PUBLIC_ACTIVITY_ID)));
     } catch (NumberFormatException e) {
       // If there was an error trying to parse the URL parameter
       LOG.error("There was an error trying to parse the activityId parameter");
