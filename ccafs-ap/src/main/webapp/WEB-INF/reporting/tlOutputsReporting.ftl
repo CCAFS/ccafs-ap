@@ -1,7 +1,7 @@
 [#ftl]
 [#assign title = "Theme Leader Outputs Report" /]
 [#assign globalLibs = ["jquery", "noty"] /]
-[#-- assign customJS = ["${baseUrl}/js/reporting/outcomesReporting.js", "${baseUrl}/js/global/utils.js"] / --]
+[#assign customJS = ["${baseUrl}/js/reporting/tlOutputsReporting.js"] /] 
 [#-- assign customCSS = ["${baseUrl}/css/reporting/partnersReporting.css"] / --]
 [#assign currentSection = "reporting" /]
 [#assign currentReportingSection = "tlRpl" /]
