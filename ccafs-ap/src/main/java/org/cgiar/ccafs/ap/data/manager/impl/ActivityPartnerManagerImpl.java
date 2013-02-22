@@ -3,7 +3,9 @@ package org.cgiar.ccafs.ap.data.manager.impl;
 import org.cgiar.ccafs.ap.data.dao.ActivityPartnerDAO;
 import org.cgiar.ccafs.ap.data.manager.ActivityPartnerManager;
 import org.cgiar.ccafs.ap.data.model.ActivityPartner;
+import org.cgiar.ccafs.ap.data.model.Country;
 import org.cgiar.ccafs.ap.data.model.Partner;
+import org.cgiar.ccafs.ap.data.model.PartnerType;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -38,6 +40,16 @@ public class ActivityPartnerManagerImpl implements ActivityPartnerManager {
       partner.setId(Integer.parseInt(activityPartnerData.get("partner_id")));
       partner.setAcronym(activityPartnerData.get("partner_acronym"));
       partner.setName(activityPartnerData.get("partner_name"));
+      // Partner type
+      PartnerType partnerType = new PartnerType();
+      partnerType.setId(Integer.parseInt(activityPartnerData.get("partner_type_id")));
+      partnerType.setName(activityPartnerData.get("partner_type_name"));
+      partner.setType(partnerType);
+      // Country
+      Country country = new Country();
+      country.setId(activityPartnerData.get("country_iso2"));
+      country.setName(activityPartnerData.get("country_name"));
+      partner.setCountry(country);
 
       activityPartner.setPartner(partner);
       activityPartnerList.add(activityPartner);

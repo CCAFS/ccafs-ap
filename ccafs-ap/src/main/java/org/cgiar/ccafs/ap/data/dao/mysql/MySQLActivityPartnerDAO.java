@@ -28,11 +28,12 @@ public class MySQLActivityPartnerDAO implements ActivityPartnerDAO {
     List<Map<String, String>> activityPartnerList = new ArrayList<>();
     try (Connection con = databaseManager.getConnection()) {
       String query =
-        "SELECT ap.id, ap.contact_name, ap.contact_email, p.acronym, p.id as 'partner_id', p.acronym as 'partner_acronym', p.name as 'partner_name' "
-          + "FROM activity_partners ap "
+        "SELECT ap.id, ap.contact_name, ap.contact_email, p.id as 'partner_id', p.acronym as 'partner_acronym', "
+          + "p.name as 'partner_name', pt.id as 'partner_type_id', pt.name as 'partner_type_name', "
+          + "co.iso2 as 'country_iso2', co.name as 'country_name' " + "FROM activity_partners ap "
           + "INNER JOIN partners p ON p.id = ap.partner_id "
-          + "WHERE ap.activity_id = "
-          + activityID;
+          + "INNER JOIN partner_types pt ON p.partner_type_id = pt.id "
+          + "INNER JOIN countries co ON p.country_iso2 = co.iso2 " + "WHERE ap.activity_id = " + activityID;
       ResultSet rs = databaseManager.makeQuery(query, con);
       while (rs.next()) {
         Map<String, String> activityPartnerData = new HashMap<>();
@@ -42,6 +43,10 @@ public class MySQLActivityPartnerDAO implements ActivityPartnerDAO {
         activityPartnerData.put("partner_id", rs.getString("partner_id"));
         activityPartnerData.put("partner_acronym", rs.getString("partner_acronym"));
         activityPartnerData.put("partner_name", rs.getString("partner_name"));
+        activityPartnerData.put("partner_type_id", rs.getString("partner_type_id"));
+        activityPartnerData.put("partner_type_name", rs.getString("partner_type_name"));
+        activityPartnerData.put("country_iso2", rs.getString("country_iso2"));
+        activityPartnerData.put("country_name", rs.getString("country_name"));
         activityPartnerList.add(activityPartnerData);
       }
       rs.close();
