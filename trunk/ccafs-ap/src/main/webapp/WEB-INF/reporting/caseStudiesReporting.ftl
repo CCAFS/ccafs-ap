@@ -50,10 +50,7 @@
           <div class="fullBlock">
             [@customForm.input name="caseStudies[${caseStudy_index}].title" type="text" i18nkey="reporting.caseStudies.title" /]
           </div>
-          
-          [#-- Type --]
-          [#-- This section is missing because there is not a associated table in the db --]
-          
+                    
           [#-- Author --]
           <div class="fullBlock authorBlock">
             [@customForm.input name="caseStudies[${caseStudy_index}].author" type="text" i18nkey="reporting.caseStudies.author" /]              
@@ -97,7 +94,7 @@
           </div>
           
           [#-- Is global --]
-          <div class="halfPartBlock countriesBlock">            
+          <div class="halfPartBlock">            
             [@customForm.checkbox  name="caseStudies[${caseStudy_index}].global" i18nkey="reporting.caseStudies.isGlobal" checked="${caseStudy.global?string('1', '0')}" /]              
           </div>
           
@@ -176,17 +173,17 @@
           [@customForm.input name="title" type="text" i18nkey="reporting.caseStudies.title" /]
         </div>
         
-        [#-- Type --]
-        [#-- This section is missing because there is not a associated table in the db --]
-        
         [#-- Author --]
-        <div class="halfPartBlock authorBlock">
+        <div class="fullBlock authorBlock">
           [@customForm.input name="author" type="text" i18nkey="reporting.caseStudies.author" /]              
         </div>
         
         [#-- Types --]
-        <div class="halfPartBlock">
-          [@customForm.select name="types" label="" i18nkey="reporting.caseStudies.types" listName="caseStudyTypeList" keyFieldName="id"  displayFieldName="name" value="" multiple=true /]              
+        <div class="fullBlock">
+          <h6>[@s.text name="reporting.caseStudies.types" /]</h6>
+          <div class="checkboxGroup">
+            [@s.checkboxlist name="types" list="caseStudyTypeList" listKey="id" listValue="name" cssClass="checkbox" /]
+          </div>                          
         </div>
         
         [#-- Start Date --]
@@ -205,10 +202,11 @@
             [@customForm.input name="image" type="file" i18nkey="reporting.caseStudies.image" /]
           </div>
           <div id="image" class="halfPartBlock image"></div>
+          <div class="clear"> </div>
         </div>
         
         [#-- Is global --]
-        <div class="halfPartBlock countriesBlock">            
+        <div class="halfPartBlock">            
           [@customForm.checkbox  name="global" i18nkey="reporting.caseStudies.isGlobal" checked="0"/]              
         </div>
         
