@@ -108,6 +108,9 @@
       </div> <!-- End partner template -->
     </div> <!-- End template -->
     
+    [#-- Partner list no result found message --]
+    <input id="noResultText" type="hidden" value="[@s.text name="reporting.activityPartners.addNewPartner.noResultMatch" /]" />
+    
     <!-- internal parameter -->
     <input name="activityID" type="hidden" value="${activity.id}" />
     <div class="buttons">

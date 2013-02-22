@@ -50,7 +50,7 @@ $(document).ready(function() {
     renameActivityPartners();
     $newActivityPartner.fadeIn("slow");
     // Activate the chosen plugin
-    $newActivityPartner.find("select[name$='partner']").chosen();
+    $newActivityPartner.find("select[name$='partner']").chosen({no_results_text: $("#noResultText").val()});
   });
 
   $('.removeActivityPartner').click(function(event) {
@@ -75,7 +75,7 @@ function addChosen() {
   $("select[name$='partner']").each(function() {
     // Check if its not the template countries field
     if ($(this).attr("name") != '__partner') {
-      $(this).chosen();
+      $(this).chosen({no_results_text: $("#noResultText").val()});
     }
   });
 }

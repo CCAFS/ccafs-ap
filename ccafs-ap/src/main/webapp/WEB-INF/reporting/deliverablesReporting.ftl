@@ -118,7 +118,11 @@
           <h5>[@s.text name="reporting.activityDeliverables.expectedDeliverables" /]</h5>
         </legend>
         [#-- Listing expected deliverables (see macro above) --]
-        [@deliverableSection isExpected=true /]         
+        [#if activity.deliverables?has_content]
+          [@deliverableSection isExpected=true /]
+        [#else]
+          [@s.text name="reporting.activityDeliverables.noPlannedDeliverables" /]
+        [/#if]
       </fieldset>
       
       <fieldset id="newDeliverablesGroup">
@@ -126,7 +130,9 @@
           <h5>[@s.text name="reporting.activityDeliverables.newDeliverable" /]</h5>
         </legend>             
         [#-- Listing new deliverables (see macro above) --]
-        [@deliverableSection isExpected=false /]
+        [#if activity.deliverables?has_content]
+          [@deliverableSection isExpected=false /]
+        [/#if]
       
         <div id="addDeliverableBlock" class="addLink">
           <img src="${baseUrl}/images/global/icon-add.png" />
