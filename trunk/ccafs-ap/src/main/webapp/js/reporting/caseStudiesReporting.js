@@ -42,6 +42,23 @@ $(document).ready(function() {
   // Activate the chosen plugin to the existing case studies  
   addChosen();
   hideCountries();
+  
+  // character counter to objective text areas.
+  $("#caseStudiesGroup, #template").find("[id$='objectives']").each(function() {
+    applyCharCounter($(this), 400);
+  });
+  // character counter to description text areas.
+  $("#caseStudiesGroup, #template").find("[id$='description']").each(function() {
+    applyCharCounter($(this), 1100);
+  });
+  //character counter to results text areas.
+  $("#caseStudiesGroup, #template").find("[id$='results']").each(function() {
+    applyCharCounter($(this), 1100);
+  });
+  //character counter to partners text areas.
+  $("#caseStudiesGroup, #template").find("[id$='partners']").each(function() {
+    applyCharCounter($(this), 250);
+  });
 });
 
 // Hide countries field when the case study is global after the page load
