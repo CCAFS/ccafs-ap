@@ -7,14 +7,20 @@ public class Publication {
   private PublicationType type;
   private String identifier;
   private String citation;
+  private String fileUrl;
   private Logframe logframe;
   private Leader leader;
 
   public Publication() {
   }
 
+
   public String getCitation() {
     return citation;
+  }
+
+  public String getFileUrl() {
+    return fileUrl;
   }
 
   public int getId() {
@@ -39,6 +45,10 @@ public class Publication {
 
   public void setCitation(String citation) {
     this.citation = citation;
+  }
+
+  public void setFileUrl(String fileUrl) {
+    this.fileUrl = fileUrl;
   }
 
   public void setId(int id) {

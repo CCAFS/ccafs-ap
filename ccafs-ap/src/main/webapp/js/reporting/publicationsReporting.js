@@ -25,6 +25,10 @@ $(document).ready(function() {
           $(this).find("[id$='citation']").attr("id", "publications[" + index + "].citation");
           $(this).find("[name$='citation']").attr("name", "publications[" + index + "].citation");
           $(this).find("[for$='citation']").attr("for", "publications[" + index + "].citation");
+          // Publication File URL.
+          $(this).find("[id$='fileUrl']").attr("id", "publications[" + index + "].fileUrl");
+          $(this).find("[name$='fileUrl']").attr("name", "publications[" + index + "].fileUrl");
+          $(this).find("[for$='fileUrl']").attr("for", "publications[" + index + "].fileUrl");
         }
     );
   }
