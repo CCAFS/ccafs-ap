@@ -64,44 +64,4 @@ public class OutcomesReportingAction extends BaseAction {
     this.outcomes = outcomes;
   }
 
-  @Override
-  public void validate() {
-    super.validate();
-    // Validate only when user click on save button
-    if (save) {
-      boolean problem = false;
-      int c = 0;
-      for (Outcome outcome : outcomes) {
-        if (outcome.getOutcome().isEmpty()) {
-          addFieldError("outcomes[" + c + "].outcome", getText("validation.field.required"));
-          problem = true;
-        }
-        if (outcome.getOutputs().isEmpty()) {
-          addFieldError("outcomes[" + c + "].outputs", getText("validation.field.required"));
-          problem = true;
-        }
-        if (outcome.getPartners().isEmpty()) {
-          addFieldError("outcomes[" + c + "].partners", getText("validation.field.required"));
-          problem = true;
-        }
-        if (outcome.getOutputUser().isEmpty()) {
-          addFieldError("outcomes[" + c + "].outputUser", getText("validation.field.required"));
-          problem = true;
-        }
-        if (outcome.getHowUsed().isEmpty()) {
-          addFieldError("outcomes[" + c + "].howUsed", getText("validation.field.required"));
-          problem = true;
-        }
-        if (outcome.getEvidence().isEmpty()) {
-          addFieldError("outcomes[" + c + "].evidence", getText("validation.field.required"));
-          problem = true;
-        }
-        c++;
-      }
-      if (problem) {
-        addActionError(getText("saving.fields.required"));
-      }
-    }
-  }
-
 }
