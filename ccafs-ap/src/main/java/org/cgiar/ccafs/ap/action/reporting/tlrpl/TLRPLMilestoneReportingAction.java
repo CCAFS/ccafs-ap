@@ -67,34 +67,5 @@ public class TLRPLMilestoneReportingAction extends BaseAction {
     this.milestoneReports = milestoneReports;
   }
 
-  @Override
-  public void validate() {
-    boolean anyProblem = false;
-    // Validate only when the user click on save
-    if (save) {
-      for (int c = 0; c < milestoneReports.length; c++) {
-        // Status
-        if (milestoneReports[c].getStatus().getId() == -1) {
-          addFieldError("milestoneReports[" + c + "].status.id", getText("validation.field.required"));
-          anyProblem = true;
-        }
-        // Description, check what type of user is
-        if (getCurrentUser().isTL()) {
-          if (milestoneReports[c].getThemeLeaderDescription().isEmpty()) {
-            addFieldError("milestoneReports[" + c + "].themeLeaderDescription", getText("validation.field.required"));
-            anyProblem = true;
-          }
-        } else if (getCurrentUser().isRPL()) {
-          if (milestoneReports[c].getRegionalLeaderDescription().isEmpty()) {
-            addFieldError("milestoneReports[" + c + "].regionalLeaderDescription", getText("validation.field.required"));
-            anyProblem = true;
-          }
-        }
-      }
-    }
 
-    if (anyProblem) {
-      addActionError(getText("saving.fields.required"));
-    }
-  }
 }

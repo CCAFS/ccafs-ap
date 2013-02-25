@@ -50,32 +50,4 @@ public class RPLSynthesisReportingAction extends BaseAction {
       return INPUT;
     }
   }
-
-  @Override
-  public void validate() {
-    super.validate();
-    if (save) {
-      boolean problem = false;
-      if (synthesisReport.getCcafsSites().isEmpty()) {
-        problem = true;
-        addFieldError("synthesisReport.ccafsSites", getText("validation.field.required"));
-      }
-      if (synthesisReport.getCrossCenter().isEmpty()) {
-        problem = true;
-        addFieldError("synthesisReport.crossCenter", getText("validation.field.required"));
-      }
-      if (synthesisReport.getRegional().isEmpty()) {
-        problem = true;
-        addFieldError("synthesisReport.regional", getText("validation.field.required"));
-      }
-      if (synthesisReport.getDecisionSupport().isEmpty()) {
-        problem = true;
-        addFieldError("synthesisReport.decisionSupport", getText("validation.field.required"));
-      }
-      if (problem) {
-        addActionError(getText("saving.fields.required"));
-      }
-    }
-  }
-
 }

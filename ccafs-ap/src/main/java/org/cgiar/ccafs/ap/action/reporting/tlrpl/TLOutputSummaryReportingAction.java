@@ -56,26 +56,4 @@ public class TLOutputSummaryReportingAction extends BaseAction {
     this.tlOutputSummaries = tlOutputSummaries;
   }
 
-  @Override
-  public void validate() {
-    super.validate();
-    // If the page is loading don't validate
-    if (save) {
-      boolean problem = false;
-      int c = 0;
-      for (TLOutputSummary outputSummary : tlOutputSummaries) {
-        if (outputSummary.getDescription().isEmpty()) {
-          problem = true;
-          addFieldError("tlOutputSummaries[" + c + "].description", getText("validation.field.required"));
-        }
-        c++;
-      }
-
-      if (problem) {
-        addActionError(getText("saving.fields.required"));
-      }
-    }
-  }
-
-
 }

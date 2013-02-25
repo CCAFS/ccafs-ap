@@ -53,7 +53,7 @@
             [#if currentUser.TL || currentUser.admin]
               <div class="milestoneReportStatus">
                 [@customForm.radioButtonGroup name="milestoneReports[${milestoneReport_index}].status.id" label="" i18nkey="reporting.tlRplMilestoneReport.milestoneStatus" listName="milestoneStatusList" keyFieldName="id" displayFieldName="name" value="${milestoneReport.status.id}" /]
-              </div>  
+              </div>           
             [/#if]
             
             [#-- TL/RPL Milestone description --]

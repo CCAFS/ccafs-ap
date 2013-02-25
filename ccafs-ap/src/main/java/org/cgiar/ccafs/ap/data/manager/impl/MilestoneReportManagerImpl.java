@@ -101,9 +101,21 @@ public class MilestoneReportManagerImpl implements MilestoneReportManager {
       Map<String, Object> milestoneReportData = new HashMap<String, Object>();
       milestoneReportData.put("id", milestoneReport.getId());
       milestoneReportData.put("milestone_id", milestoneReport.getMilestone().getId());
-      milestoneReportData.put("milestone_status_id", milestoneReport.getStatus().getId());
-      milestoneReportData.put("tl_description", milestoneReport.getThemeLeaderDescription());
-      milestoneReportData.put("rpl_description", milestoneReport.getRegionalLeaderDescription());
+      if (milestoneReport.getStatus().getId() == -1) {
+        milestoneReportData.put("milestone_status_id", null);
+      } else {
+        milestoneReportData.put("milestone_status_id", milestoneReport.getStatus().getId());
+      }
+      if (milestoneReport.getThemeLeaderDescription().isEmpty()) {
+        milestoneReportData.put("tl_description", null);
+      } else {
+        milestoneReportData.put("tl_description", milestoneReport.getThemeLeaderDescription());
+      }
+      if (milestoneReport.getRegionalLeaderDescription().isEmpty()) {
+        milestoneReportData.put("rpl_description", null);
+      } else {
+        milestoneReportData.put("rpl_description", milestoneReport.getRegionalLeaderDescription());
+      }
 
       milestoneReportDataList.add(milestoneReportData);
     }
