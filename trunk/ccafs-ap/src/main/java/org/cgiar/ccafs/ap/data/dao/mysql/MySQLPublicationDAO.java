@@ -28,7 +28,7 @@ public class MySQLPublicationDAO implements PublicationDAO {
     List<Map<String, String>> publications = new ArrayList<>();
     try (Connection connection = dbManager.getConnection()) {
       String query =
-        "SELECT p.id, p.identifier, p.citation, pt.id as 'publication_type_id', pt.name as 'publication_type_name' "
+        "SELECT p.id, p.identifier, p.citation, p.file_url, pt.id as 'publication_type_id', pt.name as 'publication_type_name' "
           + "FROM publications p INNER JOIN publication_types pt ON pt.id = p.publication_type_id "
           + "WHERE activity_leader_id = " + leaderId + " AND logframe_id = " + logframeId;
       ResultSet rs = dbManager.makeQuery(query, connection);
@@ -37,6 +37,7 @@ public class MySQLPublicationDAO implements PublicationDAO {
         publicationData.put("id", rs.getString("id"));
         publicationData.put("identifier", rs.getString("identifier"));
         publicationData.put("citation", rs.getString("citation"));
+        publicationData.put("file_url", rs.getString("file_url"));
         publicationData.put("publication_type_id", rs.getString("publication_type_id"));
         publicationData.put("publication_type_name", rs.getString("publication_type_name"));
         publications.add(publicationData);
@@ -75,15 +76,16 @@ public class MySQLPublicationDAO implements PublicationDAO {
       Object[] values;
       for (Map<String, String> publicationData : publications) {
         addQueryPrepared =
-          "INSERT INTO publications (id, publication_type_id, identifier, citation, logframe_id, "
-            + "activity_leader_id) VALUES (?, ?, ?, ?, ?, ?)";
-        values = new Object[6];
+          "INSERT INTO publications (id, publication_type_id, identifier, citation, file_url, logframe_id, "
+            + "activity_leader_id) VALUES (?, ?, ?, ?, ?, ?, ?)";
+        values = new Object[7];
         values[0] = publicationData.get("id");
         values[1] = publicationData.get("publication_type_id");
         values[2] = publicationData.get("identifier");
         values[3] = publicationData.get("citation");
-        values[4] = publicationData.get("logframe_id");
-        values[5] = publicationData.get("activity_leader_id");
+        values[4] = publicationData.get("file_url");
+        values[5] = publicationData.get("logframe_id");
+        values[6] = publicationData.get("activity_leader_id");
 
         int rows = dbManager.makeChangeSecure(connection, addQueryPrepared, values);
         if (rows < 0) {

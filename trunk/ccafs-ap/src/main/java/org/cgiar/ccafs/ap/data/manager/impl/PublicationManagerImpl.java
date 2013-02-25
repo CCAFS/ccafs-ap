@@ -33,6 +33,7 @@ public class PublicationManagerImpl implements PublicationManager {
       publication.setId(Integer.parseInt(pubData.get("id")));
       publication.setIdentifier(pubData.get("identifier"));
       publication.setCitation(pubData.get("citation"));
+      publication.setFileUrl(pubData.get("file_url"));
       publication.setLogframe(logframe);
       publication.setLeader(leader);
       PublicationType publicationType = new PublicationType();
@@ -67,6 +68,11 @@ public class PublicationManagerImpl implements PublicationManager {
         pubData.put("identifier", publication.getIdentifier());
       }
       pubData.put("citation", publication.getCitation());
+      if (publication.getFileUrl().isEmpty()) {
+        pubData.put("file_url", null);
+      } else {
+        pubData.put("file_url", publication.getFileUrl());
+      }
       pubData.put("logframe_id", logframe.getId() + "");
       pubData.put("activity_leader_id", leader.getId() + "");
       publicationsData.add(pubData);

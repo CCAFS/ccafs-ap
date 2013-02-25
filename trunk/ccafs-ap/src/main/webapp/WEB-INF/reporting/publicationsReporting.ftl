@@ -39,9 +39,14 @@
         [@customForm.input name="publications[${publication_index}].identifier" type="text" i18nkey="reporting.publications.identifier" help="reporting.publications.identifier.help" /]
       </div>
       
-      [#-- Publication ciation --]
+      [#-- Publication citation --]
       <div class="fullBlock">
         [@customForm.textArea name="publications[${publication_index}].citation" i18nkey="reporting.publications.citation" help="reporting.publications.citation.help" /]
+      </div> 
+      
+      [#-- Publication file url --]
+      <div class="fullBlock">
+        [@customForm.input name="publications[${publication_index}].fileUrl" i18nkey="reporting.publications.fileUrl" help="reporting.publications.fileUrl.help" /]
       </div> 
     </div> <!-- End publications-${publication_index} -->
     <hr />
@@ -97,9 +102,14 @@
             [@customForm.input name="identifier" type="text" i18nkey="reporting.publications.identifier" help="reporting.publications.identifier.help" /]
           </div>
       
-          [#-- Publication ciation --]
+          [#-- Publication citation --]
           <div class="fullBlock">
             [@customForm.textArea name="citation" i18nkey="reporting.publications.citation" help="reporting.publications.citation.help" /]
+          </div>
+          
+          [#-- Publication file url --]
+          <div class="fullBlock">
+            [@customForm.input name="fileUrl" i18nkey="reporting.publications.fileUrl" help="reporting.publications.fileUrl.help" /]
           </div>
         </div> <!-- End publication template -->
       </div> <!-- End template -->
