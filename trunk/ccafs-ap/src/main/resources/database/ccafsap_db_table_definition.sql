@@ -1,7 +1,7 @@
 -- MySQL dump 10.13  Distrib 5.5.28, for Win64 (x86)
 --
 -- ------------------------------------------------------
--- Server version 5.1.56-log
+-- Server version 5.5.30
 
 /*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
 /*!40101 SET @OLD_CHARACTER_SET_RESULTS=@@CHARACTER_SET_RESULTS */;
@@ -44,7 +44,7 @@ CREATE TABLE `activities` (
   CONSTRAINT `activities_ibfk_2` FOREIGN KEY (`activity_leader_id`) REFERENCES `activity_leaders` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
   CONSTRAINT `activities_ibfk_3` FOREIGN KEY (`continuous_activity_id`) REFERENCES `activities` (`id`),
   CONSTRAINT `activities_ibfk_4` FOREIGN KEY (`activity_status_id`) REFERENCES `activity_status` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
-) ENGINE=InnoDB AUTO_INCREMENT=300 DEFAULT CHARSET=utf8 PACK_KEYS=1;
+) ENGINE=InnoDB AUTO_INCREMENT=315 DEFAULT CHARSET=utf8 PACK_KEYS=1;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -64,10 +64,10 @@ CREATE TABLE `activity_budgets` (
   KEY `cg_funds_fk` (`cg_funds`),
   KEY `bilateral_fk` (`bilateral`),
   KEY `budgets_activity_fk` (`activity_id`),
-  CONSTRAINT `activity_budgets_ibfk_3` FOREIGN KEY (`bilateral`) REFERENCES `budget_percentages` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
   CONSTRAINT `activity_budgets_ibfk_1` FOREIGN KEY (`activity_id`) REFERENCES `activities` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
-  CONSTRAINT `activity_budgets_ibfk_2` FOREIGN KEY (`cg_funds`) REFERENCES `budget_percentages` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
-) ENGINE=InnoDB AUTO_INCREMENT=401 DEFAULT CHARSET=utf8;
+  CONSTRAINT `activity_budgets_ibfk_2` FOREIGN KEY (`cg_funds`) REFERENCES `budget_percentages` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
+  CONSTRAINT `activity_budgets_ibfk_3` FOREIGN KEY (`bilateral`) REFERENCES `budget_percentages` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
+) ENGINE=InnoDB AUTO_INCREMENT=421 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -85,9 +85,9 @@ CREATE TABLE `activity_keywords` (
   PRIMARY KEY (`id`),
   KEY `ak_activity_fk` (`activity_id`),
   KEY `ak_keyword_fk` (`keyword_id`),
-  CONSTRAINT `activity_keywords_ibfk_2` FOREIGN KEY (`keyword_id`) REFERENCES `keywords` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
-  CONSTRAINT `activity_keywords_ibfk_1` FOREIGN KEY (`activity_id`) REFERENCES `activities` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
-) ENGINE=InnoDB AUTO_INCREMENT=1394 DEFAULT CHARSET=utf8;
+  CONSTRAINT `activity_keywords_ibfk_1` FOREIGN KEY (`activity_id`) REFERENCES `activities` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
+  CONSTRAINT `activity_keywords_ibfk_2` FOREIGN KEY (`keyword_id`) REFERENCES `keywords` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
+) ENGINE=InnoDB AUTO_INCREMENT=1468 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -122,7 +122,7 @@ CREATE TABLE `activity_objectives` (
   PRIMARY KEY (`id`),
   KEY `activity_fk` (`activity_id`),
   CONSTRAINT `activity_objectives_ibfk_1` FOREIGN KEY (`activity_id`) REFERENCES `activities` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
-) ENGINE=InnoDB AUTO_INCREMENT=566 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=610 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -139,8 +139,8 @@ CREATE TABLE `activity_partner_roles` (
   PRIMARY KEY (`id`),
   KEY `activity_partner_fk` (`activity_partner_id`),
   KEY `partner_role_fk` (`partner_role_id`),
-  CONSTRAINT `activity_partner_roles_ibfk_2` FOREIGN KEY (`partner_role_id`) REFERENCES `partner_roles` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
-  CONSTRAINT `activity_partner_roles_ibfk_1` FOREIGN KEY (`activity_partner_id`) REFERENCES `activity_partners` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
+  CONSTRAINT `activity_partner_roles_ibfk_1` FOREIGN KEY (`activity_partner_id`) REFERENCES `activity_partners` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
+  CONSTRAINT `activity_partner_roles_ibfk_2` FOREIGN KEY (`partner_role_id`) REFERENCES `partner_roles` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -160,9 +160,9 @@ CREATE TABLE `activity_partners` (
   PRIMARY KEY (`id`),
   KEY `ap_partner_fk` (`partner_id`),
   KEY `ap_activity_fk` (`activity_id`),
-  CONSTRAINT `activity_partners_ibfk_2` FOREIGN KEY (`activity_id`) REFERENCES `activities` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
-  CONSTRAINT `activity_partners_ibfk_1` FOREIGN KEY (`partner_id`) REFERENCES `partners` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
-) ENGINE=InnoDB AUTO_INCREMENT=1017 DEFAULT CHARSET=utf8;
+  CONSTRAINT `activity_partners_ibfk_1` FOREIGN KEY (`partner_id`) REFERENCES `partners` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
+  CONSTRAINT `activity_partners_ibfk_2` FOREIGN KEY (`activity_id`) REFERENCES `activities` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
+) ENGINE=InnoDB AUTO_INCREMENT=1083 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -214,8 +214,8 @@ CREATE TABLE `bs_locations` (
   PRIMARY KEY (`id`),
   KEY `bs_fk` (`bs_id`),
   KEY `activity_id` (`activity_id`),
-  CONSTRAINT `bs_locations_ibfk_2` FOREIGN KEY (`activity_id`) REFERENCES `activities` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
-  CONSTRAINT `bs_locations_ibfk_1` FOREIGN KEY (`bs_id`) REFERENCES `benchmark_sites` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
+  CONSTRAINT `bs_locations_ibfk_1` FOREIGN KEY (`bs_id`) REFERENCES `benchmark_sites` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
+  CONSTRAINT `bs_locations_ibfk_2` FOREIGN KEY (`activity_id`) REFERENCES `activities` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
 ) ENGINE=InnoDB AUTO_INCREMENT=528 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -230,7 +230,7 @@ CREATE TABLE `budget_percentages` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `percentage` varchar(45) NOT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=11 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -244,7 +244,8 @@ CREATE TABLE `case_studies` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `title` text NOT NULL,
   `author` text NOT NULL,
-  `date` date NOT NULL,
+  `start_date` date NOT NULL,
+  `end_date` date NOT NULL,
   `photo` text,
   `objectives` text,
   `description` text,
@@ -252,14 +253,15 @@ CREATE TABLE `case_studies` (
   `partners` text,
   `links` text,
   `keywords` text,
+  `is_global` tinyint(1) NOT NULL,
   `logframe_id` int(11) NOT NULL,
   `activity_leader_id` int(11) NOT NULL,
   PRIMARY KEY (`id`),
   KEY `cs_logframe_fk` (`logframe_id`),
   KEY `cs_activity_leader` (`activity_leader_id`),
-  CONSTRAINT `case_studies_ibfk_2` FOREIGN KEY (`activity_leader_id`) REFERENCES `activity_leaders` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
-  CONSTRAINT `case_studies_ibfk_1` FOREIGN KEY (`logframe_id`) REFERENCES `logframes` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+  CONSTRAINT `case_studies_ibfk_1` FOREIGN KEY (`logframe_id`) REFERENCES `logframes` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
+  CONSTRAINT `case_studies_ibfk_2` FOREIGN KEY (`activity_leader_id`) REFERENCES `activity_leaders` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
+) ENGINE=InnoDB AUTO_INCREMENT=63 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -270,15 +272,29 @@ DROP TABLE IF EXISTS `case_study_countries`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `case_study_countries` (
-  `id` int(11) NOT NULL,
-  `case_study_id` int(11) NOT NULL AUTO_INCREMENT,
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `case_study_id` int(11) NOT NULL,
   `country_iso2` varchar(2) NOT NULL,
   PRIMARY KEY (`id`),
   KEY `csc_case_study_fk` (`case_study_id`),
   KEY `csc_country_fk` (`country_iso2`),
-  CONSTRAINT `case_study_countries_ibfk_2` FOREIGN KEY (`country_iso2`) REFERENCES `countries` (`iso2`) ON DELETE CASCADE ON UPDATE CASCADE,
-  CONSTRAINT `case_study_countries_ibfk_1` FOREIGN KEY (`case_study_id`) REFERENCES `case_studies` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+  CONSTRAINT `case_study_countries_ibfk_1` FOREIGN KEY (`case_study_id`) REFERENCES `case_studies` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
+  CONSTRAINT `case_study_countries_ibfk_2` FOREIGN KEY (`country_iso2`) REFERENCES `countries` (`iso2`) ON DELETE CASCADE ON UPDATE CASCADE
+) ENGINE=InnoDB AUTO_INCREMENT=223 DEFAULT CHARSET=utf8;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Table structure for table `case_study_types`
+--
+
+DROP TABLE IF EXISTS `case_study_types`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `case_study_types` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `name` varchar(255) NOT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=7 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -296,7 +312,7 @@ CREATE TABLE `contact_person` (
   PRIMARY KEY (`id`),
   KEY `cp_activity_fk` (`activity_id`),
   CONSTRAINT `contact_person_ibfk_1` FOREIGN KEY (`activity_id`) REFERENCES `activities` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
-) ENGINE=InnoDB AUTO_INCREMENT=421 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=454 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -331,9 +347,28 @@ CREATE TABLE `country_locations` (
   PRIMARY KEY (`id`),
   KEY `cl_country_fk` (`country_iso2`),
   KEY `cl_activity_fk` (`activity_id`),
-  CONSTRAINT `country_locations_ibfk_2` FOREIGN KEY (`activity_id`) REFERENCES `activities` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
-  CONSTRAINT `country_locations_ibfk_1` FOREIGN KEY (`country_iso2`) REFERENCES `countries` (`iso2`) ON DELETE CASCADE ON UPDATE CASCADE
-) ENGINE=InnoDB AUTO_INCREMENT=2312 DEFAULT CHARSET=utf8;
+  CONSTRAINT `country_locations_ibfk_1` FOREIGN KEY (`country_iso2`) REFERENCES `countries` (`iso2`) ON DELETE CASCADE ON UPDATE CASCADE,
+  CONSTRAINT `country_locations_ibfk_2` FOREIGN KEY (`activity_id`) REFERENCES `activities` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
+) ENGINE=InnoDB AUTO_INCREMENT=2345 DEFAULT CHARSET=utf8;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Table structure for table `cs_types`
+--
+
+DROP TABLE IF EXISTS `cs_types`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `cs_types` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `case_study_id` int(11) NOT NULL,
+  `case_study_type_id` int(11) NOT NULL,
+  PRIMARY KEY (`id`),
+  KEY `case_study_id` (`case_study_id`),
+  KEY `case_study_type_id` (`case_study_type_id`),
+  CONSTRAINT `cs_types_fk02` FOREIGN KEY (`case_study_type_id`) REFERENCES `case_study_types` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
+  CONSTRAINT `cs_types_fk01` FOREIGN KEY (`case_study_id`) REFERENCES `case_studies` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
+) ENGINE=InnoDB AUTO_INCREMENT=27 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -350,9 +385,9 @@ CREATE TABLE `deliverable_formats` (
   PRIMARY KEY (`id`),
   KEY `file_format_id` (`file_format_id`),
   KEY `deliverable_id` (`deliverable_id`),
-  CONSTRAINT `deliverable_formats_ibfk_2` FOREIGN KEY (`file_format_id`) REFERENCES `file_formats` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
-  CONSTRAINT `deliverable_formats_ibfk_1` FOREIGN KEY (`deliverable_id`) REFERENCES `deliverables` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+  CONSTRAINT `deliverable_formats_ibfk_1` FOREIGN KEY (`deliverable_id`) REFERENCES `deliverables` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
+  CONSTRAINT `deliverable_formats_ibfk_2` FOREIGN KEY (`file_format_id`) REFERENCES `file_formats` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
+) ENGINE=InnoDB AUTO_INCREMENT=93 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -398,14 +433,16 @@ CREATE TABLE `deliverables` (
   `deliverable_type_id` int(11) NOT NULL,
   `is_expected` tinyint(1) NOT NULL,
   `deliverable_status_id` int(11) NOT NULL,
+  `filename` text,
+  `description_update` text,
   PRIMARY KEY (`id`),
   KEY `activity_fk2` (`activity_id`),
   KEY `deliverable_type_fk2` (`deliverable_type_id`),
   KEY `deliverable_status_fk2` (`deliverable_status_id`),
-  CONSTRAINT `deliverables_ibfk_3` FOREIGN KEY (`deliverable_status_id`) REFERENCES `deliverable_status` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
   CONSTRAINT `deliverables_ibfk_1` FOREIGN KEY (`activity_id`) REFERENCES `activities` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
-  CONSTRAINT `deliverables_ibfk_2` FOREIGN KEY (`deliverable_type_id`) REFERENCES `deliverable_types` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
-) ENGINE=InnoDB AUTO_INCREMENT=862 DEFAULT CHARSET=utf8;
+  CONSTRAINT `deliverables_ibfk_2` FOREIGN KEY (`deliverable_type_id`) REFERENCES `deliverable_types` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
+  CONSTRAINT `deliverables_ibfk_3` FOREIGN KEY (`deliverable_status_id`) REFERENCES `deliverable_status` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
+) ENGINE=InnoDB AUTO_INCREMENT=1002 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -436,7 +473,7 @@ CREATE TABLE `gender_integrations` (
   PRIMARY KEY (`id`),
   KEY `gi_activity_fk` (`activity_id`),
   CONSTRAINT `gender_integrations_ibfk_1` FOREIGN KEY (`activity_id`) REFERENCES `activities` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
-) ENGINE=InnoDB AUTO_INCREMENT=122 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=125 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -485,8 +522,8 @@ CREATE TABLE `leverages` (
   PRIMARY KEY (`id`),
   KEY `lev_theme_fk` (`theme_id`),
   KEY `lev_activity_leader_fk` (`activity_leader_id`),
-  CONSTRAINT `leverages_ibfk_2` FOREIGN KEY (`activity_leader_id`) REFERENCES `activity_leaders` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
-  CONSTRAINT `leverages_ibfk_1` FOREIGN KEY (`theme_id`) REFERENCES `themes` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
+  CONSTRAINT `leverages_ibfk_1` FOREIGN KEY (`theme_id`) REFERENCES `themes` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
+  CONSTRAINT `leverages_ibfk_2` FOREIGN KEY (`activity_leader_id`) REFERENCES `activity_leaders` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -521,8 +558,8 @@ CREATE TABLE `milestone_reports` (
   PRIMARY KEY (`id`),
   KEY `mr_milestone_fk` (`milestone_id`),
   KEY `mr_milestone_status_fk` (`milestone_status_id`),
-  CONSTRAINT `milestone_reports_ibfk_2` FOREIGN KEY (`milestone_status_id`) REFERENCES `milestone_status` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
-  CONSTRAINT `milestone_reports_ibfk_1` FOREIGN KEY (`milestone_id`) REFERENCES `milestones` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
+  CONSTRAINT `milestone_reports_ibfk_1` FOREIGN KEY (`milestone_id`) REFERENCES `milestones` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
+  CONSTRAINT `milestone_reports_ibfk_2` FOREIGN KEY (`milestone_status_id`) REFERENCES `milestone_status` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -537,7 +574,7 @@ CREATE TABLE `milestone_status` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `status` varchar(255) NOT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -595,8 +632,8 @@ CREATE TABLE `other_sites` (
   PRIMARY KEY (`id`),
   KEY `os_country_fk` (`country_iso2`),
   KEY `os_activity_fk` (`activity_id`),
-  CONSTRAINT `other_sites_ibfk_2` FOREIGN KEY (`country_iso2`) REFERENCES `countries` (`iso2`) ON DELETE CASCADE ON UPDATE CASCADE,
-  CONSTRAINT `other_sites_ibfk_1` FOREIGN KEY (`activity_id`) REFERENCES `activities` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
+  CONSTRAINT `other_sites_ibfk_1` FOREIGN KEY (`activity_id`) REFERENCES `activities` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
+  CONSTRAINT `other_sites_ibfk_2` FOREIGN KEY (`country_iso2`) REFERENCES `countries` (`iso2`) ON DELETE CASCADE ON UPDATE CASCADE
 ) ENGINE=InnoDB AUTO_INCREMENT=54 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -620,9 +657,9 @@ CREATE TABLE `outcomes` (
   PRIMARY KEY (`id`),
   KEY `out_logframe_fk` (`logframe_id`),
   KEY `out_activity_leader_fk` (`activity_leader_id`),
-  CONSTRAINT `outcomes_ibfk_2` FOREIGN KEY (`activity_leader_id`) REFERENCES `activity_leaders` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
-  CONSTRAINT `outcomes_ibfk_1` FOREIGN KEY (`logframe_id`) REFERENCES `logframes` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+  CONSTRAINT `outcomes_ibfk_1` FOREIGN KEY (`logframe_id`) REFERENCES `logframes` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
+  CONSTRAINT `outcomes_ibfk_2` FOREIGN KEY (`activity_leader_id`) REFERENCES `activity_leaders` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
+) ENGINE=InnoDB AUTO_INCREMENT=24 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -634,15 +671,15 @@ DROP TABLE IF EXISTS `output_summaries`;
 /*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `output_summaries` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
-  `description` text NOT NULL,
+  `description` text,
   `output_id` int(11) NOT NULL,
   `activity_leader_id` int(11) NOT NULL,
   PRIMARY KEY (`id`),
   KEY `os_output_fk` (`output_id`),
   KEY `os_activity_leader_fk` (`activity_leader_id`),
-  CONSTRAINT `output_summaries_ibfk_2` FOREIGN KEY (`activity_leader_id`) REFERENCES `activity_leaders` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
-  CONSTRAINT `output_summaries_ibfk_1` FOREIGN KEY (`output_id`) REFERENCES `outputs` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+  CONSTRAINT `output_summaries_ibfk_1` FOREIGN KEY (`output_id`) REFERENCES `outputs` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
+  CONSTRAINT `output_summaries_ibfk_2` FOREIGN KEY (`activity_leader_id`) REFERENCES `activity_leaders` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
+) ENGINE=InnoDB AUTO_INCREMENT=111 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -674,7 +711,7 @@ CREATE TABLE `partner_roles` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `name` varchar(255) NOT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=7 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -688,6 +725,7 @@ CREATE TABLE `partner_types` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `acronym` varchar(20) NOT NULL,
   `name` text NOT NULL,
+  `description` text NOT NULL,
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=19 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
@@ -709,9 +747,9 @@ CREATE TABLE `partners` (
   PRIMARY KEY (`id`),
   KEY `type_fk` (`partner_type_id`),
   KEY `country_iso2` (`country_iso2`),
-  CONSTRAINT `partners_ibfk_2` FOREIGN KEY (`partner_type_id`) REFERENCES `partner_types` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
-  CONSTRAINT `partners_ibfk_1` FOREIGN KEY (`country_iso2`) REFERENCES `countries` (`iso2`) ON DELETE CASCADE ON UPDATE CASCADE
-) ENGINE=InnoDB AUTO_INCREMENT=482 DEFAULT CHARSET=utf8;
+  CONSTRAINT `partners_ibfk_1` FOREIGN KEY (`country_iso2`) REFERENCES `countries` (`iso2`) ON DELETE CASCADE ON UPDATE CASCADE,
+  CONSTRAINT `partners_ibfk_2` FOREIGN KEY (`partner_type_id`) REFERENCES `partner_types` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
+) ENGINE=InnoDB AUTO_INCREMENT=509 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -738,7 +776,7 @@ DROP TABLE IF EXISTS `publications`;
 CREATE TABLE `publications` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `publication_type_id` int(11) NOT NULL,
-  `identifier` text NOT NULL,
+  `identifier` text,
   `citation` text NOT NULL,
   `logframe_id` int(11) NOT NULL,
   `activity_leader_id` int(11) NOT NULL,
@@ -746,10 +784,10 @@ CREATE TABLE `publications` (
   KEY `p_publication_type_fk` (`publication_type_id`),
   KEY `p_logframe_fk` (`logframe_id`),
   KEY `p_activity_leader_fk` (`activity_leader_id`),
-  CONSTRAINT `publications_ibfk_3` FOREIGN KEY (`activity_leader_id`) REFERENCES `activity_leaders` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
   CONSTRAINT `publications_ibfk_1` FOREIGN KEY (`publication_type_id`) REFERENCES `publication_types` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
-  CONSTRAINT `publications_ibfk_2` FOREIGN KEY (`logframe_id`) REFERENCES `logframes` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+  CONSTRAINT `publications_ibfk_2` FOREIGN KEY (`logframe_id`) REFERENCES `logframes` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
+  CONSTRAINT `publications_ibfk_3` FOREIGN KEY (`activity_leader_id`) REFERENCES `activity_leaders` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
+) ENGINE=InnoDB AUTO_INCREMENT=187 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -781,17 +819,17 @@ CREATE TABLE `resources` (
   PRIMARY KEY (`id`),
   KEY `res_activity_fk` (`activity_id`),
   CONSTRAINT `resources_ibfk_1` FOREIGN KEY (`activity_id`) REFERENCES `activities` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
-) ENGINE=InnoDB AUTO_INCREMENT=63 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=70 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
--- Table structure for table `rpl_shynthesis_reports`
+-- Table structure for table `rpl_synthesis_reports`
 --
 
-DROP TABLE IF EXISTS `rpl_shynthesis_reports`;
+DROP TABLE IF EXISTS `rpl_synthesis_reports`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8 */;
-CREATE TABLE `rpl_shynthesis_reports` (
+CREATE TABLE `rpl_synthesis_reports` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `ccafs_sites` text NOT NULL,
   `cross_center` text NOT NULL,
@@ -802,8 +840,8 @@ CREATE TABLE `rpl_shynthesis_reports` (
   PRIMARY KEY (`id`),
   KEY `rplsr_activity_leader_fk` (`activity_leader_id`),
   KEY `rplsr_logframe_fk` (`logframe_id`),
-  CONSTRAINT `rpl_shynthesis_reports_ibfk_2` FOREIGN KEY (`logframe_id`) REFERENCES `logframes` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
-  CONSTRAINT `rpl_shynthesis_reports_ibfk_1` FOREIGN KEY (`activity_leader_id`) REFERENCES `activity_leaders` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
+  CONSTRAINT `rpl_synthesis_reports_ibfk_1` FOREIGN KEY (`activity_leader_id`) REFERENCES `activity_leaders` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
+  CONSTRAINT `rpl_synthesis_reports_ibfk_2` FOREIGN KEY (`logframe_id`) REFERENCES `logframes` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -840,8 +878,8 @@ CREATE TABLE `tl_output_summaries` (
   PRIMARY KEY (`id`),
   KEY `tlos_output_fk` (`output_id`),
   KEY `tlos_activity_leader_fk` (`activity_leader_id`),
-  CONSTRAINT `tl_output_summaries_ibfk_2` FOREIGN KEY (`activity_leader_id`) REFERENCES `activity_leaders` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
-  CONSTRAINT `tl_output_summaries_ibfk_1` FOREIGN KEY (`output_id`) REFERENCES `outputs` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
+  CONSTRAINT `tl_output_summaries_ibfk_1` FOREIGN KEY (`output_id`) REFERENCES `outputs` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
+  CONSTRAINT `tl_output_summaries_ibfk_2` FOREIGN KEY (`activity_leader_id`) REFERENCES `activity_leaders` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -857,7 +895,7 @@ CREATE TABLE `users` (
   `email` varchar(255) NOT NULL,
   `password` varchar(255) NOT NULL,
   `activity_leader_id` int(11) NOT NULL,
-  `role` enum('Admin','CP','TL','RPL') NOT NULL,
+  `role` enum('Admin','CP','TL','RPL','PI') NOT NULL,
   `last_login` datetime DEFAULT NULL,
   PRIMARY KEY (`id`),
   KEY `u_activity_leader_fk` (`activity_leader_id`),
@@ -874,4 +912,4 @@ CREATE TABLE `users` (
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2013-01-04 12:08:01
+-- Dump completed on 2013-02-25  9:33:58
