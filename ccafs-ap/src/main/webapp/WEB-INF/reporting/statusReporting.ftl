@@ -100,12 +100,14 @@
           </tr>
         </thead>
         <tbody>
-          [#list activity.contactPersons as contactPerson]    
-            <tr>
-              <td>${contactPerson.name}</td>
-              <td>${contactPerson.email}</td>
-            </tr>
-          [/#list]    
+          [#if activity.contactPersons?has_content ]
+            [#list activity.contactPersons as contactPerson]    
+              <tr>
+                <td>${contactPerson.name}</td>
+                <td>${contactPerson.email}</td>
+              </tr>
+            [/#list]    
+          [/#if]
         </tbody>
       </table>
     </div>

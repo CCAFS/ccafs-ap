@@ -526,6 +526,16 @@ nav#secondaryMenu ul a.currentReportingSection {
   margin-bottom: 15px;
 }
 
+#country_locations{
+  height: 100%;
+  width: 100%;
+}
+
+#other_locations{
+  height: 100%;
+  width: 100%;
+}
+
 /************ ACTIVITIES ***************/
 /* Activity List */
 #activityList {

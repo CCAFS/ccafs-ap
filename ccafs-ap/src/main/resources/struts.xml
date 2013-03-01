@@ -69,6 +69,6 @@
   -->
   <include file="struts-home.xml" />
   <include file="struts-reporting.xml" />
-
+  <include file="struts-json.xml" />
 
 </struts>

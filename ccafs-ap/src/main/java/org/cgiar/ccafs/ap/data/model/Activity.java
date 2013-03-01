@@ -27,6 +27,10 @@ public class Activity {
   private ActivityObjective[] objectives;
   private List<Resource> resources;
   private List<ActivityKeyword> keywords;
+  private List<CountryLocation> countries;
+  private List<BenchmarkSiteLocation> bsLocations;
+  private List<OtherSite> otherLocations;
+
 
   public Activity() {
   }
@@ -35,12 +39,20 @@ public class Activity {
     return activityPartners;
   }
 
+  public List<BenchmarkSiteLocation> getBsLocations() {
+    return bsLocations;
+  }
+
   public Budget getBudget() {
     return budget;
   }
 
   public ContactPerson[] getContactPersons() {
     return contactPersons;
+  }
+
+  public List<CountryLocation> getCountries() {
+    return countries;
   }
 
   public Date getDateAdded() {
@@ -83,13 +95,19 @@ public class Activity {
     return objectives;
   }
 
+  public List<OtherSite> getOtherLocations() {
+    return otherLocations;
+  }
+
   public List<Resource> getResources() {
     return resources;
   }
 
+
   public Date getStartDate() {
     return startDate;
   }
+
 
   public Status getStatus() {
     return status;
@@ -115,12 +133,20 @@ public class Activity {
     this.activityPartners = activityPartners;
   }
 
+  public void setBsLocations(List<BenchmarkSiteLocation> bsLocations) {
+    this.bsLocations = bsLocations;
+  }
+
   public void setBudget(Budget budget) {
     this.budget = budget;
   }
 
   public void setContactPersons(ContactPerson[] contactPersons) {
     this.contactPersons = contactPersons;
+  }
+
+  public void setCountries(List<CountryLocation> countries) {
+    this.countries = countries;
   }
 
   public void setDateAdded(Date dateAdded) {
@@ -165,6 +191,10 @@ public class Activity {
 
   public void setObjectives(ActivityObjective[] objectives) {
     this.objectives = objectives;
+  }
+
+  public void setOtherLocations(List<OtherSite> otherLocations) {
+    this.otherLocations = otherLocations;
   }
 
   public void setPlanning(boolean isPlanning) {

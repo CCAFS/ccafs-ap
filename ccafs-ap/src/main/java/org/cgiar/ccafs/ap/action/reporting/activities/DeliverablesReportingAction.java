@@ -120,10 +120,12 @@ public class DeliverablesReportingAction extends BaseAction {
 
     // Remove all expected deliverables in case user clicked on submit button
     if (this.getRequest().getMethod().equalsIgnoreCase("post")) {
-      Iterator<Deliverable> iter = activity.getDeliverables().iterator();
-      while (iter.hasNext()) {
-        if (!iter.next().isExpected()) {
-          iter.remove();
+      if (activity.getDeliverables() != null) {
+        Iterator<Deliverable> iter = activity.getDeliverables().iterator();
+        while (iter.hasNext()) {
+          if (!iter.next().isExpected()) {
+            iter.remove();
+          }
         }
       }
     }
@@ -139,23 +141,25 @@ public class DeliverablesReportingAction extends BaseAction {
     if (!deleted) {
       problem = true;
     } else {
-      for (int c = 0; c < activity.getDeliverables().size(); c++) {
-        Deliverable deliverable = activity.getDeliverables().get(c);
-        boolean deliverableAdded = deliverableManager.addDeliverable(deliverable, activityID);
-        // if the deliverable type need a file format specification.
-        Arrays.sort(deliverableTypeIdsNeeded);
-        if (Arrays.binarySearch(deliverableTypeIdsNeeded, deliverable.getType().getId()) >= 0) {
-          // If it is a saved deliverable set the file formats
-          if (deliverable.getId() != -1) {
-            boolean fileFormatsUpdated =
-              fileFormatManager.setFileFormats(deliverable.getId(), deliverable.getFileFormats());
-            if (!fileFormatsUpdated) {
-              problem = true;
+      if (activity.getDeliverables() != null) {
+        for (int c = 0; c < activity.getDeliverables().size(); c++) {
+          Deliverable deliverable = activity.getDeliverables().get(c);
+          boolean deliverableAdded = deliverableManager.addDeliverable(deliverable, activityID);
+          // if the deliverable type need a file format specification.
+          Arrays.sort(deliverableTypeIdsNeeded);
+          if (Arrays.binarySearch(deliverableTypeIdsNeeded, deliverable.getType().getId()) >= 0) {
+            // If it is a saved deliverable set the file formats
+            if (deliverable.getId() != -1) {
+              boolean fileFormatsUpdated =
+                fileFormatManager.setFileFormats(deliverable.getId(), deliverable.getFileFormats());
+              if (!fileFormatsUpdated) {
+                problem = true;
+              }
             }
           }
-        }
-        if (!deliverableAdded) {
-          problem = true;
+          if (!deliverableAdded) {
+            problem = true;
+          }
         }
       }
     }
@@ -187,7 +191,8 @@ public class DeliverablesReportingAction extends BaseAction {
     boolean fileFormatNeeded;
     boolean anyError = false;
 
-    if (save) {
+    // Check if the user is saving and if exists any deliverable to validate
+    if (save && activity.getDeliverables() != null) {
       for (int c = 0; c < activity.getDeliverables().size(); c++) {
         deliverable = activity.getDeliverables().get(c);
         fileFormatNeeded = false;

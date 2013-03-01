@@ -42,6 +42,10 @@
           <script src="${baseUrl}/js/libs/dataTables/jquery.dataTables-1.9.4.min.js"></script>
         [/#if]
         
+        [#if libraryName="googleAPI"]
+          <script type="text/javascript" src="http://www.google.com/jsapi"></script>
+        [/#if]
+        
         [#if libraryName="jquery"]
           [#-- JQuery Core --]
           <script src="${baseUrl}/js/libs/jquery/jquery-1.8.2.min.js"></script>
