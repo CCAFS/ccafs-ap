@@ -1,7 +1,7 @@
 [#ftl]
 [#assign title = "Activity Information" /]
-[#assign globalLibs = [""] /]
-[#assign customJS = ["", ""] /]
+[#assign globalLibs = ["jquery", "googleAPI"] /]
+[#assign customJS = ["${baseUrl}/js/home/activity.js", ""] /]
 [#assign customCSS = ["", ""] /]
 
 [#include "/WEB-INF/global/pages/header.ftl" /]
@@ -9,6 +9,7 @@
 <section class="content activityInformation">
   <article class="content">
     <h1>${activity.leader.acronym} - [@s.text name="home.activity" /] ${activity.id}</h1>
+    <input type="hidden" id="activityID" value="${activity.id}" />
     <div id="activityTitle" class="fullBlock">
       <h6>[@s.text name="home.activity.title" /]</h6>
       <p>${activity.title}</p>
@@ -156,6 +157,18 @@
         </ol>    
       </div>
     [/#if]
+    
+    [#-- Country locations --]
+    <div class="halfPartBlock">
+      <h6>[@s.text name="home.activity.countryLocation" /]</h6>
+      <div id="country_locations"></div>
+    </div>
+    
+    [#-- Benchmark sites and other locations --]
+    <div class="halfPartBlock">
+      <h6>[@s.text name="home.activity.otherLocation" /]</h6>
+      <div id="other_locations"></div>
+    </div>
     
     [#-- Keywords --]
     [#if activity.keywords?has_content]

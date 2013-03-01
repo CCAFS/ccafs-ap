@@ -177,10 +177,15 @@ function renameCaseStudies() {
         $(this).find("[name$='author']").attr("name",
             "caseStudies[" + index + "].author");
         // Type.
-        $(this).find("[name$='types']").attr("id",
-            "caseStudies[" + index + "].types");
-        $(this).find("[name$='types']").attr("name",
-            "caseStudies[" + index + "].types");
+        $(this).find("[name$='types']").each(function(index2) {
+          if( ! $(this).is(":hidden") ){
+            $(this).attr("id", "caseStudies[" + index + "].types-" + index2);
+            $(this).attr("name", "caseStudies[" + index + "].types");
+          }else{
+            $(this).attr("id", "__multiselect_caseStudies_caseStudies_" + index + "__types");
+            $(this).attr("name", "__multiselect_caseStudies[" + index + "].types");
+          }
+        });
         // Image.
         $(this).find("[id$='image']").attr("id",
             "caseStudies[" + index + "].image");
