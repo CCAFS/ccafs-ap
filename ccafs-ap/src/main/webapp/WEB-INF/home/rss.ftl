@@ -9,7 +9,8 @@
     <language>en-us</language>
     [#list activities as activity]
     <item>
-      <title>${activity.title}</title>      
+      <title>${activity.title}</title>
+      <link>${baseUrl}/activity.do?id=206</link>      
       <description>${activity.description}</description>
       <guid>http://davinci.ciat.cgiar.org/ccafs-ap/reporting/status.do?activityID=${activity.id}</guid>
       <pubDate>${activity.dateAdded?string("EEE, dd MMM yyyy HH:mm:ss Z")}</pubDate>
