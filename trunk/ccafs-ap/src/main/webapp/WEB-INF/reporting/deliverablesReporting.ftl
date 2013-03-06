@@ -71,13 +71,15 @@
         [#-- Formats --]
         [#if deliverableTypeIdsNeeded?seq_contains(activity.deliverables[deliverable_index].type.id)]              
           <div class="fullBlock">
+        [#else]
+          <div class="fullBlock" style="display: none;">
+        [/#if]
             <h6>[@s.text name="reporting.activityDeliverables.formatFiles" /]</h6>
             <div class="checkboxGroup">
               [@s.fielderror cssClass="fieldError" fieldName="activity.deliverables[${deliverable_index}].fileFormats"/]
               [@s.checkboxlist name="activity.deliverables[${deliverable_index}].fileFormats" list="fileFormatsList" listKey="id" listValue="name" value="activity.deliverables[${deliverable_index}].fileFormatsIds" cssClass="checkbox" /]
             </div>
           </div>
-        [/#if]
         
         [#-- Description Update --]
         [#if deliverable.expected]
@@ -88,7 +90,18 @@
         
         [#-- File name --]
         <div class="fullBlock">
-          [@customForm.input name="activity.deliverables[${deliverable_index}].fileName" type="text" i18nkey="reporting.activityDeliverables.filename" help="reporting.activityDeliverables.filename.help" /]
+            [#if deliverableTypeIdsPublications?seq_contains(activity.deliverables[deliverable_index].type.id)]
+              <div id="fileNameMessage-${deliverable_index}" class="helpMessage">                
+            [#else]
+              <div id="fileNameMessage-${deliverable_index}" class="helpMessage" style="display: none;">
+            [/#if]            
+                <p>[@s.text name="reporting.activityDeliverables.fileNameMessage" /]</p>
+              </div>            
+            [#if deliverableTypeIdsPublications?seq_contains(activity.deliverables[deliverable_index].type.id)]
+              [@customForm.input name="activity.deliverables[${deliverable_index}].fileName" type="text" i18nkey="reporting.activityDeliverables.filename" help="reporting.activityDeliverables.filename.help" display=false /]
+            [#else]
+              [@customForm.input name="activity.deliverables[${deliverable_index}].fileName" type="text" i18nkey="reporting.activityDeliverables.filename" help="reporting.activityDeliverables.filename.help" /]
+            [/#if]
         </div>
       </div> <!-- End deliverable-${deliverable_index} -->
       <hr />
@@ -189,10 +202,16 @@
           </div>
         </div>
         
-        [#-- File name --]
+        [#-- File name message --]
         <div class="fullBlock">
-          [@customForm.input name="fileName" type="text" i18nkey="reporting.activityDeliverables.filename" help="reporting.activityDeliverables.filename.help"/]
+          <div id="fileNameMessage" class="helpMessage">
+            <p>[@s.text name="reporting.activityDeliverables.fileNameMessage" /]</p>
+          </div>
         </div>
+        [#-- File name --]
+        <div class="fullBlock">          
+          [@customForm.input name="fileName" type="text" i18nkey="reporting.activityDeliverables.filename" help="reporting.activityDeliverables.filename.help"/]
+        </div>        
               
       </div> <!-- End deliverable template -->
     </div> <!-- End template -->

@@ -1,21 +1,21 @@
 [#ftl]
-[#macro input name value="-NULL" type="text" i18nkey="" disabled=false required=false errorField="" help=""]
-<div class="input">
-  <h6>
-    <label for="${name}">[#if i18nkey==""][@s.text name="${name}"/][#else][@s.text name="${i18nkey}"/][/#if]
-      [#if required]<span class="red">*</span>[/#if]
-    </label>
-  </h6>
-  [#if errorField==""][@s.fielderror cssClass="fieldError" fieldName="${name}"/][#else][@s.fielderror cssClass="fieldError" fieldName="${errorfield}"/][/#if]
-  <input type="${type}" id="${name}" name="${name}" value="[#if value=="-NULL"][@s.property value="${name}"/][#else]${value}[/#if]" [#if disabled]disabled="disabled"[/#if] [#if help != ""]title="[@s.text name="${help}"/]"[/#if] />
-</div>
-[/#macro]
-
-[#macro textArea name value="-NULL" i18nkey="" disabled=false required=false errorfield="" help=""]
-  <div class="textArea">
+[#macro input name value="-NULL" type="text" i18nkey="" disabled=false required=false errorField="" help="" display=true]
+  <div class="input" [#if !display]style="display: none;"[/#if]>
     <h6>
       <label for="${name}">[#if i18nkey==""][@s.text name="${name}"/][#else][@s.text name="${i18nkey}"/][/#if]
-      [#if required]<span class="red">*</span>[/#if]      
+        [#if required]<span class="red">*</span>[/#if]
+      </label>
+    </h6>
+    [#if errorField==""][@s.fielderror cssClass="fieldError" fieldName="${name}"/][#else][@s.fielderror cssClass="fieldError" fieldName="${errorfield}"/][/#if]
+    <input type="${type}" id="${name}" name="${name}" value="[#if value=="-NULL"][@s.property value="${name}"/][#else]${value}[/#if]" [#if disabled]disabled="disabled"[/#if] [#if help != ""]title="[@s.text name="${help}"/]"[/#if] />
+  </div>
+[/#macro]
+
+[#macro textArea name value="-NULL" i18nkey="" disabled=false required=false errorfield="" help="" display=true]
+  <div class="textArea" [#if !display]style="display: none;"[/#if]>
+    <h6>
+      <label for="${name}">[#if i18nkey==""][@s.text name="${name}"/][#else][@s.text name="${i18nkey}"/][/#if]
+      [#if required]<span class="red">*</span>[/#if]
       </label>
     </h6>
     [#if errorfield==""][@s.fielderror cssClass="fieldError" fieldName="${name}"/][#else][@s.fielderror cssClass="fieldError" fieldName="${errorfield}"/][/#if]
@@ -24,15 +24,15 @@
 [/#macro]
 
 
-[#macro checkbox name value="-NULL" label="" i18nkey="" disabled=false checked=false required=false]
-  <div class="checkbox">
+[#macro checkbox name value="-NULL" label="" i18nkey="" disabled=false checked=false required=false display=true]
+  <div class="checkbox" [#if !display]style="display: none;"[/#if]>
     <label for="${name}"><h6>[#if i18nkey==""]${label}[#else][@s.text name="${i18nkey}" /][/#if][#if required]<span class="red">*</span>[/#if]:</h6></label>
     <input type="checkbox" id="${name}" name="${name}" value="true" [#if checked == '1']checked="true"[/#if] />     
   </div>
 [/#macro]
 
-[#macro checkboxGroup label name listName displayFieldName="" keyFieldName="" value="-NULL" i18nkey="" disabled=false required=false errorField="" checked=false]
-  <div class="checkbox">
+[#macro checkboxGroup label name listName displayFieldName="" keyFieldName="" value="-NULL" i18nkey="" disabled=false required=false errorField="" checked=false display=true]
+  <div class="checkbox" [#if !display]style="display: none;"[/#if]>
     <h6>[#if i18nkey==""]${label}[#else][@s.text name="${i18nkey}" /][/#if][#if required]<span class="red">*</span>[/#if]:</h6>
     [#if errorField==""][@s.fielderror cssClass="fieldError" fieldName="${name}"/][#else][@s.fielderror cssClass="fieldError" fieldName="${errorfield}"/][/#if]
     <div class="checkboxList">
@@ -50,8 +50,8 @@
   </div> 
 [/#macro]
 
-[#macro radioButtonGroup label name listName class="" displayFieldName="" keyFieldName="" value="-NULL" i18nkey="" disabled=false required=false errorField="" checked=false]
-  <div class="radioGroup">
+[#macro radioButtonGroup label name listName class="" displayFieldName="" keyFieldName="" value="-NULL" i18nkey="" disabled=false required=false errorField="" checked=false display=true]
+  <div class="radioGroup" [#if !display]style="display: none;"[/#if]>
     <h6>[#if i18nkey==""]${label}[#else][@s.text name="${i18nkey}" /][/#if][#if required]<span class="red">*</span>[/#if]:</h6>
     [#if errorField==""][@s.fielderror cssClass="fieldError" fieldName="${name}"/][#else][@s.fielderror cssClass="fieldError" fieldName="${errorfield}"/][/#if]
     <div class="radiosList">
@@ -66,8 +66,8 @@
   </div>
 [/#macro]
 
-[#macro select name listName label="" keyFieldName="" displayFieldName="" value="-NULL" i18nkey="" disabled=false required=false errorField="" selected=false className="" multiple=false help=""]
-  <div class="select">
+[#macro select name listName label="" keyFieldName="" displayFieldName="" value="-NULL" i18nkey="" disabled=false required=false errorField="" selected=false className="" multiple=false help="" display=true]
+  <div class="select" [#if !display]style="display: none;"[/#if]>
     <h6>[#if i18nkey==""]${label}[#else][@s.text name="${i18nkey}" /][/#if][#if required]<span class="red">*</span>[/#if]:</h6>
     [#if errorField==""][@s.fielderror cssClass="fieldError" fieldName="${name}"/][#else][@s.fielderror cssClass="fieldError" fieldName="${errorfield}"/][/#if]
     <div class="selectList">

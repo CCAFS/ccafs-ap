@@ -2,10 +2,10 @@
 // that requires a file format specification
 
 var deliverableTypeIdsNeeded = [ "1", "4" ];
+var publicationType = "5";
 
 $(document).ready(
     function() {
-
       $(".addDeliverable").click(function(event) {
         event.preventDefault();
         // Cloning tempalte.
@@ -47,38 +47,35 @@ $(document).ready(
 
             // Check if the selected type needs a file format to display or hide 
             // that section
-
             if (jQuery.inArray(selected, deliverableTypeIdsNeeded) != -1) {
               var checkboxGroup = $("#deliverable-" + selectedId).find(
                   ".checkboxGroup");
-
               // Check if the checkboxgroup exists
               if (checkboxGroup.length > 0) {
                 // If exists show it
                 $(checkboxGroup).parent().show('slow');
-              } else {
-                // in another way copy it and show
-                var fileFormatsDiv = $("#deliverable-9999").find(
-                    ".checkboxGroup").parent().clone(true);
-
-                $("#deliverable-" + selectedId).append(fileFormatsDiv);
-                renameDeliverables();
-
-                fileFormatsDiv.show("slow");
               }
-
             } else {
               var checkboxGroup = $("#deliverable-" + selectedId).find(
                   ".checkboxGroup");
               checkboxGroup.parent().hide('slow', function() {
-
                 // After hide the file formats section uncheck all the checkboxes
                 $(checkboxGroup).find(":checked").each(function() {
                   $(this).attr('checked', false);
                 });
-                //alert($(checkboxGroup).find(":checked"));
-
               });
+            }
+            
+            // check if the File URL field and the help message need to be showed or hided.
+            var messageBox = $("#fileNameMessage-"+selectedId);
+            var fileUrlField = $("#activity\\.deliverables\\["+selectedId+"\\]\\.fileName");
+            if (jQuery.inArray(selected, publicationType) != -1) {
+              messageBox.show("slow");
+              fileUrlField.parent().hide("slow");
+              fileUrlField.val("");
+            } else {
+              fileUrlField.parent().show("slow");
+              messageBox.hide("slow");
             }
           });
 

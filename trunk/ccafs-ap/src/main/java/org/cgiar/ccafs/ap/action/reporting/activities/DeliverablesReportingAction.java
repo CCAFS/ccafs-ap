@@ -44,6 +44,7 @@ public class DeliverablesReportingAction extends BaseAction {
   private FileFormat[] fileFormatsList;
   private int[] deliverableTypeIdsNeeded;
   private int[] fileFormatIds;
+  private int[] deliverableTypeIdsPublications;
   private Activity activity;
   private int activityID;
 
@@ -78,14 +79,19 @@ public class DeliverablesReportingAction extends BaseAction {
   }
 
 
+  public int[] getDeliverableTypeIdsPublications() {
+    return deliverableTypeIdsPublications;
+  }
+
+
   public DeliverableType[] getDeliverableTypesList() {
     return deliverableTypesList;
   }
 
-
   public int[] getFileFormatIds() {
     return fileFormatIds;
   }
+
 
   public FileFormat[] getFileFormatsList() {
     return fileFormatsList;
@@ -117,6 +123,10 @@ public class DeliverablesReportingAction extends BaseAction {
     deliverableTypeIdsNeeded = new int[2];
     deliverableTypeIdsNeeded[0] = deliverableTypesList[0].getId();
     deliverableTypeIdsNeeded[1] = deliverableTypesList[3].getId();
+
+    // Deliverables types that need to be reported in the publications section:
+    // ID = 5
+    deliverableTypeIdsPublications = new int[] {5};
 
     // Remove all expected deliverables in case user clicked on submit button
     if (this.getRequest().getMethod().equalsIgnoreCase("post")) {

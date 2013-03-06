@@ -352,7 +352,7 @@ nav#secondaryMenu ul a.currentReportingSection {
   width: 80%;
 }
 
-.itemIndex{
+.itemIndex {
   font-size: 15px;
   font-weight: normal;
   color: #663300;
@@ -365,7 +365,7 @@ nav#secondaryMenu ul a.currentReportingSection {
   border: 1px solid #E5E5E5;
 }
 
-.imageBlock{
+.imageBlock {
   margin-top: 20px !important;
 }
 
@@ -386,12 +386,12 @@ nav#secondaryMenu ul a.currentReportingSection {
   max-width: 100%;
 }
 
-.imageBlock .browseInput{
+.imageBlock .browseInput {
   padding: 65px 0;
   float: left;
 }
 
-.imageBlock .clear{
+.imageBlock .clear {
   clear: both;
 }
 
@@ -592,6 +592,11 @@ nav#secondaryMenu ul a.currentReportingSection {
 #generalInformation td {
   width: 160px;
   padding: 3px;
+}
+
+/* Deliverables */
+#items #fileNameMessage {
+  display: none;
 }
 
 /*** Contact Persons (popup) ***/
