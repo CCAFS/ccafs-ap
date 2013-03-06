@@ -41,7 +41,7 @@ public class DeliverableManagerImpl implements DeliverableManager {
     deliverableData.put("deliverable_type_id", deliverable.getType().getId());
     deliverableData.put("is_expected", deliverable.isExpected());
     deliverableData.put("deliverable_status_id", deliverable.getStatus().getId());
-    if (deliverable.getFileName().isEmpty()) {
+    if (deliverable.getFileName() == null || deliverable.getFileName().isEmpty()) {
       deliverableData.put("filename", null);
     } else {
       deliverableData.put("filename", deliverable.getFileName());
