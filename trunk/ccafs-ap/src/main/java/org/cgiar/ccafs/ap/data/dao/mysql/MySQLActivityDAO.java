@@ -151,7 +151,7 @@ public class MySQLActivityDAO implements ActivityDAO {
     Map<String, String> activity = new HashMap<>();
     try (Connection con = databaseManager.getConnection()) {
       String query =
-        "SELECT a.title, a.start_date, a.end_date, a.description, a.status_description, astatus.id as status_id, astatus.name as status_name, "
+        "SELECT a.title, a.start_date, a.end_date, a.description, a.status_description, a.is_global, astatus.id as status_id, astatus.name as status_name, "
           + "a.milestone_id, m.code as milestone_code, al.id as 'leader_id', al.acronym as 'leader_acronym', al.name as 'leader_name', "
           + "g.id as 'gender_id', g.description as 'gender_description' "
           + "FROM activities a INNER JOIN milestones m ON a.milestone_id = m.id "
@@ -164,6 +164,7 @@ public class MySQLActivityDAO implements ActivityDAO {
         activity.put("start_date", rs.getString("start_date"));
         activity.put("end_date", rs.getString("end_date"));
         activity.put("description", rs.getString("description"));
+        activity.put("is_global", rs.getString("is_global"));
         activity.put("status_description", rs.getString("status_description"));
         activity.put("status_id", rs.getString("status_id"));
         activity.put("status_name", rs.getString("status_name"));

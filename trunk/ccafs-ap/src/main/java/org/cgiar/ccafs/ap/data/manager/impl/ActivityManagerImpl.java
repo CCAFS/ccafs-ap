@@ -167,6 +167,7 @@ public class ActivityManagerImpl implements ActivityManager {
         e.printStackTrace();
       }
       activity.setDescription(activityDB.get("description"));
+      activity.setGlobal(activityDB.get("is_global").equals("1"));
       // Status
       Status status = new Status();
       status.setId(Integer.parseInt(activityDB.get("status_id")));

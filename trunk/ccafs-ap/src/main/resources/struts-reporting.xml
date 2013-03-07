@@ -93,7 +93,7 @@
       <result name="cancel" type="redirectAction">activities</result>
       <result name="input">/WEB-INF/reporting/tlOutputsReporting.ftl</result>
       <result name="success" type="redirectAction">
-        <param name="actionName">rplSynthesis</param>
+        <param name="actionName">tlRplMilestones</param>
       </result>
     </action>
 
