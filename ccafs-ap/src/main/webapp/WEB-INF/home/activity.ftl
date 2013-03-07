@@ -1,15 +1,19 @@
 [#ftl]
 [#assign title = "Activity Information" /]
 [#assign globalLibs = ["jquery", "googleAPI"] /]
-[#assign customJS = ["${baseUrl}/js/home/activity.js", ""] /]
+[#assign customJS = ["${baseUrl}/js/home/activity.js", "http://maps.googleapis.com/maps/api/js?key=AIzaSyC5BxhTe34V_hJjK6FLXgdm_YT2qSXmAoc&sensor=false"] /]
 [#assign customCSS = ["", ""] /]
 
 [#include "/WEB-INF/global/pages/header.ftl" /]
 
 <section class="content activityInformation">
   <article class="content">
-    <h1>${activity.leader.acronym} - [@s.text name="home.activity" /] ${activity.id}</h1>
+    [#-- Hidden values --]
     <input type="hidden" id="activityID" value="${activity.id}" />
+    <input type="hidden" id="noCountriesMessage" value="[@s.text name="home.activity.noCountry" /]" />
+    <input type="hidden" id="noOtherLocationsMessage" value="[@s.text name="home.activity.noOtherLocation" /]" />
+    
+    <h1>${activity.leader.acronym} - [@s.text name="home.activity" /] ${activity.id}</h1>
     <div id="activityTitle" class="fullBlock">
       <h6>[@s.text name="home.activity.title" /]</h6>
       <p>${activity.title}</p>
@@ -160,13 +164,19 @@
     
     [#-- Country locations --]
     <div class="halfPartBlock">
-      <h6>[@s.text name="home.activity.countryLocation" /]</h6>
-      <div id="country_locations"></div>
+      <h6>[@s.text name="home.activity.countryLocation" /] - ${activity.global?string}</h6>
+      [#if activity.global]
+        <p id="countriesMessage">The activity is global</p>
+      [#else]        
+        <p id="countriesMessage"></p>        
+      [/#if]      
+      <div id="country_locations" ></div>
     </div>
     
     [#-- Benchmark sites and other locations --]
     <div class="halfPartBlock">
       <h6>[@s.text name="home.activity.otherLocation" /]</h6>
+      <p id="otherLocationMessage"></p>
       <div id="other_locations"></div>
     </div>
     
