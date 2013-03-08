@@ -3,6 +3,7 @@ package org.cgiar.ccafs.ap.data.manager.impl;
 import org.cgiar.ccafs.ap.data.dao.ActivityDAO;
 import org.cgiar.ccafs.ap.data.manager.ActivityManager;
 import org.cgiar.ccafs.ap.data.manager.ActivityPartnerManager;
+import org.cgiar.ccafs.ap.data.manager.ContactPersonManager;
 import org.cgiar.ccafs.ap.data.manager.DeliverableManager;
 import org.cgiar.ccafs.ap.data.model.Activity;
 import org.cgiar.ccafs.ap.data.model.Leader;
@@ -27,13 +28,15 @@ public class ActivityManagerImpl implements ActivityManager {
 
   private DeliverableManager deliverableManager;
   private ActivityPartnerManager activityPartnerManager;
+  private ContactPersonManager contactPersonManager;
 
   @Inject
   public ActivityManagerImpl(ActivityDAO activityDAO, DeliverableManager deliverableManager,
-    ActivityPartnerManager activityPartnerManager) {
+    ActivityPartnerManager activityPartnerManager, ContactPersonManager contactPersonManager) {
     this.activityDAO = activityDAO;
     this.deliverableManager = deliverableManager;
     this.activityPartnerManager = activityPartnerManager;
+    this.contactPersonManager = contactPersonManager;
   }
 
   @Override
@@ -67,6 +70,8 @@ public class ActivityManagerImpl implements ActivityManager {
         // TODO Auto-generated catch block
         e.printStackTrace();
       }
+      // Contact Persons
+      activity.setContactPersons(contactPersonManager.getContactPersons(activity.getId()));
       Theme theme = new Theme(Integer.parseInt(activitiesDAO.get(c).get("theme_id")));
       theme.setCode(activitiesDAO.get(c).get("theme_code"));
       // Creating fake objects just to save correctly the Theme data of the current activity.

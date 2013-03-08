@@ -28,10 +28,7 @@
         <tr>
           <th id="id">[@s.text name="reporting.activityList.id" /]</th>
           <th id="activity">[@s.text name="reporting.activityList.activity" /]</th>
-          [#-- The column leader is showed only to the users with role TL or Admin --]
-          [#if userRole == "TL" || userRole == "Admin"]
-            <th id="leaderName">[@s.text name="reporting.activityList.leaderName" /]</th>
-          [/#if]
+          <th id="contactPerson">[@s.text name="reporting.activityList.contactPerson" /]</th>
           <th id="theme">[@s.text name="reporting.activityList.milestone" /]</th>
           <th id="status">[@s.text name="reporting.activityList.reportingStatus" /]</th>
         </tr>
@@ -48,12 +45,13 @@
               " title="${activity.title}">
                 [#if activity.title?length < 50] ${activity.title}</a> [#else] [@utilities.wordCutter string=activity.title maxPos=50 /]...</a> [/#if]
             </td>
-            
-            [#-- The column leader is showed only to the users with role TL or Admin --]
-            [#if userRole == "TL" || userRole == "Admin"]
-              <td>${activity.leader.acronym}</td>
-            [/#if]
-            
+            <td>
+              [#if activity.contactPersons??]
+                ${activity.contactPersons[0].name}
+              [#else]
+                [@s.text name="reporting.activityList.contactPerson.empty" /]
+              [/#if]
+            </td>               
             <td>${activity.milestone.code}</td>
             <td>
               [#if activityStatuses[activity_index]?has_content]
