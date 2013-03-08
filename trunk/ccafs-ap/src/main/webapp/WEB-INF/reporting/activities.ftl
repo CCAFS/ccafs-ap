@@ -28,9 +28,12 @@
         <tr>
           <th id="id">[@s.text name="reporting.activityList.id" /]</th>
           <th id="activity">[@s.text name="reporting.activityList.activity" /]</th>
-          <th id="leaderName">[@s.text name="reporting.activityList.leaderName" /]</th>
-          <th id="theme">[@s.text name="reporting.activityList.theme" /]</th>
-          <th id="theme">[@s.text name="reporting.activityList.reportingStatus" /]</th>
+          [#-- The column leader is showed only to the users with role TL or Admin --]
+          [#if userRole == "TL" || userRole == "Admin"]
+            <th id="leaderName">[@s.text name="reporting.activityList.leaderName" /]</th>
+          [/#if]
+          <th id="theme">[@s.text name="reporting.activityList.milestone" /]</th>
+          <th id="status">[@s.text name="reporting.activityList.reportingStatus" /]</th>
         </tr>
       </thead>
       <tbody>
@@ -45,8 +48,13 @@
               " title="${activity.title}">
                 [#if activity.title?length < 50] ${activity.title}</a> [#else] [@utilities.wordCutter string=activity.title maxPos=50 /]...</a> [/#if]
             </td>
-            <td>${activity.leader.acronym}</td>
-            <td>${activity.milestone.output.objective.theme.code}</td>
+            
+            [#-- The column leader is showed only to the users with role TL or Admin --]
+            [#if userRole == "TL" || userRole == "Admin"]
+              <td>${activity.leader.acronym}</td>
+            [/#if]
+            
+            <td>${activity.milestone.code}</td>
             <td>
               [#if activityStatuses[activity_index]?has_content]
                 [#assign problemDescription=activityStatuses[activity_index]]

@@ -164,7 +164,7 @@
     
     [#-- Country locations --]
     <div class="halfPartBlock">
-      <h6>[@s.text name="home.activity.countryLocation" /] - ${activity.global?string}</h6>
+      <h6>[@s.text name="home.activity.countryLocation" /]</h6>
       [#if activity.global]
         <p id="countriesMessage">The activity is global</p>
       [#else]        
