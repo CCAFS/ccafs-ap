@@ -39,6 +39,11 @@
         [@customForm.input name="publications[${publication_index}].identifier" type="text" i18nkey="reporting.publications.identifier" help="reporting.publications.identifier.help" /]
       </div>
       
+      [#-- Publication access --]
+      <div class="fullBlock">
+        [@customForm.radioButtonGroup name="publications[${publication_index}].access" label="" i18nkey="reporting.publications.access" listName="publicationAccessList" keyFieldName="id" displayFieldName="name" value="${publication.access.id}" /]
+      </div>
+      
       [#-- Publication citation --]
       <div class="fullBlock">
         [@customForm.textArea name="publications[${publication_index}].citation" i18nkey="reporting.publications.citation" help="reporting.publications.citation.help" /]
@@ -100,6 +105,11 @@
           [#-- Publication identifier --]
           <div class="halfPartBlock">
             [@customForm.input name="identifier" type="text" i18nkey="reporting.publications.identifier" help="reporting.publications.identifier.help" /]
+          </div>
+          
+          [#-- Publication access --]
+          <div class="fullBlock">
+            [@customForm.radioButtonGroup name="access" label="" i18nkey="reporting.publications.access" listName="publicationAccessList" keyFieldName="id" displayFieldName="name" /]
           </div>
       
           [#-- Publication citation --]

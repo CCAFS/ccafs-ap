@@ -21,6 +21,9 @@ $(document).ready(function() {
           $(this).find("[id$='identifier']").attr("id", "publications[" + index + "].identifier");
           $(this).find("[name$='identifier']").attr("name", "publications[" + index + "].identifier");
           $(this).find("[for$='identifier']").attr("for", "publications[" + index + "].identifier");
+          // Publication Access.
+          $(this).find("[name$='access']").attr("id", "publications[" + index + "].access");
+          $(this).find("[name$='access']").attr("name", "publications[" + index + "].access");
           // Publication Citation.
           $(this).find("[id$='citation']").attr("id", "publications[" + index + "].citation");
           $(this).find("[name$='citation']").attr("name", "publications[" + index + "].citation");

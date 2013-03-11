@@ -3,8 +3,10 @@ package org.cgiar.ccafs.ap.action.reporting.publications;
 import org.cgiar.ccafs.ap.action.BaseAction;
 import org.cgiar.ccafs.ap.config.APConfig;
 import org.cgiar.ccafs.ap.data.manager.LogframeManager;
+import org.cgiar.ccafs.ap.data.manager.OpenAccessManager;
 import org.cgiar.ccafs.ap.data.manager.PublicationManager;
 import org.cgiar.ccafs.ap.data.manager.PublicationTypeManager;
+import org.cgiar.ccafs.ap.data.model.OpenAccess;
 import org.cgiar.ccafs.ap.data.model.Publication;
 import org.cgiar.ccafs.ap.data.model.PublicationType;
 
@@ -20,17 +22,25 @@ public class PublicationsReportingAction extends BaseAction {
   // Models
   private List<Publication> publications;
   private PublicationType[] publicationTypes;
+  private OpenAccess[] publicationAccessList;
 
   // Managers
   private PublicationManager publicationManager;
   private PublicationTypeManager publicationTypeManager;
+  private OpenAccessManager openAccessManager;
 
   @Inject
   public PublicationsReportingAction(APConfig config, LogframeManager logframeManager,
-    PublicationManager publicationManager, PublicationTypeManager publicationTypeManager) {
+    PublicationManager publicationManager, PublicationTypeManager publicationTypeManager,
+    OpenAccessManager openAccessManager) {
     super(config, logframeManager);
     this.publicationManager = publicationManager;
     this.publicationTypeManager = publicationTypeManager;
+    this.openAccessManager = openAccessManager;
+  }
+
+  public OpenAccess[] getPublicationAccessList() {
+    return publicationAccessList;
   }
 
   public List<Publication> getPublications() {
@@ -46,12 +56,12 @@ public class PublicationsReportingAction extends BaseAction {
     super.prepare();
     publications = publicationManager.getPublications(this.getCurrentUser().getLeader(), this.getCurrentLogframe());
     publicationTypes = publicationTypeManager.getPublicationTypes();
+    publicationAccessList = openAccessManager.getOpenAccessList();
 
     // Remove all publications so they can be added again in the save method.
     if (this.getRequest().getMethod().equalsIgnoreCase("post")) {
       publications.clear();
     }
-
   }
 
   @Override
@@ -93,6 +103,12 @@ public class PublicationsReportingAction extends BaseAction {
           addFieldError("publications[" + c + "].citation",
             getText("validation.required", new String[] {getText("reporting.publications.citation")}));
         }
+        if (publication.getAccess() == null) {
+          publication.setAccess(new OpenAccess());
+          problem = true;
+          addFieldError("publications[" + c + "].access",
+            getText("validation.required", new String[] {getText("reporting.publications.access")}));
+        }
         c++;
       }
 
@@ -101,5 +117,4 @@ public class PublicationsReportingAction extends BaseAction {
       }
     }
   }
-
 }
