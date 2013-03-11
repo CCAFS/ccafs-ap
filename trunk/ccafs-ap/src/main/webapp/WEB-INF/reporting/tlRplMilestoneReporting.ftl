@@ -22,6 +22,7 @@
   [#include "/WEB-INF/global/pages/reporting-secondary-menu.ftl" /]
   [@s.form action="tlRplMilestones"]
     <article class="halfContent">
+      [#include "/WEB-INF/reporting/tlRplSubMenu.ftl" /]
       <h1 class="contentTitle">
         [@s.text name="reporting.tlRplMilestoneReport.milestoneReport" /] - ${currentUser.leader.acronym}
       </h1>
@@ -99,8 +100,7 @@
         [@s.submit type="button" name="save"][@s.text name="form.buttons.save" /][/@s.submit]
         [@s.submit type="button" name="cancel"][@s.text name="form.buttons.cancel" /][/@s.submit]
       </div>
-      
-      [#include "/WEB-INF/reporting/tlRplSubMenu.ftl" /]
+
     </article>
   [/@s.form]
  
