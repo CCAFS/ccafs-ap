@@ -15,6 +15,10 @@
 [#-- number of theme in the legend of fieldset--]
 [#assign theme = -1 /]
 <section class="content">
+  <div class="helpMessage">
+    <img src="${baseUrl}/images/global/icon-help.png" />
+    <p>[@s.text name="reporting.tlRplMilestoneReport.help" /]</p>
+  </div>
   [#include "/WEB-INF/global/pages/reporting-secondary-menu.ftl" /]
   [@s.form action="tlRplMilestones"]
     <article class="halfContent">
@@ -96,7 +100,7 @@
         [@s.submit type="button" name="cancel"][@s.text name="form.buttons.cancel" /][/@s.submit]
       </div>
       
-      [#include "/WEB-INF/reporting/tlRplSubMenu.ftl" /]  
+      [#include "/WEB-INF/reporting/tlRplSubMenu.ftl" /]
     </article>
   [/@s.form]
  

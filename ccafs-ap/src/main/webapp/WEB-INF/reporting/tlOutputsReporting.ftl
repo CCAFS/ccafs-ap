@@ -14,12 +14,17 @@
 
 
 <section class="content">
+  <div class="helpMessage">
+    <img src="${baseUrl}/images/global/icon-help.png" />
+    <p>[@s.text name="reporting.tlOutputSummaries.help" /]</p>
+  </div>
   [#include "/WEB-INF/global/pages/reporting-secondary-menu.ftl" /]
   [@s.form action="tlOutputs"]
     <article class="halfContent">
+      
       <h1 class="contentTitle">
-          [@s.text name="reporting.tlOutputSummaries" /] - ${currentUser.leader.acronym} 
-        </h1>
+        [@s.text name="reporting.tlOutputSummaries" /] - ${currentUser.leader.acronym} 
+      </h1>
       <div id="items">      
         <fieldset id="outputsGroup">
           <legend>[@s.text name="reporting.tlOutputSummaries" /]</legend>
