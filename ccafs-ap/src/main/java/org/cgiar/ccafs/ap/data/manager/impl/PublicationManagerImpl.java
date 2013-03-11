@@ -76,7 +76,11 @@ public class PublicationManagerImpl implements PublicationManager {
       } else {
         pubData.put("identifier", publication.getIdentifier());
       }
-      pubData.put("open_access_id", String.valueOf(publication.getAccess().getId()));
+      if (publication.getAccess().getId() == 0) {
+        pubData.put("open_access_id", null);
+      } else {
+        pubData.put("open_access_id", String.valueOf(publication.getAccess().getId()));
+      }
       pubData.put("citation", publication.getCitation());
       if (publication.getFileUrl().isEmpty()) {
         pubData.put("file_url", null);
