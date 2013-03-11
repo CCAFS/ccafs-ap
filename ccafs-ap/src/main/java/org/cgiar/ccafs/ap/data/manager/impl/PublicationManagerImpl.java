@@ -4,6 +4,7 @@ import org.cgiar.ccafs.ap.data.dao.PublicationDAO;
 import org.cgiar.ccafs.ap.data.manager.PublicationManager;
 import org.cgiar.ccafs.ap.data.model.Leader;
 import org.cgiar.ccafs.ap.data.model.Logframe;
+import org.cgiar.ccafs.ap.data.model.OpenAccess;
 import org.cgiar.ccafs.ap.data.model.Publication;
 import org.cgiar.ccafs.ap.data.model.PublicationType;
 
@@ -40,6 +41,14 @@ public class PublicationManagerImpl implements PublicationManager {
       publicationType.setId(Integer.parseInt(pubData.get("publication_type_id")));
       publicationType.setName(pubData.get("publication_type_name"));
       publication.setType(publicationType);
+      OpenAccess publicationAccess = new OpenAccess();
+      if (pubData.get("publication_access_id") != null) {
+        publicationAccess.setId(Integer.parseInt(pubData.get("publication_access_id")));
+      } else {
+        // publicationAccess.setId(-1);
+      }
+      publicationAccess.setName(pubData.get("publication_access_name"));
+      publication.setAccess(publicationAccess);
       publications.add(publication);
     }
     return publications;
@@ -67,6 +76,7 @@ public class PublicationManagerImpl implements PublicationManager {
       } else {
         pubData.put("identifier", publication.getIdentifier());
       }
+      pubData.put("open_access_id", String.valueOf(publication.getAccess().getId()));
       pubData.put("citation", publication.getCitation());
       if (publication.getFileUrl().isEmpty()) {
         pubData.put("file_url", null);

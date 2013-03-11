@@ -28,9 +28,11 @@ public class MySQLPublicationDAO implements PublicationDAO {
     List<Map<String, String>> publications = new ArrayList<>();
     try (Connection connection = dbManager.getConnection()) {
       String query =
-        "SELECT p.id, p.identifier, p.citation, p.file_url, pt.id as 'publication_type_id', pt.name as 'publication_type_name' "
+        "SELECT p.id, p.identifier, p.citation, p.file_url, pt.id as 'publication_type_id', "
+          + "pt.name as 'publication_type_name', oa.id as 'publication_access_id', oa.name as 'publication_access_name'"
           + "FROM publications p INNER JOIN publication_types pt ON pt.id = p.publication_type_id "
-          + "WHERE activity_leader_id = " + leaderId + " AND logframe_id = " + logframeId;
+          + "LEFT JOIN open_access oa ON p.open_access_id = oa.id " + "WHERE activity_leader_id = " + leaderId
+          + " AND logframe_id = " + logframeId;
       ResultSet rs = dbManager.makeQuery(query, connection);
       while (rs.next()) {
         Map<String, String> publicationData = new HashMap<>();
@@ -40,6 +42,8 @@ public class MySQLPublicationDAO implements PublicationDAO {
         publicationData.put("file_url", rs.getString("file_url"));
         publicationData.put("publication_type_id", rs.getString("publication_type_id"));
         publicationData.put("publication_type_name", rs.getString("publication_type_name"));
+        publicationData.put("publication_access_id", rs.getString("publication_access_id"));
+        publicationData.put("publication_access_name", rs.getString("publication_access_name"));
         publications.add(publicationData);
       }
       rs.close();
@@ -77,8 +81,8 @@ public class MySQLPublicationDAO implements PublicationDAO {
       for (Map<String, String> publicationData : publications) {
         addQueryPrepared =
           "INSERT INTO publications (id, publication_type_id, identifier, citation, file_url, logframe_id, "
-            + "activity_leader_id) VALUES (?, ?, ?, ?, ?, ?, ?)";
-        values = new Object[7];
+            + "activity_leader_id, open_access_id) VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
+        values = new Object[8];
         values[0] = publicationData.get("id");
         values[1] = publicationData.get("publication_type_id");
         values[2] = publicationData.get("identifier");
@@ -86,6 +90,7 @@ public class MySQLPublicationDAO implements PublicationDAO {
         values[4] = publicationData.get("file_url");
         values[5] = publicationData.get("logframe_id");
         values[6] = publicationData.get("activity_leader_id");
+        values[7] = publicationData.get("open_access_id");
 
         int rows = dbManager.makeChangeSecure(connection, addQueryPrepared, values);
         if (rows < 0) {

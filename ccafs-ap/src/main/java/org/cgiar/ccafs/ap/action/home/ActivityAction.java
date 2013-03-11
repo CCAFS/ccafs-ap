@@ -62,12 +62,7 @@ public class ActivityAction extends BaseAction {
   public String execute() throws Exception {
     super.execute();
     // If there is not a activityID parameter or it is invalid, return input
-    if (activityID == -1) {
-      return INPUT;
-    }
-    // Otherwise check if it is a valid activity identifier
-    if (!activityManager.isValidId(activityID)) {
-      // TODO Show a message to the user with the error
+    if (activityID == -1 || !activityManager.isValidId(activityID)) {
       return INPUT;
     }
 

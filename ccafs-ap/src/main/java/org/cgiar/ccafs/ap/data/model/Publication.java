@@ -10,10 +10,14 @@ public class Publication {
   private String fileUrl;
   private Logframe logframe;
   private Leader leader;
+  private OpenAccess access;
 
   public Publication() {
   }
 
+  public OpenAccess getAccess() {
+    return access;
+  }
 
   public String getCitation() {
     return citation;
@@ -43,6 +47,10 @@ public class Publication {
     return type;
   }
 
+  public void setAccess(OpenAccess access) {
+    this.access = access;
+  }
+
   public void setCitation(String citation) {
     this.citation = citation;
   }
@@ -70,5 +78,4 @@ public class Publication {
   public void setType(PublicationType type) {
     this.type = type;
   }
-
 }
