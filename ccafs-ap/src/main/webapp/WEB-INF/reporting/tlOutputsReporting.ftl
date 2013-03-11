@@ -21,7 +21,7 @@
   [#include "/WEB-INF/global/pages/reporting-secondary-menu.ftl" /]
   [@s.form action="tlOutputs"]
     <article class="halfContent">
-      
+      [#include "/WEB-INF/reporting/tlRplSubMenu.ftl" /]
       <h1 class="contentTitle">
         [@s.text name="reporting.tlOutputSummaries" /] - ${currentUser.leader.acronym} 
       </h1>
@@ -50,15 +50,14 @@
               <hr />
             </div>
         [/#list]
-        </fieldset>        
+        </fieldset>
       </div>      
       
       <div class="buttons">
         [@s.submit type="button" name="save"][@s.text name="form.buttons.save" /][/@s.submit]
         [@s.submit type="button" name="cancel"][@s.text name="form.buttons.cancel" /][/@s.submit]
-      </div>
+      </div>      
       
-      [#include "/WEB-INF/reporting/tlRplSubMenu.ftl" /]  
     </article>
   [/@s.form]
  
