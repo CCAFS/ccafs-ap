@@ -23,6 +23,9 @@ public class PublicationsReportingAction extends BaseAction {
   private List<Publication> publications;
   private PublicationType[] publicationTypes;
   private OpenAccess[] publicationAccessList;
+  // This array contain the types of publications which need a
+  // access type specification
+  private int[] publicationTypeAccessNeed;
 
   // Managers
   private PublicationManager publicationManager;
@@ -47,9 +50,14 @@ public class PublicationsReportingAction extends BaseAction {
     return publications;
   }
 
+  public int[] getPublicationTypeAccessNeed() {
+    return publicationTypeAccessNeed;
+  }
+
   public PublicationType[] getPublicationTypes() {
     return publicationTypes;
   }
+
 
   @Override
   public void prepare() throws Exception {
@@ -57,6 +65,11 @@ public class PublicationsReportingAction extends BaseAction {
     publications = publicationManager.getPublications(this.getCurrentUser().getLeader(), this.getCurrentLogframe());
     publicationTypes = publicationTypeManager.getPublicationTypes();
     publicationAccessList = openAccessManager.getOpenAccessList();
+
+    // Publication types which need an access type specification
+    // ID = 1 - Journal paper
+    publicationTypeAccessNeed = new int[1];
+    publicationTypeAccessNeed[0] = publicationTypes[0].getId();
 
     // Remove all publications so they can be added again in the save method.
     if (this.getRequest().getMethod().equalsIgnoreCase("post")) {
@@ -98,6 +111,14 @@ public class PublicationsReportingAction extends BaseAction {
       boolean problem = false;
       int c = 0;
       for (Publication publication : publications) {
+        boolean needAccessType = false;
+
+        for (int typeId : publicationTypeAccessNeed) {
+          if (publication.getType().getId() == typeId) {
+            needAccessType = true;
+            break;
+          }
+        }
         if (publication.getCitation().isEmpty()) {
           problem = true;
           addFieldError("publications[" + c + "].citation",
@@ -105,9 +126,11 @@ public class PublicationsReportingAction extends BaseAction {
         }
         if (publication.getAccess() == null) {
           publication.setAccess(new OpenAccess());
-          problem = true;
-          addFieldError("publications[" + c + "].access",
-            getText("validation.required", new String[] {getText("reporting.publications.access")}));
+          if (needAccessType) {
+            problem = true;
+            addFieldError("publications[" + c + "].access",
+              getText("validation.required", new String[] {getText("reporting.publications.access")}));
+          }
         }
         c++;
       }

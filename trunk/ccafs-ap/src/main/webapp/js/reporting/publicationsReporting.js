@@ -36,6 +36,21 @@ $(document).ready(function() {
     );
   }
 
+  // This event show or hide the access type option according to the 
+  // type of publication.
+  $("[name$='type']").change(function(event) {
+    event.preventDefault();
+    // Get the element id
+    var elementId = $(event.target).attr("id").split("_")[2];
+    
+    // If the type is 1 (Journal papers) the options are showed
+    if($(event.target).val() == 1){
+      $("#publication-" + elementId).find(".accessType").show("slow");
+    }else{
+      $("#publication-" + elementId).find(".accessType").hide("slow");
+    }
+  });
+  
   $(".addPublication").click(function(event) {
     event.preventDefault();
     // Cloning template.

@@ -40,10 +40,14 @@
       </div>
       
       [#-- Publication access --]
-      <div class="fullBlock">
+      [#if publicationTypeAccessNeed?seq_contains(publication.type.id)]              
+        <div class="fullBlock accessType">
+      [#else]
+        <div class="fullBlock accessType" style="display: none;">
+      [/#if]      
         [@customForm.radioButtonGroup name="publications[${publication_index}].access" label="" i18nkey="reporting.publications.access" listName="publicationAccessList" keyFieldName="id" displayFieldName="name" value="${publication.access.id}" /]
       </div>
-      
+
       [#-- Publication citation --]
       <div class="fullBlock">
         [@customForm.textArea name="publications[${publication_index}].citation" i18nkey="reporting.publications.citation" help="reporting.publications.citation.help" /]
@@ -108,7 +112,7 @@
           </div>
           
           [#-- Publication access --]
-          <div class="fullBlock">
+          <div class="fullBlock accessType">
             [@customForm.radioButtonGroup name="access" label="" i18nkey="reporting.publications.access" listName="publicationAccessList" keyFieldName="id" displayFieldName="name" /]
           </div>
       
