@@ -45,7 +45,7 @@
       [#else]
         <div class="fullBlock accessType" style="display: none;">
       [/#if]      
-        [@customForm.radioButtonGroup name="publications[${publication_index}].access" label="" i18nkey="reporting.publications.access" listName="publicationAccessList" keyFieldName="id" displayFieldName="name" value="${publication.access.id}" /]
+        [@customForm.radioButtonGroup name="publications[${publication_index}].access" label="" i18nkey="reporting.publications.access" listName="publicationAccessList" keyFieldName="id" displayFieldName="name" value="${publication.access.id}" help="reporting.publications.access.help"/]
       </div>
 
       [#-- Publication citation --]
