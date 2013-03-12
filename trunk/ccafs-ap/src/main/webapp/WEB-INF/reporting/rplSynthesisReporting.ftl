@@ -14,10 +14,14 @@
 
 
 <section class="content">
+  <div class="helpMessage">
+    <img src="${baseUrl}/images/global/icon-help.png" />
+    <p>[@s.text name="reporting.synthesisReport.help" /]</p>
+  </div>
   [#include "/WEB-INF/global/pages/reporting-secondary-menu.ftl" /]
   [@s.form action="rplSynthesis"]
     <article class="halfContent">
-    [#include "/WEB-INF/reporting/tlRplSubMenu.ftl" /]
+      [#include "/WEB-INF/reporting/tlRplSubMenu.ftl" /]
       <h1 class="contentTitle">
         [@s.text name="reporting.rplSynthesisreport" /] - ${currentUser.leader.acronym} 
       </h1>
