@@ -47,7 +47,10 @@ $(document).ready(function() {
     if($(event.target).val() == 1){
       $("#publication-" + elementId).find(".accessType").show("slow");
     }else{
-      $("#publication-" + elementId).find(".accessType").hide("slow");
+      $("#publication-" + elementId).find(".accessType").hide("slow", function() {
+        // remove radio button selection
+        $(this).find(".radiosList").find(":checked").attr('checked', false);        
+      });
     }
   });
   
