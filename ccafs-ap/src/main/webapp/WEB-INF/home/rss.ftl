@@ -7,12 +7,13 @@
     <atom:link href="${baseUrl}" rel="self" type="application/rss+xml" />    
     <description>This site is for the internal use of CCAFS themes, centers and regions for the planning and subsequent reporting of yearly research activities</description>
     <language>en-us</language>
+    <webMaster>h.f.tobon@cgiar.org</webMaster>
     [#list activities as activity]
     <item>
       <title>${activity.title}</title>
-      <link>${baseUrl}/activity.do?id=${activity.id}</link>      
-      <description>${activity.description}</description>
-      <guid>http://davinci.ciat.cgiar.org/ccafs-ap/reporting/status.do?activityID=${activity.id}</guid>
+      <link>${baseUrl}/activity.do?id=${activity.id}</link>
+      <description><![CDATA[${activity.description}]]></description>
+      <guid>${baseUrl}/activity.do?id=${activity.id}</guid>
       <pubDate>${activity.dateAdded?string("EEE, dd MMM yyyy HH:mm:ss Z")}</pubDate>
     </item>
     [/#list]
