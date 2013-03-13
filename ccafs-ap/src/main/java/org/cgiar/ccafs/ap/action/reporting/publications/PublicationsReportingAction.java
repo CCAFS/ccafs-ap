@@ -6,11 +6,14 @@ import org.cgiar.ccafs.ap.data.manager.LogframeManager;
 import org.cgiar.ccafs.ap.data.manager.OpenAccessManager;
 import org.cgiar.ccafs.ap.data.manager.PublicationManager;
 import org.cgiar.ccafs.ap.data.manager.PublicationTypeManager;
+import org.cgiar.ccafs.ap.data.manager.ThemeManager;
 import org.cgiar.ccafs.ap.data.model.OpenAccess;
 import org.cgiar.ccafs.ap.data.model.Publication;
 import org.cgiar.ccafs.ap.data.model.PublicationType;
+import org.cgiar.ccafs.ap.data.model.Theme;
 
 import java.util.List;
+import java.util.Map;
 
 import com.google.inject.Inject;
 
@@ -23,23 +26,25 @@ public class PublicationsReportingAction extends BaseAction {
   private List<Publication> publications;
   private PublicationType[] publicationTypes;
   private OpenAccess[] publicationAccessList;
-  // This array contain the types of publications which need a
-  // access type specification
+  private Map<Integer, String> themeList;
+  // This array contains the publication types which need an access type specification.
   private int[] publicationTypeAccessNeed;
 
   // Managers
   private PublicationManager publicationManager;
   private PublicationTypeManager publicationTypeManager;
   private OpenAccessManager openAccessManager;
+  private ThemeManager themeManager;
 
   @Inject
   public PublicationsReportingAction(APConfig config, LogframeManager logframeManager,
     PublicationManager publicationManager, PublicationTypeManager publicationTypeManager,
-    OpenAccessManager openAccessManager) {
+    OpenAccessManager openAccessManager, ThemeManager themeManager) {
     super(config, logframeManager);
     this.publicationManager = publicationManager;
     this.publicationTypeManager = publicationTypeManager;
     this.openAccessManager = openAccessManager;
+    this.themeManager = themeManager;
   }
 
   public OpenAccess[] getPublicationAccessList() {
@@ -70,6 +75,9 @@ public class PublicationsReportingAction extends BaseAction {
     // ID = 1 - Journal paper
     publicationTypeAccessNeed = new int[1];
     publicationTypeAccessNeed[0] = publicationTypes[0].getId();
+
+    Theme[] themes = themeManager.getThemes(this.getCurrentLogframe());
+    // TODO - populate themeList here.
 
     // Remove all publications so they can be added again in the save method.
     if (this.getRequest().getMethod().equalsIgnoreCase("post")) {

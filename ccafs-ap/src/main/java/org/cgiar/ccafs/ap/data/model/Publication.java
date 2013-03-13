@@ -10,6 +10,7 @@ public class Publication {
   private String fileUrl;
   private Logframe logframe;
   private Leader leader;
+  private Theme[] relatedThemes;
   private OpenAccess access;
 
   public Publication() {
@@ -43,6 +44,10 @@ public class Publication {
     return logframe;
   }
 
+  public Theme[] getRelatedThemes() {
+    return relatedThemes;
+  }
+
   public PublicationType getType() {
     return type;
   }
@@ -73,6 +78,10 @@ public class Publication {
 
   public void setLogframe(Logframe logframe) {
     this.logframe = logframe;
+  }
+
+  public void setRelatedThemes(Theme[] relatedThemes) {
+    this.relatedThemes = relatedThemes;
   }
 
   public void setType(PublicationType type) {
