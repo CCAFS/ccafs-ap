@@ -28,6 +28,17 @@ $(document).ready(function() {
           $(this).find("[id$='citation']").attr("id", "publications[" + index + "].citation");
           $(this).find("[name$='citation']").attr("name", "publications[" + index + "].citation");
           $(this).find("[for$='citation']").attr("for", "publications[" + index + "].citation");
+          // Themes.
+          $(this).find("[name$='relatedThemes']").each(function(index2) {
+            if( ! $(this).is(":hidden") ){
+              $(this).attr("id", "publications[" + index + "].relatedThemes-" + index2);
+              $(this).attr("name", "publications[" + index + "].relatedThemes");
+              $(this).next(".checkboxLabel").attr('for', "publications[" + index + "].relatedThemes-" + index2)
+            }else{
+              $(this).attr("id", "__multiselect_publications_publications_" + index + "__relatedThemes");
+              $(this).attr("name", "__multiselect_publications[" + index + "].relatedThemes");
+            }
+          });
           // Publication File URL.
           $(this).find("[id$='fileUrl']").attr("id", "publications[" + index + "].fileUrl");
           $(this).find("[name$='fileUrl']").attr("name", "publications[" + index + "].fileUrl");
@@ -60,8 +71,8 @@ $(document).ready(function() {
     var $newPublication = $("#publication-9999").clone(true);
     $(".addLink").before($newPublication);
     $(".addLink").before("<hr />");
-    renamePublications();
     $newPublication.fadeIn("slow");
+    renamePublications();
   });
 
   $('.removePublication').click(function(event) {

@@ -181,6 +181,7 @@ function renameCaseStudies() {
           if( ! $(this).is(":hidden") ){
             $(this).attr("id", "caseStudies[" + index + "].types-" + index2);
             $(this).attr("name", "caseStudies[" + index + "].types");
+            $(this).next(".checkboxLabel").attr('for', "caseStudies[" + index + "].types-" + index2);
           }else{
             $(this).attr("id", "__multiselect_caseStudies_caseStudies_" + index + "__types");
             $(this).attr("name", "__multiselect_caseStudies[" + index + "].types");

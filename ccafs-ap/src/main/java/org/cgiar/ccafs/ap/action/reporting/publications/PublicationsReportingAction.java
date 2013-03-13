@@ -12,6 +12,7 @@ import org.cgiar.ccafs.ap.data.model.Publication;
 import org.cgiar.ccafs.ap.data.model.PublicationType;
 import org.cgiar.ccafs.ap.data.model.Theme;
 
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -64,6 +65,11 @@ public class PublicationsReportingAction extends BaseAction {
   }
 
 
+  public Map<Integer, String> getThemeList() {
+    return themeList;
+  }
+
+
   @Override
   public void prepare() throws Exception {
     super.prepare();
@@ -77,7 +83,10 @@ public class PublicationsReportingAction extends BaseAction {
     publicationTypeAccessNeed[0] = publicationTypes[0].getId();
 
     Theme[] themes = themeManager.getThemes(this.getCurrentLogframe());
-    // TODO - populate themeList here.
+    themeList = new HashMap<>();
+    for (Theme theme : themes) {
+      themeList.put(theme.getId(), getText("reporting.publications.Theme") + " " + theme.getCode());
+    }
 
     // Remove all publications so they can be added again in the save method.
     if (this.getRequest().getMethod().equalsIgnoreCase("post")) {
@@ -139,6 +148,11 @@ public class PublicationsReportingAction extends BaseAction {
             addFieldError("publications[" + c + "].access",
               getText("validation.required", new String[] {getText("reporting.publications.access")}));
           }
+        }
+        if (publication.getRelatedThemes().length == 0) {
+          problem = true;
+          addFieldError("publications[" + c + "].themeRelated",
+            getText("validation.required", new String[] {getText("reporting.publications.themeRelated")}));
         }
         c++;
       }

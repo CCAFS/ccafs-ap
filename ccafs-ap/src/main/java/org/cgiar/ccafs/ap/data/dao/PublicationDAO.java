@@ -32,8 +32,8 @@ public interface PublicationDAO {
    * Save a list of publications into the database.
    * 
    * @param publications - List of Maps with all the information of publications.
-   * @return true if all the publications were successfully saved into the database, or false if any problem occur.
+   * @return the identifier assigned to the new record.
    */
-  public boolean savePublications(List<Map<String, String>> publications);
+  public int savePublication(Map<String, String> publications);
 
 }

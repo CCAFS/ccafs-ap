@@ -1,5 +1,7 @@
 package org.cgiar.ccafs.ap.data.model;
 
+import java.util.ArrayList;
+
 
 public class Publication {
 
@@ -46,6 +48,14 @@ public class Publication {
 
   public Theme[] getRelatedThemes() {
     return relatedThemes;
+  }
+
+  public ArrayList<String> getRelatedThemesIds() {
+    ArrayList<String> ids = new ArrayList<>();
+    for (int c = 0; c < getRelatedThemes().length; c++) {
+      ids.add(getRelatedThemes()[c].getId() + "");
+    }
+    return ids;
   }
 
   public PublicationType getType() {
