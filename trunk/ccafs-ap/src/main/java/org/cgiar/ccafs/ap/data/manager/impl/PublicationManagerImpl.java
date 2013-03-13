@@ -1,12 +1,14 @@
 package org.cgiar.ccafs.ap.data.manager.impl;
 
 import org.cgiar.ccafs.ap.data.dao.PublicationDAO;
+import org.cgiar.ccafs.ap.data.dao.PublicationThemeDAO;
 import org.cgiar.ccafs.ap.data.manager.PublicationManager;
 import org.cgiar.ccafs.ap.data.model.Leader;
 import org.cgiar.ccafs.ap.data.model.Logframe;
 import org.cgiar.ccafs.ap.data.model.OpenAccess;
 import org.cgiar.ccafs.ap.data.model.Publication;
 import org.cgiar.ccafs.ap.data.model.PublicationType;
+import org.cgiar.ccafs.ap.data.model.Theme;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -19,10 +21,12 @@ import com.google.inject.Inject;
 public class PublicationManagerImpl implements PublicationManager {
 
   private PublicationDAO publicationDAO;
+  private PublicationThemeDAO publicationThemeDAO;
 
   @Inject
-  public PublicationManagerImpl(PublicationDAO publicationDAO) {
+  public PublicationManagerImpl(PublicationDAO publicationDAO, PublicationThemeDAO publicationThemeDAO) {
     this.publicationDAO = publicationDAO;
+    this.publicationThemeDAO = publicationThemeDAO;
   }
 
   @Override
@@ -47,6 +51,16 @@ public class PublicationManagerImpl implements PublicationManager {
       } else {
         // publicationAccess.setId(-1);
       }
+      List<Map<String, String>> themes = publicationThemeDAO.getThemes(publication.getId());
+      Theme[] relatedThemes = new Theme[themes.size()];
+      for (int c = 0; c < themes.size(); c++) {
+        Theme theme = new Theme();
+        theme.setId(Integer.parseInt(themes.get(c).get("id")));
+        theme.setCode(themes.get(c).get("code"));
+        theme.setDescription(themes.get(c).get("description"));
+        relatedThemes[c] = theme;
+      }
+      publication.setRelatedThemes(relatedThemes);
       publicationAccess.setName(pubData.get("publication_access_name"));
       publication.setAccess(publicationAccess);
       publications.add(publication);
@@ -62,7 +76,6 @@ public class PublicationManagerImpl implements PublicationManager {
   @Override
   public boolean savePublications(List<Publication> publications, Logframe logframe, Leader leader) {
     boolean problem = false;
-    List<Map<String, String>> publicationsData = new ArrayList<>();
     for (Publication publication : publications) {
       Map<String, String> pubData = new HashMap<>();
       if (publication.getId() != -1) {
@@ -89,9 +102,21 @@ public class PublicationManagerImpl implements PublicationManager {
       }
       pubData.put("logframe_id", logframe.getId() + "");
       pubData.put("activity_leader_id", leader.getId() + "");
-      publicationsData.add(pubData);
+
+      int publicationId = publicationDAO.savePublication(pubData);
+      // If the publication has an id the addDeliverable function return 0 as id,
+      // so, the id must be set to its original value
+      publicationId = (publication.getId() != -1) ? publication.getId() : publicationId;
+
+      // If the publications was successfully saved, save the themes related
+      if (publicationId != -1) {
+        // lets add the file format list.
+        boolean themesRelatedAdded = publicationThemeDAO.saveThemes(publicationId, publication.getRelatedThemesIds());
+        if (!themesRelatedAdded) {
+          return false;
+        }
+      }
     }
-    problem = !publicationDAO.savePublications(publicationsData);
-    return !problem;
+    return true;
   }
 }

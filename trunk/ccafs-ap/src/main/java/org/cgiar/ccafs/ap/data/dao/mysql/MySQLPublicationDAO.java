@@ -73,36 +73,38 @@ public class MySQLPublicationDAO implements PublicationDAO {
   }
 
   @Override
-  public boolean savePublications(List<Map<String, String>> publications) {
-    boolean problem = false;
+  public int savePublication(Map<String, String> publication) {
+    int generatedId = -1;
     try (Connection connection = dbManager.getConnection()) {
       String addQueryPrepared = null;
       Object[] values;
-      for (Map<String, String> publicationData : publications) {
-        addQueryPrepared =
-          "INSERT INTO publications (id, publication_type_id, identifier, citation, file_url, logframe_id, "
-            + "activity_leader_id, open_access_id) VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
-        values = new Object[8];
-        values[0] = publicationData.get("id");
-        values[1] = publicationData.get("publication_type_id");
-        values[2] = publicationData.get("identifier");
-        values[3] = publicationData.get("citation");
-        values[4] = publicationData.get("file_url");
-        values[5] = publicationData.get("logframe_id");
-        values[6] = publicationData.get("activity_leader_id");
-        values[7] = publicationData.get("open_access_id");
+      addQueryPrepared =
+        "INSERT INTO publications (id, publication_type_id, identifier, citation, file_url, logframe_id, "
+          + "activity_leader_id, open_access_id) VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
+      values = new Object[8];
+      values[0] = publication.get("id");
+      values[1] = publication.get("publication_type_id");
+      values[2] = publication.get("identifier");
+      values[3] = publication.get("citation");
+      values[4] = publication.get("file_url");
+      values[5] = publication.get("logframe_id");
+      values[6] = publication.get("activity_leader_id");
+      values[7] = publication.get("open_access_id");
 
-        int rows = dbManager.makeChangeSecure(connection, addQueryPrepared, values);
-        if (rows < 0) {
-          // TODO Make a log error message.
-          problem = true;
+      int rows = dbManager.makeChangeSecure(connection, addQueryPrepared, values);
+      if (rows > 0) {
+        // get the id assigned to this new record.
+        ResultSet rs = dbManager.makeQuery("SELECT LAST_INSERT_ID()", connection);
+        if (rs.next()) {
+          generatedId = rs.getInt(1);
         }
+        rs.close();
       }
     } catch (SQLException e) {
       // TODO Auto-generated catch block
       e.printStackTrace();
     }
 
-    return !problem;
+    return generatedId;
   }
 }

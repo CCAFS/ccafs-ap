@@ -65,10 +65,11 @@ $(document).ready(
                 });
               });
             }
-            
+
             // check if the File URL field and the help message need to be showed or hided.
-            var messageBox = $("#fileNameMessage-"+selectedId);
-            var fileUrlField = $("#activity\\.deliverables\\["+selectedId+"\\]\\.fileName");
+            var messageBox = $("#fileNameMessage-" + selectedId);
+            var fileUrlField = $("#activity\\.deliverables\\[" + selectedId
+                + "\\]\\.fileName");
             if (jQuery.inArray(selected, publicationType) != -1) {
               messageBox.show("slow");
               fileUrlField.parent().hide("slow");
@@ -135,6 +136,10 @@ function renameDeliverables() {
                             + index2);
                     $(this).attr("name",
                         "activity.deliverables[" + index + "].fileFormats");
+                    $(this).next(".checkboxLabel").attr(
+                        'for',
+                        "activity.deliverables[" + index + "].fileFormats-"
+                            + index2);
                   });
               // File name
               $(this).find("[id$='fileName']").attr("id",

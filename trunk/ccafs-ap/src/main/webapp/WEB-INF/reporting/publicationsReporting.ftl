@@ -53,6 +53,15 @@
         [@customForm.textArea name="publications[${publication_index}].citation" i18nkey="reporting.publications.citation" help="reporting.publications.citation.help" /]
       </div> 
       
+      [#-- Publication themes related --]
+      <div class="fullBlock">
+        <h6>[@s.text name="reporting.publications.themeRelated" /]</h6>
+        <div class="checkboxGroup">
+          [@s.fielderror cssClass="fieldError" fieldName="publications[${publication_index}].themeRelated"/]
+          [@s.checkboxlist name="publications[${publication_index}].relatedThemes" list="themeList" value="publications[${publication_index}].relatedThemesIds" cssClass="checkbox" /]
+        </div>
+      </div>
+      
       [#-- Publication file url --]
       <div class="fullBlock">
         [@customForm.input name="publications[${publication_index}].fileUrl" i18nkey="reporting.publications.fileUrl" help="reporting.publications.fileUrl.help" /]
@@ -119,6 +128,14 @@
           [#-- Publication citation --]
           <div class="fullBlock">
             [@customForm.textArea name="citation" i18nkey="reporting.publications.citation" help="reporting.publications.citation.help" /]
+          </div>
+          
+          [#-- Publication themes related --]
+          <div class="fullBlock">
+            <h6>[@s.text name="reporting.publications.themeRelated" /]</h6>
+            <div class="checkboxGroup">
+              [@s.checkboxlist name="relatedThemes" list="themeList" cssClass="checkbox" /]
+            </div>
           </div>
           
           [#-- Publication file url --]
