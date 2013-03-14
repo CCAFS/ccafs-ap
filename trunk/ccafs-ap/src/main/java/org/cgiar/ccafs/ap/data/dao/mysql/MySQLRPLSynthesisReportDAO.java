@@ -10,10 +10,13 @@ import java.util.HashMap;
 import java.util.Map;
 
 import com.google.inject.Inject;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 
 public class MySQLRPLSynthesisReportDAO implements RPLSynthesisReportDAO {
 
+  private static final Logger LOG = LoggerFactory.getLogger(MySQLActivityDAO.class);
   private DAOManager dbManager;
 
   @Inject
@@ -24,10 +27,9 @@ public class MySQLRPLSynthesisReportDAO implements RPLSynthesisReportDAO {
   @Override
   public Map<String, Object> getRPLSynthesisReport(int leaderId, int logframeId) {
     Map<String, Object> synthesisReport = new HashMap<String, Object>();
+    String query =
+      "SELECT * FROM rpl_synthesis_reports WHERE activity_leader_id = " + leaderId + " AND logframe_id = " + logframeId;
     try (Connection connection = dbManager.getConnection()) {
-      String query =
-        "SELECT * FROM rpl_synthesis_reports WHERE activity_leader_id = " + leaderId + " AND logframe_id = "
-          + logframeId;
       ResultSet rs = dbManager.makeQuery(query, connection);
       if (rs.next()) {
         synthesisReport.put("id", rs.getInt("id"));
@@ -40,8 +42,7 @@ public class MySQLRPLSynthesisReportDAO implements RPLSynthesisReportDAO {
       }
       rs.close();
     } catch (SQLException e) {
-      // TODO Auto-generated catch block
-      e.printStackTrace();
+      LOG.error("There was an error getting the RPL synthesis report data. '{}'", query, e);
     }
     if (synthesisReport.size() > 0) {
       return synthesisReport;
@@ -67,7 +68,7 @@ public class MySQLRPLSynthesisReportDAO implements RPLSynthesisReportDAO {
         values[5] = synthesisReport.get("logframe_id");
         int rows = dbManager.makeChangeSecure(connection, preparedInsertQuery, values);
         if (rows <= 0) {
-          // TODO - Add log error problem.
+          LOG.warn("It wasn't possible save the RPL synthesis report data");
           return false;
         }
       } else {

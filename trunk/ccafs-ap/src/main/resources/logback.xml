@@ -1,11 +1,12 @@
 <configuration>
   <contextName>CCAFS Activities</contextName>
+  <property file="ccafsap.properties" />
 
   <!-- ***************************************************************************** -->
   <!-- ccafsap-dev is a developer log file, just TRACE and DEBUG messages are showed --> 
   
   <appender name="DEV_TRACE" class="ch.qos.logback.core.rolling.RollingFileAppender">
-    <file>src/main/resources/logs/ccafsap-dev.log</file>
+    <file>${log.folder}/ccafsap-dev.log</file>
     <filter class="ch.qos.logback.classic.filter.LevelFilter">
       <level>TRACE</level>
       <onMatch>ACCEPT</onMatch>
@@ -25,7 +26,7 @@
   </appender>
   
   <appender name="DEV_DEBUG" class="ch.qos.logback.core.FileAppender">
-    <file>src/main/resources/logs/ccafsap-dev.log</file>
+    <file>${log.folder}/ccafsap-dev.log</file>
     <filter class="ch.qos.logback.classic.filter.LevelFilter">
       <level>DEBUG</level>
       <onMatch>ACCEPT</onMatch>
@@ -40,7 +41,7 @@
   <!-- ccafsap is the general log file, INFO, WARN and ERROR messages are showed --> 
   
   <appender name="GENERAL" class="ch.qos.logback.core.rolling.RollingFileAppender">
-    <file>src/main/resources/logs/ccafsap.log</file>
+    <file>${log.folder}/ccafsap.log</file>
     <filter class="ch.qos.logback.classic.filter.ThresholdFilter">
       <level>INFO</level>
     </filter>
@@ -69,9 +70,18 @@
   
    
   <root level="ALL">
-    <appender-ref ref="GENERAL" />  
-    <appender-ref ref="DEV_TRACE" />  
-    <appender-ref ref="DEV_DEBUG" />  
-    <appender-ref ref="STDOUT" />  
+    <if condition='property("log.toConsole").equalsIgnoreCase("true")'> 
+	    <then>
+        <appender-ref ref="STDOUT"/>
+	    </then>
+    </if>
+    
+    <if condition='property("log.toFile").equalsIgnoreCase("true")'> 
+	    <then>
+	      <appender-ref ref="GENERAL" />  
+			  <appender-ref ref="DEV_TRACE" />  
+			  <appender-ref ref="DEV_DEBUG" />
+	    </then>
+    </if>
   </root>
 </configuration>
