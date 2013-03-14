@@ -1,5 +1,6 @@
 package org.cgiar.ccafs.ap.data.dao.mysql;
 
+import org.cgiar.ccafs.ap.action.reporting.activities.DeliverablesReportingAction;
 import org.cgiar.ccafs.ap.data.dao.DAOManager;
 import org.cgiar.ccafs.ap.data.dao.PublicationDAO;
 
@@ -12,9 +13,14 @@ import java.util.List;
 import java.util.Map;
 
 import com.google.inject.Inject;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 
 public class MySQLPublicationDAO implements PublicationDAO {
+
+  // Loggin
+  private static final Logger LOG = LoggerFactory.getLogger(DeliverablesReportingAction.class);
 
   private DAOManager dbManager;
 
@@ -48,8 +54,10 @@ public class MySQLPublicationDAO implements PublicationDAO {
       }
       rs.close();
     } catch (SQLException e) {
-      // TODO Auto-generated catch block
-      e.printStackTrace();
+      String message =
+        "There was an error getting the data from publications table related to the leader " + leaderId
+          + " and the logframe " + logframeId;
+      LOG.error(message, e);
     }
     return publications;
   }
@@ -62,11 +70,11 @@ public class MySQLPublicationDAO implements PublicationDAO {
         "DELETE FROM publications WHERE activity_leader_id = " + leaderId + " AND logframe_id = " + logframeId;
       int rows = dbManager.makeChange(removeQuery, connection);
       if (rows < 0) {
-        // TODO Define some log error message.
+        LOG.warn("There was an error deleting the records from 'publications' table.");
         problem = true;
       }
     } catch (SQLException e) {
-      // TODO Auto-generated catch block
+      LOG.error("There was an error deleting the records form 'publications' table.", e);
       e.printStackTrace();
     }
     return !problem;
@@ -101,8 +109,7 @@ public class MySQLPublicationDAO implements PublicationDAO {
         rs.close();
       }
     } catch (SQLException e) {
-      // TODO Auto-generated catch block
-      e.printStackTrace();
+      LOG.error("There was an error trying to save into 'publications' table.", e);
     }
 
     return generatedId;
