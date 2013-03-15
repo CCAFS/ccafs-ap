@@ -12,10 +12,14 @@ import java.util.List;
 import java.util.Map;
 
 import com.google.inject.Inject;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 
 public class MySQLOpenAccessDAO implements OpenAccessDAO {
 
+  // Loggin
+  private static final Logger LOG = LoggerFactory.getLogger(MySQLPartnerDAO.class);
   private DAOManager databaseManager;
 
   @Inject
@@ -35,8 +39,7 @@ public class MySQLOpenAccessDAO implements OpenAccessDAO {
       }
       rs.close();
     } catch (SQLException e) {
-      // TODO: handle exception
-      e.printStackTrace();
+      LOG.error("There was an error getting the data from 'open_access' table. \n{}", query, e);
     }
     return oaData;
   }
@@ -55,8 +58,7 @@ public class MySQLOpenAccessDAO implements OpenAccessDAO {
       }
       rs.close();
     } catch (SQLException e) {
-      // TODO: handle exception
-      e.printStackTrace();
+      LOG.error("There was an error getting the data from 'open_access' table. \n{}", query, e);
     }
     return openAccessDataList;
   }

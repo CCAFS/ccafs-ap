@@ -24,10 +24,9 @@ import org.slf4j.LoggerFactory;
 
 public class StatusReportingAction extends BaseAction {
 
-  private static final long serialVersionUID = 8943904574788764606L;
-
-  // Loggin
+  // Logger
   private static final Logger LOG = LoggerFactory.getLogger(StatusReportingAction.class);
+  private static final long serialVersionUID = 8943904574788764606L;
 
   // Managers
   private ActivityManager activityManager;
@@ -41,7 +40,6 @@ public class StatusReportingAction extends BaseAction {
   private Status[] statusList;
   private Map<String, String> genderOptions;
   private String genderIntegrationOption;
-
 
   @Inject
   public StatusReportingAction(APConfig config, LogframeManager logframeManager, ActivityManager activityManager,
@@ -99,6 +97,7 @@ public class StatusReportingAction extends BaseAction {
     this.statusList = statusManager.getStatusList();
 
     activityID = Integer.parseInt(StringUtils.trim(this.getRequest().getParameter(APConstants.ACTIVITY_REQUEST_ID)));
+    LOG.info("The user {} load the status section for the activity {}", getCurrentUser().getEmail(), activityID);
     // get main activity information based on the status form.
     activity = activityManager.getActivityStatusInfo(activityID);
     // get contact persons.
@@ -110,13 +109,16 @@ public class StatusReportingAction extends BaseAction {
 
   }
 
-
   @Override
   public String save() {
     if (activityManager.saveStatus(activity)) {
       addActionMessage(getText("saving.success", new String[] {getText("reporting.activityStatus")}));
+      LOG
+        .info("The user {} saved the status of the activity {} successfully.", getCurrentUser().getEmail(), activityID);
       return SUCCESS;
     } else {
+      LOG.warn("The user {} had problems to save the status of the activity {} successfully.", getCurrentUser()
+        .getEmail(), activityID);
       addActionError(getText("saving.problem"));
       return INPUT;
     }

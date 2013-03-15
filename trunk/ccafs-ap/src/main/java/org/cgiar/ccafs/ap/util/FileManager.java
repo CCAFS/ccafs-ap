@@ -25,8 +25,8 @@ public class FileManager {
     try {
       FileUtils.copyFile(source, destinationFile);
     } catch (IOException e) {
-      // TODO Auto generated catch block
-      e.printStackTrace();
+      String msg = "There was an error copying file from " + source + " to " + destination;
+      LOG.error(msg, e);
       return false;
     }
     return true;

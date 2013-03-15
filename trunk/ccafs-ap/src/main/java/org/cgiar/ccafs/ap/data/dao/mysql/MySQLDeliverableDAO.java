@@ -19,7 +19,6 @@ import org.slf4j.LoggerFactory;
 public class MySQLDeliverableDAO implements DeliverableDAO {
 
   private static final Logger LOG = LoggerFactory.getLogger(MySQLDeliverableDAO.class);
-
   private DAOManager databaseManager;
 
   @Inject
@@ -56,8 +55,7 @@ public class MySQLDeliverableDAO implements DeliverableDAO {
         rs.close();
       }
     } catch (SQLException e) {
-      // TODO Auto-generated catch block
-      e.printStackTrace();
+      LOG.error("There was a problem saving a new deliverables into the database. \n{}", e);
     }
     return generatedId;
   }
@@ -65,15 +63,15 @@ public class MySQLDeliverableDAO implements DeliverableDAO {
   @Override
   public List<Map<String, String>> getDeliverables(int activityID) {
     List<Map<String, String>> deliverables = new ArrayList<>();
+    String query =
+      "SELECT de.id, de.description, de.year, de.is_expected, de.filename, de.description_update, ds.id as 'deliverable_status_id', "
+        + "ds.name as 'deliverable_status_name', dt.id as 'deliverable_type_id', dt.name as 'deliverable_type_name' "
+        + "FROM deliverables de "
+        + "INNER JOIN deliverable_types dt ON de.deliverable_type_id = dt.id "
+        + "INNER JOIN deliverable_status ds ON de.deliverable_status_id = ds.id "
+        + "WHERE de.activity_id="
+        + activityID + " ORDER BY de.id";
     try (Connection con = databaseManager.getConnection()) {
-      String query =
-        "SELECT de.id, de.description, de.year, de.is_expected, de.filename, de.description_update, ds.id as 'deliverable_status_id', "
-          + "ds.name as 'deliverable_status_name', dt.id as 'deliverable_type_id', dt.name as 'deliverable_type_name' "
-          + "FROM deliverables de "
-          + "INNER JOIN deliverable_types dt ON de.deliverable_type_id = dt.id "
-          + "INNER JOIN deliverable_status ds ON de.deliverable_status_id = ds.id "
-          + "WHERE de.activity_id="
-          + activityID + " ORDER BY de.id";
       ResultSet rs = databaseManager.makeQuery(query, con);
       while (rs.next()) {
         Map<String, String> deliverable = new HashMap<>();
@@ -91,8 +89,7 @@ public class MySQLDeliverableDAO implements DeliverableDAO {
       }
       rs.close();
     } catch (SQLException e) {
-      // TODO Auto-generated catch block
-      e.printStackTrace();
+      LOG.error("There was a problem getting deliverables for an activity. \n{}", query, e);
       return null;
     }
 
@@ -107,31 +104,29 @@ public class MySQLDeliverableDAO implements DeliverableDAO {
   @Override
   public int getDeliverablesCount(int activityID) {
     int deliverableCount = 0;
+    String query = "SELECT COUNT(id) FROM deliverables WHERE activity_id = " + activityID;
     try (Connection connection = databaseManager.getConnection()) {
-      String query = "SELECT COUNT(id) FROM deliverables WHERE activity_id = " + activityID;
       ResultSet rs = databaseManager.makeQuery(query, connection);
       if (rs.next()) {
         deliverableCount = rs.getInt(1);
       }
       rs.close();
     } catch (SQLException e) {
-      // TODO Auto-generated catch block
-      e.printStackTrace();
+      LOG.error("There was a problem counting the deliverables for an activity. \n{}", query, e);
     }
     return deliverableCount;
   }
 
   @Override
   public boolean removeNotExpected(int activityID) {
+    String deleteDeliverableQuery = "DELETE FROM deliverables WHERE is_expected = 0 AND activity_id = ?";
     try (Connection connection = databaseManager.getConnection()) {
-      String deleteDeliverableQuery = "DELETE FROM deliverables WHERE is_expected = 0 AND activity_id = ?";
       int rowsDeleted = databaseManager.makeChangeSecure(connection, deleteDeliverableQuery, new Object[] {activityID});
       if (rowsDeleted >= 0) {
         return true;
       }
     } catch (SQLException e) {
-      // TODO Auto-generated catch block
-      e.printStackTrace();
+      LOG.error("There was a problem deleting the new deliverables for an activity. \n{}", deleteDeliverableQuery, e);
     }
     return false;
   }

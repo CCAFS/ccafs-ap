@@ -75,7 +75,6 @@ public class PublicationManagerImpl implements PublicationManager {
 
   @Override
   public boolean savePublications(List<Publication> publications, Logframe logframe, Leader leader) {
-    boolean problem = false;
     for (Publication publication : publications) {
       Map<String, String> pubData = new HashMap<>();
       if (publication.getId() != -1) {
@@ -115,6 +114,8 @@ public class PublicationManagerImpl implements PublicationManager {
         if (!themesRelatedAdded) {
           return false;
         }
+      } else {
+        return false;
       }
     }
     return true;

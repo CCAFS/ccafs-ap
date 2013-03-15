@@ -12,10 +12,14 @@ import java.util.List;
 import java.util.Map;
 
 import com.google.inject.Inject;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 
 public class MySQLOutcomeDAO implements OutcomeDAO {
 
+  // Loggin
+  private static final Logger LOG = LoggerFactory.getLogger(MySQLOutcomeDAO.class);
   private DAOManager dbManager;
 
   @Inject
@@ -44,13 +48,12 @@ public class MySQLOutcomeDAO implements OutcomeDAO {
         values[8] = outcomeData.get("activity_leader_id"); // activity_leader_id
         int rows = dbManager.makeChangeSecure(connection, preparedQuery, values);
         if (rows < 1) {
-          // TODO Generate log about the problem generated.
+          LOG.warn("There was an error saving the data into 'outcomes' table");
           problem = true;
         }
       }
     } catch (SQLException e) {
-      // TODO Auto-generated catch block
-      e.printStackTrace();
+      LOG.error("There was an error saving the data into 'outcomes' table", e);
     }
     return !problem;
   }
@@ -76,8 +79,10 @@ public class MySQLOutcomeDAO implements OutcomeDAO {
       }
       rs.close();
     } catch (SQLException e) {
-      // TODO Auto-generated catch block
-      e.printStackTrace();
+      String message =
+        "There was an error getting the data from 'outcomes' table that is related to the leader " + leader_id
+          + "and the logframe " + logframe_id;
+      LOG.error(message, e);
     }
     return outcomes;
   }
@@ -93,8 +98,10 @@ public class MySQLOutcomeDAO implements OutcomeDAO {
         problem = true;
       }
     } catch (SQLException e) {
-      // TODO Auto-generated catch block
-      e.printStackTrace();
+      String msg =
+        "There was an error deleting the records from 'outcomes' table that are related to the leader " + leader_id
+          + " and the logframe " + logframe_id;
+      LOG.error(msg, e);
     }
     return !problem;
   }

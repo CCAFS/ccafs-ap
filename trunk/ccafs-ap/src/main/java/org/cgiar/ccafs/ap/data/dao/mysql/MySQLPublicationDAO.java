@@ -1,6 +1,5 @@
 package org.cgiar.ccafs.ap.data.dao.mysql;
 
-import org.cgiar.ccafs.ap.action.reporting.activities.DeliverablesReportingAction;
 import org.cgiar.ccafs.ap.data.dao.DAOManager;
 import org.cgiar.ccafs.ap.data.dao.PublicationDAO;
 
@@ -20,7 +19,7 @@ import org.slf4j.LoggerFactory;
 public class MySQLPublicationDAO implements PublicationDAO {
 
   // Loggin
-  private static final Logger LOG = LoggerFactory.getLogger(DeliverablesReportingAction.class);
+  private static final Logger LOG = LoggerFactory.getLogger(MySQLPublicationDAO.class);
 
   private DAOManager dbManager;
 

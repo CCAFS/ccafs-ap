@@ -12,9 +12,14 @@ import java.sql.SQLException;
 import java.sql.Statement;
 
 import com.google.inject.Inject;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 
 public class MySQLDAOManager extends DAOManager {
+
+  // Logger
+  private static final Logger LOG = LoggerFactory.getLogger(MySQLDAOManager.class);
 
   @Inject
   public MySQLDAOManager(PropertiesManager properties) {
@@ -35,8 +40,7 @@ public class MySQLDAOManager extends DAOManager {
       Statement stm = conn.createStatement();
       return stm.executeUpdate(updateQuery);
     } catch (SQLException e) {
-      // TODO Auto-generated catch block
-      e.printStackTrace();
+      LOG.error("There was a problem making a change into the database. \n{}", updateQuery, e);
       return -1;
     }
   }
@@ -44,6 +48,7 @@ public class MySQLDAOManager extends DAOManager {
   @Override
   public int makeChangeSecure(Connection conn, String preparedUpdateQuery, Object[] values) {
     int rowsChanged = -1;
+    String query = "";
     try (PreparedStatement stm = conn.prepareStatement(preparedUpdateQuery)) {
       for (int c = 0; c < values.length; c++) {
         if (values[c] instanceof String) {
@@ -56,10 +61,10 @@ public class MySQLDAOManager extends DAOManager {
           stm.setObject((c + 1), values[c]);
         }
       }
+      query = stm.toString();
       rowsChanged = stm.executeUpdate();
     } catch (SQLException e) {
-      // TODO Auto-generated catch block
-      e.printStackTrace();
+      LOG.error("There was a problem making a secure change to the database. \n{}", query, e);
     }
     return rowsChanged;
   }
@@ -70,8 +75,7 @@ public class MySQLDAOManager extends DAOManager {
       Statement stm = conn.createStatement();
       return stm.executeQuery(query);
     } catch (SQLException e) {
-      // TODO Auto-generated catch block
-      e.printStackTrace();
+      LOG.error("There was a problem making a query to the database. \n{}", query, e);
     }
     return null;
   }
@@ -83,8 +87,7 @@ public class MySQLDAOManager extends DAOManager {
         DriverManager.getConnection("jdbc:mysql://" + ip + ":" + port + "/" + databaseName, user, password);
       return conexion;
     } catch (SQLException e) {
-      // TODO Auto-generated catch block
-      e.printStackTrace();
+      LOG.error("There was a problem getting connection to the database", e);
       return null;
     }
   }
@@ -94,18 +97,16 @@ public class MySQLDAOManager extends DAOManager {
     try {
       Class.forName("com.mysql.jdbc.Driver").newInstance();
     } catch (ClassNotFoundException e) {
-      // TODO Auto-generated catch block
-      e.printStackTrace();
+      LOG.error("There was a problem registering database driver. System don't found 'com.mysql.jdbc.Driver'", e);
       return false;
     } catch (InstantiationException e) {
-      // TODO Auto-generated catch block
-      e.printStackTrace();
+      String msg =
+        "There was a problem registering database driver. It wasn't posible get an instance of 'com.mysql.jdbc.Driver'";
+      LOG.error(msg, e);
     } catch (IllegalAccessException e) {
-      // TODO Auto-generated catch block
-      e.printStackTrace();
+      LOG.error("There was a problem registering database driver. It wasn't posible acces to 'com.mysql.jdbc.Driver'",
+        e);
     }
     return true;
   }
-
-
 }

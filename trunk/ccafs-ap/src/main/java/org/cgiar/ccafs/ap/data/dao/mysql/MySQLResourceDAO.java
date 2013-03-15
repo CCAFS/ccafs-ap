@@ -12,10 +12,14 @@ import java.util.List;
 import java.util.Map;
 
 import com.google.inject.Inject;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 
 public class MySQLResourceDAO implements ResourceDAO {
 
+  // Loggin
+  private static final Logger LOG = LoggerFactory.getLogger(MySQLResourceDAO.class);
   DAOManager databaseManager;
 
   @Inject
@@ -37,8 +41,7 @@ public class MySQLResourceDAO implements ResourceDAO {
       }
       rs.close();
     } catch (SQLException e) {
-      // TODO: handle exception
-      e.printStackTrace();
+      LOG.error("There was an error getting the data from 'resources' table. \n{}", query, e);
     }
     return resorcesDataList;
   }

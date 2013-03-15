@@ -16,7 +16,7 @@ import org.slf4j.LoggerFactory;
 
 public class MySQLRPLSynthesisReportDAO implements RPLSynthesisReportDAO {
 
-  private static final Logger LOG = LoggerFactory.getLogger(MySQLActivityDAO.class);
+  private static final Logger LOG = LoggerFactory.getLogger(MySQLRPLSynthesisReportDAO.class);
   private DAOManager dbManager;
 
   @Inject
@@ -84,14 +84,13 @@ public class MySQLRPLSynthesisReportDAO implements RPLSynthesisReportDAO {
         values[5] = synthesisReport.get("logframe_id");
         int rows = dbManager.makeChangeSecure(connection, preparedUpdateQuery, values);
         if (rows <= 0) {
-          // TODO - Add log error problem.
+          LOG.warn("There was an error updating the 'rpl_synthesis_reports' table.");
           return false;
         }
       }
 
     } catch (SQLException e) {
-      // TODO Auto-generated catch block
-      e.printStackTrace();
+      LOG.error("There was an error updating a record into the 'rpl_synthesis_reports'", e);
     }
     return true;
   }

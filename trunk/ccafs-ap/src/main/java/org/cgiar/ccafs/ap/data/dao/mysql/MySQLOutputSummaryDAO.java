@@ -12,10 +12,14 @@ import java.util.List;
 import java.util.Map;
 
 import com.google.inject.Inject;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 
 public class MySQLOutputSummaryDAO implements OutputSummaryDAO {
 
+  // Logger
+  private static final Logger LOG = LoggerFactory.getLogger(MySQLOutputSummaryDAO.class);
   private DAOManager databaseManager;
 
   @Inject
@@ -26,19 +30,18 @@ public class MySQLOutputSummaryDAO implements OutputSummaryDAO {
   @Override
   public List<Map<String, String>> getOutputSummariesList(int activityLeaderId, int logframeId) {
     List<Map<String, String>> outputSummaryDataList = new ArrayList<>();
+    String query =
+      "SELECT os.id, os.description, m.code, o.id as 'output_id', o.code as 'output_code', "
+        + "o.description as 'output_description', obj.id as 'objective_id', obj.code as 'objective_code',"
+        + "th.id as 'theme_id', th.code as 'theme_code' FROM `output_summaries` os "
+        + "RIGHT JOIN outputs o on (os.output_id = o.id AND  os.activity_leader_id = " + activityLeaderId + ") "
+        + "INNER JOIN milestones m on o.id = m.output_id " + "INNER JOIN activities a on m.id = a.milestone_id "
+        + "INNER JOIN activity_leaders al on a.activity_leader_id = al.id "
+        + "INNER JOIN objectives obj on o.objective_id = obj.id " + "INNER JOIN themes th on obj.theme_id = th.id "
+        + "INNER JOIN logframes l on th.logframe_id = l.id " + "WHERE al.id = " + activityLeaderId + " and l.id ="
+        + logframeId + " GROUP BY o.id ORDER BY th.code, obj.code, o.code";
 
     try (Connection con = databaseManager.getConnection()) {
-      String query =
-        "SELECT os.id, os.description, m.code, o.id as 'output_id', o.code as 'output_code', "
-          + "o.description as 'output_description', obj.id as 'objective_id', obj.code as 'objective_code',"
-          + "th.id as 'theme_id', th.code as 'theme_code' FROM `output_summaries` os "
-          + "RIGHT JOIN outputs o on (os.output_id = o.id AND  os.activity_leader_id = " + activityLeaderId + ") "
-          + "INNER JOIN milestones m on o.id = m.output_id " + "INNER JOIN activities a on m.id = a.milestone_id "
-          + "INNER JOIN activity_leaders al on a.activity_leader_id = al.id "
-          + "INNER JOIN objectives obj on o.objective_id = obj.id " + "INNER JOIN themes th on obj.theme_id = th.id "
-          + "INNER JOIN logframes l on th.logframe_id = l.id " + "WHERE al.id = " + activityLeaderId + " and l.id ="
-          + logframeId + " GROUP BY o.id ORDER BY th.code, obj.code, o.code";
-
       ResultSet rs = databaseManager.makeQuery(query, con);
       while (rs.next()) {
         Map<String, String> outputSummaryData = new HashMap<>();
@@ -56,8 +59,7 @@ public class MySQLOutputSummaryDAO implements OutputSummaryDAO {
       }
       rs.close();
     } catch (SQLException e) {
-      // TODO Auto generated catch block
-      e.printStackTrace();
+      LOG.error("There was an error getting information from 'output_summaries' table. \n{}", query, e);
     }
 
     return outputSummaryDataList;
@@ -78,12 +80,11 @@ public class MySQLOutputSummaryDAO implements OutputSummaryDAO {
         int rows = databaseManager.makeChangeSecure(con, preparedQuery, data);
         if (rows < 0) {
           problem = true;
-          // TODO - Add log about the problem ?
+          LOG.error("There was a problem inserting records into 'output_summaries' table.");
         }
       }
     } catch (SQLException e) {
-      // TODO Auto generated catch block
-      e.printStackTrace();
+      LOG.error("There was an error inserting records into 'output_summaries' table.", e);
     }
     return !problem;
   }
@@ -102,11 +103,11 @@ public class MySQLOutputSummaryDAO implements OutputSummaryDAO {
         int rows = databaseManager.makeChangeSecure(con, preparedQuery, data);
         if (rows < 0) {
           problem = true;
-          // TODO - Add log about the problem ?
+          LOG.error("There was a problem updating records into 'output_summaries' table.");
         }
       }
     } catch (SQLException e) {
-      e.printStackTrace();
+      LOG.error("There was an error updating records into 'output_summaries' table.", e);
     }
     return !problem;
   }

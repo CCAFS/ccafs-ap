@@ -1,6 +1,5 @@
 package org.cgiar.ccafs.ap.data.dao.mysql;
 
-import org.cgiar.ccafs.ap.action.reporting.activities.DeliverablesReportingAction;
 import org.cgiar.ccafs.ap.data.dao.DAOManager;
 import org.cgiar.ccafs.ap.data.dao.PartnerTypeDAO;
 
@@ -20,8 +19,7 @@ import org.slf4j.LoggerFactory;
 public class MySQLPartnerTypeDAO implements PartnerTypeDAO {
 
   // Loggin
-  private static final Logger LOG = LoggerFactory.getLogger(DeliverablesReportingAction.class);
-
+  private static final Logger LOG = LoggerFactory.getLogger(MySQLPartnerTypeDAO.class);
   private DAOManager databaseManager;
 
   @Inject
@@ -36,7 +34,7 @@ public class MySQLPartnerTypeDAO implements PartnerTypeDAO {
     try (Connection con = databaseManager.getConnection()) {
       ResultSet rs = databaseManager.makeQuery(query, con);
       while (rs.next()) {
-        Map<String, String> partnerTypeData = new HashMap();
+        Map<String, String> partnerTypeData = new HashMap<>();
         partnerTypeData.put("id", rs.getString("id"));
         partnerTypeData.put("acronym", rs.getString("acronym"));
         partnerTypeData.put("name", rs.getString("name"));

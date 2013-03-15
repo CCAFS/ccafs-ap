@@ -12,10 +12,14 @@ import java.util.List;
 import java.util.Map;
 
 import com.google.inject.Inject;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 
 public class MySQLActivityBenchmarkSiteDAO implements ActivityBenchmarkSiteDAO {
 
+  // Loggin
+  private static final Logger LOG = LoggerFactory.getLogger(MySQLActivityBenchmarkSiteDAO.class);
   private DAOManager databaseManager;
 
   @Inject
@@ -47,8 +51,7 @@ public class MySQLActivityBenchmarkSiteDAO implements ActivityBenchmarkSiteDAO {
       }
       rs.close();
     } catch (SQLException e) {
-      // TODO: handle exception
-      e.printStackTrace();
+      LOG.error("There was an error getting the data from 'benchmark_sites' table. \n{}", query, e);
     }
     return bsDataList;
   }

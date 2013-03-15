@@ -3,6 +3,7 @@ package org.cgiar.ccafs.ap.data.manager.impl;
 import org.cgiar.ccafs.ap.data.dao.CaseStudyCountriesDAO;
 import org.cgiar.ccafs.ap.data.dao.CaseStudyDAO;
 import org.cgiar.ccafs.ap.data.dao.CaseStudyTypeDAO;
+import org.cgiar.ccafs.ap.data.dao.mysql.MySQLCaseStudyCountriesDAO;
 import org.cgiar.ccafs.ap.data.manager.CaseStudyManager;
 import org.cgiar.ccafs.ap.data.model.CaseStudy;
 import org.cgiar.ccafs.ap.data.model.Leader;
@@ -16,10 +17,14 @@ import java.util.List;
 import java.util.Map;
 
 import com.google.inject.Inject;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 
 public class CaseStudyManagerImpl implements CaseStudyManager {
 
+  // Loggin
+  private static final Logger LOG = LoggerFactory.getLogger(MySQLCaseStudyCountriesDAO.class);
   private CaseStudyDAO caseStudyDAO;
   private CaseStudyCountriesDAO caseStudyCountriesDAO;
   private CaseStudyTypeDAO caseStudyTypeDAO;
@@ -48,10 +53,20 @@ public class CaseStudyManagerImpl implements CaseStudyManager {
       try {
         // Parse from string to Date object
         temporalCaseStudy.setStartDate(dateFormat.parse(caseStudyData.get("start_date")));
+      } catch (ParseException e) {
+        String msg =
+          "There was an error parsing start date '" + caseStudyData.get("start_date") + "' for the case study "
+            + temporalCaseStudy.getId() + ".";
+        LOG.error(msg, e);
+      }
+      try {
+        // Parse from string to Date object
         temporalCaseStudy.setEndDate(dateFormat.parse(caseStudyData.get("end_date")));
       } catch (ParseException e) {
-        // TODO Auto-generated catch block
-        e.printStackTrace();
+        String msg =
+          "There was an error parsing end date '" + caseStudyData.get("start_date") + "' for the case study "
+            + temporalCaseStudy.getId() + ".";
+        LOG.error(msg, e);
       }
       temporalCaseStudy.setImageFileName(caseStudyData.get("photo"));
       temporalCaseStudy.setObjectives(caseStudyData.get("objectives"));

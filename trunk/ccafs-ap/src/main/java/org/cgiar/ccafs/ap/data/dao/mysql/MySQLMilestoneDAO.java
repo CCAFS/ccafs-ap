@@ -1,19 +1,23 @@
 package org.cgiar.ccafs.ap.data.dao.mysql;
 
+import org.cgiar.ccafs.ap.data.dao.DAOManager;
+import org.cgiar.ccafs.ap.data.dao.MilestoneDAO;
+
 import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.HashMap;
 import java.util.Map;
 
-import org.cgiar.ccafs.ap.data.dao.DAOManager;
-import org.cgiar.ccafs.ap.data.dao.MilestoneDAO;
-
 import com.google.inject.Inject;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 
 public class MySQLMilestoneDAO implements MilestoneDAO {
 
+  // Loggin
+  private static final Logger LOG = LoggerFactory.getLogger(MySQLMilestoneDAO.class);
   private DAOManager databaseManager;
 
   @Inject
@@ -24,16 +28,16 @@ public class MySQLMilestoneDAO implements MilestoneDAO {
   @Override
   public Map<String, String> getMilestone(int milestoneID) {
     Map<String, String> milestone = new HashMap<>();
+    // Querying milestone record.
+    String query =
+      "SELECT m.id, m.code, m.year, m.description, op.code as 'output_code', "
+        + "op.description as 'output_description', obj.code as 'objective_code', "
+        + "obj.description as 'objective_description', obj.outcome_description as 'objective_outcome_description', "
+        + "th.code as 'theme_code', th.description as 'theme_description', lf.name as 'logframe_name' "
+        + "FROM milestones m, outputs op, objectives obj, themes th, logframes lf "
+        + "WHERE m.output_id = op.id AND op.objective_id = obj.id AND obj.theme_id = th.id "
+        + "AND th.logframe_id = lf.id " + "AND m.id=" + milestoneID;
     try (Connection con = databaseManager.getConnection()) {
-      // Querying milestone record.
-      String query =
-        "SELECT m.id, m.code, m.year, m.description, op.code as 'output_code', "
-          + "op.description as 'output_description', obj.code as 'objective_code', "
-          + "obj.description as 'objective_description', obj.outcome_description as 'objective_outcome_description', "
-          + "th.code as 'theme_code', th.description as 'theme_description', lf.name as 'logframe_name' "
-          + "FROM milestones m, outputs op, objectives obj, themes th, logframes lf "
-          + "WHERE m.output_id = op.id AND op.objective_id = obj.id AND obj.theme_id = th.id "
-          + "AND th.logframe_id = lf.id " + "AND m.id=" + milestoneID;
       ResultSet rs = databaseManager.makeQuery(query, con);
       if (rs.next()) {
         milestone.put("id", rs.getString("id"));
@@ -52,8 +56,7 @@ public class MySQLMilestoneDAO implements MilestoneDAO {
       rs.close();
 
     } catch (SQLException e) {
-      // TODO Auto-generated catch block
-      e.printStackTrace();
+      LOG.error("There was an error getting the data from 'milestones' table. \n{}", query, e);
     }
 
     if (milestone.isEmpty()) {

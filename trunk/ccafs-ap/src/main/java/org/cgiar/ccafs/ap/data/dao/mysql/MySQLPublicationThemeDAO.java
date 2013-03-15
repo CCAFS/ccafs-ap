@@ -12,10 +12,14 @@ import java.util.List;
 import java.util.Map;
 
 import com.google.inject.Inject;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 
 public class MySQLPublicationThemeDAO implements PublicationThemeDAO {
 
+  // Loggin
+  private static final Logger LOG = LoggerFactory.getLogger(MySQLPublicationThemeDAO.class);
   private DAOManager databaseManager;
 
   @Inject
@@ -40,8 +44,7 @@ public class MySQLPublicationThemeDAO implements PublicationThemeDAO {
       }
       rs.close();
     } catch (SQLException e) {
-      // TODO: handle exception
-      e.printStackTrace();
+      LOG.error("There was an error getting the data from 'themes' table. \n{}", query, e);
     }
     return themesDataList;
   }
@@ -49,13 +52,10 @@ public class MySQLPublicationThemeDAO implements PublicationThemeDAO {
   @Override
   public boolean saveThemes(int publicationId, ArrayList<String> themeIds) {
     boolean added = false;
+    String addQuery = "INSERT INTO themes_publications (publication_id, theme_id) VALUES ";
     try (Connection con = databaseManager.getConnection()) {
-      String addQuery = "INSERT INTO themes_publications (publication_id, theme_id) VALUES ";
-      boolean isFirst = true;
-      for (String themeId : themeIds) {
-        if (isFirst) {
-          isFirst = false;
-        } else {
+      for (int c = 0; c < themeIds.size(); c++) {
+        if (c != 0) {
           addQuery += ", ";
         }
         addQuery += "(" + publicationId + ", ?)";
@@ -69,8 +69,7 @@ public class MySQLPublicationThemeDAO implements PublicationThemeDAO {
         added = true;
       }
     } catch (SQLException e) {
-      // TODO: handle exception
-      e.printStackTrace();
+      LOG.error("There was not posible save the data into 'themes' table. \n{}", e);
     }
     return added;
   }
