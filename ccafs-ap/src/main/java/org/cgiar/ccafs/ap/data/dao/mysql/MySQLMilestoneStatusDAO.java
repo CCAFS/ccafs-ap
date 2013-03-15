@@ -12,10 +12,14 @@ import java.util.List;
 import java.util.Map;
 
 import com.google.inject.Inject;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 
 public class MySQLMilestoneStatusDAO implements MilestoneStatusDAO {
 
+  // Loggin
+  private static final Logger LOG = LoggerFactory.getLogger(MySQLMilestoneStatusDAO.class);
   DAOManager databaseManager;
 
   @Inject
@@ -26,8 +30,8 @@ public class MySQLMilestoneStatusDAO implements MilestoneStatusDAO {
   @Override
   public List<Map<String, String>> getMilestoneStatus() {
     List<Map<String, String>> milestoneStatusDataList = new ArrayList<>();
+    String query = "SELECT * FROM milestone_status";
     try (Connection con = databaseManager.getConnection()) {
-      String query = "SELECT * FROM milestone_status";
       ResultSet rs = databaseManager.makeQuery(query, con);
       while (rs.next()) {
         Map<String, String> milestoneStatusData = new HashMap<>();
@@ -37,8 +41,7 @@ public class MySQLMilestoneStatusDAO implements MilestoneStatusDAO {
       }
       rs.close();
     } catch (SQLException e) {
-      // TODO: handle exception
-      e.printStackTrace();
+      LOG.error("There was an error getting the data from 'milestone_status' table. \n{}", query, e);
     }
     return milestoneStatusDataList;
   }

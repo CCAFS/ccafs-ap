@@ -1,27 +1,23 @@
 package org.cgiar.ccafs.ap.action.reporting.activities;
 
-import org.apache.commons.lang3.StringUtils;
 import org.cgiar.ccafs.ap.action.BaseAction;
 import org.cgiar.ccafs.ap.config.APConfig;
 import org.cgiar.ccafs.ap.config.APConstants;
 import org.cgiar.ccafs.ap.data.manager.LogframeManager;
 import org.cgiar.ccafs.ap.data.manager.MilestoneManager;
 import org.cgiar.ccafs.ap.data.model.Milestone;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 import com.google.inject.Inject;
+import org.apache.commons.lang3.StringUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 
 public class MilestoneReportingAction extends BaseAction {
 
-  /**
-   * 
-   */
-  private static final long serialVersionUID = -5490095465004832840L;
-
   // Loggin
   private static final Logger LOG = LoggerFactory.getLogger(MilestoneReportingAction.class);
+  private static final long serialVersionUID = -5490095465004832840L;
 
   // Managers
   protected MilestoneManager milestoneManager;
@@ -51,10 +47,17 @@ public class MilestoneReportingAction extends BaseAction {
     // TODO - get the milestone id requested.
     // Also we need to create another interceptor in order to validate if the current milestone exists in the database
     // and validate if the current user has enough privileges to see it.
-    milestoneID = Integer.parseInt(StringUtils.trim(this.getRequest().getParameter(APConstants.MILESTONE_REQUEST_ID)));
+    try {
+      milestoneID =
+        Integer.parseInt(StringUtils.trim(this.getRequest().getParameter(APConstants.MILESTONE_REQUEST_ID)));
+    } catch (NumberFormatException e) {
+      LOG.error("There was an error trying to parse the mileston id {}",
+        this.getRequest().getParameter(APConstants.MILESTONE_REQUEST_ID), e);
+    }
+    LOG.info("The user {} is loading the information about milestone {}.", getCurrentUser().getEmail(),
+      String.valueOf(milestoneID));
     // get main activity information based on the status form.
     milestone = milestoneManager.getMilestone(milestoneID);
-
   }
 
   public void setActivity(Milestone milestone) {

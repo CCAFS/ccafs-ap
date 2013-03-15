@@ -12,10 +12,14 @@ import java.util.List;
 import java.util.Map;
 
 import com.google.inject.Inject;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 
 public class MySQLCountryDAO implements CountryDAO {
 
+  // Logger
+  private static final Logger LOG = LoggerFactory.getLogger(MySQLCountryDAO.class);
   private DAOManager databaseManager;
 
   @Inject
@@ -26,8 +30,8 @@ public class MySQLCountryDAO implements CountryDAO {
   @Override
   public List<Map<String, String>> getCountriesList() {
     List<Map<String, String>> countryList = new ArrayList<>();
+    String query = "SELECT * FROM countries ORDER BY name";
     try (Connection con = databaseManager.getConnection()) {
-      String query = "SELECT * FROM countries ORDER BY name";
       ResultSet rs = databaseManager.makeQuery(query, con);
       while (rs.next()) {
         Map<String, String> countryData = new HashMap<>();
@@ -37,8 +41,7 @@ public class MySQLCountryDAO implements CountryDAO {
       }
       rs.close();
     } catch (SQLException e) {
-      // TODO Auto generated catch block
-      e.printStackTrace();
+      LOG.error("There was an error getting the country list, \n{}", query, e);
     }
 
     if (countryList.isEmpty()) {
@@ -50,8 +53,8 @@ public class MySQLCountryDAO implements CountryDAO {
   @Override
   public Map<String, String> getCountryInformation(String id) {
     Map<String, String> countryData = null;
+    String query = "SELECT * FROM countries WHERE iso2='" + id + "';";
     try (Connection con = databaseManager.getConnection()) {
-      String query = "SELECT * FROM countries WHERE iso2='" + id + "';";
       ResultSet rs = databaseManager.makeQuery(query, con);
       if (rs.next()) {
         countryData = new HashMap<>();
@@ -60,8 +63,7 @@ public class MySQLCountryDAO implements CountryDAO {
       }
       rs.close();
     } catch (Exception e) {
-      // TODO Auto generated catch block
-      e.printStackTrace();
+      LOG.error("There was an error getting a country. \n{}", query, e);
     }
 
     if (countryData == null) {

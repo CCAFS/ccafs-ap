@@ -35,14 +35,14 @@ public class MySQLActivityDAO implements ActivityDAO {
      * (is_planning)
      */
     List<Map<String, String>> activities = new ArrayList<>();
+    String query =
+      "SELECT a.id, a.title, a.start_date, a.end_date, a.description, m.id as 'milestone_id', m.code as 'milestone_code', "
+        + "th.id as 'theme_id', th.code as 'theme_code', al.id as 'leader_id', al.acronym as 'leader_acronym', al.name as 'leader_name'"
+        + "FROM activities a, milestones m, outputs ou, objectives ob, themes th, logframes lo, activity_leaders al "
+        + "WHERE a.milestone_id = m.id " + "AND m.output_id = ou.id " + "AND ou.objective_id = ob.id "
+        + "AND ob.theme_id = th.id " + "AND th.logframe_id = lo.id " + "AND a.activity_leader_id = al.id "
+        + "AND lo.year = " + year;
     try (Connection con = databaseManager.getConnection()) {
-      String query =
-        "SELECT a.id, a.title, a.start_date, a.end_date, a.description, m.id as 'milestone_id', m.code as 'milestone_code', "
-          + "th.id as 'theme_id', th.code as 'theme_code', al.id as 'leader_id', al.acronym as 'leader_acronym', al.name as 'leader_name'"
-          + "FROM activities a, milestones m, outputs ou, objectives ob, themes th, logframes lo, activity_leaders al "
-          + "WHERE a.milestone_id = m.id " + "AND m.output_id = ou.id " + "AND ou.objective_id = ob.id "
-          + "AND ob.theme_id = th.id " + "AND th.logframe_id = lo.id " + "AND a.activity_leader_id = al.id "
-          + "AND lo.year = " + year;
       ResultSet rs = databaseManager.makeQuery(query, con);
       while (rs.next()) {
         Map<String, String> activity = new HashMap<>();
@@ -61,8 +61,7 @@ public class MySQLActivityDAO implements ActivityDAO {
         activities.add(activity);
       }
     } catch (SQLException e) {
-      // TODO Auto-generated catch block
-      e.printStackTrace();
+      LOG.error("There was an error getting the activity list for a year. \n{}", query, e);
       return null;
     }
     return activities;
@@ -75,14 +74,14 @@ public class MySQLActivityDAO implements ActivityDAO {
      * (is_planning)
      */
     List<Map<String, String>> activities = new ArrayList<>();
+    String query =
+      "SELECT a.id, a.title, a.start_date, a.end_date, a.description, m.id as 'milestone_id', m.code as 'milestone_code', "
+        + "th.id as 'theme_id', th.code as 'theme_code', al.id as 'leader_id', al.acronym as 'leader_acronym', al.name as 'leader_name', a.status_description "
+        + "FROM activities a, milestones m, outputs ou, objectives ob, themes th, logframes lo, activity_leaders al "
+        + "WHERE a.milestone_id = m.id " + "AND m.output_id = ou.id " + "AND ou.objective_id = ob.id "
+        + "AND ob.theme_id = th.id " + "AND th.logframe_id = lo.id " + "AND a.activity_leader_id = al.id "
+        + "AND lo.year = " + year + " " + "AND al.id = " + leaderTypeCode;
     try (Connection con = databaseManager.getConnection()) {
-      String query =
-        "SELECT a.id, a.title, a.start_date, a.end_date, a.description, m.id as 'milestone_id', m.code as 'milestone_code', "
-          + "th.id as 'theme_id', th.code as 'theme_code', al.id as 'leader_id', al.acronym as 'leader_acronym', al.name as 'leader_name', a.status_description "
-          + "FROM activities a, milestones m, outputs ou, objectives ob, themes th, logframes lo, activity_leaders al "
-          + "WHERE a.milestone_id = m.id " + "AND m.output_id = ou.id " + "AND ou.objective_id = ob.id "
-          + "AND ob.theme_id = th.id " + "AND th.logframe_id = lo.id " + "AND a.activity_leader_id = al.id "
-          + "AND lo.year = " + year + " " + "AND al.id = " + leaderTypeCode;
       ResultSet rs = databaseManager.makeQuery(query, con);
       while (rs.next()) {
         Map<String, String> activity = new HashMap<>();
@@ -103,8 +102,7 @@ public class MySQLActivityDAO implements ActivityDAO {
       }
       rs.close();
     } catch (SQLException e) {
-      // TODO Auto-generated catch block
-      e.printStackTrace();
+      LOG.error("There was an error getting the activity list for a year and activity leader given. \n{}", query, e);
     }
     return activities;
   }
@@ -112,21 +110,21 @@ public class MySQLActivityDAO implements ActivityDAO {
   @Override
   public List<Map<String, String>> getActivitiesForRSS(int year, int limit) {
     List<Map<String, String>> activities = new ArrayList<>();
+    StringBuilder query = new StringBuilder();
+    query.append("SELECT a.id, a.title, a.start_date, a.end_date, a.description, a.date_added ");
+    query.append("FROM activities a ");
+    query.append("INNER JOIN milestones m ON m.id = a.milestone_id ");
+    query.append("INNER JOIN outputs o ON o.id = m.output_id ");
+    query.append("INNER JOIN objectives obj ON obj.id = o.objective_id ");
+    query.append("INNER JOIN themes t ON t.id = obj.theme_id ");
+    query.append("INNER JOIN logframes l on l.id = t.logframe_id " + "WHERE l.year = ");
+    query.append(year);
+    query.append(" ORDER BY a.date_added DESC");
+    if (limit > 0) {
+      query.append(" LIMIT ");
+      query.append(limit);
+    }
     try (Connection con = databaseManager.getConnection()) {
-      StringBuilder query = new StringBuilder();
-      query.append("SELECT a.id, a.title, a.start_date, a.end_date, a.description, a.date_added ");
-      query.append("FROM activities a ");
-      query.append("INNER JOIN milestones m ON m.id = a.milestone_id ");
-      query.append("INNER JOIN outputs o ON o.id = m.output_id ");
-      query.append("INNER JOIN objectives obj ON obj.id = o.objective_id ");
-      query.append("INNER JOIN themes t ON t.id = obj.theme_id ");
-      query.append("INNER JOIN logframes l on l.id = t.logframe_id " + "WHERE l.year = ");
-      query.append(year);
-      query.append(" ORDER BY a.date_added DESC");
-      if (limit > 0) {
-        query.append(" LIMIT ");
-        query.append(limit);
-      }
       ResultSet rs = databaseManager.makeQuery(query.toString(), con);
       while (rs.next()) {
         Map<String, String> activity = new HashMap<>();
@@ -140,8 +138,7 @@ public class MySQLActivityDAO implements ActivityDAO {
       }
       rs.close();
     } catch (SQLException e) {
-      // TODO Auto-generated catch block
-      e.printStackTrace();
+      LOG.error("There was an error getting the activity list for create an rss feed. \n{}", query.toString(), e);
     }
     return activities;
   }
@@ -149,15 +146,15 @@ public class MySQLActivityDAO implements ActivityDAO {
   @Override
   public Map<String, String> getActivityStatusInfo(int id) {
     Map<String, String> activity = new HashMap<>();
+    String query =
+      "SELECT a.title, a.start_date, a.end_date, a.description, a.status_description, a.is_global, astatus.id as status_id, astatus.name as status_name, "
+        + "a.milestone_id, m.code as milestone_code, al.id as 'leader_id', al.acronym as 'leader_acronym', al.name as 'leader_name', "
+        + "g.id as 'gender_id', g.description as 'gender_description' "
+        + "FROM activities a INNER JOIN milestones m ON a.milestone_id = m.id "
+        + "INNER JOIN activity_status astatus ON a.activity_status_id = astatus.id "
+        + "INNER JOIN activity_leaders al ON a.activity_leader_id = al.id "
+        + "LEFT OUTER JOIN gender_integrations g ON g.activity_id = a.id WHERE a.id = " + id;
     try (Connection con = databaseManager.getConnection()) {
-      String query =
-        "SELECT a.title, a.start_date, a.end_date, a.description, a.status_description, a.is_global, astatus.id as status_id, astatus.name as status_name, "
-          + "a.milestone_id, m.code as milestone_code, al.id as 'leader_id', al.acronym as 'leader_acronym', al.name as 'leader_name', "
-          + "g.id as 'gender_id', g.description as 'gender_description' "
-          + "FROM activities a INNER JOIN milestones m ON a.milestone_id = m.id "
-          + "INNER JOIN activity_status astatus ON a.activity_status_id = astatus.id "
-          + "INNER JOIN activity_leaders al ON a.activity_leader_id = al.id "
-          + "LEFT OUTER JOIN gender_integrations g ON g.activity_id = a.id WHERE a.id = " + id;
       ResultSet rs = databaseManager.makeQuery(query, con);
       if (rs.next()) {
         activity.put("title", rs.getString("title"));
@@ -178,8 +175,7 @@ public class MySQLActivityDAO implements ActivityDAO {
       }
       rs.close();
     } catch (SQLException e) {
-      // TODO Auto-generated catch block
-      e.printStackTrace();
+      LOG.error("There was an error getting the status of an activity. \n{}", query, e);
     }
 
     if (activity.isEmpty()) {
@@ -193,10 +189,10 @@ public class MySQLActivityDAO implements ActivityDAO {
   @Override
   public Map<String, String> getSimpleActivity(int id) {
     Map<String, String> activity = new HashMap<>();
+    String query =
+      "SELECT a.title, a.id, al.id as 'leader_id', 'al.name' as 'leader_name', al.acronym as 'leader_acronym' "
+        + "FROM activities a, activity_leaders al " + "WHERE a.activity_leader_id = al.id AND a.id = " + id;
     try (Connection con = databaseManager.getConnection()) {
-      String query =
-        "SELECT a.title, a.id, al.id as 'leader_id', 'al.name' as 'leader_name', al.acronym as 'leader_acronym' "
-          + "FROM activities a, activity_leaders al " + "WHERE a.activity_leader_id = al.id AND a.id = " + id;
       ResultSet rs = databaseManager.makeQuery(query, con);
       if (rs.next()) {
         activity.put("title", rs.getString("title"));
@@ -207,8 +203,7 @@ public class MySQLActivityDAO implements ActivityDAO {
       }
       rs.close();
     } catch (SQLException e) {
-      // TODO Auto-generated catch block
-      e.printStackTrace();
+      LOG.error("There was an error getting the basic information for an activity. \n{}", query, e);
     }
 
     if (activity.isEmpty()) {
@@ -222,14 +217,13 @@ public class MySQLActivityDAO implements ActivityDAO {
   @Override
   public boolean isValidId(int id) {
     boolean isValid = false;
+    String query = "SELECT id FROM activities WHERE id = " + id;
     try (Connection con = databaseManager.getConnection()) {
-      String query = "SELECT id FROM activities WHERE id = " + id;
       ResultSet rs = databaseManager.makeQuery(query, con);
       isValid = rs.next();
       rs.close();
     } catch (SQLException e) {
-      // TODO Auto-generated catch block
-      e.printStackTrace();
+      LOG.error("There was an error checking if an activity is valid. \n{}", query, e);
     }
     return isValid;
   }
@@ -308,8 +302,7 @@ public class MySQLActivityDAO implements ActivityDAO {
       }
 
     } catch (SQLException e) {
-      // TODO Auto-generated catch block
-      e.printStackTrace();
+      LOG.error("There was an error saving an activity status. \n{}", e);
     }
     return !problem;
   }

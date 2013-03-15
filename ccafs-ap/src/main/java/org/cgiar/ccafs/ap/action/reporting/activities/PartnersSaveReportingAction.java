@@ -21,8 +21,9 @@ import org.slf4j.LoggerFactory;
 
 public class PartnersSaveReportingAction extends BaseAction {
 
-  // Loggin
+  // Logger
   private static final Logger LOG = LoggerFactory.getLogger(PartnersSaveReportingAction.class);
+  private static final long serialVersionUID = -5598244190394106332L;
 
   // Managers
   private CountryManager countryManager;
@@ -78,7 +79,8 @@ public class PartnersSaveReportingAction extends BaseAction {
     if (this.getRequest().getParameter(APConstants.ACTIVITY_REQUEST_ID) != null) {
       activityID = Integer.parseInt(StringUtils.trim(this.getRequest().getParameter(APConstants.ACTIVITY_REQUEST_ID)));
     }
-
+    LOG.info("The user {} load the save partner section related to the activity {}.", getCurrentUser().getEmail(),
+      activityID);
     this.countriesList = countryManager.getCountryList();
     this.partnerTypesList = partnerTypeManager.getPartnerTypeList();
   }
@@ -141,6 +143,8 @@ public class PartnersSaveReportingAction extends BaseAction {
     message.append("\n");
     SendMail sendMail = new SendMail(this.config);
     sendMail.send("h.f.tobon@cgiar.org", subject, message.toString());
+    LOG.info("The user {} send a message requesting add partners to the activity {}", getCurrentUser().getEmail(),
+      activityID);
     return SUCCESS;
   }
 

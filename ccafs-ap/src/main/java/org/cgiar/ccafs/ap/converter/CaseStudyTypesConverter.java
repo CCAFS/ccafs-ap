@@ -34,9 +34,8 @@ public class CaseStudyTypesConverter extends StrutsTypeConverter {
     List<CaseStudyType> caseStudyTypesArray = (List<CaseStudyType>) o;
     ArrayList<String> temp = new ArrayList<>();
     for (CaseStudyType cst : caseStudyTypesArray) {
-      temp.add(cst.getId() + "");
+      temp.add(String.valueOf(cst.getId()));
     }
-    // TODO
     return temp.toString();
   }
 }

@@ -12,10 +12,14 @@ import java.util.List;
 import java.util.Map;
 
 import com.google.inject.Inject;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 
 public class MySQLMilestoneReportDAO implements MilestoneReportDAO {
 
+  // Logger
+  private static final Logger LOG = LoggerFactory.getLogger(MySQLMilestoneReportDAO.class);
   DAOManager databaseManager;
 
   @Inject
@@ -26,20 +30,19 @@ public class MySQLMilestoneReportDAO implements MilestoneReportDAO {
   @Override
   public List<Map<String, String>> getMilestoneReportList(int activityLeaderId, int logframeId) {
     List<Map<String, String>> milestoneReportDataList = new ArrayList<>();
+    String query =
+      "SELECT mr.id, mr.tl_description, mr.rpl_description, ms.id as 'milestone_status_id', "
+        + "ms.status as 'milestone_status_name', m.id as 'milestone_id', m.code as 'milestone_code', "
+        + "m.description as 'milestone_description', op.id as 'output_id', op.code as 'ouput_code', "
+        + "obj.id as 'objective_id', obj.code as 'objecctive_code', th.id as 'theme_id', th.code as 'theme_code'"
+        + "FROM milestone_reports mr " + "LEFT JOIN milestone_status ms ON mr.milestone_status_id = ms.id "
+        + "RIGHT JOIN milestones m ON mr.milestone_id = m.id " + "INNER JOIN activities ac ON m.id = ac.milestone_id "
+        + "INNER JOIN activity_leaders al ON ac.activity_leader_id=al.id "
+        + "INNER JOIN outputs op ON m.output_id=op.id " + "INNER JOIN objectives obj ON op.objective_id = obj.id "
+        + "INNER JOIN themes th ON obj.theme_id = th.id " + "INNER JOIN logframes lf ON th.logframe_id = lf.id "
+        + "WHERE al.id=" + activityLeaderId + " AND lf.id=" + logframeId
+        + " GROUP BY m.id ORDER BY th.code, obj.code, op.code";
     try (Connection con = databaseManager.getConnection()) {
-      String query =
-        "SELECT mr.id, mr.tl_description, mr.rpl_description, ms.id as 'milestone_status_id', "
-          + "ms.status as 'milestone_status_name', m.id as 'milestone_id', m.code as 'milestone_code', "
-          + "m.description as 'milestone_description', op.id as 'output_id', op.code as 'ouput_code', "
-          + "obj.id as 'objective_id', obj.code as 'objecctive_code', th.id as 'theme_id', th.code as 'theme_code'"
-          + "FROM milestone_reports mr " + "LEFT JOIN milestone_status ms ON mr.milestone_status_id = ms.id "
-          + "RIGHT JOIN milestones m ON mr.milestone_id = m.id "
-          + "INNER JOIN activities ac ON m.id = ac.milestone_id "
-          + "INNER JOIN activity_leaders al ON ac.activity_leader_id=al.id "
-          + "INNER JOIN outputs op ON m.output_id=op.id " + "INNER JOIN objectives obj ON op.objective_id = obj.id "
-          + "INNER JOIN themes th ON obj.theme_id = th.id " + "INNER JOIN logframes lf ON th.logframe_id = lf.id "
-          + "WHERE al.id=" + activityLeaderId + " AND lf.id=" + logframeId
-          + " GROUP BY m.id ORDER BY th.code, obj.code, op.code";
       ResultSet rs = databaseManager.makeQuery(query, con);
       while (rs.next()) {
         Map<String, String> milestoneReportData = new HashMap<>();
@@ -61,8 +64,7 @@ public class MySQLMilestoneReportDAO implements MilestoneReportDAO {
       }
       rs.close();
     } catch (SQLException e) {
-      // TODO auto generate catch block
-      e.printStackTrace();
+      LOG.warn("There was an error getting data from 'milestone_reports' table. \n{}", query, e);
     }
     return milestoneReportDataList;
   }
@@ -97,11 +99,11 @@ public class MySQLMilestoneReportDAO implements MilestoneReportDAO {
         rows = databaseManager.makeChangeSecure(con, query, values);
         if (rows < 0) {
           problem = true;
+          LOG.warn("There was an problem saving records into 'milestone_reports' table.");
         }
       }
     } catch (SQLException e) {
-      // TODO Auto generated catch block
-      e.printStackTrace();
+      LOG.error("There was an error saving records into 'milestone_reports' table.", e);
     }
     return !problem;
   }

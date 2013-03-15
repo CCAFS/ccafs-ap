@@ -1,5 +1,8 @@
 package org.cgiar.ccafs.ap.data.dao.mysql;
 
+import org.cgiar.ccafs.ap.data.dao.BudgetDAO;
+import org.cgiar.ccafs.ap.data.dao.DAOManager;
+
 import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -7,12 +10,14 @@ import java.util.HashMap;
 import java.util.Map;
 
 import com.google.inject.Inject;
-import org.cgiar.ccafs.ap.data.dao.BudgetDAO;
-import org.cgiar.ccafs.ap.data.dao.DAOManager;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 
 public class MySQLBudgetDAO implements BudgetDAO {
 
+  // Loggin
+  private static final Logger LOG = LoggerFactory.getLogger(MySQLBudgetDAO.class);
   private DAOManager databaseManager;
 
   @Inject
@@ -23,9 +28,9 @@ public class MySQLBudgetDAO implements BudgetDAO {
   @Override
   public Map<String, String> getBudget(int activityID) {
     Map<String, String> budgetData = new HashMap<>();
+    // Querying budget record.
+    String query = "SELECT * FROM activity_budgets WHERE activity_id = " + activityID;
     try (Connection con = databaseManager.getConnection()) {
-      // Querying budget record.
-      String query = "SELECT * FROM activity_budgets WHERE activity_id = " + activityID;
       ResultSet rs = databaseManager.makeQuery(query, con);
       if (rs.next()) {
         budgetData.put("id", rs.getString("id"));
@@ -52,8 +57,7 @@ public class MySQLBudgetDAO implements BudgetDAO {
       }
 
     } catch (SQLException e) {
-      // TODO Auto-generated catch block
-      e.printStackTrace();
+      LOG.error("There was an error getting an activity budget", query, e);
       return null;
     }
     if (budgetData.isEmpty()) {

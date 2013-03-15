@@ -12,10 +12,14 @@ import java.util.List;
 import java.util.Map;
 
 import com.google.inject.Inject;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 
 public class MySQLContactPersonDAO implements ContactPersonDAO {
 
+  // Logger
+  private static final Logger LOG = LoggerFactory.getLogger(MySQLContactPersonDAO.class);
   private DAOManager databaseManager;
 
   @Inject
@@ -26,8 +30,8 @@ public class MySQLContactPersonDAO implements ContactPersonDAO {
   @Override
   public List<Map<String, String>> getContactPersons(int activityID) {
     List<Map<String, String>> contactPersonsDB = new ArrayList<>();
+    String query = "SELECT * FROM contact_person WHERE activity_id = " + activityID;
     try (Connection con = databaseManager.getConnection()) {
-      String query = "SELECT * FROM contact_person WHERE activity_id = " + activityID;
       ResultSet rs = databaseManager.makeQuery(query, con);
       while (rs.next()) {
         HashMap<String, String> cps = new HashMap<>();
@@ -37,8 +41,7 @@ public class MySQLContactPersonDAO implements ContactPersonDAO {
         contactPersonsDB.add(cps);
       }
     } catch (SQLException e) {
-      // TODO Auto-generated catch block
-      e.printStackTrace();
+      LOG.error("There was an error getting the contact persons related to an activity. \n{}", query, e);
     }
 
     return contactPersonsDB;

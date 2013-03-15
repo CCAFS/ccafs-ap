@@ -12,10 +12,14 @@ import org.cgiar.ccafs.ap.data.model.Deliverable;
 import java.util.List;
 
 import com.google.inject.Inject;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 
 public class ActivitiesReportingAction extends BaseAction {
 
+  // Logger
+  private static final Logger LOG = LoggerFactory.getLogger(ActivitiesReportingAction.class);
   private static final long serialVersionUID = 9001775749549472317L;
 
   // Managers
@@ -94,6 +98,8 @@ public class ActivitiesReportingAction extends BaseAction {
   public void prepare() throws Exception {
     super.prepare();
     currentActivities = activityManager.getActivities(config.getCurrentYear(), this.getCurrentUser());
+    LOG.info("User {} charge the activity list for the year {}", String.valueOf(config.getCurrentYear()), this
+      .getCurrentUser().getEmail());
     activityStatuses = new String[currentActivities.length];
     // Calculate the status of each activity.
     for (int c = 0; c < currentActivities.length; c++) {

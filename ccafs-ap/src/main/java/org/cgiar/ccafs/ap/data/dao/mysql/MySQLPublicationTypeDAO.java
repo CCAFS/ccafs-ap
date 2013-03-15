@@ -17,7 +17,7 @@ import org.slf4j.LoggerFactory;
 
 public class MySQLPublicationTypeDAO implements PublicationTypeDAO {
 
-  private static final Logger LOG = LoggerFactory.getLogger(MySQLActivityDAO.class);
+  private static final Logger LOG = LoggerFactory.getLogger(MySQLPublicationTypeDAO.class);
   private DAOManager dbManager;
 
   @Inject

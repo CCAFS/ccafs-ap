@@ -20,10 +20,9 @@ import org.slf4j.LoggerFactory;
 
 public class PartnersReportingAction extends BaseAction {
 
-  private static final long serialVersionUID = 1380416261959252826L;
-
   // Logger
   private static final Logger LOG = LoggerFactory.getLogger(PartnersReportingAction.class);
+  private static final long serialVersionUID = 1380416261959252826L;
 
   // Managers
   private ActivityManager activityManager;
@@ -35,7 +34,6 @@ public class PartnersReportingAction extends BaseAction {
   private PartnerType[] partnerTypes;
   private Partner[] partners;
   private Activity activity;
-
 
   private int activityID;
 
@@ -78,6 +76,7 @@ public class PartnersReportingAction extends BaseAction {
   public void prepare() throws Exception {
     super.prepare();
     activityID = Integer.parseInt(StringUtils.trim(this.getRequest().getParameter(APConstants.ACTIVITY_REQUEST_ID)));
+    LOG.info("The user {} loads the partners for the activity {}", activityID);
     activity = activityManager.getSimpleActivity(activityID);
     activity.setActivityPartners(activityPartnerManager.getActivityPartners(activityID));
     partnerTypes = partnerTypeManager.getPartnerTypeList();
@@ -97,9 +96,11 @@ public class PartnersReportingAction extends BaseAction {
       boolean added = activityPartnerManager.saveActivityPartners(activity.getActivityPartners(), activityID);
       if (added) {
         addActionMessage(getText("saving.success", new String[] {getText("reporting.activityPartners.partners")}));
+        LOG.info("The user {} save the partners of activity {} successfully", getCurrentUser().getEmail(), activityID);
         return SUCCESS;
       }
     }
+    LOG.info("The user {} had a problem saving the partners of activity {}", getCurrentUser().getEmail(), activityID);
     addActionError(getText("saving.problem"));
     return INPUT;
   }

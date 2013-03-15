@@ -17,7 +17,6 @@ import org.slf4j.LoggerFactory;
 public class MySQLLogframeDAO implements LogframeDAO {
 
   private static final Logger LOG = LoggerFactory.getLogger(MySQLLogframeDAO.class);
-
   private DAOManager databaseManager;
 
   @Inject
@@ -28,9 +27,9 @@ public class MySQLLogframeDAO implements LogframeDAO {
   @Override
   public Map<String, String> getLogframe(int id) {
     Map<String, String> logframe = new HashMap<>();
+    String query = "SELECT * FROM logframes WHERE id = " + id;
 
     try (Connection con = databaseManager.getConnection()) {
-      String query = "SELECT * FROM logframes WHERE id = " + id;
       ResultSet rs = databaseManager.makeQuery(query, con);
       if (rs.next()) {
         logframe.put("id", rs.getString("id"));
@@ -38,8 +37,7 @@ public class MySQLLogframeDAO implements LogframeDAO {
         logframe.put("name", rs.getString("name"));
       }
     } catch (SQLException e) {
-      // TODO Auto-generated catch block
-      e.printStackTrace();
+      LOG.error("There was an error getting the data from 'logframes' table \n{}", query, e);
       return null;
     }
     return logframe;
@@ -48,9 +46,9 @@ public class MySQLLogframeDAO implements LogframeDAO {
   @Override
   public Map<String, String> getLogframeByYear(int year) {
     Map<String, String> logframe = new HashMap<>();
+    String query = "SELECT * FROM logframes WHERE year = " + year;
 
     try (Connection con = databaseManager.getConnection()) {
-      String query = "SELECT * FROM logframes WHERE year = " + year;
       ResultSet rs = databaseManager.makeQuery(query, con);
       if (rs.next()) {
         logframe.put("id", rs.getString("id"));
@@ -58,8 +56,7 @@ public class MySQLLogframeDAO implements LogframeDAO {
         logframe.put("name", rs.getString("name"));
       }
     } catch (SQLException e) {
-      // TODO Auto-generated catch block
-      e.printStackTrace();
+      LOG.error("There was an error getting the data from 'logframes' table \n{}", query, e);
       return null;
     }
     return logframe;

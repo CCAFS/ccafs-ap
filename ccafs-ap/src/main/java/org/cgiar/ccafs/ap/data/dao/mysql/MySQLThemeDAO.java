@@ -12,10 +12,14 @@ import java.util.List;
 import java.util.Map;
 
 import com.google.inject.Inject;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 
 public class MySQLThemeDAO implements ThemeDAO {
 
+  // Loggin
+  private static final Logger LOG = LoggerFactory.getLogger(MySQLThemeDAO.class);
   private DAOManager databaseManager;
 
   @Inject
@@ -38,8 +42,7 @@ public class MySQLThemeDAO implements ThemeDAO {
       }
       rs.close();
     } catch (SQLException e) {
-      // TODO Auto-generated catch block
-      e.printStackTrace();
+      LOG.error("There was an error getting the data from themes table.", e);
     }
     return themes;
   }
@@ -59,8 +62,8 @@ public class MySQLThemeDAO implements ThemeDAO {
       }
       rs.close();
     } catch (SQLException e) {
-      // TODO Auto-generated catch block
-      e.printStackTrace();
+      LOG.error("There was an error getting the data from themes table that are related to the logframe {}.",
+        logframeId, e);
     }
     return themes;
   }

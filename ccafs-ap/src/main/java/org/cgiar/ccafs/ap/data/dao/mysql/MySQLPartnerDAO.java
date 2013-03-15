@@ -12,10 +12,14 @@ import java.util.List;
 import java.util.Map;
 
 import com.google.inject.Inject;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 
 public class MySQLPartnerDAO implements PartnerDAO {
 
+  // Logger
+  private static final Logger LOG = LoggerFactory.getLogger(MySQLPartnerDAO.class);
   private DAOManager databaseManager;
 
   @Inject
@@ -26,10 +30,10 @@ public class MySQLPartnerDAO implements PartnerDAO {
   @Override
   public List<Map<String, String>> getAllPartners() {
     List<Map<String, String>> partners = new ArrayList<>();
+    String query =
+      "SELECT p.id, p.acronym, p.name, pt.id as 'partner_type_id', pt.acronym as 'partner_type_acronym' "
+        + "FROM partners p " + "INNER JOIN partner_types pt ON pt.id = p.partner_type_id " + "ORDER BY p.name";
     try (Connection connection = databaseManager.getConnection()) {
-      String query =
-        "SELECT p.id, p.acronym, p.name, pt.id as 'partner_type_id', pt.acronym as 'partner_type_acronym' "
-          + "FROM partners p " + "INNER JOIN partner_types pt ON pt.id = p.partner_type_id " + "ORDER BY p.name";
       ResultSet rs = databaseManager.makeQuery(query, connection);
       while (rs.next()) {
         Map<String, String> partnerData = new HashMap<>();
@@ -43,8 +47,7 @@ public class MySQLPartnerDAO implements PartnerDAO {
       }
       rs.close();
     } catch (SQLException e) {
-      // TODO Auto-generated catch block
-      e.printStackTrace();
+      LOG.error("There was an error getting the data from 'partners' table. \n{}", query, e);
     }
     return partners;
   }
@@ -52,8 +55,8 @@ public class MySQLPartnerDAO implements PartnerDAO {
   @Override
   public Map<String, String> getPartner(int id) {
     Map<String, String> partnerData = new HashMap<>();
+    String query = "SELECT id, acronym, name FROM partners WHERE id = " + id;
     try (Connection connection = databaseManager.getConnection()) {
-      String query = "SELECT id, acronym, name FROM partners WHERE id = " + id;
       ResultSet rs = databaseManager.makeQuery(query, connection);
       if (rs.next()) {
         partnerData.put("id", rs.getString("id"));
@@ -62,8 +65,7 @@ public class MySQLPartnerDAO implements PartnerDAO {
       }
       rs.close();
     } catch (SQLException e) {
-      // TODO Auto-generated catch block
-      e.printStackTrace();
+      LOG.error("There was an error getting the data form 'partners' table. \n{}", query, e);
     }
     if (partnerData.size() > 0) {
       return partnerData;
@@ -74,16 +76,16 @@ public class MySQLPartnerDAO implements PartnerDAO {
   @Override
   public List<Map<String, String>> getPartnersList(int activityID) {
     List<Map<String, String>> statusList = new ArrayList<>();
+    String query =
+      "SELECT pa.id, pa.name, pa.acronym, pa.city, co.iso2 as 'country_id', co.name as 'country_name', "
+        + "ap.contact_name, ap.contact_email, pt.id as 'partner_type_id', pt.name as 'partner_type_name' "
+        + "FROM `partners` pa INNER JOIN countries co ON pa.country_iso2 = co.iso2 "
+        + "INNER JOIN activity_partners ap ON ap.partner_id = pa.id INNER JOIN  partner_types pt ON pa.partner_type_id = pt.id "
+        + "WHERE ap.activity_id=" + activityID;
     try (Connection con = databaseManager.getConnection()) {
-      String query =
-        "SELECT pa.id, pa.name, pa.acronym, pa.city, co.iso2 as 'country_id', co.name as 'country_name', "
-          + "ap.contact_name, ap.contact_email, pt.id as 'partner_type_id', pt.name as 'partner_type_name' "
-          + "FROM `partners` pa INNER JOIN countries co ON pa.country_iso2 = co.iso2 "
-          + "INNER JOIN activity_partners ap ON ap.partner_id = pa.id INNER JOIN  partner_types pt ON pa.partner_type_id = pt.id "
-          + "WHERE ap.activity_id=" + activityID;
       ResultSet rs = databaseManager.makeQuery(query, con);
       while (rs.next()) {
-        Map<String, String> statusData = new HashMap();
+        Map<String, String> statusData = new HashMap<>();
         statusData.put("id", rs.getString("id"));
         statusData.put("name", rs.getString("name"));
         statusData.put("acronym", rs.getString("acronym"));
@@ -98,8 +100,7 @@ public class MySQLPartnerDAO implements PartnerDAO {
       }
       rs.close();
     } catch (SQLException e) {
-      // TODO Auto-generated catch block
-      e.printStackTrace();
+      LOG.error("There was an error getting the data from 'partners' table. \n{}", query, e);
       return null;
     }
 

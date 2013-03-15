@@ -12,10 +12,14 @@ import java.util.List;
 import java.util.Map;
 
 import com.google.inject.Inject;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 
 public class MySQLActivityOtherSiteDAO implements ActivityOtherSiteDAO {
 
+  // Loggin
+  private static final Logger LOG = LoggerFactory.getLogger(MySQLActivityOtherSiteDAO.class);
   private DAOManager databaseManager;
 
   @Inject
@@ -44,8 +48,7 @@ public class MySQLActivityOtherSiteDAO implements ActivityOtherSiteDAO {
       }
       rs.close();
     } catch (SQLException e) {
-      // TODO: handle exception
-      e.printStackTrace();
+      LOG.error("There was an error getting the data from 'other_sites' table. \n{}", query, e);
     }
     return osDataList;
   }

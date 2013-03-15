@@ -27,6 +27,7 @@ public abstract class DAOManager {
    * @param connection
    * @return true if all were ok, and false otherwise.
    */
+  @SuppressWarnings("unused")
   @Deprecated
   private boolean closeConnection(Connection connection) {
     try {

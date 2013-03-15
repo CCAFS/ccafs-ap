@@ -12,10 +12,14 @@ import java.util.List;
 import java.util.Map;
 
 import com.google.inject.Inject;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 
 public class MySQLActivityCountryDAO implements ActivityCountryDAO {
 
+  // Loggin
+  private static final Logger LOG = LoggerFactory.getLogger(MySQLActivityCountryDAO.class);
   private DAOManager databaseManager;
 
   @Inject
@@ -40,8 +44,7 @@ public class MySQLActivityCountryDAO implements ActivityCountryDAO {
       }
       rs.close();
     } catch (SQLException e) {
-      // TODO: handle exception
-      e.printStackTrace();
+      LOG.error("There was an error getting the data from 'country_locations' table. \n{}", query, e);
     }
     return countriesDataList;
   }

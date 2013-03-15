@@ -25,10 +25,9 @@ import org.slf4j.LoggerFactory;
 
 public class CaseStudiesAction extends BaseAction {
 
-  private static final long serialVersionUID = -6393409409918755065L;
-
-  // Loggin
+  // Logger
   private static final Logger LOG = LoggerFactory.getLogger(CaseStudiesAction.class);
+  private static final long serialVersionUID = -6393409409918755065L;
 
   // Managers
   private CaseStudyManager caseStudyManager;
@@ -255,9 +254,6 @@ public class CaseStudiesAction extends BaseAction {
               getText("validation.file.badFormat", new String[] {"an image"}));
             anyError = true;
           }
-          // TODO - check the maximum size allowed because, the tomcat has a max size defined too
-          // in my test server is 2 Mb, in that case it must be redefined in the web.xml or in the
-          // struts.properties struts.multipart.maxSize=100485760
 
           // Check the file size
           if (caseStudies.get(c).getImage().length() > config.getFileMaxSize()) {

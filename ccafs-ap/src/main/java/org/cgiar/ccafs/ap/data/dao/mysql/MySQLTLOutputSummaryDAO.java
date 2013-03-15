@@ -12,10 +12,14 @@ import java.util.List;
 import java.util.Map;
 
 import com.google.inject.Inject;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 
 public class MySQLTLOutputSummaryDAO implements TLOutputSummaryDAO {
 
+  // Loggin
+  private static final Logger LOG = LoggerFactory.getLogger(MySQLTLOutputSummaryDAO.class);
   private DAOManager dbManager;
 
   @Inject
@@ -47,8 +51,7 @@ public class MySQLTLOutputSummaryDAO implements TLOutputSummaryDAO {
         tlSummariesData.add(summaryData);
       }
     } catch (SQLException e) {
-      // TODO Auto-generated catch block
-      e.printStackTrace();
+      LOG.error("There was an error getting the data from activity_status table.", e);
     }
     return tlSummariesData;
   }
@@ -83,8 +86,7 @@ public class MySQLTLOutputSummaryDAO implements TLOutputSummaryDAO {
         }
       }
     } catch (SQLException e) {
-      // TODO Auto-generated catch block
-      e.printStackTrace();
+      LOG.error("There was an error trying to save a list of outputs in the tl_output_summaries table.", e);
     }
     return !problem;
   }

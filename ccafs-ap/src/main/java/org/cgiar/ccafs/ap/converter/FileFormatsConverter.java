@@ -30,14 +30,11 @@ public class FileFormatsConverter extends StrutsTypeConverter {
 
   @Override
   public String convertToString(Map context, Object o) {
-    System.out.println("-----convertToString--------");
     List<FileFormat> ffArray = (List<FileFormat>) o;
     ArrayList<String> temp = new ArrayList<>();
     for (FileFormat f : ffArray) {
       temp.add(f.getId() + "");
     }
-    // TODO
-    System.out.println(temp.toString());
     return temp.toString();
   }
 

@@ -12,10 +12,14 @@ import java.util.List;
 import java.util.Map;
 
 import com.google.inject.Inject;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 
 public class MySQLCaseStudyCountriesDAO implements CaseStudyCountriesDAO {
 
+  // Loggin
+  private static final Logger LOG = LoggerFactory.getLogger(MySQLCaseStudyCountriesDAO.class);
   private DAOManager databaseManager;
 
   @Inject
@@ -26,11 +30,11 @@ public class MySQLCaseStudyCountriesDAO implements CaseStudyCountriesDAO {
   @Override
   public List<Map<String, String>> getCaseStudyCountries(int caseStudyId) {
     List<Map<String, String>> caseStudyCountriesDataList = new ArrayList<>();
+    String query =
+      "SELECT csc.country_iso2 id, co.name "
+        + "FROM case_study_countries csc INNER JOIN countries co ON csc.country_iso2 = co.iso2 "
+        + "WHERE csc.case_study_id=" + caseStudyId;
     try (Connection con = databaseManager.getConnection()) {
-      String query =
-        "SELECT csc.country_iso2 id, co.name "
-          + "FROM case_study_countries csc INNER JOIN countries co ON csc.country_iso2 = co.iso2 "
-          + "WHERE csc.case_study_id=" + caseStudyId;
       ResultSet rs = databaseManager.makeQuery(query, con);
       while (rs.next()) {
         Map<String, String> caseStudyCountriesData = new HashMap<>();
@@ -40,8 +44,7 @@ public class MySQLCaseStudyCountriesDAO implements CaseStudyCountriesDAO {
       }
       rs.close();
     } catch (SQLException e) {
-      // TODO Auto generated try catch block
-      e.printStackTrace();
+      LOG.error("There was an error getting the countries related to a case study. \n{}", query, e);
     }
     return caseStudyCountriesDataList;
   }
@@ -51,11 +54,8 @@ public class MySQLCaseStudyCountriesDAO implements CaseStudyCountriesDAO {
     boolean problem = false;
     try (Connection con = databaseManager.getConnection()) {
       String addQuery = "INSERT INTO case_study_countries (case_study_id, country_iso2) VALUES ";
-      boolean isFirst = true;
-      for (String countryId : countriesIds) {
-        if (isFirst) {
-          isFirst = false;
-        } else {
+      for (int c = 0; c < countriesIds.size(); c++) {
+        if (c != 0) {
           addQuery += ", ";
         }
         addQuery += "(" + caseStudyId + ", ?)";
@@ -70,8 +70,7 @@ public class MySQLCaseStudyCountriesDAO implements CaseStudyCountriesDAO {
         problem = true;
       }
     } catch (SQLException e) {
-      // TODO Auto generated catch block
-      e.printStackTrace();
+      LOG.error("There was an error saving records into 'case_study_countries' table. \n{}", e);
     }
     return !problem;
   }

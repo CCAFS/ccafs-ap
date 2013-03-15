@@ -102,7 +102,8 @@ public class DeliverablesReportingAction extends BaseAction {
   public void prepare() throws Exception {
     super.prepare();
     activityID = Integer.parseInt(StringUtils.trim(this.getRequest().getParameter(APConstants.ACTIVITY_REQUEST_ID)));
-
+    LOG.info("There user {} is loading the deliverables information for the activity {}", getCurrentUser().getEmail(),
+      String.valueOf(activityID));
     deliverableTypesList = deliverableTypeManager.getDeliverableTypes();
     deliverableStatusList = deliverableStatusManager.getDeliverableStatus();
     // get information of files format
@@ -175,9 +176,11 @@ public class DeliverablesReportingAction extends BaseAction {
     }
 
     if (!problem) {
+      LOG.warn("There was a problem saving the deliverables to the activity {}", String.valueOf(activityID));
       addActionMessage(getText("saving.success", new String[] {getText("reporting.activityDeliverables")}));
       return SUCCESS;
     } else {
+      LOG.info("The deliverables to the activity {} was saved successfully", String.valueOf(activityID));
       addActionError(getText("saving.problem"));
       return INPUT;
     }

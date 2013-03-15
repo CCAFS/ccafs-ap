@@ -12,10 +12,14 @@ import java.util.List;
 import java.util.Map;
 
 import com.google.inject.Inject;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 
 public class MySQLStatusDAO implements StatusDAO {
 
+  // Loggin
+  private static final Logger LOG = LoggerFactory.getLogger(MySQLStatusDAO.class);
   private DAOManager databaseManager;
 
   @Inject
@@ -30,15 +34,14 @@ public class MySQLStatusDAO implements StatusDAO {
       String query = "SELECT * from activity_status";
       ResultSet rs = databaseManager.makeQuery(query, con);
       while (rs.next()) {
-        Map<String, String> statusData = new HashMap();
+        Map<String, String> statusData = new HashMap<>();
         statusData.put("id", rs.getString("id"));
         statusData.put("name", rs.getString("name"));
         statusList.add(statusData);
       }
       rs.close();
     } catch (SQLException e) {
-      // TODO Auto-generated catch block
-      e.printStackTrace();
+      LOG.error("There was an error getting the data from activity_status table.", e);
     }
     return statusList;
   }

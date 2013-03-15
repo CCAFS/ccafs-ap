@@ -10,10 +10,14 @@ import java.util.HashMap;
 import java.util.Map;
 
 import com.google.inject.Inject;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 
 public class MySQLUserDAO implements UserDAO {
 
+  // Loggin
+  private static final Logger LOG = LoggerFactory.getLogger(MySQLUserDAO.class);
   private DAOManager dbManager;
 
   @Inject
@@ -41,11 +45,11 @@ public class MySQLUserDAO implements UserDAO {
         userData.put("leader_name", rs.getString("leader_name"));
         userData.put("leader_type_id", rs.getString("leader_type_id"));
         userData.put("leader_type_name", rs.getString("leader_type_name"));
+        LOG.trace("The data for the user {} was fetched from the database", email);
       }
       rs.close();
     } catch (SQLException e) {
-      // TODO Auto-generated catch block
-      e.printStackTrace();
+      LOG.error("There was an error getting the data from users table.", e);
     }
     return userData;
   }

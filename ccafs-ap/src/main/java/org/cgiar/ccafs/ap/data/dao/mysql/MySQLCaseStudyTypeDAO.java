@@ -12,10 +12,14 @@ import java.util.List;
 import java.util.Map;
 
 import com.google.inject.Inject;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 
 public class MySQLCaseStudyTypeDAO implements CaseStudyTypeDAO {
 
+  // Loggin
+  private static final Logger LOG = LoggerFactory.getLogger(MySQLPartnerDAO.class);
   private DAOManager databaseManager;
 
   @Inject
@@ -26,8 +30,8 @@ public class MySQLCaseStudyTypeDAO implements CaseStudyTypeDAO {
   @Override
   public List<Map<String, String>> getCaseStudyTypes() {
     List<Map<String, String>> caseStudyTypesList = new ArrayList<>();
+    String query = "SELECT * FROM case_study_types";
     try (Connection con = databaseManager.getConnection()) {
-      String query = "SELECT * FROM case_study_types";
       ResultSet rs = databaseManager.makeQuery(query, con);
       while (rs.next()) {
         Map<String, String> typesData = new HashMap<>();
@@ -37,8 +41,7 @@ public class MySQLCaseStudyTypeDAO implements CaseStudyTypeDAO {
       }
       rs.close();
     } catch (SQLException e) {
-      // TODO: handle exception
-      e.printStackTrace();
+      LOG.error("There was an error getting the data from 'case_study_types' table. \n{}", query, e);
     }
     return caseStudyTypesList;
   }
@@ -46,11 +49,11 @@ public class MySQLCaseStudyTypeDAO implements CaseStudyTypeDAO {
   @Override
   public List<Map<String, String>> getCaseStudyTypes(int caseStudyId) {
     List<Map<String, String>> caseStudyTypesList = new ArrayList<>();
+    String query =
+      "SELECT cst.id, cst.name FROM case_study_types cst "
+        + "INNER JOIN cs_types cs_t ON cst.id = cs_t.case_study_type_id "
+        + "INNER JOIN case_studies cs ON cs_t.case_study_id = cs.id " + "WHERE cs.id = " + caseStudyId;
     try (Connection con = databaseManager.getConnection()) {
-      String query =
-        "SELECT cst.id, cst.name FROM case_study_types cst "
-          + "INNER JOIN cs_types cs_t ON cst.id = cs_t.case_study_type_id "
-          + "INNER JOIN case_studies cs ON cs_t.case_study_id = cs.id " + "WHERE cs.id = " + caseStudyId;
       ResultSet rs = databaseManager.makeQuery(query, con);
       while (rs.next()) {
         Map<String, String> typesData = new HashMap<>();
@@ -60,8 +63,7 @@ public class MySQLCaseStudyTypeDAO implements CaseStudyTypeDAO {
       }
       rs.close();
     } catch (SQLException e) {
-      // TODO: handle exception
-      e.printStackTrace();
+      LOG.error("There was an error getting the data from 'case_study_types' table. \n{}", query, e);
     }
     return caseStudyTypesList;
   }
@@ -83,11 +85,11 @@ public class MySQLCaseStudyTypeDAO implements CaseStudyTypeDAO {
       }
       int rows = databaseManager.makeChangeSecure(con, addQuery, values);
       if (rows <= 0) {
+        LOG.warn("There was not posible save data into 'case_study_types' table.");
         problem = true;
       }
     } catch (SQLException e) {
-      // TODO: handle exception
-      e.printStackTrace();
+      LOG.error("There was an error saving data into 'case_study_types' table.", e);
     }
     return problem;
   }

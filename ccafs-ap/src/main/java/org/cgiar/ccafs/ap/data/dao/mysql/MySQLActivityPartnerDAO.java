@@ -12,10 +12,14 @@ import java.util.List;
 import java.util.Map;
 
 import com.google.inject.Inject;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 
 public class MySQLActivityPartnerDAO implements ActivityPartnerDAO {
 
+  // Logger
+  private static final Logger LOG = LoggerFactory.getLogger(MySQLActivityPartnerDAO.class);
   private DAOManager databaseManager;
 
   @Inject
@@ -26,14 +30,14 @@ public class MySQLActivityPartnerDAO implements ActivityPartnerDAO {
   @Override
   public List<Map<String, String>> getActivityPartnersList(int activityID) {
     List<Map<String, String>> activityPartnerList = new ArrayList<>();
+    String query =
+      "SELECT ap.id, ap.contact_name, ap.contact_email, p.id as 'partner_id', p.acronym as 'partner_acronym', "
+        + "p.name as 'partner_name', pt.id as 'partner_type_id', pt.name as 'partner_type_name', "
+        + "co.iso2 as 'country_iso2', co.name as 'country_name' " + "FROM activity_partners ap "
+        + "INNER JOIN partners p ON p.id = ap.partner_id "
+        + "INNER JOIN partner_types pt ON p.partner_type_id = pt.id "
+        + "INNER JOIN countries co ON p.country_iso2 = co.iso2 " + "WHERE ap.activity_id = " + activityID;
     try (Connection con = databaseManager.getConnection()) {
-      String query =
-        "SELECT ap.id, ap.contact_name, ap.contact_email, p.id as 'partner_id', p.acronym as 'partner_acronym', "
-          + "p.name as 'partner_name', pt.id as 'partner_type_id', pt.name as 'partner_type_name', "
-          + "co.iso2 as 'country_iso2', co.name as 'country_name' " + "FROM activity_partners ap "
-          + "INNER JOIN partners p ON p.id = ap.partner_id "
-          + "INNER JOIN partner_types pt ON p.partner_type_id = pt.id "
-          + "INNER JOIN countries co ON p.country_iso2 = co.iso2 " + "WHERE ap.activity_id = " + activityID;
       ResultSet rs = databaseManager.makeQuery(query, con);
       while (rs.next()) {
         Map<String, String> activityPartnerData = new HashMap<>();
@@ -51,8 +55,7 @@ public class MySQLActivityPartnerDAO implements ActivityPartnerDAO {
       }
       rs.close();
     } catch (SQLException e) {
-      // TODO Auto-generated catch block
-      e.printStackTrace();
+      LOG.error("There was an error getting data from 'activity_partners' table. \n{}", query, e);
       return null;
     }
     return activityPartnerList;
@@ -61,15 +64,14 @@ public class MySQLActivityPartnerDAO implements ActivityPartnerDAO {
   @Override
   public int getPartnersCount(int activityID) {
     int partnersCount = 0;
+    String query = "SELECT COUNT(id) FROM activity_partners WHERE activity_id = " + activityID;
     try (Connection connection = databaseManager.getConnection()) {
-      String query = "SELECT COUNT(id) FROM activity_partners WHERE activity_id = " + activityID;
       ResultSet rs = databaseManager.makeQuery(query, connection);
       if (rs.next()) {
         partnersCount = rs.getInt(1);
       }
     } catch (SQLException e) {
-      // TODO Auto-generated catch block
-      e.printStackTrace();
+      LOG.error("There was an error counting the activity partners related to a given activity \n{}", query, e);
     }
     return partnersCount;
   }
@@ -77,15 +79,14 @@ public class MySQLActivityPartnerDAO implements ActivityPartnerDAO {
   @Override
   public boolean removeActivityPartners(int activityID) {
     boolean problem = false;
+    String removeQuery = "DELETE FROM activity_partners WHERE activity_id = " + activityID;
     try (Connection connection = databaseManager.getConnection()) {
-      String removeQuery = "DELETE FROM activity_partners WHERE activity_id = " + activityID;
       int rows = databaseManager.makeChange(removeQuery, connection);
       if (rows < 0) {
         problem = true;
       }
     } catch (SQLException e) {
-      // TODO Auto-generated catch block
-      e.printStackTrace();
+      LOG.error("There was an error deleting the activity partners related to a given activity \n{}", removeQuery, e);
     }
     return !problem;
   }
@@ -106,12 +107,11 @@ public class MySQLActivityPartnerDAO implements ActivityPartnerDAO {
         int rows = databaseManager.makeChangeSecure(connection, preparedQuery, data);
         if (rows < 0) {
           problem = true;
-          // TODO - Add log about the problem?
+          LOG.warn("There was a problem saving an activity partners list.");
         }
       }
     } catch (SQLException e) {
-      // TODO Auto-generated catch block
-      e.printStackTrace();
+      LOG.warn("There was an error saving an activity partners list.", e);
     }
     return !problem;
   }

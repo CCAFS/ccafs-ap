@@ -21,9 +21,13 @@ import java.util.List;
 import java.util.Map;
 
 import com.google.inject.Inject;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 public class ActivityManagerImpl implements ActivityManager {
 
+  // Loggin
+  private static final Logger LOG = LoggerFactory.getLogger(ActivityManagerImpl.class);
   private ActivityDAO activityDAO;
 
   private DeliverableManager deliverableManager;
@@ -61,14 +65,18 @@ public class ActivityManagerImpl implements ActivityManager {
       try {
         activity.setStartDate(dateFormat.parse(activitiesDAO.get(c).get("start_date")));
       } catch (ParseException e) {
-        // TODO Auto-generated catch block
-        e.printStackTrace();
+        String msg =
+          "There was an error parsing start date '" + activitiesDAO.get(c).get("start_date") + "' for the activity "
+            + activity.getId() + ".";
+        LOG.error(msg, e);
       }
       try {
         activity.setEndDate(dateFormat.parse(activitiesDAO.get(c).get("end_date")));
       } catch (ParseException e) {
-        // TODO Auto-generated catch block
-        e.printStackTrace();
+        String msg =
+          "There was an error parsing end date '" + activitiesDAO.get(c).get("end_date") + "' for the activity "
+            + activity.getId() + ".";
+        LOG.error(msg, e);
       }
       // Contact Persons
       activity.setContactPersons(contactPersonManager.getContactPersons(activity.getId()));
@@ -127,21 +135,27 @@ public class ActivityManagerImpl implements ActivityManager {
         try {
           activity.setStartDate(dateFormat.parse(activityDB.get("start_date")));
         } catch (ParseException e) {
-          // TODO Auto-generated catch block
-          e.printStackTrace();
+          String msg =
+            "There was an error parsing start date '" + activityDB.get("start_date") + "' for the activity "
+              + activity.getId() + ".";
+          LOG.error(msg, e);
         }
         try {
           activity.setEndDate(dateFormat.parse(activityDB.get("end_date")));
         } catch (ParseException e) {
-          // TODO Auto-generated catch block
-          e.printStackTrace();
+          String msg =
+            "There was an error parsing end date '" + activityDB.get("end_date") + "' for the activity "
+              + activity.getId() + ".";
+          LOG.error(msg, e);
         }
         activity.setDescription(activityDB.get("description"));
         try {
           activity.setDateAdded(dateFormat.parse(activityDB.get("date_added")));
         } catch (ParseException e) {
-          // TODO Auto-generated catch block
-          e.printStackTrace();
+          String msg =
+            "There was an error parsing date_added '" + activityDB.get("date_added") + "' for the activity "
+              + activity.getId() + ".";
+          LOG.error(msg, e);
         }
         activities[c] = activity;
         c++;
@@ -162,14 +176,16 @@ public class ActivityManagerImpl implements ActivityManager {
       try {
         activity.setStartDate(dateFormat.parse(activityDB.get("start_date")));
       } catch (ParseException e) {
-        // TODO Auto-generated catch block
-        e.printStackTrace();
+        String msg =
+          "There was an error parsing start date '" + activityDB.get("start_date") + "' for the activity " + id + ".";
+        LOG.error(msg, e);
       }
       try {
         activity.setEndDate(dateFormat.parse(activityDB.get("end_date")));
       } catch (ParseException e) {
-        // TODO Auto-generated catch block
-        e.printStackTrace();
+        String msg =
+          "There was an error parsing end date '" + activityDB.get("end_date") + "' for the activity " + id + ".";
+        LOG.error(msg, e);
       }
       activity.setDescription(activityDB.get("description"));
       activity.setGlobal(activityDB.get("is_global").equals("1"));

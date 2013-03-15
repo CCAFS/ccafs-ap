@@ -12,10 +12,14 @@ import java.util.List;
 import java.util.Map;
 
 import com.google.inject.Inject;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 
 public class MySQLCaseStudyDAO implements CaseStudyDAO {
 
+  // Logger
+  private static final Logger LOG = LoggerFactory.getLogger(MySQLCaseStudyDAO.class);
   private DAOManager databaseManager;
 
   @Inject
@@ -26,11 +30,12 @@ public class MySQLCaseStudyDAO implements CaseStudyDAO {
   @Override
   public List<Map<String, String>> getCaseStudyList(int activityLeaderId, int logframeId) {
     List<Map<String, String>> caseStudyDataList = new ArrayList<>();
+    String query =
+      "SELECT cs.id, cs.title, cs.author, cs.start_date, cs.end_date, cs.photo, cs.objectives, "
+        + "cs.description, cs.results, cs.partners, cs.links, cs.keywords, cs.logframe_id, cs.is_global "
+        + "FROM case_studies cs " + "WHERE cs.activity_leader_id=" + activityLeaderId + " AND logframe_id="
+        + logframeId;
     try (Connection con = databaseManager.getConnection()) {
-      String query =
-        "SELECT cs.id, cs.title, cs.author, cs.start_date, cs.end_date, cs.photo, cs.objectives, cs.description, cs.results, cs.partners, "
-          + "cs.links, cs.keywords, cs.logframe_id, cs.is_global " + "FROM case_studies cs " + "WHERE cs.activity_leader_id="
-          + activityLeaderId + " AND logframe_id=" + logframeId;
       ResultSet rs = databaseManager.makeQuery(query, con);
       while (rs.next()) {
         Map<String, String> caseStudyData = new HashMap<String, String>();
@@ -52,16 +57,15 @@ public class MySQLCaseStudyDAO implements CaseStudyDAO {
       }
       rs.close();
     } catch (SQLException e) {
-      // TODO auto generated try catch block
-      e.printStackTrace();
+      LOG.error("There was a problem getting a case study \n{}", query, e);
     }
     return caseStudyDataList;
   }
 
   @Override
   public boolean removeAllCaseStudies(int activityLeaderId, int logframeId) {
+    String deleteDeliverableQuery = "DELETE FROM case_studies WHERE activity_leader_id = ? AND logframe_id = ?";
     try (Connection connection = databaseManager.getConnection()) {
-      String deleteDeliverableQuery = "DELETE FROM case_studies WHERE activity_leader_id = ? AND logframe_id = ?";
       int rowsDeleted =
         databaseManager.makeChangeSecure(connection, deleteDeliverableQuery,
           new Object[] {activityLeaderId, logframeId});
@@ -69,8 +73,7 @@ public class MySQLCaseStudyDAO implements CaseStudyDAO {
         return true;
       }
     } catch (SQLException e) {
-      // TODO Auto-generated catch block
-      e.printStackTrace();
+      LOG.error("There was a problem deleting a case study \n{}", deleteDeliverableQuery, e);
     }
     return false;
   }
@@ -78,11 +81,11 @@ public class MySQLCaseStudyDAO implements CaseStudyDAO {
   @Override
   public int saveCaseStudy(Map<String, Object> caseStudyData) {
     int generatedId = -1;
+    String preparedQuery =
+      "INSERT INTO case_studies (id, title, author, start_date, end_date, photo, objectives, description, "
+        + "results, partners, links, keywords, logframe_id, activity_leader_id, is_global) "
+        + "VALUES ( ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
     try (Connection con = databaseManager.getConnection()) {
-      String preparedQuery =
-        "INSERT INTO case_studies (id, title, author, start_date, end_date, photo, objectives, description, "
-          + "results, partners, links, keywords, logframe_id, activity_leader_id, is_global) "
-          + "VALUES ( ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
 
       Object[] data = new Object[15];
       data[0] = caseStudyData.get("id");
@@ -110,8 +113,7 @@ public class MySQLCaseStudyDAO implements CaseStudyDAO {
         rs.close();
       }
     } catch (SQLException e) {
-      // TODO Auto generated catch block
-      e.printStackTrace();
+      LOG.error("There was an error inserting a record into 'case_studies' table. ", e);
       return -1;
     }
     return generatedId;
