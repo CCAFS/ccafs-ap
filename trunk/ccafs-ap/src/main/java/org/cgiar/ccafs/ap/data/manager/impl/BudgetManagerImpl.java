@@ -1,16 +1,21 @@
 package org.cgiar.ccafs.ap.data.manager.impl;
 
-import java.util.Map;
-
-import com.google.inject.Inject;
 import org.cgiar.ccafs.ap.data.dao.BudgetDAO;
 import org.cgiar.ccafs.ap.data.manager.BudgetManager;
 import org.cgiar.ccafs.ap.data.model.Budget;
 import org.cgiar.ccafs.ap.data.model.BudgetPercentage;
 
+import java.util.Map;
+
+import com.google.inject.Inject;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 
 public class BudgetManagerImpl implements BudgetManager {
 
+  // Logger
+  private static final Logger LOG = LoggerFactory.getLogger(BudgetManagerImpl.class);
   private BudgetDAO budgetDAO;
 
   @Inject
@@ -48,7 +53,7 @@ public class BudgetManagerImpl implements BudgetManager {
       budget.setBilateral(bilateral);
     }
 
-
+    LOG.debug("The budget for the activity {} was loaded successfully.", activityID);
     return budget;
   }
 

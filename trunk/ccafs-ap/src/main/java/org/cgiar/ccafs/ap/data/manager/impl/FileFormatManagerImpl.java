@@ -9,10 +9,13 @@ import java.util.List;
 import java.util.Map;
 
 import com.google.inject.Inject;
-
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 public class FileFormatManagerImpl implements FileFormatManager {
 
+  // Logger
+  private static final Logger LOG = LoggerFactory.getLogger(FileFormatManagerImpl.class);
   private FileFormatDAO fileFormatDAO;
 
   @Inject
@@ -45,9 +48,11 @@ public class FileFormatManagerImpl implements FileFormatManager {
     }
 
     if (fileFormatsList.size() > 0) {
+      LOG.debug("File formats list loaded successfully.");
       return fileFormats;
     }
 
+    LOG.warn("File formats list loaded is empty.");
     return null;
   }
 
@@ -58,6 +63,7 @@ public class FileFormatManagerImpl implements FileFormatManager {
       fileFormatIds[c] = fileFormats.get(c).getId();
     }
 
+    LOG.debug("Sent a request to save file formats related to the deliverable {} into the DAO.", deliverableId);
     return fileFormatDAO.setFileFormats(deliverableId, fileFormatIds);
   }
 }

@@ -7,10 +7,14 @@ import org.cgiar.ccafs.ap.data.model.PublicationType;
 import java.util.Map;
 
 import com.google.inject.Inject;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 
 public class PublicationTypeManagerImpl implements PublicationTypeManager {
 
+  // Logger
+  private static final Logger LOG = LoggerFactory.getLogger(PublicationTypeManagerImpl.class);
   private PublicationTypeDAO publicationTypeDAO;
 
   @Inject
@@ -25,8 +29,10 @@ public class PublicationTypeManagerImpl implements PublicationTypeManager {
       PublicationType type = new PublicationType();
       type.setId(Integer.parseInt(pubTypeData.get("id")));
       type.setName(pubTypeData.get("name"));
+      LOG.debug("Loaded type for publication {}", id);
       return type;
     }
+    LOG.debug("Type wasn't found for publication {}", id);
     return null;
   }
 
@@ -42,6 +48,7 @@ public class PublicationTypeManagerImpl implements PublicationTypeManager {
       pubTypes[c] = type;
       c++;
     }
+    LOG.debug("Publication type list loaded succesfully");
     return pubTypes;
   }
 }

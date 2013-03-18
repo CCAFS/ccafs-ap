@@ -13,10 +13,14 @@ import java.util.List;
 import java.util.Map;
 
 import com.google.inject.Inject;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 
 public class ActivityPartnerManagerImpl implements ActivityPartnerManager {
 
+  // Logger
+  private static final Logger LOG = LoggerFactory.getLogger(ActivityPartnerManagerImpl.class);
   private ActivityPartnerDAO activityPartnerDAO;
 
   @Inject
@@ -54,7 +58,7 @@ public class ActivityPartnerManagerImpl implements ActivityPartnerManager {
       activityPartner.setPartner(partner);
       activityPartnerList.add(activityPartner);
     }
-
+    LOG.debug("The activity partners for the activity {} loaded.", activityID);
     return activityPartnerList;
   }
 
@@ -88,6 +92,8 @@ public class ActivityPartnerManagerImpl implements ActivityPartnerManager {
       }
       activityPartnersData.add(cpData);
     }
+
+    LOG.debug("The activity partners information for activity {} was send to the DAO to save it", activityID);
     problem = !activityPartnerDAO.saveActivityPartnerList(activityPartnersData);
     return !problem;
   }

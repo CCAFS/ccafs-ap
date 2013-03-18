@@ -8,10 +8,14 @@ import java.util.List;
 import java.util.Map;
 
 import com.google.inject.Inject;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 
 public class DeliverableTypeManagerImpl implements DeliverableTypeManager {
 
+  // Logger
+  private static final Logger LOG = LoggerFactory.getLogger(DeliverableTypeManagerImpl.class);
   private DeliverableTypeDAO deliverableTypeDAO;
 
   @Inject
@@ -42,9 +46,11 @@ public class DeliverableTypeManagerImpl implements DeliverableTypeManager {
     }
 
     if (deliverableTypesList.size() > 0) {
+      LOG.debug("Deliverable type list loaded successfully.");
       return deliverableTypes;
     }
 
+    LOG.warn("Deliverable type list loaded id empty.");
     return null;
   }
 }

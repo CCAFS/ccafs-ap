@@ -9,10 +9,14 @@ import java.util.List;
 import java.util.Map;
 
 import com.google.inject.Inject;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 
 public class ResourceManagerImpl implements ResourceManager {
 
+  // Logger
+  private static final Logger LOG = LoggerFactory.getLogger(ResourceManagerImpl.class);
   private ResourceDAO resourceDAO;
 
   @Inject
@@ -30,6 +34,7 @@ public class ResourceManagerImpl implements ResourceManager {
       temp.setName(resourcesDataList.get(c).get("name"));
       resources.add(temp);
     }
+    LOG.debug("Loaded resources for activity {}.", activityID);
     return resources;
   }
 

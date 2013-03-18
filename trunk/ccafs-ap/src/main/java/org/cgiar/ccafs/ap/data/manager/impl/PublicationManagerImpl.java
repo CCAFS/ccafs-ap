@@ -16,10 +16,14 @@ import java.util.List;
 import java.util.Map;
 
 import com.google.inject.Inject;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 
 public class PublicationManagerImpl implements PublicationManager {
 
+  // Logger
+  private static final Logger LOG = LoggerFactory.getLogger(PublicationManagerImpl.class);
   private PublicationDAO publicationDAO;
   private PublicationThemeDAO publicationThemeDAO;
 
@@ -65,11 +69,14 @@ public class PublicationManagerImpl implements PublicationManager {
       publication.setAccess(publicationAccess);
       publications.add(publication);
     }
+    LOG.debug("Publications made by leader {} for logframe {} loaded successfully", leader.getId(), logframe.getId());
     return publications;
   }
 
   @Override
   public boolean removeAllPublications(Leader leader, Logframe logframe) {
+    LOG.debug("Sent a request to delete all publications related to leader {} and logframe.", leader.getId(),
+      logframe.getId());
     return publicationDAO.removeAllPublications(leader.getId(), logframe.getId());
   }
 
@@ -102,6 +109,7 @@ public class PublicationManagerImpl implements PublicationManager {
       pubData.put("logframe_id", logframe.getId() + "");
       pubData.put("activity_leader_id", leader.getId() + "");
 
+      LOG.debug("Sent a request to save the publications made by leader {} into the DAO", leader.getId());
       int publicationId = publicationDAO.savePublication(pubData);
       // If the publication has an id the addDeliverable function return 0 as id,
       // so, the id must be set to its original value

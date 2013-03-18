@@ -8,10 +8,14 @@ import java.util.List;
 import java.util.Map;
 
 import com.google.inject.Inject;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 
 public class PartnerTypeManagerImpl implements PartnerTypeManager {
 
+  // Logger
+  private static final Logger LOG = LoggerFactory.getLogger(PartnerTypeManagerImpl.class);
   private PartnerTypeDAO partnerTypeDAO;
 
   @Inject
@@ -38,8 +42,10 @@ public class PartnerTypeManagerImpl implements PartnerTypeManager {
       partnerTypeList[c].setAcronym(partnerTypeData.get("description"));
     }
     if (partnerTypeDataList.size() > 0) {
+      LOG.debug("Partner type list loaded successfully.");
       return partnerTypeList;
     }
+    LOG.warn("Partner type list loaded is empty");
     return null;
   }
 

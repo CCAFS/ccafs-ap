@@ -8,17 +8,20 @@ import java.util.List;
 import java.util.Map;
 
 import com.google.inject.Inject;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 
 public class StatusManagerImpl implements StatusManager {
 
+  // Logger
+  private static final Logger LOG = LoggerFactory.getLogger(StatusManagerImpl.class);
   private StatusDAO statusDAO;
 
   @Inject
   public StatusManagerImpl(StatusDAO statusDAO) {
     this.statusDAO = statusDAO;
   }
-
 
   @Override
   public Status getStatus(String id) {
@@ -40,8 +43,10 @@ public class StatusManagerImpl implements StatusManager {
       statusList[c] = new Status(Integer.parseInt(statusData.get("id")), statusData.get("name"));
     }
     if (statusDataList.size() > 0) {
+      LOG.debug("Activity status list loaded succesfully");
       return statusList;
     }
+    LOG.warn("Activity status list loaded is empty");
     return null;
   }
 }

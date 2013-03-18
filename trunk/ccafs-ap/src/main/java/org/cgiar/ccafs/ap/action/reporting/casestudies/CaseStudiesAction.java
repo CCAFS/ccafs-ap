@@ -57,6 +57,7 @@ public class CaseStudiesAction extends BaseAction {
    * which are not being used
    */
   private void deleteUnusedImages() {
+    LOG.info("The user {} is going to erase the unused images of case studies", getCurrentUser().getEmail());
     Collection<String> imageNames = imageNameMap.values();
     // Remove from the list of names all the images used
     // by a case study
@@ -68,6 +69,7 @@ public class CaseStudiesAction extends BaseAction {
     // All the elements that still in the list
     // aren't used, then, delete them from the disk
     for (String imageName : imageNames) {
+      LOG.info("Deleting image {} from the disk", imageName);
       FileManager.deleteFile(getFolderPath(imageName));
     }
   }
@@ -121,7 +123,7 @@ public class CaseStudiesAction extends BaseAction {
   @Override
   public void prepare() throws Exception {
     super.prepare();
-
+    LOG.info("The user {} load the case study section", getCurrentUser().getEmail());
     caseStudies = caseStudyManager.getCaseStudyList(getCurrentUser().getLeader(), getCurrentLogframe());
     countryList = countryManager.getCountryList();
     caseStudyTypeList = caseStudyTypeManager.getCaseStudyTypes();
@@ -150,6 +152,7 @@ public class CaseStudiesAction extends BaseAction {
     // Remove all caseStudies in case user clicked on submit button
     if (this.getRequest().getMethod().equalsIgnoreCase("post")) {
       caseStudies.clear();
+      LOG.debug("All the case studies related to the leader {} was deleted", getCurrentUser().getLeader().getId());
     }
   }
 

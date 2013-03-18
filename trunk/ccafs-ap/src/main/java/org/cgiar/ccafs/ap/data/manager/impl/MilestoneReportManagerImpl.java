@@ -15,11 +15,14 @@ import java.util.List;
 import java.util.Map;
 
 import com.google.inject.Inject;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 
 public class MilestoneReportManagerImpl implements MilestoneReportManager {
 
-
+  // Logger
+  private static final Logger LOG = LoggerFactory.getLogger(MilestoneReportManagerImpl.class);
   private MilestoneReportDAO milestoneReportDAO;
 
   @Inject
@@ -90,6 +93,8 @@ public class MilestoneReportManagerImpl implements MilestoneReportManager {
       milestoneReports[c].setMilestone(milestone);
       milestoneReports[c].setStatus(status);
     }
+    LOG.debug("Milestone report information related to leader {} and logframe {} loaded succesfully.",
+      activityLeaderId, logframeId);
     return milestoneReports;
   }
 
@@ -119,6 +124,7 @@ public class MilestoneReportManagerImpl implements MilestoneReportManager {
 
       milestoneReportDataList.add(milestoneReportData);
     }
+    LOG.debug("Sent the request to save the milestone reportes into the DAO");
     return !milestoneReportDAO.saveMilestoneReportList(milestoneReportDataList);
   }
 }

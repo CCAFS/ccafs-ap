@@ -8,10 +8,13 @@ import org.cgiar.ccafs.ap.data.model.LeaderType;
 import java.util.Map;
 
 import com.google.inject.Inject;
-
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 public class LeaderManagerImpl implements LeaderManager {
 
+  // Logger
+  private static final Logger LOG = LoggerFactory.getLogger(LeaderManagerImpl.class);
   private LeaderDAO leaderDAO;
 
   @Inject
@@ -30,8 +33,10 @@ public class LeaderManagerImpl implements LeaderManager {
       leaderType.setId(Integer.parseInt(leaderData.get("leader_type_id")));
       leaderType.setName(leaderData.get("leader_type_name"));
       leader.setLeaderType(leaderType);
+      LOG.debug("Loaded activity leader for activity {}.", activityID);
       return leader;
     }
+    LOG.warn("Activity leader wasn't found for activity {}.", activityID);
     return null;
   }
 

@@ -17,10 +17,14 @@ import java.util.List;
 import java.util.Map;
 
 import com.google.inject.Inject;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 
 public class PublicationsReportingAction extends BaseAction {
 
+  // Logger
+  private static final Logger LOG = LoggerFactory.getLogger(PublicationsReportingAction.class);
   private static final long serialVersionUID = -7843902991180158797L;
 
   // Models
@@ -73,6 +77,7 @@ public class PublicationsReportingAction extends BaseAction {
   @Override
   public void prepare() throws Exception {
     super.prepare();
+    LOG.info("Ther user {} load the publication section.", getCurrentUser().getEmail());
     publications = publicationManager.getPublications(this.getCurrentUser().getLeader(), this.getCurrentLogframe());
     publicationTypes = publicationTypeManager.getPublicationTypes();
     publicationAccessList = openAccessManager.getOpenAccessList();
@@ -90,6 +95,7 @@ public class PublicationsReportingAction extends BaseAction {
 
     // Remove all publications so they can be added again in the save method.
     if (this.getRequest().getMethod().equalsIgnoreCase("post")) {
+      LOG.debug("The publications have been deleted from the model to save it later.");
       publications.clear();
     }
   }
@@ -103,11 +109,15 @@ public class PublicationsReportingAction extends BaseAction {
       boolean added =
         publicationManager.savePublications(publications, this.getCurrentLogframe(), this.getCurrentUser().getLeader());
       if (added) {
+        LOG.info("The user {} save the publications for the leader.", getCurrentUser().getEmail(), getCurrentUser()
+          .getLeader().getId());
         addActionMessage(getText("saving.success", new String[] {getText("reporting.publications")}));
         return SUCCESS;
       }
     }
 
+    LOG.warn("The user {} had a problem saving the publications for the leader {}", getCurrentUser().getEmail(),
+      getCurrentUser().getLeader().getId());
     addActionError(getText("saving.problem"));
     return INPUT;
   }

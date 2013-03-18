@@ -10,10 +10,14 @@ import java.util.List;
 import java.util.Map;
 
 import com.google.inject.Inject;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 
 public class ActivityOtherSiteManagerImpl implements ActivityOtherSiteManager {
 
+  // Logger
+  private static final Logger LOG = LoggerFactory.getLogger(ActivityOtherSiteManagerImpl.class);
   private ActivityOtherSiteDAO activityOtherSiteDAO;
 
   @Inject
@@ -40,6 +44,7 @@ public class ActivityOtherSiteManagerImpl implements ActivityOtherSiteManager {
 
       otherSites.add(otherSiteTemp);
     }
+    LOG.debug("Activity other sites for activity {} loaded.", activityID);
     return otherSites;
   }
 }

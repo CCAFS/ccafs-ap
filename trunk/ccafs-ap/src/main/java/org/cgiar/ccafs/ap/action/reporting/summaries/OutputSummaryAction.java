@@ -15,10 +15,9 @@ import org.slf4j.LoggerFactory;
 
 public class OutputSummaryAction extends BaseAction {
 
-  private static final long serialVersionUID = 6422944336602787958L;
-
-  // Loggin
+  // Logger
   private static final Logger LOG = LoggerFactory.getLogger(OutputSummaryAction.class);
+  private static final long serialVersionUID = 6422944336602787958L;
 
   // Managers
   private OutputSummaryManager outputSummaryManager;
@@ -39,6 +38,8 @@ public class OutputSummaryAction extends BaseAction {
   @Override
   public void prepare() throws Exception {
     super.prepare();
+    LOG.info("User {} loads the outputs for the leader {}.", getCurrentUser().getEmail(), getCurrentUser().getLeader()
+      .getId());
     // Get all the summary outputs objects corresponding to the activity leader and current logframe
     outputSummaries = outputSummaryManager.getOutputSummaries(getCurrentUser().getLeader(), getCurrentLogframe());
   }
@@ -80,6 +81,8 @@ public class OutputSummaryAction extends BaseAction {
       }
     }
 
+    LOG.info("The user {} saved the outputs for the leader {}.", getCurrentUser().getEmail(), getCurrentUser()
+      .getLeader().getId());
     addActionMessage(getText("reporting.outputSummary.saved"));
     return SUCCESS;
   }

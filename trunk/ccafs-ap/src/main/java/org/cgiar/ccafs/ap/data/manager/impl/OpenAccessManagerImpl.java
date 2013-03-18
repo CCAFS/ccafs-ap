@@ -8,10 +8,14 @@ import java.util.List;
 import java.util.Map;
 
 import com.google.inject.Inject;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 
 public class OpenAccessManagerImpl implements OpenAccessManager {
 
+  // Logger
+  private static final Logger LOG = LoggerFactory.getLogger(OpenAccessManagerImpl.class);
   private OpenAccessDAO openAccessDAO;
 
   @Inject
@@ -37,6 +41,7 @@ public class OpenAccessManagerImpl implements OpenAccessManager {
       openAccessList[i].setId(Integer.parseInt(openAccessDataList.get(i).get("id")));
       openAccessList[i].setName(openAccessDataList.get(i).get("name"));
     }
+    LOG.debug("Open acces list loaded successfully.");
     return openAccessList;
   }
 

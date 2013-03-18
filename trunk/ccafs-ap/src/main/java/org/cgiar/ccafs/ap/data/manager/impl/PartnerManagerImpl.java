@@ -10,10 +10,14 @@ import java.util.List;
 import java.util.Map;
 
 import com.google.inject.Inject;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 
 public class PartnerManagerImpl implements PartnerManager {
 
+  // Logger
+  private static final Logger LOG = LoggerFactory.getLogger(PartnerManagerImpl.class);
   private PartnerDAO partnerDAO;
 
   @Inject
@@ -39,8 +43,10 @@ public class PartnerManagerImpl implements PartnerManager {
 
     }
     if (partnerList.size() == 0) {
+      LOG.warn("Partner list loaded is empty");
       return null;
     }
+    LOG.debug("Partner list loaded successfully");
     return partners;
   }
 
@@ -53,8 +59,10 @@ public class PartnerManagerImpl implements PartnerManager {
       partner.setId(id);
       partner.setAcronym(partnerData.get("acronym"));
       partner.setName(partnerData.get("name"));
+      LOG.debug("Loaded information about partner identified by {}", id);
       return partner;
     }
+    LOG.warn("Partner identified by {} wasn't found", id);
     return null;
   }
 }
