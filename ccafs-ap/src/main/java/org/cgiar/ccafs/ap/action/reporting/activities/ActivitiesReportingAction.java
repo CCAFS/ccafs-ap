@@ -98,8 +98,8 @@ public class ActivitiesReportingAction extends BaseAction {
   public void prepare() throws Exception {
     super.prepare();
     currentActivities = activityManager.getActivities(config.getCurrentYear(), this.getCurrentUser());
-    LOG.info("User {} charge the activity list for the year {}", String.valueOf(config.getCurrentYear()), this
-      .getCurrentUser().getEmail());
+    LOG.info("User {} charge the activity list for the year {}", this.getCurrentUser().getEmail(),
+      String.valueOf(config.getCurrentYear()));
     activityStatuses = new String[currentActivities.length];
     // Calculate the status of each activity.
     for (int c = 0; c < currentActivities.length; c++) {

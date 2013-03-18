@@ -1,5 +1,6 @@
 package org.cgiar.ccafs.ap.data.manager.impl;
 
+import org.cgiar.ccafs.ap.data.dao.TLOutputSummaryDAO;
 import org.cgiar.ccafs.ap.data.manager.TLOutputSummaryManager;
 import org.cgiar.ccafs.ap.data.model.Leader;
 import org.cgiar.ccafs.ap.data.model.Logframe;

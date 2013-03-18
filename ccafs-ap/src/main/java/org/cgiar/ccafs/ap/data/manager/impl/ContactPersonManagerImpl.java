@@ -8,10 +8,14 @@ import java.util.List;
 import java.util.Map;
 
 import com.google.inject.Inject;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 
 public class ContactPersonManagerImpl implements ContactPersonManager {
 
+  // Logger
+  private static final Logger LOG = LoggerFactory.getLogger(ContactPersonManagerImpl.class);
   private ContactPersonDAO contactPersonDAO;
 
   @Inject
@@ -35,6 +39,7 @@ public class ContactPersonManagerImpl implements ContactPersonManager {
     if (contactPersonsDB.size() == 0) {
       return null;
     }
+    LOG.debug("Contact persons for activity {} loaded.", activityID);
     return contactPersons;
   }
 

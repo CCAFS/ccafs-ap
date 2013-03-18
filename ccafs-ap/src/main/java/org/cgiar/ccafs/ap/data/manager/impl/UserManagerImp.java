@@ -9,10 +9,14 @@ import org.cgiar.ccafs.ap.data.model.User;
 import java.util.Map;
 
 import com.google.inject.Inject;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 
 public class UserManagerImp implements UserManager {
 
+  // Logger
+  private static final Logger LOG = LoggerFactory.getLogger(UserManagerImp.class);
   private UserDAO userDAO;
 
   @Inject
@@ -38,8 +42,10 @@ public class UserManagerImp implements UserManager {
       leaderType.setName(userData.get("leader_type_name"));
       leader.setLeaderType(leaderType);
       user.setLeader(leader);
+      LOG.debug("Information related to the user {} successfully loaded.", email);
       return user;
     }
+    LOG.warn("Information related to the user {} wasn't found.", email);
     return null;
   }
 

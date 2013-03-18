@@ -10,10 +10,14 @@ import java.util.HashMap;
 import java.util.Map;
 
 import com.google.inject.Inject;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 
 public class RPLSynthesisReportManagerImpl implements RPLSynthesisReportManager {
 
+  // Logger
+  private static final Logger LOG = LoggerFactory.getLogger(RPLSynthesisReportManagerImpl.class);
   private RPLSynthesisReportDAO synthesisReportDAO;
 
   @Inject
@@ -36,6 +40,7 @@ public class RPLSynthesisReportManagerImpl implements RPLSynthesisReportManager 
       synthesisReport.setLeader(leader);
       synthesisReport.setLogframe(logframe);
     }
+    LOG.debug("Loaded the synthesis report for leader {} and logframe {}", leader.getId(), logframe.getId());
     return synthesisReport;
   }
 
@@ -49,6 +54,7 @@ public class RPLSynthesisReportManagerImpl implements RPLSynthesisReportManager 
     synthesisData.put("decision_support", synthesisReport.getDecisionSupport());
     synthesisData.put("activity_leader_id", leader.getId());
     synthesisData.put("logframe_id", logframe.getId());
+    LOG.debug("Sent a request to save the synthesis report made by leader {} into the DAO", leader.getId());
     return synthesisReportDAO.saveRPLSynthesisReport(synthesisData);
   }
 }

@@ -10,10 +10,14 @@ import java.util.List;
 import java.util.Map;
 
 import com.google.inject.Inject;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 
 public class ActivityCountryManagerImpl implements ActivityCountryManager {
 
+  // Logger
+  private static final Logger LOG = LoggerFactory.getLogger(ActivityCountryManagerImpl.class);
   private ActivityCountryDAO activityCountryDAO;
 
   @Inject
@@ -35,6 +39,7 @@ public class ActivityCountryManagerImpl implements ActivityCountryManager {
       clTemp.setDetails(CData.get("details"));
       activityCountries.add(clTemp);
     }
+    LOG.info("Activity countries loaded for the activity {}.", activityID);
     return activityCountries;
   }
 }

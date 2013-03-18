@@ -10,10 +10,14 @@ import java.util.List;
 import java.util.Map;
 
 import com.google.inject.Inject;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 
 public class CaseStudyCountriesManagerImpl implements CaseStudyCountriesManager {
 
+  // Logger
+  private static final Logger LOG = LoggerFactory.getLogger(CaseStudyCountriesManagerImpl.class);
   private CaseStudyCountriesDAO caseStudyCountriesDAO;
 
   @Inject
@@ -35,6 +39,7 @@ public class CaseStudyCountriesManagerImpl implements CaseStudyCountriesManager 
       caseStudyCountries.add(temporalCountry);
     }
 
+    LOG.debug("Case study countries loaded for case study {}.", caseStudy.getId());
     return caseStudyCountries;
   }
 }

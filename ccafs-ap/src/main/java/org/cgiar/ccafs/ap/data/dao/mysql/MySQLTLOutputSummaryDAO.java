@@ -1,7 +1,7 @@
 package org.cgiar.ccafs.ap.data.dao.mysql;
 
 import org.cgiar.ccafs.ap.data.dao.DAOManager;
-import org.cgiar.ccafs.ap.data.manager.impl.TLOutputSummaryDAO;
+import org.cgiar.ccafs.ap.data.dao.TLOutputSummaryDAO;
 
 import java.sql.Connection;
 import java.sql.ResultSet;

@@ -9,10 +9,14 @@ import org.cgiar.ccafs.ap.data.model.Outcome;
 import java.util.List;
 
 import com.google.inject.Inject;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 
 public class OutcomesReportingAction extends BaseAction {
 
+  // Logger
+  private static final Logger LOG = LoggerFactory.getLogger(OutcomesReportingAction.class);
   private static final long serialVersionUID = -1903471529414936807L;
 
   // Managers
@@ -34,10 +38,13 @@ public class OutcomesReportingAction extends BaseAction {
   @Override
   public void prepare() throws Exception {
     super.prepare();
+    LOG.info("The user {} loads the outcomes section.", getCurrentUser().getEmail());
     outcomes = outcomeManager.getOutcomes(this.getCurrentUser().getLeader(), this.getCurrentLogframe());
 
     // Remove all outcomes so they can be added again in the save method.
     if (this.getRequest().getMethod().equalsIgnoreCase("post")) {
+      LOG.debug("The outcomes for leader {} have been deleted from the model to save them later", getCurrentUser()
+        .getLeader().getId());
       outcomes.clear();
     }
   }
@@ -51,11 +58,14 @@ public class OutcomesReportingAction extends BaseAction {
         boolean added =
           outcomeManager.addOutcomes(outcomes, this.getCurrentUser().getLeader(), this.getCurrentLogframe());
         if (added) {
+          LOG.info("The user {} saved the outcomes for the leader {}.", getCurrentUser().getEmail(), getCurrentUser()
+            .getLeader().getId());
           addActionMessage(getText("saving.success", new String[] {getText("reporting.outcomes")}));
           return SUCCESS;
         }
       }
     }
+    LOG.warn("There was an error saving the outcomes for the leader {}", getCurrentUser().getLeader());
     addActionError(getText("saving.problem"));
     return INPUT;
   }

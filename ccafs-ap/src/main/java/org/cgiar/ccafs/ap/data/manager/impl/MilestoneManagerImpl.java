@@ -1,7 +1,5 @@
 package org.cgiar.ccafs.ap.data.manager.impl;
 
-import java.util.Map;
-
 import org.cgiar.ccafs.ap.data.dao.MilestoneDAO;
 import org.cgiar.ccafs.ap.data.manager.MilestoneManager;
 import org.cgiar.ccafs.ap.data.model.Logframe;
@@ -10,11 +8,17 @@ import org.cgiar.ccafs.ap.data.model.Objective;
 import org.cgiar.ccafs.ap.data.model.Output;
 import org.cgiar.ccafs.ap.data.model.Theme;
 
+import java.util.Map;
+
 import com.google.inject.Inject;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 
 public class MilestoneManagerImpl implements MilestoneManager {
 
+  // Logger
+  private static final Logger LOG = LoggerFactory.getLogger(MilestoneManagerImpl.class);
   private MilestoneDAO milestoneDAO;
 
   @Inject
@@ -59,9 +63,11 @@ public class MilestoneManagerImpl implements MilestoneManager {
       milestone.setDescription(milestoneDB.get("description"));
       milestone.setOutput(output);
 
+      LOG.debug("Milestone {} loaded successfully.", milestoneID);
       return milestone;
     }
+
+    LOG.warn("Milestone identified by {} wan't found", milestoneID);
     return null;
   }
-
 }

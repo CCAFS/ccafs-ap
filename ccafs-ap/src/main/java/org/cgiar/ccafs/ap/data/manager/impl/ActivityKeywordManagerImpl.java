@@ -10,10 +10,14 @@ import java.util.List;
 import java.util.Map;
 
 import com.google.inject.Inject;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 
 public class ActivityKeywordManagerImpl implements ActivityKeywordManager {
 
+  // Logger
+  private static final Logger LOG = LoggerFactory.getLogger(ActivityKeywordManagerImpl.class);
   private ActivityKeywordDAO keywordDAO;
 
   @Inject
@@ -37,6 +41,7 @@ public class ActivityKeywordManagerImpl implements ActivityKeywordManager {
 
       activityKeywords.add(activityKeywordTemp);
     }
+    LOG.debug("Keywords loaded for the activity {}.", activityID);
     return activityKeywords;
   }
 

@@ -11,10 +11,14 @@ import java.util.List;
 import java.util.Map;
 
 import com.google.inject.Inject;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 
 public class ActivityBenchmarkSiteManagerImpl implements ActivityBenchmarkSiteManager {
 
+  // Logger
+  private static final Logger LOG = LoggerFactory.getLogger(ActivityBenchmarkSiteManagerImpl.class);
   private ActivityBenchmarkSiteDAO activityBSDAO;
 
   @Inject
@@ -44,6 +48,7 @@ public class ActivityBenchmarkSiteManagerImpl implements ActivityBenchmarkSiteMa
 
       benchmarkSites.add(bsLocationTemp);
     }
+    LOG.debug("Benchmarks sites for the activity {} was loaded.", activityID);
     return benchmarkSites;
   }
 }

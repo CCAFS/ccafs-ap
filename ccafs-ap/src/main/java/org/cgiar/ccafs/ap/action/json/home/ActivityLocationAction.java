@@ -1,7 +1,6 @@
 package org.cgiar.ccafs.ap.action.json.home;
 
 import org.cgiar.ccafs.ap.action.BaseAction;
-import org.cgiar.ccafs.ap.action.reporting.activities.DeliverablesReportingAction;
 import org.cgiar.ccafs.ap.config.APConfig;
 import org.cgiar.ccafs.ap.config.APConstants;
 import org.cgiar.ccafs.ap.data.manager.ActivityBenchmarkSiteManager;
@@ -26,10 +25,9 @@ import org.slf4j.LoggerFactory;
 
 public class ActivityLocationAction extends BaseAction {
 
+  // Logger
+  private static final Logger LOG = LoggerFactory.getLogger(ActivityLocationAction.class);
   private static final long serialVersionUID = -7910041519418474107L;
-
-  // Loggin
-  private static final Logger LOG = LoggerFactory.getLogger(DeliverablesReportingAction.class);
 
   // Managers
   private ActivityManager activityManager;

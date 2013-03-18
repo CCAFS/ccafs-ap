@@ -1,4 +1,4 @@
-package org.cgiar.ccafs.ap.data.manager.impl;
+package org.cgiar.ccafs.ap.data.dao;
 
 import org.cgiar.ccafs.ap.data.dao.mysql.MySQLTLOutputSummaryDAO;
 

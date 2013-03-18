@@ -10,10 +10,13 @@ import java.util.List;
 import java.util.Map;
 
 import com.google.inject.Inject;
-
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 public class ThemeManagerImpl implements ThemeManager {
 
+  // Logger
+  private static final Logger LOG = LoggerFactory.getLogger(ThemeManagerImpl.class);
   private ThemeDAO themeDAO;
 
   @Inject
@@ -32,8 +35,10 @@ public class ThemeManagerImpl implements ThemeManager {
         themes[c].setCode(themesDB.get(c).get("code"));
         themes[c].setDescription(themesDB.get(c).get("description"));
       }
+      LOG.debug("Loaded the theme list successfully");
       return themes;
     }
+    LOG.debug("Theme list loaded is empty");
     return null;
   }
 
@@ -49,8 +54,10 @@ public class ThemeManagerImpl implements ThemeManager {
         themes[c].setDescription(themesDB.get(c).get("description"));
         themes[c].setLogframe(logframe);
       }
+      LOG.debug("Theme list for logframe {} loaded successfully", logframe.getId());
       return themes;
     }
+    LOG.warn("Theme list for logframe {} loaded is empty", logframe.getId());
     return null;
   }
 

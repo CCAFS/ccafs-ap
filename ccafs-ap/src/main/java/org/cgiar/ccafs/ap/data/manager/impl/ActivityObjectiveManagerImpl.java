@@ -8,10 +8,14 @@ import java.util.List;
 import java.util.Map;
 
 import com.google.inject.Inject;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 
 public class ActivityObjectiveManagerImpl implements ActivityObjectiveManager {
 
+  // Logger
+  private static final Logger LOG = LoggerFactory.getLogger(ActivityObjectiveManagerImpl.class);
   ActivityObjectiveDAO activityObjectiveDAO;
 
   @Inject
@@ -29,6 +33,7 @@ public class ActivityObjectiveManagerImpl implements ActivityObjectiveManager {
       activityObjectives[c].setId(Integer.parseInt(activityObjectivesDataList.get(c).get("id")));
       activityObjectives[c].setDescription(activityObjectivesDataList.get(c).get("description"));
     }
+    LOG.debug("The activity objectives for the activity {} loaded.", activityID);
     return activityObjectives;
   }
 }

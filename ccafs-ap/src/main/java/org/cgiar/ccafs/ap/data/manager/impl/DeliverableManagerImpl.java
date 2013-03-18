@@ -14,10 +14,14 @@ import java.util.List;
 import java.util.Map;
 
 import com.google.inject.Inject;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 
 public class DeliverableManagerImpl implements DeliverableManager {
 
+  // Logger
+  private static final Logger LOG = LoggerFactory.getLogger(DeliverableManagerImpl.class);
   private DeliverableDAO deliverableDAO;
   private FileFormatDAO fileFormatDAO;
 
@@ -70,10 +74,12 @@ public class DeliverableManagerImpl implements DeliverableManager {
         // lets add the file format list.
         boolean fileFormatsAdded = fileFormatDAO.addFileFormats(deliverableId, deliverable.getFileFormatsIds());
         if (!fileFormatsAdded) {
+          LOG.warn("There was a problem saving the file formats for the deliverable {}.", deliverableId);
           return false;
         }
       }
     }
+    LOG.debug("The deliverable {} was successfully saved", deliverableId);
     return true;
   }
 
@@ -107,6 +113,7 @@ public class DeliverableManagerImpl implements DeliverableManager {
         deliverable.setType(type);
 
         // File Format
+        LOG.debug("Getting file formats for deliverable {}.", deliverable.getId());
         fileFormatsDB = fileFormatDAO.getFileFormats(deliverable.getId());
 
         if (fileFormatsDB != null) {
@@ -121,6 +128,7 @@ public class DeliverableManagerImpl implements DeliverableManager {
         }
         deliverables.add(deliverable);
       }
+      LOG.debug("Loaded deliverables for activity {}.", activityId);
       return deliverables;
     } else {
       return null;
@@ -129,6 +137,7 @@ public class DeliverableManagerImpl implements DeliverableManager {
 
   @Override
   public boolean removeNotExpected(int activityID) {
+    LOG.debug("Sent the request to delete the not expected deliverables related to the activity {}.", activityID);
     return deliverableDAO.removeNotExpected(activityID);
   }
 

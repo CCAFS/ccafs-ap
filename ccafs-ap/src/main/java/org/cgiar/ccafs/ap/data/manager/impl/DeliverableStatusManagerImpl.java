@@ -8,10 +8,14 @@ import java.util.List;
 import java.util.Map;
 
 import com.google.inject.Inject;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 
 public class DeliverableStatusManagerImpl implements DeliverableStatusManager {
 
+  // Logger
+  private static final Logger LOG = LoggerFactory.getLogger(DeliverableStatusManagerImpl.class);
   private DeliverableStatusDAO deliverableStatusDAO;
 
   @Inject
@@ -32,9 +36,11 @@ public class DeliverableStatusManagerImpl implements DeliverableStatusManager {
     }
 
     if (deliverableStatusList.size() > 0) {
+      LOG.debug("Deliverable status list loaded.");
       return deliverableStatus;
     }
 
+    LOG.warn("Deliverable status list loaded is empty.");
     return null;
   }
 
@@ -50,6 +56,7 @@ public class DeliverableStatusManagerImpl implements DeliverableStatusManager {
 
   @Override
   public boolean setDeliverableStatus(int id, DeliverableStatus status) {
+    LOG.debug("Sent a request to save the status for deliverable {} into the DAO", id);
     return deliverableStatusDAO.setDeliverableStatus(id, status.getId());
   }
 }

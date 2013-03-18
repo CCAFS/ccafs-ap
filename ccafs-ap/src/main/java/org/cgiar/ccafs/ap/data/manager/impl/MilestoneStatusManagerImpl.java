@@ -8,10 +8,13 @@ import java.util.List;
 import java.util.Map;
 
 import com.google.inject.Inject;
-
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 public class MilestoneStatusManagerImpl implements MilestoneStatusManager {
 
+  // Logger
+  private static final Logger LOG = LoggerFactory.getLogger(MilestoneStatusManagerImpl.class);
   MilestoneStatusDAO milestoneStatusDAO;
 
   @Inject
@@ -29,6 +32,7 @@ public class MilestoneStatusManagerImpl implements MilestoneStatusManager {
       milestoneStatus[c].setId(Integer.parseInt(milestoneStatusDataList.get(c).get("id")));
       milestoneStatus[c].setName(milestoneStatusDataList.get(c).get("status"));
     }
+    LOG.debug("Milestone status list loaded successfully");
     return milestoneStatus;
   }
 }

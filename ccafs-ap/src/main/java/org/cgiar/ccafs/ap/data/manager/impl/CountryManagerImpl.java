@@ -9,15 +9,30 @@ import java.util.List;
 import java.util.Map;
 
 import com.google.inject.Inject;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 
 public class CountryManagerImpl implements CountryManager {
 
+  // Logger
+  private static final Logger LOG = LoggerFactory.getLogger(CountryManagerImpl.class);
   private CountryDAO countryDAO;
 
   @Inject
   public CountryManagerImpl(CountryDAO countryDAO) {
     this.countryDAO = countryDAO;
+  }
+
+  @Override
+  public Country getCountry(String id) {
+    Map<String, String> countryData = countryDAO.getCountryInformation(id);
+
+    if (countryData == null) {
+      return null;
+    }
+    LOG.debug("Getting information about country identified by {}.", id);
+    return new Country(countryData.get("id"), countryData.get("name"));
   }
 
   @Override
@@ -36,8 +51,10 @@ public class CountryManagerImpl implements CountryManager {
     }
 
     if (countryDataList.size() > 0) {
+      LOG.debug("Country list loaded");
       return countryList;
     }
+    LOG.warn("Country list loaded is empty.");
     return null;
   }
 
@@ -52,16 +69,5 @@ public class CountryManagerImpl implements CountryManager {
       }
     }
     return countries;
-  }
-
-  @Override
-  public Country getCountry(String id) {
-    Map<String, String> countryData = countryDAO.getCountryInformation(id);
-
-    if (countryData == null) {
-      return null;
-    }
-    return new Country(countryData.get("id"), countryData.get("name"));
-
   }
 }
