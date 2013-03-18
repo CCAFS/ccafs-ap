@@ -87,7 +87,7 @@ public class CaseStudiesAction extends BaseAction {
    * @return the url where images are
    */
   public String getCaseStudiesImagesUrl() {
-    return config.getCaseStudiesImagesUrl() + "/" + getCurrentLogframe().getYear() + "/"
+    return config.getCaseStudiesImagesUrl() + "/" + getCurrentReportingLogframe().getYear() + "/"
       + getCurrentUser().getLeader().getAcronym() + "/";
   }
 
@@ -100,7 +100,7 @@ public class CaseStudiesAction extends BaseAction {
   }
 
   public int getCurrentYear() {
-    return config.getCurrentYear();
+    return config.getReportingCurrentYear();
   }
 
   public int getEndYear() {
@@ -116,7 +116,7 @@ public class CaseStudiesAction extends BaseAction {
    * @return complete path where the image is stored
    */
   private String getFolderPath(String imageName) {
-    return config.getCaseStudiesImagesPath() + File.separator + getCurrentLogframe().getYear() + File.separator
+    return config.getCaseStudiesImagesPath() + File.separator + getCurrentReportingLogframe().getYear() + File.separator
       + getCurrentUser().getLeader().getAcronym() + File.separator + imageName;
   }
 
@@ -124,7 +124,7 @@ public class CaseStudiesAction extends BaseAction {
   public void prepare() throws Exception {
     super.prepare();
     LOG.info("The user {} load the case study section", getCurrentUser().getEmail());
-    caseStudies = caseStudyManager.getCaseStudyList(getCurrentUser().getLeader(), getCurrentLogframe());
+    caseStudies = caseStudyManager.getCaseStudyList(getCurrentUser().getLeader(), getCurrentReportingLogframe());
     countryList = countryManager.getCountryList();
     caseStudyTypeList = caseStudyTypeManager.getCaseStudyTypes();
 
@@ -162,7 +162,7 @@ public class CaseStudiesAction extends BaseAction {
 
     // First, remove all the case studies from the database
     boolean deleted =
-      caseStudyManager.removeAllCaseStudies(getCurrentUser().getLeader().getId(), getCurrentLogframe().getId());
+      caseStudyManager.removeAllCaseStudies(getCurrentUser().getLeader().getId(), getCurrentReportingLogframe().getId());
     if (!deleted) {
       problem = true;
     } else {
@@ -182,7 +182,7 @@ public class CaseStudiesAction extends BaseAction {
         }
 
         boolean added =
-          caseStudyManager.saveCaseStudy(caseStudies.get(c), getCurrentUser().getLeader().getId(), getCurrentLogframe()
+          caseStudyManager.saveCaseStudy(caseStudies.get(c), getCurrentUser().getLeader().getId(), getCurrentReportingLogframe()
             .getId());
         if (!added) {
           problem = true;

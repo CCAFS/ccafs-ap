@@ -97,9 +97,9 @@ public class ActivitiesReportingAction extends BaseAction {
   @Override
   public void prepare() throws Exception {
     super.prepare();
-    currentActivities = activityManager.getActivities(config.getCurrentYear(), this.getCurrentUser());
+    currentActivities = activityManager.getActivities(config.getReportingCurrentYear(), this.getCurrentUser());
     LOG.info("User {} charge the activity list for the year {}", this.getCurrentUser().getEmail(),
-      String.valueOf(config.getCurrentYear()));
+      String.valueOf(config.getReportingCurrentYear()));
     activityStatuses = new String[currentActivities.length];
     // Calculate the status of each activity.
     for (int c = 0; c < currentActivities.length; c++) {

@@ -247,10 +247,10 @@ public class DeliverablesReportingAction extends BaseAction {
           // be check
 
           // Check if the deliverable year is not from past years
-          else if (deliverable.getYear() < getCurrentLogframe().getYear()) {
+          else if (deliverable.getYear() < getCurrentReportingLogframe().getYear()) {
             anyError = true;
             addFieldError("activity.deliverables[" + c + "].year",
-              getText("reporting.activityDeliverables.smallYearValidate") + getCurrentLogframe().getYear());
+              getText("reporting.activityDeliverables.smallYearValidate") + getCurrentReportingLogframe().getYear());
           }
 
           // Check if the deliverable year is not bigger than ccafs end

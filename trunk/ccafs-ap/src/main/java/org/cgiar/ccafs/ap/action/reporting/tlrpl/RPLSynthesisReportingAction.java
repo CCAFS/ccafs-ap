@@ -40,14 +40,14 @@ public class RPLSynthesisReportingAction extends BaseAction {
     LOG.info("The user {} loads the synthesis section for the leader {}.", getCurrentUser().getEmail(),
       getCurrentUser().getLeader().getId());
     synthesisReport =
-      synthesisReportManager.getRPLSynthesisReport(this.getCurrentUser().getLeader(), this.getCurrentLogframe());
+      synthesisReportManager.getRPLSynthesisReport(this.getCurrentUser().getLeader(), this.getCurrentReportingLogframe());
   }
 
   @Override
   public String save() {
     boolean saved =
       synthesisReportManager.saveRPLSynthesisReport(synthesisReport, this.getCurrentUser().getLeader(),
-        this.getCurrentLogframe());
+        this.getCurrentReportingLogframe());
     if (saved) {
       LOG.info("The user {} saved successfully the synthesis report for the leader {}.", getCurrentUser().getEmail(),
         getCurrentUser().getLeader().getId());

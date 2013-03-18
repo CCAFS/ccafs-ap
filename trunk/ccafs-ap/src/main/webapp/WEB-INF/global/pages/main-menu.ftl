@@ -4,7 +4,7 @@
     <a href="${baseUrl}/"><li [#if currentSection?? && currentSection == "home"] class="currentSection" [/#if]>[@s.text name="menu.home" /]</li></a>
     [#if logged]
       [#if currentUser.CP || currentUser.TL || currentUser.RPL || currentUser.PI || currentUser.admin ]
-        <a  href="javascript:void(0);" title="[@s.text name="menu.link.disabled" /]" >
+        <a  href="${baseUrl}/planning/activities.do" title="[@s.text name="menu.link.disabled" /]" >
           <li [#if currentSection?? && currentSection == "planning"] class="currentSection" [/#if]>[@s.text name="menu.planning" /]</li>
         </a>
       [/#if]

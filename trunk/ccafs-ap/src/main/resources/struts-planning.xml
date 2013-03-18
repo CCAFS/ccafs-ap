@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE struts PUBLIC "-//Apache Software Foundation//DTD Struts Configuration 2.3//EN" "http://struts.apache.org/dtds/struts-2.3.dtd">
+<struts>
+
+  <!-- Add addition packages and configuration here. -->
+  <package name="planning" namespace="/planning" extends="ccafsap-default">    
+    <default-action-ref name="activities" />
+
+    <!-- Sections -->
+    
+    <action name="activities" class="org.cgiar.ccafs.ap.action.planning.ActivitiesPlanningAction">
+      <interceptor-ref name="planningStack" />
+      <result name="input">/WEB-INF/planning/activities.ftl</result>
+    </action>
+
+  </package>
+</struts>

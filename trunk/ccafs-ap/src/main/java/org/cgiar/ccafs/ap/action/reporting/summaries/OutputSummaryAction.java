@@ -41,7 +41,7 @@ public class OutputSummaryAction extends BaseAction {
     LOG.info("User {} loads the outputs for the leader {}.", getCurrentUser().getEmail(), getCurrentUser().getLeader()
       .getId());
     // Get all the summary outputs objects corresponding to the activity leader and current logframe
-    outputSummaries = outputSummaryManager.getOutputSummaries(getCurrentUser().getLeader(), getCurrentLogframe());
+    outputSummaries = outputSummaryManager.getOutputSummaries(getCurrentUser().getLeader(), getCurrentReportingLogframe());
   }
 
   @Override

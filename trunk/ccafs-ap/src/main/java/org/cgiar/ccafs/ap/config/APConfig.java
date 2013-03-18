@@ -15,9 +15,15 @@ public class APConfig {
   public static final String MYSQL_PASSWORD = "mysql.password";
   public static final String MYSQL_DATABASE = "mysql.database";
   public static final String MYSQL_PORT = "mysql.port";
-  public static final String BASE_URL = "ccafsap.baseUrl";
-  public static final String CURRENT_YEAR = "ccafsap.currentYear";
-  public static final String END_YEAR = "ccafsap.endYear";
+
+  private static final String BASE_URL = "ccafsap.baseUrl";
+  private static final String REPORTING_CURRENT_YEAR = "ccafsap.reporting.currentYear";
+  private static final String PLANNING_CURRENT_YEAR = "ccafsap.planning.currentYear";
+  private static final String END_YEAR = "ccafsap.endYear";
+  private static final String GMAIL_USER = "gmail.user";
+  private static final String GMAIL_PASSWORD = "gmail.password";
+  private static final String FILE_CASE_STUDIES_IMAGE_URL = "file.caseStudiesImagesUrl";
+  private static final String FILE_CASE_STUDIES_IMAGE_PATH = "file.caseStudiesImagesPath";
 
   // Logging.
   private static final Logger LOG = LoggerFactory.getLogger(APConfig.class);
@@ -43,12 +49,6 @@ public class APConfig {
     while (base != null && base.endsWith("/")) {
       base = base.substring(0, base.length() - 1);
     }
-    /*
-     * if (!base.startsWith("https://")) {
-     * base = "http://" + base;
-     * return base;
-     * } else
-     */
     if (!base.startsWith("http://")) {
       base = "http://" + base;
       return base;
@@ -63,7 +63,7 @@ public class APConfig {
    */
   public String getCaseStudiesImagesPath() {
     try {
-      return properties.getPropertiesAsString("file.caseStudiesImagesPath");
+      return properties.getPropertiesAsString(FILE_CASE_STUDIES_IMAGE_PATH);
     } catch (Exception e) {
       LOG.error("there is not a path for the user images configured.");
     }
@@ -71,7 +71,7 @@ public class APConfig {
   }
 
   public String getCaseStudiesImagesUrl() {
-    String url = properties.getPropertiesAsString("file.caseStudiesImagesUrl");
+    String url = properties.getPropertiesAsString(FILE_CASE_STUDIES_IMAGE_URL);
     if (url == null) {
       LOG.error("There is not a url for case studies images configured");
       return null;
@@ -87,27 +87,13 @@ public class APConfig {
   }
 
   /**
-   * Get the current year value that is in the configuration file.
-   * 
-   * @return an integer identifying the current year.
-   */
-  public int getCurrentYear() {
-    try {
-      return properties.getPropertiesAsInt("ccafsap.currentYear");
-    } catch (Exception e) {
-      LOG.error("There is not a current year configured");
-    }
-    return -1;
-  }
-
-  /**
    * Get the end year value that is in the configuration file.
    * 
    * @return an integer identifying the end year.
    */
   public int getEndYear() {
     try {
-      return properties.getPropertiesAsInt("ccafsap.endYear");
+      return properties.getPropertiesAsInt(END_YEAR);
     } catch (Exception e) {
       LOG.error("there is not a end  year configured.");
     }
@@ -130,7 +116,7 @@ public class APConfig {
 
   public String getGmailPassword() {
     try {
-      return properties.getPropertiesAsString("gmail.password");
+      return properties.getPropertiesAsString(GMAIL_PASSWORD);
     } catch (Exception e) {
       LOG.error("there is not a Gmail password configured.");
     }
@@ -139,11 +125,39 @@ public class APConfig {
 
   public String getGmailUsername() {
     try {
-      return properties.getPropertiesAsString("gmail.user");
+      return properties.getPropertiesAsString(GMAIL_USER);
     } catch (Exception e) {
       LOG.error("there is not a Gmail user configured.");
     }
     return null;
+  }
+
+  /**
+   * Get the current year value that is being used in the planning stage.
+   * 
+   * @return an integer identifying the current year.
+   */
+  public int getPlanningCurrentYear() {
+    try {
+      return properties.getPropertiesAsInt(PLANNING_CURRENT_YEAR);
+    } catch (Exception e) {
+      LOG.error("There is not a current year configured for the planning section.");
+    }
+    return -1;
+  }
+
+  /**
+   * Get the current year value that is being used in the reporting stage.
+   * 
+   * @return an integer identifying the current year.
+   */
+  public int getReportingCurrentYear() {
+    try {
+      return properties.getPropertiesAsInt(REPORTING_CURRENT_YEAR);
+    } catch (Exception e) {
+      LOG.error("There is not a current year configured for the reporting section.");
+    }
+    return -1;
   }
 
 }

@@ -39,7 +39,7 @@ public class OutcomesReportingAction extends BaseAction {
   public void prepare() throws Exception {
     super.prepare();
     LOG.info("The user {} loads the outcomes section.", getCurrentUser().getEmail());
-    outcomes = outcomeManager.getOutcomes(this.getCurrentUser().getLeader(), this.getCurrentLogframe());
+    outcomes = outcomeManager.getOutcomes(this.getCurrentUser().getLeader(), this.getCurrentReportingLogframe());
 
     // Remove all outcomes so they can be added again in the save method.
     if (this.getRequest().getMethod().equalsIgnoreCase("post")) {
@@ -53,10 +53,11 @@ public class OutcomesReportingAction extends BaseAction {
   public String save() {
     if (outcomes.size() > 0) {
       // Remove all outcomes from the database.
-      boolean removed = outcomeManager.removeOutcomes(this.getCurrentUser().getLeader(), this.getCurrentLogframe());
+      boolean removed =
+        outcomeManager.removeOutcomes(this.getCurrentUser().getLeader(), this.getCurrentReportingLogframe());
       if (removed) {
         boolean added =
-          outcomeManager.addOutcomes(outcomes, this.getCurrentUser().getLeader(), this.getCurrentLogframe());
+          outcomeManager.addOutcomes(outcomes, this.getCurrentUser().getLeader(), this.getCurrentReportingLogframe());
         if (added) {
           LOG.info("The user {} saved the outcomes for the leader {}.", getCurrentUser().getEmail(), getCurrentUser()
             .getLeader().getId());

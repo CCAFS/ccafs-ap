@@ -42,7 +42,7 @@ public class TLOutputSummaryReportingAction extends BaseAction {
     LOG.info("The user {} loads the TL output summary for the leader {}.", getCurrentUser().getEmail(),
       getCurrentUser().getLeader().getId());
     tlOutputSummaries =
-      tlOutputManager.getTLOutputSummaries(this.getCurrentUser().getLeader(), this.getCurrentLogframe());
+      tlOutputManager.getTLOutputSummaries(this.getCurrentUser().getLeader(), this.getCurrentReportingLogframe());
   }
 
   @Override

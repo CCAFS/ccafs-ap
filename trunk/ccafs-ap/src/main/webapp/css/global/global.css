@@ -293,6 +293,10 @@ nav#secondaryMenu ul a.currentReportingSection {
   padding: 20px;
 }
 
+.fullContent {
+  padding: 10px;
+}
+
 .halfContent {
   float: right;
   padding: 10px;
@@ -420,34 +424,6 @@ nav#secondaryMenu ul a.currentReportingSection {
   padding: 10px;
 }
 
-
-/********* Activity Reporting Sub Menu **********/
-#stageMenu {
-  display: block;
-  margin: 12px;
-  text-align: center;
-}
-
-#stageMenu a {
-  background-image: url("../../images/global/sub-menu.png"); 
-  background-repeat: no-repeat;
-  display: inline-block; 
-  color: black;
-  padding: 5px 3px;
-  height: 34px;
-  width: 145px;
-}
-
-#stageMenu a.currentReportingSection {
-  background-image: url("../../images/global/sub-menu-selected.png"); 
-  font-weight: bold;
-}
-
-#stageMenu a li {
-  display: inline-block;
-  margin-top: 9px;
-}
-
 /************* LOGIN *****************/
 #loginFormContainer {
   margin: 10px 0;
@@ -501,6 +477,46 @@ nav#secondaryMenu ul a.currentReportingSection {
   border-bottom: 1px solid #9D9D9D;
 }
 
+/***** PLANNING *****/
+#activityListPlanning #addActivity {
+  display: block;
+  margin-top: 20px;
+}
+
+#activityListPlanning #addActivity a {
+  background-color: #067305;
+  color: white;  
+  padding: 5px;
+  width: 110px;  
+}
+
+/****** REPORTING **********/
+/********* Activity Reporting Sub Menu **********/
+#stageMenu {
+  display: block;
+  margin: 12px;
+  text-align: center;
+}
+
+#stageMenu a {
+  background-image: url("../../images/global/sub-menu.png"); 
+  background-repeat: no-repeat;
+  display: inline-block; 
+  color: black;
+  padding: 5px 3px;
+  height: 34px;
+  width: 145px;
+}
+
+#stageMenu a.currentReportingSection {
+  background-image: url("../../images/global/sub-menu-selected.png"); 
+  font-weight: bold;
+}
+
+#stageMenu a li {
+  display: inline-block;
+  margin-top: 9px;
+}
 /*************** HOME ****************/
 
 /* Activities */
