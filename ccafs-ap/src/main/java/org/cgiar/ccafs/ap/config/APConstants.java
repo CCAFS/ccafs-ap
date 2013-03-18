@@ -1,7 +1,7 @@
 package org.cgiar.ccafs.ap.config;
 
 /**
- * All Constants shoud be here.
+ * All Constants should be here.
  * 
  * @author hftobon
  */

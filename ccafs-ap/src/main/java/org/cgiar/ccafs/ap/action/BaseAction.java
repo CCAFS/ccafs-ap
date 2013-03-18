@@ -88,12 +88,23 @@ public class BaseAction extends ActionSupport implements Preparable, SessionAwar
   }
 
   /**
-   * Get the current logframe based on the variable ccafsap.currentYear which is in the configuration file.
+   * Get the current planning logframe based on the variable ccafsap.planning.currentYear which is in the configuration
+   * file.
    * 
    * @return a Logframe object or null if no logframe is found.
    */
-  public Logframe getCurrentLogframe() {
-    return logframeManager.getLogframeByYear(config.getCurrentYear());
+  public Logframe getCurrentPlanningLogframe() {
+    return logframeManager.getLogframeByYear(config.getPlanningCurrentYear());
+  }
+
+  /**
+   * Get the current reporting logframe based on the variable ccafsap.reporting.currentYear which is in the
+   * configuration file.
+   * 
+   * @return a Logframe object or null if no logframe is found.
+   */
+  public Logframe getCurrentReportingLogframe() {
+    return logframeManager.getLogframeByYear(config.getReportingCurrentYear());
   }
 
   /**

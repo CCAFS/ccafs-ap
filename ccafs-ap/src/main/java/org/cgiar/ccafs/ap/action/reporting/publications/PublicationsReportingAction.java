@@ -78,7 +78,9 @@ public class PublicationsReportingAction extends BaseAction {
   public void prepare() throws Exception {
     super.prepare();
     LOG.info("Ther user {} load the publication section.", getCurrentUser().getEmail());
-    publications = publicationManager.getPublications(this.getCurrentUser().getLeader(), this.getCurrentLogframe());
+    publications =
+      publicationManager.getPublications(this.getCurrentUser().getLeader(), this.getCurrentReportingLogframe());
+
     publicationTypes = publicationTypeManager.getPublicationTypes();
     publicationAccessList = openAccessManager.getOpenAccessList();
 
@@ -87,7 +89,7 @@ public class PublicationsReportingAction extends BaseAction {
     publicationTypeAccessNeed = new int[1];
     publicationTypeAccessNeed[0] = publicationTypes[0].getId();
 
-    Theme[] themes = themeManager.getThemes(this.getCurrentLogframe());
+    Theme[] themes = themeManager.getThemes(this.getCurrentReportingLogframe());
     themeList = new HashMap<>();
     for (Theme theme : themes) {
       themeList.put(theme.getId(), getText("reporting.publications.Theme") + " " + theme.getCode());
@@ -104,10 +106,11 @@ public class PublicationsReportingAction extends BaseAction {
   public String save() {
     // Remove all publication from the database.
     boolean removed =
-      publicationManager.removeAllPublications(this.getCurrentUser().getLeader(), this.getCurrentLogframe());
+      publicationManager.removeAllPublications(this.getCurrentUser().getLeader(), this.getCurrentReportingLogframe());
     if (removed) {
       boolean added =
-        publicationManager.savePublications(publications, this.getCurrentLogframe(), this.getCurrentUser().getLeader());
+        publicationManager.savePublications(publications, this.getCurrentReportingLogframe(), this.getCurrentUser()
+          .getLeader());
       if (added) {
         LOG.info("The user {} save the publications for the leader.", getCurrentUser().getEmail(), getCurrentUser()
           .getLeader().getId());

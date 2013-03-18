@@ -52,7 +52,7 @@ public class TLRPLMilestoneReportingAction extends BaseAction {
 
     // Get all the milestone reports
     milestoneReports =
-      milestoneReportManager.getMilestoneReports(getCurrentUser().getLeader().getId(), getCurrentLogframe().getId());
+      milestoneReportManager.getMilestoneReports(getCurrentUser().getLeader().getId(), getCurrentReportingLogframe().getId());
   }
 
   @Override

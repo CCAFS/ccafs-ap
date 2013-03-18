@@ -1,11 +1,9 @@
 [#ftl]
-[#assign title = "Activity List" /]
+[#assign title = "Activity List (Planning)" /]
 [#assign globalLibs = ["jquery", "dataTable", "noty"] /]
-[#assign customJS = ["${baseUrl}/js/reporting/activity-list.js"] /]
+[#assign customJS = ["${baseUrl}/js/planning/activity-list.js"] /]
 [#assign customCSS = ["${baseUrl}/css/libs/dataTables/jquery.dataTables-1.9.4.css", "${baseUrl}/css/reporting/customDataTable.css"] /]
-[#assign currentSection = "reporting" /]
-[#assign currentReportingSection = "activities" /]
-[#assign currentStage = "status" /]
+[#assign currentSection = "planning" /]
 [#assign userRole = "${currentUser.role}"]
 
 
@@ -13,16 +11,14 @@
 [#include "/WEB-INF/global/pages/main-menu.ftl" /]
 [#import "/WEB-INF/global/macros/utils.ftl" as utilities/]
     
-<section class="content">
+<section id="activityListPlanning" class="content">
   <div class="helpMessage">
     <img src="${baseUrl}/images/global/icon-help.png" />
-    <p>[@s.text name="reporting.activityList.help" /]</p>
+    <p>// TODO... </p>
   </div>
   
-  [#include "/WEB-INF/global/pages/reporting-secondary-menu.ftl" /]
-  
-  <article class="halfContent">
-    <h1>[#if currentUser.leader??]${currentUser.leader.name}[/#if] ([@s.text name="reporting.activityList.activities" /] ${currentReportingLogframe.year?c})</h1>    
+  <article class="fullContent">
+    <h1>[#if currentUser.leader??]${currentUser.leader.name}[/#if] ([@s.text name="reporting.activityList.activities" /] ${currentPlanningLogframe.year?c})</h1>    
     <table id="activityList">
       <thead>
         <tr>
@@ -62,12 +58,13 @@
               [/#if]
               </td>
           </tr>
-        [/#list]  
+        [/#list]
       </tbody>
-	<ul>
-    </ul>
     </table>
-    
+    <div class="clearfix"></div>
+    <div id="addActivity">
+      <a href="${baseUrl}/planning/addActivity.do">Add new activity</a>
+    </div>
   </article>
   </section>
 [#include "/WEB-INF/global/pages/footer.ftl"]
