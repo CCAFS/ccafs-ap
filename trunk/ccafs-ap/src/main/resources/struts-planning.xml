@@ -12,6 +12,14 @@
       <interceptor-ref name="planningStack" />
       <result name="input">/WEB-INF/planning/activities.ftl</result>
     </action>
+    
+    <action name="addActivity" class="org.cgiar.ccafs.ap.action.planning.AddActivityPlanningAction">
+      <interceptor-ref name="planningStack" />
+      <interceptor-ref name="requireAdmin" />
+      <result name="cancel" type="redirectAction">activities</result>
+      <result name="input">/WEB-INF/planning/addActivity.ftl</result>
+      <result name="success" type="redirectAction">activities</result>
+    </action>
 
   </package>
 </struts>

@@ -17,6 +17,13 @@ public interface LeaderManager {
   public Leader getActivityLeader(int activityID);
 
   /**
+   * Get all activity leaders.
+   * 
+   * @return an array of Leader objects.
+   */
+  public Leader[] getAllLeaders();
+
+  /**
    * Find the Leader of a given user id.
    * 
    * @param activityID - user identifier.
