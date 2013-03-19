@@ -2,7 +2,7 @@
 [#assign title = "Activity List" /]
 [#assign globalLibs = ["jquery", "dataTable", "noty"] /]
 [#assign customJS = ["${baseUrl}/js/reporting/activity-list.js"] /]
-[#assign customCSS = ["${baseUrl}/css/libs/dataTables/jquery.dataTables-1.9.4.css", "${baseUrl}/css/reporting/customDataTable.css"] /]
+[#assign customCSS = ["${baseUrl}/css/libs/dataTables/jquery.dataTables-1.9.4.css", "${baseUrl}/css/global/customDataTable.css"] /]
 [#assign currentSection = "reporting" /]
 [#assign currentReportingSection = "activities" /]
 [#assign currentStage = "status" /]

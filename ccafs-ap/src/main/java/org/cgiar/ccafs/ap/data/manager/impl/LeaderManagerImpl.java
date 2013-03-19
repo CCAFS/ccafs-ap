@@ -5,6 +5,7 @@ import org.cgiar.ccafs.ap.data.manager.LeaderManager;
 import org.cgiar.ccafs.ap.data.model.Leader;
 import org.cgiar.ccafs.ap.data.model.LeaderType;
 
+import java.util.List;
 import java.util.Map;
 
 import com.google.inject.Inject;
@@ -38,6 +39,27 @@ public class LeaderManagerImpl implements LeaderManager {
     }
     LOG.warn("Activity leader wasn't found for activity {}.", activityID);
     return null;
+  }
+
+  @Override
+  public Leader[] getAllLeaders() {
+    List<Map<String, String>> leadersData = leaderDAO.getAllLeaders();
+    if (leadersData.size() > 0) {
+      Leader[] leaders = new Leader[leadersData.size()];
+      for (int c = 0; c < leadersData.size(); c++) {
+        leaders[c] = new Leader();
+        leaders[c].setId(Integer.parseInt(leadersData.get(c).get("id")));
+        leaders[c].setName(leadersData.get(c).get("name"));
+        leaders[c].setAcronym(leadersData.get(c).get("acronym"));
+        LeaderType leaderType = new LeaderType();
+        leaderType.setId(Integer.parseInt(leadersData.get(c).get("leader_type_id")));
+        leaderType.setName(leadersData.get(c).get("leader_type_name"));
+        leaders[c].setLeaderType(leaderType);
+      }
+      return leaders;
+    }
+    return null;
+
   }
 
   @Override

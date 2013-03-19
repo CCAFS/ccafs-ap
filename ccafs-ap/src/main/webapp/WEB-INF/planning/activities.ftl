@@ -2,9 +2,8 @@
 [#assign title = "Activity List (Planning)" /]
 [#assign globalLibs = ["jquery", "dataTable", "noty"] /]
 [#assign customJS = ["${baseUrl}/js/planning/activity-list.js"] /]
-[#assign customCSS = ["${baseUrl}/css/libs/dataTables/jquery.dataTables-1.9.4.css", "${baseUrl}/css/reporting/customDataTable.css"] /]
+[#assign customCSS = ["${baseUrl}/css/libs/dataTables/jquery.dataTables-1.9.4.css", "${baseUrl}/css/global/customDataTable.css"] /]
 [#assign currentSection = "planning" /]
-[#assign userRole = "${currentUser.role}"]
 
 
 [#include "/WEB-INF/global/pages/header.ftl" /]
@@ -18,15 +17,15 @@
   </div>
   
   <article class="fullContent">
-    <h1>[#if currentUser.leader??]${currentUser.leader.name}[/#if] ([@s.text name="reporting.activityList.activities" /] ${currentPlanningLogframe.year?c})</h1>    
+    <h1>[#if currentUser.leader??]${currentUser.leader.name}[/#if] ([@s.text name="planning.activityList.activities" /] ${currentPlanningLogframe.year?c})</h1>    
     <table id="activityList">
       <thead>
         <tr>
-          <th id="id">[@s.text name="reporting.activityList.id" /]</th>
-          <th id="activity">[@s.text name="reporting.activityList.activity" /]</th>
-          <th id="contactPerson">[@s.text name="reporting.activityList.contactPerson" /]</th>
-          <th id="theme">[@s.text name="reporting.activityList.milestone" /]</th>
-          <th id="status">[@s.text name="reporting.activityList.reportingStatus" /]</th>
+          <th id="id">[@s.text name="planning.activityList.id" /]</th>
+          <th id="activity">[@s.text name="planning.activityList.activity" /]</th>
+          <th id="contactPerson">[@s.text name="planning.activityList.contactPerson" /]</th>
+          <th id="theme">[@s.text name="planning.activityList.milestone" /]</th>
+          <th id="status">[@s.text name="planning.activityList.planningStatus" /]</th>
         </tr>
       </thead>
       <tbody>
@@ -45,7 +44,7 @@
               [#if activity.contactPersons??]
                 ${activity.contactPersons[0].name}
               [#else]
-                [@s.text name="reporting.activityList.contactPerson.empty" /]
+                [@s.text name="planning.activityList.contactPerson.empty" /]
               [/#if]
             </td>               
             <td>${activity.milestone.code}</td>
@@ -56,15 +55,17 @@
               [#else]
                 <img src="${baseUrl}/images/global/icon-complete.png" alt="Activity Completed" />
               [/#if]
-              </td>
+            </td>
           </tr>
         [/#list]
       </tbody>
     </table>
     <div class="clearfix"></div>
-    <div id="addActivity">
-      <a href="${baseUrl}/planning/addActivity.do">Add new activity</a>
-    </div>
+    [#if currentUser.admin]
+      <div id="addActivity">
+        <a href="${baseUrl}/planning/addActivity.do">Add new activity</a>
+      </div>
+    [/#if]
   </article>
   </section>
 [#include "/WEB-INF/global/pages/footer.ftl"]

@@ -12,7 +12,7 @@ import com.google.inject.Inject;
 
 public class ActivitiesPlanningAction extends BaseAction {
 
-  private static final long serialVersionUID = 9001775749549472317L;
+  private static final long serialVersionUID = 610099339078512575L;
 
   // Managers
   protected ActivityManager activityManager;

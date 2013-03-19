@@ -6,7 +6,9 @@ import org.cgiar.ccafs.ap.data.dao.LeaderDAO;
 import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import com.google.inject.Inject;
@@ -45,6 +47,32 @@ public class MySQLLeaderDAO implements LeaderDAO {
       LOG.error("There was an error getting the activity leader of an activity. \n{}", query, e);
     }
     return leaderData;
+  }
+
+  @Override
+  public List<Map<String, String>> getAllLeaders() {
+    List<Map<String, String>> leadersData = new ArrayList<>();
+    StringBuilder query = new StringBuilder();
+    query.append("SELECT al.id, al.acronym, al.name, lt.id as 'leader_type_id', lt.name as 'leader_type_name' ");
+    query.append("FROM activity_leaders al ");
+    query.append("INNER JOIN leader_types lt ON lt.id = al.led_activity_id");
+    try (Connection conn = databaseManager.getConnection()) {
+      ResultSet rs = databaseManager.makeQuery(query.toString(), conn);
+      while (rs.next()) {
+        Map<String, String> data = new HashMap<>();
+        data.put("id", rs.getString("id"));
+        data.put("acronym", rs.getString("acronym"));
+        data.put("name", rs.getString("name"));
+        data.put("leader_type_id", rs.getString("leader_type_id"));
+        data.put("leader_type_name", rs.getString("leader_type_name"));
+        leadersData.add(data);
+      }
+      rs.close();
+    } catch (SQLException e) {
+      LOG.error("There was an error getting all the activity leaders. \n{}", query.toString(), e);
+    }
+
+    return leadersData;
   }
 
   @Override

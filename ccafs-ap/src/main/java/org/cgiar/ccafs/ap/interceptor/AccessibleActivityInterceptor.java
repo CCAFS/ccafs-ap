@@ -43,7 +43,7 @@ public class AccessibleActivityInterceptor extends AbstractInterceptor {
         if (user.getRole() == UserRole.Admin) {
           return invocation.invoke();
         } else {
-          // validate if current user has the enought privileges to access to this activity.
+          // validate if current user has the enough privileges to access to this activity.
           Leader activityLeader = leaderManager.getActivityLeader(activityID);
           Leader userLeader = user.getLeader();
           if (activityLeader.equals(userLeader)) {
