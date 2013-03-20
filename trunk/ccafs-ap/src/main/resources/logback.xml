@@ -53,19 +53,19 @@
   
    
   <root level="ALL">
-    <if condition='property("log.console.active").equalsIgnoreCase("true")'> 
+    <if condition='property("log.console").equalsIgnoreCase("true")'> 
 	    <then>
         <appender-ref ref="STDOUT"/>
 	    </then>
     </if>
     
-    <if condition='property("log.general.active").equalsIgnoreCase("true")'> 
+    <if condition='property("log.general").equalsIgnoreCase("true")'> 
 	    <then>
 	      <appender-ref ref="GENERAL" />  
 	    </then>
     </if>
 
-    <if condition='property("log.developer.active").equalsIgnoreCase("true")'> 
+    <if condition='property("log.developer").equalsIgnoreCase("true")'> 
 	    <then>
 			  <appender-ref ref="DEVELOPER" />  
 	    </then>
