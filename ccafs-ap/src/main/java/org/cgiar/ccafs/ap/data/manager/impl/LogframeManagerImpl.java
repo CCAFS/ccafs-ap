@@ -29,7 +29,6 @@ public class LogframeManagerImpl implements LogframeManager {
       Logframe logframe = new Logframe();
       logframe.setId(Integer.parseInt(logframeDB.get("id")));
       logframe.setYear(Integer.parseInt(logframeDB.get("year")));
-      LOG.debug("Logframe {} loaded successfully.", id);
       return logframe;
     }
     LOG.warn("Logframe {} wasn't found.", id);
@@ -39,7 +38,6 @@ public class LogframeManagerImpl implements LogframeManager {
   @Override
   public Logframe getLogframeByYear(int year) {
     Map<String, String> logframeDB = logframeDAO.getLogframeByYear(year);
-    LOG.debug("Sent the request to load the logframe of year {} into DAO", year);
     return new Logframe(Integer.parseInt(logframeDB.get("id")), Integer.parseInt(logframeDB.get("year")),
       logframeDB.get("name"));
   }

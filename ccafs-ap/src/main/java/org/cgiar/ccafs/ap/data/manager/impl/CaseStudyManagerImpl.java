@@ -80,14 +80,11 @@ public class CaseStudyManagerImpl implements CaseStudyManager {
       caseStudies.add(temporalCaseStudy);
     }
 
-    LOG.debug("Case studies from year {} and leader {} loaded.", logframe.getYear(), leader.getId());
     return caseStudies;
   }
 
   @Override
   public boolean removeAllCaseStudies(int activityLeaderId, int logframeId) {
-    LOG.debug("Activity leader {} send a request to the DAO to remove case studies related to the logframe {}.",
-      activityLeaderId, logframeId);
     boolean deleted = caseStudyDAO.removeAllCaseStudies(activityLeaderId, logframeId);
     return deleted;
   }
@@ -134,7 +131,6 @@ public class CaseStudyManagerImpl implements CaseStudyManager {
       // Save the countries
       if (!caseStudy.isGlobal()) {
         ArrayList<String> countriesIds = (ArrayList<String>) caseStudy.getCountriesIds();
-        LOG.debug("Sent the request to save case study countries into DAO");
         boolean caseStudyCountriesAdded = caseStudyCountriesDAO.saveCaseStudyCountries(caseStudyId, countriesIds);
         if (!caseStudyCountriesAdded) {
           return false;
@@ -147,7 +143,6 @@ public class CaseStudyManagerImpl implements CaseStudyManager {
       for (int c = 0; c < typesIds.size(); c++) {
         typesIdsArray[c] = Integer.parseInt(typesIds.get(c));
       }
-      LOG.debug("Sent the request to save case study into DAO");
       boolean problemSavingTypes = caseStudyTypeDAO.saveCaseStudyTypes(caseStudyId, typesIdsArray);
       if (problemSavingTypes) {
         LOG.warn("There was a problem saving a new case study");

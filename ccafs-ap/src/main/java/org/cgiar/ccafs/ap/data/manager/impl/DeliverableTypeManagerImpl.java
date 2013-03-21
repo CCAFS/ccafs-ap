@@ -46,7 +46,6 @@ public class DeliverableTypeManagerImpl implements DeliverableTypeManager {
     }
 
     if (deliverableTypesList.size() > 0) {
-      LOG.debug("Deliverable type list loaded successfully.");
       return deliverableTypes;
     }
 

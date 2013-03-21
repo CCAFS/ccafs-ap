@@ -79,7 +79,7 @@ public class DeliverableManagerImpl implements DeliverableManager {
         }
       }
     }
-    LOG.debug("The deliverable {} was successfully saved", deliverableId);
+    // LOG.debug("The deliverable {} was successfully saved", deliverableId);
     return true;
   }
 
@@ -113,7 +113,7 @@ public class DeliverableManagerImpl implements DeliverableManager {
         deliverable.setType(type);
 
         // File Format
-        LOG.debug("Getting file formats for deliverable {}.", deliverable.getId());
+        // LOG.debug("Getting file formats for deliverable {}.", deliverable.getId());
         fileFormatsDB = fileFormatDAO.getFileFormats(deliverable.getId());
 
         if (fileFormatsDB != null) {
@@ -128,7 +128,6 @@ public class DeliverableManagerImpl implements DeliverableManager {
         }
         deliverables.add(deliverable);
       }
-      LOG.debug("Loaded deliverables for activity {}.", activityId);
       return deliverables;
     } else {
       return null;
@@ -137,7 +136,6 @@ public class DeliverableManagerImpl implements DeliverableManager {
 
   @Override
   public boolean removeNotExpected(int activityID) {
-    LOG.debug("Sent the request to delete the not expected deliverables related to the activity {}.", activityID);
     return deliverableDAO.removeNotExpected(activityID);
   }
 

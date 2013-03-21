@@ -48,7 +48,7 @@ public class ActivityBenchmarkSiteManagerImpl implements ActivityBenchmarkSiteMa
 
       benchmarkSites.add(bsLocationTemp);
     }
-    LOG.debug("Benchmarks sites for the activity {} was loaded.", activityID);
+
     return benchmarkSites;
   }
 }

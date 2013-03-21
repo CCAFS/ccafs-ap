@@ -43,7 +43,6 @@ public class StatusManagerImpl implements StatusManager {
       statusList[c] = new Status(Integer.parseInt(statusData.get("id")), statusData.get("name"));
     }
     if (statusDataList.size() > 0) {
-      LOG.debug("Activity status list loaded succesfully");
       return statusList;
     }
     LOG.warn("Activity status list loaded is empty");

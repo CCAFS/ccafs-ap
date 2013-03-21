@@ -8,6 +8,7 @@ import org.cgiar.ccafs.ap.data.model.Objective;
 import org.cgiar.ccafs.ap.data.model.Output;
 import org.cgiar.ccafs.ap.data.model.Theme;
 
+import java.util.List;
 import java.util.Map;
 
 import com.google.inject.Inject;
@@ -63,11 +64,27 @@ public class MilestoneManagerImpl implements MilestoneManager {
       milestone.setDescription(milestoneDB.get("description"));
       milestone.setOutput(output);
 
-      LOG.debug("Milestone {} loaded successfully.", milestoneID);
       return milestone;
     }
 
     LOG.warn("Milestone identified by {} wan't found", milestoneID);
     return null;
+  }
+
+  @Override
+  public Milestone[] getMilestoneList(String logframeID) {
+    List<Map<String, String>> milestoneDataList = milestoneDAO.getMilestoneList(logframeID);
+    Milestone[] milestones = new Milestone[milestoneDataList.size()];
+
+    for (int c = 0; c < milestoneDataList.size(); c++) {
+      Milestone milestone = new Milestone();
+      milestone.setId(Integer.parseInt(milestoneDataList.get(c).get("id")));
+      milestone.setCode(milestoneDataList.get(c).get("code"));
+      milestone.setYear(Integer.parseInt(milestoneDataList.get(c).get("year")));
+      milestone.setDescription(milestoneDataList.get(c).get("Description"));
+      milestones[c] = milestone;
+    }
+
+    return milestones;
   }
 }

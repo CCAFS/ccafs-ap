@@ -118,7 +118,6 @@ public class ActivityManagerImpl implements ActivityManager {
 
       activities[c] = activity;
     }
-    LOG.debug("The activities from year {} for the user {} have been loaded.", year, user.getLeader().getId());
     return activities;
   }
 
@@ -161,7 +160,6 @@ public class ActivityManagerImpl implements ActivityManager {
         activities[c] = activity;
         c++;
       }
-      LOG.debug("The activities from year {} have been loaded to send a RSS feed", year);
       return activities;
     }
     return null;
@@ -217,7 +215,6 @@ public class ActivityManagerImpl implements ActivityManager {
       // Gender Integration
       activity.setGenderIntegrationsDescription(activityDB.get("gender_description"));
 
-      LOG.debug("Activity status info loaded for activity {}", id);
       return activity;
     }
     return null;
@@ -237,7 +234,6 @@ public class ActivityManagerImpl implements ActivityManager {
       activityLeader.setAcronym(activityDB.get("leader_acronym"));
       activity.setLeader(activityLeader);
 
-      LOG.debug("The activity basic information loaded for the activity {}", id);
       return activity;
     }
     return null;
@@ -255,7 +251,6 @@ public class ActivityManagerImpl implements ActivityManager {
     activityData.put("activity_status_id", "" + activity.getStatus().getId());
     activityData.put("status_description", activity.getStatusDescription());
     activityData.put("gender_integrations_description", activity.getGenderIntegrationsDescription());
-    LOG.debug("The information about activity {} have been send to the DAO manager to save it.", activity.getId());
     return activityDAO.saveStatus(activityData);
   }
 }

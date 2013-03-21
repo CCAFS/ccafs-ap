@@ -33,7 +33,6 @@ public class ActivityObjectiveManagerImpl implements ActivityObjectiveManager {
       activityObjectives[c].setId(Integer.parseInt(activityObjectivesDataList.get(c).get("id")));
       activityObjectives[c].setDescription(activityObjectivesDataList.get(c).get("description"));
     }
-    LOG.debug("The activity objectives for the activity {} loaded.", activityID);
     return activityObjectives;
   }
 }

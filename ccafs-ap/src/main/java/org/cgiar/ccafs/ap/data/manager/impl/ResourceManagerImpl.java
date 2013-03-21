@@ -34,7 +34,6 @@ public class ResourceManagerImpl implements ResourceManager {
       temp.setName(resourcesDataList.get(c).get("name"));
       resources.add(temp);
     }
-    LOG.debug("Loaded resources for activity {}.", activityID);
     return resources;
   }
 

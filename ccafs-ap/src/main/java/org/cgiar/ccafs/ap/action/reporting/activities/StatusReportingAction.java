@@ -14,6 +14,7 @@ import org.cgiar.ccafs.ap.data.model.ContactPerson;
 import org.cgiar.ccafs.ap.data.model.Status;
 
 import java.util.LinkedHashMap;
+import java.util.List;
 import java.util.Map;
 
 import com.google.inject.Inject;
@@ -101,7 +102,7 @@ public class StatusReportingAction extends BaseAction {
     // get main activity information based on the status form.
     activity = activityManager.getActivityStatusInfo(activityID);
     // get contact persons.
-    ContactPerson[] contactPersons = contactPersonManager.getContactPersons(activityID);
+    List<ContactPerson> contactPersons = contactPersonManager.getContactPersons(activityID);
     activity.setContactPersons(contactPersons);
     // get activity budget.
     Budget budget = budgetManager.getBudget(activityID);

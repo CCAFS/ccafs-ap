@@ -36,7 +36,6 @@ public class DeliverableStatusManagerImpl implements DeliverableStatusManager {
     }
 
     if (deliverableStatusList.size() > 0) {
-      LOG.debug("Deliverable status list loaded.");
       return deliverableStatus;
     }
 
@@ -56,7 +55,6 @@ public class DeliverableStatusManagerImpl implements DeliverableStatusManager {
 
   @Override
   public boolean setDeliverableStatus(int id, DeliverableStatus status) {
-    LOG.debug("Sent a request to save the status for deliverable {} into the DAO", id);
     return deliverableStatusDAO.setDeliverableStatus(id, status.getId());
   }
 }

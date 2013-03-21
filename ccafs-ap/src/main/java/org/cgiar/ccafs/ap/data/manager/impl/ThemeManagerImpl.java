@@ -35,10 +35,9 @@ public class ThemeManagerImpl implements ThemeManager {
         themes[c].setCode(themesDB.get(c).get("code"));
         themes[c].setDescription(themesDB.get(c).get("description"));
       }
-      LOG.debug("Loaded the theme list successfully");
       return themes;
     }
-    LOG.debug("Theme list loaded is empty");
+    LOG.warn("Theme list loaded is empty");
     return null;
   }
 
@@ -54,7 +53,6 @@ public class ThemeManagerImpl implements ThemeManager {
         themes[c].setDescription(themesDB.get(c).get("description"));
         themes[c].setLogframe(logframe);
       }
-      LOG.debug("Theme list for logframe {} loaded successfully", logframe.getId());
       return themes;
     }
     LOG.warn("Theme list for logframe {} loaded is empty", logframe.getId());

@@ -33,7 +33,7 @@ public class BudgetManagerImpl implements BudgetManager {
      * and usd 0
      */
     if (budgetDB == null) {
-      Budget budget = new Budget(0, 0);
+      Budget budget = new Budget(-1, 0);
       return budget;
     }
 

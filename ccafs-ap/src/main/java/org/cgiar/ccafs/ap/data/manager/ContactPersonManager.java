@@ -3,6 +3,8 @@ package org.cgiar.ccafs.ap.data.manager;
 import org.cgiar.ccafs.ap.data.manager.impl.ContactPersonManagerImpl;
 import org.cgiar.ccafs.ap.data.model.ContactPerson;
 
+import java.util.List;
+
 import com.google.inject.ImplementedBy;
 
 @ImplementedBy(ContactPersonManagerImpl.class)
@@ -14,5 +16,5 @@ public interface ContactPersonManager {
    * @param activityID - activity identifier.
    * @return a set of ContactPerson objects.
    */
-  public ContactPerson[] getContactPersons(int activityID);
+  public List<ContactPerson> getContactPersons(int activityID);
 }

@@ -41,7 +41,6 @@ public class OpenAccessManagerImpl implements OpenAccessManager {
       openAccessList[i].setId(Integer.parseInt(openAccessDataList.get(i).get("id")));
       openAccessList[i].setName(openAccessDataList.get(i).get("name"));
     }
-    LOG.debug("Open acces list loaded successfully.");
     return openAccessList;
   }
 

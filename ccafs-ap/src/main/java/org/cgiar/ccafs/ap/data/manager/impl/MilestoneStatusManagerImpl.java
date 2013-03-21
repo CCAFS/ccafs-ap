@@ -32,7 +32,6 @@ public class MilestoneStatusManagerImpl implements MilestoneStatusManager {
       milestoneStatus[c].setId(Integer.parseInt(milestoneStatusDataList.get(c).get("id")));
       milestoneStatus[c].setName(milestoneStatusDataList.get(c).get("status"));
     }
-    LOG.debug("Milestone status list loaded successfully");
     return milestoneStatus;
   }
 }

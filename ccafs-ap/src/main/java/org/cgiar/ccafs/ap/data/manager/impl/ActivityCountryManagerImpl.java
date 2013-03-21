@@ -39,7 +39,6 @@ public class ActivityCountryManagerImpl implements ActivityCountryManager {
       clTemp.setDetails(CData.get("details"));
       activityCountries.add(clTemp);
     }
-    LOG.info("Activity countries loaded for the activity {}.", activityID);
     return activityCountries;
   }
 }

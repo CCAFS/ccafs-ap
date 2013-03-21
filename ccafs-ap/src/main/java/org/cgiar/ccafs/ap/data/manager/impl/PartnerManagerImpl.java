@@ -46,7 +46,6 @@ public class PartnerManagerImpl implements PartnerManager {
       LOG.warn("Partner list loaded is empty");
       return null;
     }
-    LOG.debug("Partner list loaded successfully");
     return partners;
   }
 
@@ -59,7 +58,6 @@ public class PartnerManagerImpl implements PartnerManager {
       partner.setId(id);
       partner.setAcronym(partnerData.get("acronym"));
       partner.setName(partnerData.get("name"));
-      LOG.debug("Loaded information about partner identified by {}", id);
       return partner;
     }
     LOG.warn("Partner identified by {} wasn't found", id);

@@ -63,7 +63,9 @@ public class LoginAction extends BaseAction {
 
   public String logout() {
     User user = (User) this.getSession().get("current_user");
-    LOG.info("User {} logout succesfully", user.getEmail());
+    if (user != null) {
+      LOG.info("User {} logout succesfully", user.getEmail());
+    }
     this.getSession().clear();
     return SUCCESS;
   }

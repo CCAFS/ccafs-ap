@@ -42,7 +42,6 @@ public class UserManagerImp implements UserManager {
       leaderType.setName(userData.get("leader_type_name"));
       leader.setLeaderType(leaderType);
       user.setLeader(leader);
-      LOG.debug("Information related to the user {} successfully loaded.", email);
       return user;
     }
     LOG.warn("Information related to the user {} wasn't found.", email);
@@ -63,6 +62,4 @@ public class UserManagerImp implements UserManager {
     }
     return null;
   }
-
-
 }
