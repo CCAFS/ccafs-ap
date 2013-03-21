@@ -2,73 +2,200 @@
   <contextName>CCAFS Activities</contextName>
   <property file="ccafsap.properties" />
 
-  <!-- ***************************************************************************** -->
-  <!-- ccafsap-dev is a developer log file, just TRACE and DEBUG messages are showed --> 
+  <!-- ======= Filters by levels to print logs in file ======= -->
   
-  <appender name="DEVELOPER" class="ch.qos.logback.core.rolling.RollingFileAppender">
-    <file>${log.folder}/ccafsap-dev.log</file>    
-    <encoder>
-      <pattern>%d{HH:mm:ss.SSS} - %logger{0} [%-5level] : %msg%n</pattern>
-    </encoder>
-    <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
-      <!-- rollover daily -->
-      <fileNamePattern>${log.folder}/ccafsap-dev-%d{yyyy-MM-dd}.%i.txt</fileNamePattern>
-      <timeBasedFileNamingAndTriggeringPolicy class="ch.qos.logback.core.rolling.SizeAndTimeBasedFNATP">
-        <!-- or whenever the file size reaches 10MB -->
-        <maxFileSize>10MB</maxFileSize>
-      </timeBasedFileNamingAndTriggeringPolicy>
-    </rollingPolicy>
-  </appender>
-   
-  <!-- ************************************************************************* -->
-  <!-- ccafsap is the general log file, INFO, WARN and ERROR messages are showed --> 
-  
-  <appender name="GENERAL" class="ch.qos.logback.core.rolling.RollingFileAppender">
+  <appender name="FILE-TRACE" class="ch.qos.logback.core.FileAppender">
     <file>${log.folder}/ccafsap.log</file>
-    <filter class="ch.qos.logback.classic.filter.ThresholdFilter">
-      <level>INFO</level>
+    <encoder>
+      <pattern>%d{HH:mm:ss.SSS} - %logger{0} [%-5level] : %msg%n</pattern>
+    </encoder>
+    <filter class="ch.qos.logback.classic.filter.LevelFilter">
+      <level>TRACE</level>
+      <onMatch>ACCEPT</onMatch>
+      <onMismatch>DENY</onMismatch>
     </filter>
-    <encoder>
-      <pattern>%d{HH:mm:ss.SSS} - %logger{0} [%-5level] : %msg%n</pattern>
-    </encoder>
-    <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
-      <!-- rollover daily -->
-      <fileNamePattern>${log.folder}/ccafsap-%d{yyyy-MM-dd}.%i.txt</fileNamePattern>
-      <timeBasedFileNamingAndTriggeringPolicy class="ch.qos.logback.core.rolling.SizeAndTimeBasedFNATP">
-        <!-- or whenever the file size reaches 10MB -->
-        <maxFileSize>10MB</maxFileSize>
-      </timeBasedFileNamingAndTriggeringPolicy>
-    </rollingPolicy>
   </appender>
-  
-  
-  <!-- ************************************************************************* -->
-  <!-- This is a console log used to develop purposes --> 
-  
-  <appender name="STDOUT" class="ch.qos.logback.core.ConsoleAppender">
+
+  <appender name="FILE-DEBUG" class="ch.qos.logback.core.FileAppender">
+    <filter class="ch.qos.logback.classic.filter.LevelFilter">
+      <level>DEBUG</level>
+      <onMatch>ACCEPT</onMatch>
+      <onMismatch>DENY</onMismatch>
+    </filter>
+    <file>${log.folder}/ccafsap.log</file>
     <encoder>
       <pattern>%d{HH:mm:ss.SSS} - %logger{0} [%-5level] : %msg%n</pattern>
     </encoder>
   </appender>
+
+  <appender name="FILE-INFO" class="ch.qos.logback.core.FileAppender">
+    <file>${log.folder}/ccafsap.log</file>
+    <encoder>
+      <pattern>%d{HH:mm:ss.SSS} - %logger{0} [%-5level] : %msg%n</pattern>
+    </encoder>
+    <filter class="ch.qos.logback.classic.filter.LevelFilter">
+      <level>INFO</level>
+      <onMatch>ACCEPT</onMatch>
+      <onMismatch>DENY</onMismatch>
+    </filter>
+  </appender>
+
+  <appender name="FILE-WARN" class="ch.qos.logback.core.FileAppender">
+    <file>${log.folder}/ccafsap.log</file>
+    <encoder>
+      <pattern>%d{HH:mm:ss.SSS} - %logger{0} [%-5level] : %msg%n</pattern>
+    </encoder>
+    <filter class="ch.qos.logback.classic.filter.LevelFilter">
+      <level>WARN</level>
+      <onMatch>ACCEPT</onMatch>
+      <onMismatch>DENY</onMismatch>
+    </filter>
+  </appender>
+
+  <appender name="FILE-ERROR" class="ch.qos.logback.core.FileAppender">
+    <file>${log.folder}/ccafsap.log</file>
+    <encoder>
+      <pattern>%d{HH:mm:ss.SSS} - %logger{0} [%-5level] : %msg%n</pattern>
+    </encoder>
+    <filter class="ch.qos.logback.classic.filter.LevelFilter">
+      <level>ERROR</level>
+      <onMatch>ACCEPT</onMatch>
+      <onMismatch>DENY</onMismatch>
+    </filter>
+  </appender>
+
+  <!-- ======= Filters by levels to print logs in Console ======= -->
+    
+  <appender name="CONSOLE-TRACE" class="ch.qos.logback.core.ConsoleAppender">
+    <encoder>
+      <pattern>%d{HH:mm:ss.SSS} - %logger{0} [%-5level] : %msg%n</pattern>
+    </encoder>
+    <filter class="ch.qos.logback.classic.filter.LevelFilter">
+      <level>TRACE</level>
+      <onMatch>ACCEPT</onMatch>
+      <onMismatch>DENY</onMismatch>
+    </filter>
+  </appender>
   
-   
+  <appender name="CONSOLE-DEBUG" class="ch.qos.logback.core.ConsoleAppender">
+    <encoder>
+      <pattern>%d{HH:mm:ss.SSS} - %logger{0} [%-5level] : %msg%n</pattern>
+    </encoder>
+    <filter class="ch.qos.logback.classic.filter.LevelFilter">
+      <level>DEBUG</level>
+      <onMatch>ACCEPT</onMatch>
+      <onMismatch>DENY</onMismatch>
+    </filter>
+  </appender>
+
+  <appender name="CONSOLE-INFO" class="ch.qos.logback.core.ConsoleAppender">
+    <encoder>
+      <pattern>%d{HH:mm:ss.SSS} - %logger{0} [%-5level] : %msg%n</pattern>
+    </encoder>
+    <filter class="ch.qos.logback.classic.filter.LevelFilter">
+      <level>INFO</level>
+      <onMatch>ACCEPT</onMatch>
+      <onMismatch>DENY</onMismatch>
+    </filter>
+  </appender>
+
+  <appender name="CONSOLE-WARN" class="ch.qos.logback.core.ConsoleAppender">
+    <encoder>
+      <pattern>%d{HH:mm:ss.SSS} - %logger{0} [%-5level] : %msg%n</pattern>
+    </encoder>
+    <filter class="ch.qos.logback.classic.filter.LevelFilter">
+      <level>WARN</level>
+      <onMatch>ACCEPT</onMatch>
+      <onMismatch>DENY</onMismatch>
+    </filter>
+  </appender>
+
+  <appender name="CONSOLE-ERROR" class="ch.qos.logback.core.ConsoleAppender">
+    <encoder>
+      <pattern>%d{HH:mm:ss.SSS} - %logger{0} [%-5level] : %msg%n</pattern>
+    </encoder>
+    <filter class="ch.qos.logback.classic.filter.LevelFilter">
+      <level>ERROR</level>
+      <onMatch>ACCEPT</onMatch>
+      <onMismatch>DENY</onMismatch>
+    </filter>
+  </appender>
+
+  <!-- ======= Attach the appenders according to the configuration properties ======= -->
+
   <root level="ALL">
-    <if condition='property("log.console").equalsIgnoreCase("true")'> 
+    <if condition='property("log.console").equalsIgnoreCase("true")'>
 	    <then>
-        <appender-ref ref="STDOUT"/>
+
+	     <if condition='property("log.trace").equalsIgnoreCase("true")'>
+        <then>
+          <appender-ref ref="CONSOLE-TRACE"/>
+		    </then>
+	     </if>
+
+	     <if condition='property("log.debug").equalsIgnoreCase("true")'> 
+        <then>
+          <appender-ref ref="CONSOLE-DEBUG"/>
+		    </then>
+	     </if>
+		    
+	     <if condition='property("log.info").equalsIgnoreCase("true")'> 
+        <then>
+          <appender-ref ref="CONSOLE-INFO"/>
+		    </then>
+	     </if>
+		    
+	     <if condition='property("log.warn").equalsIgnoreCase("true")'> 
+        <then>
+          <appender-ref ref="CONSOLE-WARN"/>
+		    </then>
+	     </if>
+		    
+	     <if condition='property("log.error").equalsIgnoreCase("true")'> 
+        <then>
+          <appender-ref ref="CONSOLE-ERROR"/>
+		    </then>
+	     </if>
+		    
 	    </then>
     </if>
     
-    <if condition='property("log.general").equalsIgnoreCase("true")'> 
-	    <then>
-	      <appender-ref ref="GENERAL" />  
-	    </then>
-    </if>
+    <if condition='property("log.file").equalsIgnoreCase("true")'> 
+      <then>
+       
+       <!-- This appender always is active, is in charge of backup the logs  -->
+       
+       <if condition='property("log.trace").equalsIgnoreCase("true")'> 
+        <then>
+          <appender-ref ref="FILE-TRACE"/>
+        </then>
+       </if>
 
-    <if condition='property("log.developer").equalsIgnoreCase("true")'> 
-	    <then>
-			  <appender-ref ref="DEVELOPER" />  
-	    </then>
+       <if condition='property("log.debug").equalsIgnoreCase("true")'> 
+        <then>
+          <appender-ref ref="FILE-DEBUG"/>
+        </then>
+       </if>
+
+       <if condition='property("log.info").equalsIgnoreCase("true")'> 
+        <then>
+          <appender-ref ref="FILE-INFO"/>
+        </then>
+       </if>
+        
+       <if condition='property("log.warn").equalsIgnoreCase("true")'> 
+        <then>
+          <appender-ref ref="FILE-WARN"/>
+        </then>
+       </if>
+        
+       <if condition='property("log.error").equalsIgnoreCase("true")'> 
+        <then>
+          <appender-ref ref="FILE-ERROR"/>
+        </then>
+       </if>
+        
+      </then>
     </if>
   </root>
 </configuration>
