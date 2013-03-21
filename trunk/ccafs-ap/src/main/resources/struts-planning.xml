@@ -13,6 +13,16 @@
       <result name="input">/WEB-INF/planning/activities.ftl</result>
     </action>
     
+    <action name="mainInformation" class="org.cgiar.ccafs.ap.action.planning.MainInformationPlanningAction">
+      <interceptor-ref name="planningStack" />
+      <result name="cancel" type="redirectAction">activities</result>
+      <result name="input">/WEB-INF/planning/mainInformation.ftl</result>
+      <result name="success" type="redirectAction">
+        <param name="actionName">mainInformation</param>
+        <param name="activityID">${activity.id}</param>
+      </result>
+    </action>
+    
     <action name="addActivity" class="org.cgiar.ccafs.ap.action.planning.AddActivityPlanningAction">
       <interceptor-ref name="planningStack" />
       <interceptor-ref name="requireAdmin" />

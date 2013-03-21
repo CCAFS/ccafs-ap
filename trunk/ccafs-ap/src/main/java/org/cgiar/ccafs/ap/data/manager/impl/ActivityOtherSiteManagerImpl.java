@@ -44,7 +44,6 @@ public class ActivityOtherSiteManagerImpl implements ActivityOtherSiteManager {
 
       otherSites.add(otherSiteTemp);
     }
-    LOG.debug("Activity other sites for activity {} loaded.", activityID);
     return otherSites;
   }
 }

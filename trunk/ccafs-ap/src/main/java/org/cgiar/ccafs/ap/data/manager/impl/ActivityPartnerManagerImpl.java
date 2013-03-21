@@ -58,7 +58,10 @@ public class ActivityPartnerManagerImpl implements ActivityPartnerManager {
       activityPartner.setPartner(partner);
       activityPartnerList.add(activityPartner);
     }
-    LOG.debug("The activity partners for the activity {} loaded.", activityID);
+
+
+    // LOG.debug("The activity partners for the activity {} loaded.", activityID);
+
     return activityPartnerList;
   }
 
@@ -93,7 +96,7 @@ public class ActivityPartnerManagerImpl implements ActivityPartnerManager {
       activityPartnersData.add(cpData);
     }
 
-    LOG.debug("The activity partners information for activity {} was send to the DAO to save it", activityID);
+    // LOG.debug("The activity partners information for activity {} was send to the DAO to save it", activityID);
     problem = !activityPartnerDAO.saveActivityPartnerList(activityPartnersData);
     return !problem;
   }

@@ -76,7 +76,7 @@ public class PartnersReportingAction extends BaseAction {
   public void prepare() throws Exception {
     super.prepare();
     activityID = Integer.parseInt(StringUtils.trim(this.getRequest().getParameter(APConstants.ACTIVITY_REQUEST_ID)));
-    LOG.info("The user {} loads the partners for the activity {}", activityID);
+    LOG.info("The user {} loads the partners for the activity {}", getCurrentUser().getEmail(), activityID);
     activity = activityManager.getSimpleActivity(activityID);
     activity.setActivityPartners(activityPartnerManager.getActivityPartners(activityID));
     partnerTypes = partnerTypeManager.getPartnerTypeList();

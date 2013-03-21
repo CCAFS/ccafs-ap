@@ -6,7 +6,9 @@ import org.cgiar.ccafs.ap.data.dao.MilestoneDAO;
 import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import com.google.inject.Inject;
@@ -64,5 +66,34 @@ public class MySQLMilestoneDAO implements MilestoneDAO {
     } else {
       return milestone;
     }
+  }
+
+  @Override
+  public List<Map<String, String>> getMilestoneList(String logframeID) {
+    List<Map<String, String>> milestoneDataList = new ArrayList<>();
+    String query =
+      "SELECT m.id, m.code, m.year, m.description FROM milestones m " + "INNER JOIN outputs op ON m.output_id = op.id "
+        + "INNER JOIN objectives ob ON op.objective_id = ob.id " + "INNER JOIN themes t ON ob.theme_id = t.id "
+        + "INNER JOIN logframes lf ON t.logframe_id = lf.id " + "WHERE lf.id = " + logframeID;
+    try (Connection con = databaseManager.getConnection()) {
+      ResultSet rs = databaseManager.makeQuery(query, con);
+      while (rs.next()) {
+        Map<String, String> milestoneData = new HashMap<>();
+        milestoneData.put("id", rs.getString("id"));
+        milestoneData.put("code", rs.getString("code"));
+        milestoneData.put("description", rs.getString("description"));
+        milestoneData.put("year", rs.getString("year"));
+        milestoneDataList.add(milestoneData);
+      }
+      rs.close();
+    } catch (SQLException e) {
+      LOG.error("There was an error getting the milestone list from 'milestones' table. \n{}", query, e);
+    }
+
+    if (milestoneDataList.isEmpty()) {
+      LOG.warn("It was not found milestone list corresponding to the logframe {}", logframeID);
+    }
+
+    return milestoneDataList;
   }
 }

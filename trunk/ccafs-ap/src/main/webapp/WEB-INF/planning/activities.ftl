@@ -34,7 +34,7 @@
             <td>${activity.id}</td>
             <td class="left">
               <a href="
-              [@s.url action='status' includeParams='get']
+              [@s.url action='mainInformation' includeParams='get']
                 [@s.param name='${activityRequestParameter}']${activity.id}[/@s.param]
               [/@s.url]
               " title="${activity.title}">
@@ -49,12 +49,12 @@
             </td>               
             <td>${activity.milestone.code}</td>
             <td>
-              [#if activityStatuses[activity_index]?has_content]
+              [#--if activityStatuses[activity_index]?has_content]
                 [#assign problemDescription=activityStatuses[activity_index]]
                 <img src="${baseUrl}/images/global/icon-incomplete.png" alt="Activity Incomplete" title="${problemDescription}" />
               [#else]
                 <img src="${baseUrl}/images/global/icon-complete.png" alt="Activity Completed" />
-              [/#if]
+              [/#if --]
             </td>
           </tr>
         [/#list]

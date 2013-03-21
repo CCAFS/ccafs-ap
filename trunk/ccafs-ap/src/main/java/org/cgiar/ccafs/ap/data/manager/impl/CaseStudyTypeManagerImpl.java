@@ -50,7 +50,6 @@ public class CaseStudyTypeManagerImpl implements CaseStudyTypeManager {
     }
 
     if (caseStudyTypeList.size() > 0) {
-      LOG.debug("Case study type list was loaded.");
       return caseStudyTypes;
     }
     return null;
@@ -67,7 +66,6 @@ public class CaseStudyTypeManagerImpl implements CaseStudyTypeManager {
       caseStudyTypes.add(caseStudyTypeTemp);
     }
 
-    LOG.debug("Case study type loaded for case study {}.", caseStudy.getId());
     return caseStudyTypes;
   }
 
@@ -79,7 +77,6 @@ public class CaseStudyTypeManagerImpl implements CaseStudyTypeManager {
     for (int c = 0; c < caseStudyTypes.size(); c++) {
       caseStudyTypeIds[c] = caseStudyTypes.get(c).getId();
     }
-    LOG.debug("Sent a request to save the types for case study {} in the DAO.", caseStudy.getId());
     return caseStudyTypeDAO.saveCaseStudyTypes(caseStudy.getId(), caseStudyTypeIds);
   }
 

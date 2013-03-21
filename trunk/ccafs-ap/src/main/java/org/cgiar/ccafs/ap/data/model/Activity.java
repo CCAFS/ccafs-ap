@@ -16,7 +16,7 @@ public class Activity {
   private Leader leader;
   private boolean isPlanning;
   private boolean isGlobal;
-  private ContactPerson[] contactPersons;
+  private List<ContactPerson> contactPersons;
   private String genderIntegrationsDescription;
   private Status status;
   private Budget budget;
@@ -47,7 +47,7 @@ public class Activity {
     return budget;
   }
 
-  public ContactPerson[] getContactPersons() {
+  public List<ContactPerson> getContactPersons() {
     return contactPersons;
   }
 
@@ -99,6 +99,7 @@ public class Activity {
     return otherLocations;
   }
 
+
   public List<Resource> getResources() {
     return resources;
   }
@@ -107,7 +108,6 @@ public class Activity {
   public Date getStartDate() {
     return startDate;
   }
-
 
   public Status getStatus() {
     return status;
@@ -129,9 +129,11 @@ public class Activity {
     return isPlanning;
   }
 
+
   public void setActivityPartners(List<ActivityPartner> activityPartners) {
     this.activityPartners = activityPartners;
   }
+
 
   public void setBsLocations(List<BenchmarkSiteLocation> bsLocations) {
     this.bsLocations = bsLocations;
@@ -141,7 +143,7 @@ public class Activity {
     this.budget = budget;
   }
 
-  public void setContactPersons(ContactPerson[] contactPersons) {
+  public void setContactPersons(List<ContactPerson> contactPersons) {
     this.contactPersons = contactPersons;
   }
 

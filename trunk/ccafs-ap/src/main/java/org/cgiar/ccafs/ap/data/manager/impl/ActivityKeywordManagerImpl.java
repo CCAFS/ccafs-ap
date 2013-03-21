@@ -41,7 +41,6 @@ public class ActivityKeywordManagerImpl implements ActivityKeywordManager {
 
       activityKeywords.add(activityKeywordTemp);
     }
-    LOG.debug("Keywords loaded for the activity {}.", activityID);
     return activityKeywords;
   }
 

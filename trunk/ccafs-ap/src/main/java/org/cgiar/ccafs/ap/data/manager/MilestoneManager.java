@@ -16,4 +16,12 @@ public interface MilestoneManager {
    * @return a Milestione object or null if no milestone was found.
    */
   public Milestone getMilestone(int id);
+
+  /**
+   * Get the complete milestone list corresponding to the logframe given
+   * 
+   * @param logframeID - the logframe identifier
+   * @return a list of Milestone objects
+   */
+  public Milestone[] getMilestoneList(String logframeID);
 }

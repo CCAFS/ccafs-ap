@@ -8,10 +8,14 @@ import org.cgiar.ccafs.ap.data.manager.LogframeManager;
 import org.cgiar.ccafs.ap.data.model.Activity;
 
 import com.google.inject.Inject;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 
 public class ActivitiesPlanningAction extends BaseAction {
 
+  // Logger
+  private static final Logger LOG = LoggerFactory.getLogger(ActivitiesPlanningAction.class);
   private static final long serialVersionUID = 610099339078512575L;
 
   // Managers
@@ -53,6 +57,8 @@ public class ActivitiesPlanningAction extends BaseAction {
   @Override
   public void prepare() throws Exception {
     super.prepare();
+    LOG.info("User {} load the list of activities for leader {} in planing section", getCurrentUser().getEmail(),
+      getCurrentUser().getLeader().getId());
     currentActivities = activityManager.getActivities(config.getPlanningCurrentYear(), this.getCurrentUser());
     // activityStatuses = new String[currentActivities.length];
     // Calculate the status of each activity.
@@ -66,6 +72,4 @@ public class ActivitiesPlanningAction extends BaseAction {
   public void setCurrentActivities(Activity[] currentActivities) {
     this.currentActivities = currentActivities;
   }
-
-
 }

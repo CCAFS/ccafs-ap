@@ -34,7 +34,6 @@ public class LeaderManagerImpl implements LeaderManager {
       leaderType.setId(Integer.parseInt(leaderData.get("leader_type_id")));
       leaderType.setName(leaderData.get("leader_type_name"));
       leader.setLeaderType(leaderType);
-      LOG.debug("Loaded activity leader for activity {}.", activityID);
       return leader;
     }
     LOG.warn("Activity leader wasn't found for activity {}.", activityID);

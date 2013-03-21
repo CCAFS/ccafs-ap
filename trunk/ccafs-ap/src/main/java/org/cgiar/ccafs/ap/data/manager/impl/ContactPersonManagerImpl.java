@@ -4,6 +4,7 @@ import org.cgiar.ccafs.ap.data.dao.ContactPersonDAO;
 import org.cgiar.ccafs.ap.data.manager.ContactPersonManager;
 import org.cgiar.ccafs.ap.data.model.ContactPerson;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
@@ -24,22 +25,21 @@ public class ContactPersonManagerImpl implements ContactPersonManager {
   }
 
   @Override
-  public ContactPerson[] getContactPersons(int activityID) {
+  public List<ContactPerson> getContactPersons(int activityID) {
     List<Map<String, String>> contactPersonsDB = contactPersonDAO.getContactPersons(activityID);
-    ContactPerson[] contactPersons = new ContactPerson[contactPersonsDB.size()];
+    List<ContactPerson> contactPersons = new ArrayList<>();
 
-    for (int c = 0; c < contactPersons.length; c++) {
+    for (int c = 0; c < contactPersonsDB.size(); c++) {
       ContactPerson cp = new ContactPerson();
       cp.setId(Integer.parseInt(contactPersonsDB.get(c).get("id")));
       cp.setEmail(contactPersonsDB.get(c).get("email"));
       cp.setName(contactPersonsDB.get(c).get("name"));
-      contactPersons[c] = cp;
+      contactPersons.add(cp);
     }
 
     if (contactPersonsDB.size() == 0) {
       return null;
     }
-    LOG.debug("Contact persons for activity {} loaded.", activityID);
     return contactPersons;
   }
 

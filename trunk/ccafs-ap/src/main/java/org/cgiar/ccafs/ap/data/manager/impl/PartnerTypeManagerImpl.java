@@ -42,7 +42,6 @@ public class PartnerTypeManagerImpl implements PartnerTypeManager {
       partnerTypeList[c].setAcronym(partnerTypeData.get("description"));
     }
     if (partnerTypeDataList.size() > 0) {
-      LOG.debug("Partner type list loaded successfully.");
       return partnerTypeList;
     }
     LOG.warn("Partner type list loaded is empty");

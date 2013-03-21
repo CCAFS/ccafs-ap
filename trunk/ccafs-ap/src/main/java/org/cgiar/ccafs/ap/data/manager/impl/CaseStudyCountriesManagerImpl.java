@@ -39,7 +39,6 @@ public class CaseStudyCountriesManagerImpl implements CaseStudyCountriesManager 
       caseStudyCountries.add(temporalCountry);
     }
 
-    LOG.debug("Case study countries loaded for case study {}.", caseStudy.getId());
     return caseStudyCountries;
   }
 }

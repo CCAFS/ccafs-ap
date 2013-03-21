@@ -67,7 +67,6 @@ public class OutputSummaryManagerImpl implements OutputSummaryManager {
       outputSummaries[c].setOutput(op);
       outputSummaries[c].setLeader(activityLeader);
     }
-    LOG.debug("Loaded output summaries for leader {} and logframe {}.", activityLeader.getId(), logframe.getId());
     return outputSummaries;
   }
 
@@ -87,7 +86,6 @@ public class OutputSummaryManagerImpl implements OutputSummaryManager {
       outputSummaryData.add(osData);
     }
 
-    LOG.debug("Sent a request to save the output summary into the DAO");
     problem = !outputSummaryDAO.saveOutputsSummaryList(outputSummaryData);
     return !problem;
   }
@@ -103,7 +101,6 @@ public class OutputSummaryManagerImpl implements OutputSummaryManager {
       osData.put("activity_leader_id", outputSummary.getLeader().getId());
       outputSummaryData.add(osData);
     }
-    LOG.debug("Sent a request to update the output summary into the DAO");
     problem = !outputSummaryDAO.updateOutputsSummaryList(outputSummaryData);
     return !problem;
   }

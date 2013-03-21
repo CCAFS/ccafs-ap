@@ -48,7 +48,6 @@ public class FileFormatManagerImpl implements FileFormatManager {
     }
 
     if (fileFormatsList.size() > 0) {
-      LOG.debug("File formats list loaded successfully.");
       return fileFormats;
     }
 
@@ -63,7 +62,6 @@ public class FileFormatManagerImpl implements FileFormatManager {
       fileFormatIds[c] = fileFormats.get(c).getId();
     }
 
-    LOG.debug("Sent a request to save file formats related to the deliverable {} into the DAO.", deliverableId);
     return fileFormatDAO.setFileFormats(deliverableId, fileFormatIds);
   }
 }

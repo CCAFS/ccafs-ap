@@ -48,8 +48,6 @@ public class OutcomeManagerImpl implements OutcomeManager {
       outcomeData.put("activity_leader_id", leader.getId() + "");
       outcomes.add(outcomeData);
     }
-    LOG.debug("Sent the request to save the outcomes for leader {} and logframe {} into the DAO", leader.getId(),
-      logframe.getId());
     return outcomeDAO.addOutcomes(outcomes);
   }
 
@@ -70,14 +68,11 @@ public class OutcomeManagerImpl implements OutcomeManager {
       outcome.setLeader(leader);
       outcomes.add(outcome);
     }
-    LOG.debug("Outcomes by leader {} and logframe {} loaded successfully.", leader.getId(), logframe.getId());
     return outcomes;
   }
 
   @Override
   public boolean removeOutcomes(Leader leader, Logframe logframe) {
-    LOG.debug("Sent the request to save the outcomes for leader {} and logframe {} into the DAO", leader.getId(),
-      logframe.getId());
     return outcomeDAO.removeOutcomes(leader.getId(), logframe.getId());
   }
 

@@ -29,10 +29,9 @@ public class PublicationTypeManagerImpl implements PublicationTypeManager {
       PublicationType type = new PublicationType();
       type.setId(Integer.parseInt(pubTypeData.get("id")));
       type.setName(pubTypeData.get("name"));
-      LOG.debug("Loaded type for publication {}", id);
       return type;
     }
-    LOG.debug("Type wasn't found for publication {}", id);
+    LOG.warn("Type wasn't found for publication {}", id);
     return null;
   }
 
@@ -48,7 +47,6 @@ public class PublicationTypeManagerImpl implements PublicationTypeManager {
       pubTypes[c] = type;
       c++;
     }
-    LOG.debug("Publication type list loaded succesfully");
     return pubTypes;
   }
 }

@@ -31,7 +31,6 @@ public class CountryManagerImpl implements CountryManager {
     if (countryData == null) {
       return null;
     }
-    LOG.debug("Getting information about country identified by {}.", id);
     return new Country(countryData.get("id"), countryData.get("name"));
   }
 
@@ -51,7 +50,6 @@ public class CountryManagerImpl implements CountryManager {
     }
 
     if (countryDataList.size() > 0) {
-      LOG.debug("Country list loaded");
       return countryList;
     }
     LOG.warn("Country list loaded is empty.");
