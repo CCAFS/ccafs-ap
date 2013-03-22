@@ -28,7 +28,17 @@
       
       [#-- Activity Leader --]
       <div class="thirdPartBlock">
-        [@customForm.select name="activity.leader" label="" i18nkey="planning.addActivity.leader" listName="leaders" keyFieldName="id"  displayFieldName="acronym" /]        
+        [@customForm.select name="activity.leader" label="" i18nkey="planning.addActivity.leader" listName="leaders" keyFieldName="id"  displayFieldName="acronym" /]
+      </div>
+      
+      [#-- Is this activity commissioned? --]
+      <div class="thirdPartBlock">
+        [@customForm.checkbox name="activity.isCommissioned" label="" i18nkey="planning.addActivity.isCommissioned" required=true /]
+      </div>
+      
+      [#-- Is this activity a continuation of a previous activity? --]
+      <div class="thirdPartBlock">
+        [@customForm.select name="activity.continuousActivity" label="" i18nkey="planning.addActivity.continuousActivity" listName="continuousActivityList" /]
       </div>
       
       <div class="buttons">

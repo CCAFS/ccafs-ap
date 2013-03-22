@@ -30,7 +30,8 @@ public class Activity {
   private List<CountryLocation> countries;
   private List<BenchmarkSiteLocation> bsLocations;
   private List<OtherSite> otherLocations;
-
+  private boolean isCommissioned;
+  private Activity continuousActivity;
 
   public Activity() {
   }
@@ -99,7 +100,6 @@ public class Activity {
     return otherLocations;
   }
 
-
   public List<Resource> getResources() {
     return resources;
   }
@@ -108,6 +108,7 @@ public class Activity {
   public Date getStartDate() {
     return startDate;
   }
+
 
   public Status getStatus() {
     return status;
@@ -121,6 +122,10 @@ public class Activity {
     return title;
   }
 
+  public boolean isCommissioned() {
+    return isCommissioned;
+  }
+
   public boolean isGlobal() {
     return isGlobal;
   }
@@ -129,11 +134,9 @@ public class Activity {
     return isPlanning;
   }
 
-
   public void setActivityPartners(List<ActivityPartner> activityPartners) {
     this.activityPartners = activityPartners;
   }
-
 
   public void setBsLocations(List<BenchmarkSiteLocation> bsLocations) {
     this.bsLocations = bsLocations;
@@ -141,6 +144,10 @@ public class Activity {
 
   public void setBudget(Budget budget) {
     this.budget = budget;
+  }
+
+  public void setCommissioned(boolean isCommissioned) {
+    this.isCommissioned = isCommissioned;
   }
 
   public void setContactPersons(List<ContactPerson> contactPersons) {
@@ -226,5 +233,13 @@ public class Activity {
   @Override
   public String toString() {
     return ToStringBuilder.reflectionToString(this);
+  }
+
+  public Activity getContinuousActivity() {
+    return continuousActivity;
+  }
+
+  public void setContinuousActivity(Activity continuousActivity) {
+    this.continuousActivity = continuousActivity;
   }
 }
