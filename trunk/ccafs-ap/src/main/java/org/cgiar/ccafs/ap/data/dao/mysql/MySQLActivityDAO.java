@@ -30,10 +30,6 @@ public class MySQLActivityDAO implements ActivityDAO {
 
   @Override
   public List<Map<String, String>> getActivities(int year) {
-    /*
-     * TODO - Validate if the list of activities correspond to the planning section or to the reporting section
-     * (is_planning)
-     */
     List<Map<String, String>> activities = new ArrayList<>();
     String query =
       "SELECT a.id, a.title, a.start_date, a.end_date, a.description, m.id as 'milestone_id', m.code as 'milestone_code', "
@@ -69,10 +65,6 @@ public class MySQLActivityDAO implements ActivityDAO {
 
   @Override
   public List<Map<String, String>> getActivities(int year, int leaderTypeCode) {
-    /*
-     * TODO - Validate if the list of activities correspond to the planning section or to the reporting section
-     * (is_planning)
-     */
     List<Map<String, String>> activities = new ArrayList<>();
     String query =
       "SELECT a.id, a.title, a.start_date, a.end_date, a.description, m.id as 'milestone_id', m.code as 'milestone_code', "

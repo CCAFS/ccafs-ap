@@ -67,7 +67,7 @@ public class MilestoneManagerImpl implements MilestoneManager {
       return milestone;
     }
 
-    LOG.warn("Milestone identified by {} wan't found", milestoneID);
+    LOG.warn("Milestone identified by {} wasn't found", milestoneID);
     return null;
   }
 

@@ -30,6 +30,14 @@ public interface ActivityManager {
   public Activity[] getActivitiesForRSS(int year, int limit);
 
   /**
+   * Get an activity identified with the given id.
+   * 
+   * @param id - Activity ID
+   * @return an Activity object or null if nothing found.
+   */
+  public Activity getActivity(int id);
+
+  /**
    * Get an activity identified with the given id populated only with the data showed in the status reporting interface.
    * 
    * @param id

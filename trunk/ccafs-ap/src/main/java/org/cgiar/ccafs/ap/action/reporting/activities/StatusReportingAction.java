@@ -98,7 +98,7 @@ public class StatusReportingAction extends BaseAction {
     this.statusList = statusManager.getStatusList();
 
     activityID = Integer.parseInt(StringUtils.trim(this.getRequest().getParameter(APConstants.ACTIVITY_REQUEST_ID)));
-    LOG.info("The user {} load the status section for the activity {}", getCurrentUser().getEmail(), activityID);
+    LOG.info("The user {} loaded the status section for the activity {}", getCurrentUser().getEmail(), activityID);
     // get main activity information based on the status form.
     activity = activityManager.getActivityStatusInfo(activityID);
     // get contact persons.

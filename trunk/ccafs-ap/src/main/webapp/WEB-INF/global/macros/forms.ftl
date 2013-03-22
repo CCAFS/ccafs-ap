@@ -27,7 +27,7 @@
 [#macro checkbox name value="-NULL" label="" i18nkey="" disabled=false checked=false required=false display=true]
   <div class="checkbox" [#if !display]style="display: none;"[/#if]>
     <label for="${name}"><h6>[#if i18nkey==""]${label}[#else][@s.text name="${i18nkey}" /][/#if][#if required]<span class="red">*</span>[/#if]:</h6></label>
-    <input type="checkbox" id="${name}" name="${name}" value="true" [#if checked == '1']checked="true"[/#if] />     
+    <input type="checkbox" id="${name}" name="${name}" value="true" [#if checked]checked="true"[/#if] />     
   </div>
 [/#macro]
 

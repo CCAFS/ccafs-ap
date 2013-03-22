@@ -8,6 +8,9 @@ import org.cgiar.ccafs.ap.data.manager.LogframeManager;
 import org.cgiar.ccafs.ap.data.model.Activity;
 import org.cgiar.ccafs.ap.data.model.Leader;
 
+import java.util.Map;
+import java.util.TreeMap;
+
 import com.google.inject.Inject;
 
 
@@ -21,7 +24,9 @@ public class AddActivityPlanningAction extends BaseAction {
 
   // Model
   private Activity activity;
-  private Activity[] oldActivities;
+
+  private Map<Integer, String> continuousActivityList;
+
   private Leader[] leaders;
 
   @Inject
@@ -30,16 +35,21 @@ public class AddActivityPlanningAction extends BaseAction {
     super(config, logframeManager);
     this.activityManager = activityManager;
     this.leaderManager = leaderManager;
+    this.continuousActivityList = new TreeMap<>();
   }
 
   @Override
   public String execute() throws Exception {
-    // TODO Auto-generated method stub
+    System.out.println(activity);
     return super.execute();
   }
 
   public Activity getActivity() {
     return activity;
+  }
+
+  public Map<Integer, String> getContinuousActivityList() {
+    return continuousActivityList;
   }
 
   public Leader[] getLeaders() {
@@ -50,7 +60,22 @@ public class AddActivityPlanningAction extends BaseAction {
   public void prepare() throws Exception {
     super.prepare();
     leaders = leaderManager.getAllLeaders();
+    Activity[] oldActivities =
+      activityManager.getActivities(this.getCurrentPlanningLogframe().getYear() - 1, this.getCurrentUser());
+    String text;
+    continuousActivityList.put(-1, "Select an activity.");
+    for (int c = 0; c < oldActivities.length; c++) {
+      text =
+        oldActivities[c].getId()
+          + " - "
+          + (oldActivities[c].getTitle().length() > 40 ? oldActivities[c].getTitle().substring(0, 40)
+            : oldActivities[c].getTitle()) + "...";
+      continuousActivityList.put(oldActivities[c].getId(), text);
+    }
   }
 
+  public void setActivity(Activity activity) {
+    this.activity = activity;
+  }
 
 }
