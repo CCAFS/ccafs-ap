@@ -5,6 +5,7 @@ import org.cgiar.ccafs.ap.data.manager.ContactPersonManager;
 import org.cgiar.ccafs.ap.data.model.ContactPerson;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -43,4 +44,31 @@ public class ContactPersonManagerImpl implements ContactPersonManager {
     return contactPersons;
   }
 
+  @Override
+  public boolean saveContactPersons(List<ContactPerson> contactPersons, int activityID) {
+    boolean saved = true;
+    // First delete all the contact persons related to the activity
+    contactPersonDAO.deleteContactPersons(activityID);
+
+    // Then save the contact persons one by one
+    for (ContactPerson contactPerson : contactPersons) {
+      Map<String, String> cpData = new HashMap<>();
+      if (contactPerson.getId() == -1) {
+        cpData.put("id", null);
+      } else {
+        cpData.put("id", String.valueOf(contactPerson.getId()));
+      }
+      cpData.put("name", contactPerson.getName());
+      cpData.put("email", contactPerson.getEmail());
+      if (!contactPersonDAO.saveContactPersons(cpData, activityID)) {
+        saved = false;
+        LOG.warn("There was a problem saving the contact person ({}, {}) for activity {}",
+          new Object[] {contactPerson.getName(), contactPerson.getEmail(), activityID});
+      } else {
+        LOG.debug("The contact person ({}, {}) for activity {} was successfully saved.",
+          new Object[] {contactPerson.getName(), contactPerson.getEmail(), activityID});
+      }
+    }
+    return saved;
+  }
 }

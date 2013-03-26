@@ -69,4 +69,12 @@ public interface ActivityDAO {
    */
   public boolean saveStatus(Map<String, String> activityData);
 
+  /**
+   * Update the main information of the given activity
+   * 
+   * @param activityData - Map with the data to be saved.
+   * @return true if the data was saved successfully, or false otherwise.
+   */
+  public boolean updateMainInformation(Map<String, String> activityData);
+
 }

@@ -139,8 +139,9 @@ public class MySQLActivityDAO implements ActivityDAO {
   public Map<String, String> getActivityStatusInfo(int id) {
     Map<String, String> activity = new HashMap<>();
     String query =
-      "SELECT a.title, a.start_date, a.end_date, a.description, a.status_description, a.is_global, astatus.id as status_id, astatus.name as status_name, "
-        + "a.milestone_id, m.code as milestone_code, al.id as 'leader_id', al.acronym as 'leader_acronym', al.name as 'leader_name', "
+      "SELECT a.title, a.start_date, a.end_date, a.description, a.status_description, a.is_global, astatus.id as status_id, "
+        + "astatus.name as status_name, a.is_commissioned, a.continuous_activity_id, a.milestone_id, "
+        + "m.code as milestone_code, al.id as 'leader_id', al.acronym as 'leader_acronym', al.name as 'leader_name', "
         + "g.id as 'gender_id', g.description as 'gender_description' "
         + "FROM activities a INNER JOIN milestones m ON a.milestone_id = m.id "
         + "INNER JOIN activity_status astatus ON a.activity_status_id = astatus.id "
@@ -155,6 +156,8 @@ public class MySQLActivityDAO implements ActivityDAO {
         activity.put("description", rs.getString("description"));
         activity.put("is_global", rs.getString("is_global"));
         activity.put("status_description", rs.getString("status_description"));
+        activity.put("is_commissioned", rs.getString("is_commissioned"));
+        activity.put("continuous_activity_id", rs.getString("continuous_activity_id"));
         activity.put("status_id", rs.getString("status_id"));
         activity.put("status_name", rs.getString("status_name"));
         activity.put("milestone_id", rs.getString("milestone_id"));
@@ -297,5 +300,59 @@ public class MySQLActivityDAO implements ActivityDAO {
       LOG.error("There was an error saving an activity status. \n{}", e);
     }
     return !problem;
+  }
+
+
+  @Override
+  public boolean updateMainInformation(Map<String, String> activityData) {
+    boolean added = false;
+    Object[] values = new Object[6];
+    values[0] = activityData.get("title");
+    values[1] = activityData.get("description");
+    values[2] = activityData.get("start_date");
+    values[3] = activityData.get("end_date");
+    values[4] = activityData.get("milestone_id");
+    values[5] = activityData.get("id");
+
+    String query =
+      "UPDATE activities SET title = ?, description = ?, start_date = ?, end_date = ?, milestone_id = ? WHERE id = ?";
+
+    try (Connection con = databaseManager.getConnection()) {
+      int updatedResult = databaseManager.makeChangeSecure(con, query, values);
+      if (updatedResult < 0) {
+        LOG.warn("There was a problem updating the main information for an activity. See query below. \n{}", query);
+        LOG.warn("  Query: " + query);
+        LOG.warn("  Values: " + Arrays.toString(values));
+      } else {
+        added = true;
+        // If the activity was updated successfully save the gender integration description
+        // Delete the record in the database
+        query = "DELETE FROM gender_integrations WHERE `activity_id` = ?";
+        int rowsDeleted = databaseManager.makeChangeSecure(con, query, new Object[] {activityData.get("id")});
+        if (rowsDeleted < -1) {
+          LOG.warn("There was a problem deleting the gender integration description for activity {}",
+            activityData.get("id"));
+        }
+        if (activityData.get("genderDescription") != null) {
+          values = new Object[2];
+          values[0] = activityData.get("genderDescription");
+          values[1] = activityData.get("id");
+          query =
+            "INSERT INTO gender_integrations (description, activity_id) VALUES (?, ?) "
+              + "ON DUPLICATE KEY UPDATE description = VALUES(description)";
+          int rowsAffected = databaseManager.makeChangeSecure(con, query, values);
+          if (rowsAffected < 0) {
+            LOG.warn("There was a problem saving the gender integration description.");
+            LOG.warn("Query: {}", query);
+            LOG.warn("Values: {}", values);
+          }
+        }
+      }
+    } catch (SQLException e) {
+      LOG.error("There was an error updating the main information for an activity. See query below. \n{}", query, e);
+      LOG.error("  Query: " + query);
+      LOG.error("  Values: " + Arrays.toString(values));
+    }
+    return added;
   }
 }

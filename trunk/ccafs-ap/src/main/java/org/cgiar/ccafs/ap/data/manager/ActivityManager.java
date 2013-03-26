@@ -68,4 +68,13 @@ public interface ActivityManager {
    * @return true if the information was saved, or false otherwise.
    */
   public boolean saveStatus(Activity activity);
+
+  /**
+   * Update the main information (Title, description, milestone, budget, start and end date,
+   * gender) into the DAO
+   * 
+   * @param activity - Activity object with the information populated on it
+   * @return true if the information was updated successfully, false otherwise
+   */
+  public boolean updateMainInformation(Activity activity);
 }

@@ -1,6 +1,6 @@
 [#ftl]
 [#assign title = "Main information" /]
-[#assign globalLibs = ["jquery", "noty"] /]
+[#assign globalLibs = ["jquery", "noty", "chosen"] /]
 [#assign customJS = ["${baseUrl}/js/planning/mainInformation.js"] /]
 [#assign currentSection = "planning" /]
 [#assign currentPlanningSection = "mainInformation" /]
@@ -16,7 +16,7 @@
   [@s.form action="mainInformation"]  
   <article class="halfContent">
     <h1 class="contentTitle">
-      ${currentUser.leader.acronym} - [@s.text name="planning.mainInformation" /]  
+      ${currentUser.leader.acronym} - [@s.text name="planning.mainInformation.activity" /]  
     </h1>
     
     [#-- Activity identifier --]
@@ -27,6 +27,25 @@
     [#-- Hidden values used by js --]
     <input id="minDateValue" value="${currentYear?c}-01-01" type="hidden"/>
     <input id="maxDateValue" value="${endYear?c}-12-31" type="hidden"/>
+    
+    [#-- Commissioned and continuous --]
+    [#if activity.continuousActivity?has_content || activity.commissioned]
+      <div class="fullblock">
+        <div class="halfPartBlock">
+          [#if activity.continuousActivity?has_content]
+            [@s.text name="planning.mainInformation.continuationActivity" /] 
+            <a href="[@s.url action='activity' namespace="/"][@s.param name='${publicActivtyRequestParameter}']${activity.continuousActivity.id}[/@s.param][/@s.url]"> 
+              [@s.text name="planning.mainInformation.activity" /] ${activity.continuousActivity.id} 
+            </a>
+          [/#if]
+        </div>
+        <div class="halfPartBlock">
+          [#if activity.commissioned]
+            [@s.text name="planning.mainInformation.commissioned" /] TODO : 
+          [/#if]
+        </div>
+      </div>
+    [/#if]
     
     [#-- Title --]
     <div class="fullBlock">
@@ -40,13 +59,12 @@
     
     [#-- Milestones --]
     <div class="halfPartBlock">
-      [@customForm.select name="activity.milestone" label="" i18nkey="planning.mainInformation.milestone" listName="milestones" keyFieldName="id"  displayFieldName="code" value="selectedTheme" /]
+      [@customForm.select name="activity.milestone" label="" i18nkey="planning.mainInformation.milestone" listName="milestones" keyFieldName="id"  displayFieldName="code" value="selectedTheme" className="milestones" /]
     </div>
     
     [#-- Milestone --]
     <div class="halfPartBlock">
-      [#-- @customForm.select name="themes" label="" i18nkey="planning.mainInformation.milestone" listName="themes" keyFieldName="id"  displayFieldName="name" value="activity.milestone.output.objective.theme.id" / --]
-      <a href="#">view logframe </a> 
+      <a href="#" target="_blank">view logframe </a> 
     </div>
     
     [#-- Budget --]
@@ -92,7 +110,10 @@
             [#list activity.contactPersons as contactPerson]
               
               <div id="contactPerson-${contactPerson_index}" class="contactPerson">
-                [#-- Contact person --]
+                [#-- Contact person id--]
+                <input type="hidden" name="activity.contactPersons[${contactPerson_index}].id" value="${contactPerson.id}">
+                
+                [#-- Contact name --]
                 <div class="halfPartBlock">
                   [@customForm.input name="activity.contactPersons[${contactPerson_index}].name" type="text" i18nkey="planning.mainInformation.contactName" /]
                 </div>
@@ -111,6 +132,9 @@
             [/#list]
           [#else]
             <div class="contactPerson">
+              [#-- Contact person id--]
+              <input type="hidden" name="activity.contactPersons[0].id" value="-1">
+              
               [#-- Contact person --]
               <div class="halfPartBlock">
                 [@customForm.input name="activity.contactPersons[0].name" type="text" i18nkey="planning.mainInformation.contactName" /]
@@ -138,6 +162,9 @@
     
     [#-- Contact person template --]
     <div id="contactPersonTemplate" style="display:none;">
+      [#-- Contact person id--]
+      <input type="hidden" name="id" value="-1">
+      
       [#-- Contact name --]
       <div class="halfPartBlock">
         [@customForm.input name="name" type="text" i18nkey="planning.mainInformation.contactName" /]

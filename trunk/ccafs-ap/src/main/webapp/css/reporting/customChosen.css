@@ -22,7 +22,7 @@
     width: 100% !important;
 }
 
-.chzn-container-multi .chzn-choices {
+.fullBlock .chzn-container-multi .chzn-choices {
     width: 614px;
 }
 
@@ -34,6 +34,6 @@
     width: 100% !important; 
 }
 
-.chzn-drop .chzn-search input{
+.fullBlock .chzn-drop .chzn-search input{
     width: 581px !important; 
 }

@@ -5,6 +5,7 @@ import org.cgiar.ccafs.ap.data.manager.BudgetManager;
 import org.cgiar.ccafs.ap.data.model.Budget;
 import org.cgiar.ccafs.ap.data.model.BudgetPercentage;
 
+import java.util.HashMap;
 import java.util.Map;
 
 import com.google.inject.Inject;
@@ -57,4 +58,20 @@ public class BudgetManagerImpl implements BudgetManager {
     return budget;
   }
 
+  @Override
+  public boolean saveBudget(Budget budget, int activityID) {
+    Map<String, String> budgetData = new HashMap<>();
+
+    if (budget.getId() != -1) {
+      budgetData.put("id", String.valueOf(budget.getId()));
+    } else {
+      budgetData.put("id", null);
+    }
+    budgetData.put("usd", String.valueOf(budget.getUsd()));
+    budgetData.put("cgFund", String.valueOf(budget.getCgFund().getId()));
+    budgetData.put("bilateral", String.valueOf(budget.getBilateral().getId()));
+    budgetData.put("activityID", String.valueOf(activityID));
+
+    return budgetDAO.saveBudget(budgetData);
+  }
 }

@@ -16,4 +16,13 @@ public interface BudgetManager {
    */
   public Budget getBudget(int activityID);
 
+  /**
+   * Save into the DAO the budget data corresponding to the given activity
+   * 
+   * @param budget Budget object with the information to save
+   * @param activityID - Activity identifier
+   * @return true if was successfully saved, false otherwise
+   */
+  public boolean saveBudget(Budget budget, int activityID);
+
 }

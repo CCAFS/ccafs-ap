@@ -6,6 +6,7 @@ import org.cgiar.ccafs.ap.data.dao.DAOManager;
 import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -16,7 +17,7 @@ import org.slf4j.LoggerFactory;
 
 public class MySQLBudgetDAO implements BudgetDAO {
 
-  // Loggin
+  // Logger
   private static final Logger LOG = LoggerFactory.getLogger(MySQLBudgetDAO.class);
   private DAOManager databaseManager;
 
@@ -65,5 +66,38 @@ public class MySQLBudgetDAO implements BudgetDAO {
     }
 
     return budgetData;
+  }
+
+  @Override
+  public boolean saveBudget(Map<String, String> budgetData) {
+    boolean saved = false;
+
+    Object[] values = new Object[budgetData.size()];
+    values[0] = budgetData.get("id");
+    values[1] = budgetData.get("usd");
+    values[2] = budgetData.get("cgFund");
+    values[3] = budgetData.get("bilateral");
+    values[4] = budgetData.get("activityID");
+
+    String query =
+      "INSERT INTO activity_budgets (id, usd, cg_funds, bilateral, activity_id) VALUES (?, ?, ?, ?, ?) "
+        + " ON DUPLICATE KEY UPDATE usd = VALUES(usd), cg_funds = VALUES(cg_funds), bilateral = VALUES(bilateral)";
+
+    try (Connection con = databaseManager.getConnection()) {
+      int rows = databaseManager.makeChangeSecure(con, query, values);
+      if (rows < 0) {
+        LOG.error("There was a problem saving the budget data.");
+        LOG.error("Query: {}", query);
+        LOG.error("Values: {}", Arrays.toString(values));
+      } else {
+        saved = true;
+      }
+    } catch (SQLException e) {
+      LOG.error("There was an error saving the budget data.");
+      LOG.error("Query: {}", query);
+      LOG.error("Values: {}", Arrays.toString(values));
+      LOG.error("Error: ", e);
+    }
+    return saved;
   }
 }
