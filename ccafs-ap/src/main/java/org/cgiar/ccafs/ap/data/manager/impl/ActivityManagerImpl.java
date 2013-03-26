@@ -297,6 +297,14 @@ public class ActivityManagerImpl implements ActivityManager {
       }
       activity.setDescription(activityDB.get("description"));
       activity.setGlobal(activityDB.get("is_global").equals("1"));
+      activity.setCommissioned(activityDB.get("is_commissioned").equals("1"));
+
+      if (activityDB.get("continuous_activity_id") != null) {
+        Activity activityTemp = new Activity();
+        activityTemp.setId(Integer.parseInt(activityDB.get("continuous_activity_id")));
+        activity.setContinuousActivity(activityTemp);
+      }
+
       // Status
       Status status = new Status();
       status.setId(Integer.parseInt(activityDB.get("status_id")));
@@ -360,5 +368,25 @@ public class ActivityManagerImpl implements ActivityManager {
     activityData.put("status_description", activity.getStatusDescription());
     activityData.put("gender_integrations_description", activity.getGenderIntegrationsDescription());
     return activityDAO.saveStatus(activityData);
+  }
+
+  @Override
+  public boolean updateMainInformation(Activity activity) {
+    SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+
+    Map<String, String> activityData = new HashMap<>();
+    activityData.put("id", String.valueOf(activity.getId()));
+    activityData.put("title", activity.getTitle());
+    activityData.put("description", activity.getDescription());
+    activityData.put("start_date", sdf.format(activity.getStartDate()));
+    activityData.put("end_date", sdf.format(activity.getEndDate()));
+    activityData.put("milestone_id", String.valueOf(activity.getMilestone().getId()));
+    if (activity.getGenderIntegrationsDescription().isEmpty()) {
+      activityData.put("genderDescription", null);
+    } else {
+      activityData.put("genderDescription", activity.getGenderIntegrationsDescription());
+    }
+
+    return activityDAO.updateMainInformation(activityData);
   }
 }

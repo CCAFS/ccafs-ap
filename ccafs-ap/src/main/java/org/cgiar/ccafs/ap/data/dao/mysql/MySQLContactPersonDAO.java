@@ -28,6 +28,20 @@ public class MySQLContactPersonDAO implements ContactPersonDAO {
   }
 
   @Override
+  public boolean deleteContactPersons(int activityID) {
+    String query = "DELETE FROM contact_person WHERE activity_id = ?";
+    try (Connection con = databaseManager.getConnection()) {
+      int rowsDeleted = databaseManager.makeChangeSecure(con, query, new Object[] {activityID});
+      if (rowsDeleted >= 0) {
+        return true;
+      }
+    } catch (SQLException e) {
+      LOG.error("There was an error deleting the contact persons related to the activity {}", activityID, e);
+    }
+    return false;
+  }
+
+  @Override
   public List<Map<String, String>> getContactPersons(int activityID) {
     List<Map<String, String>> contactPersonsDB = new ArrayList<>();
     String query = "SELECT * FROM contact_person WHERE activity_id = " + activityID;
@@ -47,4 +61,25 @@ public class MySQLContactPersonDAO implements ContactPersonDAO {
     return contactPersonsDB;
   }
 
+  @Override
+  public boolean saveContactPersons(Map<String, String> contactPerson, int activityID) {
+    boolean saved = false;
+    String query =
+      "INSERT INTO contact_person (id, name, email, activity_id) VALUES (?, ?, ?, " + activityID
+        + ") ON DUPLICATE KEY UPDATE name = VALUES(name), email = VALUES(email), activity_id = VALUES(activity_id);";
+    Object[] values = new Object[3];
+    values[0] = contactPerson.get("id");
+    values[1] = contactPerson.get("name");
+    values[2] = contactPerson.get("email");
+
+    try (Connection con = databaseManager.getConnection()) {
+      int rows = databaseManager.makeChangeSecure(con, query, values);
+      if (rows > 0) {
+        saved = true;
+      }
+    } catch (SQLException e) {
+      LOG.error("There was an error saving the contact person into the DAO.", e);
+    }
+    return saved;
+  }
 }

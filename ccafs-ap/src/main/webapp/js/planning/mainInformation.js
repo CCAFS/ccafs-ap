@@ -22,6 +22,8 @@ $(document).ready(function() {
     newContactPerson.show("slow");
   });
 
+  // Add chosen plugin to the milestone select
+  $(".milestones").chosen();
   datePickerConfig();
 });
 
@@ -30,16 +32,21 @@ function renameContactPersons() {
       function(index, contactPerson) {
         // Block id
         $(this).attr("id", "contactPerson-" + index);
+        // Contact person id
+        $(this).find("[name$='id']").attr("id",
+            "activity.contactPersons[" + index + "].id");
+        $(this).find("[name$='id']").attr("name",
+            "activity.contactPersons[" + index + "].id");
         // Contact name
         $(this).find("[id$='name']").attr("id",
-            "activity\\.contactPersons[" + index + "]\\.name");
+            "activity.contactPersons[" + index + "].name");
         $(this).find("[name$='name']").attr("name",
-            "activity\\.contactPersons[" + index + "]\\.name");
+            "activity.contactPersons[" + index + "].name");
         // Contact email
         $(this).find("[id$='email']").attr("id",
-            "activity\\.contactPersons[" + index + "]\\.email");
+            "activity.contactPersons[" + index + "].email");
         $(this).find("[name$='email']").attr("name",
-            "activity\\.contactPersons[" + index + "]\\.email");
+            "activity.contactPersons[" + index + "].email");
       });
 }
 
@@ -51,6 +58,7 @@ function renameContactPersons() {
 function toggleGenderIntegrationText() {
   if ($(".genderIntegrationOption:checked").val() == 0) {
     $(".genderIntegrationsDescription").hide("slow");
+    $("#activity\\.genderIntegrationsDescription").text("");
   } else {
     $(".genderIntegrationsDescription").show("slow");
   }
@@ -98,7 +106,7 @@ function datePickerConfig() {
     changeYear : true,
     defaultDate : null,
     onClose : function(selectedDate) {
-      $("#activity.startDate").datepicker("option", "maxDate", selectedDate);
+      $("#activity\\.startDate").datepicker("option", "maxDate", selectedDate);
     }
   });
 }

@@ -12,6 +12,7 @@ import org.cgiar.ccafs.ap.data.manager.MilestoneManager;
 import org.cgiar.ccafs.ap.data.model.Activity;
 import org.cgiar.ccafs.ap.data.model.BudgetPercentage;
 import org.cgiar.ccafs.ap.data.model.Milestone;
+import org.cgiar.ccafs.ap.util.EmailValidator;
 
 import java.util.LinkedHashMap;
 import java.util.List;
@@ -98,6 +99,10 @@ public class MainInformationPlanningAction extends BaseAction {
     return milestones;
   }
 
+  public String getPublicActivtyRequestParameter() {
+    return APConstants.PUBLIC_ACTIVITY_ID;
+  }
+
   @Override
   public void prepare() throws Exception {
     super.prepare();
@@ -119,16 +124,86 @@ public class MainInformationPlanningAction extends BaseAction {
     activity.setContactPersons(contactPersonManager.getContactPersons(activityID));
     // Set the budget
     activity.setBudget(budgetManager.getBudget(activityID));
+
+    // Remove all contact persons in case user clicked on submit button
+    if (activity.getContactPersons() != null) {
+      if (this.getRequest().getMethod().equalsIgnoreCase("post")) {
+        activity.getContactPersons().clear();
+        LOG.debug("All the case studies related to the leader {} was deleted", getCurrentUser().getLeader().getId());
+      }
+    }
   }
 
   @Override
   public String save() {
-    System.out.println(activity.getMilestone());
-    System.out.println("------ SAVE -------");
-    return super.save();
+    boolean success = true;
+
+    if (activityManager.updateMainInformation(activity)) {
+      LOG.info("The user {} saved the main information of the activity {} successfully.", getCurrentUser().getEmail(),
+        activityID);
+
+      if (!budgetManager.saveBudget(activity.getBudget(), activity.getId())) {
+        LOG.warn("There was a problem saving the budget for activity {}", activity.getId());
+        success = false;
+      }
+
+      if (contactPersonManager.saveContactPersons(activity.getContactPersons(), activityID)) {
+
+      }
+
+    } else {
+      success = false;
+    }
+
+    if (success) {
+      addActionMessage(getText("saving.success", new String[] {getText("planning.mainInformation")}));
+      LOG.info("The user {} saved the main information of the activity {} successfully.", getCurrentUser().getEmail(),
+        activityID);
+      return SUCCESS;
+    } else {
+      LOG.warn("The user {} had problems to save the main information of the activity {}.",
+        getCurrentUser().getEmail(), activityID);
+      addActionError(getText("saving.problem"));
+      return INPUT;
+    }
+
   }
 
   public void setActivity(Activity activity) {
     this.activity = activity;
+  }
+
+  @Override
+  public void validate() {
+    boolean problem = false;
+
+    if (save) {
+      // Validate if the contact person is filled
+      if (activity.getContactPersons() == null || activity.getContactPersons().isEmpty()) {
+        problem = true;
+        addFieldError("activity.contactPersons[0].name", getText("validation.field.required"));
+      } else {
+        for (int c = 0; c < activity.getContactPersons().size(); c++) {
+          // Check if at least there is a contact name
+          if (activity.getContactPersons().get(c).getName().isEmpty()) {
+            problem = true;
+            addFieldError("activity.contactPersons[" + c + "].name", getText("validation.field.required"));
+          }
+
+          // If there is a contact email, check if it is valid
+          if (!activity.getContactPersons().get(c).getEmail().isEmpty()) {
+            if (!EmailValidator.isValidEmail(activity.getContactPersons().get(c).getEmail())) {
+              problem = true;
+              addFieldError("activity.contactPersons[" + c + "].email",
+                getText("validation.invalid", new String[] {getText("planning.mainInformation.contactEmail")}));
+            }
+          }
+        }
+      }
+    }
+
+    if (problem) {
+      addActionError(getText("saving.fields.required"));
+    }
   }
 }

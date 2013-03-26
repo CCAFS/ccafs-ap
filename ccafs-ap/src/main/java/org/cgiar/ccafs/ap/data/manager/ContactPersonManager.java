@@ -17,4 +17,13 @@ public interface ContactPersonManager {
    * @return a set of ContactPerson objects.
    */
   public List<ContactPerson> getContactPersons(int activityID);
+
+  /**
+   * Save the contact persons for the given activity
+   * 
+   * @param contactPersons
+   * @param activityID
+   * @return true if ALL contact persons was saved successfully, false otherwise.
+   */
+  public boolean saveContactPersons(List<ContactPerson> contactPersons, int activityID);
 }
