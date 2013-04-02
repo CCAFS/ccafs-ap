@@ -146,6 +146,9 @@ function renameDeliverables() {
                   "activity.deliverables[" + index + "].fileName");
               $(this).find("[name$='fileName']").attr("name",
                   "activity.deliverables[" + index + "].fileName");
+              // File name message
+              $(this).find("[id$='fileNameMessage']").attr("id",
+                  "fileNameMessage-" + index);
               // Description Update
               $(this).find("[id$='descriptionUpdate']").attr("id",
                   "activity.deliverables[" + index + "].descriptionUpdate");

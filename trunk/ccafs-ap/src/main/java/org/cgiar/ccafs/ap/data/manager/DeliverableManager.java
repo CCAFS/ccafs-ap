@@ -30,6 +30,14 @@ public interface DeliverableManager {
   public List<Deliverable> getDeliverables(int activityId);
 
   /**
+   * Remove all those expected deliverables that belongs to the specified activity id.
+   * 
+   * @param activityID - activity identifier.
+   * @return true if all the not expected deliverables were removed, or false if any problem occur.
+   */
+  public boolean removeExpected(int activityID);
+
+  /**
    * Remove all those not expected deliverables that belongs to the specified activity id.
    * 
    * @param activityID - activity identifier.

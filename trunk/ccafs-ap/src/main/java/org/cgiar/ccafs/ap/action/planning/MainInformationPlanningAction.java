@@ -66,6 +66,10 @@ public class MainInformationPlanningAction extends BaseAction {
   }
 
 
+  public String getActivityRequestParameter() {
+    return APConstants.ACTIVITY_REQUEST_ID;
+  }
+
   public List<BudgetPercentage> getBudgetPercentages() {
     return budgetPercentages;
   }
@@ -147,8 +151,9 @@ public class MainInformationPlanningAction extends BaseAction {
         success = false;
       }
 
-      if (contactPersonManager.saveContactPersons(activity.getContactPersons(), activityID)) {
-
+      if (!contactPersonManager.saveContactPersons(activity.getContactPersons(), activityID)) {
+        LOG.warn("There was a problem saving the contact persons for activity {}", activity.getId());
+        success = false;
       }
 
     } else {

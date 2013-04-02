@@ -16,7 +16,7 @@
   [@s.form action="mainInformation"]  
   <article class="halfContent">
     <h1 class="contentTitle">
-      ${currentUser.leader.acronym} - [@s.text name="planning.mainInformation.activity" /]  
+      ${currentUser.leader.acronym} - [@s.text name="planning.mainInformation.activity" /] ${activity.id}
     </h1>
     
     [#-- Activity identifier --]
@@ -41,7 +41,7 @@
         </div>
         <div class="halfPartBlock">
           [#if activity.commissioned]
-            [@s.text name="planning.mainInformation.commissioned" /] TODO : 
+            [@s.text name="planning.mainInformation.commissioned" /]
           [/#if]
         </div>
       </div>
@@ -98,7 +98,7 @@
         [@customForm.radioButtonGroup label="Gender Integration" name="genderIntegrationOption" listName="genderOptions" value="${hasGender?string('1', '0')}" /]
       </div>
       <div class="fullBlock genderIntegrationsDescription">
-        [@customForm.textArea name="activity.genderIntegrationsDescription" i18nkey="reporting.activityStatus.genderIntegrationDescription" required=true /]
+        [@customForm.textArea name="activity.genderIntegrationsDescription" i18nkey="planning.mainInformation.genderIntegrationDescription" required=true /]
       </div>
     </div>
         
@@ -153,9 +153,9 @@
           [/#if]
         </div>
     
-    <div class="addContactPerson">
+    <div class="contactPerson">
       <img src="${baseUrl}/images/global/icon-add.png" />
-      <a href="" class="addDeliverable" >[@s.text name="reporting.activityDeliverables.addDeliverable" /]</a>
+      <a href="" class="addContactPerson" >[@s.text name="planning.mainInformation.addContactPerson" /]</a>
     </div>
     </fieldset>
     

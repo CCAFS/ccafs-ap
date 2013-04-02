@@ -36,6 +36,14 @@ public interface DeliverableDAO {
   public int getDeliverablesCount(int activityID);
 
   /**
+   * Remove all expected deliverables that belongs of a given activity.
+   * 
+   * @param activityID - activity identifier.
+   * @return true if all deliverables were successfully deleted, false otherwise.
+   */
+  public boolean removeExpected(int activityID);
+
+  /**
    * Remove all not expected deliverables that belongs of a given activity.
    * 
    * @param activityID - activity identifier.

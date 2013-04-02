@@ -33,7 +33,7 @@ $(document).ready(function() {
             if( ! $(this).is(":hidden") ){
               $(this).attr("id", "publications[" + index + "].relatedThemes-" + index2);
               $(this).attr("name", "publications[" + index + "].relatedThemes");
-              $(this).next(".checkboxLabel").attr('for', "publications[" + index + "].relatedThemes-" + index2)
+              $(this).next(".checkboxLabel").attr('for', "publications[" + index + "].relatedThemes-" + index2);
             }else{
               $(this).attr("id", "__multiselect_publications_publications_" + index + "__relatedThemes");
               $(this).attr("name", "__multiselect_publications[" + index + "].relatedThemes");

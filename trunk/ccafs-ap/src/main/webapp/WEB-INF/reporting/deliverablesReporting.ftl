@@ -88,6 +88,13 @@
           </div>
         [/#if]
         
+        [#-- File name message --]
+        <div class="fullBlock">
+          <div id="fileNameMessage" class="helpMessage" style="display:none;">
+            <p>[@s.text name="reporting.activityDeliverables.fileNameMessage" /]</p>
+          </div>
+        </div>
+        
         [#-- File name --]
         <div class="fullBlock">
             [#if deliverableTypeIdsPublications?seq_contains(activity.deliverables[deliverable_index].type.id)]
@@ -204,10 +211,11 @@
         
         [#-- File name message --]
         <div class="fullBlock">
-          <div id="fileNameMessage" class="helpMessage">
+          <div id="fileNameMessage" class="helpMessage" style="display:none;">
             <p>[@s.text name="reporting.activityDeliverables.fileNameMessage" /]</p>
           </div>
         </div>
+        
         [#-- File name --]
         <div class="fullBlock">          
           [@customForm.input name="fileName" type="text" i18nkey="reporting.activityDeliverables.filename" help="reporting.activityDeliverables.filename.help"/]
