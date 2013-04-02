@@ -331,7 +331,7 @@ public class ActivityManagerImpl implements ActivityManager {
 
     if (activityID != -1) {
       // Objectives
-      if (activity.getObjectives() != null && activity.getObjectives().length > 0) {
+      if (activity.getObjectives() != null && activity.getObjectives().size() > 0) {
         // TODO
       }
 

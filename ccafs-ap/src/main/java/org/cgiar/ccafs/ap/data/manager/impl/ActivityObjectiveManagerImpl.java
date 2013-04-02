@@ -4,6 +4,8 @@ import org.cgiar.ccafs.ap.data.dao.ActivityObjectiveDAO;
 import org.cgiar.ccafs.ap.data.manager.ActivityObjectiveManager;
 import org.cgiar.ccafs.ap.data.model.ActivityObjective;
 
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -24,15 +26,39 @@ public class ActivityObjectiveManagerImpl implements ActivityObjectiveManager {
   }
 
   @Override
-  public ActivityObjective[] getActivityObjectives(int activityID) {
-    List<Map<String, String>> activityObjectivesDataList = activityObjectiveDAO.getActivityObjectives(activityID);
-    ActivityObjective[] activityObjectives = new ActivityObjective[activityObjectivesDataList.size()];
+  public boolean deleteActivityObjectives(int activityId) {
+    return activityObjectiveDAO.deleteActivityObjectives(activityId);
+  }
 
-    for (int c = 0; c < activityObjectives.length; c++) {
-      activityObjectives[c] = new ActivityObjective();
-      activityObjectives[c].setId(Integer.parseInt(activityObjectivesDataList.get(c).get("id")));
-      activityObjectives[c].setDescription(activityObjectivesDataList.get(c).get("description"));
+  @Override
+  public List<ActivityObjective> getActivityObjectives(int activityID) {
+    List<Map<String, String>> activityObjectivesDataList = activityObjectiveDAO.getActivityObjectives(activityID);
+    List<ActivityObjective> activityObjectives = new ArrayList<>();
+
+    for (Map<String, String> ao : activityObjectivesDataList) {
+      ActivityObjective activityObjective = new ActivityObjective();
+      activityObjective.setId(Integer.parseInt(ao.get("id")));
+      activityObjective.setDescription(ao.get("description"));
+      activityObjectives.add(activityObjective);
     }
     return activityObjectives;
+  }
+
+  @Override
+  public boolean saveActivityObjectives(List<ActivityObjective> objectives, int activityID) {
+    boolean saved = true;
+    for (ActivityObjective objective : objectives) {
+      Map<String, String> actObjData = new HashMap<>();
+      if (objective.getId() == -1) {
+        actObjData.put("id", null);
+      } else {
+        actObjData.put("id", String.valueOf(objective.getId()));
+      }
+      actObjData.put("description", objective.getDescription());
+      if (!activityObjectiveDAO.saveActivityObjectives(actObjData, activityID)) {
+        saved = false;
+      }
+    }
+    return saved;
   }
 }

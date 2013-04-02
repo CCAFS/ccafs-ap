@@ -24,7 +24,7 @@ public class Activity {
   private List<Deliverable> deliverables;
   private List<ActivityPartner> activityPartners;
   private Date dateAdded;
-  private ActivityObjective[] objectives;
+  private List<ActivityObjective> objectives;
   private List<Resource> resources;
   private List<ActivityKeyword> keywords;
   private List<CountryLocation> countries;
@@ -96,7 +96,7 @@ public class Activity {
     return milestone;
   }
 
-  public ActivityObjective[] getObjectives() {
+  public List<ActivityObjective> getObjectives() {
     return objectives;
   }
 
@@ -107,7 +107,6 @@ public class Activity {
   public List<Resource> getResources() {
     return resources;
   }
-
 
   public Date getStartDate() {
     return startDate;
@@ -205,7 +204,7 @@ public class Activity {
     this.milestone = milestone;
   }
 
-  public void setObjectives(ActivityObjective[] objectives) {
+  public void setObjectives(List<ActivityObjective> objectives) {
     this.objectives = objectives;
   }
 

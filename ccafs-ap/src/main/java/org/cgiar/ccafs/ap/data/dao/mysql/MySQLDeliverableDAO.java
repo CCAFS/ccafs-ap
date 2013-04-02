@@ -118,6 +118,21 @@ public class MySQLDeliverableDAO implements DeliverableDAO {
   }
 
   @Override
+  public boolean removeExpected(int activityID) {
+    String deleteDeliverableQuery = "DELETE FROM deliverables WHERE is_expected = 1 AND activity_id = ?";
+    try (Connection connection = databaseManager.getConnection()) {
+      int rowsDeleted = databaseManager.makeChangeSecure(connection, deleteDeliverableQuery, new Object[] {activityID});
+      if (rowsDeleted >= 0) {
+        return true;
+      }
+    } catch (SQLException e) {
+      LOG.error("There was a problem deleting the planned deliverables for an activity. \n{}", deleteDeliverableQuery,
+        e);
+    }
+    return false;
+  }
+
+  @Override
   public boolean removeNotExpected(int activityID) {
     String deleteDeliverableQuery = "DELETE FROM deliverables WHERE is_expected = 0 AND activity_id = ?";
     try (Connection connection = databaseManager.getConnection()) {
