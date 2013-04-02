@@ -5,9 +5,14 @@ import org.cgiar.ccafs.ap.config.APConfig;
 import org.cgiar.ccafs.ap.data.manager.ActivityManager;
 import org.cgiar.ccafs.ap.data.manager.LeaderManager;
 import org.cgiar.ccafs.ap.data.manager.LogframeManager;
+import org.cgiar.ccafs.ap.data.manager.MilestoneManager;
 import org.cgiar.ccafs.ap.data.model.Activity;
+import org.cgiar.ccafs.ap.data.model.Deliverable;
 import org.cgiar.ccafs.ap.data.model.Leader;
+import org.cgiar.ccafs.ap.data.model.Milestone;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Map;
 import java.util.TreeMap;
 
@@ -21,27 +26,22 @@ public class AddActivityPlanningAction extends BaseAction {
   // Managers
   private ActivityManager activityManager;
   private LeaderManager leaderManager;
+  private MilestoneManager milestoneManager;
 
   // Model
   private Activity activity;
-
   private Map<Integer, String> continuousActivityList;
-
+  private Milestone[] milestones;
   private Leader[] leaders;
 
   @Inject
   public AddActivityPlanningAction(APConfig config, LogframeManager logframeManager, ActivityManager activityManager,
-    LeaderManager leaderManager) {
+    LeaderManager leaderManager, MilestoneManager milestoneManager) {
     super(config, logframeManager);
     this.activityManager = activityManager;
     this.leaderManager = leaderManager;
+    this.milestoneManager = milestoneManager;
     this.continuousActivityList = new TreeMap<>();
-  }
-
-  @Override
-  public String execute() throws Exception {
-    System.out.println(activity);
-    return super.execute();
   }
 
   public Activity getActivity() {
@@ -56,9 +56,14 @@ public class AddActivityPlanningAction extends BaseAction {
     return leaders;
   }
 
+  public Milestone[] getMilestones() {
+    return milestones;
+  }
+
   @Override
   public void prepare() throws Exception {
     super.prepare();
+    milestones = milestoneManager.getMilestoneList(this.getCurrentPlanningLogframe());
     leaders = leaderManager.getAllLeaders();
     Activity[] oldActivities =
       activityManager.getActivities(this.getCurrentPlanningLogframe().getYear() - 1, this.getCurrentUser());
@@ -72,6 +77,45 @@ public class AddActivityPlanningAction extends BaseAction {
             : oldActivities[c].getTitle()) + "...";
       continuousActivityList.put(oldActivities[c].getId(), text);
     }
+  }
+
+  @Override
+  public String save() {
+    // Validate if the activity is a continuation of another previous activity.
+    // If so, the main information will be copied to the current activity (dates, descriptions, deliverables, partners,
+    // etc..).
+    if (activity.getContinuousActivity() != null) {
+      Activity oldActivity = activity.getContinuousActivity();
+      // description
+      activity.setDescription(oldActivity.getDescription());
+      // dates
+      activity.setStartDate(oldActivity.getStartDate());
+      activity.setEndDate(oldActivity.getEndDate());
+      // contact persons
+      activity.setContactPersons(oldActivity.getContactPersons());
+      // objectives
+      activity.setObjectives(oldActivity.getObjectives());
+      // partners
+      activity.setActivityPartners(oldActivity.getActivityPartners());
+      // deliverables
+      List<Deliverable> newDeliverables = new ArrayList<>();
+      for (Deliverable deliverable : oldActivity.getDeliverables()) {
+        // Only keep deliverables that end in the the current year or in the future.
+        if (deliverable.getYear() >= this.getCurrentPlanningLogframe().getYear()) {
+          newDeliverables.add(deliverable);
+        }
+      }
+      activity.setDeliverables(newDeliverables);
+    }
+
+    boolean saved = activityManager.saveActivity(activity);
+    if (saved) {
+      // TODO success message
+      return SUCCESS;
+    } else {
+      // TODO error message
+    }
+    return super.save();
   }
 
   public void setActivity(Activity activity) {

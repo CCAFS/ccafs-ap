@@ -62,6 +62,14 @@ public interface ActivityManager {
   public boolean isValidId(int id);
 
   /**
+   * Save the information from Planning section into the DAO.
+   * 
+   * @param activity - Activity object with the information of an activity.
+   * @return true if the information was successfully saved, or false otherwise.
+   */
+  public boolean saveActivity(Activity activity);
+
+  /**
    * Save the activity status information into the DAO.
    * 
    * @param activity - Activity object with the information populated on it.

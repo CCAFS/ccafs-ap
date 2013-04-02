@@ -69,7 +69,7 @@ public class MySQLMilestoneDAO implements MilestoneDAO {
   }
 
   @Override
-  public List<Map<String, String>> getMilestoneList(String logframeID) {
+  public List<Map<String, String>> getMilestoneList(int logframeID) {
     List<Map<String, String>> milestoneDataList = new ArrayList<>();
     String query =
       "SELECT m.id, m.code, m.year, m.description FROM milestones m " + "INNER JOIN outputs op ON m.output_id = op.id "

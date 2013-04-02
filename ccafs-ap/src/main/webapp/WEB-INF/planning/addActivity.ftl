@@ -22,8 +22,13 @@
       <h1>[@s.text name="planning.addActivity.headerTitle" /] (${currentPlanningLogframe.year?c})</h1>    
       
       [#-- Activity title --]
-      <div class="fullBlock">
+      <div class="halfPartBlock">
         [@customForm.input name="activity.title" type="text" i18nkey="planning.addActivity.title" /]
+      </div>
+      
+      [#-- Milestone Codes --]
+      <div class="halfPartBlock">
+        [@customForm.select name="activity.milestone" label="" i18nkey="planning.addActivity.milestone" listName="milestones" keyFieldName="id"  displayFieldName="code" /]
       </div>
       
       [#-- Activity Leader --]
@@ -33,7 +38,7 @@
       
       [#-- Is this activity commissioned? --]
       <div class="thirdPartBlock">
-        [@customForm.checkbox name="activity.isCommissioned" label="" i18nkey="planning.addActivity.isCommissioned" required=true /]
+        [@customForm.checkbox name="activity.commissioned" label="" i18nkey="planning.addActivity.isCommissioned" required=true /]
       </div>
       
       [#-- Is this activity a continuation of a previous activity? --]

@@ -24,6 +24,6 @@ public interface MilestoneDAO {
    * @param logframeID - Logframe identifier
    * @return a list of maps with the information
    */
-  List<Map<String, String>> getMilestoneList(String logframeID);
+  List<Map<String, String>> getMilestoneList(int logframeID);
 
 }

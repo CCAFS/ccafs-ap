@@ -72,8 +72,8 @@ public class MilestoneManagerImpl implements MilestoneManager {
   }
 
   @Override
-  public Milestone[] getMilestoneList(String logframeID) {
-    List<Map<String, String>> milestoneDataList = milestoneDAO.getMilestoneList(logframeID);
+  public Milestone[] getMilestoneList(Logframe logframe) {
+    List<Map<String, String>> milestoneDataList = milestoneDAO.getMilestoneList(logframe.getId());
     Milestone[] milestones = new Milestone[milestoneDataList.size()];
 
     for (int c = 0; c < milestoneDataList.size(); c++) {
