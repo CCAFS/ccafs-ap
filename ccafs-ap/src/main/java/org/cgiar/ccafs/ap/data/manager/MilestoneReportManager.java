@@ -1,7 +1,10 @@
 package org.cgiar.ccafs.ap.data.manager;
 
 import org.cgiar.ccafs.ap.data.manager.impl.MilestoneReportManagerImpl;
+import org.cgiar.ccafs.ap.data.model.Leader;
+import org.cgiar.ccafs.ap.data.model.Logframe;
 import org.cgiar.ccafs.ap.data.model.MilestoneReport;
+import org.cgiar.ccafs.ap.data.model.User.UserRole;
 
 import com.google.inject.ImplementedBy;
 
@@ -16,7 +19,7 @@ public interface MilestoneReportManager {
    * @param logframeId logframe identifier
    * @return A list of milestonReport objects
    */
-  public MilestoneReport[] getMilestoneReports(int activityLeaderId, int logframeId);
+  public MilestoneReport[] getMilestoneReports(Leader activityLeader, Logframe logframe, UserRole role);
 
   /**
    * Save into the DAO the milestone report information

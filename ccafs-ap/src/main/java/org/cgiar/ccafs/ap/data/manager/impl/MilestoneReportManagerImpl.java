@@ -2,12 +2,15 @@ package org.cgiar.ccafs.ap.data.manager.impl;
 
 import org.cgiar.ccafs.ap.data.dao.MilestoneReportDAO;
 import org.cgiar.ccafs.ap.data.manager.MilestoneReportManager;
+import org.cgiar.ccafs.ap.data.model.Leader;
+import org.cgiar.ccafs.ap.data.model.Logframe;
 import org.cgiar.ccafs.ap.data.model.Milestone;
 import org.cgiar.ccafs.ap.data.model.MilestoneReport;
 import org.cgiar.ccafs.ap.data.model.MilestoneStatus;
 import org.cgiar.ccafs.ap.data.model.Objective;
 import org.cgiar.ccafs.ap.data.model.Output;
 import org.cgiar.ccafs.ap.data.model.Theme;
+import org.cgiar.ccafs.ap.data.model.User.UserRole;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -31,9 +34,17 @@ public class MilestoneReportManagerImpl implements MilestoneReportManager {
   }
 
   @Override
-  public MilestoneReport[] getMilestoneReports(int activityLeaderId, int logframeId) {
-    List<Map<String, String>> milestoneReportsDataList =
-      milestoneReportDAO.getMilestoneReportList(activityLeaderId, logframeId);
+  public MilestoneReport[] getMilestoneReports(Leader activityLeader, Logframe logframe, UserRole role) {
+    List<Map<String, String>> milestoneReportsDataList = new ArrayList<Map<String, String>>();
+
+    if (role == UserRole.TL) {
+      milestoneReportsDataList =
+        milestoneReportDAO.getTLMilestoneReportList(activityLeader.getId(), logframe.getId(), logframe.getYear());
+    } else if (role == UserRole.RPL) {
+      milestoneReportsDataList =
+        milestoneReportDAO.getRPLMilestoneReportList(activityLeader.getId(), logframe.getId(), logframe.getYear());
+    }
+
     MilestoneReport[] milestoneReports = new MilestoneReport[milestoneReportsDataList.size()];
 
     for (int c = 0; c < milestoneReportsDataList.size(); c++) {
