@@ -1,6 +1,7 @@
 package org.cgiar.ccafs.ap.data.manager;
 
 import org.cgiar.ccafs.ap.data.manager.impl.MilestoneManagerImpl;
+import org.cgiar.ccafs.ap.data.model.Logframe;
 import org.cgiar.ccafs.ap.data.model.Milestone;
 
 import com.google.inject.ImplementedBy;
@@ -20,8 +21,8 @@ public interface MilestoneManager {
   /**
    * Get the complete milestone list corresponding to the logframe given
    * 
-   * @param logframeID - the logframe identifier
+   * @param logframe - the logframe
    * @return a list of Milestone objects
    */
-  public Milestone[] getMilestoneList(String logframeID);
+  public Milestone[] getMilestoneList(Logframe logframe);
 }

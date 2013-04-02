@@ -117,7 +117,7 @@ public class MainInformationPlanningAction extends BaseAction {
     }
 
     budgetPercentages = budgetPercentageManager.getBudgetPercentageList();
-    milestones = milestoneManager.getMilestoneList(getCurrentPlanningLogframe().getId() + "");
+    milestones = milestoneManager.getMilestoneList(getCurrentPlanningLogframe());
     // Get the basic information about the activity
     activity = activityManager.getActivityStatusInfo(activityID);
     // Set contact persons

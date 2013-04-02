@@ -210,6 +210,13 @@ public class MySQLActivityDAO implements ActivityDAO {
 
 
   @Override
+  public Map<String, String> getTitles(int year, int leaderTypeCode) {
+    // TODO Auto-generated method stub
+    return null;
+  }
+
+
+  @Override
   public boolean isValidId(int id) {
     boolean isValid = false;
     String query = "SELECT id FROM activities WHERE id = " + id;
@@ -221,6 +228,37 @@ public class MySQLActivityDAO implements ActivityDAO {
       LOG.error("There was an error checking if an activity is valid. \n{}", query, e);
     }
     return isValid;
+  }
+
+
+  @Override
+  public int saveSimpleActivity(Map<String, Object> activityData) {
+    boolean problem = false;
+    int activityID = -1;
+    try (Connection con = databaseManager.getConnection()) {
+      String addQuery =
+        "INSERT INTO activities (title, start_date, end_date, description, activity_leader_id, continuous_activity_id, is_commissioned) VALUES (?,?,?,?,?,?,?)";
+      Object[] values = new Object[7];
+      values[0] = activityData.get("title");
+      values[1] = activityData.get("start_date");
+      values[2] = activityData.get("end_date");
+      values[3] = activityData.get("description");
+      values[4] = activityData.get("activity_leader_id");
+      values[5] = activityData.get("continuous_activity_id");
+      values[6] = activityData.get("is_commissioned");
+      int activityAdded = databaseManager.makeChangeSecure(con, addQuery, values);
+      if (activityAdded > 0) {
+        // Get the generated id of the added record.
+        ResultSet rs = databaseManager.makeQuery("SELECT LAST_INSERT_ID()", con);
+        if (rs.next()) {
+          activityID = rs.getInt(1);
+        }
+        rs.close();
+      }
+    } catch (SQLException e) {
+      LOG.error("There was an error trying to add a new activity titled: \"{}\"", activityData.get("title"), e);
+    }
+    return activityID;
   }
 
 

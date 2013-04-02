@@ -92,9 +92,6 @@
             [/#if]
             <div class="clear"> </div>
           </div>
-          <script>
-            alert("${caseStudy.global?string('1', '0')}");
-          </script>
           [#-- Is global --]
           <div class="halfPartBlock">          
             [@customForm.checkbox  name="caseStudies[${caseStudy_index}].global" i18nkey="reporting.caseStudies.isGlobal" checked=caseStudy.global /]

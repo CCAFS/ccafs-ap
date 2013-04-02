@@ -10,6 +10,7 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.sql.Types;
 
 import com.google.inject.Inject;
 import org.slf4j.Logger;
@@ -51,7 +52,11 @@ public class MySQLDAOManager extends DAOManager {
     String query = "";
     try (PreparedStatement stm = conn.prepareStatement(preparedUpdateQuery)) {
       for (int c = 0; c < values.length; c++) {
-        if (values[c] instanceof String) {
+        if (values[c] == null) {
+          // Lest's try to use the same type for all columns and see what happens.
+          // Some databases don't need to have a specific SQL Data Type.
+          stm.setNull((c + 1), Types.VARCHAR);
+        } else if (values[c] instanceof String) {
           stm.setString((c + 1), (String) values[c]);
         } else if (values[c] instanceof Integer) {
           stm.setInt((c + 1), (int) values[c]);

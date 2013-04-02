@@ -54,6 +54,13 @@ public interface ActivityDAO {
   public Map<String, String> getSimpleActivity(int id);
 
   /**
+   * @param year
+   * @param leaderTypeCode
+   * @return
+   */
+  public Map<String, String> getTitles(int year, int leaderTypeCode);
+
+  /**
    * Validate if the given id actually exist in the current list of activities.
    * 
    * @param id - activity identifier.
@@ -62,12 +69,21 @@ public interface ActivityDAO {
   public boolean isValidId(int id);
 
   /**
+   * Add a new activity to the DAO.
+   * 
+   * @param activityData - a Map with the main activity information.
+   * @return the id that represents the added activity, or -1 if some error happened.
+   */
+  public int saveSimpleActivity(Map<String, Object> activityData);
+
+  /**
    * Save the status reporting information of the given activity.
    * 
    * @param activityData - Map with the data to be saved.
    * @return true if the data was saved successfully, or false otherwise.
    */
   public boolean saveStatus(Map<String, String> activityData);
+
 
   /**
    * Update the main information of the given activity
