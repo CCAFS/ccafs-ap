@@ -128,7 +128,7 @@ public class DeliverablesPlanningAction extends BaseAction {
     deliverableTypeIdsPublications = new int[] {5};
 
     // Get the basic information about the activity
-    activity = activityManager.getActivityStatusInfo(activityID);
+    activity = activityManager.getSimpleActivity(activityID);
 
     // Get the deliverables related to the activity
     activity.setDeliverables(deliverableManager.getDeliverables(activityID));

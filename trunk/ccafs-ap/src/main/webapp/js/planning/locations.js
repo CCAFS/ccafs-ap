@@ -76,6 +76,9 @@ function renameOtherSites() {
         // Activate the chosen plugin
         var selectList = $(this).find(".countries");
         $(selectList).chosen();
+        // Other site id
+        $(this).find("[name$='id']").attr("name",
+            "activity.otherLocations[" + index + "].id");
         // Latitude
         $(this).find("[name$='latitude']").attr("name",
             "activity.otherLocations[" + index + "].latitude");

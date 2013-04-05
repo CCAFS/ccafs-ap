@@ -244,22 +244,40 @@ public class ActivityManagerImpl implements ActivityManager {
       activity.setId(id);
       activity.setTitle(activityDB.get("title"));
       try {
-        activity.setStartDate(dateFormat.parse(activityDB.get("start_date")));
+        if (activityDB.get("start_date") == null) {
+          activity.setStartDate(null);
+        } else {
+          activity.setStartDate(dateFormat.parse(activityDB.get("start_date")));
+        }
       } catch (ParseException e) {
         String msg =
           "There was an error parsing start date '" + activityDB.get("start_date") + "' for the activity " + id + ".";
         LOG.error(msg, e);
       }
       try {
-        activity.setEndDate(dateFormat.parse(activityDB.get("end_date")));
+        if (activityDB.get("end_date") == null) {
+          activity.setEndDate(null);
+        } else {
+          activity.setEndDate(dateFormat.parse(activityDB.get("end_date")));
+        }
       } catch (ParseException e) {
         String msg =
           "There was an error parsing end date '" + activityDB.get("end_date") + "' for the activity " + id + ".";
         LOG.error(msg, e);
       }
       activity.setDescription(activityDB.get("description"));
-      activity.setGlobal(activityDB.get("is_global").equals("1"));
-      activity.setCommissioned(activityDB.get("is_commissioned").equals("1"));
+
+      if (activityDB.get("is_global") == null) {
+        activity.setGlobal(false);
+      } else {
+        activity.setGlobal(activityDB.get("is_global").equals("1"));
+      }
+
+      if (activityDB.get("is_commissioned") == null) {
+        activity.setCommissioned(false);
+      } else {
+        activity.setCommissioned(activityDB.get("is_commissioned").equals("1"));
+      }
 
       if (activityDB.get("continuous_activity_id") != null) {
         Activity activityTemp = new Activity();
@@ -269,8 +287,13 @@ public class ActivityManagerImpl implements ActivityManager {
 
       // Status
       Status status = new Status();
-      status.setId(Integer.parseInt(activityDB.get("status_id")));
-      status.setName(activityDB.get("status_name"));
+      if (activityDB.get("status_id") != null) {
+        status.setId(Integer.parseInt(activityDB.get("status_id")));
+      }
+
+      if (activityDB.get("status_name") != null) {
+        status.setName(activityDB.get("status_name"));
+      }
       activity.setStatus(status);
 
       // Status Description
@@ -278,13 +301,20 @@ public class ActivityManagerImpl implements ActivityManager {
 
       // Milestone
       Milestone milestone = new Milestone();
-      milestone.setId(Integer.parseInt(activityDB.get("milestone_id")));
-      milestone.setCode(activityDB.get("milestone_code"));
+      if (activityDB.get("milestone_id") != null) {
+        milestone.setId(Integer.parseInt(activityDB.get("milestone_id")));
+      }
+
+      if (activityDB.get("milestone_code") != null) {
+        milestone.setCode(activityDB.get("milestone_code"));
+      }
       activity.setMilestone(milestone);
 
       // Activity leader
       Leader activityLeader = new Leader();
-      activityLeader.setId(Integer.parseInt(activityDB.get("leader_id")));
+      if (activityDB.get("leader_id") != null) {
+        activityLeader.setId(Integer.parseInt(activityDB.get("leader_id")));
+      }
       activityLeader.setAcronym(activityDB.get("leader_acronym"));
       activityLeader.setName(activityDB.get("leader_name"));
 

@@ -15,6 +15,7 @@ import org.cgiar.ccafs.ap.data.manager.RegionManager;
 import org.cgiar.ccafs.ap.data.model.Activity;
 import org.cgiar.ccafs.ap.data.model.BenchmarkSite;
 import org.cgiar.ccafs.ap.data.model.Country;
+import org.cgiar.ccafs.ap.data.model.OtherSite;
 import org.cgiar.ccafs.ap.data.model.Region;
 
 import java.util.List;
@@ -101,7 +102,7 @@ public class LocationsPlanningAction extends BaseAction {
     }
 
     // Get the basic information about the activity
-    activity = activityManager.getActivityStatusInfo(activityID);
+    activity = activityManager.getSimpleActivity(activityID);
 
     // Set activity countries
     activity.setCountries(activityCountryManager.getActvitiyCountries(activityID));
@@ -121,13 +122,20 @@ public class LocationsPlanningAction extends BaseAction {
     // Get the benchmark sites list
     benchmarkSites = benchmarkSiteManager.getActiveBenchmarkSiteList();
 
-    if (getRequest().getMethod().equalsIgnoreCase("save")) {
+    if (getRequest().getMethod().equalsIgnoreCase("post")) {
+      activity.getOtherLocations().clear();
     }
   }
 
   @Override
   public String save() {
     boolean saved = false;
+
+
+    // First delete the existing other sites from the database
+    activityOtherSiteManager.deleteActivityOtherSites(activityID);
+    // Save the other sites
+    activityOtherSiteManager.saveActivityOtherSites(activity.getOtherLocations(), activityID);
 
     if (saved) {
       addActionMessage(getText("saving.success", new String[] {getText("planning.objectives")}));
@@ -151,6 +159,26 @@ public class LocationsPlanningAction extends BaseAction {
     boolean problem = false;
 
     if (save) {
+
+      // If there is an other site, validate its fields
+      if (!activity.getOtherLocations().isEmpty()) {
+        for (int c = 0; c < activity.getOtherLocations().size(); c++) {
+          OtherSite os = activity.getOtherLocations().get(c);
+
+          // Validate the latitude
+          if (os.getLatitude() > 91 || os.getLatitude() < -91) {
+            addFieldError("activity.otherLocations[" + c + "].latitude",
+              getText("validation.invalid", new String[] {getText("planning.locations.latitude")}));
+          }
+
+          // Validate the longitude
+          if (os.getLongitude() > 181 || os.getLongitude() < -181) {
+            addFieldError("activity.otherLocations[" + c + "].longitude",
+              getText("validation.invalid", new String[] {getText("planning.locations.longitude")}));
+          }
+        }
+      }
+
       if (problem) {
         addActionError(getText("saving.fields.required"));
       }

@@ -22,10 +22,12 @@
     [#-- Activity identifier --]
     <input name="activityID" value="${activity.id}" type="hidden"/>
     
+    [#-- Is global --]
     <div class="halfPartBlock">
       [@customForm.checkbox  name="activity.global" i18nkey="planning.locations.global" checked=activity.global /]
     </div>
     
+    [#-- Regions --]
     <fieldset class="fullblock" id="regionsLocations">
       <legend> <h6> [@s.text name="planning.locations.regions" /] </h6> </legend>
       <div class="regions">
@@ -37,11 +39,13 @@
       </div>
     </fieldset>
     
+    [#-- Countries --]
     <fieldset class="fullBlock locations" id="countryLocations">
       <legend> <h6> [@s.text name="planning.locations.countries" /] </h6> </legend>
       [@customForm.select name="activity.countries" label="" i18nkey="planning.locations.countries" listName="countries" keyFieldName="id"  displayFieldName="name" value="activity.countriesIds" multiple=true className="countries" /]
     </fieldset>
     
+    [#-- Benchmark sites --]
     <fieldset class="fullblock" id="bsLocations">
       <legend> <h6> [@s.text name="planning.locations.benchmarkSites" /] </h6> </legend>
       <div class="benchmarkSites">
@@ -53,15 +57,26 @@
       </div>
     </fieldset>
     
+    [#-- Other locations --]    
     <fieldset class="fullBlock locations" id="otherSites">
       <legend> <h6> [@s.text name="planning.locations.otherSites" /] </h6> </legend>
       
       [#if activity.otherLocations?has_content]
         [#list activity.otherLocations as otherSite]
           <div class="otherSite">
+            [#-- Other site Identifier --]
+            <input type="hidden" name="activity.otherLocations[${otherSite_index}].id" value="${otherSite.id}" />
+            
             <div  class="halfPartBlock">
               [@customForm.select name="activity.otherLocations[${otherSite_index}].country" label="" i18nkey="planning.locations.country" listName="countries" keyFieldName="id"  displayFieldName="name" value="activity.otherLocations[${otherSite_index}].country.id" className="countries" /]
             </div>
+            <div class="halfPartBlock">
+              [@customForm.input name="activity.otherLocations[${otherSite_index}].details" type="text" i18nkey="planning.locations.details" /]
+            </div>
+            [#-- Remove image --]
+            <a href="#" >
+              <img src="${baseUrl}/images/global/icon-remove.png" class="removeOtherSite" />
+            </a>
             <div  class="halfPartBlock">
               <div  class="halfPartBlock">
                 [@customForm.input name="activity.otherLocations[${otherSite_index}].latitude" type="text" i18nkey="planning.locations.latitude" /]
@@ -69,13 +84,6 @@
               <div  class="halfPartBlock">
                 [@customForm.input name="activity.otherLocations[${otherSite_index}].longitude" type="text" i18nkey="planning.locations.longitude" /]
               </div>
-            </div>
-            [#-- Remove image --]
-            <a href="#" >
-              <img src="${baseUrl}/images/global/icon-remove.png" class="removeOtherSite" />
-            </a>
-            <div class="halfPartBlock">
-              [@customForm.input name="activity.otherLocations[${otherSite_index}].details" type="text" i18nkey="planning.locations.details" /]
             </div>
             <div class="halfPartBlock">
               <a class="popup" href="[@s.url action='selectLocation'] [@s.param name='otherSiteID']${otherSite_index}[/@s.param][/@s.url]"> [@s.text name="planning.locations.selectOtherSite" /] </a>
@@ -86,23 +94,24 @@
         [/#list]
       [#else]
           <div class="otherSite">
+            <input type="hidden" name="activity.otherLocations[0].id" value="-1" />
             <div  class="halfPartBlock">
-              [@customForm.select name="activity.otherLocations[0].country" label="" i18nkey="planning.locations.country" listName="countries" keyFieldName="id"  displayFieldName="name" className="countries" /]
+              [@customForm.select name="activity.otherLocations[0].country" label="" i18nkey="planning.locations.country" listName="countries" keyFieldName="id"  displayFieldName="name" className="countries" value="" /]
             </div>
-            <div  class="halfPartBlock">
-              <div  class="halfPartBlock">
-                [@customForm.input name="activity.otherLocations[0].latitude" type="text" i18nkey="planning.locations.latitude" /]
-              </div>
-              <div  class="halfPartBlock">
-                [@customForm.input name="activity.otherLocations[0].longitude" type="text" i18nkey="planning.locations.longitude" /]
-              </div>
+            <div class="halfPartBlock">
+              [@customForm.input name="activity.otherLocations[0].details" type="text" i18nkey="planning.locations.details" value="" /]
             </div>
             [#-- Remove image --]
             <a href="#" >
               <img src="${baseUrl}/images/global/icon-remove.png" class="removeOtherSite" />
             </a>
-            <div class="halfPartBlock">
-              [@customForm.input name="activity.otherLocations[0].details" type="text" i18nkey="planning.locations.details" /]
+            <div  class="halfPartBlock">
+              <div  class="halfPartBlock">
+                [@customForm.input name="activity.otherLocations[0].latitude" type="text" i18nkey="planning.locations.latitude" value="" /]
+              </div>
+              <div  class="halfPartBlock">
+                [@customForm.input name="activity.otherLocations[0].longitude" type="text" i18nkey="planning.locations.longitude" value="" /]
+              </div>
             </div>
             <div class="halfPartBlock">
               <a class="popup" href="[@s.url action='selectLocation'] [@s.param name='otherSiteID']0[/@s.param][/@s.url]"> [@s.text name="planning.locations.selectOtherSite" /] </a>
@@ -117,11 +126,20 @@
       </div>
     </fieldset>
     
+    [#-- Other site template --]
     <div id="otherSiteTemplate" style="display:none;">
       <div class="otherSite">
+        <input type="hidden" name="id" value="-1" />
         <div  class="halfPartBlock">
           [@customForm.select name="country" label="" i18nkey="planning.locations.country" listName="countries" keyFieldName="id"  displayFieldName="name" className="countries" /]
         </div>
+        <div class="halfPartBlock">
+          [@customForm.input name="details" type="text" i18nkey="planning.locations.details" /]
+        </div>
+        [#-- Remove image --]
+        <a href="#" >
+          <img src="${baseUrl}/images/global/icon-remove.png" class="removeOtherSite" />
+        </a>
         <div  class="halfPartBlock">
           <div  class="halfPartBlock">
             [@customForm.input name="latitude" type="text" i18nkey="planning.locations.latitude" /]
@@ -129,13 +147,6 @@
           <div  class="halfPartBlock">
             [@customForm.input name="longitude" type="text" i18nkey="planning.locations.longitude" /]
           </div>
-        </div>
-        [#-- Remove image --]
-        <a href="#" >
-          <img src="${baseUrl}/images/global/icon-remove.png" class="removeOtherSite" />
-        </a>
-        <div class="halfPartBlock">
-          [@customForm.input name="details" type="text" i18nkey="planning.locations.details" /]
         </div>
         <div class="halfPartBlock">
           <a id="geoLocationLink" class="popup" href="[@s.url action='selectLocation'] [@s.param name='otherSiteID'][/@s.param][/@s.url]"> [@s.text name="planning.locations.selectOtherSite" /] </a>

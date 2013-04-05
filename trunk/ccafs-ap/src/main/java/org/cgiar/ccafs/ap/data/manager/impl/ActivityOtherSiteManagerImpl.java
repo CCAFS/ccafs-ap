@@ -6,6 +6,7 @@ import org.cgiar.ccafs.ap.data.model.Country;
 import org.cgiar.ccafs.ap.data.model.OtherSite;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -23,6 +24,11 @@ public class ActivityOtherSiteManagerImpl implements ActivityOtherSiteManager {
   @Inject
   public ActivityOtherSiteManagerImpl(ActivityOtherSiteDAO activityOtherSiteDAO) {
     this.activityOtherSiteDAO = activityOtherSiteDAO;
+  }
+
+  @Override
+  public boolean deleteActivityOtherSites(int activityID) {
+    return activityOtherSiteDAO.deleteActivityOtherSites(activityID);
   }
 
   @Override
@@ -45,5 +51,26 @@ public class ActivityOtherSiteManagerImpl implements ActivityOtherSiteManager {
       otherSites.add(otherSiteTemp);
     }
     return otherSites;
+  }
+
+  @Override
+  public boolean saveActivityOtherSites(List<OtherSite> otherSites, int activityID) {
+    boolean success = true;
+    for (OtherSite os : otherSites) {
+      Map<String, String> otherSiteData = new HashMap<String, String>();
+      if (os.getId() == -1) {
+        otherSiteData.put("id", null);
+      } else {
+        otherSiteData.put("id", String.valueOf(os.getId()));
+      }
+      otherSiteData.put("latitude", String.valueOf(os.getLatitude()));
+      otherSiteData.put("longitude", String.valueOf(os.getLongitude()));
+      otherSiteData.put("details", os.getDetails());
+      otherSiteData.put("country_iso2", os.getCountry().getId());
+      if (!activityOtherSiteDAO.saveActivityOtherSites(otherSiteData, activityID)) {
+        success = false;
+      }
+    }
+    return success;
   }
 }
