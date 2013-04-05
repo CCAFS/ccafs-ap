@@ -30,6 +30,15 @@ public interface ActivityManager {
   public Activity[] getActivitiesForRSS(int year, int limit);
 
   /**
+   * Get a list of activities populated only with the id and the title.
+   * 
+   * @param logframe - Logframe object
+   * @param leader - Leader object.
+   * @return a list of activity objects.
+   */
+  public Activity[] getActivitiesTitle(int year, User user);
+
+  /**
    * Get an activity identified with the given id.
    * 
    * @param id - Activity ID
@@ -44,6 +53,15 @@ public interface ActivityManager {
    * @return an Activity object or null if no activity was found.
    */
   public Activity getActivityStatusInfo(int id);
+
+  /**
+   * Get a list of activities that is going to be used in the planning section.
+   * 
+   * @param year - An integer representing the year in which the activities belong.
+   * @param user - An User object representing the leader in which the activities belong.
+   * @return A List of Activity objects that belong to a specific year and user.
+   */
+  public Activity[] getPlanningActivityList(int year, User user);
 
   /**
    * Get an activity with its basic information (ID, Title, Leader)
