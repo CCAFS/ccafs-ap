@@ -56,9 +56,24 @@
       <result name="cancel" type="redirectAction">activities</result>
       <result name="input">/WEB-INF/planning/partnersPlanning.ftl</result>
       <result name="success" type="redirectAction">
-        <param name="actionName">partners</param>
+        <param name="actionName">locations</param>
         <param name="activityID">${activity.id}</param>
       </result>
+    </action>
+    
+    <action name="locations" class="org.cgiar.ccafs.ap.action.planning.LocationsPlanningAction">
+      <interceptor-ref name="planningStack" />
+      <result name="cancel" type="redirectAction">activities</result>
+      <result name="input">/WEB-INF/planning/locationsPlanning.ftl</result>
+      <result name="success" type="redirectAction">
+        <param name="actionName">locations</param>
+        <param name="activityID">${activity.id}</param>
+      </result>
+    </action>
+
+    <action name="selectLocation" class="org.cgiar.ccafs.ap.action.BaseAction">
+      <interceptor-ref name="planningStack" />
+      <result name="input">/WEB-INF/planning/selectLocation.ftl</result>
     </action>
     
   </package>

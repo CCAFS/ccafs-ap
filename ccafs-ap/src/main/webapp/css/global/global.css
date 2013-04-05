@@ -490,6 +490,14 @@ nav#secondaryMenu ul a.currentReportingSection {
   width: 110px;  
 }
 
+.activityLocations fieldset.locations {
+  width: 688px;
+}
+
+.activityLocations fieldset > div > h6{
+  display: none;
+}
+
 /****** REPORTING **********/
 /********* Activity Reporting Sub Menu **********/
 #stageMenu {

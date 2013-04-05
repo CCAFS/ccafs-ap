@@ -37,3 +37,7 @@
 .fullBlock .chzn-drop .chzn-search input{
     width: 581px !important; 
 }
+
+.halfPartBlock .chzn-drop .chzn-search input {
+    width: 250px !important;
+}

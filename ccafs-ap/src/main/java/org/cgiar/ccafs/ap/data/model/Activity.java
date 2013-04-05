@@ -1,5 +1,6 @@
 package org.cgiar.ccafs.ap.data.model;
 
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -40,6 +41,14 @@ public class Activity {
     return activityPartners;
   }
 
+  public List<String> getBenchmarkSitesIds() {
+    ArrayList<String> ids = new ArrayList<>();
+    for (int c = 0; c < getBsLocations().size(); c++) {
+      ids.add(getBsLocations().get(c).getBenchmarkSite().getId() + "");
+    }
+    return ids;
+  }
+
   public List<BenchmarkSiteLocation> getBsLocations() {
     return bsLocations;
   }
@@ -58,6 +67,14 @@ public class Activity {
 
   public List<CountryLocation> getCountries() {
     return countries;
+  }
+
+  public List<String> getCountriesIds() {
+    ArrayList<String> ids = new ArrayList<>();
+    for (int c = 0; c < getCountries().size(); c++) {
+      ids.add(getCountries().get(c).getCountry().getId() + "");
+    }
+    return ids;
   }
 
   public Date getDateAdded() {

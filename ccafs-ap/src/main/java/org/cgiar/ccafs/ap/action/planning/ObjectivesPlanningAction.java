@@ -79,10 +79,11 @@ public class ObjectivesPlanningAction extends BaseAction {
     saved = activityObjectiveManager.saveActivityObjectives(activity.getObjectives(), activityID);
     if (saved) {
       addActionMessage(getText("saving.success", new String[] {getText("planning.objectives")}));
+      return SUCCESS;
     } else {
       addActionError(getText("saving.problem"));
+      return INPUT;
     }
-    return SUCCESS;
   }
 
   public void setActivity(Activity activity) {
