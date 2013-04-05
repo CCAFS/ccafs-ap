@@ -38,9 +38,6 @@ public class ContactPersonManagerImpl implements ContactPersonManager {
       contactPersons.add(cp);
     }
 
-    if (contactPersonsDB.size() == 0) {
-      return null;
-    }
     return contactPersons;
   }
 
