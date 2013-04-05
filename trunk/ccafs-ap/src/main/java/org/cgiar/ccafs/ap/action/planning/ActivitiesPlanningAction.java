@@ -59,7 +59,7 @@ public class ActivitiesPlanningAction extends BaseAction {
     super.prepare();
     LOG.info("User {} load the list of activities for leader {} in planing section", getCurrentUser().getEmail(),
       getCurrentUser().getLeader().getId());
-    currentActivities = activityManager.getActivities(config.getPlanningCurrentYear(), this.getCurrentUser());
+    currentActivities = activityManager.getPlanningActivityList(config.getPlanningCurrentYear(), this.getCurrentUser());
     // activityStatuses = new String[currentActivities.length];
     // Calculate the status of each activity.
     /*

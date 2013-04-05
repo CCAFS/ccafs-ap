@@ -46,6 +46,15 @@ public interface ActivityDAO {
   public Map<String, String> getActivityStatusInfo(int id);
 
   /**
+   * Get a basic information for each activity that is going to be used in the home planning section.
+   * 
+   * @param year - The year in which the activities belong.
+   * @param leaderId - the identification of the leader in which the activities belong.
+   * @return a List of Map objects with the information of each activity (id, title and milestone).
+   */
+  public List<Map<String, String>> getPlanningActivityList(int year, int leaderId);
+
+  /**
    * Get the basic main information of an activity identified with the given integer.
    * 
    * @param id - Activity identifier.
@@ -54,11 +63,13 @@ public interface ActivityDAO {
   public Map<String, String> getSimpleActivity(int id);
 
   /**
-   * @param year
-   * @param leaderTypeCode
-   * @return
+   * Get a list of activities populated only with the id and title.
+   * 
+   * @param year - the logframe year when the activities were added.
+   * @param leaderTypeCode - the leader id where the activities belong to.
+   * @return a list of maps with the id, and title for each activity.
    */
-  public Map<String, String> getTitles(int year, int leaderTypeCode);
+  public List<Map<String, String>> getTitles(int year, int leaderTypeCode);
 
   /**
    * Validate if the given id actually exist in the current list of activities.
@@ -76,6 +87,7 @@ public interface ActivityDAO {
    */
   public int saveSimpleActivity(Map<String, Object> activityData);
 
+
   /**
    * Save the status reporting information of the given activity.
    * 
@@ -83,7 +95,6 @@ public interface ActivityDAO {
    * @return true if the data was saved successfully, or false otherwise.
    */
   public boolean saveStatus(Map<String, String> activityData);
-
 
   /**
    * Update the main information of the given activity

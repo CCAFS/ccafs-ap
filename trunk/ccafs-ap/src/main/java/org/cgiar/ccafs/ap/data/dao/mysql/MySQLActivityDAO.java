@@ -182,6 +182,39 @@ public class MySQLActivityDAO implements ActivityDAO {
 
 
   @Override
+  public List<Map<String, String>> getPlanningActivityList(int year, int leaderId) {
+    List<Map<String, String>> activitiesData = new ArrayList<>();
+    StringBuilder query = new StringBuilder("SELECT a.id, a.title, m.code as 'milestone_code'");
+    query.append(" FROM activities a");
+    query.append(" INNER JOIN milestones m ON m.id = a.milestone_id");
+    query.append(" INNER JOIN outputs o ON o.id = m.output_id");
+    query.append(" INNER JOIN objectives ob ON ob.id = o.objective_id");
+    query.append(" INNER JOIN themes t ON t.id = ob.theme_id");
+    query.append(" INNER JOIN logframes l ON l.id = t.logframe_id");
+    query.append(" INNER JOIN activity_leaders al ON al.id = a.activity_leader_id");
+    query.append(" WHERE l.year = ");
+    query.append(year);
+    query.append(" AND al.id = ");
+    query.append(leaderId);
+    try (Connection connection = databaseManager.getConnection()) {
+      ResultSet rs = databaseManager.makeQuery(query.toString(), connection);
+      while (rs.next()) {
+        Map<String, String> activityData = new HashMap<>();
+        activityData.put("id", rs.getString("id"));
+        activityData.put("title", rs.getString("title"));
+        activityData.put("milestone_code", rs.getString("milestone_code"));
+        activitiesData.add(activityData);
+      }
+      rs.close();
+    } catch (SQLException e) {
+      LOG.error("There was an error trying to get the basic information for an activity. \n{}", query.toString(), e);
+      e.printStackTrace();
+    }
+
+    return activitiesData;
+  }
+
+  @Override
   public Map<String, String> getSimpleActivity(int id) {
     Map<String, String> activity = new HashMap<>();
     String query =
@@ -210,9 +243,34 @@ public class MySQLActivityDAO implements ActivityDAO {
 
 
   @Override
-  public Map<String, String> getTitles(int year, int leaderTypeCode) {
-    // TODO Auto-generated method stub
-    return null;
+  public List<Map<String, String>> getTitles(int year, int leaderTypeCode) {
+    List<Map<String, String>> activityTitles = new ArrayList<>();
+    StringBuilder query = new StringBuilder("SELECT a.id, a.title");
+    query.append(" FROM activities a");
+    query.append(" INNER JOIN activity_leaders al ON al.id = a.activity_leader_id");
+    query.append(" INNER JOIN milestones m ON m.id = a.milestone_id");
+    query.append(" INNER JOIN outputs o ON o.id = m.output_id");
+    query.append(" INNER JOIN objectives obj ON obj.id = o.objective_id");
+    query.append(" INNER JOIN themes t ON t.id = obj.theme_id");
+    query.append(" INNER JOIN logframes l ON l.id = t.logframe_id");
+    query.append(" WHERE l.year = ");
+    query.append(year);
+    query.append(" AND al.id = ");
+    query.append(leaderTypeCode);
+    try (Connection connection = databaseManager.getConnection()) {
+      ResultSet rs = databaseManager.makeQuery(query.toString(), connection);
+      while (rs.next()) {
+        Map<String, String> activityData = new HashMap<>();
+        activityData.put("id", rs.getString("id"));
+        activityData.put("title", rs.getString("title"));
+        activityTitles.add(activityData);
+      }
+      rs.close();
+    } catch (SQLException e) {
+      LOG.error("There was an error trying to get the list of activities that belong to the year " + year
+        + " and the leader id " + leaderTypeCode + "\n{}", query.toString(), e);
+    }
+    return activityTitles;
   }
 
 
@@ -233,12 +291,11 @@ public class MySQLActivityDAO implements ActivityDAO {
 
   @Override
   public int saveSimpleActivity(Map<String, Object> activityData) {
-    boolean problem = false;
     int activityID = -1;
     try (Connection con = databaseManager.getConnection()) {
       String addQuery =
-        "INSERT INTO activities (title, start_date, end_date, description, activity_leader_id, continuous_activity_id, is_commissioned) VALUES (?,?,?,?,?,?,?)";
-      Object[] values = new Object[7];
+        "INSERT INTO activities (title, start_date, end_date, description, activity_leader_id, continuous_activity_id, is_commissioned, milestone_id) VALUES (?,?,?,?,?,?,?,?)";
+      Object[] values = new Object[8];
       values[0] = activityData.get("title");
       values[1] = activityData.get("start_date");
       values[2] = activityData.get("end_date");
@@ -246,6 +303,7 @@ public class MySQLActivityDAO implements ActivityDAO {
       values[4] = activityData.get("activity_leader_id");
       values[5] = activityData.get("continuous_activity_id");
       values[6] = activityData.get("is_commissioned");
+      values[7] = activityData.get("milestone_id");
       int activityAdded = databaseManager.makeChangeSecure(con, addQuery, values);
       if (activityAdded > 0) {
         // Get the generated id of the added record.

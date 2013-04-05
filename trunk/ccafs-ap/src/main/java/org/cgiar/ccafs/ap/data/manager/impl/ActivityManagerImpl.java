@@ -174,6 +174,21 @@ public class ActivityManagerImpl implements ActivityManager {
   }
 
   @Override
+  public Activity[] getActivitiesTitle(int year, User user) {
+    List<Map<String, String>> activityData = activityDAO.getTitles(year, user.getLeader().getId());
+    if (activityData.size() > 0) {
+      Activity[] activities = new Activity[activityData.size()];
+      for (int c = 0; c < activities.length; c++) {
+        activities[c] = new Activity();
+        activities[c].setId(Integer.parseInt(activityData.get(c).get("id")));
+        activities[c].setTitle(activityData.get(c).get("title"));
+      }
+      return activities;
+    }
+    return null;
+  }
+
+  @Override
   public Activity getActivity(int id) {
     // Activity DATA
     Map<String, String> activityData = activityDAO.getActivityStatusInfo(id);
@@ -284,6 +299,24 @@ public class ActivityManagerImpl implements ActivityManager {
   }
 
   @Override
+  public Activity[] getPlanningActivityList(int year, User user) {
+    List<Map<String, String>> activityData = activityDAO.getPlanningActivityList(year, user.getLeader().getId());
+    if (activityData.size() > 0) {
+      Activity[] activities = new Activity[activityData.size()];
+      for (int c = 0; c < activities.length; c++) {
+        activities[c] = new Activity();
+        activities[c].setId(Integer.parseInt(activityData.get(c).get("id")));
+        activities[c].setTitle(activityData.get(c).get("title"));
+        Milestone milestone = new Milestone();
+        milestone.setCode(activityData.get(c).get("milestone_code"));
+        activities[c].setMilestone(milestone);
+      }
+      return activities;
+    }
+    return null;
+  }
+
+  @Override
   public Activity getSimpleActivity(int id) {
     Map<String, String> activityDB = activityDAO.getSimpleActivity(id);
     if (activityDB != null) {
@@ -313,6 +346,7 @@ public class ActivityManagerImpl implements ActivityManager {
     activityData.put("title", activity.getTitle());
     activityData.put("activity_leader_id", activity.getLeader().getId());
     activityData.put("is_commissioned", activity.isCommissioned());
+    activityData.put("milestone_id", activity.getMilestone().getId());
     if (activity.getDescription() != null) {
       activityData.put("description", activity.getDescription());
     }

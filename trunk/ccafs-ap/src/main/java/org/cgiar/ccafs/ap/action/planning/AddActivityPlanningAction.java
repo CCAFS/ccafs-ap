@@ -66,7 +66,7 @@ public class AddActivityPlanningAction extends BaseAction {
     milestones = milestoneManager.getMilestoneList(this.getCurrentPlanningLogframe());
     leaders = leaderManager.getAllLeaders();
     Activity[] oldActivities =
-      activityManager.getActivities(this.getCurrentPlanningLogframe().getYear() - 1, this.getCurrentUser());
+      activityManager.getActivitiesTitle(this.getCurrentPlanningLogframe().getYear() - 1, this.getCurrentUser());
     String text;
     continuousActivityList.put(-1, "Select an activity.");
     for (int c = 0; c < oldActivities.length; c++) {
