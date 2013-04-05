@@ -143,9 +143,9 @@ public class MySQLActivityDAO implements ActivityDAO {
         + "astatus.name as status_name, a.is_commissioned, a.continuous_activity_id, a.milestone_id, "
         + "m.code as milestone_code, al.id as 'leader_id', al.acronym as 'leader_acronym', al.name as 'leader_name', "
         + "g.id as 'gender_id', g.description as 'gender_description' "
-        + "FROM activities a INNER JOIN milestones m ON a.milestone_id = m.id "
-        + "INNER JOIN activity_status astatus ON a.activity_status_id = astatus.id "
-        + "INNER JOIN activity_leaders al ON a.activity_leader_id = al.id "
+        + "FROM activities a LEFT JOIN milestones m ON a.milestone_id = m.id "
+        + "LEFT JOIN activity_status astatus ON a.activity_status_id = astatus.id "
+        + "LEFT JOIN activity_leaders al ON a.activity_leader_id = al.id "
         + "LEFT OUTER JOIN gender_integrations g ON g.activity_id = a.id WHERE a.id = " + id;
     try (Connection con = databaseManager.getConnection()) {
       ResultSet rs = databaseManager.makeQuery(query, con);

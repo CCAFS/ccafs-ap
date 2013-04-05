@@ -29,6 +29,7 @@
         </tr>
       </thead>
       <tbody>
+      [#if currentActivities??]
         [#list currentActivities as activity]
           <tr>
             <td>${activity.id}</td>
@@ -58,6 +59,7 @@
             </td>
           </tr>
         [/#list]
+      [/#if]
       </tbody>
     </table>
     <div class="clearfix"></div>

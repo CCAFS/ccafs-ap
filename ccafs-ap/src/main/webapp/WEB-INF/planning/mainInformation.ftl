@@ -137,12 +137,12 @@
               
               [#-- Contact person --]
               <div class="halfPartBlock">
-                [@customForm.input name="activity.contactPersons[0].name" type="text" i18nkey="planning.mainInformation.contactName" /]
+                [@customForm.input name="activity.contactPersons[0].name" type="text" i18nkey="planning.mainInformation.contactName" value="" /]
               </div>
               
               [#-- Contact email --]
               <div class="halfPartBlock">
-                [@customForm.input name="activity.contactPersons[0].email" type="text" i18nkey="planning.mainInformation.contactEmail" /]
+                [@customForm.input name="activity.contactPersons[0].email" type="text" i18nkey="planning.mainInformation.contactEmail" value="" /]
               </div>
               
               [#-- Adding remove image --]

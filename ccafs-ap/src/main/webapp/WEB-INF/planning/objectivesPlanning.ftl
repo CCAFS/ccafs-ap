@@ -1,7 +1,7 @@
 [#ftl]
 [#assign title = "Activity Objectives Planning" /]
 [#assign globalLibs = ["jquery", "noty"] /]
-[#assign customJS = ["${baseUrl}/js/planning/objectives.js"] /]
+[#assign customJS = ["${baseUrl}/js/planning/objectivesPlanning.js"] /]
 [#assign currentSection = "planning" /]
 [#assign currentPlanningSection = "objectives" /]
 [#assign userRole = "${currentUser.role}"]
@@ -52,7 +52,7 @@
             </a>
         </div>      
         [#-- Description --]
-        [@customForm.textArea name="activity.objectives[0].description" i18nkey="planning.objectives.objective" required=true /]
+        [@customForm.textArea name="activity.objectives[0].description" i18nkey="planning.objectives.objective" required=true value="" /]
       </div>
     [/#if]
     </div>

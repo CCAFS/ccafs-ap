@@ -72,7 +72,7 @@ public class PartnersPlanningAction extends BaseAction {
     }
 
     // Get the basic information about the activity
-    activity = activityManager.getActivityStatusInfo(activityID);
+    activity = activityManager.getSimpleActivity(activityID);
     // Get activity partners
     activity.setActivityPartners(activityPartnerManager.getActivityPartners(activityID));
 
@@ -112,13 +112,16 @@ public class PartnersPlanningAction extends BaseAction {
   public void validate() {
     boolean anyError = false;
 
-    if (activity.getActivityPartners() != null) {
-      for (int c = 0; c < activity.getActivityPartners().size(); c++) {
-        if (!activity.getActivityPartners().get(c).getContactEmail().isEmpty()) {
-          if (!EmailValidator.isValidEmail(activity.getActivityPartners().get(c).getContactEmail())) {
-            anyError = true;
-            addFieldError("activity.activityPartners[" + c + "].contactEmail",
-              getText("validation.invalid", new String[] {getText("planning.activityPartners.contactPersonEmail")}));
+
+    if (save) {
+      if (activity.getActivityPartners() != null) {
+        for (int c = 0; c < activity.getActivityPartners().size(); c++) {
+          if (!activity.getActivityPartners().get(c).getContactEmail().isEmpty()) {
+            if (!EmailValidator.isValidEmail(activity.getActivityPartners().get(c).getContactEmail())) {
+              anyError = true;
+              addFieldError("activity.activityPartners[" + c + "].contactEmail",
+                getText("validation.invalid", new String[] {getText("planning.activityPartners.contactPersonEmail")}));
+            }
           }
         }
       }

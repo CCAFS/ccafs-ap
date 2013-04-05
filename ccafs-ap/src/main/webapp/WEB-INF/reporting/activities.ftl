@@ -46,7 +46,7 @@
                 [#if activity.title?length < 50] ${activity.title}</a> [#else] [@utilities.wordCutter string=activity.title maxPos=50 /]...</a> [/#if]
             </td>
             <td>
-              [#if activity.contactPersons??]
+              [#if activity.contactPersons?has_content]
                 ${activity.contactPersons[0].name}
               [#else]
                 [@s.text name="reporting.activityList.contactPerson.empty" /]

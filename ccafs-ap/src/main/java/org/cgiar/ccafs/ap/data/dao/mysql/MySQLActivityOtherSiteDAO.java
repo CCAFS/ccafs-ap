@@ -28,6 +28,25 @@ public class MySQLActivityOtherSiteDAO implements ActivityOtherSiteDAO {
   }
 
   @Override
+  public boolean deleteActivityOtherSites(int activityID) {
+    boolean deleted = false;
+    String query = "DELETE FROM other_sites WHERE activity_id = ?";
+    Object[] values = new String[] {String.valueOf(activityID)};
+
+    try (Connection con = databaseManager.getConnection()) {
+      int rows = databaseManager.makeChangeSecure(con, query, values);
+      if (rows <= -1) {
+        LOG.warn("There was a problem deleting the other sites related to the activity {}", activityID);
+      } else {
+        deleted = true;
+      }
+    } catch (SQLException e) {
+      LOG.error("There was an error deleting the other sites related to the activity {}", activityID, e);
+    }
+    return deleted;
+  }
+
+  @Override
   public List<Map<String, String>> getActivityOtherSites(int activityID) {
     List<Map<String, String>> osDataList = new ArrayList<>();
     String query =
@@ -53,4 +72,29 @@ public class MySQLActivityOtherSiteDAO implements ActivityOtherSiteDAO {
     return osDataList;
   }
 
+  @Override
+  public boolean saveActivityOtherSites(Map<String, String> otherSite, int activityID) {
+    boolean saved = false;
+    String query =
+      "INSERT INTO other_sites (id, latitude, longitude, details, country_iso2, activity_id) VALUES (?, ?, ?, ?, ?, "
+        + activityID + ")";
+    Object[] values = new Object[5];
+    values[0] = otherSite.get("id");
+    values[1] = otherSite.get("latitude");
+    values[2] = otherSite.get("longitude");
+    values[3] = otherSite.get("details");
+    values[4] = otherSite.get("country_iso2");
+
+    try (Connection con = databaseManager.getConnection()) {
+      int rows = databaseManager.makeChangeSecure(con, query, values);
+      if (rows <= -1) {
+        LOG.error("There was a problem saving an otherSite location. \nQuery: {} \nValues: {}", query, values);
+      } else {
+        saved = true;
+      }
+    } catch (SQLException e) {
+      LOG.error("There was an error saving an otherSite location.", e);
+    }
+    return saved;
+  }
 }

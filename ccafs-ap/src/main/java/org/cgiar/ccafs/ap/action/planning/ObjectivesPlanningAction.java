@@ -59,12 +59,12 @@ public class ObjectivesPlanningAction extends BaseAction {
     }
 
     // Get the basic information about the activity
-    activity = activityManager.getActivityStatusInfo(activityID);
+    activity = activityManager.getSimpleActivity(activityID);
 
     // Get the activity objectives
     activity.setObjectives(activityObjectiveManager.getActivityObjectives(activityID));
 
-    if (getRequest().getMethod().equalsIgnoreCase("save")) {
+    if (getRequest().getMethod().equalsIgnoreCase("post")) {
       activity.getObjectives().clear();
     }
   }
