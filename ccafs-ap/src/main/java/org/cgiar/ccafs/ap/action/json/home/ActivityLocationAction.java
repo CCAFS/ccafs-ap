@@ -8,8 +8,8 @@ import org.cgiar.ccafs.ap.data.manager.ActivityCountryManager;
 import org.cgiar.ccafs.ap.data.manager.ActivityManager;
 import org.cgiar.ccafs.ap.data.manager.ActivityOtherSiteManager;
 import org.cgiar.ccafs.ap.data.manager.LogframeManager;
-import org.cgiar.ccafs.ap.data.model.BenchmarkSiteLocation;
-import org.cgiar.ccafs.ap.data.model.CountryLocation;
+import org.cgiar.ccafs.ap.data.model.BenchmarkSite;
+import org.cgiar.ccafs.ap.data.model.Country;
 import org.cgiar.ccafs.ap.data.model.OtherSite;
 
 import java.util.ArrayList;
@@ -37,8 +37,8 @@ public class ActivityLocationAction extends BaseAction {
 
   // Model
   private int activityID;
-  private List<CountryLocation> countries;
-  private List<BenchmarkSiteLocation> benchmarkSites;
+  private List<Country> countries;
+  private List<BenchmarkSite> benchmarkSites;
   private List<OtherSite> otherSites;
 
   @Inject
@@ -67,15 +67,15 @@ public class ActivityLocationAction extends BaseAction {
     return SUCCESS;
   }
 
-  public List<BenchmarkSiteLocation> getBenchmarkSites() {
+  public List<BenchmarkSite> getBenchmarkSites() {
     return benchmarkSites;
   }
 
   public List<Map<String, String>> getCountries() {
     List<Map<String, String>> la = new ArrayList<>();
-    for (CountryLocation cl : countries) {
+    for (Country country : countries) {
       Map<String, String> a = new HashMap<>();
-      a.put("id", cl.getCountry().getName());
+      a.put("id", country.getName());
       la.add(a);
     }
     return la;

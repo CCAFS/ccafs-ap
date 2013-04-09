@@ -28,8 +28,8 @@ public class Activity {
   private List<ActivityObjective> objectives;
   private List<Resource> resources;
   private List<ActivityKeyword> keywords;
-  private List<CountryLocation> countries;
-  private List<BenchmarkSiteLocation> bsLocations;
+  private List<Country> countries;
+  private List<BenchmarkSite> bsLocations;
   private List<OtherSite> otherLocations;
   private boolean commissioned;
   private Activity continuousActivity;
@@ -44,12 +44,12 @@ public class Activity {
   public List<String> getBenchmarkSitesIds() {
     ArrayList<String> ids = new ArrayList<>();
     for (int c = 0; c < getBsLocations().size(); c++) {
-      ids.add(getBsLocations().get(c).getBenchmarkSite().getId() + "");
+      ids.add(getBsLocations().get(c).getId() + "");
     }
     return ids;
   }
 
-  public List<BenchmarkSiteLocation> getBsLocations() {
+  public List<BenchmarkSite> getBsLocations() {
     return bsLocations;
   }
 
@@ -65,14 +65,14 @@ public class Activity {
     return continuousActivity;
   }
 
-  public List<CountryLocation> getCountries() {
+  public List<Country> getCountries() {
     return countries;
   }
 
   public List<String> getCountriesIds() {
     ArrayList<String> ids = new ArrayList<>();
     for (int c = 0; c < getCountries().size(); c++) {
-      ids.add(getCountries().get(c).getCountry().getId() + "");
+      ids.add(getCountries().get(c).getId() + "");
     }
     return ids;
   }
@@ -157,7 +157,7 @@ public class Activity {
     this.activityPartners = activityPartners;
   }
 
-  public void setBsLocations(List<BenchmarkSiteLocation> bsLocations) {
+  public void setBsLocations(List<BenchmarkSite> bsLocations) {
     this.bsLocations = bsLocations;
   }
 
@@ -177,7 +177,7 @@ public class Activity {
     this.continuousActivity = continuousActivity;
   }
 
-  public void setCountries(List<CountryLocation> countries) {
+  public void setCountries(List<Country> countries) {
     this.countries = countries;
   }
 

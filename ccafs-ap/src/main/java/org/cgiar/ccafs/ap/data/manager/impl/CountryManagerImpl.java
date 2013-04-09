@@ -3,6 +3,7 @@ package org.cgiar.ccafs.ap.data.manager.impl;
 import org.cgiar.ccafs.ap.data.dao.CountryDAO;
 import org.cgiar.ccafs.ap.data.manager.CountryManager;
 import org.cgiar.ccafs.ap.data.model.Country;
+import org.cgiar.ccafs.ap.data.model.Region;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -46,7 +47,13 @@ public class CountryManagerImpl implements CountryManager {
     Country[] countryList = new Country[countryDataList.size()];
     for (int c = 0; c < countryDataList.size(); c++) {
       countryData = countryDataList.get(c);
-      countryList[c] = new Country(countryData.get("id"), countryData.get("name"));
+      Country countryTemp = new Country(countryData.get("id"), countryData.get("name"));
+
+      // Temporal region
+      Region regionTemp = new Region(Integer.parseInt(countryData.get("region_id")), countryData.get("region_name"));
+      countryTemp.setRegion(regionTemp);
+
+      countryList[c] = countryTemp;
     }
 
     if (countryDataList.size() > 0) {

@@ -18,6 +18,7 @@ import org.cgiar.ccafs.ap.data.model.Country;
 import org.cgiar.ccafs.ap.data.model.OtherSite;
 import org.cgiar.ccafs.ap.data.model.Region;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import com.google.inject.Inject;
@@ -64,6 +65,65 @@ public class LocationsPlanningAction extends BaseAction {
     this.benchmarkSiteManager = benchmarkSiteManager;
   }
 
+  /**
+   * Count the number of countries by region and check
+   * if the activity has all the countries of some region to
+   * select the corresponding checkbox.
+   */
+  private void checkRegionsLoaded() {
+    regionsSelected = new ArrayList<>();
+    int regionId = 0;
+    int[] countriesByRegionTotal = new int[regions.length];
+    int[] countriesByRegionLoaded = new int[regions.length];
+
+    // Initialize all the values to zero
+    for (int c = 0; c < regions.length; c++) {
+      countriesByRegionTotal[c] = 0;
+      countriesByRegionLoaded[c] = 0;
+    }
+
+    for (int c = 0; c < countries.length; c++) {
+
+      // If the counter is a valid value in the activity.countries list,
+      // region to which the country belongs
+      if (c < activity.getCountries().size()) {
+        regionId = activity.getCountries().get(c).getRegion().getId();
+        countriesByRegionLoaded[regionId - 1]++;
+      }
+
+      // take the next element in countries list and check
+      // region to which the country belongs
+      regionId = countries[c].getRegion().getId();
+      countriesByRegionTotal[regionId - 1]++;
+    }
+
+    // If the values in both list are the same, the region is
+    // selected
+    for (int c = 0; c < regions.length; c++) {
+      if (countriesByRegionLoaded[c] == countriesByRegionTotal[c]) {
+        regionsSelected.add(String.valueOf(regions[c].getId()));
+      }
+    }
+  }
+
+  /**
+   * If there is some region selected delete the countries that
+   * belongs to the region selected from activity.countries list
+   */
+  private void deleteCountriesOfRegionSelected() {
+    for (int c = 0; c < activity.getCountries().size(); c++) {
+      for (String region : regionsSelected) {
+        // If the country in the list belongs to a region selected, delete it from the list
+        if (activity.getCountries().get(c).getRegion().getId() == Integer.parseInt(region)) {
+          activity.getCountries().remove(c);
+          // As the list change its size we need re-check the position deleted
+          c--;
+          break;
+        }
+      }
+    }
+  }
+
   public Activity getActivity() {
     return activity;
   }
@@ -102,7 +162,7 @@ public class LocationsPlanningAction extends BaseAction {
     }
 
     // Get the basic information about the activity
-    activity = activityManager.getSimpleActivity(activityID);
+    activity = activityManager.getActivityStatusInfo(activityID);
 
     // Set activity countries
     activity.setCountries(activityCountryManager.getActvitiyCountries(activityID));
@@ -122,20 +182,76 @@ public class LocationsPlanningAction extends BaseAction {
     // Get the benchmark sites list
     benchmarkSites = benchmarkSiteManager.getActiveBenchmarkSiteList();
 
+    // Check which regions are selected
+    checkRegionsLoaded();
+    // After knowing which regions are selected, it must be deleted the
+    // countries of that regions to prevent show them in countries select
+    deleteCountriesOfRegionSelected();
+
     if (getRequest().getMethod().equalsIgnoreCase("post")) {
       activity.getOtherLocations().clear();
+      // Global is set to false to prevent the value is always true.
+      activity.setGlobal(false);
     }
   }
 
   @Override
   public String save() {
-    boolean saved = false;
+    boolean saved = true;
+    boolean result;
 
+    // Save the activity global attribute
+    activityManager.updateGlobalAttribute(activity);
 
-    // First delete the existing other sites from the database
-    activityOtherSiteManager.deleteActivityOtherSites(activityID);
-    // Save the other sites
-    activityOtherSiteManager.saveActivityOtherSites(activity.getOtherLocations(), activityID);
+    // After, delete all the values from the database
+
+    // Delete the activity countries
+    result = activityCountryManager.deleteActivityCountries(activityID);
+    if (!result) {
+      saved = false;
+      LOG.warn("There was a problem deleting the countries for activity {}.", activityID);
+    }
+
+    // Delete the activity other sites
+    result = activityOtherSiteManager.deleteActivityOtherSites(activityID);
+    // If there was a problem deleting the other sites show it in the log.
+    if (!result) {
+      saved = false;
+      LOG.warn("There was a problem deleting the other sites for activity {}.", activityID);
+    }
+    activityManager.saveActivity(activity);
+    // Delete the activity benchmark sites
+    result = activityBenchmarkSiteManager.deleteActivityBenchmarkSites(activityID);
+    // If there was a problem deleting the benchmark sites show it in the log.
+    if (!result) {
+      saved = false;
+      LOG.warn("There was a problem deleting the benchmark sites for activity {}.", activityID);
+    }
+
+    // If the activity is not global, save the values selected.
+    if (!activity.isGlobal()) {
+
+      // If there are regions selected
+      if (!regionsSelected.isEmpty()) {
+        // Save all the countries of that region
+        for (String regionId : regionsSelected) {
+          activityCountryManager.saveCountriesByRegion(Integer.parseInt(regionId), activityID);
+        }
+
+        // Then delete the countries from activity.countries list to prevent duplicate entries into the DB
+        deleteCountriesOfRegionSelected();
+      }
+
+      // Save the countries
+      activityCountryManager.saveActivityCountries(activity.getCountries(), activityID);
+
+      // Save the other sites
+      activityOtherSiteManager.saveActivityOtherSites(activity.getOtherLocations(), activityID);
+
+      // Save the benchmark sites
+      activityBenchmarkSiteManager.saveActivityBenchmarkSites(activity.getBsLocations(), activityID);
+    }
+
 
     if (saved) {
       addActionMessage(getText("saving.success", new String[] {getText("planning.objectives")}));

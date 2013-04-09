@@ -431,6 +431,11 @@ public class ActivityManagerImpl implements ActivityManager {
   }
 
   @Override
+  public boolean updateGlobalAttribute(Activity activity) {
+    return activityDAO.updateGlobalAttribute(activity.getId(), activity.isGlobal());
+  }
+
+  @Override
   public boolean updateMainInformation(Activity activity) {
     SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
 

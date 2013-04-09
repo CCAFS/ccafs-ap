@@ -97,6 +97,15 @@ public interface ActivityDAO {
   public boolean saveStatus(Map<String, String> activityData);
 
   /**
+   * Set the value of attribute isGlobal into the DAO
+   * 
+   * @param activityID - Activity identifier
+   * @param isGlobal - value of global attribute
+   * @return true if the information was successfully saved. False otherwise
+   */
+  public boolean updateGlobalAttribute(int activityID, boolean isGlobal);
+
+  /**
    * Update the main information of the given activity
    * 
    * @param activityData - Map with the data to be saved.

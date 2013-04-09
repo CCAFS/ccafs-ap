@@ -10,34 +10,41 @@
   color: #fff;
 }
 
-.chzn-container-active .chzn-single {
-    border: 1px solid #427D22;
-}
-
-.chzn-container-active .chzn-choices {
-    border: 1px solid #427D22;
-}
-
-.chzn-container .chzn-drop {
-    width: 100% !important;
-}
 
 .fullBlock .chzn-container-multi .chzn-choices {
-    width: 614px;
-}
-
-.chzn-container-single {
-    width: 100% !important;    
-}
-
-.chzn-drop .chzn-search{
-    width: 100% !important; 
+    width: 614px !important;
 }
 
 .fullBlock .chzn-drop .chzn-search input{
-    width: 581px !important; 
+    width: 614px !important; 
 }
 
-.halfPartBlock .chzn-drop .chzn-search input {
+.fullBlock .chzn-container .chzn-results {
+  width: 614px !important;  
+}
+
+.fullBlock .chzn-container .chzn-drop {
+  width: 614px !important;  
+}
+
+.fullBlock .chzn-container .chzn-choices .default{
+  width: 614px !important;  
+}
+
+/*---  Half part block elements  ---*/
+
+.halfPartBlock .chzn-container-single .chzn-single {
     width: 250px !important;
+}
+
+.halfPartBlock .chzn-drop .chzn-search input{
+    width: 225px !important; 
+}
+
+.halfPartBlock .chzn-container .chzn-results {
+  width: 250px !important;  
+}
+
+.halfPartBlock .chzn-container .chzn-drop {
+  width: 258px !important;  
 }

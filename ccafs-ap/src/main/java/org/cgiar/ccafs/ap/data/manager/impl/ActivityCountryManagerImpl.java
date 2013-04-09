@@ -3,7 +3,7 @@ package org.cgiar.ccafs.ap.data.manager.impl;
 import org.cgiar.ccafs.ap.data.dao.ActivityCountryDAO;
 import org.cgiar.ccafs.ap.data.manager.ActivityCountryManager;
 import org.cgiar.ccafs.ap.data.model.Country;
-import org.cgiar.ccafs.ap.data.model.CountryLocation;
+import org.cgiar.ccafs.ap.data.model.Region;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -12,7 +12,6 @@ import java.util.Map;
 import com.google.inject.Inject;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-
 
 public class ActivityCountryManagerImpl implements ActivityCountryManager {
 
@@ -26,19 +25,47 @@ public class ActivityCountryManagerImpl implements ActivityCountryManager {
   }
 
   @Override
-  public List<CountryLocation> getActvitiyCountries(int activityID) {
-    List<CountryLocation> activityCountries = new ArrayList<>();
+  public boolean deleteActivityCountries(int activityID) {
+    return activityCountryDAO.deleteActivityCountries(activityID);
+  }
+
+  @Override
+  public List<Country> getActvitiyCountries(int activityID) {
+    List<Country> activityCountries = new ArrayList<>();
     List<Map<String, String>> countryDataList = activityCountryDAO.getActivityCountries(activityID);
     for (Map<String, String> CData : countryDataList) {
       Country countryTemp = new Country();
       countryTemp.setId(CData.get("iso2"));
       countryTemp.setName(CData.get("name"));
 
-      CountryLocation clTemp = new CountryLocation();
-      clTemp.setCountry(countryTemp);
-      clTemp.setDetails(CData.get("details"));
-      activityCountries.add(clTemp);
+      // Temporal region
+      Region regionTemp = new Region();
+      regionTemp.setId(Integer.parseInt(CData.get("region_id")));
+      regionTemp.setName(CData.get("region_name"));
+
+      countryTemp.setRegion(regionTemp);
+
+      activityCountries.add(countryTemp);
     }
     return activityCountries;
+  }
+
+  @Override
+  public boolean saveActivityCountries(List<Country> countries, int activityID) {
+    boolean saved = true;
+    boolean countrySaved;
+    for (Country country : countries) {
+      countrySaved = activityCountryDAO.saveActivityCountry(activityID, country.getId());
+      if (!countrySaved) {
+        saved = false;
+      }
+    }
+    return saved;
+  }
+
+
+  @Override
+  public boolean saveCountriesByRegion(int regionID, int activityID) {
+    return activityCountryDAO.saveActivityCountriesByRegion(activityID, regionID);
   }
 }
