@@ -28,10 +28,27 @@ public class MySQLActivityBenchmarkSiteDAO implements ActivityBenchmarkSiteDAO {
   }
 
   @Override
+  public boolean deleteActivityBenchmarkSites(int activityID) {
+    boolean deleted = false;
+    String query = "DELETE FROM bs_locations WHERE activity_id = ?";
+    try (Connection con = databaseManager.getConnection()) {
+      int rows = databaseManager.makeChangeSecure(con, query, new String[] {String.valueOf(activityID)});
+      if (rows < 0) {
+        LOG.warn("There was an problem deleting the benchmark sites locations for activity {}.", activityID);
+      } else {
+        deleted = true;
+      }
+    } catch (SQLException e) {
+      LOG.error("There was an error deleting the benchmark sites locations.", e);
+    }
+    return deleted;
+  }
+
+  @Override
   public List<Map<String, String>> getActivityBenchmarkSites(int activityID) {
     List<Map<String, String>> bsDataList = new ArrayList<>();
     String query =
-      "SELECT bsl.id, bs.bs_id, bs.name, bs.longitude, bs.latitude, bsl.details, "
+      "SELECT bs.id, bs.bs_id, bs.name, bs.longitude, bs.latitude, bsl.details, "
         + "co.iso2 as 'country_iso2', co.name as 'country_name' FROM benchmark_sites bs "
         + "INNER JOIN bs_locations bsl ON bs.id = bsl.bs_id " + "INNER JOIN countries co ON bs.country_iso2 = co.iso2 "
         + "INNER JOIN activities ac ON bsl.activity_id = ac.id " + "WHERE ac.id = " + activityID;
@@ -54,6 +71,28 @@ public class MySQLActivityBenchmarkSiteDAO implements ActivityBenchmarkSiteDAO {
       LOG.error("There was an error getting the data from 'benchmark_sites' table. \n{}", query, e);
     }
     return bsDataList;
+  }
+
+  @Override
+  public boolean saveActivityBenchmarkSite(String benchmarkSiteID, int activityID) {
+    boolean saved = false;
+    String query = "INSERT INTO bs_locations (bs_id, activity_id) VALUES (?, ?)";
+    Object[] values = new Object[2];
+    values[0] = benchmarkSiteID;
+    values[1] = activityID;
+
+    try (Connection con = databaseManager.getConnection()) {
+      int rows = databaseManager.makeChangeSecure(con, query, values);
+      if (rows < 0) {
+        LOG.error("There was a problem saving a benchmark site location into the DAO. \n Query: {} |n Values: ", query,
+          values);
+      } else {
+        saved = true;
+      }
+    } catch (SQLException e) {
+      LOG.error("There was an error saving a benchmark site location into the DAO.", e);
+    }
+    return saved;
   }
 
 }

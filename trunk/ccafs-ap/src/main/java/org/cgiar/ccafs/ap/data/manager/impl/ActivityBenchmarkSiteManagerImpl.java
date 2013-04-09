@@ -3,7 +3,6 @@ package org.cgiar.ccafs.ap.data.manager.impl;
 import org.cgiar.ccafs.ap.data.dao.ActivityBenchmarkSiteDAO;
 import org.cgiar.ccafs.ap.data.manager.ActivityBenchmarkSiteManager;
 import org.cgiar.ccafs.ap.data.model.BenchmarkSite;
-import org.cgiar.ccafs.ap.data.model.BenchmarkSiteLocation;
 import org.cgiar.ccafs.ap.data.model.Country;
 
 import java.util.ArrayList;
@@ -27,8 +26,13 @@ public class ActivityBenchmarkSiteManagerImpl implements ActivityBenchmarkSiteMa
   }
 
   @Override
-  public List<BenchmarkSiteLocation> getActivityBenchmarkSites(int activityID) {
-    List<BenchmarkSiteLocation> benchmarkSites = new ArrayList<>();
+  public boolean deleteActivityBenchmarkSites(int activityID) {
+    return activityBSDAO.deleteActivityBenchmarkSites(activityID);
+  }
+
+  @Override
+  public List<BenchmarkSite> getActivityBenchmarkSites(int activityID) {
+    List<BenchmarkSite> benchmarkSites = new ArrayList<>();
     List<Map<String, String>> bsDataList = activityBSDAO.getActivityBenchmarkSites(activityID);
     for (Map<String, String> bsData : bsDataList) {
       Country countryTemp = new Country();
@@ -36,19 +40,26 @@ public class ActivityBenchmarkSiteManagerImpl implements ActivityBenchmarkSiteMa
       countryTemp.setName(bsData.get("country_name"));
 
       BenchmarkSite bsTemp = new BenchmarkSite();
-      bsTemp.setId(bsData.get("bs_id"));
+      bsTemp.setId(bsData.get("id"));
       bsTemp.setName(bsData.get("name"));
       bsTemp.setLatitude(Double.parseDouble(bsData.get("latitude")));
       bsTemp.setLongitud(Double.parseDouble(bsData.get("longitude")));
       bsTemp.setCountry(countryTemp);
 
-      BenchmarkSiteLocation bsLocationTemp = new BenchmarkSiteLocation();
-      bsLocationTemp.setDetails(bsData.get("details"));
-      bsLocationTemp.setBenchmarkSite(bsTemp);
-
-      benchmarkSites.add(bsLocationTemp);
+      benchmarkSites.add(bsTemp);
     }
 
     return benchmarkSites;
+  }
+
+  @Override
+  public boolean saveActivityBenchmarkSites(List<BenchmarkSite> benchmarkSites, int activityID) {
+    boolean saved = true;
+    for (BenchmarkSite bs : benchmarkSites) {
+      if (!activityBSDAO.saveActivityBenchmarkSite(bs.getId(), activityID)) {
+        saved = false;
+      }
+    }
+    return saved;
   }
 }

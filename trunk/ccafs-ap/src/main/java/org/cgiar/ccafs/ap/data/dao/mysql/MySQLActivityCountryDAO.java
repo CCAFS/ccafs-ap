@@ -28,17 +28,37 @@ public class MySQLActivityCountryDAO implements ActivityCountryDAO {
   }
 
   @Override
+  public boolean deleteActivityCountries(int activityID) {
+    boolean deleted = false;
+    String query = "DELETE FROM country_locations WHERE activity_id = ?";
+    try (Connection con = databaseManager.getConnection()) {
+      int rows = databaseManager.makeChangeSecure(con, query, new String[] {String.valueOf(activityID)});
+      if (rows < 0) {
+        LOG.warn("There was a problem deleting the countries related with the activity {}.", activityID);
+      } else {
+        deleted = true;
+      }
+    } catch (SQLException e) {
+      LOG.error("There was an error deleting the countries related with the activity {}.", activityID, e);
+    }
+    return deleted;
+  }
+
+  @Override
   public List<Map<String, String>> getActivityCountries(int activityID) {
     List<Map<String, String>> countriesDataList = new ArrayList<>();
     String query =
-      "SELECT co.iso2, co.name, cl.details FROM country_locations cl "
-        + "INNER JOIN countries co ON cl.country_iso2 = co.iso2 " + "WHERE cl.activity_id = " + activityID;
+      "SELECT co.iso2, co.name, cl.details, r.name as 'region_name', r.id as 'region_id' FROM country_locations cl "
+        + "INNER JOIN countries co ON cl.country_iso2 = co.iso2 " + "INNER JOIN regions r ON co.region_id = r.id "
+        + "WHERE cl.activity_id = " + activityID;
     try (Connection con = databaseManager.getConnection()) {
       ResultSet rs = databaseManager.makeQuery(query, con);
       while (rs.next()) {
         Map<String, String> countryData = new HashMap<String, String>();
         countryData.put("iso2", rs.getString("iso2"));
         countryData.put("name", rs.getString("name"));
+        countryData.put("region_id", rs.getString("region_id"));
+        countryData.put("region_name", rs.getString("region_name"));
         countryData.put("details", rs.getString("details"));
         countriesDataList.add(countryData);
       }
@@ -49,4 +69,46 @@ public class MySQLActivityCountryDAO implements ActivityCountryDAO {
     return countriesDataList;
   }
 
+  @Override
+  public boolean saveActivityCountriesByRegion(int activityID, int regionID) {
+    boolean saved = false;
+    String query =
+      "INSERT INTO country_locations (country_iso2, activity_id) SELECT iso2, ? FROM countries WHERE region_id = ? ";
+    Object[] values = new Object[2];
+    values[0] = activityID;
+    values[1] = regionID;
+
+    try (Connection con = databaseManager.getConnection()) {
+      int rows = databaseManager.makeChangeSecure(con, query, values);
+      if (rows < 0) {
+        LOG.warn("There was an error saving countries by region. \n Query: {}. \n Values: {}", query, values);
+      } else {
+        saved = true;
+      }
+    } catch (SQLException e) {
+      LOG.error("There was an error saving countries by region.");
+    }
+    return saved;
+  }
+
+  @Override
+  public boolean saveActivityCountry(int activityID, String countryID) {
+    boolean saved = false;
+    String query = "INSERT INTO country_locations (activity_id, country_iso2) VALUES (?, ?)";
+    Object[] values = new Object[2];
+    values[0] = activityID;
+    values[1] = countryID;
+
+    try (Connection con = databaseManager.getConnection()) {
+      int rows = databaseManager.makeChangeSecure(con, query, values);
+      if (rows < 0) {
+        LOG.error("There was a problem saving the activity country. \n Query: {} \n Values: {}", query, values);
+      } else {
+        saved = true;
+      }
+    } catch (SQLException e) {
+      LOG.error("There was an error saving the activity country.", e);
+    }
+    return saved;
+  }
 }

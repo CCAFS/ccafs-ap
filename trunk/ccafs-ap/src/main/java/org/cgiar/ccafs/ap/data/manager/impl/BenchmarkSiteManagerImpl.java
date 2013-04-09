@@ -5,6 +5,7 @@ import org.cgiar.ccafs.ap.data.manager.BenchmarkSiteManager;
 import org.cgiar.ccafs.ap.data.model.BenchmarkSite;
 import org.cgiar.ccafs.ap.data.model.Country;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
@@ -27,7 +28,7 @@ public class BenchmarkSiteManagerImpl implements BenchmarkSiteManager {
 
     for (int c = 0; c < bsDataList.size(); c++) {
       BenchmarkSite benchmarkSite = new BenchmarkSite();
-      benchmarkSite.setId(bsDataList.get(c).get("bs_id"));
+      benchmarkSite.setId(bsDataList.get(c).get("id"));
       benchmarkSite.setLatitude(Double.parseDouble(bsDataList.get(c).get("latitude")));
       benchmarkSite.setLongitud(Double.parseDouble(bsDataList.get(c).get("longitude")));
       benchmarkSite.setName(bsDataList.get(c).get("name"));
@@ -42,4 +43,18 @@ public class BenchmarkSiteManagerImpl implements BenchmarkSiteManager {
     }
     return benchmarkSites;
   }
+
+  @Override
+  public List<BenchmarkSite> getBenchmarkSiteList(String[] ids) {
+    List<BenchmarkSite> benchmarkSites = new ArrayList<>();
+    for (BenchmarkSite bs : getActiveBenchmarkSiteList()) {
+      for (String id : ids) {
+        if (bs.getId().equals(id)) {
+          benchmarkSites.add(bs);
+        }
+      }
+    }
+    return benchmarkSites;
+  }
+
 }

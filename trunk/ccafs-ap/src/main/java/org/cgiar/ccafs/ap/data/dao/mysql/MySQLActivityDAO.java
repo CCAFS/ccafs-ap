@@ -400,6 +400,26 @@ public class MySQLActivityDAO implements ActivityDAO {
 
 
   @Override
+  public boolean updateGlobalAttribute(int activityID, boolean isGlobal) {
+    boolean saved = false;
+    String query = "UPDATE activities SET is_global = ? WHERE id = ?";
+    Object[] values = new Object[2];
+    values[0] = isGlobal;
+    values[1] = activityID;
+    try (Connection con = databaseManager.getConnection()) {
+      int rows = databaseManager.makeChangeSecure(con, query, values);
+      if (rows < 0) {
+        LOG.warn("There was a problem updating the attribute is global of activity {}.", activityID);
+      } else {
+        saved = true;
+      }
+    } catch (SQLException e) {
+      LOG.error("There was an error updating the attribute is global of activity {}.", activityID, e);
+    }
+    return saved;
+  }
+
+  @Override
   public boolean updateMainInformation(Map<String, String> activityData) {
     boolean added = false;
     Object[] values = new Object[6];

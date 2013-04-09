@@ -96,6 +96,14 @@ public interface ActivityManager {
   public boolean saveStatus(Activity activity);
 
   /**
+   * Set the value of attribute isGlobal into the DAO
+   * 
+   * @param activity - Activity object with the information on it
+   * @return true if the information was updated successfully, false otherwise.
+   */
+  public boolean updateGlobalAttribute(Activity activity);
+
+  /**
    * Update the main information (Title, description, milestone, budget, start and end date,
    * gender) into the DAO
    * 

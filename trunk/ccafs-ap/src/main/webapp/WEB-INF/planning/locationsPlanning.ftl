@@ -28,25 +28,25 @@
     </div>
     
     [#-- Regions --]
-    <fieldset class="fullblock" id="regionsLocations">
+    <fieldset class="fullblock" id="regionsLocations" [#if activity.global]style="display:none"[/#if]>
       <legend> <h6> [@s.text name="planning.locations.regions" /] </h6> </legend>
       <div class="regions">
         <h6>[@s.text name="planning.locations.regions" /]</h6>
         <div class="checkboxGroup">
           [@s.fielderror cssClass="fieldError" fieldName="regionsSelected"/]
-          [@s.checkboxlist name="regionsSelected" list="regions" listKey="id" listValue="name" value="" cssClass="checkbox" /]
+          [@s.checkboxlist name="regionsSelected" list="regions" listKey="id" listValue="name" value="" cssClass="checkbox" value="regionsSelected" /]
         </div>
       </div>
     </fieldset>
     
     [#-- Countries --]
-    <fieldset class="fullBlock locations" id="countryLocations">
+    <fieldset class="fullBlock locations" id="countryLocations" [#if activity.global]style="display:none"[/#if]>
       <legend> <h6> [@s.text name="planning.locations.countries" /] </h6> </legend>
       [@customForm.select name="activity.countries" label="" i18nkey="planning.locations.countries" listName="countries" keyFieldName="id"  displayFieldName="name" value="activity.countriesIds" multiple=true className="countries" /]
     </fieldset>
     
     [#-- Benchmark sites --]
-    <fieldset class="fullblock" id="bsLocations">
+    <fieldset class="fullblock" id="bsLocations" [#if activity.global]style="display:none"[/#if]>
       <legend> <h6> [@s.text name="planning.locations.benchmarkSites" /] </h6> </legend>
       <div class="benchmarkSites">
         <h6>[@s.text name="planning.locations.benchmarkSites" /]</h6>
@@ -58,7 +58,7 @@
     </fieldset>
     
     [#-- Other locations --]    
-    <fieldset class="fullBlock locations" id="otherSites">
+    <fieldset class="fullBlock locations" id="otherSites" [#if activity.global]style="display:none"[/#if]>
       <legend> <h6> [@s.text name="planning.locations.otherSites" /] </h6> </legend>
       
       [#if activity.otherLocations?has_content]
