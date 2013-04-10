@@ -83,12 +83,12 @@ public class ActivityPartnerManagerImpl implements ActivityPartnerManager {
       }
       cpData.put("partner_id", cp.getPartner().getId());
       cpData.put("activity_id", activityID);
-      if (cp.getContactName().isEmpty()) {
+      if (cp.getContactName() == null || cp.getContactName().isEmpty()) {
         cpData.put("contact_name", null);
       } else {
         cpData.put("contact_name", cp.getContactName());
       }
-      if (cp.getContactEmail().isEmpty()) {
+      if (cp.getContactEmail() == null || cp.getContactEmail().isEmpty()) {
         cpData.put("contact_email", null);
       } else {
         cpData.put("contact_email", cp.getContactEmail());

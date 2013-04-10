@@ -221,6 +221,8 @@ public class ActivityManagerImpl implements ActivityManager {
           + activity.getId() + ".";
       LOG.error(msg, e);
     }
+    // Objectives
+    activity.setObjectives(activityObjectiveManager.getActivityObjectives(activity.getId()));
     // Contact Persons
     activity.setContactPersons(contactPersonManager.getContactPersons(activity.getId()));
     Milestone milestone = milestoneManager.getMilestone(Integer.parseInt(activityData.get("milestone_id")));
@@ -396,22 +398,22 @@ public class ActivityManagerImpl implements ActivityManager {
     if (activityID != -1) {
       // Objectives
       if (activity.getObjectives() != null && activity.getObjectives().size() > 0) {
-        // TODO
+        activityObjectiveManager.saveActivityObjectives(activity.getObjectives(), activityID);
       }
 
       // Contact Persons
       if (activity.getContactPersons() != null && activity.getContactPersons().size() > 0) {
-        // TODO
+        contactPersonManager.saveContactPersons(activity.getContactPersons(), activityID);
       }
 
       // Partners
       if (activity.getActivityPartners() != null && activity.getActivityPartners().size() > 0) {
-        // TODO
+        activityPartnerManager.saveActivityPartners(activity.getActivityPartners(), activityID);
       }
 
       // Deliverables
       if (activity.getDeliverables() != null && activity.getDeliverables().size() > 0) {
-        // TODO
+        deliverableManager.saveDeliverables(activity.getDeliverables(), activityID);
       }
 
       return true;

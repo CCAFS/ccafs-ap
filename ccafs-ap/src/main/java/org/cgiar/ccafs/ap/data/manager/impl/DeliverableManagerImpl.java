@@ -144,4 +144,15 @@ public class DeliverableManagerImpl implements DeliverableManager {
     return deliverableDAO.removeNotExpected(activityID);
   }
 
+  @Override
+  public boolean saveDeliverables(List<Deliverable> deliverables, int activityID) {
+    boolean problem = false;
+    for (Deliverable deliverable : deliverables) {
+      if (!this.addDeliverable(deliverable, activityID)) {
+        problem = true;
+      }
+    }
+    return problem;
+  }
+
 }
