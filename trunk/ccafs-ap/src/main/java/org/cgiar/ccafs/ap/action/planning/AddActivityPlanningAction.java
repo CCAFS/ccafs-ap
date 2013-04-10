@@ -7,6 +7,9 @@ import org.cgiar.ccafs.ap.data.manager.LeaderManager;
 import org.cgiar.ccafs.ap.data.manager.LogframeManager;
 import org.cgiar.ccafs.ap.data.manager.MilestoneManager;
 import org.cgiar.ccafs.ap.data.model.Activity;
+import org.cgiar.ccafs.ap.data.model.ActivityObjective;
+import org.cgiar.ccafs.ap.data.model.ActivityPartner;
+import org.cgiar.ccafs.ap.data.model.ContactPerson;
 import org.cgiar.ccafs.ap.data.model.Deliverable;
 import org.cgiar.ccafs.ap.data.model.Leader;
 import org.cgiar.ccafs.ap.data.model.Milestone;
@@ -91,17 +94,34 @@ public class AddActivityPlanningAction extends BaseAction {
       // dates
       activity.setStartDate(oldActivity.getStartDate());
       activity.setEndDate(oldActivity.getEndDate());
-      // contact persons
+      // Contact Persons
       activity.setContactPersons(oldActivity.getContactPersons());
-      // objectives
+      // Resetting contact person ids so they can be considered as new records.
+      if (activity.getContactPersons() != null) {
+        for (ContactPerson cp : activity.getContactPersons()) {
+          cp.setId(-1);
+        }
+      }
+      // Objectives
       activity.setObjectives(oldActivity.getObjectives());
-      // partners
+      // Resetting objective ids so they can be considered as new records.
+      if (activity.getObjectives() != null) {
+        for (ActivityObjective obj : activity.getObjectives()) {
+          obj.setId(-1);
+        }
+      }
+      // Partners
       activity.setActivityPartners(oldActivity.getActivityPartners());
-      // deliverables
+      // Resetting activity partner uds so they can be considered as new records.
+      for (ActivityPartner ap : activity.getActivityPartners()) {
+        ap.setId(-1);
+      }
+      // Deliverables
       List<Deliverable> newDeliverables = new ArrayList<>();
       for (Deliverable deliverable : oldActivity.getDeliverables()) {
         // Only keep deliverables that end in the the current year or in the future.
         if (deliverable.getYear() >= this.getCurrentPlanningLogframe().getYear()) {
+          deliverable.setId(-1);
           newDeliverables.add(deliverable);
         }
       }

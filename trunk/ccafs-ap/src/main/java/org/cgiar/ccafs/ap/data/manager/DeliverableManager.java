@@ -44,4 +44,14 @@ public interface DeliverableManager {
    * @return true if all the not expected deliverables were removed, or false if any problem occur.
    */
   public boolean removeNotExpected(int activityID);
+
+  /**
+   * Save into the DAO the list of the deliverables and its file formats associated with a specific activity.
+   * 
+   * @param deliverables - A list of Deliverable objects representing the information that is going to be added into the
+   *        DAO.
+   * @param activityID - An integer representing the id of the activity that will contain those deliverable list.
+   * @return true if the list of the deliverables was successfully added into the DAO, or false if any problem occur.
+   */
+  public boolean saveDeliverables(List<Deliverable> deliverables, int activityID);
 }

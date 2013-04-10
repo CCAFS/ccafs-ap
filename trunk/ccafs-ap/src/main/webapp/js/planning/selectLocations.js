@@ -45,7 +45,6 @@ function getOtherSiteID() {
  * selected calling a function in parent window
  * 
  */
-
 function returnValues() {
   // Call the function in the other window to update the values.
   window.opener.setOtherSiteLocation(getOtherSiteID(), latitude, longitude);
