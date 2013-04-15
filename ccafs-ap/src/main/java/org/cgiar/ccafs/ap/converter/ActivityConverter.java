@@ -8,7 +8,6 @@ import java.util.Map;
 import com.google.inject.Inject;
 import org.apache.struts2.util.StrutsTypeConverter;
 
-
 public class ActivityConverter extends StrutsTypeConverter {
 
   private ActivityManager activityManager;
@@ -35,5 +34,4 @@ public class ActivityConverter extends StrutsTypeConverter {
     }
     return null;
   }
-
 }

@@ -17,4 +17,21 @@ public interface ResourceManager {
    * @return a list of Resources objects with the information
    */
   public List<Resource> getResources(int activityID);
+
+  /**
+   * Delete all the resources related to the activity given from the database.
+   * 
+   * @param activityID - Activity identifier
+   * @return true if the records were successfully removed. False otherwise.
+   */
+  public boolean removeResources(int activityID);
+
+  /**
+   * Save the resources list into the database.
+   * 
+   * @param resources - The data to be saved.
+   * @param activityID - activity identifier
+   * @return true if the data was successfully saved. False otherwise
+   */
+  public boolean saveResources(List<Resource> resources, int activityID);
 }

@@ -17,4 +17,21 @@ public interface ActivityKeywordManager {
    * @return a list o keyword objects with the information
    */
   public List<ActivityKeyword> getKeywordList(int activityID);
+
+  /**
+   * Delete all the keywords related to the activity given from the database.
+   * 
+   * @param activityID - Activity identifier
+   * @return true if the records were successfully removed. False otherwise.
+   */
+  public boolean removeActivityKeywords(int activityID);
+
+  /**
+   * Save a list of activity keywords into the database
+   * 
+   * @param keywords - The information to be saved
+   * @param activityID - activity identifier
+   * @return true if ALL the ActivityKeyword was successfully saved
+   */
+  public boolean saveKeywordList(List<ActivityKeyword> keywords, int activityID);
 }

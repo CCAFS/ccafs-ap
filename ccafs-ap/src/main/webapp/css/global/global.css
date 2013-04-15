@@ -498,6 +498,15 @@ nav#secondaryMenu ul a.currentReportingSection {
   display: none;
 }
 
+#additionalInformation .select > h6{
+  display: none;
+}
+
+#additionalInformation .input > h6{
+  display: none;
+}
+
+
 /****** REPORTING **********/
 /********* Activity Reporting Sub Menu **********/
 #stageMenu {

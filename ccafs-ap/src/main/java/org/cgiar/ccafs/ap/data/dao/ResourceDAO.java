@@ -17,4 +17,20 @@ public interface ResourceDAO {
    * @return a list of maps with the information
    */
   public List<Map<String, String>> getResources(int activityID);
+
+  /**
+   * Remove all the resources related to the given activity
+   * 
+   * @param activityID - activity identifier
+   * @return true if the records were successfully deleted. False otherwise.
+   */
+  public boolean removeResources(int activityID);
+
+  /**
+   * Save the resource information into the database.
+   * 
+   * @param resourceData - the data to be saved
+   * @return true if the information was successfully saved. False otherwise
+   */
+  public boolean saveResource(Map<String, String> resourceData);
 }
