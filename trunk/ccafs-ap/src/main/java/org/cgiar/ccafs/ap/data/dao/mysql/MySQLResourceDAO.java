@@ -46,4 +46,41 @@ public class MySQLResourceDAO implements ResourceDAO {
     return resorcesDataList;
   }
 
+  @Override
+  public boolean removeResources(int activityID) {
+    boolean problem = false;
+    String removeQuery = "DELETE FROM resources WHERE activity_id = " + activityID;
+    try (Connection connection = databaseManager.getConnection()) {
+      int rows = databaseManager.makeChange(removeQuery, connection);
+      if (rows < 0) {
+        problem = true;
+      }
+    } catch (SQLException e) {
+      LOG.error("There was an error deleting the resources related to a given activity.", e);
+    }
+    return !problem;
+  }
+
+  @Override
+  public boolean saveResource(Map<String, String> resourceData) {
+    boolean saved = false;
+    String query = "INSERT INTO resources (id, name, activity_id) VALUES (?, ?, ?)";
+    Object[] values = new Object[3];
+    values[0] = resourceData.get("id");
+    values[1] = resourceData.get("name");
+    values[2] = resourceData.get("activity_id");
+
+    try (Connection con = databaseManager.getConnection()) {
+      int rows = databaseManager.makeChangeSecure(con, query, values);
+      if (rows < 0) {
+        LOG.warn("There was an error saving the resource. \n Query: {}. \n Values: {}", query, values);
+      } else {
+        saved = true;
+      }
+    } catch (SQLException e) {
+      LOG.error("There was an error saving the resource.", e);
+    }
+    return saved;
+  }
+
 }

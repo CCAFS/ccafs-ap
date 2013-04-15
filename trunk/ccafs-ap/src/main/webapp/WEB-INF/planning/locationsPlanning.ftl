@@ -11,6 +11,10 @@
 [#import "/WEB-INF/global/macros/forms.ftl" as customForm/]
     
 <section class="content">
+  <div class="helpMessage">
+    <img src="${baseUrl}/images/global/icon-help.png" />
+    <p> [@s.text name="planning.locations.help" /] </p>
+  </div>
   [#include "/WEB-INF/global/pages/planning-secondary-menu.ftl" /]
   
   [@s.form action="locations"]  
@@ -92,33 +96,6 @@
             <hr/>
           </div>
         [/#list]
-      [#else]
-          <div class="otherSite">
-            <input type="hidden" name="activity.otherLocations[0].id" value="-1" />
-            <div  class="halfPartBlock">
-              [@customForm.select name="activity.otherLocations[0].country" label="" i18nkey="planning.locations.country" listName="countries" keyFieldName="id"  displayFieldName="name" className="countries" value="" /]
-            </div>
-            <div class="halfPartBlock">
-              [@customForm.input name="activity.otherLocations[0].details" type="text" i18nkey="planning.locations.details" value="" /]
-            </div>
-            [#-- Remove image --]
-            <a href="#" >
-              <img src="${baseUrl}/images/global/icon-remove.png" class="removeOtherSite" />
-            </a>
-            <div  class="halfPartBlock">
-              <div  class="halfPartBlock">
-                [@customForm.input name="activity.otherLocations[0].latitude" type="text" i18nkey="planning.locations.latitude" value="" /]
-              </div>
-              <div  class="halfPartBlock">
-                [@customForm.input name="activity.otherLocations[0].longitude" type="text" i18nkey="planning.locations.longitude" value="" /]
-              </div>
-            </div>
-            <div class="halfPartBlock">
-              <a class="popup" href="[@s.url action='selectLocation'] [@s.param name='otherSiteID']0[/@s.param][/@s.url]"> [@s.text name="planning.locations.selectOtherSite" /] </a>
-            </div>
-            [#-- Separator --]
-            <hr/>
-          </div>
       [/#if]
       <div id="addOtherSitesBlock" class="addLink">
         <img src="${baseUrl}/images/global/icon-add.png" />

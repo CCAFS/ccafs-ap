@@ -17,4 +17,21 @@ public interface ActivityKeywordDAO {
    * @return a list of maps with the information
    */
   public List<Map<String, String>> getKeywordList(int activityID);
+
+  /**
+   * Remove all activity keywords related to the activity given.
+   * 
+   * @param activityID - Activity identifier
+   * @return true if the records were successfully saved. False otherwise.
+   */
+  public boolean removeActivityKeywords(int activityID);
+
+  /**
+   * Save the keyword information into the database
+   * 
+   * @param activityID - Activity identifier
+   * @param keywordID - Keyword identifier
+   * @return true if the information was successfully saved. False otherwise
+   */
+  public boolean saveKeyword(Map<String, String> keywordData);
 }

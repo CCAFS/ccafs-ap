@@ -16,5 +16,8 @@
     <a [#if currentPlanningSection == "locations"] class="currentReportingSection" [/#if] href="[@s.url action='locations'][@s.param name='${activityRequestParameter}']${activity.id}[/@s.param][/@s.url]">
       <li>[@s.text name="menu.secondary.planning.locations" /]</li>
     </a>
+    <a [#if currentPlanningSection == "additionalInformation"] class="currentReportingSection" [/#if] href="[@s.url action='additionalInformation'][@s.param name='${activityRequestParameter}']${activity.id}[/@s.param][/@s.url]">
+      <li>[@s.text name="menu.secondary.planning.additionalInformation" /]</li>
+    </a>
   </ul>
 </nav>

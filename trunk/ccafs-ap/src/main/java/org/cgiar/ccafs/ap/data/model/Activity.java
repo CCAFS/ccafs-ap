@@ -105,6 +105,14 @@ public class Activity {
     return keywords;
   }
 
+  public List<String> getKeywordsIds() {
+    ArrayList<String> ids = new ArrayList<>();
+    for (int c = 0; c < getKeywords().size(); c++) {
+      ids.add(getKeywords().get(c).getKeyword().getId() + "");
+    }
+    return ids;
+  }
+
   public Leader getLeader() {
     return leader;
   }

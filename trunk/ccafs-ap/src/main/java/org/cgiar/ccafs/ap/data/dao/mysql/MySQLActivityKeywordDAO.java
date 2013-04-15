@@ -32,7 +32,8 @@ public class MySQLActivityKeywordDAO implements ActivityKeywordDAO {
     List<Map<String, String>> keywordDataList = new ArrayList<>();
     String query =
       "SELECT ak.id, ak.other, ke.id as keyword_id, ke.name as keyword_name FROM activity_keywords ak "
-        + "INNER JOIN keywords ke ON ak.keyword_id = ke.id " + "WHERE ak.activity_id = " + activityID;
+        + "LEFT JOIN keywords ke ON ak.keyword_id = ke.id " + "WHERE ak.activity_id = " + activityID
+        + " ORDER BY ke.name";
     try (Connection con = databaseManager.getConnection()) {
       ResultSet rs = databaseManager.makeQuery(query, con);
       while (rs.next()) {
@@ -48,6 +49,44 @@ public class MySQLActivityKeywordDAO implements ActivityKeywordDAO {
       LOG.error("There was an error getting the data from 'activity_keywords' table \n{}", query, e);
     }
     return keywordDataList;
+  }
+
+  @Override
+  public boolean removeActivityKeywords(int activityID) {
+    boolean problem = false;
+    String removeQuery = "DELETE FROM activity_keywords WHERE activity_id = " + activityID;
+    try (Connection connection = databaseManager.getConnection()) {
+      int rows = databaseManager.makeChange(removeQuery, connection);
+      if (rows < 0) {
+        problem = true;
+      }
+    } catch (SQLException e) {
+      LOG.error("There was an error deleting the activity keywords related to a given activity.", e);
+    }
+    return !problem;
+  }
+
+  @Override
+  public boolean saveKeyword(Map<String, String> keywordData) {
+    boolean saved = false;
+    String query = "INSERT INTO activity_keywords (id, keyword_id, other, activity_id) VALUES (?, ?, ?, ?)  ";
+    Object[] values = new Object[4];
+    values[0] = keywordData.get("id");
+    values[1] = keywordData.get("keyword_id");
+    values[2] = keywordData.get("other");
+    values[3] = keywordData.get("activity_id");
+
+    try (Connection con = databaseManager.getConnection()) {
+      int rows = databaseManager.makeChangeSecure(con, query, values);
+      if (rows < 0) {
+        LOG.warn("There was an error saving the keyword. \n Query: {}. \n Values: {}", query, values);
+      } else {
+        saved = true;
+      }
+    } catch (SQLException e) {
+      LOG.error("There was an error saving the keyword.", e);
+    }
+    return saved;
   }
 
 }

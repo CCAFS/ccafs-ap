@@ -5,6 +5,7 @@ import org.cgiar.ccafs.ap.data.manager.ResourceManager;
 import org.cgiar.ccafs.ap.data.model.Resource;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -35,6 +36,32 @@ public class ResourceManagerImpl implements ResourceManager {
       resources.add(temp);
     }
     return resources;
+  }
+
+  @Override
+  public boolean removeResources(int activityID) {
+    return resourceDAO.removeResources(activityID);
+  }
+
+  @Override
+  public boolean saveResources(List<Resource> resources, int activityID) {
+    boolean saved = true;
+
+    for (Resource resource : resources) {
+      Map<String, String> resourceData = new HashMap<String, String>();
+      if (resource.getId() == -1) {
+        resourceData.put("id", null);
+      } else {
+        resourceData.put("id", String.valueOf(resource.getId()));
+      }
+      resourceData.put("name", resource.getName());
+      resourceData.put("activity_id", String.valueOf(activityID));
+
+      if (!resourceDAO.saveResource(resourceData)) {
+        saved = false;
+      }
+    }
+    return saved;
   }
 
 }
