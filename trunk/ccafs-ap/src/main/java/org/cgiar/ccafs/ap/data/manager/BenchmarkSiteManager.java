@@ -19,6 +19,14 @@ public interface BenchmarkSiteManager {
   public BenchmarkSite[] getActiveBenchmarkSiteList();
 
   /**
+   * Get all the active benchmark sites that belongs to the given country
+   * 
+   * @param countryID - Country identifier
+   * @return a list of BenchmarkSite objects with the information
+   */
+  public BenchmarkSite[] getActiveBenchmarkSitesByCountry(String countryID);
+
+  /**
    * Get a list of benchmarkSite objects corresponding to the given array of ids
    * 
    * @param ids - Array of benchmarkSites identifiers

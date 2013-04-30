@@ -11,6 +11,14 @@ import com.google.inject.ImplementedBy;
 public interface CountryManager {
 
   /**
+   * Get all the countries that belongs to the region given
+   * 
+   * @param regionID - Region identifier
+   * @return a list of Country objects with the information.
+   */
+  public Country[] getCountriesByRegion(String regionID);
+
+  /**
    * Get the country object corresponding to the given id
    * 
    * @param id - The country identifier

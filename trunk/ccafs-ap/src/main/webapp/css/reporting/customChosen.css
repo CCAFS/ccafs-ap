@@ -31,7 +31,7 @@
   width: 614px !important;  
 }
 
-/*---  Half part block elements  ---*/
+/*-----------------  Half part block elements  --------------*/
 
 .halfPartBlock .chzn-container-single .chzn-single {
     width: 250px !important;
@@ -48,3 +48,28 @@
 .halfPartBlock .chzn-container .chzn-drop {
   width: 258px !important;  
 }
+
+/*-------------  third part block elements  ----------------*/
+
+.thirdPartBlock .chzn-container-single .chzn-single {
+    width: 150px !important;
+}
+
+.thirdPartBlock .chzn-drop .chzn-search input{
+    width: 155px !important; 
+}
+
+.thirdPartBlock .chzn-container .chzn-results {
+  width: 150px !important;  
+}
+
+.thirdPartBlock .chzn-container .chzn-drop {
+  width: 158px !important;  
+}
+
+.thirdPartBlock .chzn-container-multi .chzn-choices {
+    width: 154px !important;
+}
+
+.thirdPartBlock .chzn-container .chzn-choices .default{
+  width: 154px !important;  

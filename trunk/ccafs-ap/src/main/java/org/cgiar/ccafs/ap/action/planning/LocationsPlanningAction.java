@@ -19,7 +19,10 @@ import org.cgiar.ccafs.ap.data.model.OtherSite;
 import org.cgiar.ccafs.ap.data.model.Region;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
+import java.util.Map.Entry;
 
 import com.google.inject.Inject;
 import org.apache.commons.lang3.StringUtils;
@@ -48,7 +51,16 @@ public class LocationsPlanningAction extends BaseAction {
   private BenchmarkSite[] benchmarkSites;
   private Country[] countries;
   private Region[] regions;
-  private List<String> regionsSelected;
+
+  /*
+   * regionsSelected var is true when all the region countries
+   * are selected.
+   * regionDisplayed var is true when at least one country of the
+   * region is selected.
+   */
+  private Map<Integer, Boolean> regionsSelected;
+  private Map<Integer, Boolean> regionsDisplayed;
+
 
   @Inject
   public LocationsPlanningAction(APConfig config, LogframeManager logframeManager, ActivityManager activityManager,
@@ -71,7 +83,8 @@ public class LocationsPlanningAction extends BaseAction {
    * select the corresponding checkbox.
    */
   private void checkRegionsLoaded() {
-    regionsSelected = new ArrayList<>();
+    regionsSelected = new HashMap<>();
+    regionsDisplayed = new HashMap<>();
     int regionId = 0;
     int[] countriesByRegionTotal = new int[regions.length];
     int[] countriesByRegionLoaded = new int[regions.length];
@@ -100,8 +113,16 @@ public class LocationsPlanningAction extends BaseAction {
     // If the values in both list are the same, the region is
     // selected
     for (int c = 0; c < regions.length; c++) {
+      // Set regionDisplayed
+      if (countriesByRegionLoaded[c] > 0) {
+        regionsDisplayed.put(c + 1, true);
+      }
+
+      // Set regionsSelected
       if (countriesByRegionLoaded[c] == countriesByRegionTotal[c]) {
-        regionsSelected.add(String.valueOf(regions[c].getId()));
+        regionsSelected.put(c, true);
+      } else {
+        regionsSelected.put(c, false);
       }
     }
   }
@@ -111,15 +132,15 @@ public class LocationsPlanningAction extends BaseAction {
    * belongs to the region selected from activity.countries list
    */
   private void deleteCountriesOfRegionSelected() {
+    int regionId;
     for (int c = 0; c < activity.getCountries().size(); c++) {
-      for (String region : regionsSelected) {
-        // If the country in the list belongs to a region selected, delete it from the list
-        if (activity.getCountries().get(c).getRegion().getId() == Integer.parseInt(region)) {
-          activity.getCountries().remove(c);
-          // As the list change its size we need re-check the position deleted
-          c--;
-          break;
-        }
+      regionId = activity.getCountries().get(c).getRegion().getId();
+      // If the country in the list belongs to a region selected, delete it from the list
+      if (regionsSelected.get(regionId)) {
+        activity.getCountries().remove(c);
+        // As the list change its size we need re-check the position deleted
+        c--;
+        break;
       }
     }
   }
@@ -140,11 +161,25 @@ public class LocationsPlanningAction extends BaseAction {
     return countries;
   }
 
+  public List<Country> getCountriesByRegion(int regionId) {
+    List<Country> countryList = new ArrayList<>();
+    for (Country country : countries) {
+      if (country.getRegion().getId() == regionId) {
+        countryList.add(country);
+      }
+    }
+    return countryList;
+  }
+
   public Region[] getRegions() {
     return regions;
   }
 
-  public List<String> getRegionsSelected() {
+  public Map<Integer, Boolean> getRegionsDisplayed() {
+    return regionsDisplayed;
+  }
+
+  public Map<Integer, Boolean> getRegionsSelected() {
     return regionsSelected;
   }
 
@@ -186,7 +221,7 @@ public class LocationsPlanningAction extends BaseAction {
     checkRegionsLoaded();
     // After knowing which regions are selected, it must be deleted the
     // countries of that regions to prevent show them in countries select
-    deleteCountriesOfRegionSelected();
+    // deleteCountriesOfRegionSelected();
 
     if (getRequest().getMethod().equalsIgnoreCase("post")) {
       activity.getOtherLocations().clear();
@@ -234,8 +269,10 @@ public class LocationsPlanningAction extends BaseAction {
       // If there are regions selected
       if (!regionsSelected.isEmpty()) {
         // Save all the countries of that region
-        for (String regionId : regionsSelected) {
-          activityCountryManager.saveCountriesByRegion(Integer.parseInt(regionId), activityID);
+        for (Entry<Integer, Boolean> entry : regionsSelected.entrySet()) {
+          if (entry.getValue()) {
+            activityCountryManager.saveCountriesByRegion(entry.getKey().intValue(), activityID);
+          }
         }
 
         // Then delete the countries from activity.countries list to prevent duplicate entries into the DB
@@ -266,7 +303,12 @@ public class LocationsPlanningAction extends BaseAction {
     this.activity = activity;
   }
 
-  public void setRegionsSelected(List<String> regionsSelected) {
+  public void setRegionsDisplayed(Map<Integer, Boolean> regionsDisplayed) {
+    this.regionsDisplayed = regionsDisplayed;
+  }
+
+
+  public void setRegionsSelected(Map<Integer, Boolean> regionsSelected) {
     this.regionsSelected = regionsSelected;
   }
 

@@ -77,6 +77,16 @@ public class Activity {
     return ids;
   }
 
+  public List<String> getCountriesIdsByRegion(int regionId) {
+    ArrayList<String> ids = new ArrayList<>();
+    for (int c = 0; c < getCountries().size(); c++) {
+      if (getCountries().get(c).getRegion().getId() == regionId) {
+        ids.add(getCountries().get(c).getId() + "");
+      }
+    }
+    return ids;
+  }
+
   public Date getDateAdded() {
     return dateAdded;
   }

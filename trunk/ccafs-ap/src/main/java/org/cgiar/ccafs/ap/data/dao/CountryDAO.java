@@ -11,6 +11,14 @@ import com.google.inject.ImplementedBy;
 public interface CountryDAO {
 
   /**
+   * Get all the countries that belongs to the given region.
+   * 
+   * @param regionID - Region identifier
+   * @return a list of maps with the information.
+   */
+  public List<Map<String, String>> getCountriesByRegion(String regionID);
+
+  /**
    * Get all the countries from the DAO
    * 
    * @return a List of Maps with the information
@@ -24,6 +32,4 @@ public interface CountryDAO {
    * @return
    */
   public Map<String, String> getCountryInformation(String id);
-
-
 }

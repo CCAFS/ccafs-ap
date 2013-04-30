@@ -58,6 +58,26 @@ $(document).ready(function() {
       $("#otherSites").show("slow");
     }
   });
+  
+  $("[id^=region-]").on("change", showCountriesByRegion);
+  
+  $("[id^=allCountriesForRegion-]").on("change", function(event){
+   event.preventDefault();
+   // Getting the id.
+   var regionId = $(event.target).attr("id").split("-")[1];
+   //Enable or unable the corresponding select
+   if ($(event.target).attr('checked') == "checked" ){
+     // Hide the countries field
+    $("select#locations_activity_countries-" + regionId ).attr('disabled', true);
+     $("select#locations_activity_countries-" + regionId ).trigger("liszt:updated");
+   }else{
+    // Show the countries field
+    $("select#locations_activity_countries-" + regionId ).attr('disabled', false);
+    $("select#locations_activity_countries-" + regionId ).trigger("liszt:updated");
+   }
+  });
+  
+  
 
   popups();
   addChosen();
@@ -102,9 +122,11 @@ function renameOtherSites() {
 
 //Activate the chosen plugin to the countries inputs
 function addChosen() {
-  $(".countries").each(function() {
+  $(".countries").each(function(index) {
     // Check if its not the template countries field
     if ($(this).attr("name") != 'country') {
+      // Add the index to the id attribute to prevent duplicate id
+      $(this).attr("id", $(this).attr("id") + "-" +index);
       $(this).chosen();
     }
   });
@@ -131,6 +153,29 @@ function drawRegionsMap() {
     console.log("long: " + e.latLng.lng());
   });
 };
+
+/**
+ * Make a request to show the countries that belongs to
+ * the region selected.
+ * 
+ */
+function showCountriesByRegion(event){
+  regionInput = event.target;
+  regionID = $(regionInput).attr("value");
+
+  if($(regionInput).attr("checked") == "checked"){
+   
+   // Display div block
+   $("#countriesForRegion-"+ (regionID)).fadeIn();
+   
+  }else{
+   // If the user un-check the input hide the field and reset the values
+   $("#countriesForRegion-"+ (regionID)).fadeOut();
+   $("#allCountriesForRegion-"+ (regionID-1)).attr('checked', false);
+   $("select#locations_activity_countries-" + (regionID-1) ).attr('disabled', false);
+   $("select#locations_activity_countries-" + (regionID-1)).val('').trigger('liszt:updated');
+  }
+}
 
 /**
  * This function is called from popup window, set the values of latitude and
