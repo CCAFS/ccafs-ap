@@ -13,5 +13,7 @@ public final class APConstants {
   public static final String ACTIVITY_YEAR_REQUEST = "year";
   public static final String ACTIVITY_LIMIT_REQUEST = "limit";
   public static final String MILESTONE_REQUEST_ID = "milestoneID";
+  public static final String REGION_REQUEST_ID = "regionID";
+  public static final String COUNTRY_REQUEST_ID = "countryID";
 
 }

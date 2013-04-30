@@ -26,6 +26,26 @@ public class CountryManagerImpl implements CountryManager {
   }
 
   @Override
+  public Country[] getCountriesByRegion(String regionID) {
+    List<Map<String, String>> countryDataList = countryDAO.getCountriesByRegion(regionID);
+    Country[] countries = new Country[countryDataList.size()];
+
+    int c = 0;
+    for (Map<String, String> countryData : countryDataList) {
+      Country country = new Country();
+      country.setId(countryData.get("id"));
+      country.setName(countryData.get("name"));
+
+      Region regionTemp = new Region(Integer.parseInt(countryData.get("region_id")), countryData.get("region_name"));
+      country.setRegion(regionTemp);
+
+      countries[c] = country;
+      c++;
+    }
+    return countries;
+  }
+
+  @Override
   public Country getCountry(String id) {
     Map<String, String> countryData = countryDAO.getCountryInformation(id);
 

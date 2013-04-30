@@ -8,6 +8,14 @@
     <action name="activityLocations" class="org.cgiar.ccafs.ap.action.json.home.ActivityLocationAction">
       <result type="json"/>        
     </action>
+    
+    <action name="countriesByRegion" class="org.cgiar.ccafs.ap.action.json.planning.CountriesByRegionAction">
+      <result type="json"/>        
+    </action>
+
+    <action name="sitesByCountry" class="org.cgiar.ccafs.ap.action.json.planning.SitesByCountryAction">
+      <result type="json"/>        
+    </action>
 
   </package>
 </struts>

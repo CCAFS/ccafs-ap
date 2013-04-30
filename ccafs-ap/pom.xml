@@ -22,6 +22,7 @@
     <logback-classic.version>1.0.7</logback-classic.version>
     <janino.version>2.6.1</janino.version>
     <struts2-json.version>2.3.4.1</struts2-json.version>
+    <itext.version>2.1.7</itext.version>
   </properties>
 
   <developers>
@@ -143,6 +144,14 @@
 	    <artifactId>struts2-json-plugin</artifactId>
 	    <version>${struts2-json.version}</version>
     </dependency>
+    
+    <!-- iText -->
+    <dependency>
+		  <groupId>com.lowagie</groupId>
+		  <artifactId>itext</artifactId>
+		  <version>${itext.version}</version>
+		</dependency>
+
   </dependencies>
 
   <build>

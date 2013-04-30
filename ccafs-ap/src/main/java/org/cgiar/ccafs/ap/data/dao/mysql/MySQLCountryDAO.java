@@ -28,6 +28,33 @@ public class MySQLCountryDAO implements CountryDAO {
   }
 
   @Override
+  public List<Map<String, String>> getCountriesByRegion(String regionID) {
+    List<Map<String, String>> countryList = new ArrayList<>();
+    String query =
+      "SELECT co.iso2, co.name, re.id as 'region_id', re.name as 'region_name' FROM countries co "
+        + "INNER JOIN regions re ON co.region_id = re.id " + "WHERE re.id = " + regionID + " ORDER BY co.name";
+    try (Connection con = databaseManager.getConnection()) {
+      ResultSet rs = databaseManager.makeQuery(query, con);
+      while (rs.next()) {
+        Map<String, String> countryData = new HashMap<>();
+        countryData.put("id", rs.getString("iso2"));
+        countryData.put("name", rs.getString("name"));
+        countryData.put("region_id", rs.getString("region_id"));
+        countryData.put("region_name", rs.getString("region_name"));
+        countryList.add(countryData);
+      }
+      rs.close();
+    } catch (SQLException e) {
+      LOG.error("There was an error getting the country list, \n{}", query, e);
+    }
+
+    if (countryList.isEmpty()) {
+      return null;
+    }
+    return countryList;
+  }
+
+  @Override
   public List<Map<String, String>> getCountriesList() {
     List<Map<String, String>> countryList = new ArrayList<>();
     String query =

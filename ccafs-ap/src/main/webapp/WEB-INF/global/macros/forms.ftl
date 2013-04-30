@@ -27,7 +27,7 @@
 [#macro checkbox name value="-NULL" label="" i18nkey="" disabled=false checked=false required=false display=true]
   <div class="checkbox" [#if !display]style="display: none;"[/#if]>
     <label for="${name}"><h6>[#if i18nkey==""]${label}[#else][@s.text name="${i18nkey}" /][/#if][#if required]<span class="red">*</span>[/#if]:</h6></label>
-    <input type="checkbox" id="${name}" name="${name}" value="true" [#if checked]checked="true"[/#if] />     
+    <input type="checkbox" id="${name}" name="${name}" value="${value}" [#if checked]checked="true"[/#if] />     
   </div>
 [/#macro]
 
@@ -101,10 +101,10 @@
 
 [#-- The following macros aren't tested yet. --]
 
-[#macro radioButton name value="-NULL" i18nkey="" disabled=false checked=false]
-  <div class="radio">
-    <input type="radio" name="${name}" value="[#if value=="-NULL"][@s.property value="${name}"/][#else]${value}[/#if]" [#if checked]checked="true"[/#if] id="${name}">
-    <label for="${name}"> [#if i18nkey==""][@s.text name="${name}"/][#else][@s.text name="${i18nkey}"/][/#if] </label>
+[#macro radioButton name value="-NULL" i18nkey="" label="" disabled=false checked=false id=""]
+  <div class="radioList">
+    <input type="radio" id="${id}" name="${name}" value="[#if value=="-NULL"][@s.property value="${name}"/][#else]${value}[/#if]" [#if checked]checked="true"[/#if] />
+    <label for="${id}"> [#if i18nkey==""]${label}[#else][@s.text name="${i18nkey}"/][/#if] </label>
   </div>
 [/#macro]
 
