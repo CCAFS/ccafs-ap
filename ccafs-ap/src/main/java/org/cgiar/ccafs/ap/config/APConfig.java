@@ -19,6 +19,7 @@ public class APConfig {
   private static final String BASE_URL = "ccafsap.baseUrl";
   private static final String REPORTING_CURRENT_YEAR = "ccafsap.reporting.currentYear";
   private static final String PLANNING_CURRENT_YEAR = "ccafsap.planning.currentYear";
+  private static final String START_YEAR = "ccafsap.startYear";
   private static final String END_YEAR = "ccafsap.endYear";
   private static final String GMAIL_USER = "gmail.user";
   private static final String GMAIL_PASSWORD = "gmail.password";
@@ -156,6 +157,20 @@ public class APConfig {
       return properties.getPropertiesAsInt(REPORTING_CURRENT_YEAR);
     } catch (Exception e) {
       LOG.error("There is not a current year configured for the reporting section.");
+    }
+    return -1;
+  }
+
+  /**
+   * Get the start year value that is in the configuration file.
+   * 
+   * @return an integer identifying the end year.
+   */
+  public int getStartYear() {
+    try {
+      return properties.getPropertiesAsInt(START_YEAR);
+    } catch (Exception e) {
+      LOG.error("there is not a start year configured.");
     }
     return -1;
   }

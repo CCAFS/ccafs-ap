@@ -107,6 +107,10 @@ public class MainInformationPlanningAction extends BaseAction {
     return APConstants.PUBLIC_ACTIVITY_ID;
   }
 
+  public int getStartYear() {
+    return config.getStartYear();
+  }
+
   @Override
   public void prepare() throws Exception {
     super.prepare();

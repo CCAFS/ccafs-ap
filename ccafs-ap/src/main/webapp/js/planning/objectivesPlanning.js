@@ -11,7 +11,7 @@ $(document).ready(function() {
   $(".addObjective").on("click", function(event) {
     event.preventDefault();
     var newObjective = $("#objectiveTemplate").clone(true);
-    $("#objectivesBlock").append(newObjective);
+    $("#addDeliverableBlock").before(newObjective);
     $(newObjective).attr("class", "objective");
     renameObjectives();
     newObjective.show("slow");

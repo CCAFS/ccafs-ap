@@ -10,8 +10,7 @@ $(document).ready(
         event.preventDefault();
         // Cloning tempalte.
         var $newDeliverable = $("#deliverable-9999").clone(true);
-        $("#deliverablesBlock").append($newDeliverable);
-        $("#deliverablesBlock").append("<hr />");
+        $("#addDeliverableBlock").before($newDeliverable);
         renameDeliverables();
         $newDeliverable.fadeIn("slow");
       });
@@ -32,35 +31,6 @@ $(document).ready(
         });
       });
 
-      $('.deliverableType').change(
-          function(event) {
-            var selected = $(this).find('option:selected').val();
-
-            // Getting the id.
-            var selectedId = $(event.target).attr("id").split("_")[3];
-            console.log(selectedId);
-            // Check if the selected type needs a file format to display or hide 
-            // that section
-            if (jQuery.inArray(selected, deliverableTypeIdsNeeded) != -1) {
-              var checkboxGroup = $("#deliverable-" + selectedId).find(
-                  ".checkboxGroup");
-              // Check if the checkboxgroup exists
-              if (checkboxGroup.length > 0) {
-                // If exists show it
-                $(checkboxGroup).parent().show('slow');
-              }
-            } else {
-              var checkboxGroup = $("#deliverable-" + selectedId).find(
-                  ".checkboxGroup");
-              checkboxGroup.parent().hide('slow', function() {
-                // After hide the file formats section uncheck all the checkboxes
-                $(checkboxGroup).find(":checked").each(function() {
-                  $(this).attr('checked', false);
-                });
-              });
-            }
-
-          });
     });
 
 function renameDeliverables() {

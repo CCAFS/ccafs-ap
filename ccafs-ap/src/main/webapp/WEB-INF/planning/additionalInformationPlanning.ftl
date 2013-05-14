@@ -24,57 +24,38 @@
       ${activity.leader.acronym} - [@s.text name="planning.additionalInformation.activity" /] ${activity.id}      
     </h1>
     
+    <fieldset>
+      <legend><h6>[@s.text name="planning.additionalInformation" /]</h6></legend>
+    
     [#-- Activity keywords --]
-    <fieldset class="keywordsBlock">
-      <legend> <h6> [@s.text name="planning.additionalInformation.keywords" /] </h6> </legend>
+    <div class="keywordsBlock">
       <div id="keywordsList">
-        [#list activity.keywords as activityKeyword]
-          [#if activityKeyword.keyword?has_content]
-            <div id="keyword-${activityKeyword_index}" class="activityKeyword keyword thirdPartBlock">
-              <input type="hidden" name="activity.keywords[${activityKeyword_index}].id" value="${activityKeyword.id?c}" class="activityKeywordId" />
-              [@customForm.select name="activity.keywords[${activityKeyword_index}].keyword" label="" i18nkey="planning.additionalInformation.keywords" listName="keywords" keyFieldName="id"  displayFieldName="name" value="activity.keywords[${activityKeyword_index}].keyword.id" className="keywords" /]
-            </div>
-          [/#if]
-        [/#list]
+        [@customForm.select name="activity.keywords" label="" i18nkey="planning.additionalInformation.keywords" listName="keywords" keyFieldName="id"  displayFieldName="name" value="activity.keywordsIds" multiple=true className="keywords" /]
       </div>
       <hr />
-      <div id="addOtherKeywordBlock" class="halfPartBlock">
-        <img src="${baseUrl}/images/global/icon-add.png" />
-        <a href="" class="addKeyword" >[@s.text name="planning.additionalInformation.addKeyword" /]</a>
-      </div>
-      <div id="removeKeywordBlock" class="halfPartBlock" [#if ! activity.keywords?has_content] style="display:none" [/#if] >
-        <img src="${baseUrl}/images/global/icon-remove.png" />
-        <a href="" class="removeKeyword" >[@s.text name="planning.additionalInformation.removeLast" /]</a>
-      </div>
-    </fieldset>
+    </div>
     
     [#-- Other keywords --]
-    <fieldset class="otherKeywordsBlock">
-      <legend> <h6> [@s.text name="planning.additionalInformation.otherKeywords" /] </h6> </legend>
+    <div class="otherKeywordsBlock">
+      [#-- Title --]
+      <div class="otherKeywordTitle">
+        <h6>[@s.text name="planning.additionalInformation.otherKeywords" /]</h6>
+      </div>
+      
+      [#-- Other keyword Help --]
+      <div class="otherKeywordsHelp">
+        [@s.text name="planning.additionalInformation.otherKeywords.help" /]
+      </div>
+      
+      [#-- Other keywords field --]
       <div id="otherKeywordsList">
-        [#list activity.keywords as activityKeyword]
-          [#if activityKeyword.other??]
-            <div id="otherKeyword-${activityKeyword_index}" class="activityKeyword other thirdPartBlock">
-              <input type="hidden" class="activityKeywordId" name="activity.keywords[${activityKeyword_index}].id" value="${activityKeyword.id?c}" />
-              [@customForm.input name="activity.keywords[${activityKeyword_index}].other" type="text" i18nkey="planning.additionalInformation.otherKeywords" className="keywords" /]
-            </div>
-          [/#if]
-        [/#list]
+        [@customForm.textArea name="otherKeywordsString" i18nkey="planning.additionalInformation.otherKeywords" /]
       </div>
       <hr />
-      <div id="addOtherKeywordBlock" class="halfPartBlock">
-        <img src="${baseUrl}/images/global/icon-add.png" />
-        <a href="" class="addOtherKeyword" >[@s.text name="planning.additionalInformation.addOtherKeyword" /]</a>
-      </div>
-      <div id="removeOtherKeywordBlock" class="halfPartBlock" [#if ! activity.keywords?has_content] style="display:none" [/#if] >
-        <img src="${baseUrl}/images/global/icon-remove.png" />
-        <a href="" class="removeOtherKeyword" >[@s.text name="planning.additionalInformation.removeLast" /]</a>
-      </div>
-    </fieldset>
+    </div>
     
     [#-- Resources --]
-    <fieldset class="resourcesBlock">
-      <legend> <h6> [@s.text name="planning.additionalInformation.resources" /] </h6> </legend>
+    <div class="resourcesBlock">
       <div id="resourcesList">
         [#list activity.resources as resource]
           <div id="resource-${resource_index}" class="fullBlock resource">
@@ -83,7 +64,6 @@
           </div>
         [/#list]
       </div>
-      <hr />
       <div id="addResourceBlock" class="halfPartBlock">
         <img src="${baseUrl}/images/global/icon-add.png" />
         <a href="" class="addResource" >[@s.text name="planning.additionalInformation.addResource" /]</a>
@@ -92,7 +72,8 @@
         <img src="${baseUrl}/images/global/icon-remove.png" />
         <a href="" class="removeResource" >[@s.text name="planning.additionalInformation.removeLast" /]</a>
       </div>
-    </fieldset>
+      <hr />
+    </div>
     
     [#-- Keyword template --]
     <div id="keywordTemplate" class="thirdPartBlock" style="display:none" >
@@ -103,13 +84,13 @@
     [#-- Other keyword template --]
     <div id="otherKeywordTemplate" class="thirdPartBlock" style="display:none">
       <input type="hidden" class="activityKeywordId" value="-1" />
-      [@customForm.input name="other" type="text" i18nkey="planning.additionalInformation.otherKeywords" /]
+      [@customForm.input name="other" type="text" i18nkey="planning.additionalInformation.keyword" /]
     </div>
     
     [#-- Resource template --]
     <div id="resourceTemplate" class="fullBlock" style="display:none">
       <input type="hidden" name="resourceId" value="-1" />
-      [@customForm.input name="name" type="text" i18nkey="planning.additionalInformation.resources" /]
+      [@customForm.input name="name" type="text" i18nkey="planning.additionalInformation.resource" /]
     </div>
     
     <!-- internal parameter -->
@@ -118,7 +99,7 @@
       [@s.submit type="button" name="save"][@s.text name="form.buttons.save" /][/@s.submit]
       [@s.submit type="button" name="cancel"][@s.text name="form.buttons.cancel" /][/@s.submit]
     </div>
-        
+        </fieldset>
     </article>
   [/@s.form]
  

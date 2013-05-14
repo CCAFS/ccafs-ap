@@ -24,4 +24,12 @@ public interface BenchmarkSiteDAO {
    * @return a list of maps with the information
    */
   public List<Map<String, String>> getActiveBenchmarkSitesByCountry(String countryID);
+
+  /**
+   * Get all the benchmark sites that belongs to the given region
+   * 
+   * @param regionID - region identifier
+   * @return a list of maps with the information
+   */
+  public List<Map<String, String>> getActiveBenchmarkSitesByRegion(String regionID);
 }

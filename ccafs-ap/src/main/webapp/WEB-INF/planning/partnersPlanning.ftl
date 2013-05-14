@@ -25,7 +25,7 @@
         </div>
         
         [#-- Partner Name --]
-        <div class="fullBlock partnerName">
+        <div class="fullBlock partnerName chosen">
           [@customForm.select name="activity.activityPartners[${ap_index}].partner" label="" i18nkey="planning.activityPartners.partner.name" listName="partners" keyFieldName="id"  displayFieldName="name" /]
         </div>
         
@@ -56,14 +56,11 @@
       ${activity.leader.acronym} - [@s.text name="planning.activityPartners.activity" /] ${activity.id}      
     </h1>
     
-    <h6>[@s.text name="planning.activityPartners.title" /]</h6>
-    <p> ${activity.title} </p>
-    
     [#assign typeSelectHeadValue ] [@s.text name="planning.activityPartners.selectPartnerType" /] [/#assign]
     
     <div id="items">
       <fieldset id="activityPartnerGroup" class="group">
-        <legend>[@s.text name="planning.activityPartners.partners" /]</legend>
+        <legend> <h6> [@s.text name="planning.activityPartners.partners" /] </h6> </legend>
         [@partnerSection /]
       <div class="addLink">
         <img src="${baseUrl}/images/global/icon-add.png" />
@@ -92,7 +89,7 @@
         <input type="hidden" name="id" value="-1">
       
         [#-- Partner Name --]
-        <div class="fullBlock partnerName">
+        <div class="fullBlock partnerName chosen">
           [@customForm.select name="__partner" label="" i18nkey="planning.activityPartners.partner.name" listName="partners" keyFieldName="id"  displayFieldName="name" /]
         </div>
         

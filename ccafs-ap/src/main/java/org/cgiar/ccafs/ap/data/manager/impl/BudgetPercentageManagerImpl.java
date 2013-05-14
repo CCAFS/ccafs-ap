@@ -44,6 +44,15 @@ public class BudgetPercentageManagerImpl implements BudgetPercentageManager {
     List<BudgetPercentage> budgetPercentages = new ArrayList<>();
     List<Map<String, String>> budgetPercentagesDataList = budgetPercentageDAO.getBudgetPercentages();
 
+    // Create 'No funds' option in budget percentages list with a
+    // fake object
+    BudgetPercentage fakeBp = new BudgetPercentage();
+    fakeBp.setId(-1);
+    // i18n text set on page load, because managers can't call getText()
+    fakeBp.setPercentage("");
+    budgetPercentages.add(fakeBp);
+
+
     for (Map<String, String> bpData : budgetPercentagesDataList) {
       BudgetPercentage bp = new BudgetPercentage();
       bp.setId(Integer.parseInt(bpData.get("id")));

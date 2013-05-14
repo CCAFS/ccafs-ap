@@ -21,6 +21,11 @@ $(document).ready(function() {
     renameContactPersons();
     newContactPerson.show("slow");
   });
+  
+  // Set text 'No funds' in budget percentage list
+  var nofundsMsg = $("#activity\\.budget\\.noFunds").val();
+  $("#mainInformation_activity_budget_cgFund option").first().text(nofundsMsg);
+  $("#mainInformation_activity_budget_bilateral option").first().text(nofundsMsg);
 
   // Add chosen plugin to the milestone select
   $(".milestones").chosen();

@@ -184,8 +184,11 @@ public class MySQLActivityDAO implements ActivityDAO {
   @Override
   public List<Map<String, String>> getPlanningActivityList(int year, int leaderId) {
     List<Map<String, String>> activitiesData = new ArrayList<>();
-    StringBuilder query = new StringBuilder("SELECT a.id, a.title, m.code as 'milestone_code'");
+    StringBuilder query =
+      new StringBuilder("SELECT a.id, a.title, GROUP_CONCAT(cp.name SEPARATOR '::') AS 'contact_person_names',");
+    query.append(" GROUP_CONCAT(cp.email SEPARATOR '::') AS 'contact_person_emails', m.code as 'milestone_code'");
     query.append(" FROM activities a");
+    query.append(" LEFT JOIN contact_person cp ON cp.activity_id = a.id");
     query.append(" INNER JOIN milestones m ON m.id = a.milestone_id");
     query.append(" INNER JOIN outputs o ON o.id = m.output_id");
     query.append(" INNER JOIN objectives ob ON ob.id = o.objective_id");
@@ -196,6 +199,7 @@ public class MySQLActivityDAO implements ActivityDAO {
     query.append(year);
     query.append(" AND al.id = ");
     query.append(leaderId);
+    query.append(" GROUP BY a.id");
     try (Connection connection = databaseManager.getConnection()) {
       ResultSet rs = databaseManager.makeQuery(query.toString(), connection);
       while (rs.next()) {
@@ -203,6 +207,8 @@ public class MySQLActivityDAO implements ActivityDAO {
         activityData.put("id", rs.getString("id"));
         activityData.put("title", rs.getString("title"));
         activityData.put("milestone_code", rs.getString("milestone_code"));
+        activityData.put("contact_person_names", rs.getString("contact_person_names"));
+        activityData.put("contact_person_emails", rs.getString("contact_person_emails"));
         activitiesData.add(activityData);
       }
       rs.close();

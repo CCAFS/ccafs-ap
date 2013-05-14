@@ -98,7 +98,7 @@
           </div>
           
           [#-- Countries --]
-          <div class="fullBlock countriesBlock">
+          <div class="fullBlock countriesBlock chosen">
             [@customForm.select name="caseStudies[${caseStudy_index}].countries" label="" i18nkey="reporting.caseStudies.countries" listName="countryList" keyFieldName="id"  displayFieldName="name" value="caseStudies[${caseStudy_index}].countriesIds" multiple=true disabled="${caseStudy.global?string('1', '0')}"/]              
           </div>
           

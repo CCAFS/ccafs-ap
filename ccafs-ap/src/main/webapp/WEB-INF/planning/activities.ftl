@@ -43,7 +43,11 @@
             </td>
             <td>
               [#if activity.contactPersons??]
-                ${activity.contactPersons[0].name}
+                [#if activity.contactPersons[0].email??]
+                  <a href="mailto:${activity.contactPersons[0].email}">${activity.contactPersons[0].name}</a>
+                [#else]
+                  ${activity.contactPersons[0].name}
+                [/#if]
               [#else]
                 [@s.text name="planning.activityList.contactPerson.empty" /]
               [/#if]

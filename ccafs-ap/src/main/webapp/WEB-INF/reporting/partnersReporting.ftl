@@ -25,7 +25,7 @@
       </div>
       
       [#-- Partner Name --]
-      <div class="fullBlock partnerName">
+      <div class="fullBlock partnerName chosen">
         [@customForm.select name="activity.activityPartners[${ap_index}].partner" label="" i18nkey="reporting.activityPartners.partner.name" listName="partners" keyFieldName="id"  displayFieldName="name" /]
       </div>
       
@@ -92,7 +92,7 @@
         <input type="hidden" name="id" value="-1">
       
         [#-- Partner Name --]
-        <div class="fullBlock partnerName">
+        <div class="fullBlock partnerName chosen">
           [@customForm.select name="__partner" label="" i18nkey="reporting.activityPartners.partner.name" listName="partners" keyFieldName="id"  displayFieldName="name" /]
         </div>
         

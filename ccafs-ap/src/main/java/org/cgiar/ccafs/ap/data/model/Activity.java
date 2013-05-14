@@ -118,7 +118,9 @@ public class Activity {
   public List<String> getKeywordsIds() {
     ArrayList<String> ids = new ArrayList<>();
     for (int c = 0; c < getKeywords().size(); c++) {
-      ids.add(getKeywords().get(c).getKeyword().getId() + "");
+      if (getKeywords().get(c).getKeyword() != null) {
+        ids.add(getKeywords().get(c).getKeyword().getId() + "");
+      }
     }
     return ids;
   }

@@ -8,6 +8,7 @@ import org.cgiar.ccafs.ap.data.manager.ContactPersonManager;
 import org.cgiar.ccafs.ap.data.manager.DeliverableManager;
 import org.cgiar.ccafs.ap.data.manager.MilestoneManager;
 import org.cgiar.ccafs.ap.data.model.Activity;
+import org.cgiar.ccafs.ap.data.model.ContactPerson;
 import org.cgiar.ccafs.ap.data.model.Leader;
 import org.cgiar.ccafs.ap.data.model.Milestone;
 import org.cgiar.ccafs.ap.data.model.Objective;
@@ -18,6 +19,7 @@ import org.cgiar.ccafs.ap.data.model.User;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -341,6 +343,26 @@ public class ActivityManagerImpl implements ActivityManager {
         activities[c].setTitle(activityData.get(c).get("title"));
         Milestone milestone = new Milestone();
         milestone.setCode(activityData.get(c).get("milestone_code"));
+
+        if (activityData.get(c).get("contact_person_names") != null) {
+          String[] contactPersonNames = activityData.get(c).get("contact_person_names").split("::");
+          String[] contactPersonEmails = activityData.get(c).get("contact_person_emails").split("::");
+
+          List<ContactPerson> contactPersons = new ArrayList<>();
+          for (int i = 0; i < contactPersonNames.length; i++) {
+            ContactPerson contactPerson = new ContactPerson();
+            contactPerson.setName(contactPersonNames[i]);
+
+            // Contact person may not have email
+            if (i < contactPersonEmails.length) {
+              contactPerson.setEmail(contactPersonEmails[i]);
+            }
+
+            contactPersons.add(contactPerson);
+          }
+          activities[c].setContactPersons(contactPersons);
+        }
+
         activities[c].setMilestone(milestone);
       }
       return activities;
