@@ -20,13 +20,14 @@
   [@s.form action="deliverables"]  
   <article class="halfContent">
     <h1 class="contentTitle">
-      [@s.text name="planning.mainInformation.activity" /] ${activity.id} - [@s.text name="planning.activityDeliverables" /] 
+      ${activity.leader.acronym} - [@s.text name="planning.mainInformation.activity" /] ${activity.id} 
     </h1>
     
     [#-- Activity identifier --]
     <input name="activityID" value="${activity.id}" type="hidden"/>
     
-    <div id="deliverablesBlock">
+    <fieldset id="deliverablesBlock">
+      <legend> <h6> [@s.text name="planning.activityDeliverables" /] </h6> </legend>
       [#if activity.deliverables?has_content]
         [#list activity.deliverables as deliverable]
           <div id="deliverable-${deliverable_index}" class="deliverable">
@@ -61,29 +62,17 @@
               [@customForm.select name="activity.deliverables[${deliverable_index}].year" label="" i18nkey="planning.activityDeliverables.year" listName="yearList" value="${activity.deliverables[deliverable_index].year}" /]            
             </div>
             
-            [#-- Formats --]
-            [#if deliverableTypeIdsNeeded?seq_contains(activity.deliverables[deliverable_index].type.id)]              
-              <div class="fullBlock">
-            [#else]
-              <div class="fullBlock" style="display: none;">
-            [/#if]
-                <h6>[@s.text name="planning.activityDeliverables.formatFiles" /]</h6>
-                <div class="checkboxGroup">
-                  [@s.fielderror cssClass="fieldError" fieldName="activity.deliverables[${deliverable_index}].fileFormats"/]
-                  [@s.checkboxlist name="activity.deliverables[${deliverable_index}].fileFormats" list="fileFormatsList" listKey="id" listValue="name" value="activity.deliverables[${deliverable_index}].fileFormatsIds" cssClass="checkbox" /]
-                </div>
-              </div>
-            
           </div> <!-- End deliverable-${deliverable_index} -->
           <hr />
         [/#list]
       [/#if]
-    </div>
+      
+      <div id="addDeliverableBlock" class="addLink">
+        <img src="${baseUrl}/images/global/icon-add.png" />
+        <a href="" class="addDeliverable" >[@s.text name="planning.activityDeliverables.addDeliverable" /]</a>
+      </div>
     
-    <div id="addDeliverableBlock" class="addLink">
-      <img src="${baseUrl}/images/global/icon-add.png" />
-      <a href="" class="addDeliverable" >[@s.text name="planning.activityDeliverables.addDeliverable" /]</a>
-    </div>
+    </fieldset>
     
     [#-- Delvierable template --]
     <div id="delvierableTemplate" style="display:none">
@@ -119,14 +108,7 @@
           [@customForm.select name="year" label="" i18nkey="planning.activityDeliverables.year" listName="yearList"/]            
         </div>
         
-        [#-- Formats --]                    
-        <div class="fullBlock">
-          <h6>[@s.text name="planning.activityDeliverables.formatFiles" /]</h6>          
-          <div class="checkboxGroup">                        
-            [@s.checkboxlist name="fileFormats" list="fileFormatsList" listKey="id" listValue="name" cssClass="checkbox" /]
-          </div>
-        </div>
-        
+        <hr />
       </div> <!-- End deliverable template -->
     </div>
       

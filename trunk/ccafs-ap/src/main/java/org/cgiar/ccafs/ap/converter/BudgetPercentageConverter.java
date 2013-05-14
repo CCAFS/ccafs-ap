@@ -21,6 +21,12 @@ public class BudgetPercentageConverter extends StrutsTypeConverter {
   @Override
   public Object convertFromString(Map context, String[] values, Class toClass) {
     if (toClass == BudgetPercentage.class) {
+      if (values[0].equals("-1")) {
+        BudgetPercentage budgetPercentage = new BudgetPercentage();
+        budgetPercentage.setId(-1);
+        budgetPercentage.setPercentage("");
+        return budgetPercentage;
+      }
       return budgetPercentageManager.getBudgetPercentage(values[0]);
     }
     return null;

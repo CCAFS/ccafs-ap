@@ -9,7 +9,7 @@
       <result type="json"/>        
     </action>
     
-    <action name="countriesByRegion" class="org.cgiar.ccafs.ap.action.json.planning.CountriesByRegionAction">
+    <action name="sitesByRegion" class="org.cgiar.ccafs.ap.action.json.planning.SitesByRegionAction">
       <result type="json"/>        
     </action>
 

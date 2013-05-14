@@ -30,7 +30,7 @@ public class BudgetManagerImpl implements BudgetManager {
 
     /*
      * If there is no budget stored in the DB
-     * creates a budget object whit identifier 0
+     * creates a budget object whit identifier -1
      * and usd 0
      */
     if (budgetDB == null) {
@@ -67,9 +67,21 @@ public class BudgetManagerImpl implements BudgetManager {
     } else {
       budgetData.put("id", null);
     }
+
     budgetData.put("usd", String.valueOf(budget.getUsd()));
-    budgetData.put("cgFund", String.valueOf(budget.getCgFund().getId()));
-    budgetData.put("bilateral", String.valueOf(budget.getBilateral().getId()));
+
+    if (budget.getCgFund().getId() != -1) {
+      budgetData.put("cgFund", String.valueOf(budget.getCgFund().getId()));
+    } else {
+      budgetData.put("cgFund", null);
+    }
+
+    if (budget.getBilateral().getId() != -1) {
+      budgetData.put("bilateral", String.valueOf(budget.getBilateral().getId()));
+    } else {
+      budgetData.put("bilateral", null);
+    }
+
     budgetData.put("activityID", String.valueOf(activityID));
 
     return budgetDAO.saveBudget(budgetData);

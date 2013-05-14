@@ -21,13 +21,15 @@
   [@s.form action="objectives"]  
   <article class="halfContent">
     <h1 class="contentTitle">
-      [@s.text name="planning.mainInformation.activity" /] ${activity.id} - [@s.text name="planning.objectives" /] 
+      ${activity.leader.acronym} - [@s.text name="planning.mainInformation.activity" /] ${activity.id} 
     </h1>
     
     [#-- Activity identifier --]
     <input name="activityID" value="${activity.id}" type="hidden"/>
     
-    <div id="objectivesBlock">
+    <fieldset id="objectivesBlock">
+      <legend><h6> [@s.text name="planning.objectives" /]  </h6></legend>
+    
     [#if activity.objectives?has_content]
       [#list activity.objectives as objective]
         <div id="objective-${objective_index}" class="objective">
@@ -42,6 +44,7 @@
               </a>
           </div>      
           [@customForm.textArea name="activity.objectives[${objective_index}].description" i18nkey="planning.objectives.objective"/]
+          <hr />
         </div>
       [/#list]
     [#else]
@@ -58,14 +61,16 @@
         </div>      
         [#-- Description --]
         [@customForm.textArea name="activity.objectives[0].description" i18nkey="planning.objectives.objective" required=true value="" /]
+        <hr />
       </div>
     [/#if]
-    </div>
-    
+
     <div id="addDeliverableBlock" class="addLink">
       <img src="${baseUrl}/images/global/icon-add.png" />
       <a href="" class="addObjective" >[@s.text name="planning.objectives.addObjective" /]</a>
     </div>
+    </fieldset>
+    
     
     [#-- Objective template --]
     <div id="objectiveTemplate" style="display:none">
@@ -81,6 +86,7 @@
       </div>      
       [#-- Description --]
       [@customForm.textArea name="description" i18nkey="planning.objectives.objective" required=true /]
+      <hr />
     </div>
       
     <div class="buttons">

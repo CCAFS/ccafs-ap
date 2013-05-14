@@ -211,25 +211,7 @@ public class DeliverablesPlanningAction extends BaseAction {
           anyError = true;
           addFieldError("activity.deliverables[" + c + "].description", getText("validation.field.required"));
         }
-
-        // Check if the deliverable type selected needs a file format
-        for (int deliverableTypeId : deliverableTypeIdsNeeded) {
-          if (deliverable.getType().getId() == deliverableTypeId) {
-            fileFormatNeeded = true;
-            break;
-          }
-        }
-
-        // If the deliverable needs a file format check if the user select at least one
-        if (fileFormatNeeded) {
-          if (deliverable.getFileFormats().isEmpty()) {
-            anyError = true;
-            addFieldError("activity.deliverables[" + c + "].fileFormats",
-              getText("reporting.activityDeliverables.fileFormatValidate"));
-          }
-        }
       }
-
       if (anyError) {
         addActionError(getText("saving.fields.required"));
       }

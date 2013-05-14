@@ -103,6 +103,10 @@ input[type="radio"] {
   vertical-align: middle;
 }
 
+.addLink{
+	margin : 10px 5px 2px;
+}
+
 .addLink img, .addLink a {
   vertical-align: middle;
 }
@@ -498,14 +502,22 @@ nav#secondaryMenu ul a.currentReportingSection {
   display: none;
 }
 
-#additionalInformation .select > h6{
-  display: none;
+.activityLocations #countryLocations input{
+	margin-left : 15px;
 }
 
-#additionalInformation .input > h6{
-  display: none;
+.activityLocations #countryLocations label{
+	font-size : 11px;
 }
 
+#additionalInformation #otherKeywordsList h6{
+	display : none;
+}
+
+#additionalInformation .otherKeywordsHelp{
+	margin-left: 15px;
+	font-size: 11px;
+}
 
 /****** REPORTING **********/
 /********* Activity Reporting Sub Menu **********/

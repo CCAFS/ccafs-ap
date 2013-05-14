@@ -19,6 +19,7 @@ import org.cgiar.ccafs.ap.data.model.OtherSite;
 import org.cgiar.ccafs.ap.data.model.Region;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -118,11 +119,12 @@ public class LocationsPlanningAction extends BaseAction {
         regionsDisplayed.put(c + 1, true);
       }
 
-      // Set regionsSelected
+      // Set regionsSelected, put c+1 because the regions ids start from 1
+      // not from 0
       if (countriesByRegionLoaded[c] == countriesByRegionTotal[c]) {
-        regionsSelected.put(c, true);
+        regionsSelected.put(c + 1, true);
       } else {
-        regionsSelected.put(c, false);
+        regionsSelected.put(c + 1, false);
       }
     }
   }
@@ -140,7 +142,6 @@ public class LocationsPlanningAction extends BaseAction {
         activity.getCountries().remove(c);
         // As the list change its size we need re-check the position deleted
         c--;
-        break;
       }
     }
   }
@@ -205,6 +206,7 @@ public class LocationsPlanningAction extends BaseAction {
     // Set activity benchmark sites
     activity.setBsLocations(activityBenchmarkSiteManager.getActivityBenchmarkSites(activityID));
 
+
     // Set activity other sites
     activity.setOtherLocations(activityOtherSiteManager.getActivityOtherSites(activityID));
 
@@ -215,18 +217,31 @@ public class LocationsPlanningAction extends BaseAction {
     countries = countryManager.getCountryList();
 
     // Get the benchmark sites list
-    benchmarkSites = benchmarkSiteManager.getActiveBenchmarkSiteList();
+    // If the activity doesn't have benchmark sites, load the benchmark
+    // sites for the countries loaded, if there is any
+    if (activity.getBenchmarkSitesIds().size() == 0) {
+      List<BenchmarkSite> benchmarkSitesTemp = new ArrayList<>();
+      for (String countryID : activity.getCountriesIds()) {
+        benchmarkSitesTemp.addAll(Arrays.asList(benchmarkSiteManager.getActiveBenchmarkSitesByCountry(countryID)));
+      }
+
+      benchmarkSites = benchmarkSitesTemp.toArray(new BenchmarkSite[benchmarkSitesTemp.size()]);
+    }
 
     // Check which regions are selected
     checkRegionsLoaded();
     // After knowing which regions are selected, it must be deleted the
     // countries of that regions to prevent show them in countries select
-    // deleteCountriesOfRegionSelected();
+    deleteCountriesOfRegionSelected();
 
     if (getRequest().getMethod().equalsIgnoreCase("post")) {
       activity.getOtherLocations().clear();
-      // Global is set to false to prevent the value is always true.
+      // Global and regions selected values are set to false to prevent the value is always true.
       activity.setGlobal(false);
+      for (int c = 0; c < regions.length; c++) {
+        regionsSelected.put(c + 1, false);
+      }
+
     }
   }
 
@@ -254,7 +269,6 @@ public class LocationsPlanningAction extends BaseAction {
       saved = false;
       LOG.warn("There was a problem deleting the other sites for activity {}.", activityID);
     }
-    activityManager.saveActivity(activity);
     // Delete the activity benchmark sites
     result = activityBenchmarkSiteManager.deleteActivityBenchmarkSites(activityID);
     // If there was a problem deleting the benchmark sites show it in the log.
@@ -265,18 +279,16 @@ public class LocationsPlanningAction extends BaseAction {
 
     // If the activity is not global, save the values selected.
     if (!activity.isGlobal()) {
+      // Delete countries which belongs to regions selected from activity.countries list,
+      // in order to prevent duplicate entries into the DB
+      deleteCountriesOfRegionSelected();
 
-      // If there are regions selected
-      if (!regionsSelected.isEmpty()) {
-        // Save all the countries of that region
-        for (Entry<Integer, Boolean> entry : regionsSelected.entrySet()) {
-          if (entry.getValue()) {
-            activityCountryManager.saveCountriesByRegion(entry.getKey().intValue(), activityID);
-          }
+      // If there are regions selected save all countries of that region
+      for (Entry<Integer, Boolean> entry : regionsSelected.entrySet()) {
+
+        if (entry.getValue()) {
+          activityCountryManager.saveCountriesByRegion(entry.getKey().intValue(), activityID);
         }
-
-        // Then delete the countries from activity.countries list to prevent duplicate entries into the DB
-        deleteCountriesOfRegionSelected();
       }
 
       // Save the countries
@@ -291,7 +303,7 @@ public class LocationsPlanningAction extends BaseAction {
 
 
     if (saved) {
-      addActionMessage(getText("saving.success", new String[] {getText("planning.objectives")}));
+      addActionMessage(getText("saving.success", new String[] {getText("planning.locations")}));
       return SUCCESS;
     } else {
       addActionError(getText("saving.problem"));

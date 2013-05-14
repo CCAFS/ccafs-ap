@@ -27,9 +27,12 @@
     <input name="activityID" value="${activity.id}" type="hidden"/>
     [#-- Budget identifier --]
     <input name="activity.budget.id" value="${activity.budget.id}" type="hidden"/>
+    [#-- Budget 'No funds' text --]
+    <input id="activity.budget.noFunds" value="[@s.text name="planning.mainInformation.budget.noFunds" /] " type="hidden"/>
+    
     
     [#-- Hidden values used by js --]
-    <input id="minDateValue" value="${currentYear?c}-01-01" type="hidden"/>
+    <input id="minDateValue" value="${startYear?c}-01-01" type="hidden"/>
     <input id="maxDateValue" value="${endYear?c}-12-31" type="hidden"/>
     
     [#-- Commissioned and continuous --]
@@ -53,7 +56,7 @@
     
     [#-- Title --]
     <div class="fullBlock">
-      [@customForm.input name="activity.title" type="text" i18nkey="planning.mainInformation.title" /]
+      [@customForm.textArea name="activity.title"  i18nkey="planning.mainInformation.title" disabled=true /]
     </div>
     
     [#-- Description --]
@@ -63,12 +66,12 @@
     
     [#-- Milestones --]
     <div class="halfPartBlock">
-      [@customForm.select name="activity.milestone" label="" i18nkey="planning.mainInformation.milestone" listName="milestones" keyFieldName="id"  displayFieldName="code" value="selectedTheme" className="milestones" /]
+      [@customForm.select name="activity.milestone" label="" i18nkey="planning.mainInformation.milestone" listName="milestones" keyFieldName="id"  displayFieldName="code" value="${activity.milestone.id}" className="milestones" /]
     </div>
     
-    [#-- Milestone --]
+    [#-- Logframe link --]
     <div class="halfPartBlock">
-      <a href="#" target="_blank">view logframe </a> 
+      <a href="" target="_blank">view logframe </a> 
     </div>
     
     [#-- Budget --]
@@ -157,7 +160,7 @@
           [/#if]
         </div>
     
-    <div class="contactPerson">
+    <div id="addContactPerson" class="addLink">
       <img src="${baseUrl}/images/global/icon-add.png" />
       <a href="" class="addContactPerson" >[@s.text name="planning.mainInformation.addContactPerson" /]</a>
     </div>

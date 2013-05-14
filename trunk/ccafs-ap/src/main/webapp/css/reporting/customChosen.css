@@ -10,6 +10,9 @@
   color: #fff;
 }
 
+.fullBlock.chosen .selectList{
+	width: 614px !important;
+}
 
 .fullBlock .chzn-container-multi .chzn-choices {
     width: 614px !important;
@@ -33,6 +36,10 @@
 
 /*-----------------  Half part block elements  --------------*/
 
+.halfPartBlock.chosen .selectList{
+  width: 250px !important;
+}
+
 .halfPartBlock .chzn-container-single .chzn-single {
     width: 250px !important;
 }
@@ -50,6 +57,10 @@
 }
 
 /*-------------  third part block elements  ----------------*/
+
+.thirdPartBlock.chosen .selectList{
+  width: 150px !important;
+}
 
 .thirdPartBlock .chzn-container-single .chzn-single {
     width: 150px !important;

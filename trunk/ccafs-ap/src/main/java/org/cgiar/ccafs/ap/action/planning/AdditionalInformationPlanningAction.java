@@ -9,6 +9,7 @@ import org.cgiar.ccafs.ap.data.manager.KeywordManager;
 import org.cgiar.ccafs.ap.data.manager.LogframeManager;
 import org.cgiar.ccafs.ap.data.manager.ResourceManager;
 import org.cgiar.ccafs.ap.data.model.Activity;
+import org.cgiar.ccafs.ap.data.model.ActivityKeyword;
 import org.cgiar.ccafs.ap.data.model.Keyword;
 
 import com.google.inject.Inject;
@@ -33,6 +34,7 @@ public class AdditionalInformationPlanningAction extends BaseAction {
   private int activityID;
   private Activity activity;
   private Keyword[] keywords;
+  private String otherKeywordsString;
 
   @Inject
   public AdditionalInformationPlanningAction(APConfig config, LogframeManager logframeManager,
@@ -61,6 +63,9 @@ public class AdditionalInformationPlanningAction extends BaseAction {
     return keywords;
   }
 
+  public String getOtherKeywordsString() {
+    return otherKeywordsString;
+  }
 
   @Override
   public void prepare() throws Exception {
@@ -83,6 +88,18 @@ public class AdditionalInformationPlanningAction extends BaseAction {
     // Set the activity keywords
     activity.setKeywords(activityKeywordManager.getKeywordList(activityID));
 
+    // Delete the other keywords and show it as string in the text area
+    StringBuilder temp = new StringBuilder();
+    for (int i = 0; i < activity.getKeywords().size(); i++) {
+      if (activity.getKeywords().get(i).getOther() != null) {
+        if (i > 0) {
+          temp.append(", ");
+        }
+
+        temp.append(activity.getKeywords().get(i).getOther().trim());
+      }
+    }
+    otherKeywordsString = temp.toString();
     // Set the activity resources
     activity.setResources(resourceManager.getResources(activityID));
 
@@ -91,6 +108,7 @@ public class AdditionalInformationPlanningAction extends BaseAction {
       activity.getResources().clear();
     }
   }
+
 
   @Override
   public String save() {
@@ -108,6 +126,18 @@ public class AdditionalInformationPlanningAction extends BaseAction {
     }
 
     // After remove the records, insert the values received if there is any.
+
+    // Convert the other keywords from string to ActivityKeywords Objects
+    if (!otherKeywordsString.isEmpty()) {
+      for (String keyword : otherKeywordsString.split(",")) {
+        ActivityKeyword ak = new ActivityKeyword();
+        ak.setId(-1);
+        ak.setOther(keyword);
+        activity.getKeywords().add(ak);
+      }
+    }
+
+
     if (activity.getKeywords().size() > 0) {
       keywordsSaved = activityKeywordManager.saveKeywordList(activity.getKeywords(), activityID);
       if (!keywordsSaved) {
@@ -137,6 +167,10 @@ public class AdditionalInformationPlanningAction extends BaseAction {
 
   public void setActivityID(int activityID) {
     this.activityID = activityID;
+  }
+
+  public void setOtherKeywordsString(String otherKeywordsString) {
+    this.otherKeywordsString = otherKeywordsString;
   }
 
   @Override
