@@ -150,6 +150,13 @@ public class BaseAction extends ActionSupport implements Preparable, SessionAwar
     return true;
   }
 
+  public boolean isPlanningActive() {
+    return config.isPlanningActive();
+  }
+
+  public boolean isReportingActive() {
+    return config.isReportingActive();
+  }
 
   @Override
   public void prepare() throws Exception {

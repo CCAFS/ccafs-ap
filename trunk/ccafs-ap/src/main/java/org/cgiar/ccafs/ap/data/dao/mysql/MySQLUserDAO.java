@@ -53,4 +53,28 @@ public class MySQLUserDAO implements UserDAO {
     }
     return userData;
   }
+
+  @Override
+  public boolean saveUser(Map<String, String> userData) {
+    String query = "INSERT INTO users (email, password, activity_leader_id, role) VALUES (?, ?, ?, ?);";
+    Object[] values = new Object[4];
+    values[0] = userData.get("email");
+    values[1] = userData.get("password");
+    values[2] = userData.get("activity_leader_id");
+    values[3] = userData.get("role");
+
+    try (Connection con = dbManager.getConnection()) {
+      int rows = dbManager.makeChangeSecure(con, query, values);
+      if (rows <= 0) {
+        LOG.warn("There was an error saving the user into the database.");
+        LOG.warn("Query: {}", query);
+        LOG.warn("Values: {}", values);
+        return false;
+      }
+
+    } catch (SQLException e) {
+      LOG.error("There was a problem saving a new user into the database. \n{}", e);
+    }
+    return true;
+  }
 }

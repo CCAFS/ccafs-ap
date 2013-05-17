@@ -5,7 +5,9 @@ import org.cgiar.ccafs.ap.data.manager.UserManager;
 import org.cgiar.ccafs.ap.data.model.Leader;
 import org.cgiar.ccafs.ap.data.model.LeaderType;
 import org.cgiar.ccafs.ap.data.model.User;
+import org.cgiar.ccafs.ap.util.MD5Convert;
 
+import java.util.HashMap;
 import java.util.Map;
 
 import com.google.inject.Inject;
@@ -61,5 +63,16 @@ public class UserManagerImp implements UserManager {
       }
     }
     return null;
+  }
+
+  @Override
+  public boolean saveUser(User user) {
+    Map<String, String> userData = new HashMap<>();
+    userData.put("email", user.getEmail());
+    userData.put("password", MD5Convert.stringToMD5(user.getPassword()));
+    userData.put("activity_leader_id", String.valueOf(user.getLeader().getId()));
+    userData.put("role", String.valueOf(user.getRole()));
+
+    return userDAO.saveUser(userData);
   }
 }

@@ -21,6 +21,8 @@ public class APConfig {
   private static final String PLANNING_CURRENT_YEAR = "ccafsap.planning.currentYear";
   private static final String START_YEAR = "ccafsap.startYear";
   private static final String END_YEAR = "ccafsap.endYear";
+  private static final String PLANNING_ACTIVE = "ccafsap.planning.active";
+  private static final String REPORTING_ACTIVE = "ccafsap.reporting.active";
   private static final String GMAIL_USER = "gmail.user";
   private static final String GMAIL_PASSWORD = "gmail.password";
   private static final String FILE_CASE_STUDIES_IMAGE_URL = "file.caseStudiesImagesUrl";
@@ -173,6 +175,36 @@ public class APConfig {
       LOG.error("there is not a start year configured.");
     }
     return -1;
+  }
+
+  /**
+   * Get the flag that indicate is planing stage is active that is in the configuration file.
+   * 
+   * @return a boolean indicating if it is active.
+   */
+  public boolean isPlanningActive() {
+    String planningActive = properties.getPropertiesAsString(PLANNING_ACTIVE);
+    if (planningActive == null) {
+      LOG.error("There is not a planning active configured");
+      return false;
+    }
+
+    return planningActive.equals("true");
+  }
+
+  /**
+   * Get the flag that indicate is planing stage is active that is in the configuration file.
+   * 
+   * @return a boolean indicating if it is active.
+   */
+  public boolean isReportingActive() {
+    String reportingActive = properties.getPropertiesAsString(REPORTING_ACTIVE);
+    if (reportingActive == null) {
+      LOG.error("There is not a reporting active configured");
+      return false;
+    }
+
+    return reportingActive.equals("true");
   }
 
 }

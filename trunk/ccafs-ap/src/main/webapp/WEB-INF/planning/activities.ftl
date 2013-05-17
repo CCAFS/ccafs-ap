@@ -17,7 +17,7 @@
   </div>
   
   <article class="fullContent">
-    <h1>[#if currentUser.leader??]${currentUser.leader.name}[/#if] ([@s.text name="planning.activityList.activities" /] ${currentPlanningLogframe.year?c})</h1>    
+    <h1>[#if currentUser.leader??]${currentUser.leader.name}[/#if] ([@s.text name="planning.activityList.activities" /] ${currentPlanningLogframe.year?c})</h1>   
     <table id="activityList">
       <thead>
         <tr>
@@ -25,7 +25,6 @@
           <th id="activity">[@s.text name="planning.activityList.activity" /]</th>
           <th id="contactPerson">[@s.text name="planning.activityList.contactPerson" /]</th>
           <th id="theme">[@s.text name="planning.activityList.milestone" /]</th>
-          <th id="status">[@s.text name="planning.activityList.planningStatus" /]</th>
         </tr>
       </thead>
       <tbody>
@@ -39,7 +38,7 @@
                 [@s.param name='${activityRequestParameter}']${activity.id}[/@s.param]
               [/@s.url]
               " title="${activity.title}">
-                [#if activity.title?length < 50] ${activity.title}</a> [#else] [@utilities.wordCutter string=activity.title maxPos=50 /]...</a> [/#if]
+                [#if activity.title?length < 70] ${activity.title}</a> [#else] [@utilities.wordCutter string=activity.title maxPos=70 /]...</a> [/#if]
             </td>
             <td>
               [#if activity.contactPersons??]
@@ -53,14 +52,6 @@
               [/#if]
             </td>               
             <td>${activity.milestone.code}</td>
-            <td>
-              [#--if activityStatuses[activity_index]?has_content]
-                [#assign problemDescription=activityStatuses[activity_index]]
-                <img src="${baseUrl}/images/global/icon-incomplete.png" alt="Activity Incomplete" title="${problemDescription}" />
-              [#else]
-                <img src="${baseUrl}/images/global/icon-complete.png" alt="Activity Completed" />
-              [/#if --]
-            </td>
           </tr>
         [/#list]
       [/#if]
