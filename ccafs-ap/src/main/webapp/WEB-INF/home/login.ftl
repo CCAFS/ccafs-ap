@@ -32,7 +32,8 @@
       [@s.text name="home.login.followlink" /]
     </p>
     <br>
-  	[#if logged]
+    [#-- To show the message again remove the "&& false" sentence of the condition --]
+  	[#if logged && false]
   	<div id="explanatoryNotes">
       <h6>Explanatory notes:</h6>
     	<ol>

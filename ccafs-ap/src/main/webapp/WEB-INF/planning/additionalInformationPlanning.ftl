@@ -28,15 +28,14 @@
       <legend><h6>[@s.text name="planning.additionalInformation" /]</h6></legend>
     
     [#-- Activity keywords --]
-    <div class="keywordsBlock">
+    <div class="keywordsBlock fullBlock">
       <div id="keywordsList">
         [@customForm.select name="activity.keywords" label="" i18nkey="planning.additionalInformation.keywords" listName="keywords" keyFieldName="id"  displayFieldName="name" value="activity.keywordsIds" multiple=true className="keywords" /]
       </div>
-      <hr />
     </div>
     
     [#-- Other keywords --]
-    <div class="otherKeywordsBlock">
+    <div class="otherKeywordsBlock fullBlock">
       [#-- Title --]
       <div class="otherKeywordTitle">
         <h6>[@s.text name="planning.additionalInformation.otherKeywords" /]</h6>

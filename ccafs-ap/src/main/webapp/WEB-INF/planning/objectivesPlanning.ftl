@@ -47,22 +47,6 @@
           <hr />
         </div>
       [/#list]
-    [#else]
-      <div id="objective-0" class="objective">
-        [#-- Objective identifier --]
-        <input type="hidden" name="activity.objectives[0].id" value="-1" />
-        
-        [#-- remove link --]      
-        <div class="removeLink">            
-            <img src="${baseUrl}/images/global/icon-remove.png" />
-            <a id="removeObjective-0" href="" class="removeObjective">
-              [@s.text name="planning.objectives.removeObjective" /]
-            </a>
-        </div>      
-        [#-- Description --]
-        [@customForm.textArea name="activity.objectives[0].description" i18nkey="planning.objectives.objective" required=true value="" /]
-        <hr />
-      </div>
     [/#if]
 
     <div id="addDeliverableBlock" class="addLink">

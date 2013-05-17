@@ -185,7 +185,11 @@
       <div id="keywords" class="fullBlock">
         <h6>[@s.text name="home.activity.keywords" /]</h6>
         [#list activity.keywords as activityKeyword]    
-          <span class="thirdPartBlock">${activityKeyword.keyword.name?cap_first}</span>
+          [#if activityKeyword.keyword?has_content]
+            <span class="thirdPartBlock">${activityKeyword.keyword.name?cap_first}</span>
+          [#else]
+            <span class="thirdPartBlock">${activityKeyword.other?cap_first}</span>
+          [/#if]
         [/#list]        
       </div>      
     [/#if]

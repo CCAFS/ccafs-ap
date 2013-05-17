@@ -27,7 +27,7 @@
           </div>
           <div id="copyright">
             <p>&#64; Copyright 2013</p>
-            <p>Current version 1.0-ALPHA</p>
+            <p>Current version 1.0-BETA</p>
           </div>
         </div>
       </footer>

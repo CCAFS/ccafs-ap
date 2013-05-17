@@ -41,7 +41,7 @@
         <div class="halfPartBlock">
           [#if activity.continuousActivity?has_content]
             [@s.text name="planning.mainInformation.continuationActivity" /] 
-            <a href="[@s.url action='activity' namespace="/"][@s.param name='${publicActivtyRequestParameter}']${activity.continuousActivity.id}[/@s.param][/@s.url]"> 
+            <a href="[@s.url action='activity' namespace="/"][@s.param name='${publicActivtyRequestParameter}']${activity.continuousActivity.id}[/@s.param][/@s.url]" target="_blank"> 
               [@s.text name="planning.mainInformation.activity" /] ${activity.continuousActivity.id} 
             </a>
           [/#if]
@@ -71,7 +71,7 @@
     
     [#-- Logframe link --]
     <div class="halfPartBlock">
-      <a href="" target="_blank">view logframe </a> 
+      <a href="../documents/Logframe_2013-2015.pdf" target="_blank">view logframe </a> 
     </div>
     
     [#-- Budget --]

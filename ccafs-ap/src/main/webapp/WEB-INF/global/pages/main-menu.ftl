@@ -4,12 +4,20 @@
     <a href="${baseUrl}/"><li [#if currentSection?? && currentSection == "home"] class="currentSection" [/#if]>[@s.text name="menu.home" /]</li></a>
     [#if logged]
       [#if currentUser.CP || currentUser.TL || currentUser.RPL || currentUser.PI || currentUser.admin ]
-        <a  href="${baseUrl}/planning/activities.do">
+        [#if planningActive ]               
+          <a  href="${baseUrl}/planning/activities.do">
+        [#else]
+          <a href="javascript:void(0);" title="[@s.text name="menu.link.disabled" /]" >
+        [/#if]
           <li [#if currentSection?? && currentSection == "planning"] class="currentSection" [/#if]>[@s.text name="menu.planning" /]</li>
         </a>
       [/#if]
-      [#if currentUser.CP || currentUser.TL || currentUser.RPL || currentUser.PI || currentUser.admin ]                
-        <a href="${baseUrl}/reporting/activities.do" >
+      [#if currentUser.CP || currentUser.TL || currentUser.RPL || currentUser.PI || currentUser.admin ] 
+        [#if reportingActive ]               
+          <a href="${baseUrl}/reporting/activities.do" >
+        [#else]
+          <a href="javascript:void(0);" title="[@s.text name="menu.link.disabled" /]" >
+        [/#if]
           <li [#if currentSection?? && currentSection == "reporting"] class="currentSection" [/#if]>[@s.text name="menu.reporting" /]</li>
         </a>
       [/#if]
