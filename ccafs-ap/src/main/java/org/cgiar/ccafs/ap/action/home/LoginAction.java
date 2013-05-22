@@ -48,6 +48,7 @@ public class LoginAction extends BaseAction {
       User loggedUser = userManager.login(user.getEmail(), user.getPassword());
       if (loggedUser != null) {
         loggedUser.setLastLogin(new Date());
+        userManager.saveLastLogin(loggedUser);
         this.getSession().put(APConstants.SESSION_USER, loggedUser);
         LOG.info("User " + user.getEmail() + " logged in successfully.");
       } else {

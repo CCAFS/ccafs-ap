@@ -5,11 +5,10 @@
 [#include "/WEB-INF/global/pages/main-menu.ftl" /]
 
 <section class="content">
-  <meta http-equiv="refresh" content="10;url=[@s.url action='login' namespace="/" /]"> 
   <article class="fullContent">
-      <h1>Error 401</h1>
+      <h1>Error 404</h1>
     <div class="content">
-      <p>[@s.text name="server.error.401" /]<a href="[@s.url action='login' namespace="/" /]"> [@s.text name="server.error.401.homePage" /]</a></p>
+      <p>[@s.text name="server.error.404" /]</p>
     </div>
   </article>
 </section>

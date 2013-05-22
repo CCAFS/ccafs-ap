@@ -18,7 +18,7 @@
   [#include "/WEB-INF/global/pages/planning-secondary-menu.ftl" /]
   
   [@s.form action="mainInformation"]  
-  <article class="halfContent">
+  <article class="halfContent" id="#mainInformation">
     <h1 class="contentTitle">
       ${currentUser.leader.acronym} - [@s.text name="planning.mainInformation.activity" /] ${activity.id}
     </h1>
@@ -38,7 +38,7 @@
     [#-- Commissioned and continuous --]
     [#if activity.continuousActivity?has_content || activity.commissioned]
       <div class="fullblock">
-        <div class="halfPartBlock">
+        <div class="halfPartBlock continuation">
           [#if activity.continuousActivity?has_content]
             [@s.text name="planning.mainInformation.continuationActivity" /] 
             <a href="[@s.url action='activity' namespace="/"][@s.param name='${publicActivtyRequestParameter}']${activity.continuousActivity.id}[/@s.param][/@s.url]" target="_blank"> 
@@ -46,7 +46,7 @@
             </a>
           [/#if]
         </div>
-        <div class="halfPartBlock">
+        <div class="halfPartBlock commisioned">
           [#if activity.commissioned]
             [@s.text name="planning.mainInformation.commissioned" /]
           [/#if]

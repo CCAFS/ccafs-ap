@@ -31,7 +31,7 @@ public class MySQLLeaderDAO implements LeaderDAO {
   public Map<String, String> getActivityLeader(int activityID) {
     Map<String, String> leaderData = new HashMap<>();
     String query =
-      "SELECT al.id, al.name, lt.id as leader_type_id, lt.name leader_type_name "
+      "SELECT al.id, al.name, al.acronym, lt.id as leader_type_id, lt.name leader_type_name "
         + "FROM activities a, activity_leaders al, leader_types lt "
         + "WHERE a.activity_leader_id = al.id AND al.led_activity_id = lt.id AND a.id = " + activityID;
     try (Connection conn = databaseManager.getConnection()) {
@@ -39,6 +39,7 @@ public class MySQLLeaderDAO implements LeaderDAO {
       if (rs.next()) {
         leaderData.put("id", rs.getString("id"));
         leaderData.put("name", rs.getString("name"));
+        leaderData.put("acronym", rs.getString("acronym"));
         leaderData.put("leader_type_id", rs.getString("leader_type_id"));
         leaderData.put("leader_type_name", rs.getString("leader_type_name"));
       }

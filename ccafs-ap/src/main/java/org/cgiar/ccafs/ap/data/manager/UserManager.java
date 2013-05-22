@@ -27,6 +27,14 @@ public interface UserManager {
   public User login(String email, String password);
 
   /**
+   * Save in the database the date and time that the user made its last login.
+   * 
+   * @param user - User information
+   * @return - True if the information was succesfully saved, false otherwise.
+   */
+  public boolean saveLastLogin(User user);
+
+  /**
    * Create a new user in the system by saving the
    * user data in the database.
    * 

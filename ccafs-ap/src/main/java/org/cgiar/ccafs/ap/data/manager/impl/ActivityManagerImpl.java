@@ -142,8 +142,16 @@ public class ActivityManagerImpl implements ActivityManager {
         Activity activity = new Activity();
         activity.setId(Integer.parseInt(activityDB.get("id")));
         activity.setTitle(activityDB.get("title"));
+        if (activityDB.get("is_global") != null) {
+          activity.setGlobal(Integer.parseInt(activityDB.get("is_global")) == 1);
+        } else {
+          activity.setGlobal(false);
+        }
+
         try {
-          activity.setStartDate(dateFormat.parse(activityDB.get("start_date")));
+          if (activityDB.get("start_date") != null) {
+            activity.setStartDate(dateFormat.parse(activityDB.get("start_date")));
+          }
         } catch (ParseException e) {
           String msg =
             "There was an error parsing start date '" + activityDB.get("start_date") + "' for the activity "
@@ -151,7 +159,9 @@ public class ActivityManagerImpl implements ActivityManager {
           LOG.error(msg, e);
         }
         try {
-          activity.setEndDate(dateFormat.parse(activityDB.get("end_date")));
+          if (activityDB.get("end_date") != null) {
+            activity.setEndDate(dateFormat.parse(activityDB.get("end_date")));
+          }
         } catch (ParseException e) {
           String msg =
             "There was an error parsing end date '" + activityDB.get("end_date") + "' for the activity "
@@ -160,13 +170,22 @@ public class ActivityManagerImpl implements ActivityManager {
         }
         activity.setDescription(activityDB.get("description"));
         try {
-          activity.setDateAdded(dateFormat.parse(activityDB.get("date_added")));
+          if (activityDB.get("date_added") != null) {
+            activity.setDateAdded(dateFormat.parse(activityDB.get("date_added")));
+          }
         } catch (ParseException e) {
           String msg =
             "There was an error parsing date_added '" + activityDB.get("date_added") + "' for the activity "
               + activity.getId() + ".";
           LOG.error(msg, e);
         }
+
+        Milestone milestone = new Milestone();
+        milestone.setId(Integer.parseInt(activityDB.get("milestone_id")));
+        milestone.setCode(activityDB.get("milestone_code"));
+
+        activity.setMilestone(milestone);
+
         activities[c] = activity;
         c++;
       }
@@ -467,8 +486,13 @@ public class ActivityManagerImpl implements ActivityManager {
     activityData.put("id", String.valueOf(activity.getId()));
     activityData.put("title", activity.getTitle());
     activityData.put("description", activity.getDescription());
-    activityData.put("start_date", sdf.format(activity.getStartDate()));
-    activityData.put("end_date", sdf.format(activity.getEndDate()));
+
+    if (activity.getEndDate() != null) {
+      activityData.put("end_date", sdf.format(activity.getEndDate()));
+    }
+    if (activity.getStartDate() != null) {
+      activityData.put("start_date", sdf.format(activity.getStartDate()));
+    }
     activityData.put("milestone_id", String.valueOf(activity.getMilestone().getId()));
     if (activity.getGenderIntegrationsDescription().isEmpty()) {
       activityData.put("genderDescription", null);

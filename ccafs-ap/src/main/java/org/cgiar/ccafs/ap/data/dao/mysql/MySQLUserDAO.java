@@ -55,6 +55,31 @@ public class MySQLUserDAO implements UserDAO {
   }
 
   @Override
+  public boolean saveLastLogin(Map<String, String> userData) {
+    String query = "UPDATE users SET last_login = ? WHERE id = ?;";
+    Object[] values = new Object[2];
+    values[0] = userData.get("last_login");
+    values[1] = userData.get("user_id");
+
+    try (Connection con = dbManager.getConnection()) {
+      int rows = dbManager.makeChangeSecure(con, query, values);
+      if (rows <= 0) {
+        LOG
+          .warn("There was an error saving the last login for the user {} into the database.", userData.get("user_id"));
+        LOG.warn("Query: {}", query);
+        LOG.warn("Values: {}", values);
+        return false;
+      }
+
+    } catch (SQLException e) {
+      LOG.error("There was an error saving the last login for the user {} into the database.", userData.get("user_id"),
+        e);
+      return false;
+    }
+    return true;
+  }
+
+  @Override
   public boolean saveUser(Map<String, String> userData) {
     String query = "INSERT INTO users (email, password, activity_leader_id, role) VALUES (?, ?, ?, ?);";
     Object[] values = new Object[4];

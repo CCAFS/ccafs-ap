@@ -137,7 +137,7 @@ function addChosen() {
  * Toogle effect. Benchmark site identifier must have the country identifier 
  */
 function changeBsLocationsIDs(){
-  var sitesByRegionLink = 'http://localhost:8080/ccafs-ap/sitesByRegion.do?regionID='; 
+  var sitesByRegionLink = '../json/sitesByRegion.do?regionID='; 
   var siteIndex = 1;
   
   $("[name = 'activity\\.countries']").each(function(index){
@@ -278,7 +278,7 @@ function showCcafsSitesByCountry(event, data) {
     // The country was selected
     country = data.selected;
 
-    $.getJSON('http://localhost:8080/ccafs-ap/sitesByCountry.do?countryID='
+    $.getJSON('../json/sitesByCountry.do?countryID='
         + country, function(data) {
       var ccafsSites = data.benchmarkSites;
       var inputsHtml = "";
@@ -323,7 +323,7 @@ function showCcafsSitesByRegion(regionID, action) {
   var data = new Array();
   var countriesSelected = $("#locations_activity_countries-" + (regionID-1)).val();
 
-  $.getJSON('http://localhost:8080/ccafs-ap/sitesByRegion.do?regionID='
+  $.getJSON('../json/sitesByRegion.do?regionID='
       + regionID, function(data) {
 
     var ccafsSites = data.benchmarkSites;

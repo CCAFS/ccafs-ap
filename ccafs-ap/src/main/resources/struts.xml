@@ -54,10 +54,10 @@
         /WEB-INF/global/pages/error/401.ftl
       </result>
       <result name="403">
-        /WEB-INF/global/pages/error/401.ftl
+        /WEB-INF/global/pages/error/403.ftl
       </result>
       <result name="404">
-        /WEB-INF/global/pages/error/401.ftl
+        /WEB-INF/global/pages/error/404.ftl
       </result>
     </global-results>
 
