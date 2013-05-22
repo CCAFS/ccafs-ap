@@ -30,6 +30,7 @@ public class LeaderManagerImpl implements LeaderManager {
       Leader leader = new Leader();
       leader.setId(Integer.parseInt(leaderData.get("id")));
       leader.setName(leaderData.get("name"));
+      leader.setAcronym(leaderData.get("acronym"));
       LeaderType leaderType = new LeaderType();
       leaderType.setId(Integer.parseInt(leaderData.get("leader_type_id")));
       leaderType.setName(leaderData.get("leader_type_name"));

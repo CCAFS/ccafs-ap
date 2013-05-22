@@ -3,7 +3,13 @@ package org.cgiar.ccafs.ap.action.home;
 import org.cgiar.ccafs.ap.action.BaseAction;
 import org.cgiar.ccafs.ap.config.APConfig;
 import org.cgiar.ccafs.ap.config.APConstants;
+import org.cgiar.ccafs.ap.data.manager.ActivityBenchmarkSiteManager;
+import org.cgiar.ccafs.ap.data.manager.ActivityCountryManager;
 import org.cgiar.ccafs.ap.data.manager.ActivityManager;
+import org.cgiar.ccafs.ap.data.manager.ActivityOtherSiteManager;
+import org.cgiar.ccafs.ap.data.manager.ActivityPartnerManager;
+import org.cgiar.ccafs.ap.data.manager.ContactPersonManager;
+import org.cgiar.ccafs.ap.data.manager.LeaderManager;
 import org.cgiar.ccafs.ap.data.manager.LogframeManager;
 import org.cgiar.ccafs.ap.data.model.Activity;
 
@@ -16,15 +22,30 @@ public class RSSAction extends BaseAction {
 
   // Managers
   private ActivityManager activityManager;
+  private LeaderManager leaderManager;
+  private ContactPersonManager contactPersonManager;
+  private ActivityCountryManager activityCountryManager;
+  private ActivityBenchmarkSiteManager activityBenchmarkSiteManager;
+  private ActivityOtherSiteManager activityOtherSiteManager;
+  private ActivityPartnerManager activityPartnerManager;
 
   // Models
   private Activity[] activities;
   private int year;
 
   @Inject
-  public RSSAction(APConfig config, LogframeManager logframeManager, ActivityManager activityManager) {
+  public RSSAction(APConfig config, LogframeManager logframeManager, ActivityManager activityManager,
+    LeaderManager leaderManager, ContactPersonManager contactPersonManager,
+    ActivityCountryManager activityCountryManager, ActivityBenchmarkSiteManager activityBenchmarkSiteManager,
+    ActivityOtherSiteManager activityOtherSiteManager, ActivityPartnerManager activityPartnerManager) {
     super(config, logframeManager);
     this.activityManager = activityManager;
+    this.leaderManager = leaderManager;
+    this.contactPersonManager = contactPersonManager;
+    this.activityCountryManager = activityCountryManager;
+    this.activityBenchmarkSiteManager = activityBenchmarkSiteManager;
+    this.activityOtherSiteManager = activityOtherSiteManager;
+    this.activityPartnerManager = activityPartnerManager;
   }
 
   @Override
@@ -73,6 +94,24 @@ public class RSSAction extends BaseAction {
     activities = activityManager.getActivitiesForRSS(year, limit);
     if (activities == null) {
       activities = new Activity[0];
+    } else {
+      // Set the other information to activities
+      for (Activity activity : activities) {
+        int activityID = activity.getId();
+
+        // Leader
+        activity.setLeader(leaderManager.getActivityLeader(activityID));
+        // Contact Person
+        activity.setContactPersons(contactPersonManager.getContactPersons(activityID));
+        // Countries
+        activity.setCountries(activityCountryManager.getActvitiyCountries(activityID));
+        // Benchmark Sites
+        activity.setBsLocations(activityBenchmarkSiteManager.getActivityBenchmarkSites(activityID));
+        // Other sites
+        activity.setOtherLocations(activityOtherSiteManager.getActivityOtherSites(activityID));
+        // Partners
+        activity.setActivityPartners(activityPartnerManager.getActivityPartners(activityID));
+      }
     }
   }
 

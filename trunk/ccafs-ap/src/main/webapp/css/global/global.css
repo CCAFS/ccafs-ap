@@ -482,6 +482,15 @@ nav#secondaryMenu ul a.currentReportingSection {
 }
 
 /***** PLANNING *****/
+
+#mainInformation .commisioned{
+	font-weight: bold;
+}
+
+#mainInformation .continuation{
+	font-weight: bold;
+}
+
 #activityListPlanning #addActivity {
   display: block;
   margin-top: 20px;

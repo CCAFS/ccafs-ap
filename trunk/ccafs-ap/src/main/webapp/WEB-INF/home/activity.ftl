@@ -46,9 +46,13 @@
           <tr>
             <td class="title">[@s.text name="home.activity.contactPerson" /]</td>
             <td colspan="3">
-               ${activity.contactPersons[0].name}
-              (<a id="contactEmail" href="mailto: ${activity.contactPersons[0].email} ">${activity.contactPersons[0].email}</a>)
-              [#if activity.contactPersons?size > 1] <a id="viewMoreContacts" href="">, [@s.text name="home.activity.contactPerson.showTable" /]</a> [/#if]
+              [#if contactPersons?has_content]
+                 ${activity.contactPersons[0].name}
+                (<a id="contactEmail" href="mailto: ${activity.contactPersons[0].email} ">${activity.contactPersons[0].email}</a>)
+                [#if activity.contactPersons?size > 1] <a id="viewMoreContacts" href="">, [@s.text name="home.activity.contactPerson.showTable" /]</a> [/#if]
+              [#else]
+                [@s.text name="home.activity.contactPerson.none" /]
+              [/#if]
             </td>        
           </tr>
         [/#if]

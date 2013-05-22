@@ -89,5 +89,13 @@
       <result name="success" type="redirectAction">activities</result>
     </action>
     
+    <action name="partnerSave" class="org.cgiar.ccafs.ap.action.reporting.activities.PartnersSaveReportingAction">
+      <interceptor-ref name="reportingStack" />
+      <result name="input">/WEB-INF/reporting/partnersSaveReporting.ftl</result>
+      <result name="success" type="redirectAction">
+        <param name="actionName">partnerSave</param>
+      </result>
+    </action>
+    
   </package>
 </struts>

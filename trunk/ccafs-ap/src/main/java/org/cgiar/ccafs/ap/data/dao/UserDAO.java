@@ -18,6 +18,14 @@ public interface UserDAO {
   public Map<String, String> getUser(String email);
 
   /**
+   * Save in the database the date and time that the user made its last login.
+   * 
+   * @param userData - User information
+   * @return - True if the information was succesfully saved, false otherwise.
+   */
+  public boolean saveLastLogin(Map<String, String> userData);
+
+  /**
    * Save the user data into the database.
    * 
    * @param userData - Information to be saved.

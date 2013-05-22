@@ -7,6 +7,7 @@ import org.cgiar.ccafs.ap.data.model.LeaderType;
 import org.cgiar.ccafs.ap.data.model.User;
 import org.cgiar.ccafs.ap.util.MD5Convert;
 
+import java.text.SimpleDateFormat;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -63,6 +64,16 @@ public class UserManagerImp implements UserManager {
       }
     }
     return null;
+  }
+
+  @Override
+  public boolean saveLastLogin(User user) {
+    Map<String, String> userData = new HashMap<>();
+    SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+
+    userData.put("user_id", String.valueOf(user.getId()));
+    userData.put("last_login", sdf.format(user.getLastLogin()));
+    return userDAO.saveLastLogin(userData);
   }
 
   @Override
