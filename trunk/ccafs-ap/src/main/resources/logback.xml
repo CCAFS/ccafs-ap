@@ -86,7 +86,7 @@
         </then>
        </if>
 
-       <if condition='property("log.production").equalsIgnoreCase("true")'> 
+       <if condition='property("log.test").equalsIgnoreCase("true")'> 
         <then>
           <appender-ref ref="FILE-TEST"/>
         </then>
