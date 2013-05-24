@@ -5,6 +5,7 @@
 [#include "/WEB-INF/global/pages/main-menu.ftl" /]
 
 <section class="content">
+  <meta http-equiv="refresh" content="10;url=[@s.url action='login' namespace="/" /]"> 
   <article class="fullContent">
       <h1>Error 404</h1>
     <div class="content">
