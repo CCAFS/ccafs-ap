@@ -9,7 +9,7 @@
   <article class="fullContent">
       <h1>Error 401</h1>
     <div class="content">
-      <p>[@s.text name="server.error.401" /]<a href="[@s.url action='login' namespace="/" /]"> [@s.text name="server.error.401.homePage" /]</a></p>
+      <p>[@s.text name="server.error.401" /]</p>
     </div>
   </article>
 </section>

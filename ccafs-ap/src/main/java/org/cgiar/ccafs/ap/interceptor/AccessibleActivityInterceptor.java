@@ -14,7 +14,6 @@ import com.google.inject.Inject;
 import com.opensymphony.xwork2.ActionInvocation;
 import com.opensymphony.xwork2.interceptor.AbstractInterceptor;
 
-
 public class AccessibleActivityInterceptor extends AbstractInterceptor {
 
   private static final long serialVersionUID = 3723021484076686914L;
@@ -34,9 +33,9 @@ public class AccessibleActivityInterceptor extends AbstractInterceptor {
     Map<String, Object> session = invocation.getInvocationContext().getSession();
     String[] activityIdParam = (String[]) request.get(APConstants.ACTIVITY_REQUEST_ID);
     User user = (User) session.get(APConstants.SESSION_USER);
+
     if (activityIdParam != null) {
       int activityID = Integer.parseInt(activityIdParam[0]);
-      int userID = user.getId();
       // validate if activity actually exists.
       if (activityManager.isValidId(activityID)) {
         // is the user an admin?
