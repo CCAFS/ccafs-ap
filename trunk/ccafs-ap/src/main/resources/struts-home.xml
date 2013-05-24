@@ -19,7 +19,7 @@
       <param name="contentType">text/xml</param>
     </action>
     
-    <action name="rss" class="org.cgiar.ccafs.ap.action.home.RSSAction">
+    <action name="xml" class="org.cgiar.ccafs.ap.action.home.RSSAction">
       <result name="input" type="freemarker">/WEB-INF/home/xml.ftl</result>
       <param name="contentType">text/xml</param>
     </action> 
