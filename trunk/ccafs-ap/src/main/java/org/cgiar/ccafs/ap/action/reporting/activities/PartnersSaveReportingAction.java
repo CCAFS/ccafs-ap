@@ -142,7 +142,7 @@ public class PartnersSaveReportingAction extends BaseAction {
     message.append(".\n");
     message.append("\n");
     SendMail sendMail = new SendMail(this.config);
-    sendMail.send("ccafsap@gmail.com", subject, message.toString());
+    sendMail.send(config.getGmailUsername(), subject, message.toString());
     LOG.info("The user {} send a message requesting add partners to the activity {}", getCurrentUser().getEmail(),
       activityID);
     return SUCCESS;
