@@ -1,6 +1,7 @@
 package org.cgiar.ccafs.ap.interceptor;
 
 import org.cgiar.ccafs.ap.action.BaseAction;
+import org.cgiar.ccafs.ap.config.APConfig;
 import org.cgiar.ccafs.ap.config.APConstants;
 import org.cgiar.ccafs.ap.data.manager.ActivityManager;
 import org.cgiar.ccafs.ap.data.manager.LeaderManager;
@@ -13,6 +14,7 @@ import java.util.Map;
 import com.google.inject.Inject;
 import com.opensymphony.xwork2.ActionInvocation;
 import com.opensymphony.xwork2.interceptor.AbstractInterceptor;
+import org.apache.struts2.ServletActionContext;
 
 public class AccessibleActivityInterceptor extends AbstractInterceptor {
 
@@ -20,11 +22,13 @@ public class AccessibleActivityInterceptor extends AbstractInterceptor {
 
   private ActivityManager activityManager;
   private LeaderManager leaderManager;
+  private APConfig config;
 
   @Inject
-  public AccessibleActivityInterceptor(ActivityManager activityManager, LeaderManager leaderManager) {
+  public AccessibleActivityInterceptor(ActivityManager activityManager, LeaderManager leaderManager, APConfig config) {
     this.activityManager = activityManager;
     this.leaderManager = leaderManager;
+    this.config = config;
   }
 
   @Override
@@ -46,7 +50,22 @@ public class AccessibleActivityInterceptor extends AbstractInterceptor {
           Leader activityLeader = leaderManager.getActivityLeader(activityID);
           Leader userLeader = user.getLeader();
           if (activityLeader.equals(userLeader)) {
-            return invocation.invoke();
+            // validate if the activity is valid for the current year
+            String stageName = ServletActionContext.getActionMapping().getNamespace();
+            if (stageName.equals("/planning")) {
+              if (activityManager.isActiveActivity(activityID, config.getPlanningCurrentYear())) {
+                return invocation.invoke();
+              } else {
+                return BaseAction.NOT_AUTHORIZED;
+              }
+            } else if (stageName.equals("/reporting")) {
+              if (activityManager.isActiveActivity(activityID, config.getReportingCurrentYear())) {
+                return invocation.invoke();
+              } else {
+                return BaseAction.NOT_AUTHORIZED;
+              }
+            }
+            return BaseAction.NOT_FOUND;
           } else {
             return BaseAction.NOT_AUTHORIZED;
           }
