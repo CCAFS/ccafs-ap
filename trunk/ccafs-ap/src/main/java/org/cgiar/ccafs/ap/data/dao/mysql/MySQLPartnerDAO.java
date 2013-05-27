@@ -31,8 +31,10 @@ public class MySQLPartnerDAO implements PartnerDAO {
   public List<Map<String, String>> getAllPartners() {
     List<Map<String, String>> partners = new ArrayList<>();
     String query =
-      "SELECT p.id, p.acronym, p.name, pt.id as 'partner_type_id', pt.acronym as 'partner_type_acronym' "
-        + "FROM partners p " + "INNER JOIN partner_types pt ON pt.id = p.partner_type_id " + "ORDER BY p.name";
+      "SELECT p.id, p.acronym, CASE WHEN p.acronym IS NULL THEN CONCAT(p.name, ', ', co.name) ELSE CONCAT(p.acronym, ' - ', p.name, ', ', co.name) END as 'name', pt.id as 'partner_type_id', pt.acronym as 'partner_type_acronym' "
+        + "FROM partners p "
+        + "INNER JOIN partner_types pt ON pt.id = p.partner_type_id "
+        + "INNER JOIN countries co ON p.country_iso2 = co.iso2 " + "ORDER BY p.name";
     try (Connection connection = databaseManager.getConnection()) {
       ResultSet rs = databaseManager.makeQuery(query, connection);
       while (rs.next()) {
