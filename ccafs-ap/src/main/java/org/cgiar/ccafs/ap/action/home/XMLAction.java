@@ -5,6 +5,7 @@ import org.cgiar.ccafs.ap.config.APConfig;
 import org.cgiar.ccafs.ap.config.APConstants;
 import org.cgiar.ccafs.ap.data.manager.ActivityBenchmarkSiteManager;
 import org.cgiar.ccafs.ap.data.manager.ActivityCountryManager;
+import org.cgiar.ccafs.ap.data.manager.ActivityKeywordManager;
 import org.cgiar.ccafs.ap.data.manager.ActivityManager;
 import org.cgiar.ccafs.ap.data.manager.ActivityOtherSiteManager;
 import org.cgiar.ccafs.ap.data.manager.ActivityPartnerManager;
@@ -16,7 +17,7 @@ import org.cgiar.ccafs.ap.data.model.Activity;
 import com.google.inject.Inject;
 
 
-public class RSSAction extends BaseAction {
+public class XMLAction extends BaseAction {
 
   private static final long serialVersionUID = 4983286741588568418L;
 
@@ -28,16 +29,18 @@ public class RSSAction extends BaseAction {
   private ActivityBenchmarkSiteManager activityBenchmarkSiteManager;
   private ActivityOtherSiteManager activityOtherSiteManager;
   private ActivityPartnerManager activityPartnerManager;
+  private ActivityKeywordManager activityKeywordManager;
 
   // Models
   private Activity[] activities;
   private int year;
 
   @Inject
-  public RSSAction(APConfig config, LogframeManager logframeManager, ActivityManager activityManager,
+  public XMLAction(APConfig config, LogframeManager logframeManager, ActivityManager activityManager,
     LeaderManager leaderManager, ContactPersonManager contactPersonManager,
     ActivityCountryManager activityCountryManager, ActivityBenchmarkSiteManager activityBenchmarkSiteManager,
-    ActivityOtherSiteManager activityOtherSiteManager, ActivityPartnerManager activityPartnerManager) {
+    ActivityOtherSiteManager activityOtherSiteManager, ActivityPartnerManager activityPartnerManager,
+    ActivityKeywordManager activityKeywordManager) {
     super(config, logframeManager);
     this.activityManager = activityManager;
     this.leaderManager = leaderManager;
@@ -46,6 +49,7 @@ public class RSSAction extends BaseAction {
     this.activityBenchmarkSiteManager = activityBenchmarkSiteManager;
     this.activityOtherSiteManager = activityOtherSiteManager;
     this.activityPartnerManager = activityPartnerManager;
+    this.activityKeywordManager = activityKeywordManager;
   }
 
   @Override
@@ -111,6 +115,8 @@ public class RSSAction extends BaseAction {
         activity.setOtherLocations(activityOtherSiteManager.getActivityOtherSites(activityID));
         // Partners
         activity.setActivityPartners(activityPartnerManager.getActivityPartners(activityID));
+        // Keywords
+        activity.setKeywords(activityKeywordManager.getKeywordList(activityID));
       }
     }
   }

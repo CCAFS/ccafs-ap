@@ -148,6 +148,12 @@ public class ActivityManagerImpl implements ActivityManager {
           activity.setGlobal(false);
         }
 
+        if (activityDB.get("is_commissioned") != null) {
+          activity.setGlobal(Integer.parseInt(activityDB.get("is_commissioned")) == 1);
+        } else {
+          activity.setGlobal(false);
+        }
+
         try {
           if (activityDB.get("start_date") != null) {
             activity.setStartDate(dateFormat.parse(activityDB.get("start_date")));

@@ -6,6 +6,7 @@
     <activity id="${activity.id}">
       <id>${activity.id}</id>
       <publicURL>${baseUrl}/activity.do?id=${activity.id}</publicURL>
+      <isCommissioned>${activity.commissioned?string}</isCommissioned>
       <title><![CDATA[${activity.title}]]></title>      
       <description><![CDATA[[#if activity.description?has_content]${activity.description}[/#if]]]></description>
       <startDate>[#if activity.startDate?has_content]${activity.startDate?string("MM/dd/yyyy")}[/#if]</startDate>

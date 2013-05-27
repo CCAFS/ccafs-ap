@@ -104,7 +104,7 @@ public class MySQLActivityDAO implements ActivityDAO {
     List<Map<String, String>> activities = new ArrayList<>();
     StringBuilder query = new StringBuilder();
     query.append("SELECT a.id, a.title, a.start_date, a.end_date, a.description, a.date_added, a.is_global, ");
-    query.append("m.id as 'milestone_id', m.code as 'milestone_code'");
+    query.append("is_commissioned, m.id as 'milestone_id', m.code as 'milestone_code'");
     query.append("FROM activities a ");
     query.append("INNER JOIN activity_leaders al ON al.id = a.activity_leader_id ");
     query.append("INNER JOIN milestones m ON m.id = a.milestone_id ");
@@ -128,6 +128,7 @@ public class MySQLActivityDAO implements ActivityDAO {
         activity.put("end_date", rs.getString("end_date"));
         activity.put("description", rs.getString("description"));
         activity.put("is_global", rs.getString("is_global"));
+        activity.put("is_commissioned", rs.getString("is_commissioned"));
         activity.put("milestone_id", rs.getString("milestone_id"));
         activity.put("milestone_code", rs.getString("milestone_code"));
         activity.put("date_added", rs.getString("date_added"));
