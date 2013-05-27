@@ -9,7 +9,6 @@ import com.google.inject.ImplementedBy;
 @ImplementedBy(ActivityManagerImpl.class)
 public interface ActivityManager {
 
-
   /**
    * Get a list of activities that belongs to the given user in the given year.
    * 
@@ -70,6 +69,15 @@ public interface ActivityManager {
    * @return an Activity object or null if no activity was found with the given id.
    */
   public Activity getSimpleActivity(int id);
+
+  /**
+   * Validate if the activity is active for current year
+   * 
+   * @param activityID - Activity identifier
+   * @param year - Current year
+   * @return true if activity is active, false otherwise.
+   */
+  public boolean isActiveActivity(int activityID, int year);
 
   /**
    * Validate if the given id actually exist in the current list of activities.

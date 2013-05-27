@@ -188,6 +188,27 @@ public class MySQLActivityDAO implements ActivityDAO {
 
 
   @Override
+  public int getActivityYear(int activityID) {
+    int year = 0;
+    String query =
+      "SELECT l.year FROM activities a" + " INNER JOIN activity_leaders al ON al.id = a.activity_leader_id"
+        + " INNER JOIN milestones m ON m.id = a.milestone_id" + " INNER JOIN outputs o ON o.id = m.output_id"
+        + " INNER JOIN objectives obj ON obj.id = o.objective_id" + " INNER JOIN themes t ON t.id = obj.theme_id"
+        + " INNER JOIN logframes l ON l.id = t.logframe_id" + " WHERE a.id = " + activityID;
+    try (Connection con = databaseManager.getConnection()) {
+      ResultSet rs = databaseManager.makeQuery(query, con);
+      if (rs.next()) {
+        year = Integer.parseInt(rs.getString("year"));
+      }
+      rs.close();
+    } catch (SQLException e) {
+      LOG.error("There was an error getting the year of logframe linked with the activity {}.", activityID, e);
+    }
+
+    return year;
+  }
+
+  @Override
   public List<Map<String, String>> getPlanningActivityList(int year, int leaderId) {
     List<Map<String, String>> activitiesData = new ArrayList<>();
     StringBuilder query =
@@ -225,6 +246,7 @@ public class MySQLActivityDAO implements ActivityDAO {
 
     return activitiesData;
   }
+
 
   @Override
   public Map<String, String> getSimpleActivity(int id) {
@@ -410,7 +432,6 @@ public class MySQLActivityDAO implements ActivityDAO {
     return !problem;
   }
 
-
   @Override
   public boolean updateGlobalAttribute(int activityID, boolean isGlobal) {
     boolean saved = false;
@@ -430,6 +451,7 @@ public class MySQLActivityDAO implements ActivityDAO {
     }
     return saved;
   }
+
 
   @Override
   public boolean updateMainInformation(Map<String, String> activityData) {

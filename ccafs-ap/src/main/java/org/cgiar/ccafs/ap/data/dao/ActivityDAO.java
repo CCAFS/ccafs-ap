@@ -46,6 +46,14 @@ public interface ActivityDAO {
   public Map<String, String> getActivityStatusInfo(int id);
 
   /**
+   * Get the year of the logframe which is linked with the activity
+   * 
+   * @param activityID - Activity identifier.
+   * @return year of the logframe.
+   */
+  public int getActivityYear(int activityID);
+
+  /**
    * Get a basic information for each activity that is going to be used in the home planning section.
    * 
    * @param year - The year in which the activities belong.

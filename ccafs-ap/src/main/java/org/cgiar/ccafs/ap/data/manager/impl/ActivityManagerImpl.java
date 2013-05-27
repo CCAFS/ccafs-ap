@@ -415,6 +415,12 @@ public class ActivityManagerImpl implements ActivityManager {
   }
 
   @Override
+  public boolean isActiveActivity(int activityID, int year) {
+    int activityYear = activityDAO.getActivityYear(activityID);
+    return activityYear == year;
+  }
+
+  @Override
   public boolean isValidId(int id) {
     return activityDAO.isValidId(id);
   }
