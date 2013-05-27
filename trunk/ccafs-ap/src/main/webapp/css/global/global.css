@@ -417,6 +417,7 @@ nav#secondaryMenu ul a.currentReportingSection {
 .helpMessage {
   background-color: #F2F2F2;
   color: #29336F;
+  min-height: 45px;
 }
 
 .helpMessage img {
@@ -501,10 +502,6 @@ nav#secondaryMenu ul a.currentReportingSection {
   color: white;  
   padding: 5px;
   width: 110px;  
-}
-
-.activityLocations fieldset.locations {
-  width: 688px;
 }
 
 .activityLocations fieldset > div > h6{

@@ -82,7 +82,7 @@
     </fieldset>
     
     [#-- Other locations --]    
-    <fieldset class="fullBlock locations" id="otherSites" [#if activity.global]style="display:none"[/#if]>
+    <fieldset class="locations" id="otherSites" [#if activity.global]style="display:none"[/#if]>
       <legend> <h6> [@s.text name="planning.locations.otherSites" /] </h6> </legend>
       
       [#if activity.otherLocations?has_content]
@@ -91,16 +91,26 @@
             [#-- Other site Identifier --]
             <input type="hidden" name="activity.otherLocations[${otherSite_index}].id" value="${otherSite.id}" />
             
-            <div  class="halfPartBlock">
-              [@customForm.select name="activity.otherLocations[${otherSite_index}].country" label="" i18nkey="planning.locations.country" listName="countries" keyFieldName="id"  displayFieldName="name" value="activity.otherLocations[${otherSite_index}].country.id" className="countries" /]
+            [#-- Remove link --]
+            <div class="removeLink">
+              <img src="${baseUrl}/images/global/icon-remove.png" />
+              <a href="" class="removeOtherSite">
+                [@s.text name="planning.locations.removeOtherSite" /]
+              </a>
             </div>
-            <div class="halfPartBlock">
-              [@customForm.input name="activity.otherLocations[${otherSite_index}].details" type="text" i18nkey="planning.locations.details" /]
+            
+            <div  class="fullBlock">
+              <div  class="halfPartBlock">
+                [@customForm.select name="activity.otherLocations[${otherSite_index}].country" label="" i18nkey="planning.locations.country" listName="countries" keyFieldName="id"  displayFieldName="name" value="activity.otherLocations[${otherSite_index}].country.id" className="countries" /]
+              </div>
+              <div class="halfPartBlock">
+                [@customForm.input name="activity.otherLocations[${otherSite_index}].details" type="text" i18nkey="planning.locations.details" /]
+              </div>
+              [#-- Remove image --]
+              <a href="#" >
+                <img src="${baseUrl}/images/global/icon-help.png" alt="[@s.text name="planning.locations.otherSite.details.help" /]" title="[@s.text name="planning.locations.otherSite.details.help" /]" />
+              </a>
             </div>
-            [#-- Remove image --]
-            <a href="#" >
-              <img src="${baseUrl}/images/global/icon-remove.png" class="removeOtherSite" />
-            </a>
             <div  class="halfPartBlock">
               <div  class="halfPartBlock">
                 [@customForm.input name="activity.otherLocations[${otherSite_index}].latitude" type="text" i18nkey="planning.locations.latitude" /]
@@ -127,16 +137,28 @@
     <div id="otherSiteTemplate" style="display:none;">
       <div class="otherSite">
         <input type="hidden" name="id" value="-1" />
-        <div  class="halfPartBlock">
-          [@customForm.select name="country" label="" i18nkey="planning.locations.country" listName="countries" keyFieldName="id"  displayFieldName="name" className="countries" /]
+        
+        [#-- Remove link --]
+        <div class="removeLink">
+          <img src="${baseUrl}/images/global/icon-remove.png" />
+          <a href="" class="removeOtherSite">
+            [@s.text name="planning.locations.removeOtherSite" /]
+          </a>
         </div>
-        <div class="halfPartBlock">
-          [@customForm.input name="details" type="text" i18nkey="planning.locations.details" /]
+        
+        <div  class="fullBlock">
+          <div  class="halfPartBlock">
+            [@customForm.select name="country" label="" i18nkey="planning.locations.country" listName="countries" keyFieldName="id"  displayFieldName="name" className="countries" /]
+          </div>
+          <div class="halfPartBlock">
+            [@customForm.input name="details" type="text" i18nkey="planning.locations.details" /]
+          </div>
+          [#-- Remove image --]
+          <a href="#" >
+            <img src="${baseUrl}/images/global/icon-help.png" alt="[@s.text name="planning.locations.otherSite.details.help" /]" title="[@s.text name="planning.locations.otherSite.details.help" /]" />
+          </a>
         </div>
-        [#-- Remove image --]
-        <a href="#" >
-          <img src="${baseUrl}/images/global/icon-remove.png" class="removeOtherSite" />
-        </a>
+            
         <div  class="halfPartBlock">
           <div  class="halfPartBlock">
             [@customForm.input name="latitude" type="text" i18nkey="planning.locations.latitude" /]
