@@ -1,6 +1,7 @@
 [#ftl]
 [#assign title = "Welcome to CCAFS Activity Planning" /]
-[#assign jsIncludes = [""] /]
+[#assign globalLibs = ["jquery", "jreject"] /]
+[#assign customJS = ["${baseUrl}/js/home/login.js"] /]
 [#assign currentSection = "home" /]
 
 [#include "/WEB-INF/global/pages/header.ftl" /]

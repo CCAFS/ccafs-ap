@@ -72,6 +72,11 @@
           <script type="text/javascript" src="${baseUrl}/js/libs/noty/themes/default.js"></script>
         [/#if]
         
+        [#if libraryName="jreject"]          
+          <script src="${baseUrl}/js/libs/jreject/jquery.reject-1.0.2.js"></script>
+          <link rel="stylesheet" type="text/css" href="${baseUrl}/css/libs/jreject/jquery.reject.css" />
+        [/#if]
+        
   	 [/#list]
   	[/#if]
   	
