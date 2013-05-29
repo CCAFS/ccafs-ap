@@ -23,6 +23,7 @@ $(document).ready(function() {
     newObjective.show("slow");
   });
 
+  $(".keywords").attr('data-placeholder', $("#keywordsDefaultText").val());
   $(".keywords").chosen();
   renameResources();
 });

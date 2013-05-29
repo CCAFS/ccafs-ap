@@ -108,6 +108,10 @@ $(document).ready(
               showCcafsSitesByRegion(parseInt(regionId) + 1, "hide");
             }
           });
+      
+      $(".countries").each(function(){
+        $(this).attr('data-placeholder', $("#countriesSelectDefault").val());        
+      });
 
       popups();
       changeBsLocationsIDs();

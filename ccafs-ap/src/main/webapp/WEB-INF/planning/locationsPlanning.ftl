@@ -25,6 +25,8 @@
     
     [#-- Activity identifier --]
     <input name="activityID" value="${activity.id}" type="hidden"/>
+    [#-- Hidden values --]
+    <input id="countriesSelectDefault" value="[@s.text name="planning.locations.country.default" /]" type="hidden"/>
     
     [#-- Is global --]
     <div class="halfPartBlock">
