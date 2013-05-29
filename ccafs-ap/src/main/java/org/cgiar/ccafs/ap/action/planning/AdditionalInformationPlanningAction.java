@@ -154,7 +154,11 @@ public class AdditionalInformationPlanningAction extends BaseAction {
 
     if (keywordsSaved && resourcesSaved) {
       addActionMessage(getText("saving.success", new String[] {getText("planning.additionalInformation")}));
-      return SUCCESS;
+      if (save) {
+        return SUCCESS;
+      } else {
+        return SAVE_NEXT;
+      }
     } else {
       addActionError(getText("saving.problem"));
       return INPUT;

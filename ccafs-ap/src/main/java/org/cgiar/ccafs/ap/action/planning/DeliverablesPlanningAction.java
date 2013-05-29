@@ -186,7 +186,11 @@ public class DeliverablesPlanningAction extends BaseAction {
 
     if (!problem) {
       addActionMessage(getText("saving.success", new String[] {getText("planning.activityDeliverables")}));
-      return SUCCESS;
+      if (save) {
+        return SUCCESS;
+      } else {
+        return SAVE_NEXT;
+      }
     } else {
       addActionError(getText("saving.problem"));
       return INPUT;

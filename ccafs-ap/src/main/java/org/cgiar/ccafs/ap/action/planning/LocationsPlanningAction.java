@@ -304,7 +304,11 @@ public class LocationsPlanningAction extends BaseAction {
 
     if (saved) {
       addActionMessage(getText("saving.success", new String[] {getText("planning.locations")}));
-      return SUCCESS;
+      if (save) {
+        return SUCCESS;
+      } else {
+        return SAVE_NEXT;
+      }
     } else {
       addActionError(getText("saving.problem"));
       return INPUT;

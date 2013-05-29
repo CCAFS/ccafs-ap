@@ -96,7 +96,11 @@ public class PartnersPlanningAction extends BaseAction {
       if (added) {
         addActionMessage(getText("saving.success", new String[] {getText("reporting.activityPartners.partners")}));
         LOG.info("The user {} save the partners of activity {} successfully", getCurrentUser().getEmail(), activityID);
-        return SUCCESS;
+        if (save) {
+          return SUCCESS;
+        } else {
+          return SAVE_NEXT;
+        }
       }
     }
     LOG.info("The user {} had a problem saving the partners of activity {}", getCurrentUser().getEmail(), activityID);

@@ -29,12 +29,14 @@ public class BaseAction extends ActionSupport implements Preparable, SessionAwar
   private static final long serialVersionUID = -740360140511380630L;
 
   public static final String CANCEL = "cancel";
+  public static final String SAVE_NEXT = "saveNext";
   public static final String NOT_LOGGED = "401";
   public static final String NOT_AUTHORIZED = "403";
   public static final String NOT_FOUND = "404";
 
   // button actions
   protected boolean save;
+  protected boolean saveNext;
   protected boolean delete;
   protected boolean cancel;
 
@@ -61,7 +63,6 @@ public class BaseAction extends ActionSupport implements Preparable, SessionAwar
     return CANCEL;
   }
 
-
   /* Override this method depending of the delete action. */
   public String delete() {
     return SUCCESS;
@@ -75,6 +76,8 @@ public class BaseAction extends ActionSupport implements Preparable, SessionAwar
       return delete();
     } else if (cancel) {
       return cancel();
+    } else if (saveNext) {
+      return save();
     }
     return INPUT;
   }
@@ -168,6 +171,11 @@ public class BaseAction extends ActionSupport implements Preparable, SessionAwar
     return SUCCESS;
   }
 
+  public String saveNext() {
+    return SAVE_NEXT;
+  }
+
+
   public void setCancel(boolean cancel) {
     this.cancel = true;
   }
@@ -178,6 +186,11 @@ public class BaseAction extends ActionSupport implements Preparable, SessionAwar
 
   public void setSave(boolean save) {
     this.save = true;
+  }
+
+
+  public void setSaveNext(boolean save_next) {
+    this.saveNext = true;
   }
 
   @Override
