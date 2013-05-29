@@ -20,6 +20,10 @@
   [#include "/WEB-INF/global/pages/planning-secondary-menu.ftl" /]
   [@s.form action="additionalInformation"]
   <article class="halfContent">
+    
+    [#-- Hidden values --]
+    <input id="keywordsDefaultText" value="[@s.text name="planning.additionalInformation.keyword.default" /]">
+  
     <h1 class="contentTitle">
       ${activity.leader.acronym} - [@s.text name="planning.additionalInformation.activity" /] ${activity.id}      
     </h1>
