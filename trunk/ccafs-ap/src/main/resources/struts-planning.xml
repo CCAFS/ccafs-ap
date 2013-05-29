@@ -27,6 +27,10 @@
       <result name="cancel" type="redirectAction">activities</result>
       <result name="input">/WEB-INF/planning/deliverablesPlanning.ftl</result>
       <result name="success" type="redirectAction">
+        <param name="actionName">deliverables</param>
+        <param name="activityID">${activity.id}</param>
+      </result>
+      <result name="saveNext" type="redirectAction">
         <param name="actionName">partners</param>
         <param name="activityID">${activity.id}</param>
       </result>
@@ -38,6 +42,10 @@
       <result name="cancel" type="redirectAction">activities</result>
       <result name="input">/WEB-INF/planning/mainInformation.ftl</result>
       <result name="success" type="redirectAction">
+        <param name="actionName">mainInformation</param>
+        <param name="activityID">${activity.id}</param>
+      </result>
+      <result name="saveNext" type="redirectAction">
         <param name="actionName">objectives</param>
         <param name="activityID">${activity.id}</param>
       </result>
@@ -49,6 +57,10 @@
       <result name="cancel" type="redirectAction">activities</result>
       <result name="input">/WEB-INF/planning/objectivesPlanning.ftl</result>
       <result name="success" type="redirectAction">
+        <param name="actionName">objectives</param>
+        <param name="activityID">${activity.id}</param>
+      </result>
+      <result name="saveNext" type="redirectAction">
         <param name="actionName">deliverables</param>
         <param name="activityID">${activity.id}</param>
       </result>
@@ -60,6 +72,10 @@
       <result name="cancel" type="redirectAction">activities</result>
       <result name="input">/WEB-INF/planning/partnersPlanning.ftl</result>
       <result name="success" type="redirectAction">
+        <param name="actionName">partners</param>
+        <param name="activityID">${activity.id}</param>
+      </result>
+      <result name="saveNext" type="redirectAction">
         <param name="actionName">locations</param>
         <param name="activityID">${activity.id}</param>
       </result>
@@ -71,6 +87,10 @@
       <result name="cancel" type="redirectAction">activities</result>
       <result name="input">/WEB-INF/planning/locationsPlanning.ftl</result>
       <result name="success" type="redirectAction">
+        <param name="actionName">locations</param>
+        <param name="activityID">${activity.id}</param>
+      </result>
+      <result name="saveNext" type="redirectAction">
         <param name="actionName">additionalInformation</param>
         <param name="activityID">${activity.id}</param>
       </result>
@@ -86,7 +106,11 @@
       <interceptor-ref name="accessibleActivity" />
       <result name="cancel" type="redirectAction">activities</result>
       <result name="input">/WEB-INF/planning/additionalInformationPlanning.ftl</result>
-      <result name="success" type="redirectAction">activities</result>
+      <result name="success" type="redirectAction">
+        <param name="actionName">additionalInformation</param>
+        <param name="activityID">${activity.id}</param>
+      </result>
+      <result name="saveNext" type="redirectAction">activities</result>
     </action>
     
     <action name="partnerSave" class="org.cgiar.ccafs.ap.action.reporting.activities.PartnersSaveReportingAction">

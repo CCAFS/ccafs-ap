@@ -22,7 +22,7 @@
   <article class="halfContent">
     
     [#-- Hidden values --]
-    <input id="keywordsDefaultText" value="[@s.text name="planning.additionalInformation.keyword.default" /]">
+    <input id="keywordsDefaultText" value="[@s.text name="planning.additionalInformation.keyword.default" /]" type="hidden">
   
     <h1 class="contentTitle">
       ${activity.leader.acronym} - [@s.text name="planning.additionalInformation.activity" /] ${activity.id}      
@@ -100,6 +100,7 @@
     <input name="activityID" type="hidden" value="${activity.id}" />
     <div class="buttons">
       [@s.submit type="button" name="save"][@s.text name="form.buttons.save" /][/@s.submit]
+      [@s.submit type="button" name="saveNext"][@s.text name="form.buttons.saveNext" /][/@s.submit]
       [@s.submit type="button" name="cancel"][@s.text name="form.buttons.cancel" /][/@s.submit]
     </div>
         </fieldset>

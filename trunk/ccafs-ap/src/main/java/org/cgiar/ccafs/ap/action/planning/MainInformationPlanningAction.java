@@ -145,7 +145,6 @@ public class MainInformationPlanningAction extends BaseAction {
   @Override
   public String save() {
     boolean success = true;
-
     if (activityManager.updateMainInformation(activity)) {
       LOG.info("The user {} saved the main information of the activity {} successfully.", getCurrentUser().getEmail(),
         activityID);
@@ -168,7 +167,11 @@ public class MainInformationPlanningAction extends BaseAction {
       addActionMessage(getText("saving.success", new String[] {getText("planning.mainInformation")}));
       LOG.info("The user {} saved the main information of the activity {} successfully.", getCurrentUser().getEmail(),
         activityID);
-      return SUCCESS;
+      if (save) {
+        return SUCCESS;
+      } else {
+        return SAVE_NEXT;
+      }
     } else {
       LOG.warn("The user {} had problems to save the main information of the activity {}.",
         getCurrentUser().getEmail(), activityID);
