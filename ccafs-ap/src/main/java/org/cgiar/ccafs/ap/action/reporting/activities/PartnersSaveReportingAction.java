@@ -10,7 +10,6 @@ import org.cgiar.ccafs.ap.data.manager.PartnerTypeManager;
 import org.cgiar.ccafs.ap.data.model.ActivityPartner;
 import org.cgiar.ccafs.ap.data.model.Country;
 import org.cgiar.ccafs.ap.data.model.PartnerType;
-import org.cgiar.ccafs.ap.util.EmailValidator;
 import org.cgiar.ccafs.ap.util.SendMail;
 
 import com.google.inject.Inject;
@@ -171,31 +170,6 @@ public class PartnersSaveReportingAction extends BaseAction {
       // Check the partner name
       if (activityPartner.getPartner().getName().isEmpty()) {
         addFieldError("activityPartner.partner.name", getText("validation.field.required"));
-        anyError = true;
-      }
-
-      // Check the city name
-      if (activityPartner.getPartner().getCity().isEmpty()) {
-        addFieldError("activityPartner.partner.city", getText("validation.field.required"));
-        anyError = true;
-      }
-
-      // Check the contact name
-      if (activityPartner.getContactName().isEmpty()) {
-        addFieldError("activityPartner.contactName", getText("validation.field.required"));
-        anyError = true;
-      }
-
-      // Check if there is a contact email
-      if (activityPartner.getContactEmail().isEmpty()) {
-        addFieldError("activityPartner.contactEmail", getText("validation.field.required"));
-        anyError = true;
-      }
-
-      // Check if the contact email is valid
-      else if (!EmailValidator.isValidEmail(activityPartner.getContactEmail())) {
-        String[] invalidMail = {"Email "};
-        addFieldError("activityPartner.contactEmail", getText("validation.invalid", invalidMail));
         anyError = true;
       }
 
