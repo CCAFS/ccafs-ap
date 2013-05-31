@@ -9,6 +9,11 @@
 
     <!-- Sections -->
     
+    <action name="introduction" class="org.cgiar.ccafs.ap.action.BaseAction">
+      <interceptor-ref name="reportingStack" />
+      <result name="input">/WEB-INF/reporting/homeReporting.ftl</result>
+    </action>
+    
     <action name="activities" class="org.cgiar.ccafs.ap.action.reporting.activities.ActivitiesReportingAction">
       <interceptor-ref name="reportingStack" />
       <result name="input">/WEB-INF/reporting/activities.ftl</result>
