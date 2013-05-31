@@ -74,10 +74,9 @@ public interface ActivityDAO {
    * Get a list of activities populated only with the id and title.
    * 
    * @param year - the logframe year when the activities were added.
-   * @param leaderTypeCode - the leader id where the activities belong to.
    * @return a list of maps with the id, and title for each activity.
    */
-  public List<Map<String, String>> getTitles(int year, int leaderTypeCode);
+  public List<Map<String, String>> getTitles(int year);
 
   /**
    * Validate if the given id actually exist in the current list of activities.

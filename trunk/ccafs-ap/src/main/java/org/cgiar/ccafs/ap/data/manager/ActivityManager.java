@@ -29,13 +29,12 @@ public interface ActivityManager {
   public Activity[] getActivitiesForRSS(int year, int limit);
 
   /**
-   * Get a list of activities populated only with the id and the title.
+   * Get a list of activities from the given year populated only with the id and the title.
    * 
-   * @param logframe - Logframe object
-   * @param leader - Leader object.
+   * @param year
    * @return a list of activity objects.
    */
-  public Activity[] getActivitiesTitle(int year, User user);
+  public Activity[] getActivitiesTitle(int year);
 
   /**
    * Get an activity identified with the given id.

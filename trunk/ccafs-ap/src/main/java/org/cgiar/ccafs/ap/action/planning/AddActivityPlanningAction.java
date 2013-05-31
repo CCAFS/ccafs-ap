@@ -68,17 +68,16 @@ public class AddActivityPlanningAction extends BaseAction {
     super.prepare();
     milestones = milestoneManager.getMilestoneList(this.getCurrentPlanningLogframe());
     leaders = leaderManager.getAllLeaders();
-    Activity[] oldActivities =
-      activityManager.getActivitiesTitle(this.getCurrentPlanningLogframe().getYear() - 1, this.getCurrentUser());
+    Activity[] oldActivities = activityManager.getActivitiesTitle(this.getCurrentPlanningLogframe().getYear() - 1);
     String text;
     continuousActivityList.put(-1, "Select an activity.");
-    for (int c = 0; c < oldActivities.length; c++) {
+    for (Activity oldActivitie : oldActivities) {
       text =
-        oldActivities[c].getId()
+        oldActivitie.getId()
           + " - "
-          + (oldActivities[c].getTitle().length() > 40 ? oldActivities[c].getTitle().substring(0, 40)
-            : oldActivities[c].getTitle()) + "...";
-      continuousActivityList.put(oldActivities[c].getId(), text);
+          + (oldActivitie.getTitle().length() > 40 ? oldActivitie.getTitle().substring(0, 40) : oldActivitie.getTitle())
+          + "...";
+      continuousActivityList.put(oldActivitie.getId(), text);
     }
   }
 
