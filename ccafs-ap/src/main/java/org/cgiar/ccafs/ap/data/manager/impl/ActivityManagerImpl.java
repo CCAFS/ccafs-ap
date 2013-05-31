@@ -201,8 +201,8 @@ public class ActivityManagerImpl implements ActivityManager {
   }
 
   @Override
-  public Activity[] getActivitiesTitle(int year, User user) {
-    List<Map<String, String>> activityData = activityDAO.getTitles(year, user.getLeader().getId());
+  public Activity[] getActivitiesTitle(int year) {
+    List<Map<String, String>> activityData = activityDAO.getTitles(year);
     if (activityData.size() > 0) {
       Activity[] activities = new Activity[activityData.size()];
       for (int c = 0; c < activities.length; c++) {

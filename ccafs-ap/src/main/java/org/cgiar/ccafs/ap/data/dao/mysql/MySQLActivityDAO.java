@@ -277,11 +277,10 @@ public class MySQLActivityDAO implements ActivityDAO {
 
 
   @Override
-  public List<Map<String, String>> getTitles(int year, int leaderTypeCode) {
+  public List<Map<String, String>> getTitles(int year) {
     List<Map<String, String>> activityTitles = new ArrayList<>();
     StringBuilder query = new StringBuilder("SELECT a.id, a.title");
     query.append(" FROM activities a");
-    query.append(" INNER JOIN activity_leaders al ON al.id = a.activity_leader_id");
     query.append(" INNER JOIN milestones m ON m.id = a.milestone_id");
     query.append(" INNER JOIN outputs o ON o.id = m.output_id");
     query.append(" INNER JOIN objectives obj ON obj.id = o.objective_id");
@@ -289,8 +288,6 @@ public class MySQLActivityDAO implements ActivityDAO {
     query.append(" INNER JOIN logframes l ON l.id = t.logframe_id");
     query.append(" WHERE l.year = ");
     query.append(year);
-    query.append(" AND al.id = ");
-    query.append(leaderTypeCode);
     try (Connection connection = databaseManager.getConnection()) {
       ResultSet rs = databaseManager.makeQuery(query.toString(), connection);
       while (rs.next()) {
@@ -301,8 +298,7 @@ public class MySQLActivityDAO implements ActivityDAO {
       }
       rs.close();
     } catch (SQLException e) {
-      LOG.error("There was an error trying to get the list of activities that belong to the year " + year
-        + " and the leader id " + leaderTypeCode + "\n{}", query.toString(), e);
+      LOG.error("There was an error trying to get the list of activities that belong to the year {}.", year, e);
     }
     return activityTitles;
   }
