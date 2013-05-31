@@ -5,7 +5,7 @@
     [#if logged]
       [#if currentUser.CP || currentUser.TL || currentUser.RPL || currentUser.PI || currentUser.admin ]
         [#if planningActive ]               
-          <a  href="${baseUrl}/planning/activities.do">
+          <a  href="${baseUrl}/planning/introduction.do">
         [#else]
           <a href="javascript:void(0);" title="[@s.text name="menu.link.disabled" /]" >
         [/#if]
@@ -14,7 +14,7 @@
       [/#if]
       [#if currentUser.CP || currentUser.TL || currentUser.RPL || currentUser.PI || currentUser.admin ] 
         [#if reportingActive ]               
-          <a href="${baseUrl}/reporting/activities.do" >
+          <a href="${baseUrl}/reporting/introduction.do" >
         [#else]
           <a href="javascript:void(0);" title="[@s.text name="menu.link.disabled" /]" >
         [/#if]

@@ -8,6 +8,11 @@
 
     <!-- Sections -->
     
+    <action name="introduction" class="org.cgiar.ccafs.ap.action.BaseAction">
+      <interceptor-ref name="planningStack" />
+      <result name="input">/WEB-INF/planning/homePlanning.ftl</result>
+    </action>
+    
     <action name="activities" class="org.cgiar.ccafs.ap.action.planning.ActivitiesPlanningAction">
       <interceptor-ref name="planningStack" />
       <result name="input">/WEB-INF/planning/activities.ftl</result>
