@@ -118,9 +118,6 @@ function drawRegionsMap() {
       lng_max = (site.longitude > lng_max) ? site.longitude : lng_max;
     });
 
-    console.log(lat_max, ", ", lat_min);
-    console.log(lng_max, ", ", lng_min);
-
     // Set the map center  
     map.setCenter(new google.maps.LatLng(((lat_max + lat_min) / 2.0),
         ((lng_max + lng_min) / 2.0)));
