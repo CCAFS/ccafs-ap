@@ -20,7 +20,12 @@
   [@s.form action="mainInformation"]  
   <article class="halfContent" id="#mainInformation">
     <h1 class="contentTitle">
-      ${currentUser.leader.acronym} - [@s.text name="planning.mainInformation.activity" /] ${activity.id}
+      ${currentUser.leader.acronym} - 
+      [#if activity.commissioned] 
+        [@s.text name="planning.mainInformation.commissionedActivity" /] ${activity.id}
+      [#else] 
+        [@s.text name="planning.mainInformation.activity" /] ${activity.id}
+      [/#if]
     </h1>
     
     [#-- Activity identifier --]
@@ -36,7 +41,7 @@
     <input id="maxDateValue" value="${endYear?c}-12-31" type="hidden"/>
     
     [#-- Commissioned and continuous --]
-    [#if activity.continuousActivity?has_content || activity.commissioned]
+    [#if activity.continuousActivity?has_content]
       <div class="fullblock">
         <div class="halfPartBlock continuation">
           [#if activity.continuousActivity?has_content]
@@ -44,11 +49,6 @@
             <a href="[@s.url action='activity' namespace="/"][@s.param name='${publicActivtyRequestParameter}']${activity.continuousActivity.id}[/@s.param][/@s.url]" target="_blank"> 
               [@s.text name="planning.mainInformation.activity" /] ${activity.continuousActivity.id} 
             </a>
-          [/#if]
-        </div>
-        <div class="halfPartBlock commisioned">
-          [#if activity.commissioned]
-            [@s.text name="planning.mainInformation.commissioned" /]
           [/#if]
         </div>
       </div>

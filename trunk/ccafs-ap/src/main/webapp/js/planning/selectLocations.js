@@ -25,7 +25,6 @@ $(document).ready(function() {
 function getGeoCoordinates(){
   var otherSiteID = getOtherSiteID();
   var geoCoordinates = window.opener.getOtherSitesCoordinates(otherSiteID);
-  console.log(otherSiteID  + " - " + geoCoordinates);
   return geoCoordinates;
 }
 
@@ -84,7 +83,6 @@ function drawMap() {
   
   // Check if the coordinates are specified,
   var coordinates = getGeoCoordinates(); 
-  console.log(coordinates);
   if(coordinates != null){
     var location = new google.maps.LatLng(coordinates.lat, coordinates.lng);
     var bounds = new google.maps.LatLngBounds(location, location);

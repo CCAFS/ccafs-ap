@@ -36,7 +36,6 @@ $(document).ready(
 function renameDeliverables() {
   //getting the text of the index element.
   var itemText = $("#delvierableTemplate").find(".itemIndex").text();
-  console.log(itemText);
   $("#deliverablesBlock .deliverable").each(
       function(index, deliverable) {
         // Changing attributes of each component in order to match with the array order.
