@@ -809,6 +809,12 @@ nav#secondaryMenu ul a.currentReportingSection {
   text-align: left;
 }
 
+#footerContainer.little {
+	background-image: url("../../images/global/footer-background-small.png");
+	height: 80px;
+  background-size: 50%;
+}
+
 #footerContainer #centres-logos {
   margin-left: 40px;  
 }

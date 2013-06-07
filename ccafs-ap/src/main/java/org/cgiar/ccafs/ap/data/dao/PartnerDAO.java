@@ -27,6 +27,16 @@ public interface PartnerDAO {
   public Map<String, String> getPartner(int id);
 
   /**
+   * Get a list of partners that fill the conditions given or all partners
+   * if there is no condition.
+   * 
+   * @param countryID - Country identifier or null if no filter by country is needed
+   * @param partnerTypeID - Partner type identifier or null if no filter by type is needed
+   * @return a list of maps with the information
+   */
+  public List<Map<String, String>> getPartnersByFilter(String countryID, String partnerTypeID);
+
+  /**
    * Get all partners of the activity identified
    * whit activityID from the DAO.
    * 
@@ -34,6 +44,4 @@ public interface PartnerDAO {
    * @return a List of Maps with the information.
    */
   public List<Map<String, String>> getPartnersList(int activityID);
-
-
 }

@@ -5,11 +5,19 @@ import org.cgiar.ccafs.ap.config.APConfig;
 import org.cgiar.ccafs.ap.config.APConstants;
 import org.cgiar.ccafs.ap.data.manager.ActivityManager;
 import org.cgiar.ccafs.ap.data.manager.ActivityPartnerManager;
+import org.cgiar.ccafs.ap.data.manager.CountryManager;
 import org.cgiar.ccafs.ap.data.manager.LogframeManager;
 import org.cgiar.ccafs.ap.data.manager.PartnerManager;
+import org.cgiar.ccafs.ap.data.manager.PartnerTypeManager;
 import org.cgiar.ccafs.ap.data.model.Activity;
+import org.cgiar.ccafs.ap.data.model.Country;
 import org.cgiar.ccafs.ap.data.model.Partner;
+import org.cgiar.ccafs.ap.data.model.PartnerType;
 import org.cgiar.ccafs.ap.util.EmailValidator;
+
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 
 import com.google.inject.Inject;
 import org.apache.commons.lang3.StringUtils;
@@ -26,19 +34,26 @@ public class PartnersPlanningAction extends BaseAction {
   private ActivityManager activityManager;
   private ActivityPartnerManager activityPartnerManager;
   private PartnerManager partnerManager;
+  private CountryManager countryManager;
+  private PartnerTypeManager partnerTypeManager;
 
   // Model
   private int activityID;
   private Activity activity;
   private Partner[] partners;
+  private List<PartnerType> partnerTypes;
+  private List<Country> countries;
 
   @Inject
   public PartnersPlanningAction(APConfig config, LogframeManager logframeManager, ActivityManager activityManager,
-    ActivityPartnerManager activityPartnerManager, PartnerManager partnerManager) {
+    ActivityPartnerManager activityPartnerManager, PartnerManager partnerManager, CountryManager countryManager,
+    PartnerTypeManager partnerTypeManager) {
     super(config, logframeManager);
     this.activityManager = activityManager;
     this.activityPartnerManager = activityPartnerManager;
     this.partnerManager = partnerManager;
+    this.countryManager = countryManager;
+    this.partnerTypeManager = partnerTypeManager;
   }
 
   public Activity getActivity() {
@@ -53,8 +68,18 @@ public class PartnersPlanningAction extends BaseAction {
     return APConstants.ACTIVITY_REQUEST_ID;
   }
 
+
+  public List<Country> getCountries() {
+    return countries;
+  }
+
+
   public Partner[] getPartners() {
     return partners;
+  }
+
+  public List<PartnerType> getPartnerTypes() {
+    return partnerTypes;
   }
 
 
@@ -78,6 +103,20 @@ public class PartnersPlanningAction extends BaseAction {
 
     // Get the list of partners
     partners = partnerManager.getAllPartners();
+
+    // Get the list of countries
+    Country co = new Country("-1", "");
+    countries = new ArrayList<>();
+    countries.add(co);
+    countries.addAll(Arrays.asList(countryManager.getCountryList()));
+
+    // Get the list of partner types
+    PartnerType pt = new PartnerType();
+    pt.setId(-1);
+    pt.setName("");
+    partnerTypes = new ArrayList<>();
+    partnerTypes.add(pt);
+    partnerTypes.addAll(Arrays.asList(partnerTypeManager.getPartnerTypeList()));
 
     if (getRequest().getMethod().equalsIgnoreCase("post")) {
       // Clear out the list if it has some element
