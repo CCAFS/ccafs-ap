@@ -120,10 +120,7 @@ function addChosen() {
 
 function updatePartnerList(event, data){
   
-  console.log(event.target);
-  
   var partnersByFilterLink = '../json/partnersByFilter.do?';
-  
   var indexID = $(event.target).attr('id').split('_')[1];
   
   if($("#partnerTypeList_" + indexID).val() != -1){
@@ -140,7 +137,7 @@ function updatePartnerList(event, data){
       optionsHtml += "<option value='-1'>";
       optionsHtml += $("#noResultByFilterText").val();
       optionsHtml += "</option>";
-      console.log(optionsHtml);
+
       $("#partners_activity_activityPartners_" + indexID + "__partner").html(optionsHtml);
       $("#partners_activity_activityPartners_" + indexID + "__partner").trigger("liszt:updated");
     }else{
