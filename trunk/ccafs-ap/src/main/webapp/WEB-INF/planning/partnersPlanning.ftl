@@ -23,6 +23,16 @@
           <img src="${baseUrl}/images/global/icon-remove.png" />
           <a id="removeActivityPartner-${ap_index}" href="" class="removeActivityPartner">[@s.text name="planning.activityPartners.removePartner" /]</a>
         </div>
+
+        [#-- Partner type list --]
+        <div class="halfPartBlock partnerTypeName chosen">
+          [@customForm.select name="partnerTypeList" label="" i18nkey="planning.activityPartners.partnerType" listName="partnerTypes" keyFieldName="id"  displayFieldName="name" className="partnerTypes" value="activity.activityPartners[${ap_index}].partner.type.id" /]
+        </div>
+        
+        [#-- Country list --]
+        <div class="halfPartBlock countryListBlock chosen">
+          [@customForm.select name="countryList" label="" i18nkey="planning.activityPartners.country" listName="countries" keyFieldName="id"  displayFieldName="name" className="countryList" value="activity.activityPartners[${ap_index}].partner.country.id" /]
+        </div>
         
         [#-- Partner Name --]
         <div class="fullBlock partnerName chosen">
@@ -85,6 +95,16 @@
           <a id="removeActivityPartner-9999" href="" class="removeActivityPartner">[@s.text name="planning.activityPartners.removePartner" /]</a>
         </div>
         
+        [#-- Partner type list --]
+        <div class="halfPartBlock partnerTypeName chosen">
+          [@customForm.select name="partnerTypeList" label="" i18nkey="planning.activityPartners.partnerType" listName="partnerTypes" keyFieldName="id"  displayFieldName="name" className="partnerTypes" /]
+        </div>
+        
+        [#-- Country list --]
+        <div class="halfPartBlock countryListBlock chosen">
+          [@customForm.select name="countryList" label="" i18nkey="planning.activityPartners.country" listName="countries" keyFieldName="id"  displayFieldName="name" className="countryList" /]
+        </div>
+        
         [#-- Partner identifier --]
         <input type="hidden" name="id" value="-1">
       
@@ -107,6 +127,9 @@
     
     [#-- Partner list no result found message --]
     <input id="noResultText" type="hidden" value="[@s.text name="planning.activityPartners.addNewPartner.noResultMatch" /]" />
+    <input id="noResultByFilterText" type="hidden" value="[@s.text name="planning.activityPartners.addNewPartner.noResultFilterMatch" /]" />
+    <input id="partnerTypeDefault" type="hidden" value="[@s.text name="planning.activityPartners.selectPartnerType" /]" />
+    <input id="countryListDefault" type="hidden" value="[@s.text name="planning.activityPartners.selectCountry" /]" />
     
     <!-- internal parameter -->
     <input name="activityID" type="hidden" value="${activity.id}" />

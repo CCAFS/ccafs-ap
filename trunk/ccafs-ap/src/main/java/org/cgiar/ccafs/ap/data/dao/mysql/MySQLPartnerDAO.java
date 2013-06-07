@@ -76,6 +76,43 @@ public class MySQLPartnerDAO implements PartnerDAO {
   }
 
   @Override
+  public List<Map<String, String>> getPartnersByFilter(String countryID, String partnerTypeID) {
+    List<Map<String, String>> partners = new ArrayList<>();
+    String query =
+      "SELECT p.id, p.acronym, CASE WHEN p.acronym IS NULL THEN CONCAT(p.name, ', ', co.name) ELSE CONCAT(p.acronym, ' - ', p.name, ', ', co.name) END as 'name', pt.id as 'partner_type_id', pt.acronym as 'partner_type_acronym' "
+        + "FROM partners p "
+        + "INNER JOIN partner_types pt ON pt.id = p.partner_type_id "
+        + "INNER JOIN countries co ON p.country_iso2 = co.iso2 ";
+
+    if (!countryID.isEmpty() || !partnerTypeID.isEmpty()) {
+      query += "WHERE ";
+
+      // Add the conditions if exists
+      query += (!countryID.isEmpty()) ? "p.country_iso2 = '" + countryID + "' " : " 1 ";
+      query += (!partnerTypeID.isEmpty()) ? "AND p.partner_type_id = '" + partnerTypeID + "' " : "";
+    }
+
+    query += "ORDER BY p.name";
+    try (Connection connection = databaseManager.getConnection()) {
+      ResultSet rs = databaseManager.makeQuery(query, connection);
+      while (rs.next()) {
+        Map<String, String> partnerData = new HashMap<>();
+        partnerData.put("id", rs.getString("id"));
+        partnerData.put("acronym", rs.getString("acronym"));
+        partnerData.put("name", rs.getString("name"));
+        partnerData.put("partner_type_id", rs.getString("partner_type_id"));
+        partnerData.put("partner_type_acronym", rs.getString("partner_type_acronym"));
+
+        partners.add(partnerData);
+      }
+      rs.close();
+    } catch (SQLException e) {
+      LOG.error("There was an error getting the data from 'partners' table. \n{}", query, e);
+    }
+    return partners;
+  }
+
+  @Override
   public List<Map<String, String>> getPartnersList(int activityID) {
     List<Map<String, String>> statusList = new ArrayList<>();
     String query =

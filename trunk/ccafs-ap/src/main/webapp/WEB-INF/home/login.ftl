@@ -93,4 +93,4 @@
   	 [/#if]
   </div>
 </article>
-[#include "/WEB-INF/global/pages/footer.ftl"]
+[#include "/WEB-INF/global/pages/footer-logos.ftl"]
