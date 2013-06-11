@@ -393,6 +393,7 @@ function showCountriesByRegion(event) {
     $("#countriesForRegion-" + (regionID)).fadeIn();
 
   } else {
+    
     // If the user un-check the input hide the field and reset the values
     $("#countriesForRegion-" + (regionID)).fadeOut();
     $("#allCountriesForRegion-" + (regionID - 1)).attr('checked', false);
@@ -401,11 +402,8 @@ function showCountriesByRegion(event) {
     $("select#locations_activity_countries-" + (regionID - 1)).val('').trigger(
         'liszt:updated');
 
-    $("#bsLocations").hide();
-    $(".checkboxGroup [id ^= 'activity.bsLocations-']").each(function() {
-      $(this).next().remove();
-      $(this).remove();
-    });
+    // Hide the corresponding CCAFS Sites if any
+    showCcafsSitesByRegion(regionID, "hide");
   }
 }
 
