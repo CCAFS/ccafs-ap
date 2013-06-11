@@ -296,9 +296,11 @@ function showCcafsSitesByCountry(event, data) {
             + ccafsSites[c].country.id + "-1'> " + ccafsSites[c].name
             + "</label> ";
       }
-
-      $(".benchmarkSites .checkboxGroup").append(inputsHtml);
-      $("#bsLocations").fadeIn();
+      
+      if(ccafsSites.length > 0){
+        $(".benchmarkSites .checkboxGroup").append(inputsHtml);
+        $("#bsLocations").fadeIn();
+      }
     });
 
   } else {
@@ -324,7 +326,6 @@ function showCcafsSitesByCountry(event, data) {
 
 
 function showCcafsSitesByRegion(regionID, action) {
-  var data = new Array();
   var countriesSelected = $("#locations_activity_countries-" + (regionID-1)).val();
 
   $.getJSON('../json/sitesByRegion.do?regionID='
