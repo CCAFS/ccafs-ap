@@ -88,7 +88,7 @@ $(document).ready(function() {
     $(this).attr('data-placeholder', $("#countryListDefault").val());        
   });
   
-  //Activate the chosen plugin to the existing case studies  
+  //Activate the chosen plugin to the existing partners  
   addChosen();
   
 });
@@ -147,7 +147,10 @@ function updatePartnerList(event, data){
         optionsHtml += partners[c].name;
         optionsHtml += "</option>";
       }
+      // Keep the selected value if is still in the list
+      var selectedValue = $("#partners_activity_activityPartners_" + indexID + "__partner").val();
       $("#partners_activity_activityPartners_" + indexID + "__partner").html(optionsHtml);
+      $("#partners_activity_activityPartners_" + indexID + "__partner").val(selectedValue);
       $("#partners_activity_activityPartners_" + indexID + "__partner").trigger("liszt:updated");
     }
   });
