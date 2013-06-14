@@ -73,7 +73,7 @@ public class SendMail {
       LOG.info("Message sent.");
 
     } catch (MessagingException e) {
-      e.printStackTrace();
+      LOG.error("There was an error sending a message", e);
     }
   }
 

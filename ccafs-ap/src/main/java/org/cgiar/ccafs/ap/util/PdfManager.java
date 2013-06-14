@@ -17,6 +17,7 @@ import com.lowagie.text.FontFactory;
 import com.lowagie.text.Image;
 import com.lowagie.text.PageSize;
 import com.lowagie.text.Paragraph;
+import com.lowagie.text.Phrase;
 import com.lowagie.text.pdf.PdfPCell;
 import com.lowagie.text.pdf.PdfPTable;
 import com.lowagie.text.pdf.PdfWriter;
@@ -34,38 +35,51 @@ public class PdfManager {
   public final static int LANDSCAPE = 2;
 
   // Fonts
-  private final static Font TITLE_FONT = new Font(FontFactory.getFont("Arial", 12, Font.BOLD, Color.BLACK));
-  private final static Font NORMAL_FONT = new Font(FontFactory.getFont("Arial", 10, Color.BLACK));
+  private final static Font TITLE_FONT = new Font(FontFactory.getFont("Arial", 26, Font.BOLD, new Color(153, 102, 51)));
+  private final static Font NORMAL_FONT = new Font(FontFactory.getFont("Arial", 12, Color.BLACK));
+  private final static Font HEADER_FONT = new Font(FontFactory.getFont("Arial", 12, Color.LIGHT_GRAY));
+  private final static Font FOOTER_FONT = new Font(FontFactory.getFont("Arial", 12, Color.LIGHT_GRAY));
   private final static Font TABLE_HEADER_FONT = new Font(FontFactory.getFont("Arial", 10, Font.BOLD, Color.WHITE));
-  private final static Font TABLE_BODY_FONT = new Font(FontFactory.getFont("Arial", 10, Font.BOLD, Color.BLACK));
+  private final static Font TABLE_BODY_FONT = new Font(FontFactory.getFont("Arial", 10, Color.BLACK));
 
   // Backgrounds colors
-  private final static Color TABLE_HEADER_BACKGORUND = Color.BLUE;
-  private final static Color TABLE_BODY_EVEN_ROW_BACKGORUND = Color.WHITE;
-  private final static Color TABLE_BODY_ODD_ROW_BACKGORUND = Color.LIGHT_GRAY;
+  private final static Color TABLE_HEADER_BACKGROUND = new Color(155, 187, 89);
+  private final static Color TABLE_BODY_EVEN_ROW_BACKGROUND = new Color(234, 241, 221);
+  private final static Color TABLE_BODY_ODD_ROW_BACKGROUND = Color.WHITE;
 
 
-  public static void addCover(Document document) {
+  public static void addCover(Document document, String title) {
 
-    Image headerImage, ccafsLogo;
+    Image headerImage, ccafsLogo, ciatLogo, footerImage;
     try {
-      headerImage =
-        Image.getInstance(new URL("http://davinci.ciat.cgiar.org/ccafs-ap/images/global/header-background.png"));
-
-      ccafsLogo =
-        Image.getInstance(new URL("http://davinci.ciat.cgiar.org/ccafs-ap/images/global/logo-ccafs-little.png"));
+      headerImage = Image.getInstance(new URL("http://davinci.ciat.cgiar.org/images/global/header-background.png"));
+      ccafsLogo = Image.getInstance(new URL("http://localhost/logo_ccafs.png"));
+      ciatLogo = Image.getInstance(new URL("http://localhost/logo_ciat.png"));
+      footerImage = Image.getInstance(new URL("http://davinci.ciat.cgiar.org/images/global/footer-background.png"));
 
       // Scale the image to the page size
       headerImage.scaleToFit(document.getPageSize().getWidth(), document.getPageSize().getHeight());
-
+      footerImage.scaleToFit(document.getPageSize().getWidth(), document.getPageSize().getHeight());
 
       // Put the image on top of page
       headerImage.setAbsolutePosition(0f, document.getPageSize().getHeight() - headerImage.getScaledHeight());
+      ccafsLogo.setAbsolutePosition(75f, 250f);
+      ciatLogo.setAbsolutePosition(380f, 250f);
+      footerImage.setAbsolutePosition(0f, 0f);
 
-      ccafsLogo.setAbsolutePosition(0f, 0f);
+
       try {
         document.add(headerImage);
         document.add(ccafsLogo);
+        document.add(ciatLogo);
+        document.add(footerImage);
+
+        Phrase phrase = new Phrase();
+        for (int c = 0; c < 20; c++) {
+          phrase.add(new Chunk().NEWLINE);
+        }
+        document.add(phrase);
+        addTitle(document, title);
       } catch (DocumentException e) {
         // TODO Auto-generated catch block
         e.printStackTrace();
@@ -81,8 +95,15 @@ public class PdfManager {
       // TODO Auto-generated catch block
       e.printStackTrace();
     }
+  }
 
+  public static void addHeader(Document document, String text) throws DocumentException {
+    Paragraph paragraph = new Paragraph();
+    paragraph.setFont(HEADER_FONT);
+    paragraph.setAlignment(Paragraph.ALIGN_RIGHT);
 
+    paragraph.add(text);
+    document.add(paragraph);
   }
 
   public static void addParagraph(Document document, String text) throws DocumentException {
@@ -109,14 +130,14 @@ public class PdfManager {
       for (String cellText : row) {
         if (rowIndex == 0) {
           tempCell = getTableHeaderCell(cellText);
-          tempCell.setBackgroundColor(TABLE_HEADER_BACKGORUND);
+          tempCell.setBackgroundColor(TABLE_HEADER_BACKGROUND);
           table.addCell(tempCell);
         } else {
           tempCell = getTableBodyCell(cellText);
           if (rowIndex % 2 == 0) {
-            tempCell.setBackgroundColor(TABLE_BODY_EVEN_ROW_BACKGORUND);
+            tempCell.setBackgroundColor(TABLE_BODY_EVEN_ROW_BACKGROUND);
           } else {
-            tempCell.setBackgroundColor(TABLE_BODY_ODD_ROW_BACKGORUND);
+            tempCell.setBackgroundColor(TABLE_BODY_ODD_ROW_BACKGROUND);
           }
           table.addCell(tempCell);
         }
