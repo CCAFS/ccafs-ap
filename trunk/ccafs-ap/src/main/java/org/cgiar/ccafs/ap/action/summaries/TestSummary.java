@@ -17,6 +17,7 @@ import com.google.inject.Inject;
 import com.lowagie.text.Chunk;
 import com.lowagie.text.Document;
 import com.lowagie.text.DocumentException;
+import com.lowagie.text.PageSize;
 import com.lowagie.text.Phrase;
 
 
@@ -34,15 +35,15 @@ public class TestSummary extends BaseAction {
 
   public void createPdf(String filename) throws DocumentException, IOException {
     ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
-    Document document = new Document();
-
+    Document document = new Document(PageSize.A4);
 
     PdfManager.initializePdf(document, outputStream, PdfManager.PORTRAIT);
-
     document.open();
 
-    PdfManager.addCover(document);
+    PdfManager.addCover(document, "Test Report");
+    PdfManager.addHeader(document, "Test report");
     PdfManager.addTitle(document, "Titulo de prueba");
+
     PdfManager.addParagraph(document, "Prueba texto");
     document.add(new Chunk(" Test "));
     document.add(new Chunk().NEWLINE);
@@ -50,6 +51,7 @@ public class TestSummary extends BaseAction {
     document.add(new Chunk().NEWLINE);
     document.add(new Chunk(" Test 3").setBackground(new Color(231, 255, 0)));
     document.add(new Chunk().NEWLINE);
+    document.newPage();
     Phrase phrase = new Phrase("Prueba frase ");
     phrase.add(new Chunk("Ademas agregamos chunk"));
     document.add(phrase);
