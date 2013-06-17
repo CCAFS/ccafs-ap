@@ -32,25 +32,21 @@ public class SendMail {
     this.config = config;
   }
 
-
   public void send(String toEmail, String subject, String messageContent) {
 
     // Get a Properties object
     Properties properties = System.getProperties();
 
-    // properties.setProperty("proxySet", "true");
-    // properties.setProperty("socksProxyHost", "proxy4.ciat.cgiar.org");
-    // properties.setProperty("socksProxyPort", "8080");
-
-    properties.put("mail.smtp.host", "smtp.gmail.com");
-    properties.put("mail.smtp.socketFactory.port", "465");
-    properties.put("mail.smtp.socketFactory.class", "javax.net.ssl.SSLSocketFactory");
     properties.put("mail.smtp.auth", "true");
-    properties.put("mail.smtp.port", "465");
+    properties.put("mail.smtp.starttls.enable", "true");
+    properties.put("mail.smtp.host", "smtp.gmail.com");
+    properties.put("mail.smtp.port", "587");
 
-    properties.put("mail.debug", "true");
+    // Un-comment this line to watch javaMail debug
+    // properties.put("mail.debug", "true");
 
-    Session session = Session.getDefaultInstance(properties, new Authenticator() {
+
+    Session session = Session.getInstance(properties, new Authenticator() {
 
       @Override
       protected PasswordAuthentication getPasswordAuthentication() {
@@ -76,5 +72,4 @@ public class SendMail {
       LOG.error("There was an error sending a message", e);
     }
   }
-
 }
