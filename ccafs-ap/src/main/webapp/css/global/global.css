@@ -307,7 +307,8 @@ nav#secondaryMenu ul a.currentReportingSection {
   width: 700px;
 }
 
-.content a,.halfContent a,.content a:hover,.halfContent a:hover {
+.content a,.halfContent a, #footerContainer a, 
+.content a:hover,.halfContent a:hover, #footerContainer a{
   color: #366506;
 }
 
