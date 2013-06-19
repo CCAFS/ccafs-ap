@@ -425,13 +425,13 @@ nav#secondaryMenu ul a.currentReportingSection {
 }
 
 .buttons button[name=save] {
-    color:#336699;
+    color:#529214;
 }
 
 .buttons button[name=save]:hover{
-    background-color:#dff4ff;
-    border:1px solid #c2e1ef;
-    color:#336699;
+    background-color:#E6EFC2;
+    border:1px solid #C6D880;
+    color:#529214;
 }
 
 .buttons button[name=saveNext] {
