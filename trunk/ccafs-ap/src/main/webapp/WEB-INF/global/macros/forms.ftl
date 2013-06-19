@@ -5,9 +5,12 @@
       <label for="${name}">[#if i18nkey==""][@s.text name="${name}"/][#else][@s.text name="${i18nkey}"/][/#if]
         [#if required]<span class="red">*</span>[/#if]
       </label>
+      [#if help != ""]
+        <img src="${baseUrl}/images/global/icon-help2.png" title="[@s.text name="${help}"/]" />
+      [/#if]
     </h6>
     [#if errorField==""][@s.fielderror cssClass="fieldError" fieldName="${name}"/][#else][@s.fielderror cssClass="fieldError" fieldName="${errorfield}"/][/#if]
-    <input type="${type}" id="${name}" name="${name}" value="[#if value=="-NULL"][@s.property value="${name}"/][#else]${value}[/#if]" [#if disabled]disabled="disabled"[/#if] [#if help != ""]title="[@s.text name="${help}"/]"[/#if] [#if className != "-NULL"] class="${className}" [/#if] />
+    <input type="${type}" id="${name}" name="${name}" value="[#if value=="-NULL"][@s.property value="${name}"/][#else]${value}[/#if]" [#if disabled]disabled="disabled"[/#if] [#if className != "-NULL"] class="${className}" [/#if] />
   </div>
 [/#macro]
 
@@ -17,16 +20,24 @@
       <label for="${name}">[#if i18nkey==""][@s.text name="${name}"/][#else][@s.text name="${i18nkey}"/][/#if]
       [#if required]<span class="red">*</span>[/#if]
       </label>
+      [#if help != ""]
+        <img src="${baseUrl}/images/global/icon-help2.png" title="[@s.text name="${help}"/]" />
+      [/#if]
     </h6>
     [#if errorfield==""][@s.fielderror cssClass="fieldError" fieldName="${name}"/][#else][@s.fielderror cssClass="fieldError" fieldName="${errorfield}"/][/#if]
-    <textarea name="${name}" id="${name}" [#if disabled]disabled="disabled"[/#if] [#if help != ""]title="[@s.text name="${help}"/]"[/#if] />[#if value=="-NULL"][@s.property value="${name}"/][#else]${value}[/#if]</textarea>
+    <textarea name="${name}" id="${name}" [#if disabled]disabled="disabled"[/#if] />[#if value=="-NULL"][@s.property value="${name}"/][#else]${value}[/#if]</textarea>
   </div>
 [/#macro]
 
 
-[#macro checkbox name value="-NULL" label="" i18nkey="" disabled=false checked=false required=false display=true]
+[#macro checkbox name value="-NULL" label="" i18nkey="" disabled=false checked=false required=false display=true help=""]
   <div class="checkbox" [#if !display]style="display: none;"[/#if]>
-    <label for="${name}"><h6>[#if i18nkey==""]${label}[#else][@s.text name="${i18nkey}" /][/#if][#if required]<span class="red">*</span>[/#if]:</h6></label>
+    <label for="${name}">
+      <h6>[#if i18nkey==""]${label}[#else][@s.text name="${i18nkey}" /][/#if][#if required]<span class="red">*</span>[/#if]:</h6>
+      [#if help != ""]
+        <img src="${baseUrl}/images/global/icon-help2.png" title="[@s.text name="${help}"/]" />
+      [/#if]
+    </label>
     <input type="checkbox" id="${name}" name="${name}" value="${value}" [#if checked]checked="true"[/#if] />     
   </div>
 [/#macro]
@@ -69,7 +80,12 @@
 
 [#macro select name listName label="" keyFieldName="" displayFieldName="" value="-NULL" i18nkey="" disabled=false required=false errorField="" selected=false className="" multiple=false help="" display=true]
   <div class="select" [#if !display]style="display: none;"[/#if]>
-    <h6>[#if i18nkey==""]${label}[#else][@s.text name="${i18nkey}" /][/#if][#if required]<span class="red">*</span>[/#if]:</h6>
+    <h6>
+      [#if i18nkey==""]${label}[#else][@s.text name="${i18nkey}" /][/#if][#if required]<span class="red">*</span>[/#if]:
+      [#if help != ""]
+        <img src="${baseUrl}/images/global/icon-help2.png" title="[@s.text name="${help}"/]" />
+      [/#if]
+    </h6>
     [#if errorField==""][@s.fielderror cssClass="fieldError" fieldName="${name}"/][#else][@s.fielderror cssClass="fieldError" fieldName="${errorfield}"/][/#if]
     <div class="selectList">
       [#if value=="-NULL"]
@@ -84,15 +100,15 @@
       [/#if]
       [#if keyFieldName == ""]
         [#if multiple]
-          [@s.select name="${name}" list="${listName}" value="${customValue}" disabled="${disabled?string}" cssClass="${className}" multiple="true" title="${helpText}"/]
+          [@s.select name="${name}" list="${listName}" value="${customValue}" disabled="${disabled?string}" cssClass="${className}" multiple="true"/]
         [#else]
-          [@s.select name="${name}" list="${listName}" value="${customValue}" disabled="${disabled?string}" cssClass="${className}" title="${helpText}" /]
+          [@s.select name="${name}" list="${listName}" value="${customValue}" disabled="${disabled?string}" cssClass="${className}" /]
         [/#if]
       [#else]
         [#if multiple]
-          [@s.select name="${name}" list="${listName}" listKey="${keyFieldName}" listValue="${displayFieldName}" value="${customValue}" disabled="${disabled?string}" cssClass="${className}" multiple="true" title="${helpText}"/]
+          [@s.select name="${name}" list="${listName}" listKey="${keyFieldName}" listValue="${displayFieldName}" value="${customValue}" disabled="${disabled?string}" cssClass="${className}" multiple="true"/]
         [#else]
-          [@s.select name="${name}" list="${listName}" listKey="${keyFieldName}" listValue="${displayFieldName}" value="${customValue}" disabled="${disabled?string}" cssClass="${className}" title="${helpText}"/]
+          [@s.select name="${name}" list="${listName}" listKey="${keyFieldName}" listValue="${displayFieldName}" value="${customValue}" disabled="${disabled?string}" cssClass="${className}"/]
         [/#if]        
       [/#if]
     </div>
