@@ -10,28 +10,36 @@
 
 <article>
   <div class="content">
-    <h1>[@s.text name="home.login.title" /]</h1>
-    
-    <p>
-      [@s.text name="home.login.introduction" /]
-    </p>
-    <div id="loginFormContainer">
     [#if logged]
-      <p class="alreadyLogged">[@s.text name="home.login.alreadyLogged" /]</p>
-      <span class="alreadyLoggedEmail">${currentUser.email}</span>
+      <h1>[@s.text name="home.home.title" /]</h1>
     [#else]
-      [@s.form method="POST" action="login" cssClass="loginForm"]
-        [@s.fielderror cssClass="fieldError" fieldName="loginMesage"/]    	
-        [@customForm.input name="user.email" i18nkey="home.login.email" required=true /]
-        [@customForm.input name="user.password" i18nkey="home.login.password" required=true type="password" /]
-        [@s.submit key="home.login.button" name="login" /]    	
-      [/@s.form]
+      <h1>[@s.text name="home.login.title" /]</h1>
     [/#if]
-  	</div>
+    
+    [#if logged]
+      [#-- Home introduction  --]
+      <p> [@s.text name="home.home.introduction" /] </p>
+      
+      <div id="loginFormContainer">
+        <p class="alreadyLogged">[@s.text name="home.login.alreadyLogged" /]</p>
+        <span class="alreadyLoggedEmail">${currentUser.email}</span>
+    	</div>
+      
+    [#else]
+      [#-- Login introduction  --]
+      <p>
+        [@s.text name="home.login.introduction" /]
+      </p>
+      <div id="loginFormContainer">  
+        [@s.form method="POST" action="login" cssClass="loginForm"]
+          [@s.fielderror cssClass="fieldError" fieldName="loginMesage"/]    	
+          [@customForm.input name="user.email" i18nkey="home.login.email" required=true /]
+          [@customForm.input name="user.password" i18nkey="home.login.password" required=true type="password" /]
+          [@s.submit key="home.login.button" name="login" /]    	
+        [/@s.form]
+    	</div>
+    [/#if]
   	
-    <p>
-      [@s.text name="home.login.followlink" /]
-    </p>
     <br>
     [#-- To show the message again remove the "&& false" sentence of the condition --]
   	[#if logged && false]
