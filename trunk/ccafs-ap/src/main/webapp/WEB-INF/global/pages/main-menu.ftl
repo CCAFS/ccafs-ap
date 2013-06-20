@@ -1,8 +1,11 @@
 [#ftl]
 <nav id="mainMenu">  
   <ul>
-    <a href="${baseUrl}/"><li [#if currentSection?? && currentSection == "home"] class="currentSection" [/#if]>[@s.text name="menu.home" /]</li></a>
     [#if logged]
+      [#-- Home element --]
+      <a href="${baseUrl}/"><li [#if currentSection?? && currentSection == "home"] class="currentSection" [/#if]>[@s.text name="menu.home" /]</li></a>
+      
+      [#-- Other elements --]
       [#if currentUser.CP || currentUser.TL || currentUser.RPL || currentUser.PI || currentUser.admin ]
         [#if planningActive ]               
           <a  href="${baseUrl}/planning/introduction.do">
@@ -31,6 +34,9 @@
           <li [#if currentSection?? && currentSection == "admin"] class="currentSection" [/#if]>[@s.text name="menu.admin" /]</li>
         </a>
       [/#if]
+    [#else]
+      [#-- If the user is not logged show the login element in menu --]
+      <a href="${baseUrl}/"><li [#if currentSection?? && currentSection == "home"] class="currentSection" [/#if]>[@s.text name="menu.login" /]</li></a>
     [/#if]
   </ul>
 </nav>
