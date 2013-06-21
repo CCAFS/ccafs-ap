@@ -22,12 +22,12 @@
               <img src="${baseUrl}/images/global/centers/logo_worldfish.jpg" alt="WORLDFISH Logo" height="60px"/>
             </div>            
           </div> <!-- end centres-logos -->
-          <div id="reportIssue">
-            <p><b>[@s.text name="footer.report.issue.first" /]<a target="_blank" href="https://code.google.com/p/ccafs-ap/issues/entry?template=Defect%20report%20from%20user">[@s.text name="footer.report.issue.second" /]</a></b></p>
-          </div>
           <div id="copyright">
             <p>&#64; Copyright 2013</p>
             <p>Current version 1.0-BETA</p>
+          </div>
+          <div id="reportIssue" class="fullBlock">
+            <p><b>[@s.text name="footer.report.issue.first" /]<a target="_blank" href="https://code.google.com/p/ccafs-ap/issues/entry?template=Defect%20report%20from%20user">[@s.text name="footer.report.issue.second" /]</a></b></p>
           </div>
         </div>
       </footer>
