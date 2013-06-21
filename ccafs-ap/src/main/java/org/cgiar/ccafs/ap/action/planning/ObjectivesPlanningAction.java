@@ -99,15 +99,19 @@ public class ObjectivesPlanningAction extends BaseAction {
     boolean problem = false;
 
     if (save) {
-      for (int c = 0; c < activity.getObjectives().size(); c++) {
-        if (activity.getObjectives().get(c).getDescription().isEmpty()) {
-          problem = true;
-          addFieldError("activity.objectives[" + c + "].description", getText("validation.field.required"));
+      if (activity.getObjectives().size() == 0) {
+        addActionError(getText("saving.fields.atLeastOne", new String[] {getText("planning.objectives.objective")}));
+      } else {
+        for (int c = 0; c < activity.getObjectives().size(); c++) {
+          if (activity.getObjectives().get(c).getDescription().isEmpty()) {
+            problem = true;
+            addFieldError("activity.objectives[" + c + "].description", getText("validation.field.required"));
+          }
         }
-      }
 
-      if (problem) {
-        addActionError(getText("saving.fields.required"));
+        if (problem) {
+          addActionError(getText("saving.fields.required"));
+        }
       }
     }
   }
