@@ -71,6 +71,19 @@
           [/#if]
         </location>
       </locations>
+      <keywords>
+        [#if activity.keywords?has_content]
+          [#list activity.keywords as keyword]
+            <keyword>
+              [#if keyword.other?has_content]
+                ${keyword.other}
+              [#else]
+                ${keyword.keyword.name}
+              [/#if]
+            </keyword>
+          [/#list]
+        [/#if]
+      </keywords>
       <partners>
         [#if activity.partners?has_content]
           [#list activity.partners as partner]
