@@ -55,9 +55,9 @@ function drawRegionsMap() {
         mapOptions);
 
     var ccafsSiteImage = {
-      url : 'https://dl.dropbox.com/u/68183213/ccafs_sites.png',
+      url : 'http://davinci.ciat.cgiar.org/images/global/ccafs_sites-marker.png',
       // This marker is 20 pixels wide by 32 pixels tall.
-      size : new google.maps.Size(20, 19),
+      size : new google.maps.Size(20, 20),
       // The origin for this image is 0,0.
       origin : new google.maps.Point(0, 0),
       // The anchor for this image is the base of the flagpole at 0,32.
@@ -65,9 +65,9 @@ function drawRegionsMap() {
     };
 
     var otherSiteImage = {
-      url : 'http://s.ytimg.com/yts/img/favicon-vfldLzJxy.ico',
+      url : 'http://davinci.ciat.cgiar.org/images/global/otherSite-marker.png',
       // This marker is 20 pixels wide by 32 pixels tall.
-      size : new google.maps.Size(20, 32),
+      size : new google.maps.Size(16, 16),
       // The origin for this image is 0,0.
       origin : new google.maps.Point(0, 0),
       // The anchor for this image is the base of the flagpole at 0,32.
@@ -84,14 +84,14 @@ function drawRegionsMap() {
     // ------------- Benchmarks sites ------------------
     // setup the benchmark markers
     $.each(benchmarkSites, function(i, site) {
-      var site_lat = site.benchmarkSite.latitude;
-      var site_lng = site.benchmarkSite.longitud;
+      var site_lat = site.latitude;
+      var site_lng = site.longitud;
       var myLatLng = new google.maps.LatLng(site_lat, site_lng);
       var marker = new google.maps.Marker({
         position : myLatLng,
         map : map,
         icon : ccafsSiteImage,
-        title : site.benchmarkSite.name
+        title : site.name
       });
 
       lat_min = (site_lat < lat_min) ? site_lat : lat_min;
