@@ -100,7 +100,8 @@ public class ObjectivesPlanningAction extends BaseAction {
 
     if (save) {
       if (activity.getObjectives().size() == 0) {
-        addActionError(getText("saving.fields.atLeastOne", new String[] {getText("planning.objectives.objective")}));
+        addActionError(getText("saving.fields.atLeastOne", new String[] {getText("planning.objectives.objective")
+          .toLowerCase()}));
       } else {
         for (int c = 0; c < activity.getObjectives().size(); c++) {
           if (activity.getObjectives().get(c).getDescription().isEmpty()) {
