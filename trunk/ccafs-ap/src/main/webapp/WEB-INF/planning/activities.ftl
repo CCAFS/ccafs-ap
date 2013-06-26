@@ -13,7 +13,7 @@
 <section id="activityListPlanning" class="content">
   <div class="helpMessage">
     <img src="${baseUrl}/images/global/icon-help.png" />
-    <p> [@s.text name="planning.activityList.help" /] </p>
+    <p> [@s.text name="planning.activityList.help1" /] ${currentUser.leader.acronym} [@s.text name="planning.activityList.help2" /]</p>
   </div>
   
   <article class="fullContent">
