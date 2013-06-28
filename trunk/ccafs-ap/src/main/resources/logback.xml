@@ -11,7 +11,7 @@
       <level>INFO</level>
     </filter>
     <encoder>
-      <pattern>%d{yyyy-MM-dd_HH:mm:ss.SSS} - %logger{0} [%-5level] : %msg%n</pattern>
+      <pattern>%d{yyyy-MM-dd_HH:mm:ss.SSS} - [%thread]%logger{0} [%-5level] : %msg%n</pattern>
     </encoder>
     <rollingPolicy class="ch.qos.logback.core.rolling.FixedWindowRollingPolicy">
       <fileNamePattern>tests.%i.log.zip</fileNamePattern>
@@ -27,7 +27,7 @@
   <appender name="FILE-TEST" class="ch.qos.logback.core.rolling.RollingFileAppender">
     <file>${log.folder}/ccafsap-test.log</file>
     <encoder>
-      <pattern>%d{yyyy-MM-dd_HH:mm:ss.SSS} - %logger{0} [%-5level] : %msg%n</pattern>
+      <pattern>%d{yyyy-MM-dd_HH:mm:ss.SSS} - [%thread]%logger{0} [%-5level] : %msg%n</pattern>
     </encoder>
     <rollingPolicy class="ch.qos.logback.core.rolling.FixedWindowRollingPolicy">
       <fileNamePattern>tests.%i.log.zip</fileNamePattern>
@@ -48,13 +48,13 @@
       <level>INFO</level>
     </filter>
     <encoder>
-      <pattern>%d{yyyy-MM-dd_HH:mm:ss.SSS} - %logger{0} [%-5level] : %msg%n</pattern>
+      <pattern>%d{yyyy-MM-dd_HH:mm:ss.SSS} - [%thread]%logger{0} [%-5level] : %msg%n</pattern>
     </encoder>
   </appender>
 
   <appender name="CONSOLE-TEST" class="ch.qos.logback.core.ConsoleAppender">
     <encoder>
-      <pattern>%d{yyyy-MM-dd_HH:mm:ss.SSS} - %logger{0} [%-5level] : %msg%n</pattern>
+      <pattern>%d{yyyy-MM-dd_HH:mm:ss.SSS} - [%thread]%logger{0} [%-5level] : %msg%n</pattern>
     </encoder>
   </appender>
 
