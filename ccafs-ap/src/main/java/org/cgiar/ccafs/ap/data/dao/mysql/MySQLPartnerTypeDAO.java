@@ -29,6 +29,7 @@ public class MySQLPartnerTypeDAO implements PartnerTypeDAO {
 
   @Override
   public List<Map<String, String>> getPartnerTypeList() {
+    LOG.debug(">> getPartnerTypeList()");
     List<Map<String, String>> partnerTypeList = new ArrayList<>();
     String query = "SELECT * FROM partner_types";
     try (Connection con = databaseManager.getConnection()) {
@@ -43,8 +44,10 @@ public class MySQLPartnerTypeDAO implements PartnerTypeDAO {
       }
       rs.close();
     } catch (SQLException e) {
-      LOG.error("There was an error getting the data from partner_types table.", e);
+      LOG.error("-- getPartnerTypeList() > There was an error getting the list of partner types.", e);
     }
+
+    LOG.debug("<< getPartnerTypeList():partnerTypeList.size={}", partnerTypeList.size());
     return partnerTypeList;
   }
 

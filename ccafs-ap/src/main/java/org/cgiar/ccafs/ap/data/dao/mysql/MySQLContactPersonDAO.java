@@ -29,20 +29,28 @@ public class MySQLContactPersonDAO implements ContactPersonDAO {
 
   @Override
   public boolean deleteContactPersons(int activityID) {
+    LOG.debug(">> deleteContactPersons(activityID={})", activityID);
     String query = "DELETE FROM contact_person WHERE activity_id = ?";
     try (Connection con = databaseManager.getConnection()) {
       int rowsDeleted = databaseManager.makeChangeSecure(con, query, new Object[] {activityID});
       if (rowsDeleted >= 0) {
+        LOG.debug("<< deleteContactPersons():{}", true);
         return true;
       }
     } catch (SQLException e) {
-      LOG.error("There was an error deleting the contact persons related to the activity {}", activityID, e);
+      LOG.error(
+        "-- deleteContactPersons() > There was an error deleting the contact persons related to the activity {}",
+        activityID, e);
     }
+
+    LOG.debug("<< deleteContactPersons():{}", false);
     return false;
   }
 
   @Override
   public List<Map<String, String>> getContactPersons(int activityID) {
+    LOG.debug(">> getContactPersons(activityID={})", activityID);
+
     List<Map<String, String>> contactPersonsDB = new ArrayList<>();
     String query = "SELECT * FROM contact_person WHERE activity_id = " + activityID;
     try (Connection con = databaseManager.getConnection()) {
@@ -55,14 +63,17 @@ public class MySQLContactPersonDAO implements ContactPersonDAO {
         contactPersonsDB.add(cps);
       }
     } catch (SQLException e) {
-      LOG.error("There was an error getting the contact persons related to an activity. \n{}", query, e);
+      LOG.error("-- getContactPersons() > There was an error getting the contact persons related to the activity {}.",
+        activityID, e);
     }
 
+    LOG.debug("<< getContactPersons():contactPersonsDB.size={}", contactPersonsDB.size());
     return contactPersonsDB;
   }
 
   @Override
   public boolean saveContactPersons(Map<String, String> contactPerson, int activityID) {
+    LOG.debug(">> saveContactPersons(contactPerson={}, activityID={})", contactPerson, activityID);
     boolean saved = false;
     String query =
       "INSERT INTO contact_person (id, name, email, activity_id) VALUES (?, ?, ?, " + activityID
@@ -78,8 +89,11 @@ public class MySQLContactPersonDAO implements ContactPersonDAO {
         saved = true;
       }
     } catch (SQLException e) {
-      LOG.error("There was an error saving the contact person into the DAO.", e);
+      LOG.error("-- saveContactPersons() > There was an error saving the contact person for activity {} into the DAO.",
+        activityID, e);
     }
+
+    LOG.debug("<< saveContactPersons():{}", saved);
     return saved;
   }
 }

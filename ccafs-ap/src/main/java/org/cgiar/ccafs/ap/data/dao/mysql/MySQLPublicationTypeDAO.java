@@ -27,6 +27,7 @@ public class MySQLPublicationTypeDAO implements PublicationTypeDAO {
 
   @Override
   public Map<String, String> getPublicationType(String id) {
+    LOG.debug(">> getPublicationType(id={})", id);
     Map<String, String> typeData = new HashMap<>();
     String query = "SELECT * FROM publication_types WHERE id = " + id;
     try (Connection connection = dbManager.getConnection()) {
@@ -37,13 +38,16 @@ public class MySQLPublicationTypeDAO implements PublicationTypeDAO {
       }
       rs.close();
     } catch (SQLException e) {
-      LOG.error("There was an error getting publication types information. '{}'", query, e);
+      LOG.error("-- getPublicationType() > There was an error getting publication type with id {}.", id, e);
     }
+
+    LOG.debug("<< getPublicationType():{}", typeData);
     return typeData;
   }
 
   @Override
   public Map<String, String> getPublicationTypes() {
+    LOG.debug(">> getPublicationTypes()");
     Map<String, String> typesData = new LinkedHashMap<>();
     String query = "SELECT * FROM publication_types";
     try (Connection connection = dbManager.getConnection()) {
@@ -53,8 +57,10 @@ public class MySQLPublicationTypeDAO implements PublicationTypeDAO {
       }
       rs.close();
     } catch (SQLException e) {
-      LOG.error("There was an error getting publication types information. '{}'", query, e);
+      LOG.error("-- getPublicationTypes() > There was an error getting the list of publication types", e);
     }
+
+    LOG.debug("<< getPublicationTypes():{}", typesData);
     return typesData;
   }
 

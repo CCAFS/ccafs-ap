@@ -29,6 +29,7 @@ public class MySQLMilestoneStatusDAO implements MilestoneStatusDAO {
 
   @Override
   public List<Map<String, String>> getMilestoneStatus() {
+    LOG.debug(">> getMilestoneStatus()");
     List<Map<String, String>> milestoneStatusDataList = new ArrayList<>();
     String query = "SELECT * FROM milestone_status";
     try (Connection con = databaseManager.getConnection()) {
@@ -41,8 +42,10 @@ public class MySQLMilestoneStatusDAO implements MilestoneStatusDAO {
       }
       rs.close();
     } catch (SQLException e) {
-      LOG.error("There was an error getting the data from 'milestone_status' table. \n{}", query, e);
+      LOG.error("-- getMilestoneStatus() > There was an error getting the list of milestone status.", e);
     }
+
+    LOG.debug("<< getMilestoneStatus():milestoneStatusDataList.size={}", milestoneStatusDataList.size());
     return milestoneStatusDataList;
   }
 }

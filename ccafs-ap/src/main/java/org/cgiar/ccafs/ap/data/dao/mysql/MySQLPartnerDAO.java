@@ -29,6 +29,7 @@ public class MySQLPartnerDAO implements PartnerDAO {
 
   @Override
   public List<Map<String, String>> getAllPartners() {
+    LOG.debug(">> getAllPartners()");
     List<Map<String, String>> partners = new ArrayList<>();
     String query =
       "SELECT p.id, p.acronym, CASE WHEN p.acronym IS NULL THEN CONCAT(p.name, ', ', co.name) ELSE CONCAT(p.acronym, ' - ', p.name, ', ', co.name) END as 'name', pt.id as 'partner_type_id', pt.acronym as 'partner_type_acronym' "
@@ -49,13 +50,15 @@ public class MySQLPartnerDAO implements PartnerDAO {
       }
       rs.close();
     } catch (SQLException e) {
-      LOG.error("There was an error getting the data from 'partners' table. \n{}", query, e);
+      LOG.error("-- getAllPartners() > There was an error getting the list of partners.", e);
     }
+    LOG.debug("<< getAllPartners():partners.size={}", partners.size());
     return partners;
   }
 
   @Override
   public Map<String, String> getPartner(int id) {
+    LOG.debug(">> getPartner(id={})", id);
     Map<String, String> partnerData = new HashMap<>();
     String query = "SELECT id, acronym, name FROM partners WHERE id = " + id;
     try (Connection connection = databaseManager.getConnection()) {
@@ -67,16 +70,21 @@ public class MySQLPartnerDAO implements PartnerDAO {
       }
       rs.close();
     } catch (SQLException e) {
-      LOG.error("There was an error getting the data form 'partners' table. \n{}", query, e);
+      LOG.error("-- getPartner() > There was an error getting the information for partner {}", id, e);
     }
-    if (partnerData.size() > 0) {
-      return partnerData;
+
+    if (partnerData.isEmpty()) {
+      LOG.debug("<< getPartner():null");
+      return null;
     }
-    return null;
+
+    LOG.debug("<< getPartner():{}", partnerData);
+    return partnerData;
   }
 
   @Override
   public List<Map<String, String>> getPartnersByFilter(String countryID, String partnerTypeID) {
+    LOG.debug(">> getPartnersByFilter(countryID='{}', partnerTypeID='{}')", countryID, partnerTypeID);
     List<Map<String, String>> partners = new ArrayList<>();
     String query =
       "SELECT p.id, p.acronym, CASE WHEN p.acronym IS NULL THEN CONCAT(p.name, ', ', co.name) ELSE CONCAT(p.acronym, ' - ', p.name, ', ', co.name) END as 'name', pt.id as 'partner_type_id', pt.acronym as 'partner_type_acronym' "
@@ -107,13 +115,19 @@ public class MySQLPartnerDAO implements PartnerDAO {
       }
       rs.close();
     } catch (SQLException e) {
-      LOG.error("There was an error getting the data from 'partners' table. \n{}", query, e);
+      Object[] errorParams = {countryID, partnerTypeID, e};
+      LOG.error(
+        "-- getPartnersByFilter() > There was an error getting the partners list for country '{}' and type '{}'",
+        errorParams);
     }
+
+    LOG.debug("<< getPartnersByFilter():partners.size={}", partners.size());
     return partners;
   }
 
   @Override
   public List<Map<String, String>> getPartnersList(int activityID) {
+    LOG.debug(">> getPartnersList(activityID={})", activityID);
     List<Map<String, String>> statusList = new ArrayList<>();
     String query =
       "SELECT pa.id, pa.name, pa.acronym, pa.city, co.iso2 as 'country_id', co.name as 'country_name', "
@@ -139,13 +153,15 @@ public class MySQLPartnerDAO implements PartnerDAO {
       }
       rs.close();
     } catch (SQLException e) {
-      LOG.error("There was an error getting the data from 'partners' table. \n{}", query, e);
+      LOG.error("-- getPartnersList() > There was an error getting the partners list for activity {}", activityID, e);
       return null;
     }
 
     if (statusList.size() == 0) {
       return null;
     }
+
+    LOG.debug("<< getPartnersList():statusList.size={}", statusList.size());
     return statusList;
   }
 

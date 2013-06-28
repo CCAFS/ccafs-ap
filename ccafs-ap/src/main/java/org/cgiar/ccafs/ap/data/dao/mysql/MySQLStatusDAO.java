@@ -29,6 +29,7 @@ public class MySQLStatusDAO implements StatusDAO {
 
   @Override
   public List<Map<String, String>> getStatusList() {
+    LOG.debug(">> getStatusList()");
     List<Map<String, String>> statusList = new ArrayList<>();
     try (Connection con = databaseManager.getConnection()) {
       String query = "SELECT * from activity_status";
@@ -41,8 +42,10 @@ public class MySQLStatusDAO implements StatusDAO {
       }
       rs.close();
     } catch (SQLException e) {
-      LOG.error("There was an error getting the data from activity_status table.", e);
+      LOG.error("-- getStatusList() > There was an error getting the activity status list.", e);
     }
+
+    LOG.debug("<< getStatusList():statusList.size={}", statusList.size());
     return statusList;
   }
 

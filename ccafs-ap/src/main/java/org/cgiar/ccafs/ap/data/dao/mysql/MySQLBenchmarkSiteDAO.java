@@ -28,6 +28,7 @@ public class MySQLBenchmarkSiteDAO implements BenchmarkSiteDAO {
 
   @Override
   public List<Map<String, String>> getActiveBenchmarkSiteList() {
+    LOG.debug(">> getActiveBenchmarkSiteList()");
     List<Map<String, String>> bsDataList = new ArrayList<>();
     String query =
       "SELECT bs.id, bs.bs_id, bs.name, bs.longitude, bs.latitude, co.iso2 as 'country_iso2', co.name as 'country_name' "
@@ -48,13 +49,17 @@ public class MySQLBenchmarkSiteDAO implements BenchmarkSiteDAO {
       }
       rs.close();
     } catch (SQLException e) {
-      LOG.error("There was an error getting the benchmark sites list.", e);
+      LOG.error("-- getActiveBenchmarkSiteList > There was an error getting the benchmark sites list.", e);
     }
+
+    LOG.debug("<< getActiveBenchmarkSiteList():bsDataList.size={}", bsDataList.size());
     return bsDataList;
   }
 
   @Override
   public List<Map<String, String>> getActiveBenchmarkSitesByCountry(String countryID) {
+    LOG.debug(">> getActiveBenchmarkSitesByCountry(countryID={})", countryID);
+
     List<Map<String, String>> bsDataList = new ArrayList<>();
     String query =
       "SELECT bs.id, bs.bs_id, bs.name, bs.longitude, bs.latitude, co.iso2 as 'country_iso2', co.name as 'country_name' "
@@ -75,13 +80,19 @@ public class MySQLBenchmarkSiteDAO implements BenchmarkSiteDAO {
       }
       rs.close();
     } catch (SQLException e) {
-      LOG.error("There was an error getting the benchmark sites list.", e);
+      LOG.error(
+        "-- getActiveBenchmarkSitesByCountry() > There was an error getting the benchmark sites list for country {}.",
+        countryID, e);
     }
+
+    LOG.debug("<< getActiveBenchmarkSitesByCountry():bsDataList.size={}", bsDataList.size());
     return bsDataList;
   }
 
   @Override
   public List<Map<String, String>> getActiveBenchmarkSitesByRegion(String regionID) {
+    LOG.debug(">> getActiveBenchmarkSitesByRegion(regionID={})", regionID);
+
     List<Map<String, String>> bsDataList = new ArrayList<>();
     String query =
       "SELECT bs.id, bs.bs_id, bs.name, bs.longitude, bs.latitude, co.iso2 as 'country_iso2', co.name as 'country_name', "
@@ -105,8 +116,12 @@ public class MySQLBenchmarkSiteDAO implements BenchmarkSiteDAO {
       }
       rs.close();
     } catch (SQLException e) {
-      LOG.error("There was an error getting the benchmark sites list.", e);
+      LOG.error(
+        "-- getActiveBenchmarkSitesByRegion() > There was an error getting the benchmark sites list for region {}.",
+        regionID, e);
     }
+
+    LOG.debug("<< getActiveBenchmarkSitesByRegion():bsDataList.size={}", bsDataList.size());
     return bsDataList;
   }
 }

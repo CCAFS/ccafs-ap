@@ -29,6 +29,7 @@ public class MySQLCaseStudyDAO implements CaseStudyDAO {
 
   @Override
   public List<Map<String, String>> getCaseStudyList(int activityLeaderId, int logframeId) {
+    LOG.debug(">> getCaseStudyList(activityLeaderId={}, logframeId={})", activityLeaderId, logframeId);
     List<Map<String, String>> caseStudyDataList = new ArrayList<>();
     String query =
       "SELECT cs.id, cs.title, cs.author, cs.start_date, cs.end_date, cs.photo, cs.objectives, "
@@ -57,29 +58,45 @@ public class MySQLCaseStudyDAO implements CaseStudyDAO {
       }
       rs.close();
     } catch (SQLException e) {
-      LOG.error("There was a problem getting a case study \n{}", query, e);
+      Object[] errorParam = {activityLeaderId, logframeId, e};
+      LOG.error(
+        "-- getCaseStudyList() > There was a problem getting the case studies for leader {} related to logframe {}",
+        errorParam);
     }
+
+    LOG.debug("<< getCaseStudyList():caseStudyDataList.size={}", caseStudyDataList.size());
     return caseStudyDataList;
   }
 
   @Override
   public boolean removeAllCaseStudies(int activityLeaderId, int logframeId) {
+    LOG.debug("<< removeAllCaseStudies(activityLeaderId={}, logframeId={})", activityLeaderId, logframeId);
+
     String deleteDeliverableQuery = "DELETE FROM case_studies WHERE activity_leader_id = ? AND logframe_id = ?";
     try (Connection connection = databaseManager.getConnection()) {
       int rowsDeleted =
         databaseManager.makeChangeSecure(connection, deleteDeliverableQuery,
           new Object[] {activityLeaderId, logframeId});
       if (rowsDeleted >= 0) {
+        LOG.debug("<< removeAllCaseStudies():{}", true);
         return true;
       }
     } catch (SQLException e) {
-      LOG.error("There was a problem deleting a case study \n{}", deleteDeliverableQuery, e);
+      Object[] errorParams = {activityLeaderId, logframeId, e};
+      LOG
+        .error(
+          "-- removeAllCaseStudies() > There was a problem deleting the case studies related to the leader {} and logframe {}",
+          errorParams);
     }
+
+    LOG.debug("<< removeAllCaseStudies():{}", false);
     return false;
   }
 
   @Override
   public int saveCaseStudy(Map<String, Object> caseStudyData) {
+    LOG.debug("saveCaseStudy(caseStudyData={})", caseStudyData);
+
     int generatedId = -1;
     String preparedQuery =
       "INSERT INTO case_studies (id, title, author, start_date, end_date, photo, objectives, description, "
@@ -113,9 +130,11 @@ public class MySQLCaseStudyDAO implements CaseStudyDAO {
         rs.close();
       }
     } catch (SQLException e) {
-      LOG.error("There was an error inserting a record into 'case_studies' table. ", e);
+      LOG.error("-- saveCaseStudy() > There was an error inserting a record into 'case_studies' table. ", e);
       return -1;
     }
+
+    LOG.debug("<< saveCaseStudy():{}", generatedId);
     return generatedId;
   }
 }

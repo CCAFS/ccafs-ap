@@ -30,7 +30,7 @@ public class MySQLBudgetPercentageDAO implements BudgetPercentageDAO {
 
   @Override
   public Map<String, String> getBudgetPercentage(String id) {
-    LOG.trace("Getting the budget percentage identified by {}.", id);
+    LOG.debug(">> getBudgetPercentage(id={}).", id);
 
     Map<String, String> bpData = new HashMap<>();
     String query = "SELECT * FROM budget_percentages WHERE id = " + id;
@@ -43,18 +43,20 @@ public class MySQLBudgetPercentageDAO implements BudgetPercentageDAO {
       }
       rs.close();
     } catch (SQLException e) {
-      LOG.error("There was an error getting the budget percentage. \n{}", query, e);
+      LOG.error("-- getBudgetPercentage() > There was an error getting the budget percentage identified by {}", id, e);
     }
 
     if (bpData.isEmpty()) {
-      LOG.warn("The budget percentage list is empty");
+      LOG.warn("-- getBudgetPercentage() > The budget percentage list is empty");
     }
+
+    LOG.debug("<< getBudgetPercentage():{}.", bpData);
     return bpData;
   }
 
   @Override
   public List<Map<String, String>> getBudgetPercentages() {
-    LOG.trace("Getting the budget percentage list");
+    LOG.debug(">> getBudgetPercentages()");
 
     List<Map<String, String>> bpDataList = new ArrayList<>();
     String query = "SELECT * FROM budget_percentages";
@@ -68,12 +70,14 @@ public class MySQLBudgetPercentageDAO implements BudgetPercentageDAO {
       }
       rs.close();
     } catch (SQLException e) {
-      LOG.error("There was an error getting the budget percentage list. \n{}", query, e);
+      LOG.error("-- getBudgetPercentages() > There was an error getting the budget percentage list. \n{}", e);
     }
 
     if (bpDataList.size() <= 0) {
-      LOG.warn("The budget percentage list is empty");
+      LOG.warn("-- getBudgetPercentages() > The budget percentage list is empty");
     }
+
+    LOG.debug("<< getBudgetPercentages():bpDataList.size={}", bpDataList.size());
     return bpDataList;
   }
 

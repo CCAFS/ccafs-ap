@@ -29,6 +29,8 @@ public class MySQLCaseStudyCountriesDAO implements CaseStudyCountriesDAO {
 
   @Override
   public List<Map<String, String>> getCaseStudyCountries(int caseStudyId) {
+    LOG.debug(">> getCaseStudyCountries(caseStudyId={})", caseStudyId);
+
     List<Map<String, String>> caseStudyCountriesDataList = new ArrayList<>();
     String query =
       "SELECT csc.country_iso2 id, co.name "
@@ -44,13 +46,20 @@ public class MySQLCaseStudyCountriesDAO implements CaseStudyCountriesDAO {
       }
       rs.close();
     } catch (SQLException e) {
-      LOG.error("There was an error getting the countries related to a case study. \n{}", query, e);
+      LOG
+        .error(
+          "-- getCaseStudyCountries() > There was an error getting the countries related to the case study identified by {}.",
+          caseStudyId, e);
     }
+
+    LOG.debug("<< getCaseStudyCountries():caseStudyCountriesDataList.size={}", caseStudyCountriesDataList.size());
     return caseStudyCountriesDataList;
   }
 
   @Override
   public boolean saveCaseStudyCountries(int caseStudyId, ArrayList<String> countriesIds) {
+    LOG.debug(">> saveCaseStudyCountries(caseStudyId={}, countriesIds={})", caseStudyId, countriesIds);
+
     boolean problem = false;
     try (Connection con = databaseManager.getConnection()) {
       String addQuery = "INSERT INTO case_study_countries (case_study_id, country_iso2) VALUES ";
@@ -70,8 +79,13 @@ public class MySQLCaseStudyCountriesDAO implements CaseStudyCountriesDAO {
         problem = true;
       }
     } catch (SQLException e) {
-      LOG.error("There was an error saving records into 'case_study_countries' table. \n{}", e);
+      LOG
+        .error(
+          "-- saveCaseStudyCountries() > There was an error saving records into 'case_study_countries' table for case study {}",
+          caseStudyId, e);
     }
+
+    LOG.debug("<< saveCaseStudyCountries():{}", !problem);
     return !problem;
   }
 }

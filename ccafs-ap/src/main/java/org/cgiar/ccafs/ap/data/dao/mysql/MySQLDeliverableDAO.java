@@ -28,6 +28,7 @@ public class MySQLDeliverableDAO implements DeliverableDAO {
 
   @Override
   public int addDeliverable(Map<String, Object> deliverableData) {
+    LOG.debug(">> addDeliverable(deliverableData={})", deliverableData);
     int generatedId = -1;
     try (Connection connection = databaseManager.getConnection()) {
 
@@ -55,13 +56,16 @@ public class MySQLDeliverableDAO implements DeliverableDAO {
         rs.close();
       }
     } catch (SQLException e) {
-      LOG.error("There was a problem saving a new deliverables into the database. \n{}", e);
+      LOG.error("-- addDeliverable() > There was a problem saving new deliverables into the database. \n{}", e);
     }
+
+    LOG.debug("<< addDeliverable():{}", generatedId);
     return generatedId;
   }
 
   @Override
   public List<Map<String, String>> getDeliverables(int activityID) {
+    LOG.debug(">> getDeliverables(activityID={})", activityID);
     List<Map<String, String>> deliverables = new ArrayList<>();
     String query =
       "SELECT de.id, de.description, de.year, de.is_expected, de.filename, de.description_update, ds.id as 'deliverable_status_id', "
@@ -89,20 +93,24 @@ public class MySQLDeliverableDAO implements DeliverableDAO {
       }
       rs.close();
     } catch (SQLException e) {
-      LOG.error("There was a problem getting deliverables for an activity. \n{}", query, e);
+      LOG.error("There was a problem getting deliverables for activity {}.", activityID, e);
+      LOG.debug("<< getDeliverables():null");
       return null;
     }
 
     if (deliverables.isEmpty()) {
+      LOG.debug("<< getDeliverables():null");
       return null;
-    } else {
-      return deliverables;
     }
 
+    LOG.debug("<< getDeliverables():deliverables.size={}", deliverables.size());
+    return deliverables;
   }
 
   @Override
   public int getDeliverablesCount(int activityID) {
+    LOG.debug(">> getDeliverablesCount(activityID={})", activityID);
+
     int deliverableCount = 0;
     String query = "SELECT COUNT(id) FROM deliverables WHERE activity_id = " + activityID;
     try (Connection connection = databaseManager.getConnection()) {
@@ -112,37 +120,51 @@ public class MySQLDeliverableDAO implements DeliverableDAO {
       }
       rs.close();
     } catch (SQLException e) {
-      LOG.error("There was a problem counting the deliverables for an activity. \n{}", query, e);
+      LOG.error("-- getDeliverablesCount() > There was a problem counting the deliverables for activity {}.",
+        activityID, e);
     }
+
+    LOG.debug("<< getDeliverablesCount():{}", deliverableCount);
     return deliverableCount;
   }
 
   @Override
   public boolean removeExpected(int activityID) {
+    LOG.debug(">> removeExpected(activityID={})", activityID);
+
     String deleteDeliverableQuery = "DELETE FROM deliverables WHERE is_expected = 1 AND activity_id = ?";
     try (Connection connection = databaseManager.getConnection()) {
       int rowsDeleted = databaseManager.makeChangeSecure(connection, deleteDeliverableQuery, new Object[] {activityID});
       if (rowsDeleted >= 0) {
+        LOG.debug("<< removeExpected():{}", true);
         return true;
       }
     } catch (SQLException e) {
-      LOG.error("There was a problem deleting the planned deliverables for an activity. \n{}", deleteDeliverableQuery,
-        e);
+      LOG.error("-- removeExpected() > There was a problem deleting the planned deliverables for activity {}.",
+        activityID, e);
     }
+
+    LOG.debug("<< getDeliverablesCount():{}", false);
     return false;
   }
 
   @Override
   public boolean removeNotExpected(int activityID) {
+    LOG.debug(">> removeNotExpected(activityID={})", activityID);
+
     String deleteDeliverableQuery = "DELETE FROM deliverables WHERE is_expected = 0 AND activity_id = ?";
     try (Connection connection = databaseManager.getConnection()) {
       int rowsDeleted = databaseManager.makeChangeSecure(connection, deleteDeliverableQuery, new Object[] {activityID});
       if (rowsDeleted >= 0) {
+        LOG.debug("<< removeNotExpected():{}", true);
         return true;
       }
     } catch (SQLException e) {
-      LOG.error("There was a problem deleting the new deliverables for an activity. \n{}", deleteDeliverableQuery, e);
+      LOG.error("-- removeNotExpected() > There was a problem deleting the new deliverables for activity {}.",
+        activityID, e);
     }
+
+    LOG.debug("<< removeNotExpected():{}", false);
     return false;
   }
 }

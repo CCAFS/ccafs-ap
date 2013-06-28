@@ -29,6 +29,7 @@ public class MySQLThemeDAO implements ThemeDAO {
 
   @Override
   public List<Map<String, String>> getThemes() {
+    LOG.debug(">> getThemes()");
     List<Map<String, String>> themes = new ArrayList<>();
     String query = "SELECT * FROM themes";
     try (Connection con = databaseManager.getConnection()) {
@@ -42,13 +43,16 @@ public class MySQLThemeDAO implements ThemeDAO {
       }
       rs.close();
     } catch (SQLException e) {
-      LOG.error("There was an error getting the data from themes table.", e);
+      LOG.error("-- getThemes() > There was an error getting the themes list.", e);
     }
+
+    LOG.debug("<< getThemes():themes.size={}", themes.size());
     return themes;
   }
 
   @Override
   public List<Map<String, String>> getThemes(int logframeId) {
+    LOG.debug(">> getThemes(logframeId={})", logframeId);
     List<Map<String, String>> themes = new ArrayList<>();
     String query = "SELECT * FROM themes WHERE logframe_id = " + logframeId;
     try (Connection con = databaseManager.getConnection()) {
@@ -62,9 +66,11 @@ public class MySQLThemeDAO implements ThemeDAO {
       }
       rs.close();
     } catch (SQLException e) {
-      LOG.error("There was an error getting the data from themes table that are related to the logframe {}.",
-        logframeId, e);
+      LOG.error("-- getThemes() > There was an error getting the themes list related to the logframe {}.", logframeId,
+        e);
     }
+
+    LOG.debug("<< getThemes():themes.size={}", themes.size());
     return themes;
   }
 }

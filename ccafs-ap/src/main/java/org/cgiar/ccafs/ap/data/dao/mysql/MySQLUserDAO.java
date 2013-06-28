@@ -27,6 +27,7 @@ public class MySQLUserDAO implements UserDAO {
 
   @Override
   public Map<String, String> getUser(String email) {
+    LOG.debug(">> getUser(email={})", email);
     Map<String, String> userData = new HashMap<>();
     try (Connection connection = dbManager.getConnection()) {
       String query =
@@ -45,17 +46,18 @@ public class MySQLUserDAO implements UserDAO {
         userData.put("leader_name", rs.getString("leader_name"));
         userData.put("leader_type_id", rs.getString("leader_type_id"));
         userData.put("leader_type_name", rs.getString("leader_type_name"));
-        LOG.trace("The data for the user {} was fetched from the database", email);
       }
       rs.close();
     } catch (SQLException e) {
-      LOG.error("There was an error getting the data from users table.", e);
+      LOG.error("-- getUser() > There was an error getting the data for user {}.", email, e);
     }
+    LOG.debug("<< getUser():{}", userData);
     return userData;
   }
 
   @Override
   public boolean saveLastLogin(Map<String, String> userData) {
+    LOG.debug(">> saveLastLogin(userData={})", userData);
     String query = "UPDATE users SET last_login = ? WHERE id = ?;";
     Object[] values = new Object[2];
     values[0] = userData.get("last_login");
@@ -64,23 +66,27 @@ public class MySQLUserDAO implements UserDAO {
     try (Connection con = dbManager.getConnection()) {
       int rows = dbManager.makeChangeSecure(con, query, values);
       if (rows <= 0) {
-        LOG
-          .warn("There was an error saving the last login for the user {} into the database.", userData.get("user_id"));
+        LOG.warn("-- saveLastLogin() > There was an error saving the last login for the user {} into the database.",
+          userData.get("user_id"));
         LOG.warn("Query: {}", query);
         LOG.warn("Values: {}", values);
         return false;
       }
 
     } catch (SQLException e) {
-      LOG.error("There was an error saving the last login for the user {} into the database.", userData.get("user_id"),
-        e);
+      LOG.error("-- saveLastLogin() > There was an error saving the last login for the user {} into the database.",
+        userData.get("user_id"), e);
+      LOG.debug("<< saveLastLogin():false");
       return false;
     }
+
+    LOG.debug("<< saveLastLogin():true");
     return true;
   }
 
   @Override
   public boolean saveUser(Map<String, String> userData) {
+    LOG.debug(">> saveUser(userData={})", userData);
     String query = "INSERT INTO users (email, password, activity_leader_id, role) VALUES (?, ?, ?, ?);";
     Object[] values = new Object[4];
     values[0] = userData.get("email");
@@ -91,15 +97,18 @@ public class MySQLUserDAO implements UserDAO {
     try (Connection con = dbManager.getConnection()) {
       int rows = dbManager.makeChangeSecure(con, query, values);
       if (rows <= 0) {
-        LOG.warn("There was an error saving the user into the database.");
+        LOG.warn("-- saveUser() > There was an error saving a new user into the database.");
         LOG.warn("Query: {}", query);
         LOG.warn("Values: {}", values);
+
+        LOG.debug("<< saveUser():false");
         return false;
       }
 
     } catch (SQLException e) {
-      LOG.error("There was a problem saving a new user into the database. \n{}", e);
+      LOG.error("-- saveUser() > There was a problem saving a new user into the database. \n{}", e);
     }
+    LOG.debug("<< saveUser():true");
     return true;
   }
 }

@@ -29,6 +29,7 @@ public class MySQLOutcomeDAO implements OutcomeDAO {
 
   @Override
   public boolean addOutcomes(List<Map<String, String>> newOutcomes) {
+    LOG.debug(">> addOutcomes(newOutcomes={})", newOutcomes);
     boolean problem = false;
     try (Connection connection = dbManager.getConnection()) {
       String preparedQuery;
@@ -53,13 +54,16 @@ public class MySQLOutcomeDAO implements OutcomeDAO {
         }
       }
     } catch (SQLException e) {
-      LOG.error("There was an error saving the data into 'outcomes' table", e);
+      LOG.error("-- addOutcomes() > There was an error saving new 'outcomes'.", e);
     }
+
+    LOG.debug("<< addOutcomes():{}", !problem);
     return !problem;
   }
 
   @Override
   public List<Map<String, String>> getOutcomes(int leader_id, int logframe_id) {
+    LOG.debug(">> getOutcomes(leader_id={}, logframe_id={})", leader_id, logframe_id);
     List<Map<String, String>> outcomes = new ArrayList<>();
     try (Connection connection = dbManager.getConnection()) {
       String query =
@@ -79,16 +83,18 @@ public class MySQLOutcomeDAO implements OutcomeDAO {
       }
       rs.close();
     } catch (SQLException e) {
-      String message =
-        "There was an error getting the data from 'outcomes' table that is related to the leader " + leader_id
-          + "and the logframe " + logframe_id;
-      LOG.error(message, e);
+      Object[] errorParams = {leader_id, logframe_id, e};
+      LOG.error("-- getOutcomes() > There was an error getting the outcomes list for leader {} and logframe {}",
+        errorParams);
     }
+
+    LOG.debug("<< getOutcomes():outcomes.size={}", outcomes.size());
     return outcomes;
   }
 
   @Override
   public boolean removeOutcomes(int leader_id, int logframe_id) {
+    LOG.debug(">> removeOutcomes(leader_id={}, logframe_id={})");
     boolean problem = false;
     try (Connection connection = dbManager.getConnection()) {
       String removeQuery =
@@ -98,11 +104,11 @@ public class MySQLOutcomeDAO implements OutcomeDAO {
         problem = true;
       }
     } catch (SQLException e) {
-      String msg =
-        "There was an error deleting the records from 'outcomes' table that are related to the leader " + leader_id
-          + " and the logframe " + logframe_id;
-      LOG.error(msg, e);
+      Object[] errorParams = {leader_id, logframe_id, e};
+      LOG.error("-- removeOutcomes() > There was an error deleting the outcomes list for leader {} and logframe {}",
+        errorParams);
     }
+    LOG.debug("<< removeOutcomes():{}", !problem);
     return !problem;
   }
 

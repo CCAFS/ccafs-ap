@@ -56,7 +56,7 @@ public abstract class DAOManager {
    * 
    * @return A new object connection.
    */
-  public Connection getConnection() {
+  public Connection getConnection() throws SQLException {
     return null;
   }
 
@@ -114,7 +114,8 @@ public abstract class DAOManager {
    * @param password
    * @return A Connection object type
    */
-  protected Connection openConnection(String user, String password, String ip, String port, String databaseName) {
+  protected Connection openConnection(String user, String password, String ip, String port, String databaseName)
+    throws SQLException {
     return null;
   }
 

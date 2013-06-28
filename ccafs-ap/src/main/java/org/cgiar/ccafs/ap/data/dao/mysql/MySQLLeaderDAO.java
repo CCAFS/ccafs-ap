@@ -29,6 +29,7 @@ public class MySQLLeaderDAO implements LeaderDAO {
 
   @Override
   public Map<String, String> getActivityLeader(int activityID) {
+    LOG.debug(">> getActivityLeader(activityID={})", activityID);
     Map<String, String> leaderData = new HashMap<>();
     String query =
       "SELECT al.id, al.name, al.acronym, lt.id as leader_type_id, lt.name leader_type_name "
@@ -45,13 +46,17 @@ public class MySQLLeaderDAO implements LeaderDAO {
       }
       rs.close();
     } catch (SQLException e) {
-      LOG.error("There was an error getting the activity leader of an activity. \n{}", query, e);
+      LOG.error("-- getActivityLeader() > There was an error getting the activity leader for activity {}.", activityID,
+        e);
     }
+    LOG.debug("<< getActivityLeader():{}", leaderData.toString());
     return leaderData;
   }
 
   @Override
   public List<Map<String, String>> getAllLeaders() {
+    LOG.debug(">> getAllLeaders()");
+
     List<Map<String, String>> leadersData = new ArrayList<>();
     StringBuilder query = new StringBuilder();
     query.append("SELECT al.id, al.acronym, al.name, lt.id as 'leader_type_id', lt.name as 'leader_type_name' ");
@@ -70,14 +75,17 @@ public class MySQLLeaderDAO implements LeaderDAO {
       }
       rs.close();
     } catch (SQLException e) {
-      LOG.error("There was an error getting all the activity leaders. \n{}", query.toString(), e);
+      LOG.error("-- getAllLeaders() > There was an error getting the activity leaders list.", e);
     }
 
+    LOG.debug("<< getAllLeaders():leadersData.size={}", leadersData.size());
     return leadersData;
   }
 
   @Override
   public Map<String, String> getUserLeader(int userID) {
+    LOG.debug(">> getUserLeader(userID={})", userID);
+
     Map<String, String> leaderData = new HashMap<>();
     String query =
       "SELECT al.id, al.name, lt.id as leader_type_id, lt.name as leader_type_name "
@@ -93,10 +101,10 @@ public class MySQLLeaderDAO implements LeaderDAO {
       }
       rs.close();
     } catch (SQLException e) {
-      LOG.error("There was an error getting the user leader related to an user. \n{}", query, e);
+      LOG.error("-- getUserLeader() > There was an error getting the user leader related to the user {}.", userID, e);
     }
+
+    LOG.debug("<< getUserLeader():{}", leaderData.toString());
     return leaderData;
   }
-
-
 }

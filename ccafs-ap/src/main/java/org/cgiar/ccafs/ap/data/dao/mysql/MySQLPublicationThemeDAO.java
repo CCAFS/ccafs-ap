@@ -29,6 +29,7 @@ public class MySQLPublicationThemeDAO implements PublicationThemeDAO {
 
   @Override
   public List<Map<String, String>> getThemes(int publicationId) {
+    LOG.debug(">> getThemes(publicationId={})", publicationId);
     List<Map<String, String>> themesDataList = new ArrayList<>();
     String query =
       "SELECT th.id, th.code, th.description FROM themes th "
@@ -44,13 +45,15 @@ public class MySQLPublicationThemeDAO implements PublicationThemeDAO {
       }
       rs.close();
     } catch (SQLException e) {
-      LOG.error("There was an error getting the data from 'themes' table. \n{}", query, e);
+      LOG.error("-- getThemes() > There was an error getting the theme of publication {}", publicationId, e);
     }
+    LOG.debug("<< getThemes():themesDataList.size={}", themesDataList.size());
     return themesDataList;
   }
 
   @Override
   public boolean saveThemes(int publicationId, ArrayList<String> themeIds) {
+    LOG.debug(">> saveThemes(publicationId, themeIds)", publicationId, themeIds);
     boolean added = false;
     String addQuery = "INSERT INTO themes_publications (publication_id, theme_id) VALUES ";
     try (Connection con = databaseManager.getConnection()) {
@@ -69,8 +72,9 @@ public class MySQLPublicationThemeDAO implements PublicationThemeDAO {
         added = true;
       }
     } catch (SQLException e) {
-      LOG.error("There was not posible save the data into 'themes' table. \n{}", e);
+      LOG.error("-- saveThemes() > There was not posible save the data into 'themes' table. \n{}", e);
     }
+    LOG.debug("<< saveThemes():{}", added);
     return added;
   }
 

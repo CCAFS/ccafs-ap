@@ -29,6 +29,7 @@ public class MySQLMilestoneDAO implements MilestoneDAO {
 
   @Override
   public Map<String, String> getMilestone(int milestoneID) {
+    LOG.debug(">> getMilestone(milestoneID={})", milestoneID);
     Map<String, String> milestone = new HashMap<>();
     // Querying milestone record.
     String query =
@@ -58,18 +59,21 @@ public class MySQLMilestoneDAO implements MilestoneDAO {
       rs.close();
 
     } catch (SQLException e) {
-      LOG.error("There was an error getting the data from 'milestones' table. \n{}", query, e);
+      LOG.error("-- getMilestone() > There was an error getting the data for 'milestones' {}.", milestoneID, e);
     }
 
     if (milestone.isEmpty()) {
+      LOG.debug("<< getMilestone():null");
       return null;
-    } else {
-      return milestone;
     }
+
+    LOG.debug("<< getMilestone():{}", milestone.toString());
+    return milestone;
   }
 
   @Override
   public List<Map<String, String>> getMilestoneList(int logframeID) {
+    LOG.debug(">> getMilestoneList(logframeID={})", logframeID);
     List<Map<String, String>> milestoneDataList = new ArrayList<>();
     String query =
       "SELECT m.id, m.code, m.year, m.description FROM milestones m " + "INNER JOIN outputs op ON m.output_id = op.id "
@@ -87,13 +91,14 @@ public class MySQLMilestoneDAO implements MilestoneDAO {
       }
       rs.close();
     } catch (SQLException e) {
-      LOG.error("There was an error getting the milestone list from 'milestones' table. \n{}", query, e);
+      LOG.error("-- getMilestoneList() > There was an error getting the milestone list for logframe {}", logframeID, e);
     }
 
     if (milestoneDataList.isEmpty()) {
-      LOG.warn("It was not found milestone list corresponding to the logframe {}", logframeID);
+      LOG.warn("-- getMilestoneList() > It was not found milestone list corresponding to the logframe {}", logframeID);
     }
 
+    LOG.debug("<< getMilestoneList():milestoneDataList.size={}", milestoneDataList.size());
     return milestoneDataList;
   }
 }

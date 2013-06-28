@@ -28,6 +28,7 @@ public class MySQLDeliverableStatusDAO implements DeliverableStatusDAO {
 
   @Override
   public List<Map<String, String>> getDeliverableStatus() {
+    LOG.debug(">> getDeliverableStatus()");
     List<Map<String, String>> deliverableTypesList = new ArrayList<>();
     String query = "SELECT * from deliverable_status";
     try (Connection con = databaseManager.getConnection()) {
@@ -40,22 +41,28 @@ public class MySQLDeliverableStatusDAO implements DeliverableStatusDAO {
       }
       rs.close();
     } catch (SQLException e) {
-      LOG.error("There was an error getting the status of an deliverable. \n{}", query, e);
+      LOG.error("-- getDeliverableStatus() > There was an error getting the deliverable status list.", e);
     }
+
+    LOG.debug("<< getDeliverableStatus():deliverableTypesList.size={}", deliverableTypesList.size());
     return deliverableTypesList;
   }
 
   @Override
   public boolean setDeliverableStatus(int deliverableId, int statusId) {
+    LOG.debug(">> setDeliverableStatus(deliverableId={}, statusId={})", deliverableId, statusId);
     String preparedUpdateQuery = "UPDATE deliverables SET deliverable_status_id = ? WHERE id = ?";
     try (Connection connection = databaseManager.getConnection()) {
       int rowsUpdated =
         databaseManager.makeChangeSecure(connection, preparedUpdateQuery, new Object[] {statusId, deliverableId});
+      LOG.debug("<< getDeliverableStatus():", (rowsUpdated > 0));
       return (rowsUpdated > 0);
 
     } catch (SQLException e) {
-      LOG.error("There was an error updating a deliverable status. \n{}", preparedUpdateQuery, e);
+      LOG.error("-- getDeliverableStatus() > There was an error updating the status of deliverable {}.", deliverableId,
+        e);
     }
+    LOG.debug("<< getDeliverableStatus():", false);
     return false;
   }
 }

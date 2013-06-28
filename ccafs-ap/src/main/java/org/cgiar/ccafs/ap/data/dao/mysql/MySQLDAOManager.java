@@ -28,7 +28,7 @@ public class MySQLDAOManager extends DAOManager {
   }
 
   @Override
-  public Connection getConnection() {
+  public Connection getConnection() throws SQLException {
     return openConnection(this.getProperties().getPropertiesAsString(APConfig.MYSQL_USER), this.getProperties()
       .getPropertiesAsString(APConfig.MYSQL_PASSWORD), this.getProperties().getPropertiesAsString(APConfig.MYSQL_HOST),
       this.getProperties().getPropertiesAsString(APConfig.MYSQL_PORT),
@@ -86,15 +86,16 @@ public class MySQLDAOManager extends DAOManager {
   }
 
   @Override
-  protected Connection openConnection(String user, String password, String ip, String port, String databaseName) {
+  protected Connection openConnection(String user, String password, String ip, String port, String databaseName)
+    throws SQLException {
+    Connection conexion;
     try {
-      Connection conexion =
-        DriverManager.getConnection("jdbc:mysql://" + ip + ":" + port + "/" + databaseName, user, password);
-      return conexion;
+      conexion = DriverManager.getConnection("jdbc:mysql://" + ip + ":" + port + "/" + databaseName, user, password);
     } catch (SQLException e) {
-      LOG.error("There was a problem getting connection to the database", e);
-      return null;
+      LOG.error("Connection to the database couldn't be established.", e);
+      throw new SQLException("There is not conection to the database.");
     }
+    return conexion;
   }
 
   @Override

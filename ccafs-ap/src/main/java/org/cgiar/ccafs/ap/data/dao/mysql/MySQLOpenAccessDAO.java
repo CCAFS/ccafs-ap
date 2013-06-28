@@ -29,6 +29,7 @@ public class MySQLOpenAccessDAO implements OpenAccessDAO {
 
   @Override
   public Map<String, String> getOpenAccess(String id) {
+    LOG.debug(">> getOpenAccess(id='{}')", id);
     Map<String, String> oaData = new HashMap<>();
     String query = "SELECT * FROM open_access WHERE id = " + id;
     try (Connection con = databaseManager.getConnection()) {
@@ -39,13 +40,16 @@ public class MySQLOpenAccessDAO implements OpenAccessDAO {
       }
       rs.close();
     } catch (SQLException e) {
-      LOG.error("There was an error getting the data from 'open_access' table. \n{}", query, e);
+      LOG.error("-- getOpenAccess() > There was an error getting the data for open access {}", id, e);
     }
+
+    LOG.debug("<< getOpenAccess():{}", oaData.toString());
     return oaData;
   }
 
   @Override
   public List<Map<String, String>> getOpenAccessOptions() {
+    LOG.debug(">> getOpenAccessOptions()");
     List<Map<String, String>> openAccessDataList = new ArrayList<>();
     String query = "SELECT * FROM open_access";
     try (Connection con = databaseManager.getConnection()) {
@@ -58,8 +62,10 @@ public class MySQLOpenAccessDAO implements OpenAccessDAO {
       }
       rs.close();
     } catch (SQLException e) {
-      LOG.error("There was an error getting the data from 'open_access' table. \n{}", query, e);
+      LOG.error("-- getOpenAccessOptions() > There was an error getting the open access list. ", e);
     }
+
+    LOG.debug("<< getOpenAccessOptions():openAccessDataList.size={}", openAccessDataList.size());
     return openAccessDataList;
   }
 
