@@ -29,6 +29,7 @@ public class MySQLActivityObjectiveDAO implements ActivityObjectiveDAO {
 
   @Override
   public boolean deleteActivityObjectives(int activityID) {
+    LOG.debug(">> deleteActivityObjectives(activityID={})", activityID);
     boolean deleted = false;
     String query = "DELETE FROM activity_objectives WHERE activity_id = ?";
     Object[] values = new Object[1];
@@ -36,18 +37,25 @@ public class MySQLActivityObjectiveDAO implements ActivityObjectiveDAO {
     try (Connection con = databaseManager.getConnection()) {
       int rows = databaseManager.makeChangeSecure(con, query, values);
       if (rows < 0) {
-        LOG.warn("There was a problem deleting the objectives related to the activity {}. \n{}", activityID, query);
+        LOG
+          .warn(
+            "-- deleteActivityObjectives() > There was a problem deleting the objectives related to the activity {}. \n{}",
+            activityID, query);
       } else {
         deleted = true;
       }
     } catch (SQLException e) {
-      LOG.error("There was an error deleting the objectives related to the activity {}", activityID, e);
+      LOG.error(
+        "-- deleteActivityObjectives() > There was an error deleting the objectives related to the activity {}",
+        activityID, e);
     }
+    LOG.debug("<< deleteActivityObjectives():{}", deleted);
     return deleted;
   }
 
   @Override
   public List<Map<String, String>> getActivityObjectives(int activityID) {
+    LOG.debug(">> getActivityObjectives(activityID={})", activityID);
     List<Map<String, String>> activityObjectivesDataList = new ArrayList<>();
     String query = "SELECT id, description FROM activity_objectives WHERE activity_id = " + activityID;
     try (Connection con = databaseManager.getConnection()) {
@@ -60,13 +68,16 @@ public class MySQLActivityObjectiveDAO implements ActivityObjectiveDAO {
       }
       rs.close();
     } catch (SQLException e) {
-      LOG.error("There was an error getting the data from 'activity_objectives' table. \n{}", query, e);
+      LOG.error("-- getActivityObjectives() > There was an error getting the activity objectives for activity {}",
+        activityID, e);
     }
+    LOG.debug("<< getActivityObjectives():activityObjectivesDataList.size={}", activityObjectivesDataList.size());
     return activityObjectivesDataList;
   }
 
   @Override
   public boolean saveActivityObjectives(Map<String, String> objectives, int activityID) {
+    LOG.debug(">> saveActivityObjectives(objectives={}, activityID={})", objectives, activityID);
     boolean saved = false;
     String query =
       "INSERT INTO activity_objectives (id, description, activity_id) VALUES (?, ?, " + activityID + ") "
@@ -80,8 +91,10 @@ public class MySQLActivityObjectiveDAO implements ActivityObjectiveDAO {
         saved = true;
       }
     } catch (SQLException e) {
-      LOG.error("There was an error saving the activity objective.", e);
+      LOG.error("-- saveActivityObjectives() > There was an error saving objectives for activity {}.", activityID);
     }
+
+    LOG.debug("<< saveActivityObjectives():{}", saved);
     return saved;
   }
 }

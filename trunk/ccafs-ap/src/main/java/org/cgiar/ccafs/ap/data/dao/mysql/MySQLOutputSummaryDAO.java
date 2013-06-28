@@ -29,6 +29,7 @@ public class MySQLOutputSummaryDAO implements OutputSummaryDAO {
 
   @Override
   public List<Map<String, String>> getOutputSummariesList(int activityLeaderId, int logframeId) {
+    LOG.debug(">> getOutputSummariesList(activityLeaderId+{}, logframeId={})", activityLeaderId, logframeId);
     List<Map<String, String>> outputSummaryDataList = new ArrayList<>();
     String query =
       "SELECT os.id, os.description, m.code, o.id as 'output_id', o.code as 'output_code', "
@@ -59,15 +60,20 @@ public class MySQLOutputSummaryDAO implements OutputSummaryDAO {
       }
       rs.close();
     } catch (SQLException e) {
-      LOG.error("There was an error getting information from 'output_summaries' table. \n{}", query, e);
+      Object[] errorParams = {activityLeaderId, logframeId, e};
+      LOG
+        .error(
+          "-- getOutputSummariesList() > There was an error getting the output summary list for leader {} and logframe {}",
+          errorParams);
     }
 
+    LOG.debug("<< getOutputSummariesList():outputSummaryDataList.size={}", outputSummaryDataList.size());
     return outputSummaryDataList;
-
   }
 
   @Override
   public boolean saveOutputsSummaryList(List<Map<String, Object>> outputsSummaryData) {
+    LOG.debug(">> saveOutputsSummaryList(outputsSummaryData={})", outputsSummaryData);
     boolean problem = false;
     try (Connection con = databaseManager.getConnection()) {
       for (Map<String, Object> osData : outputsSummaryData) {
@@ -80,17 +86,20 @@ public class MySQLOutputSummaryDAO implements OutputSummaryDAO {
         int rows = databaseManager.makeChangeSecure(con, preparedQuery, data);
         if (rows < 0) {
           problem = true;
-          LOG.error("There was a problem inserting records into 'output_summaries' table.");
+          LOG
+            .warn("-- saveOutputsSummaryList() > There was a problem inserting records into 'output_summaries' table.");
         }
       }
     } catch (SQLException e) {
-      LOG.error("There was an error inserting records into 'output_summaries' table.", e);
+      LOG.error("-- saveOutputsSummaryList() > There was an error inserting records into 'output_summaries' table.", e);
     }
+    LOG.debug("<< saveOutputsSummaryList():{}", !problem);
     return !problem;
   }
 
   @Override
   public boolean updateOutputsSummaryList(List<Map<String, Object>> outputsSummaryData) {
+    LOG.debug(">> updateOutputsSummaryList(outputsSummaryData={})", outputsSummaryData);
     boolean problem = false;
     try (Connection con = databaseManager.getConnection()) {
       for (Map<String, Object> osData : outputsSummaryData) {
@@ -103,12 +112,15 @@ public class MySQLOutputSummaryDAO implements OutputSummaryDAO {
         int rows = databaseManager.makeChangeSecure(con, preparedQuery, data);
         if (rows < 0) {
           problem = true;
-          LOG.error("There was a problem updating records into 'output_summaries' table.");
+          LOG
+            .warn("-- updateOutputsSummaryList() > There was a problem updating records into 'output_summaries' table.");
         }
       }
     } catch (SQLException e) {
-      LOG.error("There was an error updating records into 'output_summaries' table.", e);
+      LOG
+        .error("-- updateOutputsSummaryList() > There was an error updating records into 'output_summaries' table.", e);
     }
+    LOG.debug(">> updateOutputsSummaryList():{}", !problem);
     return !problem;
   }
 }

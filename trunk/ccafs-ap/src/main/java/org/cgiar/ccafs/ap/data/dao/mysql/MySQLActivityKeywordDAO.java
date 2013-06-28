@@ -29,6 +29,7 @@ public class MySQLActivityKeywordDAO implements ActivityKeywordDAO {
 
   @Override
   public List<Map<String, String>> getKeywordList(int activityID) {
+    LOG.debug(">> getKeywordList(activityID={})", activityID);
     List<Map<String, String>> keywordDataList = new ArrayList<>();
     String query =
       "SELECT ak.id, ak.other, ke.id as keyword_id, ke.name as keyword_name FROM activity_keywords ak "
@@ -46,28 +47,40 @@ public class MySQLActivityKeywordDAO implements ActivityKeywordDAO {
       }
       rs.close();
     } catch (SQLException e) {
-      LOG.error("There was an error getting the data from 'activity_keywords' table \n{}", query, e);
+      LOG.error("-- getKeywordList() > There was an error getting activity keywords for activity {}", activityID, e);
     }
+    LOG.debug("<< getKeywordList():{}", keywordDataList);
     return keywordDataList;
   }
 
   @Override
   public boolean removeActivityKeywords(int activityID) {
+    LOG.debug(">> removeActivityKeywords(activityID={})", activityID);
+
     boolean problem = false;
     String removeQuery = "DELETE FROM activity_keywords WHERE activity_id = " + activityID;
     try (Connection connection = databaseManager.getConnection()) {
       int rows = databaseManager.makeChange(removeQuery, connection);
       if (rows < 0) {
+        LOG
+          .warn(
+            "-- removeActivityKeywords() > It was tried delete activity keywords from database for activity {} but failed.",
+            activityID);
         problem = true;
       }
     } catch (SQLException e) {
-      LOG.error("There was an error deleting the activity keywords related to a given activity.", e);
+      LOG.error(
+        "-- removeActivityKeywords() > There was an error deleting the activity keywords related to the activity {}.",
+        activityID, e);
     }
+
+    LOG.debug("<< removeActivityKeywords():{}", !problem);
     return !problem;
   }
 
   @Override
   public boolean saveKeyword(Map<String, String> keywordData) {
+    LOG.debug(">> saveKeyword(keywordData={})", keywordData);
     boolean saved = false;
     String query = "INSERT INTO activity_keywords (id, keyword_id, other, activity_id) VALUES (?, ?, ?, ?)  ";
     Object[] values = new Object[4];
@@ -79,13 +92,16 @@ public class MySQLActivityKeywordDAO implements ActivityKeywordDAO {
     try (Connection con = databaseManager.getConnection()) {
       int rows = databaseManager.makeChangeSecure(con, query, values);
       if (rows < 0) {
-        LOG.warn("There was an error saving the keyword. \n Query: {}. \n Values: {}", query, values);
+        LOG
+          .warn("-- saveKeyword() > There was an error saving the keyword. \n Query: {}. \n Values: {}", query, values);
       } else {
         saved = true;
       }
     } catch (SQLException e) {
-      LOG.error("There was an error saving the keyword.", e);
+      LOG.error("-- saveKeyword() > There was an error saving the keyword.", e);
     }
+
+    LOG.debug("<< saveKeyword():{}", saved);
     return saved;
   }
 

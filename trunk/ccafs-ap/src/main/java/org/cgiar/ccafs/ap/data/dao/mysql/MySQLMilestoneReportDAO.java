@@ -29,6 +29,9 @@ public class MySQLMilestoneReportDAO implements MilestoneReportDAO {
 
   @Override
   public List<Map<String, String>> getRPLMilestoneReportList(int activityLeaderId, int logframeId, int currentYear) {
+    Object[] debugParams = {activityLeaderId, logframeId, currentYear};
+    LOG.debug(">> getRPLMilestoneReportList(activityLeaderId={}, logframeId={}, currentYear={})", debugParams);
+
     List<Map<String, String>> milestoneReportDataList = new ArrayList<>();
     String query =
       "SELECT mr.id, mr.tl_description, mr.rpl_description, ms.id as 'milestone_status_id', "
@@ -64,13 +67,21 @@ public class MySQLMilestoneReportDAO implements MilestoneReportDAO {
       }
       rs.close();
     } catch (SQLException e) {
-      LOG.warn("There was an error getting data from 'milestone_reports' table. \n{}", query, e);
+      LOG
+        .error(
+          "-- getRPLMilestoneReportList() > There was an error getting the list of milestones related to the RPL {} and logframe {} for year {}.",
+          debugParams, e);
     }
+
+    LOG.debug("<< getRPLMilestoneReportList():milestoneReportDataList.size={}", milestoneReportDataList.size());
     return milestoneReportDataList;
   }
 
   @Override
   public List<Map<String, String>> getTLMilestoneReportList(int activityLeaderId, int logframeId, int year) {
+    Object[] debugParams = {activityLeaderId, logframeId, year};
+    LOG.debug(">> getTLMilestoneReportList(activityLeaderId={}, logframeId={}, year={})", debugParams);
+
     List<Map<String, String>> milestoneReportDataList = new ArrayList<>();
     String themeCode = getTLrelatedTheme(activityLeaderId, logframeId);
     String query =
@@ -112,13 +123,20 @@ public class MySQLMilestoneReportDAO implements MilestoneReportDAO {
       }
       rs.close();
     } catch (SQLException e) {
-      LOG.warn("There was an error getting data from 'milestone_reports' table. \n{}", query, e);
+      LOG
+        .error(
+          "-- getTLMilestoneReportList() > There was an error getting the list of milestones related to the TL {} and logframe {} for year {}.",
+          debugParams, e);
     }
+
+    LOG.debug("<< getRPLMilestoneReportList():milestoneReportDataList.size={}", milestoneReportDataList.size());
     return milestoneReportDataList;
   }
 
   @Override
   public String getTLrelatedTheme(int themeLeaderID, int currentPlanningLogframeID) {
+    LOG.debug(">> getTLrelatedTheme(themeLeaderID={}, currentPlanningLogframeID={})", themeLeaderID,
+      currentPlanningLogframeID);
     String themeCode = null;
     String query =
       "SELECT m.code FROM activities a " + "INNER JOIN milestones m ON a.milestone_id = m.id "
@@ -132,7 +150,8 @@ public class MySQLMilestoneReportDAO implements MilestoneReportDAO {
         themeCode = rs.getString("code");
       }
     } catch (SQLException e) {
-      LOG.error("There was an error getting the theme related to the theme leader {}", themeLeaderID, e);
+      LOG.error("-- getTLrelatedTheme() > There was an error getting the theme related to the theme leader {}",
+        themeLeaderID, e);
     }
 
     if (themeCode != null) {
@@ -145,11 +164,13 @@ public class MySQLMilestoneReportDAO implements MilestoneReportDAO {
       }
     }
 
+    LOG.debug("<< getTLrelatedTheme():'{}'", themeCode);
     return themeCode;
   }
 
   @Override
   public boolean saveMilestoneReportList(List<Map<String, Object>> milestoneReportDataList) {
+    LOG.debug(">> saveMilestoneReportList(milestoneReportDataList={})", milestoneReportDataList);
     boolean problem = false;
     try (Connection con = databaseManager.getConnection()) {
       String query;
@@ -182,8 +203,10 @@ public class MySQLMilestoneReportDAO implements MilestoneReportDAO {
         }
       }
     } catch (SQLException e) {
-      LOG.error("There was an error saving records into 'milestone_reports' table.", e);
+      LOG.error("-- saveMilestoneReportList() > There was an error saving records into 'milestone_reports' table.", e);
     }
+
+    LOG.debug("<< saveMilestoneReportList():{}", !problem);
     return !problem;
   }
 }

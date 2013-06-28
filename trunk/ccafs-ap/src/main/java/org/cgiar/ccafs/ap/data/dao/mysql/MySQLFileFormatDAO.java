@@ -7,6 +7,7 @@ import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -28,6 +29,7 @@ public class MySQLFileFormatDAO implements FileFormatDAO {
 
   @Override
   public boolean addFileFormats(int deliverableId, ArrayList<String> fileFormatsIds) {
+    LOG.debug(">> addFileFormats(deliverableId={}, fileFormatsIds={})", deliverableId, fileFormatsIds);
     boolean problem = false;
     try (Connection connection = databaseManager.getConnection()) {
       String addQuery = "INSERT INTO deliverable_formats (deliverable_id, file_format_id) VALUES ";
@@ -46,13 +48,16 @@ public class MySQLFileFormatDAO implements FileFormatDAO {
         problem = true;
       }
     } catch (SQLException e) {
-      LOG.error("There was an error saving data into 'deliverable_formats' table.", e);
+      LOG.error("-- addFileFormats() > There was an error saving the formats asociated with the deliverable {}.",
+        deliverableId, e);
     }
+    LOG.debug("<< addFileFormats():{}", problem);
     return !problem;
   }
 
   @Override
   public List<Map<String, String>> getFileFormats() {
+    LOG.debug(">> getFileFormats()");
     List<Map<String, String>> fileFormatsList = new ArrayList<>();
     String query = "SELECT * from file_formats";
     try (Connection con = databaseManager.getConnection()) {
@@ -65,13 +70,15 @@ public class MySQLFileFormatDAO implements FileFormatDAO {
       }
       rs.close();
     } catch (SQLException e) {
-      LOG.error("There was an error getting the file formats list. \n{}", query, e);
+      LOG.error("-- getFileFormats() > There was an error getting the file formats list. \n{}", query, e);
     }
+    LOG.debug("<< getFileFormats():fileFormatsList.size={}", fileFormatsList.size());
     return fileFormatsList;
   }
 
   @Override
   public List<Map<String, String>> getFileFormats(int deliverableID) {
+    LOG.debug(">> getFileFormats(deliverableID={})", deliverableID);
     List<Map<String, String>> fileFormatsList = new ArrayList<>();
     String query =
       "SELECT ff.id, ff.name FROM file_formats ff " + "INNER JOIN deliverable_formats df ON df.file_format_id = ff.id "
@@ -86,19 +93,25 @@ public class MySQLFileFormatDAO implements FileFormatDAO {
       }
       rs.close();
     } catch (SQLException e) {
-      LOG.error("There was an error getting the file formats related to a deliverable. \n{}", query, e);
+      LOG.error("-- getFileFormats() > There was an error getting the file formats related to deliverable {}.",
+        deliverableID, e);
+
+      LOG.debug("<< getFileFormats():null");
       return null;
     }
 
     if (fileFormatsList.isEmpty()) {
+      LOG.debug("<< getFileFormats():null");
       return null;
-    } else {
-      return fileFormatsList;
     }
+
+    LOG.debug("<< getFileFormats():fileFormatsList.size={}", fileFormatsList.size());
+    return fileFormatsList;
   }
 
   @Override
   public boolean setFileFormats(int deliverableId, int[] fileFormatIds) {
+    LOG.debug(">> setFileFormats(deliverableId={}, fileFormatIds={})", deliverableId, Arrays.toString(fileFormatIds));
     boolean problem = false;
     try (Connection connection = databaseManager.getConnection()) {
       String preparedRemoveQuery = "DELETE FROM deliverable_formats WHERE deliverable_id = ?";
@@ -110,19 +123,25 @@ public class MySQLFileFormatDAO implements FileFormatDAO {
             databaseManager.makeChangeSecure(connection, preparedInsertQuery,
               new Object[] {deliverableId, fileFormatId});
           if (rowsInserted < 0) {
-            LOG.warn("There wasn't posible save the file formats list into the database");
+            LOG
+              .warn(
+                "-- setFileFormats() > There wasn't posible save the file formats list for deliverable {} into the database",
+                deliverableId);
             problem = true;
           }
         }
       } else {
-        LOG.warn(
-          "There was a problem removing the deliverables formats that belongs to deliverable {} from the database",
-          deliverableId);
+        LOG
+          .warn(
+            "-- setFileFormats() > There was a problem removing the deliverables formats that belongs to deliverable {} from the database",
+            deliverableId);
         problem = true;
       }
     } catch (SQLException e) {
-      LOG.error("There was an error saving the file formats related to a deliverable.", e);
+      LOG.error("-- setFileFormats() > There was an error saving the file formats related to deliverable {}.",
+        deliverableId, e);
     }
+    LOG.debug("<< setFileFormats():{}", !problem);
     return !problem;
   }
 }

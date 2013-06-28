@@ -30,6 +30,7 @@ public class MySQLPublicationDAO implements PublicationDAO {
 
   @Override
   public List<Map<String, String>> getPublications(int leaderId, int logframeId) {
+    LOG.debug(">> getPublications(leaderId={}, logframeId={})", leaderId, logframeId);
     List<Map<String, String>> publications = new ArrayList<>();
     try (Connection connection = dbManager.getConnection()) {
       String query =
@@ -53,34 +54,42 @@ public class MySQLPublicationDAO implements PublicationDAO {
       }
       rs.close();
     } catch (SQLException e) {
-      String message =
-        "There was an error getting the data from publications table related to the leader " + leaderId
-          + " and the logframe " + logframeId;
-      LOG.error(message, e);
+      Object[] errorParams = {leaderId, logframeId, e};
+      LOG
+        .error(
+          "-- getPublications() > There was an error getting the publications listed related to the leader {} and the logframe {}",
+          errorParams);
     }
+
+    LOG.debug("<< getPublications():publications.size={}", publications.size());
     return publications;
   }
 
   @Override
   public boolean removeAllPublications(int leaderId, int logframeId) {
+    LOG.debug(">> removeAllPublications(leaderId={}, logframeId={})", leaderId, logframeId);
     boolean problem = false;
     try (Connection connection = dbManager.getConnection()) {
       String removeQuery =
         "DELETE FROM publications WHERE activity_leader_id = " + leaderId + " AND logframe_id = " + logframeId;
       int rows = dbManager.makeChange(removeQuery, connection);
       if (rows < 0) {
-        LOG.warn("There was an error deleting the records from 'publications' table.");
+        LOG
+          .warn("-- removeAllPublications() > There was an error deleting all 'publications' for leader {}.", leaderId);
         problem = true;
       }
     } catch (SQLException e) {
-      LOG.error("There was an error deleting the records form 'publications' table.", e);
+      LOG.error("-- removeAllPublications() > There was an error deleting all 'publications' for leader {}.", leaderId,
+        e);
       e.printStackTrace();
     }
+    LOG.debug("<< removeAllPublications():{}", !problem);
     return !problem;
   }
 
   @Override
   public int savePublication(Map<String, String> publication) {
+    LOG.debug(">> savePublication(publication={})");
     int generatedId = -1;
     try (Connection connection = dbManager.getConnection()) {
       String addQueryPrepared = null;
@@ -108,9 +117,10 @@ public class MySQLPublicationDAO implements PublicationDAO {
         rs.close();
       }
     } catch (SQLException e) {
-      LOG.error("There was an error trying to save into 'publications' table.", e);
+      LOG.error("-- savePublication() > There was an error trying to save into 'publications' table.", e);
     }
 
+    LOG.debug("<< savePublication():{}", generatedId);
     return generatedId;
   }
 }

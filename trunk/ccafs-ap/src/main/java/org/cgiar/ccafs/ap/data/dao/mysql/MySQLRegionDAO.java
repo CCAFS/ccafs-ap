@@ -28,6 +28,7 @@ public class MySQLRegionDAO implements RegionDAO {
 
   @Override
   public List<Map<String, String>> getRegionsList() {
+    LOG.debug(">> getRegionsList()");
     List<Map<String, String>> regionDataList = new ArrayList<>();
     String query = "SELECT * FROM regions";
     try (Connection con = databaseManager.getConnection()) {
@@ -40,8 +41,10 @@ public class MySQLRegionDAO implements RegionDAO {
         regionDataList.add(regionData);
       }
     } catch (SQLException e) {
-      LOG.error("There was an error getting the region list", e);
+      LOG.error("-- getRegionsList() > There was an error getting the region list", e);
     }
+
+    LOG.debug("<< getRegionsList():regionDataList.size={}", regionDataList.size());
     return regionDataList;
   }
 }

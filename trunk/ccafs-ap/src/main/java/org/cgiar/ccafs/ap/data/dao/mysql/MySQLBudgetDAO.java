@@ -28,6 +28,8 @@ public class MySQLBudgetDAO implements BudgetDAO {
 
   @Override
   public Map<String, String> getBudget(int activityID) {
+    LOG.debug(">> getBudget(activityID={})", activityID);
+
     Map<String, String> budgetData = new HashMap<>();
     // Querying budget record.
     String query = "SELECT * FROM activity_budgets WHERE activity_id = " + activityID;
@@ -58,18 +60,20 @@ public class MySQLBudgetDAO implements BudgetDAO {
       }
 
     } catch (SQLException e) {
-      LOG.error("There was an error getting an activity budget", query, e);
+      LOG.error("-- getBudget() > There was an error getting budget for activity {}", activityID, e);
       return null;
     }
     if (budgetData.isEmpty()) {
       return null;
     }
 
+    LOG.debug("<< getBudget():{}", budgetData);
     return budgetData;
   }
 
   @Override
   public boolean saveBudget(Map<String, String> budgetData) {
+    LOG.debug(">> saveBudget(budgetData={})", budgetData);
     boolean saved = false;
 
     Object[] values = new Object[budgetData.size()];
@@ -93,11 +97,12 @@ public class MySQLBudgetDAO implements BudgetDAO {
         saved = true;
       }
     } catch (SQLException e) {
-      LOG.error("There was an error saving the budget data.");
+      LOG.error("-- saveBudget() > There was an error saving the budget data.");
       LOG.error("Query: {}", query);
       LOG.error("Values: {}", Arrays.toString(values));
       LOG.error("Error: ", e);
     }
+    LOG.debug("<< saveBudget():{}", saved);
     return saved;
   }
 }

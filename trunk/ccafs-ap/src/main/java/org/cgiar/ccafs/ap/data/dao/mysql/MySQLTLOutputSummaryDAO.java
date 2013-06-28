@@ -29,6 +29,7 @@ public class MySQLTLOutputSummaryDAO implements TLOutputSummaryDAO {
 
   @Override
   public List<Map<String, Object>> getTLOutputSummaries(int leader_id, int logframe_id) {
+    LOG.debug(">> getTLOutputSummaries(leader_id={}, logframe_id={})", leader_id, logframe_id);
     List<Map<String, Object>> tlSummariesData = new ArrayList<>();
     try (Connection connection = dbManager.getConnection()) {
       String query =
@@ -51,13 +52,18 @@ public class MySQLTLOutputSummaryDAO implements TLOutputSummaryDAO {
         tlSummariesData.add(summaryData);
       }
     } catch (SQLException e) {
-      LOG.error("There was an error getting the data from activity_status table.", e);
+      Object[] errorParams = {leader_id, logframe_id, e};
+      LOG.error(
+        "-- getTLOutputSummaries() > There was an error getting the TL output summary for leader {} and logframe {}.",
+        errorParams);
     }
+    LOG.debug("<< getTLOutputSummaries():tlSummariesData.size={}", tlSummariesData.size());
     return tlSummariesData;
   }
 
   @Override
   public boolean saveTLOutputSummaries(List<Map<String, Object>> outputs) {
+    LOG.debug(">> saveTLOutputSummaries(outputs={})", outputs);
     boolean problem = false;
     try (Connection connection = dbManager.getConnection()) {
       String query;
@@ -86,8 +92,13 @@ public class MySQLTLOutputSummaryDAO implements TLOutputSummaryDAO {
         }
       }
     } catch (SQLException e) {
-      LOG.error("There was an error trying to save a list of outputs in the tl_output_summaries table.", e);
+      LOG
+        .error(
+          "-- saveTLOutputSummaries() > There was an error trying to save a list of outputs in the tl_output_summaries table.",
+          e);
     }
+
+    LOG.debug("<< saveTLOutputSummaries():{}", !problem);
     return !problem;
   }
 }

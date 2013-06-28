@@ -29,23 +29,35 @@ public class MySQLActivityCountryDAO implements ActivityCountryDAO {
 
   @Override
   public boolean deleteActivityCountries(int activityID) {
+    LOG.debug(">> deleteActivityBenchmarkSites(activityID={})", activityID);
+
     boolean deleted = false;
     String query = "DELETE FROM country_locations WHERE activity_id = ?";
     try (Connection con = databaseManager.getConnection()) {
       int rows = databaseManager.makeChangeSecure(con, query, new String[] {String.valueOf(activityID)});
       if (rows < 0) {
-        LOG.warn("There was a problem deleting the countries related with the activity {}.", activityID);
+        LOG.warn(
+          "-- deleteActivityCountries() > There was a problem deleting the countries related with the activity {}.",
+          activityID);
       } else {
+        LOG
+          .info("-- deleteActivityCountries() > Country locations related to the activity {} were deleted", activityID);
         deleted = true;
       }
     } catch (SQLException e) {
-      LOG.error("There was an error deleting the countries related with the activity {}.", activityID, e);
+      LOG.error(
+        "-- deleteActivityCountries() > There was an error deleting the countries related with the activity {}.",
+        activityID, e);
     }
+
+    LOG.debug("<< deleteActivityBenchmarkSites():{}", deleted);
     return deleted;
   }
 
   @Override
   public List<Map<String, String>> getActivityCountries(int activityID) {
+    LOG.debug(">> getActivityCountries(activityID={})", activityID);
+
     List<Map<String, String>> countriesDataList = new ArrayList<>();
     String query =
       "SELECT co.iso2, co.name, cl.details, r.name as 'region_name', r.id as 'region_id' FROM country_locations cl "
@@ -66,11 +78,15 @@ public class MySQLActivityCountryDAO implements ActivityCountryDAO {
     } catch (SQLException e) {
       LOG.error("There was an error getting the data from 'country_locations' table. \n{}", query, e);
     }
+
+    LOG.debug("<< getActivityCountries():List.size={}", countriesDataList.size());
     return countriesDataList;
   }
 
   @Override
   public boolean saveActivityCountriesByRegion(int activityID, int regionID) {
+    LOG.debug(">> getActivityCountries(activityID={}, regionID={})", activityID, regionID);
+
     boolean saved = false;
     String query =
       "INSERT INTO country_locations (country_iso2, activity_id) SELECT iso2, ? FROM countries WHERE region_id = ? ";
@@ -81,18 +97,29 @@ public class MySQLActivityCountryDAO implements ActivityCountryDAO {
     try (Connection con = databaseManager.getConnection()) {
       int rows = databaseManager.makeChangeSecure(con, query, values);
       if (rows < 0) {
-        LOG.warn("There was an error saving countries by region. \n Query: {}. \n Values: {}", query, values);
+        LOG
+          .warn(
+            "-- saveActivityCountriesByRegion > There was an error saving countries by region. \n Query: {}. \n Values: {}",
+            query, values);
       } else {
         saved = true;
+        LOG
+          .info(
+            "-- saveActivityCountriesByRegion > All countries of region {} were saved as country locations of activity {}",
+            regionID, activityID);
       }
     } catch (SQLException e) {
-      LOG.error("There was an error saving countries by region.");
+      LOG.error("-- saveActivityCountriesByRegion > There was an error saving countries by region.");
     }
+
+    LOG.debug("<< getActivityCountries():{}", saved);
     return saved;
   }
 
   @Override
   public boolean saveActivityCountry(int activityID, String countryID) {
+    LOG.debug(">> saveActivityCountry(activityID={}, countryID={})", activityID, countryID);
+
     boolean saved = false;
     String query = "INSERT INTO country_locations (activity_id, country_iso2) VALUES (?, ?)";
     Object[] values = new Object[2];
@@ -102,13 +129,18 @@ public class MySQLActivityCountryDAO implements ActivityCountryDAO {
     try (Connection con = databaseManager.getConnection()) {
       int rows = databaseManager.makeChangeSecure(con, query, values);
       if (rows < 0) {
-        LOG.error("There was a problem saving the activity country. \n Query: {} \n Values: {}", query, values);
+        LOG.error(
+          "-- saveActivityCountry > There was a problem saving the activity country. \n Query: {} \n Values: {}",
+          query, values);
       } else {
+        LOG.info("-- saveActivityCountry > Country {} was saved as a location for activity {}", countryID, activityID);
         saved = true;
       }
     } catch (SQLException e) {
-      LOG.error("There was an error saving the activity country.", e);
+      LOG.error("-- saveActivityCountry > There was an error saving the activity country.", e);
     }
+
+    LOG.debug("<< saveActivityCountry():{}", saved);
     return saved;
   }
 }

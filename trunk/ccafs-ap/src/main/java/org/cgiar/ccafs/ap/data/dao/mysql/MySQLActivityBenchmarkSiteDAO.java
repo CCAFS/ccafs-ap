@@ -29,23 +29,34 @@ public class MySQLActivityBenchmarkSiteDAO implements ActivityBenchmarkSiteDAO {
 
   @Override
   public boolean deleteActivityBenchmarkSites(int activityID) {
+    LOG.debug(">> deleteActivityBenchmarkSites(activityID={} )", activityID);
+
     boolean deleted = false;
     String query = "DELETE FROM bs_locations WHERE activity_id = ?";
     try (Connection con = databaseManager.getConnection()) {
       int rows = databaseManager.makeChangeSecure(con, query, new String[] {String.valueOf(activityID)});
       if (rows < 0) {
-        LOG.warn("There was an problem deleting the benchmark sites locations for activity {}.", activityID);
+        LOG
+          .warn(
+            "-- deleteActivityBenchmarkSites() > There was an problem deleting the benchmark sites locations for activity {}.",
+            activityID);
       } else {
+        LOG
+          .info("-- deleteActivityBenchmarkSites() > Benchmark sites related to activity {} were deleted.", activityID);
         deleted = true;
       }
     } catch (SQLException e) {
-      LOG.error("There was an error deleting the benchmark sites locations.", e);
+      LOG.error("-- deleteActivityBenchmarkSites() > There was an error deleting the benchmark sites locations.", e);
     }
+
+    LOG.debug("<< deleteActivityBenchmarkSites():{}", deleted);
     return deleted;
   }
 
   @Override
   public List<Map<String, String>> getActivityBenchmarkSites(int activityID) {
+    LOG.debug(">> getActivityBenchmarkSites(activityID={})", activityID);
+
     List<Map<String, String>> bsDataList = new ArrayList<>();
     String query =
       "SELECT bs.id, bs.bs_id, bs.name, bs.longitude, bs.latitude, bsl.details, "
@@ -68,13 +79,19 @@ public class MySQLActivityBenchmarkSiteDAO implements ActivityBenchmarkSiteDAO {
       }
       rs.close();
     } catch (SQLException e) {
-      LOG.error("There was an error getting the data from 'benchmark_sites' table. \n{}", query, e);
+      LOG.error(
+        "-- getActivityBenchmarkSites() > There was an error getting the data from 'benchmark_sites' table. \n{}",
+        query, e);
     }
+
+    LOG.debug("<< getActivityBenchmarkSites():List.size()={}", bsDataList.size());
     return bsDataList;
   }
 
   @Override
   public boolean saveActivityBenchmarkSite(String benchmarkSiteID, int activityID) {
+    LOG.debug(">> saveActivityBenchmarkSite(benchmarkSiteID={}, activityID={})", benchmarkSiteID, activityID);
+
     boolean saved = false;
     String query = "INSERT INTO bs_locations (bs_id, activity_id) VALUES (?, ?)";
     Object[] values = new Object[2];
@@ -84,14 +101,21 @@ public class MySQLActivityBenchmarkSiteDAO implements ActivityBenchmarkSiteDAO {
     try (Connection con = databaseManager.getConnection()) {
       int rows = databaseManager.makeChangeSecure(con, query, values);
       if (rows < 0) {
-        LOG.error("There was a problem saving a benchmark site location into the DAO. \n Query: {} |n Values: ", query,
-          values);
+        LOG
+          .error(
+            "-- saveActivityBenchmarkSite() > There was a problem saving a benchmark site location into the DAO. \n Query: {} |n Values: ",
+            query, values);
       } else {
         saved = true;
+        LOG.info("-- saveActivityBenchmarkSite() > Benchmark site {} was saved in the DAO related to the activity {}",
+          benchmarkSiteID, activityID);
       }
     } catch (SQLException e) {
-      LOG.error("There was an error saving a benchmark site location into the DAO.", e);
+      LOG
+        .error("-- saveActivityBenchmarkSite() > There was an error saving a benchmark site location into the DAO.", e);
     }
+
+    LOG.debug("<< saveActivityBenchmarkSite(): {}", saved);
     return saved;
   }
 

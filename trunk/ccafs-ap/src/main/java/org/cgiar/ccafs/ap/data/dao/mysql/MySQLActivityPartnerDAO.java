@@ -29,6 +29,7 @@ public class MySQLActivityPartnerDAO implements ActivityPartnerDAO {
 
   @Override
   public List<Map<String, String>> getActivityPartnersList(int activityID) {
+    LOG.debug(">> getActivityPartnersList(activityID={})", activityID);
     List<Map<String, String>> activityPartnerList = new ArrayList<>();
     String query =
       "SELECT ap.id, ap.contact_name, ap.contact_email, p.id as 'partner_id', p.acronym as 'partner_acronym', "
@@ -55,14 +56,17 @@ public class MySQLActivityPartnerDAO implements ActivityPartnerDAO {
       }
       rs.close();
     } catch (SQLException e) {
-      LOG.error("There was an error getting data from 'activity_partners' table. \n{}", query, e);
+      LOG.error("-- getActivityPartnersList() > There was an error getting activity partners for activity {}.",
+        activityID, e);
       return null;
     }
+    LOG.debug("<< getActivityPartnersList():activityPartnerList.size={}", activityPartnerList.size());
     return activityPartnerList;
   }
 
   @Override
   public int getPartnersCount(int activityID) {
+    LOG.debug(">> getPartnersCount(activityID={})", activityID);
     int partnersCount = 0;
     String query = "SELECT COUNT(id) FROM activity_partners WHERE activity_id = " + activityID;
     try (Connection connection = databaseManager.getConnection()) {
@@ -71,13 +75,17 @@ public class MySQLActivityPartnerDAO implements ActivityPartnerDAO {
         partnersCount = rs.getInt(1);
       }
     } catch (SQLException e) {
-      LOG.error("There was an error counting the activity partners related to a given activity \n{}", query, e);
+      LOG.error("-- getPartnersCount() > There was an error counting the activity partners related to the activity {}",
+        activityID, e);
     }
+
+    LOG.debug("<< getPartnersCount():{}", partnersCount);
     return partnersCount;
   }
 
   @Override
   public boolean removeActivityPartners(int activityID) {
+    LOG.debug(">> removeActivityPartners(activityID={})", activityID);
     boolean problem = false;
     String removeQuery = "DELETE FROM activity_partners WHERE activity_id = " + activityID;
     try (Connection connection = databaseManager.getConnection()) {
@@ -86,13 +94,17 @@ public class MySQLActivityPartnerDAO implements ActivityPartnerDAO {
         problem = true;
       }
     } catch (SQLException e) {
-      LOG.error("There was an error deleting the activity partners related to a given activity \n{}", removeQuery, e);
+      LOG.error(
+        "-- removeActivityPartners > There was an error deleting the activity partners related to activity {}.",
+        activityID, e);
     }
+    LOG.debug("<< removeActivityPartners():{}", !problem);
     return !problem;
   }
 
   @Override
   public boolean saveActivityPartnerList(List<Map<String, Object>> activityPartnersData) {
+    LOG.debug(">> saveActivityPartnerList(activityPartnersData={})", activityPartnersData);
     boolean problem = false;
     try (Connection connection = databaseManager.getConnection()) {
       for (Map<String, Object> cpData : activityPartnersData) {
@@ -107,12 +119,13 @@ public class MySQLActivityPartnerDAO implements ActivityPartnerDAO {
         int rows = databaseManager.makeChangeSecure(connection, preparedQuery, data);
         if (rows < 0) {
           problem = true;
-          LOG.warn("There was a problem saving an activity partners list.");
+          LOG.warn("-- saveActivityPartnerList() > There was a problem saving an activity partners list.");
         }
       }
     } catch (SQLException e) {
-      LOG.warn("There was an error saving an activity partners list.", e);
+      LOG.error("-- saveActivityPartnerList() > There was an error saving an activity partners list.", e);
     }
+    LOG.debug("<< saveActivityPartnerList():{}", !problem);
     return !problem;
   }
 

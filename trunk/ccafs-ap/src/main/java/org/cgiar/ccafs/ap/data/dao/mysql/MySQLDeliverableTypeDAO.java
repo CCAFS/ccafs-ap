@@ -28,6 +28,7 @@ public class MySQLDeliverableTypeDAO implements DeliverableTypeDAO {
 
   @Override
   public List<Map<String, String>> getDeliverableTypes() {
+    LOG.debug(">> getDeliverableTypes()");
     List<Map<String, String>> deliverableTypesList = new ArrayList<>();
     String query = "SELECT * from deliverable_types";
     try (Connection con = databaseManager.getConnection()) {
@@ -40,8 +41,10 @@ public class MySQLDeliverableTypeDAO implements DeliverableTypeDAO {
       }
       rs.close();
     } catch (SQLException e) {
-      LOG.error("There was an error getting the deliverable types list. \n{}", query, e);
+      LOG.error("-- getDeliverableTypes() > There was an error getting the deliverable types list. \n{}", query, e);
     }
+
+    LOG.debug("<< getDeliverableTypes():deliverableTypesList.size={}", deliverableTypesList.size());
     return deliverableTypesList;
   }
 }

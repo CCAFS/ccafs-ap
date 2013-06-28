@@ -26,6 +26,7 @@ public class MySQLRPLSynthesisReportDAO implements RPLSynthesisReportDAO {
 
   @Override
   public Map<String, Object> getRPLSynthesisReport(int leaderId, int logframeId) {
+    LOG.debug(">> getRPLSynthesisReport(leaderId={}, logframeId={})", leaderId, logframeId);
     Map<String, Object> synthesisReport = new HashMap<String, Object>();
     String query =
       "SELECT * FROM rpl_synthesis_reports WHERE activity_leader_id = " + leaderId + " AND logframe_id = " + logframeId;
@@ -42,16 +43,22 @@ public class MySQLRPLSynthesisReportDAO implements RPLSynthesisReportDAO {
       }
       rs.close();
     } catch (SQLException e) {
-      LOG.error("There was an error getting the RPL synthesis report data. '{}'", query, e);
+      LOG.error("-- getRPLSynthesisReport() > There was an error getting the RPL synthesis report for leader {}.",
+        leaderId, e);
     }
-    if (synthesisReport.size() > 0) {
-      return synthesisReport;
+    if (synthesisReport.isEmpty()) {
+      LOG.debug("<< getRPLSynthesisReport():null");
+      return null;
     }
-    return null;
+
+    LOG.debug("<< getRPLSynthesisReport():{}", synthesisReport);
+    return synthesisReport;
   }
 
   @Override
   public boolean saveRPLSynthesisReport(Map<String, Object> synthesisReport) {
+    LOG.debug(">> saveRPLSynthesisReport(synthesisReport={})", synthesisReport);
+
     try (Connection connection = dbManager.getConnection()) {
       // If synthesis report has a default id, the synthesis need to be added to the database.
       // Otherwise it needs to be updated.
@@ -68,7 +75,7 @@ public class MySQLRPLSynthesisReportDAO implements RPLSynthesisReportDAO {
         values[5] = synthesisReport.get("logframe_id");
         int rows = dbManager.makeChangeSecure(connection, preparedInsertQuery, values);
         if (rows <= 0) {
-          LOG.warn("It wasn't possible save the RPL synthesis report data");
+          LOG.warn("-- saveRPLSynthesisReport() > It wasn't possible save the RPL synthesis report data");
           return false;
         }
       } else {
@@ -84,14 +91,18 @@ public class MySQLRPLSynthesisReportDAO implements RPLSynthesisReportDAO {
         values[5] = synthesisReport.get("logframe_id");
         int rows = dbManager.makeChangeSecure(connection, preparedUpdateQuery, values);
         if (rows <= 0) {
-          LOG.warn("There was an error updating the 'rpl_synthesis_reports' table.");
+          LOG.warn("-- saveRPLSynthesisReport() > There was an error updating the 'rpl_synthesis_reports' table.");
+          LOG.debug("<< saveRPLSynthesisReport():false");
           return false;
         }
       }
 
     } catch (SQLException e) {
-      LOG.error("There was an error updating a record into the 'rpl_synthesis_reports'", e);
+      LOG.error("-- saveRPLSynthesisReport() > There was an error updating a record into the 'rpl_synthesis_reports'",
+        e);
     }
+
+    LOG.debug("<< saveRPLSynthesisReport():true");
     return true;
   }
 

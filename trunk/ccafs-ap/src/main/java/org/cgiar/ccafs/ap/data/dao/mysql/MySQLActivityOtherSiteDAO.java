@@ -29,6 +29,7 @@ public class MySQLActivityOtherSiteDAO implements ActivityOtherSiteDAO {
 
   @Override
   public boolean deleteActivityOtherSites(int activityID) {
+    LOG.debug(">> deleteActivityOtherSites(activityID={})", activityID);
     boolean deleted = false;
     String query = "DELETE FROM other_sites WHERE activity_id = ?";
     Object[] values = new String[] {String.valueOf(activityID)};
@@ -36,18 +37,26 @@ public class MySQLActivityOtherSiteDAO implements ActivityOtherSiteDAO {
     try (Connection con = databaseManager.getConnection()) {
       int rows = databaseManager.makeChangeSecure(con, query, values);
       if (rows <= -1) {
-        LOG.warn("There was a problem deleting the other sites related to the activity {}", activityID);
+        LOG.warn(
+          "-- deleteActivityOtherSites() > There was a problem deleting the other sites related to the activity {}",
+          activityID);
       } else {
         deleted = true;
       }
     } catch (SQLException e) {
-      LOG.error("There was an error deleting the other sites related to the activity {}", activityID, e);
+      LOG.error(
+        "-- deleteActivityOtherSites() > There was an error deleting the other sites related to the activity {}",
+        activityID, e);
     }
+
+    LOG.debug("<< deleteActivityOtherSites():{}", deleted);
     return deleted;
   }
 
   @Override
   public List<Map<String, String>> getActivityOtherSites(int activityID) {
+    LOG.debug(">> getActivityOtherSites(activityID={})", activityID);
+
     List<Map<String, String>> osDataList = new ArrayList<>();
     String query =
       "SELECT os.id, os.longitude, os.latitude, os.details, co.iso2 as 'country_iso2', "
@@ -67,13 +76,17 @@ public class MySQLActivityOtherSiteDAO implements ActivityOtherSiteDAO {
       }
       rs.close();
     } catch (SQLException e) {
-      LOG.error("There was an error getting the data from 'other_sites' table. \n{}", query, e);
+      LOG.error("-- getActivityOtherSites() > There was an error getting activity other sites for activity {}",
+        activityID, e);
     }
+
+    LOG.debug("<< getActivityOtherSites():osDataList.size={}", osDataList.size());
     return osDataList;
   }
 
   @Override
   public boolean saveActivityOtherSites(Map<String, String> otherSite, int activityID) {
+    LOG.debug(">> saveActivityOtherSites(otherSite={}, activityID={})", otherSite, activityID);
     boolean saved = false;
     String query =
       "INSERT INTO other_sites (id, latitude, longitude, details, country_iso2, activity_id) VALUES (?, ?, ?, ?, ?, "
@@ -88,13 +101,17 @@ public class MySQLActivityOtherSiteDAO implements ActivityOtherSiteDAO {
     try (Connection con = databaseManager.getConnection()) {
       int rows = databaseManager.makeChangeSecure(con, query, values);
       if (rows <= -1) {
-        LOG.error("There was a problem saving an otherSite location. \nQuery: {} \nValues: {}", query, values);
+        LOG.warn(
+          "-- saveActivityOtherSites() > There was a problem saving an otherSite location. \nQuery: {} \nValues: {}",
+          query, values);
       } else {
         saved = true;
       }
     } catch (SQLException e) {
-      LOG.error("There was an error saving an otherSite location.", e);
+      LOG.error("-- saveActivityOtherSites() > There was an error saving an otherSite location for activity {}",
+        activityID, e);
     }
+    LOG.debug("<< saveActivityOtherSites():{}", saved);
     return saved;
   }
 }

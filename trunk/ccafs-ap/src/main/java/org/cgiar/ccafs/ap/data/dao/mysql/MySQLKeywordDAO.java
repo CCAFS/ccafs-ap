@@ -30,6 +30,8 @@ public class MySQLKeywordDAO implements KeywordDAO {
 
   @Override
   public Map<String, String> getKeywordInformation(String id) {
+    LOG.debug(">> getKeywordInformation(id={})", id);
+
     Map<String, String> keywordData = new HashMap<>();
     String query = "SELECT * FROM keywords WHERE id='" + id + "';";
     try (Connection con = databaseManager.getConnection()) {
@@ -41,14 +43,16 @@ public class MySQLKeywordDAO implements KeywordDAO {
       }
       rs.close();
     } catch (Exception e) {
-      LOG.error("There was an error getting a keyword. \n{}", query, e);
+      LOG.error("-- getKeywordInformation() > There was an error getting a keyword. \n{}", query, e);
     }
 
+    LOG.debug("<< getKeywordInformation():{}", keywordData.toString());
     return keywordData;
   }
 
   @Override
   public List<Map<String, String>> getKeywordList() {
+    LOG.debug(">> getKeywordList()");
     List<Map<String, String>> keywordDataList = new ArrayList<>();
     String query = "SELECT * FROM keywords ORDER BY name";
 
@@ -62,8 +66,10 @@ public class MySQLKeywordDAO implements KeywordDAO {
       }
       rs.close();
     } catch (SQLException e) {
-      LOG.error("There was an error getting the keyword list from the database.", e);
+      LOG.error("-- getKeywordList() > There was an error getting the keyword list from the database.", e);
     }
+
+    LOG.debug("<< getKeywordList():keywordDataList.size={}", keywordDataList.size());
     return keywordDataList;
   }
 }

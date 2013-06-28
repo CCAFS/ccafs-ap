@@ -26,6 +26,8 @@ public class MySQLLogframeDAO implements LogframeDAO {
 
   @Override
   public Map<String, String> getLogframe(int id) {
+    LOG.debug(">> getLogframe(id={})", id);
+
     Map<String, String> logframe = new HashMap<>();
     String query = "SELECT * FROM logframes WHERE id = " + id;
 
@@ -37,14 +39,17 @@ public class MySQLLogframeDAO implements LogframeDAO {
         logframe.put("name", rs.getString("name"));
       }
     } catch (SQLException e) {
-      LOG.error("There was an error getting the data from 'logframes' table \n{}", query, e);
+      LOG.error("-- getLogframe() > There was an error getting the 'logframe' {}.", id, e);
       return null;
     }
+
+    LOG.debug("<< getLogframe():{}", logframe.toString());
     return logframe;
   }
 
   @Override
   public Map<String, String> getLogframeByYear(int year) {
+    LOG.debug(">> getLogframeByYear(year={})", year);
     Map<String, String> logframe = new HashMap<>();
     String query = "SELECT * FROM logframes WHERE year = " + year;
 
@@ -56,9 +61,11 @@ public class MySQLLogframeDAO implements LogframeDAO {
         logframe.put("name", rs.getString("name"));
       }
     } catch (SQLException e) {
-      LOG.error("There was an error getting the data from 'logframes' table \n{}", query, e);
+      LOG.error("-- getLogframeByYear() > There was an error getting the 'logframes' for year {}", year, e);
       return null;
     }
+
+    LOG.debug("<< getLogframeByYear():{}", logframe.toString());
     return logframe;
   }
 
