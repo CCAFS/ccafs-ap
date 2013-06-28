@@ -88,7 +88,7 @@
     
     <script type="text/javascript" src="${baseUrl}/js/global/global.js" ></script>
     
-    [#-- Last, import the custom JS and CSS --]
+    [#-- import the custom JS and CSS --]
     [#if customJS??]
       [#list customJS as js]
         <script src="${js}"></script>
@@ -100,6 +100,7 @@
       [/#list]
     [/#if]
     
-    
+    [#-- Last, import the google analytics code --]
+    <script type="text/javascript" src="${baseUrl}/js/global/analytics.js"></script>
     
   </head>
