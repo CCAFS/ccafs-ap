@@ -114,15 +114,16 @@ public class MainInformationPlanningAction extends BaseAction {
   @Override
   public void prepare() throws Exception {
     super.prepare();
-    LOG.info("User {} load the activity main information planning for leader {} in planing section", getCurrentUser()
-      .getEmail(), getCurrentUser().getLeader().getId());
 
     String activityStringID = StringUtils.trim(this.getRequest().getParameter(APConstants.ACTIVITY_REQUEST_ID));
     try {
       activityID = Integer.parseInt(activityStringID);
     } catch (NumberFormatException e) {
-      LOG.error("There was an error parsing the activity identifier '{}'.", activityStringID, e);
+      LOG.error("-- prepare() > There was an error parsing the activity identifier '{}'.", activityStringID, e);
     }
+
+    LOG.info("-- prepare() > User {} load the main information for activity {} in planing section", getCurrentUser()
+      .getEmail(), activityID);
 
     budgetPercentages = budgetPercentageManager.getBudgetPercentageList();
     milestones = milestoneManager.getMilestoneList(getCurrentPlanningLogframe());
@@ -137,7 +138,8 @@ public class MainInformationPlanningAction extends BaseAction {
     if (activity.getContactPersons() != null) {
       if (this.getRequest().getMethod().equalsIgnoreCase("post")) {
         activity.getContactPersons().clear();
-        LOG.debug("All the case studies related to the leader {} was deleted", getCurrentUser().getLeader().getId());
+        LOG.debug("-- prepare() > All the case studies related to the leader {} was deleted from model",
+          getCurrentUser().getLeader().getId());
       }
     }
   }
@@ -146,16 +148,14 @@ public class MainInformationPlanningAction extends BaseAction {
   public String save() {
     boolean success = true;
     if (activityManager.updateMainInformation(activity)) {
-      LOG.info("The user {} saved the main information of the activity {} successfully.", getCurrentUser().getEmail(),
-        activityID);
 
       if (!budgetManager.saveBudget(activity.getBudget(), activity.getId())) {
-        LOG.warn("There was a problem saving the budget for activity {}", activity.getId());
+        LOG.warn("-- save() > There was a problem saving the budget for activity {}", activity.getId());
         success = false;
       }
 
       if (!contactPersonManager.saveContactPersons(activity.getContactPersons(), activityID)) {
-        LOG.warn("There was a problem saving the contact persons for activity {}", activity.getId());
+        LOG.warn("-- save() > There was a problem saving the contact persons for activity {}", activity.getId());
         success = false;
       }
 
@@ -165,15 +165,15 @@ public class MainInformationPlanningAction extends BaseAction {
 
     if (success) {
       addActionMessage(getText("saving.success", new String[] {getText("planning.mainInformation")}));
-      LOG.info("The user {} saved the main information of the activity {} successfully.", getCurrentUser().getEmail(),
-        activityID);
+      LOG.info("-- save() > The user {} saved the main information of the activity {} successfully.", getCurrentUser()
+        .getEmail(), activityID);
       if (save) {
         return SUCCESS;
       } else {
         return SAVE_NEXT;
       }
     } else {
-      LOG.warn("The user {} had problems to save the main information of the activity {}.",
+      LOG.warn("-- save() > The user {} had problems to save the main information of the activity {}.",
         getCurrentUser().getEmail(), activityID);
       addActionError(getText("saving.problem"));
       return INPUT;
@@ -215,6 +215,9 @@ public class MainInformationPlanningAction extends BaseAction {
     }
 
     if (problem) {
+      LOG.info(
+        "-- validate() > User {} try to save the main information for activity {} but don't fill all required fields.",
+        this.getCurrentUser().getEmail(), activityID);
       addActionError(getText("saving.fields.required"));
     }
   }

@@ -37,6 +37,8 @@ public class SitesByCountryAction extends BaseAction {
   @Override
   public String execute() throws Exception {
     benchmarkSites = benchmarkSiteManager.getActiveBenchmarkSitesByCountry(countryID);
+
+    LOG.info("-- execute() > CCAFS sites in country '{}' was loaded.", countryID);
     return SUCCESS;
   }
 

@@ -43,7 +43,7 @@ public class PartnerManagerImpl implements PartnerManager {
 
     }
     if (partnerList.size() == 0) {
-      LOG.warn("Partner list loaded is empty");
+      LOG.warn("-- getAllPartners() > Partner list loaded is empty");
       return null;
     }
     return partners;
@@ -60,7 +60,7 @@ public class PartnerManagerImpl implements PartnerManager {
       partner.setName(partnerData.get("name"));
       return partner;
     }
-    LOG.warn("Partner identified by {} wasn't found", id);
+    LOG.warn("-- getPartner() > Partner identified by {} wasn't found", id);
     return null;
   }
 
@@ -89,7 +89,7 @@ public class PartnerManagerImpl implements PartnerManager {
 
     }
     if (partnerList.size() == 0) {
-      LOG.warn("Partner list loaded is empty");
+      LOG.warn("-- getPartnersByFilter() > Partner list loaded is empty");
       return null;
     }
     return partners;

@@ -20,10 +20,14 @@ import java.util.Map;
 import java.util.TreeMap;
 
 import com.google.inject.Inject;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 
 public class AddActivityPlanningAction extends BaseAction {
 
+  // Logger
+  private static final Logger LOG = LoggerFactory.getLogger(AddActivityPlanningAction.class);
   private static final long serialVersionUID = 9154840925469694494L;
 
   // Managers
@@ -66,6 +70,9 @@ public class AddActivityPlanningAction extends BaseAction {
   @Override
   public void prepare() throws Exception {
     super.prepare();
+
+    LOG.info("User {} load the Add activity section", this.getCurrentUser().getEmail());
+
     milestones = milestoneManager.getMilestoneList(this.getCurrentPlanningLogframe());
     leaders = leaderManager.getAllLeaders();
     Activity[] oldActivities = activityManager.getActivitiesTitle(this.getCurrentPlanningLogframe().getYear() - 1);
@@ -129,10 +136,12 @@ public class AddActivityPlanningAction extends BaseAction {
 
     boolean saved = activityManager.saveActivity(activity);
     if (saved) {
-      // TODO success message
+      LOG.info("A new activity was saved successfully");
+      addActionMessage(getText("saving.success", new String[] {getText("planning.addActivity.newActivity")}));
       return SUCCESS;
     } else {
-      // TODO error message
+      LOG.warn("There was a problem saving the new activity into the database");
+      addActionMessage(getText("saving.problem"));
     }
     return super.save();
   }

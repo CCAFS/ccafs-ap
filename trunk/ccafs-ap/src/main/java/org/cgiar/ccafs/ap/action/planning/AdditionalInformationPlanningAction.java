@@ -69,14 +69,15 @@ public class AdditionalInformationPlanningAction extends BaseAction {
 
   @Override
   public void prepare() throws Exception {
-    LOG.info("User {} load the activity additional information for leader {} in planing section", getCurrentUser()
-      .getEmail(), getCurrentUser().getLeader().getId());
+    LOG.info("-- prepare() > User {} load the activity additional information for leader {} in planing section",
+      getCurrentUser().getEmail(), getCurrentUser().getLeader().getId());
 
     String activityStringID = StringUtils.trim(this.getRequest().getParameter(APConstants.ACTIVITY_REQUEST_ID));
     try {
       activityID = Integer.parseInt(activityStringID);
     } catch (NumberFormatException e) {
-      LOG.error("There was an error parsing the activity identifier '{}'.", activityStringID, e);
+      LOG
+        .error("-- prepare() > There was an error getting the activity identifier '{}' from URL.", activityStringID, e);
     }
 
     // Get keyword list
@@ -117,12 +118,14 @@ public class AdditionalInformationPlanningAction extends BaseAction {
     // First delete all the records from the database.
     deleted = activityKeywordManager.removeActivityKeywords(activityID);
     if (!deleted) {
-      LOG.warn("There was a problem deleting the keywords for the activity {} from the database.", activityID);
+      LOG.warn("-- save() > There was a problem deleting the keywords for the activity {} from the database.",
+        activityID);
     }
 
     deleted = resourceManager.removeResources(activityID);
     if (!deleted) {
-      LOG.warn("There was a problem deleting the resources for the activity {} from the database.", activityID);
+      LOG.warn("-- save() > There was a problem deleting the resources for the activity {} from the database.",
+        activityID);
     }
 
     // After remove the records, insert the values received if there is any.
@@ -141,14 +144,16 @@ public class AdditionalInformationPlanningAction extends BaseAction {
     if (activity.getKeywords().size() > 0) {
       keywordsSaved = activityKeywordManager.saveKeywordList(activity.getKeywords(), activityID);
       if (!keywordsSaved) {
-        LOG.warn("There was a problem saving the keywords for the activity {} into the database.", activityID);
+        LOG.warn("-- save() > There was a problem saving the keywords for the activity {} into the database.",
+          activityID);
       }
     }
 
     if (activity.getResources().size() > 0) {
       resourcesSaved = resourceManager.saveResources(activity.getResources(), activityID);
       if (!resourcesSaved) {
-        LOG.warn("There was a problem saving the resources for the activity {} from the database.", activityID);
+        LOG.warn("-- save() > There was a problem saving the resources for the activity {} from the database.",
+          activityID);
       }
     }
 

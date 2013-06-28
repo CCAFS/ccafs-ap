@@ -33,7 +33,6 @@ public class LoginAction extends BaseAction {
 
   @Override
   public String execute() throws Exception {
-    LOG.trace("Running execute() method.");
     return SUCCESS;
   }
 
@@ -42,7 +41,6 @@ public class LoginAction extends BaseAction {
   }
 
   public String login() {
-    LOG.trace("Running login() method.");
     // validate if user is just visiting the login page at first time.
     if (user != null) {
       User loggedUser = userManager.login(user.getEmail(), user.getPassword());

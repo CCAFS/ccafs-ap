@@ -15,10 +15,14 @@ import org.cgiar.ccafs.ap.data.manager.LogframeManager;
 import org.cgiar.ccafs.ap.data.model.Activity;
 
 import com.google.inject.Inject;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 
 public class XMLAction extends BaseAction {
 
+  // Logger
+  private static final Logger LOG = LoggerFactory.getLogger(XMLAction.class);
   private static final long serialVersionUID = 4983286741588568418L;
 
   // Managers
@@ -95,6 +99,9 @@ public class XMLAction extends BaseAction {
         // Nothing here
       }
     }
+
+    LOG.info("The XML file with activity list for year '{}' is being generated with limit '{}'", year, limit);
+
     activities = activityManager.getActivitiesForRSS(year, limit);
     if (activities == null) {
       activities = new Activity[0];

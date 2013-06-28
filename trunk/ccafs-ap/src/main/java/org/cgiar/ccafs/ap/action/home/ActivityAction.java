@@ -64,6 +64,8 @@ public class ActivityAction extends BaseAction {
       return INPUT;
     }
 
+    LOG.info("Activity information page for activity {} is being loaded.", activityID);
+
     // Get the basic information about the activity
     activity = activityManager.getActivityStatusInfo(activityID);
     // Set activity deliverables

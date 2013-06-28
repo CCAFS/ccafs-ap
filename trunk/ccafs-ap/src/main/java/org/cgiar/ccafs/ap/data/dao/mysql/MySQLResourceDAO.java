@@ -29,7 +29,7 @@ public class MySQLResourceDAO implements ResourceDAO {
 
   @Override
   public List<Map<String, String>> getResources(int activityID) {
-    LOG.info(">> getResources(activityID={})", activityID);
+    LOG.debug(">> getResources(activityID={})", activityID);
     List<Map<String, String>> resorcesDataList = new ArrayList<>();
     String query = "SELECT id, name FROM resources WHERE activity_id=" + activityID;
     try (Connection con = databaseManager.getConnection()) {
@@ -45,7 +45,7 @@ public class MySQLResourceDAO implements ResourceDAO {
       LOG.error("-- getResources() > There was an error getting the resources associated with activity {}", activityID,
         e);
     }
-    LOG.info("<< getResources():resorcesDataList.size={}", resorcesDataList.size());
+    LOG.debug("<< getResources():resorcesDataList.size={}", resorcesDataList.size());
     return resorcesDataList;
   }
 

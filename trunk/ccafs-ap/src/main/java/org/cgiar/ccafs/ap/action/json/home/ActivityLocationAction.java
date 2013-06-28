@@ -64,6 +64,8 @@ public class ActivityLocationAction extends BaseAction {
     countries = activityCountryManager.getActvitiyCountries(activityID);
     benchmarkSites = activityBenchmarkSiteManager.getActivityBenchmarkSites(activityID);
     otherSites = activityOtherSiteManager.getActivityOtherSites(activityID);
+
+    LOG.info("Activity locations for activity {} was loaded successfully", activityID);
     return SUCCESS;
   }
 
