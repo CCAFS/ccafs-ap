@@ -15,10 +15,9 @@ import org.slf4j.LoggerFactory;
 
 public class PartnersByFilterAction extends BaseAction {
 
-  private static final long serialVersionUID = 1946972405939522041L;
-
   // Logger
   private static final Logger LOG = LoggerFactory.getLogger(PartnersByFilterAction.class);
+  private static final long serialVersionUID = 1946972405939522041L;
 
   // Model
   private Partner[] partners;
@@ -37,6 +36,7 @@ public class PartnersByFilterAction extends BaseAction {
   @Override
   public String execute() throws Exception {
     partners = partnerManager.getPartnersByFilter(countryID, partnerTypeID);
+    LOG.info("The list of partners by country='{}' and type='{}' was loaded.", countryID, partnerTypeID);
     return SUCCESS;
   }
 

@@ -187,14 +187,14 @@ public class LocationsPlanningAction extends BaseAction {
   @Override
   public void prepare() throws Exception {
     super.prepare();
-    LOG.info("User {} load the activity locations for leader {} in planing section", getCurrentUser().getEmail(),
-      getCurrentUser().getLeader().getId());
+    LOG.info("-- prepare() > User {} load the activity locations for leader {} in planing section", getCurrentUser()
+      .getEmail(), getCurrentUser().getLeader().getId());
 
     String activityStringID = StringUtils.trim(this.getRequest().getParameter(APConstants.ACTIVITY_REQUEST_ID));
     try {
       activityID = Integer.parseInt(activityStringID);
     } catch (NumberFormatException e) {
-      LOG.error("There was an error parsing the activity identifier '{}'.", activityStringID, e);
+      LOG.error("-- prepare() > There was an error parsing the activity identifier '{}'.", activityStringID, e);
     }
 
     // Get the basic information about the activity
@@ -259,7 +259,7 @@ public class LocationsPlanningAction extends BaseAction {
     result = activityCountryManager.deleteActivityCountries(activityID);
     if (!result) {
       saved = false;
-      LOG.warn("There was a problem deleting the countries for activity {}.", activityID);
+      LOG.warn("-- save() > There was a problem deleting the countries for activity {}.", activityID);
     }
 
     // Delete the activity other sites
@@ -267,14 +267,14 @@ public class LocationsPlanningAction extends BaseAction {
     // If there was a problem deleting the other sites show it in the log.
     if (!result) {
       saved = false;
-      LOG.warn("There was a problem deleting the other sites for activity {}.", activityID);
+      LOG.warn("-- save() > There was a problem deleting the other sites for activity {}.", activityID);
     }
     // Delete the activity benchmark sites
     result = activityBenchmarkSiteManager.deleteActivityBenchmarkSites(activityID);
     // If there was a problem deleting the benchmark sites show it in the log.
     if (!result) {
       saved = false;
-      LOG.warn("There was a problem deleting the benchmark sites for activity {}.", activityID);
+      LOG.warn("-- save() > There was a problem deleting the benchmark sites for activity {}.", activityID);
     }
 
     // If the activity is not global, save the values selected.
@@ -304,12 +304,16 @@ public class LocationsPlanningAction extends BaseAction {
 
     if (saved) {
       addActionMessage(getText("saving.success", new String[] {getText("planning.locations")}));
+      LOG.info("-- save() > User {} save locations for activity {} successfully", this.getCurrentUser().getEmail(),
+        activityID);
       if (save) {
         return SUCCESS;
       } else {
         return SAVE_NEXT;
       }
     } else {
+      LOG.warn("-- save() > User {} had problems to save locations for activity {}.", this.getCurrentUser().getEmail(),
+        activityID);
       addActionError(getText("saving.problem"));
       return INPUT;
     }
@@ -354,6 +358,9 @@ public class LocationsPlanningAction extends BaseAction {
       }
 
       if (problem) {
+        LOG.info(
+          "-- validate() > User {} try to save the locations for activity {} but don't fill all required fields.", this
+            .getCurrentUser().getEmail(), activityID);
         addActionError(getText("saving.fields.required"));
       }
     }

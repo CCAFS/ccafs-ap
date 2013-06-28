@@ -123,6 +123,11 @@ function updatePartnerList(event, data){
   var partnersByFilterLink = '../json/partnersByFilter.do?';
   var indexID = $(event.target).attr('id').split('_')[1];
   
+  // Return if the element is the template
+  if(indexID == 'partnerTypeList'){
+    return;
+  }
+  
   if($("#partnerTypeList_" + indexID).val() != -1){
     partnersByFilterLink += "partnerTypeID=" + $("#partnerTypeList_" + indexID).val();
   }

@@ -102,15 +102,15 @@ public class DeliverablesPlanningAction extends BaseAction {
   @Override
   public void prepare() throws Exception {
     super.prepare();
-    LOG.info("User {} load the activity objectives for leader {} in planing section", getCurrentUser().getEmail(),
-      getCurrentUser().getLeader().getId());
 
     String activityStringID = StringUtils.trim(this.getRequest().getParameter(APConstants.ACTIVITY_REQUEST_ID));
     try {
       activityID = Integer.parseInt(activityStringID);
     } catch (NumberFormatException e) {
-      LOG.error("There was an error parsing the activity identifier '{}'.", activityStringID, e);
+      LOG.error("-- prepare() > There was an error parsing the activity identifier '{}'.", activityStringID, e);
     }
+    LOG.info("-- prepare() > User {} load the deliverables for activity {} in planing section", getCurrentUser()
+      .getEmail(), activityID);
 
     deliverableTypesList = deliverableTypeManager.getDeliverableTypes();
     deliverableStatusList = deliverableStatusManager.getDeliverableStatus();
@@ -149,8 +149,11 @@ public class DeliverablesPlanningAction extends BaseAction {
     // deliverables have been changed.
     boolean deleted = deliverableManager.removeExpected(activityID);
     if (!deleted) {
+      LOG.warn("There was a problem deleting the expected deliverables for activity {}.", activityID);
       problem = true;
     } else {
+      LOG.info("The expected deliverables for activity {} were saved successfully.", activityID);
+
       if (activity.getDeliverables() != null) {
         for (int c = 0; c < activity.getDeliverables().size(); c++) {
           Deliverable deliverable = activity.getDeliverables().get(c);
@@ -173,7 +176,10 @@ public class DeliverablesPlanningAction extends BaseAction {
               boolean fileFormatsUpdated =
                 fileFormatManager.setFileFormats(deliverable.getId(), deliverable.getFileFormats());
               if (!fileFormatsUpdated) {
+                LOG.warn("There was a problem saving the file formats for deliverable {}.", deliverable.getId());
                 problem = true;
+              } else {
+                LOG.info("File formats for deliverable {} was saved succesfully.", deliverable.getId());
               }
             }
           }
@@ -186,13 +192,19 @@ public class DeliverablesPlanningAction extends BaseAction {
 
     if (!problem) {
       addActionMessage(getText("saving.success", new String[] {getText("planning.activityDeliverables")}));
+      LOG.info("-- save() > User '{}' save the deliverables corresponding to the activity {}", this.getCurrentUser()
+        .getEmail(), activityID);
+
       if (save) {
         return SUCCESS;
       } else {
         return SAVE_NEXT;
       }
     } else {
+      LOG.warn("-- save () > User '{}' had problems to save the deliverables corresponding to the activity {}", this
+        .getCurrentUser().getEmail(), activityID);
       addActionError(getText("saving.problem"));
+
       return INPUT;
     }
   }
@@ -217,6 +229,8 @@ public class DeliverablesPlanningAction extends BaseAction {
         }
       }
       if (anyError) {
+        LOG.info("-- validate() > User {} try to save the deliverables for activity {} but don't fill all fields.",
+          this.getCurrentUser().getEmail(), activityID);
         addActionError(getText("saving.fields.required"));
       }
     }

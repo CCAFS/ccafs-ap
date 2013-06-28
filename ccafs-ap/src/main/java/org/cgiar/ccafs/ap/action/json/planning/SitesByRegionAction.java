@@ -27,6 +27,12 @@ public class SitesByRegionAction extends BaseAction {
   // Managers
   private BenchmarkSiteManager benchmarkSiteManager;
 
+  @Inject
+  public SitesByRegionAction(APConfig config, LogframeManager logframeManager, BenchmarkSiteManager benchmarkSiteManager) {
+    super(config, logframeManager);
+    this.benchmarkSiteManager = benchmarkSiteManager;
+  }
+
   @Override
   public String execute() throws Exception {
     if (regionID == "") {
@@ -34,6 +40,8 @@ public class SitesByRegionAction extends BaseAction {
     }
 
     benchmarkSites = benchmarkSiteManager.getActiveBenchmarkSitesByRegion(String.valueOf(regionID));
+
+    LOG.info("-- execute() > CCAFS sites of region '{}' were loaded successfully", regionID);
     return SUCCESS;
   }
 
@@ -52,12 +60,6 @@ public class SitesByRegionAction extends BaseAction {
 
     // If there is a parameter take its values
     regionID = StringUtils.trim(this.getRequest().getParameter(APConstants.REGION_REQUEST_ID));
-  }
-
-  @Inject
-  public SitesByRegionAction(APConfig config, LogframeManager logframeManager, BenchmarkSiteManager benchmarkSiteManager) {
-    super(config, logframeManager);
-    this.benchmarkSiteManager = benchmarkSiteManager;
   }
 
 }

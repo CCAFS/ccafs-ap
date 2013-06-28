@@ -48,15 +48,16 @@ public class ObjectivesPlanningAction extends BaseAction {
   @Override
   public void prepare() throws Exception {
     super.prepare();
-    LOG.info("User {} load the activity objectives for leader {} in planing section", getCurrentUser().getEmail(),
-      getCurrentUser().getLeader().getId());
 
     String activityStringID = StringUtils.trim(this.getRequest().getParameter(APConstants.ACTIVITY_REQUEST_ID));
     try {
       activityID = Integer.parseInt(activityStringID);
     } catch (NumberFormatException e) {
-      LOG.error("There was an error parsing the activity identifier '{}'.", activityStringID, e);
+      LOG.error("-- prepare() > There was an error parsing the activity identifier '{}'.", activityStringID, e);
     }
+
+    LOG.info("-- prepare() > User {} load the objectives for activity {} in planing section", getCurrentUser()
+      .getEmail(), activityID);
 
     // Get the basic information about the activity
     activity = activityManager.getSimpleActivity(activityID);
@@ -79,12 +80,16 @@ public class ObjectivesPlanningAction extends BaseAction {
     saved = activityObjectiveManager.saveActivityObjectives(activity.getObjectives(), activityID);
     if (saved) {
       addActionMessage(getText("saving.success", new String[] {getText("planning.objectives")}));
+      LOG.info("-- save() > User {} save successfully the objectives for activity {}",
+        this.getCurrentUser().getEmail(), activityID);
       if (save) {
         return SUCCESS;
       } else {
         return SAVE_NEXT;
       }
     } else {
+      LOG.info("-- save() > User {} had problems to save the objectives for activity {}", this.getCurrentUser()
+        .getEmail(), activityID);
       addActionError(getText("saving.problem"));
       return INPUT;
     }
@@ -100,6 +105,7 @@ public class ObjectivesPlanningAction extends BaseAction {
 
     if (save) {
       if (activity.getObjectives().size() == 0) {
+        problem = true;
         addActionError(getText("saving.fields.atLeastOne", new String[] {getText("planning.objectives.objective")
           .toLowerCase()}));
       } else {
@@ -109,10 +115,13 @@ public class ObjectivesPlanningAction extends BaseAction {
             addFieldError("activity.objectives[" + c + "].description", getText("validation.field.required"));
           }
         }
+      }
 
-        if (problem) {
-          addActionError(getText("saving.fields.required"));
-        }
+      if (problem) {
+        LOG.info(
+          "-- validate() > User {} try to save the the objectives for activity {} but don't fill all required fields.",
+          this.getCurrentUser().getEmail(), activityID);
+        addActionError(getText("saving.fields.required"));
       }
     }
   }
