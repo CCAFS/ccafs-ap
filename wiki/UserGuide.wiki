@@ -1,0 +1,56 @@
+#summary CCAFS P&R - User Guide
+
+= System sections =
+
+== Login ==
+
+<table width="800">
+ <tr>
+  <td>
+   <ul type="circle">
+    <li>
+     Go to: http://activities.ccafs.cgiar.org
+    </li>
+    <li>
+     Once the system loads the home page should appear as shown right.
+    </li>
+    <li>
+     Enter your email and password to log in.
+    </li>
+    <li>
+     Once you log in correctly you will be directed to the “getting started” page. You will be able to navigate through the platform once you successfully log in.
+    </li>
+   </ul>
+  </td>
+  <td>
+   <img src="https://docs.google.com/uc?export=download&id=0B8jCy7Ba0AgLMEFMbDlnQjgzUEk&img=login.png" />
+  </td>
+ </tr>
+</table>
+
+== Home ==
+
+<table width="800">
+ <tr>
+  <td>
+   Now that you have successfully logged in you will see a notification with your user name. At top of page you also will find your user name and a Logout button. 
+  </td>
+  <td>
+   <img src="https://docs.google.com/uc?export=download&id=0B8jCy7Ba0AgLOVgwbkw0ZTgzVFU&img=home1.png" />
+  </td>
+ </tr>
+
+ <tr>
+  <td>
+   <img src="https://docs.google.com/uc?export=download&id=0B8jCy7Ba0AgLU1JyUEZzeEJFRFE&img=home2.png" />
+  </td>
+  <td>
+   <p>
+    You will be able to navigate through the CCAFS  P&R platform using the main menu located at the top of page.
+   </p>
+   <p>
+    If any option in the main menu is disabled a tooltip will appear.
+   </p>
+  </td>
+ </tr>
+</table>
