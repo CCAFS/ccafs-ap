@@ -1,4 +1,4 @@
-#CCAFS P&R User manual - Login section
+#summary CCAFS P&R User manual - Login section
 
 == Login ==
 
