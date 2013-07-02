@@ -1,10 +1,13 @@
 #summary CCAFS P&R - User Guide
 
+<font color="#667F35">
 = System sections =
 
-== Login ==
 
-<table width="800">
+== Login ==
+</font>
+
+<table width="700">
  <tr>
   <td>
    <ul type="circle">
@@ -22,35 +25,110 @@
     </li>
    </ul>
   </td>
-  <td>
-   <img src="https://docs.google.com/uc?export=download&id=0B8jCy7Ba0AgLMEFMbDlnQjgzUEk&img=login.png" />
+  <td align="center">
+<img src="https://docs.google.com/uc?export=download&id=0B8jCy7Ba0AgLMEFMbDlnQjgzUEk&img=login.png" />
   </td>
  </tr>
 </table>
 
+
+<font color="#667F35">
 == Home ==
+</font>
 
-<table width="800">
+<table width="700">
  <tr>
-  <td>
-   Now that you have successfully logged in you will see a notification with your user name. At top of page you also will find your user name and a Logout button. 
+  <td align="justify">
+Now that you have successfully logged in you will see a notification with your user name. At top of page you also will find your user name and a Logout button. 
   </td>
-  <td>
-   <img src="https://docs.google.com/uc?export=download&id=0B8jCy7Ba0AgLOVgwbkw0ZTgzVFU&img=home1.png" />
+  <td align="center">
+<img src="https://docs.google.com/uc?export=download&id=0B8jCy7Ba0AgLOVgwbkw0ZTgzVFU&img=home1.png" />
   </td>
  </tr>
 
  <tr>
-  <td>
-   <img src="https://docs.google.com/uc?export=download&id=0B8jCy7Ba0AgLU1JyUEZzeEJFRFE&img=home2.png" />
+  <td  align="center">
+<img src="https://docs.google.com/uc?export=download&id=0B8jCy7Ba0AgLU1JyUEZzeEJFRFE&img=home2.png" />
   </td>
-  <td>
+  <td  align="justify">
    <p>
-    You will be able to navigate through the CCAFS  P&R platform using the main menu located at the top of page.
+You will be able to navigate through the CCAFS  P&R platform using the main menu located at the top of page.
    </p>
    <p>
-    If any option in the main menu is disabled a tooltip will appear.
+If any option in the main menu is disabled a tooltip will appear.
    </p>
   </td>
  </tr>
+</table>
+
+<font color="#667F35">
+== Planning section ==
+</font>
+
+<table width="700">
+ <tr>
+  <td  align="justify">
+The Planning section also has an introductory page where you will find helpful notes to guide you through the process.
+
+To start filling out the activity description forms for the forthcoming year, click on “follow this link” at the end of the introductory text.
+  </td>
+  <td  align="center">
+   <img src="https://docs.google.com/uc?export=download&id=0B8jCy7Ba0AgLQlNvQXV2cFNOQWc&img=explanaryNotes.png" />
+  </td>
+ </tr>
+
+ <tr>
+  <td  align="justify">
+Once you click on this link you will be taken to the list of activities that have been approved by the CCAFS Program Management Committee through a previous planning stage where only basic information of the planned activity was requested (Activity title, region to be conducted in and deliverables).
+  </td>
+  <td  align="center">
+   <img src="https://docs.google.com/uc?export=download&id=0B8jCy7Ba0AgLdHRXMFhnOVNqYU0&img=ActivityList.png" />
+  </td>
+ </tr>
+
+ <tr>
+  <td  align="center">
+   <img src="https://docs.google.com/uc?export=download&id=0B8jCy7Ba0AgLX2R5cDV0bldyN3c&img=ActivityListOrdered.png" />
+  </td>
+  <td  align="justify">
+Activities can be sorted by clicking on any of the table headers. For example, in the image left the activities are sorted by milestone.
+  </td>
+ </tr>
+
+
+ <tr>
+  <td  align="justify">
+If you want to go directly to a specific activity but are having trouble finding it, you may search for it by introducing a keyword or milestone number into the “Search” bar.
+  </td>
+  <td  align="center">
+   <img src="https://docs.google.com/uc?export=download&id=0B8jCy7Ba0AgLSUpNX2xCWkUxVDA&img=ActivityListFiltered.png" />
+  </td>
+ </tr>
+
+ <tr>
+  <td  align="center">
+   <img src="https://docs.google.com/uc?export=download&id=0B8jCy7Ba0AgLQlNvQXV2cFNOQWc&img=ActivityListTooltip.png" />
+  </td>
+  <td  align="justify">
+Once you find the activity that you are looking for and you are ready to start filling in the missing information, click on the activity title.
+  </td>
+ </tr>
+
+</table>
+
+=== Sub menus ===
+
+<table width="700">
+ <tr>
+  <td  align="center" width="300">
+<img src="https://docs.google.com/uc?export=download&id=0B8jCy7Ba0AgLS3ZXWHRVY3ZUdWs&img=subMenu.png" />
+  </td>
+
+  <td  align="justify" width="500">
+You will see that once you click on the activity title a sub-menu bar will appear at the left, shaded in green.  The sub-menus correspond to the components of the activity description form. All fields under these sub-menus are mandatory.  
+
+You can navigate through the different forms by clicking on the sub-menu item. 
+  </td>
+ </tr>
+
 </table>
