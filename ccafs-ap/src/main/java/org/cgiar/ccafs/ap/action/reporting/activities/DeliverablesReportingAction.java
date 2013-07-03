@@ -176,11 +176,11 @@ public class DeliverablesReportingAction extends BaseAction {
     }
 
     if (!problem) {
-      LOG.info("The deliverables to the activity {} was saved successfully", String.valueOf(activityID));
+      LOG.info("The deliverables for the activity {} was saved successfully", String.valueOf(activityID));
       addActionMessage(getText("saving.success", new String[] {getText("reporting.activityDeliverables")}));
       return SUCCESS;
     } else {
-      LOG.warn("There was a problem saving the deliverables to the activity {}", String.valueOf(activityID));
+      LOG.warn("There was a problem saving the deliverables for the activity {}", String.valueOf(activityID));
       addActionError(getText("saving.problem"));
       return INPUT;
     }
@@ -263,6 +263,7 @@ public class DeliverablesReportingAction extends BaseAction {
       }
 
       if (anyError) {
+        LOG.info("User {} try to save the deliverables but don't fill all the required fields.");
         addActionError(getText("saving.fields.required"));
       }
     }
