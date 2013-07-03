@@ -1,7 +1,7 @@
 #summary CCAFS P&R - User Guide
 
 <font color="#667F35">
-= System sections =
+= Platform sections =
 
 
 == Login ==
@@ -15,7 +15,7 @@
      Go to: http://activities.ccafs.cgiar.org
     </li>
     <li>
-     Once the system loads the home page should appear as shown right.
+     Once the platform loads the home page should appear as shown right.
     </li>
     <li>
      Enter your email and password to log in.
@@ -296,7 +296,7 @@ If you can’t find the partner you are looking for, click the “request to hav
   <td  align="justify" width="350" valign="middle">
 After clicking this link a popup appears asking you for the partner information.
 
-System administrators will receive and process the request within 36 hours. When the partner has been added to the database you will receive a confirmation email.
+Platform administrators will receive and process the request within 36 hours. When the partner has been added to the database you will receive a confirmation email.
 
 Then click the “Save and Next” button when you finish to continue to the Locations sub-section.
   </td>
