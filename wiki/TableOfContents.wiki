@@ -1,6 +1,6 @@
 #sidebar TableOfContents
   * [UserGuide User Guide]
-    * [UserGuide#System_sections System sections]
+    * [UserGuide#System_sections Platform sections]
       * [UserGuide#Login Login]
       * [UserGuide#Home Home]
       * [UserGuide#Planning_section Planning section]
