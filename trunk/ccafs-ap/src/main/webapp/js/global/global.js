@@ -29,3 +29,20 @@ function applyCharCounter($textArea, charCount) {
     $(event.target).next(".charCount").find("span").text(charCount-$(event.target).val().length);
   });
 }
+
+/* Add a word counter to a specific text area */
+function applyWordCounter($textArea, wordCount) {
+  $textArea.parent().append("<p class='charCount'>(<span>"+wordCount+"</span> words remaining)</p>");
+  $textArea.next(".charCount").find("span").text(wordCount-word_count($textArea));
+  $textArea.on("keyup", function(event) {
+    if(word_count($textArea) > wordCount) {
+      $(event.target).val($(event.target).val().slice(0,-2));
+    }
+    $(event.target).next(".charCount").find("span").text(wordCount-word_count(event.target));
+  });
+}
+
+function word_count(field) {
+  var matches = $(field).val().match(/\b/g);
+  return number = (matches) ? matches.length / 2 : 0;
+}
