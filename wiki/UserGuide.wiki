@@ -116,7 +116,7 @@ Once you find the activity that you are looking for and you are ready to start f
 
 </table>
 
-=== Sub menus ===
+==== Sub menus ====
 
 <table width="700">
  <tr>
@@ -128,6 +128,40 @@ Once you find the activity that you are looking for and you are ready to start f
 You will see that once you click on the activity title a sub-menu bar will appear at the left, shaded in green.  The sub-menus correspond to the components of the activity description form. All fields under these sub-menus are mandatory.  
 
 You can navigate through the different forms by clicking on the sub-menu item. 
+  </td>
+ </tr>
+
+</table>
+
+==== Action Buttons ====
+
+<table width="700">
+ <tr>
+  <td  align="justify" width="400">
+At the bottom of each form you will always find a group of action buttons: Save, Save and Next, and Cancel. If you click the “Save” button the platform will save the changes and remain on the current page. If you click the “Save and Next” button the information is saved and you are redirected to the next sub-menu. Finally, if you click the “Cancel” button the platform won’t save the changes and you are redirected to the activity list page.
+  </td>
+
+  <td  align="center" width="300">
+<img src="https://docs.google.com/uc?export=download&id=0B8jCy7Ba0AgLQW5PQ3hocXQwd2M&img=ActionButtons.png" />
+  </td>
+ </tr>
+
+</table>
+
+<font color="#667F35">
+=== Activity Summary Sub-Section ===
+</font>
+
+<table width="700">
+ <tr>
+  <td  align="justify" width="350">
+The first page you will see after clicking on the activity title link is the Activity Summary section. Here, the activity title, description/rationale, milestone number, budget, start end date, contact persons and gender integration must be specified. Here you can also view the CCAFS logframe by clicking on the “View logframe” link.
+
+After filling in the summary information, click the “Save and Next” button to go to the next section.
+  </td>
+
+  <td  align="center" width="350">
+<img src="https://docs.google.com/uc?export=download&id=0B8jCy7Ba0AgLLTFIVFdhNllyNmM&img=ActivitySummary.png" width="300" />
   </td>
  </tr>
 
