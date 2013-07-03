@@ -7,7 +7,7 @@
 == Login ==
 </font>
 
-<table width="700">
+<table width="750">
  <tr>
   <td>
    <ul type="circle">
@@ -36,7 +36,7 @@
 == Home ==
 </font>
 
-<table width="700">
+<table width="750">
  <tr>
   <td align="justify">
 Now that you have successfully logged in you will see a notification with your user name. At top of page you also will find your user name and a Logout button. 
@@ -65,7 +65,7 @@ If any option in the main menu is disabled a tooltip will appear.
 == Planning section ==
 </font>
 
-<table width="700">
+<table width="750">
  <tr>
   <td  align="justify">
 The Planning section also has an introductory page where you will find helpful notes to guide you through the process.
@@ -118,7 +118,7 @@ Once you find the activity that you are looking for and you are ready to start f
 
 ==== Sub menus ====
 
-<table width="700">
+<table width="750">
  <tr>
   <td  align="center" width="300">
 <img src="https://docs.google.com/uc?export=download&id=0B8jCy7Ba0AgLS3ZXWHRVY3ZUdWs&img=subMenu.png" />
@@ -135,7 +135,7 @@ You can navigate through the different forms by clicking on the sub-menu item.
 
 ==== Action Buttons ====
 
-<table width="700">
+<table width="750">
  <tr>
   <td  align="justify" width="400">
 At the bottom of each form you will always find a group of action buttons: Save, Save and Next, and Cancel. If you click the “Save” button the platform will save the changes and remain on the current page. If you click the “Save and Next” button the information is saved and you are redirected to the next sub-menu. Finally, if you click the “Cancel” button the platform won’t save the changes and you are redirected to the activity list page.
@@ -152,7 +152,7 @@ At the bottom of each form you will always find a group of action buttons: Save,
 === Activity Summary Sub-Section ===
 </font>
 
-<table width="700">
+<table width="750">
  <tr>
   <td  align="justify" width="350">
 The first page you will see after clicking on the activity title link is the Activity Summary section. Here, the activity title, description/rationale, milestone number, budget, start end date, contact persons and gender integration must be specified. Here you can also view the CCAFS logframe by clicking on the “View logframe” link.
@@ -166,3 +166,147 @@ After filling in the summary information, click the “Save and Next” button t
  </tr>
 
 </table>
+
+<font color="#667F35">
+=== Activity Objectives Sub-Section ===
+</font>
+
+<table width="750">
+
+ <tr>
+  <td  align="center" width="350">
+<img src="https://docs.google.com/uc?export=download&id=0B8jCy7Ba0AgLMFF3RkRsLUdUR2c&img=AddObjectives.png" width="300" />
+  </td>
+
+  <td  align="justify" width="350">
+To start filling out the activity objectives (what the activity aims to achieve) you must click the “Add objective” link to add a new objective. You may add as many objectives as you need.
+  </td>
+ </tr>
+
+ <tr>
+  <td  align="justify" width="350">
+When you finish adding all objectives you can press the “Save and Next” button to continue.
+
+Remember that you also can press the “Save” button at any time to guard changes and prevent information loss.
+  </td>
+
+  <td  align="center" width="350">
+<img src="https://docs.google.com/uc?export=download&id=0B8jCy7Ba0AgLU0s1NGJBTTFJR2s&img=ObjectivesFilled.png" width="300" />
+  </td>
+ </tr>
+
+</table>
+
+
+<font color="#667F35">
+=== Deliverables Sub-Section ===
+</font>
+
+<table width="750">
+
+ <tr>
+  <td  align="justify" width="350">
+As with the previous section, click the “Add deliverables” link to start filling out the activity deliverables.
+  </td>
+
+  <td  align="center" width="350">
+<img src="https://docs.google.com/uc?export=download&id=0B8jCy7Ba0AgLTllKcE9GaVFCVlE&img=AddDeliverables.png" width="300" />
+  </td>
+ </tr>
+
+
+ <tr>
+  <td  align="center" width="350">
+<img src="https://docs.google.com/uc?export=download&id=0B8jCy7Ba0AgLaDhobUN3R2dLbFk&img=DeliverablesFilled.png" width="300" />
+  </td>
+
+  <td  align="justify" width="350">
+When you finish adding all deliverables you can press the “Save and Next” button to continue.^1^
+  </td>
+ </tr>
+</table>
+
+<font color="#667F35">
+=== Partners Sub-Section ===
+</font>
+
+<table width="750">
+
+ <tr>
+  <td  align="justify" width="350">
+To start filling out the activity partners section, click the “Add new partner” link.
+  </td>
+
+  <td  align="center" width="350">
+<img src="https://docs.google.com/uc?export=download&id=0B8jCy7Ba0AgLRUNoZUJfYWRFYjA&img=AddNewPartner.png" width="300" />
+  </td>
+ </tr>
+
+
+ <tr>
+  <td  align="justify" width="350">
+In the partners section, you can add as many partners as are applicable for the activity. Typing in the “Name” bar will cause a dropdown list to be displayed, allowing you to scroll and search for the partner you are looking for. The list can be filtered using the Type and Country dropdown lists.
+  </td>
+
+  <td  align="center" width="350">
+<img src="https://docs.google.com/uc?export=download&id=0B8jCy7Ba0AgLNnZENGhaSzhTWnc&img=AddFilter.png" width="300" />
+  </td>
+ </tr>
+
+ <tr>
+  <td  align="center" width="350">
+<img src="https://docs.google.com/uc?export=download&id=0B8jCy7Ba0AgLeXVmMEZMS0Z0aEk&img=NoResultFilter.png" width="300" />
+  </td>
+
+  <td  align="justify" width="350">
+If there are no results for a filter, an error message will appear.
+  </td>
+ </tr>
+
+ <tr>
+  <td  align="justify" width="350">
+If you no longer want to use a filter click on the “x” button on the filter bar to remove it.
+  </td>
+
+  <td  align="center" width="350">
+<img src="https://docs.google.com/uc?export=download&id=0B8jCy7Ba0AgLOWVtMFFVYlZRU0U&img=DropFilter.png" width="300" />
+  </td>
+ </tr>
+
+ <tr>
+  <td  align="center" width="350">
+<img src="https://docs.google.com/uc?export=download&id=0B8jCy7Ba0AgLWHhVczlBWTdkQlE&img=Filter.png" width="300" />
+  </td>
+
+  <td  align="justify" width="350">
+Once you have applied the desired filters you can continue filtering the list by typing the partner name or acronym.
+
+If you can’t find the partner you are looking for, click the “request to have it added to the list” link.
+  </td>
+ </tr>
+
+
+ <tr>
+  <td  align="center" width="700" colspan="2">
+<img src="https://docs.google.com/uc?export=download&id=0B8jCy7Ba0AgLeW5NU0FrbkNZR1k&img=requestNewPartner.png" width="600" />
+  </td>
+ </tr>
+
+ <tr>
+  <td  align="justify" width="350">
+After clicking this link a popup appears asking you for the partner information.
+
+System administrators will receive and process the request within 36 hours. When the partner has been added to the database you will receive a confirmation email.
+
+Then click the “Save and Next” button when you finish to continue to the Locations sub-menu.
+  </td>
+
+  <td  align="center" width="350">
+<img src="https://docs.google.com/uc?export=download&id=0B8jCy7Ba0AgLVTVyZG1uTV9iX2s&img=NewPartnerForm.png" width="300" />
+  </td>
+ </tr>
+
+</table>
+
+-----------------------------
+^1^ You can return to the activity list from this or any of the following pages by clicking the “Planning” button in main menu or the “Cancel” button at bottom of the page.
