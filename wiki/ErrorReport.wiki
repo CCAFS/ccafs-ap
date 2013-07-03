@@ -1,0 +1,18 @@
+#summary CCAFS P&R - Error Report guide
+
+<font color="#667F35">
+= Error Report =
+</font>
+
+If you find any error or detail that you feel needs correction or improvement, please contact the administration staff.
+At the bottom of every page you will find a link that you can click to report the error.
+
+[https://docs.google.com/uc?export=download&id=0B8jCy7Ba0AgLcHk1MWxRaGhVVWs&img=footer.png]
+
+<font color="#667F35">
+== Technical support ==
+</font>
+
+If you have any trouble or want to provide feedback, please don’t hesitate to contact us. You can submit your email including attachments to , <a href="mailto:h.f.tobon@cgiar.org"> h.f.tobon@cgiar.org </a> . Please include the word *[ccafs-ap]* in the subject line, 
+
+e.g. “Subject:  *[ccafs-ap]* Feedback CCAFS activities platform.”
