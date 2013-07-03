@@ -413,6 +413,71 @@ After complete this process the coordinates will be automatically filled in the 
 
 </table>
 
+<font color="#667F35">
+=== Additional Information Sub-Section ===
+</font>
+
+<table width="750">
+
+ <tr>
+  <td  align="justify" width="350">
+This is the last piece of metadata needed for each activity. Here you will provide the keywords and resources associated with the activity.
+ 
+If you scroll over the “keywords” field a dropdown list will be displayed. You can search for keywords by typing in a keyword or by using the scroll bar.
+  </td>
+
+  <td  align="center" width="350">
+<img src="https://docs.google.com/uc?export=download&id=0B8jCy7Ba0AgLU2kwY2haNXJSTG8&img=keywords.png" width="300" />
+  </td>
+ </tr>
+
+ <tr>
+  <td  align="justify" width="350">
+If you don’t find the keyword you are looking for, enter it in the “Other keywords” textbox. You can add as many additional keywords as you want, separating them with commas.
+  </td>
+
+  <td  align="center" width="350">
+<img src="https://docs.google.com/uc?export=download&id=0B8jCy7Ba0AgLLUloWkQ3aVAxU1E&img=otherKeywords.png" width="300" />
+  </td>
+ </tr>
+
+ <tr>
+  <td  align="justify" width="350">
+To add a resource you must click the “Add resource” button and add the information in the text field.
+  </td>
+
+  <td  align="center" width="350">
+<img src="https://docs.google.com/uc?export=download&id=0B8jCy7Ba0AgLN1Z6M3lCYzBrR2M&img=resources.png" width="250" />
+  </td>
+ </tr>
+</table>
+
+<font color="#FF0000">
+==== Important ====
+</font>
+
+<table width="750">
+
+ <tr>
+  <td  align="justify" width="350">
+You will find throughout the planning process that there are required fields. If you try saving the form with these fields empty, a notification will appear at the top of the page (see right) and the form will not be saved. The missing field will be indicated by a red “field required” message, meaning you must enter the missing data to be able to continue.  
+  </td>
+
+  <td  align="center" width="350">
+<img src="https://docs.google.com/uc?export=download&id=0B8jCy7Ba0AgLczJlMU5TU0V6dmM&img=requiredFields.png" width="300" />
+  </td>
+ </tr>
+
+ <tr>
+  <td  align="center" width="350">
+<img src="https://docs.google.com/uc?export=download&id=0B8jCy7Ba0AgLU0lCd25oT0hLV28&img=savingSuccessfully.png" width="300" />
+  </td>
+
+  <td  align="justify" width="350">
+After fully completing all fields and successfully saving data, a green verification notice will appear and you will be redirected to the next sub-menu.
+  </td>
+ </tr>
+</table>
 
 -----------------------------
 ^1^ You can return to the activity list from this or any of the following pages by clicking the “Planning” button in main menu or the “Cancel” button at bottom of the page.
