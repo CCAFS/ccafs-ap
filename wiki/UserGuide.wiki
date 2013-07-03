@@ -298,7 +298,7 @@ After clicking this link a popup appears asking you for the partner information.
 
 System administrators will receive and process the request within 36 hours. When the partner has been added to the database you will receive a confirmation email.
 
-Then click the “Save and Next” button when you finish to continue to the Locations sub-menu.
+Then click the “Save and Next” button when you finish to continue to the Locations sub-section.
   </td>
 
   <td  align="center" width="350">
@@ -307,6 +307,112 @@ Then click the “Save and Next” button when you finish to continue to the Loc
  </tr>
 
 </table>
+
+
+<font color="#667F35">
+=== Locations Sub-Section ===
+</font>
+
+<table width="750">
+
+ <tr>
+  <td  align="justify" width="350">
+In the locations section you can specify the geographic locales where the activity will be carried out. 
+
+If an activity is global in scope you can select the “global” option. This action will disable all other options.
+  </td>
+
+  <td  align="center" width="350">
+<img src="https://docs.google.com/uc?export=download&id=0B8jCy7Ba0AgLQ1ZOdldFUk9KelU&img=isGlobal.png" width="300" />
+  </td>
+ </tr>
+
+ <tr>
+  <td  align="center" width="350">
+<img src="https://docs.google.com/uc?export=download&id=0B8jCy7Ba0AgLXzlaZ3NuV1c0QW8&img=isNotGlobal.png" width="300" />
+  </td>
+
+  <td  align="justify" width="350">
+If an activity is not Global, you can select its location(s) to as great a level of detail as possible. If the activity’s scope is an entire region, first select the region and then select the “all countries” option. The countries box will be disabled and the CCAFS sites located in that region will appear.
+
+If the activity’s scope is limited to a particular country/countries, select the region first and then select the country or countries of interest.
+  </td>
+ </tr>
+
+ <tr>
+  <td  align="justify" width="350">
+If you want select more than one country click again in the field to countinue selecting countries.
+  </td>
+
+  <td  align="center" width="350">
+<img src="https://docs.google.com/uc?export=download&id=0B8jCy7Ba0AgLajB5MXFuaE1maUU&img=countries.png" width="300" />
+  </td>
+ </tr>
+
+ <tr>
+  <td  align="justify" width="350">
+If the activity will be carried out in one or more CCAFS sites, first select the region, then select the country and finally select the applicable CCAFS sites.
+  </td>
+
+  <td  align="center" width="350">
+<img src="https://docs.google.com/uc?export=download&id=0B8jCy7Ba0AgLLTNpY0hlTVllcjg&img=ccafsSites.png" width="300" />
+  </td>
+ </tr>
+
+ <tr>
+  <td  align="justify" width="350">
+If the activity will be located in another, more specific location you can indicate it by clicking on the “Other site” link and entering the latitude and longitude.
+  </td>
+
+  <td  align="center" width="350">
+<img src="https://docs.google.com/uc?export=download&id=0B8jCy7Ba0AgLTlMwVFhaVFNXVWc&img=otherSites.png" width="300" />
+  </td>
+ </tr>
+
+ <tr>
+  <td  align="justify" width="350">
+If you don’t know the geo-coordinates or if you want to select the place from a map, first choose a country and then press the “Click to get GeoPosition” link.
+  </td>
+
+  <td  align="center" width="350">
+<img src="https://docs.google.com/uc?export=download&id=0B8jCy7Ba0AgLTXYtVmJRSzBuQzQ&img=selectOtherLocation.png" width="300" />
+  </td>
+ </tr>
+
+ <tr>
+  <td  align="center" width="350">
+<img src="https://docs.google.com/uc?export=download&id=0B8jCy7Ba0AgLa0Nvb3prVDNFMTg&img=selectedOtherLocation.png" width="300" />
+  </td>
+
+  <td  align="justify" width="350">
+You can adjust the zoom level of the map using the mouse scroll or by pressing the “+” or “-” buttons in the upper left corner of the map.
+  </td>
+ </tr>
+
+ <tr>
+  <td  align="justify" width="350">
+Once you find the location, click the place on the map and a red marker will appear. 
+
+Finally, press the “Save” button and wait for a confirmation message to appear.
+  </td>
+
+  <td  align="center" width="350">
+<img src="https://docs.google.com/uc?export=download&id=0B8jCy7Ba0AgLa09VdkZRMnJXLW8&img=succesfully.png" width="200" />
+  </td>
+ </tr>
+
+ <tr>
+  <td  align="center" width="350">
+<img src="https://docs.google.com/uc?export=download&id=0B8jCy7Ba0AgLTjktN2VyeU83VDQ&img=valuesUpdated.png" width="300" />
+  </td>
+
+  <td  align="justify" width="350">
+After complete this process the coordinates will be automatically filled in the corresponding fields.
+  </td>
+ </tr>
+
+</table>
+
 
 -----------------------------
 ^1^ You can return to the activity list from this or any of the following pages by clicking the “Planning” button in main menu or the “Cancel” button at bottom of the page.
