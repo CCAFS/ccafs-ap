@@ -7,9 +7,9 @@
 == Login ==
 </font>
 
-<table width="750">
+<table width="750" height="100">
  <tr>
-  <td>
+  <td valign="middle">
    <ul type="circle">
     <li>
      Go to: http://activities.ccafs.cgiar.org
@@ -25,7 +25,7 @@
     </li>
    </ul>
   </td>
-  <td align="center">
+  <td align="center" valign="middle">
 <img src="https://docs.google.com/uc?export=download&id=0B8jCy7Ba0AgLMEFMbDlnQjgzUEk&img=login.png" />
   </td>
  </tr>
@@ -38,19 +38,19 @@
 
 <table width="750">
  <tr>
-  <td align="justify">
+  <td align="justify" valign="middle">
 Now that you have successfully logged in you will see a notification with your user name. At top of page you also will find your user name and a Logout button. 
   </td>
-  <td align="center">
+  <td align="center" valign="middle">
 <img src="https://docs.google.com/uc?export=download&id=0B8jCy7Ba0AgLOVgwbkw0ZTgzVFU&img=home1.png" />
   </td>
  </tr>
 
  <tr>
-  <td  align="center">
+  <td  align="center" valign="middle">
 <img src="https://docs.google.com/uc?export=download&id=0B8jCy7Ba0AgLU1JyUEZzeEJFRFE&img=home2.png" />
   </td>
-  <td  align="justify">
+  <td  align="justify" valign="middle">
    <p>
 You will be able to navigate through the CCAFS  P&R platform using the main menu located at the top of page.
    </p>
@@ -67,49 +67,49 @@ If any option in the main menu is disabled a tooltip will appear.
 
 <table width="750">
  <tr>
-  <td  align="justify">
+  <td  align="justify" valign="middle">
 The Planning section also has an introductory page where you will find helpful notes to guide you through the process.
 
 To start filling out the activity description forms for the forthcoming year, click on “follow this link” at the end of the introductory text.
   </td>
-  <td  align="center">
+  <td  align="center" valign="middle">
    <img src="https://docs.google.com/uc?export=download&id=0B8jCy7Ba0AgLQlNvQXV2cFNOQWc&img=explanaryNotes.png" />
   </td>
  </tr>
 
  <tr>
-  <td  align="justify">
+  <td  align="justify" valign="middle">
 Once you click on this link you will be taken to the list of activities that have been approved by the CCAFS Program Management Committee through a previous planning stage where only basic information of the planned activity was requested (Activity title, region to be conducted in and deliverables).
   </td>
-  <td  align="center">
+  <td  align="center" valign="middle">
    <img src="https://docs.google.com/uc?export=download&id=0B8jCy7Ba0AgLdHRXMFhnOVNqYU0&img=ActivityList.png" />
   </td>
  </tr>
 
  <tr>
-  <td  align="center">
+  <td  align="center" valign="middle">
    <img src="https://docs.google.com/uc?export=download&id=0B8jCy7Ba0AgLX2R5cDV0bldyN3c&img=ActivityListOrdered.png" />
   </td>
-  <td  align="justify">
+  <td  align="justify" valign="middle">
 Activities can be sorted by clicking on any of the table headers. For example, in the image left the activities are sorted by milestone.
   </td>
  </tr>
 
 
  <tr>
-  <td  align="justify">
+  <td  align="justify" valign="middle">
 If you want to go directly to a specific activity but are having trouble finding it, you may search for it by introducing a keyword or milestone number into the “Search” bar.
   </td>
-  <td  align="center">
+  <td  align="center" valign="middle">
    <img src="https://docs.google.com/uc?export=download&id=0B8jCy7Ba0AgLSUpNX2xCWkUxVDA&img=ActivityListFiltered.png" />
   </td>
  </tr>
 
  <tr>
-  <td  align="center">
+  <td  align="center" valign="middle">
    <img src="https://docs.google.com/uc?export=download&id=0B8jCy7Ba0AgLQlNvQXV2cFNOQWc&img=ActivityListTooltip.png" />
   </td>
-  <td  align="justify">
+  <td  align="justify" valign="middle">
 Once you find the activity that you are looking for and you are ready to start filling in the missing information, click on the activity title.
   </td>
  </tr>
@@ -120,11 +120,11 @@ Once you find the activity that you are looking for and you are ready to start f
 
 <table width="750">
  <tr>
-  <td  align="center" width="300">
+  <td  align="center" width="300" valign="middle">
 <img src="https://docs.google.com/uc?export=download&id=0B8jCy7Ba0AgLS3ZXWHRVY3ZUdWs&img=subMenu.png" />
   </td>
 
-  <td  align="justify" width="500">
+  <td  align="justify" width="500" valign="middle">
 You will see that once you click on the activity title a sub-menu bar will appear at the left, shaded in green.  The sub-menus correspond to the components of the activity description form. All fields under these sub-menus are mandatory.  
 
 You can navigate through the different forms by clicking on the sub-menu item. 
@@ -137,11 +137,11 @@ You can navigate through the different forms by clicking on the sub-menu item.
 
 <table width="750">
  <tr>
-  <td  align="justify" width="400">
+  <td  align="justify" width="400" valign="middle">
 At the bottom of each form you will always find a group of action buttons: Save, Save and Next, and Cancel. If you click the “Save” button the platform will save the changes and remain on the current page. If you click the “Save and Next” button the information is saved and you are redirected to the next sub-menu. Finally, if you click the “Cancel” button the platform won’t save the changes and you are redirected to the activity list page.
   </td>
 
-  <td  align="center" width="300">
+  <td  align="center" width="300" valign="middle">
 <img src="https://docs.google.com/uc?export=download&id=0B8jCy7Ba0AgLQW5PQ3hocXQwd2M&img=ActionButtons.png" />
   </td>
  </tr>
@@ -154,13 +154,13 @@ At the bottom of each form you will always find a group of action buttons: Save,
 
 <table width="750">
  <tr>
-  <td  align="justify" width="350">
+  <td  align="justify" width="350" valign="middle">
 The first page you will see after clicking on the activity title link is the Activity Summary section. Here, the activity title, description/rationale, milestone number, budget, start end date, contact persons and gender integration must be specified. Here you can also view the CCAFS logframe by clicking on the “View logframe” link.
 
 After filling in the summary information, click the “Save and Next” button to go to the next section.
   </td>
 
-  <td  align="center" width="350">
+  <td  align="center" width="350" valign="middle">
 <img src="https://docs.google.com/uc?export=download&id=0B8jCy7Ba0AgLLTFIVFdhNllyNmM&img=ActivitySummary.png" width="300" />
   </td>
  </tr>
@@ -174,23 +174,23 @@ After filling in the summary information, click the “Save and Next” button t
 <table width="750">
 
  <tr>
-  <td  align="center" width="350">
+  <td  align="center" width="350" valign="middle">
 <img src="https://docs.google.com/uc?export=download&id=0B8jCy7Ba0AgLMFF3RkRsLUdUR2c&img=AddObjectives.png" width="300" />
   </td>
 
-  <td  align="justify" width="350">
+  <td  align="justify" width="350" valign="middle">
 To start filling out the activity objectives (what the activity aims to achieve) you must click the “Add objective” link to add a new objective. You may add as many objectives as you need.
   </td>
  </tr>
 
  <tr>
-  <td  align="justify" width="350">
+  <td  align="justify" width="350" valign="middle">
 When you finish adding all objectives you can press the “Save and Next” button to continue.
 
 Remember that you also can press the “Save” button at any time to guard changes and prevent information loss.
   </td>
 
-  <td  align="center" width="350">
+  <td  align="center" width="350" valign="middle">
 <img src="https://docs.google.com/uc?export=download&id=0B8jCy7Ba0AgLU0s1NGJBTTFJR2s&img=ObjectivesFilled.png" width="300" />
   </td>
  </tr>
@@ -205,22 +205,22 @@ Remember that you also can press the “Save” button at any time to guard chan
 <table width="750">
 
  <tr>
-  <td  align="justify" width="350">
+  <td  align="justify" width="350" valign="middle">
 As with the previous section, click the “Add deliverables” link to start filling out the activity deliverables.
   </td>
 
-  <td  align="center" width="350">
+  <td  align="center" width="350" valign="middle">
 <img src="https://docs.google.com/uc?export=download&id=0B8jCy7Ba0AgLTllKcE9GaVFCVlE&img=AddDeliverables.png" width="300" />
   </td>
  </tr>
 
 
  <tr>
-  <td  align="center" width="350">
+  <td  align="center" width="350" valign="middle">
 <img src="https://docs.google.com/uc?export=download&id=0B8jCy7Ba0AgLaDhobUN3R2dLbFk&img=DeliverablesFilled.png" width="300" />
   </td>
 
-  <td  align="justify" width="350">
+  <td  align="justify" width="350" valign="middle">
 When you finish adding all deliverables you can press the “Save and Next” button to continue.^1^
   </td>
  </tr>
@@ -233,52 +233,52 @@ When you finish adding all deliverables you can press the “Save and Next” bu
 <table width="750">
 
  <tr>
-  <td  align="justify" width="350">
+  <td  align="justify" width="350" valign="middle">
 To start filling out the activity partners section, click the “Add new partner” link.
   </td>
 
-  <td  align="center" width="350">
+  <td  align="center" width="350" valign="middle">
 <img src="https://docs.google.com/uc?export=download&id=0B8jCy7Ba0AgLRUNoZUJfYWRFYjA&img=AddNewPartner.png" width="300" />
   </td>
  </tr>
 
 
  <tr>
-  <td  align="justify" width="350">
+  <td  align="justify" width="350" valign="middle">
 In the partners section, you can add as many partners as are applicable for the activity. Typing in the “Name” bar will cause a dropdown list to be displayed, allowing you to scroll and search for the partner you are looking for. The list can be filtered using the Type and Country dropdown lists.
   </td>
 
-  <td  align="center" width="350">
+  <td  align="center" width="350" valign="middle">
 <img src="https://docs.google.com/uc?export=download&id=0B8jCy7Ba0AgLNnZENGhaSzhTWnc&img=AddFilter.png" width="300" />
   </td>
  </tr>
 
  <tr>
-  <td  align="center" width="350">
+  <td  align="center" width="350" valign="middle">
 <img src="https://docs.google.com/uc?export=download&id=0B8jCy7Ba0AgLeXVmMEZMS0Z0aEk&img=NoResultFilter.png" width="300" />
   </td>
 
-  <td  align="justify" width="350">
+  <td  align="justify" width="350" valign="middle">
 If there are no results for a filter, an error message will appear.
   </td>
  </tr>
 
  <tr>
-  <td  align="justify" width="350">
+  <td  align="justify" width="350" valign="middle">
 If you no longer want to use a filter click on the “x” button on the filter bar to remove it.
   </td>
 
-  <td  align="center" width="350">
+  <td  align="center" width="350" valign="middle">
 <img src="https://docs.google.com/uc?export=download&id=0B8jCy7Ba0AgLOWVtMFFVYlZRU0U&img=DropFilter.png" width="300" />
   </td>
  </tr>
 
  <tr>
-  <td  align="center" width="350">
+  <td  align="center" width="350" valign="middle">
 <img src="https://docs.google.com/uc?export=download&id=0B8jCy7Ba0AgLWHhVczlBWTdkQlE&img=Filter.png" width="300" />
   </td>
 
-  <td  align="justify" width="350">
+  <td  align="justify" width="350" valign="middle">
 Once you have applied the desired filters you can continue filtering the list by typing the partner name or acronym.
 
 If you can’t find the partner you are looking for, click the “request to have it added to the list” link.
@@ -287,13 +287,13 @@ If you can’t find the partner you are looking for, click the “request to hav
 
 
  <tr>
-  <td  align="center" width="700" colspan="2">
+  <td  align="center" width="700" colspan="2" valign="middle">
 <img src="https://docs.google.com/uc?export=download&id=0B8jCy7Ba0AgLeW5NU0FrbkNZR1k&img=requestNewPartner.png" width="600" />
   </td>
  </tr>
 
  <tr>
-  <td  align="justify" width="350">
+  <td  align="justify" width="350" valign="middle">
 After clicking this link a popup appears asking you for the partner information.
 
 System administrators will receive and process the request within 36 hours. When the partner has been added to the database you will receive a confirmation email.
@@ -301,7 +301,7 @@ System administrators will receive and process the request within 36 hours. When
 Then click the “Save and Next” button when you finish to continue to the Locations sub-section.
   </td>
 
-  <td  align="center" width="350">
+  <td  align="center" width="350" valign="middle">
 <img src="https://docs.google.com/uc?export=download&id=0B8jCy7Ba0AgLVTVyZG1uTV9iX2s&img=NewPartnerForm.png" width="300" />
   </td>
  </tr>
@@ -316,23 +316,23 @@ Then click the “Save and Next” button when you finish to continue to the Loc
 <table width="750">
 
  <tr>
-  <td  align="justify" width="350">
+  <td  align="justify" width="350" valign="middle">
 In the locations section you can specify the geographic locales where the activity will be carried out. 
 
 If an activity is global in scope you can select the “global” option. This action will disable all other options.
   </td>
 
-  <td  align="center" width="350">
+  <td  align="center" width="350" valign="middle">
 <img src="https://docs.google.com/uc?export=download&id=0B8jCy7Ba0AgLQ1ZOdldFUk9KelU&img=isGlobal.png" width="300" />
   </td>
  </tr>
 
  <tr>
-  <td  align="center" width="350">
+  <td  align="center" width="350" valign="middle">
 <img src="https://docs.google.com/uc?export=download&id=0B8jCy7Ba0AgLXzlaZ3NuV1c0QW8&img=isNotGlobal.png" width="300" />
   </td>
 
-  <td  align="justify" width="350">
+  <td  align="justify" width="350" valign="middle">
 If an activity is not Global, you can select its location(s) to as great a level of detail as possible. If the activity’s scope is an entire region, first select the region and then select the “all countries” option. The countries box will be disabled and the CCAFS sites located in that region will appear.
 
 If the activity’s scope is limited to a particular country/countries, select the region first and then select the country or countries of interest.
@@ -340,73 +340,73 @@ If the activity’s scope is limited to a particular country/countries, select t
  </tr>
 
  <tr>
-  <td  align="justify" width="350">
+  <td  align="justify" width="350" valign="middle">
 If you want select more than one country click again in the field to countinue selecting countries.
   </td>
 
-  <td  align="center" width="350">
+  <td  align="center" width="350" valign="middle">
 <img src="https://docs.google.com/uc?export=download&id=0B8jCy7Ba0AgLajB5MXFuaE1maUU&img=countries.png" width="300" />
   </td>
  </tr>
 
  <tr>
-  <td  align="justify" width="350">
+  <td  align="justify" width="350" valign="middle">
 If the activity will be carried out in one or more CCAFS sites, first select the region, then select the country and finally select the applicable CCAFS sites.
   </td>
 
-  <td  align="center" width="350">
+  <td  align="center" width="350" valign="middle">
 <img src="https://docs.google.com/uc?export=download&id=0B8jCy7Ba0AgLLTNpY0hlTVllcjg&img=ccafsSites.png" width="300" />
   </td>
  </tr>
 
  <tr>
-  <td  align="justify" width="350">
+  <td  align="justify" width="350" valign="middle">
 If the activity will be located in another, more specific location you can indicate it by clicking on the “Other site” link and entering the latitude and longitude.
   </td>
 
-  <td  align="center" width="350">
+  <td  align="center" width="350" valign="middle">
 <img src="https://docs.google.com/uc?export=download&id=0B8jCy7Ba0AgLTlMwVFhaVFNXVWc&img=otherSites.png" width="300" />
   </td>
  </tr>
 
  <tr>
-  <td  align="justify" width="350">
+  <td  align="justify" width="350" valign="middle">
 If you don’t know the geo-coordinates or if you want to select the place from a map, first choose a country and then press the “Click to get GeoPosition” link.
   </td>
 
-  <td  align="center" width="350">
+  <td  align="center" width="350" valign="middle">
 <img src="https://docs.google.com/uc?export=download&id=0B8jCy7Ba0AgLTXYtVmJRSzBuQzQ&img=selectOtherLocation.png" width="300" />
   </td>
  </tr>
 
  <tr>
-  <td  align="center" width="350">
+  <td  align="center" width="350" valign="middle">
 <img src="https://docs.google.com/uc?export=download&id=0B8jCy7Ba0AgLa0Nvb3prVDNFMTg&img=selectedOtherLocation.png" width="300" />
   </td>
 
-  <td  align="justify" width="350">
+  <td  align="justify" width="350" valign="middle">
 You can adjust the zoom level of the map using the mouse scroll or by pressing the “+” or “-” buttons in the upper left corner of the map.
   </td>
  </tr>
 
  <tr>
-  <td  align="justify" width="350">
+  <td  align="justify" width="350" valign="middle">
 Once you find the location, click the place on the map and a red marker will appear. 
 
 Finally, press the “Save” button and wait for a confirmation message to appear.
   </td>
 
-  <td  align="center" width="350">
+  <td  align="center" width="350" valign="middle">
 <img src="https://docs.google.com/uc?export=download&id=0B8jCy7Ba0AgLa09VdkZRMnJXLW8&img=succesfully.png" width="200" />
   </td>
  </tr>
 
  <tr>
-  <td  align="center" width="350">
+  <td  align="center" width="350" valign="middle">
 <img src="https://docs.google.com/uc?export=download&id=0B8jCy7Ba0AgLTjktN2VyeU83VDQ&img=valuesUpdated.png" width="300" />
   </td>
 
-  <td  align="justify" width="350">
+  <td  align="justify" width="350" valign="middle">
 After complete this process the coordinates will be automatically filled in the corresponding fields.
   </td>
  </tr>
@@ -420,33 +420,33 @@ After complete this process the coordinates will be automatically filled in the 
 <table width="750">
 
  <tr>
-  <td  align="justify" width="350">
+  <td  align="justify" width="350" valign="middle">
 This is the last piece of metadata needed for each activity. Here you will provide the keywords and resources associated with the activity.
  
 If you scroll over the “keywords” field a dropdown list will be displayed. You can search for keywords by typing in a keyword or by using the scroll bar.
   </td>
 
-  <td  align="center" width="350">
+  <td  align="center" width="350" valign="middle">
 <img src="https://docs.google.com/uc?export=download&id=0B8jCy7Ba0AgLU2kwY2haNXJSTG8&img=keywords.png" width="300" />
   </td>
  </tr>
 
  <tr>
-  <td  align="justify" width="350">
+  <td  align="justify" width="350" valign="middle">
 If you don’t find the keyword you are looking for, enter it in the “Other keywords” textbox. You can add as many additional keywords as you want, separating them with commas.
   </td>
 
-  <td  align="center" width="350">
+  <td  align="center" width="350" valign="middle">
 <img src="https://docs.google.com/uc?export=download&id=0B8jCy7Ba0AgLLUloWkQ3aVAxU1E&img=otherKeywords.png" width="300" />
   </td>
  </tr>
 
  <tr>
-  <td  align="justify" width="350">
+  <td  align="justify" width="350" valign="middle">
 To add a resource you must click the “Add resource” button and add the information in the text field.
   </td>
 
-  <td  align="center" width="350">
+  <td  align="center" width="350" valign="middle">
 <img src="https://docs.google.com/uc?export=download&id=0B8jCy7Ba0AgLN1Z6M3lCYzBrR2M&img=resources.png" width="250" />
   </td>
  </tr>
@@ -459,21 +459,21 @@ To add a resource you must click the “Add resource” button and add the infor
 <table width="750">
 
  <tr>
-  <td  align="justify" width="350">
+  <td  align="justify" width="350" valign="middle">
 You will find throughout the planning process that there are required fields. If you try saving the form with these fields empty, a notification will appear at the top of the page (see right) and the form will not be saved. The missing field will be indicated by a red “field required” message, meaning you must enter the missing data to be able to continue.  
   </td>
 
-  <td  align="center" width="350">
+  <td  align="center" width="350" valign="middle">
 <img src="https://docs.google.com/uc?export=download&id=0B8jCy7Ba0AgLczJlMU5TU0V6dmM&img=requiredFields.png" width="300" />
   </td>
  </tr>
 
  <tr>
-  <td  align="center" width="350">
+  <td  align="center" width="350" valign="middle">
 <img src="https://docs.google.com/uc?export=download&id=0B8jCy7Ba0AgLU0lCd25oT0hLV28&img=savingSuccessfully.png" width="300" />
   </td>
 
-  <td  align="justify" width="350">
+  <td  align="justify" width="350" valign="middle">
 After fully completing all fields and successfully saving data, a green verification notice will appear and you will be redirected to the next sub-menu.
   </td>
  </tr>
