@@ -43,7 +43,7 @@ public class LoginAction extends BaseAction {
   public String login() {
     // validate if user is just visiting the login page at first time.
     if (user != null) {
-      User loggedUser = userManager.login(user.getEmail(), user.getPassword());
+      User loggedUser = userManager.login(user.getEmail().trim(), user.getPassword());
       if (loggedUser != null) {
         loggedUser.setLastLogin(new Date());
         userManager.saveLastLogin(loggedUser);
@@ -80,7 +80,7 @@ public class LoginAction extends BaseAction {
       if (user.getEmail().isEmpty()) {
         addFieldError("user.email", getText("validation.field.required"));
         user.setPassword(null);
-      } else if (!EmailValidator.isValidEmail(user.getEmail())) {
+      } else if (!EmailValidator.isValidEmail(user.getEmail().trim())) {
         addFieldError("user.email", getText("validation.invalid", new String[] {getText("home.login.email")}));
         user.setPassword(null);
       }
