@@ -186,7 +186,7 @@ public class AdditionalInformationPlanningAction extends BaseAction {
   public void validate() {
     boolean anyError = false;
 
-    if (save) {
+    if (save || saveNext) {
       // If there is keywords
       if (activity.getKeywords() != null) {
         for (int c = 0; c < activity.getKeywords().size(); c++) {

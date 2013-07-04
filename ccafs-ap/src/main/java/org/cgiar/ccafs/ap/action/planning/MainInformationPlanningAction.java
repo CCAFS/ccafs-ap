@@ -189,7 +189,7 @@ public class MainInformationPlanningAction extends BaseAction {
   public void validate() {
     boolean problem = false;
 
-    if (save) {
+    if (save || saveNext) {
       // Validate if the contact person is filled
       if (activity.getContactPersons() == null || activity.getContactPersons().isEmpty()) {
         problem = true;

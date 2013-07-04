@@ -336,7 +336,7 @@ public class LocationsPlanningAction extends BaseAction {
   public void validate() {
     boolean problem = false;
 
-    if (save) {
+    if (save || saveNext) {
 
       // If there is an other site, validate its fields
       if (!activity.getOtherLocations().isEmpty()) {

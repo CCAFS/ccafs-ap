@@ -158,7 +158,7 @@ public class PartnersPlanningAction extends BaseAction {
     boolean anyError = false;
 
 
-    if (save) {
+    if (save || saveNext) {
       if (activity.getActivityPartners() != null) {
         for (int c = 0; c < activity.getActivityPartners().size(); c++) {
           if (!activity.getActivityPartners().get(c).getContactEmail().isEmpty()) {
