@@ -76,42 +76,46 @@ function toggleGenderIntegrationText() {
 function datePickerConfig() {
   var defaultMinDateValue = $("#minDateValue").val();
   var defaultMaxDateValue = $("#maxDateValue").val();
-  var minDateValue = 0;
-  var maxDateValue = 0;
+  var minDateValue = defaultMinDateValue;
+  var maxDateValue = defaultMaxDateValue;
 
   // Start date calendar
-  if ($("#activity\\.endDate").val().length != 0) {
-    maxDateValue = $("#activity\\.endDate").val();
-  }
+  maxDateValue = $("#activity\\.endDate").val();
+  
   // Add readonly attribute to prevent inappropriate user input
   $("#activity\\.startDate").attr('readonly', true);
+  var finalMaxDate = (maxDateValue != 0) ? maxDateValue : defaultMaxDateValue; 
   $("#activity\\.startDate").datepicker({
     dateFormat : "yy-mm-dd",
     minDate : defaultMinDateValue,
-    maxDate : (maxDateValue != 0) ? maxDateValue : defaultMaxDateValue,
+    maxDate : finalMaxDate,
     changeMonth : true,
     changeYear : true,
     defaultDate : null,
     onClose : function(selectedDate) {
-      $("#activity\\.endDate").datepicker("option", "minDate", selectedDate);
+      if(selectedDate != ""){
+        $("#activity\\.endDate").datepicker("option", "minDate", selectedDate);
+      }
     }
   });
 
   // End date calendar
-  if ($("#activity\\.startDate").val() != 0) {
-    minDateValue = $("#activity\\.startDate").val();
-  }
+  minDateValue = $("#activity\\.startDate").val();
+  
   // Add readonly attribute to prevent inappropriate user input
   $("#activity\\.endDate").attr('readonly', true);
+  var finalMinDate = (minDateValue != 0) ? minDateValue : defaultMinDateValue;
   $("#activity\\.endDate").datepicker({
     dateFormat : "yy-mm-dd",
-    minDate : (minDateValue != 0) ? minDateValue : defaultMinDateValue,
+    minDate : finalMinDate,
     maxDate : defaultMaxDateValue,
     changeMonth : true,
     changeYear : true,
     defaultDate : null,
     onClose : function(selectedDate) {
-      $("#activity\\.startDate").datepicker("option", "maxDate", selectedDate);
+      if(selectedDate != ""){
+        $("#activity\\.startDate").datepicker("option", "maxDate", selectedDate);
+      }
     }
   });
 }

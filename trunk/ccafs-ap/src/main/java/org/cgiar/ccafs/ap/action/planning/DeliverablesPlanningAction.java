@@ -220,7 +220,7 @@ public class DeliverablesPlanningAction extends BaseAction {
     Deliverable deliverable;
 
     // Validate only if exists deliverables
-    if (save && activity.getDeliverables() != null) {
+    if ((save || saveNext) && activity.getDeliverables() != null) {
       for (int c = 0; c < activity.getDeliverables().size(); c++) {
         deliverable = activity.getDeliverables().get(c);
         if (deliverable.getDescription().isEmpty()) {

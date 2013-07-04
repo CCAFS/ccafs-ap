@@ -835,6 +835,7 @@ nav#secondaryMenu ul a.currentReportingSection {
   float: left;
   margin-left: 60px;
   margin-top: 15px;
+  font-weight: bold;
 }
 
 #footerContainer #copyright {

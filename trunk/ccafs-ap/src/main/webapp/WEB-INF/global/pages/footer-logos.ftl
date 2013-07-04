@@ -24,7 +24,7 @@
           </div> <!-- end centres-logos -->
           <div id="copyright">
             <p>&#64; Copyright 2013</p>
-            <p>Current version 1.0-BETA</p>
+            <p>Current version 1.0</p>
           </div>
           <div id="reportIssue">
             <p><b>[@s.text name="footer.report.issue.first" /]<a target="_blank" href="https://docs.google.com/forms/d/1EouZJYHqERbDRB2DaT6Q1cY-_-Tqe0daf4fxXrBU-ts/viewform">[@s.text name="footer.report.issue.second" /]</a></b></p>

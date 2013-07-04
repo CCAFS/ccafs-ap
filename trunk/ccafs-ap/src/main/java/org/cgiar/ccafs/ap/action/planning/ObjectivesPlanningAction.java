@@ -103,7 +103,7 @@ public class ObjectivesPlanningAction extends BaseAction {
   public void validate() {
     boolean problem = false;
 
-    if (save) {
+    if (save || saveNext) {
       if (activity.getObjectives().size() == 0) {
         problem = true;
         addActionError(getText("saving.fields.atLeastOne", new String[] {getText("planning.objectives.objective")
