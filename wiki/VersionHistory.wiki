@@ -1,4 +1,4 @@
 #summary Version history of releases
 
 ||           *Version*       ||     *Date*       ||    Download     ||
-|| [Release1_0 Version 1.0]  ||   July # 2013    ||   [https://docs.google.com/file/d/0B8jCy7Ba0AgLQkFRYXFSNERHZGc/edit?usp=sharing ccafsap_v1.0.war] ||
+|| [Release1_0 Version 1.0]  ||   July # 2013    ||   [https://docs.google.com/uc?export=download&id=0B8jCy7Ba0AgLQkFRYXFSNERHZGc&file=cccafs-ap_v1.0.war ccafsap_v1.0.war] ||
