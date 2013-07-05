@@ -1,0 +1,86 @@
+
+.chzn-container .chzn-results .highlighted {
+  background-color: #3C771C;
+  filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#3C771C', endColorstr='#4E892E', GradientType=0 );  
+  background-image: -webkit-gradient(linear, 0 0, 0 100%, color-stop(20%, #3C771C), color-stop(90%, #4E892E));
+  background-image: -webkit-linear-gradient(top, #3C771C 20%, #4E892E 90%);
+  background-image: -moz-linear-gradient(top, #3C771C 20%, #4E892E 90%);
+  background-image: -o-linear-gradient(top, #3C771C 20%, #4E892E 90%);
+  background-image: linear-gradient(#3C771C 20%, #4E892E 90%);
+  color: #fff;
+}
+
+.fullBlock.chosen .selectList{
+	width: 614px !important;
+}
+
+.fullBlock .chzn-container-multi .chzn-choices {
+    width: 614px !important;
+}
+
+.fullBlock .chzn-drop .chzn-search input{
+    width: 575px !important; 
+}
+
+.fullBlock .chzn-container .chzn-results {
+  width: 608px !important;  
+}
+
+.fullBlock .chzn-container .chzn-drop {
+  width: 612px !important;  
+}
+
+.fullBlock .chzn-container .chzn-choices .default{
+  width: 614px !important;  
+}
+
+/*-----------------  Half part block elements  --------------*/
+
+.halfPartBlock.chosen .selectList{
+  width: 250px !important;
+}
+
+.halfPartBlock .chzn-container-single .chzn-single {
+    width: 250px !important;
+}
+
+.halfPartBlock .chzn-drop .chzn-search input{
+    width: 225px !important; 
+}
+
+.halfPartBlock .chzn-container .chzn-results {
+  width: 250px !important;  
+}
+
+.halfPartBlock .chzn-container .chzn-drop {
+  width: 258px !important;  
+}
+
+/*-------------  third part block elements  ----------------*/
+
+.thirdPartBlock.chosen .selectList{
+  width: 150px !important;
+}
+
+.thirdPartBlock .chzn-container-single .chzn-single {
+    width: 150px !important;
+}
+
+.thirdPartBlock .chzn-drop .chzn-search input{
+    width: 155px !important; 
+}
+
+.thirdPartBlock .chzn-container .chzn-results {
+  width: 150px !important;  
+}
+
+.thirdPartBlock .chzn-container .chzn-drop {
+  width: 158px !important;  
+}
+
+.thirdPartBlock .chzn-container-multi .chzn-choices {
+    width: 154px !important;
+}
+
+.thirdPartBlock .chzn-container .chzn-choices .default{
+  width: 154px !important;  
