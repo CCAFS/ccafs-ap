@@ -59,7 +59,7 @@
             
             [#-- Year --]
             <div class="halfPartBlock">
-              [@customForm.select name="activity.deliverables[${deliverable_index}].year" label="" i18nkey="planning.activityDeliverables.year" listName="yearList" value="${activity.deliverables[deliverable_index].year}" /]            
+              [@customForm.select name="activity.deliverables[${deliverable_index}].year" label="" i18nkey="planning.activityDeliverables.year" listName="yearList" value="${deliverable.year?c}" /]            
             </div>
             
           </div> <!-- End deliverable-${deliverable_index} -->
