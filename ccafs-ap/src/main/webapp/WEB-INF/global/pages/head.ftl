@@ -100,7 +100,4 @@
       [/#list]
     [/#if]
     
-    [#-- Last, import the google analytics code --]
-    <script type="text/javascript" src="${baseUrl}/js/global/analytics.js"></script>
-    
   </head>

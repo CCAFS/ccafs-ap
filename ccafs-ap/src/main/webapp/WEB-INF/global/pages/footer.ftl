@@ -9,5 +9,6 @@
         </div>
       </footer>
     </div> <!-- end container -->
+    [#include "/WEB-INF/global/pages/analytics.ftl"]
   </body>
 </html>
