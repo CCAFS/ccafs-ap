@@ -114,7 +114,9 @@ public class PartnersSaveReportingAction extends BaseAction {
     // message subject
     subject = "Partner verification - " + partnerName;
     // Message content
-    message.append("The user in charge of \"" + getCurrentUser().getLeader().getName()
+    message.append(getCurrentUser().getName() + " ");
+    message.append("(" + getCurrentUser().getName() + ") ");
+    message.append("who is the user in charge of \"" + getCurrentUser().getLeader().getName()
       + "\" is requesting to add the following partner information:");
     message.append("\n\n");
     message.append("Partner Name: ");

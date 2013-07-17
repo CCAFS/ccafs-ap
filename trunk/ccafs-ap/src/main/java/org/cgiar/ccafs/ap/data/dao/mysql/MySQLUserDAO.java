@@ -38,6 +38,7 @@ public class MySQLUserDAO implements UserDAO {
       ResultSet rs = dbManager.makeQuery(query, connection);
       if (rs.next()) {
         userData.put("id", rs.getString("id"));
+        userData.put("name", rs.getString("name"));
         userData.put("email", email);
         userData.put("password", rs.getString("password"));
         userData.put("role", rs.getString("role"));
@@ -87,8 +88,9 @@ public class MySQLUserDAO implements UserDAO {
   @Override
   public boolean saveUser(Map<String, String> userData) {
     LOG.debug(">> saveUser(userData={})", userData);
-    String query = "INSERT INTO users (email, password, activity_leader_id, role) VALUES (?, ?, ?, ?);";
+    String query = "INSERT INTO users (name, email, password, activity_leader_id, role) VALUES (?, ?, ?, ?);";
     Object[] values = new Object[4];
+    values[0] = userData.get("name");
     values[0] = userData.get("email");
     values[1] = userData.get("password");
     values[2] = userData.get("activity_leader_id");

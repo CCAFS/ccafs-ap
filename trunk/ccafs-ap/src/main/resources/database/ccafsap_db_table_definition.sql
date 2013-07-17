@@ -760,6 +760,7 @@ CREATE TABLE `partners` (
   `country_iso2` varchar(2) DEFAULT NULL,
   `city` text,
   `partner_type_id` int(11) NOT NULL,
+  `website` text,
   PRIMARY KEY (`id`),
   KEY `type_fk` (`partner_type_id`),
   KEY `country_iso2` (`country_iso2`),
@@ -931,6 +932,7 @@ DROP TABLE IF EXISTS `users`;
 /*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `users` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
+  `name` text NOT NULL,
   `email` varchar(255) NOT NULL,
   `password` varchar(255) NOT NULL,
   `activity_leader_id` int(11) NOT NULL,
@@ -951,4 +953,4 @@ CREATE TABLE `users` (
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2013-03-12 10:41:27
+-- Dump completed on 2013-07-17 10:08:53
