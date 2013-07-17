@@ -13,7 +13,8 @@
     // not in every page.
     
     [#-- Dimension1: Users --]
-    ga('set', 'dimension1', '${currentUser.email}');
+    [#-- Remove the @cgiar.org in order to prevent sending emails to analytics  --]
+    ga('set', 'dimension1', '${currentUser.email?substring(0, currentUser.email?last_index_of("@"))}');
     
     [#-- metric1: Visits --]
     ga('set', 'metric1', metricValue);      
