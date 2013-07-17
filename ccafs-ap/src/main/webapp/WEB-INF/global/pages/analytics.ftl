@@ -14,14 +14,12 @@
     
     [#-- Dimension1: Users --]
     [#-- Remove the @cgiar.org in order to prevent sending emails to analytics  --]
+    ga('set', 'dimension1', '${currentUser.email?substring(0, currentUser.email?last_index_of("@"))}');
     
-    ga('send', 'pageview', {
-      'dimension1' : '${currentUser.email?substring(0, currentUser.email?last_index_of("@"))}',
-      'metric1' : 1
-    });
-  [#else]
-    ga('send', 'pageview');
+    [#-- metric1: Visits --]
+    ga('set', 'metric1', '1');      
   [/#if]
     
+  ga('send', 'pageview');
 
 </script>
