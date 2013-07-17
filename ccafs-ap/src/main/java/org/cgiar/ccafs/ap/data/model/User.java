@@ -13,6 +13,7 @@ public class User {
   }
 
   private int id;
+  private String name;
   private String email;
   private String password;
   private UserRole role;
@@ -44,6 +45,10 @@ public class User {
     return leader;
   }
 
+  public String getName() {
+    return name;
+  }
+
   /**
    * @return the password previously codified using MD5 algorithm.
    */
@@ -51,10 +56,10 @@ public class User {
     return password;
   }
 
-
   public UserRole getRole() {
     return role;
   }
+
 
   /**
    * Validate if the current user is an Administrator.
@@ -105,10 +110,10 @@ public class User {
     this.email = email;
   }
 
-
   public void setId(int id) {
     this.id = id;
   }
+
 
   public void setLastLogin(Date lastLogin) {
     this.lastLogin = lastLogin;
@@ -120,6 +125,10 @@ public class User {
 
   public void setMD5Password(String password) {
     this.password = password;
+  }
+
+  public void setName(String name) {
+    this.name = name;
   }
 
   /**

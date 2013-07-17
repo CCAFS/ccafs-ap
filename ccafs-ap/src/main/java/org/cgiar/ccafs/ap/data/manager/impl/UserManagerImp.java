@@ -33,6 +33,7 @@ public class UserManagerImp implements UserManager {
     if (!userData.isEmpty()) {
       User user = new User();
       user.setId(Integer.parseInt(userData.get("id")));
+      user.setName(userData.get("name"));
       user.setEmail(email);
       user.setMD5Password(userData.get("password"));
       user.setRole(userData.get("role"));
@@ -79,6 +80,7 @@ public class UserManagerImp implements UserManager {
   @Override
   public boolean saveUser(User user) {
     Map<String, String> userData = new HashMap<>();
+    userData.put("name", user.getName());
     userData.put("email", user.getEmail());
     userData.put("password", MD5Convert.stringToMD5(user.getPassword()));
     userData.put("activity_leader_id", String.valueOf(user.getLeader().getId()));
