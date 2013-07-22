@@ -20,6 +20,16 @@ public interface ActivityManager {
   public Activity[] getActivities(int year, User user);
 
   /**
+   * Get a list of activities matching the parameters given in order to fill the Activities detail summary.
+   * 
+   * @param year - Year when activity was carried out or 0 to indicate no value.
+   * @param activityID - Activity identifier or 0 to indicate no value.
+   * @param activityLeader - Activity leader or 0 to indicate no value.
+   * @return
+   */
+  public Activity[] getActivitiesForDetailedSummary(int year, int activityID, int activityLeader);
+
+  /**
    * Get a list of activities that belong to a specific year.
    * 
    * @param year - (Integer) Year
@@ -27,6 +37,16 @@ public interface ActivityManager {
    * @return a list of activities ordered by date added.
    */
   public Activity[] getActivitiesForRSS(int year, int limit);
+
+  /**
+   * Get a list of activities matching the parameters given in order to fill the Activities status summary.
+   * 
+   * @param year - Year when activity was carried out or 0 to indicate no value.
+   * @param activityID - Activity identifier or 0 to indicate no value.
+   * @param activityLeader - Activity leader or 0 to indicate no value.
+   * @return
+   */
+  public Activity[] getActivitiesForStatusSummary(int year, int activityID, int activityLeader);
 
   /**
    * Get a list of activities from the given year populated only with the id and the title.

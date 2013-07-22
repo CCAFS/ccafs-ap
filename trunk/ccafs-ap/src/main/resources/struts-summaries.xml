@@ -4,14 +4,16 @@
 
  <package extends="ccafsap-default" name="summaries" namespace="/summaries">
  
-	 <action class="org.cgiar.ccafs.ap.action.summaries.TestSummary" name="test">
-	   <result name="success" type="stream">
-      <param name="inputName">inputStream</param>
-      <param name="contentType">application/pdf</param>
-      <!-- param name="contentDisposition">attachment;filename="test.pdf"</param -->
-      <param name="contentDisposition">filename="test.pdf"</param>
-     </result>
+  <action class="org.cgiar.ccafs.ap.action.summaries.ActivitiesSummariesAction" name="activities">
+    <interceptor-ref name="reportingStack" />
+      <result name="input">/WEB-INF/summaries/activitiesSummaries.ftl</result>
+		  <result name="success" type="stream">
+			  <param name="inputName">inputStream</param>
+			  <param name="contentType">application/pdf</param>
+			  <!-- param name="contentDisposition">attachment;filename="test.pdf"</param -->
+			  <param name="contentDisposition">filename="test.pdf"</param>
+			 </result>
 	 </action>  
- </package>  
+  </package>  
 
 </struts>

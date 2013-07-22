@@ -1,14 +1,16 @@
 [#ftl]
-[#macro input name value="-NULL" type="text" i18nkey="" disabled=false required=false errorField="" help="" display=true className="-NULL"]
+[#macro input name value="-NULL" type="text" i18nkey="" disabled=false required=false errorField="" help="" display=true className="-NULL" showTitle=true]
   <div class="input" [#if !display]style="display: none;"[/#if]>
-    <h6>
-      <label for="${name}">[#if i18nkey==""][@s.text name="${name}"/][#else][@s.text name="${i18nkey}"/][/#if]
-        [#if required]<span class="red">*</span>[/#if]
-      </label>
-      [#if help != ""]
-        <img src="${baseUrl}/images/global/icon-help2.png" title="[@s.text name="${help}"/]" />
-      [/#if]
-    </h6>
+    [#if showTitle]
+      <h6>
+        <label for="${name}">[#if i18nkey==""][@s.text name="${name}"/][#else][@s.text name="${i18nkey}"/][/#if]
+          [#if required]<span class="red">*</span>[/#if]
+        </label>
+        [#if help != ""]
+          <img src="${baseUrl}/images/global/icon-help2.png" title="[@s.text name="${help}"/]" />
+        [/#if]
+      </h6>
+    [/#if]
     [#if errorField==""][@s.fielderror cssClass="fieldError" fieldName="${name}"/][#else][@s.fielderror cssClass="fieldError" fieldName="${errorfield}"/][/#if]
     <input type="${type}" id="${name}" name="${name}" value="[#if value=="-NULL"][@s.property value="${name}"/][#else]${value}[/#if]" [#if disabled]disabled="disabled"[/#if] [#if className != "-NULL"] class="${className}" [/#if] />
   </div>
@@ -78,14 +80,16 @@
   </div>
 [/#macro]
 
-[#macro select name listName label="" keyFieldName="" displayFieldName="" value="-NULL" i18nkey="" disabled=false required=false errorField="" selected=false className="" multiple=false help="" display=true]
+[#macro select name listName label="" keyFieldName="" displayFieldName="" value="-NULL" i18nkey="" disabled=false required=false errorField="" selected=false className="" multiple=false help="" display=true showTitle=true]
   <div class="select" [#if !display]style="display: none;"[/#if]>
-    <h6>
-      [#if i18nkey==""]${label}[#else][@s.text name="${i18nkey}" /][/#if][#if required]<span class="red">*</span>[/#if]:
-      [#if help != ""]
-        <img src="${baseUrl}/images/global/icon-help2.png" title="[@s.text name="${help}"/]" />
-      [/#if]
-    </h6>
+    [#if showTitle]
+      <h6>
+        [#if i18nkey==""]${label}[#else][@s.text name="${i18nkey}" /][/#if][#if required]<span class="red">*</span>[/#if]:
+        [#if help != ""]
+          <img src="${baseUrl}/images/global/icon-help2.png" title="[@s.text name="${help}"/]" />
+        [/#if]
+      </h6>
+    [/#if]
     [#if errorField==""][@s.fielderror cssClass="fieldError" fieldName="${name}"/][#else][@s.fielderror cssClass="fieldError" fieldName="${errorfield}"/][/#if]
     <div class="selectList">
       [#if value=="-NULL"]
@@ -117,8 +121,9 @@
 
 [#-- The following macros aren't tested yet. --]
 
-[#macro radioButton name value="-NULL" i18nkey="" label="" disabled=false checked=false id=""]
+[#macro radioButton name value="-NULL" i18nkey="" label="" disabled=false checked=false id="" errorField=""]
   <div class="radioList">
+    [#if errorField==""][@s.fielderror cssClass="fieldError" fieldName="${name}"/][#else][@s.fielderror cssClass="fieldError" fieldName="${errorfield}"/][/#if]
     <input type="radio" id="${id}" name="${name}" value="[#if value=="-NULL"][@s.property value="${name}"/][#else]${value}[/#if]" [#if checked]checked="true"[/#if] />
     <label for="${id}"> [#if i18nkey==""]${label}[#else][@s.text name="${i18nkey}"/][/#if] </label>
   </div>

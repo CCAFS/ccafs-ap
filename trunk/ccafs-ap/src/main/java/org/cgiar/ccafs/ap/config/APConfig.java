@@ -23,6 +23,7 @@ public class APConfig {
   private static final String END_YEAR = "ccafsap.endYear";
   private static final String PLANNING_ACTIVE = "ccafsap.planning.active";
   private static final String REPORTING_ACTIVE = "ccafsap.reporting.active";
+  private static final String SUMMARIES_ACTIVE = "ccafsap.summaries.active";
   private static final String GMAIL_USER = "gmail.user";
   private static final String GMAIL_PASSWORD = "gmail.password";
   private static final String FILE_CASE_STUDIES_IMAGE_URL = "file.caseStudiesImagesUrl";
@@ -205,6 +206,21 @@ public class APConfig {
     }
 
     return reportingActive.equals("true");
+  }
+
+  /**
+   * Get the flag that indicate if summaries stage is active that is in the configuration file.
+   * 
+   * @return a boolean indicating if it is active.
+   */
+  public boolean isSummariesActive() {
+    String summariesActive = properties.getPropertiesAsString(SUMMARIES_ACTIVE);
+    if (summariesActive == null) {
+      LOG.error("There is not a summaries active configured");
+      return false;
+    }
+
+    return summariesActive.equals("true");
   }
 
 }

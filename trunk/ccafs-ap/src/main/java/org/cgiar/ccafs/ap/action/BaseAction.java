@@ -161,6 +161,10 @@ public class BaseAction extends ActionSupport implements Preparable, SessionAwar
     return config.isReportingActive();
   }
 
+  public boolean isSummariesActive() {
+    return config.isSummariesActive();
+  }
+
   @Override
   public void prepare() throws Exception {
     // So far, do nothing here!
