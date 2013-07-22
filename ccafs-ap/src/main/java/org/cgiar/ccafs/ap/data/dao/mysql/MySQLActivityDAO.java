@@ -71,15 +71,35 @@ public class MySQLActivityDAO implements ActivityDAO {
     LOG.debug(">> getActivities(year={}, leaderTypeCode={})", year, leaderTypeCode);
 
     List<Map<String, String>> activities = new ArrayList<>();
-    String query =
-      "SELECT a.id, a.title, a.start_date, a.end_date, a.description, m.id as 'milestone_id', m.code as 'milestone_code', "
-        + "th.id as 'theme_id', th.code as 'theme_code', al.id as 'leader_id', al.acronym as 'leader_acronym', al.name as 'leader_name', a.status_description "
-        + "FROM activities a, milestones m, outputs ou, objectives ob, themes th, logframes lo, activity_leaders al "
-        + "WHERE a.milestone_id = m.id " + "AND m.output_id = ou.id " + "AND ou.objective_id = ob.id "
-        + "AND ob.theme_id = th.id " + "AND th.logframe_id = lo.id " + "AND a.activity_leader_id = al.id "
-        + "AND lo.year = " + year + " " + "AND al.id = " + leaderTypeCode;
+    StringBuilder query = new StringBuilder();
+
+    query.append("SELECT a.id, a.title, a.start_date, a.end_date, a.description, m.id as 'milestone_id', ");
+    query.append("m.code as 'milestone_code', ast.id as 'status_id', ast.name as 'status_name', ");
+    query.append("th.id as 'theme_id', th.code as 'theme_code', al.id as 'leader_id', ");
+    query.append("al.acronym as 'leader_acronym', al.name as 'leader_name', a.status_description ");
+    query.append("FROM activities a ");
+    query.append("INNER JOIN milestones m ON a.milestone_id = m.id ");
+    query.append("INNER JOIN outputs ou ON m.output_id = ou.id ");
+    query.append("INNER JOIN objectives ob ON ou.objective_id = ob.id ");
+    query.append("INNER JOIN themes th ON ob.theme_id = th.id ");
+    query.append("INNER JOIN logframes lo ON th.logframe_id = lo.id ");
+    query.append("INNER JOIN activity_leaders al ON a.activity_leader_id = al.id ");
+    query.append("LEFT JOIN activity_status ast ON a.activity_status_id = ast.id ");
+    query.append("WHERE 1 ");
+
+
+    if (year != 0) {
+      query.append(" AND lo.year = ");
+      query.append(year);
+    }
+
+    if (leaderTypeCode != 0) {
+      query.append(" AND al.id = ");
+      query.append(leaderTypeCode);
+    }
+
     try (Connection con = databaseManager.getConnection()) {
-      ResultSet rs = databaseManager.makeQuery(query, con);
+      ResultSet rs = databaseManager.makeQuery(query.toString(), con);
       while (rs.next()) {
         Map<String, String> activity = new HashMap<>();
         activity.put("id", rs.getString("id"));
@@ -87,6 +107,8 @@ public class MySQLActivityDAO implements ActivityDAO {
         activity.put("start_date", rs.getString("start_date"));
         activity.put("end_date", rs.getString("end_date"));
         activity.put("description", rs.getString("description"));
+        activity.put("status_id", rs.getString("status_id"));
+        activity.put("status_name", rs.getString("status_name"));
         activity.put("milestone_id", rs.getString("milestone_id"));
         activity.put("milestone_code", rs.getString("milestone_code"));
         activity.put("theme_id", rs.getString("theme_id"));

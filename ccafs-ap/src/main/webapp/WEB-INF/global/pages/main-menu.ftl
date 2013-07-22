@@ -25,9 +25,15 @@
         </a>
       [/#if]
       [#if currentUser.TL || currentUser.RPL || currentUser.admin ]
-        <a href="javascript:void(0);" title="[@s.text name="menu.link.disabled" /]" >
-            <li [#if currentSection?? && currentSection == "summaries"]class="currentSection"[/#if]>[@s.text name="menu.summaries" /]</li>
-        </a>
+        [#if summariesActive ]
+          <a href="${baseUrl}/summaries/activities.do" /]" >
+              <li [#if currentSection?? && currentSection == "summaries"]class="currentSection"[/#if]>[@s.text name="menu.summaries" /]</li>
+          </a>
+        [#else]
+          <a href="javascript:void(0);" title="[@s.text name="menu.link.disabled" /]" >
+              <li [#if currentSection?? && currentSection == "summaries"]class="currentSection"[/#if]>[@s.text name="menu.summaries" /]</li>
+          </a>
+        [/#if]
       [/#if]
       [#if currentUser.admin ]                
         <a href="javascript:void(0);">

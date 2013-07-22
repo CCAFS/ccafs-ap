@@ -1,11 +1,15 @@
 package org.cgiar.ccafs.ap.data.manager.impl;
 
 import org.cgiar.ccafs.ap.data.dao.ActivityDAO;
+import org.cgiar.ccafs.ap.data.manager.ActivityBenchmarkSiteManager;
+import org.cgiar.ccafs.ap.data.manager.ActivityCountryManager;
 import org.cgiar.ccafs.ap.data.manager.ActivityManager;
 import org.cgiar.ccafs.ap.data.manager.ActivityObjectiveManager;
+import org.cgiar.ccafs.ap.data.manager.ActivityOtherSiteManager;
 import org.cgiar.ccafs.ap.data.manager.ActivityPartnerManager;
 import org.cgiar.ccafs.ap.data.manager.ContactPersonManager;
 import org.cgiar.ccafs.ap.data.manager.DeliverableManager;
+import org.cgiar.ccafs.ap.data.manager.LeaderManager;
 import org.cgiar.ccafs.ap.data.manager.MilestoneManager;
 import org.cgiar.ccafs.ap.data.model.Activity;
 import org.cgiar.ccafs.ap.data.model.ContactPerson;
@@ -40,17 +44,27 @@ public class ActivityManagerImpl implements ActivityManager {
   private ContactPersonManager contactPersonManager;
   private MilestoneManager milestoneManager;
   private ActivityObjectiveManager activityObjectiveManager;
+  private LeaderManager leaderManager;
+  private ActivityCountryManager activityCountryManager;
+  private ActivityBenchmarkSiteManager activityBenchmarkSiteManager;
+  private ActivityOtherSiteManager activityOtherSiteManager;
 
   @Inject
   public ActivityManagerImpl(ActivityDAO activityDAO, DeliverableManager deliverableManager,
     ActivityPartnerManager activityPartnerManager, ContactPersonManager contactPersonManager,
-    MilestoneManager milestoneManager, ActivityObjectiveManager activityObjectiveManager) {
+    MilestoneManager milestoneManager, ActivityObjectiveManager activityObjectiveManager, LeaderManager leaderManager,
+    ActivityCountryManager activityCountryManager, ActivityBenchmarkSiteManager activityBenchmarkSiteManager,
+    ActivityOtherSiteManager activityOtherSiteManager) {
     this.activityDAO = activityDAO;
     this.deliverableManager = deliverableManager;
     this.activityPartnerManager = activityPartnerManager;
     this.contactPersonManager = contactPersonManager;
     this.milestoneManager = milestoneManager;
     this.activityObjectiveManager = activityObjectiveManager;
+    this.leaderManager = leaderManager;
+    this.activityCountryManager = activityCountryManager;
+    this.activityBenchmarkSiteManager = activityBenchmarkSiteManager;
+    this.activityOtherSiteManager = activityOtherSiteManager;
   }
 
   @Override
@@ -132,6 +146,112 @@ public class ActivityManagerImpl implements ActivityManager {
   }
 
   @Override
+  public Activity[] getActivitiesForDetailedSummary(int year, int activityID, int activityLeader) {
+    Activity[] activities;
+    SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
+
+    // Getting the list of activities according on the parameters received
+    // and filling them with basic information (id, title).
+
+    if (activityID != 0) {
+      // If the activity identifier is defined just is needed one activity
+      activities = new Activity[1];
+      Map<String, String> activityData = activityDAO.getActivityStatusInfo(activityID);
+
+      Activity activity = new Activity();
+      activity.setId(activityID);
+      activity.setTitle(activityData.get("title"));
+
+      try {
+        activity.setStartDate(dateFormat.parse(activityData.get("start_date")));
+        activity.setEndDate(dateFormat.parse(activityData.get("end_date")));
+      } catch (ParseException e) {
+        String msg =
+          "-- getActivitiesForDetailedSummary() > There was a problem "
+            + "parsing the start date ({}) and end date ({}) for activity {}";
+        LOG.error(msg, new Object[] {activityData.get("start_date"), activityData.get("start_date"), activityID});
+      }
+
+      Status status = new Status();
+      status.setId(Integer.parseInt(activityData.get("status_id")));
+      status.setName(activityData.get("status_name"));
+      activity.setStatus(status);
+
+      Milestone milestone = new Milestone();
+      milestone.setId(Integer.parseInt(activityData.get("milestone_id")));
+      milestone.setCode(activityData.get("milestone_code"));
+      activity.setMilestone(milestone);
+
+      activities[0] = activity;
+
+    } else {
+      // If the activity identifier was not specified, search for
+      // activities that fills the parameters received.
+
+      User user = new User();
+      user.setLeader(new Leader(activityLeader));
+      List<Map<String, String>> activityList = activityDAO.getActivities(year, activityLeader);
+      activities = new Activity[activityList.size()];
+
+      for (int c = 0; c < activityList.size(); c++) {
+        Activity activity = new Activity();
+        activity.setId(Integer.parseInt(activityList.get(c).get("id")));
+        activity.setTitle(activityList.get(c).get("title"));
+
+        try {
+          activity.setStartDate(dateFormat.parse(activityList.get(c).get("start_date")));
+          activity.setEndDate(dateFormat.parse(activityList.get(c).get("end_date")));
+        } catch (ParseException e) {
+          String msg =
+            "-- getActivitiesForDetailedSummary() > There was a problem "
+              + "parsing the start date ({}) and end date ({}) for activity {}";
+          LOG.error(msg, new Object[] {activityList.get(c).get("start_date"), activityList.get(c).get("start_date"),
+            activityID});
+        }
+
+        Status status = new Status();
+        status.setId(Integer.parseInt(activityList.get(c).get("status_id")));
+        status.setName(activityList.get(c).get("status_name"));
+        activity.setStatus(status);
+
+        Milestone milestone = new Milestone();
+        milestone.setId(Integer.parseInt(activityList.get(c).get("milestone_id")));
+        milestone.setCode(activityList.get(c).get("milestone_code"));
+        activity.setMilestone(milestone);
+
+        activities[c] = activity;
+      }
+    }
+
+    // After have the list of activities, we will fill all other needed information.
+
+    for (Activity activity : activities) {
+      // Contact persons
+      activity.setContactPersons(contactPersonManager.getContactPersons(activity.getId()));
+
+      // Leader
+      activity.setLeader(leaderManager.getActivityLeader(activity.getId()));
+
+      // Country Locations
+      activity.setCountries(activityCountryManager.getActvitiyCountries(activity.getId()));
+
+      // CCAFS Locations
+      activity.setBsLocations(activityBenchmarkSiteManager.getActivityBenchmarkSites(activity.getId()));
+
+      // Other locations
+      activity.setOtherLocations(activityOtherSiteManager.getActivityOtherSites(activity.getId()));
+
+      // Partners
+      activity.setActivityPartners(activityPartnerManager.getActivityPartners(activity.getId()));
+
+      // Deliverables
+      activity.setDeliverables(deliverableManager.getDeliverables(activity.getId()));
+    }
+
+    return activities;
+  }
+
+  @Override
   public Activity[] getActivitiesForRSS(int year, int limit) {
     List<Map<String, String>> activitiesDB = activityDAO.getActivitiesForRSS(year, limit);
     if (activitiesDB.size() > 0) {
@@ -197,6 +317,12 @@ public class ActivityManagerImpl implements ActivityManager {
       }
       return activities;
     }
+    return null;
+  }
+
+  @Override
+  public Activity[] getActivitiesForStatusSummary(int year, int activityID, int activityLeader) {
+    // TODO Auto-generated method stub
     return null;
   }
 

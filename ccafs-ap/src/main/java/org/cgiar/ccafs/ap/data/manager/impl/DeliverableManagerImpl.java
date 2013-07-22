@@ -88,8 +88,8 @@ public class DeliverableManagerImpl implements DeliverableManager {
     List<Map<String, String>> fileFormatsDB;
     List<Map<String, String>> deliverablesDB = deliverableDAO.getDeliverables(activityId);
 
+    List<Deliverable> deliverables = new ArrayList<Deliverable>();
     if (deliverablesDB != null) {
-      List<Deliverable> deliverables = new ArrayList<Deliverable>();
       for (int c = 0; c < deliverablesDB.size(); c++) {
 
         Deliverable deliverable = new Deliverable();
@@ -128,10 +128,9 @@ public class DeliverableManagerImpl implements DeliverableManager {
         }
         deliverables.add(deliverable);
       }
-      return deliverables;
-    } else {
-      return null;
     }
+
+    return deliverables;
   }
 
   @Override

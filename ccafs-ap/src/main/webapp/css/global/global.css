@@ -797,6 +797,29 @@ nav#secondaryMenu ul a.currentReportingSection {
   margin-bottom: 10px;
 }
 
+/* -------------- SUMMARIES -----------------*/
+
+#activitiesSummaries h6{
+	margin-top : 10px;
+	margin-bottom : 5px;
+}
+
+#activitiesSummaries .reportOptions{
+	margin-top : 5px;
+	margin-left : 30px;
+}
+
+#activitiesSummaries .thirdPartBlock{
+	width: 25%;
+}
+
+#activitiesSummaries .thirdPartBlock .input input{
+  width: 35%;
+}
+
+#activitiesSummaries .selectList{
+  width: 39%;
+}
 
 /*************** FOOTER ****************/
 #footerContainer {
