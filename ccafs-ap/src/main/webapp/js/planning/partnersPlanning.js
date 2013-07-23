@@ -56,9 +56,9 @@ $(document).ready(function() {
     renameActivityPartners();
     $newActivityPartner.fadeIn("slow");
     // Activate the chosen plugin
-    $newActivityPartner.find("select[name$='partner']").chosen({no_results_text: $("#noResultText").val()});
-    $newActivityPartner.find(".partnerTypes").chosen({allow_single_deselect:true});
-    $newActivityPartner.find(".countryList").chosen({allow_single_deselect:true});
+    $newActivityPartner.find("select[name$='partner']").chosen({no_results_text: $("#noResultText").val(),search_contains:true});
+    $newActivityPartner.find(".partnerTypes").chosen({allow_single_deselect:true, search_contains:true});
+    $newActivityPartner.find(".countryList").chosen({allow_single_deselect:true, search_contains:true});
   });
 
   $('.removeActivityPartner').click(function(event) {
@@ -99,21 +99,21 @@ function addChosen() {
   $("select[name$='partner']").each(function() {
     // Check if its not the template partner field
     if ($(this).attr("name") != '__partner') {
-      $(this).chosen({no_results_text: $("#noResultText").val()});
+      $(this).chosen({no_results_text: $("#noResultText").val(),search_contains:true});
     }
   });
   
   $(".partnerTypes").each(function() {
     // Check if its not the template partner types field
     if ($(this).attr("id") != 'partners_partnerTypeList') {
-      $(this).chosen({allow_single_deselect:true});
+      $(this).chosen({allow_single_deselect:true,search_contains:true});
     }
   });
   
   $(".countryList").each(function() {
     // Check if its not the template countries field
     if ($(this).attr("id") != 'partners_countryList') {
-      $(this).chosen({allow_single_deselect:true});
+      $(this).chosen({allow_single_deselect:true, search_contains:true});
     }
   });
 }
