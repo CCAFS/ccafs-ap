@@ -33,8 +33,8 @@
     [#if globalLibs??]
      [#list globalLibs as libraryName]
         [#if libraryName="chosen"]
-          <script src="${baseUrl}/js/libs/chosen/chosen-0.9.11.jquery.min.js"></script>
-          <link rel="stylesheet" type="text/css" href="${baseUrl}/css/libs/chosen/chosen.css" />
+          <script src="${baseUrl}/js/libs/chosen/chosen-0.13.0.jquery.min.js"></script>
+          <link rel="stylesheet" type="text/css" href="${baseUrl}/css/libs/chosen/chosen-0.13.0.css" />
           <link rel="stylesheet" type="text/css" href="${baseUrl}/css/reporting/customChosen.css" />
         [/#if]
         

@@ -1,5 +1,49 @@
+/*-------------------  Setting images paths -------------------*/
+.chzn-container-single .chzn-single abbr {
+  background: url('../../images/libs/chosen/chosen-sprite.png') -42px 1px no-repeat;
+}
 
-.chzn-container .chzn-results .highlighted {
+.chzn-container-single .chzn-single div b {
+  background: url('../../images/libs/chosen/chosen-sprite.png') no-repeat 0px 2px;
+}
+
+.chzn-container-single .chzn-search input {
+  background: white url('../../images/libs/chosen/chosen-sprite.png') no-repeat 100% -20px;
+  background: url('../../images/libs/chosen/chosen-sprite.png') no-repeat 100% -20px, -webkit-gradient(linear, 50% 0%, 50% 100%, color-stop(1%, #eeeeee), color-stop(15%, #ffffff));
+  background: url('../../images/libs/chosen/chosen-sprite.png') no-repeat 100% -20px, -webkit-linear-gradient(#eeeeee 1%, #ffffff 15%);
+  background: url('../../images/libs/chosen/chosen-sprite.png') no-repeat 100% -20px, -moz-linear-gradient(#eeeeee 1%, #ffffff 15%);
+  background: url('../../images/libs/chosen/chosen-sprite.png') no-repeat 100% -20px, -o-linear-gradient(#eeeeee 1%, #ffffff 15%);
+  background: url('../../images/libs/chosen/chosen-sprite.png') no-repeat 100% -20px, linear-gradient(#eeeeee 1%, #ffffff 15%);
+}
+
+.chzn-container-multi .chzn-choices li.search-choice .search-choice-close {
+  background: url('../../../images/libs/chosen/chosen-sprite.png') -42px 1px no-repeat;
+}
+
+.chzn-rtl .chzn-search input {
+  background: url('../../images/libs/chosen/chosen-sprite.png') no-repeat -30px -20px, -webkit-gradient(linear, 50% 0%, 50% 100%, color-stop(1%, #eeeeee), color-stop(15%, #ffffff));
+  background: url('../../images/libs/chosen/chosen-sprite.png') no-repeat -30px -20px, -webkit-linear-gradient(#eeeeee 1%, #ffffff 15%);
+  background: url('../../images/libs/chosen/chosen-sprite.png') no-repeat -30px -20px, -moz-linear-gradient(#eeeeee 1%, #ffffff 15%);
+  background: url('../../images/libs/chosen/chosen-sprite.png') no-repeat -30px -20px, -o-linear-gradient(#eeeeee 1%, #ffffff 15%);
+  background: url('../../images/libs/chosen/chosen-sprite.png') no-repeat -30px -20px, linear-gradient(#eeeeee 1%, #ffffff 15%);
+}
+
+/* @group Retina compatibility */
+@media only screen and (-webkit-min-device-pixel-ratio: 2), only screen and (min-resolution: 144dpi) {
+  .chzn-rtl .chzn-search input,
+  .chzn-container-single .chzn-single abbr,
+  .chzn-container-single .chzn-single div b,
+  .chzn-container-single .chzn-search input,
+  .chzn-container-multi .chzn-choices .search-choice .search-choice-close,
+  .chzn-container .chzn-results-scroll-down span,
+  .chzn-container .chzn-results-scroll-up span {
+    background-image: url('../../images/libs/chosen/chosen-sprite@2x.png') !important;
+  }
+}
+
+/*-------------------  Setting colors and sizes -------------------*/
+
+.chzn-container .chzn-results li.highlighted {
   background-color: #3C771C;
   filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#3C771C', endColorstr='#4E892E', GradientType=0 );  
   background-image: -webkit-gradient(linear, 0 0, 0 100%, color-stop(20%, #3C771C), color-stop(90%, #4E892E));
