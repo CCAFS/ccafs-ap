@@ -5,8 +5,8 @@
             <div id="rowOne">
               <img src="${baseUrl}/images/global/centers/logo_africarice.jpg" alt="Africa Rice Logo" height="60px" width="83" />
               <img src="${baseUrl}/images/global/centers/logo_bioversity.jpg" alt="Bioversity Logo" height="60px" width="68" />
-              <img src="${baseUrl}/images/global/centers/logo_ciat.png" alt="CIAT Logo" height="60px" width="139" />
-              <img src="${baseUrl}/images/global/centers/logo_cifor.png" alt="CIFOR Logo" height="60px" width="63" />
+              <img src="${baseUrl}/images/global/centers/logo_ciat.jpg" alt="CIAT Logo" height="60px" width="139" />
+              <img src="${baseUrl}/images/global/centers/logo_cifor.jpg" alt="CIFOR Logo" height="60px" width="63" />
               <img src="${baseUrl}/images/global/centers/logo_cimmyt.jpg" alt="CIMMYT Logo" height="60px" width="80" />
               <img src="${baseUrl}/images/global/centers/logo_cip.jpg" alt="CIP Logo" height="60px" width="69" />
               <img src="${baseUrl}/images/global/centers/logo_icarda.gif" alt="ICARDA Logo" height="60px" width="64" />
