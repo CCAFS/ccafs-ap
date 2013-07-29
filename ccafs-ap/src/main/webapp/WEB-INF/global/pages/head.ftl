@@ -24,6 +24,46 @@
     
     <title>${title!"CCAFS Activity Planning"}</title>
     
+    [#-- First, import CSS files of external libraries. --]
+    [#-- All js imports are made in footer --]
     
+    [#if globalLibs??]
+     [#list globalLibs as libraryName]
+        [#if libraryName="chosen"]
+          <link rel="stylesheet" type="text/css" href="${baseUrl}/css/libs/chosen/chosen-0.13.0.css" />
+          <link rel="stylesheet" type="text/css" href="${baseUrl}/css/reporting/customChosen.css" />
+        [/#if]
+        
+        [#if libraryName="jquery"]
+          [#-- JQuery UI --]
+          <link rel="stylesheet" type="text/css" href="${baseUrl}/css/libs/jqueryUI/smoothness/jquery-ui-1.10.0.custom.min.css" />
+        [/#if]
+        
+        [#if libraryName="jqueryUI"]
+          <link rel="stylesheet" type="text/css" href="${baseUrl}/css/libs/jqueryUI/smoothness/jquery-ui-1.10.0.custom.min.css" />
+        [/#if]
+        
+        [#if libraryName="jqueryAndUI"]          
+          <link rel="stylesheet" type="text/css" href="${baseUrl}/css/libs/jqueryUI/smoothness/jquery-ui-1.10.0.custom.min.css" />
+        [/#if]
+        
+        [#if libraryName="jreject"]          
+          <link rel="stylesheet" type="text/css" href="${baseUrl}/css/libs/jreject/jquery.reject.css" />
+        [/#if]
+        
+  	 [/#list]
+  	[/#if]
+  	
+    [#-- Second, import global javascripts and templates. --]
+    <link rel="stylesheet" type="text/css" href="${baseUrl}/css/global/global.css" />
+    <!--[if lte IE 7]>
+      <link rel="stylesheet" type="text/css" href="${baseUrl}/css/global/ie7.css"/> 
+    <![endif]-->
     
+    [#-- import the custom CSS --]
+    [#if customCSS??]
+      [#list customCSS as css]
+        <link rel="stylesheet" type="text/css" href="${css}" />
+      [/#list]
+    [/#if]
   </head>
