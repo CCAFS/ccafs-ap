@@ -34,7 +34,7 @@
     </div> <!-- end container -->
     [#include "/WEB-INF/global/pages/analytics.ftl"]
     
-    [#-- First, import external libraries and CSS. --]
+    [#-- Last, import js files of external libraries--]
     <!-- Support for lower versions of IE 9 -->
     <!--[if lt IE 9]>
       <script src="${baseUrl}/js/libs/html5shiv/html5shiv.js"></script>
@@ -44,8 +44,6 @@
      [#list globalLibs as libraryName]
         [#if libraryName="chosen"]
           <script src="${baseUrl}/js/libs/chosen/chosen-0.13.0.jquery.min.js"></script>
-          <link rel="stylesheet" type="text/css" href="${baseUrl}/css/libs/chosen/chosen-0.13.0.css" />
-          <link rel="stylesheet" type="text/css" href="${baseUrl}/css/reporting/customChosen.css" />
         [/#if]
         
         [#if libraryName="dataTable"]
@@ -61,17 +59,14 @@
           <script src="${baseUrl}/js/libs/jquery/jquery-1.8.2.min.js"></script>
           [#-- JQuery UI --]
           <script src="${baseUrl}/js/libs/jqueryUI/jquery-ui-1.10.0.custom.min.js"></script>
-          <link rel="stylesheet" type="text/css" href="${baseUrl}/css/libs/jqueryUI/smoothness/jquery-ui-1.10.0.custom.min.css" />
         [/#if]
         
         [#if libraryName="jqueryUI"]
           <script src="${baseUrl}/js/libs/jqueryUI/jquery-ui-1.10.0.custom.min.js"></script>
-          <link rel="stylesheet" type="text/css" href="${baseUrl}/css/libs/jqueryUI/smoothness/jquery-ui-1.10.0.custom.min.css" />
         [/#if]
         
         [#if libraryName="jqueryAndUI"]          
           <script src="${baseUrl}/js/libs/jqueryUI/jquery-ui-1.10.0.custom.min.js"></script>
-          <link rel="stylesheet" type="text/css" href="${baseUrl}/css/libs/jqueryUI/smoothness/jquery-ui-1.10.0.custom.min.css" />
         [/#if]
         
         [#if libraryName="noty"]
@@ -84,29 +79,18 @@
         
         [#if libraryName="jreject"]          
           <script src="${baseUrl}/js/libs/jreject/jquery.reject-1.0.2.js"></script>
-          <link rel="stylesheet" type="text/css" href="${baseUrl}/css/libs/jreject/jquery.reject.css" />
         [/#if]
         
      [/#list]
     [/#if]
     
     [#-- Second, import global javascripts and templates. --]
-    <link rel="stylesheet" type="text/css" href="${baseUrl}/css/global/global.css" />
-    <!--[if lte IE 7]>
-      <link rel="stylesheet" type="text/css" href="${baseUrl}/css/global/ie7.css"/> 
-    <![endif]-->
-    
     <script type="text/javascript" src="${baseUrl}/js/global/global.js" ></script>
     
     [#-- import the custom JS and CSS --]
     [#if customJS??]
       [#list customJS as js]
         <script src="${js}"></script>
-      [/#list]
-    [/#if]
-    [#if customCSS??]
-      [#list customCSS as css]
-        <link rel="stylesheet" type="text/css" href="${css}" />
       [/#list]
     [/#if]
   </body>
