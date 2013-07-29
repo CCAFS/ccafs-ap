@@ -55,6 +55,7 @@
   	[/#if]
   	
     [#-- Second, import global javascripts and templates. --]
+    <link rel="stylesheet" type="text/css" href="${baseUrl}/css/global/reset.css" />
     <link rel="stylesheet" type="text/css" href="${baseUrl}/css/global/global.css" />
     <!--[if lte IE 7]>
       <link rel="stylesheet" type="text/css" href="${baseUrl}/css/global/ie7.css"/> 
