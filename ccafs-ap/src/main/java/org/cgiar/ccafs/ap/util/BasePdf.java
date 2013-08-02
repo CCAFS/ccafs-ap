@@ -43,15 +43,18 @@ public class BasePdf {
   public final static int ROW_ODD = 1;
 
   // Fonts
-  private final static Font TITLE_FONT = new Font(FontFactory.getFont("Arial", 26, Font.BOLD, new Color(153, 102, 51)));
-  private final static Font NORMAL_FONT = new Font(FontFactory.getFont("Arial", 12, Color.BLACK));
-  private final static Font TABLE_HEADER_FONT = new Font(FontFactory.getFont("Arial", 10, Font.BOLD, Color.WHITE));
-  private final static Font TABLE_BODY_FONT = new Font(FontFactory.getFont("Arial", 10, Color.BLACK));
+  private final static Font TITLE_FONT = new Font(FontFactory.getFont("Arial", 24, Font.BOLD, new Color(153, 102, 51)));
+  private final static Font NORMAL_FONT = new Font(FontFactory.getFont("Helvetica", 12, Color.BLACK));
+  private final static Font TABLE_HEADER_FONT = new Font(FontFactory.getFont("Arial", 12, Font.BOLD, Color.WHITE));
+  private final static Font TABLE_BODY_FONT = new Font(FontFactory.getFont("Arial", 11, new Color(34, 34, 34)));
 
   // Backgrounds colors
   private final static Color TABLE_HEADER_BACKGROUND = new Color(155, 187, 89);
   private final static Color TABLE_BODY_EVEN_ROW_BACKGROUND = new Color(234, 241, 221);
   private final static Color TABLE_BODY_ODD_ROW_BACKGROUND = Color.WHITE;
+
+  // Table cell border color
+  private final static Color TABLE_CELL_BORDER_COLOR = new Color(225, 225, 225);
 
   // Images path
   private final static String HEADER_IMAGE_PATH = "http://davinci.ciat.cgiar.org/images/global/header-background.png";
@@ -155,16 +158,29 @@ public class BasePdf {
    * @return a PdfCell object with the text formatted.
    */
   public static void addTableBodyCell(PdfPTable table, String text, int alignment, int rowIndex) {
-    Chunk chunk = new Chunk(text, TABLE_BODY_FONT);
+    Paragraph paragraph = new Paragraph(text, TABLE_BODY_FONT);
+    paragraph.setAlignment(alignment);
 
-    PdfPCell cell = new PdfPCell();
-    cell.addElement(chunk);
+    PdfPCell cell = new PdfPCell(paragraph);
+
+    // Set alignment
     cell.setHorizontalAlignment(alignment);
+    cell.setVerticalAlignment(Element.ALIGN_MIDDLE);
     if (rowIndex == ROW_EVEN) {
       cell.setBackgroundColor(TABLE_BODY_EVEN_ROW_BACKGROUND);
     } else {
       cell.setBackgroundColor(TABLE_BODY_ODD_ROW_BACKGROUND);
     }
+
+    // Set padding
+    cell.setUseBorderPadding(true);
+    cell.setPadding(5);
+
+    // Set border color
+    cell.setBorderColor(TABLE_CELL_BORDER_COLOR);
+
+    // Set leading
+    cell.setLeading(2, 1);
 
     table.addCell(cell);
   }
@@ -180,12 +196,19 @@ public class BasePdf {
     Paragraph paragraph = new Paragraph(text, TABLE_HEADER_FONT);
     paragraph.setAlignment(Element.ALIGN_CENTER);
 
-    PdfPCell cell = new PdfPCell();
-    cell.addElement(paragraph);
+    PdfPCell cell = new PdfPCell(paragraph);
+
+    // Set alignment
     cell.setHorizontalAlignment(Element.ALIGN_CENTER);
     cell.setVerticalAlignment(Element.ALIGN_MIDDLE);
     cell.setBackgroundColor(TABLE_HEADER_BACKGROUND);
-    cell.setPadding(5f);
+
+    // Set padding
+    cell.setUseBorderPadding(true);
+    cell.setPadding(3);
+
+    // Set border color
+    cell.setBorderColor(TABLE_CELL_BORDER_COLOR);
 
     table.addCell(cell);
   }
@@ -203,6 +226,7 @@ public class BasePdf {
     paragraph.setAlignment(Paragraph.ALIGN_CENTER);
     try {
       document.add(paragraph);
+      document.add(new Chunk().NEWLINE);
     } catch (DocumentException e) {
       LOG.error("There was an error adding title to the document", e);
     }

@@ -23,6 +23,21 @@ public interface CaseStudyManager {
   public List<CaseStudy> getCaseStudyList(Leader leader, Logframe logframe);
 
   /**
+   * Get all the case studies that belongs to the given leader, were
+   * carried out the given year in the countries given and that have
+   * the types indicated. Or return the complete list if no valid parameters
+   * were given.
+   * 
+   * @param activityLeaderId - Activity leader identifier
+   * @param year
+   * @param countriesIds - Country identifiers
+   * @param typesIds - Case study types identifiers
+   * @return a list of CaseStudy objects with the information
+   */
+  public List<CaseStudy>
+    getCaseStudyListForSummary(int activityLeaderId, int year, String countriesIds, String typesIds);
+
+  /**
    * Remove all the case studies related to the activity leader and logframe specified
    * 
    * @param activityLeaderId - Activity leader identifier
@@ -40,5 +55,4 @@ public interface CaseStudyManager {
    * @return true if the data was successfully stored. False otherwise
    */
   public boolean saveCaseStudy(CaseStudy caseStudy, int activityLeaderId, int logframeId);
-
 }

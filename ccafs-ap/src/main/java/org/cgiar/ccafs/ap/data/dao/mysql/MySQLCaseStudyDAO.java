@@ -69,6 +69,67 @@ public class MySQLCaseStudyDAO implements CaseStudyDAO {
   }
 
   @Override
+  public List<Map<String, String>> getCaseStudyListForSummary(int activityLeaderId, int year, String countriesIds,
+    String typesIds) {
+    LOG.debug(">> getCaseStudyListForSummary(activityLeaderId={}, year={})", activityLeaderId, year);
+    List<Map<String, String>> caseStudyDataList = new ArrayList<>();
+    StringBuilder query = new StringBuilder();
+
+    query.append("SELECT cs.id, cs.title, al.acronym as 'activity_leader_acronym', ");
+    query.append("IFNULL( GROUP_CONCAT(DISTINCT cst.name SEPARATOR ',\n'), 'No type selected') as 'type', ");
+    query.append("IFNULL( GROUP_CONCAT(co.name ORDER BY co.name SEPARATOR ',\n'), 'Global') as 'Countries' ");
+    query.append("FROM case_studies cs ");
+    query.append("INNER JOIN activity_leaders al ON cs.activity_leader_id = al.id ");
+    query.append("INNER JOIN logframes l ON cs.logframe_id = l.id ");
+    query.append("LEFT JOIN cs_types ct ON cs.id = ct.case_study_id ");
+    query.append("LEFT JOIN case_study_types cst ON ct.case_study_type_id = cst.id ");
+    query.append("LEFT JOIN case_study_countries csc ON cs.id = csc.case_study_id ");
+    query.append("LEFT JOIN countries co ON csc.country_iso2 = co.iso2 ");
+    query.append("WHERE 1 ");
+
+    if (activityLeaderId != -1) {
+      query.append("AND al.id = " + activityLeaderId + " ");
+    }
+
+    if (year != -1) {
+      query.append("AND l.year = " + year + " ");
+    }
+
+    if (!countriesIds.isEmpty()) {
+      query.append("AND co.iso2 IN (" + countriesIds + ") ");
+    }
+
+    if (!typesIds.isEmpty()) {
+      query.append("AND cst.id IN (" + typesIds + ") ");
+    }
+
+    query.append("GROUP BY cs.id ");
+    query.append("ORDER BY cs.id, al.acronym, cs.title; ");
+    try (Connection con = databaseManager.getConnection()) {
+      ResultSet rs = databaseManager.makeQuery(query.toString(), con);
+      while (rs.next()) {
+        Map<String, String> caseStudyData = new HashMap<String, String>();
+        caseStudyData.put("id", rs.getString("id"));
+        caseStudyData.put("title", rs.getString("title"));
+        caseStudyData.put("activity_leader_acronym", rs.getString("activity_leader_acronym"));
+        caseStudyData.put("type", rs.getString("type"));
+        caseStudyData.put("Countries", rs.getString("Countries"));
+        caseStudyDataList.add(caseStudyData);
+      }
+      rs.close();
+    } catch (SQLException e) {
+      Object[] errorParam = {activityLeaderId, year, e};
+      LOG
+        .error(
+          "-- getCaseStudyListForSummary() > There was a problem getting the case studies for leader {} related to logframe {}",
+          errorParam);
+    }
+
+    LOG.debug("<< getCaseStudyListForSummary():caseStudyDataList.size={}", caseStudyDataList.size());
+    return caseStudyDataList;
+  }
+
+  @Override
   public boolean removeAllCaseStudies(int activityLeaderId, int logframeId) {
     LOG.debug("<< removeAllCaseStudies(activityLeaderId={}, logframeId={})", activityLeaderId, logframeId);
 
