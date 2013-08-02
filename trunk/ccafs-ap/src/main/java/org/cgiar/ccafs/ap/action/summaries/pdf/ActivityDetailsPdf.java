@@ -9,7 +9,6 @@ import java.io.ByteArrayOutputStream;
 import java.io.InputStream;
 import java.text.SimpleDateFormat;
 
-import com.lowagie.text.Chunk;
 import com.lowagie.text.Document;
 import com.lowagie.text.DocumentException;
 import com.lowagie.text.Element;
@@ -24,9 +23,6 @@ public class ActivityDetailsPdf {
 
   // Logger
   private static final Logger LOG = LoggerFactory.getLogger(ActivityDetailsPdf.class);
-
-  // Constants
-  private final int ORIENTATION = BasePdf.LANDSCAPE;
 
   // Attributes
   private String fileName;
@@ -60,8 +56,6 @@ public class ActivityDetailsPdf {
 
     // Create table
     try {
-
-      document.add(new Chunk().NEWLINE);
       PdfPTable table = new PdfPTable(11);
       table.setLockedWidth(true);
       table.setTotalWidth(700);

@@ -5,6 +5,8 @@ import org.cgiar.ccafs.ap.data.dao.CaseStudyDAO;
 import org.cgiar.ccafs.ap.data.dao.CaseStudyTypeDAO;
 import org.cgiar.ccafs.ap.data.manager.CaseStudyManager;
 import org.cgiar.ccafs.ap.data.model.CaseStudy;
+import org.cgiar.ccafs.ap.data.model.CaseStudyType;
+import org.cgiar.ccafs.ap.data.model.Country;
 import org.cgiar.ccafs.ap.data.model.Leader;
 import org.cgiar.ccafs.ap.data.model.Logframe;
 
@@ -75,6 +77,46 @@ public class CaseStudyManagerImpl implements CaseStudyManager {
       temporalCaseStudy.setLinks(caseStudyData.get("links"));
       temporalCaseStudy.setKeywords(caseStudyData.get("keywords"));
       temporalCaseStudy.setGlobal(Integer.parseInt(caseStudyData.get("is_global")) == 1);
+
+      // Add the object to the list
+      caseStudies.add(temporalCaseStudy);
+    }
+
+    return caseStudies;
+  }
+
+  @Override
+  public List<CaseStudy>
+    getCaseStudyListForSummary(int activityLeaderId, int year, String countriesIds, String typesIds) {
+    SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
+    List<Map<String, String>> caseStudyDataList =
+      caseStudyDAO.getCaseStudyListForSummary(activityLeaderId, year, countriesIds, typesIds);
+    Map<String, String> caseStudyData;
+    List<CaseStudy> caseStudies = new ArrayList<>();
+
+    for (int c = 0; c < caseStudyDataList.size(); c++) {
+      caseStudyData = caseStudyDataList.get(c);
+
+      CaseStudy temporalCaseStudy = new CaseStudy(Integer.parseInt(caseStudyData.get("id")));
+      temporalCaseStudy.setTitle(caseStudyData.get("title"));
+
+      // Temporal activity leader
+      Leader caseStudyLeader = new Leader(-1);
+      caseStudyLeader.setAcronym(caseStudyData.get("activity_leader_acronym"));
+      temporalCaseStudy.setLeader(caseStudyLeader);
+
+      // Temporal case study type
+      CaseStudyType cst = new CaseStudyType(-1);
+      cst.setName(caseStudyData.get("type"));
+      List<CaseStudyType> types = new ArrayList<>();
+      types.add(cst);
+      temporalCaseStudy.setTypes(types);
+
+      // Countries
+      List<Country> countries = new ArrayList<>();
+      Country country = new Country("-1", caseStudyData.get("Countries"));
+      countries.add(country);
+      temporalCaseStudy.setCountries(countries);
 
       // Add the object to the list
       caseStudies.add(temporalCaseStudy);
