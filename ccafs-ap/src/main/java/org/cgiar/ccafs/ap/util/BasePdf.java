@@ -57,10 +57,12 @@ public class BasePdf {
   private final static Color TABLE_CELL_BORDER_COLOR = new Color(225, 225, 225);
 
   // Images path
-  private final static String HEADER_IMAGE_PATH = "http://davinci.ciat.cgiar.org/images/global/header-background.png";
-  private final static String FOOTER_IMAGE_PATH = "http://davinci.ciat.cgiar.org/images/global/footer-background.png";
-  private final static String CIAT_LOGO_PATH = "http://localhost/logo_ciat.png";
-  private final static String CCAFS_LOGO_PATH = "http://localhost/logo_ccafs.png";
+  private final static String HEADER_IMAGE_PATH =
+    "http://activities.ccafs.cgiar.org/images/global/header-background.png";
+  private final static String FOOTER_IMAGE_PATH =
+    "http://activities.ccafs.cgiar.org/images/global/footer-background.png";
+  private final static String CIAT_LOGO_PATH = "http://activities.ccafs.cgiar.org/images/summaries/logo_ciat.png";
+  private final static String CCAFS_LOGO_PATH = "http://activities.ccafs.cgiar.org/images/summaries/logo_ccafs.png";
 
   /**
    * Create the cover page and add it to the document;
