@@ -23,5 +23,6 @@
 
   </article>
 </section>
+[#include "/WEB-INF/global/pages/js-imports.ftl"]
 </body>
 </html>
