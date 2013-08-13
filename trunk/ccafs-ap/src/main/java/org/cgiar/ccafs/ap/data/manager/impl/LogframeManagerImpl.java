@@ -38,8 +38,16 @@ public class LogframeManagerImpl implements LogframeManager {
   @Override
   public Logframe getLogframeByYear(int year) {
     Map<String, String> logframeDB = logframeDAO.getLogframeByYear(year);
-    return new Logframe(Integer.parseInt(logframeDB.get("id")), Integer.parseInt(logframeDB.get("year")),
-      logframeDB.get("name"));
+    Logframe logframe = new Logframe();
+
+    if (logframeDB.size() > 0) {
+      logframe.setId(Integer.parseInt(logframeDB.get("id")));
+      logframe.setYear(Integer.parseInt(logframeDB.get("year")));
+      logframe.setName(logframeDB.get("name"));
+      return logframe;
+    }
+
+    return null;
   }
 
 }

@@ -93,6 +93,50 @@ public class MySQLOutcomeDAO implements OutcomeDAO {
   }
 
   @Override
+  public List<Map<String, String>> getOutcomesListForSummary(int leader_id, int logframe_id) {
+    LOG.debug(">> getOutcomesListForSummary(leader_id={}, logframe_id={})", leader_id, logframe_id);
+    List<Map<String, String>> outcomes = new ArrayList<>();
+
+    try (Connection connection = dbManager.getConnection()) {
+      StringBuilder query = new StringBuilder();
+      query.append("SELECT o.id, o.outcome, al.id as 'leader_id', al.acronym as 'leader_acronym' ");
+      query.append("FROM outcomes o ");
+      query.append("INNER JOIN activity_leaders al ON o.activity_leader_id = al.id ");
+      query.append("INNER JOIN logframes l ON o.logframe_id = l.id ");
+
+      if (leader_id != -1) {
+        query.append("AND activity_leader_id = " + leader_id + " ");
+      }
+
+      if (logframe_id != -1) {
+        query.append(" AND logframe_id = " + logframe_id + " ");
+      }
+      query.append("ORDER BY al.acronym");
+
+
+      ResultSet rs = dbManager.makeQuery(query.toString(), connection);
+      Map<String, String> outcomeData;
+      while (rs.next()) {
+        outcomeData = new HashMap<>();
+        outcomeData.put("id", rs.getString("id"));
+        outcomeData.put("outcome", rs.getString("outcome"));
+        outcomeData.put("leader_id", rs.getString("leader_id"));
+        outcomeData.put("leader_acronym", rs.getString("leader_acronym"));
+        outcomes.add(outcomeData);
+      }
+      rs.close();
+    } catch (SQLException e) {
+      Object[] errorParams = {leader_id, logframe_id, e};
+      LOG.error(
+        "-- getOutcomesListForSummary() > There was an error getting the outcomes list for leader {} and logframe {}",
+        errorParams);
+    }
+
+    LOG.debug("<< getOutcomesListForSummary():outcomes.size={}", outcomes.size());
+    return outcomes;
+  }
+
+  @Override
   public boolean removeOutcomes(int leader_id, int logframe_id) {
     LOG.debug(">> removeOutcomes(leader_id={}, logframe_id={})");
     boolean problem = false;

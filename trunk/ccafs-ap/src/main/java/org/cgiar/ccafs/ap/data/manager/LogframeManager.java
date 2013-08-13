@@ -17,7 +17,7 @@ public interface LogframeManager {
   public Logframe getLogframe(int id);
 
   /**
-   * Get a logframe object based on the given year.
+   * Get a logframe object based on the given year or null if no exists logframe for the given year.
    * 
    * @param year of the logframe.
    * @return a Logframe object.

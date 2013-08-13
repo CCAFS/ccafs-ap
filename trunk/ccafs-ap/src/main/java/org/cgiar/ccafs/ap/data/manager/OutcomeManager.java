@@ -32,6 +32,15 @@ public interface OutcomeManager {
   public List<Outcome> getOutcomes(Leader leader, Logframe logframe);
 
   /**
+   * Get a list with information of all outcomes that belong to a given leader and logframe for show them in a summary.
+   * 
+   * @param leader - Leader object.
+   * @param logframe - logframe object.
+   * @return a list of Outcome objects.
+   */
+  public List<Outcome> getOutcomesForSummary(Leader leader, Logframe logframe);
+
+  /**
    * Remove a list of outcomes that belong to a specific leader and logframe.
    * 
    * @param leader - Leader object.
