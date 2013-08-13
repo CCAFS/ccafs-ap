@@ -64,5 +64,6 @@
       [@s.submit type="button" name="save"][@s.text name="form.buttons.savePartner.request" /][/@s.submit]
       [/@s.form]
     </article>
-  </section>  
+  </section> 
+  [#include "/WEB-INF/global/pages/js-imports.ftl"]
 </body>
