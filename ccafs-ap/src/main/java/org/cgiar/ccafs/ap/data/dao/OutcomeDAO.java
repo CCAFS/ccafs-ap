@@ -28,6 +28,16 @@ public interface OutcomeDAO {
   public List<Map<String, String>> getOutcomes(int leader_id, int logframe_id);
 
   /**
+   * Get a list with information of all outcomes that belong to a given leader and logframe identifier to display them
+   * in a summary.
+   * 
+   * @param activity_leader_id - Leader identifier or -1 to indicate all.
+   * @param logframe_id - logframe identifier or -1 to indicate all.
+   * @return a list of Maps with the information of each outcome.
+   */
+  public List<Map<String, String>> getOutcomesListForSummary(int leader_id, int logframe_id);
+
+  /**
    * Remove a list of outcomes that belong to a specific leader and logframe.
    * 
    * @param leader_id - leader identifier.

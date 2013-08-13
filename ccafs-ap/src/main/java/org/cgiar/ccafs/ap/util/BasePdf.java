@@ -42,6 +42,10 @@ public class BasePdf {
   public final static int ROW_EVEN = 0;
   public final static int ROW_ODD = 1;
 
+  // Table width
+  public final static int TABLE_WIDTH_PORTRAIT = 500;
+  public final static int TABLE_WIDTH_LANDSCAPE = 700;
+
   // Fonts
   private final static Font TITLE_FONT = new Font(FontFactory.getFont("Arial", 24, Font.BOLD, new Color(153, 102, 51)));
   private final static Font NORMAL_FONT = new Font(FontFactory.getFont("Helvetica", 12, Color.BLACK));

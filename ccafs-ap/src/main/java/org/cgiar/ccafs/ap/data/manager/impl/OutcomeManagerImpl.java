@@ -72,6 +72,27 @@ public class OutcomeManagerImpl implements OutcomeManager {
   }
 
   @Override
+  public List<Outcome> getOutcomesForSummary(Leader leader, Logframe logframe) {
+    List<Outcome> outcomes = new ArrayList<>();
+    List<Map<String, String>> outcomesData = outcomeDAO.getOutcomesListForSummary(leader.getId(), logframe.getId());
+
+    Leader tempLeader;
+    for (Map<String, String> outcomeData : outcomesData) {
+      Outcome outcome = new Outcome();
+      outcome.setId(Integer.parseInt(outcomeData.get("id")));
+      outcome.setOutcome(outcomeData.get("outcome"));
+
+      tempLeader = new Leader();
+      tempLeader.setId(Integer.parseInt(outcomeData.get("leader_id")));
+      tempLeader.setAcronym(outcomeData.get("leader_acronym"));
+
+      outcome.setLeader(tempLeader);
+      outcomes.add(outcome);
+    }
+    return outcomes;
+  }
+
+  @Override
   public boolean removeOutcomes(Leader leader, Logframe logframe) {
     return outcomeDAO.removeOutcomes(leader.getId(), logframe.getId());
   }
