@@ -54,8 +54,8 @@
               [/#list]
             [/#if]
           </ccafsLocations>
-          [#if activity.otherLocations?has_content]
-            <otherSites>
+          <otherSites>
+            [#if activity.otherLocations?has_content]
               [#list activity.otherLocations as otherLocation]
                 <otherSite>
                   <country>
@@ -67,8 +67,8 @@
                   <longitude>[#if otherLocation.longitude?has_content]${otherLocation.longitude}[/#if]</longitude>
                 </otherSite>
               [/#list]
-            </otherSites>
-          [/#if]
+            [/#if]
+          </otherSites>
         </location>
       </locations>
       <keywords>
