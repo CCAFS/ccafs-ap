@@ -146,7 +146,7 @@ public class MySQLActivityDAO implements ActivityDAO {
     query.append("INNER JOIN themes t ON t.id = obj.theme_id ");
     query.append("INNER JOIN logframes l on l.id = t.logframe_id " + "WHERE l.year = ");
     query.append(year);
-    query.append(" ORDER BY a.date_added DESC");
+    query.append(" ORDER BY a.id");
     if (limit > 0) {
       query.append(" LIMIT ");
       query.append(limit);
