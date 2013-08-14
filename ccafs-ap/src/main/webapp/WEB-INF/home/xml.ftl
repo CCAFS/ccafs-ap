@@ -85,25 +85,24 @@
         [/#if]
       </keywords>
       <partners>
-        [#if activity.partners?has_content]
-          [#list activity.partners as partner]
+        [#if activity.activityPartners?has_content]
+          [#list activity.activityPartners as activityPartner]
             <partner>
-              <name>${partner.name}</name>
-              <acronym>[#if partner.acronym?has_content]${partner.acronym}[/#if]</acronym>
+              <name>${activityPartner.partner.name}</name>
+              <acronym>[#if activityPartner.partner.acronym?has_content]${activityPartner.partner.acronym}[/#if]</acronym>
               <country>
-                <iso2>${country.id}</iso2>
-                <name>${country.name}</name>
+                <iso2>${activityPartner.partner.country.id}</iso2>
+                <name>${activityPartner.partner.country.name}</name>
               </country>
               <contactPerson>
-                <name>[#if partner.contactName?has_content]${partner.contactName}[/#if]</name>
-                <email>[#if partner.contactEmail?has_content]${partner.contactEmail}[/#if]</email>
+                <name>[#if activityPartner.contactName?has_content]${activityPartner.contactName}[/#if]</name>
+                <email>[#if activityPartner.contactEmail?has_content]${activityPartner.contactEmail}[/#if]</email>
               </contactPerson>
             </partner>
           [/#list]
         [/#if]
       </partners>
     </activity>
-    
   [/#list]
 </activities>
 [/#escape]
