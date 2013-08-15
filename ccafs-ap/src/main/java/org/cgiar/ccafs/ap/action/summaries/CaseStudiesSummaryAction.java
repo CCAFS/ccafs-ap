@@ -51,12 +51,14 @@ public class CaseStudiesSummaryAction extends BaseAction {
 
   @Inject
   public CaseStudiesSummaryAction(APConfig config, LogframeManager logframeManager, CaseStudyManager caseStudyManager,
-    LeaderManager leaderManager, CountryManager countryManager, CaseStudyTypeManager caseStudyTypeManager) {
+    LeaderManager leaderManager, CountryManager countryManager, CaseStudyTypeManager caseStudyTypeManager,
+    CaseStudySummaryPdf caseStudyPdf) {
     super(config, logframeManager);
     this.caseStudyManager = caseStudyManager;
     this.leaderManager = leaderManager;
     this.countryManager = countryManager;
     this.caseStudyTypeManager = caseStudyTypeManager;
+    this.caseStudyPdf = caseStudyPdf;
   }
 
   @Override
@@ -103,7 +105,7 @@ public class CaseStudiesSummaryAction extends BaseAction {
   public Map<Integer, String> getYearList() {
     Map<Integer, String> years = new TreeMap<>();
     years.put(-1, getText("summaries.caseStudies.selectYear"));
-    for (int c = config.getStartYear(); c <= config.getEndYear(); c++) {
+    for (int c = config.getStartYear(); c <= config.getReportingCurrentYear(); c++) {
       years.put(c, String.valueOf(c));
     }
     return years;
@@ -144,7 +146,7 @@ public class CaseStudiesSummaryAction extends BaseAction {
       return INPUT;
     }
 
-    caseStudyPdf = new CaseStudySummaryPdf(getText("summaries.caseStudies.pdf.title"));
+    caseStudyPdf.setSummaryTitle(getText("summaries.caseStudies.pdf.title"));
     caseStudyPdf.generatePdf(caseStudies);
     return SUCCESS;
   }

@@ -17,7 +17,7 @@
 
 
   [@s.form action="outcomes"]  
-  <article class="halfContent" id="activitiesSummaries">
+  <article class="halfContent" id="outcomesSummaries">
     <h1 class="contentTitle">
       [@s.text name="summaries.outcomes.title" /] 
     </h1>

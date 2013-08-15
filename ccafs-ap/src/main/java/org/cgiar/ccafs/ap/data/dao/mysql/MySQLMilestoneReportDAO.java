@@ -28,6 +28,77 @@ public class MySQLMilestoneReportDAO implements MilestoneReportDAO {
   }
 
   @Override
+  public List<Map<String, String>> getMilestoneReportListForSummary(int logframeId, int themeId, int milestoneId) {
+    Object[] debugParams = {logframeId, themeId, milestoneId};
+    LOG.debug(">> getMilestoneReportListForSummary(logframeId={}, themeId={}, milestoneId={})", debugParams);
+
+    List<Map<String, String>> milestoneReportDataList = new ArrayList<>();
+    StringBuilder query = new StringBuilder();
+    query.append("SELECT mr.id, mr.tl_description, mr.rpl_description, ");
+    query.append("ms.id as 'milestone_status_id', ms.status as 'milestone_status_name', ");
+    query.append("m.id as 'milestone_id', m.code as 'milestone_code', m.description as 'milestone_description', ");
+    query.append("op.id as 'output_id', op.code as 'output_code', op.description as 'output_description', ");
+    query.append("ob.id as 'objective_id', ob.code as 'objective_code', ob.description as 'objective_description', ");
+    query.append("ob.outcome_description as 'outcome_description', ");
+    query.append("th.id as 'theme_id', th.code as 'theme_code', th.description as 'theme_description', ");
+    query.append("lf.id as 'logframe_id' ");
+    query.append("FROM milestone_reports mr ");
+    query.append("LEFT JOIN milestone_status ms ON mr.milestone_status_id = ms.id ");
+    query.append("RIGHT JOIN milestones m ON mr.milestone_id = m.id ");
+    query.append("INNER JOIN activities ac ON m.id = ac.milestone_id ");
+    query.append("INNER JOIN outputs op ON m.output_id=op.id ");
+    query.append("INNER JOIN objectives ob ON op.objective_id = ob.id ");
+    query.append("INNER JOIN themes th ON ob.theme_id = th.id ");
+    query.append("INNER JOIN logframes lf ON th.logframe_id = lf.id ");
+    query.append("WHERE lf.id = " + logframeId + " AND m.year = lf.year ");
+
+    if (themeId != -1) {
+      query.append("AND th.id = " + themeId + " ");
+    }
+
+    if (milestoneId != -1) {
+      query.append("AND m.id = " + milestoneId + " ");
+    }
+
+    query.append("GROUP BY m.id ORDER BY th.code, ob.code, op.code ");
+    try (Connection con = databaseManager.getConnection()) {
+      ResultSet rs = databaseManager.makeQuery(query.toString(), con);
+      while (rs.next()) {
+        Map<String, String> milestoneReportData = new HashMap<>();
+        milestoneReportData.put("id", rs.getString("id"));
+        milestoneReportData.put("tl_description", rs.getString("tl_description"));
+        milestoneReportData.put("rpl_description", rs.getString("rpl_description"));
+        milestoneReportData.put("milestone_status_id", rs.getString("milestone_status_id"));
+        milestoneReportData.put("milestone_status_name", rs.getString("milestone_status_name"));
+        milestoneReportData.put("milestone_id", rs.getString("milestone_id"));
+        milestoneReportData.put("milestone_code", rs.getString("milestone_code"));
+        milestoneReportData.put("milestone_description", rs.getString("milestone_description"));
+        milestoneReportData.put("output_id", rs.getString("output_id"));
+        milestoneReportData.put("output_code", rs.getString("output_code"));
+        milestoneReportData.put("output_description", rs.getString("output_description"));
+        milestoneReportData.put("objective_id", rs.getString("objective_id"));
+        milestoneReportData.put("objective_code", rs.getString("objective_code"));
+        milestoneReportData.put("objective_description", rs.getString("objective_description"));
+        milestoneReportData.put("outcome_description", rs.getString("outcome_description"));
+        milestoneReportData.put("theme_id", rs.getString("theme_id"));
+        milestoneReportData.put("theme_code", rs.getString("theme_code"));
+        milestoneReportData.put("theme_description", rs.getString("theme_description"));
+        milestoneReportData.put("logframe_id", rs.getString("logframe_id"));
+        milestoneReportDataList.add(milestoneReportData);
+      }
+      rs.close();
+    } catch (SQLException e) {
+      LOG
+        .error(
+          "-- getMilestoneReportListForSummary() > There was an error getting the list of milestones related to the RPL {} and logframe {} for year {}.",
+          debugParams, e);
+    }
+
+    LOG.debug("<< getMilestoneReportListForSummary():milestoneReportDataList.size={}", milestoneReportDataList.size());
+    return milestoneReportDataList;
+  }
+
+  @Override
   public List<Map<String, String>> getRPLMilestoneReportList(int activityLeaderId, int logframeId, int currentYear) {
     Object[] debugParams = {activityLeaderId, logframeId, currentYear};
     LOG.debug(">> getRPLMilestoneReportList(activityLeaderId={}, logframeId={}, currentYear={})", debugParams);

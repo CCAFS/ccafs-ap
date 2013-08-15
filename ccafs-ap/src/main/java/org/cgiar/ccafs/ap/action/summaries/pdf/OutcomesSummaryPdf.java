@@ -12,6 +12,7 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
 
+import com.google.inject.Inject;
 import com.lowagie.text.Document;
 import com.lowagie.text.DocumentException;
 import com.lowagie.text.Element;
@@ -28,32 +29,34 @@ public class OutcomesSummaryPdf {
   private static final Logger LOG = LoggerFactory.getLogger(OutcomesSummaryPdf.class);
 
   // Attributes
+  private BasePdf basePdf;
   private String summaryTitle;
   private InputStream inputStream;
   private int contentLength;
 
-  public OutcomesSummaryPdf(String summaryTitle) {
-    this.summaryTitle = summaryTitle;
+  @Inject
+  public OutcomesSummaryPdf(BasePdf basePdf) {
+    this.basePdf = basePdf;
   }
 
   public void generatePdf(List<Outcome> outcomes) {
     ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
     Document document = new Document(PageSize.A4);
 
-    PdfWriter writer = BasePdf.initializePdf(document, outputStream, BasePdf.LANDSCAPE);
+    PdfWriter writer = basePdf.initializePdf(document, outputStream, basePdf.LANDSCAPE);
 
     // Adding the event to include header and footer on each page
-    HeaderFooterPdf event = new HeaderFooterPdf(summaryTitle, BasePdf.LANDSCAPE);
+    HeaderFooterPdf event = new HeaderFooterPdf(summaryTitle, basePdf.LANDSCAPE);
     writer.setPageEvent(event);
 
     // Open document
     document.open();
 
     // Cover page
-    BasePdf.addCover(document, summaryTitle);
+    basePdf.addCover(document, summaryTitle);
 
     // Summary title
-    BasePdf.addTitle(document, summaryTitle);
+    basePdf.addTitle(document, summaryTitle);
 
     // Add content
     try {
@@ -61,24 +64,24 @@ public class OutcomesSummaryPdf {
 
       // Set table widths
       table.setLockedWidth(true);
-      table.setTotalWidth(BasePdf.TABLE_WIDTH_LANDSCAPE);
+      table.setTotalWidth(basePdf.TABLE_WIDTH_LANDSCAPE);
       table.setWidths(new int[] {1, 2, 10});
 
       // Repeat header in every page
       table.setHeaderRows(1);
 
       // Add table headers
-      BasePdf.addTableHeaderCell(table, "ID");
-      BasePdf.addTableHeaderCell(table, "Leader");
-      BasePdf.addTableHeaderCell(table, "Title");
+      basePdf.addTableHeaderCell(table, "ID");
+      basePdf.addTableHeaderCell(table, "Leader");
+      basePdf.addTableHeaderCell(table, "Title");
 
       // Add table body
       Outcome outcomeTemp;
       for (int c = 0; c < outcomes.size(); c++) {
         outcomeTemp = outcomes.get(c);
-        BasePdf.addTableBodyCell(table, String.valueOf(outcomeTemp.getId()), Element.ALIGN_CENTER, c % 2);
-        BasePdf.addTableBodyCell(table, outcomeTemp.getLeader().getAcronym(), Element.ALIGN_CENTER, c % 2);
-        BasePdf.addTableBodyCell(table, outcomeTemp.getOutcome(), Element.ALIGN_LEFT, c % 2);
+        basePdf.addTableBodyCell(table, String.valueOf(outcomeTemp.getId()), Element.ALIGN_CENTER, c % 2);
+        basePdf.addTableBodyCell(table, outcomeTemp.getLeader().getAcronym(), Element.ALIGN_CENTER, c % 2);
+        basePdf.addTableBodyCell(table, outcomeTemp.getOutcome(), Element.ALIGN_LEFT, c % 2);
       }
 
       document.add(table);
@@ -115,5 +118,9 @@ public class OutcomesSummaryPdf {
 
   public InputStream getInputStream() {
     return inputStream;
+  }
+
+  public void setSummaryTitle(String title) {
+    this.summaryTitle = title;
   }
 }

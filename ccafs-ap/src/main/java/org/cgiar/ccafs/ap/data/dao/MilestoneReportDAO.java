@@ -11,6 +11,16 @@ import com.google.inject.ImplementedBy;
 public interface MilestoneReportDAO {
 
   /**
+   * Get the list of milestone reports according to the given parameters.
+   * 
+   * @param logframeId - Logframe identifier
+   * @param themeId - Theme identifier
+   * @param milestoneId - Milestone identifier
+   * @return
+   */
+  public List<Map<String, String>> getMilestoneReportListForSummary(int logframeId, int themeId, int milestoneId);
+
+  /**
    * Get the list with all the milestones related to the activity leader and logframe
    * given made by RPL's
    * 
