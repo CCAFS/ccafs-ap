@@ -12,6 +12,7 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
 
+import com.google.inject.Inject;
 import com.lowagie.text.Document;
 import com.lowagie.text.DocumentException;
 import com.lowagie.text.Element;
@@ -28,32 +29,34 @@ public class CaseStudySummaryPdf {
   private static final Logger LOG = LoggerFactory.getLogger(CaseStudySummaryPdf.class);
 
   // Attributes
+  private BasePdf basePdf;
   private String summaryTitle;
   private InputStream inputStream;
   private int contentLength;
 
-  public CaseStudySummaryPdf(String summaryTitle) {
-    this.summaryTitle = summaryTitle;
+  @Inject
+  public CaseStudySummaryPdf(BasePdf basePdf) {
+    this.basePdf = basePdf;
   }
 
   public void generatePdf(List<CaseStudy> caseStudies) {
     ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
     Document document = new Document(PageSize.A4);
 
-    PdfWriter writer = BasePdf.initializePdf(document, outputStream, BasePdf.PORTRAIT);
+    PdfWriter writer = basePdf.initializePdf(document, outputStream, basePdf.PORTRAIT);
 
     // Adding the event to include header and footer on each page
-    HeaderFooterPdf event = new HeaderFooterPdf(summaryTitle, BasePdf.PORTRAIT);
+    HeaderFooterPdf event = new HeaderFooterPdf(summaryTitle, basePdf.PORTRAIT);
     writer.setPageEvent(event);
 
     // Open document
     document.open();
 
     // Cover page
-    BasePdf.addCover(document, summaryTitle);
+    basePdf.addCover(document, summaryTitle);
 
     // Summary title
-    BasePdf.addTitle(document, summaryTitle);
+    basePdf.addTitle(document, summaryTitle);
 
     // Add content
     try {
@@ -68,21 +71,21 @@ public class CaseStudySummaryPdf {
       table.setHeaderRows(1);
 
       // Add table headers
-      BasePdf.addTableHeaderCell(table, "ID");
-      BasePdf.addTableHeaderCell(table, "Title");
-      BasePdf.addTableHeaderCell(table, "Leader");
-      BasePdf.addTableHeaderCell(table, "Countries");
-      BasePdf.addTableHeaderCell(table, "type");
+      basePdf.addTableHeaderCell(table, "ID");
+      basePdf.addTableHeaderCell(table, "Title");
+      basePdf.addTableHeaderCell(table, "Leader");
+      basePdf.addTableHeaderCell(table, "Countries");
+      basePdf.addTableHeaderCell(table, "type");
 
       // Add table body
       CaseStudy csTemp;
       for (int c = 0; c < caseStudies.size(); c++) {
         csTemp = caseStudies.get(c);
-        BasePdf.addTableBodyCell(table, String.valueOf(csTemp.getId()), Element.ALIGN_CENTER, c % 2);
-        BasePdf.addTableBodyCell(table, csTemp.getTitle(), Element.ALIGN_LEFT, c % 2);
-        BasePdf.addTableBodyCell(table, csTemp.getLeader().getAcronym(), Element.ALIGN_CENTER, c % 2);
-        BasePdf.addTableBodyCell(table, csTemp.getCountries().get(0).getName(), Element.ALIGN_LEFT, c % 2);
-        BasePdf.addTableBodyCell(table, csTemp.getTypes().get(0).getName(), Element.ALIGN_LEFT, c % 2);
+        basePdf.addTableBodyCell(table, String.valueOf(csTemp.getId()), Element.ALIGN_CENTER, c % 2);
+        basePdf.addTableBodyCell(table, csTemp.getTitle(), Element.ALIGN_LEFT, c % 2);
+        basePdf.addTableBodyCell(table, csTemp.getLeader().getAcronym(), Element.ALIGN_CENTER, c % 2);
+        basePdf.addTableBodyCell(table, csTemp.getCountries().get(0).getName(), Element.ALIGN_LEFT, c % 2);
+        basePdf.addTableBodyCell(table, csTemp.getTypes().get(0).getName(), Element.ALIGN_LEFT, c % 2);
       }
 
       document.add(table);
@@ -119,5 +122,9 @@ public class CaseStudySummaryPdf {
 
   public InputStream getInputStream() {
     return inputStream;
+  }
+
+  public void setSummaryTitle(String title) {
+    this.summaryTitle = title;
   }
 }

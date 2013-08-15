@@ -71,7 +71,7 @@
     
     [#-- Logframe link --]
     <div class="halfPartBlock">
-      <a href="../documents/Logframe_2013-2015.pdf" target="_blank">view logframe </a> 
+      <a href="../resources/documents/Logframe_2013-2015.pdf" target="_blank">view logframe </a> 
     </div>
     
     [#-- Budget --]

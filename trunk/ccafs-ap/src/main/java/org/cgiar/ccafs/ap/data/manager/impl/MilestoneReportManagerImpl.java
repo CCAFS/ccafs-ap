@@ -108,6 +108,80 @@ public class MilestoneReportManagerImpl implements MilestoneReportManager {
   }
 
   @Override
+  public MilestoneReport[] getMilestoneReportsForSumamry(Logframe logframe, Theme theme, Milestone milestone) {
+    // Creating the milestone Reports Data List (mrDataList)
+    List<Map<String, String>> mrDataList;
+
+    mrDataList =
+      milestoneReportDAO.getMilestoneReportListForSummary(logframe.getId(), theme.getId(), milestone.getId());
+
+    MilestoneReport[] milestoneReports = new MilestoneReport[mrDataList.size()];
+
+    for (int c = 0; c < mrDataList.size(); c++) {
+      milestoneReports[c] = new MilestoneReport();
+      // If there is no a report for the milestone, set the milestone report identifier to -1
+      if (mrDataList.get(c).get("id") == null) {
+        milestoneReports[c].setId(-1);
+      } else {
+        milestoneReports[c].setId(Integer.parseInt(mrDataList.get(c).get("id")));
+      }
+
+      if (mrDataList.get(c).get("tl_description") != null) {
+        milestoneReports[c].setThemeLeaderDescription(mrDataList.get(c).get("tl_description"));
+      } else {
+        milestoneReports[c].setThemeLeaderDescription("");
+      }
+
+      if (mrDataList.get(c).get("rpl_description") != null) {
+        milestoneReports[c].setRegionalLeaderDescription(mrDataList.get(c).get("rpl_description"));
+      } else {
+        milestoneReports[c].setRegionalLeaderDescription("");
+      }
+
+      // Temporal milestone status object
+      MilestoneStatus status = new MilestoneStatus();
+      if (mrDataList.get(c).get("milestone_status_id") != null) {
+        status.setId(Integer.parseInt(mrDataList.get(c).get("milestone_status_id")));
+      } else {
+        status.setId(-1);
+      }
+      status.setName(mrDataList.get(c).get("milestone_status_name"));
+
+      // Temporal milestone object
+      Milestone milestoneObj = new Milestone();
+      milestoneObj.setId(Integer.parseInt(mrDataList.get(c).get("milestone_id")));
+      milestoneObj.setCode(mrDataList.get(c).get("milestone_code"));
+      milestoneObj.setDescription(mrDataList.get(c).get("milestone_description"));
+
+      // Temporal Output object
+      Output output = new Output(Integer.parseInt(mrDataList.get(c).get("output_id")));
+      output.setCode(mrDataList.get(c).get("output_code"));
+      output.setDescription(mrDataList.get(c).get("output_description"));
+
+      // Temporal Objective code
+      Objective objective = new Objective(Integer.parseInt(mrDataList.get(c).get("objective_id")));
+      objective.setCode(mrDataList.get(c).get("objective_code"));
+      objective.setDescription(mrDataList.get(c).get("objective_description"));
+      objective.setOutcomeDescription(mrDataList.get(c).get("outcome_description"));
+
+      // Temporal Theme object
+      Theme themeObj = new Theme(Integer.parseInt(mrDataList.get(c).get("theme_id")));
+      themeObj.setCode(mrDataList.get(c).get("theme_code"));
+      themeObj.setDescription(mrDataList.get(c).get("theme_description"));
+
+      // Assign objects
+      objective.setTheme(themeObj);
+      output.setObjective(objective);
+      milestoneObj.setOutput(output);
+
+      // Add all objects to milestone reports
+      milestoneReports[c].setMilestone(milestoneObj);
+      milestoneReports[c].setStatus(status);
+    }
+    return milestoneReports;
+  }
+
+  @Override
   public boolean saveMilestoneReports(MilestoneReport[] milestoneReports) {
     List<Map<String, Object>> milestoneReportDataList = new ArrayList<>();
 

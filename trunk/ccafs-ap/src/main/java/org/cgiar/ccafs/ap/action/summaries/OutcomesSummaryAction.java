@@ -44,11 +44,12 @@ public class OutcomesSummaryAction extends BaseAction {
 
   @Inject
   public OutcomesSummaryAction(APConfig config, LogframeManager logframeManager, OutcomeManager outcomeManager,
-    LeaderManager leaderManager) {
+    LeaderManager leaderManager, OutcomesSummaryPdf outcomesPdf) {
     super(config, logframeManager);
     this.outcomeManager = outcomeManager;
     this.leaderManager = leaderManager;
     this.logframeManager = logframeManager;
+    this.outcomesPdf = outcomesPdf;
   }
 
   @Override
@@ -83,7 +84,7 @@ public class OutcomesSummaryAction extends BaseAction {
   public Map<Integer, String> getYearList() {
     Map<Integer, String> years = new TreeMap<>();
     years.put(-1, getText("summaries.caseStudies.selectYear"));
-    for (int c = config.getStartYear(); c <= config.getEndYear(); c++) {
+    for (int c = config.getStartYear(); c <= config.getReportingCurrentYear(); c++) {
       years.put(c, String.valueOf(c));
     }
     return years;
@@ -133,7 +134,7 @@ public class OutcomesSummaryAction extends BaseAction {
       return INPUT;
     }
 
-    outcomesPdf = new OutcomesSummaryPdf(getText("summaries.outcomes.pdf.title"));
+    outcomesPdf.setSummaryTitle(getText("summaries.outcomes.pdf.title"));
     outcomesPdf.generatePdf(outcomes);
     return SUCCESS;
   }

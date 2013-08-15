@@ -33,7 +33,7 @@ public class ActivitiesSummariesAction extends BaseAction {
   LeaderManager leaderManager;
 
   // Pdf generator
-  ActivityDetailsPdf pdfGenerator;
+  ActivityDetailsPdf activitiesPdf;
 
   // Model
   List<Activity> activities;
@@ -47,10 +47,11 @@ public class ActivitiesSummariesAction extends BaseAction {
 
   @Inject
   public ActivitiesSummariesAction(APConfig config, LogframeManager logframeManager, LeaderManager leaderManager,
-    ActivityManager activityManager) {
+    ActivityManager activityManager, ActivityDetailsPdf activitiesPdf) {
     super(config, logframeManager);
     this.leaderManager = leaderManager;
     this.activityManager = activityManager;
+    this.activitiesPdf = activitiesPdf;
   }
 
   /**
@@ -63,8 +64,8 @@ public class ActivitiesSummariesAction extends BaseAction {
   public void createActivityDetailSummary(int year, int activityID, int leaderID) {
     Activity[] activities = activityManager.getActivitiesForDetailedSummary(year, activityID, leaderID);
 
-    pdfGenerator = new ActivityDetailsPdf("fileNameTest.pdf", "Title file");
-    pdfGenerator.generatePdf(activities);
+    activitiesPdf.setSummaryTitle("Activities summary");
+    activitiesPdf.generatePdf(activities);
   }
 
   /**
@@ -75,7 +76,7 @@ public class ActivitiesSummariesAction extends BaseAction {
    * @param activityID - the activity selected or 0 to indicate none.
    */
   public void createActivityStatusSummary(int year, int activityID, int leaderID) {
-    pdfGenerator = new ActivityDetailsPdf("fileNameTest.pdf", "Title file");
+
   }
 
   public int getActivityID() {
@@ -91,15 +92,15 @@ public class ActivitiesSummariesAction extends BaseAction {
   }
 
   public int getContentLength() {
-    return pdfGenerator.getContentLength();
+    return activitiesPdf.getContentLength();
   }
 
   public String getFileName() {
-    return pdfGenerator.getFileName();
+    return activitiesPdf.getFileName();
   }
 
   public InputStream getInputStream() {
-    return pdfGenerator.getInputStream();
+    return activitiesPdf.getInputStream();
   }
 
   public List<Leader> getLeaders() {

@@ -7,6 +7,7 @@ import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.net.URL;
 
+import com.google.inject.Inject;
 import com.lowagie.text.BadElementException;
 import com.lowagie.text.Chunk;
 import com.lowagie.text.Document;
@@ -32,7 +33,7 @@ public class BasePdf {
   private static final Logger LOG = LoggerFactory.getLogger(BasePdf.class);
 
   // Config
-  private static APConfig config;
+  private APConfig config;
 
   // Page orientation
   public final static int PORTRAIT = 1;
@@ -47,10 +48,11 @@ public class BasePdf {
   public final static int TABLE_WIDTH_LANDSCAPE = 700;
 
   // Fonts
-  private final static Font TITLE_FONT = new Font(FontFactory.getFont("Arial", 24, Font.BOLD, new Color(153, 102, 51)));
-  private final static Font NORMAL_FONT = new Font(FontFactory.getFont("Helvetica", 12, Color.BLACK));
-  private final static Font TABLE_HEADER_FONT = new Font(FontFactory.getFont("Arial", 12, Font.BOLD, Color.WHITE));
-  private final static Font TABLE_BODY_FONT = new Font(FontFactory.getFont("Arial", 11, new Color(34, 34, 34)));
+  private final static Font TITLE_FONT = new Font(
+    FontFactory.getFont("calibri", 24, Font.BOLD, new Color(153, 102, 51)));
+  private final static Font BODY_TEXT_FONT = new Font(FontFactory.getFont("calibri", 12, Color.BLACK));
+  private final static Font TABLE_HEADER_FONT = new Font(FontFactory.getFont("calibri", 11, Font.BOLD, Color.WHITE));
+  private final static Font TABLE_BODY_FONT = new Font(FontFactory.getFont("calibri", 10, new Color(34, 34, 34)));
 
   // Backgrounds colors
   private final static Color TABLE_HEADER_BACKGROUND = new Color(155, 187, 89);
@@ -61,12 +63,23 @@ public class BasePdf {
   private final static Color TABLE_CELL_BORDER_COLOR = new Color(225, 225, 225);
 
   // Images path
-  private final static String HEADER_IMAGE_PATH =
-    "http://activities.ccafs.cgiar.org/images/global/header-background.png";
-  private final static String FOOTER_IMAGE_PATH =
-    "http://activities.ccafs.cgiar.org/images/global/footer-background.png";
-  private final static String CIAT_LOGO_PATH = "http://activities.ccafs.cgiar.org/images/summaries/logo_ciat.png";
-  private final static String CCAFS_LOGO_PATH = "http://activities.ccafs.cgiar.org/images/summaries/logo_ccafs.png";
+  private static String HEADER_IMAGE_PATH;
+  private static String FOOTER_IMAGE_PATH;
+  private static String CIAT_LOGO_PATH;
+  private static String CCAFS_LOGO_PATH;
+
+  @Inject
+  public BasePdf(APConfig config) {
+    this.config = config;
+
+    // Use this space to register and initialize the default font
+    FontFactory.register(config.getBaseUrl() + "/resources/pdfFonts/calibri.ttf", "calibri");
+
+    HEADER_IMAGE_PATH = config.getBaseUrl() + "/images/global/header-background.png";
+    FOOTER_IMAGE_PATH = config.getBaseUrl() + "/images/global/footer-background.png";
+    CIAT_LOGO_PATH = config.getBaseUrl() + "/images/summaries/logo_ciat.png";
+    CCAFS_LOGO_PATH = config.getBaseUrl() + "/images/summaries/logo_ccafs.png";
+  }
 
   /**
    * Create the cover page and add it to the document;
@@ -74,7 +87,7 @@ public class BasePdf {
    * @param document - Document where the cover must be inserted.
    * @param title - Cover title.
    */
-  public static void addCover(Document document, String title) {
+  public void addCover(Document document, String title) {
     Image headerImage = null, footerImage = null, ccafsLogo = null, ciatLogo = null;
     int orientation = (document.getPageSize().getHeight() > document.getPageSize().getWidth()) ? PORTRAIT : LANDSCAPE;
 
@@ -163,7 +176,44 @@ public class BasePdf {
    * @param alignment - Alignment to apply in the cell.
    * @return a PdfCell object with the text formatted.
    */
-  public static void addTableBodyCell(PdfPTable table, String text, int alignment, int rowIndex) {
+  public void addCustomTableCell(PdfPTable table, String text, int alignment, Font cellFont, Color cellColor,
+    int colspan) {
+    Paragraph paragraph = new Paragraph(text, cellFont);
+    paragraph.setAlignment(alignment);
+
+    PdfPCell cell = new PdfPCell(paragraph);
+
+    // Set alignment
+    cell.setHorizontalAlignment(alignment);
+    cell.setVerticalAlignment(Element.ALIGN_MIDDLE);
+    cell.setBackgroundColor(cellColor);
+
+    // Set padding
+    cell.setUseBorderPadding(true);
+    cell.setPadding(5);
+
+    // Set border color
+    cell.setBorderColor(TABLE_CELL_BORDER_COLOR);
+
+    // Set leading
+    cell.setLeading(2, 1);
+
+    if (colspan != 0) {
+      cell.setColspan(colspan);
+    }
+
+    table.addCell(cell);
+  }
+
+  /**
+   * Creates a PdfCell object add the text passed and
+   * give it the standard format for body cells.
+   * 
+   * @param text - Text to insert into the cell.
+   * @param alignment - Alignment to apply in the cell.
+   * @return a PdfCell object with the text formatted.
+   */
+  public void addTableBodyCell(PdfPTable table, String text, int alignment, int rowIndex) {
     Paragraph paragraph = new Paragraph(text, TABLE_BODY_FONT);
     paragraph.setAlignment(alignment);
 
@@ -198,7 +248,7 @@ public class BasePdf {
    * @param text - Text to insert into the cell.
    * @return a PdfCell object with the text formatted.
    */
-  public static void addTableHeaderCell(PdfPTable table, String text) {
+  public void addTableHeaderCell(PdfPTable table, String text) {
     Paragraph paragraph = new Paragraph(text, TABLE_HEADER_FONT);
     paragraph.setAlignment(Element.ALIGN_CENTER);
 
@@ -225,7 +275,7 @@ public class BasePdf {
    * @param document - Document where title must be inserted
    * @param text - Title to insert
    */
-  public static void addTitle(Document document, String text) {
+  public void addTitle(Document document, String text) {
     Paragraph paragraph = new Paragraph();
     paragraph.setFont(TITLE_FONT);
     paragraph.add(text);
@@ -245,7 +295,7 @@ public class BasePdf {
    * @param pageOrientation - Landscape or portrait
    * @return A Rectangle object.
    */
-  public static Rectangle getBoxSize(int pageOrientation) {
+  public Rectangle getBoxSize(int pageOrientation) {
     switch (pageOrientation) {
       case PORTRAIT:
         return new Rectangle(36, 20, 590, 770);
@@ -266,7 +316,7 @@ public class BasePdf {
    * @param pageOrientation - Landscape or portrait
    * @return the PdfWriter object.
    */
-  public static PdfWriter initializePdf(Document document, ByteArrayOutputStream outputStream, int pageOrientation) {
+  public PdfWriter initializePdf(Document document, ByteArrayOutputStream outputStream, int pageOrientation) {
 
     // Set the page orientation
     if (pageOrientation == LANDSCAPE) {

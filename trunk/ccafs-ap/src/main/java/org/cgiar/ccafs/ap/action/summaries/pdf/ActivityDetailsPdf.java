@@ -9,6 +9,7 @@ import java.io.ByteArrayOutputStream;
 import java.io.InputStream;
 import java.text.SimpleDateFormat;
 
+import com.google.inject.Inject;
 import com.lowagie.text.Document;
 import com.lowagie.text.DocumentException;
 import com.lowagie.text.Element;
@@ -25,14 +26,15 @@ public class ActivityDetailsPdf {
   private static final Logger LOG = LoggerFactory.getLogger(ActivityDetailsPdf.class);
 
   // Attributes
+  private BasePdf basePdf;
   private String fileName;
-  private String fileTitle;
+  private String summaryTitle;
   private InputStream inputStream;
   private int contentLength;
 
-  public ActivityDetailsPdf(String fileName, String fileTitle) {
-    this.fileName = fileName;
-    this.fileTitle = fileTitle;
+  @Inject
+  public ActivityDetailsPdf(BasePdf basePdf) {
+    this.basePdf = basePdf;
   }
 
   public void generatePdf(Activity[] activities) {
@@ -40,19 +42,19 @@ public class ActivityDetailsPdf {
     Document document = new Document(PageSize.A4);
     SimpleDateFormat dateFormat = new SimpleDateFormat("MMM yyyy");
 
-    PdfWriter writer = BasePdf.initializePdf(document, outputStream, BasePdf.LANDSCAPE);
+    PdfWriter writer = basePdf.initializePdf(document, outputStream, basePdf.LANDSCAPE);
 
     // Adding the event to include header and footer on each page
-    HeaderFooterPdf event = new HeaderFooterPdf(fileTitle, BasePdf.LANDSCAPE);
+    HeaderFooterPdf event = new HeaderFooterPdf(summaryTitle, basePdf.LANDSCAPE);
     writer.setPageEvent(event);
 
     document.open();
 
     // Cover page
-    BasePdf.addCover(document, "Test Report");
+    basePdf.addCover(document, "Test Report");
 
     // Summary title
-    BasePdf.addTitle(document, "Titulo de prueba");
+    basePdf.addTitle(document, "Titulo de prueba");
 
     // Create table
     try {
@@ -62,33 +64,33 @@ public class ActivityDetailsPdf {
       table.setWidths(new int[] {1, 3, 1, 1, 1, 1, 1, 2, 1, 2, 2});
 
       // Add table headers
-      BasePdf.addTableHeaderCell(table, "Activity ID");
-      BasePdf.addTableHeaderCell(table, "Activity title");
-      BasePdf.addTableHeaderCell(table, "Leader");
-      BasePdf.addTableHeaderCell(table, "Contact person(s)");
-      BasePdf.addTableHeaderCell(table, "Start date");
-      BasePdf.addTableHeaderCell(table, "End date");
-      BasePdf.addTableHeaderCell(table, "Status");
-      BasePdf.addTableHeaderCell(table, "Regions");
-      BasePdf.addTableHeaderCell(table, "CCAFS Sites");
-      BasePdf.addTableHeaderCell(table, "Key partners");
-      BasePdf.addTableHeaderCell(table, "Key deliverables");
+      basePdf.addTableHeaderCell(table, "Activity ID");
+      basePdf.addTableHeaderCell(table, "Activity title");
+      basePdf.addTableHeaderCell(table, "Leader");
+      basePdf.addTableHeaderCell(table, "Contact person(s)");
+      basePdf.addTableHeaderCell(table, "Start date");
+      basePdf.addTableHeaderCell(table, "End date");
+      basePdf.addTableHeaderCell(table, "Status");
+      basePdf.addTableHeaderCell(table, "Regions");
+      basePdf.addTableHeaderCell(table, "CCAFS Sites");
+      basePdf.addTableHeaderCell(table, "Key partners");
+      basePdf.addTableHeaderCell(table, "Key deliverables");
 
       Activity a;
       // Add table contents
       for (int c = 0; c < activities.length; c++) {
         a = activities[c];
-        BasePdf.addTableBodyCell(table, String.valueOf(a.getId()), Element.ALIGN_CENTER, c % 2);
-        BasePdf.addTableBodyCell(table, a.getTitle(), Element.ALIGN_CENTER, c % 2);
-        BasePdf.addTableBodyCell(table, a.getLeader().getAcronym(), Element.ALIGN_CENTER, c % 2);
-        BasePdf.addTableBodyCell(table, dateFormat.format(a.getStartDate()), Element.ALIGN_CENTER, c % 2);
-        BasePdf.addTableBodyCell(table, dateFormat.format(a.getEndDate()), Element.ALIGN_CENTER, c % 2);
-        BasePdf.addTableBodyCell(table, a.getStatus().getName(), Element.ALIGN_CENTER, c % 2);
-        BasePdf.addTableBodyCell(table, "Element test kdfjd aksdfj ", Element.ALIGN_CENTER, c % 2);
-        BasePdf.addTableBodyCell(table, "Element test kdfjd aksdfj ", Element.ALIGN_CENTER, c % 2);
-        BasePdf.addTableBodyCell(table, "Element test kdfjd aksdfj ", Element.ALIGN_CENTER, c % 2);
-        BasePdf.addTableBodyCell(table, "Element test kdfjd aksdfj ", Element.ALIGN_CENTER, c % 2);
-        BasePdf.addTableBodyCell(table, "Element test kdfjd aksdfj ", Element.ALIGN_CENTER, c % 2);
+        basePdf.addTableBodyCell(table, String.valueOf(a.getId()), Element.ALIGN_CENTER, c % 2);
+        basePdf.addTableBodyCell(table, a.getTitle(), Element.ALIGN_CENTER, c % 2);
+        basePdf.addTableBodyCell(table, a.getLeader().getAcronym(), Element.ALIGN_CENTER, c % 2);
+        basePdf.addTableBodyCell(table, dateFormat.format(a.getStartDate()), Element.ALIGN_CENTER, c % 2);
+        basePdf.addTableBodyCell(table, dateFormat.format(a.getEndDate()), Element.ALIGN_CENTER, c % 2);
+        basePdf.addTableBodyCell(table, a.getStatus().getName(), Element.ALIGN_CENTER, c % 2);
+        basePdf.addTableBodyCell(table, "Element test kdfjd aksdfj ", Element.ALIGN_CENTER, c % 2);
+        basePdf.addTableBodyCell(table, "Element test kdfjd aksdfj ", Element.ALIGN_CENTER, c % 2);
+        basePdf.addTableBodyCell(table, "Element test kdfjd aksdfj ", Element.ALIGN_CENTER, c % 2);
+        basePdf.addTableBodyCell(table, "Element test kdfjd aksdfj ", Element.ALIGN_CENTER, c % 2);
+        basePdf.addTableBodyCell(table, "Element test kdfjd aksdfj ", Element.ALIGN_CENTER, c % 2);
 
       }
 
@@ -113,5 +115,9 @@ public class ActivityDetailsPdf {
 
   public InputStream getInputStream() {
     return inputStream;
+  }
+
+  public void setSummaryTitle(String title) {
+    this.summaryTitle = title;
   }
 }
