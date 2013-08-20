@@ -106,6 +106,7 @@ public class PartnersSaveReportingAction extends BaseAction {
     countryName = countryManager.getCountry(countryId).getName();
 
     // Get the partner type name
+    partnerTypeName = "";
     for (PartnerType pt : partnerTypesList) {
       if (pt.getId() == partnerTypeId) {
         partnerTypeName = pt.getName();
@@ -124,6 +125,8 @@ public class PartnersSaveReportingAction extends BaseAction {
     message.append("\n");
     message.append("Acronym: ");
     message.append(partnerAcronym);
+    message.append("Partner type: ");
+    message.append(partnerTypeName);
     message.append("\n");
     message.append("Location (City, Country): ");
     message.append(city);
