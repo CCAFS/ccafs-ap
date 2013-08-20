@@ -125,6 +125,7 @@ public class PartnersSaveReportingAction extends BaseAction {
     message.append("\n");
     message.append("Acronym: ");
     message.append(partnerAcronym);
+    message.append("\n");
     message.append("Partner type: ");
     message.append(partnerTypeName);
     message.append("\n");
