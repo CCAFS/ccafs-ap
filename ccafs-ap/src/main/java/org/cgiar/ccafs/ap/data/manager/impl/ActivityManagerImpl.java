@@ -269,9 +269,9 @@ public class ActivityManagerImpl implements ActivityManager {
         }
 
         if (activityDB.get("is_commissioned") != null) {
-          activity.setGlobal(Integer.parseInt(activityDB.get("is_commissioned")) == 1);
+          activity.setCommissioned(Integer.parseInt(activityDB.get("is_commissioned")) == 1);
         } else {
-          activity.setGlobal(false);
+          activity.setCommissioned(false);
         }
 
         try {
