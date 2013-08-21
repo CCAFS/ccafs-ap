@@ -21,8 +21,11 @@ This version includes the planning and reporting sections although just the plan
 We need to make some improvements into the planning section before the contact point users start the planning process for 2014 activities:
  
  - Add a Submit button to the forms.
+
  - Change the way of show the introduction texts into the sections 
+
  - Change the way of ask for the resources in additional information sub-section
+
  - Allow the platform save the regions separately.
 
 Also it is needed a XML file to export the partners information in order to import them into the CCAFS page.
@@ -36,11 +39,15 @@ Also it is needed a XML file to export the partners information in order to impo
 For this release we need add some sub-sections in the reporting section:
  
  - Communications
+
  - Indicators 
+
  - Leverages
 
 Also it's needed make the suggested improvements and adjustments :
 
  - Improve outcomes section (Add a title, specify what is each field.)
+
  - Revise the categories of case studies
+
  - Revise the publication types list.
