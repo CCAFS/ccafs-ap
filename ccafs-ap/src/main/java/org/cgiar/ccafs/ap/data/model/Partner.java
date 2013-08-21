@@ -10,6 +10,7 @@ public class Partner {
   private String acronym;
   private Country country;
   private String city;
+  private String website;
   private PartnerType type;
 
   public Partner() {
@@ -39,6 +40,10 @@ public class Partner {
     return type;
   }
 
+  public String getWebsite() {
+    return website;
+  }
+
   public void setAcronym(String acronym) {
     this.acronym = acronym;
   }
@@ -61,6 +66,10 @@ public class Partner {
 
   public void setType(PartnerType type) {
     this.type = type;
+  }
+
+  public void setWebsite(String website) {
+    this.website = website;
   }
 
   @Override

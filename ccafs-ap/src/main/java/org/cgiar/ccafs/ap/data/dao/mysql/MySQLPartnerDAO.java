@@ -126,6 +126,41 @@ public class MySQLPartnerDAO implements PartnerDAO {
   }
 
   @Override
+  public List<Map<String, String>> getPartnersForXML() {
+    LOG.debug(">> getPartnersForXML()");
+    List<Map<String, String>> partners = new ArrayList<>();
+    String query =
+      "SELECT p.id, p.acronym, p.name as 'name', p.city, p.website, "
+        + "pt.id as 'partner_type_id', pt.acronym as 'partner_type_acronym', pt.name as 'partner_type_name', "
+        + "co.iso2 as 'country_iso2', co.name as 'country_name' " + "FROM partners p "
+        + "INNER JOIN partner_types pt ON pt.id = p.partner_type_id "
+        + "INNER JOIN countries co ON p.country_iso2 = co.iso2 " + "ORDER BY p.id ";
+    try (Connection connection = databaseManager.getConnection()) {
+      ResultSet rs = databaseManager.makeQuery(query, connection);
+      while (rs.next()) {
+        Map<String, String> partnerData = new HashMap<>();
+        partnerData.put("id", rs.getString("id"));
+        partnerData.put("acronym", rs.getString("acronym"));
+        partnerData.put("name", rs.getString("name"));
+        partnerData.put("city", rs.getString("city"));
+        partnerData.put("website", rs.getString("website"));
+        partnerData.put("partner_type_id", rs.getString("partner_type_id"));
+        partnerData.put("partner_type_acronym", rs.getString("partner_type_acronym"));
+        partnerData.put("partner_type_name", rs.getString("partner_type_name"));
+        partnerData.put("country_iso2", rs.getString("country_iso2"));
+        partnerData.put("country_name", rs.getString("country_name"));
+
+        partners.add(partnerData);
+      }
+      rs.close();
+    } catch (SQLException e) {
+      LOG.error("-- getPartnersForXML() > There was an error getting the list of partners.", e);
+    }
+    LOG.debug("<< getPartnersForXML():partners.size={}", partners.size());
+    return partners;
+  }
+
+  @Override
   public List<Map<String, String>> getPartnersList(int activityID) {
     LOG.debug(">> getPartnersList(activityID={})", activityID);
     List<Map<String, String>> statusList = new ArrayList<>();

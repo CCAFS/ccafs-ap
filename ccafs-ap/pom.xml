@@ -4,7 +4,7 @@
   <modelVersion>4.0.0</modelVersion>
   <groupId>org.cgiar.ccafs</groupId>
   <artifactId>ccafs-ap</artifactId>
-  <version>1.0</version>
+  <version>1.1.1-SNAPSHOT</version>
   <packaging>war</packaging>
   <name>ccafs-ap</name>
 
@@ -23,6 +23,7 @@
     <janino.version>2.6.1</janino.version>
     <struts2-json.version>2.3.4.1</struts2-json.version>
     <itext.version>2.1.7</itext.version>
+    <jfreechart.version>1.0.15</jfreechart.version>
   </properties>
 
   <developers>
@@ -151,6 +152,12 @@
 		  <artifactId>itext</artifactId>
 		  <version>${itext.version}</version>
 		</dependency>
+		
+		<dependency>
+      <groupId>org.jfree</groupId>
+      <artifactId>jfreechart</artifactId>
+      <version>${jfreechart.version}</version>
+    </dependency>
 
   </dependencies>
 

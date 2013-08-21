@@ -3,6 +3,7 @@ package org.cgiar.ccafs.ap.data.manager.impl;
 import org.cgiar.ccafs.ap.data.dao.ActivityPartnerDAO;
 import org.cgiar.ccafs.ap.data.dao.PartnerDAO;
 import org.cgiar.ccafs.ap.data.manager.PartnerManager;
+import org.cgiar.ccafs.ap.data.model.Country;
 import org.cgiar.ccafs.ap.data.model.Partner;
 import org.cgiar.ccafs.ap.data.model.PartnerType;
 
@@ -62,6 +63,38 @@ public class PartnerManagerImpl implements PartnerManager {
     }
     LOG.warn("-- getPartner() > Partner identified by {} wasn't found", id);
     return null;
+  }
+
+  @Override
+  public Partner[] getPartnerForXML() {
+    List<Map<String, String>> partnerList = partnerDAO.getPartnersForXML();
+    Partner[] partners = new Partner[partnerList.size()];
+    for (int c = 0; c < partners.length; c++) {
+      Map<String, String> partnerData = partnerList.get(c);
+      partners[c] = new Partner();
+      partners[c].setId(Integer.parseInt(partnerData.get("id")));
+      partners[c].setAcronym(partnerData.get("acronym"));
+      partners[c].setName(partnerData.get("name"));
+      partners[c].setCity(partnerData.get("city"));
+      partners[c].setWebsite(partnerData.get("website"));
+      // Partner Type
+      PartnerType partnerType = new PartnerType();
+      partnerType.setId(Integer.parseInt(partnerData.get("partner_type_id")));
+      partnerType.setAcronym(partnerData.get("partner_type_acronym"));
+      partnerType.setName(partnerData.get("partner_type_name"));
+      partners[c].setType(partnerType);
+      // Country
+      Country country = new Country();
+      country.setId(partnerData.get("country_iso2"));
+      country.setName(partnerData.get("country_name"));
+      partners[c].setCountry(country);
+
+    }
+    if (partnerList.size() == 0) {
+      LOG.warn("-- getPartnerForXML() > Partner list loaded is empty");
+      return null;
+    }
+    return partners;
   }
 
   @Override

@@ -24,6 +24,13 @@ public interface PartnerManager {
   public Partner getPartner(int id);
 
   /**
+   * Get all partners.
+   * 
+   * @return an array of Partner objects.
+   */
+  public Partner[] getPartnerForXML();
+
+  /**
    * Get a list of partners that fill the conditions given or all partners
    * if there is no condition.
    * 

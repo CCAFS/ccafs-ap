@@ -252,7 +252,7 @@ public class ActivityManagerImpl implements ActivityManager {
   }
 
   @Override
-  public Activity[] getActivitiesForRSS(int year, int limit) {
+  public Activity[] getActivitiesForXML(int year, int limit) {
     List<Map<String, String>> activitiesDB = activityDAO.getActivitiesForRSS(year, limit);
     if (activitiesDB.size() > 0) {
       Activity[] activities = new Activity[activitiesDB.size()];
