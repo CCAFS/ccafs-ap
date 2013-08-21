@@ -19,10 +19,10 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 
-public class XMLAction extends BaseAction {
+public class ActivitiesXMLAction extends BaseAction {
 
   // Logger
-  private static final Logger LOG = LoggerFactory.getLogger(XMLAction.class);
+  private static final Logger LOG = LoggerFactory.getLogger(ActivitiesXMLAction.class);
   private static final long serialVersionUID = 4983286741588568418L;
 
   // Managers
@@ -40,7 +40,7 @@ public class XMLAction extends BaseAction {
   private int year;
 
   @Inject
-  public XMLAction(APConfig config, LogframeManager logframeManager, ActivityManager activityManager,
+  public ActivitiesXMLAction(APConfig config, LogframeManager logframeManager, ActivityManager activityManager,
     LeaderManager leaderManager, ContactPersonManager contactPersonManager,
     ActivityCountryManager activityCountryManager, ActivityBenchmarkSiteManager activityBenchmarkSiteManager,
     ActivityOtherSiteManager activityOtherSiteManager, ActivityPartnerManager activityPartnerManager,
@@ -102,7 +102,7 @@ public class XMLAction extends BaseAction {
 
     LOG.info("The XML file with activity list for year '{}' is being generated with limit '{}'", year, limit);
 
-    activities = activityManager.getActivitiesForRSS(year, limit);
+    activities = activityManager.getActivitiesForXML(year, limit);
     if (activities == null) {
       activities = new Activity[0];
     } else {

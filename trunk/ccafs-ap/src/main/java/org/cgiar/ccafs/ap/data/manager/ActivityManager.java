@@ -36,7 +36,7 @@ public interface ActivityManager {
    * @param limit - Number of activities that will be returned.
    * @return a list of activities ordered by date added.
    */
-  public Activity[] getActivitiesForRSS(int year, int limit);
+  public Activity[] getActivitiesForXML(int year, int limit);
 
   /**
    * Get a list of activities matching the parameters given in order to fill the Activities status summary.

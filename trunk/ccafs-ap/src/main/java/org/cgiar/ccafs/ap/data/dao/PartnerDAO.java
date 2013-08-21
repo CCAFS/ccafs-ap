@@ -37,6 +37,13 @@ public interface PartnerDAO {
   public List<Map<String, String>> getPartnersByFilter(String countryID, String partnerTypeID);
 
   /**
+   * Get a list of all Partners.
+   * 
+   * @return a List of Maps of partner data.
+   */
+  public List<Map<String, String>> getPartnersForXML();
+
+  /**
    * Get all partners of the activity identified
    * whit activityID from the DAO.
    * 
