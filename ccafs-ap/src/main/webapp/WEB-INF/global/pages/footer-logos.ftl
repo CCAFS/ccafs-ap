@@ -32,7 +32,9 @@
         </div>
       </footer>
     </div> <!-- end container -->
-    [#include "/WEB-INF/global/pages/js-imports.ftl"]
+    <div id="scriptsContainer">
+      [#include "/WEB-INF/global/pages/js-imports.ftl"]
+    </div>
     
   </body>
 </html>

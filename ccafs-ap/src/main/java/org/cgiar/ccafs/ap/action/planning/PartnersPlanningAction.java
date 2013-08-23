@@ -157,7 +157,6 @@ public class PartnersPlanningAction extends BaseAction {
   public void validate() {
     boolean anyError = false;
 
-
     if (save || saveNext) {
       if (activity.getActivityPartners() != null) {
         for (int c = 0; c < activity.getActivityPartners().size(); c++) {
@@ -167,6 +166,13 @@ public class PartnersPlanningAction extends BaseAction {
               addFieldError("activity.activityPartners[" + c + "].contactEmail",
                 getText("validation.invalid", new String[] {getText("planning.activityPartners.contactPersonEmail")}));
             }
+          }
+          if (activity.getActivityPartners().get(c).getPartner() == null) {
+            // If User save the option of no result for filter this element should be deleted from the list.
+            activity.getActivityPartners().remove(c);
+            // As we removed an element from the list and the list reorganize its indexes
+            // we need check again the c position
+            c--;
           }
         }
       }
