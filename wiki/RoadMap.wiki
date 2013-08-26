@@ -14,6 +14,18 @@ This version includes the planning and reporting sections although just the plan
 
 ---------
 
+= CCAFS P&R v1.0.1: Release notes =
+
+Version 1.0.1 was released on August 23, 2013
+
+This version was released to fix an error reported by a science officer, also were fixed some less critical issues and added some improvements.
+
+== Issues resolved ==
+
+[https://code.google.com/p/ccafs-ap/issues/list?can=1&cursor=ccafs-ap%3A107&q=Milestone%3DRelease1.0.1 Issues fixed]
+
+---------
+
 
 = CCAFS P&R v1.1 =
 *Planned release date:* October 1 2013
