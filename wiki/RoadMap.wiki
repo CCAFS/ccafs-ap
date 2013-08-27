@@ -1,65 +1,47 @@
 #summary Roadmap for upcoming releases
 
 
+== CCAFS P&R v1.1.2 ==
+*Planned release date:* December 2013
 
-= CCAFS P&R v1.0: Release notes =
+In reporting it is needed add new sub-sections, like Communications, Indicators and Leverages.
 
-Version 1.0 was released on July 5, 2013
+Also it's needed make improvements and adjustments in reporting subsections like Outcomes, Case studies, Publications and Deliverables.
 
-This version includes the planning and reporting sections although just the planning section is available for users.
+----------
 
-== Issues resolved ==
+== CCAFS P&R v1.1.1 ==
+*Planned release date:* October 1 2013
 
-[https://code.google.com/p/ccafs-ap/issues/list?can=1&q=milestone=Release1.0%20status=Verified&sort=-status&colspec=ID%20Type%20Status%20Priority%20Component%20Milestone%20Owner%20Summary Issues fixed]
+It is needed make some improvements into the planning section before the contact point users start the planning process for 2014 activities.
+
+Also it is planned add some enhancements like a submit button in the forms, and a way to export the partners information into a XML file.
 
 ---------
 
-= CCAFS P&R v1.0.1: Release notes =
+== CCAFS P&R v1.0.1: Release notes ==
 
 Version 1.0.1 was released on August 23, 2013
 
 This version was released to fix an error reported by a science officer, also were fixed some less critical issues and added some improvements.
 
-== Issues resolved ==
+=== Issues resolved ===
 
 [https://code.google.com/p/ccafs-ap/issues/list?can=1&cursor=ccafs-ap%3A107&q=Milestone%3DRelease1.0.1 Issues fixed]
 
 ---------
 
+== CCAFS P&R v1.0: Release notes ==
 
-= CCAFS P&R v1.1 =
-*Planned release date:* October 1 2013
+Version 1.0 was released on July 5, 2013
 
-We need to make some improvements into the planning section before the contact point users start the planning process for 2014 activities:
- 
- - Add a Submit button to the forms.
+This version includes the planning and reporting sections although just the planning section is available for users.
 
- - Change the way of show the introduction texts into the sections 
+=== Issues resolved ===
 
- - Change the way of ask for the resources in additional information sub-section
-
- - Allow the platform save the regions separately.
-
-Also it is needed a XML file to export the partners information in order to import them into the CCAFS page.
-
----------
+[https://code.google.com/p/ccafs-ap/issues/list?can=1&q=milestone=Release1.0%20status=Verified&sort=-status&colspec=ID%20Type%20Status%20Priority%20Component%20Milestone%20Owner%20Summary Issues fixed]
 
 
-= CCAFS P&R v1.2 =
-*Planned release date:* December 2013
 
-For this release we need add some sub-sections in the reporting section:
- 
- - Communications
 
- - Indicators 
 
- - Leverages
-
-Also it's needed make the suggested improvements and adjustments :
-
- - Improve outcomes section (Add a title, specify what is each field.)
-
- - Revise the categories of case studies
-
- - Revise the publication types list.
