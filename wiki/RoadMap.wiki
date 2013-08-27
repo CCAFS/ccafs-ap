@@ -25,9 +25,7 @@ Version 1.0.1 was released on August 23, 2013
 
 This version was released to fix an error reported by a science officer, also were fixed some less critical issues and added some improvements.
 
-=== Issues resolved ===
-
-[https://code.google.com/p/ccafs-ap/issues/list?can=1&cursor=ccafs-ap%3A107&q=Milestone%3DRelease1.0.1 Issues fixed]
+[https://code.google.com/p/ccafs-ap/issues/list?can=1&cursor=ccafs-ap%3A107&q=Milestone%3DRelease1.0.1 Resolved issues]
 
 ---------
 
@@ -37,11 +35,7 @@ Version 1.0 was released on July 5, 2013
 
 This version includes the planning and reporting sections although just the planning section is available for users.
 
-=== Issues resolved ===
-
-[https://code.google.com/p/ccafs-ap/issues/list?can=1&q=milestone=Release1.0%20status=Verified&sort=-status&colspec=ID%20Type%20Status%20Priority%20Component%20Milestone%20Owner%20Summary Issues fixed]
-
-
+[https://code.google.com/p/ccafs-ap/issues/list?can=1&q=milestone=Release1.0%20status=Verified&sort=-status&colspec=ID%20Type%20Status%20Priority%20Component%20Milestone%20Owner%20Summary Resolved issues]
 
 
 
