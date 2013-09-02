@@ -27,6 +27,12 @@ public class UnhandledExceptionAction extends BaseAction {
     super(config, logframeManager);
   }
 
+  @Override
+  public String execute() throws Exception {
+    sendExceptionMessage();
+    return super.execute();
+  }
+
   public String getExceptionMessage() {
     StringWriter writer = new StringWriter();
     exception.printStackTrace(new PrintWriter(writer));
