@@ -62,10 +62,4 @@ public class ActivityCountryManagerImpl implements ActivityCountryManager {
     }
     return saved;
   }
-
-
-  @Override
-  public boolean saveCountriesByRegion(int regionID, int activityID) {
-    return activityCountryDAO.saveActivityCountriesByRegion(activityID, regionID);
-  }
 }

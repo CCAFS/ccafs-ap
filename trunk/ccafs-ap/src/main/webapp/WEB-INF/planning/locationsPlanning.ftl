@@ -32,15 +32,15 @@
     <div class="halfPartBlock">
       [@customForm.checkbox  name="activity.global" i18nkey="planning.locations.global" checked=activity.global value="true" /]
     </div> 
-    
+
     [#-- Regions --]
     <fieldset class="fullblock" id="regionsLocations" [#if activity.global]style="display:none"[/#if]>
       <legend> <h6> [@s.text name="planning.locations.regions" /] </h6> </legend>
       <div class="regions">
         <h6>[@s.text name="planning.locations.regions" /]</h6>
         <div class="checkboxGroup">
-          [@s.fielderror cssClass="fieldError" fieldName="regionsSelected"/]
-          [@s.checkboxlist name="region" list="regions" listKey="id" listValue="name" value="regionsDisplayed" cssClass="checkbox" /]
+          [@s.fielderror cssClass="fieldError" fieldName="regionsSelected"/]          
+          [@s.checkboxlist name="region" list="regions" listKey="id" listValue="name" value="activeRegions" cssClass="checkbox" /]
         </div>
       </div>
     </fieldset>
@@ -48,17 +48,15 @@
     [#-- Countries --]
     <div id="countryLocations">
       [#list regions as region]
-        [#-- If there is a selected region show the countries option --]
-        [#assign showRegion = regionsDisplayed((region_index+1)?int)?has_content /]
-        <fieldset class="thirdPartBlock " id="countriesForRegion-${region_index+1}" [#if activity.global || !showRegion]style="display:none"[/#if]>
-          <legend> <h6> [@s.text name="planning.locations.region${region_index+1}" /] [@s.text name="planning.locations.countries" /] </h6> </legend>
+        <fieldset class="thirdPartBlock " id="countriesForRegion-${region.id}" [#if activity.global || !activeRegions?contains(region.id?string)]style="display:none"[/#if]>
+          <legend> <h6> [@s.text name="planning.locations.region${region.id}" /] [@s.text name="planning.locations.countries" /] </h6> </legend>
           [#-- All region checkbox --]
-          <input type="checkbox" class="countriesForRegion" id="allCountriesForRegion-${region_index}" name="regionsSelected[${region_index+1}]" value="true" [#if regionsSelected( (region_index+1)?int )]checked="checked"[/#if] />
+          <input type="checkbox" class="countriesForRegion" id="allCountriesForRegion-${region_index}" name="activity.regions" value="${region.id}" [#if activity.regionsIds?contains(region.id?string)]checked="checked"[/#if] />
           <label for="">[@s.text name="planning.locations.allCountries" /]</label>
           
           [#-- If the region is selected, the countries selector is not shown --]
-          [#assign disableCountries = regionsSelected( (region_index+1)?int ) /]
-          [@customForm.select name="activity.countries" label="" i18nkey="planning.locations.countries" listName="getCountriesByRegion(${region_index+1 })" keyFieldName="id"  displayFieldName="name" value="activity.getCountriesIdsByRegion(${region_index + 1})" multiple=true className="countries" disabled=disableCountries /]
+          [#assign disableCountries = activity.regionsIds?contains(region.id?string) /]
+          [@customForm.select name="activity.countries" label="" i18nkey="planning.locations.countries" listName="getCountriesByRegion(${region.id})" keyFieldName="id"  displayFieldName="name" value="activity.getCountriesIdsByRegion(${region.id})" multiple=true className="countries" disabled=disableCountries /]
         </fieldset>
       [/#list]
     </div>
