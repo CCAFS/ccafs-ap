@@ -63,11 +63,23 @@
       <result name="404">
         /WEB-INF/global/pages/error/404.ftl
       </result>
+      <result name="unhandledException" type="chain">
+        <param name="actionName">unhandledExceptionAction</param>
+        <param name="namespace">/</param>
+      </result>
     </global-results>
+
+    <global-exception-mappings>
+      <exception-mapping exception="java.lang.Exception" result="unhandledException"/>
+    </global-exception-mappings>
 
     <action name="defaultAction" class="org.cgiar.ccafs.ap.action.home.LoginAction">
       <result name="success">/WEB-INF/home/login.ftl</result>
       <result name="input">/WEB-INF/home/login.ftl</result>
+    </action>
+    
+    <action name="unhandledExceptionAction" class="org.cgiar.ccafs.ap.action.UnhandledExceptionAction">
+      <result name="success">/WEB-INF/global/pages/error/500.ftl</result>
     </action>
     
     <action name="*" class="org.cgiar.ccafs.ap.action.BaseAction">
