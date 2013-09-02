@@ -4,6 +4,7 @@ import org.cgiar.ccafs.ap.data.dao.RegionDAO;
 import org.cgiar.ccafs.ap.data.manager.RegionManager;
 import org.cgiar.ccafs.ap.data.model.Region;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
@@ -30,6 +31,19 @@ public class RegionManagerImpl implements RegionManager {
       region.setName(regionsDataList.get(c).get("name"));
       region.setDescription(regionsDataList.get(c).get("description"));
       regions[c] = region;
+    }
+    return regions;
+  }
+
+  @Override
+  public List<Region> getRegionList(String[] ids) {
+    List<Region> regions = new ArrayList<>();
+    for (Region region : getRegionList()) {
+      for (String id : ids) {
+        if (region.getId() == Integer.parseInt(id)) {
+          regions.add(region);
+        }
+      }
     }
     return regions;
   }

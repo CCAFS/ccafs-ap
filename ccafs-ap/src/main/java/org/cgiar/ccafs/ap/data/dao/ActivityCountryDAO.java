@@ -27,15 +27,6 @@ public interface ActivityCountryDAO {
   public List<Map<String, String>> getActivityCountries(int activityID);
 
   /**
-   * Save all countries that belongs to the region given
-   * 
-   * @param activityID - Activity identifier
-   * @param regionID - Region identifier
-   * @return true if the data was successfully saved, false otherwise
-   */
-  public boolean saveActivityCountriesByRegion(int activityID, int regionID);
-
-  /**
    * Save the activity country given into the database.
    * 
    * @param activityID - The activity identifier.

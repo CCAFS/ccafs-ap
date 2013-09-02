@@ -34,13 +34,4 @@ public interface ActivityCountryManager {
    * @return true if ALL the countries were successfully saved. False otherwise
    */
   public boolean saveActivityCountries(List<Country> countries, int activityID);
-
-  /**
-   * Save all countries that belongs to the region given.
-   * 
-   * @param regionID - region identifier
-   * @param activityID - activity identifier
-   * @return true if the data was successfully saved. False otherwise
-   */
-  public boolean saveCountriesByRegion(int regionID, int activityID);
 }

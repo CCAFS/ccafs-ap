@@ -29,7 +29,7 @@ public class MySQLActivityCountryDAO implements ActivityCountryDAO {
 
   @Override
   public boolean deleteActivityCountries(int activityID) {
-    LOG.debug(">> deleteActivityBenchmarkSites(activityID={})", activityID);
+    LOG.debug(">> deleteActivityCountries(activityID={})", activityID);
 
     boolean deleted = false;
     String query = "DELETE FROM country_locations WHERE activity_id = ?";
@@ -50,7 +50,7 @@ public class MySQLActivityCountryDAO implements ActivityCountryDAO {
         activityID, e);
     }
 
-    LOG.debug("<< deleteActivityBenchmarkSites():{}", deleted);
+    LOG.debug("<< deleteActivityCountries():{}", deleted);
     return deleted;
   }
 
@@ -76,44 +76,12 @@ public class MySQLActivityCountryDAO implements ActivityCountryDAO {
       }
       rs.close();
     } catch (SQLException e) {
-      LOG.error("There was an error getting the data from 'country_locations' table. \n{}", query, e);
+      LOG.error("-- getActivityCountries > There was an error getting the data from 'country_locations' table. \n{}",
+        query, e);
     }
 
     LOG.debug("<< getActivityCountries():List.size={}", countriesDataList.size());
     return countriesDataList;
-  }
-
-  @Override
-  public boolean saveActivityCountriesByRegion(int activityID, int regionID) {
-    LOG.debug(">> getActivityCountries(activityID={}, regionID={})", activityID, regionID);
-
-    boolean saved = false;
-    String query =
-      "INSERT INTO country_locations (country_iso2, activity_id) SELECT iso2, ? FROM countries WHERE region_id = ? ";
-    Object[] values = new Object[2];
-    values[0] = activityID;
-    values[1] = regionID;
-
-    try (Connection con = databaseManager.getConnection()) {
-      int rows = databaseManager.makeChangeSecure(con, query, values);
-      if (rows < 0) {
-        LOG
-          .warn(
-            "-- saveActivityCountriesByRegion > There was an error saving countries by region. \n Query: {}. \n Values: {}",
-            query, values);
-      } else {
-        saved = true;
-        LOG
-          .info(
-            "-- saveActivityCountriesByRegion > All countries of region {} were saved as country locations of activity {}",
-            regionID, activityID);
-      }
-    } catch (SQLException e) {
-      LOG.error("-- saveActivityCountriesByRegion > There was an error saving countries by region.");
-    }
-
-    LOG.debug("<< getActivityCountries():{}", saved);
-    return saved;
   }
 
   @Override

@@ -29,6 +29,7 @@ public class Activity {
   private List<Resource> resources;
   private List<ActivityKeyword> keywords;
   private List<Country> countries;
+  private List<Region> regions;
   private List<BenchmarkSite> bsLocations;
   private List<OtherSite> otherLocations;
   private boolean commissioned;
@@ -141,6 +142,18 @@ public class Activity {
     return otherLocations;
   }
 
+  public List<Region> getRegions() {
+    return regions;
+  }
+
+  public List<String> getRegionsIds() {
+    ArrayList<String> ids = new ArrayList<>();
+    for (int c = 0; c < getRegions().size(); c++) {
+      ids.add(getRegions().get(c).getId() + "");
+    }
+    return ids;
+  }
+
   public List<Resource> getResources() {
     return resources;
   }
@@ -251,6 +264,10 @@ public class Activity {
 
   public void setPlanning(boolean isPlanning) {
     this.isPlanning = isPlanning;
+  }
+
+  public void setRegions(List<Region> regions) {
+    this.regions = regions;
   }
 
   public void setResources(List<Resource> resources) {
