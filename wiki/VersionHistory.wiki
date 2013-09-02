@@ -3,3 +3,4 @@
 ||   *Version*   ||   *Date*   ||   *Download*   ||   *Description*   ||
 || [RoadMap#CCAFS_P&R_v1.0:_Release_notes Version 1.0]  ||   July 5 2013    ||   [https://docs.google.com/uc?export=download&id=0B8jCy7Ba0AgLQkFRYXFSNERHZGc&file=cccafs-ap_v1.0.war ccafsap_v1.0.war] || First release with planning and reporting section ||
 || [RoadMap#CCAFS_P&R_v1.0:_Release_notes Version 1.0.1]  ||   August 23 2013    ||   [https://docs.google.com/uc?export=download&id=0B8jCy7Ba0AgLNkc1Q3c2X2l6VEk&file=cccafs-ap_v1.0.1.war ccafsap_v1.0.1.war] || The release was made to fix an error encountered. ||
+|| [RoadMap#CCAFS_P&R_v1.0:_Release_notes Version 1.0.2]  ||   September 2 2013    ||   [https://docs.google.com/uc?export=download&id=0B8jCy7Ba0AgLdDgyV0JyQndtQk0&file=cccafs-ap_v1.0.2.war ccafsap_v1.0.2.war] || The release was made to made the activity title editable. ||
