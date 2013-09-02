@@ -31,7 +31,11 @@
       [#if currentActivities??]
         [#list currentActivities as activity]
           <tr>
-            <td>${activity.id}</td>
+            <td>
+              <a href=" [@s.url action='mainInformation' includeParams='get'] [@s.param name='${activityRequestParameter}']${activity.id}[/@s.param] [/@s.url]" >
+                ${activity.id}
+              </a> 
+            </td>
             <td class="left">
               <a href="
               [@s.url action='mainInformation' includeParams='get']
