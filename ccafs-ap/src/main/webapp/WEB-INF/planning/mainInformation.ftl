@@ -56,12 +56,12 @@
     
     [#-- Title --]
     <div class="fullBlock">
-      [@customForm.textArea name="activity.title"  i18nkey="planning.mainInformation.title" disabled=true /]
+      [@customForm.textArea name="activity.title"  i18nkey="planning.mainInformation.title"  /]
     </div>
     
     [#-- Description --]
     <div class="fullBlock">
-      [@customForm.textArea name="activity.description" i18nkey="planning.mainInformation.descripition" /]
+      [@customForm.textArea name="activity.description" i18nkey="planning.mainInformation.descripition" disabled=true /]
     </div>
     
     [#-- Milestones --]

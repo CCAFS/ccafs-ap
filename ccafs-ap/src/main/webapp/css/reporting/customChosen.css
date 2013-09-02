@@ -17,7 +17,7 @@
 }
 
 .chzn-container-multi .chzn-choices li.search-choice .search-choice-close {
-  background: url('../../../images/libs/chosen/chosen-sprite.png') -42px 1px no-repeat;
+  background: url('../../images/libs/chosen/chosen-sprite.png') -42px 1px no-repeat;
 }
 
 .chzn-rtl .chzn-search input {
