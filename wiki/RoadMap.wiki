@@ -19,6 +19,16 @@ Also it is planned add some enhancements like a submit button in the forms, and 
 
 ---------
 
+== CCAFS P&R v1.0.2: Release notes ==
+
+Version 1.0.2 was released on September 2, 2013
+
+This version was released to give response a several requests made by some science officers who asked to make editable the field of activity title, also were changed the way of save the activity regions into the database and the platform behavior when an exception occurs.
+
+[https://code.google.com/p/ccafs-ap/issues/list?can=1&cursor=ccafs-ap%3A107&q=Milestone%3DRelease1.0.2 Resolved issues]
+
+---------
+
 == CCAFS P&R v1.0.1: Release notes ==
 
 Version 1.0.1 was released on August 23, 2013
@@ -36,6 +46,4 @@ Version 1.0 was released on July 5, 2013
 This version includes the planning and reporting sections although just the planning section is available for users.
 
 [https://code.google.com/p/ccafs-ap/issues/list?can=1&q=milestone=Release1.0%20status=Verified&sort=-status&colspec=ID%20Type%20Status%20Priority%20Component%20Milestone%20Owner%20Summary Resolved issues]
-
-
 
