@@ -8,7 +8,7 @@
       [#-- Other elements --]
       [#if currentUser.CP || currentUser.TL || currentUser.RPL || currentUser.PI || currentUser.admin ]
         [#if planningActive ]               
-          <a  href="${baseUrl}/planning/introduction.do">
+          <a  href="${baseUrl}/planning/activities.do">
         [#else]
           <a href="javascript:void(0);" title="[@s.text name="menu.link.disabled" /]" >
         [/#if]
