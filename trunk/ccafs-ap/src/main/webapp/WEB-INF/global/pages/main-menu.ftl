@@ -3,38 +3,57 @@
   <ul>
     [#if logged]
       [#-- Home element --]
-      <a href="${baseUrl}/"><li [#if currentSection?? && currentSection == "home"] class="currentSection" [/#if]>[@s.text name="menu.home" /]</li></a>
+      <a href="${baseUrl}/">
+        <li [#if currentSection?? && currentSection == "home"] class="currentSection" [/#if]>
+          <span class="icon">
+            [#if currentSection?? && currentSection == "home"]
+               <img src="${baseUrl}/images/global/icon-home-menu-selected.png" />
+            [#else]
+               <img src="${baseUrl}/images/global/icon-home-menu.png" />
+            [/#if]
+          </span>
+          <span class="text">
+            [@s.text name="menu.home" /]
+          </span>
+        </li>
+      </a>
       
-      [#-- Other elements --]
+      [#-- Planning section --]
       [#if currentUser.CP || currentUser.TL || currentUser.RPL || currentUser.PI || currentUser.admin ]
         [#if planningActive ]               
           <a  href="${baseUrl}/planning/activities.do">
         [#else]
-          <a href="javascript:void(0);" title="[@s.text name="menu.link.disabled" /]" >
+          <a href="javascript:void(0);" title="[@s.text name="menu.link.disabled" /]" class="disabled">
         [/#if]
           <li [#if currentSection?? && currentSection == "planning"] class="currentSection" [/#if]>[@s.text name="menu.planning" /]</li>
         </a>
       [/#if]
+      
+      [#-- Reporting section --]
       [#if currentUser.CP || currentUser.TL || currentUser.RPL || currentUser.PI || currentUser.admin ] 
         [#if reportingActive ]               
           <a href="${baseUrl}/reporting/introduction.do" >
         [#else]
-          <a href="javascript:void(0);" title="[@s.text name="menu.link.disabled" /]" >
+          <a href="javascript:void(0);" title="[@s.text name="menu.link.disabled" /]" class="disabled">
         [/#if]
           <li [#if currentSection?? && currentSection == "reporting"] class="currentSection" [/#if]>[@s.text name="menu.reporting" /]</li>
         </a>
       [/#if]
+      
+      [#-- Summaries section --]
       [#if currentUser.TL || currentUser.RPL || currentUser.admin ]
         [#if summariesActive ]
           <a href="${baseUrl}/summaries/activities.do" /]" >
               <li [#if currentSection?? && currentSection == "summaries"]class="currentSection"[/#if]>[@s.text name="menu.summaries" /]</li>
           </a>
         [#else]
-          <a href="javascript:void(0);" title="[@s.text name="menu.link.disabled" /]" >
+          <a href="javascript:void(0);" title="[@s.text name="menu.link.disabled" /]" class="disabled">
               <li [#if currentSection?? && currentSection == "summaries"]class="currentSection"[/#if]>[@s.text name="menu.summaries" /]</li>
           </a>
         [/#if]
       [/#if]
+      
+      [#-- Admin section --]
       [#if currentUser.admin ]                
         <a href="javascript:void(0);">
           <li [#if currentSection?? && currentSection == "admin"] class="currentSection" [/#if]>[@s.text name="menu.admin" /]</li>

@@ -221,25 +221,48 @@ nav#mainMenu ul a {
   color: white;
   display: inline-block;
   text-align: center;
-  width: 180px;
+  width: 140px;
+  margin-left: -5px;
 }
 
 nav#mainMenu ul a li {
-  background-color: #F2F2F2;
-  color: #7F7F7F;
+  background-color: #FFFFFF;
+  color: #526170;
   display: table-cell;
   font-size: 15px;  
   margin-bottom: 20px;
   margin-top: 20px;
-  padding: 10px;
   vertical-align: middle;
-  width: 155px;
-  border: 1px solid #A6A6A6;
+  width: 140px;
+  height: 40px;
+  border: 1px solid #dbdbdb;
+}
+
+nav#mainMenu ul a.disabled li{
+  color: #b7bcc1;
 }
 
 nav#mainMenu ul a li.currentSection {
   color: white;
   background-color: #A6A6A6;
+  background-image: url("../../images/global/mainMenuMarker.png");
+}
+
+nav#mainMenu ul a li .icon {
+  display: inline-block;
+  width: 40%;
+  text-align: right;
+  margin-right: 5px;
+}
+
+nav#mainMenu ul a li .text {
+  display: inline-block;
+  width: 50%;
+  text-align: left;
+}
+
+nav#mainMenu ul a li .icon img{
+	margin-bottom: -7px
 }
 
 /*************** SECONDARY MENU ***********/
@@ -455,6 +478,7 @@ nav#secondaryMenu ul a.currentReportingSection {
   background-color: #F2F2F2;
   color: #29336F;
   min-height: 45px;
+  min-width: 80%;
 }
 
 .helpMessage img {
