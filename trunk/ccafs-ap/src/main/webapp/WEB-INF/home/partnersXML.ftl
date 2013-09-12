@@ -13,13 +13,33 @@
           <iso2>${partner.country.id}</iso2>
           <name>${partner.country.name}</name>
         </country>
+        <region>
+          <id>${partner.country.region.id}</id>
+          <name>${partner.country.region.name}</name>
+        </region>
         <city>[#if partner.city?has_content]${partner.city}[/#if]</city>
       </location>
       <type>
         <id>${partner.type.id}</id>
         <name>${partner.type.name}</name>
         <acronym>${partner.type.acronym}</acronym>
-      </type>      
+      </type>
+      <themes>
+        [#if themesByPartner.get(partner.id)?has_content]
+          [#assign themes = themesByPartner.get(partner.id) /]
+          [#list themes as theme]
+            <theme>
+              <code>${theme.code}</code>
+              <description>${theme.description}</description>
+            </theme>
+          [/#list]
+        [#else]
+          <theme>
+            <code></code>
+            <description></description>
+          </theme>
+        [/#if]
+      </themes>
     </partner>
   [/#list]
 </partners>

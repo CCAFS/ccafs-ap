@@ -6,6 +6,7 @@ import org.cgiar.ccafs.ap.data.manager.PartnerManager;
 import org.cgiar.ccafs.ap.data.model.Country;
 import org.cgiar.ccafs.ap.data.model.Partner;
 import org.cgiar.ccafs.ap.data.model.PartnerType;
+import org.cgiar.ccafs.ap.data.model.Region;
 
 import java.util.List;
 import java.util.Map;
@@ -83,12 +84,19 @@ public class PartnerManagerImpl implements PartnerManager {
       partnerType.setAcronym(partnerData.get("partner_type_acronym"));
       partnerType.setName(partnerData.get("partner_type_name"));
       partners[c].setType(partnerType);
+
+      // region
+      Region region = new Region();
+      region.setId(Integer.parseInt(partnerData.get("region_id")));
+      region.setName(partnerData.get("region_name"));
+
       // Country
       Country country = new Country();
       country.setId(partnerData.get("country_iso2"));
       country.setName(partnerData.get("country_name"));
-      partners[c].setCountry(country);
+      country.setRegion(region);
 
+      partners[c].setCountry(country);
     }
     if (partnerList.size() == 0) {
       LOG.warn("-- getPartnerForXML() > Partner list loaded is empty");

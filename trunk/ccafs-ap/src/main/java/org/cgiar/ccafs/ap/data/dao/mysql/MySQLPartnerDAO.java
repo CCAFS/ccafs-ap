@@ -129,14 +129,20 @@ public class MySQLPartnerDAO implements PartnerDAO {
   public List<Map<String, String>> getPartnersForXML() {
     LOG.debug(">> getPartnersForXML()");
     List<Map<String, String>> partners = new ArrayList<>();
-    String query =
-      "SELECT p.id, p.acronym, p.name as 'name', p.city, p.website, "
-        + "pt.id as 'partner_type_id', pt.acronym as 'partner_type_acronym', pt.name as 'partner_type_name', "
-        + "co.iso2 as 'country_iso2', co.name as 'country_name' " + "FROM partners p "
-        + "INNER JOIN partner_types pt ON pt.id = p.partner_type_id "
-        + "INNER JOIN countries co ON p.country_iso2 = co.iso2 " + "ORDER BY p.id ";
+    StringBuilder query = new StringBuilder();
+    query.append("SELECT p.id, p.acronym, p.name as 'name', p.city, p.website, ");
+    query.append("pt.id as 'partner_type_id', pt.acronym as 'partner_type_acronym', pt.name as 'partner_type_name', ");
+    query.append("co.iso2 as 'country_iso2', co.name as 'country_name', re.id as 'region_id', ");
+    query.append("re.name as 'region_name'");
+    query.append("FROM partners p ");
+    query.append("INNER JOIN partner_types pt ON pt.id = p.partner_type_id ");
+    query.append("INNER JOIN countries co ON p.country_iso2 = co.iso2 ");
+    query.append("INNER JOIN regions re ON co.region_id = re.id ");
+    query.append("GROUP BY p.id ");
+    query.append("ORDER BY p.id ");
+
     try (Connection connection = databaseManager.getConnection()) {
-      ResultSet rs = databaseManager.makeQuery(query, connection);
+      ResultSet rs = databaseManager.makeQuery(query.toString(), connection);
       while (rs.next()) {
         Map<String, String> partnerData = new HashMap<>();
         partnerData.put("id", rs.getString("id"));
@@ -149,7 +155,8 @@ public class MySQLPartnerDAO implements PartnerDAO {
         partnerData.put("partner_type_name", rs.getString("partner_type_name"));
         partnerData.put("country_iso2", rs.getString("country_iso2"));
         partnerData.put("country_name", rs.getString("country_name"));
-
+        partnerData.put("region_id", rs.getString("region_id"));
+        partnerData.put("region_name", rs.getString("region_name"));
         partners.add(partnerData);
       }
       rs.close();
