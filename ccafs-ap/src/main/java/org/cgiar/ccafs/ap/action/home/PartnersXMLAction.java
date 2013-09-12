@@ -4,7 +4,12 @@ import org.cgiar.ccafs.ap.action.BaseAction;
 import org.cgiar.ccafs.ap.config.APConfig;
 import org.cgiar.ccafs.ap.data.manager.LogframeManager;
 import org.cgiar.ccafs.ap.data.manager.PartnerManager;
+import org.cgiar.ccafs.ap.data.manager.ThemeManager;
 import org.cgiar.ccafs.ap.data.model.Partner;
+import org.cgiar.ccafs.ap.data.model.Theme;
+
+import java.util.HashMap;
+import java.util.Map;
 
 import com.google.inject.Inject;
 import org.slf4j.Logger;
@@ -19,14 +24,18 @@ public class PartnersXMLAction extends BaseAction {
 
   // Managers
   private PartnerManager partnerManager;
+  private ThemeManager themeManager;
 
   // Models
   private Partner[] partners;
+  private Map<Integer, Theme[]> themesByPartner;
 
   @Inject
-  public PartnersXMLAction(APConfig config, LogframeManager logframeManager, PartnerManager partnerManager) {
+  public PartnersXMLAction(APConfig config, LogframeManager logframeManager, PartnerManager partnerManager,
+    ThemeManager themeManager) {
     super(config, logframeManager);
     this.partnerManager = partnerManager;
+    this.themeManager = themeManager;
   }
 
   @Override
@@ -38,15 +47,28 @@ public class PartnersXMLAction extends BaseAction {
     return partners;
   }
 
+  public Map<Integer, Theme[]> getThemesByPartner() {
+    return themesByPartner;
+  }
+
   @Override
   public void prepare() throws Exception {
     super.prepare();
 
     LOG.info("The Partner XML file with partner list is being generated.");
-
     partners = partnerManager.getPartnerForXML();
+
     if (partners == null) {
       partners = new Partner[0];
+    } else {
+      themesByPartner = new HashMap<Integer, Theme[]>();
+      // For each partner get the list of themes in which the partner works
+      for (Partner partner : partners) {
+        Theme[] themes = themeManager.getThemesByPartner(partner);
+        if (themes != null) {
+          themesByPartner.put(partner.getId(), themes);
+        }
+      }
     }
   }
 }

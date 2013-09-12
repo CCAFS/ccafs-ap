@@ -3,6 +3,7 @@ package org.cgiar.ccafs.ap.data.manager.impl;
 import org.cgiar.ccafs.ap.data.dao.ThemeDAO;
 import org.cgiar.ccafs.ap.data.manager.ThemeManager;
 import org.cgiar.ccafs.ap.data.model.Logframe;
+import org.cgiar.ccafs.ap.data.model.Partner;
 import org.cgiar.ccafs.ap.data.model.Theme;
 
 import java.util.ArrayList;
@@ -70,6 +71,22 @@ public class ThemeManagerImpl implements ThemeManager {
       }
     }
     return themes.toArray(new Theme[themes.size()]);
+  }
+
+  @Override
+  public Theme[] getThemesByPartner(Partner partner) {
+    List<Map<String, String>> themesDB = themeDAO.getThemesByPartner(partner.getId());
+    if (themesDB.size() > 0) {
+      Theme[] themes = new Theme[themesDB.size()];
+      for (int c = 0; c < themesDB.size(); c++) {
+        themes[c] = new Theme();
+        themes[c].setId(Integer.parseInt(themesDB.get(c).get("id")));
+        themes[c].setCode(themesDB.get(c).get("code"));
+        themes[c].setDescription(themesDB.get(c).get("description"));
+      }
+      return themes;
+    }
+    return null;
   }
 
 }

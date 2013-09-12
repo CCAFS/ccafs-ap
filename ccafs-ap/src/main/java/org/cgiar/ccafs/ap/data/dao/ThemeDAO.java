@@ -24,4 +24,12 @@ public interface ThemeDAO {
    * @return a list of maps with the information of those themes
    */
   public List<Map<String, String>> getThemes(int logframeId);
+
+  /**
+   * Get the themes on which partner works.
+   * 
+   * @param partnerId - The partner identifier
+   * @return a list of maps with the information.
+   */
+  public List<Map<String, String>> getThemesByPartner(int partnerId);
 }

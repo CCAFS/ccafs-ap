@@ -73,4 +73,37 @@ public class MySQLThemeDAO implements ThemeDAO {
     LOG.debug("<< getThemes():themes.size={}", themes.size());
     return themes;
   }
+
+  @Override
+  public List<Map<String, String>> getThemesByPartner(int partnerId) {
+    LOG.debug(">> getThemesByPartner(partnerId = {})", partnerId);
+    List<Map<String, String>> themes = new ArrayList<>();
+    StringBuilder query = new StringBuilder();
+    query.append("SELECT th.* FROM themes th ");
+    query.append("INNER JOIN objectives ob ON th.id = ob.theme_id ");
+    query.append("INNER JOIN outputs op ON ob.id = op.objective_id ");
+    query.append("INNER JOIN milestones m ON op.id = m.output_id ");
+    query.append("INNER JOIN activities a ON m.id = a.milestone_id ");
+    query.append("INNER JOIN activity_partners ap ON a.id = ap.activity_id ");
+    query.append("INNER JOIN partners p ON ap.partner_id = p.id ");
+    query.append("WHERE p.id = " + partnerId + " ");
+    query.append("GROUP BY th.code ");
+    query.append("ORDER BY th.code ");
+    try (Connection con = databaseManager.getConnection()) {
+      ResultSet rs = databaseManager.makeQuery(query.toString(), con);
+      while (rs.next()) {
+        Map<String, String> theme = new HashMap<String, String>();
+        theme.put("id", rs.getString("id"));
+        theme.put("code", rs.getString("code"));
+        theme.put("description", rs.getString("description"));
+        themes.add(theme);
+      }
+      rs.close();
+    } catch (SQLException e) {
+      LOG.error("-- getThemesByPartner() > There was an error getting the themes list.", e);
+    }
+
+    LOG.debug("<< getThemesByPartner():themes.size={}", themes.size());
+    return themes;
+  }
 }

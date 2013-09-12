@@ -2,6 +2,7 @@ package org.cgiar.ccafs.ap.data.manager;
 
 import org.cgiar.ccafs.ap.data.manager.impl.ThemeManagerImpl;
 import org.cgiar.ccafs.ap.data.model.Logframe;
+import org.cgiar.ccafs.ap.data.model.Partner;
 import org.cgiar.ccafs.ap.data.model.Theme;
 
 import com.google.inject.ImplementedBy;
@@ -31,4 +32,12 @@ public interface ThemeManager {
    * @return a list of Theme objects
    */
   public Theme[] getThemes(String[] ids);
+
+  /**
+   * Get the themes on which partner works.
+   * 
+   * @param partner
+   * @return an array of themes objects or null if there is no themes related.
+   */
+  public Theme[] getThemesByPartner(Partner partner);
 }
