@@ -1,7 +1,7 @@
 [#ftl]
 [#assign title = "Activity Information" /]
-[#assign globalLibs = ["jquery", "googleAPI"] /]
-[#assign customJS = ["${baseUrl}/js/home/activity.js", "http://maps.googleapis.com/maps/api/js?key=AIzaSyC5BxhTe34V_hJjK6FLXgdm_YT2qSXmAoc&sensor=false"] /]
+[#assign globalLibs = ["jquery", "googleAPI", "googleMaps"] /]
+[#assign customJS = ["${baseUrl}/js/home/activity.js"] /]
 [#assign customCSS = ["", ""] /]
 
 [#include "/WEB-INF/global/pages/header.ftl" /]

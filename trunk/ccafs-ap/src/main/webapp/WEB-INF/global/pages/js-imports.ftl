@@ -20,6 +20,10 @@
         <script type="text/javascript" src="http://www.google.com/jsapi"></script>
       [/#if]
       
+      [#if libraryName="googleMaps"]
+        <script type="text/javascript" src="http://maps.googleapis.com/maps/api/js?key=AIzaSyBTC15VqenY93jEFMYO8F-mcWc-cXUZ_Mw&sensor=false"></script>
+      [/#if]
+      
       [#if libraryName="jquery"]
         [#-- JQuery Core --]
         <script src="${baseUrl}/js/libs/jquery/jquery-1.8.2.min.js"></script>
