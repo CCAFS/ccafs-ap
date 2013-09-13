@@ -1,7 +1,7 @@
 [#ftl]
 [#assign title = "Select other Location - Acitivty Planning" /]
-[#assign globalLibs = ["jquery"] /]
-[#assign customJS = ["${baseUrl}/js/planning/selectLocations.js", "http://maps.googleapis.com/maps/api/js?key=AIzaSyC5BxhTe34V_hJjK6FLXgdm_YT2qSXmAoc&sensor=false"] /]
+[#assign globalLibs = ["jquery", "googleMaps"] /]
+[#assign customJS = ["${baseUrl}/js/planning/selectLocations.js"] /]
 [#include "/WEB-INF/global/pages/popup-header.ftl" /]
     
 <section class="content">
