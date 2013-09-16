@@ -3,7 +3,7 @@
 [#escape x as x?xml]
 <partners>
   [#list partners as partner]
-    <partner id="${partner.id}">
+    <partner >
       <id>${partner.id}</id>
       <name>${partner.name}</name>
       <acronym>[#if partner.acronym?has_content]${partner.acronym}[/#if]</acronym>
