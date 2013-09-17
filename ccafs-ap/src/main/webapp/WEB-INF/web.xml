@@ -39,10 +39,6 @@
       <param-name>ExpiresByType application/javascript</param-name>
       <param-value>modification plus 12 hours</param-value>
     </init-param>
-		<init-param>
-		  <param-name>ExpiresDefault</param-name>
-		  <param-value>modification plus 1 days</param-value>
-		</init-param>
   </filter>
 
   <filter-mapping>
