@@ -41,23 +41,29 @@ public class LoginAction extends BaseAction {
   }
 
   public String login() {
-    // validate if user is just visiting the login page at first time.
+
+    // attribute user is not null when the user try to login
     if (user != null) {
+      // Check if is a valid user
       User loggedUser = userManager.login(user.getEmail().trim(), user.getPassword());
       if (loggedUser != null) {
         loggedUser.setLastLogin(new Date());
         userManager.saveLastLogin(loggedUser);
         this.getSession().put(APConstants.SESSION_USER, loggedUser);
         LOG.info("User " + user.getEmail() + " logged in successfully.");
+        return SUCCESS;
       } else {
-        // user = new User();
         LOG.info("User " + user.getEmail() + " tried to logged in but failed.");
         user.setPassword(null);
         addFieldError("loginMesage", getText("home.login.error"));
         return INPUT;
       }
+    } else {
+      // Check if the user exists in the session
+      System.out.println(this.getSession());
+      System.out.println(this.getCurrentUser());
+      return (this.getCurrentUser() == null) ? INPUT : SUCCESS;
     }
-    return SUCCESS;
   }
 
   public String logout() {
