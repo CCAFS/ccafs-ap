@@ -18,7 +18,7 @@
   [#include "/WEB-INF/global/pages/planning-secondary-menu.ftl" /]
   
   [@s.form action="mainInformation"]  
-  <article class="halfContent" id="#mainInformation">
+  <article class="halfContent" id="mainInformation">
     <h1 class="contentTitle">
       ${currentUser.leader.acronym} - 
       [#if activity.commissioned] 

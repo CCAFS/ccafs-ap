@@ -211,90 +211,109 @@ body {
 
 /************* 3. MAIN MENU ***************/
 nav#mainMenu {
-  clear: both;
-  list-style-type: none;
-  text-align: center;
-  margin-top: 15px;
+	width: 100%; 
+	padding-top: 10px;
+	padding-bottom: 15px;
+	height: 40px;
+	
+} 
+nav#mainMenu ul{
+	list-style-type: none;
+	/* height: 40px; */
+	margin: 0 auto;
+	text-align: center;
+} 
+nav#mainMenu ul li {
+	height: 40px;
+	width: 91px;
+	display: inline;
+	background: #FFFFFF;
+	padding: 11px 35px 12px 33px;
+	border: 1px solid #dbdbdb;
+	margin: -3px;
+	color: #636368;
 }
-
-nav#mainMenu ul a {
-  color: white;
-  display: inline-block;
-  text-align: center;
-  width: 140px;
-  margin-left: -5px;
+nav#mainMenu ul li.currentSection {
+	background-image: url("../../images/global/mainMenuMarker.png");
+	font-weight: bold;
+	color: #fff; 
 }
-
-nav#mainMenu ul a li {
-  background-color: #FFFFFF;
-  color: #526170;
-  display: table-cell;
-  font-size: 15px;  
-  margin-bottom: 20px;
-  margin-top: 20px;
-  vertical-align: middle;
-  width: 140px;
-  height: 40px;
-  border: 1px solid #dbdbdb;
-}
-
 nav#mainMenu ul a.disabled li{
   color: #b7bcc1;
 }
 
-nav#mainMenu ul a li.currentSection {
-  color: white;
-  background-color: #A6A6A6;
-  background-image: url("../../images/global/mainMenuMarker.png");
-}
-
-nav#mainMenu ul a li .icon {
-  display: inline-block;
-  width: 40%;
-  text-align: right;
-  margin-right: 5px;
-}
-
-nav#mainMenu ul a li .text {
-  display: inline-block;
-  width: 50%;
-  text-align: left;
-}
-
-nav#mainMenu ul a li .icon img{
-	margin-bottom: -7px
-}
 
 /*************** SECONDARY MENU ***********/
-nav#secondaryMenu {
-  background-color: #F2F2F2;
-  border: 1px solid #A6A6A6;
+#secondaryMenu {
+  background-color: #FFFFFF;
   float: left;
-  margin-top: 20px;
-  padding: 10px;
-  width: 163px;
+  margin-top: 22px;
+  padding: 0px;
+  width: 184px;
+  border: 1px solid #dbdbdb;
+  border-radius: 8px;
 }
 
-nav#secondaryMenu ul {
-  
+#secondaryMenu ul {
+  list-style-type: none;
+  margin-left: 0;
 }
 
-nav#secondaryMenu ul a {
-  display: list-item;
+#secondaryMenuBar {
+	background: #FFFFFF;
+	height: 0px;
+	border-radius: 3px 5px 0px 0px;
+	border-bottom: 4px solid #FFFFFF;
+	position: relative;
+	top: 0px;
+}
+
+a.currentReportingSection li {
+  margin-left: 12px;
+  margin-top: -5px;
+  color: #fff;
   font-weight: bold;
-  height: 35px;
-  margin-left: -18px;
+}
+
+.icon-s{
+	float: left;
+	height: 25px;
+	width:25px; 
+}
+.i-mainInformation			{ background:url('../../images/global/sprite-icons.png') 0 0; }
+.i-objectives				{ background:url('../../images/global/sprite-icons.png') 0 -40px; }
+.i-deliverables				{ background:url('../../images/global/sprite-icons.png') 0 -80px; }
+.i-partners					{ background:url('../../images/global/sprite-icons.png') 0 -120px; }
+.i-locations				{ background:url('../../images/global/sprite-icons.png') 0 -158px; }
+.i-additionalInformation	{ background:url('../../images/global/sprite-icons.png') 0 -198px; }
+
+a.currentReportingSection li .i-mainInformation			{ background:url('../../images/global/sprite-icons.png') -25px 0; }
+a.currentReportingSection li .i-objectives				{ background:url('../../images/global/sprite-icons.png') -25px -40px; }
+a.currentReportingSection li .i-deliverables				{ background:url('../../images/global/sprite-icons.png') -25px -80px; }
+a.currentReportingSection li .i-partners					{ background:url('../../images/global/sprite-icons.png') -25px -120px; }
+a.currentReportingSection li .i-locations				{ background:url('../../images/global/sprite-icons.png') -25px -158px; }
+a.currentReportingSection li .i-additionalInformation	{ background:url('../../images/global/sprite-icons.png') -25px -198px; }
+
+
+#secondaryMenu ul a {
+  display: list-item;
+  height: 26px;
+  margin-left: 0px;
   padding-bottom: 5px;
-  padding-left: 25px;
-  padding-top: 5px;
+  padding-left: 11px;
+  padding-top: 14px;
+  border-bottom: 1px solid #dbdbdb;
+  color: #636368;
 }
 
 
-nav#secondaryMenu ul a.currentReportingSection {
+#secondaryMenu ul a.currentReportingSection {
   color: white;
   background-image: url("../../images/global/reportingMenuMarker.png");
   background-repeat: no-repeat;
-  width: 200px;
+  width: 220px;
+  margin-left: -12px;
+  border: none;
 }
 
 #arrowDown {

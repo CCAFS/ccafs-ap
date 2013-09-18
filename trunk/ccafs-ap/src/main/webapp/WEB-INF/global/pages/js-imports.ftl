@@ -1,10 +1,5 @@
  [#ftl]
-  [#-- This file must be called before close the body tag in order to allow first the page load --]
-  [#-- import js files of external libraries--]
-  <!-- Support for lower versions of IE 9 -->
-  <!--[if lt IE 9]>
-    <script src="${baseUrl}/js/libs/html5shiv/html5shiv.js"></script>
-  <![endif]-->
+  
   
   [#if globalLibs??]
    [#list globalLibs as libraryName]
@@ -63,6 +58,8 @@
       <script src="${js}"></script>
     [/#list]
   [/#if]
+  
+
   
   [#-- Last, import the google analytics code --]
   [#include "/WEB-INF/global/pages/analytics.ftl" /]

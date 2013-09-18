@@ -7,9 +7,9 @@
         <li [#if currentSection?? && currentSection == "home"] class="currentSection" [/#if]>
           <span class="icon">
             [#if currentSection?? && currentSection == "home"]
-               <img src="${baseUrl}/images/global/icon-home-menu-selected.png" />
+               <img width="15" src="${baseUrl}/images/global/icon-home-menu-selected.png" />
             [#else]
-               <img src="${baseUrl}/images/global/icon-home-menu.png" />
+               <img width="15" src="${baseUrl}/images/global/icon-home-menu.png" />
             [/#if]
           </span>
           <span class="text">
