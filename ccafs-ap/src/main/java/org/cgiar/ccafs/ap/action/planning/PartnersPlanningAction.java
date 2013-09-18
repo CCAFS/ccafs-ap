@@ -136,11 +136,7 @@ public class PartnersPlanningAction extends BaseAction {
         addActionMessage(getText("saving.success", new String[] {getText("reporting.activityPartners.partners")}));
         LOG.info("-- save() > The user {} save the partners of activity {} successfully", getCurrentUser().getEmail(),
           activityID);
-        if (save) {
-          return SUCCESS;
-        } else {
-          return SAVE_NEXT;
-        }
+        return SUCCESS;
       }
     }
     LOG.info("-- save() > The user {} had a problem saving the partners of activity {}", getCurrentUser().getEmail(),
@@ -157,7 +153,7 @@ public class PartnersPlanningAction extends BaseAction {
   public void validate() {
     boolean anyError = false;
 
-    if (save || saveNext) {
+    if (save) {
       if (activity.getActivityPartners() != null) {
         for (int c = 0; c < activity.getActivityPartners().size(); c++) {
           if (!activity.getActivityPartners().get(c).getContactEmail().isEmpty()) {

@@ -195,11 +195,7 @@ public class DeliverablesPlanningAction extends BaseAction {
       LOG.info("-- save() > User '{}' save the deliverables corresponding to the activity {}", this.getCurrentUser()
         .getEmail(), activityID);
 
-      if (save) {
-        return SUCCESS;
-      } else {
-        return SAVE_NEXT;
-      }
+      return SUCCESS;
     } else {
       LOG.warn("-- save () > User '{}' had problems to save the deliverables corresponding to the activity {}", this
         .getCurrentUser().getEmail(), activityID);
@@ -220,14 +216,14 @@ public class DeliverablesPlanningAction extends BaseAction {
     Deliverable deliverable;
 
     // Validate only if exists deliverables
-    if ((save || saveNext) && activity.getDeliverables() != null) {
+    if ((save) && activity.getDeliverables() != null) {
       for (int c = 0; c < activity.getDeliverables().size(); c++) {
-        deliverable = activity.getDeliverables().get(c);
-        if (deliverable.getDescription().isEmpty()) {
-          anyError = true;
-          addFieldError("activity.deliverables[" + c + "].description", getText("validation.field.required"));
+        if (activity.getDeliverables().get(c).getDescription().isEmpty()) {
+          activity.getDeliverables().remove(c);
+          c--;
         }
       }
+
       if (anyError) {
         LOG.info("-- validate() > User {} try to save the deliverables for activity {} but don't fill all fields.",
           this.getCurrentUser().getEmail(), activityID);

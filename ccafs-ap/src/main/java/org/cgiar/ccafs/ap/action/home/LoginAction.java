@@ -60,8 +60,6 @@ public class LoginAction extends BaseAction {
       }
     } else {
       // Check if the user exists in the session
-      System.out.println(this.getSession());
-      System.out.println(this.getCurrentUser());
       return (this.getCurrentUser() == null) ? INPUT : SUCCESS;
     }
   }

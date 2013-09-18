@@ -60,7 +60,7 @@
               [#else]
                 <img src="${baseUrl}/images/global/icon-complete.png" alt="Activity Completed" />
               [/#if]
-              </td>
+            </td>
           </tr>
         [/#list]  
       </tbody>

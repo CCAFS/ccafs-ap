@@ -4,10 +4,21 @@ $(document).ready(function() {
   
   function showNotificationMessages() {
     $('#generalMessages #messages').children("li").each(function(index) {
-      $('#generalMessages').noty({
-        type: $(this).attr("class"), 
-        text: $(this).text()
-      });
+      // Validate if the notification is a warning checking if the text contains --warn--
+      var message = $(this).text();
+      if(message.lastIndexOf("--warn--", 0) === 0){
+        message = message.replace("--warn--", " ");
+        $('#generalMessages').noty({
+          type: 'warning', 
+          text: message
+        });
+        
+      }else{
+        $('#generalMessages').noty({
+          type: $(this).attr("class"), 
+          text: $(this).text()
+        });
+      }
     });
   }
   

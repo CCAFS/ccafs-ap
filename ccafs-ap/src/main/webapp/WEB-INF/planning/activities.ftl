@@ -26,6 +26,7 @@
           <th id="activity">[@s.text name="planning.activityList.activity" /]</th>
           <th id="contactPerson">[@s.text name="planning.activityList.contactPerson" /]</th>
           <th id="theme">[@s.text name="planning.activityList.milestone" /]</th>
+          <th id="validated">[@s.text name="planning.activityList.validated" /]</th>
         </tr>
       </thead>
       <tbody>
@@ -57,6 +58,68 @@
               [/#if]
             </td>               
             <td>${activity.milestone.code}</td>
+            <td>
+              [#if activity.validated]
+                <img src="${baseUrl}/images/global/icon-complete.png" alt="Activity submitted" title="Activity submitted" />
+              [#else]
+                [#-- The PI only can see a notification, they can't validate the activity --]
+                [#if currentUser.PI]
+                  <img src="${baseUrl}/images/global/icon-incomplete.png" alt="This activity has not been validated yet" title="This activity has not been validated yet" />
+                [/#if]
+                
+                [#-- The CP can validate the activity if needed --]
+                [#if currentUser.CP]
+                  [#if activityID == activity.id]
+                    [#-- User tried to submit this activity but there is some missing data. --]
+                    <img src="${baseUrl}/images/global/icon-incomplete.png" alt="There is missing data" title="There is missing data" />
+                  [#else]
+                    [#-- We send the index of the activity in the array, not the activity identifier  --]
+                    [#-- in order find quickly the activity in the array to modify it.  --]
+                    [@s.form action="activities" cssClass="buttons"]
+                      <input name="activityIndex" value="${activity_index}" type="hidden"/>
+                      [@s.submit type="button" name="save"][@s.text name="form.buttons.validate" /][/@s.submit]
+                    [/@s.form]  
+                  [/#if]
+                [/#if]
+                
+                [#-- If the user is TL/RPL only can validate the activities which belongs to him/her --]
+                [#if currentUser.TL || currentUser.RPL ]                  
+                  [#if activity.leader.id == currentUser.leader.id]
+                    [#if activityID == activity.id]
+                      [#-- User tried to submit this activity but there is some missing data. --]
+                      <img src="${baseUrl}/images/global/icon-incomplete.png" alt="There is missing data" title="There is missing data" />
+                    [#else]
+                      [#-- We send the index of the activity in the array, not the activity identifier  --]
+                      [#-- in order find quickly the activity in the array to modify it.  --]
+                      [@s.form action="activities" cssClass="buttons"]
+                        <input name="activityIndex" value="${activity_index}" type="hidden"/>
+                        [@s.submit type="button" name="save"][@s.text name="form.buttons.save" /][/@s.submit]
+                      [/@s.form]
+                    [/#if]
+                  [#else]
+                    <img src="${baseUrl}/images/global/icon-incomplete.png" alt="There is missing data" title="There is missing data" />
+                  [/#if]                  
+                [/#if]
+                
+                [#-- The Admin can validate the activity if needed --]
+                [#if currentUser.admin]
+                  [#if activityID == activity.id]
+                    [#-- User tried to submit this activity but there is some missing data. --]
+                    <img src="${baseUrl}/images/global/icon-incomplete.png" alt="There is missing data" title="There is missing data" />
+                  [#else]
+                    [#-- We send the index of the activity in the array, not the activity identifier  --]
+                    [#-- in order find quickly the activity in the array to modify it.  --]
+                    [@s.form action="activities" cssClass="buttons"]
+                      <input name="activityIndex" value="${activity_index}" type="hidden"/>
+                      [@s.submit type="button" name="save"][@s.text name="form.buttons.save" /][/@s.submit]
+                    [/@s.form]  
+                  [/#if]
+                [/#if]
+                
+                                
+                [#-- <img src="${baseUrl}/images/global/icon-incomplete.png" alt="Submit activity" /> --]
+              [/#if]
+            </td>            
           </tr>
         [/#list]
       [/#if]

@@ -29,14 +29,14 @@ public class BaseAction extends ActionSupport implements Preparable, SessionAwar
   private static final long serialVersionUID = -740360140511380630L;
 
   public static final String CANCEL = "cancel";
-  public static final String SAVE_NEXT = "saveNext";
+  public static final String NEXT = "next";
   public static final String NOT_LOGGED = "401";
   public static final String NOT_AUTHORIZED = "403";
   public static final String NOT_FOUND = "404";
 
   // button actions
   protected boolean save;
-  protected boolean saveNext;
+  protected boolean next;
   protected boolean delete;
   protected boolean cancel;
 
@@ -58,6 +58,16 @@ public class BaseAction extends ActionSupport implements Preparable, SessionAwar
     this.logframeManager = logframeManager;
   }
 
+  /**
+   * This function add a flag (--warn--) to the message in order to give
+   * a different style to the success message using javascript once the html is ready.
+   * 
+   * @param message
+   */
+  public void AddActionWarning(String message) {
+    addActionMessage("--warn--" + message);
+  }
+
   /* Override this method depending of the cancel action. */
   public String cancel() {
     return CANCEL;
@@ -76,8 +86,8 @@ public class BaseAction extends ActionSupport implements Preparable, SessionAwar
       return delete();
     } else if (cancel) {
       return cancel();
-    } else if (saveNext) {
-      return save();
+    } else if (next) {
+      return next();
     }
     return INPUT;
   }
@@ -175,8 +185,8 @@ public class BaseAction extends ActionSupport implements Preparable, SessionAwar
     return SUCCESS;
   }
 
-  public String saveNext() {
-    return SAVE_NEXT;
+  public String next() {
+    return NEXT;
   }
 
 
@@ -193,8 +203,8 @@ public class BaseAction extends ActionSupport implements Preparable, SessionAwar
   }
 
 
-  public void setSaveNext(boolean save_next) {
-    this.saveNext = true;
+  public void setNext(boolean next) {
+    this.next = true;
   }
 
   @Override

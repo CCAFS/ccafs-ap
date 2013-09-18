@@ -39,6 +39,7 @@ public class MainInformationPlanningAction extends BaseAction {
 
   // Model
   private int activityID;
+  private StringBuilder validationMessage;
   private List<BudgetPercentage> budgetPercentages;
   private Activity activity;
   private Milestone[] milestones;
@@ -115,6 +116,8 @@ public class MainInformationPlanningAction extends BaseAction {
   public void prepare() throws Exception {
     super.prepare();
 
+    validationMessage = new StringBuilder();
+
     String activityStringID = StringUtils.trim(this.getRequest().getParameter(APConstants.ACTIVITY_REQUEST_ID));
     try {
       activityID = Integer.parseInt(activityStringID);
@@ -147,6 +150,8 @@ public class MainInformationPlanningAction extends BaseAction {
   @Override
   public String save() {
     boolean success = true;
+    String finalMessage;
+
     if (activityManager.updateMainInformation(activity)) {
 
       if (!budgetManager.saveBudget(activity.getBudget(), activity.getId())) {
@@ -164,18 +169,29 @@ public class MainInformationPlanningAction extends BaseAction {
     }
 
     if (success) {
-      addActionMessage(getText("saving.success", new String[] {getText("planning.mainInformation")}));
-      LOG.info("-- save() > The user {} saved the main information of the activity {} successfully.", getCurrentUser()
-        .getEmail(), activityID);
-      if (save) {
-        return SUCCESS;
+
+      // Check if there is a validation message.
+      if (validationMessage.toString().isEmpty()) {
+        addActionMessage(getText("saving.success", new String[] {getText("planning.mainInformation")}));
+        LOG.info("-- save() > The user {} saved the main information of the activity {} successfully.",
+          getCurrentUser().getEmail(), activityID);
       } else {
-        return SAVE_NEXT;
+        // If there were validation messages show them in a warning message.
+        finalMessage = getText("saving.success", new String[] {getText("planning.mainInformation")});
+        finalMessage += " " + getText("savind.fields.however") + " ";
+        finalMessage += validationMessage.toString();
+
+        AddActionWarning(finalMessage);
+        LOG.info("-- save() > The user {} saved the main information of the activity {} with empty fields.",
+          getCurrentUser().getEmail(), activityID);
       }
+
+      return SUCCESS;
     } else {
       LOG.warn("-- save() > The user {} had problems to save the main information of the activity {}.",
         getCurrentUser().getEmail(), activityID);
-      addActionError(getText("saving.problem"));
+      finalMessage = getText("saving.problem");
+      addActionError(finalMessage);
       return INPUT;
     }
 
@@ -189,36 +205,50 @@ public class MainInformationPlanningAction extends BaseAction {
   public void validate() {
     boolean problem = false;
 
-    if (save || saveNext) {
-      // Validate if the contact person is filled
-      if (activity.getContactPersons() == null || activity.getContactPersons().isEmpty()) {
-        problem = true;
-        addFieldError("activity.contactPersons[0].name", getText("validation.field.required"));
-      } else {
-        for (int c = 0; c < activity.getContactPersons().size(); c++) {
-          // Check if at least there is a contact name
-          if (activity.getContactPersons().get(c).getName().isEmpty()) {
-            problem = true;
-            addFieldError("activity.contactPersons[" + c + "].name", getText("validation.field.required"));
-          }
+    if (save) {
 
+      // Validate if there is at least one contact person, if there is a contact person
+      // without name nor email remove it from the list.
+      if (activity.getContactPersons() != null && !activity.getContactPersons().isEmpty()) {
+        for (int c = 0; c < activity.getContactPersons().size(); c++) {
           // If there is a contact email, check if it is valid
           if (!activity.getContactPersons().get(c).getEmail().isEmpty()) {
             if (!EmailValidator.isValidEmail(activity.getContactPersons().get(c).getEmail())) {
-              problem = true;
+              validationMessage.append(getText("planning.mainInformation.validation.invalidEmail") + ", ");
               addFieldError("activity.contactPersons[" + c + "].email",
                 getText("validation.invalid", new String[] {getText("planning.mainInformation.contactEmail")}));
+              problem = true;
+            }
+          } else {
+            if (activity.getContactPersons().get(c).getName().isEmpty()) {
+              activity.getContactPersons().remove(c);
+              c--;
             }
           }
         }
       }
+
+      // The list could be empty after the last validation
+      if (activity.getContactPersons().isEmpty()) {
+        validationMessage.append(getText("planning.mainInformation.validation.contactPerson") + ", ");
+        problem = true;
+      }
+
+      if (activity.getStartDate() == null) {
+        validationMessage.append(getText("planning.mainInformation.validation.startDate") + ", ");
+        problem = true;
+      }
+
+      if (activity.getEndDate() == null) {
+        validationMessage.append(getText("planning.mainInformation.validation.endDate") + ", ");
+        problem = true;
+      }
+
+      // Change the last colon by a period
+      if (problem == true) {
+        validationMessage.setCharAt(validationMessage.lastIndexOf(","), '.');
+      }
     }
 
-    if (problem) {
-      LOG.info(
-        "-- validate() > User {} try to save the main information for activity {} but don't fill all required fields.",
-        this.getCurrentUser().getEmail(), activityID);
-      addActionError(getText("saving.fields.required"));
-    }
   }
 }

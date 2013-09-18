@@ -29,6 +29,8 @@ public class UnhandledExceptionAction extends BaseAction {
 
   @Override
   public String execute() throws Exception {
+    // Print the exception in the log
+    LOG.error("There was an unexpected exception", exception);
     sendExceptionMessage();
     return super.execute();
   }

@@ -46,6 +46,7 @@ public class LocationsPlanningAction extends BaseAction {
 
   // Model
   private int activityID;
+  private StringBuilder validationMessages;
   private Activity activity;
   private BenchmarkSite[] benchmarkSites;
   private Country[] countries;
@@ -108,6 +109,8 @@ public class LocationsPlanningAction extends BaseAction {
     super.prepare();
     LOG.info("-- prepare() > User {} load the activity locations for leader {} in planing section", getCurrentUser()
       .getEmail(), getCurrentUser().getLeader().getId());
+
+    validationMessages = new StringBuilder();
 
     String activityStringID = StringUtils.trim(this.getRequest().getParameter(APConstants.ACTIVITY_REQUEST_ID));
     try {
@@ -226,14 +229,20 @@ public class LocationsPlanningAction extends BaseAction {
 
 
     if (saved) {
-      addActionMessage(getText("saving.success", new String[] {getText("planning.locations")}));
+
+      if (validationMessages.toString().isEmpty()) {
+        addActionMessage(getText("saving.success", new String[] {getText("planning.locations")}));
+      } else {
+        String finalMessage = getText("saving.success", new String[] {getText("planning.locations")});
+        finalMessage += " " + getText("savind.fields.however") + " ";
+        finalMessage += validationMessages.toString();
+
+        AddActionWarning(finalMessage);
+      }
+
       LOG.info("-- save() > User {} save locations for activity {} successfully", this.getCurrentUser().getEmail(),
         activityID);
-      if (save) {
-        return SUCCESS;
-      } else {
-        return SAVE_NEXT;
-      }
+      return SUCCESS;
     } else {
       LOG.warn("-- save() > User {} had problems to save locations for activity {}.", this.getCurrentUser().getEmail(),
         activityID);
@@ -249,7 +258,13 @@ public class LocationsPlanningAction extends BaseAction {
   @Override
   public void validate() {
     boolean problem = false;
-    if (save || saveNext) {
+    if (save) {
+
+      // Activity should be global or have at least one location
+      if (!activity.isGlobal() && activity.getCountries().isEmpty() && activity.getRegions().isEmpty()
+        && activity.getOtherLocations().isEmpty()) {
+        validationMessages.append(getText("planning.locations.validation.atLeastOneLocation"));
+      }
 
       // If there is an other site, validate its fields
       if (!activity.getOtherLocations().isEmpty()) {

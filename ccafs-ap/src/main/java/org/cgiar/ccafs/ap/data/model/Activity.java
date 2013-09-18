@@ -17,6 +17,7 @@ public class Activity {
   private Leader leader;
   private boolean isPlanning;
   private boolean isGlobal;
+  private boolean isValidated;
   private List<ContactPerson> contactPersons;
   private String genderIntegrationsDescription;
   private Status status;
@@ -186,6 +187,10 @@ public class Activity {
     return isPlanning;
   }
 
+  public boolean isValidated() {
+    return isValidated;
+  }
+
   public void setActivityPartners(List<ActivityPartner> activityPartners) {
     this.activityPartners = activityPartners;
   }
@@ -284,6 +289,10 @@ public class Activity {
 
   public void setStatusDescription(String statusDescription) {
     this.statusDescription = statusDescription;
+  }
+
+  public void setValidated(boolean isValidated) {
+    this.isValidated = isValidated;
   }
 
   public void setTitle(String title) {

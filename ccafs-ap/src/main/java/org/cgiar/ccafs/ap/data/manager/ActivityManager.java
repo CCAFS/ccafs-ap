@@ -30,15 +30,6 @@ public interface ActivityManager {
   public Activity[] getActivitiesForDetailedSummary(int year, int activityID, int activityLeader);
 
   /**
-   * Get a list of activities that belong to a specific year.
-   * 
-   * @param year - (Integer) Year
-   * @param limit - Number of activities that will be returned.
-   * @return a list of activities ordered by date added.
-   */
-  public Activity[] getActivitiesForXML(int year, int limit);
-
-  /**
    * Get a list of activities matching the parameters given in order to fill the Activities status summary.
    * 
    * @param year - Year when activity was carried out or 0 to indicate no value.
@@ -47,6 +38,15 @@ public interface ActivityManager {
    * @return
    */
   public Activity[] getActivitiesForStatusSummary(int year, int activityID, int activityLeader);
+
+  /**
+   * Get a list of activities that belong to a specific year.
+   * 
+   * @param year - (Integer) Year
+   * @param limit - Number of activities that will be returned.
+   * @return a list of activities ordered by date added.
+   */
+  public Activity[] getActivitiesForXML(int year, int limit);
 
   /**
    * Get a list of activities from the given year populated only with the id and the title.
@@ -99,6 +99,14 @@ public interface ActivityManager {
   public boolean isActiveActivity(int activityID, int year);
 
   /**
+   * Validate if the activity given have been validated.
+   * 
+   * @param activityID - activity identifier.
+   * @return true if the activity was validated. False otherwise.
+   */
+  public boolean isValidatedActivity(int activityID);
+
+  /**
    * Validate if the given id actually exist in the current list of activities.
    * 
    * @param id - activity identifier.
@@ -138,4 +146,12 @@ public interface ActivityManager {
    * @return true if the information was updated successfully, false otherwise
    */
   public boolean updateMainInformation(Activity activity);
+
+  /**
+   * This method set the activity attribute isValidated to true into the database.
+   * 
+   * @param activity - The activity to validate
+   * @return true if the process was successful. False, otherwise.
+   */
+  public boolean validateActivity(Activity activity);
 }
