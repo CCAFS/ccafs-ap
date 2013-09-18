@@ -1,5 +1,5 @@
 [#ftl]
-<div id="secondaryMenu">
+<nav id="secondaryMenu">
   <ul>
     <a [#if currentSummariesSection == "activities"] class="currentReportingSection" [/#if] href="[@s.url action='activities' /]">
       <li>[@s.text name="menu.secondary.summaries.activities" /]</li>
@@ -20,4 +20,4 @@
       <li>[@s.text name="menu.secondary.summaries.deliverables" /]</li>
     </a>
   </ul>
-</div>
+</nav>
