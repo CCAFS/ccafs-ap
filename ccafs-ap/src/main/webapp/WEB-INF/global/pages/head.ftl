@@ -24,8 +24,17 @@
     
     <title>${title!"CCAFS Activity Planning"}</title>
     
+      [#-- This file must be called before close the body tag in order to allow first the page load --]
+  [#-- import js files of external libraries--]
+  <!-- Support for lower versions of IE 9 -->
+  <!--[if lt IE 9]>
+    <script src="${baseUrl}/js/libs/html5shiv/html5shiv.js"></script>
+  <![endif]-->
+    
+    
     [#-- First, import CSS files of external libraries. --]
     [#-- All js imports are made in footer --]
+    
     
     [#if globalLibs??]
      [#list globalLibs as libraryName]
