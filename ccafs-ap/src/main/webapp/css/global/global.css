@@ -274,25 +274,29 @@ a.currentReportingSection li {
   color: #fff;
   font-weight: bold;
 }
+.icon-15{ 
+	height: 15px;
+	width:15px; 
+}
 
 .icon-s{
 	float: left;
 	height: 25px;
 	width:25px; 
 }
-.i-mainInformation			{ background:url('../../images/global/sprite-icons.png') 0 0; }
-.i-objectives				{ background:url('../../images/global/sprite-icons.png') 0 -40px; }
-.i-deliverables				{ background:url('../../images/global/sprite-icons.png') 0 -80px; }
-.i-partners					{ background:url('../../images/global/sprite-icons.png') 0 -120px; }
-.i-locations				{ background:url('../../images/global/sprite-icons.png') 0 -158px; }
-.i-additionalInformation	{ background:url('../../images/global/sprite-icons.png') 0 -198px; }
+#i-mainInformation			{ background:url('../../images/global/sprite-icons.png') 0 0; }
+#i-objectives				{ background:url('../../images/global/sprite-icons.png') 0 -40px; }
+#i-deliverables				{ background:url('../../images/global/sprite-icons.png') 0 -80px; }
+#i-partners					{ background:url('../../images/global/sprite-icons.png') 0 -120px; }
+#i-locations				{ background:url('../../images/global/sprite-icons.png') 0 -158px; }
+#i-additionalInformation	{ background:url('../../images/global/sprite-icons.png') 0 -198px; }
 
-a.currentReportingSection li .i-mainInformation			{ background:url('../../images/global/sprite-icons.png') -25px 0; }
-a.currentReportingSection li .i-objectives				{ background:url('../../images/global/sprite-icons.png') -25px -40px; }
-a.currentReportingSection li .i-deliverables				{ background:url('../../images/global/sprite-icons.png') -25px -80px; }
-a.currentReportingSection li .i-partners					{ background:url('../../images/global/sprite-icons.png') -25px -120px; }
-a.currentReportingSection li .i-locations				{ background:url('../../images/global/sprite-icons.png') -25px -158px; }
-a.currentReportingSection li .i-additionalInformation	{ background:url('../../images/global/sprite-icons.png') -25px -198px; }
+a.currentReportingSection li #i-mainInformation			{ background:url('../../images/global/sprite-icons.png') -25px 0; }
+a.currentReportingSection li #i-objectives				{ background:url('../../images/global/sprite-icons.png') -25px -40px; }
+a.currentReportingSection li #i-deliverables			{ background:url('../../images/global/sprite-icons.png') -25px -80px; }
+a.currentReportingSection li #i-partners				{ background:url('../../images/global/sprite-icons.png') -25px -120px; }
+a.currentReportingSection li #i-locations				{ background:url('../../images/global/sprite-icons.png') -25px -158px; }
+a.currentReportingSection li #i-additionalInformation	{ background:url('../../images/global/sprite-icons.png') -25px -198px; }
 
 
 #secondaryMenu ul a {
