@@ -159,11 +159,7 @@ public class AdditionalInformationPlanningAction extends BaseAction {
 
     if (keywordsSaved && resourcesSaved) {
       addActionMessage(getText("saving.success", new String[] {getText("planning.additionalInformation")}));
-      if (save) {
-        return SUCCESS;
-      } else {
-        return SAVE_NEXT;
-      }
+      return SUCCESS;
     } else {
       addActionError(getText("saving.problem"));
       return INPUT;
@@ -186,7 +182,7 @@ public class AdditionalInformationPlanningAction extends BaseAction {
   public void validate() {
     boolean anyError = false;
 
-    if (save || saveNext) {
+    if (save) {
       // If there is keywords
       if (activity.getKeywords() != null) {
         for (int c = 0; c < activity.getKeywords().size(); c++) {

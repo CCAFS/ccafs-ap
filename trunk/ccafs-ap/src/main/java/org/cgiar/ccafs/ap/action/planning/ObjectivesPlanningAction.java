@@ -21,12 +21,13 @@ public class ObjectivesPlanningAction extends BaseAction {
   private static final long serialVersionUID = -8764463530270764535L;
 
   // Managers
-  ActivityManager activityManager;
-  ActivityObjectiveManager activityObjectiveManager;
+  private ActivityManager activityManager;
+  private ActivityObjectiveManager activityObjectiveManager;
 
   // Model
   private int activityID;
   private Activity activity;
+  private StringBuilder validationMessage;
 
 
   @Inject
@@ -48,6 +49,8 @@ public class ObjectivesPlanningAction extends BaseAction {
   @Override
   public void prepare() throws Exception {
     super.prepare();
+
+    validationMessage = new StringBuilder();
 
     String activityStringID = StringUtils.trim(this.getRequest().getParameter(APConstants.ACTIVITY_REQUEST_ID));
     try {
@@ -79,14 +82,18 @@ public class ObjectivesPlanningAction extends BaseAction {
     // Save the new objectives
     saved = activityObjectiveManager.saveActivityObjectives(activity.getObjectives(), activityID);
     if (saved) {
-      addActionMessage(getText("saving.success", new String[] {getText("planning.objectives")}));
+      if (validationMessage.toString().isEmpty()) {
+        addActionMessage(getText("saving.success", new String[] {getText("planning.objectives")}));
+      } else {
+        String finalMessage = getText("saving.success", new String[] {getText("planning.objectives")});
+        finalMessage += " " + getText("savind.fields.however") + " ";
+        finalMessage += validationMessage.toString();
+        AddActionWarning(finalMessage);
+      }
+
       LOG.info("-- save() > User {} save successfully the objectives for activity {}",
         this.getCurrentUser().getEmail(), activityID);
-      if (save) {
-        return SUCCESS;
-      } else {
-        return SAVE_NEXT;
-      }
+      return SUCCESS;
     } else {
       LOG.info("-- save() > User {} had problems to save the objectives for activity {}", this.getCurrentUser()
         .getEmail(), activityID);
@@ -101,28 +108,22 @@ public class ObjectivesPlanningAction extends BaseAction {
 
   @Override
   public void validate() {
-    boolean problem = false;
-
-    if (save || saveNext) {
-      if (activity.getObjectives().size() == 0) {
-        problem = true;
-        addActionError(getText("saving.fields.atLeastOne", new String[] {getText("planning.objectives.objective")
-          .toLowerCase()}));
-      } else {
+    if (save) {
+      // Remove the empty objectives
+      if (!activity.getObjectives().isEmpty()) {
         for (int c = 0; c < activity.getObjectives().size(); c++) {
           if (activity.getObjectives().get(c).getDescription().isEmpty()) {
-            problem = true;
-            addFieldError("activity.objectives[" + c + "].description", getText("validation.field.required"));
+            activity.getObjectives().remove(c);
+            c--;
           }
         }
-      }
-
-      if (problem) {
-        LOG.info(
-          "-- validate() > User {} try to save the the objectives for activity {} but don't fill all required fields.",
-          this.getCurrentUser().getEmail(), activityID);
-        addActionError(getText("saving.fields.required"));
+      } else {
+        // Activity must have at least one objective
+        if (activity.getObjectives().isEmpty()) {
+          validationMessage.append(getText("planning.objectives.validation.atLeastOne"));
+        }
       }
     }
   }
+
 }

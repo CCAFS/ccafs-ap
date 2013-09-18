@@ -30,7 +30,7 @@
         <param name="actionName">deliverables</param>
         <param name="activityID">${activity.id}</param>
       </result>
-      <result name="saveNext" type="redirectAction">
+      <result name="next" type="redirectAction">
         <param name="actionName">partners</param>
         <param name="activityID">${activity.id}</param>
       </result>
@@ -45,7 +45,7 @@
         <param name="actionName">mainInformation</param>
         <param name="activityID">${activity.id}</param>
       </result>
-      <result name="saveNext" type="redirectAction">
+      <result name="next" type="redirectAction">
         <param name="actionName">objectives</param>
         <param name="activityID">${activity.id}</param>
       </result>
@@ -60,7 +60,7 @@
         <param name="actionName">objectives</param>
         <param name="activityID">${activity.id}</param>
       </result>
-      <result name="saveNext" type="redirectAction">
+      <result name="next" type="redirectAction">
         <param name="actionName">deliverables</param>
         <param name="activityID">${activity.id}</param>
       </result>
@@ -75,7 +75,7 @@
         <param name="actionName">partners</param>
         <param name="activityID">${activity.id}</param>
       </result>
-      <result name="saveNext" type="redirectAction">
+      <result name="next" type="redirectAction">
         <param name="actionName">locations</param>
         <param name="activityID">${activity.id}</param>
       </result>
@@ -90,7 +90,7 @@
         <param name="actionName">locations</param>
         <param name="activityID">${activity.id}</param>
       </result>
-      <result name="saveNext" type="redirectAction">
+      <result name="next" type="redirectAction">
         <param name="actionName">additionalInformation</param>
         <param name="activityID">${activity.id}</param>
       </result>
@@ -110,7 +110,7 @@
         <param name="actionName">additionalInformation</param>
         <param name="activityID">${activity.id}</param>
       </result>
-      <result name="saveNext" type="redirectAction">activities</result>
+      <result name="next" type="redirectAction">activities</result>
     </action>
     
     <action name="partnerSave" class="org.cgiar.ccafs.ap.action.reporting.activities.PartnersSaveReportingAction">

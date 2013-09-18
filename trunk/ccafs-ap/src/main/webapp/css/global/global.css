@@ -88,10 +88,6 @@ input[type="radio"] {
   width: 29%\0/; /*hack for IE8 & IE9*/
 }
 
-.radiosList input {
-  
-}
-
 .removeLink {
   display: block;
   text-align: right;
@@ -102,7 +98,7 @@ input[type="radio"] {
 }
 
 .addLink{
-	margin : 10px 5px 2px;
+  margin : 10px 5px 2px;
 }
 
 .addLink img, .addLink a {
@@ -211,32 +207,32 @@ body {
 
 /************* 3. MAIN MENU ***************/
 nav#mainMenu {
-	width: 100%; 
-	padding-top: 10px;
-	padding-bottom: 15px;
-	height: 40px;
-	
+  width: 100%; 
+  padding-top: 10px;
+  padding-bottom: 15px;
+  height: 40px;
+  
 } 
 nav#mainMenu ul{
-	list-style-type: none;
-	/* height: 40px; */
-	margin: 0 auto;
-	text-align: center;
+  list-style-type: none;
+  /* height: 40px; */
+  margin: 0 auto;
+  text-align: center;
 } 
 nav#mainMenu ul li {
-	height: 40px;
-	width: 91px;
-	display: inline;
-	background: #FFFFFF;
-	padding: 11px 35px 12px 33px;
-	border: 1px solid #dbdbdb;
-	margin: -3px;
-	color: #636368;
+  height: 40px;
+  width: 91px;
+  display: inline;
+  background: #FFFFFF;
+  padding: 11px 35px 12px 33px;
+  border: 1px solid #dbdbdb;
+  margin: -3px;
+  color: #636368;
 }
 nav#mainMenu ul li.currentSection {
-	background-image: url("../../images/global/mainMenuMarker.png");
-	font-weight: bold;
-	color: #fff; 
+  background-image: url("../../images/global/mainMenuMarker.png");
+  font-weight: bold;
+  color: #fff; 
 }
 nav#mainMenu ul a.disabled li{
   color: #b7bcc1;
@@ -260,12 +256,12 @@ nav#mainMenu ul a.disabled li{
 }
 
 #secondaryMenuBar {
-	background: #FFFFFF;
-	height: 0px;
-	border-radius: 3px 5px 0px 0px;
-	border-bottom: 4px solid #FFFFFF;
-	position: relative;
-	top: 0px;
+  background: #FFFFFF;
+  height: 0px;
+  border-radius: 3px 5px 0px 0px;
+  border-bottom: 4px solid #FFFFFF;
+  position: relative;
+  top: 0px;
 }
 
 a.currentReportingSection li {
@@ -275,29 +271,62 @@ a.currentReportingSection li {
   font-weight: bold;
 }
 .icon-15{ 
-	height: 15px;
-	width:15px; 
+  height: 15px;
+  width:15px; 
 }
 
 .icon-s{
-	float: left;
-	height: 25px;
-	width:25px; 
+  float: left;
+  height: 25px;
+  width:25px; 
 }
-#i-mainInformation			{ background:url('../../images/global/sprite-icons.png') 0 0; }
-#i-objectives				{ background:url('../../images/global/sprite-icons.png') 0 -40px; }
-#i-deliverables				{ background:url('../../images/global/sprite-icons.png') 0 -80px; }
-#i-partners					{ background:url('../../images/global/sprite-icons.png') 0 -120px; }
-#i-locations				{ background:url('../../images/global/sprite-icons.png') 0 -158px; }
-#i-additionalInformation	{ background:url('../../images/global/sprite-icons.png') 0 -198px; }
+#i-mainInformation{ 
+	background:url('../../images/global/sprite-icons.png') 0 0; 
+}
 
-a.currentReportingSection li #i-mainInformation			{ background:url('../../images/global/sprite-icons.png') -25px 0; }
-a.currentReportingSection li #i-objectives				{ background:url('../../images/global/sprite-icons.png') -25px -40px; }
-a.currentReportingSection li #i-deliverables			{ background:url('../../images/global/sprite-icons.png') -25px -80px; }
-a.currentReportingSection li #i-partners				{ background:url('../../images/global/sprite-icons.png') -25px -120px; }
-a.currentReportingSection li #i-locations				{ background:url('../../images/global/sprite-icons.png') -25px -158px; }
-a.currentReportingSection li #i-additionalInformation	{ background:url('../../images/global/sprite-icons.png') -25px -198px; }
+#i-objectives{ 
+	background:url('../../images/global/sprite-icons.png') 0 -40px; 
+}
 
+#i-deliverables{ 
+	background:url('../../images/global/sprite-icons.png') 0 -80px; 
+}
+
+#i-partners{ 
+	background:url('../../images/global/sprite-icons.png') 0 -120px; 
+}
+
+#i-locations{ 
+	background:url('../../images/global/sprite-icons.png') 0 -158px;
+}
+
+#i-additionalInformation{ 
+	background:url('../../images/global/sprite-icons.png') 0 -198px; 
+}
+
+a.currentReportingSection li #i-mainInformation{ 
+	background:url('../../images/global/sprite-icons.png') -25px 0; 
+}
+
+a.currentReportingSection li #i-objectives{ 
+	background:url('../../images/global/sprite-icons.png') -25px -40px; 
+}
+
+a.currentReportingSection li #i-deliverables{ 
+	background:url('../../images/global/sprite-icons.png') -25px -80px; 
+}
+
+a.currentReportingSection li #i-partners{ 
+	background:url('../../images/global/sprite-icons.png') -25px -120px; 
+}
+
+a.currentReportingSection li #i-locations{ 
+	background:url('../../images/global/sprite-icons.png') -25px -158px; 
+}
+
+a.currentReportingSection li #i-additionalInformation{ 
+	background:url('../../images/global/sprite-icons.png') -25px -198px; 
+}
 
 #secondaryMenu ul a {
   display: list-item;
@@ -569,11 +598,11 @@ a.currentReportingSection li #i-additionalInformation	{ background:url('../../im
 /***** PLANNING *****/
 
 #mainInformation .commisioned{
-	font-weight: bold;
+  font-weight: bold;
 }
 
 #mainInformation .continuation{
-	font-weight: bold;
+  font-weight: bold;
 }
 
 #activityListPlanning #addActivity {
@@ -593,20 +622,20 @@ a.currentReportingSection li #i-additionalInformation	{ background:url('../../im
 }
 
 .activityLocations #countryLocations input{
-	margin-left : 15px;
+  margin-left : 15px;
 }
 
 .activityLocations #countryLocations label{
-	font-size : 11px;
+  font-size : 11px;
 }
 
 #additionalInformation #otherKeywordsList h6{
-	display : none;
+  display : none;
 }
 
 #additionalInformation .otherKeywordsHelp{
-	margin-left: 15px;
-	font-size: 11px;
+  margin-left: 15px;
+  font-size: 11px;
 }
 
 /****** REPORTING **********/
@@ -845,17 +874,17 @@ a.currentReportingSection li #i-additionalInformation	{ background:url('../../im
 /* -------------- SUMMARIES -----------------*/
 
 #activitiesSummaries h6{
-	margin-top : 10px;
-	margin-bottom : 5px;
+  margin-top : 10px;
+  margin-bottom : 5px;
 }
 
 #activitiesSummaries .reportOptions{
-	margin-top : 5px;
-	margin-left : 30px;
+  margin-top : 5px;
+  margin-left : 30px;
 }
 
 #activitiesSummaries .thirdPartBlock{
-	width: 25%;
+  width: 25%;
 }
 
 #activitiesSummaries .thirdPartBlock .input input{
@@ -878,8 +907,8 @@ a.currentReportingSection li #i-additionalInformation	{ background:url('../../im
 }
 
 #footerContainer.little {
-	background-image: url("../../images/global/footer-background-small.png");
-	height: 80px;
+  background-image: url("../../images/global/footer-background-small.png");
+  height: 80px;
   background-size: 50%;
 }
 
@@ -913,4 +942,3 @@ a.currentReportingSection li #i-additionalInformation	{ background:url('../../im
   margin-top: 15px;
   text-align: right;
 }
-

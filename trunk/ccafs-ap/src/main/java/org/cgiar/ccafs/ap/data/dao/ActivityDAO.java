@@ -79,6 +79,14 @@ public interface ActivityDAO {
   public List<Map<String, String>> getTitles(int year);
 
   /**
+   * Check if the activity given have been validated.
+   * 
+   * @param activityID - activity identifier.
+   * @return true if the activity was validated. False otherwise.
+   */
+  public boolean isValidatedActivity(int activityID);
+
+  /**
    * Validate if the given id actually exist in the current list of activities.
    * 
    * @param id - activity identifier.
@@ -94,7 +102,6 @@ public interface ActivityDAO {
    */
   public int saveSimpleActivity(Map<String, Object> activityData);
 
-
   /**
    * Save the status reporting information of the given activity.
    * 
@@ -102,6 +109,7 @@ public interface ActivityDAO {
    * @return true if the data was saved successfully, or false otherwise.
    */
   public boolean saveStatus(Map<String, String> activityData);
+
 
   /**
    * Set the value of attribute isGlobal into the DAO
@@ -119,5 +127,14 @@ public interface ActivityDAO {
    * @return true if the data was saved successfully, or false otherwise.
    */
   public boolean updateMainInformation(Map<String, String> activityData);
+
+  /**
+   * This method set the activity attribute isValidate to true.
+   * 
+   * @param activityID - The activity identifier
+   * @param validate - The value of validate to assign
+   * @return true if the process was successful. False, otherwise.
+   */
+  public boolean validateActivity(int activityID);
 
 }

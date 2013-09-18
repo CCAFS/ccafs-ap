@@ -32,15 +32,24 @@ public class MySQLActivityDAO implements ActivityDAO {
   public List<Map<String, String>> getActivities(int year) {
     LOG.debug(">> getActivities(year={} )", year);
     List<Map<String, String>> activities = new ArrayList<>();
-    String query =
-      "SELECT a.id, a.title, a.start_date, a.end_date, a.description, m.id as 'milestone_id', m.code as 'milestone_code', "
-        + "th.id as 'theme_id', th.code as 'theme_code', al.id as 'leader_id', al.acronym as 'leader_acronym', al.name as 'leader_name'"
-        + "FROM activities a, milestones m, outputs ou, objectives ob, themes th, logframes lo, activity_leaders al "
-        + "WHERE a.milestone_id = m.id " + "AND m.output_id = ou.id " + "AND ou.objective_id = ob.id "
-        + "AND ob.theme_id = th.id " + "AND th.logframe_id = lo.id " + "AND a.activity_leader_id = al.id "
-        + "AND lo.year = " + year;
+    StringBuilder query = new StringBuilder();
+    query.append("SELECT a.id, a.title, a.start_date, a.end_date, a.description, ");
+    query.append("(av.activity_id IS NOT NULL) as 'is_validated', m.id as 'milestone_id', ");
+    query.append("m.code as 'milestone_code', th.id as 'theme_id', th.code as 'theme_code', ");
+    query.append("al.id as 'leader_id', al.acronym as 'leader_acronym', al.name as 'leader_name' ");
+    query.append("FROM activities a ");
+    query.append("LEFT JOIN activity_validations av ON a.id = av.activity_id ");
+    query.append("INNER JOIN milestones m ON a.milestone_id = m.id ");
+    query.append("INNER JOIN outputs op ON m.output_id = op.id ");
+    query.append("INNER JOIN objectives ob ON op.objective_id = ob.id ");
+    query.append("INNER JOIN themes th ON ob.theme_id = th.id ");
+    query.append("INNER JOIN logframes l ON th.logframe_id = l.id ");
+    query.append("INNER JOIN activity_leaders al ON a.activity_leader_id = al.id ");
+    query.append("WHERE l.year = ");
+    query.append(year);
+
     try (Connection con = databaseManager.getConnection()) {
-      ResultSet rs = databaseManager.makeQuery(query, con);
+      ResultSet rs = databaseManager.makeQuery(query.toString(), con);
       while (rs.next()) {
         Map<String, String> activity = new HashMap<>();
         activity.put("id", rs.getString("id"));
@@ -48,6 +57,7 @@ public class MySQLActivityDAO implements ActivityDAO {
         activity.put("start_date", rs.getString("start_date"));
         activity.put("end_date", rs.getString("end_date"));
         activity.put("description", rs.getString("description"));
+        activity.put("is_validated", rs.getString("is_validated"));
         activity.put("milestone_id", rs.getString("milestone_id"));
         activity.put("milestone_code", rs.getString("milestone_code"));
         activity.put("theme_id", rs.getString("theme_id"));
@@ -73,11 +83,13 @@ public class MySQLActivityDAO implements ActivityDAO {
     List<Map<String, String>> activities = new ArrayList<>();
     StringBuilder query = new StringBuilder();
 
-    query.append("SELECT a.id, a.title, a.start_date, a.end_date, a.description, m.id as 'milestone_id', ");
-    query.append("m.code as 'milestone_code', ast.id as 'status_id', ast.name as 'status_name', ");
-    query.append("th.id as 'theme_id', th.code as 'theme_code', al.id as 'leader_id', ");
-    query.append("al.acronym as 'leader_acronym', al.name as 'leader_name', a.status_description ");
-    query.append("FROM activities a ");
+    query.append("SELECT a.id, a.title, a.start_date, a.end_date, a.description, ");
+    query.append("(av.activity_id IS NOT NULL) as 'is_validated', ");
+    query.append("m.id as 'milestone_id', m.code as 'milestone_code', ast.id as 'status_id', ");
+    query.append("ast.name as 'status_name', th.id as 'theme_id', th.code as 'theme_code', ");
+    query.append("al.id as 'leader_id', al.acronym as 'leader_acronym', al.name as 'leader_name', ");
+    query.append("a.status_description FROM activities a ");
+    query.append("LEFT JOIN activity_validations av ON a.id = av.activity_id ");
     query.append("INNER JOIN milestones m ON a.milestone_id = m.id ");
     query.append("INNER JOIN outputs ou ON m.output_id = ou.id ");
     query.append("INNER JOIN objectives ob ON ou.objective_id = ob.id ");
@@ -107,6 +119,7 @@ public class MySQLActivityDAO implements ActivityDAO {
         activity.put("start_date", rs.getString("start_date"));
         activity.put("end_date", rs.getString("end_date"));
         activity.put("description", rs.getString("description"));
+        activity.put("is_validated", rs.getString("is_validated"));
         activity.put("status_id", rs.getString("status_id"));
         activity.put("status_name", rs.getString("status_name"));
         activity.put("milestone_id", rs.getString("milestone_id"));
@@ -255,11 +268,13 @@ public class MySQLActivityDAO implements ActivityDAO {
   public List<Map<String, String>> getPlanningActivityList(int year, int leaderId) {
     LOG.debug(">> getPlanningActivityList(year={}, leaderId={})", year, leaderId);
     List<Map<String, String>> activitiesData = new ArrayList<>();
-    StringBuilder query =
-      new StringBuilder("SELECT a.id, a.title, GROUP_CONCAT(cp.name SEPARATOR '::') AS 'contact_person_names',");
-    query.append(" GROUP_CONCAT(cp.email SEPARATOR '::') AS 'contact_person_emails', m.code as 'milestone_code'");
+    StringBuilder query = new StringBuilder("SELECT a.id, a.title, (av.activity_id IS NOT NULL) as 'is_validated', ");
+    query.append(" GROUP_CONCAT(cp.name SEPARATOR '::') AS 'contact_person_names',");
+    query.append(" GROUP_CONCAT(cp.email SEPARATOR '::') AS 'contact_person_emails', m.code as 'milestone_code',");
+    query.append(" al.id as 'leader_id', al.name as 'leader_name', al.acronym as 'leader_acronym'");
     query.append(" FROM activities a");
     query.append(" LEFT JOIN contact_person cp ON cp.activity_id = a.id");
+    query.append(" LEFT JOIN activity_validations av ON a.id = av.activity_id");
     query.append(" INNER JOIN milestones m ON m.id = a.milestone_id");
     query.append(" INNER JOIN outputs o ON o.id = m.output_id");
     query.append(" INNER JOIN objectives ob ON ob.id = o.objective_id");
@@ -277,9 +292,13 @@ public class MySQLActivityDAO implements ActivityDAO {
         Map<String, String> activityData = new HashMap<>();
         activityData.put("id", rs.getString("id"));
         activityData.put("title", rs.getString("title"));
+        activityData.put("is_validated", rs.getString("is_validated"));
         activityData.put("milestone_code", rs.getString("milestone_code"));
         activityData.put("contact_person_names", rs.getString("contact_person_names"));
         activityData.put("contact_person_emails", rs.getString("contact_person_emails"));
+        activityData.put("leader_id", rs.getString("leader_id"));
+        activityData.put("leader_name", rs.getString("leader_name"));
+        activityData.put("leader_acronym", rs.getString("leader_acronym"));
         activitiesData.add(activityData);
       }
       rs.close();
@@ -362,6 +381,26 @@ public class MySQLActivityDAO implements ActivityDAO {
 
 
   @Override
+  public boolean isValidatedActivity(int activityID) {
+    LOG.debug(">> isValidatedActivity(activityID={})", activityID);
+    boolean isValidated = false;
+    String query = "SELECT * FROM activity_validations av INNER JOIN activities WHERE av.activity_id = " + activityID;
+    try (Connection con = databaseManager.getConnection()) {
+      ResultSet rs = databaseManager.makeQuery(query, con);
+      if (rs.next()) {
+        isValidated = true;
+      }
+      rs.close();
+    } catch (SQLException e) {
+      LOG.error("-- isValidatedActivity() > There was an error checking if an activity was validated.", e);
+    }
+
+    LOG.debug("<< isValidatedActivity():{}", isValidated);
+    return isValidated;
+  }
+
+
+  @Override
   public boolean isValidId(int id) {
     LOG.debug(">> isValidId(id={})", id);
     boolean isValid = false;
@@ -411,7 +450,6 @@ public class MySQLActivityDAO implements ActivityDAO {
     LOG.debug("<< saveSimpleActivity():{}", activityID);
     return activityID;
   }
-
 
   @Override
   public boolean saveStatus(Map<String, String> activityData) {
@@ -493,6 +531,7 @@ public class MySQLActivityDAO implements ActivityDAO {
     LOG.debug("<< saveStatus():{}", !problem);
     return !problem;
   }
+
 
   @Override
   public boolean updateGlobalAttribute(int activityID, boolean isGlobal) {
@@ -579,5 +618,32 @@ public class MySQLActivityDAO implements ActivityDAO {
 
     LOG.debug("<< updateMainInformation():{}", added);
     return added;
+  }
+
+
+  @Override
+  public boolean validateActivity(int activityID) {
+    LOG.debug(">> validateActivity(activityID = {})", activityID);
+    boolean saved = false;
+    String query = "INSERT INTO activity_validations (`activity_id`) VALUES (?)";
+    Object[] values = new Object[1];
+    values[0] = activityID;
+    try (Connection con = databaseManager.getConnection()) {
+      int rows = databaseManager.makeChangeSecure(con, query, values);
+      if (rows < 0) {
+        String message =
+          "-- validateActivity() > There was a problem inserting a record into the table activity_validations for activity {}.";
+        LOG.warn(message, activityID);
+      } else {
+        saved = true;
+      }
+    } catch (SQLException e) {
+      String message =
+        "-- validateActivity() > There was an error inserting a record into the table activity_validations for activity {}.";
+      LOG.error(message, activityID, e);
+    }
+
+    LOG.debug("<< validateActivity():{}", saved);
+    return saved;
   }
 }

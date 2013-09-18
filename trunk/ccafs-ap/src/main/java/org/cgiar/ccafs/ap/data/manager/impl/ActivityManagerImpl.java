@@ -104,6 +104,9 @@ public class ActivityManagerImpl implements ActivityManager {
       }
       // Contact Persons
       activity.setContactPersons(contactPersonManager.getContactPersons(activity.getId()));
+      // Is validated
+      activity.setValidated(activitiesDAO.get(c).get("is_validated").equals("1"));
+
       Theme theme = new Theme(Integer.parseInt(activitiesDAO.get(c).get("theme_id")));
       theme.setCode(activitiesDAO.get(c).get("theme_code"));
       // Creating fake objects just to save correctly the Theme data of the current activity.
@@ -252,6 +255,12 @@ public class ActivityManagerImpl implements ActivityManager {
   }
 
   @Override
+  public Activity[] getActivitiesForStatusSummary(int year, int activityID, int activityLeader) {
+    // TODO Auto-generated method stub
+    return null;
+  }
+
+  @Override
   public Activity[] getActivitiesForXML(int year, int limit) {
     List<Map<String, String>> activitiesDB = activityDAO.getActivitiesForRSS(year, limit);
     if (activitiesDB.size() > 0) {
@@ -317,12 +326,6 @@ public class ActivityManagerImpl implements ActivityManager {
       }
       return activities;
     }
-    return null;
-  }
-
-  @Override
-  public Activity[] getActivitiesForStatusSummary(int year, int activityID, int activityLeader) {
-    // TODO Auto-generated method stub
     return null;
   }
 
@@ -492,8 +495,19 @@ public class ActivityManagerImpl implements ActivityManager {
         activities[c] = new Activity();
         activities[c].setId(Integer.parseInt(activityData.get(c).get("id")));
         activities[c].setTitle(activityData.get(c).get("title"));
+        activities[c].setValidated(activityData.get(c).get("is_validated").equals("1"));
+
+        // Milestone
         Milestone milestone = new Milestone();
         milestone.setCode(activityData.get(c).get("milestone_code"));
+        activities[c].setMilestone(milestone);
+
+        // Leader
+        Leader leader = new Leader();
+        leader.setId(Integer.parseInt(activityData.get(c).get("leader_id")));
+        leader.setAcronym(activityData.get(c).get("leader_acronym"));
+        leader.setName(activityData.get(c).get("leader_name"));
+        activities[c].setLeader(leader);
 
         if (activityData.get(c).get("contact_person_names") != null) {
           String[] contactPersonNames = activityData.get(c).get("contact_person_names").split("::");
@@ -514,7 +528,6 @@ public class ActivityManagerImpl implements ActivityManager {
           activities[c].setContactPersons(contactPersons);
         }
 
-        activities[c].setMilestone(milestone);
       }
       return activities;
     }
@@ -544,6 +557,11 @@ public class ActivityManagerImpl implements ActivityManager {
   public boolean isActiveActivity(int activityID, int year) {
     int activityYear = activityDAO.getActivityYear(activityID);
     return activityYear == year;
+  }
+
+  @Override
+  public boolean isValidatedActivity(int activityID) {
+    return activityDAO.isValidatedActivity(activityID);
   }
 
   @Override
@@ -639,5 +657,10 @@ public class ActivityManagerImpl implements ActivityManager {
     }
 
     return activityDAO.updateMainInformation(activityData);
+  }
+
+  @Override
+  public boolean validateActivity(Activity activity) {
+    return activityDAO.validateActivity(activity.getId());
   }
 }
