@@ -93,7 +93,7 @@
                       [#-- in order find quickly the activity in the array to modify it.  --]
                       [@s.form action="activities" cssClass="buttons"]
                         <input name="activityIndex" value="${activity_index}" type="hidden"/>
-                        [@s.submit type="button" name="save"][@s.text name="form.buttons.save" /][/@s.submit]
+                        [@s.submit type="button" name="save"][@s.text name="form.buttons.validate" /][/@s.submit]
                       [/@s.form]
                     [/#if]
                   [#else]
@@ -111,7 +111,7 @@
                     [#-- in order find quickly the activity in the array to modify it.  --]
                     [@s.form action="activities" cssClass="buttons"]
                       <input name="activityIndex" value="${activity_index}" type="hidden"/>
-                      [@s.submit type="button" name="save"][@s.text name="form.buttons.save" /][/@s.submit]
+                      [@s.submit type="button" name="save"][@s.text name="form.buttons.validate" /][/@s.submit]
                     [/@s.form]  
                   [/#if]
                 [/#if]
