@@ -617,6 +617,14 @@ a.currentReportingSection li #i-additionalInformation{
   width: 110px;  
 }
 
+#activityListPlanning form.buttons{
+	margin : 0;
+}
+
+#activityListPlanning .buttons button{
+  padding : 0 8px;
+}
+
 .activityLocations fieldset > div > h6{
   display: none;
 }
