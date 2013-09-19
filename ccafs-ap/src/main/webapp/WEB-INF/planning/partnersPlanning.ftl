@@ -63,7 +63,7 @@
   [@s.form action="partners"]
   <article class="halfContent">
     <h1 class="contentTitle">
-      ${activity.leader.acronym} - [@s.text name="planning.activityPartners.activity" /] ${activity.id}      
+      [@s.text name="planning.mainInformation.activity" /] ${activity.id} - ${activity.leader.acronym}
     </h1>
     
     [#assign typeSelectHeadValue ] [@s.text name="planning.activityPartners.selectPartnerType" /] [/#assign]

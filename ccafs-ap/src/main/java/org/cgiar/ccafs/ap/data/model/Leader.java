@@ -9,6 +9,8 @@ public class Leader {
   private String name;
   private String acronym;
   private LeaderType leaderType;
+  private Theme theme;
+  private Region region;
 
   public Leader() {
   }
@@ -54,6 +56,14 @@ public class Leader {
     return name;
   }
 
+  public Region getRegion() {
+    return region;
+  }
+
+  public Theme getTheme() {
+    return theme;
+  }
+
   public void setAcronym(String acronym) {
     this.acronym = acronym;
   }
@@ -70,9 +80,16 @@ public class Leader {
     this.name = name;
   }
 
+  public void setRegion(Region region) {
+    this.region = region;
+  }
+
+  public void setTheme(Theme theme) {
+    this.theme = theme;
+  }
+
   @Override
   public String toString() {
     return ToStringBuilder.reflectionToString(this);
   }
-
 }

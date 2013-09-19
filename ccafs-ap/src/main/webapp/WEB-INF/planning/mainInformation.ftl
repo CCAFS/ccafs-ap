@@ -20,12 +20,12 @@
   [@s.form action="mainInformation"]  
   <article class="halfContent" id="mainInformation">
     <h1 class="contentTitle">
-      ${currentUser.leader.acronym} - 
       [#if activity.commissioned] 
         [@s.text name="planning.mainInformation.commissionedActivity" /] ${activity.id}
       [#else] 
         [@s.text name="planning.mainInformation.activity" /] ${activity.id}
       [/#if]
+      - ${activity.leader.acronym}
     </h1>
     
     [#-- Activity identifier --]

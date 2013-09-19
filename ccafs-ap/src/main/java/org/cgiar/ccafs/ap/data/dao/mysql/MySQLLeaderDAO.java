@@ -32,9 +32,11 @@ public class MySQLLeaderDAO implements LeaderDAO {
     LOG.debug(">> getActivityLeader(activityID={})", activityID);
     Map<String, String> leaderData = new HashMap<>();
     String query =
-      "SELECT al.id, al.name, al.acronym, lt.id as leader_type_id, lt.name leader_type_name "
-        + "FROM activities a, activity_leaders al, leader_types lt "
-        + "WHERE a.activity_leader_id = al.id AND al.led_activity_id = lt.id AND a.id = " + activityID;
+      "SELECT al.id, al.name, al.acronym, lt.id as 'leader_type_id', lt.name 'leader_type_name', "
+        + "r.id as 'region_id', r.name as 'region_name', t.id as 'theme_id', t.code as 'theme_code' "
+        + "FROM activities a " + "INNER JOIN activity_leaders al ON a.activity_leader_id = al.id "
+        + "INNER JOIN leader_types lt ON al.led_activity_id = lt.id " + "LEFT JOIN themes t ON al.theme_id = t.id "
+        + "LEFT JOIN regions r ON al.region_id = r.id " + "WHERE a.id = " + activityID;
     try (Connection conn = databaseManager.getConnection()) {
       ResultSet rs = databaseManager.makeQuery(query, conn);
       if (rs.next()) {
@@ -43,6 +45,10 @@ public class MySQLLeaderDAO implements LeaderDAO {
         leaderData.put("acronym", rs.getString("acronym"));
         leaderData.put("leader_type_id", rs.getString("leader_type_id"));
         leaderData.put("leader_type_name", rs.getString("leader_type_name"));
+        leaderData.put("region_id", rs.getString("region_id"));
+        leaderData.put("region_name", rs.getString("region_name"));
+        leaderData.put("theme_id", rs.getString("theme_id"));
+        leaderData.put("theme_code", rs.getString("theme_code"));
       }
       rs.close();
     } catch (SQLException e) {
@@ -88,9 +94,12 @@ public class MySQLLeaderDAO implements LeaderDAO {
 
     Map<String, String> leaderData = new HashMap<>();
     String query =
-      "SELECT al.id, al.name, lt.id as leader_type_id, lt.name as leader_type_name "
+      "SELECT al.id, al.name, lt.id as leader_type_id, lt.name as leader_type_name, "
+        + "r.id as 'region_id', r.name as 'region_name', t.id as 'theme_id', t.code as 'theme_code' "
         + "FROM users u, activity_leaders al, leader_types lt "
-        + "WHERE u.activity_leader_id = al.id AND al.led_activity_id = lt.id AND u.id = " + userID;
+        + "INNER JOIN activity_leaders al ON activity_leader_id = al.id "
+        + "INNER JOIN leader_types lt ON al.led_activity_id = lt.id " + "LEFT JOIN themes t ON al.theme_id = t.id "
+        + "LEFT JOIN regions r ON al.region_id = r.id " + "WHERE u.id = " + userID;
     try (Connection conn = databaseManager.getConnection()) {
       ResultSet rs = databaseManager.makeQuery(query, conn);
       if (rs.next()) {
@@ -98,6 +107,10 @@ public class MySQLLeaderDAO implements LeaderDAO {
         leaderData.put("name", rs.getString("name"));
         leaderData.put("leader_type_id", rs.getString("leader_type_id"));
         leaderData.put("leader_type_name", rs.getString("leader_type_name"));
+        leaderData.put("region_id", rs.getString("region_id"));
+        leaderData.put("region_name", rs.getString("region_name"));
+        leaderData.put("theme_id", rs.getString("theme_id"));
+        leaderData.put("theme_code", rs.getString("theme_code"));
       }
       rs.close();
     } catch (SQLException e) {

@@ -63,6 +63,28 @@ public interface ActivityDAO {
   public List<Map<String, String>> getPlanningActivityList(int year, int leaderId);
 
   /**
+   * Get all the activities from the given year that belongs to the given leader but also
+   * get all the activities located in the given region.
+   * 
+   * @param year
+   * @param leaderId
+   * @param region
+   * @return a list of maps with the information.
+   */
+  public List<Map<String, String>> getPlanningActivityListForRPL(int year, int leaderId, int region);
+
+  /**
+   * Get all the activities from the given year that belongs to the given leader but also
+   * get all the activities under the given theme.
+   * 
+   * @param year
+   * @param leaderId
+   * @param theme
+   * @return a list of maps with the information.
+   */
+  public List<Map<String, String>> getPlanningActivityListForTL(int year, int leaderId, int theme);
+
+  /**
    * Get the basic main information of an activity identified with the given integer.
    * 
    * @param id - Activity identifier.

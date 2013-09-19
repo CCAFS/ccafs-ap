@@ -7,7 +7,6 @@ import org.cgiar.ccafs.ap.data.manager.ActivityManager;
 import org.cgiar.ccafs.ap.data.manager.LeaderManager;
 import org.cgiar.ccafs.ap.data.model.Leader;
 import org.cgiar.ccafs.ap.data.model.User;
-import org.cgiar.ccafs.ap.data.model.User.UserRole;
 
 import java.util.Map;
 
@@ -42,14 +41,22 @@ public class AccessibleActivityInterceptor extends AbstractInterceptor {
       int activityID = Integer.parseInt(activityIdParam[0]);
       // validate if activity actually exists.
       if (activityManager.isValidId(activityID)) {
-        // is the user an admin?
-        if (user.getRole() == UserRole.Admin) {
+
+        if (user.isAdmin()) {
           return invocation.invoke();
         } else {
+          boolean canSeeActivity = true;
           // validate if current user has the enough privileges to access to this activity.
           Leader activityLeader = leaderManager.getActivityLeader(activityID);
           Leader userLeader = user.getLeader();
-          if (activityLeader.equals(userLeader)) {
+
+          if (user.isCP() || user.isPI()) {
+            if (!activityLeader.equals(userLeader)) {
+              canSeeActivity = false;
+            }
+          }
+
+          if (canSeeActivity) {
             // validate if the activity is valid for the current year
             String stageName = ServletActionContext.getActionMapping().getNamespace();
             if (stageName.equals("/planning")) {
@@ -70,7 +77,6 @@ public class AccessibleActivityInterceptor extends AbstractInterceptor {
             return BaseAction.NOT_AUTHORIZED;
           }
         }
-
       }
       // activity id is not valid and was not found.
       return BaseAction.NOT_FOUND;

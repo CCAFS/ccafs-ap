@@ -32,9 +32,11 @@ public class MySQLUserDAO implements UserDAO {
     try (Connection connection = dbManager.getConnection()) {
       String query =
         "SELECT u.*, al.id as leader_id, al.acronym as leader_acronym, al.name as leader_name, "
-          + "lt.id as leader_type_id, lt.name as leader_type_name FROM users u "
+          + "lt.id as leader_type_id, lt.name as leader_type_name, " + "t.id as 'theme_id', t.code as 'theme_code', "
+          + "r.id as 'region_id', r.name as 'region_name' " + "FROM users u "
           + "INNER JOIN activity_leaders al ON u.activity_leader_id = al.id "
-          + "INNER JOIN leader_types lt ON al.led_activity_id = lt.id WHERE u.email = '" + email + "'";
+          + "INNER JOIN leader_types lt ON al.led_activity_id = lt.id " + "LEFT JOIN themes t ON al.theme_id = t.id "
+          + "LEFT JOIN regions r ON al.region_id = r.id " + "WHERE u.email = '" + email + "'";
       ResultSet rs = dbManager.makeQuery(query, connection);
       if (rs.next()) {
         userData.put("id", rs.getString("id"));
@@ -47,6 +49,10 @@ public class MySQLUserDAO implements UserDAO {
         userData.put("leader_name", rs.getString("leader_name"));
         userData.put("leader_type_id", rs.getString("leader_type_id"));
         userData.put("leader_type_name", rs.getString("leader_type_name"));
+        userData.put("theme_id", rs.getString("theme_id"));
+        userData.put("theme_code", rs.getString("theme_code"));
+        userData.put("region_id", rs.getString("region_id"));
+        userData.put("region_name", rs.getString("region_name"));
       }
       rs.close();
     } catch (SQLException e) {

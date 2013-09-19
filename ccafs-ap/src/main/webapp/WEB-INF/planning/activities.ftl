@@ -24,7 +24,11 @@
         <tr>
           <th id="id">[@s.text name="planning.activityList.id" /]</th>
           <th id="activity">[@s.text name="planning.activityList.activity" /]</th>
-          <th id="contactPerson">[@s.text name="planning.activityList.contactPerson" /]</th>
+          [#if currentUser.CP || currentUser.PI]
+            <th id="contactPerson">[@s.text name="planning.activityList.contactPerson" /]</th>
+          [#else]
+            <th id="leaderName">[@s.text name="planning.activityList.leader" /]</th>
+          [/#if]
           <th id="theme">[@s.text name="planning.activityList.milestone" /]</th>
           <th id="validated">[@s.text name="planning.activityList.validated" /]</th>
         </tr>
@@ -46,17 +50,21 @@
               " title="${activity.title}">
                 [#if activity.title?length < 70] ${activity.title}</a> [#else] [@utilities.wordCutter string=activity.title maxPos=70 /]...</a> [/#if]
             </td>
-            <td>
-              [#if activity.contactPersons??]
-                [#if activity.contactPersons[0].email?has_content]
-                  <a href="mailto:${activity.contactPersons[0].email}">${activity.contactPersons[0].name}</a>
+            [#if currentUser.CP || currentUser.PI]
+              <td>
+                [#if activity.contactPersons??]
+                  [#if activity.contactPersons[0].email?has_content]
+                    <a href="mailto:${activity.contactPersons[0].email}">${activity.contactPersons[0].name}</a>
+                  [#else]
+                    ${activity.contactPersons[0].name}
+                  [/#if]
                 [#else]
-                  ${activity.contactPersons[0].name}
+                  [@s.text name="planning.activityList.contactPerson.empty" /]
                 [/#if]
-              [#else]
-                [@s.text name="planning.activityList.contactPerson.empty" /]
-              [/#if]
-            </td>               
+              </td>               
+            [#else]
+              <td>${activity.leader.acronym}</td>
+            [/#if]
             <td>${activity.milestone.code}</td>
             <td>
               [#if activity.validated]
