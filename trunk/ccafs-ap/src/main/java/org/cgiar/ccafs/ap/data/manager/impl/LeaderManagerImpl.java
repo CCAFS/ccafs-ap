@@ -4,6 +4,8 @@ import org.cgiar.ccafs.ap.data.dao.LeaderDAO;
 import org.cgiar.ccafs.ap.data.manager.LeaderManager;
 import org.cgiar.ccafs.ap.data.model.Leader;
 import org.cgiar.ccafs.ap.data.model.LeaderType;
+import org.cgiar.ccafs.ap.data.model.Region;
+import org.cgiar.ccafs.ap.data.model.Theme;
 
 import java.util.List;
 import java.util.Map;
@@ -31,10 +33,26 @@ public class LeaderManagerImpl implements LeaderManager {
       leader.setId(Integer.parseInt(leaderData.get("id")));
       leader.setName(leaderData.get("name"));
       leader.setAcronym(leaderData.get("acronym"));
+      // Leader type
       LeaderType leaderType = new LeaderType();
       leaderType.setId(Integer.parseInt(leaderData.get("leader_type_id")));
       leaderType.setName(leaderData.get("leader_type_name"));
       leader.setLeaderType(leaderType);
+
+      if (leaderData.get("region_id") != null) {
+        Region region = new Region();
+        region.setId(Integer.parseInt(leaderData.get("region_id")));
+        region.setName(leaderData.get("region_name"));
+        leader.setRegion(region);
+      }
+
+      if (leaderData.get("theme_id") != null) {
+        Theme theme = new Theme();
+        theme.setId(Integer.parseInt(leaderData.get("theme_id")));
+        theme.setCode(leaderData.get("theme_code"));
+        leader.setTheme(theme);
+      }
+
       return leader;
     }
     LOG.warn("Activity leader wasn't found for activity {}.", activityID);
@@ -69,10 +87,26 @@ public class LeaderManagerImpl implements LeaderManager {
       Leader leader = new Leader();
       leader.setId(Integer.parseInt(leaderData.get("id")));
       leader.setName(leaderData.get("name"));
+
       LeaderType leaderType = new LeaderType();
       leaderType.setId(Integer.parseInt(leaderData.get("leader_type_id")));
       leaderType.setName(leaderData.get("leader_type_name"));
       leader.setLeaderType(leaderType);
+
+      if (leaderData.get("region_id") != null) {
+        Region region = new Region();
+        region.setId(Integer.parseInt(leaderData.get("region_id")));
+        region.setName(leaderData.get("region_name"));
+        leader.setRegion(region);
+      }
+
+      if (leaderData.get("theme_id") != null) {
+        Theme theme = new Theme();
+        theme.setId(Integer.parseInt(leaderData.get("theme_id")));
+        theme.setCode(leaderData.get("theme_code"));
+        leader.setTheme(theme);
+      }
+
       return leader;
     }
     return null;

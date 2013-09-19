@@ -488,7 +488,24 @@ public class ActivityManagerImpl implements ActivityManager {
 
   @Override
   public Activity[] getPlanningActivityList(int year, User user) {
-    List<Map<String, String>> activityData = activityDAO.getPlanningActivityList(year, user.getLeader().getId());
+    List<Map<String, String>> activityData;
+
+    int leaderId = user.getLeader().getId();
+    if (user.isRPL()) {
+      // If the user is a regional leader also should see the activities
+      // of centers located in its region.
+      int regionId = user.getLeader().getRegion().getId();
+      activityData = activityDAO.getPlanningActivityListForRPL(year, leaderId, regionId);
+    } else if (user.isTL()) {
+      // If the user is a theme leader also should see the activities of centers and rpls
+      // under its theme
+      int themeCode = Integer.parseInt(user.getLeader().getTheme().getCode());
+      activityData = activityDAO.getPlanningActivityListForTL(year, leaderId, themeCode);
+    } else {
+      // Get the list of activities corresponding to the role of the user
+      activityData = activityDAO.getPlanningActivityList(year, leaderId);
+    }
+
     if (activityData.size() > 0) {
       Activity[] activities = new Activity[activityData.size()];
       for (int c = 0; c < activities.length; c++) {

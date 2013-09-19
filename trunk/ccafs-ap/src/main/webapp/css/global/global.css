@@ -506,11 +506,11 @@ a.currentReportingSection li #i-additionalInformation{
     color:#529214;
 }
 
-.buttons button[name=saveNext] {
+.buttons button[name=next] {
     color:#529214;
 }
 
-.buttons button[name=saveNext]:hover{
+.buttons button[name=next]:hover{
     background-color:#E6EFC2;
     border:1px solid #C6D880;
     color:#529214;
@@ -735,6 +735,10 @@ a.currentReportingSection li #i-additionalInformation{
 
 #activityList #activity {
   width: 440px;
+}
+
+#activityList #contactPerson {
+  width: 100px;
 }
 
 #activityList #leaderName {

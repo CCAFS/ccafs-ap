@@ -316,6 +316,159 @@ public class MySQLActivityDAO implements ActivityDAO {
 
 
   @Override
+  public List<Map<String, String>> getPlanningActivityListForRPL(int year, int leaderId, int regionId) {
+    LOG.debug(">> getPlanningActivityListForRPL(year={}, leaderId={})", year, leaderId);
+    List<Map<String, String>> activitiesData = new ArrayList<>();
+    StringBuilder query = new StringBuilder("SELECT * FROM ( ");
+    query.append("SELECT a.id, a.title, (av.activity_id IS NOT NULL) as 'is_validated', ");
+    query.append("GROUP_CONCAT(cp.name SEPARATOR '::') AS 'contact_person_names', ");
+    query.append("GROUP_CONCAT(cp.email SEPARATOR '::') AS 'contact_person_emails', m.code as 'milestone_code', ");
+    query.append("al.id as 'leader_id', al.name as 'leader_name', al.acronym as 'leader_acronym' ");
+    query.append("FROM activities a ");
+    query.append("LEFT JOIN contact_person cp ON cp.activity_id = a.id ");
+    query.append("LEFT JOIN activity_validations av ON a.id = av.activity_id ");
+    query.append("INNER JOIN milestones m ON m.id = a.milestone_id ");
+    query.append("INNER JOIN outputs o ON o.id = m.output_id ");
+    query.append("INNER JOIN objectives ob ON ob.id = o.objective_id ");
+    query.append("INNER JOIN themes t ON t.id = ob.theme_id ");
+    query.append("INNER JOIN logframes l ON l.id = t.logframe_id ");
+    query.append("INNER JOIN activity_leaders al ON al.id = a.activity_leader_id ");
+    query.append("LEFT JOIN country_locations cl ON a.id = cl.activity_id ");
+    query.append("LEFT JOIN countries co ON cl.country_iso2 = co.iso2 ");
+    query.append("LEFT JOIN region_locations rl ON a.id = rl.activity_id ");
+    query.append("LEFT JOIN regions r ON rl.region_id = r.id OR co.region_id = r.id ");
+    query.append(" WHERE l.year = ");
+    query.append(year);
+    query.append(" AND r.id = ");
+    query.append(regionId);
+    query.append(" GROUP BY a.id ");
+    query.append("UNION  ");
+    query.append("SELECT a.id, a.title, (av.activity_id IS NOT NULL) as 'is_validated', ");
+    query.append("GROUP_CONCAT(cp.name SEPARATOR '::') AS 'contact_person_names', ");
+    query.append("GROUP_CONCAT(cp.email SEPARATOR '::') AS 'contact_person_emails', m.code as 'milestone_code', ");
+    query.append("al.id as 'leader_id', al.name as 'leader_name', al.acronym as 'leader_acronym' ");
+    query.append("FROM activities a ");
+    query.append("LEFT JOIN contact_person cp ON cp.activity_id = a.id ");
+    query.append("LEFT JOIN activity_validations av ON a.id = av.activity_id ");
+    query.append("INNER JOIN milestones m ON m.id = a.milestone_id ");
+    query.append("INNER JOIN outputs o ON o.id = m.output_id ");
+    query.append("INNER JOIN objectives ob ON ob.id = o.objective_id ");
+    query.append("INNER JOIN themes t ON t.id = ob.theme_id ");
+    query.append("INNER JOIN logframes l ON l.id = t.logframe_id ");
+    query.append("INNER JOIN activity_leaders al ON al.id = a.activity_leader_id ");
+    query.append("WHERE l.year = ");
+    query.append(year);
+    query.append(" AND al.id = ");
+    query.append(leaderId);
+    query.append(" GROUP BY a.id ");
+    query.append(") total GROUP BY id ORDER BY 'leader_id'");
+    System.out.println(query.toString());
+    try (Connection connection = databaseManager.getConnection()) {
+      ResultSet rs = databaseManager.makeQuery(query.toString(), connection);
+      while (rs.next()) {
+        Map<String, String> activityData = new HashMap<>();
+        activityData.put("id", rs.getString("id"));
+        activityData.put("title", rs.getString("title"));
+        activityData.put("is_validated", rs.getString("is_validated"));
+        activityData.put("milestone_code", rs.getString("milestone_code"));
+        activityData.put("contact_person_names", rs.getString("contact_person_names"));
+        activityData.put("contact_person_emails", rs.getString("contact_person_emails"));
+        activityData.put("leader_id", rs.getString("leader_id"));
+        activityData.put("leader_name", rs.getString("leader_name"));
+        activityData.put("leader_acronym", rs.getString("leader_acronym"));
+        activitiesData.add(activityData);
+      }
+      rs.close();
+    } catch (SQLException e) {
+      LOG
+        .error(
+          "-- getPlanningActivityListForRPL() > There was an error getting the list of planning activities for year {} and leader {}.",
+          year, leaderId);
+      e.printStackTrace();
+    }
+
+    LOG.debug("<< getPlanningActivityListForRPL():activitiesData.size={}", activitiesData.size());
+    return activitiesData;
+  }
+
+
+  @Override
+  public List<Map<String, String>> getPlanningActivityListForTL(int year, int leaderId, int themeCode) {
+    LOG.debug(">> getPlanningActivityListForTL(year={}, themeCode={})", year, themeCode);
+    List<Map<String, String>> activitiesData = new ArrayList<>();
+    // We going to make a UNION of both queries: one to get the activities of leader and other to
+    // get the activities under the theme given.
+
+    StringBuilder query = new StringBuilder("SELECT * FROM ( ");
+    query.append("SELECT a.id, a.title, (av.activity_id IS NOT NULL) as 'is_validated', ");
+    query.append("GROUP_CONCAT(cp.name SEPARATOR '::') AS 'contact_person_names', ");
+    query.append("GROUP_CONCAT(cp.email SEPARATOR '::') AS 'contact_person_emails', m.code as 'milestone_code', ");
+    query.append("al.id as 'leader_id', al.name as 'leader_name', al.acronym as 'leader_acronym' ");
+    query.append("FROM activities a ");
+    query.append("LEFT JOIN contact_person cp ON cp.activity_id = a.id ");
+    query.append("LEFT JOIN activity_validations av ON a.id = av.activity_id ");
+    query.append("INNER JOIN milestones m ON m.id = a.milestone_id ");
+    query.append("INNER JOIN outputs o ON o.id = m.output_id ");
+    query.append("INNER JOIN objectives ob ON ob.id = o.objective_id ");
+    query.append("INNER JOIN themes t ON t.id = ob.theme_id ");
+    query.append("INNER JOIN logframes l ON l.id = t.logframe_id ");
+    query.append("INNER JOIN activity_leaders al ON al.id = a.activity_leader_id ");
+    query.append("WHERE l.year = ");
+    query.append(year);
+    query.append(" AND t.code = ");
+    query.append(themeCode);
+    query.append(" GROUP BY a.id ");
+    query.append("UNION  ");
+    query.append("SELECT a.id, a.title, (av.activity_id IS NOT NULL) as 'is_validated', ");
+    query.append("GROUP_CONCAT(cp.name SEPARATOR '::') AS 'contact_person_names', ");
+    query.append("GROUP_CONCAT(cp.email SEPARATOR '::') AS 'contact_person_emails', m.code as 'milestone_code', ");
+    query.append("al.id as 'leader_id', al.name as 'leader_name', al.acronym as 'leader_acronym' ");
+    query.append("FROM activities a ");
+    query.append("LEFT JOIN contact_person cp ON cp.activity_id = a.id ");
+    query.append("LEFT JOIN activity_validations av ON a.id = av.activity_id ");
+    query.append("INNER JOIN milestones m ON m.id = a.milestone_id ");
+    query.append("INNER JOIN outputs o ON o.id = m.output_id ");
+    query.append("INNER JOIN objectives ob ON ob.id = o.objective_id ");
+    query.append("INNER JOIN themes t ON t.id = ob.theme_id ");
+    query.append("INNER JOIN logframes l ON l.id = t.logframe_id ");
+    query.append("INNER JOIN activity_leaders al ON al.id = a.activity_leader_id ");
+    query.append("WHERE l.year = ");
+    query.append(year);
+    query.append(" AND al.id = ");
+    query.append(leaderId);
+    query.append(" GROUP BY a.id ");
+    query.append(") total GROUP BY id ORDER BY 'leader_id'");
+
+    try (Connection connection = databaseManager.getConnection()) {
+      ResultSet rs = databaseManager.makeQuery(query.toString(), connection);
+      while (rs.next()) {
+        Map<String, String> activityData = new HashMap<>();
+        activityData.put("id", rs.getString("id"));
+        activityData.put("title", rs.getString("title"));
+        activityData.put("is_validated", rs.getString("is_validated"));
+        activityData.put("milestone_code", rs.getString("milestone_code"));
+        activityData.put("contact_person_names", rs.getString("contact_person_names"));
+        activityData.put("contact_person_emails", rs.getString("contact_person_emails"));
+        activityData.put("leader_id", rs.getString("leader_id"));
+        activityData.put("leader_name", rs.getString("leader_name"));
+        activityData.put("leader_acronym", rs.getString("leader_acronym"));
+        activitiesData.add(activityData);
+      }
+      rs.close();
+    } catch (SQLException e) {
+      LOG
+        .error(
+          "-- getPlanningActivityListForTL() > There was an error getting the list of planning activities for year {} and leader {}.",
+          year, themeCode);
+      e.printStackTrace();
+    }
+
+    LOG.debug("<< getPlanningActivityListForTL():activitiesData.size={}", activitiesData.size());
+    return activitiesData;
+  }
+
+
+  @Override
   public Map<String, String> getSimpleActivity(int id) {
     LOG.debug(">> getSimpleActivity(id={})", id);
 
@@ -399,7 +552,6 @@ public class MySQLActivityDAO implements ActivityDAO {
     return isValidated;
   }
 
-
   @Override
   public boolean isValidId(int id) {
     LOG.debug(">> isValidId(id={})", id);
@@ -450,6 +602,7 @@ public class MySQLActivityDAO implements ActivityDAO {
     LOG.debug("<< saveSimpleActivity():{}", activityID);
     return activityID;
   }
+
 
   @Override
   public boolean saveStatus(Map<String, String> activityData) {

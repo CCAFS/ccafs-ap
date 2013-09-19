@@ -4,6 +4,8 @@ import org.cgiar.ccafs.ap.data.dao.UserDAO;
 import org.cgiar.ccafs.ap.data.manager.UserManager;
 import org.cgiar.ccafs.ap.data.model.Leader;
 import org.cgiar.ccafs.ap.data.model.LeaderType;
+import org.cgiar.ccafs.ap.data.model.Region;
+import org.cgiar.ccafs.ap.data.model.Theme;
 import org.cgiar.ccafs.ap.data.model.User;
 import org.cgiar.ccafs.ap.util.MD5Convert;
 
@@ -37,14 +39,31 @@ public class UserManagerImp implements UserManager {
       user.setEmail(email);
       user.setMD5Password(userData.get("password"));
       user.setRole(userData.get("role"));
+      // Leader
       Leader leader = new Leader();
       leader.setId(Integer.parseInt(userData.get("leader_id")));
       leader.setName(userData.get("leader_name"));
       leader.setAcronym(userData.get("leader_acronym"));
+      // Leader Type
       LeaderType leaderType = new LeaderType();
       leaderType.setId(Integer.parseInt(userData.get("leader_type_id")));
       leaderType.setName(userData.get("leader_type_name"));
       leader.setLeaderType(leaderType);
+      // Region
+      if (userData.get("region_id") != null) {
+        Region region = new Region();
+        region.setId(Integer.parseInt(userData.get("region_id")));
+        region.setName(userData.get("region_name"));
+        leader.setRegion(region);
+      }
+      // Theme
+      if (userData.get("theme_id") != null) {
+        Theme theme = new Theme();
+        theme.setId(Integer.parseInt(userData.get("theme_id")));
+        theme.setCode(userData.get("theme_code"));
+        leader.setTheme(theme);
+      }
+
       user.setLeader(leader);
       return user;
     }

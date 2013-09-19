@@ -21,7 +21,7 @@
   [@s.form action="objectives"]  
   <article class="halfContent">
     <h1 class="contentTitle">
-      ${activity.leader.acronym} - [@s.text name="planning.mainInformation.activity" /] ${activity.id} 
+      [@s.text name="planning.mainInformation.activity" /] ${activity.id} - ${activity.leader.acronym}
     </h1>
     
     [#-- Activity identifier --]
