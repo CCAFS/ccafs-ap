@@ -133,11 +133,14 @@
     
     <!-- internal parameter -->
     <input name="activityID" type="hidden" value="${activity.id}" />
-    <div class="buttons">
-      [@s.submit type="button" name="save"][@s.text name="form.buttons.save" /][/@s.submit]
-      [@s.submit type="button" name="next"][@s.text name="form.buttons.next" /][/@s.submit]
-      [@s.submit type="button" name="cancel"][@s.text name="form.buttons.cancel" /][/@s.submit]
-    </div>
+    [#-- Only the owner of the activity can see the action buttons --]
+    [#if activity.leader.id == currentUser.leader.id]
+      <div class="buttons">
+        [@s.submit type="button" name="save"][@s.text name="form.buttons.save" /][/@s.submit]
+        [@s.submit type="button" name="next"][@s.text name="form.buttons.next" /][/@s.submit]
+        [@s.submit type="button" name="cancel"][@s.text name="form.buttons.cancel" /][/@s.submit]
+      </div>
+    [/#if]
         
     </article>
   [/@s.form]
