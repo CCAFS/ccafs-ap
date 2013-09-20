@@ -362,7 +362,6 @@ public class MySQLActivityDAO implements ActivityDAO {
     query.append(leaderId);
     query.append(" GROUP BY a.id ");
     query.append(") total GROUP BY id ORDER BY 'leader_id'");
-    System.out.println(query.toString());
     try (Connection connection = databaseManager.getConnection()) {
       ResultSet rs = databaseManager.makeQuery(query.toString(), connection);
       while (rs.next()) {
