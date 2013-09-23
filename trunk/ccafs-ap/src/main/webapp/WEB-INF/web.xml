@@ -24,6 +24,8 @@
   </filter>
   
   <!-- Setting cache specification in headers  -->
+  <!-- Comment this filter in order to run jetty server
+  
 	<filter>
     <filter-name>ExpiresFilter</filter-name>
     <filter-class>org.apache.catalina.filters.ExpiresFilter</filter-class>
@@ -40,7 +42,8 @@
       <param-value>modification plus 12 hours</param-value>
     </init-param>
   </filter>
-
+  -->
+  
   <filter-mapping>
     <filter-name>struts2</filter-name>
     <url-pattern>/*</url-pattern>
@@ -51,11 +54,13 @@
     <url-pattern>/*</url-pattern>
   </filter-mapping>
   
+  <!-- 
   <filter-mapping>
 	  <filter-name>ExpiresFilter</filter-name>
 	  <url-pattern>*</url-pattern>
 	  <dispatcher>REQUEST</dispatcher>
 	</filter-mapping>
+	 -->
   
   <session-config>  
 	  <session-timeout> 30 </session-timeout>  

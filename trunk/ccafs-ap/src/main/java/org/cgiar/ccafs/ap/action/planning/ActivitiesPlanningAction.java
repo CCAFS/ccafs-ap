@@ -75,10 +75,6 @@ public class ActivitiesPlanningAction extends BaseAction {
     return activityID;
   }
 
-  public String getActivityRequestParameter() {
-    return APConstants.ACTIVITY_REQUEST_ID;
-  }
-
   public String[] getActivityStatuses() {
     return activityStatuses;
   }
@@ -93,6 +89,10 @@ public class ActivitiesPlanningAction extends BaseAction {
 
   public List<Activity> getPastActivities() {
     return pastActivities;
+  }
+
+  public String getPublicActivityRequestParameter() {
+    return APConstants.PUBLIC_ACTIVITY_ID;
   }
 
   /**

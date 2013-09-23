@@ -61,9 +61,9 @@ public class ActivityAction extends BaseAction {
     super.execute();
     // If there is not a activityID parameter or it is invalid, return input
     if (activityID == -1 || !activityManager.isValidId(activityID)) {
+      activityID = -1;
       return INPUT;
     }
-
     LOG.info("Activity information page for activity {} is being loaded.", activityID);
 
     // Get the basic information about the activity
