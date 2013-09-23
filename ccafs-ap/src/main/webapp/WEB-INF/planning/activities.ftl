@@ -48,14 +48,14 @@
             [#list ownActivities as activity]
               <tr>
                 <td>
-                  <a href=" [@s.url action='mainInformation' includeParams='get'] [@s.param name='${publicActivityRequestParameter}']${activity.id}[/@s.param] [/@s.url]" >
+                  <a href=" [@s.url action='mainInformation' includeParams='get'] [@s.param name='${activityRequestParameter}']${activity.id}[/@s.param] [/@s.url]" >
                     ${activity.id}
                   </a> 
                 </td>
                 <td class="left">
                   <a href="
                   [@s.url action='mainInformation' includeParams='get']
-                    [@s.param name='${publicActivityRequestParameter}']${activity.id}[/@s.param]
+                    [@s.param name='${activityRequestParameter}']${activity.id}[/@s.param]
                   [/@s.url]
                   " title="${activity.title}">
                     [#if activity.title?length < 70] ${activity.title}</a> [#else] [@utilities.wordCutter string=activity.title maxPos=70 /]...</a> [/#if]
@@ -127,14 +127,14 @@
               [#list othersActivities as activity]
                 <tr>
                   <td>
-                    <a href=" [@s.url action='mainInformation' includeParams='get'] [@s.param name='${publicActivityRequestParameter}']${activity.id}[/@s.param] [/@s.url]" >
+                    <a href=" [@s.url action='mainInformation' includeParams='get'] [@s.param name='${activityRequestParameter}']${activity.id}[/@s.param] [/@s.url]" >
                       ${activity.id}
                     </a> 
                   </td>
                   <td class="left">
                     <a href="
                     [@s.url action='mainInformation' includeParams='get']
-                      [@s.param name='${publicActivityRequestParameter}']${activity.id}[/@s.param]
+                      [@s.param name='${activityRequestParameter}']${activity.id}[/@s.param]
                     [/@s.url]
                     " title="${activity.title}">
                       [#if activity.title?length < 70] ${activity.title}</a> [#else] [@utilities.wordCutter string=activity.title maxPos=70 /]...</a> [/#if]
