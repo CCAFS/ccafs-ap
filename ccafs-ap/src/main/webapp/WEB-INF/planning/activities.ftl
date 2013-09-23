@@ -164,12 +164,12 @@
             [#list pastActivities as activity]
               <tr>
                 <td>
-                  <a href=" [@s.url action='activity' namespace="/home" includeParams='get'] [@s.param name='${publicActivityRequestParameter}']${activity.id}[/@s.param] [/@s.url]" >
+                  <a target="_blank" href=" [@s.url action='activity' namespace="/home" includeParams='get'] [@s.param name='${publicActivityRequestParameter}']${activity.id}[/@s.param] [/@s.url]" >
                     ${activity.id}
                   </a> 
                 </td>
                 <td class="left">
-                  <a href="
+                  <a target="_blank" href="
                   [@s.url action='activity' namespace="/home" includeParams='get']
                     [@s.param name='${publicActivityRequestParameter}']${activity.id}[/@s.param]
                   [/@s.url]
