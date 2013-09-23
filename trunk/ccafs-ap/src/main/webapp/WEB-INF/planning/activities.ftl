@@ -19,80 +19,69 @@
   
   <article class="fullContent">
     <h1>[#if currentUser.leader??]${currentUser.leader.name}[/#if] ([@s.text name="planning.activityList.activities" /] ${currentPlanningLogframe.year?c})</h1>   
-    <table id="activityList">
-      <thead>
-        <tr>
-          <th id="id">[@s.text name="planning.activityList.id" /]</th>
-          <th id="activity">[@s.text name="planning.activityList.activity" /]</th>
-          [#if currentUser.CP || currentUser.PI]
-            <th id="contactPerson">[@s.text name="planning.activityList.contactPerson" /]</th>
-          [#else]
-            <th id="leaderName">[@s.text name="planning.activityList.leader" /]</th>
-          [/#if]
-          <th id="theme">[@s.text name="planning.activityList.milestone" /]</th>
-          <th id="validated">[@s.text name="planning.activityList.validated" /]</th>
-        </tr>
-      </thead>
-      <tbody>
-      [#if currentActivities??]
-        [#list currentActivities as activity]
+    
+    <div id="activityTables">
+      <ul>
+        <li><a href="#activityTables-1"> [@s.text name="planning.activityList.currentActivities" /] </a></li>
+        [#if othersActivities?has_content]
+          <li><a href="#activityTables-2"> [@s.text name="planning.activityList.relatedActivities" /] </a></li>
+          <li><a href="#activityTables-3"> [@s.text name="planning.activityList.pastActivities" /] </a></li>
+        [#else]
+          <li><a href="#activityTables-3"> [@s.text name="planning.activityList.pastActivities" /] </a></li>
+        [/#if]
+        
+      </ul>
+      
+      <div id="activityTables-1">
+        <table id="ownActivitiesTable" class="activityList">
+        <thead>
           <tr>
-            <td>
-              <a href=" [@s.url action='mainInformation' includeParams='get'] [@s.param name='${activityRequestParameter}']${activity.id}[/@s.param] [/@s.url]" >
-                ${activity.id}
-              </a> 
-            </td>
-            <td class="left">
-              <a href="
-              [@s.url action='mainInformation' includeParams='get']
-                [@s.param name='${activityRequestParameter}']${activity.id}[/@s.param]
-              [/@s.url]
-              " title="${activity.title}">
-                [#if activity.title?length < 70] ${activity.title}</a> [#else] [@utilities.wordCutter string=activity.title maxPos=70 /]...</a> [/#if]
-            </td>
-            [#if currentUser.CP || currentUser.PI]
-              <td>
-                [#if activity.contactPersons??]
-                  [#if activity.contactPersons[0].email?has_content]
-                    <a href="mailto:${activity.contactPersons[0].email}">${activity.contactPersons[0].name}</a>
+            <th id="id">[@s.text name="planning.activityList.id" /]</th>
+            <th id="activity">[@s.text name="planning.activityList.activity" /]</th>
+            <th id="contactPerson">[@s.text name="planning.activityList.contactPerson" /]</th>
+            <th id="theme">[@s.text name="planning.activityList.milestone" /]</th>
+            <th id="validated">[@s.text name="planning.activityList.validated" /]</th>
+          </tr>
+        </thead>
+        <tbody>
+          [#if ownActivities?has_content]
+            [#list ownActivities as activity]
+              <tr>
+                <td>
+                  <a href=" [@s.url action='mainInformation' includeParams='get'] [@s.param name='${activityRequestParameter}']${activity.id}[/@s.param] [/@s.url]" >
+                    ${activity.id}
+                  </a> 
+                </td>
+                <td class="left">
+                  <a href="
+                  [@s.url action='mainInformation' includeParams='get']
+                    [@s.param name='${activityRequestParameter}']${activity.id}[/@s.param]
+                  [/@s.url]
+                  " title="${activity.title}">
+                    [#if activity.title?length < 70] ${activity.title}</a> [#else] [@utilities.wordCutter string=activity.title maxPos=70 /]...</a> [/#if]
+                </td>
+                <td>
+                  [#if activity.contactPersons??]
+                    [#if activity.contactPersons[0].email?has_content]
+                      <a href="mailto:${activity.contactPersons[0].email}">${activity.contactPersons[0].name}</a>
+                    [#else]
+                      ${activity.contactPersons[0].name}
+                    [/#if]
                   [#else]
-                    ${activity.contactPersons[0].name}
+                    [@s.text name="planning.activityList.contactPerson.empty" /]
                   [/#if]
-                [#else]
-                  [@s.text name="planning.activityList.contactPerson.empty" /]
-                [/#if]
-              </td>               
-            [#else]
-              <td>${activity.leader.acronym}</td>
-            [/#if]
-            <td>${activity.milestone.code}</td>
-            <td>
-              [#if activity.validated]
-                <img src="${baseUrl}/images/global/icon-complete.png" alt="Activity submitted" title="Activity submitted" />
-              [#else]
-                [#-- The PI only can see a notification, they can't validate the activity --]
-                [#if currentUser.PI]
-                  <img src="${baseUrl}/images/global/icon-incomplete.png" alt="This activity has not been validated yet" title="This activity has not been validated yet" />
-                [/#if]
-                
-                [#-- The CP can validate the activity if needed --]
-                [#if currentUser.CP]
-                  [#if activityID == activity.id]
-                    [#-- User tried to submit this activity but there is some missing data. --]
-                    <img src="${baseUrl}/images/global/icon-incomplete.png" alt="There is missing data" title="There is missing data" />
+                </td>               
+                <td>${activity.milestone.code}</td>
+                <td>
+                  [#if activity.validated]
+                    <img src="${baseUrl}/images/global/icon-complete.png" alt="Activity submitted" title="Activity submitted" />
                   [#else]
-                    [#-- We send the index of the activity in the array, not the activity identifier  --]
-                    [#-- in order find quickly the activity in the array to modify it.  --]
-                    [@s.form action="activities" cssClass="buttons"]
-                      <input name="activityIndex" value="${activity_index}" type="hidden"/>
-                      [@s.submit type="button" name="save"][@s.text name="form.buttons.validate" /][/@s.submit]
-                    [/@s.form]  
-                  [/#if]
-                [/#if]
-                
-                [#-- If the user is TL/RPL only can validate the activities which belongs to him/her --]
-                [#if currentUser.TL || currentUser.RPL ]                  
-                  [#if activity.leader.id == currentUser.leader.id]
+                    [#-- The PI only can see a notification, they can't validate the activity --]
+                    [#if currentUser.PI]
+                      <img src="${baseUrl}/images/global/icon-incomplete.png" alt="This activity has not been validated yet" title="This activity has not been validated yet" />
+                    [/#if]
+                    
+                    [#-- The CP/TL/RPL can validate the activity if needed --]
                     [#if activityID == activity.id]
                       [#-- User tried to submit this activity but there is some missing data. --]
                       <img src="${baseUrl}/images/global/icon-incomplete.png" alt="There is missing data" title="There is missing data" />
@@ -102,37 +91,102 @@
                       [@s.form action="activities" cssClass="buttons"]
                         <input name="activityIndex" value="${activity_index}" type="hidden"/>
                         [@s.submit type="button" name="save"][@s.text name="form.buttons.validate" /][/@s.submit]
-                      [/@s.form]
+                      [/@s.form]  
                     [/#if]
-                  [#else]
-                    <img src="${baseUrl}/images/global/icon-incomplete.png" alt="There is missing data" title="There is missing data" />
-                  [/#if]                  
-                [/#if]
-                
-                [#-- The Admin can validate the activity if needed --]
-                [#if currentUser.admin]
-                  [#if activityID == activity.id]
-                    [#-- User tried to submit this activity but there is some missing data. --]
-                    <img src="${baseUrl}/images/global/icon-incomplete.png" alt="There is missing data" title="There is missing data" />
-                  [#else]
-                    [#-- We send the index of the activity in the array, not the activity identifier  --]
-                    [#-- in order find quickly the activity in the array to modify it.  --]
-                    [@s.form action="activities" cssClass="buttons"]
-                      <input name="activityIndex" value="${activity_index}" type="hidden"/>
-                      [@s.submit type="button" name="save"][@s.text name="form.buttons.validate" /][/@s.submit]
-                    [/@s.form]  
                   [/#if]
-                [/#if]
-                
-                                
-                [#-- <img src="${baseUrl}/images/global/icon-incomplete.png" alt="Submit activity" /> --]
-              [/#if]
-            </td>            
-          </tr>
-        [/#list]
+                </td>            
+              </tr>
+            [/#list]
+          [/#if]
+          </tbody>
+        </table>
+        [#if currentUser.TL || currentUser.RPL || currentUser.admin ]
+          [#if workplanReady]
+            <div id="submitButtonBlock">
+              [@s.form action="activities" cssClass="buttons"]
+                [@s.submit type="button" name="save" method="submit" ][@s.text name="form.buttons.submit" /][/@s.submit] 
+              [/@s.form]  
+            </div>
+          [/#if]
+        [/#if]
+      </div>
+  
+      [#if othersActivities?has_content]
+        <div id="activityTables-2">      
+          <table id="othersActivitiesTable" class="activityList">
+            <thead>
+              <tr>
+                <th id="id">[@s.text name="planning.activityList.id" /]</th>
+                <th id="activity">[@s.text name="planning.activityList.activity" /]</th>
+                <th id="leaderName">[@s.text name="planning.activityList.leader" /]</th>
+                <th id="theme">[@s.text name="planning.activityList.milestone" /]</th>
+              </tr>
+            </thead>
+            <tbody>
+            [#if othersActivities?has_content]
+              [#list othersActivities as activity]
+                <tr>
+                  <td>
+                    <a href=" [@s.url action='mainInformation' includeParams='get'] [@s.param name='${activityRequestParameter}']${activity.id}[/@s.param] [/@s.url]" >
+                      ${activity.id}
+                    </a> 
+                  </td>
+                  <td class="left">
+                    <a href="
+                    [@s.url action='mainInformation' includeParams='get']
+                      [@s.param name='${activityRequestParameter}']${activity.id}[/@s.param]
+                    [/@s.url]
+                    " title="${activity.title}">
+                      [#if activity.title?length < 70] ${activity.title}</a> [#else] [@utilities.wordCutter string=activity.title maxPos=70 /]...</a> [/#if]
+                  </td>
+                  <td>${activity.leader.acronym}</td>
+                  <td>${activity.milestone.code}</td>
+                </tr>
+              [/#list]
+            [/#if]
+            </tbody>
+          </table>
+        </div>
       [/#if]
-      </tbody>
-    </table>
+  
+      <div id="activityTables-3">
+        <table id="pastActivitiesTable" class="activityList">
+          <thead>
+            <tr>
+              <th id="id">[@s.text name="planning.activityList.id" /]</th>
+              <th id="activity">[@s.text name="planning.activityList.activity" /]</th>
+              <th id="leaderName">[@s.text name="planning.activityList.leader" /]</th>
+              <th id="theme">[@s.text name="planning.activityList.milestone" /]</th>
+            </tr>
+          </thead>
+          <tbody>
+          [#if pastActivities?has_content]
+            [#list pastActivities as activity]
+              <tr>
+                <td>
+                  <a href=" [@s.url action='activity' namespace="/home" includeParams='get'] [@s.param name='${activityRequestParameter}']${activity.id}[/@s.param] [/@s.url]" >
+                    ${activity.id}
+                  </a> 
+                </td>
+                <td class="left">
+                  <a href="
+                  [@s.url action='activity' namespace="/home" includeParams='get']
+                    [@s.param name='${activityRequestParameter}']${activity.id}[/@s.param]
+                  [/@s.url]
+                  " title="${activity.title}">
+                    [#if activity.title?length < 70] ${activity.title}</a> [#else] [@utilities.wordCutter string=activity.title maxPos=70 /]...</a> [/#if]
+                </td>
+                <td>${activity.leader.acronym}</td>
+                <td>${activity.milestone.code}</td>
+              </tr>
+            [/#list]
+          [/#if]
+          </tbody>
+        </table>
+      </div>
+      
+    </div>
+    
     <div class="clearfix"></div>
     [#if currentUser.admin]
       <div id="addActivity">

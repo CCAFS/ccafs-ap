@@ -15,7 +15,11 @@ import org.cgiar.ccafs.ap.data.manager.DeliverableManager;
 import org.cgiar.ccafs.ap.data.manager.LeaderManager;
 import org.cgiar.ccafs.ap.data.manager.LogframeManager;
 import org.cgiar.ccafs.ap.data.model.Activity;
-import org.cgiar.ccafs.ap.util.EmailValidator;
+import org.cgiar.ccafs.ap.util.ActivityValidator;
+
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 
 import com.google.inject.Inject;
 import org.slf4j.Logger;
@@ -41,10 +45,10 @@ public class ActivitiesPlanningAction extends BaseAction {
   private ActivityOtherSiteManager activityOtherSiteManager;
 
   // Model
-  private StringBuilder validationMessages;
   private Activity activity;
-  private Activity[] currentActivities;
+  private List<Activity> ownActivities, othersActivities, pastActivities;
   private String[] activityStatuses;
+  private boolean workplanReady;
   private int activityIndex;
   private int activityID;
 
@@ -79,8 +83,16 @@ public class ActivitiesPlanningAction extends BaseAction {
     return activityStatuses;
   }
 
-  public Activity[] getCurrentActivities() {
-    return currentActivities;
+  public List<Activity> getOthersActivities() {
+    return othersActivities;
+  }
+
+  public List<Activity> getOwnActivities() {
+    return ownActivities;
+  }
+
+  public List<Activity> getPastActivities() {
+    return pastActivities;
   }
 
   /**
@@ -89,7 +101,7 @@ public class ActivitiesPlanningAction extends BaseAction {
    * submitted yet.
    */
   private boolean isValidActivity() {
-    boolean problem = false;
+    boolean isValidActivity = false;
 
     // Check if the activity is valid
     if (activityManager.isValidId(activityID)) {
@@ -98,24 +110,21 @@ public class ActivitiesPlanningAction extends BaseAction {
         // Check if the current user owns the activity to submit
         if (leaderManager.getActivityLeader(activityID).getId() == getCurrentUser().getLeader().getId()) {
           // Check if the activity hasn't been submitted yet
-          if (activityManager.isValidatedActivity(activityID)) {
-            problem = true;
+          if (!activityManager.isValidatedActivity(activityID)) {
+            isValidActivity = true;
           }
-        } else {
-          problem = true;
         }
-      } else {
-        problem = true;
       }
-    } else {
-      problem = true;
     }
+    return isValidActivity;
+  }
 
-    return !problem;
+  public boolean isWorkplanReady() {
+    return workplanReady;
   }
 
   /**
-   * This method is called only after press the submit button
+   * This method is called only after press the validate button
    * if the activity is valid.
    */
   private void loadActivityInformation() {
@@ -145,20 +154,48 @@ public class ActivitiesPlanningAction extends BaseAction {
   @Override
   public void prepare() throws Exception {
     super.prepare();
-    validationMessages = new StringBuilder();
     LOG.info("User {} load the list of activities for leader {} in planing section", getCurrentUser().getEmail(),
       getCurrentUser().getLeader().getId());
-    currentActivities = activityManager.getPlanningActivityList(config.getPlanningCurrentYear(), this.getCurrentUser());
-  }
 
+    // By default, the user can't submit the workplan until he/she fill all the
+    // information
+    workplanReady = false;
+
+    // For TL and RPL this list will contain the own activities and the activities related to their programmes.
+    Activity[] currentActivities =
+      activityManager.getPlanningActivityList(config.getPlanningCurrentYear(), this.getCurrentUser());
+
+    ownActivities = new ArrayList<>();
+    othersActivities = new ArrayList<>();
+    int activitiesFilled = 0;
+    for (Activity activity : currentActivities) {
+      if (activity.getLeader().getId() == getCurrentUser().getLeader().getId()) {
+        // Check if the activity is filled
+        activitiesFilled += (activity.isValidated()) ? 1 : 0;
+        ownActivities.add(activity);
+      } else {
+        othersActivities.add(activity);
+      }
+    }
+
+    // If all the activities are filled, then the user can submit
+    System.out.println(activitiesFilled);
+    workplanReady = (ownActivities.size() == activitiesFilled);
+
+    // This array contains activities from previous years.
+    pastActivities = new ArrayList<>();
+    for (int year = config.getStartYear(); year <= config.getPlanningCurrentYear() - 1; year++) {
+      pastActivities.addAll(Arrays.asList(activityManager.getActivityListByYear(year)));
+    }
+  }
 
   @Override
   public String save() {
     boolean validated = false;
 
     // After validate that all information is complete, set the activity as submitted
-    currentActivities[activityIndex].setValidated(true);
-    validated = activityManager.validateActivity(currentActivities[activityIndex]);
+    ownActivities.get(activityIndex).setValidated(true);
+    validated = activityManager.validateActivity(ownActivities.get(activityIndex));
 
     if (validated) {
       addActionMessage(getText("planning.activityList.validation.success", new String[] {String.valueOf(activityID)}));
@@ -173,8 +210,11 @@ public class ActivitiesPlanningAction extends BaseAction {
     this.activityIndex = activityIndex;
   }
 
-  public void setCurrentActivities(Activity[] currentActivities) {
-    this.currentActivities = currentActivities;
+  public String submit() {
+    /**
+     * TODO
+     */
+    return INPUT;
   }
 
   @Override
@@ -182,10 +222,8 @@ public class ActivitiesPlanningAction extends BaseAction {
     boolean problem = false;
 
     if (save) {
-
-      // It is needed take the activity identifier before continue
-      activityID = currentActivities[activityIndex].getId();
-
+      String result;
+      activityID = ownActivities.get(activityIndex).getId();
       // Check if the user can submit the activity
       if (!isValidActivity()) {
         addActionError(getText("planning.activityList.validation.noValidActivity",
@@ -197,66 +235,12 @@ public class ActivitiesPlanningAction extends BaseAction {
       loadActivityInformation();
 
       // Validate process
-      // Check the exists an start date and end date
-      if (activity.getStartDate() == null) {
-        validationMessages.append(getText("planning.mainInformation.validation.startDate"));
-        validationMessages.append(", ");
-        problem = true;
+      ActivityValidator av = new ActivityValidator();
+      result = av.validateActivityPlanning(activity);
+
+      if (!result.isEmpty()) {
+        addActionError(result);
       }
-
-      if (activity.getEndDate() == null) {
-        validationMessages.append(getText("planning.mainInformation.validation.endDate"));
-        validationMessages.append(", ");
-        problem = true;
-      }
-
-      // Check if the activity have at least one contact person
-      if (activity.getContactPersons() == null || activity.getContactPersons().isEmpty()) {
-        validationMessages.append(getText("planning.mainInformation.validation.contactPerson"));
-        validationMessages.append(", ");
-        problem = true;
-      } else {
-        for (int c = 0; c < activity.getContactPersons().size(); c++) {
-          // Check if at least there is a contact name
-          if (activity.getContactPersons().get(c).getName().isEmpty()) {
-            validationMessages.append(getText("planning.mainInformation.validation.contactPerson.name"));
-            validationMessages.append(", ");
-            problem = true;
-          }
-
-          // If there is a contact email, check if it is valid
-          if (!activity.getContactPersons().get(c).getEmail().isEmpty()) {
-            if (!EmailValidator.isValidEmail(activity.getContactPersons().get(c).getEmail())) {
-              validationMessages.append(getText("planning.mainInformation.validation.contactPerson.email"));
-              validationMessages.append(", ");
-              problem = true;
-            }
-          }
-        }
-      }
-
-      // Validate objectives
-      if (activity.getObjectives().isEmpty()) {
-        validationMessages.append(getText("planning.objectives.validation.atLeastOne"));
-        validationMessages.append(", ");
-        problem = true;
-      }
-
-      // Validate locations
-      // Activity should be global or have at least one location
-      if (!activity.isGlobal() && activity.getCountries().isEmpty() && activity.getRegions().isEmpty()
-        && activity.getOtherLocations().isEmpty()) {
-        validationMessages.append(getText("planning.locations.validation.atLeastOneLocation"));
-        validationMessages.append(", ");
-      }
-
-      validationMessages.setCharAt(validationMessages.lastIndexOf(","), '.');
-      if (problem) {
-        String message = getText("planning.activityList.validation.error", new String[] {String.valueOf(activityID)});
-        message += validationMessages.toString();
-        addActionError(message);
-      }
-
     }
   }
 }

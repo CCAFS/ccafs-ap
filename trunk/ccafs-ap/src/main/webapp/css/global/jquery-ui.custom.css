@@ -1,0 +1,8 @@
+.ui-widget {
+    font-family: inherit;
+    font-size: inherit;
+}
+
+.ui-tabs .ui-tabs-panel {
+    padding: 0em 1.4em 3em;
+}

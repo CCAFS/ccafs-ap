@@ -49,8 +49,9 @@ public class UnhandledExceptionAction extends BaseAction {
     exception.printStackTrace(new PrintWriter(writer));
 
     subject = "Exception occurred in CCAFS P&R";
-    message.append("The user " + getCurrentUser().getName());
-    message.append("has experienced an exception on the platform.");
+    message.append("The user " + getCurrentUser().getName() + " ");
+    message.append("has experienced an exception on the platform. \n");
+    message.append("This execption occurs in the server: " + config.getBaseUrl() + ".\n");
     message.append("The exception message was: \n\n");
     message.append(writer.toString());
 
