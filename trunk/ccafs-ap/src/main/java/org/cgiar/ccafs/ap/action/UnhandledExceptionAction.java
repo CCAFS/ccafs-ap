@@ -48,6 +48,10 @@ public class UnhandledExceptionAction extends BaseAction {
     StringWriter writer = new StringWriter();
     exception.printStackTrace(new PrintWriter(writer));
 
+    if (config.getBaseUrl().contains("localhost") || config.getBaseUrl().contains("/test")) {
+      return;
+    }
+
     subject = "Exception occurred in CCAFS P&R";
     message.append("The user " + getCurrentUser().getName() + " ");
     message.append("has experienced an exception on the platform. \n");
