@@ -625,6 +625,13 @@ a.currentReportingSection li #i-additionalInformation{
   padding : 0 8px;
 }
 
+#activityListPlanning #submitButtonBlock{
+  clear: both;
+  display: block;
+  margin-top: 30px;
+  text-align: left;
+}
+
 .activityLocations fieldset > div > h6{
   display: none;
 }
@@ -724,45 +731,44 @@ a.currentReportingSection li #i-additionalInformation{
 
 /************ ACTIVITIES ***************/
 /* Activity List */
-#activityList {
-  display: inline-block;
+.activityList {
   margin-top: 20px;
 }
 
-#activityList #id {
+.activityList #id {
   width: 60px;
 }
 
-#activityList #activity {
+.activityList #activity {
   width: 440px;
 }
 
-#activityList #contactPerson {
+.activityList #contactPerson {
   width: 100px;
 }
 
-#activityList #leaderName {
+.activityList #leaderName {
   width: 100px;
 }
 
-#activityList #theme {
+.activityList #theme {
   width: 76px;
 }
 
-#activityList #lastModified {
+.activityList #lastModified {
   width: 80px;
   text-align: center;
 }
 
-#activityList td {
+.activityList td {
   text-align: center;
 }
 
-#activityList td.left {
+.activityList td.left {
   text-align: left;
 }
 
-#activityList a:HOVER {
+.activityList a:HOVER {
   text-decoration: underline;
 }
 

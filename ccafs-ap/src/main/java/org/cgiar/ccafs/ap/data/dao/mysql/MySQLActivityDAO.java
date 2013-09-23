@@ -191,6 +191,53 @@ public class MySQLActivityDAO implements ActivityDAO {
   }
 
   @Override
+  public List<Map<String, String>> getActivityListByYear(int year) {
+    LOG.debug(">> getActivityListByYear(year={})", year);
+    List<Map<String, String>> activitiesData = new ArrayList<>();
+    StringBuilder query = new StringBuilder("SELECT a.id, a.title, (av.activity_id IS NOT NULL) as 'is_validated', ");
+    query.append(" GROUP_CONCAT(cp.name SEPARATOR '::') AS 'contact_person_names',");
+    query.append(" GROUP_CONCAT(cp.email SEPARATOR '::') AS 'contact_person_emails', m.code as 'milestone_code',");
+    query.append(" al.id as 'leader_id', al.name as 'leader_name', al.acronym as 'leader_acronym'");
+    query.append(" FROM activities a");
+    query.append(" LEFT JOIN contact_person cp ON cp.activity_id = a.id");
+    query.append(" LEFT JOIN activity_validations av ON a.id = av.activity_id");
+    query.append(" INNER JOIN milestones m ON m.id = a.milestone_id");
+    query.append(" INNER JOIN outputs o ON o.id = m.output_id");
+    query.append(" INNER JOIN objectives ob ON ob.id = o.objective_id");
+    query.append(" INNER JOIN themes t ON t.id = ob.theme_id");
+    query.append(" INNER JOIN logframes l ON l.id = t.logframe_id");
+    query.append(" INNER JOIN activity_leaders al ON al.id = a.activity_leader_id");
+    query.append(" WHERE l.year = ");
+    query.append(year);
+    query.append(" GROUP BY a.id");
+    try (Connection connection = databaseManager.getConnection()) {
+      ResultSet rs = databaseManager.makeQuery(query.toString(), connection);
+      while (rs.next()) {
+        Map<String, String> activityData = new HashMap<>();
+        activityData.put("id", rs.getString("id"));
+        activityData.put("title", rs.getString("title"));
+        activityData.put("is_validated", rs.getString("is_validated"));
+        activityData.put("milestone_code", rs.getString("milestone_code"));
+        activityData.put("contact_person_names", rs.getString("contact_person_names"));
+        activityData.put("contact_person_emails", rs.getString("contact_person_emails"));
+        activityData.put("leader_id", rs.getString("leader_id"));
+        activityData.put("leader_name", rs.getString("leader_name"));
+        activityData.put("leader_acronym", rs.getString("leader_acronym"));
+        activitiesData.add(activityData);
+      }
+      rs.close();
+    } catch (SQLException e) {
+      LOG.error("-- getActivityListByYear() > There was an error getting the list of planning activities for year {}.",
+        year);
+      e.printStackTrace();
+    }
+
+    LOG.debug("<< getActivityListByYear():activitiesData.size={}", activitiesData.size());
+    return activitiesData;
+  }
+
+
+  @Override
   public Map<String, String> getActivityStatusInfo(int id) {
     LOG.debug(">> getActivityStatusInfo(id={})", id);
     Map<String, String> activity = new HashMap<>();
@@ -239,7 +286,6 @@ public class MySQLActivityDAO implements ActivityDAO {
     }
   }
 
-
   @Override
   public int getActivityYear(int activityID) {
     LOG.debug(">> getActivityYear(activityID={})", activityID);
@@ -263,6 +309,7 @@ public class MySQLActivityDAO implements ActivityDAO {
     LOG.debug("<< getActivityYear():{}", year);
     return year;
   }
+
 
   @Override
   public List<Map<String, String>> getPlanningActivityList(int year, int leaderId) {
@@ -531,7 +578,6 @@ public class MySQLActivityDAO implements ActivityDAO {
     return activityTitles;
   }
 
-
   @Override
   public boolean isValidatedActivity(int activityID) {
     LOG.debug(">> isValidatedActivity(activityID={})", activityID);
@@ -550,6 +596,7 @@ public class MySQLActivityDAO implements ActivityDAO {
     LOG.debug("<< isValidatedActivity():{}", isValidated);
     return isValidated;
   }
+
 
   @Override
   public boolean isValidId(int id) {

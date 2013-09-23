@@ -65,6 +65,14 @@ public interface ActivityManager {
   public Activity getActivity(int id);
 
   /**
+   * Get a list of activities to show in the activity table.
+   * 
+   * @param year - An integer representing the year in which the activities belong.
+   * @return A List of Activity objects that belong to a specific year and user.
+   */
+  public Activity[] getActivityListByYear(int year);
+
+  /**
    * Get an activity identified with the given id populated only with the data showed in the status reporting interface.
    * 
    * @param id

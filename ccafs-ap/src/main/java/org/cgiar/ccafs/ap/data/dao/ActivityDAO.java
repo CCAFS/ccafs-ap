@@ -38,6 +38,14 @@ public interface ActivityDAO {
   public List<Map<String, String>> getActivitiesForRSS(int year, int limit);
 
   /**
+   * Get a basic information for each activity.
+   * 
+   * @param year - The year in which the activities belong.
+   * @return a List of Map objects with the information of each activity (id, title and milestone).
+   */
+  public List<Map<String, String>> getActivityListByYear(int year);
+
+  /**
    * Get an an activity identified with the given year.
    * 
    * @param id - identifier.

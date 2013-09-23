@@ -394,6 +394,55 @@ public class ActivityManagerImpl implements ActivityManager {
   }
 
   @Override
+  public Activity[] getActivityListByYear(int year) {
+    List<Map<String, String>> activityData;
+    activityData = activityDAO.getActivityListByYear(year);
+    Activity[] activities = new Activity[activityData.size()];
+
+    if (activityData.size() > 0) {
+      for (int c = 0; c < activities.length; c++) {
+        activities[c] = new Activity();
+        activities[c].setId(Integer.parseInt(activityData.get(c).get("id")));
+        activities[c].setTitle(activityData.get(c).get("title"));
+        activities[c].setValidated(activityData.get(c).get("is_validated").equals("1"));
+
+        // Milestone
+        Milestone milestone = new Milestone();
+        milestone.setCode(activityData.get(c).get("milestone_code"));
+        activities[c].setMilestone(milestone);
+
+        // Leader
+        Leader leader = new Leader();
+        leader.setId(Integer.parseInt(activityData.get(c).get("leader_id")));
+        leader.setAcronym(activityData.get(c).get("leader_acronym"));
+        leader.setName(activityData.get(c).get("leader_name"));
+        activities[c].setLeader(leader);
+
+        if (activityData.get(c).get("contact_person_names") != null) {
+          String[] contactPersonNames = activityData.get(c).get("contact_person_names").split("::");
+          String[] contactPersonEmails = activityData.get(c).get("contact_person_emails").split("::");
+
+          List<ContactPerson> contactPersons = new ArrayList<>();
+          for (int i = 0; i < contactPersonNames.length; i++) {
+            ContactPerson contactPerson = new ContactPerson();
+            contactPerson.setName(contactPersonNames[i]);
+
+            // Contact person may not have email
+            if (i < contactPersonEmails.length) {
+              contactPerson.setEmail(contactPersonEmails[i]);
+            }
+
+            contactPersons.add(contactPerson);
+          }
+          activities[c].setContactPersons(contactPersons);
+        }
+
+      }
+    }
+    return activities;
+  }
+
+  @Override
   public Activity getActivityStatusInfo(int id) {
     Map<String, String> activityDB = activityDAO.getActivityStatusInfo(id);
     if (activityDB != null) {
