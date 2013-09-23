@@ -75,6 +75,10 @@ public class ActivitiesPlanningAction extends BaseAction {
     return activityID;
   }
 
+  public String getActivityRequestParameter() {
+    return APConstants.ACTIVITY_REQUEST_ID;
+  }
+
   public String[] getActivityStatuses() {
     return activityStatuses;
   }
