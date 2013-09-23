@@ -16,7 +16,6 @@
     <action name="activity" class="org.cgiar.ccafs.ap.action.home.ActivityAction">
       <result name="input" type="freemarker">/WEB-INF/home/activity.ftl</result>
       <result name="success" type="freemarker">/WEB-INF/home/activity.ftl</result>
-      <param name="contentType">text/xml</param>
     </action>
     
     <action name="xml" class="org.cgiar.ccafs.ap.action.home.ActivitiesXMLAction">
