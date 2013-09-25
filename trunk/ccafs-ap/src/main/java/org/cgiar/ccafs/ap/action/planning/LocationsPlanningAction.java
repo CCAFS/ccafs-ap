@@ -12,11 +12,13 @@ import org.cgiar.ccafs.ap.data.manager.BenchmarkSiteManager;
 import org.cgiar.ccafs.ap.data.manager.CountryManager;
 import org.cgiar.ccafs.ap.data.manager.LogframeManager;
 import org.cgiar.ccafs.ap.data.manager.RegionManager;
+import org.cgiar.ccafs.ap.data.manager.SubmissionManager;
 import org.cgiar.ccafs.ap.data.model.Activity;
 import org.cgiar.ccafs.ap.data.model.BenchmarkSite;
 import org.cgiar.ccafs.ap.data.model.Country;
 import org.cgiar.ccafs.ap.data.model.OtherSite;
 import org.cgiar.ccafs.ap.data.model.Region;
+import org.cgiar.ccafs.ap.data.model.Submission;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -43,6 +45,7 @@ public class LocationsPlanningAction extends BaseAction {
   private CountryManager countryManager;
   private RegionManager regionManager;
   private BenchmarkSiteManager benchmarkSiteManager;
+  private SubmissionManager submissionManager;
 
   // Model
   private int activityID;
@@ -52,12 +55,14 @@ public class LocationsPlanningAction extends BaseAction {
   private Country[] countries;
   private Region[] regions;
   private List<Integer> activeRegions;
+  private boolean canSubmit;
 
   @Inject
   public LocationsPlanningAction(APConfig config, LogframeManager logframeManager, ActivityManager activityManager,
     ActivityCountryManager activityCountryManager, ActivityRegionManager activityRegionManager,
     ActivityBenchmarkSiteManager activityBenchmarkSiteManager, ActivityOtherSiteManager activityOtherSiteManager,
-    CountryManager countryManager, RegionManager regionManager, BenchmarkSiteManager benchmarkSiteManager) {
+    CountryManager countryManager, RegionManager regionManager, BenchmarkSiteManager benchmarkSiteManager,
+    SubmissionManager submissionManager) {
     super(config, logframeManager);
     this.activityManager = activityManager;
     this.activityCountryManager = activityCountryManager;
@@ -67,6 +72,7 @@ public class LocationsPlanningAction extends BaseAction {
     this.countryManager = countryManager;
     this.regionManager = regionManager;
     this.benchmarkSiteManager = benchmarkSiteManager;
+    this.submissionManager = submissionManager;
   }
 
   public List<Integer> getActiveRegions() {
@@ -101,6 +107,10 @@ public class LocationsPlanningAction extends BaseAction {
 
   public Region[] getRegions() {
     return regions;
+  }
+
+  public boolean isCanSubmit() {
+    return canSubmit;
   }
 
 
@@ -162,6 +172,12 @@ public class LocationsPlanningAction extends BaseAction {
         activeRegions.add(region.getId());
       }
     }
+
+    // If the workplan was submitted before the user can't save new information
+    Submission submission =
+      submissionManager.getSubmission(getCurrentUser().getLeader(), getCurrentPlanningLogframe(),
+        APConstants.PLANNING_SECTION);
+    canSubmit = (submission == null) ? true : false;
 
     if (getRequest().getMethod().equalsIgnoreCase("post")) {
       activity.getOtherLocations().clear();

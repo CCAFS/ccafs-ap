@@ -14,7 +14,9 @@ import org.cgiar.ccafs.ap.data.manager.ContactPersonManager;
 import org.cgiar.ccafs.ap.data.manager.DeliverableManager;
 import org.cgiar.ccafs.ap.data.manager.LeaderManager;
 import org.cgiar.ccafs.ap.data.manager.LogframeManager;
+import org.cgiar.ccafs.ap.data.manager.SubmissionManager;
 import org.cgiar.ccafs.ap.data.model.Activity;
+import org.cgiar.ccafs.ap.data.model.Submission;
 import org.cgiar.ccafs.ap.util.ActivityValidator;
 
 import java.util.ArrayList;
@@ -43,21 +45,23 @@ public class ActivitiesPlanningAction extends BaseAction {
   private ActivityRegionManager activityRegionManager;
   private ActivityBenchmarkSiteManager activityBenchmarkSiteManager;
   private ActivityOtherSiteManager activityOtherSiteManager;
+  private SubmissionManager submissionManager;
 
   // Model
+  private Submission submission;
   private Activity activity;
   private List<Activity> ownActivities, othersActivities, pastActivities;
   private String[] activityStatuses;
-  private boolean workplanReady;
-  private int activityIndex;
-  private int activityID;
+  private boolean workplanSubmitted, canSubmit;
+  private int activityIndex, activityID, activitiesFilled;
 
   @Inject
   public ActivitiesPlanningAction(APConfig config, LogframeManager logframeManager, ActivityManager activityManager,
     LeaderManager leaderManager, ContactPersonManager contactPersonManager, DeliverableManager deliverableManager,
     ActivityPartnerManager activityPartnerManager, ActivityObjectiveManager activityObjectiveManager,
     ActivityCountryManager activityCountryManager, ActivityRegionManager activityRegionManager,
-    ActivityBenchmarkSiteManager activityBenchmarkSiteManager, ActivityOtherSiteManager activityOtherSiteManager) {
+    ActivityBenchmarkSiteManager activityBenchmarkSiteManager, ActivityOtherSiteManager activityOtherSiteManager,
+    SubmissionManager submissionManager) {
     super(config, logframeManager);
     this.activityManager = activityManager;
     this.leaderManager = leaderManager;
@@ -69,6 +73,7 @@ public class ActivitiesPlanningAction extends BaseAction {
     this.activityRegionManager = activityRegionManager;
     this.activityBenchmarkSiteManager = activityBenchmarkSiteManager;
     this.activityOtherSiteManager = activityOtherSiteManager;
+    this.submissionManager = submissionManager;
   }
 
   public int getActivityID() {
@@ -99,6 +104,11 @@ public class ActivitiesPlanningAction extends BaseAction {
     return APConstants.PUBLIC_ACTIVITY_ID;
   }
 
+  public boolean isCanSubmit() {
+    return canSubmit;
+  }
+
+
   /**
    * This method checks if the activity to submit is valid, checking
    * its owner, if it is from current year and if the activity isn't
@@ -123,8 +133,8 @@ public class ActivitiesPlanningAction extends BaseAction {
     return isValidActivity;
   }
 
-  public boolean isWorkplanReady() {
-    return workplanReady;
+  public boolean isWorkplanSubmitted() {
+    return workplanSubmitted;
   }
 
   /**
@@ -161,9 +171,7 @@ public class ActivitiesPlanningAction extends BaseAction {
     LOG.info("User {} load the list of activities for leader {} in planing section", getCurrentUser().getEmail(),
       getCurrentUser().getLeader().getId());
 
-    // By default, the user can't submit the workplan until he/she fill all the
-    // information
-    workplanReady = false;
+    /* --------- Getting all the activities ------------- */
 
     // For TL and RPL this list will contain the own activities and the activities related to their programmes.
     Activity[] currentActivities =
@@ -171,7 +179,7 @@ public class ActivitiesPlanningAction extends BaseAction {
 
     ownActivities = new ArrayList<>();
     othersActivities = new ArrayList<>();
-    int activitiesFilled = 0;
+    activitiesFilled = 0;
     for (Activity activity : currentActivities) {
       if (activity.getLeader().getId() == getCurrentUser().getLeader().getId()) {
         // Check if the activity is filled
@@ -182,14 +190,28 @@ public class ActivitiesPlanningAction extends BaseAction {
       }
     }
 
-    // If all the activities are filled, then the user can submit
-    System.out.println(activitiesFilled);
-    workplanReady = (ownActivities.size() == activitiesFilled);
-
     // This array contains activities from previous years.
     pastActivities = new ArrayList<>();
     for (int year = config.getStartYear(); year <= config.getPlanningCurrentYear() - 1; year++) {
       pastActivities.addAll(Arrays.asList(activityManager.getActivityListByYear(year)));
+    }
+
+    /* --------- Checking if the user can submit ------------- */
+    // First, check if the workplan is already submitted.
+    submission =
+      submissionManager.getSubmission(getCurrentUser().getLeader(), getCurrentPlanningLogframe(),
+        APConstants.PLANNING_SECTION);
+
+    if (submission == null) {
+      workplanSubmitted = false;
+
+      // If the workplan wasn't submitted yet, the user can do it if
+      // all activities are completely filled.
+      canSubmit = (ownActivities.size() == activitiesFilled);
+    } else {
+      workplanSubmitted = true;
+      // If the user already did the submission thus can't do it again.
+      canSubmit = false;
     }
   }
 
@@ -202,6 +224,12 @@ public class ActivitiesPlanningAction extends BaseAction {
     validated = activityManager.validateActivity(ownActivities.get(activityIndex));
 
     if (validated) {
+      activitiesFilled++;
+      // After make the activity validation we must
+      // check if now the user can submit
+      if (submission == null) {
+        canSubmit = (ownActivities.size() == activitiesFilled);
+      }
       addActionMessage(getText("planning.activityList.validation.success", new String[] {String.valueOf(activityID)}));
     } else {
       addActionError(getText("saving.problem"));
@@ -215,16 +243,32 @@ public class ActivitiesPlanningAction extends BaseAction {
   }
 
   public String submit() {
-    /**
-     * TODO
-     */
+    boolean submitted;
+
+    if (submission != null) {
+      AddActionWarning("Workplan already submitted");
+      return INPUT;
+    }
+
+    submission = new Submission();
+    submission.setLeader(getCurrentUser().getLeader());
+    submission.setLogframe(getCurrentPlanningLogframe());
+    submission.setSection(APConstants.PLANNING_SECTION);
+
+    submitted = submissionManager.submit(submission);
+    if (submitted) {
+      // Now the user can't submit again.
+      workplanSubmitted = true;
+      canSubmit = false;
+      addActionMessage(getText("planning.activityList.submission.success"));
+    } else {
+      addActionError(getText("planning.activityList.submission.error"));
+    }
     return INPUT;
   }
 
   @Override
   public void validate() {
-    boolean problem = false;
-
     if (save) {
       String result;
       activityID = ownActivities.get(activityIndex).getId();

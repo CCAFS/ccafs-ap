@@ -52,6 +52,7 @@ table.dataTable td {
  * Pagination
  */
 .dataTables_paginate {
+  margin-top: 5px;
   border-bottom: 1px solid black;
 }
 
@@ -134,4 +135,5 @@ table.dataTable td {
 /* Info */
 .dataTables_info {
   font-style: italic;
+  margin-top: 5px;
 }

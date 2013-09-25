@@ -9,10 +9,12 @@ import org.cgiar.ccafs.ap.data.manager.CountryManager;
 import org.cgiar.ccafs.ap.data.manager.LogframeManager;
 import org.cgiar.ccafs.ap.data.manager.PartnerManager;
 import org.cgiar.ccafs.ap.data.manager.PartnerTypeManager;
+import org.cgiar.ccafs.ap.data.manager.SubmissionManager;
 import org.cgiar.ccafs.ap.data.model.Activity;
 import org.cgiar.ccafs.ap.data.model.Country;
 import org.cgiar.ccafs.ap.data.model.Partner;
 import org.cgiar.ccafs.ap.data.model.PartnerType;
+import org.cgiar.ccafs.ap.data.model.Submission;
 import org.cgiar.ccafs.ap.util.EmailValidator;
 
 import java.util.ArrayList;
@@ -36,6 +38,7 @@ public class PartnersPlanningAction extends BaseAction {
   private PartnerManager partnerManager;
   private CountryManager countryManager;
   private PartnerTypeManager partnerTypeManager;
+  private SubmissionManager submissionManager;
 
   // Model
   private int activityID;
@@ -43,17 +46,19 @@ public class PartnersPlanningAction extends BaseAction {
   private Partner[] partners;
   private List<PartnerType> partnerTypes;
   private List<Country> countries;
+  private boolean canSubmit;
 
   @Inject
   public PartnersPlanningAction(APConfig config, LogframeManager logframeManager, ActivityManager activityManager,
     ActivityPartnerManager activityPartnerManager, PartnerManager partnerManager, CountryManager countryManager,
-    PartnerTypeManager partnerTypeManager) {
+    PartnerTypeManager partnerTypeManager, SubmissionManager submissionManager) {
     super(config, logframeManager);
     this.activityManager = activityManager;
     this.activityPartnerManager = activityPartnerManager;
     this.partnerManager = partnerManager;
     this.countryManager = countryManager;
     this.partnerTypeManager = partnerTypeManager;
+    this.submissionManager = submissionManager;
   }
 
   public Activity getActivity() {
@@ -68,11 +73,9 @@ public class PartnersPlanningAction extends BaseAction {
     return APConstants.ACTIVITY_REQUEST_ID;
   }
 
-
   public List<Country> getCountries() {
     return countries;
   }
-
 
   public Partner[] getPartners() {
     return partners;
@@ -80,6 +83,10 @@ public class PartnersPlanningAction extends BaseAction {
 
   public List<PartnerType> getPartnerTypes() {
     return partnerTypes;
+  }
+
+  public boolean isCanSubmit() {
+    return canSubmit;
   }
 
 
@@ -117,6 +124,12 @@ public class PartnersPlanningAction extends BaseAction {
     partnerTypes = new ArrayList<>();
     partnerTypes.add(pt);
     partnerTypes.addAll(Arrays.asList(partnerTypeManager.getPartnerTypeList()));
+
+    // If the workplan was submitted before the user can't save new information
+    Submission submission =
+      submissionManager.getSubmission(getCurrentUser().getLeader(), getCurrentPlanningLogframe(),
+        APConstants.PLANNING_SECTION);
+    canSubmit = (submission == null) ? true : false;
 
     if (getRequest().getMethod().equalsIgnoreCase("post")) {
       // Clear out the list if it has some element

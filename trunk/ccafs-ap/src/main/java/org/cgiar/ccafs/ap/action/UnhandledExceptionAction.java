@@ -1,6 +1,5 @@
 package org.cgiar.ccafs.ap.action;
 
-import org.cgiar.ccafs.ap.action.reporting.activities.PartnersSaveReportingAction;
 import org.cgiar.ccafs.ap.config.APConfig;
 import org.cgiar.ccafs.ap.data.manager.LogframeManager;
 import org.cgiar.ccafs.ap.util.SendMail;
@@ -16,7 +15,7 @@ import org.slf4j.LoggerFactory;
 public class UnhandledExceptionAction extends BaseAction {
 
   // Logger
-  private static final Logger LOG = LoggerFactory.getLogger(PartnersSaveReportingAction.class);
+  private static final Logger LOG = LoggerFactory.getLogger(UnhandledExceptionAction.class);
   private static final long serialVersionUID = 1095057952669633270L;
 
   // Model
