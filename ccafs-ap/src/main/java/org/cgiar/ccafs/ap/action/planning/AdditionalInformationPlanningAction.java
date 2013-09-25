@@ -8,9 +8,11 @@ import org.cgiar.ccafs.ap.data.manager.ActivityManager;
 import org.cgiar.ccafs.ap.data.manager.KeywordManager;
 import org.cgiar.ccafs.ap.data.manager.LogframeManager;
 import org.cgiar.ccafs.ap.data.manager.ResourceManager;
+import org.cgiar.ccafs.ap.data.manager.SubmissionManager;
 import org.cgiar.ccafs.ap.data.model.Activity;
 import org.cgiar.ccafs.ap.data.model.ActivityKeyword;
 import org.cgiar.ccafs.ap.data.model.Keyword;
+import org.cgiar.ccafs.ap.data.model.Submission;
 
 import com.google.inject.Inject;
 import org.apache.commons.lang3.StringUtils;
@@ -29,22 +31,25 @@ public class AdditionalInformationPlanningAction extends BaseAction {
   private ActivityKeywordManager activityKeywordManager;
   private KeywordManager keywordManager;
   private ResourceManager resourceManager;
+  private SubmissionManager submissionManager;
 
   // Model
   private int activityID;
   private Activity activity;
   private Keyword[] keywords;
   private String otherKeywordsString;
+  private boolean canSubmit;
 
   @Inject
   public AdditionalInformationPlanningAction(APConfig config, LogframeManager logframeManager,
     ActivityManager activityManager, KeywordManager keywordManager, ActivityKeywordManager activityKeywordManager,
-    ResourceManager resourceManager) {
+    ResourceManager resourceManager, SubmissionManager submissionManager) {
     super(config, logframeManager);
     this.activityManager = activityManager;
     this.keywordManager = keywordManager;
     this.activityKeywordManager = activityKeywordManager;
     this.resourceManager = resourceManager;
+    this.submissionManager = submissionManager;
   }
 
   public Activity getActivity() {
@@ -65,6 +70,10 @@ public class AdditionalInformationPlanningAction extends BaseAction {
 
   public String getOtherKeywordsString() {
     return otherKeywordsString;
+  }
+
+  public boolean isCanSubmit() {
+    return canSubmit;
   }
 
   @Override
@@ -103,6 +112,12 @@ public class AdditionalInformationPlanningAction extends BaseAction {
     otherKeywordsString = temp.toString();
     // Set the activity resources
     activity.setResources(resourceManager.getResources(activityID));
+
+    // If the workplan was submitted before the user can't save new information
+    Submission submission =
+      submissionManager.getSubmission(getCurrentUser().getLeader(), getCurrentPlanningLogframe(),
+        APConstants.PLANNING_SECTION);
+    canSubmit = (submission == null) ? true : false;
 
     if (getRequest().getMethod().equalsIgnoreCase("post")) {
       activity.getKeywords().clear();

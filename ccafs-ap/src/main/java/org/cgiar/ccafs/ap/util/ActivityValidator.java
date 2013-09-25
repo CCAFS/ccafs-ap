@@ -80,8 +80,10 @@ public class ActivityValidator extends ActionSupport {
       problem = true;
     }
 
-    validationMessages.setCharAt(validationMessages.lastIndexOf(","), '.');
-    System.out.println(validationMessages.toString());
+    if (!validationMessages.toString().isEmpty()) {
+      validationMessages.setCharAt(validationMessages.lastIndexOf(","), '.');
+    }
+
     if (problem) {
       String message = getText("planning.activityList.validation.error", new String[] {String.valueOf(activityID)});
       message += validationMessages.toString();

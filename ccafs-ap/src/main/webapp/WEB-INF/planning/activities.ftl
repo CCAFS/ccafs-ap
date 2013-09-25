@@ -33,6 +33,9 @@
       </ul>
       
       <div id="activityTables-1">
+        [#if workplanSubmitted]
+          <p class="workplanSubmitted">[@s.text name="planning.activityList.workplanSubmitted" /]</p>
+        [/#if]
         <table id="ownActivitiesTable" class="activityList">
         <thead>
           <tr>
@@ -79,19 +82,19 @@
                     [#-- The PI only can see a notification, they can't validate the activity --]
                     [#if currentUser.PI]
                       <img src="${baseUrl}/images/global/icon-incomplete.png" alt="This activity has not been validated yet" title="This activity has not been validated yet" />
-                    [/#if]
-                    
-                    [#-- The CP/TL/RPL can validate the activity if needed --]
-                    [#if activityID == activity.id]
-                      [#-- User tried to submit this activity but there is some missing data. --]
-                      <img src="${baseUrl}/images/global/icon-incomplete.png" alt="There is missing data" title="There is missing data" />
                     [#else]
-                      [#-- We send the index of the activity in the array, not the activity identifier  --]
-                      [#-- in order find quickly the activity in the array to modify it.  --]
-                      [@s.form action="activities" cssClass="buttons"]
-                        <input name="activityIndex" value="${activity_index}" type="hidden"/>
-                        [@s.submit type="button" name="save"][@s.text name="form.buttons.validate" /][/@s.submit]
-                      [/@s.form]  
+                      [#-- The CP/TL/RPL can validate the activity if needed --]
+                      [#if activityID == activity.id]
+                        [#-- User tried to submit this activity but there is some missing data. --]
+                        <img src="${baseUrl}/images/global/icon-incomplete.png" alt="There is missing data" title="There is missing data" />
+                      [#else]
+                        [#-- We send the index of the activity in the array, not the activity identifier  --]
+                        [#-- in order find quickly the activity in the array to modify it.  --]
+                        [@s.form action="activities" cssClass="buttons"]
+                          <input name="activityIndex" value="${activity_index}" type="hidden"/>
+                          [@s.submit type="button" name="save"][@s.text name="form.buttons.validate" /][/@s.submit]
+                        [/@s.form]  
+                      [/#if]
                     [/#if]
                   [/#if]
                 </td>            
@@ -101,11 +104,16 @@
           </tbody>
         </table>
         [#if currentUser.TL || currentUser.RPL || currentUser.admin ]
-          [#if workplanReady]
-            <div id="submitButtonBlock">
-              [@s.form action="activities" cssClass="buttons"]
+          [#-- If the workplan hasn't been submitted yet, show the button --]
+          [#if !workplanSubmitted]
+            <div id="submitButtonBlock" class="buttons">
+              [#if canSubmit]
+              [@s.form action="activities" ]
                 [@s.submit type="button" name="save" method="submit" ][@s.text name="form.buttons.submit" /][/@s.submit] 
               [/@s.form]  
+              [#else]
+              <button class="disabled" title="[@s.text name="planning.activityList.submit.disabled" /]"> [@s.text name="form.buttons.submit" /] </button>
+              [/#if]
             </div>
           [/#if]
         [/#if]

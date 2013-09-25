@@ -9,11 +9,13 @@ import org.cgiar.ccafs.ap.data.manager.DeliverableStatusManager;
 import org.cgiar.ccafs.ap.data.manager.DeliverableTypeManager;
 import org.cgiar.ccafs.ap.data.manager.FileFormatManager;
 import org.cgiar.ccafs.ap.data.manager.LogframeManager;
+import org.cgiar.ccafs.ap.data.manager.SubmissionManager;
 import org.cgiar.ccafs.ap.data.model.Activity;
 import org.cgiar.ccafs.ap.data.model.Deliverable;
 import org.cgiar.ccafs.ap.data.model.DeliverableStatus;
 import org.cgiar.ccafs.ap.data.model.DeliverableType;
 import org.cgiar.ccafs.ap.data.model.FileFormat;
+import org.cgiar.ccafs.ap.data.model.Submission;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -37,6 +39,7 @@ public class DeliverablesPlanningAction extends BaseAction {
   private DeliverableTypeManager deliverableTypeManager;
   private DeliverableStatusManager deliverableStatusManager;
   private FileFormatManager fileFormatManager;
+  private SubmissionManager submissionManager;
 
   // Model
   private int activityID;
@@ -46,17 +49,20 @@ public class DeliverablesPlanningAction extends BaseAction {
   private int[] deliverableTypeIdsPublications;
   private DeliverableStatus[] deliverableStatusList;
   private FileFormat[] fileFormatsList;
+  private boolean canSubmit;
 
   @Inject
   public DeliverablesPlanningAction(APConfig config, LogframeManager logframeManager, ActivityManager activityManager,
     DeliverableManager deliverableManager, DeliverableTypeManager deliverableTypeManager,
-    DeliverableStatusManager deliverableStatusManager, FileFormatManager fileFormatManager) {
+    DeliverableStatusManager deliverableStatusManager, FileFormatManager fileFormatManager,
+    SubmissionManager submissionManager) {
     super(config, logframeManager);
     this.activityManager = activityManager;
     this.deliverableManager = deliverableManager;
     this.deliverableTypeManager = deliverableTypeManager;
     this.deliverableStatusManager = deliverableStatusManager;
     this.fileFormatManager = fileFormatManager;
+    this.submissionManager = submissionManager;
   }
 
   public Activity getActivity() {
@@ -99,6 +105,10 @@ public class DeliverablesPlanningAction extends BaseAction {
     return years;
   }
 
+  public boolean isCanSubmit() {
+    return canSubmit;
+  }
+
   @Override
   public void prepare() throws Exception {
     super.prepare();
@@ -132,6 +142,12 @@ public class DeliverablesPlanningAction extends BaseAction {
 
     // Get the deliverables related to the activity
     activity.setDeliverables(deliverableManager.getDeliverables(activityID));
+
+    // If the workplan was submitted before the user can't save new information
+    Submission submission =
+      submissionManager.getSubmission(getCurrentUser().getLeader(), getCurrentPlanningLogframe(),
+        APConstants.PLANNING_SECTION);
+    canSubmit = (submission == null) ? true : false;
 
     if (getRequest().getMethod().equalsIgnoreCase("post")) {
       // Clear out the list if it has some element

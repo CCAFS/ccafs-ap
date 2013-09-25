@@ -16,5 +16,7 @@ public final class APConstants {
   public static final String REGION_REQUEST_ID = "regionID";
   public static final String COUNTRY_REQUEST_ID = "countryID";
   public static final String PARTNER_TYPE_REQUEST_ID = "partnerTypeID";
+  public static final String PLANNING_SECTION = "Planning";
+  public static final String REPORTING_SECTION = "Reporting";
 
 }

@@ -9,9 +9,11 @@ import org.cgiar.ccafs.ap.data.manager.BudgetPercentageManager;
 import org.cgiar.ccafs.ap.data.manager.ContactPersonManager;
 import org.cgiar.ccafs.ap.data.manager.LogframeManager;
 import org.cgiar.ccafs.ap.data.manager.MilestoneManager;
+import org.cgiar.ccafs.ap.data.manager.SubmissionManager;
 import org.cgiar.ccafs.ap.data.model.Activity;
 import org.cgiar.ccafs.ap.data.model.BudgetPercentage;
 import org.cgiar.ccafs.ap.data.model.Milestone;
+import org.cgiar.ccafs.ap.data.model.Submission;
 import org.cgiar.ccafs.ap.util.EmailValidator;
 
 import java.util.LinkedHashMap;
@@ -36,6 +38,7 @@ public class MainInformationPlanningAction extends BaseAction {
   BudgetManager budgetManager;
   ContactPersonManager contactPersonManager;
   MilestoneManager milestoneManager;
+  SubmissionManager submissionManager;
 
   // Model
   private int activityID;
@@ -45,17 +48,20 @@ public class MainInformationPlanningAction extends BaseAction {
   private Milestone[] milestones;
   private Map<String, String> genderOptions;
   private String genderIntegrationOption;
+  private boolean canSubmit;
 
   @Inject
   public MainInformationPlanningAction(APConfig config, LogframeManager logframeManager,
     ActivityManager activityManager, BudgetPercentageManager budgetPercentageManager,
-    ContactPersonManager contactPersonManager, BudgetManager budgetManager, MilestoneManager milestoneManager) {
+    ContactPersonManager contactPersonManager, BudgetManager budgetManager, MilestoneManager milestoneManager,
+    SubmissionManager submissionManager) {
     super(config, logframeManager);
     this.activityManager = activityManager;
     this.budgetPercentageManager = budgetPercentageManager;
     this.contactPersonManager = contactPersonManager;
     this.budgetManager = budgetManager;
     this.milestoneManager = milestoneManager;
+    this.submissionManager = submissionManager;
 
     this.genderOptions = new LinkedHashMap<>();
     genderOptions.put("1", "Yes");
@@ -65,7 +71,6 @@ public class MainInformationPlanningAction extends BaseAction {
   public Activity getActivity() {
     return activity;
   }
-
 
   public String getActivityRequestParameter() {
     return APConstants.ACTIVITY_REQUEST_ID;
@@ -112,6 +117,10 @@ public class MainInformationPlanningAction extends BaseAction {
     return config.getStartYear();
   }
 
+  public boolean isCanSubmit() {
+    return canSubmit;
+  }
+
   @Override
   public void prepare() throws Exception {
     super.prepare();
@@ -136,6 +145,12 @@ public class MainInformationPlanningAction extends BaseAction {
     activity.setContactPersons(contactPersonManager.getContactPersons(activityID));
     // Set the budget
     activity.setBudget(budgetManager.getBudget(activityID));
+
+    // If the workplan was submitted before the user can't save new information
+    Submission submission =
+      submissionManager.getSubmission(getCurrentUser().getLeader(), getCurrentPlanningLogframe(),
+        APConstants.PLANNING_SECTION);
+    canSubmit = (submission == null) ? true : false;
 
     // Remove all contact persons in case user clicked on submit button
     if (activity.getContactPersons() != null) {
@@ -194,7 +209,6 @@ public class MainInformationPlanningAction extends BaseAction {
       addActionError(finalMessage);
       return INPUT;
     }
-
   }
 
   public void setActivity(Activity activity) {

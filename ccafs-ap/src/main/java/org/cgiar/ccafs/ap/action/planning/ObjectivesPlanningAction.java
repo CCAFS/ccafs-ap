@@ -6,7 +6,9 @@ import org.cgiar.ccafs.ap.config.APConstants;
 import org.cgiar.ccafs.ap.data.manager.ActivityManager;
 import org.cgiar.ccafs.ap.data.manager.ActivityObjectiveManager;
 import org.cgiar.ccafs.ap.data.manager.LogframeManager;
+import org.cgiar.ccafs.ap.data.manager.SubmissionManager;
 import org.cgiar.ccafs.ap.data.model.Activity;
+import org.cgiar.ccafs.ap.data.model.Submission;
 
 import com.google.inject.Inject;
 import org.apache.commons.lang3.StringUtils;
@@ -23,19 +25,21 @@ public class ObjectivesPlanningAction extends BaseAction {
   // Managers
   private ActivityManager activityManager;
   private ActivityObjectiveManager activityObjectiveManager;
+  private SubmissionManager submissionManager;
 
   // Model
   private int activityID;
   private Activity activity;
   private StringBuilder validationMessage;
-
+  private boolean canSubmit;
 
   @Inject
   public ObjectivesPlanningAction(APConfig config, LogframeManager logframeManager, ActivityManager activityManager,
-    ActivityObjectiveManager activityObjectiveManager) {
+    ActivityObjectiveManager activityObjectiveManager, SubmissionManager submissionManager) {
     super(config, logframeManager);
     this.activityManager = activityManager;
     this.activityObjectiveManager = activityObjectiveManager;
+    this.submissionManager = submissionManager;
   }
 
   public Activity getActivity() {
@@ -44,6 +48,10 @@ public class ObjectivesPlanningAction extends BaseAction {
 
   public String getActivityRequestParameter() {
     return APConstants.ACTIVITY_REQUEST_ID;
+  }
+
+  public boolean isCanSubmit() {
+    return canSubmit;
   }
 
   @Override
@@ -67,6 +75,12 @@ public class ObjectivesPlanningAction extends BaseAction {
 
     // Get the activity objectives
     activity.setObjectives(activityObjectiveManager.getActivityObjectives(activityID));
+
+    // If the workplan was submitted before the user can't save new information
+    Submission submission =
+      submissionManager.getSubmission(getCurrentUser().getLeader(), getCurrentPlanningLogframe(),
+        APConstants.PLANNING_SECTION);
+    canSubmit = (submission == null) ? true : false;
 
     if (getRequest().getMethod().equalsIgnoreCase("post")) {
       activity.getObjectives().clear();
