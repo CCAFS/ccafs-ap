@@ -555,49 +555,46 @@ public class ActivityManagerImpl implements ActivityManager {
       activityData = activityDAO.getPlanningActivityList(year, leaderId);
     }
 
-    if (activityData.size() > 0) {
-      Activity[] activities = new Activity[activityData.size()];
-      for (int c = 0; c < activities.length; c++) {
-        activities[c] = new Activity();
-        activities[c].setId(Integer.parseInt(activityData.get(c).get("id")));
-        activities[c].setTitle(activityData.get(c).get("title"));
-        activities[c].setValidated(activityData.get(c).get("is_validated").equals("1"));
+    Activity[] activities = new Activity[activityData.size()];
+    for (int c = 0; c < activities.length; c++) {
+      activities[c] = new Activity();
+      activities[c].setId(Integer.parseInt(activityData.get(c).get("id")));
+      activities[c].setTitle(activityData.get(c).get("title"));
+      activities[c].setValidated(activityData.get(c).get("is_validated").equals("1"));
 
-        // Milestone
-        Milestone milestone = new Milestone();
-        milestone.setCode(activityData.get(c).get("milestone_code"));
-        activities[c].setMilestone(milestone);
+      // Milestone
+      Milestone milestone = new Milestone();
+      milestone.setCode(activityData.get(c).get("milestone_code"));
+      activities[c].setMilestone(milestone);
 
-        // Leader
-        Leader leader = new Leader();
-        leader.setId(Integer.parseInt(activityData.get(c).get("leader_id")));
-        leader.setAcronym(activityData.get(c).get("leader_acronym"));
-        leader.setName(activityData.get(c).get("leader_name"));
-        activities[c].setLeader(leader);
+      // Leader
+      Leader leader = new Leader();
+      leader.setId(Integer.parseInt(activityData.get(c).get("leader_id")));
+      leader.setAcronym(activityData.get(c).get("leader_acronym"));
+      leader.setName(activityData.get(c).get("leader_name"));
+      activities[c].setLeader(leader);
 
-        if (activityData.get(c).get("contact_person_names") != null) {
-          String[] contactPersonNames = activityData.get(c).get("contact_person_names").split("::");
-          String[] contactPersonEmails = activityData.get(c).get("contact_person_emails").split("::");
+      if (activityData.get(c).get("contact_person_names") != null) {
+        String[] contactPersonNames = activityData.get(c).get("contact_person_names").split("::");
+        String[] contactPersonEmails = activityData.get(c).get("contact_person_emails").split("::");
 
-          List<ContactPerson> contactPersons = new ArrayList<>();
-          for (int i = 0; i < contactPersonNames.length; i++) {
-            ContactPerson contactPerson = new ContactPerson();
-            contactPerson.setName(contactPersonNames[i]);
+        List<ContactPerson> contactPersons = new ArrayList<>();
+        for (int i = 0; i < contactPersonNames.length; i++) {
+          ContactPerson contactPerson = new ContactPerson();
+          contactPerson.setName(contactPersonNames[i]);
 
-            // Contact person may not have email
-            if (i < contactPersonEmails.length) {
-              contactPerson.setEmail(contactPersonEmails[i]);
-            }
-
-            contactPersons.add(contactPerson);
+          // Contact person may not have email
+          if (i < contactPersonEmails.length) {
+            contactPerson.setEmail(contactPersonEmails[i]);
           }
-          activities[c].setContactPersons(contactPersons);
-        }
 
+          contactPersons.add(contactPerson);
+        }
+        activities[c].setContactPersons(contactPersons);
       }
-      return activities;
+
     }
-    return null;
+    return activities;
   }
 
   @Override
@@ -622,7 +619,7 @@ public class ActivityManagerImpl implements ActivityManager {
   @Override
   public boolean isActiveActivity(int activityID, int year) {
     int activityYear = activityDAO.getActivityYear(activityID);
-    return activityYear == year;
+    return activityYear >= year;
   }
 
   @Override
@@ -641,7 +638,11 @@ public class ActivityManagerImpl implements ActivityManager {
     activityData.put("title", activity.getTitle());
     activityData.put("activity_leader_id", activity.getLeader().getId());
     activityData.put("is_commissioned", activity.isCommissioned());
-    activityData.put("milestone_id", activity.getMilestone().getId());
+    activityData.put("year", activity.getYear());
+
+    if (activity.getMilestone() != null) {
+      activityData.put("milestone_id", activity.getMilestone().getId());
+    }
     if (activity.getDescription() != null) {
       activityData.put("description", activity.getDescription());
     }

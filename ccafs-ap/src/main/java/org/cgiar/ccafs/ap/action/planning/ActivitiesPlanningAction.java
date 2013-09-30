@@ -20,8 +20,9 @@ import org.cgiar.ccafs.ap.data.model.Submission;
 import org.cgiar.ccafs.ap.util.ActivityValidator;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
+import java.util.Map;
+import java.util.TreeMap;
 
 import com.google.inject.Inject;
 import org.slf4j.Logger;
@@ -50,7 +51,8 @@ public class ActivitiesPlanningAction extends BaseAction {
   // Model
   private Submission submission;
   private Activity activity;
-  private List<Activity> ownActivities, othersActivities, pastActivities;
+  private Map<Integer, Activity[]> previousActivities, futureActivities;
+  private List<Activity> currentActivities, relatedActivities;
   private String[] activityStatuses;
   private boolean workplanSubmitted, canSubmit;
   private int activityIndex, activityID, activitiesFilled;
@@ -88,26 +90,46 @@ public class ActivitiesPlanningAction extends BaseAction {
     return activityStatuses;
   }
 
+  public String getActivityYearRequest() {
+    return APConstants.ACTIVITY_YEAR_REQUEST;
+  }
+
+  public List<Activity> getCurrentActivities() {
+    return currentActivities;
+  }
+
+  public int getCurrentYear() {
+    return config.getPlanningCurrentYear();
+  }
+
+  public Map<Integer, Activity[]> getFutureActivities() {
+    return futureActivities;
+  }
+
+
   public List<Activity> getOthersActivities() {
-    return othersActivities;
+    return relatedActivities;
   }
 
   public List<Activity> getOwnActivities() {
-    return ownActivities;
+    return currentActivities;
   }
 
-  public List<Activity> getPastActivities() {
-    return pastActivities;
+  public Map<Integer, Activity[]> getPreviousActivities() {
+    return previousActivities;
   }
 
   public String getPublicActivityRequestParameter() {
     return APConstants.PUBLIC_ACTIVITY_ID;
   }
 
+  public List<Activity> getRelatedActivities() {
+    return relatedActivities;
+  }
+
   public boolean isCanSubmit() {
     return canSubmit;
   }
-
 
   /**
    * This method checks if the activity to submit is valid, checking
@@ -172,28 +194,35 @@ public class ActivitiesPlanningAction extends BaseAction {
       getCurrentUser().getLeader().getId());
 
     /* --------- Getting all the activities ------------- */
+    previousActivities = new TreeMap<>();
+    futureActivities = new TreeMap<>();
+    currentActivities = new ArrayList<>();
+    relatedActivities = new ArrayList<>();
+    activitiesFilled = 0;
 
     // For TL and RPL this list will contain the own activities and the activities related to their programmes.
-    Activity[] currentActivities =
+    Activity[] activities =
       activityManager.getPlanningActivityList(config.getPlanningCurrentYear(), this.getCurrentUser());
 
-    ownActivities = new ArrayList<>();
-    othersActivities = new ArrayList<>();
-    activitiesFilled = 0;
-    for (Activity activity : currentActivities) {
+    for (Activity activity : activities) {
       if (activity.getLeader().getId() == getCurrentUser().getLeader().getId()) {
         // Check if the activity is filled
         activitiesFilled += (activity.isValidated()) ? 1 : 0;
-        ownActivities.add(activity);
+        currentActivities.add(activity);
       } else {
-        othersActivities.add(activity);
+        relatedActivities.add(activity);
       }
     }
 
-    // This array contains activities from previous years.
-    pastActivities = new ArrayList<>();
-    for (int year = config.getStartYear(); year <= config.getPlanningCurrentYear() - 1; year++) {
-      pastActivities.addAll(Arrays.asList(activityManager.getActivityListByYear(year)));
+    // Load activities from previous years.
+    for (int year = config.getStartYear(); year < config.getPlanningCurrentYear(); year++) {
+      previousActivities.put(year, activityManager.getPlanningActivityList(year, this.getCurrentUser()));
+    }
+
+    // Load activities from futures years.
+    int endYear = config.getPlanningCurrentYear() + config.getFuturePlanningYears();
+    for (int year = config.getPlanningCurrentYear() + 1; year <= endYear; year++) {
+      futureActivities.put(year, activityManager.getPlanningActivityList(year, this.getCurrentUser()));
     }
 
     /* --------- Checking if the user can submit ------------- */
@@ -207,7 +236,7 @@ public class ActivitiesPlanningAction extends BaseAction {
 
       // If the workplan wasn't submitted yet, the user can do it if
       // all activities are completely filled.
-      canSubmit = (ownActivities.size() == activitiesFilled);
+      canSubmit = (currentActivities.size() == activitiesFilled);
     } else {
       workplanSubmitted = true;
       // If the user already did the submission thus can't do it again.
@@ -220,21 +249,20 @@ public class ActivitiesPlanningAction extends BaseAction {
     boolean validated = false;
 
     // After validate that all information is complete, set the activity as submitted
-    ownActivities.get(activityIndex).setValidated(true);
-    validated = activityManager.validateActivity(ownActivities.get(activityIndex));
+    currentActivities.get(activityIndex).setValidated(true);
+    validated = activityManager.validateActivity(currentActivities.get(activityIndex));
 
     if (validated) {
       activitiesFilled++;
       // After make the activity validation we must
       // check if now the user can submit
       if (submission == null) {
-        canSubmit = (ownActivities.size() == activitiesFilled);
+        canSubmit = (currentActivities.size() == activitiesFilled);
       }
       addActionMessage(getText("planning.activityList.validation.success", new String[] {String.valueOf(activityID)}));
     } else {
       addActionError(getText("saving.problem"));
     }
-
     return INPUT;
   }
 
@@ -271,7 +299,7 @@ public class ActivitiesPlanningAction extends BaseAction {
   public void validate() {
     if (save) {
       String result;
-      activityID = ownActivities.get(activityIndex).getId();
+      activityID = currentActivities.get(activityIndex).getId();
       // Check if the user can submit the activity
       if (!isValidActivity()) {
         addActionError(getText("planning.activityList.validation.noValidActivity",

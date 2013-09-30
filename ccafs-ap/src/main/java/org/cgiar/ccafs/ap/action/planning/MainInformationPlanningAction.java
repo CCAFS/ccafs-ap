@@ -221,6 +221,11 @@ public class MainInformationPlanningAction extends BaseAction {
 
     if (save) {
 
+      if (activity.getTitle().isEmpty()) {
+        validationMessage.append(getText("planning.mainInformation.validation.title") + ", ");
+        problem = true;
+      }
+
       // Validate if there is at least one contact person, if there is a contact person
       // without name nor email remove it from the list.
       if (activity.getContactPersons() != null && !activity.getContactPersons().isEmpty()) {

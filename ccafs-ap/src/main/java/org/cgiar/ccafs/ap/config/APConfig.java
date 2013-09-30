@@ -21,6 +21,7 @@ public class APConfig {
   private static final String PLANNING_CURRENT_YEAR = "ccafsap.planning.currentYear";
   private static final String START_YEAR = "ccafsap.startYear";
   private static final String END_YEAR = "ccafsap.endYear";
+  private static final String YEARS_FUTURE_PLANNING = "ccafsap.planning.future.years";
   private static final String PLANNING_ACTIVE = "ccafsap.planning.active";
   private static final String REPORTING_ACTIVE = "ccafsap.reporting.active";
   private static final String SUMMARIES_ACTIVE = "ccafsap.summaries.active";
@@ -114,6 +115,20 @@ public class APConfig {
       return properties.getPropertiesAsInt("file.maxSizeAllowed.bytes");
     } catch (Exception e) {
       LOG.error("there is not a maximun file size configured.");
+    }
+    return -1;
+  }
+
+  /**
+   * Get the number of future years that an user can plan.
+   * 
+   * @return an integer identifying the number of years.
+   */
+  public int getFuturePlanningYears() {
+    try {
+      return properties.getPropertiesAsInt(YEARS_FUTURE_PLANNING);
+    } catch (Exception e) {
+      LOG.error("There is not a number of future years that an user can plan.");
     }
     return -1;
   }
