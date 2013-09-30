@@ -216,7 +216,7 @@ public class ActivitiesPlanningAction extends BaseAction {
 
     // Load activities from previous years.
     for (int year = config.getStartYear(); year < config.getPlanningCurrentYear(); year++) {
-      previousActivities.put(year, activityManager.getPlanningActivityList(year, this.getCurrentUser()));
+      previousActivities.put(year, activityManager.getActivityListByYear(year));
     }
 
     // Load activities from futures years.

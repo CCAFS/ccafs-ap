@@ -116,20 +116,16 @@
           <div id="previousActivities">
             <ul>
               [#list previousActivities?keys as year]
-                <li><a href="#previousActivities-${year_index+1}"> ${year?c} </a></li>
+                [#if previousActivities.get(year)?has_content]
+                  <li><a href="#previousActivities-${year_index+1}"> ${year?c} </a></li>
+                [/#if]
               [/#list]
             </ul>
             [#list previousActivities?keys as year]
               [#if previousActivities.get(year)?has_content]
                 <div id="previousActivities-${year_index+1}">
                   [#assign listOfActivities = previousActivities.get(year)]
-                  [@activityList.activitiesList activities=listOfActivities canValidate=false canEditActivity=false /]                
-                </div>
-              [#else]
-                <div id="previousActivities-${year_index+1}">
-                  <div class="noActivities">
-                    [@s.text name="planning.activityList.empty" /]
-                  </div>
+                  [@activityList.activitiesList activities=listOfActivities canValidate=false canEditActivity=false owned=false /]                
                 </div>
               [/#if]
             [/#list]
@@ -139,7 +135,7 @@
       [#-- Related activities --]      
       [#if relatedActivities?has_content]
         <div id="activityTables-4" class="activityTable">      
-          [@activityList.activitiesList activities=relatedActivities canValidate=false canEditActivity=true /]
+          [@activityList.activitiesList activities=relatedActivities canValidate=false canEditActivity=true owned=false /]
         </div>
       [/#if]
       
