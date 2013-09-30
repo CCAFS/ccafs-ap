@@ -39,13 +39,13 @@ public class MySQLActivityDAO implements ActivityDAO {
     query.append("al.id as 'leader_id', al.acronym as 'leader_acronym', al.name as 'leader_name' ");
     query.append("FROM activities a ");
     query.append("LEFT JOIN activity_validations av ON a.id = av.activity_id ");
-    query.append("INNER JOIN milestones m ON a.milestone_id = m.id ");
-    query.append("INNER JOIN outputs op ON m.output_id = op.id ");
-    query.append("INNER JOIN objectives ob ON op.objective_id = ob.id ");
-    query.append("INNER JOIN themes th ON ob.theme_id = th.id ");
-    query.append("INNER JOIN logframes l ON th.logframe_id = l.id ");
+    query.append("LEFT JOIN milestones m ON a.milestone_id = m.id ");
+    query.append("LEFT JOIN outputs op ON m.output_id = op.id ");
+    query.append("LEFT JOIN objectives ob ON op.objective_id = ob.id ");
+    query.append("LEFT JOIN themes th ON ob.theme_id = th.id ");
+    query.append("LEFT JOIN logframes l ON th.logframe_id = l.id ");
     query.append("INNER JOIN activity_leaders al ON a.activity_leader_id = al.id ");
-    query.append("WHERE l.year = ");
+    query.append("WHERE a.year = ");
     query.append(year);
 
     try (Connection con = databaseManager.getConnection()) {
@@ -90,18 +90,18 @@ public class MySQLActivityDAO implements ActivityDAO {
     query.append("al.id as 'leader_id', al.acronym as 'leader_acronym', al.name as 'leader_name', ");
     query.append("a.status_description FROM activities a ");
     query.append("LEFT JOIN activity_validations av ON a.id = av.activity_id ");
-    query.append("INNER JOIN milestones m ON a.milestone_id = m.id ");
-    query.append("INNER JOIN outputs ou ON m.output_id = ou.id ");
-    query.append("INNER JOIN objectives ob ON ou.objective_id = ob.id ");
-    query.append("INNER JOIN themes th ON ob.theme_id = th.id ");
-    query.append("INNER JOIN logframes lo ON th.logframe_id = lo.id ");
+    query.append("LEFT JOIN milestones m ON a.milestone_id = m.id ");
+    query.append("LEFT JOIN outputs ou ON m.output_id = ou.id ");
+    query.append("LEFT JOIN objectives ob ON ou.objective_id = ob.id ");
+    query.append("LEFT JOIN themes th ON ob.theme_id = th.id ");
+    query.append("LEFT JOIN logframes lo ON th.logframe_id = lo.id ");
     query.append("INNER JOIN activity_leaders al ON a.activity_leader_id = al.id ");
     query.append("LEFT JOIN activity_status ast ON a.activity_status_id = ast.id ");
     query.append("WHERE 1 ");
 
 
     if (year != 0) {
-      query.append(" AND lo.year = ");
+      query.append(" AND a.year = ");
       query.append(year);
     }
 
@@ -154,10 +154,7 @@ public class MySQLActivityDAO implements ActivityDAO {
     query.append("FROM activities a ");
     query.append("INNER JOIN activity_leaders al ON al.id = a.activity_leader_id ");
     query.append("INNER JOIN milestones m ON m.id = a.milestone_id ");
-    query.append("INNER JOIN outputs o ON o.id = m.output_id ");
-    query.append("INNER JOIN objectives obj ON obj.id = o.objective_id ");
-    query.append("INNER JOIN themes t ON t.id = obj.theme_id ");
-    query.append("INNER JOIN logframes l on l.id = t.logframe_id " + "WHERE l.year = ");
+    query.append("WHERE a.year = ");
     query.append(year);
     query.append(" ORDER BY a.id");
     if (limit > 0) {
@@ -201,13 +198,9 @@ public class MySQLActivityDAO implements ActivityDAO {
     query.append(" FROM activities a");
     query.append(" LEFT JOIN contact_person cp ON cp.activity_id = a.id");
     query.append(" LEFT JOIN activity_validations av ON a.id = av.activity_id");
-    query.append(" INNER JOIN milestones m ON m.id = a.milestone_id");
-    query.append(" INNER JOIN outputs o ON o.id = m.output_id");
-    query.append(" INNER JOIN objectives ob ON ob.id = o.objective_id");
-    query.append(" INNER JOIN themes t ON t.id = ob.theme_id");
-    query.append(" INNER JOIN logframes l ON l.id = t.logframe_id");
+    query.append(" LEFT JOIN milestones m ON m.id = a.milestone_id");
     query.append(" INNER JOIN activity_leaders al ON al.id = a.activity_leader_id");
-    query.append(" WHERE l.year = ");
+    query.append(" WHERE a.year = ");
     query.append(year);
     query.append(" GROUP BY a.id");
     try (Connection connection = databaseManager.getConnection()) {
@@ -290,11 +283,7 @@ public class MySQLActivityDAO implements ActivityDAO {
   public int getActivityYear(int activityID) {
     LOG.debug(">> getActivityYear(activityID={})", activityID);
     int year = 0;
-    String query =
-      "SELECT l.year FROM activities a" + " INNER JOIN activity_leaders al ON al.id = a.activity_leader_id"
-        + " INNER JOIN milestones m ON m.id = a.milestone_id" + " INNER JOIN outputs o ON o.id = m.output_id"
-        + " INNER JOIN objectives obj ON obj.id = o.objective_id" + " INNER JOIN themes t ON t.id = obj.theme_id"
-        + " INNER JOIN logframes l ON l.id = t.logframe_id" + " WHERE a.id = " + activityID;
+    String query = "SELECT a.year FROM activities a" + " WHERE a.id = " + activityID;
     try (Connection con = databaseManager.getConnection()) {
       ResultSet rs = databaseManager.makeQuery(query, con);
       if (rs.next()) {
@@ -302,8 +291,7 @@ public class MySQLActivityDAO implements ActivityDAO {
       }
       rs.close();
     } catch (SQLException e) {
-      LOG.error("--getActivityYear() > There was an error getting the year of logframe linked with the activity {}.",
-        activityID, e);
+      LOG.error("--getActivityYear() > There was an error getting the year of the activity {}.", activityID, e);
     }
 
     LOG.debug("<< getActivityYear():{}", year);
@@ -322,13 +310,9 @@ public class MySQLActivityDAO implements ActivityDAO {
     query.append(" FROM activities a");
     query.append(" LEFT JOIN contact_person cp ON cp.activity_id = a.id");
     query.append(" LEFT JOIN activity_validations av ON a.id = av.activity_id");
-    query.append(" INNER JOIN milestones m ON m.id = a.milestone_id");
-    query.append(" INNER JOIN outputs o ON o.id = m.output_id");
-    query.append(" INNER JOIN objectives ob ON ob.id = o.objective_id");
-    query.append(" INNER JOIN themes t ON t.id = ob.theme_id");
-    query.append(" INNER JOIN logframes l ON l.id = t.logframe_id");
+    query.append(" LEFT JOIN milestones m ON m.id = a.milestone_id");
     query.append(" INNER JOIN activity_leaders al ON al.id = a.activity_leader_id");
-    query.append(" WHERE l.year = ");
+    query.append(" WHERE a.year = ");
     query.append(year);
     query.append(" AND al.id = ");
     query.append(leaderId);
@@ -374,17 +358,13 @@ public class MySQLActivityDAO implements ActivityDAO {
     query.append("FROM activities a ");
     query.append("LEFT JOIN contact_person cp ON cp.activity_id = a.id ");
     query.append("LEFT JOIN activity_validations av ON a.id = av.activity_id ");
-    query.append("INNER JOIN milestones m ON m.id = a.milestone_id ");
-    query.append("INNER JOIN outputs o ON o.id = m.output_id ");
-    query.append("INNER JOIN objectives ob ON ob.id = o.objective_id ");
-    query.append("INNER JOIN themes t ON t.id = ob.theme_id ");
-    query.append("INNER JOIN logframes l ON l.id = t.logframe_id ");
+    query.append("LEFT JOIN milestones m ON m.id = a.milestone_id ");
     query.append("INNER JOIN activity_leaders al ON al.id = a.activity_leader_id ");
     query.append("LEFT JOIN country_locations cl ON a.id = cl.activity_id ");
     query.append("LEFT JOIN countries co ON cl.country_iso2 = co.iso2 ");
     query.append("LEFT JOIN region_locations rl ON a.id = rl.activity_id ");
     query.append("LEFT JOIN regions r ON rl.region_id = r.id OR co.region_id = r.id ");
-    query.append(" WHERE l.year = ");
+    query.append(" WHERE a.year = ");
     query.append(year);
     query.append(" AND r.id = ");
     query.append(regionId);
@@ -397,13 +377,9 @@ public class MySQLActivityDAO implements ActivityDAO {
     query.append("FROM activities a ");
     query.append("LEFT JOIN contact_person cp ON cp.activity_id = a.id ");
     query.append("LEFT JOIN activity_validations av ON a.id = av.activity_id ");
-    query.append("INNER JOIN milestones m ON m.id = a.milestone_id ");
-    query.append("INNER JOIN outputs o ON o.id = m.output_id ");
-    query.append("INNER JOIN objectives ob ON ob.id = o.objective_id ");
-    query.append("INNER JOIN themes t ON t.id = ob.theme_id ");
-    query.append("INNER JOIN logframes l ON l.id = t.logframe_id ");
+    query.append("LEFT JOIN milestones m ON m.id = a.milestone_id ");
     query.append("INNER JOIN activity_leaders al ON al.id = a.activity_leader_id ");
-    query.append("WHERE l.year = ");
+    query.append("WHERE a.year = ");
     query.append(year);
     query.append(" AND al.id = ");
     query.append(leaderId);
@@ -453,13 +429,12 @@ public class MySQLActivityDAO implements ActivityDAO {
     query.append("FROM activities a ");
     query.append("LEFT JOIN contact_person cp ON cp.activity_id = a.id ");
     query.append("LEFT JOIN activity_validations av ON a.id = av.activity_id ");
-    query.append("INNER JOIN milestones m ON m.id = a.milestone_id ");
-    query.append("INNER JOIN outputs o ON o.id = m.output_id ");
-    query.append("INNER JOIN objectives ob ON ob.id = o.objective_id ");
-    query.append("INNER JOIN themes t ON t.id = ob.theme_id ");
-    query.append("INNER JOIN logframes l ON l.id = t.logframe_id ");
+    query.append("LEFT JOIN milestones m ON m.id = a.milestone_id ");
+    query.append("LEFT JOIN outputs op ON m.output_id = op.id ");
+    query.append("LEFT JOIN objectives ob ON op.objective_id = ob.id ");
+    query.append("LEFT JOIN themes t ON ob.theme_id = t.id ");
     query.append("INNER JOIN activity_leaders al ON al.id = a.activity_leader_id ");
-    query.append("WHERE l.year = ");
+    query.append("WHERE a.year = ");
     query.append(year);
     query.append(" AND t.code = ");
     query.append(themeCode);
@@ -472,13 +447,12 @@ public class MySQLActivityDAO implements ActivityDAO {
     query.append("FROM activities a ");
     query.append("LEFT JOIN contact_person cp ON cp.activity_id = a.id ");
     query.append("LEFT JOIN activity_validations av ON a.id = av.activity_id ");
-    query.append("INNER JOIN milestones m ON m.id = a.milestone_id ");
-    query.append("INNER JOIN outputs o ON o.id = m.output_id ");
-    query.append("INNER JOIN objectives ob ON ob.id = o.objective_id ");
-    query.append("INNER JOIN themes t ON t.id = ob.theme_id ");
-    query.append("INNER JOIN logframes l ON l.id = t.logframe_id ");
+    query.append("LEFT JOIN milestones m ON m.id = a.milestone_id ");
+    query.append("LEFT JOIN outputs op ON m.output_id = op.id ");
+    query.append("LEFT JOIN objectives ob ON op.objective_id = ob.id ");
+    query.append("LEFT JOIN themes t ON ob.theme_id = t.id ");
     query.append("INNER JOIN activity_leaders al ON al.id = a.activity_leader_id ");
-    query.append("WHERE l.year = ");
+    query.append("WHERE a.year = ");
     query.append(year);
     query.append(" AND al.id = ");
     query.append(leaderId);
@@ -552,12 +526,7 @@ public class MySQLActivityDAO implements ActivityDAO {
     List<Map<String, String>> activityTitles = new ArrayList<>();
     StringBuilder query = new StringBuilder("SELECT a.id, a.title");
     query.append(" FROM activities a");
-    query.append(" INNER JOIN milestones m ON m.id = a.milestone_id");
-    query.append(" INNER JOIN outputs o ON o.id = m.output_id");
-    query.append(" INNER JOIN objectives obj ON obj.id = o.objective_id");
-    query.append(" INNER JOIN themes t ON t.id = obj.theme_id");
-    query.append(" INNER JOIN logframes l ON l.id = t.logframe_id");
-    query.append(" WHERE l.year = ");
+    query.append(" WHERE a.year = ");
     query.append(year);
     try (Connection connection = databaseManager.getConnection()) {
       ResultSet rs = databaseManager.makeQuery(query.toString(), connection);
@@ -622,16 +591,17 @@ public class MySQLActivityDAO implements ActivityDAO {
     int activityID = -1;
     try (Connection con = databaseManager.getConnection()) {
       String addQuery =
-        "INSERT INTO activities (title, start_date, end_date, description, activity_leader_id, continuous_activity_id, is_commissioned, milestone_id) VALUES (?,?,?,?,?,?,?,?)";
-      Object[] values = new Object[8];
+        "INSERT INTO activities (title, start_date, end_date, year, description, activity_leader_id, continuous_activity_id, is_commissioned, milestone_id) VALUES (?,?,?,?,?,?,?,?,?)";
+      Object[] values = new Object[9];
       values[0] = activityData.get("title");
       values[1] = activityData.get("start_date");
       values[2] = activityData.get("end_date");
-      values[3] = activityData.get("description");
-      values[4] = activityData.get("activity_leader_id");
-      values[5] = activityData.get("continuous_activity_id");
-      values[6] = activityData.get("is_commissioned");
-      values[7] = activityData.get("milestone_id");
+      values[3] = activityData.get("year");
+      values[4] = activityData.get("description");
+      values[5] = activityData.get("activity_leader_id");
+      values[6] = activityData.get("continuous_activity_id");
+      values[7] = activityData.get("is_commissioned");
+      values[8] = activityData.get("milestone_id");
       int activityAdded = databaseManager.makeChangeSecure(con, addQuery, values);
       if (activityAdded > 0) {
         // Get the generated id of the added record.

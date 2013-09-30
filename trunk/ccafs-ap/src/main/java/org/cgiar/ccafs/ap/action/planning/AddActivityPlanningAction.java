@@ -2,6 +2,7 @@ package org.cgiar.ccafs.ap.action.planning;
 
 import org.cgiar.ccafs.ap.action.BaseAction;
 import org.cgiar.ccafs.ap.config.APConfig;
+import org.cgiar.ccafs.ap.config.APConstants;
 import org.cgiar.ccafs.ap.data.manager.ActivityManager;
 import org.cgiar.ccafs.ap.data.manager.LeaderManager;
 import org.cgiar.ccafs.ap.data.manager.LogframeManager;
@@ -15,11 +16,13 @@ import org.cgiar.ccafs.ap.data.model.Leader;
 import org.cgiar.ccafs.ap.data.model.Milestone;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
 import java.util.TreeMap;
 
 import com.google.inject.Inject;
+import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -39,7 +42,8 @@ public class AddActivityPlanningAction extends BaseAction {
   private Activity activity;
   private Map<Integer, String> continuousActivityList;
   private Milestone[] milestones;
-  private Leader[] leaders;
+  private List<Leader> leaders;
+  private int year;
 
   @Inject
   public AddActivityPlanningAction(APConfig config, LogframeManager logframeManager, ActivityManager activityManager,
@@ -59,7 +63,11 @@ public class AddActivityPlanningAction extends BaseAction {
     return continuousActivityList;
   }
 
-  public Leader[] getLeaders() {
+  public int getEndYear() {
+    return config.getEndYear();
+  }
+
+  public List<Leader> getLeaders() {
     return leaders;
   }
 
@@ -67,17 +75,29 @@ public class AddActivityPlanningAction extends BaseAction {
     return milestones;
   }
 
+  public int getStartYear() {
+    return config.getStartYear();
+  }
+
+  public int getYear() {
+    return year;
+  }
+
   @Override
   public void prepare() throws Exception {
-    super.prepare();
-
     LOG.info("User {} load the Add activity section", this.getCurrentUser().getEmail());
 
     milestones = milestoneManager.getMilestoneList(this.getCurrentPlanningLogframe());
-    leaders = leaderManager.getAllLeaders();
+
+    leaders = new ArrayList<>();
+    // Fake leader
+    Leader leader = new Leader(-1, getText("planning.addActivity.selectLeader"), "");
+    leaders.add(leader);
+    leaders.addAll(Arrays.asList(leaderManager.getAllLeaders()));
+
     Activity[] oldActivities = activityManager.getActivitiesTitle(this.getCurrentPlanningLogframe().getYear() - 1);
     String text;
-    continuousActivityList.put(-1, "Select an activity.");
+    continuousActivityList.put(-1, getText("planning.addActivity.selectActivity"));
     for (Activity oldActivitie : oldActivities) {
       text =
         oldActivitie.getId()
@@ -85,6 +105,15 @@ public class AddActivityPlanningAction extends BaseAction {
           + (oldActivitie.getTitle().length() > 40 ? oldActivitie.getTitle().substring(0, 40) : oldActivitie.getTitle())
           + "...";
       continuousActivityList.put(oldActivitie.getId(), text);
+    }
+
+    String yearString;
+    yearString = StringUtils.trim(this.getRequest().getParameter(APConstants.ACTIVITY_YEAR_REQUEST));
+    try {
+      year = Integer.parseInt(yearString);
+    } catch (NumberFormatException e) {
+      LOG.error("-- prepare() > There was an error parsing the year to create a new activity: '{}'.", yearString, e);
+      year = 0;
     }
   }
 
@@ -141,13 +170,44 @@ public class AddActivityPlanningAction extends BaseAction {
       return SUCCESS;
     } else {
       LOG.warn("There was a problem saving the new activity into the database");
-      addActionMessage(getText("saving.problem"));
+      addActionError(getText("saving.problem"));
+      return INPUT;
     }
-    return super.save();
   }
 
   public void setActivity(Activity activity) {
     this.activity = activity;
   }
 
+  @Override
+  public void validate() {
+    boolean problem = false;
+
+    if (save) {
+      if (activity.getTitle().isEmpty()) {
+        addFieldError("activity.title", getText("validation.field.required"));
+        problem = true;
+      }
+
+      if (activity.getLeader() == null) {
+        addFieldError("activity.leader", getText("validation.field.required"));
+        problem = true;
+      }
+
+      if (activity.getContinuousActivity() == null) {
+        if (activity.getStartDate() == null) {
+          addFieldError("activity.startDate", getText("validation.field.required"));
+          problem = true;
+        }
+        if (activity.getEndDate() == null) {
+          addFieldError("activity.endDate", getText("validation.field.required"));
+          problem = true;
+        }
+      }
+
+      if (problem) {
+        addActionError(getText("Please fill the required fields or correct the indicated values."));
+      }
+    }
+  }
 }

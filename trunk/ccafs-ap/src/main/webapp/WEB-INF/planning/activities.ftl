@@ -9,6 +9,7 @@
 [#include "/WEB-INF/global/pages/header.ftl" /]
 [#include "/WEB-INF/global/pages/main-menu.ftl" /]
 [#import "/WEB-INF/global/macros/utils.ftl" as utilities/]
+[#import "/WEB-INF/planning/activitiesList.ftl" as activityList/]
     
 <section id="activityListPlanning" class="content">
   <div class="helpMessage">
@@ -23,87 +24,28 @@
     <div id="activityTables">
       <ul>
         <li><a href="#activityTables-1"> [@s.text name="planning.activityList.currentActivities" /] </a></li>
-        [#if othersActivities?has_content]
-          <li><a href="#activityTables-2"> [@s.text name="planning.activityList.relatedActivities" /] </a></li>
-          <li><a href="#activityTables-3"> [@s.text name="planning.activityList.pastActivities" /] </a></li>
-        [#else]
-          <li><a href="#activityTables-3"> [@s.text name="planning.activityList.pastActivities" /] </a></li>
+        <li><a href="#activityTables-2"> [@s.text name="planning.activityList.futureActivities" /] </a></li>
+        <li><a href="#activityTables-3"> [@s.text name="planning.activityList.previousActivities" /] </a></li>
+        [#if relatedActivities?has_content]
+          <li><a href="#activityTables-4"> [@s.text name="planning.activityList.relatedActivities" /] </a></li>
         [/#if]
-        
       </ul>
-      
-      <div id="activityTables-1">
+
+      [#-- Current activities --]      
+      <div id="activityTables-1" class="activityTable">
         [#if workplanSubmitted]
           <p class="workplanSubmitted">[@s.text name="planning.activityList.workplanSubmitted" /]</p>
         [/#if]
-        <table id="ownActivitiesTable" class="activityList">
-        <thead>
-          <tr>
-            <th id="id">[@s.text name="planning.activityList.id" /]</th>
-            <th id="activity">[@s.text name="planning.activityList.activity" /]</th>
-            <th id="contactPerson">[@s.text name="planning.activityList.contactPerson" /]</th>
-            <th id="theme">[@s.text name="planning.activityList.milestone" /]</th>
-            <th id="validated">[@s.text name="planning.activityList.validated" /]</th>
-          </tr>
-        </thead>
-        <tbody>
-          [#if ownActivities?has_content]
-            [#list ownActivities as activity]
-              <tr>
-                <td>
-                  <a href=" [@s.url action='mainInformation' includeParams='get'] [@s.param name='${activityRequestParameter}']${activity.id}[/@s.param] [/@s.url]" >
-                    ${activity.id}
-                  </a> 
-                </td>
-                <td class="left">
-                  <a href="
-                  [@s.url action='mainInformation' includeParams='get']
-                    [@s.param name='${activityRequestParameter}']${activity.id}[/@s.param]
-                  [/@s.url]
-                  " title="${activity.title}">
-                    [#if activity.title?length < 70] ${activity.title}</a> [#else] [@utilities.wordCutter string=activity.title maxPos=70 /]...</a> [/#if]
-                </td>
-                <td>
-                  [#if activity.contactPersons??]
-                    [#if activity.contactPersons[0].email?has_content]
-                      <a href="mailto:${activity.contactPersons[0].email}">${activity.contactPersons[0].name}</a>
-                    [#else]
-                      ${activity.contactPersons[0].name}
-                    [/#if]
-                  [#else]
-                    [@s.text name="planning.activityList.contactPerson.empty" /]
-                  [/#if]
-                </td>               
-                <td>${activity.milestone.code}</td>
-                <td>
-                  [#if activity.validated]
-                    <img src="${baseUrl}/images/global/icon-complete.png" alt="Activity submitted" title="Activity submitted" />
-                  [#else]
-                    [#-- The PI only can see a notification, they can't validate the activity --]
-                    [#if currentUser.PI]
-                      <img src="${baseUrl}/images/global/icon-incomplete.png" alt="This activity has not been validated yet" title="This activity has not been validated yet" />
-                    [#else]
-                      [#-- The CP/TL/RPL can validate the activity if needed --]
-                      [#if activityID == activity.id]
-                        [#-- User tried to submit this activity but there is some missing data. --]
-                        <img src="${baseUrl}/images/global/icon-incomplete.png" alt="There is missing data" title="There is missing data" />
-                      [#else]
-                        [#-- We send the index of the activity in the array, not the activity identifier  --]
-                        [#-- in order find quickly the activity in the array to modify it.  --]
-                        [@s.form action="activities" cssClass="buttons"]
-                          <input name="activityIndex" value="${activity_index}" type="hidden"/>
-                          [@s.submit type="button" name="save"][@s.text name="form.buttons.validate" /][/@s.submit]
-                        [/@s.form]  
-                      [/#if]
-                    [/#if]
-                  [/#if]
-                </td>            
-              </tr>
-            [/#list]
-          [/#if]
-          </tbody>
-        </table>
-        [#if currentUser.TL || currentUser.RPL || currentUser.admin ]
+        
+        [#if currentActivities?has_content]
+          [@activityList.activitiesList activities=currentActivities canValidate=true canEditActivity=true /]
+        [#else]
+          <div class="noActivities">
+            [@s.text name="planning.activityList.empty" /]
+          </div>
+        [/#if]
+        
+        [#if !currentUser.PI ]
           [#-- If the workplan hasn't been submitted yet, show the button --]
           [#if !workplanSubmitted]
             <div id="submitButtonBlock" class="buttons">
@@ -117,90 +59,93 @@
             </div>
           [/#if]
         [/#if]
+        
+        [#-- Show the Add activity button if the workplan hasn't been submitted yet--]
+        [#if !workplanSubmitted]
+          <div id="addActivity">
+            <a href=" [@s.url action='addActivity' includeParams='get'] [@s.param name='${activityYearRequest}']${currentYear?c}[/@s.param] [/@s.url]" >
+              [@s.text name="planning.activityList.addActivity" /]
+            </a>
+          </div>
+        [/#if]
       </div>
   
-      [#if othersActivities?has_content]
-        <div id="activityTables-2">      
-          <table id="othersActivitiesTable" class="activityList">
-            <thead>
-              <tr>
-                <th id="id">[@s.text name="planning.activityList.id" /]</th>
-                <th id="activity">[@s.text name="planning.activityList.activity" /]</th>
-                <th id="leaderName">[@s.text name="planning.activityList.leader" /]</th>
-                <th id="theme">[@s.text name="planning.activityList.milestone" /]</th>
-              </tr>
-            </thead>
-            <tbody>
-            [#if othersActivities?has_content]
-              [#list othersActivities as activity]
-                <tr>
-                  <td>
-                    <a href=" [@s.url action='mainInformation' includeParams='get'] [@s.param name='${activityRequestParameter}']${activity.id}[/@s.param] [/@s.url]" >
-                      ${activity.id}
-                    </a> 
-                  </td>
-                  <td class="left">
-                    <a href="
-                    [@s.url action='mainInformation' includeParams='get']
-                      [@s.param name='${activityRequestParameter}']${activity.id}[/@s.param]
-                    [/@s.url]
-                    " title="${activity.title}">
-                      [#if activity.title?length < 70] ${activity.title}</a> [#else] [@utilities.wordCutter string=activity.title maxPos=70 /]...</a> [/#if]
-                  </td>
-                  <td>${activity.leader.acronym}</td>
-                  <td>${activity.milestone.code}</td>
-                </tr>
-              [/#list]
+      [#-- Future activities --]
+      <div id="activityTables-2" class="activityTable">
+        <div id="futureActivities">
+          <ul>
+            [#list futureActivities?keys as year]
+              <li><a href="#futureActivities-${year_index+1}"> ${year?c} </a></li>
+            [/#list]
+          </ul>
+          [#list futureActivities?keys as year]
+            [#if futureActivities.get(year)?has_content]
+              <div id="futureActivities-${year_index+1}">
+                [#assign listOfActivities = futureActivities.get(year)]
+                [@activityList.activitiesList activities=listOfActivities canValidate=false canEditActivity=true /]                
+                
+                [#-- Add activity button --]
+                <div id="addActivity">
+                  <a href=" [@s.url action='addActivity' includeParams='get'] [@s.param name='${activityYearRequest}']${year?c}[/@s.param] [/@s.url]" >
+                    [@s.text name="planning.activityList.addActivity" /]
+                  </a>
+                </div>
+              </div>
+            [#else]
+              <div id="futureActivities-${year_index+1}">
+                <div class="noActivities">
+                  [@s.text name="planning.activityList.empty" /]
+                </div>
+                
+                [#-- Add activity button --]
+                <div id="addActivity">
+                  <a href=" [@s.url action='addActivity' includeParams='get'] [@s.param name='${activityYearRequest}']${year?c}[/@s.param] [/@s.url]" >
+                    [@s.text name="planning.activityList.addActivity" /]
+                  </a>
+                </div>
+              </div>
             [/#if]
-            </tbody>
-          </table>
+          [/#list]
+          
+        </div>
+        
+      </div>
+          
+      [#-- Previous activities --]
+      <div id="activityTables-3" class="activityTable">
+          <div id="previousActivities">
+            <ul>
+              [#list previousActivities?keys as year]
+                <li><a href="#previousActivities-${year_index+1}"> ${year?c} </a></li>
+              [/#list]
+            </ul>
+            [#list previousActivities?keys as year]
+              [#if previousActivities.get(year)?has_content]
+                <div id="previousActivities-${year_index+1}">
+                  [#assign listOfActivities = previousActivities.get(year)]
+                  [@activityList.activitiesList activities=listOfActivities canValidate=false canEditActivity=false /]                
+                </div>
+              [#else]
+                <div id="previousActivities-${year_index+1}">
+                  <div class="noActivities">
+                    [@s.text name="planning.activityList.empty" /]
+                  </div>
+                </div>
+              [/#if]
+            [/#list]
+          </div>
+      </div>
+
+      [#-- Related activities --]      
+      [#if relatedActivities?has_content]
+        <div id="activityTables-4" class="activityTable">      
+          [@activityList.activitiesList activities=relatedActivities canValidate=false canEditActivity=true /]
         </div>
       [/#if]
-  
-      <div id="activityTables-3">
-        <table id="pastActivitiesTable" class="activityList">
-          <thead>
-            <tr>
-              <th id="id">[@s.text name="planning.activityList.id" /]</th>
-              <th id="activity">[@s.text name="planning.activityList.activity" /]</th>
-              <th id="leaderName">[@s.text name="planning.activityList.leader" /]</th>
-              <th id="theme">[@s.text name="planning.activityList.milestone" /]</th>
-            </tr>
-          </thead>
-          <tbody>
-          [#if pastActivities?has_content]
-            [#list pastActivities as activity]
-              <tr>
-                <td>
-                  <a target="_blank" href=" [@s.url action='activity' namespace="/home" includeParams='get'] [@s.param name='${publicActivityRequestParameter}']${activity.id}[/@s.param] [/@s.url]" >
-                    ${activity.id}
-                  </a> 
-                </td>
-                <td class="left">
-                  <a target="_blank" href="
-                  [@s.url action='activity' namespace="/home" includeParams='get']
-                    [@s.param name='${publicActivityRequestParameter}']${activity.id}[/@s.param]
-                  [/@s.url]
-                  " title="${activity.title}">
-                    [#if activity.title?length < 70] ${activity.title}</a> [#else] [@utilities.wordCutter string=activity.title maxPos=70 /]...</a> [/#if]
-                </td>
-                <td>${activity.leader.acronym}</td>
-                <td>${activity.milestone.code}</td>
-              </tr>
-            [/#list]
-          [/#if]
-          </tbody>
-        </table>
-      </div>
       
     </div>
     
     <div class="clearfix"></div>
-    [#if currentUser.admin]
-      <div id="addActivity">
-        <a href="${baseUrl}/planning/addActivity.do">Add new activity</a>
-      </div>
-    [/#if]
   </article>
   </section>
 [#include "/WEB-INF/global/pages/footer.ftl"]

@@ -1,3 +1,7 @@
+.dataTables_wrapper {
+  margin-bottom: 30px;
+}
+
 /* Search Bar */
 .dataTables_filter {
   margin-top: 10px;

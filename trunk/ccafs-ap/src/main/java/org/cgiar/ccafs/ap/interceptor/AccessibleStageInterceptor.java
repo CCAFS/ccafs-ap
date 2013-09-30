@@ -41,6 +41,12 @@ public class AccessibleStageInterceptor extends AbstractInterceptor {
       } else {
         return BaseAction.NOT_AUTHORIZED;
       }
+    } else if (stageName.equals("/summaries")) {
+      if (config.isSummariesActive()) {
+        return invocation.invoke();
+      } else {
+        return BaseAction.NOT_AUTHORIZED;
+      }
     } else {
       return invocation.invoke();
     }

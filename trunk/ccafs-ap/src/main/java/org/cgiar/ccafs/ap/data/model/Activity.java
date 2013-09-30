@@ -9,6 +9,7 @@ import org.apache.commons.lang3.builder.ToStringBuilder;
 public class Activity {
 
   private int id;
+  private int year;
   private String title;
   private Date startDate;
   private Date endDate;
@@ -175,6 +176,10 @@ public class Activity {
     return title;
   }
 
+  public int getYear() {
+    return year;
+  }
+
   public boolean isCommissioned() {
     return commissioned;
   }
@@ -291,12 +296,16 @@ public class Activity {
     this.statusDescription = statusDescription;
   }
 
+  public void setTitle(String title) {
+    this.title = title;
+  }
+
   public void setValidated(boolean isValidated) {
     this.isValidated = isValidated;
   }
 
-  public void setTitle(String title) {
-    this.title = title;
+  public void setYear(int year) {
+    this.year = year;
   }
 
   @Override
