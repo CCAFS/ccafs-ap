@@ -6,10 +6,14 @@ import java.io.IOException;
 import java.util.Properties;
 
 import com.google.inject.Singleton;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 @Singleton
 public class PropertiesManager {
 
+  // Logger
+  private static final Logger LOG = LoggerFactory.getLogger(PropertiesManager.class);
   private Properties properties;
   private static String PROPERTIES_FILE = "ccafsap.properties";
 
@@ -18,9 +22,8 @@ public class PropertiesManager {
     try {
       properties.load(new FileInputStream(PROPERTIES_FILE));
     } catch (IOException e) {
-      System.out.println("The indicated file has not been found, file needed: \""
-        + new File(PROPERTIES_FILE).getAbsolutePath() + "\"");
-      e.getLocalizedMessage();
+      LOG.error("The indicated file has not been found, file needed: \"" + new File(PROPERTIES_FILE).getAbsolutePath()
+        + "\"", e);
       System.exit(-1);
     }
   }
@@ -36,8 +39,9 @@ public class PropertiesManager {
   public float[] getPropertiesAsFloatArray(String name) {
     String[] str = getPropertiesAsString(name).split(";");
     float[] array = new float[str.length];
-    for (int i = 0; i < str.length; i++)
+    for (int i = 0; i < str.length; i++) {
       array[i] = Float.parseFloat(str[i]);
+    }
 
     return array;
   }
@@ -49,8 +53,9 @@ public class PropertiesManager {
   public int[] getPropertiesAsIntArray(String name) {
     String[] str = getPropertiesAsString(name).split(";");
     int[] array = new int[str.length];
-    for (int i = 0; i < str.length; i++)
+    for (int i = 0; i < str.length; i++) {
       array[i] = Integer.parseInt(str[i]);
+    }
 
     return array;
   }

@@ -345,6 +345,21 @@ public class ActivityManagerImpl implements ActivityManager {
   }
 
   @Override
+  public Activity[] getActivitiesTitle(int year, Leader leader) {
+    List<Map<String, String>> activityData = activityDAO.getTitles(year, leader.getId());
+    if (activityData.size() > 0) {
+      Activity[] activities = new Activity[activityData.size()];
+      for (int c = 0; c < activities.length; c++) {
+        activities[c] = new Activity();
+        activities[c].setId(Integer.parseInt(activityData.get(c).get("id")));
+        activities[c].setTitle(activityData.get(c).get("title"));
+      }
+      return activities;
+    }
+    return null;
+  }
+
+  @Override
   public Activity getActivity(int id) {
     // Activity DATA
     Map<String, String> activityData = activityDAO.getActivityStatusInfo(id);
@@ -361,28 +376,42 @@ public class ActivityManagerImpl implements ActivityManager {
     activity.setTitle(activityData.get("title"));
     activity.setDescription(activityData.get("description"));
     SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM");
-    try {
-      activity.setStartDate(dateFormat.parse(activityData.get("start_date")));
-    } catch (ParseException e) {
-      String msg =
-        "There was an error parsing the start date '" + activityData.get("start_date") + "' for the activity "
-          + activity.getId() + ".";
-      LOG.error(msg, e);
+    if (activityData.get("start_date") == null) {
+      activity.setStartDate(null);
+    } else {
+      try {
+        activity.setStartDate(dateFormat.parse(activityData.get("start_date")));
+      } catch (ParseException e) {
+        String msg =
+          "There was an error parsing the start date '" + activityData.get("start_date") + "' for the activity "
+            + activity.getId() + ".";
+        LOG.error(msg, e);
+      }
     }
-    try {
-      activity.setEndDate(dateFormat.parse(activityData.get("end_date")));
-    } catch (ParseException e) {
-      String msg =
-        "There was an error parsing the end date '" + activityData.get("end_date") + "' for the activity "
-          + activity.getId() + ".";
-      LOG.error(msg, e);
+
+    if (activityData.get("end_date") == null) {
+      activity.setEndDate(null);
+    } else {
+      try {
+        activity.setEndDate(dateFormat.parse(activityData.get("end_date")));
+      } catch (ParseException e) {
+        String msg =
+          "There was an error parsing the end date '" + activityData.get("end_date") + "' for the activity "
+            + activity.getId() + ".";
+        LOG.error(msg, e);
+      }
     }
+
     // Objectives
     activity.setObjectives(activityObjectiveManager.getActivityObjectives(activity.getId()));
     // Contact Persons
     activity.setContactPersons(contactPersonManager.getContactPersons(activity.getId()));
-    Milestone milestone = milestoneManager.getMilestone(Integer.parseInt(activityData.get("milestone_id")));
-    activity.setMilestone(milestone);
+    if (activityData.get("milestone_id") != null) {
+      Milestone milestone = milestoneManager.getMilestone(Integer.parseInt(activityData.get("milestone_id")));
+      activity.setMilestone(milestone);
+    } else {
+      activity.setMilestone(null);
+    }
     // Deliverables
     activity.setDeliverables(deliverableManager.getDeliverables(activity.getId()));
     // Partners
@@ -604,6 +633,7 @@ public class ActivityManagerImpl implements ActivityManager {
       Activity activity = new Activity();
       activity.setId(id);
       activity.setTitle(activityDB.get("title"));
+      activity.setYear(Integer.parseInt(activityDB.get("year")));
 
       Leader activityLeader = new Leader();
       activityLeader.setId(Integer.parseInt(activityDB.get("leader_id")));

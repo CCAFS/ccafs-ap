@@ -234,8 +234,6 @@ public class MainInformationPlanningAction extends BaseAction {
           if (!activity.getContactPersons().get(c).getEmail().isEmpty()) {
             if (!EmailValidator.isValidEmail(activity.getContactPersons().get(c).getEmail())) {
               validationMessage.append(getText("planning.mainInformation.validation.invalidEmail") + ", ");
-              addFieldError("activity.contactPersons[" + c + "].email",
-                getText("validation.invalid", new String[] {getText("planning.mainInformation.contactEmail")}));
               problem = true;
             }
           } else {
