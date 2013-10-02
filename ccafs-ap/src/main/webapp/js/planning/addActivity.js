@@ -3,7 +3,7 @@ $(document).ready(function() {
   $("#addActivity_activity_continuousActivity").on("change", checkIsContinuation);
   
   // If the activity is commisioned change the leader
-  $("#addActivity_activity_leader_commisioned").on('change', changeLeader);
+  $("#addActivity_activity_commissioned").on('change', changeLeader);
   
   datePickerConfig();
 });
@@ -19,10 +19,14 @@ function changeLeader(event){
 
   if($(element).val() == -1){
     $("#addActivity_activity_leader").attr("name", "activity.leader");
-    $("#addActivity_activity_leader_commisioned").attr("name", "activity.leader.null");
+    $("#addActivity_activity_commissioned").attr("name", "activity.leader.null");
+    // Set to false the commissioned atribute
+    $("#commissionedActivity").attr("checked", false);
   }else{
     $("#addActivity_activity_leader").attr("name", "activity.leader.null");
-    $("#addActivity_activity_leader_commisioned").attr("name", "activity.leader");
+    $("#addActivity_activity_commissioned").attr("name", "activity.leader");
+    // Set to true the commissioned atribute
+    $("#commissionedActivity").attr("checked", true);
   }
 }
 
@@ -33,6 +37,7 @@ function checkIsContinuation(event){
   var element = $(event.target);
   if($(element).val() == -1){
     $("#datesBlock").fadeIn("slow");
+    $("#leaderBlock").fadeIn("slow");
     // Enable the dates inputs 
     $("#activity\\.startDate").attr("disabled", false);
     $("#activity\\.endDate").attr("disabled", false);
@@ -41,9 +46,8 @@ function checkIsContinuation(event){
     $("#activity\\.startDate").prop("disabled", true);
     $("#activity\\.endDate").prop("disabled", true);
     $("#datesBlock").fadeOut("slow");
+    $("#leaderBlock").fadeOut("slow");
   }
-  
-  console.log($(element).val());
 }
 
 

@@ -109,6 +109,15 @@ public interface ActivityDAO {
   public List<Map<String, String>> getTitles(int year);
 
   /**
+   * Get a list of activities populated only with the id and title.
+   * 
+   * @param year - the year when the activities were added.
+   * @param activityLeaderId - The leader identifier.
+   * @return a list of maps with the id, and title for each activity.
+   */
+  public List<Map<String, String>> getTitles(int year, int activityLeaderId);
+
+  /**
    * Check if the activity given have been validated.
    * 
    * @param activityID - activity identifier.

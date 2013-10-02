@@ -99,7 +99,7 @@ public class DeliverablesPlanningAction extends BaseAction {
 
   public List<String> getYearList() {
     List<String> years = new ArrayList<>();
-    for (int c = config.getPlanningCurrentYear(); c <= config.getEndYear(); c++) {
+    for (int c = activity.getYear(); c <= config.getEndYear(); c++) {
       years.add(String.valueOf(c));
     }
     return years;
@@ -228,8 +228,6 @@ public class DeliverablesPlanningAction extends BaseAction {
   @Override
   public void validate() {
     boolean anyError = false;
-    boolean fileFormatNeeded = false;
-    Deliverable deliverable;
 
     // Validate only if exists deliverables
     if ((save) && activity.getDeliverables() != null) {

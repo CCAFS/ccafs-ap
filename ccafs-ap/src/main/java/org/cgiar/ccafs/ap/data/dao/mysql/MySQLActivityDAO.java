@@ -494,13 +494,14 @@ public class MySQLActivityDAO implements ActivityDAO {
 
     Map<String, String> activity = new HashMap<>();
     String query =
-      "SELECT a.title, a.id, al.id as 'leader_id', 'al.name' as 'leader_name', al.acronym as 'leader_acronym' "
+      "SELECT a.title, a.id, a.year, al.id as 'leader_id', 'al.name' as 'leader_name', al.acronym as 'leader_acronym' "
         + "FROM activities a, activity_leaders al " + "WHERE a.activity_leader_id = al.id AND a.id = " + id;
     try (Connection con = databaseManager.getConnection()) {
       ResultSet rs = databaseManager.makeQuery(query, con);
       if (rs.next()) {
         activity.put("title", rs.getString("title"));
         activity.put("id", rs.getString("id"));
+        activity.put("year", rs.getString("year"));
         activity.put("leader_id", rs.getString("leader_id"));
         activity.put("leader_name", rs.getString("leader_name"));
         activity.put("leader_acronym", rs.getString("leader_acronym"));
@@ -528,6 +529,35 @@ public class MySQLActivityDAO implements ActivityDAO {
     query.append(" FROM activities a");
     query.append(" WHERE a.year = ");
     query.append(year);
+    try (Connection connection = databaseManager.getConnection()) {
+      ResultSet rs = databaseManager.makeQuery(query.toString(), connection);
+      while (rs.next()) {
+        Map<String, String> activityData = new HashMap<>();
+        activityData.put("id", rs.getString("id"));
+        activityData.put("title", rs.getString("title"));
+        activityTitles.add(activityData);
+      }
+      rs.close();
+    } catch (SQLException e) {
+      LOG.error(
+        "-- getTitles() > There was an error trying to get the list of activity titles that belong to the year {}.",
+        year, e);
+    }
+
+    LOG.debug("<< getTitles():activityTitles.size={}", activityTitles.size());
+    return activityTitles;
+  }
+
+  @Override
+  public List<Map<String, String>> getTitles(int year, int activityLeaderId) {
+    LOG.debug(">> getTitles(year={}, activityLeaderId={})", year, activityLeaderId);
+    List<Map<String, String>> activityTitles = new ArrayList<>();
+    StringBuilder query = new StringBuilder("SELECT a.id, a.title");
+    query.append(" FROM activities a");
+    query.append(" WHERE a.year = ");
+    query.append(year);
+    query.append(" AND a.activity_leader_id = ");
+    query.append(activityLeaderId);
     try (Connection connection = databaseManager.getConnection()) {
       ResultSet rs = databaseManager.makeQuery(query.toString(), connection);
       while (rs.next()) {

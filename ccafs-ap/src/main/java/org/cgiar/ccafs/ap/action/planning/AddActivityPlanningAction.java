@@ -95,26 +95,54 @@ public class AddActivityPlanningAction extends BaseAction {
     leaders.add(leader);
     leaders.addAll(Arrays.asList(leaderManager.getAllLeaders()));
 
-    Activity[] oldActivities = activityManager.getActivitiesTitle(this.getCurrentPlanningLogframe().getYear() - 1);
-    String text;
-    continuousActivityList.put(-1, getText("planning.addActivity.selectActivity"));
-    for (Activity oldActivitie : oldActivities) {
-      text =
-        oldActivitie.getId()
-          + " - "
-          + (oldActivitie.getTitle().length() > 40 ? oldActivitie.getTitle().substring(0, 40) : oldActivitie.getTitle())
-          + "...";
-      continuousActivityList.put(oldActivitie.getId(), text);
-    }
-
     String yearString;
     yearString = StringUtils.trim(this.getRequest().getParameter(APConstants.ACTIVITY_YEAR_REQUEST));
+
     try {
-      year = Integer.parseInt(yearString);
+      if (yearString == null) {
+        // Check if the activity already has a year defined
+        if (activity != null && activity.getYear() != 0) {
+          year = activity.getYear();
+        } else {
+          year = getCurrentPlanningLogframe().getYear();
+        }
+      } else {
+        year = (yearString != null) ? Integer.parseInt(yearString) : getCurrentPlanningLogframe().getYear();
+      }
     } catch (NumberFormatException e) {
       LOG.error("-- prepare() > There was an error parsing the year to create a new activity: '{}'.", yearString, e);
-      year = 0;
+      year = getCurrentPlanningLogframe().getYear();
     }
+
+    Activity[] oldActivities;
+    if (getCurrentUser().isAdmin()) {
+      oldActivities = activityManager.getActivitiesTitle(year - 1);
+    } else {
+      oldActivities = activityManager.getActivitiesTitle(year - 1, getCurrentUser().getLeader());
+    }
+
+    if (oldActivities != null) {
+      continuousActivityList.put(-1, getText("planning.addActivity.selectActivity"));
+      StringBuilder text;
+      for (Activity oldActivitie : oldActivities) {
+        text = new StringBuilder();
+        text.append(oldActivitie.getId());
+        text.append(" - ");
+
+        if (oldActivitie.getTitle().length() > 40) {
+          text.append(oldActivitie.getTitle().substring(0, 40));
+          text.append("...");
+        } else {
+          text.append(oldActivitie.getTitle());
+        }
+
+        continuousActivityList.put(oldActivitie.getId(), text.toString());
+      }
+    } else {
+      // If the user doesn't have activities from previous years show a message
+      continuousActivityList.put(-1, getText("planning.addActivity.noActivityFromPreviousYear"));
+    }
+
   }
 
   @Override
@@ -188,21 +216,9 @@ public class AddActivityPlanningAction extends BaseAction {
         addFieldError("activity.title", getText("validation.field.required"));
         problem = true;
       }
-
       if (activity.getLeader() == null) {
         addFieldError("activity.leader", getText("validation.field.required"));
         problem = true;
-      }
-
-      if (activity.getContinuousActivity() == null) {
-        if (activity.getStartDate() == null) {
-          addFieldError("activity.startDate", getText("validation.field.required"));
-          problem = true;
-        }
-        if (activity.getEndDate() == null) {
-          addFieldError("activity.endDate", getText("validation.field.required"));
-          problem = true;
-        }
       }
 
       if (problem) {

@@ -25,10 +25,12 @@
         <p>${activity.title}</p>
       </div>
       
-      <div id="activityDescription" class="fullBlock">
-        <h6>[@s.text name="home.activity.description" /]</h6>
-        <p>${activity.description}</p>
-      </div>
+      [#if activity.description?has_content]
+        <div id="activityDescription" class="fullBlock">
+          <h6>[@s.text name="home.activity.description" /]</h6>
+          <p>${activity.description}</p>
+        </div>
+      [/#if]
       
       <table id="generalInformation"  class="fullBlock">
         <tbody>
@@ -44,7 +46,7 @@
             <td class="title">[@s.text name="home.activity.milestone" /]</td>
             <td>
               <a class="popup" href="[@s.url action='milestone'][@s.param name='${milestoneRequestParameter}']${activity.milestone.id}[/@s.param][/@s.url]">
-                ${activity.milestone.code}
+                [#if milestone?has_content]${activity.milestone.code}[/#if]
               </a>
             </td>
           </tr>

@@ -19,11 +19,11 @@
   </div>
   
   <article class="fullContent">
-    <h1>[#if currentUser.leader??]${currentUser.leader.name}[/#if] ([@s.text name="planning.activityList.activities" /] ${currentPlanningLogframe.year?c})</h1>   
+    <h1>[#if currentUser.leader??]${currentUser.leader.name}[/#if] [@s.text name="planning.activityList.activities" /] </h1>   
     
     <div id="activityTables">
       <ul>
-        <li><a href="#activityTables-1"> [@s.text name="planning.activityList.currentActivities" /] </a></li>
+        <li><a href="#activityTables-1"> [@s.text name="planning.activityList.activities" /] ${currentYear?c} </a></li>
         <li><a href="#activityTables-2"> [@s.text name="planning.activityList.futureActivities" /] </a></li>
         <li><a href="#activityTables-3"> [@s.text name="planning.activityList.previousActivities" /] </a></li>
         [#if relatedActivities?has_content]
@@ -39,29 +39,34 @@
         
         [#if currentActivities?has_content]
           [@activityList.activitiesList activities=currentActivities canValidate=true canEditActivity=true /]
+          
+          [#-- If the workplan hasn't been submitted yet, show the button --]
+          [#if !workplanSubmitted]
+            [#if !currentUser.PI ]
+              <div id="submitButtonBlock" class="buttons">
+                [#if canSubmit]
+                  [@s.form action="activities" ]
+                    [@s.submit type="button" name="save" method="submit" ][@s.text name="form.buttons.submit" /][/@s.submit] 
+                  [/@s.form]  
+                [#else]
+                  <button class="disabled" title="[@s.text name="planning.activityList.submit.disabled" /]"> [@s.text name="form.buttons.submit" /] </button>
+                [/#if]
+              </div>
+            [/#if]
+          [#else]
+            <div id="submitButtonBlock" class="buttons">
+              <img src="${baseUrl}/images/global/icon-complete.png" /> [@s.text name="planning.activityList.submitted" /]
+            </div>
+          [/#if]
+        
         [#else]
           <div class="noActivities">
             [@s.text name="planning.activityList.empty" /]
           </div>
         [/#if]
         
-        [#if !currentUser.PI ]
-          [#-- If the workplan hasn't been submitted yet, show the button --]
-          [#if !workplanSubmitted]
-            <div id="submitButtonBlock" class="buttons">
-              [#if canSubmit]
-              [@s.form action="activities" ]
-                [@s.submit type="button" name="save" method="submit" ][@s.text name="form.buttons.submit" /][/@s.submit] 
-              [/@s.form]  
-              [#else]
-              <button class="disabled" title="[@s.text name="planning.activityList.submit.disabled" /]"> [@s.text name="form.buttons.submit" /] </button>
-              [/#if]
-            </div>
-          [/#if]
-        [/#if]
-        
         [#-- Show the Add activity button if the workplan hasn't been submitted yet--]
-        [#if !workplanSubmitted]
+        [#if !workplanSubmitted && !currentUser.PI]
           <div id="addActivity">
             <a href=" [@s.url action='addActivity' includeParams='get'] [@s.param name='${activityYearRequest}']${currentYear?c}[/@s.param] [/@s.url]" >
               [@s.text name="planning.activityList.addActivity" /]
@@ -85,11 +90,13 @@
                 [@activityList.activitiesList activities=listOfActivities canValidate=false canEditActivity=true /]                
                 
                 [#-- Add activity button --]
-                <div id="addActivity">
-                  <a href=" [@s.url action='addActivity' includeParams='get'] [@s.param name='${activityYearRequest}']${year?c}[/@s.param] [/@s.url]" >
-                    [@s.text name="planning.activityList.addActivity" /]
-                  </a>
-                </div>
+                [#if !workplanSubmitted && !currentUser.PI]
+                  <div id="addActivity">
+                    <a href=" [@s.url action='addActivity' includeParams='get'] [@s.param name='${activityYearRequest}']${year?c}[/@s.param] [/@s.url]" >
+                      [@s.text name="planning.activityList.addActivity" /]
+                    </a>
+                  </div>
+                [/#if]
               </div>
             [#else]
               <div id="futureActivities-${year_index+1}">
@@ -98,11 +105,13 @@
                 </div>
                 
                 [#-- Add activity button --]
-                <div id="addActivity">
-                  <a href=" [@s.url action='addActivity' includeParams='get'] [@s.param name='${activityYearRequest}']${year?c}[/@s.param] [/@s.url]" >
-                    [@s.text name="planning.activityList.addActivity" /]
-                  </a>
-                </div>
+                [#if !workplanSubmitted && !currentUser.PI]
+                  <div id="addActivity">
+                    <a href=" [@s.url action='addActivity' includeParams='get'] [@s.param name='${activityYearRequest}']${year?c}[/@s.param] [/@s.url]" >
+                      [@s.text name="planning.activityList.addActivity" /]
+                    </a>
+                  </div>
+                [/#if]
               </div>
             [/#if]
           [/#list]

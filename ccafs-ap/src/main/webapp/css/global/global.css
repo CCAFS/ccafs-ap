@@ -622,7 +622,9 @@ a.currentReportingSection li #i-additionalInformation{
 
 #activityListPlanning #submitButtonBlock {
   clear: both;
+  color: #663300;
   display: block;
+  font-weight: bold;
   margin-top: 30px;
   text-align: center !important;
 }
