@@ -20,6 +20,9 @@
       <meta name="googlebot" content="${robotAccess}" />
     [/#if]
     
+    [#-- Google webmaster tools tag --]
+    <meta name="google-site-verification" content="uDt49ijI7uKxK60GeIDi2N1DedHr3hsomqFzE7ngwqw" />
+    
     [#-- TODO - Still need to integrate google verification for google webmaster tools --] 
     <title>${title!"CCAFS Activity Planning"}</title> 
     
