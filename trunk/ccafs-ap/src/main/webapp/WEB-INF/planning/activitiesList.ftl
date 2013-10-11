@@ -38,11 +38,19 @@
                 [@s.url action='mainInformation' includeParams='get']
                   [@s.param name='${activityRequestParameter}']${activity.id}[/@s.param]
                 [/@s.url]" title="${activity.title}">
-                [#if activity.title?length < 70] ${activity.title} [#else] [@utilities.wordCutter string=activity.title maxPos=70 /]... [/#if]
+                [#if activity.title?has_content]
+                  [#if activity.title?length < 70] ${activity.title} [#else] [@utilities.wordCutter string=activity.title maxPos=70 /]... [/#if]
+                [#else]
+                  [@s.text name="planning.activityList.title.undefined" /]
+                [/#if]
               </a> 
             [#else]
               <a target="_blank" href=" [@s.url action='activity' namespace="/home" includeParams='get'] [@s.param name='${publicActivityRequestParameter}']${activity.id}[/@s.param] [/@s.url]" >
-                [#if activity.title?length < 70] ${activity.title} [#else] [@utilities.wordCutter string=activity.title maxPos=70 /]... [/#if]
+                [#if activity.title?has_content]
+                  [#if activity.title?length < 70] ${activity.title} [#else] [@utilities.wordCutter string=activity.title maxPos=70 /]... [/#if]
+                [#else]
+                  [@s.text name="planning.activityList.title.undefined" /]
+                [/#if]
               </a>
             [/#if]
           </td>

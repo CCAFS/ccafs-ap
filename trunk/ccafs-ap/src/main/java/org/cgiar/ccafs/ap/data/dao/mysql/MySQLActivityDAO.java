@@ -236,7 +236,7 @@ public class MySQLActivityDAO implements ActivityDAO {
     Map<String, String> activity = new HashMap<>();
     String query =
       "SELECT a.title, a.start_date, a.end_date, a.description, a.status_description, a.is_global, astatus.id as status_id, "
-        + "astatus.name as status_name, a.is_commissioned, a.continuous_activity_id, a.milestone_id, "
+        + "a.has_partners, astatus.name as status_name, a.is_commissioned, a.continuous_activity_id, a.milestone_id, "
         + "m.code as milestone_code, al.id as 'leader_id', al.acronym as 'leader_acronym', al.name as 'leader_name', "
         + "g.id as 'gender_id', g.description as 'gender_description' "
         + "FROM activities a LEFT JOIN milestones m ON a.milestone_id = m.id "
@@ -253,6 +253,7 @@ public class MySQLActivityDAO implements ActivityDAO {
         activity.put("is_global", rs.getString("is_global"));
         activity.put("status_description", rs.getString("status_description"));
         activity.put("is_commissioned", rs.getString("is_commissioned"));
+        activity.put("has_partners", rs.getString("has_partners"));
         activity.put("continuous_activity_id", rs.getString("continuous_activity_id"));
         activity.put("status_id", rs.getString("status_id"));
         activity.put("status_name", rs.getString("status_name"));
@@ -578,6 +579,26 @@ public class MySQLActivityDAO implements ActivityDAO {
   }
 
   @Override
+  public boolean hasPartners(int activityID) {
+    LOG.debug(">> hasPartners(activityID={})", activityID);
+    boolean hasPartners = false;
+    String query = "SELECT has_partners FROM activities a WHERE a.id = " + activityID;
+    try (Connection con = databaseManager.getConnection()) {
+      ResultSet rs = databaseManager.makeQuery(query, con);
+      if (rs.next()) {
+        hasPartners = rs.getBoolean("has_partners");
+      }
+      rs.close();
+    } catch (SQLException e) {
+      LOG.error("-- hasPartners() > There was an error checking if the activity {} has partners.", activityID, e);
+    }
+
+    LOG.debug("<< hasPartners():{}", hasPartners);
+    return hasPartners;
+  }
+
+
+  @Override
   public boolean isValidatedActivity(int activityID) {
     LOG.debug(">> isValidatedActivity(activityID={})", activityID);
     boolean isValidated = false;
@@ -612,6 +633,32 @@ public class MySQLActivityDAO implements ActivityDAO {
 
     LOG.debug("<< isValidId():{}", isValid);
     return isValid;
+  }
+
+
+  @Override
+  public boolean saveHasPartners(int activityID, boolean hasPartners) {
+    LOG.debug(">> saveHasPartners(activityID = {}, hasPartners = {})", activityID, hasPartners);
+    boolean saved = false;
+    String query = "UPDATE activities SET has_partners = ? WHERE id = ?";
+    Object[] values = new Object[2];
+    values[0] = hasPartners;
+    values[1] = activityID;
+    try (Connection con = databaseManager.getConnection()) {
+      int rows = databaseManager.makeChangeSecure(con, query, values);
+      if (rows < 0) {
+        LOG.warn("-- saveHasPartners() > There was a problem updating the attribute has_partners of activity {}.",
+          activityID);
+      } else {
+        saved = true;
+      }
+    } catch (SQLException e) {
+      LOG.error("-- saveHasPartners() > There was an error updating the attribute has_partners of activity {}.",
+        activityID, e);
+    }
+
+    LOG.debug("<< saveHasPartners():{}", saved);
+    return saved;
   }
 
 
@@ -821,10 +868,17 @@ public class MySQLActivityDAO implements ActivityDAO {
 
 
   @Override
-  public boolean validateActivity(int activityID) {
-    LOG.debug(">> validateActivity(activityID = {})", activityID);
+  public boolean validateActivity(int activityID, boolean isValidated) {
+    LOG.debug(">> validateActivity(activityID = {}, isValidated={} )", activityID);
     boolean saved = false;
-    String query = "INSERT INTO activity_validations (`activity_id`) VALUES (?)";
+    String query;
+
+    if (isValidated) {
+      query = "INSERT INTO activity_validations (`activity_id`) VALUES (?)";
+    } else {
+      query = "DELETE FROM activity_validations WHERE `activity_id` = ?; ";
+    }
+
     Object[] values = new Object[1];
     values[0] = activityID;
     try (Connection con = databaseManager.getConnection()) {

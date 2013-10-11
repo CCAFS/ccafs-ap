@@ -28,18 +28,30 @@
 
       [#-- Is this activity a continuation of a previous activity? --]
       <div class="halfPartBlock">
-        [#assign continuousActivityId = -1]
-        [#if activity?has_content][#if activity.continuousActivity?has_content][#assign continuousActivityId = activity.continuousActivity.id][/#if][/#if]
-        [@customForm.select name="activity.continuousActivity" label="" i18nkey="planning.addActivity.continuousActivity" listName="continuousActivityList" value="${continuousActivityId}" /]
+        [@customForm.checkbox  name="continuousActivity" i18nkey="planning.addActivity.isContinuation" value="true" /]
       </div>
 
       [#-- Commisioned activity ? --]
-      [#if currentUser.TL || currentUser.RPL]
-        <div class="halfPartBlock">
-          [@customForm.select name="activity.commissioned" label="" i18nkey="planning.addActivity.isCommissioned" listName="leaders" keyFieldName="id"  displayFieldName="acronym" /]
+      <div class="halfPartBlock">
+        [#if currentUser.TL || currentUser.RPL]
+          [@customForm.checkbox  name="activity.commissioned" i18nkey="planning.addActivity.isCommissioned" value="true" /]
+        [/#if]
+      </div>
+      
+      [#-- Which activity is the previous one? --]
+      <div class="halfPartBlock" id="activityListBlock" >
+        <div class="halfPartBlock" >
+          [#assign continuousActivityId = -1]
+          [#if activity?has_content][#if activity.continuousActivity?has_content][#assign continuousActivityId = activity.continuousActivity.id][/#if][/#if]
+          [@customForm.select name="activity.continuousActivity" label="" i18nkey="planning.addActivity.continuousActivity" listName="continuousActivityList" value="${continuousActivityId}" showTitle=false display=false /]
         </div>
-        <input id="commissionedActivity" type="checkbox" value="true" name="activity.commissioned" style="display:none;">
-      [/#if]
+      </div>
+        
+      <div class="halfPartBlock" id="leaderListBlock" >
+        <div class="halfPartBlock"  >
+          [@customForm.select name="activity.commissioned" label="" i18nkey="planning.addActivity.commissionedLeader" listName="leaders" keyFieldName="id"  displayFieldName="acronym" showTitle=false display=false /]
+        </div>
+      </div>
 
       [#-- Leader --]
       [#if currentUser.admin]

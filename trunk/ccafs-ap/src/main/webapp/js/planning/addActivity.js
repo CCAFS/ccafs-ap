@@ -1,8 +1,7 @@
 $(document).ready(function() {
   
-  $("#addActivity_activity_continuousActivity").on("change", checkIsContinuation);
-  
-  // If the activity is commisioned change the leader
+  $("#continuousActivity").on("change", showActivityList);
+  $("#activity\\.commissioned").on('change', showLeaderList);
   $("#addActivity_activity_commissioned").on('change', changeLeader);
   
   datePickerConfig();
@@ -20,36 +19,39 @@ function changeLeader(event){
   if($(element).val() == -1){
     $("#addActivity_activity_leader").attr("name", "activity.leader");
     $("#addActivity_activity_commissioned").attr("name", "activity.leader.null");
-    // Set to false the commissioned atribute
-    $("#commissionedActivity").attr("checked", false);
   }else{
     $("#addActivity_activity_leader").attr("name", "activity.leader.null");
     $("#addActivity_activity_commissioned").attr("name", "activity.leader");
-    // Set to true the commissioned atribute
-    $("#commissionedActivity").attr("checked", true);
   }
 }
 
 /**
- * If the activity is a continuation, we don't need the dates
+ * If the user indicates that the new activity is a continuation
+ * show the list of previous activities
  */
-function checkIsContinuation(event){
-  var element = $(event.target);
-  if($(element).val() == -1){
-    $("#datesBlock").fadeIn("slow");
-    $("#leaderBlock").fadeIn("slow");
-    // Enable the dates inputs 
-    $("#activity\\.startDate").attr("disabled", false);
-    $("#activity\\.endDate").attr("disabled", false);
+function showActivityList(event){
+  var element = event.target;
+  if($(element).prop("checked")){
+    $("#addActivity_activity_continuousActivity").parent().parent().fadeIn();
   }else{
-    // Disable the dates inputs 
-    $("#activity\\.startDate").prop("disabled", true);
-    $("#activity\\.endDate").prop("disabled", true);
-    $("#datesBlock").fadeOut("slow");
-    $("#leaderBlock").fadeOut("slow");
+    $("#addActivity_activity_continuousActivity").parent().parent().fadeOut();
+    $("#addActivity_activity_continuousActivity").val(-1);
   }
 }
 
+/**
+ * If the user indicates that the new activity will be commisioned
+ * show the list of activity leaders
+ */
+function showLeaderList(event){
+  var element = event.target;
+  if($(element).prop("checked")){
+    $("#addActivity_activity_commissioned").parent().parent().fadeIn();
+  }else{
+    $("#addActivity_activity_commissioned").parent().parent().fadeOut();
+    $("#addActivity_activity_commissioned").val(-1);
+  }
+}
 
 /**
  * Attach to the date fields the datepicker plugin

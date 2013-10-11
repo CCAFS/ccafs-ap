@@ -173,6 +173,10 @@ public class AdditionalInformationPlanningAction extends BaseAction {
     }
 
     if (keywordsSaved && resourcesSaved) {
+      // As there were changes in the activity we should mark the validation as false
+      activity.setValidated(false);
+      activityManager.validateActivity(activity);
+
       addActionMessage(getText("saving.success", new String[] {getText("planning.additionalInformation")}));
       return SUCCESS;
     } else {
@@ -207,6 +211,16 @@ public class AdditionalInformationPlanningAction extends BaseAction {
               addFieldError("activity.keywords[" + c + "].other", getText("validation.field.required"));
               anyError = true;
             }
+          }
+        }
+      }
+
+      // Delete the empty resources
+      if (activity.getResources() != null) {
+        for (int c = 0; c < activity.getResources().size(); c++) {
+          if (activity.getResources().get(c).getName() == null || activity.getResources().get(c).getName().isEmpty()) {
+            activity.getResources().remove(c);
+            c--;
           }
         }
       }

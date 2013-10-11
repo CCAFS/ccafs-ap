@@ -246,14 +246,17 @@ public class LocationsPlanningAction extends BaseAction {
 
     if (saved) {
 
+      // As there were changes in the activity we should mark the validation as false
+      activity.setValidated(false);
+      activityManager.validateActivity(activity);
+
       if (validationMessages.toString().isEmpty()) {
         addActionMessage(getText("saving.success", new String[] {getText("planning.locations")}));
       } else {
         String finalMessage = getText("saving.success", new String[] {getText("planning.locations")});
-        finalMessage += " " + getText("savind.fields.however") + " ";
-        finalMessage += validationMessages.toString();
+        finalMessage += getText("saving.keepInMind", new String[] {validationMessages.toString()});
 
-        AddActionWarning(finalMessage);
+        addActionWarning(finalMessage);
       }
 
       LOG.info("-- save() > User {} save locations for activity {} successfully", this.getCurrentUser().getEmail(),

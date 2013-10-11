@@ -14,6 +14,7 @@ import org.cgiar.ccafs.ap.data.model.Activity;
 import org.cgiar.ccafs.ap.data.model.BudgetPercentage;
 import org.cgiar.ccafs.ap.data.model.Milestone;
 import org.cgiar.ccafs.ap.data.model.Submission;
+import org.cgiar.ccafs.ap.util.Capitalize;
 import org.cgiar.ccafs.ap.util.EmailValidator;
 
 import java.util.LinkedHashMap;
@@ -64,8 +65,8 @@ public class MainInformationPlanningAction extends BaseAction {
     this.submissionManager = submissionManager;
 
     this.genderOptions = new LinkedHashMap<>();
-    genderOptions.put("1", "Yes");
-    genderOptions.put("0", "No");
+    genderOptions.put("1", getText("form.options.yes"));
+    genderOptions.put("0", getText("form.options.no"));
   }
 
   public Activity getActivity() {
@@ -179,6 +180,10 @@ public class MainInformationPlanningAction extends BaseAction {
         success = false;
       }
 
+      // As there were changes in the activity we should mark the validation as false
+      activity.setValidated(false);
+      activityManager.validateActivity(activity);
+
     } else {
       success = false;
     }
@@ -193,10 +198,9 @@ public class MainInformationPlanningAction extends BaseAction {
       } else {
         // If there were validation messages show them in a warning message.
         finalMessage = getText("saving.success", new String[] {getText("planning.mainInformation")});
-        finalMessage += " " + getText("savind.fields.however") + " ";
-        finalMessage += validationMessage.toString();
+        finalMessage += getText("saving.missingFields", new String[] {validationMessage.toString()});
 
-        AddActionWarning(finalMessage);
+        addActionWarning(Capitalize.capitalizeString(finalMessage));
         LOG.info("-- save() > The user {} saved the main information of the activity {} with empty fields.",
           getCurrentUser().getEmail(), activityID);
       }
@@ -222,25 +226,37 @@ public class MainInformationPlanningAction extends BaseAction {
     if (save) {
 
       if (activity.getTitle().isEmpty()) {
-        validationMessage.append(getText("planning.mainInformation.validation.title") + ", ");
+        validationMessage.append(getText("planning.mainInformation.title") + ", ");
+        problem = true;
+      }
+
+      if (activity.getDescription().isEmpty()) {
+        validationMessage.append(getText("planning.mainInformation.descripition") + ", ");
         problem = true;
       }
 
       // Validate if there is at least one contact person, if there is a contact person
       // without name nor email remove it from the list.
-      if (activity.getContactPersons() != null && !activity.getContactPersons().isEmpty()) {
-        for (int c = 0; c < activity.getContactPersons().size(); c++) {
-          // If there is a contact email, check if it is valid
-          if (!activity.getContactPersons().get(c).getEmail().isEmpty()) {
-            if (!EmailValidator.isValidEmail(activity.getContactPersons().get(c).getEmail())) {
-              validationMessage.append(getText("planning.mainInformation.validation.invalidEmail") + ", ");
-              problem = true;
+      if (activity.getContactPersons() != null) {
+        if (!activity.getContactPersons().isEmpty()) {
+          boolean invalidEmail = false;
+          for (int c = 0; c < activity.getContactPersons().size(); c++) {
+            // If there is a contact email, check if it is valid
+            if (!activity.getContactPersons().get(c).getEmail().isEmpty()) {
+              if (!EmailValidator.isValidEmail(activity.getContactPersons().get(c).getEmail())) {
+                invalidEmail = true;
+                problem = true;
+              }
+            } else {
+              if (activity.getContactPersons().get(c).getName().isEmpty()) {
+                activity.getContactPersons().remove(c);
+                c--;
+              }
             }
-          } else {
-            if (activity.getContactPersons().get(c).getName().isEmpty()) {
-              activity.getContactPersons().remove(c);
-              c--;
-            }
+          }
+
+          if (invalidEmail) {
+            validationMessage.append(getText("planning.mainInformation.contactEmail") + ", ");
           }
         }
       }
@@ -252,12 +268,12 @@ public class MainInformationPlanningAction extends BaseAction {
       }
 
       if (activity.getStartDate() == null) {
-        validationMessage.append(getText("planning.mainInformation.validation.startDate") + ", ");
+        validationMessage.append(getText("planning.mainInformation.startDate") + ", ");
         problem = true;
       }
 
       if (activity.getEndDate() == null) {
-        validationMessage.append(getText("planning.mainInformation.validation.endDate") + ", ");
+        validationMessage.append(getText("planning.mainInformation.endDate") + ", ");
         problem = true;
       }
 

@@ -4,8 +4,11 @@ $(document).ready(function() {
 
   $(".removeResource").on("click", function(event) {
     event.preventDefault();
-    $(".resource").last().fadeOut(function() {
+    var elementID = $(event.target).attr("id").split("-")[1];
+    
+    $("#resource-"+elementID).fadeOut(function() {
       $(this).remove();
+      renameResources();
     });
 
     // If there is no more elements, hide the remove option
@@ -42,6 +45,9 @@ function renameResources() {
         // Description
         $(this).find("[name$='name']").attr("name",
             "activity.resources[" + index + "].name");
+        // Remove image
+        $(this).find("[class='removeResource']").attr("id",
+            "removeResource-" + index );
       });
 
   // If it is the first option show the remove option again 

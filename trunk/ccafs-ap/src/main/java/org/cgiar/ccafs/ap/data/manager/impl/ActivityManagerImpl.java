@@ -515,6 +515,12 @@ public class ActivityManagerImpl implements ActivityManager {
         activity.setCommissioned(activityDB.get("is_commissioned").equals("1"));
       }
 
+      if (activityDB.get("has_partners") == null) {
+        activity.setHasPartners(false);
+      } else {
+        activity.setHasPartners(activityDB.get("has_partners").equals("1"));
+      }
+
       if (activityDB.get("continuous_activity_id") != null) {
         Activity activityTemp = new Activity();
         activityTemp.setId(Integer.parseInt(activityDB.get("continuous_activity_id")));
@@ -647,6 +653,11 @@ public class ActivityManagerImpl implements ActivityManager {
   }
 
   @Override
+  public boolean hasPartners(int activityId) {
+    return activityDAO.hasPartners(activityId);
+  }
+
+  @Override
   public boolean isActiveActivity(int activityID, int year) {
     int activityYear = activityDAO.getActivityYear(activityID);
     return activityYear >= year;
@@ -717,6 +728,11 @@ public class ActivityManagerImpl implements ActivityManager {
   }
 
   @Override
+  public boolean saveHasPartners(Activity activity) {
+    return activityDAO.saveHasPartners(activity.getId(), activity.isHasPartners());
+  }
+
+  @Override
   public boolean saveStatus(Activity activity) {
     Map<String, String> activityData = new HashMap<>();
     activityData.put("activity_id", "" + activity.getId());
@@ -758,6 +774,6 @@ public class ActivityManagerImpl implements ActivityManager {
 
   @Override
   public boolean validateActivity(Activity activity) {
-    return activityDAO.validateActivity(activity.getId());
+    return activityDAO.validateActivity(activity.getId(), activity.isValidated());
   }
 }

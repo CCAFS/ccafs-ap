@@ -9,6 +9,7 @@ import org.cgiar.ccafs.ap.data.manager.LogframeManager;
 import org.cgiar.ccafs.ap.data.manager.SubmissionManager;
 import org.cgiar.ccafs.ap.data.model.Activity;
 import org.cgiar.ccafs.ap.data.model.Submission;
+import org.cgiar.ccafs.ap.util.Capitalize;
 
 import com.google.inject.Inject;
 import org.apache.commons.lang3.StringUtils;
@@ -100,10 +101,13 @@ public class ObjectivesPlanningAction extends BaseAction {
         addActionMessage(getText("saving.success", new String[] {getText("planning.objectives")}));
       } else {
         String finalMessage = getText("saving.success", new String[] {getText("planning.objectives")});
-        finalMessage += " " + getText("savind.fields.however") + " ";
-        finalMessage += validationMessage.toString();
-        AddActionWarning(finalMessage);
+        finalMessage += getText("saving.keepInMind", new String[] {validationMessage.toString()});
+        addActionWarning(Capitalize.capitalizeString(finalMessage));
       }
+
+      // As there were changes in the activity we should mark the validation as false
+      activity.setValidated(false);
+      activityManager.validateActivity(activity);
 
       LOG.info("-- save() > User {} save successfully the objectives for activity {}",
         this.getCurrentUser().getEmail(), activityID);

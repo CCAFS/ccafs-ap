@@ -19,6 +19,7 @@ public class Activity {
   private boolean isPlanning;
   private boolean isGlobal;
   private boolean isValidated;
+  private boolean hasPartners;
   private List<ContactPerson> contactPersons;
   private String genderIntegrationsDescription;
   private Status status;
@@ -188,6 +189,10 @@ public class Activity {
     return isGlobal;
   }
 
+  public boolean isHasPartners() {
+    return hasPartners;
+  }
+
   public boolean isPlanning() {
     return isPlanning;
   }
@@ -246,6 +251,10 @@ public class Activity {
 
   public void setGlobal(boolean isGlobal) {
     this.isGlobal = isGlobal;
+  }
+
+  public void setHasPartners(boolean hasPartners) {
+    this.hasPartners = hasPartners;
   }
 
   public void setId(int id) {

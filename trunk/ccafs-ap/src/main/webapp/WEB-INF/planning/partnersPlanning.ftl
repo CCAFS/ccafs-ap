@@ -28,30 +28,30 @@
         <div class="halfPartBlock partnerTypeName chosen">
           [@customForm.select name="partnerTypeList" label="" i18nkey="planning.activityPartners.partnerType" listName="partnerTypes" keyFieldName="id"  displayFieldName="name" className="partnerTypes" value="activity.activityPartners[${ap_index}].partner.type.id" /]
         </div>
-        
+
         [#-- Country list --]
         <div class="halfPartBlock countryListBlock chosen">
           [@customForm.select name="countryList" label="" i18nkey="planning.activityPartners.country" listName="countries" keyFieldName="id"  displayFieldName="name" className="countryList" value="activity.activityPartners[${ap_index}].partner.country.id" /]
         </div>
-        
+
         [#-- Partner Name --]
         <div class="fullBlock partnerName chosen">
           [@customForm.select name="activity.activityPartners[${ap_index}].partner" label="" i18nkey="planning.activityPartners.partner.name" listName="partners" keyFieldName="id"  displayFieldName="name" /]
         </div>
-        
+
         [#-- Contact Name --]
         <div class="halfPartBlock">
           [@customForm.input name="activity.activityPartners[${ap_index}].contactName" type="text" i18nkey="planning.activityPartners.contactPersonName" /]
         </div>
-        
+
         [#-- Contact Email --]
         <div class="halfPartBlock">
           [@customForm.input name="activity.activityPartners[${ap_index}].contactEmail" type="text" i18nkey="planning.activityPartners.contactPersonEmail" /]
         </div> 
+        <hr />
       </div> <!-- End activityPartner-${ap_index} -->
-      <hr />
     [/#list]
-  [/#if]
+  [/#if]  
 [/#macro]
 
 <section class="content">
@@ -61,30 +61,35 @@
   </div>
   [#include "/WEB-INF/global/pages/planning-secondary-menu.ftl" /]
   [@s.form action="partners"]
+  [#assign typeSelectHeadValue ] [@s.text name="planning.activityPartners.selectPartnerType" /] [/#assign]
+  
   <article class="halfContent">
     <h1 class="contentTitle">
       [@s.text name="planning.mainInformation.activity" /] ${activity.id} - ${activity.leader.acronym}
     </h1>
+  
+    <div class="fullBlock">
+      [@customForm.radioButtonGroup i18nkey="planning.activityPartners.havePartners" label="" name="activity.hasPartners" listName="partnersOptions" value="${activity.hasPartners?string('true', 'false')}" /]
+    </div>  
     
-    [#assign typeSelectHeadValue ] [@s.text name="planning.activityPartners.selectPartnerType" /] [/#assign]
-    
-    <div id="items">
-      <fieldset id="activityPartnerGroup" class="group">
+    <div id="items" [#if !activity.hasPartners]style="display:none;"[/#if]>
+      <fieldset id="activityPartnerGroup" class="group" >
         <legend> <h6> [@s.text name="planning.activityPartners.partners" /] </h6> </legend>
         [@partnerSection /]
-      <div class="addLink">
-        <img src="${baseUrl}/images/global/icon-add.png" />
-        <a href="" class="addActivityPartner">[@s.text name="planning.activityPartners.addNewPartner" /]</a>
-      </div>   
+        <div class="addLink">
+          <img src="${baseUrl}/images/global/icon-add.png" />
+          <a href="" class="addActivityPartner">[@s.text name="planning.activityPartners.addNewPartner" /]</a>
+        </div>   
       </fieldset>
+    
+      <p id="addPartnerText">
+        [@s.text name="planning.activityPartners.addPartnerMessage.first" /]
+        <a class="popup" href="[@s.url action='partnerSave'][@s.param name='${activityRequestParameter}']${activityID}[/@s.param][/@s.url]">
+          [@s.text name="planning.activityPartners.addPartnerMessage.second" /]
+        </a>       
+      </p>
     </div>
     
-    <p id="addPartnerText">
-      [@s.text name="planning.activityPartners.addPartnerMessage.first" /]
-      <a class="popup" href="[@s.url action='partnerSave'][@s.param name='${activityRequestParameter}']${activityID}[/@s.param][/@s.url]">
-        [@s.text name="planning.activityPartners.addPartnerMessage.second" /]
-      </a>       
-    </p>
     
     <!-- PARTNERS TEMPLATE -->
     <div id="template">
@@ -122,6 +127,7 @@
         <div class="halfPartBlock">
           [@customForm.input name="contactEmail" type="text" i18nkey="planning.activityPartners.contactPersonEmail" /]
         </div>
+        <hr />
       </div> <!-- End partner template -->
     </div> <!-- End template -->
     

@@ -49,7 +49,7 @@
             
             [#-- Description --]
             <div class="fullBlock">
-              [@customForm.textArea name="activity.deliverables[${deliverable_index}].description" i18nkey="planning.activityDeliverables.description" /]
+              [@customForm.textArea name="activity.deliverables[${deliverable_index}].description" i18nkey="planning.activityDeliverables.description" required=true /]
             </div>
             
             [#-- Type --]
@@ -95,7 +95,7 @@
         
         [#-- Description --]
         <div class="fullBlock">                      
-          [@customForm.textArea name="description" i18nkey="planning.activityDeliverables.description" /]
+          [@customForm.textArea name="description" i18nkey="planning.activityDeliverables.description" required=true /]
         </div>
         
         [#-- Type --]
