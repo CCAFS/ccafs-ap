@@ -612,6 +612,15 @@ a.currentReportingSection li #i-additionalInformation{
   width: 110px;  
 }
 
+#activityListPlanning #addActivity input {
+	float: left;
+	margin-right: 10px;
+}
+	
+#activityListPlanning #addActivity select {
+	margin-left: 40px;
+}
+	
 #activityListPlanning form.buttons{
 	margin : 0;
 }
@@ -669,6 +678,17 @@ a.currentReportingSection li #i-additionalInformation{
 #additionalInformation .otherKeywordsHelp{
   margin-left: 15px;
   font-size: 11px;
+}
+
+#additionalInformation #resourcesList input{
+  width: 90%;
+  float: left;
+  margin-bottom: 8px;
+}
+
+#additionalInformation #resourcesList img{
+  float: right;
+  margin: 5px 10px 0 0;
 }
 
 /****** REPORTING **********/

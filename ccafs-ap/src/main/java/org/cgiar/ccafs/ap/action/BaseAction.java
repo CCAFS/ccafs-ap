@@ -64,7 +64,7 @@ public class BaseAction extends ActionSupport implements Preparable, SessionAwar
    * 
    * @param message
    */
-  public void AddActionWarning(String message) {
+  public void addActionWarning(String message) {
     addActionMessage("--warn--" + message);
   }
 

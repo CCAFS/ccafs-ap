@@ -26,6 +26,17 @@ public class ActivityValidator extends ActionSupport {
     activityID = activity.getId();
 
     // Validate process
+
+    if (activity.getTitle().isEmpty()) {
+      validationMessages.append(getText("planning.mainInformation.title") + ", ");
+      problem = true;
+    }
+
+    if (activity.getDescription().isEmpty()) {
+      validationMessages.append(getText("planning.mainInformation.descripition") + ", ");
+      problem = true;
+    }
+
     // Check the exists an start date and end date
     if (activity.getStartDate() == null) {
       validationMessages.append(getText("planning.mainInformation.validation.startDate"));
@@ -48,7 +59,7 @@ public class ActivityValidator extends ActionSupport {
       for (int c = 0; c < activity.getContactPersons().size(); c++) {
         // Check if at least there is a contact name
         if (activity.getContactPersons().get(c).getName().isEmpty()) {
-          validationMessages.append(getText("planning.mainInformation.validation.contactPerson.name"));
+          validationMessages.append(getText("planning.mainInformation.contactName"));
           validationMessages.append(", ");
           problem = true;
         }
@@ -56,7 +67,7 @@ public class ActivityValidator extends ActionSupport {
         // If there is a contact email, check if it is valid
         if (!activity.getContactPersons().get(c).getEmail().isEmpty()) {
           if (!EmailValidator.isValidEmail(activity.getContactPersons().get(c).getEmail())) {
-            validationMessages.append(getText("planning.mainInformation.validation.contactPerson.email"));
+            validationMessages.append(getText("planning.mainInformation.contactEmail"));
             validationMessages.append(", ");
             problem = true;
           }
@@ -64,11 +75,26 @@ public class ActivityValidator extends ActionSupport {
       }
     }
 
+    // The list could be empty after the last validation
+    if (activity.getContactPersons().isEmpty()) {
+      validationMessages.append(getText("planning.mainInformation.validation.contactPerson") + ", ");
+      problem = true;
+    }
+
     // Validate objectives
     if (activity.getObjectives().isEmpty()) {
       validationMessages.append(getText("planning.objectives.validation.atLeastOne"));
       validationMessages.append(", ");
       problem = true;
+    }
+
+    // Validate partners
+    if (activity.isHasPartners()) {
+      if (activity.getActivityPartners().isEmpty()) {
+        validationMessages.append(getText("planning.activityPartners.atLeastOne"));
+        validationMessages.append(", ");
+        problem = true;
+      }
     }
 
     // Validate locations

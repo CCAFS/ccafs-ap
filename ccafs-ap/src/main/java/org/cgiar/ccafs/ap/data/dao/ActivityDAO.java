@@ -118,6 +118,14 @@ public interface ActivityDAO {
   public List<Map<String, String>> getTitles(int year, int activityLeaderId);
 
   /**
+   * Get the activity attribute hasPartners
+   * 
+   * @param activityID
+   * @return true if the activity has partners. False otherwise.
+   */
+  public boolean hasPartners(int activityID);
+
+  /**
    * Check if the activity given have been validated.
    * 
    * @param activityID - activity identifier.
@@ -134,12 +142,22 @@ public interface ActivityDAO {
   public boolean isValidId(int id);
 
   /**
+   * Save the hasPartners attribute into the DAO.
+   * 
+   * @param activityID - activity identifier
+   * @param hasPartners
+   * @return true if the value was updated successfully. False otherwise.
+   */
+  public boolean saveHasPartners(int activityID, boolean hasPartners);
+
+  /**
    * Add a new activity to the DAO.
    * 
    * @param activityData - a Map with the main activity information.
    * @return the id that represents the added activity, or -1 if some error happened.
    */
   public int saveSimpleActivity(Map<String, Object> activityData);
+
 
   /**
    * Save the status reporting information of the given activity.
@@ -148,7 +166,6 @@ public interface ActivityDAO {
    * @return true if the data was saved successfully, or false otherwise.
    */
   public boolean saveStatus(Map<String, String> activityData);
-
 
   /**
    * Set the value of attribute isGlobal into the DAO
@@ -168,12 +185,12 @@ public interface ActivityDAO {
   public boolean updateMainInformation(Map<String, String> activityData);
 
   /**
-   * This method set the activity attribute isValidate to true.
+   * This method save into the DAO if the activity is validated or not.
    * 
    * @param activityID - The activity identifier
-   * @param validate - The value of validate to assign
+   * @param isValidated - The value of validate to assign
    * @return true if the process was successful. False, otherwise.
    */
-  public boolean validateActivity(int activityID);
+  public boolean validateActivity(int activityID, boolean isValidated);
 
 }

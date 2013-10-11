@@ -108,6 +108,14 @@ public interface ActivityManager {
   public Activity getSimpleActivity(int id);
 
   /**
+   * Get the value of the attribute hasPartners
+   * 
+   * @param activityId
+   * @return true if the activity has partners. False otherwise.
+   */
+  public boolean hasPartners(int activityId);
+
+  /**
    * Validate if the activity is active for current year
    * 
    * @param activityID - Activity identifier
@@ -139,6 +147,14 @@ public interface ActivityManager {
    * @return true if the information was successfully saved, or false otherwise.
    */
   public boolean saveActivity(Activity activity);
+
+  /**
+   * Save the activity attribute hasPartners into the DAO.
+   * 
+   * @param activity
+   * @return
+   */
+  public boolean saveHasPartners(Activity activity);
 
   /**
    * Save the activity status information into the DAO.

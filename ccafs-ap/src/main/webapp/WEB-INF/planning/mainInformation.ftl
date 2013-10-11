@@ -56,17 +56,17 @@
     
     [#-- Title --]
     <div class="fullBlock">
-      [@customForm.textArea name="activity.title"  i18nkey="planning.mainInformation.title"  /]
+      [@customForm.textArea name="activity.title"  i18nkey="planning.mainInformation.title" required=true /]
     </div>
     
     [#-- Description --]
     <div class="fullBlock">
-      [@customForm.textArea name="activity.description" i18nkey="planning.mainInformation.descripition" disabled=true /]
+      [@customForm.textArea name="activity.description" i18nkey="planning.mainInformation.descripition" required=true /]
     </div>
     
     [#-- Milestones --]
     <div class="halfPartBlock">
-      [@customForm.select name="activity.milestone" label="" i18nkey="planning.mainInformation.milestone" listName="milestones" keyFieldName="id"  displayFieldName="code" value="${activity.milestone.id}" className="milestones" /]
+      [@customForm.select name="activity.milestone" label="" i18nkey="planning.mainInformation.milestone" listName="milestones" keyFieldName="id"  displayFieldName="code" value="${activity.milestone.id}" className="milestones" required=true /]
     </div>
     
     [#-- Logframe link --]
@@ -76,7 +76,7 @@
     
     [#-- Budget --]
     <div class="halfPartBlock">
-      [@customForm.input name="activity.budget.usd" type="text" i18nkey="planning.mainInformation.budget" /]
+      [@customForm.input name="activity.budget.usd" type="text" i18nkey="planning.mainInformation.budget" required=true /]
     </div>
     
     [#-- Budget Percentages --]
@@ -91,18 +91,18 @@
     
     [#-- Start Date --]
     <div class="halfPartBlock">
-      [@customForm.input name="activity.startDate" type="text" i18nkey="planning.mainInformation.startDate" /]
+      [@customForm.input name="activity.startDate" type="text" i18nkey="planning.mainInformation.startDate" required=true /]
     </div>
     
     [#-- End Date --]
     <div class="halfPartBlock">
-      [@customForm.input name="activity.endDate" type="text" i18nkey="planning.mainInformation.endDate" /]
+      [@customForm.input name="activity.endDate" type="text" i18nkey="planning.mainInformation.endDate" required=true /]
     </div>
     
     [#-- Gender integration --]
     <div id="gender">
       <div class="fullBlock">
-        [@customForm.radioButtonGroup label="Gender Integration" name="genderIntegrationOption" listName="genderOptions" value="${hasGender?string('1', '0')}" /]
+        [@customForm.radioButtonGroup i18nkey="planning.mainInformation.genderIntegration" label="" name="genderIntegrationOption" listName="genderOptions" value="${hasGender?string('1', '0')}" /]
       </div>
       <div class="fullBlock genderIntegrationsDescription">
         [@customForm.textArea name="activity.genderIntegrationsDescription" i18nkey="planning.mainInformation.genderIntegrationDescription" required=true /]
@@ -122,12 +122,12 @@
                 
                 [#-- Contact name --]
                 <div class="halfPartBlock">
-                  [@customForm.input name="activity.contactPersons[${contactPerson_index}].name" type="text" i18nkey="planning.mainInformation.contactName" /]
+                  [@customForm.input name="activity.contactPersons[${contactPerson_index}].name" type="text" i18nkey="planning.mainInformation.contactName" required=true /]
                 </div>
                 
                 [#-- Contact email --]
                 <div class="halfPartBlock">
-                  [@customForm.input name="activity.contactPersons[${contactPerson_index}].email" type="text" i18nkey="planning.mainInformation.contactEmail" /]
+                  [@customForm.input name="activity.contactPersons[${contactPerson_index}].email" type="text" i18nkey="planning.mainInformation.contactEmail" required=true /]
                 </div>
         
                 [#-- Adding remove image --]

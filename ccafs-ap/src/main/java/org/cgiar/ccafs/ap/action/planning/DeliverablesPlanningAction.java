@@ -16,6 +16,7 @@ import org.cgiar.ccafs.ap.data.model.DeliverableStatus;
 import org.cgiar.ccafs.ap.data.model.DeliverableType;
 import org.cgiar.ccafs.ap.data.model.FileFormat;
 import org.cgiar.ccafs.ap.data.model.Submission;
+import org.cgiar.ccafs.ap.util.Capitalize;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -50,6 +51,7 @@ public class DeliverablesPlanningAction extends BaseAction {
   private DeliverableStatus[] deliverableStatusList;
   private FileFormat[] fileFormatsList;
   private boolean canSubmit;
+  private StringBuilder validationMessage;
 
   @Inject
   public DeliverablesPlanningAction(APConfig config, LogframeManager logframeManager, ActivityManager activityManager,
@@ -113,6 +115,7 @@ public class DeliverablesPlanningAction extends BaseAction {
   public void prepare() throws Exception {
     super.prepare();
 
+    validationMessage = new StringBuilder();
     String activityStringID = StringUtils.trim(this.getRequest().getParameter(APConstants.ACTIVITY_REQUEST_ID));
     try {
       activityID = Integer.parseInt(activityStringID);
@@ -207,10 +210,20 @@ public class DeliverablesPlanningAction extends BaseAction {
     }
 
     if (!problem) {
-      addActionMessage(getText("saving.success", new String[] {getText("planning.activityDeliverables")}));
+      if (validationMessage.toString().isEmpty()) {
+        addActionMessage(getText("saving.success", new String[] {getText("planning.activityDeliverables")}));
+      } else {
+        String finalMessage = getText("saving.success", new String[] {getText("planning.activityDeliverables")});
+        finalMessage += getText("saving.keepInMind", new String[] {validationMessage.toString()});
+        addActionWarning(Capitalize.capitalizeString(finalMessage));
+      }
+
+      // As there were changes in the activity we should mark the validation as false
+      activity.setValidated(false);
+      activityManager.validateActivity(activity);
+
       LOG.info("-- save() > User '{}' save the deliverables corresponding to the activity {}", this.getCurrentUser()
         .getEmail(), activityID);
-
       return SUCCESS;
     } else {
       LOG.warn("-- save () > User '{}' had problems to save the deliverables corresponding to the activity {}", this
@@ -227,21 +240,17 @@ public class DeliverablesPlanningAction extends BaseAction {
 
   @Override
   public void validate() {
-    boolean anyError = false;
 
-    // Validate only if exists deliverables
-    if ((save) && activity.getDeliverables() != null) {
-      for (int c = 0; c < activity.getDeliverables().size(); c++) {
-        if (activity.getDeliverables().get(c).getDescription().isEmpty()) {
-          activity.getDeliverables().remove(c);
-          c--;
+    if ((save)) {
+      if (!activity.getDeliverables().isEmpty()) {
+        for (int c = 0; c < activity.getDeliverables().size(); c++) {
+          if (activity.getDeliverables().get(c).getDescription().isEmpty()) {
+            activity.getDeliverables().remove(c);
+            c--;
+          }
         }
-      }
-
-      if (anyError) {
-        LOG.info("-- validate() > User {} try to save the deliverables for activity {} but don't fill all fields.",
-          this.getCurrentUser().getEmail(), activityID);
-        addActionError(getText("saving.fields.required"));
+      } else {
+        validationMessage.append(getText("planning.activityDeliverables.validation.atLeastOne"));
       }
     }
   }

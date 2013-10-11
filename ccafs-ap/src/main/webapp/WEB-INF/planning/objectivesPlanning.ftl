@@ -43,7 +43,7 @@
                 [@s.text name="planning.objectives.removeObjective" /]
               </a>
           </div>      
-          [@customForm.textArea name="activity.objectives[${objective_index}].description" i18nkey="planning.objectives.objective"/]
+          [@customForm.textArea name="activity.objectives[${objective_index}].description" i18nkey="planning.objectives.objective"  required=true/]
           <hr />
         </div>
       [/#list]

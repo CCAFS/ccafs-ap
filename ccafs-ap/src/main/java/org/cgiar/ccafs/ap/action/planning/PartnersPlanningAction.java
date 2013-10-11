@@ -11,15 +11,19 @@ import org.cgiar.ccafs.ap.data.manager.PartnerManager;
 import org.cgiar.ccafs.ap.data.manager.PartnerTypeManager;
 import org.cgiar.ccafs.ap.data.manager.SubmissionManager;
 import org.cgiar.ccafs.ap.data.model.Activity;
+import org.cgiar.ccafs.ap.data.model.ActivityPartner;
 import org.cgiar.ccafs.ap.data.model.Country;
 import org.cgiar.ccafs.ap.data.model.Partner;
 import org.cgiar.ccafs.ap.data.model.PartnerType;
 import org.cgiar.ccafs.ap.data.model.Submission;
+import org.cgiar.ccafs.ap.util.Capitalize;
 import org.cgiar.ccafs.ap.util.EmailValidator;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.LinkedHashMap;
 import java.util.List;
+import java.util.Map;
 
 import com.google.inject.Inject;
 import org.apache.commons.lang3.StringUtils;
@@ -31,6 +35,7 @@ public class PartnersPlanningAction extends BaseAction {
 
   // Logger
   private static final Logger LOG = LoggerFactory.getLogger(PartnersPlanningAction.class);
+  private static final long serialVersionUID = 3127617453572822319L;
 
   // Managers
   private ActivityManager activityManager;
@@ -47,6 +52,8 @@ public class PartnersPlanningAction extends BaseAction {
   private List<PartnerType> partnerTypes;
   private List<Country> countries;
   private boolean canSubmit;
+  private Map<Boolean, String> partnersOptions;
+  private StringBuilder validationMessage;
 
   @Inject
   public PartnersPlanningAction(APConfig config, LogframeManager logframeManager, ActivityManager activityManager,
@@ -59,7 +66,14 @@ public class PartnersPlanningAction extends BaseAction {
     this.countryManager = countryManager;
     this.partnerTypeManager = partnerTypeManager;
     this.submissionManager = submissionManager;
+
+    this.partnersOptions = new LinkedHashMap<>();
+
+    validationMessage = new StringBuilder();
+    partnersOptions.put(true, getText("form.options.yes"));
+    partnersOptions.put(false, getText("form.options.no"));
   }
+
 
   public Activity getActivity() {
     return activity;
@@ -77,8 +91,19 @@ public class PartnersPlanningAction extends BaseAction {
     return countries;
   }
 
+  public boolean getHasPartners() {
+    if (activity != null) {
+      return !activity.getActivityPartners().isEmpty();
+    }
+    return false;
+  }
+
   public Partner[] getPartners() {
     return partners;
+  }
+
+  public Map<Boolean, String> getPartnersOptions() {
+    return partnersOptions;
   }
 
   public List<PartnerType> getPartnerTypes() {
@@ -88,7 +113,6 @@ public class PartnersPlanningAction extends BaseAction {
   public boolean isCanSubmit() {
     return canSubmit;
   }
-
 
   @Override
   public void prepare() throws Exception {
@@ -105,8 +129,15 @@ public class PartnersPlanningAction extends BaseAction {
 
     // Get the basic information about the activity
     activity = activityManager.getSimpleActivity(activityID);
-    // Get activity partners
-    activity.setActivityPartners(activityPartnerManager.getActivityPartners(activityID));
+    // Check if the activity has partners
+    activity.setHasPartners(activityManager.hasPartners(activityID));
+
+    if (activity.isHasPartners()) {
+      // Get activity partners
+      activity.setActivityPartners(activityPartnerManager.getActivityPartners(activityID));
+    } else {
+      activity.setActivityPartners(new ArrayList<ActivityPartner>());
+    }
 
     // Get the list of partners
     partners = partnerManager.getAllPartners();
@@ -141,17 +172,42 @@ public class PartnersPlanningAction extends BaseAction {
 
   @Override
   public String save() {
+    boolean success = false;
+
     // Remove all activity partners from the database.
     boolean removed = activityPartnerManager.removeActivityPartners(activityID);
     if (removed) {
-      boolean added = activityPartnerManager.saveActivityPartners(activity.getActivityPartners(), activityID);
-      if (added) {
-        addActionMessage(getText("saving.success", new String[] {getText("reporting.activityPartners.partners")}));
-        LOG.info("-- save() > The user {} save the partners of activity {} successfully", getCurrentUser().getEmail(),
-          activityID);
-        return SUCCESS;
+      if (activityManager.saveHasPartners(activity)) {
+        if (activity.isHasPartners()) {
+          boolean added = activityPartnerManager.saveActivityPartners(activity.getActivityPartners(), activityID);
+          if (added) {
+            success = true;
+          }
+        } else {
+          success = true;
+        }
       }
     }
+
+    if (success) {
+
+      // As there were changes in the activity we should mark the validation as false
+      activity.setValidated(false);
+      activityManager.validateActivity(activity);
+
+      if (validationMessage.toString().isEmpty()) {
+        addActionMessage(getText("saving.success", new String[] {getText("planning.activityPartners.partners")}));
+      } else {
+        String finalMessage = getText("saving.success", new String[] {getText("planning.activityPartners.partners")});
+        finalMessage += getText("saving.keepInMind", new String[] {validationMessage.toString()});
+        addActionWarning(Capitalize.capitalizeString(finalMessage));
+      }
+
+      LOG.info("-- save() > The user {} save the partners of activity {} successfully", getCurrentUser().getEmail(),
+        activityID);
+      return SUCCESS;
+    }
+
     LOG.info("-- save() > The user {} had a problem saving the partners of activity {}", getCurrentUser().getEmail(),
       activityID);
     addActionError(getText("saving.problem"));
@@ -184,6 +240,10 @@ public class PartnersPlanningAction extends BaseAction {
             c--;
           }
         }
+      }
+
+      if (activity.isHasPartners() && activity.getActivityPartners().isEmpty()) {
+        validationMessage.append(getText("planning.activityPartners.atLeastOne") + ".");
       }
     }
 

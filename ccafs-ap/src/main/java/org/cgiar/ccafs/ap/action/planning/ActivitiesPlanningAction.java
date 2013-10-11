@@ -18,6 +18,7 @@ import org.cgiar.ccafs.ap.data.manager.SubmissionManager;
 import org.cgiar.ccafs.ap.data.model.Activity;
 import org.cgiar.ccafs.ap.data.model.Submission;
 import org.cgiar.ccafs.ap.util.ActivityValidator;
+import org.cgiar.ccafs.ap.util.SendMail;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -131,6 +132,10 @@ public class ActivitiesPlanningAction extends BaseAction {
     return canSubmit;
   }
 
+  public boolean isFuturePlanningActive() {
+    return config.isPlanningForFutureYearsActive();
+  }
+
   /**
    * This method checks if the activity to submit is valid, checking
    * its owner, if it is from current year and if the activity isn't
@@ -220,9 +225,11 @@ public class ActivitiesPlanningAction extends BaseAction {
     }
 
     // Load activities from futures years.
-    int endYear = config.getPlanningCurrentYear() + config.getFuturePlanningYears();
-    for (int year = config.getPlanningCurrentYear() + 1; year <= endYear; year++) {
-      futureActivities.put(year, activityManager.getPlanningActivityList(year, this.getCurrentUser()));
+    if (isFuturePlanningActive()) {
+      int endYear = config.getPlanningCurrentYear() + config.getFuturePlanningYears();
+      for (int year = config.getPlanningCurrentYear() + 1; year <= endYear; year++) {
+        futureActivities.put(year, activityManager.getPlanningActivityList(year, this.getCurrentUser()));
+      }
     }
 
     /* --------- Checking if the user can submit ------------- */
@@ -266,6 +273,34 @@ public class ActivitiesPlanningAction extends BaseAction {
     return INPUT;
   }
 
+  private void sendConfirmationMessage() {
+    if (!config.getBaseUrl().contains("localhost") || !config.getBaseUrl().contains("/test")) {
+      // Additionally, sent a confirmation message to TL/RPL
+      // In this moment only to Gloria, Hector and David Abreu
+
+      String subject;
+      subject = "[CCAFS P&R] " + getCurrentUser().getLeader().getAcronym() + " has sent its workplan ";
+
+      String recipients = "g.c.rengifo@cgiar.org d.abreu@cgiar h.f.tobon@cgiar.org";
+
+      StringBuilder message = new StringBuilder();
+      message.append("The user " + getCurrentUser().getName() + " ");
+      message.append("has submitted the workplan for " + getCurrentUser().getLeader().getAcronym() + ". \n");
+      message.append("Below you will find the list of activities that the user submits: \n\n");
+
+      for (int i = 0; i < currentActivities.size(); i++) {
+        message.append("http://activities.ccafs.cgiar.org/activity.do?id=" + currentActivities.get(i).getId());
+        message.append("\n");
+      }
+
+      message.append("\nKind regards, \n");
+      message.append("CCAFS P&R Team");
+
+      SendMail sendMail = new SendMail(this.config);
+      sendMail.send(recipients, subject, message.toString());
+    }
+  }
+
   public void setActivityIndex(int activityIndex) {
     this.activityIndex = activityIndex;
   }
@@ -274,7 +309,7 @@ public class ActivitiesPlanningAction extends BaseAction {
     boolean submitted;
 
     if (submission != null) {
-      AddActionWarning("Workplan already submitted");
+      addActionWarning("Workplan already submitted");
       return INPUT;
     }
 
@@ -288,6 +323,7 @@ public class ActivitiesPlanningAction extends BaseAction {
       // Now the user can't submit again.
       workplanSubmitted = true;
       canSubmit = false;
+      sendConfirmationMessage();
       addActionMessage(getText("planning.activityList.submission.success"));
     } else {
       addActionError(getText("planning.activityList.submission.error"));

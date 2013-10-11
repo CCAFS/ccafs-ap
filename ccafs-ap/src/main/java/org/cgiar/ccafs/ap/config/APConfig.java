@@ -21,7 +21,8 @@ public class APConfig {
   private static final String PLANNING_CURRENT_YEAR = "ccafsap.planning.currentYear";
   private static final String START_YEAR = "ccafsap.startYear";
   private static final String END_YEAR = "ccafsap.endYear";
-  private static final String YEARS_FUTURE_PLANNING = "ccafsap.planning.future.years";
+  private static final String PLANNING_FUTURE_YEARS_ACTIVE = "ccafsap.planning.future.years.active";
+  private static final String PLANNING_FUTURE_YEARS = "ccafsap.planning.future.years";
   private static final String PLANNING_ACTIVE = "ccafsap.planning.active";
   private static final String REPORTING_ACTIVE = "ccafsap.reporting.active";
   private static final String SUMMARIES_ACTIVE = "ccafsap.summaries.active";
@@ -126,7 +127,7 @@ public class APConfig {
    */
   public int getFuturePlanningYears() {
     try {
-      return properties.getPropertiesAsInt(YEARS_FUTURE_PLANNING);
+      return properties.getPropertiesAsInt(PLANNING_FUTURE_YEARS);
     } catch (Exception e) {
       LOG.error("There is not a number of future years that an user can plan.");
     }
@@ -206,6 +207,21 @@ public class APConfig {
     }
 
     return planningActive.equals("true");
+  }
+
+  /**
+   * Get the flag that indicate if planing for future years is active, that value is in the configuration file.
+   * 
+   * @return a boolean indicating if it is active or not.
+   */
+  public boolean isPlanningForFutureYearsActive() {
+    String planningFutureActive = properties.getPropertiesAsString(PLANNING_FUTURE_YEARS_ACTIVE);
+    if (planningFutureActive == null) {
+      LOG.error("There is not a planning for future years active configured");
+      return false;
+    }
+
+    return planningFutureActive.equals("true");
   }
 
   /**

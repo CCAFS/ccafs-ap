@@ -29,8 +29,12 @@ function renameObjectives() {
     $(this).find(".removeObjective").attr("id",
         "removeObjective-" + index);
     // Label
-    // TODO - Take the word objective from a field filled with i18n value
-    $(this).find("label").text("Objective " + (index+1));
+    // Take the word 'Objective' from the template to 
+    var label = $("#objectiveTemplate label").clone();
+    // Insert the index
+    $(label).find("span").before((index+1) + " ");
+    
+    $(this).find("label").html($(label).html());
     // description
     $(this).find("[name$='id']").attr("name",
         "activity.objectives[" + index + "].id");

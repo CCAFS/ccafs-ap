@@ -60,20 +60,19 @@
     [#-- Resources --]
     <div class="resourcesBlock">
       <div id="resourcesList">
-        [#list activity.resources as resource]
-          <div id="resource-${resource_index}" class="fullBlock resource">
-            <input type="hidden" name="activity.resources[${resource_index}].id" value="${resource.id?c}" />
-            [@customForm.input name="activity.resources[${resource_index}].name" type="text" i18nkey="planning.additionalInformation.resources" /]
-          </div>
-        [/#list]
+        [#if activity.resources?has_content]
+          [#list activity.resources as resource]
+            <div id="resource-${resource_index}" class="fullBlock resource">
+              <input type="hidden" name="activity.resources[${resource_index}].id" value="${resource.id?c}" />
+              [@customForm.input name="activity.resources[${resource_index}].name" type="text" i18nkey="planning.additionalInformation.resources" /]
+              <img src="${baseUrl}/images/global/icon-remove.png" class="removeResource" id="removeResource-${resource_index}" />
+            </div>
+          [/#list]
+        [/#if]
       </div>
       <div id="addResourceBlock" class="halfPartBlock">
         <img src="${baseUrl}/images/global/icon-add.png" />
         <a href="" class="addResource" >[@s.text name="planning.additionalInformation.addResource" /]</a>
-      </div>
-      <div id="removeResourceBlock" class="halfPartBlock" [#if ! activity.resources?has_content] style="display:none" [/#if] >
-        <img src="${baseUrl}/images/global/icon-remove.png" />
-        <a href="" class="removeResource" >[@s.text name="planning.additionalInformation.removeLast" /]</a>
       </div>
       <hr />
     </div>
@@ -94,6 +93,7 @@
     <div id="resourceTemplate" class="fullBlock" style="display:none">
       <input type="hidden" name="resourceId" value="-1" />
       [@customForm.input name="name" type="text" i18nkey="planning.additionalInformation.resource" /]
+      <img src="${baseUrl}/images/global/icon-remove.png" class="removeResource" />
     </div>
     
     <!-- internal parameter -->

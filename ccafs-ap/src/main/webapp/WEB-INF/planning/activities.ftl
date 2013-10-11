@@ -24,7 +24,9 @@
     <div id="activityTables">
       <ul>
         <li><a href="#activityTables-1"> [@s.text name="planning.activityList.activities" /] ${currentYear?c} </a></li>
-        <li><a href="#activityTables-2"> [@s.text name="planning.activityList.futureActivities" /] </a></li>
+        [#if futurePlanningActive]
+          <li><a href="#activityTables-2"> [@s.text name="planning.activityList.futureActivities" /] </a></li>
+        [/#if]
         <li><a href="#activityTables-3"> [@s.text name="planning.activityList.previousActivities" /] </a></li>
         [#if relatedActivities?has_content]
           <li><a href="#activityTables-4"> [@s.text name="planning.activityList.relatedActivities" /] </a></li>
@@ -33,9 +35,6 @@
 
       [#-- Current activities --]      
       <div id="activityTables-1" class="activityTable">
-        [#if workplanSubmitted]
-          <p class="workplanSubmitted">[@s.text name="planning.activityList.workplanSubmitted" /]</p>
-        [/#if]
         
         [#if currentActivities?has_content]
           [@activityList.activitiesList activities=currentActivities canValidate=true canEditActivity=true /]
@@ -76,49 +75,49 @@
       </div>
   
       [#-- Future activities --]
-      <div id="activityTables-2" class="activityTable">
-        <div id="futureActivities">
-          <ul>
+      [#if futurePlanningActive]
+        <div id="activityTables-2" class="activityTable">
+          <div id="futureActivities">
+            <ul>
+              [#list futureActivities?keys as year]
+                <li><a href="#futureActivities-${year_index+1}"> ${year?c} </a></li>
+              [/#list]
+            </ul>
             [#list futureActivities?keys as year]
-              <li><a href="#futureActivities-${year_index+1}"> ${year?c} </a></li>
-            [/#list]
-          </ul>
-          [#list futureActivities?keys as year]
-            [#if futureActivities.get(year)?has_content]
-              <div id="futureActivities-${year_index+1}">
-                [#assign listOfActivities = futureActivities.get(year)]
-                [@activityList.activitiesList activities=listOfActivities canValidate=false canEditActivity=true /]                
-                
-                [#-- Add activity button --]
-                [#if !workplanSubmitted && !currentUser.PI]
-                  <div id="addActivity">
-                    <a href=" [@s.url action='addActivity' includeParams='get'] [@s.param name='${activityYearRequest}']${year?c}[/@s.param] [/@s.url]" >
-                      [@s.text name="planning.activityList.addActivity" /]
-                    </a>
-                  </div>
-                [/#if]
-              </div>
-            [#else]
-              <div id="futureActivities-${year_index+1}">
-                <div class="noActivities">
-                  [@s.text name="planning.activityList.empty" /]
+              [#if futureActivities.get(year)?has_content]
+                <div id="futureActivities-${year_index+1}">
+                  [#assign listOfActivities = futureActivities.get(year)]
+                  [@activityList.activitiesList activities=listOfActivities canValidate=false canEditActivity=true /]                
+                  
+                  [#-- Add activity button --]
+                  [#if !workplanSubmitted && !currentUser.PI]
+                    <div id="addActivity">
+                      <a href=" [@s.url action='addActivity' includeParams='get'] [@s.param name='${activityYearRequest}']${year?c}[/@s.param] [/@s.url]" >
+                        [@s.text name="planning.activityList.addActivity" /]
+                      </a>
+                    </div>
+                  [/#if]
                 </div>
-                
-                [#-- Add activity button --]
-                [#if !workplanSubmitted && !currentUser.PI]
-                  <div id="addActivity">
-                    <a href=" [@s.url action='addActivity' includeParams='get'] [@s.param name='${activityYearRequest}']${year?c}[/@s.param] [/@s.url]" >
-                      [@s.text name="planning.activityList.addActivity" /]
-                    </a>
+              [#else]
+                <div id="futureActivities-${year_index+1}">
+                  <div class="noActivities">
+                    [@s.text name="planning.activityList.empty" /]
                   </div>
-                [/#if]
-              </div>
-            [/#if]
-          [/#list]
-          
+                  
+                  [#-- Add activity button --]
+                  [#if !workplanSubmitted && !currentUser.PI]
+                    <div id="addActivity">
+                      <a href=" [@s.url action='addActivity' includeParams='get'] [@s.param name='${activityYearRequest}']${year?c}[/@s.param] [/@s.url]" >
+                        [@s.text name="planning.activityList.addActivity" /]
+                      </a>
+                    </div>
+                  [/#if]
+                </div>
+              [/#if]
+            [/#list]
+          </div>
         </div>
-        
-      </div>
+      [/#if]
           
       [#-- Previous activities --]
       <div id="activityTables-3" class="activityTable">
