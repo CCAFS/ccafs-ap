@@ -39,13 +39,13 @@ public class ActivityValidator extends ActionSupport {
 
     // Check the exists an start date and end date
     if (activity.getStartDate() == null) {
-      validationMessages.append(getText("planning.mainInformation.validation.startDate"));
+      validationMessages.append(getText("planning.mainInformation.startDate"));
       validationMessages.append(", ");
       problem = true;
     }
 
     if (activity.getEndDate() == null) {
-      validationMessages.append(getText("planning.mainInformation.validation.endDate"));
+      validationMessages.append(getText("planning.mainInformation.endDate"));
       validationMessages.append(", ");
       problem = true;
     }
@@ -115,7 +115,7 @@ public class ActivityValidator extends ActionSupport {
       message += validationMessages.toString();
 
       // Return the string with the message.
-      return message;
+      return Capitalize.capitalizeString(message);
     } else {
       // Return an empty field to indicate that wasn't any problem.
       return "";

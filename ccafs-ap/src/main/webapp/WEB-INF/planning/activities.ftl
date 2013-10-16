@@ -23,13 +23,27 @@
     
     <div id="activityTables">
       <ul>
-        <li><a href="#activityTables-1"> [@s.text name="planning.activityList.activities" /] ${currentYear?c} </a></li>
+        [#-- Current Activities --]
+        [#if currentUser.TL]
+          <li><a href="#activityTables-1"> [@s.text name="planning.activityList.themeActivities" /] </a></li>
+        [#elseif currentUser.RPL ]
+          <li><a href="#activityTables-1"> [@s.text name="planning.activityList.regionActivities" /] </a></li>
+        [#else]
+          <li><a href="#activityTables-1"> [@s.text name="planning.activityList.activities" /] ${currentYear?c} </a></li>
+        [/#if]
+        [#-- Future activities --]
         [#if futurePlanningActive]
           <li><a href="#activityTables-2"> [@s.text name="planning.activityList.futureActivities" /] </a></li>
         [/#if]
+        [#-- Previous activities --]
         <li><a href="#activityTables-3"> [@s.text name="planning.activityList.previousActivities" /] </a></li>
+        [#-- Related activities --]
         [#if relatedActivities?has_content]
-          <li><a href="#activityTables-4"> [@s.text name="planning.activityList.relatedActivities" /] </a></li>
+          [#if currentUser.TL]
+            <li><a href="#activityTables-4"> [@s.text name="planning.activityList.themeLedActivities" ] [@s.param] ${currentUser.leader.theme.code} [/@s.param] [/@s.text] </a></li>
+          [#elseif currentUser.RPL ]
+            <li><a href="#activityTables-4"> [@s.text name="planning.activityList.regionLedActivities" ] [@s.param] ${currentUser.leader.region.name} [/@s.param] [/@s.text] </a></li>
+          [/#if]
         [/#if]
       </ul>
 
