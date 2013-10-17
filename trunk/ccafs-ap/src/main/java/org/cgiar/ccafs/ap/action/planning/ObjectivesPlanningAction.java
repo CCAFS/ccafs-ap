@@ -128,18 +128,16 @@ public class ObjectivesPlanningAction extends BaseAction {
   public void validate() {
     if (save) {
       // Remove the empty objectives
-      if (!activity.getObjectives().isEmpty()) {
-        for (int c = 0; c < activity.getObjectives().size(); c++) {
-          if (activity.getObjectives().get(c).getDescription().isEmpty()) {
-            activity.getObjectives().remove(c);
-            c--;
-          }
+      for (int c = 0; c < activity.getObjectives().size(); c++) {
+        if (activity.getObjectives().get(c).getDescription().isEmpty()) {
+          activity.getObjectives().remove(c);
+          c--;
         }
-      } else {
-        // Activity must have at least one objective
-        if (activity.getObjectives().isEmpty()) {
-          validationMessage.append(getText("planning.objectives.validation.atLeastOne"));
-        }
+      }
+
+      // Activity must have at least one objective
+      if (activity.getObjectives().isEmpty()) {
+        validationMessage.append(getText("planning.objectives.validation.atLeastOne"));
       }
     }
   }
