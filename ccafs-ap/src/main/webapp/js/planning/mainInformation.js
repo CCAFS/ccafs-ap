@@ -26,6 +26,9 @@ $(document).ready(function() {
   var nofundsMsg = $("#activity\\.budget\\.noFunds").val();
   $("#mainInformation_activity_budget_cgFund option").first().text(nofundsMsg);
   $("#mainInformation_activity_budget_bilateral option").first().text(nofundsMsg);
+  
+  // Format the budget field
+  $("#activity\\.budget\\.usd").on("keypress", isNumber);
 
   // Add chosen plugin to the milestone select
   $(".milestones").chosen();
