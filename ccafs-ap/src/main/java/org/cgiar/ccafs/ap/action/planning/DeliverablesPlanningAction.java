@@ -242,14 +242,14 @@ public class DeliverablesPlanningAction extends BaseAction {
   public void validate() {
 
     if ((save)) {
-      if (!activity.getDeliverables().isEmpty()) {
-        for (int c = 0; c < activity.getDeliverables().size(); c++) {
-          if (activity.getDeliverables().get(c).getDescription().isEmpty()) {
-            activity.getDeliverables().remove(c);
-            c--;
-          }
+      for (int c = 0; c < activity.getDeliverables().size(); c++) {
+        if (activity.getDeliverables().get(c).getDescription().isEmpty()) {
+          activity.getDeliverables().remove(c);
+          c--;
         }
-      } else {
+      }
+
+      if (activity.getDeliverables().isEmpty()) {
         validationMessage.append(getText("planning.activityDeliverables.validation.atLeastOne"));
       }
     }
