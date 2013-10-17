@@ -14,3 +14,11 @@ function popups() {
     nueva = window.open(this.href, '_blank', options);
   });
 }
+
+function isNumber(event) {
+  var charCode = event.which;
+  if (charCode > 31 && (charCode < 48 || charCode > 57))
+     return false;
+
+  return true;
+}
