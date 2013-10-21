@@ -606,11 +606,10 @@ a.currentReportingSection li #i-additionalInformation{
 }
 
 #activityListPlanning #addActivity a {
-
-  background: url('../../images/global/sprite-icons-activities.png') 4px 3px #067305 no-repeat;
+  background: url('../../images/global/sprite-icons-activities.png') 3px 3px #637933 no-repeat;
   color: #FFF;
-  padding: 6px 20px 6px 0px;
-  width: 110px;
+  padding: 6px 10px 6px 25px;
+  width: 80px;
   float: left;	
 }	
 
