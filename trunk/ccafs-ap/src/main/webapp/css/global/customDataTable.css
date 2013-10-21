@@ -4,6 +4,7 @@
 
 /* Search Bar */
 .dataTables_filter {
+  float: none;
   margin-top: 10px;
   margin-bottom: 20px;
 }

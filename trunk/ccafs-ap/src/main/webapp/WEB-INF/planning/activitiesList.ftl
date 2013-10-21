@@ -1,7 +1,7 @@
 [#ftl]
-[#macro activitiesList activities owned=true canValidate=false canEditActivity=false]
+[#macro activitiesList activities owned=true canValidate=false canEditActivity=false tableID=""]
 
-  <table class="activityList">
+  <table class="activityList" id="${tableID}">
   <thead>
     <tr>
       <th id="id">[@s.text name="planning.activityList.id" /]</th>

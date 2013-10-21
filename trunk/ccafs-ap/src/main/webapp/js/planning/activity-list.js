@@ -1,6 +1,6 @@
 $(document).ready(function() {
   
-  $("#activityTables").tabs( );
+  $("#activityTables").tabs({ show: { effect: "slide", direction: "up", duration: 500 }});
   
   $( "#previousActivities" )
     .tabs( )
@@ -16,6 +16,13 @@ $(document).ready(function() {
     "bFilter" : true, // This option enable the search
     "bSort" : true, // this option enable the sort of contents by columns
     "bAutoWidth" : true, // This option enables the auto adjust columns width
-    "iDisplayLength" : 15 // Number of rows to show on the table
+    "iDisplayLength" : 15, // Number of rows to show on the table
+    "fnDrawCallback": function(){
+      // This function locates the add activity button at left to the filter box
+      var table = $(this).parent().find("table");
+      if( $(table).attr("id") == "currentActivities"){
+        $("#currentActivities_filter").prepend($("#addActivity"));
+      }
+    }
   });
 });

@@ -32,7 +32,7 @@ public class ActivityValidator extends ActionSupport {
       problem = true;
     }
 
-    if (activity.getDescription().isEmpty()) {
+    if (activity.getDescription() == null || activity.getDescription().isEmpty()) {
       validationMessages.append(getText("planning.mainInformation.descripition") + ", ");
       problem = true;
     }
@@ -51,11 +51,7 @@ public class ActivityValidator extends ActionSupport {
     }
 
     // Check if the activity have at least one contact person
-    if (activity.getContactPersons() == null || activity.getContactPersons().isEmpty()) {
-      validationMessages.append(getText("planning.mainInformation.validation.contactPerson"));
-      validationMessages.append(", ");
-      problem = true;
-    } else {
+    if (activity.getContactPersons() != null && !activity.getContactPersons().isEmpty()) {
       for (int c = 0; c < activity.getContactPersons().size(); c++) {
         // Check if at least there is a contact name
         if (activity.getContactPersons().get(c).getName().isEmpty()) {
