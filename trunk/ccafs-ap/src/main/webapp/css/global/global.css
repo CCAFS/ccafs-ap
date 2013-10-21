@@ -606,15 +606,13 @@ a.currentReportingSection li #i-additionalInformation{
 }
 
 #activityListPlanning #addActivity a {
+
+  background: url('../../images/global/sprite-icons-activities.png') 4px 3px #067305 no-repeat;
+  color: #FFF;
+  padding: 6px 20px 6px 0px;
+  width: 110px;
   float: left;	
-}
-	
-#activityListPlanning #addActivity a {
-  background-color: #067305;
-  color: white;  
-  padding: 5px;
-  width: 110px;  
-}
+}	
 
 #activityListPlanning #addActivity input {
 	float: left;
@@ -640,7 +638,17 @@ a.currentReportingSection li #i-additionalInformation{
   font-weight: bold;
   margin-top: 30px;
   text-align: center !important;
+  
 }
+#submitActivities{
+  background: url('../../images/global/sprite-icons-activities.png') 5px -103px #F1F1F1 no-repeat;
+  width: 146px;
+  height: 28px;
+  font-weight: bold;
+  color: #BBB;
+  border: 1px solid #DDD;
+}
+
 
 #activityListPlanning #submitButtonBlock #activities_save{
   background-color: #657A36;
@@ -772,6 +780,27 @@ a.currentReportingSection li #i-additionalInformation{
 }
 
 /************ ACTIVITIES ***************/
+
+
+#i-addActivity{ 
+	background:url('../../images/global/sprite-icons-activities.png') 0 0; 
+}
+#i-checkedActivity{ 
+	background:url('../../images/global/sprite-icons-activities.png') 0 -30; 
+}
+#i-errorCheckedActivity{ 
+	background:url('../../images/global/sprite-icons-activities.png') 0 -60; 
+}
+#i-checkActivity{ 
+	background:url('../../images/global/sprite-icons-activities.png') 0 -90; 
+}
+#i-neutralActivity{ 
+	background:url('../../images/global/sprite-icons-activities.png') 0 -120; 
+}
+#i-submitActivity{ 
+	background:url('../../images/global/sprite-icons-activities.png') 0 -1500; 
+}
+
 
 /* Activity List */
 .activityList {
