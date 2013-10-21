@@ -59,10 +59,10 @@
               <div id="submitButtonBlock" class="buttons">
                 [#if canSubmit]
                   [@s.form action="activities" ]
-                    [@s.submit type="button" name="save" method="submit" ][@s.text name="form.buttons.submit" /][/@s.submit] 
+                    [@s.submit type="button" name="save" method="submit" cssClass="test" ][@s.text name="form.buttons.submit" /][/@s.submit] 
                   [/@s.form]  
                 [#else]
-                  <button class="disabled" title="[@s.text name="planning.activityList.submit.disabled" /]"> [@s.text name="form.buttons.submit" /] </button>
+                  <button id="submitActivities" class="disabled" title="[@s.text name="planning.activityList.submit.disabled" /]"> [@s.text name="form.buttons.submit" /] </button>
                 [/#if]
               </div>
             [/#if]
@@ -82,7 +82,7 @@
         [#if !workplanSubmitted && !currentUser.PI]
           <span id="addActivity">
             <a href=" [@s.url action='addActivity' includeParams='get'] [@s.param name='${activityYearRequest}']${currentYear?c}[/@s.param] [/@s.url]" >
-              [@s.text name="planning.activityList.addActivity" /]
+             [@s.text name="planning.activityList.addActivity" /]
             </a>
           </span>
         [/#if]

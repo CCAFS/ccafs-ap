@@ -46,7 +46,7 @@
         
         [#if libraryName="jquery"]
           [#-- JQuery UI --]
-          <link rel="stylesheet" type="text/css" href="${baseUrl}/css/libs/jqueryUI/smoothness/jquery-ui-1.10.0.custom.min.css" />
+          <link rel="stylesheet" type="text/css" href="${baseUrl}/css/libs/jqueryUI/smoothness/jquery-ui-1.10.css" />
           <link rel="stylesheet" type="text/css" href="${baseUrl}/css/global/jquery-ui.custom.css" />
         [/#if]
         
