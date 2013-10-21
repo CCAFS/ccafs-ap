@@ -8,6 +8,10 @@ nav#mainMenu ul a li {
   *margin-top: 50px;
 }
 
+.container {
+  border: 1px outset #F1F1F1;
+}
+
 /*************** BODY ****************/
 
 .thirdPartBlock {
@@ -22,6 +26,10 @@ nav#mainMenu ul a li {
   *display: inline;
   padding: 5px;
   width: 45%;
+}
+
+table.dataTable thead tr th{
+  background-color: #F1D023;
 }
 
 /*------- Reporting section -------*/

@@ -5,13 +5,18 @@
 /* Search Bar */
 .dataTables_filter {
   float: none;
-  margin-top: 10px;
+  padding-top: 10px;
   margin-bottom: 20px;
 }
 
 /* Table */
+
+table.dataTable thead {
+  background-color: #F1D023;
+}
+
 table.dataTable tr.odd {
-  background-color: #FFF2B5;
+  background-color: white;
 }
 
 table.dataTable tr.even {
@@ -19,15 +24,15 @@ table.dataTable tr.even {
 }
 
 table.dataTable tr.odd td.sorting_1 {
-  background-color: #FFF2B5;
+  background-color: white;
 }
 
 table.dataTable tr.odd td.sorting_2 {
-  background-color: #F1D023;
+  background-color: white;
 }
 
 table.dataTable tr.odd td.sorting_3 {
-  background-color: #F1D023;
+  background-color: white;
 }
 
 table.dataTable tr.even td.sorting_1 {
@@ -44,13 +49,13 @@ table.dataTable tr.even td.sorting_3 {
 
 table.dataTable thead th {
   text-align: center;
-  border: 1px solid #000000;
+  border: 1px solid #777777;
   font-size: 13px;
   vertical-align: middle;
 }
 
 table.dataTable td {
-  border: 1px solid black;
+  border: 1px solid #777777;
 }
 
 /*
@@ -58,7 +63,7 @@ table.dataTable td {
  */
 .dataTables_paginate {
   margin-top: 5px;
-  border-bottom: 1px solid black;
+  border-bottom: 1px solid #777777;
 }
 
 .paginate_enabled_previous {
