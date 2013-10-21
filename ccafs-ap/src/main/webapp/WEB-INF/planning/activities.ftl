@@ -51,7 +51,7 @@
       <div id="activityTables-1" class="activityTable">
         
         [#if currentActivities?has_content]
-          [@activityList.activitiesList activities=currentActivities canValidate=true canEditActivity=true /]
+          [@activityList.activitiesList activities=currentActivities canValidate=true canEditActivity=true tableID="currentActivities" /]
           
           [#-- If the workplan hasn't been submitted yet, show the button --]
           [#if !workplanSubmitted]
@@ -80,11 +80,11 @@
         
         [#-- Show the Add activity button if the workplan hasn't been submitted yet--]
         [#if !workplanSubmitted && !currentUser.PI]
-          <div id="addActivity">
+          <span id="addActivity">
             <a href=" [@s.url action='addActivity' includeParams='get'] [@s.param name='${activityYearRequest}']${currentYear?c}[/@s.param] [/@s.url]" >
               [@s.text name="planning.activityList.addActivity" /]
             </a>
-          </div>
+          </span>
         [/#if]
       </div>
   
@@ -101,7 +101,7 @@
               [#if futureActivities.get(year)?has_content]
                 <div id="futureActivities-${year_index+1}">
                   [#assign listOfActivities = futureActivities.get(year)]
-                  [@activityList.activitiesList activities=listOfActivities canValidate=false canEditActivity=true /]                
+                  [@activityList.activitiesList activities=listOfActivities canValidate=false canEditActivity=true tableID="futureActivities" /]                
                   
                   [#-- Add activity button --]
                   [#if !workplanSubmitted && !currentUser.PI]

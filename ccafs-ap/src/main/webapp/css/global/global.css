@@ -606,6 +606,10 @@ a.currentReportingSection li #i-additionalInformation{
 }
 
 #activityListPlanning #addActivity a {
+  float: left;	
+}
+	
+#activityListPlanning #addActivity a {
   background-color: #067305;
   color: white;  
   padding: 5px;
@@ -768,10 +772,6 @@ a.currentReportingSection li #i-additionalInformation{
 }
 
 /************ ACTIVITIES ***************/
-
-.activityTable{
-	min-height: 300px;
-}
 
 /* Activity List */
 .activityList {
