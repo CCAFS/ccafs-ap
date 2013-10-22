@@ -274,6 +274,11 @@ a.currentReportingSection li {
   height: 15px;
   width:15px; 
 }
+.icon-20{
+  float: left;
+  height: 20px;
+  width:20px; 
+}
 
 .icon-s{
   float: left;
@@ -608,9 +613,10 @@ a.currentReportingSection li #i-additionalInformation{
 #activityListPlanning #addActivity a {
   background: url('../../images/global/sprite-icons-activities.png') 3px 3px #637933 no-repeat;
   color: #FFF;
-  padding: 6px 10px 6px 25px;
-  width: 80px;
+  padding: 6px 10px 6px 15px;
+  width: 83px;
   float: left;	
+  border-radius: 2px;
 }	
 
 #activityListPlanning #addActivity input {
@@ -627,7 +633,7 @@ a.currentReportingSection li #i-additionalInformation{
 }
 
 #activityListPlanning .buttons button{
-  padding : 0 8px;
+  padding: 0 0 0 15px;
 }
 
 #activityListPlanning #submitButtonBlock {
@@ -785,19 +791,23 @@ a.currentReportingSection li #i-additionalInformation{
 	background:url('../../images/global/sprite-icons-activities.png') 0 0; 
 }
 #i-checkedActivity{ 
-	background:url('../../images/global/sprite-icons-activities.png') 0 -30; 
+	background:url('../../images/global/sprite-icons-activities.png') 0 -24px; 
 }
 #i-errorCheckedActivity{ 
-	background:url('../../images/global/sprite-icons-activities.png') 0 -60; 
+	background:url('../../images/global/sprite-icons-activities.png') 0 -45px; 
 }
-#i-checkActivity{ 
-	background:url('../../images/global/sprite-icons-activities.png') 0 -90; 
+button#activities_save{ 
+	background: url('../../images/global/sprite-icons-activities.png') 0 -67px no-repeat; 
+	border:none;
+	width: 100%;
+	color: #630;
+	font-size: 13px;
 }
 #i-neutralActivity{ 
-	background:url('../../images/global/sprite-icons-activities.png') 0 -120; 
+	background:url('../../images/global/sprite-icons-activities.png') 0 -90px; 
 }
 #i-submitActivity{ 
-	background:url('../../images/global/sprite-icons-activities.png') 0 -1500; 
+	background:url('../../images/global/sprite-icons-activities.png') 0 -150px; 
 }
 
 
@@ -807,7 +817,7 @@ a.currentReportingSection li #i-additionalInformation{
 }
 
 .activityList #id {
-  width: 60px;
+  width: 20px;
 }
 
 .activityList #activity {
@@ -820,6 +830,10 @@ a.currentReportingSection li #i-additionalInformation{
 
 .activityList #leaderName {
   width: 100px;
+}
+
+.activityList #validated {
+  width: 64px;
 }
 
 .activityList #theme {

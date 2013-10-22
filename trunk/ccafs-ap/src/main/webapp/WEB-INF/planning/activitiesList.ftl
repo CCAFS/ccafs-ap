@@ -78,17 +78,17 @@
           </td>
           [#if canValidate]
             <td>
-              [#if activity.validated]
-                <img src="${baseUrl}/images/global/icon-complete.png" alt="Activity validated" title="Activity validated" />
+              [#if activity.validated] 
+                <div alt="Activity validated" title="Activity validated" ><div class="icon-20" id="i-checkedActivity"></div>Validated </div>
               [#else]
                 [#-- The PI only can see a notification, they can't validate the activity --]
-                [#if currentUser.PI]
-                  <img src="${baseUrl}/images/global/icon-incomplete.png" alt="This activity has not been validated yet" title="This activity has not been validated yet" />
+                [#if currentUser.PI] 
+                  <div alt="This activity has not been validated yet" title="This activity has not been validated yet"  ><div class="icon-20" id="i-errorCheckedActivity"></div>Validate</div>
                 [#else]
                   [#-- The CP/TL/RPL can validate the activity if needed --]
                   [#if activityID == activity.id]
-                    [#-- User tried to submit this activity but there is some missing data. --]
-                    <img src="${baseUrl}/images/global/icon-incomplete.png" alt="There is missing data" title="There is missing data" />
+                    [#-- User tried to submit this activity but there is some missing data. --] 
+                    <div alt="There is missing data" title="There is missing data"  ><div class="icon-20" id="i-errorCheckedActivity"></div>Validate</div>
                   [#else]
                     [#-- We send the index of the activity in the array, not the activity identifier  --]
                     [#-- in order find quickly the activity in the array to modify it.  --]
