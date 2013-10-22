@@ -617,7 +617,11 @@ a.currentReportingSection li #i-additionalInformation{
   width: 83px;
   float: left;	
   border-radius: 2px;
-}	
+}
+
+#activityListPlanning #addActivity a:hover{
+	background-color: #576A2D;
+}
 
 #activityListPlanning #addActivity input {
 	float: left;
@@ -632,8 +636,12 @@ a.currentReportingSection li #i-additionalInformation{
 	margin : 0;
 }
 
-#activityListPlanning .buttons button{
+#activityListPlanning .activityTable .buttons button{
   padding: 0 0 0 15px;
+}
+
+#activityListPlanning .buttons button{
+  padding: 3px 15px;
 }
 
 #activityListPlanning #submitButtonBlock {
@@ -643,28 +651,27 @@ a.currentReportingSection li #i-additionalInformation{
   font-weight: bold;
   margin-top: 30px;
   text-align: center !important;
-  
 }
-#submitActivities{
-  background: url('../../images/global/sprite-icons-activities.png') 5px -103px #F1F1F1 no-repeat;
+
+#activityListPlanning #submitButtonBlock #activities_save{
+  background: url('../../images/global/sprite-icons-activities.png') 30px -103px #657A36 no-repeat;
   width: 146px;
   height: 28px;
   font-weight: bold;
+  color: #FFFFFF;
+}
+
+#activityListPlanning #submitButtonBlock #activities_save.disabled{
+  background: url('../../images/global/sprite-icons-activities.png') 30px -103px #F1F1F1 no-repeat;
   color: #BBB;
   border: 1px solid #DDD;
-}
-
-
-#activityListPlanning #submitButtonBlock #activities_save{
-  background-color: #657A36;
-  color: #FFFFFF;
-  padding: 2px 10px;
-}
-
-#activityListPlanning #submitButtonBlock .disabled{
   cursor : auto;
 }
 
+#activityListPlanning #submitButtonBlock #activities_save:hover {
+	background-color: #576A2D;
+}
+	
 #activityListPlanning .workplanSubmitted {
   color: #FF0000;
   margin-top: 10px;

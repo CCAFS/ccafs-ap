@@ -62,7 +62,7 @@
                     [@s.submit type="button" name="save" method="submit" cssClass="test" ][@s.text name="form.buttons.submit" /][/@s.submit] 
                   [/@s.form]  
                 [#else]
-                  <button id="submitActivities" class="disabled" title="[@s.text name="planning.activityList.submit.disabled" /]"> [@s.text name="form.buttons.submit" /] </button>
+                  <button id="activities_save" class="disabled" title="[@s.text name="planning.activityList.submit.disabled" /]"> [@s.text name="form.buttons.submit" /] </button>
                 [/#if]
               </div>
             [/#if]
