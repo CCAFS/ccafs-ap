@@ -51,7 +51,7 @@
         <fieldset class="thirdPartBlock " id="countriesForRegion-${region.id}" [#if activity.global || !activeRegions?contains(region.id?string)]style="display:none"[/#if]>
           <legend> <h6> [@s.text name="planning.locations.region${region.id}" /] [@s.text name="planning.locations.countries" /] </h6> </legend>
           [#-- All region checkbox --]
-          <input type="checkbox" class="countriesForRegion" id="allCountriesForRegion-${region_index}" name="activity.regions" value="${region.id}" [#if activity.regionsIds?contains(region.id?string)]checked="checked"[/#if] />
+          <input type="checkbox" class="countriesForRegion" id="allCountriesForRegion-${region_index}" name="activity.regions" value="${region.id}" [#if activity.regionsIds?contains(region.id?string)]checked="checked"[/#if] title="[@s.text name="planning.locations.allCountries.help" /]" />
           <label for="">[@s.text name="planning.locations.allCountries" /]</label>
           
           [#-- If the region is selected, the countries selector is not shown --]

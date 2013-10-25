@@ -672,6 +672,10 @@ a.currentReportingSection li #i-additionalInformation{
 	background-color: #576A2D;
 }
 	
+#activityListPlanning #submitButtonBlock #activities_save.disabled:hover {
+	background-color: #F1F1F1;
+}
+	
 #activityListPlanning .workplanSubmitted {
   color: #FF0000;
   margin-top: 10px;

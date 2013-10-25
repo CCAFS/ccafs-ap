@@ -41,12 +41,12 @@
 
         [#-- Contact Name --]
         <div class="halfPartBlock">
-          [@customForm.input name="activity.activityPartners[${ap_index}].contactName" type="text" i18nkey="planning.activityPartners.contactPersonName" /]
+          [@customForm.input name="activity.activityPartners[${ap_index}].contactName" type="text" i18nkey="planning.activityPartners.contactPersonName" required=true /]
         </div>
 
         [#-- Contact Email --]
         <div class="halfPartBlock">
-          [@customForm.input name="activity.activityPartners[${ap_index}].contactEmail" type="text" i18nkey="planning.activityPartners.contactPersonEmail" /]
+          [@customForm.input name="activity.activityPartners[${ap_index}].contactEmail" type="text" i18nkey="planning.activityPartners.contactPersonEmail" required=true /]
         </div> 
         <hr />
       </div> <!-- End activityPartner-${ap_index} -->
@@ -120,12 +120,12 @@
         
         [#-- Contact Name --]
         <div class="halfPartBlock">
-          [@customForm.input name="contactName" type="text" i18nkey="planning.activityPartners.contactPersonName" /]
+          [@customForm.input name="contactName" type="text" i18nkey="planning.activityPartners.contactPersonName" required=true /]
         </div>
       
         [#-- Contact Email --]
         <div class="halfPartBlock">
-          [@customForm.input name="contactEmail" type="text" i18nkey="planning.activityPartners.contactPersonEmail" /]
+          [@customForm.input name="contactEmail" type="text" i18nkey="planning.activityPartners.contactPersonEmail" required=true /]
         </div>
         <hr />
       </div> <!-- End partner template -->
