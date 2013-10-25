@@ -77,6 +77,12 @@ public class AdditionalInformationPlanningAction extends BaseAction {
   }
 
   @Override
+  public String next() {
+    save();
+    return super.next();
+  }
+
+  @Override
   public void prepare() throws Exception {
     LOG.info("-- prepare() > User {} load the activity additional information for leader {} in planing section",
       getCurrentUser().getEmail(), getCurrentUser().getLeader().getId());
@@ -125,7 +131,6 @@ public class AdditionalInformationPlanningAction extends BaseAction {
     }
   }
 
-
   @Override
   public String save() {
     boolean deleted;
@@ -154,7 +159,6 @@ public class AdditionalInformationPlanningAction extends BaseAction {
         activity.getKeywords().add(ak);
       }
     }
-
 
     if (activity.getKeywords().size() > 0) {
       keywordsSaved = activityKeywordManager.saveKeywordList(activity.getKeywords(), activityID);

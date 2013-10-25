@@ -113,6 +113,11 @@ public class LocationsPlanningAction extends BaseAction {
     return canSubmit;
   }
 
+  @Override
+  public String next() {
+    save();
+    return super.next();
+  }
 
   @Override
   public void prepare() throws Exception {

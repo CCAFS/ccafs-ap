@@ -74,7 +74,6 @@ public class PartnersPlanningAction extends BaseAction {
     partnersOptions.put(false, getText("form.options.no"));
   }
 
-
   public Activity getActivity() {
     return activity;
   }
@@ -112,6 +111,12 @@ public class PartnersPlanningAction extends BaseAction {
 
   public boolean isCanSubmit() {
     return canSubmit;
+  }
+
+  @Override
+  public String next() {
+    save();
+    return super.next();
   }
 
   @Override
