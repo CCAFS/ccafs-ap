@@ -259,14 +259,14 @@ public class PartnersPlanningAction extends BaseAction {
       // If the user said the activity will have partner but don't select anyone
       if (activity.isHasPartners() && activity.getActivityPartners().isEmpty()) {
         validationMessage.append(getText("planning.activityPartners.atLeastOne") + ".");
-      }
+      } else {
+        if (missingContactEmail) {
+          // TODO - Add message
+        }
 
-      if (missingContactEmail) {
-        validationMessage.append(getText("planning.activityPartners.atLeastOne") + ".");
-      }
-
-      if (missingContactName) {
-        validationMessage.append(getText("planning.activityPartners.atLeastOne") + ".");
+        if (missingContactName) {
+          // TODO - Add message
+        }
       }
 
     }
