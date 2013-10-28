@@ -281,8 +281,7 @@ public class ActivitiesPlanningAction extends BaseAction {
       String subject;
       subject = "[CCAFS P&R] " + getCurrentUser().getLeader().getAcronym() + " has sent its workplan ";
 
-// String recipients = "g.c.rengifo@cgiar.org d.abreu@cgiar.org h.f.tobon@cgiar.org";
-      String recipients = "h.f.tobon@cgiar.org";
+      String recipients = "g.c.rengifo@cgiar.org d.abreu@cgiar.org h.f.tobon@cgiar.org";
 
       StringBuilder message = new StringBuilder();
       message.append("The user " + getCurrentUser().getName() + " ");
@@ -325,8 +324,7 @@ public class ActivitiesPlanningAction extends BaseAction {
       workplanSubmitted = true;
       canSubmit = false;
 
-// if (!config.getBaseUrl().contains("localhost") && !config.getBaseUrl().contains("/test")) {
-      if (!config.getBaseUrl().contains("localhost")) {
+      if (!config.getBaseUrl().contains("localhost") && !config.getBaseUrl().contains("/test")) {
         sendConfirmationMessage();
       }
 
