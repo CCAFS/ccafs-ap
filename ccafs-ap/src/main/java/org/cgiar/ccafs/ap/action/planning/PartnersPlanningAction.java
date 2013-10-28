@@ -226,17 +226,26 @@ public class PartnersPlanningAction extends BaseAction {
   @Override
   public void validate() {
     boolean anyError = false;
+    boolean missingContactName = false, missingContactEmail = false;
 
     if (save) {
       if (activity.getActivityPartners() != null) {
         for (int c = 0; c < activity.getActivityPartners().size(); c++) {
+
+          if (activity.getActivityPartners().get(c).getContactName().isEmpty()) {
+            missingContactName = true;
+          }
+
           if (!activity.getActivityPartners().get(c).getContactEmail().isEmpty()) {
             if (!EmailValidator.isValidEmail(activity.getActivityPartners().get(c).getContactEmail())) {
               anyError = true;
               addFieldError("activity.activityPartners[" + c + "].contactEmail",
                 getText("validation.invalid", new String[] {getText("planning.activityPartners.contactPersonEmail")}));
             }
+          } else {
+            missingContactEmail = true;
           }
+
           if (activity.getActivityPartners().get(c).getPartner() == null) {
             // If User save the option of no result for filter this element should be deleted from the list.
             activity.getActivityPartners().remove(c);
@@ -247,9 +256,19 @@ public class PartnersPlanningAction extends BaseAction {
         }
       }
 
+      // If the user said the activity will have partner but don't select anyone
       if (activity.isHasPartners() && activity.getActivityPartners().isEmpty()) {
         validationMessage.append(getText("planning.activityPartners.atLeastOne") + ".");
       }
+
+      if (missingContactEmail) {
+        validationMessage.append(getText("planning.activityPartners.atLeastOne") + ".");
+      }
+
+      if (missingContactName) {
+        validationMessage.append(getText("planning.activityPartners.atLeastOne") + ".");
+      }
+
     }
 
     if (anyError) {
