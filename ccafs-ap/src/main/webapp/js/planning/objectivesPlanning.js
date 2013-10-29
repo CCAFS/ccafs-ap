@@ -15,6 +15,7 @@ $(document).ready(function() {
     $(newObjective).attr("class", "objective");
     renameObjectives();
     newObjective.show("slow");
+    $(newObjective).find("[id$='description']").focus();
   });
   
   renameObjectives();
