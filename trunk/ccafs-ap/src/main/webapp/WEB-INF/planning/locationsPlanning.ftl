@@ -101,10 +101,10 @@
             
             <div  class="fullBlock">
               <div  class="halfPartBlock">
-                [@customForm.select name="activity.otherLocations[${otherSite_index}].country" label="" i18nkey="planning.locations.country" listName="countries" keyFieldName="id"  displayFieldName="name" value="activity.otherLocations[${otherSite_index}].country.id" className="countries" /]
+                [@customForm.select name="activity.otherLocations[${otherSite_index}].country" label="" i18nkey="planning.locations.country" listName="countries" keyFieldName="id"  displayFieldName="name" value="activity.otherLocations[${otherSite_index}].country.id" className="countries" required=true /]
               </div>
               <div class="halfPartBlock">
-                [@customForm.input name="activity.otherLocations[${otherSite_index}].details" type="text" i18nkey="planning.locations.details" /]
+                [@customForm.input name="activity.otherLocations[${otherSite_index}].details" type="text" i18nkey="planning.locations.details" required=true /]
               </div>
               [#-- Remove image --]
               <a href="#" >
@@ -113,10 +113,10 @@
             </div>
             <div  class="halfPartBlock">
               <div  class="halfPartBlock">
-                [@customForm.input name="activity.otherLocations[${otherSite_index}].latitude" type="text" i18nkey="planning.locations.latitude" /]
+                [@customForm.input name="activity.otherLocations[${otherSite_index}].latitude" type="text" i18nkey="planning.locations.latitude" required=true /]
               </div>
               <div  class="halfPartBlock">
-                [@customForm.input name="activity.otherLocations[${otherSite_index}].longitude" type="text" i18nkey="planning.locations.longitude" /]
+                [@customForm.input name="activity.otherLocations[${otherSite_index}].longitude" type="text" i18nkey="planning.locations.longitude" required=true /]
               </div>
             </div>
             <div class="halfPartBlock">
@@ -148,10 +148,10 @@
         
         <div  class="fullBlock">
           <div  class="halfPartBlock">
-            [@customForm.select name="country" label="" i18nkey="planning.locations.country" listName="countries" keyFieldName="id"  displayFieldName="name" className="countries" /]
+            [@customForm.select name="country" label="" i18nkey="planning.locations.country" listName="countries" keyFieldName="id"  displayFieldName="name" className="countries" required=true /]
           </div>
           <div class="halfPartBlock">
-            [@customForm.input name="details" type="text" i18nkey="planning.locations.details" /]
+            [@customForm.input name="details" type="text" i18nkey="planning.locations.details" required=true /]
           </div>
           [#-- Remove image --]
           <a href="#" >
@@ -161,10 +161,10 @@
             
         <div  class="halfPartBlock">
           <div  class="halfPartBlock">
-            [@customForm.input name="latitude" type="text" i18nkey="planning.locations.latitude" /]
+            [@customForm.input name="latitude" type="text" i18nkey="planning.locations.latitude" required=true /]
           </div>
           <div  class="halfPartBlock">
-            [@customForm.input name="longitude" type="text" i18nkey="planning.locations.longitude" /]
+            [@customForm.input name="longitude" type="text" i18nkey="planning.locations.longitude" required=true /]
           </div>
         </div>
         <div class="halfPartBlock">
