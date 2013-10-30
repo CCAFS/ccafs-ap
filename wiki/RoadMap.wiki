@@ -1,7 +1,7 @@
 #summary Roadmap for upcoming releases
 
 
-== CCAFS P&R v1.1.2 ==
+== CCAFS P&R v1.2 ==
 *Planned release date:* December 2013
 
 In reporting it is needed add new sub-sections, like Communications, Indicators and Leverages.
@@ -10,12 +10,14 @@ Also it's needed make improvements and adjustments in reporting subsections like
 
 ----------
 
-== CCAFS P&R v1.1.1 ==
+== CCAFS P&R v1.1 ==
 *Planned release date:* October 1 2013
 
-It is needed make some improvements into the planning section before the contact point users start the planning process for 2014 activities.
+*Released on:* October 30, 2013
 
-Also it is planned add some enhancements like a submit button in the forms, and a way to export the partners information into a XML file.
+This version improved the planning section. It was added a Validate button per activity and a Submit button to make the submission once the work plan is ready.
+
+Also was added a list to see the activities from previus years.
 
 ---------
 
