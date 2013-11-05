@@ -112,6 +112,12 @@ public class DeliverablesPlanningAction extends BaseAction {
   }
 
   @Override
+  public String next() {
+    save();
+    return super.next();
+  }
+
+  @Override
   public void prepare() throws Exception {
     super.prepare();
 

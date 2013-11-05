@@ -13,6 +13,7 @@ $(document).ready(
         $("#addDeliverableBlock").before($newDeliverable);
         renameDeliverables();
         $newDeliverable.fadeIn("slow");
+        $newDeliverable.find("[id$='description']").focus();
       });
 
       $('.removeDeliverable').click(function(event) {

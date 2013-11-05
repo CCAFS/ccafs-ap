@@ -38,12 +38,10 @@
         [#-- Previous activities --]
         <li><a href="#activityTables-3"> [@s.text name="planning.activityList.previousActivities" /] </a></li>
         [#-- Related activities --]
-        [#if relatedActivities?has_content]
-          [#if currentUser.TL]
-            <li><a href="#activityTables-4"> [@s.text name="planning.activityList.themeLedActivities" ] [@s.param] ${currentUser.leader.theme.code} [/@s.param] [/@s.text] </a></li>
-          [#elseif currentUser.RPL ]
-            <li><a href="#activityTables-4"> [@s.text name="planning.activityList.regionLedActivities" ] [@s.param] ${currentUser.leader.region.name} [/@s.param] [/@s.text] </a></li>
-          [/#if]
+        [#if currentUser.TL]
+          <li><a href="#activityTables-4"> [@s.text name="planning.activityList.themeLedActivities" ] [@s.param] ${currentUser.leader.theme.code} [/@s.param] [/@s.text] </a></li>
+        [#elseif currentUser.RPL ]
+          <li><a href="#activityTables-4"> [@s.text name="planning.activityList.regionLedActivities" ] [@s.param] ${currentUser.leader.region.name} [/@s.param] [/@s.text] </a></li>
         [/#if]
       </ul>
 
@@ -62,7 +60,7 @@
                     [@s.submit type="button" name="save" method="submit" cssClass="test" ][@s.text name="form.buttons.submit" /][/@s.submit] 
                   [/@s.form]  
                 [#else]
-                  <button id="submitActivities" class="disabled" title="[@s.text name="planning.activityList.submit.disabled" /]"> [@s.text name="form.buttons.submit" /] </button>
+                  <button id="activities_save" class="disabled" title="[@s.text name="planning.activityList.submit.disabled" /]"> [@s.text name="form.buttons.submit" /] </button>
                 [/#if]
               </div>
             [/#if]
@@ -79,7 +77,7 @@
         [/#if]
         
         [#-- Show the Add activity button if the workplan hasn't been submitted yet--]
-        [#if !workplanSubmitted && !currentUser.PI]
+        [#if !workplanSubmitted]
           <span id="addActivity">
             <a href=" [@s.url action='addActivity' includeParams='get'] [@s.param name='${activityYearRequest}']${currentYear?c}[/@s.param] [/@s.url]" >
              [@s.text name="planning.activityList.addActivity" /]
@@ -155,9 +153,15 @@
       </div>
 
       [#-- Related activities --]      
-      [#if relatedActivities?has_content]
-        <div id="activityTables-4" class="activityTable">      
-          [@activityList.activitiesList activities=relatedActivities canValidate=false canEditActivity=true owned=false /]
+      [#if currentUser.TL || currentUser.RPL ]
+        <div id="activityTables-4" class="activityTable">
+          [#if relatedActivities?has_content]
+            [@activityList.activitiesList activities=relatedActivities canValidate=false canEditActivity=true owned=false /]
+          [#else]
+            <div class="noActivities">
+              [@s.text name="planning.activityList.empty" /]
+            </div>
+          [/#if]
         </div>
       [/#if]
       

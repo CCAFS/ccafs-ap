@@ -1,3 +1,7 @@
+$(document).ready(function() {
+  popups();
+});
+
 google.load('visualization', '1', {
   'packages' : [ 'geochart' ]
 });
