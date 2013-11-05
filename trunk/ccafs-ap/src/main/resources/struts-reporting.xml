@@ -125,7 +125,6 @@
     <!-- Others -->
         
     <action name="milestone" class="org.cgiar.ccafs.ap.action.reporting.activities.MilestoneReportingAction">
-      <interceptor-ref name="reportingStack" />
       <result>/WEB-INF/reporting/milestone.ftl</result>
     </action>
 
