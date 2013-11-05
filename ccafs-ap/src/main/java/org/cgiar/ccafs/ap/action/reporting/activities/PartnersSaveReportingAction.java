@@ -78,7 +78,7 @@ public class PartnersSaveReportingAction extends BaseAction {
     if (this.getRequest().getParameter(APConstants.ACTIVITY_REQUEST_ID) != null) {
       activityID = Integer.parseInt(StringUtils.trim(this.getRequest().getParameter(APConstants.ACTIVITY_REQUEST_ID)));
     }
-    LOG.info("The user {} load the save partner section related to the activity {}.", getCurrentUser().getEmail(),
+    LOG.info("The user {} load the request partner section related to the activity {}.", getCurrentUser().getEmail(),
       activityID);
     this.countriesList = countryManager.getCountryList();
     this.partnerTypesList = partnerTypeManager.getPartnerTypeList();

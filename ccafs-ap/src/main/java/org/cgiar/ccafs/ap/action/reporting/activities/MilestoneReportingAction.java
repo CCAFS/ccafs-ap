@@ -54,8 +54,12 @@ public class MilestoneReportingAction extends BaseAction {
       LOG.error("There was an error trying to parse the mileston id {}",
         this.getRequest().getParameter(APConstants.MILESTONE_REQUEST_ID), e);
     }
-    LOG.info("The user {} is loading the information about milestone {}.", getCurrentUser().getEmail(),
-      String.valueOf(milestoneID));
+
+    // TODO - The log should not write the user name because this action can be called
+    // by not authenticated users
+
+    // LOG.info("The user {} is loading the information about milestone {}.", getCurrentUser().getEmail(),
+    // String.valueOf(milestoneID));
     // get main activity information based on the status form.
     milestone = milestoneManager.getMilestone(milestoneID);
   }
