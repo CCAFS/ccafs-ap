@@ -75,6 +75,10 @@ public class ActivityPartnerManagerImpl implements ActivityPartnerManager {
     boolean problem = false;
     List<Map<String, Object>> activityPartnersData = new ArrayList<>();
     for (ActivityPartner cp : activityPartners) {
+      if (cp.getPartner() == null) {
+        // If the partner is null, continue with the next one
+        continue;
+      }
       Map<String, Object> cpData = new HashMap<>();
       if (cp.getId() != -1) {
         cpData.put("id", cp.getId());
