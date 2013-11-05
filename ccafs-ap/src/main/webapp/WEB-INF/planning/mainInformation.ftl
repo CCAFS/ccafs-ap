@@ -71,7 +71,13 @@
     
     [#-- Logframe link --]
     <div class="halfPartBlock">
-      <a href="../resources/documents/Logframe_2013-2015.pdf" target="_blank">view logframe </a> 
+      [#if currentYear == 2013]
+        <a href="../resources/documents/Logframe_2013-2015.pdf" target="_blank">view logframe </a> 
+      [#elseif currentYear == 2014]
+        <a href="../resources/documents/Logframe_2014-2015.pdf" target="_blank">view logframe </a> 
+      [#else]
+        <a href="../resources/documents/Logframe_2013-2015.pdf" target="_blank">view logframe </a> 
+      [/#if]
     </div>
     
     [#-- Budget --]
