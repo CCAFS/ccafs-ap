@@ -1,7 +1,7 @@
 [#ftl]
 [#assign title = "Activity Information" /]
 [#assign globalLibs = ["jquery", "googleAPI", "googleMaps"] /]
-[#assign customJS = ["${baseUrl}/js/home/activity.js"] /]
+[#assign customJS = ["${baseUrl}/js/home/activity.js", "${baseUrl}/js/global/utils.js"] /]
 [#assign customCSS = ["", ""] /]
 
 [#include "/WEB-INF/global/pages/header.ftl" /]
@@ -36,17 +36,17 @@
         <tbody>
           <tr>
             <td class="title">[@s.text name="home.activity.startDate" /]</td>
-            <td>${activity.startDate?string("MM/dd/yyyy")}</td>
+            <td>[#if activity.startDate?has_content]${activity.startDate?string("MM/dd/yyyy")}[/#if]</td>
             <td class="title">[@s.text name="home.activity.budget" /]</td>
             <td>${activity.budget.usd}</td>
           </tr>
           <tr>
             <td class="title">[@s.text name="home.activity.endDate" /]</td>
-            <td>${activity.endDate?string("MM/dd/yyyy")}</td>
+            <td>[#if activity.endDate?has_content]${activity.endDate?string("MM/dd/yyyy")}[/#if]</td>
             <td class="title">[@s.text name="home.activity.milestone" /]</td>
             <td>
-              <a class="popup" href="[@s.url action='milestone'][@s.param name='${milestoneRequestParameter}']${activity.milestone.id}[/@s.param][/@s.url]">
-                [#if milestone?has_content]${activity.milestone.code}[/#if]
+              <a class="popup" href="[@s.url action='milestone' namespace="/reporting" ][@s.param name='${milestoneRequestParameter}']${activity.milestone.id}[/@s.param][/@s.url]">
+                [#if activity.milestone?has_content]${activity.milestone.code}[/#if]
               </a>
             </td>
           </tr>
@@ -54,7 +54,7 @@
             <tr>
               <td class="title">[@s.text name="home.activity.contactPerson" /]</td>
               <td colspan="3">
-                [#if contactPersons?has_content]
+                [#if activity.contactPersons?has_content]
                    ${activity.contactPersons[0].name}
                   (<a id="contactEmail" href="mailto: ${activity.contactPersons[0].email} ">${activity.contactPersons[0].email}</a>)
                   [#if activity.contactPersons?size > 1] <a id="viewMoreContacts" href="">, [@s.text name="home.activity.contactPerson.showTable" /]</a> [/#if]
