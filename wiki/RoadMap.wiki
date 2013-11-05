@@ -16,8 +16,9 @@ Also it's needed make improvements and adjustments in reporting subsections like
 *Released on:* October 30, 2013
 
 This version improved the planning section. It was added a Validate button per activity and a Submit button to make the submission once the work plan is ready.
-
 Also was added a list to see the activities from previus years.
+
+[http://code.google.com/p/ccafs-ap/issues/list?can=1&q=milestone%3DRelease1.1&colspec=ID+Type+Status+Priority+Component+Section+Milestone+Owner+Summary&cells=tiles Resolved issues]
 
 ---------
 
