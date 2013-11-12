@@ -97,7 +97,16 @@
       <result name="cancel" type="redirectAction">activities</result>
       <result name="input">/WEB-INF/reporting/indicatorsReporting.ftl</result>
       <result name="success" type="redirectAction">
-        <param name="actionName">indicators</param>
+        <param name="actionName">leverages</param>
+      </result>
+    </action>
+    
+    <action name="leverages" class="org.cgiar.ccafs.ap.action.reporting.leverages.LeveragesReportingAction">
+      <interceptor-ref name="reportingStack" />
+      <result name="cancel" type="redirectAction">activities</result>
+      <result name="input">/WEB-INF/reporting/leveragesReporting.ftl</result>
+      <result name="success" type="redirectAction">
+        <param name="actionName">leverages</param>
       </result>
     </action>
 

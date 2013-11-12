@@ -47,10 +47,17 @@ public class IndicatorsReportingAction extends BaseAction {
 
   @Override
   public String save() {
-    indicatorReportManager.saveIndicatorReportsList(indicatorReports, getCurrentUser().getLeader(),
-      getCurrentReportingLogframe());
+    boolean saved =
+      indicatorReportManager.saveIndicatorReportsList(indicatorReports, getCurrentUser().getLeader(),
+        getCurrentReportingLogframe());
 
-    return super.save();
+    if (saved) {
+      addActionMessage("");
+      return SUCCESS;
+    } else {
+      addActionError("");
+      return INPUT;
+    }
   }
 
 
