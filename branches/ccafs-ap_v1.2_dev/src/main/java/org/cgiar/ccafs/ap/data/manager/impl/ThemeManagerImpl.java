@@ -26,6 +26,16 @@ public class ThemeManagerImpl implements ThemeManager {
   }
 
   @Override
+  public Theme getTheme(String id) {
+    for (Theme theme : getThemes()) {
+      if (String.valueOf(theme.getId()).equals(id)) {
+        return theme;
+      }
+    }
+    return null;
+  }
+
+  @Override
   public Theme[] getThemes() {
     List<Map<String, String>> themesDB = themeDAO.getThemes();
     if (themesDB.size() > 0) {

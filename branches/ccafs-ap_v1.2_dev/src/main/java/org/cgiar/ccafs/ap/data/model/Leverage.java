@@ -9,8 +9,8 @@ public class Leverage {
   private int id;
   private String title;
   private double budget;
-  private int start_year;
-  private int end_year;
+  private int startYear;
+  private int endYear;
   private Theme theme;
   private Leader leader;
   private String partnerName;
@@ -19,8 +19,8 @@ public class Leverage {
     return budget;
   }
 
-  public int getEnd_year() {
-    return end_year;
+  public int getEndYear() {
+    return endYear;
   }
 
   public int getId() {
@@ -35,8 +35,8 @@ public class Leverage {
     return partnerName;
   }
 
-  public int getStart_year() {
-    return start_year;
+  public int getStartYear() {
+    return startYear;
   }
 
   public Theme getTheme() {
@@ -51,8 +51,8 @@ public class Leverage {
     this.budget = budget;
   }
 
-  public void setEnd_year(int end_year) {
-    this.end_year = end_year;
+  public void setEndYear(int endYear) {
+    this.endYear = endYear;
   }
 
   public void setId(int id) {
@@ -67,8 +67,8 @@ public class Leverage {
     this.partnerName = partnerName;
   }
 
-  public void setStart_year(int start_year) {
-    this.start_year = start_year;
+  public void setStartYear(int startYear) {
+    this.startYear = startYear;
   }
 
   public void setTheme(Theme theme) {

@@ -43,6 +43,7 @@ public class IndicatorsReportingAction extends BaseAction {
     Leader leader = getCurrentUser().getLeader();
     Logframe logframe = getCurrentReportingLogframe();
     indicatorReports = indicatorReportManager.getIndicatorReportsList(leader, logframe);
+
   }
 
   @Override
@@ -52,10 +53,13 @@ public class IndicatorsReportingAction extends BaseAction {
         getCurrentReportingLogframe());
 
     if (saved) {
-      addActionMessage("");
+      LOG.info("The user {} saved the indicators for the leader {}.", getCurrentUser().getEmail(), getCurrentUser()
+        .getLeader().getId());
+      addActionMessage(getText("saving.success", new String[] {getText("reporting.indicators")}));
       return SUCCESS;
     } else {
-      addActionError("");
+      LOG.warn("There was an error saving the indicators for the leader {}", getCurrentUser().getLeader());
+      addActionError(getText("saving.problem"));
       return INPUT;
     }
   }

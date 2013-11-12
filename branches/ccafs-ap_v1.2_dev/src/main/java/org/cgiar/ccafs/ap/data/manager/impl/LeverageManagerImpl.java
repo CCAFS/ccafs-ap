@@ -31,19 +31,19 @@ public class LeverageManagerImpl implements LeverageManager {
 
     for (Map<String, String> leverageData : leveragesDataList) {
       Leverage leverage = new Leverage();
-      leverage.setId(Integer.parseInt(leverageData.get("")));
-      leverage.setStart_year(Integer.parseInt(leverageData.get("")));
-      leverage.setEnd_year(Integer.parseInt(leverageData.get("")));
-      leverage.setBudget(Double.parseDouble(leverageData.get("")));
+      leverage.setId(Integer.parseInt(leverageData.get("id")));
+      leverage.setStartYear(Integer.parseInt(leverageData.get("start_year")));
+      leverage.setEndYear(Integer.parseInt(leverageData.get("end_year")));
+      leverage.setBudget(Double.parseDouble(leverageData.get("budget")));
       leverage.setLeader(leader);
-      leverage.setPartnerName(leverageData.get(""));
-      leverage.setTitle(leverageData.get(""));
+      leverage.setPartnerName(leverageData.get("partner_name"));
+      leverage.setTitle(leverageData.get("title"));
 
       // Theme
       Theme theme = new Theme();
-      theme.setCode(leverageData.get(""));
-      theme.setDescription(leverageData.get(""));
-      theme.setId(Integer.parseInt(leverageData.get("")));
+      theme.setCode(leverageData.get("theme_code"));
+      theme.setId(Integer.parseInt(leverageData.get("theme_id")));
+      leverage.setTheme(theme);
 
       leverages.add(leverage);
     }
@@ -59,8 +59,8 @@ public class LeverageManagerImpl implements LeverageManager {
       leverageData.put("id", String.valueOf(leverage.getId()));
       leverageData.put("title", leverage.getTitle());
       leverageData.put("budget", String.valueOf(leverage.getBudget()));
-      leverageData.put("start_year", String.valueOf(leverage.getStart_year()));
-      leverageData.put("end_year", String.valueOf(leverage.getEnd_year()));
+      leverageData.put("start_year", String.valueOf(leverage.getStartYear()));
+      leverageData.put("end_year", String.valueOf(leverage.getEndYear()));
       leverageData.put("theme_id", String.valueOf(leverage.getTheme().getId()));
       leverageData.put("partner_name", leverage.getPartnerName());
 
