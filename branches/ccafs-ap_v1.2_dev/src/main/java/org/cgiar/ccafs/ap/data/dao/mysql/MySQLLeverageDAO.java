@@ -73,9 +73,9 @@ public class MySQLLeverageDAO implements LeverageDAO {
     boolean saved = true;
 
     StringBuilder query = new StringBuilder();
-    query.append("INSERT INTO `Leverages` (`ìd`, `title`, `budget`, `start_year`, `end_year`, ");
+    query.append("INSERT INTO `Leverages` (`id`, `title`, `budget`, `start_year`, `end_year`, ");
     query.append("`theme_id`, `activity_leader_id`, `partner_name`) VALUES (?, ?, ?, ?, ?, ?, ?, ?) ");
-    query.append("ON DUPLICATE KEY UPDATE ìd = VALUES(ìd), title = VALUES(title), budget = VALUES(budget), ");
+    query.append("ON DUPLICATE KEY UPDATE id = VALUES(id), title = VALUES(title), budget = VALUES(budget), ");
     query.append("start_year = VALUES(start_year), end_year = VALUES(end_year), theme_id = VALUES(theme_id), ");
     query.append("activity_leader_id = VALUES(activity_leader_id), partner_name = VALUES(partner_name); ");
 
