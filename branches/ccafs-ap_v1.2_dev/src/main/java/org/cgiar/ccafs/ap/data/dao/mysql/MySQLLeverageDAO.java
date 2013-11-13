@@ -69,6 +69,39 @@ public class MySQLLeverageDAO implements LeverageDAO {
   }
 
   @Override
+  public boolean removeLeverages(int leader_id, int logframe_id) {
+    LOG.debug(">> removeLeverages(leader_id={}, logframe_id={})", leader_id, logframe_id);
+
+    boolean removed = false;
+    StringBuilder query = new StringBuilder();
+    query.append("DELETE l FROM `leverages` l ");
+    query.append("INNER JOIN themes t ON l.theme_id = t.id ");
+    query.append("INNER JOIN logframes lo ON t.logframe_id = lo.id ");
+    query.append("WHERE l.activity_leader_id = ");
+    query.append(leader_id);
+    query.append(" AND lo.id = ");
+    query.append(logframe_id);
+
+    try (Connection con = databaseManager.getConnection()) {
+      int rows = databaseManager.makeChange(query.toString(), con);
+
+      if (rows < 0) {
+        String msg = "-- removeLeverages() > There was an error removing the leverages for leader {} and logframe {}";
+        LOG.warn(msg, leader_id, logframe_id);
+      } else {
+        removed = true;
+      }
+    } catch (SQLException e) {
+      String msg = "-- removeLeverages() > There was an error removing the leverages for leader {} and logframe {}";
+      Object params = new Object[] {leader_id, logframe_id, e};
+      LOG.warn(msg, params);
+    }
+
+    LOG.debug("<< removeLeverages():{}", removed);
+    return removed;
+  }
+
+  @Override
   public boolean saveLeverages(List<Map<String, String>> leverages, int activity_leader_id) {
     boolean saved = true;
 

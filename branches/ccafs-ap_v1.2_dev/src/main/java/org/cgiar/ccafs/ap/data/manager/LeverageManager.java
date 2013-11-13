@@ -23,6 +23,16 @@ public interface LeverageManager {
   public List<Leverage> getLeverages(Leader leader, Logframe logframe);
 
   /**
+   * Remove all the leverages that bleongs to the given leader for
+   * the corresponding logframe.
+   * 
+   * @param leader
+   * @param logframe
+   * @return true if the leverages were successfully removed. False otherwise.
+   */
+  public boolean removeLeverages(Leader leader, Logframe logframe);
+
+  /**
    * Save the leverages reported by the leader corresponding to the logframe given.
    * 
    * @param leverages

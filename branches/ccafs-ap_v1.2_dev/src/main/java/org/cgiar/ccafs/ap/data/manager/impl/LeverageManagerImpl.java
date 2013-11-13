@@ -51,6 +51,11 @@ public class LeverageManagerImpl implements LeverageManager {
   }
 
   @Override
+  public boolean removeLeverages(Leader leader, Logframe logframe) {
+    return leverageDAO.removeLeverages(leader.getId(), logframe.getId());
+  }
+
+  @Override
   public boolean saveLeverages(List<Leverage> leverages, Leader leader) {
     List<Map<String, String>> leverageDataList = new ArrayList<>();
 

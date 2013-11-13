@@ -74,54 +74,6 @@
               </div>
             [/#list]
             
-          [#else]
-            <div class="leverage-0">
-              [#-- Item index --]
-              <div class="itemIndex">
-                [@s.text name="reporting.leverages.leverageTitle" /] 1
-              </div>
-              
-              [#-- Remove link for a leverage --]
-              <div class="removeLink">
-                <img src="${baseUrl}/images/global/icon-remove.png" />
-                <a id="removeLeverage-0" href="" class="removeLeverage" href="">[@s.text name="reporting.leverages.removeLeverage" /]</a>
-              </div>
-                
-              [#-- Leverage title --]
-              <div id="titleBlock" class="fullBlock">
-                [@customForm.textArea name="leverages[0].title" i18nkey="reporting.leverages.title" /]
-              </div>
-              
-              [#-- Identifier --]
-              <input type="hidden" name="leverages[0].id" value="-1" />
-              
-              [#-- Leverage partner name --]
-              <div id="partnerBlock" class="fullBlock" >
-                [@customForm.input name="leverages[0].partnerName" i18nkey="reporting.leverages.partnerName" /]          
-              </div>
-              
-              [#-- Leverage theme --]
-              <div id="themeBlock" class="thirdPartBlock" >
-                [@customForm.select name="leverages[0].theme" label="" i18nkey="reporting.leverages.theme" listName="themeList"  /]
-              </div>
-              
-              [#-- Leverage start date --]
-              <div id="startDateBlock" class="thirdPartBlock" >
-                [@customForm.input name="leverages[0].startYear" i18nkey="reporting.leverages.startYear" /]          
-              </div>
-              
-              [#-- Leverage end date --]
-              <div id="endDateBlock" class="thirdPartBlock" >
-                [@customForm.input name="leverages[0].endYear" i18nkey="reporting.leverages.endYear" /]          
-              </div>
-              
-              [#-- Leverage budget --]
-              <div id="budgetBlock" class="thirdPartBlock" >
-                [@customForm.input name="leverages[0].budget" i18nkey="reporting.leverages.budget" /]          
-              </div>
-              
-              <hr />
-            </div>
           [/#if]
         
           <div class="addLink">
@@ -149,14 +101,18 @@
           <div id="partnerBlock" class="fullBlock" >
             [@customForm.input name="partnerName" i18nkey="reporting.leverages.partnerName"  /]          
           </div>
-          <div id="budgetBlock" class="thirdPartBlock" >
-            [@customForm.input name="budget" i18nkey="reporting.leverages.budget" /]          
-          </div>
+          [#-- Leverage theme --]
+          <div id="themeBlock" class="thirdPartBlock" >
+            [@customForm.select name="leverages[0].theme" label="" i18nkey="reporting.leverages.theme" listName="themeList" /]
+          </div>          
           <div id="startDateBlock" class="thirdPartBlock" >
             [@customForm.input name="startYear" i18nkey="reporting.leverages.startYear" /]          
           </div>
           <div id="endDateBlock" class="thirdPartBlock" >
             [@customForm.input name="endYear" i18nkey="reporting.leverages.endYear" /]          
+          </div>
+          <div id="budgetBlock" class="thirdPartBlock" >
+            [@customForm.input name="budget" i18nkey="reporting.leverages.budget" /]          
           </div>
         </div>
       </div>

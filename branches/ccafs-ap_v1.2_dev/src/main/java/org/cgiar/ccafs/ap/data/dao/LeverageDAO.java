@@ -21,6 +21,16 @@ public interface LeverageDAO {
   public List<Map<String, String>> getLeverages(int leader_id, int logframe_id);
 
   /**
+   * Remove the leverages that belongs to the given leader for the corresponding
+   * logframe from the database.
+   * 
+   * @param leader_id
+   * @param logframe_id
+   * @return true if the leverages were successfully removed. False otherwise.
+   */
+  public boolean removeLeverages(int leader_id, int logframe_id);
+
+  /**
    * Save the leverages of the leader for the given logframe.
    * 
    * @param leverages - List of leverages
