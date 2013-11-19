@@ -20,7 +20,7 @@
   [@s.form action="locations"]  
   <article class="halfContent activityLocations">
     <h1 class="contentTitle">
-      [@s.text name="planning.mainInformation.activity" /] ${activity.id} - ${activity.leader.acronym}
+      ${activity.leader.acronym}: [@s.text name="planning.mainInformation.activity" /] ${activity.activityId}
     </h1>
     
     [#-- Activity identifier --]

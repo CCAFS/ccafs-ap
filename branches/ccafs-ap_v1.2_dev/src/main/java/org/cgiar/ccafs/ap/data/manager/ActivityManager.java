@@ -67,6 +67,24 @@ public interface ActivityManager {
   public Activity[] getActivitiesTitle(int year, Leader leader);
 
   /**
+   * Get a list of activities from the given year that can be continued.
+   * 
+   * @param year
+   * @return an array of Activity objects.
+   */
+  public Activity[] getActivitiesToContinue(int year);
+
+  /**
+   * Get a list of activities from the given year that belongs to the given leader
+   * that can be continued.
+   * 
+   * @param year
+   * @param leader
+   * @return an array of Activity objects.
+   */
+  public Activity[] getActivitiesToContinue(int year, int leader);
+
+  /**
    * Get an activity identified with the given id.
    * 
    * @param id - Activity ID

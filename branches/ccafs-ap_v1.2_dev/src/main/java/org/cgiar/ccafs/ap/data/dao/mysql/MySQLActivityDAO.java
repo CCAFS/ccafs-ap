@@ -33,7 +33,7 @@ public class MySQLActivityDAO implements ActivityDAO {
     LOG.debug(">> getActivities(year={} )", year);
     List<Map<String, String>> activities = new ArrayList<>();
     StringBuilder query = new StringBuilder();
-    query.append("SELECT a.id, a.title, a.start_date, a.end_date, a.description, ");
+    query.append("SELECT a.id, a.activity_id, a.title, a.start_date, a.end_date, a.description, ");
     query.append("(av.activity_id IS NOT NULL) as 'is_validated', m.id as 'milestone_id', ");
     query.append("m.code as 'milestone_code', th.id as 'theme_id', th.code as 'theme_code', ");
     query.append("al.id as 'leader_id', al.acronym as 'leader_acronym', al.name as 'leader_name' ");
@@ -53,6 +53,7 @@ public class MySQLActivityDAO implements ActivityDAO {
       while (rs.next()) {
         Map<String, String> activity = new HashMap<>();
         activity.put("id", rs.getString("id"));
+        activity.put("activity_id", rs.getString("activity_id"));
         activity.put("title", rs.getString("title"));
         activity.put("start_date", rs.getString("start_date"));
         activity.put("end_date", rs.getString("end_date"));
@@ -83,7 +84,7 @@ public class MySQLActivityDAO implements ActivityDAO {
     List<Map<String, String>> activities = new ArrayList<>();
     StringBuilder query = new StringBuilder();
 
-    query.append("SELECT a.id, a.title, a.start_date, a.end_date, a.description, ");
+    query.append("SELECT a.id, a.activity_id, a.title, a.start_date, a.end_date, a.description, ");
     query.append("(av.activity_id IS NOT NULL) as 'is_validated', ");
     query.append("m.id as 'milestone_id', m.code as 'milestone_code', ast.id as 'status_id', ");
     query.append("ast.name as 'status_name', th.id as 'theme_id', th.code as 'theme_code', ");
@@ -115,6 +116,7 @@ public class MySQLActivityDAO implements ActivityDAO {
       while (rs.next()) {
         Map<String, String> activity = new HashMap<>();
         activity.put("id", rs.getString("id"));
+        activity.put("activity_id", rs.getString("activity_id"));
         activity.put("title", rs.getString("title"));
         activity.put("start_date", rs.getString("start_date"));
         activity.put("end_date", rs.getString("end_date"));
@@ -149,7 +151,8 @@ public class MySQLActivityDAO implements ActivityDAO {
 
     List<Map<String, String>> activities = new ArrayList<>();
     StringBuilder query = new StringBuilder();
-    query.append("SELECT a.id, a.title, a.start_date, a.end_date, a.description, a.date_added, a.is_global, ");
+    query
+      .append("SELECT a.id, activity_id, a.title, a.start_date, a.end_date, a.description, a.date_added, a.is_global, ");
     query.append("is_commissioned, m.id as 'milestone_id', m.code as 'milestone_code'");
     query.append("FROM activities a ");
     query.append("INNER JOIN activity_leaders al ON al.id = a.activity_leader_id ");
@@ -166,6 +169,7 @@ public class MySQLActivityDAO implements ActivityDAO {
       while (rs.next()) {
         Map<String, String> activity = new HashMap<>();
         activity.put("id", rs.getString("id"));
+        activity.put("activity_id", rs.getString("activity_id"));
         activity.put("title", rs.getString("title"));
         activity.put("start_date", rs.getString("start_date"));
         activity.put("end_date", rs.getString("end_date"));
@@ -188,10 +192,73 @@ public class MySQLActivityDAO implements ActivityDAO {
   }
 
   @Override
+  public List<Map<String, String>> getActivitiesToContinue(int year) {
+    LOG.debug(">> getActivitiesToContinue(year={}) ", year);
+    List<Map<String, String>> activitiesToContinue = new ArrayList<>();
+    StringBuilder query = new StringBuilder();
+    query.append("SELECT a.id, a.activity_id, a.title FROM activities a ");
+    query.append("LEFT JOIN activities a2 ON a.id =  a2.continuous_activity_id ");
+    query.append("WHERE a2.continuous_activity_id IS NULL ");
+    query.append("AND a.year = ");
+    query.append(year);
+
+    try (Connection con = databaseManager.getConnection()) {
+      ResultSet rs = databaseManager.makeQuery(query.toString(), con);
+      while (rs.next()) {
+        Map<String, String> activity = new HashMap<>();
+        activity.put("id", rs.getString("id"));
+        activity.put("activity_id", rs.getString("activity_id"));
+        activity.put("title", rs.getString("title"));
+
+        activitiesToContinue.add(activity);
+      }
+      rs.close();
+    } catch (SQLException e) {
+      LOG.error("-- getActivitiesToContinue() > There was an exception trying to get the activity list.", e);
+    }
+
+    LOG.debug("<< getActivitiesToContinue():activitiesToContinue.size={} ", activitiesToContinue.size());
+    return activitiesToContinue;
+  }
+
+  @Override
+  public List<Map<String, String>> getActivitiesToContinue(int year, int leaderID) {
+    LOG.debug(">> getActivitiesToContinue(year={}, leader={}) ", year, leaderID);
+    List<Map<String, String>> activitiesToContinue = new ArrayList<>();
+    StringBuilder query = new StringBuilder();
+    query.append("SELECT a.id, a.activity_id, a.title FROM activities a ");
+    query.append("LEFT JOIN activities a2 ON a.id =  a2.continuous_activity_id ");
+    query.append("WHERE a2.continuous_activity_id IS NULL ");
+    query.append(" AND a.year = ");
+    query.append(year);
+    query.append(" AND a.activity_leader_id = ");
+    query.append(leaderID);
+
+    try (Connection con = databaseManager.getConnection()) {
+      ResultSet rs = databaseManager.makeQuery(query.toString(), con);
+      while (rs.next()) {
+        Map<String, String> activity = new HashMap<>();
+        activity.put("id", rs.getString("id"));
+        activity.put("activity_id", rs.getString("activity_id"));
+        activity.put("title", rs.getString("title"));
+
+        activitiesToContinue.add(activity);
+      }
+      rs.close();
+    } catch (SQLException e) {
+      LOG.error("-- getActivitiesToContinue() > There was an exception trying to get the activity list.", e);
+    }
+
+    LOG.debug("<< getActivitiesToContinue():activitiesToContinue.size={} ", activitiesToContinue.size());
+    return activitiesToContinue;
+  }
+
+  @Override
   public List<Map<String, String>> getActivityListByYear(int year) {
     LOG.debug(">> getActivityListByYear(year={})", year);
     List<Map<String, String>> activitiesData = new ArrayList<>();
-    StringBuilder query = new StringBuilder("SELECT a.id, a.title, (av.activity_id IS NOT NULL) as 'is_validated', ");
+    StringBuilder query =
+      new StringBuilder("SELECT a.id, a.title, a.activity_id, (av.activity_id IS NOT NULL) as 'is_validated', ");
     query.append(" GROUP_CONCAT(cp.name SEPARATOR '::') AS 'contact_person_names',");
     query.append(" GROUP_CONCAT(cp.email SEPARATOR '::') AS 'contact_person_emails', m.code as 'milestone_code',");
     query.append(" al.id as 'leader_id', al.name as 'leader_name', al.acronym as 'leader_acronym'");
@@ -208,6 +275,7 @@ public class MySQLActivityDAO implements ActivityDAO {
       while (rs.next()) {
         Map<String, String> activityData = new HashMap<>();
         activityData.put("id", rs.getString("id"));
+        activityData.put("activity_id", rs.getString("activity_id"));
         activityData.put("title", rs.getString("title"));
         activityData.put("is_validated", rs.getString("is_validated"));
         activityData.put("milestone_code", rs.getString("milestone_code"));
@@ -235,17 +303,20 @@ public class MySQLActivityDAO implements ActivityDAO {
     LOG.debug(">> getActivityStatusInfo(id={})", id);
     Map<String, String> activity = new HashMap<>();
     String query =
-      "SELECT a.title, a.start_date, a.end_date, a.description, a.status_description, a.is_global, astatus.id as status_id, "
+      "SELECT a.activity_id, a.title, a.start_date, a.end_date, a.description, a.status_description, a.is_global, astatus.id as status_id, "
         + "a.has_partners, astatus.name as status_name, a.is_commissioned, a.continuous_activity_id, a.milestone_id, "
         + "m.code as milestone_code, al.id as 'leader_id', al.acronym as 'leader_acronym', al.name as 'leader_name', "
-        + "g.id as 'gender_id', g.description as 'gender_description' "
+        + "g.id as 'gender_id', g.description as 'gender_description', "
+        + "(SELECT a2.activity_id FROM activities a2 WHERE a2.id = a.continuous_activity_id) as 'countinuos_activity_activityID' "
         + "FROM activities a LEFT JOIN milestones m ON a.milestone_id = m.id "
         + "LEFT JOIN activity_status astatus ON a.activity_status_id = astatus.id "
         + "LEFT JOIN activity_leaders al ON a.activity_leader_id = al.id "
         + "LEFT OUTER JOIN gender_integrations g ON g.activity_id = a.id WHERE a.id = " + id;
+
     try (Connection con = databaseManager.getConnection()) {
       ResultSet rs = databaseManager.makeQuery(query, con);
       if (rs.next()) {
+        activity.put("activity_id", rs.getString("activity_id"));
         activity.put("title", rs.getString("title"));
         activity.put("start_date", rs.getString("start_date"));
         activity.put("end_date", rs.getString("end_date"));
@@ -255,6 +326,7 @@ public class MySQLActivityDAO implements ActivityDAO {
         activity.put("is_commissioned", rs.getString("is_commissioned"));
         activity.put("has_partners", rs.getString("has_partners"));
         activity.put("continuous_activity_id", rs.getString("continuous_activity_id"));
+        activity.put("countinuos_activity_activityID", rs.getString("countinuos_activity_activityID"));
         activity.put("status_id", rs.getString("status_id"));
         activity.put("status_name", rs.getString("status_name"));
         activity.put("milestone_id", rs.getString("milestone_id"));
@@ -280,6 +352,7 @@ public class MySQLActivityDAO implements ActivityDAO {
     }
   }
 
+
   @Override
   public int getActivityYear(int activityID) {
     LOG.debug(">> getActivityYear(activityID={})", activityID);
@@ -304,7 +377,8 @@ public class MySQLActivityDAO implements ActivityDAO {
   public List<Map<String, String>> getPlanningActivityList(int year, int leaderId) {
     LOG.debug(">> getPlanningActivityList(year={}, leaderId={})", year, leaderId);
     List<Map<String, String>> activitiesData = new ArrayList<>();
-    StringBuilder query = new StringBuilder("SELECT a.id, a.title, (av.activity_id IS NOT NULL) as 'is_validated', ");
+    StringBuilder query =
+      new StringBuilder("SELECT a.id, a.activity_id, a.title, (av.activity_id IS NOT NULL) as 'is_validated', ");
     query.append(" GROUP_CONCAT(cp.name SEPARATOR '::') AS 'contact_person_names',");
     query.append(" GROUP_CONCAT(cp.email SEPARATOR '::') AS 'contact_person_emails', m.code as 'milestone_code',");
     query.append(" al.id as 'leader_id', al.name as 'leader_name', al.acronym as 'leader_acronym'");
@@ -323,6 +397,7 @@ public class MySQLActivityDAO implements ActivityDAO {
       while (rs.next()) {
         Map<String, String> activityData = new HashMap<>();
         activityData.put("id", rs.getString("id"));
+        activityData.put("activity_id", rs.getString("activity_id"));
         activityData.put("title", rs.getString("title"));
         activityData.put("is_validated", rs.getString("is_validated"));
         activityData.put("milestone_code", rs.getString("milestone_code"));
@@ -352,7 +427,7 @@ public class MySQLActivityDAO implements ActivityDAO {
     LOG.debug(">> getPlanningActivityListForRPL(year={}, leaderId={})", year, leaderId);
     List<Map<String, String>> activitiesData = new ArrayList<>();
     StringBuilder query = new StringBuilder("SELECT * FROM ( ");
-    query.append("SELECT a.id, a.title, (av.activity_id IS NOT NULL) as 'is_validated', ");
+    query.append("SELECT a.id, a.activity_id, a.title, (av.activity_id IS NOT NULL) as 'is_validated', ");
     query.append("GROUP_CONCAT(cp.name SEPARATOR '::') AS 'contact_person_names', ");
     query.append("GROUP_CONCAT(cp.email SEPARATOR '::') AS 'contact_person_emails', m.code as 'milestone_code', ");
     query.append("al.id as 'leader_id', al.name as 'leader_name', al.acronym as 'leader_acronym' ");
@@ -371,7 +446,7 @@ public class MySQLActivityDAO implements ActivityDAO {
     query.append(regionId);
     query.append(" GROUP BY a.id ");
     query.append("UNION  ");
-    query.append("SELECT a.id, a.title, (av.activity_id IS NOT NULL) as 'is_validated', ");
+    query.append("SELECT a.id, a.activity_id, a.title, (av.activity_id IS NOT NULL) as 'is_validated', ");
     query.append("GROUP_CONCAT(cp.name SEPARATOR '::') AS 'contact_person_names', ");
     query.append("GROUP_CONCAT(cp.email SEPARATOR '::') AS 'contact_person_emails', m.code as 'milestone_code', ");
     query.append("al.id as 'leader_id', al.name as 'leader_name', al.acronym as 'leader_acronym' ");
@@ -391,6 +466,7 @@ public class MySQLActivityDAO implements ActivityDAO {
       while (rs.next()) {
         Map<String, String> activityData = new HashMap<>();
         activityData.put("id", rs.getString("id"));
+        activityData.put("activity_id", rs.getString("activity_id"));
         activityData.put("title", rs.getString("title"));
         activityData.put("is_validated", rs.getString("is_validated"));
         activityData.put("milestone_code", rs.getString("milestone_code"));
@@ -423,7 +499,7 @@ public class MySQLActivityDAO implements ActivityDAO {
     // get the activities under the theme given.
 
     StringBuilder query = new StringBuilder("SELECT * FROM ( ");
-    query.append("SELECT a.id, a.title, (av.activity_id IS NOT NULL) as 'is_validated', ");
+    query.append("SELECT a.id, a.activity_id, a.title, (av.activity_id IS NOT NULL) as 'is_validated', ");
     query.append("GROUP_CONCAT(cp.name SEPARATOR '::') AS 'contact_person_names', ");
     query.append("GROUP_CONCAT(cp.email SEPARATOR '::') AS 'contact_person_emails', m.code as 'milestone_code', ");
     query.append("al.id as 'leader_id', al.name as 'leader_name', al.acronym as 'leader_acronym' ");
@@ -441,7 +517,7 @@ public class MySQLActivityDAO implements ActivityDAO {
     query.append(themeCode);
     query.append(" GROUP BY a.id ");
     query.append("UNION  ");
-    query.append("SELECT a.id, a.title, (av.activity_id IS NOT NULL) as 'is_validated', ");
+    query.append("SELECT a.id, a.activity_id, a.title, (av.activity_id IS NOT NULL) as 'is_validated', ");
     query.append("GROUP_CONCAT(cp.name SEPARATOR '::') AS 'contact_person_names', ");
     query.append("GROUP_CONCAT(cp.email SEPARATOR '::') AS 'contact_person_emails', m.code as 'milestone_code', ");
     query.append("al.id as 'leader_id', al.name as 'leader_name', al.acronym as 'leader_acronym' ");
@@ -465,6 +541,7 @@ public class MySQLActivityDAO implements ActivityDAO {
       while (rs.next()) {
         Map<String, String> activityData = new HashMap<>();
         activityData.put("id", rs.getString("id"));
+        activityData.put("activity_id", rs.getString("activity_id"));
         activityData.put("title", rs.getString("title"));
         activityData.put("is_validated", rs.getString("is_validated"));
         activityData.put("milestone_code", rs.getString("milestone_code"));
@@ -488,20 +565,20 @@ public class MySQLActivityDAO implements ActivityDAO {
     return activitiesData;
   }
 
-
   @Override
   public Map<String, String> getSimpleActivity(int id) {
     LOG.debug(">> getSimpleActivity(id={})", id);
 
     Map<String, String> activity = new HashMap<>();
     String query =
-      "SELECT a.title, a.id, a.year, al.id as 'leader_id', 'al.name' as 'leader_name', al.acronym as 'leader_acronym' "
+      "SELECT a.title, a.id, a.activity_id, a.year, al.id as 'leader_id', 'al.name' as 'leader_name', al.acronym as 'leader_acronym' "
         + "FROM activities a, activity_leaders al " + "WHERE a.activity_leader_id = al.id AND a.id = " + id;
     try (Connection con = databaseManager.getConnection()) {
       ResultSet rs = databaseManager.makeQuery(query, con);
       if (rs.next()) {
         activity.put("title", rs.getString("title"));
         activity.put("id", rs.getString("id"));
+        activity.put("activity_id", rs.getString("activity_id"));
         activity.put("year", rs.getString("year"));
         activity.put("leader_id", rs.getString("leader_id"));
         activity.put("leader_name", rs.getString("leader_name"));
@@ -521,12 +598,11 @@ public class MySQLActivityDAO implements ActivityDAO {
     }
   }
 
-
   @Override
   public List<Map<String, String>> getTitles(int year) {
     LOG.debug(">> getTitles(year={})", year);
     List<Map<String, String>> activityTitles = new ArrayList<>();
-    StringBuilder query = new StringBuilder("SELECT a.id, a.title");
+    StringBuilder query = new StringBuilder("SELECT a.id, a.activity_id, a.title");
     query.append(" FROM activities a");
     query.append(" WHERE a.year = ");
     query.append(year);
@@ -535,6 +611,7 @@ public class MySQLActivityDAO implements ActivityDAO {
       while (rs.next()) {
         Map<String, String> activityData = new HashMap<>();
         activityData.put("id", rs.getString("id"));
+        activityData.put("activity_id", rs.getString("activity_id"));
         activityData.put("title", rs.getString("title"));
         activityTitles.add(activityData);
       }
@@ -549,11 +626,12 @@ public class MySQLActivityDAO implements ActivityDAO {
     return activityTitles;
   }
 
+
   @Override
   public List<Map<String, String>> getTitles(int year, int activityLeaderId) {
     LOG.debug(">> getTitles(year={}, activityLeaderId={})", year, activityLeaderId);
     List<Map<String, String>> activityTitles = new ArrayList<>();
-    StringBuilder query = new StringBuilder("SELECT a.id, a.title");
+    StringBuilder query = new StringBuilder("SELECT a.id, a.activity_id, a.title");
     query.append(" FROM activities a");
     query.append(" WHERE a.year = ");
     query.append(year);
@@ -564,6 +642,7 @@ public class MySQLActivityDAO implements ActivityDAO {
       while (rs.next()) {
         Map<String, String> activityData = new HashMap<>();
         activityData.put("id", rs.getString("id"));
+        activityData.put("activity_id", rs.getString("activity_id"));
         activityData.put("title", rs.getString("title"));
         activityTitles.add(activityData);
       }
@@ -577,6 +656,7 @@ public class MySQLActivityDAO implements ActivityDAO {
     LOG.debug("<< getTitles():activityTitles.size={}", activityTitles.size());
     return activityTitles;
   }
+
 
   @Override
   public boolean hasPartners(int activityID) {

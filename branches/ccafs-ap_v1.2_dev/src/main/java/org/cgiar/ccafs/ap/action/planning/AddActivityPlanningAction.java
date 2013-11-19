@@ -116,9 +116,9 @@ public class AddActivityPlanningAction extends BaseAction {
 
     Activity[] oldActivities;
     if (getCurrentUser().isAdmin()) {
-      oldActivities = activityManager.getActivitiesTitle(year - 1);
+      oldActivities = activityManager.getActivitiesToContinue(year - 1);
     } else {
-      oldActivities = activityManager.getActivitiesTitle(year - 1, getCurrentUser().getLeader());
+      oldActivities = activityManager.getActivitiesToContinue(year - 1, getCurrentUser().getLeader().getId());
     }
 
     if (oldActivities != null) {
@@ -126,8 +126,9 @@ public class AddActivityPlanningAction extends BaseAction {
       StringBuilder text;
       for (Activity oldActivitie : oldActivities) {
         text = new StringBuilder();
-        text.append(oldActivitie.getId());
-        text.append(" - ");
+        text.append("[");
+        text.append(oldActivitie.getActivityId());
+        text.append("] ");
 
         if (oldActivitie.getTitle().length() > 40) {
           text.append(oldActivitie.getTitle().substring(0, 40));

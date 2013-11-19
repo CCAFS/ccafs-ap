@@ -20,12 +20,12 @@
   [@s.form action="mainInformation"]  
   <article class="halfContent" id="mainInformation">
     <h1 class="contentTitle">
+      ${activity.leader.acronym}: 
       [#if activity.commissioned] 
-        [@s.text name="planning.mainInformation.commissionedActivity" /] ${activity.id}
+        [@s.text name="planning.mainInformation.commissionedActivity" /] ${activity.activityId}
       [#else] 
-        [@s.text name="planning.mainInformation.activity" /] ${activity.id}
+        [@s.text name="planning.mainInformation.activity" /] ${activity.activityId}
       [/#if]
-      - ${activity.leader.acronym}
     </h1>
     
     [#-- Activity identifier --]
@@ -47,7 +47,7 @@
           [#if activity.continuousActivity?has_content]
             [@s.text name="planning.mainInformation.continuationActivity" /] 
             <a href="[@s.url action='activity' namespace="/"][@s.param name='${publicActivtyRequestParameter}']${activity.continuousActivity.id}[/@s.param][/@s.url]" target="_blank"> 
-              [@s.text name="planning.mainInformation.activity" /] ${activity.continuousActivity.id} 
+              [@s.text name="planning.mainInformation.activity" /] ${activity.continuousActivity.activityId} 
             </a>
           [/#if]
         </div>

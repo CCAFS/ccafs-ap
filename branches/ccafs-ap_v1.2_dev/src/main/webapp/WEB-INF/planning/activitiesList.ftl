@@ -24,7 +24,7 @@
           <td>
             [#if canEditActivity]
               <a href=" [@s.url action='mainInformation' includeParams='get'] [@s.param name='${activityRequestParameter}']${activity.id}[/@s.param] [/@s.url]" >
-                ${activity.id}
+                ${activity.activityId}
               </a> 
             [#else]
               <a target="_blank" href=" [@s.url action='activity' namespace="/home" includeParams='get'] [@s.param name='${publicActivityRequestParameter}']${activity.id}[/@s.param] [/@s.url]" >
