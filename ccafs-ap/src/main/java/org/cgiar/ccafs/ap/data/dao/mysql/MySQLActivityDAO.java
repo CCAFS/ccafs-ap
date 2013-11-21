@@ -668,17 +668,18 @@ public class MySQLActivityDAO implements ActivityDAO {
     int activityID = -1;
     try (Connection con = databaseManager.getConnection()) {
       String addQuery =
-        "INSERT INTO activities (title, start_date, end_date, year, description, activity_leader_id, continuous_activity_id, is_commissioned, milestone_id) VALUES (?,?,?,?,?,?,?,?,?)";
-      Object[] values = new Object[9];
+        "INSERT INTO activities (title, start_date, end_date, year, description, has_partners, activity_leader_id, continuous_activity_id, is_commissioned, milestone_id) VALUES (?,?,?,?,?,?,?,?,?, ?)";
+      Object[] values = new Object[10];
       values[0] = activityData.get("title");
       values[1] = activityData.get("start_date");
       values[2] = activityData.get("end_date");
       values[3] = activityData.get("year");
       values[4] = activityData.get("description");
-      values[5] = activityData.get("activity_leader_id");
-      values[6] = activityData.get("continuous_activity_id");
-      values[7] = activityData.get("is_commissioned");
-      values[8] = activityData.get("milestone_id");
+      values[5] = activityData.get("has_partners");
+      values[6] = activityData.get("activity_leader_id");
+      values[7] = activityData.get("continuous_activity_id");
+      values[8] = activityData.get("is_commissioned");
+      values[9] = activityData.get("milestone_id");
       int activityAdded = databaseManager.makeChangeSecure(con, addQuery, values);
       if (activityAdded > 0) {
         // Get the generated id of the added record.
