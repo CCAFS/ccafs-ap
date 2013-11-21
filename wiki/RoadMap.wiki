@@ -18,7 +18,12 @@ Also it's needed make improvements and adjustments in reporting subsections like
 This version improved the planning section. It was added a Validate button per activity and a Submit button to make the submission once the work plan is ready.
 Also was added a list to see the activities from previus years.
 
-[http://code.google.com/p/ccafs-ap/issues/list?can=1&q=milestone%3DRelease1.1&colspec=ID+Type+Status+Priority+Component+Section+Milestone+Owner+Summary&cells=tiles Resolved issues]
+[http://code.google.com/p/ccafs-ap/issues/list?can=1&q=milestone%3DRelease1.1 Resolved issues]
+
+*Minor versions:*
+
+  * Version 1.1.1 [http://code.google.com/p/ccafs-ap/issues/list?can=1&q=milestone%3DRelease1.1.1 Resolved issues]
+
 
 ---------
 
@@ -58,4 +63,4 @@ Version 1.0 was released on July 5, 2013
 
 This version includes the planning and reporting sections although just the planning section is available for users.
 
-[https://code.google.com/p/ccafs-ap/issues/list?can=1&q=milestone=Release1.0%20status=Verified&sort=-status&colspec=ID%20Type%20Status%20Priority%20Component%20Milestone%20Owner%20Summary Resolved issues]
+[https://code.google.com/p/ccafs-ap/issues/list?can=1&q=milestone=Release1.0%20status=Verified&sort=-status Resolved issues]
