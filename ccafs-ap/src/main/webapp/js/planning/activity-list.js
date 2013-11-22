@@ -25,4 +25,14 @@ $(document).ready(function() {
       }
     }
   });
+  
+  $("#submitForm").on("submit", function(evt){
+    if(confirm($("#beforeSubmitMessage").val())){
+      
+      return true;
+    }else{
+      evt.preventDefault();
+      return false;
+    }
+  });
 });

@@ -56,7 +56,7 @@
             [#if !currentUser.PI ]
               <div id="submitButtonBlock" class="buttons">
                 [#if canSubmit]
-                  [@s.form action="activities" ]
+                  [@s.form action="activities" id="submitForm" ]
                     [@s.submit type="button" name="save" method="submit" cssClass="test" ][@s.text name="form.buttons.submit" /][/@s.submit] 
                   [/@s.form]  
                 [#else]
@@ -166,6 +166,8 @@
       [/#if]
       
     </div>
+    
+    <input type="hidden" id="beforeSubmitMessage" value="[@s.text name="planning.activityList.beforeSubmit.message" /]" />
     
     <div class="clearfix"></div>
   </article>
