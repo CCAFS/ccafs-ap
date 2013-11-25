@@ -155,6 +155,8 @@ public class AddActivityPlanningAction extends BaseAction {
       Activity oldActivity = activity.getContinuousActivity();
       // description
       activity.setDescription(oldActivity.getDescription());
+      // hasPartners
+      activity.setHasPartners(oldActivity.isHasPartners());
       // dates
       activity.setStartDate(oldActivity.getStartDate());
       activity.setEndDate(oldActivity.getEndDate());

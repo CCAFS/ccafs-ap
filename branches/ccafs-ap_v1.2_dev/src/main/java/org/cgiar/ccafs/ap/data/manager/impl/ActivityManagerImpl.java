@@ -413,6 +413,7 @@ public class ActivityManagerImpl implements ActivityManager {
     // Main information
     activity.setTitle(activityData.get("title"));
     activity.setDescription(activityData.get("description"));
+    activity.setHasPartners(activityData.get("has_partners").equals("1"));
     SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM");
     if (activityData.get("start_date") == null) {
       activity.setStartDate(null);
@@ -723,6 +724,7 @@ public class ActivityManagerImpl implements ActivityManager {
     activityData.put("activity_leader_id", activity.getLeader().getId());
     activityData.put("is_commissioned", activity.isCommissioned());
     activityData.put("year", activity.getYear());
+    activityData.put("has_partners", activity.isHasPartners());
 
     if (activity.getMilestone() != null) {
       activityData.put("milestone_id", activity.getMilestone().getId());
@@ -742,7 +744,6 @@ public class ActivityManagerImpl implements ActivityManager {
     }
 
     int activityID = activityDAO.saveSimpleActivity(activityData);
-
     if (activityID != -1) {
       // Objectives
       if (activity.getObjectives() != null && activity.getObjectives().size() > 0) {
