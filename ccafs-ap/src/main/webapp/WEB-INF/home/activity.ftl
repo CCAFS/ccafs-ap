@@ -46,7 +46,7 @@
             <td class="title">[@s.text name="home.activity.milestone" /]</td>
             <td>
               <a class="popup" href="[@s.url action='milestone' namespace="/reporting" ][@s.param name='${milestoneRequestParameter}']${activity.milestone.id}[/@s.param][/@s.url]">
-                [#if activity.milestone?has_content]${activity.milestone.code}[/#if]
+                [#if activity.milestone?has_content && activity.milestone.code?has_content ]${activity.milestone.code}[/#if]
               </a>
             </td>
           </tr>
