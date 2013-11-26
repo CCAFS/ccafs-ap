@@ -34,6 +34,8 @@ public class PublicationsReportingAction extends BaseAction {
   private Map<Integer, String> themeList;
   // This array contains the publication types which need an access type specification.
   private int[] publicationTypeAccessNeed;
+  // This array contains the publication types which need indicators description.
+  private int[] publicationTypeIndicatorsNeed;
 
   // Managers
   private PublicationManager publicationManager;
@@ -64,15 +66,17 @@ public class PublicationsReportingAction extends BaseAction {
     return publicationTypeAccessNeed;
   }
 
+  public int[] getPublicationTypeIndicatorsNeed() {
+    return publicationTypeIndicatorsNeed;
+  }
+
   public PublicationType[] getPublicationTypes() {
     return publicationTypes;
   }
 
-
   public Map<Integer, String> getThemeList() {
     return themeList;
   }
-
 
   @Override
   public void prepare() throws Exception {
@@ -88,6 +92,11 @@ public class PublicationsReportingAction extends BaseAction {
     // ID = 1 - Journal paper
     publicationTypeAccessNeed = new int[1];
     publicationTypeAccessNeed[0] = publicationTypes[0].getId();
+
+    // Publication types which need indicators description
+    // ID = 1 - Journal paper
+    publicationTypeIndicatorsNeed = new int[1];
+    publicationTypeIndicatorsNeed[0] = publicationTypes[0].getId();
 
     Theme[] themes = themeManager.getThemes(this.getCurrentReportingLogframe());
     themeList = new HashMap<>();

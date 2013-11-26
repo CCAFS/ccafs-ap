@@ -923,7 +923,25 @@ button#activities_save{
   text-decoration: underline;
 }
 
+/* Publications */
+#publications .checkbox h6{
+	font-weight: normal;
+	font-size: 11px;
+}
 
+#publications .checkbox input{
+	float: left;
+	margin-left: 10px;
+}
+
+#publications .checkbox > label {
+	float: right;
+  width: 95%;
+}
+
+#publications .journalArticlesIndicators{
+	margin-bottom: 25px;
+}
 
 /******** SUMMARY BY OUTPUTS ***********/
 .outputTitle {

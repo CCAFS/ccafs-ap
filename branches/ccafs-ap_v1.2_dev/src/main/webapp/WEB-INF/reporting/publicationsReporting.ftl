@@ -48,6 +48,26 @@
         [@customForm.radioButtonGroup name="publications[${publication_index}].access" label="" i18nkey="reporting.publications.access" listName="publicationAccessList" keyFieldName="id" displayFieldName="name" value="${publication.access.id}" help="reporting.publications.access.help"/]
       </div>
 
+      [#-- Indicators for journal articles --]
+      [#if publicationTypeAccessNeed?seq_contains(publication.type.id)]              
+        <div class="fullBlock journalArticlesIndicators" >
+      [#else]
+        <div class="fullBlock journalArticlesIndicators" style="display: none;">
+      [/#if]      
+          <h6>[@s.text name="reporting.publications.indicators" /]</h6>
+          <div>
+            <div class="fullBlock">
+              [@customForm.checkbox name="indicators" i18nkey="reporting.publications.isiPublication" /]
+            </div>
+            <div class="fullBlock">
+              [@customForm.checkbox name="indicators" i18nkey="reporting.publications.narsCoauthor" /]
+            </div>
+            <div class="fullBlock">
+              [@customForm.checkbox name="indicators" i18nkey="reporting.publications.earthSystemCoauthor" /]
+            </div>
+          </div>
+        </div>
+      
       [#-- Publication citation --]
       <div class="fullBlock">
         [@customForm.textArea name="publications[${publication_index}].citation" i18nkey="reporting.publications.citation" help="reporting.publications.citation.help" /]
@@ -109,7 +129,7 @@
           
           [#-- Publication identifier --]
           <input type="hidden" name="id" value="-1" />
-          
+      
           [#-- Publication type --]
           <div class="halfPartBlock">
             [@customForm.select name="type" label="" i18nkey="reporting.publications.type.name" listName="publicationTypes" keyFieldName="id"  displayFieldName="name" /]
@@ -125,6 +145,21 @@
             [@customForm.radioButtonGroup name="access" label="" i18nkey="reporting.publications.access" listName="publicationAccessList" keyFieldName="id" displayFieldName="name" /]
           </div>
       
+          [#-- Indicators for journal articles --]
+          <div class="fullBlock journalArticlesIndicators">
+            <h6>[@s.text name="reporting.publications.indicators" /]</h6>
+            <div></div>      
+            <div class="fullBlock">
+              [@customForm.checkbox name="indicators" i18nkey="reporting.publications.isiPublication" /]
+            </div>
+            <div class="fullBlock">
+              [@customForm.checkbox name="indicators" i18nkey="reporting.publications.narsCoauthor" /]
+            </div>
+            <div class="fullBlock">
+              [@customForm.checkbox name="indicators" i18nkey="reporting.publications.earthSystemCoauthor" /]
+            </div>
+          </div>
+          
           [#-- Publication citation --]
           <div class="fullBlock">
             [@customForm.textArea name="citation" i18nkey="reporting.publications.citation" help="reporting.publications.citation.help" /]

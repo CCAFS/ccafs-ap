@@ -34,6 +34,10 @@ public class IndicatorsReportingAction extends BaseAction {
     this.indicatorReportManager = indicatorReportManager;
   }
 
+  public int getCurrentReportingYear() {
+    return config.getReportingCurrentYear();
+  }
+
   public List<IndicatorReport> getIndicatorReports() {
     return indicatorReports;
   }
@@ -43,7 +47,6 @@ public class IndicatorsReportingAction extends BaseAction {
     Leader leader = getCurrentUser().getLeader();
     Logframe logframe = getCurrentReportingLogframe();
     indicatorReports = indicatorReportManager.getIndicatorReportsList(leader, logframe);
-
   }
 
   @Override
