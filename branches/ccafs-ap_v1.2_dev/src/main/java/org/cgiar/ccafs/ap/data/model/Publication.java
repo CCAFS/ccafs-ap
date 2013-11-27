@@ -14,6 +14,9 @@ public class Publication {
   private Leader leader;
   private Theme[] relatedThemes;
   private OpenAccess access;
+  private boolean isiPublication;
+  private boolean narsCoauthor;
+  private boolean earthSystemCoauthor;
 
   public Publication() {
   }
@@ -62,12 +65,28 @@ public class Publication {
     return type;
   }
 
+  public boolean isEarthSystemCoauthor() {
+    return earthSystemCoauthor;
+  }
+
+  public boolean isIsiPublication() {
+    return isiPublication;
+  }
+
+  public boolean isNarsCoauthor() {
+    return narsCoauthor;
+  }
+
   public void setAccess(OpenAccess access) {
     this.access = access;
   }
 
   public void setCitation(String citation) {
     this.citation = citation;
+  }
+
+  public void setEarthSystemCoauthor(boolean earthSystemCoauthor) {
+    this.earthSystemCoauthor = earthSystemCoauthor;
   }
 
   public void setFileUrl(String fileUrl) {
@@ -82,12 +101,20 @@ public class Publication {
     this.identifier = identifier;
   }
 
+  public void setIsiPublication(boolean isiPublication) {
+    this.isiPublication = isiPublication;
+  }
+
   public void setLeader(Leader leader) {
     this.leader = leader;
   }
 
   public void setLogframe(Logframe logframe) {
     this.logframe = logframe;
+  }
+
+  public void setNarsCoauthor(boolean narsCoauthor) {
+    this.narsCoauthor = narsCoauthor;
   }
 
   public void setRelatedThemes(Theme[] relatedThemes) {

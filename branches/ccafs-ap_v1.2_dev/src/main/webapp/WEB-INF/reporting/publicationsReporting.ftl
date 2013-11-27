@@ -49,7 +49,7 @@
       </div>
 
       [#-- Indicators for journal articles --]
-      [#if publicationTypeAccessNeed?seq_contains(publication.type.id)]              
+      [#if publicationTypeAccessNeed?seq_contains(publication.type.id)]
         <div class="fullBlock journalArticlesIndicators" >
       [#else]
         <div class="fullBlock journalArticlesIndicators" style="display: none;">
@@ -57,13 +57,13 @@
           <h6>[@s.text name="reporting.publications.indicators" /]</h6>
           <div>
             <div class="fullBlock">
-              [@customForm.checkbox name="indicators" i18nkey="reporting.publications.isiPublication" /]
+              [@customForm.checkbox name="publications[${publication_index}].isiPublication" i18nkey="reporting.publications.isiPublication" checked=publication.isiPublication value="true" /]
             </div>
             <div class="fullBlock">
-              [@customForm.checkbox name="indicators" i18nkey="reporting.publications.narsCoauthor" /]
+              [@customForm.checkbox name="publications[${publication_index}].narsCoauthor" i18nkey="reporting.publications.narsCoauthor" checked=publication.narsCoauthor value="true" /]
             </div>
             <div class="fullBlock">
-              [@customForm.checkbox name="indicators" i18nkey="reporting.publications.earthSystemCoauthor" /]
+              [@customForm.checkbox name="publications[${publication_index}].earthSystemCoauthor" i18nkey="reporting.publications.earthSystemCoauthor" checked=publication.earthSystemCoauthor value="true" /]
             </div>
           </div>
         </div>
@@ -150,13 +150,13 @@
             <h6>[@s.text name="reporting.publications.indicators" /]</h6>
             <div></div>      
             <div class="fullBlock">
-              [@customForm.checkbox name="indicators" i18nkey="reporting.publications.isiPublication" /]
+              [@customForm.checkbox name="isiPublication" i18nkey="reporting.publications.isiPublication" /]
             </div>
             <div class="fullBlock">
-              [@customForm.checkbox name="indicators" i18nkey="reporting.publications.narsCoauthor" /]
+              [@customForm.checkbox name="narsCoauthor" i18nkey="reporting.publications.narsCoauthor" /]
             </div>
             <div class="fullBlock">
-              [@customForm.checkbox name="indicators" i18nkey="reporting.publications.earthSystemCoauthor" /]
+              [@customForm.checkbox name="earthSystemCoauthor" i18nkey="reporting.publications.earthSystemCoauthor" /]
             </div>
           </div>
           

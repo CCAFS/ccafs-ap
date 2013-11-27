@@ -43,6 +43,25 @@ public class PublicationManagerImpl implements PublicationManager {
       publication.setIdentifier(pubData.get("identifier"));
       publication.setCitation(pubData.get("citation"));
       publication.setFileUrl(pubData.get("file_url"));
+
+      if (pubData.get("isi_publication") != null) {
+        publication.setIsiPublication(pubData.get("isi_publication").equals("1"));
+      } else {
+        publication.setIsiPublication(false);
+      }
+
+      if (pubData.get("nars_coauthor") != null) {
+        publication.setNarsCoauthor(pubData.get("nars_coauthor").equals("1"));
+      } else {
+        publication.setNarsCoauthor(false);
+      }
+
+      if (pubData.get("earth_system_coauthor") != null) {
+        publication.setEarthSystemCoauthor(pubData.get("earth_system_coauthor").equals("1"));
+      } else {
+        publication.setEarthSystemCoauthor(false);
+      }
+
       publication.setLogframe(logframe);
       publication.setLeader(leader);
       PublicationType publicationType = new PublicationType();
@@ -97,6 +116,11 @@ public class PublicationManagerImpl implements PublicationManager {
       } else {
         pubData.put("open_access_id", String.valueOf(publication.getAccess().getId()));
       }
+
+      pubData.put("isi_publication", publication.isIsiPublication() ? "1" : "0");
+      pubData.put("nars_coauthor", publication.isNarsCoauthor() ? "1" : "0");
+      pubData.put("earth_system_coauthor", publication.isEarthSystemCoauthor() ? "1" : "0");
+
       pubData.put("citation", publication.getCitation());
       if (publication.getFileUrl().isEmpty()) {
         pubData.put("file_url", null);
