@@ -73,6 +73,11 @@
         [@customForm.textArea name="publications[${publication_index}].citation" i18nkey="reporting.publications.citation" help="reporting.publications.citation.help" /]
       </div> 
 
+      [#-- CCAFS Acknowledge --]
+      <div class="fullBlock" id="ccafsAcknowledge" >
+        [@customForm.checkbox name="publications[${publication_index}].ccafsAcknowledge" i18nkey="reporting.publications.ccafsAcknowledge" checked=publication.ccafsAcknowledge value="true" /]
+      </div>
+
       [#-- Publication themes related --]
       <div class="fullBlock">
         <h6>[@s.text name="reporting.publications.themeRelated" /]</h6>
@@ -83,7 +88,7 @@
       </div>
 
       [#-- Publication file url --]
-      <div class="fullBlock">
+      <div class="fullBlock" >
         [@customForm.input name="publications[${publication_index}].fileUrl" i18nkey="reporting.publications.fileUrl" help="reporting.publications.fileUrl.help" /]
       </div> 
     </div> <!-- End publications-${publication_index} -->

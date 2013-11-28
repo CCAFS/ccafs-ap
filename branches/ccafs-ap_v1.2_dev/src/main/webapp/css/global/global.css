@@ -924,7 +924,7 @@ button#activities_save{
 }
 
 /* Publications */
-#publications .checkbox h6{
+#publications .journalArticlesIndicators .checkbox h6{
 	font-weight: normal;
 	font-size: 11px;
 }
@@ -939,7 +939,8 @@ button#activities_save{
   width: 95%;
 }
 
-#publications .journalArticlesIndicators{
+#publications .journalArticlesIndicators,
+#publications #ccafsAcknowledge{
 	margin-bottom: 25px;
 }
 

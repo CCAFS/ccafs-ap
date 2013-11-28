@@ -14,6 +14,7 @@ public class Publication {
   private Leader leader;
   private Theme[] relatedThemes;
   private OpenAccess access;
+  private boolean ccafsAcknowledge;
   private boolean isiPublication;
   private boolean narsCoauthor;
   private boolean earthSystemCoauthor;
@@ -65,6 +66,10 @@ public class Publication {
     return type;
   }
 
+  public boolean isCcafsAcknowledge() {
+    return ccafsAcknowledge;
+  }
+
   public boolean isEarthSystemCoauthor() {
     return earthSystemCoauthor;
   }
@@ -79,6 +84,10 @@ public class Publication {
 
   public void setAccess(OpenAccess access) {
     this.access = access;
+  }
+
+  public void setCcafsAcknowledge(boolean ccafsAcknowledge) {
+    this.ccafsAcknowledge = ccafsAcknowledge;
   }
 
   public void setCitation(String citation) {

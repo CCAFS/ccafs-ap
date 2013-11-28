@@ -44,6 +44,12 @@ public class PublicationManagerImpl implements PublicationManager {
       publication.setCitation(pubData.get("citation"));
       publication.setFileUrl(pubData.get("file_url"));
 
+      if (pubData.get("ccafs_acknowledge") != null) {
+        publication.setCcafsAcknowledge(pubData.get("ccafs_acknowledge").equals("1"));
+      } else {
+        publication.setIsiPublication(false);
+      }
+
       if (pubData.get("isi_publication") != null) {
         publication.setIsiPublication(pubData.get("isi_publication").equals("1"));
       } else {
@@ -117,6 +123,7 @@ public class PublicationManagerImpl implements PublicationManager {
         pubData.put("open_access_id", String.valueOf(publication.getAccess().getId()));
       }
 
+      pubData.put("ccafs_acknowledge", publication.isCcafsAcknowledge() ? "1" : "0");
       pubData.put("isi_publication", publication.isIsiPublication() ? "1" : "0");
       pubData.put("nars_coauthor", publication.isNarsCoauthor() ? "1" : "0");
       pubData.put("earth_system_coauthor", publication.isEarthSystemCoauthor() ? "1" : "0");
