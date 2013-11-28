@@ -66,6 +66,15 @@
       <result name="cancel" type="redirectAction">activities</result>
       <result name="input">/WEB-INF/reporting/publicationsReporting.ftl</result>
       <result name="success" type="redirectAction">
+        <param name="actionName">communications</param>
+      </result>
+    </action>
+
+    <action name="communications" class="org.cgiar.ccafs.ap.action.reporting.communications.CommunicationsReportingAction">
+      <interceptor-ref name="reportingStack" />
+      <result name="cancel" type="redirectAction">activities</result>
+      <result name="input">/WEB-INF/reporting/communicationsReporting.ftl</result>
+      <result name="success" type="redirectAction">
         <param name="actionName">caseStudies</param>
       </result>
     </action>
