@@ -29,10 +29,15 @@
       [#-- Identifier --]
       <input type="hidden" name="outcomes[${outcome_index}].id" value="${outcome.id}" />
       
+      [#-- Title --]
+      <div class="fullBlock">
+        [@customForm.textArea name="outcomes[${outcome_index}].title" i18nkey="reporting.outcomes.title" /]
+      </div>
+      
       [#-- Outcome --]
       <div class="fullBlock">
         [@customForm.textArea name="outcomes[${outcome_index}].outcome" i18nkey="reporting.outcomes.outcome" /]
-      </div>     
+      </div>
       
       [#-- Output --]
       <div class="fullBlock">

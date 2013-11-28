@@ -36,17 +36,18 @@ public class MySQLOutcomeDAO implements OutcomeDAO {
       Object[] values;
       for (Map<String, String> outcomeData : newOutcomes) {
         preparedQuery =
-          "INSERT INTO outcomes (id, outcome, outputs, partners, output_user, how_used, evidence, logframe_id, activity_leader_id) VALUES (?,?,?,?,?,?,?,?,?)";
-        values = new Object[9];
+          "INSERT INTO outcomes (id, title, outcome, outputs, partners, output_user, how_used, evidence, logframe_id, activity_leader_id) VALUES (?,?,?,?,?,?,?,?,?,?)";
+        values = new Object[10];
         values[0] = outcomeData.get("id"); // identifier
-        values[1] = outcomeData.get("outcome"); // outcome
-        values[2] = outcomeData.get("outputs"); // outputs
-        values[3] = outcomeData.get("partners"); // partners
-        values[4] = outcomeData.get("output_user"); // output_user
-        values[5] = outcomeData.get("how_used"); // how_used
-        values[6] = outcomeData.get("evidence"); // evidence
-        values[7] = outcomeData.get("logframe_id"); // logframe_id
-        values[8] = outcomeData.get("activity_leader_id"); // activity_leader_id
+        values[1] = outcomeData.get("title"); // title
+        values[2] = outcomeData.get("outcome"); // outcome
+        values[3] = outcomeData.get("outputs"); // outputs
+        values[4] = outcomeData.get("partners"); // partners
+        values[5] = outcomeData.get("output_user"); // output_user
+        values[6] = outcomeData.get("how_used"); // how_used
+        values[7] = outcomeData.get("evidence"); // evidence
+        values[8] = outcomeData.get("logframe_id"); // logframe_id
+        values[9] = outcomeData.get("activity_leader_id"); // activity_leader_id
         int rows = dbManager.makeChangeSecure(connection, preparedQuery, values);
         if (rows < 1) {
           LOG.warn("There was an error saving the data into 'outcomes' table");
@@ -73,6 +74,7 @@ public class MySQLOutcomeDAO implements OutcomeDAO {
       while (rs.next()) {
         outcomeData = new HashMap<>();
         outcomeData.put("id", rs.getString("id"));
+        outcomeData.put("title", rs.getString("title"));
         outcomeData.put("outcome", rs.getString("outcome"));
         outcomeData.put("outputs", rs.getString("outputs"));
         outcomeData.put("partners", rs.getString("partners"));
@@ -99,7 +101,7 @@ public class MySQLOutcomeDAO implements OutcomeDAO {
 
     try (Connection connection = dbManager.getConnection()) {
       StringBuilder query = new StringBuilder();
-      query.append("SELECT o.id, o.outcome, al.id as 'leader_id', al.acronym as 'leader_acronym' ");
+      query.append("SELECT o.id, o.title, o.outcome, al.id as 'leader_id', al.acronym as 'leader_acronym' ");
       query.append("FROM outcomes o ");
       query.append("INNER JOIN activity_leaders al ON o.activity_leader_id = al.id ");
       query.append("INNER JOIN logframes l ON o.logframe_id = l.id ");
@@ -119,6 +121,7 @@ public class MySQLOutcomeDAO implements OutcomeDAO {
       while (rs.next()) {
         outcomeData = new HashMap<>();
         outcomeData.put("id", rs.getString("id"));
+        outcomeData.put("title", rs.getString("title"));
         outcomeData.put("outcome", rs.getString("outcome"));
         outcomeData.put("leader_id", rs.getString("leader_id"));
         outcomeData.put("leader_acronym", rs.getString("leader_acronym"));
