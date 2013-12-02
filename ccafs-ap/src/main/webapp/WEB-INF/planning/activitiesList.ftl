@@ -56,7 +56,7 @@
           </td>
           <td>
             [#if owned]
-              [#if activity.contactPersons??]
+              [#if activity.contactPersons?has_content]
                 [#if activity.contactPersons[0].email?has_content]
                   <a href="mailto:${activity.contactPersons[0].email}">${activity.contactPersons[0].name}</a>
                 [#else]
