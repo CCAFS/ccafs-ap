@@ -12,7 +12,7 @@ public class Publication {
   private String fileUrl;
   private Logframe logframe;
   private Leader leader;
-  private Theme[] relatedThemes;
+  private PublicationTheme[] relatedThemes;
   private OpenAccess access;
   private boolean ccafsAcknowledge;
   private boolean isiPublication;
@@ -50,7 +50,7 @@ public class Publication {
     return logframe;
   }
 
-  public Theme[] getRelatedThemes() {
+  public PublicationTheme[] getRelatedThemes() {
     return relatedThemes;
   }
 
@@ -126,7 +126,7 @@ public class Publication {
     this.narsCoauthor = narsCoauthor;
   }
 
-  public void setRelatedThemes(Theme[] relatedThemes) {
+  public void setRelatedThemes(PublicationTheme[] relatedThemes) {
     this.relatedThemes = relatedThemes;
   }
 

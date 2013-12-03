@@ -5,16 +5,16 @@ import org.cgiar.ccafs.ap.config.APConfig;
 import org.cgiar.ccafs.ap.data.manager.LogframeManager;
 import org.cgiar.ccafs.ap.data.manager.OpenAccessManager;
 import org.cgiar.ccafs.ap.data.manager.PublicationManager;
+import org.cgiar.ccafs.ap.data.manager.PublicationThemeManager;
 import org.cgiar.ccafs.ap.data.manager.PublicationTypeManager;
-import org.cgiar.ccafs.ap.data.manager.ThemeManager;
 import org.cgiar.ccafs.ap.data.model.OpenAccess;
 import org.cgiar.ccafs.ap.data.model.Publication;
+import org.cgiar.ccafs.ap.data.model.PublicationTheme;
 import org.cgiar.ccafs.ap.data.model.PublicationType;
-import org.cgiar.ccafs.ap.data.model.Theme;
 
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.TreeMap;
 
 import com.google.inject.Inject;
 import org.slf4j.Logger;
@@ -31,7 +31,7 @@ public class PublicationsReportingAction extends BaseAction {
   private List<Publication> publications;
   private PublicationType[] publicationTypes;
   private OpenAccess[] publicationAccessList;
-  private Map<Integer, String> themeList;
+  private Map<String, String> publicationThemeList;
   // This array contains the publication types which need an access type specification.
   private int[] publicationTypeAccessNeed;
   // This array contains the publication types which need indicators description.
@@ -41,17 +41,18 @@ public class PublicationsReportingAction extends BaseAction {
   private PublicationManager publicationManager;
   private PublicationTypeManager publicationTypeManager;
   private OpenAccessManager openAccessManager;
-  private ThemeManager themeManager;
+  private PublicationThemeManager publicationThemeManager;
+
 
   @Inject
   public PublicationsReportingAction(APConfig config, LogframeManager logframeManager,
     PublicationManager publicationManager, PublicationTypeManager publicationTypeManager,
-    OpenAccessManager openAccessManager, ThemeManager themeManager) {
+    OpenAccessManager openAccessManager, PublicationThemeManager publicationThemeManager) {
     super(config, logframeManager);
     this.publicationManager = publicationManager;
     this.publicationTypeManager = publicationTypeManager;
     this.openAccessManager = openAccessManager;
-    this.themeManager = themeManager;
+    this.publicationThemeManager = publicationThemeManager;
   }
 
   public OpenAccess[] getPublicationAccessList() {
@@ -60,6 +61,10 @@ public class PublicationsReportingAction extends BaseAction {
 
   public List<Publication> getPublications() {
     return publications;
+  }
+
+  public Map<String, String> getPublicationThemeList() {
+    return publicationThemeList;
   }
 
   public int[] getPublicationTypeAccessNeed() {
@@ -72,10 +77,6 @@ public class PublicationsReportingAction extends BaseAction {
 
   public PublicationType[] getPublicationTypes() {
     return publicationTypes;
-  }
-
-  public Map<Integer, String> getThemeList() {
-    return themeList;
   }
 
   @Override
@@ -98,10 +99,12 @@ public class PublicationsReportingAction extends BaseAction {
     publicationTypeIndicatorsNeed = new int[1];
     publicationTypeIndicatorsNeed[0] = publicationTypes[0].getId();
 
-    Theme[] themes = themeManager.getThemes(this.getCurrentReportingLogframe());
-    themeList = new HashMap<>();
-    for (Theme theme : themes) {
-      themeList.put(theme.getId(), getText("reporting.publications.Theme") + " " + theme.getCode());
+    PublicationTheme[] publicationThemeListObjects = publicationThemeManager.getPublicationThemes();
+    publicationThemeList = new TreeMap<>();
+
+    for (PublicationTheme pubTheme : publicationThemeListObjects) {
+      String themeName = getText("reporting.publications.Theme") + " " + pubTheme.getCode() + ": " + pubTheme.getName();
+      publicationThemeList.put(String.valueOf(pubTheme.getId()), themeName);
     }
 
     // Remove all publications so they can be added again in the save method.

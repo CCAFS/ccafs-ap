@@ -83,7 +83,7 @@
         <h6>[@s.text name="reporting.publications.themeRelated" /]</h6>
         <div class="checkboxGroup">
           [@s.fielderror cssClass="fieldError" fieldName="publications[${publication_index}].themeRelated"/]
-          [@s.checkboxlist name="publications[${publication_index}].relatedThemes" list="themeList" value="publications[${publication_index}].relatedThemesIds" cssClass="checkbox" /]
+          [@s.checkboxlist name="publications[${publication_index}].relatedThemes" list="publicationThemeList" value="publications[${publication_index}].relatedThemesIds" cssClass="checkbox" /]
         </div>
       </div>
 

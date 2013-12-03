@@ -939,6 +939,11 @@ button#activities_save{
   width: 95%;
 }
 
+
+#publications .checkboxGroup .checkboxLabel {
+    width: 46%;
+}
+
 #publications .journalArticlesIndicators,
 #publications #ccafsAcknowledge{
 	margin-bottom: 25px;

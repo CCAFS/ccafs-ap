@@ -7,8 +7,8 @@ import org.cgiar.ccafs.ap.data.model.Leader;
 import org.cgiar.ccafs.ap.data.model.Logframe;
 import org.cgiar.ccafs.ap.data.model.OpenAccess;
 import org.cgiar.ccafs.ap.data.model.Publication;
+import org.cgiar.ccafs.ap.data.model.PublicationTheme;
 import org.cgiar.ccafs.ap.data.model.PublicationType;
-import org.cgiar.ccafs.ap.data.model.Theme;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -80,13 +80,14 @@ public class PublicationManagerImpl implements PublicationManager {
       } else {
         // publicationAccess.setId(-1);
       }
-      List<Map<String, String>> themes = publicationThemeDAO.getThemes(publication.getId());
-      Theme[] relatedThemes = new Theme[themes.size()];
+
+      List<Map<String, String>> themes = publicationThemeDAO.getPublicationThemes(publication.getId());
+      PublicationTheme[] relatedThemes = new PublicationTheme[themes.size()];
       for (int c = 0; c < themes.size(); c++) {
-        Theme theme = new Theme();
+        PublicationTheme theme = new PublicationTheme();
         theme.setId(Integer.parseInt(themes.get(c).get("id")));
         theme.setCode(themes.get(c).get("code"));
-        theme.setDescription(themes.get(c).get("description"));
+        theme.setName(themes.get(c).get("name"));
         relatedThemes[c] = theme;
       }
       publication.setRelatedThemes(relatedThemes);
@@ -145,7 +146,8 @@ public class PublicationManagerImpl implements PublicationManager {
       // If the publications was successfully saved, save the themes related
       if (publicationId != -1) {
         // lets add the file format list.
-        boolean themesRelatedAdded = publicationThemeDAO.saveThemes(publicationId, publication.getRelatedThemesIds());
+        boolean themesRelatedAdded =
+          publicationThemeDAO.savePublicationThemes(publicationId, publication.getRelatedThemesIds());
         if (!themesRelatedAdded) {
           return false;
         }
