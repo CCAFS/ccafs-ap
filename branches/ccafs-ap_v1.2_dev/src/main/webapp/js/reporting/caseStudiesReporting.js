@@ -37,6 +37,8 @@ $(document).ready(function() {
       $("#caseStudies_caseStudies_" + elementId + "__countries").attr('disabled', false).trigger("liszt:updated");      
     }
   });
+  
+  $(".checkboxGroup input[name$='types']").on("change", checkCaseStudyTypes);
 
   addDatepicker();
   // Activate the chosen plugin to the existing case studies  
@@ -60,6 +62,19 @@ $(document).ready(function() {
     applyCharCounter($(this), 250);
   });
 });
+
+// This function checks that a case study doesn't have more than 3 types 
+// selected
+function checkCaseStudyTypes(evt){
+  var elementName = $(evt.target).attr("name");
+  
+  if($("input[name='"+ elementName +"']:checked").length == $("#maxNumberCaseStudyTypes").val()){
+    $("input[name='"+ elementName +"']:checkbox:not(:checked)").attr("disabled", true);
+  } else if ( $("input[name='"+ elementName +"']:checked").length < $("#maxNumberCaseStudyTypes").val() ){
+    $("input[name='"+ elementName +"']").attr("disabled", false);
+  }
+  
+}
 
 // Hide countries field when the case study is global after the page load
 function hideCountries(){

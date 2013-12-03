@@ -32,6 +32,7 @@
         <div id="caseStudy-${caseStudy_index}" class="caseStudy">
           [#-- CaseStudy identifier --]
           <input name="caseStudies[${caseStudy_index}].id" type="hidden" value="${caseStudy.id?c}">
+          <input id="maxNumberCaseStudyTypes" type="hidden" value="${maxCaseStudyTypes?c}">
 
           [#-- Item index --]
           <div class="itemIndex">
@@ -58,10 +59,16 @@
 
           [#-- Types --]
           <div class="fullBlock">
-            <h6>[@s.text name="reporting.caseStudies.types" /]</h6>
+            <h6>
+              <label for="caseStudies[${caseStudy_index}].types">
+                [@s.text name="reporting.caseStudies.types" /]
+                <span class="red">*</span>
+              </label>
+              <img src="${baseUrl}/images/global/icon-help2.png" title="[@s.text name="reporting.caseStudies.types.help"/]" />
+            </h6>
             <div class="checkboxGroup">
               [@s.fielderror cssClass="fieldError" fieldName="caseStudies[${caseStudy_index}].types"/]
-              [@s.checkboxlist name="caseStudies[${caseStudy_index}].types" list="caseStudyTypeList" listKey="id" listValue="name" value="caseStudies[${caseStudy_index}].typesIds" cssClass="checkbox" /]
+              [@s.checkboxlist name="caseStudies[${caseStudy_index}].types" list="caseStudyTypeList" listKey="id" listValue="name" value="caseStudies[${caseStudy_index}].typesIds" cssClass="checkbox" help="reporting.caseStudies.types.help" /]
             </div>
           </div>
 

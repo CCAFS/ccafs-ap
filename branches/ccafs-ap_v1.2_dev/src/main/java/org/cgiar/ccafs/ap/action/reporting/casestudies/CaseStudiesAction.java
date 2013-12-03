@@ -74,10 +74,10 @@ public class CaseStudiesAction extends BaseAction {
     }
   }
 
-
   public List<CaseStudy> getCaseStudies() {
     return caseStudies;
   }
+
 
   /**
    * Join the url to the folder of cases studies images and
@@ -116,8 +116,16 @@ public class CaseStudiesAction extends BaseAction {
    * @return complete path where the image is stored
    */
   private String getFolderPath(String imageName) {
-    return config.getCaseStudiesImagesPath() + File.separator + getCurrentReportingLogframe().getYear() + File.separator
-      + getCurrentUser().getLeader().getAcronym() + File.separator + imageName;
+    return config.getCaseStudiesImagesPath() + File.separator + getCurrentReportingLogframe().getYear()
+      + File.separator + getCurrentUser().getLeader().getAcronym() + File.separator + imageName;
+  }
+
+  /**
+   * This function returns the number maximum of case study types
+   * that can have a case study
+   */
+  public int getMaxCaseStudyTypes() {
+    return config.getMaxCaseStudyTypes();
   }
 
   @Override
@@ -162,7 +170,8 @@ public class CaseStudiesAction extends BaseAction {
 
     // First, remove all the case studies from the database
     boolean deleted =
-      caseStudyManager.removeAllCaseStudies(getCurrentUser().getLeader().getId(), getCurrentReportingLogframe().getId());
+      caseStudyManager
+        .removeAllCaseStudies(getCurrentUser().getLeader().getId(), getCurrentReportingLogframe().getId());
     if (!deleted) {
       problem = true;
     } else {
@@ -182,8 +191,8 @@ public class CaseStudiesAction extends BaseAction {
         }
 
         boolean added =
-          caseStudyManager.saveCaseStudy(caseStudies.get(c), getCurrentUser().getLeader().getId(), getCurrentReportingLogframe()
-            .getId());
+          caseStudyManager.saveCaseStudy(caseStudies.get(c), getCurrentUser().getLeader().getId(),
+            getCurrentReportingLogframe().getId());
         if (!added) {
           problem = true;
         } else {
@@ -310,6 +319,11 @@ public class CaseStudiesAction extends BaseAction {
         // Partners
         if (caseStudies.get(c).getPartners().isEmpty()) {
           addFieldError("caseStudies[" + c + "].partners", getText("validation.field.required"));
+          anyError = true;
+        }
+        // Type
+        if (caseStudies.get(c).getTypes().size() > config.getMaxCaseStudyTypes()) {
+          addFieldError("caseStudies[" + c + "].types", getText("validation.invalid"));
           anyError = true;
         }
       }
