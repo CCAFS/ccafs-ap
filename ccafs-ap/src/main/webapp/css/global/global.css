@@ -653,7 +653,7 @@ a.currentReportingSection li #i-additionalInformation{
   text-align: center !important;
 }
 
-#activityListPlanning #submitButtonBlock #activities_save{
+#activityListPlanning #submitButtonBlock button#submitForm_save{
   background: url('../../images/global/sprite-icons-activities.png') 30px -103px #657A36 no-repeat;
   width: 146px;
   height: 28px;
@@ -661,18 +661,18 @@ a.currentReportingSection li #i-additionalInformation{
   color: #FFFFFF;
 }
 
-#activityListPlanning #submitButtonBlock #activities_save.disabled{
+#activityListPlanning #submitButtonBlock button#submitForm_save.disabled{
   background: url('../../images/global/sprite-icons-activities.png') 30px -103px #F1F1F1 no-repeat;
   color: #BBB;
   border: 1px solid #DDD;
   cursor : auto;
 }
 
-#activityListPlanning #submitButtonBlock #activities_save:hover {
+#activityListPlanning #submitButtonBlock button#submitForm_save:hover {
 	background-color: #576A2D;
 }
 	
-#activityListPlanning #submitButtonBlock #activities_save.disabled:hover {
+#activityListPlanning #submitButtonBlock button#submitForm_save.disabled:hover {
 	background-color: #F1F1F1;
 }
 	
