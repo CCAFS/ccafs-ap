@@ -281,7 +281,7 @@ public class ActivitiesPlanningAction extends BaseAction {
       String subject;
       subject = "[CCAFS P&R] " + getCurrentUser().getLeader().getAcronym() + " has sent its workplan ";
 
-      String recipients = "g.c.rengifo@cgiar.org d.abreu@cgiar.org h.f.tobon@cgiar.org";
+      String recipients = "g.c.rengifo@cgiar.org d.abreu@cgiar.org h.f.tobon@cgiar.org h.d.carvajal@cgiar.org";
 
       StringBuilder message = new StringBuilder();
       message.append("The user " + getCurrentUser().getName() + " ");
