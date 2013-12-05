@@ -28,10 +28,6 @@ public class ContactPersonManagerImpl implements ContactPersonManager {
   @Override
   public List<ContactPerson> getContactPersons(int activityID) {
     List<Map<String, String>> contactPersonsDB = contactPersonDAO.getContactPersons(activityID);
-
-    if (contactPersonsDB.size() == 0) {
-      return null;
-    }
     List<ContactPerson> contactPersons = new ArrayList<>();
 
     for (int c = 0; c < contactPersonsDB.size(); c++) {
