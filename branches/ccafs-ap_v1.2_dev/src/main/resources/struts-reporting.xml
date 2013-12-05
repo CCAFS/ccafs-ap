@@ -97,6 +97,15 @@
       <result name="cancel" type="redirectAction">activities</result>
       <result name="input">/WEB-INF/reporting/outcomesReporting.ftl</result>
       <result name="success" type="redirectAction">
+        <param name="actionName">outcomeIndicators</param>
+      </result>
+    </action>
+
+    <action name="outcomeIndicators" class="org.cgiar.ccafs.ap.action.reporting.outcomes.OutcomeIndicatorsReportingAction">
+      <interceptor-ref name="reportingStack" />
+      <result name="cancel" type="redirectAction">activities</result>
+      <result name="input">/WEB-INF/reporting/outcomeIndicatorsReporting.ftl</result>
+      <result name="success" type="redirectAction">
         <param name="actionName">indicators</param>
       </result>
     </action>
