@@ -130,6 +130,7 @@ public class MainInformationPlanningAction extends BaseAction {
 
   @Override
   public void prepare() throws Exception {
+    System.out.println("--------------- PREPARE --------------------------");
     super.prepare();
 
     validationMessage = new StringBuilder();
@@ -172,6 +173,7 @@ public class MainInformationPlanningAction extends BaseAction {
 
   @Override
   public String save() {
+    System.out.println("--------------- SAVE --------------------------");
     boolean success = true;
     String finalMessage;
 
