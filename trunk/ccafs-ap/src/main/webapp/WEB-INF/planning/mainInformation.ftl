@@ -21,9 +21,9 @@
   <article class="halfContent" id="mainInformation">
     <h1 class="contentTitle">
       [#if activity.commissioned] 
-        [@s.text name="planning.mainInformation.commissionedActivity" /] ${activity.activityId?c}
+        [@s.text name="planning.mainInformation.commissionedActivity" /] ${activity.id?c}
       [#else] 
-        [@s.text name="planning.mainInformation.activity" /] ${activity.activityId?c}
+        [@s.text name="planning.mainInformation.activity" /] ${activity.id?c}
       [/#if]
       - ${activity.leader.acronym}
     </h1>
