@@ -47,7 +47,7 @@
           [#if activity.continuousActivity?has_content]
             [@s.text name="planning.mainInformation.continuationActivity" /] 
               <a href="[@s.url action='activity' namespace="/"][@s.param name='${publicActivtyRequestParameter}']${activity.continuousActivity.id?c}[/@s.param][/@s.url]" target="_blank"> 
-            [@s.text name="planning.mainInformation.activity" /] ${activity.continuousActivity.activityId?c} 
+            [@s.text name="planning.mainInformation.activity" /] ${activity.continuousActivity.id?c} 
             </a>
           [/#if]
         </div>
