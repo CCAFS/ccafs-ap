@@ -43,7 +43,7 @@
         <div class="halfPartBlock" >
           [#assign continuousActivityId = -1]
           [#if activity?has_content][#if activity.continuousActivity?has_content][#assign continuousActivityId = activity.continuousActivity.id][/#if][/#if]
-          [@customForm.select name="activity.continuousActivity" label="" i18nkey="planning.addActivity.continuousActivity" listName="continuousActivityList" value="${continuousActivityId}" showTitle=false display=false /]
+          [@customForm.select name="activity.continuousActivity" label="" i18nkey="planning.addActivity.continuousActivity" listName="continuousActivityList" value="${continuousActivityId?c}" showTitle=false display=false /]
         </div>
       </div>
         
@@ -60,7 +60,7 @@
         </div>
       [#else]
         <div class="thirdPartBlock" id="leaderBlock" >
-          <input type="hidden" name="activity.leader" value="${currentUser.leader.id}" id="addActivity_activity_leader">
+          <input type="hidden" name="activity.leader" value="${currentUser.leader.id?c}" id="addActivity_activity_leader">
         </div>
       [/#if]
 

@@ -25,7 +25,7 @@
     <input id="keywordsDefaultText" value="[@s.text name="planning.additionalInformation.keyword.default" /]" type="hidden">
   
     <h1 class="contentTitle">
-      [@s.text name="planning.mainInformation.activity" /] ${activity.id} - ${activity.leader.acronym}
+      [@s.text name="planning.mainInformation.activity" /] ${activity.id?c} - ${activity.leader.acronym}
     </h1>
     
     <fieldset>
@@ -97,7 +97,7 @@
     </div>
     
     <!-- internal parameter -->
-    <input name="activityID" type="hidden" value="${activity.id}" />
+    <input name="activityID" type="hidden" value="${activity.id?c}" />
     [#-- Only the owner of the activity can see the action buttons --]
     [#if activity.leader.id == currentUser.leader.id && canSubmit]
       <div class="buttons">
