@@ -21,17 +21,17 @@
   <article class="halfContent" id="mainInformation">
     <h1 class="contentTitle">
       [#if activity.commissioned] 
-        [@s.text name="planning.mainInformation.commissionedActivity" /] ${activity.id}
+        [@s.text name="planning.mainInformation.commissionedActivity" /] ${activity.activityId?c}
       [#else] 
-        [@s.text name="planning.mainInformation.activity" /] ${activity.id}
+        [@s.text name="planning.mainInformation.activity" /] ${activity.activityId?c}
       [/#if]
       - ${activity.leader.acronym}
     </h1>
     
     [#-- Activity identifier --]
-    <input name="activityID" value="${activity.id}" type="hidden"/>
+    <input name="activityID" value="${activity.id?c}" type="hidden"/>
     [#-- Budget identifier --]
-    <input name="activity.budget.id" value="${activity.budget.id}" type="hidden"/>
+    <input name="activity.budget.id" value="${activity.budget.id?c}" type="hidden"/>
     [#-- Budget 'No funds' text --]
     <input id="activity.budget.noFunds" value="[@s.text name="planning.mainInformation.budget.noFunds" /] " type="hidden"/>
     
@@ -46,8 +46,8 @@
         <div class="halfPartBlock continuation">
           [#if activity.continuousActivity?has_content]
             [@s.text name="planning.mainInformation.continuationActivity" /] 
-            <a href="[@s.url action='activity' namespace="/"][@s.param name='${publicActivtyRequestParameter}']${activity.continuousActivity.id}[/@s.param][/@s.url]" target="_blank"> 
-              [@s.text name="planning.mainInformation.activity" /] ${activity.continuousActivity.id} 
+              <a href="[@s.url action='activity' namespace="/"][@s.param name='${publicActivtyRequestParameter}']${activity.continuousActivity.id?c}[/@s.param][/@s.url]" target="_blank"> 
+            [@s.text name="planning.mainInformation.activity" /] ${activity.continuousActivity.activityId?c} 
             </a>
           [/#if]
         </div>
@@ -66,7 +66,7 @@
     
     [#-- Milestones --]
     <div class="halfPartBlock">
-      [@customForm.select name="activity.milestone" label="" i18nkey="planning.mainInformation.milestone" listName="milestones" keyFieldName="id"  displayFieldName="code" value="${activity.milestone.id}" className="milestones" required=true /]
+      [@customForm.select name="activity.milestone" label="" i18nkey="planning.mainInformation.milestone" listName="milestones" keyFieldName="id"  displayFieldName="code" value="${activity.milestone.id?c}" className="milestones" required=true /]
     </div>
     
     [#-- Logframe link --]
@@ -124,7 +124,7 @@
               
               <div id="contactPerson-${contactPerson_index}" class="contactPerson">
                 [#-- Contact person id--]
-                <input type="hidden" name="activity.contactPersons[${contactPerson_index}].id" value="${contactPerson.id}">
+                <input type="hidden" name="activity.contactPersons[${contactPerson_index}].id" value="${contactPerson.id?c}">
                 
                 [#-- Contact name --]
                 <div class="halfPartBlock">
