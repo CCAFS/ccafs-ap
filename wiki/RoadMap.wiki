@@ -26,6 +26,7 @@ Also was added a list to see the activities from previus years.
 
   * Version 1.1.2 [http://code.google.com/p/ccafs-ap/issues/list?can=1&q=milestone%3DRelease1.1.2 Resolved issues]
 
+  * Version 1.1.3 [http://code.google.com/p/ccafs-ap/issues/list?can=1&q=milestone%3DRelease1.1.3 Resolved issues]
 
 ---------
 
