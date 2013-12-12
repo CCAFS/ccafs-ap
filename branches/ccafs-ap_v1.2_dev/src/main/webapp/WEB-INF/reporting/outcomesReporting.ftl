@@ -109,6 +109,11 @@
           [#-- Identifier --]
           <input type="hidden" name="id" value="-1" />
           
+          [#-- Title --]
+          <div class="fullBlock">
+            [@customForm.textArea name="title" i18nkey="reporting.outcomes.title" /]
+          </div>
+          
           [#-- Outcome --]
           <div class="fullBlock">
             [@customForm.textArea name="outcome" i18nkey="reporting.outcomes.outcome" /]
