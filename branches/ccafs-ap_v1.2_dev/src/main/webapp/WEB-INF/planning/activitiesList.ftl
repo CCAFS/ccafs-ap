@@ -27,8 +27,8 @@
                 ${activity.activityId}
               </a> 
             [#else]
-              <a target="_blank" href=" [@s.url action='activity' namespace="/home" includeParams='get'] [@s.param name='${publicActivityRequestParameter}']${activity.id}[/@s.param] [/@s.url]" >
-                ${activity.id}
+              <a target="_blank" href=" [@s.url action='activity' namespace="/home" includeParams='get'] [@s.param name='${publicActivityRequestParameter}']${activity.id?c}[/@s.param] [/@s.url]" >
+                ${activity.id?c}
               </a>
             [/#if]
           </td>
@@ -36,7 +36,7 @@
             [#if canEditActivity]
               <a href="
                 [@s.url action='mainInformation' includeParams='get']
-                  [@s.param name='${activityRequestParameter}']${activity.id}[/@s.param]
+                  [@s.param name='${activityRequestParameter}']${activity.id?c}[/@s.param]
                 [/@s.url]" title="${activity.title}">
                 [#if activity.title?has_content]
                   [#if activity.title?length < 70] ${activity.title} [#else] [@utilities.wordCutter string=activity.title maxPos=70 /]... [/#if]
@@ -45,7 +45,7 @@
                 [/#if]
               </a> 
             [#else]
-              <a target="_blank" href=" [@s.url action='activity' namespace="/home" includeParams='get'] [@s.param name='${publicActivityRequestParameter}']${activity.id}[/@s.param] [/@s.url]" >
+              <a target="_blank" href=" [@s.url action='activity' namespace="/home" includeParams='get'] [@s.param name='${publicActivityRequestParameter}']${activity.id?c}[/@s.param] [/@s.url]" >
                 [#if activity.title?has_content]
                   [#if activity.title?length < 70] ${activity.title} [#else] [@utilities.wordCutter string=activity.title maxPos=70 /]... [/#if]
                 [#else]
@@ -56,7 +56,7 @@
           </td>
           <td>
             [#if owned]
-              [#if activity.contactPersons??]
+              [#if activity.contactPersons?has_content]
                 [#if activity.contactPersons[0].email?has_content]
                   <a href="mailto:${activity.contactPersons[0].email}">${activity.contactPersons[0].name}</a>
                 [#else]

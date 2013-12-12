@@ -24,7 +24,7 @@
     </h1>
     
     [#-- Activity identifier --]
-    <input name="activityID" value="${activity.id}" type="hidden"/>
+    <input name="activityID" value="${activity.id?c}" type="hidden"/>
     [#-- Hidden values --]
     <input id="countriesSelectDefault" value="[@s.text name="planning.locations.country.default" /]" type="hidden"/>
     
@@ -89,7 +89,7 @@
         [#list activity.otherLocations as otherSite]
           <div class="otherSite">
             [#-- Other site Identifier --]
-            <input type="hidden" name="activity.otherLocations[${otherSite_index}].id" value="${otherSite.id}" />
+            <input type="hidden" name="activity.otherLocations[${otherSite_index}].id" value="${otherSite.id?c}" />
             
             [#-- Remove link --]
             <div class="removeLink">

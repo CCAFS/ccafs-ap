@@ -87,8 +87,11 @@ public class ActivityManagerImpl implements ActivityManager {
       activity.setActivityId(activitiesDAO.get(c).get("activity_id"));
       activity.setTitle(activitiesDAO.get(c).get("title"));
       activity.setDescription(activitiesDAO.get(c).get("description"));
+
       try {
-        activity.setStartDate(dateFormat.parse(activitiesDAO.get(c).get("start_date")));
+        if (activitiesDAO.get(c).get("start_date") != null) {
+          activity.setStartDate(dateFormat.parse(activitiesDAO.get(c).get("start_date")));
+        }
       } catch (ParseException e) {
         String msg =
           "There was an error parsing start date '" + activitiesDAO.get(c).get("start_date") + "' for the activity "
@@ -96,7 +99,9 @@ public class ActivityManagerImpl implements ActivityManager {
         LOG.error(msg, e);
       }
       try {
-        activity.setEndDate(dateFormat.parse(activitiesDAO.get(c).get("end_date")));
+        if (activitiesDAO.get(c).get("end_date") != null) {
+          activity.setEndDate(dateFormat.parse(activitiesDAO.get(c).get("end_date")));
+        }
       } catch (ParseException e) {
         String msg =
           "There was an error parsing end date '" + activitiesDAO.get(c).get("end_date") + "' for the activity "
@@ -128,10 +133,14 @@ public class ActivityManagerImpl implements ActivityManager {
 
       /* --- ACTIVITY STATUS --- */
       Map<String, String> statusInfo = activityDAO.getActivityStatusInfo(activity.getId());
-      Status status = new Status();
-      status.setId(Integer.parseInt(statusInfo.get("status_id")));
-      status.setName(statusInfo.get("status_name"));
-      activity.setStatus(status);
+
+      if (statusInfo.get("status_id") != null) {
+        Status status = new Status();
+        status.setId(Integer.parseInt(statusInfo.get("status_id")));
+        status.setName(statusInfo.get("status_name"));
+        activity.setStatus(status);
+      }
+
       // Status Description
       activity.setStatusDescription(statusInfo.get("status_description"));
       // Gender Integration

@@ -97,7 +97,7 @@
     </div>
     
     <!-- internal parameter -->
-    <input name="activityID" type="hidden" value="${activity.id}" />
+    <input name="activityID" type="hidden" value="${activity.id?c}" />
     [#-- Only the owner of the activity can see the action buttons --]
     [#if activity.leader.id == currentUser.leader.id && canSubmit]
       <div class="buttons">

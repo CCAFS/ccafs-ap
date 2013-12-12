@@ -97,17 +97,48 @@
       <result name="cancel" type="redirectAction">activities</result>
       <result name="input">/WEB-INF/reporting/outcomesReporting.ftl</result>
       <result name="success" type="redirectAction">
-        <param name="actionName">outcomeIndicators</param>
+        <param name="actionName">themeOneOutcomeIndicators</param>
       </result>
     </action>
 
-    <action name="outcomeIndicators" class="org.cgiar.ccafs.ap.action.reporting.outcomes.OutcomeIndicatorsReportingAction">
+    <action name="themeOneOutcomeIndicators" class="org.cgiar.ccafs.ap.action.reporting.outcomes.OutcomeIndicatorsReportingAction">
+      <interceptor-ref name="reportingStack" />
+      <result name="cancel" type="redirectAction">activities</result>
+      <result name="input">/WEB-INF/reporting/outcomeIndicatorsReporting.ftl</result>
+      <result name="success" type="redirectAction">
+        <param name="actionName">themeTwoOutcomeIndicators</param>
+      </result>
+      <param name="currentIndicatorsTheme">1</param>
+    </action>
+
+    <action name="themeTwoOutcomeIndicators" class="org.cgiar.ccafs.ap.action.reporting.outcomes.OutcomeIndicatorsReportingAction">
+      <interceptor-ref name="reportingStack" />
+      <result name="cancel" type="redirectAction">activities</result>
+      <result name="input">/WEB-INF/reporting/outcomeIndicatorsReporting.ftl</result>
+      <result name="success" type="redirectAction">
+        <param name="actionName">themeThreeOutcomeIndicators</param>
+      </result>
+      <param name="currentIndicatorsTheme">2</param>
+    </action>
+
+    <action name="themeThreeOutcomeIndicators" class="org.cgiar.ccafs.ap.action.reporting.outcomes.OutcomeIndicatorsReportingAction">
+      <interceptor-ref name="reportingStack" />
+      <result name="cancel" type="redirectAction">activities</result>
+      <result name="input">/WEB-INF/reporting/outcomeIndicatorsReporting.ftl</result>
+      <result name="success" type="redirectAction">
+        <param name="actionName">themeFourOutcomeIndicators</param>
+      </result>
+      <param name="currentIndicatorsTheme">3</param>
+    </action>
+
+    <action name="themeFourOutcomeIndicators" class="org.cgiar.ccafs.ap.action.reporting.outcomes.OutcomeIndicatorsReportingAction">
       <interceptor-ref name="reportingStack" />
       <result name="cancel" type="redirectAction">activities</result>
       <result name="input">/WEB-INF/reporting/outcomeIndicatorsReporting.ftl</result>
       <result name="success" type="redirectAction">
         <param name="actionName">indicators</param>
       </result>
+      <param name="currentIndicatorsTheme">4</param>
     </action>
 
     <action name="indicators" class="org.cgiar.ccafs.ap.action.reporting.indicators.IndicatorsReportingAction">

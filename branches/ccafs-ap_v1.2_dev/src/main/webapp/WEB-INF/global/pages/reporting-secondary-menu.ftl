@@ -10,6 +10,7 @@
     <a [#if currentReportingSection == "communications"] class="currentReportingSection" [/#if] href="${baseUrl}/reporting/communications.do"><li>[@s.text name="menu.secondary.reporting.communications" /]</li></a>
     <a [#if currentReportingSection == "caseStudies"] class="currentReportingSection" [/#if] href="${baseUrl}/reporting/caseStudies.do"><li>[@s.text name="menu.secondary.reporting.caseStudies" /]</li></a>
     <a [#if currentReportingSection == "outcomes"] class="currentReportingSection" [/#if] href="${baseUrl}/reporting/outcomes.do"><li>[@s.text name="menu.secondary.reporting.outcomes" /]</li></a>
+    <a [#if currentReportingSection == "outcomeIndicators"] class="currentReportingSection" [/#if] href="${baseUrl}/reporting/themeOneOutcomeIndicators.do"><li>[@s.text name="menu.secondary.reporting.outcomeIndicators" /]</li></a>
     <a [#if currentReportingSection == "indicators"] class="currentReportingSection" [/#if] href="${baseUrl}/reporting/indicators.do"><li>[@s.text name="menu.secondary.reporting.indicators" /]</li></a>
     <a [#if currentReportingSection == "leverages"] class="currentReportingSection" [/#if] href="${baseUrl}/reporting/leverages.do"><li>[@s.text name="menu.secondary.reporting.leverages" /]</li></a>
     <!-- a [#if currentReportingSection == "leverage"] class="currentReportingSection" [/#if] href=""><li>Leverage</li></a -->

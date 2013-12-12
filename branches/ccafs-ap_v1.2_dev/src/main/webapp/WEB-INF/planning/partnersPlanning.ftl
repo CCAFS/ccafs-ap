@@ -84,7 +84,7 @@
     
       <p id="addPartnerText">
         [@s.text name="planning.activityPartners.addPartnerMessage.first" /]
-        <a class="popup" href="[@s.url action='partnerSave'][@s.param name='${activityRequestParameter}']${activityID}[/@s.param][/@s.url]">
+        <a class="popup" href="[@s.url action='partnerSave'][@s.param name='${activityRequestParameter}']${activityID?c}[/@s.param][/@s.url]">
           [@s.text name="planning.activityPartners.addPartnerMessage.second" /]
         </a>       
       </p>
@@ -138,7 +138,7 @@
     <input id="countryListDefault" type="hidden" value="[@s.text name="planning.activityPartners.selectCountry" /]" />
     
     <!-- internal parameter -->
-    <input name="activityID" type="hidden" value="${activity.id}" />
+    <input name="activityID" type="hidden" value="${activity.id?c}" />
     [#-- Only the owner of the activity can see the action buttons --]
     [#if activity.leader.id == currentUser.leader.id && canSubmit]
       <div class="buttons">

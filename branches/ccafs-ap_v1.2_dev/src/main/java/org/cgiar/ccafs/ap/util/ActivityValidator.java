@@ -72,7 +72,7 @@ public class ActivityValidator extends ActionSupport {
     }
 
     // The list could be empty after the last validation
-    if (activity.getContactPersons().isEmpty()) {
+    if (activity.getContactPersons() != null && activity.getContactPersons().isEmpty()) {
       validationMessages.append(getText("planning.mainInformation.validation.contactPerson") + ", ");
       problem = true;
     }
