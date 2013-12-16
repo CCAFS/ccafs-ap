@@ -73,7 +73,7 @@ public class ActivityManagerImpl implements ActivityManager {
     List<Map<String, String>> activitiesDAO;
 
     // if leader is null the user must be an admin.
-    if (user.getRole() == User.UserRole.Admin) {
+    if (user.getRole().isAdmin()) {
       activitiesDAO = activityDAO.getActivities(year);
     } else {
       // get all activities added by the specified leader.

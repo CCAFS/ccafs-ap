@@ -6,7 +6,7 @@ import org.cgiar.ccafs.ap.data.model.Logframe;
 import org.cgiar.ccafs.ap.data.model.Milestone;
 import org.cgiar.ccafs.ap.data.model.MilestoneReport;
 import org.cgiar.ccafs.ap.data.model.Theme;
-import org.cgiar.ccafs.ap.data.model.User.UserRole;
+import org.cgiar.ccafs.ap.data.model.UserRole;
 
 import com.google.inject.ImplementedBy;
 

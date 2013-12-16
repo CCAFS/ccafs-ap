@@ -8,10 +8,6 @@ import org.apache.commons.lang3.builder.ToStringBuilder;
 
 public class User {
 
-  public enum UserRole {
-    PI, CP, TL, RPL, Admin
-  }
-
   private int id;
   private String name;
   private String email;
@@ -67,7 +63,7 @@ public class User {
    * @return true if the user is actually an Administrator, or false otherwise.
    */
   public boolean isAdmin() {
-    return this.role == UserRole.Admin;
+    return this.role.isAdmin();
   }
 
   /**
@@ -76,7 +72,7 @@ public class User {
    * @return true if the user is actually a Contact Point, or false otherwise.
    */
   public boolean isCP() {
-    return this.role == UserRole.CP;
+    return this.role.isCP();
   }
 
   /**
@@ -85,7 +81,7 @@ public class User {
    * @return true if the user is actually a Principal Investigator, or false otherwise.
    */
   public boolean isPI() {
-    return this.role == UserRole.PI;
+    return this.role.isPI();
   }
 
   /**
@@ -94,7 +90,7 @@ public class User {
    * @return true if the user is actually a Regional Program Leader, or false otherwise.
    */
   public boolean isRPL() {
-    return this.role == UserRole.RPL;
+    return this.role.isRPL();
   }
 
   /**
@@ -103,7 +99,7 @@ public class User {
    * @return true if the user is actually a Theme Leader, or false otherwise.
    */
   public boolean isTL() {
-    return this.role == UserRole.TL;
+    return this.role.isTL();
   }
 
   public void setEmail(String email) {
@@ -113,7 +109,6 @@ public class User {
   public void setId(int id) {
     this.id = id;
   }
-
 
   public void setLastLogin(Date lastLogin) {
     this.lastLogin = lastLogin;
@@ -141,28 +136,6 @@ public class User {
       this.password = MD5Convert.stringToMD5(password);
     } else {
       this.password = null;
-    }
-  }
-
-  public void setRole(String roleString) {
-    switch (roleString) {
-      case "Admin":
-        this.role = UserRole.Admin;
-        break;
-      case "CP":
-        this.role = UserRole.CP;
-        break;
-      case "TL":
-        this.role = UserRole.TL;
-        break;
-      case "RPL":
-        this.role = UserRole.RPL;
-        break;
-      case "PI":
-        this.role = UserRole.PI;
-        break;
-      default:
-        break;
     }
   }
 

@@ -32,9 +32,12 @@ public class MySQLUserDAO implements UserDAO {
     try (Connection connection = dbManager.getConnection()) {
       String query =
         "SELECT u.*, al.id as leader_id, al.acronym as leader_acronym, al.name as leader_name, "
+          + "ur.id as 'user_role_id', ur.name as 'user_role_name', "
           + "lt.id as leader_type_id, lt.name as leader_type_name, " + "t.id as 'theme_id', t.code as 'theme_code', "
           + "r.id as 'region_id', r.name as 'region_name' " + "FROM users u "
-          + "INNER JOIN activity_leaders al ON u.activity_leader_id = al.id "
+          + "INNER JOIN user_activity_leaders ual ON u.id = ual.user_id "
+          + "INNER JOIN user_roles ur ON ual.user_role_id  = ur.id"
+          + "INNER JOIN activity_leaders al ON ual.activity_leader_id = al.id "
           + "INNER JOIN leader_types lt ON al.led_activity_id = lt.id " + "LEFT JOIN themes t ON al.theme_id = t.id "
           + "LEFT JOIN regions r ON al.region_id = r.id " + "WHERE u.email = '" + email + "'";
       ResultSet rs = dbManager.makeQuery(query, connection);
@@ -43,7 +46,8 @@ public class MySQLUserDAO implements UserDAO {
         userData.put("name", rs.getString("name"));
         userData.put("email", email);
         userData.put("password", rs.getString("password"));
-        userData.put("role", rs.getString("role"));
+        userData.put("user_role_id", rs.getString("user_role_id"));
+        userData.put("user_role_name", rs.getString("user_role_name"));
         userData.put("leader_id", rs.getString("leader_id"));
         userData.put("leader_acronym", rs.getString("leader_acronym"));
         userData.put("leader_name", rs.getString("leader_name"));

@@ -7,6 +7,7 @@ import org.cgiar.ccafs.ap.data.model.LeaderType;
 import org.cgiar.ccafs.ap.data.model.Region;
 import org.cgiar.ccafs.ap.data.model.Theme;
 import org.cgiar.ccafs.ap.data.model.User;
+import org.cgiar.ccafs.ap.data.model.UserRole;
 import org.cgiar.ccafs.ap.util.MD5Convert;
 
 import java.text.SimpleDateFormat;
@@ -38,7 +39,13 @@ public class UserManagerImp implements UserManager {
       user.setName(userData.get("name"));
       user.setEmail(email);
       user.setMD5Password(userData.get("password"));
-      user.setRole(userData.get("role"));
+
+      // Temporal UserRole object
+      UserRole userRole = new UserRole();
+      userRole.setId(Integer.parseInt(userData.get("user_role_id")));
+      userRole.setName(userData.get("user_role_name"));
+      user.setRole(userRole);
+
       // Leader
       Leader leader = new Leader();
       leader.setId(Integer.parseInt(userData.get("leader_id")));
