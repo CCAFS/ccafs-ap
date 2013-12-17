@@ -174,6 +174,13 @@
           <div class="fullBlock">
             <h6>[@s.text name="reporting.publications.themeRelated" /]</h6>
             <div class="checkboxGroup">
+              [@s.fielderror cssClass="fieldError" fieldName="themeRelated"/]
+              [@s.checkboxlist name="relatedThemes" list="publicationThemeList" cssClass="checkbox" /]
+            </div>
+          </div>
+          <div class="fullBlock">
+            <h6>[@s.text name="reporting.publications.themeRelated" /]</h6>
+            <div class="checkboxGroup">
               [@s.checkboxlist name="relatedThemes" list="themeList" cssClass="checkbox" /]
             </div>
           </div>
