@@ -1,6 +1,6 @@
 [#ftl]
 <div id="arrowDown">
-  <img src="${baseUrl}/images/global/complete-arrow.png" />
+  
 </div>
 <nav id="secondaryMenu">  
   <ul>
