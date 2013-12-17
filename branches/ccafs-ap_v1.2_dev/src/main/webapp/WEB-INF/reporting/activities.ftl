@@ -56,9 +56,9 @@
             <td>
               [#if activityStatuses[activity_index]?has_content]
                 [#assign problemDescription=activityStatuses[activity_index]]
-                <img src="${baseUrl}/images/global/icon-incomplete.png" alt="Activity Incomplete" title="${problemDescription}" />
+                <div class="icon-20" id="i-errorCheckedActivity" alt="Activity Incomplete" title="${problemDescription}"></div> 
               [#else]
-                <img src="${baseUrl}/images/global/icon-complete.png" alt="Activity Completed" />
+                <div class="icon-20" id="i-checkedActivity"></div>
               [/#if]
             </td>
           </tr>

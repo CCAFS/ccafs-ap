@@ -122,6 +122,12 @@ input[type="radio"] {
   text-align: right;
 }
 
+a.popup {
+border-radius: 6px;
+box-shadow: 1px 1px 3px #AAAAAA;
+padding: 1px 10px;
+}
+
 /************* 2. HEADER ***************/
 body {
   text-align: center;
@@ -178,9 +184,11 @@ body {
 }
 
 #userInfo .logout {
-  background-color: green;
+  background-color: #637833;
   margin-left: 15px;
-  padding: 3px 10px;
+  padding: 2px 10px;
+  border-radius: 5px;
+  border-bottom: 2px solid #4F6322;
 }
 
 #userInfo .logout a {
@@ -731,10 +739,15 @@ a.currentReportingSection li #i-additionalInformation{
   background-image: url("../../images/global/sub-menu.png"); 
   background-repeat: no-repeat;
   display: inline-block; 
-  color: black;
-  padding: 5px 3px;
-  height: 34px;
+  color: #585858;
+  padding: 7px 3px;
+  height: 32px;
   width: 145px;
+  margin-left: -38px;
+}
+
+#stageMenu a:hover {
+  color: #000;
 }
 
 #stageMenu a.currentReportingSection {
@@ -744,7 +757,8 @@ a.currentReportingSection li #i-additionalInformation{
 
 #stageMenu a li {
   display: inline-block;
-  margin-top: 9px;
+  margin-top: 6px;
+  margin-left: inherit;
 }
 /*************** HOME ****************/
 
@@ -975,6 +989,7 @@ button#activities_save{
    font-size: 12px;
    margin-top: 2px;
    width: 110px;
+   margin-left: -36px;
 }
 
 /* TL Outputs */

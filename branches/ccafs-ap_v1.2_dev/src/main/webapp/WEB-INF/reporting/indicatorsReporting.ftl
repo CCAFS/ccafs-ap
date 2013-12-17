@@ -24,17 +24,34 @@
       <div id="items">      
         <div id="accordion">
           [#assign indicatorTypeId = 0]
+          <ul> 
           [#list indicatorReports as ir ]
             [#if ir.indicator.type.id != indicatorTypeId ]
+              [#-- If this is not the first div, close the previous one --]
+              [#if indicatorTypeId != 0]  [/#if]
+              
+              [#-- Assign the new value of indicatorTypeID --]
+              [#assign indicatorTypeId = ir.indicator.type.id]
+              
+              <li><a href="#tabs-${indicatorTypeId}">Indicator type ${indicatorTypeId}</a></li> 
+               
+            [/#if] 
+          [/#list]
+          </ul> 
+          [#assign indicatorTypeId = 0]
+          [#list indicatorReports as ir ]  
+          	  
+          	  [#if ir.indicator.type.id != indicatorTypeId ]
               [#-- If this is not the first div, close the previous one --]
               [#if indicatorTypeId != 0] </div> [/#if]
               
               [#-- Assign the new value of indicatorTypeID --]
               [#assign indicatorTypeId = ir.indicator.type.id]
-              <h3>${ir.indicator.type.name}</h3>
-              <div> 
-            [/#if]
-              <div> 
+              
+              <div id="tabs-${indicatorTypeId}">
+            [/#if] 
+              	<h3>${ir.indicator.type.name}</h3>
+              	<br>
                 [#-- Indicator title --]
                 <p>${ir_index+1}. ${ir.indicator.name} </p>
                 
@@ -74,8 +91,8 @@
                   [@customForm.textArea name="indicatorReports[${ir_index}].deviation" i18nkey="reporting.indicators.deviation" value="${ir.deviation!''}" /]
                 </div>
                 
-                <hr/>
-              </div> 
+                <hr/> 
+              
           [/#list]
             [#-- Close the last div of the list --]
         </div>
