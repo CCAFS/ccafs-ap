@@ -56,7 +56,9 @@
             <td class="title">[@s.text name="reporting.activityStatus.contactPerson" /]</td>
             <td colspan="3">
                ${activity.contactPersons[0].name}
-              (<a id="contactEmail" href="mailto: ${activity.contactPersons[0].email} ">${activity.contactPersons[0].email}</a>)
+               [#if activity.contactPersons[0].email?has_content ]
+                (<a id="contactEmail" href="mailto: ${activity.contactPersons[0].email} ">${activity.contactPersons[0].email}</a>)
+               [/#if] 
               [#if activity.contactPersons?size > 1] <a id="viewMoreContacts" href="">, [@s.text name="reporting.activityStatus.contactPerson.showTable" /]</a> [/#if]
             </td>        
           </tr>
