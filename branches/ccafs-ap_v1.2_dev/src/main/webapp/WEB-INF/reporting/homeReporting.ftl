@@ -68,7 +68,7 @@
      </div> <!-- End explanatory notes -->  
     <div class="fullBlock"></div>
     <p>
-      <h6>[@s.text name="reporting.introduction.start" /] <a class="popup" href="[@s.url action='activities' /]">[@s.text name="reporting.introduction.followLink" /]</a></h6>
+      <h6>[@s.text name="reporting.introduction.start" /] <a class="popup-link" href="[@s.url action='activities' /]">[@s.text name="reporting.introduction.followLink" /]</a></h6>
     </p>
     <br>
   </div>

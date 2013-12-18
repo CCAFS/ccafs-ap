@@ -122,8 +122,8 @@ input[type="radio"] {
   text-align: right;
 }
 
-a.popup {
-border-radius: 6px;
+a.popup-link {
+border-radius: 2px;
 box-shadow: 1px 1px 3px #AAAAAA;
 padding: 1px 10px;
 }
@@ -539,13 +539,17 @@ a.currentReportingSection li #i-additionalInformation{
   color:#d12f19;
 }
 
-.helpMessage {
-  background-color: #5C5C5C;
-  color: #FFFFFF;
-  min-height: 45px;
-  min-width: 80%;
-  border-radius: 5px;
-  border: 1px solid #D8D8D8;
+.helpMessage { 
+  position: relative;
+  -webkit-box-shadow: 1px 2px 8px rgba(0, 0, 0, 0.3);
+  -moz-box-shadow: 1px 2px 8px rgba(0,0,0,.3);
+  box-shadow: 1px 2px 8px rgba(0, 0, 0, 0.3); 
+  -webkit-border-radius:2px;
+  -moz-border-radius:2px;
+  border-radius:2px;
+  padding: 10px;
+  border: 1px solid #EEE;
+  background: #F8F8F8;	
 }
 
 .helpMessage img {
@@ -555,6 +559,7 @@ a.currentReportingSection li #i-additionalInformation{
 
 .helpMessage p {
   padding: 10px;
+  color: #636368;
 }
 
 /************* LOGIN *****************/
