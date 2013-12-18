@@ -42,15 +42,15 @@
           [#list indicatorReports as ir ]  
           	  
           	  [#if ir.indicator.type.id != indicatorTypeId ]
-              [#-- If this is not the first div, close the previous one --]
-              [#if indicatorTypeId != 0] </div> [/#if]
+                [#-- If this is not the first div, close the previous one --]
+                [#if indicatorTypeId != 0] </div> [/#if]
               
-              [#-- Assign the new value of indicatorTypeID --]
-              [#assign indicatorTypeId = ir.indicator.type.id]
-              
-              <div id="tabs-${indicatorTypeId}">
-            [/#if] 
+                [#-- Assign the new value of indicatorTypeID --]
+                [#assign indicatorTypeId = ir.indicator.type.id]
+                
+                <div id="tabs-${indicatorTypeId}">
               	<h3>${ir.indicator.type.name}</h3>
+              [/#if] 
               	<br>
                 [#-- Indicator title --]
                 <p>${ir_index+1}. ${ir.indicator.name} </p>
@@ -66,18 +66,29 @@
                 [/#if]
                 
                 [#-- Target --]
-                <div class="halfPartBlock">
-                  <span class="thirdPartBlock"> <h6>[@s.text name="reporting.indicators.target" /] </h6></span>
-                  <span class="halfPartBlock">${ir.target}</span>
+                <div class="thirdPartBlock">
+                  <span class="halfPartBlock"> <h6>[@s.text name="reporting.indicators.target" ] [@s.param]${currentReportingYear?c}:[/@s.param] [/@s.text] </h6></span>
+                  <span class="thirdPartBlock">${ir.target}</span>
                 </div>
                 
                 [#-- Actual --]
-                <div class="halfPartBlock">
+                <div class="thirdPartBlock">
                   <div class="thirdPartBlock">
                     <h6>[@s.text name="reporting.indicators.actual" /]</h6>
                   </div>
                   <div class="halfPartBlock">                    
                     [@customForm.input name="indicatorReports[${ir_index}].actual" type="text" i18nkey="reporting.indicators.actual" value="${ir.actual}" showTitle=false /]
+                  </div>
+                </div>
+                
+                [#-- Next year target --]
+                <div class="thirdPartBlock">
+                  <div class="thirdPartBlock">
+                    <h6>[@s.text name="reporting.indicators.target" ] [@s.param]${(currentReportingYear+1)?c }:[/@s.param] [/@s.text]</h6>
+                  </div>
+                  <div class="halfPartBlock">                    
+                    [#-- The targe for the new year it is added as a new indicator for the next year --]
+                    [@customForm.input name="indicatorReports[${ir_index}].nextYearTarget" type="text" i18nkey="reporting.indicators.actual" value="${ir.nextYearTarget}" showTitle=false /]
                   </div>
                 </div>
                 

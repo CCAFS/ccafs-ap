@@ -6,14 +6,15 @@ import org.apache.commons.lang3.builder.ToStringBuilder;
 public class IndicatorReport {
 
   private int id;
+  private int year;
   private double target;
+  private double nextYearTarget;
   private double actual;
   private String description;
   private String supportLinks;
   private String deviation;
   private Leader leader;
   private Indicator indicator;
-  private Logframe logframe;
 
   public double getActual() {
     return actual;
@@ -39,8 +40,8 @@ public class IndicatorReport {
     return leader;
   }
 
-  public Logframe getLogframe() {
-    return logframe;
+  public double getNextYearTarget() {
+    return nextYearTarget;
   }
 
   public String getSupportLinks() {
@@ -49,6 +50,10 @@ public class IndicatorReport {
 
   public double getTarget() {
     return target;
+  }
+
+  public int getYear() {
+    return year;
   }
 
   public void setActual(double actual) {
@@ -75,8 +80,8 @@ public class IndicatorReport {
     this.leader = leader;
   }
 
-  public void setLogframe(Logframe logframe) {
-    this.logframe = logframe;
+  public void setNextYearTarget(double nextYearTarget) {
+    this.nextYearTarget = nextYearTarget;
   }
 
   public void setSupportLinks(String supportLinks) {
@@ -85,6 +90,10 @@ public class IndicatorReport {
 
   public void setTarget(double target) {
     this.target = target;
+  }
+
+  public void setYear(int year) {
+    this.year = year;
   }
 
   @Override

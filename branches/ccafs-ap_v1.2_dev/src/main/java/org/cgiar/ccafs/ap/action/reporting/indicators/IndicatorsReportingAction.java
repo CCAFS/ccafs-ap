@@ -51,9 +51,7 @@ public class IndicatorsReportingAction extends BaseAction {
 
   @Override
   public String save() {
-    boolean saved =
-      indicatorReportManager.saveIndicatorReportsList(indicatorReports, getCurrentUser().getLeader(),
-        getCurrentReportingLogframe());
+    boolean saved = indicatorReportManager.saveIndicatorReportsList(indicatorReports, getCurrentUser().getLeader());
 
     if (saved) {
       LOG.info("The user {} saved the indicators for the leader {}.", getCurrentUser().getEmail(), getCurrentUser()

@@ -33,7 +33,7 @@ public class IndicatorReportManagerImpl implements IndicatorReportManager {
   @Override
   public List<IndicatorReport> getIndicatorReportsList(Leader leader, Logframe logframe) {
     List<IndicatorReport> indicatorReports = new ArrayList<>();
-    List<Map<String, String>> irDataList = indicatorReportDAO.getIndicatorReports(leader.getId(), logframe.getId());
+    List<Map<String, String>> irDataList = indicatorReportDAO.getIndicatorReports(leader.getId(), logframe.getYear());
 
     for (Map<String, String> irData : irDataList) {
       IndicatorReport ir = new IndicatorReport();
@@ -50,12 +50,19 @@ public class IndicatorReportManagerImpl implements IndicatorReportManager {
         ir.setTarget(0);
       }
 
+      if (irData.get("next_target") != null) {
+        ir.setNextYearTarget(Double.parseDouble(irData.get("next_target")));
+      } else {
+        ir.setNextYearTarget(0);
+      }
+
       if (irData.get("actual") != null) {
         ir.setActual(Double.parseDouble(irData.get("actual")));
       } else {
         ir.setActual(0);
       }
 
+      ir.setYear(logframe.getYear());
       ir.setDeviation(irData.get("deviation"));
       ir.setDescription(irData.get("description"));
       ir.setSupportLinks(irData.get("support_links"));
@@ -82,7 +89,7 @@ public class IndicatorReportManagerImpl implements IndicatorReportManager {
   }
 
   @Override
-  public boolean saveIndicatorReportsList(List<IndicatorReport> indicatorReports, Leader leader, Logframe logframe) {
+  public boolean saveIndicatorReportsList(List<IndicatorReport> indicatorReports, Leader leader) {
     boolean saved = true;
     Map<String, String> indicatorReportData;
     for (IndicatorReport ir : indicatorReports) {
@@ -93,6 +100,7 @@ public class IndicatorReportManagerImpl implements IndicatorReportManager {
         indicatorReportData.put("id", null);
       }
       indicatorReportData.put("target", String.valueOf(ir.getTarget()));
+      indicatorReportData.put("next_target", String.valueOf(ir.getNextYearTarget()));
       indicatorReportData.put("actual", String.valueOf(ir.getActual()));
       indicatorReportData.put("description", ir.getDescription());
       indicatorReportData.put("support_links", ir.getSupportLinks());
@@ -100,7 +108,7 @@ public class IndicatorReportManagerImpl implements IndicatorReportManager {
       indicatorReportData.put("indicator_id", String.valueOf(ir.getIndicator().getId()));
 
       // This function return true if all the information was saved successfully.
-      saved = saved && indicatorReportDAO.saveIndicatorReport(indicatorReportData, leader.getId(), logframe.getId());
+      saved = saved && indicatorReportDAO.saveIndicatorReport(indicatorReportData, leader.getId(), ir.getYear());
     }
 
     return saved;

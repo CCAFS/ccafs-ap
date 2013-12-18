@@ -28,5 +28,5 @@ public interface IndicatorReportManager {
    * @param logframe
    * @return
    */
-  public boolean saveIndicatorReportsList(List<IndicatorReport> indicatorReports, Leader leader, Logframe logframe);
+  public boolean saveIndicatorReportsList(List<IndicatorReport> indicatorReports, Leader leader);
 }

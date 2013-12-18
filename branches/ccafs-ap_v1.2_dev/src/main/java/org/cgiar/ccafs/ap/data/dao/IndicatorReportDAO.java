@@ -15,10 +15,10 @@ public interface IndicatorReportDAO {
    * by the activity leader corresponding to the given logframe.
    * 
    * @param activityLeaderId - Activity leader identifier
-   * @param logframeId - Logframe identifier
+   * @param year
    * @return A list of maps with the information
    */
-  public List<Map<String, String>> getIndicatorReports(int activityLeaderId, int logframeId);
+  public List<Map<String, String>> getIndicatorReports(int activityLeaderId, int year);
 
   /**
    * This method save the Indicator's report made by the leader
@@ -26,8 +26,8 @@ public interface IndicatorReportDAO {
    * 
    * @param indicatorsReport - Data with the report about the indicator
    * @param activityLeaderId - Activity leader identifier
-   * @param logframeId - Logframe identifier
+   * @param year
    * @return true if the information was successfully saved, false otherwise.
    */
-  public boolean saveIndicatorReport(Map<String, String> indicatorReportData, int activityLeaderId, int logframeId);
+  public boolean saveIndicatorReport(Map<String, String> indicatorReportData, int activityLeaderId, int year);
 }
