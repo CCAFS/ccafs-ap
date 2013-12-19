@@ -40,8 +40,8 @@ public class MySQLIndicatorReportDAO implements IndicatorReportDAO {
     query.append("i.is_active as 'indicator_active', it.id as 'indicator_type_id', ");
     query.append("it.name as 'indicator_type_name', ");
     query.append("(SELECT `target` FROM `indicator_reports` ir2 ");
-    query.append("WHERE ir2.indicator_id = ir.indicator_id AND ir2.year = (ir.year + 1) ) ");
-    query.append("as 'next_target' ");
+    query.append("WHERE ir2.indicator_id = ir.indicator_id AND ir2.year = (ir.year + 1)  ");
+    query.append("AND ir2.activity_leader_id = ir.activity_leader_id) as 'next_target' ");
     query.append("FROM `indicators` i ");
     query.append("LEFT JOIN `indicator_reports` ir ON i.id = ir.indicator_id AND ir.year = ");
     query.append(year);
