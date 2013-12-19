@@ -7,15 +7,15 @@ public class IndicatorReport {
 
   private int id;
   private int year;
-  private double target;
-  private double nextYearTarget;
-  private double actual;
+  private String target;
+  private String nextYearTarget;
+  private String actual;
   private String supportLinks;
   private String deviation;
   private Leader leader;
   private Indicator indicator;
 
-  public double getActual() {
+  public String getActual() {
     return actual;
   }
 
@@ -35,7 +35,7 @@ public class IndicatorReport {
     return leader;
   }
 
-  public double getNextYearTarget() {
+  public String getNextYearTarget() {
     return nextYearTarget;
   }
 
@@ -43,7 +43,7 @@ public class IndicatorReport {
     return supportLinks;
   }
 
-  public double getTarget() {
+  public String getTarget() {
     return target;
   }
 
@@ -51,7 +51,7 @@ public class IndicatorReport {
     return year;
   }
 
-  public void setActual(double actual) {
+  public void setActual(String actual) {
     this.actual = actual;
   }
 
@@ -71,7 +71,7 @@ public class IndicatorReport {
     this.leader = leader;
   }
 
-  public void setNextYearTarget(double nextYearTarget) {
+  public void setNextYearTarget(String nextYearTarget) {
     this.nextYearTarget = nextYearTarget;
   }
 
@@ -79,7 +79,7 @@ public class IndicatorReport {
     this.supportLinks = supportLinks;
   }
 
-  public void setTarget(double target) {
+  public void setTarget(String target) {
     this.target = target;
   }
 

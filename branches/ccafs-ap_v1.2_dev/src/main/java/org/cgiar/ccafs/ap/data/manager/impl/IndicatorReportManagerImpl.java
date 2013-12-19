@@ -44,23 +44,9 @@ public class IndicatorReportManagerImpl implements IndicatorReportManager {
         ir.setId(-1);
       }
 
-      if (irData.get("target") != null) {
-        ir.setTarget(Double.parseDouble(irData.get("target")));
-      } else {
-        ir.setTarget(0);
-      }
-
-      if (irData.get("next_target") != null) {
-        ir.setNextYearTarget(Double.parseDouble(irData.get("next_target")));
-      } else {
-        ir.setNextYearTarget(0);
-      }
-
-      if (irData.get("actual") != null) {
-        ir.setActual(Double.parseDouble(irData.get("actual")));
-      } else {
-        ir.setActual(0);
-      }
+      ir.setTarget(irData.get("target"));
+      ir.setNextYearTarget(irData.get("next_target"));
+      ir.setActual(irData.get("actual"));
 
       ir.setYear(logframe.getYear());
       ir.setDeviation(irData.get("deviation"));
@@ -98,9 +84,9 @@ public class IndicatorReportManagerImpl implements IndicatorReportManager {
       } else {
         indicatorReportData.put("id", null);
       }
-      indicatorReportData.put("target", String.valueOf(ir.getTarget()));
-      indicatorReportData.put("next_target", String.valueOf(ir.getNextYearTarget()));
-      indicatorReportData.put("actual", String.valueOf(ir.getActual()));
+      indicatorReportData.put("target", ir.getTarget());
+      indicatorReportData.put("next_target", ir.getNextYearTarget());
+      indicatorReportData.put("actual", ir.getActual());
       indicatorReportData.put("support_links", ir.getSupportLinks());
       indicatorReportData.put("deviation", ir.getDeviation());
       indicatorReportData.put("indicator_id", String.valueOf(ir.getIndicator().getId()));
