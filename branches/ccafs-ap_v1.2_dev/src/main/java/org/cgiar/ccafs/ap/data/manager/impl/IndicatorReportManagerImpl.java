@@ -64,7 +64,6 @@ public class IndicatorReportManagerImpl implements IndicatorReportManager {
 
       ir.setYear(logframe.getYear());
       ir.setDeviation(irData.get("deviation"));
-      ir.setDescription(irData.get("description"));
       ir.setSupportLinks(irData.get("support_links"));
 
       Indicator ind = new Indicator();
@@ -102,7 +101,6 @@ public class IndicatorReportManagerImpl implements IndicatorReportManager {
       indicatorReportData.put("target", String.valueOf(ir.getTarget()));
       indicatorReportData.put("next_target", String.valueOf(ir.getNextYearTarget()));
       indicatorReportData.put("actual", String.valueOf(ir.getActual()));
-      indicatorReportData.put("description", ir.getDescription());
       indicatorReportData.put("support_links", ir.getSupportLinks());
       indicatorReportData.put("deviation", ir.getDeviation());
       indicatorReportData.put("indicator_id", String.valueOf(ir.getIndicator().getId()));

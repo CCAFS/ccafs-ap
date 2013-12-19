@@ -10,7 +10,6 @@ public class IndicatorReport {
   private double target;
   private double nextYearTarget;
   private double actual;
-  private String description;
   private String supportLinks;
   private String deviation;
   private Leader leader;
@@ -18,10 +17,6 @@ public class IndicatorReport {
 
   public double getActual() {
     return actual;
-  }
-
-  public String getDescription() {
-    return description;
   }
 
   public String getDeviation() {
@@ -58,10 +53,6 @@ public class IndicatorReport {
 
   public void setActual(double actual) {
     this.actual = actual;
-  }
-
-  public void setDescription(String description) {
-    this.description = description;
   }
 
   public void setDeviation(String deviation) {

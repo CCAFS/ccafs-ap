@@ -34,7 +34,7 @@ public class MySQLIndicatorReportDAO implements IndicatorReportDAO {
     LOG.debug(">> getIndicatorReports(activityLeaderId={}, year={})", activityLeaderId, year);
     List<Map<String, String>> indicatorReportDataList = new ArrayList<>();
     StringBuilder query = new StringBuilder();
-    query.append("SELECT ir.id, ir.target, ir.actual, ir.description, ir.support_links, ");
+    query.append("SELECT ir.id, ir.target, ir.actual, ir.support_links, ");
     query.append("ir.deviation, i.id as 'indicator_id', i.serial as 'indicator_serial', ");
     query.append("i.name as 'indicator_name', i.description as 'indicator_description', ");
     query.append("i.is_active as 'indicator_active', it.id as 'indicator_type_id', ");
@@ -58,7 +58,6 @@ public class MySQLIndicatorReportDAO implements IndicatorReportDAO {
         indicatorReportData.put("target", rs.getString("target"));
         indicatorReportData.put("next_target", rs.getString("next_target"));
         indicatorReportData.put("actual", rs.getString("actual"));
-        indicatorReportData.put("description", rs.getString("description"));
         indicatorReportData.put("support_links", rs.getString("support_links"));
         indicatorReportData.put("deviation", rs.getString("deviation"));
         indicatorReportData.put("indicator_id", rs.getString("indicator_id"));
@@ -89,26 +88,25 @@ public class MySQLIndicatorReportDAO implements IndicatorReportDAO {
     LOG.debug(">> saveIndicatorsReport(indicatorsReport.size={}, activityLeaderId={}, year={})", params);
     boolean saved = false;
 
-    Object[] values = new Object[9];
+    Object[] values = new Object[8];
     values[0] = indicatorReportData.get("id");
     values[1] = indicatorReportData.get("target");
     values[2] = indicatorReportData.get("actual");
-    values[3] = indicatorReportData.get("description");
-    values[4] = indicatorReportData.get("support_links");
-    values[5] = indicatorReportData.get("deviation");
-    values[6] = activityLeaderId;
-    values[7] = indicatorReportData.get("indicator_id");
-    values[8] = year;
+    values[3] = indicatorReportData.get("support_links");
+    values[4] = indicatorReportData.get("deviation");
+    values[5] = activityLeaderId;
+    values[6] = indicatorReportData.get("indicator_id");
+    values[7] = year;
 
     // The current target should be defined the previous year, by this reason, it is not
     // included in the query.
     StringBuilder query = new StringBuilder();
-    query.append("INSERT INTO `indicator_reports` (`id`, `target`, `actual`, `description`, ");
+    query.append("INSERT INTO `indicator_reports` (`id`, `target`, `actual`, ");
     query.append("`support_links`, `deviation`, `activity_leader_id`, `indicator_id`, ");
-    query.append("`year`) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?) ");
+    query.append("`year`) VALUES (?, ?, ?, ?, ?, ?, ?, ?) ");
     query.append(" ON DUPLICATE KEY UPDATE target = VALUES(target), actual = VALUES(actual), ");
-    query.append(" description = VALUES(description), support_links = VALUES(support_links), ");
-    query.append(" deviation = VALUES(deviation), activity_leader_id = VALUES(activity_leader_id), ");
+    query.append(" support_links = VALUES(support_links), deviation = VALUES(deviation), ");
+    query.append(" activity_leader_id = VALUES(activity_leader_id), ");
     query.append(" indicator_id = VALUES(indicator_id), year = VALUES(year) ");
 
     try (Connection con = databaseManager.getConnection()) {
@@ -119,8 +117,6 @@ public class MySQLIndicatorReportDAO implements IndicatorReportDAO {
         LOG.error("Values: {}", Arrays.toString(values));
       } else {
         // If the indicator for the current year was inserted successfully, update the target for the next year
-        System.out
-          .println("--------------------------------------------------------------------------------------------------------------------------------------------------");
         query = new StringBuilder();
         query.append("UPDATE `indicator_reports` SET `target` = ? WHERE `activity_leader_id` = ? ");
         query.append("AND indicator_id = ? AND `year` = ? ");
@@ -131,7 +127,6 @@ public class MySQLIndicatorReportDAO implements IndicatorReportDAO {
         values[2] = indicatorReportData.get("indicator_id");
         values[3] = year + 1;
         rows = databaseManager.makeChangeSecure(con, query.toString(), values);
-        System.out.println(rows);
 
         // If there was no record to update, then insert a new record
         if (rows <= 0) {

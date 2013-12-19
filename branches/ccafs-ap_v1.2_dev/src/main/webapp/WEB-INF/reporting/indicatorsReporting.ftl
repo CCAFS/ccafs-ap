@@ -49,7 +49,7 @@
                 [#assign indicatorTypeId = ir.indicator.type.id]
                 
                 <div id="tabs-${indicatorTypeId}">
-              	<h3>${ir.indicator.type.name}</h3>
+              	<div class="itemIndex">${ir.indicator.type.name}</div>
               [/#if] 
               	<br>
                 [#-- Indicator title --]
