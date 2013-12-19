@@ -10,7 +10,7 @@ import org.cgiar.ccafs.ap.data.model.MilestoneStatus;
 import org.cgiar.ccafs.ap.data.model.Objective;
 import org.cgiar.ccafs.ap.data.model.Output;
 import org.cgiar.ccafs.ap.data.model.Theme;
-import org.cgiar.ccafs.ap.data.model.UserRole;
+import org.cgiar.ccafs.ap.data.model.User.UserRole;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -37,10 +37,10 @@ public class MilestoneReportManagerImpl implements MilestoneReportManager {
   public MilestoneReport[] getMilestoneReports(Leader activityLeader, Logframe logframe, UserRole role) {
     List<Map<String, String>> milestoneReportsDataList = new ArrayList<Map<String, String>>();
 
-    if (role.isTL()) {
+    if (role == UserRole.TL) {
       milestoneReportsDataList =
         milestoneReportDAO.getTLMilestoneReportList(activityLeader.getId(), logframe.getId(), logframe.getYear());
-    } else if (role.isRPL()) {
+    } else if (role == UserRole.RPL) {
       milestoneReportsDataList =
         milestoneReportDAO.getRPLMilestoneReportList(activityLeader.getId(), logframe.getId(), logframe.getYear());
     }
