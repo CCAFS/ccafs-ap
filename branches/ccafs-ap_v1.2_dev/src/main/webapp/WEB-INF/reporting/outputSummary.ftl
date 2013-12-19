@@ -22,7 +22,7 @@
         <h1 class="contentTitle">
           [@s.text name="reporting.outputSummary.outputSummary" /] - ${currentUser.leader.acronym} 
         </h1>
-        
+        <fieldset>
         [#list outputSummaries as outputSummary]
           <div id="outputSummary-${outputSummary_index}">
             [#-- Title --]
@@ -45,6 +45,7 @@
             
           </div>
         [/#list]
+        </fieldset>
         <div class="buttons">
           [@s.submit type="button" name="save"][@s.text name="form.buttons.save" /][/@s.submit]
           [@s.submit type="button" name="cancel"][@s.text name="form.buttons.cancel" /][/@s.submit]

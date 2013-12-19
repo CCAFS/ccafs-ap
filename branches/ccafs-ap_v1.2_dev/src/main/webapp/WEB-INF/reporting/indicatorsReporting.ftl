@@ -53,16 +53,19 @@
               [/#if] 
               	<br>
                 [#-- Indicator title --]
-                <p>${ir_index+1}. ${ir.indicator.name} </p>
+                <h6>${ir_index+1}. ${ir.indicator.name} </h6>
                 
                 [#-- Indicator report id --]
                 <input name="indicatorReports[${ir_index}].id" value="${ir.id}" type="hidden" />
                 
                 [#-- Indicator description --]
                 [#if ir.indicator.description?has_content]
-                  <p class="indicator_description">
+                  <p class="indicator_description" style="display:none">
                     ${ir.indicator.description}
                   </p>
+                  <div>
+                    <a class="toggleDescription show">[@s.text name="reporting.indicators.showDescription" /]</a>
+                  </div>
                 [/#if]
                 
                 [#-- Target --]
@@ -98,7 +101,7 @@
                 </div>
                 
                 [#-- Deviation --]
-                <div class="fullBlock">
+                <div class="fullBlock" >
                   [@customForm.textArea name="indicatorReports[${ir_index}].deviation" i18nkey="reporting.indicators.deviation" value="${ir.deviation!''}" /]
                 </div>
                 
@@ -108,6 +111,8 @@
             [#-- Close the last div of the list --]
         </div>
       </div>
+      <input type="hidden" id="showDescriptionText" value="[@s.text name="reporting.indicators.showDescription" /]" />
+      <input type="hidden" id="hideDescriptionText" value="[@s.text name="reporting.indicators.hideDescription" /]" />
       
       <div class="buttons">
         [@s.submit type="button" name="save"][@s.text name="form.buttons.save" /][/@s.submit]

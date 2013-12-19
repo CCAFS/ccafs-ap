@@ -990,6 +990,14 @@ button#activities_save{
 .outcome .textArea h6 {
   font-weight: normal;
 }
+
+/************* INDICATORS ****************/
+#indicators .toggleDescription{
+  cursor: pointer;
+  font-size: 11px;
+  margin-left: 10px;
+}
+
 /************ TL/RPL ONLY **************/
 /* TL/RPL Sub-Menu */
 #stageMenu.tlRplSubMenu ul a li {
