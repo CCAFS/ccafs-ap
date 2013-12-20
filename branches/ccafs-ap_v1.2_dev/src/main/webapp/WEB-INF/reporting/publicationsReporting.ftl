@@ -178,12 +178,6 @@
               [@s.checkboxlist name="relatedThemes" list="publicationThemeList" cssClass="checkbox" /]
             </div>
           </div>
-          <div class="fullBlock">
-            <h6>[@s.text name="reporting.publications.themeRelated" /]</h6>
-            <div class="checkboxGroup">
-              [@s.checkboxlist name="relatedThemes" list="themeList" cssClass="checkbox" /]
-            </div>
-          </div>
           
           [#-- Publication file url --]
           <div class="fullBlock">
@@ -194,6 +188,7 @@
       
       <div class="buttons">
         [@s.submit type="button" name="save"][@s.text name="form.buttons.save" /][/@s.submit]
+        [@s.submit type="button" name="next"][@s.text name="form.buttons.next" /][/@s.submit]
         [@s.submit type="button" name="cancel"][@s.text name="form.buttons.cancel" /][/@s.submit]
       </div>
     </article>

@@ -71,7 +71,7 @@
                 [#-- Target --]
                 <div class="thirdPartBlock">
                   <span class="halfPartBlock"> <h6>[@s.text name="reporting.indicators.target" ] [@s.param]${currentReportingYear?c}:[/@s.param] [/@s.text] </h6></span>
-                  <span class="thirdPartBlock">${ir.target}</span>
+                  <span class="thirdPartBlock">[#if ir.target?has_content]${ir.target}[#else] 0 [/#if]</span>
                 </div>
                 
                 [#-- Actual --]
@@ -79,8 +79,13 @@
                   <div class="thirdPartBlock">
                     <h6>[@s.text name="reporting.indicators.actual" /]</h6>
                   </div>
-                  <div class="halfPartBlock">                    
-                    [@customForm.input name="indicatorReports[${ir_index}].actual" type="text" i18nkey="reporting.indicators.actual" value="${ir.actual}" showTitle=false /]
+                  <div class="halfPartBlock">
+                    [#if ir.actual?has_content]
+                      [#assign actual = ir.actual]
+                    [#else]
+                      [#assign actual = ""]
+                    [/#if]
+                    [@customForm.input name="indicatorReports[${ir_index}].actual" type="text" i18nkey="reporting.indicators.actual" value="${actual}" showTitle=false /]
                   </div>
                 </div>
                 
@@ -90,8 +95,12 @@
                     <h6>[@s.text name="reporting.indicators.target" ] [@s.param]${(currentReportingYear+1)?c }:[/@s.param] [/@s.text]</h6>
                   </div>
                   <div class="halfPartBlock">                    
-                    [#-- The targe for the new year it is added as a new indicator for the next year --]
-                    [@customForm.input name="indicatorReports[${ir_index}].nextYearTarget" type="text" i18nkey="reporting.indicators.actual" value="${ir.nextYearTarget}" showTitle=false /]
+                    [#if ir.nextYearTarget?has_content]
+                      [#assign nextYearTarget = ir.nextYearTarget]
+                    [#else]
+                      [#assign nextYearTarget = ""]
+                    [/#if]
+                    [@customForm.input name="indicatorReports[${ir_index}].nextYearTarget" type="text" i18nkey="reporting.indicators.actual" value="${nextYearTarget}" showTitle=false /]
                   </div>
                 </div>
                 

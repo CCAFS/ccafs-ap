@@ -12,6 +12,7 @@ import org.cgiar.ccafs.ap.data.model.Activity;
 import org.cgiar.ccafs.ap.data.model.Budget;
 import org.cgiar.ccafs.ap.data.model.ContactPerson;
 import org.cgiar.ccafs.ap.data.model.Status;
+import org.cgiar.ccafs.ap.util.Capitalize;
 
 import java.util.LinkedHashMap;
 import java.util.List;
@@ -41,6 +42,7 @@ public class StatusReportingAction extends BaseAction {
   private Status[] statusList;
   private Map<String, String> genderOptions;
   private String genderIntegrationOption;
+  private StringBuilder validationMessage;
 
   @Inject
   public StatusReportingAction(APConfig config, LogframeManager logframeManager, ActivityManager activityManager,
@@ -54,6 +56,8 @@ public class StatusReportingAction extends BaseAction {
     this.genderOptions = new LinkedHashMap<>();
     genderOptions.put("1", "Yes");
     genderOptions.put("0", "No");
+
+    validationMessage = new StringBuilder();
   }
 
   public Activity getActivity() {
@@ -92,6 +96,12 @@ public class StatusReportingAction extends BaseAction {
   }
 
   @Override
+  public String next() {
+    save();
+    return super.next();
+  }
+
+  @Override
   public void prepare() throws Exception {
     super.prepare();
 
@@ -101,6 +111,10 @@ public class StatusReportingAction extends BaseAction {
     LOG.info("The user {} loaded the status section for the activity {}", getCurrentUser().getEmail(), activityID);
     // get main activity information based on the status form.
     activity = activityManager.getActivityStatusInfo(activityID);
+    // If the activity status is undefined, set it to imcomplete by default
+    if (activity.getStatus().getId() == 0) {
+      activity.setStatus(statusList[2]);
+    }
     // get contact persons.
     List<ContactPerson> contactPersons = contactPersonManager.getContactPersons(activityID);
     activity.setContactPersons(contactPersons);
@@ -113,9 +127,16 @@ public class StatusReportingAction extends BaseAction {
   @Override
   public String save() {
     if (activityManager.saveStatus(activity)) {
-      addActionMessage(getText("saving.success", new String[] {getText("reporting.activityStatus")}));
-      LOG
-        .info("The user {} saved the status of the activity {} successfully.", getCurrentUser().getEmail(), activityID);
+      if (validationMessage.toString().isEmpty()) {
+        addActionMessage(getText("saving.success", new String[] {getText("reporting.activityStatus")}));
+        LOG.info("The user {} saved the status of the activity {} successfully.", getCurrentUser().getEmail(),
+          activityID);
+      } else {
+        String finalMessage = getText("saving.success", new String[] {getText("reporting.activityStatus")});
+        finalMessage += getText("saving.keepInMind", new String[] {validationMessage.toString()});
+        addActionWarning(Capitalize.capitalizeString(finalMessage));
+      }
+
       return SUCCESS;
     } else {
       LOG.warn("The user {} had problems to save the status of the activity {} successfully.", getCurrentUser()
@@ -138,19 +159,18 @@ public class StatusReportingAction extends BaseAction {
   @Override
   public void validate() {
     super.validate();
-    boolean problem = false;
+
     if (save) {
       if (activity.getStatusDescription().isEmpty()) {
-        addFieldError("activity.statusDescription", getText("validation.field.required"));
-        problem = true;
-      }
-      if (this.getHasGender() && activity.getGenderIntegrationsDescription().isEmpty()) {
-        addFieldError("activity.genderIntegrationsDescription", getText("validation.field.required"));
-        problem = true;
+        validationMessage.append(getText("reporting.activityStatus.statusDescription.invalid"));
       }
 
-      if (problem) {
-        addActionError(getText("saving.fields.required"));
+      if (this.getHasGender() && activity.getGenderIntegrationsDescription().isEmpty()) {
+        validationMessage.append(getText("validation.field.required"));
+      }
+
+      if (activity.getStatus().getId() == 0) {
+        validationMessage.append(getText("reporting.activityStatus.status.invalid"));
       }
     }
 

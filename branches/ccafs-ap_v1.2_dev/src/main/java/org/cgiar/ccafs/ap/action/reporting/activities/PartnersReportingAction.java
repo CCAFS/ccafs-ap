@@ -11,6 +11,11 @@ import org.cgiar.ccafs.ap.data.manager.PartnerTypeManager;
 import org.cgiar.ccafs.ap.data.model.Activity;
 import org.cgiar.ccafs.ap.data.model.Partner;
 import org.cgiar.ccafs.ap.data.model.PartnerType;
+import org.cgiar.ccafs.ap.util.Capitalize;
+import org.cgiar.ccafs.ap.util.EmailValidator;
+
+import java.util.LinkedHashMap;
+import java.util.Map;
 
 import com.google.inject.Inject;
 import org.apache.commons.lang3.StringUtils;
@@ -34,6 +39,8 @@ public class PartnersReportingAction extends BaseAction {
   private PartnerType[] partnerTypes;
   private Partner[] partners;
   private Activity activity;
+  private StringBuilder validationMessage;
+  private Map<Boolean, String> partnersOptions;
 
   private int activityID;
 
@@ -47,6 +54,12 @@ public class PartnersReportingAction extends BaseAction {
     this.activityPartnerManager = activityPartnerManager;
     this.partnerManager = partnerManager;
     this.partnerTypeManager = partnerTypeManager;
+
+    this.partnersOptions = new LinkedHashMap<>();
+
+    validationMessage = new StringBuilder();
+    partnersOptions.put(true, getText("form.options.yes"));
+    partnersOptions.put(false, getText("form.options.no"));
   }
 
   public Activity getActivity() {
@@ -57,7 +70,6 @@ public class PartnersReportingAction extends BaseAction {
     return activityID;
   }
 
-
   public String getActivityRequestParameter() {
     return APConstants.ACTIVITY_REQUEST_ID;
   }
@@ -67,14 +79,26 @@ public class PartnersReportingAction extends BaseAction {
     return partners;
   }
 
+
+  public Map<Boolean, String> getPartnersOptions() {
+    return partnersOptions;
+  }
+
   public PartnerType[] getPartnerTypes() {
     return partnerTypes;
   }
 
 
   @Override
+  public String next() {
+    save();
+    return super.next();
+  }
+
+  @Override
   public void prepare() throws Exception {
     super.prepare();
+    validationMessage = new StringBuilder();
     activityID = Integer.parseInt(StringUtils.trim(this.getRequest().getParameter(APConstants.ACTIVITY_REQUEST_ID)));
     LOG.info("The user {} loads the partners for the activity {}", getCurrentUser().getEmail(), activityID);
     activity = activityManager.getSimpleActivity(activityID);
@@ -95,8 +119,18 @@ public class PartnersReportingAction extends BaseAction {
     if (removed) {
       boolean added = activityPartnerManager.saveActivityPartners(activity.getActivityPartners(), activityID);
       if (added) {
-        addActionMessage(getText("saving.success", new String[] {getText("reporting.activityPartners.partners")}));
-        LOG.info("The user {} save the partners of activity {} successfully", getCurrentUser().getEmail(), activityID);
+
+        if (validationMessage.toString().isEmpty()) {
+          addActionMessage(getText("saving.success", new String[] {getText("reporting.activityPartners.partners")}));
+          LOG
+            .info("The user {} save the partners of activity {} successfully", getCurrentUser().getEmail(), activityID);
+        } else {
+          String finalMessage =
+            getText("saving.success", new String[] {getText("reporting.activityPartners.partners")});
+          finalMessage += getText("saving.keepInMind", new String[] {validationMessage.toString()});
+          addActionWarning(Capitalize.capitalizeString(finalMessage));
+        }
+
         return SUCCESS;
       }
     }
@@ -111,5 +145,54 @@ public class PartnersReportingAction extends BaseAction {
 
   public void setPartnerTypes(PartnerType[] partnerTypes) {
     this.partnerTypes = partnerTypes;
+  }
+
+  @Override
+  public void validate() {
+    boolean missingContactName = false, missingContactEmail = false;
+
+    if (save) {
+      if (activity.getActivityPartners() != null) {
+        for (int c = 0; c < activity.getActivityPartners().size(); c++) {
+
+          if (activity.getActivityPartners().get(c).getContactName().isEmpty()) {
+            missingContactName = true;
+          }
+
+          if (!activity.getActivityPartners().get(c).getContactEmail().isEmpty()) {
+            if (!activity.getActivityPartners().get(c).getContactEmail().isEmpty()) {
+              if (!EmailValidator.isValidEmail(activity.getActivityPartners().get(c).getContactEmail())) {
+                addFieldError("activity.activityPartners[" + c + "].contactEmail",
+                  getText("validation.invalid", new String[] {getText("planning.activityPartners.contactPersonEmail")}));
+              }
+            }
+          } else {
+            missingContactEmail = true;
+          }
+
+          if (activity.getActivityPartners().get(c).getPartner() == null) {
+            // If User save the option of no result for filter this element should be deleted from the list.
+            activity.getActivityPartners().remove(c);
+            // As we removed an element from the list and the list reorganize its indexes
+            // we need check again the c position
+            c--;
+          }
+        }
+      }
+
+      // If the user said the activity will have partner but don't select anyone
+      if (activity.isHasPartners() && activity.getActivityPartners().isEmpty()) {
+        validationMessage.append(getText("planning.activityPartners.atLeastOne") + ".");
+      } else {
+        if (missingContactEmail) {
+          validationMessage.append(getText("reporting.activityPartners.contactName.validation") + ", ");
+        }
+
+        if (missingContactName) {
+          validationMessage.append(getText("reporting.activityPartners.contactEmail.validation") + ", ");
+        }
+      }
+
+    }
   }
 }

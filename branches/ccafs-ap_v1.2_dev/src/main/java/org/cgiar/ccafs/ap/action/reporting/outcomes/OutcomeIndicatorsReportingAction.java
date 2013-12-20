@@ -50,6 +50,12 @@ public class OutcomeIndicatorsReportingAction extends BaseAction {
   }
 
   @Override
+  public String next() {
+    save();
+    return super.next();
+  }
+
+  @Override
   public void prepare() throws Exception {
     outcomeIndicatorReports = outcomeIndicatorReportManager.getOutcomeIndicatorReports(getCurrentReportingLogframe());
     themes = themeManager.getThemes(getCurrentReportingLogframe());
@@ -57,9 +63,17 @@ public class OutcomeIndicatorsReportingAction extends BaseAction {
 
   @Override
   public String save() {
-    outcomeIndicatorReportManager.saveOutcomeIndicatorReports(outcomeIndicatorReports, getCurrentUser().getLeader(),
-      getCurrentReportingLogframe());
-    return super.save();
+    boolean save =
+      outcomeIndicatorReportManager.saveOutcomeIndicatorReports(outcomeIndicatorReports, getCurrentUser().getLeader(),
+        getCurrentReportingLogframe());
+
+    if (save) {
+      addActionMessage(getText("saving.success", new String[] {getText("reporting.outcomeIndicators")}));
+      return SUCCESS;
+    } else {
+      addActionError(getText("saving.problem", new String[] {getText("reporting.outcomeIndicators")}));
+      return INPUT;
+    }
   }
 
   public void setCurrentIndicatorsTheme(int currentIndicatorsTheme) {

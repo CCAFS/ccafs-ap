@@ -192,8 +192,8 @@
         </div>
         
         [#-- Year --]
-        <div class="thirdPartBlock">        
-          [@customForm.input name="year" type="text" i18nkey="reporting.activityDeliverables.year" /]
+        <div class="thirdPartBlock">
+          [@customForm.select name="year" label="" i18nkey="reporting.activityDeliverables.year" listName="yearList"  /]            
         </div>
         
         [#-- Status --]
@@ -228,6 +228,7 @@
     <input name="activityID" type="hidden" value="${activity.id}" />
     <div class="buttons">
       [@s.submit type="button" name="save"][@s.text name="form.buttons.save" /][/@s.submit]
+      [@s.submit type="button" name="next"][@s.text name="form.buttons.next" /][/@s.submit]
       [@s.submit type="button" name="cancel"][@s.text name="form.buttons.cancel" /][/@s.submit]
     </div>
 

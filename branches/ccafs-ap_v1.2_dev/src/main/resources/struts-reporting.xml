@@ -25,6 +25,10 @@
       <result name="cancel" type="redirectAction">activities</result>
       <result name="input">/WEB-INF/reporting/statusReporting.ftl</result>
       <result name="success" type="redirectAction">
+        <param name="actionName">status</param>
+        <param name="activityID">${activity.id}</param>
+      </result>
+      <result name="next" type="redirectAction">
         <param name="actionName">deliverables</param>
         <param name="activityID">${activity.id}</param>
       </result>
@@ -36,6 +40,10 @@
       <result name="cancel" type="redirectAction">activities</result>
       <result name="input">/WEB-INF/reporting/deliverablesReporting.ftl</result>
       <result name="success" type="redirectAction">
+        <param name="actionName">deliverables</param>
+        <param name="activityID">${activity.id}</param>
+      </result>
+      <result name="next" type="redirectAction">
         <param name="actionName">partners</param>
         <param name="activityID">${activity.id}</param>
       </result>
@@ -46,8 +54,11 @@
       <interceptor-ref name="accessibleActivity" />
       <result name="cancel" type="redirectAction">activities</result>
       <result name="input">/WEB-INF/reporting/partnersReporting.ftl</result>
-      <!-- Temporal redirect -->
       <result name="success" type="redirectAction">
+        <param name="actionName">partners</param>
+        <param name="activityID">${activity.id}</param>
+      </result>
+      <result name="next" type="redirectAction">
         <param name="actionName">activities</param>
       </result>
     </action>
@@ -57,6 +68,9 @@
       <result name="cancel" type="redirectAction">activities</result>
       <result name="input">/WEB-INF/reporting/outputSummary.ftl</result>
       <result name="success" type="redirectAction">
+        <param name="actionName">outputSummary</param>
+      </result>
+      <result name="next" type="redirectAction">
         <param name="actionName">publications</param>
       </result>
     </action>
@@ -66,6 +80,9 @@
       <result name="cancel" type="redirectAction">activities</result>
       <result name="input">/WEB-INF/reporting/publicationsReporting.ftl</result>
       <result name="success" type="redirectAction">
+        <param name="actionName">publications</param>
+      </result>
+      <result name="next" type="redirectAction">
         <param name="actionName">communications</param>
       </result>
     </action>
@@ -75,6 +92,9 @@
       <result name="cancel" type="redirectAction">activities</result>
       <result name="input">/WEB-INF/reporting/communicationsReporting.ftl</result>
       <result name="success" type="redirectAction">
+        <param name="actionName">communications</param>
+      </result>
+      <result name="next" type="redirectAction">
         <param name="actionName">caseStudies</param>
       </result>
     </action>
@@ -88,7 +108,10 @@
       <result name="cancel" type="redirectAction">activities</result>
       <result name="input">/WEB-INF/reporting/caseStudiesReporting.ftl</result>
       <result name="success" type="redirectAction">
-        <param name="actionName">outcomes</param>        
+        <param name="actionName">caseStudies</param>        
+      </result>
+      <result name="next" type="redirectAction">
+        <param name="actionName">outcomes</param>
       </result>
     </action>
 
@@ -97,6 +120,9 @@
       <result name="cancel" type="redirectAction">activities</result>
       <result name="input">/WEB-INF/reporting/outcomesReporting.ftl</result>
       <result name="success" type="redirectAction">
+        <param name="actionName">outcomes</param>
+      </result>
+      <result name="next" type="redirectAction">
         <param name="actionName">themeOneOutcomeIndicators</param>
       </result>
     </action>
@@ -106,6 +132,9 @@
       <result name="cancel" type="redirectAction">activities</result>
       <result name="input">/WEB-INF/reporting/outcomeIndicatorsReporting.ftl</result>
       <result name="success" type="redirectAction">
+        <param name="actionName">themeOneOutcomeIndicators</param>
+      </result>
+      <result name="next" type="redirectAction">
         <param name="actionName">themeTwoOutcomeIndicators</param>
       </result>
       <param name="currentIndicatorsTheme">1</param>
@@ -116,6 +145,9 @@
       <result name="cancel" type="redirectAction">activities</result>
       <result name="input">/WEB-INF/reporting/outcomeIndicatorsReporting.ftl</result>
       <result name="success" type="redirectAction">
+        <param name="actionName">themeTwoOutcomeIndicators</param>
+      </result>
+      <result name="next" type="redirectAction">
         <param name="actionName">themeThreeOutcomeIndicators</param>
       </result>
       <param name="currentIndicatorsTheme">2</param>
@@ -126,6 +158,9 @@
       <result name="cancel" type="redirectAction">activities</result>
       <result name="input">/WEB-INF/reporting/outcomeIndicatorsReporting.ftl</result>
       <result name="success" type="redirectAction">
+        <param name="actionName">themeThreeOutcomeIndicators</param>
+      </result>
+      <result name="next" type="redirectAction">
         <param name="actionName">themeFourOutcomeIndicators</param>
       </result>
       <param name="currentIndicatorsTheme">3</param>
@@ -136,6 +171,9 @@
       <result name="cancel" type="redirectAction">activities</result>
       <result name="input">/WEB-INF/reporting/outcomeIndicatorsReporting.ftl</result>
       <result name="success" type="redirectAction">
+        <param name="actionName">themeFourOutcomeIndicators</param>
+      </result>
+      <result name="next" type="redirectAction">
         <param name="actionName">indicators</param>
       </result>
       <param name="currentIndicatorsTheme">4</param>
@@ -146,6 +184,9 @@
       <result name="cancel" type="redirectAction">activities</result>
       <result name="input">/WEB-INF/reporting/indicatorsReporting.ftl</result>
       <result name="success" type="redirectAction">
+        <param name="actionName">indicators</param>
+      </result>
+      <result name="next" type="redirectAction">
         <param name="actionName">leverages</param>
       </result>
     </action>
@@ -165,6 +206,9 @@
       <result name="cancel" type="redirectAction">activities</result>
       <result name="input">/WEB-INF/reporting/tlOutputsReporting.ftl</result>
       <result name="success" type="redirectAction">
+        <param name="actionName">tlOutputs</param>
+      </result>
+      <result name="next" type="redirectAction">
         <param name="actionName">tlRplMilestones</param>
       </result>
     </action>
@@ -175,6 +219,9 @@
       <result name="cancel" type="redirectAction">activities</result>
       <result name="input">/WEB-INF/reporting/rplSynthesisReporting.ftl</result>
       <result name="success" type="redirectAction">
+        <param name="actionName">rplSynthesis</param>
+      </result>
+      <result name="next" type="redirectAction">
         <param name="actionName">tlRplMilestones</param>
       </result>
     </action>

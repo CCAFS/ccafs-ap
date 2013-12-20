@@ -7,6 +7,7 @@ import org.cgiar.ccafs.ap.data.manager.LogframeManager;
 import org.cgiar.ccafs.ap.data.model.IndicatorReport;
 import org.cgiar.ccafs.ap.data.model.Leader;
 import org.cgiar.ccafs.ap.data.model.Logframe;
+import org.cgiar.ccafs.ap.util.Capitalize;
 
 import java.util.List;
 
@@ -25,13 +26,15 @@ public class IndicatorsReportingAction extends BaseAction {
   private IndicatorReportManager indicatorReportManager;
 
   // Model
-  List<IndicatorReport> indicatorReports;
+  private List<IndicatorReport> indicatorReports;
+  private StringBuilder validationMessage;
 
   @Inject
   public IndicatorsReportingAction(APConfig config, LogframeManager logframeManager,
     IndicatorReportManager indicatorReportManager) {
     super(config, logframeManager);
     this.indicatorReportManager = indicatorReportManager;
+    validationMessage = new StringBuilder();
   }
 
   public int getCurrentReportingYear() {
@@ -43,6 +46,12 @@ public class IndicatorsReportingAction extends BaseAction {
   }
 
   @Override
+  public String next() {
+    save();
+    return super.next();
+  }
+
+  @Override
   public void prepare() throws Exception {
     Leader leader = getCurrentUser().getLeader();
     Logframe logframe = getCurrentReportingLogframe();
@@ -51,12 +60,21 @@ public class IndicatorsReportingAction extends BaseAction {
 
   @Override
   public String save() {
+    String finalMessage;
     boolean saved = indicatorReportManager.saveIndicatorReportsList(indicatorReports, getCurrentUser().getLeader());
 
     if (saved) {
+      if (validationMessage.toString().isEmpty()) {
+        addActionMessage(getText("saving.success", new String[] {getText("reporting.indicators")}));
+      } else {
+        // If there were validation messages show them in a warning message.
+        finalMessage = getText("saving.success", new String[] {getText("planning.mainInformation")});
+        finalMessage += getText("saving.missingFields", new String[] {validationMessage.toString()});
+
+        addActionWarning(Capitalize.capitalizeString(finalMessage));
+      }
       LOG.info("The user {} saved the indicators for the leader {}.", getCurrentUser().getEmail(), getCurrentUser()
         .getLeader().getId());
-      addActionMessage(getText("saving.success", new String[] {getText("reporting.indicators")}));
       return SUCCESS;
     } else {
       LOG.warn("There was an error saving the indicators for the leader {}", getCurrentUser().getLeader());
@@ -70,5 +88,20 @@ public class IndicatorsReportingAction extends BaseAction {
     this.indicatorReports = indicatorReports;
   }
 
+  @Override
+  public void validate() {
+    /*
+     * for (int c = 0; c < indicatorReports.size(); c++) {
+     * IndicatorReport ir = indicatorReports.get(c);
+     * if (ir.getActual() == null || ir.getActual().isEmpty()) {
+     * validationMessage.append(getText("reporting.indicators.validation.actual", new String[] {String.valueOf(c)}));
+     * }
+     * if (ir.getNextYearTarget() == null || ir.getNextYearTarget().isEmpty()) {
+     * validationMessage
+     * .append(getText("reporting.indicators.validation.nextTarget", new String[] {String.valueOf(c)}));
+     * }
+     * }
+     */
+  }
 
 }

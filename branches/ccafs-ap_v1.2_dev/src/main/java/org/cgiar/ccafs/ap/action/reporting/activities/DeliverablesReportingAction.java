@@ -14,9 +14,12 @@ import org.cgiar.ccafs.ap.data.model.Deliverable;
 import org.cgiar.ccafs.ap.data.model.DeliverableStatus;
 import org.cgiar.ccafs.ap.data.model.DeliverableType;
 import org.cgiar.ccafs.ap.data.model.FileFormat;
+import org.cgiar.ccafs.ap.util.Capitalize;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Iterator;
+import java.util.List;
 
 import com.google.inject.Inject;
 import org.apache.commons.lang3.StringUtils;
@@ -47,6 +50,7 @@ public class DeliverablesReportingAction extends BaseAction {
   private int[] deliverableTypeIdsPublications;
   private Activity activity;
   private int activityID;
+  private StringBuilder validationMessage;
 
   @Inject
   public DeliverablesReportingAction(APConfig config, LogframeManager logframeManager,
@@ -97,10 +101,24 @@ public class DeliverablesReportingAction extends BaseAction {
     return fileFormatsList;
   }
 
+  public List<String> getYearList() {
+    List<String> years = new ArrayList<>();
+    for (int c = activity.getYear(); c <= config.getEndYear(); c++) {
+      years.add(String.valueOf(c));
+    }
+    return years;
+  }
+
+  @Override
+  public String next() {
+    save();
+    return super.next();
+  }
 
   @Override
   public void prepare() throws Exception {
     super.prepare();
+    validationMessage = new StringBuilder();
     activityID = Integer.parseInt(StringUtils.trim(this.getRequest().getParameter(APConstants.ACTIVITY_REQUEST_ID)));
     LOG.info("There user {} is loading the deliverables information for the activity {}", getCurrentUser().getEmail(),
       String.valueOf(activityID));
@@ -176,8 +194,14 @@ public class DeliverablesReportingAction extends BaseAction {
     }
 
     if (!problem) {
-      LOG.info("The deliverables for the activity {} was saved successfully", String.valueOf(activityID));
-      addActionMessage(getText("saving.success", new String[] {getText("reporting.activityDeliverables")}));
+      if (validationMessage.toString().isEmpty()) {
+        LOG.info("The deliverables for the activity {} was saved successfully", String.valueOf(activityID));
+        addActionMessage(getText("saving.success", new String[] {getText("reporting.activityDeliverables")}));
+      } else {
+        String finalMessage = getText("saving.success", new String[] {getText("reporting.activityDeliverables")});
+        finalMessage += getText("saving.keepInMind", new String[] {validationMessage.toString()});
+        addActionWarning(Capitalize.capitalizeString(finalMessage));
+      }
       return SUCCESS;
     } else {
       LOG.warn("There was a problem saving the deliverables for the activity {}", String.valueOf(activityID));
@@ -202,7 +226,6 @@ public class DeliverablesReportingAction extends BaseAction {
   public void validate() {
     Deliverable deliverable = null;
     boolean fileFormatNeeded;
-    boolean anyError = false;
 
     // Check if the user is saving and if exists any deliverable to validate
     if (save && activity.getDeliverables() != null) {
@@ -221,25 +244,19 @@ public class DeliverablesReportingAction extends BaseAction {
         // If the deliverable needs a file format check if the user select at least one
         if (fileFormatNeeded) {
           if (deliverable.getFileFormats().isEmpty()) {
-            anyError = true;
-            addFieldError("activity.deliverables[" + c + "].fileFormats",
-              getText("reporting.activityDeliverables.fileFormatValidate"));
+            validationMessage.append(getText("reporting.activityDeliverables.fileFormatValidate") + ", ");
           }
         }
 
         if (!deliverable.isExpected()) {
           if (deliverable.getDescription().isEmpty()) {
-            anyError = true;
-            addFieldError("activity.deliverables[" + c + "].description",
-              getText("reporting.activityDeliverables.descriptionValidate"));
+            validationMessage.append(getText("reporting.activityDeliverables.descriptionValidate") + ", ");
           }
 
           // Check if the deliverable year is valid. When the user set a invalid value (empty or NaN)
           // the deliverable converter set the year whit 0
           if (deliverable.getYear() == 0) {
-            anyError = true;
-            addFieldError("activity.deliverables[" + c + "].year",
-              getText("reporting.activityDeliverables.yearInvalidValidate"));
+            validationMessage.append(getText("reporting.activityDeliverables.yearInvalidValidate") + ", ");
           }
 
           // TODO - Check if always the application will show the activities for
@@ -248,24 +265,16 @@ public class DeliverablesReportingAction extends BaseAction {
 
           // Check if the deliverable year is not from past years
           else if (deliverable.getYear() < getCurrentReportingLogframe().getYear()) {
-            anyError = true;
-            addFieldError("activity.deliverables[" + c + "].year",
-              getText("reporting.activityDeliverables.smallYearValidate") + getCurrentReportingLogframe().getYear());
+            validationMessage.append(getText("reporting.activityDeliverables.smallYearValidate") + ", ");
           }
 
           // Check if the deliverable year is not bigger than ccafs end
           else if (deliverable.getYear() > config.getEndYear()) {
-            anyError = true;
-            addFieldError("activity.deliverables[" + c + "].year",
-              getText("reporting.activityDeliverables.bigYearValidate") + config.getEndYear());
+            validationMessage.append(getText("reporting.activityDeliverables.bigYearValidate") + ", ");
           }
         }
       }
 
-      if (anyError) {
-        LOG.info("User {} try to save the deliverables but don't fill all the required fields.");
-        addActionError(getText("saving.fields.required"));
-      }
     }
     super.validate();
   }

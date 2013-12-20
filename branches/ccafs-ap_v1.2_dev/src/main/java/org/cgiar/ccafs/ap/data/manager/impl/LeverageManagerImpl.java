@@ -61,11 +61,19 @@ public class LeverageManagerImpl implements LeverageManager {
 
     for (Leverage leverage : leverages) {
       Map<String, String> leverageData = new HashMap<String, String>();
-      leverageData.put("id", String.valueOf(leverage.getId()));
-      leverageData.put("title", leverage.getTitle());
+
+      if (leverage.getId() != -1) {
+        leverageData.put("id", String.valueOf(leverage.getId()));
+      } else {
+        leverageData.put("id", null);
+      }
+
+      String title = (leverage.getTitle() == null) ? "" : leverage.getTitle();
+      leverageData.put("title", title);
       leverageData.put("budget", String.valueOf(leverage.getBudget()));
       leverageData.put("start_year", String.valueOf(leverage.getStartYear()));
       leverageData.put("end_year", String.valueOf(leverage.getEndYear()));
+      System.out.println();
       leverageData.put("theme_id", String.valueOf(leverage.getTheme().getId()));
       leverageData.put("partner_name", leverage.getPartnerName());
 

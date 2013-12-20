@@ -53,7 +53,9 @@ public class CaseStudyManagerImpl implements CaseStudyManager {
       temporalCaseStudy.setAuthor(caseStudyData.get("author"));
       try {
         // Parse from string to Date object
-        temporalCaseStudy.setStartDate(dateFormat.parse(caseStudyData.get("start_date")));
+        if (caseStudyData.get("start_date") != null) {
+          temporalCaseStudy.setStartDate(dateFormat.parse(caseStudyData.get("start_date")));
+        }
       } catch (ParseException e) {
         String msg =
           "There was an error parsing start date '" + caseStudyData.get("start_date") + "' for the case study "
@@ -62,7 +64,9 @@ public class CaseStudyManagerImpl implements CaseStudyManager {
       }
       try {
         // Parse from string to Date object
-        temporalCaseStudy.setEndDate(dateFormat.parse(caseStudyData.get("end_date")));
+        if (caseStudyData.get("emd_date") != null) {
+          temporalCaseStudy.setEndDate(dateFormat.parse(caseStudyData.get("end_date")));
+        }
       } catch (ParseException e) {
         String msg =
           "There was an error parsing end date '" + caseStudyData.get("start_date") + "' for the case study "
@@ -145,8 +149,16 @@ public class CaseStudyManagerImpl implements CaseStudyManager {
     csData.put("title", caseStudy.getTitle());
     csData.put("author", caseStudy.getAuthor());
     // Convert the date to string
-    csData.put("start_date", sdf.format(caseStudy.getStartDate()));
-    csData.put("end_date", sdf.format(caseStudy.getEndDate()));
+    if (caseStudy.getStartDate() != null) {
+      csData.put("start_date", sdf.format(caseStudy.getStartDate()));
+    } else {
+      csData.put("start_date", null);
+    }
+    if (caseStudy.getEndDate() != null) {
+      csData.put("end_date", sdf.format(caseStudy.getEndDate()));
+    } else {
+      csData.put("end_date", null);
+    }
     csData.put("photo", caseStudy.getImageFileName());
     csData.put("objectives", caseStudy.getObjectives());
     csData.put("description", caseStudy.getDescription());
@@ -171,7 +183,7 @@ public class CaseStudyManagerImpl implements CaseStudyManager {
     // if the case study was successfully saved, save the countries related and the case study types.
     if (caseStudyId >= 0) {
       // Save the countries
-      if (!caseStudy.isGlobal()) {
+      if (!caseStudy.isGlobal() && caseStudy.getCountriesIds().size() > 0) {
         ArrayList<String> countriesIds = (ArrayList<String>) caseStudy.getCountriesIds();
         boolean caseStudyCountriesAdded = caseStudyCountriesDAO.saveCaseStudyCountries(caseStudyId, countriesIds);
         if (!caseStudyCountriesAdded) {
@@ -180,12 +192,17 @@ public class CaseStudyManagerImpl implements CaseStudyManager {
       }
 
       // Save the types
-      ArrayList<String> typesIds = (ArrayList<String>) caseStudy.getTypesIds();
-      int[] typesIdsArray = new int[typesIds.size()];
-      for (int c = 0; c < typesIds.size(); c++) {
-        typesIdsArray[c] = Integer.parseInt(typesIds.get(c));
+      boolean problemSavingTypes = false;
+
+      if (caseStudy.getTypesIds().size() > 0) {
+        ArrayList<String> typesIds = (ArrayList<String>) caseStudy.getTypesIds();
+        int[] typesIdsArray = new int[typesIds.size()];
+        for (int c = 0; c < typesIds.size(); c++) {
+          typesIdsArray[c] = Integer.parseInt(typesIds.get(c));
+        }
+        problemSavingTypes = caseStudyTypeDAO.saveCaseStudyTypes(caseStudyId, typesIdsArray);
       }
-      boolean problemSavingTypes = caseStudyTypeDAO.saveCaseStudyTypes(caseStudyId, typesIdsArray);
+
       if (problemSavingTypes) {
         LOG.warn("There was a problem saving a new case study");
         return false;
