@@ -36,7 +36,7 @@
       <tbody>
         [#list currentActivities as activity]
           <tr>
-            <td>${activity.id}</td>
+            <td>${activity.activityId}</td>
             <td class="left">
               <a href="
               [@s.url action='status' includeParams='get']

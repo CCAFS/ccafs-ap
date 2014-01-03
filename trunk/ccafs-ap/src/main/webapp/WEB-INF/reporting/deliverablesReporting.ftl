@@ -129,7 +129,7 @@
   <article class="halfContent">
     [#include "/WEB-INF/reporting/activitiesReportingSubMenu.ftl" /]
     <h1 class="contentTitle">
-      ${activity.leader.acronym} - [@s.text name="reporting.activityList.activity" /] ${activity.id}      
+      ${activity.leader.acronym}: [@s.text name="reporting.activityList.activity" /] ${activity.activityId}
     </h1>
     
     <fieldset>
