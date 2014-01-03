@@ -2,11 +2,14 @@ package org.cgiar.ccafs.ap.action.reporting.tlrpl;
 
 import org.cgiar.ccafs.ap.action.BaseAction;
 import org.cgiar.ccafs.ap.config.APConfig;
+import org.cgiar.ccafs.ap.config.APConstants;
 import org.cgiar.ccafs.ap.data.manager.LogframeManager;
 import org.cgiar.ccafs.ap.data.manager.MilestoneReportManager;
 import org.cgiar.ccafs.ap.data.manager.MilestoneStatusManager;
+import org.cgiar.ccafs.ap.data.manager.SubmissionManager;
 import org.cgiar.ccafs.ap.data.model.MilestoneReport;
 import org.cgiar.ccafs.ap.data.model.MilestoneStatus;
+import org.cgiar.ccafs.ap.data.model.Submission;
 
 import com.google.inject.Inject;
 import org.slf4j.Logger;
@@ -22,17 +25,21 @@ public class TLRPLMilestoneReportingAction extends BaseAction {
   // Manager
   MilestoneReportManager milestoneReportManager;
   MilestoneStatusManager milestoneStatusManager;
+  SubmissionManager submissionManager;
 
   // Models
   private MilestoneReport[] milestoneReports;
   private MilestoneStatus[] milestoneStatusList;
+  private boolean canSubmit;
 
   @Inject
   public TLRPLMilestoneReportingAction(APConfig config, LogframeManager logframeManager,
-    MilestoneReportManager milestoneReportManager, MilestoneStatusManager milestoneStatusManager) {
+    MilestoneReportManager milestoneReportManager, MilestoneStatusManager milestoneStatusManager,
+    SubmissionManager submissionManager) {
     super(config, logframeManager);
     this.milestoneReportManager = milestoneReportManager;
     this.milestoneStatusManager = milestoneStatusManager;
+    this.submissionManager = submissionManager;
   }
 
   public MilestoneReport[] getMilestoneReports() {
@@ -42,6 +49,11 @@ public class TLRPLMilestoneReportingAction extends BaseAction {
   public MilestoneStatus[] getMilestoneStatusList() {
     return milestoneStatusList;
   }
+
+  public boolean isCanSubmit() {
+    return canSubmit;
+  }
+
 
   @Override
   public void prepare() {
@@ -55,6 +67,12 @@ public class TLRPLMilestoneReportingAction extends BaseAction {
       milestoneReportManager.getMilestoneReports(getCurrentUser().getLeader(), getCurrentReportingLogframe(),
         getCurrentUser().getRole());
 
+    /* --------- Checking if the user can submit ------------- */
+    Submission submission =
+      submissionManager.getSubmission(getCurrentUser().getLeader(), getCurrentReportingLogframe(),
+        APConstants.REPORTING_SECTION);
+
+    canSubmit = (submission == null) ? true : false;
   }
 
   @Override

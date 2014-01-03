@@ -23,8 +23,8 @@
         <tr>
           <td>
             [#if canEditActivity]
-              <a href=" [@s.url action='mainInformation' includeParams='get'] [@s.param name='${activityRequestParameter}']${activity.id?c}[/@s.param] [/@s.url]" >
-                ${activity.id?c}
+              <a href=" [@s.url action='mainInformation' includeParams='get'] [@s.param name='${activityRequestParameter}']${activity.id}[/@s.param] [/@s.url]" >
+                ${activity.activityId}
               </a> 
             [#else]
               <a target="_blank" href=" [@s.url action='activity' namespace="/home" includeParams='get'] [@s.param name='${publicActivityRequestParameter}']${activity.id?c}[/@s.param] [/@s.url]" >

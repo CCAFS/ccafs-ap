@@ -38,6 +38,23 @@ public interface ActivityDAO {
   public List<Map<String, String>> getActivitiesForRSS(int year, int limit);
 
   /**
+   * Get the activities from the given year that can be continued.
+   * 
+   * @param year
+   * @return a list of maps with the information.
+   */
+  public List<Map<String, String>> getActivitiesToContinue(int year);
+
+  /**
+   * Get the activities from the given year and that belongs to the given leader
+   * that can be continued.
+   * 
+   * @param year
+   * @return a list of maps with the information.
+   */
+  public List<Map<String, String>> getActivitiesToContinue(int year, int leaderID);
+
+  /**
    * Get a basic information for each activity.
    * 
    * @param year - The year in which the activities belong.

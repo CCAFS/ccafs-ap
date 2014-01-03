@@ -12,8 +12,12 @@ public class Publication {
   private String fileUrl;
   private Logframe logframe;
   private Leader leader;
-  private Theme[] relatedThemes;
+  private PublicationTheme[] relatedThemes;
   private OpenAccess access;
+  private boolean ccafsAcknowledge;
+  private boolean isiPublication;
+  private boolean narsCoauthor;
+  private boolean earthSystemCoauthor;
 
   public Publication() {
   }
@@ -46,7 +50,7 @@ public class Publication {
     return logframe;
   }
 
-  public Theme[] getRelatedThemes() {
+  public PublicationTheme[] getRelatedThemes() {
     return relatedThemes;
   }
 
@@ -62,12 +66,36 @@ public class Publication {
     return type;
   }
 
+  public boolean isCcafsAcknowledge() {
+    return ccafsAcknowledge;
+  }
+
+  public boolean isEarthSystemCoauthor() {
+    return earthSystemCoauthor;
+  }
+
+  public boolean isIsiPublication() {
+    return isiPublication;
+  }
+
+  public boolean isNarsCoauthor() {
+    return narsCoauthor;
+  }
+
   public void setAccess(OpenAccess access) {
     this.access = access;
   }
 
+  public void setCcafsAcknowledge(boolean ccafsAcknowledge) {
+    this.ccafsAcknowledge = ccafsAcknowledge;
+  }
+
   public void setCitation(String citation) {
     this.citation = citation;
+  }
+
+  public void setEarthSystemCoauthor(boolean earthSystemCoauthor) {
+    this.earthSystemCoauthor = earthSystemCoauthor;
   }
 
   public void setFileUrl(String fileUrl) {
@@ -82,6 +110,10 @@ public class Publication {
     this.identifier = identifier;
   }
 
+  public void setIsiPublication(boolean isiPublication) {
+    this.isiPublication = isiPublication;
+  }
+
   public void setLeader(Leader leader) {
     this.leader = leader;
   }
@@ -90,7 +122,11 @@ public class Publication {
     this.logframe = logframe;
   }
 
-  public void setRelatedThemes(Theme[] relatedThemes) {
+  public void setNarsCoauthor(boolean narsCoauthor) {
+    this.narsCoauthor = narsCoauthor;
+  }
+
+  public void setRelatedThemes(PublicationTheme[] relatedThemes) {
     this.relatedThemes = relatedThemes;
   }
 

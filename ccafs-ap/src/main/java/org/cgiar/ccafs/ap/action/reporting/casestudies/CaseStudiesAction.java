@@ -2,14 +2,18 @@ package org.cgiar.ccafs.ap.action.reporting.casestudies;
 
 import org.cgiar.ccafs.ap.action.BaseAction;
 import org.cgiar.ccafs.ap.config.APConfig;
+import org.cgiar.ccafs.ap.config.APConstants;
 import org.cgiar.ccafs.ap.data.manager.CaseStudyCountriesManager;
 import org.cgiar.ccafs.ap.data.manager.CaseStudyManager;
 import org.cgiar.ccafs.ap.data.manager.CaseStudyTypeManager;
 import org.cgiar.ccafs.ap.data.manager.CountryManager;
 import org.cgiar.ccafs.ap.data.manager.LogframeManager;
+import org.cgiar.ccafs.ap.data.manager.SubmissionManager;
 import org.cgiar.ccafs.ap.data.model.CaseStudy;
 import org.cgiar.ccafs.ap.data.model.CaseStudyType;
 import org.cgiar.ccafs.ap.data.model.Country;
+import org.cgiar.ccafs.ap.data.model.Submission;
+import org.cgiar.ccafs.ap.util.Capitalize;
 import org.cgiar.ccafs.ap.util.FileManager;
 
 import java.io.File;
@@ -34,22 +38,29 @@ public class CaseStudiesAction extends BaseAction {
   private CaseStudyCountriesManager caseStudyCountriesManager;
   private CaseStudyTypeManager caseStudyTypeManager;
   private CountryManager countryManager;
+  private SubmissionManager submissionManager;
 
   // Model
   private List<CaseStudy> caseStudies;
   private Country[] countryList;
   private Map<Integer, String> imageNameMap;
   private CaseStudyType[] caseStudyTypeList;
+  private StringBuilder validationMessage;
+  private boolean canSubmit;
+
 
   @Inject
   public CaseStudiesAction(APConfig config, LogframeManager logframeManager, CaseStudyManager caseStudyManager,
     CaseStudyTypeManager caseStudyTypeManager, CountryManager countryManager,
-    CaseStudyCountriesManager caseStudyCountriesManager) {
+    CaseStudyCountriesManager caseStudyCountriesManager, SubmissionManager submissionManager) {
     super(config, logframeManager);
     this.caseStudyManager = caseStudyManager;
     this.countryManager = countryManager;
     this.caseStudyTypeManager = caseStudyTypeManager;
     this.caseStudyCountriesManager = caseStudyCountriesManager;
+    this.submissionManager = submissionManager;
+
+    validationMessage = new StringBuilder();
   }
 
   /**
@@ -74,7 +85,6 @@ public class CaseStudiesAction extends BaseAction {
     }
   }
 
-
   public List<CaseStudy> getCaseStudies() {
     return caseStudies;
   }
@@ -90,6 +100,7 @@ public class CaseStudiesAction extends BaseAction {
     return config.getCaseStudiesImagesUrl() + "/" + getCurrentReportingLogframe().getYear() + "/"
       + getCurrentUser().getLeader().getAcronym() + "/";
   }
+
 
   public CaseStudyType[] getCaseStudyTypeList() {
     return caseStudyTypeList;
@@ -116,8 +127,26 @@ public class CaseStudiesAction extends BaseAction {
    * @return complete path where the image is stored
    */
   private String getFolderPath(String imageName) {
-    return config.getCaseStudiesImagesPath() + File.separator + getCurrentReportingLogframe().getYear() + File.separator
-      + getCurrentUser().getLeader().getAcronym() + File.separator + imageName;
+    return config.getCaseStudiesImagesPath() + File.separator + getCurrentReportingLogframe().getYear()
+      + File.separator + getCurrentUser().getLeader().getAcronym() + File.separator + imageName;
+  }
+
+  /**
+   * This function returns the number maximum of case study types
+   * that can have a case study
+   */
+  public int getMaxCaseStudyTypes() {
+    return config.getMaxCaseStudyTypes();
+  }
+
+  public boolean isCanSubmit() {
+    return canSubmit;
+  }
+
+  @Override
+  public String next() {
+    save();
+    return super.next();
   }
 
   @Override
@@ -154,6 +183,13 @@ public class CaseStudiesAction extends BaseAction {
       caseStudies.clear();
       LOG.debug("All the case studies related to the leader {} was deleted", getCurrentUser().getLeader().getId());
     }
+
+    /* --------- Checking if the user can submit ------------- */
+    Submission submission =
+      submissionManager.getSubmission(getCurrentUser().getLeader(), getCurrentReportingLogframe(),
+        APConstants.REPORTING_SECTION);
+
+    canSubmit = (submission == null) ? true : false;
   }
 
   @Override
@@ -162,7 +198,8 @@ public class CaseStudiesAction extends BaseAction {
 
     // First, remove all the case studies from the database
     boolean deleted =
-      caseStudyManager.removeAllCaseStudies(getCurrentUser().getLeader().getId(), getCurrentReportingLogframe().getId());
+      caseStudyManager
+        .removeAllCaseStudies(getCurrentUser().getLeader().getId(), getCurrentReportingLogframe().getId());
     if (!deleted) {
       problem = true;
     } else {
@@ -182,8 +219,8 @@ public class CaseStudiesAction extends BaseAction {
         }
 
         boolean added =
-          caseStudyManager.saveCaseStudy(caseStudies.get(c), getCurrentUser().getLeader().getId(), getCurrentReportingLogframe()
-            .getId());
+          caseStudyManager.saveCaseStudy(caseStudies.get(c), getCurrentUser().getLeader().getId(),
+            getCurrentReportingLogframe().getId());
         if (!added) {
           problem = true;
         } else {
@@ -209,7 +246,13 @@ public class CaseStudiesAction extends BaseAction {
     deleteUnusedImages();
 
     if (!problem) {
-      addActionMessage(getText("saving.success", new String[] {getText("reporting.caseStudies")}));
+      if (validationMessage.toString().isEmpty()) {
+        addActionMessage(getText("saving.success", new String[] {getText("reporting.caseStudies")}));
+      } else {
+        String finalMessage = getText("saving.success", new String[] {getText("reporting.caseStudies")});
+        finalMessage += getText("saving.keepInMind", new String[] {validationMessage.toString()});
+        addActionWarning(Capitalize.capitalizeString(finalMessage));
+      }
       return SUCCESS;
     } else {
       addActionError(getText("saving.problem"));
@@ -224,28 +267,27 @@ public class CaseStudiesAction extends BaseAction {
   @Override
   public void validate() {
     boolean anyError = false;
+    boolean validationError = false;
 
     // Validations
     if (save) {
       for (int c = 0; c < caseStudies.size(); c++) {
         // Title
         if (caseStudies.get(c).getTitle().isEmpty()) {
-          addFieldError("caseStudies[" + c + "].title", getText("validation.field.required"));
-          anyError = true;
+          validationMessage.append(getText("reporting.caseStudies.validation.title") + ", ");
+          validationError = true;
         }
         // Author
         if (caseStudies.get(c).getAuthor().isEmpty()) {
-          addFieldError("caseStudies[" + c + "].author", getText("validation.field.required"));
-          anyError = true;
         }
         // Type
         // If a new case study don't select a type the attribute is null
         if (caseStudies.get(c).getTypes() == null) {
-          addFieldError("caseStudies[" + c + "].types", getText("validation.field.required"));
-          anyError = true;
+          validationMessage.append(getText("reporting.caseStudies.validation.type") + ", ");
+          validationError = true;
         } else if (caseStudies.get(c).getTypes().size() == 0) {
-          addFieldError("caseStudies[" + c + "].types", getText("validation.field.required"));
-          anyError = true;
+          validationMessage.append(getText("reporting.caseStudies.validation.type") + ", ");
+          validationError = true;
         }
         // Photo
         if (caseStudies.get(c).getImage() != null) {
@@ -268,55 +310,65 @@ public class CaseStudiesAction extends BaseAction {
 
         // Start date, if the user don't enter a value, the object is null
         if (caseStudies.get(c).getStartDate() == null) {
-          addFieldError("caseStudies[" + c + "].startDate", getText("validation.field.required"));
-          anyError = true;
+          validationMessage.append(getText("reporting.caseStudies.validation.startDate") + ", ");
+          validationError = true;
         }
         // End date, if the user don't enter a value, the object is null
         if (caseStudies.get(c).getEndDate() == null) {
-          addFieldError("caseStudies[" + c + "].endDate", getText("validation.field.required"));
-          anyError = true;
+          validationMessage.append(getText("reporting.caseStudies.validation.endDate") + ", ");
+          validationError = true;
         }
         // Countries
         // If the case study is not global check if there are countries
         if (!caseStudies.get(c).isGlobal()) {
           if (caseStudies.get(c).getCountries() == null) {
-            addFieldError("caseStudies[" + c + "].countries", getText("validation.field.required"));
-            anyError = true;
+            validationMessage.append(getText("reporting.caseStudies.validation.location") + ", ");
+            validationError = true;
           } else if (caseStudies.get(c).getCountries().size() == 0) {
-            addFieldError("caseStudies[" + c + "].countries", getText("validation.field.required"));
-            anyError = true;
+            validationMessage.append(getText("reporting.caseStudies.validation.location") + ", ");
+            validationError = true;
           }
         }
         // Keywords
         if (caseStudies.get(c).getKeywords().isEmpty()) {
-          addFieldError("caseStudies[" + c + "].keywords", getText("validation.field.required"));
-          anyError = true;
+          validationMessage.append(getText("reporting.caseStudies.validation.keywords") + ", ");
+          validationError = true;
         }
         // Objectives
         if (caseStudies.get(c).getObjectives().isEmpty()) {
-          addFieldError("caseStudies[" + c + "].objectives", getText("validation.field.required"));
-          anyError = true;
+          validationMessage.append(getText("reporting.caseStudies.validation.objectives") + ", ");
+          validationError = true;
         }
         // Description
         if (caseStudies.get(c).getDescription().isEmpty()) {
-          addFieldError("caseStudies[" + c + "].description", getText("validation.field.required"));
-          anyError = true;
+          validationMessage.append(getText("reporting.caseStudies.validation.description") + ", ");
+          validationError = true;
         }
         // Results
         if (caseStudies.get(c).getResults().isEmpty()) {
-          addFieldError("caseStudies[" + c + "].results", getText("validation.field.required"));
-          anyError = true;
+          validationMessage.append(getText("reporting.caseStudies.validation.results") + ", ");
+          validationError = true;
         }
         // Partners
         if (caseStudies.get(c).getPartners().isEmpty()) {
-          addFieldError("caseStudies[" + c + "].partners", getText("validation.field.required"));
-          anyError = true;
+          validationMessage.append(getText("reporting.caseStudies.validation.partners") + ", ");
+          validationError = true;
+        }
+        // Type
+        if (caseStudies.get(c).getTypes().size() > config.getMaxCaseStudyTypes()) {
+          validationMessage.append(getText("reporting.caseStudies.validation.types") + ", ");
+          validationError = true;
         }
       }
     }
 
     if (anyError) {
       addActionError(getText("saving.fields.required"));
+    }
+
+    // Change the last colon by a period
+    if (validationError == true) {
+      validationMessage.setCharAt(validationMessage.lastIndexOf(","), '.');
     }
   }
 }

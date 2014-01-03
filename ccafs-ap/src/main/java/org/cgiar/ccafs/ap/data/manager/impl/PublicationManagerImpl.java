@@ -7,8 +7,8 @@ import org.cgiar.ccafs.ap.data.model.Leader;
 import org.cgiar.ccafs.ap.data.model.Logframe;
 import org.cgiar.ccafs.ap.data.model.OpenAccess;
 import org.cgiar.ccafs.ap.data.model.Publication;
+import org.cgiar.ccafs.ap.data.model.PublicationTheme;
 import org.cgiar.ccafs.ap.data.model.PublicationType;
-import org.cgiar.ccafs.ap.data.model.Theme;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -43,6 +43,31 @@ public class PublicationManagerImpl implements PublicationManager {
       publication.setIdentifier(pubData.get("identifier"));
       publication.setCitation(pubData.get("citation"));
       publication.setFileUrl(pubData.get("file_url"));
+
+      if (pubData.get("ccafs_acknowledge") != null) {
+        publication.setCcafsAcknowledge(pubData.get("ccafs_acknowledge").equals("1"));
+      } else {
+        publication.setIsiPublication(false);
+      }
+
+      if (pubData.get("isi_publication") != null) {
+        publication.setIsiPublication(pubData.get("isi_publication").equals("1"));
+      } else {
+        publication.setIsiPublication(false);
+      }
+
+      if (pubData.get("nars_coauthor") != null) {
+        publication.setNarsCoauthor(pubData.get("nars_coauthor").equals("1"));
+      } else {
+        publication.setNarsCoauthor(false);
+      }
+
+      if (pubData.get("earth_system_coauthor") != null) {
+        publication.setEarthSystemCoauthor(pubData.get("earth_system_coauthor").equals("1"));
+      } else {
+        publication.setEarthSystemCoauthor(false);
+      }
+
       publication.setLogframe(logframe);
       publication.setLeader(leader);
       PublicationType publicationType = new PublicationType();
@@ -55,13 +80,14 @@ public class PublicationManagerImpl implements PublicationManager {
       } else {
         // publicationAccess.setId(-1);
       }
-      List<Map<String, String>> themes = publicationThemeDAO.getThemes(publication.getId());
-      Theme[] relatedThemes = new Theme[themes.size()];
+
+      List<Map<String, String>> themes = publicationThemeDAO.getPublicationThemes(publication.getId());
+      PublicationTheme[] relatedThemes = new PublicationTheme[themes.size()];
       for (int c = 0; c < themes.size(); c++) {
-        Theme theme = new Theme();
+        PublicationTheme theme = new PublicationTheme();
         theme.setId(Integer.parseInt(themes.get(c).get("id")));
         theme.setCode(themes.get(c).get("code"));
-        theme.setDescription(themes.get(c).get("description"));
+        theme.setName(themes.get(c).get("name"));
         relatedThemes[c] = theme;
       }
       publication.setRelatedThemes(relatedThemes);
@@ -92,11 +118,17 @@ public class PublicationManagerImpl implements PublicationManager {
       } else {
         pubData.put("identifier", publication.getIdentifier());
       }
-      if (publication.getAccess().getId() == 0) {
+      if (publication.getAccess() == null || publication.getAccess().getId() == 0) {
         pubData.put("open_access_id", null);
       } else {
         pubData.put("open_access_id", String.valueOf(publication.getAccess().getId()));
       }
+
+      pubData.put("ccafs_acknowledge", publication.isCcafsAcknowledge() ? "1" : "0");
+      pubData.put("isi_publication", publication.isIsiPublication() ? "1" : "0");
+      pubData.put("nars_coauthor", publication.isNarsCoauthor() ? "1" : "0");
+      pubData.put("earth_system_coauthor", publication.isEarthSystemCoauthor() ? "1" : "0");
+
       pubData.put("citation", publication.getCitation());
       if (publication.getFileUrl().isEmpty()) {
         pubData.put("file_url", null);
@@ -107,6 +139,7 @@ public class PublicationManagerImpl implements PublicationManager {
       pubData.put("activity_leader_id", leader.getId() + "");
 
       int publicationId = publicationDAO.savePublication(pubData);
+
       // If the publication has an id the addDeliverable function return 0 as id,
       // so, the id must be set to its original value
       publicationId = (publication.getId() != -1) ? publication.getId() : publicationId;
@@ -114,9 +147,12 @@ public class PublicationManagerImpl implements PublicationManager {
       // If the publications was successfully saved, save the themes related
       if (publicationId != -1) {
         // lets add the file format list.
-        boolean themesRelatedAdded = publicationThemeDAO.saveThemes(publicationId, publication.getRelatedThemesIds());
-        if (!themesRelatedAdded) {
-          return false;
+        if (publication.getRelatedThemesIds().size() > 0) {
+          boolean themesRelatedAdded =
+            publicationThemeDAO.savePublicationThemes(publicationId, publication.getRelatedThemesIds());
+          if (!themesRelatedAdded) {
+            return false;
+          }
         }
       } else {
         return false;

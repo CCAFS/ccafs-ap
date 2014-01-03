@@ -5,9 +5,11 @@ import org.cgiar.ccafs.ap.config.APConfig;
 import org.cgiar.ccafs.ap.config.APConstants;
 import org.cgiar.ccafs.ap.data.manager.ActivityManager;
 import org.cgiar.ccafs.ap.data.manager.LogframeManager;
+import org.cgiar.ccafs.ap.data.manager.SubmissionManager;
 import org.cgiar.ccafs.ap.data.model.Activity;
 import org.cgiar.ccafs.ap.data.model.ActivityPartner;
 import org.cgiar.ccafs.ap.data.model.Deliverable;
+import org.cgiar.ccafs.ap.data.model.Submission;
 
 import java.util.List;
 
@@ -24,15 +26,19 @@ public class ActivitiesReportingAction extends BaseAction {
 
   // Managers
   protected ActivityManager activityManager;
+  private SubmissionManager submissionManager;
 
   // Model
   private Activity[] currentActivities;
   private String[] activityStatuses;
+  private boolean canSubmit;
 
   @Inject
-  public ActivitiesReportingAction(APConfig config, LogframeManager logframeManager, ActivityManager activityManager) {
+  public ActivitiesReportingAction(APConfig config, LogframeManager logframeManager, ActivityManager activityManager,
+    SubmissionManager submissionManager) {
     super(config, logframeManager);
     this.activityManager = activityManager;
+    this.submissionManager = submissionManager;
   }
 
   /**
@@ -94,6 +100,10 @@ public class ActivitiesReportingAction extends BaseAction {
     return currentActivities;
   }
 
+  public boolean isCanSubmit() {
+    return canSubmit;
+  }
+
   @Override
   public void prepare() throws Exception {
     super.prepare();
@@ -105,11 +115,18 @@ public class ActivitiesReportingAction extends BaseAction {
     for (int c = 0; c < currentActivities.length; c++) {
       activityStatuses[c] = calculateStatus(currentActivities[c]);
     }
+
+    /* --------- Checking if the user can submit ------------- */
+    Submission submission =
+      submissionManager.getSubmission(getCurrentUser().getLeader(), getCurrentReportingLogframe(),
+        APConstants.REPORTING_SECTION);
+    System.out.println("---------------------------------");
+    System.out.println(submission);
+    canSubmit = (submission == null) ? true : false;
   }
 
   public void setCurrentActivities(Activity[] currentActivities) {
     this.currentActivities = currentActivities;
   }
-
 
 }

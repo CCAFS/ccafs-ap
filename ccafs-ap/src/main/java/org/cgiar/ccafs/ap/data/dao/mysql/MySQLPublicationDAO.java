@@ -34,9 +34,11 @@ public class MySQLPublicationDAO implements PublicationDAO {
     List<Map<String, String>> publications = new ArrayList<>();
     try (Connection connection = dbManager.getConnection()) {
       String query =
-        "SELECT p.id, p.identifier, p.citation, p.file_url, pt.id as 'publication_type_id', "
-          + "pt.name as 'publication_type_name', oa.id as 'publication_access_id', oa.name as 'publication_access_name'"
-          + "FROM publications p INNER JOIN publication_types pt ON pt.id = p.publication_type_id "
+        "SELECT p.id, p.identifier, p.citation, p.file_url, p.isi_publication, p.nars_coauthor, "
+          + "p.earth_system_coauthor, p.ccafs_acknowledge, pt.id as 'publication_type_id', "
+          + "pt.name as 'publication_type_name', oa.id as 'publication_access_id', "
+          + "oa.name as 'publication_access_name' " + "FROM publications p "
+          + "INNER JOIN publication_types pt ON pt.id = p.publication_type_id "
           + "LEFT JOIN open_access oa ON p.open_access_id = oa.id " + "WHERE activity_leader_id = " + leaderId
           + " AND logframe_id = " + logframeId;
       ResultSet rs = dbManager.makeQuery(query, connection);
@@ -46,6 +48,10 @@ public class MySQLPublicationDAO implements PublicationDAO {
         publicationData.put("identifier", rs.getString("identifier"));
         publicationData.put("citation", rs.getString("citation"));
         publicationData.put("file_url", rs.getString("file_url"));
+        publicationData.put("ccafs_acknowledge", rs.getString("ccafs_acknowledge"));
+        publicationData.put("isi_publication", rs.getString("isi_publication"));
+        publicationData.put("nars_coauthor", rs.getString("nars_coauthor"));
+        publicationData.put("earth_system_coauthor", rs.getString("earth_system_coauthor"));
         publicationData.put("publication_type_id", rs.getString("publication_type_id"));
         publicationData.put("publication_type_name", rs.getString("publication_type_name"));
         publicationData.put("publication_access_id", rs.getString("publication_access_id"));
@@ -96,8 +102,9 @@ public class MySQLPublicationDAO implements PublicationDAO {
       Object[] values;
       addQueryPrepared =
         "INSERT INTO publications (id, publication_type_id, identifier, citation, file_url, logframe_id, "
-          + "activity_leader_id, open_access_id) VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
-      values = new Object[8];
+          + "activity_leader_id, open_access_id, ccafs_acknowledge, isi_publication, nars_coauthor, earth_system_coauthor) "
+          + "VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
+      values = new Object[12];
       values[0] = publication.get("id");
       values[1] = publication.get("publication_type_id");
       values[2] = publication.get("identifier");
@@ -106,6 +113,10 @@ public class MySQLPublicationDAO implements PublicationDAO {
       values[5] = publication.get("logframe_id");
       values[6] = publication.get("activity_leader_id");
       values[7] = publication.get("open_access_id");
+      values[8] = publication.get("ccafs_acknowledge");
+      values[9] = publication.get("isi_publication");
+      values[10] = publication.get("nars_coauthor");
+      values[11] = publication.get("earth_system_coauthor");
 
       int rows = dbManager.makeChangeSecure(connection, addQueryPrepared, values);
       if (rows > 0) {
