@@ -73,7 +73,6 @@ public class LeverageManagerImpl implements LeverageManager {
       leverageData.put("budget", String.valueOf(leverage.getBudget()));
       leverageData.put("start_year", String.valueOf(leverage.getStartYear()));
       leverageData.put("end_year", String.valueOf(leverage.getEndYear()));
-      System.out.println();
       leverageData.put("theme_id", String.valueOf(leverage.getTheme().getId()));
       leverageData.put("partner_name", leverage.getPartnerName());
 
