@@ -235,6 +235,16 @@
         <param name="actionName">tlRplMilestones</param>
       </result>
     </action>
+    
+    <action name="submit" class="org.cgiar.ccafs.ap.action.reporting.SubmitAction">
+      <interceptor-ref name="reportingStack" />
+      <result name="input" type="redirectAction">
+        <param name="actionName">activities</param>
+      </result>
+      <result name="success" type="redirectAction">
+        <param name="actionName">activities</param>
+      </result>
+    </action>
 
     <!-- Others -->
         

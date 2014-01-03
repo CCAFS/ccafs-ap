@@ -799,57 +799,54 @@ public class MySQLActivityDAO implements ActivityDAO {
         LOG.warn("  Values: {}", Arrays.toString(values));
       }
 
-      // Check if user wants to add/update gender integration
-      if (!activityData.get("gender_integrations_description").isEmpty()) {
-
-        // Check if the gender integration records already exist.
-        String countQuery =
-          "SELECT count(id) FROM gender_integrations WHERE activity_id = " + activityData.get("activity_id");
-        ResultSet rs = databaseManager.makeQuery(countQuery, connection);
-        if (rs.next()) {
-          int genderExistence = rs.getInt(1);
-          if (genderExistence == 1) {
-            // if gender exists there must be an update statement.
-            String genderUpdatePrepared = "UPDATE gender_integrations SET description = ? WHERE activity_id = ?";
-            values = new Object[2];
-            values[0] = activityData.get("gender_integrations_description");
-            values[1] = activityData.get("activity_id");
-            int insertedGenderRows = databaseManager.makeChangeSecure(connection, genderUpdatePrepared, values);
-            if (insertedGenderRows == 1) {
-              // record updated
-              LOG.debug("-- saveStatus() > Activity {}: Gender integration description successfully updated.",
-                activityData.get("activity_id"));
-            } else {
-              // problem.
-              problem = true;
-              LOG.warn("-- saveStatus() > Activity {}: Problem trying to update the gender description.",
-                activityData.get("activity_id"));
-              LOG.error("  Query: {}", genderUpdatePrepared);
-              LOG.error("  Values: {}", Arrays.toString(values));
-            }
+      // Check if the gender integration records already exist.
+      String countQuery =
+        "SELECT count(id) FROM gender_integrations WHERE activity_id = " + activityData.get("activity_id");
+      ResultSet rs = databaseManager.makeQuery(countQuery, connection);
+      if (rs.next()) {
+        int genderExistence = rs.getInt(1);
+        if (genderExistence == 1) {
+          // if gender exists there must be an update statement.
+          String genderUpdatePrepared = "UPDATE gender_integrations SET description = ? WHERE activity_id = ?";
+          values = new Object[2];
+          values[0] = activityData.get("gender_integrations_description");
+          values[1] = activityData.get("activity_id");
+          int insertedGenderRows = databaseManager.makeChangeSecure(connection, genderUpdatePrepared, values);
+          if (insertedGenderRows == 1) {
+            // record updated
+            LOG.debug("-- saveStatus() > Activity {}: Gender integration description successfully updated.",
+              activityData.get("activity_id"));
           } else {
-            // if gender doesn't exists there must an insert statement.
-            String genderInsertPrepared = "INSERT INTO gender_integrations(description, activity_id) VALUES(?, ?)";
-            values = new Object[2];
-            values[0] = activityData.get("gender_integrations_description");
-            values[1] = activityData.get("activity_id");
-            int insertedGenderRows = databaseManager.makeChangeSecure(connection, genderInsertPrepared, values);
-            if (insertedGenderRows == 1) {
-              // record added
-              LOG.debug("-- saveStatus() > Activity {}: Gender integration description successfully added.",
-                activityData.get("activity_id"));
-            } else {
-              // problem.
-              problem = true;
-              LOG.warn("-- saveStatus() > Activity {}: Problem trying to add the gender description.",
-                activityData.get("activity_id"));
-              LOG.warn("  Query: {}", genderInsertPrepared);
-              LOG.warn("  Values: {}", Arrays.toString(values));
-            }
+            // problem.
+            problem = true;
+            LOG.warn("-- saveStatus() > Activity {}: Problem trying to update the gender description.",
+              activityData.get("activity_id"));
+            LOG.error("  Query: {}", genderUpdatePrepared);
+            LOG.error("  Values: {}", Arrays.toString(values));
+          }
+        } else {
+          // if gender doesn't exists there must an insert statement.
+          String genderInsertPrepared = "INSERT INTO gender_integrations(description, activity_id) VALUES(?, ?)";
+          values = new Object[2];
+          values[0] = activityData.get("gender_integrations_description");
+          values[1] = activityData.get("activity_id");
+          int insertedGenderRows = databaseManager.makeChangeSecure(connection, genderInsertPrepared, values);
+          if (insertedGenderRows == 1) {
+            // record added
+            LOG.debug("-- saveStatus() > Activity {}: Gender integration description successfully added.",
+              activityData.get("activity_id"));
+          } else {
+            // problem.
+            problem = true;
+            LOG.warn("-- saveStatus() > Activity {}: Problem trying to add the gender description.",
+              activityData.get("activity_id"));
+            LOG.warn("  Query: {}", genderInsertPrepared);
+            LOG.warn("  Values: {}", Arrays.toString(values));
           }
         }
-        rs.close();
       }
+      rs.close();
+
 
     } catch (SQLException e) {
       LOG.error("-- saveStatus() > There was an error saving an activity status. \n{}", e);

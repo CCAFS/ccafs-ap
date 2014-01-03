@@ -2,14 +2,17 @@ package org.cgiar.ccafs.ap.action.reporting.casestudies;
 
 import org.cgiar.ccafs.ap.action.BaseAction;
 import org.cgiar.ccafs.ap.config.APConfig;
+import org.cgiar.ccafs.ap.config.APConstants;
 import org.cgiar.ccafs.ap.data.manager.CaseStudyCountriesManager;
 import org.cgiar.ccafs.ap.data.manager.CaseStudyManager;
 import org.cgiar.ccafs.ap.data.manager.CaseStudyTypeManager;
 import org.cgiar.ccafs.ap.data.manager.CountryManager;
 import org.cgiar.ccafs.ap.data.manager.LogframeManager;
+import org.cgiar.ccafs.ap.data.manager.SubmissionManager;
 import org.cgiar.ccafs.ap.data.model.CaseStudy;
 import org.cgiar.ccafs.ap.data.model.CaseStudyType;
 import org.cgiar.ccafs.ap.data.model.Country;
+import org.cgiar.ccafs.ap.data.model.Submission;
 import org.cgiar.ccafs.ap.util.Capitalize;
 import org.cgiar.ccafs.ap.util.FileManager;
 
@@ -35,6 +38,7 @@ public class CaseStudiesAction extends BaseAction {
   private CaseStudyCountriesManager caseStudyCountriesManager;
   private CaseStudyTypeManager caseStudyTypeManager;
   private CountryManager countryManager;
+  private SubmissionManager submissionManager;
 
   // Model
   private List<CaseStudy> caseStudies;
@@ -42,16 +46,19 @@ public class CaseStudiesAction extends BaseAction {
   private Map<Integer, String> imageNameMap;
   private CaseStudyType[] caseStudyTypeList;
   private StringBuilder validationMessage;
+  private boolean canSubmit;
+
 
   @Inject
   public CaseStudiesAction(APConfig config, LogframeManager logframeManager, CaseStudyManager caseStudyManager,
     CaseStudyTypeManager caseStudyTypeManager, CountryManager countryManager,
-    CaseStudyCountriesManager caseStudyCountriesManager) {
+    CaseStudyCountriesManager caseStudyCountriesManager, SubmissionManager submissionManager) {
     super(config, logframeManager);
     this.caseStudyManager = caseStudyManager;
     this.countryManager = countryManager;
     this.caseStudyTypeManager = caseStudyTypeManager;
     this.caseStudyCountriesManager = caseStudyCountriesManager;
+    this.submissionManager = submissionManager;
 
     validationMessage = new StringBuilder();
   }
@@ -82,7 +89,6 @@ public class CaseStudiesAction extends BaseAction {
     return caseStudies;
   }
 
-
   /**
    * Join the url to the folder of cases studies images and
    * the organization folders to return the complete url where
@@ -94,6 +100,7 @@ public class CaseStudiesAction extends BaseAction {
     return config.getCaseStudiesImagesUrl() + "/" + getCurrentReportingLogframe().getYear() + "/"
       + getCurrentUser().getLeader().getAcronym() + "/";
   }
+
 
   public CaseStudyType[] getCaseStudyTypeList() {
     return caseStudyTypeList;
@@ -130,6 +137,10 @@ public class CaseStudiesAction extends BaseAction {
    */
   public int getMaxCaseStudyTypes() {
     return config.getMaxCaseStudyTypes();
+  }
+
+  public boolean isCanSubmit() {
+    return canSubmit;
   }
 
   @Override
@@ -172,6 +183,13 @@ public class CaseStudiesAction extends BaseAction {
       caseStudies.clear();
       LOG.debug("All the case studies related to the leader {} was deleted", getCurrentUser().getLeader().getId());
     }
+
+    /* --------- Checking if the user can submit ------------- */
+    Submission submission =
+      submissionManager.getSubmission(getCurrentUser().getLeader(), getCurrentReportingLogframe(),
+        APConstants.REPORTING_SECTION);
+
+    canSubmit = (submission == null) ? true : false;
   }
 
   @Override

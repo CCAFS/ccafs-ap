@@ -2,9 +2,12 @@ package org.cgiar.ccafs.ap.action.reporting.outcomes;
 
 import org.cgiar.ccafs.ap.action.BaseAction;
 import org.cgiar.ccafs.ap.config.APConfig;
+import org.cgiar.ccafs.ap.config.APConstants;
 import org.cgiar.ccafs.ap.data.manager.LogframeManager;
 import org.cgiar.ccafs.ap.data.manager.OutcomeManager;
+import org.cgiar.ccafs.ap.data.manager.SubmissionManager;
 import org.cgiar.ccafs.ap.data.model.Outcome;
+import org.cgiar.ccafs.ap.data.model.Submission;
 import org.cgiar.ccafs.ap.util.Capitalize;
 
 import java.util.List;
@@ -23,15 +26,19 @@ public class OutcomesReportingAction extends BaseAction {
 
   // Managers
   private OutcomeManager outcomeManager;
+  private SubmissionManager submissionManager;
 
   // Models
   private List<Outcome> outcomes;
   private StringBuilder validationMessage;
+  private boolean canSubmit;
 
   @Inject
-  public OutcomesReportingAction(APConfig config, LogframeManager logframeManager, OutcomeManager outcomeManager) {
+  public OutcomesReportingAction(APConfig config, LogframeManager logframeManager, OutcomeManager outcomeManager,
+    SubmissionManager submissionManager) {
     super(config, logframeManager);
     this.outcomeManager = outcomeManager;
+    this.submissionManager = submissionManager;
 
     validationMessage = new StringBuilder();
   }
@@ -40,11 +47,16 @@ public class OutcomesReportingAction extends BaseAction {
     return outcomes;
   }
 
+  public boolean isCanSubmit() {
+    return canSubmit;
+  }
+
   @Override
   public String next() {
     save();
     return super.next();
   }
+
 
   @Override
   public void prepare() throws Exception {
@@ -58,6 +70,13 @@ public class OutcomesReportingAction extends BaseAction {
         .getLeader().getId());
       outcomes.clear();
     }
+
+    /* --------- Checking if the user can submit ------------- */
+    Submission submission =
+      submissionManager.getSubmission(getCurrentUser().getLeader(), getCurrentReportingLogframe(),
+        APConstants.REPORTING_SECTION);
+
+    canSubmit = (submission == null) ? true : false;
   }
 
   @Override

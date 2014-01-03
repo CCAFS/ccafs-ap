@@ -2,15 +2,19 @@ package org.cgiar.ccafs.ap.action.reporting.publications;
 
 import org.cgiar.ccafs.ap.action.BaseAction;
 import org.cgiar.ccafs.ap.config.APConfig;
+import org.cgiar.ccafs.ap.config.APConstants;
 import org.cgiar.ccafs.ap.data.manager.LogframeManager;
 import org.cgiar.ccafs.ap.data.manager.OpenAccessManager;
 import org.cgiar.ccafs.ap.data.manager.PublicationManager;
 import org.cgiar.ccafs.ap.data.manager.PublicationThemeManager;
 import org.cgiar.ccafs.ap.data.manager.PublicationTypeManager;
+import org.cgiar.ccafs.ap.data.manager.SubmissionManager;
 import org.cgiar.ccafs.ap.data.model.OpenAccess;
 import org.cgiar.ccafs.ap.data.model.Publication;
 import org.cgiar.ccafs.ap.data.model.PublicationTheme;
 import org.cgiar.ccafs.ap.data.model.PublicationType;
+import org.cgiar.ccafs.ap.data.model.Submission;
+import org.cgiar.ccafs.ap.util.Capitalize;
 
 import java.util.List;
 import java.util.Map;
@@ -36,23 +40,29 @@ public class PublicationsReportingAction extends BaseAction {
   private int[] publicationTypeAccessNeed;
   // This array contains the publication types which need indicators description.
   private int[] publicationTypeIndicatorsNeed;
+  private StringBuilder validationMessages;
+  private boolean canSubmit;
 
   // Managers
   private PublicationManager publicationManager;
   private PublicationTypeManager publicationTypeManager;
   private OpenAccessManager openAccessManager;
   private PublicationThemeManager publicationThemeManager;
-
+  private SubmissionManager submissionManager;
 
   @Inject
   public PublicationsReportingAction(APConfig config, LogframeManager logframeManager,
     PublicationManager publicationManager, PublicationTypeManager publicationTypeManager,
-    OpenAccessManager openAccessManager, PublicationThemeManager publicationThemeManager) {
+    OpenAccessManager openAccessManager, PublicationThemeManager publicationThemeManager,
+    SubmissionManager submissionManager) {
     super(config, logframeManager);
     this.publicationManager = publicationManager;
     this.publicationTypeManager = publicationTypeManager;
     this.openAccessManager = openAccessManager;
     this.publicationThemeManager = publicationThemeManager;
+    this.submissionManager = submissionManager;
+
+    validationMessages = new StringBuilder();
   }
 
   public OpenAccess[] getPublicationAccessList() {
@@ -77,6 +87,16 @@ public class PublicationsReportingAction extends BaseAction {
 
   public PublicationType[] getPublicationTypes() {
     return publicationTypes;
+  }
+
+  public boolean isCanSubmit() {
+    return canSubmit;
+  }
+
+  @Override
+  public String next() {
+    save();
+    return super.next();
   }
 
   @Override
@@ -112,10 +132,19 @@ public class PublicationsReportingAction extends BaseAction {
       LOG.debug("The publications have been deleted from the model to save it later.");
       publications.clear();
     }
+
+    /* --------- Checking if the user can submit ------------- */
+    Submission submission =
+      submissionManager.getSubmission(getCurrentUser().getLeader(), getCurrentReportingLogframe(),
+        APConstants.REPORTING_SECTION);
+
+    canSubmit = (submission == null) ? true : false;
   }
 
   @Override
   public String save() {
+    String finalMessage;
+
     // Remove all publication from the database.
     boolean removed =
       publicationManager.removeAllPublications(this.getCurrentUser().getLeader(), this.getCurrentReportingLogframe());
@@ -124,9 +153,17 @@ public class PublicationsReportingAction extends BaseAction {
         publicationManager.savePublications(publications, this.getCurrentReportingLogframe(), this.getCurrentUser()
           .getLeader());
       if (added) {
+        if (validationMessages.toString().isEmpty()) {
+          addActionMessage(getText("saving.success", new String[] {getText("reporting.publications")}));
+        } else {
+          // If there were validation messages show them in a warning message.
+          finalMessage = getText("saving.success", new String[] {getText("reporting.publications")});
+          finalMessage += getText("saving.missingFields", new String[] {validationMessages.toString()});
+
+          addActionWarning(Capitalize.capitalizeString(finalMessage));
+        }
         LOG.info("The user {} save the publications for the leader.", getCurrentUser().getEmail(), getCurrentUser()
           .getLeader().getId());
-        addActionMessage(getText("saving.success", new String[] {getText("reporting.publications")}));
         return SUCCESS;
       }
     }
@@ -151,39 +188,58 @@ public class PublicationsReportingAction extends BaseAction {
     // If the page is loading don't validate
     if (save) {
       boolean problem = false;
+      boolean needCitation = false, needOpenAccess = false, needIdentifier = false;
+      boolean needThemes = false;
+
       int c = 0;
       for (Publication publication : publications) {
         boolean needAccessType = false;
 
+        if (publication.getIdentifier().isEmpty()) {
+          problem = needIdentifier = true;
+        }
+
+        if (publication.getCitation().isEmpty()) {
+          problem = needCitation = true;
+        }
+
         for (int typeId : publicationTypeAccessNeed) {
           if (publication.getType().getId() == typeId) {
-            needAccessType = true;
+            problem = needAccessType = true;
             break;
           }
         }
-        if (publication.getCitation().isEmpty()) {
-          problem = true;
-          addFieldError("publications[" + c + "].citation",
-            getText("validation.required", new String[] {getText("reporting.publications.citation")}));
-        }
+
         if (publication.getAccess() == null) {
           publication.setAccess(new OpenAccess());
           if (needAccessType) {
-            problem = true;
-            addFieldError("publications[" + c + "].access",
-              getText("validation.required", new String[] {getText("reporting.publications.access")}));
+            problem = needOpenAccess = true;
           }
         }
         if (publication.getRelatedThemes().length == 0) {
-          problem = true;
-          addFieldError("publications[" + c + "].themeRelated",
-            getText("validation.required", new String[] {getText("reporting.publications.themeRelated")}));
+          problem = needThemes = true;
         }
         c++;
       }
 
+      if (needCitation) {
+        validationMessages.append(getText("reporting.publications.validation.citation") + ", ");
+      }
+
+      if (needOpenAccess) {
+        validationMessages.append(getText("reporting.publications.validation.openAccess") + ", ");
+      }
+
+      if (needIdentifier) {
+        validationMessages.append(getText("reporting.publications.validation.identifier") + ", ");
+      }
+
+      if (needThemes) {
+        validationMessages.append(getText("reporting.publications.validation.theme") + ", ");
+      }
+
       if (problem) {
-        addActionError(getText("saving.fields.required"));
+        validationMessages.setCharAt(validationMessages.lastIndexOf(","), '.');
       }
     }
   }

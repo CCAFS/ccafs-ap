@@ -2,11 +2,14 @@ package org.cgiar.ccafs.ap.action.reporting.indicators;
 
 import org.cgiar.ccafs.ap.action.BaseAction;
 import org.cgiar.ccafs.ap.config.APConfig;
+import org.cgiar.ccafs.ap.config.APConstants;
 import org.cgiar.ccafs.ap.data.manager.IndicatorReportManager;
 import org.cgiar.ccafs.ap.data.manager.LogframeManager;
+import org.cgiar.ccafs.ap.data.manager.SubmissionManager;
 import org.cgiar.ccafs.ap.data.model.IndicatorReport;
 import org.cgiar.ccafs.ap.data.model.Leader;
 import org.cgiar.ccafs.ap.data.model.Logframe;
+import org.cgiar.ccafs.ap.data.model.Submission;
 import org.cgiar.ccafs.ap.util.Capitalize;
 
 import java.util.List;
@@ -24,16 +27,20 @@ public class IndicatorsReportingAction extends BaseAction {
 
   // Manager
   private IndicatorReportManager indicatorReportManager;
+  private SubmissionManager submissionManager;
 
   // Model
   private List<IndicatorReport> indicatorReports;
   private StringBuilder validationMessage;
+  private boolean canSubmit;
 
   @Inject
   public IndicatorsReportingAction(APConfig config, LogframeManager logframeManager,
-    IndicatorReportManager indicatorReportManager) {
+    IndicatorReportManager indicatorReportManager, SubmissionManager submissionManager) {
     super(config, logframeManager);
     this.indicatorReportManager = indicatorReportManager;
+    this.submissionManager = submissionManager;
+
     validationMessage = new StringBuilder();
   }
 
@@ -43,6 +50,10 @@ public class IndicatorsReportingAction extends BaseAction {
 
   public List<IndicatorReport> getIndicatorReports() {
     return indicatorReports;
+  }
+
+  public boolean isCanSubmit() {
+    return canSubmit;
   }
 
   @Override
@@ -56,6 +67,13 @@ public class IndicatorsReportingAction extends BaseAction {
     Leader leader = getCurrentUser().getLeader();
     Logframe logframe = getCurrentReportingLogframe();
     indicatorReports = indicatorReportManager.getIndicatorReportsList(leader, logframe);
+
+    /* --------- Checking if the user can submit ------------- */
+    Submission submission =
+      submissionManager.getSubmission(getCurrentUser().getLeader(), getCurrentReportingLogframe(),
+        APConstants.REPORTING_SECTION);
+
+    canSubmit = (submission == null) ? true : false;
   }
 
   @Override

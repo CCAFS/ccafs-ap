@@ -9,11 +9,13 @@ import org.cgiar.ccafs.ap.data.manager.DeliverableStatusManager;
 import org.cgiar.ccafs.ap.data.manager.DeliverableTypeManager;
 import org.cgiar.ccafs.ap.data.manager.FileFormatManager;
 import org.cgiar.ccafs.ap.data.manager.LogframeManager;
+import org.cgiar.ccafs.ap.data.manager.SubmissionManager;
 import org.cgiar.ccafs.ap.data.model.Activity;
 import org.cgiar.ccafs.ap.data.model.Deliverable;
 import org.cgiar.ccafs.ap.data.model.DeliverableStatus;
 import org.cgiar.ccafs.ap.data.model.DeliverableType;
 import org.cgiar.ccafs.ap.data.model.FileFormat;
+import org.cgiar.ccafs.ap.data.model.Submission;
 import org.cgiar.ccafs.ap.util.Capitalize;
 
 import java.util.ArrayList;
@@ -40,6 +42,7 @@ public class DeliverablesReportingAction extends BaseAction {
   private DeliverableTypeManager deliverableTypeManager;
   private FileFormatManager fileFormatManager;
   private ActivityManager activityManager;
+  private SubmissionManager submissionManager;
 
   // Model
   private DeliverableType[] deliverableTypesList;
@@ -51,12 +54,13 @@ public class DeliverablesReportingAction extends BaseAction {
   private Activity activity;
   private int activityID;
   private StringBuilder validationMessage;
+  private boolean canSubmit;
 
   @Inject
   public DeliverablesReportingAction(APConfig config, LogframeManager logframeManager,
     DeliverableManager deliverableManager, ActivityManager activityManager,
     DeliverableTypeManager deliverableTypeManager, DeliverableStatusManager deliverableStatusManager,
-    FileFormatManager fileFormatManager) {
+    FileFormatManager fileFormatManager, SubmissionManager submissionManager) {
 
     super(config, logframeManager);
     this.deliverableManager = deliverableManager;
@@ -64,6 +68,7 @@ public class DeliverablesReportingAction extends BaseAction {
     this.deliverableStatusManager = deliverableStatusManager;
     this.deliverableTypeManager = deliverableTypeManager;
     this.fileFormatManager = fileFormatManager;
+    this.submissionManager = submissionManager;
   }
 
   public Activity getActivity() {
@@ -109,11 +114,16 @@ public class DeliverablesReportingAction extends BaseAction {
     return years;
   }
 
+  public boolean isCanSubmit() {
+    return canSubmit;
+  }
+
   @Override
   public String next() {
     save();
     return super.next();
   }
+
 
   @Override
   public void prepare() throws Exception {
@@ -158,6 +168,13 @@ public class DeliverablesReportingAction extends BaseAction {
         }
       }
     }
+
+    /* --------- Checking if the user can submit ------------- */
+    Submission submission =
+      submissionManager.getSubmission(getCurrentUser().getLeader(), getCurrentReportingLogframe(),
+        APConstants.REPORTING_SECTION);
+
+    canSubmit = (submission == null) ? true : false;
   }
 
   @Override

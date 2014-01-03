@@ -2,10 +2,13 @@ package org.cgiar.ccafs.ap.action.reporting.outcomes;
 
 import org.cgiar.ccafs.ap.action.BaseAction;
 import org.cgiar.ccafs.ap.config.APConfig;
+import org.cgiar.ccafs.ap.config.APConstants;
 import org.cgiar.ccafs.ap.data.manager.LogframeManager;
 import org.cgiar.ccafs.ap.data.manager.OutcomeIndicatorReportManager;
+import org.cgiar.ccafs.ap.data.manager.SubmissionManager;
 import org.cgiar.ccafs.ap.data.manager.ThemeManager;
 import org.cgiar.ccafs.ap.data.model.OutcomeIndicatorReport;
+import org.cgiar.ccafs.ap.data.model.Submission;
 import org.cgiar.ccafs.ap.data.model.Theme;
 
 import java.util.List;
@@ -23,18 +26,22 @@ public class OutcomeIndicatorsReportingAction extends BaseAction {
   // Managers
   private OutcomeIndicatorReportManager outcomeIndicatorReportManager;
   private ThemeManager themeManager;
+  private SubmissionManager submissionManager;
 
   // Model
   private List<OutcomeIndicatorReport> outcomeIndicatorReports;
   private Theme[] themes;
   private int currentIndicatorsTheme;
+  private boolean canSubmit;
 
   @Inject
   public OutcomeIndicatorsReportingAction(APConfig config, LogframeManager logframeManager,
-    OutcomeIndicatorReportManager outcomeIndicatorReportManager, ThemeManager themeManager) {
+    OutcomeIndicatorReportManager outcomeIndicatorReportManager, ThemeManager themeManager,
+    SubmissionManager submissionManager) {
     super(config, logframeManager);
     this.outcomeIndicatorReportManager = outcomeIndicatorReportManager;
     this.themeManager = themeManager;
+    this.submissionManager = submissionManager;
   }
 
   public int getCurrentIndicatorsTheme() {
@@ -49,16 +56,28 @@ public class OutcomeIndicatorsReportingAction extends BaseAction {
     return themes;
   }
 
+  public boolean isCanSubmit() {
+    return canSubmit;
+  }
+
   @Override
   public String next() {
     save();
     return super.next();
   }
 
+
   @Override
   public void prepare() throws Exception {
     outcomeIndicatorReports = outcomeIndicatorReportManager.getOutcomeIndicatorReports(getCurrentReportingLogframe());
     themes = themeManager.getThemes(getCurrentReportingLogframe());
+
+    /* --------- Checking if the user can submit ------------- */
+    Submission submission =
+      submissionManager.getSubmission(getCurrentUser().getLeader(), getCurrentReportingLogframe(),
+        APConstants.REPORTING_SECTION);
+
+    canSubmit = (submission == null) ? true : false;
   }
 
   @Override

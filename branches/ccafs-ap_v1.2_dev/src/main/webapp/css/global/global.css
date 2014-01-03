@@ -659,7 +659,7 @@ a.currentReportingSection li #i-additionalInformation{
   padding: 3px 15px;
 }
 
-#activityListPlanning #submitButtonBlock {
+ #submitButtonBlock {
   clear: both;
   color: #663300;
   display: block;
@@ -668,7 +668,7 @@ a.currentReportingSection li #i-additionalInformation{
   text-align: center !important;
 }
 
-#activityListPlanning #submitButtonBlock button#submitForm_save{
+#submitButtonBlock button#submitForm_save{
   background: url('../../images/global/sprite-icons-activities.png') 30px -103px #657A36 no-repeat;
   width: 146px;
   height: 28px;
@@ -683,7 +683,7 @@ a.currentReportingSection li #i-additionalInformation{
   cursor : auto;
 }
 
-#activityListPlanning #submitButtonBlock button#submitForm_save:hover {
+#submitButtonBlock button#submitForm_save:hover {
 	background-color: #576A2D;
 }
 	

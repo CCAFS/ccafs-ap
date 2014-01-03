@@ -8,10 +8,12 @@ import org.cgiar.ccafs.ap.data.manager.BudgetManager;
 import org.cgiar.ccafs.ap.data.manager.ContactPersonManager;
 import org.cgiar.ccafs.ap.data.manager.LogframeManager;
 import org.cgiar.ccafs.ap.data.manager.StatusManager;
+import org.cgiar.ccafs.ap.data.manager.SubmissionManager;
 import org.cgiar.ccafs.ap.data.model.Activity;
 import org.cgiar.ccafs.ap.data.model.Budget;
 import org.cgiar.ccafs.ap.data.model.ContactPerson;
 import org.cgiar.ccafs.ap.data.model.Status;
+import org.cgiar.ccafs.ap.data.model.Submission;
 import org.cgiar.ccafs.ap.util.Capitalize;
 
 import java.util.LinkedHashMap;
@@ -35,6 +37,8 @@ public class StatusReportingAction extends BaseAction {
   private ContactPersonManager contactPersonManager;
   private BudgetManager budgetManager;
   private StatusManager statusManager;
+  private SubmissionManager submissionManager;
+  private boolean canSubmit;
 
   // Model
   private Activity activity;
@@ -46,12 +50,14 @@ public class StatusReportingAction extends BaseAction {
 
   @Inject
   public StatusReportingAction(APConfig config, LogframeManager logframeManager, ActivityManager activityManager,
-    ContactPersonManager contactPersonManager, BudgetManager budgetManager, StatusManager statusManager) {
+    ContactPersonManager contactPersonManager, BudgetManager budgetManager, StatusManager statusManager,
+    SubmissionManager submissionManager) {
     super(config, logframeManager);
     this.activityManager = activityManager;
     this.contactPersonManager = contactPersonManager;
     this.budgetManager = budgetManager;
     this.statusManager = statusManager;
+    this.submissionManager = submissionManager;
 
     this.genderOptions = new LinkedHashMap<>();
     genderOptions.put("1", "Yes");
@@ -95,11 +101,16 @@ public class StatusReportingAction extends BaseAction {
     return statusList;
   }
 
+  public boolean isCanSubmit() {
+    return canSubmit;
+  }
+
   @Override
   public String next() {
     save();
     return super.next();
   }
+
 
   @Override
   public void prepare() throws Exception {
@@ -122,6 +133,12 @@ public class StatusReportingAction extends BaseAction {
     Budget budget = budgetManager.getBudget(activityID);
     activity.setBudget(budget);
 
+    /* --------- Checking if the user can submit ------------- */
+    Submission submission =
+      submissionManager.getSubmission(getCurrentUser().getLeader(), getCurrentReportingLogframe(),
+        APConstants.REPORTING_SECTION);
+
+    canSubmit = (submission == null) ? true : false;
   }
 
   @Override
@@ -133,7 +150,7 @@ public class StatusReportingAction extends BaseAction {
           activityID);
       } else {
         String finalMessage = getText("saving.success", new String[] {getText("reporting.activityStatus")});
-        finalMessage += getText("saving.keepInMind", new String[] {validationMessage.toString()});
+        finalMessage += getText("saving.missingFields", new String[] {validationMessage.toString()});
         addActionWarning(Capitalize.capitalizeString(finalMessage));
       }
 
@@ -158,19 +175,26 @@ public class StatusReportingAction extends BaseAction {
 
   @Override
   public void validate() {
-    super.validate();
+    boolean problem = false;
 
     if (save) {
       if (activity.getStatusDescription().isEmpty()) {
-        validationMessage.append(getText("reporting.activityStatus.statusDescription.invalid"));
+        validationMessage.append(getText("reporting.activityStatus.statusDescription.invalid") + ", ");
+        problem = true;
       }
 
       if (this.getHasGender() && activity.getGenderIntegrationsDescription().isEmpty()) {
-        validationMessage.append(getText("validation.field.required"));
+        validationMessage.append(getText("reporting.activityStatus.genderIntegration.invalid") + ", ");
+        problem = true;
       }
 
       if (activity.getStatus().getId() == 0) {
-        validationMessage.append(getText("reporting.activityStatus.status.invalid"));
+        validationMessage.append(getText("reporting.activityStatus.status.invalid") + ", ");
+        problem = true;
+      }
+
+      if (problem) {
+        validationMessage.setCharAt(validationMessage.lastIndexOf(","), '.');
       }
     }
 

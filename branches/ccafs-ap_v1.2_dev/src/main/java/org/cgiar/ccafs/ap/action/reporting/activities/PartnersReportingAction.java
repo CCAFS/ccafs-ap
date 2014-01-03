@@ -8,9 +8,11 @@ import org.cgiar.ccafs.ap.data.manager.ActivityPartnerManager;
 import org.cgiar.ccafs.ap.data.manager.LogframeManager;
 import org.cgiar.ccafs.ap.data.manager.PartnerManager;
 import org.cgiar.ccafs.ap.data.manager.PartnerTypeManager;
+import org.cgiar.ccafs.ap.data.manager.SubmissionManager;
 import org.cgiar.ccafs.ap.data.model.Activity;
 import org.cgiar.ccafs.ap.data.model.Partner;
 import org.cgiar.ccafs.ap.data.model.PartnerType;
+import org.cgiar.ccafs.ap.data.model.Submission;
 import org.cgiar.ccafs.ap.util.Capitalize;
 import org.cgiar.ccafs.ap.util.EmailValidator;
 
@@ -34,6 +36,7 @@ public class PartnersReportingAction extends BaseAction {
   private ActivityPartnerManager activityPartnerManager;
   private PartnerManager partnerManager;
   private PartnerTypeManager partnerTypeManager;
+  private SubmissionManager submissionManager;
 
   // Model
   private PartnerType[] partnerTypes;
@@ -41,19 +44,21 @@ public class PartnersReportingAction extends BaseAction {
   private Activity activity;
   private StringBuilder validationMessage;
   private Map<Boolean, String> partnersOptions;
+  private boolean canSubmit;
 
   private int activityID;
 
   @Inject
   public PartnersReportingAction(APConfig config, LogframeManager logframeManager,
     ActivityPartnerManager activityPartnerManager, ActivityManager activityManager, PartnerManager partnerManager,
-    PartnerTypeManager partnerTypeManager) {
+    PartnerTypeManager partnerTypeManager, SubmissionManager submissionManager) {
 
     super(config, logframeManager);
     this.activityManager = activityManager;
     this.activityPartnerManager = activityPartnerManager;
     this.partnerManager = partnerManager;
     this.partnerTypeManager = partnerTypeManager;
+    this.submissionManager = submissionManager;
 
     this.partnersOptions = new LinkedHashMap<>();
 
@@ -89,11 +94,16 @@ public class PartnersReportingAction extends BaseAction {
   }
 
 
+  public boolean isCanSubmit() {
+    return canSubmit;
+  }
+
   @Override
   public String next() {
     save();
     return super.next();
   }
+
 
   @Override
   public void prepare() throws Exception {
@@ -109,6 +119,13 @@ public class PartnersReportingAction extends BaseAction {
     if (this.getRequest().getMethod().equalsIgnoreCase("post")) {
       activity.getActivityPartners().clear();
     }
+
+    /* --------- Checking if the user can submit ------------- */
+    Submission submission =
+      submissionManager.getSubmission(getCurrentUser().getLeader(), getCurrentReportingLogframe(),
+        APConstants.REPORTING_SECTION);
+
+    canSubmit = (submission == null) ? true : false;
   }
 
   @Override

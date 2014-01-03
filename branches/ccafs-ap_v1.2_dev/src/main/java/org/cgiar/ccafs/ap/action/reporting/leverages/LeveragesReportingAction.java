@@ -2,10 +2,13 @@ package org.cgiar.ccafs.ap.action.reporting.leverages;
 
 import org.cgiar.ccafs.ap.action.BaseAction;
 import org.cgiar.ccafs.ap.config.APConfig;
+import org.cgiar.ccafs.ap.config.APConstants;
 import org.cgiar.ccafs.ap.data.manager.LeverageManager;
 import org.cgiar.ccafs.ap.data.manager.LogframeManager;
+import org.cgiar.ccafs.ap.data.manager.SubmissionManager;
 import org.cgiar.ccafs.ap.data.manager.ThemeManager;
 import org.cgiar.ccafs.ap.data.model.Leverage;
+import org.cgiar.ccafs.ap.data.model.Submission;
 import org.cgiar.ccafs.ap.data.model.Theme;
 import org.cgiar.ccafs.ap.util.Capitalize;
 
@@ -29,18 +32,22 @@ public class LeveragesReportingAction extends BaseAction {
   // Manager
   private LeverageManager leverageManager;
   private ThemeManager themeManager;
+  private SubmissionManager submissionManager;
 
   // Model
   private List<Leverage> leverages;
   private Map<Integer, String> themeList;
   private StringBuilder validationMessage;
+  private boolean canSubmit;
+
 
   @Inject
   public LeveragesReportingAction(APConfig config, LogframeManager logframeManager, LeverageManager leverageManager,
-    ThemeManager themeManager) {
+    ThemeManager themeManager, SubmissionManager submissionManager) {
     super(config, logframeManager);
     this.leverageManager = leverageManager;
     this.themeManager = themeManager;
+    this.submissionManager = submissionManager;
 
     validationMessage = new StringBuilder();
   }
@@ -59,6 +66,10 @@ public class LeveragesReportingAction extends BaseAction {
       years.add(String.valueOf(c));
     }
     return years;
+  }
+
+  public boolean isCanSubmit() {
+    return canSubmit;
   }
 
   @Override
@@ -83,6 +94,13 @@ public class LeveragesReportingAction extends BaseAction {
         .getLeader().getId());
       leverages.clear();
     }
+
+    /* --------- Checking if the user can submit ------------- */
+    Submission submission =
+      submissionManager.getSubmission(getCurrentUser().getLeader(), getCurrentReportingLogframe(),
+        APConstants.REPORTING_SECTION);
+
+    canSubmit = (submission == null) ? true : false;
   }
 
   @Override

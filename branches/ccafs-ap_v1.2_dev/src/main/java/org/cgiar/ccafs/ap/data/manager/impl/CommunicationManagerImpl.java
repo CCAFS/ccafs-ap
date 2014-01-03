@@ -60,7 +60,12 @@ public class CommunicationManagerImpl implements CommunicationManager {
   public boolean saveCommunicationReport(Communication communication, Leader leader, Logframe logframe) {
 
     Map<String, String> communicationData = new HashMap<>();
-    communicationData.put("id", String.valueOf(communication.getId()));
+    if (communication.getId() != -1) {
+      communicationData.put("id", String.valueOf(communication.getId()));
+    } else {
+      communicationData.put("id", null);
+    }
+
     communicationData.put("media_campaigns", communication.getMediaCampaings());
     communicationData.put("blogs", communication.getBlogs());
     communicationData.put("websites", communication.getWebsites());

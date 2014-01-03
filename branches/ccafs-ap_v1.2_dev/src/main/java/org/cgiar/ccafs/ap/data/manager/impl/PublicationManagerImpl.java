@@ -118,7 +118,7 @@ public class PublicationManagerImpl implements PublicationManager {
       } else {
         pubData.put("identifier", publication.getIdentifier());
       }
-      if (publication.getAccess().getId() == 0) {
+      if (publication.getAccess() == null || publication.getAccess().getId() == 0) {
         pubData.put("open_access_id", null);
       } else {
         pubData.put("open_access_id", String.valueOf(publication.getAccess().getId()));
@@ -139,6 +139,7 @@ public class PublicationManagerImpl implements PublicationManager {
       pubData.put("activity_leader_id", leader.getId() + "");
 
       int publicationId = publicationDAO.savePublication(pubData);
+
       // If the publication has an id the addDeliverable function return 0 as id,
       // so, the id must be set to its original value
       publicationId = (publication.getId() != -1) ? publication.getId() : publicationId;
@@ -146,10 +147,12 @@ public class PublicationManagerImpl implements PublicationManager {
       // If the publications was successfully saved, save the themes related
       if (publicationId != -1) {
         // lets add the file format list.
-        boolean themesRelatedAdded =
-          publicationThemeDAO.savePublicationThemes(publicationId, publication.getRelatedThemesIds());
-        if (!themesRelatedAdded) {
-          return false;
+        if (publication.getRelatedThemesIds().size() > 0) {
+          boolean themesRelatedAdded =
+            publicationThemeDAO.savePublicationThemes(publicationId, publication.getRelatedThemesIds());
+          if (!themesRelatedAdded) {
+            return false;
+          }
         }
       } else {
         return false;
