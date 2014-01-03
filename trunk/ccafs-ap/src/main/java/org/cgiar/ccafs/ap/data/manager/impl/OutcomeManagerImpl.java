@@ -38,6 +38,7 @@ public class OutcomeManagerImpl implements OutcomeManager {
       } else {
         outcomeData.put("id", null);
       }
+      outcomeData.put("title", outcome.getTitle());
       outcomeData.put("outcome", outcome.getOutcome());
       outcomeData.put("outputs", outcome.getOutputs());
       outcomeData.put("partners", outcome.getPartners());
@@ -58,6 +59,7 @@ public class OutcomeManagerImpl implements OutcomeManager {
     for (Map<String, String> outcomeData : outcomesData) {
       Outcome outcome = new Outcome();
       outcome.setId(Integer.parseInt(outcomeData.get("id")));
+      outcome.setTitle(outcomeData.get("title"));
       outcome.setOutcome(outcomeData.get("outcome"));
       outcome.setOutputs(outcomeData.get("outputs"));
       outcome.setPartners(outcomeData.get("partners"));
@@ -80,6 +82,7 @@ public class OutcomeManagerImpl implements OutcomeManager {
     for (Map<String, String> outcomeData : outcomesData) {
       Outcome outcome = new Outcome();
       outcome.setId(Integer.parseInt(outcomeData.get("id")));
+      outcome.setTitle(outcomeData.get("title"));
       outcome.setOutcome(outcomeData.get("outcome"));
 
       tempLeader = new Leader();

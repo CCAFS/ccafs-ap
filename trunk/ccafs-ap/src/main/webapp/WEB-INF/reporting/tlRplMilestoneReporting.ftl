@@ -96,10 +96,12 @@
         [/#list]
       </div>
       
-      <div class="buttons">
-        [@s.submit type="button" name="save"][@s.text name="form.buttons.save" /][/@s.submit]
-        [@s.submit type="button" name="cancel"][@s.text name="form.buttons.cancel" /][/@s.submit]
-      </div>
+      [#if canSubmit]
+        <div class="buttons">
+          [@s.submit type="button" name="save"][@s.text name="form.buttons.save" /][/@s.submit]
+          [@s.submit type="button" name="cancel"][@s.text name="form.buttons.cancel" /][/@s.submit]
+        </div>
+      [/#if]
 
     </article>
   [/@s.form]

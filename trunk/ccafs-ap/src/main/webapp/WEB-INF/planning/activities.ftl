@@ -60,13 +60,13 @@
                     [@s.submit type="button" name="save" method="submit" cssClass="test" ][@s.text name="form.buttons.submit" /][/@s.submit] 
                   [/@s.form]  
                 [#else]
-                  <button id="submitForm_save" class="disabled" title="[@s.text name="planning.activityList.submit.disabled" /]"> [@s.text name="form.buttons.submit" /] </button>
+                  <button id="submitForm_save" class="disabled" title="[@s.text name="submit.disabled" /]"> [@s.text name="form.buttons.submit" /] </button>
                 [/#if]
               </div>
             [/#if]
           [#else]
             <div id="submitButtonBlock" class="buttons">
-              <img src="${baseUrl}/images/global/icon-complete.png" /> [@s.text name="planning.activityList.submitted" /]
+              <img src="${baseUrl}/images/global/icon-complete.png" /> [@s.text name="submit.submitted" /]
             </div>
           [/#if]
         
@@ -167,7 +167,7 @@
       
     </div>
     
-    <input type="hidden" id="beforeSubmitMessage" value="[@s.text name="planning.activityList.beforeSubmit.message" /]" />
+    <input type="hidden" id="beforeSubmitMessage" value="[@s.text name="submit.beforeSubmit.message" /]" />
     
     <div class="clearfix"></div>
   </article>

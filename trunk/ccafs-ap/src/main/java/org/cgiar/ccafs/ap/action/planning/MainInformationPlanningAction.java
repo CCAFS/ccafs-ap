@@ -148,6 +148,7 @@ public class MainInformationPlanningAction extends BaseAction {
     milestones = milestoneManager.getMilestoneList(getCurrentPlanningLogframe());
     // Get the basic information about the activity
     activity = activityManager.getActivityStatusInfo(activityID);
+
     // Set contact persons
     activity.setContactPersons(contactPersonManager.getContactPersons(activityID));
     // Set the budget

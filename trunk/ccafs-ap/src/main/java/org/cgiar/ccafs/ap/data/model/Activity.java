@@ -9,6 +9,7 @@ import org.apache.commons.lang3.builder.ToStringBuilder;
 public class Activity {
 
   private int id;
+  private String activityId;
   private int year;
   private String title;
   private Date startDate;
@@ -39,6 +40,10 @@ public class Activity {
   private Activity continuousActivity;
 
   public Activity() {
+  }
+
+  public String getActivityId() {
+    return activityId;
   }
 
   public List<ActivityPartner> getActivityPartners() {
@@ -199,6 +204,10 @@ public class Activity {
 
   public boolean isValidated() {
     return isValidated;
+  }
+
+  public void setActivityId(String activityId) {
+    this.activityId = activityId;
   }
 
   public void setActivityPartners(List<ActivityPartner> activityPartners) {

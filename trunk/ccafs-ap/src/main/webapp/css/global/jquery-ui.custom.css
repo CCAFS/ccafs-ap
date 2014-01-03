@@ -45,12 +45,12 @@
     clear: left;
     width: 100%;
     margin: 0.2em 0;
-    border: 1px solid gray;
+    border: 1px solid #FFFFFF;
     border-width: 1px 0 1px 1px;
     border-radius: 4px 0 0 4px;
     overflow: hidden;
     position: relative;
-    right: -2px;
+    right: -3px;
     z-index: 2;
  
 }

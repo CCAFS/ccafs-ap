@@ -30,6 +30,7 @@ public class APConfig {
   private static final String GMAIL_PASSWORD = "gmail.password";
   private static final String FILE_CASE_STUDIES_IMAGE_URL = "file.caseStudiesImagesUrl";
   private static final String FILE_CASE_STUDIES_IMAGE_PATH = "file.caseStudiesImagesPath";
+  private static final String MAX_CASE_STUDY_TYPES = "ccafsap.reporting.caseStudy.types.max";
 
   // Logging.
   private static final Logger LOG = LoggerFactory.getLogger(APConfig.class);
@@ -150,6 +151,20 @@ public class APConfig {
       LOG.error("there is not a Gmail user configured.");
     }
     return null;
+  }
+
+  /**
+   * Get the number maximum of types that can have a case study
+   * 
+   * @return
+   */
+  public int getMaxCaseStudyTypes() {
+    try {
+      return properties.getPropertiesAsInt(MAX_CASE_STUDY_TYPES);
+    } catch (Exception e) {
+      LOG.error("there is not a number maximum of types that can have a case study configured.");
+    }
+    return -1;
   }
 
   /**

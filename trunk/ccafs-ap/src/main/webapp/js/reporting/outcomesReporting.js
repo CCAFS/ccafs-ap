@@ -14,6 +14,9 @@ $(document).ready(function() {
           $(this).find("[id^='removeOutcome-']").attr("id","removeOutcome-" + index);
           // Identifier
           $(this).find("[name$='id']").attr("name", "outcomes[" + index + "].id");
+          // Title.
+          $(this).find("[id$='title']").attr("id", "outcomes[" + index + "].title");
+          $(this).find("[id$='title']").attr("name", "outcomes[" + index + "].title");
           // Outcome.
           $(this).find("[id$='outcome']").attr("id", "outcomes[" + index + "].outcome");
           $(this).find("[name$='outcome']").attr("name", "outcomes[" + index + "].outcome");

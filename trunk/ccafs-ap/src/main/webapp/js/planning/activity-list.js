@@ -1,5 +1,5 @@
 $(document).ready(function() {
-  
+  // Test
   $("#activityTables").tabs({ show: { effect: "slide", direction: "up", duration: 500 }});
   
   $( "#previousActivities" )

@@ -29,10 +29,15 @@
       [#-- Identifier --]
       <input type="hidden" name="outcomes[${outcome_index}].id" value="${outcome.id}" />
       
+      [#-- Title --]
+      <div class="fullBlock">
+        [@customForm.textArea name="outcomes[${outcome_index}].title" i18nkey="reporting.outcomes.title" /]
+      </div>
+      
       [#-- Outcome --]
       <div class="fullBlock">
         [@customForm.textArea name="outcomes[${outcome_index}].outcome" i18nkey="reporting.outcomes.outcome" /]
-      </div>     
+      </div>
       
       [#-- Output --]
       <div class="fullBlock">
@@ -104,6 +109,11 @@
           [#-- Identifier --]
           <input type="hidden" name="id" value="-1" />
           
+          [#-- Title --]
+          <div class="fullBlock">
+            [@customForm.textArea name="title" i18nkey="reporting.outcomes.title" /]
+          </div>
+          
           [#-- Outcome --]
           <div class="fullBlock">
             [@customForm.textArea name="outcome" i18nkey="reporting.outcomes.outcome" /]
@@ -136,10 +146,13 @@
         </div> <!-- End outcome template -->
       </div> <!-- End template -->
       
-      <div class="buttons">
-        [@s.submit type="button" name="save"][@s.text name="form.buttons.save" /][/@s.submit]
-        [@s.submit type="button" name="cancel"][@s.text name="form.buttons.cancel" /][/@s.submit]
-      </div>
+      [#if canSubmit]
+        <div class="buttons">
+          [@s.submit type="button" name="save"][@s.text name="form.buttons.save" /][/@s.submit]
+          [@s.submit type="button" name="next"][@s.text name="form.buttons.next" /][/@s.submit]
+          [@s.submit type="button" name="cancel"][@s.text name="form.buttons.cancel" /][/@s.submit]
+        </div>
+      [/#if]
     </article>
   [/@s.form]
  

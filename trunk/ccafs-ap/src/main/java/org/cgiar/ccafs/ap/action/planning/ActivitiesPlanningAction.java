@@ -328,9 +328,9 @@ public class ActivitiesPlanningAction extends BaseAction {
         sendConfirmationMessage();
       }
 
-      addActionMessage(getText("planning.activityList.submission.success"));
+      addActionMessage(getText("submit.success"));
     } else {
-      addActionError(getText("planning.activityList.submission.error"));
+      addActionError(getText("submit.error"));
     }
     return INPUT;
   }

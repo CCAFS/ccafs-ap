@@ -11,6 +11,14 @@ import com.google.inject.ImplementedBy;
 public interface ThemeManager {
 
   /**
+   * Get the theme object corresponding to the given id
+   * 
+   * @param id - Theme identifier
+   * @return Theme objects
+   */
+  public Theme getTheme(String id);
+
+  /**
    * Get the theme list.
    * 
    * @return an array of Theme objects or null if no data found

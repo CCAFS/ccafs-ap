@@ -4,6 +4,7 @@ package org.cgiar.ccafs.ap.data.model;
 public class Outcome {
 
   private int id;
+  private String title;
   private String outcome;
   private String outputs;
   private String partners;
@@ -52,6 +53,10 @@ public class Outcome {
     return partners;
   }
 
+  public String getTitle() {
+    return title;
+  }
+
   public void setEvidence(String evidence) {
     this.evidence = evidence;
   }
@@ -86,6 +91,10 @@ public class Outcome {
 
   public void setPartners(String partners) {
     this.partners = partners;
+  }
+
+  public void setTitle(String title) {
+    this.title = title;
   }
 
 }

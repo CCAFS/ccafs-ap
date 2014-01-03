@@ -9,14 +9,19 @@ import org.cgiar.ccafs.ap.data.manager.DeliverableStatusManager;
 import org.cgiar.ccafs.ap.data.manager.DeliverableTypeManager;
 import org.cgiar.ccafs.ap.data.manager.FileFormatManager;
 import org.cgiar.ccafs.ap.data.manager.LogframeManager;
+import org.cgiar.ccafs.ap.data.manager.SubmissionManager;
 import org.cgiar.ccafs.ap.data.model.Activity;
 import org.cgiar.ccafs.ap.data.model.Deliverable;
 import org.cgiar.ccafs.ap.data.model.DeliverableStatus;
 import org.cgiar.ccafs.ap.data.model.DeliverableType;
 import org.cgiar.ccafs.ap.data.model.FileFormat;
+import org.cgiar.ccafs.ap.data.model.Submission;
+import org.cgiar.ccafs.ap.util.Capitalize;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Iterator;
+import java.util.List;
 
 import com.google.inject.Inject;
 import org.apache.commons.lang3.StringUtils;
@@ -37,6 +42,7 @@ public class DeliverablesReportingAction extends BaseAction {
   private DeliverableTypeManager deliverableTypeManager;
   private FileFormatManager fileFormatManager;
   private ActivityManager activityManager;
+  private SubmissionManager submissionManager;
 
   // Model
   private DeliverableType[] deliverableTypesList;
@@ -47,12 +53,14 @@ public class DeliverablesReportingAction extends BaseAction {
   private int[] deliverableTypeIdsPublications;
   private Activity activity;
   private int activityID;
+  private StringBuilder validationMessage;
+  private boolean canSubmit;
 
   @Inject
   public DeliverablesReportingAction(APConfig config, LogframeManager logframeManager,
     DeliverableManager deliverableManager, ActivityManager activityManager,
     DeliverableTypeManager deliverableTypeManager, DeliverableStatusManager deliverableStatusManager,
-    FileFormatManager fileFormatManager) {
+    FileFormatManager fileFormatManager, SubmissionManager submissionManager) {
 
     super(config, logframeManager);
     this.deliverableManager = deliverableManager;
@@ -60,6 +68,7 @@ public class DeliverablesReportingAction extends BaseAction {
     this.deliverableStatusManager = deliverableStatusManager;
     this.deliverableTypeManager = deliverableTypeManager;
     this.fileFormatManager = fileFormatManager;
+    this.submissionManager = submissionManager;
   }
 
   public Activity getActivity() {
@@ -97,10 +106,103 @@ public class DeliverablesReportingAction extends BaseAction {
     return fileFormatsList;
   }
 
+  public String getIntranetPath() {
+    StringBuilder path = new StringBuilder();
+    path.append("http://intranet.ccafs.cgiar.org/");
+
+    if (getCurrentUser().isCP() || getCurrentUser().isPI()) {
+      path.append("Institutional Contact Points Library/Forms/");
+      path.append("AllItems.aspx?RootFolder=/Institutional Contact Points Library/");
+      path.append("Reviewing and Reporting/Center Technical Reports/");
+      path.append(getCurrentReportingLogframe().getYear() + "/");
+      path.append(getCurrentUser().getLeader().getAcronym() + "/");
+    }
+
+    if (getCurrentUser().isRPL()) {
+      path.append("CRP%207%20Management/Forms/");
+      path.append("AllItems.aspx?RootFolder=/CRP%207%20Management/");
+      path.append("Reviewing%20and%20Reporting/Annual%20Reporting/");
+      path.append("TL%20and%20RPL%20Technical%20Reporting/");
+      path.append(getCurrentReportingLogframe().getYear() + "/");
+      path.append("RPLs/");
+
+      switch (getCurrentUser().getLeader().getRegion().getName()) {
+        case "East Africa (EA)":
+          path.append("EA/");
+          break;
+
+        case "Latin America (LAM)":
+          path.append("LAM/");
+          break;
+
+        case "South East Asia (SEA) ":
+          path.append("SAs/");
+          break;
+
+        case "South Asia (SAs)":
+          path.append("SEA/");
+          break;
+
+        case "West Africa (WA)":
+          path.append("WA/");
+          break;
+      }
+    }
+
+    if (getCurrentUser().isTL()) {
+      path.append("CRP%207%20Management/Forms/");
+      path.append("AllItems.aspx?RootFolder=/CRP%207%20Management/");
+      path.append("Reviewing%20and%20Reporting/Annual%20Reporting/");
+      path.append("TL%20and%20RPL%20Technical%20Reporting/");
+      path.append(getCurrentReportingLogframe().getYear() + "/");
+      path.append("THEMES/");
+
+      switch (getCurrentUser().getLeader().getTheme().getCode()) {
+        case "1":
+          path.append("T1/");
+          break;
+
+        case "2":
+          path.append("T2/");
+          break;
+
+        case "3":
+          path.append("T3/");
+          break;
+
+        case "4":
+          path.append("T4/");
+          break;
+
+      }
+    }
+
+    return path.toString();
+  }
+
+  public List<String> getYearList() {
+    List<String> years = new ArrayList<>();
+    for (int c = activity.getYear(); c <= config.getEndYear(); c++) {
+      years.add(String.valueOf(c));
+    }
+    return years;
+  }
+
+  public boolean isCanSubmit() {
+    return canSubmit;
+  }
+
+
+  @Override
+  public String next() {
+    save();
+    return super.next();
+  }
 
   @Override
   public void prepare() throws Exception {
     super.prepare();
+    validationMessage = new StringBuilder();
     activityID = Integer.parseInt(StringUtils.trim(this.getRequest().getParameter(APConstants.ACTIVITY_REQUEST_ID)));
     LOG.info("There user {} is loading the deliverables information for the activity {}", getCurrentUser().getEmail(),
       String.valueOf(activityID));
@@ -140,6 +242,15 @@ public class DeliverablesReportingAction extends BaseAction {
         }
       }
     }
+
+    /* --------- Checking if the user can submit ------------- */
+    Submission submission =
+      submissionManager.getSubmission(getCurrentUser().getLeader(), getCurrentReportingLogframe(),
+        APConstants.REPORTING_SECTION);
+
+    canSubmit = (submission == null) ? true : false;
+
+    getIntranetPath();
   }
 
   @Override
@@ -176,8 +287,14 @@ public class DeliverablesReportingAction extends BaseAction {
     }
 
     if (!problem) {
-      LOG.info("The deliverables for the activity {} was saved successfully", String.valueOf(activityID));
-      addActionMessage(getText("saving.success", new String[] {getText("reporting.activityDeliverables")}));
+      if (validationMessage.toString().isEmpty()) {
+        LOG.info("The deliverables for the activity {} was saved successfully", String.valueOf(activityID));
+        addActionMessage(getText("saving.success", new String[] {getText("reporting.activityDeliverables")}));
+      } else {
+        String finalMessage = getText("saving.success", new String[] {getText("reporting.activityDeliverables")});
+        finalMessage += getText("saving.keepInMind", new String[] {validationMessage.toString()});
+        addActionWarning(Capitalize.capitalizeString(finalMessage));
+      }
       return SUCCESS;
     } else {
       LOG.warn("There was a problem saving the deliverables for the activity {}", String.valueOf(activityID));
@@ -202,7 +319,6 @@ public class DeliverablesReportingAction extends BaseAction {
   public void validate() {
     Deliverable deliverable = null;
     boolean fileFormatNeeded;
-    boolean anyError = false;
 
     // Check if the user is saving and if exists any deliverable to validate
     if (save && activity.getDeliverables() != null) {
@@ -221,25 +337,19 @@ public class DeliverablesReportingAction extends BaseAction {
         // If the deliverable needs a file format check if the user select at least one
         if (fileFormatNeeded) {
           if (deliverable.getFileFormats().isEmpty()) {
-            anyError = true;
-            addFieldError("activity.deliverables[" + c + "].fileFormats",
-              getText("reporting.activityDeliverables.fileFormatValidate"));
+            validationMessage.append(getText("reporting.activityDeliverables.fileFormatValidate") + ", ");
           }
         }
 
         if (!deliverable.isExpected()) {
           if (deliverable.getDescription().isEmpty()) {
-            anyError = true;
-            addFieldError("activity.deliverables[" + c + "].description",
-              getText("reporting.activityDeliverables.descriptionValidate"));
+            validationMessage.append(getText("reporting.activityDeliverables.descriptionValidate") + ", ");
           }
 
           // Check if the deliverable year is valid. When the user set a invalid value (empty or NaN)
           // the deliverable converter set the year whit 0
           if (deliverable.getYear() == 0) {
-            anyError = true;
-            addFieldError("activity.deliverables[" + c + "].year",
-              getText("reporting.activityDeliverables.yearInvalidValidate"));
+            validationMessage.append(getText("reporting.activityDeliverables.yearInvalidValidate") + ", ");
           }
 
           // TODO - Check if always the application will show the activities for
@@ -248,24 +358,16 @@ public class DeliverablesReportingAction extends BaseAction {
 
           // Check if the deliverable year is not from past years
           else if (deliverable.getYear() < getCurrentReportingLogframe().getYear()) {
-            anyError = true;
-            addFieldError("activity.deliverables[" + c + "].year",
-              getText("reporting.activityDeliverables.smallYearValidate") + getCurrentReportingLogframe().getYear());
+            validationMessage.append(getText("reporting.activityDeliverables.smallYearValidate") + ", ");
           }
 
           // Check if the deliverable year is not bigger than ccafs end
           else if (deliverable.getYear() > config.getEndYear()) {
-            anyError = true;
-            addFieldError("activity.deliverables[" + c + "].year",
-              getText("reporting.activityDeliverables.bigYearValidate") + config.getEndYear());
+            validationMessage.append(getText("reporting.activityDeliverables.bigYearValidate") + ", ");
           }
         }
       }
 
-      if (anyError) {
-        LOG.info("User {} try to save the deliverables but don't fill all the required fields.");
-        addActionError(getText("saving.fields.required"));
-      }
     }
     super.validate();
   }

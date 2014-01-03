@@ -43,6 +43,13 @@ $(document).ready(function() {
           $(this).find("[id$='fileUrl']").attr("id", "publications[" + index + "].fileUrl");
           $(this).find("[name$='fileUrl']").attr("name", "publications[" + index + "].fileUrl");
           $(this).find("[for$='fileUrl']").attr("for", "publications[" + index + "].fileUrl");
+          // Publication indicators
+          $(this).find("[id$='isiPublication']").attr("id", "publications[" + index + "].isiPublication");
+          $(this).find("[id$='isiPublication']").attr("name", "publications[" + index + "].isiPublication");
+          $(this).find("[id$='narsCoauthor']").attr("id", "publications[" + index + "].narsCoauthor");
+          $(this).find("[id$='narsCoauthor']").attr("name", "publications[" + index + "].narsCoauthor");
+          $(this).find("[id$='earthSystemCoauthor']").attr("id", "publications[" + index + "].earthSystemCoauthor");
+          $(this).find("[id$='earthSystemCoauthor']").attr("name", "publications[" + index + "].earthSystemCoauthor");
         }
     );
   }
@@ -57,10 +64,16 @@ $(document).ready(function() {
     // If the type is 1 (Journal papers) the options are showed
     if($(event.target).val() == 1){
       $("#publication-" + elementId).find(".accessType").show("slow");
+      $("#publication-" + elementId).find(".journalArticlesIndicators").show("slow");
     }else{
       $("#publication-" + elementId).find(".accessType").hide("slow", function() {
         // remove radio button selection
         $(this).find(".radiosList").find(":checked").attr('checked', false);        
+      });
+      
+      $("#publication-" + elementId).find(".journalArticlesIndicators").hide("slow", function() {
+        // remove radio button selection
+        $(this).find(".checkbox").find(":checked").attr('checked', false);        
       });
     }
   });

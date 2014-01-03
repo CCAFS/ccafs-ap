@@ -122,6 +122,12 @@ input[type="radio"] {
   text-align: right;
 }
 
+a.popup-link {
+border-radius: 2px;
+box-shadow: 1px 1px 3px #AAAAAA;
+padding: 1px 10px;
+}
+
 /************* 2. HEADER ***************/
 body {
   text-align: center;
@@ -178,9 +184,11 @@ body {
 }
 
 #userInfo .logout {
-  background-color: green;
+  background-color: #4B4B4B;
   margin-left: 15px;
-  padding: 3px 10px;
+  padding: 2px 10px;
+  border-radius: 5px;
+  border-bottom: 2px solid #2E2E2E;
 }
 
 #userInfo .logout a {
@@ -531,11 +539,17 @@ a.currentReportingSection li #i-additionalInformation{
   color:#d12f19;
 }
 
-.helpMessage {
-  background-color: #F2F2F2;
-  color: #29336F;
-  min-height: 45px;
-  min-width: 80%;
+.helpMessage { 
+  position: relative;
+  -webkit-box-shadow: 1px 2px 8px rgba(0, 0, 0, 0.3);
+  -moz-box-shadow: 1px 2px 8px rgba(0,0,0,.3);
+  box-shadow: 1px 2px 8px rgba(0, 0, 0, 0.3); 
+  -webkit-border-radius:2px;
+  -moz-border-radius:2px;
+  border-radius:2px;
+  padding: 10px;
+  border: 1px solid #EEE;
+  background: #F8F8F8;	
 }
 
 .helpMessage img {
@@ -545,6 +559,7 @@ a.currentReportingSection li #i-additionalInformation{
 
 .helpMessage p {
   padding: 10px;
+  color: #636368;
 }
 
 /************* LOGIN *****************/
@@ -613,7 +628,7 @@ a.currentReportingSection li #i-additionalInformation{
 #activityListPlanning #addActivity a {
   background: url('../../images/global/sprite-icons-activities.png') 3px 3px #637933 no-repeat;
   color: #FFF;
-  padding: 6px 10px 6px 15px;
+  padding: 6px 10px 6px 22px;
   width: 83px;
   float: left;	
   border-radius: 2px;
@@ -644,7 +659,7 @@ a.currentReportingSection li #i-additionalInformation{
   padding: 3px 15px;
 }
 
-#activityListPlanning #submitButtonBlock {
+ #submitButtonBlock {
   clear: both;
   color: #663300;
   display: block;
@@ -653,7 +668,7 @@ a.currentReportingSection li #i-additionalInformation{
   text-align: center !important;
 }
 
-#activityListPlanning #submitButtonBlock button#submitForm_save{
+#submitButtonBlock button#submitForm_save{
   background: url('../../images/global/sprite-icons-activities.png') 30px -103px #657A36 no-repeat;
   width: 146px;
   height: 28px;
@@ -668,7 +683,7 @@ a.currentReportingSection li #i-additionalInformation{
   cursor : auto;
 }
 
-#activityListPlanning #submitButtonBlock button#submitForm_save:hover {
+#submitButtonBlock button#submitForm_save:hover {
 	background-color: #576A2D;
 }
 	
@@ -731,10 +746,15 @@ a.currentReportingSection li #i-additionalInformation{
   background-image: url("../../images/global/sub-menu.png"); 
   background-repeat: no-repeat;
   display: inline-block; 
-  color: black;
-  padding: 5px 3px;
-  height: 34px;
+  color: #585858;
+  padding: 7px 3px;
+  height: 32px;
   width: 145px;
+  margin-left: -38px;
+}
+
+#stageMenu a:hover {
+  color: #000;
 }
 
 #stageMenu a.currentReportingSection {
@@ -744,7 +764,8 @@ a.currentReportingSection li #i-additionalInformation{
 
 #stageMenu a li {
   display: inline-block;
-  margin-top: 9px;
+  margin-top: 6px;
+  margin-left: inherit;
 }
 /*************** HOME ****************/
 
@@ -923,7 +944,31 @@ button#activities_save{
   text-decoration: underline;
 }
 
+/* Publications */
+#publications .journalArticlesIndicators .checkbox h6{
+	font-weight: normal;
+	font-size: 11px;
+}
 
+#publications .checkbox input{
+	float: left;
+	margin-left: 10px;
+}
+
+#publications .checkbox > label {
+	float: right;
+  width: 95%;
+}
+
+
+#publications .checkboxGroup .checkboxLabel {
+    width: 46%;
+}
+
+#publications .journalArticlesIndicators,
+#publications #ccafsAcknowledge{
+	margin-bottom: 25px;
+}
 
 /******** SUMMARY BY OUTPUTS ***********/
 .outputTitle {
@@ -945,12 +990,21 @@ button#activities_save{
 .outcome .textArea h6 {
   font-weight: normal;
 }
+
+/************* INDICATORS ****************/
+#indicators .toggleDescription{
+  cursor: pointer;
+  font-size: 11px;
+  margin-left: 10px;
+}
+
 /************ TL/RPL ONLY **************/
 /* TL/RPL Sub-Menu */
 #stageMenu.tlRplSubMenu ul a li {
    font-size: 12px;
    margin-top: 2px;
    width: 110px;
+   margin-left: -36px;
 }
 
 /* TL Outputs */

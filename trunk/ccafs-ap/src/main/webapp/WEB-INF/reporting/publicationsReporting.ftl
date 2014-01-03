@@ -14,18 +14,18 @@
 [#macro publicationSection]
   [#list publications as publication]
     <div id="publication-${publication_index}" class="publication">
-      
+
       [#-- Item index --]
       <div class="itemIndex">
         [@s.text name="reporting.publications.publication" /] ${publication_index +1}
       </div>
-      
+
       [#-- Remove link for a publications --]
       <div class="removeLink">
         <img src="${baseUrl}/images/global/icon-remove.png" />
         <a id="removePublication-${publication_index}" href="" class="removePublication">[@s.text name="reporting.publications.removePublication" /]</a>
       </div>
-      
+
       [#-- Publication identifier --]
       <input type="hidden" name="publications[${publication_index}].id" value="${publication.id?c}" />
       
@@ -33,37 +33,62 @@
       <div class="halfPartBlock">
         [@customForm.select name="publications[${publication_index}].type" label="" i18nkey="reporting.publications.type.name" listName="publicationTypes" keyFieldName="id"  displayFieldName="name" /]
       </div>
-      
+
       [#-- Publication identifier --]
       <div class="halfPartBlock">
         [@customForm.input name="publications[${publication_index}].identifier" type="text" i18nkey="reporting.publications.identifier" help="reporting.publications.identifier.help" /]
       </div>
-      
+
       [#-- Publication access --]
-      [#if publicationTypeAccessNeed?seq_contains(publication.type.id)]              
+      [#if publicationTypeAccessNeed?seq_contains(publication.type.id)]
         <div class="fullBlock accessType">
       [#else]
         <div class="fullBlock accessType" style="display: none;">
-      [/#if]      
+      [/#if]
         [@customForm.radioButtonGroup name="publications[${publication_index}].access" label="" i18nkey="reporting.publications.access" listName="publicationAccessList" keyFieldName="id" displayFieldName="name" value="${publication.access.id}" help="reporting.publications.access.help"/]
       </div>
+
+      [#-- Indicators for journal articles --]
+      [#if publicationTypeAccessNeed?seq_contains(publication.type.id)]
+        <div class="fullBlock journalArticlesIndicators" >
+      [#else]
+        <div class="fullBlock journalArticlesIndicators" style="display: none;">
+      [/#if]
+          <h6>[@s.text name="reporting.publications.indicators" /]</h6>
+          <div>
+            <div class="fullBlock">
+              [@customForm.checkbox name="publications[${publication_index}].isiPublication" i18nkey="reporting.publications.isiPublication" checked=publication.isiPublication value="true" /]
+            </div>
+            <div class="fullBlock">
+              [@customForm.checkbox name="publications[${publication_index}].narsCoauthor" i18nkey="reporting.publications.narsCoauthor" checked=publication.narsCoauthor value="true" /]
+            </div>
+            <div class="fullBlock">
+              [@customForm.checkbox name="publications[${publication_index}].earthSystemCoauthor" i18nkey="reporting.publications.earthSystemCoauthor" checked=publication.earthSystemCoauthor value="true" /]
+            </div>
+          </div>
+        </div>
 
       [#-- Publication citation --]
       <div class="fullBlock">
         [@customForm.textArea name="publications[${publication_index}].citation" i18nkey="reporting.publications.citation" help="reporting.publications.citation.help" /]
       </div> 
-      
+
+      [#-- CCAFS Acknowledge --]
+      <div class="fullBlock" id="ccafsAcknowledge" >
+        [@customForm.checkbox name="publications[${publication_index}].ccafsAcknowledge" i18nkey="reporting.publications.ccafsAcknowledge" checked=publication.ccafsAcknowledge value="true" /]
+      </div>
+
       [#-- Publication themes related --]
       <div class="fullBlock">
         <h6>[@s.text name="reporting.publications.themeRelated" /]</h6>
         <div class="checkboxGroup">
           [@s.fielderror cssClass="fieldError" fieldName="publications[${publication_index}].themeRelated"/]
-          [@s.checkboxlist name="publications[${publication_index}].relatedThemes" list="themeList" value="publications[${publication_index}].relatedThemesIds" cssClass="checkbox" /]
+          [@s.checkboxlist name="publications[${publication_index}].relatedThemes" list="publicationThemeList" value="publications[${publication_index}].relatedThemesIds" cssClass="checkbox" /]
         </div>
       </div>
-      
+
       [#-- Publication file url --]
-      <div class="fullBlock">
+      <div class="fullBlock" >
         [@customForm.input name="publications[${publication_index}].fileUrl" i18nkey="reporting.publications.fileUrl" help="reporting.publications.fileUrl.help" /]
       </div> 
     </div> <!-- End publications-${publication_index} -->
@@ -84,7 +109,7 @@
       </h1>
       <div id="items">      
         <fieldset id="publicationGroup">
-          
+
           [@publicationSection /]
           <div class="addLink">
             <img src="${baseUrl}/images/global/icon-add.png" />        
@@ -92,7 +117,7 @@
           </div>
         </fieldset>
       </div>
-      
+
       <!-- PUBLICATION TEMPLATE -->
       <div id="template">
         <div id="publication-9999" class="publication" style="display: none;">
@@ -100,31 +125,46 @@
           <div class="itemIndex">
             [@s.text name="reporting.publications.publication" /] 
           </div>
-          
+
           [#-- remove link --]
           <div class="removeLink">
             <img src="${baseUrl}/images/global/icon-remove.png" />
             <a id="removePublication-9999" href="" class="removePublication">[@s.text name="reporting.publications.removePublication" /]</a>
           </div>
-          
+
           [#-- Publication identifier --]
           <input type="hidden" name="id" value="-1" />
-          
+
           [#-- Publication type --]
           <div class="halfPartBlock">
             [@customForm.select name="type" label="" i18nkey="reporting.publications.type.name" listName="publicationTypes" keyFieldName="id"  displayFieldName="name" /]
           </div>
-      
+
           [#-- Publication identifier --]
           <div class="halfPartBlock">
             [@customForm.input name="identifier" type="text" i18nkey="reporting.publications.identifier" help="reporting.publications.identifier.help" /]
           </div>
-          
+
           [#-- Publication access --]
           <div class="fullBlock accessType">
             [@customForm.radioButtonGroup name="access" label="" i18nkey="reporting.publications.access" listName="publicationAccessList" keyFieldName="id" displayFieldName="name" /]
           </div>
-      
+
+          [#-- Indicators for journal articles --]
+          <div class="fullBlock journalArticlesIndicators">
+            <h6>[@s.text name="reporting.publications.indicators" /]</h6>
+            <div></div>      
+            <div class="fullBlock">
+              [@customForm.checkbox name="isiPublication" i18nkey="reporting.publications.isiPublication" /]
+            </div>
+            <div class="fullBlock">
+              [@customForm.checkbox name="narsCoauthor" i18nkey="reporting.publications.narsCoauthor" /]
+            </div>
+            <div class="fullBlock">
+              [@customForm.checkbox name="earthSystemCoauthor" i18nkey="reporting.publications.earthSystemCoauthor" /]
+            </div>
+          </div>
+          
           [#-- Publication citation --]
           <div class="fullBlock">
             [@customForm.textArea name="citation" i18nkey="reporting.publications.citation" help="reporting.publications.citation.help" /]
@@ -134,7 +174,8 @@
           <div class="fullBlock">
             <h6>[@s.text name="reporting.publications.themeRelated" /]</h6>
             <div class="checkboxGroup">
-              [@s.checkboxlist name="relatedThemes" list="themeList" cssClass="checkbox" /]
+              [@s.fielderror cssClass="fieldError" fieldName="themeRelated"/]
+              [@s.checkboxlist name="relatedThemes" list="publicationThemeList" cssClass="checkbox" /]
             </div>
           </div>
           
@@ -145,10 +186,14 @@
         </div> <!-- End publication template -->
       </div> <!-- End template -->
       
-      <div class="buttons">
-        [@s.submit type="button" name="save"][@s.text name="form.buttons.save" /][/@s.submit]
-        [@s.submit type="button" name="cancel"][@s.text name="form.buttons.cancel" /][/@s.submit]
-      </div>
+      [#if canSubmit]
+        <div class="buttons">
+          [@s.submit type="button" name="save"][@s.text name="form.buttons.save" /][/@s.submit]
+          [@s.submit type="button" name="next"][@s.text name="form.buttons.next" /][/@s.submit]
+          [@s.submit type="button" name="cancel"][@s.text name="form.buttons.cancel" /][/@s.submit]
+        </div>
+      [/#if]
+
     </article>
   [/@s.form]
  

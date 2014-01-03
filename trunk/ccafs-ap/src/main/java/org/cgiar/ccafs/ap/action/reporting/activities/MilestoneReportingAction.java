@@ -5,7 +5,9 @@ import org.cgiar.ccafs.ap.config.APConfig;
 import org.cgiar.ccafs.ap.config.APConstants;
 import org.cgiar.ccafs.ap.data.manager.LogframeManager;
 import org.cgiar.ccafs.ap.data.manager.MilestoneManager;
+import org.cgiar.ccafs.ap.data.manager.SubmissionManager;
 import org.cgiar.ccafs.ap.data.model.Milestone;
+import org.cgiar.ccafs.ap.data.model.Submission;
 
 import com.google.inject.Inject;
 import org.apache.commons.lang3.StringUtils;
@@ -21,15 +23,19 @@ public class MilestoneReportingAction extends BaseAction {
 
   // Managers
   protected MilestoneManager milestoneManager;
+  private SubmissionManager submissionManager;
 
   // Model
   protected Milestone milestone;
   protected int milestoneID;
+  private boolean canSubmit;
 
   @Inject
-  public MilestoneReportingAction(APConfig config, LogframeManager logframeManager, MilestoneManager milestoneManager) {
+  public MilestoneReportingAction(APConfig config, LogframeManager logframeManager, MilestoneManager milestoneManager,
+    SubmissionManager submissionManager) {
     super(config, logframeManager);
     this.milestoneManager = milestoneManager;
+    this.submissionManager = submissionManager;
   }
 
   @Override
@@ -55,13 +61,14 @@ public class MilestoneReportingAction extends BaseAction {
         this.getRequest().getParameter(APConstants.MILESTONE_REQUEST_ID), e);
     }
 
-    // TODO - The log should not write the user name because this action can be called
-    // by not authenticated users
-
-    // LOG.info("The user {} is loading the information about milestone {}.", getCurrentUser().getEmail(),
-    // String.valueOf(milestoneID));
-    // get main activity information based on the status form.
     milestone = milestoneManager.getMilestone(milestoneID);
+
+    /* --------- Checking if the user can submit ------------- */
+    Submission submission =
+      submissionManager.getSubmission(getCurrentUser().getLeader(), getCurrentReportingLogframe(),
+        APConstants.REPORTING_SECTION);
+
+    canSubmit = (submission == null) ? true : false;
   }
 
   public void setActivity(Milestone milestone) {

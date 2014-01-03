@@ -104,11 +104,14 @@
             [/#if]            
                 <p>[@s.text name="reporting.activityDeliverables.fileNameMessage" /]</p>
               </div>            
+              
+            [#--  
             [#if deliverableTypeIdsPublications?seq_contains(activity.deliverables[deliverable_index].type.id)]
               [@customForm.input name="activity.deliverables[${deliverable_index}].fileName" type="text" i18nkey="reporting.activityDeliverables.filename" help="reporting.activityDeliverables.filename.help" display=false /]
             [#else]
               [@customForm.input name="activity.deliverables[${deliverable_index}].fileName" type="text" i18nkey="reporting.activityDeliverables.filename" help="reporting.activityDeliverables.filename.help" /]
             [/#if]
+            --]
         </div>
       </div> <!-- End deliverable-${deliverable_index} -->
       <hr />
@@ -129,9 +132,26 @@
       ${activity.leader.acronym} - [@s.text name="reporting.activityList.activity" /] ${activity.id}      
     </h1>
     
+    <fieldset>
+      <p>
+        <strong>
+        Please upload your deliverables by clicking <a target="_BLANK" href="${intranetPath}">here</a> <br />
+        In order to add your deliverables to your CG Center/RPLs/THEMES folder, you should: <br />
+        <ol>
+          <li>Create a folder named with your actvity ID (e.g. activity 508-2013)</li>
+          <li>Inside the actvity folder, create a folder named with your deliverable ID (e.g. deliverable 2)</li>
+          <li>Upload your deliverables to the related folder.</li>
+        </ol>
+        
+        <br/>
+        If you are a principal investigator without access to the CCAFS intranet please contact to your Contact point to get it.
+        </strong>
+      </p>
+    </fieldset>
+
     <h6>[@s.text name="reporting.activityStatus.title" /]</h6>
     <p>${activity.title}</p>
-    
+
     <div id="items">
       <fieldset id="expectedDeliverablesGroup">
         <legend>
@@ -192,8 +212,8 @@
         </div>
         
         [#-- Year --]
-        <div class="thirdPartBlock">        
-          [@customForm.input name="year" type="text" i18nkey="reporting.activityDeliverables.year" /]
+        <div class="thirdPartBlock">
+          [@customForm.select name="year" label="" i18nkey="reporting.activityDeliverables.year" listName="yearList"  /]            
         </div>
         
         [#-- Status --]
@@ -216,20 +236,24 @@
           </div>
         </div>
         
-        [#-- File name --]
+        [#-- File name 
         <div class="fullBlock">          
           [@customForm.input name="fileName" type="text" i18nkey="reporting.activityDeliverables.filename" help="reporting.activityDeliverables.filename.help"/]
         </div>        
+        --]
               
       </div> <!-- End deliverable template -->
     </div> <!-- End template -->
     
     <!-- internal parameter -->
     <input name="activityID" type="hidden" value="${activity.id}" />
-    <div class="buttons">
-      [@s.submit type="button" name="save"][@s.text name="form.buttons.save" /][/@s.submit]
-      [@s.submit type="button" name="cancel"][@s.text name="form.buttons.cancel" /][/@s.submit]
-    </div>
+    [#if canSubmit]
+      <div class="buttons">
+        [@s.submit type="button" name="save"][@s.text name="form.buttons.save" /][/@s.submit]
+        [@s.submit type="button" name="next"][@s.text name="form.buttons.next" /][/@s.submit]
+        [@s.submit type="button" name="cancel"][@s.text name="form.buttons.cancel" /][/@s.submit]
+      </div>
+    [/#if]
 
     </article>
   [/@s.form]

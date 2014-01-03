@@ -84,10 +84,14 @@ public class ActivityManagerImpl implements ActivityManager {
       Activity activity = new Activity();
       /* --- MAIN INFORMATION --- */
       activity.setId(Integer.parseInt(activitiesDAO.get(c).get("id")));
+      activity.setActivityId(activitiesDAO.get(c).get("activity_id"));
       activity.setTitle(activitiesDAO.get(c).get("title"));
       activity.setDescription(activitiesDAO.get(c).get("description"));
+
       try {
-        activity.setStartDate(dateFormat.parse(activitiesDAO.get(c).get("start_date")));
+        if (activitiesDAO.get(c).get("start_date") != null) {
+          activity.setStartDate(dateFormat.parse(activitiesDAO.get(c).get("start_date")));
+        }
       } catch (ParseException e) {
         String msg =
           "There was an error parsing start date '" + activitiesDAO.get(c).get("start_date") + "' for the activity "
@@ -95,7 +99,9 @@ public class ActivityManagerImpl implements ActivityManager {
         LOG.error(msg, e);
       }
       try {
-        activity.setEndDate(dateFormat.parse(activitiesDAO.get(c).get("end_date")));
+        if (activitiesDAO.get(c).get("end_date") != null) {
+          activity.setEndDate(dateFormat.parse(activitiesDAO.get(c).get("end_date")));
+        }
       } catch (ParseException e) {
         String msg =
           "There was an error parsing end date '" + activitiesDAO.get(c).get("end_date") + "' for the activity "
@@ -127,10 +133,14 @@ public class ActivityManagerImpl implements ActivityManager {
 
       /* --- ACTIVITY STATUS --- */
       Map<String, String> statusInfo = activityDAO.getActivityStatusInfo(activity.getId());
-      Status status = new Status();
-      status.setId(Integer.parseInt(statusInfo.get("status_id")));
-      status.setName(statusInfo.get("status_name"));
-      activity.setStatus(status);
+
+      if (statusInfo.get("status_id") != null) {
+        Status status = new Status();
+        status.setId(Integer.parseInt(statusInfo.get("status_id")));
+        status.setName(statusInfo.get("status_name"));
+        activity.setStatus(status);
+      }
+
       // Status Description
       activity.setStatusDescription(statusInfo.get("status_description"));
       // Gender Integration
@@ -163,6 +173,7 @@ public class ActivityManagerImpl implements ActivityManager {
 
       Activity activity = new Activity();
       activity.setId(activityID);
+      activity.setActivityId(activityData.get("activity_id"));
       activity.setTitle(activityData.get("title"));
 
       try {
@@ -199,6 +210,7 @@ public class ActivityManagerImpl implements ActivityManager {
       for (int c = 0; c < activityList.size(); c++) {
         Activity activity = new Activity();
         activity.setId(Integer.parseInt(activityList.get(c).get("id")));
+        activity.setActivityId(activityList.get(c).get("activity_id"));
         activity.setTitle(activityList.get(c).get("title"));
 
         try {
@@ -270,6 +282,7 @@ public class ActivityManagerImpl implements ActivityManager {
       for (Map<String, String> activityDB : activitiesDB) {
         Activity activity = new Activity();
         activity.setId(Integer.parseInt(activityDB.get("id")));
+        activity.setActivityId(activityDB.get("activity_id"));
         activity.setTitle(activityDB.get("title"));
         if (activityDB.get("is_global") != null) {
           activity.setGlobal(Integer.parseInt(activityDB.get("is_global")) == 1);
@@ -337,6 +350,7 @@ public class ActivityManagerImpl implements ActivityManager {
       for (int c = 0; c < activities.length; c++) {
         activities[c] = new Activity();
         activities[c].setId(Integer.parseInt(activityData.get(c).get("id")));
+        activities[c].setId(Integer.parseInt(activityData.get(c).get("activity_id")));
         activities[c].setTitle(activityData.get(c).get("title"));
       }
       return activities;
@@ -352,11 +366,44 @@ public class ActivityManagerImpl implements ActivityManager {
       for (int c = 0; c < activities.length; c++) {
         activities[c] = new Activity();
         activities[c].setId(Integer.parseInt(activityData.get(c).get("id")));
+        activities[c].setActivityId(activityData.get(c).get("activity_id"));
         activities[c].setTitle(activityData.get(c).get("title"));
       }
       return activities;
     }
     return null;
+  }
+
+  @Override
+  public Activity[] getActivitiesToContinue(int year) {
+    List<Map<String, String>> activitiesDataList = activityDAO.getActivitiesToContinue(year);
+    Activity[] activities = new Activity[activitiesDataList.size()];
+
+    for (int c = 0; c < activitiesDataList.size(); c++) {
+      Activity activity = new Activity();
+      activity.setId(Integer.parseInt(activitiesDataList.get(c).get("id")));
+      activity.setActivityId(activitiesDataList.get(c).get("activity_id"));
+      activity.setTitle(activitiesDataList.get(c).get("title"));
+
+      activities[c] = activity;
+    }
+    return activities;
+  }
+
+  @Override
+  public Activity[] getActivitiesToContinue(int year, int leader) {
+    List<Map<String, String>> activitiesDataList = activityDAO.getActivitiesToContinue(year, leader);
+    Activity[] activities = new Activity[activitiesDataList.size()];
+
+    for (int c = 0; c < activitiesDataList.size(); c++) {
+      Activity activity = new Activity();
+      activity.setId(Integer.parseInt(activitiesDataList.get(c).get("id")));
+      activity.setActivityId(activitiesDataList.get(c).get("activity_id"));
+      activity.setTitle(activitiesDataList.get(c).get("title"));
+
+      activities[c] = activity;
+    }
+    return activities;
   }
 
   @Override
@@ -433,6 +480,7 @@ public class ActivityManagerImpl implements ActivityManager {
       for (int c = 0; c < activities.length; c++) {
         activities[c] = new Activity();
         activities[c].setId(Integer.parseInt(activityData.get(c).get("id")));
+        activities[c].setActivityId(activityData.get(c).get("activity_id"));
         activities[c].setTitle(activityData.get(c).get("title"));
         activities[c].setValidated(activityData.get(c).get("is_validated").equals("1"));
 
@@ -479,6 +527,7 @@ public class ActivityManagerImpl implements ActivityManager {
       SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM");
       Activity activity = new Activity();
       activity.setId(id);
+      activity.setActivityId(activityDB.get("activity_id"));
       activity.setTitle(activityDB.get("title"));
       try {
         if (activityDB.get("start_date") == null) {
@@ -525,6 +574,7 @@ public class ActivityManagerImpl implements ActivityManager {
       if (activityDB.get("continuous_activity_id") != null) {
         Activity activityTemp = new Activity();
         activityTemp.setId(Integer.parseInt(activityDB.get("continuous_activity_id")));
+        activityTemp.setActivityId(activityDB.get("countinuos_activity_activityID"));
         activity.setContinuousActivity(activityTemp);
       }
 
@@ -595,6 +645,7 @@ public class ActivityManagerImpl implements ActivityManager {
     for (int c = 0; c < activities.length; c++) {
       activities[c] = new Activity();
       activities[c].setId(Integer.parseInt(activityData.get(c).get("id")));
+      activities[c].setActivityId(activityData.get(c).get("activity_id"));
       activities[c].setTitle(activityData.get(c).get("title"));
       activities[c].setValidated(activityData.get(c).get("is_validated").equals("1"));
 
@@ -639,6 +690,7 @@ public class ActivityManagerImpl implements ActivityManager {
     if (activityDB != null) {
       Activity activity = new Activity();
       activity.setId(id);
+      activity.setActivityId(activityDB.get("activity_id"));
       activity.setTitle(activityDB.get("title"));
       activity.setYear(Integer.parseInt(activityDB.get("year")));
 

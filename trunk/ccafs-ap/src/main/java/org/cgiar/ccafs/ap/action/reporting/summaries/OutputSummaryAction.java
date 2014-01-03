@@ -2,9 +2,13 @@ package org.cgiar.ccafs.ap.action.reporting.summaries;
 
 import org.cgiar.ccafs.ap.action.BaseAction;
 import org.cgiar.ccafs.ap.config.APConfig;
+import org.cgiar.ccafs.ap.config.APConstants;
 import org.cgiar.ccafs.ap.data.manager.LogframeManager;
 import org.cgiar.ccafs.ap.data.manager.OutputSummaryManager;
+import org.cgiar.ccafs.ap.data.manager.SubmissionManager;
 import org.cgiar.ccafs.ap.data.model.OutputSummary;
+import org.cgiar.ccafs.ap.data.model.Submission;
+import org.cgiar.ccafs.ap.util.Capitalize;
 
 import java.util.ArrayList;
 
@@ -21,18 +25,35 @@ public class OutputSummaryAction extends BaseAction {
 
   // Managers
   private OutputSummaryManager outputSummaryManager;
+  private SubmissionManager submissionManager;
 
   // Model
   private OutputSummary[] outputSummaries;
+  StringBuilder validationMessage;
+  private boolean canSubmit;
 
   @Inject
-  public OutputSummaryAction(APConfig config, LogframeManager logframeManager, OutputSummaryManager outputSummaryManager) {
+  public OutputSummaryAction(APConfig config, LogframeManager logframeManager,
+    OutputSummaryManager outputSummaryManager, SubmissionManager submissionManager) {
     super(config, logframeManager);
     this.outputSummaryManager = outputSummaryManager;
+    this.submissionManager = submissionManager;
+
+    validationMessage = new StringBuilder();
   }
 
   public OutputSummary[] getOutputSummaries() {
     return outputSummaries;
+  }
+
+  public boolean isCanSubmit() {
+    return canSubmit;
+  }
+
+  @Override
+  public String next() {
+    save();
+    return super.next();
   }
 
   @Override
@@ -41,11 +62,20 @@ public class OutputSummaryAction extends BaseAction {
     LOG.info("User {} loads the outputs for the leader {}.", getCurrentUser().getEmail(), getCurrentUser().getLeader()
       .getId());
     // Get all the summary outputs objects corresponding to the activity leader and current logframe
-    outputSummaries = outputSummaryManager.getOutputSummaries(getCurrentUser().getLeader(), getCurrentReportingLogframe());
+    outputSummaries =
+      outputSummaryManager.getOutputSummaries(getCurrentUser().getLeader(), getCurrentReportingLogframe());
+
+    /* --------- Checking if the user can submit ------------- */
+    Submission submission =
+      submissionManager.getSubmission(getCurrentUser().getLeader(), getCurrentReportingLogframe(),
+        APConstants.REPORTING_SECTION);
+
+    canSubmit = (submission == null) ? true : false;
   }
 
   @Override
   public String save() {
+    String finalMessage;
     boolean added = false;
 
     // Create lists of objects to make only one call to the manager
@@ -81,13 +111,36 @@ public class OutputSummaryAction extends BaseAction {
       }
     }
 
+    if (validationMessage.toString().isEmpty()) {
+      addActionMessage(getText("saving.success", new String[] {getText("reporting.outputSummary.outputSummary")}));
+    } else {
+      // If there were validation messages show them in a warning message.
+      finalMessage = getText("saving.success", new String[] {getText("planning.mainInformation")});
+      finalMessage += getText("saving.missingFields", new String[] {validationMessage.toString()});
+
+      addActionWarning(Capitalize.capitalizeString(finalMessage));
+    }
     LOG.info("The user {} saved the outputs for the leader {}.", getCurrentUser().getEmail(), getCurrentUser()
       .getLeader().getId());
-    addActionMessage(getText("reporting.outputSummary.saved"));
     return SUCCESS;
   }
 
   public void setOutputSummaries(OutputSummary[] outputSummaries) {
     this.outputSummaries = outputSummaries;
+  }
+
+  @Override
+  public void validate() {
+    boolean missingDescription = false;
+
+    for (OutputSummary os : outputSummaries) {
+      if (os.getDescription() == null || os.getDescription().isEmpty()) {
+        missingDescription = true;
+      }
+    }
+
+    if (missingDescription) {
+      validationMessage.append(getText("reporting.tlOutputSummaries.validation"));
+    }
   }
 }
