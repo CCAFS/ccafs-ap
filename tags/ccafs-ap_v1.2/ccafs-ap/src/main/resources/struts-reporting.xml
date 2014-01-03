@@ -1,0 +1,264 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE struts PUBLIC "-//Apache Software Foundation//DTD Struts Configuration 2.3//EN" "http://struts.apache.org/dtds/struts-2.3.dtd">
+<struts>
+
+  <!-- Add addition packages and configuration here. -->
+  <package name="reporting" namespace="/reporting" extends="ccafsap-default">
+    <!-- default-interceptor-ref name="reportingStack" / -->
+    <default-action-ref name="activities" />
+
+    <!-- Sections -->
+    
+    <action name="introduction" class="org.cgiar.ccafs.ap.action.BaseAction">
+      <interceptor-ref name="reportingStack" />
+      <result name="input">/WEB-INF/reporting/homeReporting.ftl</result>
+    </action>
+    
+    <action name="activities" class="org.cgiar.ccafs.ap.action.reporting.activities.ActivitiesReportingAction">
+      <interceptor-ref name="reportingStack" />
+      <result name="input">/WEB-INF/reporting/activities.ftl</result>
+    </action>
+
+    <action name="status" class="org.cgiar.ccafs.ap.action.reporting.activities.StatusReportingAction">
+      <interceptor-ref name="reportingStack" />
+      <interceptor-ref name="accessibleActivity" />
+      <result name="cancel" type="redirectAction">activities</result>
+      <result name="input">/WEB-INF/reporting/statusReporting.ftl</result>
+      <result name="success" type="redirectAction">
+        <param name="actionName">status</param>
+        <param name="activityID">${activity.id}</param>
+      </result>
+      <result name="next" type="redirectAction">
+        <param name="actionName">deliverables</param>
+        <param name="activityID">${activity.id}</param>
+      </result>
+    </action>
+
+    <action name="deliverables" class="org.cgiar.ccafs.ap.action.reporting.activities.DeliverablesReportingAction">
+      <interceptor-ref name="reportingStack" />
+      <interceptor-ref name="accessibleActivity" />
+      <result name="cancel" type="redirectAction">activities</result>
+      <result name="input">/WEB-INF/reporting/deliverablesReporting.ftl</result>
+      <result name="success" type="redirectAction">
+        <param name="actionName">deliverables</param>
+        <param name="activityID">${activity.id}</param>
+      </result>
+      <result name="next" type="redirectAction">
+        <param name="actionName">partners</param>
+        <param name="activityID">${activity.id}</param>
+      </result>
+    </action>
+
+    <action name="partners" class="org.cgiar.ccafs.ap.action.reporting.activities.PartnersReportingAction">
+      <interceptor-ref name="reportingStack" />
+      <interceptor-ref name="accessibleActivity" />
+      <result name="cancel" type="redirectAction">activities</result>
+      <result name="input">/WEB-INF/reporting/partnersReporting.ftl</result>
+      <result name="success" type="redirectAction">
+        <param name="actionName">partners</param>
+        <param name="activityID">${activity.id}</param>
+      </result>
+      <result name="next" type="redirectAction">
+        <param name="actionName">activities</param>
+      </result>
+    </action>
+
+    <action name="outputSummary" class="org.cgiar.ccafs.ap.action.reporting.summaries.OutputSummaryAction">
+      <interceptor-ref name="reportingStack" />
+      <result name="cancel" type="redirectAction">activities</result>
+      <result name="input">/WEB-INF/reporting/outputSummary.ftl</result>
+      <result name="success" type="redirectAction">
+        <param name="actionName">outputSummary</param>
+      </result>
+      <result name="next" type="redirectAction">
+        <param name="actionName">publications</param>
+      </result>
+    </action>
+
+    <action name="publications" class="org.cgiar.ccafs.ap.action.reporting.publications.PublicationsReportingAction">
+      <interceptor-ref name="reportingStack" />
+      <result name="cancel" type="redirectAction">activities</result>
+      <result name="input">/WEB-INF/reporting/publicationsReporting.ftl</result>
+      <result name="success" type="redirectAction">
+        <param name="actionName">publications</param>
+      </result>
+      <result name="next" type="redirectAction">
+        <param name="actionName">communications</param>
+      </result>
+    </action>
+
+    <action name="communications" class="org.cgiar.ccafs.ap.action.reporting.communications.CommunicationsReportingAction">
+      <interceptor-ref name="reportingStack" />
+      <result name="cancel" type="redirectAction">activities</result>
+      <result name="input">/WEB-INF/reporting/communicationsReporting.ftl</result>
+      <result name="success" type="redirectAction">
+        <param name="actionName">communications</param>
+      </result>
+      <result name="next" type="redirectAction">
+        <param name="actionName">caseStudies</param>
+      </result>
+    </action>
+
+    <action name="caseStudies" class="org.cgiar.ccafs.ap.action.reporting.casestudies.CaseStudiesAction">
+      <interceptor-ref name="reportingStack" />
+      <interceptor-ref name="fileUpload">
+        <param name="allowedTypes">image/bmp,image/gif,image/jpeg,image/png</param>
+        <param name="maximumSize">10485760</param>
+      </interceptor-ref> 
+      <result name="cancel" type="redirectAction">activities</result>
+      <result name="input">/WEB-INF/reporting/caseStudiesReporting.ftl</result>
+      <result name="success" type="redirectAction">
+        <param name="actionName">caseStudies</param>        
+      </result>
+      <result name="next" type="redirectAction">
+        <param name="actionName">outcomes</param>
+      </result>
+    </action>
+
+    <action name="outcomes" class="org.cgiar.ccafs.ap.action.reporting.outcomes.OutcomesReportingAction">
+      <interceptor-ref name="reportingStack" />
+      <result name="cancel" type="redirectAction">activities</result>
+      <result name="input">/WEB-INF/reporting/outcomesReporting.ftl</result>
+      <result name="success" type="redirectAction">
+        <param name="actionName">outcomes</param>
+      </result>
+      <result name="next" type="redirectAction">
+        <param name="actionName">themeOneOutcomeIndicators</param>
+      </result>
+    </action>
+
+    <action name="themeOneOutcomeIndicators" class="org.cgiar.ccafs.ap.action.reporting.outcomes.OutcomeIndicatorsReportingAction">
+      <interceptor-ref name="reportingStack" />
+      <result name="cancel" type="redirectAction">activities</result>
+      <result name="input">/WEB-INF/reporting/outcomeIndicatorsReporting.ftl</result>
+      <result name="success" type="redirectAction">
+        <param name="actionName">themeOneOutcomeIndicators</param>
+      </result>
+      <result name="next" type="redirectAction">
+        <param name="actionName">themeTwoOutcomeIndicators</param>
+      </result>
+      <param name="currentIndicatorsTheme">1</param>
+    </action>
+
+    <action name="themeTwoOutcomeIndicators" class="org.cgiar.ccafs.ap.action.reporting.outcomes.OutcomeIndicatorsReportingAction">
+      <interceptor-ref name="reportingStack" />
+      <result name="cancel" type="redirectAction">activities</result>
+      <result name="input">/WEB-INF/reporting/outcomeIndicatorsReporting.ftl</result>
+      <result name="success" type="redirectAction">
+        <param name="actionName">themeTwoOutcomeIndicators</param>
+      </result>
+      <result name="next" type="redirectAction">
+        <param name="actionName">themeThreeOutcomeIndicators</param>
+      </result>
+      <param name="currentIndicatorsTheme">2</param>
+    </action>
+
+    <action name="themeThreeOutcomeIndicators" class="org.cgiar.ccafs.ap.action.reporting.outcomes.OutcomeIndicatorsReportingAction">
+      <interceptor-ref name="reportingStack" />
+      <result name="cancel" type="redirectAction">activities</result>
+      <result name="input">/WEB-INF/reporting/outcomeIndicatorsReporting.ftl</result>
+      <result name="success" type="redirectAction">
+        <param name="actionName">themeThreeOutcomeIndicators</param>
+      </result>
+      <result name="next" type="redirectAction">
+        <param name="actionName">themeFourOutcomeIndicators</param>
+      </result>
+      <param name="currentIndicatorsTheme">3</param>
+    </action>
+
+    <action name="themeFourOutcomeIndicators" class="org.cgiar.ccafs.ap.action.reporting.outcomes.OutcomeIndicatorsReportingAction">
+      <interceptor-ref name="reportingStack" />
+      <result name="cancel" type="redirectAction">activities</result>
+      <result name="input">/WEB-INF/reporting/outcomeIndicatorsReporting.ftl</result>
+      <result name="success" type="redirectAction">
+        <param name="actionName">themeFourOutcomeIndicators</param>
+      </result>
+      <result name="next" type="redirectAction">
+        <param name="actionName">indicators</param>
+      </result>
+      <param name="currentIndicatorsTheme">4</param>
+    </action>
+
+    <action name="indicators" class="org.cgiar.ccafs.ap.action.reporting.indicators.IndicatorsReportingAction">
+      <interceptor-ref name="reportingStack" />
+      <result name="cancel" type="redirectAction">activities</result>
+      <result name="input">/WEB-INF/reporting/indicatorsReporting.ftl</result>
+      <result name="success" type="redirectAction">
+        <param name="actionName">indicators</param>
+      </result>
+      <result name="next" type="redirectAction">
+        <param name="actionName">leverages</param>
+      </result>
+    </action>
+    
+    <action name="leverages" class="org.cgiar.ccafs.ap.action.reporting.leverages.LeveragesReportingAction">
+      <interceptor-ref name="reportingStack" />
+      <result name="cancel" type="redirectAction">activities</result>
+      <result name="input">/WEB-INF/reporting/leveragesReporting.ftl</result>
+      <result name="success" type="redirectAction">
+        <param name="actionName">leverages</param>
+      </result>
+    </action>
+
+    <action name="tlOutputs" class="org.cgiar.ccafs.ap.action.reporting.tlrpl.TLOutputSummaryReportingAction">
+      <interceptor-ref name="reportingStack" />
+      <interceptor-ref name="tlRplAuthorizedUsers" />
+      <result name="cancel" type="redirectAction">activities</result>
+      <result name="input">/WEB-INF/reporting/tlOutputsReporting.ftl</result>
+      <result name="success" type="redirectAction">
+        <param name="actionName">tlOutputs</param>
+      </result>
+      <result name="next" type="redirectAction">
+        <param name="actionName">tlRplMilestones</param>
+      </result>
+    </action>
+
+    <action name="rplSynthesis" class="org.cgiar.ccafs.ap.action.reporting.tlrpl.RPLSynthesisReportingAction">
+      <interceptor-ref name="reportingStack" />
+      <interceptor-ref name="tlRplAuthorizedUsers" />
+      <result name="cancel" type="redirectAction">activities</result>
+      <result name="input">/WEB-INF/reporting/rplSynthesisReporting.ftl</result>
+      <result name="success" type="redirectAction">
+        <param name="actionName">rplSynthesis</param>
+      </result>
+      <result name="next" type="redirectAction">
+        <param name="actionName">tlRplMilestones</param>
+      </result>
+    </action>
+    
+    <action name="tlRplMilestones" class="org.cgiar.ccafs.ap.action.reporting.tlrpl.TLRPLMilestoneReportingAction">
+      <interceptor-ref name="reportingStack" />
+      <interceptor-ref name="tlRplAuthorizedUsers" />
+      <result name="cancel" type="redirectAction">activities</result>
+      <result name="input">/WEB-INF/reporting/tlRplMilestoneReporting.ftl</result>
+      <result name="success" type="redirectAction">
+        <param name="actionName">tlRplMilestones</param>
+      </result>
+    </action>
+    
+    <action name="submit" class="org.cgiar.ccafs.ap.action.reporting.SubmitAction">
+      <interceptor-ref name="reportingStack" />
+      <result name="input" type="redirectAction">
+        <param name="actionName">activities</param>
+      </result>
+      <result name="success" type="redirectAction">
+        <param name="actionName">activities</param>
+      </result>
+    </action>
+
+    <!-- Others -->
+        
+    <action name="milestone" class="org.cgiar.ccafs.ap.action.reporting.activities.MilestoneReportingAction">
+      <result>/WEB-INF/reporting/milestone.ftl</result>
+    </action>
+
+    <action name="partnerSave" class="org.cgiar.ccafs.ap.action.reporting.activities.PartnersSaveReportingAction">
+      <interceptor-ref name="reportingStack" />
+      <result name="input">/WEB-INF/reporting/partnersSaveReporting.ftl</result>
+      <result name="success" type="redirectAction">
+        <param name="actionName">partnerSave</param>
+      </result>
+    </action>
+
+  </package>
+</struts>
