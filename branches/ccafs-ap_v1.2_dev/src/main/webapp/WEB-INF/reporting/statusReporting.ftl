@@ -53,11 +53,11 @@
               </a>
             </td>
           </tr>
-          [#if activity.contactPersons??]
+          [#if activity.contactPersons?has_content]
             <tr>
               <td class="title">[@s.text name="reporting.activityStatus.contactPerson" /]</td>
               <td colspan="3">
-                 ${activity.contactPersons[0].name}
+                  ${activity.contactPersons[0].name}
                  [#if activity.contactPersons[0].email?has_content ]
                   (<a id="contactEmail" href="mailto: ${activity.contactPersons[0].email} ">${activity.contactPersons[0].email}</a>)
                  [/#if] 

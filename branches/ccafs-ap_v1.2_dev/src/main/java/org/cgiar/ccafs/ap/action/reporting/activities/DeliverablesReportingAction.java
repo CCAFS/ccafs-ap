@@ -106,6 +106,80 @@ public class DeliverablesReportingAction extends BaseAction {
     return fileFormatsList;
   }
 
+  public String getIntranetPath() {
+    StringBuilder path = new StringBuilder();
+    path.append("http://intranet.ccafs.cgiar.org/");
+
+    if (getCurrentUser().isCP() || getCurrentUser().isPI()) {
+      path.append("Institutional Contact Points Library/Forms/");
+      path.append("AllItems.aspx?RootFolder=/Institutional Contact Points Library/");
+      path.append("Reviewing and Reporting/Center Technical Reports/");
+      path.append(getCurrentReportingLogframe().getYear() + "/");
+      path.append(getCurrentUser().getLeader().getAcronym() + "/");
+    }
+
+    if (getCurrentUser().isRPL()) {
+      path.append("CRP%207%20Management/Forms/");
+      path.append("AllItems.aspx?RootFolder=/CRP%207%20Management/");
+      path.append("Reviewing%20and%20Reporting/Annual%20Reporting/");
+      path.append("TL%20and%20RPL%20Technical%20Reporting/");
+      path.append(getCurrentReportingLogframe().getYear() + "/");
+      path.append("RPLs/");
+
+      switch (getCurrentUser().getLeader().getRegion().getName()) {
+        case "East Africa (EA)":
+          path.append("EA/");
+          break;
+
+        case "Latin America (LAM)":
+          path.append("LAM/");
+          break;
+
+        case "South East Asia (SEA) ":
+          path.append("SAs/");
+          break;
+
+        case "South Asia (SAs)":
+          path.append("SEA/");
+          break;
+
+        case "West Africa (WA)":
+          path.append("WA/");
+          break;
+      }
+    }
+
+    if (getCurrentUser().isTL()) {
+      path.append("CRP%207%20Management/Forms/");
+      path.append("AllItems.aspx?RootFolder=/CRP%207%20Management/");
+      path.append("Reviewing%20and%20Reporting/Annual%20Reporting/");
+      path.append("TL%20and%20RPL%20Technical%20Reporting/");
+      path.append(getCurrentReportingLogframe().getYear() + "/");
+      path.append("THEMES/");
+
+      switch (getCurrentUser().getLeader().getTheme().getCode()) {
+        case "1":
+          path.append("T1/");
+          break;
+
+        case "2":
+          path.append("T2/");
+          break;
+
+        case "3":
+          path.append("T3/");
+          break;
+
+        case "4":
+          path.append("T4/");
+          break;
+
+      }
+    }
+
+    return path.toString();
+  }
+
   public List<String> getYearList() {
     List<String> years = new ArrayList<>();
     for (int c = activity.getYear(); c <= config.getEndYear(); c++) {
@@ -118,12 +192,12 @@ public class DeliverablesReportingAction extends BaseAction {
     return canSubmit;
   }
 
+
   @Override
   public String next() {
     save();
     return super.next();
   }
-
 
   @Override
   public void prepare() throws Exception {
@@ -175,6 +249,8 @@ public class DeliverablesReportingAction extends BaseAction {
         APConstants.REPORTING_SECTION);
 
     canSubmit = (submission == null) ? true : false;
+
+    getIntranetPath();
   }
 
   @Override

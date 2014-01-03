@@ -104,11 +104,14 @@
             [/#if]            
                 <p>[@s.text name="reporting.activityDeliverables.fileNameMessage" /]</p>
               </div>            
+              
+            [#--  
             [#if deliverableTypeIdsPublications?seq_contains(activity.deliverables[deliverable_index].type.id)]
               [@customForm.input name="activity.deliverables[${deliverable_index}].fileName" type="text" i18nkey="reporting.activityDeliverables.filename" help="reporting.activityDeliverables.filename.help" display=false /]
             [#else]
               [@customForm.input name="activity.deliverables[${deliverable_index}].fileName" type="text" i18nkey="reporting.activityDeliverables.filename" help="reporting.activityDeliverables.filename.help" /]
             [/#if]
+            --]
         </div>
       </div> <!-- End deliverable-${deliverable_index} -->
       <hr />
@@ -129,9 +132,26 @@
       ${activity.leader.acronym} - [@s.text name="reporting.activityList.activity" /] ${activity.id}      
     </h1>
     
+    <fieldset>
+      <p>
+        <strong>
+        Please upload your deliverables by clicking <a target="_BLANK" href="${intranetPath}">here</a> <br />
+        In order to add your deliverables to your CG Center/RPLs/THEMES folder, you should: <br />
+        <ol>
+          <li>Create a folder named with your actvity ID (e.g. activity 508-2013)</li>
+          <li>Inside the actvity folder, create a folder named with your deliverable ID (e.g. deliverable 2)</li>
+          <li>Upload your deliverables to the related folder.</li>
+        </ol>
+        
+        <br/>
+        If you are a principal investigator without access to the CCAFS intranet please contact to your Contact point to get it.
+        </strong>
+      </p>
+    </fieldset>
+
     <h6>[@s.text name="reporting.activityStatus.title" /]</h6>
     <p>${activity.title}</p>
-    
+
     <div id="items">
       <fieldset id="expectedDeliverablesGroup">
         <legend>
@@ -216,10 +236,11 @@
           </div>
         </div>
         
-        [#-- File name --]
+        [#-- File name 
         <div class="fullBlock">          
           [@customForm.input name="fileName" type="text" i18nkey="reporting.activityDeliverables.filename" help="reporting.activityDeliverables.filename.help"/]
         </div>        
+        --]
               
       </div> <!-- End deliverable template -->
     </div> <!-- End template -->
