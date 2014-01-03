@@ -22,7 +22,7 @@
   [@s.form action="status"]
   <article class="halfContent">
     [#include "/WEB-INF/reporting/activitiesReportingSubMenu.ftl" /]
-    <h1>${activity.leader.acronym} - [@s.text name="reporting.activityList.activity" /] ${activity.id}</h1>
+    <h1>${activity.leader.acronym}: [@s.text name="reporting.activityList.activity" /] ${activity.activityId} </h1>
     
     <fieldset>
       <div id="activityTitle" class="fullBlock">
