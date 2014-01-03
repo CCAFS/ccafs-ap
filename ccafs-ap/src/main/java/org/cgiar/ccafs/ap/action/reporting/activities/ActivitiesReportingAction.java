@@ -120,8 +120,6 @@ public class ActivitiesReportingAction extends BaseAction {
     Submission submission =
       submissionManager.getSubmission(getCurrentUser().getLeader(), getCurrentReportingLogframe(),
         APConstants.REPORTING_SECTION);
-    System.out.println("---------------------------------");
-    System.out.println(submission);
     canSubmit = (submission == null) ? true : false;
   }
 

@@ -81,9 +81,6 @@ public class RedirectMessageInterceptor extends MethodFilterInterceptor {
 
     @SuppressWarnings("unchecked")
     Collection<String> actionMessages = (Collection) session.remove(ACTION_MESSAGES_KEY);
-    // if (actionMessages!=null){
-    // System.out.println("Found "+actionMessages.size()+" actionMessages in session");
-    // }
     if (actionMessages != null && !actionMessages.isEmpty()) {
       for (String message : actionMessages) {
         action.addActionMessage(message);
