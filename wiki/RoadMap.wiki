@@ -4,9 +4,17 @@
 == CCAFS P&R v1.2 ==
 *Planned release date:* December 2013
 
-In reporting it is needed add new sub-sections, like Communications, Indicators and Leverages.
+*Released on:* January 3, 2014
 
-Also it's needed make improvements and adjustments in reporting subsections like Outcomes, Case studies, Publications and Deliverables.
+It was added new sub-section in the reporting: Communications, CRP Indicators, Leverages and Outcomes indicators.
+
+Also was made some improvements in other reporting subsections like Outcomes, Case studies, Publications and Deliverables.
+
+[http://code.google.com/p/ccafs-ap/issues/list?can=1&q=milestone%3DRelease1.2 Resolved issues]
+
+*Minor versions:*
+
+  * Version 1.2.1 [http://code.google.com/p/ccafs-ap/issues/list?can=1&q=milestone%3DRelease1.2.1 Resolved issues]
 
 ----------
 
