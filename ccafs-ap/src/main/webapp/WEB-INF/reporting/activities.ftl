@@ -40,7 +40,7 @@
             <td class="left">
               <a href="
               [@s.url action='status' includeParams='get']
-                [@s.param name='${activityRequestParameter}']${activity.id}[/@s.param]
+                [@s.param name='${activityRequestParameter}']${activity.id?c}[/@s.param]
               [/@s.url]
               " title="${activity.title}">
                 [#if activity.title?length < 50] ${activity.title}</a> [#else] [@utilities.wordCutter string=activity.title maxPos=50 /]...</a> [/#if]
