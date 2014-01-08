@@ -112,7 +112,7 @@
     <input id="noResultText" type="hidden" value="[@s.text name="reporting.activityPartners.addNewPartner.noResultMatch" /]" />
     
     <!-- internal parameter -->
-    <input name="activityID" type="hidden" value="${activity.id}" />
+    <input name="activityID" type="hidden" value="${activity.id?c}" />
     
     [#if canSubmit]
       <div class="buttons">

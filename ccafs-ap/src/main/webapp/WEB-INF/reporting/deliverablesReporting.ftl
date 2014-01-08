@@ -246,7 +246,7 @@
     </div> <!-- End template -->
     
     <!-- internal parameter -->
-    <input name="activityID" type="hidden" value="${activity.id}" />
+    <input name="activityID" type="hidden" value="${activity.id?c}" />
     [#if canSubmit]
       <div class="buttons">
         [@s.submit type="button" name="save"][@s.text name="form.buttons.save" /][/@s.submit]
