@@ -112,8 +112,8 @@ public class DeliverablesReportingAction extends BaseAction {
 
     if (getCurrentUser().isCP() || getCurrentUser().isPI()) {
       path.append("Institutional Contact Points Library/Forms/");
-      path.append("AllItems.aspx?RootFolder=/Institutional Contact Points Library/");
-      path.append("Reviewing and Reporting/Center Technical Reports/");
+      path.append("AllItems.aspx?RootFolder=/Institutional%20Contact%20Points%20Library/");
+      path.append("Reviewing%20and%20Reporting/Center%20Technical%20Reports/");
       path.append(getCurrentReportingLogframe().getYear() + "/");
       path.append(getCurrentUser().getLeader().getAcronym() + "/");
     }
