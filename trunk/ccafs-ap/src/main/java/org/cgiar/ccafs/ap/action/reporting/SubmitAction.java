@@ -384,7 +384,7 @@ public class SubmitAction extends BaseAction {
     for (Publication publication : publications) {
       boolean needAccessType = false;
 
-      if (publication.getIdentifier().isEmpty()) {
+      if (publication.getIdentifier() == null || publication.getIdentifier().isEmpty()) {
         needIdentifier = true;
       }
 
