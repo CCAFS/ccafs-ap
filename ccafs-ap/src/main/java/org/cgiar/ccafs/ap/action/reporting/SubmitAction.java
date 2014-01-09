@@ -32,6 +32,7 @@ import org.cgiar.ccafs.ap.data.model.RPLSynthesisReport;
 import org.cgiar.ccafs.ap.data.model.Submission;
 import org.cgiar.ccafs.ap.data.model.TLOutputSummary;
 import org.cgiar.ccafs.ap.util.Capitalize;
+import org.cgiar.ccafs.ap.util.SendMail;
 
 import java.util.List;
 
@@ -453,6 +454,34 @@ public class SubmitAction extends BaseAction {
     }
   }
 
+  private void sendConfirmationMessage() {
+    if (!config.getBaseUrl().contains("localhost") || !config.getBaseUrl().contains("/test")) {
+      // Additionally, sent a confirmation message to TL/RPL
+      // In this moment only to Gloria, Hector and David Abreu
+
+      String subject;
+      subject = "[CCAFS P&R] " + getCurrentUser().getLeader().getAcronym() + " has sent its reporting workplan ";
+
+      String recipients = "g.c.rengifo@cgiar.org d.abreu@cgiar.org h.f.tobon@cgiar.org h.d.carvajal@cgiar.org";
+
+      StringBuilder message = new StringBuilder();
+      message.append("The user " + getCurrentUser().getName() + " ");
+      message.append("has submitted the workplan for " + getCurrentUser().getLeader().getAcronym() + ". \n");
+      message.append("Below you will find the list of activities that the user submits: \n\n");
+
+      for (Activity activitie : activities) {
+        message.append("http://activities.ccafs.cgiar.org/activity.do?id=" + activitie.getId());
+        message.append("\n");
+      }
+
+      message.append("\nKind regards, \n");
+      message.append("CCAFS P&R Team");
+
+      SendMail sendMail = new SendMail(this.config);
+      sendMail.send(recipients, subject, message.toString());
+    }
+  }
+
   public String submit() {
     boolean submitted = false;
     validateWorkplan();
@@ -470,6 +499,7 @@ public class SubmitAction extends BaseAction {
 
     submitted = submissionManager.submit(submission);
     if (submitted) {
+      sendConfirmationMessage();
       addActionMessage(getText("submit.success"));
       return SUCCESS;
     } else {
