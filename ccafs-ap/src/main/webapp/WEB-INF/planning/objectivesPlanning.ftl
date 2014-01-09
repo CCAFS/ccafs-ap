@@ -25,7 +25,7 @@
     </h1>
     
     [#-- Activity identifier --]
-    <input name="activityID" value="${activity.id}" type="hidden"/>
+    <input name="activityID" value="${activity.id?c}" type="hidden"/>
     
     <fieldset id="objectivesBlock">
       <legend><h6> [@s.text name="planning.objectives" /]  </h6></legend>
