@@ -239,7 +239,9 @@ public class PublicationsReportingAction extends BaseAction {
       }
 
       if (problem) {
-        validationMessages.setCharAt(validationMessages.lastIndexOf(","), '.');
+        if (validationMessages.toString().contains(",")) {
+          validationMessages.setCharAt(validationMessages.lastIndexOf(","), '.');
+        }
       }
     }
   }

@@ -32,7 +32,7 @@
       
       <div id="activityDescription" class="fullBlock">
         <h6>[@s.text name="reporting.activityStatus.description" /]</h6>
-        <p>${activity.description}</p>
+        <p> [#if activity.description?has_content] ${activity.description} [/#if]</p>
       </div>
       
       <table id="generalInformation"  class="fullBlock">

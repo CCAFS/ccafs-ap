@@ -111,7 +111,7 @@ public class DeliverablesReportingAction extends BaseAction {
     path.append("http://intranet.ccafs.cgiar.org/");
 
     if (getCurrentUser().isCP() || getCurrentUser().isPI()) {
-      path.append("Institutional Contact Points Library/Forms/");
+      path.append("Institutional%20Contact%20Points%20Library/Forms/");
       path.append("AllItems.aspx?RootFolder=/Institutional%20Contact%20Points%20Library/");
       path.append("Reviewing%20and%20Reporting/Center%20Technical%20Reports/");
       path.append(getCurrentReportingLogframe().getYear() + "/");
@@ -176,7 +176,6 @@ public class DeliverablesReportingAction extends BaseAction {
 
       }
     }
-
     return path.toString();
   }
 
