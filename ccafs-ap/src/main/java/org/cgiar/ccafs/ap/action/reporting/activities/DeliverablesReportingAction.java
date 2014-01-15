@@ -106,6 +106,79 @@ public class DeliverablesReportingAction extends BaseAction {
     return fileFormatsList;
   }
 
+  public String getIntranetIndications() {
+    StringBuilder path = new StringBuilder();
+    path.append("<b> * </b> Intranet Home ");
+
+    if (getCurrentUser().isCP() || getCurrentUser().isPI()) {
+      path.append("<b> >> </b> Institutional Contact Points library ");
+      path.append("<b> >> </b> Reviewing and reporting ");
+      path.append("<b> >> </b> Center Technical Reports ");
+      path.append("<b> >> </b> " + getCurrentReportingLogframe().getYear() + " ");
+      path.append("<b> >> </b> " + getCurrentUser().getLeader().getAcronym() + " ");
+    }
+
+    if (getCurrentUser().isRPL()) {
+      path.append("<b> >> </b> Program Management Library ");
+      path.append("<b> >> </b> Reviewing and reporting ");
+      path.append("<b> >> </b> Annual Reporting ");
+      path.append("<b> >> </b> TL and RPL Technical reporting ");
+      path.append("<b> >> </b> " + getCurrentReportingLogframe().getYear() + " ");
+      path.append("<b> >> </b> RPLs ");
+
+      switch (getCurrentUser().getLeader().getRegion().getName()) {
+        case "East Africa (EA)":
+          path.append("<b> >> </b> EA ");
+          break;
+
+        case "Latin America (LAM)":
+          path.append("<b> >> </b> LAM ");
+          break;
+
+        case "South East Asia (SEA) ":
+          path.append("<b> >> </b> SAs ");
+          break;
+
+        case "South Asia (SAs)":
+          path.append("<b> >> </b> SEA ");
+          break;
+
+        case "West Africa (WA)":
+          path.append("<b> >> </b> WA ");
+          break;
+      }
+    }
+
+    if (getCurrentUser().isTL()) {
+      path.append("<b> >> </b> Program Management Library ");
+      path.append("<b> >> </b> Reviewing and reporting ");
+      path.append("<b> >> </b> Annual Reporting ");
+      path.append("<b> >> </b> TL and RPL Technical reporting ");
+      path.append("<b> >> </b> " + getCurrentReportingLogframe().getYear() + " ");
+      path.append("THEMES/");
+
+      switch (getCurrentUser().getLeader().getTheme().getCode()) {
+        case "1":
+          path.append("<b> >> </b> T1 ");
+          break;
+
+        case "2":
+          path.append("<b> >> </b> T2 ");
+          break;
+
+        case "3":
+          path.append("<b> >> </b> T3 ");
+          break;
+
+        case "4":
+          path.append("<b> >> </b> T4 ");
+          break;
+
+      }
+    }
+    return path.toString();
+  }
+
   public String getIntranetPath() {
     StringBuilder path = new StringBuilder();
     path.append("http://intranet.ccafs.cgiar.org/");

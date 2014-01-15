@@ -104,14 +104,13 @@
             [/#if]            
                 <p>[@s.text name="reporting.activityDeliverables.fileNameMessage" /]</p>
               </div>            
-              
-            [#--  
+
             [#if deliverableTypeIdsPublications?seq_contains(activity.deliverables[deliverable_index].type.id)]
               [@customForm.input name="activity.deliverables[${deliverable_index}].fileName" type="text" i18nkey="reporting.activityDeliverables.filename" help="reporting.activityDeliverables.filename.help" display=false /]
             [#else]
               [@customForm.input name="activity.deliverables[${deliverable_index}].fileName" type="text" i18nkey="reporting.activityDeliverables.filename" help="reporting.activityDeliverables.filename.help" /]
             [/#if]
-            --]
+
         </div>
       </div> <!-- End deliverable-${deliverable_index} -->
       <hr />
@@ -134,18 +133,35 @@
     
     <fieldset>
       <p>
-        <strong>
-        Please upload your deliverables by clicking <a target="_BLANK" href="${intranetPath}">here</a> <br />
-        In order to add your deliverables to your CG Center/RPLs/THEMES folder, you should: <br />
-        <ol>
-          <li>Create a folder named with your actvity ID (e.g. activity 508-2013)</li>
-          <li>Inside the actvity folder, create a folder named with your deliverable ID (e.g. deliverable 2)</li>
-          <li>Upload your deliverables to the related folder.</li>
-        </ol>
-        
-        <br/>
-        If you are a principal investigator without access to the CCAFS intranet please contact to your Contact point to get it.
-        </strong>
+        <ul id="deliverablesFilesMessages">
+          <li>
+            <strong> Option 1 </strong> <br />
+            Please upload  your deliverables files in the CCAFS Intranet by clicking <a target="_BLANK" href="${intranetPath}">here</a>. You may also access the folder by following the path: <br />
+            ${intranetIndications} <br />
+            <br />
+            Please, keep it in mind that in order to add your deliverables to your CG Center/RPLs/THEMES folder, you should: <br />
+            <ol>
+              <li>Create a folder named with your activity ID (e.g. activity 508-2013)</li>
+              <li>Inside the activity folder, create another folder named with your deliverable ID (e.g. deliverable 2)</li>
+              <li>Upload your deliverables to the related folder.</li>
+              <li>
+                  At the end of the process you should end up with something like the following: <br />
+                    activity 508-2013/deliverable 2/file_name.xlsx <br />
+                    activity 508-2013/deliverable 3/my_other_file.xlsx <br />
+                    activity 900-2013/deliverable 2/file_name.doc <br />
+              </li>
+            </ol>
+            
+            <br/>
+            If you are a principal investigator without access to the CCAFS intranet, please kindly ask your contact point to upload the deliverables for you.
+          </li>
+          
+          <li>
+            <Strong> Option 2 </Strong> 
+              <br/>
+              If your deliverable file has a size less than 10MB, please provide the URL or Path where we can download the deliverables ourselves
+          </li>
+        </ul>
       </p>
     </fieldset>
 
@@ -236,12 +252,11 @@
           </div>
         </div>
         
-        [#-- File name 
+        [#-- File name --]
         <div class="fullBlock">          
           [@customForm.input name="fileName" type="text" i18nkey="reporting.activityDeliverables.filename" help="reporting.activityDeliverables.filename.help"/]
-        </div>        
-        --]
-              
+        </div>
+
       </div> <!-- End deliverable template -->
     </div> <!-- End template -->
     

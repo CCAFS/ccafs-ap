@@ -74,7 +74,7 @@
     
     <p id="addPartnerText">
       [@s.text name="reporting.activityPartners.addPartnerMessage.first" /]
-      <a class="popup" href="[@s.url action='partnerSave'][@s.param name='${activityRequestParameter}']${activityID}[/@s.param][/@s.url]">
+      <a class="popup" href="[@s.url action='partnerSave'][@s.param name='${activityRequestParameter}']${activityID?c}[/@s.param][/@s.url]">
         [@s.text name="reporting.activityPartners.addPartnerMessage.second" /]
       </a>       
     </p>

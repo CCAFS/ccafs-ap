@@ -912,6 +912,10 @@ button#activities_save{
   display: none;
 }
 
+ul#deliverablesFilesMessages > li {
+  margin-bottom: 10px;
+}
+
 /*** Contact Persons (popup) ***/
 #contactPersons {
   display: none;
