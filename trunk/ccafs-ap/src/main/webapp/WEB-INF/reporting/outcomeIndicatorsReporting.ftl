@@ -20,8 +20,8 @@
           ${oir.outcomeIndicator.description}
         </p>
 
-        [@customForm.textArea name="outcomeIndicatorReports[${oir_index}].achievements" i18nkey="reporting.outcomeIndicators.achievements" help="reporting.outcomeIndicators.achievements.help"/]
-        [@customForm.textArea name="outcomeIndicatorReports[${oir_index}].evidence" i18nkey="reporting.outcomeIndicators.evidence" help="reporting.outcomeIndicators.evidence.help" /]
+        [@customForm.textArea name="outcomeIndicatorReports[${oir_index}].achievements" i18nkey="reporting.outcomeIndicators.achievements" /]
+        [@customForm.textArea name="outcomeIndicatorReports[${oir_index}].evidence" i18nkey="reporting.outcomeIndicators.evidence" /]
       </div>
     [/#if]
   [/#list]
