@@ -228,8 +228,7 @@ public class MySQLActivityDAO implements ActivityDAO {
     StringBuilder query = new StringBuilder();
     query.append("SELECT a.id, a.activity_id, a.title FROM activities a ");
     query.append("LEFT JOIN activities a2 ON a.id =  a2.continuous_activity_id ");
-    query.append("WHERE a2.continuous_activity_id IS NULL ");
-    query.append(" AND a.year = ");
+    query.append("WHERE a.year = ");
     query.append(year);
     query.append(" AND a.activity_leader_id = ");
     query.append(leaderID);
