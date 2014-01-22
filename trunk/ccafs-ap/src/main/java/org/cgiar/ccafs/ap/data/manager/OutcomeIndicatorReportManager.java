@@ -18,7 +18,7 @@ public interface OutcomeIndicatorReportManager {
    * @param logframe
    * @return
    */
-  public List<OutcomeIndicatorReport> getOutcomeIndicatorReports(Logframe logframe);
+  public List<OutcomeIndicatorReport> getOutcomeIndicatorReports(Logframe logframe, Leader leader);
 
   /**
    * Save the information about the outcome indicators reports given into the database.

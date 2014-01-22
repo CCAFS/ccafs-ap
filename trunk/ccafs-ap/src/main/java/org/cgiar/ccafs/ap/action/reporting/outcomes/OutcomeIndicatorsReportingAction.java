@@ -69,7 +69,9 @@ public class OutcomeIndicatorsReportingAction extends BaseAction {
 
   @Override
   public void prepare() throws Exception {
-    outcomeIndicatorReports = outcomeIndicatorReportManager.getOutcomeIndicatorReports(getCurrentReportingLogframe());
+    outcomeIndicatorReports =
+      outcomeIndicatorReportManager.getOutcomeIndicatorReports(getCurrentReportingLogframe(), getCurrentUser()
+        .getLeader());
     themes = themeManager.getThemes(getCurrentReportingLogframe());
 
     /* --------- Checking if the user can submit ------------- */

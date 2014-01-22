@@ -26,9 +26,9 @@ public class OutcomeIndicatorReportManagerImpl implements OutcomeIndicatorReport
   }
 
   @Override
-  public List<OutcomeIndicatorReport> getOutcomeIndicatorReports(Logframe logframe) {
+  public List<OutcomeIndicatorReport> getOutcomeIndicatorReports(Logframe logframe, Leader leader) {
     List<OutcomeIndicatorReport> outcomeIndicatorReports = new ArrayList<>();
-    List<Map<String, String>> oirDataList = oirDAO.getOutcomeIndicatorReports(logframe.getYear());
+    List<Map<String, String>> oirDataList = oirDAO.getOutcomeIndicatorReports(logframe.getYear(), leader.getId());
 
     for (Map<String, String> oirData : oirDataList) {
       OutcomeIndicatorReport oir = new OutcomeIndicatorReport();
@@ -54,14 +54,14 @@ public class OutcomeIndicatorReportManagerImpl implements OutcomeIndicatorReport
       outcomeIndicator.setTheme(theme);
 
       // Leader object
-      Leader leader = new Leader();
+      Leader lead = new Leader();
       if (oirData.get("leader_id") != null) {
-        leader.setId(Integer.parseInt(oirData.get("leader_id")));
-        leader.setAcronym(oirData.get("leader_acronym"));
+        lead.setId(Integer.parseInt(oirData.get("leader_id")));
+        lead.setAcronym(oirData.get("leader_acronym"));
       }
 
       oir.setOutcomeIndicator(outcomeIndicator);
-      oir.setLeader(leader);
+      oir.setLeader(lead);
 
       outcomeIndicatorReports.add(oir);
     }

@@ -16,7 +16,7 @@ public interface OutcomeIndicatorReportDAO {
    * @param year
    * @return a list of maps with the information.
    */
-  public List<Map<String, String>> getOutcomeIndicatorReports(int year);
+  public List<Map<String, String>> getOutcomeIndicatorReports(int year, int leaderId);
 
   /**
    * Save all the information related to the outcome indicators.
