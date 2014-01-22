@@ -27,7 +27,7 @@ public class MySQLOutcomeIndicatorReportDAO implements OutcomeIndicatorReportDAO
   }
 
   @Override
-  public List<Map<String, String>> getOutcomeIndicatorReports(int year) {
+  public List<Map<String, String>> getOutcomeIndicatorReports(int year, int leaderId) {
     LOG.debug(">> getOutcomeIndicatorReports(year={})", year);
 
     List<Map<String, String>> outcomeIndicatorReports = new ArrayList<>();
@@ -39,6 +39,7 @@ public class MySQLOutcomeIndicatorReportDAO implements OutcomeIndicatorReportDAO
     query.append("th.id as 'theme_id', th.code as 'theme_code' ");
     query.append("FROM outcome_indicators oi ");
     query.append("LEFT JOIN outcome_indicator_reports oir ON oi.id = oir.outcome_indicator_id ");
+    query.append(" AND oir.activity_leader_id = " + leaderId + " ");
     query.append("LEFT JOIN activity_leaders al ON oir.activity_leader_id = al.id ");
     query.append("INNER JOIN themes th ON oi.theme_id = th.id ");
     query.append("INNER JOIN logframes l ON th.logframe_id = l.id ");
