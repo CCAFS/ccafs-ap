@@ -28,6 +28,10 @@ $(document).ready(function() {
           $(this).find("[id$='citation']").attr("id", "publications[" + index + "].citation");
           $(this).find("[name$='citation']").attr("name", "publications[" + index + "].citation");
           $(this).find("[for$='citation']").attr("for", "publications[" + index + "].citation");
+          // Publication CCAFS Acknowledge.
+          $(this).find("[id$='ccafsAcknowledge']").attr("id", "publications[" + index + "].ccafsAcknowledge");
+          $(this).find("[name$='ccafsAcknowledge']").attr("name", "publications[" + index + "].ccafsAcknowledge");
+          $(this).find("[for$='ccafsAcknowledge']").attr("for", "publications[" + index + "].ccafsAcknowledge");
           // Themes.
           $(this).find("[name$='relatedThemes']").each(function(index2) {
             if( ! $(this).is(":hidden") ){

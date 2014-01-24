@@ -170,6 +170,11 @@
             [@customForm.textArea name="citation" i18nkey="reporting.publications.citation" help="reporting.publications.citation.help" /]
           </div>
           
+          [#-- CCAFS Acknowledge --]
+          <div class="fullBlock" id="ccafsAcknowledge" >
+            [@customForm.checkbox name="ccafsAcknowledge" i18nkey="reporting.publications.ccafsAcknowledge" value="true" /]
+          </div>
+
           [#-- Publication themes related --]
           <div class="fullBlock">
             <h6>[@s.text name="reporting.publications.themeRelated" /]</h6>
