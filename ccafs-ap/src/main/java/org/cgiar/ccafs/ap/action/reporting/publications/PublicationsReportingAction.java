@@ -195,16 +195,16 @@ public class PublicationsReportingAction extends BaseAction {
       for (Publication publication : publications) {
         boolean needAccessType = false;
 
-        if (publication.getIdentifier().isEmpty()) {
+        if (publication.getIdentifier() == null || publication.getIdentifier().isEmpty()) {
           problem = needIdentifier = true;
         }
 
-        if (publication.getCitation().isEmpty()) {
+        if (publication.getCitation() == null || publication.getCitation().isEmpty()) {
           problem = needCitation = true;
         }
 
         for (int typeId : publicationTypeAccessNeed) {
-          if (publication.getType().getId() == typeId) {
+          if (publication.getType() == null || publication.getType().getId() == typeId) {
             problem = needAccessType = true;
             break;
           }
