@@ -23,16 +23,18 @@
     [/#if]
   </ul>
   
-  [#if canSubmit]
-    <div id="submitButtonBlock" class="buttons">
-      [@s.form action="submit" id="submitForm" ]
-        [@s.submit type="button" name="save" method="submit" cssClass="test" ][@s.text name="form.buttons.submit" /][/@s.submit] 
-      [/@s.form]  
-    </div>
-  [#else]
-    <div id="submitButtonBlock" class="buttons">
-      <img src="${baseUrl}/images/global/icon-complete.png" /> [@s.text name="submit.submitted" /]
-    </div>
+  [#if !currentUser.isPI() ]
+    [#if canSubmit ]
+      <div id="submitButtonBlock" class="buttons">
+        [@s.form action="submit" id="submitForm" ]
+          [@s.submit type="button" name="save" method="submit" cssClass="test" ][@s.text name="form.buttons.submit" /][/@s.submit] 
+        [/@s.form]  
+      </div>
+    [#else]
+      <div id="submitButtonBlock" class="buttons">
+        <img src="${baseUrl}/images/global/icon-complete.png" /> [@s.text name="submit.submitted" /]
+      </div>
+    [/#if]
   [/#if]
   
 </nav>
