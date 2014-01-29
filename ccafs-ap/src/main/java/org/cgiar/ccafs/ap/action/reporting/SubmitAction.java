@@ -210,7 +210,7 @@ public class SubmitAction extends BaseAction {
         validationMessage.append(getText("reporting.caseStudies.validation.partners") + ", ");
       }
       // Type
-      if (caseStudies.get(c).getTypes().size() > config.getMaxCaseStudyTypes()) {
+      if (caseStudies.get(c).getTypes() == null || caseStudies.get(c).getTypes().size() > config.getMaxCaseStudyTypes()) {
         validationMessage.append(getText("reporting.caseStudies.validation.types") + ", ");
       }
     }
