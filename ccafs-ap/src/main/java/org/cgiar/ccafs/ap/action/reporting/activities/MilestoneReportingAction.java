@@ -7,7 +7,6 @@ import org.cgiar.ccafs.ap.data.manager.LogframeManager;
 import org.cgiar.ccafs.ap.data.manager.MilestoneManager;
 import org.cgiar.ccafs.ap.data.manager.SubmissionManager;
 import org.cgiar.ccafs.ap.data.model.Milestone;
-import org.cgiar.ccafs.ap.data.model.Submission;
 
 import com.google.inject.Inject;
 import org.apache.commons.lang3.StringUtils;
@@ -28,14 +27,11 @@ public class MilestoneReportingAction extends BaseAction {
   // Model
   protected Milestone milestone;
   protected int milestoneID;
-  private boolean canSubmit;
 
   @Inject
-  public MilestoneReportingAction(APConfig config, LogframeManager logframeManager, MilestoneManager milestoneManager,
-    SubmissionManager submissionManager) {
+  public MilestoneReportingAction(APConfig config, LogframeManager logframeManager, MilestoneManager milestoneManager) {
     super(config, logframeManager);
     this.milestoneManager = milestoneManager;
-    this.submissionManager = submissionManager;
   }
 
   @Override
@@ -62,18 +58,9 @@ public class MilestoneReportingAction extends BaseAction {
     }
 
     milestone = milestoneManager.getMilestone(milestoneID);
-
-    /* --------- Checking if the user can submit ------------- */
-    Submission submission =
-      submissionManager.getSubmission(getCurrentUser().getLeader(), getCurrentReportingLogframe(),
-        APConstants.REPORTING_SECTION);
-
-    canSubmit = (submission == null) ? true : false;
   }
 
   public void setActivity(Milestone milestone) {
     this.milestone = milestone;
   }
-
-
 }
