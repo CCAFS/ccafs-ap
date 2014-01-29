@@ -60,7 +60,7 @@
       <input type="hidden" id="message.success" value="[@s.text name="reporting.PartnersSave.successMessage" /]"/>
             
       <!-- internal parameter -->
-      <input name="activityID" type="hidden" value="${activityID}" />
+      <input name="activityID" type="hidden" value="${activityID?c}" />
       [@s.submit type="button" name="save"][@s.text name="form.buttons.savePartner.request" /][/@s.submit]
       [/@s.form]
     </article>
