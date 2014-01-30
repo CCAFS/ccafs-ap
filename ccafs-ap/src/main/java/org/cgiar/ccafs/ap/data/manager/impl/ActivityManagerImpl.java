@@ -791,7 +791,11 @@ public class ActivityManagerImpl implements ActivityManager {
     activityData.put("activity_id", "" + activity.getId());
     activityData.put("activity_status_id", "" + activity.getStatus().getId());
     activityData.put("status_description", activity.getStatusDescription());
-    activityData.put("gender_integrations_description", activity.getGenderIntegrationsDescription());
+    if (activity.getGenderIntegrationsDescription() == null || activity.getGenderIntegrationsDescription().isEmpty()) {
+      activityData.put("gender_integrations_description", null);
+    } else {
+      activityData.put("gender_integrations_description", activity.getGenderIntegrationsDescription());
+    }
     return activityDAO.saveStatus(activityData);
   }
 
