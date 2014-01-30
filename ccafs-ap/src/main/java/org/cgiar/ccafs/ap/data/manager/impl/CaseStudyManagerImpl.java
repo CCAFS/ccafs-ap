@@ -64,7 +64,7 @@ public class CaseStudyManagerImpl implements CaseStudyManager {
       }
       try {
         // Parse from string to Date object
-        if (caseStudyData.get("emd_date") != null) {
+        if (caseStudyData.get("end_date") != null) {
           temporalCaseStudy.setEndDate(dateFormat.parse(caseStudyData.get("end_date")));
         }
       } catch (ParseException e) {
@@ -154,6 +154,7 @@ public class CaseStudyManagerImpl implements CaseStudyManager {
     } else {
       csData.put("start_date", null);
     }
+
     if (caseStudy.getEndDate() != null) {
       csData.put("end_date", sdf.format(caseStudy.getEndDate()));
     } else {
