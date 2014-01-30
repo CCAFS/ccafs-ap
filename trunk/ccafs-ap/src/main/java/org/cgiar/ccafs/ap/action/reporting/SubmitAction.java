@@ -4,7 +4,9 @@ import org.cgiar.ccafs.ap.action.BaseAction;
 import org.cgiar.ccafs.ap.config.APConfig;
 import org.cgiar.ccafs.ap.config.APConstants;
 import org.cgiar.ccafs.ap.data.manager.ActivityManager;
+import org.cgiar.ccafs.ap.data.manager.CaseStudyCountriesManager;
 import org.cgiar.ccafs.ap.data.manager.CaseStudyManager;
+import org.cgiar.ccafs.ap.data.manager.CaseStudyTypeManager;
 import org.cgiar.ccafs.ap.data.manager.CommunicationManager;
 import org.cgiar.ccafs.ap.data.manager.LeverageManager;
 import org.cgiar.ccafs.ap.data.manager.LogframeManager;
@@ -19,7 +21,9 @@ import org.cgiar.ccafs.ap.data.manager.TLOutputSummaryManager;
 import org.cgiar.ccafs.ap.data.model.Activity;
 import org.cgiar.ccafs.ap.data.model.ActivityPartner;
 import org.cgiar.ccafs.ap.data.model.CaseStudy;
+import org.cgiar.ccafs.ap.data.model.CaseStudyType;
 import org.cgiar.ccafs.ap.data.model.Communication;
+import org.cgiar.ccafs.ap.data.model.Country;
 import org.cgiar.ccafs.ap.data.model.Deliverable;
 import org.cgiar.ccafs.ap.data.model.Leverage;
 import org.cgiar.ccafs.ap.data.model.MilestoneReport;
@@ -50,6 +54,8 @@ public class SubmitAction extends BaseAction {
   // Managers
   private ActivityManager activityManager;
   private CaseStudyManager caseStudyManager;
+  private CaseStudyCountriesManager caseStudyCountriesManager;
+  private CaseStudyTypeManager caseStudyTypeManager;
   private CommunicationManager communicationManager;
   private LeverageManager leverageManager;
   private OutcomeManager outcomeManager;
@@ -83,7 +89,8 @@ public class SubmitAction extends BaseAction {
     PublicationManager publicationManager, PublicationTypeManager publicationTypeManager,
     OutputSummaryManager outputSummaryManager, RPLSynthesisReportManager synthesisReportManager,
     TLOutputSummaryManager tlOutputManager, SubmissionManager submissionManager,
-    MilestoneReportManager milestoneReportManager, ActivityManager activityManager) {
+    MilestoneReportManager milestoneReportManager, ActivityManager activityManager,
+    CaseStudyCountriesManager caseStudyCountriesManager, CaseStudyTypeManager caseStudyTypeManager) {
     super(config, logframeManager);
     this.caseStudyManager = caseStudyManager;
     this.communicationManager = communicationManager;
@@ -97,6 +104,8 @@ public class SubmitAction extends BaseAction {
     this.submissionManager = submissionManager;
     this.milestoneReportManager = milestoneReportManager;
     this.activityManager = activityManager;
+    this.caseStudyCountriesManager = caseStudyCountriesManager;
+    this.caseStudyTypeManager = caseStudyTypeManager;
 
     validationMessage = new StringBuilder();
   }
@@ -340,6 +349,18 @@ public class SubmitAction extends BaseAction {
 
     // Case studies
     caseStudies = caseStudyManager.getCaseStudyList(getCurrentUser().getLeader(), getCurrentReportingLogframe());
+
+    // If there are elements in the case study list, iterate it to store
+    // the corresponding list of countries and the list of types
+    List<Country> temporalCountryList;
+    List<CaseStudyType> temporalTypeList;
+    for (int c = 0; c < caseStudies.size(); c++) {
+      temporalCountryList = caseStudyCountriesManager.getCaseStudyCountriesList(caseStudies.get(c));
+      caseStudies.get(c).setCountries(temporalCountryList);
+
+      temporalTypeList = caseStudyTypeManager.getCaseStudyTypes(caseStudies.get(c));
+      caseStudies.get(c).setTypes(temporalTypeList);
+    }
 
     // Communications
     communicationReport =
