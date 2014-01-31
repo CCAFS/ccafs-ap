@@ -184,11 +184,15 @@ public class CaseStudyManagerImpl implements CaseStudyManager {
     // if the case study was successfully saved, save the countries related and the case study types.
     if (caseStudyId >= 0) {
       // Save the countries
-      if (!caseStudy.isGlobal() && caseStudy.getCountriesIds().size() > 0) {
-        ArrayList<String> countriesIds = (ArrayList<String>) caseStudy.getCountriesIds();
-        boolean caseStudyCountriesAdded = caseStudyCountriesDAO.saveCaseStudyCountries(caseStudyId, countriesIds);
-        if (!caseStudyCountriesAdded) {
-          return false;
+      if (!caseStudy.isGlobal()) {
+        if (caseStudy.getCountries() != null) {
+          if (caseStudy.getCountriesIds().size() > 0) {
+            ArrayList<String> countriesIds = (ArrayList<String>) caseStudy.getCountriesIds();
+            boolean caseStudyCountriesAdded = caseStudyCountriesDAO.saveCaseStudyCountries(caseStudyId, countriesIds);
+            if (!caseStudyCountriesAdded) {
+              return false;
+            }
+          }
         }
       }
 

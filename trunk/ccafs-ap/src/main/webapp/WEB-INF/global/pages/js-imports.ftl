@@ -1,6 +1,5 @@
  [#ftl]
-  
-  
+
   [#if globalLibs??]
    [#list globalLibs as libraryName]
       [#if libraryName="chosen"]
@@ -58,8 +57,6 @@
       <script src="${js}"></script>
     [/#list]
   [/#if]
-  
 
-  
   [#-- Last, import the google analytics code --]
   [#include "/WEB-INF/global/pages/analytics.ftl" /]
