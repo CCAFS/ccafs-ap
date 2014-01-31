@@ -102,7 +102,7 @@
 
           [#-- Is global --]
           <div class="halfPartBlock">
-            [@customForm.checkbox  name="caseStudies[${caseStudy_index}].global" i18nkey="reporting.caseStudies.isGlobal" checked=caseStudy.global /]
+            [@customForm.checkbox  name="caseStudies[${caseStudy_index}].global" i18nkey="reporting.caseStudies.isGlobal" checked=caseStudy.global value="true" /]
           </div>
 
           [#-- Countries --]
@@ -214,7 +214,7 @@
 
         [#-- Is global --]
         <div class="halfPartBlock">
-          [@customForm.checkbox  name="global" i18nkey="reporting.caseStudies.isGlobal" checked=false /]
+          [@customForm.checkbox  name="global" i18nkey="reporting.caseStudies.isGlobal" checked=false value="true" /]
         </div>
 
         [#-- Countries --]
