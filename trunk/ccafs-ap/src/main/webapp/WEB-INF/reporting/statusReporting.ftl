@@ -22,7 +22,11 @@
   [@s.form action="status"]
   <article class="halfContent">
     [#include "/WEB-INF/reporting/activitiesReportingSubMenu.ftl" /]
-    <h1>${activity.leader.acronym}: [@s.text name="reporting.activityList.activity" /] ${activity.activityId} </h1>
+    [#if activity.commissioned] 
+      <h1>${activity.leader.acronym}: [@s.text name="planning.mainInformation.commissionedActivity" /] ${activity.activityId} </h1>
+    [#else] 
+      <h1>${activity.leader.acronym}: [@s.text name="reporting.activityList.activity" /] ${activity.activityId} </h1>
+    [/#if]
     
     <fieldset>
       <div id="activityTitle" class="fullBlock">
