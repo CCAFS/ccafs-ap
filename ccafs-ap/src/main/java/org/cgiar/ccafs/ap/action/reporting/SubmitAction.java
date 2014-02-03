@@ -481,7 +481,7 @@ public class SubmitAction extends BaseAction {
       // In this moment only to Gloria, Hector and David Abreu
 
       String subject;
-      subject = "[CCAFS P&R] " + getCurrentUser().getLeader().getAcronym() + " has sent its reporting workplan ";
+      subject = "[CCAFS P&R] " + getCurrentUser().getLeader().getAcronym() + " has sent its technical report";
 
       String recipients = "g.c.rengifo@cgiar.org d.abreu@cgiar.org h.f.tobon@cgiar.org h.d.carvajal@cgiar.org";
 
