@@ -78,6 +78,16 @@ public class IndicatorReportManagerImpl implements IndicatorReportManager {
     boolean saved = true;
     Map<String, String> indicatorReportData;
     for (IndicatorReport ir : indicatorReports) {
+
+      // If the indicator is empty, it is not saved
+      if ((ir.getTarget() == null || ir.getTarget().isEmpty())
+        && (ir.getNextYearTarget() == null || ir.getNextYearTarget().isEmpty())
+        && (ir.getActual() == null || ir.getActual().isEmpty())
+        && (ir.getSupportLinks() == null || ir.getSupportLinks().isEmpty())
+        && (ir.getDeviation() == null || ir.getDeviation().isEmpty())) {
+        continue;
+      }
+
       indicatorReportData = new HashMap<String, String>();
       if (ir.getId() != -1) {
         indicatorReportData.put("id", String.valueOf(ir.getId()));
