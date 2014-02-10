@@ -28,8 +28,8 @@ public class MySQLTLOutputSummaryDAO implements TLOutputSummaryDAO {
   }
 
   @Override
-  public List<Map<String, Object>> getTLOutputSummaries(int leader_id, int logframe_id) {
-    LOG.debug(">> getTLOutputSummaries(leader_id={}, logframe_id={})", leader_id, logframe_id);
+  public List<Map<String, Object>> getTLOutputSummaries(int theme_code, int logframe_id) {
+    LOG.debug(">> getTLOutputSummaries(theme_code={}, logframe_id={})", theme_code, logframe_id);
     List<Map<String, Object>> tlSummariesData = new ArrayList<>();
     try (Connection connection = dbManager.getConnection()) {
       String query =
@@ -39,7 +39,7 @@ public class MySQLTLOutputSummaryDAO implements TLOutputSummaryDAO {
           + "INNER JOIN milestones m on o.id = m.output_id " + "INNER JOIN activities a on m.id = a.milestone_id "
           + "INNER JOIN activity_leaders al on a.activity_leader_id = al.id "
           + "INNER JOIN objectives obj on o.objective_id = obj.id " + "INNER JOIN themes th on obj.theme_id = th.id "
-          + "INNER JOIN logframes l on th.logframe_id = l.id " + "WHERE al.id = " + leader_id + " and l.id = "
+          + "INNER JOIN logframes l on th.logframe_id = l.id " + "WHERE th.code = " + theme_code + " and l.id = "
           + logframe_id + " GROUP BY o.id ";
       ResultSet rs = dbManager.makeQuery(query, connection);
       while (rs.next()) {
@@ -52,9 +52,9 @@ public class MySQLTLOutputSummaryDAO implements TLOutputSummaryDAO {
         tlSummariesData.add(summaryData);
       }
     } catch (SQLException e) {
-      Object[] errorParams = {leader_id, logframe_id, e};
+      Object[] errorParams = {theme_code, logframe_id, e};
       LOG.error(
-        "-- getTLOutputSummaries() > There was an error getting the TL output summary for leader {} and logframe {}.",
+        "-- getTLOutputSummaries() > There was an error getting the TL output summary for theme {} and logframe {}.",
         errorParams);
     }
     LOG.debug("<< getTLOutputSummaries():tlSummariesData.size={}", tlSummariesData.size());

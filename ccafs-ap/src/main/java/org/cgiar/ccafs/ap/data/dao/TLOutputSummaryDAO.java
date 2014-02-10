@@ -11,13 +11,13 @@ import com.google.inject.ImplementedBy;
 public interface TLOutputSummaryDAO {
 
   /**
-   * Get a list of Summaries by Output that belong to a specific leader and a specific logframe.
+   * Get a list of Summaries by Output that belongs to the given theme and a specific logframe.
    * 
-   * @param leader - Leader identifier.
-   * @param logframe - Logframe identifier.
+   * @param theme_code
+   * @param logframe_id - Logframe identifier.
    * @return a List of Maps with all the summary by outputs information.
    */
-  public List<Map<String, Object>> getTLOutputSummaries(int leader_id, int logframe_id);
+  public List<Map<String, Object>> getTLOutputSummaries(int theme_code, int logframe_id);
 
   /**
    * Save a list of Summaries by Output.

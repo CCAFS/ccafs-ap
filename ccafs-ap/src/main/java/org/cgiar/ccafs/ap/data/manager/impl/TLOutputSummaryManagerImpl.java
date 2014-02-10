@@ -27,7 +27,8 @@ public class TLOutputSummaryManagerImpl implements TLOutputSummaryManager {
   @Override
   public List<TLOutputSummary> getTLOutputSummaries(Leader leader, Logframe logframe) {
     List<TLOutputSummary> outputs = new ArrayList<>();
-    List<Map<String, Object>> outputsData = tlOutputDAO.getTLOutputSummaries(leader.getId(), logframe.getId());
+    int themeCode = Integer.parseInt(leader.getTheme().getCode());
+    List<Map<String, Object>> outputsData = tlOutputDAO.getTLOutputSummaries(themeCode, logframe.getId());
     for (Map<String, Object> outputData : outputsData) {
       TLOutputSummary output = new TLOutputSummary();
       // if there is not an id, just assign -1 as default.
