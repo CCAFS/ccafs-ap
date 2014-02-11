@@ -384,18 +384,24 @@ public class SubmitAction extends BaseAction {
       outputSummaryManager.getOutputSummaries(getCurrentUser().getLeader(), getCurrentReportingLogframe());
 
     // RPL Synthesis
-    synthesisReport =
-      synthesisReportManager.getRPLSynthesisReport(this.getCurrentUser().getLeader(),
-        this.getCurrentReportingLogframe());
+    if (getCurrentUser().isRPL()) {
+      synthesisReport =
+        synthesisReportManager.getRPLSynthesisReport(this.getCurrentUser().getLeader(),
+          this.getCurrentReportingLogframe());
+    }
 
     // TL output summaries
-    tlOutputSummaries =
-      tlOutputManager.getTLOutputSummaries(this.getCurrentUser().getLeader(), this.getCurrentReportingLogframe());
+    if (getCurrentUser().isTL()) {
+      tlOutputSummaries =
+        tlOutputManager.getTLOutputSummaries(this.getCurrentUser().getLeader(), this.getCurrentReportingLogframe());
+    }
 
     // Milestone reports
-    milestoneReports =
-      milestoneReportManager.getMilestoneReports(getCurrentUser().getLeader(), getCurrentReportingLogframe(),
-        getCurrentUser().getRole());
+    if (getCurrentUser().isTL() || getCurrentUser().isRPL()) {
+      milestoneReports =
+        milestoneReportManager.getMilestoneReports(getCurrentUser().getLeader(), getCurrentReportingLogframe(),
+          getCurrentUser().getRole());
+    }
   }
 
   private void publicationsValidation() {
