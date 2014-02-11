@@ -47,19 +47,23 @@ $(document).ready(function() {
   
   // character counter to objective text areas.
   $("#caseStudiesGroup, #template").find("[id$='objectives']").each(function() {
-    applyCharCounter($(this), 400);
+    // applyCharCounter($(this), 400);
+    applyWordCounter($(this), 100);
   });
   // character counter to description text areas.
   $("#caseStudiesGroup, #template").find("[id$='description']").each(function() {
-    applyCharCounter($(this), 1100);
+    // applyCharCounter($(this), 1100);
+    applyWordCounter($(this), 300);
   });
   //character counter to results text areas.
   $("#caseStudiesGroup, #template").find("[id$='results']").each(function() {
-    applyCharCounter($(this), 1100);
+    // applyCharCounter($(this), 1100);
+    applyWordCounter($(this), 300);
   });
   //character counter to partners text areas.
   $("#caseStudiesGroup, #template").find("[id$='partners']").each(function() {
-    applyCharCounter($(this), 250);
+    // applyCharCounter($(this), 250);
+    applyWordCounter($(this), 300);
   });
 });
 
