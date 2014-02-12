@@ -155,13 +155,13 @@
             <h6>[@s.text name="reporting.publications.indicators" /]</h6>
             <div></div>      
             <div class="fullBlock">
-              [@customForm.checkbox name="isiPublication" i18nkey="reporting.publications.isiPublication" /]
+              [@customForm.checkbox name="isiPublication" i18nkey="reporting.publications.isiPublication" value="true" /]
             </div>
             <div class="fullBlock">
-              [@customForm.checkbox name="narsCoauthor" i18nkey="reporting.publications.narsCoauthor" /]
+              [@customForm.checkbox name="narsCoauthor" i18nkey="reporting.publications.narsCoauthor" value="true" /]
             </div>
             <div class="fullBlock">
-              [@customForm.checkbox name="earthSystemCoauthor" i18nkey="reporting.publications.earthSystemCoauthor" /]
+              [@customForm.checkbox name="earthSystemCoauthor" i18nkey="reporting.publications.earthSystemCoauthor" value="true" /]
             </div>
           </div>
           
