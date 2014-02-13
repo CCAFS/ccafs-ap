@@ -122,7 +122,7 @@
     </fieldset>
     
     <!-- internal parameter -->    
-    <input name="${activityIdParameter}" type="hidden" value="${activity.id}" />
+    <input name="${activityIdParameter}" type="hidden" value="${activity.id?c}" />
     
     [#if canSubmit]
       <div class="buttons">
