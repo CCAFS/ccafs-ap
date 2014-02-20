@@ -1,3 +1,4 @@
+
 [#ftl]
 [#assign title = "Indicators Report" /]
 [#assign globalLibs = ["jquery", "noty"] /]
@@ -56,7 +57,7 @@
                 <h6>${ir_index+1}. ${ir.indicator.name} </h6>
                 
                 [#-- Indicator report id --]
-                <input name="indicatorReports[${ir_index}].id" value="${ir.id}" type="hidden" />
+                <input name="indicatorReports[${ir_index}].id" value="${ir.id?c}" type="hidden" />
                 
                 [#-- Indicator description --]
                 [#if ir.indicator.description?has_content]
