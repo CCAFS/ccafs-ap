@@ -6,19 +6,31 @@
   <package name="json" namespace="/" extends="json-default">
 
     <action name="activityLocations" class="org.cgiar.ccafs.ap.action.json.home.ActivityLocationAction">
-      <result type="json"/>        
+      <result type="json">        
+        <param name="noCache">true</param>
+        <param name="excludeNullProperties">true</param>
+      </result>
     </action>
     
     <action name="sitesByRegion" class="org.cgiar.ccafs.ap.action.json.planning.SitesByRegionAction">
-      <result type="json"/>        
+      <result type="json">        
+        <param name="noCache">true</param>
+        <param name="excludeNullProperties">true</param>
+      </result>
     </action>
 
     <action name="sitesByCountry" class="org.cgiar.ccafs.ap.action.json.planning.SitesByCountryAction">
-      <result type="json"/>        
+      <result type="json">        
+        <param name="noCache">true</param>
+        <param name="excludeNullProperties">true</param>
+      </result>
     </action>
     
     <action name="partnersByFilter" class="org.cgiar.ccafs.ap.action.json.global.PartnersByFilterAction">
-      <result type="json"/>        
+      <result type="json">        
+        <param name="noCache">true</param>
+        <param name="excludeNullProperties">true</param>
+      </result>
     </action>
 
   </package>

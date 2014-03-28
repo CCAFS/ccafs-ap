@@ -10,7 +10,8 @@
 
   <properties>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-    <struts2.version>2.3.15.1</struts2.version>
+    <struts2.version>2.3.16.1</struts2.version>
+    <struts2-json.version>2.3.16.1</struts2-json.version>
     <commons-logging.version>1.1.1</commons-logging.version>
     <junit.version>4.5</junit.version>
     <servlet-api.version>2.4</servlet-api.version>
@@ -20,10 +21,10 @@
     <mysql.version>5.1.21</mysql.version>
     <java-mail.version>1.4.3</java-mail.version>
     <logback-classic.version>1.0.7</logback-classic.version>
-    <janino.version>2.6.1</janino.version>
-    <struts2-json.version>2.3.4.1</struts2-json.version>
+    <janino.version>2.6.1</janino.version>    
     <itext.version>2.1.7</itext.version>
     <jfreechart.version>1.0.15</jfreechart.version>
+    <shiro.version>1.2.2</shiro.version>
   </properties>
 
   <developers>
@@ -158,7 +159,37 @@
       <artifactId>jfreechart</artifactId>
       <version>${jfreechart.version}</version>
     </dependency>
+    
+    <!-- Shiro dependencies: -->
+    <dependency>
+	    <groupId>org.apache.shiro</groupId>
+	    <artifactId>shiro-core</artifactId>
+	    <version>${shiro.version}</version>
+    </dependency>
+    <dependency>
+	    <groupId>org.apache.shiro</groupId>
+	    <artifactId>shiro-web</artifactId>
+	    <version>${shiro.version}</version>
+    </dependency>
 
+    <!-- Stormpath support for quick Realm deployment: -->
+    <dependency>
+      <groupId>com.stormpath.shiro</groupId>
+      <artifactId>stormpath-shiro-core</artifactId>
+      <version>0.5.0</version>
+    </dependency>
+    <dependency>
+      <groupId>com.stormpath.sdk</groupId>
+      <artifactId>stormpath-sdk-httpclient</artifactId>
+      <version>0.9.1</version>
+      <scope>runtime</scope>
+    </dependency>
+    <dependency>
+      <groupId>javax.servlet</groupId>
+      <artifactId>javax.servlet-api</artifactId>
+      <version>3.1.0</version>
+      <scope>provided</scope>
+    </dependency>
   </dependencies>
 
   <build>
