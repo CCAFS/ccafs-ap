@@ -58,8 +58,25 @@
     </encoder>
   </appender>
 
-  <!-- ======= Attach the appenders according to the configuration properties ======= -->
+  <!-- ======= Only show error messages from the framework ======= -->
+  <logger name="org.apache.struts2">
+    <level value="WARN" />
+  </logger>
+  <logger name="org.apache.struts2.components">
+    <level value="WARN" />
+  </logger>
+  <logger name="com.opensymphony.xwork2">
+    <level value="ERROR" />
+  </logger>       
+  <logger name="com.opensymphony.xwork2.ognl.OgnlValueStack">
+    <level value="ERROR" />
+  </logger>
+  <logger name="org.apache.shiro">
+    <level value="WARN" />
+  </logger>
 
+
+  <!-- ======= Attach the appenders according to the configuration properties ======= -->
   <root level="ALL">
     <if condition='property("log.console").equalsIgnoreCase("true")'>
 	    <then>
