@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE struts PUBLIC "-//Apache Software Foundation//DTD Struts Configuration 2.3//EN" "http://struts.apache.org/dtds/struts-2.3.dtd">
+<struts>
+
+ <package extends="ccafsap-default" name="summaries" namespace="/summaries">
+
+  <action class="org.cgiar.ccafs.ap.action.summaries.ActivitiesSummariesAction" name="activities">
+    <interceptor-ref name="reportingStack" />
+      <result name="input">/WEB-INF/summaries/activitiesSummaries.ftl</result>
+		  <result name="success" type="stream">
+			  <param name="inputName">inputStream</param>
+			  <param name="contentType">application/pdf</param>
+			  <!-- param name="contentDisposition">attachment;filename="test.pdf"</param -->
+			  <param name="contentDisposition">filename="test.pdf"</param>
+			 </result>
+	 </action>
+
+	 <action class="org.cgiar.ccafs.ap.action.summaries.CaseStudiesSummaryAction" name="caseStudies">
+    <interceptor-ref name="reportingStack" />
+      <result name="input">/WEB-INF/summaries/caseStudiesSummaries.ftl</result>
+      <result name="success" type="stream">
+        <param name="inputName">inputStream</param>
+        <param name="contentType">application/pdf</param>
+        <!-- param name="contentDisposition">attachment;filename="test.pdf"</param -->
+        <param name="contentDisposition">filename="${fileName}"</param>
+       </result>
+   </action>
+
+	 <action class="org.cgiar.ccafs.ap.action.summaries.OutcomesSummaryAction" name="outcomes">
+    <interceptor-ref name="reportingStack" />
+      <result name="input">/WEB-INF/summaries/outcomesSummaries.ftl</result>
+      <result name="success" type="stream">
+        <param name="inputName">inputStream</param>
+        <param name="contentType">application/pdf</param>
+        <!-- param name="contentDisposition">attachment;filename="test.pdf"</param -->
+        <param name="contentDisposition">filename="${fileName}"</param>
+       </result>
+   </action>
+
+	 <action class="org.cgiar.ccafs.ap.action.summaries.MilestonesSummaryAction" name="milestones">
+    <interceptor-ref name="reportingStack" />
+      <result name="input">/WEB-INF/summaries/milestonesSummaries.ftl</result>
+      <result name="success" type="stream">
+        <param name="inputName">inputStream</param>
+        <param name="contentType">application/pdf</param>
+        <!-- param name="contentDisposition">attachment;filename="test.pdf"</param -->
+        <param name="contentDisposition">filename="${fileName}"</param>
+       </result>
+   </action>
+
+  </package>
+</struts>
