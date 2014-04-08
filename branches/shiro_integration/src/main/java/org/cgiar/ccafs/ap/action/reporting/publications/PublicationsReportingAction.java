@@ -21,6 +21,7 @@ import java.util.Map;
 import java.util.TreeMap;
 
 import com.google.inject.Inject;
+import org.apache.shiro.mgt.SecurityManager;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -51,11 +52,11 @@ public class PublicationsReportingAction extends BaseAction {
   private SubmissionManager submissionManager;
 
   @Inject
-  public PublicationsReportingAction(APConfig config, LogframeManager logframeManager,
+  public PublicationsReportingAction(APConfig config, LogframeManager logframeManager, SecurityManager securityManager,
     PublicationManager publicationManager, PublicationTypeManager publicationTypeManager,
     OpenAccessManager openAccessManager, PublicationThemeManager publicationThemeManager,
     SubmissionManager submissionManager) {
-    super(config, logframeManager);
+    super(config, logframeManager, securityManager);
     this.publicationManager = publicationManager;
     this.publicationTypeManager = publicationTypeManager;
     this.openAccessManager = openAccessManager;

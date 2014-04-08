@@ -1,13 +1,11 @@
 package org.cgiar.ccafs.ap.interceptor;
 
 import org.cgiar.ccafs.ap.action.BaseAction;
-import org.cgiar.ccafs.ap.config.APConstants;
-import org.cgiar.ccafs.ap.data.model.User;
-
-import java.util.Map;
 
 import com.opensymphony.xwork2.ActionInvocation;
 import com.opensymphony.xwork2.interceptor.AbstractInterceptor;
+import org.apache.shiro.SecurityUtils;
+import org.apache.shiro.subject.Subject;
 
 /**
  * This interceptor is responsible for validating if the user is actually logged or not, in order to be able to access
@@ -22,9 +20,9 @@ public class RequireUserInterceptor extends AbstractInterceptor {
 
   @Override
   public String intercept(ActionInvocation invocation) throws Exception {
-    Map<String, Object> session = invocation.getInvocationContext().getSession();
-    User user = (User) session.get(APConstants.SESSION_USER);
-    if (user != null) {
+    Subject user = SecurityUtils.getSubject();
+
+    if (user.isAuthenticated() || user.isRemembered()) {
       return invocation.invoke();
     }
     return BaseAction.NOT_LOGGED;

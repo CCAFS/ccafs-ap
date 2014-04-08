@@ -21,6 +21,7 @@ import java.util.Map;
 import java.util.TreeMap;
 
 import com.google.inject.Inject;
+import org.apache.shiro.mgt.SecurityManager;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -50,10 +51,10 @@ public class CaseStudiesSummaryAction extends BaseAction {
   private int yearSelected;
 
   @Inject
-  public CaseStudiesSummaryAction(APConfig config, LogframeManager logframeManager, CaseStudyManager caseStudyManager,
-    LeaderManager leaderManager, CountryManager countryManager, CaseStudyTypeManager caseStudyTypeManager,
-    CaseStudySummaryPdf caseStudyPdf) {
-    super(config, logframeManager);
+  public CaseStudiesSummaryAction(APConfig config, LogframeManager logframeManager, SecurityManager securityManager,
+    CaseStudyManager caseStudyManager, LeaderManager leaderManager, CountryManager countryManager,
+    CaseStudyTypeManager caseStudyTypeManager, CaseStudySummaryPdf caseStudyPdf) {
+    super(config, logframeManager, securityManager);
     this.caseStudyManager = caseStudyManager;
     this.leaderManager = leaderManager;
     this.countryManager = countryManager;

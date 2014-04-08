@@ -9,6 +9,7 @@ import org.cgiar.ccafs.ap.data.model.BenchmarkSite;
 
 import com.google.inject.Inject;
 import org.apache.commons.lang3.StringUtils;
+import org.apache.shiro.mgt.SecurityManager;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -28,9 +29,9 @@ public class SitesByCountryAction extends BaseAction {
   private BenchmarkSiteManager benchmarkSiteManager;
 
   @Inject
-  public SitesByCountryAction(APConfig config, LogframeManager logframeManager,
+  public SitesByCountryAction(APConfig config, LogframeManager logframeManager, SecurityManager securityManager,
     BenchmarkSiteManager benchmarkSiteManager) {
-    super(config, logframeManager);
+    super(config, logframeManager, securityManager);
     this.benchmarkSiteManager = benchmarkSiteManager;
   }
 

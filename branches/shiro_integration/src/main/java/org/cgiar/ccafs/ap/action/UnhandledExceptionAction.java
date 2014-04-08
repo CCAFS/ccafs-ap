@@ -8,6 +8,7 @@ import java.io.PrintWriter;
 import java.io.StringWriter;
 
 import com.google.inject.Inject;
+import org.apache.shiro.mgt.SecurityManager;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -22,8 +23,8 @@ public class UnhandledExceptionAction extends BaseAction {
   private Exception exception;
 
   @Inject
-  public UnhandledExceptionAction(APConfig config, LogframeManager logframeManager) {
-    super(config, logframeManager);
+  public UnhandledExceptionAction(APConfig config, LogframeManager logframeManager, SecurityManager securityManager) {
+    super(config, logframeManager, securityManager);
   }
 
   @Override
@@ -51,8 +52,9 @@ public class UnhandledExceptionAction extends BaseAction {
       return;
     }
 
+
     subject = "Exception occurred in CCAFS P&R";
-    message.append("The user " + getCurrentUser().getName() + " ");
+    message.append("The user " + getCurrentUser().getEmail() + " ");
     message.append("has experienced an exception on the platform. \n");
     message.append("This execption occurs in the server: " + config.getBaseUrl() + ".\n");
     message.append("The exception message was: \n\n");

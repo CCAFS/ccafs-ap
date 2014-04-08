@@ -22,6 +22,7 @@ import java.util.Map;
 
 import com.google.inject.Inject;
 import org.apache.commons.lang3.StringUtils;
+import org.apache.shiro.mgt.SecurityManager;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -49,10 +50,10 @@ public class StatusReportingAction extends BaseAction {
   private StringBuilder validationMessage;
 
   @Inject
-  public StatusReportingAction(APConfig config, LogframeManager logframeManager, ActivityManager activityManager,
-    ContactPersonManager contactPersonManager, BudgetManager budgetManager, StatusManager statusManager,
-    SubmissionManager submissionManager) {
-    super(config, logframeManager);
+  public StatusReportingAction(APConfig config, LogframeManager logframeManager, SecurityManager securityManager,
+    ActivityManager activityManager, ContactPersonManager contactPersonManager, BudgetManager budgetManager,
+    StatusManager statusManager, SubmissionManager submissionManager) {
+    super(config, logframeManager, securityManager);
     this.activityManager = activityManager;
     this.contactPersonManager = contactPersonManager;
     this.budgetManager = budgetManager;

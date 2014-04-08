@@ -13,6 +13,7 @@ import org.cgiar.ccafs.ap.util.Capitalize;
 import java.util.List;
 
 import com.google.inject.Inject;
+import org.apache.shiro.mgt.SecurityManager;
 import org.jfree.util.Log;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -34,9 +35,9 @@ public class OutcomesReportingAction extends BaseAction {
   private boolean canSubmit;
 
   @Inject
-  public OutcomesReportingAction(APConfig config, LogframeManager logframeManager, OutcomeManager outcomeManager,
-    SubmissionManager submissionManager) {
-    super(config, logframeManager);
+  public OutcomesReportingAction(APConfig config, LogframeManager logframeManager, SecurityManager securityManager,
+    OutcomeManager outcomeManager, SubmissionManager submissionManager) {
+    super(config, logframeManager, securityManager);
     this.outcomeManager = outcomeManager;
     this.submissionManager = submissionManager;
 

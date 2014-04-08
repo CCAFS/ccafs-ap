@@ -26,9 +26,9 @@ import java.util.List;
 
 import com.google.inject.Inject;
 import org.apache.commons.lang3.StringUtils;
+import org.apache.shiro.mgt.SecurityManager;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-
 
 public class LocationsPlanningAction extends BaseAction {
 
@@ -58,12 +58,12 @@ public class LocationsPlanningAction extends BaseAction {
   private boolean canSubmit;
 
   @Inject
-  public LocationsPlanningAction(APConfig config, LogframeManager logframeManager, ActivityManager activityManager,
-    ActivityCountryManager activityCountryManager, ActivityRegionManager activityRegionManager,
-    ActivityBenchmarkSiteManager activityBenchmarkSiteManager, ActivityOtherSiteManager activityOtherSiteManager,
-    CountryManager countryManager, RegionManager regionManager, BenchmarkSiteManager benchmarkSiteManager,
-    SubmissionManager submissionManager) {
-    super(config, logframeManager);
+  public LocationsPlanningAction(APConfig config, LogframeManager logframeManager, SecurityManager securityManager,
+    ActivityManager activityManager, ActivityCountryManager activityCountryManager,
+    ActivityRegionManager activityRegionManager, ActivityBenchmarkSiteManager activityBenchmarkSiteManager,
+    ActivityOtherSiteManager activityOtherSiteManager, CountryManager countryManager, RegionManager regionManager,
+    BenchmarkSiteManager benchmarkSiteManager, SubmissionManager submissionManager) {
+    super(config, logframeManager, securityManager);
     this.activityManager = activityManager;
     this.activityCountryManager = activityCountryManager;
     this.activityRegionManager = activityRegionManager;

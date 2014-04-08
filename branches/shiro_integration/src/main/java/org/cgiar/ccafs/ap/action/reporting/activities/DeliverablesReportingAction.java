@@ -25,6 +25,7 @@ import java.util.List;
 
 import com.google.inject.Inject;
 import org.apache.commons.lang3.StringUtils;
+import org.apache.shiro.mgt.SecurityManager;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -57,12 +58,12 @@ public class DeliverablesReportingAction extends BaseAction {
   private boolean canSubmit;
 
   @Inject
-  public DeliverablesReportingAction(APConfig config, LogframeManager logframeManager,
+  public DeliverablesReportingAction(APConfig config, LogframeManager logframeManager, SecurityManager securityManager,
     DeliverableManager deliverableManager, ActivityManager activityManager,
     DeliverableTypeManager deliverableTypeManager, DeliverableStatusManager deliverableStatusManager,
     FileFormatManager fileFormatManager, SubmissionManager submissionManager) {
 
-    super(config, logframeManager);
+    super(config, logframeManager, securityManager);
     this.deliverableManager = deliverableManager;
     this.activityManager = activityManager;
     this.deliverableStatusManager = deliverableStatusManager;

@@ -7,7 +7,6 @@ import javax.servlet.ServletContextEvent;
 import com.google.inject.Guice;
 import com.google.inject.Injector;
 import com.google.inject.servlet.GuiceServletContextListener;
-import com.google.inject.servlet.ServletModule;
 import com.google.inject.struts2.Struts2GuicePluginModule;
 import org.apache.shiro.guice.web.ShiroWebModule;
 
@@ -24,8 +23,7 @@ public class APGuiceContextListener extends GuiceServletContextListener {
 
   @Override
   protected Injector getInjector() {
-    return Guice.createInjector(new ServletModule(), new APShiroWebModule(servletContext),
-      ShiroWebModule.guiceFilterModule(), new Struts2GuicePluginModule());
+    return Guice.createInjector(new APShiroWebModule(this.servletContext), ShiroWebModule.guiceFilterModule(),
+      new Struts2GuicePluginModule());
   }
-
 }

@@ -23,9 +23,9 @@ import java.util.TreeMap;
 
 import com.google.inject.Inject;
 import org.apache.commons.lang3.StringUtils;
+import org.apache.shiro.mgt.SecurityManager;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-
 
 public class AddActivityPlanningAction extends BaseAction {
 
@@ -46,9 +46,9 @@ public class AddActivityPlanningAction extends BaseAction {
   private int year;
 
   @Inject
-  public AddActivityPlanningAction(APConfig config, LogframeManager logframeManager, ActivityManager activityManager,
-    LeaderManager leaderManager, MilestoneManager milestoneManager) {
-    super(config, logframeManager);
+  public AddActivityPlanningAction(APConfig config, LogframeManager logframeManager, SecurityManager securityManager,
+    ActivityManager activityManager, LeaderManager leaderManager, MilestoneManager milestoneManager) {
+    super(config, logframeManager, securityManager);
     this.activityManager = activityManager;
     this.leaderManager = leaderManager;
     this.milestoneManager = milestoneManager;

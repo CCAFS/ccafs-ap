@@ -70,13 +70,13 @@ public class BudgetManagerImpl implements BudgetManager {
 
     budgetData.put("usd", String.valueOf(budget.getUsd()));
 
-    if (budget.getCgFund().getId() != -1) {
+    if (budget.getCgFund() != null && budget.getCgFund().getId() != -1) {
       budgetData.put("cgFund", String.valueOf(budget.getCgFund().getId()));
     } else {
       budgetData.put("cgFund", null);
     }
 
-    if (budget.getBilateral().getId() != -1) {
+    if (budget.getBilateral() != null && budget.getBilateral().getId() != -1) {
       budgetData.put("bilateral", String.valueOf(budget.getBilateral().getId()));
     } else {
       budgetData.put("bilateral", null);

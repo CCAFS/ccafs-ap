@@ -9,7 +9,7 @@ package org.cgiar.ccafs.ap.interceptor;
  */
 
 
-import org.cgiar.ccafs.ap.action.BaseAction;
+import org.cgiar.ccafs.ap.action.BaseAction; import org.apache.shiro.mgt.SecurityManager;
 
 import java.util.Collection;
 import java.util.List;

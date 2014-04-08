@@ -16,9 +16,9 @@ import org.cgiar.ccafs.ap.data.model.Submission;
 
 import com.google.inject.Inject;
 import org.apache.commons.lang3.StringUtils;
+import org.apache.shiro.mgt.SecurityManager;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-
 
 public class AdditionalInformationPlanningAction extends BaseAction {
 
@@ -42,9 +42,9 @@ public class AdditionalInformationPlanningAction extends BaseAction {
 
   @Inject
   public AdditionalInformationPlanningAction(APConfig config, LogframeManager logframeManager,
-    ActivityManager activityManager, KeywordManager keywordManager, ActivityKeywordManager activityKeywordManager,
-    ResourceManager resourceManager, SubmissionManager submissionManager) {
-    super(config, logframeManager);
+    SecurityManager securityManager, ActivityManager activityManager, KeywordManager keywordManager,
+    ActivityKeywordManager activityKeywordManager, ResourceManager resourceManager, SubmissionManager submissionManager) {
+    super(config, logframeManager, securityManager);
     this.activityManager = activityManager;
     this.keywordManager = keywordManager;
     this.activityKeywordManager = activityKeywordManager;

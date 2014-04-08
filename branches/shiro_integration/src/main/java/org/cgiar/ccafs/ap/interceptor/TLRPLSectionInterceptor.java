@@ -1,6 +1,6 @@
 package org.cgiar.ccafs.ap.interceptor;
 
-import org.cgiar.ccafs.ap.action.BaseAction;
+import org.cgiar.ccafs.ap.action.BaseAction; import org.apache.shiro.mgt.SecurityManager;
 import org.cgiar.ccafs.ap.config.APConstants;
 import org.cgiar.ccafs.ap.data.model.User;
 

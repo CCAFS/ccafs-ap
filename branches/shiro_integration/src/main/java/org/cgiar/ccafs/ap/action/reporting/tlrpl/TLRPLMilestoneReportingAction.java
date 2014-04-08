@@ -1,6 +1,6 @@
 package org.cgiar.ccafs.ap.action.reporting.tlrpl;
 
-import org.cgiar.ccafs.ap.action.BaseAction;
+import org.cgiar.ccafs.ap.action.BaseAction; import org.apache.shiro.mgt.SecurityManager;
 import org.cgiar.ccafs.ap.config.APConfig;
 import org.cgiar.ccafs.ap.config.APConstants;
 import org.cgiar.ccafs.ap.data.manager.LogframeManager;
@@ -33,10 +33,10 @@ public class TLRPLMilestoneReportingAction extends BaseAction {
   private boolean canSubmit;
 
   @Inject
-  public TLRPLMilestoneReportingAction(APConfig config, LogframeManager logframeManager,
+  public TLRPLMilestoneReportingAction(APConfig config, LogframeManager logframeManager, SecurityManager securityManager,
     MilestoneReportManager milestoneReportManager, MilestoneStatusManager milestoneStatusManager,
     SubmissionManager submissionManager) {
-    super(config, logframeManager);
+    super(config, logframeManager, securityManager);
     this.milestoneReportManager = milestoneReportManager;
     this.milestoneStatusManager = milestoneStatusManager;
     this.submissionManager = submissionManager;

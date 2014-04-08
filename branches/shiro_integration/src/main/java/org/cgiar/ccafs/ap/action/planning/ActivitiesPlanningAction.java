@@ -26,9 +26,9 @@ import java.util.Map;
 import java.util.TreeMap;
 
 import com.google.inject.Inject;
+import org.apache.shiro.mgt.SecurityManager;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-
 
 public class ActivitiesPlanningAction extends BaseAction {
 
@@ -59,13 +59,13 @@ public class ActivitiesPlanningAction extends BaseAction {
   private int activityIndex, activityID, activitiesFilled;
 
   @Inject
-  public ActivitiesPlanningAction(APConfig config, LogframeManager logframeManager, ActivityManager activityManager,
-    LeaderManager leaderManager, ContactPersonManager contactPersonManager, DeliverableManager deliverableManager,
-    ActivityPartnerManager activityPartnerManager, ActivityObjectiveManager activityObjectiveManager,
-    ActivityCountryManager activityCountryManager, ActivityRegionManager activityRegionManager,
-    ActivityBenchmarkSiteManager activityBenchmarkSiteManager, ActivityOtherSiteManager activityOtherSiteManager,
-    SubmissionManager submissionManager) {
-    super(config, logframeManager);
+  public ActivitiesPlanningAction(APConfig config, LogframeManager logframeManager, SecurityManager securityManager,
+    ActivityManager activityManager, LeaderManager leaderManager, ContactPersonManager contactPersonManager,
+    DeliverableManager deliverableManager, ActivityPartnerManager activityPartnerManager,
+    ActivityObjectiveManager activityObjectiveManager, ActivityCountryManager activityCountryManager,
+    ActivityRegionManager activityRegionManager, ActivityBenchmarkSiteManager activityBenchmarkSiteManager,
+    ActivityOtherSiteManager activityOtherSiteManager, SubmissionManager submissionManager) {
+    super(config, logframeManager, securityManager);
     this.activityManager = activityManager;
     this.leaderManager = leaderManager;
     this.contactPersonManager = contactPersonManager;

@@ -18,6 +18,7 @@ import java.util.List;
 import java.util.Map;
 
 import com.google.inject.Inject;
+import org.apache.shiro.mgt.SecurityManager;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -46,9 +47,9 @@ public class ActivitiesSummariesAction extends BaseAction {
   int activityLeader;
 
   @Inject
-  public ActivitiesSummariesAction(APConfig config, LogframeManager logframeManager, LeaderManager leaderManager,
-    ActivityManager activityManager, ActivityDetailsPdf activitiesPdf) {
-    super(config, logframeManager);
+  public ActivitiesSummariesAction(APConfig config, LogframeManager logframeManager, SecurityManager securityManager,
+    LeaderManager leaderManager, ActivityManager activityManager, ActivityDetailsPdf activitiesPdf) {
+    super(config, logframeManager, securityManager);
     this.leaderManager = leaderManager;
     this.activityManager = activityManager;
     this.activitiesPdf = activitiesPdf;

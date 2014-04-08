@@ -1,6 +1,6 @@
 package org.cgiar.ccafs.ap.action.reporting.summaries;
 
-import org.cgiar.ccafs.ap.action.BaseAction;
+import org.cgiar.ccafs.ap.action.BaseAction; import org.apache.shiro.mgt.SecurityManager;
 import org.cgiar.ccafs.ap.config.APConfig;
 import org.cgiar.ccafs.ap.config.APConstants;
 import org.cgiar.ccafs.ap.data.manager.LogframeManager;
@@ -33,9 +33,9 @@ public class OutputSummaryAction extends BaseAction {
   private boolean canSubmit;
 
   @Inject
-  public OutputSummaryAction(APConfig config, LogframeManager logframeManager,
+  public OutputSummaryAction(APConfig config, LogframeManager logframeManager, SecurityManager securityManager,
     OutputSummaryManager outputSummaryManager, SubmissionManager submissionManager) {
-    super(config, logframeManager);
+    super(config, logframeManager, securityManager);
     this.outputSummaryManager = outputSummaryManager;
     this.submissionManager = submissionManager;
 

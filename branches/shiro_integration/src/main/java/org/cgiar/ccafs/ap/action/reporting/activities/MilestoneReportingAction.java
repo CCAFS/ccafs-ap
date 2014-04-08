@@ -10,6 +10,7 @@ import org.cgiar.ccafs.ap.data.model.Milestone;
 
 import com.google.inject.Inject;
 import org.apache.commons.lang3.StringUtils;
+import org.apache.shiro.mgt.SecurityManager;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -29,8 +30,9 @@ public class MilestoneReportingAction extends BaseAction {
   protected int milestoneID;
 
   @Inject
-  public MilestoneReportingAction(APConfig config, LogframeManager logframeManager, MilestoneManager milestoneManager) {
-    super(config, logframeManager);
+  public MilestoneReportingAction(APConfig config, LogframeManager logframeManager, SecurityManager securityManager,
+    MilestoneManager milestoneManager) {
+    super(config, logframeManager, securityManager);
     this.milestoneManager = milestoneManager;
   }
 

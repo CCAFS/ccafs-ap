@@ -49,6 +49,10 @@ public class ContactPersonManagerImpl implements ContactPersonManager {
 
     // Then save the contact persons one by one
     for (ContactPerson contactPerson : contactPersons) {
+      if (contactPerson == null) {
+        continue;
+      }
+
       Map<String, String> cpData = new HashMap<>();
       if (contactPerson.getId() == -1) {
         cpData.put("id", null);

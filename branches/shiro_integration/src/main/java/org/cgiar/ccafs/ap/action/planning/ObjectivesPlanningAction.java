@@ -13,9 +13,9 @@ import org.cgiar.ccafs.ap.util.Capitalize;
 
 import com.google.inject.Inject;
 import org.apache.commons.lang3.StringUtils;
+import org.apache.shiro.mgt.SecurityManager;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-
 
 public class ObjectivesPlanningAction extends BaseAction {
 
@@ -35,9 +35,10 @@ public class ObjectivesPlanningAction extends BaseAction {
   private boolean canSubmit;
 
   @Inject
-  public ObjectivesPlanningAction(APConfig config, LogframeManager logframeManager, ActivityManager activityManager,
-    ActivityObjectiveManager activityObjectiveManager, SubmissionManager submissionManager) {
-    super(config, logframeManager);
+  public ObjectivesPlanningAction(APConfig config, LogframeManager logframeManager, SecurityManager securityManager,
+    ActivityManager activityManager, ActivityObjectiveManager activityObjectiveManager,
+    SubmissionManager submissionManager) {
+    super(config, logframeManager, securityManager);
     this.activityManager = activityManager;
     this.activityObjectiveManager = activityObjectiveManager;
     this.submissionManager = submissionManager;

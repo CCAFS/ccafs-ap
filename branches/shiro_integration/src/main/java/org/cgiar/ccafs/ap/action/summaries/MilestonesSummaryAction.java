@@ -20,6 +20,7 @@ import java.util.Map;
 import java.util.TreeMap;
 
 import com.google.inject.Inject;
+import org.apache.shiro.mgt.SecurityManager;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -47,10 +48,10 @@ public class MilestonesSummaryAction extends BaseAction {
   private String milestoneSelected;
 
   @Inject
-  public MilestonesSummaryAction(APConfig config, LogframeManager logframeManager, ThemeManager themeManager,
-    MilestoneManager milestoneManager, MilestoneReportManager milestoneReportManager,
+  public MilestonesSummaryAction(APConfig config, LogframeManager logframeManager, SecurityManager securityManager,
+    ThemeManager themeManager, MilestoneManager milestoneManager, MilestoneReportManager milestoneReportManager,
     MilestonesSummaryPdf milestonesSummaryPdf) {
-    super(config, logframeManager);
+    super(config, logframeManager, securityManager);
     this.themeManager = themeManager;
     this.milestoneManager = milestoneManager;
     this.milestoneReportManager = milestoneReportManager;

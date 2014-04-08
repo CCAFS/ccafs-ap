@@ -23,6 +23,7 @@ import java.util.List;
 import java.util.Map;
 
 import com.google.inject.Inject;
+import org.apache.shiro.mgt.SecurityManager;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -50,10 +51,10 @@ public class CaseStudiesAction extends BaseAction {
 
 
   @Inject
-  public CaseStudiesAction(APConfig config, LogframeManager logframeManager, CaseStudyManager caseStudyManager,
-    CaseStudyTypeManager caseStudyTypeManager, CountryManager countryManager,
+  public CaseStudiesAction(APConfig config, LogframeManager logframeManager, SecurityManager securityManager,
+    CaseStudyManager caseStudyManager, CaseStudyTypeManager caseStudyTypeManager, CountryManager countryManager,
     CaseStudyCountriesManager caseStudyCountriesManager, SubmissionManager submissionManager) {
-    super(config, logframeManager);
+    super(config, logframeManager, securityManager);
     this.caseStudyManager = caseStudyManager;
     this.countryManager = countryManager;
     this.caseStudyTypeManager = caseStudyTypeManager;

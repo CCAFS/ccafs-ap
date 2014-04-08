@@ -15,6 +15,7 @@ import org.cgiar.ccafs.ap.util.Capitalize;
 import java.util.List;
 
 import com.google.inject.Inject;
+import org.apache.shiro.mgt.SecurityManager;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -35,9 +36,9 @@ public class IndicatorsReportingAction extends BaseAction {
   private boolean canSubmit;
 
   @Inject
-  public IndicatorsReportingAction(APConfig config, LogframeManager logframeManager,
+  public IndicatorsReportingAction(APConfig config, LogframeManager logframeManager, SecurityManager securityManager,
     IndicatorReportManager indicatorReportManager, SubmissionManager submissionManager) {
-    super(config, logframeManager);
+    super(config, logframeManager, securityManager);
     this.indicatorReportManager = indicatorReportManager;
     this.submissionManager = submissionManager;
 

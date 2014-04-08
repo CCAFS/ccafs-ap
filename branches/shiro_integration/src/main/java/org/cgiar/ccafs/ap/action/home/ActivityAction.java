@@ -16,6 +16,7 @@ import org.cgiar.ccafs.ap.data.model.Activity;
 
 import com.google.inject.Inject;
 import org.apache.commons.lang3.StringUtils;
+import org.apache.shiro.mgt.SecurityManager;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -41,11 +42,12 @@ public class ActivityAction extends BaseAction {
   int activityID;
 
   @Inject
-  public ActivityAction(APConfig config, LogframeManager logframeManager, ActivityManager activityManager,
-    DeliverableManager deliverableManager, ActivityPartnerManager activityPartnerManager,
-    ContactPersonManager contactPersonManager, BudgetManager budgetManager, ActivityKeywordManager keywordManager,
+  public ActivityAction(APConfig config, LogframeManager logframeManager, SecurityManager securityManager,
+    ActivityManager activityManager, DeliverableManager deliverableManager,
+    ActivityPartnerManager activityPartnerManager, ContactPersonManager contactPersonManager,
+    BudgetManager budgetManager, ActivityKeywordManager keywordManager,
     ActivityObjectiveManager activityObjectiveManager, ResourceManager resourceManager) {
-    super(config, logframeManager);
+    super(config, logframeManager, securityManager);
     this.activityManager = activityManager;
     this.deliverableManager = deliverableManager;
     this.activityPartnerManager = activityPartnerManager;

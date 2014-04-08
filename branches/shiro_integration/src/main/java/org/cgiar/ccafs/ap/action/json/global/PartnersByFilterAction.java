@@ -9,6 +9,7 @@ import org.cgiar.ccafs.ap.data.model.Partner;
 
 import com.google.inject.Inject;
 import org.apache.commons.lang3.StringUtils;
+import org.apache.shiro.mgt.SecurityManager;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -28,8 +29,9 @@ public class PartnersByFilterAction extends BaseAction {
   private PartnerManager partnerManager;
 
   @Inject
-  public PartnersByFilterAction(APConfig config, LogframeManager logframeManager, PartnerManager partnerManager) {
-    super(config, logframeManager);
+  public PartnersByFilterAction(APConfig config, LogframeManager logframeManager, SecurityManager securityManager,
+    PartnerManager partnerManager) {
+    super(config, logframeManager, securityManager);
     this.partnerManager = partnerManager;
   }
 

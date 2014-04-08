@@ -19,6 +19,7 @@ import java.util.Map;
 
 import com.google.inject.Inject;
 import org.apache.commons.lang3.StringUtils;
+import org.apache.shiro.mgt.SecurityManager;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -42,10 +43,10 @@ public class ActivityLocationAction extends BaseAction {
   private List<OtherSite> otherSites;
 
   @Inject
-  public ActivityLocationAction(APConfig config, LogframeManager logframeManager, ActivityManager activityManager,
-    ActivityCountryManager activityCountryManager, ActivityBenchmarkSiteManager activityBenchmarkSiteManager,
-    ActivityOtherSiteManager activityOtherSiteManager) {
-    super(config, logframeManager);
+  public ActivityLocationAction(APConfig config, LogframeManager logframeManager, SecurityManager securityManager,
+    ActivityManager activityManager, ActivityCountryManager activityCountryManager,
+    ActivityBenchmarkSiteManager activityBenchmarkSiteManager, ActivityOtherSiteManager activityOtherSiteManager) {
+    super(config, logframeManager, securityManager);
     this.activityManager = activityManager;
     this.activityCountryManager = activityCountryManager;
     this.activityBenchmarkSiteManager = activityBenchmarkSiteManager;

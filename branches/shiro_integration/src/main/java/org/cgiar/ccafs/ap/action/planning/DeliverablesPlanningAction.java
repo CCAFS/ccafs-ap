@@ -24,9 +24,9 @@ import java.util.List;
 
 import com.google.inject.Inject;
 import org.apache.commons.lang3.StringUtils;
+import org.apache.shiro.mgt.SecurityManager;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-
 
 public class DeliverablesPlanningAction extends BaseAction {
 
@@ -54,11 +54,11 @@ public class DeliverablesPlanningAction extends BaseAction {
   private StringBuilder validationMessage;
 
   @Inject
-  public DeliverablesPlanningAction(APConfig config, LogframeManager logframeManager, ActivityManager activityManager,
-    DeliverableManager deliverableManager, DeliverableTypeManager deliverableTypeManager,
-    DeliverableStatusManager deliverableStatusManager, FileFormatManager fileFormatManager,
-    SubmissionManager submissionManager) {
-    super(config, logframeManager);
+  public DeliverablesPlanningAction(APConfig config, LogframeManager logframeManager, SecurityManager securityManager,
+    ActivityManager activityManager, DeliverableManager deliverableManager,
+    DeliverableTypeManager deliverableTypeManager, DeliverableStatusManager deliverableStatusManager,
+    FileFormatManager fileFormatManager, SubmissionManager submissionManager) {
+    super(config, logframeManager, securityManager);
     this.activityManager = activityManager;
     this.deliverableManager = deliverableManager;
     this.deliverableTypeManager = deliverableTypeManager;

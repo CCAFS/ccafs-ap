@@ -21,6 +21,7 @@ import java.util.Map;
 
 import com.google.inject.Inject;
 import org.apache.commons.lang3.StringUtils;
+import org.apache.shiro.mgt.SecurityManager;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -49,11 +50,11 @@ public class PartnersReportingAction extends BaseAction {
   private int activityID;
 
   @Inject
-  public PartnersReportingAction(APConfig config, LogframeManager logframeManager,
+  public PartnersReportingAction(APConfig config, LogframeManager logframeManager, SecurityManager securityManager,
     ActivityPartnerManager activityPartnerManager, ActivityManager activityManager, PartnerManager partnerManager,
     PartnerTypeManager partnerTypeManager, SubmissionManager submissionManager) {
 
-    super(config, logframeManager);
+    super(config, logframeManager, securityManager);
     this.activityManager = activityManager;
     this.activityPartnerManager = activityPartnerManager;
     this.partnerManager = partnerManager;

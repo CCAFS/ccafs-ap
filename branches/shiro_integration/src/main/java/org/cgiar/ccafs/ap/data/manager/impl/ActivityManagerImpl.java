@@ -820,7 +820,8 @@ public class ActivityManagerImpl implements ActivityManager {
       activityData.put("start_date", sdf.format(activity.getStartDate()));
     }
     activityData.put("milestone_id", String.valueOf(activity.getMilestone().getId()));
-    if (activity.getGenderIntegrationsDescription().isEmpty()) {
+
+    if (activity.getGenderIntegrationsDescription() == null || activity.getGenderIntegrationsDescription().isEmpty()) {
       activityData.put("genderDescription", null);
     } else {
       activityData.put("genderDescription", activity.getGenderIntegrationsDescription());

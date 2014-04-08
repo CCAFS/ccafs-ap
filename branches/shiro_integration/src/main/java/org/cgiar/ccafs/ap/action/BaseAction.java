@@ -14,6 +14,10 @@ import javax.servlet.http.HttpServletRequest;
 import com.google.inject.Inject;
 import com.opensymphony.xwork2.ActionSupport;
 import com.opensymphony.xwork2.Preparable;
+import org.apache.shiro.SecurityUtils;
+import org.apache.shiro.mgt.SecurityManager;
+import org.apache.shiro.session.Session;
+import org.apache.shiro.subject.Subject;
 import org.apache.struts2.interceptor.ServletRequestAware;
 import org.apache.struts2.interceptor.SessionAware;
 import org.slf4j.Logger;
@@ -33,12 +37,14 @@ public class BaseAction extends ActionSupport implements Preparable, SessionAwar
   public static final String NOT_LOGGED = "401";
   public static final String NOT_AUTHORIZED = "403";
   public static final String NOT_FOUND = "404";
+  public static final String SAVED_STATUS = "savedStatus";
 
   // button actions
   protected boolean save;
   protected boolean next;
   protected boolean delete;
   protected boolean cancel;
+  private boolean dataSaved;
 
   // Loggin
   private static final Logger LOG = LoggerFactory.getLogger(BaseAction.class);
@@ -52,10 +58,14 @@ public class BaseAction extends ActionSupport implements Preparable, SessionAwar
   // Managers
   protected LogframeManager logframeManager;
 
+  protected Subject currentUser;
+
   @Inject
-  public BaseAction(APConfig config, LogframeManager logframeManager) {
+  public BaseAction(APConfig config, LogframeManager logframeManager, SecurityManager securityManager) {
     this.config = config;
     this.logframeManager = logframeManager;
+
+    SecurityUtils.setSecurityManager(securityManager);
   }
 
   /**
@@ -120,19 +130,16 @@ public class BaseAction extends ActionSupport implements Preparable, SessionAwar
     return logframeManager.getLogframeByYear(config.getReportingCurrentYear());
   }
 
+
   /**
    * Get the user that is currently saved in the session.
    * 
    * @return a user object or null if no user was found.
    */
+
   public User getCurrentUser() {
-    User u = null;
-    try {
-      u = (User) session.get(APConstants.SESSION_USER);
-    } catch (Exception e) {
-      LOG.warn("There was a problem trying to find the user in the session.");
-    }
-    return u;
+    User currentUser = (User) SecurityUtils.getSubject().getSession().getAttribute(APConstants.SESSION_USER);
+    return currentUser;
   }
 
   /**
@@ -147,8 +154,16 @@ public class BaseAction extends ActionSupport implements Preparable, SessionAwar
     return request;
   }
 
-  public Map<String, Object> getSession() {
-    return session;
+  public Session getSession() {
+    return SecurityUtils.getSubject().getSession();
+  }
+
+  public Subject getSubject() {
+    return SecurityUtils.getSubject();
+  }
+
+  public boolean isDataSaved() {
+    return dataSaved;
   }
 
   /**
@@ -157,10 +172,7 @@ public class BaseAction extends ActionSupport implements Preparable, SessionAwar
    * @return true if the user is logged in, false otherwise.
    */
   public boolean isLogged() {
-    if (this.getCurrentUser() == null) {
-      return false;
-    }
-    return true;
+    return SecurityUtils.getSubject().isAuthenticated() || SecurityUtils.getSubject().isRemembered();
   }
 
   public boolean isPlanningActive() {
@@ -175,6 +187,11 @@ public class BaseAction extends ActionSupport implements Preparable, SessionAwar
     return config.isSummariesActive();
   }
 
+  public String next() {
+    return NEXT;
+  }
+
+
   @Override
   public void prepare() throws Exception {
     // So far, do nothing here!
@@ -185,26 +202,29 @@ public class BaseAction extends ActionSupport implements Preparable, SessionAwar
     return SUCCESS;
   }
 
-  public String next() {
-    return NEXT;
+  public void setCancel(boolean cancel) {
+    this.cancel = true;
   }
 
 
-  public void setCancel(boolean cancel) {
-    this.cancel = true;
+  public void setCurrentUser(Subject currentUser) {
+    this.currentUser = currentUser;
+  }
+
+  public void setDataSaved(boolean dataSaved) {
+    this.dataSaved = dataSaved;
   }
 
   public void setDelete(boolean delete) {
     this.delete = delete;
   }
 
-  public void setSave(boolean save) {
-    this.save = true;
-  }
-
-
   public void setNext(boolean next) {
     this.next = true;
+  }
+
+  public void setSave(boolean save) {
+    this.save = true;
   }
 
   @Override

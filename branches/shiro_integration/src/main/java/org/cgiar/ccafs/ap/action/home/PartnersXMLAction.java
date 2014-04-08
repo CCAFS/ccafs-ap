@@ -12,6 +12,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 import com.google.inject.Inject;
+import org.apache.shiro.mgt.SecurityManager;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -31,9 +32,9 @@ public class PartnersXMLAction extends BaseAction {
   private Map<Integer, Theme[]> themesByPartner;
 
   @Inject
-  public PartnersXMLAction(APConfig config, LogframeManager logframeManager, PartnerManager partnerManager,
-    ThemeManager themeManager) {
-    super(config, logframeManager);
+  public PartnersXMLAction(APConfig config, LogframeManager logframeManager, SecurityManager securityManager,
+    PartnerManager partnerManager, ThemeManager themeManager) {
+    super(config, logframeManager, securityManager);
     this.partnerManager = partnerManager;
     this.themeManager = themeManager;
   }

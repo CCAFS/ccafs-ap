@@ -18,6 +18,7 @@ import java.util.List;
 import java.util.Map;
 
 import com.google.inject.Inject;
+import org.apache.shiro.mgt.SecurityManager;
 import org.jfree.util.Log;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -42,9 +43,9 @@ public class LeveragesReportingAction extends BaseAction {
 
 
   @Inject
-  public LeveragesReportingAction(APConfig config, LogframeManager logframeManager, LeverageManager leverageManager,
-    ThemeManager themeManager, SubmissionManager submissionManager) {
-    super(config, logframeManager);
+  public LeveragesReportingAction(APConfig config, LogframeManager logframeManager, SecurityManager securityManager,
+    LeverageManager leverageManager, ThemeManager themeManager, SubmissionManager submissionManager) {
+    super(config, logframeManager, securityManager);
     this.leverageManager = leverageManager;
     this.themeManager = themeManager;
     this.submissionManager = submissionManager;

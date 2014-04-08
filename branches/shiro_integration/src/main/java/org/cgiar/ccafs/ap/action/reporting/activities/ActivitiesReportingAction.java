@@ -14,6 +14,7 @@ import org.cgiar.ccafs.ap.data.model.Submission;
 import java.util.List;
 
 import com.google.inject.Inject;
+import org.apache.shiro.mgt.SecurityManager;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -34,9 +35,9 @@ public class ActivitiesReportingAction extends BaseAction {
   private boolean canSubmit;
 
   @Inject
-  public ActivitiesReportingAction(APConfig config, LogframeManager logframeManager, ActivityManager activityManager,
-    SubmissionManager submissionManager) {
-    super(config, logframeManager);
+  public ActivitiesReportingAction(APConfig config, LogframeManager logframeManager, SecurityManager securityManager,
+    ActivityManager activityManager, SubmissionManager submissionManager) {
+    super(config, logframeManager, securityManager);
     this.activityManager = activityManager;
     this.submissionManager = submissionManager;
   }

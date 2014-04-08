@@ -14,6 +14,7 @@ import org.cgiar.ccafs.ap.util.SendMail;
 
 import com.google.inject.Inject;
 import org.apache.commons.lang3.StringUtils;
+import org.apache.shiro.mgt.SecurityManager;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -39,9 +40,9 @@ public class PartnersSaveReportingAction extends BaseAction {
 
 
   @Inject
-  public PartnersSaveReportingAction(APConfig config, LogframeManager logframeManager, CountryManager countryManager,
-    PartnerTypeManager partnerTypeManager, ActivityManager activityManager) {
-    super(config, logframeManager);
+  public PartnersSaveReportingAction(APConfig config, LogframeManager logframeManager, SecurityManager securityManager,
+    CountryManager countryManager, PartnerTypeManager partnerTypeManager, ActivityManager activityManager) {
+    super(config, logframeManager, securityManager);
     this.countryManager = countryManager;
     this.partnerTypeManager = partnerTypeManager;
     this.activityManager = activityManager;

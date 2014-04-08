@@ -27,9 +27,9 @@ import java.util.Map;
 
 import com.google.inject.Inject;
 import org.apache.commons.lang3.StringUtils;
+import org.apache.shiro.mgt.SecurityManager;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-
 
 public class PartnersPlanningAction extends BaseAction {
 
@@ -56,10 +56,10 @@ public class PartnersPlanningAction extends BaseAction {
   private StringBuilder validationMessage;
 
   @Inject
-  public PartnersPlanningAction(APConfig config, LogframeManager logframeManager, ActivityManager activityManager,
-    ActivityPartnerManager activityPartnerManager, PartnerManager partnerManager, CountryManager countryManager,
-    PartnerTypeManager partnerTypeManager, SubmissionManager submissionManager) {
-    super(config, logframeManager);
+  public PartnersPlanningAction(APConfig config, LogframeManager logframeManager, SecurityManager securityManager,
+    ActivityManager activityManager, ActivityPartnerManager activityPartnerManager, PartnerManager partnerManager,
+    CountryManager countryManager, PartnerTypeManager partnerTypeManager, SubmissionManager submissionManager) {
+    super(config, logframeManager, securityManager);
     this.activityManager = activityManager;
     this.activityPartnerManager = activityPartnerManager;
     this.partnerManager = partnerManager;

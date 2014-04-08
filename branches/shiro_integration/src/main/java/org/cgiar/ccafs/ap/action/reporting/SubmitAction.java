@@ -41,6 +41,7 @@ import org.cgiar.ccafs.ap.util.SendMail;
 import java.util.List;
 
 import com.google.inject.Inject;
+import org.apache.shiro.mgt.SecurityManager;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -84,14 +85,15 @@ public class SubmitAction extends BaseAction {
   private Submission submission;
 
   @Inject
-  public SubmitAction(APConfig config, LogframeManager logframeManager, CaseStudyManager caseStudyManager,
-    CommunicationManager communicationManager, LeverageManager leverageManager, OutcomeManager outcomeManager,
-    PublicationManager publicationManager, PublicationTypeManager publicationTypeManager,
-    OutputSummaryManager outputSummaryManager, RPLSynthesisReportManager synthesisReportManager,
-    TLOutputSummaryManager tlOutputManager, SubmissionManager submissionManager,
-    MilestoneReportManager milestoneReportManager, ActivityManager activityManager,
-    CaseStudyCountriesManager caseStudyCountriesManager, CaseStudyTypeManager caseStudyTypeManager) {
-    super(config, logframeManager);
+  public SubmitAction(APConfig config, LogframeManager logframeManager, SecurityManager securityManager,
+    CaseStudyManager caseStudyManager, CommunicationManager communicationManager, LeverageManager leverageManager,
+    OutcomeManager outcomeManager, PublicationManager publicationManager,
+    PublicationTypeManager publicationTypeManager, OutputSummaryManager outputSummaryManager,
+    RPLSynthesisReportManager synthesisReportManager, TLOutputSummaryManager tlOutputManager,
+    SubmissionManager submissionManager, MilestoneReportManager milestoneReportManager,
+    ActivityManager activityManager, CaseStudyCountriesManager caseStudyCountriesManager,
+    CaseStudyTypeManager caseStudyTypeManager) {
+    super(config, logframeManager, securityManager);
     this.caseStudyManager = caseStudyManager;
     this.communicationManager = communicationManager;
     this.leverageManager = leverageManager;

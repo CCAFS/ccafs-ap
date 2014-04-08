@@ -15,6 +15,7 @@ import org.cgiar.ccafs.ap.data.manager.LogframeManager;
 import org.cgiar.ccafs.ap.data.model.Activity;
 
 import com.google.inject.Inject;
+import org.apache.shiro.mgt.SecurityManager;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -40,12 +41,12 @@ public class ActivitiesXMLAction extends BaseAction {
   private int year;
 
   @Inject
-  public ActivitiesXMLAction(APConfig config, LogframeManager logframeManager, ActivityManager activityManager,
-    LeaderManager leaderManager, ContactPersonManager contactPersonManager,
+  public ActivitiesXMLAction(APConfig config, LogframeManager logframeManager, SecurityManager securityManager,
+    ActivityManager activityManager, LeaderManager leaderManager, ContactPersonManager contactPersonManager,
     ActivityCountryManager activityCountryManager, ActivityBenchmarkSiteManager activityBenchmarkSiteManager,
     ActivityOtherSiteManager activityOtherSiteManager, ActivityPartnerManager activityPartnerManager,
     ActivityKeywordManager activityKeywordManager) {
-    super(config, logframeManager);
+    super(config, logframeManager, securityManager);
     this.activityManager = activityManager;
     this.leaderManager = leaderManager;
     this.contactPersonManager = contactPersonManager;

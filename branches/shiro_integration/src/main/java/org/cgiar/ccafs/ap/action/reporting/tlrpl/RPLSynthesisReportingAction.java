@@ -11,6 +11,7 @@ import org.cgiar.ccafs.ap.data.model.Submission;
 import org.cgiar.ccafs.ap.util.Capitalize;
 
 import com.google.inject.Inject;
+import org.apache.shiro.mgt.SecurityManager;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -31,9 +32,9 @@ public class RPLSynthesisReportingAction extends BaseAction {
   private boolean canSubmit;
 
   @Inject
-  public RPLSynthesisReportingAction(APConfig config, LogframeManager logframeManager,
+  public RPLSynthesisReportingAction(APConfig config, LogframeManager logframeManager, SecurityManager securityManager,
     RPLSynthesisReportManager synthesisReportManager, SubmissionManager submissionManager) {
-    super(config, logframeManager);
+    super(config, logframeManager, securityManager);
     this.synthesisReportManager = synthesisReportManager;
     this.submissionManager = submissionManager;
 

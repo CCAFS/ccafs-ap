@@ -14,6 +14,7 @@ import org.cgiar.ccafs.ap.data.model.Theme;
 import java.util.List;
 
 import com.google.inject.Inject;
+import org.apache.shiro.mgt.SecurityManager;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -36,9 +37,9 @@ public class OutcomeIndicatorsReportingAction extends BaseAction {
 
   @Inject
   public OutcomeIndicatorsReportingAction(APConfig config, LogframeManager logframeManager,
-    OutcomeIndicatorReportManager outcomeIndicatorReportManager, ThemeManager themeManager,
-    SubmissionManager submissionManager) {
-    super(config, logframeManager);
+    SecurityManager securityManager, OutcomeIndicatorReportManager outcomeIndicatorReportManager,
+    ThemeManager themeManager, SubmissionManager submissionManager) {
+    super(config, logframeManager, securityManager);
     this.outcomeIndicatorReportManager = outcomeIndicatorReportManager;
     this.themeManager = themeManager;
     this.submissionManager = submissionManager;

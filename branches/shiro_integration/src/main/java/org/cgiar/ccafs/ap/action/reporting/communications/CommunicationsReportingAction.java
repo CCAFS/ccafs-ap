@@ -11,6 +11,7 @@ import org.cgiar.ccafs.ap.data.model.Submission;
 import org.cgiar.ccafs.ap.util.Capitalize;
 
 import com.google.inject.Inject;
+import org.apache.shiro.mgt.SecurityManager;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -30,8 +31,8 @@ public class CommunicationsReportingAction extends BaseAction {
 
   @Inject
   public CommunicationsReportingAction(APConfig config, LogframeManager logframeManager,
-    CommunicationManager communicationManager, SubmissionManager submissionManager) {
-    super(config, logframeManager);
+    SecurityManager securityManager, CommunicationManager communicationManager, SubmissionManager submissionManager) {
+    super(config, logframeManager, securityManager);
     this.communicationManager = communicationManager;
     this.submissionManager = submissionManager;
 

@@ -19,6 +19,7 @@ import java.util.Map;
 import java.util.TreeMap;
 
 import com.google.inject.Inject;
+import org.apache.shiro.mgt.SecurityManager;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -43,9 +44,9 @@ public class OutcomesSummaryAction extends BaseAction {
   private int yearSelected;
 
   @Inject
-  public OutcomesSummaryAction(APConfig config, LogframeManager logframeManager, OutcomeManager outcomeManager,
-    LeaderManager leaderManager, OutcomesSummaryPdf outcomesPdf) {
-    super(config, logframeManager);
+  public OutcomesSummaryAction(APConfig config, LogframeManager logframeManager, SecurityManager securityManager,
+    OutcomeManager outcomeManager, LeaderManager leaderManager, OutcomesSummaryPdf outcomesPdf) {
+    super(config, logframeManager, securityManager);
     this.outcomeManager = outcomeManager;
     this.leaderManager = leaderManager;
     this.logframeManager = logframeManager;
