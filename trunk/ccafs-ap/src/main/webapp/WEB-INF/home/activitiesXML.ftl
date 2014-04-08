@@ -16,6 +16,9 @@
         <name>${activity.leader.name}</name>
         <acronym>${activity.leader.acronym}</acronym>
       </leader>
+      <budget>
+        <usd>${activity.budget.usd}</usd>
+      </budget>
       <contactPersons>
         [#if activity.contactPersons?has_content]
           [#list activity.contactPersons as cp]
