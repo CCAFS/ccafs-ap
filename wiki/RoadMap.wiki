@@ -15,6 +15,7 @@ Also was made some improvements in other reporting subsections like Outcomes, Ca
 *Minor versions:*
 
   * Version 1.2.1 [http://code.google.com/p/ccafs-ap/issues/list?can=1&q=milestone%3DRelease1.2.1 Resolved issues]
+  * Version 1.2.2 [http://code.google.com/p/ccafs-ap/issues/list?can=1&q=milestone%3DRelease1.2.2 Resolved issues]
 
 ----------
 
