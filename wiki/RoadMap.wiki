@@ -1,6 +1,14 @@
 #summary Roadmap for upcoming releases
 
+== CCAFS P&R v1.4 ==
+*Planned release date:* December 2014
 
+This release will bring major improvements in the deliverables reporting section. Also should include the necessary sections to report the information about projects.
+
+== CCAFS P&R v1.3 ==
+*Planned release date:* September 2014
+
+In this release should be added the necessary sections to plan projects. This accordingly to the change on the CCAFS program to work with flagships
 == CCAFS P&R v1.2 ==
 *Planned release date:* December 2013
 
