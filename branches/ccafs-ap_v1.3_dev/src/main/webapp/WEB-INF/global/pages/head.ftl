@@ -80,4 +80,8 @@
         <link rel="stylesheet" type="text/css" href="${css}" />
       [/#list]
     [/#if]
+    
+    
+    [#-- import the JS files --]
+    [#include "/WEB-INF/global/pages/js-imports.ftl"]
   </head>

@@ -8,9 +8,6 @@
           </div>
         </div>
       </footer>
-    </div> <!-- end container -->
-    <div id="scriptsContainer">
-      [#include "/WEB-INF/global/pages/js-imports.ftl"]
-    </div>
+    </div> <!-- end container -->    
   </body>
 </html>

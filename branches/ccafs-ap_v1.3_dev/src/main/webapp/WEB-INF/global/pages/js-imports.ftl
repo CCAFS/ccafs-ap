@@ -32,7 +32,7 @@
       [#if libraryName="jqueryAndUI"]          
         <script src="${baseUrl}/js/libs/jqueryUI/jquery-ui-1.10.0.custom.min.js"></script>
       [/#if]
-      
+
       [#if libraryName="noty"]
         [#-- Additional information visit: http://needim.github.com/noty/ --]
         [#-- Style can be found on /noty/layouts/inline.js and /noty/themes/default.js --]
@@ -40,17 +40,26 @@
         <script type="text/javascript" src="${baseUrl}/js/libs/noty/layouts/inline.js"></script>
         <script type="text/javascript" src="${baseUrl}/js/libs/noty/themes/default.js"></script>
       [/#if]
-      
-      [#if libraryName="jreject"]          
+
+      [#if libraryName="jreject"]
         <script src="${baseUrl}/js/libs/jreject/jquery.reject-1.0.2.js"></script>
       [/#if]
       
+      [#if libraryName="tinyEditor"]
+        <script src="${baseUrl}/js/libs/tinymce/tinymce-4.0.22.min.js"></script>
+        <script src="${baseUrl}/js/libs/tinymce/tinymce-configuration.js"></script>
+      [/#if]
+      
+      [#if libraryName="autoSave"]
+        <script src="${baseUrl}/js/global/autoSave.js"></script>
+      [/#if]
+
    [/#list]
   [/#if]
-  
+
   [#-- Second, import global javascripts and templates. --]
   <script type="text/javascript" src="${baseUrl}/js/global/global.js" ></script>
-  
+
   [#-- import the custom JS and CSS --]
   [#if customJS??]
     [#list customJS as js]
