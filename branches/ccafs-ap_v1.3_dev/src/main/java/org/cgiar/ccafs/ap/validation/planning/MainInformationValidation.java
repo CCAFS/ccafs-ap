@@ -40,13 +40,15 @@ public class MainInformationValidation extends BaseValidator {
           }
 
           // If there is a contact email, check if it is valid
-          if (!activity.getContactPersons().get(c).getEmail().isEmpty()) {
+          if (activity.getContactPersons().get(c).getEmail() != null
+            && !activity.getContactPersons().get(c).getEmail().isEmpty()) {
             if (!isValidEmail(activity.getContactPersons().get(c).getEmail())) {
               invalidEmail = true;
               problem = true;
             }
           } else {
-            if (activity.getContactPersons().get(c).getName().isEmpty()) {
+            if (activity.getContactPersons().get(c).getName() != null
+              && activity.getContactPersons().get(c).getName().isEmpty()) {
               activity.getContactPersons().remove(c);
               c--;
             }

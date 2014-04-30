@@ -33,12 +33,14 @@ public class BaseAction extends ActionSupport implements Preparable, SessionAwar
   public static final String NOT_LOGGED = "401";
   public static final String NOT_AUTHORIZED = "403";
   public static final String NOT_FOUND = "404";
+  public static final String SAVED_STATUS = "savedStatus";
 
   // button actions
   protected boolean save;
   protected boolean next;
   protected boolean delete;
   protected boolean cancel;
+  protected boolean dataSaved;
 
   // Loggin
   private static final Logger LOG = LoggerFactory.getLogger(BaseAction.class);
@@ -151,6 +153,10 @@ public class BaseAction extends ActionSupport implements Preparable, SessionAwar
     return session;
   }
 
+  public boolean isDataSaved() {
+    return dataSaved;
+  }
+
   /**
    * Validate if the user is already logged in or not.
    * 
@@ -175,6 +181,10 @@ public class BaseAction extends ActionSupport implements Preparable, SessionAwar
     return config.isSummariesActive();
   }
 
+  public String next() {
+    return NEXT;
+  }
+
   @Override
   public void prepare() throws Exception {
     // So far, do nothing here!
@@ -185,26 +195,26 @@ public class BaseAction extends ActionSupport implements Preparable, SessionAwar
     return SUCCESS;
   }
 
-  public String next() {
-    return NEXT;
+  public void setCancel(boolean cancel) {
+    this.cancel = true;
   }
 
 
-  public void setCancel(boolean cancel) {
-    this.cancel = true;
+  public void setDataSaved(boolean dataSaved) {
+    this.dataSaved = dataSaved;
   }
 
   public void setDelete(boolean delete) {
     this.delete = delete;
   }
 
-  public void setSave(boolean save) {
-    this.save = true;
+  public void setNext(boolean next) {
+    this.next = true;
   }
 
 
-  public void setNext(boolean next) {
-    this.next = true;
+  public void setSave(boolean save) {
+    this.save = true;
   }
 
   @Override

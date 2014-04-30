@@ -4,7 +4,9 @@ var timeoutID,
 
 function setAutoSaveEvents(){
   $("form input").on("keyup", getDataModified);
-  $("form textArea").on("keyup", getDataModified);
+  console.log($("form input").lenght);
+  // The event for textarea elements is called in the initialization
+  // of the tinyMCE editor
 }
 
 function autoSave(formAction){
@@ -20,6 +22,8 @@ function autoSave(formAction){
   // Second, get the values that were updated
   for(var key in saveData){
     var $input = saveData[key];
+    
+    console.log($input.prop("tagName"));
     data[$input.attr("name")]= $input.val();
   }
 
@@ -35,8 +39,14 @@ function autoSave(formAction){
       $("#autoSavingMessages #problemSaving").show("slow").delay( 1250 ).hide("slow");
     },
     success: function(result){
-      result = JSON.parse(result);
-      var saved = result.dataSaved;
+      var saved;
+      try{
+        result = JSON.parse(result);
+        saved = result.dataSaved;
+      }catch(err){
+        saved = false;
+        console.log(err);
+      }
 
       $("#autoSavingMessages #saving").hide("slow");
       
@@ -57,8 +67,8 @@ function autoSave(formAction){
  * 
  */
 function getDataModified(event){
+  console.log("in -------")
   $inputElement = $(event.target);
-  
   // Set property on saveData object and set it equal to the current Jquery element
   saveData[$inputElement.attr("id")] = $inputElement;
   
