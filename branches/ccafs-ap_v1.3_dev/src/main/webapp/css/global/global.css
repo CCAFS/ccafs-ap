@@ -11,6 +11,10 @@
 */
 
 /************* 1. GENERAL ***************/
+.mce-widget.mce-tooltip {
+    display: none !important;
+}
+
 a,a:active,a:visited,a:hover {
   color: black;
   text-decoration: none;
