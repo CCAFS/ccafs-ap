@@ -278,7 +278,7 @@ public class DeliverablesReportingAction extends BaseAction {
     activityID = Integer.parseInt(StringUtils.trim(this.getRequest().getParameter(APConstants.ACTIVITY_REQUEST_ID)));
     LOG.info("There user {} is loading the deliverables information for the activity {}", getCurrentUser().getEmail(),
       String.valueOf(activityID));
-    deliverableTypesList = deliverableTypeManager.getDeliverableTypes();
+    deliverableTypesList = deliverableTypeManager.getActiveDeliverableTypes();
     deliverableStatusList = deliverableStatusManager.getDeliverableStatus();
     // get information of files format
     fileFormatsList = fileFormatManager.getFileFormats();

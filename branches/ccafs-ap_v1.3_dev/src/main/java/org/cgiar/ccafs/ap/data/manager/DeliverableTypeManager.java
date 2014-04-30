@@ -10,17 +10,24 @@ public interface DeliverableTypeManager {
 
 
   /**
-   * Get the deliverable type identified with the given id.
+   * Get all the deliverables types active.
    * 
-   * @param id - Identifier.
-   * @return a DeliverableType object or null if nothing was found.
+   * @return a List whit all the Deliverable types.
    */
-  public Object getDeliverableType(String id);
+  public DeliverableType[] getActiveDeliverableTypes();
 
   /**
    * Get all the deliverables types
    * 
    * @return a List whit all the Deliverable types.
    */
-  public DeliverableType[] getDeliverableTypes();
+  public DeliverableType[] getAllDeliverableTypes();
+
+  /**
+   * Get the deliverable type identified with the given id.
+   * 
+   * @param id - Identifier.
+   * @return a DeliverableType object or null if nothing was found.
+   */
+  public Object getDeliverableType(String id);
 }

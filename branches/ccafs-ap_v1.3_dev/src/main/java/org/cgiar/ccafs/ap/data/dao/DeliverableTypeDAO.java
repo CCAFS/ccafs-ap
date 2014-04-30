@@ -11,9 +11,16 @@ import com.google.inject.ImplementedBy;
 public interface DeliverableTypeDAO {
 
   /**
+   * Get a list with all the deliverables types that are active.
+   * 
+   * @return a Map with the types of deliverables.
+   */
+  public List<Map<String, String>> getActiveDeliverableTypes();
+
+  /**
    * Get a list with all the deliverables types
    * 
    * @return a Map with the types of deliverables.
    */
-  public List<Map<String, String>> getDeliverableTypes();
+  public List<Map<String, String>> getAllDeliverableTypes();
 }

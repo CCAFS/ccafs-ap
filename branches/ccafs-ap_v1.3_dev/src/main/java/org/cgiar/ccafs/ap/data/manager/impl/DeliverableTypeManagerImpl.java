@@ -24,18 +24,8 @@ public class DeliverableTypeManagerImpl implements DeliverableTypeManager {
   }
 
   @Override
-  public Object getDeliverableType(String id) {
-    for (DeliverableType dType : getDeliverableTypes()) {
-      if (Integer.parseInt(id) == dType.getId()) {
-        return dType;
-      }
-    }
-    return null;
-  }
-
-  @Override
-  public DeliverableType[] getDeliverableTypes() {
-    List<Map<String, String>> deliverableTypesList = deliverableTypeDAO.getDeliverableTypes();
+  public DeliverableType[] getActiveDeliverableTypes() {
+    List<Map<String, String>> deliverableTypesList = deliverableTypeDAO.getActiveDeliverableTypes();
     Map<String, String> deliverableTypeData;
 
     DeliverableType[] deliverableTypes = new DeliverableType[deliverableTypesList.size()];
@@ -50,6 +40,36 @@ public class DeliverableTypeManagerImpl implements DeliverableTypeManager {
     }
 
     LOG.warn("Deliverable type list loaded id empty.");
+    return null;
+  }
+
+  @Override
+  public DeliverableType[] getAllDeliverableTypes() {
+    List<Map<String, String>> deliverableTypesList = deliverableTypeDAO.getAllDeliverableTypes();
+    Map<String, String> deliverableTypeData;
+
+    DeliverableType[] deliverableTypes = new DeliverableType[deliverableTypesList.size()];
+    for (int c = 0; c < deliverableTypesList.size(); c++) {
+      deliverableTypeData = deliverableTypesList.get(c);
+      deliverableTypes[c] =
+        new DeliverableType(Integer.parseInt(deliverableTypeData.get("id")), deliverableTypeData.get("name"));
+    }
+
+    if (deliverableTypesList.size() > 0) {
+      return deliverableTypes;
+    }
+
+    LOG.warn("Deliverable type list loaded id empty.");
+    return null;
+  }
+
+  @Override
+  public Object getDeliverableType(String id) {
+    for (DeliverableType dType : getAllDeliverableTypes()) {
+      if (Integer.parseInt(id) == dType.getId()) {
+        return dType;
+      }
+    }
     return null;
   }
 }
