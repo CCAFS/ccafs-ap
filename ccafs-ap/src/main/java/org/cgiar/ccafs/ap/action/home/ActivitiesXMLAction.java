@@ -1,5 +1,6 @@
 package org.cgiar.ccafs.ap.action.home;
 
+import com.google.inject.Inject;
 import org.cgiar.ccafs.ap.action.BaseAction;
 import org.cgiar.ccafs.ap.config.APConfig;
 import org.cgiar.ccafs.ap.config.APConstants;
@@ -9,12 +10,11 @@ import org.cgiar.ccafs.ap.data.manager.ActivityKeywordManager;
 import org.cgiar.ccafs.ap.data.manager.ActivityManager;
 import org.cgiar.ccafs.ap.data.manager.ActivityOtherSiteManager;
 import org.cgiar.ccafs.ap.data.manager.ActivityPartnerManager;
+import org.cgiar.ccafs.ap.data.manager.BudgetManager;
 import org.cgiar.ccafs.ap.data.manager.ContactPersonManager;
 import org.cgiar.ccafs.ap.data.manager.LeaderManager;
 import org.cgiar.ccafs.ap.data.manager.LogframeManager;
 import org.cgiar.ccafs.ap.data.model.Activity;
-
-import com.google.inject.Inject;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -34,6 +34,7 @@ public class ActivitiesXMLAction extends BaseAction {
   private ActivityOtherSiteManager activityOtherSiteManager;
   private ActivityPartnerManager activityPartnerManager;
   private ActivityKeywordManager activityKeywordManager;
+  private BudgetManager budgetManager;
 
   // Models
   private Activity[] activities;
@@ -44,7 +45,7 @@ public class ActivitiesXMLAction extends BaseAction {
     LeaderManager leaderManager, ContactPersonManager contactPersonManager,
     ActivityCountryManager activityCountryManager, ActivityBenchmarkSiteManager activityBenchmarkSiteManager,
     ActivityOtherSiteManager activityOtherSiteManager, ActivityPartnerManager activityPartnerManager,
-    ActivityKeywordManager activityKeywordManager) {
+    ActivityKeywordManager activityKeywordManager, BudgetManager budgetManager) {
     super(config, logframeManager);
     this.activityManager = activityManager;
     this.leaderManager = leaderManager;
@@ -54,6 +55,7 @@ public class ActivitiesXMLAction extends BaseAction {
     this.activityOtherSiteManager = activityOtherSiteManager;
     this.activityPartnerManager = activityPartnerManager;
     this.activityKeywordManager = activityKeywordManager;
+    this.budgetManager = budgetManager;
   }
 
   @Override
@@ -124,6 +126,8 @@ public class ActivitiesXMLAction extends BaseAction {
         activity.setActivityPartners(activityPartnerManager.getActivityPartners(activityID));
         // Keywords
         activity.setKeywords(activityKeywordManager.getKeywordList(activityID));
+
+        activity.setBudget(budgetManager.getBudget(activityID));
       }
     }
   }
