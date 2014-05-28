@@ -27,7 +27,7 @@
       [/#if]
     </h6>
     [#if errorfield==""][@s.fielderror cssClass="fieldError" fieldName="${name}"/][#else][@s.fielderror cssClass="fieldError" fieldName="${errorfield}"/][/#if]
-    <textarea name="${name}" id="${name}" [#if disabled]disabled="disabled"[/#if] />[#if value=="-NULL"][@s.property value="${name}"/][#else]${value}[/#if]</textarea>
+    <textarea name="${name}" id="${name}" [#if disabled]disabled="disabled"[/#if] class="ckeditor" />[#if value=="-NULL"][@s.property value="${name}"/][#else]${value}[/#if]</textarea>
   </div>
 [/#macro]
 

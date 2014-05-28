@@ -45,6 +45,23 @@
         <script src="${baseUrl}/js/libs/jreject/jquery.reject-1.0.2.js"></script>
       [/#if]
       
+<<<<<<< .mine
+      [#if libraryName="ckEditor"]
+        <!-- script src="http://tinymce.cachefly.net/4.0/tinymce.min.js"></script -->
+        <!-- script src="${baseUrl}/js/libs/tinymce/tinymce-4.0.22.min.js"></script -->
+        <!-- script src="${baseUrl}/js/libs/tinymce/tinymce-configuration.js"></script -->
+        
+        <script src="${baseUrl}/js/libs/ckeditor/ckeditor.js"></script>
+        <script src="${baseUrl}/js/libs/ckeditor/config.js"></script>
+        <script src="${baseUrl}/js/libs/ckeditor/lang/en.js"></script>
+      [/#if]
+      
+      [#if libraryName="autoSave"]
+        <script src="${baseUrl}/js/global/autoSave.js"></script>
+      [/#if]
+
+=======
+>>>>>>> .r800
    [/#list]
   [/#if]
   

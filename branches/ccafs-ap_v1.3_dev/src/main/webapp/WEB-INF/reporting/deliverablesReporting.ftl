@@ -67,34 +67,36 @@
         <div class="thirdPartBlock">
           [@customForm.select name="activity.deliverables[${deliverable_index}].status" label="" i18nkey="reporting.activityDeliverables.deliverableStatus" listName="deliverableStatusList" keyFieldName="id"  displayFieldName="name" value="${activity.deliverables[deliverable_index].status.id}" /]
         </div>
-        
-        [#-- Formats --]
-        [#if deliverableTypeIdsNeeded?seq_contains(activity.deliverables[deliverable_index].type.id)]              
-          <div class="fullBlock">
-        [#else]
-          <div class="fullBlock" style="display: none;">
-        [/#if]
-            <h6>[@s.text name="reporting.activityDeliverables.formatFiles" /]</h6>
-            <div class="checkboxGroup">
-              [@s.fielderror cssClass="fieldError" fieldName="activity.deliverables[${deliverable_index}].fileFormats"/]
-              [@s.checkboxlist name="activity.deliverables[${deliverable_index}].fileFormats" list="fileFormatsList" listKey="id" listValue="name" value="activity.deliverables[${deliverable_index}].fileFormatsIds" cssClass="checkbox" /]
+
+        [#-- Formats --]        
+        [#if deliverableTypeIdsNeeded?seq_contains(activity.deliverables[deliverable_index].type.id)]
+          [#if deliverable.status.id = statusComplete.id ]
+            <div class="fullBlock fileFormats">
+          [#else]
+            <div class="fullBlock fileFormats" style="display: none;">
+          [/#if]
+              <h6>[@s.text name="reporting.activityDeliverables.formatFiles" /]</h6>
+              <div class="checkboxGroup">
+                [@s.fielderror cssClass="fieldError" fieldName="activity.deliverables[${deliverable_index}].fileFormats"/]
+                [@s.checkboxlist name="activity.deliverables[${deliverable_index}].fileFormats" list="fileFormatsList" listKey="id" listValue="name" value="activity.deliverables[${deliverable_index}].fileFormatsIds" cssClass="checkbox" /]
+              </div>
             </div>
-          </div>
-        
+        [/#if]
+
         [#-- Description Update --]
         [#if deliverable.expected]
           <div class="fullBlock">
-            [@customForm.textArea name="activity.deliverables[${deliverable_index}].descriptionUpdate" i18nkey="reporting.activityDeliverables.descriptionUpdate" help="reporting.activityDeliverables.descriptionUpdate.help" /]          
+            [@customForm.textArea name="activity.deliverables[${deliverable_index}].descriptionUpdate" i18nkey="reporting.activityDeliverables.descriptionUpdate" help="reporting.activityDeliverables.descriptionUpdate.help" /]
           </div>
         [/#if]
-        
+
         [#-- File name message --]
         <div class="fullBlock">
           <div id="fileNameMessage" class="helpMessage" style="display:none;">
             <p>[@s.text name="reporting.activityDeliverables.fileNameMessage" /]</p>
           </div>
         </div>
-        
+
         [#-- File name --]
         <div class="fullBlock">
             [#if deliverableTypeIdsPublications?seq_contains(activity.deliverables[deliverable_index].type.id)]
@@ -238,28 +240,28 @@
         </div>
         
         [#-- Formats --]                    
-        <div class="fullBlock">
-          <h6>[@s.text name="reporting.activityDeliverables.formatFiles" /]</h6>          
-          <div class="checkboxGroup">                        
+        <div class="fullBlock fileFormats" style="display:none">
+          <h6>[@s.text name="reporting.activityDeliverables.formatFiles" /]</h6>
+          <div class="checkboxGroup">
             [@s.checkboxlist name="fileFormats" list="fileFormatsList" listKey="id" listValue="name" cssClass="checkbox" /]
           </div>
         </div>
-        
+
         [#-- File name message --]
         <div class="fullBlock">
           <div id="fileNameMessage" class="helpMessage" style="display:none;">
             <p>[@s.text name="reporting.activityDeliverables.fileNameMessage" /]</p>
           </div>
         </div>
-        
+
         [#-- File name --]
-        <div class="fullBlock">          
+        <div class="fullBlock">
           [@customForm.input name="fileName" type="text" i18nkey="reporting.activityDeliverables.filename" help="reporting.activityDeliverables.filename.help"/]
         </div>
 
       </div> <!-- End deliverable template -->
     </div> <!-- End template -->
-    
+
     <!-- internal parameter -->
     <input name="activityID" type="hidden" value="${activity.id?c}" />
     [#if canSubmit]
@@ -272,7 +274,9 @@
 
     </article>
   [/@s.form]
- 
+
   </section>
-  
+  <script>
+    var deliverableTypeIdNeeded = [ [#list deliverableTypeIdsNeeded as id] ${id}, [/#list] ];
+  </script>
 [#include "/WEB-INF/global/pages/footer.ftl"]

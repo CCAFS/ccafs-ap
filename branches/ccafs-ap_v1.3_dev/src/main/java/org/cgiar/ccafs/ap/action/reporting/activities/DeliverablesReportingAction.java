@@ -19,7 +19,6 @@ import org.cgiar.ccafs.ap.data.model.Submission;
 import org.cgiar.ccafs.ap.util.Capitalize;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Iterator;
 import java.util.List;
 
@@ -48,13 +47,14 @@ public class DeliverablesReportingAction extends BaseAction {
   private DeliverableType[] deliverableTypesList;
   private DeliverableStatus[] deliverableStatusList;
   private FileFormat[] fileFormatsList;
-  private int[] deliverableTypeIdsNeeded;
+  private ArrayList<Integer> deliverableTypeIdsNeeded;
   private int[] fileFormatIds;
   private int[] deliverableTypeIdsPublications;
   private Activity activity;
   private int activityID;
   private StringBuilder validationMessage;
   private boolean canSubmit;
+  private DeliverableStatus statusComplete;
 
   @Inject
   public DeliverablesReportingAction(APConfig config, LogframeManager logframeManager,
@@ -83,10 +83,9 @@ public class DeliverablesReportingAction extends BaseAction {
     return deliverableStatusList;
   }
 
-  public int[] getDeliverableTypeIdsNeeded() {
+  public ArrayList<Integer> getDeliverableTypeIdsNeeded() {
     return deliverableTypeIdsNeeded;
   }
-
 
   public int[] getDeliverableTypeIdsPublications() {
     return deliverableTypeIdsPublications;
@@ -97,14 +96,15 @@ public class DeliverablesReportingAction extends BaseAction {
     return deliverableTypesList;
   }
 
+
   public int[] getFileFormatIds() {
     return fileFormatIds;
   }
 
-
   public FileFormat[] getFileFormatsList() {
     return fileFormatsList;
   }
+
 
   public String getIntranetIndications() {
     StringBuilder path = new StringBuilder();
@@ -252,6 +252,10 @@ public class DeliverablesReportingAction extends BaseAction {
     return path.toString();
   }
 
+  public DeliverableStatus getStatusComplete() {
+    return statusComplete;
+  }
+
   public List<String> getYearList() {
     List<String> years = new ArrayList<>();
     for (int c = activity.getYear(); c <= config.getEndYear(); c++) {
@@ -294,14 +298,18 @@ public class DeliverablesReportingAction extends BaseAction {
 
     // Deliverables types that need a file format specification:
     // ID = 1 - Data
-    // ID = 4 - Models tools and software
-    deliverableTypeIdsNeeded = new int[2];
-    deliverableTypeIdsNeeded[0] = deliverableTypesList[0].getId();
-    deliverableTypeIdsNeeded[1] = deliverableTypesList[3].getId();
+    // ID = 13 - Models tools and software
+    deliverableTypeIdsNeeded = new ArrayList<Integer>();
+    deliverableTypeIdsNeeded.add(deliverableTypesList[0].getId());
+    deliverableTypeIdsNeeded.add(deliverableTypesList[6].getId());
 
     // Deliverables types that need to be reported in the publications section:
     // ID = 5
     deliverableTypeIdsPublications = new int[] {5};
+
+    // Set the deliverable status complete
+    // ID = 1 - Complete
+    statusComplete = deliverableStatusList[0];
 
     // Remove all expected deliverables in case user clicked on submit button
     if (this.getRequest().getMethod().equalsIgnoreCase("post")) {
@@ -339,9 +347,9 @@ public class DeliverablesReportingAction extends BaseAction {
         for (int c = 0; c < activity.getDeliverables().size(); c++) {
           Deliverable deliverable = activity.getDeliverables().get(c);
           boolean deliverableAdded = deliverableManager.addDeliverable(deliverable, activityID);
+
           // if the deliverable type need a file format specification.
-          Arrays.sort(deliverableTypeIdsNeeded);
-          if (Arrays.binarySearch(deliverableTypeIdsNeeded, deliverable.getType().getId()) >= 0) {
+          if (deliverableTypeIdsNeeded.contains(deliverable.getType().getId())) {
             // If it is a saved deliverable set the file formats
             if (deliverable.getId() != -1) {
               boolean fileFormatsUpdated =

@@ -1,4 +1,9 @@
 $(document).ready(function() {
+  for (var i in CKEDITOR.instances) {
+    
+    CKEDITOR.instances[i].on('change', function() { alert("1 2 3 ") });
+    
+  }
   autoSaveSettings();
   
   // Set the event to radio button

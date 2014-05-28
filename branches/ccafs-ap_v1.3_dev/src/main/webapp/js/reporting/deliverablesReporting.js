@@ -1,8 +1,4 @@
-// deliverableTypeIdsNeeded contains the types of deliverable 
-// that requires a file format specification
-
-var deliverableTypeIdsNeeded = [ "1", "4" ];
-var publicationType = "5";
+var publicationType = ["8", "9", "10"];
 
 $(document).ready(
     function() {
@@ -39,48 +35,70 @@ $(document).ready(
       });
 
       $('.deliverableType').change(
-          function(event) {
-            var selected = $(this).find('option:selected').val();
+        function(event) {
+          var optSelected = $(this).find('option:selected').val();
 
-            // Getting the id.
-            var selectedId = $(event.target).attr("id").split("_")[3];
+          // Getting the id.
+          var selectedId = $(event.target).attr("id").split("_")[3];
 
-            // Check if the selected type needs a file format to display or hide 
-            // that section
-            if (jQuery.inArray(selected, deliverableTypeIdsNeeded) != -1) {
-              var checkboxGroup = $("#deliverable-" + selectedId).find(
-                  ".checkboxGroup");
-              // Check if the checkboxgroup exists
-              if (checkboxGroup.length > 0) {
-                // If exists show it
-                $(checkboxGroup).parent().show('slow');
-              }
-            } else {
-              var checkboxGroup = $("#deliverable-" + selectedId).find(
-                  ".checkboxGroup");
-              checkboxGroup.parent().hide('slow', function() {
-                // After hide the file formats section uncheck all the checkboxes
-                $(checkboxGroup).find(":checked").each(function() {
-                  $(this).attr('checked', false);
-                });
+          // Check if the selected type needs a file format to display or hide 
+          // that section
+          console.log(optSelected);
+          console.log($.inArray(optSelected, deliverableTypeIdNeeded));
+          if ($.inArray(Number(optSelected), deliverableTypeIdNeeded) != -1) {
+            showFileFormats(selectedId);
+          } else {
+            var checkboxGroup = $("#deliverable-" + selectedId).find(
+                ".checkboxGroup");
+            checkboxGroup.parent().hide('slow', function() {
+              // After hide the file formats section uncheck all the checkboxes
+              $(checkboxGroup).find(":checked").each(function() {
+                $(this).attr('checked', false);
               });
-            }
+            });
+          }
 
-            // check if the File URL field and the help message need to be showed or hided.
-            var messageBox = $("#fileNameMessage-" + selectedId);
-            var fileUrlField = $("#activity\\.deliverables\\[" + selectedId
-                + "\\]\\.fileName");
-            if (jQuery.inArray(selected, publicationType) != -1) {
-              messageBox.show("slow");
-              fileUrlField.parent().hide("slow");
-              fileUrlField.val("");
-            } else {
-              fileUrlField.parent().show("slow");
-              messageBox.hide("slow");
-            }
-          });
+          // check if the File URL field and the help message need to be showed or hided.
+          var messageBox = $("#fileNameMessage-" + selectedId);
+          var fileUrlField = $("#activity\\.deliverables\\[" + selectedId
+              + "\\]\\.fileName");
 
+          if ($.inArray(optSelected, publicationType) != -1) {
+            messageBox.show("slow");
+            fileUrlField.parent().hide("slow");
+            fileUrlField.val("");
+          } else {
+            fileUrlField.parent().show("slow");
+            messageBox.hide("slow");
+          }
+      });
+
+      $("select[id$='status']").on("change", statusChangeEvent);
     });
+
+function statusChangeEvent(event){
+  var elementID = event.target.id;
+  var elementIndex = elementID.replace("deliverables_activity_deliverables_", "");
+  elementIndex = elementIndex.split("_")[0];
+  
+  elementType = $( "#deliverables_activity_deliverables_"+ elementIndex + "__type" ).val(); 
+  // If the deliverable hasn't "deliverable type" is because it's  a planned deliverable
+  if(elementType){
+    // Check if the deliverable needs to show the file formats
+    if ( $.inArray(Number(elementType), deliverableTypeIdNeeded) != -1 ){
+      // If the "Deliverable status" is complete show the file formats
+      // Status complete id = 1
+      console.log(elementID);
+      if( $( "#" + elementID ).val() == 1 ){
+        showFileFormats(elementIndex);
+      }
+    }
+  }
+}
+
+function showFileFormats(elementIndex){
+  $( "#deliverable-" + elementIndex).find(".fileFormats").show();  
+}
 
 function renameDeliverables() {
   //getting the text of the index element.
