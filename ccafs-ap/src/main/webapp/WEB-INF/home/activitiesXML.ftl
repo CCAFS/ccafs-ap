@@ -3,9 +3,9 @@
 [#escape x as x?xml]
 <activities>
   [#list activities as activity]
-    <activity id="${activity.id}">
-      <id>${activity.id}</id>
-      <publicURL>${baseUrl}/activity.do?id=${activity.id}</publicURL>
+    <activity id="${activity.id?c}">
+      <id>${activity.id?c}</id>
+      <publicURL>${baseUrl}/activity.do?id=${activity.id?c}</publicURL>
       <isCommissioned>${activity.commissioned?string}</isCommissioned>
       <title><![CDATA[${activity.title}]]></title>      
       <description><![CDATA[[#if activity.description?has_content]${activity.description}[/#if]]]></description>
