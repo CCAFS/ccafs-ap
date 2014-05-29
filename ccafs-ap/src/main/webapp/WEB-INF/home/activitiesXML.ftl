@@ -3,8 +3,8 @@
 [#escape x as x?xml]
 <activities>
   [#list activities as activity]
-    <activity id="${activity.id}">
-      <id>${activity.id}</id>
+    <activity id="${activity.id?c}">
+      <id>${activity.id?c}</id>
       <publicURL>${baseUrl}/activity.do?id=${activity.id}</publicURL>
       <isCommissioned>${activity.commissioned?string}</isCommissioned>
       <title><![CDATA[${activity.title}]]></title>      
@@ -16,6 +16,9 @@
         <name>${activity.leader.name}</name>
         <acronym>${activity.leader.acronym}</acronym>
       </leader>
+      <budget>
+        <usd>${activity.budget.usd}</usd>
+      </budget>
       <contactPersons>
         [#if activity.contactPersons?has_content]
           [#list activity.contactPersons as cp]
