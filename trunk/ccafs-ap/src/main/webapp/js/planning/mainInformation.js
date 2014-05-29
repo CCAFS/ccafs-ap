@@ -1,6 +1,5 @@
 $(document).ready(function() {
-  autoSaveSettings();
-  
+
   // Set the event to radio button
   $(".genderIntegrationOption").on("change", toggleGenderIntegrationText);
   // Hide the genderIntegration area if the radio has value 'no'
@@ -9,28 +8,18 @@ $(document).ready(function() {
   $(".removeContactPerson").on("click", function(event) {
     event.preventDefault();
     $(event.target).parent().parent().hide("slow", function() {
-      var elementID = $(event.target).parent().parent().attr("id").split("-")[1];
       $(event.target).parent().parent().remove();
-      
-      // Set the contact person element to null
-      $removedElement = $("#removedContactPerson").clone();
-      $removedElement.attr("name", "activity.contactPersons[" + elementID + "]");
-      
-      $("#removedContactPersons").append($removedElement);
-      
+      renameContactPersons();
     });
   });
 
   $(".addContactPerson").on("click", function(event) {
-    
     event.preventDefault();
     var newContactPerson = $("#contactPersonTemplate").clone(true);
     $("#contactPersonBlock").append(newContactPerson);
     $(newContactPerson).attr("class", "contactPerson");
+    renameContactPersons();
     newContactPerson.show("slow");
-    
-    renameContactPerson(newContactPerson);
-    
   });
   
   // Set text 'No funds' in budget percentage list
@@ -46,77 +35,27 @@ $(document).ready(function() {
   datePickerConfig();
 });
 
-
-/**
- * This function is in charge of initialize the default autoSave method
- * but also to set the auto save function in the fields that don't use
- * the keyup (default) event.
- */
-function autoSaveSettings(){
-  setAutoSaveEvents();
-  // As some changes are not registered with the keyup event, they should have a
-  // different event to start the auto save process
-  $("#activity\\.startDate").on("change", getDataModified);
-  $("#activity\\.endDate").on("change", getDataModified);
-  $(".removeContactPerson").on("click", getDataModified);
-  $("#mainInformation_activity_milestone").on("change", getDataModified);
-  
-  
-  // Both field of The contact person information (name and email) should be saved
-  // one any of them are modified
-  var emailEventTriggered = false,
-      nameEventTriggered = false;
-  
-  $("form input[id$='name']").on("keyup", function(event){ 
-    var elementID = $(event.target).attr("id");
-    elementID = elementID.split("[")[1].split("]")[0];
-    
-    if(nameEventTriggered && emailEventTriggered){
-      nameEventTriggered = emailEventTriggered = false;
-      return false;
-    }
-    
-    nameEventTriggered = true;
-    if(!emailEventTriggered){
-      $("#activity\\.contactPersons\\[" + elementID + "\\]\\.email").trigger("keyup"); 
-    }
-  });
-  
-  $("form input[id$='email']").on("keyup", function(event){ 
-    var elementID = $(event.target).attr("id");
-    elementID = elementID.split("[")[1].split("]")[0];
-    
-    if(nameEventTriggered && emailEventTriggered){
-      nameEventTriggered = emailEventTriggered = false;
-      return false;
-    }
-    
-    emailEventTriggered = true;
-    if(!nameEventTriggered){
-      $("#activity\\.contactPersons\\[" + elementID + "\\]\\.name").trigger("keyup"); 
-    }
-  });
-}
-
-function renameContactPerson(newContactPerson) {
-  var index = $("#contactPersonBlock .contactPerson").length -1;
-  
-  $(newContactPerson).attr("id", "contactPerson-" + index);
-  // Contact person id
-  $(newContactPerson).find("[name$='id']").attr("id",
-      "activity.contactPersons[" + index + "].id");
-  $(newContactPerson).find("[name$='id']").attr("name",
-      "activity.contactPersons[" + index + "].id");
-  // Contact name
-  $(newContactPerson).find("[id$='name']").attr("id",
-      "activity.contactPersons[" + index + "].name");
-  $(newContactPerson).find("[name$='name']").attr("name",
-      "activity.contactPersons[" + index + "].name");
-  // Contact email
-  $(newContactPerson).find("[id$='email']").attr("id",
-      "activity.contactPersons[" + index + "].email");
-  $(newContactPerson).find("[name$='email']").attr("name",
-      "activity.contactPersons[" + index + "].email");
+function renameContactPersons() {
+  $(".contactPerson").each(
+      function(index, contactPerson) {
+        // Block id
+        $(this).attr("id", "contactPerson-" + index);
+        // Contact person id
+        $(this).find("[name$='id']").attr("id",
+            "activity.contactPersons[" + index + "].id");
+        $(this).find("[name$='id']").attr("name",
+            "activity.contactPersons[" + index + "].id");
+        // Contact name
+        $(this).find("[id$='name']").attr("id",
+            "activity.contactPersons[" + index + "].name");
+        $(this).find("[name$='name']").attr("name",
+            "activity.contactPersons[" + index + "].name");
+        // Contact email
+        $(this).find("[id$='email']").attr("id",
+            "activity.contactPersons[" + index + "].email");
+        $(this).find("[name$='email']").attr("name",
+            "activity.contactPersons[" + index + "].email");
+      });
 }
 
 /**
