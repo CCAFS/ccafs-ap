@@ -1,7 +1,7 @@
 [#ftl]
 [#assign title = "Main information" /]
 [#assign globalLibs = ["jquery", "noty", "chosen"] /]
-[#assign customJS = ["${baseUrl}/js/global/autoSave.js", "${baseUrl}/js/global/utils.js", "${baseUrl}/js/planning/mainInformation.js"] /]
+[#assign customJS = ["${baseUrl}/js/global/utils.js", "${baseUrl}/js/planning/mainInformation.js"] /]
 [#assign currentSection = "planning" /]
 [#assign currentPlanningSection = "mainInformation" /]
 [#assign userRole = "${currentUser.role}"]
@@ -166,14 +166,10 @@
           [/#if]
         </div>
     
-      <div id="addContactPerson" class="addLink">
-        <img src="${baseUrl}/images/global/icon-add.png" />
-        <a href="" class="addContactPerson" >[@s.text name="planning.mainInformation.addContactPerson" /]</a>
-      </div>
-      
-      <div id="removedContactPersons">
-        <input type="hidden" id="removedContactPerson" />
-      </div>
+    <div id="addContactPerson" class="addLink">
+      <img src="${baseUrl}/images/global/icon-add.png" />
+      <a href="" class="addContactPerson" >[@s.text name="planning.mainInformation.addContactPerson" /]</a>
+    </div>
     </fieldset>
     
     
@@ -202,9 +198,9 @@
     [#-- Only the owner of the activity can see the action buttons --]
     [#if activity.leader.id == currentUser.leader.id && canSubmit]
       <div class="buttons">
-        [@s.submit type="button" name="cancel"][@s.text name="form.buttons.back" /][/@s.submit]
-        [@s.submit type="button" method="validateForm"][@s.text name="form.buttons.validate" /][/@s.submit]
+        [@s.submit type="button" name="save"][@s.text name="form.buttons.save" /][/@s.submit]
         [@s.submit type="button" name="next"][@s.text name="form.buttons.next" /][/@s.submit]
+        [@s.submit type="button" name="cancel"][@s.text name="form.buttons.cancel" /][/@s.submit]
       </div>
     [/#if]
   </article>

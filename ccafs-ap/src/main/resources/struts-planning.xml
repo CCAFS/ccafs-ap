@@ -3,7 +3,7 @@
 <struts>
 
   <!-- Add addition packages and configuration here. -->
-  <package name="planning" namespace="/planning" extends="ccafsap-default">
+  <package name="planning" namespace="/planning" extends="ccafsap-default">    
     <default-action-ref name="activities" />
 
     <!-- Sections -->
