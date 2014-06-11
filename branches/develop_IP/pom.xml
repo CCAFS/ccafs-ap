@@ -193,6 +193,7 @@
   </dependencies>
 
   <build>
+    <finalName>${project.artifactId}</finalName>
     <defaultGoal>jetty:run</defaultGoal>
     <!-- defaultGoal>tomcat7:run</defaultGoal -->
 
