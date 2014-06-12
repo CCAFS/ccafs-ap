@@ -35,7 +35,8 @@ table tr:first-child th:last-child{
 
 table.dataTable thead {
    
-  background-color: #F1D023;
+  background-color: #8ea786;
+  color: #fff;
 }
 
 table.dataTable tr.odd {
@@ -72,13 +73,13 @@ table.dataTable tr.even td.sorting_3 {
 
 table.dataTable thead th {
   text-align: center;
-  border: 1px solid #d4d4d4;
+  border: 1px solid #8ea786;
   font-size: 13px;
   vertical-align: middle;
 }
 
 table.dataTable td {
-  border: 1px solid #d4d4d4;
+  border: 1px solid #CCCCCC;
 }
 
 /*

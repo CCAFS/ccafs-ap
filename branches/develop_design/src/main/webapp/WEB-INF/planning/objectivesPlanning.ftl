@@ -18,7 +18,7 @@
   [#include "/WEB-INF/global/pages/planning-secondary-menu.ftl" /]
   
   
-  [@s.form action="objectives"]  
+  [@s.form action="objectives" cssClass="pure-form"]  
   <article class="halfContent">
     <h1 class="contentTitle">
       ${activity.leader.acronym}: [@s.text name="planning.mainInformation.activity" /] ${activity.activityId}

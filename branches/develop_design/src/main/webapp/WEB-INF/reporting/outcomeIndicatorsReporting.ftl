@@ -44,7 +44,7 @@
     [#assign actionName="themeFourOutcomeIndicators" /]
   [/#if]
   
-  [@s.form action="${actionName}"]
+  [@s.form action="${actionName}" cssClass="pure-form"]
     <article class="halfContent">
       [#include "/WEB-INF/reporting/outcomeIndicatorsSubMenu.ftl" /]
       <h1 class="contentTitle">

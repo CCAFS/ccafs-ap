@@ -16,7 +16,7 @@
     <p>[@s.text name="reporting.leverages.help" /]</p>
   </div>
   [#include "/WEB-INF/global/pages/reporting-secondary-menu.ftl" /]
-  [@s.form action="leverages"]
+  [@s.form action="leverages" cssClass="pure-form"]
     <article class="halfContent">
       <h1 class="contentTitle">
         [@s.text name="reporting.leverages" /] - ${currentUser.leader.acronym} 

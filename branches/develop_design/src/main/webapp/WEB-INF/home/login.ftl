@@ -17,7 +17,7 @@
       [@s.text name="home.login.introduction" /]
     </p>
     <div id="loginFormContainer">  
-      [@s.form method="POST" action="login" cssClass="loginForm"]
+      [@s.form method="POST" action="login" cssClass="loginForm pure-form"]
         [@s.fielderror cssClass="fieldError" fieldName="loginMesage"/]      
         [@customForm.input name="user.email" i18nkey="home.login.email" required=true /]
         [@customForm.input name="user.password" i18nkey="home.login.password" required=true type="password" /]
