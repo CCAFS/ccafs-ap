@@ -11,11 +11,11 @@
       [/#if]
       
       [#if libraryName="googleAPI"]
-        <script type="text/javascript" src="http://www.google.com/jsapi"></script>
+        <script type="text/javascript" src="https://www.google.com/jsapi"></script>
       [/#if]
       
       [#if libraryName="googleMaps"]
-        <script type="text/javascript" src="http://maps.googleapis.com/maps/api/js?key=AIzaSyBTC15VqenY93jEFMYO8F-mcWc-cXUZ_Mw&sensor=false"></script>
+        <script type="text/javascript" src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBTC15VqenY93jEFMYO8F-mcWc-cXUZ_Mw&sensor=false"></script>
       [/#if]
       
       [#if libraryName="jquery"]

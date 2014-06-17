@@ -1,6 +1,6 @@
 <configuration>
   <contextName>CCAFS Activities</contextName>
-  <property file="ccafsap.properties" />
+  <property resource="ccafsap.properties" />
 
   
   <!-- ======= Filters by levels to print logs in file ======= -->
