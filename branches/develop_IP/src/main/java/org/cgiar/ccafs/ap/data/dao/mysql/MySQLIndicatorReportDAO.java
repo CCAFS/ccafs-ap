@@ -20,7 +20,7 @@ import org.slf4j.LoggerFactory;
 public class MySQLIndicatorReportDAO implements IndicatorReportDAO {
 
   // Logger
-  private static Logger LOG = LoggerFactory.getLogger(IndicatorReportDAO.class);
+  private static Logger LOG = LoggerFactory.getLogger(MySQLIndicatorReportDAO.class);
 
   private DAOManager databaseManager;
 
