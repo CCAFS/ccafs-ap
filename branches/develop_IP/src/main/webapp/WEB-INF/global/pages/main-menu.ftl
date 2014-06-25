@@ -18,6 +18,17 @@
         </li>
       </a>
       
+      [#-- Pre-planning section --]
+      [#if currentUser.CP || currentUser.TL || currentUser.RPL || currentUser.PI || currentUser.admin ]
+        [#if planningActive ]               
+          <a  href="${baseUrl}/pre-planning/outcomes.do">
+        [#else]
+          <a href="javascript:void(0);" title="[@s.text name="menu.link.disabled" /]" class="disabled">
+        [/#if]
+          <li [#if currentSection?? && currentSection == "preplanning"] class="currentSection" [/#if]>[@s.text name="menu.preplanning" /]</li>
+        </a>
+      [/#if]
+      
       [#-- Planning section --]
       [#if currentUser.CP || currentUser.TL || currentUser.RPL || currentUser.PI || currentUser.admin ]
         [#if planningActive ]               
