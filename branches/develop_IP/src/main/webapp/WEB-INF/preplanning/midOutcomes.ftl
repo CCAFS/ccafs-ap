@@ -71,7 +71,7 @@
     
     <div id="addMidOutcomeBlock" class="addLink">
       <img src="${baseUrl}/images/global/icon-add.png" />
-      <a href="" class="addMidOutcome" >[@s.text name="preplanning.midOutcome.addOutcome" /]</a>
+      <a href="" class="addMidOutcome" >[@s.text name="preplanning.midOutcomes.addOutcome" /]</a>
     </div>
      
      
