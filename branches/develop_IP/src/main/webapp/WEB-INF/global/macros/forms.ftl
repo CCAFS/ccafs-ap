@@ -80,8 +80,8 @@
   </div>
 [/#macro]
 
-[#macro select name listName label="" keyFieldName="" displayFieldName="" value="-NULL" i18nkey="" disabled=false required=false errorField="" selected=false className="" multiple=false help="" display=true showTitle=true]
-  <div class="select" [#if !display]style="display: none;"[/#if]>
+[#macro select name listName label="" keyFieldName="" displayFieldName="" value="-NULL" i18nkey="" disabled=false required=false errorField="" selected=false className="" multiple=false help="" display=true showTitle=true addButton=false]
+  <div class="select[#if addButton] button[/#if]" [#if !display]style="display: none;"[/#if]>
     [#if showTitle]
       <h6>
         [#if i18nkey==""]${label}[#else][@s.text name="${i18nkey}" /][/#if][#if required]<span class="red">*</span>[/#if]:
@@ -115,8 +115,11 @@
           [@s.select name="${name}" list="${listName}" listKey="${keyFieldName}" listValue="${displayFieldName}" value="${customValue}" disabled="${disabled?string}" cssClass="${className}" tooltip="${helpText}" /]
         [/#if]        
       [/#if]
-    </div>
+    </div> 
   </div>  
+  [#if addButton]
+     <input type="button" class="addButton" name="" value="Add [@s.text name='${i18nkey}' /]" />
+  [/#if]
 [/#macro]
 
 [#-- The following macros aren't tested yet. --]

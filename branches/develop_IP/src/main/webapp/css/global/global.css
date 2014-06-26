@@ -26,6 +26,21 @@ select {
    width: 100%;
 }
 
+.select.button {
+	float: left;
+	width: 81%;
+}
+
+.addButton {
+	background: #47939C;
+	color: #fff;
+	border: 0;
+	padding: 6px;
+	margin: 5px 12px;
+	border-radius: 5px;
+	border-bottom: 2px solid #3C7D85;
+}
+
 .clearfix:before,.clearfix:after {
   content: "";
   display: table;
@@ -77,6 +92,12 @@ input[type="submit"], button {
 	border: 0;
 	padding: 5px 10px;
 	font-weight: bold;
+}
+
+input:-webkit-autofill, textarea:-webkit-autofill, select:-webkit-autofill {
+	background-color: #fff !important;
+	background-image: none !important;
+	color: #ccc !important;
 }
 
 .halfPartBlock .checkbox input{
@@ -676,6 +697,33 @@ a.currentReportingSection li #i-additionalInformation{
   border-bottom: 1px solid #9D9D9D;
 }
 
+/*** PRE-PLANNING ***/
+
+/* Impact Pathways */
+
+.indicator {
+    padding: 9px;
+    border: 2px dotted #CCC;
+    border-radius: 5px;
+    margin: 5px 8px;
+    background: #EAF3FD;
+}
+
+.indicator h6,.indicator label{
+	float: left;
+}
+
+.contentElements {
+    border: 1px solid #ccc;
+    border-top: 0;
+    border-radius: 10px 10px 2px 2px;
+    margin: 20px 14px;
+    width: 93%;
+}
+
+
+
+
 /***** PLANNING *****/
 
 #mainInformation .commisioned{
@@ -1011,7 +1059,7 @@ ul#deliverablesFilesMessages > li {
 
 /* Publications */
 
-.publication, .caseStudy, .outcome, .leverage, .deliverable, .activityPartner, .otherSite {
+.publication, .caseStudy, .outcome,.midOutcome, .leverage, .deliverable, .activityPartner, .otherSite {
 	border: 1px solid #D1D1D1;
 	padding: 6px 15px 0px 15px;
 	border-radius: 8px;
@@ -1060,7 +1108,7 @@ ul#deliverablesFilesMessages > li {
 /*********** CASE STUDIES **************/
 /************* OUTCOMES ****************/
 .outcome .textArea h6 {
-  font-weight: normal;
+  /* font-weight: normal; */
 }
 
 /************* INDICATORS ****************/
