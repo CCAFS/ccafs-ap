@@ -18,5 +18,15 @@ public interface IPElementDAO {
    * @return a list of maps with the information of all IP elements returned.
    */
 
-  public List<Map<String, String>> getIPElementByProgram(int programID);
+  public List<Map<String, String>> getIPElement(int programID);
+
+  /**
+   * This method return all the IP elements of the type given and that correspond
+   * to the program given
+   * 
+   * @param programID - program identifier
+   * @param elementTypeID - element type identifier
+   * @return a list of maps with the information of all IP elements returned
+   */
+  public List<Map<String, String>> getIPElement(int programID, int elementTypeID);
 }

@@ -28,11 +28,28 @@ public class IPElementManagerImpl implements IPElementManager {
   }
 
   @Override
-  public List<IPElement> getIPElementsByProgram(IPProgram program) {
-    List<IPElement> IPElements = new ArrayList<>();
-    List<Map<String, String>> IPElementDataList = ipElementDAO.getIPElementByProgram(program.getId());
+  public List<IPElement> getIPElements(IPProgram program) {
+    List<Map<String, String>> ipElementDataList = ipElementDAO.getIPElement(program.getId());
+    return setDataToIPElementObjects(ipElementDataList);
+  }
 
-    for (Map<String, String> elementData : IPElementDataList) {
+  @Override
+  public List<IPElement> getIPElements(IPProgram program, IPElementType type) {
+    List<Map<String, String>> ipElementDataList = ipElementDAO.getIPElement(program.getId(), type.getId());
+    return setDataToIPElementObjects(ipElementDataList);
+  }
+
+  /**
+   * This function takes the information of IPElements stored in a list of maps
+   * to organize it in a list of IPElement objects
+   * 
+   * @param ipElementDataList
+   * @return
+   */
+  private List<IPElement> setDataToIPElementObjects(List<Map<String, String>> ipElementDataList) {
+    List<IPElement> elementsList = new ArrayList<>();
+
+    for (Map<String, String> elementData : ipElementDataList) {
       IPElement element = new IPElement();
       element.setId(Integer.parseInt(elementData.get("id")));
       element.setDescription(elementData.get("description"));
@@ -60,8 +77,9 @@ public class IPElementManagerImpl implements IPElementManager {
         indicators.add(indicator);
       }
 
+      elementsList.add(element);
     }
 
-    return IPElements;
+    return elementsList;
   }
 }

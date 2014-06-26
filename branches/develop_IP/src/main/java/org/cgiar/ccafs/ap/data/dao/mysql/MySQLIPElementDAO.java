@@ -25,23 +25,12 @@ public class MySQLIPElementDAO implements IPElementDAO {
     this.databaseManager = databaseManager;
   }
 
-  @Override
-  public List<Map<String, String>> getIPElementByProgram(int programID) {
-    LOG.debug(">> getIPElementByProgram( programID = {} )", programID);
-
+  private List<Map<String, String>> executeQuery(String query) {
+    LOG.debug(">> executeQuery(query='{}')", query);
     List<Map<String, String>> ipElementList = new ArrayList<>();
-    StringBuilder query = new StringBuilder();
-    query.append("SELECT e.id, e.description,  ");
-    query.append("et.id as 'element_type_id', et.name as 'element_type_name' ");
-    query.append("pro.id as 'program_id', pro.acronym as 'program_acronym' ");
-    query.append("FROM ip_elements ");
-    query.append("INNER JOIN ip_element_types et ON e.element_type_id = et.id ");
-    query.append("INNER JOIN ip_programs pro ON e.program_id = pro.id ");
-    query.append("WHERE program_id = ");
-    query.append(programID);
 
     try (Connection con = databaseManager.getConnection()) {
-      ResultSet rs = databaseManager.makeQuery(query.toString(), con);
+      ResultSet rs = databaseManager.makeQuery(query, con);
       while (rs.next()) {
         Map<String, String> ipElementData = new HashMap<String, String>();
         ipElementData.put("id", rs.getString("id"));
@@ -55,13 +44,53 @@ public class MySQLIPElementDAO implements IPElementDAO {
       }
       rs.close();
     } catch (SQLException e) {
-      String exceptionMessage = "-- getIPElementByProgram() > Exception raised trying ";
-      exceptionMessage += "to get the ip elements corresponding to the program " + programID;
+      String exceptionMessage = "-- executeQuery() > Exception raised trying ";
+      exceptionMessage += "to execute the following query " + query;
 
-      LOG.error(exceptionMessage);
+      LOG.error(exceptionMessage, e);
     }
 
-    LOG.debug("<< getIPElementsByProgram():ipElementList.size={}", ipElementList.size());
+    LOG.debug("<< executeQuery():ipElementList.size={}", ipElementList.size());
     return ipElementList;
+  }
+
+  @Override
+  public List<Map<String, String>> getIPElement(int programID) {
+    LOG.debug(">> getIPElement( programID = {} )", programID);
+
+    StringBuilder query = new StringBuilder();
+    query.append("SELECT e.id, e.description,  ");
+    query.append("et.id as 'element_type_id', et.name as 'element_type_name' ");
+    query.append("pro.id as 'program_id', pro.acronym as 'program_acronym' ");
+    query.append("FROM ip_elements ");
+    query.append("INNER JOIN ip_element_types et ON e.element_type_id = et.id ");
+    query.append("INNER JOIN ip_programs pro ON e.program_id = pro.id ");
+    query.append("WHERE program_id = ");
+    query.append(programID);
+
+
+    LOG.debug("-- getIPElementsByProgram() > Calling method executeQuery to get the results");
+    return executeQuery(query.toString());
+  }
+
+  @Override
+  public List<Map<String, String>> getIPElement(int programID, int elementTypeID) {
+    LOG.debug(">> getIPElement( programID = {}, elementTypeID = {} )", programID, elementTypeID);
+
+    StringBuilder query = new StringBuilder();
+    query.append("SELECT e.id, e.description,  ");
+    query.append("et.id as 'element_type_id', et.name as 'element_type_name' ");
+    query.append("pro.id as 'program_id', pro.acronym as 'program_acronym' ");
+    query.append("FROM ip_elements ");
+    query.append("INNER JOIN ip_element_types et ON e.element_type_id = et.id ");
+    query.append("INNER JOIN ip_programs pro ON e.program_id = pro.id ");
+    query.append("WHERE program_id = ");
+    query.append(programID);
+    query.append(" AND elementTypeID = ");
+    query.append(elementTypeID);
+
+
+    LOG.debug("-- getIPElementsByProgram() > Calling method executeQuery to get the results");
+    return executeQuery(query.toString());
   }
 }
