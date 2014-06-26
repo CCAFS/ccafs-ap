@@ -126,7 +126,7 @@
   </div>
   [#include "/WEB-INF/global/pages/reporting-secondary-menu.ftl" /]
   
-  [@s.form action="deliverables"]
+  [@s.form action="deliverables" cssClass="pure-form"]
   <article class="halfContent">
     [#include "/WEB-INF/reporting/activitiesReportingSubMenu.ftl" /]
     <h1 class="contentTitle">

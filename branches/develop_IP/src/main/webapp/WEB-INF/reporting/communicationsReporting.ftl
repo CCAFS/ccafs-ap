@@ -17,7 +17,7 @@
     <p>[@s.text name="reporting.communications.help" /]</p>
   </div>
   [#include "/WEB-INF/global/pages/reporting-secondary-menu.ftl" /]
-  [@s.form action="communications"]
+  [@s.form action="communications" cssClass="pure-form"]
     <article class="halfContent">
       <h1 class="contentTitle">
         [@s.text name="reporting.communications" /] - ${currentUser.leader.acronym} 

@@ -19,7 +19,7 @@
     <p>[@s.text name="reporting.tlOutputSummaries.help" /]</p>
   </div>
   [#include "/WEB-INF/global/pages/reporting-secondary-menu.ftl" /]
-  [@s.form action="tlOutputs"]
+  [@s.form action="tlOutputs" cssClass="pure-form"]
     <article class="halfContent">
       [#include "/WEB-INF/reporting/tlRplSubMenu.ftl" /]
       <h1 class="contentTitle">

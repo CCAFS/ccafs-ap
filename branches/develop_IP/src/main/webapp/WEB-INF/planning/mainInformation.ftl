@@ -17,7 +17,7 @@
   </div>
   [#include "/WEB-INF/global/pages/planning-secondary-menu.ftl" /]
   
-  [@s.form action="mainInformation"]  
+  [@s.form action="mainInformation" cssClass="pure-form"]  
   <article class="halfContent" id="mainInformation">
     <h1 class="contentTitle">
       ${activity.leader.acronym}: 

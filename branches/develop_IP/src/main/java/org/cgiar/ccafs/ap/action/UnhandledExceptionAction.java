@@ -47,7 +47,7 @@ public class UnhandledExceptionAction extends BaseAction {
     StringWriter writer = new StringWriter();
     exception.printStackTrace(new PrintWriter(writer));
 
-    if (config.getBaseUrl().contains("localhost") || config.getBaseUrl().contains("/test")) {
+    if (!config.getBaseUrl().contains("activities.ccafs.cgiar.org") ) {
       return;
     }
 

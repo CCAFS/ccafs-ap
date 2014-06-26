@@ -49,7 +49,7 @@
     <p>[@s.text name="reporting.activityPartners.help" /]</p>
   </div>
   [#include "/WEB-INF/global/pages/reporting-secondary-menu.ftl" /]
-  [@s.form action="partners"]
+  [@s.form action="partners" cssClass="pure-form"]
   <article class="halfContent">
     [#include "/WEB-INF/reporting/activitiesReportingSubMenu.ftl" /]
     <h1 class="contentTitle">

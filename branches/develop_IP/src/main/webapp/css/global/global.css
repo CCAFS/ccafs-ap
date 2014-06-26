@@ -11,12 +11,14 @@
 */
 
 /************* 1. GENERAL ***************/
+@import url(http://fonts.googleapis.com/css?family=Open+Sans:400,300,800);
+
 .mce-widget.mce-tooltip {
     display: none !important;
 }
 
 a,a:active,a:visited,a:hover {
-  color: black;
+  color: #3D3D3D;
   text-decoration: none;
 }
 
@@ -48,9 +50,9 @@ ul.fieldError li {
 }
 
 fieldset {
-  padding: 10px 20px 20px;
+  /* padding: 10px 20px 20px; */
   margin: 0 0 30px;
-  border: 1px solid silver;
+  /* border: 1px solid silver; */
 }
 
 legend {
@@ -67,6 +69,14 @@ textarea {
 input[type="radio"] {
   margin-left: 15px;
   margin-right: 3px;
+}
+
+input[type="submit"], button {
+	background: #2BA6CB;
+	color: #fff;
+	border: 0;
+	padding: 5px 10px;
+	font-weight: bold;
 }
 
 .halfPartBlock .checkbox input{
@@ -148,23 +158,26 @@ padding: 1px 10px;
 }
 
 /************* 2. HEADER ***************/
-body {
+body { 
   text-align: center;
 }
-
+header {
+	font-family: 'Open Sans', sans-serif;
+}
 .container {
-  background-image: url("../../images/global/header-background.png");
+  /* background-image: url("../../images/global/header-background.png"); */
   background-repeat: no-repeat;
   display: inline-block;
   width: 1100px;
-  height: 100%;
+  /* height: 100%; */
+  position: relative;
   text-align: left;
   display: inline-block;
-  margin: 30px auto;
+  /* margin: 0 auto; */
   
   /* SHADOW */
-  -webkit-box-shadow: 2px 7px 29px #5A5E59; /* Safari and Chrome */
-  box-shadow: 2px 7px 29px #5A5E59;
+  /* -webkit-box-shadow: 2px 7px 29px #5A5E59; */ /* Safari and Chrome */
+  /* box-shadow: 2px 7px 29px #5A5E59; */
   /* For IE 8 */
   /*-ms-filter: "progid:DXImageTransform.Microsoft.Glow(Color=#5A5E59,Strength=10)";*/
   
@@ -190,22 +203,31 @@ body {
 }
 
 #userInfo {
-  margin-right: 30px;
-  margin-top: 10px;
-  margin-bottom: 10px;
+  /* margin-right: 30px; */
+  /* margin-top: 10px; */
+  /* margin-bottom: 10px; */
+  color: #fff;
   text-align: right;
+  position: absolute;
+  right: 1em;
+  top: 0;
+  background: #57A7B5;
+  border-bottom: 6px solid #4C8D99;
+  height: 18px;
+  font-size: 0.9em;
+  padding: 20px 30px;
+  box-shadow: inset 0px 0px 2px rgba(0, 0, 0, 0.1);
 }
 
 #userInfo .email {
-  color: white;
-  font-size: 15px;
-  font-weight: bold;
+  /* font-size: 0.9em; */
+  /* font-weight: bold; */
 }
 
 #userInfo .logout {
   background-color: #4B4B4B;
-  margin-left: 15px;
-  padding: 2px 10px;
+  margin-left: 4px;
+  padding: 0px 7px;
   border-radius: 5px;
   border-bottom: 2px solid #2E2E2E;
 }
@@ -216,50 +238,61 @@ body {
 
 #mainLogo {
   float: left;
+  padding: 31px 60px;
+  font-size: 2.5em;
+  color: #444;
+  font-weight: 200;
 }
 
 #mainLogo img {
-  margin-left: 75px;
-  margin-top: 20px;
+  /* margin-left: 75px; */
+  /* margin-top: 20px; */
 }
 
 #ccafsLogo {
-  float: left;
+  float: right;
 }
 
 #ccafsLogo img {
-  margin-left: 80px;
-  margin-top: 20px;
+  /* margin-left: 80px; */
+  /* margin-top: 20px; */
 }
 
 /************* 3. MAIN MENU ***************/
 nav#mainMenu {
   width: 100%; 
-  padding-top: 10px;
-  padding-bottom: 15px;
-  height: 40px;
+  /* padding-top: 10px; */
+  /* padding-bottom: 15px; */
+  height: 64px;
   
+  background-image: url("../../images/global/header-menu-bar.png");
+  font-size: 1.2em;
+  font-family: 'Open Sans', sans-serif;
 } 
+
 nav#mainMenu ul{
   list-style-type: none;
-  /* height: 40px; */
-  margin: 0 auto;
-  text-align: center;
+  height: 40px;
+  padding: 19px 20px;
+  /* margin: 0 auto; */
+  /* text-align: center; */
 } 
 nav#mainMenu ul li {
-  height: 40px;
-  width: 91px;
+  height: 60px;
+  width: 90px;
   display: inline;
-  background: #FFFFFF;
-  padding: 11px 35px 12px 33px;
-  border: 1px solid #dbdbdb;
-  margin: -3px;
-  color: #636368;
+  /* background: #FFFFFF; */
+  padding: 16px 24px 19px 23px;
+  /* border: 1px solid #dbdbdb; */
+  /* margin: -3px; */
+  color: #FFFFFF;
 }
 nav#mainMenu ul li.currentSection {
-  background-image: url("../../images/global/mainMenuMarker.png");
+  /* background-image: url("../../images/global/mainMenuMarker.png"); */
   font-weight: bold;
   color: #fff; 
+  background: rgba(0, 0, 0, 0.1);
+  box-shadow: inset 1px 1px 1px rgba(0, 0, 0, 0.1);
 }
 nav#mainMenu ul a.disabled li{
   color: #b7bcc1;
@@ -275,6 +308,7 @@ nav#mainMenu ul a.disabled li{
   width: 184px;
   border: 1px solid #dbdbdb;
   border-radius: 8px;
+  font-family: 'Open Sans', sans-serif;
 }
 
 #secondaryMenu ul {
@@ -368,7 +402,7 @@ a.currentReportingSection li #i-additionalInformation{
   padding-left: 10px;
   padding-top: 14px;
   border-bottom: 1px solid #dbdbdb;
-  color: #636368;
+  color: #535353;
 }
 
 
@@ -398,8 +432,8 @@ a.currentReportingSection li #i-additionalInformation{
 
 /*************** BODY ****************/
 .content {
-  margin: 10px 60px;
-  padding: 20px;
+  margin: 10px 50px;
+  /* padding: 20px; */
 }
 
 .fullContent {
@@ -409,12 +443,12 @@ a.currentReportingSection li #i-additionalInformation{
 .halfContent {
   float: right;
   padding: 10px;
-  width: 700px;
+  width: 755px;
 }
 
 .content a,.halfContent a, #footerContainer a, 
 .content a:hover,.halfContent a:hover, #footerContainer a{
-  color: #366506;
+  /* color: #408088; */
 }
 
 .content h1 {
@@ -469,9 +503,14 @@ a.currentReportingSection li #i-additionalInformation{
 .itemIndex {
   font-size: 15px;
   font-weight: normal;
-  color: #663300;
+  color: #FFF;
   text-align: center;
-  text-decoration: underline;
+  /* text-decoration: underline; */
+  background: #8ea786;
+  padding: 5px 0;
+  margin: 3px 0;
+  font-weight: 700;
+  border-radius: 8px 8px 0px 0px;
 }
 
 .countriesBlock select {
@@ -588,10 +627,13 @@ a.currentReportingSection li #i-additionalInformation{
 }
 
 #loginFormContainer .loginForm {
-  background-color: #D5EAD5;
+  background-color: #f1f1f1;
   margin: auto;
-  padding: 10px;
+  padding: 15px;
   width: 250px;
+  border-radius: 7px;
+  border: 2px solid #F3F3F3;
+  box-shadow: 2px 2px 5px rgba(0,0,0,0.15);
 }
 
 #loginFormContainer .loginForm div {
@@ -645,7 +687,7 @@ a.currentReportingSection li #i-additionalInformation{
 }
 
 #activityListPlanning #addActivity a {
-  background: url('../../images/global/sprite-icons-activities.png') 3px 3px #637933 no-repeat;
+  background: url('../../images/global/sprite-icons-activities.png') 3px 3px #47939c no-repeat;
   color: #FFF;
   padding: 6px 10px 6px 22px;
   width: 83px;
@@ -654,7 +696,7 @@ a.currentReportingSection li #i-additionalInformation{
 }
 
 #activityListPlanning #addActivity a:hover{
-	background-color: #576A2D;
+	background-color: #3C7B83;
 }
 
 #activityListPlanning #addActivity input {
@@ -680,7 +722,7 @@ a.currentReportingSection li #i-additionalInformation{
 
  #submitButtonBlock {
   clear: both;
-  color: #663300;
+  color: #4D4D4D;
   display: block;
   font-weight: bold;
   margin-top: 30px;
@@ -688,7 +730,7 @@ a.currentReportingSection li #i-additionalInformation{
 }
 
 #submitButtonBlock button#submitForm_save{
-  background: url('../../images/global/sprite-icons-activities.png') 30px -103px #657A36 no-repeat;
+  background: url('../../images/global/sprite-icons-activities.png') 30px -103px #47939c no-repeat;
   width: 146px;
   height: 28px;
   font-weight: bold;
@@ -968,6 +1010,13 @@ ul#deliverablesFilesMessages > li {
 }
 
 /* Publications */
+
+.publication, .caseStudy, .outcome, .leverage, .deliverable, .activityPartner, .otherSite {
+	border: 1px solid #D1D1D1;
+	padding: 6px 15px 0px 15px;
+	border-radius: 8px;
+}
+
 #publications .journalArticlesIndicators .checkbox h6{
 	font-weight: normal;
 	font-size: 11px;
@@ -1087,8 +1136,12 @@ ul#deliverablesFilesMessages > li {
 }
 
 /*************** FOOTER ****************/
+footer {
+background: #A6D1D6;
+}
+
 #footerContainer {
-  background-image: url("../../images/global/footer-background.png");
+  /*background-image: url("../../images/global/footer-background.png");*/
   background-position: right bottom;
   background-repeat: no-repeat;
   clear: both;
@@ -1098,10 +1151,18 @@ ul#deliverablesFilesMessages > li {
 }
 
 #footerContainer.little {
-  background-image: url("../../images/global/footer-background-small.png");
+  /* background-image: url("../../images/global/footer-background-small.png"); */
   height: 80px;
   background-size: 50%;
 }
+
+#centres-logos {
+    text-align: center;  
+}
+#centres-logos img{
+    margin:10px 
+}
+
 
 #footerContainer #centres-logos {
   margin-left: 40px;  

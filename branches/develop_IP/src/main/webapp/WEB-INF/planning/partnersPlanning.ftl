@@ -60,7 +60,7 @@
     <p>[@s.text name="planning.activityPartners.help" /]</p>
   </div>
   [#include "/WEB-INF/global/pages/planning-secondary-menu.ftl" /]
-  [@s.form action="partners"]
+  [@s.form action="partners" cssClass="pure-form"]
   [#assign typeSelectHeadValue ] [@s.text name="planning.activityPartners.selectPartnerType" /] [/#assign]
   
   <article class="halfContent">

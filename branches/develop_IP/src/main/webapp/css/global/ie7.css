@@ -34,6 +34,11 @@ table.dataTable thead tr th{
 
 /*------- Reporting section -------*/
 
+#stageMenu a {
+  zomm: 1;
+  *display: inline;
+}
+
  /*-- Deliverables subSection -- */
  
 .checkboxGroup input {

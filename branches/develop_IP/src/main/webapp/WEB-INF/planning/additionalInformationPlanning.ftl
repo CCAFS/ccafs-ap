@@ -18,7 +18,7 @@
   </div>
   
   [#include "/WEB-INF/global/pages/planning-secondary-menu.ftl" /]
-  [@s.form action="additionalInformation"]
+  [@s.form action="additionalInformation" cssClass="pure-form"]
   <article class="halfContent">
     
     [#-- Hidden values --]

@@ -17,7 +17,7 @@
   </div>
   [#include "/WEB-INF/global/pages/reporting-secondary-menu.ftl" /]
 
-  [@s.form action="caseStudies" enctype="multipart/form-data"]  
+  [@s.form action="caseStudies" enctype="multipart/form-data" cssClass="pure-form"]  
   <article class="halfContent">
     <h1 class="contentTitle">
       ${currentUser.leader.acronym} - [@s.text name="reporting.caseStudies" /]

@@ -75,7 +75,7 @@
     <p>[@s.text name="reporting.outcomes.help" /]</p>
   </div>
   [#include "/WEB-INF/global/pages/reporting-secondary-menu.ftl" /]
-  [@s.form action="outcomes"]
+  [@s.form action="outcomes" cssClass="pure-form"]
     <article class="halfContent">
       <h1 class="contentTitle">
         [@s.text name="reporting.outcomes" /] - ${currentUser.leader.acronym} 

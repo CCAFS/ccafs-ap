@@ -19,7 +19,7 @@
     <p>[@s.text name="reporting.activityStatus.help" /]</p>
   </div>    
   [#include "/WEB-INF/global/pages/reporting-secondary-menu.ftl" /]
-  [@s.form action="status"]
+  [@s.form action="status" cssClass="pure-form"]
   <article class="halfContent">
     [#include "/WEB-INF/reporting/activitiesReportingSubMenu.ftl" /]
     [#if activity.commissioned] 

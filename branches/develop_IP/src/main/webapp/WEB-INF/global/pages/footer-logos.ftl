@@ -1,7 +1,5 @@
  [#ftl]
-      <footer>
-        <div id="footerContainer">          
-          <div id="centres-logos">
+ <div id="centres-logos">
             <div id="rowOne">
               <img src="${baseUrl}/images/global/centers/logo_africarice.jpg" alt="Africa Rice Logo" height="60px" width="83" />
               <img src="${baseUrl}/images/global/centers/logo_bioversity.jpg" alt="Bioversity Logo" height="60px" width="68" />
@@ -22,6 +20,11 @@
               <img src="${baseUrl}/images/global/centers/logo_worldfish.jpg" alt="WORLDFISH Logo" height="60px" width="103" />
             </div>            
           </div> <!-- end centres-logos -->
+ </div> <!-- end container -->
+      <footer>
+      	<div class="container">
+        <div id="footerContainer" class="little">          
+          
           <div id="copyright">
             <p>&#64; Copyright 2013</p>
             <p>Current version 1.2.2</p>
@@ -30,8 +33,9 @@
             <p><b>[@s.text name="footer.report.issue.first" /]<a target="_blank" href="https://docs.google.com/forms/d/1EouZJYHqERbDRB2DaT6Q1cY-_-Tqe0daf4fxXrBU-ts/viewform">[@s.text name="footer.report.issue.second" /]</a></b></p>
           </div>
         </div>
+        </div> <!-- end container -->
       </footer>
-    </div> <!-- end container -->
+    
     <div id="scriptsContainer">
       [#include "/WEB-INF/global/pages/js-imports.ftl"]
     </div>

@@ -19,7 +19,7 @@
     <p>[@s.text name="reporting.synthesisReport.help" /]</p>
   </div>
   [#include "/WEB-INF/global/pages/reporting-secondary-menu.ftl" /]
-  [@s.form action="rplSynthesis"]
+  [@s.form action="rplSynthesis" cssClass="pure-form"]
     <article class="halfContent">
       [#include "/WEB-INF/reporting/tlRplSubMenu.ftl" /]
       <h1 class="contentTitle">
