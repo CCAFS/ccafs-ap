@@ -1,6 +1,6 @@
 [#ftl]
 [#assign title = "Main information" /]
-[#assign globalLibs = ["jquery", "noty", "chosen", "tinyEditor", "autoSave"] /]
+[#assign globalLibs = ["jquery", "noty", "autoSave"] /]
 [#assign customJS = ["${baseUrl}/js/global/utils.js", "${baseUrl}/js/planning/mainInformation.js"] /]
 [#assign currentSection = "preplanning" /]
 [#assign currentPrePlanningSection = "outcomes" /]
@@ -25,7 +25,22 @@
     </h1>
     
     
-    
+    [#-- Outcome 2025 template --]
+    <div id="outcomeTemplate" style="">
+      [#-- Objective identifier --]
+      <input type="hidden" name="id" value="-1" />
+      
+      [#-- remove link --]      
+      <div class="removeLink">            
+        <img src="${baseUrl}/images/global/icon-remove.png" />
+        <a id="removeObjective" href="" class="removeObjective">
+          [@s.text name="planning.objectives.removeObjective" /]
+        </a>
+      </div>      
+      [#-- Title --]
+      [@customForm.textArea name="description" i18nkey="preplanning.outcome.title" required=true /] 
+      <hr>
+    </div>
      
   </article>
   [/@s.form]  

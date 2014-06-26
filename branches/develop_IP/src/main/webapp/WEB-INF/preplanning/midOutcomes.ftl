@@ -22,7 +22,7 @@
   <article class="halfContent" id="mainInformation">
   	[#include "/WEB-INF/preplanning/ipPreplanningSubMenu.ftl" /]
     <h1 class="contentTitle">
-    [@s.text name="preplanning.midOsutcome.title" /]  
+    [@s.text name="preplanning.midOutcomes.title" /]  
     </h1>
     
     
