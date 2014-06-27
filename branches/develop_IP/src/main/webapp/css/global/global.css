@@ -26,7 +26,7 @@ select {
    width: 100%;
 }
 
-.select.button {
+.select.button, .textArea.button {
 	float: left;
 	width: 81%;
 }

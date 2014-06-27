@@ -34,15 +34,14 @@
           [#-- Title --]
           [@customForm.textArea name="outcomes[${outcome_index}].description" i18nkey="preplanning.outcomes.outcome" required=true /]
 
-          <div class="indicatorElements">
-            
+          <div class="indicatorElements"> 
             [#if outcome.indicators?has_content]
               [#list outcome.indicators as indicator]
                 <div class="itemIndex">[@s.text name="preplanning.outcomes.indicators" /] </div>
                 [#-- Indicators --]
                 <div class="indicator" style="display:block">  
-                  <p>${indicator.description}</p>
-                  [@customForm.input name="outcomes[${outcome_index}].indicator[${indicator_index}].target"  i18nkey="preplanning.outcomes.target" required=true /]  
+                  [@customForm.textArea value="${indicator.description}" showTitle=false name="outcomes[${outcome_index}].indicator[${indicator_index}].description" i18nkey="preplanning.outcomes.outcome" required=true /]
+                  [@customForm.input value="${indicator.target}" name="outcomes[${outcome_index}].indicator[${indicator_index}].target"  i18nkey="preplanning.outcomes.target" required=true /]  
 
                   [#-- remove link --]      
                   <div class="removeLink">            
@@ -55,7 +54,7 @@
             [/#if]
               [#-- Add Indicator --]
               <div class="fullBlock">
-                [@customForm.select name="newIndicator" label="" i18nkey="Indicator" showTitle=false listName="indicatorsList" keyFieldName="id"  displayFieldName="name" addButton=true className="indicator" /]
+                [@customForm.textArea name="newIndicator" i18nkey="Indicator" showTitle=false addButton=true /]
               </div>
 
           </div>

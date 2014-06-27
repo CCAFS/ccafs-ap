@@ -16,19 +16,24 @@
   </div>
 [/#macro]
 
-[#macro textArea name value="-NULL" i18nkey="" disabled=false required=false errorfield="" help="" display=true]
-  <div class="textArea" [#if !display]style="display: none;"[/#if]>
-    <h6>
-      <label for="${name}">[#if i18nkey==""][@s.text name="${name}"/][#else][@s.text name="${i18nkey}"/][/#if]
-      [#if required]<span class="red">*</span>[/#if]
-      </label>
-      [#if help != ""]
-        <img src="${baseUrl}/images/global/icon-help2.png" title="[@s.text name="${help}"/]" />
-      [/#if]
-    </h6>
+[#macro textArea name value="-NULL" i18nkey="" disabled=false required=false errorfield="" help="" addButton=false showTitle=true display=true]
+  <div class="textArea" [#if !display]style="display: none;"[/#if]> 
+  	[#if showTitle]
+	    <h6>
+	      <label for="${name}">[#if i18nkey==""][@s.text name="${name}"/][#else][@s.text name="${i18nkey}"/][/#if]
+	      [#if required]<span class="red">*</span>[/#if]
+	      </label>
+	      [#if help != ""]
+	        <img src="${baseUrl}/images/global/icon-help2.png" title="[@s.text name="${help}"/]" />
+	      [/#if]
+	    </h6>
+    [/#if]
     [#if errorfield==""][@s.fielderror cssClass="fieldError" fieldName="${name}"/][#else][@s.fielderror cssClass="fieldError" fieldName="${errorfield}"/][/#if]
     <textarea name="${name}" id="${name}" [#if disabled]disabled="disabled"[/#if] class="ckeditor" />[#if value=="-NULL"][@s.property value="${name}"/][#else]${value}[/#if]</textarea>
   </div>
+  [#if addButton]
+     <input type="button" class="addButton" name="" value="Add [@s.text name='${i18nkey}' /]" />
+  [/#if]
 [/#macro]
 
 
