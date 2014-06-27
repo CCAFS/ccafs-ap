@@ -1,6 +1,6 @@
 [#ftl]
-[#assign title = "Main information" /]
-[#assign globalLibs = ["jquery", "noty", "chosen", "tinyEditor", "autoSave"] /]
+[#assign title = "Projects" /]
+[#assign globalLibs = ["jquery", "noty","autoSave"] /]
 [#assign customJS = ["${baseUrl}/js/global/utils.js", "${baseUrl}/js/planning/mainInformation.js"] /]
 [#assign currentSection = "preplanning" /]
 [#assign currentPrePlanningSection = "projects" /]

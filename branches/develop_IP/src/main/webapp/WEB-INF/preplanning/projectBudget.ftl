@@ -1,6 +1,6 @@
 [#ftl]
-[#assign title = "Main information" /]
-[#assign globalLibs = ["jquery", "noty", "chosen", "tinyEditor", "autoSave"] /]
+[#assign title = "Project Budget" /]
+[#assign globalLibs = ["jquery", "noty","autoSave"] /]
 [#assign customJS = ["${baseUrl}/js/global/utils.js", "${baseUrl}/js/planning/mainInformation.js"] /]
 [#assign currentSection = "preplanning" /]
 [#assign currentPrePlanningSection = "projects" /]
@@ -17,16 +17,15 @@
   </div>
   [#include "/WEB-INF/global/pages/pre-planning-secondary-menu.ftl" /]
   
-  [@s.form action="mainInformation"]  
+  [@s.form action="projectBudget" cssClass="pure-form"]  
   <article class="halfContent" id="mainInformation">
   	[#include "/WEB-INF/preplanning/projectPreplanningSubMenu.ftl" /]
     <h1 class="contentTitle">
-    [@s.text name="preplanning.projects.title" /]  
+    [@s.text name="preplanning.projectBudget.title" /]  
     </h1>
     
     
     
-     
   </article>
   [/@s.form]  
 </section>
