@@ -76,6 +76,7 @@ public class IPElementManagerImpl implements IPElementManager {
         indicator.setTarget(indicatorData.get("target"));
         indicators.add(indicator);
       }
+      element.setIndicators(indicators);
 
       elementsList.add(element);
     }
