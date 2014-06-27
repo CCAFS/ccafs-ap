@@ -45,9 +45,13 @@ public class OutcomesPreplanningAction extends BaseAction {
   public void prepare() throws Exception {
     IPProgram program = new IPProgram();
     program.setId(1);
+
+    // The Outcomes 2025 are stored with id 2
     IPElementType type = new IPElementType();
-    type.setId(1);
-    outcomes = ipElementManager.getIPElements(program);
+    type.setId(2);
+
+    outcomes = ipElementManager.getIPElements(program, type);
+    System.out.println(outcomes);
   }
 
   public void setOutcomes(List<IPElement> outcomes) {

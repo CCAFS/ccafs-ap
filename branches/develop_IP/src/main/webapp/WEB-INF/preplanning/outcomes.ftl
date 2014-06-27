@@ -32,14 +32,13 @@
           <input type="hidden" name="id" value="-1" />
   
           [#-- Title --]
-          [@customForm.textArea name="outcomes[${outcome_index}].description" i18nkey="preplanning.outcomes.outcome" value="" required=true /]
-
+          [@customForm.textArea name="outcomes[${outcome_index}].description" i18nkey="preplanning.outcomes.outcome" required=true /]
 
           <div class="indicatorElements">
-            <div class="itemIndex">[@s.text name="preplanning.outcomes.indicators" /] </div>
             
             [#if outcome.indicators?has_content]
               [#list outcome.indicators as indicator]
+                <div class="itemIndex">[@s.text name="preplanning.outcomes.indicators" /] </div>
                 [#-- Indicators --]
                 <div class="indicator" style="display:block">  
                   <p>${indicator.description}</p>
@@ -52,12 +51,12 @@
                   </div>
                 </div> 
         
-                [#-- Add Indicator --]
-                <div class="fullBlock">
-                  [@customForm.select name="newIndicator" label="" i18nkey="Indicator" showTitle=false listName="indicatorsList" keyFieldName="id"  displayFieldName="name" addButton=true className="indicator" /]
-                </div>
               [/#list]
             [/#if]
+              [#-- Add Indicator --]
+              <div class="fullBlock">
+                [@customForm.select name="newIndicator" label="" i18nkey="Indicator" showTitle=false listName="indicatorsList" keyFieldName="id"  displayFieldName="name" addButton=true className="indicator" /]
+              </div>
 
           </div>
         [/#list]
