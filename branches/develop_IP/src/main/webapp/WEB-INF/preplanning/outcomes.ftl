@@ -1,7 +1,7 @@
 [#ftl]
-[#assign title = "Main information" /]
+[#assign title = "Outcomes 2025" /]
 [#assign globalLibs = ["jquery", "noty", "autoSave"] /]
-[#assign customJS = ["${baseUrl}/js/global/utils.js", "${baseUrl}/js/planning/mainInformation.js"] /]
+[#assign customJS = ["${baseUrl}/js/global/utils.js", "${baseUrl}/js/preplanning/outcomes.js"] /]
 [#assign currentSection = "preplanning" /]
 [#assign currentPrePlanningSection = "outcomes" /]
 [#assign currentStage = "outcomes" /]
@@ -85,13 +85,13 @@
       <div class="contentElements">
       	<div class="itemIndex">[@s.text name="preplanning.outcomes.indicators" /] </div>
       	[#-- Indicator template --]
-      	<div class="indicator">  
-      		[@customForm.textArea value="indicator.description}" showTitle=false name="outcomes[outcome_index}].indicator[indicator_index}].description" i18nkey="preplanning.outcomes.outcome" required=true /]
-          [@customForm.input value="indicator.target}" name="target"  i18nkey="preplanning.outcomes.target" /]  
+      	<div class="indicator indicatorTemplate">  
+      		[@customForm.textArea value="indicator.description" showTitle=false name="outcomes[outcome_index}].indicator[indicator_index}].description" i18nkey="preplanning.outcomes.outcome" required=true /]
+          [@customForm.input value="indicator.target" name="target"  i18nkey="preplanning.outcomes.target" /]  
 					[#-- remove link --]      
 		      <div class="removeLink">            
 		        <img src="${baseUrl}/images/global/icon-remove.png" />
-		        <a id="removeObjective" href="" class="removeObjective">[@s.text name="preplanning.outcomes.removeIndicator" /]</a>
+		        <a id="removeIndicator" href="" class="removeIndicator">[@s.text name="preplanning.outcomes.removeIndicator" /]</a>
 		      </div>     	
       	</div>  
       	[#-- Add Indicator --]

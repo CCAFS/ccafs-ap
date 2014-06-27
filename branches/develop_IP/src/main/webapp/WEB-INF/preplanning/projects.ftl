@@ -1,7 +1,8 @@
 [#ftl]
 [#assign title = "Projects" /]
-[#assign globalLibs = ["jquery", "noty","autoSave"] /]
-[#assign customJS = ["${baseUrl}/js/global/utils.js", "${baseUrl}/js/planning/mainInformation.js"] /]
+[#assign globalLibs = ["jquery", "dataTable", "noty","autoSave"] /]
+[#assign customJS = ["${baseUrl}/js/preplanning/project-list.js"] /]
+[#assign customCSS = ["${baseUrl}/css/libs/dataTables/jquery.dataTables-1.9.4.css", "${baseUrl}/css/global/customDataTable.css"] /]
 [#assign currentSection = "preplanning" /]
 [#assign currentPrePlanningSection = "projects" /]
 [#assign currentStage = "description" /]
@@ -20,13 +21,14 @@
   [#include "/WEB-INF/global/pages/pre-planning-secondary-menu.ftl" /]
   
   [@s.form action="mainInformation"]  
-  <article class="halfContent" id="mainInformation">
-  	[#include "/WEB-INF/preplanning/projectPreplanningSubMenu.ftl" /]
+  <article class="halfContent" id="mainInformation"> 
     <h1 class="contentTitle">
     [@s.text name="preplanning.projects.title" /]  
     </h1>
-    ${projects}
+
+    
     [@projectList.projectsList projects=projects canValidate=true canEditProject=true tableID="projects" /]
+
     
      
   </article>
