@@ -36,11 +36,17 @@ select {
 	color: #fff;
 	border: 0;
 	padding: 6px;
-	margin: 5px 12px;
+	margin: 0px 12px;
 	border-radius: 5px;
-	border-bottom: 2px solid #3C7D85;
+	border-bottom: 2px solid #3C7D85 !important;
 }
-
+.addButton.Indicator{
+	padding: 15px 9px;
+	margin-top: 11px;
+}
+.addButton.outcome{
+	padding: 6px 8px !important;
+}
 .clearfix:before,.clearfix:after {
   content: "";
   display: table;
@@ -719,6 +725,9 @@ a.currentReportingSection li #i-additionalInformation{
     border-radius: 10px 10px 2px 2px;
     margin: 20px 14px;
     width: 93%;
+}
+.contentElements textarea {
+	width: 100%;
 }
 
 

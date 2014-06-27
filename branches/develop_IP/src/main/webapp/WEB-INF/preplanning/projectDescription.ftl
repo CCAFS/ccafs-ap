@@ -28,6 +28,8 @@
     <fieldset class="fullBlock">  
 			[#-- Project Title --]
 			[@customForm.textArea name="projectTitle" i18nkey="preplanning.projectDescription.projectTitle" required=true /]
+			[#-- Project Summary --]
+			[@customForm.textArea name="projectSummary" i18nkey="preplanning.projectDescription.projectSummary" required=true /]
 	    <div id="projectDescription" class="">
 	      [#-- Project Owner --]
 	      <div class="halfPartBlock">
@@ -67,21 +69,29 @@
     </fieldset>
     <fieldset class="fullBlock">  
     	<legend>[@s.text name="preplanning.projectDescription.projectWorking" /] </legend> 
-	    <div id="projectWorking" class="halfPartBlock">
+	    <div id="projectWorking">
 	      [#-- Regions --] 
-	      <div class="regions">
-	        <h6>[@s.text name="planning.locations.regions" /]</h6>
+	      <div id="projectRegions" class="halfPartBlock">
+	        <h6>[@s.text name="preplanning.projectDescription.regions" /]</h6>
 	        <div class="checkboxGroup">
 	          [@s.fielderror cssClass="fieldError" fieldName="regionsSelected"/]          
 	          [@s.checkboxlist name="region" list="regions" listKey="id" listValue="name" value="activeRegions" cssClass="checkbox" /]
 	        </div>
 	      </div> 
 	      [#-- Flagships --] 
-	      <div class="flagships">
-	        <h6>[@s.text name="planning.locations.regions" /]</h6>
+	      <div id="projectFlagships" class="halfPartBlock">
+	        <h6>[@s.text name="preplanning.projectDescription.flagships" /]</h6>
 	        <div class="checkboxGroup">
-	          [@s.fielderror cssClass="fieldError" fieldName="regionsSelected"/]          
-	          [@s.checkboxlist name="region" list="regions" listKey="id" listValue="name" value="activeRegions" cssClass="checkbox" /]
+	          [@s.fielderror cssClass="fieldError" fieldName="flagshipsSelected"/]          
+	          [@s.checkboxlist name="flagship" list="flagships" listKey="id" listValue="name" value="activeFlagships" cssClass="checkbox" /]
+	        </div>
+	      </div> 
+	      [#-- Gender --] 
+	      <div id="projectGender" class="halfPartBlock">
+	        <h6>[@s.text name="preplanning.projectDescription.gender" /]</h6>
+	        <div class="checkboxGroup">
+	          [@s.fielderror cssClass="fieldError" fieldName="gendersSelected"/]          
+	          [@s.checkboxlist name="gender" list="genders" listKey="id" listValue="name" value="activeGender" cssClass="checkbox" /]
 	        </div>
 	      </div> 
 	      

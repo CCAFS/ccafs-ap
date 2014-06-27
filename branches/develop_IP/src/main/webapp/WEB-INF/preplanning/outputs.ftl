@@ -52,8 +52,8 @@
       	<div class="itemIndex">[@s.text name="preplanning.outputs.indicators" /] </div>
       	[#-- Indicator template --]
       	<div class="indicator" style="display:block">  
-      		<p># of equitable national/sub-national food system policies that take into consideration climate smart practices and strategies.</p>
-					[@customForm.input name="target"  i18nkey="preplanning.outputs.target" required=true /]  
+      		[@customForm.textArea value="indicator.description" showTitle=false name="midOutcomes[outcome_index].indicator[indicator_index].description" i18nkey="preplanning.midOutcomes.outcome" required=true /]
+          [@customForm.input value="indicator.target" name="midOutcomes[outcome_index].indicator[indicator_index].target"  i18nkey="preplanning.midOutcomes.target" required=true /]
 					[#-- remove link --]      
 		      <div class="removeLink">            
 		        <img src="${baseUrl}/images/global/icon-remove.png" />
@@ -62,7 +62,7 @@
       	</div> 
       	[#-- Add Indicator --]
         <div class="fullBlock">
-        	[@customForm.select name="outputs.indicators[].type" label="" i18nkey="indicator" showTitle=false listName="indicatorsList" keyFieldName="id"  displayFieldName="name" addButton=true className="indicator" /]
+        	[@customForm.textArea name="newIndicator" i18nkey="Indicator" showTitle=false addButton=true /]
         </div> 
       </div>  
     </div>

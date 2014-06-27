@@ -25,7 +25,7 @@
     [@s.text name="preplanning.projects.title" /]  
     </h1>
     
-    
+    [@projectList.projectsList projects=currentProjects canValidate=true canEditProjects=true tableID="projects" /]
     
      
   </article>

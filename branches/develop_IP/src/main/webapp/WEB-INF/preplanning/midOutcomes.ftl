@@ -37,7 +37,7 @@
       	<div class="itemIndex">[@s.text name="preplanning.midOutcomes.contributes" /] </div>
       	[#-- Contribute template --]
       	<div class="indicator" style="display:block">  
-      		<p>By 2025, national/subnational governments are making EQUITABLE INSTITUTIONAL INVESTMENTS IN CLIMATE SMART FOOD SYSTEM in 25 countries that have increased by 50% compared with 2014.</p> 
+      		<p>Example text :By 2025, national/subnational governments are making EQUITABLE INSTITUTIONAL INVESTMENTS IN CLIMATE SMART FOOD SYSTEM in 25 countries that have increased by 50% compared with 2014.</p> 
 					[#-- remove link --]      
 		      <div class="removeLink">            
 		        <img src="${baseUrl}/images/global/icon-remove.png" />
@@ -54,8 +54,8 @@
       	<div class="itemIndex">[@s.text name="preplanning.midOutcomes.indicators" /] </div>
       	[#-- Indicator template --]
       	<div class="indicator" style="display:block">  
-      		<p># of equitable national/sub-national food system policies that take into consideration climate smart practices and strategies.</p>
-					[@customForm.input name="target"  i18nkey="preplanning.midOutcomes.target" required=true /]  
+      		[@customForm.textArea value="indicator.description" showTitle=false name="midOutcomes[outcome_index].indicator[indicator_index].description" i18nkey="preplanning.midOutcomes.outcome" required=true /]
+          [@customForm.input value="indicator.target" name="midOutcomes[outcome_index].indicator[indicator_index].target"  i18nkey="preplanning.midOutcomes.target" required=true /]  
 					[#-- remove link --]      
 		      <div class="removeLink">            
 		        <img src="${baseUrl}/images/global/icon-remove.png" />
@@ -64,7 +64,7 @@
       	</div> 
       	[#-- Add Indicator --]
         <div class="fullBlock">
-        	[@customForm.select name="midOutcomes.indicators[].type" label="" i18nkey="indicator" showTitle=false listName="indicatorsList" keyFieldName="id"  displayFieldName="name" addButton=true className="indicator" /]
+        	[@customForm.textArea name="newIndicator" i18nkey="Indicator" showTitle=false addButton=true /]
         </div> 
       </div>  
     </div>
