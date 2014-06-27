@@ -11,6 +11,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import com.google.inject.Inject;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -21,6 +22,7 @@ public class MySQLIPElementDAO implements IPElementDAO {
 
   private DAOManager databaseManager;
 
+  @Inject
   public MySQLIPElementDAO(DAOManager databaseManager) {
     this.databaseManager = databaseManager;
   }
@@ -60,9 +62,9 @@ public class MySQLIPElementDAO implements IPElementDAO {
 
     StringBuilder query = new StringBuilder();
     query.append("SELECT e.id, e.description,  ");
-    query.append("et.id as 'element_type_id', et.name as 'element_type_name' ");
+    query.append("et.id as 'element_type_id', et.name as 'element_type_name', ");
     query.append("pro.id as 'program_id', pro.acronym as 'program_acronym' ");
-    query.append("FROM ip_elements ");
+    query.append("FROM ip_elements e ");
     query.append("INNER JOIN ip_element_types et ON e.element_type_id = et.id ");
     query.append("INNER JOIN ip_programs pro ON e.program_id = pro.id ");
     query.append("WHERE program_id = ");

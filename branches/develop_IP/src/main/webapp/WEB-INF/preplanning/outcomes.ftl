@@ -21,22 +21,79 @@
   <article class="halfContent" id="outcomes" class="impactPathway">
   	[#include "/WEB-INF/preplanning/ipPreplanningSubMenu.ftl" /]
     <h1 class="contentTitle">
-    [@s.text name="preplanning.outcomes.title" /]  
+      [@s.text name="preplanning.outcomes.title" /]  
     </h1>
     
+    <div id="outcomeTemplate" class="outcome" style="display:block">
+
+      [#if outcomes?has_content]      
+        [#list outcomes as outcome]
+          [#-- Outcome identifier --]
+          <input type="hidden" name="id" value="-1" />
+  
+          [#-- Title --]
+          [@customForm.textArea name="outcomes[${outcome_index}].description" i18nkey="preplanning.outcomes.outcome" value="" required=true /]
+
+
+          <div class="indicatorElements">
+            <div class="itemIndex">[@s.text name="preplanning.outcomes.indicators" /] </div>
+            
+            [#if outcome.indicators?has_content]
+              [#list outcome.indicators as indicator]
+                [#-- Indicators --]
+                <div class="indicator" style="display:block">  
+                  <p>${indicator.description}</p>
+                  [@customForm.input name="outcomes[${outcome_index}].indicator[${indicator_index}].target"  i18nkey="preplanning.outcomes.target" required=true /]  
+
+                  [#-- remove link --]      
+                  <div class="removeLink">            
+                    <img src="${baseUrl}/images/global/icon-remove.png" />
+                    <a id="removeOutcomeIndicator" href="" class="removeOutcomeIndicator">[@s.text name="preplanning.outcomes.removeIndicator" /]</a>
+                  </div>
+                </div> 
+        
+                [#-- Add Indicator --]
+                <div class="fullBlock">
+                  [@customForm.select name="newIndicator" label="" i18nkey="Indicator" showTitle=false listName="indicatorsList" keyFieldName="id"  displayFieldName="name" addButton=true className="indicator" /]
+                </div>
+              [/#list]
+            [/#if]
+
+          </div>
+        [/#list]
+
+      [#else]
+
+          [#-- Outcome identifier --]
+          <input type="hidden" name="id" value="-1" />
+  
+          [#-- Title --]
+          [@customForm.textArea name="description" i18nkey="preplanning.outcomes.outcome" required=true /]
+          
+          <div class="indicatorElements">
+            <div class="itemIndex">[@s.text name="preplanning.outcomes.indicators" /] </div>
+              [#-- Add Indicator --]
+              <div class="fullBlock">
+                [@customForm.select name="newIndicator" label="" i18nkey="Indicator" showTitle=false listName="indicatorsList" keyFieldName="id"  displayFieldName="name" addButton=true className="indicator" /]
+              </div> 
+            </div>
+          </div>
+
+      [/#if]
+    </div>
     
     [#-- Outcome 2025 template --]
-    <div id="outcomeTemplate" class="outcome" style="display:block">
-      [#-- Objective identifier --]
+    <div id="outcomeTemplate" class="outcome" style="display:none">
+      [#-- Outcome identifier --]
       <input type="hidden" name="id" value="-1" />
            
       [#-- Title --]
       [@customForm.textArea name="description" i18nkey="preplanning.outcomes.outcome" required=true /]
       
-      <div class="contentElements">
+      <div class="indicatorElements">
       	<div class="itemIndex">[@s.text name="preplanning.outcomes.indicators" /] </div>
       	[#-- Indicator template --]
-      	<div class="indicator" style="display:block">  
+      	<div class="indicator">  
       		<p># of regional and global organisations in which investment in equitable food system institutions that take into consideration climate smart practices/strategies has increased by 50% compared with 2014</p>
 					[@customForm.input name="target"  i18nkey="preplanning.outcomes.target" required=true /]  
 					[#-- remove link --]      
@@ -48,7 +105,7 @@
       	
       	[#-- Add Indicator --]
         <div class="fullBlock">
-        	[@customForm.select name="outcome.indicators[].type" label="" i18nkey="Indicator" showTitle=false listName="indicatorsList" keyFieldName="id"  displayFieldName="name" addButton=true className="indicator" /]
+        	[@customForm.select name="newIndicator" label="" i18nkey="Indicator" showTitle=false listName="indicatorsList" keyFieldName="id"  displayFieldName="name" addButton=true className="indicator" /]
         </div> 
       </div>  
     </div>

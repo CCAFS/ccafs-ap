@@ -10,7 +10,7 @@ public class IPElement {
   private String description;
   private IPElementType type;
   private IPProgram program;
-  private List<IPIndicator> indicator;
+  private List<IPIndicator> indicators;
 
 
   public String getDescription() {
@@ -21,8 +21,8 @@ public class IPElement {
     return id;
   }
 
-  public List<IPIndicator> getIndicator() {
-    return indicator;
+  public List<IPIndicator> getIndicators() {
+    return indicators;
   }
 
   public IPProgram getProgram() {
@@ -41,8 +41,8 @@ public class IPElement {
     this.id = id;
   }
 
-  public void setIndicator(List<IPIndicator> indicator) {
-    this.indicator = indicator;
+  public void setIndicators(List<IPIndicator> indicator) {
+    this.indicators = indicator;
   }
 
   public void setProgram(IPProgram program) {

@@ -11,6 +11,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import com.google.inject.Inject;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -22,6 +23,7 @@ public class MySQLIPIndicatorDAO implements IPIndicatorDAO {
 
   private DAOManager databaseManager;
 
+  @Inject
   public MySQLIPIndicatorDAO(DAOManager databaseManager) {
     this.databaseManager = databaseManager;
   }
