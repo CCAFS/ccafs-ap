@@ -10,6 +10,7 @@
 [#include "/WEB-INF/global/pages/header.ftl" /]
 [#include "/WEB-INF/global/pages/main-menu.ftl" /]
 [#import "/WEB-INF/global/macros/forms.ftl" as customForm/]
+[#import "/WEB-INF/preplanning/projectsList.ftl" as projectList/]
     
 <section class="content">
   <div class="helpMessage">
@@ -24,8 +25,8 @@
     <h1 class="contentTitle">
     [@s.text name="preplanning.projects.title" /]  
     </h1>
-    
-    [@projectList.projectsList projects=currentProjects canValidate=true canEditProjects=true tableID="projects" /]
+    ${projects}
+    [@projectList.projectsList projects=projects canValidate=true canEditProject=true tableID="projects" /]
     
      
   </article>

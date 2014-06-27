@@ -29,4 +29,12 @@ public interface IPElementDAO {
    * @return a list of maps with the information of all IP elements returned
    */
   public List<Map<String, String>> getIPElement(int programID, int elementTypeID);
+
+  /**
+   * Get all IPElements which are parents of the ipElement given
+   * 
+   * @param ipElementID - ipElement identifier
+   * @return a list of maps with the information of the element parents
+   */
+  public List<Map<String, String>> getParentsOfIPElement(int ipElementID);
 }

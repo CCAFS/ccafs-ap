@@ -51,7 +51,6 @@ public class OutcomesPreplanningAction extends BaseAction {
     type.setId(2);
 
     outcomes = ipElementManager.getIPElements(program, type);
-    System.out.println(outcomes);
   }
 
   public void setOutcomes(List<IPElement> outcomes) {

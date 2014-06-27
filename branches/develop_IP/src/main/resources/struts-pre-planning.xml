@@ -26,7 +26,7 @@
     </action>
     
     <!-- Section: Projects  -->
-    <action name="projects" class="org.cgiar.ccafs.ap.action.BaseAction">
+    <action name="projects" class="org.cgiar.ccafs.ap.action.preplanning.ProjectsListAction">
       <result name="input">/WEB-INF/preplanning/projects.ftl</result>
     </action>
     

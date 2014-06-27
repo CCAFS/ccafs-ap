@@ -78,6 +78,17 @@ public class IPElementManagerImpl implements IPElementManager {
       }
       element.setIndicators(indicators);
 
+      // Set element parents if exists
+      List<IPElement> parents = new ArrayList<>();
+      List<Map<String, String>> parentsData = ipElementDAO.getParentsOfIPElement(element.getId());
+      for (Map<String, String> parentData : parentsData) {
+        IPElement parentElement = new IPElement();
+        parentElement.setId(Integer.parseInt(parentData.get("id")));
+        parentElement.setDescription(parentData.get("description"));
+        parents.add(parentElement);
+      }
+      element.setParents(parents);
+
       elementsList.add(element);
     }
 

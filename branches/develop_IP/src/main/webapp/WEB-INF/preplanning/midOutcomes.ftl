@@ -24,10 +24,89 @@
     <h1 class="contentTitle">
     [@s.text name="preplanning.midOutcomes.title" /]  
     </h1>
-    
+
+
+    <div id="outcomesBlock" class="outcome">
+
+      [#if midOutcomes?has_content]
+        [#list midOutcomes as outcome]
+          [#-- Outcome identifier --]
+          <input type="hidden" name="id" value="${outcome.id}" />
+  
+          [#-- Title --]
+          [@customForm.textArea name="midOutcomes[${outcome_index}].description" i18nkey="preplanning.outcomes.outcome" required=true /]
+
+          [#-- Relations --]
+          <div class="contentElements">
+            <div class="itemIndex">[@s.text name="preplanning.midOutcomes.contributes" /] </div>
+            [#if outcome.parents?has_content]
+              [#list outcome.parents as parent]
+                [#-- Contributions block--]
+                <div class="indicator" >
+                  <p>${parent.description}</p>
+                  [#-- remove link --]
+                  <div class="removeLink">
+                    <img src="${baseUrl}/images/global/icon-remove.png" />
+                    <a id="removeContribute" href="" class="removeContribute">[@s.text name="preplanning.midOutcomes.removeContribute" /]</a>
+                  </div>
+                </div>
+              [/#list]
+            [/#if]
+            
+            [#-- Add contribute --]
+            <div class="fullBlock">
+              [@customForm.select name="newParent" label="" i18nkey="outcome" showTitle=false listName="outcomes" keyFieldName="id"  displayFieldName="description" addButton=true className="contributes" /]
+            </div> 
+          </div>
+
+          [#-- Indicators --]
+          <div class="indicatorElements">            
+            [#if outcome.indicators?has_content]
+              [#list outcome.indicators as indicator]
+                <div class="itemIndex">[@s.text name="preplanning.outcomes.indicators" /] </div>
+                [#-- Indicators --]
+                <div class="indicator" style="display:block">  
+                  <p>${indicator.description}</p>
+                  [@customForm.input name="outcomes[${outcome_index}].indicator[${indicator_index}].target"  i18nkey="preplanning.outcomes.target" required=true /]  
+
+                  [#-- remove link --]      
+                  <div class="removeLink">            
+                    <img src="${baseUrl}/images/global/icon-remove.png" />
+                    <a id="removeOutcomeIndicator" href="" class="removeOutcomeIndicator">[@s.text name="preplanning.outcomes.removeIndicator" /]</a>
+                  </div>
+                </div> 
+        
+              [/#list]
+            [/#if]
+              [#-- Add Indicator --]
+              <div class="fullBlock">
+                [@customForm.select name="newIndicator" label="" i18nkey="Indicator" showTitle=false listName="indicatorsList" keyFieldName="id"  displayFieldName="name" addButton=true className="indicator" /]
+              </div>
+          </div>
+        [/#list]
+
+      [#else]
+
+          [#-- Outcome identifier --]
+          <input type="hidden" name="id" value="-1" />
+  
+          [#-- Title --]
+          [@customForm.textArea name="description" i18nkey="preplanning.outcomes.outcome" required=true /]
+          
+          <div class="indicatorElements">
+            <div class="itemIndex">[@s.text name="preplanning.outcomes.indicators" /] </div>
+              [#-- Add Indicator --]
+              <div class="fullBlock">
+                [@customForm.select name="newIndicator" label="" i18nkey="Indicator" showTitle=false listName="indicatorsList" keyFieldName="id"  displayFieldName="name" addButton=true className="indicator" /]
+              </div> 
+            </div>
+          </div>
+
+      [/#if]
+    </div>
     
    	[#-- Mid Outcome template --]
-    <div id="midOutcomeTemplate" class="midOutcome" style="display:block">
+    <div id="midOutcomeTemplate" class="midOutcome" style="display:none">
       [#-- Objective identifier --]
       <input type="hidden" name="id" value="-1" />
       [#-- Title --]
