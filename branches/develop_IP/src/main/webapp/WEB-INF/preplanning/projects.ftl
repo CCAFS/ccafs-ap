@@ -29,8 +29,6 @@
     
     [@projectList.projectsList projects=projects canValidate=true canEditProject=true tableID="projects" /]
 
-    
-     
   </article>
   [/@s.form]  
 </section>

@@ -38,6 +38,10 @@ public class MidOutcomesPreplanningAction extends BaseAction {
     return midOutcomes;
   }
 
+  public List<IPElement> getOutcomes() {
+    return outcomes;
+  }
+
   @Override
   public void prepare() throws Exception {
     IPProgram program = new IPProgram();
@@ -52,10 +56,15 @@ public class MidOutcomesPreplanningAction extends BaseAction {
     midOutcomesType.setId(3);
 
     midOutcomes = ipElementManager.getIPElements(program, midOutcomesType);
+    System.out.println(midOutcomesType);
     outcomes = ipElementManager.getIPElements(program, outcomesType);
   }
 
   public void setMidOutcomes(List<IPElement> midOutcomes) {
     this.midOutcomes = midOutcomes;
+  }
+
+  public void setOutcomes(List<IPElement> outcomes) {
+    this.outcomes = outcomes;
   }
 }

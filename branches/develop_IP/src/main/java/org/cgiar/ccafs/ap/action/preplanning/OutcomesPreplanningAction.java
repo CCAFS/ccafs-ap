@@ -7,6 +7,7 @@ import org.cgiar.ccafs.ap.data.manager.LogframeManager;
 import org.cgiar.ccafs.ap.data.model.IPElement;
 import org.cgiar.ccafs.ap.data.model.IPElementType;
 import org.cgiar.ccafs.ap.data.model.IPProgram;
+import org.cgiar.ccafs.ap.validation.preplanning.OutcomesValidation;
 
 import java.util.List;
 
@@ -25,16 +26,22 @@ public class OutcomesPreplanningAction extends BaseAction {
 
   // Model
   private List<IPElement> outcomes;
+  private StringBuilder validationMessages;
+
+  // Validator
+  private OutcomesValidation validator;
 
   @Inject
-  public OutcomesPreplanningAction(APConfig config, LogframeManager logframeManager, IPElementManager ipElementManager) {
+  public OutcomesPreplanningAction(APConfig config, LogframeManager logframeManager, IPElementManager ipElementManager,
+    OutcomesValidation validator) {
     super(config, logframeManager);
     this.ipElementManager = ipElementManager;
+    this.validator = validator;
   }
 
   @Override
   public String execute() throws Exception {
-    return INPUT;
+    return super.execute();
   }
 
   public List<IPElement> getOutcomes() {
@@ -43,6 +50,8 @@ public class OutcomesPreplanningAction extends BaseAction {
 
   @Override
   public void prepare() throws Exception {
+    validationMessages = new StringBuilder();
+
     IPProgram program = new IPProgram();
     program.setId(1);
 
@@ -51,9 +60,59 @@ public class OutcomesPreplanningAction extends BaseAction {
     type.setId(2);
 
     outcomes = ipElementManager.getIPElements(program, type);
+
+    if (getRequest().getMethod().equalsIgnoreCase("post")) {
+      // Clear out the list if it has some element
+      if (outcomes != null) {
+        for (IPElement outcome : outcomes) {
+          outcome.getIndicators().clear();
+        }
+      }
+    }
+  }
+
+  @Override
+  public String save() {
+    IPProgram program = new IPProgram();
+    program.setId(1);
+
+    IPElementType type = new IPElementType();
+    type.setId(2);
+
+    for (IPElement outcome : outcomes) {
+      if (outcome.getProgram() == null) {
+        outcome.setProgram(program);
+      }
+      if (outcome.getType() == null) {
+        outcome.setType(type);
+      }
+
+      for (int i = 0; i < outcome.getIndicators().size(); i++) {
+        if (outcome.getIndicators().get(i).getDescription().isEmpty()) {
+          outcome.getIndicators().remove(i);
+        }
+      }
+    }
+
+    // Remove records already present in the database
+    ipElementManager.deleteIPElements(program, type);
+    ipElementManager.saveIPElements(outcomes);
+    return INPUT;
   }
 
   public void setOutcomes(List<IPElement> outcomes) {
     this.outcomes = outcomes;
+  }
+
+  public String validateForm() {
+    String messages = validator.validateForm(outcomes);
+
+    if (messages.isEmpty()) {
+      addActionMessage(getText("validation.success"));
+    } else {
+      String validationResult = getText("validation.fail") + messages;
+      addActionWarning(validationResult);
+    }
+    return SUCCESS;
   }
 }

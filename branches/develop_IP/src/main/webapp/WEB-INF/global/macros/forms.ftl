@@ -36,6 +36,9 @@
   [/#if]
 [/#macro]
 
+[#macro button i18nkey class="" id=""]
+  <input type="button" class="${class}" id="${id}" value="[@s.text name='${i18nkey}' /]" />
+[/#macro]
 
 [#macro checkbox name value="-NULL" label="" i18nkey="" disabled=false checked=false required=false display=true help=""]
   <div class="checkbox" [#if !display]style="display: none;"[/#if]>

@@ -27,7 +27,27 @@ public class MySQLIPElementDAO implements IPElementDAO {
     this.databaseManager = databaseManager;
   }
 
-  private List<Map<String, String>> executeQuery(String query) {
+  @Override
+  public boolean deleteIpElements(int programId, int typeId) {
+    LOG.debug(">> deleteIpElements(programId={}, typeId={})", programId, typeId);
+
+    String deleteQuery = "DELETE FROM ip_elements WHERE program_id = ? AND element_type_id = ?";
+    try (Connection connection = databaseManager.getConnection()) {
+      int rowsDeleted = databaseManager.makeChangeSecure(connection, deleteQuery, new Object[] {programId, typeId});
+      if (rowsDeleted >= 0) {
+        LOG.debug("<< deleteIpElements():{}", true);
+        return true;
+      }
+    } catch (SQLException e) {
+      LOG.error("-- deleteIpElements() > There was a problem deleting the ipElements of program {} and type {}.",
+        new Object[] {programId, typeId, e});
+    }
+
+    LOG.debug("<< deleteIpElements():{}", false);
+    return false;
+  }
+
+  private List<Map<String, String>> getData(String query) {
     LOG.debug(">> executeQuery(query='{}')", query);
     List<Map<String, String>> ipElementList = new ArrayList<>();
 
@@ -72,7 +92,7 @@ public class MySQLIPElementDAO implements IPElementDAO {
 
 
     LOG.debug("-- getIPElementsByProgram() > Calling method executeQuery to get the results");
-    return executeQuery(query.toString());
+    return getData(query.toString());
   }
 
   @Override
@@ -93,7 +113,7 @@ public class MySQLIPElementDAO implements IPElementDAO {
 
 
     LOG.debug("-- getIPElementsByProgram() > Calling method executeQuery to get the results");
-    return executeQuery(query.toString());
+    return getData(query.toString());
   }
 
   @Override
@@ -111,6 +131,46 @@ public class MySQLIPElementDAO implements IPElementDAO {
     query.append("INNER JOIN ip_programs pro ON e.program_id = pro.id ");
 
     LOG.debug("-- getIPElementsByProgram() > Calling method executeQuery to get the results");
-    return executeQuery(query.toString());
+    return getData(query.toString());
+  }
+
+  private int saveData(String query, Object[] data) {
+    int generatedId = -1;
+
+    try (Connection con = databaseManager.getConnection()) {
+      int ipElementAdded = databaseManager.makeChangeSecure(con, query, data);
+      if (ipElementAdded > 0) {
+        // get the id assigned to this new record.
+        ResultSet rs = databaseManager.makeQuery("SELECT LAST_INSERT_ID()", con);
+        if (rs.next()) {
+          generatedId = rs.getInt(1);
+        }
+        rs.close();
+
+      }
+    } catch (SQLException e) {
+      LOG.error("-- saveData() > There was a problem saving information into the database. \n{}", e);
+    }
+    return generatedId;
+  }
+
+  @Override
+  public int saveIPElements(Map<String, Object> ipElementData) {
+    LOG.debug(">> saveIPElements(ipElementData={})", ipElementData);
+
+    StringBuilder query = new StringBuilder();
+    query.append("INSERT INTO ip_elements (id, description, program_id, element_type_id) ");
+    query.append("VALUES (?, ?, ?, ?) ");
+    query.append("ON DUPLICATE KEY UPDATE description = VALUES(description), program_id = VALUES(program_id)");
+
+    Object[] values = new Object[4];
+    values[0] = ipElementData.get("id");
+    values[1] = ipElementData.get("description");
+    values[2] = ipElementData.get("program_id");
+    values[3] = ipElementData.get("element_type_id");
+
+    int result = saveData(query.toString(), values);
+    LOG.debug("<< saveIPElements():{}", result);
+    return result;
   }
 }

@@ -19,4 +19,12 @@ public interface IPIndicatorDAO {
    */
   public List<Map<String, String>> getIndicatorsByIpElementID(int ipElementID);
 
+  /**
+   * This method save the information of the indicator.
+   * 
+   * @param indicatorData - the information to be saved
+   * @return the last inserted id if any or 0 if some record was updated or -1 if any error occurred.
+   */
+  public int saveIndicator(Map<String, Object> indicatorData);
+
 }

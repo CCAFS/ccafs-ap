@@ -56,4 +56,51 @@ public class MySQLIPIndicatorDAO implements IPIndicatorDAO {
     LOG.debug("<< getIndicatorsByIpElementID():ipIndicatorList.size={}", ipIndicatorList.size());
     return ipIndicatorList;
   }
+
+  /**
+   * This method is in charge of execute the insert querys to the databases
+   * related to the IPElements.
+   * 
+   * @param query
+   * @param data
+   * @return the last inserted id or -1 if the row was not inserted
+   */
+  private int saveData(String query, Object[] data) {
+    int generatedId = -1;
+
+    try (Connection con = databaseManager.getConnection()) {
+      int ipIndicatorAdded = databaseManager.makeChangeSecure(con, query, data);
+      if (ipIndicatorAdded > 0) {
+        // get the id assigned to this new record.
+        ResultSet rs = databaseManager.makeQuery("SELECT LAST_INSERT_ID()", con);
+        if (rs.next()) {
+          generatedId = rs.getInt(1);
+        }
+        rs.close();
+      }
+    } catch (SQLException e) {
+      LOG.error("-- saveData() > There was a problem saving information into the database. \n{}", e);
+    }
+    return generatedId;
+  }
+
+  @Override
+  public int saveIndicator(Map<String, Object> indicatorData) {
+    LOG.debug(">> saveIndicator(indicatorData={})", indicatorData);
+
+    StringBuilder query = new StringBuilder();
+    query.append("INSERT INTO ip_indicators (id, description, target, element_id) ");
+    query.append("VALUES (?, ?, ?, ?) ");
+    query.append("ON DUPLICATE KEY UPDATE description = VALUES(description), target = VALUES(target)");
+
+    Object[] values = new Object[4];
+    values[0] = indicatorData.get("id");
+    values[1] = indicatorData.get("description");
+    values[2] = indicatorData.get("target");
+    values[3] = indicatorData.get("element_id");
+
+    int result = saveData(query.toString(), values);
+    LOG.debug("<< saveIndicator():{}", result);
+    return result;
+  }
 }

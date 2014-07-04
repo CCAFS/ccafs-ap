@@ -9,6 +9,7 @@ import org.cgiar.ccafs.ap.data.model.IPIndicator;
 import org.cgiar.ccafs.ap.data.model.IPProgram;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -28,6 +29,11 @@ public class IPElementManagerImpl implements IPElementManager {
   }
 
   @Override
+  public boolean deleteIPElements(IPProgram program, IPElementType type) {
+    return ipElementDAO.deleteIpElements(program.getId(), type.getId());
+  }
+
+  @Override
   public List<IPElement> getIPElements(IPProgram program) {
     List<Map<String, String>> ipElementDataList = ipElementDAO.getIPElement(program.getId());
     return setDataToIPElementObjects(ipElementDataList);
@@ -37,6 +43,58 @@ public class IPElementManagerImpl implements IPElementManager {
   public List<IPElement> getIPElements(IPProgram program, IPElementType type) {
     List<Map<String, String>> ipElementDataList = ipElementDAO.getIPElement(program.getId(), type.getId());
     return setDataToIPElementObjects(ipElementDataList);
+  }
+
+  @Override
+  public boolean saveIPElements(List<IPElement> elements) {
+    Map<String, Object> ipElementData;
+    boolean allSaved = true;
+    int elementId;
+
+    for (IPElement element : elements) {
+      ipElementData = new HashMap<String, Object>();
+
+      if (element.getId() == -1) {
+        ipElementData.put("id", null);
+      } else {
+        ipElementData.put("id", element.getId());
+      }
+
+      ipElementData.put("description", element.getDescription());
+      ipElementData.put("program_id", element.getProgram().getId());
+      ipElementData.put("element_type_id", element.getType().getId());
+
+      elementId = ipElementDAO.saveIPElements(ipElementData);
+
+      // If the result is 0 the element was updated and keep the same id
+      elementId = (elementId == 0) ? element.getId() : elementId;
+
+      if (elementId != -1) {
+        // Save the indicators of the element if any
+        if (element.getIndicators() != null) {
+          for (IPIndicator indicator : element.getIndicators()) {
+            Map<String, Object> indicatorData = new HashMap<>();
+            if (indicator.getId() == -1) {
+              indicatorData.put("id", null);
+            } else {
+              indicatorData.put("id", indicator.getId());
+            }
+
+            indicatorData.put("description", indicator.getDescription());
+            indicatorData.put("target", indicator.getTarget());
+            indicatorData.put("element_id", elementId);
+            ipIndicatorDAO.saveIndicator(indicatorData);
+
+          }
+        }
+
+      } else {
+        // All elements should be saved correctly
+        allSaved = (elementId != -1) && allSaved;
+      }
+    }
+
+    return allSaved;
   }
 
   /**
