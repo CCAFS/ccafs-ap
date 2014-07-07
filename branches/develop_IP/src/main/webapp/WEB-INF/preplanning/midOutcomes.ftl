@@ -1,7 +1,7 @@
 [#ftl]
 [#assign title = "Outcomes 2019 - Preplanning" /]
 [#assign globalLibs = ["jquery", "noty"] /]
-[#assign customJS = ["${baseUrl}/js/global/utils.js", "${baseUrl}/js/planning/midOutcomesPreplanning.js"] /]
+[#assign customJS = ["${baseUrl}/js/global/utils.js", "${baseUrl}/js/preplanning/midOutcomesPreplanning.js"] /]
 [#assign currentSection = "preplanning" /]
 [#assign currentPrePlanningSection = "impactPathways" /]
 [#assign currentStage = "midOutcomes" /]
@@ -75,7 +75,7 @@
             [/#if]
             [#-- Add Indicator --]
             <div class="fullBlock">
-              [@customForm.textArea name="newIndicator" value="Indicator" showTitle=false addButton=true /]
+              [@customForm.button i18nkey="preplanning.midOutcomes.addIndicator" class="addButton" /]
             </div> 
           </div>
         [/#list]
@@ -112,7 +112,7 @@
             </div> 
             [#-- Add Indicator --]
             <div class="fullBlock">
-              [@customForm.textArea name="newIndicator" value="Indicator" showTitle=false addButton=true /]
+              [@customForm.button i18nkey="preplanning.midOutcomes.addIndicator" class="addButton" /]
             </div> 
           </div>
 
@@ -158,7 +158,7 @@
       	</div> 
       	[#-- Add Indicator --]
         <div class="fullBlock">
-        	[@customForm.textArea name="newIndicator" value="Indicator" showTitle=false addButton=true /]
+        	[@customForm.button i18nkey="preplanning.midOutcomes.addIndicator" class="addButton" /]
         </div> 
       </div>  
     </div>
