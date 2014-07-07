@@ -60,6 +60,11 @@ public class MidOutcomesPreplanningAction extends BaseAction {
     outcomes = ipElementManager.getIPElements(program, outcomesType);
   }
 
+  @Override
+  public String save() {
+    return INPUT;
+  }
+
   public void setMidOutcomes(List<IPElement> midOutcomes) {
     this.midOutcomes = midOutcomes;
   }

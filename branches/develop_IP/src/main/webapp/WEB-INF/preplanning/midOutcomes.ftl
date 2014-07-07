@@ -1,9 +1,9 @@
 [#ftl]
 [#assign title = "Outcomes 2019 - Preplanning" /]
 [#assign globalLibs = ["jquery", "noty"] /]
-[#assign customJS = ["${baseUrl}/js/global/utils.js", "${baseUrl}/js/planning/midOutcomes.js"] /]
+[#assign customJS = ["${baseUrl}/js/global/utils.js", "${baseUrl}/js/planning/midOutcomesPreplanning.js"] /]
 [#assign currentSection = "preplanning" /]
-[#assign currentPrePlanningSection = "outcomes" /]
+[#assign currentPrePlanningSection = "impactPathways" /]
 [#assign currentStage = "midOutcomes" /]
 
 
@@ -18,8 +18,8 @@
   </div>
   [#include "/WEB-INF/global/pages/pre-planning-secondary-menu.ftl" /]
   
-  [@s.form action="outcomes" cssClass="pure-form"]  
-  <article class="halfContent" id="mainInformation">
+  [@s.form action="midOutcomes" cssClass="pure-form"]  
+  <article class="halfContent" id="midOutcomes">
   	[#include "/WEB-INF/preplanning/ipPreplanningSubMenu.ftl" /]
     <h1 class="contentTitle">
     [@s.text name="preplanning.midOutcomes.title" /]  
@@ -27,14 +27,14 @@
 
 
 
-    <div id="midOutcomeTemplate" class="midOutcome" style="display:block">
+    <div id="midOutcomesBlock" class="midOutcome">
       [#if midOutcomes?has_content]
-        [#list midOutcomes as outcome]
+        [#list midOutcomes as midOutcome]
           [#-- Mid outcome identifier --]
-          <input type="hidden" name="id" value="${outcome.id}" />
+          <input type="hidden" name="id" value="${midOutcome.id}" />
           
           [#-- Title --]
-          [@customForm.textArea name="midOutcomes[${outcome_index}].description" i18nkey="preplanning.midOutcomes.outcome" required=true /]
+          [@customForm.textArea name="midOutcomes[${midOutcome_index}].description" i18nkey="preplanning.midOutcomes.outcome" required=true /]
       
           <div class="contentElements parentsBlock">
             <div class="itemIndex">[@s.text name="preplanning.midOutcomes.contributes" /] </div>
@@ -53,7 +53,7 @@
             [/#if]
             [#-- Add contribute --]
             <div class="fullBlock">
-              [@customForm.select name="midOutcomes.outcomes[].type" i18nkey="outcome" showTitle=false listName="outcomesList" keyFieldName="id"  displayFieldName="name" addButton=true className="contributes" /]
+              [@customForm.select name="type" value="outcome" showTitle=false listName="outcomesList" keyFieldName="id"  displayFieldName="name" addButton=true className="contributes" /]
             </div> 
           </div> 
 
@@ -75,7 +75,7 @@
             [/#if]
             [#-- Add Indicator --]
             <div class="fullBlock">
-              [@customForm.textArea name="newIndicator" i18nkey="Indicator" showTitle=false addButton=true /]
+              [@customForm.textArea name="newIndicator" value="Indicator" showTitle=false addButton=true /]
             </div> 
           </div>
         [/#list]
@@ -94,7 +94,7 @@
             </div>
             [#-- Add contribute --]
             <div class="fullBlock">
-              [@customForm.select name="midOutcomes.outcomes[].type" i18nkey="outcome" showTitle=false listName="outcomesList" keyFieldName="id"  displayFieldName="name" addButton=true className="contributes" /]
+              [@customForm.select name="midOutcomes.outcomes[].type" value="outcome" showTitle=false listName="outcomesList" keyFieldName="id"  displayFieldName="name" addButton=true className="contributes" /]
             </div> 
           </div> 
 
@@ -112,7 +112,7 @@
             </div> 
             [#-- Add Indicator --]
             <div class="fullBlock">
-              [@customForm.textArea name="newIndicator" i18nkey="Indicator" showTitle=false addButton=true /]
+              [@customForm.textArea name="newIndicator" value="Indicator" showTitle=false addButton=true /]
             </div> 
           </div>
 
@@ -140,7 +140,7 @@
       	</div> 
       	[#-- Add contribute --]
         <div class="fullBlock">
-        	[@customForm.select name="midOutcomes.outcomes[].type" label="" i18nkey="outcome" showTitle=false listName="outcomesList" keyFieldName="id"  displayFieldName="name" addButton=true className="contributes" /]
+        	[@customForm.select name="midOutcomes.outcomes[].type" label="Contributes" value="Contributes" showTitle=false listName="outcomesList" keyFieldName="id"  displayFieldName="name" addButton=true className="contributes" /]
         </div> 
       </div> 
       
@@ -158,7 +158,7 @@
       	</div> 
       	[#-- Add Indicator --]
         <div class="fullBlock">
-        	[@customForm.textArea name="newIndicator" i18nkey="Indicator" showTitle=false addButton=true /]
+        	[@customForm.textArea name="newIndicator" value="Indicator" showTitle=false addButton=true /]
         </div> 
       </div>  
     </div>
