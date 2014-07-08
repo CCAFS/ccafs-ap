@@ -5,7 +5,10 @@ $(document).ready(function(){
 function attachEvents(){
   //Mid Outcomes
   $("div#addMidOutcomeBlock").click(addMidOutcomeEvent);
-  $("div#removeMidOutcomeBlock").click(removeMidOutcomeEvent);	
+  $(".removeMidOutcomeBlock").click(removeMidOutcomeEvent);	
+  //Contributes
+  $(".indicatorsBlock input.addButton").click(addIndicatorEvent);
+  $(".removeMidOutcomeIndicator").click(removeIndicatorEvent);  
   //Indicators
   $(".indicatorsBlock input.addButton").click(addIndicatorEvent);
   $(".removeMidOutcomeIndicator").click(removeIndicatorEvent);

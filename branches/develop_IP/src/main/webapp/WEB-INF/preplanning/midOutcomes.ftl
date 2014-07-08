@@ -25,14 +25,14 @@
     <h1 class="contentTitle">
     [@s.text name="preplanning.midOutcomes.title" /]  
     </h1>
-    <div id="MidOutcomeBlocks">
-      <div id="midOutcomesBlock" class="midOutcome">
+    <div id="MidOutcomeBlocks"> 
         [#if midOutcomes?has_content]
           [#list midOutcomes as midOutcome]
+          <div class="midOutcome">
             [#-- Mid outcome identifier --]
             <input type="hidden" name="id" value="${midOutcome.id}" />
             [#-- Remove midOutcome --]
-            <div id="removeMidOutcomeBlock" class="removeLink">            
+            <div class="removeMidOutcomeBlock removeLink">              
               <img src="${baseUrl}/images/global/icon-remove.png" />
               <a id="removeMidOutcome" href="" class="removeContribute">[@s.text name="preplanning.midOutcomes.removeMidOutcome" /]</a>
             </div>  
@@ -66,13 +66,14 @@
                 [@customForm.button i18nkey="preplanning.midOutcomes.addIndicator" class="addButton" /]
               </div> 
             </div>
+          </div>  
           [/#list]
         [#else]
   
           [#-- Mid outcome identifier --]
           <input type="hidden" name="id" value="-1" />
           [#-- Remove midOutcome --]      
-          <div id="removeMidOutcomeBlock" class="removeLink">            
+          <div class="removeMidOutcomeBlock removeLink">            
             <img src="${baseUrl}/images/global/icon-remove.png" />
             <a id="removeMidOutcome" href="" class="removeContribute">[@s.text name="preplanning.midOutcomes.removeMidOutcome" /]</a>
           </div> 
@@ -97,8 +98,9 @@
                 [@customForm.button i18nkey="preplanning.midOutcomes.addIndicator" class="addButton" /]
               </div> 
             </div> 
+        </div>
         [/#if]
-      </div>
+      
     
     </div>
     <div id="addMidOutcomeBlock" class="addLink">
