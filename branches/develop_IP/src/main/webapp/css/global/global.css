@@ -710,7 +710,7 @@ a.currentReportingSection li #i-additionalInformation{
 
 /* Impact Pathways */
 
-.indicator {
+.indicator, .contributions {
     padding: 9px;
     border: 2px dotted #CCC;
     border-radius: 5px;
@@ -1071,7 +1071,7 @@ ul#deliverablesFilesMessages > li {
 
 /* Publications */
 
-.publication, .caseStudy, .outcome,.midOutcome, .leverage, .deliverable, .activityPartner, .otherSite {
+.publication, .caseStudy, .outcome, .output, .midOutcome, .leverage, .deliverable, .activityPartner, .otherSite {
 	border: 1px solid #D1D1D1;
 	padding: 6px 15px 0px 15px;
 	border-radius: 8px;

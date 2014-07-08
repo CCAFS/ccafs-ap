@@ -9,6 +9,7 @@
 [#include "/WEB-INF/global/pages/header.ftl" /]
 [#include "/WEB-INF/global/pages/main-menu.ftl" /]
 [#import "/WEB-INF/global/macros/forms.ftl" as customForm/]
+[#import "/WEB-INF/preplanning/indicatorTemplate.ftl" as indicatorTemplate/]
     
 <section class="content">
   <div class="helpMessage">
@@ -28,41 +29,19 @@
 
       [#if outcomes?has_content]
         [#list outcomes as outcome]
-
           [#-- Outcome identifier --]
           <input type="hidden" name="id" value="${outcome.id}" />
-  
           [#-- Title --]
           [@customForm.textArea name="outcomes[${outcome_index}].description" i18nkey="preplanning.outcomes.outcome" required=true /]
-
           <div class="contentElements outcomeIndicatorsBlock"> 
             <div class="itemIndex">[@s.text name="preplanning.outcomes.indicators" /] </div>
             [#if outcome.indicators?has_content]
-
               [#-- Indicators --]
-              [#list outcome.indicators as indicator] 
-                <div class="indicator" style="display:block">
-                  <input type="hidden" name="outcomes[${outcome_index}].indicators[${indicator_index}].id" value="${indicator.id}" />  
-                  [@customForm.textArea showTitle=false name="outcomes[${outcome_index}].indicators[${indicator_index}].description" i18nkey="preplanning.outcomes.outcome" required=true /]
-                  [@customForm.input name="outcomes[${outcome_index}].indicators[${indicator_index}].target"  i18nkey="preplanning.outcomes.target" /]  
-                  [#-- remove link --]      
-                  <div class="removeLink">            
-                    <img src="${baseUrl}/images/global/icon-remove.png" />
-                    <a id="removeOutcomeIndicator" href="" class="removeOutcomeIndicator">[@s.text name="preplanning.outcomes.removeIndicator" /]</a>
-                  </div>
-                </div>
+              [#list outcome.indicators as indicator]
+                [@indicatorTemplate.outcomes outcome_index="${outcome_index}" indicator_index="${indicator_index}" value="${indicator.id}" /]
               [/#list]
             [#else]
-              <div class="indicator" style="display:block">
-                <input type="hidden" name="outcomes[${outcome_index}].indicators[0].id" value="-1" />  
-                [@customForm.textArea showTitle=false name="outcomes[${outcome_index}].indicators[0].description" i18nkey="preplanning.outcomes.outcome" required=true /]
-                [@customForm.input name="outcomes[${outcome_index}].indicators[0].target"  i18nkey="preplanning.outcomes.target" /]  
-                [#-- remove link --]      
-                <div class="removeLink">            
-                  <img src="${baseUrl}/images/global/icon-remove.png" />
-                  <a id="removeOutcomeIndicator" href="" class="removeOutcomeIndicator">[@s.text name="preplanning.outcomes.removeIndicator" /]</a>
-                </div>
-              </div>
+              [@indicatorTemplate.outcomes outcome_index="${outcome_index}" indicator_index="${indicator_index}"/]
             [/#if]
             
             [#-- Add Indicator --]
@@ -71,9 +50,7 @@
             </div> 
           </div>
         [/#list]
-
       [#else]
-
           [#-- Outcome identifier --]
           <input type="hidden" name="id" value="-1" /> 
           [#-- Title --]
@@ -81,18 +58,7 @@
 
           <div class="contentElements outcomeIndicatorsBlock">
             <div class="itemIndex">[@s.text name="preplanning.outcomes.indicators" /] </div>
-              
-              <div class="indicator" style="display:block">
-                <input type="hidden" name="outcomes[0].indicators[0].id" value="-1" />  
-                [@customForm.textArea showTitle=false name="outcomes[0].indicators[0].description" i18nkey="preplanning.outcomes.outcome" required=true /]
-                [@customForm.input name="outcomes[0].indicators[0].target"  i18nkey="preplanning.outcomes.target" /]  
-                [#-- remove link --]      
-                <div class="removeLink">            
-                  <img src="${baseUrl}/images/global/icon-remove.png" />
-                  <a id="removeOutcomeIndicator" href="" class="removeOutcomeIndicator">[@s.text name="preplanning.outcomes.removeIndicator" /]</a>
-                </div>
-              </div>
-                
+              [@indicatorTemplate.outcomes /] 
               [#-- Add Indicator --]
               <div class="fullBlock" id="addIndicatorBlock">
                 [@customForm.button i18nkey="preplanning.outcomes.addIndicator" class="addButton" /]
@@ -111,18 +77,11 @@
       [@customForm.textArea name="description" i18nkey="preplanning.outcomes.outcome" required=true /] 
       <div class="contentElements">
       	<div class="itemIndex">[@s.text name="preplanning.outcomes.indicators" /] </div>
-      	[#-- Indicator template --]
-      	<div class="indicator">  
-      		[@customForm.textArea showTitle=false name="description" i18nkey="preplanning.outcomes.outcome" required=true /]
-          [@customForm.input name="target"  i18nkey="preplanning.outcomes.target" /]  
-					[#-- remove link --]      
-		      <div class="removeLink">            
-            <img src="${baseUrl}/images/global/icon-remove.png" />
-            <a id="removeOutcomeIndicator" href="" class="removeOutcomeIndicator">[@s.text name="preplanning.outcomes.removeIndicator" /]</a>
-          </div>
-      	</div>
+      	[#-- Indicator template --] 
+      	[@indicatorTemplate.outcomes template=true /] 
       </div>
     </div>
+    [#-- End Outcome 2025 template --]
     
     <div class="buttons">
       [@s.submit type="button" name="save"][@s.text name="form.buttons.save" /][/@s.submit]
