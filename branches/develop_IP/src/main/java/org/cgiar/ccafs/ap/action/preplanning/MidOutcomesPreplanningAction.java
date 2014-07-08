@@ -25,7 +25,7 @@ public class MidOutcomesPreplanningAction extends BaseAction {
 
   // Model
   List<IPElement> midOutcomes;
-  List<IPElement> outcomes;
+  List<IPElement> outcomesList;
 
   @Inject
   public MidOutcomesPreplanningAction(APConfig config, LogframeManager logframeManager,
@@ -38,8 +38,8 @@ public class MidOutcomesPreplanningAction extends BaseAction {
     return midOutcomes;
   }
 
-  public List<IPElement> getOutcomes() {
-    return outcomes;
+  public List<IPElement> getOutcomesList() {
+    return outcomesList;
   }
 
   @Override
@@ -49,19 +49,43 @@ public class MidOutcomesPreplanningAction extends BaseAction {
 
     // The Outcomes 2025 type is stored with id 2
     IPElementType outcomesType = new IPElementType();
-    outcomesType.setId(3);
+    outcomesType.setId(2);
 
     // The Outcomes 2019 type is stored with id 3
     IPElementType midOutcomesType = new IPElementType();
     midOutcomesType.setId(3);
 
     midOutcomes = ipElementManager.getIPElements(program, midOutcomesType);
-    System.out.println(midOutcomesType);
-    outcomes = ipElementManager.getIPElements(program, outcomesType);
+    outcomesList = ipElementManager.getIPElements(program, outcomesType);
+    System.out.println(outcomesList);
   }
 
   @Override
   public String save() {
+    IPProgram program = new IPProgram();
+    program.setId(1);
+
+    IPElementType type = new IPElementType();
+    type.setId(3);
+
+    for (IPElement outcome : midOutcomes) {
+      if (outcome.getProgram() == null) {
+        outcome.setProgram(program);
+      }
+      if (outcome.getType() == null) {
+        outcome.setType(type);
+      }
+
+      for (int i = 0; i < outcome.getIndicators().size(); i++) {
+        if (outcome.getIndicators().get(i).getDescription().isEmpty()) {
+          outcome.getIndicators().remove(i);
+        }
+      }
+    }
+
+    // Remove records already present in the database
+    ipElementManager.deleteIPElements(program, type);
+    ipElementManager.saveIPElements(midOutcomes);
     return INPUT;
   }
 
@@ -69,7 +93,7 @@ public class MidOutcomesPreplanningAction extends BaseAction {
     this.midOutcomes = midOutcomes;
   }
 
-  public void setOutcomes(List<IPElement> outcomes) {
-    this.outcomes = outcomes;
+  public void setOutcomesList(List<IPElement> outcomes) {
+    this.outcomesList = outcomes;
   }
 }
