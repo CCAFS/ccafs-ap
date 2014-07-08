@@ -30,16 +30,14 @@
       [#if midOutcomes?has_content]
         [#list midOutcomes as midOutcome]
           [#-- Mid outcome identifier --]
-          <input type="hidden" name="id" value="${midOutcome.id}" />
-          
+          <input type="hidden" name="id" value="${midOutcome.id}" /> 
           [#-- Title --]
-          [@customForm.textArea name="midOutcomes[${midOutcome_index}].description" i18nkey="preplanning.midOutcomes.outcome" required=true /]
-      
+          [@customForm.textArea name="midOutcomes[${midOutcome_index}].description" i18nkey="preplanning.midOutcomes.outcome" required=true /] 
           <div class="contentElements parentsBlock">
             <div class="itemIndex">[@s.text name="preplanning.midOutcomes.contributes" /] </div>
             [#-- midOutcome's parents --]
-            [#if midOutcomes.parents?has_content]
-              [#list midOutcomes.parents as parent]
+            [#if midOutcome.parents?has_content]
+              [#list midOutcome.parents as parent]
                 <div class="contributions">  
                   <input type="hidden" name="midOutcomes[${midOutcome_index}].parents[${parent_index}].id" value="${parent.id}" />
                   <p>${parent.description}</p> 
@@ -55,35 +53,16 @@
             <div class="fullBlock">
               [@customForm.select name="contributionId" value="" showTitle=false listName="outcomesList" keyFieldName="id"  displayFieldName="description" addButton=true className="contributes" /]
             </div> 
-          </div> 
-
+          </div>  
           <div class="contentElements indicatorsBlock">
             <div class="itemIndex">[@s.text name="preplanning.midOutcomes.indicators" /] </div>
             [#-- midOutcome's indicators --]
             [#if midOutcome.indicators?has_content]
               [#list midOutcome.indicators as indicator]
-                <div class="indicator">
-                  <input type="hidden" name="midOutcomes[${midOutcome_index}].indicators[${indicator_index}].id" value="${indicator.id}" /> 
-                  [@customForm.textArea showTitle=false name="midOutcomes[${midOutcome_index}].indicators[${indicator_index}].description" i18nkey="preplanning.midOutcomes.outcome" required=true /]
-                  [@customForm.input name="midOutcomes[${midOutcome_index}].indicators[${indicator_index}].target"  i18nkey="preplanning.midOutcomes.target" required=true /]  
-                  [#-- remove link --]      
-                  <div class="removeLink">            
-                    <img src="${baseUrl}/images/global/icon-remove.png" />
-                    <a id="removeIndicator" href="" class="removeIndicator">[@s.text name="preplanning.midOutcomes.removeIndicator" /]</a>
-                  </div>      
-                </div> 
+                [@indicatorTemplate.midOutcomes midOutcome_index="${midOutcome_index}" indicator_index="${indicator_index}" value="${indicator.id}" /] 
               [/#list]
             [#else]
-              <div class="indicator">
-                <input type="hidden" name="midOutcomes[${midOutcome_index}].indicators[0].id" value="-1" /> 
-                [@customForm.textArea showTitle=false name="midOutcomes[${midOutcome_index}].indicators[0].description" i18nkey="preplanning.midOutcomes.outcome" required=true /]
-                [@customForm.input name="midOutcomes[${midOutcome_index}].indicators[0].target"  i18nkey="preplanning.midOutcomes.target" required=true /]  
-                [#-- remove link --]      
-                <div class="removeLink">            
-                  <img src="${baseUrl}/images/global/icon-remove.png" />
-                  <a id="removeIndicator" href="" class="removeIndicator">[@s.text name="preplanning.midOutcomes.removeIndicator" /]</a>
-                </div>      
-              </div>
+              [@indicatorTemplate.midOutcomes midOutcome_index="${midOutcome_index}" indicator_index="${indicator_index}" /] 
             [/#if]
             [#-- Add Indicator --]
             <div class="fullBlock">
@@ -97,8 +76,7 @@
         <input type="hidden" name="id" value="-1" />
         
         [#-- Title --]
-        [@customForm.textArea name="midOutcomes[0].description" i18nkey="preplanning.midOutcomes.outcome" required=true /]
-    
+        [@customForm.textArea name="midOutcomes[0].description" i18nkey="preplanning.midOutcomes.outcome" required=true /] 
         <div class="contentElements parentsBlock">
           <div class="itemIndex">[@s.text name="preplanning.midOutcomes.contributes" /] </div>
             [#-- midOutcome's parents --]
@@ -108,27 +86,16 @@
             <div class="fullBlock">
               [@customForm.select name="contribution" showTitle=false listName="outcomesList" keyFieldName="id"  displayFieldName="description" addButton=true className="contributes" /]
             </div> 
-          </div> 
-
+          </div>  
           <div class="contentElements indicatorsBlock">
             <div class="itemIndex">[@s.text name="preplanning.midOutcomes.indicators" /] </div>
             [#-- midOutcome's indicators --]
-            <div class="indicator">
-              <input type="hidden" name="midOutcomes[0].indicators[0].id" value="-1" /> 
-              [@customForm.textArea showTitle=false name="midOutcomes[0].indicators[0].description" i18nkey="preplanning.midOutcomes.outcome" required=true /]
-              [@customForm.input name="midOutcomes[0].indicators[0].target"  i18nkey="preplanning.midOutcomes.target" required=true /]  
-              [#-- remove link --]      
-              <div class="removeLink">            
-                <img src="${baseUrl}/images/global/icon-remove.png" />
-                <a id="removeIndicator" href="" class="removeIndicator">[@s.text name="preplanning.midOutcomes.removeIndicator" /]</a>
-              </div>      
-            </div> 
+            [@indicatorTemplate.midOutcomes /] 
             [#-- Add Indicator --]
             <div class="fullBlock">
               [@customForm.button i18nkey="preplanning.midOutcomes.addIndicator" class="addButton" /]
             </div> 
-          </div>
-
+          </div> 
       [/#if]
     </div>
   
@@ -138,8 +105,7 @@
       [#-- Objective identifier --]
       <input type="hidden" name="id" value="-1" />
       [#-- Title --]
-      [@customForm.textArea name="description" i18nkey="preplanning.midOutcomes.outcome" required=true /]
-      
+      [@customForm.textArea name="description" i18nkey="preplanning.midOutcomes.outcome" required=true /] 
       <div class="contentElements">
       	<div class="itemIndex">[@s.text name="preplanning.midOutcomes.contributes" /] </div>
       	[#-- Contribute template --]
@@ -156,27 +122,17 @@
         <div class="fullBlock">
         	[@customForm.select name="contributions" showTitle=false listName="outcomesList" keyFieldName="id"  displayFieldName="description" addButton=true className="contributes" /]
         </div> 
-      </div> 
-      
+      </div>  
       <div class="contentElements">
       	<div class="itemIndex">[@s.text name="preplanning.midOutcomes.indicators" /] </div>
       	[#-- Indicator template --]
-      	<div class="indicator" style="display:block">  
-      		[@customForm.textArea value="indicator.description" showTitle=false name="midOutcomes[outcome_index].indicator[indicator_index].description" i18nkey="preplanning.midOutcomes.outcome" required=true /]
-          [@customForm.input value="indicator.target" name="midOutcomes[outcome_index].indicator[indicator_index].target"  i18nkey="preplanning.midOutcomes.target" required=true /]  
-					[#-- remove link --]      
-		      <div class="removeLink">            
-		        <img src="${baseUrl}/images/global/icon-remove.png" />
-		        <a id="removeIndicator" href="" class="removeIndicator">[@s.text name="preplanning.midOutcomes.removeIndicator" /]</a>
-		      </div>     	
-      	</div> 
+      	[@indicatorTemplate.midOutcomes template=true /] 
       	[#-- Add Indicator --]
         <div class="fullBlock">
         	[@customForm.button i18nkey="preplanning.midOutcomes.addIndicator" class="addButton" /]
         </div> 
       </div>  
-    </div>
-    
+    </div> 
     <div id="addMidOutcomeBlock" class="addLink">
       <img src="${baseUrl}/images/global/icon-add.png" />
       <a href="" class="addMidOutcome" >[@s.text name="preplanning.midOutcomes.addOutcome" /]</a>
