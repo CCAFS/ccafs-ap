@@ -20,7 +20,7 @@
 
 [#macro midOutcomes midOutcome_index="0" indicator_index="0" value="-1" template=false]
   <div class="indicator" style="display:block">
-  [#if template]
+  [#if template] 
     <input type="hidden" name="id" value="${value}" />
     [@customForm.textArea showTitle=false name="description" i18nkey="preplanning.midOutcomes.midOutcome" required=true /]
     [@customForm.input name="target"  i18nkey="preplanning.midOutcomes.target" /]

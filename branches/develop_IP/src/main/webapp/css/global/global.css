@@ -27,27 +27,27 @@ select {
 }
 
 .select.button, .textArea.button {
-	float: left;
-	width: 81%;
+  float: left;
+  width: 81%;
 }
 
 .addButton {
-	background: #47939C;
-	color: #fff;
-	border: 0;
-	padding: 6px;
-	margin: 0px 12px;
-	border-radius: 5px;
-	border-bottom: 2px solid #3C7D85 !important;
+  background: #47939C;
+  color: #fff;
+  border: 0;
+  padding: 6px;
+  margin: 0px 12px;
+  border-radius: 5px;
+  border-bottom: 2px solid #3C7D85 !important;
 }
 
 .addButton.Indicator{
-	padding: 15px 9px;
-	margin-top: 11px;
+  padding: 15px 9px;
+  margin-top: 11px;
 }
 
 .addButton.outcome{
-	padding: 6px 8px !important;
+  padding: 6px 8px !important;
 }
 
 .clearfix:before,.clearfix:after {
@@ -96,17 +96,17 @@ input[type="radio"] {
 }
 
 input[type="submit"], button {
-	background: #2BA6CB;
-	color: #fff;
-	border: 0;
-	padding: 5px 10px;
-	font-weight: bold;
+  background: #2BA6CB;
+  color: #fff;
+  border: 0;
+  padding: 5px 10px;
+  font-weight: bold;
 }
 
 input:-webkit-autofill, textarea:-webkit-autofill, select:-webkit-autofill {
-	background-color: #fff !important;
-	background-image: none !important;
-	color: #ccc !important;
+  background-color: #fff !important;
+  background-image: none !important;
+  color: #ccc !important;
 }
 
 .halfPartBlock .checkbox input{
@@ -173,17 +173,17 @@ padding: 1px 10px;
 }
 
 .container #autoSavingMessages{
-	background-color: #ffffff;
-	opacity: 0.6;
-	filter:alpha(opacity=60); /* For IE8 and earlier */
-	position: fixed;
-	top: 0;
-	width: 1100px;
+  background-color: #ffffff;
+  opacity: 0.6;
+  filter:alpha(opacity=60); /* For IE8 and earlier */
+  position: fixed;
+  top: 0;
+  width: 1100px;
 }
 
 .container #autoSavingMessages p{
-	color: 000;
-	font-weight: bold;
+  color: 000;
+  font-weight: bold;
   text-align: center;
 }
 
@@ -192,7 +192,7 @@ body {
   text-align: center;
 }
 header {
-	font-family: 'Open Sans', sans-serif;
+  font-family: 'Open Sans', sans-serif;
 }
 .container {
   /* background-image: url("../../images/global/header-background.png"); */
@@ -377,51 +377,51 @@ a.currentReportingSection li {
   width:25px; 
 }
 #i-mainInformation{ 
-	background:url('../../images/global/sprite-icons.png') 0 0; 
+  background:url('../../images/global/sprite-icons.png') 0 0; 
 }
 
 #i-objectives{ 
-	background:url('../../images/global/sprite-icons.png') 0 -40px; 
+  background:url('../../images/global/sprite-icons.png') 0 -40px; 
 }
 
 #i-deliverables{ 
-	background:url('../../images/global/sprite-icons.png') 0 -80px; 
+  background:url('../../images/global/sprite-icons.png') 0 -80px; 
 }
 
 #i-partners{ 
-	background:url('../../images/global/sprite-icons.png') 0 -120px; 
+  background:url('../../images/global/sprite-icons.png') 0 -120px; 
 }
 
 #i-locations{ 
-	background:url('../../images/global/sprite-icons.png') 0 -158px;
+  background:url('../../images/global/sprite-icons.png') 0 -158px;
 }
 
 #i-additionalInformation{ 
-	background:url('../../images/global/sprite-icons.png') 0 -198px; 
+  background:url('../../images/global/sprite-icons.png') 0 -198px; 
 }
 
 a.currentReportingSection li #i-mainInformation{ 
-	background:url('../../images/global/sprite-icons.png') -25px 0; 
+  background:url('../../images/global/sprite-icons.png') -25px 0; 
 }
 
 a.currentReportingSection li #i-objectives{ 
-	background:url('../../images/global/sprite-icons.png') -25px -40px; 
+  background:url('../../images/global/sprite-icons.png') -25px -40px; 
 }
 
 a.currentReportingSection li #i-deliverables{ 
-	background:url('../../images/global/sprite-icons.png') -25px -80px; 
+  background:url('../../images/global/sprite-icons.png') -25px -80px; 
 }
 
 a.currentReportingSection li #i-partners{ 
-	background:url('../../images/global/sprite-icons.png') -25px -120px; 
+  background:url('../../images/global/sprite-icons.png') -25px -120px; 
 }
 
 a.currentReportingSection li #i-locations{ 
-	background:url('../../images/global/sprite-icons.png') -25px -158px; 
+  background:url('../../images/global/sprite-icons.png') -25px -158px; 
 }
 
 a.currentReportingSection li #i-additionalInformation{ 
-	background:url('../../images/global/sprite-icons.png') -25px -198px; 
+  background:url('../../images/global/sprite-icons.png') -25px -198px; 
 }
 
 #secondaryMenu ul a {
@@ -637,7 +637,7 @@ a.currentReportingSection li #i-additionalInformation{
   border-radius:2px;
   padding: 10px;
   border: 1px solid #EEE;
-  background: #F8F8F8;	
+  background: #F8F8F8;  
 }
 
 .helpMessage img {
@@ -719,7 +719,7 @@ a.currentReportingSection li #i-additionalInformation{
 }
 
 .indicator h6,.indicator label{
-	float: left;
+  float: left;
 }
 
 .contentElements {
@@ -730,7 +730,7 @@ a.currentReportingSection li #i-additionalInformation{
     width: 93%;
 }
 .contentElements textarea {
-	width: 100%;
+  width: 100%;
 }
 
 
@@ -751,25 +751,25 @@ a.currentReportingSection li #i-additionalInformation{
   color: #FFF;
   padding: 6px 10px 6px 22px;
   width: 83px;
-  float: left;	
+  float: left;  
   border-radius: 2px;
 }
 
 #activityListPlanning #addActivity a:hover{
-	background-color: #3C7B83;
+  background-color: #3C7B83;
 }
 
 #activityListPlanning #addActivity input {
-	float: left;
-	margin-right: 10px;
+  float: left;
+  margin-right: 10px;
 }
-	
+  
 #activityListPlanning #addActivity select {
-	margin-left: 40px;
+  margin-left: 40px;
 }
-	
+  
 #activityListPlanning form.buttons{
-	margin : 0;
+  margin : 0;
 }
 
 #activityListPlanning .activityTable .buttons button{
@@ -805,13 +805,13 @@ a.currentReportingSection li #i-additionalInformation{
 }
 
 #submitButtonBlock button#submitForm_save:hover {
-	background-color: #576A2D;
+  background-color: #576A2D;
 }
-	
+  
 #activityListPlanning #submitButtonBlock button#submitForm_save.disabled:hover {
-	background-color: #F1F1F1;
+  background-color: #F1F1F1;
 }
-	
+  
 #activityListPlanning .workplanSubmitted {
   color: #FF0000;
   margin-top: 10px;
@@ -941,26 +941,26 @@ a.currentReportingSection li #i-additionalInformation{
 
 
 #i-addActivity{ 
-	background:url('../../images/global/sprite-icons-activities.png') 0 0; 
+  background:url('../../images/global/sprite-icons-activities.png') 0 0; 
 }
 #i-checkedActivity{ 
-	background:url('../../images/global/sprite-icons-activities.png') 0 -24px; 
+  background:url('../../images/global/sprite-icons-activities.png') 0 -24px; 
 }
 #i-errorCheckedActivity{ 
-	background:url('../../images/global/sprite-icons-activities.png') 0 -45px; 
+  background:url('../../images/global/sprite-icons-activities.png') 0 -45px; 
 }
 button#activities_save{ 
-	background: url('../../images/global/sprite-icons-activities.png') 0 -67px no-repeat; 
-	border:none;
-	width: 100%;
-	color: #630;
-	font-size: 13px;
+  background: url('../../images/global/sprite-icons-activities.png') 0 -67px no-repeat; 
+  border:none;
+  width: 100%;
+  color: #630;
+  font-size: 13px;
 }
 #i-neutralActivity{ 
-	background:url('../../images/global/sprite-icons-activities.png') 0 -90px; 
+  background:url('../../images/global/sprite-icons-activities.png') 0 -90px; 
 }
 #i-submitActivity{ 
-	background:url('../../images/global/sprite-icons-activities.png') 0 -150px; 
+  background:url('../../images/global/sprite-icons-activities.png') 0 -150px; 
 }
 
 
@@ -1072,23 +1072,24 @@ ul#deliverablesFilesMessages > li {
 /* Publications */
 
 .publication, .caseStudy, .outcome, .output, .midOutcome, .leverage, .deliverable, .activityPartner, .otherSite {
-	border: 1px solid #D1D1D1;
-	padding: 6px 15px 0px 15px;
-	border-radius: 8px;
+  border: 1px solid #D1D1D1;
+  padding: 6px 15px 0px 15px;
+  border-radius: 8px;
+  margin-top: 6px;
 }
 
 #publications .journalArticlesIndicators .checkbox h6{
-	font-weight: normal;
-	font-size: 11px;
+  font-weight: normal;
+  font-size: 11px;
 }
 
 #publications .checkbox input{
-	float: left;
-	margin-left: 10px;
+  float: left;
+  margin-left: 10px;
 }
 
 #publications .checkbox > label {
-	float: right;
+  float: right;
   width: 95%;
 }
 
@@ -1099,7 +1100,7 @@ ul#deliverablesFilesMessages > li {
 
 #publications .journalArticlesIndicators,
 #publications #ccafsAcknowledge{
-	margin-bottom: 25px;
+  margin-bottom: 25px;
 }
 
 /******** SUMMARY BY OUTPUTS ***********/
