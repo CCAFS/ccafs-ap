@@ -30,7 +30,7 @@
           [#list midOutcomes as midOutcome]
           <div id="midOutcome-${midOutcome_index}" class="midOutcome">
             [#-- Mid outcome identifier --]
-            <input type="hidden" name="id" value="${midOutcome.id}" />
+            <input type="hidden" name="midOutcomes[${midOutcome_index}].id" value="${midOutcome.id}" />
             [#-- Remove midOutcome --]
             <div class="removeMidOutcomeBlock removeLink">              
               <img src="${baseUrl}/images/global/icon-remove.png" />
@@ -71,7 +71,7 @@
         [#else]
   
           [#-- Mid outcome identifier --]
-          <input type="hidden" name="id" value="-1" />
+          <input type="hidden" name="midOutcomes[0].id" value="-1" />
           [#-- Remove midOutcome --]      
           <div class="removeMidOutcomeBlock removeLink">            
             <img src="${baseUrl}/images/global/icon-remove.png" />
@@ -108,7 +108,7 @@
       <a href="" class="addMidOutcome" >[@s.text name="preplanning.midOutcomes.addOutcome" /]</a>
     </div>
     
-    [#-- Mid Outcome template hidden  --]
+    [#----  Mid Outcome TEMPLATE hidden ----]
     <div id="midOutcomeTemplate" class="midOutcome" style="display:none">
       [#-- Objective identifier --]
       <input type="hidden" name="id" value="-1" />

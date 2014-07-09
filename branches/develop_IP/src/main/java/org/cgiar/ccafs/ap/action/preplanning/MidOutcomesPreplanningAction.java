@@ -1,5 +1,8 @@
 package org.cgiar.ccafs.ap.action.preplanning;
 
+import java.util.List;
+
+import com.google.inject.Inject;
 import org.cgiar.ccafs.ap.action.BaseAction;
 import org.cgiar.ccafs.ap.config.APConfig;
 import org.cgiar.ccafs.ap.data.manager.IPElementManager;
@@ -7,10 +10,6 @@ import org.cgiar.ccafs.ap.data.manager.LogframeManager;
 import org.cgiar.ccafs.ap.data.model.IPElement;
 import org.cgiar.ccafs.ap.data.model.IPElementType;
 import org.cgiar.ccafs.ap.data.model.IPProgram;
-
-import java.util.List;
-
-import com.google.inject.Inject;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -58,6 +57,13 @@ public class MidOutcomesPreplanningAction extends BaseAction {
     midOutcomes = ipElementManager.getIPElements(program, midOutcomesType);
     outcomesList = ipElementManager.getIPElements(program, outcomesType);
     System.out.println(outcomesList);
+
+    if (getRequest().getMethod().equalsIgnoreCase("post")) {
+      // Clear out the list if it has some element
+      if (midOutcomes != null) {
+        midOutcomes.clear();
+      }
+    }
   }
 
   @Override

@@ -8,7 +8,7 @@ function attachEvents(){
   $(".removeMidOutcomeBlock").click(removeMidOutcomeEvent);	
   //Contributes
   $(".addContributeBlock input.addButton").click(addContributeEvent);
-  $(".removeMidOutcomeIndicator").click(removeIndicatorEvent);  
+  $(".removeContribute").click(removeContributeEvent);  
   //Indicators
   $(".indicatorsBlock input.addButton").click(addIndicatorEvent);
   $(".removeMidOutcomeIndicator").click(removeIndicatorEvent);
@@ -64,6 +64,19 @@ function addContributeEvent(event){
 	}
 }
 
+function removeContributeEvent(event){
+  event.preventDefault();
+  var pressedLink = event.target;
+  var $elementDiv = $(event.target).parent().parent();
+  var $parentDiv = $elementDiv.parent().parent();
+  $elementDiv.hide("slow", function() {
+	$(this).parent().parent().find("select").append('<option value="'+$elementDiv.find("input").attr("value")+'">'+$elementDiv.find("p").html()+'</option>');
+    var i = $(this).parent().parent().attr("id").split("-")[1];
+    $(this).remove(); 
+    setContributesIndexes(i)
+  }); 
+}
+
 function setContributesIndexes(i){
   $("#midOutcome-"+i+" div.contributions").each(function(index, element){ 
       var elementName = "midOutcomes["+i+"].parents[" + index + "]."; 
@@ -81,8 +94,7 @@ function addIndicatorEvent(event){
   setIndicatorsIndexes(grandParentId)
 }
 
-function removeIndicatorEvent(event){
-	console.log("$indicatorDiv");
+function removeIndicatorEvent(event){ 
   event.preventDefault();
   var pressedLink = event.target;
   var $indicatorDiv = $(event.target).parent().parent();
