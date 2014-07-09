@@ -13,7 +13,7 @@
     </div>
   [#else]
     <div class="contributions">  
-      <input type="hidden" name="outputs[${midOutcome_index}].parents[${parent_index}].id" value="${value}" />
+      <input type="hidden" name="midOutcomes[${midOutcome_index}].parents[${parent_index}].id" value="${value}" />
       <p>${description}</p> 
       [#-- remove link --]      
       <div class="removeLink">            

@@ -28,7 +28,7 @@
     <div id="MidOutcomeBlocks"> 
         [#if midOutcomes?has_content]
           [#list midOutcomes as midOutcome]
-          <div class="midOutcome">
+          <div id="midOutcome-${midOutcome_index}" class="midOutcome">
             [#-- Mid outcome identifier --]
             <input type="hidden" name="id" value="${midOutcome.id}" />
             [#-- Remove midOutcome --]
@@ -47,7 +47,7 @@
                 [/#list]
               [/#if]
               [#-- Add contribute --]
-              <div id="addContributeBlock" class="fullBlock">
+              <div class="fullBlock addContributeBlock">
                 [@customForm.select name="contributionId" value="" showTitle=false listName="outcomesList" keyFieldName="id"  displayFieldName="description" addButton=true className="contributes" /]
               </div> 
             </div>  
@@ -56,10 +56,10 @@
               [#-- midOutcome's indicators --]
               [#if midOutcome.indicators?has_content]
                 [#list midOutcome.indicators as indicator]
-                  [@indicatorTemplate.midOutcomes midOutcome_index="${midOutcome_index}" indicator_index="${indicator_index}" value="${indicator.id}" /] 
+                  [@indicatorTemplate.midOutcomes midOutcome_index="${midOutcome_index}" indicator_index="${indicator_index}" value="${indicator.id}" /]
                 [/#list]
               [#else]
-                [@indicatorTemplate.midOutcomes /] 
+                [@indicatorTemplate.midOutcomes midOutcome_index="${midOutcome_index}" /] 
               [/#if]
               [#-- Add Indicator --]
               <div id="addIndicatorBlock" class="fullBlock">
@@ -85,7 +85,7 @@
               <div class="contributions">  
               </div>
               [#-- Add contribute --]
-              <div class="fullBlock">
+              <div class="fullBlock addContributeBlock">
                 [@customForm.select name="contribution" showTitle=false listName="outcomesList" keyFieldName="id"  displayFieldName="description" addButton=true className="contributes" /]
               </div> 
             </div>  
@@ -113,7 +113,7 @@
       [#-- Objective identifier --]
       <input type="hidden" name="id" value="-1" />
       [#-- Remove midOutcome --]      
-      <div id="removeMidOutcomeBlock" class="removeLink">            
+      <div class="removeLink removeMidOutcomeBlock">            
         <img src="${baseUrl}/images/global/icon-remove.png" />
         <a id="removeMidOutcome" href="" class="removeContribute">[@s.text name="preplanning.midOutcomes.removeMidOutcome" /]</a>
       </div> 
@@ -123,7 +123,7 @@
       	<div class="itemIndex">[@s.text name="preplanning.midOutcomes.contributes" /] </div>
       	
       	[#-- Add contribute --]
-        <div id="addIndicatorBlock" class="fullBlock">
+         <div class="fullBlock addContributeBlock">
         	[@customForm.select name="contributions" showTitle=false listName="outcomesList" keyFieldName="id"  displayFieldName="description" addButton=true className="contributes" /]
         </div> 
       </div>  
@@ -140,10 +140,8 @@
     [#-- End Mid Outcome template  --]
     [#-- Contribute template --]
     [@contributeTemplate.midOutcomes template=true /]
-    [#-- End Contribute template --]
+    [#-- End Contribute template --] 
     
-    
-     
      <div class="buttons">
       [@s.submit type="button" name="save"][@s.text name="form.buttons.save" /][/@s.submit]
       [@s.submit type="button" name="next"][@s.text name="form.buttons.next" /][/@s.submit]
