@@ -41,6 +41,13 @@ public interface IPElementDAO {
   public List<Map<String, String>> getIPElement(int programID, int elementTypeID);
 
   /**
+   * Get all the ipElements presents in the database
+   * 
+   * @return all list of maps with the information of all ipElements
+   */
+  public List<Map<String, String>> getIPElementList();
+
+  /**
    * Get all IPElements which are parents of the ipElement given
    * 
    * @param ipElementID - ipElement identifier

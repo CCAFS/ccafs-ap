@@ -30,8 +30,8 @@ function removeIndicatorEvent(event){
 function setIndicatorsIndexes(){
   $(".outcomeIndicatorsBlock div.indicator").each(
     function(index, indicator){
-      console.log(index);
       var elementName = "outcomes[0].indicators[" + index + "].";
+      console.log(index + ": " + elementName);
 
       $(indicator).find("[id^='description']").attr("name", elementName + "description");
       $(indicator).find("[id^='target']").attr("name", elementName + "target");

@@ -11,7 +11,11 @@ public class IPElement {
   private IPElementType type;
   private IPProgram program;
   private List<IPIndicator> indicators;
-  private List<IPElement> parents;
+  private List<IPElement> contributesTo;
+
+  public List<IPElement> getContributesTo() {
+    return contributesTo;
+  }
 
   public String getDescription() {
     return description;
@@ -25,16 +29,16 @@ public class IPElement {
     return indicators;
   }
 
-  public List<IPElement> getParents() {
-    return parents;
-  }
-
   public IPProgram getProgram() {
     return program;
   }
 
   public IPElementType getType() {
     return type;
+  }
+
+  public void setContributesTo(List<IPElement> contributesTo) {
+    this.contributesTo = contributesTo;
   }
 
   public void setDescription(String description) {
@@ -47,10 +51,6 @@ public class IPElement {
 
   public void setIndicators(List<IPIndicator> indicator) {
     this.indicators = indicator;
-  }
-
-  public void setParents(List<IPElement> parents) {
-    this.parents = parents;
   }
 
   public void setProgram(IPProgram program) {

@@ -1,8 +1,5 @@
 package org.cgiar.ccafs.ap.action.preplanning;
 
-import java.util.List;
-
-import com.google.inject.Inject;
 import org.cgiar.ccafs.ap.action.BaseAction;
 import org.cgiar.ccafs.ap.config.APConfig;
 import org.cgiar.ccafs.ap.data.manager.IPElementManager;
@@ -10,6 +7,10 @@ import org.cgiar.ccafs.ap.data.manager.LogframeManager;
 import org.cgiar.ccafs.ap.data.model.IPElement;
 import org.cgiar.ccafs.ap.data.model.IPElementType;
 import org.cgiar.ccafs.ap.data.model.IPProgram;
+
+import java.util.List;
+
+import com.google.inject.Inject;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -56,7 +57,6 @@ public class MidOutcomesPreplanningAction extends BaseAction {
 
     midOutcomes = ipElementManager.getIPElements(program, midOutcomesType);
     outcomesList = ipElementManager.getIPElements(program, outcomesType);
-    System.out.println(outcomesList);
 
     if (getRequest().getMethod().equalsIgnoreCase("post")) {
       // Clear out the list if it has some element
@@ -74,18 +74,26 @@ public class MidOutcomesPreplanningAction extends BaseAction {
     IPElementType type = new IPElementType();
     type.setId(3);
 
-    for (IPElement outcome : midOutcomes) {
-      if (outcome.getProgram() == null) {
-        outcome.setProgram(program);
+    for (IPElement midOutcome : midOutcomes) {
+      if (midOutcome.getProgram() == null) {
+        midOutcome.setProgram(program);
       }
-      if (outcome.getType() == null) {
-        outcome.setType(type);
+      if (midOutcome.getType() == null) {
+        midOutcome.setType(type);
       }
 
-      for (int i = 0; i < outcome.getIndicators().size(); i++) {
-        if (outcome.getIndicators().get(i).getDescription().isEmpty()) {
-          outcome.getIndicators().remove(i);
+      for (int i = 0; i < midOutcome.getIndicators().size(); i++) {
+        if (midOutcome.getIndicators().get(i).getDescription().isEmpty()) {
+          midOutcome.getIndicators().remove(i);
         }
+      }
+
+      if (midOutcome.getContributesTo() != null) {
+        String[] values = new String[midOutcome.getContributesTo().size()];
+        for (int i = 0; i < midOutcome.getContributesTo().size(); i++) {
+          values[i] = String.valueOf(midOutcome.getContributesTo().get(i).getId());
+        }
+        midOutcome.setContributesTo(ipElementManager.getIPElementList(values));
       }
     }
 

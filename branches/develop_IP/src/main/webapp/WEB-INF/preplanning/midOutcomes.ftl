@@ -41,8 +41,8 @@
             <div class="contentElements parentsBlock">
               <div class="itemIndex">[@s.text name="preplanning.midOutcomes.contributes" /] </div>
               [#-- midOutcome's parents --]
-              [#if midOutcome.parents?has_content]
-                [#list midOutcome.parents as parent] 
+              [#if midOutcome.contributesTo?has_content]
+                [#list midOutcome.contributesTo as parent] 
                   [@contributeTemplate.midOutcomes midOutcome_index="${midOutcome_index}" parent_index="${parent_index}" value="${parent.id}" description="${parent.description}" /]
                 [/#list]
               [/#if]

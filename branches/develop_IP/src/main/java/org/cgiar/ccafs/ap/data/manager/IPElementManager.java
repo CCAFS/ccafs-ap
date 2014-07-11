@@ -23,6 +23,21 @@ public interface IPElementManager {
   public boolean deleteIPElements(IPProgram program, IPElementType type);
 
   /**
+   * Get all the ipElements existent in the database
+   * 
+   * @return an array of IPElement objects
+   */
+  public List<IPElement> getIPElementList();
+
+  /**
+   * Get a list of IPElement objects corresponding to the given array of ids
+   * 
+   * @param ids - list of IPElement identifiers
+   * @return a list of IPElement objects
+   */
+  public List<IPElement> getIPElementList(String[] ids);
+
+  /**
    * This method gets all the IPElements related to the IP program
    * given
    * 

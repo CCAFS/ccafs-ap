@@ -52,9 +52,9 @@ function addContributeEvent(event){
 	var $optionSelected = $selectElemet.find('option:selected');
 	
 	if ($selectElemet.find('option').length != 0){
-		var $newElementClone = $("#contributeTemplate").clone(true).removeAttr("id");
-		//<input type="hidden" name="outputs[${midOutcome_index}].parents[${parent_index}].id" value="${value}" />
+		var $newElementClone = $("#contributeTemplate").clone(true).removeAttr("id");		
 		var grandParentId = $addButton.parent().parent().attr("id").split("-")[1];
+		
 		$newElementClone.find("[value]").attr("value", $optionSelected.attr("value"));
 		$newElementClone.find('p').html($optionSelected.html())
 		$addButton.before($newElementClone);
@@ -79,7 +79,7 @@ function removeContributeEvent(event){
 
 function setContributesIndexes(i){
   $("#midOutcome-"+i+" div.contributions").each(function(index, element){ 
-      var elementName = "midOutcomes["+i+"].parents[" + index + "]."; 
+      var elementName = "midOutcomes["+i+"].contributesTo[" + index + "]."; 
       $(element).find("[name^='id']").attr("name", elementName+"id");
   });
 }

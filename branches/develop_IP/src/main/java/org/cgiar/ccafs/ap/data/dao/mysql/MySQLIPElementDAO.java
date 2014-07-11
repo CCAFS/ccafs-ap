@@ -117,6 +117,22 @@ public class MySQLIPElementDAO implements IPElementDAO {
   }
 
   @Override
+  public List<Map<String, String>> getIPElementList() {
+    LOG.debug(">> getIPElementList( )");
+
+    StringBuilder query = new StringBuilder();
+    query.append("SELECT e.id, e.description,  ");
+    query.append("et.id as 'element_type_id', et.name as 'element_type_name', ");
+    query.append("pro.id as 'program_id', pro.acronym as 'program_acronym' ");
+    query.append("FROM ip_elements e ");
+    query.append("INNER JOIN ip_element_types et ON e.element_type_id = et.id ");
+    query.append("INNER JOIN ip_programs pro ON e.program_id = pro.id ");
+
+    LOG.debug("-- getIPElementList () > Calling method executeQuery to get the results");
+    return getData(query.toString());
+  }
+
+  @Override
   public List<Map<String, String>> getParentsOfIPElement(int ipElementID) {
     LOG.debug(">> getParentsOfIPElement( ipElementID = {} )", ipElementID);
 

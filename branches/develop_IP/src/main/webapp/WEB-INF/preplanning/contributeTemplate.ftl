@@ -12,8 +12,9 @@
         </div>
     </div>
   [#else]
+
     <div class="contributions">  
-      <input type="hidden" name="midOutcomes[${midOutcome_index}].parents[${parent_index}].id" value="${value}" />
+      <input type="hidden" name="midOutcomes[${midOutcome_index}].contributesTo[${parent_index}].id" value="${value}" />
       <p>${description}</p> 
       [#-- remove link --]      
       <div class="removeLink">            
@@ -26,7 +27,7 @@
 
 [#macro outputs output_index="0" parent_index="0" value="-1" description="description"] 
   <div class="contributions">  
-    <input type="hidden" name="outputs[${output_index}].parents[${parent_index}].id" value="${value}" />
+    <input type="hidden" name="outputs[${output_index}].contributesTo[${parent_index}].id" value="${value}" />
     <p>${description}</p> 
     [#-- remove link --]      
     <div class="removeLink">            

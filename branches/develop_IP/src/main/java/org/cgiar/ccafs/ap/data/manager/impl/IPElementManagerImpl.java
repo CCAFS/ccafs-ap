@@ -2,6 +2,7 @@ package org.cgiar.ccafs.ap.data.manager.impl;
 
 import org.cgiar.ccafs.ap.data.dao.IPElementDAO;
 import org.cgiar.ccafs.ap.data.dao.IPIndicatorDAO;
+import org.cgiar.ccafs.ap.data.dao.IPRelationshipDAO;
 import org.cgiar.ccafs.ap.data.manager.IPElementManager;
 import org.cgiar.ccafs.ap.data.model.IPElement;
 import org.cgiar.ccafs.ap.data.model.IPElementType;
@@ -21,16 +22,39 @@ public class IPElementManagerImpl implements IPElementManager {
   // DAOs
   private IPElementDAO ipElementDAO;
   private IPIndicatorDAO ipIndicatorDAO;
+  private IPRelationshipDAO ipRelationshipDAO;
 
   @Inject
-  public IPElementManagerImpl(IPElementDAO ipElementDAO, IPIndicatorDAO ipIndicatorDAO) {
+  public IPElementManagerImpl(IPElementDAO ipElementDAO, IPIndicatorDAO ipIndicatorDAO,
+    IPRelationshipDAO ipRelationshipDAO) {
     this.ipElementDAO = ipElementDAO;
     this.ipIndicatorDAO = ipIndicatorDAO;
+    this.ipRelationshipDAO = ipRelationshipDAO;
   }
 
   @Override
   public boolean deleteIPElements(IPProgram program, IPElementType type) {
     return ipElementDAO.deleteIpElements(program.getId(), type.getId());
+  }
+
+  @Override
+  public List<IPElement> getIPElementList() {
+    List<Map<String, String>> elementDataList = ipElementDAO.getIPElementList();
+
+    return setDataToIPElementObjects(elementDataList);
+  }
+
+  @Override
+  public List<IPElement> getIPElementList(String[] ids) {
+    List<IPElement> elements = new ArrayList<>();
+    for (IPElement element : getIPElementList()) {
+      for (String id : ids) {
+        if (String.valueOf(element.getId()).equals(id)) {
+          elements.add(element);
+        }
+      }
+    }
+    return elements;
   }
 
   @Override
@@ -84,10 +108,15 @@ public class IPElementManagerImpl implements IPElementManager {
             indicatorData.put("target", indicator.getTarget());
             indicatorData.put("element_id", elementId);
             ipIndicatorDAO.saveIndicator(indicatorData);
-
           }
         }
 
+        // Save the relations added if any
+        if (element.getContributesTo() != null) {
+          for (IPElement parentElement : element.getContributesTo()) {
+            ipRelationshipDAO.saveIPRelation(parentElement.getId(), elementId);
+          }
+        }
       } else {
         // All elements should be saved correctly
         allSaved = (elementId != -1) && allSaved;
@@ -145,7 +174,7 @@ public class IPElementManagerImpl implements IPElementManager {
         parentElement.setDescription(parentData.get("description"));
         parents.add(parentElement);
       }
-      element.setParents(parents);
+      element.setContributesTo(parents);
 
       elementsList.add(element);
     }
