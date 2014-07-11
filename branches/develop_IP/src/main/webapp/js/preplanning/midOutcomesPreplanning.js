@@ -15,7 +15,7 @@ function attachEvents(){
 }
 
 
-// Mid Outcomes Events
+//----------------- Mid Outcomes Events ----------------------//
 function addMidOutcomeEvent(event){
   event.preventDefault(); 
   var $newElement = $("#midOutcomeTemplate").clone(true).removeAttr("id");  
@@ -26,25 +26,28 @@ function addMidOutcomeEvent(event){
 
 function removeMidOutcomeEvent(event){
   event.preventDefault(); 
-  var pressedLink = event.target;
-  var $ElementDiv = $(event.target).parent().parent();
-  $ElementDiv.hide("slow", function() {
-    $(this).remove();
-    setMidOutcomesIndexes();
-  });
+  var $ElementDiv = $(event.target).parent().parent(); 
+  $ElementDiv.hide("slow", function() { 
+	$(this).remove(); 
+  }); 
+  setMidOutcomesIndexes();
 }
+
 
 function setMidOutcomesIndexes(){
   $("div#MidOutcomeBlocks .midOutcome").each(function(index, element){
-      //console.log(index); 
+     
       var elementName = "midOutcomes[" + index + "]."; 
       $(element).attr("id","midOutcome-"+index);
-      $(element).find("[id^='midOutcomeDescription']").attr("name", elementName + "description").attr("placeholder", "Add outcome #"+ (index+1) );  
-      //setIndicatorsIndexes(index);
+      $(element).find("[name^='id']").attr("name", elementName + "id");
+      $(element).find("[id^='midOutcomeDescription']").attr("name", elementName + "description").attr("placeholder", "Add outcome #"+ (index+1) );
+      console.log('setMidOutcomesIndexes -->'+index+ ' -->'+$(element).attr('id') ); 
+      console.log($(element));
+     
   });
 }
 
-// Contribute Events
+//----------------- Contribute Events ----------------------//
 function addContributeEvent(event){
 	event.preventDefault();  
 	var $addButton = $(event.target).parent(); 
@@ -52,9 +55,8 @@ function addContributeEvent(event){
 	var $optionSelected = $selectElemet.find('option:selected');
 	
 	if ($selectElemet.find('option').length != 0){
-		var $newElementClone = $("#contributeTemplate").clone(true).removeAttr("id");		
+		var $newElementClone = $("#contributeTemplate").clone(true).removeAttr("id");
 		var grandParentId = $addButton.parent().parent().attr("id").split("-")[1];
-		
 		$newElementClone.find("[value]").attr("value", $optionSelected.attr("value"));
 		$newElementClone.find('p').html($optionSelected.html())
 		$addButton.before($newElementClone);
@@ -73,7 +75,7 @@ function removeContributeEvent(event){
 	$(this).parent().parent().find("select").append('<option value="'+$elementDiv.find("input").attr("value")+'">'+$elementDiv.find("p").html()+'</option>');
     var i = $(this).parent().parent().attr("id").split("-")[1];
     $(this).remove(); 
-    setContributesIndexes(i)
+    setContributesIndexes(i);
   }); 
 }
 
@@ -84,10 +86,10 @@ function setContributesIndexes(i){
   });
 }
 
-// Indicators Events
+// -----------------   Indicators Events  ----------------------//
 function addIndicatorEvent(event){
   var grandParentId = $(event.target).parent().parent().parent().attr("id").split("-")[1];
-  console.log(grandParentId);
+  //console.log(grandParentId);
   var $newIndicator = $("#midOutcomeTemplate div.indicator").clone(true); 
   $(event.target).parent().before($newIndicator);
   $newIndicator.show( "slow" );
@@ -96,18 +98,19 @@ function addIndicatorEvent(event){
 
 function removeIndicatorEvent(event){ 
   event.preventDefault();
+  var grandParentId = $(event.target).parent().parent().parent().parent().attr("id").split("-")[1];
   var pressedLink = event.target;
   var $indicatorDiv = $(event.target).parent().parent();
   var $parentDiv = $indicatorDiv.parent().parent();
   $indicatorDiv.hide("slow", function() {
     $(this).remove();
-    setIndicatorsIndexes(index)
+    setIndicatorsIndexes(grandParentId);
   }); 
 }
 
 function setIndicatorsIndexes(i){
   $("#midOutcome-"+i+" div.indicator").each(function(index, indicator){
-      console.log(index);
+      //console.log(index);
       var elementName = "midOutcomes["+i+"].indicators[" + index + "].";  
       $(indicator).find("[name^='id']").attr("name", elementName + "id");
       $(indicator).find("[id^='indicatorDescription']").attr("name", elementName + "description").attr("placeholder", "Add indicator #"+ (index+1) ); 

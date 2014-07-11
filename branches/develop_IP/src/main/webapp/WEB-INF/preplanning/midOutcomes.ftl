@@ -28,7 +28,7 @@
     <div id="MidOutcomeBlocks"> 
         [#if midOutcomes?has_content]
           [#list midOutcomes as midOutcome]
-          <div id="midOutcome-${midOutcome_index}" class="midOutcome">
+          <div class="midOutcome" id="midOutcome-${midOutcome_index}">
             [#-- Mid outcome identifier --]
             <input type="hidden" name="midOutcomes[${midOutcome_index}].id" value="${midOutcome.id}" />
             [#-- Remove midOutcome --]
@@ -69,7 +69,7 @@
           </div>  
           [/#list]
         [#else]
-  
+          <div class="midOutcome" id="midOutcome-0">
           [#-- Mid outcome identifier --]
           <input type="hidden" name="midOutcomes[0].id" value="-1" />
           [#-- Remove midOutcome --]      
