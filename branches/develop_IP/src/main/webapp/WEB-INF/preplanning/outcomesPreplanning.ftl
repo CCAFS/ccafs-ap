@@ -9,12 +9,12 @@
 [#include "/WEB-INF/global/pages/header.ftl" /]
 [#include "/WEB-INF/global/pages/main-menu.ftl" /]
 [#import "/WEB-INF/global/macros/forms.ftl" as customForm/]
-[#import "/WEB-INF/preplanning/indicatorTemplate.ftl" as indicatorTemplate/]
+[#import "/WEB-INF/global/macros/indicatorTemplate.ftl" as indicatorTemplate/]
     
 <section class="content">
   <div class="helpMessage">
     <img src="${baseUrl}/images/global/icon-help.png" />
-    <p> [@s.text name="planning.mainInformation.help" /] </p>
+    <p> [@s.text name="preplanning.outcomes.help" /] </p>
   </div>
   [#include "/WEB-INF/global/pages/pre-planning-secondary-menu.ftl" /]
   
@@ -22,7 +22,7 @@
   <article class="halfContent" id="outcomes" class="impactPathway">
   	[#include "/WEB-INF/preplanning/ipPreplanningSubMenu.ftl" /]
     <h1 class="contentTitle">
-      [@s.text name="preplanning.outcomes.title" /]  
+      [@s.text name="preplanning.outcomes.title" /]
     </h1>
     
     <div id="outcomesBlock" class="outcome">

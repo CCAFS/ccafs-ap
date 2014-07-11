@@ -6,7 +6,7 @@
   <artifactId>ip</artifactId>
   <version>2.0-SNAPSHOT</version>
   <packaging>war</packaging>
-  <name>CCAFS Planning and Reporting Impact Pathways version</name>
+  <name>CCAFS Planning and Reporting Platform - Impact Pathway version</name>
 
   <properties>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
@@ -35,6 +35,10 @@
     <developer>
       <name>Hernán D. Carvajal B.</name>
       <email>h.d.carvajal@cgiar.org</email>
+    </developer>
+    <developer>
+      <name>Sebastián Amariles</name>
+      <email>s.a.amariles@cgiar.org</email>
     </developer>
   </developers>
 
