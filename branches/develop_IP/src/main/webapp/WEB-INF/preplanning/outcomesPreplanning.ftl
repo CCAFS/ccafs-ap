@@ -38,17 +38,20 @@
             [#if outcome.indicators?has_content]
               [#-- Indicators --]
               [#list outcome.indicators as indicator]
-                [@indicatorTemplate.outcomes outcome_index="${outcome_index}" indicator_index="${indicator_index}" value="${indicator.id}" /]
+                [@indicatorTemplate.outcomes outcome_index="${outcome_index}" indicator_index="${indicator_index}" value="${indicator.id}" i18nkey="preplanning.outcomes.indicators.description" show_remove_link=false /]
               [/#list]
             [#else]
-              [@indicatorTemplate.outcomes outcome_index="${outcome_index}" indicator_index="${indicator_index}"/]
+              [@indicatorTemplate.outcomes outcome_index="${outcome_index}" indicator_index="${indicator_index}" show_remove_link=false /]
             [/#if]
             
             [#-- Add Indicator --]
+            [#-- So far, there will be only 1 indicator per outcome 2025 --]
+            [#-- 
             <div class="fullBlock" id="addIndicatorBlock">
               [@customForm.button i18nkey="preplanning.outcomes.addIndicator" class="addButton" /]
-            </div> 
-          </div>
+            </div>
+            --] 
+          </div>          
         [/#list]
       [#else]
           [#-- Outcome identifier --]
