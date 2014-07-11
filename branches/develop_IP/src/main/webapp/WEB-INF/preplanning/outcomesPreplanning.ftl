@@ -18,11 +18,11 @@
   </div>
   [#include "/WEB-INF/global/pages/pre-planning-secondary-menu.ftl" /]
   
-  [@s.form action="outcomes" cssClass="pure-form"]  
+  [@s.form action="outcomes" cssClass="pure-form"]
   <article class="halfContent" id="outcomes" class="impactPathway">
   	[#include "/WEB-INF/preplanning/ipPreplanningSubMenu.ftl" /]
     <h1 class="contentTitle">
-      [@s.text name="preplanning.outcomes.title" /]
+      [@s.text name="preplanning.outcomes.title" /] [#-- Pending to add the leader acronym, so it should say something like: Flagship 1 - Outcome 2025 --]
     </h1>
     
     <div id="outcomesBlock" class="outcome">
@@ -44,7 +44,7 @@
               [@indicatorTemplate.outcomes outcome_index="${outcome_index}" indicator_index="${indicator_index}" show_remove_link=false /]
             [/#if]
             
-            [#-- Add Indicator --]
+            [#-- Add Indicator Button --]
             [#-- So far, there will be only 1 indicator per outcome 2025 --]
             [#-- 
             <div class="fullBlock" id="addIndicatorBlock">
@@ -62,10 +62,13 @@
           <div class="contentElements outcomeIndicatorsBlock">
             <div class="itemIndex">[@s.text name="preplanning.outcomes.indicators" /] </div>
               [@indicatorTemplate.outcomes /] 
-              [#-- Add Indicator --]
-              <div class="fullBlock" id="addIndicatorBlock">
-                [@customForm.button i18nkey="preplanning.outcomes.addIndicator" class="addButton" /]
-              </div> 
+              [#-- Add Indicator Button --]
+              [#-- So far, there will be only 1 indicator per outcome 2025 --]
+              [#-- 
+                <div class="fullBlock" id="addIndicatorBlock">
+                  [@customForm.button i18nkey="preplanning.outcomes.addIndicator" class="addButton" /]
+                </div>
+              --] 
             </div>
           </div>
 
