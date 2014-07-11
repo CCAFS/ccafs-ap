@@ -5,7 +5,7 @@ $(document).ready(function(){
 function attachEvents(){
   //Mid Outcomes
   $("div#addMidOutcomeBlock").click(addMidOutcomeEvent);
-  $(".removeMidOutcomeBlock").click(removeMidOutcomeEvent);	
+  $(".removeMidOutcomeBlock #removeMidOutcome").click(removeMidOutcomeEvent);	
   //Contributes
   $(".addContributeBlock input.addButton").click(addContributeEvent);
   $(".removeContribute").click(removeContributeEvent);  
@@ -29,12 +29,13 @@ function removeMidOutcomeEvent(event){
   var $ElementDiv = $(event.target).parent().parent(); 
   $ElementDiv.hide("slow", function() { 
 	$(this).remove(); 
-  }); 
-  setMidOutcomesIndexes();
+	setMidOutcomesIndexes();
+  });  
 }
 
 
 function setMidOutcomesIndexes(){
+	console.log($("div#MidOutcomeBlocks .midOutcome"));
   $("div#MidOutcomeBlocks .midOutcome").each(function(index, element){
      
       var elementName = "midOutcomes[" + index + "]."; 
@@ -42,7 +43,7 @@ function setMidOutcomesIndexes(){
       $(element).find("[name^='id']").attr("name", elementName + "id");
       $(element).find("[id^='midOutcomeDescription']").attr("name", elementName + "description").attr("placeholder", "Add outcome #"+ (index+1) );
       console.log('setMidOutcomesIndexes -->'+index+ ' -->'+$(element).attr('id') ); 
-      console.log($(element));
+      
      
   });
 }
