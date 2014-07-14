@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE struts PUBLIC "-//Apache Software Foundation//DTD Struts Configuration 2.3//EN" "http://struts.apache.org/dtds/struts-2.3.dtd">
+<struts>
+  <!-- constant name="struts.enable.DynamicMethodInvocation" value="false"/ -->
+  <constant name="struts.devMode" value="true" />
+
+  <!-- Add addition packages and configuration here. -->
+  <package name="ccafsap-default" namespace="/" extends="struts-default">
+    <result-types>
+      <result-type name="freemarker" class="org.apache.struts2.views.freemarker.FreemarkerResult"
+        default="true" />
+    </result-types>
+
+    <default-action-ref name="defaultAction" />
+
+    <global-results>
+      <result name="savedStatus" >
+        /WEB-INF/global/pages/saveStatus.ftl
+      </result>
+      <result name="401">
+        /WEB-INF/global/pages/error/401.ftl
+      </result>
+      <result name="403">
+        /WEB-INF/global/pages/error/403.ftl
+      </result>
+      <result name="404">
+        /WEB-INF/global/pages/error/404.ftl
+      </result>
+      <result name="unhandledException" type="chain">
+        <param name="actionName">unhandledExceptionAction</param>
+        <param name="namespace">/</param>
+      </result>
+    </global-results>
+
+    <global-exception-mappings>
+      <exception-mapping exception="java.lang.Exception" result="unhandledException"/>
+    </global-exception-mappings>
+
+    <action name="defaultAction" class="org.cgiar.ccafs.ap.action.home.LoginAction" method="login">
+      <result name="success">/WEB-INF/home/home.ftl</result>
+      <result name="input">/WEB-INF/home/login.ftl</result>
+    </action>
+    
+    <action name="unhandledExceptionAction" class="org.cgiar.ccafs.ap.action.UnhandledExceptionAction">
+      <result name="success">/WEB-INF/global/pages/error/500.ftl</result>
+      <result name="input">/WEB-INF/global/pages/error/500.ftl</result>
+    </action>
+    
+    <action name="*" class="org.cgiar.ccafs.ap.action.BaseAction">
+      <result name="input">/WEB-INF/global/pages/error/404.ftl</result>
+    </action>
+
+  </package>
+
+  <!--
+    Home is in the namespace="/"
+    Planning is in the namespace="/planning"
+    Reporting is in the namespace="/reporting"
+    Summaries is in the namespace="/summaries"
+    Admin is in the namespace="/admin"
+  -->
+  <include file="struts-home.xml" />
+  <include file="struts-pre-planning.xml" />
+
+</struts>

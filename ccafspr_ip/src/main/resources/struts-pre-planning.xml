@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE struts PUBLIC "-//Apache Software Foundation//DTD Struts Configuration 2.3//EN" "http://struts.apache.org/dtds/struts-2.3.dtd">
+<struts>
+
+  <!-- Add addition packages and configuration here. -->
+  <package name="preplanning" namespace="/pre-planning" extends="ccafsap-default">
+    <default-action-ref name="activities" />
+
+    <!-- Sections -->
+    
+    <!-- Section: Higher Level Impact Pathways  -->
+    <action name="outcomes" class="org.cgiar.ccafs.ap.action.preplanning.OutcomesPreplanningAction">
+      <result name="input">/WEB-INF/preplanning/outcomesPreplanning.ftl</result>
+    </action>
+    
+    <action name="midOutcomes" class="org.cgiar.ccafs.ap.action.preplanning.MidOutcomesPreplanningAction">
+      <result name="input">/WEB-INF/preplanning/midOutcomes.ftl</result>
+    </action>
+    
+    <action name="outputs" class="org.cgiar.ccafs.ap.action.BaseAction">
+      <result name="input">/WEB-INF/preplanning/outputs.ftl</result>
+    </action>
+    
+    <action name="actions" class="org.cgiar.ccafs.ap.action.BaseAction">
+      <result name="input">/WEB-INF/preplanning/actions.ftl</result>
+    </action>
+    
+    <!-- Section: Projects  -->
+    <action name="projects" class="org.cgiar.ccafs.ap.action.preplanning.ProjectsListAction">
+      <result name="input">/WEB-INF/preplanning/projects.ftl</result>
+    </action>
+    
+    <action name="description" class="org.cgiar.ccafs.ap.action.BaseAction">
+      <result name="input">/WEB-INF/preplanning/projectDescription.ftl</result>
+    </action>
+    
+    <action name="partners" class="org.cgiar.ccafs.ap.action.BaseAction">
+      <result name="input">/WEB-INF/preplanning/projectPartners.ftl</result>
+    </action>
+    
+    <action name="budget" class="org.cgiar.ccafs.ap.action.BaseAction">
+      <result name="input">/WEB-INF/preplanning/projectBudget.ftl</result>
+    </action>
+    
+    
+  </package>
+</struts>
