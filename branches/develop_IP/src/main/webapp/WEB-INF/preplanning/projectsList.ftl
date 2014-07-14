@@ -22,7 +22,7 @@
               </td>
               <td> 
                   <a href=" [@s.url action='description' includeParams='get']  [/@s.url]" >
-                    ${project.name}
+                    ${project.title}
                   </a>  
               </td>
               <td> 

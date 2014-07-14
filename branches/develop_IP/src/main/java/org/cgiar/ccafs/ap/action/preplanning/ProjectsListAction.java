@@ -1,13 +1,15 @@
 package org.cgiar.ccafs.ap.action.preplanning;
 
-import java.util.ArrayList;
-import java.util.List;
-
-import com.google.inject.Inject;
 import org.cgiar.ccafs.ap.action.BaseAction;
 import org.cgiar.ccafs.ap.config.APConfig;
 import org.cgiar.ccafs.ap.data.manager.LogframeManager;
+import org.cgiar.ccafs.ap.data.manager.ProjectManager;
+import org.cgiar.ccafs.ap.data.model.Employees;
 import org.cgiar.ccafs.ap.data.model.Project;
+
+import java.util.List;
+
+import com.google.inject.Inject;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -15,9 +17,13 @@ import org.slf4j.LoggerFactory;
 public class ProjectsListAction extends BaseAction {
 
 
-  private static final long serialVersionUID = 6064621727280821945L;
+  /**
+   * 
+   */
+  private static final long serialVersionUID = 2845677913596494699L;
 
   // Manager
+  private ProjectManager projectManager;
 
   private static Logger LOG = LoggerFactory.getLogger(ProjectsListAction.class);
 
@@ -25,9 +31,9 @@ public class ProjectsListAction extends BaseAction {
   List<Project> projects;
 
   @Inject
-  public ProjectsListAction(APConfig config, LogframeManager logframeManager) {
+  public ProjectsListAction(APConfig config, LogframeManager logframeManager, ProjectManager projectManager) {
     super(config, logframeManager);
-    // TODO Auto-generated constructor stub
+    this.projectManager = projectManager;
   }
 
 
@@ -37,16 +43,9 @@ public class ProjectsListAction extends BaseAction {
 
   @Override
   public void prepare() throws Exception {
-    projects = new ArrayList<>();
-    Project project1 = new Project(1, "Project 1");
-    Project project2 = new Project(2, "Project 2");
-    Project project3 = new Project(3, "Project 3");
-    Project project4 = new Project(4, "Project 4");
-
-    projects.add(project1);
-    projects.add(project2);
-    projects.add(project3);
-    projects.add(project4);
+    Employees projectLeader = new Employees(1);
+    projects = projectManager.getProject(projectLeader);
+    System.out.println(projects);
     super.prepare();
   }
 }
