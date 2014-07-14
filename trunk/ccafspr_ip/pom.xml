@@ -36,6 +36,10 @@
       <name>Hernán D. Carvajal B.</name>
       <email>h.d.carvajal@cgiar.org</email>
     </developer>
+    <developer>
+      <name>Sebastián Amariles</name>
+      <email>s.amariles@cgiar.org</email>
+    </developer>
   </developers>
 
   <issueManagement>
