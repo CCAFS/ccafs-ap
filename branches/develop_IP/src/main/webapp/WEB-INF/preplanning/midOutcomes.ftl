@@ -47,7 +47,7 @@
                 [/#list]
               [/#if]
               [#-- Add contribute --]
-              <div class="fullBlock addContributeBlock">
+              <div class="fullBlock addContributeBlock" style="display:none">
                 [@customForm.select name="contributionId" value="" showTitle=false listName="outcomesList" keyFieldName="id"  displayFieldName="description" addButton=true className="contributes" /]
               </div> 
             </div>  
@@ -82,10 +82,9 @@
           <div class="contentElements parentsBlock">
             <div class="itemIndex">[@s.text name="preplanning.midOutcomes.contributes" /] </div>
               [#-- midOutcome's parents --]
-              <div class="contributions">  
-              </div>
+               
               [#-- Add contribute --]
-              <div class="fullBlock addContributeBlock">
+              <div class="fullBlock addContributeBlock" style="display:none">
                 [@customForm.select name="contribution" showTitle=false listName="outcomesList" keyFieldName="id"  displayFieldName="description" addButton=true className="contributes" /]
               </div> 
             </div>  
@@ -119,15 +118,16 @@
       </div> 
       [#-- Title --]
       [@customForm.textArea name="midOutcomeDescription" i18nkey="preplanning.midOutcomes.outcome" required=true /] 
-      <div class="contentElements">
+      <div id="contributesBlock" class="contentElements">
       	<div class="itemIndex">[@s.text name="preplanning.midOutcomes.contributes" /] </div>
-      	
+      	[#-- Contribute area --]
+      	[@contributeTemplate.midOutcomes value="${outcomesList[0].id}" description="${outcomesList[0].description}"/]
       	[#-- Add contribute --]
-         <div class="fullBlock addContributeBlock">
+         <div class="fullBlock addContributeBlock" style="display:none">
         	[@customForm.select name="contributions" showTitle=false listName="outcomesList" keyFieldName="id"  displayFieldName="description" addButton=true className="contributes" /]
         </div> 
       </div>  
-      <div class="contentElements indicatorsBlock">
+      <div id="indicatorsBlock" class="contentElements indicatorsBlock">
       	<div class="itemIndex">[@s.text name="preplanning.midOutcomes.indicators" /] </div>
       	[#-- Indicator template --]
       	[@indicatorTemplate.midOutcomes template=true /] 
