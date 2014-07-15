@@ -35,15 +35,16 @@ function removeMidOutcomeEvent(event){
 
 
 function setMidOutcomesIndexes(){
-	console.log($("div#MidOutcomeBlocks .midOutcome"));
+	//console.log($("div#MidOutcomeBlocks .midOutcome"));
   $("div#MidOutcomeBlocks .midOutcome").each(function(index, element){
      
       var elementName = "midOutcomes[" + index + "]."; 
       $(element).attr("id","midOutcome-"+index);
-      $(element).find("[name^='id']").attr("name", elementName + "id");
+      $(element).find("[id^='midOutcomeId']").attr("name", elementName + "id");
       $(element).find("[id^='midOutcomeDescription']").attr("name", elementName + "description").attr("placeholder", "Add outcome #"+ (index+1) );
       console.log('setMidOutcomesIndexes -->'+index+ ' -->'+$(element).attr('id') ); 
-      
+      setContributesIndexes(index);
+      setIndicatorsIndexes(index);
      
   });
 }
@@ -59,31 +60,31 @@ function addContributeEvent(event){
 		var $newElementClone = $("#contributeTemplate").clone(true).removeAttr("id");
 		var grandParentId = $addButton.parent().parent().attr("id").split("-")[1];
 		$newElementClone.find("[value]").attr("value", $optionSelected.attr("value"));
-		$newElementClone.find('p').html($optionSelected.html())
+		$newElementClone.find('p').html($optionSelected.html());
 		$addButton.before($newElementClone);
 		$newElementClone.show("slow");  
-		$optionSelected.remove();
+		$optionSelected.remove(); 
 		setContributesIndexes(grandParentId);
 	}
 }
 
 function removeContributeEvent(event){
-  event.preventDefault();
-  var pressedLink = event.target;
+  event.preventDefault(); 
   var $elementDiv = $(event.target).parent().parent();
   var $parentDiv = $elementDiv.parent().parent();
   $elementDiv.hide("slow", function() {
-	$(this).parent().parent().find("select").append('<option value="'+$elementDiv.find("input").attr("value")+'">'+$elementDiv.find("p").html()+'</option>');
-    var i = $(this).parent().parent().attr("id").split("-")[1];
-    $(this).remove(); 
+	var i = $parentDiv.attr("id").split("-")[1];  
+	$parentDiv.find("select").append('<option value="'+$elementDiv.find("input").attr("value")+'">'+$elementDiv.find("p").html()+'</option>');  
+    $(this).remove();  
     setContributesIndexes(i);
   }); 
 }
 
 function setContributesIndexes(i){
-  $("#midOutcome-"+i+" div.contributions").each(function(index, element){ 
+  $("#midOutcome-"+i+" div.contributions").each(function(index, element){
+	  console.log(i);
       var elementName = "midOutcomes["+i+"].contributesTo[" + index + "]."; 
-      $(element).find("[name^='id']").attr("name", elementName+"id");
+      $(element).find("[id^='contributeId']").attr("name", elementName+"id").attr("value", outcome.id);
   });
 }
 

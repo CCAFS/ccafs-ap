@@ -20,8 +20,8 @@
   [#include "/WEB-INF/global/pages/pre-planning-secondary-menu.ftl" /]
   
   [@s.form action="midOutcomes" cssClass="pure-form"]  
-  <article class="halfContent" id="midOutcomes">
-  	[#include "/WEB-INF/preplanning/ipPreplanningSubMenu.ftl" /]
+    <article class="halfContent" id="midOutcomes">
+    [#include "/WEB-INF/preplanning/ipPreplanningSubMenu.ftl" /]
     <h1 class="contentTitle">
     [@s.text name="preplanning.midOutcomes.title" /]  
     </h1>
@@ -30,7 +30,7 @@
           [#list midOutcomes as midOutcome]
           <div class="midOutcome" id="midOutcome-${midOutcome_index}">
             [#-- Mid outcome identifier --]
-            <input type="hidden" name="midOutcomes[${midOutcome_index}].id" value="${midOutcome.id}" />
+            <input id="midOutcomeId" type="hidden" name="midOutcomes[${midOutcome_index}].id" value="${midOutcome.id}" />
             [#-- Remove midOutcome --]
             <div class="removeMidOutcomeBlock removeLink">              
               <img src="${baseUrl}/images/global/icon-remove.png" />
@@ -43,12 +43,12 @@
               [#-- midOutcome's parents --]
               [#if midOutcome.contributesTo?has_content]
                 [#list midOutcome.contributesTo as parent] 
-                  [@contributeTemplate.midOutcomes midOutcome_index="${midOutcome_index}" parent_index="${parent_index}" value="${parent.id}" description="${parent.description}" /]
+                  [@contributeTemplate.midOutcomes midOutcome_index="${midOutcome_index}" parent_index="${parent_index}" value="${parent.id}"description="Outcome 2025"  /]
                 [/#list]
               [/#if]
               [#-- Add contribute --]
               <div class="fullBlock addContributeBlock" style="display:none">
-                [@customForm.select name="contributionId" value="" showTitle=false listName="outcomesList" keyFieldName="id"  displayFieldName="description" addButton=true className="contributes" /]
+                [@customForm.select name="contributionId" value="none" showTitle=false listName="outcomesList" keyFieldName="id"  displayFieldName="description" addButton=true className="contributes" /]
               </div> 
             </div>  
             <div class="contentElements indicatorsBlock">
@@ -85,7 +85,7 @@
                
               [#-- Add contribute --]
               <div class="fullBlock addContributeBlock" style="display:none">
-                [@customForm.select name="contribution" showTitle=false listName="outcomesList" keyFieldName="id"  displayFieldName="description" addButton=true className="contributes" /]
+                [@customForm.select name="contribution" value="none" showTitle=false listName="outcomesList" keyFieldName="id"  displayFieldName="description" addButton=true className="contributes" /]
               </div> 
             </div>  
             <div class="contentElements indicatorsBlock">
@@ -106,11 +106,10 @@
       <img src="${baseUrl}/images/global/icon-add.png" />
       <a href="" class="addMidOutcome" >[@s.text name="preplanning.midOutcomes.addOutcome" /]</a>
     </div>
-    
     [#----  Mid Outcome TEMPLATE hidden ----]
     <div id="midOutcomeTemplate" class="midOutcome" style="display:none">
       [#-- Objective identifier --]
-      <input type="hidden" name="id" value="-1" />
+      <input id="midOutcomeId" type="hidden" value="-1" />
       [#-- Remove midOutcome --]      
       <div class="removeLink removeMidOutcomeBlock">            
         <img src="${baseUrl}/images/global/icon-remove.png" />
@@ -119,21 +118,21 @@
       [#-- Title --]
       [@customForm.textArea name="midOutcomeDescription" i18nkey="preplanning.midOutcomes.outcome" required=true /] 
       <div id="contributesBlock" class="contentElements">
-      	<div class="itemIndex">[@s.text name="preplanning.midOutcomes.contributes" /] </div>
-      	[#-- Contribute area --]
-      	[@contributeTemplate.midOutcomes value="${outcomesList[0].id}" description="${outcomesList[0].description}"/]
-      	[#-- Add contribute --]
+        <div class="itemIndex">[@s.text name="preplanning.midOutcomes.contributes" /] </div>
+        [#-- Contribute area --]
+        [@contributeTemplate.midOutcomes template=true value="${outcomesList[0].id}" description="${outcomesList[0].description}"/]
+        [#-- Add contribute --]
          <div class="fullBlock addContributeBlock" style="display:none">
-        	[@customForm.select name="contributions" showTitle=false listName="outcomesList" keyFieldName="id"  displayFieldName="description" addButton=true className="contributes" /]
+          [@customForm.select name="contributions" value="none" showTitle=false listName="outcomesList" keyFieldName="id"  displayFieldName="description" addButton=true className="contributes" /]
         </div> 
       </div>  
       <div id="indicatorsBlock" class="contentElements indicatorsBlock">
-      	<div class="itemIndex">[@s.text name="preplanning.midOutcomes.indicators" /] </div>
-      	[#-- Indicator template --]
-      	[@indicatorTemplate.midOutcomes template=true /] 
-      	[#-- Add Indicator --]
+        <div class="itemIndex">[@s.text name="preplanning.midOutcomes.indicators" /] </div>
+        [#-- Indicator template --]
+        [@indicatorTemplate.midOutcomes template=true /] 
+        [#-- Add Indicator --]
         <div id="addIndicatorBlock" class="fullBlock">
-        	[@customForm.button i18nkey="preplanning.midOutcomes.addIndicator" class="addButton" /]
+          [@customForm.button i18nkey="preplanning.midOutcomes.addIndicator" class="addButton" /]
         </div> 
       </div>  
     </div> 
@@ -150,4 +149,7 @@
   </article>
   [/@s.form]  
 </section>
+<script type="text/javascript">
+var outcome = {id:${outcomesList[0].id}, description:"${outcomesList[0].description}" };
+</script>
 [#include "/WEB-INF/global/pages/footer.ftl"]

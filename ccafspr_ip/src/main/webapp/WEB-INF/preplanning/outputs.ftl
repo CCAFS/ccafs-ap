@@ -28,8 +28,8 @@
     <div id="outputBlocks"> 
         [#if outputs?has_content]
           [#list outputs as output]
-          <div class="output" id="output-${midOutcome_index}">
-            [#-- output identifier --]
+          <div class="output" id="output-${output_index}">
+            [#-- output identifier --] 
             <input type="hidden" name="outputs[${output_index}].id" value="${output.id}" />
             [#-- Remove output --]
             <div class="removeOutputBlock removeLink">              
@@ -38,17 +38,17 @@
             </div>  
             [#-- Title --]
             [@customForm.textArea name="outputs[${output_index}].description" i18nkey="preplanning.outputs.output" required=true /] 
-            <div class="contentElements parentsBlock">
+            <div id="contributesBlock" class="contentElements parentsBlock">
               <div class="itemIndex">[@s.text name="preplanning.outputs.contributes" /] </div>
-              [#-- output's parents --]
+              [#-- output's parents --] 
               [#if output.contributesTo?has_content]
                 [#list output.contributesTo as parent] 
-                  [@contributeTemplate.outputs output_index="${output_index}" parent_index="${parent_index}" value="${parent.id}" description="${parent.description}" /]
+                  [@contributeTemplate.outputs output_index="${output_index}" parent_index="${parent_index}" value="${parent.id}" description="${parent.description}" canRemove=true /]
                 [/#list]
               [/#if]
               [#-- Add contribute --]
               <div class="fullBlock addContributeBlock">
-                [@customForm.select name="contributionId" value="" showTitle=false listName="outputsList" keyFieldName="id"  displayFieldName="description" addButton=true className="contributes" /]
+                [@customForm.select name="contributionId" value="" showTitle=false listName="midOutcomesList" keyFieldName="id"  displayFieldName="description" addButton=true className="contributes" /]
               </div> 
             </div>   
           </div>  
@@ -64,13 +64,13 @@
           </div> 
           [#-- Title --]
           [@customForm.textArea name="outputs[0].description" i18nkey="preplanning.outputs.output" required=true /] 
-          <div class="contentElements parentsBlock">
+          <div id="contributesBlock" class="contentElements parentsBlock">
             <div class="itemIndex">[@s.text name="preplanning.outputs.contributes" /] </div>
               [#-- output's parents --]
                
               [#-- Add contribute --]
-              <div class="fullBlock addContributeBlock" style="display:none">
-                [@customForm.select name="contribution" showTitle=false listName="outcomesList" keyFieldName="id"  displayFieldName="description" addButton=true className="contributes" /]
+              <div class="fullBlock addContributeBlock"">
+                [@customForm.select name="contribution" showTitle=false listName="midOutcomesList" keyFieldName="id"  displayFieldName="description" addButton=true className="contributes" /]
               </div> 
             </div>
         </div>
@@ -84,38 +84,29 @@
     </div>
     
     [#----  Output TEMPLATE hidden ----]
-    <div id="midOutcomeTemplate" class="midOutcome" style="display:none">
+    <div id="outputTemplate" class="output" style="display:none">
       [#-- Objective identifier --]
-      <input type="hidden" name="id" value="-1" />
+      <input id="outputId" type="hidden" value="-1" />
       [#-- Remove Output --]      
-      <div class="removeLink removeMidOutcomeBlock">            
+      <div class="removeLink removeOutputBlock">            
         <img src="${baseUrl}/images/global/icon-remove.png" />
-        <a id="removeMidOutcome" href="" class="removeContribute">[@s.text name="preplanning.midOutcomes.removeMidOutcome" /]</a>
+        <a id="removeOutput" href="" class="removeContribute">[@s.text name="preplanning.outputs.removeOutput" /]</a>
       </div> 
       [#-- Title --]
-      [@customForm.textArea name="midOutcomeDescription" i18nkey="preplanning.midOutcomes.outcome" required=true /] 
+      [@customForm.textArea name="outputDescription" i18nkey="preplanning.outputs.output" required=true /] 
       <div id="contributesBlock" class="contentElements">
-        <div class="itemIndex">[@s.text name="preplanning.midOutcomes.contributes" /] </div>
+        <div class="itemIndex">[@s.text name="preplanning.outputs.contributes" /] </div>
         [#-- Contribute area --]
-        [@contributeTemplate.midOutcomes value="${outcomesList[0].id}" description="${outcomesList[0].description}"/]
+         
         [#-- Add contribute --]
-         <div class="fullBlock addContributeBlock" style="display:none">
-          [@customForm.select name="contributions" showTitle=false listName="outcomesList" keyFieldName="id"  displayFieldName="description" addButton=true className="contributes" /]
-        </div> 
-      </div>  
-      <div id="indicatorsBlock" class="contentElements indicatorsBlock">
-        <div class="itemIndex">[@s.text name="preplanning.midOutcomes.indicators" /] </div>
-        [#-- Indicator template --]
-        [@indicatorTemplate.midOutcomes template=true /] 
-        [#-- Add Indicator --]
-        <div id="addIndicatorBlock" class="fullBlock">
-          [@customForm.button i18nkey="preplanning.midOutcomes.addIndicator" class="addButton" /]
+         <div class="fullBlock addContributeBlock">
+          [@customForm.select name="contributions" showTitle=false listName="midOutcomesList" keyFieldName="id"  displayFieldName="description" addButton=true className="contributes" /]
         </div> 
       </div>  
     </div> 
-    [#-- End Mid Outcome template  --]
+    [#-- End Output template  --]
     [#-- Contribute template --]
-    [@contributeTemplate.midOutcomes template=true /]
+    [@contributeTemplate.outputs template=true canRemove=true /]
     [#-- End Contribute template --] 
     
      <div class="buttons">
@@ -127,3 +118,11 @@
   [/@s.form]  
 </section>
 [#include "/WEB-INF/global/pages/footer.ftl"]
+
+
+
+
+
+
+
+  

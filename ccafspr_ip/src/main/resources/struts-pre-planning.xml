@@ -15,16 +15,14 @@
     
     <action name="midOutcomes" class="org.cgiar.ccafs.ap.action.preplanning.MidOutcomesPreplanningAction">
       <result name="input">/WEB-INF/preplanning/midOutcomes.ftl</result>
+      <result name="success">/WEB-INF/preplanning/midOutcomes.ftl</result>
     </action>
     
-    <action name="outputs" class="org.cgiar.ccafs.ap.action.BaseAction">
+    <action name="outputs" class="org.cgiar.ccafs.ap.action.preplanning.OutputsPreplanningAction">
       <result name="input">/WEB-INF/preplanning/outputs.ftl</result>
+      <result name="success">/WEB-INF/preplanning/outputs.ftl</result>
     </action>
-    
-    <action name="actions" class="org.cgiar.ccafs.ap.action.BaseAction">
-      <result name="input">/WEB-INF/preplanning/actions.ftl</result>
-    </action>
-    
+        
     <!-- Section: Projects  -->
     <action name="projects" class="org.cgiar.ccafs.ap.action.preplanning.ProjectsListAction">
       <result name="input">/WEB-INF/preplanning/projects.ftl</result>
