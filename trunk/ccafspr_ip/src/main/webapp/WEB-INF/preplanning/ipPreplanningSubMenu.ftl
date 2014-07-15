@@ -13,9 +13,5 @@
         [@s.url action='outputs' includeParams='get'][/@s.url]
       "><li>[@s.text name="menu.preplanning.submenu.outputs" /]</li>
     </a>
-    <a [#if currentStage == "actions"] class="currentReportingSection" [/#if] href="
-        [@s.url action='actions' includeParams='get'][/@s.url]
-      "><li>[@s.text name="menu.preplanning.submenu.actions" /]</li>
-    </a>
   </ul>
 </nav>
