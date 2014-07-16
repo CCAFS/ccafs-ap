@@ -43,7 +43,7 @@
               [#-- midOutcome's parents --]
               [#if midOutcome.contributesTo?has_content]
                 [#list midOutcome.contributesTo as parent] 
-                  [@contributeTemplate.midOutcomes midOutcome_index="${midOutcome_index}" parent_index="${parent_index}" value="${parent.id}"description="Outcome 2025"  /]
+                  [@contributeTemplate.midOutcomes midOutcome_index="${midOutcome_index}" parent_index="${parent_index}" value="${parent.id}" description="Outcome 2025"  /]
                 [/#list]
               [/#if]
               [#-- Add contribute --]
