@@ -73,7 +73,7 @@ public class IPElementManagerImpl implements IPElementManager {
   public boolean saveIPElements(List<IPElement> elements) {
     Map<String, Object> ipElementData;
     boolean allSaved = true;
-    int elementId;
+    int elementId, programElementID;
 
     for (IPElement element : elements) {
       ipElementData = new HashMap<String, Object>();
@@ -85,10 +85,14 @@ public class IPElementManagerImpl implements IPElementManager {
       }
 
       ipElementData.put("description", element.getDescription());
-      ipElementData.put("program_id", element.getProgram().getId());
+      ipElementData.put("creator_id", element.getProgram().getId());
       ipElementData.put("element_type_id", element.getType().getId());
+      elementId = ipElementDAO.createIPElement(ipElementData);
 
-      elementId = ipElementDAO.saveIPElements(ipElementData);
+      // If the ip_element was updated, createIPElement method returns 0, update the value
+      elementId = (elementId == 0) ? element.getId() : elementId;
+
+      programElementID = ipElementDAO.relateIPElement(elementId, element.getProgram().getId());
 
       // If the result is 0 the element was updated and keep the same id
       elementId = (elementId == 0) ? element.getId() : elementId;
@@ -106,7 +110,7 @@ public class IPElementManagerImpl implements IPElementManager {
 
             indicatorData.put("description", indicator.getDescription());
             indicatorData.put("target", indicator.getTarget());
-            indicatorData.put("element_id", elementId);
+            indicatorData.put("program_element_id", programElementID);
             ipIndicatorDAO.saveIndicator(indicatorData);
           }
         }

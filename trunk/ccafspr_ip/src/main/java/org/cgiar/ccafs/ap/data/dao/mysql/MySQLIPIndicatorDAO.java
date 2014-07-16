@@ -34,7 +34,7 @@ public class MySQLIPIndicatorDAO implements IPIndicatorDAO {
     List<Map<String, String>> ipIndicatorList = new ArrayList<>();
 
     StringBuilder query = new StringBuilder();
-    query.append("SELECT * FROM ip_indicators WHERE element_id = " + ipElementID);
+    query.append("SELECT * FROM ip_indicators WHERE program_element_id = " + ipElementID);
 
     try (Connection con = databaseManager.getConnection()) {
       ResultSet rs = databaseManager.makeQuery(query.toString(), con);
@@ -89,7 +89,7 @@ public class MySQLIPIndicatorDAO implements IPIndicatorDAO {
     LOG.debug(">> saveIndicator(indicatorData={})", indicatorData);
 
     StringBuilder query = new StringBuilder();
-    query.append("INSERT INTO ip_indicators (id, description, target, element_id) ");
+    query.append("INSERT INTO ip_indicators (id, description, target, program_element_id) ");
     query.append("VALUES (?, ?, ?, ?) ");
     query.append("ON DUPLICATE KEY UPDATE description = VALUES(description), target = VALUES(target)");
 
@@ -97,7 +97,7 @@ public class MySQLIPIndicatorDAO implements IPIndicatorDAO {
     values[0] = indicatorData.get("id");
     values[1] = indicatorData.get("description");
     values[2] = indicatorData.get("target");
-    values[3] = indicatorData.get("element_id");
+    values[3] = indicatorData.get("program_element_id");
 
     int result = saveData(query.toString(), values);
     LOG.debug("<< saveIndicator():{}", result);
