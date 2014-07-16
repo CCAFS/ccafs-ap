@@ -41,7 +41,7 @@
                 [@indicatorTemplate.outcomes outcome_index="${outcome_index}" indicator_index="${indicator_index}" value="${indicator.id}" i18nkey="preplanning.outcomes.indicators.description" show_remove_link=false /]
               [/#list]
             [#else]
-              [@indicatorTemplate.outcomes outcome_index="${outcome_index}" show_remove_link=false /]
+              [@indicatorTemplate.outcomes outcome_index="${outcome_index}" i18nkey="preplanning.outcomes.indicators.description" show_remove_link=false /]
             [/#if]
             
             [#-- Add Indicator Button --]
