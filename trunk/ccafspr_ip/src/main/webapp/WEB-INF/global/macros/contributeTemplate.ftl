@@ -11,7 +11,7 @@
       <p>${description}</p>
   [/#if] 
   [#if canRemove]
-      [#-- remove link --]      
+      [#-- remove link --]
       <div class="removeLink">            
         <img src="${baseUrl}/images/global/icon-remove.png" />
         <a id="removeContribute-${parent_index}" href="" class="removeContribute">[@s.text name="preplanning.midOutcomes.removeContribute" /]</a>

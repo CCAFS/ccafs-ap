@@ -41,6 +41,7 @@ public class OutputsPreplanningAction extends BaseAction {
 
   @Override
   public void prepare() throws Exception {
+	super.prepare();
     IPProgram program = new IPProgram();
     program.setId(1);
 

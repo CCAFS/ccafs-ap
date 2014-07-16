@@ -2,7 +2,7 @@ package org.cgiar.ccafs.ap.data.manager.impl;
 
 import org.cgiar.ccafs.ap.data.dao.ProjectDAO;
 import org.cgiar.ccafs.ap.data.manager.ProjectManager;
-import org.cgiar.ccafs.ap.data.model.Employees;
+import org.cgiar.ccafs.ap.data.model.Employee;
 import org.cgiar.ccafs.ap.data.model.Project;
 
 import java.util.ArrayList;
@@ -24,7 +24,9 @@ public class ProjectManagerImpl implements ProjectManager {
 
 
   @Override
-  public List<Project> getProject(Employees projectLeader) {
+  public List<Project> getProject(Object object) {
+	// TODO - Pending to validate what kind of parameter should be used in this method.
+	Employee projectLeader = (Employee) object;
     List<Map<String, String>> projectDataList = projectDAO.getProject(projectLeader.getId());
     return setDataToProjectObjects(projectDataList);
   }
@@ -41,6 +43,13 @@ public class ProjectManagerImpl implements ProjectManager {
     }
 
     return projectsList;
+  }
+
+
+  @Override
+  public List<Project> getAllProjects() {
+	// TODO Auto-generated method stub
+	return new ArrayList<Project>();
   }
 
 

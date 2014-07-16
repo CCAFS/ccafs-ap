@@ -66,9 +66,9 @@ public class MySQLProjectDAO implements ProjectDAO {
     query.append("SELECT p.*   ");
     // query.append("et.id as 'element_type_id', et.name as 'element_type_name', ");
     // query.append("pro.id as 'program_id', pro.acronym as 'program_acronym' ");
-    query.append("FROM `projects` as p ");
+    query.append("FROM projects as p ");
     query.append("INNER JOIN project_focuses pf ON p.id = pf.project_id ");
-    query.append("INNER JOIN ip_programs ipr    ON pf.program_id=ipr.id ");
+    query.append("INNER JOIN ip_programs ipr ON pf.program_id=ipr.id ");
     query.append("WHERE ipr.id='1' ");
     // query.append(programID);
 

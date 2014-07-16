@@ -48,6 +48,7 @@ public class OutcomesPreplanningAction extends BaseAction {
 
   @Override
   public void prepare() throws Exception {
+	super.prepare();
     validationMessages = new StringBuilder();
 
     IPProgram program = new IPProgram();
