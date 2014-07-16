@@ -28,10 +28,31 @@ public class MySQLIPElementDAO implements IPElementDAO {
   }
 
   @Override
+  public int createIPElement(Map<String, Object> ipElementData) {
+    LOG.debug(">> createIPElement(ipElementData)", ipElementData);
+
+    StringBuilder query = new StringBuilder();
+    query.append("INSERT INTO ip_elements (id, description, creator_id, element_type_id ) ");
+    query.append("VALUES (?, ?, ?, ?) ");
+    query.append("ON DUPLICATE KEY UPDATE description=VALUES(description), creator_id=VALUES(creator_id), ");
+    query.append("element_type_id=VALUES(element_type_id)");
+
+    Object[] values = new Object[4];
+    values[0] = ipElementData.get("id");
+    values[1] = ipElementData.get("description");
+    values[2] = ipElementData.get("creator_id");
+    values[3] = ipElementData.get("element_type_id");
+
+    int result = saveData(query.toString(), values);
+    LOG.debug("<< createIPElement():{}", result);
+    return result;
+  }
+
+  @Override
   public boolean deleteIpElements(int programId, int typeId) {
     LOG.debug(">> deleteIpElements(programId={}, typeId={})", programId, typeId);
 
-    String deleteQuery = "DELETE FROM ip_elements WHERE program_id = ? AND element_type_id = ?";
+    String deleteQuery = "DELETE FROM ip_elements WHERE creator_id = ? AND element_type_id = ?";
     try (Connection connection = databaseManager.getConnection()) {
       int rowsDeleted = databaseManager.makeChangeSecure(connection, deleteQuery, new Object[] {programId, typeId});
       if (rowsDeleted >= 0) {
@@ -86,12 +107,13 @@ public class MySQLIPElementDAO implements IPElementDAO {
     query.append("pro.id as 'program_id', pro.acronym as 'program_acronym' ");
     query.append("FROM ip_elements e ");
     query.append("INNER JOIN ip_element_types et ON e.element_type_id = et.id ");
-    query.append("INNER JOIN ip_programs pro ON e.program_id = pro.id ");
-    query.append("WHERE program_id = ");
+    query.append("INNER JOIN ip_program_elements pel ON e.id = pel.element_id ");
+    query.append("INNER JOIN ip_programs pro ON pel.program_id = pro.id ");
+    query.append("WHERE pel.program_id = ");
     query.append(programID);
 
 
-    LOG.debug("-- getIPElementsByProgram() > Calling method executeQuery to get the results");
+    LOG.debug("-- getIPElement() > Calling method executeQuery to get the results");
     return getData(query.toString());
   }
 
@@ -105,14 +127,15 @@ public class MySQLIPElementDAO implements IPElementDAO {
     query.append("pro.id as 'program_id', pro.acronym as 'program_acronym' ");
     query.append("FROM ip_elements e ");
     query.append("INNER JOIN ip_element_types et ON e.element_type_id = et.id ");
-    query.append("INNER JOIN ip_programs pro ON e.program_id = pro.id ");
-    query.append("WHERE program_id = ");
+    query.append("INNER JOIN ip_program_elements pel ON e.id = pel.element_id ");
+    query.append("INNER JOIN ip_programs pro ON pel.program_id = pro.id ");
+    query.append("WHERE pel.program_id = ");
     query.append(programID);
     query.append(" AND et.id = ");
     query.append(elementTypeID);
 
 
-    LOG.debug("-- getIPElementsByProgram() > Calling method executeQuery to get the results");
+    LOG.debug("-- getIPElement() > Calling method executeQuery to get the results");
     return getData(query.toString());
   }
 
@@ -126,7 +149,8 @@ public class MySQLIPElementDAO implements IPElementDAO {
     query.append("pro.id as 'program_id', pro.acronym as 'program_acronym' ");
     query.append("FROM ip_elements e ");
     query.append("INNER JOIN ip_element_types et ON e.element_type_id = et.id ");
-    query.append("INNER JOIN ip_programs pro ON e.program_id = pro.id ");
+    query.append("INNER JOIN ip_program_elements pel ON e.id = pel.element_id ");
+    query.append("INNER JOIN ip_programs pro ON pel.program_id = pro.id ");
 
     LOG.debug("-- getIPElementList () > Calling method executeQuery to get the results");
     return getData(query.toString());
@@ -142,12 +166,30 @@ public class MySQLIPElementDAO implements IPElementDAO {
     query.append("pro.id as 'program_id', pro.acronym as 'program_acronym' ");
     query.append("FROM ip_elements e ");
     query.append("INNER JOIN ip_relationships r ON e.id = r.parent_id AND r.child_id = ");
-    query.append(ipElementID);
-    query.append(" INNER JOIN ip_element_types et ON e.element_type_id = et.id ");
-    query.append("INNER JOIN ip_programs pro ON e.program_id = pro.id ");
+    query.append(ipElementID + " ");
+    query.append("INNER JOIN ip_element_types et ON e.element_type_id = et.id ");
+    query.append("INNER JOIN ip_program_elements pel ON e.id = pel.element_id ");
+    query.append("INNER JOIN ip_programs pro ON pel.program_id = pro.id ");
 
-    LOG.debug("-- getIPElementsByProgram() > Calling method executeQuery to get the results");
+    LOG.debug("-- getParentsOfIPElement() > Calling method executeQuery to get the results");
     return getData(query.toString());
+  }
+
+  @Override
+  public int relateIPElement(int elementID, int programID) {
+    LOG.debug(">> relateIPElement(elementID, programID)", elementID, programID);
+
+    StringBuilder query = new StringBuilder();
+    query.append("INSERT INTO ip_program_elements (element_id, program_id) ");
+    query.append("VALUES (?, ?) ");
+
+    Object[] values = new Object[2];
+    values[0] = elementID;
+    values[1] = programID;
+
+    int result = saveData(query.toString(), values);
+    LOG.debug("<< relateIPElements():{}", result);
+    return result;
   }
 
   private int saveData(String query, Object[] data) {
@@ -168,25 +210,5 @@ public class MySQLIPElementDAO implements IPElementDAO {
       LOG.error("-- saveData() > There was a problem saving information into the database. \n{}", e);
     }
     return generatedId;
-  }
-
-  @Override
-  public int saveIPElements(Map<String, Object> ipElementData) {
-    LOG.debug(">> saveIPElements(ipElementData={})", ipElementData);
-
-    StringBuilder query = new StringBuilder();
-    query.append("INSERT INTO ip_elements (id, description, program_id, element_type_id) ");
-    query.append("VALUES (?, ?, ?, ?) ");
-    query.append("ON DUPLICATE KEY UPDATE description = VALUES(description), program_id = VALUES(program_id)");
-
-    Object[] values = new Object[4];
-    values[0] = ipElementData.get("id");
-    values[1] = ipElementData.get("description");
-    values[2] = ipElementData.get("program_id");
-    values[3] = ipElementData.get("element_type_id");
-
-    int result = saveData(query.toString(), values);
-    LOG.debug("<< saveIPElements():{}", result);
-    return result;
   }
 }

@@ -30,7 +30,7 @@ public class ProjectsListAction extends BaseAction {
   List<Project> projects;
 
   @Inject
-  public ProjectsListAction(APConfig config) {
+  public ProjectsListAction(APConfig config, ProjectManager projectManager) {
     super(config);
     this.projectManager = projectManager;
   }
