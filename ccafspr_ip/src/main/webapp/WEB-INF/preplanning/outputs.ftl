@@ -10,7 +10,7 @@
 [#include "/WEB-INF/global/pages/main-menu.ftl" /]
 [#import "/WEB-INF/global/macros/forms.ftl" as customForm/]
 [#import "/WEB-INF/global/macros/indicatorTemplate.ftl" as indicatorTemplate/]
-[#import "/WEB-INF/preplanning/contributeTemplate.ftl" as contributeTemplate/]
+[#import "/WEB-INF/global/macros/contributeTemplate.ftl" as contributeTemplate/]
     
 <section class="content">
   <div class="helpMessage">
