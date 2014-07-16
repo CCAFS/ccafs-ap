@@ -30,7 +30,7 @@
       [#if outcomes?has_content]
         [#list outcomes as outcome]
           [#-- Outcome identifier --]
-          <input type="hidden" name="id" value="${outcome.id}" />
+          <input type="hidden" name="outcomes[${outcome_index}].id" value="${outcome.id}" />
           [#-- Title --]
           [@customForm.textArea name="outcomes[${outcome_index}].description" i18nkey="preplanning.outcomes.outcome" required=true /]
           <div class="contentElements outcomeIndicatorsBlock"> 
@@ -41,7 +41,7 @@
                 [@indicatorTemplate.outcomes outcome_index="${outcome_index}" indicator_index="${indicator_index}" value="${indicator.id}" i18nkey="preplanning.outcomes.indicators.description" show_remove_link=false /]
               [/#list]
             [#else]
-              [@indicatorTemplate.outcomes outcome_index="${outcome_index}" indicator_index="${indicator_index}" show_remove_link=false /]
+              [@indicatorTemplate.outcomes outcome_index="${outcome_index}" show_remove_link=false /]
             [/#if]
             
             [#-- Add Indicator Button --]
@@ -55,7 +55,7 @@
         [/#list]
       [#else]
           [#-- Outcome identifier --]
-          <input type="hidden" name="id" value="-1" /> 
+          <input type="hidden" name="outcomes[0].id" value="-1" /> 
           [#-- Title --]
           [@customForm.textArea name="outcomes[0].description" i18nkey="preplanning.outcomes.outcome" required=true /] 
 
