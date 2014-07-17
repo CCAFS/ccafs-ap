@@ -1,18 +1,15 @@
 /*****************************************************************
  * This file is part of CCAFS Planning and Reporting Platform.
- * 
  * CCAFS P&R is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
  * the Free Software Foundation, either version 3 of the License, or
  * at your option) any later version.
- * 
  * CCAFS P&R is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
  * GNU General Public License for more details.
- * 
  * You should have received a copy of the GNU General Public License
- * along with CCAFS P&R.  If not, see <http://www.gnu.org/licenses/>.
+ * along with CCAFS P&R. If not, see <http://www.gnu.org/licenses/>.
  *****************************************************************/
 package org.cgiar.ccafs.ap.data.model;
 
@@ -20,22 +17,57 @@ import java.util.ArrayList;
 
 import org.apache.commons.lang3.builder.ToStringBuilder;
 
-
+/**
+ * This class represents a Project.
+ * 
+ * @author Javier Andrés Gallego
+ * @author Héctor Tobón
+ *
+ */
 public class Project {
 
-  public int id;
-  public String title;
-  private ArrayList<IPProgram> types;
+  private int id;
+  private String title;
+  private ArrayList<IPProgram> regions; // The list of regions in which this project works with.
+  private ArrayList<IPProgram> flagships; // The list of flagships in which this project works with.
+  private Institution leader;
+  private Institution owner;
 
   public Project() {
-
+    super();
   }
 
-  public Project(int id, String title) {
-    this.id = id;
-    this.title = title;
+  public ArrayList<IPProgram> getRegions() {
+    return regions;
+  }
+  
+  public void setRegions(ArrayList<IPProgram> regions) {
+    this.regions = regions;
+  }
+  
+  public ArrayList<IPProgram> getFlagships() {
+    return flagships;
+  }
+  
+  public void setFlagships(ArrayList<IPProgram> flagships) {
+    this.flagships = flagships;
   }
 
+  public Institution getLeader() {
+    return leader;
+  }
+
+  public void setLeader(Institution leader) {
+    this.leader = leader;
+  }
+
+  public Institution getOwner() {
+    return owner;
+  }
+
+  public void setOwner(Institution owner) {
+    this.owner = owner;
+  }
 
   public int getId() {
     return id;
@@ -46,7 +78,7 @@ public class Project {
   }
 
   public ArrayList<IPProgram> getTypes() {
-    return types;
+    return regions;
   }
 
   public void setId(int id) {
@@ -57,9 +89,8 @@ public class Project {
     this.title = title;
   }
 
-
   public void setTypes(ArrayList<IPProgram> types) {
-    this.types = types;
+    this.regions = types;
   }
 
   @Override
