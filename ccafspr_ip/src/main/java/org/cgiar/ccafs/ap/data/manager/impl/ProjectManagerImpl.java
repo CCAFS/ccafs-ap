@@ -3,7 +3,6 @@ package org.cgiar.ccafs.ap.data.manager.impl;
 import org.cgiar.ccafs.ap.data.dao.ProjectDAO;
 import org.cgiar.ccafs.ap.data.manager.ProjectManager;
 import org.cgiar.ccafs.ap.data.model.Employee;
-import org.cgiar.ccafs.ap.data.model.IPProgramTypes;
 import org.cgiar.ccafs.ap.data.model.Project;
 
 import java.util.ArrayList;
@@ -25,9 +24,16 @@ public class ProjectManagerImpl implements ProjectManager {
 
 
   @Override
+  public List<Project> getAllProjects() {
+    // TODO Auto-generated method stub
+    return new ArrayList<Project>();
+  }
+
+
+  @Override
   public List<Project> getProject(Object object) {
-	// TODO - Pending to validate what kind of parameter should be used in this method.
-	Employee projectLeader = (Employee) object;
+    // TODO - Pending to validate what kind of parameter should be used in this method.
+    Employee projectLeader = (Employee) object;
     List<Map<String, String>> projectDataList = projectDAO.getProject(projectLeader.getId());
     List<Project> projectsList = new ArrayList<>();
 
@@ -36,13 +42,16 @@ public class ProjectManagerImpl implements ProjectManager {
       project.setId(Integer.parseInt(elementData.get("id")));
       project.setTitle(elementData.get("title"));
 
-      List<Map<String, String>> projectTypesData = projectDAO.getProjectType(projectLeader.getId(), 1);
-      for (Map<String, String> typeData : projectTypesData) {
-        IPProgramTypes programType = new IPProgramTypes();
-        programType.setId(Integer.parseInt(elementData.get("id")));
-        programType.setAcronym(elementData.get("acronym"));
-        programType.setTypeId(Integer.parseInt(elementData.get("type_id")));
-      }
+
+      /*
+       * List<Map<String, String>> projectTypesData = projectDAO.getProjectType(projectLeader.getId(), 1);
+       * for (Map<String, String> typeData : projectTypesData) {
+       * IPProgramTypes programType = new IPProgramTypes();
+       * programType.setId(Integer.parseInt(elementData.get("id")));
+       * programType.setAcronym(elementData.get("acronym"));
+       * programType.setTypeId(Integer.parseInt(elementData.get("type_id")));
+       * }
+       */
 
       projectsList.add(project);
     }
@@ -53,13 +62,6 @@ public class ProjectManagerImpl implements ProjectManager {
    * return projectsList;
    * }
    */
-
-
-  @Override
-  public List<Project> getAllProjects() {
-	// TODO Auto-generated method stub
-	return new ArrayList<Project>();
-  }
 
 
 }

@@ -64,8 +64,8 @@ public class ProjectsListAction extends BaseAction {
 
 
     // Getting project list.
-    projects = projectManager.getAllProjects();
-    // projects = projectManager.getProject(projectLeader);
+    // projects = projectManager.getAllProjects();
+    projects = projectManager.getProject(projectLeader);
 
     System.out.println(projects);
 

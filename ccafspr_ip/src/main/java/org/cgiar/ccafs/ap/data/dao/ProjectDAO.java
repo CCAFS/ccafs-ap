@@ -28,12 +28,6 @@ public interface ProjectDAO {
 
   public List<Map<String, String>> getProjectOwnerId(int programId);
 
-  public List<Map<String, String>> getProjectType(int programID, int typeProgramId);
-
   public int saveProject(Map<String, Object> projectData);
-
-  public int saveProjectFlagships(Map<String, Object> projectData);
-
-  public int saveProjectRegions(Map<String, Object> projectData);
 
 }
