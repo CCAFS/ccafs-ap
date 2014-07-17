@@ -35,6 +35,7 @@ public class User {
   private boolean isCcafsUser;
   private Role role;
   private ArrayList<Institution> institutions;
+
   private Date lastLogin;
 
   public String getEmail() {
@@ -84,6 +85,10 @@ public class User {
    */
   public boolean isAdmin() {
     return this.role.getAcronym().equals(Role.UserRole.Admin.name());
+  }
+
+  public boolean isCcafsUser() {
+    return isCcafsUser;
   }
 
   /**
@@ -147,6 +152,10 @@ public class User {
    */
   public boolean isRPL() {
     return this.role.getAcronym().equals(Role.UserRole.RPL.name());
+  }
+
+  public void setCcafsUser(boolean isCcafsUser) {
+    this.isCcafsUser = isCcafsUser;
   }
 
   public void setEmail(String email) {

@@ -2,7 +2,6 @@ package org.cgiar.ccafs.ap.data.manager.impl;
 
 import org.cgiar.ccafs.ap.data.dao.ProjectDAO;
 import org.cgiar.ccafs.ap.data.manager.ProjectManager;
-import org.cgiar.ccafs.ap.data.model.Employee;
 import org.cgiar.ccafs.ap.data.model.Project;
 
 import java.util.ArrayList;
@@ -33,15 +32,13 @@ public class ProjectManagerImpl implements ProjectManager {
   @Override
   public List<Project> getProject(Object object) {
     // TODO - Pending to validate what kind of parameter should be used in this method.
-    Employee projectLeader = (Employee) object;
-    List<Map<String, String>> projectDataList = projectDAO.getProject(projectLeader.getId());
+    List<Map<String, String>> projectDataList = projectDAO.getProject(0);
     List<Project> projectsList = new ArrayList<>();
 
     for (Map<String, String> elementData : projectDataList) {
       Project project = new Project();
       project.setId(Integer.parseInt(elementData.get("id")));
       project.setTitle(elementData.get("title"));
-
 
       /*
        * List<Map<String, String>> projectTypesData = projectDAO.getProjectType(projectLeader.getId(), 1);

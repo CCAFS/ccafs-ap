@@ -8,6 +8,7 @@ import org.cgiar.ccafs.ap.data.model.Region;
 import org.cgiar.ccafs.ap.data.model.User;
 import org.cgiar.ccafs.ap.util.MD5Convert;
 
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.HashMap;
 import java.util.Map;
@@ -30,14 +31,30 @@ public class UserManagerImp implements UserManager {
 
   @Override
   public User getUser(String email) {
+    SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM");
     Map<String, String> userData = userDAO.getUser(email);
     if (!userData.isEmpty()) {
+
       User user = new User();
       user.setId(Integer.parseInt(userData.get("id")));
-      user.setName(userData.get("name"));
-      user.setEmail(email);
-      user.setMD5Password(userData.get("password"));
-      user.setRole(userData.get("role"));
+      user.setUsername(userData.get("username"));
+      user.setPassword(userData.get("password"));
+      user.setCcafsUser(Boolean.parseBoolean(userData.get("is_ccafs_user")));
+      user.setFirstName(userData.get("first_name"));
+      user.setLastName(userData.get("last_name"));
+
+
+      try {
+        user.setLastLogin(dateFormat.parse(userData.get("last_login")));
+      } catch (ParseException e) {
+        String msg = "There was an error parsing the last login of user " + user.getId() + ".";
+        LOG.error(msg, e);
+      }
+      /*
+       * user.lastLogin
+       * user.setMD5Password(userData.get("password"));
+       * user.setRole(userData.get("role"));
+       */
       // Leader
       Leader leader = new Leader();
       leader.setId(Integer.parseInt(userData.get("leader_id")));
@@ -56,7 +73,7 @@ public class UserManagerImp implements UserManager {
         leader.setRegion(region);
       }
 
-      user.setLeader(leader);
+      // user.setLeader(leader);
       return user;
     }
     LOG.warn("Information related to the user {} wasn't found.", email);
@@ -69,7 +86,7 @@ public class UserManagerImp implements UserManager {
       User userFound = this.getUser(email);
       if (userFound != null) {
         User temp = new User();
-        temp.setMD5Password(password);
+        // temp.setMD5Password(password);
         if (userFound.getPassword().equals(temp.getPassword())) {
           return userFound;
         }
@@ -91,10 +108,10 @@ public class UserManagerImp implements UserManager {
   @Override
   public boolean saveUser(User user) {
     Map<String, String> userData = new HashMap<>();
-    userData.put("name", user.getName());
+    // userData.put("name", user.getName());
     userData.put("email", user.getEmail());
     userData.put("password", MD5Convert.stringToMD5(user.getPassword()));
-    userData.put("activity_leader_id", String.valueOf(user.getLeader().getId()));
+    // userData.put("activity_leader_id", String.valueOf(user.getLeader().getId()));
     userData.put("role", String.valueOf(user.getRole()));
 
     return userDAO.saveUser(userData);
