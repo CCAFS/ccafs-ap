@@ -7,24 +7,33 @@ import java.util.Map;
 
 import com.google.inject.ImplementedBy;
 
+/**
+ * @author Javier Andrés Gallego
+ */
 @ImplementedBy(MySQLProjectDAO.class)
 public interface ProjectDAO {
 
 
   /**
-   * This method return a all the IP elements which belongs to the program
+   * This method return a all the Projects which belongs to the program
    * indicated by parameter.
    * 
    * @param programID, identifier of the program
    * @return a list of maps with the information of all IP elements returned.
    */
 
-  public List<Map<String, String>> getProject(int projectLeaderID);
+  public List<Map<String, String>> getProject(int programId);
 
-  public List<Map<String, String>> getProjectFlagship(int programId);
+  public List<Map<String, String>> getProjectOwnerContact(int programId);
 
-  public List<Map<String, String>> getProjectRegion(int programId);
+  public List<Map<String, String>> getProjectOwnerId(int programId);
+
+  public List<Map<String, String>> getProjectType(int programID, int typeProgramId);
 
   public int saveProject(Map<String, Object> projectData);
+
+  public int saveProjectFlagships(Map<String, Object> projectData);
+
+  public int saveProjectRegions(Map<String, Object> projectData);
 
 }

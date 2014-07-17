@@ -78,32 +78,31 @@ public class MySQLProjectDAO implements ProjectDAO {
   }
 
   @Override
-  public List<Map<String, String>> getProjectFlagship(int programId) {
-    LOG.debug(">> getProjectFlagship( programID = {} )", programId);
+  public List<Map<String, String>> getProjectOwnerContact(int institutionId) {
+    LOG.debug(">> getProjectOwnerContact( programID = {} )", institutionId);
 
     StringBuilder query = new StringBuilder();
     query.append("SELECT p.*   ");
-    // query.append("et.id as 'element_type_id', et.name as 'element_type_name', ");
-    // query.append("pro.id as 'program_id', pro.acronym as 'program_acronym' ");
-    query.append("FROM `projects` as p ");
-    query.append("INNER JOIN project_focuses pf ON p.id = pf.project_id ");
-    query.append("INNER JOIN ip_programs ipr    ON pf.program_id=ipr.id ");
-    query.append("WHERE ipr.id='1' ");
-    // query.append(programID);
+    query.append("FROM `ccafs_employees` as ce ");
+    // query.append("INNER JOIN users u ON u.id = ce.users_id ");
+    // query.append("INNER JOIN persons p ON p.id = u.person_id ");
+    query.append("INNER JOIN persons p ON p.id = u.person_id ");
+    query.append("WHERE ce.institution_id='1' ");
+    // query.append(institutionId);
 
 
-    LOG.debug("-- getProjectFlagship() > Calling method executeQuery to get the results");
+    LOG.debug("-- getProjectOwnerContact() > Calling method executeQuery to get the results");
     return getData(query.toString());
   }
 
   @Override
-  public List<Map<String, String>> getProjectRegion(int programId) {
-    LOG.debug(">> getProjectRegion( programID = {} )", programId);
+  public List<Map<String, String>> getProjectOwnerId(int programId) {
+    // TODO Pending function to define, until we can obtain the session credentials
+
+    LOG.debug(">> getProjectOwnerId( programID = {} )", programId);
 
     StringBuilder query = new StringBuilder();
     query.append("SELECT p.*   ");
-    // query.append("et.id as 'element_type_id', et.name as 'element_type_name', ");
-    // query.append("pro.id as 'program_id', pro.acronym as 'program_acronym' ");
     query.append("FROM `projects` as p ");
     query.append("INNER JOIN project_focuses pf ON p.id = pf.project_id ");
     query.append("INNER JOIN ip_programs ipr    ON pf.program_id=ipr.id ");
@@ -111,9 +110,28 @@ public class MySQLProjectDAO implements ProjectDAO {
     // query.append(programID);
 
 
-    LOG.debug("-- getProjectRegion() > Calling method executeQuery to get the results");
+    LOG.debug("-- getProjectOwnerId() > Calling method executeQuery to get the results");
     return getData(query.toString());
   }
+
+  @Override
+  public List<Map<String, String>> getProjectType(int projectId, int typeProgramId) {
+
+    LOG.debug(">> getProjectType( programID = {} )", projectId, typeProgramId);
+
+    StringBuilder query = new StringBuilder();
+    query.append("SELECT ipr.type_id, ipr.acronym   ");
+    query.append("FROM `projects` as p ");
+    query.append("INNER JOIN project_focuses pf ON p.id = pf.project_id ");
+    query.append("INNER JOIN ip_programs ipr    ON pf.program_id=ipr.id ");
+    query.append("WHERE ipr.id='1' ");
+    // query.append(programID);
+
+
+    LOG.debug("-- getProjectOwnerId() > Calling method executeQuery to get the results");
+    return getData(query.toString());
+  }
+
 
   private int saveData(String query, Object[] data) {
     int generatedId = -1;
@@ -141,10 +159,10 @@ public class MySQLProjectDAO implements ProjectDAO {
 
     StringBuilder query = new StringBuilder();
     query.append("INSERT INTO projects (id, title, summary, start_date,end_date,project_leader_id,project_owner_id) ");
-    query.append("VALUES (?, ?, ?, ?) ");
+    query.append("VALUES (?, ?, ?, ?, ?, ?, ?) ");
     // query.append("ON DUPLICATE KEY UPDATE description = VALUES(description), program_id = VALUES(program_id)");
 
-    Object[] values = new Object[4];
+    Object[] values = new Object[7];
     values[0] = projectData.get("id");
     values[1] = projectData.get("title");
     values[2] = projectData.get("summary");
@@ -155,6 +173,44 @@ public class MySQLProjectDAO implements ProjectDAO {
 
     int result = saveData(query.toString(), values);
     LOG.debug("<< saveProject():{}", result);
+    return result;
+  }
+
+  @Override
+  public int saveProjectFlagships(Map<String, Object> projectData) {
+    LOG.debug(">> saveProject(projectData={})", projectData);
+
+    StringBuilder query = new StringBuilder();
+    query.append("INSERT INTO project_focuses (id, project_id, programid) ");
+    query.append("VALUES (?, ?, ?) ");
+    // query.append("ON DUPLICATE KEY UPDATE description = VALUES(description), program_id = VALUES(program_id)");
+
+    Object[] values = new Object[3];
+    values[0] = projectData.get("id");
+    values[1] = projectData.get("title");
+    values[2] = projectData.get("summary");
+
+    int result = saveData(query.toString(), values);
+    LOG.debug("<< saveProjectFlagship():{}", result);
+    return result;
+  }
+
+  @Override
+  public int saveProjectRegions(Map<String, Object> projectData) {
+    LOG.debug(">> saveProject(projectData={})", projectData);
+
+    StringBuilder query = new StringBuilder();
+    query.append("INSERT INTO project_focuses (id, project_id, programid) ");
+    query.append("VALUES (?, ?, ?) ");
+    // query.append("ON DUPLICATE KEY UPDATE description = VALUES(description), program_id = VALUES(program_id)");
+
+    Object[] values = new Object[3];
+    values[0] = projectData.get("id");
+    values[1] = projectData.get("title");
+    values[2] = projectData.get("summary");
+
+    int result = saveData(query.toString(), values);
+    LOG.debug("<< saveProjectRegions():{}", result);
     return result;
   }
 
