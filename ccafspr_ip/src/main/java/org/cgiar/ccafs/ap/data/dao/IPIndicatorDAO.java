@@ -14,10 +14,10 @@ public interface IPIndicatorDAO {
    * This function returns all the indicators corresponding to the given
    * ip element
    * 
-   * @param ipElementID - IP Element identifier
+   * @param ipProgramElementID - IP Program Element identifier
    * @return a list of maps with the information.
    */
-  public List<Map<String, String>> getIndicatorsByIpElementID(int ipElementID);
+  public List<Map<String, String>> getIndicatorsByIpProgramElementID(int ipProgramElementID);
 
   /**
    * This method save the information of the indicator.
