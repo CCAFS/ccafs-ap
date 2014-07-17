@@ -13,6 +13,10 @@
  *****************************************************************/
 package org.cgiar.ccafs.ap.action;
 
+import org.cgiar.ccafs.ap.config.APConfig;
+import org.cgiar.ccafs.ap.config.APConstants;
+import org.cgiar.ccafs.ap.data.model.User;
+
 import java.util.Locale;
 import java.util.Map;
 
@@ -23,9 +27,6 @@ import com.opensymphony.xwork2.ActionSupport;
 import com.opensymphony.xwork2.Preparable;
 import org.apache.struts2.interceptor.ServletRequestAware;
 import org.apache.struts2.interceptor.SessionAware;
-import org.cgiar.ccafs.ap.config.APConfig;
-import org.cgiar.ccafs.ap.config.APConstants;
-import org.cgiar.ccafs.ap.data.model.User;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 

@@ -26,37 +26,33 @@ public class MySQLUserDAO implements UserDAO {
   }
 
   @Override
-  public Map<String, String> getUser(String email) {
-    LOG.debug(">> getUser(email={})", email);
+  public Map<String, String> getUser(String username) {
+    LOG.debug(">> getUser(username={})", username);
     Map<String, String> userData = new HashMap<>();
     try (Connection connection = dbManager.getConnection()) {
-      String query =
-        "SELECT u.*, al.id as leader_id, al.acronym as leader_acronym, al.name as leader_name, "
-          + "lt.id as leader_type_id, lt.name as leader_type_name, " + "t.id as 'theme_id', t.code as 'theme_code', "
-          + "r.id as 'region_id', r.name as 'region_name' " + "FROM users u "
-          + "INNER JOIN activity_leaders al ON u.activity_leader_id = al.id "
-          + "INNER JOIN leader_types lt ON al.led_activity_id = lt.id " + "LEFT JOIN themes t ON al.theme_id = t.id "
-          + "LEFT JOIN regions r ON al.region_id = r.id " + "WHERE u.email = '" + email + "'";
-      ResultSet rs = dbManager.makeQuery(query, connection);
+      StringBuilder query = new StringBuilder();
+      query.append("SELECT u.id, u.username, u.password, u.is_ccafs_user, u.last_login ");
+      query.append("p.first_name, p.last_name, p.email, p.phone ");
+      query.append("FROM users u ");
+      query.append("INNER JOIN persons p ON u.person_id = p.id ");
+      query.append("WHERE u.username = ");
+      query.append(username);
+
+      ResultSet rs = dbManager.makeQuery(query.toString(), connection);
       if (rs.next()) {
         userData.put("id", rs.getString("id"));
-        userData.put("name", rs.getString("name"));
-        userData.put("email", email);
+        userData.put("username", username);
         userData.put("password", rs.getString("password"));
-        userData.put("role", rs.getString("role"));
-        userData.put("leader_id", rs.getString("leader_id"));
-        userData.put("leader_acronym", rs.getString("leader_acronym"));
-        userData.put("leader_name", rs.getString("leader_name"));
-        userData.put("leader_type_id", rs.getString("leader_type_id"));
-        userData.put("leader_type_name", rs.getString("leader_type_name"));
-        userData.put("theme_id", rs.getString("theme_id"));
-        userData.put("theme_code", rs.getString("theme_code"));
-        userData.put("region_id", rs.getString("region_id"));
-        userData.put("region_name", rs.getString("region_name"));
+        userData.put("is_ccafs_user", rs.getString("is_ccafs_user"));
+        userData.put("last_login", rs.getString("last_login"));
+        userData.put("first_name", rs.getString("first_name"));
+        userData.put("last_name", rs.getString("last_name"));
+        userData.put("email", rs.getString("email"));
+        userData.put("phone", rs.getString("phone"));
       }
       rs.close();
     } catch (SQLException e) {
-      LOG.error("-- getUser() > There was an error getting the data for user {}.", email, e);
+      LOG.error("-- getUser() > There was an error getting the data for user {}.", username, e);
     }
     LOG.debug("<< getUser():{}", userData);
     return userData;

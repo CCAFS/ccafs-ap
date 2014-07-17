@@ -64,7 +64,7 @@ public class UnhandledExceptionAction extends BaseAction {
     }
 
     subject = "Exception occurred in CCAFS P&R";
-    message.append("The user " + getCurrentUser().getName() + " ");
+    message.append("The user " + getCurrentUser().getFirstName() + " " + getCurrentUser().getLastName() + " ");
     message.append("has experienced an exception on the platform. \n");
     message.append("This execption occurs in the server: " + config.getBaseUrl() + ".\n");
     message.append("The exception message was: \n\n");
