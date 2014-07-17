@@ -5,13 +5,13 @@
 [#assign currentSection = "preplanning" /]
 [#assign currentPrePlanningSection = "impactPathways" /]
 [#assign currentStage = "midOutcomes" /]
-[#assign userRole = "FPL"]
+[#assign userRole = "RPL"]
 
 [#include "/WEB-INF/global/pages/header.ftl" /]
 [#include "/WEB-INF/global/pages/main-menu.ftl" /]
 [#import "/WEB-INF/global/macros/forms.ftl" as customForm/]
 [#import "/WEB-INF/global/macros/indicatorTemplate.ftl" as indicatorTemplate/]
-[#import "/WEB-INF/global/macros/contributeTemplate.ftl" as contributeTemplate/]
+[#import "/WEB-INF/preplanning/contributeTemplate.ftl" as contributeTemplate/]
     
 <section class="content">
   <div class="helpMessage">
@@ -79,7 +79,7 @@
             <a id="removeMidOutcome" href="" class="removeContribute">[@s.text name="preplanning.midOutcomes.removeMidOutcome" /]</a>
           </div> 
           [#-- Title --]
-          [@customForm.textArea name="midOutcomes[0].description" i18nkey="preplanning.midOutcomes.outcome" required=true /]
+          [@customForm.textArea name="midOutcomes[0].description" i18nkey="preplanning.midOutcomes.outcome" required=true /] 
           <div class="contentElements parentsBlock">
             <div class="itemIndex">[@s.text name="preplanning.midOutcomes.contributes" /] </div>
               [#-- midOutcome's parents --]

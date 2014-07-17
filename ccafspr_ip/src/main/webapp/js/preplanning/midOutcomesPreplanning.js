@@ -19,7 +19,8 @@ function attachEvents(){
 function addMidOutcomeEvent(event){
   event.preventDefault(); 
   var $newElement = $("#midOutcomeTemplate").clone(true).removeAttr("id");  
-  $("div#MidOutcomeBlocks").append($newElement); 
+  $("div#MidOutcomeBlocks").append($newElement);
+  
   $newElement.show("slow");
   setMidOutcomesIndexes();
 }
@@ -92,10 +93,10 @@ function setContributesIndexes(i){
 function addIndicatorEvent(event){
   var grandParentId = $(event.target).parent().parent().parent().attr("id").split("-")[1];
   //console.log(grandParentId);
-  var $newIndicator = $("#midOutcomeTemplate div.indicator").clone(true); 
+  var $newIndicator = $("#midOutcomeTemplate div.indicator").clone(true).css("display","none"); 
   $(event.target).parent().before($newIndicator);
-  $newIndicator.show( "slow" );
-  setIndicatorsIndexes(grandParentId)
+  $newIndicator.show("slow");
+  setIndicatorsIndexes(grandParentId);
 }
 
 function removeIndicatorEvent(event){ 
