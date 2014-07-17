@@ -26,7 +26,8 @@ public class Institution {
   private int id;
   private String name;
   private String acronym;
-  // TODO private Person contactPerson;
+  private String contactPersonName;
+  private String contactPersonEmail;
   private IPProgram program;
   private InstitutionType type;
 
@@ -34,67 +35,73 @@ public class Institution {
     super();
   }
 
-  public Institution(int id, String name, String acronym, IPProgram program, InstitutionType type /*
-                                                                                                   * , Person
-                                                                                                   * contactPerson
-                                                                                                   */) {
+  public Institution(int id, String name, String acronym, String contactPersonName, String contactPersonEmail,
+    IPProgram program, InstitutionType type) {
     super();
     this.id = id;
     this.name = name;
     this.acronym = acronym;
+    this.contactPersonName = contactPersonName;
+    this.contactPersonEmail = contactPersonEmail;
     this.program = program;
     this.type = type;
-    // this.contactPerson = contactPerson;
   }
 
-  public String getAcronym() {
-    return acronym;
+  public String getContactPersonName() {
+    return contactPersonName;
+  }
+
+  public void setContactPersonName(String contactPersonName) {
+    this.contactPersonName = contactPersonName;
+  }
+
+  public String getContactPersonEmail() {
+    return contactPersonEmail;
+  }
+
+  public void setContactPersonEmail(String contactPersonEmail) {
+    this.contactPersonEmail = contactPersonEmail;
   }
 
   public int getId() {
     return id;
   }
 
-  public String getName() {
-    return name;
-  }
-
-  public IPProgram getProgram() {
-    return program;
-  }
-
-  public InstitutionType getType() {
-    return type;
-  }
-
-  public void setAcronym(String acronym) {
-    this.acronym = acronym;
-  }
-
   public void setId(int id) {
     this.id = id;
+  }
+
+  public String getName() {
+    return name;
   }
 
   public void setName(String name) {
     this.name = name;
   }
 
+  public String getAcronym() {
+    return acronym;
+  }
+
+  public void setAcronym(String acronym) {
+    this.acronym = acronym;
+  }
+
+  public IPProgram getProgram() {
+    return program;
+  }
+
   public void setProgram(IPProgram program) {
     this.program = program;
+  }
+
+  public InstitutionType getType() {
+    return type;
   }
 
   public void setType(InstitutionType type) {
     this.type = type;
   }
-
-// TODO
-// public Person getContactPerson() {
-// return contactPerson;
-// }
-//
-// public void setContactPerson(Person contactPerson) {
-// this.contactPerson = contactPerson;
-// }
 
   @Override
   public String toString() {

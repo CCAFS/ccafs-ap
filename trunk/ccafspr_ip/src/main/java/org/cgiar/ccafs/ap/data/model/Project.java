@@ -22,7 +22,6 @@ import org.apache.commons.lang3.builder.ToStringBuilder;
  * 
  * @author Javier Andrés Gallego
  * @author Héctor Tobón
- *
  */
 public class Project {
 
@@ -32,23 +31,32 @@ public class Project {
   private ArrayList<IPProgram> flagships; // The list of flagships in which this project works with.
   private Institution leader;
   private Institution owner;
+  private ArrayList<Institution> partners; // Project partners.
 
   public Project() {
     super();
   }
 
+  public ArrayList<Institution> getPartners() {
+    return partners;
+  }
+
+  public void setPartners(ArrayList<Institution> partners) {
+    this.partners = partners;
+  }
+
   public ArrayList<IPProgram> getRegions() {
     return regions;
   }
-  
+
   public void setRegions(ArrayList<IPProgram> regions) {
     this.regions = regions;
   }
-  
+
   public ArrayList<IPProgram> getFlagships() {
     return flagships;
   }
-  
+
   public void setFlagships(ArrayList<IPProgram> flagships) {
     this.flagships = flagships;
   }

@@ -67,7 +67,9 @@
     <h1 class="contentTitle">
     [@s.text name="preplanning.projectPartners.title" /]  
     </h1>
-    
+    [#list partners as partner]
+    	${partner.name}<br>
+    [/#list]
     
     
      

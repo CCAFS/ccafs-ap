@@ -46,7 +46,6 @@ public class ProjectsListAction extends BaseAction {
     this.projectManager = projectManager;
   }
 
-
   public List<Project> getProjects() {
     return projects;
   }

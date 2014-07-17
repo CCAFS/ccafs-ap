@@ -14,7 +14,7 @@ import com.google.inject.Inject;
 public class ProjectManagerImpl implements ProjectManager {
 
   // DAOs
-  private ProjectDAO projectDAO;
+  private ProjectDAO projectDAO;  
 
   @Inject
   public ProjectManagerImpl(ProjectDAO projectDAO) {
