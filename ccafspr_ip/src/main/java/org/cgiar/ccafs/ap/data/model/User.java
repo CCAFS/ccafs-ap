@@ -1,4 +1,5 @@
-/*****************************************************************
+/*
+ * ****************************************************************
  * This file is part of CCAFS Planning and Reporting Platform.
  * 
  * CCAFS P&R is free software: you can redistribute it and/or modify
@@ -8,74 +9,73 @@
  * 
  * CCAFS P&R is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
  * GNU General Public License for more details.
  * 
  * You should have received a copy of the GNU General Public License
- * along with CCAFS P&R.  If not, see <http://www.gnu.org/licenses/>.
- *****************************************************************/
+ * along with CCAFS P&R. If not, see <http://www.gnu.org/licenses/>.
+ * ***************************************************************
+ */
 package org.cgiar.ccafs.ap.data.model;
 
-import org.cgiar.ccafs.ap.util.MD5Convert;
-
+import java.util.ArrayList;
 import java.util.Date;
 
 import org.apache.commons.lang3.builder.ToStringBuilder;
 
 public class User {
 
-  public enum UserRole {
-    PI, CP, TL, RPL, Admin
-  }
-
   private int id;
-  private String name;
-  private String email;
+  private String username;
   private String password;
-  private UserRole role;
+  private String email;
+  private String firstName;
+  private String lastName;
+  private String phone;
+  private boolean isCcafsUser;
+  private Role role;
+  private ArrayList<Institution> institutions;
   private Date lastLogin;
-  private Leader leader;
-
-  @Override
-  public boolean equals(Object obj) {
-    if (obj instanceof User) {
-      User u = (User) obj;
-      return u.getEmail().equals(this.getEmail());
-    }
-    return false;
-  }
 
   public String getEmail() {
     return email;
+  }
+
+  public String getFirstName() {
+    return firstName;
   }
 
   public int getId() {
     return id;
   }
 
+  public ArrayList<Institution> getInstitutions() {
+    return institutions;
+  }
+
   public Date getLastLogin() {
     return lastLogin;
   }
 
-  public Leader getLeader() {
-    return leader;
+  public String getLastName() {
+    return lastName;
   }
 
-  public String getName() {
-    return name;
-  }
-
-  /**
-   * @return the password previously codified using MD5 algorithm.
-   */
   public String getPassword() {
     return password;
   }
 
-  public UserRole getRole() {
+  public String getPhone() {
+    return phone;
+  }
+
+  public Role getRole() {
     return role;
   }
 
+  public String getUsername() {
+    return username;
+  }
 
   /**
    * Validate if the current user is an Administrator.
@@ -83,7 +83,7 @@ public class User {
    * @return true if the user is actually an Administrator, or false otherwise.
    */
   public boolean isAdmin() {
-    return this.role == UserRole.Admin;
+    return this.role.getAcronym().equals(Role.UserRole.Admin.name());
   }
 
   /**
@@ -92,7 +92,25 @@ public class User {
    * @return true if the user is actually a Contact Point, or false otherwise.
    */
   public boolean isCP() {
-    return this.role == UserRole.CP;
+    return this.role.getAcronym().equals(Role.UserRole.CP.name());
+  }
+
+  /**
+   * Validate if the current user is a coordinating unit member.
+   * 
+   * @return true if the user is actually a member of the coordinating unit, or false otherwise.
+   */
+  public boolean isCU() {
+    return this.role.getAcronym().equals(Role.UserRole.CU.name());
+  }
+
+  /**
+   * Validate if the current user is a Theme Leader.
+   * 
+   * @return true if the user is actually a Flagship program Leader, or false otherwise.
+   */
+  public boolean isFPL() {
+    return this.role.getAcronym().equals(Role.UserRole.FPL.name());
   }
 
   /**
@@ -101,7 +119,25 @@ public class User {
    * @return true if the user is actually a Principal Investigator, or false otherwise.
    */
   public boolean isPI() {
-    return this.role == UserRole.PI;
+    return this.role.getAcronym().equals(Role.UserRole.PI.name());
+  }
+
+  /**
+   * Validate if the current user is a project leader.
+   * 
+   * @return true if the user is actually a Project leader, or false otherwise.
+   */
+  public boolean isPL() {
+    return this.role.getAcronym().equals(Role.UserRole.PO.name());
+  }
+
+  /**
+   * Validate if the current user is a project owner.
+   * 
+   * @return true if the user is actually a Project owner, or false otherwise.
+   */
+  public boolean isPO() {
+    return this.role.getAcronym().equals(Role.UserRole.PO.name());
   }
 
   /**
@@ -110,85 +146,53 @@ public class User {
    * @return true if the user is actually a Regional Program Leader, or false otherwise.
    */
   public boolean isRPL() {
-    return this.role == UserRole.RPL;
-  }
-
-  /**
-   * Validate if the current user is a Theme Leader.
-   * 
-   * @return true if the user is actually a Theme Leader, or false otherwise.
-   */
-  public boolean isTL() {
-    return this.role == UserRole.TL;
+    return this.role.getAcronym().equals(Role.UserRole.RPL.name());
   }
 
   public void setEmail(String email) {
     this.email = email;
   }
 
+  public void setFirstName(String firstName) {
+    this.firstName = firstName;
+  }
+
+
   public void setId(int id) {
     this.id = id;
   }
 
-
-  public void setLastLogin(Date lastLogin) {
-    this.lastLogin = lastLogin;
+  public void setInstitutions(ArrayList<Institution> institutions) {
+    this.institutions = institutions;
   }
 
-  public void setLeader(Leader leader) {
-    this.leader = leader;
+  public void setLastLogin(Date last_login) {
+    this.lastLogin = last_login;
   }
 
-  public void setMD5Password(String password) {
+  public void setLastName(String lastName) {
+    this.lastName = lastName;
+  }
+
+
+  public void setPassword(String password) {
     this.password = password;
   }
 
-  public void setName(String name) {
-    this.name = name;
+  public void setPhone(String phone) {
+    this.phone = phone;
   }
 
-  /**
-   * This method will calculate the MD5 of the provided parameter.
-   * 
-   * @param password normal String.
-   */
-  public void setPassword(String password) {
-    if (password != null) {
-      this.password = MD5Convert.stringToMD5(password);
-    } else {
-      this.password = null;
-    }
-  }
-
-  public void setRole(String roleString) {
-    switch (roleString) {
-      case "Admin":
-        this.role = UserRole.Admin;
-        break;
-      case "CP":
-        this.role = UserRole.CP;
-        break;
-      case "TL":
-        this.role = UserRole.TL;
-        break;
-      case "RPL":
-        this.role = UserRole.RPL;
-        break;
-      case "PI":
-        this.role = UserRole.PI;
-        break;
-      default:
-        break;
-    }
-  }
-
-  public void setRole(UserRole role) {
+  public void setRole(Role role) {
     this.role = role;
+  }
+
+  public void setUsername(String username) {
+    this.username = username;
   }
 
   @Override
   public String toString() {
     return ToStringBuilder.reflectionToString(this);
   }
-
 }
