@@ -13,6 +13,9 @@
  *****************************************************************/
 package org.cgiar.ccafs.ap.action.preplanning;
 
+import java.util.List;
+
+import com.google.inject.Inject;
 import org.cgiar.ccafs.ap.action.BaseAction;
 import org.cgiar.ccafs.ap.config.APConfig;
 import org.cgiar.ccafs.ap.data.manager.IPElementManager;
@@ -20,10 +23,6 @@ import org.cgiar.ccafs.ap.data.model.IPElement;
 import org.cgiar.ccafs.ap.data.model.IPElementType;
 import org.cgiar.ccafs.ap.data.model.IPProgram;
 import org.cgiar.ccafs.ap.validation.preplanning.OutcomesValidation;
-
-import java.util.List;
-
-import com.google.inject.Inject;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -61,7 +60,7 @@ public class OutcomesPreplanningAction extends BaseAction {
 
   @Override
   public void prepare() throws Exception {
-	super.prepare();
+    super.prepare();
     validationMessages = new StringBuilder();
 
     IPProgram program = new IPProgram();
@@ -110,6 +109,8 @@ public class OutcomesPreplanningAction extends BaseAction {
     ipElementManager.deleteIPElements(program, type);
     ipElementManager.saveIPElements(outcomes);
     return INPUT;
+
+
   }
 
   public void setOutcomes(List<IPElement> outcomes) {

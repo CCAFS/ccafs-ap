@@ -93,13 +93,13 @@ public class MidOutcomesPreplanningAction extends BaseAction {
       if (midOutcome.getType() == null) {
         midOutcome.setType(type);
       }
-
-      for (int i = 0; i < midOutcome.getIndicators().size(); i++) {
-        if (midOutcome.getIndicators().get(i).getDescription().isEmpty()) {
-          midOutcome.getIndicators().remove(i);
+      if (midOutcome.getIndicators() != null) {
+        for (int i = 0; i < midOutcome.getIndicators().size(); i++) {
+          if (midOutcome.getIndicators().get(i).getDescription().isEmpty()) {
+            midOutcome.getIndicators().remove(i);
+          }
         }
       }
-
       if (midOutcome.getContributesTo() != null) {
         String[] values = new String[midOutcome.getContributesTo().size()];
         for (int i = 0; i < midOutcome.getContributesTo().size(); i++) {
