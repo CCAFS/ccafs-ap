@@ -114,24 +114,6 @@ public class MySQLProjectDAO implements ProjectDAO {
     return getData(query.toString());
   }
 
-  @Override
-  public List<Map<String, String>> getProjectType(int projectId, int typeProgramId) {
-
-    LOG.debug(">> getProjectType( programID = {} )", projectId, typeProgramId);
-
-    StringBuilder query = new StringBuilder();
-    query.append("SELECT ipr.type_id, ipr.acronym   ");
-    query.append("FROM `projects` as p ");
-    query.append("INNER JOIN project_focuses pf ON p.id = pf.project_id ");
-    query.append("INNER JOIN ip_programs ipr    ON pf.program_id=ipr.id ");
-    query.append("WHERE ipr.id='1' ");
-    // query.append(programID);
-
-
-    LOG.debug("-- getProjectOwnerId() > Calling method executeQuery to get the results");
-    return getData(query.toString());
-  }
-
 
   private int saveData(String query, Object[] data) {
     int generatedId = -1;
@@ -175,44 +157,5 @@ public class MySQLProjectDAO implements ProjectDAO {
     LOG.debug("<< saveProject():{}", result);
     return result;
   }
-
-  @Override
-  public int saveProjectFlagships(Map<String, Object> projectData) {
-    LOG.debug(">> saveProject(projectData={})", projectData);
-
-    StringBuilder query = new StringBuilder();
-    query.append("INSERT INTO project_focuses (id, project_id, programid) ");
-    query.append("VALUES (?, ?, ?) ");
-    // query.append("ON DUPLICATE KEY UPDATE description = VALUES(description), program_id = VALUES(program_id)");
-
-    Object[] values = new Object[3];
-    values[0] = projectData.get("id");
-    values[1] = projectData.get("title");
-    values[2] = projectData.get("summary");
-
-    int result = saveData(query.toString(), values);
-    LOG.debug("<< saveProjectFlagship():{}", result);
-    return result;
-  }
-
-  @Override
-  public int saveProjectRegions(Map<String, Object> projectData) {
-    LOG.debug(">> saveProject(projectData={})", projectData);
-
-    StringBuilder query = new StringBuilder();
-    query.append("INSERT INTO project_focuses (id, project_id, programid) ");
-    query.append("VALUES (?, ?, ?) ");
-    // query.append("ON DUPLICATE KEY UPDATE description = VALUES(description), program_id = VALUES(program_id)");
-
-    Object[] values = new Object[3];
-    values[0] = projectData.get("id");
-    values[1] = projectData.get("title");
-    values[2] = projectData.get("summary");
-
-    int result = saveData(query.toString(), values);
-    LOG.debug("<< saveProjectRegions():{}", result);
-    return result;
-  }
-
 
 }
