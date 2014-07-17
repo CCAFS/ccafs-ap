@@ -5,6 +5,7 @@
 [#assign currentSection = "preplanning" /]
 [#assign currentPrePlanningSection = "impactPathways" /]
 [#assign currentStage = "outcomes" /]
+[#assign userRole = "FPL"]
 
 [#include "/WEB-INF/global/pages/header.ftl" /]
 [#include "/WEB-INF/global/pages/main-menu.ftl" /]
@@ -57,8 +58,7 @@
           [#-- Outcome identifier --]
           <input type="hidden" name="outcomes[0].id" value="-1" /> 
           [#-- Title --]
-          [@customForm.textArea name="outcomes[0].description" i18nkey="preplanning.outcomes.outcome" required=true /] 
-
+          [@customForm.textArea name="outcomes[0].description" i18nkey="preplanning.outcomes.outcome" required=true /]  
           <div class="contentElements outcomeIndicatorsBlock">
             <div class="itemIndex">[@s.text name="preplanning.outcomes.indicators" /] </div>
               [@indicatorTemplate.outcomes /] 
@@ -70,8 +70,7 @@
                 </div>
               --] 
             </div>
-          </div>
-
+          </div> 
       [/#if]
     </div>
     

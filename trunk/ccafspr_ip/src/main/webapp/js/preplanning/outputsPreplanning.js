@@ -63,8 +63,7 @@ function addContributeEvent(event){
 }
 
 function removeContributeEvent(event){
-  event.preventDefault();
-  var pressedLink = event.target;
+  event.preventDefault(); 
   var $elementDiv = $(event.target).parent().parent();
   var $parentDiv = $elementDiv.parent().parent();
   $elementDiv.hide("slow", function() {

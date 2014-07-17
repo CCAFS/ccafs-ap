@@ -11,11 +11,17 @@
     <!-- Section: Higher Level Impact Pathways  -->
     <action name="outcomes" class="org.cgiar.ccafs.ap.action.preplanning.OutcomesPreplanningAction">
       <result name="input">/WEB-INF/preplanning/outcomesPreplanning.ftl</result>
+      <result name="success">/WEB-INF/preplanning/outcomesPreplanning.ftl</result>
     </action>
     
     <action name="midOutcomes" class="org.cgiar.ccafs.ap.action.preplanning.MidOutcomesPreplanningAction">
       <result name="input">/WEB-INF/preplanning/midOutcomes.ftl</result>
       <result name="success">/WEB-INF/preplanning/midOutcomes.ftl</result>
+    </action>
+    
+    <action name="midOutcomesRPL" class="org.cgiar.ccafs.ap.action.preplanning.MidOutcomesPreplanningAction">
+      <result name="input">/WEB-INF/preplanning/midOutcomesRPL.ftl</result>
+      <result name="success">/WEB-INF/preplanning/midOutcomesRPL.ftl</result>
     </action>
     
     <action name="outputs" class="org.cgiar.ccafs.ap.action.preplanning.OutputsPreplanningAction">
