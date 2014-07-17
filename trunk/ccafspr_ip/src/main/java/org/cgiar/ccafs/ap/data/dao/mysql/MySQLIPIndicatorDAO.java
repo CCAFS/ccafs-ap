@@ -29,12 +29,12 @@ public class MySQLIPIndicatorDAO implements IPIndicatorDAO {
   }
 
   @Override
-  public List<Map<String, String>> getIndicatorsByIpElementID(int ipElementID) {
-    LOG.debug(">> getIndicatorsByIpElementID( ipElementID = {} )", ipElementID);
+  public List<Map<String, String>> getIndicatorsByIpProgramElementID(int ipProgramElementID) {
+    LOG.debug(">> getIndicatorsByIpElementID( ipElementID = {} )", ipProgramElementID);
     List<Map<String, String>> ipIndicatorList = new ArrayList<>();
 
     StringBuilder query = new StringBuilder();
-    query.append("SELECT * FROM ip_indicators WHERE program_element_id = " + ipElementID);
+    query.append("SELECT * FROM ip_indicators WHERE program_element_id = " + ipProgramElementID);
 
     try (Connection con = databaseManager.getConnection()) {
       ResultSet rs = databaseManager.makeQuery(query.toString(), con);
@@ -48,7 +48,7 @@ public class MySQLIPIndicatorDAO implements IPIndicatorDAO {
       rs.close();
     } catch (SQLException e) {
       String exceptionMessage = "-- getIndicatorsByIpElementID() > Exception raised trying ";
-      exceptionMessage += "to get the ip indicators corresponding to the ip element " + ipElementID;
+      exceptionMessage += "to get the ip indicators corresponding to the ip program element " + ipProgramElementID;
 
       LOG.error(exceptionMessage);
     }

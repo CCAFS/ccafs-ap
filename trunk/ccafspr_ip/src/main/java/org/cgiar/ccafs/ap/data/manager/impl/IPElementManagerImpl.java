@@ -159,7 +159,8 @@ public class IPElementManagerImpl implements IPElementManager {
 
       // Set element indicators if exists
       List<IPIndicator> indicators = new ArrayList<>();
-      List<Map<String, String>> indicatorsData = ipIndicatorDAO.getIndicatorsByIpElementID(element.getId());
+      int programElementID = Integer.parseInt(elementData.get("program_element_id"));
+      List<Map<String, String>> indicatorsData = ipIndicatorDAO.getIndicatorsByIpProgramElementID(programElementID);
       for (Map<String, String> indicatorData : indicatorsData) {
         IPIndicator indicator = new IPIndicator();
         indicator.setId(Integer.parseInt(indicatorData.get("id")));

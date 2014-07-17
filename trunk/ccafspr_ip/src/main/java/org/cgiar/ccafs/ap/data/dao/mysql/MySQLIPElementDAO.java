@@ -52,9 +52,14 @@ public class MySQLIPElementDAO implements IPElementDAO {
   public boolean deleteIpElements(int programId, int typeId) {
     LOG.debug(">> deleteIpElements(programId={}, typeId={})", programId, typeId);
 
-    String deleteQuery = "DELETE FROM ip_elements WHERE creator_id = ? AND element_type_id = ?";
+    StringBuilder query = new StringBuilder();
+    query.append("DELETE ipe.* FROM ip_program_elements ");
+    query.append("INNER JOIN ip_program_element_relation_types iet ON ipe.relation_type_id = iet.id ");
+    query.append("WHERE ipe.creator_id = ? AND ipe.element_type_id = ?");
+    // String deleteQuery = ;
     try (Connection connection = databaseManager.getConnection()) {
-      int rowsDeleted = databaseManager.makeChangeSecure(connection, deleteQuery, new Object[] {programId, typeId});
+      int rowsDeleted =
+        databaseManager.makeChangeSecure(connection, query.toString(), new Object[] {programId, typeId});
       if (rowsDeleted >= 0) {
         LOG.debug("<< deleteIpElements():{}", true);
         return true;
@@ -82,6 +87,7 @@ public class MySQLIPElementDAO implements IPElementDAO {
         ipElementData.put("element_type_name", rs.getString("element_type_name"));
         ipElementData.put("program_id", rs.getString("program_id"));
         ipElementData.put("program_acronym", rs.getString("program_acronym"));
+        ipElementData.put("program_element_id", rs.getString("program_element_id"));
 
         ipElementList.add(ipElementData);
       }
@@ -102,7 +108,7 @@ public class MySQLIPElementDAO implements IPElementDAO {
     LOG.debug(">> getIPElement( programID = {} )", programID);
 
     StringBuilder query = new StringBuilder();
-    query.append("SELECT e.id, e.description,  ");
+    query.append("SELECT e.id, e.description,  pel.id as 'program_element_id',  ");
     query.append("et.id as 'element_type_id', et.name as 'element_type_name', ");
     query.append("pro.id as 'program_id', pro.acronym as 'program_acronym' ");
     query.append("FROM ip_elements e ");
@@ -122,7 +128,7 @@ public class MySQLIPElementDAO implements IPElementDAO {
     LOG.debug(">> getIPElement( programID = {}, elementTypeID = {} )", programID, elementTypeID);
 
     StringBuilder query = new StringBuilder();
-    query.append("SELECT e.id, e.description,  ");
+    query.append("SELECT e.id, e.description,  pel.id as 'program_element_id', ");
     query.append("et.id as 'element_type_id', et.name as 'element_type_name', ");
     query.append("pro.id as 'program_id', pro.acronym as 'program_acronym' ");
     query.append("FROM ip_elements e ");
