@@ -88,8 +88,8 @@
               <div class="fullBlock addContributeBlock" style="display:none">
                 [@customForm.select name="contribution" value="none" showTitle=false listName="outcomesList" keyFieldName="id"  displayFieldName="description" addButton=true className="contributes" /]
               </div> 
-            </div>  
-            <div class="contentElements indicatorsBlock">
+          </div>  
+          <div class="contentElements indicatorsBlock">
               <div class="itemIndex">[@s.text name="preplanning.midOutcomes.indicators" /] </div>
               [#-- midOutcome's indicators --]
               [@indicatorTemplate.midOutcomes /] 

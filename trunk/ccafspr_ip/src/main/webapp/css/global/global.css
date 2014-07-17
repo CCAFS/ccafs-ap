@@ -132,6 +132,16 @@ input:-webkit-autofill, textarea:-webkit-autofill, select:-webkit-autofill {
   width: 29%\0/; /*hack for IE8 & IE9*/
 }
 
+div.checkboxGroup.vertical label {
+   width: 95%;
+}
+
+div.checkboxGroup.vertical input {
+  margin-top:5px;
+  vertical-align: top;
+   
+}
+
 .removeLink {
   display: block;
   text-align: right;
