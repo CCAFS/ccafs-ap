@@ -1,4 +1,5 @@
 [#ftl]
+[#-- This macro is being used in projects.ftl. The idea is to represent a table with specific information about projects --]
 [#macro projectsList projects owned=true canValidate=false canEditProject=false tableID=""]
 
     <table class="projectsList" id="${tableID}">
