@@ -17,8 +17,6 @@ import org.cgiar.ccafs.ap.action.BaseAction;
 import org.cgiar.ccafs.ap.config.APConfig;
 import org.cgiar.ccafs.ap.data.manager.ProjectManager;
 import org.cgiar.ccafs.ap.data.model.Project;
-import org.cgiar.ccafs.ap.data.model.Role;
-import org.cgiar.ccafs.ap.data.model.User;
 
 import java.util.List;
 
@@ -27,24 +25,25 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 
-public class ProjectsListAction extends BaseAction {
+public class ProjectDescriptionAction extends BaseAction {
 
 
-  private static final long serialVersionUID = 2845677913596494699L;
+  private static final long serialVersionUID = 2845669913596494699L;
 
   // Manager
   private ProjectManager projectManager;
 
-  private static Logger LOG = LoggerFactory.getLogger(ProjectsListAction.class);
+  private static Logger LOG = LoggerFactory.getLogger(ProjectDescriptionAction.class);
 
   // Model
   private List<Project> projects;
 
   @Inject
-  public ProjectsListAction(APConfig config, ProjectManager projectManager) {
+  public ProjectDescriptionAction(APConfig config, ProjectManager projectManager) {
     super(config);
     this.projectManager = projectManager;
   }
+
 
   public List<Project> getProjects() {
     return projects;
@@ -55,22 +54,16 @@ public class ProjectsListAction extends BaseAction {
     super.prepare();
 
     // Depending on the user that is logged-in, the list of projects will be displayed.
-    User fakeUser = new User();
-    fakeUser.setId(100);
-    fakeUser.setEmail("user@email.org");
-
-    // Fake role object
-    Role userRole = new Role();
-    userRole.setId(1);
-    userRole.setAcronym("RPL");
-    fakeUser.setRole(userRole);
+    Project fakeProject = new Project();
+    fakeProject.setId(100);
+    fakeProject.setTitle("titulo de prueba");
+    fakeProject.setSummary("-------------------------");
 
 
     // Getting project list.
     // projects = projectManager.getAllProjects();
-    projects = projectManager.getProjects(fakeUser);
+    projects = projectManager.getProjects(fakeProject);
 
     System.out.println(projects);
-
   }
 }

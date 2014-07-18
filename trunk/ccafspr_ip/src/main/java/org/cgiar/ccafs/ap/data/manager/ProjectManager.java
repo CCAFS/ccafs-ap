@@ -24,7 +24,7 @@ public interface ProjectManager {
    * @param object - TODO
    * @return a list with Projects.
    */
-  public List<Project> getProject(Object object);
+  public List<Project> getProjects(Object object);
 
 
 }

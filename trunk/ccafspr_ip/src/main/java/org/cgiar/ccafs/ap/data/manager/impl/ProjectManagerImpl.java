@@ -14,7 +14,7 @@ import com.google.inject.Inject;
 public class ProjectManagerImpl implements ProjectManager {
 
   // DAOs
-  private ProjectDAO projectDAO;  
+  private ProjectDAO projectDAO;
 
   @Inject
   public ProjectManagerImpl(ProjectDAO projectDAO) {
@@ -30,15 +30,16 @@ public class ProjectManagerImpl implements ProjectManager {
 
 
   @Override
-  public List<Project> getProject(Object object) {
+  public List<Project> getProjects(Object object) {
     // TODO - Pending to validate what kind of parameter should be used in this method.
-    List<Map<String, String>> projectDataList = projectDAO.getProject(0);
+    List<Map<String, String>> projectDataList = projectDAO.getProjects(0);
     List<Project> projectsList = new ArrayList<>();
 
     for (Map<String, String> elementData : projectDataList) {
       Project project = new Project();
       project.setId(Integer.parseInt(elementData.get("id")));
       project.setTitle(elementData.get("title"));
+      project.setSummary(elementData.get("summary"));
 
       /*
        * List<Map<String, String>> projectTypesData = projectDAO.getProjectType(projectLeader.getId(), 1);

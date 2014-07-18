@@ -15,29 +15,29 @@
 		  <tbody> 
 		  [#if projects?has_content]
         [#list projects as project]
-    		   <tr> 
+    		   <tr>
               <td> 
-                  <a href=" [@s.url action='description' includeParams='get']  [/@s.url]" >
+                  <a href=" [@s.url action='description' includeParams='get'] [@s.param name='projectID']${project.id?c} [/@s.param][/@s.url]" >
                     ${project.id}
                   </a>  
               </td>
               <td> 
-                  <a href=" [@s.url action='description' includeParams='get']  [/@s.url]" >
+                  <a href=" [@s.url action='description' includeParams='get'] [@s.param name='projectID']${project.id?c} [/@s.param]  [/@s.url]" >
                     ${project.title}
                   </a>  
               </td>
               <td> 
-                  <a href=" [@s.url action='description' includeParams='get']  [/@s.url]" >
+                  <a href=" [@s.url action='description' includeParams='get'] [@s.param name='projectID']${project.id?c} [/@s.param] [/@s.url]" >
                     regions
                   </a>  
               </td>
               <td> 
-                  <a href=" [@s.url action='description' includeParams='get']  [/@s.url]" >
+                  <a href=" [@s.url action='description' includeParams='get'] [@s.param name='projectID']${project.id?c} [/@s.param] [/@s.url]" >
                     flagship
                   </a>  
               </td>
               <td> 
-                  <a href=" [@s.url action='description' includeParams='get']  [/@s.url]" >
+                  <a href=" [@s.url action='description' includeParams='get'] [@s.param name='projectID']${project.id?c} [/@s.param] [/@s.url]" >
                     TBD
                   </a>  
               </td>

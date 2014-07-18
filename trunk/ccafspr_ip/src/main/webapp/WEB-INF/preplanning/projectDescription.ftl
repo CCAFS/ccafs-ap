@@ -27,9 +27,10 @@
     
     <fieldset class="fullBlock">  
 			[#-- Project Title --]
-			[@customForm.textArea name="projectTitle" i18nkey="preplanning.projectDescription.projectTitle" required=true /]
+			[@customForm.textArea name="project.title" i18nkey="preplanning.projectDescription.projectTitle" required=true value="${projects[0].title}"/]
 			[#-- Project Summary --]
-			[@customForm.textArea name="projectSummary" i18nkey="preplanning.projectDescription.projectSummary" required=true /]
+			[#--${projects[0]}--]
+			[@customForm.textArea name="projects.summary" i18nkey="preplanning.projectDescription.projectSummary" required=true value="${projects[0].summary}"/]
 	    <div id="projectDescription" class="">
 	      [#-- Project Owner --]
 	      <div class="halfPartBlock">

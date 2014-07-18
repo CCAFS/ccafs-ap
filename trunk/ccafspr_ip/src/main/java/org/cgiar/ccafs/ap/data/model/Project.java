@@ -27,6 +27,9 @@ public class Project {
 
   private int id;
   private String title;
+  private String summary;
+  private String startDate;
+  private String endDate;
   private ArrayList<IPProgram> regions; // The list of regions in which this project works with.
   private ArrayList<IPProgram> flagships; // The list of flagships in which this project works with.
   private Institution leader;
@@ -37,48 +40,40 @@ public class Project {
     super();
   }
 
-  public ArrayList<Institution> getPartners() {
-    return partners;
-  }
-
-  public void setPartners(ArrayList<Institution> partners) {
-    this.partners = partners;
-  }
-
-  public ArrayList<IPProgram> getRegions() {
-    return regions;
-  }
-
-  public void setRegions(ArrayList<IPProgram> regions) {
-    this.regions = regions;
+  public String getEndDate() {
+    return endDate;
   }
 
   public ArrayList<IPProgram> getFlagships() {
     return flagships;
   }
 
-  public void setFlagships(ArrayList<IPProgram> flagships) {
-    this.flagships = flagships;
+  public int getId() {
+    return id;
   }
 
   public Institution getLeader() {
     return leader;
   }
 
-  public void setLeader(Institution leader) {
-    this.leader = leader;
-  }
-
   public Institution getOwner() {
     return owner;
   }
 
-  public void setOwner(Institution owner) {
-    this.owner = owner;
+  public ArrayList<Institution> getPartners() {
+    return partners;
   }
 
-  public int getId() {
-    return id;
+  public ArrayList<IPProgram> getRegions() {
+    return regions;
+  }
+
+  public String getStartDate() {
+    return startDate;
+  }
+
+  public String getSummary() {
+    return summary;
   }
 
   public String getTitle() {
@@ -89,8 +84,40 @@ public class Project {
     return regions;
   }
 
+  public void setEndDate(String endDate) {
+    this.endDate = endDate;
+  }
+
+  public void setFlagships(ArrayList<IPProgram> flagships) {
+    this.flagships = flagships;
+  }
+
   public void setId(int id) {
     this.id = id;
+  }
+
+  public void setLeader(Institution leader) {
+    this.leader = leader;
+  }
+
+  public void setOwner(Institution owner) {
+    this.owner = owner;
+  }
+
+  public void setPartners(ArrayList<Institution> partners) {
+    this.partners = partners;
+  }
+
+  public void setRegions(ArrayList<IPProgram> regions) {
+    this.regions = regions;
+  }
+
+  public void setStartDate(String startDate) {
+    this.startDate = startDate;
+  }
+
+  public void setSummary(String summary) {
+    this.summary = summary;
   }
 
   public void setTitle(String title) {

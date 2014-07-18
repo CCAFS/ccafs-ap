@@ -34,7 +34,7 @@
       <result name="input">/WEB-INF/preplanning/projects.ftl</result>
     </action>
     
-    <action name="description" class="org.cgiar.ccafs.ap.action.BaseAction">
+    <action name="description" class="org.cgiar.ccafs.ap.action.preplanning.ProjectDescriptionAction">
       <result name="input">/WEB-INF/preplanning/projectDescription.ftl</result>
     </action>
     
