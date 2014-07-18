@@ -17,8 +17,10 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 
-import org.apache.commons.lang3.RandomStringUtils;
+import org.cgiar.ccafs.ap.data.model.ProjectPartner;
 
+import org.cgiar.ccafs.ap.data.model.Project;
+import org.apache.commons.lang3.RandomStringUtils;
 import org.cgiar.ccafs.ap.data.model.Country;
 import org.cgiar.ccafs.ap.data.model.InstitutionType;
 import org.cgiar.ccafs.ap.data.model.Institution;
@@ -43,10 +45,9 @@ public class ProjectPartnersAction extends BaseAction {
 
   // Model
   private int projectId;
-  private List<Institution> partners;
+  private Project project;
   private List<InstitutionType> partnerTypes;
   private List<Country> countries;
-  private Institution leader;
   // allPartners will be used to list all the partners that have the system.
   private List<Institution> allPartners;
 
@@ -55,6 +56,7 @@ public class ProjectPartnersAction extends BaseAction {
     super(config);
     // TODO Managers.
   }
+
 
   // TODO - Temporal - To be removed!
   private List<Country> getAllCountries() {
@@ -110,16 +112,13 @@ public class ProjectPartnersAction extends BaseAction {
     return countries;
   }
 
-  public Institution getLeader() {
-    return leader;
-  }
-
-  public List<Institution> getPartners() {
-    return partners;
-  }
-
   public List<InstitutionType> getPartnerTypes() {
     return partnerTypes;
+  }
+
+
+  public Project getProject() {
+    return project;
   }
 
   public int getProjectId() {
@@ -135,6 +134,10 @@ public class ProjectPartnersAction extends BaseAction {
     // ***********FAKE OBJECTS JUST TO TEST!******************
     Random rand = new Random();
 
+    // Project
+    project = new Project();
+    project.setId(123);
+
     // All Countries
     countries = this.getAllCountries();
 
@@ -145,27 +148,30 @@ public class ProjectPartnersAction extends BaseAction {
     allPartners = this.getAllPartnersTemporal(rand, countries, partnerTypes);
 
     // Project leader.
-    leader = allPartners.get(rand.nextInt(100));
+    ProjectPartner pp = new ProjectPartner();
+    pp.setPartner(allPartners.get(rand.nextInt(100)));
+    pp.setContactEmail("pp_email@email.com");
+    pp.setContactName("Contact Name PP");
+    project.setLeader(pp);
 
-    // Saved Partners.
-    partners = new ArrayList<Institution>();
+    // Saved Project Partners.
+    ArrayList<ProjectPartner> projectPartners = new ArrayList<ProjectPartner>();
 
     for (int c = 0; c < 10; c++) {
+      ProjectPartner ppTemp = new ProjectPartner();
+      ppTemp.setId(c + 1000);
+      ppTemp.setContactEmail("projectPartner" + c + "@email.com");
+      ppTemp.setContactName("Nombre Project Partner " + c);
       if (c == 0) {
-        partners.add(allPartners.get(0));
+        ppTemp.setPartner(allPartners.get(0));
       } else {
-        Institution inst = allPartners.get(rand.nextInt(100));
-        if (!partners.contains(inst)) {
-          partners.add(inst);
-        } else {
-          c--;
-        }
+        ppTemp.setPartner(allPartners.get(rand.nextInt(100)));
       }
+      projectPartners.add(ppTemp);
     }
+    project.setProjectPartners(projectPartners);
     // **************************************
 
 
   }
-
-
 }
