@@ -99,11 +99,11 @@
       </h6>
     [/#if]
     [#if errorField==""][@s.fielderror cssClass="fieldError" fieldName="${name}"/][#else][@s.fielderror cssClass="fieldError" fieldName="${errorfield}"/][/#if]
-    <div class="selectList">
+    <div class="selectList">   
       [#if value=="-NULL"]
         [#assign customValue][@s.property value="${name}" /][/#assign]
       [#else]
-        [#assign customValue]${value}[/#assign]
+        [#assign customValue]${value}[/#assign]        
       [/#if]
       [#if help!=""]
         [#assign helpText][@s.text name="${help}" /][/#assign]
