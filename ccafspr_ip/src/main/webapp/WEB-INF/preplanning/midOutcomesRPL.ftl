@@ -1,7 +1,7 @@
 [#ftl]
 [#assign title = "Outcomes 2019 - Preplanning" /]
 [#assign globalLibs = ["jquery", "noty"] /]
-[#assign customJS = ["${baseUrl}/js/global/utils.js", "${baseUrl}/js/preplanning/midOutcomesPreplanning.js"] /]
+[#assign customJS = ["${baseUrl}/js/global/utils.js", "${baseUrl}/js/preplanning/midOutcomesRPLPreplanning.js"] /]
 [#assign currentSection = "preplanning" /]
 [#assign currentPrePlanningSection = "impactPathways" /]
 [#assign currentStage = "midOutcomes" /]
@@ -19,7 +19,7 @@
     <p> [@s.text name="planning.preplanning.midOutcomesRPL.help" /] </p>
   </div>
   [#include "/WEB-INF/global/pages/pre-planning-secondary-menu.ftl" /]
-  
+   
   [@s.form action="midOutcomes" cssClass="pure-form"]  
     <article class="halfContent" id="midOutcomes">
     [#include "/WEB-INF/preplanning/ipPreplanningSubMenu.ftl" /]
@@ -57,7 +57,7 @@
               [#-- midOutcome's parents --]  
               [#-- Add contribute --]
               <div class="fullBlock addContributeBlock">
-                [@customForm.select name="contribution" value="none" showTitle=false listName="midOutcomes" keyFieldName="id"  displayFieldName="description" addButton=true className="contributes" /]
+                [@customForm.select name="" value="none" showTitle=false listName="midOutcomes" keyFieldName="id"  displayFieldName="description" addButton=true className="contributes" /]
               </div>
             </div>  
           </div>  
@@ -86,19 +86,19 @@
         <a id="removeMidOutcome" href="" class="removeContribute">[@s.text name="preplanning.midOutcomesRPL.removeMidOutcome" /]</a>
       </div> 
       [#-- Title --]
-      [@customForm.textArea name="midOutcomeRPLIdDescription" i18nkey="preplanning.midOutcomesRPL.outcome" required=true /] 
+      [@customForm.textArea name="midOutcomeRPLDescription" i18nkey="preplanning.midOutcomesRPL.outcome" required=true /] 
       <div class="contentElements parentsBlock">
         <div class="itemIndex">[@s.text name="preplanning.midOutcomesRPL.contributes" /] </div>
         [#-- midOutcome's parents --]  
         [#-- Add contribute --]
         <div class="fullBlock addContributeBlock">
-          [@customForm.select name="contribution" value="none" showTitle=false listName="midOutcomes" keyFieldName="id"  displayFieldName="description" addButton=true className="contributes" /]
+          [@customForm.select name=""  value="none" showTitle=false listName="midOutcomes" keyFieldName="id"  displayFieldName="description" addButton=true className="contributes" /]
         </div>
       </div>  
     </div> 
     [#-- Mid Outcomes FPL TEMPLATEs for contributions --]
     [#list midOutcomes as midOutcome]
-      [@contributeTemplate.midOutcomesRPL parent_index="${midOutcome_index}" midOutcomeRPL_value="${midOutcome.id}" canRemove=true /]
+      [@contributeTemplate.midOutcomesRPL template=true parent_index="${midOutcome_index}" midOutcomeRPL_value="${midOutcome.id}" canRemove=true /]
     [/#list] 
    
 </section>
