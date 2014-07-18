@@ -1,11 +1,11 @@
 [#ftl]
 
-[#macro partnerSection savedPartners partnerTypes countries canRemove=false]
-  [#if savedPartners?has_content]
-    [#list savedPartners as ap]    	
+[#macro partnerSection projectPartners partnerTypes countries canRemove=false]
+  [#if projectPartners?has_content]
+    [#list projectPartners as ap]    	
       <div id="partner-${ap_index}" class="projectPartner">
         [#-- Partner identifier --]
-        <input type="hidden" name="savedPartners[${ap_index}].id" value="${ap.id?c}" />        
+        <input type="hidden" name="projectPartners[${ap_index}].id" value="${ap.id?c}" />        
         
         [#-- Remove link for all partners --]
         <div class="removeLink">
@@ -15,18 +15,18 @@
         
          [#-- Partner type list --]
         <div class="halfPartBlock partnerTypeName chosen">
-          [@customForm.select name="partnerTypeList" label="" i18nkey="preplanning.projectPartners.partnerType" listName="partnerTypes" keyFieldName="id"  displayFieldName="name" className="partnerTypes" value="${ap.type.id?c}" /]
+          [@customForm.select name="partnerTypeList" label="" i18nkey="preplanning.projectPartners.partnerType" listName="partnerTypes" keyFieldName="id"  displayFieldName="name" className="partnerTypes" value="${ap.partner.type.id?c}" /]
         </div>
         
         [#-- Country list --]
         <div class="halfPartBlock countryListBlock chosen">
-          [@customForm.select name="countryList" label="" i18nkey="preplanning.projectPartners.country" listName="countries" keyFieldName="id"  displayFieldName="name" className="countryList" value="${ap.country.id?string}" help="TEST"/]
-          <p>${savedPartners[ap_index].country.id}</p>
+          [@customForm.select name="countryList" label="" i18nkey="preplanning.projectPartners.country" listName="countries" keyFieldName="id"  displayFieldName="name" className="countryList" value="${ap.partner.country.id?string}" help="TEST"/]
+          <p>${projectPartners[ap_index].partner.country.id}</p>
         </div>
         
         [#-- Partner Name --]
         <div class="fullBlock partnerName chosen">
-          [@customForm.select name="partners[${ap_index}]" label="" i18nkey="preplanning.projectPartners.partner.name" listName="allPartners" keyFieldName="id"  displayFieldName="name" help="TEST" /]          
+          [@customForm.select name="projectPartners[${ap_index}].partner" label="" i18nkey="preplanning.projectPartners.partner.name" listName="allPartners" keyFieldName="id"  displayFieldName="name" help="TEST" /]          
         </div>
         
         

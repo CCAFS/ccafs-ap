@@ -25,11 +25,11 @@
     <h1 class="contentTitle">
     [@s.text name="preplanning.projectPartners.title" /]  
     </h1>
-    [#list partners as partner]
-    	${partner.name} - ${partner.type.id} - ${partner.country.id}<br>
+    [#list project.projectPartners as projectPartner]
+    	${projectPartner.partner.name} - ${projectPartner.partner.type.id} - ${projectPartner.partner.country.id}<br>
     [/#list]
     <hr>
-    [@partnersTemplate.partnerSection savedPartners=partners partnerTypes=partnerTypes countries=countries canRemove=true /]
+    [@partnersTemplate.partnerSection projectPartners=project.projectPartners partnerTypes=partnerTypes countries=countries canRemove=true /]
     <input type="submit" value="send" />
   </article>
   [/@s.form]  

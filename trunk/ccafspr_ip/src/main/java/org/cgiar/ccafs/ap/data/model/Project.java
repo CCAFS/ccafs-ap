@@ -19,7 +19,7 @@ import org.apache.commons.lang3.builder.ToStringBuilder;
 
 /**
  * This class represents a Project.
- * 
+ *
  * @author Javier Andrés Gallego
  * @author Héctor Tobón
  */
@@ -32,9 +32,9 @@ public class Project {
   private String endDate;
   private ArrayList<IPProgram> regions; // The list of regions in which this project works with.
   private ArrayList<IPProgram> flagships; // The list of flagships in which this project works with.
-  private Institution leader;
+  private ProjectPartner leader;
   private Institution owner;
-  private ArrayList<Institution> partners; // Project partners.
+  private ArrayList<ProjectPartner> projectPartners; // Project partners.
 
   public Project() {
     super();
@@ -52,7 +52,7 @@ public class Project {
     return id;
   }
 
-  public Institution getLeader() {
+  public ProjectPartner getLeader() {
     return leader;
   }
 
@@ -60,8 +60,8 @@ public class Project {
     return owner;
   }
 
-  public ArrayList<Institution> getPartners() {
-    return partners;
+  public ArrayList<ProjectPartner> getProjectPartners() {
+    return projectPartners;
   }
 
   public ArrayList<IPProgram> getRegions() {
@@ -96,7 +96,7 @@ public class Project {
     this.id = id;
   }
 
-  public void setLeader(Institution leader) {
+  public void setLeader(ProjectPartner leader) {
     this.leader = leader;
   }
 
@@ -104,8 +104,8 @@ public class Project {
     this.owner = owner;
   }
 
-  public void setPartners(ArrayList<Institution> partners) {
-    this.partners = partners;
+  public void setProjectPartners(ArrayList<ProjectPartner> projectPartners) {
+    this.projectPartners = projectPartners;
   }
 
   public void setRegions(ArrayList<IPProgram> regions) {
