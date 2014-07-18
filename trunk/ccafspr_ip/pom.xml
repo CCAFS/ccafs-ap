@@ -48,7 +48,8 @@
   </issueManagement>
 
   <dependencies>
-    <dependency>
+  
+     <dependency>
       <groupId>org.apache.struts</groupId>
       <artifactId>struts2-core</artifactId>
       <version>${struts2.version}</version>
@@ -164,19 +165,20 @@
       <version>${jfreechart.version}</version>
     </dependency>
     
-    <!-- Shiro dependencies: -->
     <dependency>
-	    <groupId>org.apache.shiro</groupId>
-	    <artifactId>shiro-core</artifactId>
-	    <version>${shiro.version}</version>
-    </dependency>
-    <dependency>
-	    <groupId>org.apache.shiro</groupId>
-	    <artifactId>shiro-web</artifactId>
-	    <version>${shiro.version}</version>
+      <groupId>org.cgiar.ciat.auth</groupId>
+      <artifactId>adauth</artifactId>
+      <version>1.0</version>
     </dependency>
     
   </dependencies>
+  
+  <repositories>
+    <repository>
+      <id>Internal project repo</id>
+      <url>file://${basedir}/src/main/resources/libs/</url>
+    </repository>
+  </repositories>
 
   <build>
     <finalName>${project.artifactId}</finalName>

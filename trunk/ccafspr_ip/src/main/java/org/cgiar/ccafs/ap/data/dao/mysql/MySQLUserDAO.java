@@ -13,7 +13,6 @@ import com.google.inject.Inject;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-
 public class MySQLUserDAO implements UserDAO {
 
   // Loggin
@@ -31,12 +30,13 @@ public class MySQLUserDAO implements UserDAO {
     Map<String, String> userData = new HashMap<>();
     try (Connection connection = dbManager.getConnection()) {
       StringBuilder query = new StringBuilder();
-      query.append("SELECT u.id, u.username, u.password, u.is_ccafs_user, u.last_login ");
+      query.append("SELECT u.id, u.username, u.password, u.is_ccafs_user, u.last_login, ");
       query.append("p.first_name, p.last_name, p.email, p.phone ");
       query.append("FROM users u ");
       query.append("INNER JOIN persons p ON u.person_id = p.id ");
-      query.append("WHERE u.username = ");
+      query.append("WHERE u.username = '");
       query.append(username);
+      query.append("'; ");
 
       ResultSet rs = dbManager.makeQuery(query.toString(), connection);
       if (rs.next()) {

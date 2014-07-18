@@ -2,9 +2,6 @@ package org.cgiar.ccafs.ap.data.manager.impl;
 
 import org.cgiar.ccafs.ap.data.dao.UserDAO;
 import org.cgiar.ccafs.ap.data.manager.UserManager;
-import org.cgiar.ccafs.ap.data.model.Leader;
-import org.cgiar.ccafs.ap.data.model.LeaderType;
-import org.cgiar.ccafs.ap.data.model.Region;
 import org.cgiar.ccafs.ap.data.model.User;
 import org.cgiar.ccafs.ap.util.MD5Convert;
 
@@ -29,10 +26,23 @@ public class UserManagerImp implements UserManager {
     this.userDAO = userDAO;
   }
 
+  /**
+   * This method make the login process against the active directory
+   * if the user has an institutional account
+   * 
+   * @param user
+   * @return true if it was successfully logged in. False otherwise
+   */
+  private boolean activeDirectoryLogin(User user) {
+    System.out.println("-- testing AD --- ");
+    return false;
+  }
+
   @Override
   public User getUser(String email) {
     SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM");
     Map<String, String> userData = userDAO.getUser(email);
+
     if (!userData.isEmpty()) {
 
       User user = new User();
@@ -42,38 +52,15 @@ public class UserManagerImp implements UserManager {
       user.setCcafsUser(Boolean.parseBoolean(userData.get("is_ccafs_user")));
       user.setFirstName(userData.get("first_name"));
       user.setLastName(userData.get("last_name"));
-
-
+      user.setEmail(userData.get("email"));
+      user.setPhone(userData.get("phone"));
       try {
         user.setLastLogin(dateFormat.parse(userData.get("last_login")));
       } catch (ParseException e) {
         String msg = "There was an error parsing the last login of user " + user.getId() + ".";
         LOG.error(msg, e);
       }
-      /*
-       * user.lastLogin
-       * user.setMD5Password(userData.get("password"));
-       * user.setRole(userData.get("role"));
-       */
-      // Leader
-      Leader leader = new Leader();
-      leader.setId(Integer.parseInt(userData.get("leader_id")));
-      leader.setName(userData.get("leader_name"));
-      leader.setAcronym(userData.get("leader_acronym"));
-      // Leader Type
-      LeaderType leaderType = new LeaderType();
-      leaderType.setId(Integer.parseInt(userData.get("leader_type_id")));
-      leaderType.setName(userData.get("leader_type_name"));
-      leader.setLeaderType(leaderType);
-      // Region
-      if (userData.get("region_id") != null) {
-        Region region = new Region();
-        region.setId(Integer.parseInt(userData.get("region_id")));
-        region.setName(userData.get("region_name"));
-        leader.setRegion(region);
-      }
 
-      // user.setLeader(leader);
       return user;
     }
     LOG.warn("Information related to the user {} wasn't found.", email);
@@ -85,11 +72,15 @@ public class UserManagerImp implements UserManager {
     if (email != null && password != null) {
       User userFound = this.getUser(email);
       if (userFound != null) {
-        User temp = new User();
-        // temp.setMD5Password(password);
-        if (userFound.getPassword().equals(temp.getPassword())) {
-          return userFound;
+
+        if (userFound.isCcafsUser()) {
+          activeDirectoryLogin(userFound);
+        } else {
+          if (userFound.getPassword().equals(password)) {
+            return userFound;
+          }
         }
+
       }
     }
     return null;
