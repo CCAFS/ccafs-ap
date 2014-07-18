@@ -24,10 +24,7 @@
   	[#include "/WEB-INF/preplanning/projectPreplanningSubMenu.ftl" /]
     <h1 class="contentTitle">
     [@s.text name="preplanning.projectPartners.title" /]  
-    </h1>
-    [#list project.projectPartners as projectPartner]
-    	${projectPartner.partner.name} - ${projectPartner.partner.type.id} - ${projectPartner.partner.country.id}<br>
-    [/#list]
+    </h1>    
     <hr>
     [@partnersTemplate.partnerSection projectPartners=project.projectPartners partnerTypes=partnerTypes countries=countries canRemove=true /]
     <input type="submit" value="send" />
