@@ -18,6 +18,8 @@
  */
 package org.cgiar.ccafs.ap.data.model;
 
+import org.cgiar.ccafs.ap.util.MD5Convert;
+
 import java.util.ArrayList;
 import java.util.Date;
 
@@ -166,7 +168,6 @@ public class User {
     this.firstName = firstName;
   }
 
-
   public void setId(int id) {
     this.id = id;
   }
@@ -183,6 +184,13 @@ public class User {
     this.lastName = lastName;
   }
 
+  public void setMD5Password(String password) {
+    if (password != null) {
+      this.password = MD5Convert.stringToMD5(password);
+    } else {
+      this.password = null;
+    }
+  }
 
   public void setPassword(String password) {
     this.password = password;

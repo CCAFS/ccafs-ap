@@ -61,5 +61,6 @@
   -->
   <include file="struts-home.xml" />
   <include file="struts-pre-planning.xml" />
+  <include file="struts-json.xml" />
 
 </struts>
