@@ -14,6 +14,10 @@ import com.google.inject.ImplementedBy;
 public interface ProjectDAO {
 
 
+  public List<Map<String, String>> getProjectOwnerContact(int programId);
+
+  public List<Map<String, String>> getProjectOwnerId(int programId);
+
   /**
    * This method return a all the Projects which belongs to the program
    * indicated by parameter.
@@ -22,11 +26,7 @@ public interface ProjectDAO {
    * @return a list of maps with the information of all IP elements returned.
    */
 
-  public List<Map<String, String>> getProject(int programId);
-
-  public List<Map<String, String>> getProjectOwnerContact(int programId);
-
-  public List<Map<String, String>> getProjectOwnerId(int programId);
+  public List<Map<String, String>> getProjects(int programId);
 
   public int saveProject(Map<String, Object> projectData);
 
