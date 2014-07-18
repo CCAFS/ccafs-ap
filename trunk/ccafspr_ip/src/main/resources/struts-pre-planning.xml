@@ -4,7 +4,7 @@
 
   <!-- Add addition packages and configuration here. -->
   <package name="preplanning" namespace="/pre-planning" extends="ccafsap-default">
-    <default-action-ref name="activities" />
+    <default-action-ref name="outcomes" />
 
     <!-- Sections -->
     
@@ -16,7 +16,9 @@
     
     <action name="midOutcomes" class="org.cgiar.ccafs.ap.action.preplanning.MidOutcomesPreplanningAction">
       <result name="input">/WEB-INF/preplanning/midOutcomes.ftl</result>
-      <result name="success">/WEB-INF/preplanning/midOutcomes.ftl</result>
+      <result name="success" type="redirectAction">
+        <param name="actionName">midOutcomes</param>
+       </result>
     </action>
     
     <action name="midOutcomesRPL" class="org.cgiar.ccafs.ap.action.preplanning.MidOutcomesPreplanningAction">
@@ -27,6 +29,11 @@
     <action name="outputs" class="org.cgiar.ccafs.ap.action.preplanning.OutputsPreplanningAction">
       <result name="input">/WEB-INF/preplanning/outputs.ftl</result>
       <result name="success">/WEB-INF/preplanning/outputs.ftl</result>
+    </action>
+    
+    <action name="outputsRPL" class="org.cgiar.ccafs.ap.action.preplanning.OutputsPreplanningAction">
+      <result name="input">/WEB-INF/preplanning/outputsRPL.ftl</result>
+      <result name="success">/WEB-INF/preplanning/outputsRPL.ftl</result>
     </action>
         
     <!-- Section: Projects  -->

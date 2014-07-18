@@ -10,15 +10,20 @@
         [@s.url action='midOutcomesRPL' includeParams='get'][/@s.url]
       "><li>[@s.text name="menu.preplanning.submenu.midOutcomes" /]</li>
     </a>
+    <a [#if currentStage == "outputs"] class="currentReportingSection" [/#if] href="
+        [@s.url action='outputsRPL' includeParams='get'][/@s.url]
+      "><li>[@s.text name="menu.preplanning.submenu.outputs" /]</li>
+    </a>
     [#elseif userRole="FPL"]
     <a [#if currentStage == "midOutcomes"] class="currentReportingSection" [/#if] href="
         [@s.url action='midOutcomes' includeParams='get'][/@s.url]
       "><li>[@s.text name="menu.preplanning.submenu.midOutcomes" /]</li>
     </a>
-    [/#if]
     <a [#if currentStage == "outputs"] class="currentReportingSection" [/#if] href="
         [@s.url action='outputs' includeParams='get'][/@s.url]
       "><li>[@s.text name="menu.preplanning.submenu.outputs" /]</li>
     </a>
+    [/#if]
+    
   </ul>
 </nav>
