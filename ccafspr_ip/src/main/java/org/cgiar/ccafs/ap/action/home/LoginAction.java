@@ -53,7 +53,6 @@ public class LoginAction extends BaseAction {
   }
 
   public String login() {
-
     // attribute user is not null when the user try to login
     if (user != null) {
       // Check if is a valid user
@@ -77,7 +76,7 @@ public class LoginAction extends BaseAction {
   }
 
   public String logout() {
-    User user = (User) this.getSession().get("current_user");
+    User user = (User) this.getSession().get("currentUser");
     if (user != null) {
       LOG.info("User {} logout succesfully", user.getEmail());
     }
