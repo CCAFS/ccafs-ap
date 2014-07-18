@@ -2,6 +2,7 @@ package org.cgiar.ccafs.ap.data.manager.impl;
 
 import org.cgiar.ccafs.ap.data.dao.ProjectDAO;
 import org.cgiar.ccafs.ap.data.manager.ProjectManager;
+import org.cgiar.ccafs.ap.data.model.IPProgram;
 import org.cgiar.ccafs.ap.data.model.Project;
 
 import java.util.ArrayList;
@@ -30,9 +31,10 @@ public class ProjectManagerImpl implements ProjectManager {
 
 
   @Override
-  public List<Project> getProjects(Object object) {
+  public List<Project> getProjects(IPProgram program) {
     // TODO - Pending to validate what kind of parameter should be used in this method.
-    List<Map<String, String>> projectDataList = projectDAO.getProjects(0);
+    System.out.println("----- Program ID: " + program.getId());
+    List<Map<String, String>> projectDataList = projectDAO.getProjects(program.getId());
     List<Project> projectsList = new ArrayList<>();
 
     for (Map<String, String> elementData : projectDataList) {

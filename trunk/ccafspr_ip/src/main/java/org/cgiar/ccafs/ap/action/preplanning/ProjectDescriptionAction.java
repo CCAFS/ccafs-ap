@@ -15,12 +15,15 @@ package org.cgiar.ccafs.ap.action.preplanning;
 
 import org.cgiar.ccafs.ap.action.BaseAction;
 import org.cgiar.ccafs.ap.config.APConfig;
+import org.cgiar.ccafs.ap.config.APConstants;
 import org.cgiar.ccafs.ap.data.manager.ProjectManager;
+import org.cgiar.ccafs.ap.data.model.IPProgram;
 import org.cgiar.ccafs.ap.data.model.Project;
 
 import java.util.List;
 
 import com.google.inject.Inject;
+import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -37,6 +40,7 @@ public class ProjectDescriptionAction extends BaseAction {
 
   // Model
   private List<Project> projects;
+  private int projectID;
 
   @Inject
   public ProjectDescriptionAction(APConfig config, ProjectManager projectManager) {
@@ -53,11 +57,18 @@ public class ProjectDescriptionAction extends BaseAction {
   public void prepare() throws Exception {
     super.prepare();
 
+    String projectStringID = StringUtils.trim(this.getRequest().getParameter(APConstants.PROJECT_REQUEST_ID));
+    try {
+      projectID = Integer.parseInt(projectStringID);
+    } catch (NumberFormatException e) {
+      LOG.error("-- prepare() > There was an error parsing the project identifier '{}'.", projectStringID, e);
+    }
+
     // Depending on the user that is logged-in, the list of projects will be displayed.
-    Project fakeProject = new Project();
-    fakeProject.setId(100);
-    fakeProject.setTitle("titulo de prueba");
-    fakeProject.setSummary("-------------------------");
+    IPProgram fakeProject = new IPProgram();
+    fakeProject.setId(projectID);
+    // fakeProject.setTitle("titulo de prueba");
+    // fakeProject.setSummary("-------------------------");
 
 
     // Getting project list.

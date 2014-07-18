@@ -1,6 +1,7 @@
 package org.cgiar.ccafs.ap.data.manager;
 
 import org.cgiar.ccafs.ap.data.manager.impl.ProjectManagerImpl;
+import org.cgiar.ccafs.ap.data.model.IPProgram;
 import org.cgiar.ccafs.ap.data.model.Project;
 
 import java.util.List;
@@ -24,7 +25,7 @@ public interface ProjectManager {
    * @param object - TODO
    * @return a list with Projects.
    */
-  public List<Project> getProjects(Object object);
+  public List<Project> getProjects(IPProgram program);
 
 
 }

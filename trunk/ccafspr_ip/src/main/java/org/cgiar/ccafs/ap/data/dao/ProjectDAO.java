@@ -14,6 +14,8 @@ import com.google.inject.ImplementedBy;
 public interface ProjectDAO {
 
 
+  public List<Map<String, String>> getProject(int projectID);
+
   public List<Map<String, String>> getProjectOwnerContact(int programId);
 
   public List<Map<String, String>> getProjectOwnerId(int programId);
