@@ -1,9 +1,8 @@
 [#ftl]
-
 [#macro partnerSection projectPartners partnerTypes countries canRemove=false]
   [#if projectPartners?has_content]
     [#list projectPartners as ap]    	
-      <div id="partner-${ap_index}" class="projectPartner">
+      <div id="projectPartner-${ap_index}" class="projectPartner">
         [#-- Partner identifier --]
         <input type="hidden" name="projectPartners[${ap_index}].id" value="${ap.id?c}" />        
         
@@ -20,15 +19,13 @@
         
         [#-- Country list --]
         <div class="halfPartBlock countryListBlock chosen">
-          [@customForm.select name="countryList" label="" i18nkey="preplanning.projectPartners.country" listName="countries" keyFieldName="id"  displayFieldName="name" className="countryList" value="${ap.partner.country.id?string}" help="TEST"/]
-          <p>${projectPartners[ap_index].partner.country.id}</p>
+          [@customForm.select name="countryList" label="" i18nkey="preplanning.projectPartners.country" listName="countries" keyFieldName="id"  displayFieldName="name" className="countryList" value="'${ap.partner.country.id}'" /]
         </div>
         
-        [#-- Partner Name --]
+        [#-- NOT WORKING YET - Partner Name --]
         <div class="fullBlock partnerName chosen">
-          [@customForm.select name="projectPartners[${ap_index}].partner" label="" i18nkey="preplanning.projectPartners.partner.name" listName="allPartners" keyFieldName="id"  displayFieldName="name" help="TEST" /]          
-        </div>
-        
+          [@customForm.select name="projectPartners[${ap_index}].partner" label="" i18nkey="preplanning.projectPartners.partner.name" listName="allPartners" keyFieldName="id"  displayFieldName="name" /]
+        </div>        
         
       </div> <!-- End activityPartner-${ap_index} -->
     [/#list]
