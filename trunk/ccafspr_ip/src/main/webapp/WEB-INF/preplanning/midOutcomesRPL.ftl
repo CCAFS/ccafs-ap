@@ -1,7 +1,7 @@
 [#ftl]
 [#assign title = "Outcomes 2019 - Preplanning" /]
 [#assign globalLibs = ["jquery", "noty"] /]
-[#assign customJS = ["${baseUrl}/js/global/utils.js", "${baseUrl}/js/preplanning/midOutcomesRPLPreplanning.js"] /]
+[#assign customJS = ["${baseUrl}/js/global/utils.js", "${baseUrl}/js/preplanning/midOutcomesPreplanning.js"] /]
 [#assign currentSection = "preplanning" /]
 [#assign currentPrePlanningSection = "impactPathways" /]
 [#assign currentStage = "midOutcomes" /]
@@ -10,8 +10,8 @@
 [#include "/WEB-INF/global/pages/header.ftl" /]
 [#include "/WEB-INF/global/pages/main-menu.ftl" /]
 [#import "/WEB-INF/global/macros/forms.ftl" as customForm/]
-[#import "/WEB-INF/global/macros/indicatorTemplate.ftl" as indicatorTemplate/]
-[#import "/WEB-INF/global/macros/contributeTemplate.ftl" as contributeTemplate/]
+[#import "/WEB-INF/preplanning/macros/indicatorTemplate.ftl" as indicatorTemplate/]
+[#import "/WEB-INF/preplanning/macros/contributeTemplate.ftl" as contributeTemplate/]
     
 <section class="content">
   <div class="helpMessage">

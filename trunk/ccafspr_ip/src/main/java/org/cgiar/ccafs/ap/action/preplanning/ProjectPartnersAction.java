@@ -40,7 +40,8 @@ public class ProjectPartnersAction extends BaseAction {
   private int projectId;
   private List<Institution> partners;
   private Institution leader;
-  private List<Institution> allPartners; // Is going to be used to list all partners in the dropdown.
+  // allPartners will be used to list all the partners that have the system.
+  private List<Institution> allPartners;
 
   @Inject
   public ProjectPartnersAction(APConfig config) {
@@ -77,8 +78,20 @@ public class ProjectPartnersAction extends BaseAction {
     partners.add(inst1);
     partners.add(inst2);
 
+    // Creating fake Project leader.
+    leader = new Institution();
+    leader.setId(321);
+    leader.setName("Institution - Partner Leader");
+    leader.setContactPersonEmail("leader@email.com");
+    leader.setContactPersonName("Leader - Jhon Doe");
 
-    System.out.println("Loading Project Partners...");
+    // Creating fake partners with all the objects above.
+    allPartners = new ArrayList<Institution>();
+    allPartners.add(inst1);
+    allPartners.add(inst2);
+    allPartners.add(leader);
+
+
   }
 
 
