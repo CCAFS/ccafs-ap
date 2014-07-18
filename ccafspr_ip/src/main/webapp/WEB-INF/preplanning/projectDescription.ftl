@@ -28,17 +28,14 @@
     <fieldset class="fullBlock">  
 			[#-- Project Title --]
 			[@customForm.textArea name="project.title" i18nkey="preplanning.projectDescription.projectTitle" required=true value="${projects[0].title}"/]
-			[#-- Project Summary --]
-			[#--${projects[0]}--]
-			[@customForm.textArea name="projects.summary" i18nkey="preplanning.projectDescription.projectSummary" required=true value="${projects[0].summary}"/]
 	    <div id="projectDescription" class="">
 	      [#-- Project Owner --]
 	      <div class="halfPartBlock">
 	        [@customForm.input name="" type="text" i18nkey="preplanning.projectDescription.projectOwner" required=true /]
 	      </div>
-	      [#-- Project Budget --]
+	      [#-- Project Owner Contact Person --]
 	      <div class="halfPartBlock">
-	        [@customForm.input name="" type="text" i18nkey="preplanning.projectDescription.budget" required=true /]
+	        [@customForm.input name="" type="text" i18nkey="preplanning.projectDescription.projectownercontactperson" required=true /]
 	      </div>
 	      [#-- Start Date --]
 		    <div class="halfPartBlock">
@@ -49,25 +46,10 @@
 	      [@customForm.input name="" type="text" i18nkey="preplanning.projectDescription.endDate" required=true /]
 	    	</div>
 	  	</div> 
-    </fieldset>
-    <fieldset class="fullBlock">  
-    	<legend>[@s.text name="preplanning.projectDescription.projectLead" /] </legend> 
-	    <div id="projectLead" class="">
-	      [#-- Organization --]
-	      <div class="fullBlock">
-	      [@customForm.select name="" label="" i18nkey="preplanning.projectDescription.organization" showTitle=true listName="organizationList" keyFieldName="id"  displayFieldName="name" className="organization" required=true /]
-	         
-	      </div>
-	      [#-- Contact name --]
-	      <div class="halfPartBlock">
-	        [@customForm.input name="" type="text" i18nkey="preplanning.projectDescription.contactName" required=true /]
-	      </div>
-	      [#-- Email --]
-		    <div class="halfPartBlock">
-		      [@customForm.input name="" type="text" i18nkey="preplanning.projectDescription.email" required=true /]
-		    </div>  
-	  	</div> 
-    </fieldset>
+	  		[#-- Project Summary --]
+			[#--${projects[0]}--]
+			[@customForm.textArea name="projects.summary" i18nkey="preplanning.projectDescription.projectSummary" required=true value="${projects[0].summary}"/]
+    </fieldset><br/>
     <fieldset class="fullBlock">  
     	<legend>[@s.text name="preplanning.projectDescription.projectWorking" /] </legend> 
 	    <div id="projectWorking">
@@ -96,6 +78,11 @@
 	        </div>
 	      </div> 
 	      
+	      <div class="buttons">
+		      [@s.submit type="button" name="save"][@s.text name="form.buttons.save" /][/@s.submit]
+		      [@s.submit type="button" name="next"][@s.text name="form.buttons.next" /][/@s.submit]
+		      [@s.submit type="button" name="cancel"][@s.text name="form.buttons.cancel" /][/@s.submit]
+		    </div>
 	  	</div> 
     </fieldset>
  

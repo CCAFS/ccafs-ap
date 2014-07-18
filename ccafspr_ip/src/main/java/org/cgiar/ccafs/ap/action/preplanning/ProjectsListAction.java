@@ -16,8 +16,8 @@ package org.cgiar.ccafs.ap.action.preplanning;
 import org.cgiar.ccafs.ap.action.BaseAction;
 import org.cgiar.ccafs.ap.config.APConfig;
 import org.cgiar.ccafs.ap.data.manager.ProjectManager;
+import org.cgiar.ccafs.ap.data.model.IPProgram;
 import org.cgiar.ccafs.ap.data.model.Project;
-import org.cgiar.ccafs.ap.data.model.Role;
 import org.cgiar.ccafs.ap.data.model.User;
 
 import java.util.List;
@@ -60,15 +60,15 @@ public class ProjectsListAction extends BaseAction {
     fakeUser.setEmail("user@email.org");
 
     // Fake role object
-    Role userRole = new Role();
+    IPProgram userRole = new IPProgram();
     userRole.setId(1);
     userRole.setAcronym("RPL");
-    fakeUser.setRole(userRole);
+    // fakeUser.setRole(userRole);
 
 
     // Getting project list.
     // projects = projectManager.getAllProjects();
-    projects = projectManager.getProjects(fakeUser);
+    projects = projectManager.getProjects(userRole);
 
     System.out.println(projects);
 

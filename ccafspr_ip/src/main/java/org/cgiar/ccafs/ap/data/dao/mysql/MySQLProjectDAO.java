@@ -59,6 +59,25 @@ public class MySQLProjectDAO implements ProjectDAO {
   }
 
   @Override
+  public List<Map<String, String>> getProject(int projectID) {
+    LOG.debug(">> getProject projectID = {} )", projectID);
+
+    StringBuilder query = new StringBuilder();
+    query.append("SELECT p.*   ");
+    // query.append("et.id as 'element_type_id', et.name as 'element_type_name', ");
+    // query.append("pro.id as 'program_id', pro.acronym as 'program_acronym' ");
+    query.append("FROM projects as p ");
+    query.append("INNER JOIN project_focuses pf ON p.id = pf.project_id ");
+    query.append("INNER JOIN ip_programs ipr ON pf.program_id=ipr.id ");
+    query.append("WHERE p.id= ");
+    query.append(projectID);
+
+
+    LOG.debug("-- getProject() > Calling method executeQuery to get the results");
+    return getData(query.toString());
+  }
+
+  @Override
   public List<Map<String, String>> getProjectOwnerContact(int institutionId) {
     LOG.debug(">> getProjectOwnerContact( programID = {} )", institutionId);
 
@@ -97,7 +116,7 @@ public class MySQLProjectDAO implements ProjectDAO {
 
   @Override
   public List<Map<String, String>> getProjects(int programID) {
-    LOG.debug(">> getProject programID = {} )", programID);
+    LOG.debug(">> getProjects programID = {} )", programID);
 
     StringBuilder query = new StringBuilder();
     query.append("SELECT p.*   ");
@@ -106,14 +125,13 @@ public class MySQLProjectDAO implements ProjectDAO {
     query.append("FROM projects as p ");
     query.append("INNER JOIN project_focuses pf ON p.id = pf.project_id ");
     query.append("INNER JOIN ip_programs ipr ON pf.program_id=ipr.id ");
-    query.append("WHERE ipr.id='1' ");
-    // query.append(programID);
+    query.append("WHERE ipr.id= ");
+    query.append(programID);
 
 
-    LOG.debug("-- getProject() > Calling method executeQuery to get the results");
+    LOG.debug("-- getProjects() > Calling method executeQuery to get the results");
     return getData(query.toString());
   }
-
 
   private int saveData(String query, Object[] data) {
     int generatedId = -1;
