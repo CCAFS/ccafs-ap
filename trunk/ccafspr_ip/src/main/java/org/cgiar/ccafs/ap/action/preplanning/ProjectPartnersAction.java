@@ -15,7 +15,12 @@ package org.cgiar.ccafs.ap.action.preplanning;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Random;
 
+import org.apache.commons.lang3.RandomStringUtils;
+
+import org.cgiar.ccafs.ap.data.model.Country;
+import org.cgiar.ccafs.ap.data.model.InstitutionType;
 import org.cgiar.ccafs.ap.data.model.Institution;
 import org.cgiar.ccafs.ap.action.BaseAction;
 import com.google.inject.Inject;
@@ -39,6 +44,8 @@ public class ProjectPartnersAction extends BaseAction {
   // Model
   private int projectId;
   private List<Institution> partners;
+  private List<InstitutionType> partnerTypes;
+  private List<Country> countries;
   private Institution leader;
   // allPartners will be used to list all the partners that have the system.
   private List<Institution> allPartners;
@@ -49,8 +56,70 @@ public class ProjectPartnersAction extends BaseAction {
     // TODO Managers.
   }
 
+  // TODO - Temporal - To be removed!
+  private List<Country> getAllCountries() {
+    ArrayList<Country> countries = new ArrayList<Country>();
+    for (int c = 1; c <= 30; c++) {
+      Country co = new Country(RandomStringUtils.randomAlphabetic(2), RandomStringUtils.randomAlphabetic(10));
+      // Country co = new Country(new Random().nextInt(1000) + "", RandomStringUtils.randomAlphabetic(10));
+      if (!countries.contains(co)) {
+        countries.add(co);
+      } else {
+        System.out.println("ya existe " + co);
+      }
+    }
+    countries.add(new Country("coo", "Colombia"));
+    return countries;
+  }
+
+  public List<Institution> getAllPartners() {
+    return allPartners;
+  }
+
+  // TODO - Temporal - To be removed!
+  private List<Institution> getAllPartnersTemporal(Random rand, List<Country> countries, List<InstitutionType> types) {
+    ArrayList<Institution> partners = new ArrayList<Institution>();
+    for (int c = 1; c <= 100; c++) {
+      Institution inst1 = new Institution();
+      inst1.setId(c);
+      inst1.setName("Partner" + c);
+      inst1.setContactPersonEmail("email" + c + "@email.com");
+      inst1.setContactPersonName("Jhon Doe " + c);
+      if (c == 1) {
+        inst1.setCountry(countries.get(countries.size() - 1));
+      } else {
+        inst1.setCountry(countries.get(rand.nextInt(countries.size())));
+      }
+      inst1.setType(types.get(rand.nextInt(types.size())));
+      partners.add(inst1);
+    }
+
+    return partners;
+  }
+
+  // TODO - Temporal - To be removed!
+  private List<InstitutionType> getAllPartnerTypes() {
+    ArrayList<InstitutionType> types = new ArrayList<InstitutionType>();
+    for (int c = 1; c <= 20; c++) {
+      types.add(new InstitutionType(c, "Type Name " + c, "Acronym "));
+    }
+    return types;
+  }
+
+  public List<Country> getCountries() {
+    return countries;
+  }
+
+  public Institution getLeader() {
+    return leader;
+  }
+
   public List<Institution> getPartners() {
     return partners;
+  }
+
+  public List<InstitutionType> getPartnerTypes() {
+    return partnerTypes;
   }
 
   public int getProjectId() {
@@ -63,33 +132,37 @@ public class ProjectPartnersAction extends BaseAction {
 
     // partners = projectPartnerManager.getPartners(projectId);
 
-    // Creating fake Project Partners.
+    // ***********FAKE OBJECTS JUST TO TEST!******************
+    Random rand = new Random();
+
+    // All Countries
+    countries = this.getAllCountries();
+
+    // All Partner Types
+    partnerTypes = this.getAllPartnerTypes();
+
+    // All Partners.
+    allPartners = this.getAllPartnersTemporal(rand, countries, partnerTypes);
+
+    // Project leader.
+    leader = allPartners.get(rand.nextInt(100));
+
+    // Saved Partners.
     partners = new ArrayList<Institution>();
-    Institution inst1 = new Institution();
-    inst1.setId(124);
-    inst1.setName("El partner uno");
-    inst1.setContactPersonEmail("email@email.com");
-    inst1.setContactPersonName("Jhon Doe");
-    Institution inst2 = new Institution();
-    inst2.setId(159);
-    inst2.setContactPersonEmail("email2@email.com");
-    inst2.setContactPersonName("Jhon 2 Doe");
-    inst2.setName("El partner DOS");
-    partners.add(inst1);
-    partners.add(inst2);
 
-    // Creating fake Project leader.
-    leader = new Institution();
-    leader.setId(321);
-    leader.setName("Institution - Partner Leader");
-    leader.setContactPersonEmail("leader@email.com");
-    leader.setContactPersonName("Leader - Jhon Doe");
-
-    // Creating fake partners with all the objects above.
-    allPartners = new ArrayList<Institution>();
-    allPartners.add(inst1);
-    allPartners.add(inst2);
-    allPartners.add(leader);
+    for (int c = 0; c < 10; c++) {
+      if (c == 0) {
+        partners.add(allPartners.get(0));
+      } else {
+        Institution inst = allPartners.get(rand.nextInt(100));
+        if (!partners.contains(inst)) {
+          partners.add(inst);
+        } else {
+          c--;
+        }
+      }
+    }
+    // **************************************
 
 
   }

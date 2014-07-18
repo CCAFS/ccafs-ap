@@ -18,7 +18,7 @@ import org.apache.commons.lang3.builder.ToStringBuilder;
 /**
  * This class represents any kind of institution inside the system.
  * An institution can be represented as project partner, activity partner, project leader, etc.
- * 
+ *
  * @author Héctor Tobón
  */
 public class Institution {
@@ -30,73 +30,70 @@ public class Institution {
   private String contactPersonEmail;
   private IPProgram program;
   private InstitutionType type;
+  private Country country;
 
   public Institution() {
     super();
-  }
-
-  public Institution(int id, String name, String acronym, String contactPersonName, String contactPersonEmail,
-    IPProgram program, InstitutionType type) {
-    super();
-    this.id = id;
-    this.name = name;
-    this.acronym = acronym;
-    this.contactPersonName = contactPersonName;
-    this.contactPersonEmail = contactPersonEmail;
-    this.program = program;
-    this.type = type;
-  }
-
-  public String getContactPersonName() {
-    return contactPersonName;
-  }
-
-  public void setContactPersonName(String contactPersonName) {
-    this.contactPersonName = contactPersonName;
-  }
-
-  public String getContactPersonEmail() {
-    return contactPersonEmail;
-  }
-
-  public void setContactPersonEmail(String contactPersonEmail) {
-    this.contactPersonEmail = contactPersonEmail;
-  }
-
-  public int getId() {
-    return id;
-  }
-
-  public void setId(int id) {
-    this.id = id;
-  }
-
-  public String getName() {
-    return name;
-  }
-
-  public void setName(String name) {
-    this.name = name;
   }
 
   public String getAcronym() {
     return acronym;
   }
 
-  public void setAcronym(String acronym) {
-    this.acronym = acronym;
+  public String getContactPersonEmail() {
+    return contactPersonEmail;
+  }
+
+  public String getContactPersonName() {
+    return contactPersonName;
+  }
+
+  public Country getCountry() {
+    return country;
+  }
+
+  public int getId() {
+    return id;
+  }
+
+  public String getName() {
+    return name;
   }
 
   public IPProgram getProgram() {
     return program;
   }
 
-  public void setProgram(IPProgram program) {
-    this.program = program;
-  }
-
   public InstitutionType getType() {
     return type;
+  }
+
+  public void setAcronym(String acronym) {
+    this.acronym = acronym;
+  }
+
+  public void setContactPersonEmail(String contactPersonEmail) {
+    this.contactPersonEmail = contactPersonEmail;
+  }
+
+  public void setContactPersonName(String contactPersonName) {
+    this.contactPersonName = contactPersonName;
+  }
+
+  public void setCountry(Country country) {
+    this.country = country;
+  }
+
+  public void setId(int id) {
+    this.id = id;
+  }
+
+  public void setName(String name) {
+    this.name = name;
+  }
+
+  public void setProgram(IPProgram program) {
+    this.program = program;
   }
 
   public void setType(InstitutionType type) {
