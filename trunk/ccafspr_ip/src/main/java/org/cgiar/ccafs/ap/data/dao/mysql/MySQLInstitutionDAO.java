@@ -69,7 +69,8 @@ public class MySQLInstitutionDAO implements InstitutionDAO {
   }
 
   @Override
-  public List<Map<String, String>> getInstitution(int institutionID) {
+  public Map<String, String> getInstitution(int institutionID) {
+    List<Map<String, String>> institutionsDataList = new ArrayList<>();
     LOG.debug(">> getInstitution( institutionID = {} )", institutionID);
 
     StringBuilder query = new StringBuilder();
@@ -78,9 +79,27 @@ public class MySQLInstitutionDAO implements InstitutionDAO {
     query.append("WHERE i.id = ");
     query.append(institutionID);
 
+    try (Connection con = databaseManager.getConnection()) {
+      ResultSet rs = databaseManager.makeQuery(query.toString(), con);
+      while (rs.next()) {
+        Map<String, String> institutionData = new HashMap<String, String>();
+        institutionData.put("id", rs.getString("id"));
+        institutionData.put("name", rs.getString("name"));
+        institutionData.put("acronym", rs.getString("acronym"));
+        institutionData.put("contact_person_name", rs.getString("contact_person_name"));
+        institutionData.put("contact_person_email", rs.getString("contact_person_email"));
+        institutionData.put("program_id", rs.getString("program_id"));
+        institutionData.put("institution_type_id", rs.getString("institution_type_id"));
+
+        institutionsDataList.add(institutionData);
+      }
+      con.close();
+    } catch (SQLException e) {
+      LOG.error("Exception arised getting the institutions for the user {}.", institutionID, e);
+    }
 
     LOG.debug("-- getInstitution() > Calling method executeQuery to get the results");
-    return getData(query.toString());
+    return null;
   }
 
   @Override

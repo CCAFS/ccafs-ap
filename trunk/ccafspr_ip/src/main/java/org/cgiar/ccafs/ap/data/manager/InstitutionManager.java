@@ -32,8 +32,16 @@ import com.google.inject.ImplementedBy;
 public interface InstitutionManager {
 
   /**
+   * Return all the institutions.
+   * 
+   * @param none
+   * @return an Institution object or null if the id does not exist in the database.
+   */
+  public List<Institution> getAllInstitutions();
+
+  /**
    * Get an institution identified with the given id.
-   *
+   * 
    * @param institutionId is an integer that represents the id of some institution.
    * @return an Institution object or null if the id does not exist in the database.
    */
@@ -41,7 +49,7 @@ public interface InstitutionManager {
 
   /**
    * This method gets the institutions related with the user given
-   *
+   * 
    * @param user
    * @return a list of institution objects with the information
    */
@@ -49,7 +57,7 @@ public interface InstitutionManager {
 
   /**
    * This method returns the user's main institution defined in the database.
-   *
+   * 
    * @param user
    * @return an Institution Object with the information
    */
