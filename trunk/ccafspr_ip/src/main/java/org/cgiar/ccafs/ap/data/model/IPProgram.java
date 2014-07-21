@@ -1,18 +1,15 @@
 /*****************************************************************
  * This file is part of CCAFS Planning and Reporting Platform.
- * 
  * CCAFS P&R is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
  * the Free Software Foundation, either version 3 of the License, or
  * at your option) any later version.
- * 
  * CCAFS P&R is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
  * GNU General Public License for more details.
- * 
  * You should have received a copy of the GNU General Public License
- * along with CCAFS P&R.  If not, see <http://www.gnu.org/licenses/>.
+ * along with CCAFS P&R. If not, see <http://www.gnu.org/licenses/>.
  *****************************************************************/
 package org.cgiar.ccafs.ap.data.model;
 
@@ -25,6 +22,7 @@ public class IPProgram {
   private String name;
   private String acronym;
   private Region region;
+  private IPProgramTypes type;
 
   public String getAcronym() {
     return acronym;
@@ -42,6 +40,10 @@ public class IPProgram {
     return region;
   }
 
+  public IPProgramTypes getType() {
+    return type;
+  }
+
   public void setAcronym(String acronym) {
     this.acronym = acronym;
   }
@@ -56,6 +58,10 @@ public class IPProgram {
 
   public void setRegion(Region region) {
     this.region = region;
+  }
+
+  public void setType(IPProgramTypes type) {
+    this.type = type;
   }
 
   @Override

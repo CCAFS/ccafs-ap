@@ -14,7 +14,25 @@ import com.google.inject.ImplementedBy;
 public interface IPProgramDAO {
 
   /**
-   * This method return a all the Program Type from an specified Project which belongs to the program
+   * This method return the Programs Type identified as Flagship
+   * indicated by parameter.
+   * 
+   * @param none
+   * @return a list of maps with the information of all IP elements returned.
+   */
+  public List<Map<String, String>> getProgramsTypeFlagship();
+
+  /**
+   * This method return the Programs Type identified as Flagship
+   * indicated by parameter.
+   * 
+   * @param none
+   * @return a list of maps with the information of all IP elements returned.
+   */
+  public List<Map<String, String>> getProgramsTypeRegion();
+
+  /**
+   * This method return all the Program Type from an specified Project which belongs to the program
    * indicated by parameter.
    * 
    * @param programID, identifier of the program
