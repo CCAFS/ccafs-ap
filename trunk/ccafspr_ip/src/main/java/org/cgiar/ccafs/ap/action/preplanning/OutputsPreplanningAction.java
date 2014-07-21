@@ -37,11 +37,16 @@ public class OutputsPreplanningAction extends BaseAction {
   // Model
   List<IPElement> outputs;
   List<IPElement> midOutcomesList;
+  List<IPProgram> flagshipsList;
 
   @Inject
   public OutputsPreplanningAction(APConfig config, IPElementManager ipElementManager) {
     super(config);
     this.ipElementManager = ipElementManager;
+  }
+
+  public List<IPProgram> getFlagshipsList() {
+    return flagshipsList;
   }
 
   public List<IPElement> getMidOutcomesList() {
@@ -54,7 +59,7 @@ public class OutputsPreplanningAction extends BaseAction {
 
   @Override
   public void prepare() throws Exception {
-	super.prepare();
+    super.prepare();
     IPProgram program = new IPProgram();
     program.setId(1);
 
