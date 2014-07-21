@@ -18,7 +18,6 @@ import java.util.List;
 import java.util.Random;
 
 import org.cgiar.ccafs.ap.data.model.ProjectPartner;
-
 import org.cgiar.ccafs.ap.data.model.Project;
 import org.apache.commons.lang3.RandomStringUtils;
 import org.cgiar.ccafs.ap.data.model.Country;
@@ -43,13 +42,14 @@ public class ProjectPartnersAction extends BaseAction {
 
   // TODO - Create Managers and assign them to the constructor below.
 
-  // Model
+  // Model for the backend
   private int projectId;
   private Project project;
+
+  // Model for the view
   private List<InstitutionType> partnerTypes;
   private List<Country> countries;
-  // allPartners will be used to list all the partners that have the system.
-  private List<Institution> allPartners;
+  private List<Institution> allPartners; // allPartners will be used to list all the partners that have the system.
 
   @Inject
   public ProjectPartnersAction(APConfig config) {
@@ -129,6 +129,7 @@ public class ProjectPartnersAction extends BaseAction {
   public void prepare() throws Exception {
     super.prepare();
 
+    // if there are not partners, please return an empty List.
     // partners = projectPartnerManager.getPartners(projectId);
 
     // ***********FAKE OBJECTS JUST TO TEST!******************
@@ -159,22 +160,28 @@ public class ProjectPartnersAction extends BaseAction {
     // Saved Project Partners.
     ArrayList<ProjectPartner> projectPartners = new ArrayList<ProjectPartner>();
 
-    for (int c = 0; c < 10; c++) {
-      ProjectPartner ppTemp = new ProjectPartner();
-      ppTemp.setId(c + 1000);
-      ppTemp.setContactEmail("projectPartner" + c + "@email.com");
-      ppTemp.setContactName("Project Partner Name " + c);
-      ppTemp.setResponsabilities(RandomStringUtils.randomAlphabetic(50));
-      if (c == 0) {
-        ppTemp.setPartner(allPartners.get(0));
-      } else {
-        ppTemp.setPartner(allPartners.get(rand.nextInt(100)));
-      }
-      projectPartners.add(ppTemp);
-    }
+// for (int c = 0; c < 3; c++) {
+// ProjectPartner ppTemp = new ProjectPartner();
+// ppTemp.setId(c + 1000);
+// ppTemp.setContactEmail("projectPartner" + c + "@email.com");
+// ppTemp.setContactName("Project Partner Name " + c);
+// ppTemp.setResponsabilities(RandomStringUtils.randomAlphabetic(50));
+// if (c == 0) {
+// ppTemp.setPartner(allPartners.get(0));
+// } else {
+// ppTemp.setPartner(allPartners.get(rand.nextInt(100)));
+// }
+// projectPartners.add(ppTemp);
+// }
     project.setProjectPartners(projectPartners);
     // **************************************
+  }
 
+  @Override
+  public String save() {
 
+    System.out.println(project);
+
+    return SUCCESS;
   }
 }
