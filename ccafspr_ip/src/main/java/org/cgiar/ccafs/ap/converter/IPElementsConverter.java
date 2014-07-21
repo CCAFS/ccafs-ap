@@ -22,7 +22,6 @@ public class IPElementsConverter extends StrutsTypeConverter {
 
   @Override
   public Object convertFromString(Map context, String[] values, Class toClass) {
-    System.out.println("1 ---------------------");
     if (toClass == List.class) {
       return ipElementManager.getIPElementList(values);
     }
@@ -31,7 +30,6 @@ public class IPElementsConverter extends StrutsTypeConverter {
 
   @Override
   public String convertToString(Map context, Object o) {
-    System.out.println("2 ---------------------");
     List<IPElement> elementsArray = (List<IPElement>) o;
     ArrayList<String> temp = new ArrayList<>();
     for (IPElement c : elementsArray) {

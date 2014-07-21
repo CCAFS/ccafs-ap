@@ -199,6 +199,19 @@
             <scanTarget>src/main/webapp/WEB-INF/web.xml</scanTarget>
             <scanTarget>src/main/resources/struts.xml</scanTarget>
           </scanTargets>
+          <connectors>
+            <connector implementation="org.mortbay.jetty.nio.SelectChannelConnector">
+              <port>80</port>
+              <maxIdleTime>60000</maxIdleTime>
+            </connector>
+            <connector implementation="org.mortbay.jetty.security.SslSocketConnector">
+              <port>443</port>
+              <maxIdleTime>60000</maxIdleTime>
+              <keystore>${basedir}/.keystore</keystore>
+              <password>d5jtY68oBqWj</password>
+              <keyPassword>d5jtY68oBqWj</keyPassword>
+            </connector>
+          </connectors>
         </configuration>
       </plugin>
       <!-- Tomcat plugin just to test compatibilities with Tomcat. -->

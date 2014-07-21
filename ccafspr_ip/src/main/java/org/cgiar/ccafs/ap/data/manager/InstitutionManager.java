@@ -1,29 +1,56 @@
-/*****************************************************************
+/*
+ * ****************************************************************
  * This file is part of CCAFS Planning and Reporting Platform.
+ * 
  * CCAFS P&R is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
  * the Free Software Foundation, either version 3 of the License, or
  * at your option) any later version.
+ * 
  * CCAFS P&R is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
  * GNU General Public License for more details.
+ * 
  * You should have received a copy of the GNU General Public License
  * along with CCAFS P&R. If not, see <http://www.gnu.org/licenses/>.
- *****************************************************************/
+ * ***************************************************************
+ */
 package org.cgiar.ccafs.ap.data.manager;
 
 import org.cgiar.ccafs.ap.data.manager.impl.InstitutionManagerImpl;
+import org.cgiar.ccafs.ap.data.model.Institution;
+import org.cgiar.ccafs.ap.data.model.User;
+
+import java.util.List;
 
 import com.google.inject.ImplementedBy;
-import org.cgiar.ccafs.ap.data.model.Institution;
 
 /**
  * @author Héctor Fabio Tobón R.
+ * @author Hernán David Carvajal B.
  */
+
 @ImplementedBy(InstitutionManagerImpl.class)
 public interface InstitutionManager {
 
   public Institution getInstitution(int parseInt);
+
+  /**
+   * This method gets the institutions related with the user given
+   * 
+   * @param user
+   * @return a list of institution objects with the information
+   */
+  public List<Institution> getInstitutionsByUser(User user);
+
+  /**
+   * This method returns the institution marked as main for the
+   * user passed as parameter
+   * 
+   * @param user
+   * @return an Institution Object with the information
+   */
+  public Institution getUserMainInstitution(User user);
 
 }
