@@ -46,7 +46,18 @@
     </action>
     
     <action name="partners" class="org.cgiar.ccafs.ap.action.preplanning.ProjectPartnersAction">
+      <!--  interceptor-ref name="planningStack" />
+      <interceptor-ref name="accessibleActivity" / -->
+      <result name="cancel" type="redirectAction">projects</result>
       <result name="input">/WEB-INF/preplanning/projectPartners.ftl</result>
+      <result name="success" type="redirectAction">
+        <param name="actionName">partners</param>
+        <param name="activityID">${project.id}</param>
+      </result>
+      <result name="next" type="redirectAction">
+        <param name="actionName">budget</param>
+        <param name="activityID">${project.id}</param>
+      </result>
     </action>
     
     <action name="budget" class="org.cgiar.ccafs.ap.action.BaseAction">
