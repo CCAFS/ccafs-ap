@@ -22,12 +22,28 @@
   [@s.form action="partners" cssClass="pure-form"]  
   <article class="halfContent" id="mainInformation">
   	[#include "/WEB-INF/preplanning/projectPreplanningSubMenu.ftl" /]
-    <h1 class="contentTitle">
-    [@s.text name="preplanning.projectPartners.title" /]  
-    </h1>    
+  	<h1 class="contentTitle">
+      [@s.text name="preplanning.projectPartners.leader.title" /]  
+    </h1>
     <hr>
-    [@partnersTemplate.partnerSection projectPartners=project.projectPartners partnerTypes=partnerTypes countries=countries canRemove=true /]
-    <input type="submit" value="send" />
+  	[#-- Displaying partner leader from partnersTemplate.ftl --]
+    [@partnersTemplate.projectLeader leader=project.leader canEdit=false /]
+  	
+    <h1 class="contentTitle">
+		  [@s.text name="preplanning.projectPartners.partners.title" /]  
+    </h1>
+    <hr>
+    [#-- Listing partners from partnersTemplate.ftl --]
+    [@partnersTemplate.partnerSection projectPartners=project.projectPartners partnerTypes=partnerTypes countries=countries canEdit=true canRemove=true /]
+    <div id="addProjectPartner" class="addLink">
+      <img src="${baseUrl}/images/global/icon-add.png" />
+      <a href="" class="addProjectPartner" >[@s.text name="preplanning.projectPartners.addProjectPartner" /]</a>
+    </div>      
+  	<div class="buttons">
+      [@s.submit type="button" name="save"][@s.text name="form.buttons.save" /][/@s.submit]
+      [@s.submit type="button" name="next"][@s.text name="form.buttons.next" /][/@s.submit]
+      [@s.submit type="button" name="cancel"][@s.text name="form.buttons.cancel" /][/@s.submit]
+    </div>
   </article>
   [/@s.form]  
 </section>

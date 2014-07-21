@@ -149,9 +149,11 @@ public class ProjectPartnersAction extends BaseAction {
 
     // Project leader.
     ProjectPartner pp = new ProjectPartner();
+    pp.setId(123);
     pp.setPartner(allPartners.get(rand.nextInt(100)));
     pp.setContactEmail("pp_email@email.com");
     pp.setContactName("Contact Name PP");
+    pp.setResponsabilities(RandomStringUtils.randomAlphabetic(50));
     project.setLeader(pp);
 
     // Saved Project Partners.
@@ -161,7 +163,8 @@ public class ProjectPartnersAction extends BaseAction {
       ProjectPartner ppTemp = new ProjectPartner();
       ppTemp.setId(c + 1000);
       ppTemp.setContactEmail("projectPartner" + c + "@email.com");
-      ppTemp.setContactName("Nombre Project Partner " + c);
+      ppTemp.setContactName("Project Partner Name " + c);
+      ppTemp.setResponsabilities(RandomStringUtils.randomAlphabetic(50));
       if (c == 0) {
         ppTemp.setPartner(allPartners.get(0));
       } else {
