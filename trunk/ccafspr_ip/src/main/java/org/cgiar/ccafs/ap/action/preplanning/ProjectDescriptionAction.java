@@ -17,7 +17,6 @@ import org.cgiar.ccafs.ap.action.BaseAction;
 import org.cgiar.ccafs.ap.config.APConfig;
 import org.cgiar.ccafs.ap.config.APConstants;
 import org.cgiar.ccafs.ap.data.manager.ProjectManager;
-import org.cgiar.ccafs.ap.data.model.IPProgram;
 import org.cgiar.ccafs.ap.data.model.Project;
 
 import java.util.List;
@@ -65,15 +64,19 @@ public class ProjectDescriptionAction extends BaseAction {
     }
 
     // Depending on the user that is logged-in, the list of projects will be displayed.
-    IPProgram fakeProject = new IPProgram();
-    fakeProject.setId(projectID);
+    /*
+     * Project fakeProject = new Project();
+     * fakeProject.setId(projectID);
+     */
+    // fakeProject.setStartDate(startDate);
+
     // fakeProject.setTitle("titulo de prueba");
     // fakeProject.setSummary("-------------------------");
 
 
     // Getting project list.
     // projects = projectManager.getAllProjects();
-    projects = projectManager.getProjects(fakeProject);
+    projects = projectManager.getProject(projectID);
 
     System.out.println(projects);
   }

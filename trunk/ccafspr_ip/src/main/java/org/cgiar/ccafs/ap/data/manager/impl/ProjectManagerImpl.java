@@ -2,7 +2,6 @@ package org.cgiar.ccafs.ap.data.manager.impl;
 
 import org.cgiar.ccafs.ap.data.dao.ProjectDAO;
 import org.cgiar.ccafs.ap.data.manager.ProjectManager;
-import org.cgiar.ccafs.ap.data.model.IPProgram;
 import org.cgiar.ccafs.ap.data.model.Project;
 
 import java.util.ArrayList;
@@ -24,17 +23,10 @@ public class ProjectManagerImpl implements ProjectManager {
 
 
   @Override
-  public List<Project> getAllProjects() {
-    // TODO Auto-generated method stub
-    return new ArrayList<Project>();
-  }
-
-
-  @Override
-  public List<Project> getProjects(IPProgram program) {
+  public List<Project> getAllProjects(Project projectId) {
     // TODO - Pending to validate what kind of parameter should be used in this method.
-    System.out.println("----- Program ID: " + program.getId());
-    List<Map<String, String>> projectDataList = projectDAO.getProjects(program.getId());
+    System.out.println("----- Project ID: " + projectId.getId());
+    List<Map<String, String>> projectDataList = projectDAO.getProjects(projectId.getId());
     List<Project> projectsList = new ArrayList<>();
 
     for (Map<String, String> elementData : projectDataList) {
@@ -42,6 +34,39 @@ public class ProjectManagerImpl implements ProjectManager {
       project.setId(Integer.parseInt(elementData.get("id")));
       project.setTitle(elementData.get("title"));
       project.setSummary(elementData.get("summary"));
+      project.setStartDate(elementData.get("startDate"));
+      project.setEndDate(elementData.get("endDate"));
+
+      /*
+       * List<Map<String, String>> projectTypesData = projectDAO.getProjectType(projectLeader.getId(), 1);
+       * for (Map<String, String> typeData : projectTypesData) {
+       * IPProgramTypes programType = new IPProgramTypes();
+       * programType.setId(Integer.parseInt(elementData.get("id")));
+       * programType.setAcronym(elementData.get("acronym"));
+       * programType.setTypeId(Integer.parseInt(elementData.get("type_id")));
+       * }
+       */
+
+      projectsList.add(project);
+    }
+    return projectsList;
+  }
+
+
+  @Override
+  public List<Project> getProject(int projectId) {
+    // TODO - Pending to validate what kind of parameter should be used in this method.
+    System.out.println("----- Project ID: " + projectId);
+    List<Map<String, String>> projectDataList = projectDAO.getProjects(projectId);
+    List<Project> projectsList = new ArrayList<>();
+
+    for (Map<String, String> elementData : projectDataList) {
+      Project project = new Project();
+      project.setId(Integer.parseInt(elementData.get("id")));
+      project.setTitle(elementData.get("title"));
+      project.setSummary(elementData.get("summary"));
+      project.setStartDate(elementData.get("startDate"));
+      project.setEndDate(elementData.get("endDate"));
 
       /*
        * List<Map<String, String>> projectTypesData = projectDAO.getProjectType(projectLeader.getId(), 1);

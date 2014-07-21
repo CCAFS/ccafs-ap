@@ -39,16 +39,16 @@
 	      </div>
 	      [#-- Start Date --]
 		    <div class="halfPartBlock">
-		      [@customForm.input name="" type="text" i18nkey="preplanning.projectDescription.startDate" required=true /]
+		      [#--[@customForm.input name="" type="text" i18nkey="preplanning.projectDescription.startDate" required=true value="${projects[0].startDate}"/]--]
 		    </div> 
 		    [#-- End Date --]
 		    <div class="halfPartBlock">
-	      [@customForm.input name="" type="text" i18nkey="preplanning.projectDescription.endDate" required=true /]
+	      		 [#--[@customForm.input name="projects.endDate" type="text" i18nkey="preplanning.projectDescription.endDate" required=true value="${projects[0].endDate}"/]--]
 	    	</div>
 	  	</div> 
 	  		[#-- Project Summary --]
 			[#--${projects[0]}--]
-			[@customForm.textArea name="projects.summary" i18nkey="preplanning.projectDescription.projectSummary" required=true value="${projects[0].summary}"/]
+			[@customForm.textArea name="projects.summary" i18nkey="preplanning.projectDescription.projectSummary" required=true value="${projects[0].summary}" /]
     </fieldset><br/>
     <fieldset class="fullBlock">  
     	<legend>[@s.text name="preplanning.projectDescription.projectWorking" /] </legend> 
