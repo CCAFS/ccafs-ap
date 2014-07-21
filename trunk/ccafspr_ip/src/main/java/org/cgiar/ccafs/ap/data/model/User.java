@@ -20,8 +20,8 @@ package org.cgiar.ccafs.ap.data.model;
 
 import org.cgiar.ccafs.ap.util.MD5Convert;
 
-import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
 import org.apache.commons.lang3.builder.ToStringBuilder;
 
@@ -36,7 +36,8 @@ public class User {
   private String phone;
   private boolean isCcafsUser;
   private Role role;
-  private ArrayList<Institution> institutions;
+  private List<Institution> institutions;
+  private Institution currentInstitution;
 
   private Date lastLogin;
 
@@ -52,7 +53,7 @@ public class User {
     return id;
   }
 
-  public ArrayList<Institution> getInstitutions() {
+  public List<Institution> getInstitutions() {
     return institutions;
   }
 
@@ -172,7 +173,7 @@ public class User {
     this.id = id;
   }
 
-  public void setInstitutions(ArrayList<Institution> institutions) {
+  public void setInstitutions(List<Institution> institutions) {
     this.institutions = institutions;
   }
 
@@ -211,5 +212,13 @@ public class User {
   @Override
   public String toString() {
     return ToStringBuilder.reflectionToString(this);
+  }
+
+  public Institution getCurrentInstitution() {
+    return currentInstitution;
+  }
+
+  public void setCurrentInstitution(Institution currentInstitution) {
+    this.currentInstitution = currentInstitution;
   }
 }

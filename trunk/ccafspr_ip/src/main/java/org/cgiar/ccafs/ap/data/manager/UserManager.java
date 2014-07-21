@@ -42,4 +42,5 @@ public interface UserManager {
    * @return true if it was successfully saved. False otherwise.
    */
   public boolean saveUser(User user);
+
 }

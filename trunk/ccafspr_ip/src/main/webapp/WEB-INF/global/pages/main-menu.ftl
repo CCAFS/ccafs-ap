@@ -20,7 +20,7 @@
 	      </a>
 	      
 	      [#-- PRE-Planning section --]
-	      [#if currentUser.CP || currentUser.TL || currentUser.RPL || currentUser.PI || currentUser.admin ]
+	      [#if currentUser.CP || currentUser.FPL || currentUser.RPL || currentUser.PI || currentUser.admin ]
 	        [#if planningActive ]               
 	          <a  href="${baseUrl}/pre-planning/outcomes.do">
 	        [#else]
@@ -31,7 +31,7 @@
 	      [/#if]
 	      
 	      [#-- Planning section --]
-	      [#if currentUser.CP || currentUser.TL || currentUser.RPL || currentUser.PI || currentUser.admin ]
+	      [#if currentUser.CP || currentUser.FPL || currentUser.RPL || currentUser.PI || currentUser.admin ]
 	        [#if planningActive ]               
 	          <a  href="${baseUrl}/planning/activities.do">
 	        [#else]
@@ -42,7 +42,7 @@
 	      [/#if]
 	      
 	      [#-- Reporting section --]
-	      [#if currentUser.CP || currentUser.TL || currentUser.RPL || currentUser.PI || currentUser.admin ] 
+	      [#if currentUser.CP || currentUser.FPL || currentUser.RPL || currentUser.PI || currentUser.admin ] 
 	        [#if reportingActive ]               
 	          <a href="${baseUrl}/reporting/introduction.do" >
 	        [#else]
@@ -53,7 +53,7 @@
 	      [/#if]
 	      
 	      [#-- Summaries section --]
-	      [#if currentUser.TL || currentUser.RPL || currentUser.admin ]
+	      [#if currentUser.FPL || currentUser.RPL || currentUser.admin ]
 	        [#if summariesActive ]
 	          <a href="${baseUrl}/summaries/activities.do" /]" >
 	              <li [#if currentSection?? && currentSection == "summaries"]class="currentSection"[/#if]>[@s.text name="menu.summaries" /]</li>

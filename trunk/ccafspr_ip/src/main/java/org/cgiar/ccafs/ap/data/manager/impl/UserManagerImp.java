@@ -38,6 +38,7 @@ public class UserManagerImp implements UserManager {
     System.out.println("-- testing AD --- ");
     System.out.println(user.getUsername() + " : " + user.getPassword());
     ADConexion con = new ADConexion(user.getUsername(), user.getPassword(), "CIAT.CGIARAD.ORG");
+
     if (con != null) {
       System.out.println("-------- " + con.getAuthenticationMessage());
       con.closeContext();
@@ -81,19 +82,19 @@ public class UserManagerImp implements UserManager {
     if (email != null && password != null) {
       User userFound = this.getUser(email);
       if (userFound != null) {
-        System.out.println(userFound.isCcafsUser());
         if (userFound.isCcafsUser()) {
-          // User brougth from the database has the pass
+          // User brought from the database has the pass
           // encrypted with MD5, to connect to the AD the pass
           // shouldn't be encrypted
-          // userFound.setPassword(password);
-          activeDirectoryLogin(userFound);
+          userFound.setPassword(password);
+          if (activeDirectoryLogin(userFound)) {
+            // Encrypt the password again
+            userFound.setMD5Password(password);
+            return userFound;
+          }
         } else {
           User tempUser = new User();
           tempUser.setMD5Password(password);
-          System.out.println(password);
-          System.out.println(userFound.getPassword());
-          System.out.println(tempUser.getPassword());
           if (userFound.getPassword().equals(tempUser.getPassword())) {
             return userFound;
           }
