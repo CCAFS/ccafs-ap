@@ -24,8 +24,8 @@
         
         [#-- NOT WORKING YET - Partner Name --]
         <div class="fullBlock partnerName chosen">
-          [@customForm.select name="projectPartners[${ap_index}].partner" label="" i18nkey="preplanning.projectPartners.partner.name" listName="allPartners" keyFieldName="id"  displayFieldName="name" /]
-        </div>        
+          [@customForm.select name="project.projectPartners[${ap_index}].partner" label="" i18nkey="preplanning.projectPartners.partner.name" listName="allPartners" keyFieldName="id"  displayFieldName="name" /]
+        </div>
         
       </div> <!-- End activityPartner-${ap_index} -->
     [/#list]
