@@ -59,6 +59,38 @@ public class MySQLIPProgramDAO implements IPProgramDAO {
 
 
   @Override
+  public List<Map<String, String>> getProgramsTypeFlagship() {
+    LOG.debug(">> getProgramsTypeFlagship( Flagship = {} )");
+
+    StringBuilder query = new StringBuilder();
+    query.append("SELECT ipr.* ");
+    query.append("FROM ip_programs as ipr ");
+    query.append(" WHERE ipr.type_id='1' ");
+    query.append(" ORDER BY ipr.acronym ");
+
+
+    LOG.debug("-- getProgramsTypeFlagship() > Calling method executeQuery to get the results");
+    return getData(query.toString());
+  }
+
+
+  @Override
+  public List<Map<String, String>> getProgramsTypeRegion() {
+    LOG.debug(">> getProgramsTypeRegion( Flagship = {} )");
+
+    StringBuilder query = new StringBuilder();
+    query.append("SELECT ipr.* ");
+    query.append("FROM ip_programs as ipr ");
+    query.append(" WHERE ipr.type_id='2' ");
+    query.append(" ORDER BY ipr.acronym ");
+
+
+    LOG.debug("-- getProgramsTypeRegion() > Calling method executeQuery to get the results");
+    return getData(query.toString());
+  }
+
+
+  @Override
   public List<Map<String, String>> getProgramType(int projectId, int typeProgramId) {
 
     LOG.debug(">> getProjectType( programID = {} )", projectId, typeProgramId);
@@ -75,7 +107,6 @@ public class MySQLIPProgramDAO implements IPProgramDAO {
     LOG.debug("-- getProjectOwnerId() > Calling method executeQuery to get the results");
     return getData(query.toString());
   }
-
 
   private int saveData(String query, Object[] data) {
     int generatedId = -1;
@@ -100,7 +131,7 @@ public class MySQLIPProgramDAO implements IPProgramDAO {
 
   @Override
   public int saveProjectFlagships(Map<String, Object> projectData) {
-    LOG.debug(">> saveProject(projectData={})", projectData);
+    LOG.debug(">> saveProjectFlagship(projectData={})", projectData);
 
     StringBuilder query = new StringBuilder();
     query.append("INSERT INTO project_focuses (id, project_id, program_id) ");
@@ -109,8 +140,8 @@ public class MySQLIPProgramDAO implements IPProgramDAO {
 
     Object[] values = new Object[3];
     values[0] = projectData.get("id");
-    values[1] = projectData.get("title");
-    values[2] = projectData.get("summary");
+    values[1] = projectData.get("project_id");
+    values[2] = projectData.get("program_id");
 
     int result = saveData(query.toString(), values);
     LOG.debug("<< saveProjectFlagship():{}", result);
@@ -119,7 +150,7 @@ public class MySQLIPProgramDAO implements IPProgramDAO {
 
   @Override
   public int saveProjectRegions(Map<String, Object> projectData) {
-    LOG.debug(">> saveProject(projectData={})", projectData);
+    LOG.debug(">> saveProjectRegions(projectData={})", projectData);
 
     StringBuilder query = new StringBuilder();
     query.append("INSERT INTO project_focuses (id, project_id, program_id) ");
@@ -128,13 +159,11 @@ public class MySQLIPProgramDAO implements IPProgramDAO {
 
     Object[] values = new Object[3];
     values[0] = projectData.get("id");
-    values[1] = projectData.get("title");
-    values[2] = projectData.get("summary");
+    values[1] = projectData.get("project_id");
+    values[2] = projectData.get("program_id");
 
     int result = saveData(query.toString(), values);
     LOG.debug("<< saveProjectRegions():{}", result);
     return result;
   }
-
-
 }
