@@ -28,7 +28,7 @@ public interface InstitutionDAO {
    * @return a list of maps with the information of all IP elements returned.
    */
 
-  public List<Map<String, String>> getInstitution(int institutionID);
+  public Map<String, String> getInstitution(int institutionID);
 
   /**
    * This method get the information of the institutions related to the user

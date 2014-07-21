@@ -31,6 +31,7 @@ import com.google.inject.Inject;
 /**
  * @author Héctor Fabio Tobón R.
  * @author Hernán David Carvajal B.
+ * @author Javier Andres Gallego B.
  */
 public class InstitutionManagerImpl implements InstitutionManager {
 
@@ -42,7 +43,61 @@ public class InstitutionManagerImpl implements InstitutionManager {
     this.institutionDAO = institutionDAO;
   }
 
- 
+
+  public List<Institution> getAllInstitutions() {
+    List<Institution> institutions = new ArrayList<>();
+    List<Map<String, String>> institutionDataList = institutionDAO.getAllInstitutions();
+    for (Map<String, String> iData : institutionDataList) {
+      Institution institution = new Institution();
+      institution.setId(Integer.parseInt(iData.get("id")));
+      institution.setName(iData.get("name"));
+      institution.setAcronym(iData.get("acronym"));
+      institution.setContactPersonName(iData.get("contactPersonName"));
+      institution.setContactPersonEmail(iData.get("contactPersonEmail"));
+
+      InstitutionType type = new InstitutionType();
+      type.setId(Integer.parseInt(iData.get("institution_type_id")));
+
+      IPProgram program = new IPProgram();
+      program.setId(Integer.parseInt(iData.get("program_id")));
+
+      institutions.add(institution);
+    }
+    return institutions;
+  }
+
+  // TODO - Pending to be implemented.
+  @Override
+  public Institution getInstitution(int institutionId) {
+    Map<String, String> iData = institutionDAO.getInstitution(institutionId);
+    if (!iData.isEmpty()) {
+      Institution institution = new Institution();
+      institution.setId(Integer.parseInt(iData.get("id")));
+      institution.setName(iData.get("name"));
+      institution.setAcronym(iData.get("acronym"));
+      institution.setContactPersonName(iData.get("contactPersonName"));
+      institution.setContactPersonEmail(iData.get("contactPersonEmail"));
+
+      // TODO ask if in this method is necessary to call the program name and the institution type name
+      // InstitutionType Object
+      InstitutionType type = new InstitutionType();
+      if (iData.get("institution_type_id") != null) {
+        type.setId(Integer.parseInt(iData.get("institution_type_id")));
+        institution.setType(type);
+      }
+      // Program Object
+      IPProgram program = new IPProgram();
+      if (iData.get("program_id") != null) {
+        program.setId(Integer.parseInt(iData.get("program_id")));
+        institution.setProgram(program);
+      }
+
+
+      return institution;
+    }
+    return null;
+  }
+
   @Override
   public List<Institution> getInstitutionsByUser(User user) {
     List<Institution> institutions = new ArrayList<>();
@@ -97,17 +152,6 @@ public class InstitutionManagerImpl implements InstitutionManager {
 
       return institution;
     }
-    return null;
-  }
-  
-  public List<Institution> getAllInstitutions() {
-    return null;
-  }
-
-  // TODO - Pending to be implemented.
-  @Override
-  public Institution getInstitution(int institutionId) {
-    // TODO Auto-generated method stub
     return null;
   }
 
