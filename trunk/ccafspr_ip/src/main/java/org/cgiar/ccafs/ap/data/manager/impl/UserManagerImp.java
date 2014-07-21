@@ -35,17 +35,25 @@ public class UserManagerImp implements UserManager {
    * @return true if it was successfully logged in. False otherwise
    */
   private boolean activeDirectoryLogin(User user) {
-    System.out.println("-- testing AD --- ");
-    System.out.println(user.getUsername() + " : " + user.getPassword());
-    ADConexion con = new ADConexion(user.getUsername(), user.getPassword(), "CIAT.CGIARAD.ORG");
+    boolean logued = false;
 
-    if (con != null) {
-      System.out.println("-------- " + con.getAuthenticationMessage());
-      con.closeContext();
-    } else {
-      System.out.println("Connection don't established");
+    // The username in the AD is the email without dots until the domain
+    String username = user.getUsername().substring(0, user.getUsername().indexOf('@'));
+    username = username.replace(".", "");
+
+    try {
+      ADConexion con = new ADConexion(username, user.getPassword());
+      if (con != null) {
+        if (con.getLogin() != null) {
+          logued = true;
+        }
+        con.closeContext();
+      }
+    } catch (Exception e) {
+      // TODO
     }
-    return false;
+
+    return logued;
   }
 
   @Override
@@ -87,6 +95,7 @@ public class UserManagerImp implements UserManager {
           // encrypted with MD5, to connect to the AD the pass
           // shouldn't be encrypted
           userFound.setPassword(password);
+
           if (activeDirectoryLogin(userFound)) {
             // Encrypt the password again
             userFound.setMD5Password(password);
