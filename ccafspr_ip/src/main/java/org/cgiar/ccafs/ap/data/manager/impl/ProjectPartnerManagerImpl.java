@@ -46,12 +46,6 @@ public class ProjectPartnerManagerImpl implements ProjectPartnerManager {
   }
 
   @Override
-  public ProjectPartner getProjectPartnerLeader(int projectId) {
-    // TODO Auto-generated method stub
-    return null;
-  }
-
-  @Override
   public List<ProjectPartner> getProjectPartners(int projectId) {
     List<ProjectPartner> projectPartners = new ArrayList<ProjectPartner>();
     // TODO

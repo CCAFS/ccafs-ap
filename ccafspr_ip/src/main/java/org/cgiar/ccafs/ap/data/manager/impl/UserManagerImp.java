@@ -9,6 +9,7 @@ import org.cgiar.ciat.auth.ADConexion;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import com.google.inject.Inject;
@@ -30,7 +31,7 @@ public class UserManagerImp implements UserManager {
   /**
    * This method make the login process against the active directory
    * if the user has an institutional account
-   * 
+   *
    * @param user
    * @return true if it was successfully logged in. False otherwise
    */
@@ -54,6 +55,18 @@ public class UserManagerImp implements UserManager {
     }
 
     return logued;
+  }
+
+  @Override
+  public List<User> getAllProjectLeaders() {
+    // TODO Auto-generated method stub
+    return null;
+  }
+
+  @Override
+  public User getProjectLeader(int projectId) {
+    // TODO Auto-generated method stub
+    return null;
   }
 
   @Override
