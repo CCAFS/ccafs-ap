@@ -1,0 +1,15 @@
+Hernán David:
+[] - Actualizar diagrama de base de datos para reflejar los cambios en Project Partners.
+[] - Pasar la lista de paises del proyecto anterior a la base de datos.
+
+
+Héctor Tobón:
+[] - Actualizar Project Partners para que se listen los usuarios en Project Leader.
+
+Javier Gallego:
+[] - Copiar y pegar todo lo de CountryManager del proyecto anterior a este y probar que todo funciona.
+[] - Copiar y pegar todo lo de RegionManager del proyecto anterior a este y probar que todo funciona.
+[] - Crear DAOs para InstitutionType (o se podrían incluir los métodos en InstitutionManager).
+ 
+
+Sebastián Amariles:
