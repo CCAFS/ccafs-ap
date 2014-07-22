@@ -4,7 +4,7 @@
     [#list projectPartners as ap]    	
       <div id="projectPartner-${ap_index}" class="projectPartner borderBox">
         [#-- Partner identifier --]
-        <input type="hidden" name="projectPartners[${ap_index}].id" value="${ap.id?c}" />  
+        <input id="id" type="hidden" name="project.projectPartners[${ap_index}].id" value="${ap.id?c}" />  
           
         <h6>[@s.text name="preplanning.projectPartners.partner"] [@s.param name="0"]${ap_index}[/@s.param] [/@s.text]</h6> 
         [#-- Remove link for all partners --]
@@ -15,17 +15,17 @@
         
          [#-- Partner type list --]
         <div class="halfPartBlock partnerTypeName chosen">
-          [@customForm.select name="project.projectPartners[${ap_index}].partnerTypeList" label="" disabled=!canEdit i18nkey="preplanning.projectPartners.partnerType" listName="partnerTypes" keyFieldName="id"  displayFieldName="name" className="partnerTypes" value="${ap.partner.type.id?c}" /]
+          [@customForm.select name="" label="" disabled=!canEdit i18nkey="preplanning.projectPartners.partnerType" listName="partnerTypes" keyFieldName="id"  displayFieldName="name" className="partnerTypes" value="${ap.partner.type.id?c}" /]
         </div>
         
         [#-- Country list --]
         <div class="halfPartBlock countryListBlock chosen">
-          [@customForm.select name="project.projectPartners[${ap_index}].countryList" label="" disabled=!canEdit i18nkey="preplanning.projectPartners.country" listName="countries" keyFieldName="id"  displayFieldName="name" className="countryList" value="'${ap.partner.country.id}'" /]
+          [@customForm.select name="" label="" disabled=!canEdit i18nkey="preplanning.projectPartners.country" listName="countries" keyFieldName="id"  displayFieldName="name" className="countryList" value="'${ap.partner.country.id}'" /]
         </div>
         
         [#-- Partner Name --]
         <div class="fullBlock partnerName chosen">
-          [@customForm.select name="project.projectPartners[${ap_index}].partner" label=""  disabled=!canEdit i18nkey="preplanning.projectPartners.partner.name" listName="allPartners" keyFieldName="id"  displayFieldName="name" /]
+          [@customForm.select name="project.projectPartners[${ap_index}].partnerId" label=""  disabled=!canEdit i18nkey="preplanning.projectPartners.partner.name" listName="allPartners" keyFieldName="id"  displayFieldName="name" /]
         </div>
         
         [#-- Contact Name --] 
@@ -49,12 +49,11 @@
   [/#if]  
 [/#macro]
 
-[#macro partnerTemplate ]
+[#macro partnerTemplate responsabilities=false canEdit=true ]
 
-  <div id="projectPartnerTemplate" class="projectPartner borderBox" style="display:none">
+  <div id="projectPartnerTemplate" class="borderBox" style="display:none">
         [#-- Partner identifier --]
-        <input type="hidden" name="projectPartnerId" value="-1" />  
-          
+        <input id="id" type="hidden" name="" value="-1" />   
         <h6>[@s.text name="preplanning.projectPartners.partner"] [@s.param name="0"][/@s.param] [/@s.text]</h6> 
         [#-- Remove link for all partners --]
         <div class="removeLink">
@@ -64,43 +63,42 @@
         
          [#-- Partner type list --]
         <div class="halfPartBlock partnerTypeName chosen">
-          [@customForm.select name="projectPartnerTypeList" label="" disabled=!canEdit i18nkey="preplanning.projectPartners.partnerType" listName="partnerTypes" keyFieldName="id"  displayFieldName="name" className="partnerTypes" value="${ap.partner.type.id?c}" /]
+          [@customForm.select name="" label="" disabled=!canEdit i18nkey="preplanning.projectPartners.partnerType" listName="partnerTypes" keyFieldName="id"  displayFieldName="name" className="partnerTypes"  /]
         </div>
         
         [#-- Country list --]
         <div class="halfPartBlock countryListBlock chosen">
-          [@customForm.select name="project.projectPartners[${ap_index}].countryList" label="" disabled=!canEdit i18nkey="preplanning.projectPartners.country" listName="countries" keyFieldName="id"  displayFieldName="name" className="countryList" value="'${ap.partner.country.id}'" /]
+          [@customForm.select name="" label="" disabled=!canEdit i18nkey="preplanning.projectPartners.country" listName="countries" keyFieldName="id"  displayFieldName="name" className="countryList"  /]
         </div>
         
         [#-- Partner Name --]
         <div class="fullBlock partnerName chosen">
-          [@customForm.select name="project.projectPartners[${ap_index}].partner" label=""  disabled=!canEdit i18nkey="preplanning.projectPartners.partner.name" listName="allPartners" keyFieldName="id"  displayFieldName="name" /]
+          [@customForm.select name="partnerId" label=""  disabled=!canEdit i18nkey="preplanning.projectPartners.partner.name" listName="allPartners" keyFieldName="id"  displayFieldName="name" /]
         </div>
         
         [#-- Contact Name --] 
         <div class="halfPartBlock">
-          [@customForm.input name="project.projectPartners[${ap_index}].contactName" type="text" disabled=!canEdit i18nkey="preplanning.projectPartners.contactPersonName" required=true /]
+          [@customForm.input name="contactName" type="text" disabled=!canEdit i18nkey="preplanning.projectPartners.contactPersonName" required=true /]
         </div>
         
         [#-- Contact Email --]
         <div class="halfPartBlock">
-          [@customForm.input name="project.projectPartners[${ap_index}].contactEmail" type="text" disabled=!canEdit i18nkey="preplanning.projectPartners.contactPersonEmail" required=true /]
+          [@customForm.input name="contactEmail" type="text" disabled=!canEdit i18nkey="preplanning.projectPartners.contactPersonEmail" required=true /]
         </div>
         [#if responsabilities]
         [#-- Responsabilities --]
         <div class="fullBlock partnerResponsabilities chosen">        
-          [@customForm.textArea name="project.projectPartners[${ap_index}].responsabilities" i18nkey="preplanning.projectPartners.responsabilities" required=true /]
+          [@customForm.textArea name="projectPartnerResponsabilities" i18nkey="preplanning.projectPartners.responsabilities" required=true /]
         </div>
         [/#if]
-         
-      </div> <!-- End projectPartner-${ap_index} -->
-  
+      </div> <!-- End projectPartner-Template -->
 [/#macro]
+
 [#macro projectLeader leader canEdit=true]
   [#if leader?has_content]
-      <div id="projectLeader" class="projectPartner borderBox">
+      <div id="projectLeader" class="projectLeader borderBox">
         [#-- Partner identifier --]
-        <input type="hidden" name="leader.id" value="${leader.id?c}" />        
+        <input type="hidden" name="project.leader.id" value="${leader.id?c}" />        
 
         [#-- Partner Name --] 
         <div class="fullBlock partnerName chosen">

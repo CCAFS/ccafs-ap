@@ -45,6 +45,8 @@
       [@s.submit type="button" name="cancel"][@s.text name="form.buttons.cancel" /][/@s.submit]
     </div>
   </article>
-  [/@s.form]  
+  [/@s.form] 
+  [#-- Simgle partner TEMPLATE from partnersTemplate.ftl --]
+  [@partnersTemplate.partnerTemplate /]  
 </section>
 [#include "/WEB-INF/global/pages/footer.ftl"]
