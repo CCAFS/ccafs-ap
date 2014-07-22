@@ -17,16 +17,18 @@ import org.apache.commons.lang3.builder.ToStringBuilder;
 
 /**
  * This class represents a Partner that belongs to a project with contact information.
- *
+ * 
  * @author Héctor Fabio Tobón R.
  */
 public class ProjectPartner {
 
   private int id;
   private Institution partner;
+  private Project project_id;
   private String contactName;
   private String contactEmail;
   private String responsabilities;
+  private boolean is_leader;
 
 
   public ProjectPartner() {
@@ -45,8 +47,16 @@ public class ProjectPartner {
     return id;
   }
 
+  public boolean getIsLeader() {
+    return is_leader;
+  }
+
   public Institution getPartner() {
     return partner;
+  }
+
+  public Project getProjectId() {
+    return project_id;
   }
 
   public String getResponsabilities() {
@@ -63,6 +73,10 @@ public class ProjectPartner {
 
   public void setId(int id) {
     this.id = id;
+  }
+
+  public void setIsLeader(boolean is_leader) {
+    this.is_leader = is_leader;
   }
 
   public void setPartner(Institution partner) {

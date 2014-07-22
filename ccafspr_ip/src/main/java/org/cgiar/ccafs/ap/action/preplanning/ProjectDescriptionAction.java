@@ -19,8 +19,6 @@ import org.cgiar.ccafs.ap.config.APConstants;
 import org.cgiar.ccafs.ap.data.manager.ProjectManager;
 import org.cgiar.ccafs.ap.data.model.Project;
 
-import java.util.List;
-
 import com.google.inject.Inject;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
@@ -38,7 +36,7 @@ public class ProjectDescriptionAction extends BaseAction {
   private static Logger LOG = LoggerFactory.getLogger(ProjectDescriptionAction.class);
 
   // Model
-  private List<Project> projects;
+  private Project projects;
   private int projectID;
 
   @Inject
@@ -48,7 +46,7 @@ public class ProjectDescriptionAction extends BaseAction {
   }
 
 
-  public List<Project> getProjects() {
+  public Project getProject() {
     return projects;
   }
 

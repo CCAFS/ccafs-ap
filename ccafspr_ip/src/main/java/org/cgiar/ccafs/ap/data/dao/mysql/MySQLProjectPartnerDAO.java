@@ -28,41 +28,18 @@ public class MySQLProjectPartnerDAO implements ProjectPartnerDAO {
   }
 
   @Override
-  public int createProjectPartner(Map<String, Object> projectPartnerData) {
-    LOG.debug(">> createProjectPartner(projectPartnerData)", projectPartnerData);
-
-    StringBuilder query = new StringBuilder();
-    query
-      .append("INSERT INTO project_partners (id, project_id, partner_id, contact_name, contact_email, responsabilities, is_leader ) ");
-    query.append("VALUES (?, ?, ?, ?, ?, ?, ?) ");
-
-    Object[] values = new Object[7];
-    values[0] = projectPartnerData.get("id");
-    values[1] = projectPartnerData.get("project_id");
-    values[2] = projectPartnerData.get("partner_id");
-    values[3] = projectPartnerData.get("contact_name");
-    values[4] = projectPartnerData.get("contact_email");
-    values[5] = projectPartnerData.get("responsabilities");
-    values[6] = projectPartnerData.get("is_leader");
-
-    int result = saveData(query.toString(), values);
-    LOG.debug("<< createProjectPartner():{}", result);
-    return result;
-  }
-
-  @Override
   public boolean deleteProjectPartner(int projectId, int institutionId) {
-    LOG.debug(">> deleteIpElements(programId={}, typeId={})", projectId, institutionId);
+    LOG.debug(">> deleteProjectPartner(projectId={}, institutionId={})", projectId, institutionId);
 
     StringBuilder query = new StringBuilder();
-    query.append("DELETE pp.* FROM project_partners ");
+    query.append("DELETE FROM project_partners pp ");
     query.append("WHERE pp.project_id = ? AND pp.partner_id = ?");
     // String deleteQuery = ;
     try (Connection connection = databaseManager.getConnection()) {
       int rowsDeleted =
         databaseManager.makeChangeSecure(connection, query.toString(), new Object[] {projectId, institutionId});
       if (rowsDeleted >= 0) {
-        LOG.debug("<< deleteIpElements():{}", true);
+        LOG.debug("<< deleteProjectPartner():{}", true);
         return true;
       }
     } catch (SQLException e) {
@@ -104,7 +81,6 @@ public class MySQLProjectPartnerDAO implements ProjectPartnerDAO {
     return projectPartnerList;
   }
 
-
   public Map<String, String> getProjectPartnerLeader(int projectID) {
     LOG.debug(">> getProjectPartnerLeader projectID = {} )", projectID);
     List<Map<String, String>> projectPartnerDataList = new ArrayList<>();
@@ -112,7 +88,9 @@ public class MySQLProjectPartnerDAO implements ProjectPartnerDAO {
     StringBuilder query = new StringBuilder();
     query.append("SELECT pp.*   ");
     query.append("FROM project_partners as pp ");
-    query.append("WHERE pp.is_leader=1 ");
+    query.append("WHERE pp.is_leader=1");
+    query.append("AND pp.project_id=");
+    query.append(projectID);
 
     try (Connection con = databaseManager.getConnection()) {
       ResultSet rs = databaseManager.makeQuery(query.toString(), con);
@@ -137,14 +115,16 @@ public class MySQLProjectPartnerDAO implements ProjectPartnerDAO {
     return null;
   }
 
+
   public List<Map<String, String>> getProjectPartners(int projectID) {
     LOG.debug(">> getProjectPartners projectID = {} )", projectID);
 
     StringBuilder query = new StringBuilder();
     query.append("SELECT pp.*   ");
     query.append("FROM project_partners as pp ");
-    query.append("WHERE pp.projec_id= ");
+    query.append("WHERE pp.project_id= ");
     query.append(projectID);
+    query.append("WHERE pp.is_leader=false ");
 
 
     LOG.debug("-- getProject() > Calling method executeQuery to get the results");
@@ -169,5 +149,28 @@ public class MySQLProjectPartnerDAO implements ProjectPartnerDAO {
       LOG.error("-- saveData() > There was a problem saving information into the database. \n{}", e);
     }
     return generatedId;
+  }
+
+  @Override
+  public int saveProjectPartner(Map<String, Object> projectPartnerData) {
+    LOG.debug(">> createProjectPartner(projectPartnerData)", projectPartnerData);
+
+    StringBuilder query = new StringBuilder();
+    query
+      .append("INSERT INTO project_partners (id, project_id, partner_id, contact_name, contact_email, responsabilities, is_leader ) ");
+    query.append("VALUES (?, ?, ?, ?, ?, ?, ?) ");
+
+    Object[] values = new Object[7];
+    values[0] = projectPartnerData.get("id");
+    values[1] = projectPartnerData.get("project_id");
+    values[2] = projectPartnerData.get("partner_id");
+    values[3] = projectPartnerData.get("contact_name");
+    values[4] = projectPartnerData.get("contact_email");
+    values[5] = projectPartnerData.get("responsabilities");
+    values[6] = projectPartnerData.get("is_leader");
+
+    int result = saveData(query.toString(), values);
+    LOG.debug("<< createProjectPartner():{}", result);
+    return result;
   }
 }

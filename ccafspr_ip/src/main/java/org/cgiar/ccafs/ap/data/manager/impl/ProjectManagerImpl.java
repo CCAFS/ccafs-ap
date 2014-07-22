@@ -37,16 +37,6 @@ public class ProjectManagerImpl implements ProjectManager {
       project.setStartDate(elementData.get("startDate"));
       project.setEndDate(elementData.get("endDate"));
 
-      /*
-       * List<Map<String, String>> projectTypesData = projectDAO.getProjectType(projectLeader.getId(), 1);
-       * for (Map<String, String> typeData : projectTypesData) {
-       * IPProgramTypes programType = new IPProgramTypes();
-       * programType.setId(Integer.parseInt(elementData.get("id")));
-       * programType.setAcronym(elementData.get("acronym"));
-       * programType.setTypeId(Integer.parseInt(elementData.get("type_id")));
-       * }
-       */
-
       projectsList.add(project);
     }
     return projectsList;
@@ -54,33 +44,23 @@ public class ProjectManagerImpl implements ProjectManager {
 
 
   @Override
-  public List<Project> getProject(int projectId) {
+  public Project getProject(int projectId) {
     // TODO - Pending to validate what kind of parameter should be used in this method.
     System.out.println("----- Project ID: " + projectId);
-    List<Map<String, String>> projectDataList = projectDAO.getProjects(projectId);
-    List<Project> projectsList = new ArrayList<>();
 
-    for (Map<String, String> elementData : projectDataList) {
+    Map<String, String> projectData = projectDAO.getProject(projectId);
+    if (!projectData.isEmpty()) {
       Project project = new Project();
-      project.setId(Integer.parseInt(elementData.get("id")));
-      project.setTitle(elementData.get("title"));
-      project.setSummary(elementData.get("summary"));
-      project.setStartDate(elementData.get("startDate"));
-      project.setEndDate(elementData.get("endDate"));
+      project.setId(Integer.parseInt(projectData.get("id")));
+      project.setTitle(projectData.get("title"));
+      project.setSummary(projectData.get("summary"));
+      project.setStartDate(projectData.get("start_date"));
+      project.setEndDate(projectData.get("end_date"));
+      // traer el project_leader y project_owner
 
-      /*
-       * List<Map<String, String>> projectTypesData = projectDAO.getProjectType(projectLeader.getId(), 1);
-       * for (Map<String, String> typeData : projectTypesData) {
-       * IPProgramTypes programType = new IPProgramTypes();
-       * programType.setId(Integer.parseInt(elementData.get("id")));
-       * programType.setAcronym(elementData.get("acronym"));
-       * programType.setTypeId(Integer.parseInt(elementData.get("type_id")));
-       * }
-       */
-
-      projectsList.add(project);
+      return project;
     }
-    return projectsList;
+    return null;
   }
   /*
    * private List<Project> setDataToProjectObjects(List<Map<String, String>> projectDataList) {
