@@ -1,6 +1,7 @@
 Hernán David:
 [] - Actualizar diagrama de base de datos para reflejar los cambios en Project Partners.
 [] - Pasar la lista de paises del proyecto anterior a la base de datos.
+[] - Método activeDirectoryLogin de UserManager tiene un TODO en el catch de un exception.
 [] - Pasar la lista de partners a la nueva bd
 [] - Hacer funcionar el save para los actions que trabajan los IPElements
 [] - Corregir el error que aparece al cargar un usuario ligado a un IPProgram
@@ -10,9 +11,17 @@ Héctor Tobón:
 [] - Actualizar Project Partners para que se listen los usuarios en Project Leader.
 
 Javier Gallego:
+[] - Desarrollar método getProjectLeader de UserManager.
 [] - Copiar y pegar todo lo de CountryManager del proyecto anterior a este y probar que todo funciona.
 [] - Copiar y pegar todo lo de RegionManager del proyecto anterior a este y probar que todo funciona.
 [] - Crear DAOs para InstitutionType (o se podrían incluir los métodos en InstitutionManager).
- 
+
 
 Sebastián Amariles:
+[] - 
+
+Todos:
+[] -
+
+General:
+[] - Idear proceso para crear nuevos Project Leaders.
