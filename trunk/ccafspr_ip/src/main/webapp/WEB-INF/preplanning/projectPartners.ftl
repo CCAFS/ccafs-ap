@@ -1,7 +1,7 @@
 [#ftl]
 [#assign title = "Project Partners" /]
 [#assign globalLibs = ["jquery", "noty", "autoSave"] /]
-[#assign customJS = ["${baseUrl}/js/global/utils.js"] /]
+[#assign customJS = ["${baseUrl}/js/global/utils.js", "${baseUrl}/js/preplanning/projectPartners.js"] /]
 [#assign currentSection = "preplanning" /]
 [#assign currentPrePlanningSection = "projects" /]
 [#assign currentStage = "partners" /]
@@ -22,19 +22,19 @@
   [@s.form action="partners" cssClass="pure-form"]  
   <article class="halfContent" id="mainInformation">
   	[#include "/WEB-INF/preplanning/projectPreplanningSubMenu.ftl" /]
+  	
   	<h1 class="contentTitle">
       [@s.text name="preplanning.projectPartners.leader.title" /]  
     </h1>
-    <hr>
   	[#-- Displaying partner leader from partnersTemplate.ftl --]
-    [@partnersTemplate.projectLeader leader=project.leader canEdit=true /]
-  	
+    [@partnersTemplate.projectLeader leader=project.leader canEdit=true /] 
+    
     <h1 class="contentTitle">
 		  [@s.text name="preplanning.projectPartners.partners.title" /]  
-    </h1>
-    <hr>
+    </h1> 
     [#-- Listing partners from partnersTemplate.ftl --]
     [@partnersTemplate.partnerSection projectPartners=project.projectPartners partnerTypes=partnerTypes countries=countries canEdit=true canRemove=true /]
+    
     <div id="addProjectPartner" class="addLink">
       <img src="${baseUrl}/images/global/icon-add.png" />
       <a href="" class="addProjectPartner" >[@s.text name="preplanning.projectPartners.addProjectPartner" /]</a>

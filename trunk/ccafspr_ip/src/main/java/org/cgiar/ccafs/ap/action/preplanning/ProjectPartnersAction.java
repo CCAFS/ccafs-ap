@@ -17,23 +17,23 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 
+import com.google.inject.Inject;
+import org.apache.commons.lang3.RandomStringUtils;
+import org.cgiar.ccafs.ap.action.BaseAction;
+import org.cgiar.ccafs.ap.config.APConfig;
 import org.cgiar.ccafs.ap.data.manager.InstitutionManager;
 import org.cgiar.ccafs.ap.data.manager.ProjectPartnerManager;
-import org.cgiar.ccafs.ap.data.model.ProjectPartner;
-import org.cgiar.ccafs.ap.data.model.Project;
-import org.apache.commons.lang3.RandomStringUtils;
 import org.cgiar.ccafs.ap.data.model.Country;
-import org.cgiar.ccafs.ap.data.model.InstitutionType;
 import org.cgiar.ccafs.ap.data.model.Institution;
-import org.cgiar.ccafs.ap.action.BaseAction;
-import com.google.inject.Inject;
-import org.cgiar.ccafs.ap.config.APConfig;
+import org.cgiar.ccafs.ap.data.model.InstitutionType;
+import org.cgiar.ccafs.ap.data.model.Project;
+import org.cgiar.ccafs.ap.data.model.ProjectPartner;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 /**
  * This class is used to manage the Project Partners section in the pre-planning step.
- *
+ * 
  * @author Héctor Tobón
  */
 public class ProjectPartnersAction extends BaseAction {
@@ -153,8 +153,8 @@ public class ProjectPartnersAction extends BaseAction {
     partnerTypes = this.getAllPartnerTypes();
 
     // All Partners.
-    allPartners = institutionManager.getAllInstitutions();
-    // this.getAllPartnersTemporal(rand, countries, partnerTypes);
+    // allPartners = institutionManager.getAllInstitutions();
+    allPartners = this.getAllPartnersTemporal(rand, countries, partnerTypes);
 
     // Project leader.
     ProjectPartner pp = new ProjectPartner();
@@ -163,24 +163,24 @@ public class ProjectPartnersAction extends BaseAction {
     pp.setContactEmail("pp_email@email.com");
     pp.setContactName("Contact Name PP");
     pp.setResponsabilities(RandomStringUtils.randomAlphabetic(50));
-    // project.setLeader(pp);
+    project.setLeader(pp);
 
     // Saved Project Partners.
     ArrayList<ProjectPartner> projectPartners = new ArrayList<ProjectPartner>();
 
-// for (int c = 0; c < 3; c++) {
-// ProjectPartner ppTemp = new ProjectPartner();
-// ppTemp.setId(c + 1000);
-// ppTemp.setContactEmail("projectPartner" + c + "@email.com");
-// ppTemp.setContactName("Project Partner Name " + c);
-// ppTemp.setResponsabilities(RandomStringUtils.randomAlphabetic(50));
-// if (c == 0) {
-// ppTemp.setPartner(allPartners.get(0));
-// } else {
-// ppTemp.setPartner(allPartners.get(rand.nextInt(100)));
-// }
-// projectPartners.add(ppTemp);
-// }
+    for (int c = 0; c < 3; c++) {
+      ProjectPartner ppTemp = new ProjectPartner();
+      ppTemp.setId(c + 1000);
+      ppTemp.setContactEmail("projectPartner" + c + "@email.com");
+      ppTemp.setContactName("Project Partner Name " + c);
+      ppTemp.setResponsabilities(RandomStringUtils.randomAlphabetic(50));
+      if (c == 0) {
+        ppTemp.setPartner(allPartners.get(0));
+      } else {
+        ppTemp.setPartner(allPartners.get(rand.nextInt(100)));
+      }
+      projectPartners.add(ppTemp);
+    }
     project.setProjectPartners(projectPartners);
     // **************************************
   }
