@@ -61,7 +61,7 @@ public class MySQLProjectDAO implements ProjectDAO {
   @Override
   public Map<String, String> getProject(int projectID) {
     LOG.debug(">> getProject projectID = {} )", projectID);
-    List<Map<String, String>> projectDataList = new ArrayList<>();
+    Map<String, String> projectDataList = new HashMap<>();
 
     StringBuilder query = new StringBuilder();
     query.append("SELECT p.*   ");
@@ -80,8 +80,6 @@ public class MySQLProjectDAO implements ProjectDAO {
         projectData.put("end_date", rs.getString("end_date"));
         projectData.put("project_leader_id", rs.getString("project_leader_id"));
         projectData.put("project_owner_id", rs.getString("project_owner_id"));
-
-        projectDataList.add(projectData);
       }
       con.close();
     } catch (SQLException e) {
@@ -89,7 +87,7 @@ public class MySQLProjectDAO implements ProjectDAO {
     }
 
     LOG.debug("-- getProject() > Calling method executeQuery to get the results");
-    return null;
+    return projectDataList;
   }
 
   @Override
