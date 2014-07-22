@@ -7,13 +7,12 @@ Hernán David:
 [] - Hacer funcionar el save para los actions que trabajan los IPElements
 [] - Corregir el error que aparece al cargar un usuario ligado a un IPProgram
 
-
-
 Héctor Tobón:
 [] - Actualizar Project Partners para que se listen los usuarios en Project Leader.
 
 Javier Gallego:
 [] - Desarrollar método getProjectLeader de UserManager.
+[] - Desarrollar método getAllProjectLeaders de UserManager.
 [] - Desarrollar método getProjectPartners de ProjectPartnerManager.
 [] - Hay un label "TODO" encima del método getInstitution de InstitutionManagerImpl. Si ya está desarrollado se debería eliminar.
 [] - Hay un label "TODO" justo al inicio del método getAllProjects de ProjectManagerImpl. 
@@ -23,12 +22,11 @@ Javier Gallego:
 [] - Copiar y pegar todo lo de RegionManager del proyecto anterior a este y probar que todo funciona.
 [] - Crear DAOs para InstitutionType (o se podrían incluir los métodos en InstitutionManager).
 
-
-
 Sebastián Amariles:
 [] - Probar interfaz de IPElements cuando el backend esta finalizado
 [] - Crear archivos base para la seccion de planning
 [] - Probar seccion de projectPartners despues de tener listo en servicio que filtra
+
 Todos:
 [] -
 
