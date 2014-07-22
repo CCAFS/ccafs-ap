@@ -62,9 +62,10 @@ public class InstitutionManagerImpl implements InstitutionManager {
 
       // IPProgram - just the Id.
       IPProgram program = new IPProgram();
-      program.setId(Integer.parseInt(iData.get("program_id")));
-      institution.setProgram(program);
-
+      if (iData.get("program_id") != null) {
+        program.setId(Integer.parseInt(iData.get("program_id")));
+        institution.setProgram(program);
+      }
       // Adding object to the array.
       institutions.add(institution);
     }

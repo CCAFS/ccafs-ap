@@ -42,7 +42,7 @@ public class MySQLProjectDAO implements ProjectDAO {
         ProjectData.put("start_date", rs.getString("start_date"));
         ProjectData.put("end_date", rs.getString("end_date"));
         ProjectData.put("project_leader_id", rs.getString("project_leader_id"));
-        ProjectData.put("project_leader_id", rs.getString("project_leader_id"));
+        ProjectData.put("project_owner_id", rs.getString("project_owner_id"));
 
         ProjectList.add(ProjectData);
       }
@@ -59,22 +59,37 @@ public class MySQLProjectDAO implements ProjectDAO {
   }
 
   @Override
-  public List<Map<String, String>> getProject(int projectID) {
+  public Map<String, String> getProject(int projectID) {
     LOG.debug(">> getProject projectID = {} )", projectID);
+    List<Map<String, String>> projectDataList = new ArrayList<>();
 
     StringBuilder query = new StringBuilder();
     query.append("SELECT p.*   ");
-    // query.append("et.id as 'element_type_id', et.name as 'element_type_name', ");
-    // query.append("pro.id as 'program_id', pro.acronym as 'program_acronym' ");
     query.append("FROM projects as p ");
-    query.append("INNER JOIN project_focuses pf ON p.id = pf.project_id ");
-    query.append("INNER JOIN ip_programs ipr ON pf.program_id=ipr.id ");
     query.append("WHERE p.id= ");
     query.append(projectID);
 
+    try (Connection con = databaseManager.getConnection()) {
+      ResultSet rs = databaseManager.makeQuery(query.toString(), con);
+      while (rs.next()) {
+        Map<String, String> projectData = new HashMap<String, String>();
+        projectData.put("id", rs.getString("id"));
+        projectData.put("title", rs.getString("title"));
+        projectData.put("summary", rs.getString("summary"));
+        projectData.put("start_date", rs.getString("start_date"));
+        projectData.put("end_date", rs.getString("end_date"));
+        projectData.put("project_leader_id", rs.getString("project_leader_id"));
+        projectData.put("project_owner_id", rs.getString("project_owner_id"));
+
+        projectDataList.add(projectData);
+      }
+      con.close();
+    } catch (SQLException e) {
+      LOG.error("Exception arised getting the project for the user {}.", projectID, e);
+    }
 
     LOG.debug("-- getProject() > Calling method executeQuery to get the results");
-    return getData(query.toString());
+    return null;
   }
 
   @Override

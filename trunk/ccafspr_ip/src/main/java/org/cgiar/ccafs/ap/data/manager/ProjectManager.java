@@ -18,14 +18,12 @@ public interface ProjectManager {
   public List<Project> getAllProjects(Project projectId);
 
   /**
-   * This method gets all the Projects related to a specific IP program
-   * given
+   * This method gets all the Project information given by a previous project selected
    * 
-   * @param object - TODO
-   * @return a list with Projects.
+   * @param projectID
+   * @return an Project Object.
    */
-  public List<Project> getProject(int projectId);
-
+  public Project getProject(int projectId);
 
 
 }

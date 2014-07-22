@@ -21,7 +21,7 @@ public interface ProjectDAO {
    * @param projectID, identifier of the project selected
    * @return a list of maps with the information of the Project returned.
    */
-  public List<Map<String, String>> getProject(int projectID);
+  public Map<String, String> getProject(int projectID);
 
   /**
    * This method return a list with the employees that belongs to a program

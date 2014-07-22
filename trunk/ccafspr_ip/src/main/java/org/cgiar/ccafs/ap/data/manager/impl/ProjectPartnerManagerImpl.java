@@ -13,17 +13,37 @@
  *****************************************************************/
 package org.cgiar.ccafs.ap.data.manager.impl;
 
-import java.util.ArrayList;
-import java.util.List;
-
-import org.cgiar.ccafs.ap.data.model.ProjectPartner;
+import org.cgiar.ccafs.ap.data.dao.ProjectPartnerDAO;
 import org.cgiar.ccafs.ap.data.manager.ProjectPartnerManager;
+import org.cgiar.ccafs.ap.data.model.Institution;
+import org.cgiar.ccafs.ap.data.model.Project;
+import org.cgiar.ccafs.ap.data.model.ProjectPartner;
+
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
+import com.google.inject.Inject;
 
 
 /**
  * @author Héctor Fabio Tobón R.
  */
 public class ProjectPartnerManagerImpl implements ProjectPartnerManager {
+
+  // DAO's
+  private ProjectPartnerDAO projecPartnerDAO;
+
+  @Inject
+  public ProjectPartnerManagerImpl(ProjectPartnerDAO projectPartnerDAO) {
+    this.projecPartnerDAO = projectPartnerDAO;
+  }
+
+  @Override
+  public boolean deleteProjectPartner(Project projectId, Institution partnerId) {
+    return projecPartnerDAO.deleteProjectPartner(projectId.getId(), partnerId.getId());
+  }
 
   @Override
   public ProjectPartner getProjectPartnerLeader(int projectId) {
@@ -38,5 +58,21 @@ public class ProjectPartnerManagerImpl implements ProjectPartnerManager {
     return projectPartners;
   }
 
+  @Override
+  public boolean saveProjectPartner(List<ProjectPartner> partners) {
+    Map<String, Object> projectPartnerData;
+    boolean allSaved = true;
+    for (ProjectPartner partner : partners) {
+      projectPartnerData = new HashMap<String, Object>();
+
+      projectPartnerData.put("id", partner.getId());
+      projectPartnerData.put("contact_name", partner.getContactName());
+      projectPartnerData.put("contact_email", partner.getContactEmail());
+      projectPartnerData.put("responsabilities ", partner.getResponsabilities());
+
+
+    }
+    return allSaved;
+  }
 
 }
