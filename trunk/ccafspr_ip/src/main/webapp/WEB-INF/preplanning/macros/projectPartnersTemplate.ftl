@@ -27,7 +27,7 @@
           [@customForm.select name="project.projectPartners[${ap_index}].partner" label=""  disabled=!canEdit i18nkey="preplanning.projectPartners.partner.name" listName="allPartners" keyFieldName="id"  displayFieldName="name" /]
         </div>
         
-        [#-- Contact Name --]
+        [#-- Contact Name --] 
         <div class="halfPartBlock">
           [@customForm.input name="project.projectPartners[${ap_index}].contactName" type="text" disabled=!canEdit i18nkey="preplanning.projectPartners.contactPersonName" required=true /]
         </div>

@@ -13,7 +13,7 @@
  *****************************************************************/
 package org.cgiar.ccafs.ap.data.model;
 
-import java.util.ArrayList;
+import java.util.List;
 
 import org.apache.commons.lang3.builder.ToStringBuilder;
 
@@ -30,11 +30,11 @@ public class Project {
   private String summary;
   private String startDate;
   private String endDate;
-  private ArrayList<IPProgram> regions; // The list of regions in which this project works with.
-  private ArrayList<IPProgram> flagships; // The list of flagships in which this project works with.
+  private List<IPProgram> regions; // The list of regions in which this project works with.
+  private List<IPProgram> flagships; // The list of flagships in which this project works with.
   private ProjectPartner leader;
   private Institution owner;
-  private ArrayList<ProjectPartner> projectPartners; // Project partners.
+  private List<ProjectPartner> projectPartners; // Project partners.
 
   public Project() {
     super();
@@ -44,7 +44,7 @@ public class Project {
     return endDate;
   }
 
-  public ArrayList<IPProgram> getFlagships() {
+  public List<IPProgram> getFlagships() {
     return flagships;
   }
 
@@ -60,11 +60,11 @@ public class Project {
     return owner;
   }
 
-  public ArrayList<ProjectPartner> getProjectPartners() {
+  public List<ProjectPartner> getProjectPartners() {
     return projectPartners;
   }
 
-  public ArrayList<IPProgram> getRegions() {
+  public List<IPProgram> getRegions() {
     return regions;
   }
 
@@ -80,7 +80,7 @@ public class Project {
     return title;
   }
 
-  public ArrayList<IPProgram> getTypes() {
+  public List<IPProgram> getTypes() {
     return regions;
   }
 
@@ -88,7 +88,7 @@ public class Project {
     this.endDate = endDate;
   }
 
-  public void setFlagships(ArrayList<IPProgram> flagships) {
+  public void setFlagships(List<IPProgram> flagships) {
     this.flagships = flagships;
   }
 
@@ -104,11 +104,11 @@ public class Project {
     this.owner = owner;
   }
 
-  public void setProjectPartners(ArrayList<ProjectPartner> projectPartners) {
+  public void setProjectPartners(List<ProjectPartner> projectPartners) {
     this.projectPartners = projectPartners;
   }
 
-  public void setRegions(ArrayList<IPProgram> regions) {
+  public void setRegions(List<IPProgram> regions) {
     this.regions = regions;
   }
 
@@ -124,7 +124,7 @@ public class Project {
     this.title = title;
   }
 
-  public void setTypes(ArrayList<IPProgram> types) {
+  public void setTypes(List<IPProgram> types) {
     this.regions = types;
   }
 

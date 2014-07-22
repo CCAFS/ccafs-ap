@@ -1,7 +1,6 @@
 package org.cgiar.ccafs.ap.config;
 
 import org.cgiar.ccafs.ap.util.PropertiesManager;
-
 import com.google.inject.Inject;
 import com.google.inject.Singleton;
 import org.slf4j.Logger;
@@ -42,9 +41,10 @@ public class APConfig {
     this.properties = properties;
   }
 
+
   /**
    * Return the base url previously added in the configuration file.
-   * 
+   *
    * @return The Base Url in the following format: http://baseurl or https://baseurl.
    */
   public String getBaseUrl() {
@@ -65,7 +65,7 @@ public class APConfig {
 
   /**
    * Get the path where are stored the case studies user images
-   * 
+   *
    * @return a string with the path
    */
   public String getCaseStudiesImagesPath() {
@@ -95,7 +95,7 @@ public class APConfig {
 
   /**
    * Get the end year value that is in the configuration file.
-   * 
+   *
    * @return an integer identifying the end year.
    */
   public int getEndYear() {
@@ -109,7 +109,7 @@ public class APConfig {
 
   /**
    * Get the maximun file size allowed
-   * 
+   *
    * @return an integer with the value
    */
   public int getFileMaxSize() {
@@ -123,7 +123,7 @@ public class APConfig {
 
   /**
    * Get the number of future years that an user can plan.
-   * 
+   *
    * @return an integer identifying the number of years.
    */
   public int getFuturePlanningYears() {
@@ -155,7 +155,7 @@ public class APConfig {
 
   /**
    * Get the number maximum of types that can have a case study
-   * 
+   *
    * @return
    */
   public int getMaxCaseStudyTypes() {
@@ -169,7 +169,7 @@ public class APConfig {
 
   /**
    * Get the current year value that is being used in the planning stage.
-   * 
+   *
    * @return an integer identifying the current year.
    */
   public int getPlanningCurrentYear() {
@@ -183,7 +183,7 @@ public class APConfig {
 
   /**
    * Get the current year value that is being used in the reporting stage.
-   * 
+   *
    * @return an integer identifying the current year.
    */
   public int getReportingCurrentYear() {
@@ -197,7 +197,7 @@ public class APConfig {
 
   /**
    * Get the start year value that is in the configuration file.
-   * 
+   *
    * @return an integer identifying the end year.
    */
   public int getStartYear() {
@@ -211,7 +211,7 @@ public class APConfig {
 
   /**
    * Get the flag that indicate is planing stage is active that is in the configuration file.
-   * 
+   *
    * @return a boolean indicating if it is active.
    */
   public boolean isPlanningActive() {
@@ -226,7 +226,7 @@ public class APConfig {
 
   /**
    * Get the flag that indicate if planing for future years is active, that value is in the configuration file.
-   * 
+   *
    * @return a boolean indicating if it is active or not.
    */
   public boolean isPlanningForFutureYearsActive() {
@@ -241,7 +241,7 @@ public class APConfig {
 
   /**
    * Get the flag that indicate is planing stage is active that is in the configuration file.
-   * 
+   *
    * @return a boolean indicating if it is active.
    */
   public boolean isReportingActive() {
@@ -256,7 +256,7 @@ public class APConfig {
 
   /**
    * Get the flag that indicate if summaries stage is active that is in the configuration file.
-   * 
+   *
    * @return a boolean indicating if it is active.
    */
   public boolean isSummariesActive() {

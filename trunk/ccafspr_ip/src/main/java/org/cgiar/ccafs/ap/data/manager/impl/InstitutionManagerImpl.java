@@ -55,12 +55,17 @@ public class InstitutionManagerImpl implements InstitutionManager {
       institution.setContactPersonName(iData.get("contactPersonName"));
       institution.setContactPersonEmail(iData.get("contactPersonEmail"));
 
+      // Institution Type - just the Id.
       InstitutionType type = new InstitutionType();
       type.setId(Integer.parseInt(iData.get("institution_type_id")));
+      institution.setType(type);
 
+      // IPProgram - just the Id.
       IPProgram program = new IPProgram();
       program.setId(Integer.parseInt(iData.get("program_id")));
+      institution.setProgram(program);
 
+      // Adding object to the array.
       institutions.add(institution);
     }
     return institutions;
