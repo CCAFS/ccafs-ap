@@ -17,6 +17,8 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 
+import org.cgiar.ccafs.ap.data.manager.InstitutionManager;
+import org.cgiar.ccafs.ap.data.manager.ProjectPartnerManager;
 import org.cgiar.ccafs.ap.data.model.ProjectPartner;
 import org.cgiar.ccafs.ap.data.model.Project;
 import org.apache.commons.lang3.RandomStringUtils;
@@ -40,7 +42,9 @@ public class ProjectPartnersAction extends BaseAction {
 
   public static Logger LOG = LoggerFactory.getLogger(ProjectPartnersAction.class);
 
-  // TODO - Create Managers and assign them to the constructor below.
+  // Managers
+  private ProjectPartnerManager projectPartnerManager;
+  private InstitutionManager institutionManager;
 
   // Model for the backend
   private int projectId;
@@ -52,9 +56,11 @@ public class ProjectPartnersAction extends BaseAction {
   private List<Institution> allPartners; // allPartners will be used to list all the partners that have the system.
 
   @Inject
-  public ProjectPartnersAction(APConfig config) {
+  public ProjectPartnersAction(APConfig config, ProjectPartnerManager projectPartnerManager,
+    InstitutionManager institutionManager) {
     super(config);
-    // TODO Managers.
+    this.projectPartnerManager = projectPartnerManager;
+    this.institutionManager = institutionManager;
   }
 
 
@@ -129,15 +135,16 @@ public class ProjectPartnersAction extends BaseAction {
   public void prepare() throws Exception {
     super.prepare();
 
+    // Creating a project
+    project = new Project();
+    project.setId(123);
+
     // if there are not partners, please return an empty List.
-    // partners = projectPartnerManager.getPartners(projectId);
+    project.setProjectPartners(projectPartnerManager.getProjectPartners(projectId));
 
     // ***********FAKE OBJECTS JUST TO TEST!******************
     Random rand = new Random();
 
-    // Project
-    project = new Project();
-    project.setId(123);
 
     // All Countries
     countries = this.getAllCountries();
@@ -146,16 +153,17 @@ public class ProjectPartnersAction extends BaseAction {
     partnerTypes = this.getAllPartnerTypes();
 
     // All Partners.
-    allPartners = this.getAllPartnersTemporal(rand, countries, partnerTypes);
+    allPartners = institutionManager.getAllInstitutions();
+    // this.getAllPartnersTemporal(rand, countries, partnerTypes);
 
     // Project leader.
     ProjectPartner pp = new ProjectPartner();
     pp.setId(123);
-    pp.setPartner(allPartners.get(rand.nextInt(100)));
+    pp.setPartner(allPartners.get(rand.nextInt(5)));
     pp.setContactEmail("pp_email@email.com");
     pp.setContactName("Contact Name PP");
     pp.setResponsabilities(RandomStringUtils.randomAlphabetic(50));
-    project.setLeader(pp);
+    // project.setLeader(pp);
 
     // Saved Project Partners.
     ArrayList<ProjectPartner> projectPartners = new ArrayList<ProjectPartner>();
@@ -180,8 +188,17 @@ public class ProjectPartnersAction extends BaseAction {
   @Override
   public String save() {
 
-    System.out.println(project);
+    // The following is the project leader.
+    System.out.println(project.getLeader());
 
-    return SUCCESS;
+    List<ProjectPartner> previousProjectPartners = projectPartnerManager.getProjectPartners(projectId);
+
+    // The following are the project partners to ADD
+    for (ProjectPartner projectPartner : previousProjectPartners) {
+
+    }
+
+
+    return INPUT;
   }
 }

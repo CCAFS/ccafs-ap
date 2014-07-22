@@ -13,6 +13,10 @@
  *****************************************************************/
 package org.cgiar.ccafs.ap.data.manager.impl;
 
+import java.util.ArrayList;
+import java.util.List;
+
+import org.cgiar.ccafs.ap.data.model.ProjectPartner;
 import org.cgiar.ccafs.ap.data.manager.ProjectPartnerManager;
 
 
@@ -20,6 +24,19 @@ import org.cgiar.ccafs.ap.data.manager.ProjectPartnerManager;
  * @author Héctor Fabio Tobón R.
  */
 public class ProjectPartnerManagerImpl implements ProjectPartnerManager {
+
+  @Override
+  public ProjectPartner getProjectPartnerLeader(int projectId) {
+    // TODO Auto-generated method stub
+    return null;
+  }
+
+  @Override
+  public List<ProjectPartner> getProjectPartners(int projectId) {
+    List<ProjectPartner> projectPartners = new ArrayList<ProjectPartner>();
+    // TODO
+    return projectPartners;
+  }
 
 
 }

@@ -32,7 +32,7 @@ public class MySQLInstitutionDAO implements InstitutionDAO {
 
     StringBuilder query = new StringBuilder();
     query.append("SELECT i.*  ");
-    query.append("FROM institution i ");
+    query.append("FROM institutions i ");
 
     LOG.debug("-- getAllInstitutions() > Calling method executeQuery to get the results");
     return getData(query.toString());
@@ -75,7 +75,7 @@ public class MySQLInstitutionDAO implements InstitutionDAO {
 
     StringBuilder query = new StringBuilder();
     query.append("SELECT i.*  ");
-    query.append("FROM instititution i ");
+    query.append("FROM institutions i ");
     query.append("WHERE i.id = ");
     query.append(institutionID);
 
