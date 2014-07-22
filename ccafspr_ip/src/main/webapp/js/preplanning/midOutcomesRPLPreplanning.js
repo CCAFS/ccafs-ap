@@ -1,14 +1,5 @@
 $(document).ready(function(){
-  var programID =  1;
-  var elementTypeId = 3;
   attachEvents();
-  
-  $.getJSON("../json/ipElements.do?programID="+programID+"&elementTypeId="+elementTypeId, function(data) {
-	    $("#midOutcomes_.contributes option").remove(); 
-	    $.each(data.IPElementsList, function(){ 
-	        $("#midOutcomes_.contributes").append('<option value="'+ this.id +'">'+ this.description +'</option>');
-	    });
-	});
 });
 
 function attachEvents(){

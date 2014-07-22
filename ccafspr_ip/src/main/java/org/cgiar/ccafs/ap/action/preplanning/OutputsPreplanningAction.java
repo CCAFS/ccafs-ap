@@ -19,6 +19,7 @@ import com.google.inject.Inject;
 import org.cgiar.ccafs.ap.action.BaseAction;
 import org.cgiar.ccafs.ap.config.APConfig;
 import org.cgiar.ccafs.ap.data.manager.IPElementManager;
+import org.cgiar.ccafs.ap.data.manager.IPProgramManager;
 import org.cgiar.ccafs.ap.data.model.IPElement;
 import org.cgiar.ccafs.ap.data.model.IPElementType;
 import org.cgiar.ccafs.ap.data.model.IPProgram;
@@ -33,6 +34,7 @@ public class OutputsPreplanningAction extends BaseAction {
 
   // Managers
   IPElementManager ipElementManager;
+  IPProgramManager ipProgramManager;
 
   // Model
   List<IPElement> outputs;
@@ -40,9 +42,10 @@ public class OutputsPreplanningAction extends BaseAction {
   List<IPProgram> flagshipsList;
 
   @Inject
-  public OutputsPreplanningAction(APConfig config, IPElementManager ipElementManager) {
+  public OutputsPreplanningAction(APConfig config, IPElementManager ipElementManager, IPProgramManager ipProgramManager) {
     super(config);
     this.ipElementManager = ipElementManager;
+    this.ipProgramManager = ipProgramManager;
   }
 
   public List<IPProgram> getFlagshipsList() {
@@ -60,8 +63,9 @@ public class OutputsPreplanningAction extends BaseAction {
   @Override
   public void prepare() throws Exception {
     super.prepare();
+    // ProgramId 5 is LAM
     IPProgram program = new IPProgram();
-    program.setId(1);
+    program.setId(5);
 
 
     // The Outcomes 2019 type is stored with id 3
@@ -74,6 +78,7 @@ public class OutputsPreplanningAction extends BaseAction {
 
     midOutcomesList = ipElementManager.getIPElements(program, midOutcomesType);
     outputs = ipElementManager.getIPElements(program, outputsType);
+    flagshipsList = ipProgramManager.getProgramsTypeFlagship();
 
     if (getRequest().getMethod().equalsIgnoreCase("post")) {
       // Clear out the list if it has some element

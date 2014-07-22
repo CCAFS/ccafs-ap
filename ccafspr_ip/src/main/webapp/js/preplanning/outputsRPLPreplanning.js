@@ -1,15 +1,52 @@
 $(document).ready(function(){
-  attachEvents();
+  //init();
+  attachEvents(); 
 });
+
+function init(){
+  var data = [
+    {"description":"FPL 1", "id":1},
+    {"description":"FPL 2", "id":2},
+    {"description":"FPL 3", "id":3},
+    {"description":"FPL 4", "id":4} ];
+  $.each(data, function(){ 
+      $("select#flagships").append('<option value="'+ this.id +'">'+ this.description +'</option>');
+  });
+}
 
 function attachEvents(){
   //Outputs
   $("a#addNewOutput").click(addOutputEvent);
   $("a#addExistingOutput").click(addExistingOutputEvent);
-  $(".removeOutputBlock a#removeOutput").click(removeOutputEvent);	
+  $(".removeOutputBlock a#removeOutput").click(removeOutputEvent);
+  
+  //Select flagship
+  $("select#flagships").change(updateMidOutcomes);
+  //Select Mid Outcome
+  
+  //Select Outputs
   //Contributes
   $(".addContributeBlock input.addButton").click(addContributeEvent);
   $(".removeContribute").click(removeContributeEvent);  
+}
+
+
+function updateMidOutcomes(event){
+    $target =$(event.target);
+    $parent =$target.parent().parent().parent().parent();
+    console.log($target.find('option:selected').attr("value"));
+    var programID =  $target.find('option:selected').attr("value");
+    var elementTypeId = 3;
+    $.getJSON("../json/ipElements.do?programID="+programID+"&elementTypeId="+elementTypeId, function(data) {
+      $parent.find("select#midOutcomes option").remove(); 
+      $.each(data.IPElementsList, function(){ 
+	  $parent.find("select#midOutcomes").append('<option value="'+ this.id +'">'+ this.description +'</option>');
+      });
+    }).fail(function() {
+	    console.log( "error" );
+    }).done(function() {
+	 $parent.find("select#midOutcomes").attr("disabled",false);
+    });
 }
 
 
@@ -22,11 +59,10 @@ function addOutputEvent(event){
   setOutputsIndexes();
 }
 function addExistingOutputEvent(){
-	event.preventDefault(); 
-	console.log("comming...");
+	event.preventDefault();  
 	var $newElement = $("#newOutputTemplate").clone(true).removeAttr("id");
 	$("div#outputBlocks").append($newElement); 
-    $newElement.show("slow");
+	$newElement.show("slow");
 	//setOutputsIndexes();
 }
 
