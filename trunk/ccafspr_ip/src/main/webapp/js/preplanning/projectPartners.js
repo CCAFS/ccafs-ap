@@ -5,9 +5,19 @@ $(document).ready(function(){
 function attachEvents(){
   // Partners Events
   $("a.addProjectPartner").click(addPartnerEvent);  
-  $("a.removePartner").click(removePartnerEvent);  
+  $("a.removePartner").click(removePartnerEvent); 
+  
+  // When Partner Type change
+  $("select.partnerTypes, select.countryList").change(updateOrganizationsList); 
 }
 
+function updateOrganizationsList(e){
+    var $parent = $(e.target).parent().parent().parent().parent(); 
+    var partnerTypes = $parent.find("select.partnerTypes").find('option:selected').val();
+    var countryList = $parent.find("select.countryList").find('option:selected').val();
+    console.log("GET -> json/partnersByFilter.do?partnerTypeID="+partnerTypes+"&countryID="+countryList);
+    
+}
 
 // Partner Events
 function removePartnerEvent(e){
