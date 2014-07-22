@@ -59,33 +59,18 @@ public class MySQLIPProgramDAO implements IPProgramDAO {
 
 
   @Override
-  public List<Map<String, String>> getProgramsTypeFlagship() {
-    LOG.debug(">> getProgramsTypeFlagship( Flagship = {} )");
+  public List<Map<String, String>> getProgramsType(int typeId) {
+    LOG.debug(">> getProgramsType( Flagship = {} )");
 
     StringBuilder query = new StringBuilder();
     query.append("SELECT ipr.* ");
     query.append("FROM ip_programs as ipr ");
-    query.append(" WHERE ipr.type_id='1' ");
+    query.append(" WHERE ipr.type_id= ");
+    query.append(typeId);
     query.append(" ORDER BY ipr.acronym ");
 
 
-    LOG.debug("-- getProgramsTypeFlagship() > Calling method executeQuery to get the results");
-    return getData(query.toString());
-  }
-
-
-  @Override
-  public List<Map<String, String>> getProgramsTypeRegion() {
-    LOG.debug(">> getProgramsTypeRegion( Flagship = {} )");
-
-    StringBuilder query = new StringBuilder();
-    query.append("SELECT ipr.* ");
-    query.append("FROM ip_programs as ipr ");
-    query.append(" WHERE ipr.type_id='2' ");
-    query.append(" ORDER BY ipr.acronym ");
-
-
-    LOG.debug("-- getProgramsTypeRegion() > Calling method executeQuery to get the results");
+    LOG.debug("-- getProgramsType() > Calling method executeQuery to get the results");
     return getData(query.toString());
   }
 
@@ -128,42 +113,4 @@ public class MySQLIPProgramDAO implements IPProgramDAO {
     return generatedId;
   }
 
-
-  @Override
-  public int saveProjectFlagships(Map<String, Object> projectData) {
-    LOG.debug(">> saveProjectFlagship(projectData={})", projectData);
-
-    StringBuilder query = new StringBuilder();
-    query.append("INSERT INTO project_focuses (id, project_id, program_id) ");
-    query.append("VALUES (?, ?, ?) ");
-    // query.append("ON DUPLICATE KEY UPDATE description = VALUES(description), program_id = VALUES(program_id)");
-
-    Object[] values = new Object[3];
-    values[0] = projectData.get("id");
-    values[1] = projectData.get("project_id");
-    values[2] = projectData.get("program_id");
-
-    int result = saveData(query.toString(), values);
-    LOG.debug("<< saveProjectFlagship():{}", result);
-    return result;
-  }
-
-  @Override
-  public int saveProjectRegions(Map<String, Object> projectData) {
-    LOG.debug(">> saveProjectRegions(projectData={})", projectData);
-
-    StringBuilder query = new StringBuilder();
-    query.append("INSERT INTO project_focuses (id, project_id, program_id) ");
-    query.append("VALUES (?, ?, ?) ");
-    // query.append("ON DUPLICATE KEY UPDATE description = VALUES(description), program_id = VALUES(program_id)");
-
-    Object[] values = new Object[3];
-    values[0] = projectData.get("id");
-    values[1] = projectData.get("project_id");
-    values[2] = projectData.get("program_id");
-
-    int result = saveData(query.toString(), values);
-    LOG.debug("<< saveProjectRegions():{}", result);
-    return result;
-  }
 }

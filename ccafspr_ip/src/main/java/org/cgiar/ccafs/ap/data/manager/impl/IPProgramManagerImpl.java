@@ -25,45 +25,30 @@ public class IPProgramManagerImpl implements IPProgramManager {
 
 
   @Override
-  public List<IPProgram> getProgramsTypeFlagship() {
-    List<IPProgram> programsTypeFlagship = new ArrayList<>();
-    List<Map<String, String>> programTypeFlagshipDataList = ipProgramDAO.getProgramsTypeFlagship();
-    for (Map<String, String> iData : programTypeFlagshipDataList) {
+  public List<IPProgram> getProgramsType(int typeId) {
+    List<IPProgram> programsType = new ArrayList<>();
+    List<Map<String, String>> programTypeDataList = ipProgramDAO.getProgramsType(typeId);
+    for (Map<String, String> iData : programTypeDataList) {
       IPProgram ipProgram = new IPProgram();
       ipProgram.setId(Integer.parseInt(iData.get("id")));
       ipProgram.setName(iData.get("name"));
       ipProgram.setAcronym(iData.get("acronym"));
 
+      // Program Type Object
       IPProgramTypes programType = new IPProgramTypes();
       programType.setTypeId(Integer.parseInt(iData.get("type_id")));
 
+      // Region Object
       Region region = new Region();
-      region.setId(Integer.parseInt(iData.get("region_id")));
+      if (iData.get("region_id") != null) {
+        region.setId(Integer.parseInt(iData.get("region_id")));
+        ipProgram.setRegion(region);
+      }
 
-      programsTypeFlagship.add(ipProgram);
+      programsType.add(ipProgram);
     }
-    return programsTypeFlagship;
+    return programsType;
   }
 
-  @Override
-  public List<IPProgram> getProgramsTypeRegion() {
-    List<IPProgram> programsTypeRegion = new ArrayList<>();
-    List<Map<String, String>> programTypeRegionDataList = ipProgramDAO.getProgramsTypeRegion();
-    for (Map<String, String> iData : programTypeRegionDataList) {
-      IPProgram ipProgram = new IPProgram();
-      ipProgram.setId(Integer.parseInt(iData.get("id")));
-      ipProgram.setName(iData.get("name"));
-      ipProgram.setAcronym(iData.get("acronym"));
-
-      IPProgramTypes programType = new IPProgramTypes();
-      programType.setTypeId(Integer.parseInt(iData.get("type_id")));
-
-      Region region = new Region();
-      region.setId(Integer.parseInt(iData.get("region_id")));
-
-      programsTypeRegion.add(ipProgram);
-    }
-    return programsTypeRegion;
-  }
 
 }

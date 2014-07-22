@@ -16,15 +16,6 @@ public interface IPProgramManager {
    * 
    * @return an array of IPElement objects
    */
-  public List<IPProgram> getProgramsTypeFlagship();
-
-  /**
-   * Get a list of IPElement objects corresponding to the given array of ids
-   * 
-   * @param ids - list of IPElement identifiers
-   * @return a list of IPElement objects
-   */
-  public List<IPProgram> getProgramsTypeRegion();
-
+  public List<IPProgram> getProgramsType(int typeId);
 
 }

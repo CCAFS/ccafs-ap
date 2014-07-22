@@ -33,7 +33,7 @@ public class MySQLProjectPartnerDAO implements ProjectPartnerDAO {
 
     StringBuilder query = new StringBuilder();
     query
-      .append("INSERT INTO project_partners (id, project_id, partner_id, contact_name, contact_email, responsabilities, isleader ) ");
+      .append("INSERT INTO project_partners (id, project_id, partner_id, contact_name, contact_email, responsabilities, is_leader ) ");
     query.append("VALUES (?, ?, ?, ?, ?, ?, ?) ");
 
     Object[] values = new Object[7];
@@ -43,7 +43,7 @@ public class MySQLProjectPartnerDAO implements ProjectPartnerDAO {
     values[3] = projectPartnerData.get("contact_name");
     values[4] = projectPartnerData.get("contact_email");
     values[5] = projectPartnerData.get("responsabilities");
-    values[6] = projectPartnerData.get("isleader");
+    values[6] = projectPartnerData.get("is_leader");
 
     int result = saveData(query.toString(), values);
     LOG.debug("<< createProjectPartner():{}", result);
@@ -88,7 +88,7 @@ public class MySQLProjectPartnerDAO implements ProjectPartnerDAO {
         projectPartnerData.put("contact_name", rs.getString("contact_name"));
         projectPartnerData.put("contact_email", rs.getString("contact_email"));
         projectPartnerData.put("responsabilities", rs.getString("responsabilities"));
-        projectPartnerData.put("isleader", rs.getString("isleader"));
+        projectPartnerData.put("is_leader", rs.getString("is_leader"));
 
         projectPartnerList.add(projectPartnerData);
       }
@@ -112,7 +112,7 @@ public class MySQLProjectPartnerDAO implements ProjectPartnerDAO {
     StringBuilder query = new StringBuilder();
     query.append("SELECT pp.*   ");
     query.append("FROM project_partners as pp ");
-    query.append("WHERE pp.isleader=1 ");
+    query.append("WHERE pp.is_leader=1 ");
 
     try (Connection con = databaseManager.getConnection()) {
       ResultSet rs = databaseManager.makeQuery(query.toString(), con);
@@ -124,7 +124,7 @@ public class MySQLProjectPartnerDAO implements ProjectPartnerDAO {
         projectPartnerData.put("contact_name", rs.getString("contact_name"));
         projectPartnerData.put("contact_email", rs.getString("contact_email"));
         projectPartnerData.put("responsabilities", rs.getString("responsabilities"));
-        projectPartnerData.put("isleader", rs.getString("isleader"));
+        projectPartnerData.put("is_leader", rs.getString("is_leader"));
 
         projectPartnerDataList.add(projectPartnerData);
       }
