@@ -1,16 +1,15 @@
 package org.cgiar.ccafs.ap.data.dao;
 
-import org.cgiar.ccafs.ap.data.dao.mysql.MySQLProjectDAO;
-
 import java.util.List;
 import java.util.Map;
 
 import com.google.inject.ImplementedBy;
+import org.cgiar.ccafs.ap.data.dao.mysql.MySQLIPProgramDAO;
 
 /**
  * @author Javier Andrés Gallego
  */
-@ImplementedBy(MySQLProjectDAO.class)
+@ImplementedBy(MySQLIPProgramDAO.class)
 public interface IPProgramDAO {
 
   /**

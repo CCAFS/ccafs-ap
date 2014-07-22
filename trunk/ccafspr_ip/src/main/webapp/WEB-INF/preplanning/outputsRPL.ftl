@@ -7,6 +7,8 @@
 [#assign currentStage = "outputs" /]
 [#assign userRole = "RPL"]
 
+ 
+
 [#include "/WEB-INF/global/pages/header.ftl" /]
 [#include "/WEB-INF/global/pages/main-menu.ftl" /]
 [#import "/WEB-INF/global/macros/forms.ftl" as customForm/]
@@ -111,10 +113,10 @@
       [@customForm.select name="flagships" label="" i18nkey="preplanning.outputsRPL.flagships" listName="flagshipsList" keyFieldName="id"  displayFieldName="name" /]
     </div>
     <div class="fullBlock chosen">
-      [@customForm.select name="midOutcomes" label="" i18nkey="preplanning.outputsRPL.midOutcomes" listName="midOutcomesList" keyFieldName="id"  displayFieldName="name" /]
+      [@customForm.select name="midOutcomes" label="" i18nkey="preplanning.outputsRPL.midOutcomes" listName="" keyFieldName="id"  displayFieldName="name" disabled=true /]
     </div>
     <div class="fullBlock chosen">
-      [@customForm.select name="outputs" label="" i18nkey="preplanning.outputsRPL.outputs" listName="outputsList" keyFieldName="id"  displayFieldName="name" /]
+      [@customForm.select name="outputs" label="" i18nkey="preplanning.outputsRPL.outputs" listName="" keyFieldName="id"  displayFieldName="name" disabled=true /]
     </div>
      
   </div> 
