@@ -1,6 +1,9 @@
 Hernán David:
 [] - Actualizar diagrama de base de datos para reflejar los cambios en Project Partners.
 [] - Pasar la lista de paises del proyecto anterior a la base de datos.
+[] - Pasar la lista de partners a la nueva bd
+[] - Hacer funcionar el save para los actions que trabajan los IPElements
+[] - Corregir el error que aparece al cargar un usuario ligado a un IPProgram
 
 
 Héctor Tobón:
