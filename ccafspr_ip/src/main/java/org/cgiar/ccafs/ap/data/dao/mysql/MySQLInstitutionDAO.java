@@ -70,7 +70,7 @@ public class MySQLInstitutionDAO implements InstitutionDAO {
 
   @Override
   public Map<String, String> getInstitution(int institutionID) {
-    List<Map<String, String>> institutionsDataList = new ArrayList<>();
+    Map<String, String> institutionData = new HashMap<String, String>();
     LOG.debug(">> getInstitution( institutionID = {} )", institutionID);
 
     StringBuilder query = new StringBuilder();
@@ -82,7 +82,6 @@ public class MySQLInstitutionDAO implements InstitutionDAO {
     try (Connection con = databaseManager.getConnection()) {
       ResultSet rs = databaseManager.makeQuery(query.toString(), con);
       while (rs.next()) {
-        Map<String, String> institutionData = new HashMap<String, String>();
         institutionData.put("id", rs.getString("id"));
         institutionData.put("name", rs.getString("name"));
         institutionData.put("acronym", rs.getString("acronym"));
@@ -90,8 +89,6 @@ public class MySQLInstitutionDAO implements InstitutionDAO {
         institutionData.put("contact_person_email", rs.getString("contact_person_email"));
         institutionData.put("program_id", rs.getString("program_id"));
         institutionData.put("institution_type_id", rs.getString("institution_type_id"));
-
-        institutionsDataList.add(institutionData);
       }
       con.close();
     } catch (SQLException e) {
@@ -99,7 +96,7 @@ public class MySQLInstitutionDAO implements InstitutionDAO {
     }
 
     LOG.debug("-- getInstitution() > Calling method executeQuery to get the results");
-    return null;
+    return institutionData;
   }
 
   @Override
