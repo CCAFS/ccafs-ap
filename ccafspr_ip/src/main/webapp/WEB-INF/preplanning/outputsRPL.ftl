@@ -109,7 +109,7 @@
     </div> 
     [#-- Title --]
     <h6>[@s.text name="preplanning.outputsRPL.output" /]</h6> 
-    <div class="fullBlock chosen">
+    <div class="fullBlock chosen"> 
       [@customForm.select name="flagships" label="" i18nkey="preplanning.outputsRPL.flagships" listName="flagshipsList" keyFieldName="id"  displayFieldName="name" /]
     </div>
     <div class="fullBlock chosen">
