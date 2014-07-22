@@ -169,7 +169,8 @@ public class MySQLIPElementDAO implements IPElementDAO {
     StringBuilder query = new StringBuilder();
     query.append("SELECT e.id, e.description,  ");
     query.append("et.id as 'element_type_id', et.name as 'element_type_name', ");
-    query.append("pro.id as 'program_id', pro.acronym as 'program_acronym' ");
+    query.append("pro.id as 'program_id', pro.acronym as 'program_acronym', ");
+    query.append("pel.id as 'program_element_id' ");
     query.append("FROM ip_elements e ");
     query.append("INNER JOIN ip_relationships r ON e.id = r.parent_id AND r.child_id = ");
     query.append(ipElementID + " ");
