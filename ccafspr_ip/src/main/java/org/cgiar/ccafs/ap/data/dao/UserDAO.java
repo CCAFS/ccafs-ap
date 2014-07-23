@@ -2,12 +2,29 @@ package org.cgiar.ccafs.ap.data.dao;
 
 import org.cgiar.ccafs.ap.data.dao.mysql.MySQLUserDAO;
 
+import java.util.List;
 import java.util.Map;
 
 import com.google.inject.ImplementedBy;
 
 @ImplementedBy(MySQLUserDAO.class)
 public interface UserDAO {
+
+  /**
+   * Get a list with All Users information
+   * 
+   * @return a list of Map objects with the users information or an empty list if no users found.
+   */
+  public List<Map<String, String>> getAllUsers();
+
+  /**
+   * Get a Project Leader information with a given Project Id
+   * 
+   * @param ProjectId is the id of a project
+   * @return a Map with the project leader information or an empty map if no user found. If an error occurs, a NULL will
+   *         be returned.
+   */
+  public Map<String, String> getProjectLeader(int projectID);
 
   /**
    * Get a user with the given email.

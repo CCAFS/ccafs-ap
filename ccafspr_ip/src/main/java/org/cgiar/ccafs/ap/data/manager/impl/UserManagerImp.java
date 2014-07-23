@@ -8,6 +8,7 @@ import org.cgiar.ciat.auth.ADConexion;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -31,7 +32,7 @@ public class UserManagerImp implements UserManager {
   /**
    * This method make the login process against the active directory
    * if the user has an institutional account
-   *
+   * 
    * @param user
    * @return true if it was successfully logged in. False otherwise
    */
@@ -58,14 +59,35 @@ public class UserManagerImp implements UserManager {
   }
 
   @Override
-  public List<User> getAllProjectLeaders() {
-    // TODO Auto-generated method stub
-    return null;
+  public List<User> getAllUsers() {
+    List<User> projectLeaders = new ArrayList<>();
+    List<Map<String, String>> projectLeadersDataList = userDAO.getAllUsers();
+    for (Map<String, String> pData : projectLeadersDataList) {
+      User projectLeader = new User();
+      projectLeader.setId(Integer.parseInt(pData.get("id")));
+      projectLeader.setUsername((pData.get("username")));
+      projectLeader.setFirstName(pData.get("first_name"));
+      projectLeader.setLastName(pData.get("last_name"));
+      projectLeader.setEmail(pData.get("email"));
+      // Adding object to the array.
+      projectLeaders.add(projectLeader);
+    }
+    return projectLeaders;
   }
 
   @Override
   public User getProjectLeader(int projectId) {
-    // TODO Auto-generated method stub
+    Map<String, String> pData = userDAO.getProjectLeader(projectId);
+    if (!pData.isEmpty()) {
+      User projectLeader = new User();
+      projectLeader.setId(Integer.parseInt(pData.get("id")));
+      projectLeader.setUsername((pData.get("username")));
+      projectLeader.setFirstName(pData.get("firstName"));
+      projectLeader.setLastName(pData.get("lastName"));
+      projectLeader.setEmail(pData.get("email"));
+
+      return projectLeader;
+    }
     return null;
   }
 
