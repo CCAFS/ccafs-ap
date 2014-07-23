@@ -17,28 +17,28 @@
         [#list projects as project]
     		   <tr>
               <td> 
-                  <a href=" [@s.url action='description' includeParams='get'] [@s.param name='projectID']${project.id?c} [/@s.param][/@s.url]" >
+                  <a href="[@s.url action='description' includeParams='get'][@s.param name='projectID']${project.id?c}[/@s.param][/@s.url]" >
                     ${project.id}
-                  </a>  
+                  </a>
               </td>
               <td> 
-                  <a href=" [@s.url action='description' includeParams='get'] [@s.param name='projectID']${project.id?c} [/@s.param]  [/@s.url]" >
+                  <a href=" [@s.url action='description' includeParams='get'] [@s.param name='projectID']${project.id?c}[/@s.param]  [/@s.url]" >
                     ${project.title}
                   </a>  
               </td>
               <td> 
-                  <a href=" [@s.url action='description' includeParams='get'] [@s.param name='projectID']${project.id?c} [/@s.param] [/@s.url]" >
-                    regions
+                  <a href=" [@s.url action='description' includeParams='get'] [@s.param name='projectID']${project.id?c}[/@s.param] [/@s.url]" >
+                    TODO
                   </a>  
               </td>
               <td> 
-                  <a href=" [@s.url action='description' includeParams='get'] [@s.param name='projectID']${project.id?c} [/@s.param] [/@s.url]" >
-                    flagship
+                  <a href=" [@s.url action='description' includeParams='get'] [@s.param name='projectID']${project.id?c}[/@s.param] [/@s.url]" >
+                    TODO
                   </a>  
               </td>
               <td> 
-                  <a href=" [@s.url action='description' includeParams='get'] [@s.param name='projectID']${project.id?c} [/@s.param] [/@s.url]" >
-                    TBD
+                  <a href=" [@s.url action='description' includeParams='get'] [@s.param name='projectID']${project.id?c}[/@s.param] [/@s.url]" >
+                    TODO
                   </a>  
               </td>
           	</tr>  

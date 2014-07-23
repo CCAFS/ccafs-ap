@@ -11,15 +11,15 @@ import com.google.inject.ImplementedBy;
 public interface ProjectManager {
 
   /**
-   * This method return the list of all CCAFS projects.
-   * 
-   * @return a list with all the Projects.
+   * This method return the list of all CCAFS projects that belongs to a specific program.
+   *
+   * @return a list with Project objects.
    */
-  public List<Project> getAllProjects(Project projectId);
+  public List<Project> getAllProjects(int programId);
 
   /**
    * This method gets all the Project information given by a previous project selected
-   * 
+   *
    * @param projectID
    * @return an Project Object.
    */
