@@ -113,6 +113,10 @@ public class IPElementManagerImpl implements IPElementManager {
 
       programElementID = ipElementDAO.relateIPElement(elementId, element.getProgram().getId());
 
+      if (programElementID == 0) {
+        programElementID = ipElementDAO.getProgramElementID(elementId, element.getProgram().getId());
+      }
+
       // If the result is 0 the element was updated and keep the same id
       elementId = (elementId == 0) ? element.getId() : elementId;
 

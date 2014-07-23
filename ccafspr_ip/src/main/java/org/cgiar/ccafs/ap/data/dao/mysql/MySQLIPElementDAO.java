@@ -226,12 +226,42 @@ public class MySQLIPElementDAO implements IPElementDAO {
   }
 
   @Override
+  public int getProgramElementID(int ipElementID, int ipProgramID) {
+    LOG.debug(">> getProgramElementID(ipElementID={}, ipProgramID={})", ipElementID, ipProgramID);
+    int programElementID = -1;
+
+    StringBuilder query = new StringBuilder();
+    query.append("SELECT id FROM ip_program_elements WHERE element_id = ");
+    query.append(ipElementID);
+    query.append(" AND program_id = ");
+    query.append(ipProgramID);
+
+    try (Connection con = databaseManager.getConnection()) {
+      ResultSet rs = databaseManager.makeQuery(query.toString(), con);
+      if (rs.next()) {
+        programElementID = rs.getInt("id");
+      }
+      rs.close();
+    } catch (SQLException e) {
+      String exceptionMessage = "-- getProgramElementID() > Exception raised trying to get the id of the";
+      exceptionMessage += "program element which relates the element " + ipElementID;
+      exceptionMessage += " and the program " + ipProgramID;
+
+      LOG.error(exceptionMessage, e);
+    }
+
+    return programElementID;
+  }
+
+  @Override
   public int relateIPElement(int elementID, int programID) {
     LOG.debug(">> relateIPElement(elementID, programID)", elementID, programID);
 
     StringBuilder query = new StringBuilder();
     query.append("INSERT INTO ip_program_elements (element_id, program_id) ");
     query.append("VALUES (?, ?) ");
+    // ON DUPLICATE KEY -> do nothing
+    query.append("ON DUPLICATE KEY UPDATE element_id = element_id");
 
     Object[] values = new Object[2];
     values[0] = elementID;
