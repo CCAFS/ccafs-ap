@@ -31,7 +31,6 @@ public class MySQLProjectDAO implements ProjectDAO {
   private List<Map<String, String>> getData(String query) {
     LOG.debug(">> executeQuery(query='{}')", query);
     List<Map<String, String>> ProjectList = new ArrayList<>();
-
     try (Connection con = databaseManager.getConnection()) {
       ResultSet rs = databaseManager.makeQuery(query, con);
       while (rs.next()) {
@@ -61,18 +60,15 @@ public class MySQLProjectDAO implements ProjectDAO {
   @Override
   public Map<String, String> getProject(int projectID) {
     LOG.debug(">> getProject projectID = {} )", projectID);
-    Map<String, String> projectDataList = new HashMap<>();
-
+    Map<String, String> projectData = new HashMap<String, String>();
     StringBuilder query = new StringBuilder();
-    query.append("SELECT p.*   ");
+    query.append("SELECT p.* ");
     query.append("FROM projects as p ");
-    query.append("WHERE p.id= ");
+    query.append("WHERE p.id = ");
     query.append(projectID);
-
     try (Connection con = databaseManager.getConnection()) {
       ResultSet rs = databaseManager.makeQuery(query.toString(), con);
-      while (rs.next()) {
-        Map<String, String> projectData = new HashMap<String, String>();
+      if (rs.next()) {
         projectData.put("id", rs.getString("id"));
         projectData.put("title", rs.getString("title"));
         projectData.put("summary", rs.getString("summary"));
@@ -85,9 +81,8 @@ public class MySQLProjectDAO implements ProjectDAO {
     } catch (SQLException e) {
       LOG.error("Exception arised getting the project for the user {}.", projectID, e);
     }
-
     LOG.debug("-- getProject() > Calling method executeQuery to get the results");
-    return projectDataList;
+    return projectData;
   }
 
   @Override
