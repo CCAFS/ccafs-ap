@@ -1,18 +1,6 @@
 $(document).ready(function(){
-  //init();
   attachEvents(); 
 });
-
-function init(){
-  var data = [
-    {"description":"FPL 1", "id":1},
-    {"description":"FPL 2", "id":2},
-    {"description":"FPL 3", "id":3},
-    {"description":"FPL 4", "id":4} ];
-  $.each(data, function(){ 
-      $("select#flagships").append('<option value="'+ this.id +'">'+ this.description +'</option>');
-  });
-}
 
 function attachEvents(){
   //Outputs

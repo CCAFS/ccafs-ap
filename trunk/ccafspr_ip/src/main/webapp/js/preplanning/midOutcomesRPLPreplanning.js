@@ -1,11 +1,19 @@
 $(document).ready(function(){
   attachEvents();
+  if(!$("div#MidOutcomeBlocks .midOutcome").length){
+      $("div#addMidOutcomeBlock").trigger( "click" );
+  } 
 });
 
 function attachEvents(){
   //Mid Outcomes
   $("div#addMidOutcomeBlock").click(addMidOutcomeEvent);
   $(".removeMidOutcomeBlock #removeMidOutcome").click(removeMidOutcomeEvent);	
+  
+  //Select flagship
+  $("select[id$='flagships']").change(updateMidOutcomes);
+   
+  
   //Contributes
   $(".addContributeBlock input.addButton").click(addContributeEvent);
   $(".removeContribute").click(removeContributeEvent); 
@@ -35,24 +43,35 @@ function removeMidOutcomeEvent(event){
 	$(this).remove(); 
 	setMidOutcomesIndexes();
   });  
-}
+} 
 
-
-function setMidOutcomesIndexes(){
-	//console.log($("div#MidOutcomeBlocks .midOutcome"));
+function setMidOutcomesIndexes(){ 
   $("div#MidOutcomeBlocks .midOutcome").each(function(index, element){
-     
-      var elementName = "midOutcomesRPL[" + index + "]."; 
-      $(element).attr("id","midOutcomeRPL-"+index);
-      $(element).find("[id^='midOutcomeRPLId']").attr("name", elementName + "id");
-      $(element).find("[id^='midOutcomeRPLDescription']").attr("name", elementName + "description").attr("placeholder", "Add regional outcome #"+ (index+1) );
-      //console.log('setMidOutcomesIndexes -->'+index+ ' -->'+$(element).attr('id') ); 
+      var elementName = "midOutcome[" + index + "]."; 
+      $(element).attr("id","midOutcome-"+index);
+      $(element).find("[id$='id']").attr("name", elementName + "id");
+      $(element).find("[id$='description']").attr("name", elementName + "description").attr("placeholder", "Add regional outcome #"+ (index+1) );
       setContributesIndexes(index);
-       
-     
   });
 }
 
+function updateMidOutcomes(event){
+    $target =$(event.target);
+    $parent =$target.parent().parent().parent();
+    console.log($target.find('option:selected').attr("value"));
+    var programID =  $target.find('option:selected').attr("value");
+    var elementTypeId = 3;
+    $.getJSON("../json/ipElements.do?programID="+programID+"&elementTypeId="+elementTypeId, function(data) {
+      $parent.find("select[id$='midOutcomesFPL'] option").remove(); 
+      $.each(data.IPElementsList, function(){ 
+	  $parent.find("select[id$='midOutcomesFPL']").append('<option value="'+ this.id +'">'+ this.description +'</option>');
+      });
+    }).fail(function() {
+	    console.log( "error" );
+    }).done(function() {
+	 
+    });
+}
 //----------------- Contribute Events ----------------------//
 function addContributeEvent(event){
 	event.preventDefault();  

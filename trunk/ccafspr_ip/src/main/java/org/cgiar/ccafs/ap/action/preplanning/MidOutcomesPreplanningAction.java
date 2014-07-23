@@ -13,19 +13,19 @@
  *****************************************************************/
 package org.cgiar.ccafs.ap.action.preplanning;
 
+import java.util.ArrayList;
+import java.util.List;
+
+import com.google.inject.Inject;
 import org.cgiar.ccafs.ap.action.BaseAction;
 import org.cgiar.ccafs.ap.config.APConfig;
 import org.cgiar.ccafs.ap.config.APConstants;
 import org.cgiar.ccafs.ap.data.manager.IPElementManager;
 import org.cgiar.ccafs.ap.data.manager.IPIndicatorManager;
+import org.cgiar.ccafs.ap.data.manager.IPProgramManager;
 import org.cgiar.ccafs.ap.data.model.IPElement;
 import org.cgiar.ccafs.ap.data.model.IPElementType;
 import org.cgiar.ccafs.ap.data.model.IPProgram;
-
-import java.util.ArrayList;
-import java.util.List;
-
-import com.google.inject.Inject;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -38,22 +38,29 @@ public class MidOutcomesPreplanningAction extends BaseAction {
   // Managers
   IPElementManager ipElementManager;
   IPIndicatorManager ipIndicatorManager;
+  IPProgramManager ipProgramManager;
 
   // Model
   List<IPElement> midOutcomes;
   List<IPElement> outcomesList;
   List<IPElement> midOutcomesFromDatabase;
+  List<IPProgram> flagshipsList;
 
   @Inject
   public MidOutcomesPreplanningAction(APConfig config, IPElementManager ipElementManager,
-    IPIndicatorManager ipIndicatorManager) {
+    IPIndicatorManager ipIndicatorManager, IPProgramManager ipProgramManager) {
     super(config);
     this.ipElementManager = ipElementManager;
     this.ipIndicatorManager = ipIndicatorManager;
+    this.ipProgramManager = ipProgramManager;
   }
 
   public int getElementTypeID() {
     return APConstants.ELEMENT_TYPE_OUTCOME2019;
+  }
+
+  public List<IPProgram> getFlagshipsList() {
+    return flagshipsList;
   }
 
   public List<IPElement> getMidOutcomes() {
@@ -77,6 +84,7 @@ public class MidOutcomesPreplanningAction extends BaseAction {
     IPProgram program = getCurrentUser().getCurrentInstitution().getProgram();
     midOutcomes = ipElementManager.getIPElements(program, midOutcomesType);
     outcomesList = ipElementManager.getIPElements(program, outcomesType);
+    flagshipsList = ipProgramManager.getProgramsType(1);
 
     midOutcomesFromDatabase = new ArrayList<>();
     midOutcomesFromDatabase.addAll(midOutcomes);
