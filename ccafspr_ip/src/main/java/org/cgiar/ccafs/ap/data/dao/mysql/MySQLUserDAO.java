@@ -89,6 +89,41 @@ public class MySQLUserDAO implements UserDAO {
   }
 
   @Override
+  public Map<String, String> getUser(int userId) {
+    LOG.debug(">> getUser(userId={})", userId);
+    Map<String, String> userData = new HashMap<>();
+    try (Connection connection = dbManager.getConnection()) {
+      StringBuilder query = new StringBuilder();
+      query.append("SELECT u.id, u.username, u.password, u.is_ccafs_user, u.last_login, ");
+      query.append("p.first_name, p.last_name, p.email, p.phone ");
+      query.append("FROM users u ");
+      query.append("INNER JOIN persons p ON u.person_id = p.id ");
+      query.append("WHERE u.id = '");
+      query.append(userId);
+      query.append("'; ");
+
+      ResultSet rs = dbManager.makeQuery(query.toString(), connection);
+      if (rs.next()) {
+        userData.put("id", "" + userId);
+        userData.put("username", rs.getString("username"));
+        userData.put("password", rs.getString("password"));
+        userData.put("is_ccafs_user", rs.getString("is_ccafs_user"));
+        userData.put("last_login", rs.getString("last_login"));
+        userData.put("first_name", rs.getString("first_name"));
+        userData.put("last_name", rs.getString("last_name"));
+        userData.put("email", rs.getString("email"));
+        userData.put("phone", rs.getString("phone"));
+      }
+      rs.close();
+    } catch (SQLException e) {
+      LOG.error("-- getUser() > There was an error getting the data for user with id {}.", userId, e);
+    }
+    LOG.debug("<< getUser():{}", userData);
+    return userData;
+
+  }
+
+  @Override
   public Map<String, String> getUser(String username) {
     LOG.debug(">> getUser(username={})", username);
     Map<String, String> userData = new HashMap<>();

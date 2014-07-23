@@ -120,14 +120,14 @@ public class ProjectPartnersAction extends BaseAction {
     } catch (NumberFormatException e) {
       LOG.error("-- prepare() > There was an error parsing the project identifier '{}'.", projectId, e);
       projectId = -1;
-      return; // Stopping here!
+      return; // Stop here and go to execute method.
     }
 
     // Getting the project identified with the id parameter.
     project = projectManager.getProject(projectId);
     // if there is not a project identified with the given id
     if (project == null) {
-      return;
+      return; // Stop here and go to execute method.
     }
 
     // if there are not partners, please return an empty List.

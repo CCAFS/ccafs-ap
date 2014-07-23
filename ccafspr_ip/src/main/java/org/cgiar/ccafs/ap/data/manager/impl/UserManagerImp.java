@@ -94,6 +94,33 @@ public class UserManagerImp implements UserManager {
   }
 
   @Override
+  public User getUser(int userId) {
+    Map<String, String> userData = userDAO.getUser(userId);
+    if (!userData.isEmpty()) {
+      SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM");
+      User user = new User();
+      user.setId(userId);
+      user.setUsername(userData.get("username"));
+      user.setPassword(userData.get("password"));
+      user.setCcafsUser(userData.get("is_ccafs_user").equals("1"));
+      user.setFirstName(userData.get("first_name"));
+      user.setLastName(userData.get("last_name"));
+      user.setEmail(userData.get("email"));
+      user.setPhone(userData.get("phone"));
+      try {
+        user.setLastLogin(dateFormat.parse(userData.get("last_login")));
+      } catch (ParseException e) {
+        String msg = "There was an error parsing the last login date of user " + user.getId() + ".";
+        LOG.error(msg, e);
+      }
+      return user;
+    }
+    LOG.warn("Information related to the user with id {} wasn't found.", userId);
+
+    return null;
+  }
+
+  @Override
   public User getUser(String email) {
     SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM");
     Map<String, String> userData = userDAO.getUser(email);

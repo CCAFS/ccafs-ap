@@ -27,7 +27,7 @@
     
     <fieldset class="fullBlock">  
 			[#-- Project Title --]
-			[@customForm.textArea name="projects.title" i18nkey="preplanning.projectDescription.projectTitle" required=true value=""/]
+			[@customForm.textArea name="project.title" i18nkey="preplanning.projectDescription.projectTitle" required=true /]
 	    <div id="projectDescription" class="">
 	      [#-- Project Owner --]
 	      <div class="halfPartBlock">
