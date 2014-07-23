@@ -35,7 +35,6 @@ public class IPElementsConverter extends StrutsTypeConverter {
     for (IPElement c : elementsArray) {
       temp.add(c.getId() + "");
     }
-    // TODO
     return temp.toString();
   }
 }

@@ -32,7 +32,7 @@ public class Project {
   private String endDate;
   private List<IPProgram> regions; // The list of regions in which this project works with.
   private List<IPProgram> flagships; // The list of flagships in which this project works with.
-  private ProjectPartner leader;
+  private User leader; // Project leader will be a user too.
   private Institution owner;
   private List<ProjectPartner> projectPartners; // Project partners.
 
@@ -52,7 +52,7 @@ public class Project {
     return id;
   }
 
-  public ProjectPartner getLeader() {
+  public User getLeader() {
     return leader;
   }
 
@@ -96,7 +96,7 @@ public class Project {
     this.id = id;
   }
 
-  public void setLeader(ProjectPartner leader) {
+  public void setLeader(User leader) {
     this.leader = leader;
   }
 
