@@ -41,7 +41,11 @@ function setMidOutcomesIndexes(){
      
       var elementName = "midOutcomes[" + index + "]."; 
       $(element).attr("id","midOutcome-"+index);
+      // Hidden inputs
       $(element).find("[id^='midOutcomeId']").attr("name", elementName + "id");
+      $(element).find("[id^='midOutcomeProgramID']").attr("name", elementName + "program.id");
+      $(element).find("[id^='midOutcomeTypeID']").attr("name", elementName + "type.id");
+      // Visible inputs
       $(element).find("[id^='midOutcomeDescription']").attr("name", elementName + "description").attr("placeholder", "Add outcome #"+ (index+1) );
       console.log('setMidOutcomesIndexes -->'+index+ ' -->'+$(element).attr('id') ); 
       setContributesIndexes(index);

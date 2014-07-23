@@ -32,6 +32,8 @@
           <div class="midOutcome" id="midOutcome-${midOutcome_index}">
             [#-- Mid outcome identifier --]
             <input id="midOutcomeId" type="hidden" name="midOutcomes[${midOutcome_index}].id" value="${midOutcome.id}" />
+            <input type="hidden" name="midOutcomes[${midOutcome_index}].program.id" value="${currentUser.currentInstitution.program.id}" />
+            <input type="hidden" name="midOutcomes[${midOutcome_index}].type.id" value="${elementTypeID}" />
             [#-- Remove midOutcome --]
             <div class="removeMidOutcomeBlock removeLink">              
               <img src="${baseUrl}/images/global/icon-remove.png" />
@@ -73,6 +75,8 @@
           <div class="midOutcome" id="midOutcome-0">
           [#-- Mid outcome identifier --]
           <input type="hidden" name="midOutcomes[0].id" value="-1" />
+          <input type="hidden" name="midOutcomes[0].program.id" value="${currentUser.currentInstitution.program.id}" />
+          <input type="hidden" name="midOutcomes[0].type.id" value="${elementTypeID}" />
           [#-- Remove midOutcome --]      
           <div class="removeMidOutcomeBlock removeLink">            
             <img src="${baseUrl}/images/global/icon-remove.png" />
@@ -111,6 +115,8 @@
     <div id="midOutcomeTemplate" class="midOutcome" style="display:none">
       [#-- Objective identifier --]
       <input id="midOutcomeId" type="hidden" value="-1" />
+      <input type="hidden" id="midOutcomeProgramID" value="${currentUser.currentInstitution.program.id}" />
+      <input type="hidden" id="midOutcomeTypeID" value="${elementTypeID}" />
       [#-- Remove midOutcome --]      
       <div class="removeLink removeMidOutcomeBlock">            
         <img src="${baseUrl}/images/global/icon-remove.png" />

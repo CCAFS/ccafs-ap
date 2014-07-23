@@ -27,7 +27,8 @@ public class MySQLIPRelationshipDAO implements IPRelationshipDAO {
     StringBuilder query = new StringBuilder();
     boolean result = false;
 
-    query.append("INSERT INTO ip_relationships (parent_id, child_id) VALUES (?, ?)");
+    query.append("INSERT INTO ip_relationships (parent_id, child_id) VALUES (?, ?) ");
+    query.append("ON DUPLICATE KEY UPDATE parent_id = parent_id ");
     Object[] values = new Object[2];
     values[0] = parentElementID;
     values[1] = childElementID;

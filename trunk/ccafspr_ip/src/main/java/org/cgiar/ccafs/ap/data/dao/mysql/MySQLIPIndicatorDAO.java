@@ -57,6 +57,28 @@ public class MySQLIPIndicatorDAO implements IPIndicatorDAO {
     return ipIndicatorList;
   }
 
+  @Override
+  public boolean removeIpElementIndicators(int ipElementID, int ipProgramID) {
+    StringBuilder query = new StringBuilder();
+    query.append("DELETE ipi.* FROM ip_indicators ipi ");
+    query.append("INNER JOIN ip_program_elements ipe ON ipi.program_element_id = ipe.id ");
+    query.append("WHERE ipe.program_id = ? AND ipe.element_id = ? ");
+
+    try (Connection connection = databaseManager.getConnection()) {
+      int rowsDeleted =
+        databaseManager.makeChangeSecure(connection, query.toString(), new Object[] {ipProgramID, ipElementID});
+      if (rowsDeleted >= 0) {
+        LOG.debug("<< removeIpElementIndicators():{}", true);
+        return true;
+      }
+    } catch (SQLException e) {
+      LOG.error("-- removeIpElementIndicators() > There was a problem deleting indicators {}.", e);
+    }
+
+    LOG.debug("<< removeIpElementIndicators():{}", false);
+    return false;
+  }
+
   /**
    * This method is in charge of execute the insert querys to the databases
    * related to the IPElements.
