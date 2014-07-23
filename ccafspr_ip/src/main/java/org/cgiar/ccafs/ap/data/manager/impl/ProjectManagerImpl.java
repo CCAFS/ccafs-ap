@@ -25,7 +25,7 @@ public class ProjectManagerImpl implements ProjectManager {
   @Override
   public List<Project> getAllProjects(Project projectId) {
     // TODO - Pending to validate what kind of parameter should be used in this method.
-    System.out.println("----- Project ID: " + projectId.getId());
+    System.out.println("----- Project ID: " + projectId.getId()); // TODO - Please do not use Sysouts! Let's use LOGs.
     List<Map<String, String>> projectDataList = projectDAO.getProjects(projectId.getId());
     List<Project> projectsList = new ArrayList<>();
 
@@ -46,7 +46,7 @@ public class ProjectManagerImpl implements ProjectManager {
   @Override
   public Project getProject(int projectId) {
     // TODO - Pending to validate what kind of parameter should be used in this method.
-    System.out.println("----- Project ID: " + projectId);
+    System.out.println("----- Project ID: " + projectId); // TODO - Please do not use Sysouts! Let's use LOGs.
 
     Map<String, String> projectData = projectDAO.getProject(projectId);
     if (!projectData.isEmpty()) {

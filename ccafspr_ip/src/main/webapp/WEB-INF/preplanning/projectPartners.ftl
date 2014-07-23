@@ -15,14 +15,17 @@
 <section class="content">
   <div class="helpMessage">
     <img src="${baseUrl}/images/global/icon-help.png" />
-    <p> [@s.text name="planning.mainInformation.help" /] </p>
+    <p> [@s.text name="preplanning.projectPartners.help" /] </p>
   </div>
   [#include "/WEB-INF/global/pages/pre-planning-secondary-menu.ftl" /]
   
   [@s.form action="partners" cssClass="pure-form"]  
   <article class="halfContent" id="mainInformation">
   	[#include "/WEB-INF/preplanning/projectPreplanningSubMenu.ftl" /]
-  	
+  	<!-- Sebas, please use this variables and remove this comment when you have finished. -->
+  	<p>Project Id: ${project.id}</p>
+  	<p>Project title: ${project.title}</p>
+  	<!-- -------------------------------------------------------------------------------- -->
   	<h1 class="contentTitle">
       [@s.text name="preplanning.projectPartners.leader.title" /]  
     </h1>

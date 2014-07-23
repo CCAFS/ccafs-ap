@@ -15,8 +15,8 @@ package org.cgiar.ccafs.ap.action.preplanning;
 
 import java.util.ArrayList;
 import java.util.List;
-import org.cgiar.ccafs.ap.data.model.User;
 
+import org.cgiar.ccafs.ap.data.model.User;
 import org.cgiar.ccafs.ap.data.manager.UserManager;
 import org.cgiar.ccafs.ap.data.manager.ProjectManager;
 import org.apache.commons.lang3.StringUtils;
@@ -73,6 +73,14 @@ public class ProjectPartnersAction extends BaseAction {
   }
 
 
+  @Override
+  public String execute() throws Exception {
+    if (projectId == -1) {
+      return NOT_FOUND;
+    }
+    return super.execute();
+  }
+
   public List<Institution> getAllPartners() {
     return allPartners;
   }
@@ -81,10 +89,10 @@ public class ProjectPartnersAction extends BaseAction {
     return allProjectLeaders;
   }
 
+
   public List<Country> getCountries() {
     return countries;
   }
-
 
   public List<InstitutionType> getPartnerTypes() {
     return partnerTypes;
@@ -97,7 +105,6 @@ public class ProjectPartnersAction extends BaseAction {
   public int getProjectId() {
     return projectId;
   }
-
 
   @Override
   public void prepare() throws Exception {
@@ -112,9 +119,9 @@ public class ProjectPartnersAction extends BaseAction {
       return; // Stopping here!
     }
 
-    // Creating a project
-    project = new Project();// projectManager.getProject(projectId);
-    // if there is not a project idenfied with the given id
+    // Getting the project identified with the id parameter.
+    project = projectManager.getProject(projectId);
+    // if there is not a project identified with the given id
     if (project == null) {
       return;
     }
