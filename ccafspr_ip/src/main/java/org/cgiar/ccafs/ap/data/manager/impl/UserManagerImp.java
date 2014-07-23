@@ -22,6 +22,8 @@ public class UserManagerImp implements UserManager {
 
   // Logger
   private static final Logger LOG = LoggerFactory.getLogger(UserManagerImp.class);
+
+  // DAO
   private UserDAO userDAO;
 
   @Inject
@@ -32,7 +34,7 @@ public class UserManagerImp implements UserManager {
   /**
    * This method make the login process against the active directory
    * if the user has an institutional account
-   * 
+   *
    * @param user
    * @return true if it was successfully logged in. False otherwise
    */

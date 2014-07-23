@@ -9,8 +9,8 @@ Hernán David:
 
 
 Héctor Tobón:
-[OK]  - Actualizar Project Partners para que se listen los usuarios en Project Leader.
-[]    - Trabajar en Project Partner Action para los casos que no haya información no hayan excepciones.
+[OK]    - Actualizar Project Partners para que se listen los usuarios en Project Leader.
+[OK]    - Trabajar en Project Partner Action para los casos que no haya información no hayan excepciones.
 []    - Dejar listo el save the Project Partners.
 
 

@@ -8,6 +8,9 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import com.google.inject.Inject;
 
 
@@ -16,6 +19,9 @@ public class ProjectManagerImpl implements ProjectManager {
   // DAOs
   private ProjectDAO projectDAO;
 
+  // LOG
+  private static Logger LOG = LoggerFactory.getLogger(ProjectManagerImpl.class);
+
   @Inject
   public ProjectManagerImpl(ProjectDAO projectDAO) {
     this.projectDAO = projectDAO;
@@ -23,10 +29,8 @@ public class ProjectManagerImpl implements ProjectManager {
 
 
   @Override
-  public List<Project> getAllProjects(Project projectId) {
-    // TODO - Pending to validate what kind of parameter should be used in this method.
-    System.out.println("----- Project ID: " + projectId.getId()); // TODO - Please do not use Sysouts! Let's use LOGs.
-    List<Map<String, String>> projectDataList = projectDAO.getProjects(projectId.getId());
+  public List<Project> getAllProjects(int programId) {
+    List<Map<String, String>> projectDataList = projectDAO.getProjects(programId);
     List<Project> projectsList = new ArrayList<>();
 
     for (Map<String, String> elementData : projectDataList) {

@@ -17,8 +17,6 @@ import org.cgiar.ccafs.ap.action.BaseAction;
 import org.cgiar.ccafs.ap.config.APConfig;
 import org.cgiar.ccafs.ap.data.manager.ProjectManager;
 import org.cgiar.ccafs.ap.data.model.Project;
-import org.cgiar.ccafs.ap.data.model.User;
-
 import java.util.List;
 
 import com.google.inject.Inject;
@@ -34,6 +32,7 @@ public class ProjectsListAction extends BaseAction {
   // Manager
   private ProjectManager projectManager;
 
+  // LOG
   private static Logger LOG = LoggerFactory.getLogger(ProjectsListAction.class);
 
   // Model
@@ -53,23 +52,13 @@ public class ProjectsListAction extends BaseAction {
   public void prepare() throws Exception {
     super.prepare();
 
-    // Depending on the user that is logged-in, the list of projects will be displayed.
-    User fakeUser = new User();
-    fakeUser.setId(100);
-    fakeUser.setEmail("user@email.org");
-
-    // Fake role object
-    Project userRole = new Project();
-    userRole.setId(1);
-    userRole.setTitle("RPL");
-    // fakeUser.setRole(userRole);
+    // Depending on the user that is logged-in, the list of projects will be displayed. - currentUser.
 
 
     // Getting project list.
     // projects = projectManager.getAllProjects();
-    projects = projectManager.getAllProjects(userRole);
+    projects = projectManager.getAllProjects(this.getCurrentUser().getCurrentInstitution().getId());
 
-    System.out.println(projects);
 
   }
 }
