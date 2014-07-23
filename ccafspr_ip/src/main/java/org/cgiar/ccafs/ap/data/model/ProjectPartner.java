@@ -28,7 +28,6 @@ public class ProjectPartner {
   private String contactName;
   private String contactEmail;
   private String responsabilities;
-  private boolean is_leader;
 
 
   public ProjectPartner() {
@@ -47,9 +46,6 @@ public class ProjectPartner {
     return id;
   }
 
-  public boolean getIsLeader() {
-    return is_leader;
-  }
 
   public Institution getPartner() {
     return partner;
@@ -75,12 +71,12 @@ public class ProjectPartner {
     this.id = id;
   }
 
-  public void setIsLeader(boolean is_leader) {
-    this.is_leader = is_leader;
-  }
-
   public void setPartner(Institution partner) {
     this.partner = partner;
+  }
+
+  public void setProjectId(Project project) {
+    this.project_id = project;
   }
 
   public void setResponsabilities(String responsabilities) {

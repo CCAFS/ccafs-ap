@@ -20,10 +20,10 @@ public interface ProjectPartnerDAO {
   public boolean deleteProjectPartner(int projectId, int partnerId);
 
   /**
-   * This method gets the project partner given the project Id
+   * This method gets the project partners information given the project Id
    * 
-   * @param projectId
-   * @return true if the elements were deleted successfully. False otherwise
+   * @param projectId - is the id of a project
+   * @return true if the elements were deleted successfully. If an error occurs, a NULL will be returned.
    */
   public List<Map<String, String>> getProjectPartners(int projectId);
 

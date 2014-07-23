@@ -47,8 +47,28 @@ public class ProjectPartnerManagerImpl implements ProjectPartnerManager {
 
   @Override
   public List<ProjectPartner> getProjectPartners(int projectId) {
-    List<ProjectPartner> projectPartners = new ArrayList<ProjectPartner>();
-    // TODO
+    List<ProjectPartner> projectPartners = new ArrayList<>();
+    List<Map<String, String>> projectPartnerDataList = projecPartnerDAO.getProjectPartners(projectId);
+    for (Map<String, String> pData : projectPartnerDataList) {
+      ProjectPartner projectPartner = new ProjectPartner();
+      projectPartner.setId(Integer.parseInt(pData.get("id")));
+      projectPartner.setContactName(pData.get("contact_name"));
+      projectPartner.setContactEmail(pData.get("contact_email"));
+      projectPartner.setResponsabilities(pData.get("responsabilities"));
+
+      // Project - just the id
+      Project project = new Project();
+      project.setId(Integer.parseInt(pData.get("project_id")));
+      projectPartner.setProjectId(project);
+
+      // Institution as partner_id
+      Institution partner = new Institution();
+      partner.setId(Integer.parseInt(pData.get("partner_id")));
+      projectPartner.setPartner(partner);
+
+      // adding information of the object to the array
+      projectPartners.add(projectPartner);
+    }
     return projectPartners;
   }
 

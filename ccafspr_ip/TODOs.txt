@@ -15,9 +15,9 @@ Héctor Tobón:
 
 
 Javier Gallego:
-[]    - Desarrollar método getProjectLeader de UserManager.
-[]    - Desarrollar método getAllProjectLeaders de UserManager.
-[]    - Desarrollar método getProjectPartners de ProjectPartnerManager.
+[OK]    - Desarrollar método getProjectLeader de UserManager.
+[OK]    - Desarrollar método getAllProjectLeaders de UserManager.
+[OK]    - Desarrollar método getProjectPartners de ProjectPartnerManager.
 []    - Hay un label "TODO" encima del método getInstitution de InstitutionManagerImpl. Si ya está desarrollado se debería eliminar.
 []    - Hay un label "TODO" justo al inicio del método getAllProjects de ProjectManagerImpl. 
 []    - Hay un label "TODO" justo al inicio del método getProject de ProjectManagerImpl.
