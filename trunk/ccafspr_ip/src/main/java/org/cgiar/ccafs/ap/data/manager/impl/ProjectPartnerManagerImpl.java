@@ -24,6 +24,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import org.cgiar.ccafs.ap.data.manager.InstitutionManager;
+
 import com.google.inject.Inject;
 
 
@@ -35,9 +37,13 @@ public class ProjectPartnerManagerImpl implements ProjectPartnerManager {
   // DAO's
   private ProjectPartnerDAO projecPartnerDAO;
 
+  // Managers
+  private InstitutionManager institutionManager;
+
   @Inject
-  public ProjectPartnerManagerImpl(ProjectPartnerDAO projectPartnerDAO) {
+  public ProjectPartnerManagerImpl(ProjectPartnerDAO projectPartnerDAO, InstitutionManager institutionManager) {
     this.projecPartnerDAO = projectPartnerDAO;
+    this.institutionManager = institutionManager;
   }
 
   @Override
@@ -56,15 +62,8 @@ public class ProjectPartnerManagerImpl implements ProjectPartnerManager {
       projectPartner.setContactEmail(pData.get("contact_email"));
       projectPartner.setResponsabilities(pData.get("responsabilities"));
 
-      // Project - just the id
-      Project project = new Project();
-      project.setId(Integer.parseInt(pData.get("project_id")));
-      projectPartner.setProjectId(project);
-
       // Institution as partner_id
-      Institution partner = new Institution();
-      partner.setId(Integer.parseInt(pData.get("partner_id")));
-      projectPartner.setPartner(partner);
+      projectPartner.setPartner(institutionManager.getInstitution(Integer.parseInt(pData.get("partner_id"))));
 
       // adding information of the object to the array
       projectPartners.add(projectPartner);

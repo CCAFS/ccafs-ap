@@ -142,18 +142,13 @@ public class ProjectPartnersAction extends BaseAction {
 
     // Getting all partner types
     partnerTypes = this.temporalGetAllPartnerTypes();
+    // **************************************
 
     // Getting all Project Leaders
-    allProjectLeaders = this.temporalGetAllProjectLeaders();
-
-    // allPartners = this.getAllPartnersTemporal(rand, countries, partnerTypes);
+    allProjectLeaders = userManager.getAllUsers();
 
     // Getting the project partner leader.
-    // TODO When the method is developed we will be able to use it -
-    project.setLeader(allProjectLeaders.get(10));
-    project.setLeaderResponsabilities("My responsabilities are.....");
-
-    // **************************************
+    project.setLeader(userManager.getProjectLeader(projectId));
 
     // project.setLeader(userManager.getProjectLeader(projectId));
     // In case there is not a partner leader defined, an empty partner will be used for the view.
@@ -214,21 +209,4 @@ public class ProjectPartnersAction extends BaseAction {
     return types;
   }
 
-  private List<User> temporalGetAllProjectLeaders() {
-    List<User> users = new ArrayList<User>();
-    for (int c = 1; c <= 30; c++) {
-      User fakeUser = new User();
-      fakeUser.setId(c);
-      fakeUser.setFirstName("Héctor " + c);
-      fakeUser.setLastName("Tobón " + c);
-      fakeUser.setEmail("h.f.tobon" + c + "@cgiar.org");
-      fakeUser.setCcafsUser(true);
-      List<Institution> fakeUserInstitutions = new ArrayList<>();
-      Institution inst = institutionManager.getInstitution(3);
-      fakeUserInstitutions.add(inst);
-      fakeUser.setInstitutions(fakeUserInstitutions);
-      users.add(fakeUser);
-    }
-    return users;
-  }
 }
