@@ -59,8 +59,8 @@ public class MySQLIPProgramDAO implements IPProgramDAO {
 
 
   @Override
-  public List<Map<String, String>> getProgramsType(int typeId) {
-    LOG.debug(">> getProgramsType( Flagship = {} )");
+  public List<Map<String, String>> getProgramsByType(int typeId) {
+    LOG.debug(">> getProgramsByType( typeId = {} )");
 
     StringBuilder query = new StringBuilder();
     query.append("SELECT ipr.* ");
@@ -70,7 +70,7 @@ public class MySQLIPProgramDAO implements IPProgramDAO {
     query.append(" ORDER BY ipr.acronym ");
 
 
-    LOG.debug("-- getProgramsType() > Calling method executeQuery to get the results");
+    LOG.debug("-- getProgramsByType() > Calling method executeQuery to get the results");
     return getData(query.toString());
   }
 

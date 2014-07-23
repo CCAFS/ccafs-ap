@@ -20,7 +20,7 @@ public interface IPProgramDAO {
    * @param none
    * @return a list of maps with the information of all IP elements returned.
    */
-  public List<Map<String, String>> getProgramsType(int typeId);
+  public List<Map<String, String>> getProgramsByType(int typeId);
 
 
   /**

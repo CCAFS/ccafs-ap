@@ -13,10 +13,6 @@
  *****************************************************************/
 package org.cgiar.ccafs.ap.action.preplanning;
 
-import java.util.ArrayList;
-import java.util.List;
-
-import com.google.inject.Inject;
 import org.cgiar.ccafs.ap.action.BaseAction;
 import org.cgiar.ccafs.ap.config.APConfig;
 import org.cgiar.ccafs.ap.config.APConstants;
@@ -26,6 +22,11 @@ import org.cgiar.ccafs.ap.data.manager.IPProgramManager;
 import org.cgiar.ccafs.ap.data.model.IPElement;
 import org.cgiar.ccafs.ap.data.model.IPElementType;
 import org.cgiar.ccafs.ap.data.model.IPProgram;
+
+import java.util.ArrayList;
+import java.util.List;
+
+import com.google.inject.Inject;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -73,18 +74,17 @@ public class MidOutcomesPreplanningAction extends BaseAction {
 
   @Override
   public void prepare() throws Exception {
+    IPProgram program = getCurrentUser().getCurrentInstitution().getProgram();
+
     // Create an ipElementType with the identifier of the outcomes 2019 type
-    IPElementType outcomesType = new IPElementType();
-    outcomesType.setId(APConstants.ELEMENT_TYPE_OUTCOME2025);
+    IPElementType outcomesType = new IPElementType(APConstants.ELEMENT_TYPE_OUTCOME2025);
 
     // Create an ipElementType with the identifier of the outcomes 2025 type
-    IPElementType midOutcomesType = new IPElementType();
-    midOutcomesType.setId(APConstants.ELEMENT_TYPE_OUTCOME2019);
+    IPElementType midOutcomesType = new IPElementType(APConstants.ELEMENT_TYPE_OUTCOME2019);
 
-    IPProgram program = getCurrentUser().getCurrentInstitution().getProgram();
     midOutcomes = ipElementManager.getIPElements(program, midOutcomesType);
     outcomesList = ipElementManager.getIPElements(program, outcomesType);
-    flagshipsList = ipProgramManager.getProgramsType(1);
+    flagshipsList = ipProgramManager.getProgramsByType(1);
 
     midOutcomesFromDatabase = new ArrayList<>();
     midOutcomesFromDatabase.addAll(midOutcomes);

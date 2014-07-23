@@ -10,12 +10,13 @@ import com.google.inject.ImplementedBy;
 @ImplementedBy(IPProgramManagerImpl.class)
 public interface IPProgramManager {
 
-
   /**
-   * Get all the ipElements existent in the database
+   * This method gets from the database a list of ipElements
+   * which have the same type as passed as parameter
    * 
-   * @return an array of IPElement objects
+   * @param ipProgramTypeID - IP Program type identifier
+   * @return a list of IPProgram objects with the information.
    */
-  public List<IPProgram> getProgramsType(int typeId);
+  public List<IPProgram> getProgramsByType(int ipProgramTypeID);
 
 }

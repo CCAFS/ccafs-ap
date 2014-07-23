@@ -47,9 +47,11 @@ function removeMidOutcomeEvent(event){
 
 function setMidOutcomesIndexes(){ 
   $("div#MidOutcomeBlocks .midOutcome").each(function(index, element){
-      var elementName = "midOutcome[" + index + "]."; 
+      var elementName = "midOutcomes[" + index + "]."; 
       $(element).attr("id","midOutcome-"+index);
       $(element).find("[id$='id']").attr("name", elementName + "id");
+      $(element).find("[id$='ProgramId']").attr("name", elementName + "program.id");
+      $(element).find("[id$='TypeId']").attr("name", elementName + "type.id");
       $(element).find("[id$='description']").attr("name", elementName + "description").attr("placeholder", "Add regional outcome #"+ (index+1) );
       setContributesIndexes(index);
   });

@@ -26,6 +26,7 @@ public class IPElement {
   private IPProgram program;
   private List<IPIndicator> indicators;
   private List<IPElement> contributesTo;
+  private List<IPElement> translatedOf;
 
   @Override
   public boolean equals(Object obj) {
@@ -65,6 +66,10 @@ public class IPElement {
     return program;
   }
 
+  public List<IPElement> getTranslatedOf() {
+    return translatedOf;
+  }
+
   public IPElementType getType() {
     return type;
   }
@@ -92,6 +97,10 @@ public class IPElement {
 
   public void setProgram(IPProgram program) {
     this.program = program;
+  }
+
+  public void setTranslatedOf(List<IPElement> translatedOf) {
+    this.translatedOf = translatedOf;
   }
 
   public void setType(IPElementType type) {
