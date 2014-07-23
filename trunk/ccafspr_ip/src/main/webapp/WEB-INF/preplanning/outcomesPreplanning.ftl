@@ -32,6 +32,8 @@
         [#list outcomes as outcome]
           [#-- Outcome identifier --]
           <input type="hidden" name="outcomes[${outcome_index}].id" value="${outcome.id}" />
+          <input type="hidden" name="outcomes[${outcome_index}].program.id" value="${currentUser.currentInstitution.program.id}" />
+          <input type="hidden" name="outcomes[${outcome_index}].type.id" value="${elementTypeID}" />
           [#-- Title --]
           [@customForm.textArea name="outcomes[${outcome_index}].description" i18nkey="preplanning.outcomes.outcome" required=true /]
           <div class="contentElements outcomeIndicatorsBlock"> 
@@ -57,6 +59,8 @@
       [#else]
           [#-- Outcome identifier --]
           <input type="hidden" name="outcomes[0].id" value="-1" /> 
+          <input type="hidden" name="outcomes[0].program.id" value="${currentUser.currentInstitution.program.id}" />
+          <input type="hidden" name="outcomes[0].type.id" value="${elementTypeID}" />
           [#-- Title --]
           [@customForm.textArea name="outcomes[0].description" i18nkey="preplanning.outcomes.outcome" required=true /]  
           <div class="contentElements outcomeIndicatorsBlock">
@@ -78,6 +82,8 @@
     <div id="outcomeTemplate" class="outcome" style="display:none">
       [#-- Outcome identifier --]
       <input type="hidden" name="id" value="-1" /> 
+      <input type="hidden" id="programID" value="${currentUser.currentInstitution.program.id}" />
+      <input type="hidden" id="typeID" value="${elementTypeID}" />
       [#-- Title --]
       [@customForm.textArea name="description" i18nkey="preplanning.outcomes.outcome" required=true /] 
       <div class="contentElements">

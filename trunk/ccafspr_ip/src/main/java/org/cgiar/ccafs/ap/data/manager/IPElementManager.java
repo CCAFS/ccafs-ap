@@ -13,6 +13,19 @@ import com.google.inject.ImplementedBy;
 public interface IPElementManager {
 
   /**
+   * This method delete the relation between the ipElement given and the ipProgram
+   * passed as parameter.
+   * If the parameter program is the same as element.getProgram then the IPElement
+   * is also deleted.
+   * 
+   * @param element
+   * @param program
+   * @return true if the relation between the program and the element was successfully
+   *         deleted, false otherwise.
+   */
+  public boolean deleteIPElement(IPElement element, IPProgram program);
+
+  /**
    * Delete all IP Elements which belongs to the program given and which are of
    * the same type given.
    * 

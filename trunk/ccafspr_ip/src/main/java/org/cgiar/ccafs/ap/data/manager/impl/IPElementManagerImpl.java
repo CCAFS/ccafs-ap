@@ -33,6 +33,25 @@ public class IPElementManagerImpl implements IPElementManager {
   }
 
   @Override
+  public boolean deleteIPElement(IPElement element, IPProgram program) {
+    boolean deleted = false;
+    boolean isElementCreator = (element.getProgram().getId() == program.getId());
+
+    if (isElementCreator) {
+      // If the user is the creator, removes directly the ipElement.
+      // if the element has children, the foreign key will prohibit the
+      // deletion
+      deleted = ipElementDAO.deleteIPElement(element.getId());
+    } else {
+      // If the user is not the creator, then remove only the relation
+      // between the element and the program
+      deleted = ipElementDAO.deleteProgramElement(element.getId());
+    }
+
+    return deleted;
+  }
+
+  @Override
   public boolean deleteIPElements(IPProgram program, IPElementType type) {
     return ipElementDAO.deleteIpElements(program.getId(), type.getId());
   }
@@ -111,6 +130,12 @@ public class IPElementManagerImpl implements IPElementManager {
             indicatorData.put("description", indicator.getDescription());
             indicatorData.put("target", indicator.getTarget());
             indicatorData.put("program_element_id", programElementID);
+
+            if (indicator.getParent() != null) {
+              indicatorData.put("parent_indicator_id", indicator.getParent().getId());
+            } else {
+              indicatorData.put("parent_indicator_id", null);
+            }
             ipIndicatorDAO.saveIndicator(indicatorData);
           }
         }
@@ -125,6 +150,7 @@ public class IPElementManagerImpl implements IPElementManager {
         // All elements should be saved correctly
         allSaved = (elementId != -1) && allSaved;
       }
+
     }
 
     return allSaved;

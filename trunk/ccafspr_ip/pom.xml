@@ -193,7 +193,7 @@
         <artifactId>maven-jetty-plugin</artifactId>
         <version>${jetty.version}</version>
         <configuration>
-          <scanIntervalSeconds>10</scanIntervalSeconds>
+          <scanIntervalSeconds>5</scanIntervalSeconds>
           <scanTargets>
             <scanTarget>src/main/webapp/WEB-INF</scanTarget>
             <scanTarget>src/main/webapp/WEB-INF/web.xml</scanTarget>
