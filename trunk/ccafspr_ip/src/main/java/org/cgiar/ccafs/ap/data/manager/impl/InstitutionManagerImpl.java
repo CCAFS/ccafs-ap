@@ -97,8 +97,6 @@ public class InstitutionManagerImpl implements InstitutionManager {
         program.setId(Integer.parseInt(iData.get("program_id")));
         institution.setProgram(program);
       }
-
-
       return institution;
     }
     return null;
