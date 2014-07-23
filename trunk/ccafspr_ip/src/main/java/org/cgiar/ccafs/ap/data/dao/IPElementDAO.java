@@ -18,6 +18,13 @@ public interface IPElementDAO {
    */
   public int createIPElement(Map<String, Object> ipElementData);
 
+  /**
+   * This method remove from the database the IPElement identified with the
+   * parameter received
+   * 
+   * @param ipElementID - IPElement identifier
+   * @return true if the record was successfully deleted. False otherwise
+   */
   public boolean deleteIPElement(int ipElementID);
 
   /**
@@ -73,6 +80,16 @@ public interface IPElementDAO {
    * @return a list of maps with the information of the element parents
    */
   public List<Map<String, String>> getParentsOfIPElement(int ipElementID);
+
+  /**
+   * This method returns the identifier of the record which relates
+   * the ipElement and the ipProgram inside the table ip_element_programs
+   * 
+   * @param ipElementID
+   * @param ipProgramID
+   * @return
+   */
+  public int getProgramElementID(int ipElementID, int ipProgramID);
 
   /**
    * This method relates an existent ip element with the program given.
