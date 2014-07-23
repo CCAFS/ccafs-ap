@@ -75,6 +75,10 @@ public class ProjectPartnersAction extends BaseAction {
 
   @Override
   public String execute() throws Exception {
+    /*
+     * If there project Id is not in the parameter or if the is not a project with that id, we must redirect to a
+     * NOT_FOUND page.
+     */
     if (projectId == -1) {
       return NOT_FOUND;
     }
@@ -133,7 +137,7 @@ public class ProjectPartnersAction extends BaseAction {
     allPartners = institutionManager.getAllInstitutions();
 
     // ***********FAKE OBJECTS JUST TO TEST!******************
-    // Getting all countries
+    // TODO - Getting all countries from a Mock list until CountryManager is finished.
     countries = this.temporalGetAllCountries();
 
     // Getting all partner types
