@@ -4,8 +4,7 @@
 [#assign customJS = ["${baseUrl}/js/global/utils.js", "${baseUrl}/js/preplanning/outcomesPreplanning.js"] /]
 [#assign currentSection = "preplanning" /]
 [#assign currentPrePlanningSection = "impactPathways" /]
-[#assign currentStage = "outcomes" /]
-[#assign userRole = "FPL"]
+[#assign currentStage = "outcomes" /] 
 
 [#include "/WEB-INF/global/pages/header.ftl" /]
 [#include "/WEB-INF/global/pages/main-menu.ftl" /]

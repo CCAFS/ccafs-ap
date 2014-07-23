@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE struts PUBLIC "-//Apache Software Foundation//DTD Struts Configuration 2.3//EN" "http://struts.apache.org/dtds/struts-2.3.dtd">
+<struts>
+
+  <!-- Add addition packages and configuration here. -->
+  <package name="planning" namespace="/planning" extends="ccafsap-default">
+    <default-action-ref name="projects" />
+
+    <!-- Sections -->
+    
+    <!-- Section: Projects  -->
+    <action name="projects" class="org.cgiar.ccafs.ap.action.preplanning.ProjectsListAction">
+      <result name="input">/WEB-INF/planning/projects.ftl</result>
+    </action>
+    
+    <action name="description" class="org.cgiar.ccafs.ap.action.preplanning.ProjectDescriptionAction">
+      <result name="input">/WEB-INF/planning/projectDescription.ftl</result>
+    </action>
+    
+    <action name="partners" class="org.cgiar.ccafs.ap.action.preplanning.ProjectPartnersAction">
+      <!--  interceptor-ref name="planningStack" />
+      <interceptor-ref name="accessibleActivity" / -->
+      <result name="cancel" type="redirectAction">projects</result>
+      <result name="input">/WEB-INF/planning/projectPartners.ftl</result>
+      <result name="success" type="redirectAction">
+        <param name="actionName">partners</param>
+        <param name="activityID">${project.id}</param>
+      </result>
+      <result name="next" type="redirectAction">
+        <param name="actionName">budget</param>
+        <param name="activityID">${project.id}</param>
+      </result>
+    </action>
+    
+    <action name="budget" class="org.cgiar.ccafs.ap.action.BaseAction">
+      <result name="input">/WEB-INF/planning/projectBudget.ftl</result>
+    </action>
+    
+    <action name="projectOutcomes" class="org.cgiar.ccafs.ap.action.BaseAction">
+      <result name="input">/WEB-INF/planning/projectOutcomes.ftl</result>
+    </action>
+    
+    <action name="activities" class="org.cgiar.ccafs.ap.action.BaseAction">
+      <result name="input">/WEB-INF/planning/activities.ftl</result>
+    </action>
+    
+  </package>
+</struts>

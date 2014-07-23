@@ -85,6 +85,7 @@
     Admin is in the namespace="/admin"
   -->
   <include file="struts-home.xml" />
+  <include file="struts-planning.xml" />
   <include file="struts-pre-planning.xml" />
   <include file="struts-json.xml" />
 

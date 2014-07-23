@@ -33,7 +33,7 @@
 	      [#-- Planning section --]
 	      [#if currentUser.CP || currentUser.FPL || currentUser.RPL || currentUser.PI || currentUser.admin ]
 	        [#if planningActive ]               
-	          <a  href="${baseUrl}/planning/activities.do">
+	          <a  href="${baseUrl}/planning/projects.do">
 	        [#else]
 	          <a href="javascript:void(0);" title="[@s.text name="menu.link.disabled" /]" class="disabled">
 	        [/#if]

@@ -13,6 +13,10 @@
  *****************************************************************/
 package org.cgiar.ccafs.ap.action.preplanning;
 
+import java.util.ArrayList;
+import java.util.List;
+
+import com.google.inject.Inject;
 import org.cgiar.ccafs.ap.action.BaseAction;
 import org.cgiar.ccafs.ap.config.APConfig;
 import org.cgiar.ccafs.ap.config.APConstants;
@@ -20,11 +24,6 @@ import org.cgiar.ccafs.ap.data.manager.IPElementManager;
 import org.cgiar.ccafs.ap.data.model.IPElement;
 import org.cgiar.ccafs.ap.data.model.IPElementType;
 import org.cgiar.ccafs.ap.validation.preplanning.OutcomesValidation;
-
-import java.util.ArrayList;
-import java.util.List;
-
-import com.google.inject.Inject;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -76,7 +75,6 @@ public class OutcomesPreplanningAction extends BaseAction {
     // TODO - Add an interceptor to verify that if the user is not related to a program, then DON'T have
     // permissions to access this action
     outcomes = ipElementManager.getIPElements(getCurrentUser().getCurrentInstitution().getProgram(), type);
-
     // Keep the id of all outcomes which come from the database
     outcomesFromDatabase = new ArrayList<>();
     outcomesFromDatabase.addAll(outcomes);
