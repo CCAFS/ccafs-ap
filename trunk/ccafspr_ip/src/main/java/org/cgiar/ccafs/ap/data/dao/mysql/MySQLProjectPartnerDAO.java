@@ -65,7 +65,6 @@ public class MySQLProjectPartnerDAO implements ProjectPartnerDAO {
         projectPartnerData.put("contact_name", rs.getString("contact_name"));
         projectPartnerData.put("contact_email", rs.getString("contact_email"));
         projectPartnerData.put("responsabilities", rs.getString("responsabilities"));
-        projectPartnerData.put("is_leader", rs.getString("is_leader"));
 
         projectPartnerList.add(projectPartnerData);
       }
@@ -75,44 +74,11 @@ public class MySQLProjectPartnerDAO implements ProjectPartnerDAO {
       exceptionMessage += "to execute the following query " + query;
 
       LOG.error(exceptionMessage, e);
+      return null;
     }
 
     LOG.debug("<< executeQuery():ipElementList.size={}", projectPartnerList.size());
     return projectPartnerList;
-  }
-
-  public Map<String, String> getProjectPartnerLeader(int projectID) {
-    LOG.debug(">> getProjectPartnerLeader projectID = {} )", projectID);
-    List<Map<String, String>> projectPartnerDataList = new ArrayList<>();
-
-    StringBuilder query = new StringBuilder();
-    query.append("SELECT pp.*   ");
-    query.append("FROM project_partners as pp ");
-    query.append("WHERE pp.is_leader=1");
-    query.append("AND pp.project_id=");
-    query.append(projectID);
-
-    try (Connection con = databaseManager.getConnection()) {
-      ResultSet rs = databaseManager.makeQuery(query.toString(), con);
-      while (rs.next()) {
-        Map<String, String> projectPartnerData = new HashMap<String, String>();
-        projectPartnerData.put("id", rs.getString("id"));
-        projectPartnerData.put("project_id", rs.getString("project_id"));
-        projectPartnerData.put("partner_id", rs.getString("partner_id"));
-        projectPartnerData.put("contact_name", rs.getString("contact_name"));
-        projectPartnerData.put("contact_email", rs.getString("contact_email"));
-        projectPartnerData.put("responsabilities", rs.getString("responsabilities"));
-        projectPartnerData.put("is_leader", rs.getString("is_leader"));
-
-        projectPartnerDataList.add(projectPartnerData);
-      }
-      con.close();
-    } catch (SQLException e) {
-      LOG.error("Exception arised getting the institutions for the user {}.", projectID, e);
-    }
-
-    LOG.debug("-- getInstitution() > Calling method executeQuery to get the results");
-    return null;
   }
 
 
@@ -124,7 +90,6 @@ public class MySQLProjectPartnerDAO implements ProjectPartnerDAO {
     query.append("FROM project_partners as pp ");
     query.append("WHERE pp.project_id= ");
     query.append(projectID);
-    query.append("WHERE pp.is_leader=false ");
 
 
     LOG.debug("-- getProject() > Calling method executeQuery to get the results");
