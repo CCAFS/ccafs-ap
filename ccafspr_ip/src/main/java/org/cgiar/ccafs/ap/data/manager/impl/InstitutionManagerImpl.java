@@ -144,11 +144,13 @@ public class InstitutionManagerImpl implements InstitutionManager {
       institution.setAcronym(iData.get("acronym"));
 
       // Program Object
-      IPProgram program = new IPProgram();
-      program.setId(Integer.parseInt(iData.get("program_id")));
-      program.setName(iData.get("program_name"));
-      program.setAcronym(iData.get("program_acronym"));
-      institution.setProgram(program);
+      if (iData.get("program_id") != null) {
+        IPProgram program = new IPProgram();
+        program.setId(Integer.parseInt(iData.get("program_id")));
+        program.setName(iData.get("program_name"));
+        program.setAcronym(iData.get("program_acronym"));
+        institution.setProgram(program);
+      }
 
       // Institution type object
       InstitutionType it = new InstitutionType();

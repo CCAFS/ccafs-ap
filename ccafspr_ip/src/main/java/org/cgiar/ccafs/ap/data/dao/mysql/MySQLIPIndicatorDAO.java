@@ -89,15 +89,17 @@ public class MySQLIPIndicatorDAO implements IPIndicatorDAO {
     LOG.debug(">> saveIndicator(indicatorData={})", indicatorData);
 
     StringBuilder query = new StringBuilder();
-    query.append("INSERT INTO ip_indicators (id, description, target, program_element_id) ");
-    query.append("VALUES (?, ?, ?, ?) ");
-    query.append("ON DUPLICATE KEY UPDATE description = VALUES(description), target = VALUES(target)");
+    query.append("INSERT INTO ip_indicators (id, description, target, program_element_id, parent_id) ");
+    query.append("VALUES (?, ?, ?, ?, ?) ");
+    query.append("ON DUPLICATE KEY UPDATE description = VALUES(description), target = VALUES(target), ");
+    query.append("parent_id = VALUES(parent_id) ");
 
-    Object[] values = new Object[4];
+    Object[] values = new Object[5];
     values[0] = indicatorData.get("id");
     values[1] = indicatorData.get("description");
     values[2] = indicatorData.get("target");
     values[3] = indicatorData.get("program_element_id");
+    values[4] = indicatorData.get("parent_id");
 
     int result = saveData(query.toString(), values);
     LOG.debug("<< saveIndicator():{}", result);

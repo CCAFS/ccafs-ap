@@ -18,6 +18,8 @@ public interface IPElementDAO {
    */
   public int createIPElement(Map<String, Object> ipElementData);
 
+  public boolean deleteIPElement(int ipElementID);
+
   /**
    * This method deletes all the ip elements which belongs to the program given
    * and which are of the same type given
@@ -27,6 +29,15 @@ public interface IPElementDAO {
    * @return true if the elements were deleted successfully. False otherwise
    */
   public boolean deleteIpElements(int programId, int typeId);
+
+  /**
+   * This method remove of the database the relation between the program and
+   * an IPElement identified with the value given as parameter.
+   * 
+   * @param elementID
+   * @return true if the element was successfully removed. False otherwise.
+   */
+  public boolean deleteProgramElement(int programElementID);
 
   /**
    * This method return a all the IP elements which belongs to the program

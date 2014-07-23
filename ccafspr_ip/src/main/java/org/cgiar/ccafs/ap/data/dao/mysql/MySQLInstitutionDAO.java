@@ -143,10 +143,12 @@ public class MySQLInstitutionDAO implements InstitutionDAO {
     query.append("FROM institutions i ");
     query.append("LEFT JOIN ip_programs p ON i.program_id = p.id ");
     query.append("LEFT JOIN institution_types it ON i.institution_type_id = it.id ");
-    query.append("INNER JOIN employees e ON i.id = e.institution_id AND is_main = TRUE ");
-    query.append("INNER JOIN users u ON e.user_id = u.id AND user_id = ");
+    query.append("INNER JOIN employees e ON i.id = e.institution_id ");
+    query.append("INNER JOIN users u ON e.user_id = u.id ");
+    query.append("WHERE u.id = ");
     query.append(userID);
-
+    query.append(" AND e.is_main = TRUE");
+    query.append(" GROUP BY i.id ");
     try (Connection con = databaseManager.getConnection()) {
       ResultSet rs = databaseManager.makeQuery(query.toString(), con);
       if (rs.next()) {
@@ -158,13 +160,11 @@ public class MySQLInstitutionDAO implements InstitutionDAO {
         institutionData.put("program_acronym", rs.getString("program_acronym"));
         institutionData.put("institution_type_id", rs.getString("institution_type_id"));
         institutionData.put("institution_type_acronym", rs.getString("institution_type_acronym"));
-
       }
       con.close();
     } catch (SQLException e) {
       LOG.error("Exception arised getting the institutions for the user {}.", userID, e);
     }
-
     return institutionData;
   }
 

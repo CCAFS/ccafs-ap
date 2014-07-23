@@ -1,5 +1,8 @@
 package org.cgiar.ccafs.ap.data.dao.mysql;
 
+import org.cgiar.ccafs.ap.data.dao.DAOManager;
+import org.cgiar.ccafs.ap.data.dao.IPElementDAO;
+
 import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -9,8 +12,6 @@ import java.util.List;
 import java.util.Map;
 
 import com.google.inject.Inject;
-import org.cgiar.ccafs.ap.data.dao.DAOManager;
-import org.cgiar.ccafs.ap.data.dao.IPElementDAO;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -31,20 +32,41 @@ public class MySQLIPElementDAO implements IPElementDAO {
     LOG.debug(">> createIPElement(ipElementData)", ipElementData);
 
     StringBuilder query = new StringBuilder();
-    query.append("INSERT INTO ip_elements (id, description, creator_id, element_type_id ) ");
-    query.append("VALUES (?, ?, ?, ?) ");
-    query.append("ON DUPLICATE KEY UPDATE description=VALUES(description), creator_id=VALUES(creator_id), ");
+    query.append("INSERT INTO ip_elements (id, description, element_type_id ) ");
+    query.append("VALUES (?, ?, ?) ");
+    query.append("ON DUPLICATE KEY UPDATE description=VALUES(description), ");
     query.append("element_type_id=VALUES(element_type_id)");
 
-    Object[] values = new Object[4];
+    Object[] values = new Object[3];
     values[0] = ipElementData.get("id");
     values[1] = ipElementData.get("description");
-    values[2] = ipElementData.get("creator_id");
-    values[3] = ipElementData.get("element_type_id");
+    values[2] = ipElementData.get("element_type_id");
 
     int result = saveData(query.toString(), values);
     LOG.debug("<< createIPElement():{}", result);
     return result;
+  }
+
+  @Override
+  public boolean deleteIPElement(int ipElementID) {
+    LOG.debug(">> deleteIPElement(ipElementID={})", ipElementID);
+
+    StringBuilder query = new StringBuilder();
+    query.append("DELETE FROM ip_elements ");
+    query.append("WHERE id = ? ");
+
+    try (Connection connection = databaseManager.getConnection()) {
+      int rowsDeleted = databaseManager.makeChangeSecure(connection, query.toString(), new Object[] {ipElementID});
+      if (rowsDeleted >= 0) {
+        LOG.debug("<< deleteIPElement():{}", true);
+        return true;
+      }
+    } catch (SQLException e) {
+      LOG.error("-- deleteIPElement() > There was a problem deleting the ipElement {}.", ipElementID, e);
+    }
+
+    LOG.debug("<< deleteIPElement():{}", false);
+    return false;
   }
 
   @Override
@@ -69,6 +91,28 @@ public class MySQLIPElementDAO implements IPElementDAO {
     }
 
     LOG.debug("<< deleteIpElements():{}", false);
+    return false;
+  }
+
+  @Override
+  public boolean deleteProgramElement(int programElementID) {
+    LOG.debug(">> deleteProgramElement(programElementID={})", programElementID);
+
+    StringBuilder query = new StringBuilder();
+    query.append("DELETE FROM ip_program_elements ");
+    query.append("WHERE id = ? ");
+
+    try (Connection connection = databaseManager.getConnection()) {
+      int rowsDeleted = databaseManager.makeChangeSecure(connection, query.toString(), new Object[] {programElementID});
+      if (rowsDeleted >= 0) {
+        LOG.debug("<< deleteProgramElement():{}", true);
+        return true;
+      }
+    } catch (SQLException e) {
+      LOG.error("-- deleteProgramElement() > There was a problem deleting the ipElement {}.", programElementID, e);
+    }
+
+    LOG.debug("<< deleteProgramElement():{}", false);
     return false;
   }
 
@@ -149,7 +193,7 @@ public class MySQLIPElementDAO implements IPElementDAO {
     LOG.debug(">> getIPElementList( )");
 
     StringBuilder query = new StringBuilder();
-    query.append("SELECT e.id, e.description,  ");
+    query.append("SELECT e.id, e.description, pel.id as 'program_element_id', ");
     query.append("et.id as 'element_type_id', et.name as 'element_type_name', ");
     query.append("pro.id as 'program_id', pro.acronym as 'program_acronym' ");
     query.append("FROM ip_elements e ");

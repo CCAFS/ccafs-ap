@@ -4,6 +4,7 @@
 
   <!-- Add addition packages and configuration here. -->
   <package name="preplanning" namespace="/pre-planning" extends="ccafsap-default">
+    <default-interceptor-ref name="preplanningStack" />
     <default-action-ref name="outcomes" />
 
     <!-- Sections -->

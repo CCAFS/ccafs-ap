@@ -20,6 +20,7 @@ import org.cgiar.ccafs.ap.data.model.IPElement;
 import org.cgiar.ccafs.ap.data.model.IPElementType;
 import org.cgiar.ccafs.ap.data.model.IPProgram;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import com.google.inject.Inject;
@@ -38,6 +39,7 @@ public class MidOutcomesPreplanningAction extends BaseAction {
   // Model
   List<IPElement> midOutcomes;
   List<IPElement> outcomesList;
+  List<IPElement> midOutcomesFromDatabase;
 
   @Inject
   public MidOutcomesPreplanningAction(APConfig config, IPElementManager ipElementManager) {
@@ -68,6 +70,9 @@ public class MidOutcomesPreplanningAction extends BaseAction {
 
     midOutcomes = ipElementManager.getIPElements(program, midOutcomesType);
     outcomesList = ipElementManager.getIPElements(program, outcomesType);
+
+    midOutcomesFromDatabase = new ArrayList<>();
+    midOutcomesFromDatabase.addAll(midOutcomes);
 
     if (getRequest().getMethod().equalsIgnoreCase("post")) {
       // Clear out the list if it has some element
@@ -106,10 +111,15 @@ public class MidOutcomesPreplanningAction extends BaseAction {
         }
         midOutcome.setContributesTo(ipElementManager.getIPElementList(values));
       }
+
+      // If the user removed the outcome we should delete it
+      // from the database
+      if (!midOutcomesFromDatabase.contains(midOutcome)) {
+        ipElementManager.deleteIPElement(midOutcome, getCurrentUser().getCurrentInstitution().getProgram());
+      }
     }
 
     // Remove records already present in the database
-    ipElementManager.deleteIPElements(program, type);
     ipElementManager.saveIPElements(midOutcomes);
     return INPUT;
   }

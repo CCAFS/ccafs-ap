@@ -15,12 +15,13 @@ package org.cgiar.ccafs.ap.action.preplanning;
 
 import org.cgiar.ccafs.ap.action.BaseAction;
 import org.cgiar.ccafs.ap.config.APConfig;
+import org.cgiar.ccafs.ap.config.APConstants;
 import org.cgiar.ccafs.ap.data.manager.IPElementManager;
 import org.cgiar.ccafs.ap.data.model.IPElement;
 import org.cgiar.ccafs.ap.data.model.IPElementType;
-import org.cgiar.ccafs.ap.data.model.IPProgram;
 import org.cgiar.ccafs.ap.validation.preplanning.OutcomesValidation;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import com.google.inject.Inject;
@@ -39,6 +40,7 @@ public class OutcomesPreplanningAction extends BaseAction {
   // Model
   private List<IPElement> outcomes;
   private StringBuilder validationMessages;
+  private List<IPElement> outcomesFromDatabase;
 
   // Validator
   private OutcomesValidation validator;
@@ -55,6 +57,10 @@ public class OutcomesPreplanningAction extends BaseAction {
     return super.execute();
   }
 
+  public int getElementTypeID() {
+    return APConstants.ELEMENT_TYPE_OUTCOME2025;
+  }
+
   public List<IPElement> getOutcomes() {
     return outcomes;
   }
@@ -64,14 +70,16 @@ public class OutcomesPreplanningAction extends BaseAction {
     super.prepare();
     validationMessages = new StringBuilder();
 
-    IPProgram program = new IPProgram();
-    program.setId(1);
-
-    // The Outcomes 2025 are stored with id 2
     IPElementType type = new IPElementType();
-    type.setId(2);
+    type.setId(APConstants.ELEMENT_TYPE_OUTCOME2025);
 
-    outcomes = ipElementManager.getIPElements(program, type);
+    // TODO - Add an interceptor to verify that if the user is not related to a program, then DON'T have
+    // permissions to access this action
+    outcomes = ipElementManager.getIPElements(getCurrentUser().getCurrentInstitution().getProgram(), type);
+
+    // Keep the id of all outcomes which come from the database
+    outcomesFromDatabase = new ArrayList<>();
+    outcomesFromDatabase.addAll(outcomes);
 
     if (getRequest().getMethod().equalsIgnoreCase("post")) {
       // Clear out the list if it has some element
@@ -85,33 +93,23 @@ public class OutcomesPreplanningAction extends BaseAction {
 
   @Override
   public String save() {
-    IPProgram program = new IPProgram();
-    program.setId(1);
-
-    IPElementType type = new IPElementType();
-    type.setId(2);
 
     for (IPElement outcome : outcomes) {
-      if (outcome.getProgram() == null) {
-        outcome.setProgram(program);
-      }
-      if (outcome.getType() == null) {
-        outcome.setType(type);
-      }
-
       for (int i = 0; i < outcome.getIndicators().size(); i++) {
         if (outcome.getIndicators().get(i).getDescription().isEmpty()) {
           outcome.getIndicators().remove(i);
         }
       }
+
+      // If the user removed the outcome we should delete it
+      // from the database
+      if (!outcomesFromDatabase.contains(outcome)) {
+        ipElementManager.deleteIPElement(outcome, getCurrentUser().getCurrentInstitution().getProgram());
+      }
     }
 
-    // Remove records already present in the database
-    ipElementManager.deleteIPElements(program, type);
     ipElementManager.saveIPElements(outcomes);
     return INPUT;
-
-
   }
 
   public void setOutcomes(List<IPElement> outcomes) {
