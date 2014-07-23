@@ -43,7 +43,14 @@
             [@customForm.select name="flagships" label="" i18nkey="preplanning.outputsRPL.flagships" listName="flagshipsList" keyFieldName="id"  displayFieldName="name" /]
             <div class="contentElements parentsBlock">
               <div class="itemIndex">[@s.text name="preplanning.midOutcomesRPL.contributes" /] </div>
-              [#-- midOutcome's parents --]  
+              [#-- midOutcome's parents --]
+              [#if midOutcome.contributesTo?has_content]
+                [#list midOutcome.contributesTo as parent]
+                  [@contributeTemplate.midOutcomesRPL parent_index="${parent_index}" midOutcomeRPL_value="${midOutcome.id}" canRemove=true  /]
+                [/#list]  
+              [#else]
+                Not contributes yet
+              [/#if]  
               [#-- Add contribute --]
               <div class="fullBlock addContributeBlock">
                 [@customForm.select name="midOutcomesFPL" value="none" showTitle=false listName="midOutcomesFPL" keyFieldName="id"  displayFieldName="description" addButton=true className="contributes" /]
@@ -89,6 +96,7 @@
         </div>
       </div>  
     </div> 
+    [#-- contributeTo RPL TEMPLATE --]
     
     
    

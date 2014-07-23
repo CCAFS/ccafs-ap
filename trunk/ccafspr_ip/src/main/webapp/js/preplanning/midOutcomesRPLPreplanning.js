@@ -32,7 +32,7 @@ function addMidOutcomeEvent(event){
   event.preventDefault(); 
   var $newElement = $("#midOutcomeRPLTemplate").clone(true).removeAttr("id");  
   $("div#MidOutcomeBlocks").append($newElement); 
-  $newElement.show("slow");
+  $newElement.fadeIn("slow");
   setMidOutcomesIndexes();
 }
 

@@ -21,8 +21,9 @@
 [/#macro]
 
 [#macro midOutcomesRPL midOutcomeRPL_index="0" parent_index="0" midOutcomeRPL_value="-1" description="description" listName="" i18nkey=""  template=false canRemove=false ] 
-  <div id="midOutcome-${midOutcomeRPL_value}" class="contributions" style="display:none">  
+   
   [#if template] 
+    <div id="contributeTemplate" class="contributions" style="display:none"> 
         <input id="id" type="hidden" name="id" value="${midOutcomeRPL_value}" />
         <p>[@s.text name="midOutcomes[${parent_index}].description" /]</p>
         <h6>[@s.text name="preplanning.midOutcomesRPL.selectIndicators" /]</h6>
@@ -36,7 +37,8 @@
       </div>
       [#-- Narrative explanation --]
       [@customForm.textArea showTitle=true name="justification" i18nkey="${i18nkey}" required=true /]
-  [#else]  
+  [#else]
+   <div id="" class="contributions">   
       <input id="contributeId" type="hidden" name="midOutcomes[${midOutcomeRPL_index}].contributesTo[${parent_index}].id" value="${midOutcomeRPL_value}" />
       <p>[@s.text name="midOutcomes[${parent_index}].description" /]</p>
       <h6>[@s.text name="preplanning.midOutcomesRPL.selectIndicators" /]</h6>
@@ -50,9 +52,7 @@
       </div>
       [#-- Narrative explanation --]
       [@customForm.textArea showTitle=true name="midOutcomes[${midOutcomeRPL_index}].contributesTo[${parent_index}].justification" i18nkey="${i18nkey}" required=true /]
-  [/#if]    
-      
-   
+  [/#if]
   [#if canRemove]
       [#-- remove link --]
       <div class="removeLink">            
