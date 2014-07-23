@@ -12,14 +12,14 @@ public interface UserDAO {
 
   /**
    * Get a list with All Users information
-   * 
+   *
    * @return a list of Map objects with the users information or an empty list if no users found.
    */
   public List<Map<String, String>> getAllUsers();
 
   /**
    * Get a Project Leader information with a given Project Id
-   * 
+   *
    * @param ProjectId is the id of a project
    * @return a Map with the project leader information or an empty map if no user found. If an error occurs, a NULL will
    *         be returned.
@@ -27,8 +27,16 @@ public interface UserDAO {
   public Map<String, String> getProjectLeader(int projectID);
 
   /**
-   * Get a user with the given email.
+   * This method gets the data of a User identified with a given id.
    * 
+   * @param userId is the id of the User.
+   * @return a Map with the user data.
+   */
+  public Map<String, String> getUser(int userId);
+
+  /**
+   * Get a user with the given email.
+   *
    * @param username
    * @return a Map with the user information or null if no user found.
    */
@@ -36,7 +44,7 @@ public interface UserDAO {
 
   /**
    * Save in the database the date and time that the user made its last login.
-   * 
+   *
    * @param userData - User information
    * @return - True if the information was succesfully saved, false otherwise.
    */
@@ -44,7 +52,7 @@ public interface UserDAO {
 
   /**
    * Save the user data into the database.
-   * 
+   *
    * @param userData - Information to be saved.
    * @return true if the information was successfully saved. False otherwise.
    */

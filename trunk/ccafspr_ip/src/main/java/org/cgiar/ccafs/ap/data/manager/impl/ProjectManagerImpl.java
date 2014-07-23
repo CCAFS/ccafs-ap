@@ -8,9 +8,10 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
+import org.cgiar.ccafs.ap.data.manager.UserManager;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-
 import com.google.inject.Inject;
 
 
@@ -19,12 +20,16 @@ public class ProjectManagerImpl implements ProjectManager {
   // DAOs
   private ProjectDAO projectDAO;
 
+  // Managers
+  private UserManager userManager;
+
   // LOG
   private static Logger LOG = LoggerFactory.getLogger(ProjectManagerImpl.class);
 
   @Inject
-  public ProjectManagerImpl(ProjectDAO projectDAO) {
+  public ProjectManagerImpl(ProjectDAO projectDAO, UserManager userManager) {
     this.projectDAO = projectDAO;
+    this.userManager = userManager;
   }
 
 
@@ -49,8 +54,6 @@ public class ProjectManagerImpl implements ProjectManager {
 
   @Override
   public Project getProject(int projectId) {
-    // TODO - Pending to validate what kind of parameter should be used in this method.
-    System.out.println("----- Project ID: " + projectId); // TODO - Please do not use Sysouts! Let's use LOGs.
 
     Map<String, String> projectData = projectDAO.getProject(projectId);
     if (!projectData.isEmpty()) {
@@ -60,7 +63,8 @@ public class ProjectManagerImpl implements ProjectManager {
       project.setSummary(projectData.get("summary"));
       project.setStartDate(projectData.get("start_date"));
       project.setEndDate(projectData.get("end_date"));
-      // traer el project_leader y project_owner
+      project.setOwner(userManager.getUser(projectData.get("project_owner_id")));
+      // traer el project_leader
 
       return project;
     }

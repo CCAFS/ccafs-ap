@@ -18,7 +18,6 @@ import org.cgiar.ccafs.ap.config.APConfig;
 import org.cgiar.ccafs.ap.config.APConstants;
 import org.cgiar.ccafs.ap.data.manager.ProjectManager;
 import org.cgiar.ccafs.ap.data.model.Project;
-
 import com.google.inject.Inject;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
@@ -36,8 +35,8 @@ public class ProjectDescriptionAction extends BaseAction {
   private static Logger LOG = LoggerFactory.getLogger(ProjectDescriptionAction.class);
 
   // Model
-  private Project projects;
-  private int projectID;
+  private Project project;
+  private int projectId;
 
   @Inject
   public ProjectDescriptionAction(APConfig config, ProjectManager projectManager) {
@@ -46,36 +45,38 @@ public class ProjectDescriptionAction extends BaseAction {
   }
 
 
+  @Override
+  public String execute() throws Exception {
+    /*
+     * If there project Id is not in the parameter or if the is not a project with that id, we must redirect to a
+     * NOT_FOUND page.
+     */
+    if (projectId == -1) {
+      return NOT_FOUND;
+    }
+    return super.execute();
+  }
+
   public Project getProject() {
-    return projects;
+    return project;
   }
 
   @Override
   public void prepare() throws Exception {
     super.prepare();
 
-    String projectStringID = StringUtils.trim(this.getRequest().getParameter(APConstants.PROJECT_REQUEST_ID));
     try {
-      projectID = Integer.parseInt(projectStringID);
+      projectId = Integer.parseInt(StringUtils.trim(this.getRequest().getParameter(APConstants.PROJECT_REQUEST_ID)));
     } catch (NumberFormatException e) {
-      LOG.error("-- prepare() > There was an error parsing the project identifier '{}'.", projectStringID, e);
+      LOG.error("-- prepare() > There was an error parsing the project identifier '{}'.", projectId, e);
+      projectId = -1;
+      return; // Stop here and go to execute method.
     }
 
-    // Depending on the user that is logged-in, the list of projects will be displayed.
-    /*
-     * Project fakeProject = new Project();
-     * fakeProject.setId(projectID);
-     */
-    // fakeProject.setStartDate(startDate);
+    // Getting project
+    project = projectManager.getProject(projectId);
+    System.out.println(project.getOwner());
 
-    // fakeProject.setTitle("titulo de prueba");
-    // fakeProject.setSummary("-------------------------");
-
-
-    // Getting project list.
-    // projects = projectManager.getAllProjects();
-    projects = projectManager.getProject(projectID);
-
-    System.out.println(projects);
+    // System.out.println(projects);
   }
 }

@@ -62,8 +62,9 @@ public class MySQLProjectDAO implements ProjectDAO {
     LOG.debug(">> getProject projectID = {} )", projectID);
     Map<String, String> projectData = new HashMap<String, String>();
     StringBuilder query = new StringBuilder();
-    query.append("SELECT p.* ");
+    query.append("SELECT p.*, emp.user_id ");
     query.append("FROM projects as p ");
+    query.append("INNER JOIN employees emp ON emp.id = p.project_owner_id ");
     query.append("WHERE p.id = ");
     query.append(projectID);
     try (Connection con = databaseManager.getConnection()) {

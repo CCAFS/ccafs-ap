@@ -34,7 +34,7 @@ public class Project {
   private List<IPProgram> flagships; // The list of flagships in which this project works with.
   private User leader; // Project leader will be a user too.
   private String leaderResponsabilities;
-  private Institution owner;
+  private User owner;
   private List<ProjectPartner> projectPartners; // Project partners.
 
 
@@ -62,7 +62,7 @@ public class Project {
     return leaderResponsabilities;
   }
 
-  public Institution getOwner() {
+  public User getOwner() {
     return owner;
   }
 
@@ -110,7 +110,7 @@ public class Project {
     this.leaderResponsabilities = leaderResponsabilities;
   }
 
-  public void setOwner(Institution owner) {
+  public void setOwner(User owner) {
     this.owner = owner;
   }
 
