@@ -1,5 +1,8 @@
 $(document).ready(function(){
-  attachEvents();
+  attachEvents(); 
+  if(!$("div.projectPartner").length){
+      $("a.addProjectPartner").trigger( "click" );
+  } 
 });
 
 function attachEvents(){
@@ -34,6 +37,7 @@ function addPartnerEvent(e){
     $(e.target).parent().before($newElement); 
     $newElement.show("slow");
     setProjectPartnersIndexes();
+    console.log("addPartnerEvent(e)");
 }
 
 function setProjectPartnersIndexes(){

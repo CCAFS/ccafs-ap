@@ -365,7 +365,7 @@ nav#mainMenu ul a.disabled li{
   top: 0px;
 }
 
-a.currentReportingSection li {
+a.currentReportingSection li, a.currentSection li {
   margin-left: 12px;
   margin-top: -5px;
   color: #fff;
@@ -446,7 +446,7 @@ a.currentReportingSection li #i-additionalInformation{
 }
 
 
-#secondaryMenu ul a.currentReportingSection {
+#secondaryMenu ul a.currentReportingSection, #secondaryMenu ul a.currentSection {
   color: white;
   background-image: url("../../images/global/reportingMenuMarker.png");
   background-repeat: no-repeat;
@@ -892,7 +892,7 @@ a.currentReportingSection li #i-additionalInformation{
   color: #000;
 }
 
-#stageMenu a.currentReportingSection {
+#stageMenu a.currentReportingSection, #stageMenu a.currentSection {
   background-image: url("../../images/global/sub-menu-selected.png"); 
   font-weight: bold;
 }

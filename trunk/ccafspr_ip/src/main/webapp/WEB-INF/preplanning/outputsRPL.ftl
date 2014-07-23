@@ -5,9 +5,6 @@
 [#assign currentSection = "preplanning" /]
 [#assign currentPrePlanningSection = "impactPathways" /]
 [#assign currentStage = "outputs" /]
-[#assign userRole = "RPL"]
-
- 
 
 [#include "/WEB-INF/global/pages/header.ftl" /]
 [#include "/WEB-INF/global/pages/main-menu.ftl" /]

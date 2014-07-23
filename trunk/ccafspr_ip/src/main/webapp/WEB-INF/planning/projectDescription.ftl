@@ -2,7 +2,7 @@
 [#assign title = "Project Description" /]
 [#assign globalLibs = ["jquery", "noty", "autoSave"] /]
 [#assign customJS = ["${baseUrl}/js/global/utils.js", "${baseUrl}/js/planning/mainInformation.js"] /]
-[#assign currentSection = "preplanning" /]
+[#assign currentSection = "planning" /]
 [#assign currentPrePlanningSection = "projects" /]
 [#assign currentStage = "description" /]
 
@@ -16,18 +16,17 @@
     <img src="${baseUrl}/images/global/icon-help.png" />
     <p> [@s.text name="planning.mainInformation.help" /] </p>
   </div>
-  [#include "/WEB-INF/global/pages/pre-planning-secondary-menu.ftl" /]
+  [#include "/WEB-INF/planning/projectPlanningSubMenu.ftl" /]
   
   [@s.form action="projectDescription" cssClass="pure-form"]  
-  <article class="halfContent" id="mainInformation">
-  	[#include "/WEB-INF/preplanning/projectPreplanningSubMenu.ftl" /]
+  <article class="halfContent" id="mainInformation"> 
     <h1 class="contentTitle">
     [@s.text name="preplanning.projectDescription.title" /] 
     </h1> 
     
     <fieldset class="fullBlock">  
 			[#-- Project Title --]
-			[@customForm.textArea name="projects.title" i18nkey="preplanning.projectDescription.projectTitle" required=true value=""/]
+			[@customForm.textArea name="project.title" i18nkey="preplanning.projectDescription.projectTitle" required=true value=""/]
 	    <div id="projectDescription" class="">
 	      [#-- Project Owner --]
 	      <div class="halfPartBlock">
@@ -47,7 +46,7 @@
 	    	</div>
 	  	</div> 
 	  		[#-- Project Summary --]
-			[#--${projects}--]
+			[#-- --]
 			[@customForm.textArea name="projects.summary" i18nkey="preplanning.projectDescription.projectSummary" required=true value="" /]
     </fieldset><br/>
     <fieldset class="fullBlock">  

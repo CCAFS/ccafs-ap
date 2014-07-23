@@ -1,5 +1,6 @@
 $(document).ready(function(){
   attachEvents();
+  addOutputEvent(event);
 });
 
 function attachEvents(){
@@ -17,7 +18,7 @@ function addOutputEvent(event){
   event.preventDefault();  
   var $newElement = $("#outputTemplate").clone(true).removeAttr("id");  
   $("div#outputBlocks").append($newElement); 
-  $newElement.show("slow");
+  $newElement.fadeIn("slow");
   setOutputsIndexes();
 }
 

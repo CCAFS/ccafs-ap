@@ -5,7 +5,6 @@
 [#assign currentSection = "preplanning" /]
 [#assign currentPrePlanningSection = "impactPathways" /]
 [#assign currentStage = "midOutcomes" /]
-[#assign userRole = "RPL"]
 
 [#include "/WEB-INF/global/pages/header.ftl" /]
 [#include "/WEB-INF/global/pages/main-menu.ftl" /]
@@ -27,8 +26,8 @@
     [@s.text name="preplanning.midOutcomesRPL.title" /]  
     </h1>
     <div id="MidOutcomeBlocks"> 
-        [#if midOutcomesRPL?has_content]
-          [#list midOutcomesRPL as midOutcomeRPL]
+        [#if midOutcomes?has_content]
+          [#list midOutcomes as midOutcome]
           <div class="midOutcome" id="midOutcomeRPL-${midOutcome_index}">
             [#-- Mid outcome identifier --]
             <input id="midOutcomeId" type="hidden" name="midOutcomes[${midOutcome_index}].id" value="${midOutcome.id}" />
@@ -41,26 +40,6 @@
             [@customForm.textArea name="midOutcomes[${midOutcome_index}].description" i18nkey="preplanning.midOutcomesRPL.outcome" required=true /]
           </div>
           [/#list]
-        [#else]
-          <div class="midOutcome" id="midOutcomeRPL-0">
-            [#-- Mid outcome identifier --]
-            <input id="midOutcomeRPLId" type="hidden" name="midOutcomesRPL[0].id" value="-1" />
-            [#-- Remove midOutcome --]      
-            <div class="removeMidOutcomeBlock removeLink">            
-              <img src="${baseUrl}/images/global/icon-remove.png" />
-              <a id="removeMidOutcome" href="" class="removeContribute">[@s.text name="preplanning.midOutcomesRPL.removeMidOutcome" /]</a>
-            </div> 
-            [#-- Title --]
-            [@customForm.textArea name="midOutcomesRPL[0].description" i18nkey="preplanning.midOutcomesRPL.outcome" required=true /] 
-            <div class="contentElements parentsBlock">
-              <div class="itemIndex">[@s.text name="preplanning.midOutcomesRPL.contributes" /] </div>
-              [#-- midOutcome's parents --]  
-              [#-- Add contribute --]
-              <div class="fullBlock addContributeBlock">
-                [@customForm.select name="" value="none" showTitle=false listName="midOutcomes" keyFieldName="id"  displayFieldName="description" addButton=true className="contributes" /]
-              </div>
-            </div>  
-          </div>  
         [/#if]
     </div>
     <div id="addMidOutcomeBlock" class="addLink">
@@ -79,7 +58,7 @@
     [#-- Mid Outcomes RPL TEMPLATE --]
     <div class="midOutcome" id="midOutcomeRPLTemplate" style="display:none">
       [#-- Mid outcome identifier --]
-      <input id="midOutcomeRPLId" type="hidden"  value="-1" />
+      <input id="midOutcomeId" type="hidden"  value="-1" />
       [#-- Remove midOutcome --]      
       <div class="removeMidOutcomeBlock removeLink">            
         <img src="${baseUrl}/images/global/icon-remove.png" />
