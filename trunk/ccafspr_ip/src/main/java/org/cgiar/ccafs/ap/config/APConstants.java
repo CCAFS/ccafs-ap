@@ -15,7 +15,7 @@ package org.cgiar.ccafs.ap.config;
 
 /**
  * All Constants should be here.
- *
+ * 
  * @author Héctor Fabio Tobón R.
  */
 public final class APConstants {
@@ -35,9 +35,12 @@ public final class APConstants {
   public static final String IP_ELEMENT_TYPE_REQUEST_ID = "elementTypeId";
   public static final String PROJECT_REQUEST_ID = "projectID";
 
-  // Identifiers for types which come from the database
+  // Identifiers for element types which come from the database
   public static final int ELEMENT_TYPE_IDOS = 1;
   public static final int ELEMENT_TYPE_OUTCOME2025 = 2;
   public static final int ELEMENT_TYPE_OUTCOME2019 = 3;
   public static final int ELEMENT_TYPE_OUTPUTS = 4;
+
+  // Identifiers for programs types which come from the database
+  public static final int FLAGSHIP_PROGRAM_TYPE = 1;
 }

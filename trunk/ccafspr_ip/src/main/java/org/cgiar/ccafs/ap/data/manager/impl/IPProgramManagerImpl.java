@@ -25,10 +25,11 @@ public class IPProgramManagerImpl implements IPProgramManager {
 
 
   @Override
-  public List<IPProgram> getProgramsType(int typeId) {
-    List<IPProgram> programsType = new ArrayList<>();
-    List<Map<String, String>> programTypeDataList = ipProgramDAO.getProgramsType(typeId);
-    for (Map<String, String> iData : programTypeDataList) {
+  public List<IPProgram> getProgramsByType(int ipProgramTypeID) {
+    List<IPProgram> programs = new ArrayList<>();
+    List<Map<String, String>> programsDataList = ipProgramDAO.getProgramsByType(ipProgramTypeID);
+
+    for (Map<String, String> iData : programsDataList) {
       IPProgram ipProgram = new IPProgram();
       ipProgram.setId(Integer.parseInt(iData.get("id")));
       ipProgram.setName(iData.get("name"));
@@ -45,9 +46,9 @@ public class IPProgramManagerImpl implements IPProgramManager {
         ipProgram.setRegion(region);
       }
 
-      programsType.add(ipProgram);
+      programs.add(ipProgram);
     }
-    return programsType;
+    return programs;
   }
 
 

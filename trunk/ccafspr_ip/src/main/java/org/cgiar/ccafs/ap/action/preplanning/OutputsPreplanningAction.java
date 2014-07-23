@@ -13,16 +13,18 @@
  *****************************************************************/
 package org.cgiar.ccafs.ap.action.preplanning;
 
-import java.util.List;
-
-import com.google.inject.Inject;
 import org.cgiar.ccafs.ap.action.BaseAction;
 import org.cgiar.ccafs.ap.config.APConfig;
+import org.cgiar.ccafs.ap.config.APConstants;
 import org.cgiar.ccafs.ap.data.manager.IPElementManager;
 import org.cgiar.ccafs.ap.data.manager.IPProgramManager;
 import org.cgiar.ccafs.ap.data.model.IPElement;
 import org.cgiar.ccafs.ap.data.model.IPElementType;
 import org.cgiar.ccafs.ap.data.model.IPProgram;
+
+import java.util.List;
+
+import com.google.inject.Inject;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -33,13 +35,14 @@ public class OutputsPreplanningAction extends BaseAction {
   private static final long serialVersionUID = 8352553096226822850L;
 
   // Managers
-  IPElementManager ipElementManager;
-  IPProgramManager ipProgramManager;
+  private IPElementManager ipElementManager;
+  private IPProgramManager ipProgramManager;
 
   // Model
-  List<IPElement> outputs;
-  List<IPElement> midOutcomesList;
-  List<IPProgram> flagshipsList;
+  private List<IPElement> outputs;
+  private List<IPElement> outputsFromDatabase;
+  private List<IPElement> midOutcomesList;
+  private List<IPProgram> flagshipsList;
 
   @Inject
   public OutputsPreplanningAction(APConfig config, IPElementManager ipElementManager, IPProgramManager ipProgramManager) {
@@ -62,24 +65,18 @@ public class OutputsPreplanningAction extends BaseAction {
 
   @Override
   public void prepare() throws Exception {
-    super.prepare();
-    // ProgramId 5 is LAM
-    IPProgram program = new IPProgram();
-    program.setId(5);
+    IPProgram program = getCurrentUser().getCurrentInstitution().getProgram();
 
+    // Create an element type for midOutcomes
+    IPElementType midOutcomesType = new IPElementType(APConstants.ELEMENT_TYPE_OUTCOME2019);
 
-    // The Outcomes 2019 type is stored with id 3
-    IPElementType midOutcomesType = new IPElementType();
-    midOutcomesType.setId(3);
-
-    // The Outcomes 2025 type is stored with id 4
-    IPElementType outputsType = new IPElementType();
-    outputsType.setId(4);
+    // Create an element type for outputs
+    IPElementType outputsType = new IPElementType(APConstants.ELEMENT_TYPE_OUTPUTS);
 
     midOutcomesList = ipElementManager.getIPElements(program, midOutcomesType);
     outputs = ipElementManager.getIPElements(program, outputsType);
-    flagshipsList = ipProgramManager.getProgramsType(1);
 
+    flagshipsList = ipProgramManager.getProgramsByType(APConstants.FLAGSHIP_PROGRAM_TYPE);
 
     if (getRequest().getMethod().equalsIgnoreCase("post")) {
       // Clear out the list if it has some element

@@ -30,9 +30,11 @@
           [#list midOutcomes as midOutcome]
           <div class="midOutcome" id="midOutcome-${midOutcome_index}">
             [#-- Mid outcome identifier --]
-            <input id="id" type="hidden" name="midOutcomes[${midOutcome_index}].id" value="${midOutcome.id}" />
-            [#-- Remove midOutcome --]      
-            <div class="removeMidOutcomeBlock removeLink">            
+            <input id="midOutcomeId" type="hidden" name="midOutcomes[${midOutcome_index}].id" value="${midOutcome.id}" />
+            <input type="hidden" name="midOutcomes[${midOutcome_index}].program.id" value="${currentUser.currentInstitution.program.id}" />
+            <input type="hidden" name="midOutcomes[${midOutcome_index}].type.id" value="${elementTypeID}" />
+            [#-- Remove midOutcome --]
+            <div class="removeMidOutcomeBlock removeLink">              
               <img src="${baseUrl}/images/global/icon-remove.png" />
               <a id="removeMidOutcome" href="" class="removeContribute">[@s.text name="preplanning.midOutcomesRPL.removeMidOutcome" /]</a>
             </div> 
@@ -68,6 +70,8 @@
     <div class="midOutcome" id="midOutcomeRPLTemplate" style="display:none">
       [#-- Mid outcome identifier --]
       <input id="id" type="hidden"  value="-1" />
+      <input type="hidden" id="midOutcomeProgramId" value="${currentUser.currentInstitution.program.id}" />
+      <input type="hidden" id="midOutcomeTypeId" value="${elementTypeID}" />
       [#-- Remove midOutcome --]      
       <div class="removeMidOutcomeBlock removeLink">            
         <img src="${baseUrl}/images/global/icon-remove.png" />
