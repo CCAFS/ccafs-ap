@@ -72,6 +72,12 @@ public class InstitutionManagerImpl implements InstitutionManager {
     return institutions;
   }
 
+  @Override
+  public List<InstitutionType> getAllInstitutionTypes() {
+    // TODO Auto-generated method stub
+    return null;
+  }
+
   // TODO - Pending to be implemented.
   @Override
   public Institution getInstitution(int institutionId) {
@@ -131,6 +137,7 @@ public class InstitutionManagerImpl implements InstitutionManager {
     }
     return institutions;
   }
+
 
   @Override
   public Institution getUserMainInstitution(User user) {
