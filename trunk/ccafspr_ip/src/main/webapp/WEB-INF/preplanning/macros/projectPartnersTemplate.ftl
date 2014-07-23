@@ -49,7 +49,7 @@
   [/#if]  
 [/#macro]
 
-[#macro partnerTemplate responsabilities=false canEdit=true ]
+[#macro partnerTemplate showResponsabilities=false canEdit=true ]
 
   <div id="projectPartnerTemplate" class="borderBox" style="display:none">
         [#-- Partner identifier --]
@@ -85,8 +85,9 @@
         <div class="halfPartBlock">
           [@customForm.input name="contactEmail" type="text" disabled=!canEdit i18nkey="preplanning.projectPartners.contactPersonEmail" required=true /]
         </div>
-        [#if responsabilities]
+        
         [#-- Responsabilities --]
+        [#if showResponsabilities]
         <div class="fullBlock partnerResponsabilities chosen">        
           [@customForm.textArea name="projectPartnerResponsabilities" i18nkey="preplanning.projectPartners.responsabilities" required=true /]
         </div>
@@ -94,32 +95,25 @@
       </div> <!-- End projectPartner-Template -->
 [/#macro]
 
-[#macro projectLeader leader canEdit=true]
+[#macro projectLeader leader showResponsabilities=false canEdit=true]
   [#if leader?has_content]
       <div id="projectLeader" class="projectLeader borderBox">
-        [#-- Partner identifier --]
-        <input type="hidden" name="project.leader.id" value="${leader.id?c}" />        
+        [#-- Organizations List --]
+        <div class="fullBlock organizationName chosen">
+          [@customForm.select name="" label="" disabled=!canEdit i18nkey="preplanning.projectPartners.leader.partner.name" listName="allPartners" keyFieldName="id"  displayFieldName="name" /]
+        </div> 
 
-        [#-- Partner Name --] 
-        <div class="fullBlock partnerName chosen">
-          [@customForm.select name="project.leader.partner" disabled=!canEdit label="" i18nkey="preplanning.projectPartners.leader.partner.name" listName="allPartners" keyFieldName="id"  displayFieldName="name" /]
-        </div>
-
-        [#-- Contact Name --]
-        <div class="halfPartBlock">
-          [@customForm.input name="project.leader.contactName" disabled=!canEdit type="text" i18nkey="preplanning.projectPartners.leader.contactPersonName" required=true /]
-        </div>
-
-        [#-- Contact Email --]
-        <div class="halfPartBlock">
-          [@customForm.input name="project.leader.contactEmail" disabled=!canEdit type="text" i18nkey="preplanning.projectPartners.leader.contactPersonEmail" required=true /]
+        [#-- Leaders List (User List) - Email accounts --]
+        <div class="fullBlock">
+          [@customForm.select name="" label="" disabled=!canEdit i18nkey="preplanning.projectPartners.leader.contactPersonEmail" listName="allProjectLeaders" keyFieldName="id"  displayFieldName="composedName" /]
         </div>
         
         [#-- Responsabilities --]
+        [#if showResponsabilities]
         <div class="fullBlock leaderResponsabilities chosen">        
-          [@customForm.textArea name="project.leader.responsabilities" i18nkey="preplanning.projectPartners.leader.responsabilities" required=true /]
+          [@customForm.textArea name="project.leaderResponsabilities" i18nkey="preplanning.projectPartners.leader.responsabilities" required=true /]
         </div>
-        
+        [/#if]
          
       </div> <!-- End projectLeader -->  
   [/#if]  

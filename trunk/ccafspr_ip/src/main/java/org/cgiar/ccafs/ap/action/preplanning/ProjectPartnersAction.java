@@ -77,7 +77,7 @@ public class ProjectPartnersAction extends BaseAction {
     return allPartners;
   }
 
-  public List<User> getAllProjectPartners() {
+  public List<User> getAllProjectLeaders() {
     return allProjectLeaders;
   }
 
@@ -139,21 +139,12 @@ public class ProjectPartnersAction extends BaseAction {
 
     // Getting the project partner leader.
     // TODO When the method is developed we will be able to use it -
-    // project.setLeader(userManager.getProjectLeader(projectId));
-    User fakeUser = new User();
-    fakeUser.setId(10);
-    fakeUser.setFirstName("Héctor");
-    fakeUser.setLastName("Tobón");
-    fakeUser.setEmail("h.f.tobon@cgiar.org");
-    fakeUser.setCcafsUser(true);
-    List<Institution> fakeUserInstitutions = new ArrayList<>();
-    Institution inst = institutionManager.getInstitution(3);
-    fakeUserInstitutions.add(inst);
-    fakeUser.setInstitutions(fakeUserInstitutions);
+    project.setLeader(allProjectLeaders.get(10));
+    project.setLeaderResponsabilities("My responsabilities are.....");
 
     // **************************************
 
-    project.setLeader(fakeUser);
+    // project.setLeader(userManager.getProjectLeader(projectId));
     // In case there is not a partner leader defined, an empty partner will be used for the view.
     if (project.getLeader() == null) {
       User projectLeader = new User();
