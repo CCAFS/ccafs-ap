@@ -15,7 +15,9 @@ package org.cgiar.ccafs.ap.action.preplanning;
 
 import org.cgiar.ccafs.ap.action.BaseAction;
 import org.cgiar.ccafs.ap.config.APConfig;
+import org.cgiar.ccafs.ap.config.APConstants;
 import org.cgiar.ccafs.ap.data.manager.IPElementManager;
+import org.cgiar.ccafs.ap.data.manager.IPIndicatorManager;
 import org.cgiar.ccafs.ap.data.model.IPElement;
 import org.cgiar.ccafs.ap.data.model.IPElementType;
 import org.cgiar.ccafs.ap.data.model.IPProgram;
@@ -35,6 +37,7 @@ public class MidOutcomesPreplanningAction extends BaseAction {
 
   // Managers
   IPElementManager ipElementManager;
+  IPIndicatorManager ipIndicatorManager;
 
   // Model
   List<IPElement> midOutcomes;
@@ -42,9 +45,15 @@ public class MidOutcomesPreplanningAction extends BaseAction {
   List<IPElement> midOutcomesFromDatabase;
 
   @Inject
-  public MidOutcomesPreplanningAction(APConfig config, IPElementManager ipElementManager) {
+  public MidOutcomesPreplanningAction(APConfig config, IPElementManager ipElementManager,
+    IPIndicatorManager ipIndicatorManager) {
     super(config);
     this.ipElementManager = ipElementManager;
+    this.ipIndicatorManager = ipIndicatorManager;
+  }
+
+  public int getElementTypeID() {
+    return APConstants.ELEMENT_TYPE_OUTCOME2019;
   }
 
   public List<IPElement> getMidOutcomes() {
@@ -57,17 +66,15 @@ public class MidOutcomesPreplanningAction extends BaseAction {
 
   @Override
   public void prepare() throws Exception {
-    IPProgram program = new IPProgram();
-    program.setId(1);
-
-    // The Outcomes 2025 type is stored with id 2
+    // Create an ipElementType with the identifier of the outcomes 2019 type
     IPElementType outcomesType = new IPElementType();
-    outcomesType.setId(2);
+    outcomesType.setId(APConstants.ELEMENT_TYPE_OUTCOME2025);
 
-    // The Outcomes 2019 type is stored with id 3
+    // Create an ipElementType with the identifier of the outcomes 2025 type
     IPElementType midOutcomesType = new IPElementType();
-    midOutcomesType.setId(3);
+    midOutcomesType.setId(APConstants.ELEMENT_TYPE_OUTCOME2019);
 
+    IPProgram program = getCurrentUser().getCurrentInstitution().getProgram();
     midOutcomes = ipElementManager.getIPElements(program, midOutcomesType);
     outcomesList = ipElementManager.getIPElements(program, outcomesType);
 
@@ -84,37 +91,39 @@ public class MidOutcomesPreplanningAction extends BaseAction {
 
   @Override
   public String save() {
-    IPProgram program = new IPProgram();
-    program.setId(1);
 
-    IPElementType type = new IPElementType();
-    type.setId(3);
+    if (!midOutcomes.isEmpty()) {
 
-    for (IPElement midOutcome : midOutcomes) {
-      if (midOutcome.getProgram() == null) {
-        midOutcome.setProgram(program);
-      }
-      if (midOutcome.getType() == null) {
-        midOutcome.setType(type);
-      }
-      if (midOutcome.getIndicators() != null) {
-        for (int i = 0; i < midOutcome.getIndicators().size(); i++) {
-          if (midOutcome.getIndicators().get(i).getDescription().isEmpty()) {
-            midOutcome.getIndicators().remove(i);
+      for (IPElement midOutcome : midOutcomes) {
+        if (midOutcome.getIndicators() != null) {
+          for (int i = 0; i < midOutcome.getIndicators().size(); i++) {
+            if (midOutcome.getIndicators().get(i).getDescription().isEmpty()) {
+              midOutcome.getIndicators().remove(i);
+            }
           }
         }
-      }
-      if (midOutcome.getContributesTo() != null) {
-        String[] values = new String[midOutcome.getContributesTo().size()];
-        for (int i = 0; i < midOutcome.getContributesTo().size(); i++) {
-          values[i] = String.valueOf(midOutcome.getContributesTo().get(i).getId());
+
+        if (midOutcome.getContributesTo() != null) {
+          String[] values = new String[midOutcome.getContributesTo().size()];
+          for (int i = 0; i < midOutcome.getContributesTo().size(); i++) {
+            values[i] = String.valueOf(midOutcome.getContributesTo().get(i).getId());
+          }
+          midOutcome.setContributesTo(ipElementManager.getIPElementList(values));
         }
-        midOutcome.setContributesTo(ipElementManager.getIPElementList(values));
+
+        // If the user removed the outcome we should delete it from the database
+        if (!midOutcomesFromDatabase.contains(midOutcome)) {
+          ipElementManager.deleteIPElement(midOutcome, getCurrentUser().getCurrentInstitution().getProgram());
+        } else {
+          // We should remove the ipIndicators of the database if the outcome wasn't removed
+          ipIndicatorManager.removeElementIndicators(midOutcome, getCurrentUser().getCurrentInstitution().getProgram());
+        }
       }
 
-      // If the user removed the outcome we should delete it
-      // from the database
-      if (!midOutcomesFromDatabase.contains(midOutcome)) {
+    } else {
+      // If all the midOutcomes were removed, we should remove all the records
+      // brought from the database
+      for (IPElement midOutcome : midOutcomesFromDatabase) {
         ipElementManager.deleteIPElement(midOutcome, getCurrentUser().getCurrentInstitution().getProgram());
       }
     }

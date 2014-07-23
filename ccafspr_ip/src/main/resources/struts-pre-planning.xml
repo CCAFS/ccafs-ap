@@ -12,7 +12,9 @@
     <!-- Section: Higher Level Impact Pathways  -->
     <action name="outcomes" class="org.cgiar.ccafs.ap.action.preplanning.OutcomesPreplanningAction">
       <result name="input">/WEB-INF/preplanning/outcomesPreplanning.ftl</result>
-      <result name="success">/WEB-INF/preplanning/outcomesPreplanning.ftl</result>
+      <result name="success" type="redirectAction">
+        <param name="actionName">outcomes</param>
+       </result>
     </action>
     
     <action name="midOutcomes" class="org.cgiar.ccafs.ap.action.preplanning.MidOutcomesPreplanningAction">

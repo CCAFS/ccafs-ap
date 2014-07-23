@@ -108,8 +108,11 @@ public class OutcomesPreplanningAction extends BaseAction {
       }
     }
 
-    ipElementManager.saveIPElements(outcomes);
-    return INPUT;
+    if (ipElementManager.saveIPElements(outcomes)) {
+      return SUCCESS;
+    } else {
+      return INPUT;
+    }
   }
 
   public void setOutcomes(List<IPElement> outcomes) {
