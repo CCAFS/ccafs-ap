@@ -213,7 +213,8 @@ public class MySQLIPElementDAO implements IPElementDAO {
     query.append(programID);
     query.append(" AND et.id = ");
     query.append(elementTypeID);
-
+    query.append(" AND pel.relation_type_id = ");
+    query.append(APConstants.PROGRAM_ELEMENT_RELATION_USE);
 
     LOG.debug("-- getIPElement() > Calling method executeQuery to get the results");
     return getData(query.toString());
@@ -254,7 +255,7 @@ public class MySQLIPElementDAO implements IPElementDAO {
     query.append("WHERE r.relation_type_id = ");
     query.append(relationTypeID);
     query.append(" GROUP BY e.id ");
-
+    System.out.println(query.toString());
     LOG.debug("-- getIPElementsRelated() > Calling method executeQuery to get the results");
     return getData(query.toString());
   }
