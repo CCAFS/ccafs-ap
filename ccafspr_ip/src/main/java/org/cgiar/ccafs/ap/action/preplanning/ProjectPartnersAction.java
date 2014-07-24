@@ -28,7 +28,6 @@ import org.cgiar.ccafs.ap.data.model.Project;
 import org.cgiar.ccafs.ap.data.model.ProjectPartner;
 import org.cgiar.ccafs.ap.data.model.User;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import com.google.inject.Inject;
@@ -143,12 +142,8 @@ public class ProjectPartnersAction extends BaseAction {
     // Getting all the countries
     countries = locationManager.getLocationsByType(APConstants.LOCATION_ELEMENT_TYPE_COUNTRY);
 
-    // ***********FAKE OBJECTS JUST TO TEST!******************
-
-
     // Getting all partner types
     partnerTypes = institutionManager.getAllInstitutionTypes();
-    // **************************************
 
     // Getting all Project Leaders
     allProjectLeaders = userManager.getAllUsers();
@@ -190,31 +185,5 @@ public class ProjectPartnersAction extends BaseAction {
     this.allProjectLeaders = allProjectLeaders;
   }
 
-  // TODO - Temporal - To be removed!
-  /*
-   * private List<Country> temporalGetAllCountries() {
-   * ArrayList<Country> countries = new ArrayList<Country>();
-   * for (int c = 1; c <= 30; c++) {
-   * Country co = new Country(RandomStringUtils.randomAlphabetic(2), RandomStringUtils.randomAlphabetic(10));
-   * // Country co = new Country(new Random().nextInt(1000) + "", RandomStringUtils.randomAlphabetic(10));
-   * if (!countries.contains(co)) {
-   * countries.add(co);
-   * } else {
-   * System.out.println("ya existe " + co);
-   * }
-   * }
-   * countries.add(new Country("coo", "Colombia"));
-   * return countries;
-   * }
-   */
-
-  // TODO - Temporal - To be removed!
-  private List<InstitutionType> temporalGetAllPartnerTypes() {
-    ArrayList<InstitutionType> types = new ArrayList<InstitutionType>();
-    for (int c = 1; c <= 20; c++) {
-      types.add(new InstitutionType(c, "Type Name " + c, "Acronym "));
-    }
-    return types;
-  }
 
 }
