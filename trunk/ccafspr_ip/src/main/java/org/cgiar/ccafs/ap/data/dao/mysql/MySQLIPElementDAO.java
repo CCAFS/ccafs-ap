@@ -206,8 +206,8 @@ public class MySQLIPElementDAO implements IPElementDAO {
   }
 
   @Override
-  public List<Map<String, String>> getParentsOfIPElement(int ipElementID) {
-    LOG.debug(">> getParentsOfIPElement( ipElementID = {} )", ipElementID);
+  public List<Map<String, String>> getIPElementsRelated(int ipElementID, int relationTypeID) {
+    LOG.debug(">> getIPElementsRelated( ipElementID = {}, relationTypeID = {} )", ipElementID, relationTypeID);
 
     StringBuilder query = new StringBuilder();
     query.append("SELECT e.id, e.description,  ");
@@ -220,8 +220,10 @@ public class MySQLIPElementDAO implements IPElementDAO {
     query.append("INNER JOIN ip_element_types et ON e.element_type_id = et.id ");
     query.append("INNER JOIN ip_program_elements pel ON e.id = pel.element_id ");
     query.append("INNER JOIN ip_programs pro ON pel.program_id = pro.id ");
+    query.append("WHERE r.relation_type_id = ");
+    query.append(relationTypeID);
 
-    LOG.debug("-- getParentsOfIPElement() > Calling method executeQuery to get the results");
+    LOG.debug("-- getIPElementsRelated() > Calling method executeQuery to get the results");
     return getData(query.toString());
   }
 
@@ -254,18 +256,20 @@ public class MySQLIPElementDAO implements IPElementDAO {
   }
 
   @Override
-  public int relateIPElement(int elementID, int programID) {
-    LOG.debug(">> relateIPElement(elementID, programID)", elementID, programID);
+  public int relateIPElement(int elementID, int programID, int relationTypeID) {
+    LOG.debug(">> relateIPElement(elementID={}, programID={}, relationTypeID={})", new int[] {elementID, programID,
+      relationTypeID});
 
     StringBuilder query = new StringBuilder();
-    query.append("INSERT INTO ip_program_elements (element_id, program_id) ");
-    query.append("VALUES (?, ?) ");
+    query.append("INSERT INTO ip_program_elements (element_id, program_id, relation_type_id) ");
+    query.append("VALUES (?, ?, ?) ");
     // ON DUPLICATE KEY -> do nothing
     query.append("ON DUPLICATE KEY UPDATE element_id = element_id");
 
-    Object[] values = new Object[2];
+    Object[] values = new Object[3];
     values[0] = elementID;
     values[1] = programID;
+    values[2] = relationTypeID;
 
     int result = saveData(query.toString(), values);
     LOG.debug("<< relateIPElements():{}", result);

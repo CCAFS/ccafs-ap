@@ -1,5 +1,6 @@
 package org.cgiar.ccafs.ap.data.manager.impl;
 
+import org.cgiar.ccafs.ap.config.APConstants;
 import org.cgiar.ccafs.ap.data.dao.IPElementDAO;
 import org.cgiar.ccafs.ap.data.dao.IPIndicatorDAO;
 import org.cgiar.ccafs.ap.data.dao.IPRelationshipDAO;
@@ -110,8 +111,13 @@ public class IPElementManagerImpl implements IPElementManager {
 
       // If the ip_element was updated, createIPElement method returns 0, update the value
       elementId = (elementId == 0) ? element.getId() : elementId;
+      // Add the relation of type creation
+      programElementID =
+        ipElementDAO.relateIPElement(elementId, element.getProgram().getId(), APConstants.PROGRAM_ELEMENT_CREATED_BY);
 
-      programElementID = ipElementDAO.relateIPElement(elementId, element.getProgram().getId());
+      // Add the connection of type 'Used by'
+      programElementID =
+        ipElementDAO.relateIPElement(elementId, element.getProgram().getId(), APConstants.PROGRAM_ELEMENT_USED_BY);
 
       if (programElementID == 0) {
         programElementID = ipElementDAO.getProgramElementID(elementId, element.getProgram().getId());
@@ -144,10 +150,19 @@ public class IPElementManagerImpl implements IPElementManager {
           }
         }
 
-        // Save the relations added if any
+        // Save the relations of type contribution added if any
         if (element.getContributesTo() != null) {
           for (IPElement parentElement : element.getContributesTo()) {
-            ipRelationshipDAO.saveIPRelation(parentElement.getId(), elementId);
+            ipRelationshipDAO.saveIPRelation(parentElement.getId(), elementId,
+              APConstants.ELEMENT_RELATION_CONTRIBUTION);
+          }
+        }
+
+        // Save the relations of type translation if any
+        if (element.getTranslatedOf() != null) {
+          for (IPElement parentElement : element.getTranslatedOf()) {
+            ipRelationshipDAO
+              .saveIPRelation(parentElement.getId(), elementId, APConstants.ELEMENT_RELATION_TRANSLATION);
           }
         }
       } else {
@@ -200,16 +215,29 @@ public class IPElementManagerImpl implements IPElementManager {
       }
       element.setIndicators(indicators);
 
-      // Set element parents if exists
-      List<IPElement> parents = new ArrayList<>();
-      List<Map<String, String>> parentsData = ipElementDAO.getParentsOfIPElement(element.getId());
-      for (Map<String, String> parentData : parentsData) {
+      // Set elements 'contributesTo' if exists
+      List<IPElement> elementsRelated = new ArrayList<>();
+      List<Map<String, String>> elementsData =
+        ipElementDAO.getIPElementsRelated(element.getId(), APConstants.ELEMENT_RELATION_CONTRIBUTION);
+      for (Map<String, String> parentData : elementsData) {
         IPElement parentElement = new IPElement();
         parentElement.setId(Integer.parseInt(parentData.get("id")));
         parentElement.setDescription(parentData.get("description"));
-        parents.add(parentElement);
+        elementsRelated.add(parentElement);
       }
-      element.setContributesTo(parents);
+      element.setContributesTo(elementsRelated);
+
+      // Set elements 'translatedOf' if exists
+      elementsRelated = new ArrayList<>();
+      elementsData = ipElementDAO.getIPElementsRelated(element.getId(), APConstants.ELEMENT_RELATION_TRANSLATION);
+      for (Map<String, String> parentData : elementsData) {
+        IPElement parentElement = new IPElement();
+        parentElement.setId(Integer.parseInt(parentData.get("id")));
+        parentElement.setDescription(parentData.get("description"));
+        elementsRelated.add(parentElement);
+      }
+      element.setTranslatedOf(elementsRelated);
+
 
       elementsList.add(element);
     }

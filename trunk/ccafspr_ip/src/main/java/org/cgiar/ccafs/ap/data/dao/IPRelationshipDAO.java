@@ -12,7 +12,8 @@ public interface IPRelationshipDAO {
    * 
    * @param parentElementID - element identifier
    * @param childElementID - element identifier
+   * @param relationTypeID - relation type identifier
    * @return true if all the information was saved successfully. False otherwise
    */
-  public boolean saveIPRelation(int parentElementID, int childElementID);
+  public boolean saveIPRelation(int parentElementID, int childElementID, int relationTypeID);
 }

@@ -43,4 +43,12 @@ public final class APConstants {
 
   // Identifiers for programs types which come from the database
   public static final int FLAGSHIP_PROGRAM_TYPE = 1;
+
+  // Identifier for types of program element relations
+  public static final int PROGRAM_ELEMENT_CREATED_BY = 1;
+  public static final int PROGRAM_ELEMENT_USED_BY = 2;
+
+  // Identifiers for types of ip elements relationships
+  public static final int ELEMENT_RELATION_CONTRIBUTION = 1;
+  public static final int ELEMENT_RELATION_TRANSLATION = 2;
 }
