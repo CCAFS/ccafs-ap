@@ -47,6 +47,15 @@ public interface IPElementDAO {
   public boolean deleteProgramElement(int programElementID);
 
   /**
+   * This method returns the information of the ipProgram that created
+   * the ipElement
+   * 
+   * @param ipElementID - IpElement identifier
+   * @return a Map with the information
+   */
+  public Map<String, String> getElementCreator(int ipElementID);
+
+  /**
    * This method return a all the IP elements which belongs to the program
    * indicated by parameter.
    * 
