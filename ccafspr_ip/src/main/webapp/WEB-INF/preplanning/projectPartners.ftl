@@ -35,8 +35,8 @@
     <h1 class="contentTitle">
 		  [@s.text name="preplanning.projectPartners.partners.title" /]  
     </h1> 
-    [#-- Listing partners from partnersTemplate.ftl 
-    [@partnersTemplate.partnerSection projectPartners=project.projectPartners partnerTypes=partnerTypes countries=countries canEdit=true canRemove=true /]--]
+    [#-- Listing partners from partnersTemplate.ftl --]
+    [@partnersTemplate.partnerSection projectPartners=project.projectPartners partnerTypes=partnerTypes countries=countries canEdit=true canRemove=true /]
     
     <div id="addProjectPartner" class="addLink">
       <img src="${baseUrl}/images/global/icon-add.png" />

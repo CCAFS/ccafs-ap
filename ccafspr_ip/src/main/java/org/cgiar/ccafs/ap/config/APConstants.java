@@ -57,4 +57,8 @@ public final class APConstants {
   public static final int PROGRAM_ELEMENT_RELATION_CREATION = 1;
   public static final int PROGRAM_ELEMENT_RELATION_USE = 2;
 
+  // Identifiers for Location Elements Type which come from the database
+  public static final int LOCATION_ELEMENT_TYPE_REGION = 1;
+  public static final int LOCATION_ELEMENT_TYPE_COUNTRY = 2;
+
 }

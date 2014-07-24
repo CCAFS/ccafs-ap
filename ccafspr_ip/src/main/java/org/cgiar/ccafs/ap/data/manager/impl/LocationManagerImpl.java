@@ -1,0 +1,77 @@
+/*
+ * ****************************************************************
+ * This file is part of CCAFS Planning and Reporting Platform.
+ * CCAFS P&R is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * at your option) any later version.
+ * CCAFS P&R is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+ * GNU General Public License for more details.
+ * You should have received a copy of the GNU General Public License
+ * along with CCAFS P&R. If not, see <http://www.gnu.org/licenses/>.
+ * ****************************************************************
+ */
+package org.cgiar.ccafs.ap.data.manager.impl;
+
+import org.cgiar.ccafs.ap.config.APConstants;
+import org.cgiar.ccafs.ap.data.dao.LocationDAO;
+import org.cgiar.ccafs.ap.data.manager.LocationManager;
+import org.cgiar.ccafs.ap.data.model.Country;
+import org.cgiar.ccafs.ap.data.model.Location;
+
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
+
+import com.google.inject.Inject;
+
+/**
+ * @author Javier Andres Gallego B.
+ */
+public class LocationManagerImpl implements LocationManager {
+
+
+  private LocationDAO locationDAO;
+
+  @Inject
+  public LocationManagerImpl(LocationDAO locationDAO) {
+    this.locationDAO = locationDAO;
+  }
+
+
+  @Override
+  public Location getLocation(int typeID, int locationID) {
+    Map<String, String> lData = locationDAO.getLocation(typeID, locationID);
+    if (!lData.isEmpty()) {
+      Location location = new Country();
+      location.setId(Integer.parseInt(lData.get("id")));
+      location.setName(lData.get("name"));
+      location.setCode(lData.get("code"));
+
+      return location;
+    }
+    return null;
+  }
+
+  public List<Location> getLocationsByType(int typeID) {
+    List<Location> locations = new ArrayList<>();
+    List<Map<String, String>> locationDataList = locationDAO.getLocationsByType(typeID);
+    if (typeID == APConstants.LOCATION_ELEMENT_TYPE_COUNTRY) {
+      for (Map<String, String> lData : locationDataList) {
+        Location location = new Country();
+        location.setId(Integer.parseInt(lData.get("id")));
+        location.setName(lData.get("name"));
+        location.setCode(lData.get("code"));
+
+        // Adding object to the array.
+        locations.add(location);
+      }
+
+
+    }
+    return locations;
+  }
+
+}

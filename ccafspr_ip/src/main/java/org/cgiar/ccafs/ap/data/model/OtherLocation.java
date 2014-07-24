@@ -15,50 +15,15 @@ package org.cgiar.ccafs.ap.data.model;
 
 import org.apache.commons.lang3.builder.ToStringBuilder;
 
-/**
- * This class represents a Country.
- * 
- * @author Héctor Fabio Tobón R.
- * @author Hernán David Carvajal
- * @author Javier Andres Gallego
- */
-public abstract class Location {
+// TODO ask to Hernán how this will be implemented
+// This class extend from Location class, and it will be used for the other Location Elements Types other than
+// Country and Region
+public class OtherLocation extends Location {
 
-  private int id;
-  private String name;
-  private String code;
 
-  public Location() {
+  public OtherLocation() {
   }
 
-  public Location(int id, String name) {
-    this.id = id;
-    this.name = name;
-  }
-
-  public String getcode() {
-    return code;
-  }
-
-  public int getId() {
-    return id;
-  }
-
-  public String getName() {
-    return name;
-  }
-
-  public void setCode(String code) {
-    this.code = code;
-  }
-
-  public void setId(int id) {
-    this.id = id;
-  }
-
-  public void setName(String name) {
-    this.name = name;
-  }
 
   @Override
   public String toString() {
