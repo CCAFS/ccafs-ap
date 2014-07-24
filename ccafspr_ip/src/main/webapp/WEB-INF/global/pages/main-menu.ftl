@@ -88,7 +88,9 @@
   	[/#if]
   </div>
 </nav>
-
+<div class="container">
+ [#include "/WEB-INF/global/pages/breadcrumb.ftl"]
+</div>
 <div class="container">
 	<section id="generalMessages">
 	  [#-- Messages are going to show using notify plugin (see global.js) --]
