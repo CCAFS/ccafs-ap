@@ -17,6 +17,8 @@ import org.slf4j.LoggerFactory;
 
 public class IPElementsAction extends BaseAction {
 
+  private static final long serialVersionUID = -6424773640004100983L;
+
   // Logger
   private static final Logger LOG = LoggerFactory.getLogger(IPElementsAction.class);
 
@@ -36,17 +38,16 @@ public class IPElementsAction extends BaseAction {
 
   @Override
   public String execute() throws Exception {
-    // Temporal program
+    // Program object
     IPProgram program = new IPProgram();
     program.setId(Integer.parseInt(programID));
 
-    // Temporal IP ELement type
+    // IP ELement type object
     IPElementType type = new IPElementType();
     type.setId(Integer.parseInt(ipElementTypeID));
 
     ipElements = ipElementManager.getIPElements(program, type);
 
-    LOG.info("-- execute() > CCAFS sites in country '{}' was loaded.", programID);
     return SUCCESS;
   }
 

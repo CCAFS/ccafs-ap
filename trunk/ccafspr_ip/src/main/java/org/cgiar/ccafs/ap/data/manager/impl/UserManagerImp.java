@@ -34,7 +34,7 @@ public class UserManagerImp implements UserManager {
   /**
    * This method make the login process against the active directory
    * if the user has an institutional account
-   *
+   * 
    * @param user
    * @return true if it was successfully logged in. False otherwise
    */
@@ -54,7 +54,7 @@ public class UserManagerImp implements UserManager {
         con.closeContext();
       }
     } catch (Exception e) {
-      // TODO
+      LOG.error("Exception raised trying to log in the user {} against the active directory.", user.getId(), e);
     }
 
     return logued;
