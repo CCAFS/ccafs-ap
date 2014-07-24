@@ -89,6 +89,7 @@ public class IPElementManagerImpl implements IPElementManager {
   @Override
   public List<IPElement> getIPElements(IPProgram program, IPElementType type) {
     List<Map<String, String>> ipElementDataList = ipElementDAO.getIPElement(program.getId(), type.getId());
+    System.out.println(ipElementDataList);
     return setDataToIPElementObjects(ipElementDataList);
   }
 
@@ -214,6 +215,13 @@ public class IPElementManagerImpl implements IPElementManager {
         indicator.setId(Integer.parseInt(indicatorData.get("id")));
         indicator.setDescription(indicatorData.get("description"));
         indicator.setTarget(indicatorData.get("target"));
+
+        // Indicator parent
+        IPIndicator indicatorParent = new IPIndicator();
+        indicatorParent.setId(Integer.parseInt(indicatorData.get("parent_id")));
+        indicatorParent.setDescription(indicatorData.get("parent_description"));
+        indicator.setParent(indicatorParent);
+
         indicators.add(indicator);
       }
       element.setIndicators(indicators);
