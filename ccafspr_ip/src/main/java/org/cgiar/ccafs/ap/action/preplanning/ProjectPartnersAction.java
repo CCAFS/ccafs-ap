@@ -13,31 +13,31 @@
  *****************************************************************/
 package org.cgiar.ccafs.ap.action.preplanning;
 
+import org.cgiar.ccafs.ap.action.BaseAction;
+import org.cgiar.ccafs.ap.config.APConfig;
+import org.cgiar.ccafs.ap.config.APConstants;
+import org.cgiar.ccafs.ap.data.manager.InstitutionManager;
+import org.cgiar.ccafs.ap.data.manager.ProjectManager;
+import org.cgiar.ccafs.ap.data.manager.ProjectPartnerManager;
+import org.cgiar.ccafs.ap.data.manager.UserManager;
+import org.cgiar.ccafs.ap.data.model.Country;
+import org.cgiar.ccafs.ap.data.model.Institution;
+import org.cgiar.ccafs.ap.data.model.InstitutionType;
+import org.cgiar.ccafs.ap.data.model.Project;
+import org.cgiar.ccafs.ap.data.model.ProjectPartner;
+import org.cgiar.ccafs.ap.data.model.User;
+
 import java.util.ArrayList;
 import java.util.List;
 
-import org.cgiar.ccafs.ap.data.model.User;
-import org.cgiar.ccafs.ap.data.manager.UserManager;
-import org.cgiar.ccafs.ap.data.manager.ProjectManager;
-import org.apache.commons.lang3.StringUtils;
-import org.cgiar.ccafs.ap.config.APConstants;
-import org.cgiar.ccafs.ap.data.manager.InstitutionManager;
-import org.cgiar.ccafs.ap.data.manager.ProjectPartnerManager;
-import org.cgiar.ccafs.ap.data.model.ProjectPartner;
-import org.cgiar.ccafs.ap.data.model.Project;
-import org.apache.commons.lang3.RandomStringUtils;
-import org.cgiar.ccafs.ap.data.model.Country;
-import org.cgiar.ccafs.ap.data.model.InstitutionType;
-import org.cgiar.ccafs.ap.data.model.Institution;
-import org.cgiar.ccafs.ap.action.BaseAction;
 import com.google.inject.Inject;
-import org.cgiar.ccafs.ap.config.APConfig;
+import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 /**
  * This class is used to manage the Project Partners section in the pre-planning step.
- *
+ * 
  * @author Héctor Tobón
  */
 public class ProjectPartnersAction extends BaseAction {
@@ -138,7 +138,7 @@ public class ProjectPartnersAction extends BaseAction {
 
     // ***********FAKE OBJECTS JUST TO TEST!******************
     // TODO - Getting all countries from a Mock list until CountryManager is finished.
-    countries = this.temporalGetAllCountries();
+    //countries = this.temporalGetAllCountries();
 
     // Getting all partner types
     partnerTypes = this.temporalGetAllPartnerTypes();
@@ -185,20 +185,22 @@ public class ProjectPartnersAction extends BaseAction {
   }
 
   // TODO - Temporal - To be removed!
-  private List<Country> temporalGetAllCountries() {
-    ArrayList<Country> countries = new ArrayList<Country>();
-    for (int c = 1; c <= 30; c++) {
-      Country co = new Country(RandomStringUtils.randomAlphabetic(2), RandomStringUtils.randomAlphabetic(10));
-      // Country co = new Country(new Random().nextInt(1000) + "", RandomStringUtils.randomAlphabetic(10));
-      if (!countries.contains(co)) {
-        countries.add(co);
-      } else {
-        System.out.println("ya existe " + co);
-      }
-    }
-    countries.add(new Country("coo", "Colombia"));
-    return countries;
-  }
+  /*
+   * private List<Country> temporalGetAllCountries() {
+   * ArrayList<Country> countries = new ArrayList<Country>();
+   * for (int c = 1; c <= 30; c++) {
+   * Country co = new Country(RandomStringUtils.randomAlphabetic(2), RandomStringUtils.randomAlphabetic(10));
+   * // Country co = new Country(new Random().nextInt(1000) + "", RandomStringUtils.randomAlphabetic(10));
+   * if (!countries.contains(co)) {
+   * countries.add(co);
+   * } else {
+   * System.out.println("ya existe " + co);
+   * }
+   * }
+   * countries.add(new Country("coo", "Colombia"));
+   * return countries;
+   * }
+   */
 
   // TODO - Temporal - To be removed!
   private List<InstitutionType> temporalGetAllPartnerTypes() {
