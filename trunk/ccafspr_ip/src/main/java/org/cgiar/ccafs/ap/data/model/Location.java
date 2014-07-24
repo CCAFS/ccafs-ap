@@ -20,23 +20,44 @@ import org.apache.commons.lang3.builder.ToStringBuilder;
  * 
  * @author Héctor Fabio Tobón R.
  * @author Hernán David Carvajal
- * @author Javier Andrés Gallego
  */
-public class Country extends Location {
+public abstract class Location {
 
-  private Region region;
+  private int id;
+  private String name;
+  private String code;
 
-  public Country() {
+  public Location() {
   }
 
-  public Region getRegion() {
-    return region;
+  public Location(int id, String name) {
+    this.id = id;
+    this.name = name;
   }
 
-  public void setRegion(Region region) {
-    this.region = region;
+  public String getcode() {
+    return code;
   }
 
+  public int getId() {
+    return id;
+  }
+
+  public String getName() {
+    return name;
+  }
+
+  public void setCode(String code) {
+    this.code = code;
+  }
+
+  public void setId(int id) {
+    this.id = id;
+  }
+
+  public void setName(String name) {
+    this.name = name;
+  }
 
   @Override
   public String toString() {

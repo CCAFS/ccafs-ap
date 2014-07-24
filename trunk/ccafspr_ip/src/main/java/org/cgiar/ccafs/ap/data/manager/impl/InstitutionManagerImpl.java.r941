@@ -17,7 +17,6 @@ package org.cgiar.ccafs.ap.data.manager.impl;
 
 import org.cgiar.ccafs.ap.data.dao.InstitutionDAO;
 import org.cgiar.ccafs.ap.data.manager.InstitutionManager;
-import org.cgiar.ccafs.ap.data.model.Country;
 import org.cgiar.ccafs.ap.data.model.IPProgram;
 import org.cgiar.ccafs.ap.data.model.Institution;
 import org.cgiar.ccafs.ap.data.model.InstitutionType;
@@ -60,27 +59,18 @@ public class InstitutionManagerImpl implements InstitutionManager {
       InstitutionType type = new InstitutionType();
       if (iData.get("institution_type_id") != null) {
         type.setId(Integer.parseInt(iData.get("institution_type_id")));
-        type.setName(iData.get("institution_type_name"));
-        type.setAcronym(iData.get("institution_type_acronym"));
+        type.setName(iData.get("name"));
+        type.setAcronym(iData.get("acronym"));
         institution.setType(type);
       }
       // Program Object
       IPProgram program = new IPProgram();
       if (iData.get("program_id") != null) {
         program.setId(Integer.parseInt(iData.get("program_id")));
-        program.setName(iData.get("program_name"));
-        program.setAcronym(iData.get("program_acronym"));
+        program.setName(iData.get("name"));
+        program.setAcronym(iData.get("acronym"));
         institution.setProgram(program);
       }
-      // Location Object
-      Country country = new Country();
-      if (iData.get("loc_elements_id") != null) {
-        country.setId(Integer.parseInt(iData.get("loc_elements_id")));
-        country.setName(iData.get("loc_elements_name"));
-        country.setCode(iData.get("loc_elements_code"));
-        institution.setCountry(country);
-      }
-
       // Adding object to the array.
       institutions.add(institution);
     }
@@ -93,7 +83,7 @@ public class InstitutionManagerImpl implements InstitutionManager {
     return null;
   }
 
-
+  // TODO - Pending to be implemented.
   @Override
   public Institution getInstitution(int institutionId) {
     Map<String, String> iData = institutionDAO.getInstitution(institutionId);
@@ -105,29 +95,18 @@ public class InstitutionManagerImpl implements InstitutionManager {
       institution.setContactPersonName(iData.get("contactPersonName"));
       institution.setContactPersonEmail(iData.get("contactPersonEmail"));
 
+      // TODO ask if in this method is necessary to call the program name and the institution type name
       // InstitutionType Object
       InstitutionType type = new InstitutionType();
       if (iData.get("institution_type_id") != null) {
         type.setId(Integer.parseInt(iData.get("institution_type_id")));
-        type.setName(iData.get("institution_type_name"));
-        type.setAcronym(iData.get("institution_type_acronym"));
         institution.setType(type);
       }
       // Program Object
       IPProgram program = new IPProgram();
       if (iData.get("program_id") != null) {
         program.setId(Integer.parseInt(iData.get("program_id")));
-        program.setName(iData.get("program_name"));
-        program.setAcronym(iData.get("program_acronym"));
         institution.setProgram(program);
-      }
-      // Location Object
-      Country country = new Country();
-      if (iData.get("loc_elements_id") != null) {
-        country.setId(Integer.parseInt(iData.get("loc_elements_id")));
-        country.setName(iData.get("loc_elements_name"));
-        country.setCode(iData.get("loc_elements_code"));
-        institution.setCountry(country);
       }
       return institution;
     }
