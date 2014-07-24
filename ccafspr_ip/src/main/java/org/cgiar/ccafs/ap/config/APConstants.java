@@ -52,4 +52,9 @@ public final class APConstants {
   // Identifiers for types of ip elements relationships
   public static final int ELEMENT_RELATION_CONTRIBUTION = 1;
   public static final int ELEMENT_RELATION_TRANSLATION = 2;
+
+  // Identifier for types of relations between programs and elements
+  public static final int PROGRAM_ELEMENT_RELATION_CREATION = 1;
+  public static final int PROGRAM_ELEMENT_RELATION_USE = 2;
+
 }

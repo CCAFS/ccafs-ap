@@ -5,6 +5,7 @@ import org.cgiar.ccafs.ap.data.dao.IPElementDAO;
 import org.cgiar.ccafs.ap.data.dao.IPIndicatorDAO;
 import org.cgiar.ccafs.ap.data.dao.IPRelationshipDAO;
 import org.cgiar.ccafs.ap.data.manager.IPElementManager;
+import org.cgiar.ccafs.ap.data.manager.IPIndicatorManager;
 import org.cgiar.ccafs.ap.data.model.IPElement;
 import org.cgiar.ccafs.ap.data.model.IPElementType;
 import org.cgiar.ccafs.ap.data.model.IPIndicator;
@@ -24,13 +25,15 @@ public class IPElementManagerImpl implements IPElementManager {
   private IPElementDAO ipElementDAO;
   private IPIndicatorDAO ipIndicatorDAO;
   private IPRelationshipDAO ipRelationshipDAO;
+  private IPIndicatorManager ipIndicatorManager;
 
   @Inject
   public IPElementManagerImpl(IPElementDAO ipElementDAO, IPIndicatorDAO ipIndicatorDAO,
-    IPRelationshipDAO ipRelationshipDAO) {
+    IPRelationshipDAO ipRelationshipDAO, IPIndicatorManager ipIndicatorManager) {
     this.ipElementDAO = ipElementDAO;
     this.ipIndicatorDAO = ipIndicatorDAO;
     this.ipRelationshipDAO = ipRelationshipDAO;
+    this.ipIndicatorManager = ipIndicatorManager;
   }
 
   @Override
@@ -234,6 +237,16 @@ public class IPElementManagerImpl implements IPElementManager {
         IPElement parentElement = new IPElement();
         parentElement.setId(Integer.parseInt(parentData.get("id")));
         parentElement.setDescription(parentData.get("description"));
+
+        // To get the indicators of the parent we need to know which program created it
+        Map<String, String> programCreatorData = ipElementDAO.getElementCreator(parentElement.getId());
+        IPProgram parentProgram = new IPProgram();
+        parentProgram.setId(Integer.parseInt(programCreatorData.get("id")));
+        parentProgram.setName(programCreatorData.get("name"));
+        parentElement.setProgram(parentProgram);
+
+        parentElement.setIndicators(ipIndicatorManager.getElementIndicators(parentElement));
+
         elementsRelated.add(parentElement);
       }
       element.setTranslatedOf(elementsRelated);

@@ -1,5 +1,6 @@
 package org.cgiar.ccafs.ap.data.dao.mysql;
 
+import org.cgiar.ccafs.ap.config.APConstants;
 import org.cgiar.ccafs.ap.data.dao.DAOManager;
 import org.cgiar.ccafs.ap.data.dao.IPElementDAO;
 
@@ -144,6 +145,36 @@ public class MySQLIPElementDAO implements IPElementDAO {
 
     LOG.debug("<< executeQuery():ipElementList.size={}", ipElementList.size());
     return ipElementList;
+  }
+
+  @Override
+  public Map<String, String> getElementCreator(int ipElementID) {
+    Map<String, String> programData = new HashMap<>();
+    StringBuilder query = new StringBuilder();
+    query.append("SELECT ipp.id, ipp.name, ipp.type_id as 'program_type_id' ");
+    query.append("FROM ip_programs ipp ");
+    query.append("INNER JOIN ip_program_elements ipe ON ipp.id = ipe.program_id ");
+    query.append("INNER JOIN ip_program_element_relation_types ipt ON ipe.relation_type_id = ipt.id ");
+    query.append("WHERE ipe.element_id = ");
+    query.append(ipElementID);
+    query.append(" AND ipt.id = ");
+    query.append(APConstants.PROGRAM_ELEMENT_RELATION_CREATION);
+
+    try (Connection con = databaseManager.getConnection()) {
+      ResultSet rs = databaseManager.makeQuery(query.toString(), con);
+      if (rs.next()) {
+        programData.put("id", rs.getString("id"));
+        programData.put("name", rs.getString("name"));
+        programData.put("program_type_id", rs.getString("program_type_id"));
+      }
+      rs.close();
+    } catch (SQLException e) {
+      String exceptionMessage = "-- getElementCreator() > Exception raised trying to get the program ";
+      exceptionMessage += "which created the ipElement " + ipElementID;
+
+      LOG.error(exceptionMessage, e);
+    }
+    return programData;
   }
 
   @Override
