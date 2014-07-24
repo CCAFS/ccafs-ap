@@ -26,8 +26,6 @@ public class Country extends Location {
 
   private Region region;
 
-  public Country() {
-  }
 
   public Region getRegion() {
     return region;

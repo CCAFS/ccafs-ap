@@ -14,17 +14,15 @@ public interface InstitutionDAO {
    * This method return all the Institutions
    * indicated by parameter.
    * 
-   * @param programID, identifier of the program
-   * @return a list of maps with the information of all IP elements returned.
+   * @return a list of maps with the information of all Institutions returned .
    */
 
   public List<Map<String, String>> getAllInstitutions();
 
   /**
-   * This method return a all the IP elements which belongs to the program
-   * indicated by parameter.
+   * This method return the information from Institution give by an institutionID
    * 
-   * @param programID, identifier of the program
+   * @param institutionID, identifier of the institution
    * @return a list of maps with the information of all IP elements returned.
    */
 

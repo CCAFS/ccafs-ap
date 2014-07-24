@@ -17,12 +17,13 @@ import org.cgiar.ccafs.ap.action.BaseAction;
 import org.cgiar.ccafs.ap.config.APConfig;
 import org.cgiar.ccafs.ap.config.APConstants;
 import org.cgiar.ccafs.ap.data.manager.InstitutionManager;
+import org.cgiar.ccafs.ap.data.manager.LocationManager;
 import org.cgiar.ccafs.ap.data.manager.ProjectManager;
 import org.cgiar.ccafs.ap.data.manager.ProjectPartnerManager;
 import org.cgiar.ccafs.ap.data.manager.UserManager;
-import org.cgiar.ccafs.ap.data.model.Country;
 import org.cgiar.ccafs.ap.data.model.Institution;
 import org.cgiar.ccafs.ap.data.model.InstitutionType;
+import org.cgiar.ccafs.ap.data.model.Location;
 import org.cgiar.ccafs.ap.data.model.Project;
 import org.cgiar.ccafs.ap.data.model.ProjectPartner;
 import org.cgiar.ccafs.ap.data.model.User;
@@ -49,6 +50,7 @@ public class ProjectPartnersAction extends BaseAction {
   // Managers
   private ProjectPartnerManager projectPartnerManager;
   private InstitutionManager institutionManager;
+  private LocationManager locationManager;
   private ProjectManager projectManager;
   private UserManager userManager;
 
@@ -58,16 +60,18 @@ public class ProjectPartnersAction extends BaseAction {
 
   // Model for the view
   private List<InstitutionType> partnerTypes;
-  private List<Country> countries;
+  private List<Location> countries;
   private List<Institution> allPartners; // will be used to list all the partners that have the system.
   private List<User> allProjectLeaders; // will be used to list all the project leaders that have the system.
 
   @Inject
   public ProjectPartnersAction(APConfig config, ProjectPartnerManager projectPartnerManager,
-    InstitutionManager institutionManager, ProjectManager projectManager, UserManager userManager) {
+    InstitutionManager institutionManager, LocationManager locationManager, ProjectManager projectManager,
+    UserManager userManager) {
     super(config);
     this.projectPartnerManager = projectPartnerManager;
     this.institutionManager = institutionManager;
+    this.locationManager = locationManager;
     this.projectManager = projectManager;
     this.userManager = userManager;
   }
@@ -93,10 +97,10 @@ public class ProjectPartnersAction extends BaseAction {
     return allProjectLeaders;
   }
 
-
-  public List<Country> getCountries() {
+  public List<Location> getCountries() {
     return countries;
   }
+
 
   public List<InstitutionType> getPartnerTypes() {
     return partnerTypes;
@@ -136,9 +140,11 @@ public class ProjectPartnersAction extends BaseAction {
     // Getting all partners.
     allPartners = institutionManager.getAllInstitutions();
 
+    // Getting all the countries
+    countries = locationManager.getLocationsByType(APConstants.LOCATION_ELEMENT_TYPE_COUNTRY);
+
     // ***********FAKE OBJECTS JUST TO TEST!******************
-    // TODO - Getting all countries from a Mock list until CountryManager is finished.
-    //countries = this.temporalGetAllCountries();
+
 
     // Getting all partner types
     partnerTypes = this.temporalGetAllPartnerTypes();
