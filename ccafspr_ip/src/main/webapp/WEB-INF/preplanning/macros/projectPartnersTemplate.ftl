@@ -99,13 +99,13 @@
   [#if leader?has_content]
       <div id="projectLeader" class="projectLeader borderBox">
         [#-- Organizations List --]
-        <div class="fullBlock organizationName chosen">
-          [@customForm.select name="" label="" disabled=!canEdit i18nkey="preplanning.projectPartners.leader.partner.name" listName="allPartners" keyFieldName="id"  displayFieldName="name" /]
+        <div class="fullBlock organizationName chosen">          
+          [@customForm.select name="project.leader.currentInstitution" disabled=!canEdit i18nkey="preplanning.projectPartners.leader.partner.name" listName="allPartners" keyFieldName="id"  displayFieldName="name" /]
         </div> 
 
         [#-- Leaders List (User List) - Email accounts --]
         <div class="fullBlock">
-          [@customForm.select name="" label="" disabled=!canEdit i18nkey="preplanning.projectPartners.leader.contactPersonEmail" listName="allProjectLeaders" keyFieldName="id"  displayFieldName="composedName" /]
+          [@customForm.select name="project.leader" label="" disabled=!canEdit i18nkey="preplanning.projectPartners.leader.contactPersonEmail" listName="allProjectLeaders" keyFieldName="id"  displayFieldName="composedName" /]
         </div>
         
         [#-- Responsabilities --]

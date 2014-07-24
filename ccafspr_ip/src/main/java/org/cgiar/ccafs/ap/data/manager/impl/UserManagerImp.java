@@ -13,6 +13,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import org.cgiar.ccafs.ap.data.manager.InstitutionManager;
+
 import com.google.inject.Inject;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -26,15 +28,19 @@ public class UserManagerImp implements UserManager {
   // DAO
   private UserDAO userDAO;
 
+  // Managers
+  private InstitutionManager institutionManager;
+
   @Inject
-  public UserManagerImp(UserDAO userDAO) {
+  public UserManagerImp(UserDAO userDAO, InstitutionManager institutionManager) {
     this.userDAO = userDAO;
+    this.institutionManager = institutionManager;
   }
 
   /**
    * This method make the login process against the active directory
    * if the user has an institutional account
-   * 
+   *
    * @param user
    * @return true if it was successfully logged in. False otherwise
    */
@@ -87,6 +93,9 @@ public class UserManagerImp implements UserManager {
       projectLeader.setFirstName(pData.get("firstName"));
       projectLeader.setLastName(pData.get("lastName"));
       projectLeader.setEmail(pData.get("email"));
+      // Getting Project leader institution and saving it in currentInstitution.
+      projectLeader.setCurrentInstitution(institutionManager.getInstitution(Integer.parseInt(pData
+        .get("institution_id"))));
 
       return projectLeader;
     }
