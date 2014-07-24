@@ -74,12 +74,14 @@ public interface IPElementDAO {
   public List<Map<String, String>> getIPElementList();
 
   /**
-   * Get all IPElements which are parents of the ipElement given
+   * Get all IPElements which have relation with the element identified by the
+   * value passed as parameter.
    * 
    * @param ipElementID - ipElement identifier
-   * @return a list of maps with the information of the element parents
+   * @param relationTypeID - relation type identifier
+   * @return a list of maps with the information of the related parents
    */
-  public List<Map<String, String>> getParentsOfIPElement(int ipElementID);
+  public List<Map<String, String>> getIPElementsRelated(int ipElementID, int relationTypeID);
 
   /**
    * This method returns the identifier of the record which relates
@@ -96,7 +98,9 @@ public interface IPElementDAO {
    * 
    * @param elementID - IPElement identifier
    * @param programID - Program identifier
+   * @param relationTypeID - Identifies the type of relation between
+   *        the element and the program (createdBy or usedBy)
    * @return the last inserted id if any or 0 if some record was updated or -1 if any error occurred.
    */
-  public int relateIPElement(int elementID, int programID);
+  public int relateIPElement(int elementID, int programID, int relationTypeID);
 }

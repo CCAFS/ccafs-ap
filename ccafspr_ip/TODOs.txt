@@ -1,6 +1,6 @@
 Hernán David:
 [OK]  - Actualizar diagrama de base de datos para reflejar los cambios en Project Partners.
-[]    - Pasar la lista de paises del proyecto anterior a la base de datos.
+[OK]    - Pasar la lista de paises del proyecto anterior a la base de datos.
 []    - Crear JSON que filtre los partners por tipo y country -> json/partnersByFilter.do?partnerTypeID=11&countryID=CO 
 []    - Método activeDirectoryLogin de UserManager tiene un TODO en el catch de un exception.
 []    - Pasar la lista de partners a la nueva bd

@@ -22,16 +22,19 @@ public class MySQLIPRelationshipDAO implements IPRelationshipDAO {
   }
 
   @Override
-  public boolean saveIPRelation(int parentElementID, int childElementID) {
-    LOG.debug(">> saveIPRelation(parentElementID={}, childElementID={})", parentElementID, childElementID);
+  public boolean saveIPRelation(int parentElementID, int childElementID, int relationTypeID) {
+    LOG.debug(">> saveIPRelation(parentElementID={}, childElementID={}, relationTypeID = {})", new int[] {
+      parentElementID, childElementID, relationTypeID});
+
     StringBuilder query = new StringBuilder();
     boolean result = false;
 
-    query.append("INSERT INTO ip_relationships (parent_id, child_id) VALUES (?, ?) ");
+    query.append("INSERT INTO ip_relationships (parent_id, child_id, relation_type_id) VALUES (?, ?, ?) ");
     query.append("ON DUPLICATE KEY UPDATE parent_id = parent_id ");
-    Object[] values = new Object[2];
+    Object[] values = new Object[3];
     values[0] = parentElementID;
     values[1] = childElementID;
+    values[2] = relationTypeID;
 
     try (Connection con = databaseManager.getConnection()) {
       int ipRelationAdded = databaseManager.makeChangeSecure(con, query.toString(), values);
@@ -39,7 +42,7 @@ public class MySQLIPRelationshipDAO implements IPRelationshipDAO {
         result = true;
       }
     } catch (SQLException e) {
-      LOG.error("-- saveData() > There was a problem saving information into the database. \n{}", e);
+      LOG.error("-- saveIPRelation() > There was a problem saving information into the database. \n{}", e);
     }
 
     LOG.debug("<< saveIPRelation():{}", result);
