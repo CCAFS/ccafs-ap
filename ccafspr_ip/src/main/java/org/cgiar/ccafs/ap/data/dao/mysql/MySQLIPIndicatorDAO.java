@@ -30,11 +30,15 @@ public class MySQLIPIndicatorDAO implements IPIndicatorDAO {
 
   @Override
   public List<Map<String, String>> getIndicatorsByIpProgramElementID(int ipProgramElementID) {
-    LOG.debug(">> getIndicatorsByIpElementID( ipElementID = {} )", ipProgramElementID);
-    List<Map<String, String>> ipIndicatorList = new ArrayList<>();
-
+    LOG.debug(">> getElementIndicators( ipProgramElementID = {} )", ipProgramElementID);
+    List<Map<String, String>> indicatorsList = new ArrayList<>();
     StringBuilder query = new StringBuilder();
-    query.append("SELECT * FROM ip_indicators WHERE program_element_id = " + ipProgramElementID);
+
+    query.append("SELECT i.id, i.description, i.target, p.id as 'parent_id', p.description as 'parent_description' ");
+    query.append("FROM ip_indicators i ");
+    query.append("LEFT JOIN ip_indicators p ON i.parent_id = p.id ");
+    query.append("WHERE i.program_element_id = ");
+    query.append(ipProgramElementID);
 
     try (Connection con = databaseManager.getConnection()) {
       ResultSet rs = databaseManager.makeQuery(query.toString(), con);
@@ -43,18 +47,20 @@ public class MySQLIPIndicatorDAO implements IPIndicatorDAO {
         indicatorData.put("id", rs.getString("id"));
         indicatorData.put("description", rs.getString("description"));
         indicatorData.put("target", rs.getString("target"));
-        ipIndicatorList.add(indicatorData);
+        indicatorData.put("parent_id", rs.getString("parent_id"));
+        indicatorData.put("parent_description", rs.getString("parent_description"));
+        indicatorsList.add(indicatorData);
       }
       rs.close();
     } catch (SQLException e) {
-      String exceptionMessage = "-- getIndicatorsByIpElementID() > Exception raised trying ";
+      String exceptionMessage = "-- getElementIndicators() > Exception raised trying ";
       exceptionMessage += "to get the ip indicators corresponding to the ip program element " + ipProgramElementID;
 
-      LOG.error(exceptionMessage);
+      LOG.error(exceptionMessage, e);
     }
 
-    LOG.debug("<< getIndicatorsByIpElementID():ipIndicatorList.size={}", ipIndicatorList.size());
-    return ipIndicatorList;
+    LOG.debug("<< getElementIndicators():ipIndicatorList.size={}", indicatorsList.size());
+    return indicatorsList;
   }
 
   @Override
