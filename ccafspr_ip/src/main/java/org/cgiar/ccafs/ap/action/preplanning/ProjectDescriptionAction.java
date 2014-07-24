@@ -75,7 +75,7 @@ public class ProjectDescriptionAction extends BaseAction {
 
     // Getting project
     project = projectManager.getProject(projectId);
-    System.out.println(project.getOwner());
+    // System.out.println(project);
 
     // System.out.println(projects);
   }

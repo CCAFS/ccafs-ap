@@ -63,7 +63,7 @@ public class ProjectManagerImpl implements ProjectManager {
       project.setSummary(projectData.get("summary"));
       project.setStartDate(projectData.get("start_date"));
       project.setEndDate(projectData.get("end_date"));
-      project.setOwner(userManager.getUser(projectData.get("project_owner_id")));
+      project.setOwner(userManager.getUser(Integer.parseInt(projectData.get("project_owner_id"))));
       // traer el project_leader
 
       return project;

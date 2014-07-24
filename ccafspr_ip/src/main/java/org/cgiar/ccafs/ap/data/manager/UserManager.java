@@ -41,7 +41,7 @@ public interface UserManager {
    * @return User object representing the user identified by the email provided or Null in the user doesn't exist in the
    *         database.
    */
-  public User getUser(String email);
+  public User getUserByEmail(String email);
 
   /**
    * Authenticate a user.

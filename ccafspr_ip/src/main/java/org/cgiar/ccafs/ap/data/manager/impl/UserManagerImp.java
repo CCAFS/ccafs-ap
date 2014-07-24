@@ -121,7 +121,7 @@ public class UserManagerImp implements UserManager {
   }
 
   @Override
-  public User getUser(String email) {
+  public User getUserByEmail(String email) {
     SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM");
     Map<String, String> userData = userDAO.getUser(email);
 
@@ -152,7 +152,7 @@ public class UserManagerImp implements UserManager {
   @Override
   public User login(String email, String password) {
     if (email != null && password != null) {
-      User userFound = this.getUser(email);
+      User userFound = this.getUserByEmail(email);
       if (userFound != null) {
         if (userFound.isCcafsUser()) {
           // User brought from the database has the pass

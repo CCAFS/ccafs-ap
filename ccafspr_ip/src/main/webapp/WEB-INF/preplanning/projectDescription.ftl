@@ -31,7 +31,7 @@
 	    <div id="projectDescription" class="">
 	      [#-- Project Owner --]
 	      <div class="halfPartBlock">
-	        [@customForm.input name="" type="text" i18nkey="preplanning.projectDescription.projectOwner" required=true /]
+	        [@customForm.input name="project.owner.username" type="text" i18nkey="preplanning.projectDescription.projectOwner" required=true /]
 	      </div>
 	      [#-- Project Owner Contact Person --]
 	      <div class="halfPartBlock">
