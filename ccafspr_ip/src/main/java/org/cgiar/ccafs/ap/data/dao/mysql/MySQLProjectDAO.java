@@ -62,7 +62,7 @@ public class MySQLProjectDAO implements ProjectDAO {
     LOG.debug(">> getProject projectID = {} )", projectID);
     Map<String, String> projectData = new HashMap<String, String>();
     StringBuilder query = new StringBuilder();
-    query.append("SELECT p.*, emp.user_id ");
+    query.append("SELECT p.*, emp.user_id as 'owner_user_id', emp.institution_id as 'owner_institution_id'");
     query.append("FROM projects as p ");
     query.append("INNER JOIN employees emp ON emp.id = p.project_owner_id ");
     query.append("WHERE p.id = ");
@@ -76,7 +76,8 @@ public class MySQLProjectDAO implements ProjectDAO {
         projectData.put("start_date", rs.getString("start_date"));
         projectData.put("end_date", rs.getString("end_date"));
         projectData.put("project_leader_id", rs.getString("project_leader_id"));
-        projectData.put("project_owner_id", rs.getString("project_owner_id"));
+        projectData.put("project_owner_user_id", rs.getString("owner_user_id"));
+        projectData.put("project_owner_institution_id", rs.getString("owner_institution_id"));
       }
       con.close();
     } catch (SQLException e) {
