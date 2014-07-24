@@ -20,6 +20,13 @@ public interface InstitutionDAO {
   public List<Map<String, String>> getAllInstitutions();
 
   /**
+   * This method returns all the information from the Institutions Type
+   * 
+   * @return a list of map with the information of the institution
+   */
+  public List<Map<String, String>> getAllInstitutionTypes();
+
+  /**
    * This method return the information from Institution give by an institutionID
    * 
    * @param institutionID, identifier of the institution
