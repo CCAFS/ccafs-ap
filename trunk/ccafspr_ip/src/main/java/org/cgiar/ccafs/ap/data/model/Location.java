@@ -16,8 +16,8 @@ package org.cgiar.ccafs.ap.data.model;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 
 /**
- * This class represents a Country.
- * 
+ * This class represents a specific location. E.g. Country, Region, etc.
+ *
  * @author Héctor Fabio Tobón R.
  * @author Hernán David Carvajal
  * @author Javier Andres Gallego

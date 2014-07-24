@@ -37,7 +37,7 @@ import org.slf4j.LoggerFactory;
 
 /**
  * This class is used to manage the Project Partners section in the pre-planning step.
- * 
+ *
  * @author Héctor Tobón
  */
 public class ProjectPartnersAction extends BaseAction {
@@ -158,9 +158,6 @@ public class ProjectPartnersAction extends BaseAction {
       projectLeader.setId(-1);
       project.setLeader(projectLeader);
     }
-
-    // Saved Project Partners.
-    project.setProjectPartners(projectPartnerManager.getProjectPartners(projectId));
 
   }
 

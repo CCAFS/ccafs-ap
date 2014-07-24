@@ -18,7 +18,7 @@ import org.apache.commons.lang3.builder.ToStringBuilder;
 /**
  * This class represents any kind of institution inside the system.
  * An institution can be represented as project partner, activity partner, project leader, etc.
- * 
+ *
  * @author Héctor Tobón
  */
 public class Institution {
@@ -38,6 +38,14 @@ public class Institution {
 
   public String getAcronym() {
     return acronym;
+  }
+
+  public String getComposedName() {
+    if (acronym == null) {
+      return name;
+    } else {
+      return name + ", " + acronym;
+    }
   }
 
   public String getContactPersonEmail() {
