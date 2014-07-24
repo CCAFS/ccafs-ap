@@ -88,7 +88,6 @@ public class OutputsPreplanningAction extends BaseAction {
 
   @Override
   public String save() {
-    System.out.println("outputs save");
     IPProgram program = new IPProgram();
     program.setId(1);
 

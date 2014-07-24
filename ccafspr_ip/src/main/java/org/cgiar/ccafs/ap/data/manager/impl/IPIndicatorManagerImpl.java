@@ -36,7 +36,7 @@ public class IPIndicatorManagerImpl implements IPIndicatorManager {
       indicator.setId(Integer.parseInt(iData.get("id")));
       indicator.setDescription(iData.get("description"));
       indicator.setTarget(iData.get("target"));
-
+      System.out.println("------------ parent id: " + iData.get("parent_id"));
       // Parent indicator
       if (iData.get("parent_id") != null) {
         IPIndicator parent = new IPIndicator();
