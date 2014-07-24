@@ -27,7 +27,7 @@
     
     <fieldset class="fullBlock">  
 			[#-- Project Title --]
-			[@customForm.textArea name="project.title" i18nkey="preplanning.projectDescription.projectTitle" required=true /]
+			[@customForm.textArea name="project.title" i18nkey="preplanning.projectDescription.projectTitle" required=true value="${project.title}" /]
 	    <div id="projectDescription" class="">
 	      [#-- Project Owner --]
 	      <div class="halfPartBlock">
@@ -39,16 +39,16 @@
 	      </div>
 	      [#-- Start Date --]
 		    <div class="halfPartBlock">
-		      [#--[@customForm.input name="" type="text" i18nkey="preplanning.projectDescription.startDate" required=true value=""/]--]
+		     	[@customForm.input name="" type="text" i18nkey="preplanning.projectDescription.startDate" required=true value="${project.startDate}"/]
 		    </div> 
 		    [#-- End Date --]
 		    <div class="halfPartBlock">
-	      		 [#--[@customForm.input name="projects.endDate" type="text" i18nkey="preplanning.projectDescription.endDate" required=true value=""/]--]
+	      		[@customForm.input name="projects.endDate" type="text" i18nkey="preplanning.projectDescription.endDate" required=true value="${project.endDate}"/]
 	    	</div>
 	  	</div> 
 	  		[#-- Project Summary --]
 			[#--${projects}--]
-			[@customForm.textArea name="projects.summary" i18nkey="preplanning.projectDescription.projectSummary" required=true value="" /]
+			[@customForm.textArea name="projects.summary" i18nkey="preplanning.projectDescription.projectSummary" required=true value="${project.summary}" /]
     </fieldset><br/>
     <fieldset class="fullBlock">  
     	<legend>[@s.text name="preplanning.projectDescription.projectWorking" /] </legend> 

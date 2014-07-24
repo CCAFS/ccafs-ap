@@ -89,8 +89,17 @@ public class InstitutionManagerImpl implements InstitutionManager {
 
   @Override
   public List<InstitutionType> getAllInstitutionTypes() {
-    // TODO Auto-generated method stub
-    return null;
+    List<InstitutionType> institutiontypes = new ArrayList<>();
+    List<Map<String, String>> institutiontypeDataList = institutionDAO.getAllInstitutionTypes();
+    for (Map<String, String> iData : institutiontypeDataList) {
+      InstitutionType institution = new InstitutionType();
+      institution.setId(Integer.parseInt(iData.get("id")));
+      institution.setName(iData.get("name"));
+      institution.setAcronym(iData.get("acronym"));
+      // Adding object to the array.
+      institutiontypes.add(institution);
+    }
+    return institutiontypes;
   }
 
 

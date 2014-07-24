@@ -18,6 +18,7 @@ import org.cgiar.ccafs.ap.config.APConfig;
 import org.cgiar.ccafs.ap.config.APConstants;
 import org.cgiar.ccafs.ap.data.manager.ProjectManager;
 import org.cgiar.ccafs.ap.data.model.Project;
+
 import com.google.inject.Inject;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
@@ -77,6 +78,6 @@ public class ProjectDescriptionAction extends BaseAction {
     project = projectManager.getProject(projectId);
     // TODO - Pending to get the Program of the project owner. System.out.println(project.getOwner());
 
-    // System.out.println(projects);
+    System.out.println(project);
   }
 }

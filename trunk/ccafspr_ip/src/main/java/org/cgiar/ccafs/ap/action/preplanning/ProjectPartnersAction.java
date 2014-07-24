@@ -147,7 +147,7 @@ public class ProjectPartnersAction extends BaseAction {
 
 
     // Getting all partner types
-    partnerTypes = this.temporalGetAllPartnerTypes();
+    partnerTypes = institutionManager.getAllInstitutionTypes();
     // **************************************
 
     // Getting all Project Leaders
