@@ -8,8 +8,9 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
-import org.cgiar.ccafs.ap.data.manager.UserManager;
+import org.cgiar.ccafs.ap.data.manager.InstitutionManager;
 
+import org.cgiar.ccafs.ap.data.manager.UserManager;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import com.google.inject.Inject;
@@ -22,14 +23,16 @@ public class ProjectManagerImpl implements ProjectManager {
 
   // Managers
   private UserManager userManager;
+  private InstitutionManager institutionManager;
 
   // LOG
   private static Logger LOG = LoggerFactory.getLogger(ProjectManagerImpl.class);
 
   @Inject
-  public ProjectManagerImpl(ProjectDAO projectDAO, UserManager userManager) {
+  public ProjectManagerImpl(ProjectDAO projectDAO, UserManager userManager, InstitutionManager institutionManager) {
     this.projectDAO = projectDAO;
     this.userManager = userManager;
+    this.institutionManager = institutionManager;
   }
 
 
@@ -63,7 +66,9 @@ public class ProjectManagerImpl implements ProjectManager {
       project.setSummary(projectData.get("summary"));
       project.setStartDate(projectData.get("start_date"));
       project.setEndDate(projectData.get("end_date"));
-      project.setOwner(userManager.getUser(Integer.parseInt(projectData.get("project_owner_id"))));
+      project.setOwner(userManager.getUser(Integer.parseInt(projectData.get("project_owner_user_id"))));
+      project.getOwner().setCurrentInstitution(
+        institutionManager.getInstitution(Integer.parseInt(projectData.get("project_owner_institution_id"))));
       // traer el project_leader
 
       return project;

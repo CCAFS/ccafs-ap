@@ -28,7 +28,7 @@ public interface UserManager {
 
   /**
    * This method find an user identify with a given id.
-   * 
+   *
    * @param userId is the id of the user.
    * @return a User object.
    */

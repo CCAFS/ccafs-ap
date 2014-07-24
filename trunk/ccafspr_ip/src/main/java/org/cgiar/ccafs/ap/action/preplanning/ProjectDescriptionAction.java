@@ -75,7 +75,7 @@ public class ProjectDescriptionAction extends BaseAction {
 
     // Getting project
     project = projectManager.getProject(projectId);
-    // System.out.println(project);
+    // TODO - Pending to get the Program of the project owner. System.out.println(project.getOwner());
 
     // System.out.println(projects);
   }
