@@ -270,7 +270,9 @@ public class MySQLIPElementDAO implements IPElementDAO {
     query.append(ipElementID);
     query.append(" AND program_id = ");
     query.append(ipProgramID);
-
+    query.append(" AND relation_type_id = ");
+    query.append(APConstants.PROGRAM_ELEMENT_RELATION_USE);
+    System.out.println(query.toString());
     try (Connection con = databaseManager.getConnection()) {
       ResultSet rs = databaseManager.makeQuery(query.toString(), con);
       if (rs.next()) {
