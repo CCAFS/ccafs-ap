@@ -19,14 +19,15 @@ Javier Gallego:
 [OK]    - Desarrollar método getProjectLeader de UserManager.
 [OK]    - Desarrollar método getAllProjectLeaders de UserManager.
 [OK]    - Desarrollar método getProjectPartners de ProjectPartnerManager.
-[]    - Desarrollar getAllInstitutionTypes dentro de InstitutionManager.
-[]    - Hay un label "TODO" encima del método getInstitution de InstitutionManagerImpl. Si ya está desarrollado se debería eliminar.
-[]    - Hay un label "TODO" justo al inicio del método getAllProjects de ProjectManagerImpl. 
-[]    - Hay un label "TODO" justo al inicio del método getProject de ProjectManagerImpl.
-[]    - Hay un label "TODO" en el método getInstitution de InstitutionManagerImpl. 
-[]    - Copiar y pegar todo lo de CountryManager del proyecto anterior a este y probar que todo funciona.
+[OK]    - Desarrollar getAllInstitutionTypes dentro de InstitutionManager.
+[OK]    - Hay un label "TODO" encima del método getInstitution de InstitutionManagerImpl. Si ya está desarrollado se debería eliminar.
+[OK]    - Hay un label "TODO" justo al inicio del método getAllProjects de ProjectManagerImpl. 
+[OK]    - Hay un label "TODO" justo al inicio del método getProject de ProjectManagerImpl.
+[OK]    - Hay un label "TODO" en el método getInstitution de InstitutionManagerImpl. 
+[OK]    - Copiar y pegar todo lo de CountryManager del proyecto anterior a este y probar que todo funciona.
 []    - Copiar y pegar todo lo de RegionManager del proyecto anterior a este y probar que todo funciona.
-[]    - Crear DAOs para InstitutionType (o se podrían incluir los métodos en InstitutionManager).
+[OK]    - Crear DAOs para InstitutionType (o se podrían incluir los métodos en InstitutionManager).
+[]    - Crear en ProjectManager de los métodos save de Project y Project Focuses
 
 Sebastián Amariles:
 []    - Probar interfaz de IPElements cuando el backend esta finalizado
