@@ -217,10 +217,12 @@ public class IPElementManagerImpl implements IPElementManager {
         indicator.setTarget(indicatorData.get("target"));
 
         // Indicator parent
-        IPIndicator indicatorParent = new IPIndicator();
-        indicatorParent.setId(Integer.parseInt(indicatorData.get("parent_id")));
-        indicatorParent.setDescription(indicatorData.get("parent_description"));
-        indicator.setParent(indicatorParent);
+        if (indicatorData.get("parent_id") != null) {
+          IPIndicator indicatorParent = new IPIndicator();
+          indicatorParent.setId(Integer.parseInt(indicatorData.get("parent_id")));
+          indicatorParent.setDescription(indicatorData.get("parent_description"));
+          indicator.setParent(indicatorParent);
+        }
 
         indicators.add(indicator);
       }
