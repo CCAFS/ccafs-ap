@@ -14,9 +14,9 @@
 package org.cgiar.ccafs.ap.converter;
 
 import org.cgiar.ccafs.ap.data.manager.InstitutionManager;
-import org.cgiar.ccafs.ap.data.model.Institution;
-
 import java.util.Map;
+
+import org.cgiar.ccafs.ap.data.model.InstitutionType;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -24,31 +24,30 @@ import com.google.inject.Inject;
 import org.apache.struts2.util.StrutsTypeConverter;
 
 
-public class InstitutionConverter extends StrutsTypeConverter {
+public class InstitutionTypeConverter extends StrutsTypeConverter {
 
   // LOG
-  private static final Logger LOG = LoggerFactory.getLogger(InstitutionConverter.class);
+  private static final Logger LOG = LoggerFactory.getLogger(InstitutionTypeConverter.class);
 
   // Manager
   private InstitutionManager institutionManager;
 
   @Inject
-  public InstitutionConverter(InstitutionManager institutionManager) {
+  public InstitutionTypeConverter(InstitutionManager institutionManager) {
     this.institutionManager = institutionManager;
   }
 
   @Override
   public Object convertFromString(Map context, String[] values, Class toClass) {
-    if (toClass == Institution.class) {
+    if (toClass == InstitutionType.class) {
       String id = values[0];
       try {
         LOG.debug(">> convertFromString > id = {} ", id);
-        System.out.println("----convertFromString - Institution_id = " + id);
-        return institutionManager.getInstitution(Integer.parseInt(id));
+        return institutionManager.getInstitutionType(Integer.parseInt(id));
       } catch (NumberFormatException e) {
         // Do Nothing
-        LOG.error("Problem to convert Institution from String (convertFromString) for user_id = {} ", id,
-          e.getMessage());
+        LOG.error("Problem to convert InstitutionType from String (convertFromString) for institution_type_id = {} ",
+          id, e.getMessage());
       }
     }
     return null;
@@ -56,9 +55,9 @@ public class InstitutionConverter extends StrutsTypeConverter {
 
   @Override
   public String convertToString(Map context, Object o) {
-    Institution institution = (Institution) o;
-    LOG.debug(">> convertToString > id = {} ", institution.getId());
-    return institution.getId() + "";
+    InstitutionType institutionType = (InstitutionType) o;
+    LOG.debug(">> convertToString > id = {} ", institutionType.getId());
+    return institutionType.getId() + "";
   }
 
 }

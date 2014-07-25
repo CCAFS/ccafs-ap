@@ -13,42 +13,39 @@
  *****************************************************************/
 package org.cgiar.ccafs.ap.converter;
 
-import org.cgiar.ccafs.ap.data.manager.InstitutionManager;
-import org.cgiar.ccafs.ap.data.model.Institution;
-
 import java.util.Map;
 
+import org.cgiar.ccafs.ap.data.manager.LocationManager;
+import org.cgiar.ccafs.ap.data.model.Country;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import com.google.inject.Inject;
 import org.apache.struts2.util.StrutsTypeConverter;
 
 
-public class InstitutionConverter extends StrutsTypeConverter {
+public class CountryConverter extends StrutsTypeConverter {
 
   // LOG
-  private static final Logger LOG = LoggerFactory.getLogger(InstitutionConverter.class);
+  private static final Logger LOG = LoggerFactory.getLogger(CountryConverter.class);
 
   // Manager
-  private InstitutionManager institutionManager;
+  private LocationManager locationManager;
 
   @Inject
-  public InstitutionConverter(InstitutionManager institutionManager) {
-    this.institutionManager = institutionManager;
+  public CountryConverter(LocationManager locationManager) {
+    this.locationManager = locationManager;
   }
 
   @Override
   public Object convertFromString(Map context, String[] values, Class toClass) {
-    if (toClass == Institution.class) {
-      String id = values[0];
+    if (toClass == Country.class) {
+      String code = values[0];
       try {
-        LOG.debug(">> convertFromString > id = {} ", id);
-        System.out.println("----convertFromString - Institution_id = " + id);
-        return institutionManager.getInstitution(Integer.parseInt(id));
+        LOG.debug(">> convertFromString > id = {} ", code);
+        return locationManager.getCountryByCode(code);
       } catch (NumberFormatException e) {
         // Do Nothing
-        LOG.error("Problem to convert Institution from String (convertFromString) for user_id = {} ", id,
-          e.getMessage());
+        LOG.error("Problem to convert Country from String (convertFromString) for code = {} ", code, e.getMessage());
       }
     }
     return null;
@@ -56,9 +53,9 @@ public class InstitutionConverter extends StrutsTypeConverter {
 
   @Override
   public String convertToString(Map context, Object o) {
-    Institution institution = (Institution) o;
-    LOG.debug(">> convertToString > id = {} ", institution.getId());
-    return institution.getId() + "";
+    Country country = (Country) o;
+    LOG.debug(">> convertToString > id = {} ", country.getCode());
+    return country.getCode();
   }
 
 }

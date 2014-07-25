@@ -55,11 +55,11 @@
       <result name="input">/WEB-INF/preplanning/projectPartners.ftl</result>
       <result name="success" type="redirectAction">
         <param name="actionName">partners</param>
-        <param name="activityID">${project.id}</param>
+        <param name="projectID">${project.id}</param>
       </result>
       <result name="next" type="redirectAction">
         <param name="actionName">budget</param>
-        <param name="activityID">${project.id}</param>
+        <param name="projectID">${project.id}</param>
       </result>
     </action>
     

@@ -11,8 +11,16 @@ import com.google.inject.ImplementedBy;
 public interface LocationDAO {
 
   /**
-   * This method return the information from an specific location given by the type, and the location
+   * This method returns the information of a specific country identified with the given code.
    * 
+   * @param code of the country.
+   * @return a Map with the information of the country, or an empty Map if nothing found.
+   */
+  public Map<String, String> getCountryByCode(String code);
+
+  /**
+   * This method return the information from an specific location given by the type, and the location
+   *
    * @param typeID, identifier of the location element type
    * @param locationID, identifier of the location
    * @return a map with the information of the location returned.
@@ -22,7 +30,7 @@ public interface LocationDAO {
 
   /**
    * This method return all the Locations given by a type
-   * 
+   *
    * @param typeID, identifier of the location element type
    * @return a list of maps with the information of all locations returned.
    */

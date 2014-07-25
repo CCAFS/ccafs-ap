@@ -33,6 +33,15 @@ public class ProjectPartner {
     super();
   }
 
+  @Override
+  public boolean equals(Object obj) {
+    if (obj instanceof ProjectPartner) {
+      ProjectPartner o = (ProjectPartner) obj;
+      return o.id == this.id;
+    }
+    return false;
+  }
+
   public String getContactEmail() {
     return contactEmail;
   }
@@ -41,10 +50,10 @@ public class ProjectPartner {
     return contactName;
   }
 
+
   public int getId() {
     return id;
   }
-
 
   public Institution getPartner() {
     return partner;
@@ -52,6 +61,11 @@ public class ProjectPartner {
 
   public String getResponsabilities() {
     return responsabilities;
+  }
+
+  @Override
+  public int hashCode() {
+    return id;
   }
 
   public void setContactEmail(String contactEmail) {
@@ -62,6 +76,7 @@ public class ProjectPartner {
     this.contactName = contactName;
   }
 
+
   public void setId(int id) {
     this.id = id;
   }
@@ -69,7 +84,6 @@ public class ProjectPartner {
   public void setPartner(Institution partner) {
     this.partner = partner;
   }
-
 
   public void setResponsabilities(String responsabilities) {
     this.responsabilities = responsabilities;

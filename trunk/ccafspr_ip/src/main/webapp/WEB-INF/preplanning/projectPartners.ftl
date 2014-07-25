@@ -19,7 +19,7 @@
   </div>
   [#include "/WEB-INF/global/pages/pre-planning-secondary-menu.ftl" /]
   
-  [@s.form action="partners" cssClass="pure-form"]  
+  [@s.form action="partners" cssClass="pure-form"]
   <article class="halfContent" id="mainInformation">
   	[#include "/WEB-INF/preplanning/projectPreplanningSubMenu.ftl" /]
   	<!-- Sebas, please use this variables and remove this comment when you have finished. -->
@@ -41,14 +41,16 @@
     <div id="addProjectPartner" class="addLink">
       <img src="${baseUrl}/images/global/icon-add.png" />
       <a href="" class="addProjectPartner" >[@s.text name="preplanning.projectPartners.addProjectPartner" /]</a>
-    </div>      
-  	<div class="buttons">
+    </div>
+     <!-- internal parameter -->
+    <input name="projectID" type="hidden" value="${project.id?c}" />
+  	<div class="buttons">  	  
       [@s.submit type="button" name="save"][@s.text name="form.buttons.save" /][/@s.submit]
       [@s.submit type="button" name="next"][@s.text name="form.buttons.next" /][/@s.submit]
       [@s.submit type="button" name="cancel"][@s.text name="form.buttons.cancel" /][/@s.submit]
     </div>
   </article>
-  [/@s.form] 
+  [/@s.form]
   [#-- Simgle partner TEMPLATE from partnersTemplate.ftl --]
   [@partnersTemplate.partnerTemplate /]  
 </section>

@@ -121,7 +121,7 @@
           [@s.select name="${name}" list="${listName}" listKey="${keyFieldName}" listValue="${displayFieldName}" value="${customValue}" disabled="${disabled?string}" cssClass="${className}" multiple="true" tooltip="${helpText}" /]
         [#else]
           [@s.select name="${name}" list="${listName}" listKey="${keyFieldName}" listValue="${displayFieldName}" value="${customValue}" disabled="${disabled?string}" cssClass="${className}" tooltip="${helpText}" /]
-        [/#if]        
+        [/#if]
       [/#if]
     </div> 
   </div>  

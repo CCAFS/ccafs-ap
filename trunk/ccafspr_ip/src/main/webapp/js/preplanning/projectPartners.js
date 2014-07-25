@@ -46,8 +46,9 @@ function setProjectPartnersIndexes(){
         $(element).attr("id","projectPartner-"+index);
         // CSS selector div[id$=parent] Get any DIV element where the ID attribute value ends with "parent".
         $(element).find("[id$='id']").attr("name", elementName + "id");
-        $(element).find("[id$='partnerId']").attr("name", elementName + "partnerId");
+        $(element).find("[id$='partner']").attr("name", elementName + "partner");
         $(element).find("[id$='contactName']").attr("name", elementName + "contactName");
-        $(element).find("[id$='contactEmail']").attr("name", elementName + "contactEmail"); 
+        $(element).find("[id$='contactEmail']").attr("name", elementName + "contactEmail");
+        $(element).find("[id$='responsabilities']").attr("name", elementName + "responsabilities"); 
     }); 
 }
