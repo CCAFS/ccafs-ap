@@ -39,11 +39,11 @@
 	      </div>
 	      [#-- Start Date --]
 		    <div class="halfPartBlock">
-		     	[@customForm.input name="" type="text" i18nkey="preplanning.projectDescription.startDate" required=true value="${project.startDate}"/]
+		     	[@customForm.input name="" type="text" i18nkey="preplanning.projectDescription.startDate" required=true value="${project.startDate?string('yyyy-MM-dd')}"/]
 		    </div> 
 		    [#-- End Date --]
 		    <div class="halfPartBlock">
-	      		[@customForm.input name="projects.endDate" type="text" i18nkey="preplanning.projectDescription.endDate" required=true value="${project.endDate}"/]
+	      		[@customForm.input name="projects.endDate" type="text" i18nkey="preplanning.projectDescription.endDate" required=true value="${project.endDate?string('yyyy-MM-dd')}"/]
 	    	</div>
 	  	</div> 
 	  		[#-- Project Summary --]

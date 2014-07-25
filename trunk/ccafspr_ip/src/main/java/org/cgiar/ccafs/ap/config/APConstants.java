@@ -44,6 +44,7 @@ public final class APConstants {
 
   // Identifiers for programs types which come from the database
   public static final int FLAGSHIP_PROGRAM_TYPE = 1;
+  public static final int REGION_PROGRAM_TYPE = 2;
 
   // Identifier for types of program element relations
   public static final int PROGRAM_ELEMENT_CREATED_BY = 1;
@@ -60,5 +61,8 @@ public final class APConstants {
   // Identifiers for Location Elements Type which come from the database
   public static final int LOCATION_ELEMENT_TYPE_REGION = 1;
   public static final int LOCATION_ELEMENT_TYPE_COUNTRY = 2;
+
+  // Identifier for Format Date
+  public static final String DATE_FORMAT = "yyyy-MM-dd";
 
 }
