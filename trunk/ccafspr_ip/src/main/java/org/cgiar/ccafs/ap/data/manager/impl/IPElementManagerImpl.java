@@ -89,7 +89,6 @@ public class IPElementManagerImpl implements IPElementManager {
   @Override
   public List<IPElement> getIPElements(IPProgram program, IPElementType type) {
     List<Map<String, String>> ipElementDataList = ipElementDAO.getIPElement(program.getId(), type.getId());
-    System.out.println(ipElementDataList);
     return setDataToIPElementObjects(ipElementDataList);
   }
 
