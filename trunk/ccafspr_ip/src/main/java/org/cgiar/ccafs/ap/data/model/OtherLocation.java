@@ -15,9 +15,12 @@ package org.cgiar.ccafs.ap.data.model;
 
 import org.apache.commons.lang3.builder.ToStringBuilder;
 
-// TODO ask to Hernán how this will be implemented
-// This class extend from Location class, and it will be used for the other Location Elements Types other than
-// Country and Region
+/**
+ * This class is a representation of a specific location, that's why it extends from Location.class.
+ * It will be used for the other Location Elements Types different from countries and regions.
+ *
+ * @author Javier Andrés Gallego
+ */
 public class OtherLocation extends Location {
 
 

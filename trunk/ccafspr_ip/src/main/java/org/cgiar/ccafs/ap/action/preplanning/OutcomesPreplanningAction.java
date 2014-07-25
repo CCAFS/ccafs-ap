@@ -70,7 +70,7 @@ public class OutcomesPreplanningAction extends BaseAction {
     IPElementType type = new IPElementType(APConstants.ELEMENT_TYPE_OUTCOME2025);
     validationMessages = new StringBuilder();
 
-    // TODO - Add an interceptor to verify that if the user is not related to a program, then DON'T have
+    // TODO HC - Add an interceptor to verify that if the user is not related to a program, then DON'T have
     // permissions to access this action
     outcomes = ipElementManager.getIPElements(getCurrentUser().getCurrentInstitution().getProgram(), type);
     // Keep the id of all outcomes which come from the database

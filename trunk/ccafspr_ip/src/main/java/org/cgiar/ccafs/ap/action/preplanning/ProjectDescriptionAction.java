@@ -103,7 +103,7 @@ public class ProjectDescriptionAction extends BaseAction {
 
     // Getting the information of the Flagships Program
 
-    // TODO - Pending to get the Program of the project owner. System.out.println(project.getOwner());
+    // TODO JG - Pending to get the Program of the project owner. System.out.println(project.getOwner());
 
 
   }
