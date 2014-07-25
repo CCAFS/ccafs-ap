@@ -38,8 +38,8 @@ public class MySQLProjectDAO implements ProjectDAO {
         ProjectData.put("id", rs.getString("id"));
         ProjectData.put("title", rs.getString("title"));
         ProjectData.put("summary", rs.getString("summary"));
-        ProjectData.put("start_date", rs.getString("start_date"));
-        ProjectData.put("end_date", rs.getString("end_date"));
+        ProjectData.put("start_date", rs.getDate("start_date").toString());
+        ProjectData.put("end_date", rs.getDate("end_date").toString());
         ProjectData.put("project_leader_id", rs.getString("project_leader_id"));
         ProjectData.put("project_owner_id", rs.getString("project_owner_id"));
 
@@ -73,8 +73,8 @@ public class MySQLProjectDAO implements ProjectDAO {
         projectData.put("id", rs.getString("id"));
         projectData.put("title", rs.getString("title"));
         projectData.put("summary", rs.getString("summary"));
-        projectData.put("start_date", rs.getString("start_date"));
-        projectData.put("end_date", rs.getString("end_date"));
+        projectData.put("start_date", rs.getDate("start_date").toString());
+        projectData.put("end_date", rs.getDate("end_date").toString());
         projectData.put("project_leader_id", rs.getString("project_leader_id"));
         projectData.put("project_owner_user_id", rs.getString("owner_user_id"));
         projectData.put("project_owner_institution_id", rs.getString("owner_institution_id"));

@@ -16,8 +16,12 @@ package org.cgiar.ccafs.ap.action.preplanning;
 import org.cgiar.ccafs.ap.action.BaseAction;
 import org.cgiar.ccafs.ap.config.APConfig;
 import org.cgiar.ccafs.ap.config.APConstants;
+import org.cgiar.ccafs.ap.data.manager.IPProgramManager;
 import org.cgiar.ccafs.ap.data.manager.ProjectManager;
+import org.cgiar.ccafs.ap.data.model.IPProgram;
 import org.cgiar.ccafs.ap.data.model.Project;
+
+import java.util.List;
 
 import com.google.inject.Inject;
 import org.apache.commons.lang3.StringUtils;
@@ -32,17 +36,21 @@ public class ProjectDescriptionAction extends BaseAction {
 
   // Manager
   private ProjectManager projectManager;
+  private IPProgramManager ipProgramManager;
 
   private static Logger LOG = LoggerFactory.getLogger(ProjectDescriptionAction.class);
 
   // Model
   private Project project;
   private int projectId;
+  private List<IPProgram> ipProgramRP;
+  private List<IPProgram> ipProgramFP;
 
   @Inject
-  public ProjectDescriptionAction(APConfig config, ProjectManager projectManager) {
+  public ProjectDescriptionAction(APConfig config, ProjectManager projectManager, IPProgramManager ipProgramManager) {
     super(config);
     this.projectManager = projectManager;
+    this.ipProgramManager = ipProgramManager;
   }
 
 
@@ -56,6 +64,14 @@ public class ProjectDescriptionAction extends BaseAction {
       return NOT_FOUND;
     }
     return super.execute();
+  }
+
+  public List<IPProgram> getProgramsFlagship() {
+    return ipProgramFP;
+  }
+
+  public List<IPProgram> getProgramsRegion() {
+    return ipProgramRP;
   }
 
   public Project getProject() {
@@ -76,8 +92,19 @@ public class ProjectDescriptionAction extends BaseAction {
 
     // Getting project
     project = projectManager.getProject(projectId);
+
+
+    // Getting the information of the Regions program
+    ipProgramRP = ipProgramManager.getProgramsByType(APConstants.REGION_PROGRAM_TYPE);
+
+    // Getting the information of the Flagships program
+    ipProgramFP = ipProgramManager.getProgramsByType(APConstants.FLAGSHIP_PROGRAM_TYPE);
+
+
+    // Getting the information of the Flagships Program
+
     // TODO - Pending to get the Program of the project owner. System.out.println(project.getOwner());
 
-    System.out.println(project);
+
   }
 }

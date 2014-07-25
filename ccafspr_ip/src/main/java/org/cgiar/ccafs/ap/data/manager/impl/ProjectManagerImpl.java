@@ -1,19 +1,23 @@
 package org.cgiar.ccafs.ap.data.manager.impl;
 
+import org.cgiar.ccafs.ap.config.APConstants;
 import org.cgiar.ccafs.ap.data.dao.ProjectDAO;
+import org.cgiar.ccafs.ap.data.manager.InstitutionManager;
 import org.cgiar.ccafs.ap.data.manager.ProjectManager;
+import org.cgiar.ccafs.ap.data.manager.UserManager;
 import org.cgiar.ccafs.ap.data.model.Project;
 
+import java.text.DateFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
-import org.cgiar.ccafs.ap.data.manager.InstitutionManager;
-
-import org.cgiar.ccafs.ap.data.manager.UserManager;
+import com.google.inject.Inject;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import com.google.inject.Inject;
 
 
 public class ProjectManagerImpl implements ProjectManager {
@@ -40,32 +44,53 @@ public class ProjectManagerImpl implements ProjectManager {
   public List<Project> getAllProjects(int programId) {
     List<Map<String, String>> projectDataList = projectDAO.getProjects(programId);
     List<Project> projectsList = new ArrayList<>();
+    DateFormat dateformatter = new SimpleDateFormat(APConstants.DATE_FORMAT);
+
 
     for (Map<String, String> elementData : projectDataList) {
+
       Project project = new Project();
       project.setId(Integer.parseInt(elementData.get("id")));
       project.setTitle(elementData.get("title"));
       project.setSummary(elementData.get("summary"));
-      project.setStartDate(elementData.get("startDate"));
-      project.setEndDate(elementData.get("endDate"));
+      // Format to the Dates of the project
+      String sDate = elementData.get("start_date");
+      String eDate = elementData.get("end_date");
+      try {
+        Date startDate = dateformatter.parse(sDate);
+        Date endDate = dateformatter.parse(eDate);
+        project.setStartDate(startDate);
+        project.setEndDate(endDate);
+      } catch (ParseException e) {
+        e.printStackTrace();
+      }
+
 
       projectsList.add(project);
     }
     return projectsList;
   }
 
-
   @Override
   public Project getProject(int projectId) {
-
+    DateFormat dateformatter = new SimpleDateFormat(APConstants.DATE_FORMAT);
     Map<String, String> projectData = projectDAO.getProject(projectId);
     if (!projectData.isEmpty()) {
       Project project = new Project();
       project.setId(Integer.parseInt(projectData.get("id")));
       project.setTitle(projectData.get("title"));
       project.setSummary(projectData.get("summary"));
-      project.setStartDate(projectData.get("start_date"));
-      project.setEndDate(projectData.get("end_date"));
+      // Format to the Dates of the project
+      String sDate = projectData.get("start_date");
+      String eDate = projectData.get("end_date");
+      try {
+        Date startDate = dateformatter.parse(sDate);
+        Date endDate = dateformatter.parse(eDate);
+        project.setStartDate(startDate);
+        project.setEndDate(endDate);
+      } catch (ParseException e) {
+        e.printStackTrace();
+      }
       project.setOwner(userManager.getUser(Integer.parseInt(projectData.get("project_owner_user_id"))));
       project.getOwner().setCurrentInstitution(
         institutionManager.getInstitution(Integer.parseInt(projectData.get("project_owner_institution_id"))));

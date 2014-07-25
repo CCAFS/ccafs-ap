@@ -13,13 +13,14 @@
  *****************************************************************/
 package org.cgiar.ccafs.ap.data.model;
 
+import java.util.Date;
 import java.util.List;
 
 import org.apache.commons.lang3.builder.ToStringBuilder;
 
 /**
  * This class represents a Project.
- *
+ * 
  * @author Javier Andrés Gallego
  * @author Héctor Tobón
  */
@@ -28,8 +29,8 @@ public class Project {
   private int id;
   private String title;
   private String summary;
-  private String startDate;
-  private String endDate;
+  private Date startDate;
+  private Date endDate;
   private List<IPProgram> regions; // The list of regions in which this project works with.
   private List<IPProgram> flagships; // The list of flagships in which this project works with.
   private User leader; // Project leader will be a user too.
@@ -42,7 +43,7 @@ public class Project {
     super();
   }
 
-  public String getEndDate() {
+  public Date getEndDate() {
     return endDate;
   }
 
@@ -74,7 +75,7 @@ public class Project {
     return regions;
   }
 
-  public String getStartDate() {
+  public Date getStartDate() {
     return startDate;
   }
 
@@ -90,7 +91,7 @@ public class Project {
     return regions;
   }
 
-  public void setEndDate(String endDate) {
+  public void setEndDate(Date endDate) {
     this.endDate = endDate;
   }
 
@@ -122,7 +123,7 @@ public class Project {
     this.regions = regions;
   }
 
-  public void setStartDate(String startDate) {
+  public void setStartDate(Date startDate) {
     this.startDate = startDate;
   }
 
