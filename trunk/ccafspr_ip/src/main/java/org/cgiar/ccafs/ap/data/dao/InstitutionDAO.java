@@ -45,6 +45,14 @@ public interface InstitutionDAO {
   public List<Map<String, String>> getInstitutionsByUser(int userID);
 
   /**
+   * This method return the information of an Institution Type given by and InstitutionType ID
+   * 
+   * @param institutionTypeID
+   * @return a map with the information
+   */
+  public Map<String, String> getInstitutionType(int institutionTypeID);
+
+  /**
    * This method return the information of the institution marked as
    * main for the user identified with the id given
    * 

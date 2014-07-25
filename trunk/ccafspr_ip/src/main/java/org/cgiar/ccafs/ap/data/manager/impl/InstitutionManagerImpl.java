@@ -173,6 +173,21 @@ public class InstitutionManagerImpl implements InstitutionManager {
     return institutions;
   }
 
+  @Override
+  public InstitutionType getInstitutionType(int institutionTypeId) {
+    Map<String, String> iData = institutionDAO.getInstitutionType(institutionTypeId);
+    if (!iData.isEmpty()) {
+      InstitutionType institutionType = new InstitutionType();
+      institutionType.setId(Integer.parseInt(iData.get("id")));
+      institutionType.setName(iData.get("name"));
+      institutionType.setAcronym(iData.get("acronym"));
+      // Institution Type Object
+      return institutionType;
+
+    }
+    return null;
+  }
+
 
   @Override
   public Institution getUserMainInstitution(User user) {

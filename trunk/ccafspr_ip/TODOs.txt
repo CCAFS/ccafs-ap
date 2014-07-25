@@ -25,7 +25,7 @@ Javier Gallego:
 [OK]    - Hay un label "TODO" justo al inicio del método getProject de ProjectManagerImpl.
 [OK]    - Hay un label "TODO" en el método getInstitution de InstitutionManagerImpl. 
 [OK]    - Copiar y pegar todo lo de CountryManager del proyecto anterior a este y probar que todo funciona.
-[]    - Copiar y pegar todo lo de RegionManager del proyecto anterior a este y probar que todo funciona.
+[OK]    - Copiar y pegar todo lo de RegionManager del proyecto anterior a este y probar que todo funciona.
 [OK]    - Crear DAOs para InstitutionType (o se podrían incluir los métodos en InstitutionManager).
 []    - Crear en ProjectManager de los métodos save de Project y Project Focuses
 

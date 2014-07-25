@@ -185,6 +185,33 @@ public class MySQLInstitutionDAO implements InstitutionDAO {
   }
 
   @Override
+  public Map<String, String> getInstitutionType(int institutionTypeID) {
+    Map<String, String> institutionData = new HashMap<String, String>();
+    LOG.debug(">> getTypeInstitutionById( institutionID = {} )", institutionTypeID);
+
+    StringBuilder query = new StringBuilder();
+    query.append("SELECT it.* ");
+    query.append("FROM institution_types it ");
+    query.append("WHERE it.id =  ");
+    query.append(institutionTypeID);
+
+    try (Connection con = databaseManager.getConnection()) {
+      ResultSet rs = databaseManager.makeQuery(query.toString(), con);
+      if (rs.next()) {
+        institutionData.put("id", rs.getString("id"));
+        institutionData.put("name", rs.getString("name"));
+        institutionData.put("acronym", rs.getString("acronym"));
+      }
+      con.close();
+    } catch (SQLException e) {
+      LOG.error("Exception arised getting the institutions for the user {}.", institutionTypeID, e);
+    }
+
+    LOG.debug("-- getTypeInstitutionById() > Calling method executeQuery to get the results");
+    return institutionData;
+  }
+
+  @Override
   public Map<String, String> getUserMainInstitution(int userID) {
     Map<String, String> institutionData = new HashMap<>();
     StringBuilder query = new StringBuilder();
