@@ -1,6 +1,8 @@
 $(document).ready(function(){
   attachEvents();
-  addOutputEvent(event);
+  if(!$("div#outputBlocks .output").length){
+	  $("div#addOutputBlock").trigger( "click" );
+  } 
 });
 
 function attachEvents(){

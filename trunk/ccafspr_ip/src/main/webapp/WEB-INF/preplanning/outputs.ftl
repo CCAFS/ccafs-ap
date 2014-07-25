@@ -38,7 +38,13 @@
               <a id="removeOutput" href="" class="">[@s.text name="preplanning.outputs.removeOutput" /]</a>
             </div>  
             [#-- Title --]
-            [@customForm.textArea name="outputs[${output_index}].description" i18nkey="preplanning.outputs.output" required=true /] 
+            [#assign outputDescription]
+              [@s.text name="preplanning.outputs.output"]
+                [@s.param name="0"]${currentUser.currentInstitution.program.id}[/@s.param] 
+                [@s.param name="1"]${output_index+1}[/@s.param] 
+              [/@s.text]
+            [/#assign]
+            [@customForm.textArea name="outputs[${output_index}].description" i18nkey="${outputDescription}" required=true /] 
             <div id="contributesBlock" class="contentElements parentsBlock">
               <div class="itemIndex">[@s.text name="preplanning.outputs.contributes" /] </div>
               [#-- output's parents --] 

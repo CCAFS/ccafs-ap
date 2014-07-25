@@ -29,7 +29,6 @@
       <h6>[@s.text name="preplanning.midOutcomesRPL.selectIndicators" /]</h6>
       [#-- Outcome Indicators --]
       <div id="midOutcomeIndicators" class="fullBlock">
-        <p>[@s.text name="preplanning.midOutcomesRPL.midOutcomeIndicators" /]</p>
         <div class="checkboxGroup vertical">
           [@s.fielderror cssClass="fieldError" fieldName="indicatorsSelected"/]
         </div>
@@ -43,10 +42,9 @@
     <h6>[@s.text name="preplanning.midOutcomesRPL.selectIndicators" /]</h6>
     [#-- Outcome Indicators --]
     <div id="midOutcomeIndicators" class="fullBlock">
-      <p>[@s.text name="preplanning.midOutcomesRPL.midOutcomeIndicators" /]</p>
-      <div class="checkboxGroup vertical">
+      <div class="checkboxGroup vertical"> 
         [@s.fielderror cssClass="fieldError" fieldName="indicatorsSelected"/]
-        [@s.checkboxlist name="midOutcomes[${midOutcomeRPL_index}].translatedOf[${parent_index}].indicators" list="midOutcomes[${midOutcomeRPL_index}].translatedOf[${parent_index}].indicators" listKey="id" listValue="description" cssClass="midOutcomeIndicator" /]
+        [@s.checkboxlist value="midOutcomes[${midOutcomeRPL_index}].parentIndicatorsIDs" name="midOutcomes[${midOutcomeRPL_index}].translatedOf[${parent_index}].indicators" list="midOutcomes[${midOutcomeRPL_index}].translatedOf[${parent_index}].indicators" listKey="id" listValue="description" cssClass="midOutcomeIndicator" /]
       </div>
     </div>
     [#-- Narrative explanation --]
