@@ -38,7 +38,6 @@ public class Project {
   private User owner;
   private List<ProjectPartner> projectPartners; // Project partners.
 
-
   public Project() {
     super();
   }
@@ -49,6 +48,14 @@ public class Project {
 
   public List<IPProgram> getFlagships() {
     return flagships;
+  }
+
+  public int[] getFlagshipsIds() {
+    int[] flagshipsIds = new int[flagships.size()];
+    for (int c = 0; c < flagships.size(); c++) {
+      flagshipsIds[c] = flagships.get(c).getId();
+    }
+    return flagshipsIds;
   }
 
   public int getId() {
@@ -73,6 +80,14 @@ public class Project {
 
   public List<IPProgram> getRegions() {
     return regions;
+  }
+
+  public int[] getRegionsIds() {
+    int[] regionsIds = new int[regions.size()];
+    for (int c = 0; c < regions.size(); c++) {
+      regionsIds[c] = regions.get(c).getId();
+    }
+    return regionsIds;
   }
 
   public Date getStartDate() {
