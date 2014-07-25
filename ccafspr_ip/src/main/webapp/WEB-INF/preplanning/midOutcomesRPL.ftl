@@ -40,13 +40,13 @@
             </div> 
             [#-- Title --]
             [@customForm.textArea name="midOutcomes[${midOutcome_index}].description" i18nkey="preplanning.midOutcomesRPL.outcome" required=true /] 
-            [@customForm.select name="flagships" label="" i18nkey="preplanning.outputsRPL.flagships" listName="flagshipsList" keyFieldName="id"  displayFieldName="name" /]
+            [@customForm.select name="flagships" label="" i18nkey="preplanning.midOutcomesRPL.flagships" listName="flagshipsList" keyFieldName="id"  displayFieldName="name" /]
             <div class="contentElements parentsBlock">
               <div class="itemIndex">[@s.text name="preplanning.midOutcomesRPL.contributes" /] </div>
               [#-- midOutcome's parents --]
-              [#if midOutcome.contributesTo?has_content]
-                [#list midOutcome.contributesTo as parent]
-                  [@contributeTemplate.midOutcomesRPL parent_index="${parent_index}" midOutcomeRPL_value="${midOutcome.id}" canRemove=true  /]
+              [#if midOutcome.translatedOf?has_content] 
+                [#list midOutcome.translatedOf as parent]
+                  [@contributeTemplate.midOutcomesRPL midOutcomeRPL_index="${midOutcome_index}" midOutcomeRPL_value="${midOutcome.id}" parent_index="${parent_index}" parent_id="${parent.id}" canRemove=true  /]
                 [/#list]  
               [#else]
                 Not contributes yet
@@ -86,7 +86,7 @@
       </div> 
       [#-- Title --]
       [@customForm.textArea name="description" i18nkey="preplanning.midOutcomesRPL.outcome" required=true /] 
-      [@customForm.select name="flagships" label="" i18nkey="preplanning.outputsRPL.flagships" listName="flagshipsList" keyFieldName="id"  displayFieldName="name" /]
+      [@customForm.select name="flagships" label="" i18nkey="preplanning.midOutcomesRPL.flagships" listName="flagshipsList" keyFieldName="id"  displayFieldName="name" /]
       <div class="contentElements parentsBlock">
         <div class="itemIndex">[@s.text name="preplanning.midOutcomesRPL.contributes" /] </div>
         [#-- midOutcome's parents --]  
@@ -97,7 +97,7 @@
       </div>  
     </div> 
     [#-- contributeTo RPL TEMPLATE --]
-    
+    [@contributeTemplate.midOutcomesRPL template=true canRemove=true  /]
     
    
 </section>
