@@ -30,6 +30,14 @@ import com.google.inject.ImplementedBy;
 public interface ProjectPartnerManager {
 
   /**
+   * This method deletes a specific project partner from the database
+   * 
+   * @param id of the project partner that will be deleted.
+   * @return true if the project partner was deleted or false otherwise.
+   */
+  public boolean deleteProjectPartner(int id);
+
+  /**
    * TODO JG - This method is bad documented!
    * Delete all Project Partners information which belongs to the project given
    *

@@ -168,24 +168,32 @@ public class ProjectPartnersAction extends BaseAction {
 
   @Override
   public String save() {
+    boolean success = true;
 
     // Getting previous Project Partners.
     List<ProjectPartner> previousProjectPartners = projectPartnerManager.getProjectPartners(projectID);
 
-    // Getting current Project Partners from the view.
-    List<ProjectPartner> currentProjectPartnres = project.getProjectPartners();
 
     for (ProjectPartner projectPartner : previousProjectPartners) {
-      if (!currentProjectPartnres.contains(projectPartner)) {
-        System.out.println("Delete " + projectPartner.getContactName());
+      if (!project.getProjectPartners().contains(projectPartner)) {
+        // TODO HT - Test if the delete method is properly working.
+        if (projectPartnerManager.deleteProjectPartner(projectPartner.getId())) {
+          success = false;
+        }
       }
     }
 
-    System.out.println("**************");
-    // System.out.println(currentProjectPartnres);
+    // TODO HT - Test if the save method is properly working.
+// if (!projectPartnerManager.saveProjectPartner(project.getProjectPartners())) {
+// success = false;
+// }
 
+    if (success) {
+      return SUCCESS;
+    } else {
+      return INPUT;
+    }
 
-    return INPUT;
   }
 
   public void setAllProjectLeaders(List<User> allProjectLeaders) {
