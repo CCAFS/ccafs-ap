@@ -11,7 +11,7 @@ Hernán David:
 Héctor Tobón:
 [OK]    - Actualizar Project Partners para que se listen los usuarios en Project Leader.
 [OK]    - Trabajar en Project Partner Action para los casos que no haya información no hayan excepciones.
-[]    - Revisión y corrección de código de listado de proyectos (Listar project partners guardados).
+[OK]    - Revisión y corrección de código de listado de proyectos (Listar project partners guardados).
 []    - Dejar listo el save the Project Partners.
 
 
