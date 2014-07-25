@@ -62,6 +62,15 @@ public class IPElement {
     return indicators;
   }
 
+  public int[] getIndicatorsIDs() {
+    int[] indicatorsIDs = new int[indicators.size()];
+    for (int c = 0; c < indicators.size(); c++) {
+      indicatorsIDs[c] = indicators.get(c).getId();
+    }
+
+    return indicatorsIDs;
+  }
+
   public IPProgram getProgram() {
     return program;
   }

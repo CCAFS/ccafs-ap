@@ -255,7 +255,7 @@ public class MySQLIPElementDAO implements IPElementDAO {
     query.append("WHERE r.relation_type_id = ");
     query.append(relationTypeID);
     query.append(" GROUP BY e.id ");
-    System.out.println(query.toString());
+
     LOG.debug("-- getIPElementsRelated() > Calling method executeQuery to get the results");
     return getData(query.toString());
   }
@@ -272,7 +272,7 @@ public class MySQLIPElementDAO implements IPElementDAO {
     query.append(ipProgramID);
     query.append(" AND relation_type_id = ");
     query.append(APConstants.PROGRAM_ELEMENT_RELATION_USE);
-    System.out.println(query.toString());
+
     try (Connection con = databaseManager.getConnection()) {
       ResultSet rs = databaseManager.makeQuery(query.toString(), con);
       if (rs.next()) {
