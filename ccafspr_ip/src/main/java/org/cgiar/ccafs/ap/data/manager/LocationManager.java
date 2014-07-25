@@ -20,6 +20,8 @@ import org.cgiar.ccafs.ap.data.model.Location;
 
 import java.util.List;
 
+import org.cgiar.ccafs.ap.data.model.Country;
+
 import com.google.inject.ImplementedBy;
 
 /**
@@ -30,8 +32,16 @@ import com.google.inject.ImplementedBy;
 public interface LocationManager {
 
   /**
-   * Get a Location identified with the given type id and location id.
+   * This method finds a Country identified with the given code.
    * 
+   * @param code must be in format ISO 3166-1 alpha-2 - lower case (eg. "co" for Colombia)
+   * @return a Country object representing the country found, or null if the code doesn't exist.
+   */
+  public Country getCountryByCode(String code);
+
+  /**
+   * Get a Location identified with the given type id and location id.
+   *
    * @param typeID is an integer that represents the id of the location element type .
    * @param locationID is an integer that represents the id of the location to search
    * @return an Location object or null if the id does not exist in the database.
@@ -40,7 +50,7 @@ public interface LocationManager {
 
   /**
    * Return all the locations with the give type Id.
-   * 
+   *
    * @param typeID is an integer that represents the id of the location element type .
    * @return an List of Locations object or an empty list if not exist in the database.
    */

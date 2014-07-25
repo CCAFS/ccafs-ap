@@ -26,6 +26,45 @@ public class MySQLLocationDAO implements LocationDAO {
     this.databaseManager = databaseManager;
   }
 
+  @Override
+  public Map<String, String> getCountryByCode(String code) {
+    LOG.debug(">> getCountryByCode( )");
+
+    StringBuilder query = new StringBuilder();
+    query.append("SELECT leo.id, leo.name, leo.code, leo.element_type_id, leo.parent_id as region_id, ");
+    query.append("let.name as region_name, let.code as region_code, let.element_type_id as region_element_type ");
+    query.append("FROM loc_elements leo ");
+    query.append("LEFT JOIN loc_elements let ON leo.parent_id = let.id ");
+    query.append("INNER JOIN loc_element_types letd ON letd.id = leo.element_type_id ");
+    query.append("WHERE letd.id = 2 "); // 2 - Country
+    query.append("AND leo.code = '");
+    query.append(code);
+    query.append("'");
+
+    Map<String, String> countryData = new HashMap<String, String>();
+    try (Connection con = databaseManager.getConnection()) {
+      ResultSet rs = databaseManager.makeQuery(query.toString(), con);
+      if (rs.next()) {
+        // Country
+        countryData.put("id", rs.getString("id"));
+        countryData.put("name", rs.getString("name"));
+        countryData.put("code", rs.getString("code"));
+        // Region
+        countryData.put("region_id", rs.getString("region_id"));
+        countryData.put("region_name", rs.getString("region_name"));
+        countryData.put("region_code", rs.getString("region_code"));
+      }
+      rs.close();
+    } catch (SQLException e) {
+      String exceptionMessage = "-- executeQuery() > Exception raised trying ";
+      exceptionMessage += "to execute the following query " + query;
+      LOG.error(exceptionMessage, e);
+      return countryData;
+    }
+    return countryData;
+  }
+
+  // TODO - This method is never used!
   private List<Map<String, String>> getData(String query) {
     LOG.debug(">> executeQuery(query='{}')", query);
     List<Map<String, String>> locationsList = new ArrayList<>();
@@ -53,7 +92,6 @@ public class MySQLLocationDAO implements LocationDAO {
     LOG.debug("<< executeQuery():getLocationsByType.size={}", locationsList.size());
     return locationsList;
   }
-
 
   @Override
   public Map<String, String> getLocation(int typeID, int locationID) {

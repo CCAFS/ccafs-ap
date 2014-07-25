@@ -75,7 +75,7 @@
         
         [#-- Partner Name --]
         <div class="fullBlock partnerName chosen">
-          [@customForm.select name="partnerId" label=""  disabled=!canEdit i18nkey="preplanning.projectPartners.partner.name" listName="allPartners" keyFieldName="id"  displayFieldName="name" /]
+          [@customForm.select name="partner" label=""  disabled=!canEdit i18nkey="preplanning.projectPartners.partner.name" listName="allPartners" keyFieldName="id"  displayFieldName="name" /]
         </div>
         
         [#-- Contact Name --] 
@@ -91,7 +91,7 @@
         [#-- Responsabilities --]
         [#if showResponsabilities]
         <div class="fullBlock partnerResponsabilities chosen">        
-          [@customForm.textArea name="projectPartnerResponsabilities" i18nkey="preplanning.projectPartners.responsabilities" required=true /]
+          [@customForm.textArea name="responsabilities" i18nkey="preplanning.projectPartners.responsabilities" required=true /]
         </div>
         [/#if]
       </div> <!-- End projectPartner-Template -->

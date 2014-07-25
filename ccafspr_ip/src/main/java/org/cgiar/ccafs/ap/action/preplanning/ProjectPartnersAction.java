@@ -53,8 +53,8 @@ public class ProjectPartnersAction extends BaseAction {
   private ProjectManager projectManager;
   private UserManager userManager;
 
-  // Model for the backend
-  private int projectId;
+  // Model for the back-end
+  private int projectID;
   private Project project;
 
   // Model for the view
@@ -75,14 +75,13 @@ public class ProjectPartnersAction extends BaseAction {
     this.userManager = userManager;
   }
 
-
   @Override
   public String execute() throws Exception {
     /*
-     * If there project Id is not in the parameter or if the is not a project with that id, we must redirect to a
+     * If there project Id is not in the parameter or if there is not a project with that id, we must redirect to a
      * NOT_FOUND page.
      */
-    if (projectId == -1) {
+    if (projectID == -1) {
       return NOT_FOUND;
     }
     return super.execute();
@@ -92,6 +91,7 @@ public class ProjectPartnersAction extends BaseAction {
     return allPartners;
   }
 
+
   public List<User> getAllProjectLeaders() {
     return allProjectLeaders;
   }
@@ -99,7 +99,6 @@ public class ProjectPartnersAction extends BaseAction {
   public List<Location> getCountries() {
     return countries;
   }
-
 
   public List<InstitutionType> getPartnerTypes() {
     return partnerTypes;
@@ -109,8 +108,9 @@ public class ProjectPartnersAction extends BaseAction {
     return project;
   }
 
-  public int getProjectId() {
-    return projectId;
+
+  public int getProjectID() {
+    return projectID;
   }
 
   @Override
@@ -119,22 +119,22 @@ public class ProjectPartnersAction extends BaseAction {
 
     // Getting the project id from the URL parameter
     try {
-      projectId = Integer.parseInt(StringUtils.trim(this.getRequest().getParameter(APConstants.PROJECT_REQUEST_ID)));
+      projectID = Integer.parseInt(StringUtils.trim(this.getRequest().getParameter(APConstants.PROJECT_REQUEST_ID)));
     } catch (NumberFormatException e) {
-      LOG.error("-- prepare() > There was an error parsing the project identifier '{}'.", projectId, e);
-      projectId = -1;
+      LOG.error("-- prepare() > There was an error parsing the project identifier '{}'.", projectID);
+      projectID = -1;
       return; // Stop here and go to execute method.
     }
-
+    System.out.println("prepare()");
     // Getting the project identified with the id parameter.
-    project = projectManager.getProject(projectId);
+    project = projectManager.getProject(projectID);
     // if there is not a project identified with the given id
     if (project == null) {
       return; // Stop here and go to execute method.
     }
 
     // if there are not partners, please return an empty List.
-    project.setProjectPartners(projectPartnerManager.getProjectPartners(projectId));
+    project.setProjectPartners(projectPartnerManager.getProjectPartners(projectID));
 
     // Getting all partners.
     allPartners = institutionManager.getAllInstitutions();
@@ -149,9 +149,8 @@ public class ProjectPartnersAction extends BaseAction {
     allProjectLeaders = userManager.getAllUsers();
 
     // Getting the project partner leader.
-    project.setLeader(userManager.getProjectLeader(projectId));
+    project.setLeader(userManager.getProjectLeader(projectID));
 
-    // project.setLeader(userManager.getProjectLeader(projectId));
     // In case there is not a partner leader defined, an empty partner will be used for the view.
     if (project.getLeader() == null) {
       User projectLeader = new User();
@@ -159,20 +158,32 @@ public class ProjectPartnersAction extends BaseAction {
       project.setLeader(projectLeader);
     }
 
+    if (getRequest().getMethod().equalsIgnoreCase("post")) {
+      // Clear out the list if it has some element
+      if (project.getProjectPartners() != null) {
+        project.getProjectPartners().clear();
+      }
+    }
+
   }
 
   @Override
   public String save() {
 
-    // The following is the project leader.
-    System.out.println(project.getLeader());
+    // project.setId(projectId);
+    List<ProjectPartner> previousProjectPartners = projectPartnerManager.getProjectPartners(projectID);
 
-    List<ProjectPartner> previousProjectPartners = projectPartnerManager.getProjectPartners(projectId);
+    List<ProjectPartner> currentProjectPartnres = project.getProjectPartners();
 
-    // The following are the project partners to ADD
+
     for (ProjectPartner projectPartner : previousProjectPartners) {
-
+      if (!currentProjectPartnres.contains(projectPartner)) {
+        System.out.println("Delete " + projectPartner.getContactName());
+      }
     }
+
+    System.out.println("**************");
+    // System.out.println(currentProjectPartnres);
 
 
     return INPUT;
@@ -181,6 +192,15 @@ public class ProjectPartnersAction extends BaseAction {
   public void setAllProjectLeaders(List<User> allProjectLeaders) {
     this.allProjectLeaders = allProjectLeaders;
   }
+
+  public void setProject(Project project) {
+    this.project = project;
+  }
+
+// public void setProjectID(int projectId) {
+// System.out.println("setProjectId(" + projectId + ")");
+// this.projectID = projectId;
+// }
 
 
 }

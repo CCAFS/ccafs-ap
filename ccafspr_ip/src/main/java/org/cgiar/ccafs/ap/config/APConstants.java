@@ -15,7 +15,7 @@ package org.cgiar.ccafs.ap.config;
 
 /**
  * All Constants should be here.
- * 
+ *
  * @author Héctor Fabio Tobón R.
  */
 public final class APConstants {
