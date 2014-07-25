@@ -20,6 +20,7 @@ import org.cgiar.ccafs.ap.data.dao.LocationDAO;
 import org.cgiar.ccafs.ap.data.manager.LocationManager;
 import org.cgiar.ccafs.ap.data.model.Country;
 import org.cgiar.ccafs.ap.data.model.Location;
+import org.cgiar.ccafs.ap.data.model.Region;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -60,10 +61,18 @@ public class LocationManagerImpl implements LocationManager {
     List<Map<String, String>> locationDataList = locationDAO.getLocationsByType(typeID);
     if (typeID == APConstants.LOCATION_ELEMENT_TYPE_COUNTRY) {
       for (Map<String, String> lData : locationDataList) {
-        Location location = new Country();
+        Country location = new Country();
         location.setId(Integer.parseInt(lData.get("id")));
         location.setName(lData.get("name"));
         location.setCode(lData.get("code"));
+
+        if (lData.get("region_id") != null) {
+          Region region = new Region();
+          region.setId(Integer.parseInt(lData.get("region_id")));
+          region.setName(lData.get("region_name"));
+          region.setCode(lData.get("region_code"));
+          location.setRegion(region);
+        }
 
         // Adding object to the array.
         locations.add(location);
@@ -73,5 +82,4 @@ public class LocationManagerImpl implements LocationManager {
     }
     return locations;
   }
-
 }
