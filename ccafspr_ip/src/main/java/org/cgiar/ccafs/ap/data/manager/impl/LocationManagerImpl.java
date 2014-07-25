@@ -86,7 +86,7 @@ public class LocationManagerImpl implements LocationManager {
         location.setName(lData.get("name"));
         location.setCode(lData.get("code"));
         if (lData.get("region_id") != null) {
-          // TODO - The region is never going to be reachable since the object is defined as 'Location'.
+          // TODO JG - The region is never going to be reachable since the object is defined as 'Location'.
           Region region = new Region();
           region.setId(Integer.parseInt(lData.get("region_id")));
           region.setName(lData.get("region_name"));

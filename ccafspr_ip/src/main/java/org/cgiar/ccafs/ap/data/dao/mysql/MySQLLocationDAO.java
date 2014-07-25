@@ -64,7 +64,6 @@ public class MySQLLocationDAO implements LocationDAO {
     return countryData;
   }
 
-  // TODO - This method is never used!
   private List<Map<String, String>> getData(String query) {
     LOG.debug(">> executeQuery(query='{}')", query);
     List<Map<String, String>> locationsList = new ArrayList<>();

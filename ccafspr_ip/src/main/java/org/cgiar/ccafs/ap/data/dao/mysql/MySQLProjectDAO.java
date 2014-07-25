@@ -107,8 +107,6 @@ public class MySQLProjectDAO implements ProjectDAO {
 
   @Override
   public List<Map<String, String>> getProjectOwnerId(int programId) {
-    // TODO Pending function to define, until we can obtain the session credentials
-
     LOG.debug(">> getProjectOwnerId( programID = {} )", programId);
 
     StringBuilder query = new StringBuilder();

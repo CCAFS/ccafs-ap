@@ -125,7 +125,6 @@ public class ProjectPartnersAction extends BaseAction {
       projectID = -1;
       return; // Stop here and go to execute method.
     }
-    System.out.println("prepare()");
     // Getting the project identified with the id parameter.
     project = projectManager.getProject(projectID);
     // if there is not a project identified with the given id
@@ -170,11 +169,11 @@ public class ProjectPartnersAction extends BaseAction {
   @Override
   public String save() {
 
-    // project.setId(projectId);
+    // Getting previous Project Partners.
     List<ProjectPartner> previousProjectPartners = projectPartnerManager.getProjectPartners(projectID);
 
+    // Getting current Project Partners from the view.
     List<ProjectPartner> currentProjectPartnres = project.getProjectPartners();
-
 
     for (ProjectPartner projectPartner : previousProjectPartners) {
       if (!currentProjectPartnres.contains(projectPartner)) {
