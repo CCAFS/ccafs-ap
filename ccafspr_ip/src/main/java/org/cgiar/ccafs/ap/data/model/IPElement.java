@@ -62,10 +62,11 @@ public class IPElement {
     return indicators;
   }
 
-  public int[] getIndicatorsIDs() {
+  public int[] getParentIndicatorsIDs() {
+
     int[] indicatorsIDs = new int[indicators.size()];
     for (int c = 0; c < indicators.size(); c++) {
-      indicatorsIDs[c] = indicators.get(c).getId();
+      indicatorsIDs[c] = indicators.get(c).getParent().getId();
     }
 
     return indicatorsIDs;
