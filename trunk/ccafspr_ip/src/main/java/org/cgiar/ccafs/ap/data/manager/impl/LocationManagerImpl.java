@@ -43,6 +43,22 @@ public class LocationManagerImpl implements LocationManager {
 
 
   @Override
+  public List<Country> getAllCountries() {
+    return null;
+  }
+
+  @Override
+  public List<Region> getAllRegions() {
+    return null;
+  }
+
+  @Override
+  public Country getCountry(int countryID) {
+    return null;
+  }
+
+
+  @Override
   public Country getCountryByCode(String code) {
     Map<String, String> lData = locationDAO.getCountryByCode(code);
     if (!lData.isEmpty()) {
@@ -75,7 +91,7 @@ public class LocationManagerImpl implements LocationManager {
     return null;
   }
 
-
+  @Override
   public List<Location> getLocationsByType(int typeID) {
     List<Location> locations = new ArrayList<>();
     List<Map<String, String>> locationDataList = locationDAO.getLocationsByType(typeID);
@@ -85,19 +101,27 @@ public class LocationManagerImpl implements LocationManager {
         location.setId(Integer.parseInt(lData.get("id")));
         location.setName(lData.get("name"));
         location.setCode(lData.get("code"));
-        if (lData.get("region_id") != null) {
-          // TODO JG - The region is never going to be reachable since the object is defined as 'Location'.
-          Region region = new Region();
-          region.setId(Integer.parseInt(lData.get("region_id")));
-          region.setName(lData.get("region_name"));
-          region.setCode(lData.get("region_code"));
-          location.setRegion(region);
-        }
+
+// if (lData.get("region_id") != null) {
+// TODO - The region is never going to be reachable since the object is defined as 'Location'.
+// Region region = new Region();
+// region.setId(Integer.parseInt(lData.get("region_id")));
+// region.setName(lData.get("region_name"));
+// region.setCode(lData.get("region_code"));
+// location.setRegion(region);
+// }
 
         // Adding object to the array.
         locations.add(location);
       }
+
+
     }
     return locations;
+  }
+
+  @Override
+  public Region getRegion(int regionID) {
+    return null;
   }
 }
