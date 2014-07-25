@@ -30,8 +30,9 @@ Javier Gallego:
 []    - Crear en ProjectManager de los métodos save de Project y Project Focuses
 
 Sebastián Amariles:
-[]    - Probar interfaz de IPElements cuando el backend esta finalizado
-[]    - Crear archivos base para la seccion de planning
+[]    - Crear breadcrumb de navegacion 
+[]    - Probar interfaz de IPElements cuando el backend este finalizado
+[OK]    - Crear archivos base para la seccion de planning
 []    - Probar seccion de projectPartners despues de tener listo en servicio que filtra
 
 Todos:

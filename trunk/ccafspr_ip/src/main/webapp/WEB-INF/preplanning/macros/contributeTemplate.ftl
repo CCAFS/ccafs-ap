@@ -20,47 +20,46 @@
     </div>
 [/#macro]
 
-[#macro midOutcomesRPL midOutcomeRPL_index="0" parent_index="0" midOutcomeRPL_value="-1" description="description" listName="" i18nkey=""  template=false canRemove=false ] 
+[#macro midOutcomesRPL midOutcomeRPL_index="0" midOutcomeRPL_value="-1" parent_index="0" parent_id="-1" description="description" listName="" i18nkey=""  template=false canRemove=false ] 
    
   [#if template] 
     <div id="contributeTemplate" class="contributions" style="display:none"> 
-        <input id="id" type="hidden" name="id" value="${midOutcomeRPL_value}" />
-        <p>[@s.text name="midOutcomes[${parent_index}].description" /]</p>
-        <h6>[@s.text name="preplanning.midOutcomesRPL.selectIndicators" /]</h6>
-      [#-- Outcome Indicators --]
-      <div id="midOutcomeIndicators" class="fullBlock">
-        <p>[@s.text name="preplanning.midOutcomesRPL.midOutcomeIndicators" /]</p>
-        <div class="checkboxGroup vertical">
-          [@s.fielderror cssClass="fieldError" fieldName="indicatorsSelected"/]          
-          [@s.checkboxlist name="indicators" list="midOutcomes[${parent_index}].indicators" listKey="id" listValue="description" cssClass="midOutcomeIndicator" /]
-        </div>
-      </div>
-      [#-- Narrative explanation --]
-      [@customForm.textArea showTitle=true name="justification" i18nkey="${i18nkey}" required=true /]
-  [#else]
-   <div id="" class="contributions">   
-      <input id="contributeId" type="hidden" name="midOutcomes[${midOutcomeRPL_index}].contributesTo[${parent_index}].id" value="${midOutcomeRPL_value}" />
-      <p>[@s.text name="midOutcomes[${parent_index}].description" /]</p>
+      <input id="contributeId" type="hidden" name="id" value="${parent_id}" />
+      <p id="description"></p>
       <h6>[@s.text name="preplanning.midOutcomesRPL.selectIndicators" /]</h6>
       [#-- Outcome Indicators --]
       <div id="midOutcomeIndicators" class="fullBlock">
         <p>[@s.text name="preplanning.midOutcomesRPL.midOutcomeIndicators" /]</p>
         <div class="checkboxGroup vertical">
-          [@s.fielderror cssClass="fieldError" fieldName="indicatorsSelected"/]          
-          [@s.checkboxlist name="midOutcomes[${midOutcomeRPL_index}].contributesTo[${parent_index}].indicators" list="midOutcomes[${parent_index}].indicators" listKey="id" listValue="description" cssClass="midOutcomeIndicator" /]
+          [@s.fielderror cssClass="fieldError" fieldName="indicatorsSelected"/]
         </div>
       </div>
       [#-- Narrative explanation --]
-      [@customForm.textArea showTitle=true name="midOutcomes[${midOutcomeRPL_index}].contributesTo[${parent_index}].justification" i18nkey="${i18nkey}" required=true /]
+      [@customForm.textArea showTitle=true name="justification" i18nkey="preplanning.midOutcomesRPL.midOutcomeIndicators.justification" required=true /]
+  [#else]  
+  <div id="" class="contributions">   
+    <input id="contributeId" type="hidden" name="midOutcomes[${midOutcomeRPL_index}].translatedOf[${parent_index}].id" value="${parent_id}" />
+    <p id="description">[@s.text name="midOutcomes[${midOutcomeRPL_index}].translatedOf[${parent_index}].description" /]</p>
+    <h6>[@s.text name="preplanning.midOutcomesRPL.selectIndicators" /]</h6>
+    [#-- Outcome Indicators --]
+    <div id="midOutcomeIndicators" class="fullBlock">
+      <p>[@s.text name="preplanning.midOutcomesRPL.midOutcomeIndicators" /]</p>
+      <div class="checkboxGroup vertical">
+        [@s.fielderror cssClass="fieldError" fieldName="indicatorsSelected"/]
+        [@s.checkboxlist name="midOutcomes[${midOutcomeRPL_index}].translatedOf[${parent_index}].indicators" list="midOutcomes[${midOutcomeRPL_index}].translatedOf[${parent_index}].indicators" listKey="id" listValue="description" cssClass="midOutcomeIndicator" /]
+      </div>
+    </div>
+    [#-- Narrative explanation --]
+    [@customForm.textArea showTitle=true name="midOutcomes[${midOutcomeRPL_index}].translatedOf[${parent_index}].justification" i18nkey="preplanning.midOutcomesRPL.midOutcomeIndicators.justification" required=true /]
   [/#if]
   [#if canRemove]
-      [#-- remove link --]
-      <div class="removeLink">            
-        <img src="${baseUrl}/images/global/icon-remove.png" />
-        <a id="removeContribute-${parent_index}" href="" class="removeContribute">[@s.text name="preplanning.midOutcomesRPL.removeContribute" /]</a>
-      </div> 
+    [#-- remove link --]
+    <div class="removeLink">            
+      <img src="${baseUrl}/images/global/icon-remove.png" />
+      <a id="removeContribute-${parent_index}" href="" class="removeContribute">[@s.text name="preplanning.midOutcomesRPL.removeContribute" /]</a>
+    </div> 
   [/#if]
-    </div>
+  </div>
 [/#macro]
 
 [#macro outputs output_index="0" parent_index="0" value="-1" description="description" template=false canRemove=false ] 
