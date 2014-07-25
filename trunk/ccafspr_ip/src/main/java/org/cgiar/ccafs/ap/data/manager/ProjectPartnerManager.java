@@ -30,6 +30,7 @@ import com.google.inject.ImplementedBy;
 public interface ProjectPartnerManager {
 
   /**
+   * TODO JG - This method is bad documented!
    * Delete all Project Partners information which belongs to the project given
    *
    * @param projectId
@@ -48,6 +49,7 @@ public interface ProjectPartnerManager {
   public List<ProjectPartner> getProjectPartners(int projectId);
 
   /**
+   * TODO JG - This method is bad documented!
    * This method creates the project partner of a specific project
    *
    * @param projectId is the id of the project
