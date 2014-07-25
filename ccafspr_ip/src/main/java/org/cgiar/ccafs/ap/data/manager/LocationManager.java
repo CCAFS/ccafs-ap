@@ -16,11 +16,11 @@
 package org.cgiar.ccafs.ap.data.manager;
 
 import org.cgiar.ccafs.ap.data.manager.impl.LocationManagerImpl;
+import org.cgiar.ccafs.ap.data.model.Country;
 import org.cgiar.ccafs.ap.data.model.Location;
+import org.cgiar.ccafs.ap.data.model.Region;
 
 import java.util.List;
-
-import org.cgiar.ccafs.ap.data.model.Country;
 
 import com.google.inject.ImplementedBy;
 
@@ -32,6 +32,28 @@ import com.google.inject.ImplementedBy;
 public interface LocationManager {
 
   /**
+   * This method return all the information of the countries
+   * 
+   * @return a list of all countries with the information.
+   */
+  public List<Country> getAllCountries();
+
+  /**
+   * This method return all the information of the regions
+   * 
+   * @return a list of all regions with the information .
+   */
+  public List<Region> getAllRegions();
+
+  /**
+   * This method return the information of a Country by a given Country ID
+   * 
+   * @param countryID - is the ID of a Country
+   * @return a Country Object with the information.
+   */
+  public Country getCountry(int countryID);
+
+  /**
    * This method finds a Country identified with the given code.
    * 
    * @param code must be in format ISO 3166-1 alpha-2 - lower case (eg. "co" for Colombia)
@@ -41,7 +63,7 @@ public interface LocationManager {
 
   /**
    * Get a Location identified with the given type id and location id.
-   *
+   * 
    * @param typeID is an integer that represents the id of the location element type .
    * @param locationID is an integer that represents the id of the location to search
    * @return an Location object or null if the id does not exist in the database.
@@ -50,10 +72,18 @@ public interface LocationManager {
 
   /**
    * Return all the locations with the give type Id.
-   *
+   * 
    * @param typeID is an integer that represents the id of the location element type .
    * @return an List of Locations object or an empty list if not exist in the database.
    */
   public List<Location> getLocationsByType(int typeID);
+
+  /**
+   * This method return the information of a Region by a given Region ID
+   * 
+   * @param regionID - is the ID of a Region
+   * @return a Region Object with the information.
+   */
+  public Region getRegion(int regionID);
 
 }

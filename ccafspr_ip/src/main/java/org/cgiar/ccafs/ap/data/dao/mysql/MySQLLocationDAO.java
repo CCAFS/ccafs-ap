@@ -1,5 +1,6 @@
 package org.cgiar.ccafs.ap.data.dao.mysql;
 
+import org.cgiar.ccafs.ap.config.APConstants;
 import org.cgiar.ccafs.ap.data.dao.DAOManager;
 import org.cgiar.ccafs.ap.data.dao.LocationDAO;
 
@@ -63,6 +64,57 @@ public class MySQLLocationDAO implements LocationDAO {
     }
     return countryData;
   }
+  
+  @Override
+  public List<Map<String, String>> getAllCountries() {
+    LOG.debug(">> getLocationsByType( )");
+
+    StringBuilder query = new StringBuilder();
+    query.append("SELECT le.id, le.name, le.code ");
+    query.append("FROM loc_elements le ");
+    query.append("INNER JOIN loc_element_types letd ON letd.id = le.element_type_id  ");
+    query.append("WHERE letd.id =  ");
+    query.append(APConstants.LOCATION_ELEMENT_TYPE_COUNTRY);
+    query.append(" ORDER BY le.name ");
+
+    LOG.debug("-- getIPElement() > Calling method executeQuery to get the results");
+    return getData(query.toString());
+  }
+
+
+  @Override
+  public List<Map<String, String>> getAllRegions() {
+    LOG.debug(">> getLocationsByType( )");
+
+    StringBuilder query = new StringBuilder();
+    query.append("SELECT le.id, le.name, le.code ");
+    query.append("FROM loc_elements le ");
+    query.append("INNER JOIN loc_element_types letd ON letd.id = le.element_type_id  ");
+    query.append("WHERE letd.id =  ");
+    query.append(APConstants.LOCATION_ELEMENT_TYPE_REGION);
+    query.append(" ORDER BY le.name ");
+
+    LOG.debug("-- getIPElement() > Calling method executeQuery to get the results");
+    return getData(query.toString());
+  }
+
+  @Override
+  public Map<String, String> getCountry(int countryID) {
+    LOG.debug(">> getLocationsByType( )");
+
+    StringBuilder query = new StringBuilder();
+    query.append("SELECT le.id, le.name, le.code ");
+    query.append("FROM loc_elements le ");
+    query.append("INNER JOIN loc_element_types letd ON letd.id = le.element_type_id  ");
+    query.append("WHERE letd.id =  ");
+    query.append(APConstants.LOCATION_ELEMENT_TYPE_COUNTRY);
+    query.append(" AND le.id= ");
+    query.append(countryID);
+
+    LOG.debug("-- getIPElement() > Calling method executeQuery to get the results");
+    // TODO finish
+    return null;
+  }
 
   private List<Map<String, String>> getData(String query) {
     LOG.debug(">> executeQuery(query='{}')", query);
@@ -75,7 +127,6 @@ public class MySQLLocationDAO implements LocationDAO {
         locationData.put("id", rs.getString("id"));
         locationData.put("name", rs.getString("name"));
         locationData.put("code", rs.getString("code"));
-        locationData.put("element_type_id", rs.getString("element_type_id"));
 
         locationsList.add(locationData);
       }
@@ -165,6 +216,24 @@ public class MySQLLocationDAO implements LocationDAO {
     LOG.debug("<< executeQuery():getLocationsByType.size={}", locationsList.size());
     return locationsList;
 
+  }
+
+  @Override
+  public Map<String, String> getRegion(int regionID) {
+    LOG.debug(">> getLocationsByType( )");
+
+    StringBuilder query = new StringBuilder();
+    query.append("SELECT le.id, le.name, le.code ");
+    query.append("FROM loc_elements le ");
+    query.append("INNER JOIN loc_element_types letd ON letd.id = le.element_type_id  ");
+    query.append("WHERE letd.id =  ");
+    query.append(APConstants.LOCATION_ELEMENT_TYPE_REGION);
+    query.append(" AND le.id= ");
+    query.append(regionID);
+
+    LOG.debug("-- getIPElement() > Calling method executeQuery to get the results");
+    // TODO FINISH
+    return null;
   }
 
 }
