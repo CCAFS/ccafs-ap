@@ -50,23 +50,23 @@
 			[#--${projects}--]
 			[@customForm.textArea name="projects.summary" i18nkey="preplanning.projectDescription.projectSummary" required=true value="${project.summary}" /]
     </fieldset><br/>
-    <fieldset class="fullBlock">  
+    <fieldset class="fullBlock">   
     	<legend>[@s.text name="preplanning.projectDescription.projectWorking" /] </legend> 
 	    <div id="projectWorking">
 	      [#-- Regions --] 
 	      <div id="projectRegions" class="halfPartBlock">
 	        <h6>[@s.text name="preplanning.projectDescription.regions" /]</h6>
-	        <div class="checkboxGroup">
+	        <div class="checkboxGroup"> 
 	          [@s.fielderror cssClass="fieldError" fieldName="regionsSelected"/]          
-	          [@s.checkboxlist name="region" list="regions" listKey="id" listValue="name" value="activeRegions" cssClass="checkbox" /]
+	          [@s.checkboxlist name="region" list="programsRegion" listKey="id" listValue="name" value="project.regionsIds" cssClass="checkbox" /]
 	        </div>
 	      </div> 
 	      [#-- Flagships --] 
 	      <div id="projectFlagships" class="halfPartBlock">
 	        <h6>[@s.text name="preplanning.projectDescription.flagships" /]</h6>
-	        <div class="checkboxGroup">
+	        <div class="checkboxGroup">  
 	          [@s.fielderror cssClass="fieldError" fieldName="flagshipsSelected"/]          
-	          [@s.checkboxlist name="flagship" list="flagships" listKey="id" listValue="name" value="activeFlagships" cssClass="checkbox" /]
+	          [@s.checkboxlist name="flagship" list="programsFlagship" listKey="id" listValue="name" value="project.flagshipsIds" cssClass="checkbox" /]
 	        </div>
 	      </div> 
 	      [#-- Gender --] 
