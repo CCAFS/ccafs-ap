@@ -751,6 +751,10 @@ a.currentReportingSection li #i-additionalInformation{
   color: #636368;
 }
 
+.textArea textarea{
+  width: 99%
+}
+
 /************* LOGIN *****************/
 #loginFormContainer {
   margin: 10px 0;
@@ -824,15 +828,19 @@ a.currentReportingSection li #i-additionalInformation{
 }
 
 .indicator h6,.indicator label{
-  float: left;
+  float: left; 
 }
+
+.indicator label{
+  margin: 0.5em 0.5em .2em 0 !important;
+} 
 
 .contentElements {
     border: 1px solid #ccc;
     border-top: 0;
     border-radius: 10px 10px 2px 2px;
-    margin: 14px 9px;
-    width: 96%;
+    margin: 14px 0px;
+    width: 99%;
 }
 .contentElements textarea {
   width: 100%;

@@ -95,6 +95,7 @@ function addContributeEvent(event){
 		var grandParentId = $addButton.parent().parent().attr("id").split("-")[1];
 		var $newElementClone = $("#contributeTemplate").clone(true).removeAttr("id");  
 		var elementName = "midOutcomes["+grandParentId+"].translatedOf["+elementId+"]."; 
+		$newElementClone.find("[id$='contributeId']").attr("value", elementId);
 		$.getJSON("../ipIndicators.do?programID="+programID+"&elementID="+elementId, function(data) { 
 		  $.each(data.IPElementsList, function(index,element){ 
 			$newElementClone.find("div.checkboxGroup").append('<input  id="'+elementName+'indicators-'+index+'" class="midOutcomeIndicator" name="'+elementName+'indicators" type="checkbox" value="'+ this.id +'">');

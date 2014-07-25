@@ -45,7 +45,7 @@
               <div class="itemIndex">[@s.text name="preplanning.midOutcomesRPL.contributes" /] </div>
               [#-- midOutcome's parents --]
               [#if midOutcome.translatedOf?has_content] 
-                [#list midOutcome.translatedOf as parent]
+                [#list midOutcome.translatedOf as parent] 
                   [@contributeTemplate.midOutcomesRPL midOutcomeRPL_index="${midOutcome_index}" midOutcomeRPL_value="${midOutcome.id}" parent_index="${parent_index}" parent_id="${parent.id}" canRemove=true  /]
                 [/#list]  
               [#else]
@@ -73,31 +73,31 @@
   [/@s.form] 
   
   
-    [#-- Mid Outcomes RPL TEMPLATE --]
-    <div class="midOutcome" id="midOutcomeRPLTemplate" style="display:none">
-      [#-- Mid outcome identifier --]
-      <input id="id" type="hidden"  value="-1" />
-      <input type="hidden" id="midOutcomeProgramId" value="${currentUser.currentInstitution.program.id}" />
-      <input type="hidden" id="midOutcomeTypeId" value="${elementTypeID}" />
-      [#-- Remove midOutcome --]      
-      <div class="removeMidOutcomeBlock removeLink">            
-        <img src="${baseUrl}/images/global/icon-remove.png" />
-        <a id="removeMidOutcome" href="" class="removeContribute">[@s.text name="preplanning.midOutcomesRPL.removeMidOutcome" /]</a>
-      </div> 
-      [#-- Title --]
-      [@customForm.textArea name="description" i18nkey="preplanning.midOutcomesRPL.outcome" required=true /] 
-      [@customForm.select name="flagships" label="" i18nkey="preplanning.midOutcomesRPL.flagships" listName="flagshipsList" keyFieldName="id"  displayFieldName="name" /]
-      <div class="contentElements parentsBlock">
-        <div class="itemIndex">[@s.text name="preplanning.midOutcomesRPL.contributes" /] </div>
-        [#-- midOutcome's parents --]  
-        [#-- Add contribute --]
-        <div class="fullBlock addContributeBlock">
-          [@customForm.select name="midOutcomesFPL"  value="none" showTitle=false listName="midOutcomesFPL" keyFieldName="id"  displayFieldName="description" addButton=true className="contributes" /]
-        </div>
-      </div>  
-    </div> 
-    [#-- contributeTo RPL TEMPLATE --]
-    [@contributeTemplate.midOutcomesRPL template=true canRemove=true  /]
+[#-- Mid Outcomes RPL TEMPLATE --]
+<div class="midOutcome" id="midOutcomeRPLTemplate" style="display:none">
+  [#-- Mid outcome identifier --]
+  <input id="id" type="hidden"  value="-1" />
+  <input type="hidden" id="midOutcomeProgramId" value="${currentUser.currentInstitution.program.id}" />
+  <input type="hidden" id="midOutcomeTypeId" value="${elementTypeID}" />
+  [#-- Remove midOutcome --]      
+  <div class="removeMidOutcomeBlock removeLink">            
+    <img src="${baseUrl}/images/global/icon-remove.png" />
+    <a id="removeMidOutcome" href="" class="removeContribute">[@s.text name="preplanning.midOutcomesRPL.removeMidOutcome" /]</a>
+  </div> 
+  [#-- Title --]
+  [@customForm.textArea name="description" i18nkey="preplanning.midOutcomesRPL.outcome" required=true /] 
+  [@customForm.select name="flagships" label="" i18nkey="preplanning.midOutcomesRPL.flagships" listName="flagshipsList" keyFieldName="id"  displayFieldName="name" /]
+  <div class="contentElements parentsBlock">
+    <div class="itemIndex">[@s.text name="preplanning.midOutcomesRPL.contributes" /] </div>
+    [#-- midOutcome's parents --]  
+    [#-- Add contribute --]
+    <div class="fullBlock addContributeBlock">
+      [@customForm.select name="midOutcomesFPL"  value="none" showTitle=false listName="midOutcomesFPL" keyFieldName="id"  displayFieldName="description" addButton=true className="contributes" /]
+    </div>
+  </div>  
+</div> 
+[#-- contributeTo RPL TEMPLATE --]
+[@contributeTemplate.midOutcomesRPL template=true canRemove=true  /]
     
    
 </section>
