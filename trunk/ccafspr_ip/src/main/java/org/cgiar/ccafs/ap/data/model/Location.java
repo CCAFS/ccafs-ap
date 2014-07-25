@@ -36,7 +36,7 @@ public abstract class Location {
     this.name = name;
   }
 
-  public String getcode() {
+  public String getCode() {
     return code;
   }
 
