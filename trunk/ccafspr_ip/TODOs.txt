@@ -28,6 +28,8 @@ Javier Gallego:
 [OK]    - Copiar y pegar todo lo de RegionManager del proyecto anterior a este y probar que todo funciona.
 [OK]    - Crear DAOs para InstitutionType (o se podrían incluir los métodos en InstitutionManager).
 []    - Crear en ProjectManager de los métodos save de Project y Project Focuses
+[]    - getProjectOwner y lista de getProjectOwnerContact
+[]    - getProjectFocuses y getProjectCrossCutting saveProjectCrossCutting
 
 Sebastián Amariles:
 []    - Crear breadcrumb de navegacion 
