@@ -21,9 +21,9 @@ import org.cgiar.ccafs.ap.data.manager.LocationManager;
 import org.cgiar.ccafs.ap.data.manager.ProjectManager;
 import org.cgiar.ccafs.ap.data.manager.ProjectPartnerManager;
 import org.cgiar.ccafs.ap.data.manager.UserManager;
+import org.cgiar.ccafs.ap.data.model.Country;
 import org.cgiar.ccafs.ap.data.model.Institution;
 import org.cgiar.ccafs.ap.data.model.InstitutionType;
-import org.cgiar.ccafs.ap.data.model.Location;
 import org.cgiar.ccafs.ap.data.model.Project;
 import org.cgiar.ccafs.ap.data.model.ProjectPartner;
 import org.cgiar.ccafs.ap.data.model.User;
@@ -37,7 +37,7 @@ import org.slf4j.LoggerFactory;
 
 /**
  * This class is used to manage the Project Partners section in the pre-planning step.
- *
+ * 
  * @author Héctor Tobón
  */
 public class ProjectPartnersAction extends BaseAction {
@@ -59,9 +59,10 @@ public class ProjectPartnersAction extends BaseAction {
 
   // Model for the view
   private List<InstitutionType> partnerTypes;
-  private List<Location> countries;
+  private List<Country> countries;
   private List<Institution> allPartners; // will be used to list all the partners that have the system.
   private List<User> allProjectLeaders; // will be used to list all the project leaders that have the system.
+
 
   @Inject
   public ProjectPartnersAction(APConfig config, ProjectPartnerManager projectPartnerManager,
@@ -96,7 +97,7 @@ public class ProjectPartnersAction extends BaseAction {
     return allProjectLeaders;
   }
 
-  public List<Location> getCountries() {
+  public List<Country> getCountries() {
     return countries;
   }
 
@@ -108,10 +109,10 @@ public class ProjectPartnersAction extends BaseAction {
     return project;
   }
 
-
   public int getProjectID() {
     return projectID;
   }
+
 
   @Override
   public void prepare() throws Exception {
@@ -139,7 +140,7 @@ public class ProjectPartnersAction extends BaseAction {
     allPartners = institutionManager.getAllInstitutions();
 
     // Getting all the countries
-    countries = locationManager.getLocationsByType(APConstants.LOCATION_ELEMENT_TYPE_COUNTRY);
+    countries = locationManager.getAllCountries();
 
     // Getting all partner types
     partnerTypes = institutionManager.getAllInstitutionTypes();
