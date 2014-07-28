@@ -19,6 +19,7 @@ import org.cgiar.ccafs.ap.config.APConstants;
 import org.cgiar.ccafs.ap.data.manager.IPElementManager;
 import org.cgiar.ccafs.ap.data.model.IPElement;
 import org.cgiar.ccafs.ap.data.model.IPElementType;
+import org.cgiar.ccafs.ap.data.model.IPProgram;
 import org.cgiar.ccafs.ap.validation.preplanning.OutcomesValidation;
 
 import java.util.ArrayList;
@@ -38,6 +39,7 @@ public class OutcomesPreplanningAction extends BaseAction {
   private IPElementManager ipElementManager;
 
   // Model
+  private List<IPElement> idos;
   private List<IPElement> outcomes;
   private StringBuilder validationMessages;
   private List<IPElement> outcomesFromDatabase;
@@ -61,6 +63,10 @@ public class OutcomesPreplanningAction extends BaseAction {
     return APConstants.ELEMENT_TYPE_OUTCOME2025;
   }
 
+  public List<IPElement> getIdos() {
+    return idos;
+  }
+
   public List<IPElement> getOutcomes() {
     return outcomes;
   }
@@ -69,6 +75,16 @@ public class OutcomesPreplanningAction extends BaseAction {
   public void prepare() throws Exception {
     IPElementType type = new IPElementType(APConstants.ELEMENT_TYPE_OUTCOME2025);
     validationMessages = new StringBuilder();
+
+    // The IDOs are created by the coordinating unit
+    IPProgram cuProgram = new IPProgram();
+    cuProgram.setId(APConstants.COORDINATING_UNIT_PROGRAM);
+    // Set the element type for IDOs
+    IPElementType idoType = new IPElementType();
+    idoType.setId(APConstants.ELEMENT_TYPE_IDOS);
+    // Get all the IDOs
+    idos = ipElementManager.getIPElements(cuProgram, idoType);
+    System.out.println(idos);
 
     // TODO HC - Add an interceptor to verify that if the user is not related to a program, then DON'T have
     // permissions to access this action
