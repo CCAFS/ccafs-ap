@@ -38,18 +38,17 @@ public interface ProjectPartnerManager {
   public boolean deleteProjectPartner(int id);
 
   /**
-   * TODO JG - This method is bad documented!
-   * Delete all Project Partners information which belongs to the project given
-   *
-   * @param projectId
+   * Delete a Project Partners information which belongs to the project Id and Institution Id given
+   * 
+   * @param projectId is the id of the project
    * @param partnerId from institution
-   * @return true if the deletion process was successful.
+   * @return true if the deletion process was successful or false otherwise.
    */
   public boolean deleteProjectPartner(Project project, Institution partner);
 
   /**
    * This method is used to get the list of Project Partners that belongs to a specific project.
-   *
+   * 
    * @param projectId is the id of the project.
    * @return a List of ProjectPartner objects that belongs to the project identified with the given id. If no projects
    *         are found, this method will return an empty list.
@@ -57,11 +56,10 @@ public interface ProjectPartnerManager {
   public List<ProjectPartner> getProjectPartners(int projectId);
 
   /**
-   * TODO JG - This method is bad documented!
-   * This method creates the project partner of a specific project
-   *
-   * @param projectId is the id of the project
-   * @return a ProjectPartner object that represents the leader of the project, or NULL if nothing found.
+   * This method save the project partner of a specific project
+   * 
+   * @param projectpartnerData is the information to be saved
+   * @return the last inserted id if any or 0 if some record was updated or -1 if any error occurred.
    */
   public boolean saveProjectPartner(List<ProjectPartner> partners);
 

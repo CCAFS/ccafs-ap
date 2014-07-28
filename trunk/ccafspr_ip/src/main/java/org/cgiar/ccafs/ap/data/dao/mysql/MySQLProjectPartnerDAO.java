@@ -29,7 +29,7 @@ public class MySQLProjectPartnerDAO implements ProjectPartnerDAO {
 
   @Override
   public boolean deleteProjectPartner(int id) {
-    LOG.debug(">> deleteProjectPartner(idd={})", id);
+    LOG.debug(">> deleteProjectPartner(id={})", id);
 
     String query = "DELETE FROM project_partners pp WHERE id = ?";
 
@@ -55,7 +55,7 @@ public class MySQLProjectPartnerDAO implements ProjectPartnerDAO {
     StringBuilder query = new StringBuilder();
     query.append("DELETE FROM project_partners pp ");
     query.append("WHERE pp.project_id = ? AND pp.partner_id = ?");
-    // String deleteQuery = ;
+
     try (Connection connection = databaseManager.getConnection()) {
       int rowsDeleted =
         databaseManager.makeChangeSecure(connection, query.toString(), new Object[] {projectId, institutionId});
@@ -64,13 +64,12 @@ public class MySQLProjectPartnerDAO implements ProjectPartnerDAO {
         return true;
       }
     } catch (SQLException e) {
-      // TODO JG - Why IP Elements here? Javier please, be careful when copy and paste code! I don't want to see this
-// kind of problems any more!
-      LOG.error("-- deleteIpElements() > There was a problem deleting the ipElements of program {} and type {}.",
-        new Object[] {projectId, institutionId, e});
+      LOG
+        .error(
+          "-- deleteProjectPartner() > There was a problem deleting the Project Partner of projectId {} and InstitutionId {}.",
+          new Object[] {projectId, institutionId, e});
     }
-    // TODO JG - Why IP Elements here?
-    LOG.debug("<< deleteIpElements():{}", false);
+    LOG.debug("<< deleteProjectPartner():{}", false);
     return false;
   }
 
@@ -100,8 +99,7 @@ public class MySQLProjectPartnerDAO implements ProjectPartnerDAO {
       LOG.error(exceptionMessage, e);
       return null;
     }
-    // TODO JG - Why IP Elements here?
-    LOG.debug("<< executeQuery():ipElementList.size={}", projectPartnerList.size());
+    LOG.debug("<< executeQuery():projectPartnerList.size={}", projectPartnerList.size());
     return projectPartnerList;
   }
 

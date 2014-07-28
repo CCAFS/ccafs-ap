@@ -34,14 +34,14 @@ public interface LocationManager {
   /**
    * This method return all the information of the countries
    * 
-   * @return a list of all countries with the information.
+   * @return a list of all countries with the information or null if there is none.
    */
   public List<Country> getAllCountries();
 
   /**
    * This method return all the information of the regions
    * 
-   * @return a list of all regions with the information .
+   * @return a list of all regions with the information or null if there is none.
    */
   public List<Region> getAllRegions();
 

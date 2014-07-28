@@ -44,16 +44,61 @@ public class LocationManagerImpl implements LocationManager {
 
   @Override
   public List<Country> getAllCountries() {
-    return null;
+    List<Country> countries = new ArrayList<>();
+    List<Map<String, String>> countriesDataList = locationDAO.getAllCountries();
+
+    for (Map<String, String> lData : countriesDataList) {
+      Country country = new Country();
+      country.setId(Integer.parseInt(lData.get("id")));
+      country.setName(lData.get("name"));
+      country.setCode(lData.get("code"));
+      // Region
+      Region region = new Region();
+      region.setId(Integer.parseInt(lData.get("region_id")));
+      region.setName(lData.get("region_name"));
+      region.setCode(lData.get("region_code"));
+      country.setRegion(region);
+
+      // Adding object to the array.
+      countries.add(country);
+    }
+    return countries;
   }
 
   @Override
   public List<Region> getAllRegions() {
-    return null;
+    List<Region> regions = new ArrayList<>();
+    List<Map<String, String>> regionsDataList = locationDAO.getAllRegions();
+
+    for (Map<String, String> lData : regionsDataList) {
+      Region region = new Region();
+      region.setId(Integer.parseInt(lData.get("id")));
+      region.setName(lData.get("name"));
+      region.setCode(lData.get("code"));
+
+      // Adding object to the array.
+      regions.add(region);
+    }
+    return regions;
   }
 
   @Override
   public Country getCountry(int countryID) {
+    Map<String, String> lData = locationDAO.getCountry(countryID);
+    if (!lData.isEmpty()) {
+      // Country
+      Country country = new Country();
+      country.setId(Integer.parseInt(lData.get("id")));
+      country.setName(lData.get("name"));
+      country.setCode(lData.get("code"));
+      // Region
+      Region region = new Region();
+      region.setId(Integer.parseInt(lData.get("region_id")));
+      region.setName(lData.get("region_name"));
+      region.setCode(lData.get("region_code"));
+      country.setRegion(region);
+      return country;
+    }
     return null;
   }
 
@@ -95,33 +140,41 @@ public class LocationManagerImpl implements LocationManager {
   public List<Location> getLocationsByType(int typeID) {
     List<Location> locations = new ArrayList<>();
     List<Map<String, String>> locationDataList = locationDAO.getLocationsByType(typeID);
-    if (typeID == APConstants.LOCATION_ELEMENT_TYPE_COUNTRY) {
+    // TODO JG HT Ask about this, when you have to search another location elements type
+    if (typeID == APConstants.LOCATION_ELEMENT_TYPE_COUNTRY) { // validation if the typeID is Country
       for (Map<String, String> lData : locationDataList) {
         Country location = new Country();
         location.setId(Integer.parseInt(lData.get("id")));
         location.setName(lData.get("name"));
         location.setCode(lData.get("code"));
-
-// if (lData.get("region_id") != null) {
-// TODO - The region is never going to be reachable since the object is defined as 'Location'.
-// Region region = new Region();
-// region.setId(Integer.parseInt(lData.get("region_id")));
-// region.setName(lData.get("region_name"));
-// region.setCode(lData.get("region_code"));
-// location.setRegion(region);
-// }
+        // Region
+        // if (lData.get("region_id") != null) {
+        // TODO - The region is never going to be reachable since the object is defined as 'Location'.
+        // Region region = new Region();
+        // region.setId(Integer.parseInt(lData.get("region_id")));
+        // region.setName(lData.get("region_name"));
+        // region.setCode(lData.get("region_code"));
+        // location.setRegion(region);
+        // }
 
         // Adding object to the array.
         locations.add(location);
       }
-
-
     }
     return locations;
   }
 
   @Override
   public Region getRegion(int regionID) {
+    Map<String, String> lData = locationDAO.getRegion(regionID);
+    if (!lData.isEmpty()) {
+      // Region
+      Region region = new Region();
+      region.setId(Integer.parseInt(lData.get("region_id")));
+      region.setName(lData.get("region_name"));
+      region.setCode(lData.get("region_code"));
+      return region;
+    }
     return null;
   }
 }
