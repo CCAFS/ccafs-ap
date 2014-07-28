@@ -22,11 +22,7 @@
 	      [#-- PRE-Planning section --]
 	      [#if currentUser.CP || currentUser.FPL || currentUser.RPL || currentUser.PI || currentUser.admin ]
 	        [#if planningActive ]
-	          [#if currentUser.FPL]
 	          <a  href="${baseUrl}/pre-planning/outcomes.do">
-	          [#elseif currentUser.RPL]
-	          <a  href="${baseUrl}/pre-planning/midOutcomesRPL.do">
-	          [/#if]
 	        [#else]
 	          <a href="javascript:void(0);" title="[@s.text name="menu.link.disabled" /]" class="disabled">
 	        [/#if]

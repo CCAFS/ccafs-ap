@@ -28,7 +28,7 @@
     <div id="MidOutcomeBlocks"> 
         [#if midOutcomes?has_content]
           [#list midOutcomes as midOutcome]
-          <div class="midOutcome" id="midOutcome-${midOutcome_index}">
+          <div class="midOutcome borderBox" id="midOutcome-${midOutcome_index}">
             [#-- Mid outcome identifier --]
             <input id="midOutcomeId" type="hidden" name="midOutcomes[${midOutcome_index}].id" value="${midOutcome.id}" />
             <input type="hidden" name="midOutcomes[${midOutcome_index}].program.id" value="${currentUser.currentInstitution.program.id}" />
@@ -39,15 +39,20 @@
               <a id="removeMidOutcome" href="" class="removeContribute">[@s.text name="preplanning.midOutcomesRPL.removeMidOutcome" /]</a>
             </div> 
             [#-- Title --]
-            [@customForm.textArea name="midOutcomes[${midOutcome_index}].description" i18nkey="preplanning.midOutcomesRPL.outcome" required=true /] 
+            [#assign midOutcomeDescription]
+              [@s.text name="preplanning.midOutcomesRPL.outcome"] 
+                [@s.param name="0"]${midOutcome_index+1}[/@s.param] 
+              [/@s.text]
+            [/#assign]
+            [@customForm.textArea name="midOutcomes[${midOutcome_index}].description" i18nkey="${midOutcomeDescription}" required=true /] 
             [@customForm.select name="flagships" label="" i18nkey="preplanning.midOutcomesRPL.flagships" listName="flagshipsList" keyFieldName="id"  displayFieldName="name" /]
             <div class="contentElements parentsBlock">
               <div class="itemIndex">[@s.text name="preplanning.midOutcomesRPL.contributes" /] </div>
               [#-- midOutcome's parents --]
-              [#if midOutcome.translatedOf?has_content] 
-                [#list midOutcome.translatedOf as parent] 
+              [#if midOutcome.translatedOf?has_content]
+                [#list midOutcome.translatedOf as parent]
                   [@contributeTemplate.midOutcomesRPL midOutcomeRPL_index="${midOutcome_index}" midOutcomeRPL_value="${midOutcome.id}" parent_index="${parent_index}" parent_id="${parent.id}" canRemove=true  /]
-                [/#list]  
+                [/#list]
               [#else]
                 Not contributes yet
               [/#if]  
@@ -74,7 +79,7 @@
   
   
 [#-- Mid Outcomes RPL TEMPLATE --]
-<div class="midOutcome" id="midOutcomeRPLTemplate" style="display:none">
+<div class="midOutcome borderBox" id="midOutcomeRPLTemplate" style="display:none">
   [#-- Mid outcome identifier --]
   <input id="id" type="hidden"  value="-1" />
   <input type="hidden" id="midOutcomeProgramId" value="${currentUser.currentInstitution.program.id}" />

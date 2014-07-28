@@ -29,7 +29,7 @@
     <div id="outputBlocks"> 
         [#if outputs?has_content]
           [#list outputs as output]
-          <div class="output" id="output-${output_index}">
+          <div class="output borderBox" id="output-${output_index}">
             [#-- output identifier --] 
             <input type="hidden" name="outputs[${output_index}].id" value="${output.id}" />
             [#-- Remove output --]
@@ -76,7 +76,7 @@
   </article>
   [/@s.form]
   [#----  Output TEMPLATE hidden ----]
-    <div id="outputTemplate" class="output" style="display:none">
+    <div id="outputTemplate" class="output borderBox" style="display:none">
       [#-- Objective identifier --]
       <input id="outputId" type="hidden" value="-1" />
       [#-- Remove Output --]      

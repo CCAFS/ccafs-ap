@@ -28,7 +28,7 @@
     <div id="MidOutcomeBlocks"> 
         [#if midOutcomes?has_content]
           [#list midOutcomes as midOutcome]
-          <div class="midOutcome" id="midOutcome-${midOutcome_index}">
+          <div class="midOutcome borderBox" id="midOutcome-${midOutcome_index}">
             [#-- Mid outcome identifier --]
             <input id="midOutcomeId" type="hidden" name="midOutcomes[${midOutcome_index}].id" value="${midOutcome.id}" />
             <input type="hidden" name="midOutcomes[${midOutcome_index}].program.id" value="${currentUser.currentInstitution.program.id}" />
@@ -78,7 +78,7 @@
           </div>  
           [/#list]
         [#else]
-          <div class="midOutcome" id="midOutcome-0">
+          <div class="midOutcome borderBox" id="midOutcome-0">
           [#-- Mid outcome identifier --]
           <input type="hidden" name="midOutcomes[0].id" value="-1" />
           <input type="hidden" name="midOutcomes[0].program.id" value="${currentUser.currentInstitution.program.id}" />
@@ -126,7 +126,7 @@
   [/@s.form] 
   
 [#----  Mid Outcome TEMPLATE hidden ----]
-<div id="midOutcomeTemplate" class="midOutcome" style="display:none">
+<div id="midOutcomeTemplate" class="midOutcome borderBox" style="display:none">
   [#-- Objective identifier --]
   <input id="midOutcomeId" type="hidden" value="-1" />
   <input type="hidden" id="midOutcomeProgramID" value="${currentUser.currentInstitution.program.id}" />

@@ -22,17 +22,16 @@
   [@s.form action="partners" cssClass="pure-form"]
   <article class="halfContent" id="mainInformation">
   	[#include "/WEB-INF/preplanning/projectPreplanningSubMenu.ftl" /]
-  	<!-- Sebas, please use this variables and remove this comment when you have finished. -->
-  	<p>Project Id: ${project.id}</p>
-  	<p>Project title: ${project.title}</p>
-  	<!-- -------------------------------------------------------------------------------- -->
   	<h1 class="contentTitle">
+       ${project.id} - ${project.title}
+    </h1>
+  	<h1 class="contentSubTitle">
       [@s.text name="preplanning.projectPartners.leader.title" /]  
     </h1>
   	[#-- Displaying partner leader from partnersTemplate.ftl --]
     [@partnersTemplate.projectLeader leader=project.leader canEdit=true /] 
     
-    <h1 class="contentTitle">
+    <h1 class="contentSubTitle">
 		  [@s.text name="preplanning.projectPartners.partners.title" /]  
     </h1> 
     [#-- Listing partners from partnersTemplate.ftl --]
@@ -44,7 +43,7 @@
     </div>
      <!-- internal parameter -->
     <input name="projectID" type="hidden" value="${project.id?c}" />
-  	<div class="buttons">  	  
+  	<div class="buttons">
       [@s.submit type="button" name="save"][@s.text name="form.buttons.save" /][/@s.submit]
       [@s.submit type="button" name="next"][@s.text name="form.buttons.next" /][/@s.submit]
       [@s.submit type="button" name="cancel"][@s.text name="form.buttons.cancel" /][/@s.submit]

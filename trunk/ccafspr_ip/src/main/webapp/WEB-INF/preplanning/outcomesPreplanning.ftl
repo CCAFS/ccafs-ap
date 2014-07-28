@@ -25,7 +25,7 @@
       [@s.text name="preplanning.outcomes.title" /] [#-- Pending to add the leader acronym, so it should say something like: Flagship 1 - Outcome 2025 --]
     </h1>
     
-    <div id="outcomesBlock" class="outcome">
+    <div id="outcomesBlock" class="outcome borderBox">
 
       [#if outcomes?has_content]
         [#list outcomes as outcome]
@@ -78,7 +78,7 @@
     </div>
     
     [#-- Outcome 2025 template --]
-    <div id="outcomeTemplate" class="outcome" style="display:none">
+    <div id="outcomeTemplate" class="outcome borderBox" style="display:none">
       [#-- Outcome identifier --]
       <input type="hidden" name="id" value="-1" /> 
       <input type="hidden" id="programID" value="${currentUser.currentInstitution.program.id}" />

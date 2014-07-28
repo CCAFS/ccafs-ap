@@ -53,7 +53,7 @@
     <fieldset class="fullBlock">   
     	<legend>[@s.text name="preplanning.projectDescription.projectWorking" /] </legend> 
 	    <div id="projectWorking">
-	      [#-- Regions --] 
+	      [#-- Regions --]
 	      <div id="projectRegions" class="halfPartBlock">
 	        <h6>[@s.text name="preplanning.projectDescription.regions" /]</h6>
 	        <div class="checkboxGroup"> 
