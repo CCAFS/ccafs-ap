@@ -46,9 +46,9 @@ public class ProjectDescriptionAction extends BaseAction {
   // Model
   private Project project;
   private int projectId;
-  private List<IPProgram> ipProgramRP;
-  private List<IPProgram> ipProgramFP;
-  private List<IPCrossCutting> ipCrossCutting;
+  private List<IPProgram> ipProgramRegions;
+  private List<IPProgram> ipProgramFlagships;
+  private List<IPCrossCutting> ipCrossCuttings;
 
   @Inject
   public ProjectDescriptionAction(APConfig config, ProjectManager projectManager, IPProgramManager ipProgramManager,
@@ -71,16 +71,16 @@ public class ProjectDescriptionAction extends BaseAction {
     return super.execute();
   }
 
-  public List<IPCrossCutting> getIPCrossCuttings() {
-    return ipCrossCutting;
+  public List<IPCrossCutting> getIpCrossCuttings() {
+    return ipCrossCuttings;
   }
 
-  public List<IPProgram> getProgramsFlagship() {
-    return ipProgramFP;
+  public List<IPProgram> getIpProgramFlagships() {
+    return ipProgramFlagships;
   }
 
-  public List<IPProgram> getProgramsRegion() {
-    return ipProgramRP;
+  public List<IPProgram> getIpProgramRegions() {
+    return ipProgramRegions;
   }
 
   public Project getProject() {
@@ -103,13 +103,13 @@ public class ProjectDescriptionAction extends BaseAction {
     project = projectManager.getProject(projectId);
 
     // Getting the information of the Regions program for the View
-    ipProgramRP = ipProgramManager.getProgramsByType(APConstants.REGION_PROGRAM_TYPE);
+    ipProgramRegions = ipProgramManager.getProgramsByType(APConstants.REGION_PROGRAM_TYPE);
 
     // Getting the information of the Flagships program for the View
-    ipProgramFP = ipProgramManager.getProgramsByType(APConstants.FLAGSHIP_PROGRAM_TYPE);
+    ipProgramFlagships = ipProgramManager.getProgramsByType(APConstants.FLAGSHIP_PROGRAM_TYPE);
 
     // Getting the information of the Cross Cutting Theme for the View
-    ipCrossCutting = ipCrossCuttingManager.getIPCrossCuttings();
+    ipCrossCuttings = ipCrossCuttingManager.getIPCrossCuttings();
 
     // TODO JG - Getting the information of the Flagships Program associated with the project
     // TODO JG - Getting the information of the Regions Program associated with the project
@@ -117,6 +117,23 @@ public class ProjectDescriptionAction extends BaseAction {
 
     // TODO JG - Pending to get the Program of the project owner. System.out.println(project.getOwner());
 
+  }
 
+
+  public void setIpCrossCuttings(List<IPCrossCutting> ipCrossCuttings) {
+    this.ipCrossCuttings = ipCrossCuttings;
+  }
+
+
+  public void setIpProgramFlagships(List<IPProgram> ipProgramFlagships) {
+    this.ipProgramFlagships = ipProgramFlagships;
+  }
+
+  public void setIpProgramRegions(List<IPProgram> ipProgramRegions) {
+    this.ipProgramRegions = ipProgramRegions;
+  }
+
+  public void setProject(Project project) {
+    this.project = project;
   }
 }
