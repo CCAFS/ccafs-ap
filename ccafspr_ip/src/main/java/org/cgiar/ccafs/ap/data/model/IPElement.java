@@ -64,14 +64,17 @@ public class IPElement {
 
   public int[] getParentIndicatorsIDs() {
 
-    int[] indicatorsIDs = new int[indicators.size()];
-    for (int c = 0; c < indicators.size(); c++) {
-      if (indicators.get(c).getParent() != null) {
-        indicatorsIDs[c] = indicators.get(c).getParent().getId();
+    if (indicators != null) {
+      int[] indicatorsIDs = new int[indicators.size()];
+      for (int c = 0; c < indicators.size(); c++) {
+        if (indicators.get(c).getParent() != null) {
+          indicatorsIDs[c] = indicators.get(c).getParent().getId();
+        }
       }
+      return indicatorsIDs;
     }
 
-    return indicatorsIDs;
+    return null;
   }
 
   public IPProgram getProgram() {
