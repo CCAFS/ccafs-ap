@@ -16,17 +16,15 @@ package org.cgiar.ccafs.ap.action.preplanning;
 import org.cgiar.ccafs.ap.action.BaseAction;
 import org.cgiar.ccafs.ap.config.APConfig;
 import org.cgiar.ccafs.ap.config.APConstants;
+import org.cgiar.ccafs.ap.data.manager.IPCrossCuttingManager;
 import org.cgiar.ccafs.ap.data.manager.IPProgramManager;
 import org.cgiar.ccafs.ap.data.manager.ProjectManager;
+import org.cgiar.ccafs.ap.data.model.IPCrossCutting;
 import org.cgiar.ccafs.ap.data.model.IPProgram;
 import org.cgiar.ccafs.ap.data.model.Project;
 
 import java.util.List;
 
-import com.google.inject.Injector;
-
-import org.cgiar.ccafs.ap.config.APModule;
-import com.google.inject.Guice;
 import com.google.inject.Inject;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
@@ -41,6 +39,7 @@ public class ProjectDescriptionAction extends BaseAction {
   // Manager
   private ProjectManager projectManager;
   private IPProgramManager ipProgramManager;
+  private IPCrossCuttingManager ipCrossCuttingManager;
 
   private static Logger LOG = LoggerFactory.getLogger(ProjectDescriptionAction.class);
 
@@ -49,19 +48,15 @@ public class ProjectDescriptionAction extends BaseAction {
   private int projectId;
   private List<IPProgram> ipProgramRP;
   private List<IPProgram> ipProgramFP;
+  private List<IPCrossCutting> ipCrossCutting;
 
   @Inject
-  public ProjectDescriptionAction(APConfig config, ProjectManager projectManager, IPProgramManager ipProgramManager) {
+  public ProjectDescriptionAction(APConfig config, ProjectManager projectManager, IPProgramManager ipProgramManager,
+    IPCrossCuttingManager ipCrossCuttingManager) {
     super(config);
     this.projectManager = projectManager;
     this.ipProgramManager = ipProgramManager;
-  }
-
-
-  public static void main(String[] args) {
-    Injector in = Guice.createInjector(new APModule());
-    ProjectManager projectManager = in.getInstance(ProjectManager.class);
-    System.out.println(projectManager.getProject(1));
+    this.ipCrossCuttingManager = ipCrossCuttingManager;
   }
 
   @Override
@@ -74,6 +69,10 @@ public class ProjectDescriptionAction extends BaseAction {
       return NOT_FOUND;
     }
     return super.execute();
+  }
+
+  public List<IPCrossCutting> getIPCrossCuttings() {
+    return ipCrossCutting;
   }
 
   public List<IPProgram> getProgramsFlagship() {
@@ -103,15 +102,18 @@ public class ProjectDescriptionAction extends BaseAction {
     // Getting project
     project = projectManager.getProject(projectId);
 
-
-    // Getting the information of the Regions program
+    // Getting the information of the Regions program for the View
     ipProgramRP = ipProgramManager.getProgramsByType(APConstants.REGION_PROGRAM_TYPE);
 
-    // Getting the information of the Flagships program
+    // Getting the information of the Flagships program for the View
     ipProgramFP = ipProgramManager.getProgramsByType(APConstants.FLAGSHIP_PROGRAM_TYPE);
 
+    // Getting the information of the Cross Cutting Theme for the View
+    ipCrossCutting = ipCrossCuttingManager.getIPCrossCuttings();
 
-    // Getting the information of the Flagships Program
+    // TODO JG - Getting the information of the Flagships Program associated with the project
+    // TODO JG - Getting the information of the Regions Program associated with the project
+    // TODO JG - Getting the information of the Cross Cutting Theme associated with the project
 
     // TODO JG - Pending to get the Program of the project owner. System.out.println(project.getOwner());
 
