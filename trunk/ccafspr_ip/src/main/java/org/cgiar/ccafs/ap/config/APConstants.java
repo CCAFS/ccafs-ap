@@ -15,7 +15,7 @@ package org.cgiar.ccafs.ap.config;
 
 /**
  * All Constants should be here.
- *
+ * 
  * @author Héctor Fabio Tobón R.
  */
 public final class APConstants {
@@ -61,6 +61,9 @@ public final class APConstants {
   // Identifiers for Location Elements Type which come from the database
   public static final int LOCATION_ELEMENT_TYPE_REGION = 1;
   public static final int LOCATION_ELEMENT_TYPE_COUNTRY = 2;
+
+  // Identifiers for the IP Programs
+  public static final int COORDINATING_UNIT_PROGRAM = 10;
 
   // Identifier for Format Date
   public static final String DATE_FORMAT = "yyyy-MM-dd";
