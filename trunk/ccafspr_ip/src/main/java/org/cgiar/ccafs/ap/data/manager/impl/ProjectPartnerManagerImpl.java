@@ -24,6 +24,9 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import org.cgiar.ccafs.ap.data.manager.InstitutionManager;
 import com.google.inject.Inject;
 
@@ -32,6 +35,9 @@ import com.google.inject.Inject;
  * @author Héctor Fabio Tobón R.
  */
 public class ProjectPartnerManagerImpl implements ProjectPartnerManager {
+
+  // LOG
+  public static Logger LOG = LoggerFactory.getLogger(ProjectPartnerManagerImpl.class);
 
   // DAO's
   private ProjectPartnerDAO projecPartnerDAO;
@@ -76,17 +82,31 @@ public class ProjectPartnerManagerImpl implements ProjectPartnerManager {
   }
 
   @Override
-  public boolean saveProjectPartner(int projectId, List<ProjectPartner> partners) {
+  public boolean saveProjectPartner(int projectId, List<ProjectPartner> projectPartners) {
     boolean allSaved = true;
     Map<String, Object> projectPartnerData = new HashMap<>();
-    for (ProjectPartner partner : partners) {
+    for (ProjectPartner projectPartner : projectPartners) {
       projectPartnerData.clear();
-      projectPartnerData.put("id", partner.getId());
-      projectPartnerData.put("contact_name", partner.getContactName());
-      projectPartnerData.put("contact_email", partner.getContactEmail());
-      projectPartnerData.put("responsabilities ", partner.getResponsabilities());
+      // if is a new project partner, do not assign an id.
+      if (projectPartner.getId() > 0) {
+        projectPartnerData.put("id", projectPartner.getId());
+      }
+      projectPartnerData.put("project_id", projectId);
+      projectPartnerData.put("partner_id", projectPartner.getPartner().getId());
+      projectPartnerData.put("contact_name", projectPartner.getContactName());
+      projectPartnerData.put("contact_email", projectPartner.getContactEmail());
+      projectPartnerData.put("responsabilities ", projectPartner.getResponsabilities());
 
-      projecPartnerDAO.saveProjectPartner(projectPartnerData);
+      int result = projecPartnerDAO.saveProjectPartner(projectPartnerData);
+      if (result > 0) {
+        LOG.debug("saveProjectPartner > New Project Partner added with id {}", result);
+      } else if (result == 0) {
+        LOG.debug("saveProjectPartner > Project partner with id={} was updated", projectPartner.getId());
+      } else {
+        LOG.error("saveProjectPartner > There was an error trying to save/update a project partner from projectId={}",
+          projectId);
+        allSaved = false;
+      }
     }
     return allSaved;
   }
