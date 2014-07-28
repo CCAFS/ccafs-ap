@@ -37,7 +37,7 @@ import org.slf4j.LoggerFactory;
 
 /**
  * This class is used to manage the Project Partners section in the pre-planning step.
- * 
+ *
  * @author Héctor Tobón
  */
 public class ProjectPartnersAction extends BaseAction {
@@ -174,20 +174,20 @@ public class ProjectPartnersAction extends BaseAction {
     // Getting previous Project Partners.
     List<ProjectPartner> previousProjectPartners = projectPartnerManager.getProjectPartners(projectID);
 
-
     for (ProjectPartner projectPartner : previousProjectPartners) {
       if (!project.getProjectPartners().contains(projectPartner)) {
-        // TODO HT - Test if the delete method is properly working.
-        if (projectPartnerManager.deleteProjectPartner(projectPartner.getId())) {
+        boolean deleted = projectPartnerManager.deleteProjectPartner(projectPartner.getId());
+        if (!deleted) {
           success = false;
         }
       }
     }
 
     // TODO HT - Test if the save method is properly working.
-// if (!projectPartnerManager.saveProjectPartner(project.getProjectPartners())) {
-// success = false;
-// }
+    boolean saved = projectPartnerManager.saveProjectPartner(project.getId(), project.getProjectPartners());
+    if (!saved) {
+      success = false;
+    }
 
     if (success) {
       return SUCCESS;

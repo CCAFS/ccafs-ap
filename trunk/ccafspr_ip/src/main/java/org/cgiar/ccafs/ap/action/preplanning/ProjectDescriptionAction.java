@@ -23,6 +23,10 @@ import org.cgiar.ccafs.ap.data.model.Project;
 
 import java.util.List;
 
+import com.google.inject.Injector;
+
+import org.cgiar.ccafs.ap.config.APModule;
+import com.google.inject.Guice;
 import com.google.inject.Inject;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
@@ -53,6 +57,12 @@ public class ProjectDescriptionAction extends BaseAction {
     this.ipProgramManager = ipProgramManager;
   }
 
+
+  public static void main(String[] args) {
+    Injector in = Guice.createInjector(new APModule());
+    ProjectManager projectManager = in.getInstance(ProjectManager.class);
+    System.out.println(projectManager.getProject(1));
+  }
 
   @Override
   public String execute() throws Exception {

@@ -29,6 +29,24 @@ public class MySQLIPIndicatorDAO implements IPIndicatorDAO {
   }
 
   @Override
+  public boolean deleteIpElementIndicators(int ipElementID, int ipProgramID) {
+    StringBuilder query = new StringBuilder();
+    query.append("DELETE ipi.* FROM ip_indicators ipi ");
+    query.append("INNER JOIN ip_program_elements ipe ON ipi.program_element_id = ipe.id ");
+    query.append("WHERE ipe.program_id = ? AND ipe.element_id = ? ");
+
+    int rowsDeleted = databaseManager.delete(query.toString(), new Object[] {ipProgramID, ipElementID});
+    if (rowsDeleted >= 0) {
+      LOG.debug("<< removeIpElementIndicators():{}", true);
+      return true;
+    }
+
+
+    LOG.debug("<< removeIpElementIndicators():{}", false);
+    return false;
+  }
+
+  @Override
   public List<Map<String, String>> getIndicatorsByIpProgramElementID(int ipProgramElementID) {
     LOG.debug(">> getElementIndicators( ipProgramElementID = {} )", ipProgramElementID);
     List<Map<String, String>> indicatorsList = new ArrayList<>();
@@ -63,54 +81,6 @@ public class MySQLIPIndicatorDAO implements IPIndicatorDAO {
     return indicatorsList;
   }
 
-  @Override
-  public boolean removeIpElementIndicators(int ipElementID, int ipProgramID) {
-    StringBuilder query = new StringBuilder();
-    query.append("DELETE ipi.* FROM ip_indicators ipi ");
-    query.append("INNER JOIN ip_program_elements ipe ON ipi.program_element_id = ipe.id ");
-    query.append("WHERE ipe.program_id = ? AND ipe.element_id = ? ");
-
-    try (Connection connection = databaseManager.getConnection()) {
-      int rowsDeleted =
-        databaseManager.makeChangeSecure(connection, query.toString(), new Object[] {ipProgramID, ipElementID});
-      if (rowsDeleted >= 0) {
-        LOG.debug("<< removeIpElementIndicators():{}", true);
-        return true;
-      }
-    } catch (SQLException e) {
-      LOG.error("-- removeIpElementIndicators() > There was a problem deleting indicators {}.", e);
-    }
-
-    LOG.debug("<< removeIpElementIndicators():{}", false);
-    return false;
-  }
-
-  /**
-   * This method is in charge of execute the insert querys to the databases
-   * related to the IPElements.
-   * 
-   * @param query
-   * @param data
-   * @return the last inserted id or -1 if the row was not inserted
-   */
-  private int saveData(String query, Object[] data) {
-    int generatedId = -1;
-
-    try (Connection con = databaseManager.getConnection()) {
-      int ipIndicatorAdded = databaseManager.makeChangeSecure(con, query, data);
-      if (ipIndicatorAdded > 0) {
-        // get the id assigned to this new record.
-        ResultSet rs = databaseManager.makeQuery("SELECT LAST_INSERT_ID()", con);
-        if (rs.next()) {
-          generatedId = rs.getInt(1);
-        }
-        rs.close();
-      }
-    } catch (SQLException e) {
-      LOG.error("-- saveData() > There was a problem saving information into the database. \n{}", e);
-    }
-    return generatedId;
-  }
 
   @Override
   public int saveIndicator(Map<String, Object> indicatorData) {
@@ -129,8 +99,9 @@ public class MySQLIPIndicatorDAO implements IPIndicatorDAO {
     values[3] = indicatorData.get("program_element_id");
     values[4] = indicatorData.get("parent_id");
 
-    int result = saveData(query.toString(), values);
+    int result = databaseManager.saveData(query.toString(), values);
     LOG.debug("<< saveIndicator():{}", result);
     return result;
+
   }
 }

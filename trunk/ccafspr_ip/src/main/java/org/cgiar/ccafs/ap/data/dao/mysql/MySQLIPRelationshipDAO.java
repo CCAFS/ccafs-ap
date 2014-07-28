@@ -3,9 +3,6 @@ package org.cgiar.ccafs.ap.data.dao.mysql;
 import org.cgiar.ccafs.ap.data.dao.DAOManager;
 import org.cgiar.ccafs.ap.data.dao.IPRelationshipDAO;
 
-import java.sql.Connection;
-import java.sql.SQLException;
-
 import com.google.inject.Inject;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -36,13 +33,11 @@ public class MySQLIPRelationshipDAO implements IPRelationshipDAO {
     values[1] = childElementID;
     values[2] = relationTypeID;
 
-    try (Connection con = databaseManager.getConnection()) {
-      int ipRelationAdded = databaseManager.makeChangeSecure(con, query.toString(), values);
-      if (ipRelationAdded > 0) {
-        result = true;
-      }
-    } catch (SQLException e) {
-      LOG.error("-- saveIPRelation() > There was a problem saving information into the database. \n{}", e);
+    // TODO HC - I can confirm this is working, however is not well implemented. Could you please update the following
+// line to reflect the kind of return from the saveData method? thks.
+    int ipRelationAdded = databaseManager.saveData(query.toString(), values);
+    if (ipRelationAdded > 0) {
+      result = true;
     }
 
     LOG.debug("<< saveIPRelation():{}", result);
