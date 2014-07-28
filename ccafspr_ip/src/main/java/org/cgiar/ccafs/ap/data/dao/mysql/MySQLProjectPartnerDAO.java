@@ -31,17 +31,12 @@ public class MySQLProjectPartnerDAO implements ProjectPartnerDAO {
   public boolean deleteProjectPartner(int id) {
     LOG.debug(">> deleteProjectPartner(id={})", id);
 
-    String query = "DELETE FROM project_partners pp WHERE id = ?";
+    String query = "DELETE FROM project_partners WHERE id = ?";
 
-    try (Connection connection = databaseManager.getConnection()) {
-      int rowsDeleted = databaseManager.makeChangeSecure(connection, query, new Object[] {id});
-      if (rowsDeleted >= 0) {
-        LOG.debug("<< deleteProjectPartner():{}", true);
-        return true;
-      }
-    } catch (SQLException e) {
-      LOG.error("-- deleteProjectPartner() > There was a problem deleting the project partner with id {}.",
-        new Object[] {id, e});
+    int rowsDeleted = databaseManager.delete(query, new Object[] {id});
+    if (rowsDeleted >= 0) {
+      LOG.debug("<< deleteProjectPartner():{}", true);
+      return true;
     }
 
     LOG.debug("<< deleteProjectPartner:{}", false);
@@ -56,18 +51,10 @@ public class MySQLProjectPartnerDAO implements ProjectPartnerDAO {
     query.append("DELETE FROM project_partners pp ");
     query.append("WHERE pp.project_id = ? AND pp.partner_id = ?");
 
-    try (Connection connection = databaseManager.getConnection()) {
-      int rowsDeleted =
-        databaseManager.makeChangeSecure(connection, query.toString(), new Object[] {projectId, institutionId});
-      if (rowsDeleted >= 0) {
-        LOG.debug("<< deleteProjectPartner():{}", true);
-        return true;
-      }
-    } catch (SQLException e) {
-      LOG
-        .error(
-          "-- deleteProjectPartner() > There was a problem deleting the Project Partner of projectId {} and InstitutionId {}.",
-          new Object[] {projectId, institutionId, e});
+    int rowsDeleted = databaseManager.delete(query.toString(), new Object[] {projectId, institutionId});
+    if (rowsDeleted >= 0) {
+      LOG.debug("<< deleteProjectPartner():{}", true);
+      return true;
     }
     LOG.debug("<< deleteProjectPartner():{}", false);
     return false;
@@ -117,25 +104,6 @@ public class MySQLProjectPartnerDAO implements ProjectPartnerDAO {
     return getData(query.toString());
   }
 
-  private int saveData(String query, Object[] data) {
-    int generatedId = -1;
-
-    try (Connection con = databaseManager.getConnection()) {
-      int ipElementAdded = databaseManager.makeChangeSecure(con, query, data);
-      if (ipElementAdded > 0) {
-        // get the id assigned to this new record.
-        ResultSet rs = databaseManager.makeQuery("SELECT LAST_INSERT_ID()", con);
-        if (rs.next()) {
-          generatedId = rs.getInt(1);
-        }
-        rs.close();
-
-      }
-    } catch (SQLException e) {
-      LOG.error("-- saveData() > There was a problem saving information into the database. \n{}", e);
-    }
-    return generatedId;
-  }
 
   @Override
   public int saveProjectPartner(Map<String, Object> projectPartnerData) {
@@ -143,7 +111,7 @@ public class MySQLProjectPartnerDAO implements ProjectPartnerDAO {
 
     StringBuilder query = new StringBuilder();
     query
-      .append("INSERT INTO project_partners (id, project_id, partner_id, contact_name, contact_email, responsabilities, is_leader ) ");
+    .append("INSERT INTO project_partners (id, project_id, partner_id, contact_name, contact_email, responsabilities, is_leader ) ");
     query.append("VALUES (?, ?, ?, ?, ?, ?, ?) ");
 
     Object[] values = new Object[7];
@@ -155,7 +123,7 @@ public class MySQLProjectPartnerDAO implements ProjectPartnerDAO {
     values[5] = projectPartnerData.get("responsabilities");
     values[6] = projectPartnerData.get("is_leader");
 
-    int result = saveData(query.toString(), values);
+    int result = databaseManager.saveData(query.toString(), values);
     LOG.debug("<< createProjectPartner():{}", result);
     return result;
   }

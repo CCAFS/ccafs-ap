@@ -31,7 +31,7 @@ public interface ProjectPartnerManager {
 
   /**
    * This method deletes a specific project partner from the database
-   * 
+   *
    * @param id of the project partner that will be deleted.
    * @return true if the project partner was deleted or false otherwise.
    */
@@ -39,7 +39,7 @@ public interface ProjectPartnerManager {
 
   /**
    * Delete a Project Partners information which belongs to the project Id and Institution Id given
-   * 
+   *
    * @param projectId is the id of the project
    * @param partnerId from institution
    * @return true if the deletion process was successful or false otherwise.
@@ -48,7 +48,7 @@ public interface ProjectPartnerManager {
 
   /**
    * This method is used to get the list of Project Partners that belongs to a specific project.
-   * 
+   *
    * @param projectId is the id of the project.
    * @return a List of ProjectPartner objects that belongs to the project identified with the given id. If no projects
    *         are found, this method will return an empty list.
@@ -57,10 +57,11 @@ public interface ProjectPartnerManager {
 
   /**
    * This method save the project partner of a specific project
-   * 
+   *
+   * @param projectId is the project identifier in which these projects partners belong to.
    * @param projectpartnerData is the information to be saved
    * @return the last inserted id if any or 0 if some record was updated or -1 if any error occurred.
    */
-  public boolean saveProjectPartner(List<ProjectPartner> partners);
+  public boolean saveProjectPartner(int projectId, List<ProjectPartner> partners);
 
 }

@@ -28,6 +28,16 @@ public class MySQLDAOManager extends DAOManager {
   }
 
   @Override
+  public int delete(String preparedUpdateQuery, Object[] values) {
+    try (Connection conn = this.getConnection()) {
+      return makeChangeSecure(conn, preparedUpdateQuery, values);
+    } catch (SQLException e) {
+      LOG.error("Connection to the database couldn't be established.", e);
+      return -1;
+    }
+  }
+
+  @Override
   public Connection getConnection() throws SQLException {
     return openConnection(this.getProperties().getPropertiesAsString(APConfig.MYSQL_USER), this.getProperties()
       .getPropertiesAsString(APConfig.MYSQL_PASSWORD), this.getProperties().getPropertiesAsString(APConfig.MYSQL_HOST),
@@ -46,8 +56,15 @@ public class MySQLDAOManager extends DAOManager {
     }
   }
 
-  @Override
-  public int makeChangeSecure(Connection conn, String preparedUpdateQuery, Object[] values) {
+  /**
+   * Execute an update statement in a secure way avoiding SQL Injections and other vulnerabilities.
+   *
+   * @param connection - a SQL Connection object which represents the connection to the DAO.
+   * @param preparedUpdateQuery - Secure query without values defined on it.
+   * @param values - An array of Objects values.
+   * @return an integer representing the number of affected rows or -1 if any problem appear.
+   */
+  private int makeChangeSecure(Connection conn, String preparedUpdateQuery, Object[] values) {
     int rowsChanged = -1;
     String query = "";
     try (PreparedStatement stm = conn.prepareStatement(preparedUpdateQuery)) {
@@ -72,6 +89,7 @@ public class MySQLDAOManager extends DAOManager {
       LOG.error("There was a problem making a secure change to the database. \n{}", query, e);
     }
     return rowsChanged;
+
   }
 
   @Override
@@ -114,5 +132,29 @@ public class MySQLDAOManager extends DAOManager {
         e);
     }
     return true;
+  }
+
+  @Override
+  public int saveData(String preparedUpdateQuery, Object[] values) {
+    int generatedId = -1;
+    try (Connection conn = this.getConnection()) {
+      int recordsAdded = this.makeChangeSecure(conn, preparedUpdateQuery, values);
+      if (recordsAdded > 0) {
+        // get the id assigned to this new record.
+        try (ResultSet rs = this.makeQuery("SELECT LAST_INSERT_ID()", conn)) {
+          if (rs.next()) {
+            generatedId = rs.getInt(1);
+          }
+          rs.close();
+        } catch (SQLException e1) {
+          LOG.error("There was a problem getting the last inserted id.", e1);
+        }
+      }
+    } catch (SQLException e) {
+      LOG.error("There was a problem trying to open a connection to the database.", e);
+    }
+    return generatedId;
+
+
   }
 }

@@ -53,7 +53,7 @@ public class IPIndicatorManagerImpl implements IPIndicatorManager {
 
   @Override
   public boolean removeElementIndicators(IPElement element, IPProgram program) {
-    return indicatorDAO.removeIpElementIndicators(element.getId(), program.getId());
+    return indicatorDAO.deleteIpElementIndicators(element.getId(), program.getId());
   }
 
 

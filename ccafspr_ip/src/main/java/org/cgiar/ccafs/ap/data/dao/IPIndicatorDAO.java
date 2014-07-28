@@ -26,7 +26,7 @@ public interface IPIndicatorDAO {
    * @param ipElementID - ipElement identifier
    * @return true if the information was successfully removed, false otherwise.
    */
-  public boolean removeIpElementIndicators(int ipElementID, int ipProgramID);
+  public boolean deleteIpElementIndicators(int ipElementID, int ipProgramID);
 
   /**
    * This method save the information of the indicator.

@@ -141,26 +141,6 @@ public class MySQLProjectDAO implements ProjectDAO {
     return getData(query.toString());
   }
 
-  private int saveData(String query, Object[] data) {
-    int generatedId = -1;
-
-    try (Connection con = databaseManager.getConnection()) {
-      int ipElementAdded = databaseManager.makeChangeSecure(con, query, data);
-      if (ipElementAdded > 0) {
-        // get the id assigned to this new record.
-        ResultSet rs = databaseManager.makeQuery("SELECT LAST_INSERT_ID()", con);
-        if (rs.next()) {
-          generatedId = rs.getInt(1);
-        }
-        rs.close();
-
-      }
-    } catch (SQLException e) {
-      LOG.error("-- saveData() > There was a problem saving information into the database. \n{}", e);
-    }
-    return generatedId;
-  }
-
   @Override
   public int saveProject(Map<String, Object> projectData) {
     LOG.debug(">> saveProject(projectData={})", projectData);
@@ -179,7 +159,7 @@ public class MySQLProjectDAO implements ProjectDAO {
     values[5] = projectData.get("project_leader_id");
     values[6] = projectData.get("project_owner_id");
 
-    int result = saveData(query.toString(), values);
+    int result = databaseManager.saveData(query.toString(), values);
     LOG.debug("<< saveProject():{}", result);
     return result;
   }

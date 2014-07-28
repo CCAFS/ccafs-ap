@@ -25,7 +25,6 @@ import java.util.List;
 import java.util.Map;
 
 import org.cgiar.ccafs.ap.data.manager.InstitutionManager;
-
 import com.google.inject.Inject;
 
 
@@ -77,18 +76,17 @@ public class ProjectPartnerManagerImpl implements ProjectPartnerManager {
   }
 
   @Override
-  public boolean saveProjectPartner(List<ProjectPartner> partners) {
-    Map<String, Object> projectPartnerData;
+  public boolean saveProjectPartner(int projectId, List<ProjectPartner> partners) {
     boolean allSaved = true;
+    Map<String, Object> projectPartnerData = new HashMap<>();
     for (ProjectPartner partner : partners) {
-      projectPartnerData = new HashMap<String, Object>();
-
+      projectPartnerData.clear();
       projectPartnerData.put("id", partner.getId());
       projectPartnerData.put("contact_name", partner.getContactName());
       projectPartnerData.put("contact_email", partner.getContactEmail());
       projectPartnerData.put("responsabilities ", partner.getResponsabilities());
 
-
+      projecPartnerDAO.saveProjectPartner(projectPartnerData);
     }
     return allSaved;
   }

@@ -166,20 +166,13 @@ public class MySQLUserDAO implements UserDAO {
     values[0] = userData.get("last_login");
     values[1] = userData.get("user_id");
 
-    try (Connection con = dbManager.getConnection()) {
-      int rows = dbManager.makeChangeSecure(con, query, values);
-      if (rows <= 0) {
-        LOG.warn("-- saveLastLogin() > There was an error saving the last login for the user {} into the database.",
-          userData.get("user_id"));
-        LOG.warn("Query: {}", query);
-        LOG.warn("Values: {}", values);
-        return false;
-      }
 
-    } catch (SQLException e) {
-      LOG.error("-- saveLastLogin() > There was an error saving the last login for the user {} into the database.",
-        userData.get("user_id"), e);
-      LOG.debug("<< saveLastLogin():false");
+    int rows = dbManager.saveData(query, values);
+    if (rows <= 0) {
+      LOG.warn("-- saveLastLogin() > There was an error saving the last login for the user {} into the database.",
+        userData.get("user_id"));
+      LOG.warn("Query: {}", query);
+      LOG.warn("Values: {}", values);
       return false;
     }
 
@@ -198,19 +191,15 @@ public class MySQLUserDAO implements UserDAO {
     values[2] = userData.get("activity_leader_id");
     values[3] = userData.get("role");
 
-    try (Connection con = dbManager.getConnection()) {
-      int rows = dbManager.makeChangeSecure(con, query, values);
-      if (rows <= 0) {
-        LOG.warn("-- saveUser() > There was an error saving a new user into the database.");
-        LOG.warn("Query: {}", query);
-        LOG.warn("Values: {}", values);
 
-        LOG.debug("<< saveUser():false");
-        return false;
-      }
+    int rows = dbManager.saveData(query, values);
+    if (rows <= 0) {
+      LOG.warn("-- saveUser() > There was an error saving a new user into the database.");
+      LOG.warn("Query: {}", query);
+      LOG.warn("Values: {}", values);
 
-    } catch (SQLException e) {
-      LOG.error("-- saveUser() > There was a problem saving a new user into the database. \n{}", e);
+      LOG.debug("<< saveUser():false");
+      return false;
     }
     LOG.debug("<< saveUser():true");
     return true;

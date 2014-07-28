@@ -39,12 +39,12 @@ public class MySQLProjectFocusesDAO implements ProjectFocusesDAO {
     values[0] = projectFocusesData.get("id");
     values[1] = projectFocusesData.get("project_id");
     values[2] = projectFocusesData.get("program_id");
-    int result = saveData(query.toString(), values);
+    int result = databaseManager.saveData(query.toString(), values);
     LOG.debug("<< saveProjectFlagship():{}", result);
     return result;
   }
 
-
+  // TODO JG - This method is never used.
   private List<Map<String, String>> getData(String query) {
     LOG.debug(">> executeQuery(query='{}')", query);
     List<Map<String, String>> ipElementList = new ArrayList<>();
@@ -75,24 +75,4 @@ public class MySQLProjectFocusesDAO implements ProjectFocusesDAO {
     return ipElementList;
   }
 
-
-  private int saveData(String query, Object[] data) {
-    int generatedId = -1;
-
-    try (Connection con = databaseManager.getConnection()) {
-      int ipElementAdded = databaseManager.makeChangeSecure(con, query, data);
-      if (ipElementAdded > 0) {
-        // get the id assigned to this new record.
-        ResultSet rs = databaseManager.makeQuery("SELECT LAST_INSERT_ID()", con);
-        if (rs.next()) {
-          generatedId = rs.getInt(1);
-        }
-        rs.close();
-
-      }
-    } catch (SQLException e) {
-      LOG.error("-- saveData() > There was a problem saving information into the database. \n{}", e);
-    }
-    return generatedId;
-  }
 }

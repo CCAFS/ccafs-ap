@@ -43,9 +43,10 @@ public class MySQLIPElementDAO implements IPElementDAO {
     values[1] = ipElementData.get("description");
     values[2] = ipElementData.get("element_type_id");
 
-    int result = saveData(query.toString(), values);
+    int result = databaseManager.saveData(query.toString(), values);
     LOG.debug("<< createIPElement():{}", result);
     return result;
+
   }
 
   @Override
@@ -56,14 +57,10 @@ public class MySQLIPElementDAO implements IPElementDAO {
     query.append("DELETE FROM ip_elements ");
     query.append("WHERE id = ? ");
 
-    try (Connection connection = databaseManager.getConnection()) {
-      int rowsDeleted = databaseManager.makeChangeSecure(connection, query.toString(), new Object[] {ipElementID});
-      if (rowsDeleted >= 0) {
-        LOG.debug("<< deleteIPElement():{}", true);
-        return true;
-      }
-    } catch (SQLException e) {
-      LOG.error("-- deleteIPElement() > There was a problem deleting the ipElement {}.", ipElementID, e);
+    int rowsDeleted = databaseManager.delete(query.toString(), new Object[] {ipElementID});
+    if (rowsDeleted >= 0) {
+      LOG.debug("<< deleteIPElement():{}", true);
+      return true;
     }
 
     LOG.debug("<< deleteIPElement():{}", false);
@@ -78,17 +75,11 @@ public class MySQLIPElementDAO implements IPElementDAO {
     query.append("DELETE ipe.* FROM ip_program_elements ");
     query.append("INNER JOIN ip_program_element_relation_types iet ON ipe.relation_type_id = iet.id ");
     query.append("WHERE ipe.creator_id = ? AND ipe.element_type_id = ?");
-    // String deleteQuery = ;
-    try (Connection connection = databaseManager.getConnection()) {
-      int rowsDeleted =
-        databaseManager.makeChangeSecure(connection, query.toString(), new Object[] {programId, typeId});
-      if (rowsDeleted >= 0) {
-        LOG.debug("<< deleteIpElements():{}", true);
-        return true;
-      }
-    } catch (SQLException e) {
-      LOG.error("-- deleteIpElements() > There was a problem deleting the ipElements of program {} and type {}.",
-        new Object[] {programId, typeId, e});
+
+    int rowsDeleted = databaseManager.delete(query.toString(), new Object[] {programId, typeId});
+    if (rowsDeleted >= 0) {
+      LOG.debug("<< deleteIpElements():{}", true);
+      return true;
     }
 
     LOG.debug("<< deleteIpElements():{}", false);
@@ -103,14 +94,10 @@ public class MySQLIPElementDAO implements IPElementDAO {
     query.append("DELETE FROM ip_program_elements ");
     query.append("WHERE id = ? ");
 
-    try (Connection connection = databaseManager.getConnection()) {
-      int rowsDeleted = databaseManager.makeChangeSecure(connection, query.toString(), new Object[] {programElementID});
-      if (rowsDeleted >= 0) {
-        LOG.debug("<< deleteProgramElement():{}", true);
-        return true;
-      }
-    } catch (SQLException e) {
-      LOG.error("-- deleteProgramElement() > There was a problem deleting the ipElement {}.", programElementID, e);
+    int rowsDeleted = databaseManager.delete(query.toString(), new Object[] {programElementID});
+    if (rowsDeleted >= 0) {
+      LOG.debug("<< deleteProgramElement():{}", true);
+      return true;
     }
 
     LOG.debug("<< deleteProgramElement():{}", false);
@@ -306,28 +293,10 @@ public class MySQLIPElementDAO implements IPElementDAO {
     values[1] = programID;
     values[2] = relationTypeID;
 
-    int result = saveData(query.toString(), values);
+    int result = databaseManager.saveData(query.toString(), values);
     LOG.debug("<< relateIPElements():{}", result);
     return result;
+
   }
 
-  private int saveData(String query, Object[] data) {
-    int generatedId = -1;
-
-    try (Connection con = databaseManager.getConnection()) {
-      int ipElementAdded = databaseManager.makeChangeSecure(con, query, data);
-      if (ipElementAdded > 0) {
-        // get the id assigned to this new record.
-        ResultSet rs = databaseManager.makeQuery("SELECT LAST_INSERT_ID()", con);
-        if (rs.next()) {
-          generatedId = rs.getInt(1);
-        }
-        rs.close();
-
-      }
-    } catch (SQLException e) {
-      LOG.error("-- saveData() > There was a problem saving information into the database. \n{}", e);
-    }
-    return generatedId;
-  }
 }
