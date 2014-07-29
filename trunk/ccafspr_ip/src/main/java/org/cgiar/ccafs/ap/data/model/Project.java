@@ -20,7 +20,7 @@ import org.apache.commons.lang3.builder.ToStringBuilder;
 
 /**
  * This class represents a Project.
- * 
+ *
  * @author Javier Andrés Gallego
  * @author Héctor Tobón
  */
@@ -37,6 +37,7 @@ public class Project {
   private String leaderResponsabilities;
   private User owner;
   private List<ProjectPartner> projectPartners; // Project partners.
+  private User expectedLeader;
 
   public Project() {
     super();
@@ -44,6 +45,10 @@ public class Project {
 
   public Date getEndDate() {
     return endDate;
+  }
+
+  public User getExpectedLeader() {
+    return expectedLeader;
   }
 
   public List<IPProgram> getFlagships() {
@@ -108,6 +113,10 @@ public class Project {
 
   public void setEndDate(Date endDate) {
     this.endDate = endDate;
+  }
+
+  public void setExpectedLeader(User expectedLeader) {
+    this.expectedLeader = expectedLeader;
   }
 
   public void setFlagships(List<IPProgram> flagships) {

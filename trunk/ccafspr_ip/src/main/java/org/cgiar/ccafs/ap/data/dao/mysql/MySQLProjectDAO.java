@@ -27,7 +27,6 @@ public class MySQLProjectDAO implements ProjectDAO {
     this.databaseManager = databaseManager;
   }
 
-
   private List<Map<String, String>> getData(String query) {
     LOG.debug(">> executeQuery(query='{}')", query);
     List<Map<String, String>> ProjectList = new ArrayList<>();
@@ -58,6 +57,36 @@ public class MySQLProjectDAO implements ProjectDAO {
   }
 
   @Override
+  public Map<String, String> getExpectedProjectLeader(int projectID) {
+    LOG.debug(">> getExpectedProjectLeader(projectID={})", projectID);
+    Map<String, String> expectedProjectLeaderData = new HashMap<>();
+    try (Connection connection = databaseManager.getConnection()) {
+      StringBuilder query = new StringBuilder();
+      query.append("SELECT epl.* ");
+      query.append("FROM expected_project_leaders epl ");
+      query.append("INNER JOIN projects p ON p.expected_project_leader_id = epl.id ");
+      query.append("WHERE p.id= ");
+      query.append(projectID);
+
+      ResultSet rs = databaseManager.makeQuery(query.toString(), connection);
+      if (rs.next()) {
+        expectedProjectLeaderData.put("id", rs.getString("id"));
+        expectedProjectLeaderData.put("contact_name", rs.getString("contact_name"));
+        expectedProjectLeaderData.put("contact_email", rs.getString("contact_email"));
+        expectedProjectLeaderData.put("institution_id", rs.getString("institution_id"));
+      }
+      rs.close();
+    } catch (SQLException e) {
+      LOG.error("-- getExpectedProjectLeader() > There was an error getting the data for expeted project leader {}.",
+        projectID, e);
+      return null;
+    }
+    LOG.debug("<< getExpectedProjectLeader():{}", expectedProjectLeaderData);
+    return expectedProjectLeaderData;
+  }
+
+
+  @Override
   public Map<String, String> getProject(int projectID) {
     LOG.debug(">> getProject projectID = {} )", projectID);
     Map<String, String> projectData = new HashMap<String, String>();
@@ -85,6 +114,39 @@ public class MySQLProjectDAO implements ProjectDAO {
     }
     LOG.debug("-- getProject() > Calling method executeQuery to get the results");
     return projectData;
+  }
+
+  @Override
+  public Map<String, String> getProjectLeader(int projectID) {
+    LOG.debug(">> getProjectLeader(projectID={})", projectID);
+    Map<String, String> projectLeaderData = new HashMap<>();
+    try (Connection connection = databaseManager.getConnection()) {
+
+      StringBuilder query = new StringBuilder();
+      query.append("SELECT u.id, u.username, pe.first_name, pe.last_name, pe.email, e.institution_id ");
+      query.append("FROM users u  ");
+      query.append("INNER JOIN persons pe  ON u.person_id=pe.id ");
+      query.append("INNER JOIN employees e ON u.id=e.user_id ");
+      query.append("INNER JOIN projects p ON e.id=p.project_leader_id ");
+      query.append("WHERE p.id= ");
+      query.append(projectID);
+
+      ResultSet rs = databaseManager.makeQuery(query.toString(), connection);
+      if (rs.next()) {
+        projectLeaderData.put("id", rs.getString("id"));
+        projectLeaderData.put("username", rs.getString("username"));
+        projectLeaderData.put("first_name", rs.getString("first_name"));
+        projectLeaderData.put("last_name", rs.getString("last_name"));
+        projectLeaderData.put("email", rs.getString("email"));
+        projectLeaderData.put("institution_id", rs.getString("institution_id"));
+      }
+      rs.close();
+    } catch (SQLException e) {
+      LOG.error("-- getProjectLeader() > There was an error getting the data for user {}.", projectID, e);
+      return null;
+    }
+    LOG.debug("<< getProjectLeader():{}", projectLeaderData);
+    return projectLeaderData;
   }
 
   @Override
@@ -139,6 +201,62 @@ public class MySQLProjectDAO implements ProjectDAO {
 
     LOG.debug("-- getProjects() > Calling method executeQuery to get the results");
     return getData(query.toString());
+  }
+
+  @Override
+  public int saveExpectedProjectLeader(int projectId, Map<String, Object> expectedProjectLeaderData) {
+    LOG.debug(">> saveExpectedProjectLeader(projectData={})", projectId);
+    StringBuilder query = new StringBuilder();
+    int result = -1;
+    int newId = -1;
+    if (expectedProjectLeaderData.get("id") == null) {
+      // Add the record into the database and assign it to the projects table (column expected_project_leader_id).
+      query.append("INSERT INTO expected_project_leaders (contact_name, contact_email, institution_id) ");
+      query.append("VALUES (?, ?, ?) ");
+      Object[] values = new Object[3];
+      values[0] = expectedProjectLeaderData.get("contact_name");
+      values[1] = expectedProjectLeaderData.get("contact_email");
+      values[2] = expectedProjectLeaderData.get("institution_id");
+      newId = databaseManager.saveData(query.toString(), values);
+      if (newId <= 0) {
+        LOG.error("A problem happened trying to add a new expected project leader in project with id={}", projectId);
+        return -1;
+      } else {
+        // Now we need to assign the new id in the table projects (column expected_project_leader_id).
+        query.setLength(0); // Clearing query.
+        query.append("UPDATE projects SET expected_project_leader_id = ");
+        query.append(newId);
+        query.append(" WHERE id = ");
+        query.append(projectId);
+
+        try (Connection conn = databaseManager.getConnection()) {
+          result = databaseManager.makeChange(query.toString(), conn);
+          if (result == 0) {
+            // Great!, record was updated.
+            result = newId;
+          }
+        } catch (SQLException e) {
+          LOG.error("error trying to create a connection to the database. ", e);
+          return -1;
+        }
+      }
+    } else {
+      // UPDATE the record into the database.
+      query.append("UPDATE expected_project_leaders SET contact_name = ?, contact_email = ?, institution_id = ? ");
+      query.append("WHERE id = ?");
+      Object[] values = new Object[4];
+      values[0] = expectedProjectLeaderData.get("contact_name");
+      values[1] = expectedProjectLeaderData.get("contact_email");
+      values[2] = expectedProjectLeaderData.get("institution_id");
+      values[3] = expectedProjectLeaderData.get("id");
+      result = databaseManager.saveData(query.toString(), values);
+      if (result == -1) {
+        LOG.error("A problem happened trying to update an expected project leader identified with the id = {}",
+          expectedProjectLeaderData.get("id"));
+        return -1;
+      }
+    }
+    return result;
   }
 
   @Override

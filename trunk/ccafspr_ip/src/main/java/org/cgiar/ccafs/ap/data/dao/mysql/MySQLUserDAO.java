@@ -57,39 +57,6 @@ public class MySQLUserDAO implements UserDAO {
   }
 
   @Override
-  public Map<String, String> getProjectLeader(int projectID) {
-    LOG.debug(">> getProjectLeader(projectID={})", projectID);
-    Map<String, String> projectLeaderData = new HashMap<>();
-    try (Connection connection = dbManager.getConnection()) {
-
-      StringBuilder query = new StringBuilder();
-      query.append("SELECT u.id, u.username, pe.first_name, pe.last_name, pe.email, e.institution_id ");
-      query.append("FROM users u  ");
-      query.append("INNER JOIN persons pe  ON u.person_id=pe.id ");
-      query.append("INNER JOIN employees e ON u.id=e.user_id ");
-      query.append("INNER JOIN projects p ON e.id=p.project_leader_id ");
-      query.append("WHERE p.id= ");
-      query.append(projectID);
-
-      ResultSet rs = dbManager.makeQuery(query.toString(), connection);
-      if (rs.next()) {
-        projectLeaderData.put("id", rs.getString("id"));
-        projectLeaderData.put("username", rs.getString("username"));
-        projectLeaderData.put("first_name", rs.getString("first_name"));
-        projectLeaderData.put("last_name", rs.getString("last_name"));
-        projectLeaderData.put("email", rs.getString("email"));
-        projectLeaderData.put("institution_id", rs.getString("institution_id"));
-      }
-      rs.close();
-    } catch (SQLException e) {
-      LOG.error("-- getProjectLeader() > There was an error getting the data for user {}.", projectID, e);
-      return null;
-    }
-    LOG.debug("<< getProjectLeader():{}", projectLeaderData);
-    return projectLeaderData;
-  }
-
-  @Override
   public Map<String, String> getUser(int userId) {
     LOG.debug(">> getUser(userId={})", userId);
     Map<String, String> userData = new HashMap<>();
@@ -204,4 +171,5 @@ public class MySQLUserDAO implements UserDAO {
     LOG.debug("<< saveUser():true");
     return true;
   }
+
 }

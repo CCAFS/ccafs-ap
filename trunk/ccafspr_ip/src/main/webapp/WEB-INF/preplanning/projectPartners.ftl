@@ -29,7 +29,7 @@
       [@s.text name="preplanning.projectPartners.leader.title" /]  
     </h1>
   	[#-- Displaying partner leader from partnersTemplate.ftl --]
-    [@partnersTemplate.projectLeader leader=project.leader canEdit=true /] 
+    [@partnersTemplate.projectLeader leader=project.expectedLeader canEdit=true /] 
     
     <h1 class="contentSubTitle">
 		  [@s.text name="preplanning.projectPartners.partners.title" /]  

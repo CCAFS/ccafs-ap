@@ -19,14 +19,6 @@ public interface UserManager {
   public List<User> getAllUsers();
 
   /**
-   * This method finds the Project Leader user from a specific Project.
-   *
-   * @param projectId is the project id.
-   * @return a User object who represents a Project Leader. Or NULL if no user was found.
-   */
-  public User getProjectLeader(int projectId);
-
-  /**
    * This method find an user identify with a given id.
    *
    * @param userId is the id of the user.

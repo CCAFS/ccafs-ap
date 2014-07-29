@@ -14,7 +14,6 @@ import java.util.List;
 import java.util.Map;
 
 import org.cgiar.ccafs.ap.data.manager.InstitutionManager;
-
 import com.google.inject.Inject;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -83,24 +82,6 @@ public class UserManagerImp implements UserManager {
     return projectLeaders;
   }
 
-  @Override
-  public User getProjectLeader(int projectId) {
-    Map<String, String> pData = userDAO.getProjectLeader(projectId);
-    if (!pData.isEmpty()) {
-      User projectLeader = new User();
-      projectLeader.setId(Integer.parseInt(pData.get("id")));
-      projectLeader.setUsername((pData.get("username")));
-      projectLeader.setFirstName(pData.get("firstName"));
-      projectLeader.setLastName(pData.get("lastName"));
-      projectLeader.setEmail(pData.get("email"));
-      // Getting Project leader institution and saving it in currentInstitution.
-      projectLeader.setCurrentInstitution(institutionManager.getInstitution(Integer.parseInt(pData
-        .get("institution_id"))));
-
-      return projectLeader;
-    }
-    return null;
-  }
 
   @Override
   public User getUser(int userId) {
@@ -186,6 +167,7 @@ public class UserManagerImp implements UserManager {
     }
     return null;
   }
+
 
   @Override
   public boolean saveLastLogin(User user) {

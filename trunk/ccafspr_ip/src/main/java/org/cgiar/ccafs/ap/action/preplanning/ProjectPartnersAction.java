@@ -149,13 +149,14 @@ public class ProjectPartnersAction extends BaseAction {
     allProjectLeaders = userManager.getAllUsers();
 
     // Getting the project partner leader.
-    project.setLeader(userManager.getProjectLeader(projectID));
+    // project.setLeader(userManager.getProjectLeader(projectID));
+    project.setExpectedLeader(projectManager.getExpectedProjectLeader(projectID));
 
     // In case there is not a partner leader defined, an empty partner will be used for the view.
-    if (project.getLeader() == null) {
-      User projectLeader = new User();
-      projectLeader.setId(-1);
-      project.setLeader(projectLeader);
+    if (project.getExpectedLeader() == null) {
+      User exptectedProjectLeader = new User();
+      exptectedProjectLeader.setId(-1);
+      project.setExpectedLeader(exptectedProjectLeader);
     }
 
     if (getRequest().getMethod().equalsIgnoreCase("post")) {
@@ -171,9 +172,16 @@ public class ProjectPartnersAction extends BaseAction {
   public String save() {
     boolean success = true;
 
+    // Saving Project leader
+    boolean saved = projectManager.saveExpectedProjectLeader(project.getId(), project.getExpectedLeader());
+    if (!saved) {
+      success = false;
+    }
+
     // Getting previous Project Partners.
     List<ProjectPartner> previousProjectPartners = projectPartnerManager.getProjectPartners(projectID);
 
+    // Deleting project partners
     for (ProjectPartner projectPartner : previousProjectPartners) {
       if (!project.getProjectPartners().contains(projectPartner)) {
         boolean deleted = projectPartnerManager.deleteProjectPartner(projectPartner.getId());
@@ -183,8 +191,8 @@ public class ProjectPartnersAction extends BaseAction {
       }
     }
 
-    // TODO HT - Test if the save method is properly working.
-    boolean saved = projectPartnerManager.saveProjectPartner(project.getId(), project.getProjectPartners());
+    // Saving new and old project partners
+    saved = projectPartnerManager.saveProjectPartner(project.getId(), project.getProjectPartners());
     if (!saved) {
       success = false;
     }

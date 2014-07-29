@@ -18,17 +18,8 @@ public interface UserDAO {
   public List<Map<String, String>> getAllUsers();
 
   /**
-   * Get a Project Leader information with a given Project Id
-   *
-   * @param ProjectId is the id of a project
-   * @return a Map with the project leader information or an empty map if no user found. If an error occurs, a NULL will
-   *         be returned.
-   */
-  public Map<String, String> getProjectLeader(int projectID);
-
-  /**
    * This method gets the data of a User identified with a given id.
-   * 
+   *
    * @param userId is the id of the User.
    * @return a Map with the user data.
    */
