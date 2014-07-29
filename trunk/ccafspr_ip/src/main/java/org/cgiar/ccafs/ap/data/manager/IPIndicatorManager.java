@@ -22,6 +22,30 @@ public interface IPIndicatorManager {
   public List<IPIndicator> getElementIndicators(IPElement element);
 
   /**
+   * This method get the indicator identified by the value passed as parameter.
+   * 
+   * @param indicatorID - indicator identifier
+   * @return the indicator object searched. Null if the indicator wasn't found.
+   */
+  public IPIndicator getIndicator(int indicatorID);
+
+  /**
+   * This method get all the indicators present in the database.
+   * 
+   * @return a list of IPIndicator objects.
+   */
+  public List<IPIndicator> getIndicatorsList();
+
+  /**
+   * This method return a list of indicators which corresponds with the
+   * list of identifiers received as parameter.
+   * 
+   * @param indicatorsIDs
+   * @return a list of IPIndicator objects.
+   */
+  public List<IPIndicator> getIndicatorsList(String[] indicatorsIDs);
+
+  /**
    * This method removes from the database the indicators which are related with the
    * ipProgram and ipElement passed as parameters
    * 

@@ -21,6 +21,7 @@ import org.cgiar.ccafs.ap.data.manager.IPIndicatorManager;
 import org.cgiar.ccafs.ap.data.manager.IPProgramManager;
 import org.cgiar.ccafs.ap.data.model.IPElement;
 import org.cgiar.ccafs.ap.data.model.IPElementType;
+import org.cgiar.ccafs.ap.data.model.IPIndicator;
 import org.cgiar.ccafs.ap.data.model.IPProgram;
 
 import java.util.ArrayList;
@@ -99,7 +100,6 @@ public class MidOutcomesPreplanningAction extends BaseAction {
 
   @Override
   public String save() {
-
     if (!midOutcomes.isEmpty()) {
 
       for (IPElement midOutcome : midOutcomes) {
@@ -107,16 +107,23 @@ public class MidOutcomesPreplanningAction extends BaseAction {
           for (int i = 0; i < midOutcome.getIndicators().size(); i++) {
             if (midOutcome.getIndicators().get(i).getDescription().isEmpty()) {
               midOutcome.getIndicators().remove(i);
+            } else {
+
+              // The regional programs won't have indicators by themselves, instead
+              // they create a copy of the FP indicators and indicating that
+              // relation in the indicator
+
+              // Here we adjust the values brought by the converter to set the
+              // id as parentID and setting the id with the value as '-1' to
+              // indicate that it is a new indicator to be added into the DB.
+              int indicatorID = midOutcome.getIndicators().get(i).getId();
+              midOutcome.getIndicators().get(i).setId(-1);
+
+              IPIndicator indicatorTemp = new IPIndicator();
+              indicatorTemp.setId(indicatorID);
+              midOutcome.getIndicators().get(i).setParent(indicatorTemp);
             }
           }
-        }
-
-        if (midOutcome.getContributesTo() != null) {
-          String[] values = new String[midOutcome.getContributesTo().size()];
-          for (int i = 0; i < midOutcome.getContributesTo().size(); i++) {
-            values[i] = String.valueOf(midOutcome.getContributesTo().get(i).getId());
-          }
-          midOutcome.setContributesTo(ipElementManager.getIPElementList(values));
         }
 
         // If the user removed the outcome we should delete it from the database
@@ -127,6 +134,7 @@ public class MidOutcomesPreplanningAction extends BaseAction {
           ipIndicatorManager.removeElementIndicators(midOutcome, getCurrentUser().getCurrentInstitution().getProgram());
         }
       }
+
 
     } else {
       // If all the midOutcomes were removed, we should remove all the records

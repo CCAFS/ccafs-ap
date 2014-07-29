@@ -11,6 +11,15 @@ import com.google.inject.ImplementedBy;
 public interface IPIndicatorDAO {
 
   /**
+   * This method returns from the database the information of the indicator
+   * identified by the value received as parameter.
+   * 
+   * @param indicatorID - indicator identifier
+   * @return a map with the information.
+   */
+  public Map<String, String> getIndicator(int indicatorID);
+
+  /**
    * This function returns all the indicators corresponding to the given
    * ip element
    * 
@@ -18,6 +27,14 @@ public interface IPIndicatorDAO {
    * @return a list of maps with the information.
    */
   public List<Map<String, String>> getIndicatorsByIpProgramElementID(int ipProgramElementID);
+
+  /**
+   * This method returns a list with all the indicators present
+   * in the database.
+   * 
+   * @return a list of maps with the information.
+   */
+  public List<Map<String, String>> getIndicatorsList();
 
   /**
    * This method removes all the indicators related with the ipElement
