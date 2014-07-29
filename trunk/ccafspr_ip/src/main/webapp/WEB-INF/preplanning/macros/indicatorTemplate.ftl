@@ -6,7 +6,7 @@
     [@customForm.textArea showTitle=false name="description" i18nkey="preplanning.outcomes.outcome" required=true /]
     [@customForm.input name="target"  i18nkey="preplanning.outcomes.target" /]
   [#else]
-    <input type="hidden" name="outcomes[${outcome_index}].indicators[${indicator_index}].id" value="${value}" />
+    <input type="hidden" name="outcomes[${outcome_index}].indicators" value="${value}" />
     [@customForm.textArea showTitle=true name="outcomes[${outcome_index}].indicators[${indicator_index}].description" i18nkey="${i18nkey}" required=true /]
     [@customForm.input name="outcomes[${outcome_index}].indicators[${indicator_index}].target"  i18nkey="preplanning.outcomes.target" /]
   [/#if]
@@ -15,9 +15,9 @@
     <div class="removeLink">            
       <img src="${baseUrl}/images/global/icon-remove.png" />
       <a id="removeOutcomeIndicator" href="" class="removeOutcomeIndicator">[@s.text name="preplanning.outcomes.removeIndicator" /]</a>
-    </div>
-  </div>
+    </div> 
   [/#if]
+  </div>
 [/#macro]
 
 [#macro midOutcomes midOutcome_index="0" indicator_index="0" value="-1" template=false]

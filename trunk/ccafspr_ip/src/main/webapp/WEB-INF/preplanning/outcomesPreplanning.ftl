@@ -41,6 +41,8 @@
               [#list outcome.indicators as indicator]
                 [#if !indicator.parent?has_content]
                   [@indicatorTemplate.outcomes outcome_index="${outcome_index}" indicator_index="${indicator_index}" value="${indicator.id}" i18nkey="preplanning.outcomes.indicators.description" show_remove_link=false /]
+                [#else]
+              tiene parent? ${indicator.parent}
                 [/#if]
               [/#list]
             [#else]
@@ -76,7 +78,7 @@
             </div>
           </div> 
       [/#if]
-    </div>
+    [#-- IDOs --]
     [#if idos?has_content]
       <div id="idosBlock" class="contentElements">
         <div class="itemIndex">[@s.text name="preplanning.outcomes.idos" /]</div>
@@ -86,13 +88,14 @@
           <label for="ido-${ido_index}" class="checkboxLabel">${ido.description}</label>
           [#if ido.indicators?has_content]
             <div id="indicatorsBlock-${ido_index}" class="idosIndicators checkboxGroup vertical"> 
-              [@s.checkboxlist name="outcomes[0].indicators[${ido_index+1}].parent.id" list="idos[${ido_index}].indicators" listKey="id" listValue="description" value="outcomes[0].indicators" cssClass="indicatorsCheckbox" /]
+              [@s.checkboxlist name="outcomes[0].indicators.parent" list="idos[${ido_index}].indicators" listKey="id" listValue="description" value="outcomes[0].indicators" cssClass="indicatorsCheckbox" /]
             </div>
           [/#if]
           </div>
         [/#list]
       </div>  
     [/#if]
+    </div>
     
     <div class="buttons">
       [@s.submit type="button" name="save"][@s.text name="form.buttons.save" /][/@s.submit]
