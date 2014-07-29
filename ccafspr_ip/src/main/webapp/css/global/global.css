@@ -823,13 +823,32 @@ h1.contentSubTitle {
 
 /*** PRE-PLANNING ***/
 
+/* Outcomes 2025*/
+#idosBlock .ido {
+    padding: 0.5em;
+    font-weight: bold;
+    background: #EAF3FD;
+    margin: 0.2em;
+}
+
+#idosBlock .ido label { 
+    font-weight: bold;
+}
+
+#idosBlock .ido .checkboxGroup.vertical { 
+    padding: 0em 1em;
+    margin: 0.5em 0.3em;
+    border-left: 2px solid #DDD;
+}
+
+#idosBlock .ido .checkboxGroup.vertical label { 
+    font-weight: normal;
+}
 
 /* Project Description*/
-
 textarea[id$='summary'] {
     height: 90px;
 }
-
 
 /* Impact Pathways */
 
