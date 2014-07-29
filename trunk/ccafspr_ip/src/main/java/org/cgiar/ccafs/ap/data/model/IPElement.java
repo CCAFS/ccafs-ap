@@ -50,6 +50,19 @@ public class IPElement {
     return contributesTo;
   }
 
+  public int[] getContributesToIDs() {
+
+    if (contributesTo != null) {
+      int[] idsList = new int[contributesTo.size()];
+      for (int c = 0; c < contributesTo.size(); c++) {
+        idsList[c] = contributesTo.get(c).getId();
+      }
+      return idsList;
+    }
+
+    return null;
+  }
+
   public String getDescription() {
     return description;
   }
