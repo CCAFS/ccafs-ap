@@ -12,9 +12,11 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import org.cgiar.ccafs.ap.data.model.User;
 import com.google.inject.Inject;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -39,13 +41,11 @@ public class ProjectManagerImpl implements ProjectManager {
     this.institutionManager = institutionManager;
   }
 
-
   @Override
   public List<Project> getAllProjects(int programId) {
     List<Map<String, String>> projectDataList = projectDAO.getProjects(programId);
     List<Project> projectsList = new ArrayList<>();
     DateFormat dateformatter = new SimpleDateFormat(APConstants.DATE_FORMAT);
-
 
     for (Map<String, String> elementData : projectDataList) {
 
@@ -70,6 +70,24 @@ public class ProjectManagerImpl implements ProjectManager {
     }
     return projectsList;
   }
+
+  @Override
+  public User getExpectedProjectLeader(int projectId) {
+    Map<String, String> pData = projectDAO.getExpectedProjectLeader(projectId);
+    if (!pData.isEmpty()) {
+      User projectLeader = new User();
+      projectLeader.setId(Integer.parseInt(pData.get("id")));
+      projectLeader.setFirstName(pData.get("contact_name"));
+      projectLeader.setEmail(pData.get("contact_email"));
+      // Getting Project leader institution and saving it in currentInstitution.
+      projectLeader.setCurrentInstitution(institutionManager.getInstitution(Integer.parseInt(pData
+        .get("institution_id"))));
+
+      return projectLeader;
+    }
+    return null;
+  }
+
 
   @Override
   public Project getProject(int projectId) {
@@ -100,11 +118,57 @@ public class ProjectManagerImpl implements ProjectManager {
     }
     return null;
   }
+
   /*
    * private List<Project> setDataToProjectObjects(List<Map<String, String>> projectDataList) {
    * return projectsList;
    * }
    */
+
+  @Override
+  public User getProjectLeader(int projectId) {
+    Map<String, String> pData = projectDAO.getProjectLeader(projectId);
+    if (!pData.isEmpty()) {
+      User projectLeader = new User();
+      projectLeader.setId(Integer.parseInt(pData.get("id")));
+      projectLeader.setUsername((pData.get("username")));
+      projectLeader.setFirstName(pData.get("firstName"));
+      projectLeader.setLastName(pData.get("lastName"));
+      projectLeader.setEmail(pData.get("email"));
+      // Getting Project leader institution and saving it in currentInstitution.
+      projectLeader.setCurrentInstitution(institutionManager.getInstitution(Integer.parseInt(pData
+        .get("institution_id"))));
+
+      return projectLeader;
+    }
+    return null;
+  }
+
+  @Override
+  public boolean saveExpectedProjectLeader(int projectId, User expectedLeader) {
+    boolean saved = true;
+    Map<String, Object> expectedProjectLeaderData = new HashMap<>();
+
+    if (expectedLeader.getId() > 0) {
+      expectedProjectLeaderData.put("id", expectedLeader.getId());
+    }
+    // First Name is used for the Contact Name.
+    expectedProjectLeaderData.put("contact_name", expectedLeader.getFirstName());
+    expectedProjectLeaderData.put("contact_email", expectedLeader.getEmail());
+    // Current institution is used for project leader institution.
+    expectedProjectLeaderData.put("institution_id", expectedLeader.getCurrentInstitution().getId());
+
+    int result = projectDAO.saveExpectedProjectLeader(projectId, expectedProjectLeaderData);
+    if (result == -1) {
+      saved = false;
+    } else if (result == 0) {
+      LOG.debug("saveExpectedProjectLeader > Expected project leader with id={} was updated", expectedLeader.getId());
+    } else {
+      LOG.debug("saveExpectedProjectLeader > Expected project leader with id={} was added", result);
+    }
+
+    return saved;
+  }
 
 
 }

@@ -23,7 +23,7 @@ public class IPProgramTypes {
 
   private int id;
   private String acronym;
-  private int type_id;
+  private int typeId;
 
   public String getAcronym() {
     return acronym;
@@ -35,7 +35,7 @@ public class IPProgramTypes {
 
 
   public int getTypeId() {
-    return type_id;
+    return typeId;
   }
 
   public void setAcronym(String acronym) {
@@ -46,8 +46,8 @@ public class IPProgramTypes {
     this.id = id;
   }
 
-  public void setTypeId(int type_id) {
-    this.type_id = type_id;
+  public void setTypeId(int typeId) {
+    this.typeId = typeId;
   }
 
   @Override
