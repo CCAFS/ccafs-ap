@@ -1,11 +1,10 @@
 [#ftl]
-[#assign title = "Main information" /]
+[#assign title = "Major Output Group" /]
 [#assign globalLibs = ["jquery", "noty", "autoSave"] /]
 [#assign customJS = ["${baseUrl}/js/global/utils.js", "${baseUrl}/js/preplanning/outputsPreplanning.js"] /]
 [#assign currentSection = "preplanning" /]
 [#assign currentPrePlanningSection = "impactPathways" /]
 [#assign currentStage = "outputs" /]
-[#assign userRole = "FPL"]
 
 [#include "/WEB-INF/global/pages/header.ftl" /]
 [#include "/WEB-INF/global/pages/main-menu.ftl" /]
@@ -16,7 +15,7 @@
 <section class="content">
   <div class="helpMessage">
     <img src="${baseUrl}/images/global/icon-help.png" />
-    <p> [@s.text name="planning.mainInformation.help" /] </p>
+    <p> [@s.text name="preplanning.outputs.help" /] </p>
   </div>
   [#include "/WEB-INF/global/pages/pre-planning-secondary-menu.ftl" /]
   
@@ -41,7 +40,7 @@
             [#assign outputDescription]
               [@s.text name="preplanning.outputs.output"]
                 [@s.param name="0"]${currentUser.currentInstitution.program.id}[/@s.param] 
-                [@s.param name="1"]${output_index+1}[/@s.param] 
+                [@s.param name="1"]<span id="elementIndex">${output_index+1}</span>[/@s.param] 
               [/@s.text]
             [/#assign]
             [@customForm.textArea name="outputs[${output_index}].description" i18nkey="${outputDescription}" required=true /] 
@@ -85,11 +84,16 @@
         <a id="removeOutput" href="" class="removeContribute">[@s.text name="preplanning.outputs.removeOutput" /]</a>
       </div> 
       [#-- Title --]
-      [@customForm.textArea name="outputDescription" i18nkey="preplanning.outputs.output" required=true /] 
+      [#assign outputDescription]
+        [@s.text name="preplanning.outputs.output"]
+          [@s.param name="0"]${currentUser.currentInstitution.program.id}[/@s.param] 
+          [@s.param name="1"]<span id="elementIndex">{0}</span>[/@s.param] 
+        [/@s.text]
+      [/#assign]
+      [@customForm.textArea name="outputDescription" i18nkey="${outputDescription}" required=true /] 
       <div id="contributesBlock" class="contentElements">
         <div class="itemIndex">[@s.text name="preplanning.outputs.contributes" /] </div>
         [#-- Contribute area --]
-         
         [#-- Add contribute --]
          <div class="fullBlock addContributeBlock">
           [@customForm.select name="contributions" showTitle=false listName="midOutcomesList" keyFieldName="id"  displayFieldName="description" addButton=true className="contributes" /]
