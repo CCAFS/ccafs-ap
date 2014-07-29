@@ -145,9 +145,9 @@ public class IPElementManagerImpl implements IPElementManager {
             indicatorData.put("program_element_id", programElementID);
 
             if (indicator.getParent() != null) {
-              indicatorData.put("parent_indicator_id", indicator.getParent().getId());
+              indicatorData.put("parent_id", indicator.getParent().getId());
             } else {
-              indicatorData.put("parent_indicator_id", null);
+              indicatorData.put("parent_id", null);
             }
             ipIndicatorDAO.saveIndicator(indicatorData);
           }
