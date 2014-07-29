@@ -31,12 +31,14 @@
 	    <div id="projectDescription" class="">
 	      [#-- Project Owner --]
 	      <div class="halfPartBlock">
-	        [@customForm.input name="project.owner.username" type="text" i18nkey="preplanning.projectDescription.projectOwner" required=true /]
+	      	<h6>[@s.text name="preplanning.projectDescription.projectOwner" /]</h6>	      	
+	      	<p>${project.owner.currentInstitution.acronym}</p>
+	        [#-- @customForm.input name="project.owner.currentInstitution.acronym" type="text" i18nkey="preplanning.projectDescription.projectOwner" required=true / --]
 	      </div>
-	      [#-- Project Owner Contact Person --]
-	      <div class="halfPartBlock">
-	        [@customForm.input name="" type="text" i18nkey="preplanning.projectDescription.projectownercontactperson" required=true /]
-	      </div>
+	      [#--  Project Owner Contact Person --]
+        <div class="halfPartBlock">          
+          [@customForm.select name="project.owner" label=""  disabled=false i18nkey="preplanning.projectDescription.projectownercontactperson" listName="allOwners" keyFieldName="id"  displayFieldName="composedNameWithInstitution" /]
+        </div>
 	      [#-- Start Date --]
 		    <div class="halfPartBlock">
 		     	[@customForm.input name="" type="text" i18nkey="preplanning.projectDescription.startDate" required=true value="${project.startDate?string('yyyy-MM-dd')}"/]

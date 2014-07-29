@@ -44,35 +44,41 @@ public class MySQLProjectFocusesDAO implements ProjectFocusesDAO {
     return result;
   }
 
-  // TODO JG - This method is never used.
-  private List<Map<String, String>> getData(String query) {
-    LOG.debug(">> executeQuery(query='{}')", query);
-    List<Map<String, String>> ipElementList = new ArrayList<>();
+  @Override
+  public List<Map<String, String>> getProjectFocuses(int projectID, int typeID) {
+    LOG.debug(">> getProjectFocuses projectID = {}, typeID ={} )", projectID, typeID);
+    List<Map<String, String>> projectFocusesDataList = new ArrayList<>();
+    StringBuilder query = new StringBuilder();
+    query
+      .append("SELECT ipr.id, ipr.name, ipr.acronym, le.id as region_id, le.name as region_name, le.code as region_code ");
+    query.append("FROM project_focuses pf ");
+    query.append("INNER JOIN ip_programs ipr ON ipr.id = pf.program_id ");
+    query.append("LEFT JOIN loc_elements le   ON le.id = ipr.region_id ");
+    query.append("WHERE pf.project_id = ");
+    query.append(projectID);
+    query.append("AND ipr.type_id= ");
+    query.append(typeID);
+    query.append("ORDER BY ipr.name");
 
     try (Connection con = databaseManager.getConnection()) {
-      ResultSet rs = databaseManager.makeQuery(query, con);
+      ResultSet rs = databaseManager.makeQuery(query.toString(), con);
       while (rs.next()) {
-        Map<String, String> ipElementData = new HashMap<String, String>();
-        ipElementData.put("id", rs.getString("id"));
-        ipElementData.put("description", rs.getString("description"));
-        ipElementData.put("element_type_id", rs.getString("element_type_id"));
-        ipElementData.put("element_type_name", rs.getString("element_type_name"));
-        ipElementData.put("program_id", rs.getString("program_id"));
-        ipElementData.put("program_acronym", rs.getString("program_acronym"));
-        ipElementData.put("program_element_id", rs.getString("program_element_id"));
+        Map<String, String> projectFocusesData = new HashMap<String, String>();
+        projectFocusesData.put("id", rs.getString("id"));
+        projectFocusesData.put("name", rs.getString("name"));
+        projectFocusesData.put("acronym", rs.getString("acronym"));
+        projectFocusesData.put("region_id", rs.getString("region_id"));
+        projectFocusesData.put("region_name", rs.getString("region_name"));
+        projectFocusesData.put("region_code", rs.getString("region_code"));
 
-        ipElementList.add(ipElementData);
+        projectFocusesDataList.add(projectFocusesData);
       }
-      rs.close();
+      con.close();
     } catch (SQLException e) {
-      String exceptionMessage = "-- executeQuery() > Exception raised trying ";
-      exceptionMessage += "to execute the following query " + query;
-
-      LOG.error(exceptionMessage, e);
+      LOG.error("Exception arised getting the project focuses {} ", projectID, e);
     }
 
-    LOG.debug("<< executeQuery():ipElementList.size={}", ipElementList.size());
-    return ipElementList;
+    return projectFocusesDataList;
   }
 
 }

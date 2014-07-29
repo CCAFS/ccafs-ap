@@ -1,5 +1,6 @@
 package org.cgiar.ccafs.ap.data.dao.mysql;
 
+import org.cgiar.ccafs.ap.config.APConstants;
 import org.cgiar.ccafs.ap.data.dao.DAOManager;
 import org.cgiar.ccafs.ap.data.dao.UserDAO;
 
@@ -55,6 +56,84 @@ public class MySQLUserDAO implements UserDAO {
     LOG.debug("<< getProjectLeader():{}", projectLeadersList);
     return projectLeadersList;
   }
+
+  @Override
+  public Map<String, String> getImportantUserByProject(int projectID) {
+    LOG.debug(">> getImportantUserByProject(projectID={})", projectID);
+    Map<String, String> projectContactPersonData = new HashMap<>();
+    try (Connection connection = dbManager.getConnection()) {
+
+      StringBuilder query = new StringBuilder();
+      query.append("SELECT ins.id as institution_id,u.id, u.username,  ");
+      query.append("pe.first_name, pe.last_name, pe.email ");
+      query.append("FROM users u ");
+      query.append("INNER JOIN persons pe  ON u.person_id=pe.id ");
+      query.append("INNER JOIN employees emp ON u.id=emp.user_id ");
+      query.append("INNER JOIN projects pro ON emp.id=pro.project_owner_id ");
+      query.append("INNER JOIN institutions ins ON emp.institution_id = ins.id ");
+      query.append("WHERE pro.id= ");
+      query.append(projectID);
+
+      ResultSet rs = dbManager.makeQuery(query.toString(), connection);
+      if (rs.next()) {
+
+        projectContactPersonData.put("institution_id", rs.getString("institution_id"));
+        projectContactPersonData.put("id", rs.getString("id"));
+        projectContactPersonData.put("username", rs.getString("username"));
+        projectContactPersonData.put("first_name", rs.getString("first_name"));
+        projectContactPersonData.put("last_name", rs.getString("last_name"));
+        projectContactPersonData.put("email", rs.getString("email"));
+      }
+      rs.close();
+    } catch (SQLException e) {
+      LOG.error("-- getUser() > There was an error getting the data for user with id {}.", projectID, e);
+    }
+    LOG.debug("<< getImportantUserByProject():{}", projectContactPersonData);
+    return projectContactPersonData;
+  }
+
+  @Override
+  public List<Map<String, String>> getImportantUsers() {
+    LOG.debug(">> getImportantUsers()");
+    List<Map<String, String>> projectContactPersonList = new ArrayList<>();
+    try (Connection connection = dbManager.getConnection()) {
+
+      StringBuilder query = new StringBuilder();
+      query.append("SELECT ins.id as institution_id, ");
+      query.append("u.id, u.username, pe.first_name, pe.last_name, pe.email ");
+      query.append("FROM users u ");
+      query.append("INNER JOIN persons pe  ON u.person_id=pe.id ");
+      query.append("INNER JOIN employees emp ON u.id=emp.user_id ");
+      query.append("INNER JOIN roles ro ON emp.role_id=ro.id ");
+      query.append("INNER JOIN institutions ins ON emp.institution_id = ins.id ");
+      query.append("WHERE ro.id= ");
+      query.append(APConstants.ROLE_FLAGSHIP_PROGRAM_LEADER);
+      query.append(" OR ro.id= ");
+      query.append(APConstants.ROLE_REGIONAL_PROGRAM_LEADER);
+      query.append(" OR ro.id= ");
+      query.append(APConstants.ROLE_COORDINATING_UNIT);
+      query.append(" ORDER BY pe.last_name, ins.name ");
+
+      ResultSet rs = dbManager.makeQuery(query.toString(), connection);
+      while (rs.next()) {
+        Map<String, String> projectContactPersonData = new HashMap<>();
+        projectContactPersonData.put("institution_id", rs.getString("institution_id"));
+        projectContactPersonData.put("id", rs.getString("id"));
+        projectContactPersonData.put("username", rs.getString("username"));
+        projectContactPersonData.put("first_name", rs.getString("first_name"));
+        projectContactPersonData.put("last_name", rs.getString("last_name"));
+        projectContactPersonData.put("email", rs.getString("email"));
+        projectContactPersonList.add(projectContactPersonData);
+      }
+      rs.close();
+    } catch (SQLException e) {
+      LOG.error("-- getImportantUsers() > There was an error getting the data for Project Contact Persons {}.", e);
+      return null;
+    }
+    LOG.debug("<< getImportantUsers():{}", projectContactPersonList);
+    return projectContactPersonList;
+  }
+
 
   @Override
   public Map<String, String> getUser(int userId) {
@@ -171,5 +250,4 @@ public class MySQLUserDAO implements UserDAO {
     LOG.debug("<< saveUser():true");
     return true;
   }
-
 }

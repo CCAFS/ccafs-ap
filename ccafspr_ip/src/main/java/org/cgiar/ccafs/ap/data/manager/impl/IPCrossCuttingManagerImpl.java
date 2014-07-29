@@ -39,6 +39,21 @@ public class IPCrossCuttingManagerImpl implements IPCrossCuttingManager {
   }
 
   @Override
+  public List<IPCrossCutting> getIPCrossCuttingByProject(int projectID) {
+    List<IPCrossCutting> ipCrossCuttings = new ArrayList<>();
+    List<Map<String, String>> ipCrossCuttingList = ipCrossCuttingDAO.getIPCrossCuttingByProject(projectID);
+    for (Map<String, String> ipCrossCuttingData : ipCrossCuttingList) {
+      IPCrossCutting ipCrossCutting = new IPCrossCutting();
+      ipCrossCutting.setId(Integer.parseInt(ipCrossCuttingData.get("id")));
+      ipCrossCutting.setName(ipCrossCuttingData.get("name"));
+
+      ipCrossCuttings.add(ipCrossCutting);
+
+    }
+    return ipCrossCuttings;
+  }
+
+  @Override
   public List<IPCrossCutting> getIPCrossCuttings() {
     List<IPCrossCutting> ipCrossCuttings = new ArrayList<>();
     List<Map<String, String>> ipCrossCuttingList = ipCrossCuttingDAO.getIPCrossCuttings();

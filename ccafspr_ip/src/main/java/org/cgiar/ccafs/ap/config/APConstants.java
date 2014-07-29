@@ -68,4 +68,9 @@ public final class APConstants {
   // Identifier for Format Date
   public static final String DATE_FORMAT = "yyyy-MM-dd";
 
+  // Identifier for role
+  public static final int ROLE_FLAGSHIP_PROGRAM_LEADER = 2;
+  public static final int ROLE_REGIONAL_PROGRAM_LEADER = 3;
+  public static final int ROLE_COORDINATING_UNIT = 6;
+
 }

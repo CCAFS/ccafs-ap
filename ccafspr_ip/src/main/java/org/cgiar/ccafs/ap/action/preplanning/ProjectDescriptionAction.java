@@ -19,9 +19,11 @@ import org.cgiar.ccafs.ap.config.APConstants;
 import org.cgiar.ccafs.ap.data.manager.IPCrossCuttingManager;
 import org.cgiar.ccafs.ap.data.manager.IPProgramManager;
 import org.cgiar.ccafs.ap.data.manager.ProjectManager;
+import org.cgiar.ccafs.ap.data.manager.UserManager;
 import org.cgiar.ccafs.ap.data.model.IPCrossCutting;
 import org.cgiar.ccafs.ap.data.model.IPProgram;
 import org.cgiar.ccafs.ap.data.model.Project;
+import org.cgiar.ccafs.ap.data.model.User;
 
 import java.util.List;
 
@@ -40,6 +42,7 @@ public class ProjectDescriptionAction extends BaseAction {
   private ProjectManager projectManager;
   private IPProgramManager ipProgramManager;
   private IPCrossCuttingManager ipCrossCuttingManager;
+  private UserManager userManager;
 
   private static Logger LOG = LoggerFactory.getLogger(ProjectDescriptionAction.class);
 
@@ -49,15 +52,21 @@ public class ProjectDescriptionAction extends BaseAction {
   private List<IPProgram> ipProgramRegions;
   private List<IPProgram> ipProgramFlagships;
   private List<IPCrossCutting> ipCrossCuttings;
+  private List<User> allOwners;
+  private User owner;
+  private List<IPCrossCutting> ipCrossCuttingByProject;
+
 
   @Inject
   public ProjectDescriptionAction(APConfig config, ProjectManager projectManager, IPProgramManager ipProgramManager,
-    IPCrossCuttingManager ipCrossCuttingManager) {
+    IPCrossCuttingManager ipCrossCuttingManager, UserManager userManager) {
     super(config);
     this.projectManager = projectManager;
     this.ipProgramManager = ipProgramManager;
     this.ipCrossCuttingManager = ipCrossCuttingManager;
+    this.userManager = userManager;
   }
+
 
   @Override
   public String execute() throws Exception {
@@ -71,6 +80,14 @@ public class ProjectDescriptionAction extends BaseAction {
     return super.execute();
   }
 
+  public List<User> getAllOwners() {
+    return allOwners;
+  }
+
+  public List<IPCrossCutting> getIpCrossCuttingByProject() {
+    return ipCrossCuttingByProject;
+  }
+
   public List<IPCrossCutting> getIpCrossCuttings() {
     return ipCrossCuttings;
   }
@@ -81,6 +98,10 @@ public class ProjectDescriptionAction extends BaseAction {
 
   public List<IPProgram> getIpProgramRegions() {
     return ipProgramRegions;
+  }
+
+  public User getOwner() {
+    return owner;
   }
 
   public Project getProject() {
@@ -99,8 +120,10 @@ public class ProjectDescriptionAction extends BaseAction {
       return; // Stop here and go to execute method.
     }
 
-    // Getting project
-    project = projectManager.getProject(projectId);
+    // /////// For the View
+    // Getting the information for the Project Owner Contact Persons for the View
+    allOwners = userManager.getImportantUsers();
+    // System.out.println(userContacts);
 
     // Getting the information of the Regions program for the View
     ipProgramRegions = ipProgramManager.getProgramsByType(APConstants.REGION_PROGRAM_TYPE);
@@ -111,14 +134,23 @@ public class ProjectDescriptionAction extends BaseAction {
     // Getting the information of the Cross Cutting Theme for the View
     ipCrossCuttings = ipCrossCuttingManager.getIPCrossCuttings();
 
+    // /////// For consultation
+    // Getting project
+    project = projectManager.getProject(projectId);
+    // Getting the project Owner
+    owner = userManager.getImportantUserByProject(projectId);
+
     // TODO JG - Getting the information of the Flagships Program associated with the project
     // TODO JG - Getting the information of the Regions Program associated with the project
-    // TODO JG - Getting the information of the Cross Cutting Theme associated with the project
+    // Getting the information of the Cross Cutting Theme associated with the project
+    // ipCrossCuttingByProject = ipCrossCuttingManager.getIPCrossCuttingByProject(projectId);
 
-    // TODO JG - Pending to get the Program of the project owner. System.out.println(project.getOwner());
 
   }
 
+  public void setIpCrossCuttingByProject(List<IPCrossCutting> ipCrossCuttingByProject) {
+    this.ipCrossCuttingByProject = ipCrossCuttingByProject;
+  }
 
   public void setIpCrossCuttings(List<IPCrossCutting> ipCrossCuttings) {
     this.ipCrossCuttings = ipCrossCuttings;
