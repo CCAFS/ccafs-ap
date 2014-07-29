@@ -104,6 +104,7 @@ public class OutcomesPreplanningAction extends BaseAction {
 
   @Override
   public String save() {
+    System.out.println("Outcomes -->");
     System.out.println(outcomes);
     for (IPElement outcome : outcomes) {
 

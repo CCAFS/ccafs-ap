@@ -1,14 +1,13 @@
 package org.cgiar.ccafs.ap.converter;
 
-import org.cgiar.ccafs.ap.data.manager.IPIndicatorManager;
-import org.cgiar.ccafs.ap.data.model.IPIndicator;
-
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
 import com.google.inject.Inject;
 import org.apache.struts2.util.StrutsTypeConverter;
+import org.cgiar.ccafs.ap.data.manager.IPIndicatorManager;
+import org.cgiar.ccafs.ap.data.model.IPIndicator;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -25,6 +24,7 @@ public class IPIndicatorsConverter extends StrutsTypeConverter {
   public IPIndicatorsConverter(IPIndicatorManager indicatorManager) {
     this.indicatorManager = indicatorManager;
   }
+
 
   @Override
   public Object convertFromString(Map context, String[] values, Class toClass) {

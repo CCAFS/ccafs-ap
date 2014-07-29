@@ -1,5 +1,5 @@
 $(document).ready(function(){
-	//init();
+	init();
 	attachEvents(); 
 });
 
@@ -16,7 +16,7 @@ function attachEvents(){
 
 function viewIDOsIndicators(event){
 	$target = $(event.target);
-	$target.parent().find(".idosIndicators");
+	$target.parent().find(".idosIndicators").toggle(300);
 	console.log($target);
 }
 
