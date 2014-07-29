@@ -1,9 +1,18 @@
+//Limits for textarea input
+var lWordsElemetDesc = 10;
+
 $(document).ready(function(){
-  attachEvents();
-  if(!$("div#outputBlocks .output").length){
-	  $("div#addOutputBlock").trigger( "click" );
-  } 
+  init(); 
 });
+
+function init(){ 
+	attachEvents();
+	if(!$("div#outputBlocks .output").length){
+		  $("div#addOutputBlock").trigger( "click" );
+	}  
+	applyWordCounter($("form .output > .textArea textarea"), lWordsElemetDesc);  
+	setMidOutcomesIndexes();
+}
 
 function attachEvents(){
   //Outputs
@@ -13,7 +22,6 @@ function attachEvents(){
   $(".addContributeBlock input.addButton").click(addContributeEvent);
   $(".removeContribute").click(removeContributeEvent);  
 }
-
 
 //----------------- Outputs Events ----------------------//
 function addOutputEvent(event){
@@ -33,16 +41,13 @@ function removeOutputEvent(event){
   });  
 }
 
-
 function setOutputsIndexes(){
-	//console.log($("div#OutputBlocks .output"));
   $("div#outputBlocks .output").each(function(index, element){
-     
       var elementName = "outputs[" + index + "]."; 
       $(element).attr("id","output-"+index);
+      $(element).find("[id$='elementIndex']").html(index+1);
       $(element).find("[id^='outputId']").attr("name", elementName + "id");
       $(element).find("[id^='outputDescription']").attr("name", elementName + "description").attr("placeholder", "Add output #"+ (index+1) );
-      //console.log('setMidOutcomesIndexes -->'+index+ ' -->'+$(element).attr('id') );  
   });
 }
 

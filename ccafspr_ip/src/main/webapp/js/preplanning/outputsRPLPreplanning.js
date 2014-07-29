@@ -1,5 +1,9 @@
+//Limits for textarea input
+var lWordsElemetDesc = 10;
+
 $(document).ready(function(){
-  attachEvents(); 
+  attachEvents();
+  if(!$("div#outputBlocks .output").length) $(".noOutputs.message").hide();
 });
 
 function attachEvents(){
@@ -10,9 +14,10 @@ function attachEvents(){
   
   //Select flagship
   $("select#flagships").change(updateMidOutcomesList);
+  
   //Select Mid Outcome
   $("select#midOutcomes").change(updateOutputsList);
-  //Select Outputs
+  
   //Contributes
   $(".addContributeBlock input.addButton").click(addContributeEvent);
   $(".removeContribute").click(removeContributeEvent);  
@@ -82,7 +87,7 @@ function addExistingOutputEvent(){
 	$("div#outputBlocks").append($newElement); 
 	$newElement.find("select#flagships").trigger("change");
 	$newElement.show("slow");
-	//setOutputsIndexes();
+	setOutputsIndexes();
 }
 
 function removeOutputEvent(event){
@@ -94,15 +99,13 @@ function removeOutputEvent(event){
   });  
 }
 
-function setOutputsIndexes(){
-	//console.log($("div#OutputBlocks .output"));
+function setOutputsIndexes(){ 
   $("div#outputBlocks .output").each(function(index, element){
-     
       var elementName = "outputs[" + index + "]."; 
       $(element).attr("id","output-"+index);
+      $(element).find("[id$='elementIndex']").html(index+1);
       $(element).find("[id^='outputId']").attr("name", elementName + "id");
-      $(element).find("[id^='outputDescription']").attr("name", elementName + "description").attr("placeholder", "Add output #"+ (index+1) );
-      //console.log('setMidOutcomesIndexes -->'+index+ ' -->'+$(element).attr('id') );  
+      $(element).find("[id$='description']").attr("name", elementName + "description").attr("placeholder", "Add output #"+ (index+1) );
   });
 }
 

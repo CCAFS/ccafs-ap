@@ -1,6 +1,20 @@
+//Limits for textarea input
+var lWordsElemetDesc = 10;
+var lWordsIndicatorDesc = 50;
+
 $(document).ready(function(){
-  attachEvents();
+	init();
 });
+
+function init(){ 
+	attachEvents();
+	if(!$("div#MidOutcomeBlocks .midOutcome").length){
+	  $("div#addMidOutcomeBlock").trigger( "click" );
+	} 
+	applyWordCounter($("form .midOutcome > .textArea textarea"), lWordsElemetDesc); 
+	applyWordCounter($("form .indicatorsBlock textarea"), lWordsIndicatorDesc);
+	setMidOutcomesIndexes();
+}
 
 function attachEvents(){
   //Mid Outcomes
@@ -20,7 +34,8 @@ function addMidOutcomeEvent(event){
   event.preventDefault(); 
   var $newElement = $("#midOutcomeTemplate").clone(true).removeAttr("id");  
   $("div#MidOutcomeBlocks").append($newElement);
-  
+  applyWordCounter($newElement.find("> .textArea textarea"), lWordsElemetDesc);  
+  applyWordCounter($newElement.find(".indicatorsBlock textarea"), lWordsIndicatorDesc);
   $newElement.show("slow");
   setMidOutcomesIndexes();
 }
@@ -46,6 +61,7 @@ function setMidOutcomesIndexes(){
       $(element).find("[id^='midOutcomeProgramID']").attr("name", elementName + "program.id");
       $(element).find("[id^='midOutcomeTypeID']").attr("name", elementName + "type.id");
       // Visible inputs
+      $(element).find("[id$='elementIndex']").html(index+1);
       $(element).find("[id^='midOutcomeDescription']").attr("name", elementName + "description").attr("placeholder", "Add outcome #"+ (index+1) );
       console.log('setMidOutcomesIndexes -->'+index+ ' -->'+$(element).attr('id') ); 
       setContributesIndexes(index);
@@ -88,7 +104,7 @@ function removeContributeEvent(event){
 function setContributesIndexes(i){
   $("#midOutcome-"+i+" div.contributions").each(function(index, element){
 	  console.log(i);
-      var elementName = "midOutcomes["+i+"].contributesTo[" + index + "]"; 
+      var elementName = "midOutcomes["+i+"].contributesTo[" + index + "]";
       $(element).find("[id^='contributeId']").attr("name", elementName).attr("value", outcome.id);
   });
 }
@@ -99,6 +115,7 @@ function addIndicatorEvent(event){
   //console.log(grandParentId);
   var $newIndicator = $("#midOutcomeTemplate div.indicator").clone(true).css("display","none"); 
   $(event.target).parent().before($newIndicator);
+  applyWordCounter($newIndicator.find("textarea"), lWordsIndicatorDesc);
   $newIndicator.show("slow");
   setIndicatorsIndexes(grandParentId);
 }

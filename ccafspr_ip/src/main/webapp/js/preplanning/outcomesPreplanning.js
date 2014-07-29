@@ -1,10 +1,16 @@
-$(document).ready(function(){
+//Limits for textarea input
+var lWordsElemetDesc = 10;
+var lWordsIndicatorDesc = 50;
+
+$(document).ready(function(){ 
 	init();
 	attachEvents(); 
 });
 
 function init(){
 	$(".idosIndicators").hide();
+	applyWordCounter($("form .outcome > .textArea textarea"), lWordsElemetDesc);
+	applyWordCounter($("form .outcomeIndicatorsBlock textarea"), lWordsIndicatorDesc);
 }
 
 function attachEvents(){

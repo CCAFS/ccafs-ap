@@ -5,7 +5,6 @@
 [#assign customCSS = ["${baseUrl}/css/libs/dataTables/jquery.dataTables-1.9.4.css", "${baseUrl}/css/global/customDataTable.css"] /]
 [#assign currentSection = "preplanning" /]
 [#assign currentPrePlanningSection = "projects" /]
-[#assign currentStage = "description" /]
 
 
 [#include "/WEB-INF/global/pages/header.ftl" /]

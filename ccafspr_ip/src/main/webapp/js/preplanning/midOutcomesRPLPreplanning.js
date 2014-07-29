@@ -1,10 +1,18 @@
-$(document).ready(function(){
-  attachEvents();
-  if(!$("div#MidOutcomeBlocks .midOutcome").length){
-      $("div#addMidOutcomeBlock").trigger( "click" );
-  } 
-  //setMidOutcomesIndexes();
+//Limits for textarea input
+var lWordsElemetDesc = 10;
+
+$(document).ready(function(){ 
+  init();
 });
+
+function init(){ 
+	attachEvents();
+	if(!$("div#MidOutcomeBlocks .midOutcome").length){
+	  $("div#addMidOutcomeBlock").trigger( "click" );
+	} 
+	applyWordCounter($("form .midOutcome > .textArea textarea"), lWordsElemetDesc); 
+	setMidOutcomesIndexes();
+}
 
 function attachEvents(){
   //Mid Outcomes
@@ -17,6 +25,7 @@ function attachEvents(){
   //Contributes
   $(".addContributeBlock input.addButton").click(addContributeEvent);
   $(".removeContribute").click(removeContributeEvent); 
+  
   //Regional Indicators
   $(".midOutcomeIndicator").click(indicatorVerify); 
 }
@@ -41,6 +50,7 @@ function addMidOutcomeEvent(event){
   var $newElement = $("#midOutcomeRPLTemplate").clone(true).removeAttr("id");  
   $("div#MidOutcomeBlocks").append($newElement); 
   $newElement.find("select[id$='flagships']").trigger("change");
+  applyWordCounter($newElement.find($("textarea")), lWordsElemetDesc); 
   $newElement.fadeIn("slow");
   setMidOutcomesIndexes();
 }
@@ -58,30 +68,31 @@ function setMidOutcomesIndexes(){
   $("div#MidOutcomeBlocks .midOutcome").each(function(index, element){ 
       var elementName = "midOutcomes[" + index + "]."; 
       $(element).attr("id","midOutcome-"+index);
+      $(element).find("[id$='elementIndex']").html(index+1);
       $(element).find("[id$='id']").attr("name", elementName + "id");
       $(element).find("[id$='ProgramId']").attr("name", elementName + "program.id");
       $(element).find("[id$='TypeId']").attr("name", elementName + "type.id");
       $(element).find("[id$='description']").attr("name", elementName + "description").attr("placeholder", "Add regional outcome #"+ (index+1) );
-      $(element).find("select[id$='flagships']").trigger( "change" );
+      $(element).find("select[id$='flagships']").trigger("change");
       setContributesIndexes(index); 
   });
 }
 
-function updateMidOutcomes(event){
-    $target =$(event.target);
-    $parent =$target.parent().parent().parent();
-    console.log($target.find('option:selected').attr("value"));
-    var programID =  $target.find('option:selected').attr("value");
+function updateMidOutcomes(event){ 
+	var $target =$(event.target); 
+	var $parent =$target.parent().parent().parent(); 
+	var programID =  $target.find('option:selected').attr("value");
     var elementTypeId = 3;
-    $.getJSON("../json/ipElements.do?programID="+programID+"&elementTypeId="+elementTypeId, function(data) {
-      $parent.find("select[id$='midOutcomesFPL'] option").remove(); 
-      $.each(data.IPElementsList, function(){ 
-	  $parent.find("select[id$='midOutcomesFPL']").append('<option value="'+ this.id +'">'+ this.description +'</option>');
-      });
+    $.getJSON("../json/ipElements.do?programID="+programID+"&elementTypeId="+elementTypeId,function() {  
+        console.log("MidOutcome: " + $parent.attr("id"));
+        console.log($target.find('option:selected').attr("value"));
+    }).done(function(data) {
+    	$parent.find("select[id$='midOutcomesFPL'] option").remove(); 
+        $.each(data.IPElementsList, function(){ 
+      	  $parent.find("select[id$='midOutcomesFPL']").append('<option value="'+ this.id +'">'+ this.description +'</option>');
+        });
     }).fail(function() {
 	    console.log( "error" );
-    }).done(function() {
-	 
     });
 }
 //----------------- Contribute Events ----------------------//

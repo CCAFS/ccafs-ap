@@ -40,7 +40,7 @@
             [#assign outputDescription]
               [@s.text name="preplanning.outputsRPL.output"] 
                 [@s.param name="0"]${currentUser.currentInstitution.program.acronym}[/@s.param] 
-                [@s.param name="1"]${output_index+1}[/@s.param] 
+                [@s.param name="1"]<span id="elementIndex">${output_index+1}</span>[/@s.param] 
               [/@s.text]
             [/#assign]
             [@customForm.textArea name="outputs[${output_index}].description" i18nkey="${outputDescription}" required=true /]
@@ -93,14 +93,13 @@
     [#assign outputDescription]
       [@s.text name="preplanning.outputsRPL.output"] 
         [@s.param name="0"]${currentUser.currentInstitution.program.acronym}[/@s.param] 
-        [@s.param name="1"]{}[/@s.param] 
+        [@s.param name="1"]<span id="elementIndex">{0}</span>[/@s.param] 
       [/@s.text]
     [/#assign]
-    [@customForm.textArea name="outputDescription" i18nkey="${outputDescription}" required=true /] 
+    [@customForm.textArea name="description" i18nkey="${outputDescription}" required=true /] 
     <div id="contributesBlock" class="contentElements">
       <div class="itemIndex">[@s.text name="preplanning.outputsRPL.contributes" /] </div>
-      [#-- Contribute area --]
-       
+      [#-- Contribute area --] 
       [#-- Add contribute --]
        <div class="fullBlock addContributeBlock">
         [@customForm.select name="contributions" showTitle=false listName="midOutcomesList" keyFieldName="id"  displayFieldName="description" addButton=true className="contributes" /]
@@ -120,7 +119,7 @@
     [#assign outputDescription]
       [@s.text name="preplanning.outputsRPL.output"] 
         [@s.param name="0"]${currentUser.currentInstitution.program.acronym}[/@s.param] 
-        [@s.param name="1"]{}[/@s.param] 
+        [@s.param name="1"]<span id="elementIndex">{0}</span>[/@s.param] 
       [/@s.text]
     [/#assign]
     [@customForm.textArea name="description" i18nkey="${outputDescription}" required=true /] 
