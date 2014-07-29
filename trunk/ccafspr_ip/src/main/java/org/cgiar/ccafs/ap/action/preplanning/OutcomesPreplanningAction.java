@@ -13,6 +13,10 @@
  *****************************************************************/
 package org.cgiar.ccafs.ap.action.preplanning;
 
+import java.util.ArrayList;
+import java.util.List;
+
+import com.google.inject.Inject;
 import org.cgiar.ccafs.ap.action.BaseAction;
 import org.cgiar.ccafs.ap.config.APConfig;
 import org.cgiar.ccafs.ap.config.APConstants;
@@ -21,11 +25,6 @@ import org.cgiar.ccafs.ap.data.model.IPElement;
 import org.cgiar.ccafs.ap.data.model.IPElementType;
 import org.cgiar.ccafs.ap.data.model.IPProgram;
 import org.cgiar.ccafs.ap.validation.preplanning.OutcomesValidation;
-
-import java.util.ArrayList;
-import java.util.List;
-
-import com.google.inject.Inject;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -84,7 +83,6 @@ public class OutcomesPreplanningAction extends BaseAction {
     idoType.setId(APConstants.ELEMENT_TYPE_IDOS);
     // Get all the IDOs
     idos = ipElementManager.getIPElements(cuProgram, idoType);
-    System.out.println(idos);
 
     // TODO HC - Add an interceptor to verify that if the user is not related to a program, then DON'T have
     // permissions to access this action
@@ -92,6 +90,7 @@ public class OutcomesPreplanningAction extends BaseAction {
     // Keep the id of all outcomes which come from the database
     outcomesFromDatabase = new ArrayList<>();
     outcomesFromDatabase.addAll(outcomes);
+    // System.out.println(outcomes);
 
     if (getRequest().getMethod().equalsIgnoreCase("post")) {
       // Clear out the list if it has some element
@@ -105,13 +104,9 @@ public class OutcomesPreplanningAction extends BaseAction {
 
   @Override
   public String save() {
-
+    System.out.println(outcomes);
     for (IPElement outcome : outcomes) {
-      for (int i = 0; i < outcome.getIndicators().size(); i++) {
-        if (outcome.getIndicators().get(i).getDescription().isEmpty()) {
-          outcome.getIndicators().remove(i);
-        }
-      }
+
 
       // If the user removed the outcome we should delete it
       // from the database

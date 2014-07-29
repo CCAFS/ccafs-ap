@@ -1,5 +1,5 @@
 [#ftl]
-[#assign title = "Main information" /]
+[#assign title][@s.text name="preplanning.outcomes.title" /]  [/#assign]
 [#assign globalLibs = ["jquery", "noty", "autoSave"] /]
 [#assign customJS = ["${baseUrl}/js/global/utils.js", "${baseUrl}/js/preplanning/outcomesPreplanning.js"] /]
 [#assign currentSection = "preplanning" /]
@@ -26,7 +26,6 @@
     </h1>
     
     <div id="outcomesBlock" class="outcome borderBox">
-
       [#if outcomes?has_content]
         [#list outcomes as outcome]
           [#-- Outcome identifier --]
@@ -36,11 +35,13 @@
           [#-- Title --]
           [@customForm.textArea name="outcomes[${outcome_index}].description" i18nkey="preplanning.outcomes.outcome" required=true /]
           <div class="contentElements outcomeIndicatorsBlock"> 
-            <div class="itemIndex">[@s.text name="preplanning.outcomes.indicators" /] </div>
+            <div class="itemIndex">[@s.text name="preplanning.outcomes.indicators" /]</div>
             [#if outcome.indicators?has_content]
               [#-- Indicators --]
               [#list outcome.indicators as indicator]
-                [@indicatorTemplate.outcomes outcome_index="${outcome_index}" indicator_index="${indicator_index}" value="${indicator.id}" i18nkey="preplanning.outcomes.indicators.description" show_remove_link=false /]
+                [#if !indicator.parent?has_content]
+                  [@indicatorTemplate.outcomes outcome_index="${outcome_index}" indicator_index="${indicator_index}" value="${indicator.id}" i18nkey="preplanning.outcomes.indicators.description" show_remove_link=false /]
+                [/#if]
               [/#list]
             [#else]
               [@indicatorTemplate.outcomes outcome_index="${outcome_index}" i18nkey="preplanning.outcomes.indicators.description" show_remove_link=false /]
@@ -53,7 +54,7 @@
               [@customForm.button i18nkey="preplanning.outcomes.addIndicator" class="addButton" /]
             </div>
             --] 
-          </div>          
+          </div>
         [/#list]
       [#else]
           [#-- Outcome identifier --]
@@ -76,22 +77,22 @@
           </div> 
       [/#if]
     </div>
-    
-    [#-- Outcome 2025 template --]
-    <div id="outcomeTemplate" class="outcome borderBox" style="display:none">
-      [#-- Outcome identifier --]
-      <input type="hidden" name="id" value="-1" /> 
-      <input type="hidden" id="programID" value="${currentUser.currentInstitution.program.id}" />
-      <input type="hidden" id="typeID" value="${elementTypeID}" />
-      [#-- Title --]
-      [@customForm.textArea name="description" i18nkey="preplanning.outcomes.outcome" required=true /] 
-      <div class="contentElements">
-      	<div class="itemIndex">[@s.text name="preplanning.outcomes.indicators" /] </div>
-      	[#-- Indicator template --] 
-      	[@indicatorTemplate.outcomes template=true /] 
-      </div>
-    </div>
-    [#-- End Outcome 2025 template --]
+    [#if idos?has_content]
+      <div id="idosBlock" class="contentElements">
+        <div class="itemIndex">[@s.text name="preplanning.outcomes.idos" /]</div>
+        [#list idos as ido]
+          <div id="idoBlock-${ido_index}" class="ido">
+          <input  id="ido-${ido_index}" class="idosCheckbox" type="checkbox" name="idos[${ido_index}].id" value="${ido.id}">
+          <label for="ido-${ido_index}" class="checkboxLabel">${ido.description}</label>
+          [#if ido.indicators?has_content]
+            <div id="indicatorsBlock-${ido_index}" class="idosIndicators checkboxGroup vertical"> 
+              [@s.checkboxlist name="outcomes[0].indicators[${ido_index+1}].parent.id" list="idos[${ido_index}].indicators" listKey="id" listValue="description" value="outcomes[0].indicators" cssClass="indicatorsCheckbox" /]
+            </div>
+          [/#if]
+          </div>
+        [/#list]
+      </div>  
+    [/#if]
     
     <div class="buttons">
       [@s.submit type="button" name="save"][@s.text name="form.buttons.save" /][/@s.submit]
@@ -100,6 +101,21 @@
     </div>
      
   </article>
-  [/@s.form]  
+  [/@s.form] 
+[#-- Outcome 2025 template --]
+<div id="outcomeTemplate" class="outcome borderBox" style="display:none">
+  [#-- Outcome identifier --]
+  <input type="hidden" name="id" value="-1" /> 
+  <input type="hidden" id="programID" value="${currentUser.currentInstitution.program.id}" />
+  <input type="hidden" id="typeID" value="${elementTypeID}" />
+  [#-- Title --]
+  [@customForm.textArea name="description" i18nkey="preplanning.outcomes.outcome" required=true /] 
+  <div class="contentElements">
+    <div class="itemIndex">[@s.text name="preplanning.outcomes.indicators" /] </div>
+    [#-- Indicator template --] 
+    [@indicatorTemplate.outcomes template=true /]
+  </div>
+</div>
+[#-- End Outcome 2025 template --]   
 </section>
 [#include "/WEB-INF/global/pages/footer.ftl"]

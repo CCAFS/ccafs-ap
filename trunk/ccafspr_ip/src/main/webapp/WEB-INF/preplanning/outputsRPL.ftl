@@ -37,7 +37,13 @@
               <a id="removeOutput" href="" class="">[@s.text name="preplanning.outputsRPL.removeOutput" /]</a>
             </div>  
             [#-- Title --]
-            [@customForm.textArea name="outputs[${output_index}].description" i18nkey="preplanning.outputsRPL.output" required=true /] 
+            [#assign outputDescription]
+              [@s.text name="preplanning.outputsRPL.output"] 
+                [@s.param name="0"]${currentUser.currentInstitution.program.acronym}[/@s.param] 
+                [@s.param name="1"]${output_index+1}[/@s.param] 
+              [/@s.text]
+            [/#assign]
+            [@customForm.textArea name="outputs[${output_index}].description" i18nkey="${outputDescription}" required=true /]
             <div id="contributesBlock" class="contentElements parentsBlock">
               <div class="itemIndex">[@s.text name="preplanning.outputsRPL.contributes" /] </div>
               [#-- RPL output's parents --] 
@@ -84,7 +90,13 @@
       <a id="removeOutput" href="" class="removeContribute">[@s.text name="preplanning.outputsRPL.removeOutput" /]</a>
     </div> 
     [#-- Title --]
-    [@customForm.textArea name="outputDescription" i18nkey="preplanning.outputsRPL.output" required=true /] 
+    [#assign outputDescription]
+      [@s.text name="preplanning.outputsRPL.output"] 
+        [@s.param name="0"]${currentUser.currentInstitution.program.acronym}[/@s.param] 
+        [@s.param name="1"]{}[/@s.param] 
+      [/@s.text]
+    [/#assign]
+    [@customForm.textArea name="outputDescription" i18nkey="${outputDescription}" required=true /] 
     <div id="contributesBlock" class="contentElements">
       <div class="itemIndex">[@s.text name="preplanning.outputsRPL.contributes" /] </div>
       [#-- Contribute area --]
@@ -103,9 +115,15 @@
     <div class="removeLink removeOutputBlock">            
       <img src="${baseUrl}/images/global/icon-remove.png" />
       <a id="removeOutput" href="" class="removeContribute">[@s.text name="preplanning.outputsRPL.removeOutput" /]</a>
-    </div> 
+    </div>
     [#-- Title --]
-    <h6>[@s.text name="preplanning.outputsRPL.output" /]</h6> 
+    [#assign outputDescription]
+      [@s.text name="preplanning.outputsRPL.output"] 
+        [@s.param name="0"]${currentUser.currentInstitution.program.acronym}[/@s.param] 
+        [@s.param name="1"]{}[/@s.param] 
+      [/@s.text]
+    [/#assign]
+    [@customForm.textArea name="description" i18nkey="${outputDescription}" required=true /] 
     <div class="fullBlock chosen"> 
       [@customForm.select name="flagships" label="" i18nkey="preplanning.outputsRPL.flagships" listName="flagshipsList" keyFieldName="id"  displayFieldName="name" /]
     </div>

@@ -1,10 +1,23 @@
 $(document).ready(function(){
-  attachEvents();
+	//init();
+	attachEvents(); 
 });
+
+function init(){
+	$(".idosIndicators").hide();
+}
 
 function attachEvents(){
   $(".outcomeIndicatorsBlock input.addButton").click(addIndicatorEvent);
   $(".indicator a.removeOutcomeIndicator").click(removeIndicatorEvent);
+  
+  $(".idosCheckbox").change(viewIDOsIndicators);
+}
+
+function viewIDOsIndicators(event){
+	$target = $(event.target);
+	$target.parent().find(".idosIndicators");
+	console.log($target);
 }
 
 function addIndicatorEvent(event){
@@ -19,7 +32,6 @@ function removeIndicatorEvent(event){
   event.preventDefault();
   var pressedLink = event.target;
   var $indicatorDiv = $(event.target).parent().parent();
-  
   $indicatorDiv.hide("slow", function() {
     $(this).remove();
     setIndicatorsIndexes();
