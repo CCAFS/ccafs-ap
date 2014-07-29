@@ -26,6 +26,14 @@ public interface IPCrossCuttingManager {
   public IPCrossCutting getIPCrossCutting(int iD);
 
   /**
+   * This method gets all the information of IP Cross Cutting Themes related with a given project ID
+   * 
+   * @param projectID
+   * @return a List with the information of IP Cross Cutting Themes related with the project
+   */
+  public List<IPCrossCutting> getIPCrossCuttingByProject(int projectID);
+
+  /**
    * This method gets all the IP Cross Cutting Themes
    * 
    * @return a List with the information of IP Cross Cutting Themes

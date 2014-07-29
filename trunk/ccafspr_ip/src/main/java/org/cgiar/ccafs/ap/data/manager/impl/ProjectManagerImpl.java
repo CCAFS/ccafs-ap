@@ -2,10 +2,13 @@ package org.cgiar.ccafs.ap.data.manager.impl;
 
 import org.cgiar.ccafs.ap.config.APConstants;
 import org.cgiar.ccafs.ap.data.dao.ProjectDAO;
+import org.cgiar.ccafs.ap.data.dao.ProjectFocusesDAO;
 import org.cgiar.ccafs.ap.data.manager.InstitutionManager;
 import org.cgiar.ccafs.ap.data.manager.ProjectManager;
 import org.cgiar.ccafs.ap.data.manager.UserManager;
 import org.cgiar.ccafs.ap.data.model.Project;
+import org.cgiar.ccafs.ap.data.model.Region;
+import org.cgiar.ccafs.ap.data.model.User;
 
 import java.text.DateFormat;
 import java.text.ParseException;
@@ -16,7 +19,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import org.cgiar.ccafs.ap.data.model.User;
 import com.google.inject.Inject;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -26,6 +28,7 @@ public class ProjectManagerImpl implements ProjectManager {
 
   // DAOs
   private ProjectDAO projectDAO;
+  private ProjectFocusesDAO projectFocusesDAO;
 
   // Managers
   private UserManager userManager;
@@ -35,8 +38,10 @@ public class ProjectManagerImpl implements ProjectManager {
   private static Logger LOG = LoggerFactory.getLogger(ProjectManagerImpl.class);
 
   @Inject
-  public ProjectManagerImpl(ProjectDAO projectDAO, UserManager userManager, InstitutionManager institutionManager) {
+  public ProjectManagerImpl(ProjectDAO projectDAO, ProjectFocusesDAO projectFocusesDAO, UserManager userManager,
+    InstitutionManager institutionManager) {
     this.projectDAO = projectDAO;
+    this.projectFocusesDAO = projectFocusesDAO;
     this.userManager = userManager;
     this.institutionManager = institutionManager;
   }
@@ -124,6 +129,29 @@ public class ProjectManagerImpl implements ProjectManager {
    * return projectsList;
    * }
    */
+
+  @Override
+  public List<Project> getProjectFocuses(int projectID, int typeID) {
+    List<Map<String, String>> projectFocusesDataList = projectFocusesDAO.getProjectFocuses(projectID, typeID);
+    List<Project> projectsList = new ArrayList<>();
+
+
+    for (Map<String, String> projectFocusesData : projectFocusesDataList) {
+
+      Project project = new Project();
+      project.setId(Integer.parseInt(projectFocusesData.get("id")));
+      project.setTitle(projectFocusesData.get("title"));
+      project.setSummary(projectFocusesData.get("summary"));
+      Region region = new Region();
+      region.setId(Integer.parseInt(projectFocusesData.get("region_id")));
+      region.setName(projectFocusesData.get("region_name"));
+      region.setCode(projectFocusesData.get("region_code"));
+
+
+      projectsList.add(project);
+    }
+    return projectsList;
+  }
 
   @Override
   public User getProjectLeader(int projectId) {

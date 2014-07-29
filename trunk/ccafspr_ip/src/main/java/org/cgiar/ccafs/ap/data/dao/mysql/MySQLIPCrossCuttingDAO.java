@@ -84,6 +84,22 @@ public class MySQLIPCrossCuttingDAO implements IPCrossCuttingDAO {
   }
 
   @Override
+  public List<Map<String, String>> getIPCrossCuttingByProject(int projectID) {
+    LOG.debug(">> getIPCrossCuttingByProject( projectID = {} )", projectID);
+
+    StringBuilder query = new StringBuilder();
+    query.append("SELECT ipc.* ");
+    query.append("FROM project_cross_cutting_themes pct ");
+    query.append("INNER JOIN ip_cross_cutting_themes ipc ON pct.theme_id=ipc.id ");
+    query.append("WHERE pct.project_id= ");
+    query.append(projectID);
+    query.append(" ORDER BY ipc.name ");
+
+    LOG.debug("-- getIPCrossCuttingByProject() > Calling method executeQuery to get the results");
+    return getData(query.toString());
+  }
+
+  @Override
   public List<Map<String, String>> getIPCrossCuttings() {
     LOG.debug(">> getIPCrossCutting( ");
 
@@ -92,10 +108,10 @@ public class MySQLIPCrossCuttingDAO implements IPCrossCuttingDAO {
     query.append("FROM ip_cross_cutting_themes ipc ");
     query.append("ORDER BY ipc.name ");
 
-
     LOG.debug("-- getIPCrossCutting() > Calling method executeQuery to get the results");
     return getData(query.toString());
   }
 
+  // TODO JG still need to do the method Save Project Cross Cutting
 
 }

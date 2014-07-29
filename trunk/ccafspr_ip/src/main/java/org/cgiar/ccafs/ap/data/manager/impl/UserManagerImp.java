@@ -1,6 +1,7 @@
 package org.cgiar.ccafs.ap.data.manager.impl;
 
 import org.cgiar.ccafs.ap.data.dao.UserDAO;
+import org.cgiar.ccafs.ap.data.manager.InstitutionManager;
 import org.cgiar.ccafs.ap.data.manager.UserManager;
 import org.cgiar.ccafs.ap.data.model.User;
 import org.cgiar.ccafs.ap.util.MD5Convert;
@@ -13,7 +14,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import org.cgiar.ccafs.ap.data.manager.InstitutionManager;
 import com.google.inject.Inject;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -39,7 +39,7 @@ public class UserManagerImp implements UserManager {
   /**
    * This method make the login process against the active directory
    * if the user has an institutional account
-   *
+   * 
    * @param user
    * @return true if it was successfully logged in. False otherwise
    */
@@ -82,6 +82,45 @@ public class UserManagerImp implements UserManager {
     return projectLeaders;
   }
 
+  @Override
+  public User getImportantUserByProject(int projectID) {
+    Map<String, String> userData = userDAO.getImportantUserByProject(projectID);
+    if (!userData.isEmpty()) {
+      User user = new User();
+      user.setId(Integer.parseInt(userData.get("id")));
+      user.setUsername(userData.get("username"));
+      user.setFirstName(userData.get("first_name"));
+      user.setLastName(userData.get("last_name"));
+      user.setEmail(userData.get("email"));
+      user.setCurrentInstitution(institutionManager.getInstitution(Integer.parseInt(userData.get("institution_id"))));
+
+      return user;
+    }
+    LOG.warn("Information related to the user with Project id {} wasn't found.", projectID);
+
+    return null;
+  }
+
+  @Override
+  public List<User> getImportantUsers() {
+    List<User> projectContacts = new ArrayList<>();
+    List<Map<String, String>> projectContactsDataList = userDAO.getImportantUsers();
+    for (Map<String, String> pData : projectContactsDataList) {
+      // User
+      User projectContact = new User();
+      projectContact.setId(Integer.parseInt(pData.get("id")));
+      projectContact.setUsername((pData.get("username")));
+      projectContact.setFirstName(pData.get("first_name"));
+      projectContact.setLastName(pData.get("last_name"));
+      projectContact.setEmail(pData.get("email"));
+      // Institution
+      projectContact.setCurrentInstitution(institutionManager.getInstitution(Integer.parseInt(pData
+        .get("institution_id"))));
+      // Adding object to the array.
+      projectContacts.add(projectContact);
+    }
+    return projectContacts;
+  }
 
   @Override
   public User getUser(int userId) {
@@ -139,6 +178,7 @@ public class UserManagerImp implements UserManager {
     return null;
   }
 
+
   @Override
   public User login(String email, String password) {
     if (email != null && password != null) {
@@ -167,7 +207,6 @@ public class UserManagerImp implements UserManager {
     }
     return null;
   }
-
 
   @Override
   public boolean saveLastLogin(User user) {

@@ -28,8 +28,9 @@ Javier Gallego:
 [OK]    - Copiar y pegar todo lo de RegionManager del proyecto anterior a este y probar que todo funciona.
 [OK]    - Crear DAOs para InstitutionType (o se podrían incluir los métodos en InstitutionManager).
 []    - Crear en ProjectManager de los métodos save de Project y Project Focuses
-[]    - getProjectOwner y lista de getProjectOwnerContact
-[]    - getProjectFocuses y getProjectCrossCutting saveProjectCrossCutting
+[OK]    - getProjectOwner - esta función no es requerida ya que HT, ya había creado el currentInstitution y se aplicó al template 
+[OK]    - getProjectFocuses y getProjectCrossCutting 
+[]    - saveProjectCrossCutting y lista de getImportantUsers para la vista de ProjectDescription
 
 Sebastián Amariles:
 []    - Crear breadcrumb de navegacion 
