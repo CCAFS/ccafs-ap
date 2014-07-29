@@ -135,9 +135,7 @@ public class ProjectManagerImpl implements ProjectManager {
     List<Map<String, String>> projectFocusesDataList = projectFocusesDAO.getProjectFocuses(projectID, typeID);
     List<Project> projectsList = new ArrayList<>();
 
-
     for (Map<String, String> projectFocusesData : projectFocusesDataList) {
-
       Project project = new Project();
       project.setId(Integer.parseInt(projectFocusesData.get("id")));
       project.setTitle(projectFocusesData.get("title"));
@@ -146,8 +144,6 @@ public class ProjectManagerImpl implements ProjectManager {
       region.setId(Integer.parseInt(projectFocusesData.get("region_id")));
       region.setName(projectFocusesData.get("region_name"));
       region.setCode(projectFocusesData.get("region_code"));
-
-
       projectsList.add(project);
     }
     return projectsList;
