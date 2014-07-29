@@ -29,6 +29,38 @@ public class MySQLIPIndicatorDAO implements IPIndicatorDAO {
   }
 
   @Override
+  public Map<String, String> getIndicator(int indicatorID) {
+    LOG.debug(">> getIndicator(indicatorID = {})", indicatorID);
+    Map<String, String> indicatorData = new HashMap<>();
+    StringBuilder query = new StringBuilder();
+
+    query.append("SELECT i.id, i.description, i.target, p.id as 'parent_id', p.description as 'parent_description' ");
+    query.append("FROM ip_indicators i ");
+    query.append("LEFT JOIN ip_indicators p ON i.parent_id = p.id ");
+    query.append("WHERE i.id = ");
+    query.append(indicatorID);
+
+    try (Connection con = databaseManager.getConnection()) {
+      ResultSet rs = databaseManager.makeQuery(query.toString(), con);
+      if (rs.next()) {
+        indicatorData.put("id", rs.getString("id"));
+        indicatorData.put("description", rs.getString("description"));
+        indicatorData.put("target", rs.getString("target"));
+        indicatorData.put("parent_id", rs.getString("parent_id"));
+        indicatorData.put("parent_description", rs.getString("parent_description"));
+      }
+      rs.close();
+    } catch (SQLException e) {
+      String exceptionMessage = "-- getIndicator() > Exception raised trying ";
+      exceptionMessage += "to get the ip indicator with id " + indicatorID;
+      LOG.error(exceptionMessage, e);
+    }
+
+    LOG.debug("<< getIndicator():indicatorData={}", indicatorData);
+    return indicatorData;
+  }
+  
+    @Override
   public boolean deleteIpElementIndicators(int ipElementID, int ipProgramID) {
     StringBuilder query = new StringBuilder();
     query.append("DELETE ipi.* FROM ip_indicators ipi ");
@@ -81,7 +113,33 @@ public class MySQLIPIndicatorDAO implements IPIndicatorDAO {
     return indicatorsList;
   }
 
+  @Override
+  public List<Map<String, String>> getIndicatorsList() {
+    LOG.debug(">> getIndicatorsList()");
+    List<Map<String, String>> indicatorsDataList = new ArrayList<>();
+    StringBuilder query = new StringBuilder();
+    query.append("SELECT * FROM ip_indicators; ");
 
+    try (Connection con = databaseManager.getConnection()) {
+      ResultSet rs = databaseManager.makeQuery(query.toString(), con);
+      while (rs.next()) {
+        Map<String, String> indicatorData = new HashMap<>();
+        indicatorData.put("id", rs.getString("id"));
+        indicatorData.put("description", rs.getString("description"));
+        indicatorData.put("target", rs.getString("target"));
+        indicatorData.put("program_element_id", rs.getString("program_element_id"));
+        indicatorData.put("parent_id", rs.getString("parent_id"));
+
+        indicatorsDataList.add(indicatorData);
+      }
+      rs.close();
+    } catch (SQLException e) {
+      LOG.error("-- getIndicatorsList()> Exception raised trying to get the list of indicators.", e);
+    }
+
+    LOG.debug("<< getIndicatorsList():indicatorsDataList.size=", indicatorsDataList.size());
+    return indicatorsDataList;
+  }
   @Override
   public int saveIndicator(Map<String, Object> indicatorData) {
     LOG.debug(">> saveIndicator(indicatorData={})", indicatorData);

@@ -95,7 +95,7 @@ function addContributeEvent(event){
 		var programID= 1;
 		var grandParentId = $addButton.parent().parent().attr("id").split("-")[1];
 		var $newElementClone = $("#contributeTemplate").clone(true).removeAttr("id");  
-		var elementName = "midOutcomes["+grandParentId+"].translatedOf["+elementId+"]."; 
+		var elementName = "midOutcomes["+grandParentId+"]."; 
 		$newElementClone.find("[id$='contributeId']").attr("value", elementId);
 		$.getJSON("../ipIndicators.do?programID="+programID+"&elementID="+elementId, function(data) { 
 		  $.each(data.IPElementsList, function(index,element){ 
@@ -134,11 +134,13 @@ function setContributesIndexes(i){
       $(element).find("[id^='__multiselect']").attr("name", "__multiselect_"+elementName+"indicators");
       //set Indicator indexes
       $(element).find(".midOutcomeIndicator").each(function(c, indicator){ 
+          var indicatorInputName = "midOutcomes["+i+"].";
     	  var inputId = $(indicator).attr('id');
     	  //set new id for label input
-    	  $(element).find("label[for='"+inputId+"']").attr("for",elementName+"indicators-"+index+c);
+    	  $(element).find("label[for='"+inputId+"']").attr("for",indicatorInputName+"indicators-"+index+c);
     	  //set new index name for input indicator
-    	  $(indicator).attr("name", elementName+"indicators").attr("id",elementName+"indicators-"+index+c);
+    	  $(indicator).attr("name", indicatorInputName+"indicators")
+                      .attr("id",indicatorInputName+"indicators-"+index+c);
       });
   });
 }

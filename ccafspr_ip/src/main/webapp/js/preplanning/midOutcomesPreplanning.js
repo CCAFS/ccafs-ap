@@ -88,8 +88,8 @@ function removeContributeEvent(event){
 function setContributesIndexes(i){
   $("#midOutcome-"+i+" div.contributions").each(function(index, element){
 	  console.log(i);
-      var elementName = "midOutcomes["+i+"].contributesTo[" + index + "]."; 
-      $(element).find("[id^='contributeId']").attr("name", elementName+"id").attr("value", outcome.id);
+      var elementName = "midOutcomes["+i+"].contributesTo[" + index + "]"; 
+      $(element).find("[id^='contributeId']").attr("name", elementName).attr("value", outcome.id);
   });
 }
 

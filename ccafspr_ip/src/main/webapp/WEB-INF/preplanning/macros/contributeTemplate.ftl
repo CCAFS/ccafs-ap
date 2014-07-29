@@ -7,7 +7,7 @@
         <p></p>
   [#else] 
     <div class="contributions">  
-      <input id="contributeId" type="hidden" name="midOutcomes[${midOutcome_index}].contributesTo[${parent_index}].id" value="${value}" />
+      <input id="contributeId" type="hidden" name="midOutcomes[${midOutcome_index}].contributesTo" value="${value}" />
       <p>${description}</p>
   [/#if] 
   [#if canRemove]
@@ -36,19 +36,19 @@
       [#-- Narrative explanation --]
       [@customForm.textArea showTitle=true name="justification" i18nkey="preplanning.midOutcomesRPL.midOutcomeIndicators.justification" required=true /]
   [#else]  
-  <div id="" class="contributions">   
-    <input id="contributeId" type="hidden" name="midOutcomes[${midOutcomeRPL_index}].translatedOf[${parent_index}].id" value="${parent_id}" />
-    <p id="description">[@s.text name="midOutcomes[${midOutcomeRPL_index}].translatedOf[${parent_index}].description" /]</p>
-    <h6>[@s.text name="preplanning.midOutcomesRPL.selectIndicators" /]</h6>
-    [#-- Outcome Indicators --]
-    <div id="midOutcomeIndicators" class="fullBlock">
-      <div class="checkboxGroup vertical"> 
-        [@s.fielderror cssClass="fieldError" fieldName="indicatorsSelected"/]
-        [@s.checkboxlist value="midOutcomes[${midOutcomeRPL_index}].parentIndicatorsIDs" name="midOutcomes[${midOutcomeRPL_index}].translatedOf[${parent_index}].indicators" list="midOutcomes[${midOutcomeRPL_index}].translatedOf[${parent_index}].indicators" listKey="id" listValue="description" cssClass="midOutcomeIndicator" /]
+    <div id="" class="contributions">   
+      <input id="contributeId" type="hidden" name="midOutcomes[${midOutcomeRPL_index}].translatedOf" value="${parent_id}" />
+      <p id="description">[@s.text name="midOutcomes[${midOutcomeRPL_index}].translatedOf[${parent_index}].description" /]</p>
+      <h6>[@s.text name="preplanning.midOutcomesRPL.selectIndicators" /]</h6>
+      [#-- Outcome Indicators --]
+      <div id="midOutcomeIndicators" class="fullBlock">
+        <div class="checkboxGroup vertical"> 
+          [@s.fielderror cssClass="fieldError" fieldName="indicatorsSelected"/]
+          [@s.checkboxlist value="midOutcomes[${midOutcomeRPL_index}].parentIndicatorsIDs" name="midOutcomes[${midOutcomeRPL_index}].indicators" list="midOutcomes[${midOutcomeRPL_index}].translatedOf[${parent_index}].indicators" listKey="id" listValue="description" cssClass="midOutcomeIndicator" /]
+        </div>
       </div>
-    </div>
-    [#-- Narrative explanation --]
-    [@customForm.textArea showTitle=true name="midOutcomes[${midOutcomeRPL_index}].translatedOf[${parent_index}].justification" i18nkey="preplanning.midOutcomesRPL.midOutcomeIndicators.justification" required=true /]
+      [#-- Narrative explanation --]
+      [@customForm.textArea showTitle=true name="midOutcomes[${midOutcomeRPL_index}].translatedOf[${parent_index}].justification" i18nkey="preplanning.midOutcomesRPL.midOutcomeIndicators.justification" required=true /]
   [/#if]
   [#if canRemove]
     [#-- remove link --]
@@ -67,7 +67,7 @@
         <p></p>  
   [#else] 
     <div class="contributions">  
-      <input type="hidden" name="outputs[${output_index}].contributesTo[${parent_index}].id" value="${value}" />
+      <input type="hidden" name="outputs[${output_index}].contributesTo" value="${value}" />
       <p>${description}</p>
   [/#if] 
   [#if canRemove]

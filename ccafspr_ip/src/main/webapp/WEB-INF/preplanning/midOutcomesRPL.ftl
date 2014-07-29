@@ -44,7 +44,10 @@
                 [@s.param name="0"]${midOutcome_index+1}[/@s.param] 
               [/@s.text]
             [/#assign]
+            [#-- Mid outcome description --]
             [@customForm.textArea name="midOutcomes[${midOutcome_index}].description" i18nkey="${midOutcomeDescription}" required=true /] 
+            
+            [#-- Flagships list --]
             [@customForm.select name="flagships" label="" i18nkey="preplanning.midOutcomesRPL.flagships" listName="flagshipsList" keyFieldName="id"  displayFieldName="name" /]
             <div class="contentElements parentsBlock">
               <div class="itemIndex">[@s.text name="preplanning.midOutcomesRPL.contributes" /] </div>

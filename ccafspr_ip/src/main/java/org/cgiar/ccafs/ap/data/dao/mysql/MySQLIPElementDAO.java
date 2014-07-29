@@ -298,5 +298,4 @@ public class MySQLIPElementDAO implements IPElementDAO {
     return result;
 
   }
-
 }
