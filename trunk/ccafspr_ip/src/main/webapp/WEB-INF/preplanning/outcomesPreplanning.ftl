@@ -25,19 +25,20 @@
       [@s.text name="preplanning.outcomes.title" /] [#-- Pending to add the leader acronym, so it should say something like: Flagship 1 - Outcome 2025 --]
     </h1>
     
-    <div id="outcomesBlock" class="outcome borderBox">
+    
       [#if outcomes?has_content]
         [#list outcomes as outcome]
+        <div id="outcomesBlock" class="outcome borderBox">
           [#-- Outcome identifier --]
           <input type="hidden" name="outcomes[${outcome_index}].id" value="${outcome.id}" />
           <input type="hidden" name="outcomes[${outcome_index}].program.id" value="${currentUser.currentInstitution.program.id}" />
           <input type="hidden" name="outcomes[${outcome_index}].type.id" value="${elementTypeID}" />
           [#-- Title --]
           [@customForm.textArea name="outcomes[${outcome_index}].description" i18nkey="preplanning.outcomes.outcome" required=true /]
+          [#-- Indicators --]
           <div class="contentElements outcomeIndicatorsBlock"> 
             <div class="itemIndex">[@s.text name="preplanning.outcomes.indicators" /]</div>
-            [#if outcome.indicators?has_content]
-              [#-- Indicators --]
+            [#if outcome.indicators?has_content] 
               [#list outcome.indicators as indicator]
                 [#if !indicator.parent?has_content]
                   [@indicatorTemplate.outcomes outcome_index="${outcome_index}" indicator_index="${indicator_index}" value="${indicator.id}" i18nkey="preplanning.outcomes.indicators.description" show_remove_link=false /]
@@ -54,7 +55,25 @@
               [@customForm.button i18nkey="preplanning.outcomes.addIndicator" class="addButton" /]
             </div>
             --] 
-          </div>
+          </div> 
+          [#-- IDOs --]
+          [#if idos?has_content]
+            <div id="idosBlock" class="contentElements">
+              <div class="itemIndex">[@s.text name="preplanning.outcomes.idos" /]</div>
+              [#list idos as ido]
+                <div id="idoBlock-${ido_index}" class="ido">
+                <input  id="ido-${ido_index}" class="idosCheckbox" type="checkbox" name="outcomes[0].contributesTo" value="${ido.id}">
+                <label for="ido-${ido_index}" class="checkboxLabel">${ido.description}</label>
+                [#if ido.indicators?has_content]
+                  <div id="indicatorsBlock-${ido_index}" class="idosIndicators checkboxGroup vertical"> 
+                    [@s.checkboxlist name="outcomes[0].indicators.parent" list="idos[${ido_index}].indicators" listKey="id" listValue="description" value="outcomes[0].parentIndicatorsIDs" cssClass="indicatorsCheckbox" /]
+                  </div>
+                [/#if]
+                </div>
+              [/#list]
+            </div>  
+          [/#if] 
+        </div>  
         [/#list]
       [#else]
           [#-- Outcome identifier --]
@@ -66,34 +85,26 @@
           <div class="contentElements outcomeIndicatorsBlock">
             <div class="itemIndex">[@s.text name="preplanning.outcomes.indicators" /] </div>
               [@indicatorTemplate.outcomes /] 
-              [#-- Add Indicator Button --]
-              [#-- So far, there will be only 1 indicator per outcome 2025 --]
-              [#-- 
-                <div class="fullBlock" id="addIndicatorBlock">
-                  [@customForm.button i18nkey="preplanning.outcomes.addIndicator" class="addButton" /]
-                </div>
-              --] 
             </div>
           </div> 
+          [#-- IDOs --]
+          [#if idos?has_content]
+            <div id="idosBlock" class="contentElements">
+              <div class="itemIndex">[@s.text name="preplanning.outcomes.idos" /]</div>
+              [#list idos as ido]
+                <div id="idoBlock-${ido_index}" class="ido">
+                <input  id="ido-${ido_index}" class="idosCheckbox" type="checkbox" name="outcomes[0].contributesTo" value="${ido.id}">
+                <label for="ido-${ido_index}" class="checkboxLabel">${ido.description}</label>
+                [#if ido.indicators?has_content]
+                  <div id="indicatorsBlock-${ido_index}" class="idosIndicators checkboxGroup vertical"> 
+                    [@s.checkboxlist name="outcomes[0].indicators.parent" list="idos[${ido_index}].indicators" listKey="id" listValue="description" value="outcomes[0].parentIndicatorsIDs" cssClass="indicatorsCheckbox" /]
+                  </div>
+                [/#if]
+                </div>
+              [/#list]
+            </div>  
+          [/#if] 
       [/#if]
-    [#-- IDOs --]
-    [#if idos?has_content]
-      <div id="idosBlock" class="contentElements">
-        <div class="itemIndex">[@s.text name="preplanning.outcomes.idos" /]</div>
-        [#list idos as ido]
-          <div id="idoBlock-${ido_index}" class="ido">
-          <input  id="ido-${ido_index}" class="idosCheckbox" type="checkbox" name="outcomes[0].contributesTo" value="${ido.id}">
-          <label for="ido-${ido_index}" class="checkboxLabel">${ido.description}</label>
-          [#if ido.indicators?has_content]
-            <div id="indicatorsBlock-${ido_index}" class="idosIndicators checkboxGroup vertical"> 
-              [@s.checkboxlist name="outcomes[0].indicators.parent" list="idos[${ido_index}].indicators" listKey="id" listValue="description" value="outcomes[0].parentIndicatorsIDs" cssClass="indicatorsCheckbox" /]
-            </div>
-          [/#if]
-          </div>
-        [/#list]
-      </div>  
-    [/#if]
-    </div>
     
     <div class="buttons">
       [@s.submit type="button" name="save"][@s.text name="form.buttons.save" /][/@s.submit]
@@ -111,9 +122,9 @@
   <input type="hidden" id="typeID" value="${elementTypeID}" />
   [#-- Title --]
   [@customForm.textArea name="description" i18nkey="preplanning.outcomes.outcome" required=true /] 
+  [#-- Indicator template --] 
   <div class="contentElements">
-    <div class="itemIndex">[@s.text name="preplanning.outcomes.indicators" /] </div>
-    [#-- Indicator template --] 
+    <div class="itemIndex">[@s.text name="preplanning.outcomes.indicators" /] </div> 
     [@indicatorTemplate.outcomes template=true /]
   </div>
 </div>
