@@ -62,8 +62,12 @@
               <div class="itemIndex">[@s.text name="preplanning.outcomes.idos" /]</div>
               [#list idos as ido]
                 <div id="idoBlock-${ido_index}" class="ido">
-                <input  id="ido-${ido_index}" class="idosCheckbox" type="checkbox" name="outcomes[0].contributesTo" value="${ido.id}">
-                <label for="ido-${ido_index}" class="checkboxLabel">${ido.description}</label>
+                  [#if outcome.contributesToIDs?seq_contains(ido.id) ] 
+                    <input  id="ido-${ido_index}" class="idosCheckbox" type="checkbox" name="outcomes[0].contributesTo" value="${ido.id}" checked="checked">
+                  [#else]
+                    <input  id="ido-${ido_index}" class="idosCheckbox" type="checkbox" name="outcomes[0].contributesTo" value="${ido.id}">
+                  [/#if]
+                    <label for="ido-${ido_index}" class="checkboxLabel" >${ido.description}</label>
                 [#if ido.indicators?has_content]
                   <div id="indicatorsBlock-${ido_index}" class="idosIndicators checkboxGroup vertical"> 
                     [@s.checkboxlist name="outcomes[0].indicators.parent" list="idos[${ido_index}].indicators" listKey="id" listValue="description" value="outcomes[0].parentIndicatorsIDs" cssClass="indicatorsCheckbox" /]
