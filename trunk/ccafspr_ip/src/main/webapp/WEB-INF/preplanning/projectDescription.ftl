@@ -58,7 +58,7 @@
 	        <h6>[@s.text name="preplanning.projectDescription.regions" /]</h6>
 	        <div class="checkboxGroup"> 
 	          [@s.fielderror cssClass="fieldError" fieldName="regionsSelected"/]          
-	          [@s.checkboxlist name="region" list="programsRegion" listKey="id" listValue="name" value="project.regionsIds" cssClass="checkbox" /]
+	          [@s.checkboxlist name="region" list="ipProgramRegions" listKey="id" listValue="name" value="project.regionsIds" cssClass="checkbox" /]
 	        </div>
 	      </div> 
 	      [#-- Flagships --] 
@@ -66,7 +66,7 @@
 	        <h6>[@s.text name="preplanning.projectDescription.flagships" /]</h6>
 	        <div class="checkboxGroup">  
 	          [@s.fielderror cssClass="fieldError" fieldName="flagshipsSelected"/]          
-	          [@s.checkboxlist name="flagship" list="programsFlagship" listKey="id" listValue="name" value="project.flagshipsIds" cssClass="checkbox" /]
+	          [@s.checkboxlist name="flagship" list="ipProgramFlagships" listKey="id" listValue="name" value="project.flagshipsIds" cssClass="checkbox" /]
 	        </div>
 	      </div> 
 	      [#-- Gender --] 
@@ -74,7 +74,7 @@
 	        <h6>[@s.text name="preplanning.projectDescription.gender" /]</h6>
 	        <div class="checkboxGroup">
 	          [@s.fielderror cssClass="fieldError" fieldName="gendersSelected"/]          
-	          [@s.checkboxlist name="gender" list="genders" listKey="id" listValue="name" value="activeGender" cssClass="checkbox" /]
+	          [@s.checkboxlist name="gender" list="ipCrossCuttings" listKey="id" listValue="name" value="project.crossCutttingIds" cssClass="checkbox" /]
 	        </div>
 	      </div> 
 	      
