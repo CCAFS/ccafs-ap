@@ -26,7 +26,7 @@ public interface IPProgramManager {
   /**
    * This method gets from the database a list of ipElements
    * which have the same type as passed as parameter
-   *
+   * 
    * @param ipProgramTypeID - IP Program type identifier
    * @return a list of IPProgram objects with the information.
    */

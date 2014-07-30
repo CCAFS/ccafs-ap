@@ -107,7 +107,9 @@ public class MidOutcomesPreplanningAction extends BaseAction {
           for (int i = 0; i < midOutcome.getIndicators().size(); i++) {
             if (midOutcome.getIndicators().get(i).getDescription().isEmpty()) {
               midOutcome.getIndicators().remove(i);
-            } else {
+            }
+
+            if (getCurrentUser().isRPL()) {
 
               // The regional programs won't have indicators by themselves, instead
               // they create a copy of the FP indicators and indicating that
