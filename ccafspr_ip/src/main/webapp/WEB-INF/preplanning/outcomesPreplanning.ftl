@@ -24,8 +24,6 @@
     <h1 class="contentTitle">
       [@s.text name="preplanning.outcomes.title" /] [#-- Pending to add the leader acronym, so it should say something like: Flagship 1 - Outcome 2025 --]
     </h1>
-    
-    
       [#if outcomes?has_content]
         [#list outcomes as outcome]
         <div id="outcomesBlock" class="outcome borderBox">
@@ -61,12 +59,15 @@
             <div id="idosBlock" class="contentElements">
               <div class="itemIndex">[@s.text name="preplanning.outcomes.idos" /]</div>
               [#list idos as ido]
-                <div id="idoBlock-${ido_index}" class="ido">
-                  [#if outcome.contributesToIDs?seq_contains(ido.id) ] 
-                    <input  id="ido-${ido_index}" class="idosCheckbox" type="checkbox" name="outcomes[0].contributesTo" value="${ido.id}" checked="checked">
-                  [#else]
-                    <input  id="ido-${ido_index}" class="idosCheckbox" type="checkbox" name="outcomes[0].contributesTo" value="${ido.id}">
-                  [/#if]
+                <div id="idoBlock-${ido_index}" class="ido"> 
+                [#if outcome.contributesToIDs?seq_contains(ido.id) ] 
+                   [#assign idoCheck = "checked='checked'" /]
+                   [#assign indicatorsVisible = "style='display:block'" /]
+                [#else]  
+                   [#assign idoCheck = "" /]
+                   [#assign indicatorsVisible = "style='display:none'" /]
+                [/#if]
+                    <input  id="ido-${ido_index}" class="idosCheckbox" type="checkbox" name="outcomes[0].contributesTo" value="${ido.id}" ${idoCheck}>
                     <label for="ido-${ido_index}" class="checkboxLabel" >${ido.description}</label>
                 [#if ido.indicators?has_content]
                   <div id="indicatorsBlock-${ido_index}" class="idosIndicators checkboxGroup vertical"> 
@@ -115,7 +116,6 @@
       [@s.submit type="button" name="next"][@s.text name="form.buttons.next" /][/@s.submit]
       [@s.submit type="button" name="cancel"][@s.text name="form.buttons.cancel" /][/@s.submit]
     </div>
-     
   </article>
   [/@s.form] 
 [#-- Outcome 2025 template --]
