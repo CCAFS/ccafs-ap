@@ -11,6 +11,15 @@ function init() {
   // $(".idosIndicators").hide();
   applyWordCounter($("form .outcome > .textArea textarea"), lWordsElemetDesc);
   applyWordCounter($("form .outcomeIndicatorsBlock textarea"), lWordsIndicatorDesc);
+  
+  // Set input indicator relation
+  $(".idosIndicators > .checkboxLabel").each(function(index, indLabel) {
+    var $parent = $(indLabel).parent();
+    var indLabelFor = $(indLabel).attr("for");
+    var $input = $parent.find("input[id^='" + indLabelFor + "']");
+    $(indLabel).attr("for", indLabelFor + "-" + index);
+    $input.attr("id", indLabelFor + "-" + index);
+  });
 }
 
 function attachEvents() {
