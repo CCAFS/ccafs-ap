@@ -42,6 +42,7 @@ public class Project {
   private User expectedLeader;
   private List<Budget> budgets;
 
+
   public Project() {
     super();
   }
@@ -68,10 +69,6 @@ public class Project {
     }
 
     return allYears;
-  }
-
-  public List<Budget> getBudgets() {
-    return budgets;
   }
 
   public Date getEndDate() {
@@ -140,10 +137,6 @@ public class Project {
 
   public List<IPProgram> getTypes() {
     return regions;
-  }
-
-  public void setBudgets(List<Budget> budgets) {
-    this.budgets = budgets;
   }
 
   public void setEndDate(Date endDate) {
