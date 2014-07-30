@@ -104,6 +104,12 @@ public class ProjectBudgetAction extends BaseAction {
       return; // Stop here and go to execute method.
     }
 
+    // Getting the project identified with the id parameter.
+    project = projectManager.getProject(projectID);
+    // if there is not a project identified with the given id
+    if (project == null) {
+      return; // Stop here and go to execute method.
+    }
 
     // Getting all the years dof the project.
     allYears = project.getAllYears();
@@ -118,14 +124,6 @@ public class ProjectBudgetAction extends BaseAction {
     } catch (NumberFormatException e) {
       LOG.error("-- prepare() > There was an error parsing the year '{}'.", parameter);
       projectID = -1;
-      return; // Stop here and go to execute method.
-    }
-
-
-    // Getting the project identified with the id parameter.
-    project = projectManager.getProject(projectID);
-    // if there is not a project identified with the given id
-    if (project == null) {
       return; // Stop here and go to execute method.
     }
 
