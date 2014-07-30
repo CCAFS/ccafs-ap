@@ -632,6 +632,7 @@ h1.contentSubTitle {
   display: inline-block;
   padding: 5px;
   width: 30%;
+  vertical-align: top;
 }
 
 .halfPartBlock {
@@ -1229,11 +1230,11 @@ ul#deliverablesFilesMessages > li {
 }
 
 .borderBox:hover{
-  box-shadow: 0px 0px 10px rgba(0,0,0,0.26);
+  box-shadow: 0px 0px 10px rgba(0,0,0,0.18);
 }
 
 .borderBox:active{
-  box-shadow: 0px 0px 12px rgba(0,0,0,0.3);
+  box-shadow: 0px 0px 12px rgba(0,0,0,0.24);
 }
 
 #publications .journalArticlesIndicators .checkbox h6{
