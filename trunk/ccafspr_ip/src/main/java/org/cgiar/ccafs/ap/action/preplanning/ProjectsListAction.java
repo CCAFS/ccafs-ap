@@ -17,7 +17,10 @@ import org.cgiar.ccafs.ap.action.BaseAction;
 import org.cgiar.ccafs.ap.config.APConfig;
 import org.cgiar.ccafs.ap.data.manager.ProjectManager;
 import org.cgiar.ccafs.ap.data.model.Project;
+
 import java.util.List;
+
+import org.cgiar.ccafs.ap.data.model.Institution;
 
 import com.google.inject.Inject;
 import org.slf4j.Logger;
@@ -54,10 +57,10 @@ public class ProjectsListAction extends BaseAction {
 
     // Depending on the user that is logged-in, the list of projects will be displayed. - currentUser.
 
-
     // Getting project list.
     // projects = projectManager.getAllProjects();
-    projects = projectManager.getAllProjects(this.getCurrentUser().getCurrentInstitution().getId());
+    Institution userInstitution = this.getCurrentUser().getCurrentInstitution();
+    projects = projectManager.getAllProjects(userInstitution.getId());
 
 
   }
