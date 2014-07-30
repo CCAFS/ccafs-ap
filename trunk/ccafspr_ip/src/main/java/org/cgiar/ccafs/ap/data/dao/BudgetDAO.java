@@ -47,7 +47,7 @@ public interface BudgetDAO {
    * @param budgetData
    * @return
    */
-  public int saveBudget(Map<String, Object> budgetData);
+  public int saveBudget(int projectID, Map<String, Object> budgetData);
 
 
 }

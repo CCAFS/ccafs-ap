@@ -2,6 +2,7 @@ package org.cgiar.ccafs.ap.data.dao.mysql;
 
 import org.cgiar.ccafs.ap.data.dao.BudgetDAO;
 import org.cgiar.ccafs.ap.data.dao.DAOManager;
+import org.cgiar.ccafs.ap.data.model.BudgetType;
 
 import java.sql.Connection;
 import java.sql.ResultSet;
@@ -55,6 +56,8 @@ public class MySQLBudgetDAO implements BudgetDAO {
     int rowsDeleted = databaseManager.delete(query.toString(), new Object[] {projectID, institutionID});
     if (rowsDeleted >= 0) {
       LOG.debug("<< deleteBudgetsByInstitution():{}", true);
+      query.setLength(0);
+      query.append("DELETE");
       return true;
     }
     LOG.debug("<< deleteBudgetsByInstitution():{}", false);
@@ -133,6 +136,7 @@ public class MySQLBudgetDAO implements BudgetDAO {
   @Override
   public List<Map<String, String>> getLeveragedInstitutions(int projectID) {
     LOG.debug(">> getLeveragedInstitutions projectID = {} )", projectID);
+    BudgetType budgetType = BudgetType.LEVERAGED;
     List<Map<String, String>> leveragedInstitutionDataList = new ArrayList<>();
     StringBuilder query = new StringBuilder();
     query.append("SELECT  i.*   ");
@@ -142,8 +146,8 @@ public class MySQLBudgetDAO implements BudgetDAO {
     query.append("INNER JOIN institutions i ON b.institution_id = i.id ");
     query.append("WHERE pb.project_id=  ");
     query.append(projectID);
-    query.append(" AND bt.id= 5 ");
-    // query.append(BudgetType.LEVERAGED);
+    query.append(" AND bt.id= ");
+    query.append(budgetType.getValue());
 
     try (Connection con = databaseManager.getConnection()) {
       ResultSet rs = databaseManager.makeQuery(query.toString(), con);
@@ -170,34 +174,51 @@ public class MySQLBudgetDAO implements BudgetDAO {
   }
 
   @Override
-  public int saveBudget(Map<String, Object> budgetData) {
-    LOG.debug(">> saveBudget(budgetData)", budgetData);
+  public int saveBudget(int projectID, Map<String, Object> budgetData) {
+    LOG.debug(">> saveBudget(budgetData={})", budgetData);
     StringBuilder query = new StringBuilder();
+    int result = -1;
+    int newId = -1;
     Object[] values;
     if (budgetData.get("id") == null) {
-      // Insert new record
+      // Insert new budget record
       query.append("INSERT INTO budgets (year, budget_type, institution_id, amount) ");
       query.append("VALUES (?,?,?,?) ");
-      values = new Object[6];
-      values[0] = budgetData.get("id");
-      values[1] = budgetData.get("year");
-      values[2] = budgetData.get("budget_type");
-      values[3] = budgetData.get("institution_id");
-      values[4] = budgetData.get("amount");
+      values = new Object[4];
+      values[0] = budgetData.get("year");
+      values[1] = budgetData.get("budget_type");
+      values[2] = budgetData.get("institution_id");
+      values[3] = budgetData.get("amount");
+      newId = databaseManager.saveData(query.toString(), values);
+      if (newId <= 0) {
+        LOG.error("A problem happened trying to add a new expected project leader in project with id={}", projectID);
+        return -1;
+      } else {
+        // Now, Addition the relation with project into table project_budgets
+        query.setLength(0); // Clearing query.
+        query.append("INSERT INTO project_budgets (project_id,budget_id) ");
+        query.append("VALUES (?,?) ");
+        values = new Object[2];
+        values[0] = projectID;
+        values[1] = newId;
+        result = databaseManager.saveData(query.toString(), values);
+      }
     } else {
-      // update record
+      // update budget record
       query.append("UPDATE budgets SET year = ?, budget_type = ?, institution_id = ?, amount = ? ");
       query.append("WHERE id = ? ");
-      values = new Object[6];
+      values = new Object[5];
       values[0] = budgetData.get("year");
       values[1] = budgetData.get("budget_type");
       values[2] = budgetData.get("institution_id");
       values[3] = budgetData.get("amount");
       values[4] = budgetData.get("id");
+      result = databaseManager.saveData(query.toString(), values);
+      if (result == -1) {
+        LOG.error("A problem happened trying to update a budget identified with the id = {}", budgetData.get("id"));
+        return -1;
+      }
     }
-    // TODO ADD INSERT INTO project_budgets (project_id,budget_id) VALUES (?,?)
-
-    int result = databaseManager.saveData(query.toString(), values);
     LOG.debug("<< saveBudget():{}", result);
     return result;
   }
