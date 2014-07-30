@@ -20,7 +20,7 @@ import org.cgiar.ccafs.ap.data.model.Project;
 
 import java.util.List;
 
-import org.cgiar.ccafs.ap.data.model.Institution;
+import org.cgiar.ccafs.ap.data.model.IPProgram;
 
 import com.google.inject.Inject;
 import org.slf4j.Logger;
@@ -59,8 +59,8 @@ public class ProjectsListAction extends BaseAction {
 
     // Getting project list.
     // projects = projectManager.getAllProjects();
-    Institution userInstitution = this.getCurrentUser().getCurrentInstitution();
-    projects = projectManager.getAllProjects(userInstitution.getId());
+    IPProgram userProgram = this.getCurrentUser().getCurrentInstitution().getProgram();
+    projects = projectManager.getAllProjects(userProgram.getId());
 
 
   }
