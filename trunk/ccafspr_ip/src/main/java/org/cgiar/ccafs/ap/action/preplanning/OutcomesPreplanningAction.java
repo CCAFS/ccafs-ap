@@ -17,6 +17,8 @@ import org.cgiar.ccafs.ap.action.BaseAction;
 import org.cgiar.ccafs.ap.config.APConfig;
 import org.cgiar.ccafs.ap.config.APConstants;
 import org.cgiar.ccafs.ap.data.manager.IPElementManager;
+import org.cgiar.ccafs.ap.data.manager.IPElementRelationManager;
+import org.cgiar.ccafs.ap.data.manager.IPIndicatorManager;
 import org.cgiar.ccafs.ap.data.model.IPElement;
 import org.cgiar.ccafs.ap.data.model.IPElementType;
 import org.cgiar.ccafs.ap.data.model.IPIndicator;
@@ -38,6 +40,8 @@ public class OutcomesPreplanningAction extends BaseAction {
 
   // Managers
   private IPElementManager ipElementManager;
+  private IPIndicatorManager ipIndicatorManager;
+  private IPElementRelationManager ipElementRelationManager;
 
   // Model
   private List<IPElement> idos;
@@ -49,10 +53,13 @@ public class OutcomesPreplanningAction extends BaseAction {
   private OutcomesValidation validator;
 
   @Inject
-  public OutcomesPreplanningAction(APConfig config, IPElementManager ipElementManager, OutcomesValidation validator) {
+  public OutcomesPreplanningAction(APConfig config, IPElementManager ipElementManager, OutcomesValidation validator,
+    IPIndicatorManager ipIndicatorManager, IPElementRelationManager ipElementRelationManager) {
     super(config);
     this.ipElementManager = ipElementManager;
+    this.ipIndicatorManager = ipIndicatorManager;
     this.validator = validator;
+    this.ipElementRelationManager = ipElementRelationManager;
   }
 
   @Override
@@ -99,6 +106,7 @@ public class OutcomesPreplanningAction extends BaseAction {
       if (outcomes != null) {
         for (IPElement outcome : outcomes) {
           outcome.getIndicators().clear();
+          outcome.getContributesTo().clear();
         }
       }
     }
@@ -109,8 +117,16 @@ public class OutcomesPreplanningAction extends BaseAction {
     for (IPElement outcome : outcomes) {
       // If the user removed the outcome we should delete it
       // from the database
-      if (!outcomesFromDatabase.contains(outcome)) {
+      int outcomeIndex = outcomesFromDatabase.indexOf(outcome);
+      if (outcomeIndex == -1) {
         ipElementManager.deleteIPElement(outcome, getCurrentUser().getCurrentInstitution().getProgram());
+      } else {
+        // We should remove the ipIndicators of the database if the outcome wasn't removed
+        ipIndicatorManager.removeElementIndicators(outcome, getCurrentUser().getCurrentInstitution().getProgram());
+        for (IPElement parentElement : outcome.getContributesTo()) {
+          // Remove the contribution
+          ipElementRelationManager.deleteRelationsByChildElement(outcome);
+        }
       }
 
       for (IPIndicator indicator : outcome.getIndicators()) {

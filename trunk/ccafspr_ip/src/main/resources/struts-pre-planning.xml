@@ -11,6 +11,8 @@
     
     <!-- Section: Higher Level Impact Pathways  -->
     <action name="outcomes" class="org.cgiar.ccafs.ap.action.preplanning.OutcomesPreplanningAction">
+      <interceptor-ref name="preplanningStack" />
+      <interceptor-ref name="timer"/>
       <result name="input">/WEB-INF/preplanning/outcomesPreplanning.ftl</result>
       <result name="success" type="redirectAction">
         <param name="actionName">outcomes</param>
