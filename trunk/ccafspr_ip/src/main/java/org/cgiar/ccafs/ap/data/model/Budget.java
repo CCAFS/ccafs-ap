@@ -16,7 +16,7 @@ package org.cgiar.ccafs.ap.data.model;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 
 /**
- * This class represents a Budget value in the system.
+ * This class represents a specific Budget value within the system.
  *
  * @author Héctor Fabio Tobón R.
  */

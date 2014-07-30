@@ -15,6 +15,8 @@ package org.cgiar.ccafs.ap.action.preplanning;
 
 import java.util.List;
 
+import org.cgiar.ccafs.ap.data.manager.BudgetManager;
+
 import org.cgiar.ccafs.ap.data.manager.ProjectManager;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -47,12 +49,13 @@ public class ProjectBudgetAction extends BaseAction {
 
   // Managers
   private ProjectManager projectManager;
-
+  private BudgetManager budgetManager;
 
   @Inject
-  public ProjectBudgetAction(APConfig config, ProjectManager projectManager) {
+  public ProjectBudgetAction(APConfig config, ProjectManager projectManager, BudgetManager budgetManager) {
     super(config);
     this.projectManager = projectManager;
+    this.budgetManager = budgetManager;
   }
 
   @Override
@@ -67,7 +70,6 @@ public class ProjectBudgetAction extends BaseAction {
     return super.execute();
   }
 
-
   public List<Integer> getAllYears() {
     return allYears;
   }
@@ -76,8 +78,13 @@ public class ProjectBudgetAction extends BaseAction {
     return project;
   }
 
+
   public int getProjectID() {
     return projectID;
+  }
+
+  public int getYear() {
+    return year;
   }
 
   @Override
@@ -135,6 +142,10 @@ public class ProjectBudgetAction extends BaseAction {
 
   public void setProjectID(int projectID) {
     this.projectID = projectID;
+  }
+
+  public void setYear(int year) {
+    this.year = year;
   }
 
 

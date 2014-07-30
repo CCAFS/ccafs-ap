@@ -37,6 +37,30 @@ public class BudgetManagerImpl implements BudgetManager {
   }
 
   @Override
+  public double calculateTotalCCAFSBudget(int projectID) {
+    // TODO JG - To complete
+    return 0;
+  }
+
+  @Override
+  public double calculateTotalOverallBudget(int projectID) {
+    // TODO JG - To complete
+    return 0;
+  }
+
+  @Override
+  public boolean deleteBudget(int budgetId) {
+    // TODO JG - To complete
+    return false;
+  }
+
+  @Override
+  public boolean deleteBudgetsByInstitution(int projectID, int institutionID) {
+    // TODO JG - To complete
+    return false;
+  }
+
+  @Override
   public List<Budget> getBudgetsByType(int projectID, BudgetType type) {
     // TODO JG - To complete
     return null;
@@ -55,15 +79,9 @@ public class BudgetManagerImpl implements BudgetManager {
   }
 
   @Override
-  public double getTotalCCAFSBudget(int projectID) {
+  public boolean saveBudget(int projectID, Budget budget) {
     // TODO JG - To complete
-    return 0;
-  }
-
-  @Override
-  public double getTotalOverallBudget(int projectID) {
-    // TODO JG - To complete
-    return 0;
+    return false;
   }
 
 

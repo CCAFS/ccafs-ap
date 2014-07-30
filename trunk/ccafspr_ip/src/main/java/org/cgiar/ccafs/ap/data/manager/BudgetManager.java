@@ -16,7 +16,6 @@ package org.cgiar.ccafs.ap.data.manager;
 import java.util.List;
 
 import org.cgiar.ccafs.ap.data.model.Institution;
-
 import org.cgiar.ccafs.ap.data.model.BudgetType;
 import org.cgiar.ccafs.ap.data.model.Budget;
 import org.cgiar.ccafs.ap.data.manager.impl.BudgetManagerImpl;
@@ -28,6 +27,40 @@ import com.google.inject.ImplementedBy;
  */
 @ImplementedBy(BudgetManagerImpl.class)
 public interface BudgetManager {
+
+  /**
+   * This method calculates the total of the CCAFS Budget which is the addition of W1+W2+W3
+   *
+   * @param projectID is the project id.
+   * @return a decimal number representing the amount of the total CCAFS Budget for that specific project.
+   */
+  public double calculateTotalCCAFSBudget(int projectID);
+
+  /**
+   * This method returns the total Budget used for that specific project.
+   * It consists in the addition of all Windows, plus the Bilateral and the Leveraged.
+   *
+   * @param projectID is the project id.
+   * @return a decimal number that represents the total amount of money used on that specific project.
+   */
+  public double calculateTotalOverallBudget(int projectID);
+
+  /**
+   * This method removes a specific budget value from the database.
+   *
+   * @param budgetId is the budget identifier.
+   * @return true if the budget was successfully deleted, false otherwise.
+   */
+  public boolean deleteBudget(int budgetId);
+
+  /**
+   * This method removes a set of budgets that belongs to a specific project and institution.
+   * 
+   * @param projectID is the project identifier.
+   * @param institutionID is the institution identifier.
+   * @return true if the set of budgets were successfully deleted, false otherwise.
+   */
+  public boolean deleteBudgetsByInstitution(int projectID, int institutionID);
 
   /**
    * This method gets all the budget information that belongs to the same type of a specific project.
@@ -50,28 +83,20 @@ public interface BudgetManager {
 
   /**
    * This method returns all the institutions that have leveraged funds with the specified project.
-   * 
+   *
    * @param projectID is the project id.
    * @return a List of Institution Objects.
    */
   public List<Institution> getLeveragedInstitutions(int projectID);
 
   /**
-   * This method calculates the total of the CCAFS Budget which is the addition of W1+W2+W3
+   * This method saves the information of the given budget that belong to a specific project into the database.
    *
-   * @param projectID is the project id.
-   * @return a decimal number representing the amount of the total CCAFS Budget for that specific project.
+   * @param projectID is the project identifier.
+   * @param budget is an object that represents a budget.
+   * @return true if the budget was saved successfully, false otherwise.
    */
-  public double getTotalCCAFSBudget(int projectID);
-
-  /**
-   * This method returns the total Budget used for that specific project.
-   * It consists in the addition of all Windows, plus the Bilateral and the Leveraged.
-   *
-   * @param projectID is the project id.
-   * @return a decimal number that represents the total amount of money used on that specific project.
-   */
-  public double getTotalOverallBudget(int projectID);
+  public boolean saveBudget(int projectID, Budget budget);
 
 
 }
