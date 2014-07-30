@@ -26,6 +26,7 @@ import org.cgiar.ccafs.ap.data.model.Institution;
 import org.cgiar.ccafs.ap.data.model.InstitutionType;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -73,14 +74,12 @@ public class BudgetManagerImpl implements BudgetManager {
 
   @Override
   public boolean deleteBudget(int budgetId) {
-    // TODO JG - To complete
-    return false;
+    return budgetDAO.deleteBudget(budgetId);
   }
 
   @Override
   public boolean deleteBudgetsByInstitution(int projectID, int institutionID) {
-    // TODO JG - To complete
-    return false;
+    return budgetDAO.deleteBudgetsByInstitution(projectID, institutionID);
   }
 
   @Override
@@ -130,14 +129,19 @@ public class BudgetManagerImpl implements BudgetManager {
       switch (Integer.parseInt(budgetData.get("budget_type"))) {
         case 1:
           budget.setType(BudgetType.W1);
+          break;
         case 2:
           budget.setType(BudgetType.W2);
+          break;
         case 3:
           budget.setType(BudgetType.W3);
+          break;
         case 4:
           budget.setType(BudgetType.BILATERAL);
+          break;
         case 5:
           budget.setType(BudgetType.LEVERAGED);
+          break;
       }
       budget.setAmount(Double.parseDouble(budgetData.get("amount")));
 
@@ -187,9 +191,29 @@ public class BudgetManagerImpl implements BudgetManager {
 
   @Override
   public boolean saveBudget(int projectID, Budget budget) {
-    // TODO JG - To complete
-    return false;
+    boolean allSaved = true;
+    Map<String, Object> budgetData = new HashMap<>();
+    if (budget.getId() > 0) {
+      budgetData.put("id", budget.getId());
+    }
+    BudgetType budgetType;
+    budgetData.put("year", budget.getYear());
+    budgetData.put("budget_type", budget.getType().getValue()); // validar como pasar el valor
+    budgetData.put("institution_id", budget.getInstitution().getId());
+    budgetData.put("amount", budget.getAmount());
+
+    int result = budgetDAO.saveBudget(projectID, budgetData);
+
+    if (result > 0) {
+      LOG.debug("saveBudget > New Budget and Project Budget added with id {}", result);
+    } else if (result == 0) {
+      LOG.debug("saveBudget > Budget with id={} was updated", budget.getId());
+    } else {
+      LOG.error("saveBudget > There was an error trying to save/update a Budget from projectId={}", projectID);
+      allSaved = false;
+    }
+
+    return allSaved;
+
   }
-
-
 }
