@@ -13,6 +13,8 @@
  *****************************************************************/
 package org.cgiar.ccafs.ap.data.model;
 
+import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 
@@ -42,6 +44,30 @@ public class Project {
 
   public Project() {
     super();
+  }
+
+  /**
+   * This method calculate all the years between the start date and the end date.
+   *
+   * @return a List of numbers representing all the years.
+   */
+  public List<Integer> getAllYears() {
+    List<Integer> allYears = new ArrayList<>();
+    if (startDate != null && endDate != null) {
+      Calendar calendarStart = Calendar.getInstance();
+      calendarStart.setTime(startDate);
+      Calendar calendarEnd = Calendar.getInstance();
+      calendarEnd.setTime(endDate);
+
+      while (calendarStart.getTimeInMillis() <= calendarEnd.getTimeInMillis()) {
+        // Adding the year to the list.
+        allYears.add(calendarStart.get(Calendar.YEAR));
+        // Adding a year (365 days) to the start date.
+        calendarStart.add(Calendar.YEAR, 1);
+      }
+    }
+
+    return allYears;
   }
 
   public List<Budget> getBudgets() {

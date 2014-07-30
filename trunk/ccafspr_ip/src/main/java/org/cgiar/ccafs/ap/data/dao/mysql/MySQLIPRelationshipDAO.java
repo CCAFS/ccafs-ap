@@ -33,7 +33,8 @@ public class MySQLIPRelationshipDAO implements IPRelationshipDAO {
     values[1] = childElementID;
     values[2] = relationTypeID;
 
-    // TODO HC - I can confirm this is working, however is not well implemented. Could you please update the following
+    // TODO HC - I can confirm this is working, however is not well implemented. Hernán, Could you please update the
+// following
 // line to reflect the kind of return from the saveData method? thks.
     int ipRelationAdded = databaseManager.saveData(query.toString(), values);
     if (ipRelationAdded > 0) {
