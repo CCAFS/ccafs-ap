@@ -22,7 +22,7 @@ import org.apache.commons.lang3.builder.ToStringBuilder;
 
 /**
  * This class represents a Project.
- *
+ * 
  * @author Javier Andrés Gallego
  * @author Héctor Tobón
  */
@@ -35,6 +35,7 @@ public class Project {
   private Date endDate;
   private List<IPProgram> regions; // The list of regions in which this project works with.
   private List<IPProgram> flagships; // The list of flagships in which this project works with.
+  private List<IPCrossCutting> crossCuttings;// The list of Cross Cutting themes in which this project works with.
   private User leader; // Project leader will be a user too.
   private String leaderResponsabilities;
   private User owner;
@@ -49,7 +50,7 @@ public class Project {
 
   /**
    * This method calculate all the years between the start date and the end date.
-   *
+   * 
    * @return a List of numbers representing all the years.
    */
   public List<Integer> getAllYears() {
@@ -71,12 +72,32 @@ public class Project {
     return allYears;
   }
 
+  public List<String> getCrossCuttingIds() {
+    ArrayList<String> ids = new ArrayList<>();
+    for (IPCrossCutting ipCrossCutting : crossCuttings) {
+      ids.add(String.valueOf(ipCrossCutting.getId()));
+    }
+    return ids;
+  }
+
+  public List<IPCrossCutting> getCrossCuttings() {
+    return crossCuttings;
+  }
+
   public Date getEndDate() {
     return endDate;
   }
 
   public User getExpectedLeader() {
     return expectedLeader;
+  }
+
+  public List<String> getFlagshipIds() {
+    ArrayList<String> ids = new ArrayList<>();
+    for (IPProgram flagship : flagships) {
+      ids.add(String.valueOf(flagship.getId()));
+    }
+    return ids;
   }
 
   public List<IPProgram> getFlagships() {
@@ -111,6 +132,14 @@ public class Project {
     return projectPartners;
   }
 
+  public List<String> getRegionIds() {
+    ArrayList<String> ids = new ArrayList<>();
+    for (IPProgram region : regions) {
+      ids.add(String.valueOf(region.getId()));
+    }
+    return ids;
+  }
+
   public List<IPProgram> getRegions() {
     return regions;
   }
@@ -137,6 +166,10 @@ public class Project {
 
   public List<IPProgram> getTypes() {
     return regions;
+  }
+
+  public void setCrossCuttings(List<IPCrossCutting> crossCuttings) {
+    this.crossCuttings = crossCuttings;
   }
 
   public void setEndDate(Date endDate) {

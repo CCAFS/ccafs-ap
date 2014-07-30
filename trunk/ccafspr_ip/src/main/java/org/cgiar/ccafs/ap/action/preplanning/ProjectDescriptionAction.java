@@ -54,9 +54,6 @@ public class ProjectDescriptionAction extends BaseAction {
   private List<IPCrossCutting> ipCrossCuttings;
   private List<User> allOwners;
   private User owner;
-  private List<IPCrossCutting> ipCrossCuttingByProject;
-  private List<IPProgram> ipProgramRegionsByProject;
-  private List<IPProgram> ipProgramFlagshipsByProject;
 
 
   @Inject
@@ -82,16 +79,9 @@ public class ProjectDescriptionAction extends BaseAction {
     return super.execute();
   }
 
-
   public List<User> getAllOwners() {
     return allOwners;
   }
-
-
-  public List<IPCrossCutting> getIpCrossCuttingByProject() {
-    return ipCrossCuttingByProject;
-  }
-
 
   public List<IPCrossCutting> getIpCrossCuttings() {
     return ipCrossCuttings;
@@ -102,17 +92,11 @@ public class ProjectDescriptionAction extends BaseAction {
     return ipProgramFlagships;
   }
 
-  public List<IPProgram> getIpProgramFlagshipsByProject() {
-    return ipProgramFlagshipsByProject;
-  }
 
   public List<IPProgram> getIpProgramRegions() {
     return ipProgramRegions;
   }
 
-  public List<IPProgram> getIpProgramRegionsByProject() {
-    return ipProgramRegionsByProject;
-  }
 
   public User getOwner() {
     return owner;
@@ -155,17 +139,13 @@ public class ProjectDescriptionAction extends BaseAction {
     owner = userManager.getImportantUserByProject(projectId);
 
     // Getting the information of the Flagships Program associated with the project
-    ipProgramFlagshipsByProject = projectManager.getProjectFocuses(projectId, APConstants.FLAGSHIP_PROGRAM_TYPE);
+    project.setRegions(projectManager.getProjectFocuses(projectId, APConstants.REGION_PROGRAM_TYPE));
     // Getting the information of the Regions Program associated with the project
-    ipProgramRegionsByProject = projectManager.getProjectFocuses(projectId, APConstants.REGION_PROGRAM_TYPE);
+    project.setFlagships(projectManager.getProjectFocuses(projectId, APConstants.FLAGSHIP_PROGRAM_TYPE));
     // Getting the information of the Cross Cutting Theme associated with the project
-    ipCrossCuttingByProject = ipCrossCuttingManager.getIPCrossCuttingByProject(projectId);
+    project.setCrossCuttings(ipCrossCuttingManager.getIPCrossCuttingByProject(projectId));
 
 
-  }
-
-  public void setIpCrossCuttingByProject(List<IPCrossCutting> ipCrossCuttingByProject) {
-    this.ipCrossCuttingByProject = ipCrossCuttingByProject;
   }
 
   public void setIpCrossCuttings(List<IPCrossCutting> ipCrossCuttings) {
@@ -176,17 +156,8 @@ public class ProjectDescriptionAction extends BaseAction {
     this.ipProgramFlagships = ipProgramFlagships;
   }
 
-  public void setIpProgramFlagshipsByProject(List<IPProgram> ipProgramFlagshipsByProject) {
-    this.ipProgramFlagshipsByProject = ipProgramFlagshipsByProject;
-  }
-
-
   public void setIpProgramRegions(List<IPProgram> ipProgramRegions) {
     this.ipProgramRegions = ipProgramRegions;
-  }
-
-  public void setIpProgramRegionsByProject(List<IPProgram> ipProgramRegionsByProject) {
-    this.ipProgramRegionsByProject = ipProgramRegionsByProject;
   }
 
   public void setProject(Project project) {
