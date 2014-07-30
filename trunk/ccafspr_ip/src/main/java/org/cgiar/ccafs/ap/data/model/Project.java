@@ -22,9 +22,9 @@ import org.apache.commons.lang3.builder.ToStringBuilder;
 
 /**
  * This class represents a Project.
- * 
+ *
  * @author Javier Andrés Gallego
- * @author Héctor Tobón
+ * @author Héctor Fabio Tobón R.
  */
 public class Project {
 
@@ -43,14 +43,13 @@ public class Project {
   private User expectedLeader;
   private List<Budget> budgets;
 
-
   public Project() {
     super();
   }
 
   /**
    * This method calculate all the years between the start date and the end date.
-   * 
+   *
    * @return a List of numbers representing all the years.
    */
   public List<Integer> getAllYears() {
@@ -70,6 +69,10 @@ public class Project {
     }
 
     return allYears;
+  }
+
+  public List<Budget> getBudgets() {
+    return budgets;
   }
 
   public List<String> getCrossCuttingIds() {
@@ -166,6 +169,10 @@ public class Project {
 
   public List<IPProgram> getTypes() {
     return regions;
+  }
+
+  public void setBudgets(List<Budget> budgets) {
+    this.budgets = budgets;
   }
 
   public void setCrossCuttings(List<IPCrossCutting> crossCuttings) {

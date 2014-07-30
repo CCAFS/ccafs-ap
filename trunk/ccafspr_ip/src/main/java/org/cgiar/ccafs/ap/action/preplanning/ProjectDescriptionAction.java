@@ -46,13 +46,15 @@ public class ProjectDescriptionAction extends BaseAction {
 
   private static Logger LOG = LoggerFactory.getLogger(ProjectDescriptionAction.class);
 
-  // Model
-  private Project project;
-  private int projectId;
+  // Model for the front-end
   private List<IPProgram> ipProgramRegions;
   private List<IPProgram> ipProgramFlagships;
   private List<IPCrossCutting> ipCrossCuttings;
   private List<User> allOwners;
+
+  // Model for the back-end
+  private Project project;
+  private int projectId;
   private User owner;
 
 
