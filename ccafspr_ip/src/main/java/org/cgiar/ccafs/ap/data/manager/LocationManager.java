@@ -31,21 +31,21 @@ public interface LocationManager {
 
   /**
    * This method return all the information of the countries
-   *
+   * 
    * @return a list of all countries with the information or null if there is none.
    */
   public List<Country> getAllCountries();
 
   /**
    * This method return all the information of the regions
-   *
+   * 
    * @return a list of all regions with the information or null if there is none.
    */
   public List<Region> getAllRegions();
 
   /**
    * This method return the information of a Country by a given Country ID
-   *
+   * 
    * @param countryID - is the ID of a Country
    * @return a Country Object with the information.
    */
@@ -53,7 +53,7 @@ public interface LocationManager {
 
   /**
    * This method finds a Country identified with the given code.
-   *
+   * 
    * @param code must be in format ISO 3166-1 alpha-2 - lower case (eg. "co" for Colombia)
    * @return a Country object representing the country found, or null if the code doesn't exist.
    */
@@ -61,7 +61,7 @@ public interface LocationManager {
 
   /**
    * Get a Location identified with the given type id and location id.
-   *
+   * 
    * @param typeID is an integer that represents the id of the location element type .
    * @param locationID is an integer that represents the id of the location to search
    * @return an Location object or null if the id does not exist in the database.
@@ -69,16 +69,8 @@ public interface LocationManager {
   public Location getLocation(int typeID, int locationID);
 
   /**
-   * Return all the locations with the give type Id.
-   *
-   * @param typeID is an integer that represents the id of the location element type .
-   * @return an List of Locations object or an empty list if not exist in the database.
-   */
-  public List<Location> getLocationsByType(int typeID);
-
-  /**
    * This method return the information of a Region by a given Region ID
-   *
+   * 
    * @param regionID - is the ID of a Region
    * @return a Region Object with the information.
    */

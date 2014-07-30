@@ -13,7 +13,6 @@
  *****************************************************************/
 package org.cgiar.ccafs.ap.data.manager.impl;
 
-import org.cgiar.ccafs.ap.config.APConstants;
 import org.cgiar.ccafs.ap.data.dao.LocationDAO;
 import org.cgiar.ccafs.ap.data.manager.LocationManager;
 import org.cgiar.ccafs.ap.data.model.Country;
@@ -134,33 +133,6 @@ public class LocationManagerImpl implements LocationManager {
     return null;
   }
 
-  @Override
-  public List<Location> getLocationsByType(int typeID) {
-    List<Location> locations = new ArrayList<>();
-    List<Map<String, String>> locationDataList = locationDAO.getLocationsByType(typeID);
-    // TODO JG - Ask about this, when you have to search another location elements type
-    if (typeID == APConstants.LOCATION_ELEMENT_TYPE_COUNTRY) { // validation if the typeID is Country
-      for (Map<String, String> lData : locationDataList) {
-        Country location = new Country();
-        location.setId(Integer.parseInt(lData.get("id")));
-        location.setName(lData.get("name"));
-        location.setCode(lData.get("code"));
-        // Region
-        // if (lData.get("region_id") != null) {
-        // TODO JG - The region is never going to be reachable since the object is defined as 'Location'.
-        // Region region = new Region();
-        // region.setId(Integer.parseInt(lData.get("region_id")));
-        // region.setName(lData.get("region_name"));
-        // region.setCode(lData.get("region_code"));
-        // location.setRegion(region);
-        // }
-
-        // Adding object to the array.
-        locations.add(location);
-      }
-    }
-    return locations;
-  }
 
   @Override
   public Region getRegion(int regionID) {
