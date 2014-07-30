@@ -71,12 +71,12 @@
 	          [@s.checkboxlist name="flagship" list="ipProgramFlagships" listKey="id" listValue="name" value="project.flagshipsIds" cssClass="checkbox" /]
 	        </div>
 	      </div> 
-	      [#-- Gender --] 
+	      [#-- Cross Cutting --] 
 	      <div id="projectGender" class="thirdPartBlock">
 	        <h6>[@s.text name="preplanning.projectDescription.gender" /]</h6>
 	        <div class="checkboxGroup">
 	          [@s.fielderror cssClass="fieldError" fieldName="gendersSelected"/]          
-	          [@s.checkboxlist name="gender" list="ipCrossCuttings" listKey="id" listValue="name" value="project.crossCutttingIds" cssClass="checkbox" /]
+	          [@s.checkboxlist name="gender" list="ipCrossCuttings" listKey="id" listValue="name" value="project.crossCuttingIds" cssClass="checkbox" /]
 	        </div>
 	      </div> 
 	      
