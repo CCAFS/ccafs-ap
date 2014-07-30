@@ -13,12 +13,13 @@
  *****************************************************************/
 package org.cgiar.ccafs.ap.data.manager;
 
+import org.cgiar.ccafs.ap.data.manager.impl.BudgetManagerImpl;
+import org.cgiar.ccafs.ap.data.model.Budget;
+import org.cgiar.ccafs.ap.data.model.BudgetType;
+import org.cgiar.ccafs.ap.data.model.Institution;
+
 import java.util.List;
 
-import org.cgiar.ccafs.ap.data.model.Institution;
-import org.cgiar.ccafs.ap.data.model.BudgetType;
-import org.cgiar.ccafs.ap.data.model.Budget;
-import org.cgiar.ccafs.ap.data.manager.impl.BudgetManagerImpl;
 import com.google.inject.ImplementedBy;
 
 /**
@@ -30,7 +31,7 @@ public interface BudgetManager {
 
   /**
    * This method calculates the total of the CCAFS Budget which is the addition of W1+W2+W3
-   *
+   * 
    * @param projectID is the project id.
    * @return a decimal number representing the amount of the total CCAFS Budget for that specific project.
    */
@@ -39,7 +40,7 @@ public interface BudgetManager {
   /**
    * This method returns the total Budget used for that specific project.
    * It consists in the addition of all Windows, plus the Bilateral and the Leveraged.
-   *
+   * 
    * @param projectID is the project id.
    * @return a decimal number that represents the total amount of money used on that specific project.
    */
@@ -47,7 +48,7 @@ public interface BudgetManager {
 
   /**
    * This method removes a specific budget value from the database.
-   *
+   * 
    * @param budgetId is the budget identifier.
    * @return true if the budget was successfully deleted, false otherwise.
    */
@@ -65,16 +66,16 @@ public interface BudgetManager {
   /**
    * This method gets all the budget information that belongs to the same type of a specific project.
    * Type can be Window 1, Window 2, Window 3, Bilateral or Leveraged.
-   *
+   * 
    * @param projectID is the id that identifies the project.
    * @param type is the type of budget see ({@link BudgetType}
    * @return a list of Budget objects.
    */
-  public List<Budget> getBudgetsByType(int projectID, BudgetType type);
+  public List<Budget> getBudgetsByType(int projectID, int budgetType);
 
   /**
    * This method gets all the budget information that belongs to a project in a specific year.
-   *
+   * 
    * @param projectID is the project identifier.
    * @param year is the year.
    * @return a List of Budget objects.
@@ -83,7 +84,7 @@ public interface BudgetManager {
 
   /**
    * This method returns all the institutions that have leveraged funds with the specified project.
-   *
+   * 
    * @param projectID is the project id.
    * @return a List of Institution Objects.
    */
@@ -91,7 +92,7 @@ public interface BudgetManager {
 
   /**
    * This method saves the information of the given budget that belong to a specific project into the database.
-   *
+   * 
    * @param projectID is the project identifier.
    * @param budget is an object that represents a budget.
    * @return true if the budget was saved successfully, false otherwise.

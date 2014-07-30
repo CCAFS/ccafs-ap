@@ -13,12 +13,22 @@
  *****************************************************************/
 package org.cgiar.ccafs.ap.data.manager.impl;
 
-import java.util.List;
+import org.cgiar.ccafs.ap.data.dao.BudgetDAO;
+import org.cgiar.ccafs.ap.data.manager.BudgetManager;
+import org.cgiar.ccafs.ap.data.manager.IPProgramManager;
+import org.cgiar.ccafs.ap.data.manager.InstitutionManager;
+import org.cgiar.ccafs.ap.data.manager.LocationManager;
 import org.cgiar.ccafs.ap.data.model.Budget;
 import org.cgiar.ccafs.ap.data.model.BudgetType;
+import org.cgiar.ccafs.ap.data.model.Country;
+import org.cgiar.ccafs.ap.data.model.IPProgram;
 import org.cgiar.ccafs.ap.data.model.Institution;
+import org.cgiar.ccafs.ap.data.model.InstitutionType;
 
-import org.cgiar.ccafs.ap.data.manager.BudgetManager;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
+
 import com.google.inject.Inject;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -31,8 +41,21 @@ public class BudgetManagerImpl implements BudgetManager {
   // LOG
   private static Logger LOG = LoggerFactory.getLogger(BudgetManagerImpl.class);
 
+  // DAO's
+  private BudgetDAO budgetDAO;
+
+  // Managers
+  private InstitutionManager institutionManager;
+  private IPProgramManager ipProgramManager;
+  private LocationManager locationManger;
+
   @Inject
-  public BudgetManagerImpl() {
+  public BudgetManagerImpl(BudgetDAO budgetDAO, InstitutionManager institutionManager,
+    IPProgramManager ipProgramManager, LocationManager locationManger) {
+    this.budgetDAO = budgetDAO;
+    this.institutionManager = institutionManager;
+    this.locationManger = locationManger;
+    this.ipProgramManager = ipProgramManager;
 
   }
 
@@ -61,21 +84,105 @@ public class BudgetManagerImpl implements BudgetManager {
   }
 
   @Override
-  public List<Budget> getBudgetsByType(int projectID, BudgetType type) {
-    // TODO JG - To complete
-    return null;
+  public List<Budget> getBudgetsByType(int projectID, int budgetType) {
+    List<Budget> budgets = new ArrayList<>();
+    List<Map<String, String>> budgetDataList = budgetDAO.getBudgetsByType(projectID, budgetType);
+    for (Map<String, String> budgetData : budgetDataList) {
+      Budget budget = new Budget();
+      budget.setId(Integer.parseInt(budgetData.get("id")));
+      budget.setYear(Integer.parseInt(budgetData.get("year")));
+      switch (Integer.parseInt(budgetData.get("budget_type"))) {
+        case 1:
+          budget.setType(BudgetType.W1);
+          break;
+        case 2:
+          budget.setType(BudgetType.W2);
+          break;
+        case 3:
+          budget.setType(BudgetType.W3);
+          break;
+        case 4:
+          budget.setType(BudgetType.BILATERAL);
+          break;
+        case 5:
+          budget.setType(BudgetType.LEVERAGED);
+          break;
+      }
+      budget.setAmount(Double.parseDouble(budgetData.get("amount")));
+
+      // Institution as institution_id
+      budget.setInstitution(institutionManager.getInstitution(Integer.parseInt(budgetData.get("institution_id"))));
+
+      // adding information of the object to the array
+      budgets.add(budget);
+    }
+    return budgets;
   }
 
   @Override
   public List<Budget> getBudgetsByYear(int projectID, int year) {
-    // TODO JG - To complete
-    return null;
+    List<Budget> budgets = new ArrayList<>();
+    List<Map<String, String>> budgetDataList = budgetDAO.getBudgetsByYear(projectID, year);
+    for (Map<String, String> budgetData : budgetDataList) {
+      Budget budget = new Budget();
+      budget.setId(Integer.parseInt(budgetData.get("id")));
+      budget.setYear(Integer.parseInt(budgetData.get("year")));
+      switch (Integer.parseInt(budgetData.get("budget_type"))) {
+        case 1:
+          budget.setType(BudgetType.W1);
+        case 2:
+          budget.setType(BudgetType.W2);
+        case 3:
+          budget.setType(BudgetType.W3);
+        case 4:
+          budget.setType(BudgetType.BILATERAL);
+        case 5:
+          budget.setType(BudgetType.LEVERAGED);
+      }
+      budget.setAmount(Double.parseDouble(budgetData.get("amount")));
+
+      // Institution as institution_id
+      budget.setInstitution(institutionManager.getInstitution(Integer.parseInt(budgetData.get("institution_id"))));
+
+      // adding information of the object to the array
+      budgets.add(budget);
+    }
+    return budgets;
   }
 
   @Override
   public List<Institution> getLeveragedInstitutions(int projectID) {
-    // TODO JG - To complete
-    return null;
+    List<Institution> institutions = new ArrayList<>();
+    List<Map<String, String>> institutionDataList = budgetDAO.getLeveragedInstitutions(projectID);
+    for (Map<String, String> iData : institutionDataList) {
+      Institution institution = new Institution();
+      institution.setId(Integer.parseInt(iData.get("id")));
+      institution.setName(iData.get("name"));
+      institution.setAcronym(iData.get("acronym"));
+      institution.setContactPersonName(iData.get("contactPersonName"));
+      institution.setContactPersonEmail(iData.get("contactPersonEmail"));
+
+      // InstitutionType Object
+      InstitutionType type = new InstitutionType();
+      if (iData.get("institution_type_id") != null) {
+        institution.setType(institutionManager.getInstitutionType(Integer.parseInt(iData.get("institution_type_id"))));
+      }
+      // Program Object
+      IPProgram program = new IPProgram();
+      if (iData.get("program_id") != null) {
+        program.setId(Integer.parseInt(iData.get("program_id")));
+        institution.setProgram(program);
+      }
+      // Location Object
+      Country country = new Country();
+      if (iData.get("loc_elements_id") != null) {
+        institution.setCountry(locationManger.getCountry(Integer.parseInt(iData.get("loc_elements_id"))));
+      }
+
+      // Adding object to the array.
+      institutions.add(institution);
+    }
+    return institutions;
   }
 
   @Override
