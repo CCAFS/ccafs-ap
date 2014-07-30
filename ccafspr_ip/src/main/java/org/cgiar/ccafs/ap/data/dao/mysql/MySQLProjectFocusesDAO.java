@@ -50,23 +50,23 @@ public class MySQLProjectFocusesDAO implements ProjectFocusesDAO {
     List<Map<String, String>> projectFocusesDataList = new ArrayList<>();
     StringBuilder query = new StringBuilder();
     query
-      .append("SELECT ipr.id, ipr.name, ipr.acronym, le.id as region_id, le.name as region_name, le.code as region_code ");
+      .append("SELECT ipr.id as program_id, ipr.name as program_name, ipr.acronym as program_acronym, le.id as region_id, le.name as region_name, le.code as region_code ");
     query.append("FROM project_focuses pf ");
     query.append("INNER JOIN ip_programs ipr ON ipr.id = pf.program_id ");
     query.append("LEFT JOIN loc_elements le   ON le.id = ipr.region_id ");
     query.append("WHERE pf.project_id = ");
     query.append(projectID);
-    query.append("AND ipr.type_id= ");
+    query.append(" AND ipr.type_id= ");
     query.append(typeID);
-    query.append("ORDER BY ipr.name");
+    query.append(" ORDER BY ipr.name");
 
     try (Connection con = databaseManager.getConnection()) {
       ResultSet rs = databaseManager.makeQuery(query.toString(), con);
       while (rs.next()) {
         Map<String, String> projectFocusesData = new HashMap<String, String>();
-        projectFocusesData.put("id", rs.getString("id"));
-        projectFocusesData.put("name", rs.getString("name"));
-        projectFocusesData.put("acronym", rs.getString("acronym"));
+        projectFocusesData.put("program_id", rs.getString("program_id"));
+        projectFocusesData.put("program_name", rs.getString("program_name"));
+        projectFocusesData.put("program_acronym", rs.getString("program_acronym"));
         projectFocusesData.put("region_id", rs.getString("region_id"));
         projectFocusesData.put("region_name", rs.getString("region_name"));
         projectFocusesData.put("region_code", rs.getString("region_code"));

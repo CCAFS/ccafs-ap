@@ -19,6 +19,7 @@ import org.cgiar.ccafs.ap.data.dao.ProjectFocusesDAO;
 import org.cgiar.ccafs.ap.data.manager.InstitutionManager;
 import org.cgiar.ccafs.ap.data.manager.ProjectManager;
 import org.cgiar.ccafs.ap.data.manager.UserManager;
+import org.cgiar.ccafs.ap.data.model.IPProgram;
 import org.cgiar.ccafs.ap.data.model.Project;
 import org.cgiar.ccafs.ap.data.model.Region;
 import org.cgiar.ccafs.ap.data.model.User;
@@ -144,22 +145,27 @@ public class ProjectManagerImpl implements ProjectManager {
    */
 
   @Override
-  public List<Project> getProjectFocuses(int projectID, int typeID) {
+  public List<IPProgram> getProjectFocuses(int projectID, int typeID) {
     List<Map<String, String>> projectFocusesDataList = projectFocusesDAO.getProjectFocuses(projectID, typeID);
-    List<Project> projectsList = new ArrayList<>();
+    List<IPProgram> projectFocusesList = new ArrayList<>();
 
     for (Map<String, String> projectFocusesData : projectFocusesDataList) {
-      Project project = new Project();
-      project.setId(Integer.parseInt(projectFocusesData.get("id")));
-      project.setTitle(projectFocusesData.get("title"));
-      project.setSummary(projectFocusesData.get("summary"));
-      Region region = new Region();
-      region.setId(Integer.parseInt(projectFocusesData.get("region_id")));
-      region.setName(projectFocusesData.get("region_name"));
-      region.setCode(projectFocusesData.get("region_code"));
-      projectsList.add(project);
+      IPProgram ipProgram = new IPProgram();
+      ipProgram.setId(Integer.parseInt(projectFocusesData.get("program_id")));
+      ipProgram.setName(projectFocusesData.get("program_name"));
+      ipProgram.setAcronym(projectFocusesData.get("program_acronym"));
+      // Region
+      if (projectFocusesData.get("region_id") != null) {
+        Region region = new Region();
+        region.setId(Integer.parseInt(projectFocusesData.get("region_id")));
+        region.setName(projectFocusesData.get("region_name"));
+        region.setCode(projectFocusesData.get("region_code"));
+        ipProgram.setRegion(region);
+      }
+
+      projectFocusesList.add(ipProgram);
     }
-    return projectsList;
+    return projectFocusesList;
   }
 
   @Override

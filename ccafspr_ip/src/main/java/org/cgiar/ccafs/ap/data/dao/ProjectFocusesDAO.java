@@ -23,11 +23,11 @@ public interface ProjectFocusesDAO {
   public int createProjectFocuses(Map<String, Object> ipElementData);
 
   /**
-   * This method gets all the information of Project Focuses by a give project Id and a type Id
+   * This method gets all the information of a Program related with a Project by a given project Id and a type Id
    * 
    * @param projectID - is the id of the project
    * @param typeID - is the id of a program type
-   * @return a List of Map with the information of project focuses
+   * @return a List of Map with the information of a Program related with a Project
    */
   public List<Map<String, String>> getProjectFocuses(int projectID, int typeID);
 
