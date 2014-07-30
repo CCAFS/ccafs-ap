@@ -1,3 +1,29 @@
+/*****************************************************************
+ * This file is part of CCAFS Planning and Reporting Platform.
+ * CCAFS P&R is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * at your option) any later version.
+ * CCAFS P&R is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+ * GNU General Public License for more details.
+ * You should have received a copy of the GNU General Public License
+ * along with CCAFS P&R. If not, see <http://www.gnu.org/licenses/>.
+ *****************************************************************/
+/*****************************************************************
+ * This file is part of CCAFS Planning and Reporting Platform.
+ * CCAFS P&R is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * at your option) any later version.
+ * CCAFS P&R is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+ * GNU General Public License for more details.
+ * You should have received a copy of the GNU General Public License
+ * along with CCAFS P&R. If not, see <http://www.gnu.org/licenses/>.
+ *****************************************************************/
 package org.cgiar.ccafs.ap.interceptor;
 
 import java.util.ArrayList;
@@ -9,6 +35,7 @@ import com.opensymphony.xwork2.interceptor.MethodFilterInterceptor;
 import org.apache.commons.lang3.StringUtils;
 
 /**
+ * TODO HC - Not well documented.
  * This interceptor is responsible for validating if the role of user is actually TL or RPL,
  * in order to be able to access the contents of the specified page.
  * If there is no an authorized user in the current session it will return
@@ -16,6 +43,7 @@ import org.apache.commons.lang3.StringUtils;
  */
 public class TrimInterceptor extends MethodFilterInterceptor {
 
+  private static final long serialVersionUID = 5761559607570669987L;
   private List<String> excluded = new ArrayList<>();
 
   @Override

@@ -1,5 +1,4 @@
-/*
- * ****************************************************************
+/*****************************************************************
  * This file is part of CCAFS Planning and Reporting Platform.
  * CCAFS P&R is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -11,8 +10,7 @@
  * GNU General Public License for more details.
  * You should have received a copy of the GNU General Public License
  * along with CCAFS P&R. If not, see <http://www.gnu.org/licenses/>.
- * ***************************************************************
- */
+ *****************************************************************/
 package org.cgiar.ccafs.ap.data.model;
 
 import org.cgiar.ccafs.ap.util.MD5Convert;
@@ -22,6 +20,9 @@ import java.util.List;
 
 import org.apache.commons.lang3.builder.ToStringBuilder;
 
+/**
+ * @author Hernán David Carvajal.
+ */
 public class User {
 
   private int id;
@@ -40,7 +41,7 @@ public class User {
 
   /**
    * This method returns a composed way to show a User.
-   * 
+   *
    * @return a String that represents a User.
    *         e.g. Tobón, Héctor <h.f.tobon@cgiar.org>
    */
@@ -99,7 +100,7 @@ public class User {
 
   /**
    * Validate if the current user is an Administrator.
-   * 
+   *
    * @return true if the user is actually an Administrator, or false otherwise.
    */
   public boolean isAdmin() {
@@ -112,7 +113,7 @@ public class User {
 
   /**
    * Validate if the current user is a Contact Point.
-   * 
+   *
    * @return true if the user is actually a Contact Point, or false otherwise.
    */
   public boolean isCP() {
@@ -121,7 +122,7 @@ public class User {
 
   /**
    * Validate if the current user is a coordinating unit member.
-   * 
+   *
    * @return true if the user is actually a member of the coordinating unit, or false otherwise.
    */
   public boolean isCU() {
@@ -130,7 +131,7 @@ public class User {
 
   /**
    * Validate if the current user is a Theme Leader.
-   * 
+   *
    * @return true if the user is actually a Flagship program Leader, or false otherwise.
    */
   public boolean isFPL() {
@@ -139,7 +140,7 @@ public class User {
 
   /**
    * Validate if the current user is a Principal Investigator.
-   * 
+   *
    * @return true if the user is actually a Principal Investigator, or false otherwise.
    */
   public boolean isPI() {
@@ -148,7 +149,7 @@ public class User {
 
   /**
    * Validate if the current user is a project leader.
-   * 
+   *
    * @return true if the user is actually a Project leader, or false otherwise.
    */
   public boolean isPL() {
@@ -157,7 +158,7 @@ public class User {
 
   /**
    * Validate if the current user is a project owner.
-   * 
+   *
    * @return true if the user is actually a Project owner, or false otherwise.
    */
   public boolean isPO() {
@@ -166,7 +167,7 @@ public class User {
 
   /**
    * Validate if the current user is a Regional Program Leader.
-   * 
+   *
    * @return true if the user is actually a Regional Program Leader, or false otherwise.
    */
   public boolean isRPL() {

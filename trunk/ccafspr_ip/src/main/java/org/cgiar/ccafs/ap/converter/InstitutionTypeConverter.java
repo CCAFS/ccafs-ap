@@ -23,7 +23,9 @@ import org.slf4j.LoggerFactory;
 import com.google.inject.Inject;
 import org.apache.struts2.util.StrutsTypeConverter;
 
-
+/**
+ * @author Héctor Fabio Tobón R.
+ */
 public class InstitutionTypeConverter extends StrutsTypeConverter {
 
   // LOG

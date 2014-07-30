@@ -1,3 +1,16 @@
+/*****************************************************************
+ * This file is part of CCAFS Planning and Reporting Platform.
+ * CCAFS P&R is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * at your option) any later version.
+ * CCAFS P&R is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+ * GNU General Public License for more details.
+ * You should have received a copy of the GNU General Public License
+ * along with CCAFS P&R. If not, see <http://www.gnu.org/licenses/>.
+ *****************************************************************/
 package org.cgiar.ccafs.ap.data.manager;
 
 import org.cgiar.ccafs.ap.data.manager.impl.IPElementManagerImpl;
@@ -17,7 +30,7 @@ public interface IPElementManager {
    * passed as parameter.
    * If the parameter program is the same as element.getProgram then the IPElement
    * is also deleted.
-   * 
+   *
    * @param element
    * @param program
    * @return true if the relation between the program and the element was successfully
@@ -28,7 +41,7 @@ public interface IPElementManager {
   /**
    * Delete all IP Elements which belongs to the program given and which are of
    * the same type given.
-   * 
+   *
    * @param program
    * @param type
    * @return true if the deletion process was successful.
@@ -37,14 +50,14 @@ public interface IPElementManager {
 
   /**
    * Get all the ipElements existent in the database
-   * 
+   *
    * @return an array of IPElement objects
    */
   public List<IPElement> getIPElementList();
 
   /**
    * Get a list of IPElement objects corresponding to the given array of ids
-   * 
+   *
    * @param ids - list of IPElement identifiers
    * @return a list of IPElement objects
    */
@@ -53,7 +66,7 @@ public interface IPElementManager {
   /**
    * This method gets all the IPElements related to the IP program
    * given
-   * 
+   *
    * @param program - Object with the program information
    * @return a list with IPElements
    */
@@ -62,7 +75,7 @@ public interface IPElementManager {
   /**
    * This method gets all the IPElements of the type given and which are
    * related to the IP program given.
-   * 
+   *
    * @param program - IPProgram object
    * @param type - IPElementType object
    * @return a list of IPElements which fill the conditions.
@@ -71,7 +84,7 @@ public interface IPElementManager {
 
   /**
    * This method save into the database the information of the IPElements
-   * 
+   *
    * @param elements - List of objects to save
    * @return true if all the information was successfully saved, false otherwise.
    */

@@ -1,5 +1,4 @@
-/*
- * ****************************************************************
+/*****************************************************************
  * This file is part of CCAFS Planning and Reporting Platform.
  * CCAFS P&R is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -11,8 +10,7 @@
  * GNU General Public License for more details.
  * You should have received a copy of the GNU General Public License
  * along with CCAFS P&R. If not, see <http://www.gnu.org/licenses/>.
- * ***************************************************************
- */
+ *****************************************************************/
 package org.cgiar.ccafs.ap.data.manager;
 
 import org.cgiar.ccafs.ap.data.manager.impl.InstitutionManagerImpl;
@@ -34,7 +32,7 @@ public interface InstitutionManager {
 
   /**
    * Return all the institutions.
-   * 
+   *
    * @param none
    * @return an Institution object or null if the id does not exist in the database.
    */
@@ -42,14 +40,14 @@ public interface InstitutionManager {
 
   /**
    * This method get all the institutions types that manage the platform.
-   * 
+   *
    * @return a List of InstitutionType objects.
    */
   public List<InstitutionType> getAllInstitutionTypes();
 
   /**
    * Get an institution identified with the given id.
-   * 
+   *
    * @param institutionId is an integer that represents the id of some institution.
    * @return an Institution object or null if the id does not exist in the database.
    */
@@ -57,7 +55,7 @@ public interface InstitutionManager {
 
   /**
    * This method gets the institutions related with the user given
-   * 
+   *
    * @param user
    * @return a list of institution objects with the information
    */
@@ -65,7 +63,7 @@ public interface InstitutionManager {
 
   /**
    * This method gets the information of an Institution Type by a give Institution Type ID
-   * 
+   *
    * @param institutionTypeId
    * @return an Institution Type Object with the information
    */
@@ -73,7 +71,7 @@ public interface InstitutionManager {
 
   /**
    * This method returns the user's main institution defined in the database.
-   * 
+   *
    * @param user
    * @return an Institution Object with the information
    */

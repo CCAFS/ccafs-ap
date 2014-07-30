@@ -23,7 +23,9 @@ import org.slf4j.LoggerFactory;
 import com.google.inject.Inject;
 import org.apache.struts2.util.StrutsTypeConverter;
 
-
+/**
+ * @author Héctor Fabio Tobón R.
+ */
 public class InstitutionConverter extends StrutsTypeConverter {
 
   // LOG
@@ -43,7 +45,6 @@ public class InstitutionConverter extends StrutsTypeConverter {
       String id = values[0];
       try {
         LOG.debug(">> convertFromString > id = {} ", id);
-        System.out.println("----convertFromString - Institution_id = " + id);
         return institutionManager.getInstitution(Integer.parseInt(id));
       } catch (NumberFormatException e) {
         // Do Nothing
