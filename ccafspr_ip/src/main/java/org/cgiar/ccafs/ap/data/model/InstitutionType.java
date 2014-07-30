@@ -17,59 +17,59 @@ import org.apache.commons.lang3.builder.ToStringBuilder;
 
 /**
  * This class represents the Type of an Institution:
- * CRP, Donnor, GO, NARES, etc.
- * 
- * @author Héctor Tobón
+ * CRP, Donor, GO, NARES, etc.
  *
+ * @author Héctor Fabio Tobón R.
  */
 public class InstitutionType {
+
   private int id;
   private String name;
   private String acronym;
-  
+
   public InstitutionType() {
-    super();    
+    super();
   }
-  
+
   public InstitutionType(int id, String name, String acronym) {
     super();
     this.id = id;
     this.name = name;
     this.acronym = acronym;
   }
-  
-  public int getId() {
-    return id;
-  }
 
-  
-  public void setId(int id) {
-    this.id = id;
-  }
-
-  
-  public String getName() {
-    return name;
-  }
-
-  
-  public void setName(String name) {
-    this.name = name;
-  }
-
-  
   public String getAcronym() {
     return acronym;
   }
 
-  
+
+  public int getId() {
+    return id;
+  }
+
+
+  public String getName() {
+    return name;
+  }
+
+
   public void setAcronym(String acronym) {
     this.acronym = acronym;
   }
-  
+
+
+  public void setId(int id) {
+    this.id = id;
+  }
+
+
+  public void setName(String name) {
+    this.name = name;
+  }
+
   @Override
   public String toString() {
     return ToStringBuilder.reflectionToString(this);
   }
-  
+
 }

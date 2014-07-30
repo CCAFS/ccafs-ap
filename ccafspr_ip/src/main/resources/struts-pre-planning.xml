@@ -63,7 +63,7 @@
       </result>
     </action>
     
-    <action name="budget" class="org.cgiar.ccafs.ap.action.BaseAction">
+    <action name="budget" class="org.cgiar.ccafs.ap.action.preplanning.ProjectBudgetAction">
       <result name="input">/WEB-INF/preplanning/projectBudget.ftl</result>
     </action>
     

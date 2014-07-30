@@ -9,6 +9,8 @@ import org.cgiar.ccafs.ap.data.model.IPProgram;
 
 import java.util.List;
 
+import org.cgiar.ccafs.ap.data.model.IPElement;
+
 import com.google.inject.Inject;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
@@ -25,7 +27,7 @@ public class IPElementsAction extends BaseAction {
   // Model
   private String programID;
   private String ipElementTypeID;
-  private List ipElements;
+  private List<IPElement> ipElements;
 
   // Managers
   private IPElementManager ipElementManager;

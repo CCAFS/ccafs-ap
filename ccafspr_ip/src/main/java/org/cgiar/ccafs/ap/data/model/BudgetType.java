@@ -22,12 +22,16 @@ import org.apache.commons.lang3.builder.ToStringBuilder;
  * @author Héctor Fabio Tobón R.
  */
 public enum BudgetType {
-  W1(1), W2(2), W3(3), BILATERAL(4), LAVERAGED(5);
+  W1(1), W2(2), W3(3), BILATERAL(4), LEVERAGED(5);
 
   private int value;
 
   private BudgetType(int value) {
     this.value = value;
+  }
+
+  public int getValue() {
+    return value;
   }
 
   @Override

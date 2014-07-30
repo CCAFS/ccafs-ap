@@ -33,8 +33,8 @@ import org.slf4j.LoggerFactory;
 /**
  * This action aims to define general functionalities that are going to be used by all other Actions.
  *
- * @author Héctor Tobón - CIAT/CCAFS
- * @author Hernán Carvajal - CIAT/CCAFS
+ * @author Héctor Fabio Tobón R. - CIAT/CCAFS
+ * @author Hernán David Carvajal - CIAT/CCAFS
  */
 public class BaseAction extends ActionSupport implements Preparable, SessionAware, ServletRequestAware {
 
