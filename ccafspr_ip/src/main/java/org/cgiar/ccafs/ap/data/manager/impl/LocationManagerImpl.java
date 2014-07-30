@@ -138,7 +138,7 @@ public class LocationManagerImpl implements LocationManager {
   public List<Location> getLocationsByType(int typeID) {
     List<Location> locations = new ArrayList<>();
     List<Map<String, String>> locationDataList = locationDAO.getLocationsByType(typeID);
-    // TODO JG HT Ask about this, when you have to search another location elements type
+    // TODO JG - Ask about this, when you have to search another location elements type
     if (typeID == APConstants.LOCATION_ELEMENT_TYPE_COUNTRY) { // validation if the typeID is Country
       for (Map<String, String> lData : locationDataList) {
         Country location = new Country();

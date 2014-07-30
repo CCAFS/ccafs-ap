@@ -54,7 +54,7 @@ public class IPIndicatorsConverter extends StrutsTypeConverter {
     for (IPIndicator indicator : indicatorArray) {
       temp.add(indicator.getId() + "");
     }
-    // TODO
+    // TODO HC - What TO DO should be here?
     return temp.toString();
   }
 }

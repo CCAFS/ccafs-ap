@@ -20,10 +20,25 @@
   [@s.form action="projectBudget" cssClass="pure-form"]  
   <article class="halfContent" id="mainInformation">
   	[#include "/WEB-INF/preplanning/projectPreplanningSubMenu.ftl" /]
+  	[#-- Tertiary Menu - All years --]
+  	<nav id="tertiaryMenu">  
+      <div class="container">
+        <ul>
+        [#list allYears as year]        
+          <a class="yearLink" href=" [@s.url action='budget' includeParams='get'][@s.param name='projectID']${project.id?c}[/@s.param][@s.param name='year']${year?c}[/@s.param][/@s.url]" >
+            <li>${year?c}</li>
+          </a>  
+        [/#list]
+        </ul>
+      </div> <!-- End tertiaryMenu -->
+    </nav> <!-- End container-->
+    
+    [#-- Title --]
     <h1 class="contentTitle">
     [@s.text name="preplanning.projectBudget.title" /]  
     </h1>
     
+       
     
     
   </article>
