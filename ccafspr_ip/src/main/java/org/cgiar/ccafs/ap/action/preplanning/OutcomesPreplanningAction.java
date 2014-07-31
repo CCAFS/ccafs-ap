@@ -96,10 +96,10 @@ public class OutcomesPreplanningAction extends BaseAction {
     // TODO HC - Add an interceptor to verify that if the user is not related to a program, then DON'T have
     // permissions to access this action
     outcomes = ipElementManager.getIPElements(getCurrentUser().getCurrentInstitution().getProgram(), type);
+
     // Keep the id of all outcomes which come from the database
     outcomesFromDatabase = new ArrayList<>();
     outcomesFromDatabase.addAll(outcomes);
-    // System.out.println(outcomes);
 
     if (getRequest().getMethod().equalsIgnoreCase("post")) {
       // Clear out the list if it has some element
@@ -121,12 +121,10 @@ public class OutcomesPreplanningAction extends BaseAction {
       if (outcomeIndex == -1) {
         ipElementManager.deleteIPElement(outcome, getCurrentUser().getCurrentInstitution().getProgram());
       } else {
-        // We should remove the ipIndicators of the database if the outcome wasn't removed
+        // IF the outcome wasn't removed, we should remove their ipIndicators and their contributesTo from the database
         ipIndicatorManager.removeElementIndicators(outcome, getCurrentUser().getCurrentInstitution().getProgram());
-        for (IPElement parentElement : outcome.getContributesTo()) {
-          // Remove the contribution
-          ipElementRelationManager.deleteRelationsByChildElement(outcome);
-        }
+        // Remove the contribution
+        ipElementRelationManager.deleteRelationsByChildElement(outcome);
       }
 
       for (IPIndicator indicator : outcome.getIndicators()) {
