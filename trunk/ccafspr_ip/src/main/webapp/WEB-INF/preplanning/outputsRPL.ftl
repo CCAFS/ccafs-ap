@@ -129,7 +129,7 @@
     <div class="fullBlock chosen">
       [@customForm.select name="midOutcomes" label="" i18nkey="preplanning.outputsRPL.midOutcomes" listName="" keyFieldName="id"  displayFieldName="name" disabled=true /]
     </div>
-    <div class="fullBlock chosen">
+    <div class="fullBlock chosen translations">
       [@customForm.select name="outputs" label="" i18nkey="preplanning.outputsRPL.outputs" listName="" keyFieldName="id"  displayFieldName="name" disabled=true /]
     </div> 
   </div> 

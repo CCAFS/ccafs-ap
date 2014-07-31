@@ -33,8 +33,6 @@
           [@s.fielderror cssClass="fieldError" fieldName="indicatorsSelected"/]
         </div>
       </div>
-      [#-- Narrative explanation --]
-      [@customForm.textArea showTitle=true name="justification" i18nkey="preplanning.midOutcomesRPL.midOutcomeIndicators.justification" required=true /]
   [#else]  
     <div id="" class="contributions">   
       <input id="contributeId" type="hidden" name="midOutcomes[${midOutcomeRPL_index}].translatedOf" value="${parent_id}" />
@@ -47,8 +45,6 @@
           [@s.checkboxlist value="midOutcomes[${midOutcomeRPL_index}].parentIndicatorsIDs" name="midOutcomes[${midOutcomeRPL_index}].indicators" list="midOutcomes[${midOutcomeRPL_index}].translatedOf[${parent_index}].indicators" listKey="id" listValue="description" cssClass="midOutcomeIndicator" /]
         </div>
       </div>
-      [#-- Narrative explanation --]
-      [@customForm.textArea showTitle=true name="midOutcomes[${midOutcomeRPL_index}].translatedOf[${parent_index}].justification" i18nkey="preplanning.midOutcomesRPL.midOutcomeIndicators.justification" required=true /]
   [/#if]
   [#if canRemove]
     [#-- remove link --]

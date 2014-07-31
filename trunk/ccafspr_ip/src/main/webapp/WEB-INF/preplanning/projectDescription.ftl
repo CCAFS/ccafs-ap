@@ -24,70 +24,70 @@
     <h1 class="contentTitle">
     [@s.text name="preplanning.projectDescription.title" /] 
     </h1> 
+    <div id="projectDescription" class="borderBox">
+      <fieldset class="fullBlock">  
+  			[#-- Project Title --]
+  			[@customForm.textArea name="project.title" i18nkey="preplanning.projectDescription.projectTitle" required=true value="${project.title}" /]
+  	    <div id="projectDescription" class="">
+  	      [#-- Project Owner --]
+  	      <div class="halfPartBlock">
+  	      	<h6>[@s.text name="preplanning.projectDescription.projectOwner" /]</h6>	      	
+  	      	<p>${project.owner.currentInstitution.acronym}</p>
+  	        [#-- @customForm.input name="project.owner.currentInstitution.acronym" type="text" i18nkey="preplanning.projectDescription.projectOwner" required=true / --]
+  	      </div>
+  	      [#--  Project Owner Contact Person --]
+          <div class="halfPartBlock">          
+            [@customForm.select name="project.owner" label=""  disabled=false i18nkey="preplanning.projectDescription.projectownercontactperson" listName="allOwners" keyFieldName="id"  displayFieldName="composedNameWithInstitution" /]
+          </div>
+  	      [#-- Start Date --]
+  		    <div class="halfPartBlock">
+  		     	[@customForm.input name="" type="text" i18nkey="preplanning.projectDescription.startDate" required=true value="${project.startDate?string('yyyy-MM-dd')}"/]
+  		    </div> 
+  		    [#-- End Date --]
+  		    <div class="halfPartBlock">
+  	      		[@customForm.input name="projects.endDate" type="text" i18nkey="preplanning.projectDescription.endDate" required=true value="${project.endDate?string('yyyy-MM-dd')}"/]
+  	    	</div>
+  	  	</div> 
+  	  		[#-- Project Summary --]
+  			[#--${projects}--]
+  			[@customForm.textArea name="projects.summary" i18nkey="preplanning.projectDescription.projectSummary" required=true value="${project.summary}" /]
+      </fieldset><br/>
+      <fieldset class="fullBlock">   
+      	<legend>[@s.text name="preplanning.projectDescription.projectWorking" /] </legend> 
+  	    <div id="projectWorking">
+  	      [#-- Regions --]
+  	      <div id="projectRegions" class="thirdPartBlock">
+  	        <h6>[@s.text name="preplanning.projectDescription.regions" /]</h6>
+  	        <div class="checkboxGroup"> 
+  	          [@s.fielderror cssClass="fieldError" fieldName="regionsSelected"/]          
+  	          [@s.checkboxlist name="region" list="ipProgramRegions" listKey="id" listValue="name" value="project.regionsIds" cssClass="checkbox" /]
+  	        </div>
+  	      </div> 
+  	      [#-- Flagships --] 
+  	      <div id="projectFlagships" class="thirdPartBlock">
+  	        <h6>[@s.text name="preplanning.projectDescription.flagships" /]</h6>
+  	        <div class="checkboxGroup">  
+  	          [@s.fielderror cssClass="fieldError" fieldName="flagshipsSelected"/]          
+  	          [@s.checkboxlist name="flagship" list="ipProgramFlagships" listKey="id" listValue="name" value="project.flagshipsIds" cssClass="checkbox" /]
+  	        </div>
+  	      </div> 
+  	      [#-- Cross Cutting --] 
+  	      <div id="projectGender" class="thirdPartBlock">
+  	        <h6>[@s.text name="preplanning.projectDescription.gender" /]</h6>
+  	        <div class="checkboxGroup">
+  	          [@s.fielderror cssClass="fieldError" fieldName="gendersSelected"/]          
+  	          [@s.checkboxlist name="gender" list="ipCrossCuttings" listKey="id" listValue="name" value="project.crossCuttingIds" cssClass="checkbox" /]
+  	        </div>
+  	      </div>  
+  	  	</div> 
+      </fieldset>
+    </div> 
     
-    <fieldset class="fullBlock">  
-			[#-- Project Title --]
-			[@customForm.textArea name="project.title" i18nkey="preplanning.projectDescription.projectTitle" required=true value="${project.title}" /]
-	    <div id="projectDescription" class="">
-	      [#-- Project Owner --]
-	      <div class="halfPartBlock">
-	      	<h6>[@s.text name="preplanning.projectDescription.projectOwner" /]</h6>	      	
-	      	<p>${project.owner.currentInstitution.acronym}</p>
-	        [#-- @customForm.input name="project.owner.currentInstitution.acronym" type="text" i18nkey="preplanning.projectDescription.projectOwner" required=true / --]
-	      </div>
-	      [#--  Project Owner Contact Person --]
-        <div class="halfPartBlock">          
-          [@customForm.select name="project.owner" label=""  disabled=false i18nkey="preplanning.projectDescription.projectownercontactperson" listName="allOwners" keyFieldName="id"  displayFieldName="composedNameWithInstitution" /]
-        </div>
-	      [#-- Start Date --]
-		    <div class="halfPartBlock">
-		     	[@customForm.input name="" type="text" i18nkey="preplanning.projectDescription.startDate" required=true value="${project.startDate?string('yyyy-MM-dd')}"/]
-		    </div> 
-		    [#-- End Date --]
-		    <div class="halfPartBlock">
-	      		[@customForm.input name="projects.endDate" type="text" i18nkey="preplanning.projectDescription.endDate" required=true value="${project.endDate?string('yyyy-MM-dd')}"/]
-	    	</div>
-	  	</div> 
-	  		[#-- Project Summary --]
-			[#--${projects}--]
-			[@customForm.textArea name="projects.summary" i18nkey="preplanning.projectDescription.projectSummary" required=true value="${project.summary}" /]
-    </fieldset><br/>
-    <fieldset class="fullBlock">   
-    	<legend>[@s.text name="preplanning.projectDescription.projectWorking" /] </legend> 
-	    <div id="projectWorking">
-	      [#-- Regions --]
-	      <div id="projectRegions" class="thirdPartBlock">
-	        <h6>[@s.text name="preplanning.projectDescription.regions" /]</h6>
-	        <div class="checkboxGroup"> 
-	          [@s.fielderror cssClass="fieldError" fieldName="regionsSelected"/]          
-	          [@s.checkboxlist name="region" list="ipProgramRegions" listKey="id" listValue="name" value="project.regionsIds" cssClass="checkbox" /]
-	        </div>
-	      </div> 
-	      [#-- Flagships --] 
-	      <div id="projectFlagships" class="thirdPartBlock">
-	        <h6>[@s.text name="preplanning.projectDescription.flagships" /]</h6>
-	        <div class="checkboxGroup">  
-	          [@s.fielderror cssClass="fieldError" fieldName="flagshipsSelected"/]          
-	          [@s.checkboxlist name="flagship" list="ipProgramFlagships" listKey="id" listValue="name" value="project.flagshipsIds" cssClass="checkbox" /]
-	        </div>
-	      </div> 
-	      [#-- Cross Cutting --] 
-	      <div id="projectGender" class="thirdPartBlock">
-	        <h6>[@s.text name="preplanning.projectDescription.gender" /]</h6>
-	        <div class="checkboxGroup">
-	          [@s.fielderror cssClass="fieldError" fieldName="gendersSelected"/]          
-	          [@s.checkboxlist name="gender" list="ipCrossCuttings" listKey="id" listValue="name" value="project.crossCuttingIds" cssClass="checkbox" /]
-	        </div>
-	      </div> 
-	      
-	      <div class="buttons">
-		      [@s.submit type="button" name="save"][@s.text name="form.buttons.save" /][/@s.submit]
-		      [@s.submit type="button" name="next"][@s.text name="form.buttons.next" /][/@s.submit]
-		      [@s.submit type="button" name="cancel"][@s.text name="form.buttons.cancel" /][/@s.submit]
-		    </div>
-	  	</div> 
-    </fieldset>
- 
+    <div class="buttons">
+      [@s.submit type="button" name="save"][@s.text name="form.buttons.save" /][/@s.submit]
+      [@s.submit type="button" name="next"][@s.text name="form.buttons.next" /][/@s.submit]
+      [@s.submit type="button" name="cancel"][@s.text name="form.buttons.cancel" /][/@s.submit]
+    </div>
      
   </article>
   [/@s.form]  

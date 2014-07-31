@@ -85,7 +85,8 @@
         </div>
   	[/#if]
   </div>
-</nav>
+</nav> 
+
 <div class="container">
  [#include "/WEB-INF/global/pages/breadcrumb.ftl"]
 </div>
