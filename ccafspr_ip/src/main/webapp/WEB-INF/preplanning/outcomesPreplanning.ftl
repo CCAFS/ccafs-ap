@@ -93,7 +93,6 @@
             <div class="itemIndex">[@s.text name="preplanning.outcomes.indicators" /] </div>
               [@indicatorTemplate.outcomes template=true i18nkey="preplanning.outcomes.indicators.description" show_remove_link=false /]
           </div>
-          
           [#if currentUser.FPL]
             [#-- IDOs --]
             [#if idos?has_content]
