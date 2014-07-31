@@ -19,7 +19,7 @@
   </div>
   [#include "/WEB-INF/global/pages/pre-planning-secondary-menu.ftl" /]
   
-  [@s.form action="mainInformation"]  
+  [@s.form action="projects"]  
   <article class="halfContent" id="mainInformation"> 
     <h1 class="contentTitle">
     [@s.text name="preplanning.projects.title" /]  
@@ -30,6 +30,10 @@
     [#else]
       ${currentUser.currentInstitution.program.name} does not have projects yet!
     [/#if]
+    
+    <div class="buttons">
+      [@s.submit type="button" name="add"][@s.text name="form.buttons.add" /][/@s.submit]      
+    </div>
 
   </article>
   [/@s.form]  

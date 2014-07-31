@@ -53,6 +53,7 @@ public class BaseAction extends ActionSupport implements Preparable, SessionAwar
   protected boolean delete;
   protected boolean cancel;
   protected boolean dataSaved;
+  protected boolean add;
 
   // Loggin
   private static final Logger LOG = LoggerFactory.getLogger(BaseAction.class);
@@ -66,6 +67,11 @@ public class BaseAction extends ActionSupport implements Preparable, SessionAwar
   @Inject
   public BaseAction(APConfig config) {
     this.config = config;
+  }
+
+  /* Override this method depending of the save action. */
+  public String add() {
+    return SUCCESS;
   }
 
   /**
@@ -98,6 +104,8 @@ public class BaseAction extends ActionSupport implements Preparable, SessionAwar
       return cancel();
     } else if (next) {
       return next();
+    } else if (add) {
+      return add();
     }
     return INPUT;
   }
@@ -184,10 +192,14 @@ public class BaseAction extends ActionSupport implements Preparable, SessionAwar
     return SUCCESS;
   }
 
+  public void setAdd(boolean add) {
+    this.add = true;
+  }
+
+
   public void setCancel(boolean cancel) {
     this.cancel = true;
   }
-
 
   public void setDataSaved(boolean dataSaved) {
     this.dataSaved = dataSaved;
@@ -200,7 +212,6 @@ public class BaseAction extends ActionSupport implements Preparable, SessionAwar
   public void setNext(boolean next) {
     this.next = true;
   }
-
 
   public void setSave(boolean save) {
     this.save = true;

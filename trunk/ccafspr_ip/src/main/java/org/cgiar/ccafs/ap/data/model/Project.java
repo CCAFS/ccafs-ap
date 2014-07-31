@@ -51,6 +51,18 @@ public class Project {
   }
 
   /**
+   * Equals based on the the project id.
+   */
+  @Override
+  public boolean equals(Object obj) {
+    if (obj instanceof Project) {
+      Project p = (Project) obj;
+      return p.getId() == this.getId();
+    }
+    return super.equals(obj);
+  }
+
+  /**
    * This method calculates all the years between the start date and the end date.
    *
    * @return a List of numbers representing all the years.
@@ -200,6 +212,11 @@ public class Project {
 
   public List<IPProgram> getTypes() {
     return regions;
+  }
+
+  @Override
+  public int hashCode() {
+    return this.getId();
   }
 
   public void setBudgets(List<Budget> budgets) {
