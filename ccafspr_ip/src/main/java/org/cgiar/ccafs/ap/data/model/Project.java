@@ -24,7 +24,7 @@ import org.apache.commons.lang3.builder.ToStringBuilder;
  * This class represents a Project.
  *
  * @author Javier Andrés Gallego
- * @author Héctor Fabio Tobón R.
+ * @author Héctor Fabio Tobón R
  */
 public class Project {
 
