@@ -191,6 +191,12 @@ public class ProjectManagerImpl implements ProjectManager {
   }
 
   @Override
+  public List<Project> getProjectsOwning(User user) {
+    // TODO Auto-generated method stub
+    return null;
+  }
+
+  @Override
   public boolean saveExpectedProjectLeader(int projectId, User expectedLeader) {
     boolean saved = true;
     Map<String, Object> expectedProjectLeaderData = new HashMap<>();

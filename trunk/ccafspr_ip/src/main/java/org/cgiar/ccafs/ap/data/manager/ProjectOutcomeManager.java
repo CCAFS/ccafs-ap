@@ -46,6 +46,15 @@ public interface ProjectOutcomeManager {
   public boolean deleteProjectOutcomesByProject(int projectID);
 
   /**
+   * This method gets all the budget information that belongs to a project in a specific year.
+   * 
+   * @param projectID is the project identifier.
+   * @param year is the year.
+   * @return a List of Budget objects.
+   */
+  public ProjectOutcome getProjectOutcomeByYear(int projectID, int year);
+
+  /**
    * This method gets all the budget information that belongs to the same type of a specific project.
    * Type can be Window 1, Window 2, Window 3, Bilateral or Leveraged.
    * 
@@ -54,15 +63,6 @@ public interface ProjectOutcomeManager {
    * @return a list of Budget objects.
    */
   public List<ProjectOutcome> getProjectOutcomesByProject(int projectID);
-
-  /**
-   * This method gets all the budget information that belongs to a project in a specific year.
-   * 
-   * @param projectID is the project identifier.
-   * @param year is the year.
-   * @return a List of Budget objects.
-   */
-  public ProjectOutcome getProjectOutcomesByYear(int projectID, int year);
 
   /**
    * This method saves the information of the given budget that belong to a specific project into the database.

@@ -63,6 +63,12 @@ public class IPProgramManagerImpl implements IPProgramManager {
 
 
   @Override
+  public IPProgram getIPProgramByProjectId(int projectID) {
+    // TODO Auto-generated method stub
+    return null;
+  }
+
+  @Override
   public List<IPProgram> getProgramsByType(int ipProgramTypeID) {
     List<IPProgram> programs = new ArrayList<>();
     List<Map<String, String>> programsDataList = ipProgramDAO.getProgramsByType(ipProgramTypeID);

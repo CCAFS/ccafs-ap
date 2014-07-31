@@ -1,7 +1,7 @@
 [#ftl]
 [#assign title = "Project Outcomes" /]
 [#assign globalLibs = ["jquery", "noty","autoSave"] /]
-[#assign customJS = ["${baseUrl}/js/global/utils.js", "${baseUrl}/js/planning/mainInformation.js"] /]
+[#assign customJS = ["${baseUrl}/js/global/utils.js"] /]
 [#assign currentSection = "planning" /]
 [#assign currentPrePlanningSection = "projects" /]
 [#assign currentStage = "projectOutcomes" /]
@@ -30,6 +30,7 @@
     <input name="projectID" type="hidden" value="${project.id?c}" />
     
     <input name="project.outcome.id" type="hidden" value="${project.outcome.id}" />
+    <input name="project.outcome.year" type="hidden" value="${project.outcome.year?c}" />
     <div class="buttons">
       [@s.submit type="button" name="save"][@s.text name="form.buttons.save" /][/@s.submit]
       [@s.submit type="button" name="next"][@s.text name="form.buttons.next" /][/@s.submit]

@@ -212,6 +212,12 @@ public class MySQLProjectDAO implements ProjectDAO {
   }
 
   @Override
+  public List<Map<String, String>> getProjectsOwning(int institutionId, int userId) {
+    // TODO Auto-generated method stub
+    return null;
+  }
+
+  @Override
   public int saveExpectedProjectLeader(int projectId, Map<String, Object> expectedProjectLeaderData) {
     LOG.debug(">> saveExpectedProjectLeader(projectData={})", projectId);
     StringBuilder query = new StringBuilder();
