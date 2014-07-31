@@ -61,36 +61,6 @@ public class ProjectManagerImpl implements ProjectManager {
   }
 
   @Override
-  public List<Project> getAllProjects(int programId) {
-    List<Map<String, String>> projectDataList = projectDAO.getProjects(programId);
-    List<Project> projectsList = new ArrayList<>();
-    DateFormat dateformatter = new SimpleDateFormat(APConstants.DATE_FORMAT);
-
-    for (Map<String, String> elementData : projectDataList) {
-
-      Project project = new Project();
-      project.setId(Integer.parseInt(elementData.get("id")));
-      project.setTitle(elementData.get("title"));
-      project.setSummary(elementData.get("summary"));
-      // Format to the Dates of the project
-      String sDate = elementData.get("start_date");
-      String eDate = elementData.get("end_date");
-      try {
-        Date startDate = dateformatter.parse(sDate);
-        Date endDate = dateformatter.parse(eDate);
-        project.setStartDate(startDate);
-        project.setEndDate(endDate);
-      } catch (ParseException e) {
-        e.printStackTrace();
-      }
-
-
-      projectsList.add(project);
-    }
-    return projectsList;
-  }
-
-  @Override
   public User getExpectedProjectLeader(int projectId) {
     Map<String, String> pData = projectDAO.getExpectedProjectLeader(projectId);
     if (!pData.isEmpty()) {
@@ -107,14 +77,12 @@ public class ProjectManagerImpl implements ProjectManager {
     return null;
   }
 
-
   @Override
   public Project getProject(int projectId) {
     DateFormat dateformatter = new SimpleDateFormat(APConstants.DATE_FORMAT);
     Map<String, String> projectData = projectDAO.getProject(projectId);
     if (!projectData.isEmpty()) {
-      Project project = new Project();
-      project.setId(Integer.parseInt(projectData.get("id")));
+      Project project = new Project(Integer.parseInt(projectData.get("id")));
       project.setTitle(projectData.get("title"));
       project.setSummary(projectData.get("summary"));
       // Format to the Dates of the project
@@ -138,11 +106,6 @@ public class ProjectManagerImpl implements ProjectManager {
     return null;
   }
 
-  /*
-   * private List<Project> setDataToProjectObjects(List<Map<String, String>> projectDataList) {
-   * return projectsList;
-   * }
-   */
 
   @Override
   public List<IPProgram> getProjectFocuses(int projectID, int typeID) {
@@ -188,6 +151,36 @@ public class ProjectManagerImpl implements ProjectManager {
   }
 
   @Override
+  public List<Project> getProjectsByProgram(int programId) {
+    List<Map<String, String>> projectDataList = projectDAO.getProjectsByProgram(programId);
+    List<Project> projectsList = new ArrayList<>();
+    DateFormat dateformatter = new SimpleDateFormat(APConstants.DATE_FORMAT);
+
+    for (Map<String, String> elementData : projectDataList) {
+
+      Project project = new Project(Integer.parseInt(elementData.get("id")));
+      project.setTitle(elementData.get("title"));
+      project.setSummary(elementData.get("summary"));
+      // Format to the Dates of the project
+      String sDate = elementData.get("start_date");
+      String eDate = elementData.get("end_date");
+      try {
+        if (sDate != null && eDate != null) {
+          Date startDate = dateformatter.parse(sDate);
+          Date endDate = dateformatter.parse(eDate);
+          project.setStartDate(startDate);
+          project.setEndDate(endDate);
+        }
+      } catch (ParseException e) {
+        // TODO JG - Never print stack trace. Instead, use LOG.error.
+        e.printStackTrace();
+      }
+      projectsList.add(project);
+    }
+    return projectsList;
+  }
+
+  @Override
   public boolean saveExpectedProjectLeader(int projectId, User expectedLeader) {
     boolean saved = true;
     Map<String, Object> expectedProjectLeaderData = new HashMap<>();
@@ -211,6 +204,23 @@ public class ProjectManagerImpl implements ProjectManager {
     }
 
     return saved;
+  }
+
+  @Override
+  public int saveProjectDescription(Project project) {
+    Map<String, Object> projectData = new HashMap<>();
+    if (project.getId() == -1) {
+      // This is a new project. we need to add it to the database.
+      // Getting the employee id.
+      int ownerId = userManager.getEmployeeID(project.getOwner());
+      projectData.put("project_owner_id", ownerId);
+    } else {
+      // Update project
+      // TODO HT - To Complete.
+    }
+
+    int result = projectDAO.saveProject(projectData);
+    return result;
   }
 
 

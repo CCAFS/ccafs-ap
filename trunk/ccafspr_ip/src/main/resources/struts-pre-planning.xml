@@ -51,7 +51,11 @@
         
     <!-- Section: Projects  -->
     <action name="projects" class="org.cgiar.ccafs.ap.action.preplanning.ProjectsListAction">
-      <result name="input">/WEB-INF/preplanning/projects.ftl</result>
+      <result name="success">/WEB-INF/preplanning/projects.ftl</result>
+      <result name="input" type="redirectAction">
+        <param name="actionName">description</param>
+        <param name="projectID">${projectID}</param>
+      </result>
     </action>
     
     <action name="description" class="org.cgiar.ccafs.ap.action.preplanning.ProjectDescriptionAction">

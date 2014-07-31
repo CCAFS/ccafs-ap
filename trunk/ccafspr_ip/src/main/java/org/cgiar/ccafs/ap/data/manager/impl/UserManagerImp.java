@@ -98,6 +98,16 @@ public class UserManagerImp implements UserManager {
   }
 
   @Override
+  public int getEmployeeID(User user) {
+    int userId = user.getId();
+    int institutionId = user.getCurrentInstitution().getId();
+    int roleId = user.getRole().getId();
+    int result = userDAO.getEmployeeID(userId, institutionId, roleId);
+
+    return result;
+  }
+
+  @Override
   public User getImportantUserByProject(int projectID) {
     Map<String, String> userData = userDAO.getImportantUserByProject(projectID);
     if (!userData.isEmpty()) {
@@ -164,6 +174,7 @@ public class UserManagerImp implements UserManager {
     return null;
   }
 
+
   @Override
   public User getUserByEmail(String email) {
     SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM");
@@ -192,7 +203,6 @@ public class UserManagerImp implements UserManager {
     LOG.warn("Information related to the user {} wasn't found.", email);
     return null;
   }
-
 
   @Override
   public User login(String email, String password) {

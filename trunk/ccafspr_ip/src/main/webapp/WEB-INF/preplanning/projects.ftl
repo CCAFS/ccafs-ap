@@ -10,7 +10,7 @@
 [#include "/WEB-INF/global/pages/header.ftl" /]
 [#include "/WEB-INF/global/pages/main-menu.ftl" /]
 [#import "/WEB-INF/global/macros/forms.ftl" as customForm/]
-[#import "/WEB-INF/preplanning/projectsList.ftl" as projectList/]
+[#import "/WEB-INF/preplanning/macros/projectsListTemplate.ftl" as projectList/]
     
 <section class="content">
   <div class="helpMessage">
@@ -25,8 +25,11 @@
     [@s.text name="preplanning.projects.title" /]  
     </h1>
 
-    
-    [@projectList.projectsList projects=projects canValidate=true canEditProject=true tableID="projects" /]
+    [#if projects?size>0]
+      [@projectList.projectsList projects=projects canValidate=true canEditProject=true tableID="projects" /]
+    [#else]
+      ${currentUser.currentInstitution.program.name} does not have projects yet!
+    [/#if]
 
   </article>
   [/@s.form]  

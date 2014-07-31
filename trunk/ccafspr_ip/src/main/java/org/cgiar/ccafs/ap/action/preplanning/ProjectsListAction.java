@@ -21,7 +21,6 @@ import org.cgiar.ccafs.ap.data.model.Project;
 import java.util.List;
 
 import org.cgiar.ccafs.ap.data.model.IPProgram;
-
 import com.google.inject.Inject;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -38,13 +37,37 @@ public class ProjectsListAction extends BaseAction {
   // LOG
   private static Logger LOG = LoggerFactory.getLogger(ProjectsListAction.class);
 
-  // Model
+  // Model for the back-end
   private List<Project> projects;
+
+  // Model for the front-end
+  private int projectID;
 
   @Inject
   public ProjectsListAction(APConfig config, ProjectManager projectManager) {
     super(config);
     this.projectManager = projectManager;
+  }
+
+  @Override
+  public String execute() throws Exception {
+    if (projects.size() <= 0) {
+      // Create new project and redirect to project description using the new projectId assigned by the database.
+      Project newProject = new Project(-1);
+      newProject.setOwner(this.getCurrentUser());
+      projectID = projectManager.saveProjectDescription(newProject);
+      if (projectID > 0) {
+        // Let's redirect the user to the Project Description section.
+        return BaseAction.INPUT;
+      }
+    }
+    // An error happened, lets redirect it to the list, even if there are not projects.
+    // TODO HT - Here we should show an error message.
+    return BaseAction.SUCCESS;
+  }
+
+  public int getProjectID() {
+    return projectID;
   }
 
   public List<Project> getProjects() {
@@ -58,10 +81,12 @@ public class ProjectsListAction extends BaseAction {
     // Depending on the user that is logged-in, the list of projects will be displayed. - currentUser.
 
     // Getting project list.
-    // projects = projectManager.getAllProjects();
     IPProgram userProgram = this.getCurrentUser().getCurrentInstitution().getProgram();
-    projects = projectManager.getAllProjects(userProgram.getId());
+    projects = projectManager.getProjectsByProgram(userProgram.getId());
 
+  }
 
+  public void setProjectID(int projectID) {
+    this.projectID = projectID;
   }
 }
