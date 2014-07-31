@@ -3,7 +3,7 @@ Hernán David:
 [OK]    - Pasar la lista de paises del proyecto anterior a la base de datos.
 []    - Crear JSON que filtre los partners por tipo y country -> json/partnersByFilter.do?partnerTypeID=11&countryID=CO 
 [OK]    - Método activeDirectoryLogin de UserManager tiene un TODO en el catch de un exception.
-[]    - Pasar la lista de partners a la nueva bd
+[OK]    - Pasar la lista de partners a la nueva bd
 []    - Hacer funcionar el save para los actions que trabajan los IPElements
 []    - Corregir el error que aparece al cargar un usuario ligado a un IPProgram
 

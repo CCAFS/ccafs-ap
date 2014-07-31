@@ -31,8 +31,8 @@
           <div class="midOutcome borderBox" id="midOutcome-${midOutcome_index}">
             [#-- Mid outcome identifier --]
             <input id="midOutcomeId" type="hidden" name="midOutcomes[${midOutcome_index}].id" value="${midOutcome.id}" />
-            <input type="hidden" name="midOutcomes[${midOutcome_index}].program.id" value="${currentUser.currentInstitution.program.id}" />
-            <input type="hidden" name="midOutcomes[${midOutcome_index}].type.id" value="${elementTypeID}" />
+            <input id="midOutcomeProgramID" type="hidden" name="midOutcomes[${midOutcome_index}].program.id" value="${currentUser.currentInstitution.program.id}" />
+            <input id="midOutcomeTypeID" type="hidden" name="midOutcomes[${midOutcome_index}].type.id" value="${elementTypeID}" />
             [#-- Remove midOutcome --]
             <div class="removeMidOutcomeBlock removeLink">              
               <img src="${baseUrl}/images/global/icon-remove.png" />
@@ -110,7 +110,7 @@
       [@s.param name="1"]<span id="elementIndex">{0}</span>[/@s.param] 
     [/@s.text]
   [/#assign]
-  [@customForm.textArea name="midOutcomeDescription" i18nkey="${midOutcomeDescription}" required=true /] 
+  [@customForm.textArea name="description" i18nkey="${midOutcomeDescription}" required=true /] 
   [#-- Contribute area --]
   <div id="contributesBlock" class="contentElements" style="display:none">
     <div class="itemIndex">[@s.text name="preplanning.midOutcomes.contributes" /] </div>

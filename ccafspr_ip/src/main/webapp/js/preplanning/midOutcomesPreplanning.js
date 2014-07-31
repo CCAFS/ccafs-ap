@@ -10,9 +10,10 @@ function init(){
 	attachEvents();
 	if(!$("div#MidOutcomeBlocks .midOutcome").length){
 	  $("div#addMidOutcomeBlock").trigger( "click" );
-	} 
-	applyWordCounter($("form .midOutcome > .textArea textarea"), lWordsElemetDesc); 
-	applyWordCounter($("form .indicatorsBlock textarea"), lWordsIndicatorDesc);
+	} else{
+      applyWordCounter($("form .midOutcome > .textArea textarea"), lWordsElemetDesc); 
+      applyWordCounter($("form .indicatorsBlock textarea"), lWordsIndicatorDesc);
+	}
 	setMidOutcomesIndexes();
 }
 
@@ -62,8 +63,8 @@ function setMidOutcomesIndexes(){
       $(element).find("[id^='midOutcomeTypeID']").attr("name", elementName + "type.id");
       // Visible inputs
       $(element).find("[id$='elementIndex']").html(index+1);
-      $(element).find("[id^='midOutcomeDescription']").attr("name", elementName + "description").attr("placeholder", "Add outcome #"+ (index+1) );
-      console.log('setMidOutcomesIndexes -->'+index+ ' -->'+$(element).attr('id') ); 
+      $(element).find("textarea[name$='description']").attr("name", elementName + "description").attr("placeholder", "Add outcome #"+ (index+1) );
+      //console.log('setMidOutcomesIndexes -->'+index+ ' -->'+$(element).attr('id') ); 
       setContributesIndexes(index);
       setIndicatorsIndexes(index);
      
@@ -103,8 +104,7 @@ function removeContributeEvent(event){
 
 function setContributesIndexes(i){
   $("#midOutcome-"+i+" div.contributions").each(function(index, element){
-	  console.log(i);
-      var elementName = "midOutcomes["+i+"].contributesTo[" + index + "]";
+      var elementName = "midOutcomes["+i+"].contributesTo";
       $(element).find("[id^='contributeId']").attr("name", elementName).attr("value", outcome.id);
   });
 }
@@ -134,10 +134,9 @@ function removeIndicatorEvent(event){
 
 function setIndicatorsIndexes(i){
   $("#midOutcome-"+i+" div.indicator").each(function(index, indicator){
-      //console.log(index);
       var elementName = "midOutcomes["+i+"].indicators[" + index + "].";  
-      $(indicator).find("[name^='id']").attr("name", elementName + "id");
-      $(indicator).find("[id^='indicatorDescription']").attr("name", elementName + "description").attr("placeholder", "Add indicator #"+ (index+1) ); 
-      $(indicator).find("[id^='indicatorTarget']").attr("name", elementName + "target");
+      $(indicator).find("[name$='id']").attr("name", elementName + "id");
+      $(indicator).find("[id$='description']").attr("name", elementName + "description").attr("placeholder", "Add indicator #"+ (index+1) ); 
+      $(indicator).find("[id$='target']").attr("name", elementName + "target");
   });
 }
