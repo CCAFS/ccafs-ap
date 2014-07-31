@@ -36,14 +36,12 @@
           [#-- Indicators --]
           <div class="contentElements outcomeIndicatorsBlock"> 
             <div class="itemIndex">[@s.text name="preplanning.outcomes.indicators" /]</div>
-            [#if outcome.indicators?has_content] 
-              [#list outcome.indicators as indicator]
-                [#if !indicator.parent?has_content]
-                  [@indicatorTemplate.outcomes outcome_index="${outcome_index}" indicator_index="${indicator_index}" value="${indicator.id}" i18nkey="preplanning.outcomes.indicators.description" show_remove_link=false /]
-                [/#if]
+            [#if outcome.getIndicators(false)?has_content]
+              [#list outcome.getIndicators(false) as indicator]
+                  [@indicatorTemplate.outcomes outcome_index="${outcome_index}" indicator_index="${indicator_index}" value="${indicator.id}" i18nkey="preplanning.outcomes.indicators.description" show_remove_link=false /] 
               [/#list]
             [#else]
-              [@indicatorTemplate.outcomes outcome_index="${outcome_index}" i18nkey="preplanning.outcomes.indicators.description" show_remove_link=false /]
+              [@indicatorTemplate.outcomes template=true i18nkey="preplanning.outcomes.indicators.description" show_remove_link=false /]
             [/#if]
             
             [#-- Add Indicator Button --]
@@ -54,30 +52,34 @@
             </div>
             --] 
           </div> 
-          [#-- IDOs --]
-          [#if idos?has_content]
-            <div id="idosBlock" class="contentElements">
-              <div class="itemIndex">[@s.text name="preplanning.outcomes.idos" /]</div>
-              [#list idos as ido]
-                <div id="idoBlock-${ido_index}" class="ido"> 
-                [#if outcome.contributesToIDs?seq_contains(ido.id) ] 
-                   [#assign idoCheck = "checked='checked'" /]
-                   [#assign indicatorsVisible = "style='display:block'" /]
-                [#else]  
-                   [#assign idoCheck = "" /]
-                   [#assign indicatorsVisible = "style='display:none'" /]
-                [/#if]
-                    <input  id="ido-${ido_index}" class="idosCheckbox" type="checkbox" name="outcomes[0].contributesTo" value="${ido.id}" ${idoCheck}>
-                    <label for="ido-${ido_index}" class="checkboxLabel" >${ido.description}</label>
-                [#if ido.indicators?has_content]
-                  <div id="indicatorsBlock-${ido_index}" class="idosIndicators checkboxGroup vertical"> 
-                    [@s.checkboxlist name="outcomes[0].indicators.parent" list="idos[${ido_index}].indicators" listKey="id" listValue="description" value="outcomes[0].parentIndicatorsIDs" cssClass="indicatorsCheckbox" /]
+          [#if currentUser.FPL]
+            [#-- IDOs --]
+            [#if idos?has_content]
+              <div id="idosBlock" class="contentElements">
+                <div class="itemIndex">[@s.text name="preplanning.outcomes.idos" /]</div>
+                [#list idos as ido]
+                  <div id="idoBlock-${ido_index}" class="ido"> 
+                  [#if outcome.contributesToIDs?seq_contains(ido.id) ] 
+                     [#assign idoCheck = "checked='checked'" /]
+                     [#assign indicatorsVisible = "style='display:block'" /]
+                  [#else]  
+                     [#assign idoCheck = "" /]
+                     [#assign indicatorsVisible = "style='display:none'" /]
+                  [/#if]
+                      <input  id="ido-${ido_index}" class="idosCheckbox" type="checkbox" name="outcomes[0].contributesTo" value="${ido.id}" ${idoCheck}>
+                      <label for="ido-${ido_index}" class="checkboxLabel" >${ido.description}</label>
+                  [#if ido.indicators?has_content]
+                    <div id="indicatorsBlock-${ido_index}" class="idosIndicators checkboxGroup vertical"> 
+                      [@s.checkboxlist name="outcomes[0].indicators.parent" list="idos[${ido_index}].indicators" listKey="id" listValue="description" value="outcomes[0].parentIndicatorsIDs" cssClass="indicatorsCheckbox" /]
+                    </div>
+                  [/#if]
                   </div>
-                [/#if]
-                </div>
-              [/#list]
-            </div>  
-          [/#if] 
+                [/#list]
+              </div>  
+            [/#if] 
+          [/#if]
+          
+          
         </div>  
         [/#list]
       [#else]

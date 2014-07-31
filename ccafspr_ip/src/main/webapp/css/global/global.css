@@ -109,6 +109,10 @@ input:-webkit-autofill, textarea:-webkit-autofill, select:-webkit-autofill {
   color: #ccc !important;
 }
 
+input.target {
+    width: 30% !important;
+}
+
 .halfPartBlock .checkbox input{
   width: 15px;
   margin-left: 20px;
@@ -122,7 +126,7 @@ input:-webkit-autofill, textarea:-webkit-autofill, select:-webkit-autofill {
 
 .checkboxGroup input {
   margin-left: 0px;
-  width: 14px !important;
+  width: 14px;
 }
 
 .checkboxGroup .checkboxLabel {
@@ -577,8 +581,8 @@ a.currentReportingSection li #i-additionalInformation{
 
 .halfContent {
   float: right;
-  padding: 10px;
-  width: 755px;
+  padding: 12px 0;
+  width: 775px;
   vertical-align: top;
 }
 
@@ -654,7 +658,7 @@ h1.contentSubTitle {
   /* text-decoration: underline; */
   background: #8ea786;
   padding: 5px 0;
-  margin: 3px 0;
+  margin: 0px 0 5px 0;
   font-weight: 700;
   border-radius: 8px 8px 0px 0px;
 }
@@ -858,10 +862,10 @@ textarea[id$='summary'] {
 /* Impact Pathways */
 
 .indicator, .contributions {
-    padding: 9px;
+    padding: 2px 15px;
     border-bottom: 2px dotted #C3D4E7;
     border-radius: 5px;
-    margin: 0px 0px;
+    margin: 2px 0px;
     background: #EAF3FD;
 }
 
@@ -875,13 +879,26 @@ textarea[id$='summary'] {
 
 .contentElements {
     border: 1px solid #ccc;
-    border-top: 0;
-    border-radius: 10px 10px 2px 2px;
-    margin: 14px 0px;
+    /* border-top: 0; */
+    border-radius: 10px 10px 6px 6px;
+    margin: 12px 0px;
     width: 99%;
 }
 .contentElements textarea {
   width: 100%;
+}
+
+.contentElements .fields{
+  padding: 0.5em 1em;
+  margin: 0.3em 0.3em;
+  border-left: 2px dotted #ccc;
+}
+
+.contentElements .fields .target {
+  width: 20%;
+}
+.contentElements .fields .narrative {
+  width: 96%;
 }
 
 

@@ -108,6 +108,9 @@
 </div> 
 [#-- contributeTo RPL TEMPLATE --]
 [@contributeTemplate.midOutcomesRPL template=true canRemove=true  /]
+
+[#-- Indicator RPL TEMPLATE --]
+[@indicatorTemplate.midOutcomesRPL template=true /]
     
    
 </section>
