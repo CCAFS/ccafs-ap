@@ -59,6 +59,35 @@ public class MySQLIPProgramDAO implements IPProgramDAO {
 
 
   @Override
+  public Map<String, String> getIPProgramById(int ipProgramID) {
+    Map<String, String> ipProgramData = new HashMap<>();
+    LOG.debug(">> getIPProgramById( programID = {} )", ipProgramID);
+    StringBuilder query = new StringBuilder();
+    query.append("SELECT ipr.*  ");
+    query.append("FROM ip_programs as ipr  ");
+    query.append("WHERE ipr.id =  ");
+    query.append(ipProgramID);
+    try (Connection con = databaseManager.getConnection()) {
+      ResultSet rs = databaseManager.makeQuery(query.toString(), con);
+      if (rs.next()) {
+        ipProgramData.put("id", rs.getString("id"));
+        ipProgramData.put("name", rs.getString("name"));
+        ipProgramData.put("acronym", rs.getString("acronym"));
+        ipProgramData.put("region_id", rs.getString("region_id"));
+        ipProgramData.put("type_id", rs.getString("type_id"));
+      }
+      rs.close();
+    } catch (SQLException e) {
+      String exceptionMessage = "-- getIPProgramById() > Exception raised trying to get the program ";
+      exceptionMessage += "which created the getIPProgramById " + ipProgramID;
+
+      LOG.error(exceptionMessage, e);
+    }
+    return ipProgramData;
+  }
+
+
+  @Override
   public List<Map<String, String>> getProgramsByType(int typeId) {
     LOG.debug(">> getProgramsByType( typeId = {} )");
 
@@ -77,19 +106,15 @@ public class MySQLIPProgramDAO implements IPProgramDAO {
 
   @Override
   public List<Map<String, String>> getProgramType(int projectId, int typeProgramId) {
-
-    LOG.debug(">> getProjectType( programID = {} )", projectId, typeProgramId);
-
+    LOG.debug(">> getProgramType( programID = {} )", projectId, typeProgramId);
     StringBuilder query = new StringBuilder();
     query.append("SELECT ipr.type_id, ipr.acronym   ");
     query.append("FROM ip_programs as ipr  ");
     query.append("INNER JOIN project_focuses pf  ON pf.program_id=ipr.id  ");
     query.append("WHERE pf.project_id='1' ");
-    // query.append(programID);
     query.append("ORDER BY ipr.type_id, ipr.acronym ");
 
-
-    LOG.debug("-- getProjectOwnerId() > Calling method executeQuery to get the results");
+    LOG.debug("-- getProgramType() > Calling method executeQuery to get the results");
     return getData(query.toString());
   }
 

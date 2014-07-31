@@ -36,6 +36,31 @@ public class IPProgramManagerImpl implements IPProgramManager {
     this.ipProgramDAO = ipProgramDAO;
   }
 
+  @Override
+  public IPProgram getIPProgramById(int ipProgramID) {
+    Map<String, String> ipProgramData = ipProgramDAO.getIPProgramById(ipProgramID);
+    if (!ipProgramData.isEmpty()) {
+      IPProgram ipProgram = new IPProgram();
+      ipProgram.setId(Integer.parseInt(ipProgramData.get("id")));
+      ipProgram.setName(ipProgramData.get("name"));
+      ipProgram.setAcronym(ipProgramData.get("acronym"));
+
+      // Program Type Object
+      IPProgramTypes programType = new IPProgramTypes();
+      programType.setTypeId(Integer.parseInt(ipProgramData.get("type_id")));
+
+      // Region Object
+      Region region = new Region();
+      if (ipProgramData.get("region_id") != null) {
+        region.setId(Integer.parseInt(ipProgramData.get("region_id")));
+        ipProgram.setRegion(region);
+      }
+
+      return ipProgram;
+    }
+    return null;
+  }
+
 
   @Override
   public List<IPProgram> getProgramsByType(int ipProgramTypeID) {
