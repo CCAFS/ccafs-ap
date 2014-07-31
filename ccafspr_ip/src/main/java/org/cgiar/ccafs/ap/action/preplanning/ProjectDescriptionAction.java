@@ -120,7 +120,6 @@ public class ProjectDescriptionAction extends BaseAction {
       return; // Stop here and go to execute method.
     }
 
-    // /////// For the View
     // Getting the information for the Project Owner Contact Persons for the View
     allOwners = userManager.getImportantUsers();
     // System.out.println(userContacts);
@@ -134,7 +133,6 @@ public class ProjectDescriptionAction extends BaseAction {
     // Getting the information of the Cross Cutting Theme for the View
     ipCrossCuttings = ipCrossCuttingManager.getIPCrossCuttings();
 
-    // /////// For consultation
     // Getting project
     project = projectManager.getProject(projectId);
     // Getting the project Owner

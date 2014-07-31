@@ -43,8 +43,8 @@ public class Project {
   private User expectedLeader;
   private List<Budget> budgets;
 
-  public Project() {
-    super();
+  public Project(int id) {
+    this.id = id;
   }
 
   /**

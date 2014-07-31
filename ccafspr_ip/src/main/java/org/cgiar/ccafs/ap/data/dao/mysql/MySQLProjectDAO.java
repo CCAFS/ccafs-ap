@@ -37,8 +37,8 @@ public class MySQLProjectDAO implements ProjectDAO {
         ProjectData.put("id", rs.getString("id"));
         ProjectData.put("title", rs.getString("title"));
         ProjectData.put("summary", rs.getString("summary"));
-        ProjectData.put("start_date", rs.getDate("start_date").toString());
-        ProjectData.put("end_date", rs.getDate("end_date").toString());
+        ProjectData.put("start_date", rs.getDate("start_date") == null ? null : rs.getDate("start_date").toString());
+        ProjectData.put("end_date", rs.getDate("end_date") == null ? null : rs.getDate("end_date").toString());
         ProjectData.put("project_leader_id", rs.getString("project_leader_id"));
         ProjectData.put("project_owner_id", rs.getString("project_owner_id"));
 
@@ -185,22 +185,20 @@ public class MySQLProjectDAO implements ProjectDAO {
   }
 
   @Override
-  public List<Map<String, String>> getProjects(int programID) {
+  public List<Map<String, String>> getProjectsByProgram(int programID) {
     LOG.debug(">> getProjects programID = {} )", programID);
-
     StringBuilder query = new StringBuilder();
-    query.append("SELECT p.*   ");
-    // query.append("et.id as 'element_type_id', et.name as 'element_type_name', ");
-    // query.append("pro.id as 'program_id', pro.acronym as 'program_acronym' ");
+
+    query.append("SELECT p.* ");
     query.append("FROM projects as p ");
-    query.append("INNER JOIN project_focuses pf ON p.id = pf.project_id ");
-    query.append("INNER JOIN ip_programs ipr ON pf.program_id=ipr.id ");
-    query.append("WHERE ipr.id= ");
+    query.append("INNER JOIN employees emp ON emp.id = p.project_owner_id ");
+    query.append("INNER JOIN institutions i ON i.id = emp.institution_id ");
+    query.append("INNER JOIN ip_programs ip ON ip.id = i.program_id ");
+    query.append("WHERE ip.id = ");
     query.append(programID);
 
-
     LOG.debug("-- getProjects() > Calling method executeQuery to get the results");
-    return getData(query.toString());
+    return this.getData(query.toString());
   }
 
   @Override
@@ -264,22 +262,22 @@ public class MySQLProjectDAO implements ProjectDAO {
     LOG.debug(">> saveProject(projectData={})", projectData);
 
     StringBuilder query = new StringBuilder();
-    query.append("INSERT INTO projects (id, title, summary, start_date,end_date,project_leader_id,project_owner_id) ");
-    query.append("VALUES (?, ?, ?, ?, ?, ?, ?) ");
-    // query.append("ON DUPLICATE KEY UPDATE description = VALUES(description), program_id = VALUES(program_id)");
+    if (projectData.get("id") == null) {
+      // Insert a new project.
+      query.append("INSERT INTO projects (project_owner_id) ");
+      query.append("VALUES (?) ");
 
-    Object[] values = new Object[7];
-    values[0] = projectData.get("id");
-    values[1] = projectData.get("title");
-    values[2] = projectData.get("summary");
-    values[3] = projectData.get("start_date");
-    values[4] = projectData.get("end_date");
-    values[5] = projectData.get("project_leader_id");
-    values[6] = projectData.get("project_owner_id");
+      Object[] values = new Object[1];
+      values[0] = projectData.get("project_owner_id");
+      int result = databaseManager.saveData(query.toString(), values);
+      LOG.debug("<< saveProject():{}", result);
+      return result;
+    } else {
+      // Update project.
+      // TODO HT - To Complete
+    }
 
-    int result = databaseManager.saveData(query.toString(), values);
-    LOG.debug("<< saveProject():{}", result);
-    return result;
+    return -1;
   }
 
 }

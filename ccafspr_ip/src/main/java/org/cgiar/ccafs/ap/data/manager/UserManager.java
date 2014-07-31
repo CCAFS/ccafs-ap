@@ -32,6 +32,16 @@ public interface UserManager {
   public List<User> getAllUsers();
 
   /**
+   * This method returns the employee Identifier that is using the given user taking into account his current
+   * institution.
+   *
+   * @param user is the user instance to be calculated.
+   * @return the id that is used in the database for the table employee, 0 if nothing found or -1 if some error
+   *         occur.
+   */
+  public int getEmployeeID(User user);
+
+  /**
    * This method gets the information of an User by a given project ID
    *
    * @param projectID - is the ID of the project

@@ -60,13 +60,13 @@ public interface ProjectDAO {
 
   /**
    * This method return all the Projects which belongs to the program
-   * indicated by parameter.
+   * indicated by the parameter.
    *
-   * @param programID, identifier of the program
-   * @return a list of maps with the information of all Projects returned.
+   * @param programID is identifier of the program
+   * @return a list of maps with the information of all Projects found.
    */
 
-  public List<Map<String, String>> getProjects(int programId);
+  public List<Map<String, String>> getProjectsByProgram(int programId);
 
   /**
    * this method add or update an expected project leader that belongs to a specific project.

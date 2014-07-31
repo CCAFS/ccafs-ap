@@ -58,6 +58,33 @@ public class MySQLUserDAO implements UserDAO {
   }
 
   @Override
+  public int getEmployeeID(int userId, int institutionId, int roleId) {
+    LOG
+    .debug(">> getEmployeeID (userId={}, institutionId={}, roleId={})", new Object[] {userId, institutionId, roleId});
+    int result = -1;
+    try (Connection connection = dbManager.getConnection()) {
+      StringBuilder query = new StringBuilder();
+      query.append("SELECT id FROM employees WHERE user_id = ");
+      query.append(userId);
+      query.append(" AND institution_id = ");
+      query.append(institutionId);
+      query.append(" AND role_id = ");
+      query.append(roleId);
+      ResultSet rs = dbManager.makeQuery(query.toString(), connection);
+      if (rs.next()) {
+        result = rs.getInt("id");
+      } else {
+        result = 0;
+      }
+      rs.close();
+    } catch (SQLException e) {
+      LOG.error("-- getEmployeeID() > There was an error getting the data for the user with id {}.", userId, e);
+    }
+    LOG.debug("<< getEmployeeID():{}", result);
+    return result;
+  }
+
+  @Override
   public Map<String, String> getImportantUserByProject(int projectID) {
     LOG.debug(">> getImportantUserByProject(projectID={})", projectID);
     Map<String, String> projectContactPersonData = new HashMap<>();
@@ -91,6 +118,7 @@ public class MySQLUserDAO implements UserDAO {
     LOG.debug("<< getImportantUserByProject():{}", projectContactPersonData);
     return projectContactPersonData;
   }
+
 
   @Override
   public List<Map<String, String>> getImportantUsers() {
@@ -133,7 +161,6 @@ public class MySQLUserDAO implements UserDAO {
     LOG.debug("<< getImportantUsers():{}", projectContactPersonList);
     return projectContactPersonList;
   }
-
 
   @Override
   public Map<String, String> getUser(int userId) {
