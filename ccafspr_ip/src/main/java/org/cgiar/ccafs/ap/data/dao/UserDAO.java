@@ -35,7 +35,7 @@ public interface UserDAO {
    * @param projectID - is the ID of the project
    * @return a Map with the User information associated to a project
    */
-  public Map<String, String> getImportantUserByProject(int projectID);
+  public Map<String, String> getContactOwner(int projectID);
 
   /**
    * Get a list with the Important users according to their role. RPLs, FPLs and CUs.

@@ -85,7 +85,7 @@ public class MySQLUserDAO implements UserDAO {
   }
 
   @Override
-  public Map<String, String> getImportantUserByProject(int projectID) {
+  public Map<String, String> getContactOwner(int projectID) {
     LOG.debug(">> getImportantUserByProject(projectID={})", projectID);
     Map<String, String> projectContactPersonData = new HashMap<>();
     try (Connection connection = dbManager.getConnection()) {

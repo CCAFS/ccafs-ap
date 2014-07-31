@@ -86,17 +86,26 @@ public class ProjectManagerImpl implements ProjectManager {
       project.setTitle(projectData.get("title"));
       project.setSummary(projectData.get("summary"));
       // Format to the Dates of the project
-      String sDate = projectData.get("start_date");
-      String eDate = projectData.get("end_date");
-      try {
-        Date startDate = dateformatter.parse(sDate);
-        Date endDate = dateformatter.parse(eDate);
-        project.setStartDate(startDate);
-        project.setEndDate(endDate);
-      } catch (ParseException e) {
-        LOG.error("There was an error formatting the dates", e);
+      if (projectData.get("start_date") != null) {
+        try {
+          Date startDate = dateformatter.parse(projectData.get("start_date"));
+          project.setStartDate(startDate);
+        } catch (ParseException e) {
+          LOG.error("There was an error formatting the date", e);
+        }
       }
+      if (projectData.get("end_date") != null) {
+        try {
+          Date endDate = dateformatter.parse(projectData.get("end_date"));
+          project.setEndDate(endDate);
+        } catch (ParseException e) {
+          LOG.error("There was an error formatting the date", e);
+        }
+      }
+
       project.setOwner(userManager.getUser(Integer.parseInt(projectData.get("project_owner_user_id"))));
+      System.out.println(institutionManager.getInstitution(Integer.parseInt(projectData
+        .get("project_owner_institution_id"))));
       project.getOwner().setCurrentInstitution(
         institutionManager.getInstitution(Integer.parseInt(projectData.get("project_owner_institution_id"))));
       project.setCreated(Long.parseLong(projectData.get("created")));

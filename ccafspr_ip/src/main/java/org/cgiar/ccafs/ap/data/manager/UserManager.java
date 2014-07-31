@@ -48,7 +48,7 @@ public interface UserManager {
    * @return an Object User with the information requested, or Null if the relationship between project ID and user
    *         doesn't exist
    */
-  public User getImportantUserByProject(int projectID);
+  public User getContactOwner(int projectID);
 
   /**
    * This method gets all the User information according to their roles. FPL's, RPL's, CU's

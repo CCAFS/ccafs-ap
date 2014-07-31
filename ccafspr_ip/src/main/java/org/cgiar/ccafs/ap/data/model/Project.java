@@ -38,6 +38,7 @@ public class Project {
   private List<IPCrossCutting> crossCuttings;// The list of Cross Cutting themes in which this project works with.
   private User leader; // Project leader will be a user too.
   private String leaderResponsabilities;
+  private IPProgram programCreator; // Creator program. e.g. LAM, FP4, CU, etc.
   private User owner;
   private List<ProjectPartner> projectPartners; // Project partners.
   private User expectedLeader;
@@ -50,7 +51,7 @@ public class Project {
   }
 
   /**
-   * This method calculate all the years between the start date and the end date.
+   * This method calculates all the years between the start date and the end date.
    *
    * @return a List of numbers representing all the years.
    */
@@ -157,6 +158,10 @@ public class Project {
     return owner;
   }
 
+  public IPProgram getProgramCreator() {
+    return programCreator;
+  }
+
   public List<ProjectPartner> getProjectPartners() {
     return projectPartners;
   }
@@ -239,6 +244,10 @@ public class Project {
 
   public void setOwner(User owner) {
     this.owner = owner;
+  }
+
+  public void setProgramCreator(IPProgram creator) {
+    this.programCreator = creator;
   }
 
   public void setProjectPartners(List<ProjectPartner> projectPartners) {
