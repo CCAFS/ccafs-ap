@@ -24,8 +24,8 @@
   <div class="indicator" style="display:block">
   [#if template] 
     <input type="hidden" name="id" value="${value}" />
-    [@customForm.textArea showTitle=false name="indicatorDescription" i18nkey="preplanning.midOutcomes.midOutcome" required=true /]
-    [@customForm.input name="indicatorTarget"  i18nkey="preplanning.midOutcomes.target" /]
+    [@customForm.textArea showTitle=false name="description" i18nkey="preplanning.midOutcomes.midOutcome" required=true /]
+    [@customForm.input name="target"  i18nkey="preplanning.midOutcomes.target" /]
   [#else]
     <input type="hidden" name="midOutcomes[${midOutcome_index}].indicators[${indicator_index}].id" value="${value}" />
     [@customForm.textArea showTitle=false name="midOutcomes[${midOutcome_index}].indicators[${indicator_index}].description" i18nkey="preplanning.midOutcomes.midOutcome" required=true /]

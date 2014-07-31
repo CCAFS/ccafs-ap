@@ -17,6 +17,7 @@ import org.cgiar.ccafs.ap.action.BaseAction;
 import org.cgiar.ccafs.ap.config.APConfig;
 import org.cgiar.ccafs.ap.config.APConstants;
 import org.cgiar.ccafs.ap.data.manager.IPElementManager;
+import org.cgiar.ccafs.ap.data.manager.IPElementRelationManager;
 import org.cgiar.ccafs.ap.data.manager.IPIndicatorManager;
 import org.cgiar.ccafs.ap.data.manager.IPProgramManager;
 import org.cgiar.ccafs.ap.data.model.IPElement;
@@ -38,23 +39,26 @@ public class MidOutcomesPreplanningAction extends BaseAction {
   private static final long serialVersionUID = 8352553096226822850L;
 
   // Managers
-  IPElementManager ipElementManager;
-  IPIndicatorManager ipIndicatorManager;
-  IPProgramManager ipProgramManager;
+  private IPElementManager ipElementManager;
+  private IPElementRelationManager ipElementRelationManager;
+  private IPIndicatorManager ipIndicatorManager;
+  private IPProgramManager ipProgramManager;
 
   // Model
-  List<IPElement> midOutcomes;
-  List<IPElement> outcomesList;
-  List<IPElement> midOutcomesFromDatabase;
-  List<IPProgram> flagshipsList;
+  private List<IPElement> midOutcomes;
+  private List<IPElement> outcomesList;
+  private List<IPElement> midOutcomesFromDatabase;
+  private List<IPProgram> flagshipsList;
 
   @Inject
   public MidOutcomesPreplanningAction(APConfig config, IPElementManager ipElementManager,
-    IPIndicatorManager ipIndicatorManager, IPProgramManager ipProgramManager) {
+    IPIndicatorManager ipIndicatorManager, IPProgramManager ipProgramManager,
+    IPElementRelationManager ipElementRelationManager) {
     super(config);
     this.ipElementManager = ipElementManager;
     this.ipIndicatorManager = ipIndicatorManager;
     this.ipProgramManager = ipProgramManager;
+    this.ipElementRelationManager = ipElementRelationManager;
   }
 
   public int getElementTypeID() {
@@ -100,55 +104,58 @@ public class MidOutcomesPreplanningAction extends BaseAction {
 
   @Override
   public String save() {
-    if (!midOutcomes.isEmpty()) {
-
-      for (IPElement midOutcome : midOutcomes) {
-        if (midOutcome.getIndicators() != null) {
-          for (int i = 0; i < midOutcome.getIndicators().size(); i++) {
-            if (midOutcome.getIndicators().get(i).getDescription().isEmpty()) {
-              midOutcome.getIndicators().remove(i);
-            }
-
-            if (getCurrentUser().isRPL()) {
-
-              // The regional programs won't have indicators by themselves, instead
-              // they create a copy of the FP indicators and indicating that
-              // relation in the indicator
-
-              // Here we adjust the values brought by the converter to set the
-              // id as parentID and setting the id with the value as '-1' to
-              // indicate that it is a new indicator to be added into the DB.
-              int indicatorID = midOutcome.getIndicators().get(i).getId();
-              midOutcome.getIndicators().get(i).setId(-1);
-
-              IPIndicator indicatorTemp = new IPIndicator();
-              indicatorTemp.setId(indicatorID);
-              midOutcome.getIndicators().get(i).setParent(indicatorTemp);
-            }
-          }
-        }
-
-        // If the user removed the outcome we should delete it from the database
-        if (!midOutcomesFromDatabase.contains(midOutcome)) {
-          ipElementManager.deleteIPElement(midOutcome, getCurrentUser().getCurrentInstitution().getProgram());
-        } else {
-          // We should remove the ipIndicators of the database if the outcome wasn't removed
-          ipIndicatorManager.removeElementIndicators(midOutcome, getCurrentUser().getCurrentInstitution().getProgram());
-        }
-      }
-
-
-    } else {
+    // First, remove of the database the elements that user deleted
+    for (int i = 0; i < midOutcomesFromDatabase.size(); i++) {
+      IPElement midOutcome = midOutcomesFromDatabase.get(i);
       // If all the midOutcomes were removed, we should remove all the records
       // brought from the database
-      for (IPElement midOutcome : midOutcomesFromDatabase) {
+      if (midOutcomes.isEmpty()) {
         ipElementManager.deleteIPElement(midOutcome, getCurrentUser().getCurrentInstitution().getProgram());
+        continue;
+      }
+
+      // Check if the user delete a midOutcome in the interface
+      if (!midOutcomes.contains(midOutcome)) {
+        ipElementManager.deleteIPElement(midOutcome, getCurrentUser().getCurrentInstitution().getProgram());
+      } else {
+        // Remove the relations and indicators of the midOutcome
+        ipIndicatorManager.removeElementIndicators(midOutcome, getCurrentUser().getCurrentInstitution().getProgram());
+        ipElementRelationManager.deleteRelationsByChildElement(midOutcome);
       }
     }
 
+    // Then adjust the indicators existent
+    for (IPElement midOutcome : midOutcomes) {
+      if (midOutcome.getIndicators() != null) {
+        for (int i = 0; i < midOutcome.getIndicators().size(); i++) {
+          if (midOutcome.getIndicators().get(i).getDescription().isEmpty()) {
+            midOutcome.getIndicators().remove(i);
+          }
+
+          if (getCurrentUser().isRPL()) {
+
+            // The regional programs won't have indicators by themselves, instead
+            // they create a copy of the FP indicators and indicating that
+            // relation in the indicator
+
+            // Here we adjust the values brought by the converter to set the
+            // id as parentID and setting the id with the value as '-1' to
+            // indicate that it is a new indicator to be added into the DB.
+            int indicatorID = midOutcome.getIndicators().get(i).getId();
+            midOutcome.getIndicators().get(i).setId(-1);
+
+            IPIndicator indicatorTemp = new IPIndicator();
+            indicatorTemp.setId(indicatorID);
+            midOutcome.getIndicators().get(i).setParent(indicatorTemp);
+          }
+        }
+      }
+    }
+
+
     // Remove records already present in the database
     ipElementManager.saveIPElements(midOutcomes);
-    return INPUT;
+    return SUCCESS;
   }
 
   public void setMidOutcomes(List<IPElement> midOutcomes) {
