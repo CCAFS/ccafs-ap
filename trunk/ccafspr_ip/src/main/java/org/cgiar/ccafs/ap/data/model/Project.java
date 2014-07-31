@@ -42,6 +42,7 @@ public class Project {
   private List<ProjectPartner> projectPartners; // Project partners.
   private User expectedLeader;
   private List<Budget> budgets;
+  private ProjectOutcome outcome;
   private long created; // Timestamp number when the project was created.
 
   public Project(int id) {
@@ -148,6 +149,10 @@ public class Project {
     return leaderResponsabilities;
   }
 
+  public ProjectOutcome getOutcome() {
+    return outcome;
+  }
+
   public User getOwner() {
     return owner;
   }
@@ -226,6 +231,10 @@ public class Project {
 
   public void setLeaderResponsabilities(String leaderResponsabilities) {
     this.leaderResponsabilities = leaderResponsabilities;
+  }
+
+  public void setOutcome(ProjectOutcome outcome) {
+    this.outcome = outcome;
   }
 
   public void setOwner(User owner) {
