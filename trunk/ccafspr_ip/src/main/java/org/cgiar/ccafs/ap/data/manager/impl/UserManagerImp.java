@@ -108,8 +108,8 @@ public class UserManagerImp implements UserManager {
   }
 
   @Override
-  public User getImportantUserByProject(int projectID) {
-    Map<String, String> userData = userDAO.getImportantUserByProject(projectID);
+  public User getContactOwner(int projectID) {
+    Map<String, String> userData = userDAO.getContactOwner(projectID);
     if (!userData.isEmpty()) {
       User user = new User();
       user.setId(Integer.parseInt(userData.get("id")));

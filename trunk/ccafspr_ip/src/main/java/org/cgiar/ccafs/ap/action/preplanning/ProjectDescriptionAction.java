@@ -136,7 +136,7 @@ public class ProjectDescriptionAction extends BaseAction {
     // Getting project
     project = projectManager.getProject(projectId);
     // Getting the project Owner
-    owner = userManager.getImportantUserByProject(projectId);
+    owner = userManager.getContactOwner(projectId);
 
     // Getting the information of the Flagships Program associated with the project
     project.setRegions(projectManager.getProjectFocuses(projectId, APConstants.REGION_PROGRAM_TYPE));
