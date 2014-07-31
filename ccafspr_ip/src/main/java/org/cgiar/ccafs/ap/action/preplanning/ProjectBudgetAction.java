@@ -103,6 +103,10 @@ public class ProjectBudgetAction extends BaseAction {
     return projectID;
   }
 
+  public User getProjectLeader() {
+    return projectLeader;
+  }
+
   public List<ProjectPartner> getProjectPartners() {
     return projectPartners;
   }
