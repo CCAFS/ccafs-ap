@@ -18,6 +18,7 @@ import org.cgiar.ccafs.ap.config.APConfig;
 import org.cgiar.ccafs.ap.data.manager.ProjectManager;
 import org.cgiar.ccafs.ap.data.model.Project;
 
+import java.util.Date;
 import java.util.List;
 
 import org.cgiar.ccafs.ap.data.model.IPProgram;
@@ -55,6 +56,7 @@ public class ProjectsListAction extends BaseAction {
       // Create new project and redirect to project description using the new projectId assigned by the database.
       Project newProject = new Project(-1);
       newProject.setOwner(this.getCurrentUser());
+      newProject.setCreated(new Date().getTime());
       projectID = projectManager.saveProjectDescription(newProject);
       if (projectID > 0) {
         // Let's redirect the user to the Project Description section.

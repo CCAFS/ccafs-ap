@@ -16,9 +16,9 @@
 		  [#if projects?has_content]
         [#list projects as project]
     		   <tr>
-              <td> 
+              <td>
                   <a href="[@s.url action='description' includeParams='get'][@s.param name='projectID']${project.id?c}[/@s.param][/@s.url]">
-                    ${project.id}
+                    ${project.composedId}
                   </a>
               </td>
               <td>

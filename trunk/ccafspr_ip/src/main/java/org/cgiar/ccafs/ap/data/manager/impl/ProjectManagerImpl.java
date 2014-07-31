@@ -99,6 +99,7 @@ public class ProjectManagerImpl implements ProjectManager {
       project.setOwner(userManager.getUser(Integer.parseInt(projectData.get("project_owner_user_id"))));
       project.getOwner().setCurrentInstitution(
         institutionManager.getInstitution(Integer.parseInt(projectData.get("project_owner_institution_id"))));
+      project.setCreated(Long.parseLong(projectData.get("created")));
       // traer el project_leader
 
       return project;
@@ -175,6 +176,7 @@ public class ProjectManagerImpl implements ProjectManager {
         // TODO JG - Never print stack trace. Instead, use LOG.error.
         e.printStackTrace();
       }
+      project.setCreated(Long.parseLong(elementData.get("created")));
       projectsList.add(project);
     }
     return projectsList;
