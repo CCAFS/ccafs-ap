@@ -28,6 +28,58 @@ public class MySQLBudgetDAO implements BudgetDAO {
     this.databaseManager = databaseManager;
   }
 
+
+  @Override
+  public double calculateTotalCCAFSBudget(int projectID) {
+    Double total = 0.0;
+    StringBuilder query = new StringBuilder();
+    query.append("SELECT SUM(b.amount) as TOTAL ");
+    query.append("FROM budgets b ");
+    query.append("INNER JOIN project_budgets pb ON b.id = pb.budget_id ");
+    query.append(" WHERE pb.project_id = ");
+    query.append(projectID);
+    query.append(" AND b.budget_type =  ");
+    query.append(BudgetType.W1.getValue());
+    query.append(" OR b.budget_type = ");
+    query.append(BudgetType.W2.getValue());
+    query.append(" OR b.budget_type = ");
+    query.append(BudgetType.W3.getValue());
+
+    try (Connection con = databaseManager.getConnection()) {
+      ResultSet rs = databaseManager.makeQuery(query.toString(), con);
+      if (rs.next()) {
+        total = Double.parseDouble(rs.getString("total"));
+      }
+      con.close();
+    } catch (SQLException e) {
+      LOG.error("Exception arised getting the institutions for the user {}.", projectID, e);
+    }
+    return total;
+  }
+
+  @Override
+  public double calculateTotalOverallBudget(int projectID) {
+    Double total = 0.0;
+    StringBuilder query = new StringBuilder();
+    query.append("SELECT SUM(b.amount) as TOTAL ");
+    query.append("FROM budgets b ");
+    query.append("INNER JOIN project_budgets pb ON b.id = pb.budget_id ");
+    query.append(" WHERE pb.project_id = ");
+    query.append(projectID);
+
+    try (Connection con = databaseManager.getConnection()) {
+      ResultSet rs = databaseManager.makeQuery(query.toString(), con);
+      if (rs.next()) {
+        total = Double.parseDouble(rs.getString("total"));
+      }
+      con.close();
+    } catch (SQLException e) {
+      LOG.error("Exception arised getting the institutions for the user {}.", projectID, e);
+    }
+    return total;
+  }
+
+
   @Override
   public boolean deleteBudget(int budgetId) {
     LOG.debug(">> deleteBudget(id={})", budgetId);
@@ -56,14 +108,11 @@ public class MySQLBudgetDAO implements BudgetDAO {
     int rowsDeleted = databaseManager.delete(query.toString(), new Object[] {projectID, institutionID});
     if (rowsDeleted >= 0) {
       LOG.debug("<< deleteBudgetsByInstitution():{}", true);
-      query.setLength(0);
-      query.append("DELETE");
       return true;
     }
     LOG.debug("<< deleteBudgetsByInstitution():{}", false);
     return false;
   }
-
 
   @Override
   public List<Map<String, String>> getBudgetsByType(int projectID, int budgetType) {
@@ -87,7 +136,7 @@ public class MySQLBudgetDAO implements BudgetDAO {
 
   @Override
   public List<Map<String, String>> getBudgetsByYear(int projectID, int year) {
-    LOG.debug(">> getBudgetsByYear projectID = {} )", projectID);
+    LOG.debug(">> getBudgetsByYear projectID = {}, year={} )", new Object[] {projectID, year});
 
     StringBuilder query = new StringBuilder();
     query.append("SELECT b.*   ");
@@ -133,21 +182,21 @@ public class MySQLBudgetDAO implements BudgetDAO {
     return budgetList;
   }
 
+
   @Override
   public List<Map<String, String>> getLeveragedInstitutions(int projectID) {
     LOG.debug(">> getLeveragedInstitutions projectID = {} )", projectID);
-    BudgetType budgetType = BudgetType.LEVERAGED;
     List<Map<String, String>> leveragedInstitutionDataList = new ArrayList<>();
     StringBuilder query = new StringBuilder();
     query.append("SELECT  i.*   ");
-    query.append("FROM budgets as b ");
+    query.append("FROM institutions as i ");
+    query.append("INNER JOIN budgets b ON b.institution_id = i.id ");
     query.append("INNER JOIN project_budgets pb ON b.id = pb.budget_id ");
     query.append("INNER JOIN budget_types bt ON b.budget_type = bt.id ");
-    query.append("INNER JOIN institutions i ON b.institution_id = i.id ");
     query.append("WHERE pb.project_id=  ");
     query.append(projectID);
     query.append(" AND bt.id= ");
-    query.append(budgetType.getValue());
+    query.append(BudgetType.LEVERAGED.getValue());
 
     try (Connection con = databaseManager.getConnection()) {
       ResultSet rs = databaseManager.makeQuery(query.toString(), con);
@@ -173,6 +222,7 @@ public class MySQLBudgetDAO implements BudgetDAO {
     return leveragedInstitutionDataList;
   }
 
+
   @Override
   public int saveBudget(int projectID, Map<String, Object> budgetData) {
     LOG.debug(">> saveBudget(budgetData={})", budgetData);
@@ -191,12 +241,12 @@ public class MySQLBudgetDAO implements BudgetDAO {
       values[3] = budgetData.get("amount");
       newId = databaseManager.saveData(query.toString(), values);
       if (newId <= 0) {
-        LOG.error("A problem happened trying to add a new expected project leader in project with id={}", projectID);
+        LOG.error("A problem happened trying to add a new budget with id={}", projectID);
         return -1;
       } else {
         // Now, Addition the relation with project into table project_budgets
         query.setLength(0); // Clearing query.
-        query.append("INSERT INTO project_budgets (project_id,budget_id) ");
+        query.append("INSERT INTO project_budgets (project_id, budget_id) ");
         query.append("VALUES (?,?) ");
         values = new Object[2];
         values[0] = projectID;

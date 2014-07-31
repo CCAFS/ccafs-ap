@@ -27,7 +27,7 @@ public interface InstitutionDAO {
   public List<Map<String, String>> getAllInstitutionTypes();
 
   /**
-   * This method return the information from Institution give by an institutionID
+   * This method return the information from Institution given by an institutionID
    * 
    * @param institutionID, identifier of the institution
    * @return a list of maps with the information of all IP elements returned.
@@ -40,7 +40,7 @@ public interface InstitutionDAO {
    * given
    * 
    * @param userID - User identifier
-   * @return a list of maps with the information
+   * @return a list of maps with the information with the Institution related by the user
    */
   public List<Map<String, String>> getInstitutionsByUser(int userID);
 
@@ -48,7 +48,7 @@ public interface InstitutionDAO {
    * This method return the information of an Institution Type given by and InstitutionType ID
    * 
    * @param institutionTypeID
-   * @return a map with the information
+   * @return a map with the information of the Institution Type
    */
   public Map<String, String> getInstitutionType(int institutionTypeID);
 
@@ -57,7 +57,7 @@ public interface InstitutionDAO {
    * main for the user identified with the id given
    * 
    * @param userID - User identifier
-   * @return a list of maps with the information
+   * @return a list of maps with the information of the Institution
    */
   public Map<String, String> getUserMainInstitution(int userID);
 }

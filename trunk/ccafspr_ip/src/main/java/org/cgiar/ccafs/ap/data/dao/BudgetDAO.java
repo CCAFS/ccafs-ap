@@ -10,42 +10,73 @@ import com.google.inject.ImplementedBy;
 @ImplementedBy(MySQLBudgetDAO.class)
 public interface BudgetDAO {
 
+
   /**
-   * @param budgetId
-   * @return
+   * This method calculates the total of the CCAFS Budget which is the addition of W1+W2+W3
+   * 
+   * @param projectID is the project id.
+   * @return a decimal number representing the amount of the total CCAFS Budget for that specific project.
+   */
+  public double calculateTotalCCAFSBudget(int projectID);
+
+  /**
+   * This method returns the total Budget used for that specific project.
+   * It consists in the addition of all Windows, plus the Bilateral and the Leveraged.
+   * 
+   * @param projectID is the project id.
+   * @return a decimal number that represents the total amount of money used on that specific project.
+   */
+  public double calculateTotalOverallBudget(int projectID);
+
+
+  /**
+   * Deletes the information of a Budget associated by a given id
+   * 
+   * @param budgetId - is the id of a Budget
+   * @return true if the elements were deleted successfully. False otherwise
    */
   public boolean deleteBudget(int budgetId);
 
   /**
+   * Deletes the information of the Budgets related by a given project id and an institution id
+   * 
    * @param projectID
    * @param institutionID
-   * @return
+   * @return true if the elements were deleted successfully. False otherwise
    */
   public boolean deleteBudgetsByInstitution(int projectID, int institutionID);
 
   /**
-   * @param projectID
-   * @param budgetType
-   * @return
+   * This method gets all the Budget Information by a given project ID and a Budget Type
+   * 
+   * @param projectID - is the id of the project
+   * @param budgetType - is the id of a Budget Type
+   * @return a list of Map of the Budgets related with the budget type id and the project id
    */
   public List<Map<String, String>> getBudgetsByType(int projectID, int budgetType);
 
   /**
-   * @param projectID
-   * @param year
-   * @return
+   * This method gets all the Budget information by a given project Id and a year
+   * 
+   * @param projectID - is the id of the project
+   * @param year - is the year of the budget
+   * @return a list of Map of the Budgets related with the year and the project id
    */
   public List<Map<String, String>> getBudgetsByYear(int projectID, int year);
 
   /**
-   * @param projectID
-   * @return
+   * This method brings all the institutions by a given project ID
+   * 
+   * @param projectID - is the project Id
+   * @return a list of Map of Institutions related with the project ID
    */
   public List<Map<String, String>> getLeveragedInstitutions(int projectID);
 
   /**
+   * This method saves the Budget and the Project Budget relation
+   * 
    * @param budgetData
-   * @return
+   * @return The last inserted id if there was a new record, 0 if the record was updated or -1 if any error happened.
    */
   public int saveBudget(int projectID, Map<String, Object> budgetData);
 
