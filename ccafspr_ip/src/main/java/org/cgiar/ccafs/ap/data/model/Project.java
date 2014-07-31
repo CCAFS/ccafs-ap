@@ -42,6 +42,7 @@ public class Project {
   private List<ProjectPartner> projectPartners; // Project partners.
   private User expectedLeader;
   private List<Budget> budgets;
+  private long created; // Timestamp number when the project was created.
 
   public Project(int id) {
     this.id = id;
@@ -73,6 +74,26 @@ public class Project {
 
   public List<Budget> getBudgets() {
     return budgets;
+  }
+
+  /**
+   * This method returns a composed Identifier that is going to be used in the front-end.
+   * The convention is going to be used depending on the creationg date of the project.
+   * yyyy-project.id => e.g. 2014-46
+   *
+   * @return the composed indentifier or null if the created date is null.
+   */
+  public String getComposedId() {
+    if (created != 0) {
+      Calendar calendar = Calendar.getInstance();
+      calendar.setTimeInMillis(created);
+      return calendar.get(Calendar.YEAR) + "-" + this.id;
+    }
+    return null;
+  }
+
+  public long getCreated() {
+    return created;
   }
 
   public List<String> getCrossCuttingIds() {
@@ -173,6 +194,10 @@ public class Project {
 
   public void setBudgets(List<Budget> budgets) {
     this.budgets = budgets;
+  }
+
+  public void setCreated(long created) {
+    this.created = created;
   }
 
   public void setCrossCuttings(List<IPCrossCutting> crossCuttings) {

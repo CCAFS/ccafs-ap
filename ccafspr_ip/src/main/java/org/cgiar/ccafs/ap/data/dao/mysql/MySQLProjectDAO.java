@@ -29,20 +29,21 @@ public class MySQLProjectDAO implements ProjectDAO {
 
   private List<Map<String, String>> getData(String query) {
     LOG.debug(">> executeQuery(query='{}')", query);
-    List<Map<String, String>> ProjectList = new ArrayList<>();
+    List<Map<String, String>> projectList = new ArrayList<>();
     try (Connection con = databaseManager.getConnection()) {
       ResultSet rs = databaseManager.makeQuery(query, con);
       while (rs.next()) {
-        Map<String, String> ProjectData = new HashMap<String, String>();
-        ProjectData.put("id", rs.getString("id"));
-        ProjectData.put("title", rs.getString("title"));
-        ProjectData.put("summary", rs.getString("summary"));
-        ProjectData.put("start_date", rs.getDate("start_date") == null ? null : rs.getDate("start_date").toString());
-        ProjectData.put("end_date", rs.getDate("end_date") == null ? null : rs.getDate("end_date").toString());
-        ProjectData.put("project_leader_id", rs.getString("project_leader_id"));
-        ProjectData.put("project_owner_id", rs.getString("project_owner_id"));
+        Map<String, String> projectData = new HashMap<String, String>();
+        projectData.put("id", rs.getString("id"));
+        projectData.put("title", rs.getString("title"));
+        projectData.put("summary", rs.getString("summary"));
+        projectData.put("start_date", rs.getDate("start_date") == null ? null : rs.getDate("start_date").toString());
+        projectData.put("end_date", rs.getDate("end_date") == null ? null : rs.getDate("end_date").toString());
+        projectData.put("project_leader_id", rs.getString("project_leader_id"));
+        projectData.put("project_owner_id", rs.getString("project_owner_id"));
+        projectData.put("created", rs.getTimestamp("created").getTime() + "");
 
-        ProjectList.add(ProjectData);
+        projectList.add(projectData);
       }
       rs.close();
     } catch (SQLException e) {
@@ -52,8 +53,8 @@ public class MySQLProjectDAO implements ProjectDAO {
       LOG.error(exceptionMessage, e);
     }
 
-    LOG.debug("<< executeQuery():ProjectList.size={}", ProjectList.size());
-    return ProjectList;
+    LOG.debug("<< executeQuery():ProjectList.size={}", projectList.size());
+    return projectList;
   }
 
   @Override
@@ -107,6 +108,7 @@ public class MySQLProjectDAO implements ProjectDAO {
         projectData.put("project_leader_id", rs.getString("project_leader_id"));
         projectData.put("project_owner_user_id", rs.getString("owner_user_id"));
         projectData.put("project_owner_institution_id", rs.getString("owner_institution_id"));
+        projectData.put("created", rs.getTimestamp("created").getTime() + "");
       }
       con.close();
     } catch (SQLException e) {
