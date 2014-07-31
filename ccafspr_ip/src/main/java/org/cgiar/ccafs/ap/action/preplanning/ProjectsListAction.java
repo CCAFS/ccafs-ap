@@ -18,6 +18,7 @@ import org.cgiar.ccafs.ap.config.APConfig;
 import org.cgiar.ccafs.ap.data.manager.ProjectManager;
 import org.cgiar.ccafs.ap.data.model.Project;
 
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -51,13 +52,42 @@ public class ProjectsListAction extends BaseAction {
   }
 
   @Override
+  public String add() {
+    // Create new project and redirect to project description using the new projectId assigned by the database.
+    projectID = this.createNewProject();
+    if (projectID > 0) {
+      // Let's redirect the user to the Project Description section.
+      return BaseAction.INPUT;
+    }
+    // Let's redirect the user to the Project Description section.
+    return BaseAction.ERROR;
+  }
+
+  private int createNewProject() {
+    Project newProject = new Project(-1);
+    newProject.setOwner(this.getCurrentUser());
+    IPProgram userProgram = this.getCurrentUser().getCurrentInstitution().getProgram();
+    if (userProgram != null) {
+      newProject.setProgramCreator(this.getCurrentUser().getCurrentInstitution().getProgram());
+    } else {
+      LOG
+        .error(
+          "-- execute() > the current user identify with id={} and institution_id={} does not belong to a specific program!",
+          new Object[] {this.getCurrentUser().getId(), this.getCurrentUser().getCurrentInstitution().getId()});
+    }
+    newProject.setCreated(new Date().getTime());
+    return projectManager.saveProjectDescription(newProject);
+
+  }
+
+  @Override
   public String execute() throws Exception {
+    if (add) {
+      return add();
+    }
     if (projects.size() <= 0) {
       // Create new project and redirect to project description using the new projectId assigned by the database.
-      Project newProject = new Project(-1);
-      newProject.setOwner(this.getCurrentUser());
-      newProject.setCreated(new Date().getTime());
-      projectID = projectManager.saveProjectDescription(newProject);
+      projectID = this.createNewProject();
       if (projectID > 0) {
         // Let's redirect the user to the Project Description section.
         return BaseAction.INPUT;
@@ -76,17 +106,29 @@ public class ProjectsListAction extends BaseAction {
     return projects;
   }
 
+
   @Override
   public void prepare() throws Exception {
     super.prepare();
 
     // Depending on the user that is logged-in, the list of projects will be displayed. - currentUser.
 
-    // Getting project list.
+    // Getting project list that belongs to the program that you blongs to.
     IPProgram userProgram = this.getCurrentUser().getCurrentInstitution().getProgram();
     projects = projectManager.getProjectsByProgram(userProgram.getId());
 
+    // Getting the list of projects in which the current user is assigned as Owner.
+    // List<Project> projectsOwning = projectManager.getProjectsOwning(this.getCurrentUser());
+    List<Project> projectsOwning = new ArrayList<Project>();
+
+    // Mixing the Owning projects with the current list of projects.
+    for (Project projectOwning : projectsOwning) {
+      if (!projects.contains(projectOwning)) {
+        projects.add(projectOwning);
+      }
+    }
   }
+
 
   public void setProjectID(int projectID) {
     this.projectID = projectID;

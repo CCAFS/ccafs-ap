@@ -104,8 +104,6 @@ public class ProjectManagerImpl implements ProjectManager {
       }
 
       project.setOwner(userManager.getUser(Integer.parseInt(projectData.get("project_owner_user_id"))));
-      System.out.println(institutionManager.getInstitution(Integer.parseInt(projectData
-        .get("project_owner_institution_id"))));
       project.getOwner().setCurrentInstitution(
         institutionManager.getInstitution(Integer.parseInt(projectData.get("project_owner_institution_id"))));
       project.setCreated(Long.parseLong(projectData.get("created")));
