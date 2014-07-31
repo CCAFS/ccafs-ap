@@ -26,10 +26,18 @@ public interface IPProgramManager {
   /**
    * This method gets the information of an IP Program given an Id
    * 
-   * @param ipProgramID
+   * @param ipProgramID - is the Id of the IP Program.
    * @return an IPProgram object with the result information.
    */
   public IPProgram getIPProgramById(int ipProgramID);
+
+  /**
+   * This method gets the IP Program information by a given project Id
+   * 
+   * @param projectID - is the id of the project
+   * @return an IPProgram object with the result information.
+   */
+  public IPProgram getIPProgramByProjectId(int projectID);
 
   /**
    * This method gets from the database a list of ipElements

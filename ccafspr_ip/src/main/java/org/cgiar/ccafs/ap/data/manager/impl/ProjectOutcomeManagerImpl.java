@@ -38,13 +38,11 @@ public class ProjectOutcomeManagerImpl implements ProjectOutcomeManager {
   private ProjectOutcomeDAO projectOutcomeDAO;
 
   // Managers
-  private ProjectOutcomeManager projectOutcomeManager;
 
 
   @Inject
-  public ProjectOutcomeManagerImpl(ProjectOutcomeDAO projectOutcomeDAO, ProjectOutcomeManager projectOutcomeManager) {
+  public ProjectOutcomeManagerImpl(ProjectOutcomeDAO projectOutcomeDAO) {
     this.projectOutcomeDAO = projectOutcomeDAO;
-    this.projectOutcomeManager = projectOutcomeManager;
   }
 
   @Override
@@ -56,6 +54,22 @@ public class ProjectOutcomeManagerImpl implements ProjectOutcomeManager {
   public boolean deleteProjectOutcomesByProject(int projectID) {
     return projectOutcomeDAO.deleteProjectOutcomesByProject(projectID);
   }
+
+  @Override
+  public ProjectOutcome getProjectOutcomeByYear(int projectID, int year) {
+    Map<String, String> projectOutcomeData = projectOutcomeDAO.getProjectOutcomesByYear(projectID, year);
+
+    if (!projectOutcomeData.isEmpty()) {
+      ProjectOutcome projectOutcome = new ProjectOutcome();
+      projectOutcome.setId(Integer.parseInt(projectOutcomeData.get("id")));
+      projectOutcome.setYear(Integer.parseInt(projectOutcomeData.get("year")));
+      projectOutcome.setStatement(projectOutcomeData.get("statement"));
+      projectOutcome.setStories(projectOutcomeData.get("stories"));
+      return projectOutcome;
+    }
+    return null;
+  }
+
 
   @Override
   public List<ProjectOutcome> getProjectOutcomesByProject(int projectID) {
@@ -73,22 +87,6 @@ public class ProjectOutcomeManagerImpl implements ProjectOutcomeManager {
       projectOutcomes.add(projectOutcome);
     }
     return projectOutcomes;
-  }
-
-
-  @Override
-  public ProjectOutcome getProjectOutcomesByYear(int projectID, int year) {
-    Map<String, String> projectOutcomeData = projectOutcomeDAO.getProjectOutcomesByYear(projectID, year);
-
-    if (!projectOutcomeData.isEmpty()) {
-      ProjectOutcome projectOutcome = new ProjectOutcome();
-      projectOutcome.setId(Integer.parseInt(projectOutcomeData.get("id")));
-      projectOutcome.setYear(Integer.parseInt(projectOutcomeData.get("year")));
-      projectOutcome.setStatement(projectOutcomeData.get("statement"));
-      projectOutcome.setStories(projectOutcomeData.get("stories"));
-      return projectOutcome;
-    }
-    return null;
   }
 
   @Override

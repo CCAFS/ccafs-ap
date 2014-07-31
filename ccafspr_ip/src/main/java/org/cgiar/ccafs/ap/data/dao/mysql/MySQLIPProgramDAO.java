@@ -88,6 +88,13 @@ public class MySQLIPProgramDAO implements IPProgramDAO {
 
 
   @Override
+  public Map<String, String> getIPProgramByProjectId(int projectID) {
+    // TODO Auto-generated method stub
+    return null;
+  }
+
+
+  @Override
   public List<Map<String, String>> getProgramsByType(int typeId) {
     LOG.debug(">> getProgramsByType( typeId = {} )");
 

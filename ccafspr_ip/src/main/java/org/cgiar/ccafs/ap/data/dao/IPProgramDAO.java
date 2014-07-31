@@ -22,6 +22,8 @@ public interface IPProgramDAO {
   public Map<String, String> getIPProgramById(int ipProgramID);
 
 
+  public Map<String, String> getIPProgramByProjectId(int projectID);
+
   /**
    * This method return the Programs Type identified as Flagship
    * indicated by parameter.

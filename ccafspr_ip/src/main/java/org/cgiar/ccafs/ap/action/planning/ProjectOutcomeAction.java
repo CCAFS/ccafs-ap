@@ -85,15 +85,34 @@ public class ProjectOutcomeAction extends BaseAction {
     Calendar calendar = Calendar.getInstance();
     calendar.setTime(new Date());
     ProjectOutcome projectOutcome =
-      projectOutcomeManager.getProjectOutcomesByYear(projectID, calendar.get(Calendar.YEAR));
+      projectOutcomeManager.getProjectOutcomeByYear(projectID, calendar.get(Calendar.YEAR));
+    if (projectOutcome == null) {
+      projectOutcome = new ProjectOutcome(-1);
+      projectOutcome.setYear(calendar.get(Calendar.YEAR));
+    }
     project.setOutcome(projectOutcome);
+  }
+
+
+  @Override
+  public String save() {
+    boolean success = true;
+    // Saving Project Outcome
+
+    boolean saved = projectOutcomeManager.saveProjectOutcome(projectID, project.getOutcome());
+    if (!saved) {
+      success = false;
+    }
+
+
+    return INPUT;
+
   }
 
 
   public void setProject(Project project) {
     this.project = project;
   }
-
 
   public void setProjectID(int projectID) {
     this.projectID = projectID;

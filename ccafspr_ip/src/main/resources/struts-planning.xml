@@ -38,6 +38,10 @@
     
     <action name="projectOutcomes" class="org.cgiar.ccafs.ap.action.planning.ProjectOutcomeAction">
       <result name="input">/WEB-INF/planning/projectOutcomes.ftl</result>
+      <result name="success" type="redirectAction">
+        <param name="actionName">activities</param>
+        <param name="projectID">${project.id}</param>
+      </result>
     </action>
     
     <action name="activities" class="org.cgiar.ccafs.ap.action.BaseAction">
