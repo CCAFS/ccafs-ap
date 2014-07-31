@@ -106,8 +106,9 @@ public class MySQLProjectOutcomeDAO implements ProjectOutcomeDAO {
 
 
   @Override
-  public List<Map<String, String>> getProjectOutcomesByYear(int projectID, int year) {
+  public Map<String, String> getProjectOutcomesByYear(int projectID, int year) {
     LOG.debug(">> getProjectOutcomesByYear projectID = {}, year={} )", new Object[] {projectID, year});
+    Map<String, String> projectOutcomeData = new HashMap<>();
 
     StringBuilder query = new StringBuilder();
     query.append("SELECT po.*   ");
@@ -117,9 +118,20 @@ public class MySQLProjectOutcomeDAO implements ProjectOutcomeDAO {
     query.append(" AND po.year=  ");
     query.append(year);
 
-
+    try (Connection con = databaseManager.getConnection()) {
+      ResultSet rs = databaseManager.makeQuery(query.toString(), con);
+      if (rs.next()) {
+        projectOutcomeData.put("id", rs.getString("id"));
+        projectOutcomeData.put("year", rs.getString("year"));
+        projectOutcomeData.put("statement", rs.getString("statement"));
+        projectOutcomeData.put("stories", rs.getString("stories"));
+      }
+      con.close();
+    } catch (SQLException e) {
+      LOG.error("Exception arised getting the Project Outcomes for project {}.", projectID, e);
+    }
     LOG.debug("-- getProjectOutcomesByYear() > Calling method executeQuery to get the results");
-    return getData(query.toString());
+    return projectOutcomeData;
   }
 
 
