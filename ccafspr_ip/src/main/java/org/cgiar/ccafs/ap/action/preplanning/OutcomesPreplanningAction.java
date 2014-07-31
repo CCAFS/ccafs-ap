@@ -21,7 +21,6 @@ import org.cgiar.ccafs.ap.data.manager.IPElementRelationManager;
 import org.cgiar.ccafs.ap.data.manager.IPIndicatorManager;
 import org.cgiar.ccafs.ap.data.model.IPElement;
 import org.cgiar.ccafs.ap.data.model.IPElementType;
-import org.cgiar.ccafs.ap.data.model.IPIndicator;
 import org.cgiar.ccafs.ap.data.model.IPProgram;
 import org.cgiar.ccafs.ap.validation.preplanning.OutcomesValidation;
 
@@ -114,27 +113,23 @@ public class OutcomesPreplanningAction extends BaseAction {
 
   @Override
   public String save() {
-    for (IPElement outcome : outcomes) {
-      // If the user removed the outcome we should delete it
-      // from the database
-      int outcomeIndex = outcomesFromDatabase.indexOf(outcome);
-      if (outcomeIndex == -1) {
+
+    for (int i = 0; i < outcomesFromDatabase.size(); i++) {
+      IPElement outcome = outcomesFromDatabase.get(i);
+      // If all the outcomes were removed, we should remove all the records
+      // brought from the database
+      if (outcomes.isEmpty()) {
         ipElementManager.deleteIPElement(outcome, getCurrentUser().getCurrentInstitution().getProgram());
-      } else {
-        // IF the outcome wasn't removed, we should remove their ipIndicators and their contributesTo from the database
-        ipIndicatorManager.removeElementIndicators(outcome, getCurrentUser().getCurrentInstitution().getProgram());
-        // Remove the contribution
-        ipElementRelationManager.deleteRelationsByChildElement(outcome);
+        continue;
       }
 
-      for (IPIndicator indicator : outcome.getIndicators()) {
-        // If the indicator has a parent is because it is a copy of
-        // some IDO's indicator
-        if (indicator.getParent() != null) {
-          indicator.setId(-1);
-          indicator.setDescription(indicator.getParent().getDescription());
-          indicator.setTarget(indicator.getParent().getTarget());
-        }
+      // Check if the user delete a midOutcome in the interface
+      if (!outcomes.contains(outcome)) {
+        ipElementManager.deleteIPElement(outcome, getCurrentUser().getCurrentInstitution().getProgram());
+      } else {
+        // Remove the relations and indicators of the midOutcome
+        ipIndicatorManager.removeElementIndicators(outcome, getCurrentUser().getCurrentInstitution().getProgram());
+        ipElementRelationManager.deleteRelationsByChildElement(outcome);
       }
     }
 

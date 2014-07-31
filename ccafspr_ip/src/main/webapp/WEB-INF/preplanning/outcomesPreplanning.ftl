@@ -70,7 +70,7 @@
                       <label for="ido-${ido_index}" class="checkboxLabel" >${ido.description}</label>
                   [#if ido.indicators?has_content]
                     <div id="indicatorsBlock-${ido_index}" class="idosIndicators checkboxGroup vertical"> 
-                      [@s.checkboxlist name="outcomes[0].indicators.parent" list="idos[${ido_index}].indicators" listKey="id" listValue="description" value="outcomes[0].parentIndicatorsIDs" cssClass="indicatorsCheckbox" /]
+                      [@s.checkboxlist name="idoIndicator" list="idos[${ido_index}].indicators" listKey="id" listValue="description" value="outcomes[0].parentIndicatorsIDs" cssClass="indicatorsCheckbox" /]
                     </div>
                   [/#if]
                   </div>
@@ -91,7 +91,7 @@
           [#-- Indicators --] 
           <div class="contentElements outcomeIndicatorsBlock">
             <div class="itemIndex">[@s.text name="preplanning.outcomes.indicators" /] </div>
-              [@indicatorTemplate.outcomes /] 
+              [@indicatorTemplate.outcomes template=true i18nkey="preplanning.outcomes.indicators.description" show_remove_link=false /]
           </div>
           
           [#if currentUser.FPL]
@@ -105,7 +105,7 @@
                       <label for="ido-${ido_index}" class="checkboxLabel" >${ido.description}</label>
                   [#if ido.indicators?has_content]
                     <div id="indicatorsBlock-${ido_index}" class="idosIndicators checkboxGroup vertical"> 
-                      [@s.checkboxlist name="outcomes[0].indicators.parent" list="idos[${ido_index}].indicators" listKey="id" listValue="description" value="outcomes[0].parentIndicatorsIDs" cssClass="indicatorsCheckbox" /]
+                      [@s.checkboxlist name="idoIndicator" list="idos[${ido_index}].indicators" listKey="id" listValue="description" value="outcomes[0].parentIndicatorsIDs" cssClass="indicatorsCheckbox" /]
                     </div>
                   [/#if]
                   </div>
