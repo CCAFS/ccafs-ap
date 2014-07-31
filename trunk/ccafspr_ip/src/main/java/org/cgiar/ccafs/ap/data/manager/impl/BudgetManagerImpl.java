@@ -21,7 +21,6 @@ import org.cgiar.ccafs.ap.data.manager.LocationManager;
 import org.cgiar.ccafs.ap.data.model.Budget;
 import org.cgiar.ccafs.ap.data.model.BudgetType;
 import org.cgiar.ccafs.ap.data.model.Institution;
-import org.cgiar.ccafs.ap.data.model.InstitutionType;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -34,6 +33,7 @@ import org.slf4j.LoggerFactory;
 
 /**
  * @author Héctor Fabio Tobón R.
+ * @author Javier Andrés Gallego
  */
 public class BudgetManagerImpl implements BudgetManager {
 
@@ -55,7 +55,6 @@ public class BudgetManagerImpl implements BudgetManager {
     this.institutionManager = institutionManager;
     this.locationManger = locationManger;
     this.ipProgramManager = ipProgramManager;
-
   }
 
   @Override
@@ -163,7 +162,6 @@ public class BudgetManagerImpl implements BudgetManager {
       institution.setContactPersonEmail(iData.get("contactPersonEmail"));
 
       // InstitutionType Object
-      InstitutionType type = new InstitutionType();
       if (iData.get("institution_type_id") != null) {
         institution.setType(institutionManager.getInstitutionType(Integer.parseInt(iData.get("institution_type_id"))));
       }
@@ -189,7 +187,6 @@ public class BudgetManagerImpl implements BudgetManager {
     if (budget.getId() > 0) {
       budgetData.put("id", budget.getId());
     }
-    BudgetType budgetType;
     budgetData.put("year", budget.getYear());
     budgetData.put("budget_type", budget.getType().getValue()); // validar como pasar el valor
     budgetData.put("institution_id", budget.getInstitution().getId());

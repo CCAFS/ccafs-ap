@@ -19,7 +19,7 @@ import org.apache.commons.lang3.builder.ToStringBuilder;
 /**
  * This class represents a Project Outcome.
  * Is mostly used for the Planning section.
- *
+ * 
  * @author Héctor Fabio Tobón R.
  */
 public class ProjectOutcome {
@@ -28,6 +28,9 @@ public class ProjectOutcome {
   private int year;
   private String statement;
   private String stories;
+
+  public ProjectOutcome() {
+  }
 
   public ProjectOutcome(int id) {
     this.id = id;
