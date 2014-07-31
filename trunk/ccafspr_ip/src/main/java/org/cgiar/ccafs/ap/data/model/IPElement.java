@@ -13,6 +13,7 @@
  *****************************************************************/
 package org.cgiar.ccafs.ap.data.model;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.apache.commons.lang3.builder.HashCodeBuilder;
@@ -73,6 +74,27 @@ public class IPElement {
 
   public List<IPIndicator> getIndicators() {
     return indicators;
+  }
+
+  /**
+   * This method returns all the indicators which fill the condition
+   * of has parents.
+   * If the parameter received is false, returns a list with all the
+   * indicators which have not parents.
+   * If the parameter received is true returns a list with all the
+   * indicators that have parents.
+   * 
+   * @param hasParents
+   * @return
+   */
+  public List<IPIndicator> getIndicators(boolean hasParents) {
+    List<IPIndicator> _indicators = new ArrayList<>();
+    for (int i = 0; i < indicators.size(); i++) {
+      if ((indicators.get(i).getParent() != null) == hasParents) {
+        _indicators.add(indicators.get(i));
+      }
+    }
+    return _indicators;
   }
 
   public int[] getParentIndicatorsIDs() {
