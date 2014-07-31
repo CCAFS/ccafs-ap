@@ -15,8 +15,10 @@ package org.cgiar.ccafs.ap.action.preplanning;
 
 import java.util.List;
 
-import org.cgiar.ccafs.ap.data.manager.BudgetManager;
+import org.cgiar.ccafs.ap.data.manager.InstitutionManager;
 
+import org.cgiar.ccafs.ap.data.model.Institution;
+import org.cgiar.ccafs.ap.data.manager.BudgetManager;
 import org.cgiar.ccafs.ap.data.manager.ProjectManager;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -46,16 +48,20 @@ public class ProjectBudgetAction extends BaseAction {
 
   // Model for the front-end
   private List<Integer> allYears;
+  private List<Institution> allInstitutions;
 
   // Managers
   private ProjectManager projectManager;
   private BudgetManager budgetManager;
+  private InstitutionManager institutionManager;
 
   @Inject
-  public ProjectBudgetAction(APConfig config, ProjectManager projectManager, BudgetManager budgetManager) {
+  public ProjectBudgetAction(APConfig config, ProjectManager projectManager, BudgetManager budgetManager,
+    InstitutionManager institutionManager) {
     super(config);
     this.projectManager = projectManager;
     this.budgetManager = budgetManager;
+    this.institutionManager = institutionManager;
   }
 
   @Override
@@ -70,14 +76,18 @@ public class ProjectBudgetAction extends BaseAction {
     return super.execute();
   }
 
+  public List<Institution> getAllInstitutions() {
+    return allInstitutions;
+  }
+
   public List<Integer> getAllYears() {
     return allYears;
   }
 
+
   public Project getProject() {
     return project;
   }
-
 
   public int getProjectID() {
     return projectID;
@@ -104,6 +114,9 @@ public class ProjectBudgetAction extends BaseAction {
       return; // Stop here and go to execute method.
     }
 
+    // Getting all the institutions.
+    allInstitutions = institutionManager.getAllInstitutions();
+
     // Getting the project identified with the id parameter.
     project = projectManager.getProject(projectID);
     // if there is not a project identified with the given id
@@ -127,7 +140,10 @@ public class ProjectBudgetAction extends BaseAction {
       return; // Stop here and go to execute method.
     }
 
+  }
 
+  public void setAllInstitutions(List<Institution> allInstitutions) {
+    this.allInstitutions = allInstitutions;
   }
 
   public void setAllYears(List<Integer> allYears) {
