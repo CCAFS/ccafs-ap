@@ -62,7 +62,7 @@ public interface ProjectOutcomeManager {
    * @param year is the year.
    * @return a List of Budget objects.
    */
-  public List<ProjectOutcome> getProjectOutcomesByYear(int projectID, int year);
+  public ProjectOutcome getProjectOutcomesByYear(int projectID, int year);
 
   /**
    * This method saves the information of the given budget that belong to a specific project into the database.

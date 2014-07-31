@@ -77,20 +77,18 @@ public class ProjectOutcomeManagerImpl implements ProjectOutcomeManager {
 
 
   @Override
-  public List<ProjectOutcome> getProjectOutcomesByYear(int projectID, int year) {
-    List<ProjectOutcome> projectOutcomes = new ArrayList<>();
-    List<Map<String, String>> projectOutcomeDataList = projectOutcomeDAO.getProjectOutcomesByYear(projectID, year);
-    for (Map<String, String> projectOutcomeData : projectOutcomeDataList) {
+  public ProjectOutcome getProjectOutcomesByYear(int projectID, int year) {
+    Map<String, String> projectOutcomeData = projectOutcomeDAO.getProjectOutcomesByYear(projectID, year);
+
+    if (!projectOutcomeData.isEmpty()) {
       ProjectOutcome projectOutcome = new ProjectOutcome();
       projectOutcome.setId(Integer.parseInt(projectOutcomeData.get("id")));
       projectOutcome.setYear(Integer.parseInt(projectOutcomeData.get("year")));
       projectOutcome.setStatement(projectOutcomeData.get("statement"));
       projectOutcome.setStories(projectOutcomeData.get("stories"));
-
-      // adding information of the object to the array
-      projectOutcomes.add(projectOutcome);
+      return projectOutcome;
     }
-    return projectOutcomes;
+    return null;
   }
 
   @Override

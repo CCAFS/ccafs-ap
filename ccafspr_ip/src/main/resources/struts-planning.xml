@@ -36,7 +36,7 @@
       <result name="input">/WEB-INF/planning/projectBudget.ftl</result>
     </action>
     
-    <action name="projectOutcomes" class="org.cgiar.ccafs.ap.action.BaseAction">
+    <action name="projectOutcomes" class="org.cgiar.ccafs.ap.action.planning.ProjectOutcomeAction">
       <result name="input">/WEB-INF/planning/projectOutcomes.ftl</result>
     </action>
     

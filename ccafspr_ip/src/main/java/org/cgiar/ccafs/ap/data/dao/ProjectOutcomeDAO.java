@@ -42,7 +42,7 @@ public interface ProjectOutcomeDAO {
    * @param year - is the year of the budget
    * @return a list of Map of the Project Outcome related with the year and the project id
    */
-  public List<Map<String, String>> getProjectOutcomesByYear(int projectID, int year);
+  public Map<String, String> getProjectOutcomesByYear(int projectID, int year);
 
   /**
    * This method saves the Project Outcome
