@@ -94,7 +94,7 @@ public class ProjectManagerImpl implements ProjectManager {
         project.setStartDate(startDate);
         project.setEndDate(endDate);
       } catch (ParseException e) {
-        e.printStackTrace();
+        LOG.error("There was an error formatting the dates", e);
       }
       project.setOwner(userManager.getUser(Integer.parseInt(projectData.get("project_owner_user_id"))));
       project.getOwner().setCurrentInstitution(
@@ -165,16 +165,15 @@ public class ProjectManagerImpl implements ProjectManager {
       // Format to the Dates of the project
       String sDate = elementData.get("start_date");
       String eDate = elementData.get("end_date");
-      try {
-        if (sDate != null && eDate != null) {
+      if (sDate != null && eDate != null) {
+        try {
           Date startDate = dateformatter.parse(sDate);
           Date endDate = dateformatter.parse(eDate);
           project.setStartDate(startDate);
           project.setEndDate(endDate);
+        } catch (ParseException e) {
+          LOG.error("There was an error formatting the dates", e);
         }
-      } catch (ParseException e) {
-        // TODO JG - Never print stack trace. Instead, use LOG.error.
-        e.printStackTrace();
       }
       project.setCreated(Long.parseLong(elementData.get("created")));
       projectsList.add(project);
