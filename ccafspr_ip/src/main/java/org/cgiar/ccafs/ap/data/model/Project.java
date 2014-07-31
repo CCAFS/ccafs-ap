@@ -43,7 +43,7 @@ public class Project {
   private User expectedLeader;
   private List<Budget> budgets;
   private ProjectOutcome outcome;
-  private long created; // Timestamp number when the project was created.
+  private long created; // Timestamp number when the project was created
 
   public Project(int id) {
     this.id = id;
