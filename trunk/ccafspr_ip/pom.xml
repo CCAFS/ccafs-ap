@@ -195,7 +195,7 @@
         <configuration>
           <scanIntervalSeconds>5</scanIntervalSeconds>
           <scanTargets>
-            <scanTarget>src/main/webapp/WEB-INF</scanTarget>
+            <scanTarget>src/main/webapp/WEB-INF/ccafsap.properties</scanTarget>
             <scanTarget>src/main/webapp/WEB-INF/web.xml</scanTarget>
             <scanTarget>src/main/resources/struts.xml</scanTarget>
           </scanTargets>
