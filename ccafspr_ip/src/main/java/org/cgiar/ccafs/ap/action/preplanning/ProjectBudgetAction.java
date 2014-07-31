@@ -15,8 +15,10 @@ package org.cgiar.ccafs.ap.action.preplanning;
 
 import java.util.List;
 
+import org.cgiar.ccafs.ap.data.model.User;
+import org.cgiar.ccafs.ap.data.model.ProjectPartner;
+import org.cgiar.ccafs.ap.data.manager.ProjectPartnerManager;
 import org.cgiar.ccafs.ap.data.manager.InstitutionManager;
-
 import org.cgiar.ccafs.ap.data.model.Institution;
 import org.cgiar.ccafs.ap.data.manager.BudgetManager;
 import org.cgiar.ccafs.ap.data.manager.ProjectManager;
@@ -49,19 +51,24 @@ public class ProjectBudgetAction extends BaseAction {
   // Model for the front-end
   private List<Integer> allYears;
   private List<Institution> allInstitutions;
+  private List<Institution> leveragedInstitutions;
+  private List<ProjectPartner> projectPartners;
+  private User projectLeader;
 
   // Managers
   private ProjectManager projectManager;
   private BudgetManager budgetManager;
   private InstitutionManager institutionManager;
+  private ProjectPartnerManager partnerManager;
 
   @Inject
   public ProjectBudgetAction(APConfig config, ProjectManager projectManager, BudgetManager budgetManager,
-    InstitutionManager institutionManager) {
+    InstitutionManager institutionManager, ProjectPartnerManager partnerManager) {
     super(config);
     this.projectManager = projectManager;
     this.budgetManager = budgetManager;
     this.institutionManager = institutionManager;
+    this.partnerManager = partnerManager;
   }
 
   @Override
@@ -84,6 +91,9 @@ public class ProjectBudgetAction extends BaseAction {
     return allYears;
   }
 
+  public List<Institution> getLeveragedInstitutions() {
+    return leveragedInstitutions;
+  }
 
   public Project getProject() {
     return project;
@@ -91,6 +101,10 @@ public class ProjectBudgetAction extends BaseAction {
 
   public int getProjectID() {
     return projectID;
+  }
+
+  public List<ProjectPartner> getProjectPartners() {
+    return projectPartners;
   }
 
   public int getYear() {
@@ -114,9 +128,6 @@ public class ProjectBudgetAction extends BaseAction {
       return; // Stop here and go to execute method.
     }
 
-    // Getting all the institutions.
-    allInstitutions = institutionManager.getAllInstitutions();
-
     // Getting the project identified with the id parameter.
     project = projectManager.getProject(projectID);
     // if there is not a project identified with the given id
@@ -124,8 +135,21 @@ public class ProjectBudgetAction extends BaseAction {
       return; // Stop here and go to execute method.
     }
 
-    // Getting all the years dof the project.
+    // Getting all the institutions.
+    allInstitutions = institutionManager.getAllInstitutions();
+
+    // Getting the list of institutions that are funding the project as leveraged. TODO HT - validate if there are not
+// institutions.
+    leveragedInstitutions = budgetManager.getLeveragedInstitutions(projectID);
+
+    // Getting all the project partners. TODO HT - Validate if there are not partners.
+    projectPartners = partnerManager.getProjectPartners(projectID);
+
+    // Getting all the years dof the project. TODO HT - Validate if there are not dates configured.
     allYears = project.getAllYears();
+
+    // Getting project leader. TODO HT - Validate if project leader doesn't exist.
+    projectLeader = projectManager.getProjectLeader(projectID);
 
     try {
       parameter = this.getRequest().getParameter(APConstants.YEAR_REQUEST);
@@ -144,10 +168,6 @@ public class ProjectBudgetAction extends BaseAction {
 
   public void setAllInstitutions(List<Institution> allInstitutions) {
     this.allInstitutions = allInstitutions;
-  }
-
-  public void setAllYears(List<Integer> allYears) {
-    this.allYears = allYears;
   }
 
   public void setProject(Project project) {
