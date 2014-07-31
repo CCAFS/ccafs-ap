@@ -204,6 +204,7 @@ padding: 1px 10px;
 /************* 2. HEADER ***************/
 body { 
   text-align: center;
+  font-family: 'Segoe UI', Helvetica, Verdana;
 }
 header {
   font-family: 'Open Sans', sans-serif;
@@ -650,11 +651,7 @@ h1.contentSubTitle {
   display: inline-block;
   padding: 5px;
   width: 48%;
-  vertical-align: top;
-}
-
-.halfPartBlock input {
-  width: 80%;
+  vertical-align: middle;
 }
 
 .itemIndex {

@@ -2,7 +2,6 @@ $(document).ready(function(){
   init();
 });
 function init(){
-  console.log("init projectBudget.js");
   //
   $("#budgetTables").tabs({
     show : {

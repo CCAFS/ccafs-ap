@@ -77,40 +77,43 @@
                 [/#list]
               </div>  
             [/#if] 
-          [/#if]
-          
-          
+          [/#if] 
         </div>  
         [/#list]
       [#else]
+      <div id="outcomesBlock" class="outcome borderBox">
           [#-- Outcome identifier --]
           <input type="hidden" name="outcomes[0].id" value="-1" /> 
           <input type="hidden" name="outcomes[0].program.id" value="${currentUser.currentInstitution.program.id}" />
           <input type="hidden" name="outcomes[0].type.id" value="${elementTypeID}" />
           [#-- Title --]
-          [@customForm.textArea name="outcomes[0].description" i18nkey="preplanning.outcomes.outcome" required=true /]  
+          [@customForm.textArea name="outcomes[0].description" i18nkey="preplanning.outcomes.outcome" required=true /] 
+          [#-- Indicators --] 
           <div class="contentElements outcomeIndicatorsBlock">
             <div class="itemIndex">[@s.text name="preplanning.outcomes.indicators" /] </div>
               [@indicatorTemplate.outcomes /] 
-            </div>
-          </div> 
-          [#-- IDOs --]
-          [#if idos?has_content]
-            <div id="idosBlock" class="contentElements">
-              <div class="itemIndex">[@s.text name="preplanning.outcomes.idos" /]</div>
-              [#list idos as ido]
-                <div id="idoBlock-${ido_index}" class="ido">
-                <input  id="ido-${ido_index}" class="idosCheckbox" type="checkbox" name="outcomes[0].contributesTo" value="${ido.id}">
-                <label for="ido-${ido_index}" class="checkboxLabel">${ido.description}</label>
-                [#if ido.indicators?has_content]
-                  <div id="indicatorsBlock-${ido_index}" class="idosIndicators checkboxGroup vertical"> 
-                    [@s.checkboxlist name="outcomes[0].indicators.parent" list="idos[${ido_index}].indicators" listKey="id" listValue="description" value="outcomes[0].parentIndicatorsIDs" cssClass="indicatorsCheckbox" /]
+          </div>
+          
+          [#if currentUser.FPL]
+            [#-- IDOs --]
+            [#if idos?has_content]
+              <div id="idosBlock" class="contentElements">
+                <div class="itemIndex">[@s.text name="preplanning.outcomes.idos" /]</div>
+                [#list idos as ido]
+                  <div id="idoBlock-${ido_index}" class="ido">  
+                      <input  id="ido-${ido_index}" class="idosCheckbox" type="checkbox" name="outcomes[0].contributesTo" value="${ido.id}">
+                      <label for="ido-${ido_index}" class="checkboxLabel" >${ido.description}</label>
+                  [#if ido.indicators?has_content]
+                    <div id="indicatorsBlock-${ido_index}" class="idosIndicators checkboxGroup vertical"> 
+                      [@s.checkboxlist name="outcomes[0].indicators.parent" list="idos[${ido_index}].indicators" listKey="id" listValue="description" value="outcomes[0].parentIndicatorsIDs" cssClass="indicatorsCheckbox" /]
+                    </div>
+                  [/#if]
                   </div>
-                [/#if]
-                </div>
-              [/#list]
-            </div>  
+                [/#list]
+               </div>
+            [/#if] 
           [/#if] 
+        </div>    
       [/#if]
     
     <div class="buttons">
