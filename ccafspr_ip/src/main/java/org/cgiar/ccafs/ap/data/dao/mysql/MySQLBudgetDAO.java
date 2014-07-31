@@ -178,7 +178,7 @@ public class MySQLBudgetDAO implements BudgetDAO {
       LOG.error(exceptionMessage, e);
       return null;
     }
-    LOG.debug("<< executeQuery():projectPartnerList.size={}", budgetList.size());
+    LOG.debug("<< executeQuery():budgetList.size={}", budgetList.size());
     return budgetList;
   }
 
@@ -217,7 +217,7 @@ public class MySQLBudgetDAO implements BudgetDAO {
       }
       con.close();
     } catch (SQLException e) {
-      LOG.error("Exception arised getting the institutions for the user {}.", projectID, e);
+      LOG.error("Exception arised getting the leveraged institutions for the project {}.", projectID, e);
     }
     return leveragedInstitutionDataList;
   }
