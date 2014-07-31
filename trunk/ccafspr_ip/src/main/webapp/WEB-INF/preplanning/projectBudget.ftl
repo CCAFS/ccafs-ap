@@ -24,38 +24,102 @@
     <h1 class="contentTitle">
     [@s.text name="preplanning.projectBudget.title" /]  
     </h1>
+    [#-- Total CCAFS budget--]
+    <div id="totalBudget" class="halfPartBlock">
+      <h6>[@s.text name="preplanning.projectBudget.totalBudget" /]</h6>
+      {project.totalBudget}
+    </div>
+    [#-- Total overall project budget:--]
+    <div id="totalBudget" class="halfPartBlock">
+      <h6>[@s.text name="preplanning.projectBudget.totalOverallBudget" /]</h6>
+      {project.totalOverallBudget}
+    </div>
+    
   	[#-- Tertiary Menu - All years --]
-  	<nav id="tertiaryMenu">  
-      <div id="budgetTables" class="">
-        <ul>
+  	
+    <div id="budgetTables" class=""> 
+      <ul>
         [#list allYears as year]
         <li><a href="#activityTables-${year_index}"> ${year?c} </a></li>   
         [/#list]  
         </ul> 
-        [#list allYears as year]
-         <div id="activityTables-${year_index}" class="activityTable">
-          Conntent by  ${year?c}
-          
-          [#--  --]
+      [#list allYears as year]
+       <div id="activityTables-${year_index}" class="activityTable"> 
+       [#assign partners = ["Partner 1", "Partner 2", "Partner 3", "Partner 4", "Partner 5"] /]
+         <div id="" class="row">
+          [#-- Partner Name --]
           <div id="" class="thirdPartBlock">
-           
+           <h6>[@s.text name="preplanning.projectBudget.partner" /]</h6>
           </div> 
-          [#--  --]
-          <div id="" class="thirdPartBlock">
-           
+          [#-- W1 title --]
+          <div id="" class="fourthPartBlock">
+            <h6>[@s.text name="preplanning.projectBudget.w3" /]</h6>
           </div> 
-          [#--  --] 
-          <div id="" class="thirdPartBlock">
-            
+          [#-- W2 title --] 
+          <div id="" class="fourthPartBlock">
+             <h6>[@s.text name="preplanning.projectBudget.w2" /]</h6>
           </div> 
-          [#--   --] 
-          <div id="" class="thirdPartBlock">
-            
+          [#-- W3 title --] 
+          <div id="" class="fourthPartBlock">
+             <h6>[@s.text name="preplanning.projectBudget.w1" /]</h6>
           </div> 
          </div>
-        [/#list]
-      </div> <!-- End tertiaryMenu -->
-    </nav> <!-- End container-->
+         [#list partners as partner ] 
+          <div id="partnerBudget-${partner_index}" class="row">
+          [#-- Partner Name --]
+          <div id="" class="thirdPartBlock">
+           {partner.name}
+          </div> 
+          [#-- W1 --]
+          <div id="" class="fourthPartBlock">
+           [@customForm.input name=""  i18nkey="" /]
+          </div> 
+          [#-- W2 --] 
+          <div id="" class="fourthPartBlock">
+            [@customForm.input name=""  i18nkey="" /]
+          </div> 
+          [#-- W3  --] 
+          <div id="" class="fourthPartBlock">
+            [@customForm.input name=""  i18nkey="" /]
+          </div> 
+         </div> 
+        [/#list] 
+       </div>   
+      [/#list]
+    </div> <!-- End budgetTables -->
+    [#assign partners = ["Partner 1", "Partner 2"] /]
+    [#-- Bilateral --]
+    <div id="bilateral" class="halfPartBlock halfPanel">
+    <h6>[@s.text name="preplanning.projectBudget.bilateral" /]</h6>
+      [#list partners as partner]
+        <div id="bilateralPartner-${partner_index}" class="row">
+          [#-- Partner Name --]
+          <div id="" class="halfPartBlock">
+           {partner.name}
+          </div> 
+          [#-- W1 --]
+          <div id="" class="thirdPartBlock">
+           [@customForm.input name=""  i18nkey="" /]
+          </div>
+        </div>   
+      [/#list] 
+    </div>
+    [#-- Leveraged --]
+    <div id="leveraged" class="halfPartBlock halfPanel">
+    <h6>[@s.text name="preplanning.projectBudget.leveraged" /]</h6>
+      [#list partners as partner]
+        <div id="leveragedPartner-${partner_index}" class="row">
+          [#-- Partner Name --]
+          <div id="" class="halfPartBlock">
+           {partner.name}
+          </div> 
+          [#-- W1 --]
+          <div id="" class="thirdPartBlock">
+           [@customForm.input name=""  i18nkey="" /]
+          </div>
+        </div>  
+      [/#list] 
+    </div>
     
   </article>
   [/@s.form]  
