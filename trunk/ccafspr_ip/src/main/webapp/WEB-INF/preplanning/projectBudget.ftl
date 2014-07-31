@@ -33,10 +33,8 @@
     <div id="totalBudget" class="halfPartBlock">
       <h6>[@s.text name="preplanning.projectBudget.totalOverallBudget" /]</h6>
       {project.totalOverallBudget}
-    </div>
-    
-  	[#-- Tertiary Menu - All years --]
-  	
+    </div>  
+  	[#-- Tertiary Menu - All years --] 
     <div id="budgetTables" class=""> 
       <ul>
         [#list allYears as year]
@@ -44,46 +42,47 @@
         [/#list]  
         </ul> 
       [#list allYears as year]
-       <div id="activityTables-${year_index}" class="activityTable">
-       [#assign partners = ["Partner 1", "Partner 2", "Partner 3", "Partner 4", "Partner 5"] /]
-         <div id="" class="row">
+       <div id="activityTables-${year_index}" class="activityTable"> 
+         <table class="fullPartBlock"> 
+         <tr id="" class="row">
           [#-- Partner Name --]
-          <div id="" class="thirdPartBlock">
+          <td id="" class="thirdPartBlock">
            <h6>[@s.text name="preplanning.projectBudget.partner" /]</h6>
-          </div> 
+          </td> 
           [#-- W1 title --]
-          <div id="" class="fourthPartBlock">
+          <td id="" class="fourthPartBlock">
             <h6>[@s.text name="preplanning.projectBudget.w3" /]</h6>
-          </div> 
+          </td> 
           [#-- W2 title --] 
-          <div id="" class="fourthPartBlock">
+          <td id="" class="fourthPartBlock">
              <h6>[@s.text name="preplanning.projectBudget.w2" /]</h6>
-          </div> 
+          </td> 
           [#-- W3 title --] 
-          <div id="" class="fourthPartBlock">
+          <td id="" class="fourthPartBlock">
              <h6>[@s.text name="preplanning.projectBudget.w1" /]</h6>
-          </div> 
-         </div>
-         [#list partners as partner ] 
-          <div id="partnerBudget-${partner_index}" class="row">
+          </td> 
+         </tr>
+         [#list projectPartners as projectPartner ] 
+          <tr id="partnerBudget-${projectPartner_index}" class="row">
           [#-- Partner Name --]
-          <div id="" class="thirdPartBlock">
-           ${partner}
-          </div> 
+          <td id="" class="thirdPartBlock">
+           ${projectPartner.partner.name}
+          </td> 
           [#-- W1 --]
-          <div id="" class="fourthPartBlock">
-           [@customForm.input name=""  i18nkey="" /]
-          </div> 
+          <td id="" class="fourthPartBlock">
+           [@customForm.input name="" showTitle=false /]
+          </td> 
           [#-- W2 --] 
-          <div id="" class="fourthPartBlock">
-            [@customForm.input name=""  i18nkey="" /]
-          </div> 
+          <td id="" class="fourthPartBlock">
+            [@customForm.input name="" showTitle=false /]
+          </td> 
           [#-- W3  --] 
-          <div id="" class="fourthPartBlock">
-            [@customForm.input name=""  i18nkey="" /]
-          </div> 
-         </div> 
-        [/#list]  
+          <td id="" class="fourthPartBlock">
+            [@customForm.input name="" showTitle=false /]
+          </td> 
+         </tr>
+        [/#list] 
+        </table>  
         <div class="partnerListMsj">
           [@s.text name="preplanning.projectBudget.partnerNotList" /]
           <a href="[@s.url action='partners' includeParams='get'][@s.param name='projectID']${project.id?c}[/@s.param][/@s.url]"> 
@@ -92,23 +91,33 @@
         </div>
        </div>   
       [/#list]
-    </div> <!-- End budgetTables -->
-    [#assign partners = ["Partner 1", "Partner 2"] /]
+    </div> <!-- End budgetTables --> 
     [#-- Bilateral --]
     <div id="bilateral" class="halfPartBlock halfPanel">
     <h6>[@s.text name="preplanning.projectBudget.bilateral" /]</h6>
-      [#list partners as partner]
-        <div id="bilateralPartner-${partner_index}" class="row">
+      <table id="bilateralTable">
+        <tr>
           [#-- Partner Name --]
-          <div id="" class="halfPartBlock">
-           ${partner}
-          </div> 
+          <td id="" class="name">
+           <h6>[@s.text name="preplanning.projectBudget.partner" /]</h6>
+          </td> 
+          [#-- Amount --]
+          <td id="" class="amount"> 
+          </td>
+        </tr>   
+      [#list projectPartners as projectPartner]
+        <tr id="bilateralPartner-${projectPartner_index}" class="bilateralPartner row">
+          [#-- Partner Name --]
+          <td id="" class="name">
+           ${projectPartner.partner.name}
+          </td> 
           [#-- W1 --]
-          <div id="" class="thirdPartBlock">
-           [@customForm.input name=""  i18nkey="" /]
-          </div>
-        </div>   
+          <td id="" class="amount">
+           [@customForm.input name="" showTitle=false /]
+          </td>
+        </tr>   
       [/#list]
+      </table>
       <div class="partnerListMsj">
         [@s.text name="preplanning.projectBudget.partnerNotList" /]
         <a href="[@s.url action='partners' includeParams='get'][@s.param name='projectID']${project.id?c}[/@s.param][/@s.url]"> 
@@ -118,26 +127,51 @@
     </div>
     [#-- Leveraged --]
     <div id="leveraged" class="halfPartBlock halfPanel">
-    <h6>[@s.text name="preplanning.projectBudget.leveraged" /]</h6>
-      [#list partners as partner]
-        <div id="leveragedPartner-${partner_index}" class="row">
+    <h6>[@s.text name="preplanning.projectBudget.leveraged" /]</h6> 
+        <div>
           [#-- Partner Name --]
-          <div id="" class="halfPartBlock">
-           ${partner}
+          <div id="" class="">
+           <h6>[@s.text name="preplanning.projectBudget.partner" /]</h6>
           </div> 
-          [#-- W1 --]
-          <div id="" class="thirdPartBlock">
-           [@customForm.input name=""  i18nkey="" /]
+          [#-- Amount --]
+          <div id="" class="amount"> 
           </div>
+        </div>  
+      [#list leveragedInstitutions as partner]
+        <div id="leveragedPartner-${partner_index}" class="leveragedPartner row"> 
+          [#-- Partner Name --]
+          <div id="" class="name"> 
+           ${partner.name}
+          </div> 
+          [#-- Amount --]
+          <div id="" class="amount">
+           <input type="hidden" id="id" name="leveragedInstitutions[${partner_index}].budgets.id" value="${partner.id}">
+           [@customForm.input name="leveragedInstitutions[${partner_index}].budgets.amount" showTitle=false/] 
+           <img class="removeButton" src="${baseUrl}/images/global/icon-remove.png" />
+          </div> 
         </div>  
       [/#list] 
       [#-- Add Leveraged --]
       <div class="fullBlock addLeveragedBlock">
-        [@customForm.select name="" value="" showTitle=false listName="partners" keyFieldName="id"  displayFieldName="description" addButton=true className="leveraged" /]
+        [@customForm.select name="" value="" showTitle=false listName="leveragedInstitutions" keyFieldName="id"  displayFieldName="name" addButton=true className="leveraged" /]
       </div>
     </div>
     
   </article>
   [/@s.form]  
+  
+  [#-- Partner Leveraged Template --] 
+  <div id="leveragedPartnerTemplate" class="row" style="display:none"> 
+    <div id="partnerName" class="name"> 
+      Partner Name
+    </div> 
+    <div id="" class="amount">
+      <input type="hidden" id="id" name="leveragedInstitutions[0].budgets.id" value="">
+      <div class="input">
+        <input type="text" id="amount" name="leveragedInstitutions[0].budgets.amount" value="">
+      </div>
+      <img class="removeButton" src="${baseUrl}/images/global/icon-remove.png">
+    </div> 
+  </div>
 </section>
 [#include "/WEB-INF/global/pages/footer.ftl"]
