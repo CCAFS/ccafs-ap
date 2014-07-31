@@ -617,7 +617,7 @@ h1.contentSubTitle {
 
 .fullContent h6+*, .halfContent h6+* {
   margin-left: 1px;
-  margin-right: 15px;
+  margin-right: 0px;
   margin-top: 3px;
 }
 
@@ -632,11 +632,18 @@ h1.contentSubTitle {
   width: 98%;
 }
 
+.fourthPartBlock {
+  display: inline-block;
+  padding: 5px;
+  width: 20%;
+  vertical-align: middle;
+}
+
 .thirdPartBlock {
   display: inline-block;
   padding: 5px;
   width: 30%;
-  vertical-align: top;
+  vertical-align: middle;
 }
 
 .halfPartBlock {
@@ -852,12 +859,7 @@ h1.contentSubTitle {
 
 #idosBlock .ido .checkboxGroup.vertical label { 
     font-weight: normal;
-}
-
-/* Project Description*/
-textarea[id$='summary'] {
-    height: 90px;
-}
+} 
 
 /* Impact Pathways */
 
@@ -901,7 +903,32 @@ textarea[id$='summary'] {
   width: 96%;
 }
 
+/* Project Description*/
+textarea[id$='summary'] {
+    height: 90px;
+}
 
+/* Project Partners*/
+
+#budgetTables {
+  margin-top: 1.5em;
+}
+
+/* Project Budget */
+
+#bilateral { 
+  float: left; 
+}
+
+#leveraged { 
+  float: right; 
+}
+
+.halfPanel {
+  border: 2px solid #DFDFDF; 
+  width: 48%;  
+  margin: 13px 0;
+}
 
 
 /***** PLANNING *****/
