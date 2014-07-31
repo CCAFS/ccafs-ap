@@ -24,6 +24,14 @@ import com.google.inject.ImplementedBy;
 public interface IPProgramManager {
 
   /**
+   * This method gets the information of an IP Program given an Id
+   * 
+   * @param ipProgramID
+   * @return an IPProgram object with the result information.
+   */
+  public IPProgram getIPProgramById(int ipProgramID);
+
+  /**
    * This method gets from the database a list of ipElements
    * which have the same type as passed as parameter
    * 

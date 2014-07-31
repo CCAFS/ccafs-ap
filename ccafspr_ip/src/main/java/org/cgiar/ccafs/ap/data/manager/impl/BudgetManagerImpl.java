@@ -20,8 +20,6 @@ import org.cgiar.ccafs.ap.data.manager.InstitutionManager;
 import org.cgiar.ccafs.ap.data.manager.LocationManager;
 import org.cgiar.ccafs.ap.data.model.Budget;
 import org.cgiar.ccafs.ap.data.model.BudgetType;
-import org.cgiar.ccafs.ap.data.model.Country;
-import org.cgiar.ccafs.ap.data.model.IPProgram;
 import org.cgiar.ccafs.ap.data.model.Institution;
 import org.cgiar.ccafs.ap.data.model.InstitutionType;
 
@@ -170,13 +168,10 @@ public class BudgetManagerImpl implements BudgetManager {
         institution.setType(institutionManager.getInstitutionType(Integer.parseInt(iData.get("institution_type_id"))));
       }
       // Program Object
-      IPProgram program = new IPProgram();
       if (iData.get("program_id") != null) {
-        program.setId(Integer.parseInt(iData.get("program_id")));
-        institution.setProgram(program);
+        institution.setProgram(ipProgramManager.getIPProgramById(Integer.parseInt(iData.get("program_id"))));
       }
       // Location Object
-      Country country = new Country();
       if (iData.get("loc_elements_id") != null) {
         institution.setCountry(locationManger.getCountry(Integer.parseInt(iData.get("loc_elements_id"))));
       }
