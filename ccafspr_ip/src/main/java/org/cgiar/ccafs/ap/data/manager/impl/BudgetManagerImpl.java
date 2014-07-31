@@ -62,14 +62,12 @@ public class BudgetManagerImpl implements BudgetManager {
 
   @Override
   public double calculateTotalCCAFSBudget(int projectID) {
-    // TODO JG - To complete
-    return 0;
+    return budgetDAO.calculateTotalCCAFSBudget(projectID);
   }
 
   @Override
   public double calculateTotalOverallBudget(int projectID) {
-    // TODO JG - To complete
-    return 0;
+    return budgetDAO.calculateTotalOverallBudget(projectID);
   }
 
   @Override
