@@ -13,53 +13,57 @@
  *****************************************************************/
 package org.cgiar.ccafs.ap.converter;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Map;
 
+import org.cgiar.ccafs.ap.data.manager.IPProgramManager;
+
+import org.cgiar.ccafs.ap.data.model.IPProgram;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-
-import org.cgiar.ccafs.ap.data.model.User;
-import org.cgiar.ccafs.ap.data.manager.UserManager;
 import com.google.inject.Inject;
 import org.apache.struts2.util.StrutsTypeConverter;
 
 
-public class UserConverter extends StrutsTypeConverter {
+public class IPProgramsListConverter extends StrutsTypeConverter {
 
   // LOG
-  private static final Logger LOG = LoggerFactory.getLogger(UserConverter.class);
+  private static final Logger LOG = LoggerFactory.getLogger(IPProgramsListConverter.class);
 
   // Manager
-  private UserManager userManager;
+  private IPProgramManager programManager;
 
   @Inject
-  public UserConverter(UserManager userManager) {
-    this.userManager = userManager;
+  public IPProgramsListConverter(IPProgramManager programManager) {
+    this.programManager = programManager;
   }
 
   @Override
   public Object convertFromString(Map context, String[] values, Class toClass) {
-    if (toClass == User.class) {
-      String id = values[0];
+    if (toClass == List.class) {
+      List<IPProgram> programs = new ArrayList<>();
       try {
-        // This will return an user without currentInstitution defined.
-        // If you want to get the current institution, you will need to use the converter UserOwnerConverter
-        User user = userManager.getUser(Integer.parseInt(id));
-        LOG.debug(">> convertFromString > id = {} ", id);
-        return user;
+        for (String value : values) {
+          IPProgram program = programManager.getIPProgramById(Integer.parseInt(value));
+          programs.add(program);
+          LOG.debug(">> convertFromString > id = {} ", value);
+        }
       } catch (NumberFormatException e) {
         // Do Nothing
-        LOG.error("Problem to convert User from String (convertFromString) for user_id = {} ", id, e.getMessage());
+        LOG.error("Problem to convert IPPrograms from String (convertFromString) for values = {} ", values,
+          e.getMessage());
       }
+      return programs;
     }
     return null;
   }
 
   @Override
   public String convertToString(Map context, Object o) {
-    User user = (User) o;
-    LOG.debug(">> convertToString > id = {} ", user.getId());
-    return user.getId() + "";
+    List<IPProgram> programs = (List) o;
+    LOG.debug(">> convertToString > id = {} ", programs.toArray());
+    return programs.toArray() + "";
   }
 
 }

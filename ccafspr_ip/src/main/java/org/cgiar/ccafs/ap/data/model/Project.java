@@ -126,14 +126,6 @@ public class Project {
     return expectedLeader;
   }
 
-  public List<String> getFlagshipIds() {
-    ArrayList<String> ids = new ArrayList<>();
-    for (IPProgram flagship : flagships) {
-      ids.add(String.valueOf(flagship.getId()));
-    }
-    return ids;
-  }
-
   public List<IPProgram> getFlagships() {
     return flagships;
   }
@@ -168,14 +160,6 @@ public class Project {
 
   public List<IPProgram> getRegions() {
     return regions;
-  }
-
-  public int[] getRegionsIds() {
-    int[] regionsIds = new int[regions.size()];
-    for (int c = 0; c < regions.size(); c++) {
-      regionsIds[c] = regions.get(c).getId();
-    }
-    return regionsIds;
   }
 
   public Date getStartDate() {
