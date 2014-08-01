@@ -115,6 +115,24 @@ public class MySQLBudgetDAO implements BudgetDAO {
   }
 
   @Override
+  public List<Map<String, String>> getBudgetsByProject(int projectID) {
+    LOG.debug(">> getBudgetsByProject projectID = {} )", projectID);
+
+    StringBuilder query = new StringBuilder();
+    query.append("SELECT b.*   ");
+    query.append("FROM budgets as b ");
+    query.append("INNER JOIN project_budgets pb ON b.id = pb.budget_id ");
+    query.append("INNER JOIN budget_types bt ON b.budget_type = bt.id ");
+    query.append("INNER JOIN institutions i ON b.institution_id = i.id ");
+    query.append("WHERE pb.project_id=  ");
+    query.append(projectID);
+
+
+    LOG.debug("-- getBudgetsByProject() > Calling method executeQuery to get the results");
+    return getData(query.toString());
+  }
+
+  @Override
   public List<Map<String, String>> getBudgetsByType(int projectID, int budgetType) {
     LOG.debug(">> getBudgetsByType projectID = {} )", projectID);
 
@@ -153,6 +171,32 @@ public class MySQLBudgetDAO implements BudgetDAO {
     LOG.debug("-- getBudgetsByYear() > Calling method executeQuery to get the results");
     return getData(query.toString());
   }
+
+  @Override
+  public List<Map<String, String>> getCCAFSBudgets(int projectID) {
+    LOG.debug(">> getCCAFSBudgets projectID = {} )", projectID);
+
+    StringBuilder query = new StringBuilder();
+    query.append("SELECT b.*   ");
+    query.append("FROM budgets as b ");
+    query.append("INNER JOIN project_budgets pb ON b.id = pb.budget_id ");
+    query.append("INNER JOIN budget_types bt ON b.budget_type = bt.id ");
+    query.append("INNER JOIN institutions i ON b.institution_id = i.id ");
+    query.append("WHERE pb.project_id=  ");
+    query.append(projectID);
+    query.append(" AND (b.budget_type = ");
+    query.append(BudgetType.W1.getValue());
+    query.append(" OR b.budget_type = ");
+    query.append(BudgetType.W2.getValue());
+    query.append(" OR b.budget_type = ");
+    query.append(BudgetType.W3.getValue());
+    query.append(" ) ");
+
+
+    LOG.debug("-- getCCAFSBudgets() > Calling method executeQuery to get the results");
+    return getData(query.toString());
+  }
+
 
   private List<Map<String, String>> getData(String query) {
     LOG.debug(">> executeQuery(query='{}')", query);

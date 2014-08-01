@@ -16,11 +16,13 @@
 		  [#if projects?has_content]
         [#list projects as project]
     		   <tr>
+    		   [#-- ID --]
               <td>
                   <a href="[@s.url action='description' includeParams='get'][@s.param name='projectID']${project.id?c}[/@s.param][/@s.url]">
                     ${project.composedId}
                   </a>
               </td>
+              [#-- Project Title --]
               <td>
                   <a href="[@s.url action='description' includeParams='get'] [@s.param name='projectID']${project.id?c}[/@s.param][/@s.url]">
                     [#if project.title?has_content]
@@ -30,26 +32,29 @@
                     [/#if]
                   </a>
               </td>
+              [#-- Region --]
               <td> 
                   <a href="[@s.url action='description' includeParams='get'] [@s.param name='projectID']${project.id?c}[/@s.param] [/@s.url]">
-                    TODO
+                    ${project.regionsAcronym}
                   </a>
               </td>
+              [#-- Flagship --]
               <td> 
                   <a href="[@s.url action='description' includeParams='get'] [@s.param name='projectID']${project.id?c}[/@s.param] [/@s.url]">
-                    TODO
+                    ${project.flagshipsAcronym}
                   </a>
               </td>
+              [#-- Budget --]
               <td> 
                   <a href="[@s.url action='description' includeParams='get'] [@s.param name='projectID']${project.id?c}[/@s.param] [/@s.url]">
-                    TODO
+                    ${project.totalCcafsBudget}
                   </a>
               </td>
           	</tr>  
         	[/#list]
         [#else]
           <tr>
-            <td colspan="4">[@s.text name="planning.activityList.empty" /]</td>
+            <td colspan="5">[@s.text name="planning.activityList.empty" /]</td>
           </tr>
         [/#if]
 		  </tbody>

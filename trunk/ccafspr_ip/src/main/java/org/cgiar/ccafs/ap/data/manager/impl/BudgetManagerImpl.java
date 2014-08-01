@@ -78,6 +78,42 @@ public class BudgetManagerImpl implements BudgetManager {
   }
 
   @Override
+  public List<Budget> getBudgetsByProject(int projectID) {
+    List<Budget> budgets = new ArrayList<>();
+    List<Map<String, String>> budgetDataList = budgetDAO.getBudgetsByProject(projectID);
+    for (Map<String, String> budgetData : budgetDataList) {
+      Budget budget = new Budget();
+      budget.setId(Integer.parseInt(budgetData.get("id")));
+      budget.setYear(Integer.parseInt(budgetData.get("year")));
+      switch (Integer.parseInt(budgetData.get("budget_type"))) {
+        case 1:
+          budget.setType(BudgetType.W1);
+          break;
+        case 2:
+          budget.setType(BudgetType.W2);
+          break;
+        case 3:
+          budget.setType(BudgetType.W3);
+          break;
+        case 4:
+          budget.setType(BudgetType.BILATERAL);
+          break;
+        case 5:
+          budget.setType(BudgetType.LEVERAGED);
+          break;
+      }
+      budget.setAmount(Double.parseDouble(budgetData.get("amount")));
+
+      // Institution as institution_id
+      budget.setInstitution(institutionManager.getInstitution(Integer.parseInt(budgetData.get("institution_id"))));
+
+      // adding information of the object to the array
+      budgets.add(budget);
+    }
+    return budgets;
+  }
+
+  @Override
   public List<Budget> getBudgetsByType(int projectID, int budgetType) {
     List<Budget> budgets = new ArrayList<>();
     List<Map<String, String>> budgetDataList = budgetDAO.getBudgetsByType(projectID, budgetType);
@@ -117,6 +153,42 @@ public class BudgetManagerImpl implements BudgetManager {
   public List<Budget> getBudgetsByYear(int projectID, int year) {
     List<Budget> budgets = new ArrayList<>();
     List<Map<String, String>> budgetDataList = budgetDAO.getBudgetsByYear(projectID, year);
+    for (Map<String, String> budgetData : budgetDataList) {
+      Budget budget = new Budget();
+      budget.setId(Integer.parseInt(budgetData.get("id")));
+      budget.setYear(Integer.parseInt(budgetData.get("year")));
+      switch (Integer.parseInt(budgetData.get("budget_type"))) {
+        case 1:
+          budget.setType(BudgetType.W1);
+          break;
+        case 2:
+          budget.setType(BudgetType.W2);
+          break;
+        case 3:
+          budget.setType(BudgetType.W3);
+          break;
+        case 4:
+          budget.setType(BudgetType.BILATERAL);
+          break;
+        case 5:
+          budget.setType(BudgetType.LEVERAGED);
+          break;
+      }
+      budget.setAmount(Double.parseDouble(budgetData.get("amount")));
+
+      // Institution as institution_id
+      budget.setInstitution(institutionManager.getInstitution(Integer.parseInt(budgetData.get("institution_id"))));
+
+      // adding information of the object to the array
+      budgets.add(budget);
+    }
+    return budgets;
+  }
+
+  @Override
+  public List<Budget> getCCAFSBudgets(int projectID) {
+    List<Budget> budgets = new ArrayList<>();
+    List<Map<String, String>> budgetDataList = budgetDAO.getCCAFSBudgets(projectID);
     for (Map<String, String> budgetData : budgetDataList) {
       Budget budget = new Budget();
       budget.setId(Integer.parseInt(budgetData.get("id")));

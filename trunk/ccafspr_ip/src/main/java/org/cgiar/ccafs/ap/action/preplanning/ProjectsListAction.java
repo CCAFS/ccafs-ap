@@ -15,13 +15,15 @@ package org.cgiar.ccafs.ap.action.preplanning;
 
 import org.cgiar.ccafs.ap.action.BaseAction;
 import org.cgiar.ccafs.ap.config.APConfig;
+import org.cgiar.ccafs.ap.data.manager.BudgetManager;
 import org.cgiar.ccafs.ap.data.manager.ProjectManager;
+import org.cgiar.ccafs.ap.data.model.IPProgram;
 import org.cgiar.ccafs.ap.data.model.Project;
 
 import java.util.Date;
 import java.util.List;
+import java.util.Map;
 
-import org.cgiar.ccafs.ap.data.model.IPProgram;
 import com.google.inject.Inject;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -34,6 +36,7 @@ public class ProjectsListAction extends BaseAction {
 
   // Manager
   private ProjectManager projectManager;
+  private BudgetManager budgetManager;
 
   // LOG
   private static Logger LOG = LoggerFactory.getLogger(ProjectsListAction.class);
@@ -43,12 +46,17 @@ public class ProjectsListAction extends BaseAction {
 
   // Model for the front-end
   private int projectID;
+  private double totalBudget = 0.0;
+  private Map<String, String> projectBudget;
+
 
   @Inject
-  public ProjectsListAction(APConfig config, ProjectManager projectManager) {
+  public ProjectsListAction(APConfig config, ProjectManager projectManager, BudgetManager budgetManager) {
     super(config);
     this.projectManager = projectManager;
+    this.budgetManager = budgetManager;
   }
+
 
   @Override
   public String add() {
@@ -107,6 +115,9 @@ public class ProjectsListAction extends BaseAction {
     return projects;
   }
 
+  public double getTotalBudget() {
+    return totalBudget;
+  }
 
   @Override
   public void prepare() throws Exception {
@@ -114,7 +125,7 @@ public class ProjectsListAction extends BaseAction {
 
     // Depending on the user that is logged-in, the list of projects will be displayed. - currentUser.
 
-    // Getting project list that belongs to the program that you blongs to.
+    // Getting project list that belongs to the program that you belongs to.
     IPProgram userProgram = this.getCurrentUser().getCurrentInstitution().getProgram();
     projects = projectManager.getProjectsByProgram(userProgram.getId());
 
@@ -134,5 +145,10 @@ public class ProjectsListAction extends BaseAction {
 
   public void setProjectID(int projectID) {
     this.projectID = projectID;
+  }
+
+
+  public void setTotalBudget(double totalBudget) {
+    this.totalBudget = totalBudget;
   }
 }
