@@ -40,47 +40,41 @@
         [#list allYears as year]
         <li><a href="#activityTables-${year_index}"> ${year?c} </a></li>   
         [/#list]  
-        </ul> 
+        </ul>
       [#list allYears as year]
        <div id="activityTables-${year_index}" class="activityTable"> 
          <table class="fullPartBlock"> 
-         <tr id="" class="row">
-          [#-- Partner Name --]
-          <td id="" class="thirdPartBlock">
-           <h6>[@s.text name="preplanning.projectBudget.partner" /]</h6>
-          </td> 
-          [#-- W1 title --]
-          <td id="" class="fourthPartBlock">
-            <h6>[@s.text name="preplanning.projectBudget.w3" /]</h6>
-          </td> 
-          [#-- W2 title --] 
-          <td id="" class="fourthPartBlock">
-             <h6>[@s.text name="preplanning.projectBudget.w2" /]</h6>
-          </td> 
-          [#-- W3 title --] 
-          <td id="" class="fourthPartBlock">
-             <h6>[@s.text name="preplanning.projectBudget.w1" /]</h6>
-          </td> 
-         </tr>
+           <tr id="" class="row">
+            [#-- Partner Name --]
+            <td id="" class="halfPartBlock"><h6>[@s.text name="preplanning.projectBudget.partner" /]</h6></td> 
+            [#-- W1 title --]
+            <td id="" class="sixthPartBlock"><h6>[@s.text name="preplanning.projectBudget.w3" /]</h6></td> 
+            [#-- W2 title --] 
+            <td id="" class="sixthPartBlock"><h6>[@s.text name="preplanning.projectBudget.w2" /]</h6></td> 
+            [#-- W3 title --] 
+            <td id="" class="sixthPartBlock"><h6>[@s.text name="preplanning.projectBudget.w1" /]</h6></td> 
+           </tr>
+           <tr id="" class="row">
+            [#-- Partner Leader Name --]
+            <td id="" class="halfPartBlock">${projectLeader.currentInstitution.name} <strong>( [@s.text name="preplanning.projectBudget.partnerLead" /] )</strong> </td> 
+            [#-- W1 --]
+            <td id="" class="sixthPartBlock">[@customForm.input name="" showTitle=false /]</td> 
+            [#-- W2 --] 
+            <td id="" class="sixthPartBlock">[@customForm.input name="" showTitle=false /]</td> 
+            [#-- W3  --] 
+            <td id="" class="sixthPartBlock">[@customForm.input name="" showTitle=false /]</td> 
+           </tr>
          [#list projectPartners as projectPartner ] 
           <tr id="partnerBudget-${projectPartner_index}" class="row">
-          [#-- Partner Name --]
-          <td id="" class="thirdPartBlock">
-           ${projectPartner.partner.name}
-          </td> 
-          [#-- W1 --]
-          <td id="" class="fourthPartBlock">
-           [@customForm.input name="" showTitle=false /]
-          </td> 
-          [#-- W2 --] 
-          <td id="" class="fourthPartBlock">
-            [@customForm.input name="" showTitle=false /]
-          </td> 
-          [#-- W3  --] 
-          <td id="" class="fourthPartBlock">
-            [@customForm.input name="" showTitle=false /]
-          </td> 
-         </tr>
+            [#-- Partner Name --]
+            <td id="" class="halfPartBlock">${projectPartner.partner.name}</td> 
+            [#-- W1 --]
+            <td id="" class="sixthPartBlock">[@customForm.input name="" showTitle=false /]</td> 
+            [#-- W2 --] 
+            <td id="" class="sixthPartBlock">[@customForm.input name="" showTitle=false /]</td> 
+            [#-- W3  --] 
+            <td id="" class="sixthPartBlock">[@customForm.input name="" showTitle=false /]</td> 
+          </tr>
         [/#list] 
         </table>  
         <div class="partnerListMsj">
@@ -98,23 +92,16 @@
       <table id="bilateralTable">
         <tr>
           [#-- Partner Name --]
-          <td id="" class="name">
-           <h6>[@s.text name="preplanning.projectBudget.partner" /]</h6>
-          </td> 
+          <td id="" class="name"><h6>[@s.text name="preplanning.projectBudget.partner" /]</h6></td> 
           [#-- Amount --]
-          <td id="" class="amount"> 
-          </td>
+          <td id="" class="amount"></td>
         </tr>   
       [#list projectPartners as projectPartner]
         <tr id="bilateralPartner-${projectPartner_index}" class="bilateralPartner row">
           [#-- Partner Name --]
-          <td id="" class="name">
-           ${projectPartner.partner.name}
-          </td> 
+          <td id="" class="name">${projectPartner.partner.name}</td> 
           [#-- W1 --]
-          <td id="" class="amount">
-           [@customForm.input name="" showTitle=false /]
-          </td>
+          <td id="" class="amount">[@customForm.input name="" showTitle=false /]</td>
         </tr>   
       [/#list]
       </table>
@@ -130,19 +117,14 @@
     <h6>[@s.text name="preplanning.projectBudget.leveraged" /]</h6> 
         <div>
           [#-- Partner Name --]
-          <div id="" class="">
-           <h6>[@s.text name="preplanning.projectBudget.partner" /]</h6>
-          </div> 
+          <div id="" class=""><h6>[@s.text name="preplanning.projectBudget.partner" /]</h6></div> 
           [#-- Amount --]
-          <div id="" class="amount"> 
-          </div>
+          <div id="" class="amount"></div>
         </div>  
       [#list leveragedInstitutions as partner]
         <div id="leveragedPartner-${partner_index}" class="leveragedPartner row"> 
           [#-- Partner Name --]
-          <div id="partnerName" class="name"> 
-           ${partner.name}
-          </div> 
+          <div id="partnerName" class="name">${partner.name}</div> 
           [#-- Amount --]
           <div id="amount" class="amount">
            <input type="hidden" id="id" name="leveragedInstitutions[${partner_index}].budgets.id" value="${partner.id}">
@@ -162,9 +144,7 @@
   
   [#-- Partner Leveraged Template --] 
   <div id="leveragedPartnerTemplate" class="row" style="display:none"> 
-    <div id="partnerName" class="name"> 
-      Partner Name
-    </div> 
+    <div id="partnerName" class="name"> Partner Name </div> 
     <div id="amount" class="amount">
       <input type="hidden" id="id" name="leveragedInstitutions[0].budgets.id" value="">
       <div class="input">
