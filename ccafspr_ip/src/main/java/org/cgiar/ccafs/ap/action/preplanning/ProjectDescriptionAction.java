@@ -125,7 +125,7 @@ public class ProjectDescriptionAction extends BaseAction {
     }
 
     // Getting the information for the Project Owner Contact Persons for the View
-    allOwners = userManager.getImportantUsers();
+    allOwners = userManager.getAllOwners();
     // System.out.println(userContacts);
 
     // Getting the information of the Regions program for the View
@@ -153,11 +153,16 @@ public class ProjectDescriptionAction extends BaseAction {
 
   @Override
   public String save() {
-
-    System.out.println("------- SAVING --------");
-    System.out.println(project.getRegions());
-
-    return BaseAction.SUCCESS;
+    // Saving project
+    userManager.getEmployeeID(project.getOwner());
+    int result = projectManager.saveProjectDescription(project);
+    // TODO HT - To save IPProgram focuses.
+    if (result >= 0) {
+      System.out.println("Success!");
+      return BaseAction.SUCCESS;
+    }
+    System.out.println("FAIL!");
+    return BaseAction.INPUT;
   }
 
   public void setIpCrossCuttings(List<IPCrossCutting> ipCrossCuttings) {

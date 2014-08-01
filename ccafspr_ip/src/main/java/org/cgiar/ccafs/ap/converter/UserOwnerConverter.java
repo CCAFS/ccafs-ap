@@ -43,17 +43,16 @@ public class UserOwnerConverter extends StrutsTypeConverter {
   @Override
   public Object convertFromString(Map context, String[] values, Class toClass) {
     if (toClass == User.class) {
-      String[] ids = values[0].split("[,]");
+      String ownerId = values[0];
       try {
-        // This will return an user without currentInstitution defined.
-        // If you want to get the current institution, you will need to use the converter XXXX
-        User user = userManager.getUser(Integer.parseInt(ids[0]));
-        user.setCurrentInstitution(institutionManager.getInstitution(Integer.parseInt(ids[1])));
-        LOG.debug(">> convertFromString > ids = {} ", ids);
+        // This will return an user from the employee table.
+        User user = userManager.getOwner(Integer.parseInt(ownerId));
+        LOG.debug(">> convertFromString > id = {} ", ownerId);
         return user;
       } catch (NumberFormatException e) {
         // Do Nothing
-        LOG.error("Problem to convert User from String (convertFromString) for user_id = {} ", ids, e.getMessage());
+        LOG
+        .error("Problem to convert User from String (convertFromString) for owner_id = {} ", ownerId, e.getMessage());
       }
     }
     return null;
@@ -62,10 +61,8 @@ public class UserOwnerConverter extends StrutsTypeConverter {
   @Override
   public String convertToString(Map context, Object o) {
     User user = (User) o;
-    LOG.debug(">> convertToString > id = {} ", user.getComposedOwnerIDs());
-    // Return should be made with simple quotes '', since the returned id is a String rather than an number.
-    // Thus, this is how is going to be used by the view.
-    return "'" + user.getComposedOwnerIDs() + "'";
+    LOG.debug(">> convertToString > id = {} ", user.getEmployeeId());
+    return user.getEmployeeId() + "";
   }
 
 }

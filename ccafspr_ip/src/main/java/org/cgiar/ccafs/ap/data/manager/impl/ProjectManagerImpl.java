@@ -109,10 +109,7 @@ public class ProjectManagerImpl implements ProjectManager {
       }
 
       // Getting the project Owner.
-      project.setOwner(userManager.getUser(Integer.parseInt(projectData.get("project_owner_user_id"))));
-      // Getting the current institution for that project owner.
-      project.getOwner().setCurrentInstitution(
-        institutionManager.getInstitution(Integer.parseInt(projectData.get("project_owner_institution_id"))));
+      project.setOwner(userManager.getOwner(Integer.parseInt(projectData.get("project_owner_id"))));
       // Getting the creation date timestamp.
       project.setCreated(Long.parseLong(projectData.get("created")));
       // Getting the Program creator
@@ -276,13 +273,24 @@ public class ProjectManagerImpl implements ProjectManager {
     Map<String, Object> projectData = new HashMap<>();
     if (project.getId() == -1) {
       // This is a new project. we need to add it to the database.
-      // Getting the employee id.
+      // Getting the employee identifier which is the owner_id.
       int ownerId = userManager.getEmployeeID(project.getOwner());
       projectData.put("project_owner_id", ownerId);
       projectData.put("program_creator_id", project.getProgramCreator().getId());
     } else {
       // Update project
-      // TODO HT - To Complete.
+      projectData.put("id", project.getId());
+      projectData.put("title", project.getTitle());
+      projectData.put("summary", project.getSummary());
+      SimpleDateFormat format = new SimpleDateFormat(APConstants.DATE_FORMAT);
+      if (project.getStartDate() != null) {
+        projectData.put("start_date", format.format(project.getStartDate()));
+      }
+      if (project.getEndDate() != null) {
+        projectData.put("end_date", format.format(project.getEndDate()));
+      }
+      System.out.println(project.getOwner().getEmployeeId());
+      projectData.put("project_owner_id", project.getOwner().getEmployeeId());
     }
 
     int result = projectDAO.saveProject(projectData);

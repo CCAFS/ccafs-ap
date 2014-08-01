@@ -28,6 +28,53 @@ public class MySQLUserDAO implements UserDAO {
   }
 
   @Override
+  public List<Map<String, String>> getAllOwners() {
+    LOG.debug(">> getAllOwners()");
+    List<Map<String, String>> projectContactPersonList = new ArrayList<>();
+    try (Connection connection = dbManager.getConnection()) {
+
+      StringBuilder query = new StringBuilder();
+      query.append("SELECT ins.id as institution_id, emp.id as employee_id, ");
+      query.append("u.id, u.username, pe.first_name, pe.last_name, pe.email, ");
+      query.append("ro.id as role_id, ro.name as role_name, ro.acronym as role_acronym ");
+      query.append("FROM users u ");
+      query.append("INNER JOIN persons pe  ON u.person_id=pe.id ");
+      query.append("INNER JOIN employees emp ON u.id=emp.user_id ");
+      query.append("INNER JOIN roles ro ON emp.role_id=ro.id ");
+      query.append("INNER JOIN institutions ins ON emp.institution_id = ins.id ");
+      query.append("WHERE ro.id= ");
+      query.append(APConstants.ROLE_FLAGSHIP_PROGRAM_LEADER);
+      query.append(" OR ro.id= ");
+      query.append(APConstants.ROLE_REGIONAL_PROGRAM_LEADER);
+      query.append(" OR ro.id= ");
+      query.append(APConstants.ROLE_COORDINATING_UNIT);
+      query.append(" ORDER BY pe.last_name, ins.name ");
+
+      ResultSet rs = dbManager.makeQuery(query.toString(), connection);
+      while (rs.next()) {
+        Map<String, String> projectContactPersonData = new HashMap<>();
+        projectContactPersonData.put("institution_id", rs.getString("institution_id"));
+        projectContactPersonData.put("id", rs.getString("id"));
+        projectContactPersonData.put("employee_id", rs.getString("employee_id"));
+        projectContactPersonData.put("username", rs.getString("username"));
+        projectContactPersonData.put("first_name", rs.getString("first_name"));
+        projectContactPersonData.put("last_name", rs.getString("last_name"));
+        projectContactPersonData.put("email", rs.getString("email"));
+        projectContactPersonData.put("role_id", rs.getString("role_id"));
+        projectContactPersonData.put("role_name", rs.getString("role_name"));
+        projectContactPersonData.put("role_acronym", rs.getString("role_acronym"));
+        projectContactPersonList.add(projectContactPersonData);
+      }
+      rs.close();
+    } catch (SQLException e) {
+      LOG.error("-- getAllOwners() > There was an error getting the data for All Project Owners {}.", e);
+      return null;
+    }
+    LOG.debug("<< getAllOwners():{}", projectContactPersonList);
+    return projectContactPersonList;
+  }
+
+  @Override
   public List<Map<String, String>> getAllUsers() {
     LOG.debug(">> getProjectLeader()");
     List<Map<String, String>> projectLeadersList = new ArrayList<>();
@@ -60,7 +107,7 @@ public class MySQLUserDAO implements UserDAO {
   @Override
   public int getEmployeeID(int userId, int institutionId, int roleId) {
     LOG
-    .debug(">> getEmployeeID (userId={}, institutionId={}, roleId={})", new Object[] {userId, institutionId, roleId});
+      .debug(">> getEmployeeID (userId={}, institutionId={}, roleId={})", new Object[] {userId, institutionId, roleId});
     int result = -1;
     try (Connection connection = dbManager.getConnection()) {
       StringBuilder query = new StringBuilder();
@@ -84,32 +131,77 @@ public class MySQLUserDAO implements UserDAO {
     return result;
   }
 
+
   @Override
-  public Map<String, String> getContactOwner(int projectID) {
+  public Map<String, String> getOwner(int ownerId) {
+    LOG.debug(">> getOwner()");
+    Map<String, String> userData = new HashMap<>();
+    try (Connection connection = dbManager.getConnection()) {
+      StringBuilder query = new StringBuilder();
+      query.append("SELECT ins.id as institution_id, emp.id as employee_id, ");
+      query.append("u.id, u.username, pe.first_name, pe.last_name, pe.email, ");
+      query.append("ro.id as role_id, ro.name as role_name, ro.acronym as role_acronym ");
+      query.append("FROM users u ");
+      query.append("INNER JOIN persons pe  ON u.person_id=pe.id ");
+      query.append("INNER JOIN employees emp ON u.id=emp.user_id ");
+      query.append("INNER JOIN roles ro ON emp.role_id=ro.id ");
+      query.append("INNER JOIN institutions ins ON emp.institution_id = ins.id ");
+      query.append("WHERE emp.id= ");
+      query.append(ownerId);
+
+      ResultSet rs = dbManager.makeQuery(query.toString(), connection);
+      if (rs.next()) {
+        userData.put("institution_id", rs.getString("institution_id"));
+        userData.put("id", rs.getString("id"));
+        userData.put("employee_id", rs.getString("employee_id"));
+        userData.put("username", rs.getString("username"));
+        userData.put("first_name", rs.getString("first_name"));
+        userData.put("last_name", rs.getString("last_name"));
+        userData.put("email", rs.getString("email"));
+        userData.put("role_id", rs.getString("role_id"));
+        userData.put("role_name", rs.getString("role_name"));
+        userData.put("role_acronym", rs.getString("role_acronym"));
+      }
+      rs.close();
+    } catch (SQLException e) {
+      LOG.error("-- getOwner() > There was an error getting the data for Project Owner {}.", e);
+      return null;
+    }
+    LOG.debug("<< getOwner():{}", ownerId);
+    return userData;
+  }
+
+  @Override
+  public Map<String, String> getOwnerByProjectId(int projectID) {
     LOG.debug(">> getImportantUserByProject(projectID={})", projectID);
     Map<String, String> projectContactPersonData = new HashMap<>();
     try (Connection connection = dbManager.getConnection()) {
 
       StringBuilder query = new StringBuilder();
-      query.append("SELECT ins.id as institution_id,u.id, u.username,  ");
-      query.append("pe.first_name, pe.last_name, pe.email ");
+      query.append("SELECT ins.id as institution_id, u.id, emp.id as employee_id, u.username, ");
+      query.append("pe.first_name, pe.last_name, pe.email, ");
+      query.append("ro.id as role_id, ro.name as role_name, ro.acronym as role_acronym ");
       query.append("FROM users u ");
       query.append("INNER JOIN persons pe  ON u.person_id=pe.id ");
       query.append("INNER JOIN employees emp ON u.id=emp.user_id ");
       query.append("INNER JOIN projects pro ON emp.id=pro.project_owner_id ");
       query.append("INNER JOIN institutions ins ON emp.institution_id = ins.id ");
+      query.append("INNER JOIN roles ro ON ro.id = emp.role_id ");
       query.append("WHERE pro.id= ");
       query.append(projectID);
 
       ResultSet rs = dbManager.makeQuery(query.toString(), connection);
       if (rs.next()) {
-
         projectContactPersonData.put("institution_id", rs.getString("institution_id"));
         projectContactPersonData.put("id", rs.getString("id"));
+        projectContactPersonData.put("employee_id", rs.getString("employee_id"));
         projectContactPersonData.put("username", rs.getString("username"));
         projectContactPersonData.put("first_name", rs.getString("first_name"));
         projectContactPersonData.put("last_name", rs.getString("last_name"));
         projectContactPersonData.put("email", rs.getString("email"));
+        projectContactPersonData.put("role_id", rs.getString("role_id"));
+        projectContactPersonData.put("role_name", rs.getString("role_name"));
+        projectContactPersonData.put("role_acronym", rs.getString("role_acronym"));
       }
       rs.close();
     } catch (SQLException e) {
@@ -117,49 +209,6 @@ public class MySQLUserDAO implements UserDAO {
     }
     LOG.debug("<< getImportantUserByProject():{}", projectContactPersonData);
     return projectContactPersonData;
-  }
-
-
-  @Override
-  public List<Map<String, String>> getImportantUsers() {
-    LOG.debug(">> getImportantUsers()");
-    List<Map<String, String>> projectContactPersonList = new ArrayList<>();
-    try (Connection connection = dbManager.getConnection()) {
-
-      StringBuilder query = new StringBuilder();
-      query.append("SELECT ins.id as institution_id, ");
-      query.append("u.id, u.username, pe.first_name, pe.last_name, pe.email ");
-      query.append("FROM users u ");
-      query.append("INNER JOIN persons pe  ON u.person_id=pe.id ");
-      query.append("INNER JOIN employees emp ON u.id=emp.user_id ");
-      query.append("INNER JOIN roles ro ON emp.role_id=ro.id ");
-      query.append("INNER JOIN institutions ins ON emp.institution_id = ins.id ");
-      query.append("WHERE ro.id= ");
-      query.append(APConstants.ROLE_FLAGSHIP_PROGRAM_LEADER);
-      query.append(" OR ro.id= ");
-      query.append(APConstants.ROLE_REGIONAL_PROGRAM_LEADER);
-      query.append(" OR ro.id= ");
-      query.append(APConstants.ROLE_COORDINATING_UNIT);
-      query.append(" ORDER BY pe.last_name, ins.name ");
-
-      ResultSet rs = dbManager.makeQuery(query.toString(), connection);
-      while (rs.next()) {
-        Map<String, String> projectContactPersonData = new HashMap<>();
-        projectContactPersonData.put("institution_id", rs.getString("institution_id"));
-        projectContactPersonData.put("id", rs.getString("id"));
-        projectContactPersonData.put("username", rs.getString("username"));
-        projectContactPersonData.put("first_name", rs.getString("first_name"));
-        projectContactPersonData.put("last_name", rs.getString("last_name"));
-        projectContactPersonData.put("email", rs.getString("email"));
-        projectContactPersonList.add(projectContactPersonData);
-      }
-      rs.close();
-    } catch (SQLException e) {
-      LOG.error("-- getImportantUsers() > There was an error getting the data for Project Contact Persons {}.", e);
-      return null;
-    }
-    LOG.debug("<< getImportantUsers():{}", projectContactPersonList);
-    return projectContactPersonList;
   }
 
   @Override
