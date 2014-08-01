@@ -16,6 +16,7 @@ package org.cgiar.ccafs.ap.data.manager.impl;
 import org.cgiar.ccafs.ap.config.APConstants;
 import org.cgiar.ccafs.ap.data.dao.ProjectDAO;
 import org.cgiar.ccafs.ap.data.dao.ProjectFocusesDAO;
+import org.cgiar.ccafs.ap.data.manager.IPProgramManager;
 import org.cgiar.ccafs.ap.data.manager.InstitutionManager;
 import org.cgiar.ccafs.ap.data.manager.ProjectManager;
 import org.cgiar.ccafs.ap.data.manager.UserManager;
@@ -47,17 +48,21 @@ public class ProjectManagerImpl implements ProjectManager {
   // Managers
   private UserManager userManager;
   private InstitutionManager institutionManager;
+  private IPProgramManager ipProgramManager;
+  private ProjectManager projectManager;
 
   // LOG
   private static Logger LOG = LoggerFactory.getLogger(ProjectManagerImpl.class);
 
   @Inject
   public ProjectManagerImpl(ProjectDAO projectDAO, ProjectFocusesDAO projectFocusesDAO, UserManager userManager,
-    InstitutionManager institutionManager) {
+    InstitutionManager institutionManager, IPProgramManager ipProgramManager, ProjectManager projectManager) {
     this.projectDAO = projectDAO;
     this.projectFocusesDAO = projectFocusesDAO;
     this.userManager = userManager;
     this.institutionManager = institutionManager;
+    this.ipProgramManager = ipProgramManager;
+    this.projectManager = projectManager;
   }
 
   @Override
@@ -190,8 +195,42 @@ public class ProjectManagerImpl implements ProjectManager {
 
   @Override
   public List<Project> getProjectsOwning(User user) {
-    // TODO Auto-generated method stub
-    return null;
+    List<Project> projectsList = new ArrayList<>();
+    if (user.getCurrentInstitution().getId() > 0) {
+      List<Map<String, String>> projectDataList =
+        projectDAO.getProjectsOwning(user.getCurrentInstitution().getId(), user.getId());
+      DateFormat dateformatter = new SimpleDateFormat(APConstants.DATE_FORMAT);
+      for (Map<String, String> elementData : projectDataList) {
+
+        Project project = new Project(Integer.parseInt(elementData.get("id")));
+        project.setTitle(elementData.get("title"));
+        project.setSummary(elementData.get("summary"));
+        // Format to the Dates of the project
+        String sDate = elementData.get("start_date");
+        String eDate = elementData.get("end_date");
+        if (sDate != null && eDate != null) {
+          try {
+            Date startDate = dateformatter.parse(sDate);
+            Date endDate = dateformatter.parse(eDate);
+            project.setStartDate(startDate);
+            project.setEndDate(endDate);
+          } catch (ParseException e) {
+            LOG.error("There was an error formatting the dates", e);
+          }
+        }
+        project.setProgramCreator(ipProgramManager.getIPProgramById(Integer.parseInt(elementData
+          .get("program_creator_id"))));
+
+        project.setOwner(userManager.getUser(Integer.parseInt(elementData.get("project_owner_user_id"))));
+        project.getOwner().setCurrentInstitution(
+          institutionManager.getInstitution(Integer.parseInt(elementData.get("project_owner_institution_id"))));
+
+        project.setCreated(Long.parseLong(elementData.get("created")));
+        projectsList.add(project);
+      }
+    }
+
+    return projectsList;
   }
 
   @Override
