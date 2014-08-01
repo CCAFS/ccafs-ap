@@ -66,11 +66,10 @@ public interface ProjectManager {
   public List<Project> getProjectsByProgram(int programId);
 
   /**
-   * This method gets all the projects information by a given user
+   * This method gets all the projects in which the given user is assigned as Project Owner
    * 
-   * @param institutionId
-   * @param user
-   * @return a List of projects that belongs to a user.
+   * @param user is the user object.
+   * @return a List of projects.
    */
   public List<Project> getProjectsOwning(User user);
 

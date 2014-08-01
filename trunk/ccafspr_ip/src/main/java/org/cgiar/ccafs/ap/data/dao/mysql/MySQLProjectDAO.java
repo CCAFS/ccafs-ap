@@ -44,6 +44,7 @@ public class MySQLProjectDAO implements ProjectDAO {
           projectData.put("end_date", rs.getDate("end_date").toString());
         }
         projectData.put("project_leader_id", rs.getString("project_leader_id"));
+        projectData.put("project_creator_id", rs.getString("project_creator_id"));
         projectData.put("project_owner_id", rs.getString("project_owner_id"));
         projectData.put("created", rs.getTimestamp("created").getTime() + "");
 
@@ -213,8 +214,50 @@ public class MySQLProjectDAO implements ProjectDAO {
 
   @Override
   public List<Map<String, String>> getProjectsOwning(int institutionId, int userId) {
-    // TODO Auto-generated method stub
-    return null;
+    List<Map<String, String>> projectList = new ArrayList<>();
+    LOG.debug(">> getProjectsOwning institutionId = {} )", institutionId);
+
+    StringBuilder query = new StringBuilder();
+    query.append("SELECT p.*, emp.user_id as 'owner_user_id', emp.institution_id as 'owner_institution_id' ");
+    query.append("FROM projects p ");
+    query.append("INNER JOIN employees emp ON p.project_owner_id=emp.id ");
+    query.append("WHERE emp.user_id= ");
+    query.append(userId);
+    query.append(" AND emp.institution_id= ");
+    query.append(institutionId);
+
+    try (Connection con = databaseManager.getConnection()) {
+      ResultSet rs = databaseManager.makeQuery(query.toString(), con);
+      while (rs.next()) {
+        Map<String, String> projectData = new HashMap<String, String>();
+        projectData.put("id", rs.getString("id"));
+        projectData.put("title", rs.getString("title"));
+        projectData.put("summary", rs.getString("summary"));
+        if (rs.getDate("start_date") != null) {
+          projectData.put("start_date", rs.getDate("start_date").toString());
+        }
+        if (rs.getDate("end_date") != null) {
+          projectData.put("end_date", rs.getDate("end_date").toString());
+        }
+        projectData.put("project_leader_id", rs.getString("project_leader_id"));
+        projectData.put("program_creator_id", rs.getString("program_creator_id"));
+        projectData.put("project_owner_id", rs.getString("project_owner_id"));
+        projectData.put("project_owner_user_id", rs.getString("owner_user_id"));
+        projectData.put("project_owner_institution_id", rs.getString("owner_institution_id"));
+        projectData.put("created", rs.getTimestamp("created").getTime() + "");
+
+        projectList.add(projectData);
+      }
+      rs.close();
+    } catch (SQLException e) {
+      String exceptionMessage = "-- executeQuery() > Exception raised trying ";
+      exceptionMessage += "to execute the following query " + query;
+
+      LOG.error(exceptionMessage, e);
+    }
+
+    LOG.debug("<< executeQuery():ProjectList.size={}", projectList.size());
+    return projectList;
   }
 
   @Override

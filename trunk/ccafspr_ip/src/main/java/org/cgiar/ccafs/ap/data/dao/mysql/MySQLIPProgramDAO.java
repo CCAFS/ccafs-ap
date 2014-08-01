@@ -89,14 +89,38 @@ public class MySQLIPProgramDAO implements IPProgramDAO {
 
   @Override
   public Map<String, String> getIPProgramByProjectId(int projectID) {
-    // TODO Auto-generated method stub
-    return null;
+    Map<String, String> ipProgramData = new HashMap<>();
+    LOG.debug(">> getIPProgramByProjectId( projectID = {} )", projectID);
+
+    StringBuilder query = new StringBuilder();
+    query.append("SELECT ipr.* ");
+    query.append("FROM ip_programs as ipr ");
+    query.append("INNER JOIN projects p ON ipr.id=p.program_creator_id ");
+    query.append("WHERE p.id= ");
+    query.append(projectID);
+    try (Connection con = databaseManager.getConnection()) {
+      ResultSet rs = databaseManager.makeQuery(query.toString(), con);
+      if (rs.next()) {
+        ipProgramData.put("id", rs.getString("id"));
+        ipProgramData.put("name", rs.getString("name"));
+        ipProgramData.put("acronym", rs.getString("acronym"));
+        ipProgramData.put("region_id", rs.getString("region_id"));
+        ipProgramData.put("type_id", rs.getString("type_id"));
+      }
+      rs.close();
+    } catch (SQLException e) {
+      String exceptionMessage = "-- getIPProgramByProjectId() > Exception raised trying to get the program ";
+      exceptionMessage += "which created the getIPProgramByProjectId " + projectID;
+
+      LOG.error(exceptionMessage, e);
+    }
+    return ipProgramData;
   }
 
 
   @Override
   public List<Map<String, String>> getProgramsByType(int typeId) {
-    LOG.debug(">> getProgramsByType( typeId = {} )");
+    LOG.debug(">> getProgramsByType( typeId = {} )", typeId);
 
     StringBuilder query = new StringBuilder();
     query.append("SELECT ipr.* ");
