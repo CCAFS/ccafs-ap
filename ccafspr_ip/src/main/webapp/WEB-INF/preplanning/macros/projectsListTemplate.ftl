@@ -35,19 +35,31 @@
               [#-- Region --]
               <td> 
                   <a href="[@s.url action='description' includeParams='get'] [@s.param name='projectID']${project.id?c}[/@s.param] [/@s.url]">
+                    [#if project.regionsAcronym?has_content]
                     ${project.regionsAcronym}
+                    [#else]
+                      [@s.text name="preplanning.projects.none" /]
+                    [/#if]
                   </a>
               </td>
               [#-- Flagship --]
               <td> 
                   <a href="[@s.url action='description' includeParams='get'] [@s.param name='projectID']${project.id?c}[/@s.param] [/@s.url]">
+                    [#if project.flagshipsAcronym?has_content]
                     ${project.flagshipsAcronym}
+                    [#else]
+                      [@s.text name="preplanning.projects.none" /]
+                    [/#if]
                   </a>
               </td>
               [#-- Budget --]
               <td> 
                   <a href="[@s.url action='description' includeParams='get'] [@s.param name='projectID']${project.id?c}[/@s.param] [/@s.url]">
+                    [#if project.totalCcafsBudget?has_content]
                     ${project.totalCcafsBudget}
+                    [#else]
+                      [@s.text name="preplanning.projects.none" /]
+                    [/#if]
                   </a>
               </td>
           	</tr>  
