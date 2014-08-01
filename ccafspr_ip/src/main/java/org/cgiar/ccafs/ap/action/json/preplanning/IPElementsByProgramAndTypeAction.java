@@ -17,12 +17,12 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 
-public class IPElementsAction extends BaseAction {
+public class IPElementsByProgramAndTypeAction extends BaseAction {
 
   private static final long serialVersionUID = -6424773640004100983L;
 
   // Logger
-  private static final Logger LOG = LoggerFactory.getLogger(IPElementsAction.class);
+  private static final Logger LOG = LoggerFactory.getLogger(IPElementsByProgramAndTypeAction.class);
 
   // Model
   private String programID;
@@ -33,7 +33,7 @@ public class IPElementsAction extends BaseAction {
   private IPElementManager ipElementManager;
 
   @Inject
-  public IPElementsAction(APConfig config, IPElementManager ipElementManager) {
+  public IPElementsByProgramAndTypeAction(APConfig config, IPElementManager ipElementManager) {
     super(config);
     this.ipElementManager = ipElementManager;
   }

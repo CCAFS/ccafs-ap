@@ -225,6 +225,30 @@ public class MySQLIPElementDAO implements IPElementDAO {
   }
 
   @Override
+  public List<Map<String, String>> getIPElementsByParent(int parentId, int relationTypeID) {
+    LOG.debug(">> getIPElementsByParent( parentId = {} )", parentId);
+
+    StringBuilder query = new StringBuilder();
+    query.append("SELECT e.id, e.description,  ");
+    query.append("et.id as 'element_type_id', et.name as 'element_type_name', ");
+    query.append("pro.id as 'program_id', pro.acronym as 'program_acronym', ");
+    query.append("pel.id as 'program_element_id' ");
+    query.append("FROM ip_elements e ");
+    query.append("INNER JOIN ip_relationships r ON e.id = r.child_id ");
+    query.append("INNER JOIN ip_element_types et ON e.element_type_id = et.id ");
+    query.append("INNER JOIN ip_program_elements pel ON e.id = pel.element_id ");
+    query.append("INNER JOIN ip_programs pro ON pel.program_id = pro.id ");
+    query.append("WHERE r.relation_type_id = ");
+    query.append(relationTypeID);
+    query.append(" AND r.parent_id = ");
+    query.append(parentId);
+    query.append(" GROUP BY e.id ");
+
+    LOG.debug("-- getIPElementsRelated() > Calling method executeQuery to get the results");
+    return getData(query.toString());
+  }
+
+  @Override
   public List<Map<String, String>> getIPElementsRelated(int ipElementID, int relationTypeID) {
     LOG.debug(">> getIPElementsRelated( ipElementID = {}, relationTypeID = {} )", ipElementID, relationTypeID);
 

@@ -5,7 +5,14 @@
   <!-- Add addition packages and configuration here. -->
   <package name="json" namespace="/" extends="json-default">
 
-    <action name="ipElements" class="org.cgiar.ccafs.ap.action.json.preplanning.IPElementsAction">
+    <action name="ipElementsByProgramAndType" class="org.cgiar.ccafs.ap.action.json.preplanning.IPElementsByProgramAndTypeAction">
+      <result type="json">        
+        <param name="noCache">true</param>
+        <param name="excludeNullProperties">true</param>
+      </result>
+    </action>
+    
+    <action name="ipElementsByParent" class="org.cgiar.ccafs.ap.action.json.preplanning.IPElementsByParentElementAction">
       <result type="json">        
         <param name="noCache">true</param>
         <param name="excludeNullProperties">true</param>

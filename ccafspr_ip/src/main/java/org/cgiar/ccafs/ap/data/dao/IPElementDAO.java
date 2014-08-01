@@ -83,6 +83,15 @@ public interface IPElementDAO {
   public List<Map<String, String>> getIPElementList();
 
   /**
+   * This method gets all the ipElements that are children of the element
+   * identified by the value passed as parameter.
+   * 
+   * @param parentId - IPElement identifier
+   * @return a list of maps with the information of the ipElements
+   */
+  public List<Map<String, String>> getIPElementsByParent(int parentId, int relationTypeID);
+
+  /**
    * Get all IPElements which have relation with the element identified by the
    * value passed as parameter.
    * 

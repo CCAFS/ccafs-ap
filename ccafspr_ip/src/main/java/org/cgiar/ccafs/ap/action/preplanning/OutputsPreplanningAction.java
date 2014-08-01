@@ -72,6 +72,10 @@ public class OutputsPreplanningAction extends BaseAction {
     return midOutcomesList;
   }
 
+  public int getMidOutcomeTypeID() {
+    return APConstants.ELEMENT_TYPE_OUTCOME2019;
+  }
+
   public List<IPElement> getOutputs() {
     return outputs;
   }

@@ -19,7 +19,7 @@
   </div>
   [#include "/WEB-INF/global/pages/pre-planning-secondary-menu.ftl" /]
   
-  [@s.form action="outputs" cssClass="pure-form"]  
+  [@s.form action="outputsRPL" cssClass="pure-form"]  
   <article class="halfContent" id="outputs">
     [#include "/WEB-INF/preplanning/ipPreplanningSubMenu.ftl" /]
     <h1 class="contentTitle">
@@ -28,9 +28,15 @@
     <div id="outputBlocks"> 
         [#if outputs?has_content]
           [#list outputs as output]
+          
+            ${output}
+          
           <div class="output borderBox" id="output-${output_index}">
             [#-- RPL output identifier --] 
-            <input type="hidden" name="outputs[${output_index}].id" value="${output.id}" />
+            <input name="outputs[${output_index}].id" id="outputId" value="${output.id}" type="hidden" />
+            <input name="outputs[${output_index}].program.id" id="outputProgramID" value="${currentUser.currentInstitution.program.id}" type="hidden" />
+            <input name="outputs[${output_index}].type.id" id="outputTypeID" value="${elementTypeID}" type="hidden" />
+            
             [#-- Remove RPL output --]
             <div class="removeOutputBlock removeLink">              
               <img src="${baseUrl}/images/global/icon-remove.png" />
@@ -80,10 +86,14 @@
     </div>
   </article>
   [/@s.form]  
-  [#----  Existing RPL Output TEMPLATE hidden ----]
+  
+  
+  [#----  New RPL Output TEMPLATE hidden ----]
   <div id="outputTemplate" class="output borderBox" style="display:none">
-    [#-- RPL Objective identifier --]
+    [#-- RPL Output identifier --]
     <input id="outputId" type="hidden" value="-1" />
+    <input id="outputProgramID" value="${currentUser.currentInstitution.program.id}" type="hidden" />
+    <input id="outputTypeID" value="${elementTypeID}" type="hidden" />
     [#-- Remove Output --]      
     <div class="removeLink removeOutputBlock">            
       <img src="${baseUrl}/images/global/icon-remove.png" />
@@ -102,13 +112,16 @@
       [#-- Contribute area --] 
       [#-- Add contribute --]
        <div class="fullBlock addContributeBlock">
-        [@customForm.select name="contributions" showTitle=false listName="midOutcomesList" keyFieldName="id"  displayFieldName="description" addButton=true className="contributes" /]
+        [@customForm.select name="contributesTo" showTitle=false listName="midOutcomesList" keyFieldName="id"  displayFieldName="description" addButton=true className="contributes" /]
       </div> 
     </div>  
   </div>  
-  [#----  Existing RPL Output TEMPLATE hidden ----]
+  
+  [#---- Existent  RPL Output TEMPLATE hidden ----]
   <div id="newOutputTemplate" class="output borderBox" style="display:none">
-    [#-- RPL Objective identifier --]
+    [#-- RPL output identifier --]
+    <input id="outputProgramID" value="${currentUser.currentInstitution.program.id}" type="hidden" />
+    <input id="outputTypeID" value="${elementTypeID}" type="hidden" />
     <input id="outputId" type="hidden" value="-1" />
     [#-- Remove Output --]      
     <div class="removeLink removeOutputBlock">            
@@ -137,13 +150,6 @@
   [#-- Contribute template --]
   [@contributeTemplate.outputs template=true canRemove=true /]
   [#-- End Contribute template --] 
+  <input id="midOutcomeTypeID" value="${midOutcomeTypeID}" type="hidden" />
 </section>
 [#include "/WEB-INF/global/pages/footer.ftl"]
-
-
-
-
-
-
-
-  
