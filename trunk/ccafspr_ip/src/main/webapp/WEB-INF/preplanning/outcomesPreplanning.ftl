@@ -32,7 +32,14 @@
           <input type="hidden" name="outcomes[${outcome_index}].program.id" value="${currentUser.currentInstitution.program.id}" />
           <input type="hidden" name="outcomes[${outcome_index}].type.id" value="${elementTypeID}" />
           [#-- Title --]
-          [@customForm.textArea name="outcomes[${outcome_index}].description" i18nkey="preplanning.outcomes.outcome" required=true /]
+          [#assign outcomeDescription]
+            [@s.text name="preplanning.outcomes.outcome"] 
+              [@s.param name="0"]${currentUser.currentInstitution.program.acronym}[/@s.param] 
+              [@s.param name="1"]<span id="elementIndex">${outcome_index+1}</span>[/@s.param] 
+            [/@s.text]
+          [/#assign]
+          <legend>${outcomeDescription}</legend> 
+          [@customForm.textArea name="outcomes[${outcome_index}].description" i18nkey="preplanning.outcomes.outcomeDescription" required=true /]
           [#-- Indicators --]
           <div class="contentElements outcomeIndicatorsBlock"> 
             <div class="itemIndex">[@s.text name="preplanning.outcomes.indicators" /]</div>
@@ -87,7 +94,14 @@
           <input type="hidden" name="outcomes[0].program.id" value="${currentUser.currentInstitution.program.id}" />
           <input type="hidden" name="outcomes[0].type.id" value="${elementTypeID}" />
           [#-- Title --]
-          [@customForm.textArea name="outcomes[0].description" i18nkey="preplanning.outcomes.outcome" required=true /] 
+          [#assign outcomeDescription]
+            [@s.text name="preplanning.outcomes.outcome"] 
+              [@s.param name="0"]${currentUser.currentInstitution.program.acronym}[/@s.param] 
+              [@s.param name="1"]<span id="elementIndex">1</span>[/@s.param] 
+            [/@s.text]
+          [/#assign]
+          <legend>${outcomeDescription}</legend> 
+          [@customForm.textArea name="outcomes[0].description" i18nkey="preplanning.outcomes.outcomeDescription" required=true /] 
           [#-- Indicators --] 
           <div class="contentElements outcomeIndicatorsBlock">
             <div class="itemIndex">[@s.text name="preplanning.outcomes.indicators" /] </div>

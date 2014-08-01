@@ -44,9 +44,9 @@
                 [@s.param name="0"]<span id="elementIndex">${midOutcome_index+1}</span>[/@s.param] 
               [/@s.text]
             [/#assign]
-
+            <legend>${midOutcomeDescription}</legend>
             [#-- Mid outcome description --]
-            [@customForm.textArea name="midOutcomes[${midOutcome_index}].description" i18nkey="${midOutcomeDescription}" required=true /] 
+            [@customForm.textArea name="midOutcomes[${midOutcome_index}].description" i18nkey="preplanning.midOutcomesRPL.outcomeDescription" required=true /] 
 
             [#-- Flagships list --]
             [@customForm.select name="flagships" label="" i18nkey="preplanning.midOutcomesRPL.flagships" listName="flagshipsList" keyFieldName="id"  displayFieldName="name" /]
@@ -98,7 +98,8 @@
       [@s.param name="0"]<span id="elementIndex">{0}</span>[/@s.param] 
     [/@s.text]
   [/#assign]
-  [@customForm.textArea name="description" i18nkey="${midOutcomeDescription}" required=true /] 
+  <legend>${midOutcomeDescription}</legend>
+  [@customForm.textArea name="description" i18nkey="preplanning.midOutcomesRPL.outcomeDescription" required=true /] 
   [@customForm.select name="flagships" label="" i18nkey="preplanning.midOutcomesRPL.flagships" listName="flagshipsList" keyFieldName="id"  displayFieldName="name" /]
   <div class="contentElements parentsBlock">
     <div class="itemIndex">[@s.text name="preplanning.midOutcomesRPL.contributes" /] </div>

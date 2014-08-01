@@ -9,9 +9,10 @@ function init(){
   attachEvents();
   if (!$("div#MidOutcomeBlocks .midOutcome").length) {
     $("div#addMidOutcomeBlock").trigger("click");
+  } else {
+    applyWordCounter($("form .midOutcome > .textArea textarea"), lWordsElemetDesc);
+    setMidOutcomesIndexes();
   }
-  applyWordCounter($("form .midOutcome > .textArea textarea"), lWordsElemetDesc);
-  setMidOutcomesIndexes();
 }
 
 function attachEvents(){

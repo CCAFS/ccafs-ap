@@ -45,7 +45,8 @@
                 [@s.param name="1"]<span id="elementIndex">${midOutcome_index+1}</span>[/@s.param] 
               [/@s.text]
             [/#assign]
-            [@customForm.textArea name="midOutcomes[${midOutcome_index}].description"  i18nkey="${midOutcomeDescription}" required=true /] 
+            <legend>${midOutcomeDescription}</legend> 
+            [@customForm.textArea name="midOutcomes[${midOutcome_index}].description"  i18nkey="preplanning.midOutcomes.outcomeDescription" required=true /] 
             <div class="contentElements parentsBlock" style="display:none">
               <div class="itemIndex">[@s.text name="preplanning.midOutcomes.contributes" /] </div>
               [#-- midOutcome's parents --]
@@ -110,7 +111,8 @@
       [@s.param name="1"]<span id="elementIndex">{0}</span>[/@s.param] 
     [/@s.text]
   [/#assign]
-  [@customForm.textArea name="description" i18nkey="${midOutcomeDescription}" required=true /] 
+  <legend>${midOutcomeDescription}</legend> 
+  [@customForm.textArea name="description" i18nkey="preplanning.midOutcomes.outcomeDescription" required=true/] 
   [#-- Contribute area --]
   <div id="contributesBlock" class="contentElements" style="display:none">
     <div class="itemIndex">[@s.text name="preplanning.midOutcomes.contributes" /] </div>
@@ -131,6 +133,7 @@
   </div>  
 </div> 
 [#-- End Mid Outcome template  --]
+
 [#-- Contribute template --]
 [@contributeTemplate.midOutcomes template=true /]
   

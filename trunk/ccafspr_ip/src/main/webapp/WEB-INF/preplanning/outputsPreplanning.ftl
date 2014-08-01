@@ -45,7 +45,8 @@
                 [@s.param name="1"]<span id="elementIndex">${output_index+1}</span>[/@s.param] 
               [/@s.text]
             [/#assign]
-            [@customForm.textArea name="outputs[${output_index}].description" i18nkey="${outputDescription}" required=true /] 
+            <legend>${outputDescription}</legend>
+            [@customForm.textArea name="outputs[${output_index}].description" i18nkey="preplanning.outputs.outputDescription" required=true /] 
             <div id="contributesBlock" class="contentElements parentsBlock">
               <div class="itemIndex">[@s.text name="preplanning.outputs.contributes" /] </div>
               [#-- output's parents --] 
@@ -94,7 +95,8 @@
           [@s.param name="1"]<span id="elementIndex">{0}</span>[/@s.param] 
         [/@s.text]
       [/#assign]
-      [@customForm.textArea name="outputDescription" i18nkey="${outputDescription}" required=true /] 
+      <legend>${outputDescription}</legend> 
+      [@customForm.textArea name="outputDescription" i18nkey="preplanning.outputs.outputDescription" required=true /] 
       <div id="contributesBlock" class="contentElements">
         <div class="itemIndex">[@s.text name="preplanning.outputs.contributes" /] </div>
         [#-- Contribute area --]
