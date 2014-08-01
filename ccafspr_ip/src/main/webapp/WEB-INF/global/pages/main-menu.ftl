@@ -80,8 +80,9 @@
         <div id="userInfo">
           <span class="email">${currentUser.email}</span>
           <span class="logout"><a href="[@s.url action="logout" namespace="/" /]">[@s.text name="header.logout" /]</a></span>
-          <br>
-          <span class="program">${currentUser.currentInstitution.program.acronym}</span>
+          <div id="userInfo-drop" class="drop-down">
+            <span class="institution">${currentUser.currentInstitution.name}</span> 
+          </div>
         </div>
   	[/#if]
   </div>
