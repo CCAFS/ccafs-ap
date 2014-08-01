@@ -13,6 +13,10 @@
  *****************************************************************/
 package org.cgiar.ccafs.ap.action.preplanning;
 
+import java.util.List;
+
+import com.google.inject.Inject;
+import org.apache.commons.lang3.StringUtils;
 import org.cgiar.ccafs.ap.action.BaseAction;
 import org.cgiar.ccafs.ap.config.APConfig;
 import org.cgiar.ccafs.ap.config.APConstants;
@@ -24,11 +28,6 @@ import org.cgiar.ccafs.ap.data.model.IPCrossCutting;
 import org.cgiar.ccafs.ap.data.model.IPProgram;
 import org.cgiar.ccafs.ap.data.model.Project;
 import org.cgiar.ccafs.ap.data.model.User;
-
-import java.util.List;
-
-import com.google.inject.Inject;
-import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -83,6 +82,10 @@ public class ProjectDescriptionAction extends BaseAction {
     return allOwners;
   }
 
+  public int getEndYear() {
+    return config.getEndYear();
+  }
+
   public List<IPCrossCutting> getIpCrossCuttings() {
     return ipCrossCuttings;
   }
@@ -103,6 +106,10 @@ public class ProjectDescriptionAction extends BaseAction {
 
   public int getProjectID() {
     return projectID;
+  }
+
+  public int getStartYear() {
+    return config.getStartYear();
   }
 
   @Override
