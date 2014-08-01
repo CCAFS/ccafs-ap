@@ -11,11 +11,26 @@ import com.google.inject.ImplementedBy;
 public interface UserDAO {
 
   /**
+   * Get a list with the Important users according to their role. RPLs, FPLs and CUs.
+   *
+   * @return a list of Map objects with the important users information or an empty list if no users found.
+   */
+  public List<Map<String, String>> getAllOwners();
+
+  /**
    * Get a list with All Users information
    *
    * @return a list of Map objects with the users information or an empty list if no users found.
    */
   public List<Map<String, String>> getAllUsers();
+
+  /**
+   * This method get the User information (Project Owner Contact Person) by a given project ID
+   *
+   * @param projectID - is the ID of the project
+   * @return a Map with the User information associated to a project
+   */
+  public Map<String, String> getOwnerByProjectId(int projectID);
 
   /**
    * This method returns the employee Identifier that is using the given user id taking into account his current
@@ -30,19 +45,12 @@ public interface UserDAO {
   public int getEmployeeID(int userId, int institutionId, int roleId);
 
   /**
-   * This method get the User information (Project Owner Contact Person) by a given project ID
+   * This method return the user information from a employee identifier given.
    *
-   * @param projectID - is the ID of the project
-   * @return a Map with the User information associated to a project
+   * @param ownerId is the employee identifier.
+   * @return a Map with the information requested.
    */
-  public Map<String, String> getContactOwner(int projectID);
-
-  /**
-   * Get a list with the Important users according to their role. RPLs, FPLs and CUs.
-   *
-   * @return a list of Map objects with the important users information or an empty list if no users found.
-   */
-  public List<Map<String, String>> getImportantUsers();
+  public Map<String, String> getOwner(int ownerId);
 
   /**
    * This method gets the data of a User identified with a given id.

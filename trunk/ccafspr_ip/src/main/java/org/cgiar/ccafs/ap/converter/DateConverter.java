@@ -18,6 +18,8 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Map;
 
+import org.cgiar.ccafs.ap.config.APConstants;
+
 import com.opensymphony.xwork2.conversion.TypeConversionException;
 import org.apache.struts2.util.StrutsTypeConverter;
 
@@ -30,7 +32,7 @@ public class DateConverter extends StrutsTypeConverter {
   @Override
   public Object convertFromString(Map context, String[] values, Class toClass) {
     if (values != null && values.length > 0 && values[0] != null && values[0].length() > 0) {
-      SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+      SimpleDateFormat sdf = new SimpleDateFormat(APConstants.DATE_FORMAT);
       try {
         return sdf.parse(values[0]);
       } catch (ParseException e) {
@@ -47,7 +49,7 @@ public class DateConverter extends StrutsTypeConverter {
       // If there isn't an object return an empty string
       return "";
     }
-    return new SimpleDateFormat("yyyy-MM-dd").format(date);
+    return new SimpleDateFormat(APConstants.DATE_FORMAT).format(date);
   }
 
 }

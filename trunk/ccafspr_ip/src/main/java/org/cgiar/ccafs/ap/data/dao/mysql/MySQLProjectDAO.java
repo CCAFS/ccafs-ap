@@ -97,7 +97,7 @@ public class MySQLProjectDAO implements ProjectDAO {
     LOG.debug(">> getProject projectID = {} )", projectID);
     Map<String, String> projectData = new HashMap<String, String>();
     StringBuilder query = new StringBuilder();
-    query.append("SELECT p.*, emp.user_id as 'owner_user_id', emp.institution_id as 'owner_institution_id'");
+    query.append("SELECT p.*, emp.id as 'owner_id', emp.institution_id as 'owner_institution_id'");
     query.append("FROM projects as p ");
     query.append("INNER JOIN employees emp ON emp.id = p.project_owner_id ");
     query.append("WHERE p.id = ");
@@ -116,8 +116,8 @@ public class MySQLProjectDAO implements ProjectDAO {
         }
         projectData.put("project_leader_id", rs.getString("project_leader_id"));
         projectData.put("program_creator_id", rs.getString("program_creator_id"));
-        projectData.put("project_owner_user_id", rs.getString("owner_user_id"));
-        projectData.put("project_owner_institution_id", rs.getString("owner_institution_id"));
+        projectData.put("project_owner_id", rs.getString("owner_id"));
+        // projectData.put("project_owner_institution_id", rs.getString("owner_institution_id"));
         projectData.put("created", rs.getTimestamp("created").getTime() + "");
       }
       con.close();
@@ -320,25 +320,33 @@ public class MySQLProjectDAO implements ProjectDAO {
   @Override
   public int saveProject(Map<String, Object> projectData) {
     LOG.debug(">> saveProject(projectData={})", projectData);
-
+    int result = -1;
     StringBuilder query = new StringBuilder();
     if (projectData.get("id") == null) {
-      // Insert a new project.
+      // Insert a new project record.
       query.append("INSERT INTO projects (project_owner_id, program_creator_id) ");
       query.append("VALUES (?, ?) ");
 
       Object[] values = new Object[2];
       values[0] = projectData.get("project_owner_id");
       values[1] = projectData.get("program_creator_id");
-      int result = databaseManager.saveData(query.toString(), values);
+      result = databaseManager.saveData(query.toString(), values);
       LOG.debug("<< saveProject():{}", result);
-      return result;
     } else {
       // Update project.
-      // TODO HT - To Complete
+      query.append("UPDATE projects SET title = ?, summary = ?, start_date = ?, end_date = ?, ");
+      query.append("project_owner_id = ? ");
+      query.append("WHERE id = ?");
+      Object[] values = new Object[6];
+      values[0] = projectData.get("title");
+      values[1] = projectData.get("summary");
+      values[2] = projectData.get("start_date");
+      values[3] = projectData.get("end_date");
+      values[4] = projectData.get("project_owner_id");
+      values[5] = projectData.get("id");
+      result = databaseManager.saveData(query.toString(), values);
     }
-
-    return -1;
+    return result;
   }
 
 }

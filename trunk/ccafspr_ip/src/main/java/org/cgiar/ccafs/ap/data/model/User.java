@@ -26,6 +26,7 @@ import org.apache.commons.lang3.builder.ToStringBuilder;
 public class User {
 
   private int id;
+  private int employeeId;
   private String username;
   private String password;
   private String email;
@@ -36,7 +37,6 @@ public class User {
   private Role role;
   private List<Institution> institutions;
   private Institution currentInstitution;
-
   private Date lastLogin;
 
   /**
@@ -49,25 +49,16 @@ public class User {
     return this.lastName + ", " + this.firstName + " <" + this.email + ">";
   }
 
-  /**
-   * This method returns a composed way to show a User with its institution.
-   *
-   * @return a String that represents a User.
-   *         e.g. Tobón, Héctor (CIAT)
-   */
-  public String getComposedNameWithInstitution() {
-    return this.lastName + ", " + this.firstName + " (" + this.currentInstitution.getAcronym() + ")";
-  }
 
   /**
-   * * This method returns a composed way to show an id.
+   * This method returns a composed way to show a User with its institution and its role.
    *
-   * @return a String that represents an Employee record - or Project Owner.
-   *         e.g. 1, 2
-   *         Where 1 is the user id, and 2 is the institution id.
+   * @return a String that represents a User.
+   *         e.g. Tobón, Héctor (CIAT) - FPL
    */
-  public String getComposedOwnerIDs() {
-    return this.id + "," + this.currentInstitution.getId();
+  public String getComposedOwnerName() {
+    return this.lastName + ", " + this.firstName + " (" + this.currentInstitution.getAcronym() + ") - "
+      + this.getRole().getAcronym();
   }
 
   public Institution getCurrentInstitution() {
@@ -76,6 +67,10 @@ public class User {
 
   public String getEmail() {
     return email;
+  }
+
+  public int getEmployeeId() {
+    return employeeId;
   }
 
   public String getFirstName() {
@@ -200,6 +195,10 @@ public class User {
 
   public void setEmail(String email) {
     this.email = email;
+  }
+
+  public void setEmployeeId(int employeeId) {
+    this.employeeId = employeeId;
   }
 
   public void setFirstName(String firstName) {

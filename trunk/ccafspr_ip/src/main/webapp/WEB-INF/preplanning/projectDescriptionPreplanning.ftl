@@ -38,7 +38,7 @@
           </div>
           [#--  Project Owner Contact Person --]
           <div class="halfPartBlock">
-            [@customForm.select name="project.owner" label=""  disabled=false i18nkey="preplanning.projectDescription.projectownercontactperson" listName="allOwners" keyFieldName="composedOwnerIDs"  displayFieldName="composedNameWithInstitution" /]
+            [@customForm.select name="project.owner" label=""  disabled=false i18nkey="preplanning.projectDescription.projectownercontactperson" listName="allOwners" keyFieldName="employeeId"  displayFieldName="composedOwnerName" /]
           </div>
           [#-- Start Date --]
           <div class="halfPartBlock">
@@ -68,7 +68,7 @@
             <h6>[@s.text name="preplanning.projectDescription.flagships" /]</h6>
             <div class="checkboxGroup">  
               [@s.fielderror cssClass="fieldError" fieldName="project.flagships"/]          
-              [#-- @s.checkboxlist name="project.flagships" list="ipProgramFlagships" listKey="id" listValue="name" cssClass="checkbox" /--]
+              [@s.checkboxlist name="project.flagships" list="ipProgramFlagships" listKey="id" listValue="name" cssClass="checkbox" /]
             </div>
           </div> 
           [#-- Cross Cutting --] 
@@ -76,7 +76,7 @@
             <h6>[@s.text name="preplanning.projectDescription.gender" /]</h6>
             <div class="checkboxGroup">
               [@s.fielderror cssClass="fieldError" fieldName="project.crossCuttings"/]          
-              [#-- @s.checkboxlist name="project.crossCuttings" list="ipCrossCuttings" listKey="id" listValue="name" cssClass="checkbox" / --]
+              [@s.checkboxlist name="project.crossCuttings" list="ipCrossCuttings" listKey="id" listValue="name" cssClass="checkbox" /]
             </div>
           </div>  
         </div> 

@@ -27,6 +27,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import org.cgiar.ccafs.ap.data.model.Role;
+
 import com.google.inject.Inject;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -81,6 +83,34 @@ public class UserManagerImp implements UserManager {
   }
 
   @Override
+  public List<User> getAllOwners() {
+    List<User> projectContacts = new ArrayList<>();
+    List<Map<String, String>> projectContactsDataList = userDAO.getAllOwners();
+    for (Map<String, String> pData : projectContactsDataList) {
+      // User
+      User projectContact = new User();
+      projectContact.setId(Integer.parseInt(pData.get("id")));
+      projectContact.setEmployeeId(Integer.parseInt(pData.get("employee_id")));
+      projectContact.setUsername((pData.get("username")));
+      projectContact.setFirstName(pData.get("first_name"));
+      projectContact.setLastName(pData.get("last_name"));
+      projectContact.setEmail(pData.get("email"));
+      // Role
+      Role role = new Role();
+      role.setId(Integer.parseInt(pData.get("role_id")));
+      role.setName(pData.get("role_name"));
+      role.setAcronym(pData.get("role_acronym"));
+      projectContact.setRole(role);
+      // Institution
+      projectContact.setCurrentInstitution(institutionManager.getInstitution(Integer.parseInt(pData
+        .get("institution_id"))));
+      // Adding object to the array.
+      projectContacts.add(projectContact);
+    }
+    return projectContacts;
+  }
+
+  @Override
   public List<User> getAllUsers() {
     List<User> projectLeaders = new ArrayList<>();
     List<Map<String, String>> projectLeadersDataList = userDAO.getAllUsers();
@@ -108,15 +138,47 @@ public class UserManagerImp implements UserManager {
   }
 
   @Override
-  public User getContactOwner(int projectID) {
-    Map<String, String> userData = userDAO.getContactOwner(projectID);
+  public User getOwner(int ownerId) {
+
+    Map<String, String> userData = userDAO.getOwner(ownerId);
+    // User
+    User owner = new User();
+    owner.setId(Integer.parseInt(userData.get("id")));
+    owner.setEmployeeId(Integer.parseInt(userData.get("employee_id")));
+    owner.setUsername((userData.get("username")));
+    owner.setFirstName(userData.get("first_name"));
+    owner.setLastName(userData.get("last_name"));
+    owner.setEmail(userData.get("email"));
+    // Role
+    Role role = new Role();
+    role.setId(Integer.parseInt(userData.get("role_id")));
+    role.setName(userData.get("role_name"));
+    role.setAcronym(userData.get("role_acronym"));
+    owner.setRole(role);
+    // Institution
+    owner.setCurrentInstitution(institutionManager.getInstitution(Integer.parseInt(userData.get("institution_id"))));
+
+    return owner;
+  }
+
+  @Override
+  public User getOwnerByProjectId(int projectID) {
+    Map<String, String> userData = userDAO.getOwnerByProjectId(projectID);
     if (!userData.isEmpty()) {
       User user = new User();
       user.setId(Integer.parseInt(userData.get("id")));
+      user.setEmployeeId(Integer.parseInt(userData.get("employee_id")));
       user.setUsername(userData.get("username"));
       user.setFirstName(userData.get("first_name"));
       user.setLastName(userData.get("last_name"));
       user.setEmail(userData.get("email"));
+      // Role
+      Role role = new Role();
+      role.setId(Integer.parseInt(userData.get("role_id")));
+      role.setName(userData.get("role_name"));
+      role.setAcronym(userData.get("role_acronym"));
+      user.setRole(role);
+      // Institution
       user.setCurrentInstitution(institutionManager.getInstitution(Integer.parseInt(userData.get("institution_id"))));
 
       return user;
@@ -126,26 +188,6 @@ public class UserManagerImp implements UserManager {
     return null;
   }
 
-  @Override
-  public List<User> getImportantUsers() {
-    List<User> projectContacts = new ArrayList<>();
-    List<Map<String, String>> projectContactsDataList = userDAO.getImportantUsers();
-    for (Map<String, String> pData : projectContactsDataList) {
-      // User
-      User projectContact = new User();
-      projectContact.setId(Integer.parseInt(pData.get("id")));
-      projectContact.setUsername((pData.get("username")));
-      projectContact.setFirstName(pData.get("first_name"));
-      projectContact.setLastName(pData.get("last_name"));
-      projectContact.setEmail(pData.get("email"));
-      // Institution
-      projectContact.setCurrentInstitution(institutionManager.getInstitution(Integer.parseInt(pData
-        .get("institution_id"))));
-      // Adding object to the array.
-      projectContacts.add(projectContact);
-    }
-    return projectContacts;
-  }
 
   @Override
   public User getUser(int userId) {
@@ -173,7 +215,6 @@ public class UserManagerImp implements UserManager {
 
     return null;
   }
-
 
   @Override
   public User getUserByEmail(String email) {

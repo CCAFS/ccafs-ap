@@ -24,12 +24,28 @@ import com.google.inject.ImplementedBy;
 public interface UserManager {
 
   /**
-   * This method gets all the Users from the system.
+   * This method gets all the User information according to their roles. FPL's, RPL's, CU's
+   *
+   * @return a list of users. If there are no user, will return an empty list.
+   */
+  public List<User> getAllOwners();
+
+  /**
+   * This method gets all the Employees from the system.
    *
    * @return a List of Users. If there are not users in the system, the method
    *         will return an empty list.
    */
   public List<User> getAllUsers();
+
+  /**
+   * This method gets the information of an User by a given project ID
+   *
+   * @param projectID - is the ID of the project
+   * @return an Object User with the information requested, or Null if the relationship between project ID and user
+   *         doesn't exist
+   */
+  public User getOwnerByProjectId(int projectID);
 
   /**
    * This method returns the employee Identifier that is using the given user taking into account his current
@@ -42,20 +58,12 @@ public interface UserManager {
   public int getEmployeeID(User user);
 
   /**
-   * This method gets the information of an User by a given project ID
-   *
-   * @param projectID - is the ID of the project
-   * @return an Object User with the information requested, or Null if the relationship between project ID and user
-   *         doesn't exist
+   * This method returns an owner represented as User object.
+   * 
+   * @param ownerId is the identifier from the Employee table.
+   * @return an User object or null if nothing found.
    */
-  public User getContactOwner(int projectID);
-
-  /**
-   * This method gets all the User information according to their roles. FPL's, RPL's, CU's
-   *
-   * @return a list of users. If there are no user, will return an empty list.
-   */
-  public List<User> getImportantUsers();
+  public User getOwner(int ownerId);
 
   /**
    * This method find an user identify with a given id.
