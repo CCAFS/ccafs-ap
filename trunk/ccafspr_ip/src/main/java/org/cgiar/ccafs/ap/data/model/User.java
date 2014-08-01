@@ -50,14 +50,24 @@ public class User {
   }
 
   /**
-   * This method returns a composed way to show an id.
+   * This method returns a composed way to show a User with its institution.
    *
-   * @return a String that represents an Employee record.
-   *         e.g. 1, 2
-   *         Where 1 is the user id, and 2 is the institution id.
+   * @return a String that represents a User.
+   *         e.g. Tobón, Héctor (CIAT)
    */
   public String getComposedNameWithInstitution() {
     return this.lastName + ", " + this.firstName + " (" + this.currentInstitution.getAcronym() + ")";
+  }
+
+  /**
+   * * This method returns a composed way to show an id.
+   *
+   * @return a String that represents an Employee record - or Project Owner.
+   *         e.g. 1, 2
+   *         Where 1 is the user id, and 2 is the institution id.
+   */
+  public String getComposedOwnerIDs() {
+    return this.id + "," + this.currentInstitution.getId();
   }
 
   public Institution getCurrentInstitution() {
@@ -98,16 +108,6 @@ public class User {
 
   public Role getRole() {
     return role;
-  }
-
-  /**
-   * his method returns a composed way to show a User with its institution.
-   *
-   * @return a String that represents a User.
-   *         e.g. Tobón, Héctor (CIAT)
-   */
-  public String getUserInstitutionID() {
-    return this.id + "," + this.currentInstitution.getId();
   }
 
   public String getUsername() {

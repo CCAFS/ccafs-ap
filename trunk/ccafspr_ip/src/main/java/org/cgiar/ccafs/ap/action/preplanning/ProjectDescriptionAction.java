@@ -148,7 +148,7 @@ public class ProjectDescriptionAction extends BaseAction {
   public String save() {
 
     System.out.println("------- SAVING --------");
-
+    System.out.println(project.getRegions());
 
     return BaseAction.SUCCESS;
   }

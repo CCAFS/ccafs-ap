@@ -15,41 +15,45 @@ package org.cgiar.ccafs.ap.converter;
 
 import java.util.Map;
 
+import org.cgiar.ccafs.ap.data.manager.InstitutionManager;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-
 import org.cgiar.ccafs.ap.data.model.User;
 import org.cgiar.ccafs.ap.data.manager.UserManager;
 import com.google.inject.Inject;
 import org.apache.struts2.util.StrutsTypeConverter;
 
 
-public class UserConverter extends StrutsTypeConverter {
+public class UserOwnerConverter extends StrutsTypeConverter {
 
   // LOG
-  private static final Logger LOG = LoggerFactory.getLogger(UserConverter.class);
+  private static final Logger LOG = LoggerFactory.getLogger(UserOwnerConverter.class);
 
   // Manager
   private UserManager userManager;
+  private InstitutionManager institutionManager;
 
   @Inject
-  public UserConverter(UserManager userManager) {
+  public UserOwnerConverter(UserManager userManager, InstitutionManager institutionManager) {
     this.userManager = userManager;
+    this.institutionManager = institutionManager;
   }
 
   @Override
   public Object convertFromString(Map context, String[] values, Class toClass) {
     if (toClass == User.class) {
-      String id = values[0];
+      String[] ids = values[0].split("[,]");
       try {
         // This will return an user without currentInstitution defined.
-        // If you want to get the current institution, you will need to use the converter UserOwnerConverter
-        User user = userManager.getUser(Integer.parseInt(id));
-        LOG.debug(">> convertFromString > id = {} ", id);
+        // If you want to get the current institution, you will need to use the converter XXXX
+        User user = userManager.getUser(Integer.parseInt(ids[0]));
+        user.setCurrentInstitution(institutionManager.getInstitution(Integer.parseInt(ids[1])));
+        LOG.debug(">> convertFromString > ids = {} ", ids);
         return user;
       } catch (NumberFormatException e) {
         // Do Nothing
-        LOG.error("Problem to convert User from String (convertFromString) for user_id = {} ", id, e.getMessage());
+        LOG.error("Problem to convert User from String (convertFromString) for user_id = {} ", ids, e.getMessage());
       }
     }
     return null;
@@ -58,8 +62,8 @@ public class UserConverter extends StrutsTypeConverter {
   @Override
   public String convertToString(Map context, Object o) {
     User user = (User) o;
-    LOG.debug(">> convertToString > id = {} ", user.getId());
-    return user.getId() + "";
+    LOG.debug(">> convertToString > id = {} ", user.getComposedOwnerIDs());
+    return user.getComposedOwnerIDs() + "";
   }
 
 }
