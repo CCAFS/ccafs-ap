@@ -44,7 +44,7 @@ public class MySQLProjectDAO implements ProjectDAO {
           projectData.put("end_date", rs.getDate("end_date").toString());
         }
         projectData.put("project_leader_id", rs.getString("project_leader_id"));
-        projectData.put("project_creator_id", rs.getString("project_creator_id"));
+        projectData.put("program_creator_id", rs.getString("program_creator_id"));
         projectData.put("project_owner_id", rs.getString("project_owner_id"));
         projectData.put("created", rs.getTimestamp("created").getTime() + "");
 
@@ -324,11 +324,12 @@ public class MySQLProjectDAO implements ProjectDAO {
     StringBuilder query = new StringBuilder();
     if (projectData.get("id") == null) {
       // Insert a new project.
-      query.append("INSERT INTO projects (project_owner_id) ");
-      query.append("VALUES (?) ");
+      query.append("INSERT INTO projects (project_owner_id, program_creator_id) ");
+      query.append("VALUES (?, ?) ");
 
-      Object[] values = new Object[1];
+      Object[] values = new Object[2];
       values[0] = projectData.get("project_owner_id");
+      values[1] = projectData.get("program_creator_id");
       int result = databaseManager.saveData(query.toString(), values);
       LOG.debug("<< saveProject():{}", result);
       return result;

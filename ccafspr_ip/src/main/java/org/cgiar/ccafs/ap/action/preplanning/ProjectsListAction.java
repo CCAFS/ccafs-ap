@@ -18,7 +18,6 @@ import org.cgiar.ccafs.ap.config.APConfig;
 import org.cgiar.ccafs.ap.data.manager.ProjectManager;
 import org.cgiar.ccafs.ap.data.model.Project;
 
-import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -68,12 +67,12 @@ public class ProjectsListAction extends BaseAction {
     newProject.setOwner(this.getCurrentUser());
     IPProgram userProgram = this.getCurrentUser().getCurrentInstitution().getProgram();
     if (userProgram != null) {
-      newProject.setProgramCreator(this.getCurrentUser().getCurrentInstitution().getProgram());
+      newProject.setProgramCreator(userProgram);
     } else {
       LOG
-      .error(
-        "-- execute() > the current user identify with id={} and institution_id={} does not belong to a specific program!",
-        new Object[] {this.getCurrentUser().getId(), this.getCurrentUser().getCurrentInstitution().getId()});
+        .error(
+          "-- execute() > the current user identify with id={} and institution_id={} does not belong to a specific program!",
+          new Object[] {this.getCurrentUser().getId(), this.getCurrentUser().getCurrentInstitution().getId()});
     }
     newProject.setCreated(new Date().getTime());
     return projectManager.saveProjectDescription(newProject);
@@ -82,9 +81,7 @@ public class ProjectsListAction extends BaseAction {
 
   @Override
   public String execute() throws Exception {
-    if (add) {
-      return add();
-    }
+    // If there are not projects to be listed.
     if (projects.size() <= 0) {
       // Create new project and redirect to project description using the new projectId assigned by the database.
       projectID = this.createNewProject();
@@ -92,6 +89,10 @@ public class ProjectsListAction extends BaseAction {
         // Let's redirect the user to the Project Description section.
         return BaseAction.INPUT;
       }
+    }
+    // If user clicks on Add button.
+    if (add) {
+      return add();
     }
     // An error happened, lets redirect it to the list, even if there are not projects.
     // TODO HT - Here we should show an error message.
@@ -119,8 +120,8 @@ public class ProjectsListAction extends BaseAction {
 
     // Getting the list of projects in which the current user is assigned as Owner.
     // TODO HT - Uncomment the following line when it is finished:
-    // List<Project> projectsOwning = projectManager.getProjectsOwning(this.getCurrentUser());
-    List<Project> projectsOwning = new ArrayList<Project>();
+    List<Project> projectsOwning = projectManager.getProjectsOwning(this.getCurrentUser());
+    // List<Project> projectsOwning = new ArrayList<Project>();
 
     // Mixing the Owning projects with the current list of projects.
     for (Project projectOwning : projectsOwning) {
