@@ -213,10 +213,4 @@ public class ProjectPartnersAction extends BaseAction {
     this.project = project;
   }
 
-// public void setProjectID(int projectId) {
-// System.out.println("setProjectId(" + projectId + ")");
-// this.projectID = projectId;
-// }
-
-
 }

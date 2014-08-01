@@ -115,6 +115,7 @@ public class MySQLProjectDAO implements ProjectDAO {
           projectData.put("end_date", rs.getDate("end_date").toString());
         }
         projectData.put("project_leader_id", rs.getString("project_leader_id"));
+        projectData.put("program_creator_id", rs.getString("program_creator_id"));
         projectData.put("project_owner_user_id", rs.getString("owner_user_id"));
         projectData.put("project_owner_institution_id", rs.getString("owner_institution_id"));
         projectData.put("created", rs.getTimestamp("created").getTime() + "");

@@ -13,8 +13,6 @@
  *****************************************************************/
 package org.cgiar.ccafs.ap.converter;
 
-import org.cgiar.ccafs.ap.data.model.Institution;
-
 import java.util.Map;
 
 import org.slf4j.Logger;
@@ -41,9 +39,11 @@ public class UserConverter extends StrutsTypeConverter {
 
   @Override
   public Object convertFromString(Map context, String[] values, Class toClass) {
-    if (toClass == Institution.class) {
+    if (toClass == User.class) {
       String id = values[0];
       try {
+        // This will return an user without currentInstitution defined.
+        // If you want to get the current institution, you will need to use the converter XXXX
         User user = userManager.getUser(Integer.parseInt(id));
         LOG.debug(">> convertFromString > id = {} ", id);
         return user;
