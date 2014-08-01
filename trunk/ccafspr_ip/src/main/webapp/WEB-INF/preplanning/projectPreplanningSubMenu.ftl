@@ -1,5 +1,5 @@
 [#ftl]
-<nav id="stageMenu">
+<nav id="stageMenu" class="clearfix">
   <ul>
     <a [#if currentStage == "description"] class="currentReportingSection" [/#if] href="
         [@s.url action='description' includeParams='get'][/@s.url]

@@ -12,7 +12,6 @@ $(document).ready(function(){
  * 
  */
 function datePickerConfig(element){
-  console.log(element);
   var defaultMinDateValue = element.defaultMinDateValue;
   var defaultMaxDateValue = element.defaultMaxDateValue;
   var minDateValue = defaultMinDateValue;

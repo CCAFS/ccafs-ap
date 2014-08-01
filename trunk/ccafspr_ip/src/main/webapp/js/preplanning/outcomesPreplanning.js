@@ -26,30 +26,50 @@ function init(){
 function attachEvents(){
   $(".outcomeIndicatorsBlock input.addButton").click(addIndicatorEvent);
   $(".indicator a.removeOutcomeIndicator").click(removeIndicatorEvent);
-  $("#idosBlock .idosIndicators input.indicatorsCheckbox").click(setIdoIndicatorsIndexes)
-  //$(".idosCheckbox").change(viewIDOsIndicators);
+  $("#idosBlock .idosIndicators input.indicatorsCheckbox").click(setIdoIndicatorsIndexes);
+  $(".idosCheckbox").change(viewIDOsIndicators);
+  $(".indicatorsCheckbox").change(verifyIDOcheck);
 }
 
 function setIdoIndicatorsIndexes(event){
   var outcomeIndicatorsSize = $(".outcomeIndicatorsBlock div.indicator").length;
-  
-  $("#outcomes .outcome").each(function(outcomeIndex, outcome){
-     var indicatorsChecked = 0;
-     $(outcome).find("#idosBlock .idosIndicators input.indicatorsCheckbox").each(function(indicatorIndex, indicator){
-       if( $(indicator).attr("checked") ){
-         $(indicator).attr("name", "outcomes["+outcomeIndex+"].indicators["+ (indicatorsChecked+outcomeIndicatorsSize) + "].parent");
-         indicatorsChecked++;
-       }else{
-         $(indicator).attr("name", "idoIndicator");
-       }
-     });
+  $("#outcomes .outcome").each(function(outcomeIndex,outcome){
+    var indicatorsChecked = 0;
+    $(outcome).find("#idosBlock .idosIndicators input.indicatorsCheckbox").each(function(indicatorIndex,indicator){
+      if ($(indicator).attr("checked")) {
+        $(indicator).attr("name", "outcomes[" + outcomeIndex + "].indicators[" + (indicatorsChecked + outcomeIndicatorsSize) + "].parent");
+        indicatorsChecked++;
+      } else {
+        $(indicator).attr("name", "idoIndicator");
+      }
+    });
   });
 }
 
 function viewIDOsIndicators(event){
-  $target = $(event.target);
-  $target.parent().find(".idosIndicators").toggle(300);
-  console.log($target);
+  var $target = $(event.target);
+  var $indicatorsBlock = $target.parent().find(".idosIndicators");
+  if ($target.prop('checked')) {
+    $indicatorsBlock.show(300);
+    $indicatorsBlock.find(".indicatorsCheckbox").removeAttr("disabled");
+  } else {
+    $indicatorsBlock.hide(300);
+    $indicatorsBlock.find(".indicatorsCheckbox").attr("disabled", true);
+  }
+}
+
+function verifyIDOcheck(event){
+  var $target = $(event.target);
+  var $indicatorsBlock = $target.parent().parent();
+  var $isCheck = $indicatorsBlock.find(".indicatorsCheckbox:checked");
+  var $currentIdo = $indicatorsBlock.find(".idosCheckbox");
+  if ($isCheck.length <= 0) {
+    console.log("no: " + this);
+    $currentIdo.removeAttr("checked").trigger("change");
+  } else {
+    console.log("yes: " + this);
+    $currentIdo.attr("checked", true).trigger("change");
+  }
 }
 
 function addIndicatorEvent(event){

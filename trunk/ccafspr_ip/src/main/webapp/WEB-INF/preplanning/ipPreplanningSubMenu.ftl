@@ -1,28 +1,27 @@
 [#ftl]
-<nav id="stageMenu">
+<nav id="stageMenu" class="clearfix">
   <ul> 
-    <a [#if currentStage == "outcomes"] class="currentReportingSection" [/#if] href="
+    <li [#if currentStage == "outcomes"] class="currentSection" [/#if]><a href="
         [@s.url action='outcomes' includeParams='get'][/@s.url]
-      "><li>[@s.text name="menu.preplanning.submenu.outcomes" /]</li>
-    </a>
+      ">[@s.text name="menu.preplanning.submenu.outcomes" /]</a></li>
+    
     [#if currentUser.RPL ]
-    <a [#if currentStage == "midOutcomes"] class="currentReportingSection" [/#if] href="
+    <li [#if currentStage == "midOutcomes"] class="currentSection" [/#if]><a href="
         [@s.url action='midOutcomesRPL' includeParams='get'][/@s.url]
-      "><li>[@s.text name="menu.preplanning.submenu.midOutcomes" /]</li>
-    </a>
-    <a [#if currentStage == "outputs"] class="currentReportingSection" [/#if] href="
+      ">[@s.text name="menu.preplanning.submenu.midOutcomes" /]</a></li>
+    
+    <li [#if currentStage == "outputs"] class="currentSection" [/#if]><a href="
         [@s.url action='outputsRPL' includeParams='get'][/@s.url]
-      "><li>[@s.text name="menu.preplanning.submenu.outputs" /]</li>
-    </a>
+      ">[@s.text name="menu.preplanning.submenu.outputs" /]</a></li>
+    
     [#elseif currentUser.FPL ] 
-    <a [#if currentStage == "midOutcomes"] class="currentReportingSection" [/#if] href="
+    <li [#if currentStage == "midOutcomes"] class="currentSection" [/#if]><a href="
         [@s.url action='midOutcomes' includeParams='get'][/@s.url]
-      "><li>[@s.text name="menu.preplanning.submenu.midOutcomes" /]</li>
-    </a>
-    <a [#if currentStage == "outputs"] class="currentReportingSection" [/#if] href="
+      ">[@s.text name="menu.preplanning.submenu.midOutcomes" /]</a></li>
+    
+    <li [#if currentStage == "outputs"] class="currentSection" [/#if]><a href="
         [@s.url action='outputs' includeParams='get'][/@s.url]
-      "><li>[@s.text name="menu.preplanning.submenu.outputs" /]</li>
-    </a>
+      ">[@s.text name="menu.preplanning.submenu.outputs" /]</a></li> 
     [/#if]
     
   </ul>
