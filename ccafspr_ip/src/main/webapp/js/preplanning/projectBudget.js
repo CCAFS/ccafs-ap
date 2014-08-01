@@ -25,16 +25,20 @@ function addLeveragedEvent(e){
   var $parent = $(e.target).parent();
   var $newElement = $("#leveragedPartnerTemplate").clone(true).removeAttr("id").addClass("leveragedPartner");
   var $optionSelected = $parent.find("select.leveraged").find('option:selected');
-  $parent.before($newElement);
-  $newElement.find("[id$='partnerName']").html($optionSelected.html());
-  $newElement.find("input[id$='id']").attr("value", $optionSelected.val());
-  $newElement.find(".removeButton").click(removeLeveragedEvent);
-  $optionSelected.remove();
-  $newElement.show("slow");
-  setLeveragedIndexes();
+  if ($parent.find("select.leveraged option").length != 0) {
+    $parent.before($newElement);
+    $newElement.find("[id$='partnerName']").html($optionSelected.html());
+    $newElement.find("input[id$='id']").attr("value", $optionSelected.val());
+    $newElement.find(".removeButton").click(removeLeveragedEvent);
+    $optionSelected.remove();
+    $newElement.show("slow");
+    setLeveragedIndexes();
+  }
+  
 }
 
 function removeLeveragedEvent(e){
+  e.preventDefault();
   var $target = $(e.target).parent();
   var $parent = $target.parent();
   var option = '<option value="' + $parent.find("input[id$='id']").attr("value") + '">' + $parent.find("[id$='partnerName']").html() + '</option>';

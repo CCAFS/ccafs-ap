@@ -34,9 +34,9 @@ function attachEvents(){
 
 function indicatorVerify(event){
   var $parent = $(event.target).parent().parent().parent();
-  var checkedIndicators = $parent.find("input[name^='" + event.currentTarget.name + "']:checked").length;
-  var $textArea = $parent.find(".fields");
-  console.log(event.currentTarget.name);
+  var checkedIndicators = $(event.target).parent().find("input[name^='" + event.currentTarget.name + "']:checked").length;
+  var $textArea = $(event.target).parent().find(".fields");
+  console.log($(event.target));
   if (!checkedIndicators == 0) {
     $textArea.fadeIn("slow");
   } else {
@@ -150,16 +150,23 @@ function setContributesIndexes(i){
   $("#midOutcome-" + i + " div.contributions").each(function(index,element){
     var elementName = "midOutcomes[" + i + "].translateOf[" + index + "].";
     $(element).find("[id$='contributeId']").attr("name", elementName + "id");
+    $(element).find("[id$='target']").attr("name", elementName + "target");
     $(element).find("[id$='justification']").attr("name", elementName + "justification");
     $(element).find("[id^='__multiselect']").attr("name", "__multiselect_" + elementName + "indicators");
     // set Indicator indexes
     $(element).find(".midOutcomeIndicator").each(function(c,indicator){
       var indicatorInputName = "midOutcomes[" + i + "].";
       var inputId = $(indicator).attr('id');
+      console.log("Label before: " + $(indicator).next().attr("for"));
+      console.log("Input before: " + inputId);
       // set new id for label input
-      $(element).find("label[for='" + inputId + "']").attr("for", indicatorInputName + "indicators-" + index + c);
+      $(indicator).next().attr("for", indicatorInputName + "indicators-" + i + index + c);
+      // console.log($(indicator));
+      console.log("Label " + $(indicator).next().attr("for"));
+      
       // set new index name for input indicator
-      $(indicator).attr("name", indicatorInputName + "indicators").attr("id", indicatorInputName + "indicators-" + index + c);
+      $(indicator).attr("name", indicatorInputName + "indicators").attr("id", indicatorInputName + "indicators-" + i + index + c);
+      console.log("Input " + $(indicator).attr("id"));
     });
   });
 }

@@ -644,15 +644,30 @@ h1.contentSubTitle {
 .fourthPartBlock {
   display: inline-block;
   padding: 5px;
-  width: 21%;
+  width: 20%;
   vertical-align: middle;
+}
+
+.fourthPartBlock input { 
+  width: 100%; 
+}
+
+.sixthPartBlock{
+  display: inline-block;
+  padding: 4px;
+  width: 15%;
+  vertical-align: middle;
+}
+
+.sixthPartBlock input { 
+  width: 100%; 
 }
 
 .thirdPartBlock {
   display: inline-block;
   padding: 5px;
   width: 30%;
-  vertical-align: middle;
+  vertical-align: top;
 }
 
 .halfPartBlock {
@@ -884,7 +899,7 @@ h1.contentSubTitle {
     border-bottom: 2px dotted #C3D4E7;
     border-radius: 5px;
     margin: 2px 0px;
-    background: #EAF3FD;
+    background: #FFFFFF;
 }
 
 .indicator h6,.indicator label{
