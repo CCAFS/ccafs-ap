@@ -17,11 +17,14 @@ import org.cgiar.ccafs.ap.action.BaseAction;
 import org.cgiar.ccafs.ap.config.APConfig;
 import org.cgiar.ccafs.ap.config.APConstants;
 import org.cgiar.ccafs.ap.data.manager.IPElementManager;
+import org.cgiar.ccafs.ap.data.manager.IPElementRelationManager;
+import org.cgiar.ccafs.ap.data.manager.IPIndicatorManager;
 import org.cgiar.ccafs.ap.data.manager.IPProgramManager;
 import org.cgiar.ccafs.ap.data.model.IPElement;
 import org.cgiar.ccafs.ap.data.model.IPElementType;
 import org.cgiar.ccafs.ap.data.model.IPProgram;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import com.google.inject.Inject;
@@ -37,6 +40,8 @@ public class OutputsPreplanningAction extends BaseAction {
   // Managers
   private IPElementManager ipElementManager;
   private IPProgramManager ipProgramManager;
+  private IPIndicatorManager ipIndicatorManager;
+  private IPElementRelationManager ipElementRelationManager;
 
   // Model
   private List<IPElement> outputs;
@@ -45,10 +50,18 @@ public class OutputsPreplanningAction extends BaseAction {
   private List<IPProgram> flagshipsList;
 
   @Inject
-  public OutputsPreplanningAction(APConfig config, IPElementManager ipElementManager, IPProgramManager ipProgramManager) {
+  public OutputsPreplanningAction(APConfig config, IPElementManager ipElementManager,
+    IPProgramManager ipProgramManager, IPIndicatorManager ipIndicatorManager,
+    IPElementRelationManager ipElementRelationManager) {
     super(config);
     this.ipElementManager = ipElementManager;
     this.ipProgramManager = ipProgramManager;
+    this.ipIndicatorManager = ipIndicatorManager;
+    this.ipElementRelationManager = ipElementRelationManager;
+  }
+
+  public int getElementTypeID() {
+    return APConstants.ELEMENT_TYPE_OUTPUTS;
   }
 
   public List<IPProgram> getFlagshipsList() {
@@ -73,10 +86,12 @@ public class OutputsPreplanningAction extends BaseAction {
     // Create an element type for outputs
     IPElementType outputsType = new IPElementType(APConstants.ELEMENT_TYPE_OUTPUTS);
 
+    flagshipsList = ipProgramManager.getProgramsByType(APConstants.FLAGSHIP_PROGRAM_TYPE);
     midOutcomesList = ipElementManager.getIPElements(program, midOutcomesType);
     outputs = ipElementManager.getIPElements(program, outputsType);
 
-    flagshipsList = ipProgramManager.getProgramsByType(APConstants.FLAGSHIP_PROGRAM_TYPE);
+    outputsFromDatabase = new ArrayList<>();
+    outputsFromDatabase.addAll(outputs);
 
     if (getRequest().getMethod().equalsIgnoreCase("post")) {
       // Clear out the list if it has some element
@@ -88,31 +103,25 @@ public class OutputsPreplanningAction extends BaseAction {
 
   @Override
   public String save() {
-    IPProgram program = new IPProgram();
-    program.setId(1);
-
-    IPElementType type = new IPElementType();
-    type.setId(4);
-
-    for (IPElement output : outputs) {
-      if (output.getProgram() == null) {
-        output.setProgram(program);
-      }
-      if (output.getType() == null) {
-        output.setType(type);
+    // First, remove of the database the elements that user deleted
+    for (IPElement output : outputsFromDatabase) {
+      // If user removed all the outputs in the interface
+      // we should do the same in the database
+      if (outputs.isEmpty()) {
+        ipElementManager.deleteIPElement(output, getCurrentUser().getCurrentInstitution().getProgram());
+        continue;
       }
 
-      if (output.getContributesTo() != null) {
-        String[] values = new String[output.getContributesTo().size()];
-        for (int i = 0; i < output.getContributesTo().size(); i++) {
-          values[i] = String.valueOf(output.getContributesTo().get(i).getId());
-        }
-        output.setContributesTo(ipElementManager.getIPElementList(values));
+      // Check if the user delete an output in the interface
+      if (!outputs.contains(output)) {
+        ipElementManager.deleteIPElement(output, getCurrentUser().getCurrentInstitution().getProgram());
+      } else {
+        // Remove the relations of the outputs that were not removed
+        ipIndicatorManager.removeElementIndicators(output, getCurrentUser().getCurrentInstitution().getProgram());
+        ipElementRelationManager.deleteRelationsByChildElement(output);
       }
     }
 
-    // Remove records already present in the database
-    ipElementManager.deleteIPElements(program, type);
     ipElementManager.saveIPElements(outputs);
     return SUCCESS;
   }
