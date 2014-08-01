@@ -194,6 +194,11 @@ public class ProjectManagerImpl implements ProjectManager {
           LOG.error("There was an error formatting the dates", e);
         }
       }
+      // Setting program creator.
+      if (elementData.get("program_creator_id") != null) {
+        project.setProgramCreator(ipProgramManager.getIPProgramById(Integer.parseInt(elementData
+          .get("program_creator_id"))));
+      }
       project.setCreated(Long.parseLong(elementData.get("created")));
       projectsList.add(project);
     }
@@ -274,6 +279,7 @@ public class ProjectManagerImpl implements ProjectManager {
       // Getting the employee id.
       int ownerId = userManager.getEmployeeID(project.getOwner());
       projectData.put("project_owner_id", ownerId);
+      projectData.put("program_creator_id", project.getProgramCreator().getId());
     } else {
       // Update project
       // TODO HT - To Complete.
@@ -282,6 +288,5 @@ public class ProjectManagerImpl implements ProjectManager {
     int result = projectDAO.saveProject(projectData);
     return result;
   }
-
 
 }
