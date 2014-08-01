@@ -1,7 +1,7 @@
 [#ftl]
 [#assign title = "Project Description" /]
 [#assign globalLibs = ["jquery", "noty", "autoSave"] /]
-[#assign customJS = ["${baseUrl}/js/global/utils.js", "${baseUrl}/js/planning/mainInformation.js"] /]
+[#assign customJS = ["${baseUrl}/js/global/utils.js", "${baseUrl}/js/preplanning/projectDescription.js"] /]
 [#assign currentSection = "preplanning" /]
 [#assign currentPrePlanningSection = "projects" /]
 [#assign currentStage = "description" /]
@@ -90,6 +90,9 @@
     </div>
      
   </article>
-  [/@s.form]  
+  [/@s.form] 
+  [#-- Hidden values used by js --]
+  <input id="minDateValue" value="${startYear?c}-01-01" type="hidden"/>
+  <input id="maxDateValue" value="${endYear?c}-12-31" type="hidden"/> 
 </section>
 [#include "/WEB-INF/global/pages/footer.ftl"]
