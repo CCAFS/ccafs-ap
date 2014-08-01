@@ -101,14 +101,16 @@ function addContributeEvent(event){
   event.preventDefault();
   var $addButton = $(event.target).parent();
   var $selectElemet = $(event.target).siblings().find("select");
+  
   if ($selectElemet.find('option').length != 0) {
     var $optionSelected = $selectElemet.find('option:selected');
     var elementId = $optionSelected.attr("value");
-    var programID = 1;
+    var programID = $("#midOutcomesRPL_flagships").val();
     var grandParentId = $addButton.parent().parent().attr("id").split("-")[1];
     var $newElementClone = $("#contributeTemplate").clone(true).removeAttr("id");
-    $newElementClone.find("#description").html($optionSelected.html());
     var elementName = "midOutcomes[" + grandParentId + "].";
+    
+    $newElementClone.find("#description").html($optionSelected.html());
     $newElementClone.find("[id$='contributeId']").attr("value", elementId);
     $.getJSON("../ipIndicators.do?programID=" + programID + "&elementID=" + elementId, function(data){
       $.each(data.IPElementsList, function(index,element){
