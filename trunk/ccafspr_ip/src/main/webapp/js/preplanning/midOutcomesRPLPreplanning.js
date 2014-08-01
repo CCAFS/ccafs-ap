@@ -82,8 +82,8 @@ function updateMidOutcomes(event){
   var $target = $(event.target);
   var $parent = $target.parent().parent().parent();
   var programID = $target.find('option:selected').attr("value");
-  var elementTypeId = 3;
-  $.getJSON("../json/ipElements.do?programID=" + programID + "&elementTypeId=" + elementTypeId, function(){
+  var elementTypeId = $("#midOutcomeTypeId").val();
+  $.getJSON("../json/ipElementsByProgramAndType.do?programID=" + programID + "&elementTypeId=" + elementTypeId, function(){
     console.log("MidOutcome: " + $parent.attr("id"));
     console.log($target.find('option:selected').attr("value"));
   }).done(function(data){

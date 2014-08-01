@@ -110,11 +110,3 @@
     [#-- End Contribute template --]   
 </section>
 [#include "/WEB-INF/global/pages/footer.ftl"]
-
-
-
-
-
-
-
-  

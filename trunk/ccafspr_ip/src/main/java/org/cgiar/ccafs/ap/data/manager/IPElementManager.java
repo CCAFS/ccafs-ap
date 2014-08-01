@@ -30,7 +30,7 @@ public interface IPElementManager {
    * passed as parameter.
    * If the parameter program is the same as element.getProgram then the IPElement
    * is also deleted.
-   *
+   * 
    * @param element
    * @param program
    * @return true if the relation between the program and the element was successfully
@@ -41,7 +41,7 @@ public interface IPElementManager {
   /**
    * Delete all IP Elements which belongs to the program given and which are of
    * the same type given.
-   *
+   * 
    * @param program
    * @param type
    * @return true if the deletion process was successful.
@@ -50,14 +50,14 @@ public interface IPElementManager {
 
   /**
    * Get all the ipElements existent in the database
-   *
+   * 
    * @return an array of IPElement objects
    */
   public List<IPElement> getIPElementList();
 
   /**
    * Get a list of IPElement objects corresponding to the given array of ids
-   *
+   * 
    * @param ids - list of IPElement identifiers
    * @return a list of IPElement objects
    */
@@ -66,7 +66,7 @@ public interface IPElementManager {
   /**
    * This method gets all the IPElements related to the IP program
    * given
-   *
+   * 
    * @param program - Object with the program information
    * @return a list with IPElements
    */
@@ -75,7 +75,7 @@ public interface IPElementManager {
   /**
    * This method gets all the IPElements of the type given and which are
    * related to the IP program given.
-   *
+   * 
    * @param program - IPProgram object
    * @param type - IPElementType object
    * @return a list of IPElements which fill the conditions.
@@ -83,8 +83,17 @@ public interface IPElementManager {
   public List<IPElement> getIPElements(IPProgram program, IPElementType type);
 
   /**
+   * This method gets all the elements that are children of the element
+   * passed as parameter.
+   * 
+   * @param parent
+   * @return a list of IPElements objects with the information
+   */
+  public List<IPElement> getIPElementsByParent(IPElement parent, int relationTypeID);
+
+  /**
    * This method save into the database the information of the IPElements
-   *
+   * 
    * @param elements - List of objects to save
    * @return true if all the information was successfully saved, false otherwise.
    */

@@ -19,7 +19,7 @@ import org.slf4j.LoggerFactory;
 public class IPIndicatorsAction extends BaseAction {
 
   // Logger
-  private static final Logger LOG = LoggerFactory.getLogger(IPElementsAction.class);
+  private static final Logger LOG = LoggerFactory.getLogger(IPElementsByProgramAndTypeAction.class);
   private static final long serialVersionUID = -420783282085859338L;
 
   // Model

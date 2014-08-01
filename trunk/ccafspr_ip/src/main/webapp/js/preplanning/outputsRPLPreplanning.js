@@ -28,8 +28,9 @@ function updateMidOutcomesList(event){
   $target = $(event.target);
   $parent = $target.parent().parent().parent().parent();
   var programID = $target.find('option:selected').attr("value");
-  var elementTypeId = 3;
-  $.getJSON("../json/ipElements.do?programID=" + programID + "&elementTypeId=" + elementTypeId, function(data){
+  var elementTypeId = $("#midOutcomeTypeID").val();
+  $.getJSON("../json/ipElementsByProgramAndType.do?programID=" + programID + "&elementTypeId=" + elementTypeId, function(data){
+    console.log(data);
     $parent.find("select#midOutcomes option").remove();
     $.each(data.IPElementsList, function(){
       $parent.find("select#midOutcomes").append('<option value="' + this.id + '">' + this.description + '</option>');
@@ -45,10 +46,9 @@ function updateMidOutcomesList(event){
 function updateOutputsList(event){
   $target = $(event.target);
   $parent = $target.parent().parent().parent().parent();
-  var programID = $parent.find("select#flagships").find('option:selected').attr("value");
-  var elementTypeId = 4;
-  var midOutcomeId = $target.find('option:selected').attr("value");
-  $.getJSON("../json/ipElements.do?programID=" + programID + "&elementTypeId=" + elementTypeId, function(data){
+  var midOutcomeId = $target.val();
+  
+  $.getJSON("../json/ipElementsByParent.do?elementID=" + midOutcomeId, function(data){
     $parent.find("select#outputs option").remove();
     $.each(data.IPElementsList, function(){
       if (objectsListContains(this.contributesTo, midOutcomeId)) {
@@ -103,6 +103,8 @@ function setOutputsIndexes(){
     $(element).attr("id", "output-" + index);
     $(element).find("[id$='elementIndex']").html(index + 1);
     $(element).find("[id^='outputId']").attr("name", elementName + "id");
+    $(element).find("[id^='outputTypeID']").attr("name", elementName + "type.id");
+    $(element).find("[id^='outputProgramID']").attr("name", elementName + "program.id");
     $(element).find("[id$='description']").attr("name", elementName + "description").attr("placeholder", "Add output #" + (index + 1));
     setContributesIndexes(index);
   });
@@ -145,8 +147,8 @@ function setContributesIndexes(i){
     var elementName = "outputs[" + i + "].contributesTo[" + index + "].";
     $(element).find("[id^='contributeId']").attr("name", elementName + "id");
     // For existing translated outputs
-    elementName = "outputs[" + i + "].translateOf[" + index + "].";
-    $(element).find("[id$='outputs']").attr("name", elementName + "id");
+    elementName = "outputs[" + i + "].translateOf";
+    $(element).find("[id$='outputs']").attr("name", elementName);
     console.log("update");
   });
 }

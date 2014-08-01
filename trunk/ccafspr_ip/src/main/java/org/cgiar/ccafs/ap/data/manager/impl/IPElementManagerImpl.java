@@ -106,6 +106,12 @@ public class IPElementManagerImpl implements IPElementManager {
   }
 
   @Override
+  public List<IPElement> getIPElementsByParent(IPElement parent, int relationTypeID) {
+    List<Map<String, String>> ipElementDataList = ipElementDAO.getIPElementsByParent(parent.getId(), relationTypeID);
+    return setDataToIPElementObjects(ipElementDataList);
+  }
+
+  @Override
   public boolean saveIPElements(List<IPElement> elements) {
     Map<String, Object> ipElementData;
     boolean allSaved = true;
@@ -178,7 +184,7 @@ public class IPElementManagerImpl implements IPElementManager {
         if (element.getTranslatedOf() != null) {
           for (IPElement parentElement : element.getTranslatedOf()) {
             ipRelationshipDAO
-            .saveIPRelation(parentElement.getId(), elementId, APConstants.ELEMENT_RELATION_TRANSLATION);
+              .saveIPRelation(parentElement.getId(), elementId, APConstants.ELEMENT_RELATION_TRANSLATION);
           }
         }
       } else {
@@ -194,7 +200,7 @@ public class IPElementManagerImpl implements IPElementManager {
   /**
    * This function takes the information of IPElements stored in a list of maps
    * to organize it in a list of IPElement objects
-   *
+   * 
    * @param ipElementDataList
    * @return
    */
