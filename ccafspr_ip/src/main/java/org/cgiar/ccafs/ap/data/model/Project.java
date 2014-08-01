@@ -22,7 +22,7 @@ import org.apache.commons.lang3.builder.ToStringBuilder;
 
 /**
  * This class represents a Project.
- *
+ * 
  * @author Javier Andrés Gallego
  * @author Héctor Fabio Tobón R
  */
@@ -68,7 +68,7 @@ public class Project {
 
   /**
    * This method calculates all the years between the start date and the end date.
-   *
+   * 
    * @return a List of numbers representing all the years.
    */
   public List<Integer> getAllYears() {
@@ -98,7 +98,7 @@ public class Project {
    * This method returns a composed Identifier that is going to be used in the front-end.
    * The convention is going to be used depending on the creationg date of the project.
    * yyyy-project.id => e.g. 2014-46
-   *
+   * 
    * @return the composed indentifier or null if the created date is null.
    */
   public String getComposedId() {
@@ -128,6 +128,18 @@ public class Project {
 
   public List<IPProgram> getFlagships() {
     return flagships;
+  }
+
+  public String getFlagshipsAcronym() {
+    StringBuilder flagshipAcronym = new StringBuilder();
+
+    for (int i = 0; i < flagships.size(); i++) {
+      flagshipAcronym.append(flagships.get(i).getAcronym());
+      if (i != (flagships.size() - 1)) {
+        flagshipAcronym.append(", ");
+      }
+    }
+    return flagshipAcronym.toString();
   }
 
   public int getId() {
@@ -162,6 +174,18 @@ public class Project {
     return regions;
   }
 
+  public String getRegionsAcronym() {
+    StringBuilder regionAcronym = new StringBuilder();
+
+    for (int i = 0; i < regions.size(); i++) {
+      regionAcronym.append(regions.get(i).getAcronym());
+      if (i != (regions.size() - 1)) {
+        regionAcronym.append(", ");
+      }
+    }
+    return regionAcronym.toString();
+  }
+
   public Date getStartDate() {
     return startDate;
   }
@@ -172,6 +196,14 @@ public class Project {
 
   public String getTitle() {
     return title;
+  }
+
+  public double getTotalCcafsBudget() {
+    double totalBudget = 0.0;
+    for (Budget budget : this.getBudgets()) {
+      totalBudget += budget.getAmount();
+    }
+    return totalBudget;
   }
 
   public List<IPProgram> getTypes() {

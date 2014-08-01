@@ -64,6 +64,14 @@ public interface BudgetManager {
   public boolean deleteBudgetsByInstitution(int projectID, int institutionID);
 
   /**
+   * This method gets all the budget information by a given Project Id
+   * 
+   * @param projectID - is the Id of the project
+   * @return a List of Budget with the budget Information related with the project
+   */
+  public List<Budget> getBudgetsByProject(int projectID);
+
+  /**
    * This method gets all the budget information that belongs to the same type of a specific project.
    * Type can be Window 1, Window 2, Window 3, Bilateral or Leveraged.
    * 
@@ -81,6 +89,14 @@ public interface BudgetManager {
    * @return a List of Budget objects.
    */
   public List<Budget> getBudgetsByYear(int projectID, int year);
+
+  /**
+   * This method gets the CCAFS Budget which is the information of budget type W1+W2+W3
+   * 
+   * @param projectID is the project id.
+   * @return a List of CCAFS Budgets for that specific project.
+   */
+  public List<Budget> getCCAFSBudgets(int projectID);
 
   /**
    * This method returns all the institutions that have leveraged funds with the specified project.

@@ -16,6 +16,8 @@ package org.cgiar.ccafs.ap.data.manager.impl;
 import org.cgiar.ccafs.ap.config.APConstants;
 import org.cgiar.ccafs.ap.data.dao.ProjectDAO;
 import org.cgiar.ccafs.ap.data.dao.ProjectFocusesDAO;
+import org.cgiar.ccafs.ap.data.manager.BudgetManager;
+import org.cgiar.ccafs.ap.data.manager.IPProgramManager;
 import org.cgiar.ccafs.ap.data.manager.InstitutionManager;
 import org.cgiar.ccafs.ap.data.manager.ProjectManager;
 import org.cgiar.ccafs.ap.data.manager.UserManager;
@@ -33,8 +35,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import org.cgiar.ccafs.ap.data.manager.IPProgramManager;
-
 import com.google.inject.Inject;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -51,18 +51,22 @@ public class ProjectManagerImpl implements ProjectManager {
   private InstitutionManager institutionManager;
   private IPProgramManager ipProgramManager;
   private ProjectManager projectManager;
+  private BudgetManager budgetManager;
 
   // LOG
   private static Logger LOG = LoggerFactory.getLogger(ProjectManagerImpl.class);
 
   @Inject
   public ProjectManagerImpl(ProjectDAO projectDAO, ProjectFocusesDAO projectFocusesDAO, UserManager userManager,
-    InstitutionManager institutionManager, IPProgramManager ipProgramManager) {
+    InstitutionManager institutionManager, IPProgramManager ipProgramManager, ProjectManager projectManager,
+    BudgetManager budgetManager) {
     this.projectDAO = projectDAO;
     this.projectFocusesDAO = projectFocusesDAO;
     this.userManager = userManager;
     this.institutionManager = institutionManager;
     this.ipProgramManager = ipProgramManager;
+    this.projectManager = projectManager;
+    this.budgetManager = budgetManager;
   }
 
   @Override
@@ -197,6 +201,11 @@ public class ProjectManagerImpl implements ProjectManager {
           .get("program_creator_id"))));
       }
       project.setCreated(Long.parseLong(elementData.get("created")));
+      project.setRegions(projectManager.getProjectFocuses(Integer.parseInt(elementData.get("id")),
+        APConstants.REGION_PROGRAM_TYPE));
+      project.setFlagships(projectManager.getProjectFocuses(Integer.parseInt(elementData.get("id")),
+        APConstants.FLAGSHIP_PROGRAM_TYPE));
+      project.setBudgets(budgetManager.getCCAFSBudgets(Integer.parseInt(elementData.get("id"))));
       projectsList.add(project);
     }
     return projectsList;
