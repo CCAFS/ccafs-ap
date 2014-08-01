@@ -31,10 +31,10 @@
         [#-- Project Title --]
         [@customForm.textArea name="project.title" i18nkey="preplanning.projectDescription.projectTitle" required=true /]
         <div id="projectDescription" class="">
-          [#-- Project Owner --]
+          [#-- Project Program Creator --]
           <div class="halfPartBlock">
-            <h6>[@s.text name="preplanning.projectDescription.projectOwner" /]</h6>
-            <p>{project.owner.currentInstitution.acronym}</p>
+            <h6>[@s.text name="preplanning.projectDescription.programCreator" /]</h6>
+            <p>${project.programCreator.acronym}</p>
           </div>
           [#--  Project Owner Contact Person --]
           <div class="halfPartBlock">

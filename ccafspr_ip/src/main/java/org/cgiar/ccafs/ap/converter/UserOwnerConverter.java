@@ -63,7 +63,9 @@ public class UserOwnerConverter extends StrutsTypeConverter {
   public String convertToString(Map context, Object o) {
     User user = (User) o;
     LOG.debug(">> convertToString > id = {} ", user.getComposedOwnerIDs());
-    return user.getComposedOwnerIDs() + "";
+    // Return should be made with simple quotes '', since the returned id is a String rather than an number.
+    // Thus, this is how is going to be used by the view.
+    return "'" + user.getComposedOwnerIDs() + "'";
   }
 
 }
