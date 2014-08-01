@@ -30,7 +30,9 @@
           [#list outputs as output]
           <div class="output borderBox" id="output-${output_index}">
             [#-- output identifier --] 
-            <input type="hidden" name="outputs[${output_index}].id" value="${output.id}" />
+            <input id="outputId" name="outputs[${output_index}].id" value="${output.id}"  type="hidden"/>
+            <input id="outputProgramID" name="outputs[${output_index}].program.id" value="${currentUser.currentInstitution.program.id}" type="hidden" />
+            <input id="outputTypeID" name="outputs[${output_index}].type.id" value="${elementTypeID}" type="hidden" />
             [#-- Remove output --]
             <div class="removeOutputBlock removeLink">              
               <img src="${baseUrl}/images/global/icon-remove.png" />
@@ -78,6 +80,8 @@
     <div id="outputTemplate" class="output borderBox" style="display:none">
       [#-- Objective identifier --]
       <input id="outputId" type="hidden" value="-1" />
+      <input id="outputProgramID" value="${currentUser.currentInstitution.program.id}" type="hidden" />
+      <input id="outputTypeID" value="${elementTypeID}" type="hidden" />
       [#-- Remove Output --]      
       <div class="removeLink removeOutputBlock">            
         <img src="${baseUrl}/images/global/icon-remove.png" />

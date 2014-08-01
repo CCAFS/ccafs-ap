@@ -44,13 +44,16 @@
                 [@s.param name="0"]<span id="elementIndex">${midOutcome_index+1}</span>[/@s.param] 
               [/@s.text]
             [/#assign]
+
             [#-- Mid outcome description --]
             [@customForm.textArea name="midOutcomes[${midOutcome_index}].description" i18nkey="${midOutcomeDescription}" required=true /] 
+
             [#-- Flagships list --]
             [@customForm.select name="flagships" label="" i18nkey="preplanning.midOutcomesRPL.flagships" listName="flagshipsList" keyFieldName="id"  displayFieldName="name" /]
+
+            [#-- midOutcome's parents --]
             <div class="contentElements parentsBlock">
               <div class="itemIndex">[@s.text name="preplanning.midOutcomesRPL.contributes" /] </div>
-              [#-- midOutcome's parents --]
               [#if midOutcome.translatedOf?has_content]
                 [#list midOutcome.translatedOf as parent]
                   [@contributeTemplate.midOutcomesRPL midOutcomeRPL_index="${midOutcome_index}" midOutcomeRPL_value="${midOutcome.id}" parent_index="${parent_index}" parent_id="${parent.id}" canRemove=true  /]

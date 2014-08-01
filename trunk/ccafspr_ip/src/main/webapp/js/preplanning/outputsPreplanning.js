@@ -11,7 +11,7 @@ function init(){
 		  $("div#addOutputBlock").trigger( "click" );
 	}  
 	applyWordCounter($("form .output > .textArea textarea"), lWordsElemetDesc);  
-	setMidOutcomesIndexes();
+	setOutputsIndexes();
 }
 
 function attachEvents(){
@@ -47,6 +47,8 @@ function setOutputsIndexes(){
       $(element).attr("id","output-"+index);
       $(element).find("[id$='elementIndex']").html(index+1);
       $(element).find("[id^='outputId']").attr("name", elementName + "id");
+      $(element).find("[id^='outputProgramID']").attr("name", elementName + "program.id");
+      $(element).find("[id^='outputTypeID']").attr("name", elementName + "type.id");
       $(element).find("[id^='outputDescription']").attr("name", elementName + "description").attr("placeholder", "Add output #"+ (index+1) );
   });
 }

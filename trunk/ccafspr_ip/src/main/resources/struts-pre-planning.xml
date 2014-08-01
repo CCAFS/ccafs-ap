@@ -22,7 +22,7 @@
     <action name="midOutcomes" class="org.cgiar.ccafs.ap.action.preplanning.MidOutcomesPreplanningAction">
       <interceptor-ref name="preplanningStack" />
       <interceptor-ref name="FPLAccessOnly" />
-      <result name="input">/WEB-INF/preplanning/midOutcomes.ftl</result>
+      <result name="input">/WEB-INF/preplanning/midOutcomesPreplanning.ftl</result>
       <result name="success" type="redirectAction">
         <param name="actionName">midOutcomes</param>
        </result>
@@ -31,27 +31,33 @@
     <action name="midOutcomesRPL" class="org.cgiar.ccafs.ap.action.preplanning.MidOutcomesPreplanningAction">
       <interceptor-ref name="preplanningStack" />
       <interceptor-ref name="RPLAccessOnly" />
-      <result name="input">/WEB-INF/preplanning/midOutcomesRPL.ftl</result>
-      <result name="success">/WEB-INF/preplanning/midOutcomesRPL.ftl</result>
+      <result name="input">/WEB-INF/preplanning/midOutcomesRplPreplanning.ftl</result>
+      <result name="success" type="redirectAction">
+        <param name="actionName">midOutcomesRPL</param>
+       </result>
     </action>
     
     <action name="outputs" class="org.cgiar.ccafs.ap.action.preplanning.OutputsPreplanningAction">
       <interceptor-ref name="preplanningStack" />
       <interceptor-ref name="FPLAccessOnly" />
-      <result name="input">/WEB-INF/preplanning/outputs.ftl</result>
-      <result name="success">/WEB-INF/preplanning/outputs.ftl</result>
+      <result name="input">/WEB-INF/preplanning/outputsPreplanning.ftl</result>
+      <result name="success" type="redirectAction">
+        <param name="actionName">outputs</param>
+       </result>
     </action>
     
     <action name="outputsRPL" class="org.cgiar.ccafs.ap.action.preplanning.OutputsPreplanningAction">
       <interceptor-ref name="preplanningStack" />
       <interceptor-ref name="RPLAccessOnly" />
-      <result name="input">/WEB-INF/preplanning/outputsRPL.ftl</result>
-      <result name="success">/WEB-INF/preplanning/outputsRPL.ftl</result>
+      <result name="input">/WEB-INF/preplanning/outputsRplPreplanning.ftl</result>
+      <result name="success" type="redirectAction">
+        <param name="actionName">outputsRPL</param>
+       </result>
     </action>
         
     <!-- Section: Projects  -->
     <action name="projects" class="org.cgiar.ccafs.ap.action.preplanning.ProjectsListAction">
-      <result name="success">/WEB-INF/preplanning/projects.ftl</result>
+      <result name="success">/WEB-INF/preplanning/projectsPreplanning.ftl</result>
       <result name="input" type="redirectAction">
         <param name="actionName">description</param>
         <param name="projectID">${projectID}</param>
@@ -59,14 +65,14 @@
     </action>
     
     <action name="description" class="org.cgiar.ccafs.ap.action.preplanning.ProjectDescriptionAction">
-      <result name="input">/WEB-INF/preplanning/projectDescription.ftl</result>
+      <result name="input">/WEB-INF/preplanning/projectDescriptionPreplanning.ftl</result>
     </action>
     
     <action name="partners" class="org.cgiar.ccafs.ap.action.preplanning.ProjectPartnersAction">
       <!--  interceptor-ref name="planningStack" />
       <interceptor-ref name="accessibleActivity" / -->
       <result name="cancel" type="redirectAction">projects</result>
-      <result name="input">/WEB-INF/preplanning/projectPartners.ftl</result>
+      <result name="input">/WEB-INF/preplanning/projectPartnersPreplanning.ftl</result>
       <result name="success" type="redirectAction">
         <param name="actionName">partners</param>
         <param name="projectID">${project.id}</param>
@@ -78,7 +84,7 @@
     </action>
     
     <action name="budget" class="org.cgiar.ccafs.ap.action.preplanning.ProjectBudgetAction">
-      <result name="input">/WEB-INF/preplanning/projectBudget.ftl</result>
+      <result name="input">/WEB-INF/preplanning/projectBudgetPreplanning.ftl</result>
     </action>
     
     
