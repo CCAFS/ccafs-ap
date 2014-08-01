@@ -153,7 +153,8 @@ public class ProjectBudgetAction extends BaseAction {
     allYears = project.getAllYears();
 
     // Getting project leader. TODO HT - Validate if project leader doesn't exist.
-    projectLeader = projectManager.getProjectLeader(projectID);
+    // projectLeader = projectManager.getProjectLeader(projectID);
+    projectLeader = projectManager.getExpectedProjectLeader(projectID);
 
     try {
       parameter = this.getRequest().getParameter(APConstants.YEAR_REQUEST);
