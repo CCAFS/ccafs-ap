@@ -71,9 +71,9 @@ public class ProjectsListAction extends BaseAction {
       newProject.setProgramCreator(this.getCurrentUser().getCurrentInstitution().getProgram());
     } else {
       LOG
-        .error(
-          "-- execute() > the current user identify with id={} and institution_id={} does not belong to a specific program!",
-          new Object[] {this.getCurrentUser().getId(), this.getCurrentUser().getCurrentInstitution().getId()});
+      .error(
+        "-- execute() > the current user identify with id={} and institution_id={} does not belong to a specific program!",
+        new Object[] {this.getCurrentUser().getId(), this.getCurrentUser().getCurrentInstitution().getId()});
     }
     newProject.setCreated(new Date().getTime());
     return projectManager.saveProjectDescription(newProject);
@@ -118,6 +118,7 @@ public class ProjectsListAction extends BaseAction {
     projects = projectManager.getProjectsByProgram(userProgram.getId());
 
     // Getting the list of projects in which the current user is assigned as Owner.
+    // TODO HT - Uncomment the following line when it is finished:
     // List<Project> projectsOwning = projectManager.getProjectsOwning(this.getCurrentUser());
     List<Project> projectsOwning = new ArrayList<Project>();
 

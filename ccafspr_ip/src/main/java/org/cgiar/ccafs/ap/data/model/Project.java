@@ -46,6 +46,10 @@ public class Project {
   private ProjectOutcome outcome;
   private long created; // Timestamp number when the project was created
 
+  public Project() {
+
+  }
+
   public Project(int id) {
     this.id = id;
   }
@@ -110,14 +114,6 @@ public class Project {
     return created;
   }
 
-  public List<String> getCrossCuttingIds() {
-    ArrayList<String> ids = new ArrayList<>();
-    for (IPCrossCutting ipCrossCutting : crossCuttings) {
-      ids.add(String.valueOf(ipCrossCutting.getId()));
-    }
-    return ids;
-  }
-
   public List<IPCrossCutting> getCrossCuttings() {
     return crossCuttings;
   }
@@ -140,14 +136,6 @@ public class Project {
 
   public List<IPProgram> getFlagships() {
     return flagships;
-  }
-
-  public int[] getFlagshipsIds() {
-    int[] flagshipsIds = new int[flagships.size()];
-    for (int c = 0; c < flagships.size(); c++) {
-      flagshipsIds[c] = flagships.get(c).getId();
-    }
-    return flagshipsIds;
   }
 
   public int getId() {
@@ -176,14 +164,6 @@ public class Project {
 
   public List<ProjectPartner> getProjectPartners() {
     return projectPartners;
-  }
-
-  public List<String> getRegionIds() {
-    ArrayList<String> ids = new ArrayList<>();
-    for (IPProgram region : regions) {
-      ids.add(String.valueOf(region.getId()));
-    }
-    return ids;
   }
 
   public List<IPProgram> getRegions() {

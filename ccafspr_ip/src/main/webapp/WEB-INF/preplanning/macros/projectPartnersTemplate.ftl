@@ -101,7 +101,7 @@
   [#if leader?has_content]
       <div id="projectLeader" class="projectLeader borderBox">
         [#-- Organizations List --]
-        <div class="fullBlock organizationName chosen">          
+        <div class="fullBlock organizationName chosen">
           [#-- @customForm.select name="project.leader.currentInstitution" disabled=!canEdit i18nkey="preplanning.projectPartners.leader.partner.name" listName="allPartners" keyFieldName="id"  displayFieldName="name" /--]
           [@customForm.select name="project.expectedLeader.currentInstitution" disabled=!canEdit i18nkey="preplanning.projectPartners.leader.partner.name" listName="allPartners" keyFieldName="id"  displayFieldName="name" /]
         </div> 

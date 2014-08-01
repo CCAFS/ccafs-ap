@@ -54,9 +54,7 @@ public class ProjectDescriptionAction extends BaseAction {
 
   // Model for the back-end
   private Project project;
-  private int projectId;
-  private User owner;
-
+  private int projectID;
 
   @Inject
   public ProjectDescriptionAction(APConfig config, ProjectManager projectManager, IPProgramManager ipProgramManager,
@@ -68,18 +66,18 @@ public class ProjectDescriptionAction extends BaseAction {
     this.userManager = userManager;
   }
 
-
   @Override
   public String execute() throws Exception {
     /*
      * If there project Id is not in the parameter or if the is not a project with that id, we must redirect to a
      * NOT_FOUND page.
      */
-    if (projectId == -1) {
+    if (projectID == -1) {
       return NOT_FOUND;
     }
     return super.execute();
   }
+
 
   public List<User> getAllOwners() {
     return allOwners;
@@ -88,7 +86,6 @@ public class ProjectDescriptionAction extends BaseAction {
   public List<IPCrossCutting> getIpCrossCuttings() {
     return ipCrossCuttings;
   }
-
 
   public List<IPProgram> getIpProgramFlagships() {
     return ipProgramFlagships;
@@ -100,12 +97,12 @@ public class ProjectDescriptionAction extends BaseAction {
   }
 
 
-  public User getOwner() {
-    return owner;
-  }
-
   public Project getProject() {
     return project;
+  }
+
+  public int getProjectID() {
+    return projectID;
   }
 
   @Override
@@ -113,10 +110,10 @@ public class ProjectDescriptionAction extends BaseAction {
     super.prepare();
 
     try {
-      projectId = Integer.parseInt(StringUtils.trim(this.getRequest().getParameter(APConstants.PROJECT_REQUEST_ID)));
+      projectID = Integer.parseInt(StringUtils.trim(this.getRequest().getParameter(APConstants.PROJECT_REQUEST_ID)));
     } catch (NumberFormatException e) {
-      LOG.error("-- prepare() > There was an error parsing the project identifier '{}'.", projectId, e);
-      projectId = -1;
+      LOG.error("-- prepare() > There was an error parsing the project identifier '{}'.", projectID, e);
+      projectID = -1;
       return; // Stop here and go to execute method.
     }
 
@@ -134,18 +131,26 @@ public class ProjectDescriptionAction extends BaseAction {
     ipCrossCuttings = ipCrossCuttingManager.getIPCrossCuttings();
 
     // Getting project
-    project = projectManager.getProject(projectId);
-    // Getting the project Owner
-    owner = userManager.getContactOwner(projectId);
+    project = projectManager.getProject(projectID);
+
 
     // Getting the information of the Flagships Program associated with the project
-    project.setRegions(projectManager.getProjectFocuses(projectId, APConstants.REGION_PROGRAM_TYPE));
+    project.setRegions(projectManager.getProjectFocuses(projectID, APConstants.REGION_PROGRAM_TYPE));
     // Getting the information of the Regions Program associated with the project
-    project.setFlagships(projectManager.getProjectFocuses(projectId, APConstants.FLAGSHIP_PROGRAM_TYPE));
+    project.setFlagships(projectManager.getProjectFocuses(projectID, APConstants.FLAGSHIP_PROGRAM_TYPE));
     // Getting the information of the Cross Cutting Theme associated with the project
-    project.setCrossCuttings(ipCrossCuttingManager.getIPCrossCuttingByProject(projectId));
+    project.setCrossCuttings(ipCrossCuttingManager.getIPCrossCuttingByProject(projectID));
 
 
+  }
+
+  @Override
+  public String save() {
+
+    System.out.println("------- SAVING --------");
+
+
+    return BaseAction.SUCCESS;
   }
 
   public void setIpCrossCuttings(List<IPCrossCutting> ipCrossCuttings) {

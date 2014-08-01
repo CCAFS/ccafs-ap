@@ -16,7 +16,6 @@ package org.cgiar.ccafs.ap.data.manager.impl;
 import org.cgiar.ccafs.ap.config.APConstants;
 import org.cgiar.ccafs.ap.data.dao.ProjectDAO;
 import org.cgiar.ccafs.ap.data.dao.ProjectFocusesDAO;
-import org.cgiar.ccafs.ap.data.manager.IPProgramManager;
 import org.cgiar.ccafs.ap.data.manager.InstitutionManager;
 import org.cgiar.ccafs.ap.data.manager.ProjectManager;
 import org.cgiar.ccafs.ap.data.manager.UserManager;
@@ -33,6 +32,8 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+
+import org.cgiar.ccafs.ap.data.manager.IPProgramManager;
 
 import com.google.inject.Inject;
 import org.slf4j.Logger;
@@ -56,13 +57,12 @@ public class ProjectManagerImpl implements ProjectManager {
 
   @Inject
   public ProjectManagerImpl(ProjectDAO projectDAO, ProjectFocusesDAO projectFocusesDAO, UserManager userManager,
-    InstitutionManager institutionManager, IPProgramManager ipProgramManager, ProjectManager projectManager) {
+    InstitutionManager institutionManager, IPProgramManager ipProgramManager) {
     this.projectDAO = projectDAO;
     this.projectFocusesDAO = projectFocusesDAO;
     this.userManager = userManager;
     this.institutionManager = institutionManager;
     this.ipProgramManager = ipProgramManager;
-    this.projectManager = projectManager;
   }
 
   @Override
@@ -108,17 +108,24 @@ public class ProjectManagerImpl implements ProjectManager {
         }
       }
 
+      // Getting the project Owner.
       project.setOwner(userManager.getUser(Integer.parseInt(projectData.get("project_owner_user_id"))));
+      // Getting the current institution for that project owner.
       project.getOwner().setCurrentInstitution(
         institutionManager.getInstitution(Integer.parseInt(projectData.get("project_owner_institution_id"))));
+      // Getting the creation date timestamp.
       project.setCreated(Long.parseLong(projectData.get("created")));
+      // Getting the Program creator
+      if (projectData.get("program_creator_id") != null) {
+        project.setProgramCreator(ipProgramManager.getIPProgramById(Integer.parseInt(projectData
+          .get("program_creator_id"))));
+      }
       // traer el project_leader
 
       return project;
     }
     return null;
   }
-
 
   @Override
   public List<IPProgram> getProjectFocuses(int projectID, int typeID) {
