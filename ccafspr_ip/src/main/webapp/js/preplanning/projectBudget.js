@@ -19,22 +19,26 @@ function attachEvents(){
   $("#leveraged .leveragedPartner .removeButton").click(removeLeveragedEvent);
 }
 
+// Leveraged Functions //
 function addLeveragedEvent(e){
   e.preventDefault();
   var $parent = $(e.target).parent();
   var $newElement = $("#leveragedPartnerTemplate").clone(true).removeAttr("id").addClass("leveragedPartner");
   var $optionSelected = $parent.find("select.leveraged").find('option:selected');
   $parent.before($newElement);
-  $newElement.show("slow");
   $newElement.find("[id$='partnerName']").html($optionSelected.html());
   $newElement.find("input[id$='id']").attr("value", $optionSelected.val());
-  $newElement.click(removeLeveragedEvent);
+  $newElement.find(".removeButton").click(removeLeveragedEvent);
+  $optionSelected.remove();
+  $newElement.show("slow");
   setLeveragedIndexes();
 }
 
 function removeLeveragedEvent(e){
   var $target = $(e.target).parent();
   var $parent = $target.parent();
+  var option = '<option value="' + $parent.find("input[id$='id']").attr("value") + '">' + $parent.find("[id$='partnerName']").html() + '</option>';
+  $parent.parent().find("select.leveraged").append(option);
   $parent.hide("slide", function(){
     $parent.remove();
     setLeveragedIndexes();
@@ -49,10 +53,5 @@ function setLeveragedIndexes(){
     // CSS selector div[id$=parent] Get any DIV element where the ID attribute value ends with "parent".
     $(element).find("[id$='id']").attr("name", elementName + "id");
     $(element).find("[id$='amount']").attr("name", elementName + "amount");
-    
   });
-}
-
-function setAttrName(target,source){
-  
 }

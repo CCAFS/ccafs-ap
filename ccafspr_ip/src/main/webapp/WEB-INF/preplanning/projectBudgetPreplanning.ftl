@@ -19,8 +19,8 @@
   
   [@s.form action="projectBudget" cssClass="pure-form"]  
   <article class="halfContent" id="projectBudget">
-  	[#include "/WEB-INF/preplanning/projectPreplanningSubMenu.ftl" /]
-  	[#-- Title --]
+    [#include "/WEB-INF/preplanning/projectPreplanningSubMenu.ftl" /]
+    [#-- Title --]
     <h1 class="contentTitle">
     [@s.text name="preplanning.projectBudget.title" /]  
     </h1>
@@ -34,7 +34,7 @@
       <h6>[@s.text name="preplanning.projectBudget.totalOverallBudget" /]</h6>
       {project.totalOverallBudget}
     </div>  
-  	[#-- Tertiary Menu - All years --] 
+    [#-- Tertiary Menu - All years --] 
     <div id="budgetTables" class=""> 
       <ul>
         [#list allYears as year]
@@ -140,11 +140,11 @@
       [#list leveragedInstitutions as partner]
         <div id="leveragedPartner-${partner_index}" class="leveragedPartner row"> 
           [#-- Partner Name --]
-          <div id="" class="name"> 
+          <div id="partnerName" class="name"> 
            ${partner.name}
           </div> 
           [#-- Amount --]
-          <div id="" class="amount">
+          <div id="amount" class="amount">
            <input type="hidden" id="id" name="leveragedInstitutions[${partner_index}].budgets.id" value="${partner.id}">
            [@customForm.input name="leveragedInstitutions[${partner_index}].budgets.amount" showTitle=false/] 
            <img class="removeButton" src="${baseUrl}/images/global/icon-remove.png" />
@@ -165,7 +165,7 @@
     <div id="partnerName" class="name"> 
       Partner Name
     </div> 
-    <div id="" class="amount">
+    <div id="amount" class="amount">
       <input type="hidden" id="id" name="leveragedInstitutions[0].budgets.id" value="">
       <div class="input">
         <input type="text" id="amount" name="leveragedInstitutions[0].budgets.amount" value="">
