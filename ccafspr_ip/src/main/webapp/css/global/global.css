@@ -952,6 +952,13 @@ h1.contentSubTitle {
   width: 96%;
 }
 
+.removeOutputBlock, .removeMidOutcomeBlock {
+  position: absolute;
+  top: .2em;
+  right: .5em;
+  background: #FFF;
+}
+
 /* Project Description*/
 textarea[id$='summary'] {
     height: 90px;
@@ -1144,34 +1151,39 @@ table tr.row:hover{
 /********* Activity Reporting Sub Menu **********/
 #stageMenu {
   display: block;
-  margin: 12px;
+  margin: 5px 35px;
   text-align: center;
 }
 
-#stageMenu a {
+#stageMenu li {
   background-image: url("../../images/global/sub-menu.png"); 
-  background-repeat: no-repeat;
-  display: inline-block; 
+  background-repeat: no-repeat; 
+  float: left;
   color: #585858;
-  padding: 7px 3px;
-  height: 32px;
-  width: 194px;
-  margin-left: -38px;
+  width: 163px; 
+  height: 43px; 
 }
 
-#stageMenu a:hover {
+#stageMenu li:hover {
   color: #000;
 }
 
-#stageMenu a.currentReportingSection, #stageMenu a.currentSection {
+#stageMenu li.currentReportingSection , #stageMenu li.currentSection {
   background-image: url("../../images/global/sub-menu-selected.png"); 
-  font-weight: bold;
+  font-weight: bold;  
 }
 
-#stageMenu a li {
+#stageMenu li.currentSection a{
+  color: #fff;
+}
+
+#stageMenu li a {
+  
   display: inline-block;
-  margin-top: 6px;
-  margin-left: inherit;
+  /* margin-top: 6px; */ 
+  width: 100%;
+  height: 100%;
+  padding-top: 13px;
 }
 /*************** HOME ****************/
 
@@ -1358,7 +1370,7 @@ ul#deliverablesFilesMessages > li {
 
 .borderBox, .publication, .caseStudy, .outcome, .output, .midOutcome, .leverage, .deliverable, .activityPartner, .otherSite {
   border: 1px solid #D1D1D1;
-  padding: 6px 15px 6px 15px;
+  padding: 18px 15px 6px 15px;
   border-radius: 4px;
   margin-top: 18px;
   position: relative;
