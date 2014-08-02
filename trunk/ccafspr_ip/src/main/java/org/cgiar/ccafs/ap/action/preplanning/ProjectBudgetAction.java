@@ -71,18 +71,6 @@ public class ProjectBudgetAction extends BaseAction {
     this.partnerManager = partnerManager;
   }
 
-  @Override
-  public String execute() throws Exception {
-    /*
-     * If projectID is not in the parameter or if there is not a project with that id, we must redirect to a
-     * NOT_FOUND page.
-     */
-    if (projectID == -1) {
-      return NOT_FOUND;
-    }
-    return super.execute();
-  }
-
   public List<Institution> getAllInstitutions() {
     return allInstitutions;
   }

@@ -146,6 +146,7 @@ public class ProjectManagerImpl implements ProjectManager {
       projectLeader.setFirstName(pData.get("firstName"));
       projectLeader.setLastName(pData.get("lastName"));
       projectLeader.setEmail(pData.get("email"));
+      projectLeader.setEmployeeId(Integer.parseInt(pData.get("employee_id")));
       // Getting Project leader institution and saving it in currentInstitution.
       projectLeader.setCurrentInstitution(institutionManager.getInstitution(Integer.parseInt(pData
         .get("institution_id"))));

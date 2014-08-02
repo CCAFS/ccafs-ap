@@ -56,6 +56,7 @@ public class ProjectPartnersAction extends BaseAction {
   // Model for the back-end
   private int projectID;
   private Project project;
+  private boolean isExpected;
 
   // Model for the view
   private List<InstitutionType> partnerTypes;
@@ -76,22 +77,9 @@ public class ProjectPartnersAction extends BaseAction {
     this.userManager = userManager;
   }
 
-  @Override
-  public String execute() throws Exception {
-    /*
-     * If projectID is not in the parameter or if there is not a project with that id, we must redirect to a
-     * NOT_FOUND page.
-     */
-    if (projectID == -1) {
-      return NOT_FOUND;
-    }
-    return super.execute();
-  }
-
   public List<Institution> getAllPartners() {
     return allPartners;
   }
-
 
   public List<User> getAllProjectLeaders() {
     return allProjectLeaders;
@@ -111,6 +99,10 @@ public class ProjectPartnersAction extends BaseAction {
 
   public int getProjectID() {
     return projectID;
+  }
+
+  public boolean isExpected() {
+    return isExpected;
   }
 
 
@@ -149,7 +141,19 @@ public class ProjectPartnersAction extends BaseAction {
     allProjectLeaders = userManager.getAllUsers();
 
     // Getting the project partner leader.
-    // project.setLeader(userManager.getProjectLeader(projectID));
+    // We need to validate if the partner leader is already in the employees table. If so, we need to get this
+    // information and show it as label in the front-end.
+    User projectLeader = projectManager.getProjectLeader(project.getId());
+    // if the official leader is defined.
+    // if (projectLeader != null) {
+    // isExpected = false;
+    // TODO HT - Load the information as labels in the interface
+    // } else {
+    // isExpected = true;
+    // project.setExpectedLeader(projectManager.getExpectedProjectLeader(projectID));
+    // TODO HT - Load the information as it is right now with inputs.
+    // }
+
     project.setExpectedLeader(projectManager.getExpectedProjectLeader(projectID));
 
     // In case there is not a partner leader defined, an empty partner will be used for the view.

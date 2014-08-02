@@ -66,18 +66,6 @@ public class ProjectDescriptionAction extends BaseAction {
     this.userManager = userManager;
   }
 
-  @Override
-  public String execute() throws Exception {
-    /*
-     * If there project Id is not in the parameter or if the is not a project with that id, we must redirect to a
-     * NOT_FOUND page.
-     */
-    if (projectID == -1) {
-      return NOT_FOUND;
-    }
-    return super.execute();
-  }
-
   public List<User> getAllOwners() {
     return allOwners;
   }
