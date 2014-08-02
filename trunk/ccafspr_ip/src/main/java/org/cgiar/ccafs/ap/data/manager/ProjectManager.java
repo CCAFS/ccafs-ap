@@ -41,6 +41,14 @@ public interface ProjectManager {
   public Project getProject(int projectId);
 
   /**
+   * This method returns the list of projects that the given user is able to edit.
+   *
+   * @param user is the user object.
+   * @return a List of project identifiers (Integer numbers).
+   */
+  public List<Integer> getProjectIdsEditables(User user);
+
+  /**
    * This method finds the Project Leader user from a specific Project.
    *
    * @param projectId is the project id.

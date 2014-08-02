@@ -116,11 +116,24 @@ public class ProjectManagerImpl implements ProjectManager {
         project.setProgramCreator(ipProgramManager.getIPProgramById(Integer.parseInt(projectData
           .get("program_creator_id"))));
       }
-      // traer el project_leader
+
+      // Getting Project Focuses - IPPrograms
+      project.setRegions(ipProgramManager.getProjectFocuses(Integer.parseInt(projectData.get("id")),
+        APConstants.REGION_PROGRAM_TYPE));
+      project.setFlagships(ipProgramManager.getProjectFocuses(Integer.parseInt(projectData.get("id")),
+        APConstants.FLAGSHIP_PROGRAM_TYPE));
+      // Getting Budget.
+      project.setBudgets(budgetManager.getCCAFSBudgets(Integer.parseInt(projectData.get("id"))));
+
 
       return project;
     }
     return null;
+  }
+
+  @Override
+  public List<Integer> getProjectIdsEditables(User user) {
+    return projectDAO.getProjectIdsEditables(user.getCurrentInstitution().getProgram().getId(), user.getEmployeeId());
   }
 
   @Override
