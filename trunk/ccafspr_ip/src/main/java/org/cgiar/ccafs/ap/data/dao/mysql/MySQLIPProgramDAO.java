@@ -1,3 +1,17 @@
+/*****************************************************************
+ * This file is part of CCAFS Planning and Reporting Platform.
+ * CCAFS P&R is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * at your option) any later version.
+ * CCAFS P&R is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+ * GNU General Public License for more details.
+ * You should have received a copy of the GNU General Public License
+ * along with CCAFS P&R. If not, see <http://www.gnu.org/licenses/>.
+ * ***************************************************************
+ */
 package org.cgiar.ccafs.ap.data.dao.mysql;
 
 import org.cgiar.ccafs.ap.data.dao.DAOManager;
@@ -15,6 +29,10 @@ import com.google.inject.Inject;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+/**
+ * @author Javier Andrés Gallego
+ * @author Héctor Fabio Tobón R.
+ */
 public class MySQLIPProgramDAO implements IPProgramDAO {
 
   // Logger
@@ -26,7 +44,6 @@ public class MySQLIPProgramDAO implements IPProgramDAO {
   public MySQLIPProgramDAO(DAOManager databaseManager) {
     this.databaseManager = databaseManager;
   }
-
 
   private List<Map<String, String>> getData(String query) {
     LOG.debug(">> executeQuery(query='{}')", query);
@@ -41,8 +58,6 @@ public class MySQLIPProgramDAO implements IPProgramDAO {
         ProgramData.put("acronym", rs.getString("acronym"));
         ProgramData.put("region_id", rs.getString("region_id"));
         ProgramData.put("type_id", rs.getString("type_id"));
-
-
         ProgramList.add(ProgramData);
       }
       rs.close();
@@ -56,7 +71,6 @@ public class MySQLIPProgramDAO implements IPProgramDAO {
     LOG.debug("<< executeQuery():ProgramList.size={}", ProgramList.size());
     return ProgramList;
   }
-
 
   @Override
   public Map<String, String> getIPProgramById(int ipProgramID) {
@@ -85,7 +99,6 @@ public class MySQLIPProgramDAO implements IPProgramDAO {
     }
     return ipProgramData;
   }
-
 
   @Override
   public Map<String, String> getIPProgramByProjectId(int projectID) {
@@ -148,5 +161,62 @@ public class MySQLIPProgramDAO implements IPProgramDAO {
     LOG.debug("-- getProgramType() > Calling method executeQuery to get the results");
     return getData(query.toString());
   }
+
+
+  @Override
+  public List<Map<String, String>> getProjectFocuses(int projectID, int typeID) {
+    LOG.debug(">> getProjectFocuses projectID = {}, typeID ={} )", projectID, typeID);
+    List<Map<String, String>> projectFocusesDataList = new ArrayList<>();
+    StringBuilder query = new StringBuilder();
+    query
+      .append("SELECT ipr.id as program_id, ipr.name as program_name, ipr.acronym as program_acronym, le.id as region_id, le.name as region_name, le.code as region_code ");
+    query.append("FROM project_focuses pf ");
+    query.append("INNER JOIN ip_programs ipr ON ipr.id = pf.program_id ");
+    query.append("LEFT JOIN loc_elements le   ON le.id = ipr.region_id ");
+    query.append("WHERE pf.project_id = ");
+    query.append(projectID);
+    query.append(" AND ipr.type_id= ");
+    query.append(typeID);
+    query.append(" ORDER BY ipr.name");
+
+    try (Connection con = databaseManager.getConnection()) {
+      ResultSet rs = databaseManager.makeQuery(query.toString(), con);
+      while (rs.next()) {
+        Map<String, String> projectFocusesData = new HashMap<String, String>();
+        projectFocusesData.put("program_id", rs.getString("program_id"));
+        projectFocusesData.put("program_name", rs.getString("program_name"));
+        projectFocusesData.put("program_acronym", rs.getString("program_acronym"));
+        projectFocusesData.put("region_id", rs.getString("region_id"));
+        projectFocusesData.put("region_name", rs.getString("region_name"));
+        projectFocusesData.put("region_code", rs.getString("region_code"));
+
+        projectFocusesDataList.add(projectFocusesData);
+      }
+      con.close();
+    } catch (SQLException e) {
+      LOG.error("Exception arised getting the project focuses {} ", projectID, e);
+    }
+
+    return projectFocusesDataList;
+  }
+
+
+  @Override
+  public boolean saveProjectFocuses(Map<String, Object> ipElementData) {
+    LOG.debug(">> createProjectFocuses(projectData={})", ipElementData);
+    StringBuilder query = new StringBuilder();
+    query.append("INSERT INTO project_focuses (id, project_id, program_id) ");
+    query.append("VALUES (?, ?, ?) ");
+    // query.append("ON DUPLICATE KEY UPDATE description = VALUES(description), program_id = VALUES(program_id)");
+
+    Object[] values = new Object[3];
+    values[0] = ipElementData.get("id");
+    values[1] = ipElementData.get("project_id");
+    values[2] = ipElementData.get("program_id");
+    int result = databaseManager.saveData(query.toString(), values);
+    LOG.debug("<< saveProjectFlagship():{}", result);
+    return false;
+  }
+
 
 }

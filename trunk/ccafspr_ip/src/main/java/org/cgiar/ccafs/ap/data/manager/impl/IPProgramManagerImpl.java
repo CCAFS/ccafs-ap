@@ -25,7 +25,10 @@ import java.util.Map;
 
 import com.google.inject.Inject;
 
-
+/**
+ * @author Hernán David Carvajal
+ * @author Héctor Fabio Tobón R.
+ */
 public class IPProgramManagerImpl implements IPProgramManager {
 
   // DAOs
@@ -34,6 +37,13 @@ public class IPProgramManagerImpl implements IPProgramManager {
   @Inject
   public IPProgramManagerImpl(IPProgramDAO ipProgramDAO) {
     this.ipProgramDAO = ipProgramDAO;
+  }
+
+
+  @Override
+  public boolean createProjectFocuses(Map<String, Object> ipElementData) {
+    // TODO HT - To Complete
+    return false;
   }
 
 
@@ -63,7 +73,6 @@ public class IPProgramManagerImpl implements IPProgramManager {
     return null;
   }
 
-
   @Override
   public IPProgram getIPProgramByProjectId(int projectID) {
     Map<String, String> ipProgramData = ipProgramDAO.getIPProgramByProjectId(projectID);
@@ -89,6 +98,7 @@ public class IPProgramManagerImpl implements IPProgramManager {
     }
     return null;
   }
+
 
   @Override
   public List<IPProgram> getProgramsByType(int ipProgramTypeID) {
@@ -116,6 +126,30 @@ public class IPProgramManagerImpl implements IPProgramManager {
       programs.add(ipProgram);
     }
     return programs;
+  }
+
+  @Override
+  public List<IPProgram> getProjectFocuses(int projectID, int typeID) {
+    List<Map<String, String>> projectFocusesDataList = ipProgramDAO.getProjectFocuses(projectID, typeID);
+    List<IPProgram> projectFocusesList = new ArrayList<>();
+
+    for (Map<String, String> projectFocusesData : projectFocusesDataList) {
+      IPProgram ipProgram = new IPProgram();
+      ipProgram.setId(Integer.parseInt(projectFocusesData.get("program_id")));
+      ipProgram.setName(projectFocusesData.get("program_name"));
+      ipProgram.setAcronym(projectFocusesData.get("program_acronym"));
+      // Region
+      if (projectFocusesData.get("region_id") != null) {
+        Region region = new Region();
+        region.setId(Integer.parseInt(projectFocusesData.get("region_id")));
+        region.setName(projectFocusesData.get("region_name"));
+        region.setCode(projectFocusesData.get("region_code"));
+        ipProgram.setRegion(region);
+      }
+
+      projectFocusesList.add(ipProgram);
+    }
+    return projectFocusesList;
   }
 
 

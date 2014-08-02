@@ -68,7 +68,7 @@
             <h6>[@s.text name="preplanning.projectDescription.flagships" /]</h6>
             <div class="checkboxGroup">  
               [@s.fielderror cssClass="fieldError" fieldName="project.flagships"/]          
-              [@s.checkboxlist name="project.flagships" list="ipProgramFlagships" listKey="id" listValue="name" cssClass="checkbox" /]
+              [@s.checkboxlist name="project.flagships" list="ipProgramFlagships" listKey="id" listValue="getComposedName(id)" cssClass="checkbox" /]
             </div>
           </div> 
           [#-- Cross Cutting --] 
