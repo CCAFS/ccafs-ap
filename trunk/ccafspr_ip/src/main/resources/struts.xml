@@ -34,6 +34,9 @@
       <!-- Custom interceptor to prevent the unauthorized access users that are not RPLs -->
       <interceptor name="RPLAccessOnly" class="org.cgiar.ccafs.ap.interceptor.RPLAccessOnlyInterceptor" />
       
+      <!-- Custom interceptor to prevent the unauthorized access to edit projects that do not belong to the users -->
+      <interceptor name="accessibleProject" class="org.cgiar.ccafs.ap.interceptor.AccessibleProjectInterceptor" />
+      
       <interceptor-stack name="preplanningStack">
         <!-- Uncomment the following interceptor only for DEVELOPING purposes -->
         <interceptor-ref name="autoLogin" />
