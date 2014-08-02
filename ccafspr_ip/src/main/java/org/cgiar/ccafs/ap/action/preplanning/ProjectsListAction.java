@@ -20,9 +20,9 @@ import org.cgiar.ccafs.ap.data.manager.ProjectManager;
 import org.cgiar.ccafs.ap.data.model.IPProgram;
 import org.cgiar.ccafs.ap.data.model.Project;
 
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
-import java.util.Map;
 
 import com.google.inject.Inject;
 import org.slf4j.Logger;
@@ -46,8 +46,7 @@ public class ProjectsListAction extends BaseAction {
 
   // Model for the front-end
   private int projectID;
-  private double totalBudget = 0.0;
-  private Map<String, String> projectBudget;
+  private double totalBudget;
 
 
   @Inject
@@ -55,6 +54,7 @@ public class ProjectsListAction extends BaseAction {
     super(config);
     this.projectManager = projectManager;
     this.budgetManager = budgetManager;
+    this.totalBudget = 0;
   }
 
 
@@ -78,9 +78,9 @@ public class ProjectsListAction extends BaseAction {
       newProject.setProgramCreator(userProgram);
     } else {
       LOG
-        .error(
-          "-- execute() > the current user identify with id={} and institution_id={} does not belong to a specific program!",
-          new Object[] {this.getCurrentUser().getId(), this.getCurrentUser().getCurrentInstitution().getId()});
+      .error(
+        "-- execute() > the current user identify with id={} and institution_id={} does not belong to a specific program!",
+        new Object[] {this.getCurrentUser().getId(), this.getCurrentUser().getCurrentInstitution().getId()});
     }
     newProject.setCreated(new Date().getTime());
     return projectManager.saveProjectDescription(newProject);
@@ -125,21 +125,15 @@ public class ProjectsListAction extends BaseAction {
 
     // Depending on the user that is logged-in, the list of projects will be displayed. - currentUser.
 
-    // Getting project list that belongs to the program that you belongs to.
-    IPProgram userProgram = this.getCurrentUser().getCurrentInstitution().getProgram();
-    projects = projectManager.getProjectsByProgram(userProgram.getId());
+    // Getting the list of projects that the user's program created and also those where the users is the project owner.
+    List<Integer> projectIds = projectManager.getProjectIdsEditables(this.getCurrentUser());
 
-    // Getting the list of projects in which the current user is assigned as Owner.
-    // TODO HT - Uncomment the following line when it is finished:
-    List<Project> projectsOwning = projectManager.getProjectsOwning(this.getCurrentUser());
-    // List<Project> projectsOwning = new ArrayList<Project>();
-
-    // Mixing the Owning projects with the current list of projects.
-    for (Project projectOwning : projectsOwning) {
-      if (!projects.contains(projectOwning)) {
-        projects.add(projectOwning);
-      }
+    projects = new ArrayList<>();
+    for (Integer projectId : projectIds) {
+      projects.add(projectManager.getProject(projectId));
     }
+
+
   }
 
 

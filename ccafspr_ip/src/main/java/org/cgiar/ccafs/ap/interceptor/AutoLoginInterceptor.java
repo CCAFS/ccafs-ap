@@ -51,12 +51,14 @@ public class AutoLoginInterceptor extends AbstractInterceptor {
     User user = (User) session.get(APConstants.SESSION_USER);
     if (user == null) {
       // user = userManager.getUserByEmail("h.d.carvajal@cgiar.org");
-      user = userManager.getUserByEmail("h.f.tobon@cgiar.org");
+      user = userManager.getUserByEmail("h.d.carvajal@cgiar.org");
       // Get the institutions related to the user
       user.setInstitutions(institutionManager.getInstitutionsByUser(user));
       // Set the main institution as current institution
       user.setCurrentInstitution(institutionManager.getUserMainInstitution(user));
       user.setRole(roleManager.getRole(user));
+      // Set the employee id.
+      user.setEmployeeId(userManager.getEmployeeID(user));
 
       session.put(APConstants.SESSION_USER, user);
       LOG.debug("Auto logged as " + user.getEmail());

@@ -147,6 +147,30 @@ public class MySQLProjectDAO implements ProjectDAO {
   }
 
   @Override
+  public List<Integer> getProjectIdsEditables(int programID, int ownerID) {
+    LOG.debug(">> getProjectIdsEditables(projectID={}, ownerId={})", new Object[] {programID, ownerID});
+    List<Integer> projectIds = new ArrayList<>();
+    try (Connection connection = databaseManager.getConnection()) {
+      StringBuilder query = new StringBuilder();
+      query.append("SELECT p.id FROM projects p WHERE p.program_creator_id = ");
+      query.append(programID);
+      query.append(" OR p.project_owner_id = ");
+      query.append(ownerID);
+      ResultSet rs = databaseManager.makeQuery(query.toString(), connection);
+      while (rs.next()) {
+        projectIds.add(rs.getInt(1));
+      }
+      rs.close();
+    } catch (SQLException e) {
+      LOG.error("-- getProjectIdsEditables() > There was an error getting the data for projectID={}, ownerId={}.",
+        new Object[] {programID, ownerID}, e);
+      return null;
+    }
+    LOG.debug("<< getProjectIdsEditables():{}", projectIds);
+    return projectIds;
+  }
+
+  @Override
   public Map<String, String> getProjectLeader(int projectID) {
     LOG.debug(">> getProjectLeader(projectID={})", projectID);
     Map<String, String> projectLeaderData = new HashMap<>();

@@ -47,6 +47,15 @@ public interface ProjectDAO {
   public Map<String, String> getProject(int projectID);
 
   /**
+   * This method returns a list of project identifiers that belongs to a specific program and/or a specific owner.
+   *
+   * @param programId is the program identifier.
+   * @param ownerId is the owner identifier.
+   * @return a list of Integers which represent the project identifiers.
+   */
+  public List<Integer> getProjectIdsEditables(int programId, int ownerId);
+
+  /**
    * Get a Project Leader information with a given Project Id
    *
    * @param ProjectId is the id of a project
