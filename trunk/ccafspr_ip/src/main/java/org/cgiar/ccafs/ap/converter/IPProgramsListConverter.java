@@ -62,8 +62,12 @@ public class IPProgramsListConverter extends StrutsTypeConverter {
   @Override
   public String convertToString(Map context, Object o) {
     List<IPProgram> programs = (List) o;
-    LOG.debug(">> convertToString > id = {} ", programs.toArray());
-    return programs.toArray() + "";
+    String[] programIds = new String[programs.size()];
+    for (int c = 0; c < programIds.length; c++) {
+      programIds[c] = programs.get(c).getId() + "";
+    }
+    LOG.debug(">> convertToString > id = {} ", programIds.toString());
+    System.out.println(programIds.toString());
+    return programIds.toString();
   }
-
 }

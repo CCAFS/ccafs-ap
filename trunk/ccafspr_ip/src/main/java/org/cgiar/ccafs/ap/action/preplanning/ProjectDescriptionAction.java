@@ -77,11 +77,9 @@ public class ProjectDescriptionAction extends BaseAction {
     return super.execute();
   }
 
-
   public List<User> getAllOwners() {
     return allOwners;
   }
-
 
   /**
    * TODO HT - To Document
@@ -94,8 +92,41 @@ public class ProjectDescriptionAction extends BaseAction {
     return program.getAcronym() + ": " + program.getName();
   }
 
+
+  /**
+   * This method returns an array of cross cutting ids depenging on the project.crossCuttings attribute.
+   *
+   * @return an array of integers.
+   */
+  public int[] getCrossCuttingIds() {
+    if (this.project.getCrossCuttings() != null) {
+      int[] ids = new int[this.project.getCrossCuttings().size()];
+      for (int c = 0; c < ids.length; c++) {
+        ids[c] = this.project.getCrossCuttings().get(c).getId();
+      }
+      return ids;
+    }
+    return null;
+  }
+
   public int getEndYear() {
     return config.getEndYear();
+  }
+
+  /**
+   * This method returns an array of flagship ids depenging on the project.flagships attribute.
+   *
+   * @return an array of integers.
+   */
+  public int[] getFlagshipIds() {
+    if (this.project.getFlagships() != null) {
+      int[] ids = new int[this.project.getFlagships().size()];
+      for (int c = 0; c < ids.length; c++) {
+        ids[c] = this.project.getFlagships().get(c).getId();
+      }
+      return ids;
+    }
+    return null;
   }
 
   public List<IPCrossCutting> getIpCrossCuttings() {
@@ -118,6 +149,22 @@ public class ProjectDescriptionAction extends BaseAction {
 
   public int getProjectID() {
     return projectID;
+  }
+
+  /**
+   * This method returns an array of region ids depenging on the project.regions attribute.
+   *
+   * @return an array of integers.
+   */
+  public int[] getRegionIds() {
+    if (this.project.getRegions() != null) {
+      int[] ids = new int[this.project.getRegions().size()];
+      for (int c = 0; c < ids.length; c++) {
+        ids[c] = this.project.getRegions().get(c).getId();
+      }
+      return ids;
+    }
+    return null;
   }
 
   public int getStartYear() {
@@ -151,7 +198,6 @@ public class ProjectDescriptionAction extends BaseAction {
 
     // Getting project
     project = projectManager.getProject(projectID);
-
 
     // Getting the information of the Flagships Program associated with the project
     project.setRegions(ipProgramManager.getProjectFocuses(projectID, APConstants.REGION_PROGRAM_TYPE));
