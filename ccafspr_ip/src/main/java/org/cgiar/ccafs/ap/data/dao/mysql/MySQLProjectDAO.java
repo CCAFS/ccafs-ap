@@ -177,7 +177,8 @@ public class MySQLProjectDAO implements ProjectDAO {
     try (Connection connection = databaseManager.getConnection()) {
 
       StringBuilder query = new StringBuilder();
-      query.append("SELECT u.id, u.username, pe.first_name, pe.last_name, pe.email, e.institution_id ");
+      query.append("SELECT u.id, u.username, pe.first_name, pe.last_name, pe.email, e.institution_id, ");
+      query.append("e.id as employee_id ");
       query.append("FROM users u  ");
       query.append("INNER JOIN persons pe  ON u.person_id=pe.id ");
       query.append("INNER JOIN employees e ON u.id=e.user_id ");
@@ -193,6 +194,7 @@ public class MySQLProjectDAO implements ProjectDAO {
         projectLeaderData.put("last_name", rs.getString("last_name"));
         projectLeaderData.put("email", rs.getString("email"));
         projectLeaderData.put("institution_id", rs.getString("institution_id"));
+        projectLeaderData.put("employee_id", rs.getString("employee_id"));
       }
       rs.close();
     } catch (SQLException e) {

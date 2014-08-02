@@ -58,13 +58,13 @@ public class AccessibleProjectInterceptor extends AbstractInterceptor {
         if (StringUtils.isNumeric(projectParameter)) {
           int projectID = Integer.parseInt(projectParameter);
           if (idsAllowedToEdit.contains(new Integer(projectID))) {
-            invocation.invoke();
+            return invocation.invoke();
           }
         }
         LOG
-        .info(
-          "User identify with id={}, email={}, role={} tried to access the project with id={}. And it is not authorized to edit it.",
-          new Object[] {user.getId(), user.getEmail(), user.getRole().getName(), projectParameter});
+          .warn(
+            "User identify with id={}, email={}, role={} tried to access the project with id={}. And it is not authorized to edit it.",
+            new Object[] {user.getId(), user.getEmail(), user.getRole().getName(), projectParameter});
         return BaseAction.NOT_AUTHORIZED;
       }
     } else {
