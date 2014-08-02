@@ -60,23 +60,23 @@
             <h6>[@s.text name="preplanning.projectDescription.regions" /]</h6>
             <div class="checkboxGroup">
               [@s.fielderror cssClass="fieldError" fieldName="project.regions"/]
-              [@s.checkboxlist name="project.regions" list="ipProgramRegions" listKey="id" listValue="name" cssClass="checkbox" /]
+              [@s.checkboxlist name="project.regions" list="ipProgramRegions" listKey="id" listValue="name" cssClass="checkbox" value="regionIds" /]
             </div>
           </div> 
           [#-- Flagships --] 
           <div id="projectFlagships" class="thirdPartBlock">
             <h6>[@s.text name="preplanning.projectDescription.flagships" /]</h6>
             <div class="checkboxGroup">  
-              [@s.fielderror cssClass="fieldError" fieldName="project.flagships"/]          
-              [@s.checkboxlist name="project.flagships" list="ipProgramFlagships" listKey="id" listValue="getComposedName(id)" cssClass="checkbox" /]
+              [@s.fielderror cssClass="fieldError" fieldName="project.flagships"/]
+              [@s.checkboxlist name="project.flagships" list="ipProgramFlagships" listKey="id" listValue="getComposedName(id)" cssClass="checkbox" value="flagshipIds" /]
             </div>
           </div> 
           [#-- Cross Cutting --] 
           <div id="projectGender" class="thirdPartBlock">
             <h6>[@s.text name="preplanning.projectDescription.gender" /]</h6>
             <div class="checkboxGroup">
-              [@s.fielderror cssClass="fieldError" fieldName="project.crossCuttings"/]          
-              [@s.checkboxlist name="project.crossCuttings" list="ipCrossCuttings" listKey="id" listValue="name" cssClass="checkbox" /]
+              [@s.fielderror cssClass="fieldError" fieldName="project.crossCuttings"/]
+              [@s.checkboxlist name="project.crossCuttings" list="ipCrossCuttings" listKey="id" listValue="name" cssClass="checkbox" value="crossCuttingIds" /]
             </div>
           </div>  
         </div> 

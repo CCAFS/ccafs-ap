@@ -24,6 +24,10 @@ public class IPProgram {
   private Region region;
   private IPProgramTypes type;
 
+  public IPProgram() {
+
+  }
+
   public String getAcronym() {
     return acronym;
   }
