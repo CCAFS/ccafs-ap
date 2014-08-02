@@ -20,6 +20,7 @@ import org.cgiar.ccafs.ap.data.model.IPProgramTypes;
 import org.cgiar.ccafs.ap.data.model.Region;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -41,11 +42,9 @@ public class IPProgramManagerImpl implements IPProgramManager {
 
 
   @Override
-  public boolean createProjectFocuses(Map<String, Object> ipElementData) {
-    // TODO HT - To Complete
-    return false;
+  public boolean deleteProjectFocus(int projectId, int ipProgramID) {
+    return ipProgramDAO.deleteProjectFocus(projectId, ipProgramID);
   }
-
 
   @Override
   public IPProgram getIPProgramById(int ipProgramID) {
@@ -73,6 +72,7 @@ public class IPProgramManagerImpl implements IPProgramManager {
     return null;
   }
 
+
   @Override
   public IPProgram getIPProgramByProjectId(int projectID) {
     Map<String, String> ipProgramData = ipProgramDAO.getIPProgramByProjectId(projectID);
@@ -98,7 +98,6 @@ public class IPProgramManagerImpl implements IPProgramManager {
     }
     return null;
   }
-
 
   @Override
   public List<IPProgram> getProgramsByType(int ipProgramTypeID) {
@@ -128,6 +127,7 @@ public class IPProgramManagerImpl implements IPProgramManager {
     return programs;
   }
 
+
   @Override
   public List<IPProgram> getProjectFocuses(int projectID, int typeID) {
     List<Map<String, String>> projectFocusesDataList = ipProgramDAO.getProjectFocuses(projectID, typeID);
@@ -152,5 +152,13 @@ public class IPProgramManagerImpl implements IPProgramManager {
     return projectFocusesList;
   }
 
+
+  @Override
+  public boolean saveProjectFocus(int projectID, int programID) {
+    Map<String, Object> elementData = new HashMap<>();
+    elementData.put("project_id", projectID);
+    elementData.put("program_id", programID);
+    return ipProgramDAO.saveProjectFocuses(elementData);
+  }
 
 }

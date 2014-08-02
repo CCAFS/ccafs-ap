@@ -18,6 +18,7 @@ import org.cgiar.ccafs.ap.data.manager.IPCrossCuttingManager;
 import org.cgiar.ccafs.ap.data.model.IPCrossCutting;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -36,6 +37,11 @@ public class IPCrossCuttingManagerImpl implements IPCrossCuttingManager {
   @Inject
   public IPCrossCuttingManagerImpl(IPCrossCuttingDAO ipCrossCuttingDAO) {
     this.ipCrossCuttingDAO = ipCrossCuttingDAO;
+  }
+
+  @Override
+  public boolean deleteCrossCutting(int projectID, int crossCuttingID) {
+    return ipCrossCuttingDAO.deleteCrossCutting(projectID, crossCuttingID);
   }
 
   @Override
@@ -79,5 +85,13 @@ public class IPCrossCuttingManagerImpl implements IPCrossCuttingManager {
 
     }
     return ipCrossCuttings;
+  }
+
+  @Override
+  public boolean saveCrossCutting(int projectID, int crossCuttingID) {
+    Map<String, Object> elementData = new HashMap<>();
+    elementData.put("project_id", projectID);
+    elementData.put("theme_id", crossCuttingID);
+    return ipCrossCuttingDAO.saveCrossCutting(elementData);
   }
 }

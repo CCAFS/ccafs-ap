@@ -45,6 +45,19 @@ public class MySQLIPProgramDAO implements IPProgramDAO {
     this.databaseManager = databaseManager;
   }
 
+  @Override
+  public boolean deleteProjectFocus(int projectID, int ipProgramID) {
+    LOG.debug(">> deleteProjectFocus(projectId={}, ipProgramID={})", new String[] {projectID + "", ipProgramID + ""});
+    String query = "DELETE FROM project_focuses WHERE project_id = ? AND program_id = ?";
+    int rowsDeleted = databaseManager.delete(query, new Object[] {projectID, ipProgramID});
+    if (rowsDeleted >= 0) {
+      LOG.debug("<< deleteProjectFocus():{}", true);
+      return true;
+    }
+    LOG.debug("<< deleteProjectFocus:{}", false);
+    return false;
+  }
+
   private List<Map<String, String>> getData(String query) {
     LOG.debug(">> executeQuery(query='{}')", query);
     List<Map<String, String>> ProgramList = new ArrayList<>();
@@ -100,6 +113,7 @@ public class MySQLIPProgramDAO implements IPProgramDAO {
     return ipProgramData;
   }
 
+
   @Override
   public Map<String, String> getIPProgramByProjectId(int projectID) {
     Map<String, String> ipProgramData = new HashMap<>();
@@ -150,12 +164,13 @@ public class MySQLIPProgramDAO implements IPProgramDAO {
 
   @Override
   public List<Map<String, String>> getProgramType(int projectId, int typeProgramId) {
+    // TODO JG - The parameters are never used. This method needs to be reviewed
     LOG.debug(">> getProgramType( programID = {} )", projectId, typeProgramId);
     StringBuilder query = new StringBuilder();
     query.append("SELECT ipr.type_id, ipr.acronym   ");
     query.append("FROM ip_programs as ipr  ");
-    query.append("INNER JOIN project_focuses pf  ON pf.program_id=ipr.id  ");
-    query.append("WHERE pf.project_id='1' ");
+    query.append("INNER JOIN project_focuses pf ON pf.program_id=ipr.id  ");
+    query.append("WHERE pf.project_id='1' "); // TODO JG - To Review. Why is 1 there?
     query.append("ORDER BY ipr.type_id, ipr.acronym ");
 
     LOG.debug("-- getProgramType() > Calling method executeQuery to get the results");
@@ -169,7 +184,7 @@ public class MySQLIPProgramDAO implements IPProgramDAO {
     List<Map<String, String>> projectFocusesDataList = new ArrayList<>();
     StringBuilder query = new StringBuilder();
     query
-      .append("SELECT ipr.id as program_id, ipr.name as program_name, ipr.acronym as program_acronym, le.id as region_id, le.name as region_name, le.code as region_code ");
+    .append("SELECT ipr.id as program_id, ipr.name as program_name, ipr.acronym as program_acronym, le.id as region_id, le.name as region_name, le.code as region_code ");
     query.append("FROM project_focuses pf ");
     query.append("INNER JOIN ip_programs ipr ON ipr.id = pf.program_id ");
     query.append("LEFT JOIN loc_elements le   ON le.id = ipr.region_id ");
@@ -200,22 +215,19 @@ public class MySQLIPProgramDAO implements IPProgramDAO {
     return projectFocusesDataList;
   }
 
-
   @Override
   public boolean saveProjectFocuses(Map<String, Object> ipElementData) {
-    LOG.debug(">> createProjectFocuses(projectData={})", ipElementData);
+    LOG.debug(">> saveProjectFocuses(ipElementData={})", ipElementData);
     StringBuilder query = new StringBuilder();
-    query.append("INSERT INTO project_focuses (id, project_id, program_id) ");
-    query.append("VALUES (?, ?, ?) ");
-    // query.append("ON DUPLICATE KEY UPDATE description = VALUES(description), program_id = VALUES(program_id)");
+    query.append("INSERT INTO project_focuses (project_id, program_id) ");
+    query.append("VALUES (?, ?) ");
 
-    Object[] values = new Object[3];
-    values[0] = ipElementData.get("id");
-    values[1] = ipElementData.get("project_id");
-    values[2] = ipElementData.get("program_id");
+    Object[] values = new Object[2];
+    values[0] = ipElementData.get("project_id");
+    values[1] = ipElementData.get("program_id");
     int result = databaseManager.saveData(query.toString(), values);
-    LOG.debug("<< saveProjectFlagship():{}", result);
-    return false;
+    LOG.debug("<< saveProjectFocuses():{}", result);
+    return true;
   }
 
 

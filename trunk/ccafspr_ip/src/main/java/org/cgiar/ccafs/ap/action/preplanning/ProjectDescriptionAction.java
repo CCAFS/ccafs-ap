@@ -13,6 +13,7 @@
  *****************************************************************/
 package org.cgiar.ccafs.ap.action.preplanning;
 
+import java.util.Iterator;
 import java.util.List;
 
 import com.google.inject.Inject;
@@ -94,7 +95,7 @@ public class ProjectDescriptionAction extends BaseAction {
 
 
   /**
-   * This method returns an array of cross cutting ids depenging on the project.crossCuttings attribute.
+   * This method returns an array of cross cutting ids depending on the project.crossCuttings attribute.
    *
    * @return an array of integers.
    */
@@ -114,7 +115,7 @@ public class ProjectDescriptionAction extends BaseAction {
   }
 
   /**
-   * This method returns an array of flagship ids depenging on the project.flagships attribute.
+   * This method returns an array of flagship ids depending on the project.flagships attribute.
    *
    * @return an array of integers.
    */
@@ -152,7 +153,7 @@ public class ProjectDescriptionAction extends BaseAction {
   }
 
   /**
-   * This method returns an array of region ids depenging on the project.regions attribute.
+   * This method returns an array of region ids depending on the project.regions attribute.
    *
    * @return an array of integers.
    */
@@ -185,7 +186,6 @@ public class ProjectDescriptionAction extends BaseAction {
 
     // Getting the information for the Project Owner Contact Persons for the View
     allOwners = userManager.getAllOwners();
-    // System.out.println(userContacts);
 
     // Getting the information of the Regions program for the View
     ipProgramRegions = ipProgramManager.getProgramsByType(APConstants.REGION_PROGRAM_TYPE);
@@ -211,7 +211,7 @@ public class ProjectDescriptionAction extends BaseAction {
 
   @Override
   public String save() {
-    // Saving project description
+    // ----- SAVING Project description -----
     userManager.getEmployeeID(project.getOwner());
     int result = projectManager.saveProjectDescription(project);
     if (result < 0) {
@@ -219,7 +219,113 @@ public class ProjectDescriptionAction extends BaseAction {
       return BaseAction.INPUT;
     }
 
-    // Saving IPPrograms (Flagships and Regions)
+    // ----- SAVING IPPrograms (Flagships and Regions) -----
+    boolean success = true;
+    boolean saved = true;
+    boolean deleted;
+
+    // Identifying regions that were unchecked in the front-end
+    if (project.getRegions() != null) {
+      List<IPProgram> previousRegions =
+        ipProgramManager.getProjectFocuses(project.getId(), APConstants.REGION_PROGRAM_TYPE);
+      for (IPProgram programRegion : previousRegions) {
+        if (!project.getRegions().contains(programRegion)) {
+          deleted = ipProgramManager.deleteProjectFocus(project.getId(), programRegion.getId());
+          if (!deleted) {
+            success = false;
+          }
+        }
+      }
+
+      // Identifying existing regions in the database, so we don't have to insert them again.
+      Iterator<IPProgram> iterator = project.getRegions().iterator();
+      while (iterator.hasNext()) {
+        if (previousRegions.contains(iterator.next())) {
+          iterator.remove();
+        }
+      }
+      // Adding new Regional Project Focuses.
+      for (IPProgram programToAdd : project.getRegions()) {
+        saved = ipProgramManager.saveProjectFocus(project.getId(), programToAdd.getId());
+        if (!saved) {
+          success = false;
+        }
+      }
+      // Stop here if a something bad happened.
+      if (!success) {
+        addActionError(getText("saving.problem"));
+        return BaseAction.INPUT;
+      }
+    }
+
+    if (project.getFlagships() != null) {
+      // Identifying deleted flagships
+      List<IPProgram> previousFlagships =
+        ipProgramManager.getProjectFocuses(project.getId(), APConstants.FLAGSHIP_PROGRAM_TYPE);
+      for (IPProgram programFlagship : previousFlagships) {
+        if (!project.getFlagships().contains(programFlagship)) {
+          deleted = ipProgramManager.deleteProjectFocus(project.getId(), programFlagship.getId());
+          if (!deleted) {
+            success = false;
+          }
+        }
+      }
+      // Identifying existing flagships in the database, so we don't have to insert them again.
+      Iterator<IPProgram> iterator = project.getFlagships().iterator();
+      while (iterator.hasNext()) {
+        if (previousFlagships.contains(iterator.next())) {
+          iterator.remove();
+        }
+      }
+      // Adding new Flagship Project Focuses.
+      for (IPProgram programToAdd : project.getFlagships()) {
+        saved = ipProgramManager.saveProjectFocus(project.getId(), programToAdd.getId());
+        if (!saved) {
+          success = false;
+        }
+      }
+      // Stop here if something bad happened.
+      if (!success) {
+        addActionError(getText("saving.problem"));
+        return BaseAction.INPUT;
+      }
+    }
+
+    // ----- SAVING Cross Cutting Themes -----
+
+    if (project.getCrossCuttings() != null) {
+      // Identifying deleted Cross Cutting Themes
+      List<IPCrossCutting> previousCrossCuttingElements =
+        ipCrossCuttingManager.getIPCrossCuttingByProject(project.getId());
+
+      for (IPCrossCutting ipCrossCuttingElement : previousCrossCuttingElements) {
+        if (!project.getCrossCuttings().contains(ipCrossCuttingElement)) {
+          deleted = ipCrossCuttingManager.deleteCrossCutting(project.getId(), ipCrossCuttingElement.getId());
+          if (!deleted) {
+            success = false;
+          }
+        }
+      }
+      // Identifying existing flagships in the database, so we don't have to insert them again.
+      Iterator<IPCrossCutting> iteratorTwo = project.getCrossCuttings().iterator();
+      while (iteratorTwo.hasNext()) {
+        if (previousCrossCuttingElements.contains(iteratorTwo.next())) {
+          iteratorTwo.remove();
+        }
+      }
+      // Adding new Flagship Project Focuses.
+      for (IPCrossCutting ipCrossCuttingElement : project.getCrossCuttings()) {
+        saved = ipCrossCuttingManager.saveCrossCutting(project.getId(), ipCrossCuttingElement.getId());
+        if (!saved) {
+          success = false;
+        }
+      }
+      // Stop here if something bad happened.
+      if (!success) {
+        addActionError(getText("saving.problem"));
+        return BaseAction.INPUT;
+      }
+    }
 
 
     addActionMessage(getText("saving.success", new String[] {getText("preplanning.projectDescription.title")}));

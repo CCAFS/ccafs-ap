@@ -28,6 +28,15 @@ import com.google.inject.ImplementedBy;
 public interface IPCrossCuttingDAO {
 
   /**
+   * This method removes a record from the table project_cross_cutting_themes.
+   *
+   * @param projectID is the project_id.
+   * @param crossCuttingID is the theme_id
+   * @return true if the record could be successfully removed, false otherwise.
+   */
+  public boolean deleteCrossCutting(int projectID, int crossCuttingID);
+
+  /**
    * This Method return the information of a IP Cross Cutting Theme by a given ID of a Theme
    *
    * @param ipThemeID - is the Id of a IP Cross Cutting Theme
@@ -49,5 +58,13 @@ public interface IPCrossCuttingDAO {
    * @return a list of maps with the information of all IP Cross Cutting Themes.
    */
   public List<Map<String, String>> getIPCrossCuttings();
+
+  /**
+   * This method saves a new record in the project_cross_cutting_themes table.
+   * 
+   * @param elementData is a Map with the project_id and theme_id.
+   * @return true if the record could successfully inserted, false otherwise.
+   */
+  public boolean saveCrossCutting(Map<String, Object> elementData);
 
 }

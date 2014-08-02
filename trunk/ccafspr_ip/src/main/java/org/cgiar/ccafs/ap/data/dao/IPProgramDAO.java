@@ -29,13 +29,22 @@ import com.google.inject.ImplementedBy;
 public interface IPProgramDAO {
 
   /**
+   * this method removes a specific record from the project_focuses table.
+   *
+   * @param projectId is the project id.
+   * @param ipProgramID is the program id.
+   * @return true if the record could be successfully removed, false otherwise.
+   */
+  public boolean deleteProjectFocus(int projectId, int ipProgramID);
+
+
+  /**
    * This method gets the information of a IP Program by a given ID
    *
    * @param ipProgramID - is the ID of the program
    * @return a Map with the IP Program information.
    */
   public Map<String, String> getIPProgramById(int ipProgramID);
-
 
   /**
    * TODO JG/HT - To Document.
@@ -60,7 +69,9 @@ public interface IPProgramDAO {
    *
    * @param programID, identifier of the program
    * @return a list of maps with the information of all IP elements returned.
+   * @deprecated Do not use this method as it is not properly working.
    */
+  @Deprecated
   public List<Map<String, String>> getProgramType(int programID, int typeProgramId);
 
   /**
@@ -72,6 +83,7 @@ public interface IPProgramDAO {
    * @return a List of Map with the information of a Program related with a Project
    */
   public List<Map<String, String>> getProjectFocuses(int projectID, int typeID);
+
 
   /**
    * This method creates or update into the table project_focuses new relations between a project and a program.
