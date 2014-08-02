@@ -65,6 +65,8 @@
     </action>
     
     <action name="description" class="org.cgiar.ccafs.ap.action.preplanning.ProjectDescriptionAction">
+      <interceptor-ref name="preplanningStack" />
+      <interceptor-ref name="accessibleProject" />
       <result name="cancel" type="redirectAction">projects</result>
       <result name="input">/WEB-INF/preplanning/projectDescriptionPreplanning.ftl</result>
       <result name="success" type="redirectAction">
@@ -78,8 +80,8 @@
     </action>
     
     <action name="partners" class="org.cgiar.ccafs.ap.action.preplanning.ProjectPartnersAction">
-      <!--  interceptor-ref name="planningStack" />
-      <interceptor-ref name="accessibleActivity" / -->
+      <interceptor-ref name="preplanningStack" />
+      <interceptor-ref name="accessibleProject" />
       <result name="cancel" type="redirectAction">projects</result>
       <result name="input">/WEB-INF/preplanning/projectPartnersPreplanning.ftl</result>
       <result name="success" type="redirectAction">
@@ -93,6 +95,8 @@
     </action>
     
     <action name="budget" class="org.cgiar.ccafs.ap.action.preplanning.ProjectBudgetAction">
+      <interceptor-ref name="preplanningStack" />
+      <interceptor-ref name="accessibleProject" />
       <result name="input">/WEB-INF/preplanning/projectBudgetPreplanning.ftl</result>
     </action>
     
