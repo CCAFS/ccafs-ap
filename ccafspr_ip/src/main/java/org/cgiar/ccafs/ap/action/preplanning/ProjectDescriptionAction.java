@@ -82,6 +82,18 @@ public class ProjectDescriptionAction extends BaseAction {
     return allOwners;
   }
 
+
+  /**
+   * TODO HT - To Document
+   *
+   * @param ipProgramId
+   * @return
+   */
+  public String getComposedName(int ipProgramId) {
+    IPProgram program = this.ipProgramFlagships.get(ipProgramId);
+    return program.getAcronym() + ": " + program.getName();
+  }
+
   public int getEndYear() {
     return config.getEndYear();
   }
@@ -89,6 +101,7 @@ public class ProjectDescriptionAction extends BaseAction {
   public List<IPCrossCutting> getIpCrossCuttings() {
     return ipCrossCuttings;
   }
+
 
   public List<IPProgram> getIpProgramFlagships() {
     return ipProgramFlagships;
@@ -98,7 +111,6 @@ public class ProjectDescriptionAction extends BaseAction {
   public List<IPProgram> getIpProgramRegions() {
     return ipProgramRegions;
   }
-
 
   public Project getProject() {
     return project;
@@ -142,9 +154,9 @@ public class ProjectDescriptionAction extends BaseAction {
 
 
     // Getting the information of the Flagships Program associated with the project
-    project.setRegions(projectManager.getProjectFocuses(projectID, APConstants.REGION_PROGRAM_TYPE));
+    project.setRegions(ipProgramManager.getProjectFocuses(projectID, APConstants.REGION_PROGRAM_TYPE));
     // Getting the information of the Regions Program associated with the project
-    project.setFlagships(projectManager.getProjectFocuses(projectID, APConstants.FLAGSHIP_PROGRAM_TYPE));
+    project.setFlagships(ipProgramManager.getProjectFocuses(projectID, APConstants.FLAGSHIP_PROGRAM_TYPE));
     // Getting the information of the Cross Cutting Theme associated with the project
     project.setCrossCuttings(ipCrossCuttingManager.getIPCrossCuttingByProject(projectID));
 
@@ -153,16 +165,19 @@ public class ProjectDescriptionAction extends BaseAction {
 
   @Override
   public String save() {
-    // Saving project
+    // Saving project description
     userManager.getEmployeeID(project.getOwner());
     int result = projectManager.saveProjectDescription(project);
-    // TODO HT - To save IPProgram focuses.
-    if (result >= 0) {
-      System.out.println("Success!");
-      return BaseAction.SUCCESS;
+    if (result < 0) {
+      addActionError(getText("saving.problem"));
+      return BaseAction.INPUT;
     }
-    System.out.println("FAIL!");
-    return BaseAction.INPUT;
+
+    // Saving IPPrograms (Flagships and Regions)
+
+
+    addActionMessage(getText("saving.success", new String[] {getText("preplanning.projectDescription.title")}));
+    return BaseAction.SUCCESS;
   }
 
   public void setIpCrossCuttings(List<IPCrossCutting> ipCrossCuttings) {

@@ -43,7 +43,7 @@
 [#macro checkbox name value="-NULL" label="" i18nkey="" disabled=false checked=false required=false display=true help=""]
   <div class="checkbox" [#if !display]style="display: none;"[/#if]>
     <label for="${name}">
-      <h6>[#if i18nkey==""]${label}[#else][@s.text name="${i18nkey}" /][/#if][#if required]<span class="red">*</span>[/#if]:</h6>
+      <h6>[#if i18nkey==""]${label}[#else][@s.text name="${i18nkey}" /][/#if][#if required]<span class="red">*</span>[/#if]</h6>
       [#if help != ""]
         <img src="${baseUrl}/images/global/icon-help2.png" title="[@s.text name="${help}"/]" />
       [/#if]
@@ -54,7 +54,7 @@
 
 [#macro checkboxGroup label name listName displayFieldName="" keyFieldName="" value="-NULL" i18nkey="" disabled=false required=false errorField="" checked=false display=true]
   <div class="checkbox" [#if !display]style="display: none;"[/#if]>
-    <h6>[#if i18nkey==""]${label}[#else][@s.text name="${i18nkey}" /][/#if][#if required]<span class="red">*</span>[/#if]:</h6>
+    <h6>[#if i18nkey==""]${label}[#else][@s.text name="${i18nkey}" /][/#if][#if required]<span class="red">*</span>[/#if]</h6>
     [#if errorField==""][@s.fielderror cssClass="fieldError" fieldName="${name}"/][#else][@s.fielderror cssClass="fieldError" fieldName="${errorfield}"/][/#if]
     <div class="checkboxList">
     [#if value=="-NULL"]
@@ -73,7 +73,7 @@
 
 [#macro radioButtonGroup label name listName class="" displayFieldName="" keyFieldName="" value="-NULL" i18nkey="" disabled=false required=false errorField="" checked=false help="" display=true]
   <div class="radioGroup" [#if !display]style="display: none;"[/#if]>
-    <h6>[#if i18nkey==""]${label}[#else][@s.text name="${i18nkey}" /][/#if][#if required]<span class="red">*</span>[/#if]:</h6>
+    <h6>[#if i18nkey==""]${label}[#else][@s.text name="${i18nkey}" /][/#if][#if required]<span class="red">*</span>[/#if]</h6>
     [#if errorField==""][@s.fielderror cssClass="fieldError" fieldName="${name}"/][#else][@s.fielderror cssClass="fieldError" fieldName="${errorfield}"/][/#if]
     <div class="radiosList">
     [#if value=="-NULL"][#assign customValue][@s.property value="${name}" /][/#assign][#else][#assign customValue]${value}[/#assign][/#if]
@@ -92,7 +92,7 @@
   <div class="select[#if addButton] button[/#if]" [#if !display]style="display: none;"[/#if]>
     [#if showTitle]
       <h6>
-        [#if i18nkey==""]${label}[#else][@s.text name="${i18nkey}" /][/#if][#if required]<span class="red">*</span>[/#if]:
+        [#if i18nkey==""]${label}[#else][@s.text name="${i18nkey}" /][/#if][#if required]<span class="red">*</span>[/#if]
         [#if help != ""]
           <img src="${baseUrl}/images/global/icon-help2.png" title="[@s.text name="${help}"/]" />
         [/#if]

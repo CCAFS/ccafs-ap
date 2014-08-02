@@ -17,6 +17,7 @@ import org.cgiar.ccafs.ap.data.manager.impl.IPProgramManagerImpl;
 import org.cgiar.ccafs.ap.data.model.IPProgram;
 
 import java.util.List;
+import java.util.Map;
 
 import com.google.inject.ImplementedBy;
 
@@ -24,8 +25,16 @@ import com.google.inject.ImplementedBy;
 public interface IPProgramManager {
 
   /**
+   * This method will assign IPPrograms to a specific project and will save them as "Project Focuses".
+   *
+   * @param ipElementData is a list of IPProgram to be assigned.
+   * @return true if the information was successfully saved, or false if any error happened.
+   */
+  public boolean createProjectFocuses(Map<String, Object> ipElementData);
+
+  /**
    * This method gets the information of an IP Program given an Id
-   * 
+   *
    * @param ipProgramID - is the Id of the IP Program.
    * @return an IPProgram object with the result information.
    */
@@ -33,19 +42,31 @@ public interface IPProgramManager {
 
   /**
    * This method gets the IP Program information by a given project Id
-   * 
+   *
    * @param projectID - is the id of the project
    * @return an IPProgram object with the result information.
    */
   public IPProgram getIPProgramByProjectId(int projectID);
 
+
   /**
    * This method gets from the database a list of ipElements
    * which have the same type as passed as parameter
-   * 
+   *
    * @param ipProgramTypeID - IP Program type identifier
    * @return a list of IPProgram objects with the information.
    */
   public List<IPProgram> getProgramsByType(int ipProgramTypeID);
+
+  /**
+   * This method gets all the IPPrograms where the projec is focusing (project_focuses).
+   *
+   * @param projectID - is the id of the project.
+   * @param typeID - is the id of a program type. Can be Flagship Program or Regional Program.
+   * @return a List of IPProgram objects that correspond to Project focuses initially saved in the Project Description
+   *         section in Pre-planning.
+   */
+  public List<IPProgram> getProjectFocuses(int projectID, int typeID);
+
 
 }
