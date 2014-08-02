@@ -142,8 +142,8 @@ public class ProjectBudgetAction extends BaseAction {
     // Getting all the institutions.
     allInstitutions = institutionManager.getAllInstitutions();
 
-    // Getting the list of institutions that are funding the project as leveraged. TODO HT - validate if there are not
-// institutions.
+    // Getting the list of institutions that are funding the project as leveraged.
+    // TODO HT - validate if there are not institutions.
     leveragedInstitutions = budgetManager.getLeveragedInstitutions(projectID);
 
     // Getting all the project partners. TODO HT - Validate if there are not partners.

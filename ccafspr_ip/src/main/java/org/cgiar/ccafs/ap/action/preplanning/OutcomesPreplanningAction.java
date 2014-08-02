@@ -81,7 +81,7 @@ public class OutcomesPreplanningAction extends BaseAction {
   @Override
   public void prepare() throws Exception {
     IPElementType type = new IPElementType(APConstants.ELEMENT_TYPE_OUTCOME2025);
-    validationMessages = new StringBuilder();
+    validationMessages = new StringBuilder(); // TODO HC - This variable is never used.
 
     // The IDOs are created by the coordinating unit
     IPProgram cuProgram = new IPProgram();

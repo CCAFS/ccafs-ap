@@ -47,10 +47,10 @@ public interface IPProgramDAO {
   public Map<String, String> getIPProgramById(int ipProgramID);
 
   /**
-   * TODO JG/HT - To Document.
+   * This method returns all the PropjectFocuses (IPPrograms) that belongs to a given project.
    *
-   * @param projectID
-   * @return
+   * @param projectID is the project identifier.
+   * @return a Map with the information requested.
    */
   public Map<String, String> getIPProgramByProjectId(int projectID);
 
