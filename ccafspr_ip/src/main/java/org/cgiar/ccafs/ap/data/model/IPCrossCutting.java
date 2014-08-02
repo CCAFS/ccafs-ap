@@ -17,8 +17,9 @@ import org.apache.commons.lang3.builder.ToStringBuilder;
 
 /**
  * This class represents the IP Cross Cutting Theme
- * 
+ *
  * @author Javier Andrés Gallego B.
+ * @author Héctor Fabio Tobón R.
  */
 public class IPCrossCutting {
 
@@ -28,12 +29,26 @@ public class IPCrossCutting {
   public IPCrossCutting() {
   }
 
+  @Override
+  public boolean equals(Object obj) {
+    if (obj instanceof IPCrossCutting) {
+      IPCrossCutting c = (IPCrossCutting) obj;
+      return c.getId() == this.id;
+    }
+    return false;
+  }
+
   public int getId() {
     return id;
   }
 
   public String getName() {
     return name;
+  }
+
+  @Override
+  public int hashCode() {
+    return this.id;
   }
 
   public void setId(int id) {

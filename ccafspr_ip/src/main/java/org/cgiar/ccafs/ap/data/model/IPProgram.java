@@ -28,6 +28,15 @@ public class IPProgram {
 
   }
 
+  @Override
+  public boolean equals(Object obj) {
+    if (obj instanceof IPProgram) {
+      IPProgram ip = (IPProgram) obj;
+      return ip.getId() == this.id;
+    }
+    return false;
+  }
+
   public String getAcronym() {
     return acronym;
   }
@@ -46,6 +55,11 @@ public class IPProgram {
 
   public IPProgramTypes getType() {
     return type;
+  }
+
+  @Override
+  public int hashCode() {
+    return id;
   }
 
   public void setAcronym(String acronym) {

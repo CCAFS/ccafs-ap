@@ -17,20 +17,19 @@ import org.cgiar.ccafs.ap.data.manager.impl.IPProgramManagerImpl;
 import org.cgiar.ccafs.ap.data.model.IPProgram;
 
 import java.util.List;
-import java.util.Map;
-
 import com.google.inject.ImplementedBy;
 
 @ImplementedBy(IPProgramManagerImpl.class)
 public interface IPProgramManager {
 
   /**
-   * This method will assign IPPrograms to a specific project and will save them as "Project Focuses".
+   * this method removes a specific project focus.
    *
-   * @param ipElementData is a list of IPProgram to be assigned.
-   * @return true if the information was successfully saved, or false if any error happened.
+   * @param projectId is the project identifier where the project focus to be removed belongs to.
+   * @param ipProgramID is the program identifier where the project focus to be removed is related to.
+   * @return true if the project focus was deleted, false otherwise.
    */
-  public boolean createProjectFocuses(Map<String, Object> ipElementData);
+  public boolean deleteProjectFocus(int projectId, int ipProgramID);
 
   /**
    * This method gets the information of an IP Program given an Id
@@ -67,6 +66,15 @@ public interface IPProgramManager {
    *         section in Pre-planning.
    */
   public List<IPProgram> getProjectFocuses(int projectID, int typeID);
+
+  /**
+   * This method will assign IPPrograms to a specific project and will save them as "Project Focuses".
+   *
+   * @param projectID is the project identifier.
+   * @param programID is the program identifier.
+   * @return true if the information was successfully saved, or false if any error happened.
+   */
+  public boolean saveProjectFocus(int projectID, int programID);
 
 
 }

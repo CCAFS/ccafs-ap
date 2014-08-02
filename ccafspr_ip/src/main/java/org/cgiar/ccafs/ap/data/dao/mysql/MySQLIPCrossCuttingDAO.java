@@ -47,6 +47,20 @@ public class MySQLIPCrossCuttingDAO implements IPCrossCuttingDAO {
   }
 
 
+  @Override
+  public boolean deleteCrossCutting(int projectID, int crossCuttingID) {
+    LOG.debug(">> deleteCrossCutting(projectId={}, crossCuttingID={})", new String[] {projectID + "",
+      crossCuttingID + ""});
+    String query = "DELETE FROM project_cross_cutting_themes WHERE project_id = ? AND theme_id = ?";
+    int rowsDeleted = databaseManager.delete(query, new Object[] {projectID, crossCuttingID});
+    if (rowsDeleted >= 0) {
+      LOG.debug("<< deleteCrossCutting():{}", true);
+      return true;
+    }
+    LOG.debug("<< deleteCrossCutting:{}", false);
+    return false;
+  }
+
   private List<Map<String, String>> getData(String query) {
     LOG.debug(">> executeQuery(query='{}')", query);
     List<Map<String, String>> ipCrossCuttingList = new ArrayList<>();
@@ -113,6 +127,7 @@ public class MySQLIPCrossCuttingDAO implements IPCrossCuttingDAO {
     return getData(query.toString());
   }
 
+
   @Override
   public List<Map<String, String>> getIPCrossCuttings() {
     LOG.debug(">> getIPCrossCutting( ");
@@ -126,6 +141,21 @@ public class MySQLIPCrossCuttingDAO implements IPCrossCuttingDAO {
     return getData(query.toString());
   }
 
-  // TODO JG still need to do the method Save Project Cross Cutting
+
+  @Override
+  public boolean saveCrossCutting(Map<String, Object> elementData) {
+    LOG.debug(">> saveCrossCutting(crossCuttingData={})", elementData);
+    StringBuilder query = new StringBuilder();
+    query.append("INSERT INTO project_cross_cutting_themes(project_id, theme_id) ");
+    query.append("VALUES (?, ?) ");
+
+    Object[] values = new Object[2];
+    values[0] = elementData.get("project_id");
+    values[1] = elementData.get("theme_id");
+    int result = databaseManager.saveData(query.toString(), values);
+    LOG.debug("<< saveCrossCutting():{}", result);
+    return true;
+  }
+
 
 }

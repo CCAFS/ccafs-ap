@@ -17,57 +17,57 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
-import org.cgiar.ccafs.ap.data.manager.IPProgramManager;
+import org.cgiar.ccafs.ap.data.model.IPCrossCutting;
 
-import org.cgiar.ccafs.ap.data.model.IPProgram;
+import org.cgiar.ccafs.ap.data.manager.IPCrossCuttingManager;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import com.google.inject.Inject;
 import org.apache.struts2.util.StrutsTypeConverter;
 
 
-public class IPProgramsListConverter extends StrutsTypeConverter {
+public class IPCrossCuttingThemeListConverter extends StrutsTypeConverter {
 
   // LOG
-  private static final Logger LOG = LoggerFactory.getLogger(IPProgramsListConverter.class);
+  private static final Logger LOG = LoggerFactory.getLogger(IPCrossCuttingThemeListConverter.class);
 
   // Manager
-  private IPProgramManager programManager;
+  private IPCrossCuttingManager ipCrossCuttingManager;
 
   @Inject
-  public IPProgramsListConverter(IPProgramManager programManager) {
-    this.programManager = programManager;
+  public IPCrossCuttingThemeListConverter(IPCrossCuttingManager ipCrossCuttingManager) {
+    this.ipCrossCuttingManager = ipCrossCuttingManager;
   }
 
   @Override
   public Object convertFromString(Map context, String[] values, Class toClass) {
     if (toClass == List.class) {
-      List<IPProgram> programs = new ArrayList<>();
+      List<IPCrossCutting> themes = new ArrayList<>();
       try {
         for (String value : values) {
-          IPProgram program = programManager.getIPProgramById(Integer.parseInt(value));
-          programs.add(program);
+          IPCrossCutting theme = ipCrossCuttingManager.getIPCrossCutting(Integer.parseInt(value));
+          themes.add(theme);
           LOG.debug(">> convertFromString > id = {} ", value);
         }
       } catch (NumberFormatException e) {
         // Do Nothing
-        LOG.error("Problem to convert IPPrograms from String (convertFromString) for values = {} ", values,
+        LOG.error("Problem to convert IPCrossCutting from String (convertFromString) for values = {} ", values,
           e.getMessage());
       }
-      return programs;
+      return themes;
     }
     return null;
   }
 
   @Override
   public String convertToString(Map context, Object o) {
-    List<IPProgram> programs = (List) o;
-    String[] programIds = new String[programs.size()];
-    for (int c = 0; c < programIds.length; c++) {
-      programIds[c] = programs.get(c).getId() + "";
+    List<IPCrossCutting> themes = (List) o;
+    String[] themeIds = new String[themes.size()];
+    for (int c = 0; c < themeIds.length; c++) {
+      themeIds[c] = themes.get(c).getId() + "";
     }
-    LOG.debug(">> convertToString > id = {} ", programIds.toString());
+    LOG.debug(">> convertToString > id = {} ", themeIds.toString());
     // TODO HT - To review.
-    return programIds.toString();
+    return themeIds.toString();
   }
 }
