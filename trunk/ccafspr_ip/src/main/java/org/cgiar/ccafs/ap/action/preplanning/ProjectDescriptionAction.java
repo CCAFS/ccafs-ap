@@ -83,14 +83,15 @@ public class ProjectDescriptionAction extends BaseAction {
   }
 
   /**
-   * TODO HT - To Document
+   * This method returns a composed name with the Acronym and Name.
+   * e.g. FP4: Policies and Institutions for Climate-Resilient Food Systems
    *
-   * @param ipProgramId
-   * @return
+   * @param ipProgramId is the program identifier.
+   * @return the composed name described above.
    */
   public String getComposedName(int ipProgramId) {
-    IPProgram program = this.ipProgramFlagships.get(ipProgramId);
-    return program.getAcronym() + ": " + program.getName();
+    return this.ipProgramFlagships.get(ipProgramId).getAcronym() + ": "
+      + this.ipProgramFlagships.get(ipProgramId).getName();
   }
 
 
@@ -198,14 +199,14 @@ public class ProjectDescriptionAction extends BaseAction {
 
     // Getting project
     project = projectManager.getProject(projectID);
-
-    // Getting the information of the Flagships Program associated with the project
-    project.setRegions(ipProgramManager.getProjectFocuses(projectID, APConstants.REGION_PROGRAM_TYPE));
-    // Getting the information of the Regions Program associated with the project
-    project.setFlagships(ipProgramManager.getProjectFocuses(projectID, APConstants.FLAGSHIP_PROGRAM_TYPE));
-    // Getting the information of the Cross Cutting Theme associated with the project
-    project.setCrossCuttings(ipCrossCuttingManager.getIPCrossCuttingByProject(projectID));
-
+    if (project != null) {
+      // Getting the information of the Flagships Program associated with the project
+      project.setRegions(ipProgramManager.getProjectFocuses(projectID, APConstants.REGION_PROGRAM_TYPE));
+      // Getting the information of the Regions Program associated with the project
+      project.setFlagships(ipProgramManager.getProjectFocuses(projectID, APConstants.FLAGSHIP_PROGRAM_TYPE));
+      // Getting the information of the Cross Cutting Theme associated with the project
+      project.setCrossCuttings(ipCrossCuttingManager.getIPCrossCuttingByProject(projectID));
+    }
 
   }
 

@@ -48,15 +48,13 @@ public class AccessibleProjectInterceptor extends AbstractInterceptor {
   public String intercept(ActionInvocation invocation) throws Exception {
     Map<String, Object> session = invocation.getInvocationContext().getSession();
     Map<String, Object> parameters = invocation.getInvocationContext().getParameters();
-    String projectParameter = ((String[]) parameters.get(APConstants.PROJECT_REQUEST_ID))[0];
-    User user = (User) session.get(APConstants.SESSION_USER);
-    if (user != null) {
-      if (projectParameter != null) {
+    if (parameters.get(APConstants.PROJECT_REQUEST_ID) != null) {
+      String projectParameter = ((String[]) parameters.get(APConstants.PROJECT_REQUEST_ID))[0];
+      User user = (User) session.get(APConstants.SESSION_USER);
+      if (user != null) {
         // Listing all projects that the user is able to edit.
-
         // Getting project list that belongs to the program that you belongs to.
         List<Integer> idsAllowedToEdit = projectManager.getProjectIdsEditables(user);
-        System.out.println(idsAllowedToEdit);
         if (StringUtils.isNumeric(projectParameter)) {
           int projectID = Integer.parseInt(projectParameter);
           if (idsAllowedToEdit.contains(new Integer(projectID))) {
@@ -68,11 +66,11 @@ public class AccessibleProjectInterceptor extends AbstractInterceptor {
           "User identify with id={}, email={}, role={} tried to access the project with id={}. And it is not authorized to edit it.",
           new Object[] {user.getId(), user.getEmail(), user.getRole().getName(), projectParameter});
         return BaseAction.NOT_AUTHORIZED;
-      } else {
-        // There is not a projectID parameter, thus, the project was not found.
-        // Redirecting to Not Found page.
-        return BaseAction.NOT_FOUND;
       }
+    } else {
+      // There is not a projectID parameter, thus, the project was not found.
+      // Redirecting to Not Found page.
+      return BaseAction.NOT_FOUND;
     }
     // User is not logged.
     return BaseAction.NOT_LOGGED;

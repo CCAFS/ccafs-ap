@@ -15,7 +15,6 @@ package org.cgiar.ccafs.ap.action.preplanning;
 
 import org.cgiar.ccafs.ap.action.BaseAction;
 import org.cgiar.ccafs.ap.config.APConfig;
-import org.cgiar.ccafs.ap.data.manager.BudgetManager;
 import org.cgiar.ccafs.ap.data.manager.ProjectManager;
 import org.cgiar.ccafs.ap.data.model.IPProgram;
 import org.cgiar.ccafs.ap.data.model.Project;
@@ -36,7 +35,6 @@ public class ProjectsListAction extends BaseAction {
 
   // Manager
   private ProjectManager projectManager;
-  private BudgetManager budgetManager;
 
   // LOG
   private static Logger LOG = LoggerFactory.getLogger(ProjectsListAction.class);
@@ -50,10 +48,9 @@ public class ProjectsListAction extends BaseAction {
 
 
   @Inject
-  public ProjectsListAction(APConfig config, ProjectManager projectManager, BudgetManager budgetManager) {
+  public ProjectsListAction(APConfig config, ProjectManager projectManager) {
     super(config);
     this.projectManager = projectManager;
-    this.budgetManager = budgetManager;
     this.totalBudget = 0;
   }
 
@@ -78,9 +75,9 @@ public class ProjectsListAction extends BaseAction {
       newProject.setProgramCreator(userProgram);
     } else {
       LOG
-      .error(
-        "-- execute() > the current user identify with id={} and institution_id={} does not belong to a specific program!",
-        new Object[] {this.getCurrentUser().getId(), this.getCurrentUser().getCurrentInstitution().getId()});
+        .error(
+          "-- execute() > the current user identify with id={} and institution_id={} does not belong to a specific program!",
+          new Object[] {this.getCurrentUser().getId(), this.getCurrentUser().getCurrentInstitution().getId()});
     }
     newProject.setCreated(new Date().getTime());
     return projectManager.saveProjectDescription(newProject);
@@ -102,8 +99,9 @@ public class ProjectsListAction extends BaseAction {
     if (add) {
       return add();
     }
+
+    addActionError(getText("preplanning.projects.creatingProject.error"));
     // An error happened, lets redirect it to the list, even if there are not projects.
-    // TODO HT - Here we should show an error message.
     return BaseAction.SUCCESS;
   }
 
