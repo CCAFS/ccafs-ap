@@ -75,7 +75,7 @@ public class LoginAction extends BaseAction {
         loggedUser.setCurrentInstitution(institutionManager.getUserMainInstitution(loggedUser));
         loggedUser.setRole(roleManager.getRole(loggedUser));
         // Set the employee id.
-        loggedUser.setEmployeeId(userManager.getEmployeeID(user));
+        loggedUser.setEmployeeId(userManager.getEmployeeID(loggedUser));
 
         this.getSession().put(APConstants.SESSION_USER, loggedUser);
         LOG.info("User " + user.getEmail() + " logged in successfully.");

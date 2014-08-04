@@ -16,6 +16,7 @@ package org.cgiar.ccafs.ap.data.manager.impl;
 import org.cgiar.ccafs.ap.data.dao.UserDAO;
 import org.cgiar.ccafs.ap.data.manager.InstitutionManager;
 import org.cgiar.ccafs.ap.data.manager.UserManager;
+import org.cgiar.ccafs.ap.data.model.Role;
 import org.cgiar.ccafs.ap.data.model.User;
 import org.cgiar.ccafs.ap.util.MD5Convert;
 import org.cgiar.ciat.auth.ADConexion;
@@ -26,8 +27,6 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-
-import org.cgiar.ccafs.ap.data.model.Role;
 
 import com.google.inject.Inject;
 import org.slf4j.Logger;
@@ -56,7 +55,7 @@ public class UserManagerImp implements UserManager {
   /**
    * This method make the login process against the active directory
    * if the user has an institutional account
-   *
+   * 
    * @param user
    * @return true if it was successfully logged in. False otherwise
    */
