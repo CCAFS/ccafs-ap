@@ -17,31 +17,31 @@
         [#list activities as activity]
     		   <tr>
               <td>
-                  <a href="[@s.url action='description' includeParams='get'][@s.param name='activityID']1[/@s.param][/@s.url]">
-                  1
+                  <a href="[@s.url action='activityDescription' ][@s.param name='activityID']${activity.id?c}[/@s.param][/@s.url]">
+                  ${activity.id?c}
                   </a>
               </td>
               <td>
-                  <a href="[@s.url action='description' includeParams='get'] [@s.param name='activityID']1[/@s.param][/@s.url]">
+                  <a href="[@s.url action='activityDescription' ] [@s.param name='activityID']${activity.id?c}[/@s.param][/@s.url]">
                     [#if activity.title?has_content]
-                      
+                      ${activity.title}
                     [#else]
                       [@s.text name="planning.activities.title.none" /]
                     [/#if]
                   </a>
               </td>
               <td> 
-                  <a href="[@s.url action='description' includeParams='get'] [@s.param name='activityID']1[/@s.param] [/@s.url]">
+                  <a href="[@s.url action='activityDescription'] [@s.param name='activityID']${activity.id?c}[/@s.param] [/@s.url]">
                     TODO
                   </a>
               </td>
               <td> 
-                  <a href="[@s.url action='description' includeParams='get'] [@s.param name='activityID']1[/@s.param] [/@s.url]">
+                  <a href="[@s.url action='activityDescription' ] [@s.param name='activityID']${activity.id?c}[/@s.param] [/@s.url]">
                     TODO
                   </a>
               </td>
               <td> 
-                  <a href="[@s.url action='description' includeParams='get'] [@s.param name='activityID']1[/@s.param] [/@s.url]">
+                  <a href="[@s.url action='activityDescription' ] [@s.param name='activityID']${activity.id?c}[/@s.param] [/@s.url]">
                     TODO
                   </a>
               </td>

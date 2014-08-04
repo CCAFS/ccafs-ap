@@ -4,7 +4,7 @@
 [#assign customJS = ["${baseUrl}/js/planning/activity-list.js"] /]
 [#assign customCSS = ["${baseUrl}/css/libs/dataTables/jquery.dataTables-1.9.4.css", "${baseUrl}/css/global/customDataTable.css"] /]
 [#assign currentSection = "planning" /]
-[#assign currentPlanningSection = "activity" /]
+[#assign currentPlanningSection = "activities" /]
 [#assign currentStage = "activities" /]
 
 [#include "/WEB-INF/global/pages/header.ftl" /]
@@ -24,8 +24,9 @@
   	 
     <h1 class="contentTitle">
     [@s.text name="planning.activities.title" /]  
-    [@activitiesList.activitiesList activities="" canValidate=true canEditProject=true tableID="activities" /]
     </h1> 
+    [@activitiesList.activitiesList activities=activities canValidate=true canEditProject=true tableID="activities" /]
+    
   </article>
   [/@s.form]  
 </section>

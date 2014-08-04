@@ -24,29 +24,29 @@
     [@s.text name="planning.activityDescription.title" /] 
     </h1> 
     <div id="activityDescription" class="borderBox">
-      <fieldset class="fullBlock">  
+         <fieldset class="fullBlock">  
   			[#-- Activity Leader --]
-  			[@customForm.textArea name="activity.leader" i18nkey="planning.activityDescription.leader" required=true value="" /]
+  			[@customForm.select name="activity.leader" label=""  disabled=false i18nkey="planning.activityDescription.leader" listName="allActivityLeaders" keyFieldName="id"  displayFieldName="" /]
   	    <div id="projectDescription" class="">
   	      [#-- Contact Name --]
   	      <div class="halfPartBlock">  
-  	      	[@customForm.select name="project.owner" label=""  disabled=false i18nkey="planning.activityDescription.contactName" listName="allOwners" keyFieldName="id"  displayFieldName="composedNameWithInstitution" /]
+  	      	[@customForm.select name="activity.contactName" label=""  disabled=false i18nkey="planning.activityDescription.contactName" listName="allOwners" keyFieldName="id"  displayFieldName="" /]
           </div>    	
   	      [#--  Contact Email --]
           <div class="halfPartBlock">          
-            [@customForm.select name="project.owner" label=""  disabled=false i18nkey="planning.activityDescription.contactEmail" listName="allOwners" keyFieldName="id"  displayFieldName="composedNameWithInstitution" /]
+            [@customForm.select name="activity.contactEmail" label=""  disabled=false i18nkey="planning.activityDescription.contactEmail" listName="allOwners" keyFieldName="id"  displayFieldName="" /]
           </div>
           [#-- Activity Title --]
-  			[@customForm.textArea name="projects.summary" i18nkey="planning.activityDescription.title" required=true value="" /]
+  			[@customForm.textArea name="activity.title" i18nkey="planning.activityDescription.title" required=true /]
   	      [#-- Activity Description --]
-  			[@customForm.textArea name="projects.summary" i18nkey="planning.activityDescription.description" required=true value="" /]
+  			[@customForm.textArea name="activity.description" i18nkey="planning.activityDescription.description" required=true  /]
   	      [#-- Start Date --]
   		    <div class="halfPartBlock">
-  		     	[@customForm.input name="" type="text" i18nkey="planning.activityDescription.startDate" required=true value=""/]
+  		     	[@customForm.input name="activity.start" type="text" i18nkey="planning.activityDescription.startDate" required=true /]
   		    </div> 
   		    [#-- End Date --]
   		    <div class="halfPartBlock">
-  	      		[@customForm.input name="projects.endDate" type="text" i18nkey="planning.activityDescription.endDate" required=true value=""/]
+  	      		[@customForm.input name="activity.end" type="text" i18nkey="planning.activityDescription.endDate" required=true /]
   	    	</div>
   	  	</div> 
   	  		
