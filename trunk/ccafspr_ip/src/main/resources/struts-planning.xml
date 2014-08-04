@@ -43,9 +43,13 @@
         <param name="projectID">${project.id}</param>
       </result>
     </action>
-    
+    <!-- Section: Activities  -->
     <action name="activities" class="org.cgiar.ccafs.ap.action.BaseAction">
       <result name="input">/WEB-INF/planning/activities.ftl</result>
+    </action>
+    
+    <action name="activityDescription" class="org.cgiar.ccafs.ap.action.BaseAction">
+      <result name="input">/WEB-INF/planning/activityDescriptionPlanning.ftl</result>
     </action>
     
   </package>
