@@ -125,7 +125,7 @@ public class MySQLUserDAO implements UserDAO {
   @Override
   public int getEmployeeID(int userId, int institutionId, int roleId) {
     LOG
-    .debug(">> getEmployeeID (userId={}, institutionId={}, roleId={})", new Object[] {userId, institutionId, roleId});
+      .debug(">> getEmployeeID (userId={}, institutionId={}, roleId={})", new Object[] {userId, institutionId, roleId});
     int result = -1;
     try (Connection connection = dbManager.getConnection()) {
       StringBuilder query = new StringBuilder();
@@ -308,7 +308,7 @@ public class MySQLUserDAO implements UserDAO {
 
 
     int rows = dbManager.saveData(query, values);
-    if (rows <= 0) {
+    if (rows < 0) {
       LOG.warn("-- saveLastLogin() > There was an error saving the last login for the user {} into the database.",
         userData.get("user_id"));
       LOG.warn("Query: {}", query);
