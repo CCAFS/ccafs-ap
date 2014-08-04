@@ -25,6 +25,6 @@ function isNumber(event){
 
 function printOut(){
   $("form input, form textarea, form select").each(function(i,input){
-    console.log(" >> " + $(input).attr("name") + ": " + $(input).val());
+    console.log("> " + $(input).attr("name") + ": " + $(input).val() + " (" + input.tagName + ")");
   });
 }
