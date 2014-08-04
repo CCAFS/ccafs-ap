@@ -94,6 +94,19 @@ public class OutputsPreplanningAction extends BaseAction {
     midOutcomesList = ipElementManager.getIPElements(program, midOutcomesType);
     outputs = ipElementManager.getIPElements(program, outputsType);
 
+    // Set the parents for the translated outputs
+    for (int i = 0; i < outputs.size(); i++) {
+      if (!outputs.get(i).getTranslatedOf().isEmpty()) {
+        int[] intIds = outputs.get(i).getTranslatedOfIDs();
+        String[] stringIds = new String[intIds.length];
+        for (int c = 0; c < intIds.length; c++) {
+          stringIds[c] = String.valueOf(intIds[c]);
+        }
+
+        outputs.get(i).setTranslatedOf(ipElementManager.getIPElementList(stringIds));
+      }
+    }
+
     outputsFromDatabase = new ArrayList<>();
     outputsFromDatabase.addAll(outputs);
 
