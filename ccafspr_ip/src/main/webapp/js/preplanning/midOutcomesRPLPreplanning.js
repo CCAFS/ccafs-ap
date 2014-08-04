@@ -29,6 +29,8 @@ function attachEvents(){
   
   // Regional Indicators
   $(".midOutcomeIndicator").click(indicatorVerify);
+  
+  $(".contributions .checkboxGroup input").click(setFplIndicatorFields);
 }
 
 // ----------------- Regional Indicators ----------------------//
@@ -37,7 +39,6 @@ function indicatorVerify(event){
   var $parent = $(event.target).parent().parent().parent();
   var checkedIndicators = $(event.target).parent().find("input[name^='" + event.currentTarget.name + "']:checked").length;
   var $textArea = $(event.target).parent().find(".fields");
-  console.log($(event.target));
   if (!checkedIndicators == 0) {
     $textArea.fadeIn("slow");
   } else {
@@ -75,7 +76,7 @@ function setMidOutcomesIndexes(){
     $(element).find("[id$='TypeId']").attr("name", elementName + "type.id");
     $(element).find("[id$='description']").attr("name", elementName + "description").attr("placeholder", "Add regional outcome #" + (index + 1));
     $(element).find("select[id$='flagships']").trigger("change");
-    setContributesIndexes(index);
+    setContributesIndexes();
   });
 }
 
@@ -107,29 +108,28 @@ function addContributeEvent(event){
     var $optionSelected = $selectElemet.find('option:selected');
     var elementId = $optionSelected.attr("value");
     var programID = $("#midOutcomesRPL_flagships").val();
-    var grandParentId = $addButton.parent().parent().attr("id").split("-")[1];
+    console.log($addButton.parent().parent().attr("id"));
     var $newElementClone = $("#contributeTemplate").clone(true).removeAttr("id");
-    var elementName = "midOutcomes[" + grandParentId + "].";
     
     $newElementClone.find("#description").html($optionSelected.html());
     $newElementClone.find("[id$='contributeId']").attr("value", elementId);
-    $.getJSON("../ipIndicators.do?programID=" + programID + "&elementID=" + elementId, function(data){
+    $.getJSON("../ipIndicators.do?programID=" + programID + "&elementID=" + elementId).done(function(data){
       $.each(data.IPElementsList, function(index,element){
+        console.log(element);
         var $newIndicator = $("#indicatorTemplate").clone(true).removeAttr("id");
-        $newIndicator.find("input").attr("value", this.value);
-        $newIndicator.find("label.checkboxLabel").html(this.description);
-        $newIndicator.find(".fields").find("#target").attr("placeholder", this.target);
+        $newIndicator.find("input").attr("value", element.id);
+        $newIndicator.find("label.checkboxLabel").html(element.description);
+        $newIndicator.find(".fields").find("#target").attr("placeholder", element.target);
         
         $newElementClone.find("div.checkboxGroup").append($newIndicator);
         $newIndicator.show();
       });
-    }).done(function(){
-      // $newElementClone.find("div.checkboxGroup").append('<input type="hidden" id="__multiselect_' + elementName + 'indicators" name="" value="">');
+
       $addButton.before($newElementClone);
       $newElementClone.find(".midOutcomeIndicator").click(indicatorVerify);
       $newElementClone.show("slow");
       $optionSelected.remove();
-      setContributesIndexes(grandParentId);
+      setContributesIndexes();
     });
     
   }
@@ -140,34 +140,55 @@ function removeContributeEvent(event){
   var $elementDiv = $(event.target).parent().parent();
   var $parentDiv = $elementDiv.parent().parent();
   $elementDiv.hide("slow", function(){
-    var i = $parentDiv.attr("id").split("-")[1];
     $parentDiv.find("select.contributes").append('<option value="' + $elementDiv.find("input").attr("value") + '">' + $elementDiv.find("p").html() + '</option>');
     $(this).remove();
-    setContributesIndexes(i);
+    setContributesIndexes();
   });
 }
 
-function setContributesIndexes(i){
-  $("#midOutcome-" + i + " div.contributions").each(function(index,element){
-    var elementName = "midOutcomes[" + i + "].translateOf[" + index + "].";
-    $(element).find("[id$='contributeId']").attr("name", elementName + "id");
-    $(element).find("[id$='target']").attr("name", elementName + "target");
-    $(element).find("[id$='justification']").attr("name", elementName + "justification");
-    $(element).find("[id^='__multiselect']").attr("name", "__multiselect_" + elementName + "indicators");
-    // set Indicator indexes
-    $(element).find(".midOutcomeIndicator").each(function(c,indicator){
-      var indicatorInputName = "midOutcomes[" + i + "].";
-      var inputId = $(indicator).attr('id');
-      console.log("Label before: " + $(indicator).next().attr("for"));
-      console.log("Input before: " + inputId);
-      // set new id for label input
-      $(indicator).next().attr("for", indicatorInputName + "indicators-" + i + index + c);
-      // console.log($(indicator));
-      console.log("Label " + $(indicator).next().attr("for"));
+function setContributesIndexes(){
+  var elementName;
+  var indicatorCount = 0;
+  console.log("event");
+  $(".midOutcome ").each(function(index,contribution){
+    $(contribution).find("#contributeId").attr("name", "midOutcomes[" + index + "].translatedOf");
+    
+    $(contribution).find("div.contributions .elementIndicator").each(function(indicatorIndex,element){
       
-      // set new index name for input indicator
-      $(indicator).attr("name", indicatorInputName + "indicators").attr("id", indicatorInputName + "indicators-" + i + index + c);
-      console.log("Input " + $(indicator).attr("id"));
+      console.log("element " + indicatorCount);
+      // If the indicator is checked
+      if ($(element).find("input[name$='parent']").attr("checked")) {
+        elementName = "midOutcomes[" + index + "].";
+      } else {
+        elementName = "__midOutcomes[" + index + "].";
+      }
+      
+      $(element).find("input[id$='id']").attr("name", elementName + "id");
+      $(element).find("input[name$='parent']").attr("name", elementName + "indicators[" + indicatorCount + "].parent");
+      $(element).find("input[name$='target']").attr("name", elementName + "indicators[" + indicatorCount + "].target");
+      
+      $(element).find("textarea[name$='description']").attr("name", elementName + "indicators[" + indicatorCount + "].description")
+                                                      .attr("placeholder", "");
+      indicatorCount++;
     });
   });
+}
+
+function setFplIndicatorFields(event){
+  var $checkbox= $(event.target);
+  var $indicatorBlock = $checkbox.parent();
+  
+  if(! $indicatorBlock.hasClass("elementIndicator")){
+    $checkbox.add( $checkbox.next('label') ).wrapAll('<div class="elementIndicator">');
+    $indicatorBlock = $checkbox.parent();
+  }
+  
+  if( $indicatorBlock.find(".fields").length == 0){
+    var $indicatorTemplate = $("#indicatorTemplate").find(".fields").clone();  
+    $indicatorTemplate.removeAttr("id");
+    $indicatorBlock.append( $indicatorTemplate );
+    $indicatorBlock.find(".fields").show("slow");    
+  }
+  
+  setMidOutcomesIndexes();
 }

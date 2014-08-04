@@ -28,43 +28,48 @@
     <div id="MidOutcomeBlocks"> 
         [#if midOutcomes?has_content]
           [#list midOutcomes as midOutcome]
-          <div class="midOutcome borderBox" id="midOutcome-${midOutcome_index}">
-            [#-- Mid outcome identifier --]
-            <input id="midOutcomeId" type="hidden" name="midOutcomes[${midOutcome_index}].id" value="${midOutcome.id}" />
-            <input type="hidden" name="midOutcomes[${midOutcome_index}].program.id" value="${currentUser.currentInstitution.program.id}" />
-            <input type="hidden" name="midOutcomes[${midOutcome_index}].type.id" value="${elementTypeID}" />
-            [#-- Remove midOutcome --]
-            <div class="removeMidOutcomeBlock removeLink">              
-              <img src="${baseUrl}/images/global/icon-remove.png" />
-              <a id="removeMidOutcome" href="" class="removeContribute">[@s.text name="preplanning.midOutcomesRPL.removeMidOutcome" /]</a>
-            </div> 
-            [#-- Title --]
-            [#assign midOutcomeDescription]
-              [@s.text name="preplanning.midOutcomesRPL.outcome"] 
-                [@s.param name="0"]<span id="elementIndex">${midOutcome_index+1}</span>[/@s.param] 
-              [/@s.text]
-            [/#assign]
-            <legend>${midOutcomeDescription}</legend>
-            [#-- Mid outcome description --]
-            [@customForm.textArea name="midOutcomes[${midOutcome_index}].description" i18nkey="preplanning.midOutcomesRPL.outcomeDescription" required=true /] 
+            <div class="midOutcome borderBox" id="midOutcome-${midOutcome_index}">
+              [#-- Mid outcome identifier --]
+              <input id="midOutcomeId" type="hidden" name="midOutcomes[${midOutcome_index}].id" value="${midOutcome.id}" />
+              <input type="hidden" name="midOutcomes[${midOutcome_index}].program.id" value="${currentUser.currentInstitution.program.id}" />
+              <input type="hidden" name="midOutcomes[${midOutcome_index}].type.id" value="${elementTypeID}" />
+            
+              [#-- Remove midOutcome --]
+              <div class="removeMidOutcomeBlock removeLink">              
+                <img src="${baseUrl}/images/global/icon-remove.png" />
+                <a id="removeMidOutcome" href="" class="removeContribute">[@s.text name="preplanning.midOutcomesRPL.removeMidOutcome" /]</a>
+              </div> 
+            
+              [#-- Title --]
+              [#assign midOutcomeDescription]
+                [@s.text name="preplanning.midOutcomesRPL.outcome"] 
+                  [@s.param name="0"]<span id="elementIndex">${midOutcome_index+1}</span>[/@s.param] 
+                [/@s.text]
+              [/#assign]
+              <legend>${midOutcomeDescription}</legend>
 
-            [#-- Flagships list --]
-            [@customForm.select name="flagships" label="" i18nkey="preplanning.midOutcomesRPL.flagships" listName="flagshipsList" keyFieldName="id"  displayFieldName="name" /]
+              [#-- Mid outcome description --]
+              [@customForm.textArea name="midOutcomes[${midOutcome_index}].description" i18nkey="preplanning.midOutcomesRPL.outcomeDescription" required=true /] 
 
-            [#-- midOutcome's parents --]
-            <div class="contentElements parentsBlock">
-              <div class="itemIndex">[@s.text name="preplanning.midOutcomesRPL.contributes" /] </div>
-              [#if midOutcome.translatedOf?has_content]
-                [#list midOutcome.translatedOf as parent]
-                  [@contributeTemplate.midOutcomesRPL midOutcomeRPL_index="${midOutcome_index}" midOutcomeRPL_value="${midOutcome.id}" parent_index="${parent_index}" parent_id="${parent.id}" canRemove=true  /]
-                [/#list] 
-              [/#if]  
-              [#-- Add contribute --]
-              <div class="fullBlock addContributeBlock">
-                [@customForm.select name="midOutcomesFPL" value="none" showTitle=false listName="midOutcomesFPL" keyFieldName="id"  displayFieldName="description" addButton=true className="contributes" /]
-              </div>
+              [#-- Flagships list --]
+              [@customForm.select name="flagships" label="" i18nkey="preplanning.midOutcomesRPL.flagships" listName="flagshipsList" keyFieldName="id"  displayFieldName="name" /]
+
+              [#-- midOutcome's parents --]
+              <div class="contentElements parentsBlock">
+                <div class="itemIndex">[@s.text name="preplanning.midOutcomesRPL.contributes" /] </div>
+                ${midOutcome.indicators}
+                [#if midOutcome.translatedOf?has_content]
+                  [#list midOutcome.translatedOf as parent]
+                    [@contributeTemplate.midOutcomesRPL midOutcomeRPL_index="${midOutcome_index}" midOutcomeRPL_value="${midOutcome.id}" parent_index="${parent_index}" parent_id="${parent.id}" canRemove=true  /]
+                  [/#list] 
+                [/#if]  
+                [#-- Add contribute --]
+                <div class="fullBlock addContributeBlock">
+                  [@customForm.select name="midOutcomesFPL" value="none" showTitle=false listName="midOutcomesFPL" keyFieldName="id"  displayFieldName="description" addButton=true className="contributes" /]
+                </div>
+              </div>  
+              
             </div>  
-          </div>  
           [/#list]
         [/#if]
     </div>
@@ -106,7 +111,7 @@
     [#-- midOutcome's parents --]  
     [#-- Add contribute --]
     <div class="fullBlock addContributeBlock">
-      [@customForm.select name="midOutcomesFPL"  value="none" showTitle=false listName="midOutcomesFPL" keyFieldName="id"  displayFieldName="description" addButton=true className="contributes" /]
+      [@customForm.select name="midOutcomesFPL"  showTitle=false listName="midOutcomesFPL" keyFieldName="id"  displayFieldName="description" addButton=true className="contributes" /]
     </div>
   </div>  
 </div> 
