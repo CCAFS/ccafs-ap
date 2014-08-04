@@ -99,29 +99,11 @@
 
 [#macro projectLeader leader showResponsabilities=false canEdit=true]
   [#if leader?has_content]
-      <div id="projectLeader" class="projectLeader borderBox">        
-        [#if expected]
-          [#-- Explanatory message --]
-          [@s.text name="preplanning.projectPartners.expectedLeader.explanation" /]        
-          [#-- Organizations List --]
-          <div class="fullBlock organizationName chosen">
-            [@customForm.select name="project.expectedLeader.currentInstitution" disabled=!canEdit i18nkey="preplanning.projectPartners.leader.institutionName" listName="allPartners" keyFieldName="id"  displayFieldName="name" /]
-          </div> 
-          [#-- Contact First Name --] 
-          <div class="halfPartBlock">
-            [@customForm.input name="project.expectedLeader.firstName" type="text" disabled=!canEdit i18nkey="preplanning.projectPartners.contactPersonName" required=true /]
-          </div>
-          [#-- Contact Last Name --] 
-          <div class="halfPartBlock">
-            [@customForm.input name="project.expectedLeader.lastName" type="text" disabled=!canEdit i18nkey="preplanning.projectPartners.leader.lastName" required=true /]
-          </div>
-          [#-- Contact Email --]
-          <div class="halfPartBlock">
-            [@customForm.input name="project.expectedLeader.email" type="text" disabled=!canEdit i18nkey="preplanning.projectPartners.contactPersonEmail" required=true /]
-          </div>
-        [#else]
-          [#-- Explanatory message --]
-          [@s.text name="preplanning.projectPartners.leader.explanation"]
+      [#-- Explanatory message --]
+      [#if expected]
+        [@s.text name="preplanning.projectPartners.expectedLeader.explanation" /]
+      [#else]
+        [@s.text name="preplanning.projectPartners.leader.explanation"]
             [@s.param]
               [#-- Mailto link --]
               [@s.text name="preplanning.projectPartners.leader.mailto"]
@@ -142,8 +124,26 @@
               [/@s.text]
             [/@s.param] 
           [/@s.text]
-            
-          
+      [/#if]
+      <div id="projectLeader" class="projectLeader borderBox">        
+        [#if expected]
+          [#-- Organizations List --]
+          <div class="fullBlock organizationName chosen">
+            [@customForm.select name="project.expectedLeader.currentInstitution" disabled=!canEdit i18nkey="preplanning.projectPartners.leader.institutionName" listName="allPartners" keyFieldName="id"  displayFieldName="name" /]
+          </div> 
+          [#-- Contact First Name --] 
+          <div class="halfPartBlock">
+            [@customForm.input name="project.expectedLeader.firstName" type="text" disabled=!canEdit i18nkey="preplanning.projectPartners.contactPersonName" required=true /]
+          </div>
+          [#-- Contact Last Name --] 
+          <div class="halfPartBlock">
+            [@customForm.input name="project.expectedLeader.lastName" type="text" disabled=!canEdit i18nkey="preplanning.projectPartners.leader.lastName" required=true /]
+          </div>
+          [#-- Contact Email --]
+          <div class="halfPartBlock">
+            [@customForm.input name="project.expectedLeader.email" type="text" disabled=!canEdit i18nkey="preplanning.projectPartners.contactPersonEmail" required=true /]
+          </div>
+        [#else]          
           <div class="halfBlock">
             <h3>[@s.text name='preplanning.projectPartners.leader.firstName' /]</h3> ${leader.firstName} 
           </div>
