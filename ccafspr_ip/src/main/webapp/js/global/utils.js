@@ -7,18 +7,24 @@
  *  
  * */
 
-function popups() {
-  $("a.popup").click(function(event) {
+function popups(){
+  $("a.popup").click(function(event){
     event.preventDefault();
     var options = "width=700,height=500,resizable=1,scrollbars=1,location=0";
     nueva = window.open(this.href, '_blank', options);
   });
 }
 
-function isNumber(event) {
+function isNumber(event){
   var charCode = event.which;
   if (charCode > 31 && (charCode < 48 || charCode > 57))
-     return false;
-
+    return false;
+  
   return true;
+}
+
+function printOut(){
+  $("form input, form textarea, form select").each(function(i,input){
+    console.log(" >> " + $(input).attr("name") + ": " + $(input).val());
+  });
 }

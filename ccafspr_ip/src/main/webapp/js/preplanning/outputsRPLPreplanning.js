@@ -3,10 +3,9 @@ var lWordsElemetDesc = 10;
 
 $(document).ready(function(){
   attachEvents();
-  if (!$("div#outputBlocks .output").length) {
+  if (!$("div#outputBlocks .output").length == 0) {
     $(".noOutputs.message").hide();
-  } else {
-    $("select#outputsRPL_flagships").trigger("change");
+    $("select[id$='flagships']").trigger("change");
   }
 });
 
@@ -46,22 +45,21 @@ function updateMidOutcomesList(event){
 }
 
 function updateOutputsList(event){
-  console.log("outputs fired");
   var $target = $(event.target);
   var $parent = $target.parent().parent().parent().parent();
   var midOutcomeId = $target.val();
   
   $.getJSON("../json/ipElementsByParent.do?elementID=" + midOutcomeId, function(data){
-    $parent.find("select[id^='outputsRPL_outputs_'] option").remove();
+    $parent.find("select[id$='outputs'] option").remove();
     $.each(data.IPElementsList, function(){
       if (objectsListContains(this.contributesTo, midOutcomeId)) {
-        $parent.find("select[id^='outputsRPL_outputs_']").append('<option value="' + this.id + '">' + this.description + '</option>');
+        $parent.find("select[id^='outputsRPL_outputs']").append('<option value="' + this.id + '">' + this.description + '</option>');
       }
     });
   }).fail(function(){
     console.log("error");
   }).done(function(){
-    $parent.find("select#outputs").attr("disabled", false);
+    $parent.find("select[id^='outputsRPL_outputs']").attr("disabled", false);
   });
 }
 
@@ -86,7 +84,7 @@ function addExistingOutputEvent(){
   event.preventDefault();
   var $newElement = $("#newOutputTemplate").clone(true).removeAttr("id");
   $("div#outputBlocks").append($newElement);
-  $newElement.find("select#flagships").trigger("change");
+  $newElement.find("select[id$='flagships']").trigger("change");
   $newElement.show("slow");
   setOutputsIndexes();
 }
@@ -151,7 +149,7 @@ function setContributesIndexes(i){
     $(element).find("[id^='contributeId']").attr("name", elementName + "id");
     // For existing translated outputs
     elementName = "outputs[" + i + "].translatedOf";
-    $(element).find("[id$='outputs']").attr("name", elementName);
+    $(element).find("[id^='outputsRPL_outputs']").attr("name", elementName);
     console.log("update");
   });
 }
