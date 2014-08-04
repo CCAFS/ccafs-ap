@@ -120,6 +120,19 @@ public class IPElement {
     return translatedOf;
   }
 
+  public int[] getTranslatedOfIDs() {
+
+    if (translatedOf != null) {
+      int[] idsList = new int[translatedOf.size()];
+      for (int c = 0; c < translatedOf.size(); c++) {
+        idsList[c] = translatedOf.get(c).getId();
+      }
+      return idsList;
+    }
+
+    return null;
+  }
+
   public IPElementType getType() {
     return type;
   }
