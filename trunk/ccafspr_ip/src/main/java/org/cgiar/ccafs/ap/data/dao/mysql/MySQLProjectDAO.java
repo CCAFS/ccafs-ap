@@ -95,7 +95,8 @@ public class MySQLProjectDAO implements ProjectDAO {
       ResultSet rs = databaseManager.makeQuery(query.toString(), connection);
       if (rs.next()) {
         expectedProjectLeaderData.put("id", rs.getString("id"));
-        expectedProjectLeaderData.put("contact_name", rs.getString("contact_name"));
+        expectedProjectLeaderData.put("contact_first_name", rs.getString("contact_first_name"));
+        expectedProjectLeaderData.put("contact_last_name", rs.getString("contact_last_name"));
         expectedProjectLeaderData.put("contact_email", rs.getString("contact_email"));
         expectedProjectLeaderData.put("institution_id", rs.getString("institution_id"));
       }
@@ -313,12 +314,14 @@ public class MySQLProjectDAO implements ProjectDAO {
     int newId = -1;
     if (expectedProjectLeaderData.get("id") == null) {
       // Add the record into the database and assign it to the projects table (column expected_project_leader_id).
-      query.append("INSERT INTO expected_project_leaders (contact_name, contact_email, institution_id) ");
-      query.append("VALUES (?, ?, ?) ");
-      Object[] values = new Object[3];
-      values[0] = expectedProjectLeaderData.get("contact_name");
-      values[1] = expectedProjectLeaderData.get("contact_email");
-      values[2] = expectedProjectLeaderData.get("institution_id");
+      query
+        .append("INSERT INTO expected_project_leaders (contact_first_name, contact_last_name, contact_email, institution_id) ");
+      query.append("VALUES (?, ?, ?, ?) ");
+      Object[] values = new Object[4];
+      values[0] = expectedProjectLeaderData.get("contact_first_name");
+      values[1] = expectedProjectLeaderData.get("contact_last_name");
+      values[2] = expectedProjectLeaderData.get("contact_email");
+      values[3] = expectedProjectLeaderData.get("institution_id");
       newId = databaseManager.saveData(query.toString(), values);
       if (newId <= 0) {
         LOG.error("A problem happened trying to add a new expected project leader in project with id={}", projectId);
@@ -344,13 +347,15 @@ public class MySQLProjectDAO implements ProjectDAO {
       }
     } else {
       // UPDATE the record into the database.
-      query.append("UPDATE expected_project_leaders SET contact_name = ?, contact_email = ?, institution_id = ? ");
+      query
+      .append("UPDATE expected_project_leaders SET contact_first_name = ?, contact_last_name = ?, contact_email = ?, institution_id = ? ");
       query.append("WHERE id = ?");
-      Object[] values = new Object[4];
-      values[0] = expectedProjectLeaderData.get("contact_name");
-      values[1] = expectedProjectLeaderData.get("contact_email");
-      values[2] = expectedProjectLeaderData.get("institution_id");
-      values[3] = expectedProjectLeaderData.get("id");
+      Object[] values = new Object[5];
+      values[0] = expectedProjectLeaderData.get("contact_first_name");
+      values[1] = expectedProjectLeaderData.get("contact_last_name");
+      values[2] = expectedProjectLeaderData.get("contact_email");
+      values[3] = expectedProjectLeaderData.get("institution_id");
+      values[4] = expectedProjectLeaderData.get("id");
       result = databaseManager.saveData(query.toString(), values);
       if (result == -1) {
         LOG.error("A problem happened trying to update an expected project leader identified with the id = {}",
