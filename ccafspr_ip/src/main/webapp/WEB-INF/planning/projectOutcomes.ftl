@@ -3,8 +3,8 @@
 [#assign globalLibs = ["jquery", "noty","autoSave"] /]
 [#assign customJS = ["${baseUrl}/js/global/utils.js"] /]
 [#assign currentSection = "planning" /]
-[#assign currentPrePlanningSection = "projects" /]
-[#assign currentStage = "projectOutcomes" /]
+[#assign currentPlanningSection = "project" /]
+[#assign currentStage = "outcome" /]
 
 [#include "/WEB-INF/global/pages/header.ftl" /]
 [#include "/WEB-INF/global/pages/main-menu.ftl" /]
