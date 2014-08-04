@@ -21,7 +21,7 @@ function datePickerConfig(element){
   maxDateValue = $(element.endDate).val();
   
   // Add readonly attribute to prevent inappropriate user input
-  $(element.startDate).attr('readonly', true);
+  // $(element.startDate).attr('readonly', true);
   var finalMaxDate = (maxDateValue != 0) ? maxDateValue : defaultMaxDateValue;
   $(element.startDate).datepicker({
   dateFormat : "yy-mm-dd",
@@ -41,7 +41,7 @@ function datePickerConfig(element){
   minDateValue = $(element.startDate).val();
   
   // Add readonly attribute to prevent inappropriate user input
-  $(element.endDate).attr('readonly', true);
+  // $(element.endDate).attr('readonly', true);
   var finalMinDate = (minDateValue != 0) ? minDateValue : defaultMinDateValue;
   $(element.endDate).datepicker({
   dateFormat : "yy-mm-dd",

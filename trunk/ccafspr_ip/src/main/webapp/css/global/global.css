@@ -920,7 +920,6 @@ h1.contentSubTitle {
 .indicator, .contributions {
     padding: 2px 15px;
     border-bottom: 2px dotted #C3D4E7;
-    border-radius: 5px;
     margin: 2px 0px;
     background: #FFFFFF;
 }
@@ -1379,7 +1378,7 @@ ul#deliverablesFilesMessages > li {
 
 .borderBox, .publication, .caseStudy, .outcome, .output, .midOutcome, .leverage, .deliverable, .activityPartner, .otherSite {
   border: 1px solid #D1D1D1;
-  padding: 18px 15px 6px 15px;
+  padding: 15px 15px 15px 15px;
   border-radius: 4px;
   margin-top: 18px;
   position: relative;

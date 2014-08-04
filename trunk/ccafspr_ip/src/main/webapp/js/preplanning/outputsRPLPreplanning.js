@@ -5,7 +5,9 @@ $(document).ready(function(){
   attachEvents();
   if (!$("div#outputBlocks .output").length == 0) {
     $(".noOutputs.message").hide();
-    // $("select[id$='flagships']").trigger("change");
+    $("select[id^='outputsRPL_flagships']").each(function(i,fpList){
+      $(fpList).trigger("change");
+    });
   }
 });
 
@@ -31,7 +33,10 @@ function updateMidOutcomesList(event){
   var $parent = $target.parent().parent().parent().parent();
   var programID = $target.find('option:selected').attr("value");
   var elementTypeId = $("#midOutcomeTypeID").val();
+  var midOutcomeSelected = $parent.find("#midOutcomeSelected").val();
+  console.log("elementTypeId: " + elementTypeId);
   $.getJSON("../json/ipElementsByProgramAndType.do?programID=" + programID + "&elementTypeId=" + elementTypeId, function(data){
+    
     $parent.find("select#outputsRPL_midOutcomes option").remove();
     $.each(data.IPElementsList, function(){
       $parent.find("select#outputsRPL_midOutcomes").append('<option value="' + this.id + '">' + this.description + '</option>');
@@ -39,6 +44,9 @@ function updateMidOutcomesList(event){
   }).fail(function(){
     console.log("error");
   }).done(function(){
+    if (midOutcomeSelected) {
+      $parent.find("select#outputsRPL_midOutcomes").val(midOutcomeSelected);
+    }
     $parent.find("select#outputsRPL_midOutcomes").attr("disabled", false);
     $parent.find("select#outputsRPL_midOutcomes").trigger("change");
   });
@@ -48,9 +56,9 @@ function updateOutputsList(event){
   var $target = $(event.target);
   var $parent = $target.parent().parent().parent().parent();
   var midOutcomeId = $target.val();
-  
+  var outputSelected = $parent.find("#outputSelected").val();
   $.getJSON("../json/ipElementsByParent.do?elementID=" + midOutcomeId, function(data){
-    $parent.find("select[id$='outputs'] option").remove();
+    $parent.find("select[id^='outputsRPL_outputs'] option").remove();
     $.each(data.IPElementsList, function(){
       if (objectsListContains(this.contributesTo, midOutcomeId)) {
         $parent.find("select[id^='outputsRPL_outputs']").append('<option value="' + this.id + '">' + this.description + '</option>');
@@ -59,6 +67,9 @@ function updateOutputsList(event){
   }).fail(function(){
     console.log("error");
   }).done(function(){
+    if (outputSelected) {
+      $parent.find("select[id^='outputsRPL_outputs']").val(outputSelected);
+    }
     $parent.find("select[id^='outputsRPL_outputs']").attr("disabled", false);
   });
 }
