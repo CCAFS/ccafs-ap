@@ -41,7 +41,27 @@
                 <a id="removeOutput" href="" class="">[@s.text name="preplanning.outputsRPL.removeOutput" /]</a>
               </div>  
               
-              [#if output.contributesTo?has_content]
+              [#if output.translatedOf?has_content]
+                [#-- MOG translated from other MOG  --]
+                [#-- Title --]
+                [#assign outputDescription]
+                  [@s.text name="preplanning.outputsRPL.output"] 
+                    [@s.param name="0"]${currentUser.currentInstitution.program.acronym}[/@s.param] 
+                    [@s.param name="1"]<span id="elementIndex">${output_index+1}</span>[/@s.param] 
+                  [/@s.text]
+                [/#assign]
+                <legend>${outputDescription}</legend>
+                [@customForm.textArea name="outputs[${output_index}].description" i18nkey="preplanning.outputsRPL.outputDescription" required=true /] 
+                <div class="fullBlock chosen"> 
+                  [@customForm.select name="flagships" label="" i18nkey="preplanning.outputsRPL.flagships" listName="flagshipsList" keyFieldName="id"  displayFieldName="name" value="${output.translatedOf[0].program.id}" /]
+                </div>
+                <div class="fullBlock chosen">
+                  [@customForm.select name="midOutcomes" label="" i18nkey="preplanning.outputsRPL.midOutcomes" listName="" keyFieldName="id"  displayFieldName="name" /]
+                </div>
+                <div class="fullBlock chosen translations">
+                  [@customForm.select name="outputs[${output_index}].translatedOf" label="" i18nkey="preplanning.outputsRPL.outputs" listName="" keyFieldName="id"  displayFieldName="name" /]
+                </div> 
+              [#else]
                 [#-- MOG created by the user --]
                 [#-- Title --]
                 [#assign outputDescription]
@@ -65,31 +85,8 @@
                   <div class="fullBlock addContributeBlock">
                     [@customForm.select name="contributionId" value="" showTitle=false listName="midOutcomesList" keyFieldName="id"  displayFieldName="description" addButton=true className="contributes" /]
                   </div> 
-                </div>   
-                
-              [#elseif output.translatedOf?has_content]
-                [#-- MOG translated from other MOG  --]
-                [#-- Title --]
-                [#assign outputDescription]
-                  [@s.text name="preplanning.outputsRPL.output"] 
-                    [@s.param name="0"]${currentUser.currentInstitution.program.acronym}[/@s.param] 
-                    [@s.param name="1"]<span id="elementIndex">${output_index+1}</span>[/@s.param] 
-                  [/@s.text]
-                [/#assign]
-                <legend>${outputDescription}</legend>
-                [@customForm.textArea name="outputs[${output_index}].description" i18nkey="preplanning.outputsRPL.outputDescription" required=true /] 
-                <div class="fullBlock chosen"> 
-                  [@customForm.select name="flagships" label="" i18nkey="preplanning.outputsRPL.flagships" listName="flagshipsList" keyFieldName="id"  displayFieldName="name" value="${output.translatedOf[0].program.id}" /]
-                </div>
-                <div class="fullBlock chosen">
-                  [@customForm.select name="midOutcomes" label="" i18nkey="preplanning.outputsRPL.midOutcomes" listName="" keyFieldName="id"  displayFieldName="name" /]
-                </div>
-                <div class="fullBlock chosen translations">
-                  [@customForm.select name="outputs[${output_index}].translatedOf" label="" i18nkey="preplanning.outputsRPL.outputs" listName="" keyFieldName="id"  displayFieldName="name" /]
-                </div>
-              [/#if] 
-              
-              ${output}
+                </div> 
+              [/#if]
           </div>  
           [/#list]
         [#else]
@@ -172,7 +169,7 @@
       [@customForm.select name="outputsRPL_midOutcomes" label="" i18nkey="preplanning.outputsRPL.midOutcomes" listName="" keyFieldName="id"  displayFieldName="name" disabled=true /]
     </div>
     <div class="fullBlock chosen translations">
-      [@customForm.select name="outputsRPL_outputs" label="" i18nkey="preplanning.outputsRPL.outputs" listName="" keyFieldName="id"  displayFieldName="name" value="11111" disabled=true /]
+      [@customForm.select name="outputsRPL_outputs" label="" i18nkey="preplanning.outputsRPL.outputs" listName="" keyFieldName="id"  displayFieldName="name" disabled=true /]
     </div> 
   </div> 
    

@@ -5,7 +5,7 @@ $(document).ready(function(){
   attachEvents();
   if (!$("div#outputBlocks .output").length == 0) {
     $(".noOutputs.message").hide();
-    $("select[id$='flagships']").trigger("change");
+    // $("select[id$='flagships']").trigger("change");
   }
 });
 
