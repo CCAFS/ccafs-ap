@@ -145,23 +145,20 @@ public class ProjectPartnersAction extends BaseAction {
     // information and show it as label in the front-end.
     User projectLeader = projectManager.getProjectLeader(project.getId());
     // if the official leader is defined.
-    // if (projectLeader != null) {
-    // isExpected = false;
-    // TODO HT - Load the information as labels in the interface
-    // } else {
-    // isExpected = true;
-    // project.setExpectedLeader(projectManager.getExpectedProjectLeader(projectID));
-    // TODO HT - Load the information as it is right now with inputs.
-    // }
-
-    project.setExpectedLeader(projectManager.getExpectedProjectLeader(projectID));
-
-    // In case there is not a partner leader defined, an empty partner will be used for the view.
-    if (project.getExpectedLeader() == null) {
-      User exptectedProjectLeader = new User();
-      exptectedProjectLeader.setId(-1);
-      project.setExpectedLeader(exptectedProjectLeader);
+    if (projectLeader != null) {
+      isExpected = false;
+      project.setLeader(projectLeader);
+    } else {
+      isExpected = true;
+      project.setExpectedLeader(projectManager.getExpectedProjectLeader(projectID));
+      // In case there is not a partner leader defined, an empty partner will be used for the view.
+      if (project.getExpectedLeader() == null) {
+        User exptectedProjectLeader = new User();
+        exptectedProjectLeader.setId(-1);
+        project.setExpectedLeader(exptectedProjectLeader);
+      }
     }
+
 
     if (getRequest().getMethod().equalsIgnoreCase("post")) {
       // Clear out the list if it has some element
@@ -175,11 +172,14 @@ public class ProjectPartnersAction extends BaseAction {
   @Override
   public String save() {
     boolean success = true;
+    boolean saved = true;
 
-    // Saving Project leader
-    boolean saved = projectManager.saveExpectedProjectLeader(project.getId(), project.getExpectedLeader());
-    if (!saved) {
-      success = false;
+    if (isExpected) {
+      // Saving Project leader
+      saved = projectManager.saveExpectedProjectLeader(project.getId(), project.getExpectedLeader());
+      if (!saved) {
+        success = false;
+      }
     }
 
     // Getting previous Project Partners.

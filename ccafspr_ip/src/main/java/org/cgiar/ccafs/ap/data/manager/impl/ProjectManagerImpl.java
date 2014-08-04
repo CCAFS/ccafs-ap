@@ -70,7 +70,8 @@ public class ProjectManagerImpl implements ProjectManager {
     if (!pData.isEmpty()) {
       User projectLeader = new User();
       projectLeader.setId(Integer.parseInt(pData.get("id")));
-      projectLeader.setFirstName(pData.get("contact_name"));
+      projectLeader.setFirstName(pData.get("contact_first_name"));
+      projectLeader.setLastName(pData.get("contact_last_name"));
       projectLeader.setEmail(pData.get("contact_email"));
       // Getting Project leader institution and saving it in currentInstitution.
       projectLeader.setCurrentInstitution(institutionManager.getInstitution(Integer.parseInt(pData
@@ -143,8 +144,8 @@ public class ProjectManagerImpl implements ProjectManager {
       User projectLeader = new User();
       projectLeader.setId(Integer.parseInt(pData.get("id")));
       projectLeader.setUsername((pData.get("username")));
-      projectLeader.setFirstName(pData.get("firstName"));
-      projectLeader.setLastName(pData.get("lastName"));
+      projectLeader.setFirstName(pData.get("first_name"));
+      projectLeader.setLastName(pData.get("last_name"));
       projectLeader.setEmail(pData.get("email"));
       projectLeader.setEmployeeId(Integer.parseInt(pData.get("employee_id")));
       // Getting Project leader institution and saving it in currentInstitution.
@@ -250,7 +251,8 @@ public class ProjectManagerImpl implements ProjectManager {
       expectedProjectLeaderData.put("id", expectedLeader.getId());
     }
     // First Name is used for the Contact Name.
-    expectedProjectLeaderData.put("contact_name", expectedLeader.getFirstName());
+    expectedProjectLeaderData.put("contact_first_name", expectedLeader.getFirstName());
+    expectedProjectLeaderData.put("contact_last_name", expectedLeader.getLastName());
     expectedProjectLeaderData.put("contact_email", expectedLeader.getEmail());
     // Current institution is used for project leader institution.
     expectedProjectLeaderData.put("institution_id", expectedLeader.getCurrentInstitution().getId());

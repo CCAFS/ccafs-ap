@@ -29,7 +29,14 @@ import com.opensymphony.xwork2.interceptor.AbstractInterceptor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-
+/**
+ * This interceptor will validate if the user who is trying to edit a specific project is able to do it.
+ * Perhaps the project might exists but the user is not the project owner or does not belong to the program who create
+ * it.
+ * Or, on the other hand, the parameter is not well given.
+ * 
+ * @author Héctor Fabio Tobón R.
+ */
 public class AccessibleProjectInterceptor extends AbstractInterceptor {
 
   private static final long serialVersionUID = -1521958999615608308L;
@@ -62,9 +69,9 @@ public class AccessibleProjectInterceptor extends AbstractInterceptor {
           }
         }
         LOG
-          .warn(
-            "User identify with id={}, email={}, role={} tried to access the project with id={}. And it is not authorized to edit it.",
-            new Object[] {user.getId(), user.getEmail(), user.getRole().getName(), projectParameter});
+        .warn(
+          "User identify with id={}, email={}, role={} tried to access the project with id={}. And it is not authorized to edit it.",
+          new Object[] {user.getId(), user.getEmail(), user.getRole().getName(), projectParameter});
         return BaseAction.NOT_AUTHORIZED;
       }
     } else {
