@@ -29,40 +29,66 @@
         [#if outputs?has_content]
           [#list outputs as output]
           
-            ${output}
-          
-          <div class="output borderBox" id="output-${output_index}">
-            [#-- RPL output identifier --] 
-            <input name="outputs[${output_index}].id" id="outputId" value="${output.id}" type="hidden" />
-            <input name="outputs[${output_index}].program.id" id="outputProgramID" value="${currentUser.currentInstitution.program.id}" type="hidden" />
-            <input name="outputs[${output_index}].type.id" id="outputTypeID" value="${elementTypeID}" type="hidden" />
+            <div class="output borderBox" id="output-${output_index}">
+              [#-- RPL output identifier --] 
+              <input name="outputs[${output_index}].id" id="outputId" value="${output.id}" type="hidden" />
+              <input name="outputs[${output_index}].program.id" id="outputProgramID" value="${currentUser.currentInstitution.program.id}" type="hidden" />
+              <input name="outputs[${output_index}].type.id" id="outputTypeID" value="${elementTypeID}" type="hidden" />
             
-            [#-- Remove RPL output --]
-            <div class="removeOutputBlock removeLink">              
-              <img src="${baseUrl}/images/global/icon-remove.png" />
-              <a id="removeOutput" href="" class="">[@s.text name="preplanning.outputsRPL.removeOutput" /]</a>
-            </div>  
-            [#-- Title --]
-            [#assign outputDescription]
-              [@s.text name="preplanning.outputsRPL.output"] 
-                [@s.param name="0"]${currentUser.currentInstitution.program.acronym}[/@s.param] 
-                [@s.param name="1"]<span id="elementIndex">${output_index+1}</span>[/@s.param] 
-              [/@s.text]
-            [/#assign]
-            [@customForm.textArea name="outputs[${output_index}].description" i18nkey="${outputDescription}" required=true /]
-            <div id="contributesBlock" class="contentElements parentsBlock">
-              <div class="itemIndex">[@s.text name="preplanning.outputsRPL.contributes" /] </div>
-              [#-- RPL output's parents --] 
+              [#-- Remove RPL output --]
+              <div class="removeOutputBlock removeLink">              
+                <img src="${baseUrl}/images/global/icon-remove.png" />
+                <a id="removeOutput" href="" class="">[@s.text name="preplanning.outputsRPL.removeOutput" /]</a>
+              </div>  
+              ${output}
               [#if output.contributesTo?has_content]
-                [#list output.contributesTo as parent] 
-                  [@contributeTemplate.outputs output_index="${output_index}" parent_index="${parent_index}" value="${parent.id}" description="${parent.description}" canRemove=true /]
-                [/#list]
+                [#-- MOG created by the user --]
+                [#-- Title --]
+                [#assign outputDescription]
+                  [@s.text name="preplanning.outputsRPL.output"] 
+                    [@s.param name="0"]${currentUser.currentInstitution.program.acronym}[/@s.param] 
+                    [@s.param name="1"]<span id="elementIndex">${output_index+1}</span>[/@s.param] 
+                  [/@s.text]
+                [/#assign]
+                [@customForm.textArea name="outputs[${output_index}].description" i18nkey="${outputDescription}" required=true /]
+                <div id="contributesBlock" class="contentElements parentsBlock">
+                  <div class="itemIndex">[@s.text name="preplanning.outputsRPL.contributes" /] </div>
+                  [#-- RPL output's parents --] 
+                  [#if output.contributesTo?has_content]
+                    [#list output.contributesTo as parent] 
+                      [@contributeTemplate.outputs output_index="${output_index}" parent_index="${parent_index}" value="${parent.id}" description="${parent.description}" canRemove=true /]
+                    [/#list]
+                  [/#if]
+                  
+                  [#-- Add contribute --]
+                  <div class="fullBlock addContributeBlock">
+                    [@customForm.select name="contributionId" value="" showTitle=false listName="midOutcomesList" keyFieldName="id"  displayFieldName="description" addButton=true className="contributes" /]
+                  </div> 
+                </div>   
+                
+              [#elseif output.translatedOf?has_content]
+                [#-- MOG translated from other MOG  --]
+                [#-- Title --]
+                [#assign outputDescription]
+                  [@s.text name="preplanning.outputsRPL.output"] 
+                    [@s.param name="0"]${currentUser.currentInstitution.program.acronym}[/@s.param] 
+                    [@s.param name="1"]<span id="elementIndex">${output_index+1}</span>[/@s.param] 
+                  [/@s.text]
+                [/#assign]
+                [@customForm.textArea name="outputs[${output_index}].description" i18nkey="${outputDescription}" required=true /] 
+                <div class="fullBlock chosen"> 
+                  [@customForm.select name="flagships" label="" i18nkey="preplanning.outputsRPL.flagships" listName="flagshipsList" keyFieldName="id"  displayFieldName="name" value="${output.translatedOf[0].program.id}" /]
+                </div>
+                <div class="fullBlock chosen">
+                  [@customForm.select name="midOutcomes" label="" i18nkey="preplanning.outputsRPL.midOutcomes" listName="" keyFieldName="id"  displayFieldName="name" /]
+                </div>
+                <div class="fullBlock chosen translations">
+                  [@customForm.select name="outputs[${output_index}].translatedOf" label="" i18nkey="preplanning.outputsRPL.outputs" listName="" keyFieldName="id"  displayFieldName="name" /]
+                </div>
               [/#if]
-              [#-- Add contribute --]
-              <div class="fullBlock addContributeBlock">
-                [@customForm.select name="contributionId" value="" showTitle=false listName="midOutcomesList" keyFieldName="id"  displayFieldName="description" addButton=true className="contributes" /]
-              </div> 
-            </div>   
+            
+          
+            
           </div>  
           [/#list]
         [#else]
@@ -137,13 +163,13 @@
     [/#assign]
     [@customForm.textArea name="description" i18nkey="${outputDescription}" required=true /] 
     <div class="fullBlock chosen"> 
-      [@customForm.select name="flagships" label="" i18nkey="preplanning.outputsRPL.flagships" listName="flagshipsList" keyFieldName="id"  displayFieldName="name" /]
+      [@customForm.select name="outputsRPL_flagships" label="" i18nkey="preplanning.outputsRPL.flagships" listName="flagshipsList" keyFieldName="id"  displayFieldName="name" /]
     </div>
     <div class="fullBlock chosen">
-      [@customForm.select name="midOutcomes" label="" i18nkey="preplanning.outputsRPL.midOutcomes" listName="" keyFieldName="id"  displayFieldName="name" disabled=true /]
+      [@customForm.select name="outputsRPL_midOutcomes" label="" i18nkey="preplanning.outputsRPL.midOutcomes" listName="" keyFieldName="id"  displayFieldName="name" disabled=true /]
     </div>
     <div class="fullBlock chosen translations">
-      [@customForm.select name="outputs" label="" i18nkey="preplanning.outputsRPL.outputs" listName="" keyFieldName="id"  displayFieldName="name" disabled=true /]
+      [@customForm.select name="outputsRPL_outputs_" label="" i18nkey="preplanning.outputsRPL.outputs" listName="" keyFieldName="id"  displayFieldName="name" disabled=true /]
     </div> 
   </div> 
    

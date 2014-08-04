@@ -3,8 +3,11 @@ var lWordsElemetDesc = 10;
 
 $(document).ready(function(){
   attachEvents();
-  if (!$("div#outputBlocks .output").length)
+  if (!$("div#outputBlocks .output").length) {
     $(".noOutputs.message").hide();
+  } else {
+    $("select#outputsRPL_flagships").trigger("change");
+  }
 });
 
 function attachEvents(){
@@ -14,10 +17,10 @@ function attachEvents(){
   $(".removeOutputBlock a#removeOutput").click(removeOutputEvent);
   
   // Select flagship
-  $("select#flagships").change(updateMidOutcomesList);
+  $("select#outputsRPL_flagships").change(updateMidOutcomesList);
   
   // Select Mid Outcome
-  $("select#midOutcomes").change(updateOutputsList);
+  $("select#outputsRPL_midOutcomes").change(updateOutputsList);
   
   // Contributes
   $(".addContributeBlock input.addButton").click(addContributeEvent);
@@ -25,34 +28,34 @@ function attachEvents(){
 }
 
 function updateMidOutcomesList(event){
-  $target = $(event.target);
-  $parent = $target.parent().parent().parent().parent();
+  var $target = $(event.target);
+  var $parent = $target.parent().parent().parent().parent();
   var programID = $target.find('option:selected').attr("value");
   var elementTypeId = $("#midOutcomeTypeID").val();
   $.getJSON("../json/ipElementsByProgramAndType.do?programID=" + programID + "&elementTypeId=" + elementTypeId, function(data){
-    console.log(data);
-    $parent.find("select#midOutcomes option").remove();
+    $parent.find("select#outputsRPL_midOutcomes option").remove();
     $.each(data.IPElementsList, function(){
-      $parent.find("select#midOutcomes").append('<option value="' + this.id + '">' + this.description + '</option>');
+      $parent.find("select#outputsRPL_midOutcomes").append('<option value="' + this.id + '">' + this.description + '</option>');
     });
   }).fail(function(){
     console.log("error");
   }).done(function(){
-    $parent.find("select#midOutcomes").attr("disabled", false);
-    $parent.find("select#midOutcomes").trigger("change");
+    $parent.find("select#outputsRPL_midOutcomes").attr("disabled", false);
+    $parent.find("select#outputsRPL_midOutcomes").trigger("change");
   });
 }
 
 function updateOutputsList(event){
-  $target = $(event.target);
-  $parent = $target.parent().parent().parent().parent();
+  console.log("outputs fired");
+  var $target = $(event.target);
+  var $parent = $target.parent().parent().parent().parent();
   var midOutcomeId = $target.val();
   
   $.getJSON("../json/ipElementsByParent.do?elementID=" + midOutcomeId, function(data){
-    $parent.find("select#outputs option").remove();
+    $parent.find("select[id^='outputsRPL_outputs_'] option").remove();
     $.each(data.IPElementsList, function(){
       if (objectsListContains(this.contributesTo, midOutcomeId)) {
-        $parent.find("select#outputs").append('<option value="' + this.id + '">' + this.description + '</option>');
+        $parent.find("select[id^='outputsRPL_outputs_']").append('<option value="' + this.id + '">' + this.description + '</option>');
       }
     });
   }).fail(function(){
@@ -147,7 +150,7 @@ function setContributesIndexes(i){
     var elementName = "outputs[" + i + "].contributesTo[" + index + "].";
     $(element).find("[id^='contributeId']").attr("name", elementName + "id");
     // For existing translated outputs
-    elementName = "outputs[" + i + "].translateOf";
+    elementName = "outputs[" + i + "].translatedOf";
     $(element).find("[id$='outputs']").attr("name", elementName);
     console.log("update");
   });

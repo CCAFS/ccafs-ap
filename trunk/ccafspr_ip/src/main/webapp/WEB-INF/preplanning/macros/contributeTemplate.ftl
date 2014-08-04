@@ -34,7 +34,7 @@
         </div>
       </div>
   [#else]  
-    <div id="" class="contributions">   
+    <div id="" class="contributions">
       <input id="contributeId" type="hidden" name="midOutcomes[${midOutcomeRPL_index}].translatedOf" value="${parent_id}" />
       <p id="description">[@s.text name="midOutcomes[${midOutcomeRPL_index}].translatedOf[${parent_index}].description" /]</p>
       <h6>[@s.text name="preplanning.midOutcomesRPL.selectIndicators" /]</h6>
@@ -42,7 +42,7 @@
       <div id="midOutcomeIndicators" class="fullBlock">
         <div class="checkboxGroup vertical"> 
           [@s.fielderror cssClass="fieldError" fieldName="indicatorsSelected"/]
-          [@s.checkboxlist value="midOutcomes[${midOutcomeRPL_index}].parentIndicatorsIDs" name="midOutcomes[${midOutcomeRPL_index}].indicators" list="midOutcomes[${midOutcomeRPL_index}].translatedOf[${parent_index}].indicators" listKey="id" listValue="description" cssClass="midOutcomeIndicator" /]
+          [@s.checkboxlist value="midOutcomes[${midOutcomeRPL_index}].parentIndicatorsIDs" name="midOutcomes[${midOutcomeRPL_index}].indicators.parent" list="midOutcomes[${midOutcomeRPL_index}].translatedOf[${parent_index}].indicators" listKey="id" listValue="description" cssClass="midOutcomeIndicator" /]
         </div>
       </div>
   [/#if]
