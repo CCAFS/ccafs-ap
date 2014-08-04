@@ -6,7 +6,7 @@
         [#-- Partner identifier --]
         <input id="id" type="hidden" name="project.projectPartners[${ap_index}].id" value="${ap.id?c}" />  
           
-        <h6>[@s.text name="preplanning.projectPartners.partner"] [@s.param name="0"]${ap_index+1}[/@s.param] [/@s.text]</h6> 
+        <legend>[@s.text name="preplanning.projectPartners.partner"][@s.param name="0"] <span id="partnerIndex">${ap_index+1}</span>[/@s.param] [/@s.text]</legend> 
         [#-- Remove link for all partners --]
         <div class="removeLink">
           <img src="${baseUrl}/images/global/icon-remove.png" />
@@ -56,7 +56,7 @@
   <div id="projectPartnerTemplate" class="borderBox" style="display:none">
         [#-- Partner identifier --]
         <input id="id" type="hidden" name="" value="-1" />
-        <h6>[@s.text name="preplanning.projectPartners.partner"] [@s.param name="0"][/@s.param] [/@s.text]</h6> 
+        <legend>[@s.text name="preplanning.projectPartners.partner"][@s.param name="0"]<span id="partnerIndex">{0}</span>[/@s.param] [/@s.text]</legend> 
         [#-- Remove link for all partners --]
         <div class="removeLink">
           <img src="${baseUrl}/images/global/icon-remove.png" />
@@ -125,35 +125,35 @@
             [/@s.param] 
           [/@s.text]
       [/#if]
-      <div id="projectLeader" class="projectLeader borderBox">        
+      <div id="projectLeader" class="projectLeader borderBox clearfix">        
         [#if expected]
           [#-- Organizations List --]
           <div class="fullBlock organizationName chosen">
             [@customForm.select name="project.expectedLeader.currentInstitution" disabled=!canEdit i18nkey="preplanning.projectPartners.leader.institutionName" listName="allPartners" keyFieldName="id"  displayFieldName="name" /]
           </div> 
           [#-- Contact First Name --] 
-          <div class="halfPartBlock">
+          <div class="grid_4">
             [@customForm.input name="project.expectedLeader.firstName" type="text" disabled=!canEdit i18nkey="preplanning.projectPartners.contactPersonName" required=true /]
           </div>
           [#-- Contact Last Name --] 
-          <div class="halfPartBlock">
+          <div class="grid_4">
             [@customForm.input name="project.expectedLeader.lastName" type="text" disabled=!canEdit i18nkey="preplanning.projectPartners.leader.lastName" required=true /]
           </div>
           [#-- Contact Email --]
-          <div class="halfPartBlock">
+          <div class="grid_4">
             [@customForm.input name="project.expectedLeader.email" type="text" disabled=!canEdit i18nkey="preplanning.projectPartners.contactPersonEmail" required=true /]
           </div>
         [#else]          
-          <div class="halfBlock">
+          <div class="grid_4">
             <h3>[@s.text name='preplanning.projectPartners.leader.firstName' /]</h3> ${leader.firstName} 
           </div>
-          <div class="halfBlock">
+          <div class="grid_4">
             <h3>[@s.text name='preplanning.projectPartners.leader.lastName' /]</h3> ${leader.lastName}
           </div>
-          <div class="halfBlock">
+          <div class="grid_4">
             <h3>[@s.text name='preplanning.projectPartners.leader.email' /]</h3> ${leader.email}
           </div>
-          <div class="halfBlock">
+          <div class="grid_4">
             <h3>[@s.text name='preplanning.projectPartners.leader.institutionName' /]</h3> ${leader.currentInstitution.name}
           </div>
         [/#if]
