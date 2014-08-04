@@ -101,6 +101,8 @@
   [#if leader?has_content]
       <div id="projectLeader" class="projectLeader borderBox">        
         [#if expected]
+          [#-- Explanatory message --]
+          [@s.text name="preplanning.projectPartners.expectedLeader.explanation" /]        
           [#-- Organizations List --]
           <div class="fullBlock organizationName chosen">
             [@customForm.select name="project.expectedLeader.currentInstitution" disabled=!canEdit i18nkey="preplanning.projectPartners.leader.institutionName" listName="allPartners" keyFieldName="id"  displayFieldName="name" /]
@@ -112,13 +114,36 @@
           [#-- Contact Last Name --] 
           <div class="halfPartBlock">
             [@customForm.input name="project.expectedLeader.lastName" type="text" disabled=!canEdit i18nkey="preplanning.projectPartners.leader.lastName" required=true /]
-          </div>        
+          </div>
           [#-- Contact Email --]
           <div class="halfPartBlock">
             [@customForm.input name="project.expectedLeader.email" type="text" disabled=!canEdit i18nkey="preplanning.projectPartners.contactPersonEmail" required=true /]
           </div>
         [#else]
-          [@s.text name='preplanning.projectPartners.leader.explanation' /]
+          [#-- Explanatory message --]
+          [@s.text name="preplanning.projectPartners.leader.explanation"]
+            [@s.param]
+              [#-- Mailto link --]
+              [@s.text name="preplanning.projectPartners.leader.mailto"]
+                [#-- Subject --]
+                [@s.param]
+                  [@s.text name="preplanning.projectPartners.leader.mailto.subject"]
+                    [@s.param]${project.id?c}[/@s.param]
+                  [/@s.text]
+                [/@s.param]
+                [#-- Body --]
+                [@s.param]
+                  [@s.text name="preplanning.projectPartners.leader.mailto.body"]
+                    [@s.param]${currentUser.firstName} ${currentUser.lastName}[/@s.param]
+                  [/@s.text]
+                [/@s.param]                
+                [#-- Body --]
+                [@s.param][@s.text name="preplanning.projectPartners.leader.mailto.body" /][/@s.param]
+              [/@s.text]
+            [/@s.param] 
+          [/@s.text]
+            
+          
           <div class="halfBlock">
             <h3>[@s.text name='preplanning.projectPartners.leader.firstName' /]</h3> ${leader.firstName} 
           </div>
