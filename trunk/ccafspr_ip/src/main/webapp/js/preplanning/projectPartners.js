@@ -25,8 +25,9 @@ function updateOrganizationsList(e){
 // Partner Events
 function removePartnerEvent(e){
   e.preventDefault();
-  $(e.target).parent().parent().hide("slow", function(){
-    this.remove();
+  var $parent = $(e.target).parent().parent();
+  $parent.hide("slow", function(){
+    $parent.remove();
     setProjectPartnersIndexes();
   });
 }

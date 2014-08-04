@@ -8,6 +8,9 @@ nav#mainMenu ul a li {
   *margin-top: 50px;
 }
 
+footer .container {
+ position: static;
+}
 
 /*************** BODY ****************/
 

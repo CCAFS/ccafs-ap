@@ -40,7 +40,7 @@
                 <img src="${baseUrl}/images/global/icon-remove.png" />
                 <a id="removeOutput" href="" class="">[@s.text name="preplanning.outputsRPL.removeOutput" /]</a>
               </div>  
-              ${output}
+              
               [#if output.contributesTo?has_content]
                 [#-- MOG created by the user --]
                 [#-- Title --]
@@ -50,7 +50,8 @@
                     [@s.param name="1"]<span id="elementIndex">${output_index+1}</span>[/@s.param] 
                   [/@s.text]
                 [/#assign]
-                [@customForm.textArea name="outputs[${output_index}].description" i18nkey="${outputDescription}" required=true /]
+                <legend>${outputDescription}</legend>
+                [@customForm.textArea name="outputs[${output_index}].description" i18nkey="preplanning.outputsRPL.outputDescription" required=true /]
                 <div id="contributesBlock" class="contentElements parentsBlock">
                   <div class="itemIndex">[@s.text name="preplanning.outputsRPL.contributes" /] </div>
                   [#-- RPL output's parents --] 
@@ -75,7 +76,8 @@
                     [@s.param name="1"]<span id="elementIndex">${output_index+1}</span>[/@s.param] 
                   [/@s.text]
                 [/#assign]
-                [@customForm.textArea name="outputs[${output_index}].description" i18nkey="${outputDescription}" required=true /] 
+                <legend>${outputDescription}</legend>
+                [@customForm.textArea name="outputs[${output_index}].description" i18nkey="preplanning.outputsRPL.outputDescription" required=true /] 
                 <div class="fullBlock chosen"> 
                   [@customForm.select name="flagships" label="" i18nkey="preplanning.outputsRPL.flagships" listName="flagshipsList" keyFieldName="id"  displayFieldName="name" value="${output.translatedOf[0].program.id}" /]
                 </div>
@@ -85,10 +87,9 @@
                 <div class="fullBlock chosen translations">
                   [@customForm.select name="outputs[${output_index}].translatedOf" label="" i18nkey="preplanning.outputsRPL.outputs" listName="" keyFieldName="id"  displayFieldName="name" /]
                 </div>
-              [/#if]
-            
-          
-            
+              [/#if] 
+              
+              ${output}
           </div>  
           [/#list]
         [#else]
@@ -132,7 +133,8 @@
         [@s.param name="1"]<span id="elementIndex">{0}</span>[/@s.param] 
       [/@s.text]
     [/#assign]
-    [@customForm.textArea name="description" i18nkey="${outputDescription}" required=true /] 
+    <legend>${outputDescription}</legend>
+    [@customForm.textArea name="description" i18nkey="preplanning.outputsRPL.outputDescription" required=true /] 
     <div id="contributesBlock" class="contentElements">
       <div class="itemIndex">[@s.text name="preplanning.outputsRPL.contributes" /] </div>
       [#-- Contribute area --] 
@@ -161,7 +163,8 @@
         [@s.param name="1"]<span id="elementIndex">{0}</span>[/@s.param] 
       [/@s.text]
     [/#assign]
-    [@customForm.textArea name="description" i18nkey="${outputDescription}" required=true /] 
+    <legend>${outputDescription}</legend>
+    [@customForm.textArea name="description" i18nkey="preplanning.outputsRPL.outputDescription" required=true /] 
     <div class="fullBlock chosen"> 
       [@customForm.select name="outputsRPL_flagships" label="" i18nkey="preplanning.outputsRPL.flagships" listName="flagshipsList" keyFieldName="id"  displayFieldName="name" /]
     </div>
@@ -169,7 +172,7 @@
       [@customForm.select name="outputsRPL_midOutcomes" label="" i18nkey="preplanning.outputsRPL.midOutcomes" listName="" keyFieldName="id"  displayFieldName="name" disabled=true /]
     </div>
     <div class="fullBlock chosen translations">
-      [@customForm.select name="outputsRPL_outputs_" label="" i18nkey="preplanning.outputsRPL.outputs" listName="" keyFieldName="id"  displayFieldName="name" disabled=true /]
+      [@customForm.select name="outputsRPL_outputs" label="" i18nkey="preplanning.outputsRPL.outputs" listName="" keyFieldName="id"  displayFieldName="name" value="11111" disabled=true /]
     </div> 
   </div> 
    

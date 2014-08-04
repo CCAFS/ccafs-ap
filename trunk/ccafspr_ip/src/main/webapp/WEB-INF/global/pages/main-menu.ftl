@@ -91,7 +91,7 @@
 <div class="container">
  [#include "/WEB-INF/global/pages/breadcrumb.ftl"]
 </div>
-<div class="container">
+<div class="container container_9">
 	<section id="generalMessages">
 	  [#-- Messages are going to show using notify plugin (see global.js) --]
 	  <ul id="messages" style="display: none;">

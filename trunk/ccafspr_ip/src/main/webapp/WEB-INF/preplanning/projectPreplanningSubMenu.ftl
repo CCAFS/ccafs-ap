@@ -1,17 +1,17 @@
 [#ftl]
 <nav id="stageMenu" class="clearfix">
   <ul>
-    <a [#if currentStage == "description"] class="currentReportingSection" [/#if] href="
+    <li [#if currentStage == "description"] class="currentSection" [/#if]><a href="
         [@s.url action='description' includeParams='get'][/@s.url]
-      "><li>[@s.text name="menu.preplanning.submenu.description" /]</li>
-    </a>
-    <a [#if currentStage == "partners"] class="currentReportingSection" [/#if] href="
+      ">[@s.text name="menu.preplanning.submenu.description" /]</a>
+    </li>
+    <li [#if currentStage == "partners"] class="currentSection" [/#if]><a href="
         [@s.url action='partners' includeParams='get'][/@s.url]
-      "><li>[@s.text name="menu.preplanning.submenu.partners" /]</li>
-    </a>
-    <a [#if currentStage == "budget"] class="currentReportingSection" [/#if] href="
+      ">[@s.text name="menu.preplanning.submenu.partners" /] </a>
+    </li>
+    <li [#if currentStage == "budget"] class="currentSection" [/#if]><a href="
         [@s.url action='budget' includeParams='get'][/@s.url]
-      "><li>[@s.text name="menu.preplanning.submenu.budget" /]</li>
-    </a>
+      ">[@s.text name="menu.preplanning.submenu.budget" /]</a>
+    </li>
   </ul>
 </nav>

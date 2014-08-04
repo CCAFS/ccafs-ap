@@ -12,6 +12,7 @@
 
 /************* 1. GENERAL ***************/
 @import url(https://fonts.googleapis.com/css?family=Open+Sans:400,300,800);
+@import url(grid-system.css);
 
 .mce-widget.mce-tooltip {
     display: none !important;
@@ -101,6 +102,10 @@ input[type="submit"], button {
   border: 0;
   padding: 5px 10px;
   font-weight: bold;
+}
+
+input[type="text"] {
+  width: 100%;
 }
 
 input:-webkit-autofill, textarea:-webkit-autofill, select:-webkit-autofill {
@@ -972,12 +977,16 @@ textarea[id$='summary'] {
 
 /* Project Budget */
 
+.partnerTable tr.row {
+  height: 30px;
+}
+
 #leveraged h6,#bilateral h6 { 
-    margin: 8px 0px;
+   margin: 8px 0px;
 }
 
 #leveraged { 
-  float: right; 
+  /* float: right; */ 
 }
 
 #leveraged .leveragedPartner {
