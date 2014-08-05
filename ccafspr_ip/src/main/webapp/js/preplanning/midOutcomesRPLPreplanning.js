@@ -88,12 +88,20 @@ function updateMidOutcomes(event){
   var $target = $(event.target);
   var $parent = $target.parent().parent().parent();
   var programID = $target.find('option:selected').attr("value");
-  var elementTypeId = $("#midOutcomeTypeId").val();
-  $.getJSON("../json/ipElementsByProgramAndType.do?programID=" + programID + "&elementTypeId=" + elementTypeId)
+  var midOutcomeTypeId = $("#midOutcomeTypeId").val();
+  $.getJSON("../json/ipElementsByProgramAndType.do?programID=" + programID + "&elementTypeId=" + midOutcomeTypeId)
     .done(function(data){
+      var contributedOfIDs = new Array();
+
+      $target.parent().parent().parent().find("input#contributeId").each(function(index, element){
+        contributedOfIDs[index] = $(element).val();
+      });
+      
       $parent.find("select[id$='midOutcomesFPL'] option").remove();
       $.each(data.IPElementsList, function(){
-        $parent.find("select[id$='midOutcomesFPL']").append('<option value="' + this.id + '">' + this.description + '</option>');
+        if( $.inArray( String(this.id), contributedOfIDs) == -1 ){
+          $parent.find("select[id$='midOutcomesFPL']").append('<option value="' + this.id + '">' + this.description + '</option>');
+        }
       });
     })
     .fail(function(){
