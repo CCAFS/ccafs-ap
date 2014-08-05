@@ -180,7 +180,7 @@
               [/#list] 
               [#-- Add Leveraged --]
               <div class="fullBlock addLeveragedBlock">
-                [@customForm.select name="some_name" value="" showTitle=false listName="allInstitutions" keyFieldName="id"  displayFieldName="name" addButton=true className="leveraged" /]
+                [@customForm.select name="some_name" value="" showTitle=false listName="allInstitutions" keyFieldName="id"  displayFieldName="composedName" addButton=true className="leveraged" /]
               </div>
             </div>
            </div>   

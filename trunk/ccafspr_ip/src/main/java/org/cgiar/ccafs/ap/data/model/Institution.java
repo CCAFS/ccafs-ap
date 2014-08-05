@@ -13,6 +13,8 @@
  *****************************************************************/
 package org.cgiar.ccafs.ap.data.model;
 
+import org.apache.commons.lang3.StringUtils;
+
 import org.apache.commons.lang3.builder.ToStringBuilder;
 
 /**
@@ -36,15 +38,32 @@ public class Institution {
     super();
   }
 
+  @Override
+  public boolean equals(Object obj) {
+    if (obj instanceof Institution) {
+      Institution i = (Institution) obj;
+      return i.getId() == this.id;
+    }
+    return false;
+  }
+
   public String getAcronym() {
     return acronym;
   }
 
   public String getComposedName() {
-    if (acronym == null) {
-      return name;
+    if (StringUtils.isEmpty(acronym)) {
+      if (country == null) {
+        return name;
+      } else {
+        return name + " - " + country.getName();
+      }
     } else {
-      return name + ", " + acronym;
+      if (country == null) {
+        return acronym + " - " + name;
+      } else {
+        return acronym + " - " + name + " - " + country.getName();
+      }
     }
   }
 
@@ -74,6 +93,11 @@ public class Institution {
 
   public InstitutionType getType() {
     return type;
+  }
+
+  @Override
+  public int hashCode() {
+    return this.getId();
   }
 
   public void setAcronym(String acronym) {

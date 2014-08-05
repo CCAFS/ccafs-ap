@@ -79,6 +79,15 @@ public class ProjectBudgetAction extends BaseAction {
     this.hasLeader = true;
   }
 
+  /**
+   * This method returns a Map of Budgets. The key of this map is a composition of the year, the institution id and the
+   * type.
+   * e.g. 2014-9-W1
+   * Where 2014 is the year, 9 is the institution identifier and W1 is the budget type.
+   * If the budget is not in the database, this method will create a new one with an id=-1 and amount=0.
+   *
+   * @return a Map of budgets as was described above.
+   */
   private Map<String, Budget> generateMapBudgets() {
     Map<String, Budget> budgetsMap = new HashMap<String, Budget>();
     for (int year : allYears) {
@@ -341,20 +350,29 @@ public class ProjectBudgetAction extends BaseAction {
       // if the project leader is not defined, stop here.
       if (project.getLeader() != null) {
 
-        // Getting all the institutions.
-        allInstitutions = institutionManager.getAllInstitutions();
-
         // Getting the list of institutions that are funding the project as leveraged.
-        // TODO HT - validate if there are not institutions.
         leveragedInstitutions = budgetManager.getLeveragedInstitutions(projectID);
 
         // Getting all the project partners. TODO HT - Validate if there are not partners.
         projectPartners = partnerManager.getProjectPartners(projectID);
 
-        // Getting the list of budgets.
-        // TODO HT - Validate if there are not budgets defined, we need to create them all.
-        project.setBudgets(budgetManager.getBudgetsByProject(project.getId()));
+        // Getting all the institutions.
+        allInstitutions = institutionManager.getAllInstitutions();
 
+        // Removing the institution that is already added as project partner:
+        allInstitutions.remove(project.getLeader().getCurrentInstitution());
+        // Removing those institutions that were added in project partners.
+        for (ProjectPartner projectParner : projectPartners) {
+          allInstitutions.remove(projectParner.getPartner());
+        }
+        // Removing those institutions that are leveraged.
+        for (Institution leverage : leveragedInstitutions) {
+          allInstitutions.remove(leverage);
+        }
+
+        // Getting the list of budgets.
+        project.setBudgets(budgetManager.getBudgetsByProject(project.getId()));
+        // Creating budgets that do not exist.
         mapBudgets = generateMapBudgets();
 
         if (getRequest().getMethod().equalsIgnoreCase("post")) {
