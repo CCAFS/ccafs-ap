@@ -13,49 +13,56 @@
  *****************************************************************/
 package org.cgiar.ccafs.ap.data.model;
 
+import java.util.List;
+
 import org.apache.commons.lang3.builder.ToStringBuilder;
 
 
 /**
- * This class represents an Activity Leader, which belongs to a specific Activity.
+ * This class represents a CCAFS Product.
+ * Each deliverable will have to belong a specific activity.
  *
- * @author Javier Andrés Gallego Barona.
  * @author Héctor Fabio Tobón R.
  */
-public class ActivityLeader {
+public class Deliverable {
 
   private int id;
-  private Institution institution;
-  private String name;
-  private String email;
+  private String title;
+  private int year;
+  private DeliverableType type;
+  private List<NextUser> nextUsers;
 
-  public ActivityLeader() {
-
+  public Deliverable() {
+    super();
   }
 
   @Override
   public boolean equals(Object obj) {
-    if (obj instanceof ActivityLeader) {
-      ActivityLeader a = (ActivityLeader) obj;
-      return a.getId() == this.id;
+    if (obj instanceof Deliverable) {
+      Deliverable v = (Deliverable) obj;
+      return v.id == this.id;
     }
     return false;
-  }
-
-  public String getEmail() {
-    return email;
   }
 
   public int getId() {
     return id;
   }
 
-  public Institution getInstitution() {
-    return institution;
+  public List<NextUser> getNextUsers() {
+    return nextUsers;
   }
 
-  public String getName() {
-    return name;
+  public String getTitle() {
+    return title;
+  }
+
+  public DeliverableType getType() {
+    return type;
+  }
+
+  public int getYear() {
+    return year;
   }
 
   @Override
@@ -63,20 +70,24 @@ public class ActivityLeader {
     return this.id;
   }
 
-  public void setEmail(String email) {
-    this.email = email;
-  }
-
   public void setId(int id) {
     this.id = id;
   }
 
-  public void setInstitution(Institution institution) {
-    this.institution = institution;
+  public void setNextUsers(List<NextUser> nextUsers) {
+    this.nextUsers = nextUsers;
   }
 
-  public void setName(String name) {
-    this.name = name;
+  public void setTitle(String title) {
+    this.title = title;
+  }
+
+  public void setType(DeliverableType type) {
+    this.type = type;
+  }
+
+  public void setYear(int year) {
+    this.year = year;
   }
 
   @Override
