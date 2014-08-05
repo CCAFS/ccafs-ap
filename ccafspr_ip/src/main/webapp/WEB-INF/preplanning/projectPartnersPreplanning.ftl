@@ -23,7 +23,7 @@
   <article class="halfContent" id="mainInformation">
   	[#include "/WEB-INF/preplanning/projectPreplanningSubMenu.ftl" /]
   	<h1 class="contentTitle">
-       ${project.id}[#if project.title?has_content] - ${project.title}[/#if]
+       ${project.composedId} [#if project.title?has_content] - ${project.title}[/#if]
     </h1>
   	<h1 class="contentSubTitle">
       [@s.text name="preplanning.projectPartners.leader.title" /]  
