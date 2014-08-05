@@ -41,8 +41,32 @@
       [#-- Outcome Indicators --]
       <div id="midOutcomeIndicators" class="fullBlock">
         <div class="checkboxGroup vertical"> 
+         
+          <div class="elementIndicator">
+            <input type="checkbox" name="__midOutcomes[0].indicators[-1].parent" value="277" id="indicators.parent-1" checked="checked" class="midOutcomeIndicator">
+            <label for="indicators.parent-1" class="checkboxLabel">FPL 1 midOutcome #3 - Indicator 1</label><div class="fields">
+            <div class="target">
+              <div class="input">
+                <h6> <label for="target">Target: </label> </h6>
+                <input type="text" id="target" name="__midOutcomes[0].indicators[-1].target" value="">
+              </div>
+            </div>
+            <div class="narrative">
+              <div class="textArea "> 
+                <h6> <label for="description">Narrative explanation of indicator target contribution: <span class="red">*</span> </label> </h6>
+                <textarea name="__midOutcomes[0].indicators[-1].description" id="description" class="ckeditor" placeholder=""></textarea>
+              </div>
+            </div>
+          </div>
+          </div>
+        
+          <input type="checkbox" name="indicators.parent" value="278" id="indicators.parent-2" class="midOutcomeIndicator">
+          <label for="indicators.parent-2" class="checkboxLabel">FPL 1 midOutcome #3 - Indicator 2</label>
+          <input type="hidden" id="__multiselect_midOutcomesRPL_indicators_parent" name="__multiselect_indicators.parent" value="">
+        
+        
           [@s.fielderror cssClass="fieldError" fieldName="indicatorsSelected"/]
-          [@s.checkboxlist value="midOutcomes[${midOutcomeRPL_index}].parentIndicatorsIDs" name="midOutcomes[${midOutcomeRPL_index}].indicators.parent" list="midOutcomes[${midOutcomeRPL_index}].translatedOf[${parent_index}].indicators" listKey="id" listValue="description" cssClass="midOutcomeIndicator" /]
+          [@s.checkboxlist value="midOutcomes[${midOutcomeRPL_index}].parentIndicatorsIDs" name="indicators.parent" list="midOutcomes[${midOutcomeRPL_index}].translatedOf[${parent_index}].indicators" listKey="id" listValue="description" cssClass="midOutcomeIndicator" /]
         </div>
       </div>
   [/#if]
