@@ -1,6 +1,6 @@
 [#ftl]
 [#assign title = "Project Budget" /]
-[#assign globalLibs = ["jquery", "noty","autoSave"] /]
+[#assign globalLibs = ["jquery", "noty","autoSave","chosen"] /]
 [#assign customJS = ["${baseUrl}/js/global/utils.js", "${baseUrl}/js/preplanning/projectBudget.js"] /]
 [#assign currentSection = "preplanning" /]
 [#assign currentPrePlanningSection = "projects" /]
@@ -180,7 +180,7 @@
               [/#list] 
               [#-- Add Leveraged --]
               <div class="fullBlock addLeveragedBlock">
-                [@customForm.select name="some_name" value="" showTitle=false listName="allInstitutions" keyFieldName="id"  displayFieldName="composedName" addButton=true className="leveraged" /]
+                [@customForm.select name="leveragedList" value="" showTitle=false listName="allInstitutions" keyFieldName="id"  displayFieldName="composedName" addButton=true className="leveraged" /]
               </div>
             </div>
            </div>   

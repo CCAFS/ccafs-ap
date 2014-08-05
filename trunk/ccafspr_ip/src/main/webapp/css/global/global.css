@@ -917,8 +917,8 @@ h1.contentSubTitle {
 
 #idosBlock .ido .checkboxGroup.vertical { 
     padding: 0.2em 1.2em;
-    margin: 0.3em 0.3em;
-    border-left: 2px solid #DDD;
+    margin: 0.3em 0.4em;
+    border-left: 2px dotted #DDD;
 }
 
 #idosBlock .ido .checkboxGroup.vertical label { 
@@ -933,9 +933,11 @@ h1.contentSubTitle {
   padding: 5px 15px;
 }
 
-#indicatorsFPLBlock .target input[type="text"]  {
+#indicatorsFPLBlock .target input[type="text"] , input[name$="target"] {
   width: 99%;
 }
+
+
 
 #indicatorsFPLBlock .target  {
   padding: 6px 12px;
@@ -944,7 +946,7 @@ h1.contentSubTitle {
 }
 
 .indicator, .contributions {
-    padding: 2px 15px;
+    padding: 2px 15px 18px 15px;
     border-bottom: 2px dotted #C3D4E7;
     margin: 2px 0px;
     background: #FFFFFF;
@@ -970,8 +972,8 @@ h1.contentSubTitle {
 }
 
 .contentElements .fields{
-  padding: 0.5em 1em;
-  margin: 0.3em 0.3em;
+  padding: 0px 0 2px 14px;
+  margin: 0px 0 10px 4px;
   border-left: 2px dotted #ccc;
 }
 

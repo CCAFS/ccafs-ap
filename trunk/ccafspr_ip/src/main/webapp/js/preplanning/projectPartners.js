@@ -2,7 +2,11 @@ $(document).ready(function(){
   attachEvents();
   if (!$("div.projectPartner").length) {
     $("a.addProjectPartner").trigger("click");
+  } else {
+    // Activate the chosen plugin to the existing partners
+    addChosen();
   }
+  
 });
 
 function attachEvents(){
@@ -37,6 +41,20 @@ function addPartnerEvent(e){
   var $newElement = $("#projectPartnerTemplate").clone(true).removeAttr("id").addClass("projectPartner");
   $(e.target).parent().before($newElement);
   $newElement.show("slow");
+  
+  // Activate the chosen plugin
+  $newElement.find("select[name$='partner']").chosen({
+  no_results_text : $("#noResultText").val(),
+  search_contains : true
+  });
+  $newElement.find(".partnerTypes").chosen({
+  allow_single_deselect : true,
+  search_contains : true
+  });
+  $newElement.find(".countryList").chosen({
+  allow_single_deselect : true,
+  search_contains : true
+  });
   setProjectPartnersIndexes();
 }
 
@@ -51,5 +69,39 @@ function setProjectPartnersIndexes(){
     $(element).find("[id$='contactName']").attr("name", elementName + "contactName");
     $(element).find("[id$='contactEmail']").attr("name", elementName + "contactEmail");
     $(element).find("[id$='responsabilities']").attr("name", elementName + "responsabilities");
+  });
+}
+
+// Activate the chosen plugin to the countries, partner types and
+// partners lists.
+function addChosen(){
+  $("form select[name$='partner']").each(function(){
+    // Check if its not the template partner field
+    if ($(this).attr("name") != '__partner') {
+      $(this).chosen({
+      no_results_text : $("#noResultText").val(),
+      search_contains : true
+      });
+    }
+  });
+  
+  $("form .partnerTypes").each(function(){
+    // Check if its not the template partner types field
+    if ($(this).attr("id") != 'partners_partnerTypeList') {
+      $(this).chosen({
+      allow_single_deselect : true,
+      search_contains : true
+      });
+    }
+  });
+  
+  $("form .countryList").each(function(){
+    // Check if its not the template countries field
+    if ($(this).attr("id") != 'partners_countryList') {
+      $(this).chosen({
+      allow_single_deselect : true,
+      search_contains : true
+      });
+    }
   });
 }

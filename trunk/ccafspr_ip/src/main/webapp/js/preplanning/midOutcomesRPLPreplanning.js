@@ -12,6 +12,7 @@ function init(){
   } else {
     applyWordCounter($("form .midOutcome > .textArea textarea"), lWordsElemetDesc);
     setMidOutcomesIndexes();
+    addChosen();
   }
 }
 
@@ -58,6 +59,12 @@ function addMidOutcomeEvent(event){
   $newElement.find("select[id$='flagships']").trigger("change");
   applyWordCounter($newElement.find($("textarea")), lWordsElemetDesc);
   $newElement.fadeIn("slow");
+  $newElement.find("select[id$='flagships']").chosen({
+    search_contains : true
+  });
+  $newElement.find("select[id$='midOutcomesFPL']").chosen({
+    search_contains : true
+  });
   setMidOutcomesIndexes();
 }
 
@@ -80,6 +87,7 @@ function setMidOutcomesIndexes(){
     $(element).find("[id$='TypeId']").attr("name", elementName + "type.id");
     $(element).find("[id$='description']").attr("name", elementName + "description").attr("placeholder", "Add regional outcome #" + (index + 1));
     $(element).find("select[id$='flagships']").trigger("change");
+    $(element).find("select[id$='midOutcomesFPL']").trigger("liszt:updated");
     setContributesIndexes();
   });
 }
@@ -89,24 +97,21 @@ function updateMidOutcomes(event){
   var $parent = $target.parent().parent().parent();
   var programID = $target.find('option:selected').attr("value");
   var midOutcomeTypeId = $("#midOutcomeTypeId").val();
-  $.getJSON("../json/ipElementsByProgramAndType.do?programID=" + programID + "&elementTypeId=" + midOutcomeTypeId)
-    .done(function(data){
-      var contributedOfIDs = new Array();
-
-      $target.parent().parent().parent().find("input#contributeId").each(function(index, element){
-        contributedOfIDs[index] = $(element).val();
-      });
-      
-      $parent.find("select[id$='midOutcomesFPL'] option").remove();
-      $.each(data.IPElementsList, function(){
-        if( $.inArray( String(this.id), contributedOfIDs) == -1 ){
-          $parent.find("select[id$='midOutcomesFPL']").append('<option value="' + this.id + '">' + this.description + '</option>');
-        }
-      });
-    })
-    .fail(function(){
-      console.log("error");
+  $.getJSON("../json/ipElementsByProgramAndType.do?programID=" + programID + "&elementTypeId=" + midOutcomeTypeId).done(function(data){
+    var contributedOfIDs = new Array();
+    $target.parent().parent().parent().find("input#contributeId").each(function(index,element){
+      contributedOfIDs[index] = $(element).val();
     });
+    $parent.find("select[id$='midOutcomesFPL'] option").remove();
+    $.each(data.IPElementsList, function(){
+      if ($.inArray(String(this.id), contributedOfIDs) == -1) {
+        $parent.find("select[id$='midOutcomesFPL']").append('<option value="' + this.id + '">' + this.description + '</option>');
+      }
+    });
+    $parent.find("select[id$='midOutcomesFPL']").trigger("liszt:updated");
+  }).fail(function(){
+    console.log("error");
+  });
 }
 
 // ----------------- Contribute Events ----------------------//
@@ -118,7 +123,7 @@ function addContributeEvent(event){
   if ($selectElemet.find('option').length != 0) {
     var $optionSelected = $selectElemet.find('option:selected');
     var elementId = $optionSelected.attr("value");
-    var programID = $("#midOutcomesRPL_flagships").val();
+    var programID = $addButton.parent().parent().find("select[id$='midOutcomesRPL_flagships'] ").val();
     var $newElementClone = $("#contributeTemplate").clone(true).removeAttr("id");
     
     $newElementClone.find("#description").html($optionSelected.html());
@@ -133,14 +138,14 @@ function addContributeEvent(event){
         $newElementClone.find("div.checkboxGroup").append($newIndicator);
         $newIndicator.show();
       });
-
+      
       $addButton.before($newElementClone);
       $newElementClone.find(".midOutcomeIndicator").click(indicatorVerify);
       $newElementClone.show("slow");
       $optionSelected.remove();
-      
       // Once the users select one contribution, they cannot change the flagship
-      $addButton.parent().parent().find("select[id$='midOutcomesRPL_flagships'] ").attr("disabled", true);
+      $addButton.parent().parent().find("select[id$='midOutcomesRPL_flagships'] ").attr("disabled", true).trigger("liszt:updated");
+      $selectElemet.trigger("liszt:updated");
       setContributesIndexes();
     });
     
@@ -155,19 +160,19 @@ function removeContributeEvent(event){
     $parentDiv.find("select.contributes").append('<option value="' + $elementDiv.find("input").attr("value") + '">' + $elementDiv.find("p").html() + '</option>');
     $(this).remove();
     setContributesIndexes();
-    
-    // If users remove all the contributions, so they 
+    // If users remove all the contributions, so they
     // can change the flagship selected again
-    if( $parentDiv.find(".contributions").length == 0){
+    if ($parentDiv.find(".contributions").length == 0) {
       $parentDiv.find("select[id$='midOutcomesRPL_flagships']").attr("disabled", false);
     }
+    $parentDiv.find("select").trigger("liszt:updated");
   });
 }
 
 function setContributesIndexes(){
   var elementName;
   var indicatorCount = -1;
-
+  
   $(".midOutcome ").each(function(index,contribution){
     indicatorCount = -1;
     $(contribution).find("input#contributeId").attr("name", "midOutcomes[" + index + "].translatedOf");
@@ -187,27 +192,33 @@ function setContributesIndexes(){
       $(element).find("label").attr("for", elementName + "indicators[" + indicatorCount + "].parent");
       $(element).find("input[name$='target']").attr("name", elementName + "indicators[" + indicatorCount + "].target");
       
-      $(element).find("textarea[name$='description']").attr("name", elementName + "indicators[" + indicatorCount + "].description")
-                                                      .attr("placeholder", "");
+      $(element).find("textarea[name$='description']").attr("name", elementName + "indicators[" + indicatorCount + "].description").attr("placeholder", "");
     });
   });
 }
 
 function setFplIndicatorFields(event){
-  var $checkbox= $(event.target);
+  var $checkbox = $(event.target);
   var $indicatorBlock = $checkbox.parent();
   
-  if(! $indicatorBlock.hasClass("elementIndicator")){
-    $checkbox.add( $checkbox.next('label') ).wrapAll('<div class="elementIndicator">');
+  if (!$indicatorBlock.hasClass("elementIndicator")) {
+    $checkbox.add($checkbox.next('label')).wrapAll('<div class="elementIndicator">');
     $indicatorBlock = $checkbox.parent();
   }
   
-  if( $indicatorBlock.find(".fields").length == 0){
-    var $indicatorTemplate = $("#indicatorTemplate").find(".fields").clone();  
+  if ($indicatorBlock.find(".fields").length == 0) {
+    var $indicatorTemplate = $("#indicatorTemplate").find(".fields").clone();
     $indicatorTemplate.removeAttr("id");
-    $indicatorBlock.append( $indicatorTemplate );
-    $indicatorBlock.find(".fields").show("slow");    
+    $indicatorBlock.append($indicatorTemplate);
+    $indicatorBlock.find(".fields").show("slow");
   }
-  
   setMidOutcomesIndexes();
+}
+
+// Activate the chosen plugin.
+function addChosen(){
+  $("form select").chosen({
+    search_contains : true
+  });
+  
 }

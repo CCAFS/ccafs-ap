@@ -1,6 +1,6 @@
 [#ftl]
 [#assign title = "Regional Major output groups" /]
-[#assign globalLibs = ["jquery", "noty", "autoSave"] /]
+[#assign globalLibs = ["jquery", "noty", "autoSave","chosen"] /]
 [#assign customJS = ["${baseUrl}/js/global/utils.js", "${baseUrl}/js/preplanning/outputsRPLPreplanning.js"] /]
 [#assign currentSection = "preplanning" /]
 [#assign currentPrePlanningSection = "impactPathways" /]
@@ -85,7 +85,7 @@
                   
                   [#-- Add contribute --]
                   <div class="fullBlock addContributeBlock">
-                    [@customForm.select name="contributionId" value="" showTitle=false listName="midOutcomesList" keyFieldName="id"  displayFieldName="description" addButton=true className="contributes" /]
+                    [@customForm.select name="contributions" value="" showTitle=false listName="midOutcomesList" keyFieldName="id"  displayFieldName="description" addButton=true className="contributes" /]
                   </div> 
                 </div> 
               [/#if]
@@ -139,7 +139,7 @@
       [#-- Contribute area --] 
       [#-- Add contribute --]
        <div class="fullBlock addContributeBlock">
-        [@customForm.select name="contributesTo" showTitle=false listName="midOutcomesList" keyFieldName="id"  displayFieldName="description" addButton=true className="contributes" /]
+        [@customForm.select name="contributions" showTitle=false listName="midOutcomesList" keyFieldName="id"  displayFieldName="description" addButton=true className="contributes" /]
       </div> 
     </div>  
   </div>  

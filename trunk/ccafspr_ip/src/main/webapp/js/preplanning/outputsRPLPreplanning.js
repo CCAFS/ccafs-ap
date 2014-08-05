@@ -1,13 +1,12 @@
 //Limits for textarea input
-var lWordsElemetDesc = 10;
+var lWordsElemetDesc = 150;
 
 $(document).ready(function(){
   attachEvents();
   if (!$("div#outputBlocks .output").length == 0) {
     $(".noOutputs.message").hide();
-    $("select[id^='outputsRPL_flagships']").each(function(i,fpList){
-      $(fpList).trigger("change");
-    });
+    $("select[id^='outputsRPL_flagships']").trigger("change");
+    addChosen();
   }
 });
 
@@ -47,7 +46,7 @@ function updateMidOutcomesList(event){
     if (midOutcomeSelected) {
       $select.val(midOutcomeSelected);
     }
-    $select.attr("disabled", false).trigger("change");
+    $select.attr("disabled", false).trigger("change").trigger("liszt:updated");
   });
 }
 
@@ -70,7 +69,8 @@ function updateOutputsList(event){
     if (outputSelected) {
       $parent.find("select[id^='outputsRPL_outputs']").val(outputSelected);
     }
-    $parent.find("select[id^='outputsRPL_outputs']").attr("disabled", false);
+    $parent.find("select[id^='outputs']").attr("disabled", false).trigger("liszt:updated");
+    ;
   });
 }
 
@@ -89,14 +89,26 @@ function addOutputEvent(event){
   var $newElement = $("#outputTemplate").clone(true).removeAttr("id");
   $("div#outputBlocks").append($newElement);
   $newElement.show("slow");
+  $newElement.find("select[id$='contributions']").chosen({
+    search_contains : true
+  });
   setOutputsIndexes();
 }
 function addExistingOutputEvent(){
   event.preventDefault();
   var $newElement = $("#newOutputTemplate").clone(true).removeAttr("id");
   $("div#outputBlocks").append($newElement);
-  $newElement.find("select[id$='flagships']").trigger("change");
   $newElement.show("slow");
+  $newElement.find("select[id$='flagships']").trigger("change");
+  $newElement.find("select[id$='flagships']").chosen({
+    search_contains : true
+  });
+  $newElement.find("select[id$='midOutcomes']").chosen({
+    search_contains : true
+  });
+  $newElement.find("select[id^='outputs']").chosen({
+    search_contains : true
+  });
   setOutputsIndexes();
 }
 
@@ -137,6 +149,7 @@ function addContributeEvent(event){
     $addButton.before($newElementClone);
     $newElementClone.show("slow");
     $optionSelected.remove();
+    $selectElemet.trigger("liszt:updated");
     setContributesIndexes(grandParentId);
   }
 }
@@ -148,6 +161,7 @@ function removeContributeEvent(event){
   $elementDiv.hide("slow", function(){
     var i = $parentDiv.attr("id").split("-")[1];
     $parentDiv.find("select").append('<option value="' + $elementDiv.find("input").attr("value") + '">' + $elementDiv.find("p").html() + '</option>');
+    $parentDiv.find("select").trigger("liszt:updated");
     $(this).remove();
     setContributesIndexes(i);
   });
@@ -162,5 +176,29 @@ function setContributesIndexes(i){
     elementName = "outputs[" + i + "].translatedOf";
     $(element).find("[id^='outputsRPL_outputs']").attr("name", elementName);
     console.log("update");
+  });
+}
+
+// Activate the chosen plugin to the midOutcomes list.
+function addChosen(){
+  $("form select[id$='flagships']").each(function(){
+    $(this).chosen({
+      search_contains : true
+    });
+  });
+  $("form select[id$='midOutcomes']").each(function(){
+    $(this).chosen({
+      search_contains : true
+    });
+  });
+  $("form select[id^='outputs']").each(function(){
+    $(this).chosen({
+      search_contains : true
+    });
+  });
+  $("form select[id$='contributions']").each(function(){
+    $(this).chosen({
+      search_contains : true
+    });
   });
 }
