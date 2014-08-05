@@ -17,7 +17,11 @@ import org.cgiar.ccafs.ap.action.BaseAction;
 import org.cgiar.ccafs.ap.config.APConfig;
 import org.cgiar.ccafs.ap.config.APConstants;
 import org.cgiar.ccafs.ap.data.manager.ActivityManager;
+import org.cgiar.ccafs.ap.data.manager.InstitutionManager;
 import org.cgiar.ccafs.ap.data.model.Activity;
+import org.cgiar.ccafs.ap.data.model.Institution;
+
+import java.util.List;
 
 import com.google.inject.Inject;
 import org.apache.commons.lang3.StringUtils;
@@ -34,6 +38,7 @@ public class ActivityDescriptionAction extends BaseAction {
 
   // Manager
   private ActivityManager activityManager;
+  private InstitutionManager institutionManager;
 
   // LOG
   private static Logger LOG = LoggerFactory.getLogger(ActivityDescriptionAction.class);
@@ -44,21 +49,28 @@ public class ActivityDescriptionAction extends BaseAction {
 
   // Model for the front-end
   private int activityID;
+  private List<Institution> allPartners;
 
 
   @Inject
-  public ActivityDescriptionAction(APConfig config, ActivityManager activityManager) {
+  public ActivityDescriptionAction(APConfig config, ActivityManager activityManager,
+    InstitutionManager institutionManager) {
     super(config);
     this.activityManager = activityManager;
+    this.institutionManager = institutionManager;
   }
+
 
   public Activity getActivity() {
     return activity;
   }
 
-
   public int getActivityID() {
     return activityID;
+  }
+
+  public List<Institution> getAllPartners() {
+    return allPartners;
   }
 
 
@@ -75,8 +87,9 @@ public class ActivityDescriptionAction extends BaseAction {
 
     // Getting the information for the
     activity = activityManager.getActivityById(activityID);
-    System.out.println(activity);
 
+    allPartners = institutionManager.getAllInstitutions();
+    //
     // TODO JG Get the information of institutions
 
   }
@@ -105,5 +118,10 @@ public class ActivityDescriptionAction extends BaseAction {
 
   public void setActivityID(int activityID) {
     this.activityID = activityID;
+  }
+
+
+  public void setAllPartners(List<Institution> allPartners) {
+    this.allPartners = allPartners;
   }
 }
