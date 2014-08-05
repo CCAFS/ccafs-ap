@@ -46,7 +46,7 @@
       <img src="${baseUrl}/images/global/icon-add.png" />
       <a href="" class="addProjectPartner" >[@s.text name="preplanning.projectPartners.addProjectPartner" /]</a>
     </div>
-     <!-- internal parameter -->
+    <!-- internal parameter -->
     <input name="projectID" type="hidden" value="${project.id?c}" />
   	<div class="buttons">
       [@s.submit type="button" name="save"][@s.text name="form.buttons.save" /][/@s.submit]

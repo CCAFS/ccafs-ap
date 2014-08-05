@@ -120,10 +120,6 @@ public class ProjectPartnersAction extends BaseAction {
     }
     // Getting the project identified with the id parameter.
     project = projectManager.getProject(projectID);
-    // if there is not a project identified with the given id
-    if (project == null) {
-      return; // Stop here and go to execute method.
-    }
 
     // if there are not partners, please return an empty List.
     project.setProjectPartners(projectPartnerManager.getProjectPartners(projectID));
@@ -141,8 +137,9 @@ public class ProjectPartnersAction extends BaseAction {
     allProjectLeaders = userManager.getAllUsers();
 
     // Getting the project partner leader.
-    // We need to validate if the partner leader is already in the employees table. If so, we need to get this
+    // We validate if the partner leader is already in the employees table. If so, we need to get this
     // information and show it as label in the front-end.
+    // If not, we just load the form for the expected project leader.
     User projectLeader = projectManager.getProjectLeader(project.getId());
     // if the official leader is defined.
     if (projectLeader != null) {

@@ -95,6 +95,10 @@
     <action name="budget" class="org.cgiar.ccafs.ap.action.preplanning.ProjectBudgetAction">
       <interceptor-ref name="preplanningStackProjects" />
       <result name="input">/WEB-INF/preplanning/projectBudgetPreplanning.ftl</result>
+      <result name="success" type="redirectAction">
+        <param name="actionName">budget</param>
+        <param name="projectID">${project.id}</param>
+      </result>
     </action>
     
     

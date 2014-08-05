@@ -13,8 +13,13 @@
  *****************************************************************/
 package org.cgiar.ccafs.ap.action.preplanning;
 
+import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
+import org.cgiar.ccafs.ap.data.model.BudgetType;
+import org.cgiar.ccafs.ap.data.model.Budget;
 import org.cgiar.ccafs.ap.data.model.User;
 import org.cgiar.ccafs.ap.data.model.ProjectPartner;
 import org.cgiar.ccafs.ap.data.manager.ProjectPartnerManager;
@@ -45,7 +50,6 @@ public class ProjectBudgetAction extends BaseAction {
 
   // Model for the back-end
   private int projectID;
-  private int year;
   private Project project;
 
   // Model for the front-end
@@ -54,9 +58,12 @@ public class ProjectBudgetAction extends BaseAction {
   private List<Institution> leveragedInstitutions;
   private List<ProjectPartner> projectPartners;
   private User projectLeader;
+  private boolean hasLeader;
+  private Map<String, Budget> mapBudgets;
 
   // Managers
   private ProjectManager projectManager;
+
   private BudgetManager budgetManager;
   private InstitutionManager institutionManager;
   private ProjectPartnerManager partnerManager;
@@ -69,6 +76,166 @@ public class ProjectBudgetAction extends BaseAction {
     this.budgetManager = budgetManager;
     this.institutionManager = institutionManager;
     this.partnerManager = partnerManager;
+    this.hasLeader = true;
+  }
+
+  private Map<String, Budget> generateMapBudgets() {
+    Map<String, Budget> budgetsMap = new HashMap<String, Budget>();
+    for (int year : allYears) {
+      // project partners
+      for (ProjectPartner projectPartner : projectPartners) {
+        boolean w1 = false;
+        boolean w2 = false;
+        boolean w3 = false;
+        boolean bilateral = false;
+        for (Budget budget : project.getBudgets()) {
+          if (budget.getInstitution().getId() == projectPartner.getPartner().getId() && budget.getYear() == year) {
+            if (budget.getType().getValue() == BudgetType.W1.getValue()) {
+              w1 = true;
+              budgetsMap.put(year + "-" + projectPartner.getPartner().getId() + "-" + BudgetType.W1.name(), budget);
+            } else if (budget.getType().getValue() == BudgetType.W2.getValue()) {
+              w2 = true;
+              budgetsMap.put(year + "-" + projectPartner.getPartner().getId() + "-" + BudgetType.W2.name(), budget);
+            } else if (budget.getType().getValue() == BudgetType.W3.getValue()) {
+              w3 = true;
+              budgetsMap.put(year + "-" + projectPartner.getPartner().getId() + "-" + BudgetType.W3.name(), budget);
+            } else if (budget.getType().getValue() == BudgetType.BILATERAL.getValue()) {
+              bilateral = true;
+              budgetsMap.put(year + "-" + projectPartner.getPartner().getId() + "-" + BudgetType.BILATERAL.name(),
+                budget);
+            }
+          }
+        }
+        if (w1 == false) {
+          Budget newBudget = new Budget();
+          newBudget.setId(-1);
+          newBudget.setInstitution(projectPartner.getPartner());
+          newBudget.setType(BudgetType.W1);
+          newBudget.setAmount(0);
+          newBudget.setYear(year);
+          budgetsMap.put(year + "-" + projectPartner.getPartner().getId() + "-" + BudgetType.W1.name(), newBudget);
+        }
+        if (w2 == false) {
+          Budget newBudget = new Budget();
+          newBudget.setId(-1);
+          newBudget.setInstitution(projectPartner.getPartner());
+          newBudget.setType(BudgetType.W2);
+          newBudget.setAmount(0);
+          newBudget.setYear(year);
+          budgetsMap.put(year + "-" + projectPartner.getPartner().getId() + "-" + BudgetType.W2.name(), newBudget);
+        }
+        if (w3 == false) {
+          Budget newBudget = new Budget();
+          newBudget.setId(-1);
+          newBudget.setInstitution(projectPartner.getPartner());
+          newBudget.setType(BudgetType.W3);
+          newBudget.setAmount(0);
+          newBudget.setYear(year);
+          budgetsMap.put(year + "-" + projectPartner.getPartner().getId() + "-" + BudgetType.W3.name(), newBudget);
+        }
+        if (bilateral == false) {
+          Budget newBudget = new Budget();
+          newBudget.setId(-1);
+          newBudget.setInstitution(projectPartner.getPartner());
+          newBudget.setType(BudgetType.BILATERAL);
+          newBudget.setAmount(0);
+          newBudget.setYear(year);
+          budgetsMap.put(year + "-" + projectPartner.getPartner().getId() + "-" + BudgetType.BILATERAL.name(),
+            newBudget);
+        }
+      }
+      // Project leader
+      boolean w1 = false;
+      boolean w2 = false;
+      boolean w3 = false;
+      boolean bilateral = false;
+      for (Budget budget : project.getBudgets()) {
+        if (budget.getInstitution().getId() == project.getLeader().getCurrentInstitution().getId()
+          && budget.getYear() == year) {
+          if (budget.getType().getValue() == BudgetType.W1.getValue()) {
+            w1 = true;
+            budgetsMap.put(
+              year + "-" + project.getLeader().getCurrentInstitution().getId() + "-" + BudgetType.W1.name(), budget);
+          } else if (budget.getType().getValue() == BudgetType.W2.getValue()) {
+            w2 = true;
+            budgetsMap.put(
+              year + "-" + project.getLeader().getCurrentInstitution().getId() + "-" + BudgetType.W2.name(), budget);
+          } else if (budget.getType().getValue() == BudgetType.W3.getValue()) {
+            w3 = true;
+            budgetsMap.put(
+              year + "-" + project.getLeader().getCurrentInstitution().getId() + "-" + BudgetType.W3.name(), budget);
+          } else if (budget.getType().getValue() == BudgetType.BILATERAL.getValue()) {
+            bilateral = true;
+            budgetsMap.put(year + "-" + project.getLeader().getCurrentInstitution().getId() + "-"
+              + BudgetType.BILATERAL.name(), budget);
+          }
+        }
+      }
+      if (w1 == false) {
+        Budget newBudget = new Budget();
+        newBudget.setId(-1);
+        newBudget.setInstitution(project.getLeader().getCurrentInstitution());
+        newBudget.setType(BudgetType.W1);
+        newBudget.setAmount(0);
+        newBudget.setYear(year);
+        budgetsMap.put(year + "-" + project.getLeader().getCurrentInstitution().getId() + "-" + BudgetType.W1.name(),
+          newBudget);
+      }
+      if (w2 == false) {
+        Budget newBudget = new Budget();
+        newBudget.setId(-1);
+        newBudget.setInstitution(project.getLeader().getCurrentInstitution());
+        newBudget.setType(BudgetType.W2);
+        newBudget.setAmount(0);
+        newBudget.setYear(year);
+        budgetsMap.put(year + "-" + project.getLeader().getCurrentInstitution().getId() + "-" + BudgetType.W2.name(),
+          newBudget);
+      }
+      if (w3 == false) {
+        Budget newBudget = new Budget();
+        newBudget.setId(-1);
+        newBudget.setInstitution(project.getLeader().getCurrentInstitution());
+        newBudget.setType(BudgetType.W3);
+        newBudget.setAmount(0);
+        newBudget.setYear(year);
+        budgetsMap.put(year + "-" + project.getLeader().getCurrentInstitution().getId() + "-" + BudgetType.W3.name(),
+          newBudget);
+      }
+      if (bilateral == false) {
+        Budget newBudget = new Budget();
+        newBudget.setId(-1);
+        newBudget.setInstitution(project.getLeader().getCurrentInstitution());
+        newBudget.setType(BudgetType.BILATERAL);
+        newBudget.setAmount(0);
+        newBudget.setYear(year);
+        budgetsMap.put(
+          year + "-" + project.getLeader().getCurrentInstitution().getId() + "-" + BudgetType.BILATERAL.name(),
+          newBudget);
+      }
+
+      // Leveraged
+      for (Institution leveraged : leveragedInstitutions) {
+        boolean isLeveraged = false;
+        for (Budget budget : project.getBudgets()) {
+          if (budget.getInstitution().getId() == leveraged.getId() && budget.getYear() == year) {
+            if (budget.getType().getValue() == BudgetType.LEVERAGED.getValue()) {
+              isLeveraged = true;
+              budgetsMap.put(year + "-" + leveraged.getId() + "-" + BudgetType.LEVERAGED.name(), budget);
+            }
+          }
+        }
+        if (isLeveraged == false) {
+          Budget newBudget = new Budget();
+          newBudget.setId(-1);
+          newBudget.setInstitution(leveraged);
+          newBudget.setType(BudgetType.W1);
+          newBudget.setAmount(0);
+          newBudget.setYear(year);
+          budgetsMap.put(year + "-" + leveraged.getId() + "-" + BudgetType.LEVERAGED.name(), newBudget);
+        }
+      }
+    }
+    return budgetsMap;
   }
 
   public List<Institution> getAllInstitutions() {
@@ -79,8 +246,13 @@ public class ProjectBudgetAction extends BaseAction {
     return allYears;
   }
 
+
   public List<Institution> getLeveragedInstitutions() {
     return leveragedInstitutions;
+  }
+
+  public Map<String, Budget> getMapBudgets() {
+    return mapBudgets;
   }
 
   public Project getProject() {
@@ -99,8 +271,35 @@ public class ProjectBudgetAction extends BaseAction {
     return projectPartners;
   }
 
-  public int getYear() {
-    return year;
+  /**
+   * TODO HT - To document
+   *
+   * @return
+   */
+  public Budget getSpecificBudget(int year, int partnerId, String budgetType) {
+    Budget budget = null;
+    for (Budget budg : project.getBudgets()) {
+      if (budg.getYear() == year && budg.getInstitution().getId() == partnerId
+        && budg.getType().name().equals(budgetType)) {
+        System.out.println(new Date().getTime() + " - " + year + "- pp: " + partnerId + " - " + budgetType + " - $"
+          + budg.getAmount());
+        return budg;
+      }
+    }
+    if (budget == null) {
+      budget = new Budget();
+      budget.setId(-1);
+      Institution institution = new Institution();
+      institution.setId(partnerId);
+      budget.setInstitution(institution);
+      budget.setType(BudgetType.valueOf(budgetType));
+      budget.setAmount(-1);
+    }
+    return budget;
+  }
+
+  public boolean isHasLeader() {
+    return hasLeader;
   }
 
   @Override
@@ -117,46 +316,68 @@ public class ProjectBudgetAction extends BaseAction {
     } catch (NumberFormatException e) {
       LOG.error("-- prepare() > There was an error parsing the project identifier '{}'.", projectID);
       projectID = -1;
-      return; // Stop here and go to execute method.
+      return; // Stop here and go to the execute method.
     }
 
     // Getting the project identified with the id parameter.
     project = projectManager.getProject(projectID);
-    // if there is not a project identified with the given id
-    if (project == null) {
-      return; // Stop here and go to execute method.
-    }
 
-    // Getting all the institutions.
-    allInstitutions = institutionManager.getAllInstitutions();
-
-    // Getting the list of institutions that are funding the project as leveraged.
-    // TODO HT - validate if there are not institutions.
-    leveragedInstitutions = budgetManager.getLeveragedInstitutions(projectID);
-
-    // Getting all the project partners. TODO HT - Validate if there are not partners.
-    projectPartners = partnerManager.getProjectPartners(projectID);
-
-    // Getting all the years dof the project. TODO HT - Validate if there are not dates configured.
+    // Getting all the years of the project. TODO HT - Validate if there are not dates configured.
     allYears = project.getAllYears();
+    // If there are not years, we stop here.
+    if (allYears.size() > 0) {
 
-    // Getting project leader. TODO HT - Validate if project leader doesn't exist.
-    // projectLeader = projectManager.getProjectLeader(projectID);
-    projectLeader = projectManager.getExpectedProjectLeader(projectID);
+      // Getting the project partner leader.
 
-    try {
-      parameter = this.getRequest().getParameter(APConstants.YEAR_REQUEST);
-      if (parameter != null) {
-        year = Integer.parseInt(StringUtils.trim(parameter));
+      // We validate if the partner leader is already in the employees table. If so, we get this
+      // information. If not, we load the information from expected project leader.
+      User projectLeader = projectManager.getProjectLeader(project.getId());
+      // if the official leader is defined.
+      if (projectLeader != null) {
+        project.setLeader(projectLeader);
       } else {
-        year = allYears.get(0);
+        project.setLeader(projectManager.getExpectedProjectLeader(projectID));
       }
-    } catch (NumberFormatException e) {
-      LOG.error("-- prepare() > There was an error parsing the year '{}'.", parameter);
-      projectID = -1;
-      return; // Stop here and go to execute method.
-    }
+      // if the project leader is not defined, stop here.
+      if (project.getLeader() != null) {
 
+        // Getting all the institutions.
+        allInstitutions = institutionManager.getAllInstitutions();
+
+        // Getting the list of institutions that are funding the project as leveraged.
+        // TODO HT - validate if there are not institutions.
+        leveragedInstitutions = budgetManager.getLeveragedInstitutions(projectID);
+
+        // Getting all the project partners. TODO HT - Validate if there are not partners.
+        projectPartners = partnerManager.getProjectPartners(projectID);
+
+        // Getting the list of budgets.
+        // TODO HT - Validate if there are not budgets defined, we need to create them all.
+        project.setBudgets(budgetManager.getBudgetsByProject(project.getId()));
+
+        mapBudgets = generateMapBudgets();
+
+        if (getRequest().getMethod().equalsIgnoreCase("post")) {
+          // Clear out the list if it has some element
+          if (project.getBudgets() != null) {
+            project.getBudgets().clear();
+          }
+        }
+
+      } else {
+        hasLeader = false;
+      }
+    }
+  }
+
+  @Override
+  public String save() {
+
+    List<Budget> bs = project.getBudgets();
+    System.out.println(bs);
+
+
+    return BaseAction.SUCCESS;
   }
 
   public void setAllInstitutions(List<Institution> allInstitutions) {
@@ -169,10 +390,6 @@ public class ProjectBudgetAction extends BaseAction {
 
   public void setProjectID(int projectID) {
     this.projectID = projectID;
-  }
-
-  public void setYear(int year) {
-    this.year = year;
   }
 
 
