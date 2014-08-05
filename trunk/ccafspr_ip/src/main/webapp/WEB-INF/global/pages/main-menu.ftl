@@ -76,12 +76,23 @@
 	      <a href="${baseUrl}/"><li [#if currentSection?? && currentSection == "home"] class="currentSection" [/#if]>[@s.text name="menu.login" /]</li></a>
 	    [/#if]
 	  </ul>
+	  
 	  [#if logged]
         <div id="userInfo">
           <span class="email">${currentUser.email}</span>
           <span class="logout"><a href="[@s.url action="logout" namespace="/" /]">[@s.text name="header.logout" /]</a></span>
           <div id="userInfo-drop" class="drop-down">
-            <span class="institution">${currentUser.currentInstitution.name}</span> 
+            <span class="institution">${currentUser.currentInstitution.name}</span>
+            [#--
+            <ul>
+              [#list currentUser.institutions as institution]
+                [@s.url action="selectInstitution" namespace="/" var="url"]
+                  [@s.param name="institutionID"]${institution.id?c}[/@s.param]
+                [/@s.url]
+                <li> <a href="${url}" class="institution"> ${institution.name} </a> </li>
+              [/#list]
+            <ul>
+            --]
           </div>
         </div>
   	[/#if]
