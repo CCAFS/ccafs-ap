@@ -41,7 +41,7 @@
      [#list globalLibs as libraryName]
         [#if libraryName="chosen"]
           <link rel="stylesheet" type="text/css" href="${baseUrl}/css/libs/chosen/chosen-0.13.0.css" />
-          <link rel="stylesheet" type="text/css" href="${baseUrl}/css/reporting/customChosen.css" />
+          <link rel="stylesheet" type="text/css" href="${baseUrl}/css/global/customChosen.css" />
         [/#if]
         
         [#if libraryName="jquery"]
@@ -69,7 +69,7 @@
   	
     [#-- Second, import global javascripts and templates. --]
     <link rel="stylesheet" type="text/css" href="${baseUrl}/css/global/reset.css" />
-    <link rel="stylesheet" type="text/css" href="${baseUrl}/css/global/forms-min.css" />
+    <link rel="stylesheet" type="text/css" href="${baseUrl}/css/global/custom-forms-min.css" />
     <link rel="stylesheet" type="text/css" href="${baseUrl}/css/global/global.css" />
     <!--[if lte IE 7]>
       <link rel="stylesheet" type="text/css" href="${baseUrl}/css/global/ie7.css"/> 

@@ -5,6 +5,7 @@ $(document).ready(function(){
   defaultMinDateValue : $("#minDateValue").val(),
   defaultMaxDateValue : $("#maxDateValue").val()
   });
+  addChosen();
 });
 
 /**
@@ -56,4 +57,12 @@ function datePickerConfig(element){
     }
   }
   });
+}
+
+// Activate the chosen plugin.
+function addChosen(){
+  $("form select").chosen({
+    search_contains : true
+  });
+  
 }

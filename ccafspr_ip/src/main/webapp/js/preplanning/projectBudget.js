@@ -10,6 +10,7 @@ function init(){
     duration : 500
     }
   });
+  addChosen();
   attachEvents();
 }
 
@@ -31,6 +32,7 @@ function addLeveragedEvent(e){
     $newElement.find("input[id$='id']").attr("value", $optionSelected.val());
     $newElement.find(".removeButton").click(removeLeveragedEvent);
     $optionSelected.remove();
+    $parent.find("select.leveraged").trigger("liszt:updated");
     $newElement.show("slow");
     setLeveragedIndexes();
   }
@@ -57,5 +59,17 @@ function setLeveragedIndexes(){
     // CSS selector div[id$=parent] Get any DIV element where the ID attribute value ends with "parent".
     $(element).find("[id$='id']").attr("name", elementName + "id");
     $(element).find("[id$='amount']").attr("name", elementName + "amount");
+  });
+}
+
+// Activate the chosen plugin to the countries, partner types and
+// partners lists.
+function addChosen(){
+  $("form select[name$='leveragedList']").each(function(){
+    // Check if its not the template partner field
+    $(this).chosen({
+    no_results_text : $("#noResultText").val(),
+    search_contains : true
+    });
   });
 }

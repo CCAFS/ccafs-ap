@@ -1,6 +1,6 @@
 [#ftl]
 [#assign title = "Major Output Group" /]
-[#assign globalLibs = ["jquery", "noty", "autoSave"] /]
+[#assign globalLibs = ["jquery", "noty", "autoSave","chosen"] /]
 [#assign customJS = ["${baseUrl}/js/global/utils.js", "${baseUrl}/js/preplanning/outputsPreplanning.js"] /]
 [#assign currentSection = "preplanning" /]
 [#assign currentPrePlanningSection = "impactPathways" /]
@@ -57,7 +57,7 @@
               [/#if]
               [#-- Add contribute --]
               <div class="fullBlock addContributeBlock">
-                [@customForm.select name="contributionId" value="" showTitle=false listName="midOutcomesList" keyFieldName="id"  displayFieldName="description" addButton=true className="contributes" /]
+                [@customForm.select name="contributions" value="" showTitle=false listName="midOutcomesList" keyFieldName="id"  displayFieldName="description" addButton=true className="contributes" /]
               </div> 
             </div>   
           </div>  

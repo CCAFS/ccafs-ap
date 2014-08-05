@@ -1,4 +1,8 @@
 /*-------------------  Setting images paths -------------------*/
+.chzn-container {
+	width: 100% !important;
+}
+
 .chzn-container-single .chzn-single abbr {
   background: url('../../images/libs/chosen/chosen-sprite.png') -42px 1px no-repeat;
 }
@@ -44,18 +48,18 @@
 /*-------------------  Setting colors and sizes -------------------*/
 
 .chzn-container .chzn-results li.highlighted {
-  background-color: #3C771C;
-  filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#3C771C', endColorstr='#4E892E', GradientType=0 );  
-  background-image: -webkit-gradient(linear, 0 0, 0 100%, color-stop(20%, #3C771C), color-stop(90%, #4E892E));
-  background-image: -webkit-linear-gradient(top, #3C771C 20%, #4E892E 90%);
-  background-image: -moz-linear-gradient(top, #3C771C 20%, #4E892E 90%);
-  background-image: -o-linear-gradient(top, #3C771C 20%, #4E892E 90%);
-  background-image: linear-gradient(#3C771C 20%, #4E892E 90%);
+  background-color: #47939C;
+  filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#47939C', endColorstr='#47939C', GradientType=0 );  
+  background-image: -webkit-gradient(linear, 0 0, 0 100%, color-stop(20%, #47939C), color-stop(90%, #47939C));
+  background-image: -webkit-linear-gradient(top, #47939C 20%, #47939C 90%);
+  background-image: -moz-linear-gradient(top, #47939C 20%, #47939C 90%);
+  background-image: -o-linear-gradient(top, #47939C 20%, #47939C 90%);
+  background-image: linear-gradient(#47939C 20%, #47939C 90%);
   color: #fff;
 }
 
 .fullBlock.chosen .selectList{
-	width: 614px !important;
+  width: 614px !important;
 }
 
 .fullBlock .chzn-container-multi .chzn-choices {
@@ -128,3 +132,4 @@
 
 .thirdPartBlock .chzn-container .chzn-choices .default{
   width: 154px !important;  
+}

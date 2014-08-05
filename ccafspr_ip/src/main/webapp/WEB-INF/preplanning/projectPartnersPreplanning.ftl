@@ -1,6 +1,6 @@
 [#ftl]
 [#assign title = "Project Partners" /]
-[#assign globalLibs = ["jquery", "noty", "autoSave"] /]
+[#assign globalLibs = ["jquery", "noty", "autoSave", "chosen"] /]
 [#assign customJS = ["${baseUrl}/js/global/utils.js", "${baseUrl}/js/preplanning/projectPartners.js"] /]
 [#assign currentSection = "preplanning" /]
 [#assign currentPrePlanningSection = "projects" /]
