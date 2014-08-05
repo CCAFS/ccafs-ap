@@ -14,6 +14,7 @@
 package org.cgiar.ccafs.ap.data.manager;
 
 import org.cgiar.ccafs.ap.data.manager.impl.InstitutionManagerImpl;
+import org.cgiar.ccafs.ap.data.model.Country;
 import org.cgiar.ccafs.ap.data.model.Institution;
 import org.cgiar.ccafs.ap.data.model.InstitutionType;
 import org.cgiar.ccafs.ap.data.model.User;
@@ -32,7 +33,7 @@ public interface InstitutionManager {
 
   /**
    * Return all the institutions.
-   *
+   * 
    * @param none
    * @return an Institution object or null if the id does not exist in the database.
    */
@@ -40,22 +41,33 @@ public interface InstitutionManager {
 
   /**
    * This method get all the institutions types that manage the platform.
-   *
+   * 
    * @return a List of InstitutionType objects.
    */
   public List<InstitutionType> getAllInstitutionTypes();
 
   /**
    * Get an institution identified with the given id.
-   *
+   * 
    * @param institutionId is an integer that represents the id of some institution.
    * @return an Institution object or null if the id does not exist in the database.
    */
   public Institution getInstitution(int institutionId);
 
   /**
+   * This method returns all the institutions that have the
+   * same type as received as parameter and that are located
+   * in the same country received by parameter.
+   * 
+   * @param type - Institution type object
+   * @param country - Country object
+   * @return a list of Institution objects
+   */
+  public List<Institution> getInstitutionsByTypeAndCountry(InstitutionType type, Country country);
+
+  /**
    * This method gets the institutions related with the user given
-   *
+   * 
    * @param user
    * @return a list of institution objects with the information
    */
@@ -63,7 +75,7 @@ public interface InstitutionManager {
 
   /**
    * This method gets the information of an Institution Type by a give Institution Type ID
-   *
+   * 
    * @param institutionTypeId
    * @return an Institution Type Object with the information
    */
@@ -71,10 +83,9 @@ public interface InstitutionManager {
 
   /**
    * This method returns the user's main institution defined in the database.
-   *
+   * 
    * @param user
    * @return an Institution Object with the information
    */
   public Institution getUserMainInstitution(User user);
-
 }

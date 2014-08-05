@@ -144,6 +144,50 @@ public class InstitutionManagerImpl implements InstitutionManager {
   }
 
   @Override
+  public List<Institution> getInstitutionsByTypeAndCountry(InstitutionType type, Country country) {
+    List<Institution> institutions = new ArrayList<>();
+    List<Map<String, String>> institutionDataList =
+      institutionDAO.getInstitutionsByTypeAndCountry(type.getId(), country.getId());
+    for (Map<String, String> iData : institutionDataList) {
+      Institution institution = new Institution();
+      institution.setId(Integer.parseInt(iData.get("id")));
+      institution.setName(iData.get("name"));
+      institution.setAcronym(iData.get("acronym"));
+      institution.setContactPersonName(iData.get("contactPersonName"));
+      institution.setContactPersonEmail(iData.get("contactPersonEmail"));
+
+      // InstitutionType Object
+      InstitutionType _type = new InstitutionType();
+      if (iData.get("institution_type_id") != null) {
+        _type.setId(Integer.parseInt(iData.get("institution_type_id")));
+        _type.setName(iData.get("institution_type_name"));
+        _type.setAcronym(iData.get("institution_type_acronym"));
+        institution.setType(_type);
+      }
+      // Program Object
+      IPProgram program = new IPProgram();
+      if (iData.get("program_id") != null) {
+        program.setId(Integer.parseInt(iData.get("program_id")));
+        program.setName(iData.get("program_name"));
+        program.setAcronym(iData.get("program_acronym"));
+        institution.setProgram(program);
+      }
+      // Location Object
+      Country _country = new Country();
+      if (iData.get("loc_elements_id") != null) {
+        _country.setId(Integer.parseInt(iData.get("loc_elements_id")));
+        _country.setName(iData.get("loc_elements_name"));
+        _country.setCode(iData.get("loc_elements_code"));
+        institution.setCountry(_country);
+      }
+
+      // Adding object to the array.
+      institutions.add(institution);
+    }
+    return institutions;
+  }
+
+  @Override
   public List<Institution> getInstitutionsByUser(User user) {
     List<Institution> institutions = new ArrayList<>();
     List<Map<String, String>> institutionDataList = institutionDAO.getInstitutionsByUser(user.getId());
@@ -172,6 +216,7 @@ public class InstitutionManagerImpl implements InstitutionManager {
     }
     return institutions;
   }
+
 
   @Override
   public InstitutionType getInstitutionType(int institutionTypeId) {

@@ -31,7 +31,7 @@ public interface InstitutionDAO {
   /**
    * This method returns all the Institutions
    * indicated by parameter.
-   *
+   * 
    * @return a list of maps with the information of all Institutions returned .
    */
 
@@ -39,14 +39,14 @@ public interface InstitutionDAO {
 
   /**
    * This method returns all the information from the Institutions Type
-   *
+   * 
    * @return a list of map with the information of the institution
    */
   public List<Map<String, String>> getAllInstitutionTypes();
 
   /**
    * This method returns the information from Institution given by an institutionID
-   *
+   * 
    * @param institutionID, identifier of the institution
    * @return a list of maps with the information of all IP elements returned.
    */
@@ -54,9 +54,20 @@ public interface InstitutionDAO {
   public Map<String, String> getInstitution(int institutionID);
 
   /**
+   * This method returns all the institutions that have the
+   * same type as received as parameter and that are located
+   * in the same country received by parameter.
+   * 
+   * @param type - Institution type identifier
+   * @param country - Country identifier
+   * @return a list of Institution objects
+   */
+  public List<Map<String, String>> getInstitutionsByTypeAndCountry(int typeID, int countryID);
+
+  /**
    * This method gets the information of the institutions related to the user
    * given
-   *
+   * 
    * @param userID - User identifier
    * @return a list of maps with the information with the Institution related by the user
    */
@@ -64,7 +75,7 @@ public interface InstitutionDAO {
 
   /**
    * This method returns the information of an Institution Type given by and InstitutionType ID
-   *
+   * 
    * @param institutionTypeID
    * @return a map with the information of the Institution Type
    */
@@ -73,7 +84,7 @@ public interface InstitutionDAO {
   /**
    * This method returns the information of the institution marked as
    * main for the user identified with the id given
-   *
+   * 
    * @param userID - User identifier
    * @return a list of maps with the information of the Institution
    */
