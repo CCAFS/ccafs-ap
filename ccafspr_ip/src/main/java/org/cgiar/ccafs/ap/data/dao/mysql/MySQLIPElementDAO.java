@@ -22,6 +22,7 @@ import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -221,6 +222,33 @@ public class MySQLIPElementDAO implements IPElementDAO {
     query.append(APConstants.PROGRAM_ELEMENT_RELATION_USE);
 
     LOG.debug("-- getIPElement() > Calling method executeQuery to get the results");
+    return getData(query.toString());
+  }
+
+  @Override
+  public List<Map<String, String>> getIPElement(String[] elementIds) {
+    LOG.debug(">> getIPElement( elementIds = {} )", Arrays.toString(elementIds));
+    int elementsCount = elementIds.length;
+
+    StringBuilder query = new StringBuilder();
+    query.append("SELECT e.id, e.description, pel.id as 'program_element_id', ");
+    query.append("et.id as 'element_type_id', et.name as 'element_type_name', ");
+    query.append("pro.id as 'program_id', pro.acronym as 'program_acronym' ");
+    query.append("FROM ip_elements e ");
+    query.append("INNER JOIN ip_element_types et ON e.element_type_id = et.id ");
+    query.append("INNER JOIN ip_program_elements pel ON e.id = pel.element_id ");
+    query.append("INNER JOIN ip_programs pro ON pel.program_id = pro.id ");
+    query.append("WHERE e.id IN ( ");
+
+    for (int c = 0; c < elementsCount; c++) {
+      query.append(elementIds[c]);
+      if (c < elementsCount - 1) {
+        query.append(", ");
+      }
+    }
+    query.append("); ");
+
+    LOG.debug("-- getIPElementList () > Calling method executeQuery to get the results");
     return getData(query.toString());
   }
 

@@ -32,5 +32,12 @@
         <param name="excludeNullProperties">true</param>
       </result>
     </action>
+    
+    <action name="ipComponents" class="org.cgiar.ccafs.ap.action.json.global.ImpactPathwayComponentsAction">
+      <result type="json">        
+        <param name="noCache">true</param>
+        <param name="excludeNullProperties">true</param>
+      </result>
+    </action>
   </package>
 </struts>

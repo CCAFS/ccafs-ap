@@ -64,6 +64,15 @@ public interface IPElementManager {
   public List<IPElement> getIPElementList(String[] ids);
 
   /**
+   * This method return all the impact pathways elements
+   * setted with the basic information id, description,
+   * translatedOf and contributesTo
+   * 
+   * @return
+   */
+  public List<IPElement> getIPElementListForGraph();
+
+  /**
    * This method gets all the IPElements related to the IP program
    * given
    * 
