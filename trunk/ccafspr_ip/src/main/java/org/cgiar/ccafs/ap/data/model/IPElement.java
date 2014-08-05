@@ -72,6 +72,15 @@ public class IPElement {
     return id;
   }
 
+  public IPIndicator getIndicatorByParentID(int indicatorID) {
+    for (IPIndicator _indicator : indicators) {
+      if (_indicator.getParent().getId() == indicatorID) {
+        return _indicator;
+      }
+    }
+    return null;
+  }
+
   public List<IPIndicator> getIndicators() {
     return indicators;
   }

@@ -22,7 +22,6 @@ import org.cgiar.ccafs.ap.data.manager.IPIndicatorManager;
 import org.cgiar.ccafs.ap.data.manager.IPProgramManager;
 import org.cgiar.ccafs.ap.data.model.IPElement;
 import org.cgiar.ccafs.ap.data.model.IPElementType;
-import org.cgiar.ccafs.ap.data.model.IPIndicator;
 import org.cgiar.ccafs.ap.data.model.IPProgram;
 
 import java.util.ArrayList;
@@ -133,20 +132,9 @@ public class MidOutcomesPreplanningAction extends BaseAction {
           }
 
           if (getCurrentUser().isRPL()) {
-
-            // The regional programs won't have indicators by themselves, instead
-            // they create a copy of the FP indicators and indicating that
-            // relation in the indicator
-
-            // Here we adjust the values brought by the converter to set the
-            // id as parentID and setting the id with the value as '-1' to
-            // indicate that it is a new indicator to be added into the DB.
-            int indicatorID = midOutcome.getIndicators().get(i).getId();
-            midOutcome.getIndicators().get(i).setId(-1);
-
-            IPIndicator indicatorTemp = new IPIndicator();
-            indicatorTemp.setId(indicatorID);
-            midOutcome.getIndicators().get(i).setParent(indicatorTemp);
+            if (midOutcome.getIndicators().get(i).getId() == 0) {
+              midOutcome.getIndicators().get(i).setId(-1);
+            }
           }
         }
       }

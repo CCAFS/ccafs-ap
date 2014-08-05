@@ -56,14 +56,14 @@
         </div>
       </div> 
   [#else]
-  <div class="elementIndicator" style="display:block">
-    <input type="hidden" name="id" value="-1" />
-    <input id="midOutcomes[${midOutcomeRPL_index}].indicators-${midOutcomeRPL_index}${parent_index}" class="midOutcomeIndicator" name="midOutcomes[${midOutcomeRPL_index}].indicators" type="checkbox" value="" />
-    <label for="midOutcomes[${midOutcomeRPL_index}].indicators-${midOutcomeRPL_index}${parent_index}" class="checkboxLabel"> Indicator Label</label>
-    [#-- Target --]
-    [@customForm.input name="target"  i18nkey="preplanning.midOutcomes.target" value="${midOutcomes[midOutcomeRPL_index].indicators[parent_index]}" /]
-    [#-- Narrative explanation --]
-    [@customForm.textArea showTitle=true name="midOutcomes[${midOutcomeRPL_index}].translatedOf[${parent_index}].justification" i18nkey="preplanning.midOutcomesRPL.midOutcomeIndicators.justification" required=true /]
+    <div class="elementIndicator">
+      <input type="hidden" name="id" value="-1" />
+      <input id="midOutcomes[${midOutcomeRPL_index}].indicators-${midOutcomeRPL_index}${parent_index}" class="midOutcomeIndicator" name="midOutcomes[${midOutcomeRPL_index}].indicators" type="checkbox" value="" />
+      <label for="midOutcomes[${midOutcomeRPL_index}].indicators-${midOutcomeRPL_index}${parent_index}" class="checkboxLabel"> Indicator Label</label>
+      [#-- Target --]
+      [@customForm.input name="target"  i18nkey="preplanning.midOutcomes.target" value="${midOutcomes[midOutcomeRPL_index].indicators[parent_index].target}" /]
+      [#-- Narrative explanation --]
+      [@customForm.textArea showTitle=true name="midOutcomes[${midOutcomeRPL_index}].translatedOf[${parent_index}].justification" i18nkey="preplanning.midOutcomesRPL.midOutcomeIndicators.justification" required=true /]
     
   [/#if]
   [#if canRemove] 
