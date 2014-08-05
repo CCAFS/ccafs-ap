@@ -92,7 +92,8 @@ public class IPElement {
    * indicators which have not parents.
    * If the parameter received is true returns a list with all the
    * indicators that have parents.
-   * 
+   * TODO HC - To Document parameters.
+   *
    * @param hasParents
    * @return
    */

@@ -13,49 +13,57 @@
  *****************************************************************/
 package org.cgiar.ccafs.ap.data.model;
 
+import java.util.List;
+
 import org.apache.commons.lang3.builder.ToStringBuilder;
 
 
 /**
- * This class represents an Activity Leader, which belongs to a specific Activity.
+ * This class represents a CCAFS Product type.
+ * Each deliverable will have to be relate to one deliverable type.
+ * The timeline is used in months and depends on the Open Access Policy implemented by the CGIAR.
  *
- * @author Javier Andrés Gallego Barona.
  * @author Héctor Fabio Tobón R.
  */
-public class ActivityLeader {
+public class DeliverableType {
 
   private int id;
-  private Institution institution;
   private String name;
-  private String email;
+  private int timeline; // in months.
+  private DeliverableType category;
+  private List<IPElement> outputs;
 
-  public ActivityLeader() {
+  public DeliverableType() {
 
   }
 
   @Override
   public boolean equals(Object obj) {
-    if (obj instanceof ActivityLeader) {
-      ActivityLeader a = (ActivityLeader) obj;
-      return a.getId() == this.id;
+    if (obj instanceof DeliverableType) {
+      DeliverableType d = (DeliverableType) obj;
+      return d.id == this.id;
     }
     return false;
   }
 
-  public String getEmail() {
-    return email;
+  public DeliverableType getCategory() {
+    return category;
   }
 
   public int getId() {
     return id;
   }
 
-  public Institution getInstitution() {
-    return institution;
-  }
-
   public String getName() {
     return name;
+  }
+
+  public List<IPElement> getOutputs() {
+    return outputs;
+  }
+
+  public int getTimeline() {
+    return timeline;
   }
 
   @Override
@@ -63,20 +71,24 @@ public class ActivityLeader {
     return this.id;
   }
 
-  public void setEmail(String email) {
-    this.email = email;
+  public void setCategory(DeliverableType category) {
+    this.category = category;
   }
 
   public void setId(int id) {
     this.id = id;
   }
 
-  public void setInstitution(Institution institution) {
-    this.institution = institution;
-  }
-
   public void setName(String name) {
     this.name = name;
+  }
+
+  public void setOutputs(List<IPElement> outputs) {
+    this.outputs = outputs;
+  }
+
+  public void setTimeline(int timeline) {
+    this.timeline = timeline;
   }
 
   @Override

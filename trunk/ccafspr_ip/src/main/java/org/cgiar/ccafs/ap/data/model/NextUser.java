@@ -17,45 +17,45 @@ import org.apache.commons.lang3.builder.ToStringBuilder;
 
 
 /**
- * This class represents an Activity Leader, which belongs to a specific Activity.
+ * This class represents the expected next user of a specific deliverable.
+ * This is part of the theory of change that is being implemented for CCAFS.
  *
- * @author Javier Andrés Gallego Barona.
  * @author Héctor Fabio Tobón R.
  */
-public class ActivityLeader {
+public class NextUser {
 
   private int id;
-  private Institution institution;
-  private String name;
-  private String email;
+  private String user;
+  private String expectedChanges;
+  private String strategies;
 
-  public ActivityLeader() {
+  public NextUser() {
 
   }
 
   @Override
   public boolean equals(Object obj) {
-    if (obj instanceof ActivityLeader) {
-      ActivityLeader a = (ActivityLeader) obj;
-      return a.getId() == this.id;
+    if (obj instanceof NextUser) {
+      NextUser n = (NextUser) obj;
+      return n.id == this.id;
     }
     return false;
   }
 
-  public String getEmail() {
-    return email;
+  public String getExpectedChanges() {
+    return expectedChanges;
   }
 
   public int getId() {
     return id;
   }
 
-  public Institution getInstitution() {
-    return institution;
+  public String getStrategies() {
+    return strategies;
   }
 
-  public String getName() {
-    return name;
+  public String getUser() {
+    return user;
   }
 
   @Override
@@ -63,25 +63,24 @@ public class ActivityLeader {
     return this.id;
   }
 
-  public void setEmail(String email) {
-    this.email = email;
+  public void setExpectedChanges(String expectedChanges) {
+    this.expectedChanges = expectedChanges;
   }
 
   public void setId(int id) {
     this.id = id;
   }
 
-  public void setInstitution(Institution institution) {
-    this.institution = institution;
+  public void setStrategies(String strategies) {
+    this.strategies = strategies;
   }
 
-  public void setName(String name) {
-    this.name = name;
+  public void setUser(String user) {
+    this.user = user;
   }
 
   @Override
   public String toString() {
     return ToStringBuilder.reflectionToString(this);
   }
-
 }

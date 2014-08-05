@@ -14,13 +14,14 @@
 package org.cgiar.ccafs.ap.data.model;
 
 import java.util.Date;
+import java.util.List;
 
 import org.apache.commons.lang3.builder.ToStringBuilder;
 
 
 /**
  * This class represents a CCAFS Activity, which belongs to a specific Project.
- * 
+ *
  * @author Héctor Fabio Tobón R.
  */
 public class Activity {
@@ -32,9 +33,8 @@ public class Activity {
   private Date start;
   private Date end;
   private ActivityLeader leader;
-
+  private List<Location> locations;
   private long created;
-
 
   @Override
   public boolean equals(Object obj) {
@@ -48,6 +48,7 @@ public class Activity {
   public long getCreated() {
     return created;
   }
+
 
   public String getCustomId() {
     return customId;
@@ -67,6 +68,10 @@ public class Activity {
 
   public ActivityLeader getLeader() {
     return leader;
+  }
+
+  public List<Location> getLocations() {
+    return locations;
   }
 
   public Date getStart() {
@@ -104,6 +109,10 @@ public class Activity {
 
   public void setLeader(ActivityLeader leader) {
     this.leader = leader;
+  }
+
+  public void setLocations(List<Location> locations) {
+    this.locations = locations;
   }
 
   public void setStart(Date start) {

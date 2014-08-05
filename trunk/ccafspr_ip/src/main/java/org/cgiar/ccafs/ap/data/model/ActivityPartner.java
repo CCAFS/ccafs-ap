@@ -17,45 +17,47 @@ import org.apache.commons.lang3.builder.ToStringBuilder;
 
 
 /**
- * This class represents an Activity Leader, which belongs to a specific Activity.
- *
- * @author Javier Andrés Gallego Barona.
  * @author Héctor Fabio Tobón R.
  */
-public class ActivityLeader {
+public class ActivityPartner {
 
   private int id;
-  private Institution institution;
-  private String name;
-  private String email;
+  private Institution partner;
+  private String contactName;
+  private String contactEmail;
+  private String contribution;
 
-  public ActivityLeader() {
+  public ActivityPartner() {
 
   }
 
   @Override
   public boolean equals(Object obj) {
-    if (obj instanceof ActivityLeader) {
-      ActivityLeader a = (ActivityLeader) obj;
+    if (obj instanceof ActivityPartner) {
+      ActivityPartner a = (ActivityPartner) obj;
       return a.getId() == this.id;
     }
     return false;
   }
 
-  public String getEmail() {
-    return email;
+  public String getContactEmail() {
+    return contactEmail;
+  }
+
+  public String getContactName() {
+    return contactName;
+  }
+
+  public String getContribution() {
+    return contribution;
   }
 
   public int getId() {
     return id;
   }
 
-  public Institution getInstitution() {
-    return institution;
-  }
-
-  public String getName() {
-    return name;
+  public Institution getPartner() {
+    return partner;
   }
 
   @Override
@@ -63,20 +65,24 @@ public class ActivityLeader {
     return this.id;
   }
 
-  public void setEmail(String email) {
-    this.email = email;
+  public void setContactEmail(String contactEmail) {
+    this.contactEmail = contactEmail;
+  }
+
+  public void setContactName(String contactName) {
+    this.contactName = contactName;
+  }
+
+  public void setContribution(String contribution) {
+    this.contribution = contribution;
   }
 
   public void setId(int id) {
     this.id = id;
   }
 
-  public void setInstitution(Institution institution) {
-    this.institution = institution;
-  }
-
-  public void setName(String name) {
-    this.name = name;
+  public void setPartner(Institution partner) {
+    this.partner = partner;
   }
 
   @Override

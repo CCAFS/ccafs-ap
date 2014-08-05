@@ -20,7 +20,7 @@ import org.apache.commons.lang3.builder.ToStringBuilder;
  *
  * @author Héctor Fabio Tobón R.
  * @author Hernán David Carvajal
- * @author Javier Andres Gallego
+ * @author Javier Andrés Gallego
  */
 public abstract class Location {
 
