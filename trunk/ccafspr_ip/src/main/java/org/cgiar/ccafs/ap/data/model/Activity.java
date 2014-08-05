@@ -35,6 +35,7 @@ public class Activity {
   private ActivityLeader leader;
   private List<Location> locations;
   private long created;
+  private List<IPElement> outputs;
 
   @Override
   public boolean equals(Object obj) {
@@ -48,7 +49,6 @@ public class Activity {
   public long getCreated() {
     return created;
   }
-
 
   public String getCustomId() {
     return customId;
@@ -72,6 +72,10 @@ public class Activity {
 
   public List<Location> getLocations() {
     return locations;
+  }
+
+  public List<IPElement> getOutputs() {
+    return outputs;
   }
 
   public Date getStart() {
@@ -113,6 +117,10 @@ public class Activity {
 
   public void setLocations(List<Location> locations) {
     this.locations = locations;
+  }
+
+  public void setOutputs(List<IPElement> outputs) {
+    this.outputs = outputs;
   }
 
   public void setStart(Date start) {
