@@ -20,7 +20,7 @@ import org.apache.commons.lang3.builder.ToStringBuilder;
 
 /**
  * This class represents a CCAFS Activity, which belongs to a specific Project.
- *
+ * 
  * @author Héctor Fabio Tobón R.
  */
 public class Activity {
@@ -31,7 +31,10 @@ public class Activity {
   private String description;
   private Date start;
   private Date end;
+  private ActivityLeader leader;
+
   private long created;
+
 
   @Override
   public boolean equals(Object obj) {
@@ -60,6 +63,10 @@ public class Activity {
 
   public int getId() {
     return id;
+  }
+
+  public ActivityLeader getLeader() {
+    return leader;
   }
 
   public Date getStart() {
@@ -93,6 +100,10 @@ public class Activity {
 
   public void setId(int id) {
     this.id = id;
+  }
+
+  public void setLeader(ActivityLeader leader) {
+    this.leader = leader;
   }
 
   public void setStart(Date start) {
