@@ -13,32 +13,33 @@
  *****************************************************************/
 package org.cgiar.ccafs.ap.action.preplanning;
 
+import org.cgiar.ccafs.ap.action.BaseAction;
+import org.cgiar.ccafs.ap.config.APConfig;
+import org.cgiar.ccafs.ap.config.APConstants;
+import org.cgiar.ccafs.ap.data.manager.BudgetManager;
+import org.cgiar.ccafs.ap.data.manager.InstitutionManager;
+import org.cgiar.ccafs.ap.data.manager.ProjectManager;
+import org.cgiar.ccafs.ap.data.manager.ProjectPartnerManager;
+import org.cgiar.ccafs.ap.data.model.Budget;
+import org.cgiar.ccafs.ap.data.model.BudgetType;
+import org.cgiar.ccafs.ap.data.model.Institution;
+import org.cgiar.ccafs.ap.data.model.Project;
+import org.cgiar.ccafs.ap.data.model.ProjectPartner;
+import org.cgiar.ccafs.ap.data.model.User;
+
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import org.cgiar.ccafs.ap.data.model.BudgetType;
-import org.cgiar.ccafs.ap.data.model.Budget;
-import org.cgiar.ccafs.ap.data.model.User;
-import org.cgiar.ccafs.ap.data.model.ProjectPartner;
-import org.cgiar.ccafs.ap.data.manager.ProjectPartnerManager;
-import org.cgiar.ccafs.ap.data.manager.InstitutionManager;
-import org.cgiar.ccafs.ap.data.model.Institution;
-import org.cgiar.ccafs.ap.data.manager.BudgetManager;
-import org.cgiar.ccafs.ap.data.manager.ProjectManager;
+import com.google.inject.Inject;
+import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.apache.commons.lang3.StringUtils;
-import org.cgiar.ccafs.ap.config.APConstants;
-import org.cgiar.ccafs.ap.data.model.Project;
-import com.google.inject.Inject;
-import org.cgiar.ccafs.ap.config.APConfig;
-import org.cgiar.ccafs.ap.action.BaseAction;
 
 /**
  * Project Budget Action.
- *
+ * 
  * @author Héctor Fabio Tobón R.
  */
 public class ProjectBudgetAction extends BaseAction {
@@ -85,7 +86,7 @@ public class ProjectBudgetAction extends BaseAction {
    * e.g. 2014-9-W1
    * Where 2014 is the year, 9 is the institution identifier and W1 is the budget type.
    * If the budget is not in the database, this method will create a new one with an id=-1 and amount=0.
-   *
+   * 
    * @return a Map of budgets as was described above.
    */
   private Map<String, Budget> generateMapBudgets() {
@@ -282,7 +283,7 @@ public class ProjectBudgetAction extends BaseAction {
 
   /**
    * TODO HT - To document
-   *
+   * 
    * @return
    */
   public Budget getSpecificBudget(int year, int partnerId, String budgetType) {
@@ -390,9 +391,17 @@ public class ProjectBudgetAction extends BaseAction {
 
   @Override
   public String save() {
-
     List<Budget> bs = project.getBudgets();
-    System.out.println(bs);
+
+    for (Budget budget : bs) {
+      budget.getId();
+      budget.getInstitution();
+      budget.getType();
+      budget.getAmount();
+      budget.getYear();
+      boolean saved = budgetManager.saveBudget(projectID, budget);
+
+    }
 
 
     return BaseAction.SUCCESS;
