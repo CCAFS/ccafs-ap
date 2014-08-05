@@ -23,7 +23,7 @@
     
     [#-- Title --]
     <h1 class="contentTitle">
-    [@s.text name="preplanning.projectBudget.title" /]  
+    ${project.composedId} - [@s.text name="preplanning.projectBudget.title" /]  
     </h1>
     [#if allYears?has_content]
       [#if hasLeader]
@@ -180,7 +180,7 @@
               [/#list] 
               [#-- Add Leveraged --]
               <div class="fullBlock addLeveragedBlock">
-                [@customForm.select name="some_name" value="" showTitle=false listName="leveragedInstitutions" keyFieldName="id"  displayFieldName="name" addButton=true className="leveraged" /]
+                [@customForm.select name="some_name" value="" showTitle=false listName="allInstitutions" keyFieldName="id"  displayFieldName="name" addButton=true className="leveraged" /]
               </div>
             </div>
            </div>   

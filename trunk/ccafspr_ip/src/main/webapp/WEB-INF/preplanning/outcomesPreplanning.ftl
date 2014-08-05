@@ -85,6 +85,22 @@
               </div>  
             [/#if] 
           [/#if] 
+          [#if currentUser.RPL]
+            [#-- FPL Indicators --]
+            <div id="idosBlock" class="contentElements">
+              <div class="itemIndex">[@s.text name="preplanning.outcomes.indicatorsFPL" /]</div>
+              [#assign fplIndicators = ["FPL: Indicator #1", "FPL: Indicator #2", "FPL: Indicator #3", "FPL: Indicator #4"] /]
+              <div id="indicatorsFPLBlock" class="indicatorsFPL checkboxGroup vertical clearfix"> 
+                [#list fplIndicators as indicator]
+                  <input  id="indicatorFPL-${indicator_index}" class="indicatorFPLCheckbox" type="checkbox" name="outcomes[0].contributesTo[${indicator_index}].id" value="">
+                  <label for="indicatorFPL-${indicator_index}" class="checkboxLabel" >${indicator}</label>
+                  <div class="target fourthPartBlock">
+                    [@customForm.input name="outcomes[0].contributesTo[${indicator_index}].target"  i18nkey="preplanning.outcomes.target" /]
+                  </div>
+                [/#list]
+              </div>
+            </div>
+          [/#if]
         </div>  
         [/#list]
       [#else]

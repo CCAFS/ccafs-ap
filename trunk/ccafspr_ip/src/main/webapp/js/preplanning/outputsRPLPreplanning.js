@@ -34,21 +34,20 @@ function updateMidOutcomesList(event){
   var programID = $target.find('option:selected').attr("value");
   var elementTypeId = $("#midOutcomeTypeID").val();
   var midOutcomeSelected = $parent.find("#midOutcomeSelected").val();
+  var $select = $parent.find("select#outputsRPL_midOutcomes");
   console.log("elementTypeId: " + elementTypeId);
   $.getJSON("../json/ipElementsByProgramAndType.do?programID=" + programID + "&elementTypeId=" + elementTypeId, function(data){
-    
-    $parent.find("select#outputsRPL_midOutcomes option").remove();
+    $select.find("option").remove();
     $.each(data.IPElementsList, function(){
-      $parent.find("select#outputsRPL_midOutcomes").append('<option value="' + this.id + '">' + this.description + '</option>');
+      $select.append('<option value="' + this.id + '">' + this.description + '</option>');
     });
   }).fail(function(){
     console.log("error");
   }).done(function(){
     if (midOutcomeSelected) {
-      $parent.find("select#outputsRPL_midOutcomes").val(midOutcomeSelected);
+      $select.val(midOutcomeSelected);
     }
-    $parent.find("select#outputsRPL_midOutcomes").attr("disabled", false);
-    $parent.find("select#outputsRPL_midOutcomes").trigger("change");
+    $select.attr("disabled", false).trigger("change");
   });
 }
 
@@ -66,6 +65,7 @@ function updateOutputsList(event){
     });
   }).fail(function(){
     console.log("error");
+    $parent.find("select[id^='outputsRPL_outputs'] option").remove();
   }).done(function(){
     if (outputSelected) {
       $parent.find("select[id^='outputsRPL_outputs']").val(outputSelected);

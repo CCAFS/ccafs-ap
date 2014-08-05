@@ -83,6 +83,11 @@ table.dataTable td {
   border: 1px solid #CCCCCC;
 }
 
+table.dataTable a {
+  text-decoration:none;
+  color: #444;
+}
+
 /*
  * Pagination
  */
