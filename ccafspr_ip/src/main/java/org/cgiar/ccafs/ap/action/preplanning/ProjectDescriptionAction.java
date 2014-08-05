@@ -78,8 +78,12 @@ public class ProjectDescriptionAction extends BaseAction {
    * @return the composed name described above.
    */
   public String getComposedName(int ipProgramId) {
-    return this.ipProgramFlagships.get(ipProgramId).getAcronym() + ": "
-      + this.ipProgramFlagships.get(ipProgramId).getName();
+    for (IPProgram p : ipProgramFlagships) {
+      if (p.getId() == ipProgramId) {
+        return p.getAcronym() + ": " + p.getName();
+      }
+    }
+    return null;
   }
 
 
@@ -181,6 +185,7 @@ public class ProjectDescriptionAction extends BaseAction {
 
     // Getting the information of the Flagships program for the View
     ipProgramFlagships = ipProgramManager.getProgramsByType(APConstants.FLAGSHIP_PROGRAM_TYPE);
+    System.out.println(ipProgramFlagships);
 
     // Getting the information of the Cross Cutting Theme for the View
     ipCrossCuttings = ipCrossCuttingManager.getIPCrossCuttings();
@@ -195,6 +200,7 @@ public class ProjectDescriptionAction extends BaseAction {
       // Getting the information of the Cross Cutting Theme associated with the project
       project.setCrossCuttings(ipCrossCuttingManager.getIPCrossCuttingByProject(projectID));
     }
+
 
   }
 
