@@ -136,8 +136,8 @@ public class ActivityManagerImpl implements ActivityManager {
       if (activityData.get("leader_id") != null) {
         activity.setLeader(activityManager.getActivityLeader(activityID));
       }
-
       activity.setCreated(Long.parseLong(activityData.get("created")));
+      System.out.println(activityData.get("leader_id"));
       return activity;
     }
     return null;
@@ -145,7 +145,7 @@ public class ActivityManagerImpl implements ActivityManager {
 
   @Override
   public ActivityLeader getActivityLeader(int activityID) {
-    Map<String, String> activityLeaderData = activityDAO.getActivityById(activityID);
+    Map<String, String> activityLeaderData = activityDAO.getActivityLeaderById(activityID);
     if (!activityLeaderData.isEmpty()) {
       ActivityLeader activityLeader = new ActivityLeader();
       activityLeader.setId(Integer.parseInt(activityLeaderData.get("id")));

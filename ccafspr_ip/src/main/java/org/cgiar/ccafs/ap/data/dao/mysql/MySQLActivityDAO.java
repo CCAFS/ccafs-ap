@@ -132,9 +132,9 @@ public class MySQLActivityDAO implements ActivityDAO {
   public Map<String, String> getActivityLeaderById(int activityID) {
     Map<String, String> activityLeaderData = new HashMap<String, String>();
     StringBuilder query = new StringBuilder();
-    query.append("SELECT a.*   ");
+    query.append("SELECT al.*   ");
     query.append("FROM activity_leaders as al ");
-    query.append("INNER JOIN activities a ON al.id=a.leader_id");
+    query.append("INNER JOIN activities a ON al.id=a.leader_id ");
     query.append("WHERE a.id=  ");
     query.append(activityID);
     try (Connection con = databaseManager.getConnection()) {

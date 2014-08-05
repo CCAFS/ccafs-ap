@@ -26,15 +26,15 @@
     <div id="activityDescription" class="borderBox">
          <fieldset class="fullBlock">  
   			[#-- Activity Leader --]
-  			[@customForm.select name="activity.leader" label=""  disabled=false i18nkey="planning.activityDescription.leader" listName="allPartners" keyFieldName="id"  displayFieldName="name" /]
+  			[@customForm.select name="activity.leader.institution.id" label=""  disabled=false i18nkey="planning.activityDescription.leader" listName="allPartners" keyFieldName="id"  displayFieldName="name" /]
   	    <div id="projectDescription" class="">
   	      [#-- Contact Name --]
   	      <div class="halfPartBlock">  
-  	      	[@customForm.input name="activity.contactName" type="text" i18nkey="planning.activityDescription.contactName"  /]
+  	      	[@customForm.input name="activity.leader.name" type="text" i18nkey="planning.activityDescription.contactName" required=true  /]
           </div>    	
   	      [#--  Contact Email --]
           <div class="halfPartBlock">          
-            [@customForm.input name="activity.contactEmail" type="text"  i18nkey="planning.activityDescription.contactEmail"  /]
+            [@customForm.input name="activity.leader.email" type="text"  i18nkey="planning.activityDescription.contactEmail" required=true  /]
           </div>
           [#-- Activity Title --]
   			[@customForm.textArea name="activity.title" i18nkey="planning.activityDescription.title" required=true /]
