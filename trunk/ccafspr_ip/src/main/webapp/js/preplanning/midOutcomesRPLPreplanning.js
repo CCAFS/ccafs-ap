@@ -170,7 +170,7 @@ function setContributesIndexes(){
 
   $(".midOutcome ").each(function(index,contribution){
     indicatorCount = -1;
-    $(contribution).find("#contributeId").attr("name", "midOutcomes[" + index + "].translatedOf");
+    $(contribution).find("input#contributeId").attr("name", "midOutcomes[" + index + "].translatedOf");
     
     $(contribution).find("div.contributions .elementIndicator").each(function(indicatorIndex,element){
       
@@ -184,6 +184,7 @@ function setContributesIndexes(){
       
       $(element).find("input[name$='id']").attr("name", elementName + "indicator[" + indicatorCount + "].id");
       $(element).find("input[name$='parent']").attr("name", elementName + "indicators[" + indicatorCount + "].parent");
+      $(element).find("label").attr("for", elementName + "indicators[" + indicatorCount + "].parent");
       $(element).find("input[name$='target']").attr("name", elementName + "indicators[" + indicatorCount + "].target");
       
       $(element).find("textarea[name$='description']").attr("name", elementName + "indicators[" + indicatorCount + "].description")

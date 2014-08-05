@@ -79,7 +79,8 @@
                       <input id="contributeId" type="hidden" name="midOutcomes[${midOutcome_index}].translatedOf" value="${parent.id}" />
                       <p id="description">[@s.text name="midOutcomes[${midOutcome_index}].translatedOf[${parent_index}].description" /]</p>
                       <h6>[@s.text name="preplanning.midOutcomesRPL.selectIndicators" /]</h6>
-                      [#-- Outcome Indicators --]
+                      
+                      [#-- midOutcome's Indicators --]
                       <div id="midOutcomeIndicators" class="fullBlock">
                         <div class="checkboxGroup vertical"> 
                           [#list parent.indicators as parentIndicator] 
@@ -87,9 +88,9 @@
                             <div class="elementIndicator">
                               [#if midOutcome.getIndicatorByParentID( parentIndicator.id )?has_content]
                                 [#assign midOutcomeIndicator = midOutcome.getIndicatorByParentID( parentIndicator.id ) ]
-                                <input type="checkbox" name="midOutcomes[${midOutcome_index}].indicators[${parentIndicator_index}].parent" value="${parentIndicator.id}" id="indicator-parent-${parentIndicator_index}" checked="checked" class="midOutcomeIndicator">
+                                <input type="checkbox" name="midOutcomes[${midOutcome_index}].indicators[${parentIndicator_index}].parent" value="${parentIndicator.id}" id="indicator-parent-${midOutcomeIndicator.id}" checked="checked" class="midOutcomeIndicator">
                                 <input type="hidden" name="midOutcomes[${midOutcome_index}].indicators[${parentIndicator_index}].id" value="${midOutcomeIndicator.id}" id="indicator-${parentIndicator_index}" >
-                                <label for="indicator-parent-${parentIndicator_index}" class="checkboxLabel"> ${parentIndicator.description} </label>
+                                <label for="indicator-parent-${midOutcomeIndicator.id}" class="checkboxLabel"> ${parentIndicator.description} </label>
                                 <div class="fields">
                                   <div class="target">
                                     <div class="input">
