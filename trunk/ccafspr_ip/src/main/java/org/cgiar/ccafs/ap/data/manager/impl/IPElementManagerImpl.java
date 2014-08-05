@@ -76,21 +76,53 @@ public class IPElementManagerImpl implements IPElementManager {
   @Override
   public List<IPElement> getIPElementList() {
     List<Map<String, String>> elementDataList = ipElementDAO.getIPElementList();
-
     return setDataToIPElementObjects(elementDataList);
   }
 
   @Override
   public List<IPElement> getIPElementList(String[] ids) {
-    List<IPElement> elements = new ArrayList<>();
-    for (IPElement element : getIPElementList()) {
-      for (String id : ids) {
-        if (String.valueOf(element.getId()).equals(id)) {
-          elements.add(element);
-        }
+    List<Map<String, String>> ipElementDataList = ipElementDAO.getIPElement(ids);
+    return setDataToIPElementObjects(ipElementDataList);
+  }
+
+  @Override
+  public List<IPElement> getIPElementListForGraph() {
+    List<Map<String, String>> ipElementDataList = ipElementDAO.getIPElementList();
+    List<IPElement> elementsList = new ArrayList<>();
+
+    for (Map<String, String> elementData : ipElementDataList) {
+      IPElement element = new IPElement();
+      element.setId(Integer.parseInt(elementData.get("id")));
+      element.setDescription(elementData.get("description"));
+
+      // Set elements 'contributesTo' if exists
+      List<IPElement> elementsRelated = new ArrayList<>();
+      List<Map<String, String>> elementsData =
+        ipElementDAO.getIPElementsRelated(element.getId(), APConstants.ELEMENT_RELATION_CONTRIBUTION);
+      for (Map<String, String> parentData : elementsData) {
+        IPElement parentElement = new IPElement();
+        parentElement.setId(Integer.parseInt(parentData.get("id")));
+        parentElement.setDescription(parentData.get("description"));
+        elementsRelated.add(parentElement);
       }
+      element.setContributesTo(elementsRelated);
+
+      // Set elements 'translatedOf' if exists
+      elementsRelated = new ArrayList<>();
+      elementsData = ipElementDAO.getIPElementsRelated(element.getId(), APConstants.ELEMENT_RELATION_TRANSLATION);
+      for (Map<String, String> parentData : elementsData) {
+        IPElement parentElement = new IPElement();
+        parentElement.setId(Integer.parseInt(parentData.get("id")));
+        parentElement.setDescription(parentData.get("description"));
+        elementsRelated.add(parentElement);
+      }
+      element.setTranslatedOf(elementsRelated);
+
+      elementsList.add(element);
     }
-    return elements;
+
+    return elementsList;
+
   }
 
   @Override

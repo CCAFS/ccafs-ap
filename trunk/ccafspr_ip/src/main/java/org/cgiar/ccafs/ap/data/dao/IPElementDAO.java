@@ -29,7 +29,7 @@ public interface IPElementDAO {
 
   /**
    * This method create into the database a new IP Element
-   *
+   * 
    * @param ipElementData - Information to be saved
    * @return the last inserted id if any or 0 if some record was updated or -1 if any error recorded.
    */
@@ -38,7 +38,7 @@ public interface IPElementDAO {
   /**
    * This method remove from the database the IPElement identified with the
    * parameter received
-   *
+   * 
    * @param ipElementID - IPElement identifier
    * @return true if the record was successfully deleted. False otherwise
    */
@@ -47,7 +47,7 @@ public interface IPElementDAO {
   /**
    * This method deletes all the ip elements which belongs to the program given
    * and which are of the same type given
-   *
+   * 
    * @param programId
    * @param typeId
    * @return true if the elements were deleted successfully. False otherwise
@@ -57,7 +57,7 @@ public interface IPElementDAO {
   /**
    * This method remove of the database the relation between the program and
    * an IPElement identified with the value given as parameter.
-   *
+   * 
    * @param elementID
    * @return true if the element was successfully removed. False otherwise.
    */
@@ -66,7 +66,7 @@ public interface IPElementDAO {
   /**
    * This method returns the information of the ipProgram that created
    * the ipElement
-   *
+   * 
    * @param ipElementID - IpElement identifier
    * @return a Map with the information
    */
@@ -75,7 +75,7 @@ public interface IPElementDAO {
   /**
    * This method return a all the IP elements which belongs to the program
    * indicated by parameter.
-   *
+   * 
    * @param programID, identifier of the program
    * @return a list of maps with the information of all IP elements returned.
    */
@@ -85,7 +85,7 @@ public interface IPElementDAO {
   /**
    * This method return all the IP elements of the type given and that correspond
    * to the program given
-   *
+   * 
    * @param programID - program identifier
    * @param elementTypeID - element type identifier
    * @return a list of maps with the information of all IP elements returned
@@ -93,8 +93,17 @@ public interface IPElementDAO {
   public List<Map<String, String>> getIPElement(int programID, int elementTypeID);
 
   /**
+   * This method gets the ipElements identified by the values received by
+   * parameter
+   * 
+   * @param elementIds - Array of ipElements identifiers
+   * @return a list of maps with the information
+   */
+  public List<Map<String, String>> getIPElement(String[] elementIds);
+
+  /**
    * Get all the ipElements presents in the database
-   *
+   * 
    * @return all list of maps with the information of all ipElements
    */
   public List<Map<String, String>> getIPElementList();
@@ -102,7 +111,7 @@ public interface IPElementDAO {
   /**
    * This method gets all the ipElements that are children of the element
    * identified by the value passed as parameter.
-   *
+   * 
    * @param parentId - IPElement identifier
    * @return a list of maps with the information of the ipElements
    */
@@ -111,7 +120,7 @@ public interface IPElementDAO {
   /**
    * Get all IPElements which have relation with the element identified by the
    * value passed as parameter.
-   *
+   * 
    * @param ipElementID - ipElement identifier
    * @param relationTypeID - relation type identifier
    * @return a list of maps with the information of the related parents
@@ -121,7 +130,7 @@ public interface IPElementDAO {
   /**
    * This method returns the identifier of the record which relates
    * the ipElement and the ipProgram inside the table ip_element_programs
-   *
+   * 
    * @param ipElementID
    * @param ipProgramID
    * @return
@@ -130,7 +139,7 @@ public interface IPElementDAO {
 
   /**
    * This method relates an existent ip element with the program given.
-   *
+   * 
    * @param elementID - IPElement identifier
    * @param programID - Program identifier
    * @param relationTypeID - Identifies the type of relation between
