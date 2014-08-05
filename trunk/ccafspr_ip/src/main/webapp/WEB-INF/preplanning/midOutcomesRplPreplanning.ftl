@@ -64,7 +64,7 @@
 
               [#-- Flagships list --]
               [#if midOutcome.translatedOf?has_content]
-                [@customForm.select name="midOutcomesRPL_flagships" label="" i18nkey="preplanning.midOutcomesRPL.flagships" listName="flagshipsList" keyFieldName="id"  displayFieldName="name" disabled=true /]
+                [@customForm.select name="midOutcomesRPL_flagships" label="" i18nkey="preplanning.midOutcomesRPL.flagships" listName="flagshipsList" keyFieldName="id"  displayFieldName="name" value=midOutcome.translatedOf[0].program.id?string disabled=true  /]
               [#else]
                 [@customForm.select name="midOutcomesRPL_flagships" label="" i18nkey="preplanning.midOutcomesRPL.flagships" listName="flagshipsList" keyFieldName="id"  displayFieldName="name" /]
               [/#if]
