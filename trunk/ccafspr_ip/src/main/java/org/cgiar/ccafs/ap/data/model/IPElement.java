@@ -74,8 +74,10 @@ public class IPElement {
 
   public IPIndicator getIndicatorByParentID(int indicatorID) {
     for (IPIndicator _indicator : indicators) {
-      if (_indicator.getParent().getId() == indicatorID) {
-        return _indicator;
+      if (_indicator.getParent() != null) {
+        if (_indicator.getParent().getId() == indicatorID) {
+          return _indicator;
+        }
       }
     }
     return null;
@@ -93,7 +95,7 @@ public class IPElement {
    * If the parameter received is true returns a list with all the
    * indicators that have parents.
    * TODO HC - To Document parameters.
-   *
+   * 
    * @param hasParents
    * @return
    */

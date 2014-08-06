@@ -94,17 +94,32 @@
             <div id="idosBlock" class="contentElements">
               <div class="itemIndex">[@s.text name="preplanning.outcomes.indicatorsFPL" /]</div>
               <div id="indicatorsFPLBlock" class="indicatorsFPL checkboxGroup vertical clearfix"> 
-                [#list fplOutcomesIndicators as indicator]
-                  [#assign indicatorChecked=outcome.parentIndicatorsIDs?seq_contains(1)]
-                  
-                  <input  id="indicatorFPL-${indicator_index}" class="indicatorFPLCheckbox" type="checkbox" name="outcomes[0].indicator[${indicator_index}].parent" value=${indicator.id} [#if indicatorChecked] checked="checked" [/#if]>
-                  <label for="indicatorFPL-${indicator_index}" class="checkboxLabel" >
-                    [#if indicator.description?has_content]
-                      ${indicator.description}
+                [#list fplOutcomesIndicators as parentIndicator]
+                  <div class="fplIndicatorBlock">
+                    [#if outcome.getIndicatorByParentID(parentIndicator.id)?has_content]
+                      [#assign indicator = outcome.getIndicatorByParentID(parentIndicator.id)]
+                      <input  type="hidden" name="outcomes[0].indicators[${parentIndicator_index+1}].id" value="${indicator.id}" />
+                      <input  id="indicatorFPL-${parentIndicator_index}" class="indicatorFPLCheckbox" type="checkbox" name="outcomes[0].indicators[${parentIndicator_index+1}].parent" value="${parentIndicator.id}" checked="checked">
+                      <label for="indicatorFPL-${parentIndicator_index}" class="checkboxLabel" >
+                        [#if parentIndicator.description?has_content]
+                          ${parentIndicator.description}
+                        [/#if]
+                      </label>
+                      <div class="target fourthPartBlock">
+                        [@customForm.input name="outcomes[0].indicators[${parentIndicator_index+1}].target" value="${indicator.target}"  i18nkey="preplanning.outcomes.target" /]
+                      </div>
+                    [#else]
+                      <input  type="hidden" disabled="disabled" name="outcomes[0].indicators[${parentIndicator_index+1}].id" value="-1" />
+                      <input  id="indicatorFPL-${parentIndicator_index}" class="indicatorFPLCheckbox" type="checkbox" name="outcomes[0].indicators[${parentIndicator_index+1}].parent" value="${parentIndicator.id}" />
+                      <label for="indicatorFPL-${parentIndicator_index}" class="checkboxLabel" >
+                        [#if parentIndicator.description?has_content]
+                          ${parentIndicator.description}
+                        [/#if]
+                      </label>
+                      <div class="target fourthPartBlock">
+                        [@customForm.input name="outcomes[0].indicators[${parentIndicator_index+1}].target" value=""  i18nkey="preplanning.outcomes.target" disabled=true /]
+                      </div>
                     [/#if]
-                  </label>
-                  <div class="target fourthPartBlock">
-                    [@customForm.input name="outcomes[0].indicator[${indicator_index}].target"  i18nkey="preplanning.outcomes.target" /]
                   </div>
                 [/#list]
               </div>

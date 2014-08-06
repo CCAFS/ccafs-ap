@@ -129,6 +129,8 @@ public class MidOutcomesPreplanningAction extends BaseAction {
         for (int i = 0; i < midOutcome.getIndicators().size(); i++) {
           if (midOutcome.getIndicators().get(i).getDescription().isEmpty()) {
             midOutcome.getIndicators().remove(i);
+            // As we removed the element i, we should continue with the next if exists
+            continue;
           }
 
           if (getCurrentUser().isRPL()) {

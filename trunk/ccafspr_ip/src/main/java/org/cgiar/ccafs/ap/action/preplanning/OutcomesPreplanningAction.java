@@ -24,7 +24,6 @@ import org.cgiar.ccafs.ap.data.model.IPElement;
 import org.cgiar.ccafs.ap.data.model.IPElementType;
 import org.cgiar.ccafs.ap.data.model.IPIndicator;
 import org.cgiar.ccafs.ap.data.model.IPProgram;
-import org.cgiar.ccafs.ap.validation.preplanning.OutcomesValidation;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -48,21 +47,17 @@ public class OutcomesPreplanningAction extends BaseAction {
   // Model
   private List<IPElement> idos;
   private List<IPElement> outcomes;
-  private StringBuilder validationMessages;
   private List<IPElement> outcomesFromDatabase;
   private List<IPIndicator> fplOutcomesIndicators;
 
-  // Validator
-  private OutcomesValidation validator;
 
   @Inject
-  public OutcomesPreplanningAction(APConfig config, IPElementManager ipElementManager, OutcomesValidation validator,
+  public OutcomesPreplanningAction(APConfig config, IPElementManager ipElementManager,
     IPIndicatorManager ipIndicatorManager, IPElementRelationManager ipElementRelationManager,
     IPProgramManager ipProgramManager) {
     super(config);
     this.ipElementManager = ipElementManager;
     this.ipIndicatorManager = ipIndicatorManager;
-    this.validator = validator;
     this.ipElementRelationManager = ipElementRelationManager;
     this.ipProgramManager = ipProgramManager;
   }
@@ -92,7 +87,6 @@ public class OutcomesPreplanningAction extends BaseAction {
   @Override
   public void prepare() throws Exception {
     IPElementType type = new IPElementType(APConstants.ELEMENT_TYPE_OUTCOME2025);
-    validationMessages = new StringBuilder(); // TODO HC - This variable is never used.
 
     // The IDOs are created by the coordinating unit
     IPProgram cuProgram = new IPProgram();
@@ -143,7 +137,7 @@ public class OutcomesPreplanningAction extends BaseAction {
 
   @Override
   public String save() {
-
+    System.out.println(outcomes);
     for (int i = 0; i < outcomesFromDatabase.size(); i++) {
       IPElement outcome = outcomesFromDatabase.get(i);
       // If all the outcomes were removed, we should remove all the records
@@ -172,17 +166,5 @@ public class OutcomesPreplanningAction extends BaseAction {
 
   public void setOutcomes(List<IPElement> outcomes) {
     this.outcomes = outcomes;
-  }
-
-  public String validateForm() {
-    String messages = validator.validateForm(outcomes);
-
-    if (messages.isEmpty()) {
-      addActionMessage(getText("validation.success"));
-    } else {
-      String validationResult = getText("validation.fail") + messages;
-      addActionWarning(validationResult);
-    }
-    return SUCCESS;
   }
 }
