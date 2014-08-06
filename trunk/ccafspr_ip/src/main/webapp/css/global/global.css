@@ -86,8 +86,8 @@ legend {
 }
 
 textarea {
-  width: 93%;
-  height: 50px;
+  width: 100%;
+  height: 85px;
 }
 
 input[type="radio"] {

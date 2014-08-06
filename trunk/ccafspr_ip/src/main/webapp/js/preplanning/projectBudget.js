@@ -10,12 +10,15 @@ function init(){
   });
   addChosen();
   attachEvents();
+  
 }
 
 function attachEvents(){
   // Leveraged Events
   $("#leveraged .addLeveragedBlock .addButton").click(addLeveragedEvent);
   $("#leveraged .leveragedPartner .removeButton").click(removeLeveragedEvent);
+  $("input[name$='amount']").on("keyup", calculateBudget);
+  $("input[name$='amount']").on("keypress", isNumber);
 }
 
 // Leveraged Functions //
@@ -70,4 +73,12 @@ function addChosen(){
       search_contains : true
     });
   });
+}
+
+function calculateBudget(){
+  var totalAmount = 0;
+  $("input[name$='amount']").each(function(index,amount){
+    totalAmount += parseInt($(amount).val());
+  });
+  $("p#projectTotalBudget").text('US$ ' + parseFloat(totalAmount, 10).toFixed(2).replace(/(\d)(?=(\d{3})+\.)/g, "$1,").toString());
 }

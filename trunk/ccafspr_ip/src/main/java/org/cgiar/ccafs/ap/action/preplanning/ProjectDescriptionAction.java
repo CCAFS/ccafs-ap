@@ -73,7 +73,7 @@ public class ProjectDescriptionAction extends BaseAction {
   /**
    * This method returns a composed name with the Acronym and Name.
    * e.g. FP4: Policies and Institutions for Climate-Resilient Food Systems
-   *
+   * 
    * @param ipProgramId is the program identifier.
    * @return the composed name described above.
    */
@@ -89,7 +89,7 @@ public class ProjectDescriptionAction extends BaseAction {
 
   /**
    * This method returns an array of cross cutting ids depending on the project.crossCuttings attribute.
-   *
+   * 
    * @return an array of integers.
    */
   public int[] getCrossCuttingIds() {
@@ -109,7 +109,7 @@ public class ProjectDescriptionAction extends BaseAction {
 
   /**
    * This method returns an array of flagship ids depending on the project.flagships attribute.
-   *
+   * 
    * @return an array of integers.
    */
   public int[] getFlagshipIds() {
@@ -147,7 +147,7 @@ public class ProjectDescriptionAction extends BaseAction {
 
   /**
    * This method returns an array of region ids depending on the project.regions attribute.
-   *
+   * 
    * @return an array of integers.
    */
   public int[] getRegionIds() {
@@ -206,6 +206,8 @@ public class ProjectDescriptionAction extends BaseAction {
 
   @Override
   public String save() {
+    // TODO HT: Recordar enviar manualmente el programID del project
+
     // ----- SAVING Project description -----
     userManager.getEmployeeID(project.getOwner());
     int result = projectManager.saveProjectDescription(project);
