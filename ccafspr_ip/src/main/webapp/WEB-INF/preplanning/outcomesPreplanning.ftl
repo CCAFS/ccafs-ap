@@ -61,6 +61,7 @@
             </div>
             --] 
           </div> 
+          
           [#if currentUser.FPL]
             [#-- IDOs --]
             [#if idos?has_content]
@@ -87,17 +88,23 @@
               </div>  
             [/#if] 
           [/#if] 
+          
           [#if currentUser.RPL]
             [#-- FPL Indicators --]
             <div id="idosBlock" class="contentElements">
               <div class="itemIndex">[@s.text name="preplanning.outcomes.indicatorsFPL" /]</div>
-              [#assign fplIndicators = ["FPL: Indicator #1", "FPL: Indicator #2", "FPL: Indicator #3", "FPL: Indicator #4"] /]
               <div id="indicatorsFPLBlock" class="indicatorsFPL checkboxGroup vertical clearfix"> 
-                [#list fplIndicators as indicator]
-                  <input  id="indicatorFPL-${indicator_index}" class="indicatorFPLCheckbox" type="checkbox" name="outcomes[0].contributesTo[${indicator_index}].id" value="">
-                  <label for="indicatorFPL-${indicator_index}" class="checkboxLabel" >${indicator}</label>
+                [#list fplOutcomesIndicators as indicator]
+                  [#assign indicatorChecked=outcome.parentIndicatorsIDs?seq_contains(1)]
+                  
+                  <input  id="indicatorFPL-${indicator_index}" class="indicatorFPLCheckbox" type="checkbox" name="outcomes[0].indicator[${indicator_index}].parent" value=${indicator.id} [#if indicatorChecked] checked="checked" [/#if]>
+                  <label for="indicatorFPL-${indicator_index}" class="checkboxLabel" >
+                    [#if indicator.description?has_content]
+                      ${indicator.description}
+                    [/#if]
+                  </label>
                   <div class="target fourthPartBlock">
-                    [@customForm.input name="outcomes[0].contributesTo[${indicator_index}].target"  i18nkey="preplanning.outcomes.target" /]
+                    [@customForm.input name="outcomes[0].indicator[${indicator_index}].target"  i18nkey="preplanning.outcomes.target" /]
                   </div>
                 [/#list]
               </div>

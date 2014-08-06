@@ -20,7 +20,7 @@
 	      </a>
 	      
 	      [#-- PRE-Planning section --]
-	      [#if currentUser.CP || currentUser.FPL || currentUser.RPL || currentUser.PI || currentUser.admin ]
+	      [#if currentUser.FPL || currentUser.RPL || currentUser.CU || currentUser.admin ]
 	        [#if planningActive ]
 	          <a  href="${baseUrl}/pre-planning/outcomes.do">
 	        [#else]

@@ -19,8 +19,10 @@ import org.cgiar.ccafs.ap.config.APConstants;
 import org.cgiar.ccafs.ap.data.manager.IPElementManager;
 import org.cgiar.ccafs.ap.data.manager.IPElementRelationManager;
 import org.cgiar.ccafs.ap.data.manager.IPIndicatorManager;
+import org.cgiar.ccafs.ap.data.manager.IPProgramManager;
 import org.cgiar.ccafs.ap.data.model.IPElement;
 import org.cgiar.ccafs.ap.data.model.IPElementType;
+import org.cgiar.ccafs.ap.data.model.IPIndicator;
 import org.cgiar.ccafs.ap.data.model.IPProgram;
 import org.cgiar.ccafs.ap.validation.preplanning.OutcomesValidation;
 
@@ -41,24 +43,28 @@ public class OutcomesPreplanningAction extends BaseAction {
   private IPElementManager ipElementManager;
   private IPIndicatorManager ipIndicatorManager;
   private IPElementRelationManager ipElementRelationManager;
+  private IPProgramManager ipProgramManager;
 
   // Model
   private List<IPElement> idos;
   private List<IPElement> outcomes;
   private StringBuilder validationMessages;
   private List<IPElement> outcomesFromDatabase;
+  private List<IPIndicator> fplOutcomesIndicators;
 
   // Validator
   private OutcomesValidation validator;
 
   @Inject
   public OutcomesPreplanningAction(APConfig config, IPElementManager ipElementManager, OutcomesValidation validator,
-    IPIndicatorManager ipIndicatorManager, IPElementRelationManager ipElementRelationManager) {
+    IPIndicatorManager ipIndicatorManager, IPElementRelationManager ipElementRelationManager,
+    IPProgramManager ipProgramManager) {
     super(config);
     this.ipElementManager = ipElementManager;
     this.ipIndicatorManager = ipIndicatorManager;
     this.validator = validator;
     this.ipElementRelationManager = ipElementRelationManager;
+    this.ipProgramManager = ipProgramManager;
   }
 
   @Override
@@ -70,6 +76,10 @@ public class OutcomesPreplanningAction extends BaseAction {
     return APConstants.ELEMENT_TYPE_OUTCOME2025;
   }
 
+  public List<IPIndicator> getFplOutcomesIndicators() {
+    return fplOutcomesIndicators;
+  }
+
   public List<IPElement> getIdos() {
     return idos;
   }
@@ -77,6 +87,7 @@ public class OutcomesPreplanningAction extends BaseAction {
   public List<IPElement> getOutcomes() {
     return outcomes;
   }
+
 
   @Override
   public void prepare() throws Exception {
@@ -99,6 +110,25 @@ public class OutcomesPreplanningAction extends BaseAction {
     // Keep the id of all outcomes which come from the database
     outcomesFromDatabase = new ArrayList<>();
     outcomesFromDatabase.addAll(outcomes);
+
+    // If the user is RPL they should see a list with all the indicators
+    // filled by the FPL
+    if (getCurrentUser().isRPL()) {
+      fplOutcomesIndicators = new ArrayList<>();
+      List<IPProgram> flagshipPrograms = ipProgramManager.getProgramsByType(APConstants.FLAGSHIP_PROGRAM_TYPE);
+      IPElementType outcomesType = new IPElementType(APConstants.ELEMENT_TYPE_OUTCOME2025);
+
+      for (IPProgram program : flagshipPrograms) {
+        List<IPElement> elements = ipElementManager.getIPElements(program, outcomesType);
+        for (IPElement e : elements) {
+          for (IPIndicator indicator : e.getIndicators()) {
+            if (indicator.getParent() == null) {
+              fplOutcomesIndicators.add(indicator);
+            }
+          }
+        }
+      }
+    }
 
     if (getRequest().getMethod().equalsIgnoreCase("post")) {
       // Clear out the list if it has some element
