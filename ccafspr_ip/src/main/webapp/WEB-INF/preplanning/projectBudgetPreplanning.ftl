@@ -30,12 +30,13 @@
         [#-- Total CCAFS budget--]
         <div id="totalBudget" class="halfPartBlock">
           <h6>[@s.text name="preplanning.projectBudget.totalBudget" /]</h6>
-          {project.totalBudget}
+          <p>{project.totalBudget}</p>
         </div>
         [#-- Total overall project budget:--]
         <div id="totalBudget" class="halfPartBlock">
           <h6>[@s.text name="preplanning.projectBudget.totalOverallBudget" /]</h6>
-          {project.totalOverallBudget}
+          
+          <p id="projectTotalBudget">{project.totalBudget}</p>
         </div>  
         [#-- Tertiary Menu - All years --] 
         <div id="budgetTables" class=""> 

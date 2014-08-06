@@ -1,9 +1,9 @@
 $(document).ready(function(){
   datePickerConfig({
-  "startDate" : "#project\\.startDate",
-  "endDate" : "#project\\.endDate",
-  defaultMinDateValue : $("#minDateValue").val(),
-  defaultMaxDateValue : $("#maxDateValue").val()
+    "startDate" : "#project\\.startDate",
+    "endDate" : "#project\\.endDate",
+    defaultMinDateValue : $("#minDateValue").val(),
+    defaultMaxDateValue : $("#maxDateValue").val()
   });
   setProgramId();
   addChosen();
@@ -26,17 +26,17 @@ function datePickerConfig(element){
   // $(element.startDate).attr('readonly', true);
   var finalMaxDate = (maxDateValue != 0) ? maxDateValue : defaultMaxDateValue;
   $(element.startDate).datepicker({
-  dateFormat : "yy-mm-dd",
-  minDate : defaultMinDateValue,
-  maxDate : finalMaxDate,
-  changeMonth : true,
-  changeYear : true,
-  defaultDate : null,
-  onClose : function(selectedDate){
-    if (selectedDate != "") {
-      $(element.endDate).datepicker("option", "minDate", selectedDate);
+    dateFormat : "yy-mm-dd",
+    minDate : defaultMinDateValue,
+    maxDate : finalMaxDate,
+    changeMonth : true,
+    changeYear : true,
+    defaultDate : null,
+    onClose : function(selectedDate){
+      if (selectedDate != "") {
+        $(element.endDate).datepicker("option", "minDate", selectedDate);
+      }
     }
-  }
   });
   
   // End date calendar
@@ -46,17 +46,17 @@ function datePickerConfig(element){
   // $(element.endDate).attr('readonly', true);
   var finalMinDate = (minDateValue != 0) ? minDateValue : defaultMinDateValue;
   $(element.endDate).datepicker({
-  dateFormat : "yy-mm-dd",
-  minDate : finalMinDate,
-  maxDate : defaultMaxDateValue,
-  changeMonth : true,
-  changeYear : true,
-  defaultDate : null,
-  onClose : function(selectedDate){
-    if (selectedDate != "") {
-      $(element.startDate).datepicker("option", "maxDate", selectedDate);
+    dateFormat : "yy-mm-dd",
+    minDate : finalMinDate,
+    maxDate : defaultMaxDateValue,
+    changeMonth : true,
+    changeYear : true,
+    defaultDate : null,
+    onClose : function(selectedDate){
+      if (selectedDate != "") {
+        $(element.startDate).datepicker("option", "maxDate", selectedDate);
+      }
     }
-  }
   });
 }
 
