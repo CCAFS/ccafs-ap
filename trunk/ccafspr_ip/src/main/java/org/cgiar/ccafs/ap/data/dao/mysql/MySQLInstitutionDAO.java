@@ -180,10 +180,21 @@ public class MySQLInstitutionDAO implements InstitutionDAO {
     query.append("INNER JOIN institution_types it ON it.id=i.institution_type_id ");
     query.append("LEFT JOIN loc_elements lc ON lc.id=i.country_id ");
     query.append("LEFT JOIN ip_programs ip ON ip.id=i.program_id ");
-    query.append("WHERE it.id =  ");
-    query.append(typeID);
-    query.append(" AND lc.id =  ");
-    query.append(countryID);
+
+    if (countryID != -1 || typeID != -1) {
+      query.append("WHERE ");
+
+      // Add the conditions if exists
+      if (countryID != -1) {
+        query.append("lc.id = '" + countryID + "' ");
+      } else {
+        query.append(" 1 ");
+      }
+      if (typeID != -1) {
+        query.append(" AND it.id = '" + typeID + "' ");
+      }
+    }
+
     query.append(" ORDER BY i.acronym, i.name, loc_elements_name ASC ");
 
     LOG.debug("-- getAllInstitutions() > Calling method executeQuery to get the results");
