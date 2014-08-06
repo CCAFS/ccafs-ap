@@ -71,10 +71,37 @@ function addMidOutcomeEvent(event){
 function removeMidOutcomeEvent(event){
   event.preventDefault();
   var $ElementDiv = $(event.target).parent().parent();
-  $ElementDiv.hide("slow", function(){
-    $(this).remove();
-    setMidOutcomesIndexes();
+  var elementID = $ElementDiv.find("input[id^='id']").val();
+  var source = "../json/ipElementsByParent.do?elementID=" + elementID;
+  $.getJSON(source, function(){
+  }).done(function(data){
+    if (data.IPElementsList.length == 0) {
+      $ElementDiv.hide("slow", function(){
+        $(this).remove();
+        setMidOutcomesIndexes();
+      });
+    } else {
+      $("#removeDialog").find(".elements").html(data.IPElementsList.length);
+      $("#removeDialog").dialog({
+        modal : true,
+        buttons : {
+          "Remove" : function(){
+            $ElementDiv.hide("slow", function(){
+              $(this).remove();
+              setMidOutcomesIndexes();
+            });
+            $(this).dialog("close");
+          },
+          "Cancel" : function(){
+            $(this).dialog("close");
+          }
+        }
+      });
+    }
+  }).fail(function(){
+    console.log("error");
   });
+  
 }
 
 function setMidOutcomesIndexes(){
