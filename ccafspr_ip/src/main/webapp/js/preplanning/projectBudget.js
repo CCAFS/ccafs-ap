@@ -17,7 +17,8 @@ function attachEvents(){
   // Leveraged Events
   $("#leveraged .addLeveragedBlock .addButton").click(addLeveragedEvent);
   $("#leveraged .leveragedPartner .removeButton").click(removeLeveragedEvent);
-  $("input[name$='amount']").on("keyup", calculateBudget);
+  $(".ccafsBudget input[name$='amount']").on("keyup", calculateCCAFSBudget);
+  $("input[name$='amount']").on("keyup", calculateOverallBudget);
   $("input[name$='amount']").on("keypress", isNumber);
 }
 
@@ -75,10 +76,18 @@ function addChosen(){
   });
 }
 
-function calculateBudget(){
-  var totalAmount = 0;
+function calculateOverallBudget(){
+  var totalAmount = 0.0;
   $("input[name$='amount']").each(function(index,amount){
     totalAmount += parseInt($(amount).val());
   });
   $("p#projectTotalBudget").text('US$ ' + parseFloat(totalAmount, 10).toFixed(2).replace(/(\d)(?=(\d{3})+\.)/g, "$1,").toString());
+}
+
+function calculateCCAFSBudget(){
+  var totalAmount = 0.0;
+  $(".ccafsBudget input[name$='amount']").each(function(index,amount){
+    totalAmount += parseInt($(amount).val());
+  });
+  $("p#projectTotalCCAFSBudget").text('US$ ' + parseFloat(totalAmount, 10).toFixed(2).replace(/(\d)(?=(\d{3})+\.)/g, "$1,").toString());
 }

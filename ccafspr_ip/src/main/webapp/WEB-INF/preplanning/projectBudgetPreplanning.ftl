@@ -30,13 +30,12 @@
         [#-- Total CCAFS budget--]
         <div id="totalBudget" class="halfPartBlock">
           <h6>[@s.text name="preplanning.projectBudget.totalBudget" /]</h6>
-          <p>{project.totalBudget}</p>
+          <p id="projectTotalCCAFSBudget">US$ ${project.totalCcafsBudget?string(",##0.00")}</p>
         </div>
         [#-- Total overall project budget:--]
         <div id="totalBudget" class="halfPartBlock">
           <h6>[@s.text name="preplanning.projectBudget.totalOverallBudget" /]</h6>
-          
-          <p id="projectTotalBudget">{project.totalBudget}</p>
+          <p id="projectTotalBudget">US$ {project.totalBudget}</p>
         </div>  
         [#-- Tertiary Menu - All years --] 
         <div id="budgetTables" class=""> 
@@ -48,7 +47,7 @@
           [@s.set var="counter" value="0"/]
           [#list allYears as year]
             <div id="partnerTables-${year_index}" class="partnerTable"> 
-              <table class="fullPartBlock">
+              <table class="ccafsBudget fullPartBlock">
                 [#-- HEADERS --]
                 <tr id="" class="row">
                   [#-- Partner Name --]
