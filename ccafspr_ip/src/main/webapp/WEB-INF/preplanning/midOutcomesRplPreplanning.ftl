@@ -1,13 +1,4 @@
 [#ftl]
-
-[#--
-//
-//  When I wrote this file God and me knew what we were doing, 
-//  NOW, ONLY HE KNOWS.
-//
---]
-
-
 [#assign title = "Outcomes 2019 - Preplanning" /]
 [#assign globalLibs = ["jquery", "noty", "chosen"] /]
 [#assign customJS = ["${baseUrl}/js/global/utils.js", "${baseUrl}/js/preplanning/midOutcomesRPLPreplanning.js"] /]
@@ -39,9 +30,9 @@
           [#list midOutcomes as midOutcome]
             <div class="midOutcome borderBox" id="midOutcome-${midOutcome_index}">
               [#-- Mid outcome identifier --]
-              <input id="midOutcomeId" type="hidden" name="midOutcomes[${midOutcome_index}].id" value="${midOutcome.id}" />
-              <input type="hidden" name="midOutcomes[${midOutcome_index}].program.id" value="${currentUser.currentInstitution.program.id}" />
-              <input type="hidden" name="midOutcomes[${midOutcome_index}].type.id" value="${elementTypeID}" />
+              <input type="hidden" id="id" name="midOutcomes[${midOutcome_index}].id" value="${midOutcome.id}" />
+              <input type="hidden" id="midOutcomeProgramId" name="midOutcomes[${midOutcome_index}].program.id" value="${currentUser.currentInstitution.program.id}" />
+              <input type="hidden" id="midOutcomeTypeId" name="midOutcomes[${midOutcome_index}].type.id" value="${elementTypeID}" />
               [#-- Contribution to the regional vision 2025 --]
               <input type="hidden" name="midOutcomes[${midOutcome_index}].contributesTo" value="${outcomesList[0].id}" />
 
@@ -70,6 +61,10 @@
               [/#if]
               
               [#-- midOutcome's parents --]
+              [#--
+              //  When I wrote this code God and me knew what we were doing, 
+              //  NOW, ONLY HE KNOWS.
+              --]
               <div class="contentElements parentsBlock">
                 <div class="itemIndex">[@s.text name="preplanning.midOutcomesRPL.contributes" /] </div>
                 [#if midOutcome.translatedOf?has_content]

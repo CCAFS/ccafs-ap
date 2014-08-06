@@ -19,6 +19,7 @@ function init(){
     $(indLabel).attr("for", indLabelFor + "-" + index);
     $input.attr("id", indLabelFor + "-" + index);
   });
+  
   setIdoIndicatorsIndexes();
   attachEvents();
 }
@@ -29,6 +30,18 @@ function attachEvents(){
   $("#idosBlock .idosIndicators input.indicatorsCheckbox").click(setIdoIndicatorsIndexes);
   $(".idosCheckbox").change(viewIDOsIndicators);
   $(".indicatorsCheckbox").change(verifyIDOcheck);
+  $(".indicatorFPLCheckbox").change(rplIndicatorEvent);
+}
+
+function rplIndicatorEvent(event){
+  $checkbox = $(event.target);
+  if( $checkbox.attr("checked") ){
+    $checkbox.parent().find("input[name$='target']").attr("disabled", false);
+    $checkbox.parent().find("input[name$='id']").attr("disabled", false);
+  }else{
+    $checkbox.parent().find("input[name$='target']").attr("disabled", true);
+    $checkbox.parent().find("input[name$='id']").attr("disabled", true);
+  }
 }
 
 function setIdoIndicatorsIndexes(event){

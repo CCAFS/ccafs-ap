@@ -184,6 +184,9 @@ public class IPElementManagerImpl implements IPElementManager {
         // Save the indicators of the element if any
         if (element.getIndicators() != null) {
           for (IPIndicator indicator : element.getIndicators()) {
+            if (indicator == null) {
+              continue;
+            }
             Map<String, Object> indicatorData = new HashMap<>();
             if (indicator.getId() == -1) {
               indicatorData.put("id", null);

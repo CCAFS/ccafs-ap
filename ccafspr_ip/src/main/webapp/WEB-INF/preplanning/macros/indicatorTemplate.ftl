@@ -2,11 +2,11 @@
 [#macro outcomes outcome_index="0" indicator_index="0" value="-1" template=false i18nkey="" show_remove_link=true]
   <div class="indicator" style="display:block">
   [#if template]
-    <input type="hidden" name="outcomes[${outcome_index}].indicators[${indicator_index}].id" value="${value}" />
+    <input type="hidden" name="outcomes[${outcome_index}].indicators[0].id" value="${value}" />
     [@customForm.textArea showTitle=false value="" name="outcomes[${outcome_index}].indicators[${indicator_index}].description" i18nkey="preplanning.outcomes.outcome" required=true /]
     [@customForm.input name="outcomes[${outcome_index}].indicators[${indicator_index}].target"  i18nkey="preplanning.outcomes.target" /]
   [#else]
-    <input type="hidden" name="outcomes[${outcome_index}].indicators" value="${value}" />
+    <input type="hidden" name="outcomes[${outcome_index}].indicators[${indicator_index}].id" value="${value}" />
     [@customForm.textArea showTitle=true name="outcomes[${outcome_index}].indicators[${indicator_index}].description" i18nkey="${i18nkey}" required=true /]
     [@customForm.input name="outcomes[${outcome_index}].indicators[${indicator_index}].target"  i18nkey="preplanning.outcomes.target" /]
   [/#if]

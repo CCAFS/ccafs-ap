@@ -78,13 +78,16 @@ function removeMidOutcomeEvent(event){
 }
 
 function setMidOutcomesIndexes(){
+  console.log("setMidOutcomesIndexes");
   $("div#MidOutcomeBlocks .midOutcome").each(function(index,element){
+    console.log(index);
     var elementName = "midOutcomes[" + index + "].";
     $(element).attr("id", "midOutcome-" + index);
     $(element).find("[id$='elementIndex']").html(index + 1);
     $(element).find("[id$='id']").attr("name", elementName + "id");
     $(element).find("[id$='ProgramId']").attr("name", elementName + "program.id");
     $(element).find("[id$='TypeId']").attr("name", elementName + "type.id");
+    $(element).find("[name$='contributesTo']").attr("name", elementName + "contributesTo");
     $(element).find("[id$='description']").attr("name", elementName + "description").attr("placeholder", "Add regional outcome #" + (index + 1));
     $(element).find("select[id$='flagships']").trigger("change");
     $(element).find("select[id$='midOutcomesFPL']").trigger("liszt:updated");
