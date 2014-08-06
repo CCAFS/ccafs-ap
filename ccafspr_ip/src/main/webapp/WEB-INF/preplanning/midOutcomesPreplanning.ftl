@@ -36,7 +36,7 @@
             [#-- Remove midOutcome --]
             <div class="removeMidOutcomeBlock removeLink">              
               <img src="${baseUrl}/images/global/icon-remove.png" />
-              <a id="removeMidOutcome" href="" class="removeContribute">[@s.text name="preplanning.midOutcomes.removeMidOutcome" /]</a>
+              <a id="removeMidOutcome" href="" class="removeMidOutcome">[@s.text name="preplanning.midOutcomes.removeMidOutcome" /]</a>
             </div>  
             [#-- Title --] 
             [#assign midOutcomeDescription]
@@ -102,7 +102,7 @@
   [#-- Remove midOutcome --]      
   <div class="removeLink removeMidOutcomeBlock">            
     <img src="${baseUrl}/images/global/icon-remove.png" />
-    <a id="removeMidOutcome" href="" class="removeContribute">[@s.text name="preplanning.midOutcomes.removeMidOutcome" /]</a>
+    <a id="removeMidOutcome" href="" class="removeMidOutcome">[@s.text name="preplanning.midOutcomes.removeMidOutcome" /]</a>
   </div> 
   [#-- Title --]
   [#assign midOutcomeDescription]
@@ -136,6 +136,13 @@
 
 [#-- Contribute template --]
 [@contributeTemplate.midOutcomes template=true /]
+
+[#-- Remove element modal  template --]
+<div id="removeDialog" style="display:none" title="[@s.text name="preplanning.midOutcomes.removeDialog.title" /]"> 
+  [@s.text name="preplanning.midOutcomes.removeDialog.content.part1" /]
+  <strong><span class="elements"></span></strong>
+  [@s.text name="preplanning.midOutcomes.removeDialog.content.part2" /]
+</div> 
   
 </section>
 [#if outcomesList?has_content ]
