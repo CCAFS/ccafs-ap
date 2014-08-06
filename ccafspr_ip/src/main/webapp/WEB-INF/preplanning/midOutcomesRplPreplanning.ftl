@@ -39,7 +39,7 @@
               [#-- Remove midOutcome --]
               <div class="removeMidOutcomeBlock removeLink">              
                 <img src="${baseUrl}/images/global/icon-remove.png" />
-                <a id="removeMidOutcome" href="" class="removeContribute">[@s.text name="preplanning.midOutcomesRPL.removeMidOutcome" /]</a>
+                <a id="removeMidOutcome" href="" class="removeMidOutcome">[@s.text name="preplanning.midOutcomesRPL.removeMidOutcome" /]</a>
               </div> 
             
               [#-- Title --]
@@ -154,7 +154,7 @@
   [#-- Remove midOutcome --]      
   <div class="removeMidOutcomeBlock removeLink">            
     <img src="${baseUrl}/images/global/icon-remove.png" />
-    <a id="removeMidOutcome" href="" class="removeContribute">[@s.text name="preplanning.midOutcomesRPL.removeMidOutcome" /]</a>
+    <a id="removeMidOutcome" href="" class="removeMidOutcome">[@s.text name="preplanning.midOutcomesRPL.removeMidOutcome" /]</a>
   </div> 
   [#-- Title --]
   [#assign midOutcomeDescription]
@@ -179,6 +179,13 @@
 
 [#-- Indicator RPL TEMPLATE --]
 [@indicatorTemplate.midOutcomesRPL template=true /]
+
+[#-- Remove element modal  template --]
+<div id="removeDialog" style="display:none" title="[@s.text name="preplanning.midOutcomesRPL.removeDialog.title" /]"> 
+  [@s.text name="preplanning.midOutcomesRPL.removeDialog.content.part1" /]
+  <strong><span class="elements"></span></strong>
+  [@s.text name="preplanning.midOutcomesRPL.removeDialog.content.part2" /]
+</div> 
     
    
 </section>
