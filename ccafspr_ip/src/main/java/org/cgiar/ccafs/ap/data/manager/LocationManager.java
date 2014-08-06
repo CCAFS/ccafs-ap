@@ -11,6 +11,7 @@
  * You should have received a copy of the GNU General Public License
  * along with CCAFS P&R. If not, see <http://www.gnu.org/licenses/>.
  *****************************************************************/
+
 package org.cgiar.ccafs.ap.data.manager;
 
 import org.cgiar.ccafs.ap.data.manager.impl.LocationManagerImpl;
@@ -58,6 +59,14 @@ public interface LocationManager {
    * @return a Country object representing the country found, or null if the code doesn't exist.
    */
   public Country getCountryByCode(String code);
+
+  /**
+   * This method returns all the countries in which at least
+   * one institution is located
+   * 
+   * @return a list of countries objects.
+   */
+  public List<Country> getInstitutionCountries();
 
   /**
    * Get a Location identified with the given type id and location id.

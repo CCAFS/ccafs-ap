@@ -37,7 +37,7 @@ import org.slf4j.LoggerFactory;
 
 /**
  * This class is used to manage the Project Partners section in the pre-planning step.
- *
+ * 
  * @author Héctor Tobón
  */
 public class ProjectPartnersAction extends BaseAction {
@@ -128,7 +128,7 @@ public class ProjectPartnersAction extends BaseAction {
     allPartners = institutionManager.getAllInstitutions();
 
     // Getting all the countries
-    countries = locationManager.getAllCountries();
+    countries = locationManager.getInstitutionCountries();
 
     // Getting all partner types
     partnerTypes = institutionManager.getAllInstitutionTypes();

@@ -121,6 +121,30 @@ public class LocationManagerImpl implements LocationManager {
   }
 
   @Override
+  public List<Country> getInstitutionCountries() {
+    List<Country> countries = new ArrayList<>();
+    List<Map<String, String>> countriesDataList = locationDAO.getInstitutionCountries();
+
+    for (Map<String, String> lData : countriesDataList) {
+      Country country = new Country();
+      country.setId(Integer.parseInt(lData.get("id")));
+      country.setName(lData.get("name"));
+      country.setCode(lData.get("code"));
+      // Region
+      Region region = new Region();
+      region.setId(Integer.parseInt(lData.get("region_id")));
+      region.setName(lData.get("region_name"));
+      region.setCode(lData.get("region_code"));
+      country.setRegion(region);
+
+      // Adding object to the array.
+      countries.add(country);
+    }
+    return countries;
+  }
+
+
+  @Override
   public Location getLocation(int typeID, int locationID) {
     Map<String, String> lData = locationDAO.getLocation(typeID, locationID);
     if (!lData.isEmpty()) {
