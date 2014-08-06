@@ -70,5 +70,5 @@ function addChosen(){
 
 function setProgramId(){
   var programId = $("input#programID").val();
-  $("input[value='" + programId + "'][name$='regions'], input[value='" + programId + "'][name$='flagships']").attr("checked", true);
+  $("input[value='" + programId + "'][name$='regions'], input[value='" + programId + "'][name$='flagships']").attr("checked", true).attr("disabled", true);
 }
