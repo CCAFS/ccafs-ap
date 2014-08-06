@@ -208,6 +208,50 @@ public class MySQLLocationDAO implements LocationDAO {
   }
 
   @Override
+  public List<Map<String, String>> getInstitutionCountries() {
+    LOG.debug(">> getLocationsByType( )");
+
+    StringBuilder query = new StringBuilder();
+    query.append("SELECT le.id, le.name, le.code, ");
+    query.append("le.parent_id as region_id,let.name as region_name, let.code as region_code ");
+    query.append("FROM loc_elements le ");
+    query.append("INNER JOIN loc_elements let ON le.parent_id = let.id  ");
+    query.append("INNER JOIN loc_element_types letd ON letd.id = le.element_type_id  ");
+    query.append("INNER JOIN institutions i ON le.id = country_id ");
+    query.append("WHERE letd.id =  ");
+    query.append(APConstants.LOCATION_ELEMENT_TYPE_COUNTRY);
+    query.append(" GROUP BY le.id ");
+    query.append(" ORDER BY le.name ");
+
+    List<Map<String, String>> countriesList = new ArrayList<>();
+
+    try (Connection con = databaseManager.getConnection()) {
+      ResultSet rs = databaseManager.makeQuery(query.toString(), con);
+      while (rs.next()) {
+        Map<String, String> countryData = new HashMap<String, String>();
+        countryData.put("id", rs.getString("id"));
+        countryData.put("name", rs.getString("name"));
+        countryData.put("code", rs.getString("code"));
+        // Region Data
+        countryData.put("region_id", rs.getString("region_id"));
+        countryData.put("region_name", rs.getString("region_name"));
+        countryData.put("region_code", rs.getString("region_code"));
+
+        countriesList.add(countryData);
+      }
+      rs.close();
+    } catch (SQLException e) {
+      String exceptionMessage = "-- executeQuery() > Exception raised trying ";
+      exceptionMessage += "to execute the following query " + query;
+      LOG.error(exceptionMessage, e);
+      return null;
+    }
+
+    LOG.debug("<< executeQuery():getLocationsByType.size={}", countriesList.size());
+    return countriesList;
+  }
+
+  @Override
   public Map<String, String> getLocation(int typeID, int locationID) {
     Map<String, String> locationData = new HashMap<String, String>();
     LOG.debug(">> getLocation( typeID = {} )", typeID);
