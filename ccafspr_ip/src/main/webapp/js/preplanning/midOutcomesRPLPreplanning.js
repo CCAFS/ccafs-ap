@@ -1,5 +1,5 @@
 //Limits for textarea input
-var lWordsElemetDesc = 10;
+var lWordsElemetDesc = 150;
 
 $(document).ready(function(){
   init();
@@ -32,16 +32,16 @@ function attachEvents(){
   $(".midOutcomeIndicator").click(indicatorVerify);
   
   // Indicator parent element
-  $(".contributions .checkboxGroup input").click(setFplIndicatorFields);
+  $(".contributions .checkboxGroup input.midOutcomeIndicator").click(setFplIndicatorFields);
   
   // Indicator parent element within the template
-  $(".elementIndicator input.midOutcomeIndicator").click(setFplIndicatorFields);
+  $(".elementIndicator > input.midOutcomeIndicator").click(setFplIndicatorFields);
 }
 
 // ----------------- Regional Indicators ----------------------//
 
 function indicatorVerify(event){
-  var $parent = $(event.target).parent().parent().parent();
+  
   var checkedIndicators = $(event.target).parent().find("input[name^='" + event.currentTarget.name + "']:checked").length;
   var $textArea = $(event.target).parent().find(".fields");
   if (!checkedIndicators == 0) {
@@ -92,6 +92,7 @@ function setMidOutcomesIndexes(){
   });
 }
 
+// Update midOutcomes List when chose a flagship.
 function updateMidOutcomes(event){
   var $target = $(event.target);
   var $parent = $target.parent().parent().parent();
@@ -119,13 +120,11 @@ function addContributeEvent(event){
   event.preventDefault();
   var $addButton = $(event.target).parent();
   var $selectElemet = $(event.target).siblings().find("select");
-  
   if ($selectElemet.find('option').length != 0) {
     var $optionSelected = $selectElemet.find('option:selected');
     var elementId = $optionSelected.attr("value");
     var programID = $addButton.parent().parent().find("select[id$='midOutcomesRPL_flagships'] ").val();
     var $newElementClone = $("#contributeTemplate").clone(true).removeAttr("id");
-    
     $newElementClone.find("#description").html($optionSelected.html());
     $newElementClone.find("[id$='contributeId']").attr("value", elementId);
     $.getJSON("../ipIndicators.do?programID=" + programID + "&elementID=" + elementId).done(function(data){
@@ -133,12 +132,10 @@ function addContributeEvent(event){
         var $newIndicator = $("#indicatorTemplate").clone(true).removeAttr("id");
         $newIndicator.find("input[name$='parent']").attr("value", element.id);
         $newIndicator.find("label.checkboxLabel").html(element.description);
-        $newIndicator.find(".fields").find("#target").attr("placeholder", element.target);
-        
+        $newIndicator.find(".fields #target").attr("placeholder", element.target);
         $newElementClone.find("div.checkboxGroup").append($newIndicator);
         $newIndicator.show();
       });
-      
       $addButton.before($newElementClone);
       $newElementClone.find(".midOutcomeIndicator").click(indicatorVerify);
       $newElementClone.show("slow");
@@ -148,7 +145,6 @@ function addContributeEvent(event){
       $selectElemet.trigger("liszt:updated");
       setContributesIndexes();
     });
-    
   }
 }
 
@@ -189,7 +185,8 @@ function setContributesIndexes(){
       
       $(element).find("input[name$='id']").attr("name", elementName + "indicator[" + indicatorCount + "].id");
       $(element).find("input[name$='parent']").attr("name", elementName + "indicators[" + indicatorCount + "].parent");
-      $(element).find("label").attr("for", elementName + "indicators[" + indicatorCount + "].parent");
+      $(element).find("input[name$='parent']").attr("id", elementName + "indicatorFPL-" + indicatorCount + "" + indicatorIndex);
+      $(element).find("label.checkboxLabel").attr("for", elementName + "indicatorFPL-" + indicatorCount + "" + indicatorIndex);
       $(element).find("input[name$='target']").attr("name", elementName + "indicators[" + indicatorCount + "].target");
       
       $(element).find("textarea[name$='description']").attr("name", elementName + "indicators[" + indicatorCount + "].description").attr("placeholder", "");
@@ -200,12 +197,10 @@ function setContributesIndexes(){
 function setFplIndicatorFields(event){
   var $checkbox = $(event.target);
   var $indicatorBlock = $checkbox.parent();
-  
-  if (!$indicatorBlock.hasClass("elementIndicator")) {
-    $checkbox.add($checkbox.next('label')).wrapAll('<div class="elementIndicator">');
-    $indicatorBlock = $checkbox.parent();
-  }
-  
+  /*
+   * if (!$indicatorBlock.hasClass("elementIndicator")) { $checkbox.add($checkbox.next('label')).wrapAll('<div class="elementIndicator">'); $indicatorBlock = $checkbox.parent(); }
+   */
+
   if ($indicatorBlock.find(".fields").length == 0) {
     var $indicatorTemplate = $("#indicatorTemplate").find(".fields").clone();
     $indicatorTemplate.removeAttr("id");

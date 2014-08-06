@@ -5,9 +5,7 @@ function init(){
   //
   $("#budgetTables").tabs({
     show : {
-    effect : "slide",
-    direction : "up",
-    duration : 500
+      duration : 500
     }
   });
   addChosen();
@@ -68,8 +66,8 @@ function addChosen(){
   $("form select[name$='leveragedList']").each(function(){
     // Check if its not the template partner field
     $(this).chosen({
-    no_results_text : $("#noResultText").val(),
-    search_contains : true
+      no_results_text : $("#noResultText").val(),
+      search_contains : true
     });
   });
 }

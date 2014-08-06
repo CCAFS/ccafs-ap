@@ -51,15 +51,15 @@
                 [#-- HEADERS --]
                 <tr id="" class="row">
                   [#-- Partner Name --]
-                  <td id="" class="grid_5"><h6>[@s.text name="preplanning.projectBudget.partner" /]</h6></td> 
+                  <td id="" class="grid_5"><h6 >[@s.text name="preplanning.projectBudget.partner" /]</h6></td> 
                   [#-- W1 title --]
-                  <td id="" class="grid_1"><h6>[@s.text name="preplanning.projectBudget.w1" /]</h6></td> 
+                  <td id="" class="grid_1"><h6 title="[@s.text name="preplanning.projectBudget.w1.tooltip" /]">[@s.text name="preplanning.projectBudget.w1" /]</h6></td> 
                   [#-- W2 title --] 
-                  <td id="" class="grid_1"><h6>[@s.text name="preplanning.projectBudget.w2" /]</h6></td> 
+                  <td id="" class="grid_1"><h6 title="[@s.text name="preplanning.projectBudget.w2.tooltip" /]">[@s.text name="preplanning.projectBudget.w2" /]</h6></td> 
                   [#-- W3 title --] 
-                  <td id="" class="grid_1"><h6>[@s.text name="preplanning.projectBudget.w3" /]</h6></td> 
+                  <td id="" class="grid_1"><h6 title="[@s.text name="preplanning.projectBudget.w3.tooltip" /]">[@s.text name="preplanning.projectBudget.w3" /]</h6></td> 
                   [#-- Bilateral title --] 
-                  <td id="" class="grid_1"><h6>[@s.text name="preplanning.projectBudget.bilateral" /]</h6></td> 
+                  <td id="" class="grid_1"><h6 title="[@s.text name="preplanning.projectBudget.bilateral.tooltip" /]">[@s.text name="preplanning.projectBudget.bilateral" /]</h6></td> 
                 </tr>               
               [#if project.leader?has_content]
                 <tr id="" class="row">
@@ -188,11 +188,11 @@
         </div> <!-- End budgetTables -->
       [#else]
         [#-- If project leader is not defined --]
-        <p>Please complete the project leader information before moving on to the budget section.</p>
+        <p>[@s.text name="preplanning.projectBudget.message.leaderUndefined" /]</p>
       [/#if]
     [#else]
       [#-- If the project has not an start date and/or end date defined --]
-      <p>Please complete the start and end date for the project before moving on to the budget section.</p>
+      <p>[@s.text name="preplanning.projectBudget.message.dateUndefined" /]</p>
     [/#if]
     <!-- internal parameter -->
     <input name="projectID" type="hidden" value="${project.id?c}" />

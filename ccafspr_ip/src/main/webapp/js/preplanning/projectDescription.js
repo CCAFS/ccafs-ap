@@ -5,6 +5,7 @@ $(document).ready(function(){
   defaultMinDateValue : $("#minDateValue").val(),
   defaultMaxDateValue : $("#maxDateValue").val()
   });
+  setProgramId();
   addChosen();
 });
 
@@ -65,4 +66,9 @@ function addChosen(){
     search_contains : true
   });
   
+}
+
+function setProgramId(){
+  var programId = $("input#programID").val();
+  $("input[value='" + programId + "'][name$='regions'], input[value='" + programId + "'][name$='flagships']").attr("checked", true);
 }

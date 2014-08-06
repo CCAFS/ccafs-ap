@@ -21,9 +21,11 @@
   [@s.form action="outcomes" cssClass="pure-form"]
   <article class="halfContent" id="outcomes" class="impactPathway">
   	[#include "/WEB-INF/preplanning/ipPreplanningSubMenu.ftl" /]
-    <h1 class="contentTitle">
-      [@s.text name="preplanning.outcomes.title" /] [#-- Pending to add the leader acronym, so it should say something like: Flagship 1 - Outcome 2025 --]
-    </h1>
+  	[#if currentUser.FPL]
+      <h1 class="contentTitle">  [@s.text name="preplanning.outcomes.title" /]  </h1>
+    [#elseif currentUser.RPL]
+      <h1 class="contentTitle">  [@s.text name="preplanning.outcomes.titleRPL" /]  </h1>
+    [/#if]
       [#if outcomes?has_content]
         [#list outcomes as outcome]
         <div id="outcomesBlock" class="outcome borderBox">

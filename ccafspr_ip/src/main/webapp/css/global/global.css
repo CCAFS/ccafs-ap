@@ -269,38 +269,65 @@ header {
   /* margin-top: 10px; */
   /* margin-bottom: 10px; */
   color: #fff;
-  text-align: right;
+  text-align: left;
   position: absolute;
   right: 1em;
   top: 0;
   background: #57A7B5;
   border-bottom: 6px solid #4C8D99;
-  height: 27px;
+  height: 30px;
   font-size: 0.9em;
-  padding: 14px 20px 17px 20px;
+  padding: 10px 20px 17px 20px;
   box-shadow: inset 0px 0px 2px rgba(0, 0, 0, 0.1);
 }
 
 
 #userInfo:hover #userInfo-drop{ 
   opacity:1; 
+  display:block;
 }
 
-#userInfo-drop {
-  width: 92%; 
-  padding: 0px 0px;
+#userInfo-drop { 
+  padding: 10px !important;
   position: absolute;
-  top: 35px;
+  top: 64px;
   right: 0;
-  font-size: .8em;
-  border-radius: 0px 0px 8px 8px;
+  border-radius: 8px;
   text-align: left; 
-  opacity:0.7;
-  transition:opacity 0.5s linear;*
+  transition:opacity 0.5s linear;
+  background: #444;
+  z-index: 1;
+  display: none;
 }
+
+#userInfo-drop:after {
+  position: absolute;
+  left: 20px;
+  top: -9px;
+  content: '';
+  width: 0px;
+  height: 0px;
+  border-style: solid;
+  border-width: 0 8px 9px 8px;
+  border-color: transparent transparent #444 transparent;
+}
+
+#userInfo-drop li {
+    display: list-item !important;
+    width: 100%; 
+    padding: 5px !important;
+    border-bottom: 1px solid #4C4C4C;
+}
+
 
 #userInfo .email {
   font-size: 1em; 
+  
+}
+#userInfo .institution {
+  font-size: 0.8em; 
+  width: 211px;
+  color: #E7E7E7;
 }
 
 #userInfo .logout {
@@ -357,7 +384,7 @@ nav#mainMenu {
 
 nav#mainMenu ul{
   list-style-type: none;
-  height: 40px;
+  /* height: 40px; */
   padding: 19px 20px;
   /* margin: 0 auto; */
   /* text-align: center; */
@@ -368,13 +395,11 @@ nav#mainMenu ul a{
 
 
 nav#mainMenu ul li {
-  height: 60px;
-  width: 90px;
   display: inline;
   /* background: #FFFFFF; */
   padding: 16px 24px 19px 23px;
   /* border: 1px solid #dbdbdb; */
-  /* margin: -3px; */
+  margin: -3px;
   color: #FFFFFF;
 }
 nav#mainMenu ul li.currentSection {
