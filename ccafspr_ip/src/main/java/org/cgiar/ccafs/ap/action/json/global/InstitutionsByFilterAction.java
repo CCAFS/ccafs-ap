@@ -8,7 +8,6 @@ import org.cgiar.ccafs.ap.data.model.Country;
 import org.cgiar.ccafs.ap.data.model.Institution;
 import org.cgiar.ccafs.ap.data.model.InstitutionType;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import com.google.inject.Inject;
@@ -39,11 +38,6 @@ public class InstitutionsByFilterAction extends BaseAction {
 
   @Override
   public String execute() throws Exception {
-    if (institutionTypeID == -1 || countryID == -1) {
-      institutions = new ArrayList<>();
-      return SUCCESS;
-    }
-
     InstitutionType type = new InstitutionType();
     type.setId(institutionTypeID);
 
