@@ -80,18 +80,15 @@ public class ActivityDescriptionAction extends BaseAction {
     try {
       activityID = Integer.parseInt(StringUtils.trim(this.getRequest().getParameter(APConstants.ACTIVITY_REQUEST_ID)));
     } catch (NumberFormatException e) {
-      LOG.error("-- prepare() > There was an error parsing the project identifier '{}'.", activityID, e);
+      LOG.error("-- prepare() > There was an error parsing the activity identifier '{}'.", activityID, e);
       activityID = -1;
       return; // Stop here and go to execute method.
     }
 
-    // Getting the information for the
+    // Getting the information for the activity
     activity = activityManager.getActivityById(activityID);
-
+    // Getting the List of Institutions
     allPartners = institutionManager.getAllInstitutions();
-    //
-    // TODO JG Get the information of institutions
-
   }
 
 

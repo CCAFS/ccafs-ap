@@ -13,28 +13,20 @@
  *****************************************************************/
 package org.cgiar.ccafs.ap.data.manager;
 
-import org.cgiar.ccafs.ap.data.manager.impl.ActivityManagerImpl;
-import org.cgiar.ccafs.ap.data.model.Activity;
-import org.cgiar.ccafs.ap.data.model.ActivityLeader;
+import org.cgiar.ccafs.ap.data.manager.impl.ActivityPartnerManagerImpl;
+import org.cgiar.ccafs.ap.data.model.ActivityPartner;
 
 import java.util.List;
 
 import com.google.inject.ImplementedBy;
 
 /**
+ * @author Héctor Fabio Tobón R.
  * @author Javier Andrés Gallego
  */
-@ImplementedBy(ActivityManagerImpl.class)
-public interface ActivityManager {
+@ImplementedBy(ActivityPartnerManagerImpl.class)
+public interface ActivityPartnerManager {
 
-
-  /**
-   * This method removes a set of activities that belongs to a specific project.
-   * 
-   * @param projectID is the project identifier.
-   * @return true if the set of activities were successfully deleted, false otherwise.
-   */
-  public boolean deleteActivitiesByProject(int projectID);
 
   /**
    * This method removes a specific activity value from the database.
@@ -42,16 +34,15 @@ public interface ActivityManager {
    * @param activityId is the activity identifier.
    * @return true if the activity was successfully deleted, false otherwise.
    */
-  public boolean deleteActivity(int activityId);
+  public boolean deleteActivityPartner(int activityPartnerId);
 
   /**
-   * This method gets all the activity information by a given Project Id
+   * This method removes a set of activity partners that belongs to a specific activity.
    * 
-   * @param projectID - is the Id of the project
-   * @return a List of activities with the activity Information related with the project
+   * @param activityID is the activity identifier.
+   * @return true if the set of activities were successfully deleted, false otherwise.
    */
-  public List<Activity> getActivitiesByProject(int projectID);
-
+  public boolean deleteActivityPartnersByActivityId(int activityID);
 
   /**
    * This method gets all the activity information by a given activity ID.
@@ -59,25 +50,26 @@ public interface ActivityManager {
    * @param activityID is the activity identifier.
    * @return a List of activities objects.
    */
-  public Activity getActivityById(int activityID);
+  public ActivityPartner getActivityPartnerById(int activityPartnerID);
 
 
   /**
-   * This method gets all the information from Activity Leader by a given activity ID
+   * This method gets all the activity information by a given Project Id
    * 
-   * @param activityID - is the activity identifier
-   * @return an activity leader object
+   * @param projectID - is the Id of the project
+   * @return a List of activities with the activity Information related with the project
    */
-  public ActivityLeader getActivityLeader(int activityID);
+  public List<ActivityPartner> getActivityPartnersByActivity(int activityID);
 
   /**
-   * This method saves the information of the given activity that belong to a specific project into the database.
+   * This method saves the information of the given activity Partner that belong to a specific activity into the
+   * database.
    * 
-   * @param projectID
-   * @param activity
+   * @param activityID
+   * @param activityPartnerData
    * @return true if the activity was saved successfully, false otherwise.
    */
-  public boolean saveActivity(int projectID, Activity activity);
+  public boolean saveActivityPartner(int activityID, ActivityPartner activityPartnerData);
 
 
 }

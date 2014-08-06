@@ -137,7 +137,6 @@ public class ActivityManagerImpl implements ActivityManager {
         activity.setLeader(activityManager.getActivityLeader(activityID));
       }
       activity.setCreated(Long.parseLong(activityData.get("created")));
-      System.out.println(activityData.get("leader_id"));
       return activity;
     }
     return null;
