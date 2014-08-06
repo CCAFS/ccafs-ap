@@ -35,6 +35,7 @@
           <div class="halfPartBlock">
             <h6>[@s.text name="preplanning.projectDescription.programCreator" /]</h6>
             <p>${project.programCreator.acronym}</p>
+            <input type="hidden" id="programID" value="${project.programCreator.id}">
           </div>
           [#--  Project Owner Contact Person --]
           <div class="halfPartBlock">
