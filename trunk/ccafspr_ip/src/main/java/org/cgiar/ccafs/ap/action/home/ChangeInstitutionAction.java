@@ -51,12 +51,12 @@ public class ChangeInstitutionAction extends BaseAction {
   @Override
   public String execute() throws Exception {
     User user = (User) this.getSession().get(APConstants.SESSION_USER);
-    int previousInstitution = user.getCurrentInstitution().getId();
 
     if (user == null || institutionID == -1) {
       return NOT_FOUND;
     }
 
+    int previousInstitution = user.getCurrentInstitution().getId();
     for (Institution inst : user.getInstitutions()) {
       if (inst.getId() == institutionID) {
         user.setCurrentInstitution(inst);

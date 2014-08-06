@@ -27,6 +27,9 @@
       
       <!-- Custom interceptor to prevent the unauthorized access to pre-planning section depending on the user role -->
       <interceptor name="preplanningAccess" class="org.cgiar.ccafs.ap.interceptor.PreplanningAccessInterceptor" />
+
+      <!-- Custom interceptor to prevent the unauthorized access of users that are not program leaders (FP, RPL or CU) -->
+      <interceptor name="ProgramLeadersAccessOnly" class="org.cgiar.ccafs.ap.interceptor.ProgramLeadersAccessOnlyInterceptor" />
       
        <!-- Custom interceptor to prevent the unauthorized access users that are not FPLs -->
       <interceptor name="FPLAccessOnly" class="org.cgiar.ccafs.ap.interceptor.FPLAccessOnlyInterceptor" />
