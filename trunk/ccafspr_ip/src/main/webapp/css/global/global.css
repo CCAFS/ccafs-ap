@@ -928,6 +928,10 @@ h1.contentSubTitle {
   font-size: 12px;
 }
 
+#removeDialog {
+  text-align: left;
+}
+
 /* Outcomes 2025*/
 #idosBlock .ido {
     padding: 0.5em;
@@ -1025,14 +1029,33 @@ textarea[id$='summary'] {
 
 /* Project Partners*/
 
-#budgetTables {
-  margin-top: 1.5em;
+.projectPartner .filters-link {
+  cursor: pointer;
+  color: #848484;
+  padding-left: 7px;
+  margin-bottom: 7px;
 }
+
+.projectPartner .filters-link:hover {
+ text-decoration:underline;
+}
+
+.projectPartner .filters-content {
+  margin: 7px 0px;
+  padding: 8px;
+  border: 1px dotted #D2D2D2;
+  display: none;
+}
+
 
 /* Project Budget */
 
 .partnerTable tr.row {
   height: 30px;
+}
+
+#budgetTables {
+  margin-top: 1.5em;
 }
 
 #leveraged h6,#bilateral h6 { 
