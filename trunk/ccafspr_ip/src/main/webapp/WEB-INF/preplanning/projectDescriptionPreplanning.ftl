@@ -74,7 +74,7 @@
           </div> 
           [#-- Cross Cutting --] 
           <div id="projectGender" class="thirdPartBlock">
-            <h6>[@s.text name="preplanning.projectDescription.gender" /]</h6>
+            <h6>[@s.text name="preplanning.projectDescription.crossCutting" /]</h6>
             <div class="checkboxGroup">
               [@s.fielderror cssClass="fieldError" fieldName="project.crossCuttings"/]
               [@s.checkboxlist name="project.crossCuttings" list="ipCrossCuttings" listKey="id" listValue="name" cssClass="checkbox" value="crossCuttingIds" /]
@@ -86,7 +86,7 @@
     
     <div class="buttons">
       [@s.submit type="button" name="save"][@s.text name="form.buttons.save" /][/@s.submit]
-      [@s.submit type="button" name="next"][@s.text name="form.buttons.next" /][/@s.submit]
+      [#-- @s.submit type="button" name="next"][@s.text name="form.buttons.next" /][/@s.submit --]
       [@s.submit type="button" name="cancel"][@s.text name="form.buttons.cancel" /][/@s.submit]
     </div>
      

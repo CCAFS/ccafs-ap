@@ -73,7 +73,7 @@ public class ProjectDescriptionAction extends BaseAction {
   /**
    * This method returns a composed name with the Acronym and Name.
    * e.g. FP4: Policies and Institutions for Climate-Resilient Food Systems
-   * 
+   *
    * @param ipProgramId is the program identifier.
    * @return the composed name described above.
    */
@@ -89,7 +89,7 @@ public class ProjectDescriptionAction extends BaseAction {
 
   /**
    * This method returns an array of cross cutting ids depending on the project.crossCuttings attribute.
-   * 
+   *
    * @return an array of integers.
    */
   public int[] getCrossCuttingIds() {
@@ -109,7 +109,7 @@ public class ProjectDescriptionAction extends BaseAction {
 
   /**
    * This method returns an array of flagship ids depending on the project.flagships attribute.
-   * 
+   *
    * @return an array of integers.
    */
   public int[] getFlagshipIds() {
@@ -147,7 +147,7 @@ public class ProjectDescriptionAction extends BaseAction {
 
   /**
    * This method returns an array of region ids depending on the project.regions attribute.
-   * 
+   *
    * @return an array of integers.
    */
   public int[] getRegionIds() {
@@ -185,7 +185,6 @@ public class ProjectDescriptionAction extends BaseAction {
 
     // Getting the information of the Flagships program for the View
     ipProgramFlagships = ipProgramManager.getProgramsByType(APConstants.FLAGSHIP_PROGRAM_TYPE);
-    System.out.println(ipProgramFlagships);
 
     // Getting the information of the Cross Cutting Theme for the View
     ipCrossCuttings = ipCrossCuttingManager.getIPCrossCuttings();
@@ -206,8 +205,6 @@ public class ProjectDescriptionAction extends BaseAction {
 
   @Override
   public String save() {
-    // TODO HT: Recordar enviar manualmente el programID del project
-
     // ----- SAVING Project description -----
     userManager.getEmployeeID(project.getOwner());
     int result = projectManager.saveProjectDescription(project);
@@ -220,6 +217,22 @@ public class ProjectDescriptionAction extends BaseAction {
     boolean success = true;
     boolean saved = true;
     boolean deleted;
+
+    // Adding the program that were disabled in the interface, and validate that at least one item was selected.
+    IPProgram programDisabled = ipProgramManager.getIPProgramByProjectId(project.getId());
+    if (programDisabled.getType().getId() == APConstants.FLAGSHIP_PROGRAM_TYPE) {
+      project.getFlagships().add(programDisabled);
+    } else if (programDisabled.getType().getId() == APConstants.REGION_PROGRAM_TYPE) {
+      project.getRegions().add(programDisabled);
+    } else if (programDisabled.getType().getId() == APConstants.COORDINATION_PROGRAM_TYPE) {
+      project.getFlagships().add(programDisabled); // Which should be Global.
+    }
+
+    if (project.getRegions().isEmpty()) {
+      addActionWarning(getText("preplanning.projectDescription.noRegions"));
+    } else {
+      addActionWarning(getText("preplanning.projectDescription.noFlagships"));
+    }
 
     // Identifying regions that were unchecked in the front-end
     if (project.getRegions() != null) {
@@ -288,6 +301,7 @@ public class ProjectDescriptionAction extends BaseAction {
       }
     }
 
+
     // ----- SAVING Cross Cutting Themes -----
 
     if (project.getCrossCuttings() != null) {
@@ -324,9 +338,14 @@ public class ProjectDescriptionAction extends BaseAction {
       }
     }
 
-
-    addActionMessage(getText("saving.success", new String[] {getText("preplanning.projectDescription.title")}));
-    return BaseAction.SUCCESS;
+    // If there are some warnings, show a different message: Saving with problems
+    if (getActionMessages().size() > 0) {
+      addActionMessage(getText("saving.saved.problem"));
+      return BaseAction.INPUT;
+    } else {
+      addActionMessage(getText("saving.success", new String[] {getText("preplanning.projectDescription.title")}));
+      return BaseAction.SUCCESS;
+    }
   }
 
   public void setIpCrossCuttings(List<IPCrossCutting> ipCrossCuttings) {
