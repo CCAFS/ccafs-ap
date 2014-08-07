@@ -15,7 +15,7 @@ package org.cgiar.ccafs.ap.config;
 
 /**
  * All Constants should be here.
- * 
+ *
  * @author Héctor Fabio Tobón R.
  */
 public final class APConstants {
@@ -47,6 +47,7 @@ public final class APConstants {
   // Identifiers for programs types which come from the database
   public static final int FLAGSHIP_PROGRAM_TYPE = 1;
   public static final int REGION_PROGRAM_TYPE = 2;
+  public static final int COORDINATION_PROGRAM_TYPE = 3;
 
   // Identifier for types of program element relations
   public static final int PROGRAM_ELEMENT_CREATED_BY = 1;
