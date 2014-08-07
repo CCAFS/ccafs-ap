@@ -30,6 +30,8 @@ import org.cgiar.ccafs.ap.data.model.User;
 
 import java.util.List;
 
+import org.cgiar.ccafs.ap.util.EmailValidator;
+
 import com.google.inject.Inject;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
@@ -172,6 +174,7 @@ public class ProjectPartnersAction extends BaseAction {
 
   @Override
   public String save() {
+    System.out.println("SAVING.....");
     boolean success = true;
     boolean saved = true;
 
@@ -216,6 +219,21 @@ public class ProjectPartnersAction extends BaseAction {
 
   public void setProject(Project project) {
     this.project = project;
+  }
+
+  @Override
+  public void validate() {
+    // Validate the email of all project partners
+    for (int c = 0; c < project.getProjectPartners().size(); c++) {
+      if (!EmailValidator.isValidEmail(project.getProjectPartners().get(c).getContactEmail())) {
+        addFieldError("project.projectPartners[" + c + "].contactEmail", getText("validation.incorrect.format"));
+        addActionError(getText("preplanning.projectPartners.invalid.contactEmail", new String[] {c + ""}));
+      }
+    }
+
+    // Validate fields are empty
+
+    super.validate();
   }
 
 }
