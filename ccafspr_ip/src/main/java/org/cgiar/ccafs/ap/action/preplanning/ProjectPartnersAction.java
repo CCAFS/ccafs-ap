@@ -37,7 +37,7 @@ import org.slf4j.LoggerFactory;
 
 /**
  * This class is used to manage the Project Partners section in the pre-planning step.
- * 
+ *
  * @author Héctor Tobón
  */
 public class ProjectPartnersAction extends BaseAction {
@@ -101,10 +101,14 @@ public class ProjectPartnersAction extends BaseAction {
     return projectID;
   }
 
+  public String getProjectRequest() {
+    return APConstants.PROJECT_REQUEST_ID;
+  }
+
+
   public boolean isExpected() {
     return isExpected;
   }
-
 
   @Override
   public void prepare() throws Exception {

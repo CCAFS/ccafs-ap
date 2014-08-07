@@ -38,7 +38,7 @@ import org.slf4j.LoggerFactory;
 
 /**
  * Project Budget Action.
- * 
+ *
  * @author Héctor Fabio Tobón R.
  */
 public class ProjectBudgetAction extends BaseAction {
@@ -85,7 +85,7 @@ public class ProjectBudgetAction extends BaseAction {
    * e.g. 2014-9-W1
    * Where 2014 is the year, 9 is the institution identifier and W1 is the budget type.
    * If the budget is not in the database, this method will create a new one with an id=-1 and amount=0.
-   * 
+   *
    * @return a Map of budgets as was described above.
    */
   private Map<String, Budget> generateMapBudgets() {
@@ -255,7 +255,7 @@ public class ProjectBudgetAction extends BaseAction {
     return allYears;
   }
 
-// TODO HT: Filtrar lista de leveraged institutions por año
+  // TODO HT: Filtrar lista de leveraged institutions por año
   public List<Institution> getLeveragedInstitutions() {
     return leveragedInstitutions;
   }
@@ -280,9 +280,13 @@ public class ProjectBudgetAction extends BaseAction {
     return projectPartners;
   }
 
+  public String getProjectRequest() {
+    return APConstants.PROJECT_REQUEST_ID;
+  }
+
   /**
    * TODO HT - To document
-   * 
+   *
    * @return
    */
   public Budget getSpecificBudget(int year, int partnerId, String budgetType) {

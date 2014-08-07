@@ -145,6 +145,10 @@ public class ProjectDescriptionAction extends BaseAction {
     return projectID;
   }
 
+  public String getProjectRequest() {
+    return APConstants.PROJECT_REQUEST_ID;
+  }
+
   /**
    * This method returns an array of region ids depending on the project.regions attribute.
    *
