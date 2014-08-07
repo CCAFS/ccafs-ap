@@ -16,7 +16,7 @@ package org.cgiar.ccafs.ap.data.manager.impl;
 import org.cgiar.ccafs.ap.data.dao.IPProgramDAO;
 import org.cgiar.ccafs.ap.data.manager.IPProgramManager;
 import org.cgiar.ccafs.ap.data.model.IPProgram;
-import org.cgiar.ccafs.ap.data.model.IPProgramTypes;
+import org.cgiar.ccafs.ap.data.model.IPProgramType;
 import org.cgiar.ccafs.ap.data.model.Region;
 
 import java.util.ArrayList;
@@ -56,8 +56,9 @@ public class IPProgramManagerImpl implements IPProgramManager {
       ipProgram.setAcronym(ipProgramData.get("acronym"));
 
       // Program Type Object
-      IPProgramTypes programType = new IPProgramTypes();
-      programType.setTypeId(Integer.parseInt(ipProgramData.get("type_id")));
+      IPProgramType programType = new IPProgramType();
+      programType.setId(Integer.parseInt(ipProgramData.get("type_id")));
+      programType.setName(ipProgramData.get("type_name"));
       ipProgram.setType(programType);
 
       // Region Object
@@ -83,8 +84,9 @@ public class IPProgramManagerImpl implements IPProgramManager {
       ipProgram.setAcronym(ipProgramData.get("acronym"));
 
       // Program Type Object
-      IPProgramTypes programType = new IPProgramTypes();
-      programType.setTypeId(Integer.parseInt(ipProgramData.get("type_id")));
+      IPProgramType programType = new IPProgramType();
+      programType.setId(Integer.parseInt(ipProgramData.get("type_id")));
+      programType.setName(ipProgramData.get("type_name"));
       ipProgram.setType(programType);
 
       // Region Object
@@ -111,9 +113,10 @@ public class IPProgramManagerImpl implements IPProgramManager {
       ipProgram.setAcronym(iData.get("acronym"));
 
       // Program Type Object
-      IPProgramTypes programType = new IPProgramTypes();
-      programType.setTypeId(Integer.parseInt(iData.get("type_id")));
-      ipProgram.setType(programType);
+      IPProgramType ipProgramType = new IPProgramType();
+      ipProgramType.setId(Integer.parseInt(iData.get("type_id")));
+      ipProgramType.setName(iData.get("type_name"));
+      ipProgram.setType(ipProgramType);
 
       // Region Object
       Region region = new Region();
