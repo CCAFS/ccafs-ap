@@ -230,7 +230,8 @@ public class ProjectDescriptionAction extends BaseAction {
 
     if (project.getRegions().isEmpty()) {
       addActionWarning(getText("preplanning.projectDescription.noRegions"));
-    } else {
+    }
+    if (project.getFlagships().isEmpty()) {
       addActionWarning(getText("preplanning.projectDescription.noFlagships"));
     }
 
