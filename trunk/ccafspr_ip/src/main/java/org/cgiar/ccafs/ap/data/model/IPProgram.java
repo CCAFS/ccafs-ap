@@ -22,7 +22,7 @@ public class IPProgram {
   private String name;
   private String acronym;
   private Region region;
-  private IPProgramTypes type;
+  private IPProgramType type;
 
   public IPProgram() {
 
@@ -53,7 +53,7 @@ public class IPProgram {
     return region;
   }
 
-  public IPProgramTypes getType() {
+  public IPProgramType getType() {
     return type;
   }
 
@@ -78,7 +78,7 @@ public class IPProgram {
     this.region = region;
   }
 
-  public void setType(IPProgramTypes type) {
+  public void setType(IPProgramType type) {
     this.type = type;
   }
 

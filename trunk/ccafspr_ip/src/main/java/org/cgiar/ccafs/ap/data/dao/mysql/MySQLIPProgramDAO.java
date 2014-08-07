@@ -71,6 +71,7 @@ public class MySQLIPProgramDAO implements IPProgramDAO {
         ProgramData.put("acronym", rs.getString("acronym"));
         ProgramData.put("region_id", rs.getString("region_id"));
         ProgramData.put("type_id", rs.getString("type_id"));
+        ProgramData.put("type_name", rs.getString("type_name"));
         ProgramList.add(ProgramData);
       }
       rs.close();
@@ -90,8 +91,9 @@ public class MySQLIPProgramDAO implements IPProgramDAO {
     Map<String, String> ipProgramData = new HashMap<>();
     LOG.debug(">> getIPProgramById( programID = {} )", ipProgramID);
     StringBuilder query = new StringBuilder();
-    query.append("SELECT ipr.*  ");
+    query.append("SELECT ipr.*, type.name as 'type_name' ");
     query.append("FROM ip_programs as ipr  ");
+    query.append("INNER JOIN ip_program_types type ON type.id = ipr.type_id ");
     query.append("WHERE ipr.id =  ");
     query.append(ipProgramID);
     try (Connection con = databaseManager.getConnection()) {
@@ -102,6 +104,7 @@ public class MySQLIPProgramDAO implements IPProgramDAO {
         ipProgramData.put("acronym", rs.getString("acronym"));
         ipProgramData.put("region_id", rs.getString("region_id"));
         ipProgramData.put("type_id", rs.getString("type_id"));
+        ipProgramData.put("type_name", rs.getString("type_name"));
       }
       rs.close();
     } catch (SQLException e) {
@@ -120,9 +123,10 @@ public class MySQLIPProgramDAO implements IPProgramDAO {
     LOG.debug(">> getIPProgramByProjectId( projectID = {} )", projectID);
 
     StringBuilder query = new StringBuilder();
-    query.append("SELECT ipr.* ");
+    query.append("SELECT ipr.*, type.name as 'type_name' ");
     query.append("FROM ip_programs as ipr ");
     query.append("INNER JOIN projects p ON ipr.id=p.program_creator_id ");
+    query.append("INNER JOIN ip_program_types type ON type.id = ipr.type_id ");
     query.append("WHERE p.id= ");
     query.append(projectID);
     try (Connection con = databaseManager.getConnection()) {
@@ -133,6 +137,7 @@ public class MySQLIPProgramDAO implements IPProgramDAO {
         ipProgramData.put("acronym", rs.getString("acronym"));
         ipProgramData.put("region_id", rs.getString("region_id"));
         ipProgramData.put("type_id", rs.getString("type_id"));
+        ipProgramData.put("type_name", rs.getString("type_name"));
       }
       rs.close();
     } catch (SQLException e) {
@@ -150,9 +155,10 @@ public class MySQLIPProgramDAO implements IPProgramDAO {
     LOG.debug(">> getProgramsByType( typeId = {} )", typeId);
 
     StringBuilder query = new StringBuilder();
-    query.append("SELECT ipr.* ");
+    query.append("SELECT ipr.*, type.name as 'type_name' ");
     query.append("FROM ip_programs as ipr ");
-    query.append(" WHERE ipr.type_id= ");
+    query.append("INNER JOIN ip_program_types type ON type.id = ipr.type_id ");
+    query.append("WHERE ipr.type_id= ");
     query.append(typeId);
     query.append(" ORDER BY ipr.acronym ");
 
@@ -184,7 +190,7 @@ public class MySQLIPProgramDAO implements IPProgramDAO {
     List<Map<String, String>> projectFocusesDataList = new ArrayList<>();
     StringBuilder query = new StringBuilder();
     query
-    .append("SELECT ipr.id as program_id, ipr.name as program_name, ipr.acronym as program_acronym, le.id as region_id, le.name as region_name, le.code as region_code ");
+      .append("SELECT ipr.id as program_id, ipr.name as program_name, ipr.acronym as program_acronym, le.id as region_id, le.name as region_name, le.code as region_code ");
     query.append("FROM project_focuses pf ");
     query.append("INNER JOIN ip_programs ipr ON ipr.id = pf.program_id ");
     query.append("LEFT JOIN loc_elements le   ON le.id = ipr.region_id ");
