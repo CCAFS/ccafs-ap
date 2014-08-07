@@ -105,9 +105,7 @@ function removeMidOutcomeEvent(event){
 }
 
 function setMidOutcomesIndexes(){
-  console.log("setMidOutcomesIndexes");
   $("div#MidOutcomeBlocks .midOutcome").each(function(index,element){
-    console.log(index);
     var elementName = "midOutcomes[" + index + "].";
     $(element).attr("id", "midOutcome-" + index);
     $(element).find("[id$='elementIndex']").html(index + 1);
@@ -126,7 +124,7 @@ function setMidOutcomesIndexes(){
 function updateMidOutcomes(event){
   var $target = $(event.target);
   var $parent = $target.parent().parent().parent();
-  var programID = $target.find('option:selected').attr("value");
+  var programID = $target.find('option:selected').val();
   var midOutcomeTypeId = $("#midOutcomeTypeId").val();
   $.getJSON("../json/ipElementsByProgramAndType.do?programID=" + programID + "&elementTypeId=" + midOutcomeTypeId).done(function(data){
     var contributedOfIDs = new Array();

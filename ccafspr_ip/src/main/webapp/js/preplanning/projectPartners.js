@@ -16,6 +16,7 @@ function attachEvents(){
   
   // Partners filters
   $(".filters-link").click(function(event){
+    updateOrganizationsList(event);
     $(event.target).next().slideToggle();
   });
   
@@ -24,11 +25,14 @@ function attachEvents(){
 }
 
 function updateOrganizationsList(e){
+  var eventType = $(e.target).attr("class");
   var $parent = $(e.target).parent().parent().parent().parent().parent();
   var $selectInstitutions = $parent.find("select[name$='partner']");
   var partnerTypes = $parent.find("select.partnerTypes").find('option:selected').val();
   var countryList = $parent.find("select.countryList").find('option:selected').val();
   var source = "../json/institutionsByTypeAndCountry.do?institutionTypeID=" + partnerTypes + "&countryID=" + countryList;
+  if (eventType == "filters-link")
+    source = "../json/institutionsByTypeAndCountry.do";
   var institutionsList = "";
   $.getJSON(source, function(data){
     $.each(data.institutions, function(index,institution){
@@ -92,8 +96,10 @@ function setProjectPartnersIndexes(){
 // Activate the chosen plugin to the countries, partner types and
 // partners lists.
 function addChosen(){
+  
   $("form select[name$='partner']").chosen({
-    no_results_text : $("#noResultText").val(),
+    no_results_text : "#noResultText",
+    allow_single_deselect : true,
     search_contains : true
   });
   
@@ -106,4 +112,5 @@ function addChosen(){
     allow_single_deselect : true,
     search_contains : true
   });
+  
 }

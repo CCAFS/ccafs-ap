@@ -56,6 +56,7 @@ function setOutputsIndexes(){
     $(element).find("[id^='outputProgramID']").attr("name", elementName + "program.id");
     $(element).find("[id^='outputTypeID']").attr("name", elementName + "type.id");
     $(element).find("[id^='outputDescription']").attr("name", elementName + "description").attr("placeholder", "Add output #" + (index + 1));
+    setContributesIndexes(index);
   });
 }
 
