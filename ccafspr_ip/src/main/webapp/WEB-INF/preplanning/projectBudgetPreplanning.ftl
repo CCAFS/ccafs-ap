@@ -45,7 +45,7 @@
             <li class="ui-state-default ui-corner-top [#if yearMenu=year ]ui-tabs-active ui-state-active ui-state-hover[/#if]">
               <a href="[@s.url action='budget' includeParams='get'][@s.param name='${projectRequest}']${project.id?c}[/@s.param][@s.param name='year']${yearMenu?c}[/@s.param][/@s.url]"> ${yearMenu?c} </a>
             </li>
-            [/#list]  
+            [/#list]
           </ul>
           [@s.set var="counter" value="0"/] 
             <div id="partnerTables-${year?c}" class="partnerTable ui-tabs-panel ui-widget-content ui-corner-bottom"> 
@@ -213,10 +213,10 @@
     <div id="amount" class="amount">
       <input type="hidden" name="id" value="-1" />
       <input type="hidden" name="year" value="${year?c}" />
-      <input type="hidden" name="institution.id" value="-1" id="institution.id"/>
+      <input type="hidden" name="institution.id" value="-1" />
       <input type="hidden" name="type" value="LEVERAGED" />
       <div class="input">
-        <input type="text" id="amount" name="project.budgets[-1].amount" value="">
+        <input type="text" name="amount" />
       </div>
       <img class="removeButton" src="${baseUrl}/images/global/icon-remove.png">
     </div> 

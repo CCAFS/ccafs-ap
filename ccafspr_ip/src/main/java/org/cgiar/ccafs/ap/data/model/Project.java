@@ -22,7 +22,7 @@ import org.apache.commons.lang3.builder.ToStringBuilder;
 
 /**
  * This class represents a Project.
- * 
+ *
  * @author Javier Andrés Gallego
  * @author Héctor Fabio Tobón R
  */
@@ -73,8 +73,8 @@ public class Project {
 
   /**
    * This method calculates all the years between the start date and the end date.
-   * 
-   * @return a List of numbers representing all the years.
+   *
+   * @return a List of numbers representing all the years, or an empty list if nothing found.
    */
   public List<Integer> getAllYears() {
     List<Integer> allYears = new ArrayList<>();
@@ -103,7 +103,7 @@ public class Project {
    * This method returns a composed Identifier that is going to be used in the front-end.
    * The convention is going to be used depending on the creationg date of the project.
    * yyyy-project.id => e.g. 2014-46
-   * 
+   *
    * @return the composed indentifier or null if the created date is null.
    */
   public String getComposedId() {
