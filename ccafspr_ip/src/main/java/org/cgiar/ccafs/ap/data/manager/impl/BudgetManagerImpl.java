@@ -48,16 +48,14 @@ public class BudgetManagerImpl implements BudgetManager {
   private InstitutionManager institutionManager;
   private IPProgramManager ipProgramManager;
   private LocationManager locationManger;
-  private BudgetManager budgetManager;
 
   @Inject
   public BudgetManagerImpl(BudgetDAO budgetDAO, InstitutionManager institutionManager,
-    IPProgramManager ipProgramManager, LocationManager locationManger, BudgetManager budgetManager) {
+    IPProgramManager ipProgramManager, LocationManager locationManger) {
     this.budgetDAO = budgetDAO;
     this.institutionManager = institutionManager;
     this.locationManger = locationManger;
     this.ipProgramManager = ipProgramManager;
-    this.budgetManager = budgetManager;
   }
 
   @Override
@@ -96,7 +94,7 @@ public class BudgetManagerImpl implements BudgetManager {
     List<Integer> allYears = project.getAllYears();
     List<Budget> budgets = new ArrayList<>();
     for (Integer year : allYears) {
-      budgets.addAll(budgetManager.getBudgetsByYear(project.getId(), year));
+      budgets.addAll(this.getBudgetsByYear(project.getId(), year));
     }
     return budgets;
   }
