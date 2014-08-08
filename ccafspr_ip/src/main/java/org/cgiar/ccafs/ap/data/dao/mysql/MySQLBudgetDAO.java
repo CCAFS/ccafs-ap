@@ -250,7 +250,7 @@ public class MySQLBudgetDAO implements BudgetDAO {
     LOG.debug(">> getLeveragedInstitutions projectID = {} )", projectID);
     List<Map<String, String>> leveragedInstitutionDataList = new ArrayList<>();
     StringBuilder query = new StringBuilder();
-    query.append("SELECT  i.*   ");
+    query.append("SELECT DISTINCT i.*   ");
     query.append("FROM institutions as i ");
     query.append("INNER JOIN budgets b ON b.institution_id = i.id ");
     query.append("INNER JOIN project_budgets pb ON b.id = pb.budget_id ");

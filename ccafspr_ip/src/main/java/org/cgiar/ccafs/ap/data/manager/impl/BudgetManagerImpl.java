@@ -254,6 +254,7 @@ public class BudgetManagerImpl implements BudgetManager {
 
   @Override
   public boolean saveBudget(int projectID, Budget budget) {
+
     boolean allSaved = true;
     Map<String, Object> budgetData = new HashMap<>();
     if (budget.getId() > 0) {
