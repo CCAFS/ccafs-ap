@@ -3,13 +3,13 @@ $(document).ready(function(){
 });
 function init(){
   //
-  $("#budgetTables").tabs({
-    show : {
-      duration : 500
-    }
-  });
+  /*
+   * $("#budgetTables").tabs({ active : 1, show : { duration : 500 } });
+   */
   addChosen();
   attachEvents();
+  $("#budgetTables").fadeIn("slow");
+  // $("#budgetTables").tabs('option', 'active', "partnerTables-2016");
   
 }
 

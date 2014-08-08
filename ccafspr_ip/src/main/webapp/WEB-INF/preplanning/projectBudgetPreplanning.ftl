@@ -37,16 +37,19 @@
           <h6>[@s.text name="preplanning.projectBudget.totalOverallBudget" /]</h6>
           <p id="projectTotalBudget">US$ ${totalBudget?string(",##0.00")}</p>
         </div>  
+        ${year?c}
         [#-- Tertiary Menu - All years --] 
-        <div id="budgetTables" class=""> 
-          <ul>
-            [#list allYears as year]
-            <li><a href="#partnerTables-${year_index}"> ${year?c} </a></li>
+        <div id="budgetTables" class="ui-tabs ui-widget ui-widget-content ui-corner-all" style="display:none"> 
+          <ul class="ui-tabs-nav ui-helper-reset ui-helper-clearfix ui-widget-header ui-corner-all">
+            [#list allYears as yearMenu]
+            
+            <li class="ui-state-default ui-corner-top [#if yearMenu=year ]ui-tabs-active ui-state-active ui-state-hover[/#if]">
+              <a href="[@s.url action='budget' includeParams='get'][@s.param name='${projectRequest}']${project.id?c}[/@s.param][@s.param name='year']${yearMenu?c}[/@s.param][/@s.url]"> ${yearMenu?c} </a>
+            </li>
             [/#list]  
           </ul>
-          [@s.set var="counter" value="0"/]
-          [#list allYears as year]
-            <div id="partnerTables-${year_index}" class="partnerTable"> 
+          [@s.set var="counter" value="0"/] 
+            <div id="partnerTables-${year?c}" class="partnerTable ui-tabs-panel ui-widget-content ui-corner-bottom"> 
               <table class="ccafsBudget fullPartBlock">
                 [#-- HEADERS --]
                 <tr id="" class="row">
@@ -68,7 +71,7 @@
                   [#-- W1 --]
                   <td id="" class="budgetContent grid_1">
                     <input type="hidden" name="project.budgets[${counter}].id" value="${mapBudgets[year?c+'-'+project.leader.currentInstitution.id?c+'-W1'].id}" />
-                    <input type="hidden" name="project.budgets[${counter}].year" value="${mapBudgets[year?c+'-'+project.leader.currentInstitution.id?c+'-W1'].year?c}" />
+                    <input type="hidden" name="project.budgets[${counter}].year" value="${year?c}" />
                     <input type="hidden" name="project.budgets[${counter}].institution.id" value="${mapBudgets[year?c+'-'+project.leader.currentInstitution.id?c+'-W1'].institution.id?c}" />
                     <input type="hidden" name="project.budgets[${counter}].type" value="W1" />
                     [@customForm.input name="project.budgets[${counter}].amount" showTitle=false value="${mapBudgets[year?c+'-'+project.leader.currentInstitution.id?c+'-W1'].amount?c}"/]
@@ -77,7 +80,7 @@
                   [#-- W2 --]
                   <td id="" class="budgetContent grid_1">
                     <input type="hidden" name="project.budgets[${counter}].id" value="${mapBudgets[year?c+'-'+project.leader.currentInstitution.id?c+'-W2'].id}" />
-                    <input type="hidden" name="project.budgets[${counter}].year" value="${mapBudgets[year?c+'-'+project.leader.currentInstitution.id?c+'-W2'].year?c}" />
+                    <input type="hidden" name="project.budgets[${counter}].year" value="${year?c}" />
                     <input type="hidden" name="project.budgets[${counter}].institution.id" value="${mapBudgets[year?c+'-'+project.leader.currentInstitution.id?c+'-W2'].institution.id?c}" />
                     <input type="hidden" name="project.budgets[${counter}].type" value="W2" />
                     [@customForm.input name="project.budgets[${counter}].amount" showTitle=false value="${mapBudgets[year?c+'-'+project.leader.currentInstitution.id?c+'-W2'].amount?c}" /]
@@ -86,7 +89,7 @@
                   [#-- W3  --] 
                   <td id="" class="budgetContent grid_1">
                     <input type="hidden" name="project.budgets[${counter}].id" value="${mapBudgets[year?c+'-'+project.leader.currentInstitution.id?c+'-W3'].id}" />
-                    <input type="hidden" name="project.budgets[${counter}].year" value="${mapBudgets[year?c+'-'+project.leader.currentInstitution.id?c+'-W3'].year?c}" />
+                    <input type="hidden" name="project.budgets[${counter}].year" value="${year?c}" />
                     <input type="hidden" name="project.budgets[${counter}].institution.id" value="${mapBudgets[year?c+'-'+project.leader.currentInstitution.id?c+'-W3'].institution.id?c}" />
                     <input type="hidden" name="project.budgets[${counter}].type" value="W3" />
                     [@customForm.input name="project.budgets[${counter}].amount" showTitle=false value="${mapBudgets[year?c+'-'+project.leader.currentInstitution.id?c+'-W3'].amount?c}" /]
@@ -95,7 +98,7 @@
                   [#-- Bilateral  --] 
                   <td id="" class="budgetContent grid_1">
                     <input type="hidden" name="project.budgets[${counter}].id" value="${mapBudgets[year?c+'-'+project.leader.currentInstitution.id?c+'-BILATERAL'].id}" />
-                    <input type="hidden" name="project.budgets[${counter}].year" value="${mapBudgets[year?c+'-'+project.leader.currentInstitution.id?c+'-BILATERAL'].year?c}" />
+                    <input type="hidden" name="project.budgets[${counter}].year" value="${year?c}" />
                     <input type="hidden" name="project.budgets[${counter}].institution.id" value="${mapBudgets[year?c+'-'+project.leader.currentInstitution.id?c+'-BILATERAL'].institution.id?c}" />
                     <input type="hidden" name="project.budgets[${counter}].type" value="BILATERAL" />
                     [@customForm.input name="project.budgets[${counter}].amount" showTitle=false value="${mapBudgets[year?c+'-'+project.leader.currentInstitution.id?c+'-BILATERAL'].amount?c}" /]
@@ -110,7 +113,7 @@
                 [#-- W1 --]                
                 <td id="" class="budgetContent grid_1">
                   <input type="hidden" name="project.budgets[${counter}].id" value="${mapBudgets[year?c+'-'+projectPartner.partner.id?c+'-W1'].id}" />
-                  <input type="hidden" name="project.budgets[${counter}].year" value="${mapBudgets[year?c+'-'+projectPartner.partner.id?c+'-W1'].year?c}" />
+                  <input type="hidden" name="project.budgets[${counter}].year" value="${year?c}" />
                   <input type="hidden" name="project.budgets[${counter}].institution.id" value="${mapBudgets[year?c+'-'+projectPartner.partner.id?c+'-W1'].institution.id?c}" />
                   <input type="hidden" name="project.budgets[${counter}].type" value="W1" />
                   [@customForm.input name="project.budgets[${counter}].amount" showTitle=false value="${mapBudgets[year?c+'-'+projectPartner.partner.id?c+'-W1'].amount?c}"/]
@@ -119,7 +122,7 @@
                 [#-- W2 --] 
                 <td id="" class="budgetContent grid_1">
                   <input type="hidden" name="project.budgets[${counter}].id" value="${mapBudgets[year?c+'-'+projectPartner.partner.id?c+'-W2'].id}" />
-                  <input type="hidden" name="project.budgets[${counter}].year" value="${mapBudgets[year?c+'-'+projectPartner.partner.id?c+'-W2'].year?c}" />
+                  <input type="hidden" name="project.budgets[${counter}].year" value="${year?c}" />
                   <input type="hidden" name="project.budgets[${counter}].institution.id" value="${mapBudgets[year?c+'-'+projectPartner.partner.id?c+'-W2'].institution.id?c}" />
                   <input type="hidden" name="project.budgets[${counter}].type" value="W2" />
                   [@customForm.input name="project.budgets[${counter}].amount" showTitle=false value="${mapBudgets[year?c+'-'+projectPartner.partner.id?c+'-W2'].amount?c}"/]
@@ -128,7 +131,7 @@
                 [#-- W3  --] 
                 <td id="" class="budgetContent grid_1">
                   <input type="hidden" name="project.budgets[${counter}].id" value="${mapBudgets[year?c+'-'+projectPartner.partner.id?c+'-W3'].id}" />
-                  <input type="hidden" name="project.budgets[${counter}].year" value="${mapBudgets[year?c+'-'+projectPartner.partner.id?c+'-W3'].year?c}" />
+                  <input type="hidden" name="project.budgets[${counter}].year" value="${year?c}" />
                   <input type="hidden" name="project.budgets[${counter}].institution.id" value="${mapBudgets[year?c+'-'+projectPartner.partner.id?c+'-W3'].institution.id?c}" />
                   <input type="hidden" name="project.budgets[${counter}].type" value="W3" />
                   [@customForm.input name="project.budgets[${counter}].amount" showTitle=false value="${mapBudgets[year?c+'-'+projectPartner.partner.id?c+'-W3'].amount?c}"/]
@@ -137,7 +140,7 @@
                 [#-- Bilateral  --] 
                 <td id="" class="budgetContent grid_1">
                   <input type="hidden" name="project.budgets[${counter}].id" value="${mapBudgets[year?c+'-'+projectPartner.partner.id?c+'-BILATERAL'].id}" />
-                  <input type="hidden" name="project.budgets[${counter}].year" value="${mapBudgets[year?c+'-'+projectPartner.partner.id?c+'-BILATERAL'].year?c}" />
+                  <input type="hidden" name="project.budgets[${counter}].year" value="${year?c}" />
                   <input type="hidden" name="project.budgets[${counter}].institution.id" value="${mapBudgets[year?c+'-'+projectPartner.partner.id?c+'-BILATERAL'].institution.id?c}" />
                   <input type="hidden" name="project.budgets[${counter}].type" value="BILATERAL" />
                   [@customForm.input name="project.budgets[${counter}].amount" showTitle=false value="${mapBudgets[year?c+'-'+projectPartner.partner.id?c+'-BILATERAL'].amount?c}"/]
@@ -169,7 +172,7 @@
                   [#-- Amount --]
                   <div id="amount" class="amount">
                     <input type="hidden" name="project.budgets[${counter}].id" value="${mapBudgets[year?c+'-'+partner.id?c+'-LEVERAGED'].id}" />
-                    <input type="hidden" name="project.budgets[${counter}].year" value="${mapBudgets[year?c+'-'+partner.id?c+'-LEVERAGED'].year?c}" />
+                    <input type="hidden" name="project.budgets[${counter}].year" value="${year?c}" />
                     <input type="hidden" name="project.budgets[${counter}].institution.id" value="${mapBudgets[year?c+'-'+partner.id?c+'-LEVERAGED'].institution.id?c}" />
                     <input type="hidden" name="project.budgets[${counter}].type" value="LEVERAGED" />
                     [@customForm.input name="project.budgets[${counter}].amount" showTitle=false value="${mapBudgets[year?c+'-'+partner.id?c+'-LEVERAGED'].amount?c}"/]
@@ -184,7 +187,7 @@
               </div>
             </div>
            </div>   
-          [/#list]
+          
         </div> <!-- End budgetTables -->
       [#else]
         [#-- If project leader is not defined --]
@@ -210,7 +213,7 @@
     <div id="partnerName" class="name"> Partner Name </div> 
     <div id="amount" class="amount">
       <input type="hidden" name="project.budgets[-1].id" value="-1" />
-      <input type="hidden" name="project.budgets[-1].year" value="-1" />
+      <input type="hidden" name="project.budgets[-1].year" value="${year?c}" />
       <input type="hidden" name="project.budgets[-1].institution.id" value="-1" />
       <input type="hidden" name="project.budgets[-1].type" value="LEVERAGED" />
       <div class="input">
