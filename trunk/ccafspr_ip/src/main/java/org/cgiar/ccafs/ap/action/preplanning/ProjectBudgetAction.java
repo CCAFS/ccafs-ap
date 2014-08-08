@@ -60,6 +60,7 @@ public class ProjectBudgetAction extends BaseAction {
   private List<ProjectPartner> projectPartners;
   private User projectLeader;
   private boolean hasLeader;
+  private boolean invalidYear;
   private Map<String, Budget> mapBudgets;
   private double totalBudget;
   private double totalBudgetByYear;
@@ -68,12 +69,8 @@ public class ProjectBudgetAction extends BaseAction {
 
   // Managers
   private ProjectManager projectManager;
-
-
   private BudgetManager budgetManager;
-
   private InstitutionManager institutionManager;
-
   private ProjectPartnerManager partnerManager;
 
   @Inject
@@ -85,6 +82,7 @@ public class ProjectBudgetAction extends BaseAction {
     this.institutionManager = institutionManager;
     this.partnerManager = partnerManager;
     this.hasLeader = true;
+    this.invalidYear = false;
   }
 
   /**
@@ -119,7 +117,7 @@ public class ProjectBudgetAction extends BaseAction {
           } else if (budget.getType().getValue() == BudgetType.BILATERAL.getValue()) {
             bilateral = true;
             budgetsMap
-              .put(year + "-" + projectPartner.getPartner().getId() + "-" + BudgetType.BILATERAL.name(), budget);
+            .put(year + "-" + projectPartner.getPartner().getId() + "-" + BudgetType.BILATERAL.name(), budget);
           }
         }
       }
@@ -226,7 +224,7 @@ public class ProjectBudgetAction extends BaseAction {
       newBudget.setAmount(0);
       newBudget.setYear(year);
       budgetsMap
-        .put(year + "-" + project.getLeader().getCurrentInstitution().getId() + "-" + BudgetType.BILATERAL.name(),
+      .put(year + "-" + project.getLeader().getCurrentInstitution().getId() + "-" + BudgetType.BILATERAL.name(),
         newBudget);
     }
 
@@ -315,6 +313,10 @@ public class ProjectBudgetAction extends BaseAction {
     return hasLeader;
   }
 
+  public boolean isInvalidYear() {
+    return invalidYear;
+  }
+
   @Override
   public void prepare() throws Exception {
     super.prepare();
@@ -353,60 +355,64 @@ public class ProjectBudgetAction extends BaseAction {
         return; // Stop here and go to the execute method.
       }
 
-      // Getting the project partner leader.
+      if (allYears.contains(new Integer(year))) {
 
-      // We validate if the partner leader is already in the employees table. If so, we get this
-      // information. If not, we load the information from expected project leader.
-      User projectLeader = projectManager.getProjectLeader(project.getId());
-      // if the official leader is defined.
-      if (projectLeader != null) {
-        project.setLeader(projectLeader);
-      } else {
-        project.setLeader(projectManager.getExpectedProjectLeader(projectID));
-      }
-      // if the project leader is not defined, stop here.
-      if (project.getLeader() != null) {
 
-        // Getting the Total Overall Project Budget
-        totalBudget = budgetManager.calculateTotalOverallBudget(projectID);
-        totalBudgetByYear = budgetManager.calculateTotalCCAFSBudgetByYear(projectID, year);
-        totalCCAFSBudget = budgetManager.calculateTotalOverallBudget(projectID);
-        totalCCAFSBudgetByYear = budgetManager.calculateTotalOverallBudgetByYear(projectID, year);
-
-        // Getting the list of institutions that are funding the project as leveraged.
-        leveragedInstitutions = budgetManager.getLeveragedInstitutions(projectID);
-
-        // Getting all the project partners.
-        projectPartners = partnerManager.getProjectPartners(projectID);
-
-        // Getting all the institutions.
-        allInstitutions = institutionManager.getAllInstitutions();
-
-        // Removing the institution that is already added as project partner:
-        allInstitutions.remove(project.getLeader().getCurrentInstitution());
-        // Removing those institutions that were added in project partners.
-        for (ProjectPartner projectParner : projectPartners) {
-          allInstitutions.remove(projectParner.getPartner());
+        // We validate if the partner leader is already in the employees table. If so, we get this
+        // information. If not, we load the information from expected project leader.
+        User projectLeader = projectManager.getProjectLeader(project.getId());
+        // if the official leader is defined.
+        if (projectLeader != null) {
+          project.setLeader(projectLeader);
+        } else {
+          project.setLeader(projectManager.getExpectedProjectLeader(projectID));
         }
-        // Removing those institutions that are leveraged.
-        for (Institution leverage : leveragedInstitutions) {
-          allInstitutions.remove(leverage);
-        }
+        // if the project leader is not defined, stop here.
+        if (project.getLeader() != null) {
 
-        // Getting the list of budgets.
-        project.setBudgets(budgetManager.getBudgetsByYear(project.getId(), year));
-        // Creating budgets that do not exist.
-        mapBudgets = generateMapBudgets(year);
+          // Getting the Total Overall Project Budget
+          totalBudget = budgetManager.calculateTotalOverallBudget(projectID);
+          totalBudgetByYear = budgetManager.calculateTotalCCAFSBudgetByYear(projectID, year);
+          totalCCAFSBudget = budgetManager.calculateTotalOverallBudget(projectID);
+          totalCCAFSBudgetByYear = budgetManager.calculateTotalOverallBudgetByYear(projectID, year);
 
-        if (getRequest().getMethod().equalsIgnoreCase("post")) {
-          // Clear out the list if it has some element
-          if (project.getBudgets() != null) {
-            project.getBudgets().clear();
+          // Getting the list of institutions that are funding the project as leveraged.
+          leveragedInstitutions = budgetManager.getLeveragedInstitutions(projectID);
+
+          // Getting all the project partners.
+          projectPartners = partnerManager.getProjectPartners(projectID);
+
+          // Getting all the institutions.
+          allInstitutions = institutionManager.getAllInstitutions();
+
+          // Removing the institution that is already added as project partner:
+          allInstitutions.remove(project.getLeader().getCurrentInstitution());
+          // Removing those institutions that were added in project partners.
+          for (ProjectPartner projectParner : projectPartners) {
+            allInstitutions.remove(projectParner.getPartner());
           }
-        }
+          // Removing those institutions that are leveraged.
+          for (Institution leverage : leveragedInstitutions) {
+            allInstitutions.remove(leverage);
+          }
 
+          // Getting the list of budgets.
+          project.setBudgets(budgetManager.getBudgetsByYear(project.getId(), year));
+          // Creating budgets that do not exist.
+          mapBudgets = generateMapBudgets(year);
+
+          if (getRequest().getMethod().equalsIgnoreCase("post")) {
+            // Clear out the list if it has some element
+            if (project.getBudgets() != null) {
+              project.getBudgets().clear();
+            }
+          }
+
+        } else {
+          hasLeader = false;
+        }
       } else {
-        hasLeader = false;
+        invalidYear = true;
       }
     }
   }
@@ -451,6 +457,10 @@ public class ProjectBudgetAction extends BaseAction {
 
   public void setAllInstitutions(List<Institution> allInstitutions) {
     this.allInstitutions = allInstitutions;
+  }
+
+  public void setInvalidYear(boolean invalidYear) {
+    this.invalidYear = invalidYear;
   }
 
   public void setProject(Project project) {
