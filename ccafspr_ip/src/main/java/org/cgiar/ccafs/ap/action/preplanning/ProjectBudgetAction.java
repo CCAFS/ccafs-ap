@@ -39,7 +39,7 @@ import org.slf4j.LoggerFactory;
 
 /**
  * Project Budget Action.
- * 
+ *
  * @author Héctor Fabio Tobón R.
  */
 public class ProjectBudgetAction extends BaseAction {
@@ -92,165 +92,165 @@ public class ProjectBudgetAction extends BaseAction {
    * e.g. 2014-9-W1
    * Where 2014 is the year, 9 is the institution identifier and W1 is the budget type.
    * If the budget is not in the database, this method will create a new one with an id=-1 and amount=0.
-   * 
+   *
    * @return a Map of budgets as was described above.
    */
-  private Map<String, Budget> generateMapBudgets() {
+  private Map<String, Budget> generateMapBudgets(int year) {
     Map<String, Budget> budgetsMap = new HashMap<String, Budget>();
-    for (int year : allYears) {
-      // project partners
-      for (ProjectPartner projectPartner : projectPartners) {
-        boolean w1 = false;
-        boolean w2 = false;
-        boolean w3 = false;
-        boolean bilateral = false;
-        for (Budget budget : project.getBudgets()) {
-          if (budget.getInstitution().getId() == projectPartner.getPartner().getId() && budget.getYear() == year) {
-            if (budget.getType().getValue() == BudgetType.W1.getValue()) {
-              w1 = true;
-              budgetsMap.put(year + "-" + projectPartner.getPartner().getId() + "-" + BudgetType.W1.name(), budget);
-            } else if (budget.getType().getValue() == BudgetType.W2.getValue()) {
-              w2 = true;
-              budgetsMap.put(year + "-" + projectPartner.getPartner().getId() + "-" + BudgetType.W2.name(), budget);
-            } else if (budget.getType().getValue() == BudgetType.W3.getValue()) {
-              w3 = true;
-              budgetsMap.put(year + "-" + projectPartner.getPartner().getId() + "-" + BudgetType.W3.name(), budget);
-            } else if (budget.getType().getValue() == BudgetType.BILATERAL.getValue()) {
-              bilateral = true;
-              budgetsMap.put(year + "-" + projectPartner.getPartner().getId() + "-" + BudgetType.BILATERAL.name(),
-                budget);
-            }
-          }
-        }
-        if (w1 == false) {
-          Budget newBudget = new Budget();
-          newBudget.setId(-1);
-          newBudget.setInstitution(projectPartner.getPartner());
-          newBudget.setType(BudgetType.W1);
-          newBudget.setAmount(0);
-          newBudget.setYear(year);
-          budgetsMap.put(year + "-" + projectPartner.getPartner().getId() + "-" + BudgetType.W1.name(), newBudget);
-        }
-        if (w2 == false) {
-          Budget newBudget = new Budget();
-          newBudget.setId(-1);
-          newBudget.setInstitution(projectPartner.getPartner());
-          newBudget.setType(BudgetType.W2);
-          newBudget.setAmount(0);
-          newBudget.setYear(year);
-          budgetsMap.put(year + "-" + projectPartner.getPartner().getId() + "-" + BudgetType.W2.name(), newBudget);
-        }
-        if (w3 == false) {
-          Budget newBudget = new Budget();
-          newBudget.setId(-1);
-          newBudget.setInstitution(projectPartner.getPartner());
-          newBudget.setType(BudgetType.W3);
-          newBudget.setAmount(0);
-          newBudget.setYear(year);
-          budgetsMap.put(year + "-" + projectPartner.getPartner().getId() + "-" + BudgetType.W3.name(), newBudget);
-        }
-        if (bilateral == false) {
-          Budget newBudget = new Budget();
-          newBudget.setId(-1);
-          newBudget.setInstitution(projectPartner.getPartner());
-          newBudget.setType(BudgetType.BILATERAL);
-          newBudget.setAmount(0);
-          newBudget.setYear(year);
-          budgetsMap.put(year + "-" + projectPartner.getPartner().getId() + "-" + BudgetType.BILATERAL.name(),
-            newBudget);
-        }
-      }
-      // Project leader
+
+    // project partners
+    for (ProjectPartner projectPartner : projectPartners) {
       boolean w1 = false;
       boolean w2 = false;
       boolean w3 = false;
       boolean bilateral = false;
       for (Budget budget : project.getBudgets()) {
-        if (budget.getInstitution().getId() == project.getLeader().getCurrentInstitution().getId()
-          && budget.getYear() == year) {
+        if (budget.getInstitution().getId() == projectPartner.getPartner().getId() && budget.getYear() == year) {
           if (budget.getType().getValue() == BudgetType.W1.getValue()) {
             w1 = true;
-            budgetsMap.put(
-              year + "-" + project.getLeader().getCurrentInstitution().getId() + "-" + BudgetType.W1.name(), budget);
+            budgetsMap.put(year + "-" + projectPartner.getPartner().getId() + "-" + BudgetType.W1.name(), budget);
           } else if (budget.getType().getValue() == BudgetType.W2.getValue()) {
             w2 = true;
-            budgetsMap.put(
-              year + "-" + project.getLeader().getCurrentInstitution().getId() + "-" + BudgetType.W2.name(), budget);
+            budgetsMap.put(year + "-" + projectPartner.getPartner().getId() + "-" + BudgetType.W2.name(), budget);
           } else if (budget.getType().getValue() == BudgetType.W3.getValue()) {
             w3 = true;
-            budgetsMap.put(
-              year + "-" + project.getLeader().getCurrentInstitution().getId() + "-" + BudgetType.W3.name(), budget);
+            budgetsMap.put(year + "-" + projectPartner.getPartner().getId() + "-" + BudgetType.W3.name(), budget);
           } else if (budget.getType().getValue() == BudgetType.BILATERAL.getValue()) {
             bilateral = true;
-            budgetsMap.put(year + "-" + project.getLeader().getCurrentInstitution().getId() + "-"
-              + BudgetType.BILATERAL.name(), budget);
+            budgetsMap
+            .put(year + "-" + projectPartner.getPartner().getId() + "-" + BudgetType.BILATERAL.name(), budget);
           }
         }
       }
       if (w1 == false) {
         Budget newBudget = new Budget();
         newBudget.setId(-1);
-        newBudget.setInstitution(project.getLeader().getCurrentInstitution());
+        newBudget.setInstitution(projectPartner.getPartner());
         newBudget.setType(BudgetType.W1);
         newBudget.setAmount(0);
         newBudget.setYear(year);
-        budgetsMap.put(year + "-" + project.getLeader().getCurrentInstitution().getId() + "-" + BudgetType.W1.name(),
-          newBudget);
+        budgetsMap.put(year + "-" + projectPartner.getPartner().getId() + "-" + BudgetType.W1.name(), newBudget);
       }
       if (w2 == false) {
         Budget newBudget = new Budget();
         newBudget.setId(-1);
-        newBudget.setInstitution(project.getLeader().getCurrentInstitution());
+        newBudget.setInstitution(projectPartner.getPartner());
         newBudget.setType(BudgetType.W2);
         newBudget.setAmount(0);
         newBudget.setYear(year);
-        budgetsMap.put(year + "-" + project.getLeader().getCurrentInstitution().getId() + "-" + BudgetType.W2.name(),
-          newBudget);
+        budgetsMap.put(year + "-" + projectPartner.getPartner().getId() + "-" + BudgetType.W2.name(), newBudget);
       }
       if (w3 == false) {
         Budget newBudget = new Budget();
         newBudget.setId(-1);
-        newBudget.setInstitution(project.getLeader().getCurrentInstitution());
+        newBudget.setInstitution(projectPartner.getPartner());
         newBudget.setType(BudgetType.W3);
         newBudget.setAmount(0);
         newBudget.setYear(year);
-        budgetsMap.put(year + "-" + project.getLeader().getCurrentInstitution().getId() + "-" + BudgetType.W3.name(),
-          newBudget);
+        budgetsMap.put(year + "-" + projectPartner.getPartner().getId() + "-" + BudgetType.W3.name(), newBudget);
       }
       if (bilateral == false) {
         Budget newBudget = new Budget();
         newBudget.setId(-1);
-        newBudget.setInstitution(project.getLeader().getCurrentInstitution());
+        newBudget.setInstitution(projectPartner.getPartner());
         newBudget.setType(BudgetType.BILATERAL);
         newBudget.setAmount(0);
         newBudget.setYear(year);
-        budgetsMap.put(
-          year + "-" + project.getLeader().getCurrentInstitution().getId() + "-" + BudgetType.BILATERAL.name(),
-          newBudget);
+        budgetsMap.put(year + "-" + projectPartner.getPartner().getId() + "-" + BudgetType.BILATERAL.name(), newBudget);
       }
-
-      // Leveraged
-      for (Institution leveraged : leveragedInstitutions) {
-        boolean isLeveraged = false;
-        for (Budget budget : project.getBudgets()) {
-          if (budget.getInstitution().getId() == leveraged.getId() && budget.getYear() == year) {
-            if (budget.getType().getValue() == BudgetType.LEVERAGED.getValue()) {
-              isLeveraged = true;
-              budgetsMap.put(year + "-" + leveraged.getId() + "-" + BudgetType.LEVERAGED.name(), budget);
-            }
-          }
-        }
-        if (isLeveraged == false) {
-          Budget newBudget = new Budget();
-          newBudget.setId(-1);
-          newBudget.setInstitution(leveraged);
-          newBudget.setType(BudgetType.W1);
-          newBudget.setAmount(0);
-          newBudget.setYear(year);
-          budgetsMap.put(year + "-" + leveraged.getId() + "-" + BudgetType.LEVERAGED.name(), newBudget);
+    }
+    // Project leader
+    boolean w1 = false;
+    boolean w2 = false;
+    boolean w3 = false;
+    boolean bilateral = false;
+    for (Budget budget : project.getBudgets()) {
+      if (budget.getInstitution().getId() == project.getLeader().getCurrentInstitution().getId()
+        && budget.getYear() == year) {
+        if (budget.getType().getValue() == BudgetType.W1.getValue()) {
+          w1 = true;
+          budgetsMap.put(year + "-" + project.getLeader().getCurrentInstitution().getId() + "-" + BudgetType.W1.name(),
+            budget);
+        } else if (budget.getType().getValue() == BudgetType.W2.getValue()) {
+          w2 = true;
+          budgetsMap.put(year + "-" + project.getLeader().getCurrentInstitution().getId() + "-" + BudgetType.W2.name(),
+            budget);
+        } else if (budget.getType().getValue() == BudgetType.W3.getValue()) {
+          w3 = true;
+          budgetsMap.put(year + "-" + project.getLeader().getCurrentInstitution().getId() + "-" + BudgetType.W3.name(),
+            budget);
+        } else if (budget.getType().getValue() == BudgetType.BILATERAL.getValue()) {
+          bilateral = true;
+          budgetsMap.put(
+            year + "-" + project.getLeader().getCurrentInstitution().getId() + "-" + BudgetType.BILATERAL.name(),
+            budget);
         }
       }
     }
+    if (w1 == false) {
+      Budget newBudget = new Budget();
+      newBudget.setId(-1);
+      newBudget.setInstitution(project.getLeader().getCurrentInstitution());
+      newBudget.setType(BudgetType.W1);
+      newBudget.setAmount(0);
+      newBudget.setYear(year);
+      budgetsMap.put(year + "-" + project.getLeader().getCurrentInstitution().getId() + "-" + BudgetType.W1.name(),
+        newBudget);
+    }
+    if (w2 == false) {
+      Budget newBudget = new Budget();
+      newBudget.setId(-1);
+      newBudget.setInstitution(project.getLeader().getCurrentInstitution());
+      newBudget.setType(BudgetType.W2);
+      newBudget.setAmount(0);
+      newBudget.setYear(year);
+      budgetsMap.put(year + "-" + project.getLeader().getCurrentInstitution().getId() + "-" + BudgetType.W2.name(),
+        newBudget);
+    }
+    if (w3 == false) {
+      Budget newBudget = new Budget();
+      newBudget.setId(-1);
+      newBudget.setInstitution(project.getLeader().getCurrentInstitution());
+      newBudget.setType(BudgetType.W3);
+      newBudget.setAmount(0);
+      newBudget.setYear(year);
+      budgetsMap.put(year + "-" + project.getLeader().getCurrentInstitution().getId() + "-" + BudgetType.W3.name(),
+        newBudget);
+    }
+    if (bilateral == false) {
+      Budget newBudget = new Budget();
+      newBudget.setId(-1);
+      newBudget.setInstitution(project.getLeader().getCurrentInstitution());
+      newBudget.setType(BudgetType.BILATERAL);
+      newBudget.setAmount(0);
+      newBudget.setYear(year);
+      budgetsMap
+      .put(year + "-" + project.getLeader().getCurrentInstitution().getId() + "-" + BudgetType.BILATERAL.name(),
+          newBudget);
+    }
+
+    // Leveraged
+    for (Institution leveraged : leveragedInstitutions) {
+      boolean isLeveraged = false;
+      for (Budget budget : project.getBudgets()) {
+        if (budget.getInstitution().getId() == leveraged.getId() && budget.getYear() == year) {
+          if (budget.getType().getValue() == BudgetType.LEVERAGED.getValue()) {
+            isLeveraged = true;
+            budgetsMap.put(year + "-" + leveraged.getId() + "-" + BudgetType.LEVERAGED.name(), budget);
+          }
+        }
+      }
+      if (isLeveraged == false) {
+        Budget newBudget = new Budget();
+        newBudget.setId(-1);
+        newBudget.setInstitution(leveraged);
+        newBudget.setType(BudgetType.W1);
+        newBudget.setAmount(0);
+        newBudget.setYear(year);
+        budgetsMap.put(year + "-" + leveraged.getId() + "-" + BudgetType.LEVERAGED.name(), newBudget);
+      }
+    }
+
     return budgetsMap;
   }
 
@@ -293,7 +293,7 @@ public class ProjectBudgetAction extends BaseAction {
 
   /**
    * TODO HT - To document
-   * 
+   *
    * @return
    */
   public Budget getSpecificBudget(int year, int partnerId, String budgetType) {
@@ -412,7 +412,7 @@ public class ProjectBudgetAction extends BaseAction {
         // Getting the list of budgets.
         project.setBudgets(budgetManager.getBudgetsByProject(project.getId()));
         // Creating budgets that do not exist.
-        mapBudgets = generateMapBudgets();
+        mapBudgets = generateMapBudgets(year);
 
         if (getRequest().getMethod().equalsIgnoreCase("post")) {
           // Clear out the list if it has some element
