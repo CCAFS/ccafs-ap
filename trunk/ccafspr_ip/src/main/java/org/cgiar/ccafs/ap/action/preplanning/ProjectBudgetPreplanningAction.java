@@ -41,12 +41,12 @@ import org.slf4j.LoggerFactory;
  *
  * @author Héctor Fabio Tobón R.
  */
-public class ProjectBudgetAction extends BaseAction {
+public class ProjectBudgetPreplanningAction extends BaseAction {
 
   private static final long serialVersionUID = 6828801151634526985L;
 
   // LOG
-  public static Logger LOG = LoggerFactory.getLogger(ProjectBudgetAction.class);
+  public static Logger LOG = LoggerFactory.getLogger(ProjectBudgetPreplanningAction.class);
 
   // Model for the back-end
   private int projectID;
@@ -74,7 +74,7 @@ public class ProjectBudgetAction extends BaseAction {
   private ProjectPartnerManager partnerManager;
 
   @Inject
-  public ProjectBudgetAction(APConfig config, ProjectManager projectManager, BudgetManager budgetManager,
+  public ProjectBudgetPreplanningAction(APConfig config, ProjectManager projectManager, BudgetManager budgetManager,
     InstitutionManager institutionManager, ProjectPartnerManager partnerManager) {
     super(config);
     this.projectManager = projectManager;

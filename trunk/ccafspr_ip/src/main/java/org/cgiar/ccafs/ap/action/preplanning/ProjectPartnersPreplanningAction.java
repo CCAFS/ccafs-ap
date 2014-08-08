@@ -40,11 +40,11 @@ import org.slf4j.LoggerFactory;
  *
  * @author Héctor Tobón
  */
-public class ProjectPartnersAction extends BaseAction {
+public class ProjectPartnersPreplanningAction extends BaseAction {
 
   private static final long serialVersionUID = -2678924292464949934L;
 
-  public static Logger LOG = LoggerFactory.getLogger(ProjectPartnersAction.class);
+  public static Logger LOG = LoggerFactory.getLogger(ProjectPartnersPreplanningAction.class);
 
   // Managers
   private ProjectPartnerManager projectPartnerManager;
@@ -66,7 +66,7 @@ public class ProjectPartnersAction extends BaseAction {
 
 
   @Inject
-  public ProjectPartnersAction(APConfig config, ProjectPartnerManager projectPartnerManager,
+  public ProjectPartnersPreplanningAction(APConfig config, ProjectPartnerManager projectPartnerManager,
     InstitutionManager institutionManager, LocationManager locationManager, ProjectManager projectManager,
     UserManager userManager) {
     super(config);
