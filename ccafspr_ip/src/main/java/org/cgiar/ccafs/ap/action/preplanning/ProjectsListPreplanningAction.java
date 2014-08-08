@@ -28,7 +28,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 
-public class ProjectsListAction extends BaseAction {
+public class ProjectsListPreplanningAction extends BaseAction {
 
 
   private static final long serialVersionUID = 2845677913596494699L;
@@ -37,7 +37,7 @@ public class ProjectsListAction extends BaseAction {
   private ProjectManager projectManager;
 
   // LOG
-  private static Logger LOG = LoggerFactory.getLogger(ProjectsListAction.class);
+  private static Logger LOG = LoggerFactory.getLogger(ProjectsListPreplanningAction.class);
 
   // Model for the back-end
   private List<Project> projects;
@@ -48,7 +48,7 @@ public class ProjectsListAction extends BaseAction {
 
 
   @Inject
-  public ProjectsListAction(APConfig config, ProjectManager projectManager) {
+  public ProjectsListPreplanningAction(APConfig config, ProjectManager projectManager) {
     super(config);
     this.projectManager = projectManager;
     this.totalBudget = 0;

@@ -33,7 +33,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 
-public class ProjectDescriptionAction extends BaseAction {
+public class ProjectDescriptionPreplanningAction extends BaseAction {
 
 
   private static final long serialVersionUID = 2845669913596494699L;
@@ -44,7 +44,7 @@ public class ProjectDescriptionAction extends BaseAction {
   private IPCrossCuttingManager ipCrossCuttingManager;
   private UserManager userManager;
 
-  private static Logger LOG = LoggerFactory.getLogger(ProjectDescriptionAction.class);
+  private static Logger LOG = LoggerFactory.getLogger(ProjectDescriptionPreplanningAction.class);
 
   // Model for the front-end
   private List<IPProgram> ipProgramRegions;
@@ -57,7 +57,7 @@ public class ProjectDescriptionAction extends BaseAction {
   private int projectID;
 
   @Inject
-  public ProjectDescriptionAction(APConfig config, ProjectManager projectManager, IPProgramManager ipProgramManager,
+  public ProjectDescriptionPreplanningAction(APConfig config, ProjectManager projectManager, IPProgramManager ipProgramManager,
     IPCrossCuttingManager ipCrossCuttingManager, UserManager userManager) {
     super(config);
     this.projectManager = projectManager;
