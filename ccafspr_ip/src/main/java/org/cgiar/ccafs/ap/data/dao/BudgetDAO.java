@@ -30,12 +30,20 @@ public interface BudgetDAO {
 
 
   /**
-   * This method calculates the total of the CCAFS Budget which is the addition of W1+W2+W3
+   * This method calculates the total of the CCAFS Budget which is the addition of W1+W2+W3+BILATERAL
    * 
    * @param projectID is the project id.
    * @return a decimal number representing the amount of the total CCAFS Budget for that specific project.
    */
   public double calculateTotalCCAFSBudget(int projectID);
+
+  /**
+   * This method calculates the total of the CCAFS Budget which is the addition of W1+W2+W3+BILATERAL and a given year
+   * 
+   * @param projectID is the project id.
+   * @return a decimal number representing the amount of the total CCAFS Budget for that specific project.
+   */
+  public double calculateTotalCCAFSBudgetByYear(int projectID, int year);
 
   /**
    * This method returns the total Budget used for that specific project.
@@ -45,6 +53,15 @@ public interface BudgetDAO {
    * @return a decimal number that represents the total amount of money used on that specific project.
    */
   public double calculateTotalOverallBudget(int projectID);
+
+  /**
+   * This method returns the total Budget used for that specific project and a given year.
+   * It consists in the addition of all Windows, plus the Bilateral and the Leveraged.
+   * 
+   * @param projectID is the project id.
+   * @return a decimal number that represents the total amount of money used on that specific project.
+   */
+  public double calculateTotalOverallBudgetByYear(int projectID, int year);
 
   /**
    * Deletes the information of a Budget associated by a given id
