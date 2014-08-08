@@ -56,12 +56,15 @@ public class MySQLBudgetDAO implements BudgetDAO {
     query.append("INNER JOIN project_budgets pb ON b.id = pb.budget_id ");
     query.append(" WHERE pb.project_id = ");
     query.append(projectID);
-    query.append(" AND b.budget_type =  ");
+    query.append(" AND (b.budget_type =  ");
     query.append(BudgetType.W1.getValue());
     query.append(" OR b.budget_type = ");
     query.append(BudgetType.W2.getValue());
     query.append(" OR b.budget_type = ");
     query.append(BudgetType.W3.getValue());
+    query.append(" OR b.budget_type = ");
+    query.append(BudgetType.BILATERAL.getValue());
+    query.append(" )");
 
     try (Connection con = databaseManager.getConnection()) {
       ResultSet rs = databaseManager.makeQuery(query.toString(), con);
