@@ -31,6 +31,15 @@ import com.google.inject.ImplementedBy;
 public interface LocationManager {
 
   /**
+   * This method returns all the locations related with the activity
+   * identified by the value passed as parameter.
+   * 
+   * @param activityID - activity identifier
+   * @return a list of Location objects with the information
+   */
+  public List<Location> getActivityLocations(int activityID);
+
+  /**
    * This method return all the information of the countries
    * 
    * @return a list of all countries with the information or null if there is none.

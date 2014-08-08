@@ -23,6 +23,14 @@ public class IPIndicator {
   private String target;
   private IPIndicator parent;
 
+
+  public IPIndicator() {
+  }
+
+  public IPIndicator(int id) {
+    this.id = id;
+  }
+
   public String getDescription() {
     return description;
   }

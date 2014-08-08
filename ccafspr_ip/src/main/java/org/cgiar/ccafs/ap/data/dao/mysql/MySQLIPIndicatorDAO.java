@@ -130,6 +130,41 @@ public class MySQLIPIndicatorDAO implements IPIndicatorDAO {
   }
 
   @Override
+  public List<Map<String, String>> getIndicatorsByParent(int parentIndicatorID) {
+    LOG.debug(">> getIndicatorsByParent( indicatorID = {} )", parentIndicatorID);
+    List<Map<String, String>> indicatorsList = new ArrayList<>();
+
+    StringBuilder query = new StringBuilder();
+    query.append("SELECT i.id, i.description, i.target, p.id as 'parent_id', p.description as 'parent_description' ");
+    query.append("FROM ip_indicators i ");
+    query.append("INNER JOIN ip_indicators p ON i.parent_id = p.id ");
+    query.append("WHERE p.id = ");
+    query.append(parentIndicatorID);
+
+    try (Connection con = databaseManager.getConnection()) {
+      ResultSet rs = databaseManager.makeQuery(query.toString(), con);
+      while (rs.next()) {
+        Map<String, String> indicatorData = new HashMap<String, String>();
+        indicatorData.put("id", rs.getString("id"));
+        indicatorData.put("description", rs.getString("description"));
+        indicatorData.put("target", rs.getString("target"));
+        indicatorData.put("parent_id", rs.getString("parent_id"));
+        indicatorData.put("parent_description", rs.getString("parent_description"));
+        indicatorsList.add(indicatorData);
+      }
+      rs.close();
+    } catch (SQLException e) {
+      String exceptionMessage = "-- getIndicatorsByParent() > Exception raised trying ";
+      exceptionMessage += "to get the ip indicators with parentID =  " + parentIndicatorID;
+
+      LOG.error(exceptionMessage, e);
+    }
+
+    LOG.debug("<< getIndicatorsByParent():ipIndicatorList.size={}", indicatorsList.size());
+    return indicatorsList;
+  }
+
+  @Override
   public List<Map<String, String>> getIndicatorsList() {
     LOG.debug(">> getIndicatorsList()");
     List<Map<String, String>> indicatorsDataList = new ArrayList<>();

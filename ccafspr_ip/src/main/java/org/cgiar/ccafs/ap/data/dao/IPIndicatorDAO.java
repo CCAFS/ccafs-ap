@@ -30,7 +30,7 @@ public interface IPIndicatorDAO {
   /**
    * This method removes all the indicators related with the ipElement
    * identified by the parameter received.
-   *
+   * 
    * @param ipElementID - ipElement identifier
    * @return true if the information was successfully removed, false otherwise.
    */
@@ -39,7 +39,7 @@ public interface IPIndicatorDAO {
   /**
    * This method returns from the database the information of the indicator
    * identified by the value received as parameter.
-   *
+   * 
    * @param indicatorID - indicator identifier
    * @return a map with the information.
    */
@@ -48,25 +48,35 @@ public interface IPIndicatorDAO {
   /**
    * This function returns all the indicators corresponding to the given
    * ip element
-   *
+   * 
    * @param ipProgramElementID - IP Program Element identifier
    * @return a list of maps with the information.
    */
   public List<Map<String, String>> getIndicatorsByIpProgramElementID(int ipProgramElementID);
 
   /**
+   * This method returns a list of indicators which have as parent the
+   * indicator identified by the id received as parameter.
+   * 
+   * @param parentIndicatorID - parent indicator identifier
+   * @return a list of maps with the information
+   */
+  public List<Map<String, String>> getIndicatorsByParent(int parentIndicatorID);
+
+  /**
    * This method returns a list with all the indicators present
    * in the database.
-   *
+   * 
    * @return a list of maps with the information.
    */
   public List<Map<String, String>> getIndicatorsList();
 
   /**
    * This method save the information of the indicator.
-   *
+   * 
    * @param indicatorData - the information to be saved
    * @return the last inserted id if any or 0 if some record was updated or -1 if any error occurred.
    */
   public int saveIndicator(Map<String, Object> indicatorData);
+
 }

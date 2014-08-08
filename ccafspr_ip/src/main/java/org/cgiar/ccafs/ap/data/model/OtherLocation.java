@@ -18,7 +18,7 @@ import org.apache.commons.lang3.builder.ToStringBuilder;
 /**
  * This class is a representation of a specific location, that's why it extends from Location.class.
  * It will be used for the other Location Elements Types different from countries and regions.
- *
+ * 
  * @author Javier Andrés Gallego
  */
 public class OtherLocation extends Location {
@@ -26,7 +26,6 @@ public class OtherLocation extends Location {
 
   public OtherLocation() {
   }
-
 
   @Override
   public String toString() {
