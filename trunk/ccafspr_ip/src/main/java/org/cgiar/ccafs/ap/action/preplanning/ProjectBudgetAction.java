@@ -50,6 +50,7 @@ public class ProjectBudgetAction extends BaseAction {
 
   // Model for the back-end
   private int projectID;
+  private int year;
   private Project project;
 
   // Model for the front-end
@@ -311,6 +312,10 @@ public class ProjectBudgetAction extends BaseAction {
     return budget;
   }
 
+  public int getYear() {
+    return year;
+  }
+
   public boolean isHasLeader() {
     return hasLeader;
   }
@@ -319,7 +324,7 @@ public class ProjectBudgetAction extends BaseAction {
   public void prepare() throws Exception {
     super.prepare();
 
-    // Getting the project id from the URL parameter
+    // Getting the project id from the URL parameters.
     String parameter;
     try {
       parameter = this.getRequest().getParameter(APConstants.PROJECT_REQUEST_ID);
@@ -339,6 +344,23 @@ public class ProjectBudgetAction extends BaseAction {
     allYears = project.getAllYears();
     // If there are not years, we stop here.
     if (allYears.size() > 0) {
+
+      // Getting the year from the URL parameters.
+      try {
+        parameter = this.getRequest().getParameter(APConstants.YEAR_REQUEST);
+        if (parameter != null) {
+          year = Integer.parseInt(StringUtils.trim(parameter));
+        } else {
+          year = allYears.get(0);
+        }
+      } catch (NumberFormatException e) {
+        LOG.error("-- prepare() > There was an error parsing the year '{}'.", year);
+        return; // Stop here and go to the execute method.
+      }
+
+      System.out.println("******************");
+      System.out.println(year);
+
 
       // Getting the project partner leader.
 
@@ -394,20 +416,26 @@ public class ProjectBudgetAction extends BaseAction {
 
   @Override
   public String save() {
-    List<Budget> bs = project.getBudgets();
+    boolean success = true;
 
-    for (Budget budget : bs) {
-      budget.getId();
-      budget.getInstitution();
-      budget.getType();
-      budget.getAmount();
-      budget.getYear();
+    // Identify those deleted budgets from leverages.
+
+
+    // Saving project budgets
+    for (Budget budget : project.getBudgets()) {
       boolean saved = budgetManager.saveBudget(projectID, budget);
-
+      if (!saved) {
+        success = false;
+      }
     }
 
-
-    return BaseAction.SUCCESS;
+    if (!success) {
+      addActionError(getText("saving.problem"));
+      return BaseAction.INPUT;
+    } else {
+      addActionMessage(getText("saving.success", new String[] {getText("preplanning.projectBudget.title")}));
+      return BaseAction.SUCCESS;
+    }
   }
 
   public void setAllInstitutions(List<Institution> allInstitutions) {
@@ -420,6 +448,10 @@ public class ProjectBudgetAction extends BaseAction {
 
   public void setProjectID(int projectID) {
     this.projectID = projectID;
+  }
+
+  public void setYear(int year) {
+    this.year = year;
   }
 
 
