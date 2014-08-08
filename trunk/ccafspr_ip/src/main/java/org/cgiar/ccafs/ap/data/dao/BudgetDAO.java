@@ -33,7 +33,8 @@ public interface BudgetDAO {
    * This method calculates the total of the CCAFS Budget which is the addition of W1+W2+W3+BILATERAL
    * 
    * @param projectID is the project id.
-   * @return a decimal number representing the amount of the total CCAFS Budget for that specific project.
+   * @return a decimal number representing the amount of the total CCAFS Budget for that specific project, if no data
+   *         found return -1.0.
    */
   public double calculateTotalCCAFSBudget(int projectID);
 
@@ -41,7 +42,8 @@ public interface BudgetDAO {
    * This method calculates the total of the CCAFS Budget which is the addition of W1+W2+W3+BILATERAL and a given year
    * 
    * @param projectID is the project id.
-   * @return a decimal number representing the amount of the total CCAFS Budget for that specific project.
+   * @return a decimal number representing the amount of the total CCAFS Budget for that specific project, if no data
+   *         found return -1.0..
    */
   public double calculateTotalCCAFSBudgetByYear(int projectID, int year);
 
@@ -50,7 +52,8 @@ public interface BudgetDAO {
    * It consists in the addition of all Windows, plus the Bilateral and the Leveraged.
    * 
    * @param projectID is the project id.
-   * @return a decimal number that represents the total amount of money used on that specific project.
+   * @return a decimal number that represents the total amount of money used on that specific project, if no data found
+   *         return -1.0..
    */
   public double calculateTotalOverallBudget(int projectID);
 
@@ -59,7 +62,8 @@ public interface BudgetDAO {
    * It consists in the addition of all Windows, plus the Bilateral and the Leveraged.
    * 
    * @param projectID is the project id.
-   * @return a decimal number that represents the total amount of money used on that specific project.
+   * @return a decimal number that represents the total amount of money used on that specific project, if no data found
+   *         return -1.0..
    */
   public double calculateTotalOverallBudgetByYear(int projectID, int year);
 
