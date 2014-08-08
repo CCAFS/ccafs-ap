@@ -33,7 +33,7 @@ function addLeveragedEvent(e){
   if ($parent.find("select.leveraged option").length != 0) {
     $parent.before($newElement);
     $newElement.find("[id$='partnerName']").html($optionSelected.html());
-    $newElement.find("input[id$='id']").attr("value", $optionSelected.val());
+    $newElement.find("input[name$='institution.id']").attr("value", $optionSelected.val());
     $newElement.find(".removeButton").click(removeLeveragedEvent);
     $optionSelected.remove();
     $parent.find("select.leveraged").trigger("liszt:updated");
@@ -61,9 +61,9 @@ function setAmountIndexes(){
     var elementName = "project.budgets[" + index + "]";
     $(element).attr("id", className + "-" + index);
     // CSS selector div[id$=parent] Get any DIV element where the ID attribute value ends with "parent".
-    $(element).find("[name$='id']").attr("name", elementName + ".id");
+    $(element).find("[name$='].id']").attr("name", elementName + ".id");
     $(element).find("[name$='year']").attr("name", elementName + ".year");
-    $(element).find("[id$='institution.id']").attr("name", elementName + ".institution.id");
+    $(element).find("[name$='institution.id']").attr("name", elementName + ".institution.id");
     $(element).find("[name$='amount']").attr("name", elementName + ".amount");
     $(element).find("[name$='type']").attr("name", elementName + ".type");
   });

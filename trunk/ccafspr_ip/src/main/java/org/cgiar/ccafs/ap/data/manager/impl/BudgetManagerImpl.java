@@ -92,6 +92,7 @@ public class BudgetManagerImpl implements BudgetManager {
   public List<Budget> getBudgetsByProject(Project project) {
 
     List<Integer> allYears = project.getAllYears();
+
     List<Budget> budgets = new ArrayList<>();
     for (Integer year : allYears) {
       budgets.addAll(this.getBudgetsByYear(project.getId(), year));

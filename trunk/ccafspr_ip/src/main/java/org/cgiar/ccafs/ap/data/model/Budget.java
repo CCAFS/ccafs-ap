@@ -32,6 +32,16 @@ public class Budget {
 
   }
 
+  @Override
+  public boolean equals(Object obj) {
+    if (obj instanceof Budget) {
+      Budget b = (Budget) obj;
+      return b.getId() == this.id;
+    }
+    return false;
+  }
+
+
   public double getAmount() {
     return amount;
   }
@@ -50,6 +60,11 @@ public class Budget {
 
   public int getYear() {
     return year;
+  }
+
+  @Override
+  public int hashCode() {
+    return this.id;
   }
 
   public void setAmount(double amount) {
