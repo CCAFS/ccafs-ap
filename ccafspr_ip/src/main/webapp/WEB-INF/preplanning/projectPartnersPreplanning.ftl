@@ -55,7 +55,7 @@
     </div>
   </article>
   [/@s.form]
-  [#-- Simgle partner TEMPLATE from partnersTemplate.ftl --]
+  [#-- Single partner TEMPLATE from partnersTemplate.ftl --]
   [@partnersTemplate.partnerTemplate /]  
 </section>
 [#include "/WEB-INF/global/pages/footer.ftl"]

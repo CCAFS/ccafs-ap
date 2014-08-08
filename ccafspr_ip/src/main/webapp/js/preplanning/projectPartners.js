@@ -16,8 +16,10 @@ function attachEvents(){
   
   // Partners filters
   $(".filters-link").click(function(event){
-    updateOrganizationsList(event);
-    $(event.target).next().slideToggle();
+    var $filterContent = $(event.target).next();
+    if ($filterContent.is(":visible"))
+      updateOrganizationsList(event);
+    $filterContent.slideToggle();
   });
   
   // When Partner Type change
@@ -27,6 +29,8 @@ function attachEvents(){
 function updateOrganizationsList(e){
   var eventType = $(e.target).attr("class");
   var $parent = $(e.target).parent().parent().parent().parent().parent();
+  if (eventType == "filters-link")
+    $parent = $(e.target).parent();
   var $selectInstitutions = $parent.find("select[name$='partner']");
   var partnerTypes = $parent.find("select.partnerTypes").find('option:selected').val();
   var countryList = $parent.find("select.countryList").find('option:selected').val();
