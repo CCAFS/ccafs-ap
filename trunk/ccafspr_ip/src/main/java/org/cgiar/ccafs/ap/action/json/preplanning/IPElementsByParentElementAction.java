@@ -38,7 +38,11 @@ public class IPElementsByParentElementAction extends BaseAction {
   public String execute() throws Exception {
     // Program object
     IPElement parent = new IPElement();
-    parent.setId(Integer.parseInt(parentID));
+    try {
+      parent.setId(Integer.parseInt(parentID));
+    } catch (NumberFormatException e) {
+      LOG.error("There was an exception trying to parse the parent id = {} ", parentID);
+    }
 
     ipElements = ipElementManager.getIPElementsByParent(parent, APConstants.ELEMENT_RELATION_CONTRIBUTION);
 

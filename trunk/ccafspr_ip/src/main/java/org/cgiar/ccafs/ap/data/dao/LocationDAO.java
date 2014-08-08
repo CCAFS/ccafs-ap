@@ -29,6 +29,15 @@ import com.google.inject.ImplementedBy;
 public interface LocationDAO {
 
   /**
+   * This method returns all the locations related with the activity
+   * identified by the value received as parameter.
+   * 
+   * @param activityID
+   * @return a list of maps with the information
+   */
+  public List<Map<String, String>> getActivityLocations(int activityID);
+
+  /**
    * This method return all the information of the countries
    * 
    * @return a list of maps with the information of all countries.
@@ -50,6 +59,7 @@ public interface LocationDAO {
    */
   public Map<String, String> getCountry(int countryID);
 
+
   /**
    * This method returns the information of a specific country identified with the given code.
    * 
@@ -58,7 +68,6 @@ public interface LocationDAO {
    */
   public Map<String, String> getCountryByCode(String code);
 
-
   /**
    * This method returns all the countries in which at least
    * one institution is located
@@ -66,6 +75,7 @@ public interface LocationDAO {
    * @return a list of maps with the information.
    */
   public List<Map<String, String>> getInstitutionCountries();
+
 
   /**
    * This method return the information from an specific location given by the type, and the location
@@ -87,7 +97,6 @@ public interface LocationDAO {
 
   public List<Map<String, String>> getLocationsByType(int typeID);
 
-
   /**
    * This method return the information of a Region by a given Region ID
    * 
@@ -95,6 +104,4 @@ public interface LocationDAO {
    * @return a map with the region information.
    */
   public Map<String, String> getRegion(int regionID);
-
-
 }

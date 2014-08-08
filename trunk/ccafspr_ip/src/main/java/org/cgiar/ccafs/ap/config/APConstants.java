@@ -37,6 +37,7 @@ public final class APConstants {
   public static final String PROJECT_REQUEST_ID = "projectID";
   public static final String INSTITUTION_REQUEST_ID = "institutionID";
   public static final String INSTITUTION_TYPE_REQUEST_ID = "institutionTypeID";
+  public static final String INDICATOR_ID = "indicatorID";
 
   // Identifiers for element types which come from the database
   public static final int ELEMENT_TYPE_IDOS = 1;

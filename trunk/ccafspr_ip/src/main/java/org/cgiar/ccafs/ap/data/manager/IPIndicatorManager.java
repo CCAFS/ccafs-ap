@@ -28,7 +28,7 @@ public interface IPIndicatorManager {
   /**
    * This method gets all the indicators related with the element passed
    * as parameter.
-   *
+   * 
    * @param element - IP Element
    * @return a list of ip indicators object with the information.
    */
@@ -36,15 +36,24 @@ public interface IPIndicatorManager {
 
   /**
    * This method get the indicator identified by the value passed as parameter.
-   *
+   * 
    * @param indicatorID - indicator identifier
    * @return the indicator object searched. Null if the indicator wasn't found.
    */
   public IPIndicator getIndicator(int indicatorID);
 
   /**
+   * This method returns a list of indicators which have a parent
+   * identified with the value passed as parameter.
+   * 
+   * @param indicator
+   * @return a list of indicators object
+   */
+  public List<IPIndicator> getIndicatorsByParent(IPIndicator indicator);
+
+  /**
    * This method get all the indicators present in the database.
-   *
+   * 
    * @return a list of IPIndicator objects.
    */
   public List<IPIndicator> getIndicatorsList();
@@ -52,7 +61,7 @@ public interface IPIndicatorManager {
   /**
    * This method return a list of indicators which corresponds with the
    * list of identifiers received as parameter.
-   *
+   * 
    * @param indicatorsIDs
    * @return a list of IPIndicator objects.
    */
@@ -61,7 +70,7 @@ public interface IPIndicatorManager {
   /**
    * This method removes from the database the indicators which are related with the
    * ipProgram and ipElement passed as parameters
-   *
+   * 
    * @param element
    * @param program
    * @return true if the indicators were removed successfully. False otherwise.

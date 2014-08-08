@@ -16,7 +16,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 
-public class IPIndicatorsAction extends BaseAction {
+public class IPIndicatorsByElementAndProgramAction extends BaseAction {
 
   // Logger
   private static final Logger LOG = LoggerFactory.getLogger(IPElementsByProgramAndTypeAction.class);
@@ -31,7 +31,7 @@ public class IPIndicatorsAction extends BaseAction {
   private IPIndicatorManager ipIndicatorManager;
 
   @Inject
-  public IPIndicatorsAction(APConfig config, IPIndicatorManager ipIndicatorManager) {
+  public IPIndicatorsByElementAndProgramAction(APConfig config, IPIndicatorManager ipIndicatorManager) {
     super(config);
     this.ipIndicatorManager = ipIndicatorManager;
   }

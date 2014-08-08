@@ -13,10 +13,12 @@
  *****************************************************************/
 package org.cgiar.ccafs.ap.data.manager.impl;
 
+import org.cgiar.ccafs.ap.config.APConstants;
 import org.cgiar.ccafs.ap.data.dao.LocationDAO;
 import org.cgiar.ccafs.ap.data.manager.LocationManager;
 import org.cgiar.ccafs.ap.data.model.Country;
 import org.cgiar.ccafs.ap.data.model.Location;
+import org.cgiar.ccafs.ap.data.model.OtherLocation;
 import org.cgiar.ccafs.ap.data.model.Region;
 
 import java.util.ArrayList;
@@ -30,7 +32,6 @@ import com.google.inject.Inject;
  */
 public class LocationManagerImpl implements LocationManager {
 
-
   private LocationDAO locationDAO;
 
   @Inject
@@ -38,6 +39,40 @@ public class LocationManagerImpl implements LocationManager {
     this.locationDAO = locationDAO;
   }
 
+  @Override
+  public List<Location> getActivityLocations(int activityID) {
+    List<Location> locations = new ArrayList<>();
+    List<Map<String, String>> locationsData = locationDAO.getActivityLocations(activityID);
+
+    for (Map<String, String> lData : locationsData) {
+      Location location;
+
+      switch (Integer.parseInt(lData.get("type_id"))) {
+        case APConstants.LOCATION_ELEMENT_TYPE_COUNTRY:
+          location = new Country();
+          break;
+        case APConstants.LOCATION_ELEMENT_TYPE_REGION:
+          location = new Region();
+          break;
+        default:
+          location = new OtherLocation();
+      }
+
+      location.setId(Integer.parseInt(lData.get("id")));
+      location.setCode(lData.get("code"));
+      location.setName(lData.get("name"));
+
+      // TODO still pending to add the attributes type and geoposition
+
+      if (lData.get("location_parent_id") != null) {
+
+      }
+
+      locations.add(location);
+    }
+
+    return locations;
+  }
 
   @Override
   public List<Country> getAllCountries() {
@@ -79,6 +114,7 @@ public class LocationManagerImpl implements LocationManager {
     return regions;
   }
 
+
   @Override
   public Country getCountry(int countryID) {
     Map<String, String> lData = locationDAO.getCountry(countryID);
@@ -99,7 +135,6 @@ public class LocationManagerImpl implements LocationManager {
     return null;
   }
 
-
   @Override
   public Country getCountryByCode(String code) {
     Map<String, String> lData = locationDAO.getCountryByCode(code);
@@ -119,6 +154,7 @@ public class LocationManagerImpl implements LocationManager {
     }
     return null;
   }
+
 
   @Override
   public List<Country> getInstitutionCountries() {

@@ -45,6 +45,52 @@ public class MySQLLocationDAO implements LocationDAO {
   }
 
   @Override
+  public List<Map<String, String>> getActivityLocations(int activityID) {
+    LOG.debug(">> getActivityLocations( activityID={} )", activityID);
+    List<Map<String, String>> activityLocationsData = new ArrayList<>();
+
+    StringBuilder query = new StringBuilder();
+    query.append("SELECT le.id, le.name, le.code, ");
+    query.append("lp.id as 'location_parent_id',lp.name as 'location_parent_name', ");
+    query.append("let.id as 'type_id', let.name as 'type_name', ");
+    query.append("leg.id as 'loc_geo_id', leg.latitude as 'loc_geo_latitude', ");
+    query.append("leg.longitude as 'loc_geo_longitude' ");
+    query.append("FROM loc_elements le ");
+    query.append("INNER JOIN loc_elements lp ON le.parent_id = lp.id  ");
+    query.append("INNER JOIN loc_element_types let ON let.id = le.element_type_id  ");
+    query.append("LEFT JOIN loc_geopositions leg ON le.geoposition_id = leg.id ");
+    query.append("INNER JOIN activity_locations al ON le.id = al.loc_element_id ");
+    query.append("WHERE al.activity_id = ");
+    query.append(activityID);
+
+    try (Connection con = databaseManager.getConnection()) {
+      ResultSet rs = databaseManager.makeQuery(query.toString(), con);
+      Map<String, String> locationData;
+      if (rs.next()) {
+        locationData = new HashMap<String, String>();
+        locationData.put("id", rs.getString("id"));
+        locationData.put("name", rs.getString("name"));
+        locationData.put("code", rs.getString("code"));
+        locationData.put("location_parent_id", rs.getString("location_parent_id"));
+        locationData.put("location_parent_name", rs.getString("location_parent_name"));
+        locationData.put("type_id", rs.getString("type_id"));
+        locationData.put("type_name", rs.getString("type_name"));
+        locationData.put("loc_geo_id", rs.getString("loc_geo_id"));
+        locationData.put("loc_geo_latitude", rs.getString("loc_geo_latitude"));
+        locationData.put("loc_geo_longitude", rs.getString("loc_geo_longitude"));
+        activityLocationsData.add(locationData);
+      }
+      rs.close();
+    } catch (SQLException e) {
+      String exceptionMessage = "-- getActivityLocations() > Exception raised trying ";
+      exceptionMessage += "to execute the following query " + query;
+      LOG.error(exceptionMessage, e);
+    }
+
+    return activityLocationsData;
+  }
+
+  @Override
   public List<Map<String, String>> getAllCountries() {
     LOG.debug(">> getLocationsByType( )");
 
@@ -86,6 +132,7 @@ public class MySQLLocationDAO implements LocationDAO {
     return countriesList;
   }
 
+
   @Override
   public List<Map<String, String>> getAllRegions() {
     LOG.debug(">> getAllRegions( )");
@@ -101,7 +148,6 @@ public class MySQLLocationDAO implements LocationDAO {
     LOG.debug("-- getAllRegions() > Calling method executeQuery to get the results");
     return getData(query.toString());
   }
-
 
   @Override
   public Map<String, String> getCountry(int countryID) {

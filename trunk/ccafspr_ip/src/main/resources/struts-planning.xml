@@ -51,6 +51,10 @@
     <action name="activityDescription" class="org.cgiar.ccafs.ap.action.planning.ActivityDescriptionAction">
       <result name="input">/WEB-INF/planning/activityDescriptionPlanning.ftl</result>
     </action>
-    
+
+    <action name="locations" class="org.cgiar.ccafs.ap.action.planning.LocationsPlanningAction">
+      <result name="input">/WEB-INF/home/home.ftl</result>
+    </action>
+
   </package>
 </struts>
