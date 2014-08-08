@@ -27,7 +27,6 @@ import org.cgiar.ccafs.ap.data.model.Project;
 import org.cgiar.ccafs.ap.data.model.ProjectPartner;
 import org.cgiar.ccafs.ap.data.model.User;
 
-import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -63,7 +62,9 @@ public class ProjectBudgetAction extends BaseAction {
   private boolean hasLeader;
   private Map<String, Budget> mapBudgets;
   private double totalBudget;
-
+  private double totalBudgetByYear;
+  private double totalCCAFSBudget;
+  private double totalCCAFSBudgetByYear;
 
   // Managers
   private ProjectManager projectManager;
@@ -118,7 +119,7 @@ public class ProjectBudgetAction extends BaseAction {
           } else if (budget.getType().getValue() == BudgetType.BILATERAL.getValue()) {
             bilateral = true;
             budgetsMap
-            .put(year + "-" + projectPartner.getPartner().getId() + "-" + BudgetType.BILATERAL.name(), budget);
+              .put(year + "-" + projectPartner.getPartner().getId() + "-" + BudgetType.BILATERAL.name(), budget);
           }
         }
       }
@@ -225,8 +226,8 @@ public class ProjectBudgetAction extends BaseAction {
       newBudget.setAmount(0);
       newBudget.setYear(year);
       budgetsMap
-      .put(year + "-" + project.getLeader().getCurrentInstitution().getId() + "-" + BudgetType.BILATERAL.name(),
-          newBudget);
+        .put(year + "-" + project.getLeader().getCurrentInstitution().getId() + "-" + BudgetType.BILATERAL.name(),
+        newBudget);
     }
 
     // Leveraged
@@ -262,7 +263,6 @@ public class ProjectBudgetAction extends BaseAction {
     return allYears;
   }
 
-  // TODO HT: Filtrar lista de leveraged institutions por año
   public List<Institution> getLeveragedInstitutions() {
     return leveragedInstitutions;
   }
@@ -291,35 +291,20 @@ public class ProjectBudgetAction extends BaseAction {
     return APConstants.PROJECT_REQUEST_ID;
   }
 
-  /**
-   * TODO HT - To document
-   *
-   * @return
-   */
-  public Budget getSpecificBudget(int year, int partnerId, String budgetType) {
-    Budget budget = null;
-    for (Budget budg : project.getBudgets()) {
-      if (budg.getYear() == year && budg.getInstitution().getId() == partnerId
-        && budg.getType().name().equals(budgetType)) {
-        System.out.println(new Date().getTime() + " - " + year + "- pp: " + partnerId + " - " + budgetType + " - $"
-          + budg.getAmount());
-        return budg;
-      }
-    }
-    if (budget == null) {
-      budget = new Budget();
-      budget.setId(-1);
-      Institution institution = new Institution();
-      institution.setId(partnerId);
-      budget.setInstitution(institution);
-      budget.setType(BudgetType.valueOf(budgetType));
-      budget.setAmount(-1);
-    }
-    return budget;
-  }
-
   public double getTotalBudget() {
     return totalBudget;
+  }
+
+  public double getTotalBudgetByYear() {
+    return totalBudgetByYear;
+  }
+
+  public double getTotalCCAFSBudget() {
+    return totalCCAFSBudget;
+  }
+
+  public double getTotalCCAFSBudgetByYear() {
+    return totalCCAFSBudgetByYear;
   }
 
   public int getYear() {
@@ -350,7 +335,7 @@ public class ProjectBudgetAction extends BaseAction {
     // Getting the project identified with the id parameter.
     project = projectManager.getProject(projectID);
 
-    // Getting all the years of the project. TODO HT - Validate if there are not dates configured.
+    // Getting all the years of the project.
     allYears = project.getAllYears();
     // If there are not years, we stop here.
     if (allYears.size() > 0) {
@@ -384,6 +369,9 @@ public class ProjectBudgetAction extends BaseAction {
 
         // Getting the Total Overall Project Budget
         totalBudget = budgetManager.calculateTotalOverallBudget(projectID);
+        totalBudgetByYear = budgetManager.calculateTotalCCAFSBudgetByYear(projectID, year);
+        totalCCAFSBudget = budgetManager.calculateTotalOverallBudget(projectID);
+        totalCCAFSBudgetByYear = budgetManager.calculateTotalOverallBudgetByYear(projectID, year);
 
         // Getting the list of institutions that are funding the project as leveraged.
         leveragedInstitutions = budgetManager.getLeveragedInstitutions(projectID);
@@ -436,8 +424,6 @@ public class ProjectBudgetAction extends BaseAction {
     for (Budget budget : previousLeveragedBudgets) {
       if (!project.getBudgets().contains(budget)) {
         deleted = budgetManager.deleteBudget(budget.getId());
-        System.out.println("*************Budget DELETED: **************");
-        System.out.println(budget);
         if (!deleted) {
           success = false;
         }
@@ -448,8 +434,6 @@ public class ProjectBudgetAction extends BaseAction {
     for (Budget budget : project.getBudgets()) {
       boolean saved = budgetManager.saveBudget(projectID, budget);
       if (budget.getType() == BudgetType.LEVERAGED) {
-        System.out.println("********** SAVING ************");
-        System.out.println(budget);
       }
       if (!saved) {
         success = false;
@@ -479,6 +463,18 @@ public class ProjectBudgetAction extends BaseAction {
 
   public void setTotalBudget(double totalBudget) {
     this.totalBudget = totalBudget;
+  }
+
+  public void setTotalBudgetByYear(double totalBudgetByYear) {
+    this.totalBudgetByYear = totalBudgetByYear;
+  }
+
+  public void setTotalCCAFSBudget(double totalCCAFSBudget) {
+    this.totalCCAFSBudget = totalCCAFSBudget;
+  }
+
+  public void setTotalCCAFSBudgetByYear(double totalCCAFSBudgetByYear) {
+    this.totalCCAFSBudgetByYear = totalCCAFSBudgetByYear;
   }
 
   public void setYear(int year) {
