@@ -198,6 +198,7 @@
     [/#if]
     <!-- internal parameter -->
     <input name="projectID" type="hidden" value="${project.id?c}" />
+    <input name="year" type="hidden" value="${year?c}" />
     <div class="buttons">
       [@s.submit type="button" name="save"][@s.text name="form.buttons.save" /][/@s.submit]
       [@s.submit type="button" name="next"][@s.text name="form.buttons.next" /][/@s.submit]
