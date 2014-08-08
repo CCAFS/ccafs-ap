@@ -63,7 +63,7 @@ function setAmountIndexes(){
     // CSS selector div[id$=parent] Get any DIV element where the ID attribute value ends with "parent".
     $(element).find("[name$='id']").attr("name", elementName + ".id");
     $(element).find("[name$='year']").attr("name", elementName + ".year");
-    $(element).find("[name$='institution.id']").attr("name", elementName + ".institution.id");
+    $(element).find("[id$='institution.id']").attr("name", elementName + ".institution.id");
     $(element).find("[name$='amount']").attr("name", elementName + ".amount");
     $(element).find("[name$='type']").attr("name", elementName + ".type");
   });

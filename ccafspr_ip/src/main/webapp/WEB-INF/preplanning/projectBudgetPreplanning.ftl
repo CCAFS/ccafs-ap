@@ -37,7 +37,6 @@
           <h6>[@s.text name="preplanning.projectBudget.totalOverallBudget" /]</h6>
           <p id="projectTotalBudget">US$ ${totalBudget?string(",##0.00")}</p>
         </div>  
-        ${year?c}
         [#-- Tertiary Menu - All years --] 
         <div id="budgetTables" class="ui-tabs ui-widget ui-widget-content ui-corner-all" style="display:none"> 
           <ul class="ui-tabs-nav ui-helper-reset ui-helper-clearfix ui-widget-header ui-corner-all">
@@ -173,7 +172,7 @@
                   <div id="amount" class="amount">
                     <input type="hidden" name="project.budgets[${counter}].id" value="${mapBudgets[year?c+'-'+partner.id?c+'-LEVERAGED'].id}" />
                     <input type="hidden" name="project.budgets[${counter}].year" value="${year?c}" />
-                    <input type="hidden" name="project.budgets[${counter}].institution.id" value="${mapBudgets[year?c+'-'+partner.id?c+'-LEVERAGED'].institution.id?c}" />
+                    <input type="hidden" name="project.budgets[${counter}].institution.id" value="${mapBudgets[year?c+'-'+partner.id?c+'-LEVERAGED'].institution.id?c}" id="${counter}-institution.id" />
                     <input type="hidden" name="project.budgets[${counter}].type" value="LEVERAGED" />
                     [@customForm.input name="project.budgets[${counter}].amount" showTitle=false value="${mapBudgets[year?c+'-'+partner.id?c+'-LEVERAGED'].amount?c}"/]
                     [@s.set var="counter" value="${counter+1}"/] 
@@ -212,10 +211,10 @@
   <div id="leveragedPartnerTemplate" class="row" style="display:none"> 
     <div id="partnerName" class="name"> Partner Name </div> 
     <div id="amount" class="amount">
-      <input type="hidden" name="project.budgets[-1].id" value="-1" />
-      <input type="hidden" name="project.budgets[-1].year" value="${year?c}" />
-      <input type="hidden" name="project.budgets[-1].institution.id" value="-1" />
-      <input type="hidden" name="project.budgets[-1].type" value="LEVERAGED" />
+      <input type="hidden" name="id" value="-1" />
+      <input type="hidden" name="year" value="${year?c}" />
+      <input type="hidden" name="institution.id" value="-1" id="institution.id"/>
+      <input type="hidden" name="type" value="LEVERAGED" />
       <div class="input">
         <input type="text" id="amount" name="project.budgets[-1].amount" value="">
       </div>
