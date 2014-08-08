@@ -69,7 +69,11 @@ public class MySQLBudgetDAO implements BudgetDAO {
     try (Connection con = databaseManager.getConnection()) {
       ResultSet rs = databaseManager.makeQuery(query.toString(), con);
       if (rs.next()) {
-        total = Double.parseDouble(rs.getString("total"));
+        if (rs.getString("total") != null) {
+          total = Double.parseDouble(rs.getString("total"));
+        } else {
+          total = -1.0;
+        }
       }
       con.close();
     } catch (SQLException e) {
@@ -102,7 +106,12 @@ public class MySQLBudgetDAO implements BudgetDAO {
     try (Connection con = databaseManager.getConnection()) {
       ResultSet rs = databaseManager.makeQuery(query.toString(), con);
       if (rs.next()) {
-        total = Double.parseDouble(rs.getString("total"));
+        if (rs.getString("total") != null) {
+          total = Double.parseDouble(rs.getString("total"));
+        } else {
+          total = -1.0;
+        }
+
       }
       con.close();
     } catch (SQLException e) {
@@ -125,7 +134,11 @@ public class MySQLBudgetDAO implements BudgetDAO {
     try (Connection con = databaseManager.getConnection()) {
       ResultSet rs = databaseManager.makeQuery(query.toString(), con);
       if (rs.next()) {
-        total = Double.parseDouble(rs.getString("total"));
+        if (rs.getString("total") != null) {
+          total = Double.parseDouble(rs.getString("total"));
+        } else {
+          total = -1.0;
+        }
       }
       con.close();
     } catch (SQLException e) {
@@ -149,7 +162,11 @@ public class MySQLBudgetDAO implements BudgetDAO {
     try (Connection con = databaseManager.getConnection()) {
       ResultSet rs = databaseManager.makeQuery(query.toString(), con);
       if (rs.next()) {
-        total = Double.parseDouble(rs.getString("total"));
+        if (rs.getString("total") != null) {
+          total = Double.parseDouble(rs.getString("total"));
+        } else {
+          total = -1.0;
+        }
       }
       con.close();
     } catch (SQLException e) {
