@@ -17,6 +17,8 @@ function attachEvents(){
   // Leveraged Events
   $("#leveraged .addLeveragedBlock .addButton").click(addLeveragedEvent);
   $("#leveraged .leveragedPartner .removeButton").click(removeLeveragedEvent);
+  
+  // Amount changes event
   $(".ccafsBudget input[name$='amount']").on("keyup", calculateCCAFSBudget);
   $("input[name$='amount']").on("keyup", calculateOverallBudget);
   $("input[name$='amount']").on("keypress", isNumber);
@@ -26,7 +28,7 @@ function attachEvents(){
 function addLeveragedEvent(e){
   e.preventDefault();
   var $parent = $(e.target).parent();
-  var $newElement = $("#leveragedPartnerTemplate").clone(true).removeAttr("id").addClass("leveragedPartner");
+  var $newElement = $("#leveragedPartnerTemplate").clone(true).removeAttr("id").addClass("leveragedPartner").addClass("budgetContent");
   var $optionSelected = $parent.find("select.leveraged").find('option:selected');
   if ($parent.find("select.leveraged option").length != 0) {
     $parent.before($newElement);
@@ -36,7 +38,7 @@ function addLeveragedEvent(e){
     $optionSelected.remove();
     $parent.find("select.leveraged").trigger("liszt:updated");
     $newElement.show("slow");
-    setLeveragedIndexes();
+    setAmountIndexes();
   }
   
 }
@@ -49,18 +51,21 @@ function removeLeveragedEvent(e){
   $parent.parent().find("select.leveraged").append(option);
   $parent.hide("slide", function(){
     $parent.remove();
-    setLeveragedIndexes();
+    setAmountIndexes();
   });
 }
 
-function setLeveragedIndexes(){
-  var className = "leveragedPartner";
-  $("div." + className).each(function(index,element){
-    var elementName = "leveragedInstitutions[" + index + "].budgets.";
+function setAmountIndexes(){
+  var className = "budgetContent";
+  $("." + className).each(function(index,element){
+    var elementName = "project.budgets[" + index + "]";
     $(element).attr("id", className + "-" + index);
     // CSS selector div[id$=parent] Get any DIV element where the ID attribute value ends with "parent".
-    $(element).find("[id$='id']").attr("name", elementName + "id");
-    $(element).find("[id$='amount']").attr("name", elementName + "amount");
+    $(element).find("[name$='id']").attr("name", elementName + ".id");
+    $(element).find("[name$='year']").attr("name", elementName + ".year");
+    $(element).find("[name$='institution.id']").attr("name", elementName + ".institution.id");
+    $(element).find("[name$='amount']").attr("name", elementName + ".amount");
+    $(element).find("[name$='type']").attr("name", elementName + ".type");
   });
 }
 
@@ -78,7 +83,7 @@ function addChosen(){
 
 function calculateOverallBudget(){
   var totalAmount = 0.0;
-  $("input[name$='amount']").each(function(index,amount){
+  $("form input[name$='amount']").each(function(index,amount){
     totalAmount += parseInt($(amount).val());
   });
   $("p#projectTotalBudget").text('US$ ' + parseFloat(totalAmount, 10).toFixed(2).replace(/(\d)(?=(\d{3})+\.)/g, "$1,").toString());
@@ -86,7 +91,7 @@ function calculateOverallBudget(){
 
 function calculateCCAFSBudget(){
   var totalAmount = 0.0;
-  $(".ccafsBudget input[name$='amount']").each(function(index,amount){
+  $("form .ccafsBudget input[name$='amount']").each(function(index,amount){
     totalAmount += parseInt($(amount).val());
   });
   $("p#projectTotalCCAFSBudget").text('US$ ' + parseFloat(totalAmount, 10).toFixed(2).replace(/(\d)(?=(\d{3})+\.)/g, "$1,").toString());
