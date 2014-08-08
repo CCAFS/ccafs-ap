@@ -66,7 +66,7 @@
                   [#-- Partner Leader Name --]
                   <td id="" class="grid_5">${project.leader.currentInstitution.name} <strong>([@s.text name="preplanning.projectBudget.partnerLead" /])</strong> </td> 
                   [#-- W1 --]
-                  <td id="" class="grid_1">
+                  <td id="" class="budgetContent grid_1">
                     <input type="hidden" name="project.budgets[${counter}].id" value="${mapBudgets[year?c+'-'+project.leader.currentInstitution.id?c+'-W1'].id}" />
                     <input type="hidden" name="project.budgets[${counter}].year" value="${mapBudgets[year?c+'-'+project.leader.currentInstitution.id?c+'-W1'].year?c}" />
                     <input type="hidden" name="project.budgets[${counter}].institution.id" value="${mapBudgets[year?c+'-'+project.leader.currentInstitution.id?c+'-W1'].institution.id?c}" />
@@ -75,7 +75,7 @@
                     [@s.set var="counter" value="${counter+1}"/]
                   </td> 
                   [#-- W2 --]
-                  <td id="" class="grid_1">
+                  <td id="" class="budgetContent grid_1">
                     <input type="hidden" name="project.budgets[${counter}].id" value="${mapBudgets[year?c+'-'+project.leader.currentInstitution.id?c+'-W2'].id}" />
                     <input type="hidden" name="project.budgets[${counter}].year" value="${mapBudgets[year?c+'-'+project.leader.currentInstitution.id?c+'-W2'].year?c}" />
                     <input type="hidden" name="project.budgets[${counter}].institution.id" value="${mapBudgets[year?c+'-'+project.leader.currentInstitution.id?c+'-W2'].institution.id?c}" />
@@ -84,7 +84,7 @@
                     [@s.set var="counter" value="${counter+1}"/] 
                   </td>
                   [#-- W3  --] 
-                  <td id="" class="grid_1">
+                  <td id="" class="budgetContent grid_1">
                     <input type="hidden" name="project.budgets[${counter}].id" value="${mapBudgets[year?c+'-'+project.leader.currentInstitution.id?c+'-W3'].id}" />
                     <input type="hidden" name="project.budgets[${counter}].year" value="${mapBudgets[year?c+'-'+project.leader.currentInstitution.id?c+'-W3'].year?c}" />
                     <input type="hidden" name="project.budgets[${counter}].institution.id" value="${mapBudgets[year?c+'-'+project.leader.currentInstitution.id?c+'-W3'].institution.id?c}" />
@@ -93,7 +93,7 @@
                     [@s.set var="counter" value="${counter+1}"/]
                   </td>
                   [#-- Bilateral  --] 
-                  <td id="" class="grid_1">
+                  <td id="" class="budgetContent grid_1">
                     <input type="hidden" name="project.budgets[${counter}].id" value="${mapBudgets[year?c+'-'+project.leader.currentInstitution.id?c+'-BILATERAL'].id}" />
                     <input type="hidden" name="project.budgets[${counter}].year" value="${mapBudgets[year?c+'-'+project.leader.currentInstitution.id?c+'-BILATERAL'].year?c}" />
                     <input type="hidden" name="project.budgets[${counter}].institution.id" value="${mapBudgets[year?c+'-'+project.leader.currentInstitution.id?c+'-BILATERAL'].institution.id?c}" />
@@ -108,7 +108,7 @@
                 [#-- Partner Name --]
                 <td id="" class="grid_5">${projectPartner.partner.name}</td> 
                 [#-- W1 --]                
-                <td id="" class="grid_1">
+                <td id="" class="budgetContent grid_1">
                   <input type="hidden" name="project.budgets[${counter}].id" value="${mapBudgets[year?c+'-'+projectPartner.partner.id?c+'-W1'].id}" />
                   <input type="hidden" name="project.budgets[${counter}].year" value="${mapBudgets[year?c+'-'+projectPartner.partner.id?c+'-W1'].year?c}" />
                   <input type="hidden" name="project.budgets[${counter}].institution.id" value="${mapBudgets[year?c+'-'+projectPartner.partner.id?c+'-W1'].institution.id?c}" />
@@ -117,7 +117,7 @@
                   [@s.set var="counter" value="${counter+1}"/]
                 </td>
                 [#-- W2 --] 
-                <td id="" class="grid_1">
+                <td id="" class="budgetContent grid_1">
                   <input type="hidden" name="project.budgets[${counter}].id" value="${mapBudgets[year?c+'-'+projectPartner.partner.id?c+'-W2'].id}" />
                   <input type="hidden" name="project.budgets[${counter}].year" value="${mapBudgets[year?c+'-'+projectPartner.partner.id?c+'-W2'].year?c}" />
                   <input type="hidden" name="project.budgets[${counter}].institution.id" value="${mapBudgets[year?c+'-'+projectPartner.partner.id?c+'-W2'].institution.id?c}" />
@@ -126,7 +126,7 @@
                   [@s.set var="counter" value="${counter+1}"/]
                 </td> 
                 [#-- W3  --] 
-                <td id="" class="grid_1">
+                <td id="" class="budgetContent grid_1">
                   <input type="hidden" name="project.budgets[${counter}].id" value="${mapBudgets[year?c+'-'+projectPartner.partner.id?c+'-W3'].id}" />
                   <input type="hidden" name="project.budgets[${counter}].year" value="${mapBudgets[year?c+'-'+projectPartner.partner.id?c+'-W3'].year?c}" />
                   <input type="hidden" name="project.budgets[${counter}].institution.id" value="${mapBudgets[year?c+'-'+projectPartner.partner.id?c+'-W3'].institution.id?c}" />
@@ -135,7 +135,7 @@
                   [@s.set var="counter" value="${counter+1}"/]
                 </td> 
                 [#-- Bilateral  --] 
-                <td id="" class="grid_1">
+                <td id="" class="budgetContent grid_1">
                   <input type="hidden" name="project.budgets[${counter}].id" value="${mapBudgets[year?c+'-'+projectPartner.partner.id?c+'-BILATERAL'].id}" />
                   <input type="hidden" name="project.budgets[${counter}].year" value="${mapBudgets[year?c+'-'+projectPartner.partner.id?c+'-BILATERAL'].year?c}" />
                   <input type="hidden" name="project.budgets[${counter}].institution.id" value="${mapBudgets[year?c+'-'+projectPartner.partner.id?c+'-BILATERAL'].institution.id?c}" />
@@ -163,7 +163,7 @@
                   <div id="" class="amount"></div>
                 </div>
               [#list leveragedInstitutions as partner]
-                <div id="leveragedPartner-${partner_index}" class="leveragedPartner row"> 
+                <div id="leveragedPartner-${partner_index}" class="leveragedPartner budgetContent row"> 
                   [#-- Partner Name --]
                   <div id="partnerName" class="name">${partner.name}</div> 
                   [#-- Amount --]
@@ -209,9 +209,12 @@
   <div id="leveragedPartnerTemplate" class="row" style="display:none"> 
     <div id="partnerName" class="name"> Partner Name </div> 
     <div id="amount" class="amount">
-      <input type="hidden" id="id" name="todo" value="">
+      <input type="hidden" name="project.budgets[-1].id" value="-1" />
+      <input type="hidden" name="project.budgets[-1].year" value="-1" />
+      <input type="hidden" name="project.budgets[-1].institution.id" value="-1" />
+      <input type="hidden" name="project.budgets[-1].type" value="LEVERAGED" />
       <div class="input">
-        <input type="text" id="amount" name="todo" value="">
+        <input type="text" id="amount" name="project.budgets[-1].amount" value="">
       </div>
       <img class="removeButton" src="${baseUrl}/images/global/icon-remove.png">
     </div> 
