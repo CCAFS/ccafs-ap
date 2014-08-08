@@ -13,13 +13,6 @@
  *****************************************************************/
 package org.cgiar.ccafs.ap.action.preplanning;
 
-import java.util.Date;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-
-import com.google.inject.Inject;
-import org.apache.commons.lang3.StringUtils;
 import org.cgiar.ccafs.ap.action.BaseAction;
 import org.cgiar.ccafs.ap.config.APConfig;
 import org.cgiar.ccafs.ap.config.APConstants;
@@ -33,12 +26,20 @@ import org.cgiar.ccafs.ap.data.model.Institution;
 import org.cgiar.ccafs.ap.data.model.Project;
 import org.cgiar.ccafs.ap.data.model.ProjectPartner;
 import org.cgiar.ccafs.ap.data.model.User;
+
+import java.util.Date;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
+import com.google.inject.Inject;
+import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 /**
  * Project Budget Action.
- *
+ * 
  * @author Héctor Fabio Tobón R.
  */
 public class ProjectBudgetAction extends BaseAction {
@@ -61,12 +62,17 @@ public class ProjectBudgetAction extends BaseAction {
   private User projectLeader;
   private boolean hasLeader;
   private Map<String, Budget> mapBudgets;
+  private double totalBudget;
+
 
   // Managers
   private ProjectManager projectManager;
 
+
   private BudgetManager budgetManager;
+
   private InstitutionManager institutionManager;
+
   private ProjectPartnerManager partnerManager;
 
   @Inject
@@ -86,7 +92,7 @@ public class ProjectBudgetAction extends BaseAction {
    * e.g. 2014-9-W1
    * Where 2014 is the year, 9 is the institution identifier and W1 is the budget type.
    * If the budget is not in the database, this method will create a new one with an id=-1 and amount=0.
-   *
+   * 
    * @return a Map of budgets as was described above.
    */
   private Map<String, Budget> generateMapBudgets() {
@@ -287,7 +293,7 @@ public class ProjectBudgetAction extends BaseAction {
 
   /**
    * TODO HT - To document
-   *
+   * 
    * @return
    */
   public Budget getSpecificBudget(int year, int partnerId, String budgetType) {
@@ -310,6 +316,10 @@ public class ProjectBudgetAction extends BaseAction {
       budget.setAmount(-1);
     }
     return budget;
+  }
+
+  public double getTotalBudget() {
+    return totalBudget;
   }
 
   public int getYear() {
@@ -375,6 +385,9 @@ public class ProjectBudgetAction extends BaseAction {
       }
       // if the project leader is not defined, stop here.
       if (project.getLeader() != null) {
+
+        // Getting the Total Overall Project Budget
+        totalBudget = budgetManager.calculateTotalOverallBudget(projectID);
 
         // Getting the list of institutions that are funding the project as leveraged.
         leveragedInstitutions = budgetManager.getLeveragedInstitutions(projectID);
@@ -448,6 +461,10 @@ public class ProjectBudgetAction extends BaseAction {
 
   public void setProjectID(int projectID) {
     this.projectID = projectID;
+  }
+
+  public void setTotalBudget(double totalBudget) {
+    this.totalBudget = totalBudget;
   }
 
   public void setYear(int year) {

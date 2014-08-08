@@ -35,7 +35,7 @@
         [#-- Total overall project budget:--]
         <div id="totalBudget" class="halfPartBlock">
           <h6>[@s.text name="preplanning.projectBudget.totalOverallBudget" /]</h6>
-          <p id="projectTotalBudget">US$ {project.totalBudget}</p>
+          <p id="projectTotalBudget">US$ ${totalBudget?string(",##0.00")}</p>
         </div>  
         [#-- Tertiary Menu - All years --] 
         <div id="budgetTables" class=""> 
