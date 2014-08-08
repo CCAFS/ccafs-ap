@@ -39,7 +39,7 @@ import org.slf4j.LoggerFactory;
 
 /**
  * Project Budget Action.
- *
+ * 
  * @author Héctor Fabio Tobón R.
  */
 public class ProjectBudgetAction extends BaseAction {
@@ -92,7 +92,7 @@ public class ProjectBudgetAction extends BaseAction {
    * e.g. 2014-9-W1
    * Where 2014 is the year, 9 is the institution identifier and W1 is the budget type.
    * If the budget is not in the database, this method will create a new one with an id=-1 and amount=0.
-   *
+   * 
    * @return a Map of budgets as was described above.
    */
   private Map<String, Budget> generateMapBudgets(int year) {
@@ -118,7 +118,7 @@ public class ProjectBudgetAction extends BaseAction {
           } else if (budget.getType().getValue() == BudgetType.BILATERAL.getValue()) {
             bilateral = true;
             budgetsMap
-            .put(year + "-" + projectPartner.getPartner().getId() + "-" + BudgetType.BILATERAL.name(), budget);
+              .put(year + "-" + projectPartner.getPartner().getId() + "-" + BudgetType.BILATERAL.name(), budget);
           }
         }
       }
@@ -225,7 +225,7 @@ public class ProjectBudgetAction extends BaseAction {
       newBudget.setAmount(0);
       newBudget.setYear(year);
       budgetsMap
-      .put(year + "-" + project.getLeader().getCurrentInstitution().getId() + "-" + BudgetType.BILATERAL.name(),
+        .put(year + "-" + project.getLeader().getCurrentInstitution().getId() + "-" + BudgetType.BILATERAL.name(),
           newBudget);
     }
 
@@ -293,7 +293,7 @@ public class ProjectBudgetAction extends BaseAction {
 
   /**
    * TODO HT - To document
-   *
+   * 
    * @return
    */
   public Budget getSpecificBudget(int year, int partnerId, String budgetType) {
@@ -410,7 +410,7 @@ public class ProjectBudgetAction extends BaseAction {
         }
 
         // Getting the list of budgets.
-        project.setBudgets(budgetManager.getBudgetsByProject(project.getId()));
+        project.setBudgets(budgetManager.getBudgetsByProject(project));
         // Creating budgets that do not exist.
         mapBudgets = generateMapBudgets(year);
 

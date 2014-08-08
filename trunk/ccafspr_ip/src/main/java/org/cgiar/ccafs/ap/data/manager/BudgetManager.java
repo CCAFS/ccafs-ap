@@ -17,6 +17,7 @@ import org.cgiar.ccafs.ap.data.manager.impl.BudgetManagerImpl;
 import org.cgiar.ccafs.ap.data.model.Budget;
 import org.cgiar.ccafs.ap.data.model.BudgetType;
 import org.cgiar.ccafs.ap.data.model.Institution;
+import org.cgiar.ccafs.ap.data.model.Project;
 
 import java.util.List;
 
@@ -69,7 +70,7 @@ public interface BudgetManager {
    * @param projectID - is the Id of the project
    * @return a List of Budget with the budget Information related with the project
    */
-  public List<Budget> getBudgetsByProject(int projectID);
+  public List<Budget> getBudgetsByProject(Project projectID);
 
   /**
    * This method gets all the budget information that belongs to the same type of a specific project.
