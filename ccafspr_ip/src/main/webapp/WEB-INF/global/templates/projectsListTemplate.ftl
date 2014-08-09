@@ -1,6 +1,6 @@
 [#ftl]
 [#-- This macro is being used in projects.ftl. The idea is to represent a table with specific information about projects --]
-[#macro projectsList projects owned=true canValidate=false tableID="" isPlanning=false]
+[#macro projectsList projects owned=true canValidate=false isPlanning=false]
   <table class="projectsList" id="projects">
 	  <thead>
 	    <tr>

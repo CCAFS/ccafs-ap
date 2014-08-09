@@ -30,10 +30,11 @@
       [@s.text name="planning.projects.empty" /]
     [/#if]
     
-    
+    [#if currentUser.isRPL() || currentUser.isFPL() || currentUser.isAdmin()]
     <div class="buttons">
       [@s.submit type="button" name="add"][@s.text name="form.buttons.add" /][/@s.submit]
     </div>
+    [/#if]
 
   </article>
   [/@s.form]  
