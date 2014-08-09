@@ -59,7 +59,7 @@
     <action name="projects" class="org.cgiar.ccafs.ap.action.preplanning.ProjectsListPreplanningAction">
       <interceptor-ref name="preplanningStack" />
       <interceptor-ref name="ProgramLeadersAccessOnly" />
-      <result name="success">/WEB-INF/preplanning/projectsPreplanning.ftl</result>
+      <result name="success">/WEB-INF/preplanning/projectsListPreplanning.ftl</result>
       <result name="input" type="redirectAction">
         <param name="actionName">description</param>
         <param name="projectID">${projectID}</param>
