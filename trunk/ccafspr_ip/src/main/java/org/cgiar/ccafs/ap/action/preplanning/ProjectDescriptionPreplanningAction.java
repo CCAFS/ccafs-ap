@@ -57,8 +57,8 @@ public class ProjectDescriptionPreplanningAction extends BaseAction {
   private int projectID;
 
   @Inject
-  public ProjectDescriptionPreplanningAction(APConfig config, ProjectManager projectManager, IPProgramManager ipProgramManager,
-    IPCrossCuttingManager ipCrossCuttingManager, UserManager userManager) {
+  public ProjectDescriptionPreplanningAction(APConfig config, ProjectManager projectManager,
+    IPProgramManager ipProgramManager, IPCrossCuttingManager ipCrossCuttingManager, UserManager userManager) {
     super(config);
     this.projectManager = projectManager;
     this.ipProgramManager = ipProgramManager;
@@ -210,7 +210,6 @@ public class ProjectDescriptionPreplanningAction extends BaseAction {
   @Override
   public String save() {
     // ----- SAVING Project description -----
-    userManager.getEmployeeID(project.getOwner());
     int result = projectManager.saveProjectDescription(project);
     if (result < 0) {
       addActionError(getText("saving.problem"));

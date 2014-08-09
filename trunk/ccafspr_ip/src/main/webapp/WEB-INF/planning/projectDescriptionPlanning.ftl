@@ -9,6 +9,12 @@
 [#include "/WEB-INF/global/pages/header.ftl" /]
 [#include "/WEB-INF/global/pages/main-menu.ftl" /]
 [#import "/WEB-INF/global/macros/forms.ftl" as customForm/]
+
+[#if currentUser.isPO() || currentUser.isAdmin()]
+  [#assign canEdit = true /]
+[#else]
+  [#assign disabled = true /]
+[/#if]
     
 <section class="content">
   <div class="helpMessage">
@@ -20,32 +26,31 @@
   [@s.form action="description" cssClass="pure-form"]
   <article class="halfContent" id="mainInformation">
     <h1 class="contentTitle">
-    ${project.composedId} - [@s.text name="preplanning.projectDescription.title" /] 
+      ${project.composedId} - [@s.text name="planning.projectDescription.title" /]
     </h1> 
     <div id="projectDescription" class="borderBox">
       [#-- Project identifier --]
       <input name="projectID" type="hidden" value="${project.id?c}" />
       <fieldset class="fullBlock">  
         [#-- Project Title --]
-        [@customForm.textArea name="project.title" i18nkey="preplanning.projectDescription.projectTitle" required=true /]
+        [@customForm.textArea name="project.title" i18nkey="planning.projectDescription.projectTitle" required=true /]
         <div id="projectDescription" class="">
           [#-- Project Program Creator --]
           <div class="halfPartBlock">
-            <h6>[@s.text name="preplanning.projectDescription.programCreator" /]</h6>
+            <h6>[@s.text name="planning.projectDescription.programCreator" /]</h6>
             <p>${project.programCreator.acronym}</p>
-            <input type="hidden" id="programID" value="${project.programCreator.id}">
           </div>
           [#--  Project Owner Contact Person --]
           <div class="halfPartBlock">
-            [@customForm.select name="project.owner" label=""  disabled=false i18nkey="preplanning.projectDescription.projectownercontactperson" listName="allOwners" keyFieldName="employeeId"  displayFieldName="composedOwnerName" /]
+            [@customForm.select name="project.owner" label=""  disabled=canEdit i18nkey="preplanning.projectDescription.projectownercontactperson" listName="allOwners" keyFieldName="employeeId"  displayFieldName="composedOwnerName" /]
           </div>
           [#-- Start Date --]
           <div class="halfPartBlock">
-            [@customForm.input name="project.startDate" type="text" i18nkey="preplanning.projectDescription.startDate" required=true /]
+            [@customForm.input name="project.startDate" type="text" disabled=canEdit i18nkey="preplanning.projectDescription.startDate" required=true /]
           </div> 
           [#-- End Date --]
           <div class="halfPartBlock">
-              [@customForm.input name="project.endDate" type="text" i18nkey="preplanning.projectDescription.endDate" required=true /]
+              [@customForm.input name="project.endDate" type="text" disabled=canEdit i18nkey="preplanning.projectDescription.endDate" required=true /]
           </div>
         </div>
         [#-- Project Summary --]
@@ -59,7 +64,7 @@
             <h6>[@s.text name="preplanning.projectDescription.regions" /]</h6>
             <div class="checkboxGroup">
               [@s.fielderror cssClass="fieldError" fieldName="project.regions"/]
-              [@s.checkboxlist name="project.regions" list="ipProgramRegions" listKey="id" listValue="name" cssClass="checkbox" value="regionIds" /]
+              [@s.checkboxlist name="project.regions" disabled=canEdit list="ipProgramRegions" listKey="id" listValue="name" cssClass="checkbox" value="regionIds" /]
             </div>
           </div> 
           [#-- Flagships --] 
@@ -67,7 +72,7 @@
             <h6>[@s.text name="preplanning.projectDescription.flagships" /]</h6>
             <div class="checkboxGroup">  
               [@s.fielderror cssClass="fieldError" fieldName="project.flagships"/]
-              [@s.checkboxlist name="project.flagships" list="ipProgramFlagships" listKey="id" listValue="getComposedName(id)" cssClass="checkbox" value="flagshipIds" /]
+              [@s.checkboxlist name="project.flagships" disabled=canEdit list="ipProgramFlagships" listKey="id" listValue="getComposedName(id)" cssClass="checkbox" value="flagshipIds" /]
             </div>
           </div> 
           [#-- Cross Cutting --] 
@@ -75,7 +80,7 @@
             <h6>[@s.text name="preplanning.projectDescription.crossCutting" /]</h6>
             <div class="checkboxGroup">
               [@s.fielderror cssClass="fieldError" fieldName="project.crossCuttings"/]
-              [@s.checkboxlist name="project.crossCuttings" list="ipCrossCuttings" listKey="id" listValue="name" cssClass="checkbox" value="crossCuttingIds" /]
+              [@s.checkboxlist name="project.crossCuttings" disabled=canEdit list="ipCrossCuttings" listKey="id" listValue="name" cssClass="checkbox" value="crossCuttingIds" /]
             </div>
           </div>  
         </div> 
