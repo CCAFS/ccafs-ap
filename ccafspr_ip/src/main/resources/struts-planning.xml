@@ -12,8 +12,24 @@
     <!-- Section: Projects  -->
     <action name="projects" class="org.cgiar.ccafs.ap.action.planning.ProjectsListPlanningAction">
       <result name="success">/WEB-INF/planning/projectsListPlanning.ftl</result>
+      <result name="input" type="redirectAction">
+        <param name="actionName">description</param>
+        <param name="projectID">${projectID}</param>
+      </result>
     </action>
     
+    <action name="description" class="org.cgiar.ccafs.ap.action.planning.ProjectDescriptionPlanningAction">
+      <result name="cancel" type="redirectAction">projects</result>
+      <result name="input">/WEB-INF/planning/projectDescriptionPlanning.ftl</result>
+      <result name="success" type="redirectAction">
+        <param name="actionName">description</param>
+        <param name="projectID">${project.id}</param>
+      </result>
+      <result name="next" type="redirectAction">
+        <param name="actionName">partners</param>
+        <param name="projectID">${project.id}</param>
+      </result>
+    </action>
     
     <!-- Section: Activities  -->
     <action name="activities" class="org.cgiar.ccafs.ap.action.planning.ActivityListAction">

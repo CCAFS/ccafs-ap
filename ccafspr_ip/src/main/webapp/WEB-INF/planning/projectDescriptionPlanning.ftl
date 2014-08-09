@@ -1,9 +1,8 @@
 [#ftl]
 [#assign title = "Project Description" /]
 [#assign globalLibs = ["jquery", "noty", "autoSave", "chosen"] /]
-[#assign customJS = ["${baseUrl}/js/global/utils.js", "${baseUrl}/js/preplanning/projectDescriptionPreplanning.js"] /]
-[#assign currentSection = "preplanning" /]
-[#assign currentPrePlanningSection = "projects" /]
+[#assign customJS = ["${baseUrl}/js/global/utils.js", "${baseUrl}/js/planning/projectDescriptionPlanning.js"] /]
+[#assign currentSection = "planning" /]
 [#assign currentStage = "description" /]
 
 
@@ -14,13 +13,12 @@
 <section class="content">
   <div class="helpMessage">
     <img src="${baseUrl}/images/global/icon-help.png" />
-    <p> [@s.text name="preplanning.projectDescription.help" /] </p>
+    <p> [@s.text name="planning.projectDescription.help" /] </p>
   </div>
-  [#include "/WEB-INF/global/pages/pre-planning-secondary-menu.ftl" /]
+  [#include "/WEB-INF/global/pages/planning-secondary-menu.ftl" /]
   
-  [@s.form action="description" cssClass="pure-form"]  
+  [@s.form action="description" cssClass="pure-form"]
   <article class="halfContent" id="mainInformation">
-    [#include "/WEB-INF/preplanning/projectPreplanningSubMenu.ftl" /]
     <h1 class="contentTitle">
     ${project.composedId} - [@s.text name="preplanning.projectDescription.title" /] 
     </h1> 
