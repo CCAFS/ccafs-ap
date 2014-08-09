@@ -1,24 +1,20 @@
 [#ftl]
-<nav id="secondaryMenu">
-	 
+<nav id="secondaryMenu"> 
   <ul>
-    <a [#if currentPlanningSection == "mainInformation"] class="currentReportingSection" [/#if] href="[@s.url action='mainInformation'][@s.param name='${activityRequestParameter}']${activity.id?c}[/@s.param][/@s.url]">
-      <li><div class="icon-s"  id="i-mainInformation"></div>[@s.text name="menu.secondary.planning.mainInformation" /]</li>
+    <a [#if currentStage == "description"] class="currentSection" [/#if] href="[@s.url action='description'][@s.param name='${projectRequest}']${project.id?c}[/@s.param][/@s.url]">
+      <li>[@s.text name="menu.secondary.planning.project.description" /]</li>
     </a>
-    <a [#if currentPlanningSection == "objectives"] class="currentReportingSection" [/#if] href="[@s.url action='objectives'][@s.param name='${activityRequestParameter}']${activity.id?c}[/@s.param][/@s.url]">
-      <li><div class="icon-s"  id="i-objectives"></div>[@s.text name="menu.secondary.planning.objectives" /]</li>
+    <a [#if currentStage == "partners"] class="currentSection" [/#if] href="[@s.url action='partners' includeParams='get'] [/@s.url]">
+      <li>[@s.text name="menu.secondary.planning.project.partners" /]</li>
     </a>
-    <a [#if currentPlanningSection == "deliverables"] class="currentReportingSection" [/#if] href="[@s.url action='deliverables'][@s.param name='${activityRequestParameter}']${activity.id?c}[/@s.param][/@s.url]">
-      <li><div class="icon-s"  id="i-deliverables"></div>[@s.text name="menu.secondary.planning.deliverables" /]</li>
+    <a [#if currentStage == "budget"] class="currentSection" [/#if] href="[@s.url action='budget'  includeParams='get'][/@s.url]">
+      <li>[@s.text name="menu.secondary.planning.project.budget" /]</li>
     </a>
-    <a [#if currentPlanningSection == "partners"] class="currentReportingSection" [/#if] href="[@s.url action='partners'][@s.param name='${activityRequestParameter}']${activity.id?c}[/@s.param][/@s.url]">
-      <li><div class="icon-s"  id="i-partners"></div>[@s.text name="menu.secondary.planning.partners" /]</li>
+    <a [#if currentStage == "projectOutcomes"] class="currentSection" [/#if] href="[@s.url action='projectOutcomes'  includeParams='get'][/@s.url]">
+      <li>[@s.text name="menu.secondary.planning.project.outcome" /]</li>
     </a>
-    <a [#if currentPlanningSection == "locations"] class="currentReportingSection" [/#if] href="[@s.url action='locations'][@s.param name='${activityRequestParameter}']${activity.id?c}[/@s.param][/@s.url]">
-      <li><div class="icon-s"  id="i-locations"></div>[@s.text name="menu.secondary.planning.locations" /]</li>
-    </a>
-    <a [#if currentPlanningSection == "additionalInformation"] class="currentReportingSection" [/#if] href="[@s.url action='additionalInformation'][@s.param name='${activityRequestParameter}']${activity.id?c}[/@s.param][/@s.url]">
-      <li><div class="icon-s"  id="i-additionalInformation"></div>[@s.text name="menu.secondary.planning.additionalInformation" /]</li>
-    </a>
+    <a [#if currentStage == "activities"] class="currentSection" [/#if] href="[@s.url action='activities'  includeParams='get'][/@s.url]">
+      <li>[@s.text name="menu.secondary.planning.project.activities" /]</li>
+    </a> 
   </ul>
 </nav>
