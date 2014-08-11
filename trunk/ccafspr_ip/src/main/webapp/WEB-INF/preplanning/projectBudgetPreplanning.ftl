@@ -31,13 +31,17 @@
           [#-- Total CCAFS budget--]
           <div id="totalBudget" class="halfPartBlock">
             <h6>[@s.text name="preplanning.projectBudget.totalBudget" /]</h6>
-            <p id="projectTotalCCAFSBudget">US$ ${project.totalCcafsBudget?string(",##0.00")}</p>
+            <p id="projectTotalCCAFS">US$ <span id="projectTotalCCAFSBudget">${totalCCAFSBudget?string(",##0.00")}</span></p>
+            <input type="hidden" id="projectTotalCCAFSBudget" value="${totalCCAFSBudget?c}" />
+            <input type="hidden" id="yearTotalCCAFSBudget" value="${totalCCAFSBudgetByYear?c}" />
           </div>
           [#-- Total overall project budget:--]
           <div id="totalBudget" class="halfPartBlock">
             <h6>[@s.text name="preplanning.projectBudget.totalOverallBudget" /]</h6>
-            <p id="projectTotalBudget">US$ ${totalBudget?string(",##0.00")}</p>
-          </div>  
+            <p id="projectTotal">US$ <span id="projectTotalBudget">${totalBudget?string(",##0.00")}</span></p>
+            <input type="hidden" id="projectTotalBudget" value="${totalBudget?c}" />
+            <input type="hidden" id="yearTotalBudget" value="${totalBudgetByYear?c}" />
+          </div>   
           [#-- Tertiary Menu - All years --] 
           <div id="budgetTables" class="ui-tabs ui-widget ui-widget-content ui-corner-all" style="display:none"> 
             <ul class="ui-tabs-nav ui-helper-reset ui-helper-clearfix ui-widget-header ui-corner-all">
