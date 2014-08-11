@@ -4,6 +4,8 @@ var projectTotalCCAFSBudget,projectTotalBudget,yearTotalCCAFSBudget,yearTotalBud
 $(document).ready(init);
 
 function init(){
+  // This function enables launch the pop up window
+  popups();
   projectTotalCCAFSBudget = parseFloat($("input#projectTotalCCAFSBudget").val());
   yearTotalCCAFSBudget = projectTotalCCAFSBudget - parseFloat($("input#yearTotalCCAFSBudget").val());
   projectTotalBudget = parseFloat($("input#projectTotalBudget").val());

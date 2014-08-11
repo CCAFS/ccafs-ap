@@ -17,7 +17,7 @@ function popups(){
 
 function isNumber(event){
   var charCode = event.which;
-  if ((charCode > 46) && (charCode > 31) && (charCode < 48 || charCode > 57) && (charCode < 96 || charCode > 105) && (charCode < 37 || charCode > 40))
+  if ((charCode == 46) && (charCode > 31) && (charCode < 48 || charCode > 57) && (charCode < 96 || charCode > 105) && (charCode < 37 || charCode > 40))
     return false;
   return true;
 }

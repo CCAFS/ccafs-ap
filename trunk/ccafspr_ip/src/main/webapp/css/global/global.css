@@ -1442,13 +1442,13 @@ ul#deliverablesFilesMessages > li {
 
 /* Partners */
 #addPartnerText {
-  background-color: #F2F2F2;
-  border: 1px solid #29336F;
-  padding: 10px;
-  color: #29336F;
+  /* background-color: #F2F2F2; */
+  /* border: 1px solid #29336F; */
+  /* padding: 10px; */
+  /* color: #29336F; */
 }
 #addPartnerText a {
-  font-weight: bold;
+  /* font-weight: bold; */
 }
 #addPartnerText a:hover {
   text-decoration: underline;
