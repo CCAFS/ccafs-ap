@@ -5,8 +5,10 @@ import org.cgiar.ccafs.ap.config.APConfig;
 import org.cgiar.ccafs.ap.config.APConstants;
 import org.cgiar.ccafs.ap.data.manager.ActivityManager;
 import org.cgiar.ccafs.ap.data.manager.LocationManager;
+import org.cgiar.ccafs.ap.data.manager.LocationTypeManager;
 import org.cgiar.ccafs.ap.data.model.Activity;
 import org.cgiar.ccafs.ap.data.model.Country;
+import org.cgiar.ccafs.ap.data.model.LocationType;
 import org.cgiar.ccafs.ap.data.model.Region;
 
 import java.util.List;
@@ -23,20 +25,48 @@ public class LocationsPlanningAction extends BaseAction {
   private static final long serialVersionUID = -3960647459588960260L;
 
   // Managers
-  LocationManager locationManager;
-  ActivityManager activityManager;
+  private LocationManager locationManager;
+  private LocationTypeManager locationTypeManager;
+  private ActivityManager activityManager;
 
   // Model
+  private List<LocationType> locationTypes;
   private Activity activity;
   private List<Country> countries;
   private List<Region> regions;
   private int activityID;
 
   @Inject
-  public LocationsPlanningAction(APConfig config, LocationManager locationManager, ActivityManager activityManager) {
+  public LocationsPlanningAction(APConfig config, LocationManager locationManager, ActivityManager activityManager,
+    LocationTypeManager locationTypeManager) {
     super(config);
     this.locationManager = locationManager;
     this.activityManager = activityManager;
+    this.locationTypeManager = locationTypeManager;
+  }
+
+  public Activity getActivity() {
+    return activity;
+  }
+
+  public List<Country> getCountries() {
+    return countries;
+  }
+
+  public int getCountryTypeID() {
+    return APConstants.LOCATION_ELEMENT_TYPE_COUNTRY;
+  }
+
+  public List<LocationType> getLocationTypes() {
+    return locationTypes;
+  }
+
+  public List<Region> getRegions() {
+    return regions;
+  }
+
+  public int getRegionTypeID() {
+    return APConstants.LOCATION_ELEMENT_TYPE_REGION;
   }
 
   @Override
@@ -54,11 +84,24 @@ public class LocationsPlanningAction extends BaseAction {
     activity = activityManager.getActivityById(activityID);
     activity.setLocations(locationManager.getActivityLocations(activityID));
 
-    System.out.println(activity);
-
+    locationTypes = locationTypeManager.getLocationTypes();
     countries = locationManager.getAllCountries();
     regions = locationManager.getAllRegions();
   }
 
+  public void setActivity(Activity activity) {
+    this.activity = activity;
+  }
 
+  public void setCountries(List<Country> countries) {
+    this.countries = countries;
+  }
+
+  public void setLocationTypes(List<LocationType> locationTypes) {
+    this.locationTypes = locationTypes;
+  }
+
+  public void setRegions(List<Region> regions) {
+    this.regions = regions;
+  }
 }

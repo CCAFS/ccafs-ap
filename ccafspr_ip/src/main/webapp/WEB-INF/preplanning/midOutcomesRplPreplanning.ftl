@@ -1,4 +1,5 @@
 [#ftl]
+
 [#assign title = "Outcomes 2019 - Preplanning" /]
 [#assign globalLibs = ["jquery", "noty", "chosen"] /]
 [#assign customJS = ["${baseUrl}/js/global/utils.js", "${baseUrl}/js/preplanning/midOutcomesRPLPreplanning.js"] /]

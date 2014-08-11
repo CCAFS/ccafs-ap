@@ -11,73 +11,43 @@
  * You should have received a copy of the GNU General Public License
  * along with CCAFS P&R. If not, see <http://www.gnu.org/licenses/>.
  *****************************************************************/
+
 package org.cgiar.ccafs.ap.data.model;
 
 import org.apache.commons.lang3.builder.ToStringBuilder;
 
 /**
- * This class represents a specific location. E.g. Country, Region, etc.
- * 
- * @author Héctor Fabio Tobón R.
  * @author Hernán David Carvajal
- * @author Javier Andrés Gallego
  */
-public abstract class Location {
+
+public class LocationGeoposition {
 
   private int id;
-  private String name;
-  private String code;
-
-  public Location() {
-  }
-
-  public Location(int id, String name) {
-    this.id = id;
-    this.name = name;
-  }
-
-  public String getCode() {
-    return code;
-  }
+  private double latitude;
+  private double longitude;
 
   public int getId() {
     return id;
   }
 
-  public String getName() {
-    return name;
+  public double getLatitude() {
+    return latitude;
   }
 
-  public OtherLocation getOtherLocationInstance() {
-    if (this.isOtherLocation()) {
-      return (OtherLocation) this;
-    } else {
-      return null;
-    }
-  }
-
-  public boolean isCountry() {
-    return (this instanceof Country);
-  }
-
-  public boolean isOtherLocation() {
-    return (this instanceof OtherLocation);
-  }
-
-  public boolean isRegion() {
-    return (this instanceof Region);
-  }
-
-  public void setCode(String code) {
-    this.code = code;
+  public double getLongitude() {
+    return longitude;
   }
 
   public void setId(int id) {
     this.id = id;
   }
 
-  public void setName(String name) {
-    this.name = name;
+  public void setLatitude(double latitude) {
+    this.latitude = latitude;
+  }
+
+  public void setLongitude(double longitude) {
+    this.longitude = longitude;
   }
 
   @Override

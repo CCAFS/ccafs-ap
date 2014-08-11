@@ -14,25 +14,29 @@
 package org.cgiar.ccafs.ap.data.model;
 
 import org.apache.commons.lang3.StringUtils;
-
 import org.apache.commons.lang3.builder.ToStringBuilder;
 
 /**
  * This class represents any kind of institution inside the system.
  * An institution can be represented as project partner, activity partner, project leader, etc.
- *
+ * 
  * @author Héctor fabio Tobón R.
  */
 public class Institution {
 
+
   private int id;
+
+
   private String name;
+
   private String acronym;
   private String contactPersonName;
   private String contactPersonEmail;
   private IPProgram program;
   private InstitutionType type;
   private Country country;
+  private String city;
 
   public Institution() {
     super();
@@ -49,6 +53,10 @@ public class Institution {
 
   public String getAcronym() {
     return acronym;
+  }
+
+  public String getCity() {
+    return city;
   }
 
   public String getComposedName() {
@@ -102,6 +110,10 @@ public class Institution {
 
   public void setAcronym(String acronym) {
     this.acronym = acronym;
+  }
+
+  public void setCity(String city) {
+    this.city = city;
   }
 
   public void setContactPersonEmail(String contactPersonEmail) {

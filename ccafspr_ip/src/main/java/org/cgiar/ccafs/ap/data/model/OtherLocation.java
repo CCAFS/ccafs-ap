@@ -23,13 +23,39 @@ import org.apache.commons.lang3.builder.ToStringBuilder;
  */
 public class OtherLocation extends Location {
 
+  private LocationType type;
+  private LocationGeoposition geoPosition;
+  private Country country;
 
   public OtherLocation() {
+  }
+
+  public Country getCountry() {
+    return country;
+  }
+
+  public LocationGeoposition getGeoPosition() {
+    return geoPosition;
+  }
+
+  public LocationType getType() {
+    return type;
+  }
+
+  public void setCountry(Country country) {
+    this.country = country;
+  }
+
+  public void setGeoPosition(LocationGeoposition geoPosition) {
+    this.geoPosition = geoPosition;
+  }
+
+  public void setType(LocationType type) {
+    this.type = type;
   }
 
   @Override
   public String toString() {
     return ToStringBuilder.reflectionToString(this);
   }
-
 }

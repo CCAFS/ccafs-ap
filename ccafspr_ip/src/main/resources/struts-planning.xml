@@ -41,7 +41,7 @@
     </action>
 
     <action name="locations" class="org.cgiar.ccafs.ap.action.planning.LocationsPlanningAction">
-      <result name="input">/WEB-INF/home/home.ftl</result>
+      <result name="input">/WEB-INF/planning/locationsPlanning.ftl</result>
     </action>
 
   </package>

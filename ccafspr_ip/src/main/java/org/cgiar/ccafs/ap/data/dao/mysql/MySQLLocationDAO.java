@@ -52,7 +52,7 @@ public class MySQLLocationDAO implements LocationDAO {
     StringBuilder query = new StringBuilder();
     query.append("SELECT le.id, le.name, le.code, ");
     query.append("lp.id as 'location_parent_id',lp.name as 'location_parent_name', ");
-    query.append("let.id as 'type_id', let.name as 'type_name', ");
+    query.append("lp.code as 'location_parent_code', let.id as 'type_id', let.name as 'type_name', ");
     query.append("leg.id as 'loc_geo_id', leg.latitude as 'loc_geo_latitude', ");
     query.append("leg.longitude as 'loc_geo_longitude' ");
     query.append("FROM loc_elements le ");
@@ -72,6 +72,7 @@ public class MySQLLocationDAO implements LocationDAO {
         locationData.put("name", rs.getString("name"));
         locationData.put("code", rs.getString("code"));
         locationData.put("location_parent_id", rs.getString("location_parent_id"));
+        locationData.put("location_parent_code", rs.getString("location_parent_code"));
         locationData.put("location_parent_name", rs.getString("location_parent_name"));
         locationData.put("type_id", rs.getString("type_id"));
         locationData.put("type_name", rs.getString("type_name"));
