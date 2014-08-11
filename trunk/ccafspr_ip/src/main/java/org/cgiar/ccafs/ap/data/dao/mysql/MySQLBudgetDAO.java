@@ -287,6 +287,8 @@ public class MySQLBudgetDAO implements BudgetDAO {
     query.append(BudgetType.W2.getValue());
     query.append(" OR b.budget_type = ");
     query.append(BudgetType.W3.getValue());
+    query.append(" OR b.budget_type = ");
+    query.append(BudgetType.BILATERAL.getValue());
     query.append(" ) ");
 
 

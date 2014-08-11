@@ -42,6 +42,7 @@ public interface BudgetDAO {
    * This method calculates the total of the CCAFS Budget which is the addition of W1+W2+W3+BILATERAL and a given year
    * 
    * @param projectID is the project id.
+   * @param year
    * @return a decimal number representing the amount of the total CCAFS Budget for that specific project, if no data
    *         found return -1.0..
    */
@@ -62,6 +63,7 @@ public interface BudgetDAO {
    * It consists in the addition of all Windows, plus the Bilateral and the Leveraged.
    * 
    * @param projectID is the project id.
+   * @param year
    * @return a decimal number that represents the total amount of money used on that specific project, if no data found
    *         return -1.0..
    */
@@ -112,7 +114,7 @@ public interface BudgetDAO {
   public List<Map<String, String>> getBudgetsByYear(int projectID, int year);
 
   /**
-   * This method calculates the total of the CCAFS Budget which is the addition of W1+W2+W3
+   * This method calculates the total of the CCAFS Budget which is the addition of W1+W2+W3+BILATERAL
    * 
    * @param projectID is the project id.
    * @return a decimal number representing the amount of the total CCAFS Budget for that specific project.

@@ -31,9 +31,17 @@
       </result>
     </action>
     
+    <action name="projectOutcomes" class="org.cgiar.ccafs.ap.action.planning.ProjectOutcomeAction">		
+      <result name="input">/WEB-INF/planning/projectOutcomesPlanning.ftl</result>		
+      <result name="success" type="redirectAction">		
+        <param name="actionName">activities</param>		
+        <param name="projectID">${project.id}</param>		
+      </result>		
+    </action>
+    
     <!-- Section: Activities  -->
     <action name="activities" class="org.cgiar.ccafs.ap.action.planning.ActivityListAction">
-      <result name="input">/WEB-INF/planning/activities.ftl</result>
+      <result name="input">/WEB-INF/planning/activitiesListPlanning.ftl</result>
     </action>
     
     <action name="activityDescription" class="org.cgiar.ccafs.ap.action.planning.ActivityDescriptionAction">
@@ -44,12 +52,22 @@
       <result name="input">/WEB-INF/planning/locationsPlanning.ftl</result>
     </action>
     
+    <action name="ipOtherContributions" class="org.cgiar.ccafs.ap.action.planning.IPOtherContributionAction">
+      <result name="input">/WEB-INF/planning/ipOtherContributionPlanning.ftl</result>
+    </action>
+    
+    <action name="deliverables" class="org.cgiar.ccafs.ap.action.planning.DeliverableAction">
+      <result name="input">/WEB-INF/planning/deliverables.ftl</result>
+    </action>
+
+    
     <action name="partnerSave" class="org.cgiar.ccafs.ap.action.planning.PartnersSaveAction">
       <result name="input">/WEB-INF/global/pages/partnersSave.ftl</result>
       <result name="success" type="redirectAction">
         <param name="actionName">partnerSave</param>
       </result>
     </action>
+
 
   </package>
 </struts>
