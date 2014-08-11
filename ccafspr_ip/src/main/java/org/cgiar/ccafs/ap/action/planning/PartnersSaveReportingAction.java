@@ -6,6 +6,7 @@ import org.cgiar.ccafs.ap.config.APConstants;
 import org.cgiar.ccafs.ap.data.manager.ActivityManager;
 import org.cgiar.ccafs.ap.data.manager.InstitutionManager;
 import org.cgiar.ccafs.ap.data.manager.LocationManager;
+import org.cgiar.ccafs.ap.data.manager.ProjectManager;
 import org.cgiar.ccafs.ap.data.model.ActivityPartner;
 import org.cgiar.ccafs.ap.data.model.Country;
 import org.cgiar.ccafs.ap.data.model.InstitutionType;
@@ -29,6 +30,7 @@ public class PartnersSaveReportingAction extends BaseAction {
   private LocationManager locationManager;
   private InstitutionManager institutionManager;
   private ActivityManager activityManager;
+  private ProjectManager projectManager;
 
   // Model
   private List<Country> countriesList;
@@ -36,16 +38,18 @@ public class PartnersSaveReportingAction extends BaseAction {
   private ActivityPartner activityPartner;
 
   private String partnerWebPage;
+  private int projectID;
   private int activityID;
 
 
   @Inject
   public PartnersSaveReportingAction(APConfig config, LocationManager locationManager,
-    InstitutionManager institutionManager, ActivityManager activityManager) {
+    InstitutionManager institutionManager, ActivityManager activityManager, ProjectManager projectManager) {
     super(config);
     this.locationManager = locationManager;
     this.institutionManager = institutionManager;
     this.activityManager = activityManager;
+    this.projectManager = projectManager;
   }
 
 
@@ -65,6 +69,10 @@ public class PartnersSaveReportingAction extends BaseAction {
     return partnerWebPage;
   }
 
+  public int getProjectID() {
+    return projectID;
+  }
+
   @Override
   public void prepare() throws Exception {
     super.prepare();
@@ -72,9 +80,14 @@ public class PartnersSaveReportingAction extends BaseAction {
 
     if (this.getRequest().getParameter(APConstants.ACTIVITY_REQUEST_ID) != null) {
       activityID = Integer.parseInt(StringUtils.trim(this.getRequest().getParameter(APConstants.ACTIVITY_REQUEST_ID)));
+      LOG.info("The user {} load the request partner section related to the activity {}.", getCurrentUser().getEmail(),
+        activityID);
+    } else if (this.getRequest().getParameter(APConstants.PROJECT_REQUEST_ID) != null) {
+      projectID = Integer.parseInt(StringUtils.trim(this.getRequest().getParameter(APConstants.PROJECT_REQUEST_ID)));
+      LOG.info("The user {} load the request partner section related to the project {}.", getCurrentUser().getEmail(),
+        projectID);
     }
-    LOG.info("The user {} load the request partner section related to the activity {}.", getCurrentUser().getEmail(),
-      activityID);
+
     this.countriesList = locationManager.getAllCountries();
     this.institutionTypesList = institutionManager.getAllInstitutionTypes();
   }
@@ -135,10 +148,19 @@ public class PartnersSaveReportingAction extends BaseAction {
       message.append(partnerWebPage);
       message.append("\n");
     }
-    message.append("Activity: (");
-    message.append(activityID);
-    message.append(") - ");
-    message.append(activityManager.getActivityById(activityID).getTitle());
+
+    if (activityID > 0) {
+      message.append("Activity: (");
+      message.append(activityID);
+      message.append(") - ");
+      message.append(activityManager.getActivityById(activityID).getTitle());
+    } else if (projectID > 0) {
+      message.append("Project: (");
+      message.append(projectID);
+      message.append(") - ");
+      message.append(projectManager.getProject(projectID).getTitle());
+    }
+
     message.append(".\n");
     message.append("\n");
     SendMail sendMail = new SendMail(this.config);
@@ -160,6 +182,9 @@ public class PartnersSaveReportingAction extends BaseAction {
     this.partnerWebPage = partnerWebPage;
   }
 
+  public void setProjectID(int projectID) {
+    this.projectID = projectID;
+  }
 
   @Override
   public void validate() {
