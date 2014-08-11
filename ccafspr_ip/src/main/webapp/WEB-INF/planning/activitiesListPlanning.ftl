@@ -17,7 +17,7 @@
     <img src="${baseUrl}/images/global/icon-help.png" />
     <p> [@s.text name="planning.activities.help" /] </p>
   </div>
-  [#include "/WEB-INF/planning/projectPlanningSubMenu.ftl" /]
+  [#-- [#include "/WEB-INF/global/pages/planning-secondary-menu.ftl" /]--]
   
   [@s.form action="activities" cssClass="pure-form"]  
   <article class="halfContent" id="activities"> 

@@ -210,7 +210,7 @@ public class MySQLActivityDAO implements ActivityDAO {
       values[6] = "";
       newId = databaseManager.saveData(query.toString(), values);
       if (newId <= 0) {
-        LOG.error("A problem happened trying to add a new budget with id={}", projectID);
+        LOG.error("A problem happened trying to add a new activity with id={}", projectID);
         return -1;
       } else {
         // Now, Updating the Custom ID for the activity
@@ -250,7 +250,7 @@ public class MySQLActivityDAO implements ActivityDAO {
 
   @Override
   public int saveActivityLeader(Map<String, Object> activityLeaderData) {
-    LOG.debug(">> saveActivityLeader(budgetData={})", activityLeaderData);
+    LOG.debug(">> saveActivityLeader(activityLeaderData={})", activityLeaderData);
     StringBuilder query = new StringBuilder();
     int result = -1;
     int newId = -1;
@@ -263,9 +263,9 @@ public class MySQLActivityDAO implements ActivityDAO {
       values[0] = activityLeaderData.get("institution_id");
       values[1] = activityLeaderData.get("name");
       values[2] = activityLeaderData.get("email");
-      newId = databaseManager.saveData(query.toString(), values);
-      if (newId <= 0) {
-        LOG.error("A problem happened trying to add a new budget with id={}");
+      result = databaseManager.saveData(query.toString(), values);
+      if (result <= 0) {
+        LOG.error("A problem happened trying to add a new activity Leader with id={}");
         return -1;
       }
     } else {
