@@ -17,9 +17,8 @@ function popups(){
 
 function isNumber(event){
   var charCode = event.which;
-  if (charCode > 31 && (charCode < 48 || charCode > 57))
+  if ((charCode > 46) && (charCode > 31) && (charCode < 48 || charCode > 57) && (charCode < 96 || charCode > 105) && (charCode < 37 || charCode > 40))
     return false;
-  
   return true;
 }
 
@@ -29,4 +28,8 @@ function printOut(){
       console.log("> " + $(input).attr("name") + ": " + $(input).val() + " (" + input.tagName + ")");
     }
   });
+}
+
+function setCurrencyFormat(stringNumber){
+  return parseFloat(stringNumber, 10).toFixed(2).replace(/(\d)(?=(\d{3})+\.)/g, "$1,").toString();
 }

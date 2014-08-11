@@ -1,27 +1,46 @@
-$(document).ready(function(){
-  init();
-});
+//Global VARS
+var projectTotalCCAFSBudget,projectTotalBudget,yearTotalCCAFSBudget,yearTotalBudget;
+
+$(document).ready(init);
+
 function init(){
-  //
-  /*
-   * $("#budgetTables").tabs({ active : 1, show : { duration : 500 } });
-   */
+  projectTotalCCAFSBudget = parseFloat($("input#projectTotalCCAFSBudget").val());
+  yearTotalCCAFSBudget = projectTotalCCAFSBudget - parseFloat($("input#yearTotalCCAFSBudget").val());
+  projectTotalBudget = parseFloat($("input#projectTotalBudget").val());
+  yearTotalBudget = projectTotalBudget - parseFloat($("input#yearTotalBudget").val());
   addChosen();
   attachEvents();
+  // Show table when page is loaded
   $("#budgetTables").fadeIn("slow");
-  // $("#budgetTables").tabs('option', 'active', "partnerTables-2016");
-  
+  // Active initial currency format to all inputs
+  $("input[name$='amount']").trigger("focusout");
 }
 
 function attachEvents(){
   // Leveraged Events
   $("#leveraged .addLeveragedBlock .addButton").click(addLeveragedEvent);
   $("#leveraged .leveragedPartner .removeButton").click(removeLeveragedEvent);
-  
   // Amount changes event
   $(".ccafsBudget input[name$='amount']").on("keyup", calculateCCAFSBudget);
   $("input[name$='amount']").on("keyup", calculateOverallBudget);
-  $("input[name$='amount']").on("keypress", isNumber);
+  $("input[name$='amount']").on("keydown", isNumber);
+  
+  $("input[name$='amount']").on("focusout", setInCurrency);
+  $("input[name$='amount']").on("focus", setOutCurrency);
+}
+
+function setInCurrency(event){
+  $input = $(event.target);
+  if ($input.val().length == 0)
+    $input.val("0");
+  $input.val(setCurrencyFormat($input.val()));
+}
+
+function setOutCurrency(event){
+  $input = $(event.target);
+  $input.val(parseFloat($input.val().replace(/,/g, '')));
+  if ($input.val() == "0")
+    $input.val("");
 }
 
 // Leveraged Functions //
@@ -40,7 +59,6 @@ function addLeveragedEvent(e){
     $newElement.show("slow");
     setAmountIndexes();
   }
-  
 }
 
 function removeLeveragedEvent(e){
@@ -69,11 +87,9 @@ function setAmountIndexes(){
   });
 }
 
-// Activate the chosen plugin to the countries, partner types and
-// partners lists.
+// Activate the chosen plugin to leveraged institutions
 function addChosen(){
   $("form select[name$='leveragedList']").each(function(){
-    // Check if its not the template partner field
     $(this).chosen({
       no_results_text : $("#noResultText").val(),
       search_contains : true
@@ -81,18 +97,26 @@ function addChosen(){
   });
 }
 
+// Calculate budget functions
 function calculateOverallBudget(){
-  var totalAmount = 0.0;
-  $("form input[name$='amount']").each(function(index,amount){
-    totalAmount += parseInt($(amount).val());
-  });
-  $("p#projectTotalBudget").text('US$ ' + parseFloat(totalAmount, 10).toFixed(2).replace(/(\d)(?=(\d{3})+\.)/g, "$1,").toString());
+  var Amount = totalBudget("form input[name$='amount']");
+  var totalAmount = yearTotalBudget + Amount;
+  $("span#projectTotalBudget").text(setCurrencyFormat(totalAmount));
 }
 
 function calculateCCAFSBudget(){
-  var totalAmount = 0.0;
-  $("form .ccafsBudget input[name$='amount']").each(function(index,amount){
-    totalAmount += parseInt($(amount).val());
+  var Amount = totalBudget("form .ccafsBudget input[name$='amount']");
+  var totalAmount = yearTotalCCAFSBudget + Amount;
+  $("span#projectTotalCCAFSBudget").text(setCurrencyFormat(totalAmount));
+}
+
+function totalBudget(inputList){
+  var Amount = 0;
+  $(inputList).each(function(index,amount){
+    if (!$(amount).val().length == 0) {
+      Amount += parseFloat($(amount).val());
+    }
   });
-  $("p#projectTotalCCAFSBudget").text('US$ ' + parseFloat(totalAmount, 10).toFixed(2).replace(/(\d)(?=(\d{3})+\.)/g, "$1,").toString());
+  console.log(Amount);
+  return Amount;
 }
