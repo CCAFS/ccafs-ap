@@ -33,3 +33,7 @@ function printOut(){
 function setCurrencyFormat(stringNumber){
   return parseFloat(stringNumber, 10).toFixed(2).replace(/(\d)(?=(\d{3})+\.)/g, "$1,").toString();
 }
+
+function removeCurrencyFormat(stringNumber){
+  return parseFloat(stringNumber.replace(/,/g, ''));
+}

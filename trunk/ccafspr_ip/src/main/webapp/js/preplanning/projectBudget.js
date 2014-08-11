@@ -25,22 +25,16 @@ function attachEvents(){
   $("input[name$='amount']").on("keyup", calculateOverallBudget);
   $("input[name$='amount']").on("keydown", isNumber);
   
-  $("input[name$='amount']").on("focusout", setInCurrency);
-  $("input[name$='amount']").on("focus", setOutCurrency);
-}
-
-function setInCurrency(event){
-  $input = $(event.target);
-  if ($input.val().length == 0)
-    $input.val("0");
-  $input.val(setCurrencyFormat($input.val()));
-}
-
-function setOutCurrency(event){
-  $input = $(event.target);
-  $input.val(parseFloat($input.val().replace(/,/g, '')));
-  if ($input.val() == "0")
-    $input.val("");
+  $("input[name$='amount']").on("focusout", setCurrency);
+  $("input[name$='amount']").on("focus", removeCurrency);
+  
+  $("form").submit(function(event){
+    $("input[name$='amount']").each(function(){
+      $(this).attr("readonly", true);
+      $(this).val(removeCurrencyFormat($(this).val()));
+    });
+    return;
+  });
 }
 
 // Leveraged Functions //
@@ -114,9 +108,22 @@ function totalBudget(inputList){
   var Amount = 0;
   $(inputList).each(function(index,amount){
     if (!$(amount).val().length == 0) {
-      Amount += parseFloat($(amount).val());
+      Amount += removeCurrencyFormat($(amount).val());
     }
   });
-  console.log(Amount);
   return Amount;
+}
+
+function setCurrency(event){
+  $input = $(event.target);
+  if ($input.val().length == 0)
+    $input.val("0");
+  $input.val(setCurrencyFormat($input.val()));
+}
+
+function removeCurrency(event){
+  $input = $(event.target);
+  $input.val(removeCurrencyFormat($input.val()));
+  if ($input.val() == "0")
+    $input.val("");
 }
