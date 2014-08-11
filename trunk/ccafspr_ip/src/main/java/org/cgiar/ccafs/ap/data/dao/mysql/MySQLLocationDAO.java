@@ -56,7 +56,7 @@ public class MySQLLocationDAO implements LocationDAO {
     query.append("leg.id as 'loc_geo_id', leg.latitude as 'loc_geo_latitude', ");
     query.append("leg.longitude as 'loc_geo_longitude' ");
     query.append("FROM loc_elements le ");
-    query.append("INNER JOIN loc_elements lp ON le.parent_id = lp.id  ");
+    query.append("LEFT JOIN loc_elements lp ON le.parent_id = lp.id  ");
     query.append("INNER JOIN loc_element_types let ON let.id = le.element_type_id  ");
     query.append("LEFT JOIN loc_geopositions leg ON le.geoposition_id = leg.id ");
     query.append("INNER JOIN activity_locations al ON le.id = al.loc_element_id ");
@@ -66,7 +66,8 @@ public class MySQLLocationDAO implements LocationDAO {
     try (Connection con = databaseManager.getConnection()) {
       ResultSet rs = databaseManager.makeQuery(query.toString(), con);
       Map<String, String> locationData;
-      if (rs.next()) {
+      while (rs.next()) {
+        System.out.println("---");
         locationData = new HashMap<String, String>();
         locationData.put("id", rs.getString("id"));
         locationData.put("name", rs.getString("name"));
