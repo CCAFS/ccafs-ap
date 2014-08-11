@@ -6,7 +6,6 @@
 [#assign currentPlanningSection = "activity" /]
 [#assign currentStage = "activityDescription" /]
 
-
 [#include "/WEB-INF/global/pages/header.ftl" /]
 [#include "/WEB-INF/global/pages/main-menu.ftl" /]
 [#import "/WEB-INF/global/macros/forms.ftl" as customForm/]
@@ -16,7 +15,7 @@
     <img src="${baseUrl}/images/global/icon-help.png" />
     <p> [@s.text name="planning.mainInformation.help" /] </p>
   </div>
-  [#include "/WEB-INF/planning/projectPlanningSubMenu.ftl" /]
+  [#include "/WEB-INF/planning/activityPlanningSubMenu.ftl" /]
   
   [@s.form action="activityDescription" cssClass="pure-form"]  
   <article class="halfContent" id="mainInformation">

@@ -18,6 +18,8 @@ import org.cgiar.ccafs.ap.data.dao.LocationDAO;
 import org.cgiar.ccafs.ap.data.manager.LocationManager;
 import org.cgiar.ccafs.ap.data.model.Country;
 import org.cgiar.ccafs.ap.data.model.Location;
+import org.cgiar.ccafs.ap.data.model.LocationGeoposition;
+import org.cgiar.ccafs.ap.data.model.LocationType;
 import org.cgiar.ccafs.ap.data.model.OtherLocation;
 import org.cgiar.ccafs.ap.data.model.Region;
 
@@ -43,32 +45,65 @@ public class LocationManagerImpl implements LocationManager {
   public List<Location> getActivityLocations(int activityID) {
     List<Location> locations = new ArrayList<>();
     List<Map<String, String>> locationsData = locationDAO.getActivityLocations(activityID);
+    int locationTypeID;
 
     for (Map<String, String> lData : locationsData) {
-      Location location;
+      locationTypeID = Integer.parseInt(lData.get("type_id"));
 
-      switch (Integer.parseInt(lData.get("type_id"))) {
-        case APConstants.LOCATION_ELEMENT_TYPE_COUNTRY:
-          location = new Country();
-          break;
-        case APConstants.LOCATION_ELEMENT_TYPE_REGION:
-          location = new Region();
-          break;
-        default:
-          location = new OtherLocation();
+      if (locationTypeID == APConstants.LOCATION_ELEMENT_TYPE_REGION) {
+        // Region Location
+        Region location = new Region();
+
+        location.setId(Integer.parseInt(lData.get("id")));
+        location.setCode(lData.get("code"));
+        location.setName(lData.get("name"));
+
+        locations.add(location);
+
+      } else if (locationTypeID == APConstants.LOCATION_ELEMENT_TYPE_COUNTRY) {
+        // Country location
+        Country location = new Country();
+
+        location.setId(Integer.parseInt(lData.get("id")));
+        location.setCode(lData.get("code"));
+        location.setName(lData.get("name"));
+
+        // Set the parent location
+        Region region = new Region();
+        region.setId(Integer.parseInt(lData.get("location_parent_id")));
+        region.setName(lData.get("location_parent_name"));
+        location.setRegion(region);
+
+        locations.add(location);
+      } else {
+        // Other location
+        OtherLocation location = new OtherLocation();
+
+        location.setId(Integer.parseInt(lData.get("id")));
+        location.setCode(lData.get("code"));
+        location.setName(lData.get("name"));
+
+        // Set the parent location
+        Country country = new Country();
+        country.setId(Integer.parseInt(lData.get("location_parent_id")));
+        country.setName(lData.get("location_parent_name"));
+        country.setCode(lData.get("location_parent_code"));
+        location.setCountry(country);
+
+        LocationType type = new LocationType();
+        type.setId(Integer.parseInt(lData.get("type_id")));
+        type.setName(lData.get("type_name"));
+        location.setType(type);
+
+        LocationGeoposition geoposition = new LocationGeoposition();
+        geoposition.setId(Integer.parseInt(lData.get("loc_geo_id")));
+        geoposition.setLatitude(Double.parseDouble(lData.get("loc_geo_latitude")));
+        geoposition.setLongitude(Double.parseDouble(lData.get("loc_geo_longitude")));
+        location.setGeoPosition(geoposition);
+
+        locations.add(location);
       }
 
-      location.setId(Integer.parseInt(lData.get("id")));
-      location.setCode(lData.get("code"));
-      location.setName(lData.get("name"));
-
-      // TODO still pending to add the attributes type and geoposition
-
-      if (lData.get("location_parent_id") != null) {
-
-      }
-
-      locations.add(location);
     }
 
     return locations;
