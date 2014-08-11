@@ -1,5 +1,7 @@
 $(document).ready(function(){
   attachEvents();
+  // This function enables launch the pop up window
+  popups();
   if (!$("div.projectPartner").length) {
     $("a.addProjectPartner").trigger("click");
   } else {

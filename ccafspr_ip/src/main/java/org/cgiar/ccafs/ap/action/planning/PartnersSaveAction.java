@@ -1,5 +1,9 @@
 package org.cgiar.ccafs.ap.action.planning;
 
+import java.util.List;
+
+import com.google.inject.Inject;
+import org.apache.commons.lang3.StringUtils;
 import org.cgiar.ccafs.ap.action.BaseAction;
 import org.cgiar.ccafs.ap.config.APConfig;
 import org.cgiar.ccafs.ap.config.APConstants;
@@ -11,19 +15,14 @@ import org.cgiar.ccafs.ap.data.model.ActivityPartner;
 import org.cgiar.ccafs.ap.data.model.Country;
 import org.cgiar.ccafs.ap.data.model.InstitutionType;
 import org.cgiar.ccafs.ap.util.SendMail;
-
-import java.util.List;
-
-import com.google.inject.Inject;
-import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 
-public class PartnersSaveReportingAction extends BaseAction {
+public class PartnersSaveAction extends BaseAction {
 
   // Logger
-  private static final Logger LOG = LoggerFactory.getLogger(PartnersSaveReportingAction.class);
+  private static final Logger LOG = LoggerFactory.getLogger(PartnersSaveAction.class);
   private static final long serialVersionUID = -5598244190394106332L;
 
   // Managers
@@ -43,8 +42,8 @@ public class PartnersSaveReportingAction extends BaseAction {
 
 
   @Inject
-  public PartnersSaveReportingAction(APConfig config, LocationManager locationManager,
-    InstitutionManager institutionManager, ActivityManager activityManager, ProjectManager projectManager) {
+  public PartnersSaveAction(APConfig config, LocationManager locationManager, InstitutionManager institutionManager,
+    ActivityManager activityManager, ProjectManager projectManager) {
     super(config);
     this.locationManager = locationManager;
     this.institutionManager = institutionManager;
@@ -63,6 +62,10 @@ public class PartnersSaveReportingAction extends BaseAction {
 
   public List<Country> getCountriesList() {
     return countriesList;
+  }
+
+  public List<InstitutionType> getInstitutionTypesList() {
+    return institutionTypesList;
   }
 
   public String getPartnerWebPage() {

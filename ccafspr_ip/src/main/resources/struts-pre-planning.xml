@@ -106,7 +106,14 @@
         <param name="year">${year}</param>
       </result>
     </action>
-    
+     
+    <action name="partnerSave" class="org.cgiar.ccafs.ap.action.planning.PartnersSaveAction">
+      
+      <result name="input">/WEB-INF/global/pages/partnersSave.ftl</result>
+      <result name="success" type="redirectAction">
+        <param name="actionName">partnerSave</param>
+      </result>
+    </action>
     
   </package>
 </struts>
