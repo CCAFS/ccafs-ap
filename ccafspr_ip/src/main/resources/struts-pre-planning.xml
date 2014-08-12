@@ -12,7 +12,6 @@
     <!-- Section: Higher Level Impact Pathways  -->
     <action name="outcomes" class="org.cgiar.ccafs.ap.action.preplanning.OutcomesPreplanningAction">
       <interceptor-ref name="preplanningStack" />
-      <interceptor-ref name="ProgramLeadersAccessOnly" />
       <result name="input">/WEB-INF/preplanning/outcomesPreplanning.ftl</result>
       <result name="success" type="redirectAction">
         <param name="actionName">outcomes</param>
@@ -57,8 +56,7 @@
         
     <!-- Section: Projects  -->
     <action name="projects" class="org.cgiar.ccafs.ap.action.preplanning.ProjectsListPreplanningAction">
-      <interceptor-ref name="preplanningStack" />
-      <interceptor-ref name="ProgramLeadersAccessOnly" />
+      <interceptor-ref name="preplanningStack" />      
       <result name="success">/WEB-INF/preplanning/projectsListPreplanning.ftl</result>
       <result name="input" type="redirectAction">
         <param name="actionName">description</param>
@@ -68,7 +66,6 @@
     
     <action name="description" class="org.cgiar.ccafs.ap.action.preplanning.ProjectDescriptionPreplanningAction">
       <interceptor-ref name="preplanningStackProjects" />
-      <interceptor-ref name="ProgramLeadersAccessOnly" />
       <result name="cancel" type="redirectAction">projects</result>
       <result name="input">/WEB-INF/preplanning/projectDescriptionPreplanning.ftl</result>
       <result name="success" type="redirectAction">
@@ -83,7 +80,6 @@
     
     <action name="partners" class="org.cgiar.ccafs.ap.action.preplanning.ProjectPartnersPreplanningAction">
       <interceptor-ref name="preplanningStackProjects" />
-      <interceptor-ref name="ProgramLeadersAccessOnly" />
       <result name="cancel" type="redirectAction">projects</result>
       <result name="input">/WEB-INF/preplanning/projectPartnersPreplanning.ftl</result>
       <result name="success" type="redirectAction">
@@ -98,7 +94,6 @@
     
     <action name="budget" class="org.cgiar.ccafs.ap.action.preplanning.ProjectBudgetPreplanningAction">
       <interceptor-ref name="preplanningStackProjects" />
-      <interceptor-ref name="ProgramLeadersAccessOnly" />
       <result name="input">/WEB-INF/preplanning/projectBudgetPreplanning.ftl</result>
       <result name="success" type="redirectAction">
         <param name="actionName">budget</param>

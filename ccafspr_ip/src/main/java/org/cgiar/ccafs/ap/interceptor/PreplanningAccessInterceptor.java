@@ -42,12 +42,12 @@ public class PreplanningAccessInterceptor extends AbstractInterceptor {
     Map<String, Object> session = invocation.getInvocationContext().getSession();
     User user = (User) session.get(APConstants.SESSION_USER);
     if (user != null) {
-      if (user.isAdmin() || user.isFPL() || user.isRPL() || user.isPO()) {
+      if (user.isAdmin() || user.isFPL() || user.isRPL()) {
         invocation.invoke();
       } else {
         LOG.info("User identify with id={}, email={}, role={} tried to access pre-planning section.", new Object[] {
           user.getId(), user.getEmail(), user.getRole().getName()});
-        return BaseAction.NOT_LOGGED;
+        return BaseAction.NOT_AUTHORIZED;
       }
     }
     return BaseAction.NOT_LOGGED;

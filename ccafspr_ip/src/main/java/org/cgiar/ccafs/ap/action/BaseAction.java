@@ -38,13 +38,14 @@ import org.slf4j.LoggerFactory;
  */
 public class BaseAction extends ActionSupport implements Preparable, SessionAware, ServletRequestAware {
 
-  private static final long serialVersionUID = -740360140511380630L;
 
+  private static final long serialVersionUID = -740360140511380630L;
   public static final String CANCEL = "cancel";
   public static final String NEXT = "next";
   public static final String NOT_LOGGED = "401";
   public static final String NOT_AUTHORIZED = "403";
   public static final String NOT_FOUND = "404";
+
   public static final String SAVED_STATUS = "savedStatus";
 
   // button actions
@@ -54,6 +55,10 @@ public class BaseAction extends ActionSupport implements Preparable, SessionAwar
   protected boolean cancel;
   protected boolean dataSaved;
   protected boolean add;
+
+  // User actions
+  private boolean saveable; // If user is able to see the save, cancel, delete buttons
+  private boolean fullEditable; // If user is able to edit all the form.
 
   // Loggin
   private static final Logger LOG = LoggerFactory.getLogger(BaseAction.class);
@@ -67,6 +72,8 @@ public class BaseAction extends ActionSupport implements Preparable, SessionAwar
   @Inject
   public BaseAction(APConfig config) {
     this.config = config;
+    this.saveable = true;
+    this.fullEditable = true;
   }
 
   /* Override this method depending of the save action. */
@@ -118,7 +125,6 @@ public class BaseAction extends ActionSupport implements Preparable, SessionAwar
     return config.getBaseUrl();
   }
 
-
   /**
    * Get the user that is currently saved in the session.
    *
@@ -133,6 +139,7 @@ public class BaseAction extends ActionSupport implements Preparable, SessionAwar
     }
     return u;
   }
+
 
   /**
    * Define default locale while we decide to support other languages in the future.
@@ -152,6 +159,10 @@ public class BaseAction extends ActionSupport implements Preparable, SessionAwar
 
   public boolean isDataSaved() {
     return dataSaved;
+  }
+
+  public boolean isFullEditable() {
+    return fullEditable;
   }
 
   /**
@@ -174,6 +185,10 @@ public class BaseAction extends ActionSupport implements Preparable, SessionAwar
     return config.isReportingActive();
   }
 
+  public boolean isSaveable() {
+    return saveable;
+  }
+
   public boolean isSummariesActive() {
     return config.isSummariesActive();
   }
@@ -187,6 +202,7 @@ public class BaseAction extends ActionSupport implements Preparable, SessionAwar
     // So far, do nothing here!
   }
 
+
   /* Override this method depending of the save action. */
   public String save() {
     return SUCCESS;
@@ -195,7 +211,6 @@ public class BaseAction extends ActionSupport implements Preparable, SessionAwar
   public void setAdd(boolean add) {
     this.add = true;
   }
-
 
   public void setCancel(boolean cancel) {
     this.cancel = true;
@@ -209,12 +224,20 @@ public class BaseAction extends ActionSupport implements Preparable, SessionAwar
     this.delete = delete;
   }
 
+  public void setFullEditable(boolean fullEditable) {
+    this.fullEditable = fullEditable;
+  }
+
   public void setNext(boolean next) {
     this.next = true;
   }
 
   public void setSave(boolean save) {
     this.save = true;
+  }
+
+  public void setSaveable(boolean saveable) {
+    this.saveable = saveable;
   }
 
   @Override
