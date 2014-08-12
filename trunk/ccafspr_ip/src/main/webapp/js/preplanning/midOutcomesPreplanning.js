@@ -53,8 +53,8 @@ function removeMidOutcomeEvent(event){
         setMidOutcomesIndexes();
       });
     } else {
-      $("#removeDialog").find(".elements").html(data.IPElementsList.length);
-      $("#removeDialog").dialog({
+      $("#removeIPElementDialog").find(".elements").html(data.IPElementsList.length);
+      $("#removeIPElementDialog").dialog({
         modal : true,
         buttons : {
           "Remove" : function(){
@@ -149,12 +149,36 @@ function addIndicatorEvent(event){
 function removeIndicatorEvent(event){
   event.preventDefault();
   var grandParentId = $(event.target).parent().parent().parent().parent().attr("id").split("-")[1];
-  var pressedLink = event.target;
   var $indicatorDiv = $(event.target).parent().parent();
-  var $parentDiv = $indicatorDiv.parent().parent();
-  $indicatorDiv.hide("slow", function(){
-    $(this).remove();
-    setIndicatorsIndexes(grandParentId);
+  var indicatorID = $indicatorDiv.find("[name$='id']").val();
+  var source = "../json/ipIndicatorsByParent.do?indicatorID=" + indicatorID;
+  $.getJSON(source, function(){
+  }).done(function(data){
+    if (data.indicators.length == 0) {
+      $indicatorDiv.hide("slow", function(){
+        $(this).remove();
+        setIndicatorsIndexes(grandParentId);
+      });
+    } else {
+      $("#removeIndicatorDialog").find(".elements").html(data.indicators.length);
+      $("#removeIndicatorDialog").dialog({
+        modal : true,
+        buttons : {
+          "Remove" : function(){
+            $indicatorDiv.hide("slow", function(){
+              $(this).remove();
+              setIndicatorsIndexes(grandParentId);
+            });
+            $(this).dialog("close");
+          },
+          "Cancel" : function(){
+            $(this).dialog("close");
+          }
+        }
+      });
+    }
+  }).fail(function(){
+    console.log("error");
   });
 }
 
