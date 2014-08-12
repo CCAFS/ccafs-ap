@@ -32,7 +32,7 @@ import org.slf4j.LoggerFactory;
 
 /**
  * This class is used to deal with all MySQL connections and transactions.
- *
+ * 
  * @author Héctor Fabio Tobón R.
  * @author Hernán David Carvajal.
  */
@@ -77,7 +77,7 @@ public class MySQLDAOManager extends DAOManager {
 
   /**
    * Execute an update statement in a secure way avoiding SQL Injections and other vulnerabilities.
-   *
+   * 
    * @param connection - a SQL Connection object which represents the connection to the DAO.
    * @param preparedUpdateQuery - Secure query without values defined on it.
    * @param values - An array of Objects values.
