@@ -1,23 +1,23 @@
 [#ftl]
 <nav id="secondaryMenu"> 
   <ul>
-    <a [#if currentStage == "activityDescription"] class="currentSection" [/#if] href="[@s.url action='description' includeParams='get'] [/@s.url]">
-      <li>[@s.text name="menu.secondary.planning.activity.description" /]</li>
+    <a [#if currentStage == "activityDescription"] class="currentSection" [/#if] href="[@s.url action='activityDescription' includeParams='get'] [/@s.url]">
+      <li>[@s.text name="menu.secondary.planning.activity.activityDescription" /]</li>
     </a>
-    <a [#if currentStage == "partners"] class="currentSection" [/#if] href="[@s.url action='partners' includeParams='get'] [/@s.url]">
-      <li>[@s.text name="menu.secondary.planning.activity.partners" /]</li>
+    <a [#if currentStage == "activityPartners"] class="currentSection" [/#if] href="[@s.url action='activityPartners' includeParams='get'] [/@s.url]">
+      <li>[@s.text name="menu.secondary.planning.activity.activityPartners" /]</li>
     </a>
-    <a [#if currentStage == "budget"] class="currentSection" [/#if] href="[@s.url action='budget'  includeParams='get'][/@s.url]">
-      <li>[@s.text name="menu.secondary.planning.activity.budget" /]</li>
+    <a [#if currentStage == "activityBudget"] class="currentSection" [/#if] href="[@s.url action='activityBudget'  includeParams='get'][/@s.url]">
+      <li>[@s.text name="menu.secondary.planning.activity.activityBudget" /]</li>
     </a>
-    <a [#if currentStage == "locations"] class="currentSection" [/#if] href="[@s.url action='locations'  includeParams='get'][/@s.url]">
-      <li>[@s.text name="menu.secondary.planning.activity.locations" /]</li>
+    <a [#if currentStage == "activityLocations"] class="currentSection" [/#if] href="[@s.url action='activityLocations'  includeParams='get'][/@s.url]">
+      <li>[@s.text name="menu.secondary.planning.activity.activityLocations" /]</li>
     </a>
-    <a [#if currentStage == "impactPathways"] class="currentSection" [/#if] href="[@s.url action='impactPathways'  includeParams='get'][/@s.url]">
-      <li>[@s.text name="menu.secondary.planning.activity.impactPathways" /]</li>
+    <a [#if currentStage == "activityImpactPathway"] class="currentSection" [/#if] href="[@s.url action='activityImpactPathway'  includeParams='get'][/@s.url]">
+      <li>[@s.text name="menu.secondary.planning.activity.activityImpactPathway" /]</li>
     </a> 
-    <a [#if currentStage == "deliverables"] class="currentSection" [/#if] href="[@s.url action='deliverables'  includeParams='get'][/@s.url]">
-      <li>[@s.text name="menu.secondary.planning.activity.deliverables" /]</li>
+    <a [#if currentStage == "activityDeliverables"] class="currentSection" [/#if] href="[@s.url action='activityDeliverables'  includeParams='get'][/@s.url]">
+      <li>[@s.text name="menu.secondary.planning.activity.activityDeliverables" /]</li>
     </a> 
   </ul>
 </nav>

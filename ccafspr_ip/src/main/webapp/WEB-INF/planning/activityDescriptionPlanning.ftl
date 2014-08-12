@@ -20,7 +20,7 @@
 
   
   [@s.form action="activityDescription" cssClass="pure-form"]  
-  <article class="halfContent" id="mainInformation">
+  <article class="halfContent" id="activityDescription">
     <h1 class="contentTitle">
     [@s.text name="planning.activityDescription.title" /] 
     </h1> 

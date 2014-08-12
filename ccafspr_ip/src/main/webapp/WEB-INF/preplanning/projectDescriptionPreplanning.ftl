@@ -25,8 +25,6 @@
     ${project.composedId} - [@s.text name="preplanning.projectDescription.title" /] 
     </h1> 
     <div id="projectDescription" class="borderBox">
-      [#-- Project identifier --]
-      <input name="projectID" type="hidden" value="${project.id?c}" />
       <fieldset class="fullBlock">  
         [#-- Project Title --]
         [@customForm.textArea name="project.title" i18nkey="preplanning.projectDescription.projectTitle" required=true /]
@@ -82,7 +80,8 @@
         </div> 
       </fieldset>
     </div> 
-    
+    [#-- Project identifier --]
+    <input name="projectID" type="hidden" value="${project.id?c}" />
     <div class="buttons">
       [@s.submit type="button" name="save"][@s.text name="form.buttons.save" /][/@s.submit]
       [#-- @s.submit type="button" name="next"][@s.text name="form.buttons.next" /][/@s.submit --]
@@ -94,5 +93,7 @@
   [#-- Hidden values used by js --]
   <input id="minDateValue" value="${startYear?c}-01-01" type="hidden"/>
   <input id="maxDateValue" value="${endYear?c}-12-31" type="hidden"/> 
+  <input id="programID" value="${project.programCreator.id}" type="hidden"/>
+  
 </section>
 [#include "/WEB-INF/global/pages/footer.ftl"]
