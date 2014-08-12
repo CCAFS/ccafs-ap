@@ -64,6 +64,9 @@ public class ActivityListAction extends BaseAction {
     return projectID;
   }
 
+  public String getProjectRequest() {
+    return APConstants.PROJECT_REQUEST_ID;
+  }
 
   @Override
   public void prepare() throws Exception {

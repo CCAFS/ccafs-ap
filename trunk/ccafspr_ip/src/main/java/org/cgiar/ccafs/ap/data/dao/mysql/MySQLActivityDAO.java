@@ -117,6 +117,7 @@ public class MySQLActivityDAO implements ActivityDAO {
           activityData.put("endDate", rs.getDate("endDate").toString());
         }
         activityData.put("leader_id", rs.getString("leader_id"));
+        activityData.put("expected_leader_id", rs.getString("expected_leader_id"));
         activityData.put("created", rs.getTimestamp("created").getTime() + "");
 
       }
@@ -126,31 +127,6 @@ public class MySQLActivityDAO implements ActivityDAO {
     }
     LOG.debug("-- getActivityById() > Calling method executeQuery to get the results");
     return activityData;
-  }
-
-  @Override
-  public Map<String, String> getActivityLeaderById(int activityID) {
-    Map<String, String> activityLeaderData = new HashMap<String, String>();
-    StringBuilder query = new StringBuilder();
-    query.append("SELECT al.*   ");
-    query.append("FROM activity_leaders as al ");
-    query.append("INNER JOIN activities a ON al.id=a.leader_id ");
-    query.append("WHERE a.id=  ");
-    query.append(activityID);
-    try (Connection con = databaseManager.getConnection()) {
-      ResultSet rs = databaseManager.makeQuery(query.toString(), con);
-      if (rs.next()) {
-        activityLeaderData.put("id", rs.getString("id"));
-        activityLeaderData.put("institution_id", rs.getString("institution_id"));
-        activityLeaderData.put("name", rs.getString("name"));
-        activityLeaderData.put("email", rs.getString("email"));
-      }
-      con.close();
-    } catch (SQLException e) {
-      LOG.error("Exception arised getting the activity {}.", activityID, e);
-    }
-    LOG.debug("-- getActivityById() > Calling method executeQuery to get the results");
-    return activityLeaderData;
   }
 
   private List<Map<String, String>> getData(String query) {
@@ -172,6 +148,7 @@ public class MySQLActivityDAO implements ActivityDAO {
           activityData.put("endDate", rs.getDate("endDate").toString());
         }
         activityData.put("leader_id", rs.getString("leader_id"));
+        activityData.put("expected_leader_id", rs.getString("expected_leader_id"));
         activityData.put("created", rs.getTimestamp("created").getTime() + "");
 
         activitiesList.add(activityData);
@@ -186,6 +163,31 @@ public class MySQLActivityDAO implements ActivityDAO {
     }
     LOG.debug("<< executeQuery():activitiesList.size={}", activitiesList.size());
     return activitiesList;
+  }
+
+  @Override
+  public Map<String, String> getExpectedActivityLeaderByActivityId(int activityID) {
+    Map<String, String> activityLeaderData = new HashMap<String, String>();
+    StringBuilder query = new StringBuilder();
+    query.append("SELECT eal.*   ");
+    query.append("FROM expected_activity_leaders as eal ");
+    query.append("INNER JOIN activities a ON eal.id=a.expected_leader_id ");
+    query.append("WHERE a.id=  ");
+    query.append(activityID);
+    try (Connection con = databaseManager.getConnection()) {
+      ResultSet rs = databaseManager.makeQuery(query.toString(), con);
+      if (rs.next()) {
+        activityLeaderData.put("id", rs.getString("id"));
+        activityLeaderData.put("institution_id", rs.getString("institution_id"));
+        activityLeaderData.put("name", rs.getString("name"));
+        activityLeaderData.put("email", rs.getString("email"));
+      }
+      con.close();
+    } catch (SQLException e) {
+      LOG.error("Exception arised getting the activity {}.", activityID, e);
+    }
+    LOG.debug("-- getExpectedActivityLeaderById() > Calling method executeQuery to get the results");
+    return activityLeaderData;
   }
 
   @Override
@@ -249,15 +251,14 @@ public class MySQLActivityDAO implements ActivityDAO {
   }
 
   @Override
-  public int saveActivityLeader(Map<String, Object> activityLeaderData) {
-    LOG.debug(">> saveActivityLeader(activityLeaderData={})", activityLeaderData);
+  public int saveExpectedActivityLeader(Map<String, Object> activityLeaderData) {
+    LOG.debug(">> saveExpectedActivityLeader(activityLeaderData={})", activityLeaderData);
     StringBuilder query = new StringBuilder();
     int result = -1;
-    int newId = -1;
     Object[] values;
     if (activityLeaderData.get("id") == null) {
       // Insert new activity record
-      query.append("INSERT INTO activity_leader (institution_id, name, email) ");
+      query.append("INSERT INTO expected_activity_leader (institution_id, name, email) ");
       query.append("VALUES (?,?,?) ");
       values = new Object[3];
       values[0] = activityLeaderData.get("institution_id");
@@ -270,7 +271,7 @@ public class MySQLActivityDAO implements ActivityDAO {
       }
     } else {
       // update activity record
-      query.append("UPDATE activity_leader SET institution_id = ?, name = ?, email = ? ");
+      query.append("UPDATE expected_activity_leader SET institution_id = ?, name = ?, email = ? ");
       query.append("WHERE id = ? ");
       values = new Object[4];
       values[0] = activityLeaderData.get("institution_id");
@@ -284,7 +285,7 @@ public class MySQLActivityDAO implements ActivityDAO {
         return -1;
       }
     }
-    LOG.debug("<< saveActivityLeader():{}", result);
+    LOG.debug("<< saveExpectedActivityLeader():{}", result);
     return result;
   }
 }

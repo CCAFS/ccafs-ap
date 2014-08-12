@@ -22,21 +22,21 @@ import org.apache.commons.lang3.builder.ToStringBuilder;
  * @author Javier Andrés Gallego Barona.
  * @author Héctor Fabio Tobón R.
  */
-public class ActivityLeader {
+public class ExpectedActivityLeader {
 
   private int id;
   private Institution institution;
   private String name;
   private String email;
 
-  public ActivityLeader() {
+  public ExpectedActivityLeader() {
 
   }
 
   @Override
   public boolean equals(Object obj) {
-    if (obj instanceof ActivityLeader) {
-      ActivityLeader a = (ActivityLeader) obj;
+    if (obj instanceof ExpectedActivityLeader) {
+      ExpectedActivityLeader a = (ExpectedActivityLeader) obj;
       return a.getId() == this.id;
     }
     return false;

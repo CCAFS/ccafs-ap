@@ -1,7 +1,7 @@
 [#ftl]
 <nav id="secondaryMenu"> 
   <ul>
-    <a [#if currentStage == "description"] class="currentSection" [/#if] href="[@s.url action='description'][@s.param name='${projectRequest}']${project.id?c}[/@s.param][/@s.url]">
+    <a [#if currentStage == "description"] class="currentSection" [/#if] href="[@s.url action='description'][#-- [@s.param name='${projectRequest}']${project.id?c}[/@s.param]--][/@s.url]">
       <li>[@s.text name="menu.secondary.planning.project.description" /]</li>
     </a>
     <a [#if currentStage == "partners"] class="currentSection" [/#if] href="[@s.url action='partners' includeParams='get'] [/@s.url]">

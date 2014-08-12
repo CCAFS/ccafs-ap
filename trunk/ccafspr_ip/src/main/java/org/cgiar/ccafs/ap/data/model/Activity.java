@@ -21,7 +21,7 @@ import org.apache.commons.lang3.builder.ToStringBuilder;
 
 /**
  * This class represents a CCAFS Activity, which belongs to a specific Project.
- *
+ * 
  * @author Héctor Fabio Tobón R.
  */
 public class Activity {
@@ -32,8 +32,12 @@ public class Activity {
   private String description;
   private Date start;
   private Date end;
-  private ActivityLeader leader;
+  private User leader;
+  private ExpectedActivityLeader expectedLeader;
+
+
   private List<Location> locations;
+
   private long created;
   private List<IPElement> outputs;
 
@@ -62,11 +66,15 @@ public class Activity {
     return end;
   }
 
+  public ExpectedActivityLeader getExpectedLeader() {
+    return expectedLeader;
+  }
+
   public int getId() {
     return id;
   }
 
-  public ActivityLeader getLeader() {
+  public User getLeader() {
     return leader;
   }
 
@@ -107,11 +115,15 @@ public class Activity {
     this.end = end;
   }
 
+  public void setExpectedLeader(ExpectedActivityLeader expectedLeader) {
+    this.expectedLeader = expectedLeader;
+  }
+
   public void setId(int id) {
     this.id = id;
   }
 
-  public void setLeader(ActivityLeader leader) {
+  public void setLeader(User leader) {
     this.leader = leader;
   }
 
