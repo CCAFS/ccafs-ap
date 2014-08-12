@@ -3,7 +3,7 @@
 [#assign globalLibs = ["jquery", "noty","autoSave"] /]
 [#assign customJS = ["${baseUrl}/js/global/utils.js"] /]
 [#assign currentSection = "planning" /]
-[#assign currentPlanningSection = "project" /]
+[#assign currentPlanningSection = "projects" /]
 [#assign currentStage = "outcome" /]
 
 [#include "/WEB-INF/global/pages/header.ftl" /]
@@ -15,7 +15,7 @@
     <img src="${baseUrl}/images/global/icon-help.png" />
     <p> [@s.text name="planning.mainInformation.help" /] </p>
   </div>
-  [#--[#include "/WEB-INF/planning/projectPlanningSubMenu.ftl" /]--]
+  [#include "/WEB-INF/global/pages/planning-secondary-menu.ftl" /]
   
   [@s.form action="projectOutcomes" cssClass="pure-form"]  
   <article class="halfContent borderBox" id="projectOutcomes"> 

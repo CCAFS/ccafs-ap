@@ -61,28 +61,32 @@
       <result name="input">/WEB-INF/planning/activityDescriptionPlanning.ftl</result>
     </action>
     
-    <action name="activityPartners" class="org.cgiar.ccafs.ap.action.planning.BaseAction">
+    <action name="activityPartners" class="org.cgiar.ccafs.ap.action.BaseAction">
       <result name="input">/WEB-INF/planning/activityPartnersPlanning.ftl</result>
     </action>
-
-    <action name="locations" class="org.cgiar.ccafs.ap.action.planning.LocationsPlanningAction">
-      <result name="input">/WEB-INF/planning/locationsPlanning.ftl</result>
+    
+    <action name="activityBudget" class="org.cgiar.ccafs.ap.action.BaseAction">
+      <result name="input">/WEB-INF/planning/activityBudgetPlanning.ftl</result>
     </action>
     
-    <action name="impactPathway" class="org.cgiar.ccafs.ap.action.planning.BaseAction">
-      <result name="input">/WEB-INF/planning/impactPathwayPlanning.ftl</result>
+    <action name="activityLocations" class="org.cgiar.ccafs.ap.action.planning.LocationsPlanningAction">
+      <result name="input">/WEB-INF/planning/activityLocationsPlanning.ftl</result>
+    </action>
+    
+    <action name="activityImpactPathway" class="org.cgiar.ccafs.ap.action.BaseAction">
+      <result name="input">/WEB-INF/planning/activityImpactPathwayPlanning.ftl</result>
     </action>
         
-    <action name="primaryImpactPathway" class="org.cgiar.ccafs.ap.action.planning.BaseAction">
-      <result name="input">/WEB-INF/planning/primaryImpactPathwayPlanning.ftl</result>
+    <action name="activityPrimaryImpactPathway" class="org.cgiar.ccafs.ap.action.BaseAction">
+      <result name="input">/WEB-INF/planning/activityPrimaryImpactPathwayPlanning.ftl</result>
     </action>
     
-    <action name="ipOtherContributions" class="org.cgiar.ccafs.ap.action.BaseAction">
+    <action name="activityIpOtherContributions" class="org.cgiar.ccafs.ap.action.BaseAction">
       <result name="input">/WEB-INF/planning/ipOtherContributionPlanning.ftl</result>
     </action>
     
-    <action name="deliverables" class="org.cgiar.ccafs.ap.action.planning.BaseAction">
-      <result name="input">/WEB-INF/planning/deliverablesPlanning.ftl</result>
+    <action name="activityDeliverables" class="org.cgiar.ccafs.ap.action.BaseAction">
+      <result name="input">/WEB-INF/planning/activityDeliverablesPlanning.ftl</result>
     </action>
 
     
