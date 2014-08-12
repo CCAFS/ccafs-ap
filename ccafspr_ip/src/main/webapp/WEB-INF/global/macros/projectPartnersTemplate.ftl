@@ -7,11 +7,14 @@
         <input id="id" type="hidden" name="project.projectPartners[${ap_index}].id" value="${ap.id?c}" />  
           
         <legend>[@s.text name="preplanning.projectPartners.partner"][@s.param name="0"] <span id="partnerIndex">${ap_index+1}</span>[/@s.param] [/@s.text]</legend> 
-        [#-- Remove link for all partners --]
-        <div class="removeLink">
-          <img src="${baseUrl}/images/global/icon-remove.png" />
-          <a id="removePartner-${ap_index}" href="" class="removePartner">[@s.text name="preplanning.projectPartners.removePartner" /]</a>
-        </div>
+        
+        [#if canEdit]
+          [#-- Remove link for all partners --]
+          <div class="removeLink">
+            <img src="${baseUrl}/images/global/icon-remove.png" />
+            <a id="removePartner-${ap_index}" href="" class="removePartner">[@s.text name="preplanning.projectPartners.removePartner" /]</a>
+          </div>
+        [/#if]
          
         [#-- Partner Name --]
         <div class="fullBlock partnerName chosen">          
@@ -41,11 +44,12 @@
         <div class="halfPartBlock">
           [@customForm.input name="project.projectPartners[${ap_index}].contactEmail" type="text" disabled=!canEdit i18nkey="preplanning.projectPartners.contactPersonEmail" required=true /]
         </div>
+        
         [#if responsabilities]
-        [#-- Responsabilities --]
-        <div class="fullBlock partnerResponsabilities chosen">        
-          [@customForm.textArea name="project.projectPartners[${ap_index}].responsabilities" i18nkey="preplanning.projectPartners.responsabilities" required=true /]
-        </div>
+          [#-- Responsabilities --]
+          <div class="fullBlock partnerResponsabilities chosen">        
+            [@customForm.textArea name="project.projectPartners[${ap_index}].responsabilities" i18nkey="preplanning.projectPartners.responsabilities" required=true /]
+          </div>
         [/#if]
          
       </div> <!-- End projectPartner-${ap_index} -->

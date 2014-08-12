@@ -348,7 +348,7 @@ public class MySQLProjectDAO implements ProjectDAO {
     } else {
       // UPDATE the record into the database.
       query
-      .append("UPDATE expected_project_leaders SET contact_first_name = ?, contact_last_name = ?, contact_email = ?, institution_id = ? ");
+        .append("UPDATE expected_project_leaders SET contact_first_name = ?, contact_last_name = ?, contact_email = ?, institution_id = ? ");
       query.append("WHERE id = ?");
       Object[] values = new Object[5];
       values[0] = expectedProjectLeaderData.get("contact_first_name");
@@ -395,6 +395,7 @@ public class MySQLProjectDAO implements ProjectDAO {
       values[5] = projectData.get("id");
       result = databaseManager.saveData(query.toString(), values);
     }
+    LOG.debug(">> saveProject(projectData={})", projectData);
     return result;
   }
 

@@ -13,10 +13,6 @@
  *****************************************************************/
 package org.cgiar.ccafs.ap.action.planning;
 
-import java.util.List;
-
-import com.google.inject.Inject;
-import org.apache.commons.lang3.StringUtils;
 import org.cgiar.ccafs.ap.action.BaseAction;
 import org.cgiar.ccafs.ap.config.APConfig;
 import org.cgiar.ccafs.ap.config.APConstants;
@@ -28,6 +24,11 @@ import org.cgiar.ccafs.ap.data.model.IPCrossCutting;
 import org.cgiar.ccafs.ap.data.model.IPProgram;
 import org.cgiar.ccafs.ap.data.model.Project;
 import org.cgiar.ccafs.ap.data.model.User;
+
+import java.util.List;
+
+import com.google.inject.Inject;
+import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -52,6 +53,7 @@ public class ProjectDescriptionPlanningAction extends BaseAction {
   private List<User> allOwners;
 
   // Model for the back-end
+  private Project previousProject;
   private Project project;
   private int projectID;
 
@@ -72,7 +74,7 @@ public class ProjectDescriptionPlanningAction extends BaseAction {
   /**
    * This method returns a composed name with the Acronym and Name.
    * e.g. FP4: Policies and Institutions for Climate-Resilient Food Systems
-   *
+   * 
    * @param ipProgramId is the program identifier.
    * @return the composed name described above.
    */
@@ -88,7 +90,7 @@ public class ProjectDescriptionPlanningAction extends BaseAction {
 
   /**
    * This method returns an array of cross cutting ids depending on the project.crossCuttings attribute.
-   *
+   * 
    * @return an array of integers.
    */
   public int[] getCrossCuttingIds() {
@@ -108,7 +110,7 @@ public class ProjectDescriptionPlanningAction extends BaseAction {
 
   /**
    * This method returns an array of flagship ids depending on the project.flagships attribute.
-   *
+   * 
    * @return an array of integers.
    */
   public int[] getFlagshipIds() {
@@ -150,7 +152,7 @@ public class ProjectDescriptionPlanningAction extends BaseAction {
 
   /**
    * This method returns an array of region ids depending on the project.regions attribute.
-   *
+   * 
    * @return an array of integers.
    */
   public int[] getRegionIds() {
@@ -203,18 +205,30 @@ public class ProjectDescriptionPlanningAction extends BaseAction {
       project.setCrossCuttings(ipCrossCuttingManager.getIPCrossCuttingByProject(projectID));
     }
 
-
+    // If the user is not admin or the project owner, we should keep some information
+    // unmutable
+    previousProject = new Project();
+    previousProject.setId(project.getId());
+    previousProject.setOwner(project.getOwner());
+    previousProject.setTitle(project.getTitle());
+    previousProject.setStartDate(project.getStartDate());
+    previousProject.setEndDate(project.getEndDate());
   }
 
   @Override
   public String save() {
+    // We set the values that changed to the previous project
+    // in order to prevent unauthorized changes.
+
+    previousProject.setTitle(project.getTitle());
+    previousProject.setSummary(project.getSummary());
+
     // ----- SAVING Project description -----
-    int result = projectManager.saveProjectDescription(project);
+    int result = projectManager.saveProjectDescription(previousProject);
     if (result < 0) {
       addActionError(getText("saving.problem"));
       return BaseAction.INPUT;
     }
-
 
     // If there are some warnings, show a different message: Saving with problems
     if (getActionMessages().size() > 0) {
