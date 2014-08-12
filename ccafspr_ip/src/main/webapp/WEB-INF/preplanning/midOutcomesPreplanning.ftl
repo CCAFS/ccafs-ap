@@ -137,11 +137,18 @@
 [#-- Contribute template --]
 [@contributeTemplate.midOutcomes template=true /]
 
-[#-- Remove element modal  template --]
-<div id="removeDialog" style="display:none" title="[@s.text name="preplanning.midOutcomes.removeDialog.title" /]"> 
-  [@s.text name="preplanning.midOutcomes.removeDialog.content.part1" /]
+[#-- Remove IPElement modal  template --]
+<div id="removeIPElementDialog" style="display:none" title="[@s.text name="preplanning.midOutcomes.removeIPElementDialog.title" /]"> 
+  [@s.text name="preplanning.midOutcomes.removeIPElementDialog.content.part1" /]
   <strong><span class="elements"></span></strong>
-  [@s.text name="preplanning.midOutcomes.removeDialog.content.part2" /]
+  [@s.text name="preplanning.midOutcomes.removeIPElementDialog.content.part2" /]
+</div> 
+
+[#-- Remove indicators modal  template --]
+<div id="removeIndicatorDialog" style="display:none" title="[@s.text name="preplanning.midOutcomes.removeIndicatorDialog.title" /]"> 
+  [@s.text name="preplanning.midOutcomes.removeIndicatorDialog.content.part1" /]
+  <strong><span class="elements"></span></strong>
+  [@s.text name="preplanning.midOutcomes.removeIndicatorDialog.content.part2" /]
 </div> 
   
 </section>

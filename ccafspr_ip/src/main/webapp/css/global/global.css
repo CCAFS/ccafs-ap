@@ -851,13 +851,27 @@ h1.contentSubTitle {
   background: #F8F8F8;  
 }
 
+.helpMessage:before,.helpMessage:after {
+  content: "";
+  display: table;
+}
+
+.helpMessage:after {
+  clear: both;
+}
+
+.helpMessage {
+  *zoom: 1;
+}
+
+
 .helpMessage img {
   float: left;
   padding: 5px;
 }
 
 .helpMessage p {
-  padding: 10px;
+  padding: 1px;
   color: #636368;
 }
 
@@ -1114,123 +1128,26 @@ table tr.row:hover{
     background: #f5f5f5;
 }
 
-/***** PLANNING *****/
+/***************** PLANNING ******************/
 
-#mainInformation .commisioned{
-  font-weight: bold;
+/*** Activities ***/
+.location.row, #location-head {
+  padding: 8px 10px;
+  /* border: 1px solid #D6D6D6; */
+  margin: 3px;
 }
 
-#mainInformation .continuation{
-  font-weight: bold;
-}
-
-#activityListPlanning #addActivity a {
-  background: url('../../images/global/sprite-icons-activities.png') 3px 3px #47939c no-repeat;
-  color: #FFF;
-  padding: 6px 10px 6px 22px;
-  width: 83px;
-  float: left;  
-  border-radius: 2px;
-}
-
-#activityListPlanning #addActivity a:hover{
-  background-color: #3C7B83;
-}
-
-#activityListPlanning #addActivity input {
+.locationIndex {
+  width: 2.2%;
   float: left;
-  margin-right: 10px;
 }
-  
-#activityListPlanning #addActivity select {
-  margin-left: 40px;
-}
-  
-#activityListPlanning form.buttons{
-  margin : 0;
+.locationIndex strong {
+  vertical-align: middle;
 }
 
-#activityListPlanning .activityTable .buttons button{
-  padding: 0 0 0 15px;
-}
-
-#activityListPlanning .buttons button{
-  padding: 3px 15px;
-}
-
- #submitButtonBlock {
-  clear: both;
-  color: #4D4D4D;
-  display: block;
-  font-weight: bold;
-  margin-top: 30px;
-  text-align: center !important;
-}
-
-#submitButtonBlock button#submitForm_save{
-  background: url('../../images/global/sprite-icons-activities.png') 30px -103px #47939c no-repeat;
-  width: 146px;
-  height: 28px;
-  font-weight: bold;
-  color: #FFFFFF;
-}
-
-#activityListPlanning #submitButtonBlock button#submitForm_save.disabled{
-  background: url('../../images/global/sprite-icons-activities.png') 30px -103px #F1F1F1 no-repeat;
-  color: #BBB;
-  border: 1px solid #DDD;
-  cursor : auto;
-}
-
-#submitButtonBlock button#submitForm_save:hover {
-  background-color: #576A2D;
-}
-  
-#activityListPlanning #submitButtonBlock button#submitForm_save.disabled:hover {
-  background-color: #F1F1F1;
-}
-  
-#activityListPlanning .workplanSubmitted {
-  color: #FF0000;
-  margin-top: 10px;
-  text-align: center;
-}
-
-#activityListPlanning .noActivities {
-  margin-top: 20px;
-  text-align: center;
-}
-
-.activityLocations fieldset > div > h6{
-  display: none;
-}
-
-.activityLocations #countryLocations input{
-  margin-left : 15px;
-}
-
-.activityLocations #countryLocations label{
-  font-size : 11px;
-}
-
-#additionalInformation #otherKeywordsList h6{
-  display : none;
-}
-
-#additionalInformation .otherKeywordsHelp{
-  margin-left: 15px;
-  font-size: 11px;
-}
-
-#additionalInformation #resourcesList input{
-  width: 90%;
-  float: left;
-  margin-bottom: 8px;
-}
-
-#additionalInformation #resourcesList img{
-  float: right;
-  margin: 5px 10px 0 0;
+.location .removeButton {
+  top: 12px;
+  right: 3px;
 }
 
 /****** REPORTING **********/
