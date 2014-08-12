@@ -25,13 +25,10 @@
 
       <interceptor name="trimInputs" class="org.cgiar.ccafs.ap.interceptor.TrimInterceptor" />
       
-      <!-- Custom interceptor to prevent the unauthorized access to pre-planning section depending on the user role -->
+      <!-- Custom interceptor to prevent the unauthorized access of users that are not program leaders (Admin, FP or RPL) -->
       <interceptor name="preplanningAccess" class="org.cgiar.ccafs.ap.interceptor.PreplanningAccessInterceptor" />
 
-      <!-- Custom interceptor to prevent the unauthorized access of users that are not program leaders (FP, RPL or CU) -->
-      <interceptor name="ProgramLeadersAccessOnly" class="org.cgiar.ccafs.ap.interceptor.ProgramLeadersAccessOnlyInterceptor" />
-      
-       <!-- Custom interceptor to prevent the unauthorized access users that are not FPLs -->
+      <!-- Custom interceptor to prevent the unauthorized access users that are not FPLs -->
       <interceptor name="FPLAccessOnly" class="org.cgiar.ccafs.ap.interceptor.FPLAccessOnlyInterceptor" />
       
       <!-- Custom interceptor to prevent the unauthorized access users that are not RPLs -->
@@ -56,11 +53,12 @@
         <interceptor-ref name="autoLogin" />
         <interceptor-ref name="requireUser" />
         <interceptor-ref name="keepRedirectMessages"/>
-        <interceptor-ref name="accessibleStage" />
         <interceptor-ref name="preplanningAccess" />
-        <interceptor-ref name="accessibleProject" />
+        
+        
         <interceptor-ref name="trimInputs" />
         <interceptor-ref name="defaultStack" />
+        <interceptor-ref name="accessibleProject" />
       </interceptor-stack>
       
       <interceptor-stack name="planningStack">
