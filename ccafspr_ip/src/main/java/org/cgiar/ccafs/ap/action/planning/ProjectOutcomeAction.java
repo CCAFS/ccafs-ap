@@ -64,9 +64,12 @@ public class ProjectOutcomeAction extends BaseAction {
     return project;
   }
 
-
   public int getProjectID() {
     return projectID;
+  }
+
+  public String getProjectRequest() {
+    return APConstants.PROJECT_REQUEST_ID;
   }
 
 

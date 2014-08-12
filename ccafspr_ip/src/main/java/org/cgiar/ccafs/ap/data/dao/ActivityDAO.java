@@ -62,12 +62,12 @@ public interface ActivityDAO {
   public Map<String, String> getActivityById(int activityID);
 
   /**
-   * This method gets the information of the Activity Leader by a given Activity ID
+   * This method gets the information of the Expected Activity Leader by a given Activity ID
    * 
    * @param activityID - is the id of the activity
-   * @return a Map of the Activity leader Information related with the Activity ID
+   * @return a Map of the Expected Activity leader Information related with the Activity ID
    */
-  public Map<String, String> getActivityLeaderById(int activityID);
+  public Map<String, String> getExpectedActivityLeaderByActivityId(int activityID);
 
   /**
    * This method saves the Activity information
@@ -84,6 +84,6 @@ public interface ActivityDAO {
    * @param activityLeaderData - is a Map with information of the Activity Leader to be saved
    * @return The last inserted id if there was a new record, 0 if the record was updated or -1 if any error happened.
    */
-  public int saveActivityLeader(Map<String, Object> activityLeaderData);
+  public int saveExpectedActivityLeader(Map<String, Object> activityLeaderData);
 
 }

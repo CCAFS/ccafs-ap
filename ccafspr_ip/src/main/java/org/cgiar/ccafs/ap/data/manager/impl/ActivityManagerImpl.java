@@ -17,8 +17,9 @@ import org.cgiar.ccafs.ap.config.APConstants;
 import org.cgiar.ccafs.ap.data.dao.ActivityDAO;
 import org.cgiar.ccafs.ap.data.manager.ActivityManager;
 import org.cgiar.ccafs.ap.data.manager.InstitutionManager;
+import org.cgiar.ccafs.ap.data.manager.UserManager;
 import org.cgiar.ccafs.ap.data.model.Activity;
-import org.cgiar.ccafs.ap.data.model.ActivityLeader;
+import org.cgiar.ccafs.ap.data.model.ExpectedActivityLeader;
 
 import java.text.DateFormat;
 import java.text.ParseException;
@@ -47,13 +48,15 @@ public class ActivityManagerImpl implements ActivityManager {
   // Managers
   private ActivityManager activityManager;
   private InstitutionManager institutionManager;
+  private UserManager userManager;
 
   @Inject
   public ActivityManagerImpl(ActivityDAO activityDAO, ActivityManager activityManager,
-    InstitutionManager institutionManager) {
+    InstitutionManager institutionManager, UserManager userManager) {
     this.activityDAO = activityDAO;
     this.activityManager = activityManager;
     this.institutionManager = institutionManager;
+    this.userManager = userManager;
   }
 
   @Override
@@ -94,8 +97,12 @@ public class ActivityManagerImpl implements ActivityManager {
         } catch (ParseException e) {
           LOG.error("There was an error formatting the end date", e);
         }
+        if (activityData.get("expected_leader_id") != null) {
+          activity.setExpectedLeader(activityManager.getExpectedActivityLeaderByActivityId(Integer
+            .parseInt(activityData.get("id"))));
+        }
         if (activityData.get("leader_id") != null) {
-          activity.setLeader(activityManager.getActivityLeader(Integer.parseInt(activityData.get("id"))));
+          activity.setLeader(userManager.getOwner(Integer.parseInt(activityData.get("leader_id"))));
         }
         activity.setCreated(Long.parseLong(activityData.get("created")));
 
@@ -133,8 +140,11 @@ public class ActivityManagerImpl implements ActivityManager {
           LOG.error("There was an error formatting the end date", e);
         }
       }
+      if (activityData.get("expected_leader_id") != null) {
+        activity.setExpectedLeader(this.getExpectedActivityLeaderByActivityId(activityID));
+      }
       if (activityData.get("leader_id") != null) {
-        activity.setLeader(activityManager.getActivityLeader(activityID));
+        activity.setLeader(userManager.getOwner(Integer.parseInt(activityData.get("leader_id"))));
       }
       activity.setCreated(Long.parseLong(activityData.get("created")));
       return activity;
@@ -143,18 +153,18 @@ public class ActivityManagerImpl implements ActivityManager {
   }
 
   @Override
-  public ActivityLeader getActivityLeader(int activityID) {
-    Map<String, String> activityLeaderData = activityDAO.getActivityLeaderById(activityID);
-    if (!activityLeaderData.isEmpty()) {
-      ActivityLeader activityLeader = new ActivityLeader();
-      activityLeader.setId(Integer.parseInt(activityLeaderData.get("id")));
-      activityLeader.setName(activityLeaderData.get("name"));
-      activityLeader.setEmail(activityLeaderData.get("email"));
-      if (activityLeaderData.get("institution_id") != null) {
-        activityLeader.setInstitution(institutionManager.getInstitution(Integer.parseInt(activityLeaderData
-          .get("institution_id"))));
+  public ExpectedActivityLeader getExpectedActivityLeaderByActivityId(int activityID) {
+    Map<String, String> expectedActivityLeaderData = activityDAO.getExpectedActivityLeaderByActivityId(activityID);
+    if (!expectedActivityLeaderData.isEmpty()) {
+      ExpectedActivityLeader expectedActivityLeader = new ExpectedActivityLeader();
+      expectedActivityLeader.setId(Integer.parseInt(expectedActivityLeaderData.get("id")));
+      expectedActivityLeader.setName(expectedActivityLeaderData.get("name"));
+      expectedActivityLeader.setEmail(expectedActivityLeaderData.get("email"));
+      if (expectedActivityLeaderData.get("institution_id") != null) {
+        expectedActivityLeader.setInstitution(institutionManager.getInstitution(Integer
+          .parseInt(expectedActivityLeaderData.get("institution_id"))));
       }
-      return activityLeader;
+      return expectedActivityLeader;
     }
     return null;
   }

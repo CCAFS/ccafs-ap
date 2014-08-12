@@ -15,7 +15,7 @@ package org.cgiar.ccafs.ap.data.manager;
 
 import org.cgiar.ccafs.ap.data.manager.impl.ActivityManagerImpl;
 import org.cgiar.ccafs.ap.data.model.Activity;
-import org.cgiar.ccafs.ap.data.model.ActivityLeader;
+import org.cgiar.ccafs.ap.data.model.ExpectedActivityLeader;
 
 import java.util.List;
 
@@ -63,12 +63,12 @@ public interface ActivityManager {
 
 
   /**
-   * This method gets all the information from Activity Leader by a given activity ID
+   * This method gets all the information from Expected Activity Leader by a given activity ID
    * 
    * @param activityID - is the activity identifier
-   * @return an activity leader object
+   * @return an expected activity leader object, or null if no information were found.
    */
-  public ActivityLeader getActivityLeader(int activityID);
+  public ExpectedActivityLeader getExpectedActivityLeaderByActivityId(int activityID);
 
   /**
    * This method saves the information of the given activity that belong to a specific project into the database.

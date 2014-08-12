@@ -60,17 +60,29 @@
     <action name="activityDescription" class="org.cgiar.ccafs.ap.action.planning.ActivityDescriptionAction">
       <result name="input">/WEB-INF/planning/activityDescriptionPlanning.ftl</result>
     </action>
+    
+    <action name="activityPartners" class="org.cgiar.ccafs.ap.action.planning.BaseAction">
+      <result name="input">/WEB-INF/planning/activityPartnersPlanning.ftl</result>
+    </action>
 
     <action name="locations" class="org.cgiar.ccafs.ap.action.planning.LocationsPlanningAction">
       <result name="input">/WEB-INF/planning/locationsPlanning.ftl</result>
     </action>
     
-    <action name="ipOtherContributions" class="org.cgiar.ccafs.ap.action.planning.IPOtherContributionAction">
+    <action name="impactPathway" class="org.cgiar.ccafs.ap.action.planning.BaseAction">
+      <result name="input">/WEB-INF/planning/impactPathwayPlanning.ftl</result>
+    </action>
+        
+    <action name="primaryImpactPathway" class="org.cgiar.ccafs.ap.action.planning.BaseAction">
+      <result name="input">/WEB-INF/planning/primaryImpactPathwayPlanning.ftl</result>
+    </action>
+    
+    <action name="ipOtherContributions" class="org.cgiar.ccafs.ap.action.BaseAction">
       <result name="input">/WEB-INF/planning/ipOtherContributionPlanning.ftl</result>
     </action>
     
-    <action name="deliverables" class="org.cgiar.ccafs.ap.action.planning.DeliverableAction">
-      <result name="input">/WEB-INF/planning/deliverables.ftl</result>
+    <action name="deliverables" class="org.cgiar.ccafs.ap.action.planning.BaseAction">
+      <result name="input">/WEB-INF/planning/deliverablesPlanning.ftl</result>
     </action>
 
     
