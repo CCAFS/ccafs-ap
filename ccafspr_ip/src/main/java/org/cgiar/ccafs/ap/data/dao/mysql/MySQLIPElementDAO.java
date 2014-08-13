@@ -264,6 +264,7 @@ public class MySQLIPElementDAO implements IPElementDAO {
     query.append("INNER JOIN ip_element_types et ON e.element_type_id = et.id ");
     query.append("INNER JOIN ip_program_elements pel ON e.id = pel.element_id ");
     query.append("INNER JOIN ip_programs pro ON pel.program_id = pro.id ");
+    query.append("GROUP BY e.id ");
 
     LOG.debug("-- getIPElementList () > Calling method executeQuery to get the results");
     return getData(query.toString());

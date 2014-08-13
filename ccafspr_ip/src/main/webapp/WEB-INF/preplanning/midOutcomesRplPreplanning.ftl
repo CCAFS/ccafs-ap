@@ -28,7 +28,7 @@
     </h1>
 
     [#-- If there are no Outcomes 2025, users can not add midOutcomes --]
-    [#if outcomes?has_content]
+    [#if outcomesList?has_content]
       <div id="MidOutcomeBlocks"> 
           [#if midOutcomes?has_content]
             [#list midOutcomes as midOutcome]
