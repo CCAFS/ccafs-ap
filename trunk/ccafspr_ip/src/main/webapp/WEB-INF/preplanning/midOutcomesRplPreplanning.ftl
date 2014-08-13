@@ -26,120 +26,131 @@
     <h1 class="contentTitle">
     [@s.text name="preplanning.midOutcomesRPL.title" /]  
     </h1>
-    <div id="MidOutcomeBlocks"> 
-        [#if midOutcomes?has_content]
-          [#list midOutcomes as midOutcome]
-            <div class="midOutcome borderBox" id="midOutcome-${midOutcome_index}">
-              [#-- Mid outcome identifier --]
-              <input type="hidden" id="id" name="midOutcomes[${midOutcome_index}].id" value="${midOutcome.id}" />
-              <input type="hidden" id="midOutcomeProgramId" name="midOutcomes[${midOutcome_index}].program.id" value="${currentUser.currentInstitution.program.id}" />
-              <input type="hidden" id="midOutcomeTypeId" name="midOutcomes[${midOutcome_index}].type.id" value="${elementTypeID}" />
-              [#-- Contribution to the regional vision 2025 --]
-              <input type="hidden" name="midOutcomes[${midOutcome_index}].contributesTo" value="${outcomesList[0].id}" />
 
-              [#-- Remove midOutcome --]
-              <div class="removeMidOutcomeBlock removeLink">              
-                <img src="${baseUrl}/images/global/icon-remove.png" />
-                <a id="removeMidOutcome" href="" class="removeMidOutcome">[@s.text name="preplanning.midOutcomesRPL.removeMidOutcome" /]</a>
-              </div> 
-            
-              [#-- Title --]
-              [#assign midOutcomeDescription]
-                [@s.text name="preplanning.midOutcomesRPL.outcome"] 
-                  [@s.param name="0"]<span id="elementIndex">${midOutcome_index+1}</span>[/@s.param] 
-                [/@s.text]
-              [/#assign]
-              <legend>${midOutcomeDescription}</legend>
-
-              [#-- Mid outcome description --]
-              [@customForm.textArea name="midOutcomes[${midOutcome_index}].description" i18nkey="preplanning.midOutcomesRPL.outcomeDescription" required=true /] 
-
-              [#-- Flagships list --]
-              [#if midOutcome.translatedOf?has_content]
-                [@customForm.select name="midOutcomesRPL_flagships" label="" i18nkey="preplanning.midOutcomesRPL.flagships" listName="flagshipsList" keyFieldName="id"  displayFieldName="name" value=midOutcome.translatedOf[0].program.id?string disabled=true  /]
-              [#else]
-                [@customForm.select name="midOutcomesRPL_flagships" label="" i18nkey="preplanning.midOutcomesRPL.flagships" listName="flagshipsList" keyFieldName="id"  displayFieldName="name" /]
-              [/#if]
+    [#-- If there are no Outcomes 2025, users can not add midOutcomes --]
+    [#if outcomes?has_content]
+      <div id="MidOutcomeBlocks"> 
+          [#if midOutcomes?has_content]
+            [#list midOutcomes as midOutcome]
+              <div class="midOutcome borderBox" id="midOutcome-${midOutcome_index}">
+                [#-- Mid outcome identifier --]
+                <input type="hidden" id="id" name="midOutcomes[${midOutcome_index}].id" value="${midOutcome.id}" />
+                <input type="hidden" id="midOutcomeProgramId" name="midOutcomes[${midOutcome_index}].program.id" value="${currentUser.currentInstitution.program.id}" />
+                <input type="hidden" id="midOutcomeTypeId" name="midOutcomes[${midOutcome_index}].type.id" value="${elementTypeID}" />
+                [#-- Contribution to the regional vision 2025 --]
+                <input type="hidden" name="midOutcomes[${midOutcome_index}].contributesTo" value="${outcomesList[0].id}" />
+  
+                [#-- Remove midOutcome --]
+                <div class="removeMidOutcomeBlock removeLink">              
+                  <img src="${baseUrl}/images/global/icon-remove.png" />
+                  <a id="removeMidOutcome" href="" class="removeMidOutcome">[@s.text name="preplanning.midOutcomesRPL.removeMidOutcome" /]</a>
+                </div> 
               
-              [#-- midOutcome's parents --]
-              [#--
-              //  When I wrote this code God and me knew what we were doing, 
-              //  NOW, ONLY HE KNOWS.
-              --]
-              <div class="contentElements parentsBlock">
-                <div class="itemIndex">[@s.text name="preplanning.midOutcomesRPL.contributes" /] </div>
+                [#-- Title --]
+                [#assign midOutcomeDescription]
+                  [@s.text name="preplanning.midOutcomesRPL.outcome"] 
+                    [@s.param name="0"]<span id="elementIndex">${midOutcome_index+1}</span>[/@s.param] 
+                  [/@s.text]
+                [/#assign]
+                <legend>${midOutcomeDescription}</legend>
+  
+                [#-- Mid outcome description --]
+                [@customForm.textArea name="midOutcomes[${midOutcome_index}].description" i18nkey="preplanning.midOutcomesRPL.outcomeDescription" required=true /] 
+  
+                [#-- Flagships list --]
                 [#if midOutcome.translatedOf?has_content]
-                  [#list midOutcome.translatedOf as parent]
-                  
-                    <div id="" class="contributions">
-                      <input id="contributeId" type="hidden" name="midOutcomes[${midOutcome_index}].translatedOf" value="${parent.id}" />
-                      <p id="description">[@s.text name="midOutcomes[${midOutcome_index}].translatedOf[${parent_index}].description" /]</p>
-                      <h6>[@s.text name="preplanning.midOutcomesRPL.selectIndicators" /]</h6>
-                      
-                      [#-- midOutcome's Indicators --]
-                      <div id="midOutcomeIndicators" class="fullBlock">
-                        <div class="checkboxGroup vertical"> 
-                          [#list parent.indicators as parentIndicator] 
-
-                            <div class="elementIndicator">
-                              [#if midOutcome.getIndicatorByParentID( parentIndicator.id )?has_content]
-                                [#assign midOutcomeIndicator = midOutcome.getIndicatorByParentID( parentIndicator.id ) ]
-                                <input type="checkbox" name="midOutcomes[${midOutcome_index}].indicators[${parentIndicator_index}].parent" value="${parentIndicator.id}" id="indicator-parent-${midOutcomeIndicator.id}" checked="checked" class="midOutcomeIndicator">
-                                <input type="hidden" name="midOutcomes[${midOutcome_index}].indicators[${parentIndicator_index}].id" value="${midOutcomeIndicator.id}" id="indicator-${parentIndicator_index}" >
-                                <label for="indicator-parent-${midOutcomeIndicator.id}" class="checkboxLabel"> ${parentIndicator.description} </label>
-                                <div class="fields">
-                                  <div class="target">
-                                    <div class="input">
-                                      <h6> <label for="target"> [@s.text name="preplanning.midOutcomes.target" /] </label> </h6>
-                                      <input type="text" id="target" name="__midOutcomes[0].indicators[-1].target" value="${midOutcomeIndicator.target}">
+                  [@customForm.select name="midOutcomesRPL_flagships" label="" i18nkey="preplanning.midOutcomesRPL.flagships" listName="flagshipsList" keyFieldName="id"  displayFieldName="name" value=midOutcome.translatedOf[0].program.id?string disabled=true  /]
+                [#else]
+                  [@customForm.select name="midOutcomesRPL_flagships" label="" i18nkey="preplanning.midOutcomesRPL.flagships" listName="flagshipsList" keyFieldName="id"  displayFieldName="name" /]
+                [/#if]
+                
+                [#-- midOutcome's parents --]
+                [#--
+                //  When I wrote this code God and me knew what we were doing, 
+                //  NOW, ONLY HE KNOWS.
+                --]
+                <div class="contentElements parentsBlock">
+                  <div class="itemIndex">[@s.text name="preplanning.midOutcomesRPL.contributes" /] </div>
+                  [#if midOutcome.translatedOf?has_content]
+                    [#list midOutcome.translatedOf as parent]
+                    
+                      <div id="" class="contributions">
+                        <input id="contributeId" type="hidden" name="midOutcomes[${midOutcome_index}].translatedOf" value="${parent.id}" />
+                        <p id="description">[@s.text name="midOutcomes[${midOutcome_index}].translatedOf[${parent_index}].description" /]</p>
+                        <h6>[@s.text name="preplanning.midOutcomesRPL.selectIndicators" /]</h6>
+                        
+                        [#-- midOutcome's Indicators --]
+                        <div id="midOutcomeIndicators" class="fullBlock">
+                          <div class="checkboxGroup vertical"> 
+                            [#list parent.indicators as parentIndicator] 
+  
+                              <div class="elementIndicator">
+                                [#if midOutcome.getIndicatorByParentID( parentIndicator.id )?has_content]
+                                  [#assign midOutcomeIndicator = midOutcome.getIndicatorByParentID( parentIndicator.id ) ]
+                                  <input type="checkbox" name="midOutcomes[${midOutcome_index}].indicators[${parentIndicator_index}].parent" value="${parentIndicator.id}" id="indicator-parent-${midOutcomeIndicator.id}" checked="checked" class="midOutcomeIndicator">
+                                  <input type="hidden" name="midOutcomes[${midOutcome_index}].indicators[${parentIndicator_index}].id" value="${midOutcomeIndicator.id}" id="indicator-${parentIndicator_index}" >
+                                  <label for="indicator-parent-${midOutcomeIndicator.id}" class="checkboxLabel"> ${parentIndicator.description} </label>
+                                  <div class="fields">
+                                    <div class="target">
+                                      <div class="input">
+                                        <h6> <label for="target"> [@s.text name="preplanning.midOutcomes.target" /] </label> </h6>
+                                        <input type="text" id="target" name="__midOutcomes[0].indicators[-1].target" value="${midOutcomeIndicator.target}">
+                                      </div>
+                                    </div>
+                                    <div class="narrative">
+                                      <div class="textArea "> 
+                                        <h6> <label for="description">Narrative explanation of indicator target contribution: <span class="red">*</span> </label> </h6> <textarea name="__midOutcomes[0].indicators[-1].description" id="description" class="ckeditor" placeholder="">${midOutcomeIndicator.description}</textarea>
+                                      </div>
                                     </div>
                                   </div>
-                                  <div class="narrative">
-                                    <div class="textArea "> 
-                                      <h6> <label for="description">Narrative explanation of indicator target contribution: <span class="red">*</span> </label> </h6> <textarea name="__midOutcomes[0].indicators[-1].description" id="description" class="ckeditor" placeholder="">${midOutcomeIndicator.description}</textarea>
-                                    </div>
-                                  </div>
-                                </div>
-
-                              [#else]
-                                <input type="checkbox" name="midOutcomes[${midOutcome_index}].indicators[${parentIndicator_index}].parent" value="${parentIndicator.id}" id="indicator-parent-${parentIndicator_index}" class="midOutcomeIndicator">
-                                <input type="hidden" name="midOutcomes[${midOutcome_index}].indicators[${parentIndicator_index}].id" value="-1" id="indicator-${parentIndicator_index}" >
-                                <label for="indicator-parent-${parentIndicator_index}" class="checkboxLabel"> ${parentIndicator.description} </label>
-                              [/#if]
-
-                            </div>
-                          [/#list]
-
+  
+                                [#else]
+                                  <input type="checkbox" name="midOutcomes[${midOutcome_index}].indicators[${parentIndicator_index}].parent" value="${parentIndicator.id}" id="indicator-parent-${parentIndicator_index}" class="midOutcomeIndicator">
+                                  <input type="hidden" name="midOutcomes[${midOutcome_index}].indicators[${parentIndicator_index}].id" value="-1" id="indicator-${parentIndicator_index}" >
+                                  <label for="indicator-parent-${parentIndicator_index}" class="checkboxLabel"> ${parentIndicator.description} </label>
+                                [/#if]
+  
+                              </div>
+                            [/#list]
+  
+                          </div>
                         </div>
+                          [#-- remove link --]
+                          <div class="removeLink">            
+                            <img src="${baseUrl}/images/global/icon-remove.png" />
+                            <a id="removeContribute-${parent_index}" href="" class="removeContribute">[@s.text name="preplanning.midOutcomesRPL.removeContribute" /]</a>
+                          </div> 
                       </div>
-                        [#-- remove link --]
-                        <div class="removeLink">            
-                          <img src="${baseUrl}/images/global/icon-remove.png" />
-                          <a id="removeContribute-${parent_index}" href="" class="removeContribute">[@s.text name="preplanning.midOutcomesRPL.removeContribute" /]</a>
-                        </div> 
-                    </div>
-
-                  [/#list] 
-                [/#if]  
-                [#-- Add contribute --]
-                <div class="fullBlock addContributeBlock">
-                  [@customForm.select name="midOutcomesFPL" value="none" showTitle=false listName="midOutcomesFPL" keyFieldName="id"  displayFieldName="description" addButton=true className="contributes" /]
-                </div>
+  
+                    [/#list] 
+                  [/#if]  
+                  [#-- Add contribute --]
+                  <div class="fullBlock addContributeBlock">
+                    [@customForm.select name="midOutcomesFPL" value="none" showTitle=false listName="midOutcomesFPL" keyFieldName="id"  displayFieldName="description" addButton=true className="contributes" /]
+                  </div>
+                </div>  
+  
               </div>  
-
-            </div>  
-          [/#list]
-        [/#if]
-    </div>
-    <div id="addMidOutcomeBlock" class="addLink">
-      <img src="${baseUrl}/images/global/icon-add.png" />
-      <a href="" class="addMidOutcome" >[@s.text name="preplanning.midOutcomesRPL.addOutcome" /]</a>
-    </div> 
-     <div class="buttons">
-      [@s.submit type="button" name="save"][@s.text name="form.buttons.save" /][/@s.submit]
-      [@s.submit type="button" name="next"][@s.text name="form.buttons.next" /][/@s.submit]
-      [@s.submit type="button" name="cancel"][@s.text name="form.buttons.cancel" /][/@s.submit]
-    </div>
+            [/#list]
+          [/#if]
+      </div>
+      <div id="addMidOutcomeBlock" class="addLink">
+        <img src="${baseUrl}/images/global/icon-add.png" />
+        <a href="" class="addMidOutcome" >[@s.text name="preplanning.midOutcomesRPL.addOutcome" /]</a>
+      </div> 
+       <div class="buttons">
+        [@s.submit type="button" name="save"][@s.text name="form.buttons.save" /][/@s.submit]
+        [@s.submit type="button" name="next"][@s.text name="form.buttons.next" /][/@s.submit]
+        [@s.submit type="button" name="cancel"][@s.text name="form.buttons.cancel" /][/@s.submit]
+      </div>
+      
+    [#else]
+      [#-- To add midoutcomes, user should have outcomes 2025 --]
+      <p>
+        [@s.text name="preplanning.midOutcomesRPL.addOutcomes" /]
+      </p>
+    [/#if]
+    
   </article>
   [/@s.form] 
 
