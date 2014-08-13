@@ -176,7 +176,7 @@ public class ProjectDescriptionPreplanningAction extends BaseAction {
     try {
       projectID = Integer.parseInt(StringUtils.trim(this.getRequest().getParameter(APConstants.PROJECT_REQUEST_ID)));
     } catch (NumberFormatException e) {
-      LOG.error("-- prepare() > There was an error parsing the project identifier '{}'.", projectID, e);
+      LOG.error("-- prepare() > There was an error parsing the project identifier '{}'.", projectID, e.getMessage());
       projectID = -1;
       return; // Stop here and go to execute method.
     }
@@ -366,5 +366,10 @@ public class ProjectDescriptionPreplanningAction extends BaseAction {
 
   public void setProject(Project project) {
     this.project = project;
+  }
+
+  // TODO
+  public void setProjectID(String s) {
+    projectID = Integer.parseInt(s);
   }
 }

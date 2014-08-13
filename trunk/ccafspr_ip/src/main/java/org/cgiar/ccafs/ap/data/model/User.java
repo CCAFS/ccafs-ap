@@ -27,7 +27,6 @@ public class User {
 
   private int id;
   private int employeeId;
-  private String username;
   private String password;
   private String email;
   private String firstName;
@@ -103,10 +102,6 @@ public class User {
 
   public Role getRole() {
     return role;
-  }
-
-  public String getUsername() {
-    return username;
   }
 
   /**
@@ -241,9 +236,6 @@ public class User {
     this.role = role;
   }
 
-  public void setUsername(String username) {
-    this.username = username;
-  }
 
   @Override
   public String toString() {
