@@ -61,9 +61,9 @@ public class ProjectsListPreplanningAction extends BaseAction {
     projectID = this.createNewProject();
     if (projectID > 0) {
       // Let's redirect the user to the Project Description section.
-      return BaseAction.INPUT;
+      return BaseAction.SUCCESS;
     }
-    // Let's redirect the user to the Project Description section.
+    // Let's redirect the user to the error page.
     return BaseAction.ERROR;
   }
 
