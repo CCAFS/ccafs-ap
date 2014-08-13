@@ -88,6 +88,15 @@ public interface BudgetDAO {
   public boolean deleteBudgetsByInstitution(int projectID, int institutionID);
 
   /**
+   * This method removes all the budgets identified with the given projectID and year.
+   *
+   * @param projectID is the project identifier.
+   * @param year is a year.
+   * @return true if the elements were deleted successfully. False otherwise.
+   */
+  public boolean deleteBudgetsByYear(int projectID, int year);
+
+  /**
    * This method gets all the budget information by a given Project Id
    *
    * @param projectID - is the Id of the project

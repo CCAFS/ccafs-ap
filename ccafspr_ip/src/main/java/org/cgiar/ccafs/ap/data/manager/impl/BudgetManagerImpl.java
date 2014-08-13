@@ -89,6 +89,11 @@ public class BudgetManagerImpl implements BudgetManager {
   }
 
   @Override
+  public boolean deleteBudgetsByYear(int projectID, int year) {
+    return budgetDAO.deleteBudgetsByYear(projectID, year);
+  }
+
+  @Override
   public List<Budget> getBudgetsByProject(Project project) {
 
     List<Integer> allYears = project.getAllYears();
