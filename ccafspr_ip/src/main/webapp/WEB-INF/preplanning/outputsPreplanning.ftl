@@ -59,7 +59,7 @@
                 [/#if]
                 [#-- Add contribute --]
                 <div class="fullBlock addContributeBlock">
-                  [@customForm.select name="contributions" value="" showTitle=false listName="midOutcomesList" keyFieldName="id"  displayFieldName="description" addButton=true className="contributes" /]
+                  [@customForm.select name="contributions" value="" showTitle=false listName="midOutcomesList" keyFieldName="id"  displayFieldName="description" addButton=true className="contributes" i18nkey="preplanning.midOutcomes.addContribute" /]
                 </div> 
               </div>   
             </div>  
@@ -109,7 +109,7 @@
         [#-- Contribute area --]
         [#-- Add contribute --]
          <div class="fullBlock addContributeBlock">
-          [@customForm.select name="contributions" showTitle=false listName="midOutcomesList" keyFieldName="id"  displayFieldName="description" addButton=true className="contributes" /]
+          [@customForm.select name="contributions" i18nkey="preplanning.midOutcomes.addContribute" showTitle=false listName="midOutcomesList" keyFieldName="id"  displayFieldName="description" addButton=true className="contributes" /]
         </div> 
       </div>  
     </div> 

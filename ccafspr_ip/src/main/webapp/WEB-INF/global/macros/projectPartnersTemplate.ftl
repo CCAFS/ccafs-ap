@@ -21,20 +21,23 @@
           [@customForm.select name="project.projectPartners[${ap_index}].partner" label=""  disabled=!canEdit i18nkey="preplanning.projectPartners.partner.name" listName="allPartners" keyFieldName="id"  displayFieldName="getComposedName()" /]
         </div>
         
-        <div class="filters-link">[@s.text name="preplanning.projectPartners.filters" /]</div>
-        <div class="filters-content">
-          [#-- Partner type list --]
-          <div class="halfPartBlock partnerTypeName chosen">
-            [#-- Name attribute is not needed, we just need to load the value, not save it it. --]
-            [@customForm.select name="" label="" disabled=!canEdit i18nkey="preplanning.projectPartners.partnerType" listName="partnerTypes" keyFieldName="id"  displayFieldName="name" className="partnerTypes" value="${ap.partner.type.id?c}" /]
+        [#-- Filters --]
+        [#if canEdit]
+          <div class="filters-link">[@s.text name="preplanning.projectPartners.filters" /]</div>
+          <div class="filters-content">
+            [#-- Partner type list --]
+            <div class="halfPartBlock partnerTypeName chosen">
+              [#-- Name attribute is not needed, we just need to load the value, not save it it. --]
+              [@customForm.select name="" label="" disabled=!canEdit i18nkey="preplanning.projectPartners.partnerType" listName="partnerTypes" keyFieldName="id"  displayFieldName="name" className="partnerTypes" value="${ap.partner.type.id?c}" /]
+            </div>
+            [#-- Country list --]
+            <div class="halfPartBlock countryListBlock chosen">
+              [#-- Name attribute is not needed, we just need to load the value, not save it it. --]
+              [@customForm.select name="" label="" disabled=!canEdit i18nkey="preplanning.projectPartners.country" listName="countries" keyFieldName="id"  displayFieldName="name" className="countryList" value="'${ap.partner.country.code}'" /]
+            </div>
           </div>
-          
-          [#-- Country list --]
-          <div class="halfPartBlock countryListBlock chosen">
-            [#-- Name attribute is not needed, we just need to load the value, not save it it. --]
-            [@customForm.select name="" label="" disabled=!canEdit i18nkey="preplanning.projectPartners.country" listName="countries" keyFieldName="id"  displayFieldName="name" className="countryList" value="'${ap.partner.country.code}'" /]
-          </div>
-        </div>
+        [/#if]
+        
         [#-- Contact Name --] 
         <div class="halfPartBlock">
           [@customForm.input name="project.projectPartners[${ap_index}].contactName" type="text" disabled=!canEdit i18nkey="preplanning.projectPartners.contactPersonName" required=true /]

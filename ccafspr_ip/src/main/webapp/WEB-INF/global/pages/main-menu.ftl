@@ -21,8 +21,12 @@
 	      
 	      [#-- PRE-Planning section --]
 	      [#if currentUser.FPL || currentUser.RPL || currentUser.CU || currentUser.admin ]
-	        [#if planningActive ]
-	          <a  href="${baseUrl}/pre-planning/outcomes.do">
+	        [#if preplanningActive ]
+	          [#if currentUser.CU ]
+  	          <a  href="${baseUrl}/pre-planning/projects.do">
+  	        [#else]
+  	          <a  href="${baseUrl}/pre-planning/outcomes.do">
+  	        [/#if]
 	        [#else]
 	          <a href="javascript:void(0);" title="[@s.text name="menu.link.disabled" /]" class="disabled">
 	        [/#if]
@@ -31,7 +35,7 @@
 	      [/#if]
 	      
 	      [#-- Planning section --]
-	      [#if currentUser.CP || currentUser.FPL || currentUser.RPL || currentUser.PI || currentUser.admin ]
+	      [#if !currentUser.guest ]
 	        [#if planningActive ]               
 	          <a  href="${baseUrl}/planning/projects.do">
 	        [#else]
@@ -42,7 +46,7 @@
 	      [/#if]
 	      
 	      [#-- Reporting section --]
-	      [#if currentUser.CP || currentUser.FPL || currentUser.RPL || currentUser.PI || currentUser.admin ] 
+	      [#if !currentUser.guest ] 
 	        [#if reportingActive ]               
 	          <a href="${baseUrl}/reporting/introduction.do" >
 	        [#else]
@@ -53,7 +57,7 @@
 	      [/#if]
 	      
 	      [#-- Summaries section --]
-	      [#if currentUser.FPL || currentUser.RPL || currentUser.admin ]
+	      [#if currentUser.CU || currentUser.FPL || currentUser.RPL || currentUser.admin ]
 	        [#if summariesActive ]
 	          <a href="${baseUrl}/summaries/activities.do" /]" >
 	              <li [#if currentSection?? && currentSection == "summaries"]class="currentSection"[/#if]>[@s.text name="menu.summaries" /]</li>

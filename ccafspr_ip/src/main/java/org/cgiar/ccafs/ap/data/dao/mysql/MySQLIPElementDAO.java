@@ -49,17 +49,24 @@ public class MySQLIPElementDAO implements IPElementDAO {
   @Override
   public int createIPElement(Map<String, Object> ipElementData) {
     LOG.debug(">> createIPElement(ipElementData)", ipElementData);
-
     StringBuilder query = new StringBuilder();
-    query.append("INSERT INTO ip_elements (id, description, element_type_id ) ");
-    query.append("VALUES (?, ?, ?) ");
-    query.append("ON DUPLICATE KEY UPDATE description=VALUES(description), ");
-    query.append("element_type_id=VALUES(element_type_id)");
-
     Object[] values = new Object[3];
-    values[0] = ipElementData.get("id");
-    values[1] = ipElementData.get("description");
-    values[2] = ipElementData.get("element_type_id");
+
+    if (ipElementData.get("id") == null) {
+      query.append("INSERT INTO ip_elements (id, description, element_type_id ) ");
+      query.append("VALUES (?, ?, ?) ");
+
+      values[0] = ipElementData.get("id");
+      values[1] = ipElementData.get("description");
+      values[2] = ipElementData.get("element_type_id");
+    } else {
+      query.append("UPDATE ip_elements SET description = ?, element_type_id =? ");
+      query.append("WHERE id = ? ");
+
+      values[0] = ipElementData.get("description");
+      values[1] = ipElementData.get("element_type_id");
+      values[2] = ipElementData.get("id");
+    }
 
     int result = databaseManager.saveData(query.toString(), values);
     LOG.debug("<< createIPElement():{}", result);
@@ -353,10 +360,8 @@ public class MySQLIPElementDAO implements IPElementDAO {
       relationTypeID});
 
     StringBuilder query = new StringBuilder();
-    query.append("INSERT INTO ip_program_elements (element_id, program_id, relation_type_id) ");
+    query.append("INSERT IGNORE INTO ip_program_elements (element_id, program_id, relation_type_id) ");
     query.append("VALUES (?, ?, ?) ");
-    // ON DUPLICATE KEY -> do nothing
-    query.append("ON DUPLICATE KEY UPDATE element_id = element_id");
 
     Object[] values = new Object[3];
     values[0] = elementID;

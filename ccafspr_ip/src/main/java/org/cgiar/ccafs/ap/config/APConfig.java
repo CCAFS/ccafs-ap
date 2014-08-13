@@ -14,6 +14,7 @@
 package org.cgiar.ccafs.ap.config;
 
 import org.cgiar.ccafs.ap.util.PropertiesManager;
+
 import com.google.inject.Inject;
 import com.google.inject.Singleton;
 import org.slf4j.Logger;
@@ -35,6 +36,7 @@ public class APConfig {
   private static final String END_YEAR = "ccafsap.endYear";
   private static final String PLANNING_FUTURE_YEARS_ACTIVE = "ccafsap.planning.future.years.active";
   private static final String PLANNING_FUTURE_YEARS = "ccafsap.planning.future.years";
+  private static final String PREPLANNING_ACTIVE = "ccafsap.preplanning.active";
   private static final String PLANNING_ACTIVE = "ccafsap.planning.active";
   private static final String REPORTING_ACTIVE = "ccafsap.reporting.active";
   private static final String SUMMARIES_ACTIVE = "ccafsap.summaries.active";
@@ -57,7 +59,7 @@ public class APConfig {
 
   /**
    * Return the base url previously added in the configuration file.
-   *
+   * 
    * @return The Base Url in the following format: http://baseurl or https://baseurl.
    */
   public String getBaseUrl() {
@@ -78,7 +80,7 @@ public class APConfig {
 
   /**
    * Get the path where are stored the case studies user images
-   *
+   * 
    * @return a string with the path
    */
   public String getCaseStudiesImagesPath() {
@@ -108,7 +110,7 @@ public class APConfig {
 
   /**
    * Get the end year value that is in the configuration file.
-   *
+   * 
    * @return an integer identifying the end year.
    */
   public int getEndYear() {
@@ -122,7 +124,7 @@ public class APConfig {
 
   /**
    * Get the maximun file size allowed
-   *
+   * 
    * @return an integer with the value
    */
   public int getFileMaxSize() {
@@ -136,7 +138,7 @@ public class APConfig {
 
   /**
    * Get the number of future years that an user can plan.
-   *
+   * 
    * @return an integer identifying the number of years.
    */
   public int getFuturePlanningYears() {
@@ -168,7 +170,7 @@ public class APConfig {
 
   /**
    * Get the number maximum of types that can have a case study
-   *
+   * 
    * @return
    */
   public int getMaxCaseStudyTypes() {
@@ -182,7 +184,7 @@ public class APConfig {
 
   /**
    * Get the current year value that is being used in the planning stage.
-   *
+   * 
    * @return an integer identifying the current year.
    */
   public int getPlanningCurrentYear() {
@@ -196,7 +198,7 @@ public class APConfig {
 
   /**
    * Get the current year value that is being used in the reporting stage.
-   *
+   * 
    * @return an integer identifying the current year.
    */
   public int getReportingCurrentYear() {
@@ -210,7 +212,7 @@ public class APConfig {
 
   /**
    * Get the start year value that is in the configuration file.
-   *
+   * 
    * @return an integer identifying the end year.
    */
   public int getStartYear() {
@@ -224,7 +226,7 @@ public class APConfig {
 
   /**
    * Get the flag that indicate is planing stage is active that is in the configuration file.
-   *
+   * 
    * @return a boolean indicating if it is active.
    */
   public boolean isPlanningActive() {
@@ -239,7 +241,7 @@ public class APConfig {
 
   /**
    * Get the flag that indicate if planing for future years is active, that value is in the configuration file.
-   *
+   * 
    * @return a boolean indicating if it is active or not.
    */
   public boolean isPlanningForFutureYearsActive() {
@@ -253,8 +255,24 @@ public class APConfig {
   }
 
   /**
+   * Get the flag that indicate if the preplanning stage is active
+   * according to the variable in the configuration file.
+   * 
+   * @return a boolean indicating if it is active.
+   */
+  public boolean isPrePlanningActive() {
+    String prePlanningActive = properties.getPropertiesAsString(PREPLANNING_ACTIVE);
+    if (prePlanningActive == null) {
+      LOG.error("There is not a preplanning active configured");
+      return false;
+    }
+
+    return prePlanningActive.equals("true");
+  }
+
+  /**
    * Get the flag that indicate is planing stage is active that is in the configuration file.
-   *
+   * 
    * @return a boolean indicating if it is active.
    */
   public boolean isReportingActive() {
@@ -269,7 +287,7 @@ public class APConfig {
 
   /**
    * Get the flag that indicate if summaries stage is active that is in the configuration file.
-   *
+   * 
    * @return a boolean indicating if it is active.
    */
   public boolean isSummariesActive() {

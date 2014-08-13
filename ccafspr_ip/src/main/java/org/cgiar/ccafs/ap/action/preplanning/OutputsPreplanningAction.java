@@ -139,8 +139,18 @@ public class OutputsPreplanningAction extends BaseAction {
       }
     }
 
-    ipElementManager.saveIPElements(outputs);
-    return SUCCESS;
+    // Remove records already present in the database
+    if (ipElementManager.saveIPElements(outputs)) {
+      if (getCurrentUser().isFPL()) {
+        addActionMessage(getText("saving.success", new String[] {getText("preplanning.outputs.title")}));
+      } else if (getCurrentUser().isRPL()) {
+        addActionMessage(getText("saving.success", new String[] {getText("preplanning.outputsRPL.titleRPL")}));
+      }
+      return SUCCESS;
+    } else {
+      addActionError(getText("saving.problem"));
+      return INPUT;
+    }
   }
 
   public void setMidOutcomesList(List<IPElement> midOutcomes) {

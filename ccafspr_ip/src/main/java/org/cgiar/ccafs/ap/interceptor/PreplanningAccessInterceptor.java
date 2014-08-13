@@ -13,12 +13,11 @@
  *****************************************************************/
 package org.cgiar.ccafs.ap.interceptor;
 
+import org.cgiar.ccafs.ap.action.BaseAction;
 import org.cgiar.ccafs.ap.config.APConstants;
 import org.cgiar.ccafs.ap.data.model.User;
 
 import java.util.Map;
-
-import org.cgiar.ccafs.ap.action.BaseAction;
 
 import com.google.inject.Inject;
 import com.opensymphony.xwork2.ActionInvocation;
@@ -42,7 +41,7 @@ public class PreplanningAccessInterceptor extends AbstractInterceptor {
     Map<String, Object> session = invocation.getInvocationContext().getSession();
     User user = (User) session.get(APConstants.SESSION_USER);
     if (user != null) {
-      if (user.isAdmin() || user.isFPL() || user.isRPL()) {
+      if (user.isAdmin() || user.isFPL() || user.isRPL() || user.isCU()) {
         invocation.invoke();
       } else {
         LOG.info("User identify with id={}, email={}, role={} tried to access pre-planning section.", new Object[] {
