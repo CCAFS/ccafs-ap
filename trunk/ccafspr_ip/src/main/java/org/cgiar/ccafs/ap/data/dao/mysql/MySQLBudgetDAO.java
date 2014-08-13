@@ -205,6 +205,24 @@ public class MySQLBudgetDAO implements BudgetDAO {
   }
 
   @Override
+  public boolean deleteBudgetsByYear(int projectID, int year) {
+    LOG.debug(">> deleteBudgetsByYear(projectId={}, eyar={})", projectID, year);
+
+    StringBuilder query = new StringBuilder();
+    query.append("DELETE b FROM budgets b ");
+    query.append("INNER JOIN project_budgets pb ON b.id = pb.budget_id ");
+    query.append("WHERE pb.project_id = ? AND b.year = ?");
+
+    int rowsDeleted = databaseManager.delete(query.toString(), new Object[] {projectID, year});
+    if (rowsDeleted >= 0) {
+      LOG.debug("<< deleteBudgetsByYear():{}", true);
+      return true;
+    }
+    LOG.debug("<< deleteBudgetsByYear():{}", false);
+    return false;
+  }
+
+  @Override
   public List<Map<String, String>> getBudgetsByProject(int projectID) {
     LOG.debug(">> getBudgetsByProject projectID = {} )", projectID);
 
@@ -221,6 +239,7 @@ public class MySQLBudgetDAO implements BudgetDAO {
     LOG.debug("-- getBudgetsByProject() > Calling method executeQuery to get the results");
     return getData(query.toString());
   }
+
 
   @Override
   public List<Map<String, String>> getBudgetsByType(int projectID, int budgetType) {

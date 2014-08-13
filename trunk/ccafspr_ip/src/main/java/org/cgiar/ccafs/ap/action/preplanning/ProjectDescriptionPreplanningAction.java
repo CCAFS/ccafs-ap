@@ -16,6 +16,8 @@ package org.cgiar.ccafs.ap.action.preplanning;
 import java.util.Iterator;
 import java.util.List;
 
+import org.cgiar.ccafs.ap.data.manager.BudgetManager;
+
 import com.google.inject.Inject;
 import org.apache.commons.lang3.StringUtils;
 import org.cgiar.ccafs.ap.action.BaseAction;
@@ -41,6 +43,7 @@ public class ProjectDescriptionPreplanningAction extends BaseAction {
   private IPProgramManager ipProgramManager;
   // private IPCrossCuttingManager ipCrossCuttingManager;
   private UserManager userManager;
+  private BudgetManager budgetManager;
 
   private static Logger LOG = LoggerFactory.getLogger(ProjectDescriptionPreplanningAction.class);
 
@@ -56,12 +59,14 @@ public class ProjectDescriptionPreplanningAction extends BaseAction {
 
   @Inject
   public ProjectDescriptionPreplanningAction(APConfig config, ProjectManager projectManager,
-    IPProgramManager ipProgramManager, /* IPCrossCuttingManager ipCrossCuttingManager, */UserManager userManager) {
+    IPProgramManager ipProgramManager, /* IPCrossCuttingManager ipCrossCuttingManager, */UserManager userManager,
+    BudgetManager budgetManager) {
     super(config);
     this.projectManager = projectManager;
     this.ipProgramManager = ipProgramManager;
     // this.ipCrossCuttingManager = ipCrossCuttingManager;
     this.userManager = userManager;
+    this.budgetManager = budgetManager;
   }
 
   public List<User> getAllOwners() {
@@ -208,6 +213,17 @@ public class ProjectDescriptionPreplanningAction extends BaseAction {
 
   @Override
   public String save() {
+    // Reviewing some change in the year range from start date to end date in order to reflect those changes in the
+    // project budget section.
+    List<Integer> currentYears = project.getAllYears();
+    List<Integer> previousYears = projectManager.getProject(project.getId()).getAllYears();
+    // Deleting unused years from project budget.
+    for (Integer previousYear : previousYears) {
+      if (!currentYears.contains(previousYear)) {
+        budgetManager.deleteBudgetsByYear(projectID, previousYear.intValue());
+      }
+    }
+
     // ----- SAVING Project description -----
     int result = projectManager.saveProjectDescription(project);
     if (result < 0) {

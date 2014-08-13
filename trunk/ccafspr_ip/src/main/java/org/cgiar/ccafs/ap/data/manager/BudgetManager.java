@@ -77,13 +77,22 @@ public interface BudgetManager {
   public boolean deleteBudget(int budgetId);
 
   /**
-   * This method removes a set of budgets that belongs to a specific project and institution.
+   * This method removes a set of budgets that belong to a specific project and institution.
    *
    * @param projectID is the project identifier.
    * @param institutionID is the institution identifier.
    * @return true if the set of budgets were successfully deleted, false otherwise.
    */
   public boolean deleteBudgetsByInstitution(int projectID, int institutionID);
+
+  /**
+   * This method removes a set of budgets that belong to a specific project and year.
+   *
+   * @param projectID is the project identifier.
+   * @param year is the year.
+   * @return true if the set of budgets were successfully deleted, false otherwise.
+   */
+  public boolean deleteBudgetsByYear(int projectID, int year);
 
   /**
    * This method gets all the budget information by a given Project Id
