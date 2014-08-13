@@ -75,35 +75,35 @@ public class ProjectsListPreplanningAction extends BaseAction {
       newProject.setProgramCreator(userProgram);
     } else {
       LOG
-      .error(
-        "-- execute() > the current user identify with id={} and institution_id={} does not belong to a specific program!",
-        new Object[] {this.getCurrentUser().getId(), this.getCurrentUser().getCurrentInstitution().getId()});
+        .error(
+          "-- execute() > the current user identify with id={} and institution_id={} does not belong to a specific program!",
+          new Object[] {this.getCurrentUser().getId(), this.getCurrentUser().getCurrentInstitution().getId()});
     }
     newProject.setCreated(new Date().getTime());
     return projectManager.saveProjectDescription(newProject);
 
   }
 
-  @Override
-  public String execute() throws Exception {
-    // If there are not projects to be listed.
-    if (projects.size() <= 0) {
-      // Create new project and redirect to project description using the new projectId assigned by the database.
-      projectID = this.createNewProject();
-      if (projectID > 0) {
-        // Let's redirect the user to the Project Description section.
-        return BaseAction.INPUT;
-      }
-      addActionError(getText("preplanning.projects.creatingProject.error"));
-      // An error happened, lets redirect it to the list, even if there are not projects.
-    }
-    // If user clicks on Add button.
-    if (add) {
-      return add();
-    }
-
-    return BaseAction.SUCCESS;
-  }
+// @Override
+// public String execute() throws Exception {
+// // If there are not projects to be listed.
+// if (projects.size() <= 0) {
+// // Create new project and redirect to project description using the new projectId assigned by the database.
+// projectID = this.createNewProject();
+// if (projectID > 0) {
+// // Let's redirect the user to the Project Description section.
+// return BaseAction.INPUT;
+// }
+// addActionError(getText("preplanning.projects.creatingProject.error"));
+// // An error happened, lets redirect it to the list, even if there are not projects.
+// }
+// // If user clicks on Add button.
+// if (add) {
+// return add();
+// }
+//
+// return BaseAction.SUCCESS;
+// }
 
   public int getProjectID() {
     return projectID;
