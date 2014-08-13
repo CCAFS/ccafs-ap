@@ -13,22 +13,22 @@
  *****************************************************************/
 package org.cgiar.ccafs.ap.action.preplanning;
 
-import java.util.Iterator;
-import java.util.List;
-
-import org.cgiar.ccafs.ap.data.manager.BudgetManager;
-
-import com.google.inject.Inject;
-import org.apache.commons.lang3.StringUtils;
 import org.cgiar.ccafs.ap.action.BaseAction;
 import org.cgiar.ccafs.ap.config.APConfig;
 import org.cgiar.ccafs.ap.config.APConstants;
+import org.cgiar.ccafs.ap.data.manager.BudgetManager;
 import org.cgiar.ccafs.ap.data.manager.IPProgramManager;
 import org.cgiar.ccafs.ap.data.manager.ProjectManager;
 import org.cgiar.ccafs.ap.data.manager.UserManager;
 import org.cgiar.ccafs.ap.data.model.IPProgram;
 import org.cgiar.ccafs.ap.data.model.Project;
 import org.cgiar.ccafs.ap.data.model.User;
+
+import java.util.Iterator;
+import java.util.List;
+
+import com.google.inject.Inject;
+import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -76,7 +76,7 @@ public class ProjectDescriptionPreplanningAction extends BaseAction {
   /**
    * This method returns a composed name with the Acronym and Name.
    * e.g. FP4: Policies and Institutions for Climate-Resilient Food Systems
-   *
+   * 
    * @param ipProgramId is the program identifier.
    * @return the composed name described above.
    */
@@ -92,19 +92,19 @@ public class ProjectDescriptionPreplanningAction extends BaseAction {
 
   /**
    * This method returns an array of cross cutting ids depending on the project.crossCuttings attribute.
-   *
+   * 
    * @return an array of integers.
    */
-  public int[] getCrossCuttingIds() {
-    if (this.project.getCrossCuttings() != null) {
-      int[] ids = new int[this.project.getCrossCuttings().size()];
-      for (int c = 0; c < ids.length; c++) {
-        ids[c] = this.project.getCrossCuttings().get(c).getId();
-      }
-      return ids;
-    }
-    return null;
-  }
+// public int[] getCrossCuttingIds() {
+// if (this.project.getCrossCuttings() != null) {
+// int[] ids = new int[this.project.getCrossCuttings().size()];
+// for (int c = 0; c < ids.length; c++) {
+// ids[c] = this.project.getCrossCuttings().get(c).getId();
+// }
+// return ids;
+// }
+// return null;
+// }
 
   public int getEndYear() {
     return config.getEndYear();
@@ -112,7 +112,7 @@ public class ProjectDescriptionPreplanningAction extends BaseAction {
 
   /**
    * This method returns an array of flagship ids depending on the project.flagships attribute.
-   *
+   * 
    * @return an array of integers.
    */
   public int[] getFlagshipIds() {
@@ -154,7 +154,7 @@ public class ProjectDescriptionPreplanningAction extends BaseAction {
 
   /**
    * This method returns an array of region ids depending on the project.regions attribute.
-   *
+   * 
    * @return an array of integers.
    */
   public int[] getRegionIds() {

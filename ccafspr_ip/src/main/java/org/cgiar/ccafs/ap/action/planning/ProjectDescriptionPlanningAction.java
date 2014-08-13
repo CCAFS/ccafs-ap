@@ -20,7 +20,6 @@ import org.cgiar.ccafs.ap.data.manager.IPCrossCuttingManager;
 import org.cgiar.ccafs.ap.data.manager.IPProgramManager;
 import org.cgiar.ccafs.ap.data.manager.ProjectManager;
 import org.cgiar.ccafs.ap.data.manager.UserManager;
-import org.cgiar.ccafs.ap.data.model.IPCrossCutting;
 import org.cgiar.ccafs.ap.data.model.IPProgram;
 import org.cgiar.ccafs.ap.data.model.Project;
 import org.cgiar.ccafs.ap.data.model.User;
@@ -49,7 +48,7 @@ public class ProjectDescriptionPlanningAction extends BaseAction {
   // Model for the front-end
   private List<IPProgram> ipProgramRegions;
   private List<IPProgram> ipProgramFlagships;
-  private List<IPCrossCutting> ipCrossCuttings;
+// private List<IPCrossCutting> ipCrossCuttings;
   private List<User> allOwners;
 
   // Model for the back-end
@@ -93,16 +92,16 @@ public class ProjectDescriptionPlanningAction extends BaseAction {
    * 
    * @return an array of integers.
    */
-  public int[] getCrossCuttingIds() {
-    if (this.project.getCrossCuttings() != null) {
-      int[] ids = new int[this.project.getCrossCuttings().size()];
-      for (int c = 0; c < ids.length; c++) {
-        ids[c] = this.project.getCrossCuttings().get(c).getId();
-      }
-      return ids;
-    }
-    return null;
-  }
+// public int[] getCrossCuttingIds() {
+// if (this.project.getCrossCuttings() != null) {
+// int[] ids = new int[this.project.getCrossCuttings().size()];
+// for (int c = 0; c < ids.length; c++) {
+// ids[c] = this.project.getCrossCuttings().get(c).getId();
+// }
+// return ids;
+// }
+// return null;
+// }
 
   public int getEndYear() {
     return config.getEndYear();
@@ -124,9 +123,9 @@ public class ProjectDescriptionPlanningAction extends BaseAction {
     return null;
   }
 
-  public List<IPCrossCutting> getIpCrossCuttings() {
-    return ipCrossCuttings;
-  }
+// public List<IPCrossCutting> getIpCrossCuttings() {
+// return ipCrossCuttings;
+// }
 
 
   public List<IPProgram> getIpProgramFlagships() {
@@ -192,7 +191,7 @@ public class ProjectDescriptionPlanningAction extends BaseAction {
     ipProgramFlagships = ipProgramManager.getProgramsByType(APConstants.FLAGSHIP_PROGRAM_TYPE);
 
     // Getting the information of the Cross Cutting Theme for the View
-    ipCrossCuttings = ipCrossCuttingManager.getIPCrossCuttings();
+// ipCrossCuttings = ipCrossCuttingManager.getIPCrossCuttings();
 
     // Getting project
     project = projectManager.getProject(projectID);
@@ -202,7 +201,7 @@ public class ProjectDescriptionPlanningAction extends BaseAction {
       // Getting the information of the Regions Program associated with the project
       project.setFlagships(ipProgramManager.getProjectFocuses(projectID, APConstants.FLAGSHIP_PROGRAM_TYPE));
       // Getting the information of the Cross Cutting Theme associated with the project
-      project.setCrossCuttings(ipCrossCuttingManager.getIPCrossCuttingByProject(projectID));
+      // project.setCrossCuttings(ipCrossCuttingManager.getIPCrossCuttingByProject(projectID));
     }
 
     // If the user is not admin or the project owner, we should keep some information
@@ -240,9 +239,9 @@ public class ProjectDescriptionPlanningAction extends BaseAction {
     }
   }
 
-  public void setIpCrossCuttings(List<IPCrossCutting> ipCrossCuttings) {
-    this.ipCrossCuttings = ipCrossCuttings;
-  }
+// public void setIpCrossCuttings(List<IPCrossCutting> ipCrossCuttings) {
+// this.ipCrossCuttings = ipCrossCuttings;
+// }
 
   public void setIpProgramFlagships(List<IPProgram> ipProgramFlagships) {
     this.ipProgramFlagships = ipProgramFlagships;

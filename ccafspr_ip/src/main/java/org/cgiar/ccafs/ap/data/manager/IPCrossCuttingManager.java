@@ -22,7 +22,7 @@ import com.google.inject.ImplementedBy;
 
 /**
  * This class represents the Manager of IP Cross Cutting Theme
- *
+ * 
  * @author Javier Andrés Gallego B.
  */
 
@@ -31,33 +31,33 @@ public interface IPCrossCuttingManager {
 
 
   /**
-   * This method removes a cross cutting element from a specific project.
-   *
-   * @param projectID is the project identifier.
-   * @param crossCuttingID is the cross cutting theme identifier.
+   * This method removes a cross cutting element from a specific activity.
+   * 
+   * @param activityID - is the activity identifier.
+   * @param crossCuttingID - is the cross cutting theme identifier.
    * @return true if the cross cutting record was successfully removed, false otherwise.
    */
-  public boolean deleteCrossCutting(int projectID, int crossCuttingID);
+  public boolean deleteCrossCuttingByActivity(int activityID, int crossCuttingID);
 
   /**
    * This method gets the information of a IP Cross Cutting Theme by a given ID
-   *
-   * @param iD - is the ID of a IP Cross Cutting Theme
+   * 
+   * @param ipCrossCuttingID - is the ID of a IP Cross Cutting Theme
    * @return an object with the information of a IP Cross Cutting Theme
    */
-  public IPCrossCutting getIPCrossCutting(int iD);
+  public IPCrossCutting getIPCrossCutting(int ipCrossCuttingID);
 
   /**
-   * This method gets all the information of IP Cross Cutting Themes related with a given project ID
-   *
-   * @param projectID
-   * @return a List with the information of IP Cross Cutting Themes related with the project
+   * This method gets all the information of IP Cross Cutting Themes related with a given activity ID
+   * 
+   * @param activityID - is the activity identifier.
+   * @return a List with the information of IP Cross Cutting Themes related with the activity
    */
-  public List<IPCrossCutting> getIPCrossCuttingByProject(int projectID);
+  public List<IPCrossCutting> getIPCrossCuttingByActivityID(int activityID);
 
   /**
    * This method gets all the IP Cross Cutting Themes
-   *
+   * 
    * @return a List with the information of IP Cross Cutting Themes
    */
   public List<IPCrossCutting> getIPCrossCuttings();
@@ -65,9 +65,9 @@ public interface IPCrossCuttingManager {
   /**
    * This method saves a new Cross Cutting Element to a given project.
    * 
-   * @param projectID is the project identifier.
+   * @param activityID is the activity identifier.
    * @param crossCuttingID is the cross cutting element identifier.
    * @return true if the cross cutting could be successfully saved, false otherwise.
    */
-  public boolean saveCrossCutting(int projectID, int crossCuttingID);
+  public boolean saveCrossCutting(int activityID, int crossCuttingID);
 }

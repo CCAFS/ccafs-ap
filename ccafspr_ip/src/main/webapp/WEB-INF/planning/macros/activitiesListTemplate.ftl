@@ -1,7 +1,6 @@
 [#ftl]
 [#-- This macro is being used in activities.ftl. The idea is to represent a table with specific information about activities --]
 [#macro activitiesList activities owned=true canValidate=false canEditProject=false tableID=""]
-
     <table class="activitiesList" id="${tableID}">
 		  <thead>
 		    <tr>
@@ -32,17 +31,25 @@
               </td>
               <td> 
                   <a href="[@s.url action='activityDescription'] [@s.param name='activityID']${activity.id?c}[/@s.param] [/@s.url]">
-                    TODO
+                    [#if activity.leader?has_content]
+                    	${activity.leader.lastName} ${activity.leader.firstName}
+                    [#else]
+                    	${activity.expectedLeader.name}
+                    [/#if]
                   </a>
               </td>
               <td> 
                   <a href="[@s.url action='activityDescription' ] [@s.param name='activityID']${activity.id?c}[/@s.param] [/@s.url]">
-                    TODO
+                     [#if activity.leader?has_content]
+                    	${activity.leader.currentInstitution.name} 
+                    [#else]
+                    	${activity.expectedLeader.institution.name}
+                    [/#if]
                   </a>
               </td>
               <td> 
                   <a href="[@s.url action='activityDescription' ] [@s.param name='activityID']${activity.id?c}[/@s.param] [/@s.url]">
-                    TODO
+                    Complete / Incomplete
                   </a>
               </td>
           	</tr>  
