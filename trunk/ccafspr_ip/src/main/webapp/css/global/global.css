@@ -28,14 +28,14 @@ select {
 
 .select.button, .textArea.button {
   float: left;
-  width: 81%;
+  width: 87%;
 }
 
 .addButton {
   background: #47939C;
   color: #fff;
   border: 0;
-  padding: 6px;
+  padding: 4px 10px;
   margin: 0px 12px;
   border-radius: 5px;
   border-bottom: 2px solid #3C7D85 !important;
@@ -159,8 +159,15 @@ div.checkboxGroup.vertical input {
   cursor: pointer;
   vertical-align: middle;
   position: absolute;
-  right: -4px;
-  top: 5px;
+  right: 3px;
+  top: 11px;
+}
+
+.removeElement {
+  padding: 11px 23px;
+  background: url(../../images/global/icon-remove.png) no-repeat center #D5504C;
+  position: absolute;    top: 0;    right: 0;        border-radius: 0px 3px  0px 8px;
+  cursor: pointer;
 }
 
 .removeLink img, .removeLink a {
@@ -213,7 +220,7 @@ padding: 1px 10px;
 }
 
 .container #autoSavingMessages p{
-  color: 000;
+  color: #000;
   font-weight: bold;
   text-align: center;
 }
@@ -226,22 +233,13 @@ body {
 header {
   font-family: 'Open Sans', sans-serif;
 }
-.container {
-  /* background-image: url("../../images/global/header-background.png"); */
+.container { 
   background-repeat: no-repeat;
   display: inline-block;
-  width: 1100px;
-  /* height: 100%; */
+  width: 1100px; 
   position: relative;
   text-align: left;
-  display: inline-block;
-  /* margin: 0 auto; */
-  
-  /* SHADOW */
-  /* -webkit-box-shadow: 2px 7px 29px #5A5E59; */ /* Safari and Chrome */
-  /* box-shadow: 2px 7px 29px #5A5E59; */
-  /* For IE 8 */
-  /*-ms-filter: "progid:DXImageTransform.Microsoft.Glow(Color=#5A5E59,Strength=10)";*/
+  display: inline-block; 
   
 }
 
@@ -659,8 +657,19 @@ a.currentReportingSection li #i-additionalInformation{
 
 /*************** BODY ****************/
 .content {
-  margin: 10px 50px;
-  /* padding: 20px; */
+  margin: 10px 34px; 
+}
+.content:before,.content:after {
+  content: "";
+  display: table;
+}
+
+.content:after {
+  clear: both;
+}
+
+.content {
+  *zoom: 1;
 }
 
 .fullContent {
@@ -670,7 +679,7 @@ a.currentReportingSection li #i-additionalInformation{
 .halfContent {
   float: right;
   padding: 12px 0;
-  width: 775px;
+  width: 800px;
   vertical-align: top;
 }
 
@@ -1032,6 +1041,7 @@ h1.contentSubTitle {
 }
 .contentElements textarea {
   width: 100%;
+  height: 55px;
 }
 
 .contentElements .fields{
@@ -1049,9 +1059,10 @@ h1.contentSubTitle {
 
 .removeOutputBlock, .removeMidOutcomeBlock {
   position: absolute;
-  top: .2em;
-  right: .5em;
-  background: #FFF;
+  top: 0;
+  right: 0;
+  background: #D5504C;
+  border-radius: 0px 3px  0px 8px;
 }
 
 /********** Projects *********/
@@ -1102,7 +1113,11 @@ textarea[id$='summary'] {
 
 #leveraged .leveragedPartner {
   position: relative;
-  height: 45px;
+  height: 21px;
+  padding: 8px 10px;
+  margin: 2px 0;
+  border: 1px dotted #ccc;
+  border-radius: 4px;
 }
 
 #leveraged .leveragedPartner .amount {
@@ -1111,8 +1126,9 @@ textarea[id$='summary'] {
 }
 #leveraged .leveragedPartner .name {
     position: relative;
+    padding: 2px 0px;
     float:left;
-    width: 70%;
+    width: 74%;
 }
 
 #leveraged .leveragedPartner input {
@@ -1405,6 +1421,7 @@ ul#deliverablesFilesMessages > li {
 
 .borderBox:hover{
   box-shadow: 0px 0px 10px rgba(0,0,0,0.18);
+  border: 2px solid #E3E3E3;
 }
 
 .borderBox:active{
@@ -1416,6 +1433,7 @@ ul#deliverablesFilesMessages > li {
   border: 0;
   position: absolute;
   top: -10px;
+  left: 34%;
   background: rgba(255,255,255,0.7);
   width: auto;
   padding: 0 6px;

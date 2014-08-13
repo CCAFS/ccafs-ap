@@ -20,7 +20,7 @@ function init(){
 function attachEvents(){
   // Outputs
   $("div#addOutputBlock").click(addOutputEvent);
-  $(".removeOutputBlock a#removeOutput").click(removeOutputEvent);
+  $(".removeOutput").click(removeOutputEvent);
   // Contributes
   $(".addContributeBlock input.addButton").click(addContributeEvent);
   $(".removeContribute").click(removeContributeEvent);
@@ -40,7 +40,7 @@ function addOutputEvent(event){
 
 function removeOutputEvent(event){
   event.preventDefault();
-  var $ElementDiv = $(event.target).parent().parent();
+  var $ElementDiv = $(event.target).parent();
   $ElementDiv.hide("slow", function(){
     $(this).remove();
     setOutputsIndexes();

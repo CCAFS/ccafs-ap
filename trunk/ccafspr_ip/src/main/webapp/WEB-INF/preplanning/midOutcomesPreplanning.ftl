@@ -24,8 +24,7 @@
     [#include "/WEB-INF/preplanning/ipPreplanningSubMenu.ftl" /]
     <h1 class="contentTitle">
     [@s.text name="preplanning.midOutcomes.title" /]  
-    </h1>
-    
+    </h1> 
     [#-- If there are no Outcomes 2025, users can not add midOutcomes --]
     [#if outcomesList?has_content]
       <div id="MidOutcomeBlocks"> 
@@ -37,10 +36,7 @@
               <input id="midOutcomeProgramID" type="hidden" name="midOutcomes[${midOutcome_index}].program.id" value="${currentUser.currentInstitution.program.id}" />
               <input id="midOutcomeTypeID" type="hidden" name="midOutcomes[${midOutcome_index}].type.id" value="${elementTypeID}" />
               [#-- Remove midOutcome --]
-              <div class="removeMidOutcomeBlock removeLink">              
-                <img src="${baseUrl}/images/global/icon-remove.png" />
-                <a id="removeMidOutcome" href="" class="removeMidOutcome">[@s.text name="preplanning.midOutcomes.removeMidOutcome" /]</a>
-              </div>  
+              <div id="removeMidOutcome" class="removeMidOutcome removeElement removeLink" title="[@s.text name="preplanning.midOutcomes.removeMidOutcome" /]"></div>
               [#-- Title --] 
               [#assign midOutcomeDescription]
                 [@s.text name="preplanning.midOutcomes.outcome"]
@@ -78,11 +74,10 @@
                   [@customForm.button i18nkey="preplanning.midOutcomes.addIndicator" class="addButton" /]
                 </div> 
               </div>
+ 
             </div>  
             [/#list] 
-          [/#if]
-        
-      
+          [/#if] 
       </div>
       <div id="addMidOutcomeBlock" class="addLink">
         <img src="${baseUrl}/images/global/icon-add.png" />
@@ -90,7 +85,7 @@
       </div> 
        <div class="buttons">
         [@s.submit type="button" name="save"][@s.text name="form.buttons.save" /][/@s.submit]
-        [@s.submit type="button" name="next"][@s.text name="form.buttons.next" /][/@s.submit]
+        [#--[@s.submit type="button" name="next"][@s.text name="form.buttons.next" /][/@s.submit]--]
         [@s.submit type="button" name="cancel"][@s.text name="form.buttons.cancel" /][/@s.submit]
       </div>
     [#else]
@@ -98,7 +93,7 @@
       <p>
         [@s.text name="preplanning.midOutcomesRPL.addOutcomes" /]
       </p>
-    [/#if]
+    [/#if] 
   </article>
   [/@s.form] 
   
@@ -108,11 +103,8 @@
   <input id="midOutcomeId" type="hidden" value="-1" />
   <input type="hidden" id="midOutcomeProgramID" value="${currentUser.currentInstitution.program.id}" />
   <input type="hidden" id="midOutcomeTypeID" value="${elementTypeID}" />
-  [#-- Remove midOutcome --]      
-  <div class="removeLink removeMidOutcomeBlock">            
-    <img src="${baseUrl}/images/global/icon-remove.png" />
-    <a id="removeMidOutcome" href="" class="removeMidOutcome">[@s.text name="preplanning.midOutcomes.removeMidOutcome" /]</a>
-  </div> 
+  [#-- Remove midOutcome --]
+  <div id="removeMidOutcome" class="removeMidOutcome removeElement removeLink" title="[@s.text name="preplanning.midOutcomes.removeMidOutcome" /]"></div>
   [#-- Title --]
   [#assign midOutcomeDescription]
     [@s.text name="preplanning.midOutcomes.outcome"]

@@ -14,7 +14,7 @@ function attachEvents(){
   // Outputs
   $("a#addNewOutput").click(addOutputEvent);
   $("a#addExistingOutput").click(addExistingOutputEvent);
-  $(".removeOutputBlock a#removeOutput").click(removeOutputEvent);
+  $(".removeOutput").click(removeOutputEvent);
   
   // Select flagship
   $("select#outputsRPL_flagships").change(updateMidOutcomesList);
@@ -114,7 +114,7 @@ function addExistingOutputEvent(){
 
 function removeOutputEvent(event){
   event.preventDefault();
-  var $ElementDiv = $(event.target).parent().parent();
+  var $ElementDiv = $(event.target).parent();
   $ElementDiv.hide("slow", function(){
     $(this).remove();
     setOutputsIndexes();
