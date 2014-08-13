@@ -109,8 +109,15 @@ public class OutcomesPreplanningAction extends BaseAction {
     if (outcomes.isEmpty()) {
       IPElement outcome2025 = new IPElement();
       outcome2025.setId(-1);
-      outcome2025.setIndicators(new ArrayList<IPIndicator>());
+
+      // Indicator
+      IPIndicator indicator = new IPIndicator(-1);
+      ArrayList<IPIndicator> iList = new ArrayList<>();
+      iList.add(indicator);
+      outcome2025.setIndicators(iList);
+
       outcome2025.setContributesTo(new ArrayList<IPElement>());
+
       outcomes.add(outcome2025);
     }
 
@@ -164,8 +171,10 @@ public class OutcomesPreplanningAction extends BaseAction {
     }
 
     if (ipElementManager.saveIPElements(outcomes)) {
+      addActionMessage(getText("saving.success", new String[] {getText("preplanning.outcomes.title")}));
       return SUCCESS;
     } else {
+      addActionError(getText("saving.problem"));
       return INPUT;
     }
   }
