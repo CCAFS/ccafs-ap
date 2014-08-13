@@ -18,6 +18,8 @@ import org.cgiar.ccafs.ap.data.model.User;
 
 import java.util.List;
 
+import org.cgiar.ccafs.ap.data.model.IPProgram;
+
 import com.google.inject.ImplementedBy;
 
 @ImplementedBy(UserManagerImp.class)
@@ -31,21 +33,20 @@ public interface UserManager {
   public List<User> getAllOwners();
 
   /**
+   * This method gets a list of owners that belongs to a given program.
+   *
+   * @param program can be LAM, FP4, EA, CU, etc.
+   * @return a List of User objects.
+   */
+  public List<User> getAllOwners(IPProgram program);
+
+  /**
    * This method gets all the Employees from the system.
    *
    * @return a List of Users. If there are not users in the system, the method
    *         will return an empty list.
    */
   public List<User> getAllUsers();
-
-  /**
-   * This method gets the information of an User by a given project ID
-   *
-   * @param projectID - is the ID of the project
-   * @return an Object User with the information requested, or Null if the relationship between project ID and user
-   *         doesn't exist
-   */
-  public User getOwnerByProjectId(int projectID);
 
   /**
    * This method returns the employee Identifier that is using the given user taking into account his current
@@ -59,11 +60,20 @@ public interface UserManager {
 
   /**
    * This method returns an owner represented as User object.
-   * 
+   *
    * @param ownerId is the identifier from the Employee table.
    * @return an User object or null if nothing found.
    */
   public User getOwner(int ownerId);
+
+  /**
+   * This method gets the information of an User by a given project ID
+   *
+   * @param projectID - is the ID of the project
+   * @return an Object User with the information requested, or Null if the relationship between project ID and user
+   *         doesn't exist
+   */
+  public User getOwnerByProjectId(int projectID);
 
   /**
    * This method find an user identify with a given id.

@@ -36,6 +36,14 @@ public interface UserDAO {
   public List<Map<String, String>> getAllOwners();
 
   /**
+   * This method gets all the employees that belongs to a given program identifier
+   *
+   * @param programId is an integer that represents the program identifier within the system.
+   * @return a List of Maps with the information from the employees table.
+   */
+  public List<Map<String, String>> getAllOwners(int programId);
+
+  /**
    * Get a list with All Users information
    *
    * @return a list of Map objects with the users information or an empty list if no users found.

@@ -181,9 +181,6 @@ public class ProjectDescriptionPreplanningAction extends BaseAction {
       return; // Stop here and go to execute method.
     }
 
-    // Getting the information for the Project Owner Contact Persons for the View
-    allOwners = userManager.getAllOwners();
-
     // Getting the information of the Regions program for the View
     ipProgramRegions = ipProgramManager.getProgramsByType(APConstants.REGION_PROGRAM_TYPE);
 
@@ -195,7 +192,11 @@ public class ProjectDescriptionPreplanningAction extends BaseAction {
 
     // Getting project
     project = projectManager.getProject(projectID);
+
     if (project != null) {
+
+      // Getting all project owners that belongs to the project's program creator.
+      allOwners = userManager.getAllOwners(project.getProgramCreator());
       // Getting the information of the Flagships Program associated with the project
       project.setRegions(ipProgramManager.getProjectFocuses(projectID, APConstants.REGION_PROGRAM_TYPE));
       // Getting the information of the Regions Program associated with the project
