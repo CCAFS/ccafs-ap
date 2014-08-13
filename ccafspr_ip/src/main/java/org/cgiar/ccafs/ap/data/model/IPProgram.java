@@ -41,6 +41,24 @@ public class IPProgram {
     return acronym;
   }
 
+  /**
+   * This method returns a composed IPProgram name with the acronym on it.
+   *
+   * @return a composed program name in the format "Acronym: Name":
+   *         e.g. RPL LAM: Latin America
+   */
+  public String getComposedName() {
+    StringBuilder builder = new StringBuilder();
+    if (this.acronym != null) {
+      builder.append(acronym);
+      builder.append(": ");
+    }
+    if (this.name != null) {
+      builder.append(name);
+    }
+    return builder.toString();
+  }
+
   public int getId() {
     return id;
   }
