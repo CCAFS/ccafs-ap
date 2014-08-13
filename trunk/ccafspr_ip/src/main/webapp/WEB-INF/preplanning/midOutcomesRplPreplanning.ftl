@@ -59,9 +59,9 @@
   
                 [#-- Flagships list --]
                 [#if midOutcome.translatedOf?has_content]
-                  [@customForm.select name="midOutcomesRPL_flagships" label="" i18nkey="preplanning.midOutcomesRPL.flagships" listName="flagshipsList" keyFieldName="id"  displayFieldName="name" value=midOutcome.translatedOf[0].program.id?string disabled=true  /]
+                  [@customForm.select name="midOutcomesRPL_flagships" label="" i18nkey="preplanning.midOutcomesRPL.flagships" listName="flagshipsList" keyFieldName="id"  displayFieldName="getComposedName()" value=midOutcome.translatedOf[0].program.id?string disabled=true  /]
                 [#else]
-                  [@customForm.select name="midOutcomesRPL_flagships" label="" i18nkey="preplanning.midOutcomesRPL.flagships" listName="flagshipsList" keyFieldName="id"  displayFieldName="name" /]
+                  [@customForm.select name="midOutcomesRPL_flagships" label="" i18nkey="preplanning.midOutcomesRPL.flagships" listName="flagshipsList" keyFieldName="id"  displayFieldName="getComposedName()" /]
                 [/#if]
                 
                 [#-- midOutcome's parents --]
@@ -176,7 +176,7 @@
   [/#assign]
   <legend>${midOutcomeDescription}</legend>
   [@customForm.textArea name="description" i18nkey="preplanning.midOutcomesRPL.outcomeDescription" required=true /] 
-  [@customForm.select name="midOutcomesRPL_flagships" label="" i18nkey="preplanning.midOutcomesRPL.flagships" listName="flagshipsList" keyFieldName="id"  displayFieldName="name" /]
+  [@customForm.select name="midOutcomesRPL_flagships" label="" i18nkey="preplanning.midOutcomesRPL.flagships" listName="flagshipsList" keyFieldName="id"  displayFieldName="getComposedName()" /]
   <div class="contentElements parentsBlock">
     <div class="itemIndex">[@s.text name="preplanning.midOutcomesRPL.contributes" /] </div>
     [#-- midOutcome's parents --]  

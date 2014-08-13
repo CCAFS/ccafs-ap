@@ -54,14 +54,16 @@
                     [/@s.text]
                   [/#assign]
                   <legend>${outputDescription}</legend>
-                  [@customForm.textArea name="outputs[${output_index}].description" i18nkey="preplanning.outputsRPL.outputDescription" required=true /] 
+                  [@customForm.textArea name="outputs[${output_index}].description" i18nkey="preplanning.outputsRPL.outputDescription" required=true /]
+                  [#-- Flagships list --]
                   <div class="fullBlock chosen">
-                    [@customForm.select name="flagships" label="" i18nkey="preplanning.outputsRPL.flagships" listName="flagshipsList" keyFieldName="id"  displayFieldName="name" value="${output.translatedOf[0].program.id}" /]
+                    [@customForm.select name="flagships" label="" i18nkey="preplanning.outputsRPL.flagships" listName="flagshipsList" keyFieldName="id"  displayFieldName="getComposedName()" value="${output.translatedOf[0].program.id}" /]
                   </div>
+                  [#-- midOutcomes list --]
                   <div class="fullBlock chosen">
                     <input type="hidden" id="midOutcomeSelected" value="${output.translatedOf[0].contributesTo[0].id}">
                     [@customForm.select name="midOutcomes" label="" i18nkey="preplanning.outputsRPL.midOutcomes" listName="" keyFieldName="id"  displayFieldName="name" value="${output.translatedOf[0].contributesTo[0].id}"/]
-                  </div> 
+                  </div>
                   <div class="fullBlock chosen translations">
                     <input type="hidden" id="outputSelected" value="${output.translatedOf[0].id}">
                     [@customForm.select name="outputs[${output_index}].translatedOf" label="" i18nkey="preplanning.outputsRPL.outputs" listName="" keyFieldName="id"  displayFieldName="name" value="${output.translatedOf[0].id}"/]
@@ -173,7 +175,7 @@
     <legend>${outputDescription}</legend>
     [@customForm.textArea name="description" i18nkey="preplanning.outputsRPL.outputDescription" required=true /] 
     <div class="fullBlock chosen"> 
-      [@customForm.select name="outputsRPL_flagships" label="" i18nkey="preplanning.outputsRPL.flagships" listName="flagshipsList" keyFieldName="id"  displayFieldName="name" /]
+      [@customForm.select name="outputsRPL_flagships" label="" i18nkey="preplanning.outputsRPL.flagships" listName="flagshipsList" keyFieldName="id"  displayFieldName="getComposedName()" /]
     </div>
     <div class="fullBlock chosen">
       [@customForm.select name="outputsRPL_midOutcomes" label="" i18nkey="preplanning.outputsRPL.midOutcomes" listName="" keyFieldName="id"  displayFieldName="name" disabled=true /]
