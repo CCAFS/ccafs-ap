@@ -10,7 +10,7 @@
 [#include "/WEB-INF/global/pages/header.ftl" /]
 [#include "/WEB-INF/global/pages/main-menu.ftl" /]
 [#import "/WEB-INF/global/macros/forms.ftl" as customForm/]
-    
+
 <section class="content">
   <div class="helpMessage">
     <img src="${baseUrl}/images/global/icon-help.png" />
@@ -70,13 +70,15 @@
             </div>
           </div> 
           [#-- Cross Cutting --] 
+          [#--
           <div id="projectGender" class="thirdPartBlock">
             <h6>[@s.text name="preplanning.projectDescription.crossCutting" /]</h6>
             <div class="checkboxGroup">
               [@s.fielderror cssClass="fieldError" fieldName="project.crossCuttings"/]
               [@s.checkboxlist name="project.crossCuttings" list="ipCrossCuttings" listKey="id" listValue="name" cssClass="checkbox" value="crossCuttingIds" /]
             </div>
-          </div>  
+          </div>
+          --]  
         </div> 
       </fieldset>
     </div> 

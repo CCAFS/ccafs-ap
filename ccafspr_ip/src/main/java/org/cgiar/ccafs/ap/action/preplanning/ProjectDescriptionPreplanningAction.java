@@ -21,11 +21,9 @@ import org.apache.commons.lang3.StringUtils;
 import org.cgiar.ccafs.ap.action.BaseAction;
 import org.cgiar.ccafs.ap.config.APConfig;
 import org.cgiar.ccafs.ap.config.APConstants;
-import org.cgiar.ccafs.ap.data.manager.IPCrossCuttingManager;
 import org.cgiar.ccafs.ap.data.manager.IPProgramManager;
 import org.cgiar.ccafs.ap.data.manager.ProjectManager;
 import org.cgiar.ccafs.ap.data.manager.UserManager;
-import org.cgiar.ccafs.ap.data.model.IPCrossCutting;
 import org.cgiar.ccafs.ap.data.model.IPProgram;
 import org.cgiar.ccafs.ap.data.model.Project;
 import org.cgiar.ccafs.ap.data.model.User;
@@ -41,7 +39,7 @@ public class ProjectDescriptionPreplanningAction extends BaseAction {
   // Manager
   private ProjectManager projectManager;
   private IPProgramManager ipProgramManager;
-  private IPCrossCuttingManager ipCrossCuttingManager;
+  // private IPCrossCuttingManager ipCrossCuttingManager;
   private UserManager userManager;
 
   private static Logger LOG = LoggerFactory.getLogger(ProjectDescriptionPreplanningAction.class);
@@ -49,7 +47,7 @@ public class ProjectDescriptionPreplanningAction extends BaseAction {
   // Model for the front-end
   private List<IPProgram> ipProgramRegions;
   private List<IPProgram> ipProgramFlagships;
-  private List<IPCrossCutting> ipCrossCuttings;
+  // private List<IPCrossCutting> ipCrossCuttings;
   private List<User> allOwners;
 
   // Model for the back-end
@@ -58,11 +56,11 @@ public class ProjectDescriptionPreplanningAction extends BaseAction {
 
   @Inject
   public ProjectDescriptionPreplanningAction(APConfig config, ProjectManager projectManager,
-    IPProgramManager ipProgramManager, IPCrossCuttingManager ipCrossCuttingManager, UserManager userManager) {
+    IPProgramManager ipProgramManager, /* IPCrossCuttingManager ipCrossCuttingManager, */UserManager userManager) {
     super(config);
     this.projectManager = projectManager;
     this.ipProgramManager = ipProgramManager;
-    this.ipCrossCuttingManager = ipCrossCuttingManager;
+    // this.ipCrossCuttingManager = ipCrossCuttingManager;
     this.userManager = userManager;
   }
 
@@ -123,9 +121,9 @@ public class ProjectDescriptionPreplanningAction extends BaseAction {
     return null;
   }
 
-  public List<IPCrossCutting> getIpCrossCuttings() {
-    return ipCrossCuttings;
-  }
+// public List<IPCrossCutting> getIpCrossCuttings() {
+// return ipCrossCuttings;
+// }
 
 
   public List<IPProgram> getIpProgramFlagships() {
@@ -188,7 +186,7 @@ public class ProjectDescriptionPreplanningAction extends BaseAction {
     ipProgramFlagships = ipProgramManager.getProgramsByType(APConstants.FLAGSHIP_PROGRAM_TYPE);
 
     // Getting the information of the Cross Cutting Theme for the View
-    ipCrossCuttings = ipCrossCuttingManager.getIPCrossCuttings();
+    // ipCrossCuttings = ipCrossCuttingManager.getIPCrossCuttings();
 
     // Getting project
     project = projectManager.getProject(projectID);
@@ -202,7 +200,7 @@ public class ProjectDescriptionPreplanningAction extends BaseAction {
       // Getting the information of the Regions Program associated with the project
       project.setFlagships(ipProgramManager.getProjectFocuses(projectID, APConstants.FLAGSHIP_PROGRAM_TYPE));
       // Getting the information of the Cross Cutting Theme associated with the project
-      project.setCrossCuttings(ipCrossCuttingManager.getIPCrossCuttingByProject(projectID));
+      // project.setCrossCuttings(ipCrossCuttingManager.getIPCrossCuttingByProject(projectID));
     }
 
 
@@ -309,39 +307,39 @@ public class ProjectDescriptionPreplanningAction extends BaseAction {
 
     // ----- SAVING Cross Cutting Themes -----
 
-    if (project.getCrossCuttings() != null) {
-      // Identifying deleted Cross Cutting Themes
-      List<IPCrossCutting> previousCrossCuttingElements =
-        ipCrossCuttingManager.getIPCrossCuttingByProject(project.getId());
-
-      for (IPCrossCutting ipCrossCuttingElement : previousCrossCuttingElements) {
-        if (!project.getCrossCuttings().contains(ipCrossCuttingElement)) {
-          deleted = ipCrossCuttingManager.deleteCrossCutting(project.getId(), ipCrossCuttingElement.getId());
-          if (!deleted) {
-            success = false;
-          }
-        }
-      }
-      // Identifying existing flagships in the database, so we don't have to insert them again.
-      Iterator<IPCrossCutting> iteratorTwo = project.getCrossCuttings().iterator();
-      while (iteratorTwo.hasNext()) {
-        if (previousCrossCuttingElements.contains(iteratorTwo.next())) {
-          iteratorTwo.remove();
-        }
-      }
-      // Adding new Flagship Project Focuses.
-      for (IPCrossCutting ipCrossCuttingElement : project.getCrossCuttings()) {
-        saved = ipCrossCuttingManager.saveCrossCutting(project.getId(), ipCrossCuttingElement.getId());
-        if (!saved) {
-          success = false;
-        }
-      }
-      // Stop here if something bad happened.
-      if (!success) {
-        addActionError(getText("saving.problem"));
-        return BaseAction.INPUT;
-      }
-    }
+// if (project.getCrossCuttings() != null) {
+// // Identifying deleted Cross Cutting Themes
+// List<IPCrossCutting> previousCrossCuttingElements =
+// ipCrossCuttingManager.getIPCrossCuttingByProject(project.getId());
+//
+// for (IPCrossCutting ipCrossCuttingElement : previousCrossCuttingElements) {
+// if (!project.getCrossCuttings().contains(ipCrossCuttingElement)) {
+// deleted = ipCrossCuttingManager.deleteCrossCutting(project.getId(), ipCrossCuttingElement.getId());
+// if (!deleted) {
+// success = false;
+// }
+// }
+// }
+// // Identifying existing flagships in the database, so we don't have to insert them again.
+// Iterator<IPCrossCutting> iteratorTwo = project.getCrossCuttings().iterator();
+// while (iteratorTwo.hasNext()) {
+// if (previousCrossCuttingElements.contains(iteratorTwo.next())) {
+// iteratorTwo.remove();
+// }
+// }
+// // Adding new Flagship Project Focuses.
+// for (IPCrossCutting ipCrossCuttingElement : project.getCrossCuttings()) {
+// saved = ipCrossCuttingManager.saveCrossCutting(project.getId(), ipCrossCuttingElement.getId());
+// if (!saved) {
+// success = false;
+// }
+// }
+// // Stop here if something bad happened.
+// if (!success) {
+// addActionError(getText("saving.problem"));
+// return BaseAction.INPUT;
+// }
+// }
 
     // If there are some warnings, show a different message: Saving with problems
     if (getActionMessages().size() > 0) {
@@ -353,9 +351,9 @@ public class ProjectDescriptionPreplanningAction extends BaseAction {
     }
   }
 
-  public void setIpCrossCuttings(List<IPCrossCutting> ipCrossCuttings) {
-    this.ipCrossCuttings = ipCrossCuttings;
-  }
+// public void setIpCrossCuttings(List<IPCrossCutting> ipCrossCuttings) {
+// this.ipCrossCuttings = ipCrossCuttings;
+// }
 
   public void setIpProgramFlagships(List<IPProgram> ipProgramFlagships) {
     this.ipProgramFlagships = ipProgramFlagships;
