@@ -1,5 +1,5 @@
 //Limits for textarea input
-var lWordsElemetDesc = 10;
+var lWordsElemetDesc = 150;
 var lWordsIndicatorDesc = 50;
 
 $(document).ready(function(){
@@ -20,7 +20,7 @@ function init(){
 function attachEvents(){
   // Mid Outcomes
   $("div#addMidOutcomeBlock").click(addMidOutcomeEvent);
-  $(".removeMidOutcomeBlock #removeMidOutcome").click(removeMidOutcomeEvent);
+  $(".removeElement").click(removeMidOutcomeEvent);
   // Contributes
   $(".addContributeBlock input.addButton").click(addContributeEvent);
   $(".removeContribute").click(removeContributeEvent);
@@ -42,7 +42,7 @@ function addMidOutcomeEvent(event){
 
 function removeMidOutcomeEvent(event){
   event.preventDefault();
-  var $ElementDiv = $(event.target).parent().parent();
+  var $ElementDiv = $(event.target).parent();
   var elementID = $ElementDiv.find("[id^='midOutcomeId']").val();
   var source = "../json/ipElementsByParent.do?elementID=" + elementID;
   $.getJSON(source, function(){

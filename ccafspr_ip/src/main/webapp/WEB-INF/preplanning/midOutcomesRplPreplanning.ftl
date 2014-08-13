@@ -38,14 +38,9 @@
                 <input type="hidden" id="midOutcomeProgramId" name="midOutcomes[${midOutcome_index}].program.id" value="${currentUser.currentInstitution.program.id}" />
                 <input type="hidden" id="midOutcomeTypeId" name="midOutcomes[${midOutcome_index}].type.id" value="${elementTypeID}" />
                 [#-- Contribution to the regional vision 2025 --]
-                <input type="hidden" name="midOutcomes[${midOutcome_index}].contributesTo" value="${outcomesList[0].id}" />
-  
-                [#-- Remove midOutcome --]
-                <div class="removeMidOutcomeBlock removeLink">              
-                  <img src="${baseUrl}/images/global/icon-remove.png" />
-                  <a id="removeMidOutcome" href="" class="removeMidOutcome">[@s.text name="preplanning.midOutcomesRPL.removeMidOutcome" /]</a>
-                </div> 
-              
+                <input type="hidden" name="midOutcomes[${midOutcome_index}].contributesTo" value="${outcomesList[0].id}" /> 
+                [#-- Remove Output --]
+                <div id="removeMidOutcome" class="removeMidOutcome removeElement removeLink" title="[@s.text name="preplanning.midOutcomesRPL.removeMidOutcome" /]"></div>
                 [#-- Title --]
                 [#assign midOutcomeDescription]
                   [@s.text name="preplanning.midOutcomesRPL.outcome"] 
@@ -140,7 +135,7 @@
       </div> 
        <div class="buttons">
         [@s.submit type="button" name="save"][@s.text name="form.buttons.save" /][/@s.submit]
-        [@s.submit type="button" name="next"][@s.text name="form.buttons.next" /][/@s.submit]
+        [#--[@s.submit type="button" name="next"][@s.text name="form.buttons.next" /][/@s.submit]--]
         [@s.submit type="button" name="cancel"][@s.text name="form.buttons.cancel" /][/@s.submit]
       </div>
       
@@ -149,8 +144,7 @@
       <p>
         [@s.text name="preplanning.midOutcomesRPL.addOutcomes" /]
       </p>
-    [/#if]
-    
+    [/#if] 
   </article>
   [/@s.form] 
 
@@ -162,12 +156,8 @@
   <input type="hidden" id="midOutcomeTypeId" value="${elementTypeID}" />
   [#-- Contribution to the regional vision 2025 --]
   <input type="hidden" name="midOutcomes[0].contributesTo" value="${outcomesList[0].id}" />
-  
-  [#-- Remove midOutcome --]      
-  <div class="removeMidOutcomeBlock removeLink">            
-    <img src="${baseUrl}/images/global/icon-remove.png" />
-    <a id="removeMidOutcome" href="" class="removeMidOutcome">[@s.text name="preplanning.midOutcomesRPL.removeMidOutcome" /]</a>
-  </div> 
+  [#-- Remove Output --]
+  <div id="removeMidOutcome" class="removeMidOutcome removeElement removeLink" title="[@s.text name="preplanning.midOutcomesRPL.removeMidOutcome" /]"></div>
   [#-- Title --]
   [#assign midOutcomeDescription]
     [@s.text name="preplanning.midOutcomesRPL.outcome"] 

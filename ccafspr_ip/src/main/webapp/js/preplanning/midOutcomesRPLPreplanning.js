@@ -19,7 +19,7 @@ function init(){
 function attachEvents(){
   // Mid Outcomes
   $("div#addMidOutcomeBlock").click(addMidOutcomeEvent);
-  $(".removeMidOutcomeBlock #removeMidOutcome").click(removeMidOutcomeEvent);
+  $(".removeMidOutcome").click(removeMidOutcomeEvent);
   
   // Select flagship
   $("select[id$='flagships']").change(updateMidOutcomes);
@@ -70,7 +70,7 @@ function addMidOutcomeEvent(event){
 
 function removeMidOutcomeEvent(event){
   event.preventDefault();
-  var $ElementDiv = $(event.target).parent().parent();
+  var $ElementDiv = $(event.target).parent();
   var elementID = $ElementDiv.find("input[id^='id']").val();
   var source = "../json/ipElementsByParent.do?elementID=" + elementID;
   $.getJSON(source, function(){

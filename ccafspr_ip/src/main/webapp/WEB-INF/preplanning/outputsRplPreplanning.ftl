@@ -38,11 +38,8 @@
                 <input name="outputs[${output_index}].program.id" id="outputProgramID" value="${currentUser.currentInstitution.program.id}" type="hidden" />
                 <input name="outputs[${output_index}].type.id" id="outputTypeID" value="${elementTypeID}" type="hidden" />
               
-                [#-- Remove RPL output --]
-                <div class="removeOutputBlock removeLink">              
-                  <img src="${baseUrl}/images/global/icon-remove.png" />
-                  <a id="removeOutput" href="" class="">[@s.text name="preplanning.outputsRPL.removeOutput" /]</a>
-                </div>  
+                [#-- Remove Output --]
+                <div id="removeOutput" class="removeOutput removeElement removeLink" title="[@s.text name="preplanning.outputsRPL.removeOutput" /]"></div>  
                 
                 [#if output.translatedOf?has_content]
                   [#-- MOG translated from other MOG  --]
@@ -112,7 +109,7 @@
        
        <div class="buttons">
         [@s.submit type="button" name="save"][@s.text name="form.buttons.save" /][/@s.submit]
-        [@s.submit type="button" name="next"][@s.text name="form.buttons.next" /][/@s.submit]
+        [#--[@s.submit type="button" name="next"][@s.text name="form.buttons.next" /][/@s.submit]--]
         [@s.submit type="button" name="cancel"][@s.text name="form.buttons.cancel" /][/@s.submit]
       </div>
       
@@ -130,11 +127,8 @@
     <input id="outputId" type="hidden" value="-1" />
     <input id="outputProgramID" value="${currentUser.currentInstitution.program.id}" type="hidden" />
     <input id="outputTypeID" value="${elementTypeID}" type="hidden" />
-    [#-- Remove Output --]      
-    <div class="removeLink removeOutputBlock">            
-      <img src="${baseUrl}/images/global/icon-remove.png" />
-      <a id="removeOutput" href="" class="removeContribute">[@s.text name="preplanning.outputsRPL.removeOutput" /]</a>
-    </div> 
+    [#-- Remove Output --]
+    <div id="removeOutput" class="removeOutput removeElement removeLink" title="[@s.text name="preplanning.outputsRPL.removeOutput" /]"></div>
     [#-- Title --]
     [#assign outputDescription]
       [@s.text name="preplanning.outputsRPL.output"] 
@@ -160,11 +154,8 @@
     <input id="outputProgramID" value="${currentUser.currentInstitution.program.id}" type="hidden" />
     <input id="outputTypeID" value="${elementTypeID}" type="hidden" />
     <input id="outputId" type="hidden" value="-1" />
-    [#-- Remove Output --]      
-    <div class="removeLink removeOutputBlock">            
-      <img src="${baseUrl}/images/global/icon-remove.png" />
-      <a id="removeOutput" href="" class="removeContribute">[@s.text name="preplanning.outputsRPL.removeOutput" /]</a>
-    </div>
+    [#-- Remove Output --]
+    <div id="removeOutput" class="removeOutput removeElement removeLink" title="[@s.text name="preplanning.outputsRPL.removeOutput" /]"></div>
     [#-- Title --]
     [#assign outputDescription]
       [@s.text name="preplanning.outputsRPL.output"] 

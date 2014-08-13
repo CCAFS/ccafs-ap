@@ -2,11 +2,10 @@ $(document).ready(function(){
   attachEvents();
   // This function enables launch the pop up window
   popups();
+  // Activate the chosen plugin to the existing partners
+  addChosen();
   if (!$("div.projectPartner").length) {
     $("a.addProjectPartner").trigger("click");
-  } else {
-    // Activate the chosen plugin to the existing partners
-    addChosen();
   }
   
 });
@@ -104,6 +103,12 @@ function setProjectPartnersIndexes(){
 function addChosen(){
   
   $("form select[name$='partner']").chosen({
+    no_results_text : "#noResultText",
+    allow_single_deselect : true,
+    search_contains : true
+  });
+  
+  $("form select[name$='currentInstitution']").chosen({
     no_results_text : "#noResultText",
     allow_single_deselect : true,
     search_contains : true

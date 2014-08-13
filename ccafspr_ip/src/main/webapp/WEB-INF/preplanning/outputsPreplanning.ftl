@@ -35,11 +35,8 @@
               <input id="outputId" name="outputs[${output_index}].id" value="${output.id}"  type="hidden"/>
               <input id="outputProgramID" name="outputs[${output_index}].program.id" value="${currentUser.currentInstitution.program.id}" type="hidden" />
               <input id="outputTypeID" name="outputs[${output_index}].type.id" value="${elementTypeID}" type="hidden" />
-              [#-- Remove output --]
-              <div class="removeOutputBlock removeLink">              
-                <img src="${baseUrl}/images/global/icon-remove.png" />
-                <a id="removeOutput" href="" class="">[@s.text name="preplanning.outputs.removeOutput" /]</a>
-              </div>  
+              [#-- Remove Output --]
+              <div id="removeOutput" class="removeOutput removeElement removeLink" title="[@s.text name="preplanning.outputs.removeOutput" /]"></div>
               [#-- Title --]
               [#assign outputDescription]
                 [@s.text name="preplanning.outputs.output"]
@@ -74,7 +71,7 @@
       </div>
        <div class="buttons">
         [@s.submit type="button" name="save"][@s.text name="form.buttons.save" /][/@s.submit]
-        [@s.submit type="button" name="next"][@s.text name="form.buttons.next" /][/@s.submit]
+        [#--[@s.submit type="button" name="next"][@s.text name="form.buttons.next" /][/@s.submit]--]
         [@s.submit type="button" name="cancel"][@s.text name="form.buttons.cancel" /][/@s.submit]
       </div>
       
@@ -90,11 +87,8 @@
       <input id="outputId" type="hidden" value="-1" />
       <input id="outputProgramID" value="${currentUser.currentInstitution.program.id}" type="hidden" />
       <input id="outputTypeID" value="${elementTypeID}" type="hidden" />
-      [#-- Remove Output --]      
-      <div class="removeLink removeOutputBlock">            
-        <img src="${baseUrl}/images/global/icon-remove.png" />
-        <a id="removeOutput" href="" class="removeContribute">[@s.text name="preplanning.outputs.removeOutput" /]</a>
-      </div> 
+      [#-- Remove Output --]
+      <div id="removeOutput" class="removeOutput removeElement removeLink" title="[@s.text name="preplanning.outputs.removeOutput" /]"></div>
       [#-- Title --]
       [#assign outputDescription]
         [@s.text name="preplanning.outputs.output"]
