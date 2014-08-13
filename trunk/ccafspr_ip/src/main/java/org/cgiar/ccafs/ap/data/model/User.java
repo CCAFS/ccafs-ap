@@ -40,7 +40,7 @@ public class User {
 
   /**
    * This method returns a composed way to show a User.
-   *
+   * 
    * @return a String that represents a User.
    *         e.g. Tobón, Héctor <h.f.tobon@cgiar.org>
    */
@@ -51,7 +51,7 @@ public class User {
 
   /**
    * This method returns a composed way to show a User with its institution and its role.
-   *
+   * 
    * @return a String that represents a User.
    *         e.g. Tobón, Héctor (CIAT) - FPL
    */
@@ -106,11 +106,20 @@ public class User {
 
   /**
    * Validate if the current user is an Administrator.
-   *
+   * 
    * @return true if the user is actually an Administrator, or false otherwise.
    */
   public boolean isAdmin() {
     return this.role.getAcronym().equals(Role.UserRole.Admin.name());
+  }
+
+  /**
+   * Validate if the current user is a Principal Investigator.
+   * 
+   * @return true if the user is actually a Principal Investigator, or false otherwise.
+   */
+  public boolean isAL() {
+    return this.role.getAcronym().equals(Role.UserRole.AL.name());
   }
 
   public boolean isCcafsUser() {
@@ -119,7 +128,7 @@ public class User {
 
   /**
    * Validate if the current user is a Contact Point.
-   *
+   * 
    * @return true if the user is actually a Contact Point, or false otherwise.
    */
   public boolean isCP() {
@@ -128,7 +137,7 @@ public class User {
 
   /**
    * Validate if the current user is a coordinating unit member.
-   *
+   * 
    * @return true if the user is actually a member of the coordinating unit, or false otherwise.
    */
   public boolean isCU() {
@@ -137,7 +146,7 @@ public class User {
 
   /**
    * Validate if the current user is a Theme Leader.
-   *
+   * 
    * @return true if the user is actually a Flagship program Leader, or false otherwise.
    */
   public boolean isFPL() {
@@ -145,35 +154,26 @@ public class User {
   }
 
   /**
-   * Validate if the current user is a Principal Investigator.
-   *
-   * @return true if the user is actually a Principal Investigator, or false otherwise.
+   * Validate if the current user is a Guest.
+   * 
+   * @return true if the user is actually a guest, or false otherwise.
    */
-  public boolean isPI() {
-    return this.role.getAcronym().equals(Role.UserRole.PI.name());
+  public boolean isGuest() {
+    return this.role.getAcronym().equals(Role.UserRole.Guest.name());
   }
 
   /**
    * Validate if the current user is a project leader.
-   *
+   * 
    * @return true if the user is actually a Project leader, or false otherwise.
    */
   public boolean isPL() {
-    return this.role.getAcronym().equals(Role.UserRole.PO.name());
-  }
-
-  /**
-   * Validate if the current user is a project owner.
-   *
-   * @return true if the user is actually a Project owner, or false otherwise.
-   */
-  public boolean isPO() {
-    return this.role.getAcronym().equals(Role.UserRole.PO.name());
+    return this.role.getAcronym().equals(Role.UserRole.PL.name());
   }
 
   /**
    * Validate if the current user is a Regional Program Leader.
-   *
+   * 
    * @return true if the user is actually a Regional Program Leader, or false otherwise.
    */
   public boolean isRPL() {

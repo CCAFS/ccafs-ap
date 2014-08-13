@@ -144,8 +144,13 @@ public class MidOutcomesPreplanningAction extends BaseAction {
 
 
     // Remove records already present in the database
-    ipElementManager.saveIPElements(midOutcomes);
-    return SUCCESS;
+    if (ipElementManager.saveIPElements(midOutcomes)) {
+      addActionMessage(getText("saving.success", new String[] {getText("preplanning.midOutcomes.title")}));
+      return SUCCESS;
+    } else {
+      addActionError(getText("saving.problem"));
+      return INPUT;
+    }
   }
 
   public void setMidOutcomes(List<IPElement> midOutcomes) {

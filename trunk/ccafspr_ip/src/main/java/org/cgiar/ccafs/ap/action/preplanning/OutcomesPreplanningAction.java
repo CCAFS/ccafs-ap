@@ -171,7 +171,11 @@ public class OutcomesPreplanningAction extends BaseAction {
     }
 
     if (ipElementManager.saveIPElements(outcomes)) {
-      addActionMessage(getText("saving.success", new String[] {getText("preplanning.outcomes.title")}));
+      if (getCurrentUser().isFPL()) {
+        addActionMessage(getText("saving.success", new String[] {getText("preplanning.outcomes.title")}));
+      } else if (getCurrentUser().isRPL()) {
+        addActionMessage(getText("saving.success", new String[] {getText("preplanning.outcomes.titleRPL")}));
+      }
       return SUCCESS;
     } else {
       addActionError(getText("saving.problem"));

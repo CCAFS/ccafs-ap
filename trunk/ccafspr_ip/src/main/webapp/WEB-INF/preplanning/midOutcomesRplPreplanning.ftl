@@ -126,7 +126,7 @@
                   [/#if]  
                   [#-- Add contribute --]
                   <div class="fullBlock addContributeBlock">
-                    [@customForm.select name="midOutcomesFPL" value="none" showTitle=false listName="midOutcomesFPL" keyFieldName="id"  displayFieldName="description" addButton=true className="contributes" /]
+                    [@customForm.select name="midOutcomesFPL" i18nkey="preplanning.midOutcomes.addContribute" showTitle=false listName="midOutcomesFPL" keyFieldName="id"  displayFieldName="description" addButton=true className="contributes" /]
                   </div>
                 </div>  
   

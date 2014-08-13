@@ -39,7 +39,13 @@ public class AccessibleStageInterceptor extends AbstractInterceptor {
 
     // Check what section is the user loading and
     // validate if it is active
-    if (stageName.equals("/planning")) {
+    if (stageName.equals("/pre-planning")) {
+      if (config.isPrePlanningActive()) {
+        return invocation.invoke();
+      } else {
+        return BaseAction.NOT_AUTHORIZED;
+      }
+    } else if (stageName.equals("/planning")) {
       if (config.isPlanningActive()) {
         return invocation.invoke();
       } else {

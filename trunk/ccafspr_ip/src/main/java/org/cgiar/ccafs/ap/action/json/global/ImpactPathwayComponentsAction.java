@@ -40,6 +40,18 @@ public class ImpactPathwayComponentsAction extends BaseAction {
     ipElements = ipElementManager.getIPElementListForGraph();
 
     for (IPElement element : ipElements) {
+
+      // Translation relations
+      for (int parentID : element.getTranslatedOfIDs()) {
+        Map<String, String> relation = new HashMap<>();
+        relation.put("id", String.valueOf(parentID) + "-" + String.valueOf(element.getId()));
+        relation.put("parentID", String.valueOf(parentID));
+        relation.put("childID", String.valueOf(element.getId()));
+
+        relations.add(relation);
+      }
+
+      // Contribution relations
       for (int parentID : element.getContributesToIDs()) {
         Map<String, String> relation = new HashMap<>();
         relation.put("id", String.valueOf(parentID) + "-" + String.valueOf(element.getId()));

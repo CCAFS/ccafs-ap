@@ -95,6 +95,12 @@ public class IPElementManagerImpl implements IPElementManager {
       element.setId(Integer.parseInt(elementData.get("id")));
       element.setDescription(elementData.get("description"));
 
+      // Set the program
+      IPProgram program = new IPProgram();
+      program.setId(Integer.parseInt(elementData.get("program_id")));
+      program.setAcronym(elementData.get("program_acronym"));
+      element.setProgram(program);
+
       // Set elements 'contributesTo' if exists
       List<IPElement> elementsRelated = new ArrayList<>();
       List<Map<String, String>> elementsData =

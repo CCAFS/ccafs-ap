@@ -1,1018 +1,936 @@
--- MySQL dump 10.13  Distrib 5.5.28, for Win64 (x86)
+-- phpMyAdmin SQL Dump
+-- version 3.4.5
+-- http://www.phpmyadmin.net
 --
--- ------------------------------------------------------
--- Server version 5.5.30
+-- Servidor: davinci.ciat.cgiar.org
+-- Tiempo de generación: 13-08-2014 a las 23:18:59
+-- Versión del servidor: 5.5.30
+-- Versión de PHP: 5.3.8
 
-/*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
-/*!40101 SET @OLD_CHARACTER_SET_RESULTS=@@CHARACTER_SET_RESULTS */;
-/*!40101 SET @OLD_COLLATION_CONNECTION=@@COLLATION_CONNECTION */;
-/*!40101 SET NAMES utf8 */;
-/*!40103 SET @OLD_TIME_ZONE=@@TIME_ZONE */;
-/*!40103 SET TIME_ZONE='+00:00' */;
-/*!40014 SET @OLD_UNIQUE_CHECKS=@@UNIQUE_CHECKS, UNIQUE_CHECKS=0 */;
-/*!40014 SET @OLD_FOREIGN_KEY_CHECKS=@@FOREIGN_KEY_CHECKS, FOREIGN_KEY_CHECKS=0 */;
-/*!40101 SET @OLD_SQL_MODE=@@SQL_MODE, SQL_MODE='NO_AUTO_VALUE_ON_ZERO' */;
-/*!40111 SET @OLD_SQL_NOTES=@@SQL_NOTES, SQL_NOTES=0 */;
+SET SQL_MODE="NO_AUTO_VALUE_ON_ZERO";
+SET time_zone = "+00:00";
 
 --
--- Table structure for table `activities`
+-- Base de datos: `ccafspr_ip`
 --
 
-DROP TABLE IF EXISTS `activities`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
-CREATE TABLE `activities` (
-  `id` int(11) NOT NULL AUTO_INCREMENT,
-  `title` text NOT NULL,
-  `start_date` date NOT NULL,
-  `end_date` date NOT NULL,
-  `description` text NOT NULL,
-  `milestone_id` int(11) NOT NULL,
-  `activity_leader_id` int(11) NOT NULL,
-  `is_global` tinyint(1) NOT NULL,
-  `continuous_activity_id` int(11) DEFAULT NULL,
-  `activity_status_id` int(11) NOT NULL,
-  `status_description` text,
-  `is_commissioned` tinyint(1) NOT NULL DEFAULT '0',
-  `date_added` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
+-- --------------------------------------------------------
+
+--
+-- Estructura de tabla para la tabla `activities`
+--
+
+CREATE TABLE IF NOT EXISTS `activities` (
+  `id` bigint(20) NOT NULL AUTO_INCREMENT,
+  `project_id` bigint(20) NOT NULL,
+  `custom_id` varchar(50) NOT NULL,
+  `title` varchar(255) DEFAULT NULL,
+  `description` text,
+  `startDate` date DEFAULT NULL,
+  `endDate` date DEFAULT NULL,
+  `expected_leader_id` bigint(20) DEFAULT NULL,
+  `leader_id` bigint(20) DEFAULT NULL,
+  `created` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
   PRIMARY KEY (`id`),
-  KEY `milestone_fk` (`milestone_id`),
-  KEY `activity_leader_fk` (`activity_leader_id`),
-  KEY `continous_activity_fk` (`continuous_activity_id`),
-  KEY `status_fk` (`activity_status_id`),
-  CONSTRAINT `activities_ibfk_1` FOREIGN KEY (`milestone_id`) REFERENCES `milestones` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
-  CONSTRAINT `activities_ibfk_2` FOREIGN KEY (`activity_leader_id`) REFERENCES `activity_leaders` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
-  CONSTRAINT `activities_ibfk_3` FOREIGN KEY (`continuous_activity_id`) REFERENCES `activities` (`id`),
-  CONSTRAINT `activities_ibfk_4` FOREIGN KEY (`activity_status_id`) REFERENCES `activity_status` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
-) ENGINE=InnoDB AUTO_INCREMENT=723 DEFAULT CHARSET=utf8 PACK_KEYS=1;
-/*!40101 SET character_set_client = @saved_cs_client */;
+  KEY `FK_Projects_id_idx` (`project_id`),
+  KEY `FK_activities_activity_leaders_idx` (`leader_id`),
+  KEY `FK_activities_expected_leader_id_idx` (`expected_leader_id`)
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8;
+
+-- --------------------------------------------------------
 
 --
--- Table structure for table `activity_budgets`
+-- Estructura de tabla para la tabla `activity_budgets`
 --
 
-DROP TABLE IF EXISTS `activity_budgets`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
-CREATE TABLE `activity_budgets` (
+CREATE TABLE IF NOT EXISTS `activity_budgets` (
+  `activity_id` bigint(20) NOT NULL,
+  `budget_id` bigint(20) NOT NULL,
+  PRIMARY KEY (`activity_id`,`budget_id`),
+  KEY `FK_activity_budgets_budget_id_idx` (`budget_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+-- --------------------------------------------------------
+
+--
+-- Estructura de tabla para la tabla `activity_locations`
+--
+
+CREATE TABLE IF NOT EXISTS `activity_locations` (
+  `activity_id` bigint(20) NOT NULL,
+  `loc_element_id` bigint(20) NOT NULL,
+  PRIMARY KEY (`activity_id`,`loc_element_id`),
+  KEY `FK_activity_locations_loc_element_types_idx` (`loc_element_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+-- --------------------------------------------------------
+
+--
+-- Estructura de tabla para la tabla `activity_partners`
+--
+
+CREATE TABLE IF NOT EXISTS `activity_partners` (
+  `id` bigint(20) NOT NULL AUTO_INCREMENT,
+  `institution_id` bigint(20) NOT NULL,
+  `activity_id` bigint(20) NOT NULL,
+  `contact_name` varchar(255) DEFAULT NULL,
+  `contact_email` varchar(255) DEFAULT NULL,
+  `contribution` text,
+  PRIMARY KEY (`id`),
+  KEY `FL_activity_partners_institutions.id_idx` (`institution_id`),
+  KEY `FK_activity_partners_activities_idx` (`activity_id`)
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8;
+
+-- --------------------------------------------------------
+
+--
+-- Estructura de tabla para la tabla `budgets`
+--
+
+CREATE TABLE IF NOT EXISTS `budgets` (
+  `id` bigint(20) NOT NULL AUTO_INCREMENT,
+  `year` int(11) NOT NULL,
+  `budget_type` int(11) NOT NULL COMMENT 'Foreign key to the budget_types table.',
+  `institution_id` bigint(20) NOT NULL COMMENT 'Foreign key to the institutions table.',
+  `amount` double NOT NULL DEFAULT '0',
+  PRIMARY KEY (`id`),
+  KEY `FK_institution_id_idx` (`institution_id`),
+  KEY `FK_budget_type_idx` (`budget_type`)
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8;
+
+-- --------------------------------------------------------
+
+--
+-- Estructura de tabla para la tabla `budget_types`
+--
+
+CREATE TABLE IF NOT EXISTS `budget_types` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
-  `usd` double NOT NULL,
-  `cg_funds` int(11) DEFAULT NULL,
+  `name` varchar(255) NOT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8;
+
+-- --------------------------------------------------------
+
+--
+-- Estructura de tabla para la tabla `deliverables`
+--
+
+CREATE TABLE IF NOT EXISTS `deliverables` (
+  `id` bigint(20) NOT NULL AUTO_INCREMENT,
+  `activity_id` bigint(20) NOT NULL,
+  `title` text,
+  `type_id` bigint(20) NOT NULL,
+  `year` int(11) NOT NULL,
+  PRIMARY KEY (`id`),
+  KEY `deliverables_activities_idx` (`activity_id`),
+  KEY `deliverables_deliverables_type_idx` (`type_id`)
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8;
+
+-- --------------------------------------------------------
+
+--
+-- Estructura de tabla para la tabla `deliverable_types`
+--
+
+CREATE TABLE IF NOT EXISTS `deliverable_types` (
+  `id` bigint(20) NOT NULL AUTO_INCREMENT,
+  `name` varchar(255) DEFAULT NULL,
+  `parent_id` bigint(20) DEFAULT NULL,
+  `timeline` int(11) DEFAULT NULL,
+  PRIMARY KEY (`id`),
+  KEY `deliverable_types_parent_id_idx` (`parent_id`)
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8;
+
+-- --------------------------------------------------------
+
+--
+-- Estructura de tabla para la tabla `employees`
+--
+
+CREATE TABLE IF NOT EXISTS `employees` (
+  `id` bigint(20) NOT NULL AUTO_INCREMENT,
+  `user_id` bigint(20) NOT NULL COMMENT 'Foreign key to the table users',
+  `institution_id` bigint(20) NOT NULL COMMENT 'Foreign key to the table institutions.',
+  `role_id` bigint(20) NOT NULL COMMENT 'Positions inside CCAFS',
+  `is_main` tinyint(1) NOT NULL DEFAULT '0',
+  PRIMARY KEY (`id`),
+  KEY `FK_employees_persons_idx` (`user_id`),
+  KEY `FK_employees_institutions_idx` (`institution_id`),
+  KEY `FK_employees_roles_idx` (`role_id`)
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8;
+
+-- --------------------------------------------------------
+
+--
+-- Estructura de tabla para la tabla `expected_activity_leaders`
+--
+
+CREATE TABLE IF NOT EXISTS `expected_activity_leaders` (
+  `id` bigint(20) NOT NULL AUTO_INCREMENT,
+  `institution_id` bigint(20) NOT NULL,
+  `name` varchar(255) DEFAULT NULL,
+  `email` varchar(255) DEFAULT NULL,
+  PRIMARY KEY (`id`),
+  KEY `FK_activity_leaders_institutions_idx` (`institution_id`)
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8;
+
+-- --------------------------------------------------------
+
+--
+-- Estructura de tabla para la tabla `expected_project_leaders`
+--
+
+CREATE TABLE IF NOT EXISTS `expected_project_leaders` (
+  `id` bigint(20) NOT NULL AUTO_INCREMENT,
+  `contact_first_name` varchar(255) DEFAULT NULL,
+  `contact_last_name` varchar(255) DEFAULT NULL,
+  `contact_email` varchar(255) DEFAULT NULL,
+  `institution_id` bigint(20) NOT NULL COMMENT 'Foreign key to Institution id',
+  PRIMARY KEY (`id`),
+  KEY `PK_Institution_idx` (`institution_id`)
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8;
+
+-- --------------------------------------------------------
+
+--
+-- Estructura de tabla para la tabla `institutions`
+--
+
+CREATE TABLE IF NOT EXISTS `institutions` (
+  `id` bigint(20) NOT NULL AUTO_INCREMENT,
+  `name` text NOT NULL,
+  `acronym` varchar(45) DEFAULT NULL,
+  `contact_person_name` varchar(255) DEFAULT NULL,
+  `contact_person_email` varchar(255) DEFAULT NULL,
+  `city` varchar(255) DEFAULT NULL,
+  `website_link` varchar(255) DEFAULT NULL,
+  `program_id` bigint(20) DEFAULT NULL,
+  `institution_type_id` bigint(20) NOT NULL,
+  `country_id` bigint(20) DEFAULT NULL,
+  PRIMARY KEY (`id`),
+  KEY `FK_ip_program_lead_institutions_idx` (`program_id`),
+  KEY `FK_institutions_institution_types_idx` (`institution_type_id`),
+  KEY `FK_loc_elements_id_idx` (`country_id`)
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8;
+
+-- --------------------------------------------------------
+
+--
+-- Estructura de tabla para la tabla `institution_locations`
+--
+
+CREATE TABLE IF NOT EXISTS `institution_locations` (
+  `id` bigint(20) NOT NULL AUTO_INCREMENT,
+  `institution_id` bigint(20) NOT NULL,
+  `country_id` bigint(20) NOT NULL,
+  `city` varchar(255) DEFAULT NULL,
+  PRIMARY KEY (`id`),
+  KEY `FK_institution_locations_institutions_idx` (`institution_id`),
+  KEY `FK_institution_locations_loc_elements_idx` (`country_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+-- --------------------------------------------------------
+
+--
+-- Estructura de tabla para la tabla `institution_types`
+--
+
+CREATE TABLE IF NOT EXISTS `institution_types` (
+  `id` bigint(20) NOT NULL AUTO_INCREMENT,
+  `name` varchar(255) NOT NULL,
+  `acronym` varchar(200) DEFAULT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8;
+
+-- --------------------------------------------------------
+
+--
+-- Estructura de tabla para la tabla `ip_activity_contributions`
+--
+
+CREATE TABLE IF NOT EXISTS `ip_activity_contributions` (
+  `id` bigint(20) NOT NULL AUTO_INCREMENT,
+  `activity_id` bigint(20) NOT NULL COMMENT 'This field is a foreign key to the table activities.',
+  `ip_element_id` bigint(20) NOT NULL COMMENT 'This field is a foreign key to the table IP Elements.\nThe vales referenced in this column should be of type ''Outputs'' but this constraint is checked at application level.',
+  PRIMARY KEY (`id`),
+  KEY `FK_activities_ipElements_activityID_idx` (`activity_id`),
+  KEY `FK_activities_ipElements_ipElementID_idx` (`ip_element_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+-- --------------------------------------------------------
+
+--
+-- Estructura de tabla para la tabla `ip_activity_indicators`
+--
+
+CREATE TABLE IF NOT EXISTS `ip_activity_indicators` (
+  `id` bigint(20) NOT NULL AUTO_INCREMENT,
+  `description` text,
+  `target` text,
+  `activity_id` bigint(20) NOT NULL COMMENT 'This column is a foreign key that references to the table activities',
+  `parent_id` bigint(20) NOT NULL COMMENT 'This column is a foreign key that references to the table ip_indicators.',
+  PRIMARY KEY (`id`),
+  KEY `FK_ipActivityIndicators_ipIndicators_parentID_idx` (`parent_id`),
+  KEY `FK_ipActivityIndicators_ipIndicators_activityID_idx` (`activity_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+-- --------------------------------------------------------
+
+--
+-- Estructura de tabla para la tabla `ip_cross_cutting_themes`
+--
+
+CREATE TABLE IF NOT EXISTS `ip_cross_cutting_themes` (
+  `id` bigint(20) NOT NULL AUTO_INCREMENT,
+  `name` varchar(255) NOT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8;
+
+-- --------------------------------------------------------
+
+--
+-- Estructura de tabla para la tabla `ip_elements`
+--
+
+CREATE TABLE IF NOT EXISTS `ip_elements` (
+  `id` bigint(20) NOT NULL AUTO_INCREMENT,
+  `description` text COLLATE latin1_general_ci,
+  `element_type_id` bigint(20) NOT NULL COMMENT 'Foreign key to the table ip_element_types',
+  PRIMARY KEY (`id`),
+  KEY `FK_element_element_type_idx` (`element_type_id`)
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8;
+
+-- --------------------------------------------------------
+
+--
+-- Estructura de tabla para la tabla `ip_element_types`
+--
+
+CREATE TABLE IF NOT EXISTS `ip_element_types` (
+  `id` bigint(20) NOT NULL AUTO_INCREMENT,
+  `name` varchar(255) COLLATE latin1_general_ci DEFAULT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8;
+
+-- --------------------------------------------------------
+
+--
+-- Estructura de tabla para la tabla `ip_indicators`
+--
+
+CREATE TABLE IF NOT EXISTS `ip_indicators` (
+  `id` bigint(20) NOT NULL AUTO_INCREMENT,
+  `description` text COLLATE latin1_general_ci,
+  `target` text COLLATE latin1_general_ci,
+  `program_element_id` bigint(20) NOT NULL,
+  `parent_id` bigint(20) DEFAULT NULL COMMENT 'Foreign key to ip_indicators table. This field shows if the indicator contributes to another indicator',
+  PRIMARY KEY (`id`),
+  KEY `FK_indicators_program_elements_idx` (`program_element_id`),
+  KEY `FK_indicators_parent_indicator_idx` (`parent_id`)
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8;
+
+-- --------------------------------------------------------
+
+--
+-- Estructura de tabla para la tabla `ip_other_contributions`
+--
+
+CREATE TABLE IF NOT EXISTS `ip_other_contributions` (
+  `id` bigint(20) NOT NULL AUTO_INCREMENT,
+  `activity_id` bigint(20) NOT NULL,
+  `contribution` text,
+  `additional_contribution` text,
+  PRIMARY KEY (`id`),
+  KEY `GK_ip_other_contributions_idx` (`activity_id`)
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8;
+
+-- --------------------------------------------------------
+
+--
+-- Estructura de tabla para la tabla `ip_programs`
+--
+
+CREATE TABLE IF NOT EXISTS `ip_programs` (
+  `id` bigint(20) NOT NULL AUTO_INCREMENT,
+  `name` text COLLATE latin1_general_ci,
+  `acronym` varchar(45) COLLATE latin1_general_ci DEFAULT NULL,
+  `region_id` bigint(20) DEFAULT NULL,
+  `type_id` bigint(20) NOT NULL,
+  PRIMARY KEY (`id`),
+  KEY `FK_ip_program_program_type_idx` (`type_id`),
+  KEY `FK_ip_program_ip_region_idx` (`region_id`)
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8;
+
+-- --------------------------------------------------------
+
+--
+-- Estructura de tabla para la tabla `ip_program_elements`
+--
+
+CREATE TABLE IF NOT EXISTS `ip_program_elements` (
+  `id` bigint(20) NOT NULL AUTO_INCREMENT,
+  `element_id` bigint(20) NOT NULL COMMENT 'Foreign key to the table ip_elements',
+  `program_id` bigint(20) NOT NULL COMMENT 'Foreign key to the table ip_programs',
+  `relation_type_id` int(11) DEFAULT NULL COMMENT 'Foreign key to the table ip_program_element_relation_types',
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `unique_key` (`element_id`,`program_id`,`relation_type_id`) COMMENT ' /* comment truncated */ /*This index prevents that a program has more than one relation to the same element.*/',
+  KEY `FK_program_elements_program_idx` (`program_id`),
+  KEY `FK_program_elements_elements_idx` (`element_id`),
+  KEY `FK_program_elements_element_relation_types_idx` (`relation_type_id`)
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8;
+
+-- --------------------------------------------------------
+
+--
+-- Estructura de tabla para la tabla `ip_program_element_relation_types`
+--
+
+CREATE TABLE IF NOT EXISTS `ip_program_element_relation_types` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `name` varchar(255) NOT NULL COMMENT 'This field describe the relation between the element and the program',
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8;
+
+-- --------------------------------------------------------
+
+--
+-- Estructura de tabla para la tabla `ip_program_types`
+--
+
+CREATE TABLE IF NOT EXISTS `ip_program_types` (
+  `id` bigint(20) NOT NULL AUTO_INCREMENT,
+  `name` varchar(255) NOT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8;
+
+-- --------------------------------------------------------
+
+--
+-- Estructura de tabla para la tabla `ip_relationships`
+--
+
+CREATE TABLE IF NOT EXISTS `ip_relationships` (
+  `id` bigint(20) NOT NULL AUTO_INCREMENT,
+  `parent_id` bigint(20) NOT NULL,
+  `child_id` bigint(20) NOT NULL,
+  `relation_type_id` bigint(20) NOT NULL DEFAULT '1' COMMENT 'Foreign key to the table ip_relationship_type, by default the value is 1 (''Contributes to''  type)',
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `KEY_unique_index` (`parent_id`,`child_id`) COMMENT ' /* comment truncated */ /*Each element have to be related with another element only once.*/',
+  KEY `FK_element_relations_child_idx` (`parent_id`),
+  KEY `test_idx` (`child_id`),
+  KEY `FK_element_relations_relationship_types_idx` (`relation_type_id`)
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8;
+
+-- --------------------------------------------------------
+
+--
+-- Estructura de tabla para la tabla `ip_relationship_type`
+--
+
+CREATE TABLE IF NOT EXISTS `ip_relationship_type` (
+  `id` bigint(20) NOT NULL AUTO_INCREMENT,
+  `name` varchar(255) NOT NULL COMMENT 'This field describes the type of relation between the child element and the parent element',
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8;
+
+-- --------------------------------------------------------
+
+--
+-- Estructura de tabla para la tabla `loc_elements`
+--
+
+CREATE TABLE IF NOT EXISTS `loc_elements` (
+  `id` bigint(20) NOT NULL AUTO_INCREMENT,
+  `name` text NOT NULL,
+  `code` varchar(45) DEFAULT NULL,
+  `parent_id` bigint(20) DEFAULT NULL,
+  `element_type_id` bigint(20) NOT NULL,
+  `geoposition_id` bigint(20) DEFAULT NULL,
+  PRIMARY KEY (`id`),
+  KEY `FK_loc_element_loc_element_type_id_idx` (`element_type_id`),
+  KEY `FK_loc_elements_loc_geopositions_idx` (`geoposition_id`)
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8;
+
+-- --------------------------------------------------------
+
+--
+-- Estructura de tabla para la tabla `loc_element_types`
+--
+
+CREATE TABLE IF NOT EXISTS `loc_element_types` (
+  `id` bigint(20) NOT NULL AUTO_INCREMENT,
+  `name` varchar(245) DEFAULT NULL,
+  `parent_id` bigint(20) DEFAULT NULL,
+  PRIMARY KEY (`id`),
+  KEY `FK_loc_element_type_parent_idx` (`parent_id`)
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8;
+
+-- --------------------------------------------------------
+
+--
+-- Estructura de tabla para la tabla `loc_geopositions`
+--
+
+CREATE TABLE IF NOT EXISTS `loc_geopositions` (
+  `id` bigint(20) NOT NULL AUTO_INCREMENT,
+  `latitude` double NOT NULL,
+  `longitude` double NOT NULL,
+  `parent_id` bigint(20) DEFAULT NULL,
+  PRIMARY KEY (`id`),
+  KEY `FK_loc_geoposition_loc_geopositon_idx` (`parent_id`)
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8;
+
+-- --------------------------------------------------------
+
+--
+-- Estructura de tabla para la tabla `next_users`
+--
+
+CREATE TABLE IF NOT EXISTS `next_users` (
+  `id` bigint(20) NOT NULL AUTO_INCREMENT,
+  `deliverable_id` bigint(20) NOT NULL,
+  `user` text,
+  `expected_changes` text,
+  `strategies` text,
+  PRIMARY KEY (`id`),
+  KEY `FL_next_users_deliverables_idx` (`deliverable_id`)
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8;
+
+-- --------------------------------------------------------
+
+--
+-- Estructura de tabla para la tabla `permissions`
+--
+
+CREATE TABLE IF NOT EXISTS `permissions` (
+  `id` bigint(20) NOT NULL AUTO_INCREMENT,
+  `element_id` bigint(20) NOT NULL COMMENT 'Foreign key to the table site_elements',
+  `role_id` bigint(20) NOT NULL COMMENT 'Foreign key to the table roles',
+  `permission` enum('Create','Update','Read','Delete') NOT NULL,
+  PRIMARY KEY (`id`),
+  KEY `FK_permissions_elements_idx` (`element_id`),
+  KEY `FK_permissions_roles_idx` (`role_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+-- --------------------------------------------------------
+
+--
+-- Estructura de tabla para la tabla `persons`
+--
+
+CREATE TABLE IF NOT EXISTS `persons` (
+  `id` bigint(20) NOT NULL AUTO_INCREMENT,
+  `first_name` varchar(255) NOT NULL,
+  `last_name` varchar(255) NOT NULL,
+  `phone` varchar(45) DEFAULT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8;
+
+-- --------------------------------------------------------
+
+--
+-- Estructura de tabla para la tabla `projects`
+--
+
+CREATE TABLE IF NOT EXISTS `projects` (
+  `id` bigint(20) NOT NULL AUTO_INCREMENT,
+  `title` text,
+  `summary` text,
+  `start_date` date DEFAULT NULL,
+  `end_date` date DEFAULT NULL,
+  `leader_responsabilities` text,
+  `expected_project_leader_id` bigint(20) DEFAULT NULL,
+  `project_leader_id` bigint(20) DEFAULT NULL COMMENT 'Foreign key to the ccafs employees table',
+  `program_creator_id` bigint(20) DEFAULT NULL,
+  `project_owner_id` bigint(20) DEFAULT NULL,
+  `created` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  PRIMARY KEY (`id`),
+  KEY `FK_projects_employees_idx` (`project_leader_id`),
+  KEY `FK_projects_owner_employees_idx` (`project_owner_id`),
+  KEY `FK_projects_expected_project_leaders_idx` (`expected_project_leader_id`),
+  KEY `FK_projects_program_id_idx` (`program_creator_id`)
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8;
+
+-- --------------------------------------------------------
+
+--
+-- Estructura de tabla para la tabla `project_budgets`
+--
+
+CREATE TABLE IF NOT EXISTS `project_budgets` (
+  `id` bigint(20) NOT NULL AUTO_INCREMENT,
+  `project_id` bigint(20) NOT NULL,
+  `budget_id` bigint(20) NOT NULL,
+  PRIMARY KEY (`id`),
+  KEY `FK_project_id_idx` (`project_id`),
+  KEY `FK_budget_id_idx` (`budget_id`)
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8;
+
+-- --------------------------------------------------------
+
+--
+-- Estructura de tabla para la tabla `project_cross_cutting_themes`
+--
+
+CREATE TABLE IF NOT EXISTS `project_cross_cutting_themes` (
+  `project_id` bigint(20) NOT NULL,
+  `theme_id` bigint(20) NOT NULL COMMENT 'Foreign key to the table ip_cross_cutting_themes',
+  PRIMARY KEY (`project_id`,`theme_id`),
+  KEY `FK_projects_themes_projects_idx` (`project_id`),
+  KEY `FK_projects_themes_cutting_themes_idx` (`theme_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+-- --------------------------------------------------------
+
+--
+-- Estructura de tabla para la tabla `project_focuses`
+--
+
+CREATE TABLE IF NOT EXISTS `project_focuses` (
+  `project_id` bigint(20) NOT NULL,
+  `program_id` bigint(20) NOT NULL,
+  PRIMARY KEY (`project_id`,`program_id`),
+  KEY `FK_project_focus_project_id_idx` (`project_id`),
+  KEY `FK_project_focus_program_id_idx` (`program_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+-- --------------------------------------------------------
+
+--
+-- Estructura de tabla para la tabla `project_outcomes`
+--
+
+CREATE TABLE IF NOT EXISTS `project_outcomes` (
+  `id` bigint(20) NOT NULL AUTO_INCREMENT,
+  `year` int(11) NOT NULL,
+  `statement` text,
+  `stories` text,
+  `project_id` bigint(20) NOT NULL,
+  PRIMARY KEY (`id`),
+  KEY `FK_Projects_id_idx` (`project_id`)
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8;
+
+-- --------------------------------------------------------
+
+--
+-- Estructura de tabla para la tabla `project_partners`
+--
+
+CREATE TABLE IF NOT EXISTS `project_partners` (
+  `id` bigint(20) NOT NULL AUTO_INCREMENT,
+  `project_id` bigint(20) NOT NULL COMMENT 'Foreign key to projects table',
+  `partner_id` bigint(20) NOT NULL COMMENT 'Foreign key to institutions table',
+  `contact_name` varchar(255) DEFAULT NULL,
+  `contact_email` varchar(255) DEFAULT NULL,
+  `responsabilities` text,
+  PRIMARY KEY (`id`),
+  KEY `FK_project_partners_projects_idx` (`project_id`),
+  KEY `FK_project_partners_institutions_idx` (`partner_id`)
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8;
+
+-- --------------------------------------------------------
+
+--
+-- Estructura de tabla para la tabla `project_partner_budget`
+--
+
+CREATE TABLE IF NOT EXISTS `project_partner_budget` (
+  `id` bigint(20) NOT NULL AUTO_INCREMENT,
+  `project_id` bigint(20) NOT NULL,
+  `year` int(11) NOT NULL,
+  `total` double DEFAULT NULL,
+  `ccafs_funding` int(11) DEFAULT NULL,
   `bilateral` int(11) DEFAULT NULL,
-  `activity_id` int(11) NOT NULL,
   PRIMARY KEY (`id`),
-  KEY `cg_funds_fk` (`cg_funds`),
-  KEY `bilateral_fk` (`bilateral`),
-  KEY `budgets_activity_fk` (`activity_id`),
-  CONSTRAINT `activity_budgets_ibfk_1` FOREIGN KEY (`activity_id`) REFERENCES `activities` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
-  CONSTRAINT `activity_budgets_ibfk_2` FOREIGN KEY (`cg_funds`) REFERENCES `budget_percentages` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
-  CONSTRAINT `activity_budgets_ibfk_3` FOREIGN KEY (`bilateral`) REFERENCES `budget_percentages` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
-) ENGINE=InnoDB AUTO_INCREMENT=691 DEFAULT CHARSET=utf8;
-/*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Table structure for table `activity_keywords`
---
-
-DROP TABLE IF EXISTS `activity_keywords`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
-CREATE TABLE `activity_keywords` (
-  `id` int(11) NOT NULL AUTO_INCREMENT,
-  `activity_id` int(11) NOT NULL,
-  `keyword_id` int(11) DEFAULT NULL,
-  `other` text,
-  PRIMARY KEY (`id`),
-  KEY `ak_activity_fk` (`activity_id`),
-  KEY `ak_keyword_fk` (`keyword_id`),
-  CONSTRAINT `activity_keywords_ibfk_1` FOREIGN KEY (`activity_id`) REFERENCES `activities` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
-  CONSTRAINT `activity_keywords_ibfk_2` FOREIGN KEY (`keyword_id`) REFERENCES `keywords` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
-) ENGINE=InnoDB AUTO_INCREMENT=3036 DEFAULT CHARSET=utf8;
-/*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Table structure for table `activity_leaders`
---
-
-DROP TABLE IF EXISTS `activity_leaders`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
-CREATE TABLE `activity_leaders` (
-  `id` int(11) NOT NULL AUTO_INCREMENT,
-  `acronym` varchar(20) NOT NULL DEFAULT 'ACRONYM',
-  `name` text NOT NULL,
-  `led_activity_id` int(11) NOT NULL,
-  `region_id` int(11) DEFAULT NULL,
-  `theme_id` int(11) DEFAULT NULL,
-  PRIMARY KEY (`id`),
-  KEY `led_activity_fk` (`led_activity_id`),
-  KEY `region_id_fk` (`region_id`),
-  KEY `theme_id_fk` (`theme_id`),
-  CONSTRAINT `activity_leaders_ibfk_1` FOREIGN KEY (`led_activity_id`) REFERENCES `leader_types` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
-  CONSTRAINT `activity_leaders_ibfk_2` FOREIGN KEY (`region_id`) REFERENCES `regions` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
-  CONSTRAINT `activity_leaders_ibfk_3` FOREIGN KEY (`theme_id`) REFERENCES `themes` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
-) ENGINE=InnoDB AUTO_INCREMENT=27 DEFAULT CHARSET=utf8;
-/*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Table structure for table `activity_objectives`
---
-
-DROP TABLE IF EXISTS `activity_objectives`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
-CREATE TABLE `activity_objectives` (
-  `id` int(11) NOT NULL AUTO_INCREMENT,
-  `description` text NOT NULL,
-  `activity_id` int(11) NOT NULL,
-  PRIMARY KEY (`id`),
-  KEY `activity_fk` (`activity_id`),
-  CONSTRAINT `activity_objectives_ibfk_1` FOREIGN KEY (`activity_id`) REFERENCES `activities` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
-) ENGINE=InnoDB AUTO_INCREMENT=1451 DEFAULT CHARSET=utf8;
-/*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Table structure for table `activity_partner_roles`
---
-
-DROP TABLE IF EXISTS `activity_partner_roles`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
-CREATE TABLE `activity_partner_roles` (
-  `id` int(11) NOT NULL AUTO_INCREMENT,
-  `activity_partner_id` int(11) NOT NULL,
-  `partner_role_id` int(11) NOT NULL,
-  PRIMARY KEY (`id`),
-  KEY `activity_partner_fk` (`activity_partner_id`),
-  KEY `partner_role_fk` (`partner_role_id`),
-  CONSTRAINT `activity_partner_roles_ibfk_1` FOREIGN KEY (`activity_partner_id`) REFERENCES `activity_partners` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
-  CONSTRAINT `activity_partner_roles_ibfk_2` FOREIGN KEY (`partner_role_id`) REFERENCES `partner_roles` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
+  KEY `FK_project_budget_projects_idx` (`project_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
-/*!40101 SET character_set_client = @saved_cs_client */;
+
+-- --------------------------------------------------------
 
 --
--- Table structure for table `activity_partners`
+-- Estructura de tabla para la tabla `roles`
 --
 
-DROP TABLE IF EXISTS `activity_partners`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
-CREATE TABLE `activity_partners` (
-  `id` int(11) NOT NULL AUTO_INCREMENT,
-  `partner_id` int(11) NOT NULL,
-  `activity_id` int(11) NOT NULL,
-  `contact_name` text,
-  `contact_email` text,
-  PRIMARY KEY (`id`),
-  KEY `ap_partner_fk` (`partner_id`),
-  KEY `ap_activity_fk` (`activity_id`),
-  CONSTRAINT `activity_partners_ibfk_1` FOREIGN KEY (`partner_id`) REFERENCES `partners` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
-  CONSTRAINT `activity_partners_ibfk_2` FOREIGN KEY (`activity_id`) REFERENCES `activities` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
-) ENGINE=InnoDB AUTO_INCREMENT=2393 DEFAULT CHARSET=utf8;
-/*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Table structure for table `activity_status`
---
-
-DROP TABLE IF EXISTS `activity_status`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
-CREATE TABLE `activity_status` (
-  `id` int(11) NOT NULL AUTO_INCREMENT,
-  `name` text NOT NULL,
+CREATE TABLE IF NOT EXISTS `roles` (
+  `id` bigint(20) NOT NULL AUTO_INCREMENT,
+  `name` varchar(255) NOT NULL,
+  `acronym` varchar(45) DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8;
-/*!40101 SET character_set_client = @saved_cs_client */;
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8;
+
+-- --------------------------------------------------------
 
 --
--- Table structure for table `activity_validations`
+-- Estructura de tabla para la tabla `site_elements`
 --
 
-DROP TABLE IF EXISTS `activity_validations`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
-CREATE TABLE `activity_validations` (
-  `activity_id` int(11) NOT NULL,
-  `date` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
-  KEY `activity_id_fk` (`activity_id`),
-  CONSTRAINT `activity_id_fk_1` FOREIGN KEY (`activity_id`) REFERENCES `activities` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
+CREATE TABLE IF NOT EXISTS `site_elements` (
+  `id` bigint(20) NOT NULL AUTO_INCREMENT,
+  `name` varchar(255) NOT NULL,
+  `site_element_type_id` bigint(20) NOT NULL COMMENT 'foreign key to the table site_elements_types',
+  PRIMARY KEY (`id`),
+  KEY `FK_elements_element_types_idx` (`site_element_type_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
-/*!40101 SET character_set_client = @saved_cs_client */;
+
+-- --------------------------------------------------------
 
 --
--- Table structure for table `benchmark_sites`
+-- Estructura de tabla para la tabla `site_element_types`
 --
 
-DROP TABLE IF EXISTS `benchmark_sites`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
-CREATE TABLE `benchmark_sites` (
-  `id` int(11) NOT NULL AUTO_INCREMENT,
-  `bs_id` text NOT NULL,
-  `name` text NOT NULL,
-  `country_iso2` varchar(2) NOT NULL,
-  `longitude` double NOT NULL,
-  `latitude` double NOT NULL,
-  `is_active` tinyint(1) NOT NULL,
-  PRIMARY KEY (`id`),
-  KEY `country_fk` (`country_iso2`),
-  CONSTRAINT `benchmark_sites_ibfk_1` FOREIGN KEY (`country_iso2`) REFERENCES `countries` (`iso2`) ON DELETE CASCADE ON UPDATE CASCADE
-) ENGINE=InnoDB AUTO_INCREMENT=34 DEFAULT CHARSET=utf8;
-/*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Table structure for table `bs_locations`
---
-
-DROP TABLE IF EXISTS `bs_locations`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
-CREATE TABLE `bs_locations` (
-  `id` int(11) NOT NULL AUTO_INCREMENT,
-  `bs_id` int(11) NOT NULL,
-  `activity_id` int(11) NOT NULL,
-  `details` text,
-  PRIMARY KEY (`id`),
-  KEY `bs_fk` (`bs_id`),
-  KEY `activity_id` (`activity_id`),
-  CONSTRAINT `bs_locations_ibfk_1` FOREIGN KEY (`bs_id`) REFERENCES `benchmark_sites` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
-  CONSTRAINT `bs_locations_ibfk_2` FOREIGN KEY (`activity_id`) REFERENCES `activities` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
-) ENGINE=InnoDB AUTO_INCREMENT=750 DEFAULT CHARSET=utf8;
-/*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Table structure for table `budget_percentages`
---
-
-DROP TABLE IF EXISTS `budget_percentages`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
-CREATE TABLE `budget_percentages` (
-  `id` int(11) NOT NULL AUTO_INCREMENT,
-  `percentage` varchar(45) NOT NULL,
-  PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=utf8;
-/*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Table structure for table `case_studies`
---
-
-DROP TABLE IF EXISTS `case_studies`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
-CREATE TABLE `case_studies` (
-  `id` int(11) NOT NULL AUTO_INCREMENT,
-  `title` text NOT NULL,
-  `author` text NOT NULL,
-  `start_date` date NOT NULL,
-  `end_date` date NOT NULL,
-  `photo` text,
-  `objectives` text,
-  `description` text,
-  `results` text,
-  `partners` text,
-  `links` text,
-  `keywords` text,
-  `is_global` tinyint(1) NOT NULL,
-  `logframe_id` int(11) NOT NULL,
-  `activity_leader_id` int(11) NOT NULL,
-  PRIMARY KEY (`id`),
-  KEY `cs_logframe_fk` (`logframe_id`),
-  KEY `cs_activity_leader` (`activity_leader_id`),
-  CONSTRAINT `case_studies_ibfk_1` FOREIGN KEY (`logframe_id`) REFERENCES `logframes` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
-  CONSTRAINT `case_studies_ibfk_2` FOREIGN KEY (`activity_leader_id`) REFERENCES `activity_leaders` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
-) ENGINE=InnoDB AUTO_INCREMENT=86 DEFAULT CHARSET=utf8;
-/*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Table structure for table `case_study_countries`
---
-
-DROP TABLE IF EXISTS `case_study_countries`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
-CREATE TABLE `case_study_countries` (
-  `id` int(11) NOT NULL AUTO_INCREMENT,
-  `case_study_id` int(11) NOT NULL,
-  `country_iso2` varchar(2) NOT NULL,
-  PRIMARY KEY (`id`),
-  KEY `csc_case_study_fk` (`case_study_id`),
-  KEY `csc_country_fk` (`country_iso2`),
-  CONSTRAINT `case_study_countries_ibfk_1` FOREIGN KEY (`case_study_id`) REFERENCES `case_studies` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
-  CONSTRAINT `case_study_countries_ibfk_2` FOREIGN KEY (`country_iso2`) REFERENCES `countries` (`iso2`) ON DELETE CASCADE ON UPDATE CASCADE
-) ENGINE=InnoDB AUTO_INCREMENT=393 DEFAULT CHARSET=utf8;
-/*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Table structure for table `case_study_types`
---
-
-DROP TABLE IF EXISTS `case_study_types`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
-CREATE TABLE `case_study_types` (
-  `id` int(11) NOT NULL AUTO_INCREMENT,
+CREATE TABLE IF NOT EXISTS `site_element_types` (
+  `id` bigint(20) NOT NULL AUTO_INCREMENT,
   `name` varchar(255) NOT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=7 DEFAULT CHARSET=utf8;
-/*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Table structure for table `contact_person`
---
-
-DROP TABLE IF EXISTS `contact_person`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
-CREATE TABLE `contact_person` (
-  `id` int(11) NOT NULL AUTO_INCREMENT,
-  `name` text NOT NULL,
-  `email` text NOT NULL,
-  `activity_id` int(11) DEFAULT NULL,
-  PRIMARY KEY (`id`),
-  KEY `cp_activity_fk` (`activity_id`),
-  CONSTRAINT `contact_person_ibfk_1` FOREIGN KEY (`activity_id`) REFERENCES `activities` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
-) ENGINE=InnoDB AUTO_INCREMENT=974 DEFAULT CHARSET=utf8;
-/*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Table structure for table `countries`
---
-
-DROP TABLE IF EXISTS `countries`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
-CREATE TABLE `countries` (
-  `iso2` varchar(2) NOT NULL,
-  `name` text NOT NULL,
-  `region_id` int(11) NOT NULL,
-  PRIMARY KEY (`iso2`),
-  KEY `region_fk` (`region_id`),
-  CONSTRAINT `countries_ibfk_1` FOREIGN KEY (`region_id`) REFERENCES `regions` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
-/*!40101 SET character_set_client = @saved_cs_client */;
 
---
--- Table structure for table `country_locations`
---
-
-DROP TABLE IF EXISTS `country_locations`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
-CREATE TABLE `country_locations` (
-  `id` int(11) NOT NULL AUTO_INCREMENT,
-  `country_iso2` varchar(2) NOT NULL,
-  `activity_id` int(11) NOT NULL,
-  `details` text,
-  PRIMARY KEY (`id`),
-  KEY `cl_country_fk` (`country_iso2`),
-  KEY `cl_activity_fk` (`activity_id`),
-  CONSTRAINT `country_locations_ibfk_1` FOREIGN KEY (`country_iso2`) REFERENCES `countries` (`iso2`) ON DELETE CASCADE ON UPDATE CASCADE,
-  CONSTRAINT `country_locations_ibfk_2` FOREIGN KEY (`activity_id`) REFERENCES `activities` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
-) ENGINE=InnoDB AUTO_INCREMENT=3970 DEFAULT CHARSET=utf8;
-/*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Table structure for table `cs_types`
---
-
-DROP TABLE IF EXISTS `cs_types`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
-CREATE TABLE `cs_types` (
-  `id` int(11) NOT NULL AUTO_INCREMENT,
-  `case_study_id` int(11) NOT NULL,
-  `case_study_type_id` int(11) NOT NULL,
-  PRIMARY KEY (`id`),
-  KEY `case_study_id` (`case_study_id`),
-  KEY `case_study_type_id` (`case_study_type_id`),
-  CONSTRAINT `cs_types_fk01` FOREIGN KEY (`case_study_id`) REFERENCES `case_studies` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
-  CONSTRAINT `cs_types_fk02` FOREIGN KEY (`case_study_type_id`) REFERENCES `case_study_types` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
-) ENGINE=InnoDB AUTO_INCREMENT=97 DEFAULT CHARSET=utf8;
-/*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Table structure for table `deliverable_formats`
---
-
-DROP TABLE IF EXISTS `deliverable_formats`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
-CREATE TABLE `deliverable_formats` (
-  `id` int(11) NOT NULL AUTO_INCREMENT,
-  `deliverable_id` int(11) NOT NULL,
-  `file_format_id` int(11) NOT NULL,
-  PRIMARY KEY (`id`),
-  KEY `file_format_id` (`file_format_id`),
-  KEY `deliverable_id` (`deliverable_id`),
-  CONSTRAINT `deliverable_formats_ibfk_1` FOREIGN KEY (`deliverable_id`) REFERENCES `deliverables` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
-  CONSTRAINT `deliverable_formats_ibfk_2` FOREIGN KEY (`file_format_id`) REFERENCES `file_formats` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
-) ENGINE=InnoDB AUTO_INCREMENT=304 DEFAULT CHARSET=utf8;
-/*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Table structure for table `deliverable_status`
---
-
-DROP TABLE IF EXISTS `deliverable_status`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
-CREATE TABLE `deliverable_status` (
-  `id` int(11) NOT NULL AUTO_INCREMENT,
-  `name` text NOT NULL,
-  PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8;
-/*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Table structure for table `deliverable_types`
---
-
-DROP TABLE IF EXISTS `deliverable_types`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
-CREATE TABLE `deliverable_types` (
-  `id` int(11) NOT NULL AUTO_INCREMENT,
-  `name` text NOT NULL,
-  PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=8 DEFAULT CHARSET=utf8;
-/*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Table structure for table `deliverables`
---
-
-DROP TABLE IF EXISTS `deliverables`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
-CREATE TABLE `deliverables` (
-  `id` int(11) NOT NULL AUTO_INCREMENT,
-  `description` text NOT NULL,
-  `year` int(4) NOT NULL,
-  `activity_id` int(11) NOT NULL,
-  `deliverable_type_id` int(11) NOT NULL,
-  `is_expected` tinyint(1) NOT NULL,
-  `deliverable_status_id` int(11) NOT NULL,
-  `filename` text,
-  `description_update` text,
-  PRIMARY KEY (`id`),
-  KEY `activity_fk2` (`activity_id`),
-  KEY `deliverable_type_fk2` (`deliverable_type_id`),
-  KEY `deliverable_status_fk2` (`deliverable_status_id`),
-  CONSTRAINT `deliverables_ibfk_1` FOREIGN KEY (`activity_id`) REFERENCES `activities` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
-  CONSTRAINT `deliverables_ibfk_2` FOREIGN KEY (`deliverable_type_id`) REFERENCES `deliverable_types` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
-  CONSTRAINT `deliverables_ibfk_3` FOREIGN KEY (`deliverable_status_id`) REFERENCES `deliverable_status` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
-) ENGINE=InnoDB AUTO_INCREMENT=2253 DEFAULT CHARSET=utf8;
-/*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Table structure for table `file_formats`
---
-
-DROP TABLE IF EXISTS `file_formats`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
-CREATE TABLE `file_formats` (
-  `id` int(11) NOT NULL AUTO_INCREMENT,
-  `name` text NOT NULL,
-  PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=12 DEFAULT CHARSET=utf8;
-/*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Table structure for table `gender_integrations`
---
-
-DROP TABLE IF EXISTS `gender_integrations`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
-CREATE TABLE `gender_integrations` (
-  `id` int(11) NOT NULL AUTO_INCREMENT,
-  `description` text NOT NULL,
-  `activity_id` int(11) NOT NULL,
-  PRIMARY KEY (`id`),
-  KEY `gi_activity_fk` (`activity_id`),
-  CONSTRAINT `gender_integrations_ibfk_1` FOREIGN KEY (`activity_id`) REFERENCES `activities` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
-) ENGINE=InnoDB AUTO_INCREMENT=281 DEFAULT CHARSET=utf8;
-/*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Table structure for table `keywords`
---
-
-DROP TABLE IF EXISTS `keywords`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
-CREATE TABLE `keywords` (
-  `id` int(11) NOT NULL AUTO_INCREMENT,
-  `name` text NOT NULL,
-  PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=103 DEFAULT CHARSET=utf8;
-/*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Table structure for table `leader_types`
---
-
-DROP TABLE IF EXISTS `leader_types`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
-CREATE TABLE `leader_types` (
-  `id` int(11) NOT NULL AUTO_INCREMENT,
-  `name` text NOT NULL,
-  PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8;
-/*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Table structure for table `leverages`
---
-
-DROP TABLE IF EXISTS `leverages`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
-CREATE TABLE `leverages` (
-  `id` int(11) NOT NULL AUTO_INCREMENT,
-  `theme_id` int(11) NOT NULL,
-  `partner` text NOT NULL,
-  `project_title` text NOT NULL,
-  `project_budget` double NOT NULL,
-  `duration` varchar(9) NOT NULL DEFAULT 'year-year',
-  `activity_leader_id` int(11) NOT NULL,
-  PRIMARY KEY (`id`),
-  KEY `lev_theme_fk` (`theme_id`),
-  KEY `lev_activity_leader_fk` (`activity_leader_id`),
-  CONSTRAINT `leverages_ibfk_1` FOREIGN KEY (`theme_id`) REFERENCES `themes` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
-  CONSTRAINT `leverages_ibfk_2` FOREIGN KEY (`activity_leader_id`) REFERENCES `activity_leaders` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
-/*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Table structure for table `logframes`
---
-
-DROP TABLE IF EXISTS `logframes`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
-CREATE TABLE `logframes` (
-  `id` int(11) NOT NULL AUTO_INCREMENT,
-  `year` int(4) NOT NULL,
-  `name` varchar(255) NOT NULL,
-  PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8;
-/*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Table structure for table `milestone_reports`
---
-
-DROP TABLE IF EXISTS `milestone_reports`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
-CREATE TABLE `milestone_reports` (
-  `id` int(11) NOT NULL AUTO_INCREMENT,
-  `milestone_id` int(11) NOT NULL,
-  `milestone_status_id` int(11) DEFAULT NULL,
-  `tl_description` text,
-  `rpl_description` text,
-  PRIMARY KEY (`id`),
-  KEY `mr_milestone_fk` (`milestone_id`),
-  KEY `mr_milestone_status_fk` (`milestone_status_id`),
-  CONSTRAINT `milestone_reports_ibfk_1` FOREIGN KEY (`milestone_id`) REFERENCES `milestones` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
-  CONSTRAINT `milestone_reports_ibfk_2` FOREIGN KEY (`milestone_status_id`) REFERENCES `milestone_status` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
-) ENGINE=InnoDB AUTO_INCREMENT=251 DEFAULT CHARSET=utf8;
-/*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Table structure for table `milestone_status`
---
-
-DROP TABLE IF EXISTS `milestone_status`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
-CREATE TABLE `milestone_status` (
-  `id` int(11) NOT NULL AUTO_INCREMENT,
-  `status` varchar(255) NOT NULL,
-  PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8;
-/*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Table structure for table `milestones`
---
-
-DROP TABLE IF EXISTS `milestones`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
-CREATE TABLE `milestones` (
-  `id` int(11) NOT NULL AUTO_INCREMENT,
-  `output_id` int(11) NOT NULL,
-  `code` text NOT NULL,
-  `year` int(4) NOT NULL,
-  `description` text NOT NULL,
-  PRIMARY KEY (`id`),
-  KEY `output_fk` (`output_id`),
-  CONSTRAINT `milestones_ibfk_1` FOREIGN KEY (`output_id`) REFERENCES `outputs` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
-) ENGINE=InnoDB AUTO_INCREMENT=335 DEFAULT CHARSET=utf8;
-/*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Table structure for table `objectives`
---
-
-DROP TABLE IF EXISTS `objectives`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
-CREATE TABLE `objectives` (
-  `id` int(11) NOT NULL AUTO_INCREMENT,
-  `theme_id` int(11) NOT NULL,
-  `code` text NOT NULL,
-  `description` text NOT NULL,
-  `outcome_description` text NOT NULL,
-  PRIMARY KEY (`id`),
-  KEY `theme_fk` (`theme_id`),
-  CONSTRAINT `objectives_ibfk_1` FOREIGN KEY (`theme_id`) REFERENCES `themes` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
-) ENGINE=InnoDB AUTO_INCREMENT=37 DEFAULT CHARSET=utf8;
-/*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Table structure for table `open_access`
---
-
-DROP TABLE IF EXISTS `open_access`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
-CREATE TABLE `open_access` (
-  `id` int(11) NOT NULL AUTO_INCREMENT,
-  `name` varchar(255) NOT NULL,
-  PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8;
-/*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Table structure for table `other_sites`
---
-
-DROP TABLE IF EXISTS `other_sites`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
-CREATE TABLE `other_sites` (
-  `id` int(11) NOT NULL AUTO_INCREMENT,
-  `activity_id` int(11) NOT NULL,
-  `longitude` double NOT NULL,
-  `latitude` double NOT NULL,
-  `country_iso2` varchar(2) NOT NULL,
-  `details` text NOT NULL,
-  PRIMARY KEY (`id`),
-  KEY `os_country_fk` (`country_iso2`),
-  KEY `os_activity_fk` (`activity_id`),
-  CONSTRAINT `other_sites_ibfk_1` FOREIGN KEY (`activity_id`) REFERENCES `activities` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
-  CONSTRAINT `other_sites_ibfk_2` FOREIGN KEY (`country_iso2`) REFERENCES `countries` (`iso2`) ON DELETE CASCADE ON UPDATE CASCADE
-) ENGINE=InnoDB AUTO_INCREMENT=108 DEFAULT CHARSET=utf8;
-/*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Table structure for table `outcomes`
---
-
-DROP TABLE IF EXISTS `outcomes`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
-CREATE TABLE `outcomes` (
-  `id` int(11) NOT NULL AUTO_INCREMENT,
-  `outcome` text NOT NULL,
-  `outputs` text NOT NULL,
-  `partners` text NOT NULL,
-  `output_user` text NOT NULL,
-  `how_used` text NOT NULL,
-  `evidence` text NOT NULL,
-  `logframe_id` int(11) NOT NULL,
-  `activity_leader_id` int(11) NOT NULL,
-  PRIMARY KEY (`id`),
-  KEY `out_logframe_fk` (`logframe_id`),
-  KEY `out_activity_leader_fk` (`activity_leader_id`),
-  CONSTRAINT `outcomes_ibfk_1` FOREIGN KEY (`logframe_id`) REFERENCES `logframes` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
-  CONSTRAINT `outcomes_ibfk_2` FOREIGN KEY (`activity_leader_id`) REFERENCES `activity_leaders` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
-) ENGINE=InnoDB AUTO_INCREMENT=35 DEFAULT CHARSET=utf8;
-/*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Table structure for table `output_summaries`
---
-
-DROP TABLE IF EXISTS `output_summaries`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
-CREATE TABLE `output_summaries` (
-  `id` int(11) NOT NULL AUTO_INCREMENT,
-  `description` text,
-  `output_id` int(11) NOT NULL,
-  `activity_leader_id` int(11) NOT NULL,
-  PRIMARY KEY (`id`),
-  KEY `os_output_fk` (`output_id`),
-  KEY `os_activity_leader_fk` (`activity_leader_id`),
-  CONSTRAINT `output_summaries_ibfk_1` FOREIGN KEY (`output_id`) REFERENCES `outputs` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
-  CONSTRAINT `output_summaries_ibfk_2` FOREIGN KEY (`activity_leader_id`) REFERENCES `activity_leaders` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
-) ENGINE=InnoDB AUTO_INCREMENT=157 DEFAULT CHARSET=utf8;
-/*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Table structure for table `outputs`
---
-
-DROP TABLE IF EXISTS `outputs`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
-CREATE TABLE `outputs` (
-  `id` int(11) NOT NULL AUTO_INCREMENT,
-  `objective_id` int(11) NOT NULL,
-  `code` text NOT NULL,
-  `description` text NOT NULL,
-  PRIMARY KEY (`id`),
-  KEY `objective_fk` (`objective_id`),
-  CONSTRAINT `outputs_ibfk_1` FOREIGN KEY (`objective_id`) REFERENCES `objectives` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
-) ENGINE=InnoDB AUTO_INCREMENT=91 DEFAULT CHARSET=utf8;
-/*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Table structure for table `partner_roles`
---
-
-DROP TABLE IF EXISTS `partner_roles`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
-CREATE TABLE `partner_roles` (
-  `id` int(11) NOT NULL AUTO_INCREMENT,
-  `name` varchar(255) NOT NULL,
-  PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=7 DEFAULT CHARSET=utf8;
-/*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Table structure for table `partner_types`
---
-
-DROP TABLE IF EXISTS `partner_types`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
-CREATE TABLE `partner_types` (
-  `id` int(11) NOT NULL AUTO_INCREMENT,
-  `acronym` varchar(20) NOT NULL,
-  `name` text NOT NULL,
-  `description` text NOT NULL,
-  PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=19 DEFAULT CHARSET=utf8;
-/*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Table structure for table `partners`
---
-
-DROP TABLE IF EXISTS `partners`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
-CREATE TABLE `partners` (
-  `id` int(11) NOT NULL AUTO_INCREMENT,
-  `name` text NOT NULL,
-  `acronym` text,
-  `country_iso2` varchar(2) DEFAULT NULL,
-  `city` text,
-  `partner_type_id` int(11) NOT NULL,
-  `website` text,
-  `date_created` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
-  PRIMARY KEY (`id`),
-  KEY `type_fk` (`partner_type_id`),
-  KEY `country_iso2` (`country_iso2`),
-  CONSTRAINT `partners_ibfk_1` FOREIGN KEY (`country_iso2`) REFERENCES `countries` (`iso2`) ON DELETE CASCADE ON UPDATE CASCADE,
-  CONSTRAINT `partners_ibfk_2` FOREIGN KEY (`partner_type_id`) REFERENCES `partner_types` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
-) ENGINE=InnoDB AUTO_INCREMENT=729 DEFAULT CHARSET=utf8;
-/*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Table structure for table `publication_types`
---
-
-DROP TABLE IF EXISTS `publication_types`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
-CREATE TABLE `publication_types` (
-  `id` int(11) NOT NULL AUTO_INCREMENT,
-  `name` varchar(255) NOT NULL,
-  PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=8 DEFAULT CHARSET=utf8;
-/*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Table structure for table `publications`
---
-
-DROP TABLE IF EXISTS `publications`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
-CREATE TABLE `publications` (
-  `id` int(11) NOT NULL AUTO_INCREMENT,
-  `publication_type_id` int(11) NOT NULL,
-  `identifier` text,
-  `citation` text NOT NULL,
-  `file_url` text,
-  `logframe_id` int(11) NOT NULL,
-  `activity_leader_id` int(11) NOT NULL,
-  `open_access_id` int(11) DEFAULT NULL,
-  PRIMARY KEY (`id`),
-  KEY `p_publication_type_fk` (`publication_type_id`),
-  KEY `p_logframe_fk` (`logframe_id`),
-  KEY `p_activity_leader_fk` (`activity_leader_id`),
-  KEY `open_access_id` (`open_access_id`),
-  CONSTRAINT `publications_ibfk_1` FOREIGN KEY (`publication_type_id`) REFERENCES `publication_types` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
-  CONSTRAINT `publications_ibfk_2` FOREIGN KEY (`logframe_id`) REFERENCES `logframes` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
-  CONSTRAINT `publications_ibfk_3` FOREIGN KEY (`activity_leader_id`) REFERENCES `activity_leaders` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
-  CONSTRAINT `publications_ibfk_4` FOREIGN KEY (`open_access_id`) REFERENCES `open_access` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
-) ENGINE=InnoDB AUTO_INCREMENT=269 DEFAULT CHARSET=utf8;
-/*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Table structure for table `region_locations`
---
-
-DROP TABLE IF EXISTS `region_locations`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
-CREATE TABLE `region_locations` (
-  `id` int(11) NOT NULL AUTO_INCREMENT,
-  `region_id` int(11) NOT NULL,
-  `activity_id` int(11) NOT NULL,
-  `details` text,
-  PRIMARY KEY (`id`),
-  KEY `region_id` (`region_id`),
-  KEY `activity_id` (`activity_id`),
-  CONSTRAINT `FK_activity_id` FOREIGN KEY (`activity_id`) REFERENCES `activities` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
-  CONSTRAINT `FK_region_id` FOREIGN KEY (`region_id`) REFERENCES `regions` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
-) ENGINE=InnoDB AUTO_INCREMENT=368 DEFAULT CHARSET=utf8;
-/*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Table structure for table `regions`
---
-
-DROP TABLE IF EXISTS `regions`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
-CREATE TABLE `regions` (
-  `id` int(11) NOT NULL AUTO_INCREMENT,
-  `name` text NOT NULL,
-  `description` text,
-  PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=7 DEFAULT CHARSET=utf8;
-/*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Table structure for table `resources`
---
-
-DROP TABLE IF EXISTS `resources`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
-CREATE TABLE `resources` (
-  `id` int(11) NOT NULL AUTO_INCREMENT,
-  `name` text NOT NULL,
-  `activity_id` int(11) NOT NULL,
-  PRIMARY KEY (`id`),
-  KEY `res_activity_fk` (`activity_id`),
-  CONSTRAINT `resources_ibfk_1` FOREIGN KEY (`activity_id`) REFERENCES `activities` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
-) ENGINE=InnoDB AUTO_INCREMENT=152 DEFAULT CHARSET=utf8;
-/*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Table structure for table `rpl_synthesis_reports`
---
-
-DROP TABLE IF EXISTS `rpl_synthesis_reports`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
-CREATE TABLE `rpl_synthesis_reports` (
-  `id` int(11) NOT NULL AUTO_INCREMENT,
-  `ccafs_sites` text NOT NULL,
-  `cross_center` text NOT NULL,
-  `regional` text NOT NULL,
-  `decision_support` text NOT NULL,
-  `activity_leader_id` int(11) NOT NULL,
-  `logframe_id` int(11) NOT NULL,
-  PRIMARY KEY (`id`),
-  KEY `rplsr_activity_leader_fk` (`activity_leader_id`),
-  KEY `rplsr_logframe_fk` (`logframe_id`),
-  CONSTRAINT `rpl_synthesis_reports_ibfk_1` FOREIGN KEY (`activity_leader_id`) REFERENCES `activity_leaders` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
-  CONSTRAINT `rpl_synthesis_reports_ibfk_2` FOREIGN KEY (`logframe_id`) REFERENCES `logframes` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
-) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8;
-/*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Table structure for table `submissions`
---
-
-DROP TABLE IF EXISTS `submissions`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
-CREATE TABLE `submissions` (
-  `id` int(11) NOT NULL AUTO_INCREMENT,
-  `activity_leader_id` int(11) NOT NULL,
-  `logframe_id` int(11) NOT NULL,
-  `date_added` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
-  `section` enum('Planning','Reporting') NOT NULL,
-  PRIMARY KEY (`id`),
-  KEY `activity_leader_fk_idx` (`activity_leader_id`),
-  KEY `logframe_id_fk_idx` (`logframe_id`),
-  CONSTRAINT `activity_leader_fk` FOREIGN KEY (`activity_leader_id`) REFERENCES `activity_leaders` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
-  CONSTRAINT `logframe_id_fk` FOREIGN KEY (`logframe_id`) REFERENCES `logframes` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
-/*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Table structure for table `themes`
---
-
-DROP TABLE IF EXISTS `themes`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
-CREATE TABLE `themes` (
-  `id` int(11) NOT NULL AUTO_INCREMENT,
-  `code` text NOT NULL,
-  `description` text,
-  `logframe_id` int(11) NOT NULL,
-  PRIMARY KEY (`id`),
-  KEY `logframe_fk` (`logframe_id`),
-  CONSTRAINT `themes_ibfk_1` FOREIGN KEY (`logframe_id`) REFERENCES `logframes` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
-) ENGINE=InnoDB AUTO_INCREMENT=13 DEFAULT CHARSET=utf8;
-/*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Table structure for table `themes_publications`
---
-
-DROP TABLE IF EXISTS `themes_publications`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
-CREATE TABLE `themes_publications` (
-  `id` int(11) NOT NULL AUTO_INCREMENT,
-  `publication_id` int(11) NOT NULL,
-  `theme_id` int(11) NOT NULL,
-  PRIMARY KEY (`id`),
-  KEY `publication_id` (`publication_id`),
-  KEY `theme_id` (`theme_id`),
-  CONSTRAINT `themes_publications_fk1` FOREIGN KEY (`theme_id`) REFERENCES `themes` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
-  CONSTRAINT `themes_publications_fk` FOREIGN KEY (`publication_id`) REFERENCES `publications` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
-/*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Table structure for table `tl_output_summaries`
---
-
-DROP TABLE IF EXISTS `tl_output_summaries`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
-CREATE TABLE `tl_output_summaries` (
-  `id` int(11) NOT NULL AUTO_INCREMENT,
-  `output_id` int(11) NOT NULL,
-  `activity_leader_id` int(11) NOT NULL,
-  `description` text NOT NULL,
-  PRIMARY KEY (`id`),
-  KEY `tlos_output_fk` (`output_id`),
-  KEY `tlos_activity_leader_fk` (`activity_leader_id`),
-  CONSTRAINT `tl_output_summaries_ibfk_1` FOREIGN KEY (`output_id`) REFERENCES `outputs` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
-  CONSTRAINT `tl_output_summaries_ibfk_2` FOREIGN KEY (`activity_leader_id`) REFERENCES `activity_leaders` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
-) ENGINE=InnoDB AUTO_INCREMENT=20 DEFAULT CHARSET=utf8;
-/*!40101 SET character_set_client = @saved_cs_client */;
+-- --------------------------------------------------------
 
 --
--- Table structure for table `users`
+-- Estructura de tabla para la tabla `users`
 --
 
-DROP TABLE IF EXISTS `users`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
-CREATE TABLE `users` (
-  `id` int(11) NOT NULL AUTO_INCREMENT,
-  `name` text NOT NULL,
+CREATE TABLE IF NOT EXISTS `users` (
+  `id` bigint(20) NOT NULL AUTO_INCREMENT,
   `email` varchar(255) NOT NULL,
   `password` varchar(255) NOT NULL,
-  `activity_leader_id` int(11) NOT NULL,
-  `role` enum('Admin','CP','TL','RPL','PI') NOT NULL,
-  `last_login` datetime DEFAULT NULL,
+  `person_id` bigint(20) NOT NULL COMMENT 'Foreign key to persons table',
+  `is_ccafs_user` tinyint(1) DEFAULT '0',
+  `created_by` bigint(20) DEFAULT NULL,
+  `last_login` timestamp NULL DEFAULT CURRENT_TIMESTAMP,
   PRIMARY KEY (`id`),
-  KEY `u_activity_leader_fk` (`activity_leader_id`),
-  CONSTRAINT `users_ibfk_1` FOREIGN KEY (`activity_leader_id`) REFERENCES `activity_leaders` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
-) ENGINE=InnoDB AUTO_INCREMENT=185 DEFAULT CHARSET=utf8;
-/*!40101 SET character_set_client = @saved_cs_client */;
-/*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
+  KEY `FK_users_person_id_idx` (`person_id`),
+  KEY `FK_users_user_id_idx` (`created_by`)
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8;
 
-/*!40101 SET SQL_MODE=@OLD_SQL_MODE */;
-/*!40014 SET FOREIGN_KEY_CHECKS=@OLD_FOREIGN_KEY_CHECKS */;
-/*!40014 SET UNIQUE_CHECKS=@OLD_UNIQUE_CHECKS */;
-/*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
-/*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
-/*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
-/*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
+--
+-- Restricciones para tablas volcadas
+--
 
--- Dump completed on 2013-11-06  8:53:35
+--
+-- Filtros para la tabla `activities`
+--
+ALTER TABLE `activities`
+  ADD CONSTRAINT `FK_activities_expected_leader_id` FOREIGN KEY (`expected_leader_id`) REFERENCES `expected_activity_leaders` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
+  ADD CONSTRAINT `FK_activities_leader_id` FOREIGN KEY (`leader_id`) REFERENCES `employees` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
+  ADD CONSTRAINT `FK_Activities_Projects_id` FOREIGN KEY (`project_id`) REFERENCES `projects` (`id`) ON DELETE CASCADE ON UPDATE CASCADE;
+
+--
+-- Filtros para la tabla `activity_budgets`
+--
+ALTER TABLE `activity_budgets`
+  ADD CONSTRAINT `FK_activity_budgets_budget_id` FOREIGN KEY (`budget_id`) REFERENCES `budgets` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
+  ADD CONSTRAINT `FK_activity_budgets_activity_id` FOREIGN KEY (`activity_id`) REFERENCES `activities` (`id`) ON DELETE CASCADE ON UPDATE CASCADE;
+
+--
+-- Filtros para la tabla `activity_locations`
+--
+ALTER TABLE `activity_locations`
+  ADD CONSTRAINT `FK_activity_locations_loc_element_types` FOREIGN KEY (`loc_element_id`) REFERENCES `loc_elements` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
+  ADD CONSTRAINT `FK_activity_locations_activities` FOREIGN KEY (`activity_id`) REFERENCES `activities` (`id`) ON DELETE CASCADE ON UPDATE CASCADE;
+
+--
+-- Filtros para la tabla `activity_partners`
+--
+ALTER TABLE `activity_partners`
+  ADD CONSTRAINT `FK_activity_partners_institutions.id` FOREIGN KEY (`institution_id`) REFERENCES `institutions` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
+  ADD CONSTRAINT `FK_activity_partners_activities` FOREIGN KEY (`activity_id`) REFERENCES `activities` (`id`) ON DELETE CASCADE ON UPDATE CASCADE;
+
+--
+-- Filtros para la tabla `budgets`
+--
+ALTER TABLE `budgets`
+  ADD CONSTRAINT `FK_institution_id` FOREIGN KEY (`institution_id`) REFERENCES `institutions` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
+  ADD CONSTRAINT `FK_budget_type` FOREIGN KEY (`budget_type`) REFERENCES `budget_types` (`id`) ON DELETE CASCADE ON UPDATE CASCADE;
+
+--
+-- Filtros para la tabla `deliverables`
+--
+ALTER TABLE `deliverables`
+  ADD CONSTRAINT `deliverables_activities` FOREIGN KEY (`activity_id`) REFERENCES `activities` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
+  ADD CONSTRAINT `deliverables_deliverables_type` FOREIGN KEY (`type_id`) REFERENCES `deliverable_types` (`id`) ON DELETE CASCADE ON UPDATE CASCADE;
+
+--
+-- Filtros para la tabla `deliverable_types`
+--
+ALTER TABLE `deliverable_types`
+  ADD CONSTRAINT `deliverable_types_parent_id` FOREIGN KEY (`parent_id`) REFERENCES `deliverable_types` (`id`) ON DELETE CASCADE ON UPDATE CASCADE;
+
+--
+-- Filtros para la tabla `employees`
+--
+ALTER TABLE `employees`
+  ADD CONSTRAINT `FK_employees_persons` FOREIGN KEY (`user_id`) REFERENCES `users` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION,
+  ADD CONSTRAINT `FK_employees_institutions` FOREIGN KEY (`institution_id`) REFERENCES `institutions` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION,
+  ADD CONSTRAINT `FK_employees_roles` FOREIGN KEY (`role_id`) REFERENCES `roles` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION;
+
+--
+-- Filtros para la tabla `expected_activity_leaders`
+--
+ALTER TABLE `expected_activity_leaders`
+  ADD CONSTRAINT `FK_activity_leaders_institutions` FOREIGN KEY (`institution_id`) REFERENCES `institutions` (`id`) ON DELETE CASCADE ON UPDATE CASCADE;
+
+--
+-- Filtros para la tabla `expected_project_leaders`
+--
+ALTER TABLE `expected_project_leaders`
+  ADD CONSTRAINT `PK_Institution` FOREIGN KEY (`institution_id`) REFERENCES `institutions` (`id`) ON DELETE CASCADE ON UPDATE CASCADE;
+
+--
+-- Filtros para la tabla `institutions`
+--
+ALTER TABLE `institutions`
+  ADD CONSTRAINT `FK_institution_institution_type` FOREIGN KEY (`institution_type_id`) REFERENCES `institution_types` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
+  ADD CONSTRAINT `FK_institution_loc_elements` FOREIGN KEY (`country_id`) REFERENCES `loc_elements` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
+  ADD CONSTRAINT `FK_ip_program_lead_institutions` FOREIGN KEY (`program_id`) REFERENCES `ip_programs` (`id`) ON DELETE CASCADE ON UPDATE CASCADE;
+
+--
+-- Filtros para la tabla `institution_locations`
+--
+ALTER TABLE `institution_locations`
+  ADD CONSTRAINT `FK_institution_locations_institutions` FOREIGN KEY (`institution_id`) REFERENCES `institutions` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION,
+  ADD CONSTRAINT `FK_institution_locations_loc_elements` FOREIGN KEY (`country_id`) REFERENCES `loc_elements` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION;
+
+--
+-- Filtros para la tabla `ip_activity_contributions`
+--
+ALTER TABLE `ip_activity_contributions`
+  ADD CONSTRAINT `FK_activities_ipElements_activityID` FOREIGN KEY (`activity_id`) REFERENCES `activities` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
+  ADD CONSTRAINT `FK_activities_ipElements_ipElementID` FOREIGN KEY (`ip_element_id`) REFERENCES `ip_elements` (`id`) ON DELETE CASCADE ON UPDATE CASCADE;
+
+--
+-- Filtros para la tabla `ip_activity_indicators`
+--
+ALTER TABLE `ip_activity_indicators`
+  ADD CONSTRAINT `FK_ipActivityIndicators_ipIndicators_parentID` FOREIGN KEY (`parent_id`) REFERENCES `ip_indicators` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
+  ADD CONSTRAINT `FK_ipActivityIndicators_ipIndicators_activityID` FOREIGN KEY (`activity_id`) REFERENCES `activities` (`id`) ON DELETE CASCADE ON UPDATE CASCADE;
+
+--
+-- Filtros para la tabla `ip_elements`
+--
+ALTER TABLE `ip_elements`
+  ADD CONSTRAINT `FK_element_element_type` FOREIGN KEY (`element_type_id`) REFERENCES `ip_element_types` (`id`) ON DELETE CASCADE ON UPDATE CASCADE;
+
+--
+-- Filtros para la tabla `ip_indicators`
+--
+ALTER TABLE `ip_indicators`
+  ADD CONSTRAINT `FK_indicators_program_elements` FOREIGN KEY (`program_element_id`) REFERENCES `ip_program_elements` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
+  ADD CONSTRAINT `FK_indicators_parent_indicator` FOREIGN KEY (`parent_id`) REFERENCES `ip_indicators` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION;
+
+--
+-- Filtros para la tabla `ip_other_contributions`
+--
+ALTER TABLE `ip_other_contributions`
+  ADD CONSTRAINT `GK_ip_other_contributions` FOREIGN KEY (`activity_id`) REFERENCES `activities` (`id`) ON DELETE CASCADE ON UPDATE CASCADE;
+
+--
+-- Filtros para la tabla `ip_programs`
+--
+ALTER TABLE `ip_programs`
+  ADD CONSTRAINT `FK_ip_program_ip_region` FOREIGN KEY (`region_id`) REFERENCES `loc_elements` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
+  ADD CONSTRAINT `FK_ip_program_program_type` FOREIGN KEY (`type_id`) REFERENCES `ip_program_types` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION;
+
+--
+-- Filtros para la tabla `ip_program_elements`
+--
+ALTER TABLE `ip_program_elements`
+  ADD CONSTRAINT `FK_program_elements_elements` FOREIGN KEY (`element_id`) REFERENCES `ip_elements` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
+  ADD CONSTRAINT `FK_program_elements_element_relation_types` FOREIGN KEY (`relation_type_id`) REFERENCES `ip_program_element_relation_types` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION,
+  ADD CONSTRAINT `FK_program_elements_program` FOREIGN KEY (`program_id`) REFERENCES `ip_programs` (`id`) ON DELETE CASCADE ON UPDATE CASCADE;
+
+--
+-- Filtros para la tabla `ip_relationships`
+--
+ALTER TABLE `ip_relationships`
+  ADD CONSTRAINT `FK_element_relations_child` FOREIGN KEY (`parent_id`) REFERENCES `ip_elements` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
+  ADD CONSTRAINT `FK_element_relations_parent` FOREIGN KEY (`child_id`) REFERENCES `ip_elements` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
+  ADD CONSTRAINT `FK_element_relations_relationship_types` FOREIGN KEY (`relation_type_id`) REFERENCES `ip_relationship_type` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION;
+
+--
+-- Filtros para la tabla `loc_elements`
+--
+ALTER TABLE `loc_elements`
+  ADD CONSTRAINT `FK_loc_element_loc_element_type_id` FOREIGN KEY (`element_type_id`) REFERENCES `loc_element_types` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
+  ADD CONSTRAINT `FK_loc_elements_loc_geopositions` FOREIGN KEY (`geoposition_id`) REFERENCES `loc_geopositions` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION;
+
+--
+-- Filtros para la tabla `loc_element_types`
+--
+ALTER TABLE `loc_element_types`
+  ADD CONSTRAINT `FK_loc_element_type_parent` FOREIGN KEY (`parent_id`) REFERENCES `loc_element_types` (`id`) ON DELETE CASCADE ON UPDATE CASCADE;
+
+--
+-- Filtros para la tabla `loc_geopositions`
+--
+ALTER TABLE `loc_geopositions`
+  ADD CONSTRAINT `FK_loc_geoposition_loc_geopositon` FOREIGN KEY (`parent_id`) REFERENCES `loc_geopositions` (`id`) ON DELETE CASCADE ON UPDATE CASCADE;
+
+--
+-- Filtros para la tabla `next_users`
+--
+ALTER TABLE `next_users`
+  ADD CONSTRAINT `FL_next_users_deliverables` FOREIGN KEY (`deliverable_id`) REFERENCES `deliverables` (`id`) ON DELETE CASCADE ON UPDATE CASCADE;
+
+--
+-- Filtros para la tabla `permissions`
+--
+ALTER TABLE `permissions`
+  ADD CONSTRAINT `FK_permissions_elements` FOREIGN KEY (`element_id`) REFERENCES `site_elements` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION,
+  ADD CONSTRAINT `FK_permissions_roles` FOREIGN KEY (`role_id`) REFERENCES `roles` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION;
+
+--
+-- Filtros para la tabla `projects`
+--
+ALTER TABLE `projects`
+  ADD CONSTRAINT `FK_projects_employees` FOREIGN KEY (`project_leader_id`) REFERENCES `employees` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
+  ADD CONSTRAINT `FK_projects_expected_project_leaders` FOREIGN KEY (`expected_project_leader_id`) REFERENCES `expected_project_leaders` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
+  ADD CONSTRAINT `FK_projects_owner_employees` FOREIGN KEY (`project_owner_id`) REFERENCES `employees` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
+  ADD CONSTRAINT `FK_projects_program_id` FOREIGN KEY (`program_creator_id`) REFERENCES `ip_programs` (`id`) ON DELETE CASCADE ON UPDATE CASCADE;
+
+--
+-- Filtros para la tabla `project_budgets`
+--
+ALTER TABLE `project_budgets`
+  ADD CONSTRAINT `FK_project_id` FOREIGN KEY (`project_id`) REFERENCES `projects` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
+  ADD CONSTRAINT `FK_budget_id` FOREIGN KEY (`budget_id`) REFERENCES `budgets` (`id`) ON DELETE CASCADE ON UPDATE CASCADE;
+
+--
+-- Filtros para la tabla `project_cross_cutting_themes`
+--
+ALTER TABLE `project_cross_cutting_themes`
+  ADD CONSTRAINT `FK_projects_themes_cutting_themes` FOREIGN KEY (`theme_id`) REFERENCES `ip_cross_cutting_themes` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
+  ADD CONSTRAINT `FK_projects_themes_projects` FOREIGN KEY (`project_id`) REFERENCES `projects` (`id`) ON DELETE CASCADE ON UPDATE CASCADE;
+
+--
+-- Filtros para la tabla `project_outcomes`
+--
+ALTER TABLE `project_outcomes`
+  ADD CONSTRAINT `FK_Projects_id` FOREIGN KEY (`project_id`) REFERENCES `projects` (`id`) ON DELETE CASCADE ON UPDATE CASCADE;
+
+--
+-- Filtros para la tabla `project_partners`
+--
+ALTER TABLE `project_partners`
+  ADD CONSTRAINT `FK_project_partners_projects` FOREIGN KEY (`project_id`) REFERENCES `projects` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
+  ADD CONSTRAINT `FK_project_partners_institutions` FOREIGN KEY (`partner_id`) REFERENCES `institutions` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION;
+
+--
+-- Filtros para la tabla `project_partner_budget`
+--
+ALTER TABLE `project_partner_budget`
+  ADD CONSTRAINT `FK_project_budget_projects` FOREIGN KEY (`project_id`) REFERENCES `projects` (`id`) ON DELETE CASCADE ON UPDATE CASCADE;
+
+--
+-- Filtros para la tabla `site_elements`
+--
+ALTER TABLE `site_elements`
+  ADD CONSTRAINT `FK_elements_element_types` FOREIGN KEY (`site_element_type_id`) REFERENCES `site_element_types` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION;
+
+--
+-- Filtros para la tabla `users`
+--
+ALTER TABLE `users`
+  ADD CONSTRAINT `FK_users_person_id` FOREIGN KEY (`person_id`) REFERENCES `persons` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION,
+  ADD CONSTRAINT `FK_users_user_id` FOREIGN KEY (`created_by`) REFERENCES `users` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION;
