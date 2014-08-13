@@ -89,13 +89,13 @@ public class OutcomesPreplanningAction extends BaseAction {
     IPElementType type = new IPElementType(APConstants.ELEMENT_TYPE_OUTCOME2025);
 
     // The IDOs are created by the coordinating unit
-    IPProgram cuProgram = new IPProgram();
-    cuProgram.setId(APConstants.COORDINATING_UNIT_PROGRAM);
+    IPProgram systemProgram = new IPProgram();
+    systemProgram.setId(APConstants.SYSTEM_ADMIN_PROGRAM);
     // Set the element type for IDOs
     IPElementType idoType = new IPElementType();
     idoType.setId(APConstants.ELEMENT_TYPE_IDOS);
     // Get all the IDOs
-    idos = ipElementManager.getIPElements(cuProgram, idoType);
+    idos = ipElementManager.getIPElements(systemProgram, idoType);
 
     // TODO HC - Add an interceptor to verify that if the user is not related to a program, then DON'T have
     // permissions to access this action
@@ -104,6 +104,15 @@ public class OutcomesPreplanningAction extends BaseAction {
     // Keep the id of all outcomes which come from the database
     outcomesFromDatabase = new ArrayList<>();
     outcomesFromDatabase.addAll(outcomes);
+
+    // Create empty outcome if the list is empty
+    if (outcomes.isEmpty()) {
+      IPElement outcome2025 = new IPElement();
+      outcome2025.setId(-1);
+      outcome2025.setIndicators(new ArrayList<IPIndicator>());
+      outcome2025.setContributesTo(new ArrayList<IPElement>());
+      outcomes.add(outcome2025);
+    }
 
     // If the user is RPL they should see a list with all the indicators
     // filled by the FPL
@@ -137,7 +146,6 @@ public class OutcomesPreplanningAction extends BaseAction {
 
   @Override
   public String save() {
-    System.out.println(outcomes);
     for (int i = 0; i < outcomesFromDatabase.size(); i++) {
       IPElement outcome = outcomesFromDatabase.get(i);
       // If all the outcomes were removed, we should remove all the records
@@ -151,8 +159,6 @@ public class OutcomesPreplanningAction extends BaseAction {
       if (!outcomes.contains(outcome)) {
         ipElementManager.deleteIPElement(outcome, getCurrentUser().getCurrentInstitution().getProgram());
       } else {
-        // Remove the relations and indicators of the midOutcome
-        ipIndicatorManager.removeElementIndicators(outcome, getCurrentUser().getCurrentInstitution().getProgram());
         ipElementRelationManager.deleteRelationsByChildElement(outcome);
       }
     }

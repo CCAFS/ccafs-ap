@@ -53,8 +53,6 @@
         <interceptor-ref name="requireUser" />
         <interceptor-ref name="keepRedirectMessages"/>
         <interceptor-ref name="preplanningAccess" />
-        
-        
         <interceptor-ref name="trimInputs" />
         <interceptor-ref name="defaultStack" />
         <interceptor-ref name="accessibleProject" />

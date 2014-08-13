@@ -101,9 +101,12 @@ public class IPElement {
    */
   public List<IPIndicator> getIndicators(boolean hasParents) {
     List<IPIndicator> _indicators = new ArrayList<>();
-    for (int i = 0; i < indicators.size(); i++) {
-      if ((indicators.get(i).getParent() != null) == hasParents) {
-        _indicators.add(indicators.get(i));
+
+    if (indicators != null) {
+      for (int i = 0; i < indicators.size(); i++) {
+        if ((indicators.get(i).getParent() != null) == hasParents) {
+          _indicators.add(indicators.get(i));
+        }
       }
     }
     return _indicators;

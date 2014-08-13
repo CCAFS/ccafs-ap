@@ -119,6 +119,7 @@ public class ActivityManagerImpl implements ActivityManager {
     Map<String, String> activityData = activityDAO.getActivityById(activityID);
     if (!activityData.isEmpty()) {
       Activity activity = new Activity();
+      activity.setId(Integer.parseInt(activityData.get("id")));
       activity.setCustomId(activityData.get("custom_id"));
       activity.setTitle(activityData.get("title"));
       activity.setDescription(activityData.get("description"));
