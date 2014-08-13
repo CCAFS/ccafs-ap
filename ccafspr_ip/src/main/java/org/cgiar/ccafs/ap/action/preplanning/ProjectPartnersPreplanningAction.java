@@ -28,8 +28,12 @@ import org.cgiar.ccafs.ap.data.model.Project;
 import org.cgiar.ccafs.ap.data.model.ProjectPartner;
 import org.cgiar.ccafs.ap.data.model.User;
 
+import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
+import org.cgiar.ccafs.ap.data.manager.BudgetManager;
 import com.google.inject.Inject;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
@@ -52,6 +56,7 @@ public class ProjectPartnersPreplanningAction extends BaseAction {
   private LocationManager locationManager;
   private ProjectManager projectManager;
   private UserManager userManager;
+  private BudgetManager budgetManager;
 
   // Model for the back-end
   private int projectID;
@@ -68,13 +73,14 @@ public class ProjectPartnersPreplanningAction extends BaseAction {
   @Inject
   public ProjectPartnersPreplanningAction(APConfig config, ProjectPartnerManager projectPartnerManager,
     InstitutionManager institutionManager, LocationManager locationManager, ProjectManager projectManager,
-    UserManager userManager) {
+    UserManager userManager, BudgetManager budgetManager) {
     super(config);
     this.projectPartnerManager = projectPartnerManager;
     this.institutionManager = institutionManager;
     this.locationManager = locationManager;
     this.projectManager = projectManager;
     this.userManager = userManager;
+    this.budgetManager = budgetManager;
   }
 
   public List<Institution> getAllPartners() {
@@ -170,9 +176,9 @@ public class ProjectPartnersPreplanningAction extends BaseAction {
 
   }
 
+
   @Override
   public String save() {
-    System.out.println("SAVING.....");
     boolean success = true;
     boolean saved = true;
 
@@ -194,6 +200,23 @@ public class ProjectPartnersPreplanningAction extends BaseAction {
         if (!deleted) {
           success = false;
         }
+      }
+    }
+
+    // Getting previous Partner Institutions
+    List<Institution> previousInstitutions = new ArrayList<>();
+    for (ProjectPartner projectPartner : previousProjectPartners) {
+      previousInstitutions.add(projectPartner.getPartner());
+    }
+    // Getting current Partner Institutions
+    List<Institution> currentInstitutions = new ArrayList<>();
+    for (ProjectPartner projectPartner : project.getProjectPartners()) {
+      currentInstitutions.add(projectPartner.getPartner());
+    }
+    // Deleting Partner Institutions from budget section
+    for (Institution previousInstitution : previousInstitutions) {
+      if (!currentInstitutions.contains(previousInstitution)) {
+        budgetManager.deleteBudgetsByInstitution(project.getId(), previousInstitution.getId());
       }
     }
 
@@ -221,15 +244,25 @@ public class ProjectPartnersPreplanningAction extends BaseAction {
 
   @Override
   public void validate() {
-    // Validate the email of all project partners
-// for (int c = 0; c < project.getProjectPartners().size(); c++) {
-// if (!EmailValidator.isValidEmail(project.getProjectPartners().get(c).getContactEmail())) {
-// addFieldError("project.projectPartners[" + c + "].contactEmail", getText("validation.incorrect.format"));
-// addActionError(getText("preplanning.projectPartners.invalid.contactEmail", new String[] {c + ""}));
-// }
-// }
+    // Validate if there are duplicate institutions.
+    boolean problem = false;
+    Set<Institution> institutions = new HashSet<>();
+    if (project.getLeader() != null) {
+      institutions.add(project.getLeader().getCurrentInstitution());
+    } else if (project.getExpectedLeader() != null) {
+      institutions.add(project.getExpectedLeader().getCurrentInstitution());
+    }
+    for (int c = 0; c < project.getProjectPartners().size(); c++) {
+      if (!institutions.add(project.getProjectPartners().get(c).getPartner())) {
+        addFieldError("project.projectPartners[" + c + "].partner",
+          getText("preplanning.projectPartners.duplicatedInstitution.field"));
+        problem = true;
+      }
+    }
 
-    // Validate fields are empty
+    if (problem) {
+      addActionError(getText("preplanning.projectPartners.duplicatedInstitution.general"));
+    }
 
     super.validate();
   }

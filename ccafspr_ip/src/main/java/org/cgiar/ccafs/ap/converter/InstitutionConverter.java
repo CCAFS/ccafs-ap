@@ -57,9 +57,12 @@ public class InstitutionConverter extends StrutsTypeConverter {
 
   @Override
   public String convertToString(Map context, Object o) {
-    Institution institution = (Institution) o;
-    LOG.debug(">> convertToString > id = {} ", institution.getId());
-    return institution.getId() + "";
+    if (o != null) {
+      Institution institution = (Institution) o;
+      LOG.debug(">> convertToString > id = {} ", institution.getId());
+      return institution.getId() + "";
+    }
+    return null;
   }
 
 }
