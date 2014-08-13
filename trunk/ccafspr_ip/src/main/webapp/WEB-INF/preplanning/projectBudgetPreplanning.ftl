@@ -31,21 +31,18 @@
           [#-- Total CCAFS budget--]
           <div id="totalBudget" class="halfPartBlock">
             <h6>[@s.text name="preplanning.projectBudget.totalBudget" /]</h6>
-            <p id="projectTotalCCAFS">US$ <span id="projectTotalCCAFSBudget">${totalCCAFSBudget?string(",##0.00")}</span></p>
-            <input type="hidden" id="projectTotalCCAFSBudget" value="${totalCCAFSBudget?c}" />
-            <input type="hidden" id="yearTotalCCAFSBudget" value="${totalCCAFSBudgetByYear?c}" />
+            <p id="projectTotalCCAFSBudget">US$ ${project.totalCcafsBudget?string(",##0.00")}</p>
           </div>
           [#-- Total overall project budget:--]
           <div id="totalBudget" class="halfPartBlock">
             <h6>[@s.text name="preplanning.projectBudget.totalOverallBudget" /]</h6>
-            <p id="projectTotal">US$ <span id="projectTotalBudget">${totalBudget?string(",##0.00")}</span></p>
-            <input type="hidden" id="projectTotalBudget" value="${totalBudget?c}" />
-            <input type="hidden" id="yearTotalBudget" value="${totalBudgetByYear?c}" />
-          </div>   
-          [#-- Tertiary Menu - All years --]
+            <p id="projectTotalBudget">US$ ${totalBudget?string(",##0.00")}</p>
+          </div>  
+          [#-- Tertiary Menu - All years --] 
           <div id="budgetTables" class="ui-tabs ui-widget ui-widget-content ui-corner-all" style="display:none"> 
             <ul class="ui-tabs-nav ui-helper-reset ui-helper-clearfix ui-widget-header ui-corner-all">
-              [#list allYears as yearMenu] 
+              [#list allYears as yearMenu]
+              
               <li class="ui-state-default ui-corner-top [#if yearMenu=year ]ui-tabs-active ui-state-active ui-state-hover[/#if]">
                 <a href="[@s.url action='budget' includeParams='get'][@s.param name='${projectRequest}']${project.id?c}[/@s.param][@s.param name='year']${yearMenu?c}[/@s.param][/@s.url]"> ${yearMenu?c} </a>
               </li>
@@ -211,13 +208,6 @@
       [@s.submit type="button" name="next"][@s.text name="form.buttons.next" /][/@s.submit]
       [@s.submit type="button" name="cancel"][@s.text name="form.buttons.cancel" /][/@s.submit]
     </div>
-    
-    <p id="addPartnerText" class="helpMessage">
-      [@s.text name="preplanning.projectPartners.addPartnerMessage.first" /]
-      <a class="popup" href="[@s.url action='partnerSave'][@s.param name='${projectRequest}']${project.id?c}[/@s.param][/@s.url]">
-        [@s.text name="preplanning.projectPartners.addPartnerMessage.second" /]
-      </a>       
-    </p>
   </article>
   
   [/@s.form]  

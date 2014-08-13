@@ -79,17 +79,21 @@
 	  
 	  [#if logged]
         <div id="userInfo">
-          <p class="email">${currentUser.email}</p> 
+          <a id="userLogOut" href="[@s.url action="logout" namespace="/" /]">[@s.text name="header.logout" /]</a>
+          <p class="email">${currentUser.firstName} ${currentUser.lastName}</p>  
           <p class="institution">${currentUser.currentInstitution.name}</p>
-          <ul id="userInfo-drop" class="drop-down">
+          [#if currentUser.institutions?size != 1]
+          <ul id="userInfo-drop" class="drop-down"> 
             [#list currentUser.institutions as institution]
               [@s.url action="selectInstitution" namespace="/" var="url"]
                 [@s.param name="institutionID"]${institution.id?c}[/@s.param]
               [/@s.url]
+              [#if currentUser.currentInstitution.id != institution.id]
               <li> <a href="${url}" class="institution"> ${institution.name} </a> </li>
+              [/#if]
             [/#list]
-            <li> <a href="[@s.url action="logout" namespace="/" /]">[@s.text name="header.logout" /]</a></li>
-          </ul> 
+          </ul>
+          [/#if]
         </div>
   	[/#if]
   </div>
