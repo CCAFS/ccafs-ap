@@ -200,14 +200,16 @@
       [#-- If the project has not an start date and/or end date defined --]
       <p>[@s.text name="preplanning.projectBudget.message.dateUndefined" /]</p>
     [/#if]
-    <!-- internal parameter -->
-    <input name="projectID" type="hidden" value="${project.id?c}" />
-    <input name="year" type="hidden" value="${year?c}" />
-    <div class="buttons">
-      [@s.submit type="button" name="save"][@s.text name="form.buttons.save" /][/@s.submit]
-      [@s.submit type="button" name="next"][@s.text name="form.buttons.next" /][/@s.submit]
-      [@s.submit type="button" name="cancel"][@s.text name="form.buttons.cancel" /][/@s.submit]
-    </div>
+    [#if allYears?has_content && !invalidYear && hasLeader]
+      <!-- internal parameter -->
+      <input name="projectID" type="hidden" value="${project.id?c}" />
+      <input name="year" type="hidden" value="${year?c}" />
+      <div class="buttons">
+        [@s.submit type="button" name="save"][@s.text name="form.buttons.save" /][/@s.submit]
+        [@s.submit type="button" name="next"][@s.text name="form.buttons.next" /][/@s.submit]
+        [@s.submit type="button" name="cancel"][@s.text name="form.buttons.cancel" /][/@s.submit]
+      </div>
+    [/#if]
   </article>
   
   [/@s.form]  
