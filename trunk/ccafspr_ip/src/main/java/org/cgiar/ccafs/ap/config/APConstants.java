@@ -15,7 +15,7 @@ package org.cgiar.ccafs.ap.config;
 
 /**
  * All Constants should be here.
- *
+ * 
  * @author Héctor Fabio Tobón R.
  */
 public final class APConstants {
@@ -68,6 +68,7 @@ public final class APConstants {
 
   // Identifiers for the IP Programs
   public static final int COORDINATING_UNIT_PROGRAM = 10;
+  public static final int SYSTEM_ADMIN_PROGRAM = 13;
 
   // Identifier for Format Date
   public static final String DATE_FORMAT = "yyyy-MM-dd";

@@ -118,6 +118,12 @@ public class IPElementManagerImpl implements IPElementManager {
       }
       element.setTranslatedOf(elementsRelated);
 
+      // Set element types
+      IPElementType type = new IPElementType();
+      type.setId(Integer.parseInt(elementData.get("element_type_id")));
+      type.setName(elementData.get("element_type_name"));
+      element.setType(type);
+
       elementsList.add(element);
     }
 

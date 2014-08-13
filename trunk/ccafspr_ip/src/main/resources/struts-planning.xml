@@ -49,7 +49,7 @@
       <result name="success" type="redirectAction">		
         <param name="actionName">activities</param>		
         <param name="projectID">${project.id}</param>		
-      </result>		
+      </result>
     </action>
     
     <!-- Section: Activities  -->
@@ -64,13 +64,21 @@
     <action name="activityPartners" class="org.cgiar.ccafs.ap.action.BaseAction">
       <result name="input">/WEB-INF/planning/activityPartnersPlanning.ftl</result>
     </action>
+
+    <action name="activityLocations" class="org.cgiar.ccafs.ap.action.planning.LocationsPlanningAction">
+      <result name="input">/WEB-INF/planning/activityLocationsPlanning.ftl</result>
+      <result name="success" type="redirectAction">   
+        <param name="actionName">activityLocations</param>   
+        <param name="activityID">${activity.id}</param>   
+      </result>
+    </action>
     
     <action name="activityBudget" class="org.cgiar.ccafs.ap.action.BaseAction">
       <result name="input">/WEB-INF/planning/activityBudgetPlanning.ftl</result>
-    </action>
-    
-    <action name="activityLocations" class="org.cgiar.ccafs.ap.action.planning.LocationsPlanningAction">
-      <result name="input">/WEB-INF/planning/activityLocationsPlanning.ftl</result>
+      <result name="success" type="redirectAction">   
+        <param name="actionName">activityLocations</param>   
+        <param name="activityID">${activity.id}</param>   
+      </result>
     </action>
     
     <action name="activityImpactPathway" class="org.cgiar.ccafs.ap.action.BaseAction">
