@@ -85,12 +85,8 @@
       <result name="input">/WEB-INF/planning/activityImpactPathwayPlanning.ftl</result>
     </action>
         
-    <action name="activityPrimaryImpactPathway" class="org.cgiar.ccafs.ap.action.BaseAction">
-      <result name="input">/WEB-INF/planning/activityPrimaryImpactPathwayPlanning.ftl</result>
-    </action>
-    
     <action name="activityIpOtherContributions" class="org.cgiar.ccafs.ap.action.BaseAction">
-      <result name="input">/WEB-INF/planning/ipOtherContributionPlanning.ftl</result>
+      <result name="input">/WEB-INF/planning/activityipOtherContributionPlanning.ftl</result>
     </action>
     
     <action name="activityDeliverables" class="org.cgiar.ccafs.ap.action.BaseAction">

@@ -31,7 +31,7 @@ import org.slf4j.LoggerFactory;
 
 /**
  * This class contains the methods for the database table project_cross_cutting_themes
- *
+ * 
  * @author Javier Andrés Gallego B.
  */
 public class MySQLIPCrossCuttingDAO implements IPCrossCuttingDAO {
@@ -48,16 +48,16 @@ public class MySQLIPCrossCuttingDAO implements IPCrossCuttingDAO {
 
 
   @Override
-  public boolean deleteCrossCutting(int projectID, int crossCuttingID) {
-    LOG.debug(">> deleteCrossCutting(projectId={}, crossCuttingID={})", new String[] {projectID + "",
+  public boolean deleteCrossCuttingsByActivityId(int activityID, int crossCuttingID) {
+    LOG.debug(">> deleteCrossCuttingsByActivityId(activityID={}, crossCuttingID={})", new String[] {activityID + "",
       crossCuttingID + ""});
-    String query = "DELETE FROM project_cross_cutting_themes WHERE project_id = ? AND theme_id = ?";
-    int rowsDeleted = databaseManager.delete(query, new Object[] {projectID, crossCuttingID});
+    String query = "DELETE FROM activity_cross_cutting_themes WHERE activity_id = ? AND theme_id = ?";
+    int rowsDeleted = databaseManager.delete(query, new Object[] {activityID, crossCuttingID});
     if (rowsDeleted >= 0) {
-      LOG.debug("<< deleteCrossCutting():{}", true);
+      LOG.debug("<< deleteCrossCuttingsByActivityId():{}", true);
       return true;
     }
-    LOG.debug("<< deleteCrossCutting:{}", false);
+    LOG.debug("<< deleteCrossCuttingsByActivityId:{}", false);
     return false;
   }
 
@@ -87,13 +87,13 @@ public class MySQLIPCrossCuttingDAO implements IPCrossCuttingDAO {
   }
 
   @Override
-  public Map<String, String> getIPCrossCutting(int iD) {
+  public Map<String, String> getIPCrossCutting(int ipCrossCuttingID) {
     Map<String, String> ipCrossCuttingData = new HashMap<>();
     StringBuilder query = new StringBuilder();
     query.append("SELECT ipc.id, ipc.name ");
     query.append("FROM ip_cross_cutting_themes ipc ");
     query.append("WHERE ipc.id = ");
-    query.append(iD);
+    query.append(ipCrossCuttingID);
 
     try (Connection con = databaseManager.getConnection()) {
       ResultSet rs = databaseManager.makeQuery(query.toString(), con);
@@ -104,7 +104,7 @@ public class MySQLIPCrossCuttingDAO implements IPCrossCuttingDAO {
       rs.close();
     } catch (SQLException e) {
       String exceptionMessage = "-- getIPCrossCutting() > Exception raised trying to get the program ";
-      exceptionMessage += "which created the ipCrossCutting " + iD;
+      exceptionMessage += "which created the ipCrossCutting " + ipCrossCuttingID;
 
       LOG.error(exceptionMessage, e);
     }
@@ -112,18 +112,18 @@ public class MySQLIPCrossCuttingDAO implements IPCrossCuttingDAO {
   }
 
   @Override
-  public List<Map<String, String>> getIPCrossCuttingByProject(int projectID) {
-    LOG.debug(">> getIPCrossCuttingByProject( projectID = {} )", projectID);
+  public List<Map<String, String>> getIPCrossCuttingByActivityId(int activityID) {
+    LOG.debug(">> getIPCrossCuttingByActivityId( projectID = {} )", activityID);
 
     StringBuilder query = new StringBuilder();
     query.append("SELECT ipc.* ");
-    query.append("FROM project_cross_cutting_themes pct ");
-    query.append("INNER JOIN ip_cross_cutting_themes ipc ON pct.theme_id=ipc.id ");
-    query.append("WHERE pct.project_id= ");
-    query.append(projectID);
+    query.append("FROM activity_cross_cutting_themes act ");
+    query.append("INNER JOIN ip_cross_cutting_themes ipc ON act.theme_id=ipc.id ");
+    query.append("WHERE act.activity_id= ");
+    query.append(activityID);
     query.append(" ORDER BY ipc.name ");
 
-    LOG.debug("-- getIPCrossCuttingByProject() > Calling method executeQuery to get the results");
+    LOG.debug("-- getIPCrossCuttingByActivityId() > Calling method executeQuery to get the results");
     return getData(query.toString());
   }
 
@@ -146,11 +146,11 @@ public class MySQLIPCrossCuttingDAO implements IPCrossCuttingDAO {
   public boolean saveCrossCutting(Map<String, Object> elementData) {
     LOG.debug(">> saveCrossCutting(crossCuttingData={})", elementData);
     StringBuilder query = new StringBuilder();
-    query.append("INSERT INTO project_cross_cutting_themes(project_id, theme_id) ");
+    query.append("INSERT INTO activity_cross_cutting_themes(activity_id, theme_id) ");
     query.append("VALUES (?, ?) ");
 
     Object[] values = new Object[2];
-    values[0] = elementData.get("project_id");
+    values[0] = elementData.get("activity_id");
     values[1] = elementData.get("theme_id");
     int result = databaseManager.saveData(query.toString(), values);
     LOG.debug("<< saveCrossCutting():{}", result);

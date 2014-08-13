@@ -80,6 +80,7 @@ public class ActivityListAction extends BaseAction {
     }
 
     activities = activityManager.getActivitiesByProject(projectID);
+    // TODO HT validate when there is no activities, to show activity description
 
   }
 

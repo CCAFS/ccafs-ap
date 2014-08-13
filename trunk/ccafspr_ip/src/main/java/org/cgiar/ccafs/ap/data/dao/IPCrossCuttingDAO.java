@@ -28,33 +28,33 @@ import com.google.inject.ImplementedBy;
 public interface IPCrossCuttingDAO {
 
   /**
-   * This method removes a record from the table project_cross_cutting_themes.
-   *
-   * @param projectID is the project_id.
+   * This method removes a record from the table IP cross cutting by a given activity ID and a IP Cross Cutting.
+   * 
+   * @param activityID is the activity ID.
    * @param crossCuttingID is the theme_id
    * @return true if the record could be successfully removed, false otherwise.
    */
-  public boolean deleteCrossCutting(int projectID, int crossCuttingID);
+  public boolean deleteCrossCuttingsByActivityId(int activityID, int crossCuttingID);
 
   /**
    * This Method return the information of a IP Cross Cutting Theme by a given ID of a Theme
-   *
-   * @param ipThemeID - is the Id of a IP Cross Cutting Theme
+   * 
+   * @param ipCrossCuttingID - is the Id of a IP Cross Cutting Theme
    * @return a Map with the information of a IP Cross Cutting Theme
    */
-  public Map<String, String> getIPCrossCutting(int iD);
+  public Map<String, String> getIPCrossCutting(int ipCrossCuttingID);
 
   /**
-   * This method return the information of a IP Cross Cutting Theme by a given Project ID
-   *
-   * @param projectID
+   * This method return the information of a IP Cross Cutting Theme by a given activity ID
+   * 
+   * @param activityID
    * @return a List of Map with the information of IP Cross Cutting Themes
    */
-  public List<Map<String, String>> getIPCrossCuttingByProject(int projectID);
+  public List<Map<String, String>> getIPCrossCuttingByActivityId(int activityID);
 
   /**
    * This method return a all the IP Cross Cutting Themes
-   *
+   * 
    * @return a list of maps with the information of all IP Cross Cutting Themes.
    */
   public List<Map<String, String>> getIPCrossCuttings();

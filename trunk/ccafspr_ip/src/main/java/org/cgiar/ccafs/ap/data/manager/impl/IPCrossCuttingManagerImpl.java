@@ -26,7 +26,7 @@ import com.google.inject.Inject;
 
 /**
  * This class represents the Manager of IP Cross Cutting Theme
- *
+ * 
  * @author Javier Andrés Gallego B.
  */
 public class IPCrossCuttingManagerImpl implements IPCrossCuttingManager {
@@ -40,13 +40,13 @@ public class IPCrossCuttingManagerImpl implements IPCrossCuttingManager {
   }
 
   @Override
-  public boolean deleteCrossCutting(int projectID, int crossCuttingID) {
-    return ipCrossCuttingDAO.deleteCrossCutting(projectID, crossCuttingID);
+  public boolean deleteCrossCuttingByActivity(int activityID, int crossCuttingID) {
+    return ipCrossCuttingDAO.deleteCrossCuttingsByActivityId(activityID, crossCuttingID);
   }
 
   @Override
-  public IPCrossCutting getIPCrossCutting(int iD) {
-    Map<String, String> ipCrossCuttingData = ipCrossCuttingDAO.getIPCrossCutting(iD);
+  public IPCrossCutting getIPCrossCutting(int ipCrossCuttingID) {
+    Map<String, String> ipCrossCuttingData = ipCrossCuttingDAO.getIPCrossCutting(ipCrossCuttingID);
     if (!ipCrossCuttingData.isEmpty()) {
       IPCrossCutting ipCrossCutting = new IPCrossCutting();
       ipCrossCutting.setId(Integer.parseInt(ipCrossCuttingData.get("id")));
@@ -58,9 +58,9 @@ public class IPCrossCuttingManagerImpl implements IPCrossCuttingManager {
   }
 
   @Override
-  public List<IPCrossCutting> getIPCrossCuttingByProject(int projectID) {
+  public List<IPCrossCutting> getIPCrossCuttingByActivityID(int activityID) {
     List<IPCrossCutting> ipCrossCuttings = new ArrayList<>();
-    List<Map<String, String>> ipCrossCuttingList = ipCrossCuttingDAO.getIPCrossCuttingByProject(projectID);
+    List<Map<String, String>> ipCrossCuttingList = ipCrossCuttingDAO.getIPCrossCuttingByActivityId(activityID);
     for (Map<String, String> ipCrossCuttingData : ipCrossCuttingList) {
       IPCrossCutting ipCrossCutting = new IPCrossCutting();
       ipCrossCutting.setId(Integer.parseInt(ipCrossCuttingData.get("id")));
@@ -88,9 +88,9 @@ public class IPCrossCuttingManagerImpl implements IPCrossCuttingManager {
   }
 
   @Override
-  public boolean saveCrossCutting(int projectID, int crossCuttingID) {
+  public boolean saveCrossCutting(int activityID, int crossCuttingID) {
     Map<String, Object> elementData = new HashMap<>();
-    elementData.put("project_id", projectID);
+    elementData.put("activity_id", activityID);
     elementData.put("theme_id", crossCuttingID);
     return ipCrossCuttingDAO.saveCrossCutting(elementData);
   }

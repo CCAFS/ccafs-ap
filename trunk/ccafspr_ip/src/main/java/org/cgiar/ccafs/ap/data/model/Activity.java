@@ -34,10 +34,8 @@ public class Activity {
   private Date end;
   private User leader;
   private ExpectedActivityLeader expectedLeader;
-
-
+  private List<IPCrossCutting> crossCuttings;// The list of Cross Cutting themes in which this project works with.
   private List<Location> locations;
-
   private long created;
   private List<IPElement> outputs;
 
@@ -52,6 +50,10 @@ public class Activity {
 
   public long getCreated() {
     return created;
+  }
+
+  public List<IPCrossCutting> getCrossCuttings() {
+    return crossCuttings;
   }
 
   public String getCustomId() {
@@ -101,6 +103,10 @@ public class Activity {
 
   public void setCreated(long created) {
     this.created = created;
+  }
+
+  public void setCrossCuttings(List<IPCrossCutting> crossCuttings) {
+    this.crossCuttings = crossCuttings;
   }
 
   public void setCustomId(String customId) {
