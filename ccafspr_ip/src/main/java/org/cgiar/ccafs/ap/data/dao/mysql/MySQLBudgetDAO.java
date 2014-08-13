@@ -71,13 +71,12 @@ public class MySQLBudgetDAO implements BudgetDAO {
       if (rs.next()) {
         if (rs.getString("total") != null) {
           total = Double.parseDouble(rs.getString("total"));
-        } else {
-          total = -1.0;
         }
       }
       con.close();
     } catch (SQLException e) {
       LOG.error("Exception arised getting the institutions for the user {}.", projectID, e);
+      total = -1.0;
     }
     return total;
   }
@@ -108,14 +107,12 @@ public class MySQLBudgetDAO implements BudgetDAO {
       if (rs.next()) {
         if (rs.getString("total") != null) {
           total = Double.parseDouble(rs.getString("total"));
-        } else {
-          total = -1.0;
         }
-
       }
       con.close();
     } catch (SQLException e) {
       LOG.error("Exception arised getting the institutions for the user {}.", projectID, e);
+      total = -1.0;
     }
     return total;
   }
@@ -136,13 +133,12 @@ public class MySQLBudgetDAO implements BudgetDAO {
       if (rs.next()) {
         if (rs.getString("total") != null) {
           total = Double.parseDouble(rs.getString("total"));
-        } else {
-          total = -1.0;
         }
       }
       con.close();
     } catch (SQLException e) {
       LOG.error("Exception arised getting the institutions for the user {}.", projectID, e);
+      total = -1.0;
     }
     return total;
   }
@@ -164,13 +160,12 @@ public class MySQLBudgetDAO implements BudgetDAO {
       if (rs.next()) {
         if (rs.getString("total") != null) {
           total = Double.parseDouble(rs.getString("total"));
-        } else {
-          total = -1.0;
         }
       }
       con.close();
     } catch (SQLException e) {
       LOG.error("Exception arised getting the institutions for the user {}.", projectID, e);
+      total = -1.0;
     }
     return total;
   }
