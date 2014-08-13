@@ -28,6 +28,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import org.cgiar.ccafs.ap.data.model.IPProgram;
+
 import com.google.inject.Inject;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -109,6 +111,33 @@ public class UserManagerImp implements UserManager {
   }
 
   @Override
+  public List<User> getAllOwners(IPProgram program) {
+    List<User> projectContacts = new ArrayList<>();
+    List<Map<String, String>> projectContactsDataList = userDAO.getAllOwners(program.getId());
+    for (Map<String, String> pData : projectContactsDataList) {
+      // User
+      User projectContact = new User();
+      projectContact.setId(Integer.parseInt(pData.get("id")));
+      projectContact.setEmployeeId(Integer.parseInt(pData.get("employee_id")));
+      projectContact.setFirstName(pData.get("first_name"));
+      projectContact.setLastName(pData.get("last_name"));
+      projectContact.setEmail(pData.get("email"));
+      // Role
+      Role role = new Role();
+      role.setId(Integer.parseInt(pData.get("role_id")));
+      role.setName(pData.get("role_name"));
+      role.setAcronym(pData.get("role_acronym"));
+      projectContact.setRole(role);
+      // Institution
+      projectContact.setCurrentInstitution(institutionManager.getInstitution(Integer.parseInt(pData
+        .get("institution_id"))));
+      // Adding object to the array.
+      projectContacts.add(projectContact);
+    }
+    return projectContacts;
+  }
+
+  @Override
   public List<User> getAllUsers() {
     List<User> projectLeaders = new ArrayList<>();
     List<Map<String, String>> projectLeadersDataList = userDAO.getAllUsers();
@@ -157,6 +186,7 @@ public class UserManagerImp implements UserManager {
     return owner;
   }
 
+
   @Override
   public User getOwnerByProjectId(int projectID) {
     Map<String, String> userData = userDAO.getOwnerByProjectId(projectID);
@@ -182,7 +212,6 @@ public class UserManagerImp implements UserManager {
 
     return null;
   }
-
 
   @Override
   public User getUser(int userId) {
