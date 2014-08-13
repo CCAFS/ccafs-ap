@@ -88,7 +88,7 @@ public class MidOutcomesPreplanningAction extends BaseAction {
 
     midOutcomes = ipElementManager.getIPElements(program, midOutcomesType);
     outcomesList = ipElementManager.getIPElements(program, outcomesType);
-    flagshipsList = ipProgramManager.getProgramsByType(1);
+    flagshipsList = ipProgramManager.getProgramsByType(APConstants.FLAGSHIP_PROGRAM_TYPE);
 
     midOutcomesFromDatabase = new ArrayList<>();
     midOutcomesFromDatabase.addAll(midOutcomes);

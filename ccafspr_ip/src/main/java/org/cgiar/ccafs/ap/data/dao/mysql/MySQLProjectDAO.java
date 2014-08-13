@@ -178,7 +178,7 @@ public class MySQLProjectDAO implements ProjectDAO {
     try (Connection connection = databaseManager.getConnection()) {
 
       StringBuilder query = new StringBuilder();
-      query.append("SELECT u.id, u.username, pe.first_name, pe.last_name, pe.email, e.institution_id, ");
+      query.append("SELECT u.id, pe.first_name, pe.last_name, u.email, e.institution_id, ");
       query.append("e.id as employee_id ");
       query.append("FROM users u  ");
       query.append("INNER JOIN persons pe  ON u.person_id=pe.id ");
@@ -190,7 +190,6 @@ public class MySQLProjectDAO implements ProjectDAO {
       ResultSet rs = databaseManager.makeQuery(query.toString(), connection);
       if (rs.next()) {
         projectLeaderData.put("id", rs.getString("id"));
-        projectLeaderData.put("username", rs.getString("username"));
         projectLeaderData.put("first_name", rs.getString("first_name"));
         projectLeaderData.put("last_name", rs.getString("last_name"));
         projectLeaderData.put("email", rs.getString("email"));
@@ -315,7 +314,7 @@ public class MySQLProjectDAO implements ProjectDAO {
     if (expectedProjectLeaderData.get("id") == null) {
       // Add the record into the database and assign it to the projects table (column expected_project_leader_id).
       query
-        .append("INSERT INTO expected_project_leaders (contact_first_name, contact_last_name, contact_email, institution_id) ");
+      .append("INSERT INTO expected_project_leaders (contact_first_name, contact_last_name, contact_email, institution_id) ");
       query.append("VALUES (?, ?, ?, ?) ");
       Object[] values = new Object[4];
       values[0] = expectedProjectLeaderData.get("contact_first_name");
@@ -348,7 +347,7 @@ public class MySQLProjectDAO implements ProjectDAO {
     } else {
       // UPDATE the record into the database.
       query
-        .append("UPDATE expected_project_leaders SET contact_first_name = ?, contact_last_name = ?, contact_email = ?, institution_id = ? ");
+      .append("UPDATE expected_project_leaders SET contact_first_name = ?, contact_last_name = ?, contact_email = ?, institution_id = ? ");
       query.append("WHERE id = ?");
       Object[] values = new Object[5];
       values[0] = expectedProjectLeaderData.get("contact_first_name");

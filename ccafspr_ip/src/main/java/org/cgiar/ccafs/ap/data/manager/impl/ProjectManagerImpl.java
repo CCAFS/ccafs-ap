@@ -143,7 +143,6 @@ public class ProjectManagerImpl implements ProjectManager {
     if (!pData.isEmpty()) {
       User projectLeader = new User();
       projectLeader.setId(Integer.parseInt(pData.get("id")));
-      projectLeader.setUsername((pData.get("username")));
       projectLeader.setFirstName(pData.get("first_name"));
       projectLeader.setLastName(pData.get("last_name"));
       projectLeader.setEmail(pData.get("email"));

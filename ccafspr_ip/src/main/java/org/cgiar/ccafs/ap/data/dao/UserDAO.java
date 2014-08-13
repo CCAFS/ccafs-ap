@@ -81,10 +81,10 @@ public interface UserDAO {
   /**
    * Get a user with the given email.
    *
-   * @param username
+   * @param email is the user email
    * @return a Map with the user information or null if no user found.
    */
-  public Map<String, String> getUser(String username);
+  public Map<String, String> getUser(String email);
 
   /**
    * Save in the database the date and time that the user made its last login.

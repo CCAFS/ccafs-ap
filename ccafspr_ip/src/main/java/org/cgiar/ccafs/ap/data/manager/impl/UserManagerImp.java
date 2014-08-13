@@ -55,7 +55,7 @@ public class UserManagerImp implements UserManager {
   /**
    * This method make the login process against the active directory
    * if the user has an institutional account
-   * 
+   *
    * @param user
    * @return true if it was successfully logged in. False otherwise
    */
@@ -63,7 +63,7 @@ public class UserManagerImp implements UserManager {
     boolean logued = false;
 
     // The username in the AD is the email without dots until the domain
-    String username = user.getUsername().substring(0, user.getUsername().indexOf('@'));
+    String username = user.getEmail().substring(0, user.getEmail().indexOf('@'));
     username = username.replace(".", "");
 
     try {
@@ -90,7 +90,6 @@ public class UserManagerImp implements UserManager {
       User projectContact = new User();
       projectContact.setId(Integer.parseInt(pData.get("id")));
       projectContact.setEmployeeId(Integer.parseInt(pData.get("employee_id")));
-      projectContact.setUsername((pData.get("username")));
       projectContact.setFirstName(pData.get("first_name"));
       projectContact.setLastName(pData.get("last_name"));
       projectContact.setEmail(pData.get("email"));
@@ -116,7 +115,6 @@ public class UserManagerImp implements UserManager {
     for (Map<String, String> pData : projectLeadersDataList) {
       User projectLeader = new User();
       projectLeader.setId(Integer.parseInt(pData.get("id")));
-      projectLeader.setUsername((pData.get("username")));
       projectLeader.setFirstName(pData.get("first_name"));
       projectLeader.setLastName(pData.get("last_name"));
       projectLeader.setEmail(pData.get("email"));
@@ -144,7 +142,6 @@ public class UserManagerImp implements UserManager {
     User owner = new User();
     owner.setId(Integer.parseInt(userData.get("id")));
     owner.setEmployeeId(Integer.parseInt(userData.get("employee_id")));
-    owner.setUsername((userData.get("username")));
     owner.setFirstName(userData.get("first_name"));
     owner.setLastName(userData.get("last_name"));
     owner.setEmail(userData.get("email"));
@@ -167,7 +164,6 @@ public class UserManagerImp implements UserManager {
       User user = new User();
       user.setId(Integer.parseInt(userData.get("id")));
       user.setEmployeeId(Integer.parseInt(userData.get("employee_id")));
-      user.setUsername(userData.get("username"));
       user.setFirstName(userData.get("first_name"));
       user.setLastName(userData.get("last_name"));
       user.setEmail(userData.get("email"));
@@ -195,7 +191,6 @@ public class UserManagerImp implements UserManager {
       SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM");
       User user = new User();
       user.setId(userId);
-      user.setUsername(userData.get("username"));
       user.setPassword(userData.get("password"));
       user.setCcafsUser(userData.get("is_ccafs_user").equals("1"));
       user.setFirstName(userData.get("first_name"));
@@ -224,7 +219,6 @@ public class UserManagerImp implements UserManager {
 
       User user = new User();
       user.setId(Integer.parseInt(userData.get("id")));
-      user.setUsername(userData.get("username"));
       user.setPassword(userData.get("password"));
       user.setCcafsUser(userData.get("is_ccafs_user").equals("1"));
       user.setFirstName(userData.get("first_name"));

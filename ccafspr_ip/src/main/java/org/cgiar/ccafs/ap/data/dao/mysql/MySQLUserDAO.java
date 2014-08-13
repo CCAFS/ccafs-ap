@@ -53,7 +53,7 @@ public class MySQLUserDAO implements UserDAO {
 
       StringBuilder query = new StringBuilder();
       query.append("SELECT ins.id as institution_id, emp.id as employee_id, ");
-      query.append("u.id, u.username, pe.first_name, pe.last_name, pe.email, ");
+      query.append("u.id, pe.first_name, pe.last_name, u.email, ");
       query.append("ro.id as role_id, ro.name as role_name, ro.acronym as role_acronym ");
       query.append("FROM users u ");
       query.append("INNER JOIN persons pe  ON u.person_id=pe.id ");
@@ -74,7 +74,6 @@ public class MySQLUserDAO implements UserDAO {
         projectContactPersonData.put("institution_id", rs.getString("institution_id"));
         projectContactPersonData.put("id", rs.getString("id"));
         projectContactPersonData.put("employee_id", rs.getString("employee_id"));
-        projectContactPersonData.put("username", rs.getString("username"));
         projectContactPersonData.put("first_name", rs.getString("first_name"));
         projectContactPersonData.put("last_name", rs.getString("last_name"));
         projectContactPersonData.put("email", rs.getString("email"));
@@ -99,7 +98,7 @@ public class MySQLUserDAO implements UserDAO {
     try (Connection connection = dbManager.getConnection()) {
 
       StringBuilder query = new StringBuilder();
-      query.append("SELECT u.id, u.username, pe.first_name, pe.last_name, pe.email ");
+      query.append("SELECT u.id, pe.first_name, pe.last_name, u.email ");
       query.append("FROM users u ");
       query.append("INNER JOIN persons pe  ON u.person_id=pe.id");
 
@@ -107,7 +106,6 @@ public class MySQLUserDAO implements UserDAO {
       while (rs.next()) {
         Map<String, String> projectLeaderData = new HashMap<>();
         projectLeaderData.put("id", rs.getString("id"));
-        projectLeaderData.put("username", rs.getString("username"));
         projectLeaderData.put("first_name", rs.getString("first_name"));
         projectLeaderData.put("last_name", rs.getString("last_name"));
         projectLeaderData.put("email", rs.getString("email"));
@@ -125,7 +123,7 @@ public class MySQLUserDAO implements UserDAO {
   @Override
   public int getEmployeeID(int userId, int institutionId, int roleId) {
     LOG
-      .debug(">> getEmployeeID (userId={}, institutionId={}, roleId={})", new Object[] {userId, institutionId, roleId});
+    .debug(">> getEmployeeID (userId={}, institutionId={}, roleId={})", new Object[] {userId, institutionId, roleId});
     int result = -1;
     try (Connection connection = dbManager.getConnection()) {
       StringBuilder query = new StringBuilder();
@@ -157,7 +155,7 @@ public class MySQLUserDAO implements UserDAO {
     try (Connection connection = dbManager.getConnection()) {
       StringBuilder query = new StringBuilder();
       query.append("SELECT ins.id as institution_id, emp.id as employee_id, ");
-      query.append("u.id, u.username, pe.first_name, pe.last_name, pe.email, ");
+      query.append("u.id, pe.first_name, pe.last_name, u.email, ");
       query.append("ro.id as role_id, ro.name as role_name, ro.acronym as role_acronym ");
       query.append("FROM users u ");
       query.append("INNER JOIN persons pe  ON u.person_id=pe.id ");
@@ -172,7 +170,6 @@ public class MySQLUserDAO implements UserDAO {
         userData.put("institution_id", rs.getString("institution_id"));
         userData.put("id", rs.getString("id"));
         userData.put("employee_id", rs.getString("employee_id"));
-        userData.put("username", rs.getString("username"));
         userData.put("first_name", rs.getString("first_name"));
         userData.put("last_name", rs.getString("last_name"));
         userData.put("email", rs.getString("email"));
@@ -196,8 +193,8 @@ public class MySQLUserDAO implements UserDAO {
     try (Connection connection = dbManager.getConnection()) {
 
       StringBuilder query = new StringBuilder();
-      query.append("SELECT ins.id as institution_id, u.id, emp.id as employee_id, u.username, ");
-      query.append("pe.first_name, pe.last_name, pe.email, ");
+      query.append("SELECT ins.id as institution_id, u.id, emp.id as employee_id, ");
+      query.append("pe.first_name, pe.last_name, u.email, ");
       query.append("ro.id as role_id, ro.name as role_name, ro.acronym as role_acronym ");
       query.append("FROM users u ");
       query.append("INNER JOIN persons pe  ON u.person_id=pe.id ");
@@ -213,7 +210,6 @@ public class MySQLUserDAO implements UserDAO {
         projectContactPersonData.put("institution_id", rs.getString("institution_id"));
         projectContactPersonData.put("id", rs.getString("id"));
         projectContactPersonData.put("employee_id", rs.getString("employee_id"));
-        projectContactPersonData.put("username", rs.getString("username"));
         projectContactPersonData.put("first_name", rs.getString("first_name"));
         projectContactPersonData.put("last_name", rs.getString("last_name"));
         projectContactPersonData.put("email", rs.getString("email"));
@@ -235,8 +231,8 @@ public class MySQLUserDAO implements UserDAO {
     Map<String, String> userData = new HashMap<>();
     try (Connection connection = dbManager.getConnection()) {
       StringBuilder query = new StringBuilder();
-      query.append("SELECT u.id, u.username, u.password, u.is_ccafs_user, u.last_login, ");
-      query.append("p.first_name, p.last_name, p.email, p.phone ");
+      query.append("SELECT u.id, u.password, u.is_ccafs_user, u.last_login, ");
+      query.append("p.first_name, p.last_name, u.email, p.phone ");
       query.append("FROM users u ");
       query.append("INNER JOIN persons p ON u.person_id = p.id ");
       query.append("WHERE u.id = '");
@@ -246,7 +242,6 @@ public class MySQLUserDAO implements UserDAO {
       ResultSet rs = dbManager.makeQuery(query.toString(), connection);
       if (rs.next()) {
         userData.put("id", "" + userId);
-        userData.put("username", rs.getString("username"));
         userData.put("password", rs.getString("password"));
         userData.put("is_ccafs_user", rs.getString("is_ccafs_user"));
         userData.put("last_login", rs.getString("last_login"));
@@ -265,23 +260,22 @@ public class MySQLUserDAO implements UserDAO {
   }
 
   @Override
-  public Map<String, String> getUser(String username) {
-    LOG.debug(">> getUser(username={})", username);
+  public Map<String, String> getUser(String email) {
+    LOG.debug(">> getUser(email={})", email);
     Map<String, String> userData = new HashMap<>();
     try (Connection connection = dbManager.getConnection()) {
       StringBuilder query = new StringBuilder();
-      query.append("SELECT u.id, u.username, u.password, u.is_ccafs_user, u.last_login, ");
-      query.append("p.first_name, p.last_name, p.email, p.phone ");
+      query.append("SELECT u.id, u.password, u.is_ccafs_user, u.last_login, ");
+      query.append("p.first_name, p.last_name, u.email, p.phone ");
       query.append("FROM users u ");
       query.append("INNER JOIN persons p ON u.person_id = p.id ");
-      query.append("WHERE u.username = '");
-      query.append(username);
+      query.append("WHERE u.email = '");
+      query.append(email);
       query.append("'; ");
 
       ResultSet rs = dbManager.makeQuery(query.toString(), connection);
       if (rs.next()) {
         userData.put("id", rs.getString("id"));
-        userData.put("username", username);
         userData.put("password", rs.getString("password"));
         userData.put("is_ccafs_user", rs.getString("is_ccafs_user"));
         userData.put("last_login", rs.getString("last_login"));
@@ -292,7 +286,7 @@ public class MySQLUserDAO implements UserDAO {
       }
       rs.close();
     } catch (SQLException e) {
-      LOG.error("-- getUser() > There was an error getting the data for user {}.", username, e);
+      LOG.error("-- getUser() > There was an error getting the data for user {}.", email, e);
     }
     LOG.debug("<< getUser():{}", userData);
     return userData;
@@ -322,26 +316,7 @@ public class MySQLUserDAO implements UserDAO {
 
   @Override
   public boolean saveUser(Map<String, String> userData) {
-    LOG.debug(">> saveUser(userData={})", userData);
-    String query = "INSERT INTO users (name, email, password, activity_leader_id, role) VALUES (?, ?, ?, ?);";
-    Object[] values = new Object[4];
-    values[0] = userData.get("name");
-    values[0] = userData.get("email");
-    values[1] = userData.get("password");
-    values[2] = userData.get("activity_leader_id");
-    values[3] = userData.get("role");
-
-
-    int rows = dbManager.saveData(query, values);
-    if (rows <= 0) {
-      LOG.warn("-- saveUser() > There was an error saving a new user into the database.");
-      LOG.warn("Query: {}", query);
-      LOG.warn("Values: {}", values);
-
-      LOG.debug("<< saveUser():false");
-      return false;
-    }
-    LOG.debug("<< saveUser():true");
+    // TODO HC - To implement
     return true;
   }
 }
