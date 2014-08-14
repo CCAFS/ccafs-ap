@@ -25,7 +25,10 @@ public class IPProgram {
   private IPProgramType type;
 
   public IPProgram() {
+  }
 
+  public IPProgram(int id) {
+    this.id = id;
   }
 
   @Override
@@ -43,7 +46,7 @@ public class IPProgram {
 
   /**
    * This method returns a composed IPProgram name with the acronym on it.
-   *
+   * 
    * @return a composed program name in the format "Acronym: Name":
    *         e.g. RPL LAM: Latin America
    */

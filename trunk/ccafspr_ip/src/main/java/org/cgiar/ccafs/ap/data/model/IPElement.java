@@ -29,6 +29,14 @@ public class IPElement {
   private List<IPElement> contributesTo;
   private List<IPElement> translatedOf;
 
+
+  public IPElement() {
+  }
+
+  public IPElement(int id) {
+    this.id = id;
+  }
+
   @Override
   public boolean equals(Object obj) {
     if (!(obj instanceof IPElement)) {
