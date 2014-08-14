@@ -69,7 +69,6 @@ public class ProjectPartnersPreplanningAction extends BaseAction {
   private List<Institution> allPartners; // will be used to list all the partners that have the system.
   private List<User> allProjectLeaders; // will be used to list all the project leaders that have the system.
 
-
   @Inject
   public ProjectPartnersPreplanningAction(APConfig config, ProjectPartnerManager projectPartnerManager,
     InstitutionManager institutionManager, LocationManager locationManager, ProjectManager projectManager,
@@ -111,10 +110,10 @@ public class ProjectPartnersPreplanningAction extends BaseAction {
     return APConstants.PROJECT_REQUEST_ID;
   }
 
-
   public boolean isExpected() {
     return isExpected;
   }
+
 
   @Override
   public void prepare() throws Exception {
@@ -176,7 +175,6 @@ public class ProjectPartnersPreplanningAction extends BaseAction {
 
   }
 
-
   @Override
   public String save() {
     boolean success = true;
@@ -234,12 +232,21 @@ public class ProjectPartnersPreplanningAction extends BaseAction {
 
   }
 
+
   public void setAllProjectLeaders(List<User> allProjectLeaders) {
     this.allProjectLeaders = allProjectLeaders;
   }
 
+  public void setExpected(boolean isExpected) {
+    this.isExpected = isExpected;
+  }
+
   public void setProject(Project project) {
     this.project = project;
+  }
+
+  public void setProjectID(int projectID) {
+    this.projectID = projectID;
   }
 
   @Override
