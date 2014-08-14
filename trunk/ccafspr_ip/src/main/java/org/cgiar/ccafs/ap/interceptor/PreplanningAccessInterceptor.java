@@ -19,13 +19,21 @@ import org.cgiar.ccafs.ap.data.model.User;
 
 import java.util.Map;
 
+import javax.servlet.http.HttpServletRequest;
+
+import org.apache.struts2.ServletActionContext;
 import com.google.inject.Inject;
 import com.opensymphony.xwork2.ActionInvocation;
 import com.opensymphony.xwork2.interceptor.AbstractInterceptor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-
+/**
+ * This interceptor is used to validate what kind of users are able to access to the whole pre-planning section.
+ *
+ * @author Héctor Fabio Tobón R.
+ * @author Hernán David Carvajal.
+ */
 public class PreplanningAccessInterceptor extends AbstractInterceptor {
 
   private static final long serialVersionUID = -8195948793637271274L;
@@ -38,9 +46,17 @@ public class PreplanningAccessInterceptor extends AbstractInterceptor {
 
   @Override
   public String intercept(ActionInvocation invocation) throws Exception {
+    LOG.debug("=> PreplanningAccessInterceptor");
     Map<String, Object> session = invocation.getInvocationContext().getSession();
     User user = (User) session.get(APConstants.SESSION_USER);
     if (user != null) {
+      HttpServletRequest request = ServletActionContext.getRequest();
+      // String
+// if(reque) {
+// System.out.println(request.getRequestURI());
+// }
+      System.out.println(request.getContextPath());
+      // Coordination unit is going to acce
       if (user.isAdmin() || user.isFPL() || user.isRPL() || user.isCU()) {
         invocation.invoke();
       } else {
@@ -51,6 +67,5 @@ public class PreplanningAccessInterceptor extends AbstractInterceptor {
     }
     return BaseAction.NOT_LOGGED;
   }
-
 
 }

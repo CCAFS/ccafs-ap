@@ -45,6 +45,28 @@ public class MySQLProjectDAO implements ProjectDAO {
     this.databaseManager = databaseManager;
   }
 
+  @Override
+  public boolean existProject(int projectID) {
+    LOG.debug(">> existProject projectID = {} )", projectID);
+    StringBuilder query = new StringBuilder();
+    query.append("SELECT COUNT(id) FROM projects WHERE id = ");
+    query.append(projectID);
+    boolean exists = false;
+    try (Connection con = databaseManager.getConnection()) {
+      ResultSet rs = databaseManager.makeQuery(query.toString(), con);
+      if (rs.next()) {
+        if (rs.getInt(1) > 0) {
+          exists = true;
+        }
+      }
+      con.close();
+    } catch (SQLException e) {
+      LOG.error("Exception arised getting the project id.", projectID, e);
+    }
+    LOG.debug("-- existProject() > Calling method executeQuery to get the results");
+    return exists;
+  }
+
   private List<Map<String, String>> getData(String query) {
     LOG.debug(">> executeQuery(query='{}')", query);
     List<Map<String, String>> projectList = new ArrayList<>();
@@ -80,6 +102,7 @@ public class MySQLProjectDAO implements ProjectDAO {
     return projectList;
   }
 
+
   @Override
   public Map<String, String> getExpectedProjectLeader(int projectID) {
     LOG.debug(">> getExpectedProjectLeader(projectID={})", projectID);
@@ -109,7 +132,6 @@ public class MySQLProjectDAO implements ProjectDAO {
     LOG.debug("<< getExpectedProjectLeader():{}", expectedProjectLeaderData);
     return expectedProjectLeaderData;
   }
-
 
   @Override
   public Map<String, String> getProject(int projectID) {
@@ -141,7 +163,7 @@ public class MySQLProjectDAO implements ProjectDAO {
       }
       con.close();
     } catch (SQLException e) {
-      LOG.error("Exception arised getting the project for the user {}.", projectID, e);
+      LOG.error("Exception arised getting the project with id {}.", projectID, e);
     }
     LOG.debug("-- getProject() > Calling method executeQuery to get the results");
     return projectData;
@@ -314,7 +336,7 @@ public class MySQLProjectDAO implements ProjectDAO {
     if (expectedProjectLeaderData.get("id") == null) {
       // Add the record into the database and assign it to the projects table (column expected_project_leader_id).
       query
-      .append("INSERT INTO expected_project_leaders (contact_first_name, contact_last_name, contact_email, institution_id) ");
+        .append("INSERT INTO expected_project_leaders (contact_first_name, contact_last_name, contact_email, institution_id) ");
       query.append("VALUES (?, ?, ?, ?) ");
       Object[] values = new Object[4];
       values[0] = expectedProjectLeaderData.get("contact_first_name");
@@ -347,7 +369,7 @@ public class MySQLProjectDAO implements ProjectDAO {
     } else {
       // UPDATE the record into the database.
       query
-      .append("UPDATE expected_project_leaders SET contact_first_name = ?, contact_last_name = ?, contact_email = ?, institution_id = ? ");
+        .append("UPDATE expected_project_leaders SET contact_first_name = ?, contact_last_name = ?, contact_email = ?, institution_id = ? ");
       query.append("WHERE id = ?");
       Object[] values = new Object[5];
       values[0] = expectedProjectLeaderData.get("contact_first_name");

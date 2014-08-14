@@ -30,6 +30,14 @@ public interface ProjectDAO {
 
 
   /**
+   * This method validate if the project exists in the database.
+   * 
+   * @param projectId is the project identifier.
+   * @return true if the project exists or false otherwise.
+   */
+  public boolean existProject(int projectId);
+
+  /**
    * This method returns the information of an expected project leader.
    *
    * @param projectId is the project identifier.

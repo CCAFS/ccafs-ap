@@ -13,6 +13,9 @@ import java.util.Collection;
 import java.util.List;
 import java.util.Map;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import com.opensymphony.xwork2.ActionInvocation;
 import com.opensymphony.xwork2.Result;
 import com.opensymphony.xwork2.interceptor.MethodFilterInterceptor;
@@ -30,6 +33,8 @@ import org.apache.struts2.dispatcher.ServletRedirectResult;
 public class RedirectMessageInterceptor extends MethodFilterInterceptor {
 
   private static final long serialVersionUID = -1847557437429753540L;
+
+  private static final Logger LOG = LoggerFactory.getLogger(RedirectMessageInterceptor.class);
 
   public static final String FIELD_ERRORS_KEY = "RedirectMessageInterceptor_FieldErrors";
   public static final String ACTION_ERRORS_KEY = "RedirectMessageInterceptor_ActionErrors";
@@ -98,6 +103,7 @@ public class RedirectMessageInterceptor extends MethodFilterInterceptor {
 
   @Override
   public String doIntercept(ActionInvocation invocation) throws Exception {
+    LOG.debug("=> RedirectMessageInterceptor");
     Object action = invocation.getAction();
     if (action instanceof BaseAction) {
       before(invocation, (BaseAction) action);

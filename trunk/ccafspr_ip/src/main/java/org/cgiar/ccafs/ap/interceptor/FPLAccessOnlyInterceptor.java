@@ -39,6 +39,7 @@ public class FPLAccessOnlyInterceptor extends AbstractInterceptor {
 
   @Override
   public String intercept(ActionInvocation invocation) throws Exception {
+    LOG.debug("=> FPLAccessOnlyInterceptor");
     Map<String, Object> session = invocation.getInvocationContext().getSession();
     User user = (User) session.get(APConstants.SESSION_USER);
     if (user != null) {
