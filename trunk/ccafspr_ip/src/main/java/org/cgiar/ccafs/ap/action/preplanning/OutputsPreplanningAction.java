@@ -90,7 +90,14 @@ public class OutputsPreplanningAction extends BaseAction {
     // Create an element type for outputs
     IPElementType outputsType = new IPElementType(APConstants.ELEMENT_TYPE_OUTPUTS);
 
-    flagshipsList = ipProgramManager.getProgramsByType(APConstants.FLAGSHIP_PROGRAM_TYPE);
+    flagshipsList = new ArrayList<>();
+
+    // Fake flagship to add as a placeholder
+    IPProgram flagship = new IPProgram(-1);
+    flagship.setName(getText("preplanning.midOutcomesRPL.selectFlagship"));
+    flagshipsList.add(flagship);
+
+    flagshipsList.addAll(ipProgramManager.getProgramsByType(APConstants.FLAGSHIP_PROGRAM_TYPE));
     midOutcomesList = ipElementManager.getIPElements(program, midOutcomesType);
     outputs = ipElementManager.getIPElements(program, outputsType);
 
