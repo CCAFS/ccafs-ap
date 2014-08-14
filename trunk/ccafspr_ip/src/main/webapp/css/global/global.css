@@ -54,7 +54,7 @@ select {
 }
 
 .center {
-  text-align: center;
+  text-align: center !important;
 }
 
 .red {
@@ -104,6 +104,7 @@ input[type="submit"], button, .addButton {
 .addButton{
   background: url('../../images/global/add.png') no-repeat 4px #2BA6CB;
   padding: 4px 25px 4px 28px;
+  margin: 5px 0;
 }
 
 input[type="submit"], button:hover, .addButton:hover {

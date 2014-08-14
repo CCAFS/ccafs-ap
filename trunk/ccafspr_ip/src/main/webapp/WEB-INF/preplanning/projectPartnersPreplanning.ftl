@@ -42,8 +42,7 @@
     [@partnersTemplate.partnerSection projectPartners=project.projectPartners partnerTypes=partnerTypes countries=countries canEdit=true canRemove=true /]
     
     <div id="addProjectPartner" class="addLink">
-      <img src="${baseUrl}/images/global/icon-add.png" />
-      <a href="" class="addProjectPartner" >[@s.text name="preplanning.projectPartners.addProjectPartner" /]</a>
+      <a href="" class="addProjectPartner addButton" >[@s.text name="preplanning.projectPartners.addProjectPartner" /]</a>
     </div>
     <!-- internal parameter -->
     <input name="projectID" type="hidden" value="${project.id?c}" />
