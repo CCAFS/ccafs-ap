@@ -732,7 +732,6 @@ h1.contentSubTitle {
 
 .fullBlock {
   display: block;
-  padding: 7px;
   margin-bottom: 0px;
   width: 98%;
 }
@@ -1017,10 +1016,19 @@ h1.contentSubTitle {
 }
 
 .indicator, .contributions {
-    padding: 2px 15px 18px 15px;
+    padding: 2px 15px 5px 15px;
     border-bottom: 2px dotted #C3D4E7;
     margin: 2px 0px;
     background: #FFFFFF;
+}
+
+.contributions p#description {
+  padding-bottom: 8px;
+  padding-left: 10px;
+}
+
+.contributions .midOutcomeIndicators {
+padding-left: 11px;
 }
 
 .indicator h6,.indicator label{

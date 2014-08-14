@@ -66,8 +66,7 @@
       
       </div>
       <div id="addOutputBlock" class="addLink">
-        <img src="${baseUrl}/images/global/icon-add.png" />
-        <a href="" class="addOutput" >[@s.text name="preplanning.outputs.addOutput" /]</a>
+        <a href="" class="addOutput addButton" >[@s.text name="preplanning.outputs.addOutput" /]</a>
       </div>
        <div class="buttons">
         [@s.submit type="button" name="save"][@s.text name="form.buttons.save" /][/@s.submit]

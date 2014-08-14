@@ -71,11 +71,11 @@
                     
                       <div id="" class="contributions">
                         <input id="contributeId" type="hidden" name="midOutcomes[${midOutcome_index}].translatedOf" value="${parent.id}" />
-                        <p id="description">[@s.text name="midOutcomes[${midOutcome_index}].translatedOf[${parent_index}].description" /]</p>
-                        <h6>[@s.text name="preplanning.midOutcomesRPL.selectIndicators" /]</h6>
-                        
+                        <h6 id="midOutcomeDescription">[@s.text name="preplanning.midOutcomesRPL.midOutcomeDescription" /]</h6>
+                        <p id="description">[@s.text name="midOutcomes[${midOutcome_index}].translatedOf[${parent_index}].description" /]</p>      
                         [#-- midOutcome's Indicators --]
-                        <div id="midOutcomeIndicators" class="fullBlock">
+                        <h6>[@s.text name="preplanning.midOutcomesRPL.selectIndicators" /]</h6>
+                        <div id="midOutcomeIndicators" class="midOutcomeIndicators fullBlock">
                           <div class="checkboxGroup vertical"> 
                             [#list parent.indicators as parentIndicator] 
   

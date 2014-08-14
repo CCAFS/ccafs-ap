@@ -57,8 +57,8 @@
                 [#-- Add contribute --]
                 <div class="fullBlock addContributeBlock" style="display:none">
                   [@customForm.select name="contributionId" i18nkey="preplanning.midOutcomes.addContribute" showTitle=false listName="outcomesList" keyFieldName="id"  displayFieldName="description" addButton=true className="contributes" /]
-                </div> 
-              </div>  
+                </div>
+              </div>
               <div class="contentElements indicatorsBlock">
                 <div class="itemIndex">[@s.text name="preplanning.midOutcomes.indicators" /] </div>
                 [#-- midOutcome's indicators --]
@@ -79,9 +79,8 @@
             [/#list] 
           [/#if] 
       </div>
-      <div id="addMidOutcomeBlock" class="addLink">
-        <img src="${baseUrl}/images/global/icon-add.png" />
-        <a href="" class="addMidOutcome" >[@s.text name="preplanning.midOutcomes.addOutcome" /]</a>
+      <div id="addMidOutcomeBlock" class="addLink"> 
+        <a href="" class="addMidOutcome addButton" >[@s.text name="preplanning.midOutcomes.addOutcome" /]</a>
       </div> 
        <div class="buttons">
         [@s.submit type="button" name="save"][@s.text name="form.buttons.save" /][/@s.submit]

@@ -25,10 +25,11 @@
   [#if template] 
     <div id="contributeTemplate" class="contributions" style="display:none"> 
       <input id="contributeId" type="hidden" name="id" value="${parent_id}" />
+      <h6 id="midOutcomeDescription">[@s.text name="preplanning.midOutcomesRPL.midOutcomeDescription" /]</h6>
       <p id="description"></p>
-      <h6>[@s.text name="preplanning.midOutcomesRPL.selectIndicators" /]</h6>
       [#-- Outcome Indicators --]
-      <div id="midOutcomeIndicators" class="fullBlock">
+      <h6>[@s.text name="preplanning.midOutcomesRPL.selectIndicators" /]</h6>
+      <div id="midOutcomeIndicators" class="midOutcomeIndicators fullBlock">
         <div class="checkboxGroup vertical">
           [@s.fielderror cssClass="fieldError" fieldName="indicatorsSelected"/]
         </div>
@@ -36,10 +37,11 @@
   [#else]  
     <div id="" class="contributions">
       <input id="contributeId" type="hidden" name="midOutcomes[${midOutcomeRPL_index}].translatedOf" value="${parent_id}" />
+      <h6 id="midOutcomeDescription">[@s.text name="preplanning.midOutcomesRPL.midOutcomeDescription" /]</h6>
       <p id="description">[@s.text name="midOutcomes[${midOutcomeRPL_index}].translatedOf[${parent_index}].description" /]</p>
-      <h6>[@s.text name="preplanning.midOutcomesRPL.selectIndicators" /]</h6>
       [#-- Outcome Indicators --]
-      <div id="midOutcomeIndicators" class="fullBlock">
+      <h6>[@s.text name="preplanning.midOutcomesRPL.selectIndicators" /]</h6>
+      <div id="midOutcomeIndicators" class="midOutcomeIndicators fullBlock">
         <div class="checkboxGroup vertical"> 
          
           <div class="elementIndicator">
