@@ -11,7 +11,6 @@
 [#import "/WEB-INF/global/macros/forms.ftl" as customForm/]
 [#import "/WEB-INF/global/macros/projectPartnersTemplate.ftl" as partnersTemplate /]
 
-   
 <section class="content">
   <div class="helpMessage">
     <img src="${baseUrl}/images/global/icon-help.png" />
@@ -50,7 +49,7 @@
     <input name="projectID" type="hidden" value="${project.id?c}" />
   	<div class="buttons">
       [@s.submit type="button" name="save"][@s.text name="form.buttons.save" /][/@s.submit]
-      [@s.submit type="button" name="next"][@s.text name="form.buttons.next" /][/@s.submit]
+      [#-- @s.submit type="button" name="next"][@s.text name="form.buttons.next" /][/@s.submit --]
       [@s.submit type="button" name="cancel"][@s.text name="form.buttons.cancel" /][/@s.submit]
     </div>
     <p id="addPartnerText" class="helpMessage">
