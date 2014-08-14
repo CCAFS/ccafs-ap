@@ -11,7 +11,7 @@
  * You should have received a copy of the GNU General Public License
  * along with CCAFS P&R. If not, see <http://www.gnu.org/licenses/>.
  *****************************************************************/
-package org.cgiar.ccafs.ap.interceptor;
+package org.cgiar.ccafs.ap.interceptor.project;
 
 import org.cgiar.ccafs.ap.action.BaseAction;
 import org.cgiar.ccafs.ap.config.APConstants;
@@ -19,9 +19,6 @@ import org.cgiar.ccafs.ap.data.model.User;
 
 import java.util.Map;
 
-import javax.servlet.http.HttpServletRequest;
-
-import org.apache.struts2.ServletActionContext;
 import com.google.inject.Inject;
 import com.opensymphony.xwork2.ActionInvocation;
 import com.opensymphony.xwork2.interceptor.AbstractInterceptor;
@@ -29,19 +26,18 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 /**
- * This interceptor is used to validate what kind of users are able to access to the whole pre-planning section.
+ * This interceptor is used to validate what kind of users are able to access to the pre-planning/projects section.
  *
  * @author Héctor Fabio Tobón R.
- * @author Hernán David Carvajal.
  */
-public class PreplanningAccessInterceptor extends AbstractInterceptor {
+public class PreplanningProjectAccessInterceptor extends AbstractInterceptor {
 
-  private static final long serialVersionUID = -8195948793637271274L;
+  private static final long serialVersionUID = -5970028237143387666L;
 
-  private static final Logger LOG = LoggerFactory.getLogger(PreplanningAccessInterceptor.class);
+  private static final Logger LOG = LoggerFactory.getLogger(PreplanningProjectAccessInterceptor.class);
 
   @Inject
-  public PreplanningAccessInterceptor() {
+  public PreplanningProjectAccessInterceptor() {
   }
 
   @Override
@@ -50,13 +46,6 @@ public class PreplanningAccessInterceptor extends AbstractInterceptor {
     Map<String, Object> session = invocation.getInvocationContext().getSession();
     User user = (User) session.get(APConstants.SESSION_USER);
     if (user != null) {
-      HttpServletRequest request = ServletActionContext.getRequest();
-      // String
-// if(reque) {
-// System.out.println(request.getRequestURI());
-// }
-      System.out.println(request.getContextPath());
-      // Coordination unit is going to acce
       if (user.isAdmin() || user.isFPL() || user.isRPL() || user.isCU()) {
         invocation.invoke();
       } else {

@@ -11,12 +11,13 @@
  * You should have received a copy of the GNU General Public License
  * along with CCAFS P&R. If not, see <http://www.gnu.org/licenses/>.
  *****************************************************************/
-package org.cgiar.ccafs.ap.interceptor;
+package org.cgiar.ccafs.ap.interceptor.project;
 
 import java.util.Map;
 
-import org.cgiar.ccafs.ap.data.manager.ProjectManager;
+import org.apache.struts2.ServletActionContext;
 
+import org.cgiar.ccafs.ap.data.manager.ProjectManager;
 import org.apache.commons.lang3.StringUtils;
 import org.cgiar.ccafs.ap.config.APConstants;
 import org.cgiar.ccafs.ap.action.BaseAction;
@@ -47,27 +48,34 @@ public class ValidateProjectParameterInterceptor extends AbstractInterceptor {
   @Override
   public String intercept(ActionInvocation invocation) throws Exception {
     LOG.debug("=> ValidateProjectParameterInterceptor");
-    Map<String, Object> parameters = invocation.getInvocationContext().getParameters();
-    // Validate if project parameter exists in the URL.
-    if (parameters.get(APConstants.PROJECT_REQUEST_ID) != null) {
-      String projectParameter = ((String[]) parameters.get(APConstants.PROJECT_REQUEST_ID))[0];
-      // Validate if it is a number.
-      if (StringUtils.isNumeric(projectParameter)) {
-        int projectID = Integer.parseInt(projectParameter);
-        // If project doesn't exist.
-        if (!projectManager.existProject(projectID)) {
+
+    String actionName = ServletActionContext.getActionMapping().getName();
+    // if user is not in project list.
+    if (!actionName.equals("projects")) {
+      Map<String, Object> parameters = invocation.getInvocationContext().getParameters();
+      // Validate if project parameter exists in the URL.
+      if (parameters.get(APConstants.PROJECT_REQUEST_ID) != null) {
+        String projectParameter = ((String[]) parameters.get(APConstants.PROJECT_REQUEST_ID))[0];
+        // Validate if it is a number.
+        if (StringUtils.isNumeric(projectParameter)) {
+          int projectID = Integer.parseInt(projectParameter);
+          // If project doesn't exist.
+          if (!projectManager.existProject(projectID)) {
+            return BaseAction.NOT_FOUND;
+          }
+          // If project exists, continue!
+          return invocation.invoke();
+        } else {
+          // If parameter is not a number.
           return BaseAction.NOT_FOUND;
         }
-        // If project exists, continue!
-        return invocation.invoke();
       } else {
-        // If parameter is not a number.
+        // if parameter does not exist.
         return BaseAction.NOT_FOUND;
       }
     } else {
-      // if parameter does not exist.
-      return BaseAction.NOT_FOUND;
-
+      // if user is in project list, do nothing!
+      return invocation.invoke();
     }
   }
 
