@@ -46,6 +46,43 @@ public class MySQLUserDAO implements UserDAO {
   }
 
   @Override
+  public List<Map<String, String>> getAllEmployees() {
+    LOG.debug(">> getAllEmployees()");
+    List<Map<String, String>> employeesList = new ArrayList<>();
+    try (Connection connection = dbManager.getConnection()) {
+
+      StringBuilder query = new StringBuilder();
+      query
+        .append("SELECT u.id, pe.first_name, pe.last_name, u.email, e.institution_id, e.role_id, r.name as role_name, r.acronym as role_acronym ");
+      query.append("FROM employees e ");
+      query.append("INNER JOIN users u  ON e.user_id=u.id ");
+      query.append("INNER JOIN roles r  ON e.role_id=r.id ");
+      query.append("INNER JOIN persons pe  ON u.person_id=pe.id ");
+      query.append("ORDER BY pe.last_name");
+
+      ResultSet rs = dbManager.makeQuery(query.toString(), connection);
+      while (rs.next()) {
+        Map<String, String> employeeData = new HashMap<>();
+        employeeData.put("id", rs.getString("id"));
+        employeeData.put("first_name", rs.getString("first_name"));
+        employeeData.put("last_name", rs.getString("last_name"));
+        employeeData.put("email", rs.getString("email"));
+        employeeData.put("institution_id", rs.getString("institution_id"));
+        employeeData.put("role_id", rs.getString("role_id"));
+        employeeData.put("role_name", rs.getString("role_name"));
+        employeeData.put("role_acronym", rs.getString("role_acronym"));
+        employeesList.add(employeeData);
+      }
+      rs.close();
+    } catch (SQLException e) {
+      LOG.error("-- getAllEmployees() > There was an error getting the data for Employees {}.", e);
+      return null;
+    }
+    LOG.debug("<< getAllEmployees():{}", employeesList);
+    return employeesList;
+  }
+
+  @Override
   public List<Map<String, String>> getAllOwners() {
     LOG.debug(">> getAllOwners()");
     List<Map<String, String>> projectContactPersonList = new ArrayList<>();
@@ -138,9 +175,10 @@ public class MySQLUserDAO implements UserDAO {
     return projectContactPersonList;
   }
 
+
   @Override
   public List<Map<String, String>> getAllUsers() {
-    LOG.debug(">> getProjectLeader()");
+    LOG.debug(">> getAllUsers()");
     List<Map<String, String>> projectLeadersList = new ArrayList<>();
     try (Connection connection = dbManager.getConnection()) {
 
@@ -160,13 +198,12 @@ public class MySQLUserDAO implements UserDAO {
       }
       rs.close();
     } catch (SQLException e) {
-      LOG.error("-- getProjectLeader() > There was an error getting the data for Project Leaders {}.", e);
+      LOG.error("-- getAllUsers() > There was an error getting the data for Project Leaders {}.", e);
       return null;
     }
-    LOG.debug("<< getProjectLeader():{}", projectLeadersList);
+    LOG.debug("<< getAllUsers():{}", projectLeadersList);
     return projectLeadersList;
   }
-
 
   @Override
   public int getEmployeeID(int userId, int institutionId, int roleId) {
@@ -235,7 +272,7 @@ public class MySQLUserDAO implements UserDAO {
 
   @Override
   public Map<String, String> getOwnerByProjectId(int projectID) {
-    LOG.debug(">> getImportantUserByProject(projectID={})", projectID);
+    LOG.debug(">> getOwnerByProjectId(projectID={})", projectID);
     Map<String, String> projectContactPersonData = new HashMap<>();
     try (Connection connection = dbManager.getConnection()) {
 
@@ -268,7 +305,7 @@ public class MySQLUserDAO implements UserDAO {
     } catch (SQLException e) {
       LOG.error("-- getUser() > There was an error getting the data for user with id {}.", projectID, e);
     }
-    LOG.debug("<< getImportantUserByProject():{}", projectContactPersonData);
+    LOG.debug("<< getOwnerByProjectId():{}", projectContactPersonData);
     return projectContactPersonData;
   }
 

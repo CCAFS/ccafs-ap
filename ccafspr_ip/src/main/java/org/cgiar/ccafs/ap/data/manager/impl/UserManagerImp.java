@@ -16,6 +16,7 @@ package org.cgiar.ccafs.ap.data.manager.impl;
 import org.cgiar.ccafs.ap.data.dao.UserDAO;
 import org.cgiar.ccafs.ap.data.manager.InstitutionManager;
 import org.cgiar.ccafs.ap.data.manager.UserManager;
+import org.cgiar.ccafs.ap.data.model.IPProgram;
 import org.cgiar.ccafs.ap.data.model.Role;
 import org.cgiar.ccafs.ap.data.model.User;
 import org.cgiar.ccafs.ap.util.MD5Convert;
@@ -27,8 +28,6 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-
-import org.cgiar.ccafs.ap.data.model.IPProgram;
 
 import com.google.inject.Inject;
 import org.slf4j.Logger;
@@ -57,7 +56,7 @@ public class UserManagerImp implements UserManager {
   /**
    * This method make the login process against the active directory
    * if the user has an institutional account
-   *
+   * 
    * @param user
    * @return true if it was successfully logged in. False otherwise
    */
@@ -81,6 +80,35 @@ public class UserManagerImp implements UserManager {
     }
 
     return logued;
+  }
+
+  @Override
+  public List<User> getAllEmployees() {
+    List<User> employees = new ArrayList<>();
+    List<Map<String, String>> employeesDataList = userDAO.getAllEmployees();
+    for (Map<String, String> eData : employeesDataList) {
+      User employee = new User();
+      employee.setId(Integer.parseInt(eData.get("id")));
+      employee.setFirstName(eData.get("first_name"));
+      employee.setLastName(eData.get("last_name"));
+      employee.setEmail(eData.get("email"));
+      // Institution
+      if (eData.get("institution_id") != null) {
+        employee
+          .setCurrentInstitution(institutionManager.getInstitution(Integer.parseInt(eData.get("institution_id"))));
+      }
+      // Role
+      if (eData.get("role_id") != null) {
+        Role role = new Role();
+        role.setId(Integer.parseInt(eData.get("role_id")));
+        role.setName(eData.get("role_name"));
+        role.setAcronym(eData.get("role_acronym"));
+        employee.setRole(role);
+      }
+      // Adding object to the array.
+      employees.add(employee);
+    }
+    return employees;
   }
 
   @Override
@@ -163,6 +191,7 @@ public class UserManagerImp implements UserManager {
     return result;
   }
 
+
   @Override
   public User getOwner(int ownerId) {
 
@@ -185,7 +214,6 @@ public class UserManagerImp implements UserManager {
 
     return owner;
   }
-
 
   @Override
   public User getOwnerByProjectId(int projectID) {
