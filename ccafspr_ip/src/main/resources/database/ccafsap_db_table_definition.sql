@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- Servidor: davinci.ciat.cgiar.org
--- Tiempo de generación: 13-08-2014 a las 23:18:59
+-- Tiempo de generación: 14-08-2014 a las 23:56:21
 -- Versión del servidor: 5.5.30
 -- Versión de PHP: 5.3.8
 
@@ -48,6 +48,19 @@ CREATE TABLE IF NOT EXISTS `activity_budgets` (
   `budget_id` bigint(20) NOT NULL,
   PRIMARY KEY (`activity_id`,`budget_id`),
   KEY `FK_activity_budgets_budget_id_idx` (`budget_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+-- --------------------------------------------------------
+
+--
+-- Estructura de tabla para la tabla `activity_cross_cutting_themes`
+--
+
+CREATE TABLE IF NOT EXISTS `activity_cross_cutting_themes` (
+  `activity_id` bigint(20) NOT NULL,
+  `theme_id` bigint(20) NOT NULL COMMENT 'Foreign key to the table ip_cross_cutting_themes',
+  KEY `FK_projects_themes_projects_idx` (`activity_id`),
+  KEY `FK_projects_themes_cutting_themes_idx` (`theme_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 -- --------------------------------------------------------
@@ -295,7 +308,7 @@ CREATE TABLE IF NOT EXISTS `ip_cross_cutting_themes` (
 
 CREATE TABLE IF NOT EXISTS `ip_elements` (
   `id` bigint(20) NOT NULL AUTO_INCREMENT,
-  `description` text COLLATE latin1_general_ci,
+  `description` text,
   `element_type_id` bigint(20) NOT NULL COMMENT 'Foreign key to the table ip_element_types',
   PRIMARY KEY (`id`),
   KEY `FK_element_element_type_idx` (`element_type_id`)
@@ -309,7 +322,7 @@ CREATE TABLE IF NOT EXISTS `ip_elements` (
 
 CREATE TABLE IF NOT EXISTS `ip_element_types` (
   `id` bigint(20) NOT NULL AUTO_INCREMENT,
-  `name` varchar(255) COLLATE latin1_general_ci DEFAULT NULL,
+  `name` varchar(255) DEFAULT NULL,
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB  DEFAULT CHARSET=utf8;
 
@@ -321,8 +334,8 @@ CREATE TABLE IF NOT EXISTS `ip_element_types` (
 
 CREATE TABLE IF NOT EXISTS `ip_indicators` (
   `id` bigint(20) NOT NULL AUTO_INCREMENT,
-  `description` text COLLATE latin1_general_ci,
-  `target` text COLLATE latin1_general_ci,
+  `description` text,
+  `target` text,
   `program_element_id` bigint(20) NOT NULL,
   `parent_id` bigint(20) DEFAULT NULL COMMENT 'Foreign key to ip_indicators table. This field shows if the indicator contributes to another indicator',
   PRIMARY KEY (`id`),
@@ -353,8 +366,8 @@ CREATE TABLE IF NOT EXISTS `ip_other_contributions` (
 
 CREATE TABLE IF NOT EXISTS `ip_programs` (
   `id` bigint(20) NOT NULL AUTO_INCREMENT,
-  `name` text COLLATE latin1_general_ci,
-  `acronym` varchar(45) COLLATE latin1_general_ci DEFAULT NULL,
+  `name` text,
+  `acronym` varchar(45) DEFAULT NULL,
   `region_id` bigint(20) DEFAULT NULL,
   `type_id` bigint(20) NOT NULL,
   PRIMARY KEY (`id`),
@@ -570,20 +583,6 @@ CREATE TABLE IF NOT EXISTS `project_budgets` (
 -- --------------------------------------------------------
 
 --
--- Estructura de tabla para la tabla `project_cross_cutting_themes`
---
-
-CREATE TABLE IF NOT EXISTS `project_cross_cutting_themes` (
-  `project_id` bigint(20) NOT NULL,
-  `theme_id` bigint(20) NOT NULL COMMENT 'Foreign key to the table ip_cross_cutting_themes',
-  PRIMARY KEY (`project_id`,`theme_id`),
-  KEY `FK_projects_themes_projects_idx` (`project_id`),
-  KEY `FK_projects_themes_cutting_themes_idx` (`theme_id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
-
--- --------------------------------------------------------
-
---
 -- Estructura de tabla para la tabla `project_focuses`
 --
 
@@ -722,6 +721,13 @@ ALTER TABLE `activities`
 ALTER TABLE `activity_budgets`
   ADD CONSTRAINT `FK_activity_budgets_budget_id` FOREIGN KEY (`budget_id`) REFERENCES `budgets` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
   ADD CONSTRAINT `FK_activity_budgets_activity_id` FOREIGN KEY (`activity_id`) REFERENCES `activities` (`id`) ON DELETE CASCADE ON UPDATE CASCADE;
+
+--
+-- Filtros para la tabla `activity_cross_cutting_themes`
+--
+ALTER TABLE `activity_cross_cutting_themes`
+  ADD CONSTRAINT `FK_activity_cross_cutting_themes_activity_id` FOREIGN KEY (`activity_id`) REFERENCES `activities` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
+  ADD CONSTRAINT `FK_projects_themes_cutting_themes` FOREIGN KEY (`theme_id`) REFERENCES `ip_cross_cutting_themes` (`id`) ON DELETE CASCADE ON UPDATE CASCADE;
 
 --
 -- Filtros para la tabla `activity_locations`
@@ -895,13 +901,6 @@ ALTER TABLE `projects`
 ALTER TABLE `project_budgets`
   ADD CONSTRAINT `FK_project_id` FOREIGN KEY (`project_id`) REFERENCES `projects` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
   ADD CONSTRAINT `FK_budget_id` FOREIGN KEY (`budget_id`) REFERENCES `budgets` (`id`) ON DELETE CASCADE ON UPDATE CASCADE;
-
---
--- Filtros para la tabla `project_cross_cutting_themes`
---
-ALTER TABLE `project_cross_cutting_themes`
-  ADD CONSTRAINT `FK_projects_themes_cutting_themes` FOREIGN KEY (`theme_id`) REFERENCES `ip_cross_cutting_themes` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
-  ADD CONSTRAINT `FK_projects_themes_projects` FOREIGN KEY (`project_id`) REFERENCES `projects` (`id`) ON DELETE CASCADE ON UPDATE CASCADE;
 
 --
 -- Filtros para la tabla `project_outcomes`
