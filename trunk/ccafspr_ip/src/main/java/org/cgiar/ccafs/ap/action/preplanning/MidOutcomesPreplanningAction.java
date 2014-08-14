@@ -86,9 +86,17 @@ public class MidOutcomesPreplanningAction extends BaseAction {
     // Create an ipElementType with the identifier of the outcomes 2025 type
     IPElementType midOutcomesType = new IPElementType(APConstants.ELEMENT_TYPE_OUTCOME2019);
 
+
+    flagshipsList = new ArrayList<>();
+
+    // Fake flagship to add as a placeholder
+    IPProgram flagship = new IPProgram(-1);
+    flagship.setName(getText("preplanning.midOutcomesRPL.selectFlagship"));
+    flagshipsList.add(flagship);
+
     midOutcomes = ipElementManager.getIPElements(program, midOutcomesType);
     outcomesList = ipElementManager.getIPElements(program, outcomesType);
-    flagshipsList = ipProgramManager.getProgramsByType(APConstants.FLAGSHIP_PROGRAM_TYPE);
+    flagshipsList.addAll(ipProgramManager.getProgramsByType(APConstants.FLAGSHIP_PROGRAM_TYPE));
 
     midOutcomesFromDatabase = new ArrayList<>();
     midOutcomesFromDatabase.addAll(midOutcomes);
