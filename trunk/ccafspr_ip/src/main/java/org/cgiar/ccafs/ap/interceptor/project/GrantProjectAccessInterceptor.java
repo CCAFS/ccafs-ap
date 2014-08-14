@@ -11,13 +11,15 @@
  * You should have received a copy of the GNU General Public License
  * along with CCAFS P&R. If not, see <http://www.gnu.org/licenses/>.
  *****************************************************************/
-package org.cgiar.ccafs.ap.interceptor;
+package org.cgiar.ccafs.ap.interceptor.project;
 
 import org.cgiar.ccafs.ap.config.APConstants;
 import org.cgiar.ccafs.ap.data.model.User;
 
 import java.util.List;
 import java.util.Map;
+
+import org.apache.struts2.ServletActionContext;
 
 import org.cgiar.ccafs.ap.data.manager.ProjectManager;
 import org.cgiar.ccafs.ap.action.BaseAction;
@@ -51,32 +53,33 @@ public class GrantProjectAccessInterceptor extends AbstractInterceptor {
   public String intercept(ActionInvocation invocation) throws Exception {
     LOG.debug("=> GrantProjectAccessInterceptor");
     Map<String, Object> session = invocation.getInvocationContext().getSession();
-    Map<String, Object> parameters = invocation.getInvocationContext().getParameters();
-    // TODO TEMPORAL
-    if (parameters.get("projectID") == null) {
-      return invocation.invoke();
-    }
-    // -----------------------------------------
-    // Project parameter is validated in the ValidateProjectParameterInterceptor.
-    String projectParameter = ((String[]) parameters.get(APConstants.PROJECT_REQUEST_ID))[0];
-    int projectID = Integer.parseInt(projectParameter);
-    // User session is validated in the RequireUserInterceptor.
-    User user = (User) session.get(APConstants.SESSION_USER);
-    BaseAction baseAction = (BaseAction) invocation.getAction();
-    // Listing all projects that the user is able to edit.
-    // Getting project list that belongs to the program that you belongs to.
-    if (user.isAdmin()) {
-      // Admins are able to see all fields editable and save any information.
-      baseAction.setFullEditable(true);
-      baseAction.setSaveable(true);
-    } else {
-      List<Integer> idsAllowedToEdit = projectManager.getProjectIdsEditables(user);
-      if (idsAllowedToEdit.contains(new Integer(projectID))) {
+
+    String actionName = ServletActionContext.getActionMapping().getName();
+    if (!actionName.equals("projects")) {
+      Map<String, Object> parameters = invocation.getInvocationContext().getParameters();
+      // Project parameter is validated in the ValidateProjectParameterInterceptor.
+      String projectParameter = ((String[]) parameters.get(APConstants.PROJECT_REQUEST_ID))[0];
+      int projectID = Integer.parseInt(projectParameter);
+      // User session is validated in the RequireUserInterceptor.
+      User user = (User) session.get(APConstants.SESSION_USER);
+      BaseAction baseAction = (BaseAction) invocation.getAction();
+      // Listing all projects that the user is able to edit.
+      // Getting project list that belongs to the program that you belongs to.
+      if (user.isAdmin()) {
+        // Admins are able to see all fields editable and save any information.
         baseAction.setFullEditable(true);
         baseAction.setSaveable(true);
       } else {
-        baseAction.setFullEditable(true);
-        baseAction.setSaveable(false);
+        // If the user is not an Admin, let's figure out if he/she can have the enough privileges to edit the project.
+        List<Integer> idsAllowedToEdit = projectManager.getProjectIdsEditables(user);
+        if (idsAllowedToEdit.contains(new Integer(projectID))) {
+          baseAction.setFullEditable(true);
+          baseAction.setSaveable(true);
+        } else {
+          // User will see the the fields enable but without any save/delete button.
+          baseAction.setFullEditable(true);
+          baseAction.setSaveable(false);
+        }
       }
     }
     return invocation.invoke();

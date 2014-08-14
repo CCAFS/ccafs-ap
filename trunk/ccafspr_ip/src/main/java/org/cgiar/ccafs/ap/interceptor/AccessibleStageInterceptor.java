@@ -41,28 +41,27 @@ public class AccessibleStageInterceptor extends AbstractInterceptor {
   public String intercept(ActionInvocation invocation) throws Exception {
     LOG.debug("=> AccessibleStageInterceptor");
     String stageName = ServletActionContext.getActionMapping().getNamespace();
-
     // Check what section is the user loading and
     // validate if it is active
-    if (stageName.equals("/pre-planning")) {
+    if (stageName.startsWith("/pre-planning")) {
       if (config.isPrePlanningActive()) {
         return invocation.invoke();
       } else {
         return BaseAction.NOT_AUTHORIZED;
       }
-    } else if (stageName.equals("/planning")) {
+    } else if (stageName.startsWith("/planning")) {
       if (config.isPlanningActive()) {
         return invocation.invoke();
       } else {
         return BaseAction.NOT_AUTHORIZED;
       }
-    } else if (stageName.equals("/reporting")) {
+    } else if (stageName.startsWith("/reporting")) {
       if (config.isReportingActive()) {
         return invocation.invoke();
       } else {
         return BaseAction.NOT_AUTHORIZED;
       }
-    } else if (stageName.equals("/summaries")) {
+    } else if (stageName.startsWith("/summaries")) {
       if (config.isSummariesActive()) {
         return invocation.invoke();
       } else {

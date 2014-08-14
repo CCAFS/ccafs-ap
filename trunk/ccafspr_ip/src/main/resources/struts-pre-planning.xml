@@ -2,16 +2,15 @@
 <!DOCTYPE struts PUBLIC "-//Apache Software Foundation//DTD Struts Configuration 2.3//EN" "http://struts.apache.org/dtds/struts-2.3.dtd">
 <struts>
 
-  <!-- Add addition packages and configuration here. -->
+ 
   <package name="preplanning" namespace="/pre-planning" extends="ccafsap-default">
-    <default-interceptor-ref name="preplanningStack" />
+    <default-interceptor-ref name="preplanningStackIP" />
     <default-action-ref name="outcomes" />
 
     <!-- Sections -->
     
     <!-- Section: Higher Level Impact Pathways  -->
-    <action name="outcomes" class="org.cgiar.ccafs.ap.action.preplanning.OutcomesPreplanningAction">
-      <interceptor-ref name="preplanningStack" />
+    <action name="outcomes" class="org.cgiar.ccafs.ap.action.preplanning.OutcomesPreplanningAction">      
       <result name="cancel" type="redirectAction">
         <param name="namespace">/</param>
         <param name="actionName">login</param>
@@ -23,7 +22,7 @@
     </action>
     
     <action name="midOutcomes" class="org.cgiar.ccafs.ap.action.preplanning.MidOutcomesPreplanningAction">
-      <interceptor-ref name="preplanningStack" />
+      <interceptor-ref name="preplanningStackIP" />
       <interceptor-ref name="FPLAccessOnly" />
       <result name="input">/WEB-INF/preplanning/midOutcomesPreplanning.ftl</result>
       <result name="success" type="redirectAction">
@@ -32,7 +31,7 @@
     </action>
     
     <action name="midOutcomesRPL" class="org.cgiar.ccafs.ap.action.preplanning.MidOutcomesPreplanningAction">
-      <interceptor-ref name="preplanningStack" />
+      <interceptor-ref name="preplanningStackIP" />
       <interceptor-ref name="RPLAccessOnly" />
       <result name="input">/WEB-INF/preplanning/midOutcomesRplPreplanning.ftl</result>
       <result name="success" type="redirectAction">
@@ -41,7 +40,7 @@
     </action>
     
     <action name="outputs" class="org.cgiar.ccafs.ap.action.preplanning.OutputsPreplanningAction">
-      <interceptor-ref name="preplanningStack" />
+      <interceptor-ref name="preplanningStackIP" />
       <interceptor-ref name="FPLAccessOnly" />
       <result name="input">/WEB-INF/preplanning/outputsPreplanning.ftl</result>
       <result name="success" type="redirectAction">
@@ -50,7 +49,7 @@
     </action>
     
     <action name="outputsRPL" class="org.cgiar.ccafs.ap.action.preplanning.OutputsPreplanningAction">
-      <interceptor-ref name="preplanningStack" />
+      <interceptor-ref name="preplanningStackIP" />
       <interceptor-ref name="RPLAccessOnly" />
       <result name="input">/WEB-INF/preplanning/outputsRplPreplanning.ftl</result>
       <result name="success" type="redirectAction">
@@ -59,7 +58,6 @@
     </action>
   </package>
   
-  <!-- Add addition packages and configuration here. -->
   <package name="preplanningProjects" namespace="/pre-planning/projects" extends="ccafsap-default">
     <default-interceptor-ref name="preplanningStackProjects" />
     <default-action-ref name="projects" />

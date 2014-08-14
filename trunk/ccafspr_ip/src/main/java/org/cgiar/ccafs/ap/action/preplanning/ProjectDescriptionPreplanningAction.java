@@ -76,7 +76,7 @@ public class ProjectDescriptionPreplanningAction extends BaseAction {
   /**
    * This method returns a composed name with the Acronym and Name.
    * e.g. FP4: Policies and Institutions for Climate-Resilient Food Systems
-   * 
+   *
    * @param ipProgramId is the program identifier.
    * @return the composed name described above.
    */
@@ -92,7 +92,7 @@ public class ProjectDescriptionPreplanningAction extends BaseAction {
 
   /**
    * This method returns an array of cross cutting ids depending on the project.crossCuttings attribute.
-   * 
+   *
    * @return an array of integers.
    */
 // public int[] getCrossCuttingIds() {
@@ -112,7 +112,7 @@ public class ProjectDescriptionPreplanningAction extends BaseAction {
 
   /**
    * This method returns an array of flagship ids depending on the project.flagships attribute.
-   * 
+   *
    * @return an array of integers.
    */
   public int[] getFlagshipIds() {
@@ -154,7 +154,7 @@ public class ProjectDescriptionPreplanningAction extends BaseAction {
 
   /**
    * This method returns an array of region ids depending on the project.regions attribute.
-   * 
+   *
    * @return an array of integers.
    */
   public int[] getRegionIds() {
@@ -175,7 +175,7 @@ public class ProjectDescriptionPreplanningAction extends BaseAction {
   @Override
   public void prepare() throws Exception {
     super.prepare();
-
+    System.out.println("PREPARE: isSaveable: " + this.isSaveable() + " - isFullEditable: " + this.isFullEditable());
     try {
       projectID = Integer.parseInt(StringUtils.trim(this.getRequest().getParameter(APConstants.PROJECT_REQUEST_ID)));
     } catch (NumberFormatException e) {
@@ -213,6 +213,7 @@ public class ProjectDescriptionPreplanningAction extends BaseAction {
 
   @Override
   public String save() {
+    System.out.println("SAVE: isSaveable: " + this.isSaveable() + " - isFullEditable: " + this.isFullEditable());
     // Reviewing some change in the year range from start date to end date in order to reflect those changes in the
     // project budget section.
     List<Integer> currentYears = project.getAllYears();
@@ -384,7 +385,7 @@ public class ProjectDescriptionPreplanningAction extends BaseAction {
   }
 
   // TODO
-  public void setProjectID(String s) {
-    projectID = Integer.parseInt(s);
+  public void setProjectID(int projectID) {
+    this.projectID = projectID;
   }
 }
