@@ -19,6 +19,9 @@ import org.cgiar.ccafs.ap.data.model.User;
 
 import java.util.Map;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import com.opensymphony.xwork2.ActionInvocation;
 import com.opensymphony.xwork2.interceptor.AbstractInterceptor;
 
@@ -27,14 +30,18 @@ import com.opensymphony.xwork2.interceptor.AbstractInterceptor;
  * the contents of the specified page.
  * If there is no an user in the current session it will return a 401 error (Authentication Required).
  *
- * @author hftobon
+ * @author Héctor Fabio Tobón R.
  */
 public class RequireUserInterceptor extends AbstractInterceptor {
+
+
+  private static final Logger LOG = LoggerFactory.getLogger(RequireUserInterceptor.class);
 
   private static final long serialVersionUID = 7739155018211386527L;
 
   @Override
   public String intercept(ActionInvocation invocation) throws Exception {
+    LOG.debug("=> RequireUserInterceptor");
     Map<String, Object> session = invocation.getInvocationContext().getSession();
     User user = (User) session.get(APConstants.SESSION_USER);
     if (user != null) {

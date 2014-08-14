@@ -65,6 +65,11 @@ public class ProjectManagerImpl implements ProjectManager {
   }
 
   @Override
+  public boolean existProject(int projectId) {
+    return projectDAO.existProject(projectId);
+  }
+
+  @Override
   public User getExpectedProjectLeader(int projectId) {
     Map<String, String> pData = projectDAO.getExpectedProjectLeader(projectId);
     if (!pData.isEmpty()) {

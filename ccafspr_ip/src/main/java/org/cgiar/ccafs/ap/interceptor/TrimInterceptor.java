@@ -30,6 +30,9 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import com.opensymphony.xwork2.ActionInvocation;
 import com.opensymphony.xwork2.interceptor.MethodFilterInterceptor;
 import org.apache.commons.lang3.StringUtils;
@@ -44,10 +47,14 @@ import org.apache.commons.lang3.StringUtils;
 public class TrimInterceptor extends MethodFilterInterceptor {
 
   private static final long serialVersionUID = 5761559607570669987L;
+
+  private static final Logger LOG = LoggerFactory.getLogger(TrimInterceptor.class);
+
   private List<String> excluded = new ArrayList<>();
 
   @Override
   protected String doIntercept(ActionInvocation invocation) throws Exception {
+    LOG.debug("=> TrimInterceptor");
     Map<String, Object> parameters = invocation.getInvocationContext().getParameters();
     for (String param : parameters.keySet()) {
       if (isIncluded(param)) {

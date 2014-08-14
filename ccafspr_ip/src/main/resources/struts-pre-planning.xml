@@ -57,10 +57,15 @@
         <param name="actionName">outputsRPL</param>
        </result>
     </action>
-        
+  </package>
+  
+  <!-- Add addition packages and configuration here. -->
+  <package name="preplanningProjects" namespace="/pre-planning/projects" extends="ccafsap-default">
+    <default-interceptor-ref name="preplanningStackProjects" />
+    <default-action-ref name="projects" />
+    
     <!-- Section: Projects  -->
     <action name="projects" class="org.cgiar.ccafs.ap.action.preplanning.ProjectsListPreplanningAction">
-      <interceptor-ref name="preplanningStack" />      
       <result name="input">/WEB-INF/preplanning/projectsListPreplanning.ftl</result>
       <result name="success" type="redirectAction">
         <param name="actionName">description</param>
@@ -69,7 +74,6 @@
     </action>
     
     <action name="description" class="org.cgiar.ccafs.ap.action.preplanning.ProjectDescriptionPreplanningAction">
-      <interceptor-ref name="preplanningStackProjects" />
       <result name="cancel" type="redirectAction">projects</result>
       <result name="input">/WEB-INF/preplanning/projectDescriptionPreplanning.ftl</result>
       <result name="success" type="redirectAction">
@@ -83,7 +87,6 @@
     </action>
     
     <action name="partners" class="org.cgiar.ccafs.ap.action.preplanning.ProjectPartnersPreplanningAction">
-      <interceptor-ref name="preplanningStackProjects" />
       <result name="cancel" type="redirectAction">projects</result>
       <result name="input">/WEB-INF/preplanning/projectPartnersPreplanning.ftl</result>
       <result name="success" type="redirectAction">
@@ -97,7 +100,6 @@
     </action>
     
     <action name="budget" class="org.cgiar.ccafs.ap.action.preplanning.ProjectBudgetPreplanningAction">
-      <interceptor-ref name="preplanningStackProjects" />
       <result name="input">/WEB-INF/preplanning/projectBudgetPreplanning.ftl</result>
       <result name="success" type="redirectAction">
         <param name="actionName">budget</param>
@@ -114,5 +116,7 @@
       </result>
     </action>
     
+    
   </package>
+  
 </struts>

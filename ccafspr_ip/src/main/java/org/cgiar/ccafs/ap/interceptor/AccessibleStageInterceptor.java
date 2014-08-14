@@ -13,9 +13,11 @@
  *****************************************************************/
 package org.cgiar.ccafs.ap.interceptor;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import org.cgiar.ccafs.ap.action.BaseAction;
 import org.cgiar.ccafs.ap.config.APConfig;
-
 import com.google.inject.Inject;
 import com.opensymphony.xwork2.ActionInvocation;
 import com.opensymphony.xwork2.interceptor.AbstractInterceptor;
@@ -26,6 +28,8 @@ public class AccessibleStageInterceptor extends AbstractInterceptor {
 
   private static final long serialVersionUID = 3723021484076686914L;
 
+  private static final Logger LOG = LoggerFactory.getLogger(AccessibleStageInterceptor.class);
+
   private APConfig config;
 
   @Inject
@@ -35,6 +39,7 @@ public class AccessibleStageInterceptor extends AbstractInterceptor {
 
   @Override
   public String intercept(ActionInvocation invocation) throws Exception {
+    LOG.debug("=> AccessibleStageInterceptor");
     String stageName = ServletActionContext.getActionMapping().getNamespace();
 
     // Check what section is the user loading and

@@ -25,6 +25,14 @@ import com.google.inject.ImplementedBy;
 public interface ProjectManager {
 
   /**
+   * This method validate if the system has a project identified with the given parameter.
+   * 
+   * @param projectId is the project identifier to be verified.
+   * @return true if the project exists in the system and false otherwise.
+   */
+  public boolean existProject(int projectId);
+
+  /**
    * This method finds the Expected Project Leader user from a specific Project.
    *
    * @param projectId is the project id.
