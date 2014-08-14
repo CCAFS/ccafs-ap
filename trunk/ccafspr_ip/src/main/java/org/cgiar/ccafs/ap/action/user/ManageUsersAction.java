@@ -15,6 +15,11 @@ package org.cgiar.ccafs.ap.action.user;
 
 import org.cgiar.ccafs.ap.action.BaseAction;
 import org.cgiar.ccafs.ap.config.APConfig;
+import org.cgiar.ccafs.ap.data.manager.UserManager;
+import org.cgiar.ccafs.ap.data.model.User;
+
+import java.util.List;
+
 import com.google.inject.Inject;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -26,19 +31,31 @@ public class ManageUsersAction extends BaseAction {
 
   private static final long serialVersionUID = 2389437672158262423L;
 
+  // Manager
+  private UserManager userManager;
+
   // LOG
   private static Logger LOG = LoggerFactory.getLogger(ManageUsersAction.class);
 
+  // Model for the Back-End
+  private List<User> users;
+
   @Inject
-  public ManageUsersAction(APConfig config) {
+  public ManageUsersAction(APConfig config, UserManager userManager) {
     super(config);
+    this.userManager = userManager;
 
   }
+
+  public List<User> getUsers() {
+    return users;
+  }
+
 
   @Override
   public void prepare() throws Exception {
     super.prepare();
-    System.out.println("PREPARE...");
+    users = userManager.getAllEmployees();
   }
 
 
@@ -48,5 +65,9 @@ public class ManageUsersAction extends BaseAction {
 
     return INPUT;
 
+  }
+
+  public void setUsers(List<User> users) {
+    this.users = users;
   }
 }
