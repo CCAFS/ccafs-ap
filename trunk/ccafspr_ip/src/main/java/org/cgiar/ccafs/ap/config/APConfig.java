@@ -71,8 +71,8 @@ public class APConfig {
     while (base != null && base.endsWith("/")) {
       base = base.substring(0, base.length() - 1);
     }
-    if (!base.startsWith("https://")) {
-      base = "https://" + base;
+    if (!base.startsWith("http://")) {
+      base = "http://" + base;
       return base;
     }
     return base;
