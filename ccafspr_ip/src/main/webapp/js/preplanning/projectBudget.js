@@ -20,7 +20,7 @@ function init(){
 
 function attachEvents(){
   // Leveraged Events
-  $("#leveraged .addLeveragedBlock .addButton").click(addLeveragedEvent);
+  $("select.leveraged").change(addLeveragedEvent);
   $("#leveraged .leveragedPartner .removeButton").click(removeLeveragedEvent);
   // Amount changes event
   $(".ccafsBudget input[name$='amount']").on("keyup", calculateCCAFSBudget);
@@ -42,16 +42,17 @@ function attachEvents(){
 // Leveraged Functions //
 function addLeveragedEvent(e){
   e.preventDefault();
+  $("#selectLeveraged").hide();
   var $parent = $(e.target).parent();
   var $newElement = $("#leveragedPartnerTemplate").clone(true).removeAttr("id").addClass("leveragedPartner").addClass("budgetContent");
-  var $optionSelected = $parent.find("select.leveraged").find('option:selected');
+  var $optionSelected = $(e.target).find('option:selected');
   if ($parent.find("select.leveraged option").length != 0) {
     $parent.before($newElement);
     $newElement.find("[id$='partnerName']").html($optionSelected.html());
     $newElement.find("input[name$='institution.id']").attr("value", $optionSelected.val());
     $newElement.find(".removeButton").click(removeLeveragedEvent);
     $optionSelected.remove();
-    $parent.find("select.leveraged").trigger("liszt:updated");
+    $(e.target).trigger("liszt:updated");
     $newElement.show("slow");
     setAmountIndexes();
   }
@@ -85,9 +86,8 @@ function setAmountIndexes(){
 
 // Activate the chosen plugin to leveraged institutions
 function addChosen(){
-  $("form select[name$='leveragedList']").each(function(){
+  $("form select.leveraged").each(function(){
     $(this).chosen({
-      no_results_text : $("#noResultText").val(),
       search_contains : true
     });
   });

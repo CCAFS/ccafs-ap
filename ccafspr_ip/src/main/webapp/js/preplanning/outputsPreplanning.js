@@ -19,10 +19,10 @@ function init(){
 
 function attachEvents(){
   // Outputs
-  $("div#addOutputBlock").click(addOutputEvent);
+  $("#addOutputBlock").click(addOutputEvent);
   $(".removeOutput").click(removeOutputEvent);
   // Contributes
-  $(".addContributeBlock input.addButton").click(addContributeEvent);
+  $("select.contributes").change(addContributeEvent);
   $(".removeContribute").click(removeContributeEvent);
 }
 
@@ -63,20 +63,22 @@ function setOutputsIndexes(){
 // ----------------- Contribute Events ----------------------//
 function addContributeEvent(event){
   event.preventDefault();
-  var $addButton = $(event.target).parent();
-  var $selectElemet = $(event.target).siblings().find("select");
+  console.log(event);
+  var $selectElemet = $(event.target);
   var $optionSelected = $selectElemet.find('option:selected');
+  console.log($optionSelected);
   if ($selectElemet.find('option').length != 0) {
     var $newElementClone = $("#contributeTemplate").clone(true).removeAttr("id");
-    var grandParentId = $addButton.parent().parent().attr("id").split("-")[1];
+    var grandParentId = $selectElemet.parent().parent().parent().parent().attr("id").split("-")[1];
     $newElementClone.find("[value]").attr("value", $optionSelected.attr("value"));
     $newElementClone.find('p').html($optionSelected.html());
-    $addButton.before($newElementClone);
+    $selectElemet.parent().parent().parent().before($newElementClone);
     $newElementClone.show("slow");
     $optionSelected.remove();
     $selectElemet.trigger("liszt:updated");
     setContributesIndexes(grandParentId);
   }
+  $optionSelected.attr('selectedIndex', '-1');
 }
 
 function removeContributeEvent(event){
@@ -85,7 +87,7 @@ function removeContributeEvent(event){
   var $parentDiv = $elementDiv.parent().parent();
   $elementDiv.hide("slow", function(){
     var i = $parentDiv.attr("id").split("-")[1];
-    $parentDiv.find("select").append('<option value="' + $elementDiv.find("input").attr("value") + '">' + $elementDiv.find("p").html() + '</option>');
+    $parentDiv.find("select").append('<option value="' + $elementDiv.find("input").attr("value") + '">' + $elementDiv.find("p").html() + '</option>').trigger("liszt:updated");
     $(this).remove();
     setContributesIndexes(i);
   });

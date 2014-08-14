@@ -87,7 +87,7 @@
                     
                     [#-- Add contribute --]
                     <div class="fullBlock addContributeBlock">
-                      [@customForm.select name="contributions" value="" showTitle=false listName="midOutcomesList" keyFieldName="id"  displayFieldName="description" addButton=true className="contributes" /]
+                      [@customForm.select name="contributions" value="" showTitle=false listName="midOutcomesList" keyFieldName="id"  displayFieldName="description" className="contributes" /]
                     </div> 
                   </div> 
                 [/#if]
@@ -99,12 +99,12 @@
         
       
       </div>
-       <div id="addOutputBlock" class="addLink">
-        <img src="${baseUrl}/images/global/icon-add.png" />
-        <a href="" id="addNewOutput" class="addOutput" > [@s.text name="preplanning.outputsRPL.addNewOutput" /] </a>
-         or 
-        <img src="${baseUrl}/images/global/icon-add.png" />
-        <a href="" id="addExistingOutput" class="addOutput" > [@s.text name="preplanning.outputsRPL.addExistingOutput" /] </a>
+      
+       
+       <div id="addOutputBlock" class="addLink"> 
+        <a href="" id="addNewOutput" class="addOutput addButton" > [@s.text name="preplanning.outputsRPL.addNewOutput" /] </a>
+         <span class="or">[@s.text name="preplanning.outputsRPL.or" /]</span>  
+        <a href="" id="addExistingOutput" class="addOutput addButton" > [@s.text name="preplanning.outputsRPL.addExistingOutput" /] </a>
       </div>   
        
        <div class="buttons">
@@ -149,7 +149,7 @@
       [#-- Contribute area --] 
       [#-- Add contribute --]
        <div class="fullBlock addContributeBlock">
-        [@customForm.select name="contributions" showTitle=false listName="midOutcomesList" keyFieldName="id"  displayFieldName="description" addButton=true className="contributes" /]
+        [@customForm.select name="contributions" showTitle=false listName="midOutcomesList" keyFieldName="id"  displayFieldName="description" className="contributes" /]
       </div> 
     </div>  
   </div>  

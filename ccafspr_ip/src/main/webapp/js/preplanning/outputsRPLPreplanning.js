@@ -23,7 +23,7 @@ function attachEvents(){
   $("select#outputsRPL_midOutcomes").change(updateOutputsList);
   
   // Contributes
-  $(".addContributeBlock input.addButton").click(addContributeEvent);
+  $("select.contributes").change(addContributeEvent);
   $(".removeContribute").click(removeContributeEvent);
 }
 
@@ -167,16 +167,15 @@ function setOutputsIndexes(){
 // ----------------- Contribute Events ----------------------//
 function addContributeEvent(event){
   event.preventDefault();
-  var $addButton = $(event.target).parent();
-  var $selectElemet = $(event.target).siblings().find("select");
+  var $selectElemet = $(event.target);
   var $optionSelected = $selectElemet.find('option:selected');
   
   if ($selectElemet.find('option').length != 0) {
     var $newElementClone = $("#contributeTemplate").clone(true).removeAttr("id");
-    var grandParentId = $addButton.parent().parent().attr("id").split("-")[1];
+    var grandParentId = $selectElemet.parent().parent().parent().parent().attr("id").split("-")[1];
     $newElementClone.find("[value]").attr("value", $optionSelected.attr("value"));
     $newElementClone.find('p').html($optionSelected.html());
-    $addButton.before($newElementClone);
+    $selectElemet.parent().parent().before($newElementClone);
     $newElementClone.show("slow");
     $optionSelected.remove();
     $selectElemet.trigger("liszt:updated");
@@ -231,4 +230,3 @@ function addChosen(){
     });
   });
 }
-
