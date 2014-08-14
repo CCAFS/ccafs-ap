@@ -34,29 +34,50 @@ function updateMidOutcomesList(event){
   var elementTypeId = $("#midOutcomeTypeID").val();
   var midOutcomeSelected = $parent.find("#midOutcomeSelected").val();
   var $select = $parent.find("select#outputsRPL_midOutcomes");
-  console.log("elementTypeId: " + elementTypeId);
-  $.getJSON("../json/ipElementsByProgramAndType.do?programID=" + programID + "&elementTypeId=" + elementTypeId, function(data){
-    $select.find("option").remove();
-    $.each(data.IPElementsList, function(){
-      $select.append('<option value="' + this.id + '">' + this.description + '</option>');
+
+  if (programID != -1) {
+    $.getJSON("../json/ipElementsByProgramAndType.do?programID=" + programID + "&elementTypeId=" + elementTypeId, function(data){
+      $select.find("option").remove();
+      $.each(data.IPElementsList, function(){
+        $select.append('<option value="' + this.id + '">' + this.description + '</option>');
+      });
+    }).fail(function(){
+      console.log("error");
+    }).done(function(){
+      if (midOutcomeSelected) {
+        $select.val(midOutcomeSelected);
+      }
+      $select.attr("disabled", false).trigger("change").trigger("liszt:updated");
     });
-  }).fail(function(){
-    console.log("error");
-  }).done(function(){
-    if (midOutcomeSelected) {
-      $select.val(midOutcomeSelected);
-    }
-    $select.attr("disabled", false).trigger("change").trigger("liszt:updated");
-  });
+  }
 }
 
 /**
- * When users create a translated output but not select 
- * which flagship output is going to be translated
- * A warning message should appear before complete the submission
+ * When users create a translated output but not select which flagship output is going to be translated A warning message should appear before complete the submission
  */
-function showTranslationMessage(){
-  var $contributionSelects = $("select[name$='translatedOf']");
+function showOutputTranslatedWarning(){
+  var $contributionSelects = $("#outputsRPL select[name$='translatedOf']");
+  $contributionSelects.each(function(index,selectElemment){
+    // If the contribution select doesn't have a value defined
+    var $select = $(selectElemment);
+    if (!$select.val()) {
+      var selectName = $select.attr("name");
+      var mogIndex = selectName.split("[")[1].split("]")[0];
+      
+      $("#existentOutputDialog").find(".elements").html( parseInt(mogIndex) + 1);
+      $("#existentOutputDialog").dialog({
+        modal : true,
+        buttons : {
+          "Add as new MOG" : function(){
+            $(this).dialog("close");
+          },
+          "Cancel" : function(){
+            $(this).dialog("close");
+          }
+        }
+      });
+    }
+  });
 }
 
 function updateOutputsList(event){
@@ -184,7 +205,6 @@ function setContributesIndexes(i){
     // For existing translated outputs
     elementName = "outputs[" + i + "].translatedOf";
     $(element).find("[id^='outputsRPL_outputs']").attr("name", elementName);
-    console.log("update");
   });
 }
 

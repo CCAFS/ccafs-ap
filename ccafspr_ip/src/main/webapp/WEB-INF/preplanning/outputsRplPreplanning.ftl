@@ -120,6 +120,12 @@
   </article>
   [/@s.form]  
   
+  [#-- Existent output added without contribution modal  template --]
+  <div id="existentOutputDialog" style="display:none" title="[@s.text name="preplanning.outputsRPL.outputDialog.title" /]"> 
+    [@s.text name="preplanning.outputsRPL.outputDialog.part1" /]
+    <strong><span class="elements"></span></strong>
+    [@s.text name="preplanning.outputsRPL.outputDialog.part2" /]
+  </div> 
   
   [#----  New RPL Output TEMPLATE hidden ----]
   <div id="outputTemplate" class="output borderBox" style="display:none">
