@@ -29,7 +29,7 @@
 
     [#if projects?size>0]
       [@projectList.projectsList projects=projects canValidate=true /]
-      <div class="buttons">
+      <div class="buttons center">
         [@s.submit type="button" name="add"][@s.text name="preplanning.projects.addProject" /][/@s.submit]
       </div>
     [#else]

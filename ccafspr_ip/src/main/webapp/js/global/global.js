@@ -52,8 +52,11 @@ function applyWordCounter($textArea,wordCount){
   $textArea.on("keyup", function(event){
     if (word_count($textArea) > wordCount) {
       $(event.target).val($(event.target).val().slice(0, -2));
+      $(event.target).next(".charCount").find("span").text(wordCount - word_count(event.target));
+    } else {
+      $(event.target).next(".charCount").find("span").text(wordCount - word_count(event.target));
     }
-    $(event.target).next(".charCount").find("span").text(wordCount - word_count(event.target));
+    
   });
 }
 
