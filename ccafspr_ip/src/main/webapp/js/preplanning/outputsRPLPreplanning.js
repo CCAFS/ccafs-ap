@@ -50,6 +50,15 @@ function updateMidOutcomesList(event){
   });
 }
 
+/**
+ * When users create a translated output but not select 
+ * which flagship output is going to be translated
+ * A warning message should appear before complete the submission
+ */
+function showTranslationMessage(){
+  var $contributionSelects = $("select[name$='translatedOf']");
+}
+
 function updateOutputsList(event){
   var $target = $(event.target);
   var $parent = $target.parent().parent().parent().parent();
@@ -202,3 +211,4 @@ function addChosen(){
     });
   });
 }
+
