@@ -121,10 +121,12 @@
     Reporting is in the namespace="/reporting"
     Summaries is in the namespace="/summaries"
     Admin is in the namespace="/admin"
+    UserManagment is in the namespace="/user"
   -->
   <include file="struts-home.xml" />
   <include file="struts-planning.xml" />
   <include file="struts-pre-planning.xml" />
+  <include file="struts-user.xml" />
   <include file="struts-json.xml" />
 
 </struts>
