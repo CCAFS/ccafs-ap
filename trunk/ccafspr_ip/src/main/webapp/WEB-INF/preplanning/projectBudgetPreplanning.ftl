@@ -163,6 +163,7 @@
               [#-- Leveraged --]
               <div id="leveraged" class="grid_7">
               <h6>[@s.text name="preplanning.projectBudget.leveraged" /]</h6>
+              [#if leveragedInstitutions?has_content]
                 [#list leveragedInstitutions as partner]
                   <div id="leveragedPartner-${partner_index}" class="leveragedPartner budgetContent row"> 
                     [#-- Partner Name --]
@@ -179,9 +180,12 @@
                     </div> 
                   </div>  
                 [/#list] 
+              [#else]
+                <p id="selectLeveraged" class="center">[@s.text name="preplanning.projectBudget.selectLeveraged" /]</p>
+              [/#if]    
                 [#-- Add Leveraged --]
-                <div class="fullBlock addLeveragedBlock">
-                  [@customForm.select name="" value="" showTitle=false listName="allInstitutions" keyFieldName="id"  displayFieldName="composedName" addButton=true className="leveraged" /]
+                <div class="fullBlock addLeveragedBlock"> 
+                  [@customForm.select name="" value="" listName="allInstitutions" keyFieldName="id"  displayFieldName="composedName" className="leveraged" /]
                 </div>
               </div>
              </div>   

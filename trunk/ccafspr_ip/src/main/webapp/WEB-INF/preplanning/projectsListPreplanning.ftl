@@ -15,12 +15,14 @@
 <section class="content">
   <div class="helpMessage">
     <img src="${baseUrl}/images/global/icon-help.png" />
-    <p> [@s.text name="planning.mainInformation.help" /] </p>
+    <p> [@s.text name="planning.projectsList.help1" /] </p>
+    <p> [@s.text name="planning.projectsList.help2" /] </p>
+    <p> [@s.text name="planning.projectsList.help3" /] </p>
   </div>
   [#include "/WEB-INF/global/pages/pre-planning-secondary-menu.ftl" /]
   
   [@s.form action="projects"]  
-  <article class="halfContent" id="mainInformation"> 
+  <article class="halfContent" id="projects"> 
     <h1 class="contentTitle">
     [@s.text name="preplanning.projects.title" /]  
     </h1>
@@ -28,13 +30,13 @@
     [#if projects?size>0]
       [@projectList.projectsList projects=projects canValidate=true /]
       <div class="buttons">
-        [@s.submit type="button" name="add"][@s.text name="form.buttons.add" /][/@s.submit]
+        [@s.submit type="button" name="add"][@s.text name="preplanning.projects.addProject" /][/@s.submit]
       </div>
     [#else]
-      [@s.text name="preplanning.projects.empty" /]
-      <div class="buttons">
-        [@s.submit type="button" name="add"][@s.text name="form.buttons.add" /][/@s.submit]
-      </div>
+    <div class="borderBox center">
+      <p>[@s.text name="preplanning.projects.empty" /]</p> 
+      [@s.submit type="button" name="add"][@s.text name="preplanning.projects.addProject" /][/@s.submit]
+    </div>
     [/#if]
     
 

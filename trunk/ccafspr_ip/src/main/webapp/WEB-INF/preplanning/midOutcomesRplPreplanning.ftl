@@ -121,17 +121,16 @@
                   [/#if]  
                   [#-- Add contribute --]
                   <div class="fullBlock addContributeBlock">
-                    [@customForm.select name="midOutcomesFPL" i18nkey="preplanning.midOutcomes.addContribute" showTitle=false listName="midOutcomesFPL" keyFieldName="id"  displayFieldName="description" addButton=true className="contributes" /]
+                    [@customForm.select name="midOutcomesFPL" i18nkey="preplanning.midOutcomes.addContribute" showTitle=false listName="midOutcomesFPL" keyFieldName="id"  displayFieldName="description"  className="contributes" /]
                   </div>
                 </div>  
   
               </div>  
             [/#list]
           [/#if]
-      </div>
-      <div id="addMidOutcomeBlock" class="addLink">
-        <img src="${baseUrl}/images/global/icon-add.png" />
-        <a href="" class="addMidOutcome" >[@s.text name="preplanning.midOutcomesRPL.addOutcome" /]</a>
+      </div> 
+      <div id="addMidOutcomeBlock" class="addLink"> 
+        <a href="" class="addMidOutcome addButton" >[@s.text name="preplanning.midOutcomesRPL.addOutcome" /]</a>
       </div> 
        <div class="buttons">
         [@s.submit type="button" name="save"][@s.text name="form.buttons.save" /][/@s.submit]
@@ -172,7 +171,7 @@
     [#-- midOutcome's parents --]  
     [#-- Add contribute --]
     <div class="fullBlock addContributeBlock">
-      [@customForm.select name="midOutcomesFPL"  showTitle=false listName="midOutcomesFPL" keyFieldName="id"  displayFieldName="description" addButton=true className="contributes" /]
+      [@customForm.select name="midOutcomesFPL"  showTitle=false listName="midOutcomesFPL" keyFieldName="id"  displayFieldName="description" className="contributes" /]
     </div>
   </div>  
 </div> 

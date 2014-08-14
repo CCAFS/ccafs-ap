@@ -103,14 +103,10 @@ function setProjectPartnersIndexes(){
 function addChosen(){
   
   $("form select[name$='partner']").chosen({
-    no_results_text : "#noResultText",
-    allow_single_deselect : true,
     search_contains : true
   });
   
   $("form select[name$='currentInstitution']").chosen({
-    no_results_text : "#noResultText",
-    allow_single_deselect : true,
     search_contains : true
   });
   

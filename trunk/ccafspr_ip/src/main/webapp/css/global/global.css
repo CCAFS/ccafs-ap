@@ -31,16 +31,6 @@ select {
   width: 87%;
 }
 
-.addButton {
-  background: #47939C;
-  color: #fff;
-  border: 0;
-  padding: 4px 10px;
-  margin: 0px 12px;
-  border-radius: 5px;
-  border-bottom: 2px solid #3C7D85 !important;
-}
-
 .addButton.Indicator{
   padding: 15px 9px;
   margin-top: 11px;
@@ -61,6 +51,10 @@ select {
 
 .clearfix {
   *zoom: 1;
+}
+
+.center {
+  text-align: center;
 }
 
 .red {
@@ -95,12 +89,25 @@ input[type="radio"] {
   margin-right: 3px;
 }
 
-input[type="submit"], button {
-  background: #2BA6CB;
+
+
+input[type="submit"], button, .addButton {
+  background-color:#2BA6CB;
   color: #fff;
   border: 0;
-  padding: 5px 10px;
+  padding: 4px 20px 4px 20px;
   font-weight: bold;
+  border-bottom: 3px solid #1E94B8;
+  border-radius: 2px;
+}
+
+.addButton{
+  background: url('../../images/global/add.png') no-repeat 4px #2BA6CB;
+  padding: 4px 25px 4px 28px;
+}
+
+input[type="submit"], button:hover, .addButton:hover {
+  background-color: #239FC5;
 }
 
 input[type="text"] {
@@ -150,6 +157,11 @@ div.checkboxGroup.vertical input {
    
 }
 
+span.or {
+  font-weight: lighter;
+  padding: 10px;
+}
+
 .removeLink {
   display: block;
   text-align: right;
@@ -177,13 +189,13 @@ div.checkboxGroup.vertical input {
 }
 
 .addLink{
-  margin : 10px 5px 2px;
+  margin: 23px 5px 2px 0px;
 }
 
 .addLink img, .addLink a {
   vertical-align: middle;
   text-decoration: none;
-  color: #71AA65;
+  color: #FFFFFF;
   font-weight: bold;
 }
 
@@ -720,9 +732,9 @@ h1.contentSubTitle {
 
 .fullBlock {
   display: block;
-  padding: 5px;
+  padding: 7px;
   margin-bottom: 0px;
-  width: 100%;
+  width: 98%;
 }
 
 .fullBlock .input input{
@@ -776,7 +788,7 @@ h1.contentSubTitle {
   color: #FFF;
   text-align: center;
   /* text-decoration: underline; */
-  background: #8ea786;
+  background: #8EA786;
   padding: 5px 0;
   margin: 0px 0 5px 0;
   font-weight: 700;
@@ -824,47 +836,34 @@ h1.contentSubTitle {
   text-align: right;
 }
 
-.buttons button {
-    margin:0 7px 0 0;
-    background-color:#f5f5f5;
-    border:1px solid #dedede;
-    border-top:1px solid #eee;
-    border-left:1px solid #eee;
 
-    font-size:12px;
-    color:#565656;
-    cursor:pointer;
-    padding:5px 10px 6px 7px;
-}
 
 .buttons button[name=save] {
-    color:#529214;
+    color: #FFFFFF;
+    background: #8EA786;
+    border-bottom: 3px solid #7E9377;
 }
 
 .buttons button[name=save]:hover{
-    background-color:#E6EFC2;
-    border:1px solid #C6D880;
-    color:#529214;
+    background-color: #8BA383;
 }
 
 .buttons button[name=next] {
-    color:#529214;
+    background: #BDC3C7;
+    border-bottom: 3px solid #B0B0B0;
 }
 
 .buttons button[name=next]:hover{
-    background-color:#E6EFC2;
-    border:1px solid #C6D880;
-    color:#529214;
+    background-color: #BEBEBE;
 }
 
 .buttons button[name=cancel] {
-    color:#d12f19;
+    background: #E3685A;
+    border-bottom: 3px solid #DD5B4C;
 }
 
 .buttons button[name=cancel]:hover{
-  background:#fbe3e4;
-  border:1px solid #fbc2c4;
-  color:#d12f19;
+  background: #DB6052;
 }
 
 .helpMessage { 

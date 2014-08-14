@@ -25,7 +25,7 @@ function attachEvents(){
   $("select[id$='flagships']").change(updateMidOutcomes);
   
   // Contributes
-  $(".addContributeBlock input.addButton").click(addContributeEvent);
+  $("select.contributes").change(addContributeEvent);
   $(".removeContribute").click(removeContributeEvent);
   
   // Regional Indicators
@@ -146,12 +146,12 @@ function updateMidOutcomes(event){
 // ----------------- Contribute Events ----------------------//
 function addContributeEvent(event){
   event.preventDefault();
-  var $addButton = $(event.target).parent();
-  var $selectElemet = $(event.target).siblings().find("select");
+  var $selectElemet = $(event.target);
   if ($selectElemet.find('option').length != 0) {
     var $optionSelected = $selectElemet.find('option:selected');
     var elementId = $optionSelected.attr("value");
-    var programID = $addButton.parent().parent().find("select[id$='midOutcomesRPL_flagships'] ").val();
+    var programID = $selectElemet.parent().parent().parent().parent().parent().find("select[id$='midOutcomesRPL_flagships'] ").val();
+    console.log(programID);
     var $newElementClone = $("#contributeTemplate").clone(true).removeAttr("id");
     $newElementClone.find("#description").html($optionSelected.html());
     $newElementClone.find("[id$='contributeId']").attr("value", elementId);
@@ -164,12 +164,12 @@ function addContributeEvent(event){
         $newElementClone.find("div.checkboxGroup").append($newIndicator);
         $newIndicator.show();
       });
-      $addButton.before($newElementClone);
+      $selectElemet.before($newElementClone);
       $newElementClone.find(".midOutcomeIndicator").click(indicatorVerify);
       $newElementClone.show("slow");
       $optionSelected.remove();
       // Once the users select one contribution, they cannot change the flagship
-      $addButton.parent().parent().find("select[id$='midOutcomesRPL_flagships'] ").attr("disabled", true).trigger("liszt:updated");
+      $selectElemet.parent().parent().parent().parent().parent().find("select[id$='midOutcomesRPL_flagships'] ").attr("disabled", true).trigger("liszt:updated");
       $selectElemet.trigger("liszt:updated");
       setContributesIndexes();
     });
