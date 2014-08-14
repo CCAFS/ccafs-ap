@@ -37,7 +37,7 @@ import org.slf4j.LoggerFactory;
 
 /**
  * Project Budget Action.
- * 
+ *
  * @author Héctor Fabio Tobón R.
  */
 public class ProjectBudgetPreplanningAction extends BaseAction {
@@ -90,7 +90,7 @@ public class ProjectBudgetPreplanningAction extends BaseAction {
    * e.g. 2014-9-W1
    * Where 2014 is the year, 9 is the institution identifier and W1 is the budget type.
    * If the budget is not in the database, this method will create a new one with an id=-1 and amount=0.
-   * 
+   *
    * @return a Map of budgets as was described above.
    */
   private Map<String, Budget> generateMapBudgets(int year) {
@@ -383,6 +383,11 @@ public class ProjectBudgetPreplanningAction extends BaseAction {
 
           // Getting all the institutions.
           allInstitutions = institutionManager.getAllInstitutions();
+          // Adding header - place holder.
+          Institution headerInstitution = new Institution();
+          headerInstitution.setId(-1);
+          headerInstitution.setName(getText("preplanning.projectBudget.institutionList.header"));
+          allInstitutions.add(0, headerInstitution);
 
           // Removing the institution that is already added as project partner:
           allInstitutions.remove(project.getLeader().getCurrentInstitution());
