@@ -27,54 +27,58 @@
     </h1>
     
     [#if midOutcomesList?has_content ]
-      <div id="outputBlocks"> 
-          [#if outputs?has_content]
-            [#list outputs as output]
-            <div class="output borderBox" id="output-${output_index}">
-              [#-- output identifier --] 
-              <input id="outputId" name="outputs[${output_index}].id" value="${output.id}"  type="hidden"/>
-              <input id="outputProgramID" name="outputs[${output_index}].program.id" value="${currentUser.currentInstitution.program.id}" type="hidden" />
-              <input id="outputTypeID" name="outputs[${output_index}].type.id" value="${elementTypeID}" type="hidden" />
-              [#-- Remove Output --]
-              <div id="removeOutput" class="removeOutput removeElement removeLink" title="[@s.text name="preplanning.outputs.removeOutput" /]"></div>
-              [#-- Title --]
-              [#assign outputDescription]
-                [@s.text name="preplanning.outputs.output"]
-                  [@s.param name="0"]${currentUser.currentInstitution.program.id}[/@s.param] 
-                  [@s.param name="1"]<span id="elementIndex">${output_index+1}</span>[/@s.param] 
-                [/@s.text]
-              [/#assign]
-              <legend>${outputDescription}</legend>
-              [@customForm.textArea name="outputs[${output_index}].description" i18nkey="preplanning.outputs.outputDescription" required=true /] 
-              <div id="contributesBlock" class="contentElements parentsBlock">
-                <div class="itemIndex">[@s.text name="preplanning.outputs.contributes" /] </div>
-                [#-- output's parents --] 
-                [#if output.contributesTo?has_content]
-                  [#list output.contributesTo as parent] 
-                    [@contributeTemplate.outputs output_index="${output_index}" parent_index="${parent_index}" value="${parent.id}" description="${parent.description}" canRemove=true /]
-                  [/#list]
-                [/#if]
-                [#-- Add contribute --]
-                <div class="fullBlock addContributeBlock">
-                  [@customForm.select name="contributions" value="" showTitle=false listName="midOutcomesList" keyFieldName="id"  displayFieldName="description" className="contributes" i18nkey="preplanning.midOutcomes.addContribute" /]
-                </div> 
-              </div>   
-            </div>  
-            [/#list]          
-          [/#if]
-      </div>
-
-      [#-- Add midOutcome button --]
-      <div id="addOutputBlock" class="addLink">
-        <a href="" class="addOutput addButton" >[@s.text name="preplanning.outputs.addOutput" /]</a>
-      </div>
-
-       <div class="buttons">
-        [@s.submit type="button" name="save"][@s.text name="form.buttons.save" /][/@s.submit]
-        [#--[@s.submit type="button" name="next"][@s.text name="form.buttons.next" /][/@s.submit]--]
-        [@s.submit type="button" name="cancel"][@s.text name="form.buttons.cancel" /][/@s.submit]
-      </div>
-      
+      [#if midOutcomesList?size=1 &&  midOutcomesList[0].id == -1 ]
+        [@s.text name="preplanning.outputs.addMidoutcomes" /]
+      [#else]
+        <div id="outputBlocks"> 
+            [#if outputs?has_content]
+              [#list outputs as output]
+              <div class="output borderBox" id="output-${output_index}">
+                [#-- output identifier --] 
+                <input id="outputId" name="outputs[${output_index}].id" value="${output.id}"  type="hidden"/>
+                <input id="outputProgramID" name="outputs[${output_index}].program.id" value="${currentUser.currentInstitution.program.id}" type="hidden" />
+                <input id="outputTypeID" name="outputs[${output_index}].type.id" value="${elementTypeID}" type="hidden" />
+                [#-- Remove Output --]
+                <div id="removeOutput" class="removeOutput removeElement removeLink" title="[@s.text name="preplanning.outputs.removeOutput" /]"></div>
+                [#-- Title --]
+                [#assign outputDescription]
+                  [@s.text name="preplanning.outputs.output"]
+                    [@s.param name="0"]${currentUser.currentInstitution.program.id}[/@s.param] 
+                    [@s.param name="1"]<span id="elementIndex">${output_index+1}</span>[/@s.param] 
+                  [/@s.text]
+                [/#assign]
+                <legend>${outputDescription}</legend>
+                [@customForm.textArea name="outputs[${output_index}].description" i18nkey="preplanning.outputs.outputDescription" required=true /] 
+                <div id="contributesBlock" class="contentElements parentsBlock">
+                  <div class="itemIndex">[@s.text name="preplanning.outputs.contributes" /] </div>
+                  [#-- output's parents --] 
+                  [#if output.contributesTo?has_content]
+                    [#list output.contributesTo as parent] 
+                      [@contributeTemplate.outputs output_index="${output_index}" parent_index="${parent_index}" value="${parent.id}" description="${parent.description}" canRemove=true /]
+                    [/#list]
+                  [/#if]
+                  [#-- Add contribute --]
+                  <div class="fullBlock addContributeBlock">
+                    [@customForm.select name="contributions" value="" showTitle=false listName="midOutcomesList" keyFieldName="id"  displayFieldName="description" className="contributes" i18nkey="preplanning.midOutcomes.addContribute" /]
+                  </div> 
+                </div>   
+              </div>  
+              [/#list]
+            [/#if]   
+        </div>
+  
+        [#-- Add midOutcome button --]
+        <div id="addOutputBlock" class="addLink">
+          <a href="" class="addOutput addButton" >[@s.text name="preplanning.outputs.addOutput" /]</a>
+        </div>
+  
+         <div class="buttons">
+          [@s.submit type="button" name="save"][@s.text name="form.buttons.save" /][/@s.submit]
+          [#--[@s.submit type="button" name="next"][@s.text name="form.buttons.next" /][/@s.submit]--]
+          [@s.submit type="button" name="cancel"][@s.text name="form.buttons.cancel" /][/@s.submit]
+        </div>
+        
+      [/#if]
     [#else]
       [@s.text name="preplanning.outputs.addMidoutcomes" /]
     [/#if]
