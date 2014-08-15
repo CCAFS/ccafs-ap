@@ -74,7 +74,7 @@ function viewIDOsIndicators(event){
 
 function setIDOsIndicatorsLabel(){
   $("[for^=ido-]").each(function(index,ido){
-    var text = $(ido).text().split("-")[1];
+    var text = $(ido).text().split("-")[1] + $(ido).text().split("-")[2];
     $(ido).html("<strong>" + $(ido).text().split("-")[0] + "</strong> - " + text);
   });
 }
