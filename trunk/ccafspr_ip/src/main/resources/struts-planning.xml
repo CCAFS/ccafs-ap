@@ -3,7 +3,7 @@
 <struts>
 
   <!-- Add addition packages and configuration here. -->
-  <package name="planning" namespace="/planning" extends="ccafsap-default">
+  <package name="planningProjects" namespace="/planning/projects" extends="ccafsap-default">
     <default-interceptor-ref name="planningStackProjects" />
     <default-action-ref name="projects" />
 
@@ -103,4 +103,9 @@
 
 
   </package>
+  
+  <package name="planningActivities" namespace="/planning/activities" extends="ccafsap-default">
+  
+  </package>
+  
 </struts>
