@@ -175,7 +175,6 @@ public class ProjectDescriptionPreplanningAction extends BaseAction {
   @Override
   public void prepare() throws Exception {
     super.prepare();
-    System.out.println("PREPARE: isSaveable: " + this.isSaveable() + " - isFullEditable: " + this.isFullEditable());
     try {
       projectID = Integer.parseInt(StringUtils.trim(this.getRequest().getParameter(APConstants.PROJECT_REQUEST_ID)));
     } catch (NumberFormatException e) {
@@ -213,7 +212,6 @@ public class ProjectDescriptionPreplanningAction extends BaseAction {
 
   @Override
   public String save() {
-    System.out.println("SAVE: isSaveable: " + this.isSaveable() + " - isFullEditable: " + this.isFullEditable());
     // Reviewing some change in the year range from start date to end date in order to reflect those changes in the
     // project budget section.
     List<Integer> currentYears = project.getAllYears();

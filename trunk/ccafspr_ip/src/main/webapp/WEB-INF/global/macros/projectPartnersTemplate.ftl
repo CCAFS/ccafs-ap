@@ -8,7 +8,7 @@
           
         <legend>[@s.text name="preplanning.projectPartners.partner"][@s.param name="0"] <span id="partnerIndex">${ap_index+1}</span>[/@s.param] [/@s.text]</legend> 
         
-        [#if canEdit]
+       [#if saveable]
           [#-- Remove link for all partners --]
           <div class="removeLink">
             <img src="${baseUrl}/images/global/icon-remove.png" />

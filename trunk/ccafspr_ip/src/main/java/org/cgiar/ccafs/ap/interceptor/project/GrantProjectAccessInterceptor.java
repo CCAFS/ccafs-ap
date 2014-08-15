@@ -67,17 +67,14 @@ public class GrantProjectAccessInterceptor extends AbstractInterceptor {
       // Getting project list that belongs to the program that you belongs to.
       if (user.isAdmin()) {
         // Admins are able to see all fields editable and save any information.
-        baseAction.setFullEditable(true);
         baseAction.setSaveable(true);
       } else {
         // If the user is not an Admin, let's figure out if he/she can have the enough privileges to edit the project.
         List<Integer> idsAllowedToEdit = projectManager.getProjectIdsEditables(user);
         if (idsAllowedToEdit.contains(new Integer(projectID))) {
-          baseAction.setFullEditable(true);
           baseAction.setSaveable(true);
         } else {
           // User will see the the fields enable but without any save/delete button.
-          baseAction.setFullEditable(true);
           baseAction.setSaveable(false);
         }
       }
