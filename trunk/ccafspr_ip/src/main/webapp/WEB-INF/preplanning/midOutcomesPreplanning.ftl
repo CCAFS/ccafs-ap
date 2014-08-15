@@ -79,9 +79,12 @@
             [/#list] 
           [/#if] 
       </div>
+      
+      [#-- Add midOutcome button --]
       <div id="addMidOutcomeBlock" class="addLink"> 
-        <a href="" class="addMidOutcome addButton" >[@s.text name="preplanning.midOutcomes.addOutcome" /]</a>
-      </div> 
+        <a href="" class="addMidOutcome addButton" >[@s.text name="preplanning.midOutcomesRPL.addOutcome" /]</a>
+      </div>
+       
        <div class="buttons">
         [@s.submit type="button" name="save"][@s.text name="form.buttons.save" /][/@s.submit]
         [#--[@s.submit type="button" name="next"][@s.text name="form.buttons.next" /][/@s.submit]--]

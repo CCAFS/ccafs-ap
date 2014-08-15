@@ -182,9 +182,11 @@
     </div> 
   </div> 
    
+   
   [#-- Contribute template --]
   [@contributeTemplate.outputs template=true canRemove=true /]
   [#-- End Contribute template --] 
+  
   <input id="midOutcomeTypeID" value="${midOutcomeTypeID}" type="hidden" />
 </section>
 [#include "/WEB-INF/global/pages/footer.ftl"]

@@ -126,17 +126,27 @@ function updateMidOutcomes(event){
   var $parent = $target.parent().parent().parent();
   var programID = $target.find('option:selected').val();
   var midOutcomeTypeId = $("#midOutcomeTypeId").val();
+  
   $.getJSON("../json/ipElementsByProgramAndType.do?programID=" + programID + "&elementTypeId=" + midOutcomeTypeId).done(function(data){
     var contributedOfIDs = new Array();
     $target.parent().parent().parent().find("input#contributeId").each(function(index,element){
       contributedOfIDs[index] = $(element).val();
     });
-    $parent.find("select[id$='midOutcomesFPL'] option").remove();
+    
+    var $flagshipSelect = $parent.find("select[id$='midOutcomesFPL']")
+    // Remove all the elements if any
+    $flagshipSelect.find("option").remove();
+    // Add the placeholder
+    if(data.IPElementsList.length > 0)
+      $flagshipSelect.append('<option value="-1" >' + $("#midOutcomeSelectPlaceholder").val() + '</option>');
+    else
+      $flagshipSelect.append('<option value="-1" >' + $("#selectFlagshipFirstPlaceholder").val() + '</option>');
     $.each(data.IPElementsList, function(){
       if ($.inArray(String(this.id), contributedOfIDs) == -1) {
         $parent.find("select[id$='midOutcomesFPL']").append('<option value="' + this.id + '">' + this.description + '</option>');
       }
     });
+    
     $parent.find("select[id$='midOutcomesFPL']").trigger("liszt:updated");
   }).fail(function(){
     console.log("error");

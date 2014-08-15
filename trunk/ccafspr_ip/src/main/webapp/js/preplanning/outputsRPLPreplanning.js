@@ -23,8 +23,46 @@ function attachEvents(){
   $("select#outputsRPL_midOutcomes").change(updateOutputsList);
   
   // Contributes
-  $("select.contributes").change(addContributeEvent);
+  $(".addContributeBlock input.addButton").click(addContributeEvent);
   $(".removeContribute").click(removeContributeEvent);
+  
+  $("#outputsRPL").submit(showTranslationMessage);
+}
+
+/*
+* When users create a translated output but not select 
+* which flagship output is going to be translated    
+* A warning message should appear before complete the submission   
+*/
+function showTranslationMessage(){
+  
+  var $contributionSelects = $("#outputsRPL select[name$='translatedOf']");
+  
+  $contributionSelects.each(function(index,selectElemment){
+    // If the contribution select doesn't have a value defined
+    var $select = $(selectElemment);
+    if (!$select.val()) {
+      event.preventDefault();
+      var selectName = $select.attr("name");
+      var mogIndex = selectName.split("[")[1].split("]")[0];
+      
+      $("#existentOutputDialog").find(".elements").html( parseInt(mogIndex) + 1);
+      $("#existentOutputDialog").dialog({
+        modal : true,
+        buttons : {
+          "Add as new MOG" : function(){
+            $("#outputsRPL").submit();
+            $(this).dialog("close");
+          },
+          "Cancel" : function(){
+            $(this).dialog("close");
+          }
+        }
+      });
+    }
+  });
+  
+  return;
 }
 
 function updateMidOutcomesList(event){
@@ -34,7 +72,7 @@ function updateMidOutcomesList(event){
   var elementTypeId = $("#midOutcomeTypeID").val();
   var midOutcomeSelected = $parent.find("#midOutcomeSelected").val();
   var $select = $parent.find("select#outputsRPL_midOutcomes");
-
+  console.log("test: "+ $("#midOutcomeTypeID").attr("id"));
   if (programID != -1) {
     $.getJSON("../json/ipElementsByProgramAndType.do?programID=" + programID + "&elementTypeId=" + elementTypeId, function(data){
       $select.find("option").remove();
@@ -55,9 +93,13 @@ function updateMidOutcomesList(event){
 /**
  * When users create a translated output but not select which flagship output is going to be translated A warning message should appear before complete the submission
  */
-function showOutputTranslatedWarning(){
+function showOutputTranslatedWarning(event){
+  event.preventDefault();
+  
   var $contributionSelects = $("#outputsRPL select[name$='translatedOf']");
+  
   $contributionSelects.each(function(index,selectElemment){
+    console.log(index);
     // If the contribution select doesn't have a value defined
     var $select = $(selectElemment);
     if (!$select.val()) {
@@ -69,6 +111,9 @@ function showOutputTranslatedWarning(){
         modal : true,
         buttons : {
           "Add as new MOG" : function(){
+            
+            $("form").submit();
+            console.log("---------")
             $(this).dialog("close");
           },
           "Cancel" : function(){
@@ -78,6 +123,7 @@ function showOutputTranslatedWarning(){
       });
     }
   });
+  
 }
 
 function updateOutputsList(event){
@@ -167,15 +213,16 @@ function setOutputsIndexes(){
 // ----------------- Contribute Events ----------------------//
 function addContributeEvent(event){
   event.preventDefault();
-  var $selectElemet = $(event.target);
+  var $addButton = $(event.target).parent();
+  var $selectElemet = $(event.target).siblings().find("select");
   var $optionSelected = $selectElemet.find('option:selected');
   
   if ($selectElemet.find('option').length != 0) {
     var $newElementClone = $("#contributeTemplate").clone(true).removeAttr("id");
-    var grandParentId = $selectElemet.parent().parent().parent().parent().attr("id").split("-")[1];
+    var grandParentId = $addButton.parent().parent().attr("id").split("-")[1];
     $newElementClone.find("[value]").attr("value", $optionSelected.attr("value"));
     $newElementClone.find('p').html($optionSelected.html());
-    $selectElemet.parent().parent().before($newElementClone);
+    $addButton.before($newElementClone);
     $newElementClone.show("slow");
     $optionSelected.remove();
     $selectElemet.trigger("liszt:updated");
@@ -230,3 +277,4 @@ function addChosen(){
     });
   });
 }
+

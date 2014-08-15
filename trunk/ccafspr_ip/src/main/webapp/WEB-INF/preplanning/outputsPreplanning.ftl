@@ -62,12 +62,13 @@
             </div>  
             [/#list]          
           [/#if]
-        
-      
       </div>
+
+      [#-- Add midOutcome button --]
       <div id="addOutputBlock" class="addLink">
         <a href="" class="addOutput addButton" >[@s.text name="preplanning.outputs.addOutput" /]</a>
       </div>
+
        <div class="buttons">
         [@s.submit type="button" name="save"][@s.text name="form.buttons.save" /][/@s.submit]
         [#--[@s.submit type="button" name="next"][@s.text name="form.buttons.next" /][/@s.submit]--]
