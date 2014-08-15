@@ -708,6 +708,11 @@ a.currentReportingSection li #i-additionalInformation{
   font-weight: normal;
   margin-bottom: 20px;
 }
+.content h3 {
+  color: #663300;
+  font-weight: normal;
+  font-size: 15px;
+}
 
 .halfContent h1 {
   border-bottom: 2px solid #663300;
@@ -1081,9 +1086,24 @@ padding-left: 11px;
 
 /********** Projects *********/
 
+/* Project List */
+.content .projectSubTitle {
+  text-align: center;
+  margin: 7px 0px;
+  color: #686666;
+}
+
 /* Project Description*/
 textarea[id$='summary'] {
     height: 90px;
+}
+
+#projects .borderBox button {
+  margin-top: 10px;
+}
+
+#projects .buttons {
+	text-align: left;
 }
 
 /* Project Partners*/

@@ -14,37 +14,34 @@
     
 <section class="content">
   <div class="helpMessage">
-    <img src="${baseUrl}/images/global/icon-help.png" />
-    <p> [@s.text name="planning.projectsList.help1" /] </p>
-    <p> [@s.text name="planning.projectsList.help2" /] </p>
-    <p> [@s.text name="planning.projectsList.help3" /] </p>
+    <img src="${baseUrl}/images/global/icon-help.png"/>
+    <p>[@s.text name="planning.projectsList.help1"/]</p>
+    <p>[@s.text name="planning.projectsList.help2"/]</p>
+    <p>[@s.text name="planning.projectsList.help3"/]</p>
   </div>
-  [#include "/WEB-INF/global/pages/pre-planning-secondary-menu.ftl" /]
-  
+  [#include "/WEB-INF/global/pages/pre-planning-secondary-menu.ftl"/]
   [@s.form action="projects"]  
-  <article class="halfContent" id="projects"> 
-    <h1 class="contentTitle">
-    [@s.text name="preplanning.projects.title" /]  
-    </h1>
-
-    [#if projects?size>0]
-    <h3>[@s.text name="preplanning.projects.yourProjects" /]</h3>
-      <div class="buttons">
-        [@s.submit type="button" name="add"][@s.text name="preplanning.projects.addProject" /][/@s.submit]
-      </div>
-      [@projectList.projectsList projects=projects canValidate=true /]
-      <br/><br/>
-      <h3>[@s.text name="preplanning.projects.otherProjects" /]</h3>
+    <article class="halfContent" id="projects"> 
+      <h1 class="contentTitle">
+        [@s.text name="preplanning.projects.title"/]
+      </h1>
+      [#if projects?size>0]
+        <h3 class="projectSubTitle">[@s.text name="preplanning.projects.yourProjects"/]</h3>
+        [@projectList.projectsList projects=projects canValidate=true /]
+        <div class="buttons">
+          [@s.submit type="button" name="add"][@s.text name="preplanning.projects.addProject" /][/@s.submit]
+        </div>
+      [#else]
+        <div class="borderBox center">
+          <p>[@s.text name="preplanning.projects.empty" /]</p> 
+          [@s.submit type="button" name="add"][@s.text name="preplanning.projects.addProject" /][/@s.submit]
+        </div>
+      [/#if]
+      <hr/>
+      <h3 class="projectSubTitle">[@s.text name="preplanning.projects.otherProjects" /]</h3>
       [@projectList.projectsList projects=allProjects canValidate=true /]
-    [#else]
-    <div class="borderBox center">
-      <p>[@s.text name="preplanning.projects.empty" /]</p> 
-      [@s.submit type="button" name="add"][@s.text name="preplanning.projects.addProject" /][/@s.submit]
-    </div>
-    [/#if]
-    
-
-  </article>
+      
+    </article>
   [/@s.form]  
 </section>
 [#include "/WEB-INF/global/pages/footer.ftl"]
