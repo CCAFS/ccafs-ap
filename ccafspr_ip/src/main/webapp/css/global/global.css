@@ -836,8 +836,6 @@ h1.contentSubTitle {
   text-align: right;
 }
 
-
-
 .buttons button[name=save] {
     color: #FFFFFF;
     background: #8EA786;
@@ -905,6 +903,14 @@ h1.contentSubTitle {
 
 .textArea textarea{
   width: 99%
+}
+
+.readPrivileges {
+  text-align: center;
+  background-color: rgb(255, 205, 205);
+  padding: 5px 0px;
+  font-weight: bold;
+  color: red;
 }
 
 /************* LOGIN *****************/
