@@ -70,6 +70,51 @@ public class ProjectManagerImpl implements ProjectManager {
   }
 
   @Override
+  public List<Project> getAllProjects() {
+    List<Map<String, String>> projectDataList = projectDAO.getAllProjects();
+    List<Project> projectsList = new ArrayList<>();
+    DateFormat dateformatter = new SimpleDateFormat(APConstants.DATE_FORMAT);
+
+    for (Map<String, String> elementData : projectDataList) {
+
+      Project project = new Project(Integer.parseInt(elementData.get("id")));
+      project.setTitle(elementData.get("title"));
+      project.setSummary(elementData.get("summary"));
+      // Format to the Dates of the project
+      String sDate = elementData.get("start_date");
+      String eDate = elementData.get("end_date");
+      if (sDate != null && eDate != null) {
+        try {
+          Date startDate = dateformatter.parse(sDate);
+          Date endDate = dateformatter.parse(eDate);
+          project.setStartDate(startDate);
+          project.setEndDate(endDate);
+        } catch (ParseException e) {
+          LOG.error("There was an error formatting the dates", e);
+        }
+      }
+      // Setting program creator.
+      if (elementData.get("program_creator_id") != null) {
+        project.setProgramCreator(ipProgramManager.getIPProgramById(Integer.parseInt(elementData
+          .get("program_creator_id"))));
+      }
+      // Setting creation date.
+      project.setCreated(Long.parseLong(elementData.get("created")));
+      // Getting Project Focuses - IPPrograms
+      project.setRegions(ipProgramManager.getProjectFocuses(Integer.parseInt(elementData.get("id")),
+        APConstants.REGION_PROGRAM_TYPE));
+      project.setFlagships(ipProgramManager.getProjectFocuses(Integer.parseInt(elementData.get("id")),
+        APConstants.FLAGSHIP_PROGRAM_TYPE));
+      // Getting Budget.
+      project.setBudgets(budgetManager.getCCAFSBudgets(Integer.parseInt(elementData.get("id"))));
+
+      // Adding project to the list
+      projectsList.add(project);
+    }
+    return projectsList;
+  }
+
+  @Override
   public User getExpectedProjectLeader(int projectId) {
     Map<String, String> pData = projectDAO.getExpectedProjectLeader(projectId);
     if (!pData.isEmpty()) {

@@ -26,6 +26,7 @@ import org.slf4j.LoggerFactory;
 
 /**
  * @author Héctor Fabio Tobón R.
+ * @author Javier Andrés Gallego B.
  */
 public class ManageUsersAction extends BaseAction {
 

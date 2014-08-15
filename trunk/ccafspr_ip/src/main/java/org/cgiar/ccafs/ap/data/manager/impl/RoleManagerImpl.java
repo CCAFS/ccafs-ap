@@ -18,6 +18,8 @@ import org.cgiar.ccafs.ap.data.manager.RoleManager;
 import org.cgiar.ccafs.ap.data.model.Role;
 import org.cgiar.ccafs.ap.data.model.User;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Map;
 
 import com.google.inject.Inject;
@@ -30,6 +32,23 @@ public class RoleManagerImpl implements RoleManager {
   @Inject
   public RoleManagerImpl(RoleDAO roleDAO) {
     this.roleDAO = roleDAO;
+  }
+
+
+  @Override
+  public List<Role> getAllRoles() {
+    List<Role> roles = new ArrayList<>();
+    List<Map<String, String>> rolesDataList = roleDAO.getAllRoles();
+    for (Map<String, String> rData : rolesDataList) {
+      Role role = new Role();
+      role.setId(Integer.parseInt(rData.get("id")));
+      role.setName(rData.get("name"));
+      role.setAcronym(rData.get("acronym"));
+
+      // Adding object to the array.
+      roles.add(role);
+    }
+    return roles;
   }
 
   @Override

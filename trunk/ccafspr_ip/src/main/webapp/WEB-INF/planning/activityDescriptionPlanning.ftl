@@ -24,50 +24,54 @@
     <h1 class="contentTitle">
     [@s.text name="planning.activityDescription.title" /] 
     </h1>
-    <div id="activityDescription" class="borderBox">
-         <fieldset class="fullBlock">  
-         [#if activity.leader?has_content]
-			[#-- Activity Leader --]
-			<div id="activityLeader" class="">
-				<p><div class="fullBlock">
-				<b>[@s.text name="planning.activityDescription.leader" /]</b> ${activity.leader.currentInstitution.name}
+    <div id="activityDescription" >
+	 <fieldset class="fullBlock">  
+	 	<div class="borderBox">
+		[#if activity.leader?has_content]
+			<div class="borderBox">
+				[#-- Activity Leader --]
+				<div id="activityLeader" class="">
+					<p><div class="fullBlock">
+					<b>[@s.text name="planning.activityDescription.leader" /]</b> ${activity.leader.currentInstitution.name}
 				</div>
-			  [#-- Contact Name--]
-			  	<div class="halfPartBlock">  
-					<b>[@s.text name="planning.activityDescription.contactName" /]</b> ${activity.leader.firstName} ${activity.leader.lastName}
-			  	</div>    	 
-			  [#--  Contact Email --]
-			  <div class="halfPartBlock">
-			  		<b>[@s.text name="planning.activityDescription.contactEmail" /]</b>${activity.leader.email}
-			  </div><p/><br/><br/>
-	       [#else]
-	       [#-- Activity Leader --]
-	  			[@customForm.select name="activity.expectedLeader.institution.id" label=""  disabled=false i18nkey="planning.activityDescription.leader" listName="allPartners" keyFieldName="id"  displayFieldName="name" /]
-	  	    	<div id="projectDescription" class="">
-	  	      [#-- Contact Name--]
-	  	      <div class="halfPartBlock">  
-	  	      	[@customForm.input name="activity.expectedLeader.name" type="text" i18nkey="planning.activityDescription.contactName" required=true   /]
-	          </div>    	 
-	  	      [#--  Contact Email --]
-	          <div class="halfPartBlock">          
-	            [@customForm.input name="activity.expectedLeader.email" type="text"  i18nkey="planning.activityDescription.contactEmail" required=true  /]
-	          </div>
-          [/#if]
-          [#-- Activity Title --]
-  			[@customForm.textArea name="activity.title" i18nkey="planning.activityDescription.title" required=true /]
-  	      [#-- Activity Description --]
-  			[@customForm.textArea name="activity.description" i18nkey="planning.activityDescription.description" required=true  /]
-  	      [#-- Start Date --]
-  		    <div class="halfPartBlock">
-  		     	[@customForm.input name="activity.start" type="text" i18nkey="planning.activityDescription.startDate" required=true /]
-  		    </div> 
-  		    [#-- End Date --]
-  		    <div class="halfPartBlock">
-  	      		[@customForm.input name="activity.end" type="text" i18nkey="planning.activityDescription.endDate" required=true /]
-  	    	</div>
-  	  	</div> 
-  	  		
-      </fieldset><br/>
+				[#-- Contact Name--]
+				<div class="halfPartBlock">  
+				<b>[@s.text name="planning.activityDescription.contactName" /]</b> ${activity.leader.firstName} ${activity.leader.lastName}
+				</div>    	 
+				[#--  Contact Email --]
+				<div class="halfPartBlock">
+					<b>[@s.text name="planning.activityDescription.contactEmail" /]</b>${activity.leader.email}
+				</div>
+			</div>
+			
+		[#else]
+			[#-- Activity Leader --]
+				[@customForm.select name="activity.expectedLeader.institution.id" label=""  disabled=false i18nkey="planning.activityDescription.leader" listName="allPartners" keyFieldName="id"  displayFieldName="name" /]
+			<div id="projectDescription" class="">
+			[#-- Contact Name--]
+			<div class="halfPartBlock">  
+				[@customForm.input name="activity.expectedLeader.name" type="text" i18nkey="planning.activityDescription.contactName" required=true   /]
+			</div>    	 
+			[#--  Contact Email --]
+			<div class="halfPartBlock">          
+				[@customForm.input name="activity.expectedLeader.email" type="text"  i18nkey="planning.activityDescription.contactEmail" required=true  /]
+			</div>
+		[/#if]
+		</div><br/>
+		[#-- Activity Title --]
+			[@customForm.textArea name="activity.title" i18nkey="planning.activityDescription.title" required=true /]
+		[#-- Activity Description --]
+			[@customForm.textArea name="activity.description" i18nkey="planning.activityDescription.description" required=true  /]
+		[#-- Start Date --]
+		<div class="halfPartBlock">
+			[@customForm.input name="activity.start" type="text" i18nkey="planning.activityDescription.startDate" required=true /]
+		</div> 
+		[#-- End Date --]
+			<div class="halfPartBlock">
+				[@customForm.input name="activity.end" type="text" i18nkey="planning.activityDescription.endDate" required=true /]
+			</div>
+		</div> 
+	  </fieldset><br/>
     </div> 
     
     <div class="buttons">

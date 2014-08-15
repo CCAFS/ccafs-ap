@@ -89,6 +89,7 @@ public class UserManagerImp implements UserManager {
     for (Map<String, String> eData : employeesDataList) {
       User employee = new User();
       employee.setId(Integer.parseInt(eData.get("id")));
+      employee.setEmployeeId(Integer.parseInt(eData.get("employee_id")));
       employee.setFirstName(eData.get("first_name"));
       employee.setLastName(eData.get("last_name"));
       employee.setEmail(eData.get("email"));
