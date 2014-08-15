@@ -23,9 +23,9 @@
 	      [#if currentUser.FPL || currentUser.RPL || currentUser.CU || currentUser.admin ]
 	        [#if preplanningActive ]
 	          [#if currentUser.CU ]
-  	          <a  href="${baseUrl}/pre-planning/projects/projects.do">
+  	          <a  href="[@s.url namespace="/pre-planning/projects" action='projects'/]">
   	        [#else]
-  	          <a  href="${baseUrl}/pre-planning/outcomes.do">
+  	          <a  href="[@s.url namespace="/pre-planning/projects" action='outcomes'/]">
   	        [/#if]
 	        [#else]
 	          <a href="javascript:void(0);" title="[@s.text name="menu.link.disabled" /]" class="disabled">
@@ -37,7 +37,7 @@
 	      [#-- Planning section --]
 	      [#if !currentUser.guest ]
 	        [#if planningActive ]               
-	          <a  href="${baseUrl}/planning/projects.do">
+	          <a  href="[@s.url namespace="/planning/projects" action='projects'/]">
 	        [#else]
 	          <a href="javascript:void(0);" title="[@s.text name="menu.link.disabled" /]" class="disabled">
 	        [/#if]
@@ -46,6 +46,7 @@
 	      [/#if]
 	      
 	      [#-- Reporting section --]
+	      [#-- 
 	      [#if !currentUser.guest ] 
 	        [#if reportingActive ]               
 	          <a href="${baseUrl}/reporting/introduction.do" >
@@ -54,9 +55,10 @@
 	        [/#if]
 	          <li [#if currentSection?? && currentSection == "reporting"] class="currentSection" [/#if]>[@s.text name="menu.reporting" /]</li>
 	        </a>
-	      [/#if]
-	      
+	      [/#if]	      
+	      --]
 	      [#-- Summaries section --]
+	      [#--
 	      [#if currentUser.CU || currentUser.FPL || currentUser.RPL || currentUser.admin ]
 	        [#if summariesActive ]
 	          <a href="${baseUrl}/summaries/activities.do" /]" >
@@ -68,13 +70,15 @@
 	          </a>
 	        [/#if]
 	      [/#if]
-	      
+	      --]
 	      [#-- Admin section --]
-	      [#if currentUser.admin ]                
+	      [#--
+	      [#if currentUser.admin ]
 	        <a href="javascript:void(0);">
 	          <li [#if currentSection?? && currentSection == "admin"] class="currentSection" [/#if]>[@s.text name="menu.admin" /]</li>
 	        </a>
 	      [/#if]
+	      --]
 	    [#else]
 	      [#-- If the user is not logged show the login element in menu --]
 	      <a href="${baseUrl}/"><li [#if currentSection?? && currentSection == "home"] class="currentSection" [/#if]>[@s.text name="menu.login" /]</li></a>
