@@ -11,7 +11,7 @@
  * You should have received a copy of the GNU General Public License
  * along with CCAFS P&R. If not, see <http://www.gnu.org/licenses/>.
  *****************************************************************/
-package org.cgiar.ccafs.ap.interceptor.project;
+package org.cgiar.ccafs.ap.interceptor;
 
 import java.util.Map;
 

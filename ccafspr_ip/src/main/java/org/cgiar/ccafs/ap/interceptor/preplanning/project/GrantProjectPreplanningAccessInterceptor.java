@@ -11,7 +11,7 @@
  * You should have received a copy of the GNU General Public License
  * along with CCAFS P&R. If not, see <http://www.gnu.org/licenses/>.
  *****************************************************************/
-package org.cgiar.ccafs.ap.interceptor.project;
+package org.cgiar.ccafs.ap.interceptor.preplanning.project;
 
 import org.cgiar.ccafs.ap.config.APConstants;
 import org.cgiar.ccafs.ap.data.model.User;
@@ -35,17 +35,17 @@ import org.slf4j.LoggerFactory;
  *
  * @author Héctor Fabio Tobón R.
  */
-public class GrantProjectAccessInterceptor extends AbstractInterceptor {
+public class GrantProjectPreplanningAccessInterceptor extends AbstractInterceptor {
 
   private static final long serialVersionUID = 3416451095136457226L;
 
-  private static final Logger LOG = LoggerFactory.getLogger(GrantProjectAccessInterceptor.class);
+  private static final Logger LOG = LoggerFactory.getLogger(GrantProjectPreplanningAccessInterceptor.class);
 
   // Managers
   ProjectManager projectManager;
 
   @Inject
-  public GrantProjectAccessInterceptor(ProjectManager projectManager) {
+  public GrantProjectPreplanningAccessInterceptor(ProjectManager projectManager) {
     this.projectManager = projectManager;
   }
 
