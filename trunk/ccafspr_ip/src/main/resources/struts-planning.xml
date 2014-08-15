@@ -4,7 +4,7 @@
 
   <!-- Add addition packages and configuration here. -->
   <package name="planning" namespace="/planning" extends="ccafsap-default">
-    <default-interceptor-ref name="planningStack" />
+    <default-interceptor-ref name="planningStackProjects" />
     <default-action-ref name="projects" />
 
     <!-- Sections -->

@@ -11,7 +11,7 @@
  * You should have received a copy of the GNU General Public License
  * along with CCAFS P&R. If not, see <http://www.gnu.org/licenses/>.
  *****************************************************************/
-package org.cgiar.ccafs.ap.interceptor.project;
+package org.cgiar.ccafs.ap.interceptor.preplanning.ip;
 
 import org.cgiar.ccafs.ap.action.BaseAction;
 import org.cgiar.ccafs.ap.config.APConstants;
@@ -26,18 +26,20 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 /**
- * This interceptor is used to validate what kind of users are able to access to the pre-planning/projects section.
+ * This interceptor is used to validate what kind of users are able to access to the pre-planning impact-pathway
+ * section.
  *
  * @author Héctor Fabio Tobón R.
+ * @author Hernán David Carvajal.
  */
-public class PreplanningProjectAccessInterceptor extends AbstractInterceptor {
+public class PreplanningIPAccessInterceptor extends AbstractInterceptor {
 
-  private static final long serialVersionUID = -5970028237143387666L;
+  private static final long serialVersionUID = 557204822452161234L;
 
-  private static final Logger LOG = LoggerFactory.getLogger(PreplanningProjectAccessInterceptor.class);
+  private static final Logger LOG = LoggerFactory.getLogger(PreplanningIPAccessInterceptor.class);
 
   @Inject
-  public PreplanningProjectAccessInterceptor() {
+  public PreplanningIPAccessInterceptor() {
   }
 
   @Override
@@ -46,7 +48,8 @@ public class PreplanningProjectAccessInterceptor extends AbstractInterceptor {
     Map<String, Object> session = invocation.getInvocationContext().getSession();
     User user = (User) session.get(APConstants.SESSION_USER);
     if (user != null) {
-      if (user.isAdmin() || user.isFPL() || user.isRPL() || user.isCU()) {
+      // Only Admins, FPLs and RPLs can access to define the Impact Pathway.
+      if (user.isAdmin() || user.isFPL() || user.isRPL()) {
         invocation.invoke();
       } else {
         LOG.info("User identify with id={}, email={}, role={} tried to access pre-planning section.", new Object[] {
