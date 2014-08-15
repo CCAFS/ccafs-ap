@@ -14,7 +14,6 @@ function attachEvents(){
   // Partners Events
   $("a.addProjectPartner").click(addPartnerEvent);
   $("a.removePartner").click(removePartnerEvent);
-  
   // Partners filters
   $(".filters-link").click(function(event){
     var $filterContent = $(event.target).next();

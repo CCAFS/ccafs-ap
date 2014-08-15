@@ -994,7 +994,7 @@ h1.contentSubTitle {
 }
 
 #idosBlock .ido label { 
-    font-weight: bold;
+    font-weight: normal;
 }
 
 #idosBlock .ido .checkboxGroup.vertical { 
@@ -1103,7 +1103,7 @@ textarea[id$='summary'] {
 }
 
 #projects .buttons {
-	text-align: left;
+  text-align: left;
 }
 
 /* Project Partners*/

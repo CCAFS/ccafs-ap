@@ -21,6 +21,7 @@ function init(){
   });
   
   setIdoIndicatorsIndexes();
+  setIDOsIndicatorsLabel();
   attachEvents();
 }
 
@@ -35,10 +36,10 @@ function attachEvents(){
 
 function rplIndicatorEvent(event){
   $checkbox = $(event.target);
-  if( $checkbox.attr("checked") ){
+  if ($checkbox.attr("checked")) {
     $checkbox.parent().find("input[name$='target']").attr("disabled", false);
     $checkbox.parent().find("input[name$='id']").attr("disabled", false);
-  }else{
+  } else {
     $checkbox.parent().find("input[name$='target']").attr("disabled", true);
     $checkbox.parent().find("input[name$='id']").attr("disabled", true);
   }
@@ -69,6 +70,13 @@ function viewIDOsIndicators(event){
     $indicatorsBlock.hide(300);
     $indicatorsBlock.find(".indicatorsCheckbox").attr("disabled", true);
   }
+}
+
+function setIDOsIndicatorsLabel(){
+  $("[for^=ido-]").each(function(index,ido){
+    var text = $(ido).text().split("-")[1];
+    $(ido).html("<strong>" + $(ido).text().split("-")[0] + "</strong> - " + text);
+  });
 }
 
 function verifyIDOcheck(event){
