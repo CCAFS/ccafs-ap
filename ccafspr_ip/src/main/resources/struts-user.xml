@@ -12,5 +12,8 @@
       <result name="input">/WEB-INF/user/manageUsers.ftl</result>
     </action>
     
+    <action name="userDescription" class="org.cgiar.ccafs.ap.action.user.userDescriptionAction">
+      <result name="input">/WEB-INF/user/userDescription.ftl</result>
+    </action>
   </package>
 </struts>

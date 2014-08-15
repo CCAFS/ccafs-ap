@@ -27,27 +27,27 @@
         [#list users as user]
    		   <tr>
               <td>
-                  <a href="[@s.url action='userDescription' ][@s.param name='userID']${user.id?c}[/@s.param][/@s.url]">
+                  <a href="[@s.url action='userDescription' ][@s.param name='employeeID']${user.employeeId?c}[/@s.param][/@s.url]">
                   ${user.id?c}
                   </a>
               </td>
               <td>
-                  <a href="[@s.url action='userDescription' ] [@s.param name='userID']${user.id?c}[/@s.param][/@s.url]">
+                  <a href="[@s.url action='userDescription' ] [@s.param name='employeeID']${user.employeeId?c}[/@s.param][/@s.url]">
                    ${user.lastName} ${user.firstName}
                   </a>
               </td>
               <td> 
-                  <a href="[@s.url action='userDescription'] [@s.param name='userID']${user.id?c}[/@s.param] [/@s.url]">
+                  <a href="[@s.url action='userDescription'] [@s.param name='employeeID']${user.employeeId?c}[/@s.param] [/@s.url]">
                     ${user.email}
                   </a>
               </td>
               <td> 
-                  <a href="[@s.url action='userDescription' ] [@s.param name='userID']${user.id?c}[/@s.param] [/@s.url]">
+                  <a href="[@s.url action='userDescription' ] [@s.param name='employeeID']${user.employeeId?c}[/@s.param] [/@s.url]">
                      ${user.currentInstitution.name}
                   </a>
               </td>
               <td> 
-                  <a href="[@s.url action='userDescription' ] [@s.param name='userID']${user.id?c}[/@s.param] [/@s.url]">
+                  <a href="[@s.url action='userDescription' ] [@s.param name='employeeID']${user.employeeId?c}[/@s.param] [/@s.url]">
                    ${user.role.name}
                   </a>
               </td>

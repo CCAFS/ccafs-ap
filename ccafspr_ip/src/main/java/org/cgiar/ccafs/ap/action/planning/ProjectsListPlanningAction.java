@@ -41,9 +41,13 @@ public class ProjectsListPlanningAction extends BaseAction {
 
   // Model for the back-end
   private List<Project> projects;
+  private List<Project> allProjects;
+
 
   // Model for the front-end
   private int projectID;
+
+
   private double totalBudget;
 
 
@@ -53,7 +57,6 @@ public class ProjectsListPlanningAction extends BaseAction {
     this.projectManager = projectManager;
     this.totalBudget = 0;
   }
-
 
   @Override
   public String add() {
@@ -67,6 +70,7 @@ public class ProjectsListPlanningAction extends BaseAction {
     return BaseAction.ERROR;
   }
 
+
   private int createNewProject() {
     Project newProject = new Project(-1);
     newProject.setOwner(this.getCurrentUser());
@@ -75,14 +79,15 @@ public class ProjectsListPlanningAction extends BaseAction {
       newProject.setProgramCreator(userProgram);
     } else {
       LOG
-      .error(
-        "-- execute() > the current user identify with id={} and institution_id={} does not belong to a specific program!",
-        new Object[] {this.getCurrentUser().getId(), this.getCurrentUser().getCurrentInstitution().getId()});
+        .error(
+          "-- execute() > the current user identify with id={} and institution_id={} does not belong to a specific program!",
+          new Object[] {this.getCurrentUser().getId(), this.getCurrentUser().getCurrentInstitution().getId()});
     }
     newProject.setCreated(new Date().getTime());
     return projectManager.saveProjectDescription(newProject);
 
   }
+
 
   @Override
   public String execute() throws Exception {
@@ -103,6 +108,10 @@ public class ProjectsListPlanningAction extends BaseAction {
     }
 
     return BaseAction.SUCCESS;
+  }
+
+  public List<Project> getAllProjects() {
+    return allProjects;
   }
 
   public int getProjectID() {
@@ -130,8 +139,14 @@ public class ProjectsListPlanningAction extends BaseAction {
     for (Integer projectId : projectIds) {
       projects.add(projectManager.getProject(projectId));
     }
+    allProjects = projectManager.getAllProjects();
+    allProjects.removeAll(projects);
 
 
+  }
+
+  public void setAllProjects(List<Project> allProjects) {
+    this.allProjects = allProjects;
   }
 
 

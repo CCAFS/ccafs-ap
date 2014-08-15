@@ -45,6 +45,7 @@ public class MySQLProjectDAO implements ProjectDAO {
     this.databaseManager = databaseManager;
   }
 
+
   @Override
   public boolean existProject(int projectID) {
     LOG.debug(">> existProject projectID = {} )", projectID);
@@ -66,6 +67,22 @@ public class MySQLProjectDAO implements ProjectDAO {
     LOG.debug("-- existProject() > Calling method executeQuery to get the results");
     return exists;
   }
+
+  @Override
+  public List<Map<String, String>> getAllProjects() {
+    LOG.debug(">> getAllProjects )");
+    StringBuilder query = new StringBuilder();
+
+    query.append("SELECT p.* ");
+    query.append("FROM projects as p ");
+    query.append("INNER JOIN employees emp ON emp.id = p.project_owner_id ");
+    query.append("INNER JOIN institutions i ON i.id = emp.institution_id ");
+    query.append("INNER JOIN ip_programs ip ON ip.id = i.program_id ");
+
+    LOG.debug("-- getAllProjects() > Calling method executeQuery to get the results");
+    return this.getData(query.toString());
+  }
+
 
   private List<Map<String, String>> getData(String query) {
     LOG.debug(">> executeQuery(query='{}')", query);
@@ -101,7 +118,6 @@ public class MySQLProjectDAO implements ProjectDAO {
     LOG.debug("<< executeQuery():ProjectList.size={}", projectList.size());
     return projectList;
   }
-
 
   @Override
   public Map<String, String> getExpectedProjectLeader(int projectID) {

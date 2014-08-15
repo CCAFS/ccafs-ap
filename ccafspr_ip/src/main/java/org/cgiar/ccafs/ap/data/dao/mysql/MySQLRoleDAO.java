@@ -20,7 +20,9 @@ import org.cgiar.ccafs.ap.data.dao.RoleDAO;
 import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import com.google.inject.Inject;
@@ -38,6 +40,34 @@ public class MySQLRoleDAO implements RoleDAO {
   @Inject
   public MySQLRoleDAO(DAOManager databaseManager) {
     this.databaseManager = databaseManager;
+  }
+
+  @Override
+  public List<Map<String, String>> getAllRoles() {
+    LOG.debug(">> getAllRoles()");
+    List<Map<String, String>> roleList = new ArrayList<>();
+    try (Connection connection = databaseManager.getConnection()) {
+
+      StringBuilder query = new StringBuilder();
+      query.append("SELECT * ");
+      query.append("FROM roles ");
+      query.append("ORDER BY name ");
+
+      ResultSet rs = databaseManager.makeQuery(query.toString(), connection);
+      while (rs.next()) {
+        Map<String, String> roleData = new HashMap<>();
+        roleData.put("id", rs.getString("id"));
+        roleData.put("name", rs.getString("name"));
+        roleData.put("acronym", rs.getString("acronym"));
+        roleList.add(roleData);
+      }
+      rs.close();
+    } catch (SQLException e) {
+      LOG.error("-- getAllRoles() > There was an error getting the data for Employees {}.", e);
+      return null;
+    }
+    LOG.debug("<< getAllRoles():{}", roleList);
+    return roleList;
   }
 
   @Override

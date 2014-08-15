@@ -41,9 +41,13 @@ public class ProjectsListPreplanningAction extends BaseAction {
 
   // Model for the back-end
   private List<Project> projects;
+  private List<Project> allProjects;
+
 
   // Model for the front-end
   private int projectID;
+
+
   private double totalBudget;
 
 
@@ -53,7 +57,6 @@ public class ProjectsListPreplanningAction extends BaseAction {
     this.projectManager = projectManager;
     this.totalBudget = 0;
   }
-
 
   @Override
   public String add() {
@@ -66,6 +69,7 @@ public class ProjectsListPreplanningAction extends BaseAction {
     // Let's redirect the user to the error page.
     return BaseAction.ERROR;
   }
+
 
   private int createNewProject() {
     Project newProject = new Project(-1);
@@ -82,6 +86,15 @@ public class ProjectsListPreplanningAction extends BaseAction {
     newProject.setCreated(new Date().getTime());
     return projectManager.saveProjectDescription(newProject);
 
+  }
+
+
+  public List<Project> getAllProjects() {
+    return allProjects;
+  }
+
+  public int getProjectID() {
+    return projectID;
   }
 
 // @Override
@@ -105,10 +118,6 @@ public class ProjectsListPreplanningAction extends BaseAction {
 // return BaseAction.SUCCESS;
 // }
 
-  public int getProjectID() {
-    return projectID;
-  }
-
   public List<Project> getProjects() {
     return projects;
   }
@@ -130,8 +139,14 @@ public class ProjectsListPreplanningAction extends BaseAction {
     for (Integer projectId : projectIds) {
       projects.add(projectManager.getProject(projectId));
     }
+    allProjects = projectManager.getAllProjects();
+    allProjects.removeAll(projects);
 
 
+  }
+
+  public void setAllProjects(List<Project> allProjects) {
+    this.allProjects = allProjects;
   }
 
 

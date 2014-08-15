@@ -28,10 +28,14 @@
     </h1>
 
     [#if projects?size>0]
-      [@projectList.projectsList projects=projects canValidate=true /]
-      <div class="buttons center">
+    <h3>[@s.text name="preplanning.projects.yourProjects" /]</h3>
+      <div class="buttons">
         [@s.submit type="button" name="add"][@s.text name="preplanning.projects.addProject" /][/@s.submit]
       </div>
+      [@projectList.projectsList projects=projects canValidate=true /]
+      <br/><br/>
+      <h3>[@s.text name="preplanning.projects.otherProjects" /]</h3>
+      [@projectList.projectsList projects=allProjects canValidate=true /]
     [#else]
     <div class="borderBox center">
       <p>[@s.text name="preplanning.projects.empty" /]</p> 

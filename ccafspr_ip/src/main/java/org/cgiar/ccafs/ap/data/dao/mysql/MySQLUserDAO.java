@@ -53,7 +53,7 @@ public class MySQLUserDAO implements UserDAO {
 
       StringBuilder query = new StringBuilder();
       query
-        .append("SELECT u.id, pe.first_name, pe.last_name, u.email, e.institution_id, e.role_id, r.name as role_name, r.acronym as role_acronym ");
+        .append("SELECT u.id,e.id as employee_id, pe.first_name, pe.last_name, u.email, e.institution_id, e.role_id, r.name as role_name, r.acronym as role_acronym ");
       query.append("FROM employees e ");
       query.append("INNER JOIN users u  ON e.user_id=u.id ");
       query.append("INNER JOIN roles r  ON e.role_id=r.id ");
@@ -64,6 +64,7 @@ public class MySQLUserDAO implements UserDAO {
       while (rs.next()) {
         Map<String, String> employeeData = new HashMap<>();
         employeeData.put("id", rs.getString("id"));
+        employeeData.put("employee_id", rs.getString("employee_id"));
         employeeData.put("first_name", rs.getString("first_name"));
         employeeData.put("last_name", rs.getString("last_name"));
         employeeData.put("email", rs.getString("email"));

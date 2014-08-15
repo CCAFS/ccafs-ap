@@ -23,18 +23,23 @@
     <h1 class="contentTitle">
     [@s.text name="planning.projects.title" /]  
     </h1>
-
-    [#if projects?size>0]
-      [@projectList.projectsList projects=projects canValidate=true isPlanning=true /]
-    [#else]
-      [@s.text name="planning.projects.empty" /]
-    [/#if]
-    
-    [#if currentUser.isRPL() || currentUser.isFPL() || currentUser.isAdmin()]
+	
+	[#if currentUser.isRPL() || currentUser.isFPL() || currentUser.isAdmin()]
     <div class="buttons">
       [@s.submit type="button" name="add"][@s.text name="form.buttons.add" /][/@s.submit]
     </div>
     [/#if]
+    [#if projects?size>0]
+      <h3>[@s.text name="preplanning.projects.yourProjects" /]</h3>
+      [@projectList.projectsList projects=projects canValidate=true isPlanning=true /]
+      <br/><br/>
+      <h3>[@s.text name="preplanning.projects.otherProjects" /]</h3>
+      [@projectList.projectsList projects=allProjects canValidate=true /]
+    [#else]
+      [@s.text name="planning.projects.empty" /]
+    [/#if]
+    
+    
 
   </article>
   [/@s.form]  

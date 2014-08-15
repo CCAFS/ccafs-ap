@@ -16,6 +16,7 @@ package org.cgiar.ccafs.ap.data.dao;
 
 import org.cgiar.ccafs.ap.data.dao.mysql.MySQLRoleDAO;
 
+import java.util.List;
 import java.util.Map;
 
 import com.google.inject.ImplementedBy;
@@ -27,8 +28,15 @@ import com.google.inject.ImplementedBy;
 public interface RoleDAO {
 
   /**
+   * This method gets all the Roles
+   * 
+   * @return a List of Map with all the information of the roles. If no information were found, return an empty list
+   */
+  public List<Map<String, String>> getAllRoles();
+
+  /**
    * This method gets the user role according to the institution given
-   *
+   * 
    * @param userID
    * @param institutionID
    * @return a Map with the information of the role
