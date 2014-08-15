@@ -25,7 +25,7 @@
 	          [#if currentUser.CU ]
   	          <a  href="[@s.url namespace="/pre-planning/projects" action='projects'/]">
   	        [#else]
-  	          <a  href="[@s.url namespace="/pre-planning/projects" action='outcomes'/]">
+  	          <a  href="[@s.url namespace="/pre-planning" action='outcomes'/]">
   	        [/#if]
 	        [#else]
 	          <a href="javascript:void(0);" title="[@s.text name="menu.link.disabled" /]" class="disabled">
