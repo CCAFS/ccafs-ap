@@ -61,7 +61,6 @@
 [/#macro]
 
 [#macro partnerTemplate showResponsabilities=false canEdit=true ]
-  [@s.form action="template" cssClass="pure-form"]
   <div id="projectPartnerTemplate" class="borderBox" style="display:none">
         [#-- Partner identifier --]
         <input id="id" type="hidden" name="" value="-1" />
@@ -107,7 +106,6 @@
         </div>
         [/#if]
       </div> <!-- End projectPartner-Template -->
-      [/@s.form]
 [/#macro]
 
 [#macro projectLeader leader showResponsabilities=false canEdit=true]
