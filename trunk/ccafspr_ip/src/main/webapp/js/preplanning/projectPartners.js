@@ -35,10 +35,12 @@ function updateOrganizationsList(e){
   var $selectInstitutions = $parent.find("select[name$='partner']");
   var partnerTypes = $parent.find("select.partnerTypes").find('option:selected').val();
   var countryList = $parent.find("select.countryList").find('option:selected').val();
-  var source = "../json/institutionsByTypeAndCountry.do?institutionTypeID=" + partnerTypes + "&countryID=" + countryList;
+  var source = "../../json/institutionsByTypeAndCountry.do?institutionTypeID=" + partnerTypes + "&countryID=" + countryList;
+  
   if (eventType == "filters-link")
-    source = "../json/institutionsByTypeAndCountry.do";
+    source = "../../json/institutionsByTypeAndCountry.do";
   var institutionsList = "";
+  
   $.getJSON(source, function(data){
     $.each(data.institutions, function(index,institution){
       institutionsList += "<option value=" + institution.id + ">" + institution.composedName + "</option>";
