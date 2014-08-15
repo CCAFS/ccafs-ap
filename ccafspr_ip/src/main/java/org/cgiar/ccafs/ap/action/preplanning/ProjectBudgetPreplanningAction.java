@@ -116,7 +116,7 @@ public class ProjectBudgetPreplanningAction extends BaseAction {
           } else if (budget.getType().getValue() == BudgetType.BILATERAL.getValue()) {
             bilateral = true;
             budgetsMap
-              .put(year + "-" + projectPartner.getPartner().getId() + "-" + BudgetType.BILATERAL.name(), budget);
+            .put(year + "-" + projectPartner.getPartner().getId() + "-" + BudgetType.BILATERAL.name(), budget);
           }
         }
       }
@@ -223,8 +223,8 @@ public class ProjectBudgetPreplanningAction extends BaseAction {
       newBudget.setAmount(0);
       newBudget.setYear(year);
       budgetsMap
-        .put(year + "-" + project.getLeader().getCurrentInstitution().getId() + "-" + BudgetType.BILATERAL.name(),
-          newBudget);
+      .put(year + "-" + project.getLeader().getCurrentInstitution().getId() + "-" + BudgetType.BILATERAL.name(),
+        newBudget);
     }
 
     // Leveraged
@@ -321,17 +321,9 @@ public class ProjectBudgetPreplanningAction extends BaseAction {
     super.prepare();
 
     // Getting the project id from the URL parameters.
+    // It's assumed that the project parameter is ok. (@See ValidateProjectParameterInterceptor)
     String parameter;
-    try {
-      parameter = this.getRequest().getParameter(APConstants.PROJECT_REQUEST_ID);
-      if (parameter != null) {
-        projectID = Integer.parseInt(StringUtils.trim(parameter));
-      }
-    } catch (NumberFormatException e) {
-      LOG.error("-- prepare() > There was an error parsing the project identifier '{}'.", projectID);
-      projectID = -1;
-      return; // Stop here and go to the execute method.
-    }
+    projectID = Integer.parseInt(StringUtils.trim(this.getRequest().getParameter(APConstants.PROJECT_REQUEST_ID)));
 
     // Getting the project identified with the id parameter.
     project = projectManager.getProject(projectID);
