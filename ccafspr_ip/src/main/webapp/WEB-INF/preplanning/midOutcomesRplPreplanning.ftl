@@ -146,7 +146,11 @@
     [/#if] 
   </article>
   [/@s.form] 
-
+  
+  [#-- Placeholder text for midOutcomes select --] 
+  <input type="hidden" id="midOutcomeSelectPlaceholder" value="[@s.text name="preplanning.midOutcomesRPL.midOutcomes" /]"  />
+  <input type="hidden" id="selectFlagshipFirstPlaceholder" value="[@s.text name="preplanning.midOutcomesRPL.selectFlagshipFirst" /]"  />
+  
 [#-- Mid Outcomes RPL TEMPLATE --]
 <div class="midOutcome borderBox" id="midOutcomeRPLTemplate" style="display:none">
   [#-- Mid outcome identifier --]

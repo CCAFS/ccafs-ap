@@ -185,7 +185,7 @@ public class IPElementManagerImpl implements IPElementManager {
       programElementID =
         ipElementDAO.relateIPElement(elementId, element.getProgram().getId(), APConstants.PROGRAM_ELEMENT_USED_BY);
 
-      if (programElementID == 0) {
+      if (programElementID == -1) {
         programElementID = ipElementDAO.getProgramElementID(elementId, element.getProgram().getId());
       }
 

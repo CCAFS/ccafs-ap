@@ -15,6 +15,7 @@ function init(){
     addChosen();
   }
   setOutputsIndexes();
+  removeOutcomesAlreadySelected();
 }
 
 function attachEvents(){
@@ -47,6 +48,29 @@ function removeOutputEvent(event){
   });
 }
 
+/*
+ * This method is called onLoad to remove of each midOutcome list
+ * the options that were already selected and appears as contributions
+ */
+function removeOutcomesAlreadySelected(){
+  $(".output").each(function(c, output){
+    var $outputBlock = $(output);
+    
+    $outputBlock.find(".contributions input").each(function(index, input){
+      var $midOutcomeList = $outputBlock.find("#outputs_contributions");
+      $midOutcomeList.find("option").each(function(index, option){
+        
+        if($(option).val() == $(input).val()){
+          $(option).remove();
+          $midOutcomeList.trigger("liszt:updated");
+        }
+        
+      });
+      $outputBlock.find("#outputs_contributions option").each
+    });
+  });
+}
+
 function setOutputsIndexes(){
   $("div#outputBlocks .output").each(function(index,element){
     var elementName = "outputs[" + index + "].";
@@ -63,19 +87,20 @@ function setOutputsIndexes(){
 // ----------------- Contribute Events ----------------------//
 function addContributeEvent(event){
   event.preventDefault();
-  console.log(event);
+  
   var $selectElemet = $(event.target);
   var $optionSelected = $selectElemet.find('option:selected');
-  console.log($optionSelected);
+
   if ($selectElemet.find('option').length != 0) {
     var $newElementClone = $("#contributeTemplate").clone(true).removeAttr("id");
-    var grandParentId = $selectElemet.parent().parent().parent().parent().attr("id").split("-")[1];
+    var grandParentId = $("select").index(event.target);
     $newElementClone.find("[value]").attr("value", $optionSelected.attr("value"));
     $newElementClone.find('p').html($optionSelected.html());
     $selectElemet.parent().parent().parent().before($newElementClone);
     $newElementClone.show("slow");
     $optionSelected.remove();
     $selectElemet.trigger("liszt:updated");
+
     setContributesIndexes(grandParentId);
   }
   $optionSelected.attr('selectedIndex', '-1');
@@ -94,6 +119,7 @@ function removeContributeEvent(event){
 }
 
 function setContributesIndexes(i){
+  
   $("#output-" + i + " div.contributions").each(function(index,element){
     var elementName = "outputs[" + i + "].contributesTo[" + index + "].";
     $(element).find("[id^='contributeId']").attr("name", elementName + "id");

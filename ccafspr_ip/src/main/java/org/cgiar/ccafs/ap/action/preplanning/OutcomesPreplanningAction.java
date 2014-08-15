@@ -97,8 +97,6 @@ public class OutcomesPreplanningAction extends BaseAction {
     // Get all the IDOs
     idos = ipElementManager.getIPElements(systemProgram, idoType);
 
-    // TODO HC - Add an interceptor to verify that if the user is not related to a program, then DON'T have
-    // permissions to access this action
     outcomes = ipElementManager.getIPElements(getCurrentUser().getCurrentInstitution().getProgram(), type);
 
     // Keep the id of all outcomes which come from the database

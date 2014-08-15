@@ -91,14 +91,22 @@ public class OutputsPreplanningAction extends BaseAction {
     IPElementType outputsType = new IPElementType(APConstants.ELEMENT_TYPE_OUTPUTS);
 
     flagshipsList = new ArrayList<>();
+    midOutcomesList = new ArrayList<>();
 
     // Fake flagship to add as a placeholder
     IPProgram flagship = new IPProgram(-1);
     flagship.setName(getText("preplanning.midOutcomesRPL.selectFlagship"));
     flagshipsList.add(flagship);
 
+    // Fake midOutcome to add as a placeholder if user is a FPL
+    if (getCurrentUser().isFPL()) {
+      IPElement outcome = new IPElement(-1);
+      outcome.setDescription(getText("preplanning.midOutcomesRPL.selectMidOutcome"));
+      midOutcomesList.add(outcome);
+    }
+
     flagshipsList.addAll(ipProgramManager.getProgramsByType(APConstants.FLAGSHIP_PROGRAM_TYPE));
-    midOutcomesList = ipElementManager.getIPElements(program, midOutcomesType);
+    midOutcomesList.addAll(ipElementManager.getIPElements(program, midOutcomesType));
     outputs = ipElementManager.getIPElements(program, outputsType);
 
     // Set the parents for the translated outputs
@@ -148,11 +156,7 @@ public class OutputsPreplanningAction extends BaseAction {
 
     // Remove records already present in the database
     if (ipElementManager.saveIPElements(outputs)) {
-      if (getCurrentUser().isFPL()) {
-        addActionMessage(getText("saving.success", new String[] {getText("preplanning.outputs.title")}));
-      } else if (getCurrentUser().isRPL()) {
-        addActionMessage(getText("saving.success", new String[] {getText("preplanning.outputsRPL.titleRPL")}));
-      }
+      addActionMessage(getText("saving.success", new String[] {getText("preplanning.outputs.title")}));
       return SUCCESS;
     } else {
       addActionError(getText("saving.problem"));
