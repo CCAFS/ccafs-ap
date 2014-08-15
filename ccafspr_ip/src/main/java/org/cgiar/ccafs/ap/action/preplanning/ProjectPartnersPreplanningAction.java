@@ -16,6 +16,7 @@ package org.cgiar.ccafs.ap.action.preplanning;
 import org.cgiar.ccafs.ap.action.BaseAction;
 import org.cgiar.ccafs.ap.config.APConfig;
 import org.cgiar.ccafs.ap.config.APConstants;
+import org.cgiar.ccafs.ap.data.manager.BudgetManager;
 import org.cgiar.ccafs.ap.data.manager.InstitutionManager;
 import org.cgiar.ccafs.ap.data.manager.LocationManager;
 import org.cgiar.ccafs.ap.data.manager.ProjectManager;
@@ -33,7 +34,6 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
-import org.cgiar.ccafs.ap.data.manager.BudgetManager;
 import com.google.inject.Inject;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
@@ -41,7 +41,7 @@ import org.slf4j.LoggerFactory;
 
 /**
  * This class is used to manage the Project Partners section in the pre-planning step.
- *
+ * 
  * @author Héctor Tobón
  */
 public class ProjectPartnersPreplanningAction extends BaseAction {
@@ -221,8 +221,10 @@ public class ProjectPartnersPreplanningAction extends BaseAction {
     }
 
     if (success) {
+      addActionMessage(getText("saving.success", new String[] {getText("preplanning.projectPartners.leader.title")}));
       return SUCCESS;
     } else {
+      addActionError(getText("saving.problem"));
       return INPUT;
     }
 
