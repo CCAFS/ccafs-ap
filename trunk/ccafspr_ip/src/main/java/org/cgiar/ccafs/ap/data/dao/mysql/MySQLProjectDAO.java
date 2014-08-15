@@ -150,6 +150,28 @@ public class MySQLProjectDAO implements ProjectDAO {
   }
 
   @Override
+  public List<Integer> getPLProjectIds(int employeeId) {
+    LOG.debug(">> getPLProjectIds(employeeId={})", new Object[] {employeeId});
+    List<Integer> projectIds = new ArrayList<>();
+    try (Connection connection = databaseManager.getConnection()) {
+      StringBuilder query = new StringBuilder();
+      query.append("SELECT p.id FROM projects p WHERE p.project_leader_id = ");
+      query.append(employeeId);
+      ResultSet rs = databaseManager.makeQuery(query.toString(), connection);
+      while (rs.next()) {
+        projectIds.add(rs.getInt(1));
+      }
+      rs.close();
+    } catch (SQLException e) {
+      LOG.error("-- getPLProjectIds() > There was an error getting the data for employeeId={}.",
+        new Object[] {employeeId}, e.getMessage());
+      return null;
+    }
+    LOG.debug("<< getPLProjectIds():{}", projectIds);
+    return projectIds;
+  }
+
+  @Override
   public Map<String, String> getProject(int projectID) {
     LOG.debug(">> getProject projectID = {} )", projectID);
     Map<String, String> projectData = new HashMap<String, String>();
@@ -402,6 +424,7 @@ public class MySQLProjectDAO implements ProjectDAO {
     }
     return result;
   }
+
 
   @Override
   public int saveProject(Map<String, Object> projectData) {

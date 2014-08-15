@@ -4,7 +4,7 @@
 [#assign customJS = ["${baseUrl}/js/global/utils.js"] /]
 [#assign currentSection = "planning" /]
 [#assign currentPlanningSection = "projects" /]
-[#assign currentStage = "outcome" /]
+[#assign currentStage = "projectOutcomes" /]
 
 [#include "/WEB-INF/global/pages/header.ftl" /]
 [#include "/WEB-INF/global/pages/main-menu.ftl" /]
@@ -15,7 +15,7 @@
     <img src="${baseUrl}/images/global/icon-help.png" />
     <p> [@s.text name="planning.projectOutcome.help" /] </p>
   </div>
-  [#include "/WEB-INF/global/pages/planning-secondary-menu.ftl" /]
+  [#include "/WEB-INF/planning/planningProjectsSubMenu.ftl" /]
   
   [@s.form action="projectOutcomes" cssClass="pure-form"]  
   <article class="halfContent borderBox" id="projectOutcomes"> 

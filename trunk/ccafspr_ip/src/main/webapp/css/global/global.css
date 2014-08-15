@@ -704,10 +704,11 @@ a.currentReportingSection li #i-additionalInformation{
 .content h1 {
   border-bottom: 2px solid #663300;
   color: #663300;
-  font-size: 25px;
+  font-size: 1.6em;
   font-weight: normal;
-  margin-bottom: 20px;
+  margin-bottom: 10px;
 }
+
 .content h3 {
   color: #663300;
   font-weight: normal;
@@ -904,6 +905,7 @@ h1.contentSubTitle {
 .helpMessage p {
   padding: 1px;
   color: #636368;
+  margin-bottom: 5px;
 }
 
 .textArea textarea{
