@@ -120,13 +120,9 @@ public class ProjectPartnersPreplanningAction extends BaseAction {
     super.prepare();
 
     // Getting the project id from the URL parameter
-    try {
-      projectID = Integer.parseInt(StringUtils.trim(this.getRequest().getParameter(APConstants.PROJECT_REQUEST_ID)));
-    } catch (NumberFormatException e) {
-      LOG.error("-- prepare() > There was an error parsing the project identifier '{}'.", projectID);
-      projectID = -1;
-      return; // Stop here and go to execute method.
-    }
+    // It's assumed that the project parameter is ok. (@See ValidateProjectParameterInterceptor)
+    projectID = Integer.parseInt(StringUtils.trim(this.getRequest().getParameter(APConstants.PROJECT_REQUEST_ID)));
+
     // Getting the project identified with the id parameter.
     project = projectManager.getProject(projectID);
 

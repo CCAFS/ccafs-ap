@@ -175,13 +175,8 @@ public class ProjectDescriptionPreplanningAction extends BaseAction {
   @Override
   public void prepare() throws Exception {
     super.prepare();
-    try {
-      projectID = Integer.parseInt(StringUtils.trim(this.getRequest().getParameter(APConstants.PROJECT_REQUEST_ID)));
-    } catch (NumberFormatException e) {
-      LOG.error("-- prepare() > There was an error parsing the project identifier '{}'.", projectID, e.getMessage());
-      projectID = -1;
-      return; // Stop here and go to execute method.
-    }
+    // It's assumed that the project parameter is ok. (@See ValidateProjectParameterInterceptor)
+    projectID = Integer.parseInt(StringUtils.trim(this.getRequest().getParameter(APConstants.PROJECT_REQUEST_ID)));
 
     // Getting the information of the Regions program for the View
     ipProgramRegions = ipProgramManager.getProgramsByType(APConstants.REGION_PROGRAM_TYPE);
