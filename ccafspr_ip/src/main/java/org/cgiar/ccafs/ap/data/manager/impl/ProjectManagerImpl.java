@@ -133,6 +133,11 @@ public class ProjectManagerImpl implements ProjectManager {
   }
 
   @Override
+  public List<Integer> getPLProjectIds(User user) {
+    return projectDAO.getPLProjectIds(user.getEmployeeId());
+  }
+
+  @Override
   public Project getProject(int projectId) {
     DateFormat dateformatter = new SimpleDateFormat(APConstants.DATE_FORMAT);
     Map<String, String> projectData = projectDAO.getProject(projectId);

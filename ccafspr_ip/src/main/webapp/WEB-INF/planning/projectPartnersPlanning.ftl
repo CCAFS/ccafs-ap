@@ -22,7 +22,7 @@
     <img src="${baseUrl}/images/global/icon-help.png" />
     <p> [@s.text name="planning.mainInformation.help" /] </p>  
   </div>
-  [#include "/WEB-INF/global/pages/planning-secondary-menu.ftl" /]
+  [#include "/WEB-INF/planning/planningProjectsSubMenu.ftl" /]
 
   [@s.form action="partners" cssClass="pure-form"]  
   <article class="halfContent" id="mainInformation">  

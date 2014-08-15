@@ -17,32 +17,26 @@
     <p>[@s.text name="planning.projectsList.help2" /]</p>
     <p>[@s.text name="planning.projectsList.help3" /]</p>
   </div>
-  
-  [@s.form action="projects"]  
-  <article class="fullBlock" id="mainInformation"> 
+  [#include "/WEB-INF/global/pages/planning-secondary-menu.ftl"/]
+  [@s.form action="projects"]
+  <article class="halfContent" id="mainInformation">
     <h1 class="contentTitle">
-    [@s.text name="planning.projects.title" /]  
+      [@s.text name="planning.projects.title" /]
     </h1>
-	
-	[#if currentUser.isRPL() || currentUser.isFPL() || currentUser.isAdmin()]
-    <div class="buttons">
-      [@s.submit type="button" name="add"][@s.text name="form.buttons.add" /][/@s.submit]
-    </div>
-    [/#if]
+    
     [#if projects?size>0]
-      <h3>[@s.text name="preplanning.projects.yourProjects" /]</h3>
-      [@projectList.projectsList projects=projects canValidate=true isPlanning=true /]
-      <br/><br/>
-      <h3>[@s.text name="preplanning.projects.otherProjects" /]</h3>
-      [@projectList.projectsList projects=allProjects canValidate=true /]
+      <h3 class="projectSubTitle">[@s.text name="preplanning.projects.yourProjects"/]</h3>
+      [@projectList.projectsList projects=projects canValidate=true /]
     [#else]
-      [@s.text name="planning.projects.empty" /]
+      <div class="borderBox center">
+        <p>[@s.text name="planning.projects.empty" /]</p>
+      </div>
     [/#if]
-    
-    
-
+    <hr/>
+    <h3 class="projectSubTitle">[@s.text name="preplanning.projects.otherProjects" /]</h3>
+    [@projectList.projectsList projects=allProjects canValidate=true /]
   </article>
-  [/@s.form]  
+  [/@s.form]
   
   
 </section>
