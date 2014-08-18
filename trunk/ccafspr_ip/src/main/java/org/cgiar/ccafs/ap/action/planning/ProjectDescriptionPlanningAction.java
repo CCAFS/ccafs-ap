@@ -16,7 +16,6 @@ package org.cgiar.ccafs.ap.action.planning;
 import org.cgiar.ccafs.ap.action.BaseAction;
 import org.cgiar.ccafs.ap.config.APConfig;
 import org.cgiar.ccafs.ap.config.APConstants;
-import org.cgiar.ccafs.ap.data.manager.IPCrossCuttingManager;
 import org.cgiar.ccafs.ap.data.manager.IPProgramManager;
 import org.cgiar.ccafs.ap.data.manager.ProjectManager;
 import org.cgiar.ccafs.ap.data.manager.UserManager;
@@ -40,7 +39,6 @@ public class ProjectDescriptionPlanningAction extends BaseAction {
   // Manager
   private ProjectManager projectManager;
   private IPProgramManager ipProgramManager;
-  private IPCrossCuttingManager ipCrossCuttingManager;
   private UserManager userManager;
 
   private static Logger LOG = LoggerFactory.getLogger(ProjectDescriptionPlanningAction.class);
@@ -59,11 +57,10 @@ public class ProjectDescriptionPlanningAction extends BaseAction {
 
   @Inject
   public ProjectDescriptionPlanningAction(APConfig config, ProjectManager projectManager,
-    IPProgramManager ipProgramManager, IPCrossCuttingManager ipCrossCuttingManager, UserManager userManager) {
+    IPProgramManager ipProgramManager, UserManager userManager) {
     super(config);
     this.projectManager = projectManager;
     this.ipProgramManager = ipProgramManager;
-    this.ipCrossCuttingManager = ipCrossCuttingManager;
     this.userManager = userManager;
   }
 
@@ -88,22 +85,6 @@ public class ProjectDescriptionPlanningAction extends BaseAction {
   }
 
 
-  /**
-   * This method returns an array of cross cutting ids depending on the project.crossCuttings attribute.
-   *
-   * @return an array of integers.
-   */
-// public int[] getCrossCuttingIds() {
-// if (this.project.getCrossCuttings() != null) {
-// int[] ids = new int[this.project.getCrossCuttings().size()];
-// for (int c = 0; c < ids.length; c++) {
-// ids[c] = this.project.getCrossCuttings().get(c).getId();
-// }
-// return ids;
-// }
-// return null;
-// }
-
   public int getEndYear() {
     return config.getEndYear();
   }
@@ -123,10 +104,6 @@ public class ProjectDescriptionPlanningAction extends BaseAction {
     }
     return null;
   }
-
-// public List<IPCrossCutting> getIpCrossCuttings() {
-// return ipCrossCuttings;
-// }
 
 
   public List<IPProgram> getIpProgramFlagships() {
@@ -193,9 +170,6 @@ public class ProjectDescriptionPlanningAction extends BaseAction {
     // Getting the information of the Flagships program for the View
     ipProgramFlagships = ipProgramManager.getProgramsByType(APConstants.FLAGSHIP_PROGRAM_TYPE);
 
-    // Getting the information of the Cross Cutting Theme for the View
-// ipCrossCuttings = ipCrossCuttingManager.getIPCrossCuttings();
-
     // Getting project
     project = projectManager.getProject(projectID);
     if (project != null) {
@@ -223,29 +197,32 @@ public class ProjectDescriptionPlanningAction extends BaseAction {
     // We set the values that changed to the previous project
     // in order to prevent unauthorized changes.
 
-    previousProject.setTitle(project.getTitle());
-    previousProject.setSummary(project.getSummary());
+    if (this.isSaveable()) {
+      previousProject.setTitle(project.getTitle()); // setting the possible new title.
+      previousProject.setSummary(project.getSummary()); // setting the possible new summary.
 
-    // ----- SAVING Project description -----
-    int result = projectManager.saveProjectDescription(previousProject);
-    if (result < 0) {
-      addActionError(getText("saving.problem"));
-      return BaseAction.INPUT;
-    }
+      // ----- SAVING Project description -----
+      int result = projectManager.saveProjectDescription(previousProject);
+      if (result < 0) {
+        addActionError(getText("saving.problem"));
+        return BaseAction.INPUT;
+      }
 
-    // If there are some warnings, show a different message: Saving with problems
-    if (getActionMessages().size() > 0) {
-      addActionMessage(getText("saving.saved.problem"));
-      return BaseAction.INPUT;
+      // If there are some warnings, show a different message: Saving with problems
+      if (getActionMessages().size() > 0) {
+        addActionMessage(getText("saving.saved.problem"));
+        return BaseAction.INPUT;
+      } else {
+        addActionMessage(getText("saving.success", new String[] {getText("preplanning.projectDescription.title")}));
+        return BaseAction.SUCCESS;
+      }
     } else {
-      addActionMessage(getText("saving.success", new String[] {getText("preplanning.projectDescription.title")}));
-      return BaseAction.SUCCESS;
+      LOG.warn("User (employee_id={}, email={}) tried to save information without having enough privileges!",
+        new Object[] {this.getCurrentUser().getEmployeeId(), this.getCurrentUser().getEmail()});
     }
-  }
+    return BaseAction.ERROR;
 
-// public void setIpCrossCuttings(List<IPCrossCutting> ipCrossCuttings) {
-// this.ipCrossCuttings = ipCrossCuttings;
-// }
+  }
 
   public void setIpProgramFlagships(List<IPProgram> ipProgramFlagships) {
     this.ipProgramFlagships = ipProgramFlagships;

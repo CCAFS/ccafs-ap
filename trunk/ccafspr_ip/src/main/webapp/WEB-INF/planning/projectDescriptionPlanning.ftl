@@ -78,13 +78,15 @@
             </div>
           </div> 
           [#-- Cross Cutting --] 
+          [#--
           <div id="projectGender" class="thirdPartBlock">
             <h6>[@s.text name="preplanning.projectDescription.crossCutting" /]</h6>
             <div class="checkboxGroup">
               [@s.fielderror cssClass="fieldError" fieldName="project.crossCuttings"/]
               [@s.checkboxlist name="project.crossCuttings" disabled=!canEdit list="ipCrossCuttings" listKey="id" listValue="name" cssClass="checkbox" value="crossCuttingIds" /]
             </div>
-          </div>  
+          </div>
+          --]  
         </div> 
       </fieldset>
     </div> 
