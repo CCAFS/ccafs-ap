@@ -50,6 +50,7 @@ public class ActivityDescriptionAction extends BaseAction {
   // Model for the front-end
   private int activityID;
   private List<Institution> allPartners;
+  private boolean hasExpectedLeader;
 
 
   @Inject
@@ -69,8 +70,29 @@ public class ActivityDescriptionAction extends BaseAction {
     return activityID;
   }
 
+  /**
+   * This method returns an array of cross cutting ids depending on the project.crossCuttings attribute.
+   *
+   * @return an array of integers.
+   */
+// public int[] getCrossCuttingIds() {
+// if (this.project.getCrossCuttings() != null) {
+// int[] ids = new int[this.project.getCrossCuttings().size()];
+// for (int c = 0; c < ids.length; c++) {
+// ids[c] = this.project.getCrossCuttings().get(c).getId();
+// }
+// return ids;
+// }
+// return null;
+// }
+
   public List<Institution> getAllPartners() {
     return allPartners;
+  }
+
+
+  public boolean isHasExpectedLeader() {
+    return hasExpectedLeader;
   }
 
 
@@ -85,6 +107,9 @@ public class ActivityDescriptionAction extends BaseAction {
       return; // Stop here and go to execute method.
     }
 
+    // Getting the information of the Cross Cutting Theme for the View
+// ipCrossCuttings = ipCrossCuttingManager.getIPCrossCuttings();
+
     // Getting the information for the activity
     activity = activityManager.getActivityById(activityID);
     // Getting the List of Institutions
@@ -97,7 +122,7 @@ public class ActivityDescriptionAction extends BaseAction {
     boolean success = true;
     // Saving Project Outcome
 
-    boolean saved = activityManager.saveActivity(activityID, activity);
+    boolean saved = activityManager.saveActivity(1, activity);
     if (!saved) {
       success = false;
     }
@@ -120,5 +145,10 @@ public class ActivityDescriptionAction extends BaseAction {
 
   public void setAllPartners(List<Institution> allPartners) {
     this.allPartners = allPartners;
+  }
+
+
+  public void setHasExpectedLeader(boolean hasExpectedLeader) {
+    this.hasExpectedLeader = hasExpectedLeader;
   }
 }
