@@ -198,11 +198,22 @@ public class ProjectDescriptionPlanningAction extends BaseAction {
     // in order to prevent unauthorized changes.
 
     if (this.isSaveable()) {
-      previousProject.setTitle(project.getTitle()); // setting the possible new title.
-      previousProject.setSummary(project.getSummary()); // setting the possible new summary.
 
       // ----- SAVING Project description -----
-      int result = projectManager.saveProjectDescription(previousProject);
+      int result = 0;
+      // if user is project owner or FPL/RPL, he is able to fully edit.
+      if (this.isFullEditable()) {
+        result = projectManager.saveProjectDescription(project);
+        // TODO HT - Still I need to save the rest of the project description data.
+
+      } else {
+        // Otherwise, only save title and summary.
+        previousProject.setTitle(project.getTitle()); // setting the possible new title.
+        previousProject.setSummary(project.getSummary()); // setting the possible new summary.
+        result = projectManager.saveProjectDescription(previousProject);
+      }
+
+
       if (result < 0) {
         addActionError(getText("saving.problem"));
         return BaseAction.INPUT;
