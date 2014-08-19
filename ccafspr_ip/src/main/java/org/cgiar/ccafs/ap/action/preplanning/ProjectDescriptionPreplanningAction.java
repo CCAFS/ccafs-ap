@@ -76,7 +76,7 @@ public class ProjectDescriptionPreplanningAction extends BaseAction {
   /**
    * This method returns a composed name with the Acronym and Name.
    * e.g. FP4: Policies and Institutions for Climate-Resilient Food Systems
-   *
+   * 
    * @param ipProgramId is the program identifier.
    * @return the composed name described above.
    */
@@ -89,10 +89,9 @@ public class ProjectDescriptionPreplanningAction extends BaseAction {
     return null;
   }
 
-
   /**
    * This method returns an array of cross cutting ids depending on the project.crossCuttings attribute.
-   *
+   * 
    * @return an array of integers.
    */
 // public int[] getCrossCuttingIds() {
@@ -110,9 +109,10 @@ public class ProjectDescriptionPreplanningAction extends BaseAction {
     return config.getEndYear();
   }
 
+
   /**
    * This method returns an array of flagship ids depending on the project.flagships attribute.
-   *
+   * 
    * @return an array of integers.
    */
   public int[] getFlagshipIds() {
@@ -126,19 +126,19 @@ public class ProjectDescriptionPreplanningAction extends BaseAction {
     return null;
   }
 
+  public List<IPProgram> getIpProgramFlagships() {
+    return ipProgramFlagships;
+  }
+
 // public List<IPCrossCutting> getIpCrossCuttings() {
 // return ipCrossCuttings;
 // }
 
 
-  public List<IPProgram> getIpProgramFlagships() {
-    return ipProgramFlagships;
-  }
-
-
   public List<IPProgram> getIpProgramRegions() {
     return ipProgramRegions;
   }
+
 
   public Project getProject() {
     return project;
@@ -154,7 +154,7 @@ public class ProjectDescriptionPreplanningAction extends BaseAction {
 
   /**
    * This method returns an array of region ids depending on the project.regions attribute.
-   *
+   * 
    * @return an array of integers.
    */
   public int[] getRegionIds() {
@@ -170,6 +170,12 @@ public class ProjectDescriptionPreplanningAction extends BaseAction {
 
   public int getStartYear() {
     return config.getStartYear();
+  }
+
+  @Override
+  public String next() {
+    save();
+    return super.next();
   }
 
   @Override

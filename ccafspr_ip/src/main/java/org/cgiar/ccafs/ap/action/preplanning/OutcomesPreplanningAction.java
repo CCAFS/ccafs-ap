@@ -79,10 +79,23 @@ public class OutcomesPreplanningAction extends BaseAction {
     return idos;
   }
 
+  public String getNextActionName() {
+    if (getCurrentUser().isFPL()) {
+      return "midOutcomes";
+    } else {
+      return "midOutcomesRPL";
+    }
+  }
+
   public List<IPElement> getOutcomes() {
     return outcomes;
   }
 
+  @Override
+  public String next() {
+    save();
+    return super.next();
+  }
 
   @Override
   public void prepare() throws Exception {

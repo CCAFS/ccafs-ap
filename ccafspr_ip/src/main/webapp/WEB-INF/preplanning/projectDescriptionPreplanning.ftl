@@ -91,13 +91,14 @@
         </div> 
       </fieldset>
     </div>
+    
     [#-- Showing buttons only to users with enough privileges. See GranProjectAccessInterceptor--]
     [#if saveable]
       [#-- Project identifier --]
       <input name="projectID" type="hidden" value="${project.id?c}" />
       <div class="buttons">
         [@s.submit type="button" name="save"][@s.text name="form.buttons.save" /][/@s.submit]
-        [#-- @s.submit type="button" name="next"][@s.text name="form.buttons.next" /][/@s.submit --]
+        [@s.submit type="button" name="next"][@s.text name="form.buttons.next" /][/@s.submit]
         [@s.submit type="button" name="cancel"][@s.text name="form.buttons.cancel" /][/@s.submit]
       </div>
     [/#if]

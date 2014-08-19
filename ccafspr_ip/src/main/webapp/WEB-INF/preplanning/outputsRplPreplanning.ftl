@@ -96,11 +96,9 @@
           [#else]
             <h5 class="noOutputs message">[@s.text name="preplanning.outputsRPL.messageNoOutputs" /]</h5>
           [/#if]
-        
-      
       </div>
-      
-       
+
+
        <div id="addOutputBlock" class="addLink"> 
         <a href="" id="addNewOutput" class="addOutput addButton" > [@s.text name="preplanning.outputsRPL.addNewOutput" /] </a>
          <span class="or">[@s.text name="preplanning.outputsRPL.or" /]</span>  
@@ -109,7 +107,7 @@
        
        <div class="buttons">
         [@s.submit type="button" name="save"][@s.text name="form.buttons.save" /][/@s.submit]
-        [#--[@s.submit type="button" name="next"][@s.text name="form.buttons.next" /][/@s.submit]--]
+        [@s.submit type="button" name="next"][@s.text name="form.buttons.next" /][/@s.submit]
         [@s.submit type="button" name="cancel"][@s.text name="form.buttons.cancel" /][/@s.submit]
       </div>
       

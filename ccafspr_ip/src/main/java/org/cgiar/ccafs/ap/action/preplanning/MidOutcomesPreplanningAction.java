@@ -72,8 +72,22 @@ public class MidOutcomesPreplanningAction extends BaseAction {
     return midOutcomes;
   }
 
+  public String getNextActionName() {
+    if (getCurrentUser().isFPL()) {
+      return "outputs";
+    } else {
+      return "outputsRPL";
+    }
+  }
+
   public List<IPElement> getOutcomesList() {
     return outcomesList;
+  }
+
+  @Override
+  public String next() {
+    save();
+    return super.next();
   }
 
   @Override
