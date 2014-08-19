@@ -71,8 +71,8 @@ public class APConfig {
     while (base != null && base.endsWith("/")) {
       base = base.substring(0, base.length() - 1);
     }
-    if (!base.startsWith("http://")) {
-      base = "http://" + base;
+    if (!base.startsWith("https://")) {
+      base = "https://" + base;
       return base;
     }
     return base;
@@ -101,8 +101,8 @@ public class APConfig {
     while (url != null && url.endsWith("/")) {
       url = url.substring(0, url.length() - 1);
     }
-    if (!url.startsWith("http://")) {
-      url = "http://" + url;
+    if (!url.startsWith("https://")) {
+      url = "https://" + url;
       return url;
     }
     return url;
