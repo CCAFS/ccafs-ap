@@ -86,9 +86,15 @@ public class IPElementManagerImpl implements IPElementManager {
   }
 
   @Override
-  public List<IPElement> getIPElementListForGraph() {
-    List<Map<String, String>> ipElementDataList = ipElementDAO.getIPElementList();
+  public List<IPElement> getIPElementListForGraph(IPProgram _program) {
+    List<Map<String, String>> ipElementDataList;
     List<IPElement> elementsList = new ArrayList<>();
+
+    if (_program.getId() == -1) {
+      ipElementDataList = ipElementDAO.getIPElementList();
+    } else {
+      ipElementDataList = ipElementDAO.getIPElement(_program.getId());
+    }
 
     for (Map<String, String> elementData : ipElementDataList) {
       IPElement element = new IPElement();

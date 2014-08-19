@@ -68,9 +68,13 @@ public interface IPElementManager {
    * setted with the basic information id, description,
    * translatedOf and contributesTo
    * 
-   * @return
+   * @param program - Object with the program information
+   * @return a list of ipElements present in the database.
+   *         If the program has id -1 the full list of
+   *         ipElements is returned. Otherwise, the list is
+   *         filtered by the program given.
    */
-  public List<IPElement> getIPElementListForGraph();
+  public List<IPElement> getIPElementListForGraph(IPProgram program);
 
   /**
    * This method gets all the IPElements related to the IP program
