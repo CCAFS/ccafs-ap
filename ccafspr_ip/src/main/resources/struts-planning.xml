@@ -11,11 +11,7 @@
     
     <!-- Section: Projects  -->
     <action name="projects" class="org.cgiar.ccafs.ap.action.planning.ProjectsListPlanningAction">
-      <result name="success">/WEB-INF/planning/projectsListPlanning.ftl</result>
-      <result name="input" type="redirectAction">
-        <param name="actionName">description</param>
-        <param name="projectID">${projectID}</param>
-      </result>
+      <result name="input">/WEB-INF/planning/projectsListPlanning.ftl</result>
     </action>
     
     <action name="description" class="org.cgiar.ccafs.ap.action.planning.ProjectDescriptionPlanningAction">

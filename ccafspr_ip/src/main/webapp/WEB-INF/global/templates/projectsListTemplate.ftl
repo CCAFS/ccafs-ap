@@ -1,6 +1,6 @@
 [#ftl]
 [#import "/WEB-INF/global/macros/utils.ftl" as utilities/]
-[#-- This macro is being used in projects.ftl. The idea is to represent a table with specific information about projects --]
+[#-- This macro is being used in projectsListPreplanning.ftl and projectsListPlanning.ftl The idea is to represent a table with specific information about projects --]
 [#macro projectsList projects owned=true canValidate=false isPlanning=false]
   <table class="projectsList" id="projects">
 	  <thead>

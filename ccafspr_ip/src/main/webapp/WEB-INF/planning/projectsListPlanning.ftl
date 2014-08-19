@@ -29,7 +29,11 @@
       [@projectList.projectsList projects=projects canValidate=true /]
     [#else]
       <div class="borderBox center">
-        <p>[@s.text name="planning.projects.empty" /]</p>
+        [#if currentUser.isPL()]
+          <p>[@s.text name="planning.projects.empty.PL" /]</p>
+        [#else]
+          <p>[@s.text name="planning.projects.empty"][@s.param][@s.url namespace="/pre-planning/projects" action='projects'/][/@s.param][/@s.text]</p>
+        [/#if]
       </div>
       [#if currentUser.isRPL() || currentUser.isFPL() || currentUser.isAdmin()]
       <div class="buttons">

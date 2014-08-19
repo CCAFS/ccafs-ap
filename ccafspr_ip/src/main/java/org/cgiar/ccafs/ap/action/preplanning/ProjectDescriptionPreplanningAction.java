@@ -230,15 +230,15 @@ public class ProjectDescriptionPreplanningAction extends BaseAction {
     boolean saved = true;
     boolean deleted;
 
-    // Adding the program that were disabled in the interface, and validate that at least one item was selected.
+    // Adding the program that was disabled in the interface, and validate that at least one item was selected.
     IPProgram programDisabled = ipProgramManager.getIPProgramByProjectId(project.getId());
     if (programDisabled.getType().getId() == APConstants.FLAGSHIP_PROGRAM_TYPE) {
       project.getFlagships().add(programDisabled);
     } else if (programDisabled.getType().getId() == APConstants.REGION_PROGRAM_TYPE) {
       project.getRegions().add(programDisabled);
-    } else if (programDisabled.getType().getId() == APConstants.COORDINATION_PROGRAM_TYPE) {
-      project.getFlagships().add(programDisabled); // Which should be Global.
-    }
+    } // else if (programDisabled.getType().getId() == APConstants.COORDINATION_PROGRAM_TYPE) {
+      // project.getFlagships().add(programDisabled); // Which should be Global.
+      // }
 
     if (project.getRegions().isEmpty()) {
       addActionWarning(getText("preplanning.projectDescription.noRegions"));

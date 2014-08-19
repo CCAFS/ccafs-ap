@@ -23,6 +23,7 @@ import org.cgiar.ccafs.ap.data.model.IPProgram;
 import org.cgiar.ccafs.ap.data.model.Project;
 import org.cgiar.ccafs.ap.data.model.User;
 
+import java.util.Iterator;
 import java.util.List;
 
 import com.google.inject.Inject;
@@ -204,19 +205,112 @@ public class ProjectDescriptionPlanningAction extends BaseAction {
       // if user is project owner or FPL/RPL, he is able to fully edit.
       if (this.isFullEditable()) {
         result = projectManager.saveProjectDescription(project);
-        // TODO HT - Still I need to save the rest of the project description data.
+
+        if (result < 0) {
+          addActionError(getText("saving.problem"));
+          return BaseAction.INPUT;
+        }
+
+        // ----- SAVING IPPrograms (Flagships and Regions) -----
+        boolean success = true;
+        boolean saved = true;
+        boolean deleted;
+
+        // Adding the program that was disabled in the interface, and validate that at least one item was selected.
+        IPProgram programDisabled = ipProgramManager.getIPProgramByProjectId(project.getId());
+        if (programDisabled.getType().getId() == APConstants.FLAGSHIP_PROGRAM_TYPE) {
+          project.getFlagships().add(programDisabled);
+        } else if (programDisabled.getType().getId() == APConstants.REGION_PROGRAM_TYPE) {
+          project.getRegions().add(programDisabled);
+        } // else if (programDisabled.getType().getId() == APConstants.COORDINATION_PROGRAM_TYPE) {
+        // project.getFlagships().add(programDisabled); // Which should be Global.
+        // }
+
+        if (project.getRegions().isEmpty()) {
+          addActionWarning(getText("preplanning.projectDescription.noRegions"));
+        }
+        if (project.getFlagships().isEmpty()) {
+          addActionWarning(getText("preplanning.projectDescription.noFlagships"));
+        }
+
+        // Identifying regions that were unchecked in the front-end
+        if (project.getRegions() != null) {
+          List<IPProgram> previousRegions =
+            ipProgramManager.getProjectFocuses(project.getId(), APConstants.REGION_PROGRAM_TYPE);
+          for (IPProgram programRegion : previousRegions) {
+            if (!project.getRegions().contains(programRegion)) {
+              deleted = ipProgramManager.deleteProjectFocus(project.getId(), programRegion.getId());
+              if (!deleted) {
+                success = false;
+              }
+            }
+          }
+
+          // Identifying existing regions in the database, so we don't have to insert them again.
+          Iterator<IPProgram> iterator = project.getRegions().iterator();
+          while (iterator.hasNext()) {
+            if (previousRegions.contains(iterator.next())) {
+              iterator.remove();
+            }
+          }
+          // Adding new Regional Project Focuses.
+          for (IPProgram programToAdd : project.getRegions()) {
+            saved = ipProgramManager.saveProjectFocus(project.getId(), programToAdd.getId());
+            if (!saved) {
+              success = false;
+            }
+          }
+          // Stop here if a something bad happened.
+          if (!success) {
+            addActionError(getText("saving.problem"));
+            return BaseAction.INPUT;
+          }
+        }
+
+        // Identifying flagships that were unchecked in the front-end
+        if (project.getFlagships() != null) {
+          // Identifying deleted flagships
+          List<IPProgram> previousFlagships =
+            ipProgramManager.getProjectFocuses(project.getId(), APConstants.FLAGSHIP_PROGRAM_TYPE);
+          for (IPProgram programFlagship : previousFlagships) {
+            if (!project.getFlagships().contains(programFlagship)) {
+              deleted = ipProgramManager.deleteProjectFocus(project.getId(), programFlagship.getId());
+              if (!deleted) {
+                success = false;
+              }
+            }
+          }
+          // Identifying existing flagships in the database, so we don't have to insert them again.
+          Iterator<IPProgram> iterator = project.getFlagships().iterator();
+          while (iterator.hasNext()) {
+            if (previousFlagships.contains(iterator.next())) {
+              iterator.remove();
+            }
+          }
+          // Adding new Flagship Project Focuses.
+          for (IPProgram programToAdd : project.getFlagships()) {
+            saved = ipProgramManager.saveProjectFocus(project.getId(), programToAdd.getId());
+            if (!saved) {
+              success = false;
+            }
+          }
+          // Stop here if a something bad happened.
+          if (!success) {
+            addActionError(getText("saving.problem"));
+            return BaseAction.INPUT;
+          }
+        }
+        // ----- END SAVING IPPrograms (Flagships and Regions) -----
 
       } else {
-        // Otherwise, only save title and summary.
+        // User is PL, thus, only save title and summary.
         previousProject.setTitle(project.getTitle()); // setting the possible new title.
         previousProject.setSummary(project.getSummary()); // setting the possible new summary.
         result = projectManager.saveProjectDescription(previousProject);
-      }
-
-
-      if (result < 0) {
-        addActionError(getText("saving.problem"));
-        return BaseAction.INPUT;
+        if (result < 0) {
+          addActionError(getText("saving.problem"));
+          return BaseAction.INPUT;
+        }
       }
 
       // If there are some warnings, show a different message: Saving with problems
