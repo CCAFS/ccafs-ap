@@ -139,6 +139,8 @@ input.target {
 .checkboxGroup input {
   margin-left: 0px;
   width: 14px;
+  vertical-align: top;
+  margin-top: 6px;
 }
 
 .checkboxGroup .checkboxLabel {
@@ -709,6 +711,36 @@ a.currentReportingSection li #i-additionalInformation{
   margin-bottom: 10px;
 }
 
+h1#error{
+    font-family: 'Open Sans', sans-serif; 
+    font-size: 8em;
+    color: #C0C0C0;
+    border: 0;
+    margin: 0;
+}
+
+p.errorText{
+    color: #444;
+    margin-bottom: 40px;
+}
+
+p.errorText.primary {
+    font-size: 2em;
+}
+p.errorText.secondary {
+    font-weight: lighter;
+    margin-bottom: 30px;
+}
+
+a#backHome {
+    color: #fff;
+    background: #C1C1C1;
+    text-decoration: none;
+    padding: 5px 33px;
+    font-weight: bold;
+    border-radius: 20px;
+    margin: 44px;
+}
 .content h3 {
   color: #663300;
   font-weight: normal;
@@ -716,11 +748,12 @@ a.currentReportingSection li #i-additionalInformation{
 }
 
 .halfContent h1 {
-  border-bottom: 2px solid #663300;
+  border-bottom: 2px solid #562B00;
   color: #663300;
   font-size: 1.6em;
-  font-weight: normal;
   margin-bottom: 10px;
+  font-weight: lighter;
+  font-family: 'Open Sans', sans-serif;
 }
 
 h1.contentSubTitle {
@@ -1090,9 +1123,52 @@ padding-left: 11px;
 
 /* Project List */
 .content .projectSubTitle {
+  text-align: left;
+  margin: 20px 0px 0px 0px;
+  color: #4C4C4C;
+  font-size: 1.6em;
+  font-family: 'Open Sans', sans-serif;
+}
+
+/* projects List */
+
+.projectsList #ids {
+  width: 43px;
+}
+
+.projectsList #projectTitles {
+  width: 440px;
+}
+
+.projectsList #projectRegions {
+  width: 70px;
+}
+
+.projectsList #projectFlagships {
+  width: 64px;
+}
+
+.projectsList #projectBudget {
+  width: 90px;
+}
+
+.projectsList #lastModified {
+  width: 80px;
   text-align: center;
-  margin: 7px 0px;
-  color: #686666;
+}
+
+.projectsList td {
+  text-align: center;
+  height:30px; 
+  vertical-align: middle;
+}
+
+.projectsList td.left {
+  text-align: left;
+}
+
+.projectsList a:HOVER {
+  text-decoration: underline;
 }
 
 /* Project Description*/

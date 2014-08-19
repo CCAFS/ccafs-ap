@@ -98,8 +98,7 @@
         [/#if]
       </div>
       <div id="addLocationBlock" class="addLink">
-        <img src="${baseUrl}/images/global/icon-add.png" />
-        <a href="" id="addLocationLink" class="addLocation" >[@s.text name="planning.activities.locations.addLocation" /]</a>
+        <a href="" id="addLocationLink" class="addLocation addButton" >[@s.text name="planning.activities.locations.addLocation" /]</a>
       </div>  
     </div> 
     <!-- internal parameter -->

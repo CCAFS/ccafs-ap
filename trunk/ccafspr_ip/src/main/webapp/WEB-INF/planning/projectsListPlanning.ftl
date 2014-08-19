@@ -17,13 +17,13 @@
     <p>[@s.text name="planning.projectsList.help2" /]</p>
     <p>[@s.text name="planning.projectsList.help3" /]</p>
   </div>
+
   [#include "/WEB-INF/global/pages/planning-secondary-menu.ftl"/]
   [@s.form action="projects"]
   <article class="halfContent" id="mainInformation">
     <h1 class="contentTitle">
       [@s.text name="planning.projects.title" /]
     </h1>
-    
     [#if projects?size>0]
       <h3 class="projectSubTitle">[@s.text name="preplanning.projects.yourProjects"/]</h3>
       [@projectList.projectsList projects=projects canValidate=true /]
@@ -31,10 +31,16 @@
       <div class="borderBox center">
         <p>[@s.text name="planning.projects.empty" /]</p>
       </div>
+      [#if currentUser.isRPL() || currentUser.isFPL() || currentUser.isAdmin()]
+      <div class="buttons">
+        [@s.submit type="button" name="add"][@s.text name="form.buttons.add" /][/@s.submit]
+      </div>
+      [/#if]
     [/#if]
     <hr/>
     <h3 class="projectSubTitle">[@s.text name="preplanning.projects.otherProjects" /]</h3>
     [@projectList.projectsList projects=allProjects canValidate=true /]
+
   </article>
   [/@s.form]
   
