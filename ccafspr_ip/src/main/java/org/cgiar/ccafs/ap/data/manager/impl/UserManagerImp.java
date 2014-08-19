@@ -56,7 +56,7 @@ public class UserManagerImp implements UserManager {
   /**
    * This method make the login process against the active directory
    * if the user has an institutional account
-   *
+   * 
    * @param user
    * @return true if it was successfully logged in. False otherwise
    */
@@ -285,7 +285,10 @@ public class UserManagerImp implements UserManager {
       user.setEmail(userData.get("email"));
       user.setPhone(userData.get("phone"));
       try {
-        user.setLastLogin(dateFormat.parse(userData.get("last_login")));
+        // If the user has never logged in, this value is null.
+        if (userData.get("last_login") != null) {
+          user.setLastLogin(dateFormat.parse(userData.get("last_login")));
+        }
       } catch (ParseException e) {
         String msg = "There was an error parsing the last login of user " + user.getId() + ".";
         LOG.error(msg, e);
