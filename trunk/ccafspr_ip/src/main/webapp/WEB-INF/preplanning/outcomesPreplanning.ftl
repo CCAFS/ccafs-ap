@@ -15,6 +15,7 @@
   <div class="helpMessage">
     <img src="${baseUrl}/images/global/icon-help.png" />
     <p> [@s.text name="preplanning.outcomes.help" /] </p>
+    <p> [@s.text name="preplanning.outcomes.help2" /] </p>
   </div>
   [#include "/WEB-INF/global/pages/pre-planning-secondary-menu.ftl" /]
   
