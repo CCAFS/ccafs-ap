@@ -9,11 +9,12 @@
 [#include "/WEB-INF/global/pages/header.ftl" /]
 [#include "/WEB-INF/global/pages/main-menu.ftl" /]
 [#import "/WEB-INF/global/macros/forms.ftl" as customForm/]
+[#import "/WEB-INF/planning/macros/activityPartnersTemplate.ftl" as activityPartners/]
     
 <section class="content">
   <div class="helpMessage">
     <img src="${baseUrl}/images/global/icon-help.png" />
-    <p> [@s.text name="planning.activityPartners.help" /] </p>
+    <p> [@s.text name="planning.activityPartner.help" /] </p>
   </div>
 
   [#include "/WEB-INF/planning/activityPlanningSubMenu.ftl" /]
@@ -21,11 +22,15 @@
   
   [@s.form action="activityPartners" cssClass="pure-form"]  
   <article class="halfContent" id="activityPartners">
+  	
     <h1 class="contentTitle">
-    [@s.text name="planning.activityPartners.title" /] 
+    [@s.text name="planning.activityPartner.title" /] 
     </h1> 
      
-    
+    [@activityPartners.activityPartner /]
+    <div id="addActivityPartner" class="addLink">
+		<a href=""  class="addButton">[@s.text name="planning.activityPartner.addPartner" /]</a>
+	</div>
     <div class="buttons">
       [@s.submit type="button" name="save"][@s.text name="form.buttons.save" /][/@s.submit]
       [@s.submit type="button" name="next"][@s.text name="form.buttons.next" /][/@s.submit]
