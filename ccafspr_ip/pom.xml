@@ -201,11 +201,11 @@
           </scanTargets>
           <connectors>
             <connector implementation="org.mortbay.jetty.nio.SelectChannelConnector">
-              <port>80</port>
+              <port>8080</port>
               <maxIdleTime>60000</maxIdleTime>
             </connector>
             <connector implementation="org.mortbay.jetty.security.SslSocketConnector">
-              <port>443</port>
+              <port>8443</port>
               <maxIdleTime>60000</maxIdleTime>
               <keystore>${basedir}/.keystore</keystore>
               <password>d5jtY68oBqWj</password>
@@ -220,9 +220,9 @@
         <artifactId>tomcat7-maven-plugin</artifactId>
         <version>2.0</version>
         <configuration>
-          <port>80</port>
+          <port>8080</port>
           <useTestClasspath>true</useTestClasspath>
-          <httpsPort>443</httpsPort>
+          <httpsPort>8443</httpsPort>
           <keystoreFile>${basedir}/.keystore</keystoreFile>
           <keystorePass>d5jtY68oBqWj</keystorePass>
         </configuration>
