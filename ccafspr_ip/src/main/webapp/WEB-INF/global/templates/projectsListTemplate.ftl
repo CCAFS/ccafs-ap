@@ -1,11 +1,12 @@
 [#ftl]
+[#import "/WEB-INF/global/macros/utils.ftl" as utilities/]
 [#-- This macro is being used in projects.ftl. The idea is to represent a table with specific information about projects --]
 [#macro projectsList projects owned=true canValidate=false isPlanning=false]
   <table class="projectsList" id="projects">
 	  <thead>
 	    <tr>
 	      <th id="ids">[@s.text name="preplanning.projects.projectids" /]</th>
-	      <th id="projectTitles">[@s.text name="preplanning.projects.projectTitles" /]</th>
+	      <th id="projectTitles" >[@s.text name="preplanning.projects.projectTitles" /]</th>
         <th id="projectRegions">[@s.text name="preplanning.projects.projectRegions" /]</th>
 	      <th id="projectFlagships">[@s.text name="preplanning.projects.projectFlagships" /]</th>
 	      <th id="projectBudget">[@s.text name="preplanning.projects.projectBudget" /]</th>
@@ -24,14 +25,15 @@
           </a>
         </td>
           [#-- Project Title --]
-          <td>
-              <a href="[@s.url action='description' includeParams='get'] [@s.param name='projectID']${project.id?c}[/@s.param][/@s.url]">
+          <td class="left"> 
                 [#if project.title?has_content]
-                  ${project.title}
+                  <a href="[@s.url action='description' includeParams='get'] [@s.param name='projectID']${project.id?c}[/@s.param][/@s.url] "
+                  title="${project.title}">
+                  [#if project.title?length < 120] ${project.title}</a> [#else] [@utilities.wordCutter string=project.title maxPos=120 /]...</a> [/#if]
                 [#else]
                   [@s.text name="preplanning.projects.title.none" /]
                 [/#if]
-              </a>
+               
           </td>
           [#-- Region --]
           <td> 

@@ -4,8 +4,8 @@
     <table class="activitiesList" id="${tableID}">
 		  <thead>
 		    <tr>
-		      <th id="ids">[@s.text name="planning.activities.id" /]</th>
-		      <th id="activitiesTitles">[@s.text name="planning.activities.title" /]</th>
+		      <th id="ids" >[@s.text name="planning.activities.id" /]</th>
+		      <th id="activitiesTitles" class="left">[@s.text name="planning.activities.title" /]</th>
 	        <th id="activitiesLeaders">[@s.text name="planning.activities.leader" /]</th>
 		      <th id="activitiesOrganizations">[@s.text name="planning.activities.organization" /]</th>
 		      <th id="activitiesStatuses">[@s.text name="planning.activities.statusCompletion" /]</th>
