@@ -20,6 +20,14 @@
   
   [@s.form action="description" cssClass="pure-form"]
   <article class="halfContent" id="mainInformation">
+    [#-- Informing user that he/she doesn't have enough privileges to edit. See GrantProjectPlanningAccessInterceptor--]
+    [#if !saveable]
+      <p class="readPrivileges">
+        [@s.text name="saving.read.privileges"]
+          [@s.param][@s.text name="planning.project"/][/@s.param]
+        [/@s.text]
+      </p>
+    [/#if]
     <h1 class="contentTitle">
       ${project.composedId} - [@s.text name="planning.projectDescription.title" /]
     </h1> 

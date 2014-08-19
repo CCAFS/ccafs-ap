@@ -20,7 +20,7 @@
   
   [@s.form action="description" cssClass="pure-form"]  
   <article class="halfContent" id="mainInformation">
-    [#-- Informing user that he/she doesn't have enough privileges to edit. See GranProjectAccessInterceptor--]
+    [#-- Informing user that he/she doesn't have enough privileges to edit. See GrantProjectPreplanningAccessInterceptor--]
     [#if !saveable]
       <p class="readPrivileges">
         [@s.text name="saving.read.privileges"]

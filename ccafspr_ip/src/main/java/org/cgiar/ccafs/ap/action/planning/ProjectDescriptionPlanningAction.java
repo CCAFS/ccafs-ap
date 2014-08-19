@@ -152,8 +152,6 @@ public class ProjectDescriptionPlanningAction extends BaseAction {
   public void prepare() throws Exception {
     super.prepare();
 
-    System.out.println("PREPARE: isSaveable: " + this.isSaveable() + " - isFullEditable: " + this.isFullEditable());
-
     try {
       projectID = Integer.parseInt(StringUtils.trim(this.getRequest().getParameter(APConstants.PROJECT_REQUEST_ID)));
     } catch (NumberFormatException e) {
@@ -194,9 +192,6 @@ public class ProjectDescriptionPlanningAction extends BaseAction {
 
   @Override
   public String save() {
-    System.out.println("SAVE: isSaveable: " + this.isSaveable() + " - isFullEditable: " + this.isFullEditable());
-    // We set the values that changed to the previous project
-    // in order to prevent unauthorized changes.
 
     if (this.isSaveable()) {
 
@@ -304,6 +299,9 @@ public class ProjectDescriptionPlanningAction extends BaseAction {
 
       } else {
         // User is PL, thus, only save title and summary.
+
+        // We set the values that changed to the previous project
+        // in order to prevent unauthorized changes.
         previousProject.setTitle(project.getTitle()); // setting the possible new title.
         previousProject.setSummary(project.getSummary()); // setting the possible new summary.
         result = projectManager.saveProjectDescription(previousProject);
