@@ -28,7 +28,10 @@ import org.cgiar.ccafs.ap.data.model.Project;
 import org.cgiar.ccafs.ap.data.model.ProjectPartner;
 import org.cgiar.ccafs.ap.data.model.User;
 
+import java.util.ArrayList;
 import java.util.List;
+
+import org.cgiar.ccafs.ap.data.manager.BudgetManager;
 
 import com.google.inject.Inject;
 import org.apache.commons.lang3.StringUtils;
@@ -37,7 +40,7 @@ import org.slf4j.LoggerFactory;
 
 /**
  * This class is used to manage the Project Partners section in the planning step.
- * 
+ *
  * @author Hernán Carvajal
  */
 public class ProjectPartnersPlanningAction extends BaseAction {
@@ -51,6 +54,7 @@ public class ProjectPartnersPlanningAction extends BaseAction {
   private LocationManager locationManager;
   private ProjectManager projectManager;
   private UserManager userManager;
+  private BudgetManager budgetManager;
 
   // Model for the back-end
   private int projectID;
@@ -67,13 +71,14 @@ public class ProjectPartnersPlanningAction extends BaseAction {
   @Inject
   public ProjectPartnersPlanningAction(APConfig config, ProjectPartnerManager projectPartnerManager,
     InstitutionManager institutionManager, LocationManager locationManager, ProjectManager projectManager,
-    UserManager userManager) {
+    UserManager userManager, BudgetManager budgetManager) {
     super(config);
     this.projectPartnerManager = projectPartnerManager;
     this.institutionManager = institutionManager;
     this.locationManager = locationManager;
     this.projectManager = projectManager;
     this.userManager = userManager;
+    this.budgetManager = budgetManager;
   }
 
   public List<Institution> getAllPartners() {
@@ -114,13 +119,9 @@ public class ProjectPartnersPlanningAction extends BaseAction {
     super.prepare();
 
     // Getting the project id from the URL parameter
-    try {
-      projectID = Integer.parseInt(StringUtils.trim(this.getRequest().getParameter(APConstants.PROJECT_REQUEST_ID)));
-    } catch (NumberFormatException e) {
-      LOG.error("-- prepare() > There was an error parsing the project identifier '{}'.", projectID);
-      projectID = -1;
-      return; // Stop here and go to execute method.
-    }
+    // It's assumed that the project parameter is ok. (@See ValidateProjectParameterInterceptor)
+    projectID = Integer.parseInt(StringUtils.trim(this.getRequest().getParameter(APConstants.PROJECT_REQUEST_ID)));
+
     // Getting the project identified with the id parameter.
     project = projectManager.getProject(projectID);
 
@@ -159,6 +160,7 @@ public class ProjectPartnersPlanningAction extends BaseAction {
       }
     }
 
+
     if (getRequest().getMethod().equalsIgnoreCase("post")) {
       // Clear out the list if it has some element
       if (project.getProjectPartners() != null) {
@@ -170,7 +172,6 @@ public class ProjectPartnersPlanningAction extends BaseAction {
 
   @Override
   public String save() {
-    System.out.println("SAVING.....");
     boolean success = true;
     boolean saved = true;
 
@@ -195,6 +196,23 @@ public class ProjectPartnersPlanningAction extends BaseAction {
       }
     }
 
+    // Getting previous Partner Institutions
+    List<Institution> previousInstitutions = new ArrayList<>();
+    for (ProjectPartner projectPartner : previousProjectPartners) {
+      previousInstitutions.add(projectPartner.getPartner());
+    }
+    // Getting current Partner Institutions
+    List<Institution> currentInstitutions = new ArrayList<>();
+    for (ProjectPartner projectPartner : project.getProjectPartners()) {
+      currentInstitutions.add(projectPartner.getPartner());
+    }
+    // Deleting Partner Institutions from budget section
+    for (Institution previousInstitution : previousInstitutions) {
+      if (!currentInstitutions.contains(previousInstitution)) {
+        budgetManager.deleteBudgetsByInstitution(project.getId(), previousInstitution.getId());
+      }
+    }
+
     // Saving new and old project partners
     saved = projectPartnerManager.saveProjectPartner(project.getId(), project.getProjectPartners());
     if (!saved) {
@@ -202,8 +220,10 @@ public class ProjectPartnersPlanningAction extends BaseAction {
     }
 
     if (success) {
+      addActionMessage(getText("saving.success", new String[] {getText("preplanning.projectPartners.leader.title")}));
       return SUCCESS;
     } else {
+      addActionError(getText("saving.problem"));
       return INPUT;
     }
 

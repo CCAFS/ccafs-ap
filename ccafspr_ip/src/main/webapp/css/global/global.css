@@ -1525,7 +1525,7 @@ ul#deliverablesFilesMessages > li {
   border: 1px solid #D1D1D1;
   padding: 15px 15px 15px 15px;
   border-radius: 4px;
-  margin-top: 18px;
+  margin: 18px 0px;
   position: relative;
   transition:box-shadow 0.1s linear;*
   
