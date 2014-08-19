@@ -48,6 +48,19 @@
       </result>
     </action>
     
+    <action name="partnerSave" class="org.cgiar.ccafs.ap.action.planning.PartnersSaveAction">
+      <result name="input">/WEB-INF/global/pages/partnersSave.ftl</result>
+      <result name="success" type="redirectAction">
+        <param name="actionName">partnerSave</param>
+      </result>
+    </action>
+
+
+  </package>
+  
+  <package name="planningActivities" namespace="/planning/activities" extends="ccafsap-default">
+    <default-interceptor-ref name="planningStackActivities" />
+   
     <!-- Section: Activities  -->
     <action name="activities" class="org.cgiar.ccafs.ap.action.planning.ActivityListAction">
       <result name="input">/WEB-INF/planning/activitiesListPlanning.ftl</result>
@@ -88,20 +101,6 @@
     <action name="activityDeliverables" class="org.cgiar.ccafs.ap.action.BaseAction">
       <result name="input">/WEB-INF/planning/activityDeliverablesPlanning.ftl</result>
     </action>
-
-    
-    <action name="partnerSave" class="org.cgiar.ccafs.ap.action.planning.PartnersSaveAction">
-      <result name="input">/WEB-INF/global/pages/partnersSave.ftl</result>
-      <result name="success" type="redirectAction">
-        <param name="actionName">partnerSave</param>
-      </result>
-    </action>
-
-
-  </package>
-  
-  <package name="planningActivities" namespace="/planning/activities" extends="ccafsap-default">
-  
   </package>
   
 </struts>
