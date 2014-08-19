@@ -48,7 +48,7 @@
 		  [@s.text name="preplanning.projectPartners.partners.title" /]  
     </h1>
     [#-- Listing partners from partnersTemplate.ftl --]
-    [@partnersTemplate.partnerSection projectPartners=project.projectPartners partnerTypes=partnerTypes countries=countries canEdit=true canRemove=true /]
+    [@partnersTemplate.partnerSection projectPartners=project.projectPartners partnerTypes=partnerTypes countries=countries canEdit=true canRemove=saveable /]
     
     [#-- Showing add buttons only to users with enough privileges. See GranProjectAccessInterceptor--]
     [#if saveable]

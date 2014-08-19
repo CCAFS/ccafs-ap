@@ -11,16 +11,10 @@
 [#import "/WEB-INF/global/macros/forms.ftl" as customForm/]
 [#import "/WEB-INF/global/macros/projectPartnersTemplate.ftl" as partnersTemplate /]
 
-[#if currentUser.isAdmin() || ( project.owner.employeeId == currentUser.employeeId)]
-  [#assign _canEdit = true /]
-[#else]
-  [#assign _canEdit = false /]
-[/#if]
-
 <section class="content">
   <div class="helpMessage">
     <img src="${baseUrl}/images/global/icon-help.png" />
-    <p> [@s.text name="planning.mainInformation.help" /] </p>  
+    <p> [@s.text name="planning.mainInformation.help" /] </p>
   </div>
   [#include "/WEB-INF/planning/planningProjectsSubMenu.ftl" /]
 
@@ -36,7 +30,7 @@
 		  [@s.text name="preplanning.projectPartners.partners.title" /]  
     </h1> 
     [#-- Listing partners from partnersTemplate.ftl --]
-    [@partnersTemplate.partnerSection projectPartners=project.projectPartners partnerTypes=partnerTypes countries=countries responsabilities=true canEdit=_canEdit canRemove=true /]
+    [@partnersTemplate.partnerSection projectPartners=project.projectPartners partnerTypes=partnerTypes countries=countries responsabilities=true canEdit=fullEditable canRemove=saveable /]
 
   	<div class="buttons">
       [@s.submit type="button" name="save"][@s.text name="form.buttons.save" /][/@s.submit]

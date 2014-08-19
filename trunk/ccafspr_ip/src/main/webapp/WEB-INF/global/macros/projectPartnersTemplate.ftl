@@ -1,14 +1,13 @@
 [#ftl]
-[#macro partnerSection projectPartners partnerTypes countries canEdit=true responsabilities=false canRemove=false]
+[#macro partnerSection projectPartners partnerTypes countries canEdit=true canRemove=true responsabilities=false]
   [#if projectPartners?has_content]
     [#list projectPartners as ap]    	
       <div id="projectPartner-${ap_index}" class="projectPartner borderBox">
         [#-- Partner identifier --]
-        <input id="id" type="hidden" name="project.projectPartners[${ap_index}].id" value="${ap.id?c}" />  
-          
-        <legend>[@s.text name="preplanning.projectPartners.partner"][@s.param name="0"] <span id="partnerIndex">${ap_index+1}</span>[/@s.param] [/@s.text]</legend> 
+        <input id="id" type="hidden" name="project.projectPartners[${ap_index}].id" value="${ap.id?c}" />
+        <legend>[@s.text name="preplanning.projectPartners.partner"][@s.param name="0"] <span id="partnerIndex">${ap_index+1}</span>[/@s.param] [/@s.text]</legend>
         
-       [#if saveable]
+        [#if canEdit]
           [#-- Remove link for all partners --]
           <div class="removeLink">
             <img src="${baseUrl}/images/global/icon-remove.png" />
@@ -17,7 +16,7 @@
         [/#if]
          
         [#-- Partner Name --]
-        <div class="fullBlock partnerName chosen">          
+        <div class="fullBlock partnerName chosen">
           [@customForm.select name="project.projectPartners[${ap_index}].partner" label=""  disabled=!canEdit i18nkey="preplanning.projectPartners.partner.name" listName="allPartners" keyFieldName="id"  displayFieldName="getComposedName()" /]
         </div>
         
@@ -114,29 +113,32 @@
       [#if expected]
         [@s.text name="preplanning.projectPartners.expectedLeader.explanation" /]
       [#else]
-        [@s.text name="preplanning.projectPartners.leader.explanation"]
-            [@s.param]
-              [#-- Mailto link --]
-              [@s.text name="preplanning.projectPartners.leader.mailto"]
-                [#-- Subject --]
-                [@s.param]
-                  [@s.text name="preplanning.projectPartners.leader.mailto.subject"]
-                    [@s.param]${project.id?c}[/@s.param]
-                  [/@s.text]
-                [/@s.param]
-                [#-- Body --]
-                [@s.param]
-                  [@s.text name="preplanning.projectPartners.leader.mailto.body"]
-                    [@s.param]${currentUser.firstName} ${currentUser.lastName}[/@s.param]
-                  [/@s.text]
-                [/@s.param]                
-                [#-- Body --]
-                [@s.param][@s.text name="preplanning.projectPartners.leader.mailto.body" /][/@s.param]
-              [/@s.text]
-            [/@s.param] 
-          [/@s.text]
+        [#-- Only show the message to Admins, FPLs, RPLs and POs --]
+        [#if saveable && fullEditable]
+          [@s.text name="preplanning.projectPartners.leader.explanation"]
+              [@s.param]
+                [#-- Mailto link --]
+                [@s.text name="preplanning.projectPartners.leader.mailto"]
+                  [#-- Subject --]
+                  [@s.param]
+                    [@s.text name="preplanning.projectPartners.leader.mailto.subject"]
+                      [@s.param]${project.id?c}[/@s.param]
+                    [/@s.text]
+                  [/@s.param]
+                  [#-- START Body --]
+                  [@s.param]
+                    [@s.text name="preplanning.projectPartners.leader.mailto.body"]
+                      [@s.param]${currentUser.firstName} ${currentUser.lastName}[/@s.param]
+                    [/@s.text]
+                  [/@s.param]
+                  [#-- END Body --]
+                  [@s.param][@s.text name="preplanning.projectPartners.leader.mailto.body" /][/@s.param]
+                [/@s.text]
+              [/@s.param] 
+            [/@s.text]
+          [/#if]
       [/#if]
-      <div id="projectLeader" class="projectLeader borderBox clearfix">        
+      <div id="projectLeader" class="projectLeader borderBox clearfix">
         [#if expected]
           [#-- Organizations List --]
           <div class="fullBlock organizationName chosen">
