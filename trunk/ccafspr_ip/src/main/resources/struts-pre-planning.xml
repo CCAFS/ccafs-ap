@@ -19,6 +19,9 @@
       <result name="success" type="redirectAction">
         <param name="actionName">outcomes</param>
        </result>
+       <result name="next" type="redirectAction">
+        <param name="actionName">${nextActionName}</param>
+       </result>
     </action>
     
     <action name="midOutcomes" class="org.cgiar.ccafs.ap.action.preplanning.MidOutcomesPreplanningAction">
@@ -28,6 +31,9 @@
       <result name="success" type="redirectAction">
         <param name="actionName">midOutcomes</param>
        </result>
+       <result name="next" type="redirectAction">
+        <param name="actionName">${nextActionName}</param>
+       </result>
     </action>
     
     <action name="midOutcomesRPL" class="org.cgiar.ccafs.ap.action.preplanning.MidOutcomesPreplanningAction">
@@ -36,8 +42,11 @@
       <result name="input">/WEB-INF/preplanning/midOutcomesRplPreplanning.ftl</result>
       <result name="success" type="redirectAction">
         <param name="actionName">midOutcomesRPL</param>
-       </result>
-    </action>
+      </result>
+      <result name="next" type="redirectAction">
+       <param name="actionName">${nextActionName}</param>
+      </result>
+     </action>
     
     <action name="outputs" class="org.cgiar.ccafs.ap.action.preplanning.OutputsPreplanningAction">
       <interceptor-ref name="preplanningStackIP" />
@@ -45,6 +54,10 @@
       <result name="input">/WEB-INF/preplanning/outputsPreplanning.ftl</result>
       <result name="success" type="redirectAction">
         <param name="actionName">outputs</param>
+       </result>
+       <result name="next" type="redirectAction">
+        <param name="actionName">projects</param>
+        <param name="namespace">/pre-planning/projects</param>
        </result>
     </action>
     
@@ -54,6 +67,10 @@
       <result name="input">/WEB-INF/preplanning/outputsRplPreplanning.ftl</result>
       <result name="success" type="redirectAction">
         <param name="actionName">outputsRPL</param>
+       </result>
+       <result name="next" type="redirectAction">
+        <param name="actionName">projects</param>
+        <param name="namespace">/pre-planning/projects</param>
        </result>
     </action>
   </package>
@@ -103,6 +120,9 @@
         <param name="actionName">budget</param>
         <param name="projectID">${project.id}</param>
         <param name="year">${year}</param>
+      </result>
+      <result name="next" type="redirectAction">
+        <param name="actionName">projects</param>
       </result>
     </action>
      

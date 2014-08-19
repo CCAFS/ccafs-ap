@@ -81,6 +81,12 @@ public class OutputsPreplanningAction extends BaseAction {
   }
 
   @Override
+  public String next() {
+    save();
+    return super.next();
+  }
+
+  @Override
   public void prepare() throws Exception {
     IPProgram program = getCurrentUser().getCurrentInstitution().getProgram();
 

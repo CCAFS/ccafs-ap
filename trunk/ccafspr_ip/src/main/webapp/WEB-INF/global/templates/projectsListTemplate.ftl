@@ -31,7 +31,9 @@
                   title="${project.title}">
                   [#if project.title?length < 120] ${project.title}</a> [#else] [@utilities.wordCutter string=project.title maxPos=120 /]...</a> [/#if]
                 [#else]
-                  [@s.text name="preplanning.projects.title.none" /]
+                  <a href="[@s.url action='description' includeParams='get'] [@s.param name='projectID']${project.id?c}[/@s.param][/@s.url] ">
+                    [@s.text name="preplanning.projects.title.none" /]
+                  </a>
                 [/#if]
                
           </td>

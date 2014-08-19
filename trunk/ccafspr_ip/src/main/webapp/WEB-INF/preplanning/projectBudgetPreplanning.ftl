@@ -213,6 +213,7 @@
       <p>[@s.text name="preplanning.projectBudget.message.dateUndefined" /]</p>
     [/#if]
     [#-- Showing buttons only to users with enough privileges. See GranProjectAccessInterceptor--]
+    
     [#if saveable]
       [#if allYears?has_content && !invalidYear && hasLeader]
         <!-- internal parameter -->
@@ -220,7 +221,13 @@
         <input name="year" type="hidden" value="${year?c}" />
         <div class="buttons">
           [@s.submit type="button" name="save"][@s.text name="form.buttons.save" /][/@s.submit]
-          [#-- @s.submit type="button" name="next"][@s.text name="form.buttons.next" /][/@s.submit --]
+          [#-- 
+            As this is the last section of preplanning, the next button is showed only if 
+            the planning section is active
+          --]
+          [#if planningActive]
+            [@s.submit type="button" name="next"][@s.text name="form.buttons.next" /][/@s.submit]
+          [/#if]
           [@s.submit type="button" name="cancel"][@s.text name="form.buttons.cancel" /][/@s.submit]
         </div>
       [/#if]
