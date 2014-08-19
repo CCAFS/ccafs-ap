@@ -53,6 +53,26 @@ INSERT INTO `ip_program_types` (`id`, `name`) VALUES
 (3, 'Regional program'),
 (4, 'Coordination program');
 
+--
+-- Volcado de datos para la tabla `ip_relationship_type`
+--
+
+INSERT INTO `ip_relationship_type` (`id`, `name`) VALUES
+(1, 'contributes to'),
+(2, 'translation of');
+
+--
+-- Volcado de datos para la tabla `budget_types`
+--
+
+INSERT INTO `budget_types` (`id`, `name`) VALUES
+(1, 'W1'),
+(2, 'W2'),
+(3, 'W3'),
+(4, 'Bilateral'),
+(5, 'Leveraged'),
+(6, 'Activity Budget');
+
 
 --
 -- Volcado de datos para la tabla `loc_element_types`
