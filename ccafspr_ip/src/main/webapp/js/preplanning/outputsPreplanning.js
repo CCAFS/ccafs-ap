@@ -15,6 +15,7 @@ function init(){
     addChosen();
   }
   setOutputsIndexes();
+  initGraph();
   removeOutcomesAlreadySelected();
 }
 
@@ -49,18 +50,17 @@ function removeOutputEvent(event){
 }
 
 /*
- * This method is called onLoad to remove of each midOutcome list
- * the options that were already selected and appears as contributions
+ * This method is called onLoad to remove of each midOutcome list the options that were already selected and appears as contributions
  */
 function removeOutcomesAlreadySelected(){
-  $(".output").each(function(c, output){
+  $(".output").each(function(c,output){
     var $outputBlock = $(output);
     
-    $outputBlock.find(".contributions input").each(function(index, input){
+    $outputBlock.find(".contributions input").each(function(index,input){
       var $midOutcomeList = $outputBlock.find("#outputs_contributions");
-      $midOutcomeList.find("option").each(function(index, option){
+      $midOutcomeList.find("option").each(function(index,option){
         
-        if($(option).val() == $(input).val()){
+        if ($(option).val() == $(input).val()) {
           $(option).remove();
           $midOutcomeList.trigger("liszt:updated");
         }
@@ -90,7 +90,7 @@ function addContributeEvent(event){
   
   var $selectElemet = $(event.target);
   var $optionSelected = $selectElemet.find('option:selected');
-
+  
   if ($selectElemet.find('option').length != 0) {
     var $newElementClone = $("#contributeTemplate").clone(true).removeAttr("id");
     var grandParentId = $("select").index(event.target);
@@ -100,7 +100,7 @@ function addContributeEvent(event){
     $newElementClone.show("slow");
     $optionSelected.remove();
     $selectElemet.trigger("liszt:updated");
-
+    
     setContributesIndexes(grandParentId);
   }
   $optionSelected.attr('selectedIndex', '-1');

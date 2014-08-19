@@ -53,7 +53,16 @@
       [#if libraryName="autoSave"]
         <script src="${baseUrl}/js/global/autoSave.js"></script>
       [/#if]
-
+      
+      [#if libraryName="cytoscape"] 
+        <script src="${baseUrl}/js/libs/cytoscape-2.2.12/cytoscape.min.js"></script>
+      [/#if]
+      
+      [#if libraryName="qtip"]
+      <script src="${baseUrl}/js/libs/cytoscape-2.2.12/cytoscape.js-qtip.js"></script>
+        <script src="${baseUrl}/js/libs/qtip/jquery.qtip.js"></script>
+      [/#if]
+      
    [/#list]
   [/#if]
 

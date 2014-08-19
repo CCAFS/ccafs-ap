@@ -67,6 +67,10 @@ ul.fieldError li {
   text-align: left;
 }
 
+.hasDatepicker {
+    background: url(../../images/global/calendar.png) no-repeat scroll 99% 2px;
+}
+
 fieldset {
   /* padding: 10px 20px 20px; */
   margin: 0 0 30px;
@@ -1119,6 +1123,27 @@ padding-left: 11px;
   border-radius: 0px 3px  0px 8px;
 }
 
+#ipGraph-content {
+  height: 250px;
+  margin-top: 20px;
+}
+#ipGraph-button {
+  border:1px solid #ccc;
+  width: 45px;
+  height: 45px;
+  position: absolute;
+  bottom: -6px;
+  right: -20px;
+  cursor:pointer;
+  border-radius: 50%;
+  background: url(../../images/global/ipGraph.png) no-repeat center;
+  box-shadow: 0px 1px 7px rgba(0, 0, 0, 0.15);
+}
+
+#ipGraph-button:hover {
+  background: url(../../images/global/ipGraph-hover.png) no-repeat center #57A7B5;  
+}
+
 /********** Projects *********/
 
 /* Project List */
@@ -1304,6 +1329,7 @@ table tr.row:hover{
   display: block;
   margin: 5px 35px;
   text-align: center;
+  position: relative;
 }
 
 #stageMenu li {
