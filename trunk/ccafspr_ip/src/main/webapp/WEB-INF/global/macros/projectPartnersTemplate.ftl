@@ -73,7 +73,7 @@
         
         [#-- Partner Name --]
         <div class="fullBlock partnerName chosen">
-          [@customForm.select name="partner" label=""  disabled=!canEdit i18nkey="preplanning.projectPartners.partner.name" listName="allPartners" keyFieldName="id"  displayFieldName="name" /]
+          [@customForm.select name="partner" label=""  disabled=!canEdit i18nkey="preplanning.projectPartners.partner.name" listName="allPartners" keyFieldName="id"  displayFieldName="getComposedName()" /]
         </div>
         
         <div class="filters-link">[@s.text name="preplanning.projectPartners.filters" /]</div>
@@ -140,11 +140,11 @@
         [#if expected]
           [#-- Organizations List --]
           <div class="fullBlock organizationName chosen">
-            [@customForm.select name="project.expectedLeader.currentInstitution" disabled=!canEdit i18nkey="preplanning.projectPartners.leader.institutionName" listName="allPartners" keyFieldName="id"  displayFieldName="name" /]
+            [@customForm.select name="project.expectedLeader.currentInstitution" disabled=!canEdit i18nkey="preplanning.projectPartners.leader.institutionName" listName="allPartners" keyFieldName="id"  displayFieldName="getComposedName()" /]
           </div> 
           [#-- Contact First Name --] 
           <div class="grid_4">
-            [@customForm.input name="project.expectedLeader.firstName" type="text" disabled=!canEdit i18nkey="preplanning.projectPartners.contactPersonName" required=true /]
+            [@customForm.input name="project.expectedLeader.firstName" type="text" disabled=!canEdit i18nkey="preplanning.projectPartners.leader.firstName" required=true /]
           </div>
           [#-- Contact Last Name --] 
           <div class="grid_4">
@@ -152,7 +152,7 @@
           </div>
           [#-- Contact Email --]
           <div class="grid_4">
-            [@customForm.input name="project.expectedLeader.email" type="text" disabled=!canEdit i18nkey="preplanning.projectPartners.contactPersonEmail" required=true /]
+            [@customForm.input name="project.expectedLeader.email" type="text" disabled=!canEdit i18nkey="preplanning.projectPartners.leader.email" required=true /]
           </div>
         [#else]          
           <div class="grid_4">

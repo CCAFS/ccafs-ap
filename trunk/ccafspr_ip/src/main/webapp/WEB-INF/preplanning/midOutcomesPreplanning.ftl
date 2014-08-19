@@ -82,7 +82,7 @@
       
       [#-- Add midOutcome button --]
       <div id="addMidOutcomeBlock" class="addLink"> 
-        <a href="" class="addMidOutcome addButton" >[@s.text name="preplanning.midOutcomesRPL.addOutcome" /]</a>
+        <a href="" class="addMidOutcome addButton" >[@s.text name="preplanning.midOutcomes.addOutcome" /]</a>
       </div>
        
        <div class="buttons">
