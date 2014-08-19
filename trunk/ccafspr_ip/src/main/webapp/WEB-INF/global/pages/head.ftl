@@ -64,6 +64,10 @@
           <link rel="stylesheet" type="text/css" href="${baseUrl}/css/libs/jreject/jquery.reject.css" />
         [/#if]
         
+        [#if libraryName="cytoscape"]          
+          <link rel="stylesheet" type="text/css" href="${baseUrl}/css/libs/qtip/jquery.qtip.css" />
+        [/#if]
+        
   	 [/#list]
   	[/#if]
   	

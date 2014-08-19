@@ -8,6 +8,7 @@ $(document).ready(function(){
     $("select[id^='outputsRPL_flagships']").trigger("change");
     addChosen();
   }
+  initGraph();
 });
 
 function attachEvents(){
@@ -30,10 +31,8 @@ function attachEvents(){
 }
 
 /*
-* When users create a translated output but not select 
-* which flagship output is going to be translated    
-* A warning message should appear before complete the submission   
-*/
+ * When users create a translated output but not select which flagship output is going to be translated A warning message should appear before complete the submission
+ */
 function showTranslationMessage(){
   
   var $contributionSelects = $("#outputsRPL select[name$='translatedOf']");
@@ -46,7 +45,7 @@ function showTranslationMessage(){
       var selectName = $select.attr("name");
       var mogIndex = selectName.split("[")[1].split("]")[0];
       
-      $("#existentOutputDialog").find(".elements").html( parseInt(mogIndex) + 1);
+      $("#existentOutputDialog").find(".elements").html(parseInt(mogIndex) + 1);
       $("#existentOutputDialog").dialog({
         modal : true,
         buttons : {
@@ -72,7 +71,7 @@ function updateMidOutcomesList(event){
   var elementTypeId = $("#midOutcomeTypeID").val();
   var midOutcomeSelected = $parent.find("#midOutcomeSelected").val();
   var $select = $parent.find("select#outputsRPL_midOutcomes");
-  console.log("test: "+ $("#midOutcomeTypeID").attr("id"));
+  console.log("test: " + $("#midOutcomeTypeID").attr("id"));
   if (programID != -1) {
     $.getJSON("../json/ipElementsByProgramAndType.do?programID=" + programID + "&elementTypeId=" + elementTypeId, function(data){
       $select.find("option").remove();
@@ -106,7 +105,7 @@ function showOutputTranslatedWarning(event){
       var selectName = $select.attr("name");
       var mogIndex = selectName.split("[")[1].split("]")[0];
       
-      $("#existentOutputDialog").find(".elements").html( parseInt(mogIndex) + 1);
+      $("#existentOutputDialog").find(".elements").html(parseInt(mogIndex) + 1);
       $("#existentOutputDialog").dialog({
         modal : true,
         buttons : {
@@ -277,4 +276,3 @@ function addChosen(){
     });
   });
 }
-

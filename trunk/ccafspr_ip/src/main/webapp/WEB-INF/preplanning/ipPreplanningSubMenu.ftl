@@ -23,6 +23,10 @@
         [@s.url action='outputs' includeParams='get'][/@s.url]
       ">[@s.text name="menu.preplanning.submenu.outputs" /]</a></li> 
     [/#if]
-    
-  </ul>
-</nav>
+  </ul> 
+  <div id="ipGraph-button" title="[@s.text name="menu.preplanning.submenu.ipGraph" /]"></div>
+</nav> 
+<div id="content-ip" style="display:none;height: 100%;width: 100%;">
+  <div id="ipGraph-content" class="ui-widget-content" ></div>
+</div>
+  

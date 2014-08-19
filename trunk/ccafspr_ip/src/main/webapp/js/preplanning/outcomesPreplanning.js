@@ -20,11 +20,11 @@ function init(){
     $input.attr("id", indLabelFor + "-" + index);
   });
   
+  initGraph();
   setIdoIndicatorsIndexes();
   setIDOsIndicatorsLabel();
   attachEvents();
 }
-
 function attachEvents(){
   $(".outcomeIndicatorsBlock input.addButton").click(addIndicatorEvent);
   $(".indicator a.removeOutcomeIndicator").click(removeIndicatorEvent);

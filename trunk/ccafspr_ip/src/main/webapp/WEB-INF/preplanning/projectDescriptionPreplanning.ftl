@@ -62,20 +62,20 @@
       <fieldset class="fullBlock">   
         <legend>[@s.text name="preplanning.projectDescription.projectWorking" /] </legend> 
         <div id="projectWorking">
-          [#-- Regions --]
-          <div id="projectRegions" class="thirdPartBlock">
-            <h6>[@s.text name="preplanning.projectDescription.regions" /]</h6>
-            <div class="checkboxGroup">
-              [@s.fielderror cssClass="fieldError" fieldName="project.regions"/]
-              [@s.checkboxlist name="project.regions" list="ipProgramRegions" listKey="id" listValue="name" cssClass="checkbox" value="regionIds" /]
-            </div>
-          </div> 
           [#-- Flagships --] 
-          <div id="projectFlagships" class="thirdPartBlock">
+          <div id="projectFlagships" class="grid_4">
             <h6>[@s.text name="preplanning.projectDescription.flagships" /]</h6>
             <div class="checkboxGroup">  
               [@s.fielderror cssClass="fieldError" fieldName="project.flagships"/]
               [@s.checkboxlist name="project.flagships" list="ipProgramFlagships" listKey="id" listValue="getComposedName(id)" cssClass="checkbox" value="flagshipIds" /]
+            </div>
+          </div> 
+          [#-- Regions --]
+          <div id="projectRegions" class="grid_4">
+            <h6>[@s.text name="preplanning.projectDescription.regions" /]</h6>
+            <div class="checkboxGroup">
+              [@s.fielderror cssClass="fieldError" fieldName="project.regions"/]
+              [@s.checkboxlist name="project.regions" list="ipProgramRegions" listKey="id" listValue="name" cssClass="checkbox" value="regionIds" /]
             </div>
           </div> 
           [#-- Cross Cutting --] 

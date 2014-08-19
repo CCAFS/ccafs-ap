@@ -14,6 +14,7 @@ function init(){
     setMidOutcomesIndexes();
     addChosen();
   }
+  initGraph();
 }
 
 function attachEvents(){
@@ -137,7 +138,7 @@ function updateMidOutcomes(event){
     // Remove all the elements if any
     $flagshipSelect.find("option").remove();
     // Add the placeholder
-    if(data.IPElementsList.length > 0)
+    if (data.IPElementsList.length > 0)
       $flagshipSelect.append('<option value="-1" >' + $("#midOutcomeSelectPlaceholder").val() + '</option>');
     else
       $flagshipSelect.append('<option value="-1" >' + $("#selectFlagshipFirstPlaceholder").val() + '</option>');
