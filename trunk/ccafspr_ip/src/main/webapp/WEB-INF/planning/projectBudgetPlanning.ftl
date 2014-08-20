@@ -2,8 +2,7 @@
 [#assign title = "Project Budget" /]
 [#assign globalLibs = ["jquery", "noty","autoSave","chosen"] /]
 [#assign customJS = ["${baseUrl}/js/global/utils.js", "${baseUrl}/js/preplanning/projectBudget.js"] /]
-[#assign currentSection = "preplanning" /]
-[#assign currentPrePlanningSection = "projects" /]
+[#assign currentSection = "planning" /]
 [#assign currentStage = "budget" /]
 
 [#include "/WEB-INF/global/pages/header.ftl" /]
@@ -13,14 +12,18 @@
 <section class="content">
   <div class="helpMessage">
     <img src="${baseUrl}/images/global/icon-help.png" />
-    <p>[@s.text name="preplanning.projectBudget.help" /]</p>
+    <p>[@s.text name="planning.projectBudget.help" /]</p>
   </div>
-  [#include "/WEB-INF/global/pages/pre-planning-secondary-menu.ftl" /]
+  [#include "/WEB-INF/planning/planningProjectsSubMenu.ftl" /]
   
   [@s.form action="budget" cssClass="pure-form"]
     <article class="halfContent" id="projectBudget">
     [#-- Informing user that he/she doesn't have enough privileges to edit. See GranProjectAccessInterceptor--]
-    [#if !saveable]
+    [#if saveable && !fullEditable]
+      <p class="readPrivileges">
+        [@s.text name="saving.read.privileges.section" /]
+      </p>
+    [#elseif !saveable && fullEditable]
       <p class="readPrivileges">
         [@s.text name="saving.read.privileges"]
           [@s.param][@s.text name="preplanning.project"/][/@s.param]
@@ -28,8 +31,7 @@
       </p>
     [/#if]
     
-    [#include "/WEB-INF/preplanning/projectPreplanningSubMenu.ftl" /]
-    [#-- Title --]
+    [#-- Project Title --]
     <h1 class="contentTitle">
       ${project.composedId} - [@s.text name="preplanning.projectBudget.title" /]  
     </h1>
@@ -183,16 +185,20 @@
                           <input type="hidden" name="project.budgets[${counter}].type" value="LEVERAGED" />
                           [@customForm.input name="project.budgets[${counter}].amount" showTitle=false disabled=!fullEditable value="${mapBudgets[year?c+'-'+partner.id?c+'-LEVERAGED'].amount?c}"/]
                           [@s.set var="counter" value="${counter+1}"/]
-                          [#if saveable]
+                          [#if fullEditable && saveable]
                             <img class="removeButton" src="${baseUrl}/images/global/icon-remove.png" />
                           [/#if]
                         </div> 
                       </div>  
                     [/#list] 
                   [#else]
-                    <p id="selectLeveraged" class="center">[@s.text name="preplanning.projectBudget.selectLeveraged" /]</p>
+                    [#if fullEditable && saveable]
+                      <p id="selectLeveraged" class="center">[@s.text name="preplanning.projectBudget.selectLeveraged" /]</p>
+                    [#else]
+                      <p id="selectLeveraged" class="center">[@s.text name="planning.projectBudget.notLeveraged" /]</p>
+                    [/#if]
                   [/#if]
-                  [#if saveable]
+                  [#if fullEditable && saveable]
                     [#-- Add Leveraged --]
                     <div class="fullBlock addLeveragedBlock"> 
                       [@customForm.select name="" value="" listName="allInstitutions" keyFieldName="id"  displayFieldName="composedName" className="leveraged" /]
@@ -214,20 +220,14 @@
     [/#if]
     [#-- Showing buttons only to users with enough privileges. See GranProjectAccessInterceptor--]
     
-    [#if saveable]
+    [#if fullEditable && saveable]
       [#if allYears?has_content && !invalidYear && hasLeader]
         <!-- internal parameter -->
         <input name="projectID" type="hidden" value="${project.id?c}" />
         <input name="year" type="hidden" value="${year?c}" />
         <div class="buttons">
           [@s.submit type="button" name="save"][@s.text name="form.buttons.save" /][/@s.submit]
-          [#-- 
-            As this is the last section of preplanning, the next button is showed only if 
-            the planning section is active
-          --]
-          [#if planningActive]
-            [@s.submit type="button" name="next"][@s.text name="form.buttons.next" /][/@s.submit]
-          [/#if]
+          [@s.submit type="button" name="next"][@s.text name="form.buttons.next" /][/@s.submit]
           [@s.submit type="button" name="cancel"][@s.text name="form.buttons.cancel" /][/@s.submit]
         </div>
       [/#if]
