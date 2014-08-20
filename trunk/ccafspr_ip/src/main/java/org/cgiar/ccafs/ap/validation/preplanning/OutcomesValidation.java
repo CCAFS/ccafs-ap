@@ -27,12 +27,10 @@ public class OutcomesValidation extends BaseValidator {
 
   public String validateForm(List<IPElement> outcomes) {
     StringBuilder validationMessage = new StringBuilder();
-    boolean problem = false; // TODO HC - This variable is never used.
 
     for (IPElement outcome : outcomes) {
       if (outcome.getDescription().isEmpty()) {
         validationMessage.append(getText("validation.preplanning.outcomes.description") + ", ");
-        problem = true;
       }
 
       for (int i = 0; i < outcome.getIndicators().size(); i++) {
