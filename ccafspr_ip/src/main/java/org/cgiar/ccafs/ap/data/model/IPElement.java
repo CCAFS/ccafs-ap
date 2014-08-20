@@ -102,10 +102,10 @@ public class IPElement {
    * indicators which have not parents.
    * If the parameter received is true returns a list with all the
    * indicators that have parents.
-   * TODO HC - To Document parameters.
    * 
-   * @param hasParents
-   * @return
+   * @param hasParents - true if you want to get the indicators which have parents.
+   *        false otherwise.
+   * @return a list of IPIndicator objects with the information.
    */
   public List<IPIndicator> getIndicators(boolean hasParents) {
     List<IPIndicator> _indicators = new ArrayList<>();

@@ -13,14 +13,15 @@
  *****************************************************************/
 package org.cgiar.ccafs.ap.converter;
 
+import org.cgiar.ccafs.ap.data.manager.IPIndicatorManager;
+import org.cgiar.ccafs.ap.data.model.IPIndicator;
+
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
 import com.google.inject.Inject;
 import org.apache.struts2.util.StrutsTypeConverter;
-import org.cgiar.ccafs.ap.data.manager.IPIndicatorManager;
-import org.cgiar.ccafs.ap.data.model.IPIndicator;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -54,7 +55,7 @@ public class IPIndicatorsConverter extends StrutsTypeConverter {
     for (IPIndicator indicator : indicatorArray) {
       temp.add(indicator.getId() + "");
     }
-    // TODO HC - What TO DO should be here?
+
     return temp.toString();
   }
 }

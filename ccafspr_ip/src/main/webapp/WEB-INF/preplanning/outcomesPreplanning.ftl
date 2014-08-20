@@ -43,27 +43,29 @@
           [/#assign]
           <legend>${outcomeDescription}</legend> 
           [@customForm.textArea name="outcomes[${outcome_index}].description" i18nkey="preplanning.outcomes.outcomeDescription" required=true /]
-          [#-- Indicators --]
-          <div class="contentElements outcomeIndicatorsBlock"> 
-            <div class="itemIndex">[@s.text name="preplanning.outcomes.indicators" /]</div>
-            [#if outcome.getIndicators(false)?has_content]
-              [#list outcome.getIndicators(false) as indicator]
-                  [@indicatorTemplate.outcomes outcome_index="${outcome_index}" indicator_index="${indicator_index}" value="${indicator.id}" i18nkey="preplanning.outcomes.indicators.description" show_remove_link=false /] 
-              [/#list]
-            [#else]
-              [@indicatorTemplate.outcomes template=true i18nkey="preplanning.outcomes.indicators.description" show_remove_link=false /]
-            [/#if]
-            
-            [#-- Add Indicator Button --]
-            [#-- So far, there will be only 1 indicator per outcome 2025 --]
-            [#-- 
-            <div class="fullBlock" id="addIndicatorBlock">
-              [@customForm.button i18nkey="preplanning.outcomes.addIndicator" class="addButton" /]
-            </div>
-            --] 
-          </div> 
           
           [#if currentUser.FPL]
+          
+            [#-- Indicators --]
+            <div class="contentElements outcomeIndicatorsBlock"> 
+              <div class="itemIndex">[@s.text name="preplanning.outcomes.indicators" /]</div>
+              [#if outcome.getIndicators(false)?has_content]
+                [#list outcome.getIndicators(false) as indicator]
+                    [@indicatorTemplate.outcomes outcome_index="${outcome_index}" indicator_index="${indicator_index}" value="${indicator.id}" i18nkey="preplanning.outcomes.indicators.description" show_remove_link=false /] 
+                [/#list]
+              [#else]
+                [@indicatorTemplate.outcomes template=true i18nkey="preplanning.outcomes.indicators.description" show_remove_link=false /]
+              [/#if]
+              
+              [#-- Add Indicator Button --]
+              [#-- So far, there will be only 1 indicator per outcome 2025 --]
+              [#-- 
+              <div class="fullBlock" id="addIndicatorBlock">
+                [@customForm.button i18nkey="preplanning.outcomes.addIndicator" class="addButton" /]
+              </div>
+              --] 
+            </div> 
+            
             [#-- IDOs --]
             [#if idos?has_content]
               <div id="idosBlock" class="contentElements">

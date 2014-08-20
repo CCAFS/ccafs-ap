@@ -30,20 +30,20 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
 import com.opensymphony.xwork2.ActionInvocation;
 import com.opensymphony.xwork2.interceptor.MethodFilterInterceptor;
 import org.apache.commons.lang3.StringUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
- * TODO HC - Not well documented.
- * This interceptor is responsible for validating if the role of user is actually TL or RPL,
- * in order to be able to access the contents of the specified page.
- * If there is no an authorized user in the current session it will return
- * a 401 error (Authentication Required).
+ * This interceptor is in charge of remove all the leading and trailing whitespace
+ * present in the values received as paramter.
+ * Example:
+ * Value received: ' This value was received as parameter '
+ * Value returned: 'This value was received as parameter'
  */
+
 public class TrimInterceptor extends MethodFilterInterceptor {
 
   private static final long serialVersionUID = 5761559607570669987L;
