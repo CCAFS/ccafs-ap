@@ -134,9 +134,18 @@ public interface BudgetDAO {
    * This method brings all the institutions by a given project ID
    *
    * @param projectID - is the project Id
-   * @return a list of Map of Institutions related with the project ID
+   * @return a list of Map of Institutions data related with the project ID
    */
   public List<Map<String, String>> getLeveragedInstitutions(int projectID);
+
+  /**
+   * This method brings all the institutions by a given project identifier and a specific year.
+   *
+   * @param projectID is the project identifier.
+   * @param year is a number representing a year.
+   * @return a list of Map of Institutions data.
+   */
+  public List<Map<String, String>> getLeveragedInstitutions(int projectID, int year);
 
   /**
    * This method saves the Budget and the Project Budget relation

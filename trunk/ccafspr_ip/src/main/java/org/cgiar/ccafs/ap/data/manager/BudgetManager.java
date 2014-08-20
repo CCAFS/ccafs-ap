@@ -138,6 +138,15 @@ public interface BudgetManager {
   public List<Institution> getLeveragedInstitutions(int projectID);
 
   /**
+   * This method returns all the institutions that have leveraged funds with the specified project and year.
+   *
+   * @param projectID is the project identifier.
+   * @param year is number representing a year.
+   * @return a List of Institution Objects.
+   */
+  public List<Institution> getLeveragedInstitutions(int projectID, int year);
+
+  /**
    * This method saves the information of the given budget that belong to a specific project into the database.
    *
    * @param projectID is the project identifier.

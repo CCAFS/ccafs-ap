@@ -381,6 +381,48 @@ public class MySQLBudgetDAO implements BudgetDAO {
 
 
   @Override
+  public List<Map<String, String>> getLeveragedInstitutions(int projectID, int year) {
+    LOG.debug(">> getLeveragedInstitutions projectID = {} )", projectID);
+    List<Map<String, String>> leveragedInstitutionDataList = new ArrayList<>();
+    StringBuilder query = new StringBuilder();
+    query.append("SELECT DISTINCT i.*   ");
+    query.append("FROM institutions as i ");
+    query.append("INNER JOIN budgets b ON b.institution_id = i.id ");
+    query.append("INNER JOIN project_budgets pb ON b.id = pb.budget_id ");
+    query.append("INNER JOIN budget_types bt ON b.budget_type = bt.id ");
+    query.append("WHERE pb.project_id=  ");
+    query.append(projectID);
+    query.append(" AND b.year = ");
+    query.append(year);
+    query.append(" AND bt.id = ");
+    query.append(BudgetType.LEVERAGED.getValue());
+
+    try (Connection con = databaseManager.getConnection()) {
+      ResultSet rs = databaseManager.makeQuery(query.toString(), con);
+      while (rs.next()) {
+        Map<String, String> leveragedInstitutionData = new HashMap<String, String>();
+        leveragedInstitutionData.put("id", rs.getString("id"));
+        leveragedInstitutionData.put("name", rs.getString("name"));
+        leveragedInstitutionData.put("acronym", rs.getString("acronym"));
+        leveragedInstitutionData.put("contact_person_name", rs.getString("contact_person_name"));
+        leveragedInstitutionData.put("contact_person_name", rs.getString("contact_person_name"));
+        leveragedInstitutionData.put("city", rs.getString("city"));
+        leveragedInstitutionData.put("website_link", rs.getString("website_link"));
+        leveragedInstitutionData.put("program_id", rs.getString("program_id"));
+        leveragedInstitutionData.put("institution_type_id", rs.getString("institution_type_id"));
+        leveragedInstitutionData.put("country_id", rs.getString("country_id"));
+
+        leveragedInstitutionDataList.add(leveragedInstitutionData);
+      }
+      con.close();
+    } catch (SQLException e) {
+      LOG.error("Exception arised getting the leveraged institutions for the project {}.", projectID, e);
+    }
+    return leveragedInstitutionDataList;
+  }
+
+
+  @Override
   public int saveBudget(int projectID, Map<String, Object> budgetData) {
     LOG.debug(">> saveBudget(budgetData={})", budgetData);
     StringBuilder query = new StringBuilder();
