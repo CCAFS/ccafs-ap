@@ -14,11 +14,11 @@
 package org.cgiar.ccafs.ap.converter;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
 
 import org.cgiar.ccafs.ap.data.model.IPCrossCutting;
-
 import org.cgiar.ccafs.ap.data.manager.IPCrossCuttingManager;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -66,8 +66,7 @@ public class IPCrossCuttingThemeListConverter extends StrutsTypeConverter {
     for (int c = 0; c < themeIds.length; c++) {
       themeIds[c] = themes.get(c).getId() + "";
     }
-    LOG.debug(">> convertToString > id = {} ", themeIds.toString());
-    // TODO HT - To review.
-    return themeIds.toString();
+    LOG.debug(">> convertToString > id = {} ", Arrays.toString(themeIds));
+    return Arrays.toString(themeIds);
   }
 }

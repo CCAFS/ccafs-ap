@@ -14,11 +14,11 @@
 package org.cgiar.ccafs.ap.converter;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
 
 import org.cgiar.ccafs.ap.data.manager.IPProgramManager;
-
 import org.cgiar.ccafs.ap.data.model.IPProgram;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -66,8 +66,7 @@ public class IPProgramsListConverter extends StrutsTypeConverter {
     for (int c = 0; c < programIds.length; c++) {
       programIds[c] = programs.get(c).getId() + "";
     }
-    LOG.debug(">> convertToString > id = {} ", programIds.toString());
-    // TODO HT - To review.
-    return programIds.toString();
+    LOG.debug(">> convertToString > id = {} ", Arrays.toString(programIds));
+    return Arrays.toString(programIds);
   }
 }
