@@ -95,7 +95,7 @@ public class ProjectPartnerManagerImpl implements ProjectPartnerManager {
       projectPartnerData.put("partner_id", projectPartner.getPartner().getId());
       projectPartnerData.put("contact_name", projectPartner.getContactName());
       projectPartnerData.put("contact_email", projectPartner.getContactEmail());
-      projectPartnerData.put("responsabilities ", projectPartner.getResponsabilities());
+      projectPartnerData.put("responsabilities", projectPartner.getResponsabilities());
 
       int result = projecPartnerDAO.saveProjectPartner(projectPartnerData);
       if (result > 0) {

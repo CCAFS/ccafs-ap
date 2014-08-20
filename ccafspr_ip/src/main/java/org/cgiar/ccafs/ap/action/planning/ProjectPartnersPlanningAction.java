@@ -229,7 +229,7 @@ public class ProjectPartnersPlanningAction extends BaseAction {
         }
 
         if (success) {
-          addActionMessage(getText("saving.success", new String[] {getText("preplanning.projectPartners.leader.title")}));
+          addActionMessage(getText("saving.saved"));
           return SUCCESS;
         } else {
           addActionError(getText("saving.problem"));
@@ -240,22 +240,27 @@ public class ProjectPartnersPlanningAction extends BaseAction {
 
         // We set the values that changed to the previous project
         // in order to prevent unauthorized changes.
+        previousProject.setProjectPartners(projectPartnerManager.getProjectPartners(project.getId()));
         for (int c = 0; c < previousProject.getProjectPartners().size(); c++) {
+          // Copying responsibilities.
           previousProject.getProjectPartners().get(c)
-          .setResponsabilities(project.getProjectPartners().get(c).getResponsabilities());
+            .setResponsabilities(project.getProjectPartners().get(c).getResponsabilities());
         }
         boolean result =
           projectPartnerManager.saveProjectPartner(previousProject.getId(), previousProject.getProjectPartners());
-        if (!result) {
+        if (result) {
+          addActionMessage(getText("saving.saved"));
+          return SUCCESS;
+        } else {
           addActionError(getText("saving.problem"));
           return BaseAction.INPUT;
         }
       }
     } else {
       LOG
-        .warn(
-          "User (employee_id={}, email={}) tried to save information in Project Partners without having enough privileges!",
-          new Object[] {this.getCurrentUser().getEmployeeId(), this.getCurrentUser().getEmail()});
+      .warn(
+        "User (employee_id={}, email={}) tried to save information in Project Partners without having enough privileges!",
+        new Object[] {this.getCurrentUser().getEmployeeId(), this.getCurrentUser().getEmail()});
     }
     return BaseAction.ERROR;
 
