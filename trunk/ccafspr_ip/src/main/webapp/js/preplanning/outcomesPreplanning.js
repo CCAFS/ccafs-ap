@@ -9,7 +9,10 @@ $(document).ready(function(){
 function init(){
   // $(".idosIndicators").hide();
   applyWordCounter($("form .outcome > .textArea textarea"), lWordsElemetDesc);
-  applyWordCounter($("form .outcomeIndicatorsBlock textarea"), lWordsIndicatorDesc);
+  
+  if($("form .outcomeIndicatorsBlock textarea").length > 0){
+    applyWordCounter($("form .outcomeIndicatorsBlock textarea"), lWordsIndicatorDesc);
+  }
   
   // Set input indicator relation
   $(".idosIndicators > .checkboxLabel").each(function(index,indLabel){

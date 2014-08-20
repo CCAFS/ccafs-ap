@@ -1,8 +1,7 @@
 [#ftl]
 [#assign title = "Insert a partner" /]
 [#assign globalLibs = ["jquery", "noty"] /]
-[#assign customCSS = ["${baseUrl}/css/reporting/partnersReporting.css"] /]
-[#assign customJS = ["${baseUrl}/js/reporting/partnerSaveReporting.js"] /]
+[#assign customJS = ["${baseUrl}/js/global/partnerSave.js"] /]
 
 [#import "/WEB-INF/global/macros/forms.ftl" as customForm /]
 
@@ -10,8 +9,8 @@
   <section>
     <article class="content">
       <h1>[@s.text name="partnersSave.addPartner" /]</h1>
-      [@s.form action="partnerSave!save" cssClass="pure-form"]
-      
+      [@s.form action="partnerSave" cssClass="pure-form"]
+
       [#-- Partner Name --]
       <div class="halfPartBlock">
         [@customForm.input name="activityPartner.partner.name" type="text" i18nkey="partnersSave.name" /]
@@ -29,7 +28,7 @@
       
       [#-- Countries list --]
       <div class="halfPartBlock">
-        [@customForm.select name="activityPartner.partner.country" label="" i18nkey="partnersSave.country" listName="countriesList" keyFieldName="id"  displayFieldName="name" /]        
+        [@customForm.select name="activityPartner.partner.country.id" label="" i18nkey="partnersSave.country" listName="countriesList" keyFieldName="id"  displayFieldName="name" /]        
       </div>
       
       [#-- City of location --]
@@ -62,6 +61,8 @@
       <!-- internal parameter -->
       [#if activityID?has_content]<input name="activityID" type="hidden" value="${activityID?c}" />[/#if]
       [#if projectID?has_content]<input name="projectID" type="hidden" value="${projectID?c}" />[/#if]
+
+      <input id="messageSent" type="hidden" value="${messageSent?string}" />
       [@s.submit type="button" name="save"][@s.text name="form.buttons.savePartner.request" /][/@s.submit]
       [/@s.form]
     </article>

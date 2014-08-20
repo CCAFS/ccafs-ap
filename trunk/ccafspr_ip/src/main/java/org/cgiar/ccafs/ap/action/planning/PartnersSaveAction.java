@@ -1,9 +1,5 @@
 package org.cgiar.ccafs.ap.action.planning;
 
-import java.util.List;
-
-import com.google.inject.Inject;
-import org.apache.commons.lang3.StringUtils;
 import org.cgiar.ccafs.ap.action.BaseAction;
 import org.cgiar.ccafs.ap.config.APConfig;
 import org.cgiar.ccafs.ap.config.APConstants;
@@ -15,6 +11,11 @@ import org.cgiar.ccafs.ap.data.model.ActivityPartner;
 import org.cgiar.ccafs.ap.data.model.Country;
 import org.cgiar.ccafs.ap.data.model.InstitutionType;
 import org.cgiar.ccafs.ap.util.SendMail;
+
+import java.util.List;
+
+import com.google.inject.Inject;
+import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -35,11 +36,11 @@ public class PartnersSaveAction extends BaseAction {
   private List<Country> countriesList;
   private List<InstitutionType> institutionTypesList;
   private ActivityPartner activityPartner;
+  private boolean messageSent;
 
   private String partnerWebPage;
   private int projectID;
   private int activityID;
-
 
   @Inject
   public PartnersSaveAction(APConfig config, LocationManager locationManager, InstitutionManager institutionManager,
@@ -51,10 +52,10 @@ public class PartnersSaveAction extends BaseAction {
     this.projectManager = projectManager;
   }
 
-
   public int getActivityID() {
     return activityID;
   }
+
 
   public ActivityPartner getActivityPartner() {
     return activityPartner;
@@ -74,6 +75,10 @@ public class PartnersSaveAction extends BaseAction {
 
   public int getProjectID() {
     return projectID;
+  }
+
+  public boolean isMessageSent() {
+    return messageSent;
   }
 
   @Override
@@ -168,10 +173,13 @@ public class PartnersSaveAction extends BaseAction {
     message.append("\n");
     SendMail sendMail = new SendMail(this.config);
     sendMail.send(config.getGmailUsername(), subject, message.toString());
+    messageSent = true;
+
     LOG.info("The user {} send a message requesting add partners to the activity {}", getCurrentUser().getEmail(),
       activityID);
-    return SUCCESS;
+    return INPUT;
   }
+
 
   public void setActivityID(int activityID) {
     this.activityID = activityID;
