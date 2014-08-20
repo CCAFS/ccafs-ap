@@ -14,13 +14,14 @@
 <section class="content">
   <div class="helpMessage">
     <img src="${baseUrl}/images/global/icon-help.png" />
-    <p> [@s.text name="preplanning.projectPartners.help" /] </p>
+    <p> [@s.text name="preplanning.projectPartners.help1" /] </p>
+    <p> [@s.text name="preplanning.projectPartners.help2" /] </p>
   </div>
   [#include "/WEB-INF/global/pages/pre-planning-secondary-menu.ftl" /]
   
   [@s.form action="partners" cssClass="pure-form"]
   <article class="halfContent" id="mainInformation">
-    [#-- Informing user that he/she doesn't have enough privileges to edit. See GranProjectAccessInterceptor--]
+    [#-- Informing user that he/she doesn't have enough privileges to edit. See GranProjectPreplanningAccessInterceptor--]
     [#if !saveable]
       <p class="readPrivileges">
         [@s.text name="saving.read.privileges"]
@@ -36,8 +37,7 @@
   	<h1 class="contentSubTitle">
       [@s.text name="preplanning.projectPartners.leader.title" /]  
     </h1>
-  	[#-- Displaying partner leader from partnersTemplate.ftl --]  	
-    [@s.hidden id="isExpected" name="expected" /]
+  	[#-- Displaying partner leader from partnersTemplate.ftl --]
     [#if expected]
       [@partnersTemplate.projectLeader leader=project.expectedLeader canEdit=true /]
     [#else]
@@ -45,7 +45,7 @@
     [/#if] 
     
     <h1 class="contentSubTitle">
-		  [@s.text name="preplanning.projectPartners.partners.title" /]  
+		  [@s.text name="preplanning.projectPartners.partners.title" /]
     </h1>
     [#-- Listing partners from partnersTemplate.ftl --]
     [@partnersTemplate.partnerSection projectPartners=project.projectPartners partnerTypes=partnerTypes countries=countries canEdit=true canRemove=saveable /]
