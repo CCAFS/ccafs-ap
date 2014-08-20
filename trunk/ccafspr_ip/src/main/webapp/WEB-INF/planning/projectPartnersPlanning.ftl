@@ -62,7 +62,7 @@
         [@s.text name="preplanning.projectPartners.addPartnerMessage.first" /]
         <a class="popup" href="[@s.url action='partnerSave'][@s.param name='${projectRequest}']${project.id?c}[/@s.param][/@s.url]">
           [@s.text name="preplanning.projectPartners.addPartnerMessage.second" /]
-        </a>       
+        </a>
       </p>
     [/#if]
   </article>
