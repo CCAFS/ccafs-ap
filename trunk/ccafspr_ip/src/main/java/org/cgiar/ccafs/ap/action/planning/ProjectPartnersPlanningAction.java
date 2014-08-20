@@ -32,7 +32,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.cgiar.ccafs.ap.data.manager.BudgetManager;
-
 import com.google.inject.Inject;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
@@ -60,13 +59,13 @@ public class ProjectPartnersPlanningAction extends BaseAction {
   private int projectID;
   private Project project;
   private boolean isExpected;
+  private Project previousProject;
 
   // Model for the view
   private List<InstitutionType> partnerTypes;
   private List<Country> countries;
   private List<Institution> allPartners; // will be used to list all the partners that have the system.
   private List<User> allProjectLeaders; // will be used to list all the project leaders that have the system.
-
 
   @Inject
   public ProjectPartnersPlanningAction(APConfig config, ProjectPartnerManager projectPartnerManager,
@@ -160,72 +159,105 @@ public class ProjectPartnersPlanningAction extends BaseAction {
       }
     }
 
+    // If the user is not admin or the project owner, we should keep some information
+    // unmutable
+    previousProject = new Project();
+    previousProject.setId(project.getId());
+    previousProject.setProjectPartners(project.getProjectPartners());
+
 
     if (getRequest().getMethod().equalsIgnoreCase("post")) {
       // Clear out the list if it has some element
       if (project.getProjectPartners() != null) {
         project.getProjectPartners().clear();
       }
+      ;
     }
 
   }
 
   @Override
   public String save() {
-    boolean success = true;
-    boolean saved = true;
+    if (this.isSaveable()) {
+      if (this.isFullEditable()) {
+        // If user is an Admin, FPL, RPL or PO, he has privileges to update anything.
+        boolean success = true;
+        boolean saved = true;
 
-    if (isExpected) {
-      // Saving Project leader
-      saved = projectManager.saveExpectedProjectLeader(project.getId(), project.getExpectedLeader());
-      if (!saved) {
-        success = false;
-      }
-    }
+        if (isExpected) {
+          // Saving Project leader
+          saved = projectManager.saveExpectedProjectLeader(project.getId(), project.getExpectedLeader());
+          if (!saved) {
+            success = false;
+          }
+        }
 
-    // Getting previous Project Partners.
-    List<ProjectPartner> previousProjectPartners = projectPartnerManager.getProjectPartners(projectID);
+        // Getting previous Project Partners.
+        List<ProjectPartner> previousProjectPartners = projectPartnerManager.getProjectPartners(projectID);
 
-    // Deleting project partners
-    for (ProjectPartner projectPartner : previousProjectPartners) {
-      if (!project.getProjectPartners().contains(projectPartner)) {
-        boolean deleted = projectPartnerManager.deleteProjectPartner(projectPartner.getId());
-        if (!deleted) {
+        // Deleting project partners
+        for (ProjectPartner projectPartner : previousProjectPartners) {
+          if (!project.getProjectPartners().contains(projectPartner)) {
+            boolean deleted = projectPartnerManager.deleteProjectPartner(projectPartner.getId());
+            if (!deleted) {
+              success = false;
+            }
+          }
+        }
+
+        // Getting previous Partner Institutions
+        List<Institution> previousInstitutions = new ArrayList<>();
+        for (ProjectPartner projectPartner : previousProjectPartners) {
+          previousInstitutions.add(projectPartner.getPartner());
+        }
+        // Getting current Partner Institutions
+        List<Institution> currentInstitutions = new ArrayList<>();
+        for (ProjectPartner projectPartner : project.getProjectPartners()) {
+          currentInstitutions.add(projectPartner.getPartner());
+        }
+        // Deleting Partner Institutions from budget section
+        for (Institution previousInstitution : previousInstitutions) {
+          if (!currentInstitutions.contains(previousInstitution)) {
+            budgetManager.deleteBudgetsByInstitution(project.getId(), previousInstitution.getId());
+          }
+        }
+
+        // Saving new and old project partners
+        saved = projectPartnerManager.saveProjectPartner(project.getId(), project.getProjectPartners());
+        if (!saved) {
           success = false;
         }
+
+        if (success) {
+          addActionMessage(getText("saving.success", new String[] {getText("preplanning.projectPartners.leader.title")}));
+          return SUCCESS;
+        } else {
+          addActionError(getText("saving.problem"));
+          return INPUT;
+        }
+      } else {
+        // User is PL, thus, only partner's responsabilities.
+
+        // We set the values that changed to the previous project
+        // in order to prevent unauthorized changes.
+        for (int c = 0; c < previousProject.getProjectPartners().size(); c++) {
+          previousProject.getProjectPartners().get(c)
+          .setResponsabilities(project.getProjectPartners().get(c).getResponsabilities());
+        }
+        boolean result =
+          projectPartnerManager.saveProjectPartner(previousProject.getId(), previousProject.getProjectPartners());
+        if (!result) {
+          addActionError(getText("saving.problem"));
+          return BaseAction.INPUT;
+        }
       }
-    }
-
-    // Getting previous Partner Institutions
-    List<Institution> previousInstitutions = new ArrayList<>();
-    for (ProjectPartner projectPartner : previousProjectPartners) {
-      previousInstitutions.add(projectPartner.getPartner());
-    }
-    // Getting current Partner Institutions
-    List<Institution> currentInstitutions = new ArrayList<>();
-    for (ProjectPartner projectPartner : project.getProjectPartners()) {
-      currentInstitutions.add(projectPartner.getPartner());
-    }
-    // Deleting Partner Institutions from budget section
-    for (Institution previousInstitution : previousInstitutions) {
-      if (!currentInstitutions.contains(previousInstitution)) {
-        budgetManager.deleteBudgetsByInstitution(project.getId(), previousInstitution.getId());
-      }
-    }
-
-    // Saving new and old project partners
-    saved = projectPartnerManager.saveProjectPartner(project.getId(), project.getProjectPartners());
-    if (!saved) {
-      success = false;
-    }
-
-    if (success) {
-      addActionMessage(getText("saving.success", new String[] {getText("preplanning.projectPartners.leader.title")}));
-      return SUCCESS;
     } else {
-      addActionError(getText("saving.problem"));
-      return INPUT;
+      LOG
+        .warn(
+          "User (employee_id={}, email={}) tried to save information in Project Partners without having enough privileges!",
+          new Object[] {this.getCurrentUser().getEmployeeId(), this.getCurrentUser().getEmail()});
     }
+    return BaseAction.ERROR;
 
   }
 
