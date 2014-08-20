@@ -6,6 +6,12 @@
 [#assign currentPrePlanningSection = "projects" /]
 [#assign currentStage = "partners" /]
 
+[#assign breadCrumb = [
+  {"label":"preplanning", "nameSpace":"pre-planning", "action":"outcomes"},
+  {"label":"projects", "nameSpace":"pre-planning/projects", "action":"projects"},
+  {"label":"partners", "nameSpace":"pre-planning/projects", "action":""}
+]/]
+
 [#include "/WEB-INF/global/pages/header.ftl" /]
 [#include "/WEB-INF/global/pages/main-menu.ftl" /]
 [#import "/WEB-INF/global/macros/forms.ftl" as customForm/]
@@ -32,7 +38,7 @@
   
   	[#include "/WEB-INF/preplanning/projectPreplanningSubMenu.ftl" /]
   	<h1 class="contentTitle">
-       ${project.composedId} [#if project.title?has_content] - ${project.title}[/#if]
+      [#if project.title?has_content] ${project.title}[/#if]
     </h1>
   	<h1 class="contentSubTitle">
       [@s.text name="preplanning.projectPartners.leader.title" /]  

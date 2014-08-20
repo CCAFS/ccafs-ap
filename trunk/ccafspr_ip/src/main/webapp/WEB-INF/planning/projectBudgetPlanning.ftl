@@ -5,6 +5,12 @@
 [#assign currentSection = "planning" /]
 [#assign currentStage = "budget" /]
 
+[#assign breadCrumb = [
+  {"label":"planning", "nameSpace":"planning/projects", "action":"projects"},
+  {"label":"projects", "nameSpace":"planning/projects", "action":"projects"},
+  {"label":"budget", "nameSpace":"planning/projects", "action":""}
+]/]
+
 [#include "/WEB-INF/global/pages/header.ftl" /]
 [#include "/WEB-INF/global/pages/main-menu.ftl" /]
 [#import "/WEB-INF/global/macros/forms.ftl" as customForm/]

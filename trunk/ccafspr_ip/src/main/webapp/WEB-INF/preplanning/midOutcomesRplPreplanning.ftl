@@ -7,6 +7,12 @@
 [#assign currentPrePlanningSection = "impactPathways" /]
 [#assign currentStage = "midOutcomes" /]
 
+[#assign breadCrumb = [
+  {"label":"preplanning", "nameSpace":"pre-planning", "action":"outcomes"},
+  {"label":"impactPathways", "nameSpace":"pre-planning", "action":"outcomes"},
+  {"label":"midOutcomes", "nameSpace":"pre-planning", "action":"midOutcomesRPL"}
+]/]
+
 [#include "/WEB-INF/global/pages/header.ftl" /]
 [#include "/WEB-INF/global/pages/main-menu.ftl" /]
 [#import "/WEB-INF/global/macros/forms.ftl" as customForm/]

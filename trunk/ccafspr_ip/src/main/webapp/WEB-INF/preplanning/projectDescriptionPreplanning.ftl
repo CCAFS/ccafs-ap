@@ -6,6 +6,11 @@
 [#assign currentPrePlanningSection = "projects" /]
 [#assign currentStage = "description" /]
 
+[#assign breadCrumb = [
+  {"label":"preplanning", "nameSpace":"pre-planning", "action":"outcomes"},
+  {"label":"projects", "nameSpace":"pre-planning/projects", "action":"projects"},
+  {"label":"description", "nameSpace":"pre-planning/projects", "action":""}
+]/]
 
 [#include "/WEB-INF/global/pages/header.ftl" /]
 [#include "/WEB-INF/global/pages/main-menu.ftl" /]
@@ -63,7 +68,7 @@
         <legend>[@s.text name="preplanning.projectDescription.projectWorking" /] </legend> 
         <div id="projectWorking">
           [#-- Flagships --] 
-          <div id="projectFlagships" class="grid_4">
+          <div id="projectFlagships" class="grid_5">
             <h6>[@s.text name="preplanning.projectDescription.flagships" /]</h6>
             <div class="checkboxGroup">  
               [@s.fielderror cssClass="fieldError" fieldName="project.flagships"/]

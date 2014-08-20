@@ -1,11 +1,12 @@
+jQuery.fn.exists = function(){
+  return this.length > 0;
+};
 /*
- *  This function takes the links whit popup class and 
- *  add a click event. That event takes the href and open
- *  it in a popUp window 
+ * This function takes the links whit popup class and add a click event. That event takes the href and open it in a popUp window
  * 
- *  This method must be called in ready function
- *  
- * */
+ * This method must be called in ready function
+ * 
+ */
 
 function popups(){
   $("a.popup").click(function(event){

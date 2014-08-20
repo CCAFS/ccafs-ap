@@ -5,10 +5,14 @@ var x = {};
 var y = 100;
 var graphStarted = false;
 
-function initGraph(){
+function initGraph(programID){
   $("#ipGraph-button").on("click", function(e){
     if (!graphStarted) {
-      callCytos("../json/json/ipComponents.do");
+      if (programID) {
+        callCytos("../json/json/ipComponents.do?programID=" + programID);
+      } else {
+        callCytos("../json/json/ipComponents.do");
+      }
       graphStarted = true;
     }
     $("#content-ip").slideToggle("slow");

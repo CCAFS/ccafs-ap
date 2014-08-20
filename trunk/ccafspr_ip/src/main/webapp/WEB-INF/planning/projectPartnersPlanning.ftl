@@ -1,9 +1,15 @@
 [#ftl]
 [#assign title = "Project Partners" /]
-[#assign globalLibs = ["jquery", "noty", "autoSave"] /]
-[#assign customJS = ["${baseUrl}/js/global/utils.js"] /]
+[#assign globalLibs = ["jquery", "noty", "autoSave", "chosen"] /]
+[#assign customJS = ["${baseUrl}/js/global/utils.js", "${baseUrl}/js/planning/projectPartners.js"] /]
 [#assign currentSection = "planning" /]
 [#assign currentStage = "partners" /]
+
+[#assign breadCrumb = [
+  {"label":"planning", "nameSpace":"planning/projects", "action":"projects"},
+  {"label":"projects", "nameSpace":"planning/projects", "action":"projects"},
+  {"label":"partners", "nameSpace":"planning/projects", "action":""}
+]/]
 
 [#include "/WEB-INF/global/pages/header.ftl" /]
 [#include "/WEB-INF/global/pages/main-menu.ftl" /]
@@ -19,7 +25,7 @@
   [#include "/WEB-INF/planning/planningProjectsSubMenu.ftl" /]
 
   [@s.form action="partners" cssClass="pure-form"]
-  <article class="halfContent" id="mainInformation">
+  <article class="halfContent" id="projectPartners">
     [#-- Informing user that he/she doesn't have enough privileges to edit. See GranProjectPlanningAccessInterceptor--]
     [#if !saveable]
       <p class="readPrivileges">
@@ -68,6 +74,6 @@
   </article>
   [/@s.form] 
   [#-- Single partner TEMPLATE from partnersTemplate.ftl --]
-  [@partnersTemplate.partnerTemplate /]  
+  [@partnersTemplate.partnerTemplate showResponsabilities=true /]  
 </section>
 [#include "/WEB-INF/global/pages/footer.ftl"]
