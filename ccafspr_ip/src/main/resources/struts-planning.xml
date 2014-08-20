@@ -40,6 +40,19 @@
       </result>
     </action>
     
+    <action name="budget" class="org.cgiar.ccafs.ap.action.preplanning.ProjectBudgetPreplanningAction">
+      <result name="cancel" type="redirectAction">projects</result>
+      <result name="input">/WEB-INF/planning/projectBudgetPlanning.ftl</result>
+      <result name="success" type="redirectAction">
+        <param name="actionName">budget</param>
+        <param name="projectID">${project.id}</param>
+      </result>
+      <result name="next" type="redirectAction">
+        <param name="actionName">projectOutcomes</param>
+        <param name="projectID">${project.id}</param>
+      </result>
+    </action>
+    
     <action name="projectOutcomes" class="org.cgiar.ccafs.ap.action.planning.ProjectOutcomeAction">		
       <result name="input">/WEB-INF/planning/projectOutcomesPlanning.ftl</result>		
       <result name="success" type="redirectAction">		

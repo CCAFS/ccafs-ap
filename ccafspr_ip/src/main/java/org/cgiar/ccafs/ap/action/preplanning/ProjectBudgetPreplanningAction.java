@@ -38,7 +38,7 @@ import org.slf4j.LoggerFactory;
 
 /**
  * Project Budget Action.
- * 
+ *
  * @author Héctor Fabio Tobón R.
  */
 public class ProjectBudgetPreplanningAction extends BaseAction {
@@ -91,7 +91,7 @@ public class ProjectBudgetPreplanningAction extends BaseAction {
    * e.g. 2014-9-W1
    * Where 2014 is the year, 9 is the institution identifier and W1 is the budget type.
    * If the budget is not in the database, this method will create a new one with an id=-1 and amount=0.
-   * 
+   *
    * @return a Map of budgets as was described above.
    */
   private Map<String, Budget> generateMapBudgets(int year) {
@@ -326,6 +326,9 @@ public class ProjectBudgetPreplanningAction extends BaseAction {
   @Override
   public void prepare() throws Exception {
     super.prepare();
+    System.out.println("FULL EDITABLE: " + this.isFullEditable());
+    System.out.println("SAVEABLE: " + this.isSaveable());
+    System.out.println("***********");
 
     // Getting the project id from the URL parameters.
     // It's assumed that the project parameter is ok. (@See ValidateProjectParameterInterceptor)

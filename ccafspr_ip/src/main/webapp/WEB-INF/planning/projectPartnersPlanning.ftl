@@ -3,7 +3,6 @@
 [#assign globalLibs = ["jquery", "noty", "autoSave"] /]
 [#assign customJS = ["${baseUrl}/js/global/utils.js"] /]
 [#assign currentSection = "planning" /]
-[#assign currentPrePlanningSection = "projects" /]
 [#assign currentStage = "partners" /]
 
 [#include "/WEB-INF/global/pages/header.ftl" /]
@@ -30,6 +29,7 @@
       </p>
     [/#if]
     
+    [#-- Project Title --]
   	<h1 class="contentTitle">
       [@s.text name="preplanning.projectPartners.leader.title" /]
     </h1>
