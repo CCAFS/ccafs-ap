@@ -117,7 +117,7 @@ public class ProjectBudgetPreplanningAction extends BaseAction {
           } else if (budget.getType().getValue() == BudgetType.BILATERAL.getValue()) {
             bilateral = true;
             budgetsMap
-              .put(year + "-" + projectPartner.getPartner().getId() + "-" + BudgetType.BILATERAL.name(), budget);
+            .put(year + "-" + projectPartner.getPartner().getId() + "-" + BudgetType.BILATERAL.name(), budget);
           }
         }
       }
@@ -224,8 +224,8 @@ public class ProjectBudgetPreplanningAction extends BaseAction {
       newBudget.setAmount(0);
       newBudget.setYear(year);
       budgetsMap
-        .put(year + "-" + project.getLeader().getCurrentInstitution().getId() + "-" + BudgetType.BILATERAL.name(),
-          newBudget);
+      .put(year + "-" + project.getLeader().getCurrentInstitution().getId() + "-" + BudgetType.BILATERAL.name(),
+        newBudget);
     }
 
     // Leveraged
@@ -326,9 +326,6 @@ public class ProjectBudgetPreplanningAction extends BaseAction {
   @Override
   public void prepare() throws Exception {
     super.prepare();
-    System.out.println("FULL EDITABLE: " + this.isFullEditable());
-    System.out.println("SAVEABLE: " + this.isSaveable());
-    System.out.println("***********");
 
     // Getting the project id from the URL parameters.
     // It's assumed that the project parameter is ok. (@See ValidateProjectParameterInterceptor)
@@ -378,7 +375,7 @@ public class ProjectBudgetPreplanningAction extends BaseAction {
           totalCCAFSBudgetByYear = budgetManager.calculateTotalCCAFSBudgetByYear(projectID, year);
 
           // Getting the list of institutions that are funding the project as leveraged.
-          leveragedInstitutions = budgetManager.getLeveragedInstitutions(projectID);
+          leveragedInstitutions = budgetManager.getLeveragedInstitutions(projectID, year);
 
           // Getting all the project partners.
           projectPartners = partnerManager.getProjectPartners(projectID);
@@ -434,10 +431,12 @@ public class ProjectBudgetPreplanningAction extends BaseAction {
       budgetManager.getBudgetsByType(project.getId(), BudgetType.LEVERAGED.getValue());
     // Deleting budgets removed
     for (Budget budget : previousLeveragedBudgets) {
-      if (!project.getBudgets().contains(budget)) {
-        deleted = budgetManager.deleteBudget(budget.getId());
-        if (!deleted) {
-          success = false;
+      if (budget.getYear() == this.year) {
+        if (!project.getBudgets().contains(budget)) {
+          deleted = budgetManager.deleteBudget(budget.getId());
+          if (!deleted) {
+            success = false;
+          }
         }
       }
     }
