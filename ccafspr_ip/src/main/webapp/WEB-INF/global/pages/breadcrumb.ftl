@@ -1,13 +1,16 @@
 [#ftl]
 <ul id="breadcrumb">
-  [#if currentSection??] <li><a href="./"> [@s.text name="menu.${currentSection}" /]</a></li>  
-  
-    [#if currentPrePlanningSection??] <li><a href="#"> [@s.text name="menu.secondary.preplanning.${currentPrePlanningSection}" /] </a></li>
-      [#if currentStage??] <li><a href="./${currentStage}.do"> [@s.text name="menu.preplanning.submenu.${currentStage}" /] </a></li>[/#if] 
-    [/#if]
-    [#if currentPlanningSection??] <li><a href="#">  [@s.text name="menu.secondary.planning.${currentPlanningSection}"/] </a></li>
-      [#if currentStage??] <li><a href="./${currentStage}.do"> [@s.text name="menu.planning.submenu.${currentStage}"/] </a></li>[/#if] 
-    [/#if] 
-    
-  [/#if]
+ [#if breadCrumb?has_content] 
+   [#list breadCrumb as item]
+    <li>
+       [#if item.action?has_content] 
+      <a href="${baseUrl}/${item.nameSpace}/${item.action}.do">  
+      [#else]
+      <a href="#"> 
+      [/#if]
+      [@s.text name="breadCrumb.menu.${item.label}" /]
+      </a>
+    </li> 
+   [/#list]
+ [/#if]
 </ul>

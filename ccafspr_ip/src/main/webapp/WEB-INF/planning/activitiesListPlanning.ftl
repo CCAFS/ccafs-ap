@@ -7,6 +7,12 @@
 [#assign currentPlanningSection = "activities" /]
 [#assign currentStage = "activities" /]
 
+[#assign breadCrumb = [
+  {"label":"planning", "nameSpace":"planning/projects", "action":"projects"},
+  {"label":"projects", "nameSpace":"planning/projects", "action":"projects"},
+  {"label":"activities", "nameSpace":"planning/activities", "action":"activities", "param":"projectID=${projectID}" }
+]/]
+
 [#include "/WEB-INF/global/pages/header.ftl" /]
 [#include "/WEB-INF/global/pages/main-menu.ftl" /]
 [#import "/WEB-INF/global/macros/forms.ftl" as customForm/]

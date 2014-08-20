@@ -14,7 +14,7 @@ function init(){
     applyWordCounter($("form .midOutcome > .textArea textarea"), lWordsElemetDesc);
     applyWordCounter($("form .indicatorsBlock textarea"), lWordsIndicatorDesc);
   }
-  initGraph();
+  initGraph($("#programID").val());
   setMidOutcomesIndexes();
 }
 

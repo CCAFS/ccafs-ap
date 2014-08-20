@@ -1,6 +1,6 @@
 /*-------------------  Setting images paths -------------------*/
 .chzn-container {
-	width: 100% !important;
+  width: 100% !important;
 }
 
 .chzn-container-single .chzn-single abbr {
@@ -59,7 +59,7 @@
 }
 
 .fullBlock.chosen .selectList{
-  width: 614px !important;
+  width: 90% !important;
 }
 
 .fullBlock .chzn-container-multi .chzn-choices {

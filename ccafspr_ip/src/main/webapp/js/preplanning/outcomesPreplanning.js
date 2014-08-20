@@ -10,7 +10,7 @@ function init(){
   // $(".idosIndicators").hide();
   applyWordCounter($("form .outcome > .textArea textarea"), lWordsElemetDesc);
   
-  if($("form .outcomeIndicatorsBlock textarea").length > 0){
+  if ($("form .outcomeIndicatorsBlock textarea").length > 0) {
     applyWordCounter($("form .outcomeIndicatorsBlock textarea"), lWordsIndicatorDesc);
   }
   
@@ -23,7 +23,12 @@ function init(){
     $input.attr("id", indLabelFor + "-" + index);
   });
   
-  initGraph();
+  if ($("#isFPL").exists()) {
+    initGraph($("#programID").val());
+  } else {
+    initGraph();
+  }
+  
   setIdoIndicatorsIndexes();
   setIDOsIndicatorsLabel();
   attachEvents();

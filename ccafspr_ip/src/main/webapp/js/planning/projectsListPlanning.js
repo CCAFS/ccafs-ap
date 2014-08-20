@@ -2,7 +2,7 @@ $(document).ready(function(){
   
   $('table.projectsList').dataTable({
     "bPaginate" : true, // This option enable the table pagination
-    "bLengthChange" : false, // This option disables the select table size option
+    "bLengthChange" : true, // This option disables the select table size option
     "bFilter" : true, // This option enable the search
     "bSort" : true, // this option enable the sort of contents by columns
     "bAutoWidth" : false, // This option enables the auto adjust columns width

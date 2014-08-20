@@ -15,7 +15,7 @@ function init(){
     addChosen();
   }
   setOutputsIndexes();
-  initGraph();
+  initGraph($("#programID").val());
   removeOutcomesAlreadySelected();
 }
 

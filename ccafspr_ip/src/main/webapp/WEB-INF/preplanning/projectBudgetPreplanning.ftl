@@ -6,6 +6,12 @@
 [#assign currentPrePlanningSection = "projects" /]
 [#assign currentStage = "budget" /]
 
+[#assign breadCrumb = [
+  {"label":"preplanning", "nameSpace":"pre-planning", "action":"outcomes"},
+  {"label":"projects", "nameSpace":"pre-planning/projects", "action":"projects"},
+  {"label":"budget", "nameSpace":"pre-planning/projects", "action":""}
+]/]
+
 [#include "/WEB-INF/global/pages/header.ftl" /]
 [#include "/WEB-INF/global/pages/main-menu.ftl" /]
 [#import "/WEB-INF/global/macros/forms.ftl" as customForm/]
@@ -226,7 +232,7 @@
             the planning section is active
           --]
           [#if planningActive]
-            [@s.submit type="button" name="next"][@s.text name="form.buttons.next" /][/@s.submit]
+            [@s.submit type="button" name="next"][@s.text name="form.buttons.nextAndFinish" /][/@s.submit]
           [/#if]
           [@s.submit type="button" name="cancel"][@s.text name="form.buttons.cancel" /][/@s.submit]
         </div>

@@ -177,3 +177,9 @@ table.dataTable a {
   font-style: italic;
   margin-top: 5px;
 }
+
+.dataTables_length {
+	position: absolute;
+	top: 17px;
+	left: 0;
+}

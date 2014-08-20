@@ -7,51 +7,49 @@
 
 [#include "/WEB-INF/global/pages/popup-header.ftl" /]
   <section>
-    <article class="content">
+    <article class="content container_9">
       <h1>[@s.text name="partnersSave.addPartner" /]</h1>
       [@s.form action="partnerSave" cssClass="pure-form"]
 
       [#-- Partner Name --]
-      <div class="halfPartBlock">
+      <div id="partnerName" class="halfPartBlock ">
         [@customForm.input name="activityPartner.partner.name" type="text" i18nkey="partnersSave.name" /]
       </div>
       
       [#-- Partner Acronym --]
-      <div class="halfPartBlock">
+      <div id="partnerAcronym" class="halfPartBlock ">
         [@customForm.input name="activityPartner.partner.acronym" type="text" i18nkey="partnersSave.acronym" /]
       </div>
       
       [#-- Partner types list --]
-      <div class="halfPartBlock">
+      <div id="partnerTypes" class="halfPartBlock ">
         [@customForm.select name="activityPartner.partner.type.id" label="" i18nkey="partnersSave.partnerType" listName="institutionTypesList" keyFieldName="id"  displayFieldName="name" /]
       </div>
       
       [#-- Countries list --]
-      <div class="halfPartBlock">
+      <div id="partnerCountry" class="halfPartBlock ">
         [@customForm.select name="activityPartner.partner.country.id" label="" i18nkey="partnersSave.country" listName="countriesList" keyFieldName="id"  displayFieldName="name" /]        
       </div>
       
       [#-- City of location --]
-      <div class="halfPartBlock">
+      <div id="partnerCity" class="halfPartBlock ">
         [@customForm.input name="activityPartner.partner.city" type="text" i18nkey="partnersSave.city" /]
       </div>
       
-      [#-- Empty space --]
-      <div class="halfPartBlock">
-      </div>
+     
       
       [#-- Contact point name --]
-      <div class="halfPartBlock">
+      <div id="partnerContactName" class="halfPartBlock ">
         [@customForm.input name="activityPartner.contactName" type="text" i18nkey="partnersSave.contactName" /]
       </div>
       
       [#-- Contact point email --]
-      <div class="halfPartBlock">
+      <div id="partnerContactEmail" class="halfPartBlock ">
         [@customForm.input name="activityPartner.contactEmail" type="text" i18nkey="partnersSave.contactEmail" /]
       </div>
       
       [#-- Web page link --]
-      <div class="fullBlock">
+      <div id="partnerPage" class="fullPartBlock ">
         [@customForm.input name="partnerWebPage" type="text" i18nkey="partnersSave.webPage" /]
       </div>
       
@@ -61,9 +59,10 @@
       <!-- internal parameter -->
       [#if activityID?has_content]<input name="activityID" type="hidden" value="${activityID?c}" />[/#if]
       [#if projectID?has_content]<input name="projectID" type="hidden" value="${projectID?c}" />[/#if]
-
       <input id="messageSent" type="hidden" value="${messageSent?string}" />
-      [@s.submit type="button" name="save"][@s.text name="form.buttons.savePartner.request" /][/@s.submit]
+      <div class="grid_9 center">
+        [@s.submit type="button" name="save"][@s.text name="form.buttons.savePartner.request" /][/@s.submit]
+      </div>
       [/@s.form]
     </article>
   </section> 

@@ -6,6 +6,13 @@
 [#assign currentPlanningSection = "activity" /]
 [#assign currentStage = "activityImpactPathway" /]
 
+[#assign breadCrumb = [
+  {"label":"planning", "nameSpace":"planning/projects", "action":"projects"},
+  {"label":"projects", "nameSpace":"planning/projects", "action":"projects"},
+  {"label":"activities", "nameSpace":"planning/activities", "action":"" },
+  {"label":"activityImpactPathway", "nameSpace":"planning/activities", "action":"activityImpactPathway" }
+]/]
+
 [#include "/WEB-INF/global/pages/header.ftl" /]
 [#include "/WEB-INF/global/pages/main-menu.ftl" /]
 [#import "/WEB-INF/global/macros/forms.ftl" as customForm/]

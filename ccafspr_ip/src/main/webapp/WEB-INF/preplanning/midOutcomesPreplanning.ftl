@@ -6,6 +6,12 @@
 [#assign currentPrePlanningSection = "impactPathways" /]
 [#assign currentStage = "midOutcomes" /]
 
+[#assign breadCrumb = [
+  {"label":"preplanning", "nameSpace":"pre-planning", "action":"outcomes"},
+  {"label":"impactPathways", "nameSpace":"pre-planning", "action":"outcomes"},
+  {"label":"midOutcomes", "nameSpace":"pre-planning", "action":"midOutcomes"}
+]/]
+
 [#include "/WEB-INF/global/pages/header.ftl" /]
 [#include "/WEB-INF/global/pages/main-menu.ftl" /]
 [#import "/WEB-INF/global/macros/forms.ftl" as customForm/]
@@ -84,8 +90,9 @@
       <div id="addMidOutcomeBlock" class="addLink"> 
         <a href="" class="addMidOutcome addButton" >[@s.text name="preplanning.midOutcomes.addOutcome" /]</a>
       </div>
-       
-       <div class="buttons">
+      
+      <input type="hidden" id="programID" value="${currentUser.currentInstitution.program.id}" />
+      <div class="buttons">
         [@s.submit type="button" name="save"][@s.text name="form.buttons.save" /][/@s.submit]
         [@s.submit type="button" name="next"][@s.text name="form.buttons.next" /][/@s.submit]
         [@s.submit type="button" name="cancel"][@s.text name="form.buttons.cancel" /][/@s.submit]

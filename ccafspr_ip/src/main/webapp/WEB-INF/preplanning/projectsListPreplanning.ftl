@@ -6,6 +6,11 @@
 [#assign currentSection = "preplanning" /]
 [#assign currentPrePlanningSection = "projects" /]
 
+[#assign breadCrumb = [
+  {"label":"preplanning", "nameSpace":"pre-planning", "action":"outcomes"},
+  {"label":"projects", "nameSpace":"pre-planning/projects", "action":"projects"}
+]/]
+
 
 [#include "/WEB-INF/global/pages/header.ftl" /]
 [#include "/WEB-INF/global/pages/main-menu.ftl" /]
