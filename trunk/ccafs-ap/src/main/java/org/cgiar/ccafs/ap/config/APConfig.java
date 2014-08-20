@@ -86,8 +86,8 @@ public class APConfig {
     while (url != null && url.endsWith("/")) {
       url = url.substring(0, url.length() - 1);
     }
-    if (!url.startsWith("http://")) {
-      url = "http://" + url;
+    if (!url.startsWith("https://")) {
+      url = "https://" + url;
       return url;
     }
     return url;
