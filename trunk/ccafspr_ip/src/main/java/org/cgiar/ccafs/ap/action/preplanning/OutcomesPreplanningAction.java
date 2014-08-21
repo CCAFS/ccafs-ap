@@ -120,7 +120,6 @@ public class OutcomesPreplanningAction extends BaseAction {
     consortiumIDOs = ipElementManager.getIPElements(systemProgram, idoType);
     ccafsIDOs = ipElementManager.getIPElements(ccafsProgram, idoType);
 
-
     outcomes = ipElementManager.getIPElements(getCurrentUser().getCurrentInstitution().getProgram(), type);
 
     // Keep the id of all outcomes which come from the database
