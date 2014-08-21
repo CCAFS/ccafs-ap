@@ -223,6 +223,27 @@ public class MySQLBudgetDAO implements BudgetDAO {
   }
 
   @Override
+  public List<Map<String, String>> getActivityBudgetsByType(int activityID, int budgetType) {
+    LOG.debug(">> getActivityBudgetsByType activityID = {} )", activityID);
+
+    StringBuilder query = new StringBuilder();
+    query.append("SELECT b.*   ");
+    query.append("FROM budgets as b ");
+    query.append("INNER JOIN activity_budgets ab ON b.id = ab.budget_id ");
+    query.append("INNER JOIN budget_types bt ON b.budget_type = bt.id ");
+    query.append("INNER JOIN institutions i ON b.institution_id = i.id ");
+    query.append("WHERE ab.activity_id=  ");
+    query.append(activityID);
+    query.append(" AND b.budget_type=  ");
+    query.append(budgetType);
+
+
+    LOG.debug("-- getActivityBudgetsByType() > Calling method executeQuery to get the results");
+    return getData(query.toString());
+  }
+
+
+  @Override
   public List<Map<String, String>> getBudgetsByProject(int projectID) {
     LOG.debug(">> getBudgetsByProject projectID = {} )", projectID);
 
@@ -419,6 +440,58 @@ public class MySQLBudgetDAO implements BudgetDAO {
       LOG.error("Exception arised getting the leveraged institutions for the project {}.", projectID, e);
     }
     return leveragedInstitutionDataList;
+  }
+
+
+  @Override
+  public int saveActivityBudget(int activityID, Map<String, Object> activityBudgetData) {
+    LOG.debug(">> saveActivityBudget(activityBudgetData={})", activityBudgetData);
+    StringBuilder query = new StringBuilder();
+    int result = -1;
+    int newId = -1;
+    Object[] values;
+    if (activityBudgetData.get("id") == null) {
+      // Insert new budget record
+      query.append("INSERT INTO budgets (year, budget_type, institution_id, amount) ");
+      query.append("VALUES (?,?,?,?) ");
+      values = new Object[4];
+      values[0] = activityBudgetData.get("year");
+      values[1] = activityBudgetData.get("budget_type");
+      values[2] = activityBudgetData.get("institution_id");
+      values[3] = activityBudgetData.get("amount");
+      newId = databaseManager.saveData(query.toString(), values);
+      if (newId <= 0) {
+        LOG.error("A problem happened trying to add a new budget with id={}", activityID);
+        return -1;
+      } else {
+        // Now, Addition the relation with activity into table activity_budgets
+        query.setLength(0); // Clearing query.
+        query.append("INSERT INTO activity_budgets (activity_id, budget_id) ");
+        query.append("VALUES (?,?) ");
+        values = new Object[2];
+        values[0] = activityID;
+        values[1] = newId;
+        result = databaseManager.saveData(query.toString(), values);
+      }
+    } else {
+      // update budget record
+      query.append("UPDATE budgets SET year = ?, budget_type = ?, institution_id = ?, amount = ? ");
+      query.append("WHERE id = ? ");
+      values = new Object[5];
+      values[0] = activityBudgetData.get("year");
+      values[1] = activityBudgetData.get("budget_type");
+      values[2] = activityBudgetData.get("institution_id");
+      values[3] = activityBudgetData.get("amount");
+      values[4] = activityBudgetData.get("id");
+      result = databaseManager.saveData(query.toString(), values);
+      if (result == -1) {
+        LOG.error("A problem happened trying to update a budget identified with the id = {}",
+          activityBudgetData.get("id"));
+        return -1;
+      }
+    }
+    LOG.debug("<< saveActivityBudget():{}", result);
+    return result;
   }
 
 

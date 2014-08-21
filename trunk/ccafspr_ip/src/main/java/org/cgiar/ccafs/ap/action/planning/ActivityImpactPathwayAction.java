@@ -67,7 +67,7 @@ public class ActivityImpactPathwayAction extends BaseAction {
       return; // Stop here and go to execute method.
     }
 
-    // Getting the information for the activity
+    // Getting the information for the activity Impact Pathway
   }
 
 

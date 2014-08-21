@@ -28,7 +28,7 @@
 
   [@s.form action="activityDescription" cssClass="pure-form"]  
     <article class="halfContent" id="activityDescription">
-      [#-- Informing user that he/she doesn't have enough privileges to edit. See Grant--AccessInterceptor--]
+      [#-- Informing user that he/she doesn't have enough privileges to edit. See GrantActivityPlanningAccessInterceptor--]
       [#if !saveable]
         <p class="readPrivileges">
           [@s.text name="saving.read.privileges"]

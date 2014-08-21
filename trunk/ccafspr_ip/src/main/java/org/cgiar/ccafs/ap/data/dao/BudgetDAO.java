@@ -31,7 +31,7 @@ public interface BudgetDAO {
 
   /**
    * This method calculates the total of the CCAFS Budget which is the addition of W1+W2+W3+BILATERAL
-   *
+   * 
    * @param projectID is the project id.
    * @return a decimal number representing the amount of the total CCAFS Budget for that specific project, if no data
    *         found the method will return 0.0 and if some error happen a -1.0 will be returned.
@@ -40,7 +40,7 @@ public interface BudgetDAO {
 
   /**
    * This method calculates the total of the CCAFS Budget which is the addition of W1+W2+W3+BILATERAL and a given year
-   *
+   * 
    * @param projectID is the project id.
    * @param year
    * @return a decimal number representing the amount of the total CCAFS Budget for that specific project in the given
@@ -51,7 +51,7 @@ public interface BudgetDAO {
   /**
    * This method returns the total Budget used for that specific project.
    * It consists in the addition of all Windows, plus the Bilateral and the Leveraged.
-   *
+   * 
    * @param projectID is the project id.
    * @return a decimal number that represents the total amount of money used on that specific project, if no data found
    *         the method will return 0.0 and if some error happen a -1.0 will be returned.
@@ -61,7 +61,7 @@ public interface BudgetDAO {
   /**
    * This method returns the total Budget used for that specific project and a given year.
    * It consists in the addition of all Windows, plus the Bilateral and the Leveraged.
-   *
+   * 
    * @param projectID is the project id.
    * @param year
    * @return a decimal number that represents the total amount of money used on that specific project, if no data found
@@ -71,7 +71,7 @@ public interface BudgetDAO {
 
   /**
    * Deletes the information of a Budget associated by a given id
-   *
+   * 
    * @param budgetId - is the id of a Budget
    * @return true if the elements were deleted successfully. False otherwise
    */
@@ -80,7 +80,7 @@ public interface BudgetDAO {
 
   /**
    * Deletes the information of the Budgets related by a given project id and an institution id
-   *
+   * 
    * @param projectID
    * @param institutionID
    * @return true if the elements were deleted successfully. False otherwise
@@ -89,7 +89,7 @@ public interface BudgetDAO {
 
   /**
    * This method removes all the budgets identified with the given projectID and year.
-   *
+   * 
    * @param projectID is the project identifier.
    * @param year is a year.
    * @return true if the elements were deleted successfully. False otherwise.
@@ -97,8 +97,17 @@ public interface BudgetDAO {
   public boolean deleteBudgetsByYear(int projectID, int year);
 
   /**
+   * This method gets all the budget information by a given activity ID and a Budget Type
+   * 
+   * @param activityID
+   * @param budgetType
+   * @return a list of Map of the Budgets related with the activity and the budget type
+   */
+  public List<Map<String, String>> getActivityBudgetsByType(int activityID, int budgetType);
+
+  /**
    * This method gets all the budget information by a given Project Id
-   *
+   * 
    * @param projectID - is the Id of the project
    * @return a List of Map of the Budget Information related with the project
    */
@@ -106,7 +115,7 @@ public interface BudgetDAO {
 
   /**
    * This method gets all the Budget Information by a given project ID and a Budget Type
-   *
+   * 
    * @param projectID - is the id of the project
    * @param budgetType - is the id of a Budget Type
    * @return a list of Map of the Budgets related with the budget type id and the project id
@@ -115,7 +124,7 @@ public interface BudgetDAO {
 
   /**
    * This method gets all the Budget information by a given project Id and a year
-   *
+   * 
    * @param projectID - is the id of the project
    * @param year - is the year of the budget
    * @return a list of Map of the Budgets related with the year and the project id
@@ -124,7 +133,7 @@ public interface BudgetDAO {
 
   /**
    * This method calculates the total of the CCAFS Budget which is the addition of W1+W2+W3+BILATERAL
-   *
+   * 
    * @param projectID is the project id.
    * @return a decimal number representing the amount of the total CCAFS Budget for that specific project.
    */
@@ -132,7 +141,7 @@ public interface BudgetDAO {
 
   /**
    * This method brings all the institutions by a given project ID
-   *
+   * 
    * @param projectID - is the project Id
    * @return a list of Map of Institutions data related with the project ID
    */
@@ -140,7 +149,7 @@ public interface BudgetDAO {
 
   /**
    * This method brings all the institutions by a given project identifier and a specific year.
-   *
+   * 
    * @param projectID is the project identifier.
    * @param year is a number representing a year.
    * @return a list of Map of Institutions data.
@@ -148,8 +157,15 @@ public interface BudgetDAO {
   public List<Map<String, String>> getLeveragedInstitutions(int projectID, int year);
 
   /**
+   * @param activityID
+   * @param activityBudgetData
+   * @return
+   */
+  public int saveActivityBudget(int activityID, Map<String, Object> activityBudgetData);
+
+  /**
    * This method saves the Budget and the Project Budget relation
-   *
+   * 
    * @param budgetData
    * @return The last inserted id if there was a new record, 0 if the record was updated or -1 if any error happened.
    */
