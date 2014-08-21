@@ -72,11 +72,38 @@
               --] 
             </div> 
             
-            [#-- IDOs --]
-            [#if idos?has_content]
+            [#-- CCAFS IDOs --]
+            [#if ccafsIDOs?has_content]
+              ------- ccafsIDOs ---------
               <div id="idosBlock" class="contentElements">
                 <div class="itemIndex">[@s.text name="preplanning.outcomes.idos" /]</div>
-                [#list idos as ido]
+                [#list ccafsIDOs as ido]
+                  <div id="idoBlock-${ido_index}" class="ido"> 
+                  [#if outcome.contributesToIDs?seq_contains(ido.id) ] 
+                     [#assign idoCheck = "checked='checked'" /]
+                     [#assign indicatorsVisible = "style='display:block'" /]
+                  [#else]  
+                     [#assign idoCheck = "" /]
+                     [#assign indicatorsVisible = "style='display:none'" /]
+                  [/#if]
+                      <input  id="ido-${ido_index}" class="idosCheckbox" type="checkbox" name="outcomes[0].contributesTo" value="${ido.id}" ${idoCheck}>
+                      <label for="ido-${ido_index}" class="checkboxLabel" >${ido.description}</label>
+                  [#if ido.indicators?has_content]
+                    <div id="indicatorsBlock-${ido_index}" class="idosIndicators checkboxGroup vertical" ${indicatorsVisible}> 
+                      [@s.checkboxlist name="idoIndicator" list="idos[${ido_index}].indicators" listKey="id" listValue="description" value="outcomes[0].parentIndicatorsIDs" cssClass="indicatorsCheckbox" /]
+                    </div>
+                  [/#if]
+                  </div>
+                [/#list]
+              </div>  
+            [/#if] 
+            
+            [#-- CGIAR IDOs --]
+            [#if consortiumIDOs?has_content]
+              ------- ccafsIDOs ---------
+              <div id="idosBlock" class="contentElements">
+                <div class="itemIndex">[@s.text name="preplanning.outcomes.idos" /]</div>
+                [#list consortiumIDOs as ido]
                   <div id="idoBlock-${ido_index}" class="ido"> 
                   [#if outcome.contributesToIDs?seq_contains(ido.id) ] 
                      [#assign idoCheck = "checked='checked'" /]
