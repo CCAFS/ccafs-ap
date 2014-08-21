@@ -104,4 +104,32 @@ public interface LocationDAO {
    * @return a map with the region information.
    */
   public Map<String, String> getRegion(int regionID);
+
+  /**
+   * This method relates the location and the activity received into
+   * the database
+   * 
+   * @param activityLocationData
+   * @return the last inserted id or -1 if any error occurred.
+   */
+  public int saveActivityLocation(Map<String, String> activityLocationData);
+
+  /**
+   * This method save the information of a new location
+   * 
+   * @param locationData - Data to be saved
+   * @return The last inserted id, 0 if some record was updated or
+   *         -1 if any error occurred.
+   */
+  public int saveLocation(Map<String, String> locationData);
+
+  /**
+   * This method save the geo-coordinates of a location
+   * into the database.
+   * 
+   * @param geopositionData - data to be saved.
+   * @return the last inserted id, 0 if some record was updated,
+   *         -1 if some error occurred
+   */
+  public int saveLocationGeoPosition(Map<String, String> geopositionData);
 }

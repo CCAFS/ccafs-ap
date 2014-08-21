@@ -24,10 +24,13 @@ import org.cgiar.ccafs.ap.data.model.OtherLocation;
 import org.cgiar.ccafs.ap.data.model.Region;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
 import com.google.inject.Inject;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
  * @author Javier Andres Gallego B.
@@ -35,6 +38,7 @@ import com.google.inject.Inject;
 public class LocationManagerImpl implements LocationManager {
 
   private LocationDAO locationDAO;
+  public static Logger LOG = LoggerFactory.getLogger(LocationManagerImpl.class);
 
   @Inject
   public LocationManagerImpl(LocationDAO locationDAO) {
@@ -84,11 +88,13 @@ public class LocationManagerImpl implements LocationManager {
         location.setName(lData.get("name"));
 
         // Set the parent location
-        Country country = new Country();
-        country.setId(Integer.parseInt(lData.get("location_parent_id")));
-        country.setName(lData.get("location_parent_name"));
-        country.setCode(lData.get("location_parent_code"));
-        location.setCountry(country);
+        if (lData.get("location_parent_id") != null) {
+          Country country = new Country();
+          country.setId(Integer.parseInt(lData.get("location_parent_id")));
+          country.setName(lData.get("location_parent_name"));
+          country.setCode(lData.get("location_parent_code"));
+          location.setCountry(country);
+        }
 
         LocationType type = new LocationType();
         type.setId(Integer.parseInt(lData.get("type_id")));
@@ -241,5 +247,98 @@ public class LocationManagerImpl implements LocationManager {
       return region;
     }
     return null;
+  }
+
+  @Override
+  public boolean removeActivityLocation(List<Location> activityLocations, int activityID) {
+    boolean removed = true;
+
+    for (Location location : activityLocations) {
+      if (location.isCountry() || location.isRegion()) {
+
+      } else {
+
+      }
+    }
+
+    return removed;
+  }
+
+  @Override
+  public boolean saveActivityLocations(List<Location> locations, int activityID) {
+    boolean saved = true;
+
+    for (Location location : locations) {
+      Map<String, String> locationData = new HashMap<>();
+      locationData.put("activity_id", String.valueOf(activityID));
+
+      if (location.isRegion() || location.isCountry()) {
+        locationData.put("loc_element_id", String.valueOf(location.getId()));
+      } else {
+        OtherLocation oLocation = (OtherLocation) location;
+        int oLocationID = saveLocation(oLocation);
+
+        locationData.put("loc_element_id", String.valueOf(oLocationID));
+      }
+
+      int recordSaved = locationDAO.saveActivityLocation(locationData);
+      saved = saved && (recordSaved != -1);
+    }
+    return saved;
+  }
+
+  private int saveLocation(OtherLocation location) {
+    int locationID = -1;
+    Map<String, String> locationData = new HashMap<>();
+
+    if (location.getId() == -1) {
+      locationData.put("id", null);
+    } else {
+      locationData.put("id", String.valueOf(location.getId()));
+    }
+
+    locationData.put("name", location.getName());
+    locationData.put("code", location.getCode());
+
+    if (location.getCountry() != null) {
+      locationData.put("parent_id", String.valueOf(location.getCountry().getId()));
+    } else {
+      locationData.put("parent_id", null);
+    }
+
+    locationData.put("element_type_id", String.valueOf(location.getType().getId()));
+
+    int geoPositionID = saveLocationGeoposition(location);
+    if (geoPositionID == -1) {
+      locationData.put("geoposition_id", null);
+    } else {
+      locationData.put("geoposition_id", String.valueOf(geoPositionID));
+    }
+
+    locationID = locationDAO.saveLocation(locationData);
+    return locationID;
+  }
+
+  private int saveLocationGeoposition(OtherLocation location) {
+    int geoPositionID = -1;
+    Map<String, String> geoPositionData = new HashMap<>();
+
+    if (location.getGeoPosition() != null) {
+
+      if (location.getGeoPosition().getId() != -1) {
+        geoPositionData.put("id", String.valueOf(location.getGeoPosition().getId()));
+      } else {
+        geoPositionData.put("id", null);
+      }
+
+      geoPositionData.put("latitude", String.valueOf(location.getGeoPosition().getLatitude()));
+      geoPositionData.put("longitude", String.valueOf(location.getGeoPosition().getLongitude()));
+
+      geoPositionID = locationDAO.saveLocationGeoPosition(geoPositionData);
+      if (geoPositionID == -1) {
+        LOG.warn("There was a problem trying to save the geoposition of the location with id {}", location.getId());
+      }
+    }
+    return geoPositionID;
   }
 }

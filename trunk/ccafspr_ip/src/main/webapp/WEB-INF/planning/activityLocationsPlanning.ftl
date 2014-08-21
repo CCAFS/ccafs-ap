@@ -65,19 +65,23 @@
               <div class="locationLevel grid_2 ">
                 [#-- Type/Level --]
                 [#if location.region]
-                  [@customForm.select name="activity.locations[${location_index}].type.id" i18nkey="planning.activities.locations.level" listName="locationTypes" keyFieldName="id"  displayFieldName="name" showTitle=false value="${regionTypeID}"/]
+                  [@customForm.select name="type" i18nkey="planning.activities.locations.level" listName="locationTypes" keyFieldName="id"  displayFieldName="name" showTitle=false value="${regionTypeID}"/]
                 [#elseif location.country]
-                  [@customForm.select name="activity.locations[${location_index}].type.id" i18nkey="planning.activities.locations.level" listName="locationTypes" keyFieldName="id"  displayFieldName="name" showTitle=false value="${countryTypeID}"/]
+                  [@customForm.select name="type" i18nkey="planning.activities.locations.level" listName="locationTypes" keyFieldName="id"  displayFieldName="name" showTitle=false value="${countryTypeID}"/]
                 [#else]
-                  [@customForm.select name="activity.locations[${location_index}].type.id" i18nkey="planning.activities.locations.level" listName="locationTypes" keyFieldName="id"  displayFieldName="name" showTitle=false value="${location.type.id}"/]
+                  [@customForm.select name="otherLocationsSaved[${location_index}].type.id" i18nkey="planning.activities.locations.level" listName="locationTypes" keyFieldName="id"  displayFieldName="name" showTitle=false value="${location.type.id}"/]
                 [/#if]
               </div>
+              
               <div class="locationLatitude grid_2">
                 [#-- Latitude --]
                 [#if location.country || location.region]
                   [@customForm.input name="geoPosition.latitude" type="text" value=notApplicableText i18nkey="planning.activities.locations.latitude" showTitle=false disabled=true  /]
                 [#else]
-                  [@customForm.input name="activity.locations[${location_index}].geoPosition.latitude" type="text" i18nkey="planning.activities.locations.latitude" showTitle=false required=true  /]
+                  [#-- Geo position ID --]
+                  <input type="hidden" name="otherLocationsSaved[${location_index}].geoPosition.id" value="${location.geoPosition.id}" >
+                  [#-- Latitude --]
+                  [@customForm.input name="otherLocationsSaved[${location_index}].geoPosition.latitude" value="${location.geoPosition.latitude}" type="text" i18nkey="planning.activities.locations.latitude" showTitle=false required=true  /]
                 [/#if]
               </div>
               <div class="locationLongitude grid_2">
@@ -85,18 +89,18 @@
                 [#if location.country || location.region]
                   [@customForm.input name="geoPosition.longitude" value=notApplicableText type="text" i18nkey="planning.activities.locations.longitude" showTitle=false disabled=true  /]
                 [#else]
-                  [@customForm.input name="activity.locations[${location_index}].geoPosition.longitude" type="text" i18nkey="planning.activities.locations.longitude" showTitle=false required=true  /]
+                  [@customForm.input name="otherLocationsSaved[${location_index}].geoPosition.longitude" value="${location.geoPosition.longitude}" type="text" i18nkey="planning.activities.locations.longitude" showTitle=false required=true  /]
                 [/#if]
               </div>
               <div class="locationName grid_3">
                 [#-- Name --]
                 [#if location.country]
-                  [@customForm.select name="activity.locations[${location_index}].id" i18nkey="planning.activities.locations.level" listName="countries" keyFieldName="id" showTitle=false  displayFieldName="name" value="${location.id?int}" /]
+                  [@customForm.select name="countriesSaved[${location_index}].id" i18nkey="planning.activities.locations.level" listName="countries" keyFieldName="id" showTitle=false  displayFieldName="name" value="${location.id?int}" /]
                 [#elseif location.region]
-                  [@customForm.select name="activity.locations[${location_index}].id" i18nkey="planning.activities.locations.level" listName="regions" keyFieldName="id" showTitle=false  displayFieldName="name" value="${location.id?int}" /]
+                  [@customForm.select name="regionsSaved[${location_index}].id" i18nkey="planning.activities.locations.level" listName="regions" keyFieldName="id" showTitle=false  displayFieldName="name" value="${location.id?int}" /]
                 [#else]
-                  <input type="hidden" name="activity.locations[${location_index}].id" value="${location.id?int}">
-                  [@customForm.input name="activity.locations[${location_index}].name" type="text" i18nkey="planning.activities.locations.notApplicable" required=true showTitle=false  /]
+                  <input type="hidden" name="otherLocationsSaved[${location_index}].id" value="${location.id?int}">
+                  [@customForm.input name="otherLocationsSaved[${location_index}].name" value="${location.name}" type="text" i18nkey="planning.activities.locations.notApplicable" required=true showTitle=false  /]
                 [/#if]
               </div>
               <img class="removeButton" src="${baseUrl}/images/global/icon-remove.png" />
@@ -109,7 +113,7 @@
       </div>  
     </div> 
     <!-- internal parameter -->
-    <input type="hidden" id="activityID" value="${activity.id}">
+    <input type="hidden" name="activityID" value="${activity.id?c}">
     <div class="buttons">
       [@s.submit type="button" name="save"][@s.text name="form.buttons.save" /][/@s.submit]
       [@s.submit type="button" name="next"][@s.text name="form.buttons.next" /][/@s.submit]
@@ -122,7 +126,7 @@
       </a>       
     </p>
   </article>
-  [/@s.form]  
+  [/@s.form]
 </section>
 [#-- Location Existing Template --]
 <div id="locationTemplateExisting" class="row borderBox clearfix" style="display:none;">
@@ -134,6 +138,8 @@
   </div>
   <div class="locationLatitude grid_2">
     <div class="input">
+      [#-- Geo position ID --]
+      <input type="hidden" name="geoPosition.id" value="-1" >
       [@customForm.input name="geoPosition.latitude" value=notApplicableText type="text" i18nkey="planning.locations.longitude" showTitle=false disabled=true  /]
     </div>
   </div>

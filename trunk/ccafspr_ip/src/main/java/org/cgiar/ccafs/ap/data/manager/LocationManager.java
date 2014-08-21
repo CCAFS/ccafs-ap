@@ -94,4 +94,26 @@ public interface LocationManager {
    */
   public Region getRegion(int regionID);
 
+  /**
+   * This method remove from the database all the locations related to
+   * the activity received by parameter.
+   * If the location element has some type different to Region or country,
+   * this method also remove the location record from the database.
+   * Otherwise only the relation between the activity and the location element
+   * is removed.
+   * 
+   * @param activityLocations - list of locations
+   * @param activityID - activity identifier
+   * @return true if the relations were deleted. False otherwise.
+   */
+  public boolean removeActivityLocation(List<Location> activityLocations, int activityID);
+
+  /**
+   * This method save all the locations corresponding to the activity received.
+   * 
+   * @param locations - The list of locations to be saved
+   * @param activityID - the activity identifier
+   * @return true if the information was successfully saved. False otherwise.
+   */
+  public boolean saveActivityLocations(List<Location> locations, int activityID);
 }
