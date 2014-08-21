@@ -1,6 +1,6 @@
 [#ftl]
 [#assign title = "Outcomes 2019 - Preplanning" /]
-[#assign globalLibs = ["jquery", "noty", "cytoscape", "qtip"]  /]
+[#assign globalLibs = ["jquery", "noty", "cytoscape", "qtip","cytoscapePanzoom"]  /]
 [#assign customJS = ["${baseUrl}/js/global/utils.js", "${baseUrl}/js/global/ipGraph.js", "${baseUrl}/js/preplanning/midOutcomesPreplanning.js"] /]
 [#assign currentSection = "preplanning" /]
 [#assign currentPrePlanningSection = "impactPathways" /]

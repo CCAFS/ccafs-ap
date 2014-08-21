@@ -68,6 +68,11 @@
           <link rel="stylesheet" type="text/css" href="${baseUrl}/css/libs/qtip/jquery.qtip.css" />
         [/#if]
         
+        [#if libraryName="cytoscapePanzoom"]          
+          <link rel="stylesheet" type="text/css" href="${baseUrl}/css/libs/cytoscapePanzoom/cytoscape.js-panzoom.css" />
+          <link rel="stylesheet" type="text/css" href="${baseUrl}/css/libs/cytoscapePanzoom/font-awesome-4.0.3/css/font-awesome.css" />
+        [/#if]
+        
   	 [/#list]
   	[/#if]
   	
