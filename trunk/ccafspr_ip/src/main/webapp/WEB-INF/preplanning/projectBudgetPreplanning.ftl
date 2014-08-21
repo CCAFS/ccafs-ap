@@ -36,9 +36,11 @@
     
     [#include "/WEB-INF/preplanning/projectPreplanningSubMenu.ftl" /]
     [#-- Title --]
+    [#if project.title?has_content]    
     <h1 class="contentTitle" title="${project.title}">
       ${project.composedId} - [@s.text name="preplanning.projectBudget.title" /]  
     </h1>
+    [/#if]
     [#if allYears?has_content]
       [#if invalidYear == false]
         [#if hasLeader]
