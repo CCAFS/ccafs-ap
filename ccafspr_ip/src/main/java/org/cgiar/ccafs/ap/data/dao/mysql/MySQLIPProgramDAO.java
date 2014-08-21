@@ -167,23 +167,6 @@ public class MySQLIPProgramDAO implements IPProgramDAO {
     return getData(query.toString());
   }
 
-
-  @Override
-  public List<Map<String, String>> getProgramType(int projectId, int typeProgramId) {
-    // TODO JG - The parameters are never used. This method needs to be reviewed
-    LOG.debug(">> getProgramType( programID = {} )", projectId, typeProgramId);
-    StringBuilder query = new StringBuilder();
-    query.append("SELECT ipr.type_id, ipr.acronym   ");
-    query.append("FROM ip_programs as ipr  ");
-    query.append("INNER JOIN project_focuses pf ON pf.program_id=ipr.id  ");
-    query.append("WHERE pf.project_id='1' "); // TODO JG - To Review. Why is 1 there?
-    query.append("ORDER BY ipr.type_id, ipr.acronym ");
-
-    LOG.debug("-- getProgramType() > Calling method executeQuery to get the results");
-    return getData(query.toString());
-  }
-
-
   @Override
   public List<Map<String, String>> getProjectFocuses(int projectID, int typeID) {
     LOG.debug(">> getProjectFocuses projectID = {}, typeID ={} )", projectID, typeID);

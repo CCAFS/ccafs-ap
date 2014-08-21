@@ -110,7 +110,6 @@ public class MySQLActivityDAO implements ActivityDAO {
     query.append("WHERE a.project_id=  ");
     query.append(projectID);
 
-
     LOG.debug("-- getActivitiesByProject() > Calling method executeQuery to get the results");
     return getData(query.toString());
   }
@@ -265,6 +264,7 @@ public class MySQLActivityDAO implements ActivityDAO {
     int newId = -1;
     Object[] values;
     if (activityData.get("id") == null) {
+
       // Insert new activity record
       query
       .append("INSERT INTO activities (project_id, title, description, startDate, endDate, leader_id, custom_id) ");
@@ -318,14 +318,38 @@ public class MySQLActivityDAO implements ActivityDAO {
   }
 
   @Override
-  public int saveExpectedActivityLeader(Map<String, Object> activityLeaderData) {
+  public int saveActivityLeader(int activityID, int employeeID) {
+    LOG.debug(">> saveActivityLeader(employeeID={}, activityID={})", new Object[] {employeeID, activityID});
+    StringBuilder query = new StringBuilder();
+    int result = -1;
+    Object[] values;
+
+    // update activity record
+    query.append("UPDATE activities SET leader_id = ? ");
+    query.append("WHERE id = ? ");
+    values = new Object[2];
+    values[0] = employeeID;
+    values[1] = activityID;
+    result = databaseManager.saveData(query.toString(), values);
+    if (result == -1) {
+      LOG.error("A problem happened trying to update the activity leader with the id = {}", activityID);
+      return -1;
+    }
+
+    LOG.debug("<< saveActivityLeader():{}", result);
+    return result;
+  }
+
+
+  @Override
+  public int saveExpectedActivityLeader(int activityID, Map<String, Object> activityLeaderData) {
     LOG.debug(">> saveExpectedActivityLeader(activityLeaderData={})", activityLeaderData);
     StringBuilder query = new StringBuilder();
     int result = -1;
     Object[] values;
     if (activityLeaderData.get("id") == null) {
       // Insert new activity record
-      query.append("INSERT INTO expected_activity_leader (institution_id, name, email) ");
+      query.append("INSERT INTO expected_activity_leaders (institution_id, name, email) ");
       query.append("VALUES (?,?,?) ");
       values = new Object[3];
       values[0] = activityLeaderData.get("institution_id");
@@ -338,7 +362,7 @@ public class MySQLActivityDAO implements ActivityDAO {
       }
     } else {
       // update activity record
-      query.append("UPDATE expected_activity_leader SET institution_id = ?, name = ?, email = ? ");
+      query.append("UPDATE expected_activity_leaders SET institution_id = ?, name = ?, email = ? ");
       query.append("WHERE id = ? ");
       values = new Object[4];
       values[0] = activityLeaderData.get("institution_id");

@@ -152,7 +152,6 @@ public class MySQLDeliverableDAO implements DeliverableDAO {
     StringBuilder query = new StringBuilder();
     int result = -1;
     Object[] values;
-    // TODO JG - to validate that the Activity ID on the function exist
     if (deliverableData.get("id") == null) {
       // Insert new deliverable record
       query.append("INSERT INTO deliverables (activity_id, title, type_id, year) ");
