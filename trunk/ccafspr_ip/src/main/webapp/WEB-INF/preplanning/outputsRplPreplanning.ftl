@@ -98,9 +98,7 @@
                   </div> 
                 [/#if]
             </div>  
-            [/#list]
-          [#else]
-            <h5 class="noOutputs message">[@s.text name="preplanning.outputsRPL.messageNoOutputs" /]</h5>
+            [/#list] 
           [/#if]
       </div>
 
