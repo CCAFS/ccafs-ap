@@ -37,14 +37,43 @@ function removeLocationEvent(e){
 function setLocationIndex(){
   var elementName;
   $("#locationsBlock .location").each(function(index,location){
+    
+    var locationTypeID = $(location).find("[name$='type.id']").val();
     $(location).find(".locationIndex strong").text((index + 1) + ".");
-    // Set inputs names
-    elementName = "activity.locations[" + index + "].";
-    $(location).find("[name$='].id']").attr("name", elementName + "id");
-    $(location).find("[name$='name']").attr("name", elementName + "name");
-    $(location).find("[name$='type.id']").attr("name", elementName + "type.id");
-    $(location).find("[name$='geoPosition.latitude']").attr("name", elementName + "geoPosition.latitude").attr("placeholder", "Latitude");
-    $(location).find("[name$='geoPosition.longitude']").attr("name", elementName + "geoPosition.longitude").attr("placeholder", "Longitude");
+
+    if( locationTypeID == 1){
+      // If Location is of type region
+      
+      elementName = "regionsSaved[" + index + "].";
+      $(location).find("[name$='].id']").attr("name", elementName + "id");
+      $(location).find("[name$='name']").attr("name", "name");
+      $(location).find("[name$='type.id']").attr("name", "type.id");
+      $(location).find("[name$='geoPosition.id']").attr("name", "geoPosition.id");
+      $(location).find("[name$='geoPosition.latitude']").attr("name", "geoPosition.latitude").attr("placeholder", "Latitude");
+      $(location).find("[name$='geoPosition.longitude']").attr("name", "geoPosition.longitude").attr("placeholder", "Longitude");
+      
+    }else if(locationTypeID == 2){
+      // If location is of type country
+
+      elementName = "countriesSaved[" + index + "].";
+      $(location).find("[name$='].id']").attr("name", elementName + "id");
+      $(location).find("[name$='name']").attr("name", "name");
+      $(location).find("[name$='type.id']").attr("name", "type.id");
+      $(location).find("[name$='geoPosition.id']").attr("name", "geoPosition.id");
+      $(location).find("[name$='geoPosition.latitude']").attr("name", "geoPosition.latitude").attr("placeholder", "Latitude");
+      $(location).find("[name$='geoPosition.longitude']").attr("name", "geoPosition.longitude").attr("placeholder", "Longitude");
+    }else{
+      // If location is of other type
+
+      elementName = "otherLocationsSaved[" + index + "].";
+      $(location).find("[name$='].id']").attr("name", elementName + "id");
+      $(location).find("[name$='name']").attr("name", elementName + "name");
+      $(location).find("[name$='type.id']").attr("name", elementName + "type.id");
+      $(location).find("[name$='geoPosition.id']").attr("name", elementName + "geoPosition.id");
+      $(location).find("[name$='geoPosition.latitude']").attr("name", elementName + "geoPosition.latitude").attr("placeholder", "Latitude");
+      $(location).find("[name$='geoPosition.longitude']").attr("name", elementName + "geoPosition.longitude").attr("placeholder", "Longitude");
+    }
+    
   });
 }
 
@@ -63,4 +92,12 @@ function changeTypeEvent(e){
     $parent.find("[name$='name']").attr("placeholder", "Name");
   }
   setLocationIndex();
+}
+
+function reverseGeoCoding($location){
+  var latitude = $location.find("input[name$='latitude']").val();
+  var longitude = $location.find("input[name$='longitude']").val();
+  
+  console.log(latitude + " - " + longitude);
+  
 }

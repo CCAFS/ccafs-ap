@@ -405,4 +405,93 @@ public class MySQLLocationDAO implements LocationDAO {
     return regionData;
   }
 
+  @Override
+  public int saveActivityLocation(Map<String, String> activityLocationData) {
+    LOG.debug(">> saveActivityLocation(activityLocationData={})", activityLocationData);
+    StringBuilder query = new StringBuilder();
+    int result = -1;
+
+    query.append("INSERT INTO activity_locations (activity_id, loc_element_id) ");
+    query.append("VALUES (?, ?) ");
+
+    Object[] values = new Object[2];
+    values[0] = activityLocationData.get("activity_id");
+    values[1] = activityLocationData.get("loc_element_id");
+
+    result = databaseManager.saveData(query.toString(), values);
+    LOG.debug("<< saveActivityLocation():{}", result);
+    return result;
+  }
+
+  @Override
+  public int saveLocation(Map<String, String> locationData) {
+    LOG.debug(">> saveLocation(locationData={})", locationData);
+    StringBuilder query = new StringBuilder();
+    int result = -1;
+
+    if (locationData.get("id") == null) {
+      // Insert a new project record.
+      query.append("INSERT INTO loc_elements (name, code, parent_id, element_type_id, geoposition_id) ");
+      query.append("VALUES (?, ?, ?, ?, ?) ");
+
+      Object[] values = new Object[5];
+      values[0] = locationData.get("name");
+      values[1] = locationData.get("code");
+      values[2] = locationData.get("parent_id");
+      values[3] = locationData.get("element_type_id");
+      values[4] = locationData.get("geoposition_id");
+
+      result = databaseManager.saveData(query.toString(), values);
+      LOG.debug("<< saveLocation():{}", result);
+    } else {
+      // Update project.
+      query.append("UPDATE loc_elements SET name = ?, code = ?, parent_id = ?, element_type_id = ?, ");
+      query.append("geoposition_id = ? ");
+      query.append("WHERE id = ?");
+
+      Object[] values = new Object[6];
+      values[0] = locationData.get("name");
+      values[1] = locationData.get("code");
+      values[2] = locationData.get("parent_id");
+      values[3] = locationData.get("element_type_id");
+      values[4] = locationData.get("geoposition_id");
+      values[5] = locationData.get("id");
+      result = databaseManager.saveData(query.toString(), values);
+    }
+
+    LOG.debug("<< saveLocation()", result);
+    return result;
+  }
+
+  @Override
+  public int saveLocationGeoPosition(Map<String, String> geopositionData) {
+    LOG.debug(">> saveLocationGeoPosition(geopositionData={})", geopositionData);
+    StringBuilder query = new StringBuilder();
+    int result = -1;
+
+    if (geopositionData.get("id") == null) {
+      // Insert a new project record.
+      query.append("INSERT INTO loc_geopositions (latitude, longitude) ");
+      query.append("VALUES (?, ?) ");
+
+      Object[] values = new Object[2];
+      values[0] = geopositionData.get("latitude");
+      values[1] = geopositionData.get("longitude");
+
+      result = databaseManager.saveData(query.toString(), values);
+      LOG.debug("<< saveLocationGeoPosition():{}", result);
+    } else {
+      // Update project.
+      query.append("UPDATE loc_geopositions SET latitude = ?, longitude = ? ");
+      query.append("WHERE id = ?");
+      Object[] values = new Object[2];
+      values[0] = geopositionData.get("latitude");
+      values[1] = geopositionData.get("longitude");
+      values[2] = geopositionData.get("id");
+      result = databaseManager.saveData(query.toString(), values);
+    }
+    LOG.debug("<< saveLocationGeoPosition():result", result);
+    return result;
+  }
+
 }
