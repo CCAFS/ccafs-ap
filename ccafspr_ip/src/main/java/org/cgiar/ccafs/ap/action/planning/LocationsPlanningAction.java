@@ -145,6 +145,9 @@ public class LocationsPlanningAction extends BaseAction {
       }
     }
 
+    // First remove the existent locations
+    locationManager.removeActivityLocation(activity.getLocations(), activityID);
+
     locationManager.saveActivityLocations(locations, activityID);
     return super.save();
   }
@@ -155,7 +158,6 @@ public class LocationsPlanningAction extends BaseAction {
 
 
   public void setActivityID(String activityID) {
-    System.out.println("AI: " + activityID);
     this.activityID = Integer.parseInt(activityID);
   }
 

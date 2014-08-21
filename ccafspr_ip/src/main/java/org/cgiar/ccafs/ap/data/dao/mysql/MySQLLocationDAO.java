@@ -406,6 +406,42 @@ public class MySQLLocationDAO implements LocationDAO {
   }
 
   @Override
+  public boolean removeActivityLocation(int activityID) {
+    LOG.debug(">> removeActivityLocation(activityID={})", activityID);
+
+    StringBuilder query = new StringBuilder();
+    query.append("DELETE FROM activity_locations ");
+    query.append("WHERE activity_id = ?");
+
+    int rowsDeleted = databaseManager.delete(query.toString(), new Object[] {activityID});
+    if (rowsDeleted >= 0) {
+      LOG.debug("<< removeActivityLocation():{}", true);
+      return true;
+    }
+
+    LOG.debug("<< removeActivityLocation():{}", false);
+    return false;
+  }
+
+  @Override
+  public boolean removeLocation(int locationID) {
+    LOG.debug(">> removeLocation(locationID={})", locationID);
+
+    StringBuilder query = new StringBuilder();
+    query.append("DELETE FROM loc_elements ");
+    query.append("WHERE id = ?");
+
+    int rowsDeleted = databaseManager.delete(query.toString(), new Object[] {locationID});
+    if (rowsDeleted >= 0) {
+      LOG.debug("<< removeLocation():{}", true);
+      return true;
+    }
+
+    LOG.debug("<< removeLocation():{}", false);
+    return false;
+  }
+
+  @Override
   public int saveActivityLocation(Map<String, String> activityLocationData) {
     LOG.debug(">> saveActivityLocation(activityLocationData={})", activityLocationData);
     StringBuilder query = new StringBuilder();
@@ -484,7 +520,7 @@ public class MySQLLocationDAO implements LocationDAO {
       // Update project.
       query.append("UPDATE loc_geopositions SET latitude = ?, longitude = ? ");
       query.append("WHERE id = ?");
-      Object[] values = new Object[2];
+      Object[] values = new Object[3];
       values[0] = geopositionData.get("latitude");
       values[1] = geopositionData.get("longitude");
       values[2] = geopositionData.get("id");
@@ -493,5 +529,4 @@ public class MySQLLocationDAO implements LocationDAO {
     LOG.debug("<< saveLocationGeoPosition():result", result);
     return result;
   }
-
 }
