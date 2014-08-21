@@ -105,10 +105,23 @@
       </div>
 
 
-       <div id="addOutputBlock" class="addLink"> 
-        <a href="" id="addNewOutput" class="addOutput addButton" > [@s.text name="preplanning.outputsRPL.addNewOutput" /] </a>
-         <span class="or">[@s.text name="preplanning.outputsRPL.or" /]</span>  
+      <p class="note">
+        <span>
+        [@s.text name="preplanning.outputsRPL.addAlignedMOG"]
+          [@s.param][@s.text name="preplanning.outputsRPL.addExistingOutput" /][/@s.param]
+        [/@s.text]
+          
+        </span> 
+        <span>
+        [@s.text name="preplanning.outputsRPL.addNewMOG"]
+          [@s.param][@s.text name="preplanning.outputsRPL.addNewOutput" /][/@s.param]
+        [/@s.text]
+        </span>
+      </p>
+      <div id="addOutputBlock" class="addLink"> 
         <a href="" id="addExistingOutput" class="addOutput addButton" > [@s.text name="preplanning.outputsRPL.addExistingOutput" /] </a>
+        <span class="or">[@s.text name="preplanning.outputsRPL.or" /]</span>
+        <a href="" id="addNewOutput" class="addOutput addButton" > [@s.text name="preplanning.outputsRPL.addNewOutput" /] </a>
       </div>   
        
        <div class="buttons">
