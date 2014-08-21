@@ -1,6 +1,6 @@
 [#ftl]
 [#assign title][@s.text name="preplanning.outcomes.title" /]  [/#assign]
-[#assign globalLibs = ["jquery", "noty", "autoSave", "cytoscape", "qtip"] /]
+[#assign globalLibs = ["jquery", "noty", "autoSave", "cytoscape", "qtip","cytoscapePanzoom"] /]
 [#assign customJS = ["${baseUrl}/js/global/utils.js","${baseUrl}/js/global/ipGraph.js", "${baseUrl}/js/preplanning/outcomesPreplanning.js"] /]
 [#assign currentSection = "preplanning" /]
 [#assign currentPrePlanningSection = "impactPathways" /]

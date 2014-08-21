@@ -62,6 +62,9 @@
       <script src="${baseUrl}/js/libs/cytoscape-2.2.12/cytoscape.js-qtip.js"></script>
         <script src="${baseUrl}/js/libs/qtip/jquery.qtip.js"></script>
       [/#if]
+      [#if libraryName="cytoscapePanzoom"] 
+        <script src="${baseUrl}/js/libs/cytoscapePanzoom/cytoscape.js-panzoom.js"></script>
+      [/#if]
       
    [/#list]
   [/#if]

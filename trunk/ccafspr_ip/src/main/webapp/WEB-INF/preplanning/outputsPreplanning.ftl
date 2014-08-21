@@ -1,6 +1,6 @@
 [#ftl]
 [#assign title = "Major Output Group" /]
-[#assign globalLibs = ["jquery", "noty", "autoSave","chosen", "cytoscape", "qtip"] /]
+[#assign globalLibs = ["jquery", "noty", "autoSave","chosen", "cytoscape", "qtip","cytoscapePanzoom"] /]
 [#assign customJS = ["${baseUrl}/js/global/utils.js", "${baseUrl}/js/global/ipGraph.js", "${baseUrl}/js/preplanning/outputsPreplanning.js"] /]
 [#assign currentSection = "preplanning" /]
 [#assign currentPrePlanningSection = "impactPathways" /]
