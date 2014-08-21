@@ -19,8 +19,10 @@ import org.cgiar.ccafs.ap.data.model.User;
 import java.util.List;
 import java.util.Map;
 
-import org.apache.struts2.ServletActionContext;
+import org.cgiar.ccafs.ap.data.model.Project;
 
+import org.cgiar.ccafs.ap.data.manager.ActivityManager;
+import org.apache.struts2.ServletActionContext;
 import org.cgiar.ccafs.ap.data.manager.ProjectManager;
 import org.cgiar.ccafs.ap.action.BaseAction;
 import com.google.inject.Inject;
@@ -30,50 +32,52 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 /**
- * This interceptor will validate if the user who is trying to edit a specific project is able to: Fully edit, partially
- * edit or just read the project.
+ * This interceptor will validate if the user who is trying to edit a specific activity is able to: Edit it or just read
+ * it.
  *
  * @author Héctor Fabio Tobón R.
  */
-public class GrantProjectPlanningAccessInterceptor extends AbstractInterceptor {
+public class GrantActivityPlanningAccessInterceptor extends AbstractInterceptor {
 
   private static final long serialVersionUID = 3416451095136457226L;
 
-  private static final Logger LOG = LoggerFactory.getLogger(GrantProjectPlanningAccessInterceptor.class);
+  private static final Logger LOG = LoggerFactory.getLogger(GrantActivityPlanningAccessInterceptor.class);
 
   // Managers
+  ActivityManager activityManager;
   ProjectManager projectManager;
 
   @Inject
-  public GrantProjectPlanningAccessInterceptor(ProjectManager projectManager) {
+  public GrantActivityPlanningAccessInterceptor(ActivityManager activityManager, ProjectManager projectManager) {
+    this.activityManager = activityManager;
     this.projectManager = projectManager;
   }
 
   @Override
   public String intercept(ActionInvocation invocation) throws Exception {
-    LOG.debug("=> GrantProjectPlanningAccessInterceptor");
+    LOG.debug("=> GrantActivityPlanningAccessInterceptor");
     Map<String, Object> session = invocation.getInvocationContext().getSession();
 
     String actionName = ServletActionContext.getActionMapping().getName();
-    if (!actionName.equals("projects")) {
+    if (!actionName.equals("activities")) {
       Map<String, Object> parameters = invocation.getInvocationContext().getParameters();
       // Project parameter is validated in the ValidateProjectParameterInterceptor.
-      String projectParameter = ((String[]) parameters.get(APConstants.PROJECT_REQUEST_ID))[0];
-      int projectID = Integer.parseInt(projectParameter);
+      String activityParameter = ((String[]) parameters.get(APConstants.ACTIVITY_REQUEST_ID))[0];
+      int activityID = Integer.parseInt(activityParameter);
       // User session is validated in the RequireUserInterceptor.
       User user = (User) session.get(APConstants.SESSION_USER);
       BaseAction baseAction = (BaseAction) invocation.getAction();
-      // Listing all projects that the user is able to edit.
-      // Getting project list that belongs to the program that you belongs to.
+      // Listing all activities that the user is able to edit.
+      // And getting activity list that belongs to the program that you belongs to.
       if (user.isAdmin()) {
         // Admins are able to see all fields editable and save any information.
         baseAction.setFullEditable(true);
         baseAction.setSaveable(true);
       } else if (user.isFPL() || user.isRPL()) {
         // If the user is a FPL or RPL, let's figure out if he/she can have the enough privileges to edit the
-        // project.
-        List<Integer> idsAllowedToEdit = projectManager.getProjectIdsEditables(user);
-        if (idsAllowedToEdit.contains(new Integer(projectID))) {
+        // activity.
+        List<Integer> idsAllowedToEdit = activityManager.getActivityIdsEditable(user);
+        if (idsAllowedToEdit.contains(new Integer(activityID))) {
           baseAction.setFullEditable(true);
           baseAction.setSaveable(true);
         } else {
@@ -82,30 +86,49 @@ public class GrantProjectPlanningAccessInterceptor extends AbstractInterceptor {
           baseAction.setSaveable(false);
         }
       } else if (user.isPL()) {
-        User projectLeader = projectManager.getProjectLeader(projectID);
-        if (projectLeader != null) {
-          // If the user is the project leader, he is able to save and partially edit.
-          if (projectLeader.getEmployeeId() == user.getEmployeeId()) {
-            baseAction.setFullEditable(false);
-            baseAction.setSaveable(true);
+        // If user is a PL, let's figure out if the user is the leader of the project in which the activity belongs to.
+        Project project = projectManager.getProjectFromActivityId(activityID);
+        if (project != null) {
+          User projectLeader = projectManager.getProjectLeader(project.getId());
+          if (projectLeader != null) {
+            // If the user is the project leader, he is able to fully edit the activity.
+            if (projectLeader.getId() == user.getId()) {
+              baseAction.setFullEditable(true);
+              baseAction.setSaveable(true);
+            } else {
+              // If the user is not the project leader. Thus, he is able to see but not to edit.
+              baseAction.setFullEditable(true);
+              baseAction.setSaveable(false);
+            }
           } else {
-            // If the user is not the project leader. Thus, he is able to see but not to edit.
+            // If the project doesn't have project leader associated the PL can not edit it.
             baseAction.setFullEditable(true);
             baseAction.setSaveable(false);
           }
         } else {
-          // If the project doesn't have project leader associated.
+          // If the activity does not belong to a project, no user is able to edit it.
+          baseAction.setFullEditable(true);
+          baseAction.setSaveable(false);
+        }
+      } else if (user.isAL()) {
+        // User is AL or Guest.
+        User activityLeader = activityManager.getActivityLeader(activityID);
+        // If user is assigned as activity leader of the current activity.
+        if (user.getEmployeeId() == activityLeader.getEmployeeId()) {
+          baseAction.setFullEditable(true);
+          baseAction.setSaveable(true);
+        } else {
+          // If user is not the activity leader of the current activity, he/she is not able to edit it.
           baseAction.setFullEditable(true);
           baseAction.setSaveable(false);
         }
       } else {
-        // User is AL or Guest.
+        // User is Guest.
         baseAction.setFullEditable(true);
         baseAction.setSaveable(false);
       }
     }
     return invocation.invoke();
   }
-
 
 }

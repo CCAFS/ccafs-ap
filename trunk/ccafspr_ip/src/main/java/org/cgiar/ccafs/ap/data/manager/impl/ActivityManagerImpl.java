@@ -20,7 +20,6 @@ import org.cgiar.ccafs.ap.data.manager.InstitutionManager;
 import org.cgiar.ccafs.ap.data.manager.UserManager;
 import org.cgiar.ccafs.ap.data.model.Activity;
 import org.cgiar.ccafs.ap.data.model.ExpectedActivityLeader;
-import org.cgiar.ccafs.ap.data.model.User;
 
 import java.text.DateFormat;
 import java.text.ParseException;
@@ -30,6 +29,8 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+
+import org.cgiar.ccafs.ap.data.model.User;
 
 import com.google.inject.Inject;
 import org.slf4j.Logger;
@@ -56,7 +57,6 @@ public class ActivityManagerImpl implements ActivityManager {
     this.institutionManager = institutionManager;
     this.userManager = userManager;
   }
-
 
   @Override
   public boolean deleteActivitiesByProject(int projectID) {
@@ -97,8 +97,7 @@ public class ActivityManagerImpl implements ActivityManager {
           LOG.error("There was an error formatting the end date", e);
         }
         if (activityData.get("expected_leader_id") != null) {
-          activity
-            .setExpectedLeader(this.getExpectedActivityLeaderByActivityId(Integer.parseInt(activityData.get("id"))));
+          activity.setExpectedLeader(this.getExpectedActivityLeader(Integer.parseInt(activityData.get("id"))));
         }
         if (activityData.get("leader_id") != null) {
           activity.setLeader(userManager.getOwner(Integer.parseInt(activityData.get("leader_id"))));
@@ -141,7 +140,7 @@ public class ActivityManagerImpl implements ActivityManager {
         }
       }
       if (activityData.get("expected_leader_id") != null) {
-        activity.setExpectedLeader(this.getExpectedActivityLeaderByActivityId(activityID));
+        activity.setExpectedLeader(this.getExpectedActivityLeader(activityID));
       }
       if (activityData.get("leader_id") != null) {
         activity.setLeader(userManager.getOwner(Integer.parseInt(activityData.get("leader_id"))));
@@ -158,8 +157,18 @@ public class ActivityManagerImpl implements ActivityManager {
   }
 
   @Override
-  public ExpectedActivityLeader getExpectedActivityLeaderByActivityId(int activityID) {
-    Map<String, String> expectedActivityLeaderData = activityDAO.getExpectedActivityLeaderByActivityId(activityID);
+  public User getActivityLeader(int activityID) {
+    int activityLeaderId = activityDAO.getActivityLeaderId(activityID);
+    if (activityLeaderId != -1) {
+      User activityLeader = userManager.getOwner(activityLeaderId);
+      return activityLeader;
+    }
+    return null;
+  }
+
+  @Override
+  public ExpectedActivityLeader getExpectedActivityLeader(int activityID) {
+    Map<String, String> expectedActivityLeaderData = activityDAO.getExpectedActivityLeader(activityID);
     if (!expectedActivityLeaderData.isEmpty()) {
       ExpectedActivityLeader expectedActivityLeader = new ExpectedActivityLeader();
       expectedActivityLeader.setId(Integer.parseInt(expectedActivityLeaderData.get("id")));

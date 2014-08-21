@@ -142,7 +142,6 @@ public class MySQLActivityDAO implements ActivityDAO {
       query.append("INNER JOIN ip_programs pr ON p.program_creator_id=pr.id ");
       query.append("WHERE p.program_creator_id= ");
       query.append(programID);
-      System.out.println(query.toString());
       ResultSet rs = databaseManager.makeQuery(query.toString(), connection);
       while (rs.next()) {
         activityIds.add(rs.getInt("id"));
@@ -155,6 +154,27 @@ public class MySQLActivityDAO implements ActivityDAO {
     }
     LOG.debug("<< getActivityIdsEditable():{}", activityIds);
     return activityIds;
+  }
+
+  @Override
+  public int getActivityLeaderId(int activityID) {
+    LOG.debug(">> getActivityLeaderId(activityID={})", new Object[] {activityID});
+    int leaderID = -1;
+    try (Connection connection = databaseManager.getConnection()) {
+      StringBuilder query = new StringBuilder();
+      query.append("SELECT a.leader_id FROM activities a WHERE a.id= ");
+      query.append(activityID);
+      ResultSet rs = databaseManager.makeQuery(query.toString(), connection);
+      if (rs.next()) {
+        leaderID = rs.getInt(1);
+      }
+      rs.close();
+    } catch (SQLException e) {
+      LOG.error("-- getActivityLeaderId() > There was an error getting the data for  activityID={}.",
+        new Object[] {activityID}, e.getMessage());
+    }
+    LOG.debug("<< getActivityIdsEditable(): leaderID={}", leaderID);
+    return leaderID;
   }
 
   private List<Map<String, String>> getData(String query) {
@@ -194,7 +214,7 @@ public class MySQLActivityDAO implements ActivityDAO {
   }
 
   @Override
-  public Map<String, String> getExpectedActivityLeaderByActivityId(int activityID) {
+  public Map<String, String> getExpectedActivityLeader(int activityID) {
     Map<String, String> activityLeaderData = new HashMap<String, String>();
     StringBuilder query = new StringBuilder();
     query.append("SELECT eal.*   ");
@@ -214,7 +234,6 @@ public class MySQLActivityDAO implements ActivityDAO {
     } catch (SQLException e) {
       LOG.error("Exception arised getting the activity {}.", activityID, e);
     }
-    LOG.debug("-- getExpectedActivityLeaderById() > Calling method executeQuery to get the results");
     return activityLeaderData;
   }
 

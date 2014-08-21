@@ -188,6 +188,15 @@ public class ProjectManagerImpl implements ProjectManager {
   }
 
   @Override
+  public Project getProjectFromActivityId(int activityID) {
+    int projectID = projectDAO.getProjectIdFromActivityId(activityID);
+    if (projectID != -1) {
+      return this.getProject(projectID);
+    }
+    return null;
+  }
+
+  @Override
   public List<Integer> getProjectIdsEditables(User user) {
     return projectDAO.getProjectIdsEditables(user.getCurrentInstitution().getProgram().getId(), user.getEmployeeId());
   }

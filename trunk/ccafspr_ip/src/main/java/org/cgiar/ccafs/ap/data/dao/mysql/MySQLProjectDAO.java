@@ -208,6 +208,27 @@ public class MySQLProjectDAO implements ProjectDAO {
   }
 
   @Override
+  public int getProjectIdFromActivityId(int activityID) {
+    LOG.debug(">> getProjectIdFromActivityId(activityID={})", new Object[] {activityID});
+    int projectID = -1;
+    try (Connection connection = databaseManager.getConnection()) {
+      StringBuilder query = new StringBuilder();
+      query.append("SELECT a.project_id FROM activities a WHERE a.id = ");
+      query.append(activityID);
+      ResultSet rs = databaseManager.makeQuery(query.toString(), connection);
+      while (rs.next()) {
+        projectID = rs.getInt(1);
+      }
+      rs.close();
+    } catch (SQLException e) {
+      LOG.error("-- getProjectIdFromActivityId() > There was an error getting the data for activityID={}.",
+        new Object[] {activityID}, e.getMessage());
+    }
+    LOG.debug("<< getProjectIdFromActivityId(): projectID={}", projectID);
+    return projectID;
+  }
+
+  @Override
   public List<Integer> getProjectIdsEditables(int programID, int ownerID) {
     LOG.debug(">> getProjectIdsEditables(projectID={}, ownerId={})", new Object[] {programID, ownerID});
     List<Integer> projectIds = new ArrayList<>();
@@ -364,6 +385,7 @@ public class MySQLProjectDAO implements ProjectDAO {
     LOG.debug("<< executeQuery():ProjectList.size={}", projectList.size());
     return projectList;
   }
+
 
   @Override
   public int saveExpectedProjectLeader(int projectId, Map<String, Object> expectedProjectLeaderData) {

@@ -64,6 +64,14 @@ public interface ProjectManager {
   public Project getProject(int projectId);
 
   /**
+   * This method returns the Project in which the activity belongs to.
+   * 
+   * @param activityID is the Activity identifier.
+   * @return a Project object.
+   */
+  public Project getProjectFromActivityId(int activityID);
+
+  /**
    * This method returns the list of project identifiers that the given user is able to edit.
    *
    * @param user is the user object.

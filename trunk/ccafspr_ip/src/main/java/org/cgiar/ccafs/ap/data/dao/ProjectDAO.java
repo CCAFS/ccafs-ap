@@ -71,6 +71,14 @@ public interface ProjectDAO {
   public Map<String, String> getProject(int projectID);
 
   /**
+   * this method returns the project id in which the given activity belongs to.
+   *
+   * @param activityID is the activity identifier.
+   * @return an integer representing the project id, or -1 if the activityID does not belong to any project.
+   */
+  public int getProjectIdFromActivityId(int activityID);
+
+  /**
    * This method returns a list of project identifiers that belongs to a specific program and/or a specific owner.
    *
    * @param programId is the program identifier.
