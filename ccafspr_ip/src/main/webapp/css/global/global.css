@@ -1136,9 +1136,21 @@ padding-left: 11px;
 }
 
 #ipGraph-content {
-  height: 250px;
-  margin-top: 20px;
+  height: 100%;
+  width: 100%; 
 }
+
+#ipGraph-buttonsGroup{
+    position: absolute; 
+    bottom: 3px;
+    right: 3px;
+}
+
+button#ipGraph-btnPrint {
+  background: url(../../images/global/printer-icon.png)no-repeat center #2BA6CB;
+  height: 30px;
+}
+
 #ipGraph-button {
   border:1px solid #ccc;
   width: 45px;

@@ -27,12 +27,12 @@
   <div id="ipGraph-button" title="[@s.text name="menu.preplanning.submenu.ipGraph" /]"></div>
 </nav> 
 <div id="gran-ip">
-	<div id="content-ip" style="display:none;height: 100%;width: 100%;" class="ui-widget-content">
+	<div id="content-ip" style="display:none;height: 270px;width: 100%;margin: 21px 0px;position:relative;" class="ui-widget-content">
 	  <div id="ipGraph-content"></div>
-		<div id="add" >
-		  <button id="ipGraph-btnPrint">Print</button>
-		  <button id="ipGraph-btnMax">Max</button>
-		  <button id="ipGraph-btnMin" style="display:none">Min</button>
+		<div id="ipGraph-buttonsGroup">
+		  <button id="ipGraph-btnPrint" title="Print"></button>
+		  [#--<button id="ipGraph-btnMax">Max</button>--]
+		  [#--<button id="ipGraph-btnMin" style="display:none">Min</button>--]
 		</div>
 	</div>
 </div>
