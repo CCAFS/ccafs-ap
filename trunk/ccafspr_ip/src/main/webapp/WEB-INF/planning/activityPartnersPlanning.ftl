@@ -1,7 +1,7 @@
 [#ftl]
 [#assign title = "Activity Partners" /]
 [#assign globalLibs = ["jquery", "noty", "autoSave", "chosen"] /]
-[#assign customJS = ["${baseUrl}/js/global/utils.js"] /]
+[#assign customJS = ["${baseUrl}/js/global/utils.js", "${baseUrl}/js/planning/activityPartnersPlanning.js"] /]
 [#assign currentSection = "planning" /]
 [#assign currentPlanningSection = "activity" /]
 [#assign currentStage = "activityPartners" /]
