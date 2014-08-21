@@ -27,7 +27,6 @@ import java.util.Iterator;
 import java.util.List;
 
 import org.cgiar.ccafs.ap.data.manager.BudgetManager;
-
 import com.google.inject.Inject;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
@@ -89,10 +88,10 @@ public class ProjectDescriptionPlanningAction extends BaseAction {
     return null;
   }
 
-
   public int getEndYear() {
     return config.getEndYear();
   }
+
 
   /**
    * This method returns an array of flagship ids depending on the project.flagships attribute.
@@ -110,7 +109,6 @@ public class ProjectDescriptionPlanningAction extends BaseAction {
     return null;
   }
 
-
   public List<IPProgram> getIpProgramFlagships() {
     return ipProgramFlagships;
   }
@@ -119,6 +117,7 @@ public class ProjectDescriptionPlanningAction extends BaseAction {
   public List<IPProgram> getIpProgramRegions() {
     return ipProgramRegions;
   }
+
 
   public Project getProject() {
     return project;
@@ -150,6 +149,16 @@ public class ProjectDescriptionPlanningAction extends BaseAction {
 
   public int getStartYear() {
     return config.getStartYear();
+  }
+
+  @Override
+  public String next() {
+    String result = save();
+    if (result.equals(BaseAction.SUCCESS)) {
+      return BaseAction.NEXT;
+    } else {
+      return result;
+    }
   }
 
   @Override
@@ -335,9 +344,9 @@ public class ProjectDescriptionPlanningAction extends BaseAction {
       }
     } else {
       LOG
-        .warn(
-          "User (employee_id={}, email={}) tried to save information in Project Description without having enough privileges!",
-          new Object[] {this.getCurrentUser().getEmployeeId(), this.getCurrentUser().getEmail()});
+      .warn(
+        "User (employee_id={}, email={}) tried to save information in Project Description without having enough privileges!",
+        new Object[] {this.getCurrentUser().getEmployeeId(), this.getCurrentUser().getEmail()});
     }
     return BaseAction.ERROR;
 
