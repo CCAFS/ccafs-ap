@@ -47,9 +47,9 @@ public final class APConstants {
   public static final int ELEMENT_TYPE_OUTPUTS = 4;
 
   // Identifiers for programs types which come from the database
-  public static final int FLAGSHIP_PROGRAM_TYPE = 2;
-  public static final int REGION_PROGRAM_TYPE = 3;
-  public static final int COORDINATION_PROGRAM_TYPE = 4;
+  public static final int COORDINATION_PROGRAM_TYPE = 3;
+  public static final int FLAGSHIP_PROGRAM_TYPE = 4;
+  public static final int REGION_PROGRAM_TYPE = 5;
 
   // Identifier for types of program element relations
   public static final int PROGRAM_ELEMENT_CREATED_BY = 1;

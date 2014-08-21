@@ -251,17 +251,17 @@ public class LocationManagerImpl implements LocationManager {
 
   @Override
   public boolean removeActivityLocation(List<Location> activityLocations, int activityID) {
-    boolean removed = true;
+    boolean allRemoved = true, removed;
+    allRemoved = locationDAO.removeActivityLocation(activityID);
 
     for (Location location : activityLocations) {
-      if (location.isCountry() || location.isRegion()) {
-
-      } else {
-
+      if (location.isOtherLocation()) {
+        removed = locationDAO.removeLocation(location.getId());
+        allRemoved = (removed && allRemoved);
       }
     }
 
-    return removed;
+    return allRemoved;
   }
 
   @Override
@@ -309,6 +309,9 @@ public class LocationManagerImpl implements LocationManager {
     locationData.put("element_type_id", String.valueOf(location.getType().getId()));
 
     int geoPositionID = saveLocationGeoposition(location);
+    // If the geoPosition id was updated and the returned value was 0, then
+    // we have to get the geopositionId brought with the object
+    geoPositionID = (geoPositionID == 0) ? location.getGeoPosition().getId() : geoPositionID;
     if (geoPositionID == -1) {
       locationData.put("geoposition_id", null);
     } else {

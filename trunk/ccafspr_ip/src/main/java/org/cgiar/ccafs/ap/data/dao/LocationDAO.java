@@ -106,6 +106,23 @@ public interface LocationDAO {
   public Map<String, String> getRegion(int regionID);
 
   /**
+   * This method return ALL the locations related with the activity
+   * received as parameter
+   * 
+   * @param activityID - activity identifier
+   * @return true if the relations were successfully removed. False otherwise.
+   */
+  public boolean removeActivityLocation(int activityID);
+
+  /**
+   * This method removes the location identified by the parameter given
+   * 
+   * @param LocationID - Location identifier
+   * @return true if the location was successfully removed. False otherwise.
+   */
+  public boolean removeLocation(int locationID);
+
+  /**
    * This method relates the location and the activity received into
    * the database
    * 
