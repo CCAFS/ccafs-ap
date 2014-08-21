@@ -17,9 +17,7 @@ import org.cgiar.ccafs.ap.data.dao.IPOtherContributionDAO;
 import org.cgiar.ccafs.ap.data.manager.IPOtherContributionManager;
 import org.cgiar.ccafs.ap.data.model.IPOtherContribution;
 
-import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
 import com.google.inject.Inject;
@@ -56,6 +54,20 @@ public class IPOtherContributionManagerImpl implements IPOtherContributionManage
   }
 
   @Override
+  public IPOtherContribution getIPOtherContributionByActivityId(int activityID) {
+    Map<String, String> ipOtherContributionData = ipOtherContributionDAO.getIPOtherContributionByActivityId(activityID);
+    if (!ipOtherContributionData.isEmpty()) {
+      IPOtherContribution ipOtherContribution = new IPOtherContribution();
+      ipOtherContribution.setId(Integer.parseInt(ipOtherContributionData.get("id")));
+      ipOtherContribution.setContribution(ipOtherContributionData.get("contribution"));
+      ipOtherContribution.setAdditionalContribution(ipOtherContributionData.get("additional_contribution"));
+
+      return ipOtherContribution;
+    }
+    return null;
+  }
+
+  @Override
   public IPOtherContribution getIPOtherContributionById(int ipOtherContributionID) {
     Map<String, String> ipOtherContributionData =
       ipOtherContributionDAO.getIPOtherContributionById(ipOtherContributionID);
@@ -67,23 +79,6 @@ public class IPOtherContributionManagerImpl implements IPOtherContributionManage
       return ipOtherContribution;
     }
     return null;
-  }
-
-  @Override
-  public List<IPOtherContribution> getIPOtherContributionsByActivityId(int activityID) {
-    List<IPOtherContribution> ipOtherContributionList = new ArrayList<>();
-    List<Map<String, String>> ipOtherContributionsDataList =
-      ipOtherContributionDAO.getIPOtherContributionsByActivityId(activityID);
-    for (Map<String, String> ipOtherContributionData : ipOtherContributionsDataList) {
-      IPOtherContribution ipOtherContribution = new IPOtherContribution();
-      ipOtherContribution.setId(Integer.parseInt(ipOtherContributionData.get("id")));
-      ipOtherContribution.setContribution(ipOtherContributionData.get("contribution"));
-      ipOtherContribution.setAdditionalContribution(ipOtherContributionData.get("additional_contribution"));
-
-      // adding information of the object to the array
-      ipOtherContributionList.add(ipOtherContribution);
-    }
-    return ipOtherContributionList;
   }
 
   @Override

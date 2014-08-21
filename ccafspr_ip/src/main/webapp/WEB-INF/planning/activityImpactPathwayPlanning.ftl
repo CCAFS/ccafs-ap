@@ -52,7 +52,7 @@
       <a href=""  class="addButton">[@s.text name="planning.activityImpactPathways.addTarget" /]</a>
     </div>
     [#if saveable]
-      <input type="hidden" name="activityID" value="${activity.id?c}">
+      <input type="hidden" name="activityID" value="">
       <div class="buttons">
         [@s.submit type="button" name="save"][@s.text name="form.buttons.save" /][/@s.submit]
         [@s.submit type="button" name="next"][@s.text name="form.buttons.next" /][/@s.submit]

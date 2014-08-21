@@ -20,9 +20,7 @@ import org.cgiar.ccafs.ap.data.dao.IPOtherContributionDAO;
 import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
 import com.google.inject.Inject;
@@ -77,31 +75,34 @@ public class MySQLIPOtherContributionDAO implements IPOtherContributionDAO {
     return false;
   }
 
-  private List<Map<String, String>> getData(String query) {
-    LOG.debug(">> executeQuery(query='{}')", query);
-    List<Map<String, String>> ipOtherContributionList = new ArrayList<>();
 
+  @Override
+  public Map<String, String> getIPOtherContributionByActivityId(int activityID) {
+    LOG.debug(">> getIPOtherContributionByActivityId activityID = {} )", activityID);
+    Map<String, String> ipOtherContributionData = new HashMap<String, String>();
+    StringBuilder query = new StringBuilder();
+    query.append("SELECT ipo.*   ");
+    query.append("FROM ip_other_contributions as ipo ");
+    query.append("INNER JOIN activities a ON ipo.activity_id = a.id ");
+    query.append("WHERE ipo.activity_id=  ");
+    query.append(activityID);
     try (Connection con = databaseManager.getConnection()) {
-      ResultSet rs = databaseManager.makeQuery(query, con);
-      while (rs.next()) {
-        Map<String, String> ipOtherContributionData = new HashMap<String, String>();
+      ResultSet rs = databaseManager.makeQuery(query.toString(), con);
+      if (rs.next()) {
         ipOtherContributionData.put("id", rs.getString("id"));
         ipOtherContributionData.put("activity_id", rs.getString("activity_id"));
         ipOtherContributionData.put("contribution", rs.getString("contribution"));
         ipOtherContributionData.put("additional_contribution", rs.getString("additional_contribution"));
 
-        ipOtherContributionList.add(ipOtherContributionData);
       }
-      rs.close();
+      con.close();
     } catch (SQLException e) {
-      String exceptionMessage = "-- executeQuery() > Exception raised trying ";
-      exceptionMessage += "to execute the following query " + query;
-
-      LOG.error(exceptionMessage, e);
-      return null;
+      LOG.error("Exception arised getting the IP Other Contribution by the activityID {}.", activityID, e);
     }
-    LOG.debug("<< executeQuery():ipOtherContributionList.size={}", ipOtherContributionList.size());
-    return ipOtherContributionList;
+    LOG.debug("-- getIPOtherContributionByActivityId() > Calling method executeQuery to get the results");
+    return ipOtherContributionData;
+
+
   }
 
   @Override
@@ -124,26 +125,10 @@ public class MySQLIPOtherContributionDAO implements IPOtherContributionDAO {
       }
       con.close();
     } catch (SQLException e) {
-      LOG.error("Exception arised getting the activity {}.", ipOtherContributionId, e);
+      LOG.error("Exception arised getting the IP Other Contribution {}.", ipOtherContributionId, e);
     }
     LOG.debug("-- getIPOtherContributionById() > Calling method executeQuery to get the results");
     return ipOtherContributionData;
-  }
-
-  @Override
-  public List<Map<String, String>> getIPOtherContributionsByActivityId(int activityID) {
-    LOG.debug(">> getIPOtherContributionsByActivityId activityID = {} )", activityID);
-
-    StringBuilder query = new StringBuilder();
-    query.append("SELECT ipo.*   ");
-    query.append("FROM ip_other_contributions as ipo ");
-    query.append("INNER JOIN activities a ON ipo.activity_id = a.id ");
-    query.append("WHERE ipo.activity_id=  ");
-    query.append(activityID);
-
-
-    LOG.debug("-- getIPOtherContributionsByActivityId() > Calling method executeQuery to get the results");
-    return getData(query.toString());
   }
 
   @Override

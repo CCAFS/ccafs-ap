@@ -19,7 +19,14 @@
   
   [@s.form action="ipOtherContribution" cssClass="pure-form"]  
   <article class="halfContent borderBox" id="projectOutcomes"> 
-
+    [#-- Informing user that he/she doesn't have enough privileges to edit. See Grant -- AccessInterceptor--]
+    [#if !saveable]
+      <p class="readPrivileges">
+        [@s.text name="saving.read.privileges"]
+          [@s.param][@s.text name="planning.activityImpactPathways.title"/][/@s.param]
+        [/@s.text]
+      </p>
+    [/#if]
     <h6 class="contentTitle">
     [@customForm.textArea name="ipOtherContribution.contribution" i18nkey="planning.impactPathways.otherContributions.contribution" /]  
     </h6> <br/>
@@ -27,14 +34,15 @@
     [@customForm.textArea name="ipOtherContribution.additionalContribution" i18nkey="planning.impactPathways.otherContributions.additionalcontribution" /]  
     </h6> 
      <!-- internal parameter -->
-    <input name="activityID" type="hidden" value="" />
-    
+    <input name="activityID" type="hidden" value="" />    
     <input name="activity.ipOtherContribution.id" type="hidden" value="" />
-    <div class="buttons">
-      [@s.submit type="button" name="save"][@s.text name="form.buttons.save" /][/@s.submit]
-      [@s.submit type="button" name="next"][@s.text name="form.buttons.next" /][/@s.submit]
-      [@s.submit type="button" name="cancel"][@s.text name="form.buttons.cancel" /][/@s.submit]
-    </div>
+    [#if saveable]
+      <div class="buttons">
+        [@s.submit type="button" name="save"][@s.text name="form.buttons.save" /][/@s.submit]
+        [@s.submit type="button" name="next"][@s.text name="form.buttons.next" /][/@s.submit]
+        [@s.submit type="button" name="cancel"][@s.text name="form.buttons.cancel" /][/@s.submit]
+      </div>
+    [/#if]
   </article>
   [/@s.form]  
 </section>

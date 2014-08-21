@@ -16,8 +16,6 @@ package org.cgiar.ccafs.ap.data.manager;
 import org.cgiar.ccafs.ap.data.manager.impl.IPOtherContributionManagerImpl;
 import org.cgiar.ccafs.ap.data.model.IPOtherContribution;
 
-import java.util.List;
-
 import com.google.inject.ImplementedBy;
 
 /**
@@ -44,21 +42,21 @@ public interface IPOtherContributionManager {
   public boolean deleteIPOtherContributionsByActivityId(int activityID);
 
   /**
+   * This method gets all the IP Other Contributions information by a given activity Id
+   * 
+   * @param activityID - is the Id of the activity
+   * @return a List of IP Other Contributions with the Information related to the activity
+   */
+  public IPOtherContribution getIPOtherContributionByActivityId(int activityID);
+
+
+  /**
    * This method gets all the IP Other Contribution information by a given IP Other Contribution ID.
    * 
    * @param ipOtherContributionID is the IP Other Contribution identifier.
    * @return an IP Other Contributions object, or null if no information were found.
    */
   public IPOtherContribution getIPOtherContributionById(int ipOtherContributionID);
-
-
-  /**
-   * This method gets all the IP Other Contributions information by a given activity Id
-   * 
-   * @param activityID - is the Id of the activity
-   * @return a List of IP Other Contributions with the Information related to the activity
-   */
-  public List<IPOtherContribution> getIPOtherContributionsByActivityId(int activityID);
 
   /**
    * This method saves the information of the given IP Other Contribution that belongs to a specific activity into the
