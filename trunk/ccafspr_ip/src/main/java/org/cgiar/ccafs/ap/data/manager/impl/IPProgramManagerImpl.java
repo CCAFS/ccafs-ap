@@ -40,7 +40,6 @@ public class IPProgramManagerImpl implements IPProgramManager {
     this.ipProgramDAO = ipProgramDAO;
   }
 
-
   @Override
   public boolean deleteProjectFocus(int projectId, int ipProgramID) {
     return ipProgramDAO.deleteProjectFocus(projectId, ipProgramID);

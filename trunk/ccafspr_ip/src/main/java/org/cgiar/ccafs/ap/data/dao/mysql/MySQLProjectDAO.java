@@ -457,7 +457,6 @@ public class MySQLProjectDAO implements ProjectDAO {
       // Insert a new project record.
       query.append("INSERT INTO projects (project_owner_id, program_creator_id) ");
       query.append("VALUES (?, ?) ");
-
       Object[] values = new Object[2];
       values[0] = projectData.get("project_owner_id");
       values[1] = projectData.get("program_creator_id");

@@ -73,7 +73,7 @@ public class DeliverableManagerImpl implements DeliverableManager {
       deliverable.setYear(Integer.parseInt(deliverableData.get("year")));
       deliverable
         .setType(deliverableTypeManager.getDeliverableTypeById(Integer.parseInt(deliverableData.get("type_id"))));
-      // TODO JG Get List of Next Users to complete the model
+      deliverable.setNextUsers(nextUserManager.getNextUsersByDeliverableId(deliverableID));
       return deliverable;
     }
     return null;

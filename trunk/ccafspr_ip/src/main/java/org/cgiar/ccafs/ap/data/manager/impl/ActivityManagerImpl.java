@@ -14,12 +14,16 @@
 package org.cgiar.ccafs.ap.data.manager.impl;
 
 import org.cgiar.ccafs.ap.config.APConstants;
+import org.cgiar.ccafs.ap.config.APModule;
 import org.cgiar.ccafs.ap.data.dao.ActivityDAO;
 import org.cgiar.ccafs.ap.data.manager.ActivityManager;
 import org.cgiar.ccafs.ap.data.manager.InstitutionManager;
 import org.cgiar.ccafs.ap.data.manager.UserManager;
 import org.cgiar.ccafs.ap.data.model.Activity;
 import org.cgiar.ccafs.ap.data.model.ExpectedActivityLeader;
+import org.cgiar.ccafs.ap.data.model.IPProgram;
+import org.cgiar.ccafs.ap.data.model.Institution;
+import org.cgiar.ccafs.ap.data.model.User;
 
 import java.text.DateFormat;
 import java.text.ParseException;
@@ -30,9 +34,9 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import org.cgiar.ccafs.ap.data.model.User;
-
+import com.google.inject.Guice;
 import com.google.inject.Inject;
+import com.google.inject.Injector;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -57,6 +61,24 @@ public class ActivityManagerImpl implements ActivityManager {
     this.activityDAO = activityDAO;
     this.institutionManager = institutionManager;
     this.userManager = userManager;
+  }
+
+  public static void main(String[] args) {
+    Injector in = Guice.createInjector(new APModule());
+    ActivityManager activityManager = in.getInstance(ActivityManager.class);
+    User user = new User();
+    Institution currentInstitution = new Institution();
+    currentInstitution.setId(1024);
+    IPProgram program = new IPProgram();
+    program.setId(1);
+    currentInstitution.setProgram(program);
+    user.setEmployeeId(23);
+    user.setCurrentInstitution(currentInstitution);
+    Activity activity = new Activity();
+    activity.setTitle("Test11111");
+    activity.setDescription("Test1111111");
+    activity.setLeader(user);
+    System.out.println(activityManager.saveActivityLeader(2009, user));
   }
 
   @Override
@@ -200,6 +222,7 @@ public class ActivityManagerImpl implements ActivityManager {
     activityData.put("description", activity.getDescription());
     activityData.put("startDate", activity.getStart());
     activityData.put("endDate", activity.getEnd());
+    activityData.put("leader_id", activity.getLeader().getEmployeeId());
 
     int result = activityDAO.saveActivity(projectID, activityData);
 
@@ -214,5 +237,51 @@ public class ActivityManagerImpl implements ActivityManager {
 
     return allSaved;
 
+  }
+
+
+  @Override
+  public boolean saveActivityLeader(int activityID, User user) {
+    boolean allSaved = true;
+
+    int result = activityDAO.saveActivityLeader(activityID, user.getEmployeeId());
+
+    if (result > 0) {
+      LOG.debug("saveExpectedActivityLeader > New Activity added with id {}", result);
+    } else if (result == 0) {
+      LOG.debug("saveExpectedActivityLeader > Activity with id={} was updated", user.getEmployeeId());
+    } else {
+      LOG.error("saveExpectedActivityLeader > There was an error trying to save/update a Activity from projectId={}",
+        activityID);
+      allSaved = false;
+    }
+
+    return allSaved;
+  }
+
+  @Override
+  public boolean saveExpectedActivityLeader(int activityID, ExpectedActivityLeader expectedActivityLeader) {
+    boolean allSaved = true;
+    Map<String, Object> activityData = new HashMap<>();
+    if (expectedActivityLeader.getId() > 0) {
+      activityData.put("id", expectedActivityLeader.getId());
+    }
+    activityData.put("institution_id", expectedActivityLeader.getInstitution().getId());
+    activityData.put("name", expectedActivityLeader.getName());
+    activityData.put("email", expectedActivityLeader.getName());
+
+    int result = activityDAO.saveExpectedActivityLeader(activityID, activityData);
+
+    if (result > 0) {
+      LOG.debug("saveExpectedActivityLeader > New Activity added with id {}", result);
+    } else if (result == 0) {
+      LOG.debug("saveExpectedActivityLeader > Activity with id={} was updated", expectedActivityLeader.getId());
+    } else {
+      LOG.error("saveExpectedActivityLeader > There was an error trying to save/update a Activity from projectId={}",
+        activityID);
+      allSaved = false;
+    }
+
+    return allSaved;
   }
 }

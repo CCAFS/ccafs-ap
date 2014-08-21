@@ -1,6 +1,6 @@
 [#ftl]
 [#assign title = "Activity Deliverables" /]
-[#assign globalLibs = ["jquery", "noty", "autoSave"] /]
+[#assign globalLibs = ["jquery", "noty", "autoSave", "chosen"] /]
 [#assign customJS = ["${baseUrl}/js/global/utils.js"] /]
 [#assign currentSection = "planning" /]
 [#assign currentPlanningSection = "activity" /]

@@ -30,7 +30,7 @@ public interface IPProgramDAO {
 
   /**
    * this method removes a specific record from the project_focuses table.
-   *
+   * 
    * @param projectId is the project id.
    * @param ipProgramID is the program id.
    * @return true if the record could be successfully removed, false otherwise.
@@ -40,7 +40,7 @@ public interface IPProgramDAO {
 
   /**
    * This method gets the information of a IP Program by a given ID
-   *
+   * 
    * @param ipProgramID - is the ID of the program
    * @return a Map with the IP Program information.
    */
@@ -48,7 +48,7 @@ public interface IPProgramDAO {
 
   /**
    * This method returns all the PropjectFocuses (IPPrograms) that belongs to a given project.
-   *
+   * 
    * @param projectID is the project identifier.
    * @return a Map with the information requested.
    */
@@ -57,27 +57,16 @@ public interface IPProgramDAO {
   /**
    * This method return the Programs Type identified as Flagship
    * indicated by parameter.
-   *
+   * 
    * @param none
    * @return a list of maps with the information of all IP elements returned.
    */
   public List<Map<String, String>> getProgramsByType(int typeId);
 
   /**
-   * This method return all the Program Type from an specified Project which belongs to the program
-   * indicated by parameter.
-   *
-   * @param programID, identifier of the program
-   * @return a list of maps with the information of all IP elements returned.
-   * @deprecated Do not use this method as it is not properly working.
-   */
-  @Deprecated
-  public List<Map<String, String>> getProgramType(int programID, int typeProgramId);
-
-  /**
    * This method gets all the information of a Program related with a Project by a given project Id and a type Id, from
    * the table project_focuses.
-   *
+   * 
    * @param projectID - is the id of the project
    * @param typeID - is the id of a program type
    * @return a List of Map with the information of a Program related with a Project
@@ -87,7 +76,7 @@ public interface IPProgramDAO {
 
   /**
    * This method creates or update into the table project_focuses new relations between a project and a program.
-   *
+   * 
    * @param ipElementData - a Map with the information that is going to be saved.
    * @return true if the list were successfully saved, false otherwise.
    */
