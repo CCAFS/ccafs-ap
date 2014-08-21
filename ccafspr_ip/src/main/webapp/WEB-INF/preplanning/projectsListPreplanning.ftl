@@ -28,6 +28,7 @@
       <h1 class="contentTitle">
         [@s.text name="preplanning.projects.title"/]
       </h1>
+      <p class="note">[@s.text name="preplanning.projects.note.myProjects" /]</p>
       [#if projects?size>0]
         <h3 class="projectSubTitle">[@s.text name="preplanning.projects.yourProjects"/]</h3>
         [@projectList.projectsList projects=projects canValidate=true /]
@@ -41,6 +42,7 @@
         </div>
       [/#if]
       <hr/>
+      <p class="note">[@s.text name="preplanning.projects.note.otherProjects" /]</p>
       <h3 class="projectSubTitle">[@s.text name="preplanning.projects.otherProjects" /]</h3>
       [@projectList.projectsList projects=allProjects canValidate=true /]
       

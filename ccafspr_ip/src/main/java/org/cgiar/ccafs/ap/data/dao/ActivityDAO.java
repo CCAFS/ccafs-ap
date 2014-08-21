@@ -30,7 +30,7 @@ public interface ActivityDAO {
 
   /**
    * Deletes the information of the Activities related by a given project id
-   * 
+   *
    * @param projectID
    * @return true if the elements were deleted successfully. False otherwise
    */
@@ -39,7 +39,7 @@ public interface ActivityDAO {
 
   /**
    * Deletes the information of a Activity associated by a given id
-   * 
+   *
    * @param activityId - is the Id of an Activity
    * @return true if the elements were deleted successfully. False otherwise
    */
@@ -47,7 +47,7 @@ public interface ActivityDAO {
 
   /**
    * This method gets all the Activities information by a given Project Id
-   * 
+   *
    * @param projectID - is the Id of the project
    * @return a List of Map of the Activities Information related with the project
    */
@@ -55,40 +55,50 @@ public interface ActivityDAO {
 
   /**
    * This method gets all the Activity information by a given Id
-   * 
+   *
    * @param activityID - is the ID of the activity
    * @return a Map of the Activity Information related by the ID
    */
   public Map<String, String> getActivityById(int activityID);
 
-  /**
-   * This method gets a list of activities Id related with the program creator Id of the Project
+	/**
+   * This method gets a list of activities Id related with the program creator Id of the Project that they belongs to.
    * 
-   * @param programID
-   * @return a list of activities Id
+   * @param programID is the ccafs program id from the ip_programs table.
+   * @return a list of activities identifiers.
    */
   public List<Integer> getActivityIdsEditable(int programID);
 
   /**
-   * This method gets the information of the Expected Activity Leader by a given Activity ID
+   * This method returns the id from the employees table that belong to the activity leader.
    * 
+   * @param activityID is the activity identifier.
+   * @return an integer representing the identifier of the employee user that is leadering the activity, or -1 if
+   *         nothing was found.
+   */
+  public int getActivityLeaderId(int activityID);
+
+  /**
+   * This method gets the information of the Expected Activity Leader by a given Activity ID
+   *
    * @param activityID - is the id of the activity
    * @return a Map of the Expected Activity leader Information related with the Activity ID
    */
-  public Map<String, String> getExpectedActivityLeaderByActivityId(int activityID);
+  public Map<String, String> getExpectedActivityLeader(int activityID);
 
   /**
    * This method saves the Activity information
-   * 
+   *
    * @param activityData - is a Map with the information of the activity to be saved
    * @param projectID - is the Id of the project
    * @return The last inserted id if there was a new record, 0 if the record was updated or -1 if any error happened.
    */
   public int saveActivity(int projectID, Map<String, Object> activityData);
 
+
   /**
    * This method saves the Activity Leader information
-   * 
+   *
    * @param activityLeaderData - is a Map with information of the Activity Leader to be saved
    * @return The last inserted id if there was a new record, 0 if the record was updated or -1 if any error happened.
    */
