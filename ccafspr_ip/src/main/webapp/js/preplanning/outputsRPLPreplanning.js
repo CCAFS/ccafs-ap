@@ -8,6 +8,7 @@ $(document).ready(function(){
     $("select[id^='outputsRPL_flagships']").trigger("change");
     addChosen();
   }
+  removeOutcomesAlreadySelected();
   applyWordCounter($("textarea"), lWordsElemetDesc);
   initGraph();
 });
@@ -29,6 +30,25 @@ function attachEvents(){
   $(".removeContribute").click(removeContributeEvent);
   
   $("#outputsRPL").submit(showTranslationMessage);
+}
+
+/*
+ * This method is called onLoad to remove of each midOutcome list the options that were already selected and appears as contributions
+ */
+function removeOutcomesAlreadySelected(){
+  $("form .output").each(function(c,output){
+    var $outputBlock = $(output);
+    $outputBlock.find(".contributions input").each(function(index,input){
+      console.log(index);
+      var $midOutcomeList = $outputBlock.find("[id$='contributions']");
+      $midOutcomeList.find("option").each(function(index,option){
+        if ($(option).val() == $(input).val()) {
+          $(option).remove();
+        }
+      });
+      $midOutcomeList.trigger("liszt:updated");
+    });
+  });
 }
 
 /*

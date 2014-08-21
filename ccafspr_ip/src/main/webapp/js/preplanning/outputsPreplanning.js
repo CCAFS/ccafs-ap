@@ -59,14 +59,11 @@ function removeOutcomesAlreadySelected(){
     $outputBlock.find(".contributions input").each(function(index,input){
       var $midOutcomeList = $outputBlock.find("#outputs_contributions");
       $midOutcomeList.find("option").each(function(index,option){
-        
         if ($(option).val() == $(input).val()) {
           $(option).remove();
-          $midOutcomeList.trigger("liszt:updated");
         }
-        
       });
-      $outputBlock.find("#outputs_contributions option").each
+      $midOutcomeList.trigger("liszt:updated");
     });
   });
 }
