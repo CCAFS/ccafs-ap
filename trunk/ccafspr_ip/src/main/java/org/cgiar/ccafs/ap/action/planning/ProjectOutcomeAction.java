@@ -92,14 +92,17 @@ public class ProjectOutcomeAction extends BaseAction {
 
   @Override
   public String save() {
-    // Saving Project Outcome
-    boolean saved = projectOutcomeManager.saveProjectOutcome(projectID, project.getOutcome());
-    if (!saved) {
-      addActionError(getText("saving.problem"));
-      return BaseAction.INPUT;
+    if (this.isSaveable()) {
+      // Saving Project Outcome
+      boolean saved = projectOutcomeManager.saveProjectOutcome(projectID, project.getOutcome());
+      if (!saved) {
+        addActionError(getText("saving.problem"));
+        return BaseAction.INPUT;
+      }
+      addActionMessage(getText("saving.success", new String[] {getText("planning.projectOutcome.title")}));
+      return BaseAction.SUCCESS;
     }
-    addActionMessage(getText("saving.success", new String[] {getText("planning.projectOutcome.title")}));
-    return BaseAction.SUCCESS;
+    return BaseAction.ERROR;
   }
 
 

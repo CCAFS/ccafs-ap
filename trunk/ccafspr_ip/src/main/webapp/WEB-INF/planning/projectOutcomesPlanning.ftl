@@ -44,16 +44,18 @@
         <div class="fullBlock">
           [@customForm.textArea name="project.outcome.stories" i18nkey="planning.projectOutcome.story" /]  
         </div>
-        <!-- internal parameter -->
+      </div>
+      [#if saveable]
+        <!-- internal parameters -->
         <input name="projectID" type="hidden" value="${project.id?c}" /> 
         <input name="project.outcome.id" type="hidden" value="${project.outcome.id}" />
         <input name="project.outcome.year" type="hidden" value="${project.outcome.year?c}" />
-      </div>
-      <div class="buttons">
-        [@s.submit type="button" name="save"][@s.text name="form.buttons.save" /][/@s.submit]
-        [@s.submit type="button" name="next"][@s.text name="form.buttons.next" /][/@s.submit]
-        [@s.submit type="button" name="cancel"][@s.text name="form.buttons.cancel" /][/@s.submit]
-      </div>
+        <div class="buttons">
+          [@s.submit type="button" name="save"][@s.text name="form.buttons.save" /][/@s.submit]
+          [@s.submit type="button" name="next"][@s.text name="form.buttons.next" /][/@s.submit]
+          [@s.submit type="button" name="cancel"][@s.text name="form.buttons.cancel" /][/@s.submit]
+        </div>
+      [/#if]
     </article>
   [/@s.form]  
 </section>
