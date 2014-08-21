@@ -72,11 +72,11 @@
               --] 
             </div> 
             
+            <div id="idosBlock" class="contentElements">
+              <div class="itemIndex">[@s.text name="preplanning.outcomes.idos" /]</div>
             [#-- CCAFS IDOs --]
             [#if ccafsIDOs?has_content]
-              ------- ccafsIDOs ---------
-              <div id="idosBlock" class="contentElements">
-                <div class="itemIndex">[@s.text name="preplanning.outcomes.idos" /]</div>
+                <h3 class="contentSubTitle">[@s.text name="preplanning.outcomes.idos.ccafs" /]</h3>
                 [#list ccafsIDOs as ido]
                   <div id="idoBlock-${ido_index}" class="ido"> 
                   [#if outcome.contributesToIDs?seq_contains(ido.id) ] 
@@ -94,17 +94,13 @@
                     </div>
                   [/#if]
                   </div>
-                [/#list]
-              </div>  
-            [/#if] 
-            
-            [#-- CGIAR IDOs --]
-            [#if consortiumIDOs?has_content]
-              ------- ccafsIDOs ---------
-              <div id="idosBlock" class="contentElements">
-                <div class="itemIndex">[@s.text name="preplanning.outcomes.idos" /]</div>
+                [/#list] 
+            [/#if]  
+            [#-- Consortium IDOs --]
+            [#if consortiumIDOs?has_content] 
+               <h3 class="contentSubTitle">[@s.text name="preplanning.outcomes.idos.consortium" /]</h3>
                 [#list consortiumIDOs as ido]
-                  <div id="idoBlock-${ido_index}" class="ido"> 
+                  <div id="idoBlock-${ccafsIDOs?size+ido_index}" class="ido"> 
                   [#if outcome.contributesToIDs?seq_contains(ido.id) ] 
                      [#assign idoCheck = "checked='checked'" /]
                      [#assign indicatorsVisible = "style='display:block'" /]
@@ -112,18 +108,18 @@
                      [#assign idoCheck = "" /]
                      [#assign indicatorsVisible = "style='display:none'" /]
                   [/#if]
-                      <input  id="ido-${ido_index}" class="idosCheckbox" type="checkbox" name="outcomes[0].contributesTo" value="${ido.id}" ${idoCheck}>
-                      <label for="ido-${ido_index}" class="checkboxLabel" >${ido.description}</label>
+                      <input  id="ido-${ccafsIDOs?size+ido_index}" class="idosCheckbox" type="checkbox" name="outcomes[0].contributesTo" value="${ido.id}" ${idoCheck}>
+                      <label for="ido-${ccafsIDOs?size+ido_index}" class="checkboxLabel" >${ido.description}</label>
                   [#if ido.indicators?has_content]
-                    <div id="indicatorsBlock-${ido_index}" class="idosIndicators checkboxGroup vertical" ${indicatorsVisible}> 
-                      [@s.checkboxlist name="idoIndicator" list="idos[${ido_index}].indicators" listKey="id" listValue="description" value="outcomes[0].parentIndicatorsIDs" cssClass="indicatorsCheckbox" /]
+                    <div id="indicatorsBlock-${ccafsIDOs?size+ido_index}" class="idosIndicators checkboxGroup vertical" ${indicatorsVisible}> 
+                      [@s.checkboxlist name="idoIndicator" list="idos[${ccafsIDOs?size+ido_index}].indicators" listKey="id" listValue="description" value="outcomes[0].parentIndicatorsIDs" cssClass="indicatorsCheckbox" /]
                     </div>
                   [/#if]
                   </div>
                 [/#list]
-              </div>  
             [/#if] 
           [/#if] 
+          </div>  
           
           [#if currentUser.RPL]
             [#-- FPL Indicators --]
