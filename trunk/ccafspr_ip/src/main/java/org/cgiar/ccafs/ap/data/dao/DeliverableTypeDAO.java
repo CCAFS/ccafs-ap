@@ -45,10 +45,9 @@ public interface DeliverableTypeDAO {
   public Map<String, String> getDeliverableTypeById(int deliverableTypeID);
 
   /**
-   * This method gets all the Deliverable information by a given Activity Id
+   * This method gets all the Deliverable information
    * 
-   * @param activityID - is the Id of the Activity
-   * @return a List of Map of the Deliverables Information related with the activity
+   * @return a List of Map of the Deliverables Information
    */
   public List<Map<String, String>> getDeliverableTypes();
 

@@ -31,8 +31,7 @@ import org.slf4j.LoggerFactory;
  */
 public class ActivityListAction extends BaseAction {
 
-
-  private static final long serialVersionUID = 2845677913596494699L;
+  private static final long serialVersionUID = 9220048731862143500L;
 
   // Manager
   private ActivityManager activityManager;

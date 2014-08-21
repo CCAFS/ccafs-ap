@@ -33,17 +33,17 @@
     </h1> 
     [@activityImpactPathway.activityImpactPathwayContribute  /]
     <div class="halfPartBlock">
-    	<b>[@s.text name="planning.activityImpactPathways.higherImpact" /]</b>
+      <b>[@s.text name="planning.activityImpactPathways.higherImpact" /]</b>
     </div>
     <div id="addActivityIPMog" class="addLink">
-		<a href="" class="addButton" >[@s.text name="planning.activityImpactPathways.addMog" /]</a>
-	</div>
-	<hr/>
+      <a href="" class="addButton" >[@s.text name="planning.activityImpactPathways.addMog" /]</a>
+    </div>
+    <hr/>
     [@activityImpactPathway.activityImpactPathwayTarget  /]
     <div id="addActivityIPTarget" class="addLink">
-		<a href=""  class="addButton">[@s.text name="planning.activityImpactPathways.addTarget" /]</a>
-	</div>
-	<div class="buttons">
+      <a href=""  class="addButton">[@s.text name="planning.activityImpactPathways.addTarget" /]</a>
+    </div>
+    <div class="buttons">
       [@s.submit type="button" name="save"][@s.text name="form.buttons.save" /][/@s.submit]
       [@s.submit type="button" name="next"][@s.text name="form.buttons.next" /][/@s.submit]
       [@s.submit type="button" name="cancel"][@s.text name="form.buttons.cancel" /][/@s.submit]

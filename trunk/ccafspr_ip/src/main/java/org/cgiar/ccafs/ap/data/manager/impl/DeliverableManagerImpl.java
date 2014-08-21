@@ -16,6 +16,7 @@ package org.cgiar.ccafs.ap.data.manager.impl;
 import org.cgiar.ccafs.ap.data.dao.DeliverableDAO;
 import org.cgiar.ccafs.ap.data.manager.DeliverableManager;
 import org.cgiar.ccafs.ap.data.manager.DeliverableTypeManager;
+import org.cgiar.ccafs.ap.data.manager.NextUserManager;
 import org.cgiar.ccafs.ap.data.model.Deliverable;
 
 import java.util.ArrayList;
@@ -40,12 +41,15 @@ public class DeliverableManagerImpl implements DeliverableManager {
 
   // Managers
   private DeliverableTypeManager deliverableTypeManager;
+  private NextUserManager nextUserManager;
 
 
   @Inject
-  public DeliverableManagerImpl(DeliverableDAO deliverableDAO, DeliverableTypeManager deliverableTypeManager) {
+  public DeliverableManagerImpl(DeliverableDAO deliverableDAO, DeliverableTypeManager deliverableTypeManager,
+    NextUserManager nextUserManager) {
     this.deliverableDAO = deliverableDAO;
     this.deliverableTypeManager = deliverableTypeManager;
+    this.nextUserManager = nextUserManager;
   }
 
   @Override
@@ -86,6 +90,7 @@ public class DeliverableManagerImpl implements DeliverableManager {
       deliverable.setYear(Integer.parseInt(deliverableData.get("year")));
       deliverable
         .setType(deliverableTypeManager.getDeliverableTypeById(Integer.parseInt(deliverableData.get("type_id"))));
+      deliverable.setNextUsers(nextUserManager.getNextUsersByDeliverableId(activityID));
 
       // adding information of the object to the array
       deliverableList.add(deliverable);

@@ -16,7 +16,7 @@
 [#include "/WEB-INF/global/pages/header.ftl" /]
 [#include "/WEB-INF/global/pages/main-menu.ftl" /]
 [#import "/WEB-INF/global/macros/forms.ftl" as customForm/]
-[#import "/WEB-INF/planning/macros/activityDeliverablesTemplate.ftl" as activityDeliverable/]
+[#import "/WEB-INF/planning/macros/activityDeliverablesTemplate.ftl" as activityDeliverableTemplate/]
     
 <section class="content">
   <div class="helpMessage">
@@ -28,22 +28,20 @@
 
   
   [@s.form action="activityDeliverables" cssClass="pure-form"]  
-  <article class="halfContent" id="activityDeliverables">
-    <h1 class="contentTitle">
-    [@s.text name="planning.deliverables" /] 
-    </h1> 
-	[@activityDeliverable.activityDeliverable  /]
-
-    <div id="addDeliverable" class="addLink">
-	  <a href="" class="addButton" >[@s.text name="planning.deliverables.addDeliverable" /]</a>
-	</div>
-    <div class="buttons">
-      [@s.submit type="button" name="save"][@s.text name="form.buttons.save" /][/@s.submit]
-      [@s.submit type="button" name="next"][@s.text name="form.buttons.next" /][/@s.submit]
-      [@s.submit type="button" name="cancel"][@s.text name="form.buttons.cancel" /][/@s.submit]
-    </div>
-     
-  </article>
+    <article class="halfContent" id="activityDeliverables">
+      <h1 class="contentTitle">
+      [@s.text name="planning.deliverables" /] 
+      </h1>
+      [@activityDeliverableTemplate.activityDeliverable deliverables=deliverables/]
+      <div id="addDeliverable" class="addLink">
+        <a href="" class="addButton" >[@s.text name="planning.deliverables.addDeliverable" /]</a>
+      </div>
+      <div class="buttons">
+        [@s.submit type="button" name="save"][@s.text name="form.buttons.save" /][/@s.submit]
+        [@s.submit type="button" name="next"][@s.text name="form.buttons.next" /][/@s.submit]
+        [@s.submit type="button" name="cancel"][@s.text name="form.buttons.cancel" /][/@s.submit]
+      </div>
+    </article>
   [/@s.form]  
 </section>
 [#include "/WEB-INF/global/pages/footer.ftl"]
