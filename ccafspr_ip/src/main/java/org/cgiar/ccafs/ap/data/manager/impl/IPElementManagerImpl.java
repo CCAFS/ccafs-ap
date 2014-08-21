@@ -50,6 +50,11 @@ public class IPElementManagerImpl implements IPElementManager {
   }
 
   @Override
+  public boolean deleteChildIPElements(IPElement parentElement) {
+    return ipElementDAO.deleteChildIPElements(parentElement.getId());
+  }
+
+  @Override
   public boolean deleteIPElement(IPElement element, IPProgram program) {
     boolean deleted = false;
     boolean isElementCreator = (element.getProgram().getId() == program.getId());

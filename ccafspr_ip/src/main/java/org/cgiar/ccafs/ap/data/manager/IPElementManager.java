@@ -26,6 +26,15 @@ import com.google.inject.ImplementedBy;
 public interface IPElementManager {
 
   /**
+   * Delete all the ipElement that appears as child of the ipElement
+   * received as parameter.
+   * 
+   * @param parentElement - Parent IP element
+   * @return true if the information was removed successfully or if no child elements were removed. False otherwise
+   */
+  public boolean deleteChildIPElements(IPElement parentElement);
+
+  /**
    * This method delete the relation between the ipElement given and the ipProgram
    * passed as parameter.
    * If the parameter program is the same as element.getProgram then the IPElement

@@ -75,6 +75,25 @@ public class MySQLIPElementDAO implements IPElementDAO {
   }
 
   @Override
+  public boolean deleteChildIPElements(int parentElmentID) {
+    LOG.debug(">> deleteChildIPElements(parentElmentID={})", parentElmentID);
+
+    StringBuilder query = new StringBuilder();
+    query.append("DELETE ipe.* FROM ip_elements ipe ");
+    query.append("INNER JOIN ip_relationships ipr ON ipe.id = ipr.child_id ");
+    query.append("WHERE ipr.parent_id = ? ");
+
+    int rowsDeleted = databaseManager.delete(query.toString(), new Object[] {parentElmentID});
+    if (rowsDeleted >= 0) {
+      LOG.debug("<< deleteChildIPElements():{}", true);
+      return true;
+    }
+
+    LOG.debug("<< deleteChildIPElements():{}", false);
+    return false;
+  }
+
+  @Override
   public boolean deleteIPElement(int ipElementID) {
     LOG.debug(">> deleteIPElement(ipElementID={})", ipElementID);
 
@@ -204,6 +223,7 @@ public class MySQLIPElementDAO implements IPElementDAO {
     query.append("WHERE pel.program_id = ");
     query.append(programID);
     query.append(" GROUP BY e.id");
+    query.append(" ORDER BY et.id, pro.type_id ");
 
 
     LOG.debug("-- getIPElement() > Calling method executeQuery to get the results");
@@ -273,6 +293,7 @@ public class MySQLIPElementDAO implements IPElementDAO {
     query.append("INNER JOIN ip_program_elements pel ON e.id = pel.element_id ");
     query.append("INNER JOIN ip_programs pro ON pel.program_id = pro.id ");
     query.append("GROUP BY e.id ");
+    query.append("ORDER BY et.id, pro.type_id ");
 
     LOG.debug("-- getIPElementList () > Calling method executeQuery to get the results");
     return getData(query.toString());

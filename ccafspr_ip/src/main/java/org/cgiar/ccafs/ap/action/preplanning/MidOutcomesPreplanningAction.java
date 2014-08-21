@@ -141,6 +141,9 @@ public class MidOutcomesPreplanningAction extends BaseAction {
 
       // Check if the user delete a midOutcome in the interface
       if (!midOutcomes.contains(midOutcome)) {
+        // Before delete the ipElement we should delete the child elements
+        ipElementManager.deleteChildIPElements(midOutcome);
+        // Delete the element
         ipElementManager.deleteIPElement(midOutcome, getCurrentUser().getCurrentInstitution().getProgram());
       } else {
         // Remove the relations and indicators of the midOutcome
@@ -163,7 +166,7 @@ public class MidOutcomesPreplanningAction extends BaseAction {
     }
 
 
-    // Remove records already present in the database
+    // Save all the elements brougth from the user interface
     if (ipElementManager.saveIPElements(midOutcomes)) {
       addActionMessage(getText("saving.success", new String[] {getText("preplanning.midOutcomes.title")}));
       return SUCCESS;

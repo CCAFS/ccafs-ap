@@ -36,6 +36,15 @@ public interface IPElementDAO {
   public int createIPElement(Map<String, Object> ipElementData);
 
   /**
+   * Delete all the ipElement that appears as child of the ipElement
+   * received as parameter.
+   * 
+   * @param parentElmentID - Parent IP element
+   * @return true if the information was removed successfully or if no child elements were removed. False otherwise
+   */
+  public boolean deleteChildIPElements(int parentElmentID);
+
+  /**
    * This method remove from the database the IPElement identified with the
    * parameter received
    * 
