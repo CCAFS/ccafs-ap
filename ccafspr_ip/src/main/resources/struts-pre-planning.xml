@@ -10,7 +10,7 @@
     <!-- Sections -->
     
     <!-- Section: Higher Level Impact Pathways  -->
-    <action name="outcomes" class="org.cgiar.ccafs.ap.action.preplanning.OutcomesPreplanningAction">      
+    <action name="outcomes" class="org.cgiar.ccafs.ap.action.preplanning.OutcomesPreplanningAction">
       <result name="cancel" type="redirectAction">
         <param name="namespace">/</param>
         <param name="actionName">login</param>

@@ -82,8 +82,12 @@ public class OutputsPreplanningAction extends BaseAction {
 
   @Override
   public String next() {
-    save();
-    return super.next();
+    String result = save();
+    if (result.equals(BaseAction.SUCCESS)) {
+      return BaseAction.NEXT;
+    } else {
+      return result;
+    }
   }
 
   @Override

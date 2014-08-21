@@ -117,7 +117,7 @@ public class ProjectBudgetPreplanningAction extends BaseAction {
           } else if (budget.getType().getValue() == BudgetType.BILATERAL.getValue()) {
             bilateral = true;
             budgetsMap
-            .put(year + "-" + projectPartner.getPartner().getId() + "-" + BudgetType.BILATERAL.name(), budget);
+              .put(year + "-" + projectPartner.getPartner().getId() + "-" + BudgetType.BILATERAL.name(), budget);
           }
         }
       }
@@ -224,8 +224,8 @@ public class ProjectBudgetPreplanningAction extends BaseAction {
       newBudget.setAmount(0);
       newBudget.setYear(year);
       budgetsMap
-      .put(year + "-" + project.getLeader().getCurrentInstitution().getId() + "-" + BudgetType.BILATERAL.name(),
-        newBudget);
+        .put(year + "-" + project.getLeader().getCurrentInstitution().getId() + "-" + BudgetType.BILATERAL.name(),
+          newBudget);
     }
 
     // Leveraged
@@ -319,8 +319,12 @@ public class ProjectBudgetPreplanningAction extends BaseAction {
 
   @Override
   public String next() {
-    save();
-    return super.next();
+    String result = save();
+    if (result.equals(BaseAction.SUCCESS)) {
+      return BaseAction.NEXT;
+    } else {
+      return result;
+    }
   }
 
   @Override
