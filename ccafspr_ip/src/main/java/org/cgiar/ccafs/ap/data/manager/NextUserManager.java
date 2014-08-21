@@ -28,9 +28,9 @@ public interface NextUserManager {
 
 
   /**
-   * This method removes a set of activities that belongs to a specific project.
+   * This method removes a set of activities that belongs to a specific Deliverable.
    * 
-   * @param deliverableID is the project identifier.
+   * @param deliverableID is the Deliverable identifier.
    * @return true if the set of activities were successfully deleted, false otherwise.
    */
   public boolean deleteNextUserByDeliverable(int deliverableID);
@@ -53,15 +53,15 @@ public interface NextUserManager {
 
 
   /**
-   * This method gets all the activity information by a given Project Id
+   * This method gets all the activity information by a given Deliverable Id
    * 
-   * @param deliverableID - is the Id of the project
-   * @return a List of activities with the activity Information related with the project
+   * @param deliverableID - is the Id of the Deliverable
+   * @return a List of activities with the activity Information related with the Deliverable
    */
   public List<NextUser> getNextUsersByDeliverableId(int deliverableID);
 
   /**
-   * This method saves the information of the given activity that belong to a specific project into the database.
+   * This method saves the information of the given activity that belong to a specific Deliverable into the database.
    * 
    * @param deliverableID
    * @param nextUser

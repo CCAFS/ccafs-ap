@@ -17,8 +17,10 @@ import org.cgiar.ccafs.ap.action.BaseAction;
 import org.cgiar.ccafs.ap.config.APConfig;
 import org.cgiar.ccafs.ap.config.APConstants;
 import org.cgiar.ccafs.ap.data.manager.ActivityManager;
+import org.cgiar.ccafs.ap.data.manager.IPCrossCuttingManager;
 import org.cgiar.ccafs.ap.data.manager.InstitutionManager;
 import org.cgiar.ccafs.ap.data.model.Activity;
+import org.cgiar.ccafs.ap.data.model.IPCrossCutting;
 import org.cgiar.ccafs.ap.data.model.Institution;
 
 import java.util.List;
@@ -33,66 +35,65 @@ import org.slf4j.LoggerFactory;
  */
 public class ActivityDescriptionAction extends BaseAction {
 
-
-  private static final long serialVersionUID = 2845677913596494699L;
-
-  // Manager
-  private ActivityManager activityManager;
-  private InstitutionManager institutionManager;
+  private static final long serialVersionUID = -2523743477705227748L;
 
   // LOG
   private static Logger LOG = LoggerFactory.getLogger(ActivityDescriptionAction.class);
 
+  // Manager
+  private ActivityManager activityManager;
+  private InstitutionManager institutionManager;
+  private IPCrossCuttingManager ipCrossCuttingManager;
+
   // Model for the back-end
   private Activity activity;
 
-
   // Model for the front-end
   private int activityID;
+  private List<IPCrossCutting> ipCrossCuttings;
   private List<Institution> allPartners;
-  private boolean hasExpectedLeader;
-
 
   @Inject
   public ActivityDescriptionAction(APConfig config, ActivityManager activityManager,
-    InstitutionManager institutionManager) {
+    InstitutionManager institutionManager, IPCrossCuttingManager ipCrossCuttingManager) {
     super(config);
     this.activityManager = activityManager;
     this.institutionManager = institutionManager;
+    this.ipCrossCuttingManager = ipCrossCuttingManager;
   }
-
 
   public Activity getActivity() {
     return activity;
   }
 
+
   public int getActivityID() {
     return activityID;
   }
 
-  /**
-   * This method returns an array of cross cutting ids depending on the project.crossCuttings attribute.
-   *
-   * @return an array of integers.
-   */
-// public int[] getCrossCuttingIds() {
-// if (this.project.getCrossCuttings() != null) {
-// int[] ids = new int[this.project.getCrossCuttings().size()];
-// for (int c = 0; c < ids.length; c++) {
-// ids[c] = this.project.getCrossCuttings().get(c).getId();
-// }
-// return ids;
-// }
-// return null;
-// }
 
   public List<Institution> getAllPartners() {
     return allPartners;
   }
 
+  /**
+   * This method returns an array of cross cutting ids depending on the project.crossCuttings attribute.
+   * 
+   * @return an array of integers.
+   */
+  public int[] getCrossCuttingIds() {
+    if (this.activity.getCrossCuttings() != null) {
+      int[] ids = new int[this.activity.getCrossCuttings().size()];
+      for (int c = 0; c < ids.length; c++) {
+        ids[c] = this.activity.getCrossCuttings().get(c).getId();
+      }
+      return ids;
+    }
+    return null;
+  }
 
-  public boolean isHasExpectedLeader() {
-    return hasExpectedLeader;
+  public List<IPCrossCutting> getIpCrossCuttings() {
+    return ipCrossCuttings;
   }
 
 
@@ -108,12 +109,15 @@ public class ActivityDescriptionAction extends BaseAction {
     }
 
     // Getting the information of the Cross Cutting Theme for the View
-// ipCrossCuttings = ipCrossCuttingManager.getIPCrossCuttings();
+    ipCrossCuttings = ipCrossCuttingManager.getIPCrossCuttings();
 
     // Getting the information for the activity
     activity = activityManager.getActivityById(activityID);
     // Getting the List of Institutions
     allPartners = institutionManager.getAllInstitutions();
+
+    // Getting the information of the Cross Cutting Theme associated with the project
+    activity.setCrossCuttings(ipCrossCuttingManager.getIPCrossCuttingByActivityID(activityID));
   }
 
 
@@ -127,16 +131,13 @@ public class ActivityDescriptionAction extends BaseAction {
       success = false;
     }
 
-
     return INPUT;
 
   }
 
-
   public void setActivity(Activity activity) {
     this.activity = activity;
   }
-
 
   public void setActivityID(int activityID) {
     this.activityID = activityID;
@@ -147,8 +148,7 @@ public class ActivityDescriptionAction extends BaseAction {
     this.allPartners = allPartners;
   }
 
-
-  public void setHasExpectedLeader(boolean hasExpectedLeader) {
-    this.hasExpectedLeader = hasExpectedLeader;
+  public void setIpCrossCuttings(List<IPCrossCutting> ipCrossCuttings) {
+    this.ipCrossCuttings = ipCrossCuttings;
   }
 }

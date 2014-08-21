@@ -24,16 +24,14 @@
     <p> [@s.text name="planning.activities.help" /] </p>
   </div>
   [#include "/WEB-INF/planning/planningProjectsSubMenu.ftl" /]
-  
+
   [@s.form action="activities" cssClass="pure-form"]  
-  <article class="halfContent" id="activities"> 
-  	 
-    <h1 class="contentTitle">
-    [@s.text name="planning.activities.title" /]  
-    </h1> 
-    [@activitiesList.activitiesList activities=activities canValidate=true canEditProject=true tableID="activities" /]
-    
-  </article>
+    <article class="halfContent" id="activities"> 
+      <h1 class="contentTitle">
+      [@s.text name="planning.activities.title" /]  
+      </h1> 
+      [@activitiesList.activitiesList activities=activities canValidate=true canEditProject=true tableID="activities" /]
+    </article>
   [/@s.form]  
 </section>
 [#include "/WEB-INF/global/pages/footer.ftl"]

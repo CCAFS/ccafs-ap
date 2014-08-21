@@ -76,7 +76,7 @@ public class ProjectDescriptionPreplanningAction extends BaseAction {
   /**
    * This method returns a composed name with the Acronym and Name.
    * e.g. FP4: Policies and Institutions for Climate-Resilient Food Systems
-   *
+   * 
    * @param ipProgramId is the program identifier.
    * @return the composed name described above.
    */
@@ -91,7 +91,7 @@ public class ProjectDescriptionPreplanningAction extends BaseAction {
 
   /**
    * This method returns an array of cross cutting ids depending on the project.crossCuttings attribute.
-   *
+   * 
    * @return an array of integers.
    */
 // public int[] getCrossCuttingIds() {
@@ -112,7 +112,7 @@ public class ProjectDescriptionPreplanningAction extends BaseAction {
 
   /**
    * This method returns an array of flagship ids depending on the project.flagships attribute.
-   *
+   * 
    * @return an array of integers.
    */
   public int[] getFlagshipIds() {
@@ -154,7 +154,7 @@ public class ProjectDescriptionPreplanningAction extends BaseAction {
 
   /**
    * This method returns an array of region ids depending on the project.regions attribute.
-   *
+   * 
    * @return an array of integers.
    */
   public int[] getRegionIds() {
@@ -194,8 +194,6 @@ public class ProjectDescriptionPreplanningAction extends BaseAction {
     // Getting the information of the Flagships program for the View
     ipProgramFlagships = ipProgramManager.getProgramsByType(APConstants.FLAGSHIP_PROGRAM_TYPE);
 
-    // Getting the information of the Cross Cutting Theme for the View
-    // ipCrossCuttings = ipCrossCuttingManager.getIPCrossCuttings();
 
     // Getting project
     project = projectManager.getProject(projectID);
@@ -208,8 +206,6 @@ public class ProjectDescriptionPreplanningAction extends BaseAction {
       project.setRegions(ipProgramManager.getProjectFocuses(projectID, APConstants.REGION_PROGRAM_TYPE));
       // Getting the information of the Regions Program associated with the project
       project.setFlagships(ipProgramManager.getProjectFocuses(projectID, APConstants.FLAGSHIP_PROGRAM_TYPE));
-      // Getting the information of the Cross Cutting Theme associated with the project
-      // project.setCrossCuttings(ipCrossCuttingManager.getIPCrossCuttingByProject(projectID));
     }
 
 

@@ -88,7 +88,7 @@
       <result name="input">/WEB-INF/planning/activityDescriptionPlanning.ftl</result>
     </action>
     
-    <action name="activityPartners" class="org.cgiar.ccafs.ap.action.BaseAction">
+    <action name="activityPartners" class="org.cgiar.ccafs.ap.action.planning.ActivityPartnersAction">
       <result name="input">/WEB-INF/planning/activityPartnersPlanning.ftl</result>
     </action>
 
@@ -108,15 +108,15 @@
       </result>
     </action>
     
-    <action name="activityImpactPathway" class="org.cgiar.ccafs.ap.action.BaseAction">
+    <action name="activityImpactPathway" class="org.cgiar.ccafs.ap.action.planning.ActivityImpactPathwayAction">
       <result name="input">/WEB-INF/planning/activityImpactPathwayPlanning.ftl</result>
     </action>
         
-    <action name="activityIpOtherContributions" class="org.cgiar.ccafs.ap.action.BaseAction">
+    <action name="activityIpOtherContributions" class="org.cgiar.ccafs.ap.action.planning.ActivityIPOtherContributionAction">
       <result name="input">/WEB-INF/planning/activityipOtherContributionPlanning.ftl</result>
     </action>
     
-    <action name="activityDeliverables" class="org.cgiar.ccafs.ap.action.BaseAction">
+    <action name="activityDeliverables" class="org.cgiar.ccafs.ap.action.planning.ActivityDeliverablesAction">
       <result name="input">/WEB-INF/planning/activityDeliverablesPlanning.ftl</result>
     </action>
   </package>

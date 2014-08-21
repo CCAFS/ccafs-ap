@@ -45,9 +45,9 @@ public interface DeliverableTypeManager {
 
 
   /**
-   * This method gets all the deliverables information by a given activity Id
+   * This method gets all the deliverables information
    * 
-   * @return a List of deliverables with the Information related with the activity
+   * @return a List of deliverables with the Information
    */
   public List<DeliverableType> getDeliverableTypes();
 
