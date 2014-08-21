@@ -28,8 +28,16 @@
 
   [@s.form action="activityDescription" cssClass="pure-form"]  
     <article class="halfContent" id="activityDescription">
+      [#-- Informing user that he/she doesn't have enough privileges to edit. See Grant--AccessInterceptor--]
+      [#if !saveable]
+        <p class="readPrivileges">
+          [@s.text name="saving.read.privileges"]
+            [@s.param][@s.text name="planning.activityDescription"/][/@s.param]
+          [/@s.text]
+        </p>
+      [/#if]
       <h1 class="contentTitle">
-      [@s.text name="planning.activityDescription.title" /] 
+      [@s.text name="planning.activityDescription" /] 
       </h1>
       <div id="activityDescription" >
       <fieldset class="fullBlock">  
@@ -87,13 +95,14 @@
 
     </fieldset><br/>
     </div> 
-    
-    <div class="buttons">
-      [@s.submit type="button" name="save"][@s.text name="form.buttons.save" /][/@s.submit]
-      [@s.submit type="button" name="next"][@s.text name="form.buttons.next" /][/@s.submit]
-      [@s.submit type="button" name="cancel"][@s.text name="form.buttons.cancel" /][/@s.submit]
-    </div>
-     
+    [#if saveable]
+      <input type="hidden" name="activityID" value="${activity.id?c}">
+      <div class="buttons">
+        [@s.submit type="button" name="save"][@s.text name="form.buttons.save" /][/@s.submit]
+        [@s.submit type="button" name="next"][@s.text name="form.buttons.next" /][/@s.submit]
+        [@s.submit type="button" name="cancel"][@s.text name="form.buttons.cancel" /][/@s.submit]
+      </div>
+    [/#if]
   </article>
   [/@s.form]  
 </section>
