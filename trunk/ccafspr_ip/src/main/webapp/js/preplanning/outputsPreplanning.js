@@ -1,5 +1,5 @@
 //Limits for textarea input
-var lWordsElemetDesc = 150;
+var lWordsElemetDesc = 300;
 
 $(document).ready(function(){
   init();

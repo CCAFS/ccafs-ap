@@ -63,7 +63,7 @@
                     [@customForm.select name="flagships" label="" i18nkey="preplanning.outputsRPL.flagships" listName="flagshipsList" keyFieldName="id"  displayFieldName="getComposedName()" value="${output.translatedOf[0].program.id}" /]
                   </div>
                   [#-- midOutcomes list --]
-                  <div class="fullBlock chosen">
+                  <div class="fullBlock chosen"> 
                     <input type="hidden" id="midOutcomeSelected" value="${output.translatedOf[0].contributesTo[0].id}">
                     [@customForm.select name="midOutcomes" label="" i18nkey="preplanning.outputsRPL.midOutcomes" listName="" keyFieldName="id"  displayFieldName="name" value="${output.translatedOf[0].contributesTo[0].id}"/]
                   </div>

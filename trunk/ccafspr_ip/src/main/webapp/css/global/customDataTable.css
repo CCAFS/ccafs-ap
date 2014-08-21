@@ -77,6 +77,9 @@ table.dataTable thead th {
   border: 1px solid #8ea786;
   font-size: 13px;
   vertical-align: middle;
+  padding: 2px 16px 2px 10px;
+  font-weight: lighter;
+  cursor: pointer;
 }
 
 table.dataTable td {
@@ -179,7 +182,7 @@ table.dataTable a {
 }
 
 .dataTables_length {
-	position: absolute;
-	top: 17px;
-	left: 0;
+  position: absolute;
+  top: 17px;
+  left: 0;
 }
