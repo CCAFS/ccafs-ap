@@ -62,6 +62,14 @@ public interface ActivityDAO {
   public Map<String, String> getActivityById(int activityID);
 
   /**
+   * This method gets a list of activities Id related with the program creator Id of the Project
+   * 
+   * @param programID
+   * @return a list of activities Id
+   */
+  public List<Integer> getActivityIdsEditable(int programID);
+
+  /**
    * This method gets the information of the Expected Activity Leader by a given Activity ID
    * 
    * @param activityID - is the id of the activity
