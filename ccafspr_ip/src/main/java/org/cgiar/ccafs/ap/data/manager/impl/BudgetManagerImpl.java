@@ -94,6 +94,27 @@ public class BudgetManagerImpl implements BudgetManager {
   }
 
   @Override
+  public List<Budget> getActivityBudgetsByType(int activityID, int budgetType) {
+    List<Budget> budgets = new ArrayList<>();
+    List<Map<String, String>> budgetDataList = budgetDAO.getActivityBudgetsByType(activityID, budgetType);
+    for (Map<String, String> budgetData : budgetDataList) {
+      Budget budget = new Budget();
+      budget.setId(Integer.parseInt(budgetData.get("id")));
+      budget.setYear(Integer.parseInt(budgetData.get("year")));
+      budget.setType(BudgetType.ACTIVITY);
+
+      budget.setAmount(Double.parseDouble(budgetData.get("amount")));
+
+      // Institution as institution_id
+      budget.setInstitution(institutionManager.getInstitution(Integer.parseInt(budgetData.get("institution_id"))));
+
+      // adding information of the object to the array
+      budgets.add(budget);
+    }
+    return budgets;
+  }
+
+  @Override
   public List<Budget> getBudgetsByProject(Project project) {
 
     List<Integer> allYears = project.getAllYears();
@@ -276,15 +297,40 @@ public class BudgetManagerImpl implements BudgetManager {
   }
 
   @Override
-  public boolean saveBudget(int projectID, Budget budget) {
+  public boolean saveActivityBudget(int activityID, Budget activityBudget) {
+    boolean allSaved = true;
+    Map<String, Object> budgetData = new HashMap<>();
+    if (activityBudget.getId() > 0) {
+      budgetData.put("id", activityBudget.getId());
+    }
+    budgetData.put("year", activityBudget.getYear());
+    budgetData.put("budget_type", activityBudget.getType().getValue());
+    budgetData.put("institution_id", activityBudget.getInstitution().getId());
+    budgetData.put("amount", activityBudget.getAmount());
 
+    int result = budgetDAO.saveActivityBudget(activityID, budgetData);
+
+    if (result > 0) {
+      LOG.debug("saveActivityBudget > New Budget and Activity Budget added with id {}", result);
+    } else if (result == 0) {
+      LOG.debug("saveActivityBudget > Budget with id={} was updated", activityBudget.getId());
+    } else {
+      LOG
+        .error("saveActivityBudget > There was an error trying to save/update a Budget from ActivityId={}", activityID);
+      allSaved = false;
+    }
+    return allSaved;
+  }
+
+  @Override
+  public boolean saveBudget(int projectID, Budget budget) {
     boolean allSaved = true;
     Map<String, Object> budgetData = new HashMap<>();
     if (budget.getId() > 0) {
       budgetData.put("id", budget.getId());
     }
     budgetData.put("year", budget.getYear());
-    budgetData.put("budget_type", budget.getType().getValue()); // validar como pasar el valor
+    budgetData.put("budget_type", budget.getType().getValue());
     budgetData.put("institution_id", budget.getInstitution().getId());
     budgetData.put("amount", budget.getAmount());
 
@@ -298,8 +344,6 @@ public class BudgetManagerImpl implements BudgetManager {
       LOG.error("saveBudget > There was an error trying to save/update a Budget from projectId={}", projectID);
       allSaved = false;
     }
-
     return allSaved;
-
   }
 }

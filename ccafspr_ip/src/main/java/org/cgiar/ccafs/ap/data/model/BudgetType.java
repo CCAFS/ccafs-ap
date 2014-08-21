@@ -18,11 +18,11 @@ import org.apache.commons.lang3.builder.ToStringBuilder;
 /**
  * This enum represents the different type of Budget the system will manage.
  * The value for each enum corresponds with the ids that are assigned in the database.
- *
+ * 
  * @author Héctor Fabio Tobón R.
  */
 public enum BudgetType {
-  W1(1), W2(2), W3(3), BILATERAL(4), LEVERAGED(5);
+  W1(1), W2(2), W3(3), BILATERAL(4), LEVERAGED(5), ACTIVITY(6);
 
   private int value;
 
