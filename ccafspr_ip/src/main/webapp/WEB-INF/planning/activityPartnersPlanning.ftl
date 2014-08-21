@@ -28,21 +28,31 @@
 
 
   [@s.form action="activityPartners" cssClass="pure-form"]  
-  <article class="halfContent" id="activityPartners">
-    <h1 class="contentTitle">
-      [@s.text name="planning.activityPartner.title" /] 
-    </h1> 
-    [@activityPartnersTemplate.activityPartner activityPartners=activityPartners/]
-    <div id="addActivityPartner" class="addLink">
-      <a href=""  class="addButton">[@s.text name="planning.activityPartner.addPartner" /]</a>
-    </div>
-    <div class="buttons">
-      [@s.submit type="button" name="save"][@s.text name="form.buttons.save" /][/@s.submit]
-      [@s.submit type="button" name="next"][@s.text name="form.buttons.next" /][/@s.submit]
-      [@s.submit type="button" name="cancel"][@s.text name="form.buttons.cancel" /][/@s.submit]
-    </div>
-
-  </article>
+    <article class="halfContent" id="activityPartners">
+      [#-- Informing user that he/she doesn't have enough privileges to edit. See Grant--AccessInterceptor--]
+      [#if !saveable]
+        <p class="readPrivileges">
+          [@s.text name="saving.read.privileges"]
+            [@s.param][@s.text name="planning.activityPartner.title"/][/@s.param]
+          [/@s.text]
+        </p>
+      [/#if]
+      <h1 class="contentTitle">
+        [@s.text name="planning.activityPartner.title" /] 
+      </h1> 
+      [@activityPartnersTemplate.activityPartner activityPartners=activityPartners/]
+      <div id="addActivityPartner" class="addLink">
+        <a href=""  class="addButton">[@s.text name="planning.activityPartner.addPartner" /]</a>
+      </div>
+      [#if saveable]
+        <input type="hidden" name="activityID" value="">
+        <div class="buttons">
+          [@s.submit type="button" name="save"][@s.text name="form.buttons.save" /][/@s.submit]
+          [@s.submit type="button" name="next"][@s.text name="form.buttons.next" /][/@s.submit]
+          [@s.submit type="button" name="cancel"][@s.text name="form.buttons.cancel" /][/@s.submit]
+        </div>
+      [/#if]
+    </article>
   [/@s.form]  
 </section>
 [#include "/WEB-INF/global/pages/footer.ftl"]
