@@ -20,24 +20,19 @@ import org.cgiar.ccafs.ap.data.manager.ProjectManager;
 import org.cgiar.ccafs.ap.data.manager.ProjectOutcomeManager;
 import org.cgiar.ccafs.ap.data.model.Project;
 import org.cgiar.ccafs.ap.data.model.ProjectOutcome;
-
-import java.util.Calendar;
-import java.util.Date;
-
 import com.google.inject.Inject;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 /**
- * @author Javier Andrés Galllego B.
+ * @author Javier Andrés Gallego B.
  */
 public class ProjectOutcomeAction extends BaseAction {
 
+  private static final long serialVersionUID = -4619407905666354050L;
 
-  private static final long serialVersionUID = 2845677913596494699L;
-
-  // Manager
+  // Managers
   private ProjectOutcomeManager projectOutcomeManager;
   private ProjectManager projectManager;
 
@@ -46,7 +41,6 @@ public class ProjectOutcomeAction extends BaseAction {
 
   // Model for the back-end
   private Project project;
-
 
   // Model for the front-end
   private int projectID;
@@ -68,48 +62,44 @@ public class ProjectOutcomeAction extends BaseAction {
     return projectID;
   }
 
-  public String getProjectRequest() {
-    return APConstants.PROJECT_REQUEST_ID;
+  @Override
+  public String next() {
+    String result = save();
+    if (result.equals(BaseAction.SUCCESS)) {
+      return BaseAction.NEXT;
+    } else {
+      return result;
+    }
   }
 
 
   @Override
   public void prepare() throws Exception {
-    super.prepare();
-    try {
-      projectID = Integer.parseInt(StringUtils.trim(this.getRequest().getParameter(APConstants.PROJECT_REQUEST_ID)));
-    } catch (NumberFormatException e) {
-      LOG.error("-- prepare() > There was an error parsing the project identifier '{}'.", projectID, e);
-      projectID = -1;
-      return; // Stop here and go to execute method.
-    }
+    projectID = Integer.parseInt(StringUtils.trim(this.getRequest().getParameter(APConstants.PROJECT_REQUEST_ID)));
 
+    // Getting the project.
     project = projectManager.getProject(projectID);
-    Calendar calendar = Calendar.getInstance();
-    calendar.setTime(new Date());
-    ProjectOutcome projectOutcome =
-      projectOutcomeManager.getProjectOutcomeByYear(projectID, calendar.get(Calendar.YEAR));
+
+    // Getting the current year from the properties file.
+    int currentPlanningYear = this.config.getPlanningCurrentYear();
+    ProjectOutcome projectOutcome = projectOutcomeManager.getProjectOutcomeByYear(projectID, currentPlanningYear);
     if (projectOutcome == null) {
       projectOutcome = new ProjectOutcome(-1);
-      projectOutcome.setYear(calendar.get(Calendar.YEAR));
+      projectOutcome.setYear(currentPlanningYear);
     }
     project.setOutcome(projectOutcome);
   }
 
-
   @Override
   public String save() {
-    boolean success = true;
     // Saving Project Outcome
-
     boolean saved = projectOutcomeManager.saveProjectOutcome(projectID, project.getOutcome());
     if (!saved) {
-      success = false;
+      addActionError(getText("saving.problem"));
+      return BaseAction.INPUT;
     }
-
-
-    return INPUT;
-
+    addActionMessage(getText("saving.success", new String[] {getText("planning.projectOutcome.title")}));
+    return BaseAction.SUCCESS;
   }
 
 
