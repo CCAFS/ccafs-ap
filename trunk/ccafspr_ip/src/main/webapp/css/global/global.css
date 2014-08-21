@@ -772,6 +772,14 @@ h1.contentSubTitle {
   font-weight: bold;
 }
 
+h3.contentSubTitle {
+  margin: 0px 10px;
+  padding: 2px 0px;
+  font-weight: bold;
+  color: #939393;
+  border-bottom: 1px solid #939393;
+}
+
 .fullContent h6+*, .halfContent h6+* {
   margin-left: 1px;
   margin-right: 0px;
@@ -1032,8 +1040,10 @@ h1.contentSubTitle {
 #idosBlock .ido {
     padding: 0.5em;
     font-weight: bold;
-    background: #EAF3FD;
-    margin: 0.2em;
+    background: #FFFFFF;
+    margin: 8px 20px 5px 20px;
+    border: 1px solid #E5E5E5;
+    border-radius: 5px;
 }
 
 #idosBlock .ido label { 
@@ -1146,14 +1156,14 @@ padding-left: 11px;
   background: url(../../images/global/ipGraph-hover.png) no-repeat center #57A7B5;  
 }
 
-#outputs .note {
+.note {
   background-color: #FFF7CF;
   padding: 5px;
   text-align: center;
   font-style: italic;
 }
 
-#outputs .note span {
+.note span {
   display: inline-block;
 }
 
@@ -1344,7 +1354,7 @@ table tr.row:hover{
 
 /** Project Outcomes **/
 #projectOutcomes .fullBlock {
-	margin: 20px 0px;
+  margin: 20px 0px;
 }
 
 /*** Activities ***/
@@ -1749,7 +1759,7 @@ ul#deliverablesFilesMessages > li {
 
 /*************** FOOTER ****************/
 footer {
-background: #A6D1D6;
+background: #E0E0E0;
 }
 
 #footerContainer {
@@ -1760,6 +1770,7 @@ background: #A6D1D6;
   height: 200px;
   padding-top: 50px;
   text-align: left;
+  color: #5A5A5A;
 }
 
 #footerContainer.little {
@@ -1796,7 +1807,7 @@ background: #A6D1D6;
   float: left;
   margin-left: 60px;
   margin-top: 15px;
-  font-weight: bold;
+  font-weight: lighter;
 }
 
 #footerContainer #copyright {

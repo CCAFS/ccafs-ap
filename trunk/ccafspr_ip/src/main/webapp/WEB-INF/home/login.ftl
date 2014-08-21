@@ -4,6 +4,7 @@
 [#assign customJS = ["${baseUrl}/js/home/login.js"] /]
 [#assign currentSection = "home" /]
 
+[#include "/WEB-INF/global/pages/previousVersionMessage.ftl" /]
 [#include "/WEB-INF/global/pages/header.ftl" /]
 [#include "/WEB-INF/global/pages/main-menu.ftl" /]
 [#import "/WEB-INF/global/macros/forms.ftl" as customForm /]
