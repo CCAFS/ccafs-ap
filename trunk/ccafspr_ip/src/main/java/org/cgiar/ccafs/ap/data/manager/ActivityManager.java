@@ -47,13 +47,21 @@ public interface ActivityManager {
   public boolean deleteActivity(int activityId);
 
   /**
+   * This method validate if the activity identify with the given id exists in the system.
+   * 
+   * @param activityID is an activity identifier.
+   * @return true if the activity exists, false otherwise.
+   */
+  public boolean existActivity(int activityID);
+
+
+  /**
    * This method gets all the activity information by a given Project Id
    *
    * @param projectID - is the Id of the project
    * @return a List of activities with the activity Information related with the project
    */
   public List<Activity> getActivitiesByProject(int projectID);
-
 
   /**
    * This method gets all the activity information by a given activity ID.
