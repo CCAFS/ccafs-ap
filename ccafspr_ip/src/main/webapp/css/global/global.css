@@ -1154,7 +1154,7 @@ padding-left: 11px;
 }
 
 #outputs .note span {
-	display: inline-block;
+  display: inline-block;
 }
 
 #outputs #addOutputBlock {
@@ -1231,11 +1231,20 @@ textarea[id$='summary'] {
   text-align: left;
 }
 
-#projectRegions .checkboxGroup { 
+#projectRegionsBlock {
+    border: 1px dotted#ccc;
+    padding: 12px 3px 23px 3px;
+}
+#projectFlagshipsBlock {
+    border: 1px dotted#CCC;  
+    padding: 11px 2px;
+}
+
+#projectRegionsBlock .checkboxGroup { 
    height: 67px;
 }
 
-#projectRegions .checkboxGroup label { 
+#projectRegionsBlock .checkboxGroup label { 
    width: 42%;
 }
 
@@ -1356,6 +1365,10 @@ table tr.row:hover{
 .location .removeButton {
   top: 12px;
   right: 3px;
+}
+
+.location select{
+    width: 100%;
 }
 
 /****** REPORTING **********/

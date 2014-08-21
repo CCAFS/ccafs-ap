@@ -36,7 +36,7 @@
     [/#if]
     
     [#-- Project Title --]
-  	<h1 class="contentTitle">
+  	<h1 class="contentTitle" >
       [@s.text name="preplanning.projectPartners.leader.title" /]
     </h1>
   	[#-- Displaying partner leader from partnersTemplate.ftl --]

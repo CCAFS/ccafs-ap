@@ -16,6 +16,7 @@
 [#include "/WEB-INF/global/pages/main-menu.ftl" /]
 [#import "/WEB-INF/global/macros/forms.ftl" as customForm/]
 [#import "/WEB-INF/global/macros/projectPartnersTemplate.ftl" as partnersTemplate /]
+[#import "/WEB-INF/global/macros/utils.ftl" as utilities/]
 
 <section class="content">
   <div class="helpMessage">
@@ -37,9 +38,13 @@
     [/#if]
   
   	[#include "/WEB-INF/preplanning/projectPreplanningSubMenu.ftl" /]
-  	<h1 class="contentTitle">
-      [#if project.title?has_content] ${project.title}[/#if]
-    </h1>
+     
+     [#if project.title?has_content] 
+      <h1 class="contentTitle" title="${project.title}"> 
+        ${project.composedId} - [@s.text name="preplanning.projectPartners.title" /]
+      </h1>
+     [/#if]
+     
   	<h1 class="contentSubTitle">
       [@s.text name="preplanning.projectPartners.leader.title" /]  
     </h1>

@@ -1,5 +1,5 @@
 //Limits for textarea input
-var lWordsElemetDesc = 150;
+var lWordsElemetDesc = 300;
 
 $(document).ready(function(){
   attachEvents();
@@ -8,6 +8,7 @@ $(document).ready(function(){
     $("select[id^='outputsRPL_flagships']").trigger("change");
     addChosen();
   }
+  applyWordCounter($("textarea"), lWordsElemetDesc);
   initGraph();
 });
 
@@ -112,7 +113,6 @@ function showOutputTranslatedWarning(event){
           "Add as new MOG" : function(){
             
             $("form").submit();
-            console.log("---------")
             $(this).dialog("close");
           },
           "Cancel" : function(){
