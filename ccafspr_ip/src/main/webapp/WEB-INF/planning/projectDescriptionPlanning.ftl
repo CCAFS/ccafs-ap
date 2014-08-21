@@ -67,7 +67,7 @@
         <legend>[@s.text name="preplanning.projectDescription.projectWorking" /] </legend> 
         <div id="projectWorking">
           [#-- Flagships --] 
-          <div id="projectFlagships" class="grid_5">
+          <div id="projectFlagshipsBlock" class="grid_5">
             <h6>[@s.text name="preplanning.projectDescription.flagships" /]</h6>
             <div class="checkboxGroup">  
               [@s.fielderror cssClass="fieldError" fieldName="project.flagships"/]
@@ -75,7 +75,7 @@
             </div>
           </div> 
           [#-- Regions --]
-          <div id="projectRegions" class="grid_4">
+          <div id="projectRegionsBlock" class="grid_4">
             <h6>[@s.text name="preplanning.projectDescription.regions" /]</h6>
             <div class="checkboxGroup">
               [@s.fielderror cssClass="fieldError" fieldName="project.regions"/]

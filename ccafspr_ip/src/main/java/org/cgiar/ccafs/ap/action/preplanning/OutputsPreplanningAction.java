@@ -13,6 +13,10 @@
  *****************************************************************/
 package org.cgiar.ccafs.ap.action.preplanning;
 
+import java.util.ArrayList;
+import java.util.List;
+
+import com.google.inject.Inject;
 import org.cgiar.ccafs.ap.action.BaseAction;
 import org.cgiar.ccafs.ap.config.APConfig;
 import org.cgiar.ccafs.ap.config.APConstants;
@@ -23,11 +27,6 @@ import org.cgiar.ccafs.ap.data.manager.IPProgramManager;
 import org.cgiar.ccafs.ap.data.model.IPElement;
 import org.cgiar.ccafs.ap.data.model.IPElementType;
 import org.cgiar.ccafs.ap.data.model.IPProgram;
-
-import java.util.ArrayList;
-import java.util.List;
-
-import com.google.inject.Inject;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -109,11 +108,9 @@ public class OutputsPreplanningAction extends BaseAction {
     flagshipsList.add(flagship);
 
     // Fake midOutcome to add as a placeholder if user is a FPL
-    if (getCurrentUser().isFPL()) {
-      IPElement outcome = new IPElement(-1);
-      outcome.setDescription(getText("preplanning.midOutcomesRPL.selectMidOutcome"));
-      midOutcomesList.add(outcome);
-    }
+    IPElement outcome = new IPElement(-1);
+    outcome.setDescription(getText("preplanning.midOutcomesRPL.selectMidOutcome"));
+    midOutcomesList.add(outcome);
 
     flagshipsList.addAll(ipProgramManager.getProgramsByType(APConstants.FLAGSHIP_PROGRAM_TYPE));
     midOutcomesList.addAll(ipElementManager.getIPElements(program, midOutcomesType));
