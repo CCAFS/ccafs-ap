@@ -19,7 +19,6 @@ package org.cgiar.ccafs.ap.data.dao;
  */
 import org.cgiar.ccafs.ap.data.dao.mysql.MySQLIPOtherContributionDAO;
 
-import java.util.List;
 import java.util.Map;
 
 import com.google.inject.ImplementedBy;
@@ -46,21 +45,21 @@ public interface IPOtherContributionDAO {
   public boolean deleteIPOtherContributionsByActivityId(int activityID);
 
   /**
+   * This method gets all the IP Other Contributions information by a given activity Id
+   * 
+   * @param activityID - is the Id of the activity
+   * @return a List of Map of the IP Other Contributions Information related with the activity
+   */
+  public Map<String, String> getIPOtherContributionByActivityId(int activityID);
+
+
+  /**
    * This method gets all the IP Other Contribution information by a given Id
    * 
    * @param ipOtherContributionId - is the ID of the IP Other Contribution
    * @return a Map of the IP Other Contribution Information related by the ID
    */
   public Map<String, String> getIPOtherContributionById(int ipOtherContributionId);
-
-
-  /**
-   * This method gets all the IP Other Contributions information by a given activity Id
-   * 
-   * @param activityID - is the Id of the activity
-   * @return a List of Map of the IP Other Contributions Information related with the activity
-   */
-  public List<Map<String, String>> getIPOtherContributionsByActivityId(int activityID);
 
   /**
    * This method saves or update the IP Other Contribution information
