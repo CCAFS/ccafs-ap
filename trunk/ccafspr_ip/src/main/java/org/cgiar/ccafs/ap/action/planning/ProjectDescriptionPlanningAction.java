@@ -344,9 +344,9 @@ public class ProjectDescriptionPlanningAction extends BaseAction {
       }
     } else {
       LOG
-      .warn(
-        "User (employee_id={}, email={}) tried to save information in Project Description without having enough privileges!",
-        new Object[] {this.getCurrentUser().getEmployeeId(), this.getCurrentUser().getEmail()});
+        .warn(
+          "User (employee_id={}, email={}) tried to save information in Project Description without having enough privileges!",
+          new Object[] {this.getCurrentUser().getEmployeeId(), this.getCurrentUser().getEmail()});
     }
     return BaseAction.ERROR;
 
@@ -362,5 +362,9 @@ public class ProjectDescriptionPlanningAction extends BaseAction {
 
   public void setProject(Project project) {
     this.project = project;
+  }
+
+  public void setProjectID(int projectID) {
+    this.projectID = projectID;
   }
 }

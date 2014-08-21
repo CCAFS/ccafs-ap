@@ -38,8 +38,7 @@
       ${project.composedId} - [@s.text name="planning.projectDescription.title" /]
     </h1> 
     <div id="projectDescription" class="borderBox">
-      [#-- Project identifier --]
-      <fieldset class="fullBlock">  
+      <fieldset class="fullBlock">
         [#-- Project Title --]
         [@customForm.textArea name="project.title" i18nkey="planning.projectDescription.projectTitle" required=true /]
         <div id="projectDescription" class="">
@@ -97,6 +96,7 @@
       </fieldset>
     </div> 
     [#if saveable]
+      [#-- Project identifier --]
       <input name="projectID" type="hidden" value="${project.id?c}" />
       <div class="buttons">
         [@s.submit type="button" name="save"][@s.text name="form.buttons.save" /][/@s.submit]

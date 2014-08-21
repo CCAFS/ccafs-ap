@@ -1333,6 +1333,11 @@ table tr.row:hover{
 
 /***************** PLANNING ******************/
 
+/** Project Outcomes **/
+#projectOutcomes .fullBlock {
+	margin: 20px 0px;
+}
+
 /*** Activities ***/
 .location.row, #location-head {
   padding: 8px 10px;
