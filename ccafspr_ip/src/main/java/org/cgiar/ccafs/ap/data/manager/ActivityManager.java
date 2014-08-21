@@ -16,6 +16,7 @@ package org.cgiar.ccafs.ap.data.manager;
 import org.cgiar.ccafs.ap.data.manager.impl.ActivityManagerImpl;
 import org.cgiar.ccafs.ap.data.model.Activity;
 import org.cgiar.ccafs.ap.data.model.ExpectedActivityLeader;
+import org.cgiar.ccafs.ap.data.model.User;
 
 import java.util.List;
 
@@ -60,6 +61,15 @@ public interface ActivityManager {
    * @return a List of activities objects.
    */
   public Activity getActivityById(int activityID);
+
+
+  /**
+   * This method gets a list of activities Id related with the program creator Id of the Project
+   * 
+   * @param user
+   * @return a list of activities Id
+   */
+  public List<Integer> getActivityIdsEditable(User user);
 
 
   /**

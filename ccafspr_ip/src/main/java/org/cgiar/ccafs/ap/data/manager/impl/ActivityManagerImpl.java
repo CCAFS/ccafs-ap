@@ -20,6 +20,7 @@ import org.cgiar.ccafs.ap.data.manager.InstitutionManager;
 import org.cgiar.ccafs.ap.data.manager.UserManager;
 import org.cgiar.ccafs.ap.data.model.Activity;
 import org.cgiar.ccafs.ap.data.model.ExpectedActivityLeader;
+import org.cgiar.ccafs.ap.data.model.User;
 
 import java.text.DateFormat;
 import java.text.ParseException;
@@ -46,18 +47,16 @@ public class ActivityManagerImpl implements ActivityManager {
   private ActivityDAO activityDAO;
 
   // Managers
-  private ActivityManager activityManager;
   private InstitutionManager institutionManager;
   private UserManager userManager;
 
   @Inject
-  public ActivityManagerImpl(ActivityDAO activityDAO, ActivityManager activityManager,
-    InstitutionManager institutionManager, UserManager userManager) {
+  public ActivityManagerImpl(ActivityDAO activityDAO, InstitutionManager institutionManager, UserManager userManager) {
     this.activityDAO = activityDAO;
-    this.activityManager = activityManager;
     this.institutionManager = institutionManager;
     this.userManager = userManager;
   }
+
 
   @Override
   public boolean deleteActivitiesByProject(int projectID) {
@@ -98,8 +97,8 @@ public class ActivityManagerImpl implements ActivityManager {
           LOG.error("There was an error formatting the end date", e);
         }
         if (activityData.get("expected_leader_id") != null) {
-          activity.setExpectedLeader(activityManager.getExpectedActivityLeaderByActivityId(Integer
-            .parseInt(activityData.get("id"))));
+          activity
+            .setExpectedLeader(this.getExpectedActivityLeaderByActivityId(Integer.parseInt(activityData.get("id"))));
         }
         if (activityData.get("leader_id") != null) {
           activity.setLeader(userManager.getOwner(Integer.parseInt(activityData.get("leader_id"))));
@@ -151,6 +150,11 @@ public class ActivityManagerImpl implements ActivityManager {
       return activity;
     }
     return null;
+  }
+
+  @Override
+  public List<Integer> getActivityIdsEditable(User user) {
+    return activityDAO.getActivityIdsEditable(user.getCurrentInstitution().getProgram().getId());
   }
 
   @Override

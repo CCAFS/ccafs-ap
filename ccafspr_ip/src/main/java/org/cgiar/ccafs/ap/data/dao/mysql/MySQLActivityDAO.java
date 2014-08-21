@@ -129,6 +129,34 @@ public class MySQLActivityDAO implements ActivityDAO {
     return activityData;
   }
 
+  @Override
+  public List<Integer> getActivityIdsEditable(int programID) {
+    LOG.debug(">> getActivityIdsEditable( programID={})", new Object[] {programID});
+    List<Integer> activityIds = new ArrayList<>();
+    try (Connection connection = databaseManager.getConnection()) {
+      StringBuilder query = new StringBuilder();
+      query.append("SELECT a.id ");
+      query.append("FROM activities a ");
+      query.append("INNER JOIN projects p ON a.project_id=p.id ");
+      query.append("INNER JOIN employees e ON p.project_leader_id=e.id ");
+      query.append("INNER JOIN ip_programs pr ON p.program_creator_id=pr.id ");
+      query.append("WHERE p.program_creator_id= ");
+      query.append(programID);
+      System.out.println(query.toString());
+      ResultSet rs = databaseManager.makeQuery(query.toString(), connection);
+      while (rs.next()) {
+        activityIds.add(rs.getInt("id"));
+      }
+      rs.close();
+    } catch (SQLException e) {
+      LOG.error("-- getActivityIdsEditable() > There was an error getting the data for  programID={}.",
+        new Object[] {programID}, e);
+      return null;
+    }
+    LOG.debug("<< getActivityIdsEditable():{}", activityIds);
+    return activityIds;
+  }
+
   private List<Map<String, String>> getData(String query) {
     LOG.debug(">> executeQuery(query='{}')", query);
     List<Map<String, String>> activitiesList = new ArrayList<>();
