@@ -45,7 +45,8 @@ public class OutcomesPreplanningAction extends BaseAction {
   private IPProgramManager ipProgramManager;
 
   // Model
-  private List<IPElement> idos;
+  private List<IPElement> ccafsIDOs;
+  private List<IPElement> consortiumIDOs;
   private List<IPElement> outcomes;
   private List<IPElement> outcomesFromDatabase;
   private List<IPIndicator> fplOutcomesIndicators;
@@ -67,16 +68,20 @@ public class OutcomesPreplanningAction extends BaseAction {
     return super.execute();
   }
 
+  public List<IPElement> getCcafsIDOs() {
+    return ccafsIDOs;
+  }
+
+  public List<IPElement> getConsortiumIDOs() {
+    return consortiumIDOs;
+  }
+
   public int getElementTypeID() {
     return APConstants.ELEMENT_TYPE_OUTCOME2025;
   }
 
   public List<IPIndicator> getFplOutcomesIndicators() {
     return fplOutcomesIndicators;
-  }
-
-  public List<IPElement> getIdos() {
-    return idos;
   }
 
   public String getNextActionName() {
@@ -105,14 +110,16 @@ public class OutcomesPreplanningAction extends BaseAction {
   public void prepare() throws Exception {
     IPElementType type = new IPElementType(APConstants.ELEMENT_TYPE_OUTCOME2025);
 
-    // The IDOs are created by the coordinating unit
-    IPProgram systemProgram = new IPProgram();
-    systemProgram.setId(APConstants.SYSTEM_ADMIN_PROGRAM);
+    // The Consortium IDOs are created by the system administrator
+    IPProgram systemProgram = new IPProgram(APConstants.SYSTEM_ADMIN_PROGRAM);
+    IPProgram ccafsProgram = new IPProgram(APConstants.CCAFS_PROGRAM);
+
     // Set the element type for IDOs
-    IPElementType idoType = new IPElementType();
-    idoType.setId(APConstants.ELEMENT_TYPE_IDOS);
-    // Get all the IDOs
-    idos = ipElementManager.getIPElements(systemProgram, idoType);
+    IPElementType idoType = new IPElementType(APConstants.ELEMENT_TYPE_IDOS);
+
+    consortiumIDOs = ipElementManager.getIPElements(systemProgram, idoType);
+    ccafsIDOs = ipElementManager.getIPElements(ccafsProgram, idoType);
+
 
     outcomes = ipElementManager.getIPElements(getCurrentUser().getCurrentInstitution().getProgram(), type);
 
