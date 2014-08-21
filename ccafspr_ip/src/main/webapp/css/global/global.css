@@ -453,7 +453,7 @@ nav#mainMenu ul li.currentSection {
 nav#mainMenu ul a.disabled li{
   color: #b7bcc1;
 }
-/*************** BREADCRUMB NAVGATION ***********/
+/*************** BREADCRUMB NAVIGATION ***********/
 
 #breadcrumb {
   list-style: none;
@@ -1062,8 +1062,6 @@ h1.contentSubTitle {
   width: 99%;
 }
 
-
-
 #indicatorsFPLBlock .target  {
   padding: 6px 12px;
   margin: 5px 4px;
@@ -1146,6 +1144,22 @@ padding-left: 11px;
 
 #ipGraph-button:hover {
   background: url(../../images/global/ipGraph-hover.png) no-repeat center #57A7B5;  
+}
+
+#outputs .note {
+  background-color: #FFF7CF;
+  padding: 5px;
+  text-align: center;
+  font-style: italic;
+}
+
+#outputs .note span {
+	display: inline-block;
+}
+
+#outputs #addOutputBlock {
+  text-align: center;
+  margin-bottom: 30px;
 }
 
 /********** Projects *********/
