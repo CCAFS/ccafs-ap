@@ -79,6 +79,27 @@ public class MySQLActivityDAO implements ActivityDAO {
   }
 
   @Override
+  public boolean existActivity(int activityID) {
+    LOG.debug(">> existActivity activityID = {} )", activityID);
+    StringBuilder query = new StringBuilder();
+    query.append("SELECT COUNT(id) FROM activities WHERE id = ");
+    query.append(activityID);
+    boolean exists = false;
+    try (Connection con = databaseManager.getConnection()) {
+      ResultSet rs = databaseManager.makeQuery(query.toString(), con);
+      if (rs.next()) {
+        if (rs.getInt(1) > 0) {
+          exists = true;
+        }
+      }
+      con.close();
+    } catch (SQLException e) {
+      LOG.error("Exception arised getting the activity id.", activityID, e.getMessage());
+    }
+    return exists;
+  }
+
+  @Override
   public List<Map<String, String>> getActivitiesByProject(int projectID) {
     LOG.debug(">> getActivitiesByProject projectID = {} )", projectID);
 
@@ -137,10 +158,9 @@ public class MySQLActivityDAO implements ActivityDAO {
       StringBuilder query = new StringBuilder();
       query.append("SELECT a.id ");
       query.append("FROM activities a ");
-      query.append("INNER JOIN projects p ON a.project_id=p.id ");
-      query.append("INNER JOIN employees e ON p.project_leader_id=e.id ");
-      query.append("INNER JOIN ip_programs pr ON p.program_creator_id=pr.id ");
-      query.append("WHERE p.program_creator_id= ");
+      query.append("INNER JOIN projects p ON a.project_id = p.id ");
+      query.append("INNER JOIN ip_programs pr ON p.program_creator_id = pr.id ");
+      query.append("WHERE p.program_creator_id = ");
       query.append(programID);
       ResultSet rs = databaseManager.makeQuery(query.toString(), connection);
       while (rs.next()) {
@@ -247,7 +267,7 @@ public class MySQLActivityDAO implements ActivityDAO {
     if (activityData.get("id") == null) {
       // Insert new activity record
       query
-        .append("INSERT INTO activities (project_id, title, description, startDate, endDate, leader_id, custom_id) ");
+      .append("INSERT INTO activities (project_id, title, description, startDate, endDate, leader_id, custom_id) ");
       query.append("VALUES (?,?,?,?,?,?,?) ");
       values = new Object[7];
       values[0] = projectID;

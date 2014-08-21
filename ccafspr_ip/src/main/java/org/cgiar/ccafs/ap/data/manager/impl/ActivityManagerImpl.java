@@ -38,6 +38,7 @@ import org.slf4j.LoggerFactory;
 
 /**
  * @author Javier Andrés Gallego
+ * @author Héctor Fabio Tobón R.
  */
 public class ActivityManagerImpl implements ActivityManager {
 
@@ -66,6 +67,11 @@ public class ActivityManagerImpl implements ActivityManager {
   @Override
   public boolean deleteActivity(int activityId) {
     return activityDAO.deleteActivity(activityId);
+  }
+
+  @Override
+  public boolean existActivity(int activityID) {
+    return activityDAO.existActivity(activityID);
   }
 
   @Override

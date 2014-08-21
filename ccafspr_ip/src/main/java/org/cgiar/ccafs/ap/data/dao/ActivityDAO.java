@@ -46,6 +46,14 @@ public interface ActivityDAO {
   public boolean deleteActivity(int activityId);
 
   /**
+   * This method validates if the a given activity exists in the database.
+   * 
+   * @param activityID is an activity identifier.
+   * @return true if a record was found, false otherwise.
+   */
+  public boolean existActivity(int activityID);
+
+  /**
    * This method gets all the Activities information by a given Project Id
    *
    * @param projectID - is the Id of the project
@@ -61,17 +69,17 @@ public interface ActivityDAO {
    */
   public Map<String, String> getActivityById(int activityID);
 
-	/**
+  /**
    * This method gets a list of activities Id related with the program creator Id of the Project that they belongs to.
-   * 
-   * @param programID is the ccafs program id from the ip_programs table.
-   * @return a list of activities identifiers.
+   *
+   * @param programID is the CCAFS program id from the ip_programs table.
+   * @return a list of activities identifiers, or an empty list if nothing found.
    */
   public List<Integer> getActivityIdsEditable(int programID);
 
   /**
    * This method returns the id from the employees table that belong to the activity leader.
-   * 
+   *
    * @param activityID is the activity identifier.
    * @return an integer representing the identifier of the employee user that is leadering the activity, or -1 if
    *         nothing was found.
@@ -86,6 +94,7 @@ public interface ActivityDAO {
    */
   public Map<String, String> getExpectedActivityLeader(int activityID);
 
+
   /**
    * This method saves the Activity information
    *
@@ -94,7 +103,6 @@ public interface ActivityDAO {
    * @return The last inserted id if there was a new record, 0 if the record was updated or -1 if any error happened.
    */
   public int saveActivity(int projectID, Map<String, Object> activityData);
-
 
   /**
    * This method saves the Activity Leader information

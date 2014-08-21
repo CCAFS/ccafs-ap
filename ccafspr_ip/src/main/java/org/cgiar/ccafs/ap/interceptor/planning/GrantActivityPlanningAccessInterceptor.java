@@ -39,7 +39,7 @@ import org.slf4j.LoggerFactory;
  */
 public class GrantActivityPlanningAccessInterceptor extends AbstractInterceptor {
 
-  private static final long serialVersionUID = 3416451095136457226L;
+  private static final long serialVersionUID = 715145701059810847L;
 
   private static final Logger LOG = LoggerFactory.getLogger(GrantActivityPlanningAccessInterceptor.class);
 
