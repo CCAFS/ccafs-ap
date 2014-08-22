@@ -6,8 +6,8 @@
 [#assign currentStage = "partners" /]
 
 [#assign breadCrumb = [
-  {"label":"planning", "nameSpace":"planning/projects", "action":"projects"},
-  {"label":"projects", "nameSpace":"planning/projects", "action":"projects"},
+  {"label":"planning", "nameSpace":"planning", "action":"projects"},
+  {"label":"projects", "nameSpace":"planning", "action":"projects"},
   {"label":"partners", "nameSpace":"planning/projects", "action":""}
 ]/]
 
@@ -19,8 +19,8 @@
 <section class="content">
   <div class="helpMessage">
     <img src="${baseUrl}/images/global/icon-help.png" />
-    <p> [@s.text name="planning,projectDescription.help1" /] </p>
-    <p> [@s.text name="planning,projectDescription.help2" /] </p>
+    <p> [@s.text name="planning.projectDescription.help1" /] </p>
+    <p> [@s.text name="planning.projectDescription.help2" /] </p>
   </div>
   [#include "/WEB-INF/planning/planningProjectsSubMenu.ftl" /]
 

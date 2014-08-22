@@ -61,6 +61,7 @@ public class ActivitiesListAction extends BaseAction {
     // Create new activity and redirect to activity description using the new activityID assigned by the database.
     activityID = activityManager.saveActivity(projectID, new Activity(-1));
     if (activityID > 0) {
+      addActionMessage(getText("saving.add.new", new String[] {getText("planning.activity")}));
       // Let's redirect the user to the Activity Description section.
       return BaseAction.SUCCESS;
     }
@@ -88,16 +89,8 @@ public class ActivitiesListAction extends BaseAction {
   @Override
   public void prepare() throws Exception {
     super.prepare();
-    try {
-      projectID = Integer.parseInt(StringUtils.trim(this.getRequest().getParameter(APConstants.PROJECT_REQUEST_ID)));
-    } catch (NumberFormatException e) {
-      LOG.error("-- prepare() > There was an error parsing the project identifier '{}'.", projectID, e);
-      projectID = -1;
-      return; // Stop here and go to execute method.
-    }
-
+    projectID = Integer.parseInt(StringUtils.trim(this.getRequest().getParameter(APConstants.PROJECT_REQUEST_ID)));
     activities = activityManager.getActivitiesByProject(projectID);
-
   }
 
   public void setProjectID(int projectID) {

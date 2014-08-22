@@ -7,10 +7,10 @@
 [#assign currentStage = "activityBudget" /]
 
 [#assign breadCrumb = [
-  {"label":"planning", "nameSpace":"planning/projects", "action":"projects"},
-  {"label":"projects", "nameSpace":"planning/projects", "action":"projects"},
-  {"label":"activities", "nameSpace":"planning/activities", "action":"" },
-  {"label":"activityBudget", "nameSpace":"planning/activities", "action":"activityBudget" }
+  {"label":"planning", "nameSpace":"planning", "action":"projects"},
+  {"label":"projects", "nameSpace":"planning", "action":"projects"},
+  {"label":"activities", "nameSpace":"planning/activities", "action":"activities" },
+  {"label":"activityBudget", "nameSpace":"planning/projects/activities", "action":"activityBudget" }
 ]/]
 
 [#include "/WEB-INF/global/pages/header.ftl" /]
