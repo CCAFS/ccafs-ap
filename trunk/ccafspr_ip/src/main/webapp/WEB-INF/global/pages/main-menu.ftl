@@ -23,7 +23,7 @@
 	      [#if currentUser.FPL || currentUser.RPL || currentUser.CU || currentUser.admin ]
 	        [#if preplanningActive ]
 	          [#if currentUser.CU ]
-  	          <a  href="[@s.url namespace="/pre-planning/projects" action='projects'/]">
+  	          <a  href="[@s.url namespace="/pre-planning" action='projects'/]">
   	        [#else]
   	          <a  href="[@s.url namespace="/pre-planning" action='outcomes'/]">
   	        [/#if]
