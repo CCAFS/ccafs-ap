@@ -27,17 +27,18 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 /**
- * @author Javier Andrés Galllego B.
+ * @author Javier Andrés Gallego B.
+ * @author Héctor Fabio Tobón R.
  */
-public class ActivityListAction extends BaseAction {
+public class ActivitiesListAction extends BaseAction {
 
-  private static final long serialVersionUID = 9220048731862143500L;
+  private static final long serialVersionUID = 6131146898077781801L;
 
   // Manager
   private ActivityManager activityManager;
 
   // LOG
-  private static Logger LOG = LoggerFactory.getLogger(ActivityListAction.class);
+  private static Logger LOG = LoggerFactory.getLogger(ActivitiesListAction.class);
 
   // Model for the back-end
   private List<Activity> activities;
@@ -48,7 +49,7 @@ public class ActivityListAction extends BaseAction {
 
 
   @Inject
-  public ActivityListAction(APConfig config, ActivityManager activityManager) {
+  public ActivitiesListAction(APConfig config, ActivityManager activityManager) {
     super(config);
     this.activityManager = activityManager;
   }

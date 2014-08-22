@@ -15,22 +15,35 @@
 
 [#include "/WEB-INF/global/pages/header.ftl" /]
 [#include "/WEB-INF/global/pages/main-menu.ftl" /]
-[#import "/WEB-INF/global/macros/forms.ftl" as customForm/]
-[#import "/WEB-INF/planning/macros/activitiesListTemplate.ftl" as activitiesList/]
+[#import "/WEB-INF/global/macros/forms.ftl" as customForm /]
+[#import "/WEB-INF/planning/macros/activitiesListTemplate.ftl" as activitiesList /]
     
 <section class="content">
   <div class="helpMessage">
     <img src="${baseUrl}/images/global/icon-help.png" />
-    <p> [@s.text name="planning.activities.help" /] </p>
+    <p>[@s.text name="planning.activities.help1" /]</p>
+    <p>[@s.text name="planning.activities.help2" /]</p>
   </div>
   [#include "/WEB-INF/planning/planningProjectsSubMenu.ftl" /]
 
-  [@s.form action="activities" cssClass="pure-form"]  
-    <article class="halfContent" id="activities"> 
+  [@s.form action="activities" cssClass="pure-form"]
+    <article class="halfContent" id="activities">
       <h1 class="contentTitle">
-      [@s.text name="planning.activities.title" /]  
-      </h1> 
-      [@activitiesList.activitiesList activities=activities canValidate=true canEditProject=true tableID="activities" /]
+        [@s.text name="planning.activities.title" /]
+      </h1>
+      [#-- Validating amount of activities to be listed --]
+      [#if activities?size > 0]
+        [@activitiesList.activitiesList activities=activities canValidate=true canEditProject=true tableID="activities" /]
+      [#else]
+        [#if saveable]
+          <p>[@s.text name="planning.activities.message.empty" /] [@s.text name="planning.activities.message.addNew" /]</p>
+          <div class="buttons">
+            [@s.submit type="button" name="add"][@s.text name="planning.activities.button.add" /][/@s.submit]
+          </div>
+        [#else]
+          <p>[@s.text name="planning.activities.message.empty" /]</p>
+        [/#if]
+      [/#if]
     </article>
   [/@s.form]  
 </section>

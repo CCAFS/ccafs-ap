@@ -12,8 +12,8 @@
 
 [#include "/WEB-INF/global/pages/header.ftl" /]
 [#include "/WEB-INF/global/pages/main-menu.ftl" /]
-[#import "/WEB-INF/global/macros/forms.ftl" as customForm/]
-[#import "/WEB-INF/global/templates/projectsListTemplate.ftl" as projectList/]
+[#import "/WEB-INF/global/macros/forms.ftl" as customForm /]
+[#import "/WEB-INF/global/templates/projectsListTemplate.ftl" as projectList /]
     
 <section class="content">
   <div class="helpMessage">
@@ -25,32 +25,32 @@
 
   [#include "/WEB-INF/global/pages/planning-secondary-menu.ftl"/]
   [@s.form action="projects"]
-  <article class="halfContent" id="mainInformation">
-    <h1 class="contentTitle">
-      [@s.text name="planning.projects.title" /]
-    </h1>
-    [#if projects?size>0]
-      <h3 class="projectSubTitle">[@s.text name="preplanning.projects.yourProjects"/]</h3>
-      [@projectList.projectsList projects=projects canValidate=true /]
-    [#else]
-      <div class="borderBox center">
-        [#if currentUser.isPL()]
-          <p>[@s.text name="planning.projects.empty.PL" /]</p>
-        [#else]
-          <p>[@s.text name="planning.projects.empty"][@s.param][@s.url namespace="/pre-planning/projects" action='projects'/][/@s.param][/@s.text]</p>
+    <article class="halfContent" id="mainInformation">
+      <h1 class="contentTitle">
+        [@s.text name="planning.projects.title" /]
+      </h1>
+      [#if projects?size>0]
+        <h3 class="projectSubTitle">[@s.text name="preplanning.projects.yourProjects"/]</h3>
+        [@projectList.projectsList projects=projects canValidate=true /]
+      [#else]
+        <div class="borderBox center">
+          [#if currentUser.isPL()]
+            <p>[@s.text name="planning.projects.empty.PL" /]</p>
+          [#else]
+            <p>[@s.text name="planning.projects.empty"][@s.param][@s.url namespace="/pre-planning/projects" action='projects'/][/@s.param][/@s.text]</p>
+          [/#if]
+        </div>
+        [#if currentUser.isRPL() || currentUser.isFPL() || currentUser.isAdmin()]
+        <div class="buttons">
+          [@s.submit type="button" name="add"][@s.text name="form.buttons.add" /][/@s.submit]
+        </div>
         [/#if]
-      </div>
-      [#if currentUser.isRPL() || currentUser.isFPL() || currentUser.isAdmin()]
-      <div class="buttons">
-        [@s.submit type="button" name="add"][@s.text name="form.buttons.add" /][/@s.submit]
-      </div>
       [/#if]
-    [/#if]
-    <hr/>
-    <h3 class="projectSubTitle">[@s.text name="preplanning.projects.otherProjects" /]</h3>
-    [@projectList.projectsList projects=allProjects canValidate=true /]
-
-  </article>
+      <hr/>
+      <h3 class="projectSubTitle">[@s.text name="preplanning.projects.otherProjects" /]</h3>
+      [@projectList.projectsList projects=allProjects canValidate=true /]
+  
+    </article>
   [/@s.form]
   
   
