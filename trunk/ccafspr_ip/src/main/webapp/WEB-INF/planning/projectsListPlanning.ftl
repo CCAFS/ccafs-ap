@@ -31,7 +31,7 @@
       </h1>
       [#if projects?size>0]
         <h3 class="projectSubTitle">[@s.text name="preplanning.projects.yourProjects"/]</h3>
-        [@projectList.projectsList projects=projects canValidate=true /]
+        [@projectList.projectsList projects=projects canValidate=true namespace="/planning/projects" /]
       [#else]
         <div class="borderBox center">
           [#if saveable]
@@ -48,7 +48,7 @@
       [/#if]
       <hr/>
       <h3 class="projectSubTitle">[@s.text name="preplanning.projects.otherProjects" /]</h3>
-      [@projectList.projectsList projects=allProjects canValidate=true /]
+      [@projectList.projectsList projects=allProjects canValidate=true namespace="/planning/projects" /]
   
     </article>
   [/@s.form]

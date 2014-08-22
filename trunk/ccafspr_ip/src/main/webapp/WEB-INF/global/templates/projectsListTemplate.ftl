@@ -1,7 +1,7 @@
 [#ftl]
 [#import "/WEB-INF/global/macros/utils.ftl" as utilities/]
 [#-- This macro is being used in projectsListPreplanning.ftl and projectsListPlanning.ftl The idea is to represent a table with specific information about projects --]
-[#macro projectsList projects owned=true canValidate=false isPlanning=false]
+[#macro projectsList projects owned=true canValidate=false isPlanning=false namespace="/"]
   <table class="projectsList" id="projects">
 	  <thead>
 	    <tr>
@@ -27,11 +27,11 @@
           [#-- Project Title --]
           <td class="left"> 
                 [#if project.title?has_content]
-                  <a href="[@s.url action='description' includeParams='get'] [@s.param name='projectID']${project.id?c}[/@s.param][/@s.url] "
+                  <a href="[@s.url namespace=namespace action='description' includeParams='get'] [@s.param name='projectID']${project.id?c}[/@s.param][/@s.url] "
                   title="${project.title}">
                   [#if project.title?length < 120] ${project.title}</a> [#else] [@utilities.wordCutter string=project.title maxPos=120 /]...</a> [/#if]
                 [#else]
-                  <a href="[@s.url action='description' includeParams='get'] [@s.param name='projectID']${project.id?c}[/@s.param][/@s.url] ">
+                  <a href="[@s.url namespace=namespace action='description' includeParams='get'] [@s.param name='projectID']${project.id?c}[/@s.param][/@s.url] ">
                     [@s.text name="preplanning.projects.title.none" /]
                   </a>
                 [/#if]
@@ -39,7 +39,7 @@
           </td>
           [#-- Region --]
           <td> 
-              <a href="[@s.url action='description' includeParams='get'] [@s.param name='projectID']${project.id?c}[/@s.param] [/@s.url]">
+              <a href="[@s.url namespace=namespace action='description' includeParams='get'] [@s.param name='projectID']${project.id?c}[/@s.param] [/@s.url]">
                 [#if project.regionsAcronym?has_content]
                 ${project.regionsAcronym}
                 [#else]
@@ -49,7 +49,7 @@
           </td>
           [#-- Flagship --]
           <td> 
-              <a href="[@s.url action='description' includeParams='get'] [@s.param name='projectID']${project.id?c}[/@s.param] [/@s.url]">
+              <a href="[@s.url namespace=namespace action='description' includeParams='get'] [@s.param name='projectID']${project.id?c}[/@s.param] [/@s.url]">
                 [#if project.flagshipsAcronym?has_content]
                 ${project.flagshipsAcronym}
                 [#else]
@@ -59,7 +59,7 @@
           </td>
           [#-- Budget --]
           <td> 
-              <a href="[@s.url action='description' includeParams='get'][@s.param name='projectID']${project.id?c}[/@s.param][/@s.url]">
+              <a href="[@s.url namespace=namespace action='description' includeParams='get'][@s.param name='projectID']${project.id?c}[/@s.param][/@s.url]">
                 [#if project.totalCcafsBudget?has_content]
                 ${project.totalCcafsBudget}
                 [#else]
@@ -70,7 +70,7 @@
           [#-- Track completition of entry --]
           [#if isPlanning]
           <td> 
-              <a href="[@s.url action='description' includeParams='get'][@s.param name='projectID']${project.id?c}[/@s.param][/@s.url]">
+              <a href="[@s.url namespace=namespace action='description' includeParams='get'][@s.param name='projectID']${project.id?c}[/@s.param][/@s.url]">
                 Complete / Incomplete
               </a>
           </td>

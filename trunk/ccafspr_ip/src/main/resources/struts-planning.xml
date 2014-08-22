@@ -81,6 +81,11 @@
     <!-- Section: Activities  -->
     <action name="activities" class="org.cgiar.ccafs.ap.action.planning.ActivitiesListAction">
       <result name="input">/WEB-INF/planning/activitiesListPlanning.ftl</result>
+      <result name="success" type="redirectAction">
+        <param name="namespace">/planning/projects/activities</param>
+        <param name="actionName">activityDescription</param>
+        <param name="activityID">${activity.id}</param>
+      </result>
     </action>
 
 

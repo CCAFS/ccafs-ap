@@ -21,7 +21,7 @@ import org.apache.commons.lang3.builder.ToStringBuilder;
 
 /**
  * This class represents a CCAFS Activity, which belongs to a specific Project.
- * 
+ *
  * @author Héctor Fabio Tobón R.
  */
 public class Activity {
@@ -38,6 +38,14 @@ public class Activity {
   private List<Location> locations;
   private long created;
   private List<IPElement> outputs;
+
+  public Activity() {
+
+  }
+
+  public Activity(int id) {
+    this.id = id;
+  }
 
   @Override
   public boolean equals(Object obj) {

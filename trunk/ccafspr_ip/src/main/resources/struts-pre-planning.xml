@@ -57,7 +57,6 @@
        </result>
        <result name="next" type="redirectAction">
         <param name="actionName">projects</param>
-        <param name="namespace">/pre-planning/projects</param>
        </result>
     </action>
     
@@ -67,11 +66,10 @@
       <result name="input">/WEB-INF/preplanning/outputsRplPreplanning.ftl</result>
       <result name="success" type="redirectAction">
         <param name="actionName">outputsRPL</param>
-       </result>
-       <result name="next" type="redirectAction">
+      </result>
+      <result name="next" type="redirectAction">
         <param name="actionName">projects</param>
-        <param name="namespace">/pre-planning/projects</param>
-       </result>
+      </result>
     </action>
     
     <!-- Section: Projects  -->
@@ -79,6 +77,7 @@
     <action name="projects" class="org.cgiar.ccafs.ap.action.preplanning.ProjectsListPreplanningAction">
       <result name="input">/WEB-INF/preplanning/projectsListPreplanning.ftl</result>
       <result name="success" type="redirectAction">
+        <param name="namespace">/pre-planning/projects</param>
         <param name="actionName">description</param>
         <param name="projectID">${projectID}</param>
       </result>
