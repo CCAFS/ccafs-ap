@@ -18,8 +18,11 @@ import org.cgiar.ccafs.ap.config.APConfig;
 import org.cgiar.ccafs.ap.config.APConstants;
 import org.cgiar.ccafs.ap.data.manager.ActivityPartnerManager;
 import org.cgiar.ccafs.ap.data.manager.InstitutionManager;
+import org.cgiar.ccafs.ap.data.manager.LocationManager;
 import org.cgiar.ccafs.ap.data.model.ActivityPartner;
+import org.cgiar.ccafs.ap.data.model.Country;
 import org.cgiar.ccafs.ap.data.model.Institution;
+import org.cgiar.ccafs.ap.data.model.InstitutionType;
 
 import java.util.List;
 
@@ -41,6 +44,7 @@ public class ActivityPartnersAction extends BaseAction {
   // Manager
   private ActivityPartnerManager activityPartnerManager;
   private InstitutionManager institutionManager;
+  private LocationManager locationManager;
 
   // Model for the back-end
   private List<ActivityPartner> activityPartners;
@@ -48,16 +52,18 @@ public class ActivityPartnersAction extends BaseAction {
   // Model for the front-end
   private int activityID;
   private List<Institution> allPartners;
+  private List<InstitutionType> partnerTypes;
+  private List<Country> countries;
 
 
   @Inject
   public ActivityPartnersAction(APConfig config, InstitutionManager institutionManager,
-    ActivityPartnerManager activityPartnerManager) {
+    ActivityPartnerManager activityPartnerManager, LocationManager locationManager) {
     super(config);
     this.institutionManager = institutionManager;
     this.activityPartnerManager = activityPartnerManager;
+    this.locationManager = locationManager;
   }
-
 
   public int getActivityID() {
     return activityID;
@@ -67,11 +73,18 @@ public class ActivityPartnersAction extends BaseAction {
     return activityPartners;
   }
 
-
   public List<Institution> getAllPartners() {
     return allPartners;
   }
 
+  public List<Country> getCountries() {
+    return countries;
+  }
+
+
+  public List<InstitutionType> getPartnerTypes() {
+    return partnerTypes;
+  }
 
   @Override
   public void prepare() throws Exception {
@@ -88,31 +101,21 @@ public class ActivityPartnersAction extends BaseAction {
     activityPartners = activityPartnerManager.getActivityPartnersByActivity(activityID);
     // Getting the List of Institutions
     allPartners = institutionManager.getAllInstitutions();
+
+    // Getting all the countries
+    countries = locationManager.getInstitutionCountries();
+
+    // Getting all partner types
+    partnerTypes = institutionManager.getAllInstitutionTypes();
   }
-
-
-// @Override
-// public String save() {
-// boolean success = true;
-// // Saving Project Outcome
-//
-// //boolean saved = activityPartnerManager.saveActivityPartner(activityID, activityPartner);
-// if (!saved) {
-// success = false;
-// }
-// return INPUT;
-// }
-
 
   public void setActivityID(int activityID) {
     this.activityID = activityID;
   }
 
-
   public void setActivityPartners(List<ActivityPartner> activityPartners) {
     this.activityPartners = activityPartners;
   }
-
 
   public void setAllPartners(List<Institution> allPartners) {
     this.allPartners = allPartners;
