@@ -19,7 +19,6 @@ import java.util.Date;
 import java.util.Map;
 
 import org.cgiar.ccafs.ap.config.APConstants;
-
 import com.opensymphony.xwork2.conversion.TypeConversionException;
 import org.apache.struts2.util.StrutsTypeConverter;
 
@@ -29,6 +28,7 @@ import org.apache.struts2.util.StrutsTypeConverter;
  */
 public class DateConverter extends StrutsTypeConverter {
 
+  @SuppressWarnings("rawtypes")
   @Override
   public Object convertFromString(Map context, String[] values, Class toClass) {
     if (values != null && values.length > 0 && values[0] != null && values[0].length() > 0) {
@@ -42,6 +42,7 @@ public class DateConverter extends StrutsTypeConverter {
     return null;
   }
 
+  @SuppressWarnings("rawtypes")
   @Override
   public String convertToString(Map context, Object o) {
     Date date = (Date) o;

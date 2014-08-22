@@ -17,7 +17,6 @@ import java.util.Map;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-
 import org.cgiar.ccafs.ap.data.model.User;
 import org.cgiar.ccafs.ap.data.manager.UserManager;
 import com.google.inject.Inject;
@@ -37,6 +36,7 @@ public class UserConverter extends StrutsTypeConverter {
     this.userManager = userManager;
   }
 
+  @SuppressWarnings("rawtypes")
   @Override
   public Object convertFromString(Map context, String[] values, Class toClass) {
     if (toClass == User.class) {
@@ -55,6 +55,7 @@ public class UserConverter extends StrutsTypeConverter {
     return null;
   }
 
+  @SuppressWarnings("rawtypes")
   @Override
   public String convertToString(Map context, Object o) {
     User user = (User) o;
