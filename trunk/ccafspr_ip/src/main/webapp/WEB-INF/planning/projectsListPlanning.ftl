@@ -6,8 +6,8 @@
 [#assign currentSection = "planning" /]
 
 [#assign breadCrumb = [
-  {"label":"planning", "nameSpace":"planning/projects", "action":"projects"},
-  {"label":"projects", "nameSpace":"planning/projects", "action":"projects"}
+  {"label":"planning", "nameSpace":"planning", "action":"projects"},
+  {"label":"projects", "nameSpace":"planning", "action":""}
 ]/]
 
 [#include "/WEB-INF/global/pages/header.ftl" /]
@@ -35,9 +35,9 @@
       [#else]
         <div class="borderBox center">
           [#if saveable]
-            <p>[@s.text name="planning.projects.empty.PL" /]</p>
-          [#else]
             <p>[@s.text name="planning.projects.empty"][@s.param][@s.url namespace="/pre-planning" action='projects'/][/@s.param][/@s.text]</p>
+          [#else]
+            <p>[@s.text name="planning.projects.empty.PL" /]</p>
           [/#if]
         </div>
         [#if currentUser.isRPL() || currentUser.isFPL() || currentUser.isAdmin()]

@@ -25,6 +25,9 @@ import org.cgiar.ccafs.ap.data.model.Institution;
 
 import java.util.List;
 
+import org.cgiar.ccafs.ap.data.model.Project;
+
+import org.cgiar.ccafs.ap.data.manager.ProjectManager;
 import com.google.inject.Inject;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
@@ -44,22 +47,25 @@ public class ActivityDescriptionAction extends BaseAction {
   private ActivityManager activityManager;
   private InstitutionManager institutionManager;
   private IPCrossCuttingManager ipCrossCuttingManager;
+  private ProjectManager projectManager;
 
   // Model for the back-end
   private Activity activity;
 
   // Model for the front-end
+  private Project project;
   private int activityID;
   private List<IPCrossCutting> ipCrossCuttings;
   private List<Institution> allPartners;
 
   @Inject
   public ActivityDescriptionAction(APConfig config, ActivityManager activityManager,
-    InstitutionManager institutionManager, IPCrossCuttingManager ipCrossCuttingManager) {
+    InstitutionManager institutionManager, IPCrossCuttingManager ipCrossCuttingManager, ProjectManager projectManager) {
     super(config);
     this.activityManager = activityManager;
     this.institutionManager = institutionManager;
     this.ipCrossCuttingManager = ipCrossCuttingManager;
+    this.projectManager = projectManager;
   }
 
   public Activity getActivity() {
@@ -97,16 +103,16 @@ public class ActivityDescriptionAction extends BaseAction {
   }
 
 
+  public Project getProject() {
+    return project;
+  }
+
   @Override
   public void prepare() throws Exception {
     super.prepare();
-    try {
-      activityID = Integer.parseInt(StringUtils.trim(this.getRequest().getParameter(APConstants.ACTIVITY_REQUEST_ID)));
-    } catch (NumberFormatException e) {
-      LOG.error("-- prepare() > There was an error parsing the activity identifier '{}'.", activityID, e);
-      activityID = -1;
-      return; // Stop here and go to execute method.
-    }
+
+    activityID = Integer.parseInt(StringUtils.trim(this.getRequest().getParameter(APConstants.ACTIVITY_REQUEST_ID)));
+    project = projectManager.getProjectFromActivityId(activityID);
 
     // Getting the information of the Cross Cutting Theme for the View
     ipCrossCuttings = ipCrossCuttingManager.getIPCrossCuttings();
@@ -119,7 +125,6 @@ public class ActivityDescriptionAction extends BaseAction {
     // Getting the information of the Cross Cutting Theme associated with the project
     activity.setCrossCuttings(ipCrossCuttingManager.getIPCrossCuttingByActivityID(activityID));
   }
-
 
   @Override
   public String save() {

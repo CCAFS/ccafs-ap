@@ -129,11 +129,11 @@ public class ActivityManagerImpl implements ActivityManager {
         if (activityData.get("leader_id") != null) {
           activity.setLeader(userManager.getOwner(Integer.parseInt(activityData.get("leader_id"))));
         }
-        activity.setCreated(Long.parseLong(activityData.get("created")));
-
-        // adding information of the object to the array
-        activityList.add(activity);
       }
+      activity.setCreated(Long.parseLong(activityData.get("created")));
+
+      // adding information of the object to the array
+      activityList.add(activity);
     }
     return activityList;
   }
