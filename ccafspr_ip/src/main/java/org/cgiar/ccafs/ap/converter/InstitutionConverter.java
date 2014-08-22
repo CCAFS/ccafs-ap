@@ -39,6 +39,7 @@ public class InstitutionConverter extends StrutsTypeConverter {
     this.institutionManager = institutionManager;
   }
 
+  @SuppressWarnings("rawtypes")
   @Override
   public Object convertFromString(Map context, String[] values, Class toClass) {
     if (toClass == Institution.class) {
@@ -55,6 +56,7 @@ public class InstitutionConverter extends StrutsTypeConverter {
     return null;
   }
 
+  @SuppressWarnings("rawtypes")
   @Override
   public String convertToString(Map context, Object o) {
     if (o != null) {

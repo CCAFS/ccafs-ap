@@ -38,6 +38,7 @@ public class CountryConverter extends StrutsTypeConverter {
     this.locationManager = locationManager;
   }
 
+  @SuppressWarnings("rawtypes")
   @Override
   public Object convertFromString(Map context, String[] values, Class toClass) {
     if (toClass == Country.class) {
@@ -53,6 +54,7 @@ public class CountryConverter extends StrutsTypeConverter {
     return null;
   }
 
+  @SuppressWarnings("rawtypes")
   @Override
   public String convertToString(Map context, Object o) {
     Country country = (Country) o;

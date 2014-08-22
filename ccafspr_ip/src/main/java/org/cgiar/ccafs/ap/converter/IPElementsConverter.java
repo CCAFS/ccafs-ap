@@ -33,6 +33,7 @@ public class IPElementsConverter extends StrutsTypeConverter {
     this.ipElementManager = ipElementManager;
   }
 
+  @SuppressWarnings("rawtypes")
   @Override
   public Object convertFromString(Map context, String[] values, Class toClass) {
     if (toClass == List.class) {
@@ -41,6 +42,7 @@ public class IPElementsConverter extends StrutsTypeConverter {
     return null;
   }
 
+  @SuppressWarnings("rawtypes")
   @Override
   public String convertToString(Map context, Object o) {
     List<IPElement> elementsArray = (List<IPElement>) o;

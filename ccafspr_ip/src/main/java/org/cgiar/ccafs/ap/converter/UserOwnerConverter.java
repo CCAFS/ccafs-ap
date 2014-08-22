@@ -16,7 +16,6 @@ package org.cgiar.ccafs.ap.converter;
 import java.util.Map;
 
 import org.cgiar.ccafs.ap.data.manager.InstitutionManager;
-
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.cgiar.ccafs.ap.data.model.User;
@@ -40,6 +39,7 @@ public class UserOwnerConverter extends StrutsTypeConverter {
     this.institutionManager = institutionManager;
   }
 
+  @SuppressWarnings("rawtypes")
   @Override
   public Object convertFromString(Map context, String[] values, Class toClass) {
     if (toClass == User.class) {
@@ -52,12 +52,13 @@ public class UserOwnerConverter extends StrutsTypeConverter {
       } catch (NumberFormatException e) {
         // Do Nothing
         LOG
-        .error("Problem to convert User from String (convertFromString) for owner_id = {} ", ownerId, e.getMessage());
+          .error("Problem to convert User from String (convertFromString) for owner_id = {} ", ownerId, e.getMessage());
       }
     }
     return null;
   }
 
+  @SuppressWarnings("rawtypes")
   @Override
   public String convertToString(Map context, Object o) {
     User user = (User) o;

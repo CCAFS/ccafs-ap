@@ -39,6 +39,7 @@ public class IPCrossCuttingThemeListConverter extends StrutsTypeConverter {
     this.ipCrossCuttingManager = ipCrossCuttingManager;
   }
 
+  @SuppressWarnings("rawtypes")
   @Override
   public Object convertFromString(Map context, String[] values, Class toClass) {
     if (toClass == List.class) {
@@ -59,6 +60,7 @@ public class IPCrossCuttingThemeListConverter extends StrutsTypeConverter {
     return null;
   }
 
+  @SuppressWarnings("rawtypes")
   @Override
   public String convertToString(Map context, Object o) {
     List<IPCrossCutting> themes = (List) o;

@@ -14,10 +14,10 @@
 package org.cgiar.ccafs.ap.converter;
 
 import org.cgiar.ccafs.ap.data.manager.InstitutionManager;
+
 import java.util.Map;
 
 import org.cgiar.ccafs.ap.data.model.InstitutionType;
-
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import com.google.inject.Inject;
@@ -39,6 +39,7 @@ public class InstitutionTypeConverter extends StrutsTypeConverter {
     this.institutionManager = institutionManager;
   }
 
+  @SuppressWarnings("rawtypes")
   @Override
   public Object convertFromString(Map context, String[] values, Class toClass) {
     if (toClass == InstitutionType.class) {
@@ -55,6 +56,7 @@ public class InstitutionTypeConverter extends StrutsTypeConverter {
     return null;
   }
 
+  @SuppressWarnings("rawtypes")
   @Override
   public String convertToString(Map context, Object o) {
     InstitutionType institutionType = (InstitutionType) o;

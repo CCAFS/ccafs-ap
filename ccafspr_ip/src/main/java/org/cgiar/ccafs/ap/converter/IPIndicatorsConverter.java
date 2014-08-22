@@ -39,7 +39,7 @@ public class IPIndicatorsConverter extends StrutsTypeConverter {
     this.indicatorManager = indicatorManager;
   }
 
-
+  @SuppressWarnings("rawtypes")
   @Override
   public Object convertFromString(Map context, String[] values, Class toClass) {
     if (toClass == List.class) {
@@ -48,6 +48,7 @@ public class IPIndicatorsConverter extends StrutsTypeConverter {
     return null;
   }
 
+  @SuppressWarnings("rawtypes")
   @Override
   public String convertToString(Map context, Object o) {
     List<IPIndicator> indicatorArray = (List<IPIndicator>) o;

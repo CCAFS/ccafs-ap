@@ -37,6 +37,7 @@ public class IPIndicatorConverter extends StrutsTypeConverter {
     this.indicatorManager = indicatorManager;
   }
 
+  @SuppressWarnings("rawtypes")
   @Override
   public Object convertFromString(Map context, String[] values, Class toClass) {
     if (toClass == IPIndicator.class) {
@@ -53,6 +54,7 @@ public class IPIndicatorConverter extends StrutsTypeConverter {
     return null;
   }
 
+  @SuppressWarnings("rawtypes")
   @Override
   public String convertToString(Map context, Object o) {
     IPIndicator indicator = (IPIndicator) o;
