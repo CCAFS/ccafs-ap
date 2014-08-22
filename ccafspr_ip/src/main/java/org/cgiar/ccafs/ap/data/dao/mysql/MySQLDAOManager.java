@@ -168,6 +168,8 @@ public class MySQLDAOManager extends DAOManager {
         } catch (SQLException e1) {
           LOG.error("There was a problem getting the last inserted id.", e1);
         }
+      } else if (recordsAdded == 0) {
+        generatedId = 0;
       }
     } catch (SQLException e) {
       LOG.error("There was a problem trying to open a connection to the database.", e);

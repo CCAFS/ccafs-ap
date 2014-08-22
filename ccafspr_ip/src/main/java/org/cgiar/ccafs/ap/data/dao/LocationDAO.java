@@ -59,7 +59,6 @@ public interface LocationDAO {
    */
   public Map<String, String> getCountry(int countryID);
 
-
   /**
    * This method returns the information of a specific country identified with the given code.
    * 
@@ -68,6 +67,7 @@ public interface LocationDAO {
    */
   public Map<String, String> getCountryByCode(String code);
 
+
   /**
    * This method returns all the countries in which at least
    * one institution is located
@@ -75,6 +75,15 @@ public interface LocationDAO {
    * @return a list of maps with the information.
    */
   public List<Map<String, String>> getInstitutionCountries();
+
+  /**
+   * This method return all the information of the location
+   * identified by the value received as parameter
+   * 
+   * @param locationID - Location identifier
+   * @return a list of maps with the information of all countries.
+   */
+  public Map<String, String> getLocation(int locationID);
 
 
   /**
