@@ -37,7 +37,7 @@
 	      [#-- Planning section --]
 	      [#if !currentUser.guest ]
 	        [#if planningActive ]               
-	          <a  href="[@s.url namespace="/planning/projects" action='projects'/]">
+	          <a  href="[@s.url namespace="/planning" action='projects'/]">
 	        [#else]
 	          <a href="javascript:void(0);" title="[@s.text name="menu.link.disabled" /]" class="disabled">
 	        [/#if]

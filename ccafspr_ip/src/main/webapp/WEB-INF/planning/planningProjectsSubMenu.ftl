@@ -13,7 +13,7 @@
     <a [#if currentStage == "projectOutcomes"] class="currentSection" [/#if] href="[@s.url action='projectOutcomes'  includeParams='get'][/@s.url]">
       <li>[@s.text name="menu.secondary.planning.project.outcome" /]</li>
     </a>
-    <a [#if currentStage == "activities"] class="currentSection" [/#if] href="[@s.url action='activities' namespace="/planning/activities"  includeParams='get'][/@s.url]">
+    <a [#if currentStage == "activities"] class="currentSection" [/#if] href="[@s.url action='activities' includeParams='get'][/@s.url]">
       <li>[@s.text name="menu.secondary.planning.project.activities" /]</li>
     </a> 
   </ul>

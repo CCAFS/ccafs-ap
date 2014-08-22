@@ -53,16 +53,16 @@ public class GrantProjectPlanningAccessInterceptor extends AbstractInterceptor {
   public String intercept(ActionInvocation invocation) throws Exception {
     LOG.debug("=> GrantProjectPlanningAccessInterceptor");
     Map<String, Object> session = invocation.getInvocationContext().getSession();
+    Map<String, Object> parameters = invocation.getInvocationContext().getParameters();
+    // User session is validated in the RequireUserInterceptor.
+    User user = (User) session.get(APConstants.SESSION_USER);
+    BaseAction baseAction = (BaseAction) invocation.getAction();
 
     String actionName = ServletActionContext.getActionMapping().getName();
     if (!actionName.equals("projects")) {
-      Map<String, Object> parameters = invocation.getInvocationContext().getParameters();
       // Project parameter is validated in the ValidateProjectParameterInterceptor.
       String projectParameter = ((String[]) parameters.get(APConstants.PROJECT_REQUEST_ID))[0];
       int projectID = Integer.parseInt(projectParameter);
-      // User session is validated in the RequireUserInterceptor.
-      User user = (User) session.get(APConstants.SESSION_USER);
-      BaseAction baseAction = (BaseAction) invocation.getAction();
       // Listing all projects that the user is able to edit.
       // Getting project list that belongs to the program that you belongs to.
       if (user.isAdmin()) {
@@ -100,6 +100,17 @@ public class GrantProjectPlanningAccessInterceptor extends AbstractInterceptor {
         }
       } else {
         // User is AL or Guest.
+        baseAction.setFullEditable(true);
+        baseAction.setSaveable(false);
+      }
+    } else {
+      // if the user is in the projects list section.
+      // If user is Admin, FPL or RPL, he/she will be able to add new projects.
+      if (user.isAdmin() || user.isFPL() || user.isRPL()) {
+        baseAction.setFullEditable(true);
+        baseAction.setSaveable(true);
+      } else {
+        // If the user is a PL, AL or Guest, he/she won't be able to add new projects.
         baseAction.setFullEditable(true);
         baseAction.setSaveable(false);
       }
