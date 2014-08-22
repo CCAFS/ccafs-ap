@@ -183,6 +183,7 @@ CREATE TABLE IF NOT EXISTS `expected_activity_leaders` (
   `institution_id` bigint(20) NOT NULL,
   `name` varchar(255) DEFAULT NULL,
   `email` varchar(255) DEFAULT NULL,
+  `is_official` tinyint(1) NOT NULL DEFAULT '0' COMMENT 'If the expected leader needs to be created as a user.',
   PRIMARY KEY (`id`),
   KEY `FK_activity_leaders_institutions_idx` (`institution_id`)
 ) ENGINE=InnoDB  DEFAULT CHARSET=utf8;
