@@ -21,7 +21,6 @@ function attachEvents(){
       updateOrganizationsList(event);
     $filterContent.slideToggle();
   });
-  
   // When Partner Type change
   $("select.partnerTypes, select.countryList").change(updateOrganizationsList);
 }

@@ -55,4 +55,7 @@
     </article>
   [/@s.form]  
 </section>
+
+[#-- Activity partner Template --]
+[@activityPartnersTemplate.partnerTemplate/]
 [#include "/WEB-INF/global/pages/footer.ftl"]
