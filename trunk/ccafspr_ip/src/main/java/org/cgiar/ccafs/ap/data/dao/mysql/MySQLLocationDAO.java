@@ -67,7 +67,6 @@ public class MySQLLocationDAO implements LocationDAO {
       ResultSet rs = databaseManager.makeQuery(query.toString(), con);
       Map<String, String> locationData;
       while (rs.next()) {
-        System.out.println("---");
         locationData = new HashMap<String, String>();
         locationData.put("id", rs.getString("id"));
         locationData.put("name", rs.getString("name"));
@@ -300,6 +299,42 @@ public class MySQLLocationDAO implements LocationDAO {
   }
 
   @Override
+  public Map<String, String> getLocation(int locationID) {
+    LOG.debug(">> getLocation( locationID={} )", locationID);
+
+    StringBuilder query = new StringBuilder();
+    query.append("SELECT le.id, le.name, le.code, ");
+    query.append("le.parent_id as parent_id, let.name as parent_name, let.code as parent_code ");
+    query.append("FROM loc_elements le ");
+    query.append("INNER JOIN loc_elements let ON le.parent_id = let.id  ");
+    query.append("INNER JOIN loc_element_types letd ON letd.id = le.element_type_id  ");
+    query.append("WHERE le.id =  ");
+    query.append(locationID);
+
+    Map<String, String> locationData = new HashMap<String, String>();
+    try (Connection con = databaseManager.getConnection()) {
+      ResultSet rs = databaseManager.makeQuery(query.toString(), con);
+      if (rs.next()) {
+        // Location
+        locationData.put("id", rs.getString("id"));
+        locationData.put("name", rs.getString("name"));
+        locationData.put("code", rs.getString("code"));
+        // Parent
+        locationData.put("parent_id", rs.getString("parent_id"));
+        locationData.put("parent_name", rs.getString("parent_name"));
+        locationData.put("parent_code", rs.getString("parent_code"));
+      }
+      rs.close();
+    } catch (SQLException e) {
+      String exceptionMessage = "-- executeQuery() > Exception raised trying ";
+      exceptionMessage += "to execute the following query " + query;
+      LOG.error(exceptionMessage, e);
+      return locationData;
+    }
+    return locationData;
+  }
+
+  @Override
   public Map<String, String> getLocation(int typeID, int locationID) {
     Map<String, String> locationData = new HashMap<String, String>();
     LOG.debug(">> getLocation( typeID = {} )", typeID);
@@ -465,36 +500,19 @@ public class MySQLLocationDAO implements LocationDAO {
     StringBuilder query = new StringBuilder();
     int result = -1;
 
-    if (locationData.get("id") == null) {
-      // Insert a new project record.
-      query.append("INSERT INTO loc_elements (name, code, parent_id, element_type_id, geoposition_id) ");
-      query.append("VALUES (?, ?, ?, ?, ?) ");
+    // Insert a new project record without id.
+    query.append("INSERT INTO loc_elements (id, name, code, parent_id, element_type_id, geoposition_id) ");
+    query.append("VALUES (?, ?, ?, ?, ?, ?) ");
 
-      Object[] values = new Object[5];
-      values[0] = locationData.get("name");
-      values[1] = locationData.get("code");
-      values[2] = locationData.get("parent_id");
-      values[3] = locationData.get("element_type_id");
-      values[4] = locationData.get("geoposition_id");
+    Object[] values = new Object[6];
+    values[0] = locationData.get("id");
+    values[1] = locationData.get("name");
+    values[2] = locationData.get("code");
+    values[3] = locationData.get("parent_id");
+    values[4] = locationData.get("element_type_id");
+    values[5] = locationData.get("geoposition_id");
 
-      result = databaseManager.saveData(query.toString(), values);
-      LOG.debug("<< saveLocation():{}", result);
-    } else {
-      // Update project.
-      query.append("UPDATE loc_elements SET name = ?, code = ?, parent_id = ?, element_type_id = ?, ");
-      query.append("geoposition_id = ? ");
-      query.append("WHERE id = ?");
-
-      Object[] values = new Object[6];
-      values[0] = locationData.get("name");
-      values[1] = locationData.get("code");
-      values[2] = locationData.get("parent_id");
-      values[3] = locationData.get("element_type_id");
-      values[4] = locationData.get("geoposition_id");
-      values[5] = locationData.get("id");
-      result = databaseManager.saveData(query.toString(), values);
-    }
-
+    result = databaseManager.saveData(query.toString(), values);
     LOG.debug("<< saveLocation()", result);
     return result;
   }

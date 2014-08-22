@@ -309,7 +309,7 @@ public class LocationManagerImpl implements LocationManager {
     locationData.put("element_type_id", String.valueOf(location.getType().getId()));
 
     int geoPositionID = saveLocationGeoposition(location);
-    // If the geoPosition id was updated and the returned value was 0, then
+    // If the geoPosition was updated and the returned value was 0, then
     // we have to get the geopositionId brought with the object
     geoPositionID = (geoPositionID == 0) ? location.getGeoPosition().getId() : geoPositionID;
     if (geoPositionID == -1) {
@@ -319,6 +319,9 @@ public class LocationManagerImpl implements LocationManager {
     }
 
     locationID = locationDAO.saveLocation(locationData);
+    // If the location was updated and the returned value was 0, then
+    // we have to get the locationId brought with the object
+    locationID = (locationID == 0) ? location.getId() : locationID;
     return locationID;
   }
 
