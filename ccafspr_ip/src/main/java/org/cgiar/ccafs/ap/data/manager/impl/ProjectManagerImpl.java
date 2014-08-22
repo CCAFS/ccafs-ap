@@ -356,8 +356,7 @@ public class ProjectManagerImpl implements ProjectManager {
       projectData.put("project_owner_id", project.getOwner().getEmployeeId());
     }
 
-    int result = projectDAO.saveProject(projectData);
-    return result;
+    return projectDAO.saveProject(projectData);
   }
 
 

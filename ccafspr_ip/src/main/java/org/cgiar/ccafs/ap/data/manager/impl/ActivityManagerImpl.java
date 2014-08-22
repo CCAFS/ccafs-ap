@@ -104,7 +104,6 @@ public class ActivityManagerImpl implements ActivityManager {
     for (Map<String, String> activityData : activityDataList) {
       Activity activity = new Activity();
       activity.setId(Integer.parseInt(activityData.get("id")));
-      activity.setCustomId(activityData.get("custom_id"));
       activity.setTitle(activityData.get("title"));
       activity.setDescription(activityData.get("description"));
 
@@ -146,7 +145,6 @@ public class ActivityManagerImpl implements ActivityManager {
     if (!activityData.isEmpty()) {
       Activity activity = new Activity();
       activity.setId(Integer.parseInt(activityData.get("id")));
-      activity.setCustomId(activityData.get("custom_id"));
       activity.setTitle(activityData.get("title"));
       activity.setDescription(activityData.get("description"));
 
@@ -212,8 +210,7 @@ public class ActivityManagerImpl implements ActivityManager {
   }
 
   @Override
-  public boolean saveActivity(int projectID, Activity activity) {
-    boolean allSaved = true;
+  public int saveActivity(int projectID, Activity activity) {
     Map<String, Object> activityData = new HashMap<>();
     if (activity.getId() > 0) {
       activityData.put("id", activity.getId());
@@ -224,21 +221,8 @@ public class ActivityManagerImpl implements ActivityManager {
     activityData.put("endDate", activity.getEnd());
     activityData.put("leader_id", activity.getLeader().getEmployeeId());
 
-    int result = activityDAO.saveActivity(projectID, activityData);
-
-    if (result > 0) {
-      LOG.debug("saveActivity > New Activity added with id {}", result);
-    } else if (result == 0) {
-      LOG.debug("saveActivity > Activity with id={} was updated", activity.getId());
-    } else {
-      LOG.error("saveActivity > There was an error trying to save/update a Activity from projectId={}", projectID);
-      allSaved = false;
-    }
-
-    return allSaved;
-
+    return activityDAO.saveActivity(projectID, activityData);
   }
-
 
   @Override
   public boolean saveActivityLeader(int activityID, User user) {

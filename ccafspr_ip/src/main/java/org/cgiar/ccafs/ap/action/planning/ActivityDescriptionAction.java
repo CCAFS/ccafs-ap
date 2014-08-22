@@ -78,7 +78,7 @@ public class ActivityDescriptionAction extends BaseAction {
 
   /**
    * This method returns an array of cross cutting ids depending on the project.crossCuttings attribute.
-   * 
+   *
    * @return an array of integers.
    */
   public int[] getCrossCuttingIds() {
@@ -126,10 +126,10 @@ public class ActivityDescriptionAction extends BaseAction {
     boolean success = true;
     // Saving Project Outcome
 
-    boolean saved = activityManager.saveActivity(1, activity);
-    if (!saved) {
-      success = false;
-    }
+    // boolean saved = activityManager.saveActivity(1, activity);
+    // if (!saved) {
+    // success = false;
+    // }
 
     return INPUT;
 
