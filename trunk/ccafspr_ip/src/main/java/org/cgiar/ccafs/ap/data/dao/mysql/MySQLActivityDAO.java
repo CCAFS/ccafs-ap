@@ -21,7 +21,6 @@ import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
-import java.util.Calendar;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -127,7 +126,6 @@ public class MySQLActivityDAO implements ActivityDAO {
       ResultSet rs = databaseManager.makeQuery(query.toString(), con);
       if (rs.next()) {
         activityData.put("id", rs.getString("id"));
-        activityData.put("custom_id", rs.getString("custom_id"));
         activityData.put("title", rs.getString("title"));
         activityData.put("description", rs.getString("description"));
         if (rs.getDate("startDate") != null) {
@@ -205,7 +203,6 @@ public class MySQLActivityDAO implements ActivityDAO {
       while (rs.next()) {
         Map<String, String> activityData = new HashMap<String, String>();
         activityData.put("id", rs.getString("id"));
-        activityData.put("custom_id", rs.getString("custom_id"));
         activityData.put("title", rs.getString("title"));
         activityData.put("description", rs.getString("description"));
         if (rs.getDate("startDate") != null) {
@@ -260,41 +257,25 @@ public class MySQLActivityDAO implements ActivityDAO {
   public int saveActivity(int projectID, Map<String, Object> activityData) {
     LOG.debug(">> saveActivity(activityData={})", activityData);
     StringBuilder query = new StringBuilder();
-    int result = -1;
-    int newId = -1;
+
     Object[] values;
     if (activityData.get("id") == null) {
-
       // Insert new activity record
-      query
-      .append("INSERT INTO activities (project_id, title, description, startDate, endDate, leader_id, custom_id) ");
-      query.append("VALUES (?,?,?,?,?,?,?) ");
-      values = new Object[7];
+      query.append("INSERT INTO activities (project_id, title, description, startDate, endDate, leader_id) ");
+      query.append("VALUES (?,?,?,?,?,?) ");
+      values = new Object[6];
       values[0] = projectID;
       values[1] = activityData.get("title");
       values[2] = activityData.get("description");
       values[3] = activityData.get("startDate");
       values[4] = activityData.get("endDate");
       values[5] = activityData.get("leader_id");
-      values[6] = "";
-      newId = databaseManager.saveData(query.toString(), values);
+      int newId = databaseManager.saveData(query.toString(), values);
       if (newId <= 0) {
         LOG.error("A problem happened trying to add a new activity with id={}", projectID);
         return -1;
-      } else {
-        // Now, Updating the Custom ID for the activity
-        String customID;
-        Calendar now = Calendar.getInstance();
-        // Defining the Custom ID with the Activity Id plus the current Year
-        customID = Integer.toString(newId) + "-" + now.get(Calendar.YEAR);
-        query.setLength(0); // Clearing query.
-        query.append("UPDATE activities SET custom_id=? ");
-        query.append("WHERE id = ? ");
-        values = new Object[2];
-        values[0] = customID;
-        values[1] = newId;
-        result = databaseManager.saveData(query.toString(), values);
       }
+      return newId;
     } else {
       // update activity record
       query.append("UPDATE activities SET title = ?, description = ?, startDate = ?, endDate = ?, leader_id = ? ");
@@ -306,15 +287,14 @@ public class MySQLActivityDAO implements ActivityDAO {
       values[4] = activityData.get("endDate");
       values[5] = activityData.get("leader_id");
       values[6] = activityData.get("id");
-      result = databaseManager.saveData(query.toString(), values);
+      int result = databaseManager.saveData(query.toString(), values);
       if (result == -1) {
         LOG.error("A problem happened trying to update the activity identified with the id = {}",
           activityData.get("id"));
         return -1;
       }
+      return result;
     }
-    LOG.debug("<< saveActivity():{}", result);
-    return result;
   }
 
   @Override

@@ -23,7 +23,6 @@ SET time_zone = "+00:00";
 CREATE TABLE IF NOT EXISTS `activities` (
   `id` bigint(20) NOT NULL AUTO_INCREMENT,
   `project_id` bigint(20) NOT NULL,
-  `custom_id` varchar(50) NOT NULL,
   `title` varchar(255) DEFAULT NULL,
   `description` text,
   `startDate` date DEFAULT NULL,
