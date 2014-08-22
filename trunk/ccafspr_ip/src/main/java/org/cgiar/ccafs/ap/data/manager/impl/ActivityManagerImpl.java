@@ -219,7 +219,9 @@ public class ActivityManagerImpl implements ActivityManager {
     activityData.put("description", activity.getDescription());
     activityData.put("startDate", activity.getStart());
     activityData.put("endDate", activity.getEnd());
-    activityData.put("leader_id", activity.getLeader().getEmployeeId());
+    if (activity.getLeader() != null) {
+      activityData.put("leader_id", activity.getLeader().getEmployeeId());
+    }
 
     return activityDAO.saveActivity(projectID, activityData);
   }

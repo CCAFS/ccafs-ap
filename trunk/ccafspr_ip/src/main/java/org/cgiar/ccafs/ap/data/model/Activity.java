@@ -13,6 +13,7 @@
  *****************************************************************/
 package org.cgiar.ccafs.ap.data.model;
 
+import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 
@@ -27,7 +28,6 @@ import org.apache.commons.lang3.builder.ToStringBuilder;
 public class Activity {
 
   private int id;
-  private String customId;
   private String title;
   private String description;
   private Date start;
@@ -56,16 +56,28 @@ public class Activity {
     return false;
   }
 
+  /**
+   * This method returns a composed Identifier that is going to be used in the front-end.
+   * The convention is going to be used depending on the creation date of the activity.
+   * yyyy-activityID => e.g. 2014-12
+   *
+   * @return the composed identifier or null if the created date is null.
+   */
+  public String getComposedId() {
+    if (created != 0) {
+      Calendar calendar = Calendar.getInstance();
+      calendar.setTimeInMillis(this.created);
+      return calendar.get(Calendar.YEAR) + "-" + this.id;
+    }
+    return null;
+  }
+
   public long getCreated() {
     return created;
   }
 
   public List<IPCrossCutting> getCrossCuttings() {
     return crossCuttings;
-  }
-
-  public String getCustomId() {
-    return customId;
   }
 
   public String getDescription() {
@@ -115,10 +127,6 @@ public class Activity {
 
   public void setCrossCuttings(List<IPCrossCutting> crossCuttings) {
     this.crossCuttings = crossCuttings;
-  }
-
-  public void setCustomId(String customId) {
-    this.customId = customId;
   }
 
   public void setDescription(String description) {
