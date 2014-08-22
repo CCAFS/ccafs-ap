@@ -261,15 +261,10 @@ public class MySQLActivityDAO implements ActivityDAO {
     Object[] values;
     if (activityData.get("id") == null) {
       // Insert new activity record
-      query.append("INSERT INTO activities (project_id, title, description, startDate, endDate, leader_id) ");
-      query.append("VALUES (?,?,?,?,?,?) ");
-      values = new Object[6];
+      query.append("INSERT INTO activities (project_id) ");
+      query.append("VALUES (?) ");
+      values = new Object[1];
       values[0] = projectID;
-      values[1] = activityData.get("title");
-      values[2] = activityData.get("description");
-      values[3] = activityData.get("startDate");
-      values[4] = activityData.get("endDate");
-      values[5] = activityData.get("leader_id");
       int newId = databaseManager.saveData(query.toString(), values);
       if (newId <= 0) {
         LOG.error("A problem happened trying to add a new activity with id={}", projectID);
@@ -278,15 +273,16 @@ public class MySQLActivityDAO implements ActivityDAO {
       return newId;
     } else {
       // update activity record
-      query.append("UPDATE activities SET title = ?, description = ?, startDate = ?, endDate = ?, leader_id = ? ");
+      query
+      .append("UPDATE activities SET title = ?, description = ?, startDate = ?, endDate = ?, expected_leader_id = ? ");
       query.append("WHERE id = ? ");
-      values = new Object[7];
-      values[1] = activityData.get("title");
-      values[2] = activityData.get("description");
-      values[3] = activityData.get("startDate");
-      values[4] = activityData.get("endDate");
-      values[5] = activityData.get("leader_id");
-      values[6] = activityData.get("id");
+      values = new Object[6];
+      values[0] = activityData.get("title");
+      values[1] = activityData.get("description");
+      values[2] = activityData.get("startDate");
+      values[3] = activityData.get("endDate");
+      values[4] = activityData.get("expected_leader_id");
+      values[5] = activityData.get("id");
       int result = databaseManager.saveData(query.toString(), values);
       if (result == -1) {
         LOG.error("A problem happened trying to update the activity identified with the id = {}",

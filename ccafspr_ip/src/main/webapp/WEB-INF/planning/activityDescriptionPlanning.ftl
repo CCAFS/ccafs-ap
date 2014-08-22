@@ -1,6 +1,6 @@
 [#ftl]
 [#assign title = "Activity Description" /]
-[#assign globalLibs = ["jquery", "noty", "autoSave"] /]
+[#assign globalLibs = ["jquery", "noty", "autoSave", "chosen"] /]
 [#assign customJS = ["${baseUrl}/js/global/utils.js"] /]
 [#assign currentSection = "planning" /]
 [#assign currentPlanningSection = "activity" /]
@@ -10,7 +10,7 @@
   {"label":"planning", "nameSpace":"planning", "action":"projects"},
   {"label":"projects", "nameSpace":"planning", "action":"projects"},
   {"label":"activities", "nameSpace":"planning/projects", "action":"activities", "param":"projectID=${project.id}" },
-  {"label":"activityDescription", "nameSpace":"planning/activities", "action":"" }
+  {"label":"activityDescription", "nameSpace":"planning/projects/activities", "action":"" }
 ]/]
 
 [#include "/WEB-INF/global/pages/header.ftl" /]
@@ -28,7 +28,7 @@
 
   [@s.form action="activityDescription" cssClass="pure-form"]  
     <article class="halfContent" id="activityDescription">
-      [#-- Informing user that he/she doesn't have enough privileges to edit. See GrantActivityPlanningAccessInterceptor--]
+      [#-- Informing user that he/she doesn't have enough privileges to edit. See GrantActivityPlanningAccessInterceptor --]
       [#if !saveable]
         <p class="readPrivileges">
           [@s.text name="saving.read.privileges"]
@@ -36,74 +36,82 @@
           [/@s.text]
         </p>
       [/#if]
+      [#-- Activity Leader --]
       <h1 class="contentTitle">
-      [@s.text name="planning.activityDescription" /] 
+        [@s.text name="planning.activityDescription.leader" /] 
       </h1>
-      <div id="activityDescription" >
-      <fieldset class="fullBlock">  
-        <div class="borderBox">
-          [#if activity.leader?has_content]
-            <div class="borderBox">
-            [#-- Activity Leader --]
-            <div id="activityLeader" class="">
-              <div class="fullBlock">
-                <b>[@s.text name="planning.activityDescription.leader" /]</b> ${activity.leader.currentInstitution.name}
-              </div>
-              [#-- Contact Name--]
-              <div class="halfPartBlock">  
-                <b>[@s.text name="planning.activityDescription.contactName" /]</b> ${activity.leader.firstName} ${activity.leader.lastName}
-              </div>
-              [#--  Contact Email --]
-              <div class="halfPartBlock">
-                <b>[@s.text name="planning.activityDescription.contactEmail" /]</b>${activity.leader.email}
-              </div>
-            </div>
-          [#else]
-            [#-- Activity Leader --]
-            [@customForm.select name="activity.expectedLeader.institution.id" label=""  disabled=false i18nkey="planning.activityDescription.leader" listName="allPartners" keyFieldName="id"  displayFieldName="name" /]
-            <div id="projectDescription" class="">
-              [#-- Contact Name--]
-            <div class="halfPartBlock">  
-              [@customForm.input name="activity.expectedLeader.name" type="text" i18nkey="planning.activityDescription.contactName" required=true   /]
-            </div>
-            [#--  Contact Email --]
-            <div class="halfPartBlock">          
-              [@customForm.input name="activity.expectedLeader.email" type="text"  i18nkey="planning.activityDescription.contactEmail" required=true  /]
-            </div>
-          [/#if]
-      </div><br/>
-      [#-- Activity Title --]
-      [@customForm.textArea name="activity.title" i18nkey="planning.activityDescription.title" required=true /]
-      [#-- Activity Description --]
-      [@customForm.textArea name="activity.description" i18nkey="planning.activityDescription.description" required=true  /]
-      [#-- Start Date --]
-      <div class="halfPartBlock">
-        [@customForm.input name="activity.start" type="text" i18nkey="planning.activityDescription.startDate" required=true /]
-      </div> 
-      [#-- End Date --]
-      <div class="halfPartBlock">
-        [@customForm.input name="activity.end" type="text" i18nkey="planning.activityDescription.endDate" required=true /]
-      </div>
-      [#-- Cross Cutting --] 
-      <div id="activityCrossCutting" class="thirdPartBlock">
-        <h6>[@s.text name="planning.activityDescription.crossCutting" /]</h6>
-        <div class="checkboxGroup">
-          [@s.checkboxlist name="activity.crossCuttings" list="ipCrossCuttings" listKey="id" listValue="name" cssClass="checkbox" value="crossCuttingIds" /]
+      <div id="leader" class="borderBox clearfix">
+        [#if activity.leader?has_content]
+          [#-- Loading activity leader  --]
+          
+          [#-- Institution --]
+          <div class="fullBlock">
+            <b>[@s.text name="planning.activityDescription.institution" /]</b> ${activity.leader.currentInstitution.name}
+          </div>
+          [#-- Contact Name--]
+          <div class="halfPartBlock">  
+            <b>[@s.text name="planning.activityDescription.contactName" /]</b> ${activity.leader.firstName} ${activity.leader.lastName}
+          </div>
+          [#--  Contact Email --]
+          <div class="halfPartBlock">
+            <b>[@s.text name="planning.activityDescription.contactEmail" /]</b>${activity.leader.email}
+          </div>
+        [#else]
+          [#-- Loading expected Leader --]
+          
+          [#-- Institution --]
+          <div class="fullPartBlock chosen">
+            [@customForm.select name="activity.expectedLeader.currentInstitution" label="" disabled=false i18nkey="planning.activityDescription.institution" listName="allPartners" keyFieldName="id"  displayFieldName="composedName" /]
+          </div>
+          [#-- Contact Name--]
+          <div class="halfPartBlock">
+            [@customForm.input name="activity.expectedLeader.firstName" type="text" i18nkey="planning.activityDescription.contactName" required=true /]
+          </div>
+          [#--  Contact Email --]
+          <div class="halfPartBlock">
+            [@customForm.input name="activity.expectedLeader.email" type="text"  i18nkey="planning.activityDescription.contactEmail" required=true  /]
+          </div>
+        [/#if]
+      </div> <!-- End leader .borderBox -->
+      
+      [#-- Activity Main information --]
+      <h1 class="contentTitle">
+        [@s.text name="planning.activityDescription.mainInformation" /] 
+      </h1>
+      <div id="description" class="borderBox">
+        [#-- Activity Title --]
+        <div class="fullBlock">
+          [@customForm.textArea name="activity.title" i18nkey="planning.activityDescription.title" required=true /]
         </div>
-      </div>
-    </div> 
-
-    </fieldset><br/>
-    </div> 
-    [#if saveable]
-      <input type="hidden" name="activityID" value="${activity.id?c}">
-      <div class="buttons">
-        [@s.submit type="button" name="save"][@s.text name="form.buttons.save" /][/@s.submit]
-        [@s.submit type="button" name="next"][@s.text name="form.buttons.next" /][/@s.submit]
-        [@s.submit type="button" name="cancel"][@s.text name="form.buttons.cancel" /][/@s.submit]
-      </div>
-    [/#if]
-  </article>
+        [#-- Activity Description --]
+        <div class="fullBlock">
+          [@customForm.textArea name="activity.description" i18nkey="planning.activityDescription.description" required=true  /]
+        </div>
+        [#-- Start Date --]
+        <div class="halfPartBlock">
+          [@customForm.input name="activity.startDate" type="text" i18nkey="planning.activityDescription.startDate" required=true /]
+        </div> 
+        [#-- End Date --]
+        <div class="halfPartBlock">
+          [@customForm.input name="activity.endDate" type="text" i18nkey="planning.activityDescription.endDate" required=true /]
+        </div>
+        [#-- Cross Cutting --]
+        <div id="activityCrossCutting" class="thirdPartBlock">
+          <h6>[@s.text name="planning.activityDescription.crossCutting" /]</h6>
+          <div class="checkboxGroup">
+            [@s.checkboxlist name="activity.crossCuttings" list="ipCrossCuttings" listKey="id" listValue="name" cssClass="checkbox" value="crossCuttingIds" /]
+          </div>
+        </div>
+      </div> <!-- End description .borderBox-->
+      [#if saveable]
+        <input type="hidden" name="activityID" value="${activity.id?c}">
+        <div class="buttons">
+          [@s.submit type="button" name="save"][@s.text name="form.buttons.save" /][/@s.submit]
+          [@s.submit type="button" name="next"][@s.text name="form.buttons.next" /][/@s.submit]
+          [@s.submit type="button" name="cancel"][@s.text name="form.buttons.cancel" /][/@s.submit]
+        </div>
+      [/#if]
+    </article>
   [/@s.form]  
 </section>
 [#include "/WEB-INF/global/pages/footer.ftl"]
