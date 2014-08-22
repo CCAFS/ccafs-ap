@@ -12,7 +12,10 @@ import org.cgiar.ccafs.ap.data.model.Location;
 import org.cgiar.ccafs.ap.data.model.LocationType;
 import org.cgiar.ccafs.ap.data.model.OtherLocation;
 import org.cgiar.ccafs.ap.data.model.Region;
+import org.cgiar.ccafs.ap.util.FileManager;
+import org.cgiar.ccafs.ap.util.SendMail;
 
+import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -39,6 +42,11 @@ public class LocationsPlanningAction extends BaseAction {
   private List<Region> regions;
   private int activityID;
 
+  // Variables needed to upload the excel file
+  private File excelTemplate;
+  private String excelTemplateContentType;
+  private String excelTemplateFileName;
+
   // Temporal lists to save the locations
   private List<Region> regionsSaved;
   private List<Country> countriesSaved;
@@ -61,16 +69,13 @@ public class LocationsPlanningAction extends BaseAction {
     return activityID;
   }
 
-
   public List<Country> getCountries() {
     return countries;
   }
 
-
   public List<Country> getCountriesSaved() {
     return countriesSaved;
   }
-
 
   public int getCountryTypeID() {
     return APConstants.LOCATION_ELEMENT_TYPE_COUNTRY;
@@ -80,13 +85,16 @@ public class LocationsPlanningAction extends BaseAction {
     return locationTypes;
   }
 
+
   public List<OtherLocation> getOtherLocationsSaved() {
     return otherLocationsSaved;
   }
 
+
   public List<Region> getRegions() {
     return regions;
   }
+
 
   public List<Region> getRegionsSaved() {
     return regionsSaved;
@@ -147,15 +155,42 @@ public class LocationsPlanningAction extends BaseAction {
 
     // First remove the existent locations
     locationManager.removeActivityLocation(activity.getLocations(), activityID);
-
+    // Then, save locations received
     locationManager.saveActivityLocations(locations, activityID);
+
+    // Check if user upload an excel file
+    if (excelTemplate != null) {
+      String fileLocation = config.getUploadsBaseFolder() + config.getLocationsTemplateFolder();
+
+      // First, move the uploaded file to the corresponding folder
+      FileManager.copyFile(excelTemplate, fileLocation + excelTemplateFileName);
+
+      LOG.trace("The locations template uploaded was moved to: " + fileLocation + excelTemplateFileName);
+      // Send a message with the file received
+      sendNotificationMessage(fileLocation, excelTemplateFileName);
+    }
+
     return super.save();
+  }
+
+  private void sendNotificationMessage(String filePath, String fileName) {
+    StringBuilder messageContent = new StringBuilder();
+    String subject, recipients;
+    subject = "[CCAFS P&R] Activity locations template to save into the database";
+    recipients = "ccafsap@gmail.com";
+
+    messageContent.append("User ");
+    messageContent.append(getCurrentUser().getFirstName() + " " + getCurrentUser().getLastName());
+    messageContent.append(" <" + getCurrentUser().getEmail() + "> ");
+    messageContent.append("has uploaded a file with locations to be saved into the database.");
+
+    SendMail sendMail = new SendMail(config);
+    sendMail.sendMailWithAttachment(recipients, subject, messageContent.toString(), filePath + fileName, fileName);
   }
 
   public void setActivity(Activity activity) {
     this.activity = activity;
   }
-
 
   public void setActivityID(String activityID) {
     this.activityID = Integer.parseInt(activityID);
@@ -167,6 +202,19 @@ public class LocationsPlanningAction extends BaseAction {
 
   public void setCountriesSaved(List<Country> countriesSaved) {
     this.countriesSaved = countriesSaved;
+  }
+
+  public void setExcelTemplate(File excelTemplate) {
+    this.excelTemplate = excelTemplate;
+  }
+
+
+  public void setExcelTemplateContentType(String excelTemplateContentType) {
+    this.excelTemplateContentType = excelTemplateContentType;
+  }
+
+  public void setExcelTemplateFileName(String excelTemplateFileName) {
+    this.excelTemplateFileName = excelTemplateFileName;
   }
 
   public void setLocationTypes(List<LocationType> locationTypes) {

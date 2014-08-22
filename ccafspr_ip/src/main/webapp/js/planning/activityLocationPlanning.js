@@ -15,6 +15,11 @@ function attachEvents(){
   //
   $("[name$='geoPosition.latitude'], [name$='geoPosition.longitude']").on("keydown", isNumber);
   
+  $("#fileBrowserLauncher").click(function(event){
+    event.preventDefault();
+    $("#excelTemplate").trigger("click");
+  });
+  
 }
 
 function addLocationEvent(e){
