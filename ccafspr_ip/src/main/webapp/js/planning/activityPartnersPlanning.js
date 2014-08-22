@@ -1,19 +1,20 @@
-$(document).ready(function(){
+$(document).ready(init);
+
+function init(){
+  // Started listeners
   attachEvents();
-  // This function enables launch the pop up window
-  popups();
   // Activate the chosen plugin to the existing partners
   addChosen();
   if (!$("div.projectPartner").length) {
     $("a.addProjectPartner").trigger("click");
   }
-  
-});
+}
 
 function attachEvents(){
-  // Partners Events
-  $("a.addProjectPartner").click(addPartnerEvent);
-  $(".removePartner").click(removePartnerEvent);
+  // Add partner block
+  $("#addActivityPartner").click(addPartnerEvent);
+  // Remove partner block
+  $(".removeActivityPartner").click(removePartnerEvent);
   // Partners filters
   $(".filters-link").click(function(event){
     var $filterContent = $(event.target).next();
@@ -21,7 +22,6 @@ function attachEvents(){
       updateOrganizationsList(event);
     $filterContent.slideToggle();
   });
-  
   // When Partner Type change
   $("select.partnerTypes, select.countryList").change(updateOrganizationsList);
 }
@@ -31,15 +31,13 @@ function updateOrganizationsList(e){
   var $parent = $(e.target).parent().parent().parent().parent().parent();
   if (eventType == "filters-link")
     $parent = $(e.target).parent();
-  var $selectInstitutions = $parent.find("select[name$='partner']");
+  var $selectInstitutions = $parent.find("select[name$='partner.id']");
   var partnerTypes = $parent.find("select.partnerTypes").find('option:selected').val();
   var countryList = $parent.find("select.countryList").find('option:selected').val();
-  var source = "../../json/institutionsByTypeAndCountry.do?institutionTypeID=" + partnerTypes + "&countryID=" + countryList;
-  
+  var source = "../../../json/institutionsByTypeAndCountry.do?institutionTypeID=" + partnerTypes + "&countryID=" + countryList;
   if (eventType == "filters-link")
-    source = "../../json/institutionsByTypeAndCountry.do";
+    source = "../../../json/institutionsByTypeAndCountry.do";
   var institutionsList = "";
-  
   $.getJSON(source, function(data){
     $.each(data.institutions, function(index,institution){
       institutionsList += "<option value=" + institution.id + ">" + institution.composedName + "</option>";
@@ -56,21 +54,21 @@ function updateOrganizationsList(e){
 // Partner Events
 function removePartnerEvent(e){
   e.preventDefault();
-  var $parent = $(e.target).parent().parent();
+  var $parent = $(e.target).parent();
   $parent.hide("slow", function(){
     $parent.remove();
-    setProjectPartnersIndexes();
+    setActivityPartnersIndexes();
   });
 }
 
 function addPartnerEvent(e){
   e.preventDefault();
-  var $newElement = $("#projectPartnerTemplate").clone(true).removeAttr("id").addClass("projectPartner");
+  var $newElement = $("#activityPartnerTemplate").clone(true).removeAttr("id").addClass("activityPartner");
   $(e.target).parent().before($newElement);
   $newElement.show("slow");
   
   // Activate the chosen plugin
-  $newElement.find("select[name$='partner']").chosen({
+  $newElement.find("select[name$='partner.id']").chosen({
     no_results_text : $("#noResultText").val(),
     search_contains : true
   });
@@ -82,32 +80,26 @@ function addPartnerEvent(e){
     allow_single_deselect : true,
     search_contains : true
   });
-  setProjectPartnersIndexes();
+  setActivityPartnersIndexes();
 }
 
-function setProjectPartnersIndexes(){
-  $("div.projectPartner").each(function(index,element){
-    var elementName = "project.projectPartners[" + index + "].";
-    $(element).attr("id", "projectPartner-" + index);
+function setActivityPartnersIndexes(){
+  $("div.activityPartner").each(function(index,element){
+    console.log("partner" + index);
+    var elementName = "activityPartners[" + index + "].";
+    $(element).attr("id", "activityPartner-" + index);
     // CSS selector div[id$=parent] Get any DIV element where the ID attribute value ends with "parent".
     $(element).find("[id$='partnerIndex']").html(index + 1);
-    $(element).find("[id$='id']").attr("name", elementName + "id");
-    $(element).find("[id$='partner']").attr("name", elementName + "partner");
-    $(element).find("[id$='contactName']").attr("name", elementName + "contactName");
-    $(element).find("[id$='contactEmail']").attr("name", elementName + "contactEmail");
-    $(element).find("[id$='responsabilities']").attr("name", elementName + "responsabilities");
+    $(element).find("[name$='].id']").attr("name", elementName + "id");
+    $(element).find("[name$='partner.id']").attr("name", elementName + "partner.id");
+    $(element).find("[name$='contactName']").attr("name", elementName + "contactName");
+    $(element).find("[name$='contactEmail']").attr("name", elementName + "contactEmail");
+    $(element).find("[name$='contribution']").attr("name", elementName + "contribution");
   });
 }
 
-// Activate the chosen plugin to the countries, partner types and
-// partners lists.
 function addChosen(){
-  
-  $("form select[name$='partner']").chosen({
-    search_contains : true
-  });
-  
-  $("form select[name$='currentInstitution']").chosen({
+  $("form select[name$='partner.id']").chosen({
     search_contains : true
   });
   
@@ -120,5 +112,4 @@ function addChosen(){
     allow_single_deselect : true,
     search_contains : true
   });
-  
 }

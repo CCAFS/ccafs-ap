@@ -1400,6 +1400,26 @@ table tr.row:hover{
     width: 100%;
 }
 
+/* Activity partners*/ 
+
+.activityPartner .filters-link {
+  cursor: pointer;
+  color: #848484;
+  padding-left: 7px;
+  margin-bottom: 7px;
+}
+
+.activityPartner .filters-link:hover {
+ text-decoration:underline;
+}
+
+.activityPartner .filters-content {
+  margin: 7px 0px;
+  padding: 8px;
+  border: 1px dotted #D2D2D2;
+  display: none;
+}
+
 /****** REPORTING **********/
 /********* Activity Reporting Sub Menu **********/
 #stageMenu {
