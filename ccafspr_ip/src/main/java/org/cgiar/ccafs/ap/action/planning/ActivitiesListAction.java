@@ -22,9 +22,6 @@ import org.cgiar.ccafs.ap.data.model.Activity;
 import java.util.Date;
 import java.util.List;
 
-import org.cgiar.ccafs.ap.data.model.IPProgram;
-import org.cgiar.ccafs.ap.data.model.Project;
-
 import com.google.inject.Inject;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
@@ -76,7 +73,9 @@ public class ActivitiesListAction extends BaseAction {
   private int createNewActivity() {
     Activity newActivity = new Activity(-1);
     newActivity.setCreated(new Date().getTime());
-    return activityManager.saveActivity(projectID, newActivity);
+    // TODO HT - Fix this error
+    // return activityManager.saveActivity(projectID, newActivity);
+    return 0;
   }
 
 
