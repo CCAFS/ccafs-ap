@@ -42,9 +42,11 @@ public class APConfig {
   private static final String SUMMARIES_ACTIVE = "ccafsap.summaries.active";
   private static final String GMAIL_USER = "gmail.user";
   private static final String GMAIL_PASSWORD = "gmail.password";
-  private static final String FILE_CASE_STUDIES_IMAGE_URL = "file.caseStudiesImagesUrl";
-  private static final String FILE_CASE_STUDIES_IMAGE_PATH = "file.caseStudiesImagesPath";
   private static final String MAX_CASE_STUDY_TYPES = "ccafsap.reporting.caseStudy.types.max";
+  private static final String UPLOADS_BASE_FOLDER = "file.uploads.baseFolder";
+  private static final String LOCATIONS_TEMPLATE_FOLDER = "file.uploads.locationsTemplateFolder";
+  private static final String CASE_STUDIES_FOLDER = "file.uploads.caseStudiesImagesFolder";
+  private static final String FILE_DOWNLOADS = "file.downloads";
 
   // Logging.
   private static final Logger LOG = LoggerFactory.getLogger(APConfig.class);
@@ -55,7 +57,6 @@ public class APConfig {
   public APConfig(PropertiesManager properties) {
     this.properties = properties;
   }
-
 
   /**
    * Return the base url previously added in the configuration file.
@@ -79,33 +80,38 @@ public class APConfig {
   }
 
   /**
-   * Get the path where are stored the case studies user images
+   * Get the folder where the case studies images uploaded should be saved
    * 
    * @return a string with the path
    */
-  public String getCaseStudiesImagesPath() {
+  public String getCaseStudiesImagesFolder() {
     try {
-      return properties.getPropertiesAsString(FILE_CASE_STUDIES_IMAGE_PATH);
+      return properties.getPropertiesAsString(CASE_STUDIES_FOLDER);
     } catch (Exception e) {
-      LOG.error("there is not a path for the user images configured.");
+      LOG.error("there is not a base folder to save the uploaded files configured.");
     }
     return null;
   }
 
-  public String getCaseStudiesImagesUrl() {
-    String url = properties.getPropertiesAsString(FILE_CASE_STUDIES_IMAGE_URL);
-    if (url == null) {
-      LOG.error("There is not a url for case studies images configured");
+  /**
+   * Get the URL where the users can download the uploaded files
+   * 
+   * @return a string with the path
+   */
+  public String getDownloadURL() {
+    String downloadsURL = properties.getPropertiesAsString(FILE_DOWNLOADS);
+    if (downloadsURL == null) {
+      LOG.error("There is not a downloads url configured");
       return null;
     }
-    while (url != null && url.endsWith("/")) {
-      url = url.substring(0, url.length() - 1);
+    while (downloadsURL != null && downloadsURL.endsWith("/")) {
+      downloadsURL = downloadsURL.substring(0, downloadsURL.length() - 1);
     }
-    if (!url.startsWith("https://")) {
-      url = "https://" + url;
-      return url;
+    if (!downloadsURL.startsWith("https://")) {
+      downloadsURL = "https://" + downloadsURL;
+      return downloadsURL;
     }
-    return url;
+    return downloadsURL;
   }
 
   /**
@@ -169,6 +175,20 @@ public class APConfig {
   }
 
   /**
+   * Get the folder where the locations templates uploaded should be saved
+   * 
+   * @return a string with the path
+   */
+  public String getLocationsTemplateFolder() {
+    try {
+      return properties.getPropertiesAsString(LOCATIONS_TEMPLATE_FOLDER);
+    } catch (Exception e) {
+      LOG.error("there is not a base folder to save the uploaded files configured.");
+    }
+    return null;
+  }
+
+  /**
    * Get the number maximum of types that can have a case study
    * 
    * @return
@@ -222,6 +242,20 @@ public class APConfig {
       LOG.error("there is not a start year configured.");
     }
     return -1;
+  }
+
+  /**
+   * Get the base folder where the uploaded files should be saved
+   * 
+   * @return a string with the path
+   */
+  public String getUploadsBaseFolder() {
+    try {
+      return properties.getPropertiesAsString(UPLOADS_BASE_FOLDER);
+    } catch (Exception e) {
+      LOG.error("there is not a base folder to save the uploaded files configured.");
+    }
+    return null;
   }
 
   /**

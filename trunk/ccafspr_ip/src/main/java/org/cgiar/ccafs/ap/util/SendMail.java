@@ -18,14 +18,20 @@ import org.cgiar.ccafs.ap.config.APConfig;
 import java.util.Date;
 import java.util.Properties;
 
+import javax.activation.DataHandler;
+import javax.activation.DataSource;
+import javax.activation.FileDataSource;
 import javax.mail.Authenticator;
 import javax.mail.Message;
 import javax.mail.MessagingException;
+import javax.mail.Multipart;
 import javax.mail.PasswordAuthentication;
 import javax.mail.Session;
 import javax.mail.Transport;
 import javax.mail.internet.InternetAddress;
+import javax.mail.internet.MimeBodyPart;
 import javax.mail.internet.MimeMessage;
+import javax.mail.internet.MimeMultipart;
 
 import com.google.inject.Inject;
 import org.slf4j.Logger;
@@ -78,6 +84,67 @@ public class SendMail {
       msg.setSubject(subject);
       msg.setText(messageContent);
       msg.setSentDate(new Date());
+      Transport.send(msg);
+      LOG.info("Message sent.");
+
+    } catch (MessagingException e) {
+      LOG.error("There was an error sending a message", e);
+    }
+  }
+
+
+  public void sendMailWithAttachment(String toEmail, String subject, String messageContent, String filePath,
+    String fileName) {
+
+    // Get a Properties object
+    Properties properties = System.getProperties();
+
+    properties.put("mail.smtp.auth", "true");
+    properties.put("mail.smtp.starttls.enable", "true");
+    properties.put("mail.smtp.host", "smtp.gmail.com");
+    properties.put("mail.smtp.port", "587");
+
+    // Un-comment this line to watch javaMail debug
+    // properties.put("mail.debug", "true");
+
+
+    Session session = Session.getInstance(properties, new Authenticator() {
+
+      @Override
+      protected PasswordAuthentication getPasswordAuthentication() {
+        return new PasswordAuthentication(config.getGmailUsername(), config.getGmailPassword());
+      }
+    });
+
+    // Create a new message
+    Message msg = new MimeMessage(session);
+
+    // Set the FROM and TO fields
+    try {
+      // Headers
+      msg.setFrom(new InternetAddress(config.getGmailUsername().contains("@") ? config.getGmailUsername() : config
+        .getGmailUsername() + "@gmail.com"));
+      msg.setRecipients(Message.RecipientType.TO, InternetAddress.parse(toEmail, false));
+      msg.setSubject(subject);
+      msg.setSentDate(new Date());
+
+      // Message body
+      MimeBodyPart messageBodyPart = new MimeBodyPart();
+      messageBodyPart.setContent(messageContent, "text/html");
+
+      // Attaching file
+      MimeBodyPart attachPart = new MimeBodyPart();
+      DataSource source = new FileDataSource(filePath);
+
+      attachPart.setDataHandler(new DataHandler(source));
+      attachPart.setFileName(fileName);
+
+      Multipart multipart = new MimeMultipart();
+      multipart.addBodyPart(attachPart);
+      multipart.addBodyPart(messageBodyPart);
+
+      msg.setContent(multipart);
+
       Transport.send(msg);
       LOG.info("Message sent.");
 

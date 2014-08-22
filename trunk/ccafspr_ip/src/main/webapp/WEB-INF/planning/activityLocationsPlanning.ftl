@@ -24,7 +24,7 @@
   </div>
   [#include "/WEB-INF/planning/activityPlanningSubMenu.ftl" /]
   
-  [@s.form action="activityLocations" cssClass="pure-form"]  
+  [@s.form action="activityLocations" cssClass="pure-form" enctype="multipart/form-data"]  
   <article class="halfContent" id="activityLocations">
     <h1 class="contentTitle">
     [@s.text name="planning.activities.locations.title" /] 
@@ -114,17 +114,21 @@
     </div> 
     <!-- internal parameter -->
     <input type="hidden" name="activityID" value="${activity.id?c}">
+
+    [#-- File upload --]
+    <p id="addPartnerText" class="helpMessage">
+      [@s.text name="planning.activities.locations.uploadMessage" /]      
+      <a id="fileBrowserLauncher" href=""> [@s.text name="planning.activities.locations.uploadMessageLink" /]</a>       
+    </p>
+    <div>
+      [@customForm.input name="excelTemplate" type="file" i18nkey="reporting.caseStudies.image" /]
+    </div>
+
     <div class="buttons">
       [@s.submit type="button" name="save"][@s.text name="form.buttons.save" /][/@s.submit]
       [@s.submit type="button" name="next"][@s.text name="form.buttons.next" /][/@s.submit]
       [@s.submit type="button" name="cancel"][@s.text name="form.buttons.cancel" /][/@s.submit]
     </div>
-    <p id="addPartnerText" class="helpMessage">
-      [@s.text name="planning.activities.locations.uploadMessage" /]
-      <a class="popup" href="[@s.url action='partnerSave'][/@s.url]">
-        [@s.text name="planning.activities.locations.uploadMessageLink" /]
-      </a>       
-    </p>
   </article>
   [/@s.form]
 </section>
