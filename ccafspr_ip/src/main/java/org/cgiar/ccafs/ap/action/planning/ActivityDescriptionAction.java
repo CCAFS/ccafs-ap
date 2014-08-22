@@ -26,7 +26,6 @@ import org.cgiar.ccafs.ap.data.model.Institution;
 import java.util.List;
 
 import org.cgiar.ccafs.ap.data.model.User;
-
 import org.cgiar.ccafs.ap.data.model.Project;
 import org.cgiar.ccafs.ap.data.manager.ProjectManager;
 import com.google.inject.Inject;
@@ -79,10 +78,10 @@ public class ActivityDescriptionAction extends BaseAction {
     return activityID;
   }
 
-
   public List<Institution> getAllPartners() {
     return allPartners;
   }
+
 
   /**
    * This method returns an array of cross cutting ids depending on the project.crossCuttings attribute.
@@ -104,13 +103,22 @@ public class ActivityDescriptionAction extends BaseAction {
     return ipCrossCuttings;
   }
 
-
   public Project getProject() {
     return project;
   }
 
+
   public boolean isExpected() {
     return isExpected;
+  }
+
+  @Override
+  public String next() {
+    String result = save();
+    if (result.equals(BaseAction.SUCCESS)) {
+      return BaseAction.NEXT;
+    }
+    return result;
   }
 
   @Override
@@ -165,6 +173,10 @@ public class ActivityDescriptionAction extends BaseAction {
       ipCrossCuttingManager.saveCrossCutting(activityID, ipCrossTheme.getId());
     }
 
+    if (success == false) {
+      addActionError(getText("saving.problem"));
+      return BaseAction.INPUT;
+    }
     addActionMessage(getText("saving.success", new String[] {getText("planning.projectDescription.title")}));
     return BaseAction.SUCCESS;
 

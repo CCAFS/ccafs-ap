@@ -97,9 +97,13 @@
     <!-- Section: Activities  -->
     <action name="activityDescription" class="org.cgiar.ccafs.ap.action.planning.ActivityDescriptionAction">
       <result name="input">/WEB-INF/planning/activityDescriptionPlanning.ftl</result>
-      <result name="success" type="redirectAction">   
-        <param name="actionName">activityDescription</param>   
-        <param name="activityID">${activity.id}</param>   
+      <result name="success" type="redirectAction">
+        <param name="actionName">activityDescription</param>
+        <param name="activityID">${activity.id}</param>
+      </result>
+      <result name="next" type="redirectAction">
+        <param name="actionName">activityPartners</param>
+        <param name="activityID">${activity.id}</param>
       </result>
     </action>
     
