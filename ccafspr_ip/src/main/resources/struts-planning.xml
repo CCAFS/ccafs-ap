@@ -84,7 +84,7 @@
       <result name="success" type="redirectAction">
         <param name="namespace">/planning/projects/activities</param>
         <param name="actionName">activityDescription</param>
-        <param name="activityID">${activity.id}</param>
+        <param name="activityID">${activityID}</param>
       </result>
     </action>
 

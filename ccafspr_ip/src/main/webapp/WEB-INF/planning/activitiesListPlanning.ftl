@@ -32,8 +32,14 @@
         [@s.text name="planning.activities.title" /]
       </h1>
       [#-- Validating amount of activities to be listed --]
+      <input name="projectID" type="hidden" value="${projectID?c}" />
       [#if activities?size > 0]
         [@activitiesList.activitiesList activities=activities canValidate=true canEditProject=true namespace="/planning/projects/activities" tableID="activities" /]
+        [#if saveable]
+          <div class="buttons">
+            [@s.submit type="button" name="add"][@s.text name="planning.activities.button.add" /][/@s.submit]
+          </div>
+        [/#if]
       [#else]
         [#if saveable]
           <p>[@s.text name="planning.activities.message.empty" /] [@s.text name="planning.activities.message.addNew" /]</p>
