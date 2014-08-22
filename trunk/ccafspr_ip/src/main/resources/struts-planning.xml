@@ -2,7 +2,16 @@
 <!DOCTYPE struts PUBLIC "-//Apache Software Foundation//DTD Struts Configuration 2.3//EN" "http://struts.apache.org/dtds/struts-2.3.dtd">
 <struts>
 
-  <!-- Add addition packages and configuration here. -->
+  <package name="planning" namespace="/planning" extends="ccafsap-default">
+    <default-interceptor-ref name="planningStackProjects" />
+    <default-action-ref name="projects" />
+    
+    <action name="projects" class="org.cgiar.ccafs.ap.action.planning.ProjectsListPlanningAction">
+      <result name="input">/WEB-INF/planning/projectsListPlanning.ftl</result>
+    </action>
+    
+  </package>
+  
   <package name="planningProjects" namespace="/planning/projects" extends="ccafsap-default">
     <default-interceptor-ref name="planningStackProjects" />
     <default-action-ref name="projects" />
@@ -10,10 +19,6 @@
     <!-- Sections -->
     
     <!-- Section: Projects  -->
-    <action name="projects" class="org.cgiar.ccafs.ap.action.planning.ProjectsListPlanningAction">
-      <result name="input">/WEB-INF/planning/projectsListPlanning.ftl</result>
-    </action>
-    
     <action name="description" class="org.cgiar.ccafs.ap.action.planning.ProjectDescriptionPlanningAction">
       <result name="cancel" type="redirectAction">projects</result>
       <result name="input">/WEB-INF/planning/projectDescriptionPlanning.ftl</result>
@@ -72,18 +77,19 @@
         <param name="actionName">partnerSave</param>
       </result>
     </action>
-
-
-  </package>
-  
-  <package name="planningActivities" namespace="/planning/activities" extends="ccafsap-default">
-    <default-interceptor-ref name="planningStackActivities" />
-   
+    
     <!-- Section: Activities  -->
     <action name="activities" class="org.cgiar.ccafs.ap.action.planning.ActivitiesListAction">
       <result name="input">/WEB-INF/planning/activitiesListPlanning.ftl</result>
     </action>
-    
+
+
+  </package>
+  
+  <package name="planningActivities" namespace="/planning/projects/activities" extends="ccafsap-default">
+    <default-interceptor-ref name="planningStackActivities" />
+   
+    <!-- Section: Activities  -->
     <action name="activityDescription" class="org.cgiar.ccafs.ap.action.planning.ActivityDescriptionAction">
       <result name="input">/WEB-INF/planning/activityDescriptionPlanning.ftl</result>
     </action>

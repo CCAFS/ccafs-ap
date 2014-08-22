@@ -34,7 +34,7 @@
         [@projectList.projectsList projects=projects canValidate=true /]
       [#else]
         <div class="borderBox center">
-          [#if currentUser.isPL()]
+          [#if saveable]
             <p>[@s.text name="planning.projects.empty.PL" /]</p>
           [#else]
             <p>[@s.text name="planning.projects.empty"][@s.param][@s.url namespace="/pre-planning/projects" action='projects'/][/@s.param][/@s.text]</p>

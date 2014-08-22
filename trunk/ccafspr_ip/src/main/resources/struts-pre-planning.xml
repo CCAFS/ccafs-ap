@@ -73,13 +73,9 @@
         <param name="namespace">/pre-planning/projects</param>
        </result>
     </action>
-  </package>
-  
-  <package name="preplanningProjects" namespace="/pre-planning/projects" extends="ccafsap-default">
-    <default-interceptor-ref name="preplanningStackProjects" />
-    <default-action-ref name="projects" />
     
     <!-- Section: Projects  -->
+    
     <action name="projects" class="org.cgiar.ccafs.ap.action.preplanning.ProjectsListPreplanningAction">
       <result name="input">/WEB-INF/preplanning/projectsListPreplanning.ftl</result>
       <result name="success" type="redirectAction">
@@ -87,6 +83,14 @@
         <param name="projectID">${projectID}</param>
       </result>
     </action>
+    
+  </package>
+  
+  <package name="preplanningProjects" namespace="/pre-planning/projects" extends="ccafsap-default">
+    <default-interceptor-ref name="preplanningStackProjects" />
+    <default-action-ref name="projects" />
+    
+    <!-- Section: Projects  -->
     
     <action name="description" class="org.cgiar.ccafs.ap.action.preplanning.ProjectDescriptionPreplanningAction">
       <result name="cancel" type="redirectAction">projects</result>
