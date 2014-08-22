@@ -1,6 +1,6 @@
 [#ftl]
 [#-- This macro is being used in activities.ftl. The idea is to represent a table with specific information about activities --]
-[#macro activitiesList activities owned=true canValidate=false canEditProject=false tableID="defaultTable"]
+[#macro activitiesList activities owned=true canValidate=false canEditProject=false namespace="/" tableID="defaultTable"]
     <table class="activitiesList" id="${tableID}">
 		  [#if activities?has_content]
 		    <thead>
@@ -9,17 +9,17 @@
             <th id="activitiesTitles" class="left">[@s.text name="planning.activities.title" /]</th>
             <th id="activitiesLeaders">[@s.text name="planning.activities.leader" /]</th>
             <th id="activitiesOrganizations">[@s.text name="planning.activities.organization" /]</th>
-            <th id="activitiesStatuses">[@s.text name="planning.activities.statusCompletion" /]</th>
+            [#-- Complete / Incomplete  - TODO --][#-- <th id="activitiesStatuses">[@s.text name="planning.activities.statusCompletion" /]</th> --]
           </tr>
         </thead>
         <tbody>
         [#list activities as activity]
     		   <tr>
               <td>
-                  <a href="[@s.url action='activityDescription' ][@s.param name='activityID']${activity.id?c}[/@s.param][/@s.url]">${activity.id?c}</a>
+                  <a href="[@s.url namespace=namespace action='activityDescription' ][@s.param name='activityID']${activity.id?c}[/@s.param][/@s.url]">${activity.id?c}</a>
               </td>
               <td>
-                  <a href="[@s.url action='activityDescription' ] [@s.param name='activityID']${activity.id?c}[/@s.param][/@s.url]">
+                  <a href="[@s.url namespace=namespace action='activityDescription' ] [@s.param name='activityID']${activity.id?c}[/@s.param][/@s.url]">
                     [#if activity.title?has_content]
                       ${activity.title}
                     [#else]
@@ -28,7 +28,7 @@
                   </a>
               </td>
               <td> 
-                  <a href="[@s.url action='activityDescription'] [@s.param name='activityID']${activity.id?c}[/@s.param] [/@s.url]">
+                  <a href="[@s.url namespace=namespace action='activityDescription'] [@s.param name='activityID']${activity.id?c}[/@s.param] [/@s.url]">
                     [#if activity.leader?has_content]
                     	${activity.leader.lastName} ${activity.leader.firstName}
                     [#else]
@@ -37,7 +37,7 @@
                   </a>
               </td>
               <td> 
-                  <a href="[@s.url action='activityDescription' ] [@s.param name='activityID']${activity.id?c}[/@s.param] [/@s.url]">
+                  <a href="[@s.url namespace=namespace action='activityDescription' ] [@s.param name='activityID']${activity.id?c}[/@s.param] [/@s.url]">
                      [#if activity.leader?has_content]
                     	${activity.leader.currentInstitution.name} 
                     [#else]
@@ -45,11 +45,14 @@
                     [/#if]
                   </a>
               </td>
+              [#-- Complete / Incomplete  - TODO --]
+              [#-- 
               <td> 
-                  <a href="[@s.url action='activityDescription' ] [@s.param name='activityID']${activity.id?c}[/@s.param] [/@s.url]">
+                  <a href="[@s.url namespace=namespace action='activityDescription' ] [@s.param name='activityID']${activity.id?c}[/@s.param] [/@s.url]">
                     Complete / Incomplete
                   </a>
               </td>
+              --]
           	</tr>  
         	[/#list]
         [#else]

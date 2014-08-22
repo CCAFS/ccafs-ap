@@ -33,7 +33,7 @@
       </h1>
       [#-- Validating amount of activities to be listed --]
       [#if activities?size > 0]
-        [@activitiesList.activitiesList activities=activities canValidate=true canEditProject=true tableID="activities" /]
+        [@activitiesList.activitiesList activities=activities canValidate=true canEditProject=true namespace="/planning/projects/activities" tableID="activities" /]
       [#else]
         [#if saveable]
           <p>[@s.text name="planning.activities.message.empty" /] [@s.text name="planning.activities.message.addNew" /]</p>

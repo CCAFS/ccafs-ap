@@ -31,7 +31,7 @@
       <p class="note">[@s.text name="preplanning.projects.note.myProjects" /]</p>
       [#if projects?size>0]
         <h3 class="projectSubTitle">[@s.text name="preplanning.projects.yourProjects"/]</h3>
-        [@projectList.projectsList projects=projects canValidate=true /]
+        [@projectList.projectsList projects=projects canValidate=true namespace="/pre-planning/projects" /]
         <div class="buttons">
           [@s.submit type="button" name="add"][@s.text name="preplanning.projects.addProject" /][/@s.submit]
         </div>
@@ -44,7 +44,7 @@
       <hr/>
       <p class="note">[@s.text name="preplanning.projects.note.otherProjects" /]</p>
       <h3 class="projectSubTitle">[@s.text name="preplanning.projects.otherProjects" /]</h3>
-      [@projectList.projectsList projects=allProjects canValidate=true /]
+      [@projectList.projectsList projects=allProjects canValidate=true namespace="/pre-planning/projects" /]
       
     </article>
   [/@s.form]  

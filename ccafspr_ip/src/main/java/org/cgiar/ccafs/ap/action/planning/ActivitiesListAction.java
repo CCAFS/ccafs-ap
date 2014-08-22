@@ -19,7 +19,11 @@ import org.cgiar.ccafs.ap.config.APConstants;
 import org.cgiar.ccafs.ap.data.manager.ActivityManager;
 import org.cgiar.ccafs.ap.data.model.Activity;
 
+import java.util.Date;
 import java.util.List;
+
+import org.cgiar.ccafs.ap.data.model.IPProgram;
+import org.cgiar.ccafs.ap.data.model.Project;
 
 import com.google.inject.Inject;
 import org.apache.commons.lang3.StringUtils;
@@ -46,6 +50,7 @@ public class ActivitiesListAction extends BaseAction {
 
   // Model for the front-end
   private int projectID;
+  private int activityID;
 
 
   @Inject
@@ -55,10 +60,33 @@ public class ActivitiesListAction extends BaseAction {
   }
 
 
+  @Override
+  public String add() {
+    // Create new activity and redirect to activity description using the new activityID assigned by the database.
+    activityID = this.createNewActivity();
+    if (activityID > 0) {
+      // Let's redirect the user to the Activity Description section.
+      return BaseAction.SUCCESS;
+    }
+    // Let's redirect the user to the error page.
+    return BaseAction.ERROR;
+  }
+
+
+  private int createNewActivity() {
+    Activity newActivity = new Activity(-1);
+    newActivity.setCreated(new Date().getTime());
+    return activityManager.saveActivity(projectID, newActivity);
+  }
+
+
   public List<Activity> getActivities() {
     return activities;
   }
 
+  public int getActivityID() {
+    return activityID;
+  }
 
   public int getProjectID() {
     return projectID;
@@ -80,10 +108,8 @@ public class ActivitiesListAction extends BaseAction {
     }
 
     activities = activityManager.getActivitiesByProject(projectID);
-    // TODO HT validate when there is no activities, to show activity description
 
   }
-
 
   public void setProjectID(int projectID) {
     this.projectID = projectID;
