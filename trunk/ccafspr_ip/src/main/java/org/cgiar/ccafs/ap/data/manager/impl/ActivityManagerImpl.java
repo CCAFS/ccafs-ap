@@ -20,7 +20,6 @@ import org.cgiar.ccafs.ap.data.manager.ActivityManager;
 import org.cgiar.ccafs.ap.data.manager.InstitutionManager;
 import org.cgiar.ccafs.ap.data.manager.UserManager;
 import org.cgiar.ccafs.ap.data.model.Activity;
-import org.cgiar.ccafs.ap.data.model.ExpectedActivityLeader;
 import org.cgiar.ccafs.ap.data.model.IPProgram;
 import org.cgiar.ccafs.ap.data.model.Institution;
 import org.cgiar.ccafs.ap.data.model.User;
@@ -111,7 +110,7 @@ public class ActivityManagerImpl implements ActivityManager {
       if (activityData.get("startDate") != null) {
         try {
           Date startDate = dateformatter.parse(activityData.get("startDate"));
-          activity.setStart(startDate);
+          activity.setStartDate(startDate);
         } catch (ParseException e) {
           LOG.error("There was an error formatting the start date", e);
         }
@@ -119,7 +118,7 @@ public class ActivityManagerImpl implements ActivityManager {
       if (activityData.get("endDate") != null) {
         try {
           Date endDate = dateformatter.parse(activityData.get("endDate"));
-          activity.setEnd(endDate);
+          activity.setEndDate(endDate);
         } catch (ParseException e) {
           LOG.error("There was an error formatting the end date", e);
         }
@@ -152,7 +151,7 @@ public class ActivityManagerImpl implements ActivityManager {
       if (activityData.get("startDate") != null) {
         try {
           Date startDate = dateformatter.parse(activityData.get("startDate"));
-          activity.setStart(startDate);
+          activity.setStartDate(startDate);
         } catch (ParseException e) {
           LOG.error("There was an error formatting the start date", e);
         }
@@ -160,7 +159,7 @@ public class ActivityManagerImpl implements ActivityManager {
       if (activityData.get("endDate") != null) {
         try {
           Date endDate = dateformatter.parse(activityData.get("endDate"));
-          activity.setEnd(endDate);
+          activity.setEndDate(endDate);
         } catch (ParseException e) {
           LOG.error("There was an error formatting the end date", e);
         }
@@ -193,15 +192,15 @@ public class ActivityManagerImpl implements ActivityManager {
   }
 
   @Override
-  public ExpectedActivityLeader getExpectedActivityLeader(int activityID) {
+  public User getExpectedActivityLeader(int activityID) {
     Map<String, String> expectedActivityLeaderData = activityDAO.getExpectedActivityLeader(activityID);
     if (!expectedActivityLeaderData.isEmpty()) {
-      ExpectedActivityLeader expectedActivityLeader = new ExpectedActivityLeader();
+      User expectedActivityLeader = new User();
       expectedActivityLeader.setId(Integer.parseInt(expectedActivityLeaderData.get("id")));
-      expectedActivityLeader.setName(expectedActivityLeaderData.get("name"));
+      expectedActivityLeader.setFirstName(expectedActivityLeaderData.get("name"));
       expectedActivityLeader.setEmail(expectedActivityLeaderData.get("email"));
       if (expectedActivityLeaderData.get("institution_id") != null) {
-        expectedActivityLeader.setInstitution(institutionManager.getInstitution(Integer
+        expectedActivityLeader.setCurrentInstitution(institutionManager.getInstitution(Integer
           .parseInt(expectedActivityLeaderData.get("institution_id"))));
       }
       return expectedActivityLeader;
@@ -217,12 +216,11 @@ public class ActivityManagerImpl implements ActivityManager {
     }
     activityData.put("title", activity.getTitle());
     activityData.put("description", activity.getDescription());
-    activityData.put("startDate", activity.getStart());
-    activityData.put("endDate", activity.getEnd());
-    if (activity.getLeader() != null) {
-      activityData.put("leader_id", activity.getLeader().getEmployeeId());
+    activityData.put("startDate", activity.getStartDate());
+    activityData.put("endDate", activity.getEndDate());
+    if (activity.getExpectedLeader() != null) {
+      activityData.put("expected_leader_id", activity.getExpectedLeader().getId());
     }
-
     return activityDAO.saveActivity(projectID, activityData);
   }
 
@@ -246,15 +244,15 @@ public class ActivityManagerImpl implements ActivityManager {
   }
 
   @Override
-  public boolean saveExpectedActivityLeader(int activityID, ExpectedActivityLeader expectedActivityLeader) {
-    boolean allSaved = true;
+  public int saveExpectedActivityLeader(int activityID, User expectedActivityLeader) {
+
     Map<String, Object> activityData = new HashMap<>();
     if (expectedActivityLeader.getId() > 0) {
       activityData.put("id", expectedActivityLeader.getId());
     }
-    activityData.put("institution_id", expectedActivityLeader.getInstitution().getId());
-    activityData.put("name", expectedActivityLeader.getName());
-    activityData.put("email", expectedActivityLeader.getName());
+    activityData.put("institution_id", expectedActivityLeader.getCurrentInstitution().getId());
+    activityData.put("name", expectedActivityLeader.getFirstName());
+    activityData.put("email", expectedActivityLeader.getEmail());
 
     int result = activityDAO.saveExpectedActivityLeader(activityID, activityData);
 
@@ -265,9 +263,8 @@ public class ActivityManagerImpl implements ActivityManager {
     } else {
       LOG.error("saveExpectedActivityLeader > There was an error trying to save/update a Activity from projectId={}",
         activityID);
-      allSaved = false;
     }
 
-    return allSaved;
+    return result;
   }
 }

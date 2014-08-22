@@ -25,8 +25,9 @@ import org.cgiar.ccafs.ap.data.model.Institution;
 
 import java.util.List;
 
-import org.cgiar.ccafs.ap.data.model.Project;
+import org.cgiar.ccafs.ap.data.model.User;
 
+import org.cgiar.ccafs.ap.data.model.Project;
 import org.cgiar.ccafs.ap.data.manager.ProjectManager;
 import com.google.inject.Inject;
 import org.apache.commons.lang3.StringUtils;
@@ -55,6 +56,7 @@ public class ActivityDescriptionAction extends BaseAction {
   // Model for the front-end
   private Project project;
   private int activityID;
+  private boolean isExpected;
   private List<IPCrossCutting> ipCrossCuttings;
   private List<Institution> allPartners;
 
@@ -107,35 +109,58 @@ public class ActivityDescriptionAction extends BaseAction {
     return project;
   }
 
+  public boolean isExpected() {
+    return isExpected;
+  }
+
   @Override
   public void prepare() throws Exception {
     super.prepare();
 
     activityID = Integer.parseInt(StringUtils.trim(this.getRequest().getParameter(APConstants.ACTIVITY_REQUEST_ID)));
+
+    activity = activityManager.getActivityById(activityID);
     project = projectManager.getProjectFromActivityId(activityID);
 
-    // Getting the information of the Cross Cutting Theme for the View
+    if (activity.getLeader() != null) {
+      isExpected = false;
+    } else {
+      isExpected = true;
+      // Let's create an empty user.
+      if (activity.getExpectedLeader() == null) {
+        User expectedLeader = new User();
+        expectedLeader.setId(-1);
+        activity.setExpectedLeader(expectedLeader);
+      }
+    }
+
+    // Getting the list of Cross Cutting Themes
     ipCrossCuttings = ipCrossCuttingManager.getIPCrossCuttings();
 
-    // Getting the information for the activity
-    activity = activityManager.getActivityById(activityID);
-    // Getting the List of Institutions
+    // Getting the List of all Institutions
     allPartners = institutionManager.getAllInstitutions();
 
-    // Getting the information of the Cross Cutting Theme associated with the project
+    // Getting the information of the Cross Cutting Themes associated with the project
     activity.setCrossCuttings(ipCrossCuttingManager.getIPCrossCuttingByActivityID(activityID));
   }
 
   @Override
   public String save() {
     boolean success = true;
-    // Saving Project Outcome
-
-    // boolean saved = activityManager.saveActivity(1, activity);
-    // if (!saved) {
-    // success = false;
-    // }
-
+    if (activity.getExpectedLeader() != null) {
+      // Saving the information of the expected leader.
+      int result = activityManager.saveExpectedActivityLeader(activityID, activity.getExpectedLeader());
+      if (result > 0) {
+        // if new record was added, we need to assign this new id to the activity.
+        activity.getExpectedLeader().setId(result);
+      }
+    }
+    // then, save the full information of the activity description, included the expected activity leader, if applies.
+    int result = activityManager.saveActivity(project.getId(), activity);
+    if (result >= 0) {
+      addActionMessage(getText("saving.success", new String[] {getText("planning.projectDescription.title")}));
+      return BaseAction.SUCCESS;
+    }
     return INPUT;
 
   }
@@ -144,13 +169,17 @@ public class ActivityDescriptionAction extends BaseAction {
     this.activity = activity;
   }
 
+
   public void setActivityID(int activityID) {
     this.activityID = activityID;
   }
 
-
   public void setAllPartners(List<Institution> allPartners) {
     this.allPartners = allPartners;
+  }
+
+  public void setExpected(boolean isExpected) {
+    this.isExpected = isExpected;
   }
 
   public void setIpCrossCuttings(List<IPCrossCutting> ipCrossCuttings) {

@@ -30,10 +30,11 @@ public class Activity {
   private int id;
   private String title;
   private String description;
-  private Date start;
-  private Date end;
+  private Date startDate;
+  private Date endDate;
   private User leader;
-  private ExpectedActivityLeader expectedLeader;
+  private User expectedLeader;
+  // private ExpectedActivityLeader expectedLeader;
   private List<IPCrossCutting> crossCuttings;// The list of Cross Cutting themes in which this project works with.
   private List<Location> locations;
   private long created;
@@ -84,13 +85,13 @@ public class Activity {
     return description;
   }
 
-  public Date getEnd() {
-    return end;
+  public Date getEndDate() {
+    return endDate;
   }
 
-  public ExpectedActivityLeader getExpectedLeader() {
-    return expectedLeader;
-  }
+// public ExpectedActivityLeader getExpectedLeader() {
+// return expectedLeader;
+// }
 
   public int getId() {
     return id;
@@ -108,8 +109,8 @@ public class Activity {
     return outputs;
   }
 
-  public Date getStart() {
-    return start;
+  public Date getStartDate() {
+    return startDate;
   }
 
   public String getTitle() {
@@ -133,13 +134,13 @@ public class Activity {
     this.description = description;
   }
 
-  public void setEnd(Date end) {
-    this.end = end;
+  public void setEndDate(Date endDate) {
+    this.endDate = endDate;
   }
 
-  public void setExpectedLeader(ExpectedActivityLeader expectedLeader) {
-    this.expectedLeader = expectedLeader;
-  }
+// public void setExpectedLeader(ExpectedActivityLeader expectedLeader) {
+// this.expectedLeader = expectedLeader;
+// }
 
   public void setId(int id) {
     this.id = id;
@@ -157,8 +158,8 @@ public class Activity {
     this.outputs = outputs;
   }
 
-  public void setStart(Date start) {
-    this.start = start;
+  public void setStartDate(Date startDate) {
+    this.startDate = startDate;
   }
 
   public void setTitle(String title) {
@@ -168,6 +169,14 @@ public class Activity {
   @Override
   public String toString() {
     return ToStringBuilder.reflectionToString(this);
+  }
+
+  public User getExpectedLeader() {
+    return expectedLeader;
+  }
+
+  public void setExpectedLeader(User expectedLeader) {
+    this.expectedLeader = expectedLeader;
   }
 
 }

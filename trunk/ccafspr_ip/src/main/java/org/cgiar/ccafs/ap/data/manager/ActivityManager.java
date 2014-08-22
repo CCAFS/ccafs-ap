@@ -15,7 +15,6 @@ package org.cgiar.ccafs.ap.data.manager;
 
 import org.cgiar.ccafs.ap.data.manager.impl.ActivityManagerImpl;
 import org.cgiar.ccafs.ap.data.model.Activity;
-import org.cgiar.ccafs.ap.data.model.ExpectedActivityLeader;
 import org.cgiar.ccafs.ap.data.model.User;
 
 import java.util.List;
@@ -87,12 +86,12 @@ public interface ActivityManager {
   public User getActivityLeader(int activityID);
 
   /**
-   * This method gets all the information from Expected Activity Leader by a given activity ID
+   * This method gets all the information of an Expected Activity Leader of a given activity
    *
    * @param activityID - is the activity identifier
-   * @return an expected activity leader object, or null if no information were found.
+   * @return an user object representing the expected activity leader, or null if no information was found.
    */
-  public ExpectedActivityLeader getExpectedActivityLeader(int activityID);
+  public User getExpectedActivityLeader(int activityID);
 
 
   /**
@@ -117,11 +116,12 @@ public interface ActivityManager {
   /**
    * This method saves the information of a given expected activity leader
    *
-   * @param expectedActivityLeader
-   * @param activityID
-   * @return true if the expected activity leader was saved successfully, false otherwise
+   * @param expectedActivityLeader is the user to be saved.
+   * @param activityID is the activity identifier
+   * @return a number greater than zero with the new identifier assigned by the database, 0 if the information was
+   *         updated or -1 if some error occurred.
    */
-  public boolean saveExpectedActivityLeader(int activityID, ExpectedActivityLeader expectedActivityLeader);
+  public int saveExpectedActivityLeader(int activityID, User expectedActivityLeader);
 
 
 }
