@@ -157,11 +157,17 @@ public class ActivityDescriptionAction extends BaseAction {
     }
     // then, save the full information of the activity description, included the expected activity leader, if applies.
     int result = activityManager.saveActivity(project.getId(), activity);
-    if (result >= 0) {
-      addActionMessage(getText("saving.success", new String[] {getText("planning.projectDescription.title")}));
-      return BaseAction.SUCCESS;
+    if (result < 0) {
+      success = false;
     }
-    return INPUT;
+
+    for (IPCrossCutting ipCrossTheme : activity.getCrossCuttings()) {
+      ipCrossCuttingManager.saveCrossCutting(activityID, ipCrossTheme.getId());
+    }
+
+    addActionMessage(getText("saving.success", new String[] {getText("planning.projectDescription.title")}));
+    return BaseAction.SUCCESS;
+
 
   }
 
