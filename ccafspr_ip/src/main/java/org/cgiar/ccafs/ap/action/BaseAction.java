@@ -15,8 +15,10 @@ package org.cgiar.ccafs.ap.action;
 
 import org.cgiar.ccafs.ap.config.APConfig;
 import org.cgiar.ccafs.ap.config.APConstants;
+import org.cgiar.ccafs.ap.data.model.BoardMessage;
 import org.cgiar.ccafs.ap.data.model.User;
 
+import java.util.List;
 import java.util.Locale;
 import java.util.Map;
 
@@ -32,7 +34,7 @@ import org.slf4j.LoggerFactory;
 
 /**
  * This action aims to define general functionalities that are going to be used by all other Actions.
- *
+ * 
  * @author Héctor Fabio Tobón R. - CIAT/CCAFS
  * @author Hernán David Carvajal - CIAT/CCAFS
  */
@@ -84,7 +86,7 @@ public class BaseAction extends ActionSupport implements Preparable, SessionAwar
   /**
    * This function add a flag (--warn--) to the message in order to give
    * a different style to the success message using javascript once the html is ready.
-   *
+   * 
    * @param message
    */
   public void addActionWarning(String message) {
@@ -121,9 +123,13 @@ public class BaseAction extends ActionSupport implements Preparable, SessionAwar
     return config.getBaseUrl();
   }
 
+  public List<BoardMessage> getBoardMessages() {
+    return config.getBoardMessages();
+  }
+
   /**
    * Get the user that is currently saved in the session.
-   *
+   * 
    * @return a user object or null if no user was found.
    */
   public User getCurrentUser() {
@@ -163,7 +169,7 @@ public class BaseAction extends ActionSupport implements Preparable, SessionAwar
 
   /**
    * Validate if the user is already logged in or not.
-   *
+   * 
    * @return true if the user is logged in, false otherwise.
    */
   public boolean isLogged() {
