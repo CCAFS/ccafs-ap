@@ -51,6 +51,7 @@ public class ActivityDescriptionAction extends BaseAction {
 
   // Model for the back-end
   private Activity activity;
+  private boolean isOfficialLeader;
 
   // Model for the front-end
   private Project project;
@@ -72,7 +73,6 @@ public class ActivityDescriptionAction extends BaseAction {
   public Activity getActivity() {
     return activity;
   }
-
 
   public int getActivityID() {
     return activityID;
@@ -103,6 +103,7 @@ public class ActivityDescriptionAction extends BaseAction {
     return config.getEndYear();
   }
 
+
   public List<IPCrossCutting> getIpCrossCuttings() {
     return ipCrossCuttings;
   }
@@ -111,15 +112,19 @@ public class ActivityDescriptionAction extends BaseAction {
     return project;
   }
 
-
   public int getStartYear() {
     return config.getStartYear();
   }
 
-
   public boolean isExpected() {
     return isExpected;
   }
+
+
+  public boolean isOfficialLeader() {
+    return isOfficialLeader;
+  }
+
 
   @Override
   public String next() {
@@ -148,6 +153,10 @@ public class ActivityDescriptionAction extends BaseAction {
         User expectedLeader = new User();
         expectedLeader.setId(-1);
         activity.setExpectedLeader(expectedLeader);
+      } else {
+        // Setting isOfficialLeader variable.
+        // TODO JG: Please uncomment the following line when you are done.
+        // isOfficialLeader = activityManager.isOfficialExpectedLeader(activityID);
       }
     }
 
@@ -159,12 +168,12 @@ public class ActivityDescriptionAction extends BaseAction {
 
     // Getting the information of the Cross Cutting Themes associated with the project
     activity.setCrossCuttings(ipCrossCuttingManager.getIPCrossCuttingByActivityID(activityID));
+
   }
 
   @Override
   public String save() {
     boolean success = true;
-    boolean isOfficialLeader = false; // TODO HT please, deal with this variable for saveExpectedActivityLeader
     if (activity.getExpectedLeader() != null) {
       // Saving the information of the expected leader.
       int result =
@@ -200,10 +209,10 @@ public class ActivityDescriptionAction extends BaseAction {
     this.activity = activity;
   }
 
-
   public void setActivityID(int activityID) {
     this.activityID = activityID;
   }
+
 
   public void setAllPartners(List<Institution> allPartners) {
     this.allPartners = allPartners;
@@ -215,5 +224,9 @@ public class ActivityDescriptionAction extends BaseAction {
 
   public void setIpCrossCuttings(List<IPCrossCutting> ipCrossCuttings) {
     this.ipCrossCuttings = ipCrossCuttings;
+  }
+
+  public void setOfficialLeader(boolean isOfficialLeader) {
+    this.isOfficialLeader = isOfficialLeader;
   }
 }

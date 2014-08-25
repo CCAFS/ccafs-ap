@@ -48,7 +48,7 @@
         <img src="${baseUrl}/images/global/icon-help2.png" title="[@s.text name="${help}"/]" />
       [/#if]
     </label>
-    <input type="checkbox" id="${name}" name="${name}" value="${value}" [#if checked]checked="true"[/#if] />     
+    <input type="checkbox" id="${name}" name="${name}" value="${value}" [#if checked]checked="checked"[/#if] />
   </div>
 [/#macro]
 

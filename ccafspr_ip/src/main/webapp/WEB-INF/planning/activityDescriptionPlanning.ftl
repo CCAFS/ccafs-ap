@@ -71,6 +71,11 @@
           <div class="halfPartBlock">
             [@customForm.input name="activity.expectedLeader.email" type="text"  i18nkey="planning.activityDescription.contactEmail" required=true  /]
           </div>
+          
+          [#-- Checkbox is official --]
+          <div class="fullPartBlock chosen">
+            [@customForm.checkbox name="officialLeader" i18nkey="planning.activityDescription.isOfficialLeader" checked=officialLeader value="true"/]
+          </div>
         [/#if]
       </div> <!-- End leader .borderBox -->
       
