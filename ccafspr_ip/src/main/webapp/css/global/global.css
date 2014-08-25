@@ -69,6 +69,11 @@ textarea.fieldError, input.fieldError,textarea.fieldError:focus, input.fieldErro
   background-color: #FFEFEF;
 }
 
+p.fieldError{
+	color: #F52626;
+  font-weight: bold;
+}
+
 .hasDatepicker {
     background: url(../../images/global/calendar.png) no-repeat scroll 99% 2px;
 }
