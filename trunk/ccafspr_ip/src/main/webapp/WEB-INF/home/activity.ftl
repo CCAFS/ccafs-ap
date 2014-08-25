@@ -15,11 +15,11 @@
       </div>
     [#else]
       [#-- Hidden values --]
-      <input type="hidden" id="activityID" value="${activity.id}" />
+      <input type="hidden" id="activityID" value="${activity.id?c}" />
       <input type="hidden" id="noCountriesMessage" value="[@s.text name="home.activity.noCountry" /]" />
       <input type="hidden" id="noOtherLocationsMessage" value="[@s.text name="home.activity.noOtherLocation" /]" />
       
-      <h1>${activity.leader.acronym} - [@s.text name="home.activity" /] ${activity.id}</h1>
+      <h1>${activity.leader.acronym} - [@s.text name="home.activity" /] ${activity.id?c}</h1>
       <div id="activityTitle" class="fullBlock">
         <h6>[@s.text name="home.activity.title" /]</h6>
         <p>${activity.title}</p>
@@ -45,7 +45,7 @@
             <td>[#if activity.endDate?has_content]${activity.endDate?string("MM/dd/yyyy")}[/#if]</td>
             <td class="title">[@s.text name="home.activity.milestone" /]</td>
             <td>
-              <a class="popup" href="[@s.url action='milestone' namespace="/reporting" ][@s.param name='${milestoneRequestParameter}']${activity.milestone.id}[/@s.param][/@s.url]">
+              <a class="popup" href="[@s.url action='milestone' namespace="/reporting" ][@s.param name='${milestoneRequestParameter}']${activity.milestone.id?c}[/@s.param][/@s.url]">
                 [#if activity.milestone?has_content && activity.milestone.code?has_content ]${activity.milestone.code}[/#if]
               </a>
             </td>

@@ -48,7 +48,7 @@
       [#if saveable]
         <!-- internal parameters -->
         <input name="projectID" type="hidden" value="${project.id?c}" /> 
-        <input name="project.outcome.id" type="hidden" value="${project.outcome.id}" />
+        <input name="project.outcome.id" type="hidden" value="${project.outcome.id?c}" />
         <input name="project.outcome.year" type="hidden" value="${project.outcome.year?c}" />
         <div class="buttons">
           [@s.submit type="button" name="save"][@s.text name="form.buttons.save" /][/@s.submit]

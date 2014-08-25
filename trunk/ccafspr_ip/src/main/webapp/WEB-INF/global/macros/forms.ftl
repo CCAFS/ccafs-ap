@@ -143,9 +143,9 @@
 [#macro addRemoveLists name id selectedList allOptionList i18nkey="" disabled=false required=false errorfield=""]
   <div id="${id}-lists">
     <div class="selectTo">
-      <select name="${name}" id="${id}">
+      <select name="${name}" id="${id?c}">
         [#list selectedList as item]
-          <option value="${item.id}">${item.name}</option>
+          <option value="${item.id?c}">${item.name}</option>
         [/#list]
       </select>
     </div>
@@ -157,7 +157,7 @@
       <select id="${id}">
         [#list allOptionsList as item]
           [#if test="%{ #item not in #selectedList}"]
-            <option value="${item.id}">${item.name}</option>
+            <option value="${item.id?c}">${item.name}</option>
           [/#if]
         [/#list]
       </select>

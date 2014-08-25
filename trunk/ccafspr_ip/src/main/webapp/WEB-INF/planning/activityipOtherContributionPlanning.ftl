@@ -4,7 +4,14 @@
 [#assign customJS = ["${baseUrl}/js/global/utils.js"] /]
 [#assign currentSection = "planning" /]
 [#assign currentPlanningSection = "activities" /]
-[#assign currentStage = "Other Contribution" /]
+[#assign currentStage = "activityIpOtherContributions" /]
+
+[#assign breadCrumb = [
+  {"label":"planning", "nameSpace":"planning", "action":"projects"},
+  {"label":"projects", "nameSpace":"planning", "action":"projects"},
+  {"label":"activities", "nameSpace":"planning/activities", "action":"" },
+  {"label":"activityIpOtherContributions", "nameSpace":"planning/activities", "action":"" }
+]/]
 
 [#include "/WEB-INF/global/pages/header.ftl" /]
 [#include "/WEB-INF/global/pages/main-menu.ftl" /]
@@ -17,10 +24,11 @@
   </div>
   [#include "/WEB-INF/planning/activityPlanningSubMenu.ftl" /]
   
-  [@s.form action="ipOtherContribution" cssClass="pure-form"]  
-  <article class="halfContent borderBox" id="projectOutcomes"> 
+  [@s.form action="activityIpOtherContributions" cssClass="pure-form"]  
+  <article class="halfContent" id=""> 
   [#include "/WEB-INF/planning/activityIP-planning-sub-menu.ftl" /]
-    [#-- Informing user that he/she doesn't have enough privileges to edit. See GrantActivityPlanningAccessInterceptor--]
+  <div class="borderBox">
+    [#-- Informing user that he/she doesnt have enough privileges to edit. See GrantActivityPlanningAccessInterceptor--]
     [#if !saveable]
       <p class="readPrivileges">
         [@s.text name="saving.read.privileges"]
@@ -34,6 +42,7 @@
     <h6 class="contentTitle">
     [@customForm.textArea name="ipOtherContribution.additionalContribution" i18nkey="planning.impactPathways.otherContributions.additionalcontribution" /]  
     </h6> 
+    </div>
      <!-- internal parameter -->
     <input name="activityID" type="hidden" value="" />    
     <input name="activity.ipOtherContribution.id" type="hidden" value="" />

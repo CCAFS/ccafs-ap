@@ -89,7 +89,7 @@
                       <td id="" class="grid_5">${project.leader.currentInstitution.name} <strong>([@s.text name="preplanning.projectBudget.partnerLead" /])</strong> </td> 
                       [#-- W1 --]
                       <td id="" class="budgetContent grid_1">
-                        <input type="hidden" name="project.budgets[${counter}].id" value="${mapBudgets[year?c+'-'+project.leader.currentInstitution.id?c+'-W1'].id}" />
+                        <input type="hidden" name="project.budgets[${counter}].id" value="${mapBudgets[year?c+'-'+project.leader.currentInstitution.id?c+'-W1'].id?c}" />
                         <input type="hidden" name="project.budgets[${counter}].year" value="${year?c}" />
                         <input type="hidden" name="project.budgets[${counter}].institution.id" value="${mapBudgets[year?c+'-'+project.leader.currentInstitution.id?c+'-W1'].institution.id?c}" />
                         <input type="hidden" name="project.budgets[${counter}].type" value="W1" />
@@ -98,7 +98,7 @@
                       </td> 
                       [#-- W2 --]
                       <td id="" class="budgetContent grid_1">
-                        <input type="hidden" name="project.budgets[${counter}].id" value="${mapBudgets[year?c+'-'+project.leader.currentInstitution.id?c+'-W2'].id}" />
+                        <input type="hidden" name="project.budgets[${counter}].id" value="${mapBudgets[year?c+'-'+project.leader.currentInstitution.id?c+'-W2'].id?c}" />
                         <input type="hidden" name="project.budgets[${counter}].year" value="${year?c}" />
                         <input type="hidden" name="project.budgets[${counter}].institution.id" value="${mapBudgets[year?c+'-'+project.leader.currentInstitution.id?c+'-W2'].institution.id?c}" />
                         <input type="hidden" name="project.budgets[${counter}].type" value="W2" />
@@ -107,7 +107,7 @@
                       </td>
                       [#-- W3  --] 
                       <td id="" class="budgetContent grid_1">
-                        <input type="hidden" name="project.budgets[${counter}].id" value="${mapBudgets[year?c+'-'+project.leader.currentInstitution.id?c+'-W3'].id}" />
+                        <input type="hidden" name="project.budgets[${counter}].id" value="${mapBudgets[year?c+'-'+project.leader.currentInstitution.id?c+'-W3'].id?c}" />
                         <input type="hidden" name="project.budgets[${counter}].year" value="${year?c}" />
                         <input type="hidden" name="project.budgets[${counter}].institution.id" value="${mapBudgets[year?c+'-'+project.leader.currentInstitution.id?c+'-W3'].institution.id?c}" />
                         <input type="hidden" name="project.budgets[${counter}].type" value="W3" />
@@ -116,7 +116,7 @@
                       </td>
                       [#-- Bilateral  --] 
                       <td id="" class="budgetContent grid_1">
-                        <input type="hidden" name="project.budgets[${counter}].id" value="${mapBudgets[year?c+'-'+project.leader.currentInstitution.id?c+'-BILATERAL'].id}" />
+                        <input type="hidden" name="project.budgets[${counter}].id" value="${mapBudgets[year?c+'-'+project.leader.currentInstitution.id?c+'-BILATERAL'].id?c}" />
                         <input type="hidden" name="project.budgets[${counter}].year" value="${year?c}" />
                         <input type="hidden" name="project.budgets[${counter}].institution.id" value="${mapBudgets[year?c+'-'+project.leader.currentInstitution.id?c+'-BILATERAL'].institution.id?c}" />
                         <input type="hidden" name="project.budgets[${counter}].type" value="BILATERAL" />
@@ -131,7 +131,7 @@
                       <td id="" class="grid_5">${projectPartner.partner.name}</td> 
                       [#-- W1 --]                
                       <td id="" class="budgetContent grid_1">
-                        <input type="hidden" name="project.budgets[${counter}].id" value="${mapBudgets[year?c+'-'+projectPartner.partner.id?c+'-W1'].id}" />
+                        <input type="hidden" name="project.budgets[${counter}].id" value="${mapBudgets[year?c+'-'+projectPartner.partner.id?c+'-W1'].id?c}" />
                         <input type="hidden" name="project.budgets[${counter}].year" value="${year?c}" />
                         <input type="hidden" name="project.budgets[${counter}].institution.id" value="${mapBudgets[year?c+'-'+projectPartner.partner.id?c+'-W1'].institution.id?c}" />
                         <input type="hidden" name="project.budgets[${counter}].type" value="W1" />
@@ -140,7 +140,7 @@
                       </td>
                       [#-- W2 --] 
                       <td id="" class="budgetContent grid_1">
-                        <input type="hidden" name="project.budgets[${counter}].id" value="${mapBudgets[year?c+'-'+projectPartner.partner.id?c+'-W2'].id}" />
+                        <input type="hidden" name="project.budgets[${counter}].id" value="${mapBudgets[year?c+'-'+projectPartner.partner.id?c+'-W2'].id?c}" />
                         <input type="hidden" name="project.budgets[${counter}].year" value="${year?c}" />
                         <input type="hidden" name="project.budgets[${counter}].institution.id" value="${mapBudgets[year?c+'-'+projectPartner.partner.id?c+'-W2'].institution.id?c}" />
                         <input type="hidden" name="project.budgets[${counter}].type" value="W2" />
@@ -149,7 +149,7 @@
                       </td> 
                       [#-- W3  --] 
                       <td id="" class="budgetContent grid_1">
-                        <input type="hidden" name="project.budgets[${counter}].id" value="${mapBudgets[year?c+'-'+projectPartner.partner.id?c+'-W3'].id}" />
+                        <input type="hidden" name="project.budgets[${counter}].id" value="${mapBudgets[year?c+'-'+projectPartner.partner.id?c+'-W3'].id?c}" />
                         <input type="hidden" name="project.budgets[${counter}].year" value="${year?c}" />
                         <input type="hidden" name="project.budgets[${counter}].institution.id" value="${mapBudgets[year?c+'-'+projectPartner.partner.id?c+'-W3'].institution.id?c}" />
                         <input type="hidden" name="project.budgets[${counter}].type" value="W3" />
@@ -158,7 +158,7 @@
                       </td> 
                       [#-- Bilateral  --] 
                       <td id="" class="budgetContent grid_1">
-                        <input type="hidden" name="project.budgets[${counter}].id" value="${mapBudgets[year?c+'-'+projectPartner.partner.id?c+'-BILATERAL'].id}" />
+                        <input type="hidden" name="project.budgets[${counter}].id" value="${mapBudgets[year?c+'-'+projectPartner.partner.id?c+'-BILATERAL'].id?c}" />
                         <input type="hidden" name="project.budgets[${counter}].year" value="${year?c}" />
                         <input type="hidden" name="project.budgets[${counter}].institution.id" value="${mapBudgets[year?c+'-'+projectPartner.partner.id?c+'-BILATERAL'].institution.id?c}" />
                         <input type="hidden" name="project.budgets[${counter}].type" value="BILATERAL" />
@@ -185,7 +185,7 @@
                         <div id="partnerName" class="name">${partner.name}</div> 
                         [#-- Amount --]
                         <div id="amount" class="amount">
-                          <input type="hidden" name="project.budgets[${counter}].id" value="${mapBudgets[year?c+'-'+partner.id?c+'-LEVERAGED'].id}" />
+                          <input type="hidden" name="project.budgets[${counter}].id" value="${mapBudgets[year?c+'-'+partner.id?c+'-LEVERAGED'].id?c}" />
                           <input type="hidden" name="project.budgets[${counter}].year" value="${year?c}" />
                           <input type="hidden" name="project.budgets[${counter}].institution.id" value="${mapBudgets[year?c+'-'+partner.id?c+'-LEVERAGED'].institution.id?c}" id="${counter}-institution.id" />
                           <input type="hidden" name="project.budgets[${counter}].type" value="LEVERAGED" />

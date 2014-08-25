@@ -7,8 +7,8 @@
 [#assign currentStage = "activityImpactPathway" /]
 
 [#assign breadCrumb = [
-  {"label":"planning", "nameSpace":"planning/projects", "action":"projects"},
-  {"label":"projects", "nameSpace":"planning/projects", "action":"projects"},
+  {"label":"planning", "nameSpace":"planning", "action":"projects"},
+  {"label":"projects", "nameSpace":"planning", "action":"projects"},
   {"label":"activities", "nameSpace":"planning/activities", "action":"" },
   {"label":"activityImpactPathway", "nameSpace":"planning/activities", "action":"activityImpactPathway" }
 ]/]

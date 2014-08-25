@@ -110,6 +110,6 @@
   [#-- Hidden values used by js --]
   <input id="minDateValue" value="${startYear?c}-01-01" type="hidden"/>
   <input id="maxDateValue" value="${endYear?c}-12-31" type="hidden"/> 
-  <input id="programID" value="${project.programCreator.id}" type="hidden"/>
+  <input id="programID" value="${project.programCreator.id?c}" type="hidden"/>
 </section>
 [#include "/WEB-INF/global/pages/footer.ftl"]
