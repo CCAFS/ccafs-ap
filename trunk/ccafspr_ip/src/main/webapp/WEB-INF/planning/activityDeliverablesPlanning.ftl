@@ -40,7 +40,7 @@
       <h1 class="contentTitle">
       [@s.text name="planning.deliverables" /] 
       </h1>
-      [@activityDeliverableTemplate.activityDeliverable deliverables=deliverables/]
+      [@activityDeliverableTemplate.activityDeliverablesList deliverables=deliverables/]
       <div id="addDeliverable" class="addLink">
         <a href="" class="addButton" >[@s.text name="planning.deliverables.addDeliverable" /]</a>
       </div>
@@ -55,4 +55,13 @@
     </article>
   [/@s.form]  
 </section>
+
+[#-- Templates --]
+[@s.form action="none"]  
+  [#-- Activity Deliverable Template--]
+  [@activityDeliverableTemplate.activityDeliverableTemplate /]
+  [#-- Activity Next user Template--]
+  [@activityDeliverableTemplate.nextUserTemplate template=true /]
+[/@s.form]  
+
 [#include "/WEB-INF/global/pages/footer.ftl"]
