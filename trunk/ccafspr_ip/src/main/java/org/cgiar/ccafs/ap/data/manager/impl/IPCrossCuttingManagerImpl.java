@@ -41,7 +41,12 @@ public class IPCrossCuttingManagerImpl implements IPCrossCuttingManager {
 
   @Override
   public boolean deleteCrossCuttingByActivity(int activityID, int crossCuttingID) {
-    return ipCrossCuttingDAO.deleteCrossCuttingsByActivityId(activityID, crossCuttingID);
+    return ipCrossCuttingDAO.deleteCrossCuttingByActivityId(activityID, crossCuttingID);
+  }
+
+  @Override
+  public boolean deleteCrossCuttingsByActivity(int activityID) {
+    return ipCrossCuttingDAO.deleteCrossCuttingsByActivityId(activityID);
   }
 
   @Override

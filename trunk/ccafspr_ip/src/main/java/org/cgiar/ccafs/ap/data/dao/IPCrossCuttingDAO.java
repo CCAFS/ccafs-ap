@@ -34,7 +34,15 @@ public interface IPCrossCuttingDAO {
    * @param crossCuttingID is the theme_id
    * @return true if the record could be successfully removed, false otherwise.
    */
-  public boolean deleteCrossCuttingsByActivityId(int activityID, int crossCuttingID);
+  public boolean deleteCrossCuttingByActivityId(int activityID, int crossCuttingID);
+
+  /**
+   * This method deletes IP Cross Cutting records that are related to a specific activity ID
+   * 
+   * @param activityID is the activity ID.
+   * @return true if the record could be successfully removed, false otherwise.
+   */
+  public boolean deleteCrossCuttingsByActivityId(int activityID);
 
   /**
    * This Method return the information of a IP Cross Cutting Theme by a given ID of a Theme

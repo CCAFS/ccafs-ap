@@ -48,7 +48,7 @@ public class MySQLIPCrossCuttingDAO implements IPCrossCuttingDAO {
 
 
   @Override
-  public boolean deleteCrossCuttingsByActivityId(int activityID, int crossCuttingID) {
+  public boolean deleteCrossCuttingByActivityId(int activityID, int crossCuttingID) {
     LOG.debug(">> deleteCrossCuttingsByActivityId(activityID={}, crossCuttingID={})", new String[] {activityID + "",
       crossCuttingID + ""});
     String query = "DELETE FROM activity_cross_cutting_themes WHERE activity_id = ? AND theme_id = ?";
@@ -58,6 +58,19 @@ public class MySQLIPCrossCuttingDAO implements IPCrossCuttingDAO {
       return true;
     }
     LOG.debug("<< deleteCrossCuttingsByActivityId:{}", false);
+    return false;
+  }
+
+  @Override
+  public boolean deleteCrossCuttingsByActivityId(int activityID) {
+    LOG.debug(">> deleteCrossCuttingsByActivityID(activityID={})", activityID);
+    String query = "DELETE FROM activity_cross_cutting_themes WHERE activity_id = ? ";
+    int rowsDeleted = databaseManager.delete(query, new Object[] {activityID});
+    if (rowsDeleted >= 0) {
+      LOG.debug("<< deleteCrossCuttingsByActivityID():{}", true);
+      return true;
+    }
+    LOG.debug("<< deleteCrossCuttingsByActivityID:{}", false);
     return false;
   }
 
@@ -110,6 +123,7 @@ public class MySQLIPCrossCuttingDAO implements IPCrossCuttingDAO {
     }
     return ipCrossCuttingData;
   }
+
 
   @Override
   public List<Map<String, String>> getIPCrossCuttingByActivityId(int activityID) {
