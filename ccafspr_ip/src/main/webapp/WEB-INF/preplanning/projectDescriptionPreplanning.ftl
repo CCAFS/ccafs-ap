@@ -32,10 +32,7 @@
           [@s.param][@s.text name="preplanning.project"/][/@s.param]
         [/@s.text]
       </p>
-    [/#if]
-    
-    [#assign variable=10000000000.2256000 /]
-    ${variable}
+    [/#if] 
     
     [#include "/WEB-INF/preplanning/projectPreplanningSubMenu.ftl" /]
     <h1 class="contentTitle">
