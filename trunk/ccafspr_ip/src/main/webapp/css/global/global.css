@@ -219,7 +219,7 @@ span.or {
   color: #888888;
   font-size: 10px;
   margin-right: 25px;
-  text-align: right;
+  text-align: right !important;
 }
 
 a.popup-link {
@@ -1676,6 +1676,19 @@ ul#deliverablesFilesMessages > li {
   border-radius: 40px;
   font-size: 1.15em;
   color: #5A5A5A;
+}
+
+.borderBox:before,.borderBox:after {
+  content: "";
+  display: table;
+}
+
+.borderBox:after {
+  clear: both;
+}
+
+.borderBox {
+  *zoom: 1;
 }
 
 #publications .journalArticlesIndicators .checkbox h6{

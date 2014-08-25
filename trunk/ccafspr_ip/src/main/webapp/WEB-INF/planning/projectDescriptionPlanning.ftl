@@ -10,7 +10,7 @@
   {"label":"planning", "nameSpace":"planning", "action":"projects"},
   {"label":"projects", "nameSpace":"planning", "action":"projects"},
   {"label":"description", "nameSpace":"planning/projects", "action":""}
-]/]
+] /]
 
 
 [#include "/WEB-INF/global/pages/header.ftl" /]
