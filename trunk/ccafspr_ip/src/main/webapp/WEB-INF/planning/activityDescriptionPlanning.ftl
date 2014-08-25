@@ -42,6 +42,33 @@
       </h1>
       <div id="leader" class="borderBox clearfix">
         [#if activity.leader?has_content]
+          [#-- Showing explanatory message in case user wants to edit the Activity Leader --]
+          [#if saveable]
+            <p class="explanation">
+              [@s.text name="planning.activityDescription.leader.explanation"]
+                [@s.param]
+                  [#-- Mailto link --]
+                  [@s.text name="planning.activityDescription.leader.mailto"]
+                    [#-- Subject --]
+                    [@s.param]
+                      [@s.text name="planning.activityDescription.leader.mailto.subject"]
+                        [@s.param]${activity.id?c}[/@s.param]
+                      [/@s.text]
+                    [/@s.param]
+                    [#-- START Body --]
+                    [@s.param]
+                      [@s.text name="planning.activityDescription.leader.mailto.body"]
+                        [@s.param]${currentUser.firstName} ${currentUser.lastName}[/@s.param]
+                      [/@s.text]
+                    [/@s.param]
+                    [#-- END Body --]
+                    [@s.param][@s.text name="planning.activityDescription.leader.mailto.body" /][/@s.param]
+                  [/@s.text]
+                [/@s.param] 
+              [/@s.text]
+            </p>
+            <hr>
+          [/#if]
           [#-- Loading activity leader  --]
           
           [#-- Institution --]
