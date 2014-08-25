@@ -85,7 +85,7 @@ public class ActivityDescriptionAction extends BaseAction {
 
   /**
    * This method returns an array of cross cutting ids depending on the project.crossCuttings attribute.
-   *
+   * 
    * @return an array of integers.
    */
   public int[] getCrossCuttingIds() {
@@ -155,8 +155,7 @@ public class ActivityDescriptionAction extends BaseAction {
         activity.setExpectedLeader(expectedLeader);
       } else {
         // Setting isOfficialLeader variable.
-        // TODO JG: Please uncomment the following line when you are done.
-        // isOfficialLeader = activityManager.isOfficialExpectedLeader(activityID);
+        isOfficialLeader = activityManager.isOfficialExpectedLeader(activityID);
       }
     }
 

@@ -254,6 +254,27 @@ public class MySQLActivityDAO implements ActivityDAO {
   }
 
   @Override
+  public boolean isOfficialExpectedLeader(int activityID) {
+    Boolean isOfficialLeader = false;
+    StringBuilder query = new StringBuilder();
+    query.append("SELECT eal.is_official   ");
+    query.append("FROM expected_activity_leaders as eal ");
+    query.append("INNER JOIN activities a ON eal.id=a.expected_leader_id ");
+    query.append("WHERE a.id=  ");
+    query.append(activityID);
+    try (Connection con = databaseManager.getConnection()) {
+      ResultSet rs = databaseManager.makeQuery(query.toString(), con);
+      if (rs.next()) {
+        isOfficialLeader = rs.getBoolean("is_official");
+      }
+      con.close();
+    } catch (SQLException e) {
+      LOG.error("Exception arised getting the activity {}.", activityID, e);
+    }
+    return isOfficialLeader;
+  }
+
+  @Override
   public int saveActivity(int projectID, Map<String, Object> activityData) {
     LOG.debug(">> saveActivity(activityData={})", activityData);
     StringBuilder query = new StringBuilder();
@@ -293,6 +314,7 @@ public class MySQLActivityDAO implements ActivityDAO {
     }
   }
 
+
   @Override
   public int saveActivityLeader(int activityID, int employeeID) {
     LOG.debug(">> saveActivityLeader(employeeID={}, activityID={})", new Object[] {employeeID, activityID});
@@ -315,7 +337,6 @@ public class MySQLActivityDAO implements ActivityDAO {
     LOG.debug("<< saveActivityLeader():{}", result);
     return result;
   }
-
 
   @Override
   public int
