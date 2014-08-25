@@ -43,6 +43,7 @@ function applyCharCounter($textArea,charCount){
     }
     $(event.target).next(".charCount").find("span").text(charCount - $(event.target).val().length);
   });
+  $textArea.trigger("keyup");
 }
 
 /* Add a word counter to a specific text area */
@@ -50,14 +51,16 @@ function applyWordCounter($textArea,wordCount){
   $textArea.parent().append("<p class='charCount'>(<span>" + wordCount + "</span> words remaining)</p>");
   $textArea.next(".charCount").find("span").text(wordCount - word_count($textArea));
   $textArea.on("keyup", function(event){
-    if (word_count($textArea) > wordCount) {
+    if (word_count($(event.target)) > wordCount) {
       $(event.target).val($(event.target).val().slice(0, -2));
-      $(event.target).next(".charCount").find("span").text(wordCount - word_count(event.target));
+      $(event.target).addClass('fieldError');
     } else {
-      $(event.target).next(".charCount").find("span").text(wordCount - word_count(event.target));
+      $(event.target).removeClass('fieldError');
     }
+    $(event.target).next(".charCount").find("span").text(wordCount - word_count(event.target));
     
   });
+  $textArea.trigger("keyup");
 }
 
 function word_count(field){
