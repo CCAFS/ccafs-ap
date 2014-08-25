@@ -113,6 +113,19 @@ CREATE TABLE IF NOT EXISTS `budgets` (
 -- --------------------------------------------------------
 
 --
+-- Estructura de tabla para la tabla `board_messages`
+--
+
+CREATE TABLE IF NOT EXISTS `board_messages` (
+  `id` BIGINT NOT NULL AUTO_INCREMENT,
+  `message` TEXT NOT NULL,
+  `created` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+-- --------------------------------------------------------
+
+--
 -- Estructura de tabla para la tabla `budget_types`
 --
 
