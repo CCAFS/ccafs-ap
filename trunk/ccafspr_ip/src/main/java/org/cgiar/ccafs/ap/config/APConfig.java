@@ -13,7 +13,11 @@
  *****************************************************************/
 package org.cgiar.ccafs.ap.config;
 
+import org.cgiar.ccafs.ap.data.manager.BoardMessageManager;
+import org.cgiar.ccafs.ap.data.model.BoardMessage;
 import org.cgiar.ccafs.ap.util.PropertiesManager;
+
+import java.util.List;
 
 import com.google.inject.Inject;
 import com.google.inject.Singleton;
@@ -53,9 +57,13 @@ public class APConfig {
 
   private PropertiesManager properties;
 
+  // Manager
+  BoardMessageManager boardMessageManager;
+
   @Inject
-  public APConfig(PropertiesManager properties) {
+  public APConfig(PropertiesManager properties, BoardMessageManager boardMessageManager) {
     this.properties = properties;
+    this.boardMessageManager = boardMessageManager;
   }
 
   /**
@@ -77,6 +85,23 @@ public class APConfig {
       return base;
     }
     return base;
+  }
+
+  /**
+   * This method gets all the board Messages
+   * 
+   * @return a Board Message array with the board message information
+   */
+  public BoardMessage[] getBoardMessages() {
+    List<BoardMessage> boardMessageList = boardMessageManager.getAllBoardMessages();
+    BoardMessage[] boardMessageArray = new BoardMessage[boardMessageList.size()];
+    int i = 0;
+
+    for (BoardMessage boardMessage : boardMessageList) {
+      boardMessageArray[i] = boardMessage;
+      i++;
+    }
+    return boardMessageArray;
   }
 
   /**
