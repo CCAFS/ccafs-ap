@@ -14,14 +14,11 @@
 package org.cgiar.ccafs.ap.data.manager.impl;
 
 import org.cgiar.ccafs.ap.config.APConstants;
-import org.cgiar.ccafs.ap.config.APModule;
 import org.cgiar.ccafs.ap.data.dao.ActivityDAO;
 import org.cgiar.ccafs.ap.data.manager.ActivityManager;
 import org.cgiar.ccafs.ap.data.manager.InstitutionManager;
 import org.cgiar.ccafs.ap.data.manager.UserManager;
 import org.cgiar.ccafs.ap.data.model.Activity;
-import org.cgiar.ccafs.ap.data.model.IPProgram;
-import org.cgiar.ccafs.ap.data.model.Institution;
 import org.cgiar.ccafs.ap.data.model.User;
 
 import java.text.DateFormat;
@@ -33,9 +30,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import com.google.inject.Guice;
 import com.google.inject.Inject;
-import com.google.inject.Injector;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -60,24 +55,6 @@ public class ActivityManagerImpl implements ActivityManager {
     this.activityDAO = activityDAO;
     this.institutionManager = institutionManager;
     this.userManager = userManager;
-  }
-
-  public static void main(String[] args) {
-    Injector in = Guice.createInjector(new APModule());
-    ActivityManager activityManager = in.getInstance(ActivityManager.class);
-    User user = new User();
-    Institution currentInstitution = new Institution();
-    currentInstitution.setId(1024);
-    IPProgram program = new IPProgram();
-    program.setId(1);
-    currentInstitution.setProgram(program);
-    user.setEmployeeId(23);
-    user.setCurrentInstitution(currentInstitution);
-    Activity activity = new Activity();
-    activity.setTitle("Test11111");
-    activity.setDescription("Test1111111");
-    activity.setLeader(user);
-    System.out.println(activityManager.saveActivityLeader(2009, user));
   }
 
   @Override
@@ -231,11 +208,12 @@ public class ActivityManagerImpl implements ActivityManager {
     int result = activityDAO.saveActivityLeader(activityID, user.getEmployeeId());
 
     if (result > 0) {
-      LOG.debug("saveExpectedActivityLeader > New Activity added with id {}", result);
+      LOG.debug("saveExpectedActivityLeader > New Activity Leader added with id {}", result);
     } else if (result == 0) {
-      LOG.debug("saveExpectedActivityLeader > Activity with id={} was updated", user.getEmployeeId());
+      LOG.debug("saveExpectedActivityLeader > Activity Leader with id={} was updated", user.getEmployeeId());
     } else {
-      LOG.error("saveExpectedActivityLeader > There was an error trying to save/update a Activity from projectId={}",
+      LOG.error(
+        "saveExpectedActivityLeader > There was an error trying to save/update an Activity Leader for activityID={}",
         activityID);
       allSaved = false;
     }
@@ -244,7 +222,7 @@ public class ActivityManagerImpl implements ActivityManager {
   }
 
   @Override
-  public int saveExpectedActivityLeader(int activityID, User expectedActivityLeader) {
+  public int saveExpectedActivityLeader(int activityID, User expectedActivityLeader, boolean isOfficialLeader) {
 
     Map<String, Object> activityData = new HashMap<>();
     if (expectedActivityLeader.getId() > 0) {
@@ -253,16 +231,20 @@ public class ActivityManagerImpl implements ActivityManager {
     activityData.put("institution_id", expectedActivityLeader.getCurrentInstitution().getId());
     activityData.put("name", expectedActivityLeader.getFirstName());
     activityData.put("email", expectedActivityLeader.getEmail());
+    activityData.put("is_official", isOfficialLeader);
 
-    int result = activityDAO.saveExpectedActivityLeader(activityID, activityData);
+    int result = activityDAO.saveExpectedActivityLeader(activityID, activityData, isOfficialLeader);
 
     if (result > 0) {
-      LOG.debug("saveExpectedActivityLeader > New Activity added with id {}", result);
+      LOG.debug("saveExpectedActivityLeader > New Expected Activity Leader added with id {}", result);
     } else if (result == 0) {
-      LOG.debug("saveExpectedActivityLeader > Activity with id={} was updated", expectedActivityLeader.getId());
+      LOG.debug("saveExpectedActivityLeader > Expected Activity Leader with id={} was updated",
+        expectedActivityLeader.getId());
     } else {
-      LOG.error("saveExpectedActivityLeader > There was an error trying to save/update a Activity from projectId={}",
-        activityID);
+      LOG
+        .error(
+          "saveExpectedActivityLeader > There was an error trying to save/update an Expected Activity Leader for activityId={}",
+          activityID);
     }
 
     return result;

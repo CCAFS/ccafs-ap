@@ -274,7 +274,7 @@ public class MySQLActivityDAO implements ActivityDAO {
     } else {
       // update activity record
       query
-      .append("UPDATE activities SET title = ?, description = ?, startDate = ?, endDate = ?, expected_leader_id = ? ");
+        .append("UPDATE activities SET title = ?, description = ?, startDate = ?, endDate = ?, expected_leader_id = ? ");
       query.append("WHERE id = ? ");
       values = new Object[6];
       values[0] = activityData.get("title");
@@ -318,19 +318,21 @@ public class MySQLActivityDAO implements ActivityDAO {
 
 
   @Override
-  public int saveExpectedActivityLeader(int activityID, Map<String, Object> activityLeaderData) {
+  public int
+    saveExpectedActivityLeader(int activityID, Map<String, Object> activityLeaderData, boolean isOfficialLeader) {
     LOG.debug(">> saveExpectedActivityLeader(activityLeaderData={})", activityLeaderData);
     StringBuilder query = new StringBuilder();
     int result = -1;
     Object[] values;
     if (activityLeaderData.get("id") == null) {
       // Insert new activity record
-      query.append("INSERT INTO expected_activity_leaders (institution_id, name, email) ");
-      query.append("VALUES (?,?,?) ");
-      values = new Object[3];
+      query.append("INSERT INTO expected_activity_leaders (institution_id, name, email, is_official) ");
+      query.append("VALUES (?,?,?,?) ");
+      values = new Object[4];
       values[0] = activityLeaderData.get("institution_id");
       values[1] = activityLeaderData.get("name");
       values[2] = activityLeaderData.get("email");
+      values[3] = activityLeaderData.get("is_official");
       result = databaseManager.saveData(query.toString(), values);
       if (result <= 0) {
         LOG.error("A problem happened trying to add a new activity Leader with id={}");
@@ -338,13 +340,14 @@ public class MySQLActivityDAO implements ActivityDAO {
       }
     } else {
       // update activity record
-      query.append("UPDATE expected_activity_leaders SET institution_id = ?, name = ?, email = ? ");
+      query.append("UPDATE expected_activity_leaders SET institution_id = ?, name = ?, email = ? , is_official=? ");
       query.append("WHERE id = ? ");
-      values = new Object[4];
+      values = new Object[5];
       values[0] = activityLeaderData.get("institution_id");
       values[1] = activityLeaderData.get("name");
       values[2] = activityLeaderData.get("email");
-      values[3] = activityLeaderData.get("id");
+      values[3] = activityLeaderData.get("is_official");
+      values[4] = activityLeaderData.get("id");
       result = databaseManager.saveData(query.toString(), values);
       if (result == -1) {
         LOG.error("A problem happened trying to update the activity leader with the id = {}",
