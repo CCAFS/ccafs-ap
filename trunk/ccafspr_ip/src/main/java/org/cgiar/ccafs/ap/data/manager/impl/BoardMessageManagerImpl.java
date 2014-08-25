@@ -44,7 +44,6 @@ public class BoardMessageManagerImpl implements BoardMessageManager {
     this.boardMessageDAO = boardMessageDAO;
   }
 
-
   @Override
   public List<BoardMessage> getAllBoardMessages() {
     List<BoardMessage> boardMessageList = new ArrayList<>();

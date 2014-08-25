@@ -50,7 +50,7 @@ public class MySQLBoardMessageDAO implements BoardMessageDAO {
     StringBuilder query = new StringBuilder();
     query.append("SELECT * ");
     query.append("FROM board_messages ");
-    query.append("ORDER BY created");
+    query.append("ORDER BY created DESC ");
 
     try (Connection con = databaseManager.getConnection()) {
       ResultSet rs = databaseManager.makeQuery(query.toString(), con);

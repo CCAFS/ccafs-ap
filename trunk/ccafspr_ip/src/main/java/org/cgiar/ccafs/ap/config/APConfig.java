@@ -90,18 +90,10 @@ public class APConfig {
   /**
    * This method gets all the board Messages
    * 
-   * @return a Board Message array with the board message information
+   * @return a Board Message list with the board message information
    */
-  public BoardMessage[] getBoardMessages() {
-    List<BoardMessage> boardMessageList = boardMessageManager.getAllBoardMessages();
-    BoardMessage[] boardMessageArray = new BoardMessage[boardMessageList.size()];
-    int i = 0;
-
-    for (BoardMessage boardMessage : boardMessageList) {
-      boardMessageArray[i] = boardMessage;
-      i++;
-    }
-    return boardMessageArray;
+  public List<BoardMessage> getBoardMessages() {
+    return boardMessageManager.getAllBoardMessages();
   }
 
   /**
