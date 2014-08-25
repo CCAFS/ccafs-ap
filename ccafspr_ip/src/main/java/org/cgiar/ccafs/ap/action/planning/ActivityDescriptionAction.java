@@ -13,10 +13,6 @@
  *****************************************************************/
 package org.cgiar.ccafs.ap.action.planning;
 
-import java.util.List;
-
-import com.google.inject.Inject;
-import org.apache.commons.lang3.StringUtils;
 import org.cgiar.ccafs.ap.action.BaseAction;
 import org.cgiar.ccafs.ap.config.APConfig;
 import org.cgiar.ccafs.ap.config.APConstants;
@@ -29,6 +25,11 @@ import org.cgiar.ccafs.ap.data.model.IPCrossCutting;
 import org.cgiar.ccafs.ap.data.model.Institution;
 import org.cgiar.ccafs.ap.data.model.Project;
 import org.cgiar.ccafs.ap.data.model.User;
+
+import java.util.List;
+
+import com.google.inject.Inject;
+import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -163,9 +164,11 @@ public class ActivityDescriptionAction extends BaseAction {
   @Override
   public String save() {
     boolean success = true;
+    boolean isOfficialLeader = false; // TODO HT please, deal with this variable for saveExpectedActivityLeader
     if (activity.getExpectedLeader() != null) {
       // Saving the information of the expected leader.
-      int result = activityManager.saveExpectedActivityLeader(activityID, activity.getExpectedLeader());
+      int result =
+        activityManager.saveExpectedActivityLeader(activityID, activity.getExpectedLeader(), isOfficialLeader);
       if (result > 0) {
         // if new record was added, we need to assign this new id to the activity.
         activity.getExpectedLeader().setId(result);

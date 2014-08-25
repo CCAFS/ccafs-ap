@@ -71,7 +71,7 @@ public interface ActivityDAO {
 
   /**
    * This method gets a list of activities Id related with the program creator Id of the Project that they belongs to.
-   *
+   * 
    * @param programID is the CCAFS program id from the ip_programs table.
    * @return a list of activities identifiers, or an empty list if nothing found.
    */
@@ -79,7 +79,7 @@ public interface ActivityDAO {
 
   /**
    * This method returns the id from the employees table that belong to the activity leader.
-   *
+   * 
    * @param activityID is the activity identifier.
    * @return an integer representing the identifier of the employee user that is leadering the activity, or -1 if
    *         nothing was found.
@@ -118,8 +118,10 @@ public interface ActivityDAO {
    * 
    * @param activityID
    * @param activityLeaderData - is a Map with information of the Activity Leader to be saved
+   * @param isOfficialLeader - is true when the user wants to create a profile of this leader into the system.
    * @return The last inserted id if there was a new record, 0 if the record was updated or -1 if any error happened.
    */
-  public int saveExpectedActivityLeader(int activityID, Map<String, Object> activityLeaderData);
+  public int
+    saveExpectedActivityLeader(int activityID, Map<String, Object> activityLeaderData, boolean isOfficialLeader);
 
 }

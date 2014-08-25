@@ -38,7 +38,7 @@ public interface ActivityManager {
 
   /**
    * This method removes a specific activity value from the database.
-   *
+   * 
    * @param activityId is the activity identifier.
    * @return true if the activity was successfully deleted, false otherwise.
    */
@@ -118,10 +118,11 @@ public interface ActivityManager {
    *
    * @param expectedActivityLeader is the user to be saved.
    * @param activityID is the activity identifier
+   * @param isOfficialLeader is true when the user wants to create a profile of this leader into the system.
    * @return a number greater than zero with the new identifier assigned by the database, 0 if the information was
    *         updated or -1 if some error occurred.
    */
-  public int saveExpectedActivityLeader(int activityID, User expectedActivityLeader);
+  public int saveExpectedActivityLeader(int activityID, User expectedActivityLeader, boolean isOfficialLeader);
 
 
 }
