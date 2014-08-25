@@ -186,6 +186,11 @@ public class ActivityManagerImpl implements ActivityManager {
   }
 
   @Override
+  public boolean isOfficialExpectedLeader(int activityID) {
+    return activityDAO.isOfficialExpectedLeader(activityID);
+  }
+
+  @Override
   public int saveActivity(int projectID, Activity activity) {
     Map<String, Object> activityData = new HashMap<>();
     if (activity.getId() > 0) {

@@ -94,6 +94,14 @@ public interface ActivityDAO {
    */
   public Map<String, String> getExpectedActivityLeader(int activityID);
 
+  /**
+   * This method returns true or false from the expected activity leader given the activity Id
+   * 
+   * @param activityID - is the activity identifier
+   * @return true if the expected Activity Leader is marked as true on is_official, if not false
+   */
+  public boolean isOfficialExpectedLeader(int activityID);
+
 
   /**
    * This method saves the Activity information
