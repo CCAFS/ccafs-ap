@@ -51,13 +51,17 @@ function applyWordCounter($textArea,wordCount){
   $textArea.parent().append("<p class='charCount'>(<span>" + wordCount + "</span> words remaining)</p>");
   $textArea.next(".charCount").find("span").text(wordCount - word_count($textArea));
   $textArea.on("keyup", function(event){
+    var $charCount = $(event.target).next(".charCount");
     if (word_count($(event.target)) > wordCount) {
       $(event.target).val($(event.target).val().slice(0, -2));
       $(event.target).addClass('fieldError');
+      $charCount.addClass('fieldError');
     } else {
       $(event.target).removeClass('fieldError');
+      $charCount.removeClass('fieldError');
     }
-    $(event.target).next(".charCount").find("span").text(wordCount - word_count(event.target));
+    // Set count value
+    $charCount.find("span").text(wordCount - word_count(event.target));
     
   });
   $textArea.trigger("keyup");
