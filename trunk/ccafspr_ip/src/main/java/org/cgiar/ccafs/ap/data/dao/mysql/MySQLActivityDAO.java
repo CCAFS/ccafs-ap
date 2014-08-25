@@ -255,7 +255,7 @@ public class MySQLActivityDAO implements ActivityDAO {
 
   @Override
   public boolean isOfficialExpectedLeader(int activityID) {
-    Boolean isOfficialLeader = false;
+    boolean isOfficialLeader = false;
     StringBuilder query = new StringBuilder();
     query.append("SELECT eal.is_official   ");
     query.append("FROM expected_activity_leaders as eal ");
@@ -295,7 +295,7 @@ public class MySQLActivityDAO implements ActivityDAO {
     } else {
       // update activity record
       query
-        .append("UPDATE activities SET title = ?, description = ?, startDate = ?, endDate = ?, expected_leader_id = ? ");
+      .append("UPDATE activities SET title = ?, description = ?, startDate = ?, endDate = ?, expected_leader_id = ? ");
       query.append("WHERE id = ? ");
       values = new Object[6];
       values[0] = activityData.get("title");
@@ -340,7 +340,7 @@ public class MySQLActivityDAO implements ActivityDAO {
 
   @Override
   public int
-    saveExpectedActivityLeader(int activityID, Map<String, Object> activityLeaderData, boolean isOfficialLeader) {
+  saveExpectedActivityLeader(int activityID, Map<String, Object> activityLeaderData, boolean isOfficialLeader) {
     LOG.debug(">> saveExpectedActivityLeader(activityLeaderData={})", activityLeaderData);
     StringBuilder query = new StringBuilder();
     int result = -1;
