@@ -39,8 +39,13 @@
       [/#if]
       <h1 class="contentTitle">
         [@s.text name="planning.activityPartner.title" /] 
-      </h1> 
-      [@activityPartnersTemplate.activityPartner activityPartners=activityPartners/]
+      </h1>
+      [#-- Display message in case there are not Activity Partners and the user has not enough privileges to edit --]
+      [#if !saveable && activityPartners?size==0]
+        <p>[@s.text name="planning.activityPartner.noPartners" /]</p>
+      [#else]
+        [@activityPartnersTemplate.activityPartner activityPartners=activityPartners/]
+      [/#if]
       [#if saveable]
       <div id="addActivityPartner" class="addLink">
         <a href=""  class="addButton">[@s.text name="planning.activityPartner.addPartner" /]</a>
