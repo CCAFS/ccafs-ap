@@ -8,7 +8,7 @@
 
 [#assign breadCrumb = [
   {"label":"preplanning", "nameSpace":"pre-planning", "action":"outcomes"},
-  {"label":"projects", "nameSpace":"pre-planning/projects", "action":"projects"},
+  {"label":"projects", "nameSpace":"pre-planning", "action":"projects"},
   {"label":"description", "nameSpace":"pre-planning/projects", "action":""}
 ]/]
 
@@ -33,6 +33,9 @@
         [/@s.text]
       </p>
     [/#if]
+    
+    [#assign variable=10000000000.2256000 /]
+    ${variable}
     
     [#include "/WEB-INF/preplanning/projectPreplanningSubMenu.ftl" /]
     <h1 class="contentTitle">

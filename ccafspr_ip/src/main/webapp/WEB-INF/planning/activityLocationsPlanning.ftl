@@ -4,11 +4,11 @@
 [#assign customJS = ["${baseUrl}/js/global/utils.js", "${baseUrl}/js/planning/activityLocationPlanning.js"] /]
 [#assign currentSection = "planning" /]
 [#assign currentPlanningSection = "activities" /]
-[#assign currentStage = "activityLocations" /]
+[#assign currentStage = "activityImpactPathway" /]
 
 [#assign breadCrumb = [
-  {"label":"planning", "nameSpace":"planning/projects", "action":"projects"},
-  {"label":"projects", "nameSpace":"planning/projects", "action":"projects"},
+  {"label":"planning", "nameSpace":"planning", "action":"projects"},
+  {"label":"projects", "nameSpace":"planning", "action":"projects"},
   {"label":"activities", "nameSpace":"planning/activities", "action":"" },
   {"label":"activityLocations", "nameSpace":"planning/activities", "action":"activityLocations" }
 ]/]
@@ -69,7 +69,7 @@
                 [#elseif location.country]
                   [@customForm.select name="countriesSaved[${location_index}].type.id" i18nkey="planning.activities.locations.level" listName="locationTypes" keyFieldName="id"  displayFieldName="name" showTitle=false value="${countryTypeID}"/]
                 [#else]
-                  [@customForm.select name="otherLocationsSaved[${location_index}].type.id" i18nkey="planning.activities.locations.level" listName="locationTypes" keyFieldName="id"  displayFieldName="name" showTitle=false value="${location.type.id}"/]
+                  [@customForm.select name="otherLocationsSaved[${location_index}].type.id" i18nkey="planning.activities.locations.level" listName="locationTypes" keyFieldName="id"  displayFieldName="name" showTitle=false value="${location.type.id?c}"/]
                 [/#if]
               </div>
               
@@ -79,7 +79,7 @@
                   [@customForm.input name="geoPosition.latitude" type="text" value=notApplicableText i18nkey="planning.activities.locations.latitude" showTitle=false disabled=true  /]
                 [#else]
                   [#-- Geo position ID --]
-                  <input type="hidden" name="otherLocationsSaved[${location_index}].geoPosition.id" value="${location.geoPosition.id}" >
+                  <input type="hidden" name="otherLocationsSaved[${location_index}].geoPosition.id" value="${location.geoPosition.id?c}" >
                   [#-- Latitude --]
                   [@customForm.input name="otherLocationsSaved[${location_index}].geoPosition.latitude" value="${location.geoPosition.latitude}" type="text" i18nkey="planning.activities.locations.latitude" showTitle=false required=true  /]
                 [/#if]

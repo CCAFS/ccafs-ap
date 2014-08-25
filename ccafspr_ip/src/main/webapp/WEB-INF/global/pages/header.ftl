@@ -2,8 +2,9 @@
 [#ftl]
 [#include "/WEB-INF/global/pages/head.ftl"]
 <body>
+[#include "/WEB-INF/global/pages/previousVersionMessage.ftl" /]
 [#if !(avoidHeader!false)]
-  <div class="container">    
+  <div class="container">  
     <header class="clearfix">
       <div id="mainLogo">Planning & Reporting Platform</div>
       <div id="ccafsLogo"><img src="${baseUrl}/images/global/logo-ccafs.png" alt="CCAFS Logo" width="300px"></div>      
