@@ -5,14 +5,14 @@ function init(){
   attachEvents();
   // Activate the chosen plugin to the existing partners
   addChosen();
-  if (!$("div.projectPartner").length) {
-    $("a.addProjectPartner").trigger("click");
+  if (!$("div.activityPartner").exists()) {
+    $("#addActivityPartner .addButton").trigger("click");
   }
 }
 
 function attachEvents(){
   // Add partner block
-  $("#addActivityPartner").click(addPartnerEvent);
+  $("#addActivityPartner .addButton").click(addPartnerEvent);
   // Remove partner block
   $(".removeActivityPartner").click(removePartnerEvent);
   // Partners filters

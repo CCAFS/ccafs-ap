@@ -19,6 +19,7 @@
   
   [@s.form action="ipOtherContribution" cssClass="pure-form"]  
   <article class="halfContent borderBox" id="projectOutcomes"> 
+  [#include "/WEB-INF/planning/activityIP-planning-sub-menu.ftl" /]
     [#-- Informing user that he/she doesn't have enough privileges to edit. See GrantActivityPlanningAccessInterceptor--]
     [#if !saveable]
       <p class="readPrivileges">

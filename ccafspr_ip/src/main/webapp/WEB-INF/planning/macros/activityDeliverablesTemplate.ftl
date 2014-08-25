@@ -3,9 +3,9 @@
   [#if deliverables?has_content]
     [#list deliverables as dl]
     <div class="borderBox">
-      <div id="removeDeliverable-"  class="removeElement removeLink " title="[@s.text name="planning.deliverables.removeDeliverable" /]"></div>
+      <div id="removeDeliverable-${dl_index}"  class="removeDeliverable removeElement removeLink " title="[@s.text name="planning.deliverables.removeDeliverable" /]"></div>
       <input type="hidden" value="${dl.id}" name="deliverables[${dl_index}].id">
-      <b>[@s.text name="planning.deliverables.expectedDeliverable" ][@s.param name="0"] <span id="partnerIndex">${dl_index+1}</span>[/@s.param] [/@s.text]</b>
+      <legend>[@s.text name="planning.deliverables.expectedDeliverable" ][@s.param name="0"] <span id="partnerIndex">${dl_index+1}</span>[/@s.param] [/@s.text]</legend>
       [#-- Title --] 
       [@customForm.input name="deliverables[${dl_index}].title" type="text" i18nkey="planning.deliverables.title" required=true /]
       <div class="halfPartBlock chosen">
@@ -19,7 +19,7 @@
       [#if dl.nextUsers?has_content]
         [#list dl.nextUsers as nu] 
           <div class="borderBox">
-            <div id="removeActivityImpactPathway"class="removeElement removeLink" title="[@s.text name="planning.deliverables.removeNewUser" /]"></div>
+            <div id="removeNextUser-${nu_index}"class="removeNextUser removeElement removeLink" title="[@s.text name="planning.deliverables.removeNewUser" /]"></div>
             <input type="hidden" value="${nu.id}" name="deliverables[${dl_index}].nextUsers[${nu_index}].id">
             [#-- Next User --]
             [@customForm.input name="deliverables[${dl_index}].nextUsers[${nu_index}].user" type="text" i18nkey="planning.deliverables.nextUser" required=true /]<br/>

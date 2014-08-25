@@ -13,23 +13,22 @@
  *****************************************************************/
 package org.cgiar.ccafs.ap.action.planning;
 
+import java.util.List;
+
+import com.google.inject.Inject;
+import org.apache.commons.lang3.StringUtils;
 import org.cgiar.ccafs.ap.action.BaseAction;
 import org.cgiar.ccafs.ap.config.APConfig;
 import org.cgiar.ccafs.ap.config.APConstants;
 import org.cgiar.ccafs.ap.data.manager.ActivityManager;
 import org.cgiar.ccafs.ap.data.manager.IPCrossCuttingManager;
 import org.cgiar.ccafs.ap.data.manager.InstitutionManager;
+import org.cgiar.ccafs.ap.data.manager.ProjectManager;
 import org.cgiar.ccafs.ap.data.model.Activity;
 import org.cgiar.ccafs.ap.data.model.IPCrossCutting;
 import org.cgiar.ccafs.ap.data.model.Institution;
-
-import java.util.List;
-
-import org.cgiar.ccafs.ap.data.model.User;
 import org.cgiar.ccafs.ap.data.model.Project;
-import org.cgiar.ccafs.ap.data.manager.ProjectManager;
-import com.google.inject.Inject;
-import org.apache.commons.lang3.StringUtils;
+import org.cgiar.ccafs.ap.data.model.User;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -85,7 +84,7 @@ public class ActivityDescriptionAction extends BaseAction {
 
   /**
    * This method returns an array of cross cutting ids depending on the project.crossCuttings attribute.
-   *
+   * 
    * @return an array of integers.
    */
   public int[] getCrossCuttingIds() {
@@ -99,12 +98,21 @@ public class ActivityDescriptionAction extends BaseAction {
     return null;
   }
 
+  public int getEndYear() {
+    return config.getEndYear();
+  }
+
   public List<IPCrossCutting> getIpCrossCuttings() {
     return ipCrossCuttings;
   }
 
   public Project getProject() {
     return project;
+  }
+
+
+  public int getStartYear() {
+    return config.getStartYear();
   }
 
 
