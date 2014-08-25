@@ -84,7 +84,7 @@ public class ActivityDescriptionAction extends BaseAction {
 
   /**
    * This method returns an array of cross cutting ids depending on the project.crossCuttings attribute.
-   * 
+   *
    * @return an array of integers.
    */
   public int[] getCrossCuttingIds() {
@@ -177,6 +177,8 @@ public class ActivityDescriptionAction extends BaseAction {
       success = false;
     }
 
+    // Saving Cross Cutting elements.
+    ipCrossCuttingManager.deleteCrossCuttingsByActivity(activity.getId());
     for (IPCrossCutting ipCrossTheme : activity.getCrossCuttings()) {
       ipCrossCuttingManager.saveCrossCutting(activityID, ipCrossTheme.getId());
     }
