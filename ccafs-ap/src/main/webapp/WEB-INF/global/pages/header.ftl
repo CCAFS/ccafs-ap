@@ -2,6 +2,7 @@
 [#ftl]
 [#include "/WEB-INF/global/pages/head.ftl"]
 <body>
+[#include "/WEB-INF/global/pages/previousVersionMessage.ftl" /]
 [#if !(avoidHeader!false)]
   <div class="container">    
     <header class="clearfix">

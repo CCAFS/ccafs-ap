@@ -37,6 +37,13 @@ select {
   color: red;
 }
 
+.note {
+	background-color: #FFF7CF;
+	padding: 5px;
+	text-align: center;
+	font-style: italic;
+}
+
 ul.fieldError li {
   color: red;
   list-style-type: none;
