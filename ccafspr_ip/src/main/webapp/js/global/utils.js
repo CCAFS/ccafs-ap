@@ -34,10 +34,13 @@ function isNumber(e){
 }
 
 function printOut(){
-  $("form input, form textarea, form select, form button").each(function(i,input){
-    if ($(input).attr("name")) {
-      console.log("> " + $(input).attr("name") + ": " + $(input).val() + " (" + input.tagName + ")");
-    }
+  $("form").each(function(indexForm,form){
+    console.log("--------------------------- Form #" + indexForm + "  ------------------------------");
+    $(form).find("input,textarea,select,button").each(function(i,input){
+      if ($(input).attr("name")) {
+        console.log("> " + $(input).attr("name") + ": " + $(input).val() + " (" + input.tagName + ")");
+      }
+    });
   });
 }
 

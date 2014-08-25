@@ -195,7 +195,7 @@ span.or {
 }
 
 .addLink{
-  margin: 23px 5px 2px 0px;
+  margin: 15px 5px 12px 0px;
 }
 
 .addLink img, .addLink a {
@@ -1646,7 +1646,7 @@ ul#deliverablesFilesMessages > li {
 
 .borderBox, .publication, .caseStudy, .outcome, .output, .midOutcome, .leverage, .deliverable, .activityPartner, .otherSite {
   border: 1px solid #D1D1D1;
-  padding: 15px 15px 15px 15px;
+  padding: 22px 15px 10px 15px;
   border-radius: 4px;
   margin: 18px 0px;
   position: relative;
@@ -1676,6 +1676,17 @@ ul#deliverablesFilesMessages > li {
   border-radius: 40px;
   font-size: 1.15em;
   color: #5A5A5A;
+}
+
+.borderBox >span#index {
+position: absolute;
+top: 0px;
+left: 0px;
+background: #CECECE;
+color: #FFF;
+padding: 0px 6px;
+font-weight: bold;
+border-radius: 3px 0px 3px 0px;
 }
 
 .borderBox:before,.borderBox:after {
