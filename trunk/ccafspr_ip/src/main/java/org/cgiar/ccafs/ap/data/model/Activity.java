@@ -38,6 +38,7 @@ public class Activity {
   private List<IPCrossCutting> crossCuttings;// The list of Cross Cutting themes in which this project works with.
   private List<Location> locations;
   private long created;
+  private List<ActivityPartner> activityPartners;
   private List<IPElement> outputs;
 
   public Activity() {
@@ -55,6 +56,10 @@ public class Activity {
       return a.getId() == this.id;
     }
     return false;
+  }
+
+  public List<ActivityPartner> getActivityPartners() {
+    return activityPartners;
   }
 
   /**
@@ -85,13 +90,17 @@ public class Activity {
     return description;
   }
 
+// public ExpectedActivityLeader getExpectedLeader() {
+// return expectedLeader;
+// }
+
   public Date getEndDate() {
     return endDate;
   }
 
-// public ExpectedActivityLeader getExpectedLeader() {
-// return expectedLeader;
-// }
+  public User getExpectedLeader() {
+    return expectedLeader;
+  }
 
   public int getId() {
     return id;
@@ -122,9 +131,17 @@ public class Activity {
     return id;
   }
 
+  public void setActivityPartners(List<ActivityPartner> partners) {
+    this.activityPartners = partners;
+  }
+
   public void setCreated(long created) {
     this.created = created;
   }
+
+// public void setExpectedLeader(ExpectedActivityLeader expectedLeader) {
+// this.expectedLeader = expectedLeader;
+// }
 
   public void setCrossCuttings(List<IPCrossCutting> crossCuttings) {
     this.crossCuttings = crossCuttings;
@@ -138,9 +155,9 @@ public class Activity {
     this.endDate = endDate;
   }
 
-// public void setExpectedLeader(ExpectedActivityLeader expectedLeader) {
-// this.expectedLeader = expectedLeader;
-// }
+  public void setExpectedLeader(User expectedLeader) {
+    this.expectedLeader = expectedLeader;
+  }
 
   public void setId(int id) {
     this.id = id;
@@ -169,14 +186,6 @@ public class Activity {
   @Override
   public String toString() {
     return ToStringBuilder.reflectionToString(this);
-  }
-
-  public User getExpectedLeader() {
-    return expectedLeader;
-  }
-
-  public void setExpectedLeader(User expectedLeader) {
-    this.expectedLeader = expectedLeader;
   }
 
 }

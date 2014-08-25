@@ -26,6 +26,9 @@ import org.cgiar.ccafs.ap.data.model.InstitutionType;
 
 import java.util.List;
 
+import org.cgiar.ccafs.ap.data.manager.ActivityManager;
+
+import org.cgiar.ccafs.ap.data.model.Activity;
 import com.google.inject.Inject;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
@@ -42,12 +45,13 @@ public class ActivityPartnersAction extends BaseAction {
   private static Logger LOG = LoggerFactory.getLogger(ActivityPartnersAction.class);
 
   // Manager
+  private ActivityManager activityManager;
   private ActivityPartnerManager activityPartnerManager;
   private InstitutionManager institutionManager;
   private LocationManager locationManager;
 
   // Model for the back-end
-  private List<ActivityPartner> activityPartners;
+  private Activity activity;
 
   // Model for the front-end
   private int activityID;
@@ -57,30 +61,32 @@ public class ActivityPartnersAction extends BaseAction {
 
 
   @Inject
-  public ActivityPartnersAction(APConfig config, InstitutionManager institutionManager,
-    ActivityPartnerManager activityPartnerManager, LocationManager locationManager) {
+  public ActivityPartnersAction(APConfig config, ActivityManager activityManager,
+    InstitutionManager institutionManager, ActivityPartnerManager activityPartnerManager,
+    LocationManager locationManager) {
     super(config);
     this.institutionManager = institutionManager;
     this.activityPartnerManager = activityPartnerManager;
     this.locationManager = locationManager;
+    this.activityManager = activityManager;
+  }
+
+  public Activity getActivity() {
+    return activity;
   }
 
   public int getActivityID() {
     return activityID;
   }
 
-  public List<ActivityPartner> getActivityPartners() {
-    return activityPartners;
-  }
-
   public List<Institution> getAllPartners() {
     return allPartners;
   }
 
+
   public List<Country> getCountries() {
     return countries;
   }
-
 
   public List<InstitutionType> getPartnerTypes() {
     return partnerTypes;
@@ -89,17 +95,16 @@ public class ActivityPartnersAction extends BaseAction {
   @Override
   public void prepare() throws Exception {
     super.prepare();
-    try {
-      activityID = Integer.parseInt(StringUtils.trim(this.getRequest().getParameter(APConstants.ACTIVITY_REQUEST_ID)));
-    } catch (NumberFormatException e) {
-      LOG.error("-- prepare() > There was an error parsing the activity identifier '{}'.", activityID, e);
-      activityID = -1;
-      return; // Stop here and go to execute method.
-    }
 
-    // Getting the information for the activity partner
-    activityPartners = activityPartnerManager.getActivityPartnersByActivity(activityID);
-    // Getting the List of Institutions
+    // Getting the activity ID parameter.
+    activityID = Integer.parseInt(StringUtils.trim(this.getRequest().getParameter(APConstants.ACTIVITY_REQUEST_ID)));
+    activity = activityManager.getActivityById(activityID);
+
+    // Getting the activity partners
+    List<ActivityPartner> activityPartners = activityPartnerManager.getActivityPartnersByActivity(activityID);
+    activity.setActivityPartners(activityPartners);
+
+    // Getting the List of all institutions
     allPartners = institutionManager.getAllInstitutions();
 
     // Getting all the countries
@@ -107,14 +112,32 @@ public class ActivityPartnersAction extends BaseAction {
 
     // Getting all partner types
     partnerTypes = institutionManager.getAllInstitutionTypes();
+
+    if (getRequest().getMethod().equalsIgnoreCase("post")) {
+      // Clear out the list if it has some element
+      if (activity.getActivityPartners() != null) {
+        activity.getActivityPartners().clear();
+      }
+    }
+
+    // TODO HT - TEST (To Remove)
+    // this.setSaveable(false);
+
+  }
+
+  @Override
+  public String save() {
+    System.out.println(activity.getActivityPartners());
+    // TODO HT - To Complete.
+    return BaseAction.SUCCESS;
+  }
+
+  public void setActivity(Activity activity) {
+    this.activity = activity;
   }
 
   public void setActivityID(int activityID) {
     this.activityID = activityID;
-  }
-
-  public void setActivityPartners(List<ActivityPartner> activityPartners) {
-    this.activityPartners = activityPartners;
   }
 
   public void setAllPartners(List<Institution> allPartners) {
