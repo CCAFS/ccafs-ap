@@ -40,6 +40,14 @@ public interface IPCrossCuttingManager {
   public boolean deleteCrossCuttingByActivity(int activityID, int crossCuttingID);
 
   /**
+   * This method remove all the Cross Cutting records related by a given activity ID
+   * 
+   * @param activityID - is the activity identifier.
+   * @return true if the cross cutting records was successfully removed, false otherwise.
+   */
+  public boolean deleteCrossCuttingsByActivity(int activityID);
+
+  /**
    * This method gets the information of a IP Cross Cutting Theme by a given ID
    * 
    * @param ipCrossCuttingID - is the ID of a IP Cross Cutting Theme
