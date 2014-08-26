@@ -13,7 +13,10 @@
  *****************************************************************/
 package org.cgiar.ccafs.ap.action.planning;
 
+import java.util.ArrayList;
 import java.util.List;
+
+import org.cgiar.ccafs.ap.data.manager.BudgetManager;
 
 import com.google.inject.Inject;
 import org.apache.commons.lang3.StringUtils;
@@ -48,8 +51,9 @@ public class ActivityPartnersAction extends BaseAction {
   private ActivityManager activityManager;
   private ActivityPartnerManager activityPartnerManager;
   private InstitutionManager institutionManager;
-  private LocationManager locationManager;
   private ProjectManager projectManager;
+  private LocationManager locationManager;
+  private BudgetManager budgetManager;
 
   // Model for the back-end
   private Activity activity;
@@ -65,13 +69,14 @@ public class ActivityPartnersAction extends BaseAction {
   @Inject
   public ActivityPartnersAction(APConfig config, ActivityManager activityManager,
     InstitutionManager institutionManager, ActivityPartnerManager activityPartnerManager,
-    LocationManager locationManager, ProjectManager projectManager) {
+    LocationManager locationManager, ProjectManager projectManager, BudgetManager budgetManager) {
     super(config);
     this.institutionManager = institutionManager;
     this.activityPartnerManager = activityPartnerManager;
-    this.locationManager = locationManager;
     this.activityManager = activityManager;
     this.projectManager = projectManager;
+    this.locationManager = locationManager;
+    this.budgetManager = budgetManager;
   }
 
   public Activity getActivity() {
@@ -137,9 +142,59 @@ public class ActivityPartnersAction extends BaseAction {
 
   @Override
   public String save() {
-    System.out.println(activity.getActivityPartners());
-    // TODO HT - To Complete.
-    return BaseAction.SUCCESS;
+    // If user has privileges to save.
+    if (this.isSaveable()) {
+      boolean success = true;
+
+      // Getting previous Activity Partners.
+      List<ActivityPartner> previousActivityPartners = activityPartnerManager.getActivityPartnersByActivity(activityID);
+
+      // Deleting activity partners
+      for (ActivityPartner activityPartner : previousActivityPartners) {
+        if (!activity.getActivityPartners().contains(activityPartner)) {
+          boolean deleted = activityPartnerManager.deleteActivityPartner(activityPartner.getId());
+          if (!deleted) {
+            success = false;
+          }
+        }
+      }
+
+      // Getting previous Activity Institutions
+      List<Institution> previousInstitutions = new ArrayList<>();
+      for (ActivityPartner activityPartner : previousActivityPartners) {
+        previousInstitutions.add(activityPartner.getPartner());
+      }
+      // Getting current Partner Institutions
+      List<Institution> currentInstitutions = new ArrayList<>();
+      for (ActivityPartner activityPartner : activity.getActivityPartners()) {
+        currentInstitutions.add(activityPartner.getPartner());
+      }
+      // Deleting Partner Institutions from budget section
+      for (Institution previousInstitution : previousInstitutions) {
+        if (!currentInstitutions.contains(previousInstitution)) {
+          // TODO HT: Uncomment and validate when Javier finish to create the method.
+// budgetManager.deleteActivityBudgetsByInstitution(project.getId(), previousInstitution.getId());
+        }
+      }
+      boolean saved;
+      for (ActivityPartner activityPartner : activity.getActivityPartners()) {
+        saved = activityPartnerManager.saveActivityPartner(activityID, activityPartner);
+        if (!saved) {
+          success = false;
+        }
+      }
+
+
+      if (success == false) {
+        addActionError(getText("saving.problem"));
+        return BaseAction.INPUT;
+      }
+      addActionMessage(getText("saving.success", new String[] {getText("planning.activityPartner.title")}));
+      return BaseAction.SUCCESS;
+    } else {
+      return BaseAction.NOT_AUTHORIZED;
+    }
+
   }
 
   public void setActivity(Activity activity) {

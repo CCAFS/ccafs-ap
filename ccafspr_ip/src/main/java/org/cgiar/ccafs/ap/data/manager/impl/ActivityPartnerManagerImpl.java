@@ -101,7 +101,6 @@ public class ActivityPartnerManagerImpl implements ActivityPartnerManager {
       activityPartnerData.put("id", activityPartner.getId());
     }
     activityPartnerData.put("institution_id", activityPartner.getPartner().getId());
-    activityPartnerData.put("activity_id", activityID);
     activityPartnerData.put("contact_name", activityPartner.getContactName());
     activityPartnerData.put("contact_email", activityPartner.getContactEmail());
     activityPartnerData.put("contribution", activityPartner.getContribution());
