@@ -7,12 +7,10 @@ $(document).ready(init);
 function init(){
   // This function enables launch the pop up window
   popups();
-  projectTotalCCAFSBudget = parseFloat($("input#projectTotalCCAFSBudget").val());
-  yearTotalCCAFSBudget = projectTotalCCAFSBudget - parseFloat($("input#yearTotalCCAFSBudget").val());
-  projectTotalBudget = parseFloat($("input#projectTotalBudget").val());
-  yearTotalBudget = projectTotalBudget - parseFloat($("input#yearTotalBudget").val());
+  activityTotalBudget = parseFloat($("input#activityTotalBudget").val());
+  yearTotalBudget = activityTotalBudget - parseFloat($("input#yearTotalBudget").val());
+  
   $allBudgetInputs = $("input[name$='amount']");
-  $CCAFSBudgetInputs = $(".ccafsBudget input[name$='amount']");
   addChosen();
   attachEvents();
   // Show table when page is loaded
@@ -28,8 +26,6 @@ function attachEvents(){
   $("#leveraged .leveragedPartner .removeButton").click(removeLeveragedEvent);
   
   // Amount changes event
-  $CCAFSBudgetInputs.on("keyup", calculateCCAFSBudget);
-  
   $allBudgetInputs.on("keyup", calculateOverallBudget);
   $allBudgetInputs.on("keydown", function(event){
     isNumber(event);
@@ -105,13 +101,7 @@ function addChosen(){
 function calculateOverallBudget(e){
   var Amount = totalBudget("form input[name$='amount']");
   var totalAmount = yearTotalBudget + Amount;
-  $("span#projectTotalBudget").text(setCurrencyFormat(totalAmount));
-}
-
-function calculateCCAFSBudget(e){
-  var Amount = totalBudget("form .ccafsBudget input[name$='amount']");
-  var totalAmount = yearTotalCCAFSBudget + Amount;
-  $("span#projectTotalCCAFSBudget").text(setCurrencyFormat(totalAmount));
+  $("span#activityTotalBudget").text(setCurrencyFormat(totalAmount));
 }
 
 function totalBudget(inputList){
