@@ -65,12 +65,13 @@ public class ActivityPartnersAction extends BaseAction {
   @Inject
   public ActivityPartnersAction(APConfig config, ActivityManager activityManager,
     InstitutionManager institutionManager, ActivityPartnerManager activityPartnerManager,
-    LocationManager locationManager) {
+    LocationManager locationManager, ProjectManager projectManager) {
     super(config);
     this.institutionManager = institutionManager;
     this.activityPartnerManager = activityPartnerManager;
     this.locationManager = locationManager;
     this.activityManager = activityManager;
+    this.projectManager = projectManager;
   }
 
   public Activity getActivity() {
