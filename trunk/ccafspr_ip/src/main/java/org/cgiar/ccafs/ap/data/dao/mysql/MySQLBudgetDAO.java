@@ -269,7 +269,7 @@ public class MySQLBudgetDAO implements BudgetDAO {
 
     StringBuilder query = new StringBuilder();
     query.append("DELETE b FROM budgets b ");
-    query.append("INNER JOIN activity_budgets ab ON b.id =  ab.budget_id ");
+    query.append("INNER JOIN activity_budgets ab ON b.id = ab.budget_id ");
     query.append("WHERE ab.activity_id = ? AND b.institution_id = ?");
 
     int rowsDeleted = databaseManager.delete(query.toString(), new Object[] {activityID, institutionID});

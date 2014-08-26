@@ -174,8 +174,7 @@ public class ActivityPartnersAction extends BaseAction {
       // Deleting Partner Institutions from budget section
       for (Institution previousInstitution : previousInstitutions) {
         if (!currentInstitutions.contains(previousInstitution)) {
-          // TODO HT: Uncomment and validate when Javier finish to create the method.
-// budgetManager.deleteActivityBudgetsByInstitution(project.getId(), previousInstitution.getId());
+          budgetManager.deleteActivityBudgetsByInstitution(activity.getId(), previousInstitution.getId());
         }
       }
       boolean saved;
