@@ -1,26 +1,27 @@
 package org.cgiar.ccafs.ap.action.planning;
 
-import org.cgiar.ccafs.ap.action.BaseAction;
-import org.cgiar.ccafs.ap.config.APConfig;
-import org.cgiar.ccafs.ap.config.APConstants;
-import org.cgiar.ccafs.ap.data.manager.ActivityManager;
-import org.cgiar.ccafs.ap.data.manager.LocationManager;
-import org.cgiar.ccafs.ap.data.manager.LocationTypeManager;
-import org.cgiar.ccafs.ap.data.model.Activity;
-import org.cgiar.ccafs.ap.data.model.Country;
-import org.cgiar.ccafs.ap.data.model.Location;
-import org.cgiar.ccafs.ap.data.model.LocationType;
-import org.cgiar.ccafs.ap.data.model.OtherLocation;
-import org.cgiar.ccafs.ap.data.model.Region;
-import org.cgiar.ccafs.ap.util.FileManager;
-import org.cgiar.ccafs.ap.util.SendMail;
-
 import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 
 import com.google.inject.Inject;
 import org.apache.commons.lang3.StringUtils;
+import org.cgiar.ccafs.ap.action.BaseAction;
+import org.cgiar.ccafs.ap.config.APConfig;
+import org.cgiar.ccafs.ap.config.APConstants;
+import org.cgiar.ccafs.ap.data.manager.ActivityManager;
+import org.cgiar.ccafs.ap.data.manager.LocationManager;
+import org.cgiar.ccafs.ap.data.manager.LocationTypeManager;
+import org.cgiar.ccafs.ap.data.manager.ProjectManager;
+import org.cgiar.ccafs.ap.data.model.Activity;
+import org.cgiar.ccafs.ap.data.model.Country;
+import org.cgiar.ccafs.ap.data.model.Location;
+import org.cgiar.ccafs.ap.data.model.LocationType;
+import org.cgiar.ccafs.ap.data.model.OtherLocation;
+import org.cgiar.ccafs.ap.data.model.Project;
+import org.cgiar.ccafs.ap.data.model.Region;
+import org.cgiar.ccafs.ap.util.FileManager;
+import org.cgiar.ccafs.ap.util.SendMail;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -34,6 +35,7 @@ public class LocationsPlanningAction extends BaseAction {
   private LocationManager locationManager;
   private LocationTypeManager locationTypeManager;
   private ActivityManager activityManager;
+  private ProjectManager projectManager;
 
   // Model
   private List<LocationType> locationTypes;
@@ -41,6 +43,7 @@ public class LocationsPlanningAction extends BaseAction {
   private List<Country> countries;
   private List<Region> regions;
   private int activityID;
+  private Project project;
 
   // Variables needed to upload the excel file
   private File excelTemplate;
@@ -54,11 +57,12 @@ public class LocationsPlanningAction extends BaseAction {
 
   @Inject
   public LocationsPlanningAction(APConfig config, LocationManager locationManager, ActivityManager activityManager,
-    LocationTypeManager locationTypeManager) {
+    LocationTypeManager locationTypeManager, ProjectManager projectManager) {
     super(config);
     this.locationManager = locationManager;
     this.activityManager = activityManager;
     this.locationTypeManager = locationTypeManager;
+    this.projectManager = projectManager;
   }
 
   public Activity getActivity() {
@@ -85,9 +89,13 @@ public class LocationsPlanningAction extends BaseAction {
     return locationTypes;
   }
 
-
   public List<OtherLocation> getOtherLocationsSaved() {
     return otherLocationsSaved;
+  }
+
+
+  public Project getProject() {
+    return project;
   }
 
 
@@ -121,6 +129,7 @@ public class LocationsPlanningAction extends BaseAction {
     activityID = Integer.parseInt(StringUtils.trim(this.getRequest().getParameter(APConstants.ACTIVITY_REQUEST_ID)));
     activity = activityManager.getActivityById(activityID);
     activity.setLocations(locationManager.getActivityLocations(activityID));
+    project = projectManager.getProjectFromActivityId(activityID);
 
     locationTypes = locationTypeManager.getLocationTypes();
     countries = locationManager.getAllCountries();

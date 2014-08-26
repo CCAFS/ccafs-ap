@@ -3,6 +3,8 @@ $(document).ready(init);
 function init(){
   // Started listeners
   attachEvents();
+  // This function enables launch the pop up window
+  popups();
   // Activate the chosen plugin to the existing partners
   addChosen();
   if (!$("div.activityPartner").exists()) {
@@ -31,7 +33,7 @@ function updateOrganizationsList(e){
   var $parent = $(e.target).parent().parent().parent().parent().parent();
   if (eventType == "filters-link")
     $parent = $(e.target).parent();
-  var $selectInstitutions = $parent.find("select[name$='partner.id']");
+  var $selectInstitutions = $parent.find("select[name$='partner']");
   var partnerTypes = $parent.find("select.partnerTypes").find('option:selected').val();
   var countryList = $parent.find("select.countryList").find('option:selected').val();
   var source = "../../../json/institutionsByTypeAndCountry.do?institutionTypeID=" + partnerTypes + "&countryID=" + countryList;
@@ -68,7 +70,7 @@ function addPartnerEvent(e){
   $newElement.show("slow");
   
   // Activate the chosen plugin
-  $newElement.find("select[name$='partner.id']").chosen({
+  $newElement.find("select[name$='partner']").chosen({
     no_results_text : $("#noResultText").val(),
     search_contains : true
   });
@@ -99,7 +101,7 @@ function setActivityPartnersIndexes(){
 }
 
 function addChosen(){
-  $("form select[name$='partner.id']").chosen({
+  $("form select[name$='partner']").chosen({
     search_contains : true
   });
   

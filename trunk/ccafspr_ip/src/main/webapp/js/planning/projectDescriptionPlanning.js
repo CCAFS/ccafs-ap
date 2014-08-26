@@ -1,3 +1,6 @@
+//Limits for textarea input
+var lWordsElemetDesc = 300;
+
 $(document).ready(function(){
   datePickerConfig({
     "startDate" : "#project\\.startDate",
@@ -7,6 +10,7 @@ $(document).ready(function(){
   });
   setProgramId();
   addChosen();
+  applyWordCounter($("textarea"), lWordsElemetDesc);
 });
 
 /**

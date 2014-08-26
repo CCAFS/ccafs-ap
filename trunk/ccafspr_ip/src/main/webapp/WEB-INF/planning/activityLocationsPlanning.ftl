@@ -4,12 +4,12 @@
 [#assign customJS = ["${baseUrl}/js/global/utils.js", "${baseUrl}/js/planning/activityLocationPlanning.js"] /]
 [#assign currentSection = "planning" /]
 [#assign currentPlanningSection = "activities" /]
-[#assign currentStage = "activityImpactPathway" /]
+[#assign currentStage = "activityLocations" /]
 
 [#assign breadCrumb = [
   {"label":"planning", "nameSpace":"planning", "action":"projects"},
   {"label":"projects", "nameSpace":"planning", "action":"projects"},
-  {"label":"activities", "nameSpace":"planning/activities", "action":"" },
+  {"label":"activities", "nameSpace":"planning/projects", "action":"activities" ,"param":"projectID=${project.id}" },
   {"label":"activityLocations", "nameSpace":"planning/activities", "action":"activityLocations" }
 ]/]
 

@@ -1422,9 +1422,13 @@ table tr.row:hover{
 /* Activity Description*/
 
 .officialLeader label {
+    float: right;
   
+    width: 97%;
+    margin: 0;
 }
 .officialLeader input {
+    float: left;
   
 }
 

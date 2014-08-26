@@ -13,20 +13,21 @@
  *****************************************************************/
 package org.cgiar.ccafs.ap.action.planning;
 
+import java.util.List;
+
+import com.google.inject.Inject;
+import org.apache.commons.lang3.StringUtils;
 import org.cgiar.ccafs.ap.action.BaseAction;
 import org.cgiar.ccafs.ap.config.APConfig;
 import org.cgiar.ccafs.ap.config.APConstants;
 import org.cgiar.ccafs.ap.data.manager.DeliverableManager;
 import org.cgiar.ccafs.ap.data.manager.DeliverableTypeManager;
 import org.cgiar.ccafs.ap.data.manager.NextUserManager;
+import org.cgiar.ccafs.ap.data.manager.ProjectManager;
 import org.cgiar.ccafs.ap.data.model.Deliverable;
 import org.cgiar.ccafs.ap.data.model.DeliverableType;
 import org.cgiar.ccafs.ap.data.model.NextUser;
-
-import java.util.List;
-
-import com.google.inject.Inject;
-import org.apache.commons.lang3.StringUtils;
+import org.cgiar.ccafs.ap.data.model.Project;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -44,22 +45,25 @@ public class ActivityDeliverablesAction extends BaseAction {
   private DeliverableManager deliverableManager;
   private DeliverableTypeManager deliverableTypeManager;
   private NextUserManager nextUserManager;
+  private ProjectManager projectManager;
 
   // Model for the back-end
   private List<Deliverable> deliverables;
   private List<NextUser> nextUsers;
 
   // Model for the front-end
+  private Project project;
   private int activityID;
   private List<DeliverableType> deliverableTypes;
 
   @Inject
   public ActivityDeliverablesAction(APConfig config, DeliverableManager deliverableManager,
-    NextUserManager nextUserManager, DeliverableTypeManager deliverableTypeManager) {
+    NextUserManager nextUserManager, DeliverableTypeManager deliverableTypeManager, ProjectManager projectManager) {
     super(config);
     this.deliverableManager = deliverableManager;
     this.deliverableTypeManager = deliverableTypeManager;
     this.nextUserManager = nextUserManager;
+    this.projectManager = projectManager;
   }
 
 
@@ -79,6 +83,10 @@ public class ActivityDeliverablesAction extends BaseAction {
     return nextUsers;
   }
 
+  public Project getProject() {
+    return project;
+  }
+
   @Override
   public void prepare() throws Exception {
     super.prepare();
@@ -89,6 +97,8 @@ public class ActivityDeliverablesAction extends BaseAction {
       activityID = -1;
       return; // Stop here and go to execute method.
     }
+    // Getting the project activity
+    project = projectManager.getProjectFromActivityId(activityID);
 
     // Getting the Type of Deliverables
     deliverableTypes = deliverableTypeManager.getDeliverableTypes();

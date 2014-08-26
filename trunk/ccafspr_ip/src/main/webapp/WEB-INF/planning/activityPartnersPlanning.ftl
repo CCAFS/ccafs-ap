@@ -57,7 +57,13 @@
           [@s.submit type="button" name="next"][@s.text name="form.buttons.next" /][/@s.submit]
           [@s.submit type="button" name="cancel"][@s.text name="form.buttons.cancel" /][/@s.submit]
         </div>
-      [/#if]
+      [/#if] 
+      <p id="addPartnerText" class="helpMessage">
+        [@s.text name="preplanning.projectPartners.addPartnerMessage.first" /]
+        <a class="popup" href="[@s.url action='partnerSave'][@s.param name='${activityRequest}']${activityID?c}[/@s.param][/@s.url]">
+          [@s.text name="preplanning.projectPartners.addPartnerMessage.second" /]
+        </a>       
+      </p>
     </article>
   [/@s.form]  
 </section>
