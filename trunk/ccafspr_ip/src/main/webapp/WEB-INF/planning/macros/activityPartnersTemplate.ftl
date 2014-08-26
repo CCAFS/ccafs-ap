@@ -7,10 +7,10 @@
          <div id="removeActivityPartner"class="removeActivityPartner removeElement removeLink" title="[@s.text name="planning.activityPartner.removePartner" /]"></div>  
          [/#if] 
         <input type="hidden" value="${ap.id}" name="activityPartners[${ap_index}].id">
+        <legend>[@s.text name="planning.activityPartner.partner"][@s.param name="0"] <span id="partnerIndex">${ap_index+1}</span>[/@s.param] [/@s.text]</legend>
         [#-- Organizations List --]
-        <div class="fullBlock chosen ">
-          <h2><b>[@s.text name="planning.activityPartner.partner"][@s.param name="0"] <span id="partnerIndex">${ap_index+1}</span>[/@s.param] [/@s.text]</b></h2>
-          [@customForm.select name="activityPartners[${ap_index}].partner.id" listName="allPartners" keyFieldName="id" displayFieldName="name" /]
+        <div class="fullBlock chosen "> 
+          [@customForm.select name="activityPartners[${ap_index}].partner.id" i18nkey="planning.activityPartner.organization" listName="allPartners" keyFieldName="id" displayFieldName="name" /]
         </div> 
         
         [#-- Filters --]
@@ -52,11 +52,11 @@
     [#if canRemove]   
       <div id="removeActivityPartner"class="removeActivityPartner removeElement removeLink" title="[@s.text name="planning.activityPartner.removePartner" /]"></div>  
     [/#if]
+    <legend>[@s.text name="planning.activityPartner.partner"][@s.param name="0"] #<span id="partnerIndex">0</span>[/@s.param] [/@s.text]</legend>
     <input type="hidden" value="-1" name="].id">
     [#-- Organizations List --]
-    <div class="fullBlock chosen ">
-      <h2><b>[@s.text name="planning.activityPartner.partner"][@s.param name="0"] <span id="partnerIndex">0</span>[/@s.param] [/@s.text]</b></h2>
-      [@customForm.select name="partner.id" listName="allPartners" keyFieldName="id" displayFieldName="name" /]
+    <div class="fullBlock chosen "> 
+      [@customForm.select name="partner.id" listName="allPartners" i18nkey="planning.activityPartner.organization" keyFieldName="id" displayFieldName="name" /]
     </div> 
     
     [#-- Filters --]

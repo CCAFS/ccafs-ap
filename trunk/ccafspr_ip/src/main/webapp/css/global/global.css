@@ -23,6 +23,10 @@ a,a:active,a:visited,a:hover {
 }
 
 
+.select {
+  margin-bottom: 8px;
+  margin-left: 8px;
+}
 .select.button, .textArea.button {
   float: left;
   width: 87%;
@@ -65,12 +69,12 @@ ul.fieldError li {
 }
 
 textarea.fieldError, input.fieldError,textarea.fieldError:focus, input.fieldError:focus{
-	border-color: #FF6C6C;
+  border-color: #FF6C6C;
   background-color: #FFEFEF;
 }
 
 p.fieldError{
-	color: #F52626;
+  color: #F52626;
   font-weight: bold;
 }
 
@@ -1182,6 +1186,7 @@ button#ipGraph-btnPrint {
   background-color: #FFF7CF;
   padding: 5px;
   text-align: center;
+  border-bottom: 2px solid #fff;
   font-style: italic;
 }
 
@@ -1408,6 +1413,15 @@ table tr.row:hover{
 
 .location select{
     width: 100%;
+}
+
+/* Activity Description*/
+
+.officialLeader label {
+  
+}
+.officialLeader input {
+  
 }
 
 /* Activity partners*/ 
@@ -1678,7 +1692,7 @@ ul#deliverablesFilesMessages > li {
   border: 0;
   position: absolute;
   top: -10px;
-  left: 34%;
+  left: 36%;
   background: rgba(255,255,255,0.7);
   width: auto;
   padding: 0 6px;

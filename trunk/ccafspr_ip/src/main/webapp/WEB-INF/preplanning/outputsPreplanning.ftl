@@ -54,7 +54,6 @@
                   [/@s.text]
                 [/#assign]
                 <legend>${outputDescription}</legend>
-                [@customForm.textArea name="outputs[${output_index}].description" i18nkey="preplanning.outputs.outputDescription" required=true /] 
                 <div id="contributesBlock" class="contentElements parentsBlock">
                   <div class="itemIndex">[@s.text name="preplanning.outputs.contributes" /] </div>
                   [#-- output's parents --] 
@@ -68,6 +67,8 @@
                     [@customForm.select name="contributions" value="" showTitle=false listName="midOutcomesList" keyFieldName="id"  displayFieldName="description" className="contributes" i18nkey="preplanning.midOutcomes.addContribute" /]
                   </div> 
                 </div>   
+                [#-- Description --]
+                [@customForm.textArea name="outputs[${output_index}].description" i18nkey="preplanning.outputs.outputDescription" required=true /] 
               </div>  
               [/#list]
             [/#if]   
@@ -108,7 +109,6 @@
         [/@s.text]
       [/#assign]
       <legend>${outputDescription}</legend> 
-      [@customForm.textArea name="outputDescription" i18nkey="preplanning.outputs.outputDescription" required=true /] 
       <div id="contributesBlock" class="contentElements">
         <div class="itemIndex">[@s.text name="preplanning.outputs.contributes" /] </div>
         [#-- Contribute area --]
@@ -117,6 +117,8 @@
           [@customForm.select name="contributions"  i18nkey="preplanning.midOutcomes.addContribute" showTitle=false listName="midOutcomesList" keyFieldName="id"  displayFieldName="description" className="contributes" /]
         </div> 
       </div>  
+      [#-- Description --]
+      [@customForm.textArea name="outputDescription" i18nkey="preplanning.outputs.outputDescription" required=true /] 
     </div> 
     [#-- End Output template  --]
     [#-- Contribute template --]

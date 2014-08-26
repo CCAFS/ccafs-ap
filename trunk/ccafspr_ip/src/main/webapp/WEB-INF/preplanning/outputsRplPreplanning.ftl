@@ -57,7 +57,6 @@
                     [/@s.text]
                   [/#assign]
                   <legend>${outputDescription}</legend>
-                  [@customForm.textArea name="outputs[${output_index}].description" i18nkey="preplanning.outputsRPL.outputDescription" required=true /]
                   [#-- Flagships list --]
                   <div class="fullBlock chosen">
                     [@customForm.select name="flagships" label="" i18nkey="preplanning.outputsRPL.flagships" listName="flagshipsList" keyFieldName="id"  displayFieldName="getComposedName()" value="${output.translatedOf[0].program.id}" /]
@@ -71,6 +70,8 @@
                     <input type="hidden" id="outputSelected" value="${output.translatedOf[0].id}">
                     [@customForm.select name="outputs[${output_index}].translatedOf" label="" i18nkey="preplanning.outputsRPL.outputs" listName="" keyFieldName="id"  displayFieldName="name" value="${output.translatedOf[0].id}"/]
                   </div> 
+                  [#-- Description --]
+                  [@customForm.textArea name="outputs[${output_index}].description" i18nkey="preplanning.outputsRPL.outputDescription" required=true /]
                 [#else]
                   [#-- MOG created by the user --]
                   [#-- Title --]
@@ -81,7 +82,6 @@
                     [/@s.text]
                   [/#assign]
                   <legend>${outputDescription}</legend>
-                  [@customForm.textArea name="outputs[${output_index}].description" i18nkey="preplanning.outputsRPL.outputDescription" required=true /]
                   <div id="contributesBlock" class="contentElements parentsBlock">
                     <div class="itemIndex">[@s.text name="preplanning.outputsRPL.contributes" /] </div>
                     [#-- RPL output's parents --] 
@@ -96,6 +96,8 @@
                       [@customForm.select name="contributions" value="" showTitle=false listName="midOutcomesList" keyFieldName="id"  displayFieldName="description" className="contributes" /]
                     </div> 
                   </div> 
+                  [#-- Description --]
+                  [@customForm.textArea name="outputs[${output_index}].description" i18nkey="preplanning.outputsRPL.outputDescription" required=true /]
                 [/#if]
             </div>  
             [/#list] 
@@ -158,7 +160,6 @@
       [/@s.text]
     [/#assign]
     <legend>${outputDescription}</legend>
-    [@customForm.textArea name="description" i18nkey="preplanning.outputsRPL.outputDescription" required=true /] 
     <div id="contributesBlock" class="contentElements">
       <div class="itemIndex">[@s.text name="preplanning.outputsRPL.contributes" /] </div>
       [#-- Contribute area --] 
@@ -167,6 +168,8 @@
         [@customForm.select name="contributions" showTitle=false listName="midOutcomesList" keyFieldName="id"  displayFieldName="description" className="contributes" /]
       </div> 
     </div>  
+    [#-- Description --]
+    [@customForm.textArea name="description" i18nkey="preplanning.outputsRPL.outputDescription" required=true /] 
   </div>  
   
   [#---- Existent  RPL Output TEMPLATE hidden ----]
@@ -185,7 +188,6 @@
       [/@s.text]
     [/#assign]
     <legend>${outputDescription}</legend>
-    [@customForm.textArea name="description" i18nkey="preplanning.outputsRPL.outputDescription" required=true /] 
     <div class="fullBlock chosen"> 
       [@customForm.select name="outputsRPL_flagships" label="" i18nkey="preplanning.outputsRPL.flagships" listName="flagshipsList" keyFieldName="id"  displayFieldName="getComposedName()" /]
     </div>
@@ -195,6 +197,8 @@
     <div class="fullBlock chosen translations">
       [@customForm.select name="outputsRPL_outputs" label="" i18nkey="preplanning.outputsRPL.outputs" listName="" keyFieldName="id"  displayFieldName="name" disabled=true /]
     </div> 
+    [#-- Description --]
+    [@customForm.textArea name="description" i18nkey="preplanning.outputsRPL.outputDescription" required=true /] 
   </div> 
    
    
