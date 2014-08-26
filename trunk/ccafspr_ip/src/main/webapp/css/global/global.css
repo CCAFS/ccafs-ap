@@ -1177,6 +1177,19 @@ padding-left: 11px;
 
 button#ipGraph-btnPrint {
   background: url(../../images/global/printer-icon.png)no-repeat center #2BA6CB;
+}
+
+button#ipGraph-btnMax {
+  background: url(../../images/global/max-icon.png)no-repeat center #2BA6CB;
+}
+
+button#ipGraph-btnFullimpact, button#ipGraph-btnSingleimpact{
+    position: absolute;  
+    bottom: 3px;  
+    left: 3px;
+}
+
+button.ipGraph-btn{
   height: 30px;
 }
 
@@ -1217,6 +1230,7 @@ button#ipGraph-btnPrint {
 .btnPrint{
   background: url(../../images/global/printer-icon.png)no-repeat center #47939C !important;
   height: 30px;
+  vertical-align: middle;
 }
 
 /********** Projects *********/
