@@ -22,7 +22,7 @@ import org.apache.commons.lang3.builder.ToStringBuilder;
 
 /**
  * This class represents a CCAFS Activity, which belongs to a specific Project.
- *
+ * 
  * @author Héctor Fabio Tobón R.
  */
 public class Activity {
@@ -40,9 +40,9 @@ public class Activity {
   private long created;
   private List<ActivityPartner> activityPartners;
   private List<IPElement> outputs;
+  private List<IPIndicator> indicators;
 
   public Activity() {
-
   }
 
   public Activity(int id) {
@@ -66,7 +66,7 @@ public class Activity {
    * This method returns a composed Identifier that is going to be used in the front-end.
    * The convention is going to be used depending on the creation date of the activity.
    * yyyy-activityID => e.g. 2014-12
-   *
+   * 
    * @return the composed identifier or null if the created date is null.
    */
   public String getComposedId() {
@@ -90,10 +90,6 @@ public class Activity {
     return description;
   }
 
-// public ExpectedActivityLeader getExpectedLeader() {
-// return expectedLeader;
-// }
-
   public Date getEndDate() {
     return endDate;
   }
@@ -102,8 +98,16 @@ public class Activity {
     return expectedLeader;
   }
 
+// public ExpectedActivityLeader getExpectedLeader() {
+// return expectedLeader;
+// }
+
   public int getId() {
     return id;
+  }
+
+  public List<IPIndicator> getIndicators() {
+    return indicators;
   }
 
   public User getLeader() {
@@ -139,13 +143,13 @@ public class Activity {
     this.created = created;
   }
 
-// public void setExpectedLeader(ExpectedActivityLeader expectedLeader) {
-// this.expectedLeader = expectedLeader;
-// }
-
   public void setCrossCuttings(List<IPCrossCutting> crossCuttings) {
     this.crossCuttings = crossCuttings;
   }
+
+// public void setExpectedLeader(ExpectedActivityLeader expectedLeader) {
+// this.expectedLeader = expectedLeader;
+// }
 
   public void setDescription(String description) {
     this.description = description;
@@ -161,6 +165,10 @@ public class Activity {
 
   public void setId(int id) {
     this.id = id;
+  }
+
+  public void setIndicators(List<IPIndicator> indicators) {
+    this.indicators = indicators;
   }
 
   public void setLeader(User leader) {
