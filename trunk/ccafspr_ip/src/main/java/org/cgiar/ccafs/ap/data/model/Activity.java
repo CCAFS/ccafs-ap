@@ -13,6 +13,7 @@
  *****************************************************************/
 package org.cgiar.ccafs.ap.data.model;
 
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
@@ -41,6 +42,7 @@ public class Activity {
   private List<ActivityPartner> activityPartners;
   private List<IPElement> outputs;
   private List<IPIndicator> indicators;
+  private List<Budget> budgets;
 
   public Activity() {
   }
@@ -60,6 +62,34 @@ public class Activity {
 
   public List<ActivityPartner> getActivityPartners() {
     return activityPartners;
+  }
+
+  /**
+   * This method calculates all the years between the start date and the end date.
+   * 
+   * @return a List of numbers representing all the years, or an empty list if nothing found.
+   */
+  public List<Integer> getAllYears() {
+    List<Integer> allYears = new ArrayList<>();
+    if (startDate != null && endDate != null) {
+      Calendar calendarStart = Calendar.getInstance();
+      calendarStart.setTime(startDate);
+      Calendar calendarEnd = Calendar.getInstance();
+      calendarEnd.setTime(endDate);
+
+      while (calendarStart.getTimeInMillis() <= calendarEnd.getTimeInMillis()) {
+        // Adding the year to the list.
+        allYears.add(calendarStart.get(Calendar.YEAR));
+        // Adding a year (365 days) to the start date.
+        calendarStart.add(Calendar.YEAR, 1);
+      }
+    }
+
+    return allYears;
+  }
+
+  public List<Budget> getBudgets() {
+    return budgets;
   }
 
   /**
@@ -90,6 +120,10 @@ public class Activity {
     return description;
   }
 
+// public ExpectedActivityLeader getExpectedLeader() {
+// return expectedLeader;
+// }
+
   public Date getEndDate() {
     return endDate;
   }
@@ -97,10 +131,6 @@ public class Activity {
   public User getExpectedLeader() {
     return expectedLeader;
   }
-
-// public ExpectedActivityLeader getExpectedLeader() {
-// return expectedLeader;
-// }
 
   public int getId() {
     return id;
@@ -130,13 +160,29 @@ public class Activity {
     return title;
   }
 
+  public double getTotalActivitiesBudget() {
+    double totalBudget = 0.0;
+    for (Budget budget : this.getBudgets()) {
+      totalBudget += budget.getAmount();
+    }
+    return totalBudget;
+  }
+
   @Override
   public int hashCode() {
     return id;
   }
 
+// public void setExpectedLeader(ExpectedActivityLeader expectedLeader) {
+// this.expectedLeader = expectedLeader;
+// }
+
   public void setActivityPartners(List<ActivityPartner> partners) {
     this.activityPartners = partners;
+  }
+
+  public void setBudgets(List<Budget> budgets) {
+    this.budgets = budgets;
   }
 
   public void setCreated(long created) {
@@ -146,10 +192,6 @@ public class Activity {
   public void setCrossCuttings(List<IPCrossCutting> crossCuttings) {
     this.crossCuttings = crossCuttings;
   }
-
-// public void setExpectedLeader(ExpectedActivityLeader expectedLeader) {
-// this.expectedLeader = expectedLeader;
-// }
 
   public void setDescription(String description) {
     this.description = description;
@@ -179,6 +221,7 @@ public class Activity {
     this.locations = locations;
   }
 
+
   public void setOutputs(List<IPElement> outputs) {
     this.outputs = outputs;
   }
@@ -195,5 +238,4 @@ public class Activity {
   public String toString() {
     return ToStringBuilder.reflectionToString(this);
   }
-
 }
