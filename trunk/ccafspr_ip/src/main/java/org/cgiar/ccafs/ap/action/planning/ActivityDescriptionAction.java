@@ -85,7 +85,7 @@ public class ActivityDescriptionAction extends BaseAction {
 
   /**
    * This method returns an array of cross cutting ids depending on the project.crossCuttings attribute.
-   * 
+   *
    * @return an array of integers.
    */
   public int[] getCrossCuttingIds() {
@@ -172,36 +172,40 @@ public class ActivityDescriptionAction extends BaseAction {
 
   @Override
   public String save() {
-    boolean success = true;
-    if (activity.getExpectedLeader() != null) {
-      // Saving the information of the expected leader.
-      int result =
-        activityManager.saveExpectedActivityLeader(activityID, activity.getExpectedLeader(), isOfficialLeader);
-      if (result > 0) {
-        // if new record was added, we need to assign this new id to the activity.
-        activity.getExpectedLeader().setId(result);
+    // If user has enough privileges to save.
+    if (this.isSaveable()) {
+      boolean success = true;
+      if (activity.getExpectedLeader() != null) {
+        // Saving the information of the expected leader.
+        int result =
+          activityManager.saveExpectedActivityLeader(activityID, activity.getExpectedLeader(), isOfficialLeader);
+        if (result > 0) {
+          // if new record was added, we need to assign this new id to the activity.
+          activity.getExpectedLeader().setId(result);
+        }
       }
-    }
-    // then, save the full information of the activity description, included the expected activity leader, if applies.
-    int result = activityManager.saveActivity(project.getId(), activity);
-    if (result < 0) {
-      success = false;
-    }
+      // then, save the full information of the activity description, included the expected activity leader, if applies.
+      int result = activityManager.saveActivity(project.getId(), activity);
+      if (result < 0) {
+        success = false;
+      }
 
-    // Saving Cross Cutting elements.
-    ipCrossCuttingManager.deleteCrossCuttingsByActivity(activity.getId());
-    for (IPCrossCutting ipCrossTheme : activity.getCrossCuttings()) {
-      ipCrossCuttingManager.saveCrossCutting(activityID, ipCrossTheme.getId());
+      // Saving Cross Cutting elements.
+      ipCrossCuttingManager.deleteCrossCuttingsByActivity(activity.getId());
+      for (IPCrossCutting ipCrossTheme : activity.getCrossCuttings()) {
+        ipCrossCuttingManager.saveCrossCutting(activityID, ipCrossTheme.getId());
+      }
+
+      if (success == false) {
+        addActionError(getText("saving.problem"));
+        return BaseAction.INPUT;
+      }
+      addActionMessage(getText("saving.success", new String[] {getText("planning.projectDescription.title")}));
+      return BaseAction.SUCCESS;
+
+    } else {
+      return BaseAction.NOT_AUTHORIZED;
     }
-
-    if (success == false) {
-      addActionError(getText("saving.problem"));
-      return BaseAction.INPUT;
-    }
-    addActionMessage(getText("saving.success", new String[] {getText("planning.projectDescription.title")}));
-    return BaseAction.SUCCESS;
-
-
   }
 
   public void setActivity(Activity activity) {

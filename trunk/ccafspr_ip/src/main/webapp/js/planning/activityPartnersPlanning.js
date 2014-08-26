@@ -86,12 +86,12 @@ function addPartnerEvent(e){
 function setActivityPartnersIndexes(){
   $("div.activityPartner").each(function(index,element){
     console.log("partner" + index);
-    var elementName = "activityPartners[" + index + "].";
+    var elementName = "activity.activityPartners[" + index + "].";
     $(element).attr("id", "activityPartner-" + index);
     // CSS selector div[id$=parent] Get any DIV element where the ID attribute value ends with "parent".
     $(element).find("[id$='partnerIndex']").html(index + 1);
     $(element).find("[name$='].id']").attr("name", elementName + "id");
-    $(element).find("[name$='partner.id']").attr("name", elementName + "partner.id");
+    $(element).find("[name$='partner']").attr("name", elementName + "partner");
     $(element).find("[name$='contactName']").attr("name", elementName + "contactName");
     $(element).find("[name$='contactEmail']").attr("name", elementName + "contactEmail");
     $(element).find("[name$='contribution']").attr("name", elementName + "contribution");

@@ -165,11 +165,9 @@ public class MySQLActivityPartnerDAO implements ActivityPartnerDAO {
       values = new Object[5];
       values[0] = activityPartnerData.get("institution_id");
       values[1] = activityID;
-      values[2] = activityPartnerData.get("description");
-      values[3] = activityPartnerData.get("startDate");
-      values[4] = activityPartnerData.get("endDate");
-      values[5] = activityPartnerData.get("leader_id");
-      values[6] = "";
+      values[2] = activityPartnerData.get("contact_name");
+      values[3] = activityPartnerData.get("contact_email");
+      values[4] = activityPartnerData.get("contribution");
       result = databaseManager.saveData(query.toString(), values);
 
     } else {
@@ -177,13 +175,13 @@ public class MySQLActivityPartnerDAO implements ActivityPartnerDAO {
       query
         .append("UPDATE activity_partners SET institution_id = ?, activity_id = ?, contact_name = ?, contact_email = ?, contribution = ? ");
       query.append("WHERE id = ? ");
-      values = new Object[7];
-      values[1] = activityPartnerData.get("institution_id");
-      values[2] = activityPartnerData.get("activity_id");
-      values[3] = activityPartnerData.get("contact_name");
-      values[4] = activityPartnerData.get("contact_email");
-      values[5] = activityPartnerData.get("contribution");
-      values[6] = activityPartnerData.get("id");
+      values = new Object[6];
+      values[0] = activityPartnerData.get("institution_id");
+      values[1] = activityID;
+      values[2] = activityPartnerData.get("contact_name");
+      values[3] = activityPartnerData.get("contact_email");
+      values[4] = activityPartnerData.get("contribution");
+      values[5] = activityPartnerData.get("id");
       result = databaseManager.saveData(query.toString(), values);
       if (result == -1) {
         LOG.error("A problem happened trying to update the activity identified with the id = {}",

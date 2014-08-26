@@ -10,7 +10,7 @@
         <legend>[@s.text name="planning.activityPartner.partner"][@s.param name="0"] <span id="partnerIndex">${ap_index+1}</span>[/@s.param] [/@s.text]</legend>
         [#-- Organizations List --]
         <div class="fullBlock chosen "> 
-          [@customForm.select name="activityPartners[${ap_index}].partner.id" i18nkey="planning.activityPartner.organization" listName="allPartners" keyFieldName="id" displayFieldName="name" /]
+          [@customForm.select name="activity.activityPartners[${ap_index}].partner" i18nkey="planning.activityPartner.organization" listName="allPartners" keyFieldName="id" displayFieldName="composedName" /]
         </div> 
         
         [#-- Filters --]
@@ -32,15 +32,15 @@
         
         [#-- Contact Name --] 
         <div class="halfPartBlock">
-          [@customForm.input name="activityPartners[${ap_index}].contactName" type="text" i18nkey="planning.activityPartner.contactName" required=true /]
+          [@customForm.input name="activity.activityPartners[${ap_index}].contactName" type="text" i18nkey="planning.activityPartner.contactName" required=true /]
         </div>
         [#-- Contact Email --]
         <div class="halfPartBlock">
-          [@customForm.input name="activityPartners[${ap_index}].contactEmail" type="text" i18nkey="planning.activityPartner.contactEmail" required=true /]
+          [@customForm.input name="activity.activityPartners[${ap_index}].contactEmail" type="text" i18nkey="planning.activityPartner.contactEmail" required=true /]
         </div>
         [#-- Contribution --]
         <div class="fullBlock partnerContribution">
-          [@customForm.textArea name="activityPartners[${ap_index}].contribution" i18nkey="planning.activityPartner.contribution" required=true /]
+          [@customForm.textArea name="activity.activityPartners[${ap_index}].contribution" i18nkey="planning.activityPartner.contribution" required=true /]
         </div>
       </div>
     [/#list]
@@ -56,7 +56,7 @@
     <input type="hidden" value="-1" name="].id">
     [#-- Organizations List --]
     <div class="fullBlock chosen "> 
-      [@customForm.select name="partner.id" listName="allPartners" i18nkey="planning.activityPartner.organization" keyFieldName="id" displayFieldName="name" /]
+      [@customForm.select name="partner" listName="allPartners" i18nkey="planning.activityPartner.organization" keyFieldName="id" displayFieldName="name" /]
     </div> 
     
     [#-- Filters --]
