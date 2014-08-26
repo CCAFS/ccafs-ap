@@ -6,6 +6,7 @@ function init(){
 
 function attachEvents(){
   $("#activityImpactPathway_midOutcomesList").change(selectMidOutcomeEvent);
+  $('input[name^="activity.indicators"]').click(toogleIndicatorInfo)
 }
 
 /**
@@ -103,7 +104,7 @@ function addIndicators(midOutcomeID, programID, $indicatorsBlock){
         $newIndicator.removeAttr("id");
 
         // indexes will be adjusted in function setIndicatorsIndexes
-        $newIndicator.find("input").val(indicator.id);
+        $newIndicator.find("input[type='checkbox']").val(indicator.id);
         $newIndicator.find("label").text(indicator.description)
         
         $indicatorsBlock.append($newIndicator);
@@ -123,12 +124,17 @@ function setIndicatorIndexes(){
   var indicatorsName = "activity.indicators";
   
   // Indicators indexes
-  $contributionsBlock.find(".midOutcomeIndicator").each(function (index, indicator){
+  $contributionsBlock.find(".midOutcomeIndicator").each(function(index,indicator){
     // Checkbox
-    $(indicator).find("input").attr("id", "activity.indicators-"+index);
-    $(indicator).find("input").attr("name", indicatorsName  );
+    $(indicator).find("input[type='checkbox']").attr("id", "activity.indicators-" + index);
+    $(indicator).find("input[type='checkbox']").attr("name", indicatorsName + "[" + index + "].parent.id");
+    
+    // Hidden
+    $(indicator).find("input[type='hidden']").attr("id", "activity.indicators-" + index);
+    $(indicator).find("input[type='hidden']").attr("name", indicatorsName + "[" + index + "].id");
+    
     // Label
-    $(indicator).find("label").attr("for", "activity.indicators-"+index);
+    $(indicator).find("label").attr("for", "activity.indicators-" + index);
   });
 }
 
@@ -144,4 +150,24 @@ function setMogsIndexes(){
     // Label
     $(mog).find("label").attr("for", "mog-"+index);
   });
+}
+
+function toogleIndicatorInfo(event){
+  var $indicatorBlock = $(event.target).parent();
+  var indicatorIndex = $(event.target).attr("name").split("[")[1].split("]")[0];
+  var indicatorsName = "activity.indicators[" + indicatorIndex + "]";
+
+  if(event.target.checked){
+    $indicatorBlock.find(".indicatorNarrative input").attr("name", indicatorsName + ".target");
+    $indicatorBlock.find(".indicatorNarrative textarea").attr("name", indicatorsName + ".description");
+    
+    // Show the block
+    $indicatorBlock.find(".indicatorNarrative").show("slow");
+  }else{
+    $indicatorBlock.find(".indicatorNarrative input").attr("name", "");
+    $indicatorBlock.find(".indicatorNarrative textarea").attr("name", "");
+    
+    // Hide the block
+    $indicatorBlock.find(".indicatorNarrative").hide("slow");
+  }
 }

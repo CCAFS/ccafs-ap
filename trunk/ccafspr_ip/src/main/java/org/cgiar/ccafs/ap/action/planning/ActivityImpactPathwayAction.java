@@ -23,6 +23,7 @@ import org.cgiar.ccafs.ap.data.manager.ProjectManager;
 import org.cgiar.ccafs.ap.data.model.Activity;
 import org.cgiar.ccafs.ap.data.model.IPElement;
 import org.cgiar.ccafs.ap.data.model.IPElementType;
+import org.cgiar.ccafs.ap.data.model.IPIndicator;
 import org.cgiar.ccafs.ap.data.model.IPProgram;
 import org.cgiar.ccafs.ap.data.model.Project;
 
@@ -54,9 +55,11 @@ public class ActivityImpactPathwayAction extends BaseAction {
 
   // Model
   private List<IPElement> midOutcomes;
-  private List<IPElement> mogs;
   private List<IPProgram> projectFocusList;
   private Activity activity;
+
+  private List<IPElement> previousOutputs;
+  private List<IPIndicator> previousIndicators;
 
   private int activityID;
 
@@ -107,10 +110,6 @@ public class ActivityImpactPathwayAction extends BaseAction {
     return midOutcomesMap;
   }
 
-  public List<IPElement> getMogs() {
-    return mogs;
-  }
-
   public List<IPProgram> getProjectFocusList() {
     return projectFocusList;
   }
@@ -146,6 +145,22 @@ public class ActivityImpactPathwayAction extends BaseAction {
       midOutcomes.addAll(ipElementManager.getIPElements(program, midOutcomeType));
     }
 
+    // TODO - change to bring the real information
+    List<IPElement> outputs = new ArrayList<>();
+    activity.setOutputs(outputs);
+
+    List<IPIndicator> indicators = new ArrayList<>();
+    activity.setIndicators(indicators);
+
+
+    // Save the activity outputs brought from the database
+    previousOutputs = new ArrayList<>();
+    previousOutputs.addAll(activity.getOutputs());
+
+    // Save the activity indicators brought from the database
+    previousIndicators = new ArrayList<>();
+    previousIndicators.addAll(activity.getIndicators());
+
     if (getRequest().getMethod().equalsIgnoreCase("post")) {
       // Clear out the list if it has some element
       if (activity.getIndicators() != null) {
@@ -161,11 +176,40 @@ public class ActivityImpactPathwayAction extends BaseAction {
 
   @Override
   public String save() {
-    System.out.println("Indicators: ");
+    boolean success = true;
+    System.out.println("indicators: ");
     System.out.println(activity.getIndicators());
-    System.out.println("Outptus: ");
-    System.out.println(activity.getOutputs());
-    return SUCCESS;
+    /*
+     * // Delete the outputs removed
+     * for (IPElement output : previousOutputs) {
+     * if (!activity.getOutputs().contains(output)) {
+     * boolean deleted = activityManager.deleteActivityOutput(activityID, output.getId());
+     * if (!deleted) {
+     * success = false;
+     * }
+     * }
+     * }
+     * 
+     * success = success && activityManager.saveActivityOutputs(activity.getOutputs(), activityID);
+     * 
+     * // Delete the indicators removed
+     * for (IPElement output : previousOutputs) {
+     * if (!activity.getOutputs().contains(output)) {
+     * boolean deleted = activityManager.deleteIndicator(activityID, output.getId());
+     * if (!deleted) {
+     * success = false;
+     * }
+     * }
+     * }
+     */
+    success = success && activityManager.saveActivityIndicators(activity.getIndicators(), activityID);
+    if (success) {
+      addActionMessage(getText("saving.success", new String[] {getText("planning.activityImpactPathways.title")}));
+      return SUCCESS;
+    } else {
+      addActionError(getText("saving.problem"));
+      return INPUT;
+    }
   }
 
   public void setActivity(Activity activity) {

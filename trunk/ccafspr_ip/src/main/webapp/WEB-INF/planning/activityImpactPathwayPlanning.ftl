@@ -84,8 +84,18 @@
     <h6>[@s.text name="planning.activityImpactPathways.indicators" /]</h6>
     <div class="indicatorsBlock">
       <div class="midOutcomeIndicator" id="midOutcomeIndicatorTemplate">
-        <input type="checkbox" />
+        <input type="hidden" name="activity_indicator_id" value="-1" />
+        <input type="checkbox" name="activity.indicators" />
         <label></label>
+        
+        <div class="checkboxGroup vertical indicatorNarrative" style="display:none">
+          [#-- Target value --]
+          <label> Target value </label>
+          <input type="input" name="activity_indicator_target" >
+          
+          <label> Target narrative</label>
+          <textarea name="activity_indicator_description" > </textarea>
+        </div>
       </div>
     </div>
   </div>
@@ -95,7 +105,7 @@
     <h6>[@s.text name="planning.activityImpactPathways.mogs" /]</h6>
     <div class="mogsBlock">
       <div class="mog" id="mogTemplate">
-        <input type="checkbox" />
+        <input type="checkbox" name="activity.outputs" />
         <label></label>
       </div>
     </div>
