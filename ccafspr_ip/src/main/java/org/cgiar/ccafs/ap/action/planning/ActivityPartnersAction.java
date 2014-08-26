@@ -184,7 +184,6 @@ public class ActivityPartnersAction extends BaseAction {
         }
       }
 
-
       if (success == false) {
         addActionError(getText("saving.problem"));
         return BaseAction.INPUT;

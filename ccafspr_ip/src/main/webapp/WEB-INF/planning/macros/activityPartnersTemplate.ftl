@@ -3,9 +3,9 @@
   [#if activityPartners?has_content]
     [#list activityPartners as ap] 
       <div id="activityPartner-${ap_index}" class="activityPartner borderBox">
-         [#if canRemove]   
-         <div id="removeActivityPartner"class="removeActivityPartner removeElement removeLink" title="[@s.text name="planning.activityPartner.removePartner" /]"></div>  
-         [/#if] 
+        [#if canRemove]   
+          <div id="removeActivityPartner"class="removeActivityPartner removeElement removeLink" title="[@s.text name="planning.activityPartner.removePartner" /]"></div>  
+        [/#if] 
         <input type="hidden" value="${ap.id}" name="activityPartners[${ap_index}].id">
         <legend>[@s.text name="planning.activityPartner.partner"][@s.param name="0"] <span id="partnerIndex">${ap_index+1}</span>[/@s.param] [/@s.text]</legend>
         [#-- Organizations List --]
@@ -56,7 +56,7 @@
     <input type="hidden" value="-1" name="].id">
     [#-- Organizations List --]
     <div class="fullBlock chosen "> 
-      [@customForm.select name="partner" listName="allPartners" i18nkey="planning.activityPartner.organization" keyFieldName="id" displayFieldName="name" /]
+      [@customForm.select name="partner" listName="allPartners" i18nkey="planning.activityPartner.organization" keyFieldName="id" displayFieldName="composedName" /]
     </div> 
     
     [#-- Filters --]
