@@ -26,9 +26,9 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 
-public class LocationsPlanningAction extends BaseAction {
+public class ActivityLocationsPlanningAction extends BaseAction {
 
-  public static Logger LOG = LoggerFactory.getLogger(LocationsPlanningAction.class);
+  public static Logger LOG = LoggerFactory.getLogger(ActivityLocationsPlanningAction.class);
   private static final long serialVersionUID = -3960647459588960260L;
 
   // Managers
@@ -56,7 +56,7 @@ public class LocationsPlanningAction extends BaseAction {
   private List<OtherLocation> otherLocationsSaved;
 
   @Inject
-  public LocationsPlanningAction(APConfig config, LocationManager locationManager, ActivityManager activityManager,
+  public ActivityLocationsPlanningAction(APConfig config, LocationManager locationManager, ActivityManager activityManager,
     LocationTypeManager locationTypeManager, ProjectManager projectManager) {
     super(config);
     this.locationManager = locationManager;
