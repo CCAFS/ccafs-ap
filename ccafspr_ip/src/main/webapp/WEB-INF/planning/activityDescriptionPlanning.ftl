@@ -9,7 +9,7 @@
 [#assign breadCrumb = [
   {"label":"planning", "nameSpace":"planning", "action":"projects"},
   {"label":"projects", "nameSpace":"planning", "action":"projects"},
-  {"label":"activities", "nameSpace":"planning/projects", "action":"activities", "param":"projectID=${project.id?c}" },
+  {"label":"activities", "nameSpace":"planning/projects", "action":"activities", "param":"projectID=${project.id}" },
   {"label":"activityDescription", "nameSpace":"planning/projects/activities", "action":"" }
 ]/]
 
@@ -100,7 +100,7 @@
           </div>
           
           [#-- Checkbox is official --]
-          <div class="fullPartBlock chosen">
+          <div class="fullPartBlock officialLeader">
             [@customForm.checkbox name="officialLeader" i18nkey="planning.activityDescription.isOfficialLeader" checked=officialLeader value="true"/]
           </div>
         [/#if]

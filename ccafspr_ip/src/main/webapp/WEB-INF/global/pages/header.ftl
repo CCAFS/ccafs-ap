@@ -2,7 +2,6 @@
 [#ftl]
 [#include "/WEB-INF/global/pages/head.ftl"]
 <body>
-[#include "/WEB-INF/global/pages/previousVersionMessage.ftl" /]
 [#include "/WEB-INF/global/pages/boardMessage.ftl" /]
 [#if !(avoidHeader!false)]
   <div class="container">  
