@@ -34,7 +34,7 @@
       [/#if]
       <h1 class="contentTitle">
       [@s.text name="planning.activityBudget.title" /] 
-      </h1>
+      </h1> 
       [#if allYears?has_content]
       [#if invalidYear == false]
         [#if hasLeader]
@@ -95,13 +95,13 @@
                     </tr>
                   [/#list] 
                 </table>  
+                <hr>
                 <div class="partnerListMsj">
                   [@s.text name="planning.activityBudget.partnerNotList" /]
                   <a href="[@s.url action='activityPartners' includeParams='get'][@s.param name='activityID']${activity.id?c}[/@s.param][/@s.url]"> 
                     [@s.text name="planning.activityBudget.partnersLink" /] 
                   </a>
-                </div>
-                <hr>
+                </div> 
              </div>
           </div> <!-- End budgetTables -->
       [#else]
@@ -116,6 +116,7 @@
         <p>[@s.text name="planning.activityBudget.message.dateUndefined" /]</p>
       [/#if]
       [#if saveable]
+        <input type="hidden" name="year" value="${year}">
         <input type="hidden" name="activityID" value="${activity.id?c}">
         <div class="buttons">
           [@s.submit type="button" name="save"][@s.text name="form.buttons.save" /][/@s.submit]

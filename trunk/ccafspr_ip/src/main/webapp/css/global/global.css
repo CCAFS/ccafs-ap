@@ -1482,6 +1482,28 @@ table tr.row:hover{
   display: none;
 }
 
+/* Activity Locations */
+
+#activityLocations-map{
+    width: 99%; 
+    height: 280px;
+    border: 4px solid #EBEBEB;
+}
+
+#activityGlobalBlock{
+    padding-bottom: 20px;
+}
+
+#activityGlobalBlock input{
+    vertical-align: middle;
+}
+
+#activityGlobalBlock label{
+    width: 97%;
+    float: right;
+    margin: 0;
+}
+
 /****** REPORTING **********/
 /********* Activity Reporting Sub Menu **********/
 #stageMenu {
