@@ -16,8 +16,6 @@ package org.cgiar.ccafs.ap.action.planning;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.cgiar.ccafs.ap.data.manager.BudgetManager;
-
 import com.google.inject.Inject;
 import org.apache.commons.lang3.StringUtils;
 import org.cgiar.ccafs.ap.action.BaseAction;
@@ -25,6 +23,7 @@ import org.cgiar.ccafs.ap.config.APConfig;
 import org.cgiar.ccafs.ap.config.APConstants;
 import org.cgiar.ccafs.ap.data.manager.ActivityManager;
 import org.cgiar.ccafs.ap.data.manager.ActivityPartnerManager;
+import org.cgiar.ccafs.ap.data.manager.BudgetManager;
 import org.cgiar.ccafs.ap.data.manager.InstitutionManager;
 import org.cgiar.ccafs.ap.data.manager.LocationManager;
 import org.cgiar.ccafs.ap.data.manager.ProjectManager;
@@ -87,6 +86,10 @@ public class ActivityPartnersAction extends BaseAction {
     return activityID;
   }
 
+  public String getActivityRequest() {
+    return APConstants.ACTIVITY_REQUEST_ID;
+  }
+
   public List<Institution> getAllPartners() {
     return allPartners;
   }
@@ -94,7 +97,6 @@ public class ActivityPartnersAction extends BaseAction {
   public List<Country> getCountries() {
     return countries;
   }
-
 
   public List<InstitutionType> getPartnerTypes() {
     return partnerTypes;

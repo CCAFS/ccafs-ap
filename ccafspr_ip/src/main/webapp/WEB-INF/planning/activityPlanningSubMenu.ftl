@@ -13,7 +13,7 @@
     <a [#if currentStage == "activityLocations"] class="currentSection" [/#if] href="[@s.url action='activityLocations'  includeParams='get'][/@s.url]">
       <li>[@s.text name="menu.secondary.planning.activity.activityLocations" /]</li>
     </a>
-    <a [#if currentStage == "activityImpactPathway"] class="currentSection" [/#if] href="[@s.url action='activityImpactPathway'  includeParams='get'][/@s.url]">
+    <a [#if currentStage == "activityImpactPathway" || currentStage == "activityIpOtherContributions"] class="currentSection" [/#if] href="[@s.url action='activityImpactPathway'  includeParams='get'][/@s.url]">
       <li>[@s.text name="menu.secondary.planning.activity.activityImpactPathway" /]</li>
     </a> 
     <a [#if currentStage == "activityDeliverables"] class="currentSection" [/#if] href="[@s.url action='activityDeliverables'  includeParams='get'][/@s.url]">

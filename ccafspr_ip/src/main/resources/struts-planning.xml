@@ -140,6 +140,13 @@
         <param name="namespace">/planning/projects</param>
       </result>
     </action>
+    
+    <action name="partnerSave" class="org.cgiar.ccafs.ap.action.planning.PartnersSaveAction">
+      <result name="input">/WEB-INF/global/pages/partnersSave.ftl</result>
+      <result name="success" type="redirectAction">
+        <param name="actionName">partnerSave</param>
+      </result>
+    </action>
 
     <action name="activityBudget" class="org.cgiar.ccafs.ap.action.BaseAction">
       <result name="input">/WEB-INF/planning/activityBudgetPlanning.ftl</result>
@@ -171,8 +178,7 @@
         <param name="actionName">activities</param>
         <param name="namespace">/planning/projects</param>
       </result>
-    </action>
-    
+    </action> 
     
     <action name="activityImpactPathway" class="org.cgiar.ccafs.ap.action.planning.ActivityImpactPathwayAction">
       <result name="input">/WEB-INF/planning/activityImpactPathwayPlanning.ftl</result>
