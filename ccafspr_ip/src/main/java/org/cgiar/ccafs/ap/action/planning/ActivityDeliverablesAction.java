@@ -114,23 +114,32 @@ public class ActivityDeliverablesAction extends BaseAction {
     for (Deliverable deliverable : activity.getDeliverables()) {
       deliverable.setNextUsers(nextUserManager.getNextUsersByDeliverableId(deliverable.getId()));
     }
+
+    if (getRequest().getMethod().equalsIgnoreCase("post")) {
+      // Clear out the list if it has some element
+      if (activity.getDeliverables() != null) {
+        activity.getDeliverables().clear();
+      }
+    }
   }
+
+  @Override
+  public String save() {
+    boolean success = true;
+    // Saving Project Outcome
+    for (Deliverable deliverable : activity.getDeliverables()) {
+      boolean saved = deliverableManager.saveDeliverable(activityID, deliverable);
+      if (!saved) {
+        success = false;
+      }
+    }
+    return BaseAction.SUCCESS;
+  }
+
 
   public void setActivity(Activity activity) {
     this.activity = activity;
   }
-
-
-// @Override
-// public String save() {
-// boolean success = true;
-// // Saving Project Outcome
-// boolean saved = deliverableManager.saveDeliverable(activityID, deliverable);
-// if (!saved) {
-// success = false;
-// }
-// return INPUT;
-// }
 
   public void setActivityID(int activityID) {
     this.activityID = activityID;

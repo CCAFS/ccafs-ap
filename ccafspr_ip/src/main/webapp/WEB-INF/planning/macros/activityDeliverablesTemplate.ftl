@@ -43,11 +43,11 @@
     [@customForm.input name="title" type="text" i18nkey="planning.deliverables.title" required=true /]
     [#-- Type --]
     <div class="halfPartBlock chosen">
-      [@customForm.select name="type.id" label=""  disabled=false i18nkey="planning.deliverables.type" listName="deliverableTypes" keyFieldName="id"  displayFieldName="name" /]
+      [@customForm.select name="type" label=""  disabled=false i18nkey="planning.deliverables.type" listName="deliverableTypes" keyFieldName="id"  displayFieldName="name" /]
     </div>
     [#-- Year  --]
     <div class="halfPartBlock chosen">
-      [@customForm.select name="year" label=""  disabled=false i18nkey="planning.deliverables.year" listName="" keyFieldName="id"  displayFieldName="name" /]
+      [@customForm.select name="year" label=""  disabled=false i18nkey="planning.deliverables.year" listName="allYears" /]
     </div> 
     [#-- Add next user button  --]
     <div id="addActivityNextUserBlock" class="addLink"><a href=""  class="addActivityNextUser addButton">[@s.text name="planning.deliverables.addNewUser" /]</a></div>

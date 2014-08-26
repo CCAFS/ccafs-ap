@@ -187,14 +187,46 @@
         <param name="actionName">activityImpactPathway</param>   
         <param name="activityID">${activity.id}</param>   
       </result>
+      <result name="next" type="redirectAction">
+        <param name="actionName">activityIpOtherContributions</param>
+        <param name="activityID">${activity.id}</param>
+      </result>
+      <result name="cancel" type="redirectAction">
+        <param name="actionName">activities</param>
+        <param name="namespace">/planning/projects</param>
+      </result>
     </action>
         
     <action name="activityIpOtherContributions" class="org.cgiar.ccafs.ap.action.planning.ActivityIPOtherContributionAction">
       <result name="input">/WEB-INF/planning/activityipOtherContributionPlanning.ftl</result>
+      <result name="success" type="redirectAction">   
+        <param name="actionName">activityIpOtherContributions</param>   
+        <param name="activityID">${activity.id}</param>   
+      </result>
+      <result name="next" type="redirectAction">
+        <param name="actionName">activityDeliverables</param>
+        <param name="activityID">${activity.id}</param>
+      </result>
+      <result name="cancel" type="redirectAction">
+        <param name="actionName">activities</param>
+        <param name="namespace">/planning/projects</param>
+      </result>
     </action>
     
     <action name="activityDeliverables" class="org.cgiar.ccafs.ap.action.planning.ActivityDeliverablesAction">
       <result name="input">/WEB-INF/planning/activityDeliverablesPlanning.ftl</result>
+      <result name="success" type="redirectAction">   
+        <param name="actionName">activityDeliverables</param>   
+        <param name="activityID">${activity.id}</param>   
+      </result>
+      <result name="next" type="redirectAction">
+        <param name="actionName">activities</param>
+        <param name="namespace">/planning/projects</param>
+      </result>
+      <result name="cancel" type="redirectAction">
+        <param name="actionName">activities</param>
+        <param name="namespace">/planning/projects</param>
+      </result>
     </action>
   </package>
   
