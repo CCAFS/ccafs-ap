@@ -1,3 +1,5 @@
+//Limits for textarea input
+var lWordsElemetDesc = 300;
 $(document).ready(init);
 
 function init(){
@@ -10,6 +12,7 @@ function init(){
   if (!$("div.activityPartner").exists()) {
     $("#addActivityPartner .addButton").trigger("click");
   }
+  applyWordCounter($("textarea"), lWordsElemetDesc);
 }
 
 function attachEvents(){

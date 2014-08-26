@@ -1,6 +1,6 @@
 [#ftl]
 [#assign title = "Activity locations" /]
-[#assign globalLibs = ["jquery", "noty"] /]
+[#assign globalLibs = ["jquery", "noty","googleMaps"] /]
 [#assign customJS = ["${baseUrl}/js/global/utils.js", "${baseUrl}/js/planning/activityLocationPlanning.js"] /]
 [#assign currentSection = "planning" /]
 [#assign currentPlanningSection = "activities" /]
@@ -37,10 +37,12 @@
     [#-- Title --]
     <h1 class="contentTitle">
     [@s.text name="planning.activities.locations.title" /] 
-    </h1> 
-    
+    </h1>  
+    <div id="activityGlobalBlock" class="borderBox">
+      [@customForm.checkbox name="isGlobal" i18nkey="planning.activities.isGlobal" checked=isGlobal value="false"/]
+    </div>
+    <div id="activityLocations-map"></div> 
     <div id="locationsBlock" class="clearfix">
-      <div id="map"></div> 
       <div id="fields">
         [#if activity.locations?has_content]
           [#assign notApplicableText] [@s.text name="planning.activities.locations.notApplicable" /] [/#assign]
@@ -82,8 +84,7 @@
                 [#else]
                   [@customForm.select name="otherLocationsSaved[${location_index}].type.id" i18nkey="planning.activities.locations.level" listName="locationTypes" keyFieldName="id"  displayFieldName="name" showTitle=false value="${location.type.id?c}"/]
                 [/#if]
-              </div>
-              
+              </div> 
               <div class="locationLatitude grid_2">
                 [#-- Latitude --]
                 [#if location.country || location.region]
@@ -140,7 +141,7 @@
         [@s.text name="planning.activities.locations.uploadMessage" /]
         <a id="fileBrowserLauncher" href=""> [@s.text name="planning.activities.locations.uploadMessageLink" /]</a>       
       </p>
-      <div>
+      <div style="display:none">
         [@customForm.input name="excelTemplate" type="file" i18nkey="reporting.caseStudies.image" /]
       </div>
     
