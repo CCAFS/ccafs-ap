@@ -73,7 +73,7 @@
                         <input type="hidden" name="activity.budgets[${counter}].id" value="${mapBudgets[year?c+'-'+activity.leader.currentInstitution.id?c+'-ACTIVITY'].id?c}" />
                         <input type="hidden" name="activity.budgets[${counter}].year" value="${year?c}" />
                         <input type="hidden" name="activity.budgets[${counter}].institution.id" value="${mapBudgets[year?c+'-'+activity.leader.currentInstitution.id?c+'-ACTIVITY'].institution.id?c}" />
-                        <input type="hidden" name="activity.budgets[${counter}].type" value="W1" />
+                        <input type="hidden" name="activity.budgets[${counter}].type" value="ACTIVITY" />
                         [@customForm.input name="activity.budgets[${counter}].amount" showTitle=false disabled=!fullEditable value="${mapBudgets[year?c+'-'+activity.leader.currentInstitution.id?c+'-ACTIVITY'].amount?c}" /]
                         [@s.set var="counter" value="${counter+1}"/]
                       </td>  
