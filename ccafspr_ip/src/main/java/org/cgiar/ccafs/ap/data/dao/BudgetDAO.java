@@ -30,6 +30,22 @@ public interface BudgetDAO {
 
 
   /**
+   * This method calculates the total of the Activity Budget
+   * 
+   * @param activityID is the Id of the activity
+   * @return a decimal number representing the amount of the total Activity Budget for that specific project, if no data
+   *         found the method will return 0.0 and if some error happen a -1.0 will be returned.
+   */
+  public double calculateTotalActivityBudget(int activityID);
+
+  /**
+   * @param activityID
+   * @param year
+   * @return
+   */
+  public double calculateTotalActivityBudgetByYear(int activityID, int year);
+
+  /**
    * This method calculates the total of the CCAFS Budget which is the addition of W1+W2+W3+BILATERAL
    * 
    * @param projectID is the project id.
@@ -70,13 +86,38 @@ public interface BudgetDAO {
   public double calculateTotalOverallBudgetByYear(int projectID, int year);
 
   /**
+   * This method removes all the Activity budgets identified with the given activity ID and year.
+   * 
+   * @param activityID is the activity identifier
+   * @param year is a year
+   * @return true if the elements were deleted successfully. False otherwise.
+   */
+  public boolean deleteActivityBudgetByYear(int activityID, int year);
+
+  /**
+   * This method removes all the Activity Budgets associated by a given activity ID
+   * 
+   * @param activityID is the ID of the activity
+   * @return true if the elements were deleted successfully. False otherwise
+   */
+  public boolean deleteActivityBudgetsByActivityID(int activityID);
+
+  /**
+   * Deletes the information of the Budgets related by a given activity id and an institution id
+   * 
+   * @param activityID is the id of an activity
+   * @param institutionID is the id of an institution
+   * @return true if the elements were deleted successfully. False otherwise
+   */
+  public boolean deleteActivityBudgetsByInstitution(int activityID, int institutionID);
+
+  /**
    * Deletes the information of a Budget associated by a given id
    * 
    * @param budgetId - is the id of a Budget
    * @return true if the elements were deleted successfully. False otherwise
    */
   public boolean deleteBudget(int budgetId);
-
 
   /**
    * Deletes the information of the Budgets related by a given project id and an institution id
@@ -99,11 +140,20 @@ public interface BudgetDAO {
   /**
    * This method gets all the budget information by a given activity ID and a Budget Type
    * 
-   * @param activityID
-   * @param budgetType
+   * @param activityID - is the Id of the activity
+   * @param budgetType - is the id of a Budget Type
    * @return a list of Map of the Budgets related with the activity and the budget type
    */
   public List<Map<String, String>> getActivityBudgetsByType(int activityID, int budgetType);
+
+  /**
+   * This method gets all the Budget information by a given activity Id and a year
+   * 
+   * @param activityID - is the id of the activity
+   * @param year - is the year of the budget
+   * @return a list of Map of the Budgets related with the year and the activity id
+   */
+  public List<Map<String, String>> getActivityBudgetsByYear(int activityID, int year);
 
   /**
    * This method gets all the budget information by a given Project Id

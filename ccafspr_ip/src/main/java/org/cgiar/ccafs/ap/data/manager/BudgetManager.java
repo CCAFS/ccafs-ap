@@ -31,6 +31,26 @@ import com.google.inject.ImplementedBy;
 public interface BudgetManager {
 
   /**
+   * This method calculates the total of the Activity Budget
+   * 
+   * @param activityID is the activity id
+   * @return a decimal number representing the amount of the total Activity Budget for that specific activity, if no
+   *         data
+   *         found the method will return 0.0 and if some error happen a -1.0 will be returned.
+   */
+  public double calculateTotalActivityBudget(int activityID);
+
+  /**
+   * This method calculates the total of the Activity Budget by a given year and an activity ID
+   * 
+   * @param activityID is the activity id
+   * @param year is a year
+   * @return a decimal number representing the amount of the total CCAFS Budget for that specific project in the given
+   *         year, if no data found the method will return 0.0 and if some error happen a -1.0 will be returned.
+   */
+  public double calculateTotalActivityBudgetByYear(int activityID, int year);
+
+  /**
    * This method calculates the total of the CCAFS Budget which is the addition of W1+W2+W3+BILATERAL and a given year
    * 
    * @param projectID is the project id.
@@ -69,6 +89,32 @@ public interface BudgetManager {
   public double calculateTotalOverallBudgetByYear(int projectID, int year);
 
   /**
+   * This method removes all the Activity budgets identified with the given projectID and year.
+   * 
+   * @param activityID is the activity identifier
+   * @param year is a year
+   * @return true if the elements were deleted successfully. False otherwise.
+   */
+  public boolean deleteActivityBudgetByYear(int activityID, int year);
+
+  /**
+   * This method removes all the Activity Budgets associated by a given activity ID
+   * 
+   * @param activityID is the ID of the activity
+   * @return true if the elements were deleted successfully. False otherwise
+   */
+  public boolean deleteActivityBudgetsByActivityID(int activityID);
+
+  /**
+   * This method removes a set of budgets that belong to a specific activity and institution.
+   * 
+   * @param activityID is the activity identifier.
+   * @param institutionID is the institution identifier.
+   * @return true if the set of budgets were successfully deleted, false otherwise.
+   */
+  public boolean deleteActivityBudgetsByInstitution(int activityID, int institutionID);
+
+  /**
    * This method removes a specific budget value from the database.
    * 
    * @param budgetId is the budget identifier.
@@ -102,6 +148,15 @@ public interface BudgetManager {
    * @return a list of Budget with the information related with the activity
    */
   public List<Budget> getActivityBudgetsByType(int activityID, int budgetType);
+
+  /**
+   * This method gets all the budget information that belongs to an activity in a specific year.
+   * 
+   * @param activityID is the activity identifier.
+   * @param year is the year.
+   * @return a List of Budget objects.
+   */
+  public List<Budget> getActivityBudgetsByYear(int activityID, int year);
 
   /**
    * This method gets all the budget information by a given Project Id
