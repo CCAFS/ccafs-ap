@@ -15,8 +15,9 @@ package org.cgiar.ccafs.ap.converter;
 
 import java.util.Map;
 
-import org.cgiar.ccafs.ap.data.manager.LocationManager;
-import org.cgiar.ccafs.ap.data.model.Country;
+import org.cgiar.ccafs.ap.data.manager.DeliverableTypeManager;
+
+import org.cgiar.ccafs.ap.data.model.DeliverableType;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import com.google.inject.Inject;
@@ -25,26 +26,32 @@ import org.apache.struts2.util.StrutsTypeConverter;
 /**
  * @author Héctor Fabio Tobón R.
  */
-public class CountryConverter extends StrutsTypeConverter {
+public class DeliverableTypeConverter extends StrutsTypeConverter {
 
   // LOG
-  private static final Logger LOG = LoggerFactory.getLogger(CountryConverter.class);
+  private static final Logger LOG = LoggerFactory.getLogger(DeliverableTypeConverter.class);
 
   // Manager
-  private LocationManager locationManager;
+  private DeliverableTypeManager typeManager;
 
   @Inject
-  public CountryConverter(LocationManager locationManager) {
-    this.locationManager = locationManager;
+  public DeliverableTypeConverter(DeliverableTypeManager typeManager) {
+    this.typeManager = typeManager;
   }
 
   @SuppressWarnings("rawtypes")
   @Override
   public Object convertFromString(Map context, String[] values, Class toClass) {
-    if (toClass == Country.class) {
-      String code = values[0];
-      LOG.debug(">> convertFromString > id = {} ", code);
-      return locationManager.getCountryByCode(code);
+    if (toClass == DeliverableType.class) {
+      String id = values[0];
+      try {
+        LOG.debug(">> convertFromString > id = {} ", id);
+        return typeManager.getDeliverableTypeById(Integer.parseInt(id));
+      } catch (NumberFormatException e) {
+        // Do Nothing
+        LOG.error("Problem to convert Deliverable Type from String (convertFromString) for code = {} ", id,
+          e.getMessage());
+      }
     }
     return null;
   }
@@ -52,9 +59,9 @@ public class CountryConverter extends StrutsTypeConverter {
   @SuppressWarnings("rawtypes")
   @Override
   public String convertToString(Map context, Object o) {
-    Country country = (Country) o;
-    LOG.debug(">> convertToString > id = {} ", country.getCode());
-    return country.getCode();
+    DeliverableType type = (DeliverableType) o;
+    LOG.debug(">> convertToString > id = {} ", type.getId());
+    return type.getId() + "";
   }
 
 }
