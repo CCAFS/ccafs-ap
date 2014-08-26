@@ -207,6 +207,45 @@ public class MySQLActivityDAO implements ActivityDAO {
   }
 
   @Override
+  public List<Map<String, String>> getActivityIndicators(int activityID) {
+    LOG.debug(">> getActivityIndicators( activityID = {} )", activityID);
+    List<Map<String, String>> indicatorsDataList = new ArrayList<>();
+
+    StringBuilder query = new StringBuilder();
+    query.append("SELECT ai.id, ai.description, ai.target, aip.id as 'parent_id', ");
+    query.append("aip.description as 'parent_description', aip.target as 'parent_target' ");
+    query.append("FROM ip_activity_indicators as ai ");
+    query.append("INNER JOIN ip_indicators aip ON ai.parent_id = aip.id ");
+    query.append("WHERE ai.activity_id=  ");
+    query.append(activityID);
+
+    try (Connection con = databaseManager.getConnection()) {
+      ResultSet rs = databaseManager.makeQuery(query.toString(), con);
+      while (rs.next()) {
+        Map<String, String> indicatorData = new HashMap<String, String>();
+
+        indicatorData.put("id", rs.getString("id"));
+        indicatorData.put("description", rs.getString("description"));
+        indicatorData.put("target", rs.getString("target"));
+        indicatorData.put("parent_id", rs.getString("parent_id"));
+        indicatorData.put("parent_description", rs.getString("parent_description"));
+        indicatorData.put("parent_target", rs.getString("parent_target"));
+
+        indicatorsDataList.add(indicatorData);
+      }
+      rs.close();
+    } catch (SQLException e) {
+      String exceptionMessage = "-- getActivityIndicators() > Exception raised trying ";
+      exceptionMessage += "to get the activity indicators for activity  " + activityID;
+
+      LOG.error(exceptionMessage, e);
+      return null;
+    }
+    LOG.debug("<< getActivityIndicators():indicatorsDataList.size={}", indicatorsDataList.size());
+    return indicatorsDataList;
+  }
+
+  @Override
   public int getActivityLeaderId(int activityID) {
     LOG.debug(">> getActivityLeaderId(activityID={})", new Object[] {activityID});
     int leaderID = -1;
@@ -226,6 +265,41 @@ public class MySQLActivityDAO implements ActivityDAO {
     LOG.debug("<< getActivityIdsEditable(): leaderID={}", leaderID);
     return leaderID;
   }
+
+  @Override
+  public List<Map<String, String>> getActivityOutputs(int activityID) {
+    LOG.debug(">> getActivityOutputs( activityID = {} )", activityID);
+    List<Map<String, String>> outputsDataList = new ArrayList<>();
+
+    StringBuilder query = new StringBuilder();
+    query.append("SELECT ipe.id, ipe.description ");
+    query.append("FROM ip_elements ipe ");
+    query.append("INNER JOIN ip_activity_contributions iac ON ipe.id = iac.ip_element_id ");
+    query.append("WHERE iac.activity_id=  ");
+    query.append(activityID);
+
+    try (Connection con = databaseManager.getConnection()) {
+      ResultSet rs = databaseManager.makeQuery(query.toString(), con);
+      while (rs.next()) {
+        Map<String, String> indicatorData = new HashMap<String, String>();
+
+        indicatorData.put("id", rs.getString("id"));
+        indicatorData.put("description", rs.getString("description"));
+
+        outputsDataList.add(indicatorData);
+      }
+      rs.close();
+    } catch (SQLException e) {
+      String exceptionMessage = "-- getActivityOutputs() > Exception raised trying ";
+      exceptionMessage += "to get the activity outputs for activity  " + activityID;
+
+      LOG.error(exceptionMessage, e);
+      return null;
+    }
+    LOG.debug("<< getActivityOutputs():outputsDataList.size={}", outputsDataList.size());
+    return outputsDataList;
+  }
+
 
   private List<Map<String, String>> getData(String query) {
     LOG.debug(">> executeQuery(query='{}')", query);
@@ -285,7 +359,6 @@ public class MySQLActivityDAO implements ActivityDAO {
     }
     return activityLeaderData;
   }
-
 
   @Override
   public boolean isOfficialExpectedLeader(int activityID) {
@@ -356,7 +429,7 @@ public class MySQLActivityDAO implements ActivityDAO {
     Object[] values;
     if (indicatorData.get("id") == null) {
       // Insert new activity indicator record
-      query.append("INSERT INTO activity_indicators (description, target, activity_id, parent_id) ");
+      query.append("INSERT INTO ip_activity_indicators (description, target, activity_id, parent_id) ");
       query.append("VALUES (?, ?, ?, ?) ");
       values = new Object[4];
       values[0] = indicatorData.get("description");

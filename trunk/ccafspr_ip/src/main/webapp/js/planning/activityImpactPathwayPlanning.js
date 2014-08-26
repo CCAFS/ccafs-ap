@@ -158,12 +158,15 @@ function toogleIndicatorInfo(event){
   var indicatorsName = "activity.indicators[" + indicatorIndex + "]";
 
   if(event.target.checked){
+    $indicatorBlock.find("input[type='hidden']").attr("disabled", false);
     $indicatorBlock.find(".indicatorNarrative input").attr("name", indicatorsName + ".target");
     $indicatorBlock.find(".indicatorNarrative textarea").attr("name", indicatorsName + ".description");
+    
     
     // Show the block
     $indicatorBlock.find(".indicatorNarrative").show("slow");
   }else{
+    $indicatorBlock.find("input[type='hidden']").attr("disabled", true);
     $indicatorBlock.find(".indicatorNarrative input").attr("name", "");
     $indicatorBlock.find(".indicatorNarrative textarea").attr("name", "");
     

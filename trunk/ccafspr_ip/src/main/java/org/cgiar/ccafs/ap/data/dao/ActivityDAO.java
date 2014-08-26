@@ -99,6 +99,16 @@ public interface ActivityDAO {
   public List<Integer> getActivityIdsEditable(int programID);
 
   /**
+   * This method returns all the indicators related with the activity
+   * identified by the value received as parameter.
+   * 
+   * @param activityID - activity identifier
+   * @return a list of maps with the information
+   */
+  public List<Map<String, String>> getActivityIndicators(int activityID);
+
+
+  /**
    * This method returns the id from the employees table that belong to the activity leader.
    * 
    * @param activityID is the activity identifier.
@@ -107,6 +117,14 @@ public interface ActivityDAO {
    */
   public int getActivityLeaderId(int activityID);
 
+  /**
+   * This method returns all the outputs related to the activity identified
+   * by the value received as parameter.
+   * 
+   * @param activityID - Activity identifier
+   * @return a list of maps with the information
+   */
+  public List<Map<String, String>> getActivityOutputs(int activityID);
 
   /**
    * This method gets the information of the Expected Activity Leader by a given Activity ID
@@ -116,6 +134,7 @@ public interface ActivityDAO {
    */
   public Map<String, String> getExpectedActivityLeader(int activityID);
 
+
   /**
    * This method lets you know if the Project Leader wants to create or not an account for the specified Activity
    * Leader. The information is saved in the column is_official from the expected_activity_leaders table.
@@ -124,6 +143,7 @@ public interface ActivityDAO {
    * @return true if is_official is true, or false otherwise.
    */
   public boolean isOfficialExpectedLeader(int activityID);
+
 
   /**
    * This method saves the Activity information

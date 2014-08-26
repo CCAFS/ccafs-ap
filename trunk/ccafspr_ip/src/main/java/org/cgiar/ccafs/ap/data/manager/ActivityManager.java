@@ -99,12 +99,29 @@ public interface ActivityManager {
   public List<Integer> getActivityIdsEditable(User user);
 
   /**
+   * This method gets all the indicators related to the activity passed as parameter
+   * 
+   * @param activityID - activity identifier
+   * @return a list of IPIndicator objects
+   */
+  public List<IPIndicator> getActivityIndicators(int activityID);
+
+  /**
    * this method gets the activity leader assigned to a specific activity.
    * 
    * @param activityID is the activity identifier.
    * @return a User object representing the activity leader, or null if the activity leader was not found.
    */
   public User getActivityLeader(int activityID);
+
+  /**
+   * This method gets all the outputs related with the activity identified by the value
+   * received as parameter.
+   * 
+   * @param activityID - activity identifer
+   * @return a list of IPElement objects
+   */
+  public List<IPElement> getActivityOutputs(int activityID);
 
   /**
    * This method gets all the information of an Expected Activity Leader of a given activity
