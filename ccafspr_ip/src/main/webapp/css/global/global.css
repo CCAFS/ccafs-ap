@@ -1214,6 +1214,11 @@ button#ipGraph-btnPrint {
   margin-bottom: 30px;
 }
 
+.btnPrint{
+  background: url(../../images/global/printer-icon.png)no-repeat center #47939C !important;
+  height: 30px;
+}
+
 /********** Projects *********/
 
 /* Project List */
