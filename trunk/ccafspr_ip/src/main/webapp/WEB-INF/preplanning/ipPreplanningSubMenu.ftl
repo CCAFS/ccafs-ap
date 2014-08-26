@@ -40,20 +40,25 @@
   </ul> 
   <div id="ipGraph-button" title="[@s.text name="menu.preplanning.submenu.ipGraph" /]"></div>
 </nav> 
-<div id="gran-ip">
-	<div id="content-ip" style="display:none;height: 270px;width: 100%;margin: 21px 0px;position:relative;" class="ui-widget-content">
-    	<div id="loading" style="display:none;position:absolute; width:100%; height:100%">
-            <img style="display: block; margin: 0 auto;" src="../images/global/loading.gif" alt="Loader" />&nbsp;Loading...
-        </div>
-        <div id="ipGraph-content"></div>
-    	  <button id="ipGraph-btnFullimpact" class="ipGraph-btn">Full</button>
-    	  <button style='display:none' id="ipGraph-btnSingleimpact" class="ipGraph-btn">Single</button>
-    	<div id="ipGraph-buttonsGroup">
-    	  <button id="ipGraph-btnPrint" class="ipGraph-btn" title="Print"></button>
-    	  <button id="ipGraph-btnMax" class="ipGraph-btn" title="Fullscreen"></button>
-    	  [#--<button id="ipGraph-btnMin" style="display:none">Min</button>--]
-    	</div>
+
+<div id="content-ip" style="display:none;height: 270px;width: 100%;margin: 21px 0px;position:relative;" class="ui-widget-content">
+	<div id="loading-ipGraph-content" style="display:none;position:absolute; width:100%; height:100%;top: 45%;">
+        <img style="display: block; margin: 0 auto;" src="../images/global/loading.gif" alt="Loader" />
+    </div>
+    <div id="ipGraph-content"></div>
+      [#if currentUser.FPL]
+    	<button id="ipGraph-btnFullimpact" class="ipGraph-btn">Full</button>
+    	<button style='display:none' id="ipGraph-btnSingleimpact" class="ipGraph-btn">Single</button>
+	  [/#if]
+	<div id="ipGraph-buttonsGroup">
+	  <button id="ipGraph-btnPrint" class="ipGraph-btn" title="Print"></button>
+	  <button id="ipGraph-btnMax" class="ipGraph-btn" title="Fullscreen"></button>
+	  [#--<button id="ipGraph-btnMin" style="display:none">Min</button>--]
 	</div>
 </div>
-<div id="dialog-message" title="Full View">
+
+<div id="dialog-message" title="Full View">    
+    <div id="loading-dialog-message" style="display:none;position:absolute; width:100%; height:100%;top: 45%;">
+        <img style="display: block; margin: 0 auto;" src="../images/global/loading.gif" alt="Loader" />
+    </div>
 </div>
