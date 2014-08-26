@@ -31,6 +31,7 @@ import org.slf4j.LoggerFactory;
 
 /**
  * @author Javier Andrés Gallego B.
+ * @author Hernán David Carvajal B.
  */
 public class MySQLActivityDAO implements ActivityDAO {
 
@@ -74,6 +75,38 @@ public class MySQLActivityDAO implements ActivityDAO {
     }
 
     LOG.debug("<< deleteActivity:{}", false);
+    return false;
+  }
+
+  @Override
+  public boolean deleteActivityIndicator(int activityID, int indicatorID) {
+    LOG.debug(">> deleteActivityIndicator(activityID={}, indicatorID={})", activityID, indicatorID);
+
+    String query = "DELETE FROM ip_activity_contributions WHERE activity_id = ? AND indicatorID = ?";
+
+    int rowsDeleted = databaseManager.delete(query, new Object[] {activityID, indicatorID});
+    if (rowsDeleted >= 0) {
+      LOG.debug("<< deleteActivityIndicator():{}", true);
+      return true;
+    }
+
+    LOG.debug("<< deleteActivityIndicator:{}", false);
+    return false;
+  }
+
+  @Override
+  public boolean deleteActivityOutput(int activityID, int outputID) {
+    LOG.debug(">> deleteActivityOutput(activityID={}, outputID={})", activityID, outputID);
+
+    String query = "DELETE FROM ip_activity_contributions WHERE activity_id = ? AND outputID = ?";
+
+    int rowsDeleted = databaseManager.delete(query, new Object[] {activityID, outputID});
+    if (rowsDeleted >= 0) {
+      LOG.debug("<< deleteActivityOutput():{}", true);
+      return true;
+    }
+
+    LOG.debug("<< deleteActivityOutput:{}", false);
     return false;
   }
 
@@ -253,6 +286,7 @@ public class MySQLActivityDAO implements ActivityDAO {
     return activityLeaderData;
   }
 
+
   @Override
   public boolean isOfficialExpectedLeader(int activityID) {
     boolean isOfficialLeader = false;
@@ -314,6 +348,56 @@ public class MySQLActivityDAO implements ActivityDAO {
     }
   }
 
+  @Override
+  public boolean saveActivityIndicators(Map<String, String> indicatorData) {
+    LOG.debug(">> saveActivityIndicators(indicatorData={})", indicatorData);
+    StringBuilder query = new StringBuilder();
+
+    Object[] values;
+    if (indicatorData.get("id") == null) {
+      // Insert new activity indicator record
+      query.append("INSERT INTO activity_indicators (description, target, activity_id, parent_id) ");
+      query.append("VALUES (?, ?, ?, ?) ");
+      values = new Object[4];
+      values[0] = indicatorData.get("description");
+      values[1] = indicatorData.get("target");
+      values[2] = indicatorData.get("activity_id");
+      values[3] = indicatorData.get("parent_id");
+
+      int newId = databaseManager.saveData(query.toString(), values);
+      if (newId <= 0) {
+        LOG
+          .warn(
+            "-- saveActivityIndicators() > A problem happened trying to add a new activity indicator. Data tried to save was: {}",
+            indicatorData);
+        LOG.debug("<< saveActivityIndicators(): {}", false);
+        return false;
+      }
+    } else {
+      // update activity indicator record
+      query.append("UPDATE activity_indicators SET description = ?, target = ?, activity_id = ?, parent_id = ? ");
+      query.append("WHERE id = ? ");
+      values = new Object[5];
+      values[0] = indicatorData.get("description");
+      values[1] = indicatorData.get("target");
+      values[2] = indicatorData.get("activity_id");
+      values[3] = indicatorData.get("parent_id");
+      values[4] = indicatorData.get("id");
+
+      int result = databaseManager.saveData(query.toString(), values);
+      if (result == -1) {
+        LOG
+          .warn(
+            "-- saveActivityIndicators() > A problem happened trying to update an activity indicator. Data tried to save was: {}",
+            indicatorData);
+        LOG.debug("<< saveActivityIndicators(): {}", false);
+        return false;
+      }
+    }
+
+    LOG.debug("<< saveActivityIndicators(): {}", true);
+    return true;
+  }
 
   @Override
   public int saveActivityLeader(int activityID, int employeeID) {
@@ -336,6 +420,32 @@ public class MySQLActivityDAO implements ActivityDAO {
 
     LOG.debug("<< saveActivityLeader():{}", result);
     return result;
+  }
+
+  @Override
+  public int saveActivityOutput(Map<String, String> outputData) {
+    LOG.debug(">> saveActivityOutput(outputData={})", outputData);
+    StringBuilder query = new StringBuilder();
+
+    Object[] values;
+    // Insert new activity indicator record
+    query.append("INSERT IGNORE INTO ip_activity_contributions (activity_id, ip_element_id) ");
+    query.append("VALUES (?, ?) ");
+    values = new Object[2];
+    values[0] = outputData.get("activity_id");
+    values[1] = outputData.get("output_id");
+
+    int newId = databaseManager.saveData(query.toString(), values);
+    if (newId == -1) {
+      LOG.warn(
+        "-- saveActivityOutput() > A problem happened trying to add a new activity output. Data tried to save was: {}",
+        outputData);
+      LOG.debug("<< saveActivityIndicators(): {}", -1);
+      return -1;
+    }
+
+    LOG.debug("<< saveActivityIndicators(): {}", newId);
+    return newId;
   }
 
   @Override

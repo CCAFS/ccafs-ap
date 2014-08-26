@@ -19,6 +19,8 @@ import org.cgiar.ccafs.ap.data.manager.ActivityManager;
 import org.cgiar.ccafs.ap.data.manager.InstitutionManager;
 import org.cgiar.ccafs.ap.data.manager.UserManager;
 import org.cgiar.ccafs.ap.data.model.Activity;
+import org.cgiar.ccafs.ap.data.model.IPElement;
+import org.cgiar.ccafs.ap.data.model.IPIndicator;
 import org.cgiar.ccafs.ap.data.model.User;
 
 import java.text.DateFormat;
@@ -37,6 +39,7 @@ import org.slf4j.LoggerFactory;
 /**
  * @author Javier Andrés Gallego
  * @author Héctor Fabio Tobón R.
+ * @author Hernán David Carvajal B.
  */
 public class ActivityManagerImpl implements ActivityManager {
 
@@ -65,6 +68,16 @@ public class ActivityManagerImpl implements ActivityManager {
   @Override
   public boolean deleteActivity(int activityId) {
     return activityDAO.deleteActivity(activityId);
+  }
+
+  @Override
+  public boolean deleteActivityOutput(int activityID, int outputID) {
+    return activityDAO.deleteActivityOutput(activityID, outputID);
+  }
+
+  @Override
+  public boolean deleteIndicator(int activityID, int indicatorID) {
+    return activityDAO.deleteActivityIndicator(activityID, indicatorID);
   }
 
   @Override
@@ -207,6 +220,25 @@ public class ActivityManagerImpl implements ActivityManager {
   }
 
   @Override
+  public boolean saveActivityIndicators(List<IPIndicator> indicators, int activityID) {
+    Map<String, String> indicatorData;
+    boolean saved = false;
+
+    for (IPIndicator indicator : indicators) {
+      indicatorData = new HashMap<>();
+      indicatorData.put("id", String.valueOf(indicator.getId()));
+      indicatorData.put("description", indicator.getDescription());
+      indicatorData.put("target", indicator.getTarget());
+      indicatorData.put("parent_id", String.valueOf(indicator.getParent()));
+      indicatorData.put("activity_id", String.valueOf(activityID));
+
+      saved = activityDAO.saveActivityIndicators(indicatorData) && saved;
+    }
+
+    return saved;
+  }
+
+  @Override
   public boolean saveActivityLeader(int activityID, User user) {
     boolean allSaved = true;
 
@@ -224,6 +256,22 @@ public class ActivityManagerImpl implements ActivityManager {
     }
 
     return allSaved;
+  }
+
+  @Override
+  public boolean saveActivityOutputs(List<IPElement> outputs, int activityID) {
+    Map<String, String> outputData;
+    boolean saved = true;
+
+    for (IPElement output : outputs) {
+      outputData = new HashMap<>();
+      outputData.put("output_id", String.valueOf(output.getId()));
+      outputData.put("activity_id", String.valueOf(activityID));
+
+      int relationID = activityDAO.saveActivityOutput(outputData);
+      saved = (relationID != -1) && saved;
+    }
+    return saved;
   }
 
   @Override
