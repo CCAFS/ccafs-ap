@@ -32,7 +32,7 @@
                 [#if activity.leader?has_content]
                   ${activity.leader.lastName} ${activity.leader.firstName}
                 [#elseif activity.expectedLeader?has_content]
-                  ${activity.expectedLeader.name}
+                  ${activity.expectedLeader.firstName}
                 [#else]
                   [@s.text name="planning.activities.notDefined" /]
                 [/#if]
@@ -43,7 +43,7 @@
                 [#if activity.leader?has_content]
                   ${activity.leader.currentInstitution.name} 
                 [#elseif activity.expectedLeader?has_content]
-                  ${activity.expectedLeader.institution.name}
+                  ${activity.expectedLeader.currentInstitution.name}
                 [#else]
                   [@s.text name="planning.activities.notDefined" /]
                 [/#if]
