@@ -119,6 +119,11 @@
               [/#if]
             </div> 
           [/#list]
+        [#else]
+          [#-- Additional message for users without privileges. --]
+          [#if !saveable]
+            <p>[@s.text name="planning.activities.locations.empty" /]</p>
+          [/#if]
         [/#if]
       </div>
       [#if saveable]
