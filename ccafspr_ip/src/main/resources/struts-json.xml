@@ -46,5 +46,13 @@
         <param name="excludeNullProperties">true</param>
       </result>
     </action>
+    
+    <action name="deliverablesByType" class="org.cgiar.ccafs.ap.action.json.planning.DeliverablesSubTypeByTypeAction">
+      <result type="json">        
+        <param name="noCache">true</param>
+        <param name="excludeNullProperties">true</param>
+      </result>
+    </action>
+    
   </package>
 </struts>
