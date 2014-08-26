@@ -164,7 +164,10 @@
   <input type="hidden" id="midOutcomeProgramId" value="${currentUser.currentInstitution.program.id}" />
   <input type="hidden" id="midOutcomeTypeId" value="${elementTypeID}" />
   [#-- Contribution to the regional vision 2025 --]
-  <input type="hidden" name="midOutcomes[0].contributesTo" value="${outcomesList[0].id}" />
+  [#-- If there are no Outcomes 2025, users can not add midOutcomes --]
+  [#if outcomesList?has_content]
+    <input type="hidden" name="midOutcomes[0].contributesTo" value="${outcomesList[0].id}" />
+  [/#if]
   [#-- Remove Output --]
   <div id="removeMidOutcome" class="removeMidOutcome removeElement removeLink" title="[@s.text name="preplanning.midOutcomesRPL.removeMidOutcome" /]"></div>
   [#-- Title --]

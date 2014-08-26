@@ -40,12 +40,20 @@
             <input type="hidden" name="outcomes[${outcome_index}].id" value="${outcome.id}" />
             <input type="hidden" name="outcomes[${outcome_index}].program.id" value="${currentUser.currentInstitution.program.id}" />
             <input type="hidden" name="outcomes[${outcome_index}].type.id" value="${elementTypeID}" />
+
             [#-- Title --]
             [#assign outcomeDescription]
-              [@s.text name="preplanning.outcomes.outcome"] 
-                [@s.param name="0"]${currentUser.currentInstitution.program.acronym}[/@s.param] 
-                [@s.param name="1"]<span id="elementIndex">${outcome_index+1}</span>[/@s.param] 
-              [/@s.text]
+              [#if currentUser.FPL]
+                [@s.text name="preplanning.outcomes.outcome"] 
+                  [@s.param name="0"]${currentUser.currentInstitution.program.acronym}[/@s.param] 
+                  [@s.param name="1"]<span id="elementIndex">${outcome_index+1}</span>[/@s.param] 
+                [/@s.text]
+              [#elseif currentUser.RPL]
+                [@s.text name="preplanning.outcomes.outcomeRPL"] 
+                  [@s.param name="0"]${currentUser.currentInstitution.program.acronym}[/@s.param] 
+                  [@s.param name="1"]<span id="elementIndex">${outcome_index+1}</span>[/@s.param] 
+                [/@s.text]
+              [/#if]
             [/#assign]
             <legend>${outcomeDescription}</legend> 
             [@customForm.textArea name="outcomes[${outcome_index}].description" i18nkey="preplanning.outcomes.outcomeDescription" required=true /]
