@@ -57,14 +57,14 @@ function addNextUserEvent(e){
 
 function setDeliverablesIndexes(){
   $("div.activityDeliverable").each(function(index,element){
-    var elementName = "deliverables[" + index + "].";
+    var elementName = "activity.deliverables[" + index + "].";
     $(element).attr("id", "activityDeliverable-" + index);
     // CSS selector div[id$=parent] Get any DIV element where the ID attribute value ends with "parent".
     $(element).find("[id$='deliverableIndex']").html(index + 1);
     
     $(element).find("[name$='].id']").attr("name", elementName + "id");
     $(element).find("[name$='title']").attr("name", elementName + "title");
-    $(element).find("[name$='type.id']").attr("name", elementName + "type.id");
+    $(element).find("[name$='type']").attr("name", elementName + "type");
     $(element).find("[name$='year']").attr("name", elementName + "year");
     
     // Update index for nexts users
