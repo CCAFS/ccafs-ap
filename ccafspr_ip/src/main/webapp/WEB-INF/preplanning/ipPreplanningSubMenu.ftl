@@ -46,11 +46,11 @@
             <img style="display: block; margin: 0 auto;" src="../images/global/loading.gif" alt="Loader" />&nbsp;Loading...
         </div>
         <div id="ipGraph-content"></div>
+    	  <button id="ipGraph-btnFullimpact" class="ipGraph-btn">Full</button>
+    	  <button style='display:none' id="ipGraph-btnSingleimpact" class="ipGraph-btn">Single</button>
     	<div id="ipGraph-buttonsGroup">
-    	  <button id="ipGraph-btnPrint" title="Print"></button>
-    	  <button id="ipGraph-btnMax">Max</button>
-    	  <button id="ipGraph-btnFullimpact">Full</button>
-    	  <button style='display:none' id="ipGraph-btnSingleimpact">Single</button>
+    	  <button id="ipGraph-btnPrint" class="ipGraph-btn" title="Print"></button>
+    	  <button id="ipGraph-btnMax" class="ipGraph-btn" title="Fullscreen"></button>
     	  [#--<button id="ipGraph-btnMin" style="display:none">Min</button>--]
     	</div>
 	</div>
