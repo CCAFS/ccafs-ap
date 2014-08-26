@@ -53,6 +53,27 @@ public class DeliverableTypeManagerImpl implements DeliverableTypeManager {
   }
 
   @Override
+  public List<DeliverableType> getDeliverableSubTypes() {
+    List<DeliverableType> deliverableList = new ArrayList<>();
+    List<Map<String, String>> deliverableTypeDataList = deliverableTypeDAO.getDeliverableSubTypes();
+    for (Map<String, String> deliverableTypeData : deliverableTypeDataList) {
+      DeliverableType deliverableType = new DeliverableType();
+      deliverableType.setId(Integer.parseInt(deliverableTypeData.get("id")));
+      deliverableType.setName(deliverableTypeData.get("name"));
+      if (deliverableTypeData.get("parent_id") != null) {
+        deliverableType.setCategory(deliverableTypeManager.getDeliverableTypeById(Integer.parseInt(deliverableTypeData
+          .get("parent_id"))));
+      }
+      if (deliverableTypeData.get("timeline") != null) {
+        deliverableType.setTimeline(Integer.parseInt(deliverableTypeData.get("timeline")));
+      }
+      // adding information of the object to the array
+      deliverableList.add(deliverableType);
+    }
+    return deliverableList;
+  }
+
+  @Override
   public DeliverableType getDeliverableTypeById(int deliverableTypeID) {
     Map<String, String> deliverableTypeData = deliverableTypeDAO.getDeliverableTypeById(deliverableTypeID);
     if (!deliverableTypeData.isEmpty()) {
@@ -76,6 +97,23 @@ public class DeliverableTypeManagerImpl implements DeliverableTypeManager {
   public List<DeliverableType> getDeliverableTypes() {
     List<DeliverableType> deliverableList = new ArrayList<>();
     List<Map<String, String>> deliverableTypeDataList = deliverableTypeDAO.getDeliverableTypes();
+    for (Map<String, String> deliverableTypeData : deliverableTypeDataList) {
+      DeliverableType deliverableType = new DeliverableType();
+      deliverableType.setId(Integer.parseInt(deliverableTypeData.get("id")));
+      deliverableType.setName(deliverableTypeData.get("name"));
+      if (deliverableTypeData.get("timeline") != null) {
+        deliverableType.setTimeline(Integer.parseInt(deliverableTypeData.get("timeline")));
+      }
+      // adding information of the object to the array
+      deliverableList.add(deliverableType);
+    }
+    return deliverableList;
+  }
+
+  @Override
+  public List<DeliverableType> getDeliverableTypes(int typeID) {
+    List<DeliverableType> deliverableList = new ArrayList<>();
+    List<Map<String, String>> deliverableTypeDataList = deliverableTypeDAO.getDeliverableTypes(typeID);
     for (Map<String, String> deliverableTypeData : deliverableTypeDataList) {
       DeliverableType deliverableType = new DeliverableType();
       deliverableType.setId(Integer.parseInt(deliverableTypeData.get("id")));
