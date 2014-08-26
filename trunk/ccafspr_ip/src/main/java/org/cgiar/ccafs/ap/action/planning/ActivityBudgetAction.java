@@ -13,6 +13,12 @@
  *****************************************************************/
 package org.cgiar.ccafs.ap.action.planning;
 
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
+import com.google.inject.Inject;
+import org.apache.commons.lang3.StringUtils;
 import org.cgiar.ccafs.ap.action.BaseAction;
 import org.cgiar.ccafs.ap.config.APConfig;
 import org.cgiar.ccafs.ap.config.APConstants;
@@ -20,19 +26,14 @@ import org.cgiar.ccafs.ap.data.manager.ActivityManager;
 import org.cgiar.ccafs.ap.data.manager.ActivityPartnerManager;
 import org.cgiar.ccafs.ap.data.manager.BudgetManager;
 import org.cgiar.ccafs.ap.data.manager.InstitutionManager;
+import org.cgiar.ccafs.ap.data.manager.ProjectManager;
 import org.cgiar.ccafs.ap.data.model.Activity;
 import org.cgiar.ccafs.ap.data.model.ActivityPartner;
 import org.cgiar.ccafs.ap.data.model.Budget;
 import org.cgiar.ccafs.ap.data.model.BudgetType;
 import org.cgiar.ccafs.ap.data.model.Institution;
+import org.cgiar.ccafs.ap.data.model.Project;
 import org.cgiar.ccafs.ap.data.model.User;
-
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-
-import com.google.inject.Inject;
-import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -63,21 +64,24 @@ public class ActivityBudgetAction extends BaseAction {
   private Map<String, Budget> mapBudgets;
   private double totalActivitiesBudget;
   private double totalActivitiesBudgetByYear;
+  private Project project;
 
   // Managers
   private ActivityManager activityManager;
   private BudgetManager budgetManager;
   private InstitutionManager institutionManager;
   private ActivityPartnerManager partnerManager;
+  private ProjectManager projectManager;
 
   @Inject
   public ActivityBudgetAction(APConfig config, ActivityManager activityManager, BudgetManager budgetManager,
-    InstitutionManager institutionManager, ActivityPartnerManager partnerManager) {
+    InstitutionManager institutionManager, ActivityPartnerManager partnerManager, ProjectManager projectManager) {
     super(config);
     this.activityManager = activityManager;
     this.budgetManager = budgetManager;
     this.institutionManager = institutionManager;
     this.partnerManager = partnerManager;
+    this.projectManager = projectManager;
     this.hasLeader = true;
     this.invalidYear = false;
   }
@@ -159,9 +163,11 @@ public class ActivityBudgetAction extends BaseAction {
     return activityLeader;
   }
 
+
   public List<ActivityPartner> getActivityPartners() {
     return activityPartners;
   }
+
 
   public String getActivityRequest() {
     return APConstants.ACTIVITY_REQUEST_ID;
@@ -179,6 +185,10 @@ public class ActivityBudgetAction extends BaseAction {
     return mapBudgets;
   }
 
+  public Project getProject() {
+    return project;
+  }
+
   public double getTotalActivitiesBudget() {
     return totalActivitiesBudget;
   }
@@ -186,7 +196,6 @@ public class ActivityBudgetAction extends BaseAction {
   public double getTotalActivitiesBudgetByYear() {
     return totalActivitiesBudgetByYear;
   }
-
 
   public int getYear() {
     return year;
@@ -226,6 +235,8 @@ public class ActivityBudgetAction extends BaseAction {
 
     // Getting the project identified with the id parameter.
     activity = activityManager.getActivityById(activityID);
+    // Getting the project
+    project = projectManager.getProjectFromActivityId(activityID);
 
     // Getting all the years of the project.
     allYears = activity.getAllYears();
@@ -375,8 +386,13 @@ public class ActivityBudgetAction extends BaseAction {
     this.hasLeader = hasLeader;
   }
 
+
   public void setInvalidYear(boolean invalidYear) {
     this.invalidYear = invalidYear;
+  }
+
+  public void setProject(Project project) {
+    this.project = project;
   }
 
   public void setTotalActivitiesBudget(double totalActivitiesBudget) {
