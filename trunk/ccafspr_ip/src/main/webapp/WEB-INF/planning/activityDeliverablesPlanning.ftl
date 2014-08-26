@@ -16,7 +16,7 @@
 [#include "/WEB-INF/global/pages/header.ftl" /]
 [#include "/WEB-INF/global/pages/main-menu.ftl" /]
 [#import "/WEB-INF/global/macros/forms.ftl" as customForm/]
-[#import "/WEB-INF/planning/macros/activityDeliverablesTemplate.ftl" as activityDeliverableTemplate/]
+[#import "/WEB-INF/planning/macros/activityDeliverablesTemplate.ftl" as deliverableTemplate/]
     
 <section class="content">
   <div class="helpMessage">
@@ -25,11 +25,10 @@
   </div>
 
   [#include "/WEB-INF/planning/activityPlanningSubMenu.ftl" /]
-
   
   [@s.form action="activityDeliverables" cssClass="pure-form"]  
     <article class="halfContent" id="activityDeliverables">
-      [#-- Informing user that he/she doesn't have enough privileges to edit. See GrantActivityPlanningAccessInterceptor--]
+      [#-- Informing user that he/she doesn't have enough privileges to edit. See GrantActivityPlanningAccessInterceptor --]
       [#if !saveable]
         <p class="readPrivileges">
           [@s.text name="saving.read.privileges"]
@@ -38,13 +37,20 @@
         </p>
       [/#if]
       <h1 class="contentTitle">
-      [@s.text name="planning.deliverables" /] 
+        [@s.text name="planning.deliverables" /] 
       </h1>
-      [@activityDeliverableTemplate.activityDeliverablesList deliverables=deliverables/]
-      <div id="addDeliverable" class="addLink">
-        <a href="" class="addButton" >[@s.text name="planning.deliverables.addDeliverable" /]</a>
-      </div>
+      [#if activity.deliverables?size > 0]
+        [@deliverableTemplate.activityDeliverablesList deliverables=activity.deliverables/]
+      [#else]
+        [#-- Just show this empty message to those users who are not able to modify this section --]
+        [#if !saveable]
+          <p>[@s.text name="planning.deliverables.empty"/]</p>
+        [/#if]
+      [/#if]
       [#if saveable]
+        <div id="addDeliverable" class="addLink">
+          <a href="" class="addButton" >[@s.text name="planning.deliverables.addDeliverable" /]</a>
+        </div>
         <input type="hidden" name="activityID" value="">
         <div class="buttons">
           [@s.submit type="button" name="save"][@s.text name="form.buttons.save" /][/@s.submit]
@@ -59,9 +65,9 @@
 [#-- Templates --]
 [@s.form action="none"]  
   [#-- Activity Deliverable Template--]
-  [@activityDeliverableTemplate.activityDeliverableTemplate /]
+  [@deliverableTemplate.activityDeliverableTemplate /]
   [#-- Activity Next user Template--]
-  [@activityDeliverableTemplate.nextUserTemplate template=true /]
+  [@deliverableTemplate.nextUserTemplate template=true /]
 [/@s.form]  
 
 [#include "/WEB-INF/global/pages/footer.ftl"]

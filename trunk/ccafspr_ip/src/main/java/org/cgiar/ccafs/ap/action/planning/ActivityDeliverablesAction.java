@@ -15,6 +15,9 @@ package org.cgiar.ccafs.ap.action.planning;
 
 import java.util.List;
 
+import org.cgiar.ccafs.ap.data.manager.ActivityManager;
+
+import org.cgiar.ccafs.ap.data.model.Activity;
 import com.google.inject.Inject;
 import org.apache.commons.lang3.StringUtils;
 import org.cgiar.ccafs.ap.action.BaseAction;
@@ -26,17 +29,17 @@ import org.cgiar.ccafs.ap.data.manager.NextUserManager;
 import org.cgiar.ccafs.ap.data.manager.ProjectManager;
 import org.cgiar.ccafs.ap.data.model.Deliverable;
 import org.cgiar.ccafs.ap.data.model.DeliverableType;
-import org.cgiar.ccafs.ap.data.model.NextUser;
 import org.cgiar.ccafs.ap.data.model.Project;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 /**
- * @author Javier Andrés Galllego B.
+ * @author Javier Andrés Gallego B.
+ * @author Héctor Fabio Tobón R.
  */
 public class ActivityDeliverablesAction extends BaseAction {
 
-  private static final long serialVersionUID = -2433705513583937702L;
+  private static final long serialVersionUID = -6143944536558245482L;
 
   // LOG
   private static Logger LOG = LoggerFactory.getLogger(ActivityDeliverablesAction.class);
@@ -46,41 +49,43 @@ public class ActivityDeliverablesAction extends BaseAction {
   private DeliverableTypeManager deliverableTypeManager;
   private NextUserManager nextUserManager;
   private ProjectManager projectManager;
+  private ActivityManager activityManager;
 
   // Model for the back-end
-  private List<Deliverable> deliverables;
-  private List<NextUser> nextUsers;
+  private Activity activity;
 
   // Model for the front-end
   private Project project;
   private int activityID;
   private List<DeliverableType> deliverableTypes;
+  private List<Integer> allYears;
 
   @Inject
   public ActivityDeliverablesAction(APConfig config, DeliverableManager deliverableManager,
-    NextUserManager nextUserManager, DeliverableTypeManager deliverableTypeManager, ProjectManager projectManager) {
+    NextUserManager nextUserManager, DeliverableTypeManager deliverableTypeManager, ProjectManager projectManager,
+    ActivityManager activityManager) {
     super(config);
     this.deliverableManager = deliverableManager;
     this.deliverableTypeManager = deliverableTypeManager;
     this.nextUserManager = nextUserManager;
     this.projectManager = projectManager;
+    this.activityManager = activityManager;
   }
 
+  public Activity getActivity() {
+    return activity;
+  }
 
   public int getActivityID() {
     return activityID;
   }
 
-  public List<Deliverable> getDeliverables() {
-    return deliverables;
+  public List<Integer> getAllYears() {
+    return allYears;
   }
 
   public List<DeliverableType> getDeliverableTypes() {
     return deliverableTypes;
-  }
-
-  public List<NextUser> getNextUsers() {
-    return nextUsers;
   }
 
   public Project getProject() {
@@ -89,27 +94,30 @@ public class ActivityDeliverablesAction extends BaseAction {
 
   @Override
   public void prepare() throws Exception {
-    super.prepare();
-    try {
-      activityID = Integer.parseInt(StringUtils.trim(this.getRequest().getParameter(APConstants.ACTIVITY_REQUEST_ID)));
-    } catch (NumberFormatException e) {
-      LOG.error("-- prepare() > There was an error parsing the activity identifier '{}'.", activityID, e);
-      activityID = -1;
-      return; // Stop here and go to execute method.
-    }
-    // Getting the project activity
+
+    activityID = Integer.parseInt(StringUtils.trim(this.getRequest().getParameter(APConstants.ACTIVITY_REQUEST_ID)));
+    activity = activityManager.getActivityById(activityID);
+
+    // Getting the project where this activity belongs to.
     project = projectManager.getProjectFromActivityId(activityID);
 
     // Getting the Type of Deliverables
     deliverableTypes = deliverableTypeManager.getDeliverableTypes();
 
+    allYears = activity.getAllYears();
+
     // Getting the List of Expected Deliverables
-    deliverables = deliverableManager.getDeliverablesByActivity(activityID);
+    List<Deliverable> deliverables = deliverableManager.getDeliverablesByActivity(activityID);
+    activity.setDeliverables(deliverables);
 
     // Getting the List of Next Users related to the expected Deliverable
-    for (Deliverable deliverable : deliverables) {
+    for (Deliverable deliverable : activity.getDeliverables()) {
       deliverable.setNextUsers(nextUserManager.getNextUsersByDeliverableId(deliverable.getId()));
     }
+  }
+
+  public void setActivity(Activity activity) {
+    this.activity = activity;
   }
 
 
@@ -128,15 +136,8 @@ public class ActivityDeliverablesAction extends BaseAction {
     this.activityID = activityID;
   }
 
-  public void setDeliverables(List<Deliverable> deliverables) {
-    this.deliverables = deliverables;
-  }
-
   public void setDeliverableTypes(List<DeliverableType> deliverableTypes) {
     this.deliverableTypes = deliverableTypes;
   }
 
-  public void setNextUsers(List<NextUser> nextUsers) {
-    this.nextUsers = nextUsers;
-  }
 }
