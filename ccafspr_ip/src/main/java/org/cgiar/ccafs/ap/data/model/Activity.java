@@ -23,7 +23,7 @@ import org.apache.commons.lang3.builder.ToStringBuilder;
 
 /**
  * This class represents a CCAFS Activity, which belongs to a specific Project.
- *
+ * 
  * @author Héctor Fabio Tobón R.
  */
 public class Activity {
@@ -35,6 +35,7 @@ public class Activity {
   private Date endDate;
   private User leader;
   private User expectedLeader;
+  private boolean isGlobal;
   // private ExpectedActivityLeader expectedLeader;
   private List<IPCrossCutting> crossCuttings;// The list of Cross Cutting themes in which this project works with.
   private List<Location> locations;
@@ -67,7 +68,7 @@ public class Activity {
 
   /**
    * This method calculates all the years between the start date and the end date.
-   *
+   * 
    * @return a List of numbers representing all the years, or an empty list if nothing found.
    */
   public List<Integer> getAllYears() {
@@ -97,7 +98,7 @@ public class Activity {
    * This method returns a composed Identifier that is going to be used in the front-end.
    * The convention is going to be used depending on the creation date of the activity.
    * yyyy-activityID => e.g. 2014-12
-   *
+   * 
    * @return the composed identifier or null if the created date is null.
    */
   public String getComposedId() {
@@ -121,10 +122,6 @@ public class Activity {
     return deliverables;
   }
 
-// public ExpectedActivityLeader getExpectedLeader() {
-// return expectedLeader;
-// }
-
   public String getDescription() {
     return description;
   }
@@ -132,6 +129,10 @@ public class Activity {
   public Date getEndDate() {
     return endDate;
   }
+
+// public ExpectedActivityLeader getExpectedLeader() {
+// return expectedLeader;
+// }
 
   public User getExpectedLeader() {
     return expectedLeader;
@@ -173,14 +174,18 @@ public class Activity {
     return totalBudget;
   }
 
-// public void setExpectedLeader(ExpectedActivityLeader expectedLeader) {
-// this.expectedLeader = expectedLeader;
-// }
-
   @Override
   public int hashCode() {
     return id;
   }
+
+  public boolean isGlobal() {
+    return isGlobal;
+  }
+
+// public void setExpectedLeader(ExpectedActivityLeader expectedLeader) {
+// this.expectedLeader = expectedLeader;
+// }
 
   public void setActivityPartners(List<ActivityPartner> partners) {
     this.activityPartners = partners;
@@ -212,6 +217,10 @@ public class Activity {
 
   public void setExpectedLeader(User expectedLeader) {
     this.expectedLeader = expectedLeader;
+  }
+
+  public void setGlobal(boolean isGlobal) {
+    this.isGlobal = isGlobal;
   }
 
   public void setId(int id) {

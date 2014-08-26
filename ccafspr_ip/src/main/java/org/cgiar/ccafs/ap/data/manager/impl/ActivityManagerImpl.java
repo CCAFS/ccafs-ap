@@ -172,6 +172,29 @@ public class ActivityManagerImpl implements ActivityManager {
   }
 
   @Override
+  public List<IPIndicator> getActivityIndicators(int activityID) {
+    List<IPIndicator> indicators = new ArrayList<>();
+    List<Map<String, String>> indicatorsData = activityDAO.getActivityIndicators(activityID);
+
+    for (Map<String, String> iData : indicatorsData) {
+      IPIndicator indicator = new IPIndicator();
+      indicator.setId(Integer.parseInt(iData.get("id")));
+      indicator.setDescription(iData.get("description"));
+      indicator.setTarget(iData.get("target"));
+
+      // Parent indicator
+      IPIndicator parent = new IPIndicator(Integer.parseInt(iData.get("parent_id")));
+      parent.setDescription(iData.get("parent_description"));
+      parent.setTarget(iData.get("parent_target"));
+      indicator.setParent(parent);
+
+      indicators.add(indicator);
+    }
+
+    return indicators;
+  }
+
+  @Override
   public User getActivityLeader(int activityID) {
     int activityLeaderId = activityDAO.getActivityLeaderId(activityID);
     if (activityLeaderId != -1) {
@@ -179,6 +202,22 @@ public class ActivityManagerImpl implements ActivityManager {
       return activityLeader;
     }
     return null;
+  }
+
+  @Override
+  public List<IPElement> getActivityOutputs(int activityID) {
+    List<IPElement> outputs = new ArrayList<>();
+    List<Map<String, String>> outputsData = activityDAO.getActivityOutputs(activityID);
+
+    for (Map<String, String> oData : outputsData) {
+      IPElement output = new IPElement();
+      output.setId(Integer.parseInt(oData.get("id")));
+      output.setDescription(oData.get("description"));
+
+      outputs.add(output);
+    }
+
+    return outputs;
   }
 
   @Override
@@ -222,14 +261,19 @@ public class ActivityManagerImpl implements ActivityManager {
   @Override
   public boolean saveActivityIndicators(List<IPIndicator> indicators, int activityID) {
     Map<String, String> indicatorData;
-    boolean saved = false;
+    boolean saved = true;
 
     for (IPIndicator indicator : indicators) {
       indicatorData = new HashMap<>();
-      indicatorData.put("id", String.valueOf(indicator.getId()));
+      if (indicator.getId() == -1) {
+        indicatorData.put("id", null);
+      } else {
+        indicatorData.put("id", String.valueOf(indicator.getId()));
+      }
+
       indicatorData.put("description", indicator.getDescription());
       indicatorData.put("target", indicator.getTarget());
-      indicatorData.put("parent_id", String.valueOf(indicator.getParent()));
+      indicatorData.put("parent_id", String.valueOf(indicator.getParent().getId()));
       indicatorData.put("activity_id", String.valueOf(activityID));
 
       saved = activityDAO.saveActivityIndicators(indicatorData) && saved;

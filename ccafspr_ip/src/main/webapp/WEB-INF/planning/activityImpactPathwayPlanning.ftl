@@ -84,7 +84,7 @@
     <h6>[@s.text name="planning.activityImpactPathways.indicators" /]</h6>
     <div class="indicatorsBlock">
       <div class="midOutcomeIndicator" id="midOutcomeIndicatorTemplate">
-        <input type="hidden" name="activity_indicator_id" value="-1" />
+        <input type="hidden" disabled name="activity_indicator_id" value="-1" />
         <input type="checkbox" name="activity.indicators" />
         <label></label>
         

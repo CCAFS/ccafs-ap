@@ -145,12 +145,11 @@ public class ActivityImpactPathwayAction extends BaseAction {
       midOutcomes.addAll(ipElementManager.getIPElements(program, midOutcomeType));
     }
 
-    // TODO - change to bring the real information
-    List<IPElement> outputs = new ArrayList<>();
-    activity.setOutputs(outputs);
+    // Get the outputs from database
+    activity.setOutputs(activityManager.getActivityOutputs(activityID));
 
-    List<IPIndicator> indicators = new ArrayList<>();
-    activity.setIndicators(indicators);
+    // Get the indicators from database
+    activity.setIndicators(activityManager.getActivityIndicators(activityID));
 
 
     // Save the activity outputs brought from the database
@@ -177,31 +176,29 @@ public class ActivityImpactPathwayAction extends BaseAction {
   @Override
   public String save() {
     boolean success = true;
-    System.out.println("indicators: ");
-    System.out.println(activity.getIndicators());
-    /*
-     * // Delete the outputs removed
-     * for (IPElement output : previousOutputs) {
-     * if (!activity.getOutputs().contains(output)) {
-     * boolean deleted = activityManager.deleteActivityOutput(activityID, output.getId());
-     * if (!deleted) {
-     * success = false;
-     * }
-     * }
-     * }
-     * 
-     * success = success && activityManager.saveActivityOutputs(activity.getOutputs(), activityID);
-     * 
-     * // Delete the indicators removed
-     * for (IPElement output : previousOutputs) {
-     * if (!activity.getOutputs().contains(output)) {
-     * boolean deleted = activityManager.deleteIndicator(activityID, output.getId());
-     * if (!deleted) {
-     * success = false;
-     * }
-     * }
-     * }
-     */
+
+    // Delete the outputs removed
+    for (IPElement output : previousOutputs) {
+      if (!activity.getOutputs().contains(output)) {
+        boolean deleted = activityManager.deleteActivityOutput(activityID, output.getId());
+        if (!deleted) {
+          success = false;
+        }
+      }
+    }
+
+    success = success && activityManager.saveActivityOutputs(activity.getOutputs(), activityID);
+
+    // Delete the indicators removed
+    for (IPElement output : previousOutputs) {
+      if (!activity.getOutputs().contains(output)) {
+        boolean deleted = activityManager.deleteIndicator(activityID, output.getId());
+        if (!deleted) {
+          success = false;
+        }
+      }
+    }
+
     success = success && activityManager.saveActivityIndicators(activity.getIndicators(), activityID);
     if (success) {
       addActionMessage(getText("saving.success", new String[] {getText("planning.activityImpactPathways.title")}));
