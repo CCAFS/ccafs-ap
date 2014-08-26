@@ -56,8 +56,8 @@ public class ActivityLocationsPlanningAction extends BaseAction {
   private List<OtherLocation> otherLocationsSaved;
 
   @Inject
-  public ActivityLocationsPlanningAction(APConfig config, LocationManager locationManager, ActivityManager activityManager,
-    LocationTypeManager locationTypeManager, ProjectManager projectManager) {
+  public ActivityLocationsPlanningAction(APConfig config, LocationManager locationManager,
+    ActivityManager activityManager, LocationTypeManager locationTypeManager, ProjectManager projectManager) {
     super(config);
     this.locationManager = locationManager;
     this.activityManager = activityManager;
@@ -142,44 +142,60 @@ public class ActivityLocationsPlanningAction extends BaseAction {
 
   @Override
   public String save() {
-    List<Location> locations = new ArrayList<Location>();
-
-    for (Region region : regionsSaved) {
-      if (region != null) {
-        locations.add(region);
+    if (this.isSaveable()) {
+      boolean success = true;
+      List<Location> locations = new ArrayList<Location>();
+      // Grouping regions in the locations list.
+      for (Region region : regionsSaved) {
+        if (region != null) {
+          locations.add(region);
+        }
       }
-    }
-
-    for (Country country : countriesSaved) {
-      if (country != null) {
-        locations.add(country);
+      // Grouping countries in the locations list.
+      for (Country country : countriesSaved) {
+        if (country != null) {
+          locations.add(country);
+        }
       }
-    }
 
-    for (OtherLocation location : otherLocationsSaved) {
-      if (location != null) {
-        locations.add(location);
+      // Grouping other locations to the locations list.
+      for (OtherLocation location : otherLocationsSaved) {
+        if (location != null) {
+          locations.add(location);
+        }
       }
+
+      // Removing the existing locations
+      boolean removed = locationManager.removeActivityLocation(activity.getLocations(), activityID);
+      if (!removed) {
+        success = false;
+      }
+      // Then, saving locations received
+      boolean added = locationManager.saveActivityLocations(locations, activityID);
+      if (!added) {
+        success = false;
+      }
+
+      // Check if user uploaded an excel file
+      if (excelTemplate != null) {
+        String fileLocation = config.getUploadsBaseFolder() + config.getLocationsTemplateFolder();
+        // First, move the uploaded file to the corresponding folder
+        FileManager.copyFile(excelTemplate, fileLocation + excelTemplateFileName);
+        LOG.trace("The locations template uploaded was moved to: " + fileLocation + excelTemplateFileName);
+        // Send a message with the file received
+        sendNotificationMessage(fileLocation, excelTemplateFileName);
+      }
+
+      // Displaying user messages.
+      if (success == false) {
+        addActionError(getText("saving.problem"));
+        return BaseAction.INPUT;
+      }
+      addActionMessage(getText("saving.success", new String[] {getText("planning.activities.locations.title")}));
+      return BaseAction.SUCCESS;
+    } else {
+      return BaseAction.NOT_AUTHORIZED;
     }
-
-    // First remove the existent locations
-    locationManager.removeActivityLocation(activity.getLocations(), activityID);
-    // Then, save locations received
-    locationManager.saveActivityLocations(locations, activityID);
-
-    // Check if user upload an excel file
-    if (excelTemplate != null) {
-      String fileLocation = config.getUploadsBaseFolder() + config.getLocationsTemplateFolder();
-
-      // First, move the uploaded file to the corresponding folder
-      FileManager.copyFile(excelTemplate, fileLocation + excelTemplateFileName);
-
-      LOG.trace("The locations template uploaded was moved to: " + fileLocation + excelTemplateFileName);
-      // Send a message with the file received
-      sendNotificationMessage(fileLocation, excelTemplateFileName);
-    }
-
-    return super.save();
   }
 
   private void sendNotificationMessage(String filePath, String fileName) {
