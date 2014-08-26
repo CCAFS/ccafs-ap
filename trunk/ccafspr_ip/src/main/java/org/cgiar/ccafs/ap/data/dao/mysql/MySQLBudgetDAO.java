@@ -48,6 +48,63 @@ public class MySQLBudgetDAO implements BudgetDAO {
 
 
   @Override
+  public double calculateTotalActivityBudget(int activityID) {
+    Double total = 0.0;
+    StringBuilder query = new StringBuilder();
+    query.append("SELECT SUM(b.amount) as TOTAL ");
+    query.append("FROM budgets b ");
+    query.append("INNER JOIN activity_budgets ab ON b.id = ab.budget_id ");
+    query.append(" WHERE ab.activity_id = ");
+    query.append(activityID);
+    query.append(" AND b.budget_type =  ");
+    query.append(BudgetType.ACTIVITY.getValue());
+
+    try (Connection con = databaseManager.getConnection()) {
+      ResultSet rs = databaseManager.makeQuery(query.toString(), con);
+      if (rs.next()) {
+        if (rs.getString("total") != null) {
+          total = Double.parseDouble(rs.getString("total"));
+        }
+      }
+      con.close();
+    } catch (SQLException e) {
+      LOG.error("Exception arised getting the institutions for the user {}.", activityID, e);
+      total = -1.0;
+    }
+    return total;
+  }
+
+  @Override
+  public double calculateTotalActivityBudgetByYear(int activityID, int year) {
+    Double total = 0.0;
+    StringBuilder query = new StringBuilder();
+    query.append("SELECT SUM(b.amount) as TOTAL ");
+    query.append("FROM budgets b ");
+    query.append("INNER JOIN activity_budgets ab ON b.id = ab.budget_id ");
+    query.append(" WHERE ab.activity_id = ");
+    query.append(activityID);
+    query.append(" AND b.year =  ");
+    query.append(year);
+    query.append(" AND b.budget_type =  ");
+    query.append(BudgetType.ACTIVITY.getValue());
+
+    try (Connection con = databaseManager.getConnection()) {
+      ResultSet rs = databaseManager.makeQuery(query.toString(), con);
+      if (rs.next()) {
+        if (rs.getString("total") != null) {
+          total = Double.parseDouble(rs.getString("total"));
+        }
+      }
+      con.close();
+    } catch (SQLException e) {
+      LOG.error("Exception arised getting the institutions for the user {}.", activityID, e);
+      total = -1.0;
+    }
+    return total;
+  }
+
+
+  @Override
   public double calculateTotalCCAFSBudget(int projectID) {
     Double total = 0.0;
     StringBuilder query = new StringBuilder();
@@ -117,7 +174,6 @@ public class MySQLBudgetDAO implements BudgetDAO {
     return total;
   }
 
-
   @Override
   public double calculateTotalOverallBudget(int projectID) {
     Double total = 0.0;
@@ -171,6 +227,62 @@ public class MySQLBudgetDAO implements BudgetDAO {
   }
 
   @Override
+  public boolean deleteActivityBudgetByYear(int activityID, int year) {
+    LOG.debug(">> deleteActivityBudgetByYear(activityID={}, year={})", activityID, year);
+
+    StringBuilder query = new StringBuilder();
+    query.append("DELETE b FROM budgets b ");
+    query.append("INNER JOIN activity_budgets ab ON b.id = ab.budget_id ");
+    query.append("WHERE ab.activity_id = ? AND b.year = ?");
+
+    int rowsDeleted = databaseManager.delete(query.toString(), new Object[] {activityID, year});
+    if (rowsDeleted >= 0) {
+      LOG.debug("<< deleteActivityBudgetByYear():{}", true);
+      return true;
+    }
+    LOG.debug("<< deleteActivityBudgetByYear():{}", false);
+    return false;
+  }
+
+  @Override
+  public boolean deleteActivityBudgetsByActivityID(int activityID) {
+    LOG.debug(">> deleteActivityBudgetsByActivityID(activityID={})", activityID);
+
+    StringBuilder query = new StringBuilder();
+    query.append("DELETE b FROM budgets b ");
+    query.append("INNER JOIN activity_budgets ab ON b.id = ab.budget_id ");
+    query.append("WHERE ab.activity_id = ? ");
+
+    int rowsDeleted = databaseManager.delete(query.toString(), new Object[] {activityID});
+    if (rowsDeleted >= 0) {
+      LOG.debug("<< deleteActivityBudgetsByActivityID():{}", true);
+      return true;
+    }
+    LOG.debug("<< deleteActivityBudgetsByActivityID():{}", false);
+    return false;
+  }
+
+
+  @Override
+  public boolean deleteActivityBudgetsByInstitution(int activityID, int institutionID) {
+    LOG.debug(">> deleteActivityBudgetsByInstitution(activityID={}, institutionId={})", activityID, institutionID);
+
+    StringBuilder query = new StringBuilder();
+    query.append("DELETE b FROM budgets b ");
+    query.append("INNER JOIN activity_budgets ab ON b.id =  ab.budget_id ");
+    query.append("WHERE ab.activity_id = ? AND b.institution_id = ?");
+
+    int rowsDeleted = databaseManager.delete(query.toString(), new Object[] {activityID, institutionID});
+    if (rowsDeleted >= 0) {
+      LOG.debug("<< deleteActivityBudgetsByInstitution():{}", true);
+      return true;
+    }
+    LOG.debug("<< deleteActivityBudgetsByInstitution():{}", false);
+    return false;
+  }
+
+
+  @Override
   public boolean deleteBudget(int budgetId) {
     LOG.debug(">> deleteBudget(id={})", budgetId);
 
@@ -185,6 +297,7 @@ public class MySQLBudgetDAO implements BudgetDAO {
     LOG.debug("<< deleteBudget:{}", false);
     return false;
   }
+
 
   @Override
   public boolean deleteBudgetsByInstitution(int projectID, int institutionID) {
@@ -204,6 +317,7 @@ public class MySQLBudgetDAO implements BudgetDAO {
     return false;
   }
 
+
   @Override
   public boolean deleteBudgetsByYear(int projectID, int year) {
     LOG.debug(">> deleteBudgetsByYear(projectId={}, eyar={})", projectID, year);
@@ -222,6 +336,7 @@ public class MySQLBudgetDAO implements BudgetDAO {
     return false;
   }
 
+
   @Override
   public List<Map<String, String>> getActivityBudgetsByType(int activityID, int budgetType) {
     LOG.debug(">> getActivityBudgetsByType activityID = {} )", activityID);
@@ -239,6 +354,27 @@ public class MySQLBudgetDAO implements BudgetDAO {
 
 
     LOG.debug("-- getActivityBudgetsByType() > Calling method executeQuery to get the results");
+    return getData(query.toString());
+  }
+
+
+  @Override
+  public List<Map<String, String>> getActivityBudgetsByYear(int activityID, int year) {
+    LOG.debug(">> getBudgetsByYear projectID = {}, year={} )", new Object[] {activityID, year});
+
+    StringBuilder query = new StringBuilder();
+    query.append("SELECT b.*   ");
+    query.append("FROM budgets as b ");
+    query.append("INNER JOIN activity_budgets ab ON b.id = ab.budget_id ");
+    query.append("INNER JOIN budget_types bt ON b.budget_type = bt.id ");
+    query.append("INNER JOIN institutions i ON b.institution_id = i.id ");
+    query.append("WHERE ab.activity_id=  ");
+    query.append(activityID);
+    query.append(" AND b.year=  ");
+    query.append(year);
+
+
+    LOG.debug("-- getBudgetsByYear() > Calling method executeQuery to get the results");
     return getData(query.toString());
   }
 
