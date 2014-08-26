@@ -61,7 +61,7 @@
           <td> 
               <a href="[@s.url namespace=namespace action='description' includeParams='get'][@s.param name='projectID']${project.id?c}[/@s.param][/@s.url]">
                 [#if project.totalCcafsBudget?has_content]
-                ${project.totalCcafsBudget}
+                <p id="">US$ <span id="">${project.totalCcafsBudget?string(",##0.00")}</span></p> 
                 [#else]
                   [@s.text name="preplanning.projects.none" /]
                 [/#if]
