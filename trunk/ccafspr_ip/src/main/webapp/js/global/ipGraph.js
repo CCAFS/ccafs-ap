@@ -5,18 +5,51 @@ var x = {};
 var y = 100;
 var count = {};
 var graphStarted = false;
+var fullImpact = false;
 
 function initGraph(programID){
   $("#ipGraph-button").on("click", function(e){
     if (!graphStarted) {
-      if (programID) {
-        callCytos("../json/json/ipComponents.do?programID=" + programID);
+      if (programID && !fullImpact) {
+        callCytos("../json/json/ipComponents.do?programID=" + programID, "ipGraph-content");
       } else {
-        callCytos("../json/json/ipComponents.do");
+        callCytos("../json/json/ipComponents.do", "ipGraph-content");
       }
       graphStarted = true;
     }
     $("#content-ip").slideToggle("slow");
+  });
+  
+  $("#ipGraph-btnFullimpact").on("click", function(e){
+	  elements['nodes'] = [];
+	  elements['edges'] = [];
+	  x = {};	 
+	  count = {};
+	  fullImpact = true;
+	  $("#ipGraph-btnSingleimpact").show();
+	  $("#ipGraph-btnFullimpact").hide();
+	  if (programID && !fullImpact) {
+        callCytos("../json/json/ipComponents.do?programID=" + programID, "ipGraph-content");
+      } else {
+        callCytos("../json/json/ipComponents.do", "ipGraph-content");
+      }
+	  return false;
+  });
+  
+  $("#ipGraph-btnSingleimpact").on("click", function(e){
+	  elements['nodes'] = [];
+	  elements['edges'] = [];
+	  x = {};
+	  count = {};
+	  fullImpact = false;
+	  $("#ipGraph-btnFullimpact").show();
+	  $("#ipGraph-btnSingleimpact").hide();
+	  if (programID && !fullImpact) {
+        callCytos("../json/json/ipComponents.do?programID=" + programID, "ipGraph-content");
+      } else {
+        callCytos("../json/json/ipComponents.do", "ipGraph-content");
+      }
+	  return false;
   });
   
   $("#ipGraph-btnPrint").on("click", function(e){
@@ -24,42 +57,57 @@ function initGraph(programID){
 	  return false;
   });
   
-  $("#ipGraph-btnMin").on("click", function(e){
-	  $('body > :not(#content-ip)').show(); //hide all nodes directly under the body 
-	  $('#content-ip').appendTo('#gran-ip');
-	  $('#content-ip').attr('style','height: 100%');
-	  $('#ipGraph-content').attr('style','height: 250px');
-	  $('#ipGraph-btnMax').show();
-	  $('#ipGraph-btnMin').hide();
-	  if (programID) {
-        callCytos("../json/json/ipComponents.do?programID=" + programID);
-      } else {
-        callCytos("../json/json/ipComponents.do");
-      }
-  
-	  return false;
-  });
-  
   $("#ipGraph-btnMax").on("click", function(e){
-	  $('body > :not(#content-ip)').hide(); //hide all nodes directly under the body
-	  $('#ipGraph-btnMax').hide();
-	  $('#ipGraph-btnMin').show();
-	  $('#content-ip').appendTo('body');
-	  $('#content-ip').attr('style','height: 600px');
-	  
-	  $('#ipGraph-content').attr('style','width: 100%');
-	  if (programID) {
-        callCytos("../json/json/ipComponents.do?programID=" + programID);
+	  $( "#ipGraph-content" ).empty();
+	  $( "#dialog-message" ).dialog({
+		  width: $(window).width()*0.95,
+		  height: $(window).height()*0.95,
+	      modal: true,
+	      draggable: false,
+	      resizable: false,
+	      buttons: {
+    	  "Print": {  
+    		  text: '', 
+              class: 'btnPrint', 
+              click: printCyto
+              },
+	        Ok: function() {
+	          $( this ).dialog( "close" );
+	        }
+	      },
+	      close: function( event, ui ) {
+	    	  $( "#dialog-message" ).empty();
+	    	  if (programID && !fullImpact) {
+    	        callCytos("../json/json/ipComponents.do?programID=" + programID, "ipGraph-content");
+    	      } else {
+    	        callCytos("../json/json/ipComponents.do", "ipGraph-content");
+    	      }
+	      }
+	    });
+	  if (programID && !fullImpact) {
+        callCytos("../json/json/ipComponents.do?programID=" + programID, "dialog-message");
       } else {
-        callCytos("../json/json/ipComponents.do");
-      }
-	  $('#ipGraph-content').attr('style','height: 100%');	  
+        callCytos("../json/json/ipComponents.do", "dialog-message");
+      }	  
+	  /*var newCanvas = document.createElement('canvas');
+	  var context = newCanvas.getContext('2d');
+
+	    //set dimensions
+	  newCanvas.width = document.querySelector('[data-id="layer4-node"]').width * 2;
+	  newCanvas.height = document.querySelector('[data-id="layer4-node"]').height * 2;
+
+	    //apply the old canvas to the new one
+	  context.drawImage(document.querySelector('[data-id="layer4-node"]'), 0, 0);
+	  context.restore();
+	  var dataUrl = newCanvas.toDataURL();
+	  window.location = dataUrl;*/
 	  return false;
   });
 }
 
-function callCytos(url) {
+function callCytos(url,contentDiv) {
 	  $.getJSON(url, function(data) {
+		$("#loading").show();
 	    $.each(data, function(key, val) {
 	      if (key == 'ipElements') {
 	        $.each(val, function(attr, item) {
@@ -89,7 +137,7 @@ function callCytos(url) {
 	    });
 //	    console.log(JSON.stringify(elements, null, 4));
 	    cy = cytoscape({
-	      container: $('#ipGraph-content')[0],
+	      container: $('#'+contentDiv)[0],
 	      style: cytoscape.stylesheet()
 	              .selector('node')
 	              .css({
@@ -185,6 +233,18 @@ function callCytos(url) {
 	    cy.panzoom({
 	      // options go here
 	    });
+	    cy.on('tap', function(event){
+    	  var evtTarget = event.cyTarget;
+    	  var elems = cy.elements("edge");
+    	  elems.css( 'line-color', '#ddd' );
+    	  elems.css( 'source-arrow-color', '#ddd' );
+    	  if( evtTarget === cy ){    	      
+    	  } else {
+    		var sons = evtTarget.connectedEdges();
+    		sons.css( 'line-color', '#444' );
+    		sons.css( 'source-arrow-color', '#444' );    	    
+    	  }
+    	});
 //	    cys = $('#cy').cytoscape('get');
 //	      $('#btnAdd').click(addElem);
 	    function addElem(elem) {
@@ -254,7 +314,9 @@ function callCytos(url) {
 //	      console.log(dist + ' d');
 	      return dist;
 	    }
-	    document.querySelector('[data-id="layer4-node"]').style.position = 'static';
+    	document.querySelector('[data-id="layer4-node"]').style.position = 'static';
+	  }).always(function() {
+		  $("#loading").fadeOut('slow');
 	  });
 	}
 
@@ -303,7 +365,7 @@ function callCytos(url) {
 
 	function getWeight(text) {
 	  var weight = text.length;
-	  weight *= 10;
+	  weight *= 10	;
 	  return weight;
 	}
 
@@ -337,18 +399,19 @@ function callCytos(url) {
 
 	function printCyto() {
 	  var dataUrl = document.querySelector('[data-id="layer4-node"]').toDataURL();
-	  var windowContent = '<!DOCTYPE html>';
+	  var windowContent = '';
 	  windowContent += '<html>'
-	  windowContent += '<head><title>Print canvas</title></head>';
+	  windowContent += '<head><meta name="viewport" content="width=device-width, minimum-scale=0.1"><title>Print graph</title></head>';
 	  windowContent += '<body>'
 	  windowContent += '<img src="' + dataUrl + '">';
 	  windowContent += '</body>';
 	  windowContent += '</html>';
-	  var printWin = window.open('', '', 'width=740,height=560');
+	  var printWin = window.open(dataUrl, '', 'width=700,height=500');
 	  printWin.document.open();
 	  printWin.document.write(windowContent);
 	  printWin.document.close();
 	  printWin.focus();
 	  printWin.print();
 	  printWin.close();
+		  //return false;
 	}
