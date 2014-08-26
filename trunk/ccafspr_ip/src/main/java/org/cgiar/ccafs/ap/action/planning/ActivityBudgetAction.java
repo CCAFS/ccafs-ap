@@ -13,12 +13,6 @@
  *****************************************************************/
 package org.cgiar.ccafs.ap.action.planning;
 
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-
-import com.google.inject.Inject;
-import org.apache.commons.lang3.StringUtils;
 import org.cgiar.ccafs.ap.action.BaseAction;
 import org.cgiar.ccafs.ap.config.APConfig;
 import org.cgiar.ccafs.ap.config.APConstants;
@@ -34,6 +28,13 @@ import org.cgiar.ccafs.ap.data.model.BudgetType;
 import org.cgiar.ccafs.ap.data.model.Institution;
 import org.cgiar.ccafs.ap.data.model.Project;
 import org.cgiar.ccafs.ap.data.model.User;
+
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
+import com.google.inject.Inject;
+import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -316,23 +317,7 @@ public class ActivityBudgetAction extends BaseAction {
   @Override
   public String save() {
     boolean success = true;
-    boolean deleted = true;
-
-    // ---- Identify those deleted budgets from leverages.
-    // Getting previous leverage budgets.
-    List<Budget> previousLeveragedBudgets =
-      budgetManager.getActivityBudgetsByType(activity.getId(), BudgetType.LEVERAGED.getValue());
-    // Deleting budgets removed
-    for (Budget budget : previousLeveragedBudgets) {
-      if (budget.getYear() == this.year) {
-        if (!activity.getBudgets().contains(budget)) {
-          deleted = budgetManager.deleteBudget(budget.getId());
-          if (!deleted) {
-            success = false;
-          }
-        }
-      }
-    }
+// boolean deleted = true;
 
     // Saving project budgets
     for (Budget budget : activity.getBudgets()) {

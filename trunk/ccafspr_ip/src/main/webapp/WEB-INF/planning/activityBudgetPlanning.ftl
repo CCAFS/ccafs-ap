@@ -116,7 +116,7 @@
         <p>[@s.text name="planning.activityBudget.message.dateUndefined" /]</p>
       [/#if]
       [#if saveable]
-        <input type="hidden" name="activityID" value="">
+        <input type="hidden" name="activityID" value="${activity.id?c}">
         <div class="buttons">
           [@s.submit type="button" name="save"][@s.text name="form.buttons.save" /][/@s.submit]
           [@s.submit type="button" name="next"][@s.text name="form.buttons.next" /][/@s.submit]
