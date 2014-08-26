@@ -16,7 +16,7 @@
 [#include "/WEB-INF/global/pages/header.ftl" /]
 [#include "/WEB-INF/global/pages/main-menu.ftl" /]
 [#import "/WEB-INF/global/macros/forms.ftl" as customForm/]
-    
+
 <section class="content">
   <div class="helpMessage">
     <img src="${baseUrl}/images/global/icon-help.png" />
@@ -31,33 +31,35 @@
     </h1> 
     
     <div id="locationsBlock" class="clearfix">
-      <div id="map">  </div> 
+      <div id="map"></div> 
       <div id="fields">
         [#if activity.locations?has_content]
           [#assign notApplicableText] [@s.text name="planning.activities.locations.notApplicable" /] [/#assign]
           <div id="location-head" class="row clearfix">
-              <div id="locationIndex-head" class="locationIndex ">
-                <strong># </strong>
-              </div>
-              <div id="locationLevel-head" class="locationLevel grid_2 ">
-                [#-- Type/Level --]
-                <strong>[@s.text name="planning.activities.locations.level" /]</strong>
-              </div>
-              <div id="locationLatitude-head" class="locationLatitude grid_2">
-                [#-- Latitude --]
-                <strong>[@s.text name="planning.activities.locations.latitude" /]</strong>
-              </div>
-              <div id="locationLongitude-head" class="locationLatitude grid_2">
-                [#-- Longitude --]
-                <strong>[@s.text name="planning.activities.locations.longitude" /]</strong>
-              </div>
-              <div id="locationName-head" class="locationName grid_3">
-                [#-- Name --]
-                <strong>[@s.text name="planning.activities.locations.name" /]</strong>
-              </div>
-            </div> 
+            <div id="locationIndex-head" class="locationIndex">
+              <strong>#</strong>
+            </div>
+            [#-- Type/Level --]
+            <div id="locationLevel-head" class="locationLevel grid_2">
+              <strong>[@s.text name="planning.activities.locations.level" /]</strong>
+            </div>
+            [#-- Latitude --]
+            <div id="locationLatitude-head" class="locationLatitude grid_2">
+              <strong>[@s.text name="planning.activities.locations.latitude" /]</strong>
+            </div>
+            [#-- Longitude --]
+            <div id="locationLongitude-head" class="locationLatitude grid_2">
+              <strong>[@s.text name="planning.activities.locations.longitude" /]</strong>
+            </div>
+            [#-- Name --]
+            <div id="locationName-head" class="locationName grid_3">
+              <strong>[@s.text name="planning.activities.locations.name" /]</strong>
+            </div>
+          </div> 
           [#list activity.locations as location]
-            [#if location.otherLocation][#assign location=location.otherLocationInstance /][/#if]
+            [#if location.otherLocation]
+              [#assign location=location.otherLocationInstance /]
+            [/#if]
             <div id="location-${location_index}" class="location row borderBox clearfix">
               <div class="locationIndex ">
                 <strong>${location_index+1}.</strong>
@@ -84,16 +86,16 @@
                   [@customForm.input name="otherLocationsSaved[${location_index}].geoPosition.latitude" value="${location.geoPosition.latitude}" type="text" i18nkey="planning.activities.locations.latitude" showTitle=false required=true  /]
                 [/#if]
               </div>
+              [#-- Longitude --]
               <div class="locationLongitude grid_2">
-                [#-- Longitude --]
                 [#if location.country || location.region]
                   [@customForm.input name="geoPosition.longitude" value=notApplicableText type="text" i18nkey="planning.activities.locations.longitude" showTitle=false disabled=true  /]
                 [#else]
                   [@customForm.input name="otherLocationsSaved[${location_index}].geoPosition.longitude" value="${location.geoPosition.longitude}" type="text" i18nkey="planning.activities.locations.longitude" showTitle=false required=true  /]
                 [/#if]
               </div>
+              [#-- Name --]
               <div class="locationName grid_3">
-                [#-- Name --]
                 [#if location.country]
                   [@customForm.select name="countriesSaved[${location_index}].id" i18nkey="planning.activities.locations.level" listName="countries" keyFieldName="id" showTitle=false  displayFieldName="name" value="${location.id?int}" /]
                 [#elseif location.region]
@@ -117,7 +119,7 @@
 
     [#-- File upload --]
     <p id="addPartnerText" class="helpMessage">
-      [@s.text name="planning.activities.locations.uploadMessage" /]      
+      [@s.text name="planning.activities.locations.uploadMessage" /]
       <a id="fileBrowserLauncher" href=""> [@s.text name="planning.activities.locations.uploadMessageLink" /]</a>       
     </p>
     <div>
