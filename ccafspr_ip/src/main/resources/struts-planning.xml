@@ -151,7 +151,7 @@
     <action name="activityBudget" class="org.cgiar.ccafs.ap.action.planning.ActivityBudgetAction">
       <result name="input">/WEB-INF/planning/activityBudgetPlanning.ftl</result>
       <result name="success" type="redirectAction">   
-        <param name="actionName">activityLocations</param>   
+        <param name="actionName">activityBudget</param>   
         <param name="activityID">${activity.id}</param>   
       </result>
       <result name="next" type="redirectAction">
