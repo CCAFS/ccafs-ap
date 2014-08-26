@@ -21,6 +21,7 @@ function initGraph(programID){
   });
   
   $("#ipGraph-btnFullimpact").on("click", function(e){
+	  $( "#ipGraph-content" ).empty();
 	  elements['nodes'] = [];
 	  elements['edges'] = [];
 	  x = {};	 
@@ -37,6 +38,7 @@ function initGraph(programID){
   });
   
   $("#ipGraph-btnSingleimpact").on("click", function(e){
+	  $( "#ipGraph-content" ).empty();
 	  elements['nodes'] = [];
 	  elements['edges'] = [];
 	  x = {};
@@ -77,6 +79,11 @@ function initGraph(programID){
 	      },
 	      close: function( event, ui ) {
 	    	  $( "#dialog-message" ).empty();
+	    	  $( "<div id=\"loading-dialog-message\" style=\"display:none;position:absolute; width:100%; height:100%;top: 45%;\"><img style=\"display: block; margin: 0 auto;\" src=\"../images/global/loading.gif\" alt=\"Loader\" /></div>" ).appendTo("#dialog-message");
+	    	  elements['nodes'] = [];
+	    	  elements['edges'] = [];
+	    	  x = {};	 
+	    	  count = {};
 	    	  if (programID && !fullImpact) {
     	        callCytos("../json/json/ipComponents.do?programID=" + programID, "ipGraph-content");
     	      } else {
@@ -84,30 +91,24 @@ function initGraph(programID){
     	      }
 	      }
 	    });
+	  elements['nodes'] = [];
+	  elements['edges'] = [];
+	  x = {};	 
+	  count = {};
+	  //$("#loading-"+contentDiv).show();
 	  if (programID && !fullImpact) {
         callCytos("../json/json/ipComponents.do?programID=" + programID, "dialog-message");
       } else {
         callCytos("../json/json/ipComponents.do", "dialog-message");
       }	  
-	  /*var newCanvas = document.createElement('canvas');
-	  var context = newCanvas.getContext('2d');
-
-	    //set dimensions
-	  newCanvas.width = document.querySelector('[data-id="layer4-node"]').width * 2;
-	  newCanvas.height = document.querySelector('[data-id="layer4-node"]').height * 2;
-
-	    //apply the old canvas to the new one
-	  context.drawImage(document.querySelector('[data-id="layer4-node"]'), 0, 0);
-	  context.restore();
-	  var dataUrl = newCanvas.toDataURL();
-	  window.location = dataUrl;*/
 	  return false;
   });
 }
 
 function callCytos(url,contentDiv) {
+	$("#loading-"+contentDiv).show();
 	  $.getJSON(url, function(data) {
-		$("#loading").show();
+		
 	    $.each(data, function(key, val) {
 	      if (key == 'ipElements') {
 	        $.each(val, function(attr, item) {
@@ -122,11 +123,14 @@ function callCytos(url,contentDiv) {
 	                        descr: item.description,
 	                        faveColor: getColorNode(item.type.id, item.translatedOf.length),
 	                        nodeType: item.type.id,
+	                        translate: (item.type.id, item.translatedOf.length>0)?1:0,
 	                        faveShape: 'roundrectangle'},
 	                      position: getPosition(item.type.id, item.translatedOf.length)
 	                    }
 	            );
 	            count[item.type.id+'-'+item.program.id] ++;
+	          } else {
+	        	  
 	          }
 	        });
 	      } else if (key == 'relations') {
@@ -135,7 +139,7 @@ function callCytos(url,contentDiv) {
 	        });
 	      }
 	    });
-//	    console.log(JSON.stringify(elements, null, 4));
+	    //console.log(JSON.stringify(elements, null, 4));
 	    cy = cytoscape({
 	      container: $('#'+contentDiv)[0],
 	      style: cytoscape.stylesheet()
@@ -238,11 +242,29 @@ function callCytos(url,contentDiv) {
     	  var elems = cy.elements("edge");
     	  elems.css( 'line-color', '#ddd' );
     	  elems.css( 'source-arrow-color', '#ddd' );
-    	  if( evtTarget === cy ){    	      
+    	  var elems = cy.elements("node");
+    	  elems.css( 'background-opacity', '0.2' );
+    	  elems.css( 'text-opacity', '0.2' );
+    	  if( evtTarget === cy ){    	  
+    		  var elems = cy.elements("node");
+        	  elems.css( 'background-opacity', '1' );
+        	  elems.css( 'text-opacity', '1' );
     	  } else {
-    		var sons = evtTarget.connectedEdges();
-    		sons.css( 'line-color', '#444' );
-    		sons.css( 'source-arrow-color', '#444' );    	    
+    		  if(evtTarget.isEdge()) {
+    			  evtTarget.css( 'line-color', '#444' );
+    			  evtTarget.css( 'source-arrow-color', '#444' );
+    			  var sons = evtTarget.connectedNodes();
+    			  sons.css( 'background-opacity', '1' );
+    			  sons.css( 'text-opacity', '1' );
+    		  } else if(evtTarget.isNode()) {
+	    		var sons = evtTarget.connectedEdges();    	
+	    		sons.css( 'line-color', '#444' );
+	    		sons.css( 'source-arrow-color', '#444' );
+	    		sons.sources().css( 'background-opacity', '1' );
+	    		sons.sources().css( 'text-opacity', '1' );
+	    		sons.targets().css( 'background-opacity', '1' );
+	    		sons.targets().css( 'text-opacity', '1' );
+    		  }
     	  }
     	});
 //	    cys = $('#cy').cytoscape('get');
@@ -273,26 +295,31 @@ function callCytos(url,contentDiv) {
 	    }
 
 	    function reline(cys) {
-	      var type = 2;
+	    	//var type = 2;
+	      //var trans = 0;
 	      var lastpos = 0;
 	      var outFirst = 0;
 	      var lastEles = 0;
-	      while (cys.elements("node[nodeType=" + type + "]").length > 0) {
-	        var eles = cys.elements("node[nodeType=" + type + "]");
-	        outFirst = getDistance(eles[0].position('x'), eles[eles.length - 1].position('x'));
-	        if (lastEles != 0) {
-	          var diff = (outFirst - lastpos) / 2;
-//	          console.log(outFirst + ' - ' + lastpos + ' / 2 = ' + diff+ ' t:'+type);
-	          position = lastEles[0].position('x');
-	          cys.elements("node[nodeType=" + type + "]").each(function(i, ele) {
-	            ele.position('x', position - diff);
-	            position += 250;
-	            x[type] = ele.position('x');
-	          });
-	        }
-	        lastpos = outFirst;
-	        lastEles = eles;
-	        type++;
+	      for (var i=2;i<6;i++) {
+	    	  for (var j=0;j<2;j++) {
+	    		  if (cys.elements("node[nodeType=" + i + "][translate="+j+"]").length > 0) {
+			        var eles = cys.elements("node[nodeType=" + i + "][translate="+j+"]");
+			        outFirst = getDistance(eles[0].position('x'), eles[eles.length - 1].position('x'));
+			        if (lastEles != 0) {
+			          var diff = (outFirst - lastpos) / 2;
+		//	          console.log(outFirst + ' - ' + lastpos + ' / 2 = ' + diff+ ' t:'+type);
+			          position = lastEles[0].position('x');
+			          cys.elements("node[nodeType=" + i + "][translate="+j+"]").each(function(i, ele) {
+			            ele.position('x', position - diff);
+			            position += 250;
+			            x[i] = ele.position('x');
+			          });
+			        }
+			        lastpos = outFirst;
+			        lastEles = eles;
+			        //type++;
+    		  	}
+	      	}
 	      }
 	    }
 
@@ -316,7 +343,7 @@ function callCytos(url,contentDiv) {
 	    }
     	document.querySelector('[data-id="layer4-node"]').style.position = 'static';
 	  }).always(function() {
-		  $("#loading").fadeOut('slow');
+		  $("#loading-"+contentDiv).fadeOut('slow');
 	  });
 	}
 
@@ -356,8 +383,12 @@ function callCytos(url,contentDiv) {
 	  } else if (idType == 5) {
 	    y = 800;
 	  }
-	  if (trans > 0) {
+	  if (trans > 0) {		
 	    y += 100;
+	    if (!x[idType+''+1])
+		    x[idType+''+1] = 100;
+	    x[idType+''+1] += 250;
+		  return {x: x[idType+''+1], y: y};
 	  }
 	  x[idType] += 250;
 	  return {x: x[idType], y: y};
