@@ -26,6 +26,15 @@
   
   [@s.form action="activityLocations" cssClass="pure-form" enctype="multipart/form-data"]  
   <article class="halfContent" id="activityLocations">
+    [#-- Informing user that he/she doesn't have enough privileges to edit. See GrantActivityPlanningAccessInterceptor--]
+    [#if !saveable]
+      <p class="readPrivileges">
+        [@s.text name="saving.read.privileges"]
+          [@s.param][@s.text name="planning.activities.locations.title"/][/@s.param]
+        [/@s.text]
+      </p>
+    [/#if]
+    [#-- Title --]
     <h1 class="contentTitle">
     [@s.text name="planning.activities.locations.title" /] 
     </h1> 
@@ -105,32 +114,39 @@
                   [@customForm.input name="otherLocationsSaved[${location_index}].name" value="${location.name}" type="text" i18nkey="planning.activities.locations.notApplicable" required=true showTitle=false  /]
                 [/#if]
               </div>
-              <img class="removeButton" src="${baseUrl}/images/global/icon-remove.png" />
+              [#if saveable]
+                <img class="removeButton" src="${baseUrl}/images/global/icon-remove.png" />
+              [/#if]
             </div> 
           [/#list]
         [/#if]
       </div>
-      <div id="addLocationBlock" class="addLink">
-        <a href="" id="addLocationLink" class="addLocation addButton" >[@s.text name="planning.activities.locations.addLocation" /]</a>
-      </div>  
+      [#if saveable]
+        <div id="addLocationBlock" class="addLink">
+          <a href="" id="addLocationLink" class="addLocation addButton" >[@s.text name="planning.activities.locations.addLocation" /]</a>
+        </div>
+      [/#if]
     </div> 
-    <!-- internal parameter -->
-    <input type="hidden" name="activityID" value="${activity.id?c}">
-
-    [#-- File upload --]
-    <p id="addPartnerText" class="helpMessage">
-      [@s.text name="planning.activities.locations.uploadMessage" /]
-      <a id="fileBrowserLauncher" href=""> [@s.text name="planning.activities.locations.uploadMessageLink" /]</a>       
-    </p>
-    <div>
-      [@customForm.input name="excelTemplate" type="file" i18nkey="reporting.caseStudies.image" /]
-    </div>
-
-    <div class="buttons">
-      [@s.submit type="button" name="save"][@s.text name="form.buttons.save" /][/@s.submit]
-      [@s.submit type="button" name="next"][@s.text name="form.buttons.next" /][/@s.submit]
-      [@s.submit type="button" name="cancel"][@s.text name="form.buttons.cancel" /][/@s.submit]
-    </div>
+    
+    [#-- Only the user with enough privileges to save can upload the file --]
+    [#if saveable]
+      [#-- File upload --]
+      <p id="addPartnerText" class="helpMessage">
+        [@s.text name="planning.activities.locations.uploadMessage" /]
+        <a id="fileBrowserLauncher" href=""> [@s.text name="planning.activities.locations.uploadMessageLink" /]</a>       
+      </p>
+      <div>
+        [@customForm.input name="excelTemplate" type="file" i18nkey="reporting.caseStudies.image" /]
+      </div>
+    
+      <!-- internal parameter -->
+      <input type="hidden" name="activityID" value="${activity.id?c}">
+      <div class="buttons">
+        [@s.submit type="button" name="save"][@s.text name="form.buttons.save" /][/@s.submit]
+        [@s.submit type="button" name="next"][@s.text name="form.buttons.next" /][/@s.submit]
+        [@s.submit type="button" name="cancel"][@s.text name="form.buttons.cancel" /][/@s.submit]
+      </div>
+    [/#if]
   </article>
   [/@s.form]
 </section>
