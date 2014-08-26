@@ -1270,8 +1270,13 @@ INSERT INTO `institutions` (`id`, `name`, `acronym`, `contact_person_name`, `con
 (1030, 'Region Program - West Africa', 'RPL WA', NULL, NULL, NULL, NULL, 7, 18, NULL),
 (1031, 'Region Program - South Asia', 'RPL SAs', NULL, NULL, NULL, NULL, 8, 18, NULL),
 (1032, 'Region Program - South East Asia', 'RPL SEA', NULL, NULL, NULL, NULL, 9, 18, NULL),
-(1033, 'Coordinating Unit', 'CU', NULL, NULL, NULL, NULL, 10, 18, NULL);
-
+(1033, 'Coordinating Unit', 'CU', NULL, NULL, NULL, NULL, 10, 18, NULL),
+(1034, 'Ministerio de Agricultura', 'MAG', NULL, NULL, 'San Jose', 'http://www.mag.go.cr/', NULL, 7, 54),
+(1035, 'Office National des Forets-Andina', 'ONF-Andina', NULL, NULL, 'Bogotá', 'http://www.onfandina.com/', NULL, 11, 53),
+(1036, 'Institute for Integrated Development Studies', 'IIDS', NULL, NULL, 'Kathmandu', 'http://www.iids.org.np/', NULL, 2, 163),
+(1037, 'National Economic and Development Authority', 'NEDA', NULL, NULL, 'Manila', 'http://www.neda.gov.ph/', NULL, 7, 172),
+(1038, 'De La Salle University', 'DLSU', NULL, NULL, 'Manila', 'http://www.dlsu.edu.ph/', NULL, 1, 172),
+(1039, 'University of the Philippines - Diliman', 'UPD', NULL, NULL, 'Manila', 'http://www.upd.edu.ph/', NULL, 1, 172);
 
 
 --

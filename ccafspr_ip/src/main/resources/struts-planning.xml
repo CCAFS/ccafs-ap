@@ -182,6 +182,10 @@
     
     <action name="activityImpactPathway" class="org.cgiar.ccafs.ap.action.planning.ActivityImpactPathwayAction">
       <result name="input">/WEB-INF/planning/activityImpactPathwayPlanning.ftl</result>
+      <result name="success" type="redirectAction">   
+        <param name="actionName">activityImpactPathway</param>   
+        <param name="activityID">${activity.id}</param>   
+      </result>
     </action>
         
     <action name="activityIpOtherContributions" class="org.cgiar.ccafs.ap.action.planning.ActivityIPOtherContributionAction">

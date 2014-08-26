@@ -132,6 +132,7 @@
       </result>
       <result name="next" type="redirectAction">
         <param name="actionName">projects</param>
+        <param name="namespace">/pre-planning</param>
       </result>
       <result name="cancel" type="redirectAction">
         <param name="actionName">projects</param>
