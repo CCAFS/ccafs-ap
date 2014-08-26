@@ -86,6 +86,20 @@ public class MySQLDeliverableTypeDAO implements DeliverableTypeDAO {
   }
 
   @Override
+  public List<Map<String, String>> getDeliverableSubTypes() {
+    LOG.debug(">> getDeliverableSubTypes )");
+
+    StringBuilder query = new StringBuilder();
+    query.append("SELECT dt.*   ");
+    query.append("FROM deliverable_types as dt ");
+    query.append("WHERE dt.parent_id IS NOT NULL AND dt.timeline IS NOT NULL ");
+
+    LOG.debug("-- getDeliverableSubTypes() > Calling method executeQuery to get the results");
+    return getData(query.toString());
+  }
+
+
+  @Override
   public Map<String, String> getDeliverableTypeById(int deliverableTypeID) {
     Map<String, String> deliverableTypeData = new HashMap<String, String>();
     LOG.debug(">> getDeliverableTypeById( activityID = {} )", deliverableTypeID);
@@ -110,7 +124,6 @@ public class MySQLDeliverableTypeDAO implements DeliverableTypeDAO {
     return deliverableTypeData;
   }
 
-
   @Override
   public List<Map<String, String>> getDeliverableTypes() {
     LOG.debug(">> getDeliverableTypes activityID = {} )");
@@ -118,6 +131,21 @@ public class MySQLDeliverableTypeDAO implements DeliverableTypeDAO {
     StringBuilder query = new StringBuilder();
     query.append("SELECT dt.*   ");
     query.append("FROM deliverable_types as dt ");
+    query.append("WHERE dt.parent_id IS NULL AND dt.timeline IS NULL ");
+
+    LOG.debug("-- getDeliverableTypes() > Calling method executeQuery to get the results");
+    return getData(query.toString());
+  }
+
+  @Override
+  public List<Map<String, String>> getDeliverableTypes(int typeID) {
+    LOG.debug(">> getDeliverableTypes typeID = {})", typeID);
+
+    StringBuilder query = new StringBuilder();
+    query.append("SELECT dt.*   ");
+    query.append("FROM deliverable_types as dt ");
+    query.append("WHERE dt.parent_id= ");
+    query.append(typeID);
 
     LOG.debug("-- getDeliverableTypes() > Calling method executeQuery to get the results");
     return getData(query.toString());
