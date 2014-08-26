@@ -132,7 +132,7 @@
         <param name="activityID">${activity.id}</param>
       </result>
       <result name="next" type="redirectAction">
-        <param name="actionName">activityLocations</param>
+        <param name="actionName">activityBudget</param>
         <param name="activityID">${activity.id}</param>
       </result>
       <result name="cancel" type="redirectAction">
@@ -141,6 +141,22 @@
       </result>
     </action>
 
+    <action name="activityBudget" class="org.cgiar.ccafs.ap.action.BaseAction">
+      <result name="input">/WEB-INF/planning/activityBudgetPlanning.ftl</result>
+      <result name="success" type="redirectAction">   
+        <param name="actionName">activityLocations</param>   
+        <param name="activityID">${activity.id}</param>   
+      </result>
+      <result name="next" type="redirectAction">
+        <param name="actionName">activityImpactPathway</param>
+        <param name="activityID">${activity.id}</param>
+      </result>
+      <result name="cancel" type="redirectAction">
+        <param name="actionName">activities</param>
+        <param name="namespace">/planning/projects</param>
+      </result>
+    </action>
+    
     <action name="activityLocations" class="org.cgiar.ccafs.ap.action.planning.LocationsPlanningAction">
       <result name="input">/WEB-INF/planning/activityLocationsPlanning.ftl</result>
       <result name="success" type="redirectAction">   
@@ -157,21 +173,6 @@
       </result>
     </action>
     
-    <action name="activityBudget" class="org.cgiar.ccafs.ap.action.BaseAction">
-      <result name="input">/WEB-INF/planning/activityBudgetPlanning.ftl</result>
-      <result name="success" type="redirectAction">   
-        <param name="actionName">activityLocations</param>   
-        <param name="activityID">${activity.id}</param>   
-      </result>
-      <result name="next" type="redirectAction">
-        <param name="actionName">activityImpactPathway</param>
-        <param name="activityID">${activity.id}</param>
-      </result>
-      <result name="cancel" type="redirectAction">
-        <param name="actionName">activities</param>
-        <param name="namespace">/planning/projects</param>
-      </result>
-    </action>
     
     <action name="activityImpactPathway" class="org.cgiar.ccafs.ap.action.planning.ActivityImpactPathwayAction">
       <result name="input">/WEB-INF/planning/activityImpactPathwayPlanning.ftl</result>
