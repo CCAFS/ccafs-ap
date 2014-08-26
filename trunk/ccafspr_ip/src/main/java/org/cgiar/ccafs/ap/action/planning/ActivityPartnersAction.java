@@ -13,24 +13,24 @@
  *****************************************************************/
 package org.cgiar.ccafs.ap.action.planning;
 
+import java.util.List;
+
+import com.google.inject.Inject;
+import org.apache.commons.lang3.StringUtils;
 import org.cgiar.ccafs.ap.action.BaseAction;
 import org.cgiar.ccafs.ap.config.APConfig;
 import org.cgiar.ccafs.ap.config.APConstants;
+import org.cgiar.ccafs.ap.data.manager.ActivityManager;
 import org.cgiar.ccafs.ap.data.manager.ActivityPartnerManager;
 import org.cgiar.ccafs.ap.data.manager.InstitutionManager;
 import org.cgiar.ccafs.ap.data.manager.LocationManager;
+import org.cgiar.ccafs.ap.data.manager.ProjectManager;
+import org.cgiar.ccafs.ap.data.model.Activity;
 import org.cgiar.ccafs.ap.data.model.ActivityPartner;
 import org.cgiar.ccafs.ap.data.model.Country;
 import org.cgiar.ccafs.ap.data.model.Institution;
 import org.cgiar.ccafs.ap.data.model.InstitutionType;
-
-import java.util.List;
-
-import org.cgiar.ccafs.ap.data.manager.ActivityManager;
-
-import org.cgiar.ccafs.ap.data.model.Activity;
-import com.google.inject.Inject;
-import org.apache.commons.lang3.StringUtils;
+import org.cgiar.ccafs.ap.data.model.Project;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -49,11 +49,13 @@ public class ActivityPartnersAction extends BaseAction {
   private ActivityPartnerManager activityPartnerManager;
   private InstitutionManager institutionManager;
   private LocationManager locationManager;
+  private ProjectManager projectManager;
 
   // Model for the back-end
   private Activity activity;
 
   // Model for the front-end
+  private Project project;
   private int activityID;
   private List<Institution> allPartners;
   private List<InstitutionType> partnerTypes;
@@ -83,13 +85,17 @@ public class ActivityPartnersAction extends BaseAction {
     return allPartners;
   }
 
-
   public List<Country> getCountries() {
     return countries;
   }
 
+
   public List<InstitutionType> getPartnerTypes() {
     return partnerTypes;
+  }
+
+  public Project getProject() {
+    return project;
   }
 
   @Override
@@ -99,6 +105,9 @@ public class ActivityPartnersAction extends BaseAction {
     // Getting the activity ID parameter.
     activityID = Integer.parseInt(StringUtils.trim(this.getRequest().getParameter(APConstants.ACTIVITY_REQUEST_ID)));
     activity = activityManager.getActivityById(activityID);
+
+    // Getting the project object of activity.
+    project = projectManager.getProjectFromActivityId(activityID);
 
     // Getting the activity partners
     List<ActivityPartner> activityPartners = activityPartnerManager.getActivityPartnersByActivity(activityID);

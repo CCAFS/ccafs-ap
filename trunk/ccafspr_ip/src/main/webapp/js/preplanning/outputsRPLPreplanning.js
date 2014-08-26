@@ -189,7 +189,7 @@ function addOutputEvent(event){
   });
   setOutputsIndexes();
 }
-function addExistingOutputEvent(){
+function addExistingOutputEvent(event){
   event.preventDefault();
   var $newElement = $("#newOutputTemplate").clone(true).removeAttr("id");
   $("div#outputBlocks").append($newElement);
