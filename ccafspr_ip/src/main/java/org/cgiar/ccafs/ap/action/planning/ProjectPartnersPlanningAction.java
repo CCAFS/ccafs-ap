@@ -16,6 +16,7 @@ package org.cgiar.ccafs.ap.action.planning;
 import org.cgiar.ccafs.ap.action.BaseAction;
 import org.cgiar.ccafs.ap.config.APConfig;
 import org.cgiar.ccafs.ap.config.APConstants;
+import org.cgiar.ccafs.ap.data.manager.BudgetManager;
 import org.cgiar.ccafs.ap.data.manager.InstitutionManager;
 import org.cgiar.ccafs.ap.data.manager.LocationManager;
 import org.cgiar.ccafs.ap.data.manager.ProjectManager;
@@ -31,7 +32,6 @@ import org.cgiar.ccafs.ap.data.model.User;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.cgiar.ccafs.ap.data.manager.BudgetManager;
 import com.google.inject.Inject;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
@@ -39,7 +39,7 @@ import org.slf4j.LoggerFactory;
 
 /**
  * This class is used to manage the Project Partners section in the planning step.
- *
+ * 
  * @author Hernán Carvajal
  */
 public class ProjectPartnersPlanningAction extends BaseAction {
@@ -281,9 +281,9 @@ public class ProjectPartnersPlanningAction extends BaseAction {
       }
     } else {
       LOG
-      .warn(
-        "User (employee_id={}, email={}) tried to save information in Project Partners without having enough privileges!",
-        new Object[] {this.getCurrentUser().getEmployeeId(), this.getCurrentUser().getEmail()});
+        .warn(
+          "User (employee_id={}, email={}) tried to save information in Project Partners without having enough privileges!",
+          new Object[] {this.getCurrentUser().getEmployeeId(), this.getCurrentUser().getEmail()});
     }
     return BaseAction.ERROR;
 

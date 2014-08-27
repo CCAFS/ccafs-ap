@@ -17,6 +17,7 @@ import org.cgiar.ccafs.ap.data.manager.IPIndicatorManager;
 import org.cgiar.ccafs.ap.data.model.IPIndicator;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
 
@@ -42,6 +43,8 @@ public class IPIndicatorsConverter extends StrutsTypeConverter {
   @SuppressWarnings("rawtypes")
   @Override
   public Object convertFromString(Map context, String[] values, Class toClass) {
+    System.out.println("Indicators converter");
+    System.out.println(Arrays.toString(values));
     if (toClass == List.class) {
       return indicatorManager.getIndicatorsList(values);
     }

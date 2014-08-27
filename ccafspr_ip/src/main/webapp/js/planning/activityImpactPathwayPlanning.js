@@ -2,6 +2,10 @@ $(document).ready(init);
 
 function init(){
   attachEvents();
+  
+  loadMOGs();
+  setIndicatorIndexes();
+  setMogsIndexes();
 }
 
 function attachEvents(){

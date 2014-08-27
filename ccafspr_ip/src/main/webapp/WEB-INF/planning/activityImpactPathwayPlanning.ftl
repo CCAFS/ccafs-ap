@@ -51,6 +51,7 @@
     <div id="contributionsBlock" class="borderBox">
       [#if midOutcomesSelected?has_content]
         [#list midOutcomesSelected as midOutcome]
+
           <div class="contribution borderBox">
             [#-- Remove Contribution --]
             <div id="removeContribution" class="removeContribution removeElement removeLink" title="[@s.text name="preplanning.midOutcomes.removeMidOutcome" /]"></div>
@@ -60,6 +61,56 @@
               <h6>[@s.text name="planning.activityImpactPathways.outcome2019" /]</h6>
               <p class="description"> ${midOutcome.description} </p>
             </div>
+            
+            [#-- Indicators list --]
+            <div class="indicators">
+              <h6>[@s.text name="planning.activityImpactPathways.indicators" /]</h6>
+              [#if midOutcome.indicators?has_content]
+                [#list midOutcome.indicators as indicator]
+                  <div class="indicatorsBlock">
+                    <div class="midOutcomeIndicator" >
+                      [#if activity.indicators?has_content]
+                        [#list activity.indicators as activityIndicator]
+                          [#if activityIndicator.parent.id == indicator.id]
+                            <input type="hidden" disabled name="activity_indicator_id" value="${activityIndicator.id}" />
+                            <input type="checkbox" name="activity.indicators" value="${activityIndicator.parent.id}" checked />
+                            <label>${activityIndicator.parent.description}</label>
+                            
+                            <div class="checkboxGroup vertical indicatorNarrative" >
+                              [#-- Target value --]
+                              <label> Target value </label>
+                              <input type="input" name="activity_indicator_target" value="${activityIndicator.target}" >
+                              
+                              <label> Target narrative</label>
+                              <textarea name="activity_indicator_description" >${activityIndicator.description}</textarea>
+                            </div>
+                          [#else]
+                            <input type="hidden" disabled name="activity_indicator_id" value="-1" />
+                            <input type="checkbox" name="activity.indicators" value="${activityIndicator.parent.id}" />
+                            <label>${activityIndicator.parent.description}</label>
+                            
+                            <div class="checkboxGroup vertical indicatorNarrative" style="display:none">
+                              [#-- Target value --]
+                              <label> Target value </label>
+                              <input type="input" name="activity_indicator_target" >
+                              
+                              <label> Target narrative</label>
+                              <textarea name="activity_indicator_description" > </textarea>
+                            </div>
+                          </div>
+                          [/#if]
+                        [/#list]
+                      [/#if]
+                  </div>
+                [/#list]
+              [/#if]
+            </div>
+          
+            [#-- Major Output Group list --]
+            <div class="mogs">
+              <h6>[@s.text name="planning.activityImpactPathways.mogs" /]</h6>
+            </div>
+            
           </div>
         [/#list]
       [/#if]

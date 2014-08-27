@@ -182,6 +182,13 @@ public class ActivityImpactPathwayAction extends BaseAction {
       }
     }
 
+    // Get the information of the midOutcomes selected
+    String[] midOutcomeIds = new String[midOutcomesSelected.size()];
+    for (int i = 0; i < midOutcomesSelected.size(); i++) {
+      midOutcomeIds[i] = midOutcomesSelected.get(i).getId() + "";
+    }
+    midOutcomesSelected = ipElementManager.getIPElementList(midOutcomeIds);
+
     // Save the activity outputs brought from the database
     previousOutputs = new ArrayList<>();
     previousOutputs.addAll(activity.getOutputs());
