@@ -40,7 +40,7 @@
         [@s.text name="planning.deliverables" /] 
       </h1>
       [#if activity.deliverables?size > 0]
-        [@deliverableTemplate.activityDeliverablesList deliverables=activity.deliverables/]
+        [@deliverableTemplate.activityDeliverablesList deliverables=activity.deliverables canEdit=saveable /]
       [#else]
         [#-- Just show this empty message to those users who are not able to modify this section --]
         [#if !saveable]
