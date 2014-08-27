@@ -16,11 +16,12 @@
       [@customForm.input name="activity.deliverables[${dl_index}].title" type="text" i18nkey="planning.deliverables.title" required=true /]
       [#-- Main Type --]
       <div class="halfPartBlock chosen">
-        [@customForm.select name="mainType" label=""  disabled=false i18nkey="planning.deliverables.mainType" listName="deliverableTypes" keyFieldName="id"  displayFieldName="name" /]
+        [@customForm.select name="mainType" value="activity.deliverables[${dl_index}].type.category.id" label=""  disabled=false i18nkey="planning.deliverables.mainType" listName="deliverableTypes" keyFieldName="id"  displayFieldName="name" /]
       </div>
       [#-- Sub Type --]
       <div class="halfPartBlock chosen">
         [@customForm.select name="activity.deliverables[${dl_index}].type" label=""  disabled=false i18nkey="planning.deliverables.subType" listName="" keyFieldName=""  displayFieldName="" /]
+        <input type="hidden" id="subTypeSelected_${dl_index}" value="${activity.deliverables[dl_index].type.id}" />
       </div>
       [#-- Year  --]
       <div class="halfPartBlock chosen">
@@ -39,7 +40,7 @@
 [/#macro]
 
 [#macro activityDeliverableTemplate dl_index=0 nu_index=0 ]
-  <div id="activityDeliverableTemplate" class="borderBox" style="display:none">
+  <div id="activityDeliverable-999" class="borderBox" style="display:none">
     <div id="removeDeliverable-${dl_index}"  class="removeDeliverable removeElement removeLink" title="[@s.text name="planning.deliverables.removeDeliverable" /]"></div>
     <input type="hidden" value="-1" name="].id">
     <legend>[@s.text name="planning.deliverables.expectedDeliverable" ][@s.param name="0"] <span id="deliverableIndex">${dl_index+1}</span>[/@s.param] [/@s.text]</legend>
