@@ -14,10 +14,6 @@
  */
 package org.cgiar.ccafs.ap.data.dao.mysql;
 
-import org.cgiar.ccafs.ap.config.APConstants;
-import org.cgiar.ccafs.ap.data.dao.DAOManager;
-import org.cgiar.ccafs.ap.data.dao.IPElementDAO;
-
 import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -28,6 +24,9 @@ import java.util.List;
 import java.util.Map;
 
 import com.google.inject.Inject;
+import org.cgiar.ccafs.ap.config.APConstants;
+import org.cgiar.ccafs.ap.data.dao.DAOManager;
+import org.cgiar.ccafs.ap.data.dao.IPElementDAO;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -254,7 +253,7 @@ public class MySQLIPElementDAO implements IPElementDAO {
   }
 
   @Override
-  public List<Map<String, String>> getIPElement(String[] elementIds) {
+  public List<Map<String, String>> getIPElements(String[] elementIds) {
     LOG.debug(">> getIPElement( elementIds = {} )", Arrays.toString(elementIds));
     int elementsCount = elementIds.length;
 

@@ -21,8 +21,8 @@ function attachEvents(){
   // isGlobale Change
   $("#isGlobal").on("change", changeGlobalState);
   
-  $("[name$='geoPosition.latitude'], [name$='geoPosition.longitude']").on("keyup", updateMarker);
-  $("[name$='geoPosition.latitude'], [name$='geoPosition.longitude']").on("focus", selectMarker);
+  $("[name$='geoPosition.latitude'], [name$='geoPosition.longitude']").on("keyup", markerAction);
+  $("[name$='geoPosition.latitude'], [name$='geoPosition.longitude']").on("focus", markerAction);
   
   $("#fileBrowserLauncher").click(function(event){
     event.preventDefault();
@@ -34,19 +34,18 @@ function attachEvents(){
 function changeGlobalState(e){
   if ($(e.target).is(':checked')) {
     $("#locationsBlock").fadeOut("slow");
-    $("#addPartnerText").fadeOut("slow");
+    $(".uploadFileMessage").fadeOut("slow");
     disableLocations(true);
     clearMarkers();
     $("#activityLocations-map").html("<img id='global' src='../../../images/global/global-map.png'/>" + "<p class='global'>" + $("#isGlobalText").val() + "</p>");
     
   } else {
     $("#locationsBlock").fadeIn("slow");
-    $("#addPartnerText").fadeIn("slow");
+    $(".uploadFileMessage").fadeIn("slow");
     disableLocations(false);
     loadMap();
     showMarkers();
   }
-  
 }
 
 function disableLocations(state){
@@ -66,6 +65,7 @@ function addLocationEvent(e){
   $newElement.fadeIn("slow");
   setLocationIndex();
 }
+
 function removeLocationEvent(e){
   e.preventDefault();
   var locationId = $(e.target).parent().attr("id").split("-")[1];
@@ -262,21 +262,27 @@ function setLocationsMarkers(){
   });
 }
 
-function updateMarker(e){
+function markerAction(e){
+  console.log(e.type);
   var $parent = $(e.target).parent().parent().parent();
   var locationId = $parent.attr("id").split("-")[1];
+  var $coordinatesFields = $parent.find("[name$='geoPosition.longitude'],[name$='geoPosition.latitude']");
   var latitude = $parent.find("[name$='geoPosition.latitude']").val();
   var longitude = $parent.find("[name$='geoPosition.longitude']").val();
-  markers[locationId].setPosition(new google.maps.LatLng(latitude, longitude));
-}
-
-function selectMarker(e){
-  var locationId = $(e.target).parent().parent().parent().attr("id").split("-")[1];
   var marker = markers[locationId];
-  marker.setAnimation(google.maps.Animation.BOUNCE);
-  setTimeout(function(){
-    marker.setAnimation(null);
-  }, 1000);
+  if (isCoordinateValid(latitude, longitude)) {
+    if (e.type == "keyup") {
+      marker.setPosition(new google.maps.LatLng(latitude, longitude));
+    } else if (e.type == "focus") {
+      marker.setAnimation(google.maps.Animation.BOUNCE);
+      setTimeout(function(){
+        marker.setAnimation(null);
+      }, 1000);
+    }
+    $coordinatesFields.removeClass("fieldError");
+  } else {
+    $coordinatesFields.addClass("fieldError");
+  }
 }
 
 function makeMarker(data){

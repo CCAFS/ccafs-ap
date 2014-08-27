@@ -72,8 +72,9 @@ ul.fieldError li {
 }
 
 textarea.fieldError, input.fieldError,textarea.fieldError:focus, input.fieldError:focus{
-  border-color: #FF6C6C;
-  background-color: #FFEFEF;
+  border-color: #F44 !important;
+  background-color: #FFFAFA;
+  color: #EE1D1D !important;
 }
 
 p.fieldError{
@@ -1558,6 +1559,10 @@ table tr.row:hover{
   margin-bottom: 20px;
 }
 
+p#fileUploadText {
+  margin: 30px 0;
+}
+
 /****** REPORTING **********/
 /********* Activity Reporting Sub Menu **********/
 #stageMenu {
@@ -1572,7 +1577,7 @@ table tr.row:hover{
   background-repeat: no-repeat; 
   float: left;
   color: #585858;
-  width: 163px; 
+  width: 174px; 
   height: 43px; 
 }
 
@@ -2004,7 +2009,6 @@ background: #E0E0E0;
 #centres-logos img{
     margin:10px 
 }
-
 
 #footerContainer #centres-logos {
   margin-left: 40px;  

@@ -108,7 +108,7 @@ public interface IPElementDAO {
    * @param elementIds - Array of ipElements identifiers
    * @return a list of maps with the information
    */
-  public List<Map<String, String>> getIPElement(String[] elementIds);
+  public List<Map<String, String>> getIPElements(String[] elementIds);
 
   /**
    * Get all the ipElements presents in the database

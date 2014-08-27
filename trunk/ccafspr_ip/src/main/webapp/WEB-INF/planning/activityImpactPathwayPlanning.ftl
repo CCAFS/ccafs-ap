@@ -101,8 +101,9 @@
                           [/#if]
                         [/#list]
                       [/#if]
+                      
                   </div>
-                [/#list]
+                [/#list]  
               [/#if]
             </div>
           
