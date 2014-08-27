@@ -4,6 +4,7 @@ elements['edges'] = [];
 var x = {};
 var y = 100;
 var count = {};
+var present = {};
 var graphStarted = false;
 var fullImpact = false;
 
@@ -113,8 +114,9 @@ function callCytos(url,contentDiv) {
 		
 	    $.each(data, function(key, val) {
 	      if (key == 'ipElements') {
-	        $.each(val, function(attr, item) {
+	        $.each(val, function(attr, item) {	        
 	          if (item.type.id != 1) {
+	        	  present[item.id] = 1;
 	        	  if (!count[item.type.id+'-'+item.program.id])
 	                  count[item.type.id+'-'+item.program.id] = 1;
 	            elements['nodes'].push(
@@ -137,11 +139,13 @@ function callCytos(url,contentDiv) {
 	        });
 	      } else if (key == 'relations') {
 	        $.each(val, function(attr, item) {
-	          elements['edges'].push({data: {id: item.id.toString(), weight: 2, source: item.parentID, target: item.childID}});
+	        	if (present[item.parentID]) {
+	        		elements['edges'].push({data: {id: item.id.toString(), weight: 2, source: item.parentID, target: item.childID}});
+	        	}
 	        });
 	      }
 	    });
-	    //console.log(JSON.stringify(elements, null, 4));
+	    //console.log(JSON.stringify(present, null, 4));
 	    cy = cytoscape({
 	      container: $('#'+contentDiv)[0],
 	      style: cytoscape.stylesheet()
@@ -250,9 +254,11 @@ function callCytos(url,contentDiv) {
     	  var elems = cy.elements("edge");
     	  elems.css( 'line-color', '#ddd' );
     	  elems.css( 'source-arrow-color', '#ddd' );
+    	  elems.css( 'z-index', '1' );
     	  var elems = cy.elements("node");
     	  elems.css( 'background-opacity', '0.2' );
     	  elems.css( 'text-opacity', '0.2' );
+    	  elems.css( 'z-index', '2' );
     	  if( evtTarget === cy ){    	  
     		  var elems = cy.elements("node");
         	  elems.css( 'background-opacity', '1' );
@@ -261,6 +267,7 @@ function callCytos(url,contentDiv) {
     		  if(evtTarget.isEdge()) {
     			  evtTarget.css( 'line-color', '#444' );
     			  evtTarget.css( 'source-arrow-color', '#444' );
+    			  evtTarget.css( 'z-index', '3' );
     			  var sons = evtTarget.connectedNodes();
     			  sons.css( 'background-opacity', '1' );
     			  sons.css( 'text-opacity', '1' );
@@ -277,6 +284,7 @@ function callCytos(url,contentDiv) {
 	    	targets = node.connectedEdges('edge[target="'+node.id()+'"]');
 	    	targets.css( 'line-color', '#444' );
 	    	targets.css( 'source-arrow-color', '#444' );
+	    	targets.css( 'z-index', '3' );
 	    	targets.sources().css( 'background-opacity', '1' );
 	    	targets.sources().css( 'text-opacity', '1' );
 	    	targets.sources().each(function(i, ele){
@@ -287,6 +295,7 @@ function callCytos(url,contentDiv) {
 	    	sources = node.connectedEdges('edge[source="'+node.id()+'"]');
 	    	sources.css( 'line-color', '#444' );
 	    	sources.css( 'source-arrow-color', '#444' );
+	    	sources.css( 'z-index', '3' );
 	    	sources.targets().css( 'background-opacity', '1' );
 	    	sources.targets().css( 'text-opacity', '1' );
 	    	//if (sources){
