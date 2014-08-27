@@ -132,6 +132,42 @@ public class MySQLDeliverableDAO implements DeliverableDAO {
 
 
   @Override
+  public List<Map<String, String>> getDeliverableContributions(int deliverableID) {
+    List<Map<String, String>> deliverableContributionList = new ArrayList<>();
+    LOG.debug(">> getDeliverableContributions deliverableID = {} )", deliverableID);
+
+    StringBuilder query = new StringBuilder();
+    query.append("SELECT ipe.id,ipe.description ");
+    query.append("FROM ip_deliverable_contributions ipd ");
+    query.append("INNER JOIN deliverables d ON ipd.deliverable_id=d.id ");
+    query.append("INNER JOIN ip_activity_contributions ipac ON ipd.activity_contribution_id=ipac.id ");
+    query.append("INNER JOIN ip_elements ipe ON ipac.ip_element_id=ipe.id ");
+    query.append("WHERE ipd.deliverable_id= ");
+    query.append(deliverableID);
+
+    try (Connection con = databaseManager.getConnection()) {
+      ResultSet rs = databaseManager.makeQuery(query.toString(), con);
+      while (rs.next()) {
+        Map<String, String> activityContributionData = new HashMap<String, String>();
+        activityContributionData.put("id", rs.getString("id"));
+        activityContributionData.put("description", rs.getString("description"));
+
+        deliverableContributionList.add(activityContributionData);
+      }
+      rs.close();
+    } catch (SQLException e) {
+      String exceptionMessage = "-- executeQuery() > Exception raised trying ";
+      exceptionMessage += "to execute the following query " + query;
+
+      LOG.error(exceptionMessage, e);
+    }
+
+    LOG.debug("<< getDeliverableContributions():deliverableContributionList.size={}",
+      deliverableContributionList.size());
+    return deliverableContributionList;
+  }
+
+  @Override
   public List<Map<String, String>> getDeliverablesByActivity(int activityID) {
     LOG.debug(">> getDeliverablesByActivity activityID = {} )", activityID);
 

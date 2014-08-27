@@ -18,6 +18,7 @@ import org.cgiar.ccafs.ap.data.manager.DeliverableManager;
 import org.cgiar.ccafs.ap.data.manager.DeliverableTypeManager;
 import org.cgiar.ccafs.ap.data.manager.NextUserManager;
 import org.cgiar.ccafs.ap.data.model.Deliverable;
+import org.cgiar.ccafs.ap.data.model.IPElement;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -72,11 +73,26 @@ public class DeliverableManagerImpl implements DeliverableManager {
       deliverable.setTitle(deliverableData.get("title"));
       deliverable.setYear(Integer.parseInt(deliverableData.get("year")));
       deliverable
-      .setType(deliverableTypeManager.getDeliverableTypeById(Integer.parseInt(deliverableData.get("type_id"))));
+        .setType(deliverableTypeManager.getDeliverableTypeById(Integer.parseInt(deliverableData.get("type_id"))));
       deliverable.setNextUsers(nextUserManager.getNextUsersByDeliverableId(deliverableID));
       return deliverable;
     }
     return null;
+  }
+
+  @Override
+  public List<IPElement> getDeliverableContributions(int deliverableID) {
+    List<IPElement> deliverableContributionsList = new ArrayList<>();
+    List<Map<String, String>> deliverableContributionDataList = deliverableDAO.getDeliverablesByActivity(deliverableID);
+    for (Map<String, String> deliverableData : deliverableContributionDataList) {
+      IPElement deliverableContributions = new IPElement();
+      deliverableContributions.setId(Integer.parseInt(deliverableData.get("id")));
+      deliverableContributions.setDescription(deliverableData.get("descritpion"));
+
+      // adding information of the object to the array
+      deliverableContributionsList.add(deliverableContributions);
+    }
+    return deliverableContributionsList;
   }
 
   @Override
@@ -89,7 +105,7 @@ public class DeliverableManagerImpl implements DeliverableManager {
       deliverable.setTitle(deliverableData.get("title"));
       deliverable.setYear(Integer.parseInt(deliverableData.get("year")));
       deliverable
-      .setType(deliverableTypeManager.getDeliverableTypeById(Integer.parseInt(deliverableData.get("type_id"))));
+        .setType(deliverableTypeManager.getDeliverableTypeById(Integer.parseInt(deliverableData.get("type_id"))));
       deliverable.setNextUsers(nextUserManager.getNextUsersByDeliverableId(activityID));
 
       // adding information of the object to the array
