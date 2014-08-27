@@ -1496,13 +1496,19 @@ table tr.row:hover{
     border: 4px solid #EBEBEB;
 }
 #activityLocations-map p.global {
-	position: absolute;
-	top: 42%;
-	left: 40%;
-	font-size: 4em;
-	font-weight: bold;
-	color: #FFF;
-	text-shadow: 1px 1px 7px #616161;
+  position: absolute;
+  top: 42%;
+  left: 40%;
+  font-size: 4em;
+  font-weight: bold;
+  color: #FFF;
+  text-shadow: 1px 1px 7px #616161;
+}
+
+#activityLocations-map .infoWindow{
+  width: auto;
+  height: 20px;
+  text-align: center;
 }
 
 #activityGlobalBlock{
