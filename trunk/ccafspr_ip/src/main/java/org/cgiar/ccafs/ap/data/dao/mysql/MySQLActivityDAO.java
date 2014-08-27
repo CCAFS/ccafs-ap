@@ -170,6 +170,9 @@ public class MySQLActivityDAO implements ActivityDAO {
         activityData.put("leader_id", rs.getString("leader_id"));
         activityData.put("expected_leader_id", rs.getString("expected_leader_id"));
         activityData.put("created", rs.getTimestamp("created").getTime() + "");
+        if (rs.getString("is_global") != null) {
+          activityData.put("is_global", rs.getString("is_global"));
+        }
 
       }
       con.close();
@@ -321,6 +324,9 @@ public class MySQLActivityDAO implements ActivityDAO {
         activityData.put("leader_id", rs.getString("leader_id"));
         activityData.put("expected_leader_id", rs.getString("expected_leader_id"));
         activityData.put("created", rs.getTimestamp("created").getTime() + "");
+        if (rs.getString("is_global") != null) {
+          activityData.put("is_global", rs.getString("is_global"));
+        }
 
         activitiesList.add(activityData);
       }
@@ -402,15 +408,16 @@ public class MySQLActivityDAO implements ActivityDAO {
     } else {
       // update activity record
       query
-        .append("UPDATE activities SET title = ?, description = ?, startDate = ?, endDate = ?, expected_leader_id = ? ");
+        .append("UPDATE activities SET title = ?, description = ?, startDate = ?, endDate = ?, expected_leader_id = ?, is_global=? ");
       query.append("WHERE id = ? ");
-      values = new Object[6];
+      values = new Object[7];
       values[0] = activityData.get("title");
       values[1] = activityData.get("description");
       values[2] = activityData.get("startDate");
       values[3] = activityData.get("endDate");
       values[4] = activityData.get("expected_leader_id");
-      values[5] = activityData.get("id");
+      values[5] = activityData.get("is_global");
+      values[6] = activityData.get("id");
       int result = databaseManager.saveData(query.toString(), values);
       if (result == -1) {
         LOG.error("A problem happened trying to update the activity identified with the id = {}",

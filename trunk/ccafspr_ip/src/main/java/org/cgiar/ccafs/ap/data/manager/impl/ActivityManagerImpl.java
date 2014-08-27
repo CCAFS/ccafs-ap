@@ -118,6 +118,9 @@ public class ActivityManagerImpl implements ActivityManager {
         if (activityData.get("leader_id") != null) {
           activity.setLeader(userManager.getOwner(Integer.parseInt(activityData.get("leader_id"))));
         }
+        if (activityData.get("is_global") != null) {
+          activity.setGlobal((activityData.get("is_global").equals("1")));
+        }
       }
       activity.setCreated(Long.parseLong(activityData.get("created")));
 
@@ -159,6 +162,9 @@ public class ActivityManagerImpl implements ActivityManager {
       }
       if (activityData.get("leader_id") != null) {
         activity.setLeader(userManager.getOwner(Integer.parseInt(activityData.get("leader_id"))));
+      }
+      if (activityData.get("is_global") != null) {
+        activity.setGlobal(activityData.get("is_global").equals("1"));
       }
       activity.setCreated(Long.parseLong(activityData.get("created")));
       return activity;
@@ -255,6 +261,7 @@ public class ActivityManagerImpl implements ActivityManager {
     if (activity.getExpectedLeader() != null) {
       activityData.put("expected_leader_id", activity.getExpectedLeader().getId());
     }
+    activityData.put("is_global", activity.isGlobal());
     return activityDAO.saveActivity(projectID, activityData);
   }
 
