@@ -44,8 +44,7 @@ import org.slf4j.LoggerFactory;
  */
 public class ActivityBudgetAction extends BaseAction {
 
-
-  private static final long serialVersionUID = 3608571686281015085L;
+  private static final long serialVersionUID = -5205284667878145240L;
 
   public static Logger LOG = LoggerFactory.getLogger(ActivityBudgetAction.class);
 
@@ -90,10 +89,10 @@ public class ActivityBudgetAction extends BaseAction {
   /**
    * This method returns a Map of Budgets. The key of this map is a composition of the year, the institution id and the
    * type.
-   * e.g. 2014-9-ACTIVITY
-   * Where 2014 is the year, 9 is the institution identifier and ACTIVITY is the budget type.
+   * e.g. 2014-9-ActivityID
+   * Where 2014 is the year, 9 is the institution identifier and ActivityID is the budget type.
    * If the budget is not in the database, this method will create a new one with an id=-1 and amount=0.
-   * 
+   *
    * @return a Map of budgets as was described above.
    */
   private Map<String, Budget> generateMapBudgets(int year) {
@@ -107,7 +106,7 @@ public class ActivityBudgetAction extends BaseAction {
           if (budget.getType().getValue() == BudgetType.ACTIVITY.getValue()) {
             activtyBudget = true;
             budgetsMap
-              .put(year + "-" + activityPartner.getPartner().getId() + "-" + BudgetType.ACTIVITY.name(), budget);
+            .put(year + "-" + activityPartner.getPartner().getId() + "-" + BudgetType.ACTIVITY.name(), budget);
           }
         }
       }
@@ -143,11 +142,9 @@ public class ActivityBudgetAction extends BaseAction {
       newBudget.setAmount(0);
       newBudget.setYear(year);
       budgetsMap
-        .put(year + "-" + activity.getLeader().getCurrentInstitution().getId() + "-" + BudgetType.ACTIVITY.name(),
-          newBudget);
+      .put(year + "-" + activity.getLeader().getCurrentInstitution().getId() + "-" + BudgetType.ACTIVITY.name(),
+        newBudget);
     }
-
-
     return budgetsMap;
   }
 
@@ -159,16 +156,13 @@ public class ActivityBudgetAction extends BaseAction {
     return activityID;
   }
 
-
   public User getActivityLeader() {
     return activityLeader;
   }
 
-
   public List<ActivityPartner> getActivityPartners() {
     return activityPartners;
   }
-
 
   public String getActivityRequest() {
     return APConstants.ACTIVITY_REQUEST_ID;
@@ -202,16 +196,13 @@ public class ActivityBudgetAction extends BaseAction {
     return year;
   }
 
-
   public boolean isHasLeader() {
     return hasLeader;
   }
 
-
   public boolean isInvalidYear() {
     return invalidYear;
   }
-
 
   @Override
   public String next() {
@@ -223,23 +214,21 @@ public class ActivityBudgetAction extends BaseAction {
     }
   }
 
-
   @Override
   public void prepare() throws Exception {
     super.prepare();
 
     // Getting the activity id from the URL parameters.
     // It's assumed that the project parameter is ok. (@See ValidateProjectParameterInterceptor)
-    // TODO HT review this please
     String parameter;
     activityID = Integer.parseInt(StringUtils.trim(this.getRequest().getParameter(APConstants.ACTIVITY_REQUEST_ID)));
 
-    // Getting the project identified with the id parameter.
+    // Getting the activity identified with the id parameter.
     activity = activityManager.getActivityById(activityID);
-    // Getting the project
+    // Getting the project where this activity belongs to.
     project = projectManager.getProjectFromActivityId(activityID);
 
-    // Getting all the years of the project.
+    // Getting all the years of the activity.
     allYears = activity.getAllYears();
     // If there are not years, we stop here.
     if (allYears.size() > 0) {
@@ -257,6 +246,7 @@ public class ActivityBudgetAction extends BaseAction {
         return; // Stop here and go to the execute method.
       }
 
+      // Validating if the year requested in the URL is part of the activity years.
       if (allYears.contains(new Integer(year))) {
         // We validate if the partner leader is already in the employees table. If so, we get this
         // information. If not, we load the information from expected project leader.
@@ -267,7 +257,7 @@ public class ActivityBudgetAction extends BaseAction {
         } else {
           activity.setLeader(activityManager.getExpectedActivityLeader(activityID));
         }
-        // if the project leader is not defined, stop here.
+        // if the project leader is still not defined, stop here.
         if (activity.getLeader() != null) {
 
           // Getting the Total Overall Project Budget
@@ -311,28 +301,32 @@ public class ActivityBudgetAction extends BaseAction {
         invalidYear = true;
       }
     }
+    this.setSaveable(false);
   }
 
 
   @Override
   public String save() {
-    boolean success = true;
-// boolean deleted = true;
+    if (this.isSaveable()) {
+      boolean success = true;
 
-    // Saving project budgets
-    for (Budget budget : activity.getBudgets()) {
-      boolean saved = budgetManager.saveActivityBudget(activityID, budget);
-      if (!saved) {
-        success = false;
+      // Saving project budgets
+      for (Budget budget : activity.getBudgets()) {
+        boolean saved = budgetManager.saveActivityBudget(activityID, budget);
+        if (!saved) {
+          success = false;
+        }
       }
-    }
 
-    if (!success) {
-      addActionError(getText("saving.problem"));
-      return BaseAction.INPUT;
+      if (!success) {
+        addActionError(getText("saving.problem"));
+        return BaseAction.INPUT;
+      } else {
+        addActionMessage(getText("saving.success", new String[] {getText("planning.activityBudget.title")}));
+        return BaseAction.SUCCESS;
+      }
     } else {
-      addActionMessage(getText("saving.success", new String[] {getText("preplanning.projectBudget.title")}));
-      return BaseAction.SUCCESS;
+      return BaseAction.NOT_AUTHORIZED;
     }
   }
 

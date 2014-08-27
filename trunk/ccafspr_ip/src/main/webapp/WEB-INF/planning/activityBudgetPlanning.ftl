@@ -33,43 +33,47 @@
         </p>
       [/#if]
       <h1 class="contentTitle">
-      [@s.text name="planning.activityBudget.title" /] 
+        [@s.text name="planning.activityBudget.title" /] 
       </h1> 
       [#if allYears?has_content]
-      [#if invalidYear == false]
-        [#if hasLeader]
-          [#-- Total CCAFS budget--]
-          <div id="totalBudget" class="halfPartBlock">
-            <h6>[@s.text name="planning.activityBudget.totalBudget" /]</h6>
-            <p id="activityTotal">US$ <span id="activityTotalBudget">${totalActivitiesBudget?string(",##0.00")}</span></p>
-            <input type="hidden" id="activityTotalBudget" value="${totalActivitiesBudget?c}" />
-            <input type="hidden" id="yearTotalBudget" value="${totalActivitiesBudgetByYear?c}" />
-          </div> 
-          [#-- Tertiary Menu - All years --] 
-          <div id="budgetTables" class="ui-tabs ui-widget ui-widget-content ui-corner-all" style="display:none"> 
-            <ul class="ui-tabs-nav ui-helper-reset ui-helper-clearfix ui-widget-header ui-corner-all">
-              [#list allYears as yearMenu]
-                <li class="ui-state-default ui-corner-top [#if yearMenu=year ]ui-tabs-active ui-state-active ui-state-hover[/#if]">
-                  <a href="[@s.url action='activityBudget' includeParams='get'][@s.param name='${activityRequest}']${activity.id?c}[/@s.param][@s.param name='year']${yearMenu?c}[/@s.param][/@s.url]"> ${yearMenu?c} </a>
-                </li>
-              [/#list]
-            </ul>
-            [@s.set var="counter" value="0"/] 
-              <div id="partnerTables-${year?c}" class="partnerTable ui-tabs-panel ui-widget-content ui-corner-bottom clearfix"> 
+        [#if invalidYear == false]
+          [#if hasLeader]
+            [#-- Total CCAFS budget--]
+            <div id="totalBudget" class="halfPartBlock">
+              <h6>[@s.text name="planning.activityBudget.totalBudget" /]</h6>
+              <p id="activityTotal">US$ <span id="activityTotalBudget">${totalActivitiesBudget?string(",##0.00")}</span></p>
+              <input type="hidden" id="activityTotalBudget" value="${totalActivitiesBudget?c}" />
+              <input type="hidden" id="yearTotalBudget" value="${totalActivitiesBudgetByYear?c}" />
+            </div> 
+            [#-- Tertiary Menu - All years --] 
+            <div id="budgetTables" class="ui-tabs ui-widget ui-widget-content ui-corner-all" style="display:none"> 
+              <ul class="ui-tabs-nav ui-helper-reset ui-helper-clearfix ui-widget-header ui-corner-all">
+                [#list allYears as yearMenu]
+                  <li class="ui-state-default ui-corner-top [#if yearMenu=year ]ui-tabs-active ui-state-active ui-state-hover[/#if]">
+                    <a href="[@s.url action='activityBudget' includeParams='get'][@s.param name='${activityRequest}']${activity.id?c}[/@s.param][@s.param name='year']${yearMenu?c}[/@s.param][/@s.url]"> ${yearMenu?c} </a>
+                  </li>
+                [/#list]
+              </ul>
+              [@s.set var="counter" value="0"/]
+              <div id="partnerTables-${year?c}" class="partnerTable ui-tabs-panel ui-widget-content ui-corner-bottom clearfix">
                 <table class="ccafsBudget fullPartBlock">
                   [#-- HEADERS --]
-                  <tr id="" class="ccafsBudget-head row">
+                  <tr class="ccafsBudget-head row">
                     [#-- Partner Name --]
-                    <td id="" class="grid_8"><h6 >[@s.text name="planning.activityBudget.partner" /]</h6></td> 
+                    <td class="grid_8">
+                      <h6>[@s.text name="planning.activityBudget.partner" /]</h6>
+                    </td> 
                     [#-- ACTIVITY title --]
-                    <td id="" class="grid_1"><h6 title="[@s.text name="planning.activityBudget.amount.tooltip" /]">[@s.text name="planning.activityBudget.amount" /]</h6></td> 
+                    <td id="" class="grid_1">
+                      <h6 title="[@s.text name="planning.activityBudget.amount.tooltip" /]">[@s.text name="planning.activityBudget.amount" /]</h6>
+                    </td> 
                   </tr>  
                   [#if activity.leader?has_content]
-                    <tr id="" class="row">
+                    <tr class="row">
                       [#-- Partner Leader Name --]
-                      <td id="" class="grid_8">${activity.leader.currentInstitution.name} <strong>([@s.text name="planning.activityBudget.partnerLead" /])</strong> </td> 
+                      <td class="grid_8">${activity.leader.currentInstitution.name} <strong>([@s.text name="planning.activityBudget.partnerLead" /])</strong> </td> 
                       [#--Activity Type --]
-                      <td id="" class="budgetContent grid_1">
+                      <td class="budgetContent grid_1">
                         <input type="hidden" name="activity.budgets[${counter}].id" value="${mapBudgets[year?c+'-'+activity.leader.currentInstitution.id?c+'-ACTIVITY'].id?c}" />
                         <input type="hidden" name="activity.budgets[${counter}].year" value="${year?c}" />
                         <input type="hidden" name="activity.budgets[${counter}].institution.id" value="${mapBudgets[year?c+'-'+activity.leader.currentInstitution.id?c+'-ACTIVITY'].institution.id?c}" />
@@ -82,8 +86,8 @@
                   [#list activityPartners as activityPartner ]
                     <tr id="partnerBudget-${activityPartner_index}" class="row">
                       [#-- Partner Name --]
-                      <td id="" class="grid_8">${activityPartner.partner.name}</td> 
-                      [#-- Activity Type --]                
+                      <td id="" class="grid_8">${activityPartner.partner.name}</td>
+                      [#-- Activity Type --]
                       <td id="" class="budgetContent grid_1">
                         <input type="hidden" name="activity.budgets[${counter}].id" value="${mapBudgets[year?c+'-'+activityPartner.partner.id?c+'-ACTIVITY'].id?c}" />
                         <input type="hidden" name="activity.budgets[${counter}].year" value="${year?c}" />
@@ -93,30 +97,32 @@
                         [@s.set var="counter" value="${counter+1}"/]
                       </td>
                     </tr>
-                  [/#list] 
-                </table>  
+                  [/#list]
+                </table>
                 <hr>
-                <div class="partnerListMsj">
-                  [@s.text name="planning.activityBudget.partnerNotList" /]
-                  <a href="[@s.url action='activityPartners' includeParams='get'][@s.param name='activityID']${activity.id?c}[/@s.param][/@s.url]"> 
-                    [@s.text name="planning.activityBudget.partnersLink" /] 
-                  </a>
-                </div> 
-             </div>
-          </div> <!-- End budgetTables -->
-      [#else]
+                [#if saveable]
+                  <div class="partnerListMsj">
+                    [@s.text name="planning.activityBudget.partnerNotList" /]
+                    <a href="[@s.url action='activityPartners' includeParams='get'][@s.param name='activityID']${activity.id?c}[/@s.param][/@s.url]"> 
+                      [@s.text name="planning.activityBudget.partnersLink" /]
+                    </a>
+                  </div>
+                [/#if]
+              </div> <!-- End partnerTables-${year?c} -->
+            </div> <!-- End budgetTables -->
+          [#else] [#-- Else - hasLeader --]
             [#-- If activity leader is not defined --]
             <p>[@s.text name="planning.activityBudget.message.leaderUndefined" /]</p>
           [/#if]
-        [#else]
+        [#else] [#-- Else - invalidYear --]
           <p>[@s.text name="planning.activityBudget.message.invalidYear" /]</p>
         [/#if]
-      [#else]
+      [#else] [#-- Else - allYears has content --]
         [#-- If the activity has not an start date and/or end date defined --]
         <p>[@s.text name="planning.activityBudget.message.dateUndefined" /]</p>
       [/#if]
       [#if saveable]
-        <input type="hidden" name="year" value="${year}">
+        <input type="hidden" name="year" value="${year?c}">
         <input type="hidden" name="activityID" value="${activity.id?c}">
         <div class="buttons">
           [@s.submit type="button" name="save"][@s.text name="form.buttons.save" /][/@s.submit]
@@ -124,7 +130,7 @@
           [@s.submit type="button" name="cancel"][@s.text name="form.buttons.cancel" /][/@s.submit]
         </div>
       [/#if]
-  </article>
-  [/@s.form]  
+    </article>
+  [/@s.form]
 </section>
 [#include "/WEB-INF/global/pages/footer.ftl"]
