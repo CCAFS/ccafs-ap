@@ -7,13 +7,14 @@ function init(){
   attachEvents();
   addChosen();
   applyWordCounter($("textarea"), lWordsElemetDesc);
+  $("select[id$='mainType']").trigger('change');
 }
 
 function attachEvents(){
   // Deliverables Events
   $(".removeDeliverable, .removeNextUser").click(removeElementEvent);
   $("#addDeliverable").on("click", addDeliverableEvent);
-  
+  $("select[id$='mainType']").change(updateDeliverableSubTypeList);
   // Next users events
   $(".addActivityNextUser").on("click", addNextUserEvent);
 }
@@ -80,4 +81,27 @@ function setDeliverablesIndexes(){
       
     });
   });
+}
+
+function updateDeliverableSubTypeList(event){
+  var $mainTypeSelect = $(event.target);
+  var blockIndex = $("select[id$='mainType']").index($mainTypeSelect);
+  var $subTypeSelect = $("#activityDeliverable-" + blockIndex + " select[name$='type'] ");
+
+  var source = "../../../json/deliverablesByType.do?deliverableTypeID=" + $mainTypeSelect.val();
+  $.getJSON(source)
+  .done(function(data){
+    // First delete all the options already present in the subtype select
+    $subTypeSelect.find("option").remove();
+    
+    $.each(data.subTypes, function(index, subType){
+      var optionElement = "<option value='"+ subType.id +"'>" + subType.name + "</option>";
+      $subTypeSelect.append(optionElement);
+    });
+    // Refresh the plugin in order to show the changes
+    $subTypeSelect.trigger("liszt:updated");
+  }).fail(function(){
+    console.log("error");
+  });
+  
 }
