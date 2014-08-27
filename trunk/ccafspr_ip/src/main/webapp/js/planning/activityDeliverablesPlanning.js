@@ -69,7 +69,7 @@ function setDeliverablesIndexes(){
     
     // Update index for nexts users
     $(element).find(".activityNextUser").each(function(i,nextUser){
-      var elementName = "deliverables[" + index + "].nextUsers[" + i + "].";
+      var elementName = "activity.deliverables[" + index + "].nextUsers[" + i + "].";
       $(nextUser).attr("id", "activityNextUser-" + index);
       $(nextUser).find("span#index").html(i + 1);
       

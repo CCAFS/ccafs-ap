@@ -29,7 +29,7 @@ public interface DeliverableTypeManager {
 
   /**
    * This method removes a specific deliverable type value from the database.
-   * 
+   *
    * @param deliverableTypeId is the deliverable type identifier.
    * @return true if the deliverable type was successfully deleted, false otherwise.
    */
@@ -37,29 +37,29 @@ public interface DeliverableTypeManager {
 
   /**
    * This method gets all the information of the Deliverable Type that belongs to another Deliverable Type
-   * 
+   *
    * @return a List of Deliverable Type related to a Parent Deliverable Type
    */
   public List<DeliverableType> getDeliverableSubTypes();
 
   /**
    * This method gets all the deliverable information by a given deliverable type ID.
-   * 
+   *
    * @param deliverableID is the deliverable type identifier.
    * @return a List of deliverables type objects.
    */
   public DeliverableType getDeliverableTypeById(int deliverableTypeID);
 
   /**
-   * This method gets all the Parent deliverables type information
-   * 
-   * @return a List of Parent deliverables type with the Information
+   * This method gets all the deliverables type that are main categories.
+   *
+   * @return a List of deliverables type with the Information requested.
    */
   public List<DeliverableType> getDeliverableTypes();
 
   /**
    * This method gets all the Deliverables type information by a given deliverable type ID
-   * 
+   *
    * @param typeID
    * @return a List of the Deliverables Type Information related to a specific Deliverable Type
    */
@@ -67,7 +67,7 @@ public interface DeliverableTypeManager {
 
   /**
    * This method saves the information of the given deliverable type into the database.
-   * 
+   *
    * @param deliverableTypeData
    * @return true if the activity was saved successfully, false otherwise.
    */
