@@ -54,13 +54,20 @@ public interface DeliverableDAO {
   public Map<String, String> getDeliverableById(int deliverableID);
 
   /**
+   * This method gets all the IP Element information related by a given Deliverable Id with an Activity Contribution
+   * 
+   * @param deliverableID - is the Id of the Deliverable
+   * @return a list of Map of IP Element related with the deliverable as Deliverable Contributions
+   */
+  public List<Map<String, String>> getDeliverableContributions(int deliverableID);
+
+  /**
    * This method gets all the Deliverable information by a given Activity Id
    * 
    * @param activityID - is the Id of the Activity
    * @return a List of Map of the Deliverables Information related with the activity
    */
   public List<Map<String, String>> getDeliverablesByActivity(int activityID);
-
 
   /**
    * This method saves the Deliverable information
