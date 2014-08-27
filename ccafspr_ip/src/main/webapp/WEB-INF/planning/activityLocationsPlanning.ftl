@@ -137,12 +137,16 @@
     [#-- Only the user with enough privileges to save can upload the file --]
     [#if saveable]
       [#-- File upload --]
-      <p id="addPartnerText" class="helpMessage">
-        [@s.text name="planning.activities.locations.uploadMessage" /]
-        <a id="fileBrowserLauncher" href=""> [@s.text name="planning.activities.locations.uploadMessageLink" /]</a>
-      </p>
-      <div style="display:none">
-        [@customForm.input name="excelTemplate" type="file" i18nkey="reporting.caseStudies.image" /]
+      <div class="uploadFileMessage">
+        <div class="halfPartBlock left">
+          [@customForm.input name="excelTemplate" type="file" i18nkey="planning.activities.locations.uploadMessage" /]
+        </div>
+        <div class="halfPartBlock right">
+          <a href="${baseUrl}/resources/locationTemplate/Activity_Location_Template.xlsx">
+            <img id="icon" src="${baseUrl}/images/global/icon-excel.png" />
+            <p id="downloadMessage">[@s.text name="planning.activities.locations.templateMessage" /]</p>
+          </a>
+        </div>
       </div>
     
       <!-- internal parameter -->
