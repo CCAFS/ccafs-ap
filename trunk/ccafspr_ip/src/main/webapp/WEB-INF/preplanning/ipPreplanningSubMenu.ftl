@@ -47,8 +47,8 @@
     </div>
     <div id="ipGraph-content"></div>
       [#if currentUser.FPL]
-    	<button id="ipGraph-btnFullimpact" class="ipGraph-btn">Full</button>
-    	<button style='display:none' id="ipGraph-btnSingleimpact" class="ipGraph-btn">Single</button>
+    	<button id="ipGraph-btnFullimpact" class="ipGraph-btn">[@s.text name="preplanning.ipGraph.all" /]</button>
+    	<button style='display:none' id="ipGraph-btnSingleimpact" class="ipGraph-btn">[@s.text name="preplanning.ipGraph.myFP" /]</button>
 	  [/#if]
 	<div id="ipGraph-buttonsGroup">
 	  <button id="ipGraph-btnPrint" class="ipGraph-btn" title="Print"></button>
