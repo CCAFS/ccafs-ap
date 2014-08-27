@@ -27,15 +27,15 @@
   [@s.form action="activityIpOtherContributions" cssClass="pure-form"]  
   <article class="halfContent" id=""> 
   [#include "/WEB-INF/planning/activityIP-planning-sub-menu.ftl" /]
+  [#-- Informing user that he/she doesnt have enough privileges to edit. See GrantActivityPlanningAccessInterceptor--]
+  [#if !saveable]
+    <p class="readPrivileges">
+      [@s.text name="saving.read.privileges"]
+        [@s.param][@s.text name="planning.impactPathways.otherContributions.title"/][/@s.param]
+      [/@s.text]
+    </p>
+  [/#if]
   <div class="borderBox">
-    [#-- Informing user that he/she doesnt have enough privileges to edit. See GrantActivityPlanningAccessInterceptor--]
-    [#if !saveable]
-      <p class="readPrivileges">
-        [@s.text name="saving.read.privileges"]
-          [@s.param][@s.text name="planning.activityImpactPathways.title"/][/@s.param]
-        [/@s.text]
-      </p>
-    [/#if]
     <h6 class="contentTitle">
     [@customForm.textArea name="activity.ipOtherContribution.contribution" i18nkey="planning.impactPathways.otherContributions.contribution" /]  
     </h6> <br/>

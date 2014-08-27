@@ -105,18 +105,20 @@ public class ActivityIPOtherContributionAction extends BaseAction {
 
   @Override
   public String save() {
-    // Saving Activity IP Other Contribution
-    System.out.println(activity.getIpOtherContribution());
-    boolean saved = ipOtherContributionManager.saveIPOtherContribution(activityID, activity.getIpOtherContribution());
+    if (this.isSaveable()) {
+      // Saving Activity IP Other Contribution
+      boolean saved = ipOtherContributionManager.saveIPOtherContribution(activityID, activity.getIpOtherContribution());
 
-    if (!saved) {
-      addActionError(getText("saving.problem"));
-      return BaseAction.INPUT;
-    } else {
-      addActionMessage(getText("saving.success",
-        new String[] {getText("planning.impactPathways.otherContributions.title")}));
-      return BaseAction.SUCCESS;
+      if (!saved) {
+        addActionError(getText("saving.problem"));
+        return BaseAction.INPUT;
+      } else {
+        addActionMessage(getText("saving.success",
+          new String[] {getText("planning.impactPathways.otherContributions.title")}));
+        return BaseAction.SUCCESS;
+      }
     }
+    return BaseAction.ERROR;
   }
 
 
