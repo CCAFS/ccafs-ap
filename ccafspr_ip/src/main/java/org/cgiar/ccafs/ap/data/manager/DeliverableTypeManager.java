@@ -60,7 +60,7 @@ public interface DeliverableTypeManager {
   /**
    * This method gets all the Deliverables type information by a given deliverable type ID
    *
-   * @param typeID
+   * @param typeID is the deliverable main type or parent id.
    * @return a List of the Deliverables Type Information related to a specific Deliverable Type
    */
   public List<DeliverableType> getDeliverableTypes(int typeID);

@@ -72,7 +72,7 @@ public class DeliverableManagerImpl implements DeliverableManager {
       deliverable.setTitle(deliverableData.get("title"));
       deliverable.setYear(Integer.parseInt(deliverableData.get("year")));
       deliverable
-        .setType(deliverableTypeManager.getDeliverableTypeById(Integer.parseInt(deliverableData.get("type_id"))));
+      .setType(deliverableTypeManager.getDeliverableTypeById(Integer.parseInt(deliverableData.get("type_id"))));
       deliverable.setNextUsers(nextUserManager.getNextUsersByDeliverableId(deliverableID));
       return deliverable;
     }
@@ -89,7 +89,7 @@ public class DeliverableManagerImpl implements DeliverableManager {
       deliverable.setTitle(deliverableData.get("title"));
       deliverable.setYear(Integer.parseInt(deliverableData.get("year")));
       deliverable
-        .setType(deliverableTypeManager.getDeliverableTypeById(Integer.parseInt(deliverableData.get("type_id"))));
+      .setType(deliverableTypeManager.getDeliverableTypeById(Integer.parseInt(deliverableData.get("type_id"))));
       deliverable.setNextUsers(nextUserManager.getNextUsersByDeliverableId(activityID));
 
       // adding information of the object to the array
@@ -99,8 +99,7 @@ public class DeliverableManagerImpl implements DeliverableManager {
   }
 
   @Override
-  public boolean saveDeliverable(int activityID, Deliverable deliverable) {
-    boolean allSaved = true;
+  public int saveDeliverable(int activityID, Deliverable deliverable) {
     Map<String, Object> deliverableData = new HashMap<>();
     if (deliverable.getId() > 0) {
       deliverableData.put("id", deliverable.getId());
@@ -119,10 +118,9 @@ public class DeliverableManagerImpl implements DeliverableManager {
     } else {
       LOG.error("saveDeliverable > There was an error trying to save/update a Deliverable from projectId={}",
         activityID);
-      allSaved = false;
     }
 
-    return allSaved;
+    return result;
 
   }
 }

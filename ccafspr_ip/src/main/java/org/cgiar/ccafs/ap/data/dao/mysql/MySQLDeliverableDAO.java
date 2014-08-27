@@ -165,9 +165,9 @@ public class MySQLDeliverableDAO implements DeliverableDAO {
 
     } else {
       // update deliverable record
-      query.append("UPDATE deliverables SET activity_id = ?, title = ?, type_id = ?, year = ?");
+      query.append("UPDATE deliverables SET activity_id = ?, title = ?, type_id = ?, year = ? ");
       query.append("WHERE id = ? ");
-      values = new Object[6];
+      values = new Object[5];
       values[0] = activityID;
       values[1] = deliverableData.get("title");
       values[2] = deliverableData.get("type_id");
