@@ -205,23 +205,23 @@ public class ProjectDescriptionPlanningAction extends BaseAction {
 
   @Override
   public String save() {
-
     if (this.isSaveable()) {
-      // Reviewing some change in the year range from start date to end date in order to reflect those changes in the
-      // project budget section.
-      List<Integer> currentYears = project.getAllYears();
-      List<Integer> previousYears = projectManager.getProject(project.getId()).getAllYears();
-      // Deleting unused years from project budget.
-      for (Integer previousYear : previousYears) {
-        if (!currentYears.contains(previousYear)) {
-          budgetManager.deleteBudgetsByYear(projectID, previousYear.intValue());
-        }
-      }
-
       // ----- SAVING Project description -----
       int result = 0;
       // if user is project owner or FPL/RPL, he is able to fully edit.
       if (this.isFullEditable()) {
+
+        // Reviewing some change in the year range from start date to end date in order to reflect those changes in the
+        // project budget section.
+        List<Integer> currentYears = project.getAllYears();
+        List<Integer> previousYears = projectManager.getProject(project.getId()).getAllYears();
+        // Deleting unused years from project budget.
+        for (Integer previousYear : previousYears) {
+          if (!currentYears.contains(previousYear)) {
+            budgetManager.deleteBudgetsByYear(projectID, previousYear.intValue());
+          }
+        }
+
         result = projectManager.saveProjectDescription(project);
 
         if (result < 0) {
@@ -344,9 +344,9 @@ public class ProjectDescriptionPlanningAction extends BaseAction {
       }
     } else {
       LOG
-        .warn(
-          "User (employee_id={}, email={}) tried to save information in Project Description without having enough privileges!",
-          new Object[] {this.getCurrentUser().getEmployeeId(), this.getCurrentUser().getEmail()});
+      .warn(
+        "User (employee_id={}, email={}) tried to save information in Project Description without having enough privileges!",
+        new Object[] {this.getCurrentUser().getEmployeeId(), this.getCurrentUser().getEmail()});
     }
     return BaseAction.ERROR;
 

@@ -161,7 +161,7 @@ public class ActivityPartnersAction extends BaseAction {
         }
       }
 
-      // Getting previous Activity Institutions
+      // --- Getting previous Activity Institutions
       List<Institution> previousInstitutions = new ArrayList<>();
       for (ActivityPartner activityPartner : previousActivityPartners) {
         previousInstitutions.add(activityPartner.getPartner());
