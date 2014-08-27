@@ -36,6 +36,13 @@ public interface DeliverableDAO {
    */
   public boolean deleteDeliverable(int deliverableId);
 
+  /**
+   * Deletes the information of a Deliverable contribution by a given deliverable id
+   * 
+   * @param deliverableID - is the Id of an Deliverable
+   * @return true if the elements were deleted successfully. False otherwisem
+   */
+  public boolean deleteDeliverableOutput(int deliverableID);
 
   /**
    * Deletes the information of the Deliverable related by a given Activity id
@@ -59,7 +66,7 @@ public interface DeliverableDAO {
    * @param deliverableID - is the Id of the Deliverable
    * @return a list of Map of IP Element related with the deliverable as Deliverable Contributions
    */
-  public List<Map<String, String>> getDeliverableContributions(int deliverableID);
+  public Map<String, String> getDeliverableOutput(int deliverableID);
 
   /**
    * This method gets all the Deliverable information by a given Activity Id
@@ -78,5 +85,12 @@ public interface DeliverableDAO {
    */
   public int saveDeliverable(int activityID, Map<String, Object> deliverableData);
 
+  /**
+   * @param deliverableID
+   * @param ipElementID
+   * @param activityID
+   * @return
+   */
+  public int saveDeliverableOutput(int deliverableID, int ipElementID, int activityID);
 
 }
