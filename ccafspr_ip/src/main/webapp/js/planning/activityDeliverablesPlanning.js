@@ -14,6 +14,9 @@ function attachEvents(){
   // Deliverables Events
   $(".removeDeliverable, .removeNextUser").click(removeElementEvent);
   $("#addDeliverable").on("click", addDeliverableEvent);
+  $("select[id$='mainType']").each(function(){
+    console.log($(this).attr("id"));
+  });
   $("select[id$='mainType']").change(updateDeliverableSubTypeList);
   // Next users events
   $(".addActivityNextUser").on("click", addNextUserEvent);
@@ -37,7 +40,7 @@ function removeElementEvent(e){
 
 function addDeliverableEvent(e){
   e.preventDefault();
-  var $newElement = $("#activityDeliverableTemplate").clone(true).removeAttr("id").addClass("activityDeliverable");
+  var $newElement = $("#activityDeliverable-999").clone(true).removeAttr("id").addClass("activityDeliverable");
   $(e.target).parent().before($newElement);
   $newElement.find("select").chosen({
     search_contains : true
@@ -86,7 +89,14 @@ function setDeliverablesIndexes(){
 function updateDeliverableSubTypeList(event){
   var $mainTypeSelect = $(event.target);
   var blockIndex = $("select[id$='mainType']").index($mainTypeSelect);
-  var $subTypeSelect = $("#activityDeliverable-" + blockIndex + " select[name$='type'] ");
+  
+  // Check that the select is not inside the template
+  if($mainTypeSelect.attr("id") != "none_mainType"){
+    var $subTypeSelect = $("#activityDeliverable-" + blockIndex + " select[name$='type'] ");
+  } else {
+    // The template has index 999
+    var $subTypeSelect = $("#activityDeliverable-999 select[name$='type'] ");
+  }
 
   var source = "../../../json/deliverablesByType.do?deliverableTypeID=" + $mainTypeSelect.val();
   $.getJSON(source)
