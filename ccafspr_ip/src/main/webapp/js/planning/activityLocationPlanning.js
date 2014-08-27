@@ -287,7 +287,7 @@ function makeMarker(data){
     draggable : true,
     animation : google.maps.Animation.DROP
   });
-  var html = "<strong>" + data.name + "</strong>";
+  var html = "<div class='infoWindow'>" + data.name + "</div>";
   var infoWindow = new google.maps.InfoWindow;
   // Event when marker is clicked
   google.maps.event.addListener(marker, 'click', function(){
