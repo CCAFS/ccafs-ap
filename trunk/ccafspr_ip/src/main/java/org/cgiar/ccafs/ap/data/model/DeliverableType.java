@@ -13,8 +13,6 @@
  *****************************************************************/
 package org.cgiar.ccafs.ap.data.model;
 
-import java.util.List;
-
 import org.apache.commons.lang3.builder.ToStringBuilder;
 
 
@@ -31,7 +29,6 @@ public class DeliverableType {
   private String name;
   private int timeline; // in months.
   private DeliverableType category;
-  private List<IPElement> outputs;
 
   public DeliverableType() {
 
@@ -58,10 +55,6 @@ public class DeliverableType {
     return name;
   }
 
-  public List<IPElement> getOutputs() {
-    return outputs;
-  }
-
   public int getTimeline() {
     return timeline;
   }
@@ -81,10 +74,6 @@ public class DeliverableType {
 
   public void setName(String name) {
     this.name = name;
-  }
-
-  public void setOutputs(List<IPElement> outputs) {
-    this.outputs = outputs;
   }
 
   public void setTimeline(int timeline) {

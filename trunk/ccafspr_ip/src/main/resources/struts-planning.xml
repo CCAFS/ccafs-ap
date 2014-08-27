@@ -203,7 +203,7 @@
     </action>
         
     <action name="activityIpOtherContributions" class="org.cgiar.ccafs.ap.action.planning.ActivityIPOtherContributionAction">
-      <result name="input">/WEB-INF/planning/activityipOtherContributionPlanning.ftl</result>
+      <result name="input">/WEB-INF/planning/activityIPOtherContributionPlanning.ftl</result>
       <result name="success" type="redirectAction">   
         <param name="actionName">activityIpOtherContributions</param>   
         <param name="activityID">${activity.id}</param>   
