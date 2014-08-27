@@ -6,8 +6,15 @@ function init(){
 
 function attachEvents(){
   $("#activityImpactPathway_midOutcomesList").change(selectMidOutcomeEvent);
-  $('input[name^="activity.indicators"]').click(toogleIndicatorInfo)
+  $('input[name^="activity.indicators"]').click(toogleIndicatorInfo);
+  $(".removeContribution").click(removeContributionBlock);
 }
+
+function removeContributionBlock(event){
+  $(event.target).parent().fadeOut("slow");
+  $(event.target).parent().remove();
+}
+
 
 /**
  * This function is called when the user selects an outcome 2019 

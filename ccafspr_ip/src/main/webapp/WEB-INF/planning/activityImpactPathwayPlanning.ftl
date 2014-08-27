@@ -49,6 +49,20 @@
     </p>
     
     <div id="contributionsBlock" class="borderBox">
+      [#if midOutcomesSelected?has_content]
+        [#list midOutcomesSelected as midOutcome]
+          <div class="contribution borderBox">
+            [#-- Remove Contribution --]
+            <div id="removeContribution" class="removeContribution removeElement removeLink" title="[@s.text name="preplanning.midOutcomes.removeMidOutcome" /]"></div>
+          
+            [#-- Midoutcome title --]
+            <div class="midOutcomeTitle">
+              <h6>[@s.text name="planning.activityImpactPathways.outcome2019" /]</h6>
+              <p class="description"> ${midOutcome.description} </p>
+            </div>
+          </div>
+        [/#list]
+      [/#if]
     </div>
     
     <div id="midOutcomesSelect">

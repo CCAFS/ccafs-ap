@@ -27,6 +27,7 @@ CREATE TABLE IF NOT EXISTS `activities` (
   `description` text,
   `startDate` date DEFAULT NULL,
   `endDate` date DEFAULT NULL,
+  `is_global` tinyint(1) DEFAULT NULL,
   `expected_leader_id` bigint(20) DEFAULT NULL,
   `leader_id` bigint(20) DEFAULT NULL,
   `created` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
@@ -278,10 +279,13 @@ CREATE TABLE IF NOT EXISTS `institution_types` (
 CREATE TABLE IF NOT EXISTS `ip_activity_contributions` (
   `id` bigint(20) NOT NULL AUTO_INCREMENT,
   `activity_id` bigint(20) NOT NULL COMMENT 'This field is a foreign key to the table activities.',
-  `ip_element_id` bigint(20) NOT NULL COMMENT 'This field is a foreign key to the table IP Elements.\nThe vales referenced in this column should be of type ''Outputs'' but this constraint is checked at application level.',
+  `mog_id` BIGINT NOT NULL COMMENT 'This field is a foreign key to the table IP Elements.\nThe vales referenced in this column should be of type \'Outputs\' but this constraint is checked at application level.' ,
+  `midOutcome_id` BIGINT NOT NULL COMMENT 'This field is a foreign key to the table IP Elements.\nThe vales referenced in this column should be of type \'midOutcome\' but this constraint is checked at application level.' ,
   PRIMARY KEY (`id`),
+  UNIQUE KEY `UK_activity_contributions_unique` (`activity_id`,`mog_id`),
   KEY `FK_activities_ipElements_activityID_idx` (`activity_id`),
-  KEY `FK_activities_ipElements_ipElementID_idx` (`ip_element_id`)
+  KEY `FK_activities_ipElements_ipElementID_idx` (`mog_id` ASC) ,
+  KEY `FK_activities_midOutcome_ipElementID_idx` (`midOutcome_id` ASC)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 -- --------------------------------------------------------
@@ -839,8 +843,9 @@ ALTER TABLE `institution_locations`
 -- Filtros para la tabla `ip_activity_contributions`
 --
 ALTER TABLE `ip_activity_contributions`
-  ADD CONSTRAINT `FK_activities_ipElements_activityID` FOREIGN KEY (`activity_id`) REFERENCES `activities` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
-  ADD CONSTRAINT `FK_activities_ipElements_ipElementID` FOREIGN KEY (`ip_element_id`) REFERENCES `ip_elements` (`id`) ON DELETE CASCADE ON UPDATE CASCADE;
+  ADD CONSTRAINT `FK_activitiesContributions_ipElements_activityID` FOREIGN KEY (`activity_id`) REFERENCES `activities` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
+  ADD CONSTRAINT `FK_activitiesContributions_mog_ipElementID` FOREIGN KEY (`mog_id`) REFERENCES `ip_elements` (`id` ) ON DELETE CASCADE ON UPDATE CASCADE,
+  ADD CONSTRAINT `FK_activitiesContributions_midOutcome_ipElementID` FOREIGN KEY (`midOutcome_id` ) REFERENCES `ip_elements` (`id` ) ON DELETE CASCADE ON UPDATE CASCADE;
 
 --
 -- Filtros para la tabla `ip_activity_indicators`

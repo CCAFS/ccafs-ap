@@ -1,11 +1,5 @@
 package org.cgiar.ccafs.ap.action.planning;
 
-import java.io.File;
-import java.util.ArrayList;
-import java.util.List;
-
-import com.google.inject.Inject;
-import org.apache.commons.lang3.StringUtils;
 import org.cgiar.ccafs.ap.action.BaseAction;
 import org.cgiar.ccafs.ap.config.APConfig;
 import org.cgiar.ccafs.ap.config.APConstants;
@@ -22,6 +16,13 @@ import org.cgiar.ccafs.ap.data.model.Project;
 import org.cgiar.ccafs.ap.data.model.Region;
 import org.cgiar.ccafs.ap.util.FileManager;
 import org.cgiar.ccafs.ap.util.SendMail;
+
+import java.io.File;
+import java.util.ArrayList;
+import java.util.List;
+
+import com.google.inject.Inject;
+import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -144,46 +145,52 @@ public class ActivityLocationsPlanningAction extends BaseAction {
   public String save() {
     if (this.isSaveable()) {
       boolean success = true;
-      List<Location> locations = new ArrayList<Location>();
-      // Grouping regions in the locations list.
-      for (Region region : regionsSaved) {
-        if (region != null) {
-          locations.add(region);
-        }
-      }
-      // Grouping countries in the locations list.
-      for (Country country : countriesSaved) {
-        if (country != null) {
-          locations.add(country);
-        }
-      }
 
-      // Grouping other locations to the locations list.
-      for (OtherLocation location : otherLocationsSaved) {
-        if (location != null) {
-          locations.add(location);
+      if (activity.isGlobal()) {
+
+      } else {
+
+        List<Location> locations = new ArrayList<Location>();
+        // Grouping regions in the locations list.
+        for (Region region : regionsSaved) {
+          if (region != null) {
+            locations.add(region);
+          }
         }
-      }
+        // Grouping countries in the locations list.
+        for (Country country : countriesSaved) {
+          if (country != null) {
+            locations.add(country);
+          }
+        }
 
-      // Removing the existing locations
-      boolean removed = locationManager.removeActivityLocation(activity.getLocations(), activityID);
-      if (!removed) {
-        success = false;
-      }
-      // Then, saving locations received
-      boolean added = locationManager.saveActivityLocations(locations, activityID);
-      if (!added) {
-        success = false;
-      }
+        // Grouping other locations to the locations list.
+        for (OtherLocation location : otherLocationsSaved) {
+          if (location != null) {
+            locations.add(location);
+          }
+        }
 
-      // Check if user uploaded an excel file
-      if (excelTemplate != null) {
-        String fileLocation = config.getUploadsBaseFolder() + config.getLocationsTemplateFolder();
-        // First, move the uploaded file to the corresponding folder
-        FileManager.copyFile(excelTemplate, fileLocation + excelTemplateFileName);
-        LOG.trace("The locations template uploaded was moved to: " + fileLocation + excelTemplateFileName);
-        // Send a message with the file received
-        sendNotificationMessage(fileLocation, excelTemplateFileName);
+        // Removing the existing locations
+        boolean removed = locationManager.removeActivityLocation(activity.getLocations(), activityID);
+        if (!removed) {
+          success = false;
+        }
+        // Then, saving locations received
+        boolean added = locationManager.saveActivityLocations(locations, activityID);
+        if (!added) {
+          success = false;
+        }
+
+        // Check if user uploaded an excel file
+        if (excelTemplate != null) {
+          String fileLocation = config.getUploadsBaseFolder() + config.getLocationsTemplateFolder();
+          // First, move the uploaded file to the corresponding folder
+          FileManager.copyFile(excelTemplate, fileLocation + excelTemplateFileName);
+          LOG.trace("The locations template uploaded was moved to: " + fileLocation + excelTemplateFileName);
+          // Send a message with the file received
+          sendNotificationMessage(fileLocation, excelTemplateFileName);
+        }
       }
 
       // Displaying user messages.
