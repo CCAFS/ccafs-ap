@@ -1,10 +1,11 @@
 // Global vars
 var map;
 var markers = [];
-
+var countID;
 $(document).ready(init);
 
 function init(){
+  countID = $("#locationsBlock .location").length;
   attachEvents();
   loadMap();
   setLocationsMarkers();
@@ -21,6 +22,7 @@ function attachEvents(){
   $("#isGlobal").on("change", changeGlobalState);
   
   $("[name$='geoPosition.latitude'], [name$='geoPosition.longitude']").on("keyup", reloadMarkers);
+  $("[name$='geoPosition.latitude'], [name$='geoPosition.longitude']").on("focus", selectMarker);
   
   $("#fileBrowserLauncher").click(function(event){
     event.preventDefault();
@@ -33,9 +35,11 @@ function changeGlobalState(e){
   if ($(e.target).is(':checked')) {
     $("#locationsBlock").fadeOut("slow");
     disableLocations(true);
+    clearMarkers();
   } else {
     $("#locationsBlock").fadeIn("slow");
     disableLocations(false);
+    showMarkers();
   }
   
 }
@@ -48,27 +52,30 @@ function disableLocations(state){
 
 function addLocationEvent(e){
   e.preventDefault();
-  $newElement = $("#locationTemplateExisting").clone(true).addClass("location").removeAttr("id");
+  $newElement = $("#locationTemplateExisting").clone(true).removeAttr("id").attr("id", "location-" + (countID++)).addClass("location");
   $newElement.find(".removeButton").click(removeLocationEvent);
-  $(e.target).parent().before($newElement);
+  $(e.target).parent().parent().find("#fields").append($newElement);
   $newElement.fadeIn("slow");
   setLocationIndex();
 }
 function removeLocationEvent(e){
   e.preventDefault();
+  var locationId = $(e.target).parent().attr("id").split("-")[1];
   $(e.target).parent().hide("slow", function(){
     $(this).remove();
+    removeMarker(locationId);
     setLocationIndex();
   });
+  
 }
 
 function setLocationIndex(){
-  reloadMarkers();
   var elementName;
   $("#locationsBlock .location").each(function(index,location){
     
     var locationTypeID = $(location).find("[name$='type.id']").val();
     $(location).find(".locationIndex strong").text((index + 1) + ".");
+    // $(location).attr("id", "location-" + index);
     
     if (locationTypeID == 1) {
       // If Location is of type region
@@ -114,21 +121,36 @@ function changeTypeEvent(e){
     var $newSelectType = $selectType.clone(true);
     $parent.find(".locationName").empty().html($newSelectType.html());
     $parent.find("[name$='geoPosition.latitude'], [name$='geoPosition.longitude']").attr("disabled", true).val($("#notApplicableText").val());
+    
+    if (typeof markers[$parent.attr("id").split("-")[1]] !== 'undefined') {
+      removeMarker($parent.attr("id").split("-")[1]);
+    }
+    
   } else {
     var $newInputType = $("#inputNameTemplate").clone(true);
     $parent.find(".locationName").empty().html($newInputType.html());
-    $parent.find("[name$='geoPosition.latitude'], [name$='geoPosition.longitude']").attr("disabled", false).val("");
+    $parent.find("[name$='geoPosition.latitude'], [name$='geoPosition.longitude']").attr("disabled", false).val("0.0");
     $parent.find("[name$='name']").attr("placeholder", "Name");
+    
+    var latitude = $parent.find("[name$='geoPosition.latitude']").val();
+    var longitude = $parent.find("[name$='geoPosition.longitude']").val();
+    
+    // if marker doesn't exist create the marker
+    if (typeof markers[$parent.attr("id").split("-")[1]] === 'undefined') {
+      // checks whether a coordinate is valid
+      if (isCoordinateValid(latitude, longitude)) {
+        makeMarker({
+          latitude : latitude,
+          longitude : longitude,
+          name : $parent.find("[name$='name']").val(),
+          id : $parent.attr("id").split("-")[1]
+        });
+      }
+    }
+    ;
+    
   }
   setLocationIndex();
-}
-
-function reverseGeoCoding($location){
-  var latitude = $location.find("input[name$='latitude']").val();
-  var longitude = $location.find("input[name$='longitude']").val();
-  
-  console.log(latitude + " - " + longitude);
-  
 }
 
 function loadMap(){
@@ -224,40 +246,59 @@ function setLocationsMarkers(){
   $("#locationsBlock .location").each(function(index,location){
     var latitude = $(location).find("[name$='geoPosition.latitude']").val();
     var longitude = $(location).find("[name$='geoPosition.longitude']").val();
+    // checks whether a coordinate is valid
     if (isCoordinateValid(latitude, longitude)) {
       makeMarker({
         latitude : latitude,
         longitude : longitude,
-        name : $(location).find("[name$='name']").val()
+        name : $(location).find("[name$='name']").val(),
+        id : $(location).attr("id").split("-")[1]
       });
     }
   });
 }
 
-function isCoordinateValid(latitude,longitude){
-  if (latitude > -90 && latitude < 90 && longitude > -180 && longitude < 180) {
-    return true;
-  } else {
-    return false;
-  }
+function selectMarker(e){
+  var locationId = $(e.target).parent().parent().parent().attr("id").split("-")[1];
+  var marker = markers[locationId];
+  marker.setAnimation(google.maps.Animation.BOUNCE);
+  setTimeout(function(){
+    marker.setAnimation(null);
+  }, 1000);
 }
 
 function makeMarker(data){
   var point = new google.maps.LatLng(data.latitude, data.longitude);
   var marker = new google.maps.Marker({
+    id : data.id,
     map : map,
     position : point,
     icon : '../../../images/global/otherSite-marker.png',
-    id : 8
+    draggable : true,
+    animation : google.maps.Animation.DROP
   });
   var html = "<strong>" + data.name + "</strong>";
   var infoWindow = new google.maps.InfoWindow;
+  // Event when marker is clicked
   google.maps.event.addListener(marker, 'click', function(){
     infoWindow.setContent(html);
     infoWindow.open(map, marker);
-    console.log(marker);
   });
-  markers.push(marker);
+  // Event when marker is mouseover
+  google.maps.event.addListener(marker, 'mouseover', function(){
+    $("#location-" + marker.id).addClass("selected");
+  });
+  // Event when marker is mouseout
+  google.maps.event.addListener(marker, 'mouseout', function(){
+    $("#location-" + marker.id).removeClass("selected");
+  });
+  // Event when marker is dragged
+  google.maps.event.addListener(marker, 'dragend', function(){
+    $("#location-" + marker.id).find("[name$='geoPosition.longitude']").val(marker.position.B);
+    $("#location-" + marker.id).find("[name$='geoPosition.latitude']").val(marker.position.k);
+    
+  });
+  markers[data.id] = marker;
 }
 
 function reloadMarkers(){
@@ -270,9 +311,35 @@ function deleteMarkers(){
   markers = [];
 }
 
+// Removes the markers from the map, but keeps them in the array.
+function clearMarkers(){
+  setAllMap(null);
+}
+
+// Shows any markers currently in the array.
+function showMarkers(){
+  setAllMap(map);
+}
+
+function removeMarker(id){
+  marker = markers[id];
+  marker.setMap(null);
+  delete markers[id];
+  ;
+}
+
 // Sets the map on all markers in the array.
 function setAllMap(map){
-  for (var i = 0; i < markers.length; i++) {
-    markers[i].setMap(map);
+  $.each(markers, function(index,marker){
+    console.log(marker);
+    marker.setMap(map);
+  });
+}
+
+function isCoordinateValid(latitude,longitude){
+  if (latitude > -90 && latitude < 90 && longitude > -180 && longitude < 180) {
+    return true;
+  } else {
+    return false;
   }
 }

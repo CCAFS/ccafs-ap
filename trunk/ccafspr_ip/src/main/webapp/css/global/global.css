@@ -1432,6 +1432,12 @@ table tr.row:hover{
   margin: 3px;
 }
 
+.location.selected {
+   background: #EFECF7;
+   box-shadow: 0px 0px 10px #CFCFCF;
+}
+
+
 .locationIndex {
   width: 2.2%;
   float: left;
