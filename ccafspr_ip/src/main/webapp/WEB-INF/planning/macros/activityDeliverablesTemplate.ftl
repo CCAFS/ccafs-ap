@@ -1,10 +1,12 @@
 [#ftl]
-[#macro activityDeliverablesList deliverables]
+[#macro activityDeliverablesList deliverables canEdit=true]
   [#if deliverables?has_content]
     [#list deliverables as dl]
     <div id="activityDeliverable-${dl_index}" class="activityDeliverable borderBox">
-      <div id="removeDeliverable-${dl_index}"  class="removeDeliverable removeElement removeLink " title="[@s.text name="planning.deliverables.removeDeliverable" /]"></div>
-      <input type="hidden" value="${dl.id}" name="activity.deliverables[${dl_index}].id">
+      [#if canEdit]
+        <div id="removeDeliverable-${dl_index}"  class="removeDeliverable removeElement removeLink " title="[@s.text name="planning.deliverables.removeDeliverable" /]"></div>
+        <input type="hidden" value="${dl.id}" name="activity.deliverables[${dl_index}].id">
+      [/#if]
       <legend>
         [@s.text name="planning.deliverables.expectedDeliverable" ]
           [@s.param name="0"]
@@ -30,9 +32,11 @@
       [#if dl.nextUsers?has_content]
         [#list dl.nextUsers as nu] 
           [#-- Next User block  --] 
-          [@nextUserTemplate dl_index="${dl_index}" nu_index="${nu_index}" nextUserValue="${nu.id}" /]
+          [@nextUserTemplate dl_index="${dl_index}" nu_index="${nu_index}" nextUserValue="${nu.id}" canEdit=canEdit /]
         [/#list]
-        <div id="addActivityNextUserBlock" class="addLink"><a href=""  class="addActivityNextUser addButton">[@s.text name="planning.deliverables.addNewUser" /]</a></div>
+        [#if canEdit]
+          <div id="addActivityNextUserBlock" class="addLink"><a href=""  class="addActivityNextUser addButton">[@s.text name="planning.deliverables.addNewUser" /]</a></div>
+        [/#if]
       [/#if]
       </div>
     [/#list] 
@@ -63,7 +67,7 @@
   </div>  
 [/#macro]
 
-[#macro nextUserTemplate dl_index="0" nu_index="0" nextUserValue="-1" template=false]
+[#macro nextUserTemplate dl_index="0" nu_index="0" nextUserValue="-1" template=false canEdit=true ]
   [#if template]
     <div id="activityNextUserTemplate" class="borderBox" style="display:none">
       <div id="removeNextUser-${nu_index}"class="removeNextUser removeElement removeLink" title="[@s.text name="planning.deliverables.removeNewUser" /]"></div>
@@ -78,8 +82,10 @@
     </div>
   [#else]
     <div id="activityNextUser-${nu_index}" class="activityNextUser borderBox">
-      <div id="removeNextUser-${nu_index}"class="removeNextUser removeElement removeLink" title="[@s.text name="planning.deliverables.removeNewUser" /]"></div>
-      <input type="hidden" name="activity.deliverables[${dl_index}].nextUsers[${nu_index}].id" value="${nextUserValue}" />
+      [#if canEdit]
+        <div id="removeNextUser-${nu_index}"class="removeNextUser removeElement removeLink" title="[@s.text name="planning.deliverables.removeNewUser" /]"></div>
+        <input type="hidden" name="activity.deliverables[${dl_index}].nextUsers[${nu_index}].id" value="${nextUserValue}" />
+      [/#if]
       <span id="index">${nu_index?number+1}</span>
       [#-- Next User --]
       [@customForm.input name="activity.deliverables[${dl_index}].nextUsers[${nu_index}].user" type="text" i18nkey="planning.deliverables.nextUser" required=true /]<br/>
