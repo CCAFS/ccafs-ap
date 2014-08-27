@@ -13,6 +13,13 @@
  *****************************************************************/
 package org.cgiar.ccafs.ap.action.planning;
 
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
+import java.util.TreeMap;
+
+import com.google.inject.Inject;
+import org.apache.commons.lang3.StringUtils;
 import org.cgiar.ccafs.ap.action.BaseAction;
 import org.cgiar.ccafs.ap.config.APConfig;
 import org.cgiar.ccafs.ap.config.APConstants;
@@ -26,14 +33,6 @@ import org.cgiar.ccafs.ap.data.model.IPElementType;
 import org.cgiar.ccafs.ap.data.model.IPIndicator;
 import org.cgiar.ccafs.ap.data.model.IPProgram;
 import org.cgiar.ccafs.ap.data.model.Project;
-
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
-import java.util.TreeMap;
-
-import com.google.inject.Inject;
-import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -183,11 +182,14 @@ public class ActivityImpactPathwayAction extends BaseAction {
     }
 
     // Get the information of the midOutcomes selected
-    String[] midOutcomeIds = new String[midOutcomesSelected.size()];
-    for (int i = 0; i < midOutcomesSelected.size(); i++) {
-      midOutcomeIds[i] = midOutcomesSelected.get(i).getId() + "";
+
+    if (!midOutcomesSelected.isEmpty()) {
+      String[] midOutcomeIds = new String[midOutcomesSelected.size()];
+      for (int i = 0; i < midOutcomesSelected.size(); i++) {
+        midOutcomeIds[i] = midOutcomesSelected.get(i).getId() + "";
+      }
+      midOutcomesSelected = ipElementManager.getIPElementList(midOutcomeIds);
     }
-    midOutcomesSelected = ipElementManager.getIPElementList(midOutcomeIds);
 
     // Save the activity outputs brought from the database
     previousOutputs = new ArrayList<>();

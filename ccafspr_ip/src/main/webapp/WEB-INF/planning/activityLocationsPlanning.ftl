@@ -131,10 +131,12 @@
         <div id="addLocationBlock" class="addLink">
           <a href="" id="addLocationLink" class="addLocation addButton" >[@s.text name="planning.activities.locations.addLocation" /]</a>
         </div>
+        
       [/#if]
     </div> 
     
     [#-- Only the user with enough privileges to save can upload the file --]
+
     [#if saveable]
       [#-- File upload --]
       <div class="uploadFileMessage">
@@ -149,6 +151,7 @@
         </div>
       </div>
     
+
       <!-- internal parameter -->
       <input type="hidden" name="activityID" value="${activity.id?c}">
       <input type="hidden" id="isGlobalText" value="[@s.text name="planning.activities.locations.map.isGlobal" /]">
@@ -170,16 +173,12 @@
     [@customForm.select name="type.id" i18nkey="planning.locations.level" listName="locationTypes" keyFieldName="id"  displayFieldName="name" showTitle=false /] 
   </div>
   <div class="locationLatitude grid_2">
-    <div class="input">
       [#-- Geo position ID --]
       <input type="hidden" name="geoPosition.id" value="-1" >
       [@customForm.input name="geoPosition.latitude" className="notApplicable" value=notApplicableText type="text" i18nkey="planning.locations.longitude" showTitle=false disabled=true  /]
-    </div>
   </div>
   <div class="locationLongitude grid_2">
-    <div class="input">
       [@customForm.input name="geoPosition.longitude" className="notApplicable" value=notApplicableText type="text" i18nkey="planning.locations.longitude" showTitle=false disabled=true  /]
-    </div>
   </div>
   <div class="locationName grid_3">
     [@customForm.select name="].id" i18nkey="planning.locations.level" listName="regions" keyFieldName="id" showTitle=false  displayFieldName="name" value="-1" /]

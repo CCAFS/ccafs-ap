@@ -86,7 +86,7 @@ public class IPElementManagerImpl implements IPElementManager {
 
   @Override
   public List<IPElement> getIPElementList(String[] ids) {
-    List<Map<String, String>> ipElementDataList = ipElementDAO.getIPElement(ids);
+    List<Map<String, String>> ipElementDataList = ipElementDAO.getIPElements(ids);
     return setDataToIPElementObjects(ipElementDataList);
   }
 
