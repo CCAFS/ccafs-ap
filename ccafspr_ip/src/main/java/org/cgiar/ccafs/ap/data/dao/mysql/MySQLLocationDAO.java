@@ -14,10 +14,6 @@
  */
 package org.cgiar.ccafs.ap.data.dao.mysql;
 
-import org.cgiar.ccafs.ap.config.APConstants;
-import org.cgiar.ccafs.ap.data.dao.DAOManager;
-import org.cgiar.ccafs.ap.data.dao.LocationDAO;
-
 import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -27,6 +23,9 @@ import java.util.List;
 import java.util.Map;
 
 import com.google.inject.Inject;
+import org.cgiar.ccafs.ap.config.APConstants;
+import org.cgiar.ccafs.ap.data.dao.DAOManager;
+import org.cgiar.ccafs.ap.data.dao.LocationDAO;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -482,7 +481,7 @@ public class MySQLLocationDAO implements LocationDAO {
     StringBuilder query = new StringBuilder();
     int result = -1;
 
-    query.append("INSERT INTO activity_locations (activity_id, loc_element_id) ");
+    query.append("INSERT IGNORE INTO activity_locations (activity_id, loc_element_id) ");
     query.append("VALUES (?, ?) ");
 
     Object[] values = new Object[2];
