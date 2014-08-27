@@ -34,6 +34,10 @@
        <param name="actionName">login</param>
       </result>
     </action> 
+    
+    <action name="glossary" class="org.cgiar.ccafs.ap.action.BaseAction">
+      <result name="input">/WEB-INF/global/pages/glossary.ftl</result>
+    </action>
 
   </package>
 </struts>
