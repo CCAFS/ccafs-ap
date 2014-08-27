@@ -39,24 +39,35 @@
       <h1 class="contentTitle">
         [@s.text name="planning.deliverables" /] 
       </h1>
-      [#if activity.deliverables?size > 0]
-        [@deliverableTemplate.activityDeliverablesList deliverables=activity.deliverables canEdit=saveable /]
+      [#if outputs?size > 0]
+        [#if activity.deliverables?size > 0]
+          [@deliverableTemplate.activityDeliverablesList deliverables=activity.deliverables canEdit=saveable /]
+        [#else]
+          [#-- Just show this empty message to those users who are not able to modify this section --]
+          [#if !saveable]
+            <p>[@s.text name="planning.deliverables.empty"/]</p>
+          [/#if]
+        [/#if]
+        [#if saveable]
+          <div id="addDeliverable" class="addLink">
+            <a href="" class="addButton" >[@s.text name="planning.deliverables.addDeliverable" /]</a>
+          </div>
+          <input type="hidden" name="activityID" value="${activity.id}">
+          <div class="buttons">
+            [@s.submit type="button" name="save"][@s.text name="form.buttons.save" /][/@s.submit]
+            [@s.submit type="button" name="next"][@s.text name="form.buttons.nextAndFinish" /][/@s.submit]
+            [@s.submit type="button" name="cancel"][@s.text name="form.buttons.cancel" /][/@s.submit]
+          </div>
+        [/#if]
       [#else]
         [#-- Just show this empty message to those users who are not able to modify this section --]
         [#if !saveable]
           <p>[@s.text name="planning.deliverables.empty"/]</p>
+        [#else]
+          <p>
+            [@s.text name="planning.deliverables.outputs.empty"] [/@s.text]
+          </p>
         [/#if]
-      [/#if]
-      [#if saveable]
-        <div id="addDeliverable" class="addLink">
-          <a href="" class="addButton" >[@s.text name="planning.deliverables.addDeliverable" /]</a>
-        </div>
-        <input type="hidden" name="activityID" value="${activity.id}">
-        <div class="buttons">
-          [@s.submit type="button" name="save"][@s.text name="form.buttons.save" /][/@s.submit]
-          [@s.submit type="button" name="next"][@s.text name="form.buttons.nextAndFinish" /][/@s.submit]
-          [@s.submit type="button" name="cancel"][@s.text name="form.buttons.cancel" /][/@s.submit]
-        </div>
       [/#if]
     </article>
   [/@s.form]  

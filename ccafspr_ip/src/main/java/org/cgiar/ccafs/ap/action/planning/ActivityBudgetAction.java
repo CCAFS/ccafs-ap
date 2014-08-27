@@ -106,7 +106,7 @@ public class ActivityBudgetAction extends BaseAction {
           if (budget.getType().getValue() == BudgetType.ACTIVITY.getValue()) {
             activtyBudget = true;
             budgetsMap
-            .put(year + "-" + activityPartner.getPartner().getId() + "-" + BudgetType.ACTIVITY.name(), budget);
+              .put(year + "-" + activityPartner.getPartner().getId() + "-" + BudgetType.ACTIVITY.name(), budget);
           }
         }
       }
@@ -142,8 +142,8 @@ public class ActivityBudgetAction extends BaseAction {
       newBudget.setAmount(0);
       newBudget.setYear(year);
       budgetsMap
-      .put(year + "-" + activity.getLeader().getCurrentInstitution().getId() + "-" + BudgetType.ACTIVITY.name(),
-        newBudget);
+        .put(year + "-" + activity.getLeader().getCurrentInstitution().getId() + "-" + BudgetType.ACTIVITY.name(),
+          newBudget);
     }
     return budgetsMap;
   }
@@ -301,7 +301,6 @@ public class ActivityBudgetAction extends BaseAction {
         invalidYear = true;
       }
     }
-    this.setSaveable(false);
   }
 
 

@@ -20,7 +20,8 @@ import org.apache.commons.lang3.builder.ToStringBuilder;
 
 /**
  * This class represents a CCAFS Product.
- * Each deliverable will have to belong a specific activity.
+ * Each deliverable will have to belong a specific activity, and will be related to a specific MOG in the Impact
+ * Pathway.
  *
  * @author Héctor Fabio Tobón R.
  */
@@ -31,6 +32,7 @@ public class Deliverable {
   private int year;
   private DeliverableType type;
   private List<NextUser> nextUsers;
+  private IPElement output; // Now it is called MOG.
 
   public Deliverable() {
     super();
@@ -51,6 +53,10 @@ public class Deliverable {
 
   public List<NextUser> getNextUsers() {
     return nextUsers;
+  }
+
+  public IPElement getOutput() {
+    return output;
   }
 
   public String getTitle() {
@@ -76,6 +82,10 @@ public class Deliverable {
 
   public void setNextUsers(List<NextUser> nextUsers) {
     this.nextUsers = nextUsers;
+  }
+
+  public void setOutput(IPElement output) {
+    this.output = output;
   }
 
   public void setTitle(String title) {

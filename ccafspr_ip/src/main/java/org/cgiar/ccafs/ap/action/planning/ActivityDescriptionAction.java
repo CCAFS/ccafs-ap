@@ -200,7 +200,7 @@ public class ActivityDescriptionAction extends BaseAction {
         addActionError(getText("saving.problem"));
         return BaseAction.INPUT;
       }
-      addActionMessage(getText("saving.success", new String[] {getText("planning.projectDescription.title")}));
+      addActionMessage(getText("saving.success", new String[] {getText("planning.activityDescription")}));
       return BaseAction.SUCCESS;
 
     } else {

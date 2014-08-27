@@ -15,6 +15,8 @@ package org.cgiar.ccafs.ap.action.planning;
 
 import java.util.List;
 
+import org.cgiar.ccafs.ap.data.model.IPElement;
+
 import org.cgiar.ccafs.ap.data.model.NextUser;
 import org.cgiar.ccafs.ap.data.manager.ActivityManager;
 import org.cgiar.ccafs.ap.data.model.Activity;
@@ -60,6 +62,7 @@ public class ActivityDeliverablesAction extends BaseAction {
   private List<DeliverableType> deliverableTypes;
   private List<DeliverableType> deliverableSubTypes;
   private List<Integer> allYears;
+  private List<IPElement> outputs;
 
   @Inject
   public ActivityDeliverablesAction(APConfig config, DeliverableManager deliverableManager,
@@ -93,6 +96,10 @@ public class ActivityDeliverablesAction extends BaseAction {
     return deliverableTypes;
   }
 
+  public List<IPElement> getOutputs() {
+    return outputs;
+  }
+
   public Project getProject() {
     return project;
   }
@@ -115,19 +122,22 @@ public class ActivityDeliverablesAction extends BaseAction {
     List<Deliverable> deliverables = deliverableManager.getDeliverablesByActivity(activityID);
     activity.setDeliverables(deliverables);
 
-    // Getting the List of Next Users related to the expected Deliverable
-    for (Deliverable deliverable : activity.getDeliverables()) {
-      deliverable.setNextUsers(nextUserManager.getNextUsersByDeliverableId(deliverable.getId()));
-    }
+    outputs = activityManager.getActivityOutputs(activityID);
+    if (outputs.size() > 0) {
 
-    if (getRequest().getMethod().equalsIgnoreCase("post")) {
-      // Clear out the list if it has some element
-      if (activity.getDeliverables() != null) {
-        activity.getDeliverables().clear();
+      // Getting the List of Next Users related to the expected Deliverable
+      for (Deliverable deliverable : activity.getDeliverables()) {
+        deliverable.setNextUsers(nextUserManager.getNextUsersByDeliverableId(deliverable.getId()));
+      }
+
+      if (getRequest().getMethod().equalsIgnoreCase("post")) {
+        // Clear out the list if it has some element
+        if (activity.getDeliverables() != null) {
+          activity.getDeliverables().clear();
+        }
       }
     }
   }
-
 
   @Override
   public String save() {
@@ -191,7 +201,7 @@ public class ActivityDeliverablesAction extends BaseAction {
       addActionMessage(getText("saving.success", new String[] {getText("planning.deliverables")}));
       return BaseAction.SUCCESS;
     } else {
-      return BaseAction.NOT_AUTHORIZED;
+      return BaseAction.ERROR;
     }
   }
 

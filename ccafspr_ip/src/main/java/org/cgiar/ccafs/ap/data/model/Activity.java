@@ -23,7 +23,7 @@ import org.apache.commons.lang3.builder.ToStringBuilder;
 
 /**
  * This class represents a CCAFS Activity, which belongs to a specific Project.
- * 
+ *
  * @author Héctor Fabio Tobón R.
  */
 public class Activity {
@@ -71,7 +71,7 @@ public class Activity {
 
   /**
    * This method calculates all the years between the start date and the end date.
-   * 
+   *
    * @return a List of numbers representing all the years, or an empty list if nothing found.
    */
   public List<Integer> getAllYears() {
@@ -82,7 +82,7 @@ public class Activity {
       Calendar calendarEnd = Calendar.getInstance();
       calendarEnd.setTime(endDate);
 
-      while (calendarStart.getTimeInMillis() <= calendarEnd.getTimeInMillis()) {
+      while (calendarStart.get(Calendar.YEAR) <= calendarEnd.get(Calendar.YEAR)) {
         // Adding the year to the list.
         allYears.add(calendarStart.get(Calendar.YEAR));
         // Adding a year (365 days) to the start date.
@@ -101,7 +101,7 @@ public class Activity {
    * This method returns a composed Identifier that is going to be used in the front-end.
    * The convention is going to be used depending on the creation date of the activity.
    * yyyy-activityID => e.g. 2014-12
-   * 
+   *
    * @return the composed identifier or null if the created date is null.
    */
   public String getComposedId() {

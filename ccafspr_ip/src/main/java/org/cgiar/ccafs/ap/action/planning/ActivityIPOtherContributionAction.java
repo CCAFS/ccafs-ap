@@ -13,6 +13,9 @@
  *****************************************************************/
 package org.cgiar.ccafs.ap.action.planning;
 
+import org.cgiar.ccafs.ap.data.manager.ProjectManager;
+
+import org.cgiar.ccafs.ap.data.model.Project;
 import org.cgiar.ccafs.ap.action.BaseAction;
 import org.cgiar.ccafs.ap.config.APConfig;
 import org.cgiar.ccafs.ap.config.APConstants;
@@ -20,7 +23,6 @@ import org.cgiar.ccafs.ap.data.manager.ActivityManager;
 import org.cgiar.ccafs.ap.data.manager.IPOtherContributionManager;
 import org.cgiar.ccafs.ap.data.model.Activity;
 import org.cgiar.ccafs.ap.data.model.IPOtherContribution;
-
 import com.google.inject.Inject;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
@@ -28,6 +30,7 @@ import org.slf4j.LoggerFactory;
 
 /**
  * @author Javier Andrés Galllego B.
+ * @author Héctor fabio Tobón R.
  */
 public class ActivityIPOtherContributionAction extends BaseAction {
 
@@ -39,22 +42,23 @@ public class ActivityIPOtherContributionAction extends BaseAction {
   // Manager
   private IPOtherContributionManager ipOtherContributionManager;
   private ActivityManager activityManager;
+  private ProjectManager projectManager;
 
   // Model for the back-end
   private IPOtherContribution ipOtherContribution;
   private Activity activity;
 
-
   // Model for the front-end
   private int activityID;
-
+  private Project project;
 
   @Inject
   public ActivityIPOtherContributionAction(APConfig config, IPOtherContributionManager ipOtherContributionManager,
-    ActivityManager activityManager) {
+    ActivityManager activityManager, ProjectManager projectManager) {
     super(config);
     this.ipOtherContributionManager = ipOtherContributionManager;
     this.activityManager = activityManager;
+    this.projectManager = projectManager;
   }
 
   public Activity getActivity() {
@@ -65,11 +69,13 @@ public class ActivityIPOtherContributionAction extends BaseAction {
     return activityID;
   }
 
-
   public IPOtherContribution getIpOtherContribution() {
     return ipOtherContribution;
   }
 
+  public Project getProject() {
+    return project;
+  }
 
   @Override
   public String next() {
@@ -81,27 +87,22 @@ public class ActivityIPOtherContributionAction extends BaseAction {
     }
   }
 
-
   @Override
   public void prepare() throws Exception {
     super.prepare();
-    try {
-      activityID = Integer.parseInt(StringUtils.trim(this.getRequest().getParameter(APConstants.ACTIVITY_REQUEST_ID)));
-    } catch (NumberFormatException e) {
-      LOG.error("-- prepare() > There was an error parsing the activity identifier '{}'.", activityID, e);
-      activityID = -1;
-      return; // Stop here and go to execute method.
-    }
+
+    activityID = Integer.parseInt(StringUtils.trim(this.getRequest().getParameter(APConstants.ACTIVITY_REQUEST_ID)));
+
     // Getting the activity information
     activity = activityManager.getActivityById(activityID);
+    // Getting the project information.
+    project = projectManager.getProjectFromActivityId(activityID);
+
     // Getting the information for the IP Other Contribution
     ipOtherContribution = ipOtherContributionManager.getIPOtherContributionByActivityId(activityID);
 
     activity.setIpOtherContribution(ipOtherContribution);
-
-
   }
-
 
   @Override
   public String save() {
@@ -121,16 +122,13 @@ public class ActivityIPOtherContributionAction extends BaseAction {
     return BaseAction.ERROR;
   }
 
-
   public void setActivity(Activity activity) {
     this.activity = activity;
   }
 
-
   public void setActivityID(int activityID) {
     this.activityID = activityID;
   }
-
 
   public void setIpOtherContribution(IPOtherContribution ipOtherContribution) {
     this.ipOtherContribution = ipOtherContribution;
