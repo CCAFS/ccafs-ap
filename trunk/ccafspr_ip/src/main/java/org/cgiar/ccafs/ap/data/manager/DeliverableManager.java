@@ -29,7 +29,7 @@ public interface DeliverableManager {
 
   /**
    * This method removes a specific deliverable value from the database.
-   * 
+   *
    * @param deliverableId is the deliverable identifier.
    * @return true if the deliverable was successfully deleted, false otherwise.
    */
@@ -37,7 +37,7 @@ public interface DeliverableManager {
 
   /**
    * This method removes a set of deliverables that belongs to a specific activity.
-   * 
+   *
    * @param activityID is the activity identifier.
    * @return true if the set of activities were successfully deleted, false otherwise.
    */
@@ -45,7 +45,7 @@ public interface DeliverableManager {
 
   /**
    * This method gets all the deliverable information by a given deliverable ID.
-   * 
+   *
    * @param deliverableID is the deliverable identifier.
    * @return a List of deliverables objects.
    */
@@ -54,7 +54,7 @@ public interface DeliverableManager {
 
   /**
    * This method gets all the deliverables information by a given activity Id
-   * 
+   *
    * @param activityID - is the Id of the activity
    * @return a List of deliverables with the Information related with the activity
    */
@@ -62,12 +62,13 @@ public interface DeliverableManager {
 
   /**
    * This method saves the information of the given deliverable that belong to a specific activity into the database.
-   * 
+   *
    * @param activityID
    * @param deliverable
-   * @return true if the activity was saved successfully, false otherwise.
+   * @return a number greater than 0 representing the new ID assigned by the databse, 0 if the deliverable was updated
+   *         or -1 is some error occurred.
    */
-  public boolean saveDeliverable(int activityID, Deliverable deliverable);
+  public int saveDeliverable(int activityID, Deliverable deliverable);
 
 
 }

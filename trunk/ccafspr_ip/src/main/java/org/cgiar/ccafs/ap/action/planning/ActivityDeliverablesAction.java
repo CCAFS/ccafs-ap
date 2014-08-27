@@ -15,8 +15,8 @@ package org.cgiar.ccafs.ap.action.planning;
 
 import java.util.List;
 
+import org.cgiar.ccafs.ap.data.model.NextUser;
 import org.cgiar.ccafs.ap.data.manager.ActivityManager;
-
 import org.cgiar.ccafs.ap.data.model.Activity;
 import com.google.inject.Inject;
 import org.apache.commons.lang3.StringUtils;
@@ -58,6 +58,7 @@ public class ActivityDeliverablesAction extends BaseAction {
   private Project project;
   private int activityID;
   private List<DeliverableType> deliverableTypes;
+  private List<DeliverableType> deliverableSubTypes;
   private List<Integer> allYears;
 
   @Inject
@@ -84,6 +85,10 @@ public class ActivityDeliverablesAction extends BaseAction {
     return allYears;
   }
 
+  public List<DeliverableType> getDeliverableSubTypes() {
+    return deliverableSubTypes;
+  }
+
   public List<DeliverableType> getDeliverableTypes() {
     return deliverableTypes;
   }
@@ -101,7 +106,7 @@ public class ActivityDeliverablesAction extends BaseAction {
     // Getting the project where this activity belongs to.
     project = projectManager.getProjectFromActivityId(activityID);
 
-    // Getting the Main Type of Deliverables.
+    // Getting the Deliverables Main Types.
     deliverableTypes = deliverableTypeManager.getDeliverableTypes();
 
     allYears = activity.getAllYears();
@@ -123,19 +128,72 @@ public class ActivityDeliverablesAction extends BaseAction {
     }
   }
 
+
   @Override
   public String save() {
-    boolean success = true;
-    // Saving Project Outcome
-    for (Deliverable deliverable : activity.getDeliverables()) {
-      boolean saved = deliverableManager.saveDeliverable(activityID, deliverable);
-      if (!saved) {
-        success = false;
-      }
-    }
-    return BaseAction.SUCCESS;
-  }
+    if (this.isSaveable()) {
+      boolean success = true;
+      boolean deleted;
 
+      // Getting previous Deliverables.
+      List<Deliverable> previousDeliverables = deliverableManager.getDeliverablesByActivity(activityID);
+
+      // Identifying deleted deliverables in the interface to delete them from the database.
+      for (Deliverable deliverable : previousDeliverables) {
+        if (!activity.getDeliverables().contains(deliverable)) {
+          deleted = deliverableManager.deleteDeliverable(deliverable.getId());
+          if (!deleted) {
+            success = false;
+          }
+        }
+      }
+
+      List<NextUser> previousNextUsers;
+
+      // Saving deliverables
+      for (Deliverable deliverable : activity.getDeliverables()) {
+        int result = deliverableManager.saveDeliverable(activityID, deliverable);
+        if (result != -1) {
+          // Defining deliverable ID.
+          int deliverableID;
+          if (result > 0) {
+            deliverableID = result;
+          } else {
+            deliverableID = deliverable.getId();
+          }
+
+          // Getting previous nextUsers.
+          previousNextUsers = nextUserManager.getNextUsersByDeliverableId(deliverableID);
+
+          // Identifying deleted next users in the interface to delete them from the database.
+          for (NextUser nextUser : previousNextUsers) {
+            if (!deliverable.getNextUsers().contains(nextUser)) {
+              deleted = nextUserManager.deleteNextUserById(nextUser.getId());
+              if (!deleted) {
+                success = false;
+              }
+            }
+          }
+
+          // Saving next Users.
+          for (NextUser nextUser : deliverable.getNextUsers()) {
+            if (!nextUserManager.saveNextUser(deliverableID, nextUser)) {
+              success = false;
+            }
+          }
+        }
+      }
+
+      if (success == false) {
+        addActionError(getText("saving.problem"));
+        return BaseAction.INPUT;
+      }
+      addActionMessage(getText("saving.success", new String[] {getText("planning.deliverables")}));
+      return BaseAction.SUCCESS;
+    } else {
+      return BaseAction.NOT_AUTHORIZED;
+    }
+  }
 
   public void setActivity(Activity activity) {
     this.activity = activity;
@@ -143,6 +201,10 @@ public class ActivityDeliverablesAction extends BaseAction {
 
   public void setActivityID(int activityID) {
     this.activityID = activityID;
+  }
+
+  public void setDeliverableSubTypes(List<DeliverableType> deliverableSubTypes) {
+    this.deliverableSubTypes = deliverableSubTypes;
   }
 
   public void setDeliverableTypes(List<DeliverableType> deliverableTypes) {
