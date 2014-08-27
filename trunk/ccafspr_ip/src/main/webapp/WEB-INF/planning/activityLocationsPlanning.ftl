@@ -88,7 +88,7 @@
               <div class="locationLatitude grid_2">
                 [#-- Latitude --]
                 [#if location.country || location.region]
-                  [@customForm.input name="geoPosition.latitude" type="text" value=notApplicableText i18nkey="planning.activities.locations.latitude" showTitle=false disabled=true  /]
+                  [@customForm.input name="geoPosition.latitude" className="notApplicable" type="text" value=notApplicableText i18nkey="planning.activities.locations.latitude" showTitle=false disabled=true  /]
                 [#else]
                   [#-- Geo position ID --]
                   <input type="hidden" name="otherLocationsSaved[${location_index}].geoPosition.id" value="${location.geoPosition.id?c}" >
@@ -99,7 +99,7 @@
               [#-- Longitude --]
               <div class="locationLongitude grid_2">
                 [#if location.country || location.region]
-                  [@customForm.input name="geoPosition.longitude" value=notApplicableText type="text" i18nkey="planning.activities.locations.longitude" showTitle=false disabled=true  /]
+                  [@customForm.input name="geoPosition.longitude" className="notApplicable" value=notApplicableText type="text" i18nkey="planning.activities.locations.longitude" showTitle=false disabled=true  /]
                 [#else]
                   [@customForm.input name="otherLocationsSaved[${location_index}].geoPosition.longitude" value="${location.geoPosition.longitude}" type="text" i18nkey="planning.activities.locations.longitude" showTitle=false required=true  /]
                 [/#if]
@@ -147,6 +147,7 @@
     
       <!-- internal parameter -->
       <input type="hidden" name="activityID" value="${activity.id?c}">
+      <input type="hidden" id="isGlobalText" value="[@s.text name="planning.activities.locations.isGlobalText" /]">
       <div class="buttons">
         [@s.submit type="button" name="save"][@s.text name="form.buttons.save" /][/@s.submit]
         [@s.submit type="button" name="next"][@s.text name="form.buttons.next" /][/@s.submit]
@@ -168,12 +169,12 @@
     <div class="input">
       [#-- Geo position ID --]
       <input type="hidden" name="geoPosition.id" value="-1" >
-      [@customForm.input name="geoPosition.latitude" value=notApplicableText type="text" i18nkey="planning.locations.longitude" showTitle=false disabled=true  /]
+      [@customForm.input name="geoPosition.latitude" className="notApplicable" value=notApplicableText type="text" i18nkey="planning.locations.longitude" showTitle=false disabled=true  /]
     </div>
   </div>
   <div class="locationLongitude grid_2">
     <div class="input">
-      [@customForm.input name="geoPosition.longitude" value=notApplicableText type="text" i18nkey="planning.locations.longitude" showTitle=false disabled=true  /]
+      [@customForm.input name="geoPosition.longitude" className="notApplicable" value=notApplicableText type="text" i18nkey="planning.locations.longitude" showTitle=false disabled=true  /]
     </div>
   </div>
   <div class="locationName grid_3">

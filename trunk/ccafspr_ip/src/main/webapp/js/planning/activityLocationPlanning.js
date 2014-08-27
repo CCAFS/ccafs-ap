@@ -21,7 +21,7 @@ function attachEvents(){
   // isGlobale Change
   $("#isGlobal").on("change", changeGlobalState);
   
-  $("[name$='geoPosition.latitude'], [name$='geoPosition.longitude']").on("keyup", reloadMarkers);
+  $("[name$='geoPosition.latitude'], [name$='geoPosition.longitude']").on("keyup", updateMarker);
   $("[name$='geoPosition.latitude'], [name$='geoPosition.longitude']").on("focus", selectMarker);
   
   $("#fileBrowserLauncher").click(function(event){
@@ -36,9 +36,12 @@ function changeGlobalState(e){
     $("#locationsBlock").fadeOut("slow");
     disableLocations(true);
     clearMarkers();
+    $("#activityLocations-map").html("<img id='global' src='../../../images/global/global-map.png'/>" + "<p class='global'>" + $("#isGlobalText").val() + "</p>");
+    
   } else {
     $("#locationsBlock").fadeIn("slow");
     disableLocations(false);
+    loadMap();
     showMarkers();
   }
   
@@ -46,7 +49,10 @@ function changeGlobalState(e){
 
 function disableLocations(state){
   $("#locationsBlock .location").each(function(index,location){
-    $(location).find("input,select").attr("disabled", state);
+    $(location).find("input,select").each(function(index,input){
+      if (!$(this).hasClass("notApplicable"))
+        $(this).attr("disabled", state);
+    });
   });
 }
 
@@ -116,45 +122,41 @@ function setLocationIndex(){
 function changeTypeEvent(e){
   var valId = $(e.target).val();
   var $parent = $(e.target).parent().parent().parent().parent();
+  var locationId = $parent.attr("id").split("-")[1];
   var $selectType = $("#selectTemplate-" + valId);
   if ($selectType.exists()) {
     var $newSelectType = $selectType.clone(true);
     $parent.find(".locationName").empty().html($newSelectType.html());
-    $parent.find("[name$='geoPosition.latitude'], [name$='geoPosition.longitude']").attr("disabled", true).val($("#notApplicableText").val());
-    
-    if (typeof markers[$parent.attr("id").split("-")[1]] !== 'undefined') {
-      removeMarker($parent.attr("id").split("-")[1]);
+    $parent.find("[name$='geoPosition.latitude'], [name$='geoPosition.longitude']").addClass("notApplicable").attr("disabled", true).val($("#notApplicableText").val());
+    if (typeof markers[locationId] !== 'undefined') {
+      removeMarker(locationId);
     }
-    
   } else {
     var $newInputType = $("#inputNameTemplate").clone(true);
     $parent.find(".locationName").empty().html($newInputType.html());
-    $parent.find("[name$='geoPosition.latitude'], [name$='geoPosition.longitude']").attr("disabled", false).val("0.0");
+    $parent.find("[name$='geoPosition.latitude'], [name$='geoPosition.longitude']").removeClass("notApplicable").attr("disabled", false).val("0.0");
     $parent.find("[name$='name']").attr("placeholder", "Name");
     
     var latitude = $parent.find("[name$='geoPosition.latitude']").val();
     var longitude = $parent.find("[name$='geoPosition.longitude']").val();
     
-    // if marker doesn't exist create the marker
-    if (typeof markers[$parent.attr("id").split("-")[1]] === 'undefined') {
+    // If marker doesn't exist create the marker
+    if (typeof markers[locationId] === 'undefined') {
       // checks whether a coordinate is valid
       if (isCoordinateValid(latitude, longitude)) {
         makeMarker({
           latitude : latitude,
           longitude : longitude,
           name : $parent.find("[name$='name']").val(),
-          id : $parent.attr("id").split("-")[1]
+          id : locationId
         });
       }
     }
-    ;
-    
   }
   setLocationIndex();
 }
 
 function loadMap(){
-  geocoder = new google.maps.Geocoder();
   var style = [
       {
         "featureType" : "water",
@@ -258,6 +260,14 @@ function setLocationsMarkers(){
   });
 }
 
+function updateMarker(e){
+  var $parent = $(e.target).parent().parent().parent();
+  var locationId = $parent.attr("id").split("-")[1];
+  var latitude = $parent.find("[name$='geoPosition.latitude']").val();
+  var longitude = $parent.find("[name$='geoPosition.longitude']").val();
+  markers[locationId].setPosition(new google.maps.LatLng(latitude, longitude));
+}
+
 function selectMarker(e){
   var locationId = $(e.target).parent().parent().parent().attr("id").split("-")[1];
   var marker = markers[locationId];
@@ -301,11 +311,7 @@ function makeMarker(data){
   markers[data.id] = marker;
 }
 
-function reloadMarkers(){
-  deleteMarkers();
-  setLocationsMarkers();
-}
-
+// Delete all markers in the map
 function deleteMarkers(){
   setAllMap(null);
   markers = [];
@@ -321,6 +327,7 @@ function showMarkers(){
   setAllMap(map);
 }
 
+// Remove individual marker by id
 function removeMarker(id){
   marker = markers[id];
   marker.setMap(null);
@@ -331,11 +338,12 @@ function removeMarker(id){
 // Sets the map on all markers in the array.
 function setAllMap(map){
   $.each(markers, function(index,marker){
-    console.log(marker);
-    marker.setMap(map);
+    if (marker)
+      marker.setMap(map);
   });
 }
 
+// checks whether the coordinate is valid
 function isCoordinateValid(latitude,longitude){
   if (latitude > -90 && latitude < 90 && longitude > -180 && longitude < 180) {
     return true;
