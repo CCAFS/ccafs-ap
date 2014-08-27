@@ -120,6 +120,7 @@
         <param name="activityID">${activity.id}</param>
       </result>
       <result name="cancel" type="redirectAction">
+        <param name="projectID">${project.id}</param>
         <param name="actionName">activities</param>
         <param name="namespace">/planning/projects</param>
       </result>
@@ -136,6 +137,7 @@
         <param name="activityID">${activity.id}</param>
       </result>
       <result name="cancel" type="redirectAction">
+        <param name="projectID">${project.id}</param>
         <param name="actionName">activities</param>
         <param name="namespace">/planning/projects</param>
       </result>
@@ -160,6 +162,7 @@
         <param name="activityID">${activity.id}</param>
       </result>
       <result name="cancel" type="redirectAction">
+        <param name="projectID">${project.id}</param>
         <param name="actionName">activities</param>
         <param name="namespace">/planning/projects</param>
       </result>
@@ -176,6 +179,7 @@
         <param name="activityID">${activity.id}</param>
       </result>
       <result name="cancel" type="redirectAction">
+        <param name="projectID">${project.id}</param>
         <param name="actionName">activities</param>
         <param name="namespace">/planning/projects</param>
       </result>
@@ -192,6 +196,7 @@
         <param name="activityID">${activity.id}</param>
       </result>
       <result name="cancel" type="redirectAction">
+        <param name="projectID">${project.id}</param>
         <param name="actionName">activities</param>
         <param name="namespace">/planning/projects</param>
       </result>
@@ -208,6 +213,7 @@
         <param name="activityID">${activity.id}</param>
       </result>
       <result name="cancel" type="redirectAction">
+        <param name="projectID">${project.id}</param>
         <param name="actionName">activities</param>
         <param name="namespace">/planning/projects</param>
       </result>
@@ -215,15 +221,17 @@
     
     <action name="activityDeliverables" class="org.cgiar.ccafs.ap.action.planning.ActivityDeliverablesAction">
       <result name="input">/WEB-INF/planning/activityDeliverablesPlanning.ftl</result>
-      <result name="success" type="redirectAction">   
-        <param name="actionName">activityDeliverables</param>   
-        <param name="activityID">${activity.id}</param>   
+      <result name="success" type="redirectAction">
+        <param name="actionName">activityDeliverables</param>
+        <param name="activityID">${activity.id}</param>
       </result>
       <result name="next" type="redirectAction">
-        <param name="actionName">activities</param>
         <param name="namespace">/planning/projects</param>
+        <param name="actionName">activities</param>
+        <param name="projectID">${project.id}</param>
       </result>
       <result name="cancel" type="redirectAction">
+        <param name="projectID">${project.id}</param>
         <param name="actionName">activities</param>
         <param name="namespace">/planning/projects</param>
       </result>
