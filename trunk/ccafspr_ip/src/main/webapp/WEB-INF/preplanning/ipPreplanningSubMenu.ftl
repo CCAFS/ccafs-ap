@@ -51,8 +51,8 @@
     	<button style='display:none' id="ipGraph-btnSingleimpact" class="ipGraph-btn">[@s.text name="preplanning.ipGraph.myFP" /]</button>
 	  [/#if]
 	<div id="ipGraph-buttonsGroup">
-	  <button id="ipGraph-btnPrint" class="ipGraph-btn" title="Print"></button>
-	  <button id="ipGraph-btnMax" class="ipGraph-btn" title="Fullscreen"></button>
+	  <button id="ipGraph-btnPrint" class="ipGraph-btn" title="Print" disabled></button>
+	  <button id="ipGraph-btnMax" class="ipGraph-btn" title="Fullscreen" disabled></button>
 	  [#--<button id="ipGraph-btnMin" style="display:none">Min</button>--]
 	</div>
 </div>

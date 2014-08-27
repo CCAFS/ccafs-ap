@@ -78,6 +78,8 @@ function initGraph(programID){
 	        }
 	      },
 	      close: function( event, ui ) {
+	    	  $('#ipGraph-btnMax').attr('disabled','disabled');
+	    	  $('#ipGraph-btnPrint').attr('disabled','disabled');
 	    	  $( "#dialog-message" ).empty();
 	    	  $( "<div id=\"loading-dialog-message\" style=\"display:none;position:absolute; width:100%; height:100%;top: 45%;\"><img style=\"display: block; margin: 0 auto;\" src=\"../images/global/loading.gif\" alt=\"Loader\" /></div>" ).appendTo("#dialog-message");
 	    	  elements['nodes'] = [];
@@ -191,6 +193,12 @@ function callCytos(url,contentDiv) {
 	        userZoomingEnabled: true,
 //	        padding: 200
 	      },
+	      /*layout: {
+	    	  name: 'concentric',
+	    	    concentric: function(){ return (5-this.data('nodeType'))*100*(this.data('translate')+1); },
+	    	    levelWidth: function( nodes ){ return 10; },
+	    	    padding: 10
+		      },*/
 	      boxSelectionEnabled: false,
 	      ready: function() {
 	        window.cy = this;
@@ -257,16 +265,36 @@ function callCytos(url,contentDiv) {
     			  sons.css( 'background-opacity', '1' );
     			  sons.css( 'text-opacity', '1' );
     		  } else if(evtTarget.isNode()) {
-	    		var sons = evtTarget.connectedEdges();    	
-	    		sons.css( 'line-color', '#444' );
-	    		sons.css( 'source-arrow-color', '#444' );
-	    		sons.sources().css( 'background-opacity', '1' );
-	    		sons.sources().css( 'text-opacity', '1' );
-	    		sons.targets().css( 'background-opacity', '1' );
-	    		sons.targets().css( 'text-opacity', '1' );
+    			  evtTarget.css( 'background-opacity', '1' );
+    			  evtTarget.css( 'text-opacity', '1' );
+    			  paintSources(evtTarget);
+    			  paintTargets(evtTarget);
     		  }
     	  }
     	});
+	    
+	    function paintTargets(node) {
+	    	targets = node.connectedEdges('edge[target="'+node.id()+'"]');
+	    	targets.css( 'line-color', '#444' );
+	    	targets.css( 'source-arrow-color', '#444' );
+	    	targets.sources().css( 'background-opacity', '1' );
+	    	targets.sources().css( 'text-opacity', '1' );
+	    	targets.sources().each(function(i, ele){
+	    		paintTargets(ele);
+	    	});
+	    }
+	    function paintSources(node) {
+	    	sources = node.connectedEdges('edge[source="'+node.id()+'"]');
+	    	sources.css( 'line-color', '#444' );
+	    	sources.css( 'source-arrow-color', '#444' );
+	    	sources.targets().css( 'background-opacity', '1' );
+	    	sources.targets().css( 'text-opacity', '1' );
+	    	//if (sources){
+	    	sources.targets().each(function(i, ele){
+	    		paintSources(ele);
+	    	});
+	    	//}
+	    }
 //	    cys = $('#cy').cytoscape('get');
 //	      $('#btnAdd').click(addElem);
 	    function addElem(elem) {
@@ -344,6 +372,8 @@ function callCytos(url,contentDiv) {
     	document.querySelector('[data-id="layer4-node"]').style.position = 'static';
 	  }).always(function() {
 		  $("#loading-"+contentDiv).fadeOut('slow');
+		  $('#ipGraph-btnMax').removeAttr('disabled');
+		  $('#ipGraph-btnPrint').removeAttr('disabled');	
 	  });
 	}
 
