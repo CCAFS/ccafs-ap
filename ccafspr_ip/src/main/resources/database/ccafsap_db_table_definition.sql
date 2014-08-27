@@ -316,6 +316,30 @@ CREATE TABLE IF NOT EXISTS `ip_cross_cutting_themes` (
 -- --------------------------------------------------------
 
 --
+-- Estructura de tabla para la tabla `ip_deliverable_contributions`
+--
+
+CREATE TABLE IF NOT EXISTS `ip_deliverable_contributions` (
+  `activity_contribution_id` BIGINT NOT NULL COMMENT 'This column is a foreign key that references the table ip_activity_contributions.',
+  `deliverable_id` BIGINT NOT NULL COMMENT 'This column is a foreign key that references the table deliverables',
+  INDEX `FK_deliverables_ipActivityContributions_contributionID_idx` (`activity_contribution_id` ASC),
+  INDEX `FK_deliverables_ipActivityContributions_deliverableID_idx` (`deliverable_id` ASC),
+  INDEX `PK_deliverable_contributions` (`activity_contribution_id` ASC, `deliverable_id` ASC),
+  CONSTRAINT `FK_deliverables_ipActivityContributions_contributionID`
+    FOREIGN KEY (`activity_contribution_id`)
+    REFERENCES `ip_activity_contributions` (`id`)
+    ON DELETE CASCADE
+    ON UPDATE CASCADE,
+  CONSTRAINT `FK_deliverables_ipActivityContributions_deliverableID`
+    FOREIGN KEY (`deliverable_id`)
+    REFERENCES `deliverables` (`id`)
+    ON DELETE CASCADE
+    ON UPDATE CASCADE
+) ENGINE = InnoDB DEFAULT CHARSET=utf8;
+
+-- --------------------------------------------------------
+
+--
 -- Estructura de tabla para la tabla `ip_elements`
 --
 
