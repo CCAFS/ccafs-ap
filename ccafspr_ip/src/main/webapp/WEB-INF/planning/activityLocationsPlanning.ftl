@@ -39,7 +39,7 @@
     [@s.text name="planning.activities.locations.title" /] 
     </h1>  
     <div id="activityGlobalBlock" class="borderBox">
-      [@customForm.checkbox name="isGlobal" i18nkey="planning.activities.isGlobal" checked=isGlobal value="false"/]
+      [@customForm.checkbox name="isGlobal" i18nkey="planning.activities.locations.checkbox.isGlobal" checked=isGlobal value="false"/]
     </div>
     <div id="activityLocations-map"></div> 
     <div id="locationsBlock" class="clearfix">
@@ -126,7 +126,7 @@
             <p>[@s.text name="planning.activities.locations.empty" /]</p>
           [/#if]
         [/#if]
-      </div>
+      </div> <!-- End #locationsBlock -->
       [#if saveable]
         <div id="addLocationBlock" class="addLink">
           <a href="" id="addLocationLink" class="addLocation addButton" >[@s.text name="planning.activities.locations.addLocation" /]</a>
@@ -139,7 +139,7 @@
       [#-- File upload --]
       <p id="addPartnerText" class="helpMessage">
         [@s.text name="planning.activities.locations.uploadMessage" /]
-        <a id="fileBrowserLauncher" href=""> [@s.text name="planning.activities.locations.uploadMessageLink" /]</a>       
+        <a id="fileBrowserLauncher" href=""> [@s.text name="planning.activities.locations.uploadMessageLink" /]</a>
       </p>
       <div style="display:none">
         [@customForm.input name="excelTemplate" type="file" i18nkey="reporting.caseStudies.image" /]
@@ -147,7 +147,7 @@
     
       <!-- internal parameter -->
       <input type="hidden" name="activityID" value="${activity.id?c}">
-      <input type="hidden" id="isGlobalText" value="[@s.text name="planning.activities.locations.isGlobalText" /]">
+      <input type="hidden" id="isGlobalText" value="[@s.text name="planning.activities.locations.map.isGlobal" /]">
       <div class="buttons">
         [@s.submit type="button" name="save"][@s.text name="form.buttons.save" /][/@s.submit]
         [@s.submit type="button" name="next"][@s.text name="form.buttons.next" /][/@s.submit]

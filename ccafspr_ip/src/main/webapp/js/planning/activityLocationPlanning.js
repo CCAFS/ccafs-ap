@@ -34,12 +34,14 @@ function attachEvents(){
 function changeGlobalState(e){
   if ($(e.target).is(':checked')) {
     $("#locationsBlock").fadeOut("slow");
+    $("#addPartnerText").fadeOut("slow");
     disableLocations(true);
     clearMarkers();
     $("#activityLocations-map").html("<img id='global' src='../../../images/global/global-map.png'/>" + "<p class='global'>" + $("#isGlobalText").val() + "</p>");
     
   } else {
     $("#locationsBlock").fadeIn("slow");
+    $("#addPartnerText").fadeIn("slow");
     disableLocations(false);
     loadMap();
     showMarkers();
