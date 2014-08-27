@@ -193,14 +193,6 @@ public class ProjectPartnersPlanningAction extends BaseAction {
         boolean success = true;
         boolean saved = true;
 
-        if (isExpected) {
-          // Saving Project leader
-          saved = projectManager.saveExpectedProjectLeader(project.getId(), project.getExpectedLeader());
-          if (!saved) {
-            success = false;
-          }
-        }
-
         // Getting previous Project Partners.
         List<ProjectPartner> previousProjectPartners = projectPartnerManager.getProjectPartners(projectID);
 
@@ -214,13 +206,27 @@ public class ProjectPartnersPlanningAction extends BaseAction {
           }
         }
 
-        // Getting previous Partner Institutions
+        // --- Getting previous Partner Institutions
         List<Institution> previousInstitutions = new ArrayList<>();
+        // - From project leader
+        if (isExpected) {
+          previousInstitutions.add(projectManager.getExpectedProjectLeader(project.getId()).getCurrentInstitution());
+        } else {
+          previousInstitutions.add(projectManager.getProjectLeader(project.getId()).getCurrentInstitution());
+        }
+        // - From project partners
         for (ProjectPartner projectPartner : previousProjectPartners) {
           previousInstitutions.add(projectPartner.getPartner());
         }
-        // Getting current Partner Institutions
+        // --- Getting current Partner Institutions
         List<Institution> currentInstitutions = new ArrayList<>();
+        // - From project leader
+        if (isExpected) {
+          currentInstitutions.add(project.getExpectedLeader().getCurrentInstitution());
+        } else {
+          currentInstitutions.add(project.getLeader().getCurrentInstitution());
+        }
+        // - From project partners
         for (ProjectPartner projectPartner : project.getProjectPartners()) {
           currentInstitutions.add(projectPartner.getPartner());
         }
@@ -228,6 +234,14 @@ public class ProjectPartnersPlanningAction extends BaseAction {
         for (Institution previousInstitution : previousInstitutions) {
           if (!currentInstitutions.contains(previousInstitution)) {
             budgetManager.deleteBudgetsByInstitution(project.getId(), previousInstitution.getId());
+          }
+        }
+
+        // Saving Project leader
+        if (isExpected) {
+          saved = projectManager.saveExpectedProjectLeader(project.getId(), project.getExpectedLeader());
+          if (!saved) {
+            success = false;
           }
         }
 

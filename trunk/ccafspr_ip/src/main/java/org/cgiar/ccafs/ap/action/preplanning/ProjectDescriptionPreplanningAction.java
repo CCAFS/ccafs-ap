@@ -76,7 +76,7 @@ public class ProjectDescriptionPreplanningAction extends BaseAction {
   /**
    * This method returns a composed name with the Acronym and Name.
    * e.g. FP4: Policies and Institutions for Climate-Resilient Food Systems
-   * 
+   *
    * @param ipProgramId is the program identifier.
    * @return the composed name described above.
    */
@@ -89,30 +89,13 @@ public class ProjectDescriptionPreplanningAction extends BaseAction {
     return null;
   }
 
-  /**
-   * This method returns an array of cross cutting ids depending on the project.crossCuttings attribute.
-   * 
-   * @return an array of integers.
-   */
-// public int[] getCrossCuttingIds() {
-// if (this.project.getCrossCuttings() != null) {
-// int[] ids = new int[this.project.getCrossCuttings().size()];
-// for (int c = 0; c < ids.length; c++) {
-// ids[c] = this.project.getCrossCuttings().get(c).getId();
-// }
-// return ids;
-// }
-// return null;
-// }
-
   public int getEndYear() {
     return config.getEndYear();
   }
 
-
   /**
    * This method returns an array of flagship ids depending on the project.flagships attribute.
-   * 
+   *
    * @return an array of integers.
    */
   public int[] getFlagshipIds() {
@@ -130,15 +113,9 @@ public class ProjectDescriptionPreplanningAction extends BaseAction {
     return ipProgramFlagships;
   }
 
-// public List<IPCrossCutting> getIpCrossCuttings() {
-// return ipCrossCuttings;
-// }
-
-
   public List<IPProgram> getIpProgramRegions() {
     return ipProgramRegions;
   }
-
 
   public Project getProject() {
     return project;
@@ -154,7 +131,7 @@ public class ProjectDescriptionPreplanningAction extends BaseAction {
 
   /**
    * This method returns an array of region ids depending on the project.regions attribute.
-   * 
+   *
    * @return an array of integers.
    */
   public int[] getRegionIds() {

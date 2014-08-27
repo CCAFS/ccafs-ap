@@ -412,7 +412,7 @@ public class MySQLActivityDAO implements ActivityDAO {
     } else {
       // update activity record
       query
-        .append("UPDATE activities SET title = ?, description = ?, startDate = ?, endDate = ?, expected_leader_id = ?, is_global=? ");
+      .append("UPDATE activities SET title = ?, description = ?, startDate = ?, endDate = ?, expected_leader_id = ?, is_global=? ");
       query.append("WHERE id = ? ");
       values = new Object[7];
       values[0] = activityData.get("title");
@@ -451,9 +451,9 @@ public class MySQLActivityDAO implements ActivityDAO {
       int newId = databaseManager.saveData(query.toString(), values);
       if (newId <= 0) {
         LOG
-          .warn(
-            "-- saveActivityIndicators() > A problem happened trying to add a new activity indicator. Data tried to save was: {}",
-            indicatorData);
+        .warn(
+          "-- saveActivityIndicators() > A problem happened trying to add a new activity indicator. Data tried to save was: {}",
+          indicatorData);
         LOG.debug("<< saveActivityIndicators(): {}", false);
         return false;
       }
@@ -471,9 +471,9 @@ public class MySQLActivityDAO implements ActivityDAO {
       int result = databaseManager.saveData(query.toString(), values);
       if (result == -1) {
         LOG
-          .warn(
-            "-- saveActivityIndicators() > A problem happened trying to update an activity indicator. Data tried to save was: {}",
-            indicatorData);
+        .warn(
+          "-- saveActivityIndicators() > A problem happened trying to update an activity indicator. Data tried to save was: {}",
+          indicatorData);
         LOG.debug("<< saveActivityIndicators(): {}", false);
         return false;
       }
@@ -534,7 +534,7 @@ public class MySQLActivityDAO implements ActivityDAO {
 
   @Override
   public int
-    saveExpectedActivityLeader(int activityID, Map<String, Object> activityLeaderData, boolean isOfficialLeader) {
+  saveExpectedActivityLeader(int activityID, Map<String, Object> activityLeaderData, boolean isOfficialLeader) {
     LOG.debug(">> saveExpectedActivityLeader(activityLeaderData={})", activityLeaderData);
     StringBuilder query = new StringBuilder();
     int result = -1;

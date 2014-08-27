@@ -28,6 +28,8 @@ import org.cgiar.ccafs.ap.data.model.User;
 
 import java.util.List;
 
+import org.cgiar.ccafs.ap.data.manager.BudgetManager;
+
 import com.google.inject.Inject;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
@@ -48,6 +50,7 @@ public class ActivityDescriptionAction extends BaseAction {
   private InstitutionManager institutionManager;
   private IPCrossCuttingManager ipCrossCuttingManager;
   private ProjectManager projectManager;
+  private BudgetManager budgetManager;
 
   // Model for the back-end
   private Activity activity;
@@ -62,12 +65,14 @@ public class ActivityDescriptionAction extends BaseAction {
 
   @Inject
   public ActivityDescriptionAction(APConfig config, ActivityManager activityManager,
-    InstitutionManager institutionManager, IPCrossCuttingManager ipCrossCuttingManager, ProjectManager projectManager) {
+    InstitutionManager institutionManager, IPCrossCuttingManager ipCrossCuttingManager, ProjectManager projectManager,
+    BudgetManager budgetManager) {
     super(config);
     this.activityManager = activityManager;
     this.institutionManager = institutionManager;
     this.ipCrossCuttingManager = ipCrossCuttingManager;
     this.projectManager = projectManager;
+    this.budgetManager = budgetManager;
   }
 
   public Activity getActivity() {
@@ -175,6 +180,40 @@ public class ActivityDescriptionAction extends BaseAction {
     // If user has enough privileges to save.
     if (this.isSaveable()) {
       boolean success = true;
+
+      // Reviewing if there were any change in the year range from start date to end date in order to reflect those
+      // modifications in the activity budget section.
+      List<Integer> currentYears = activity.getAllYears();
+      List<Integer> previousYears = activityManager.getActivityById(activity.getId()).getAllYears();
+      // Deleting unused years from activity budget.
+      for (Integer previousYear : previousYears) {
+        if (!currentYears.contains(previousYear)) {
+          budgetManager.deleteActivityBudgetByYear(activityID, previousYear.intValue());
+        }
+      }
+
+      // Reviewing if there were any change in the institution of the activity leader.
+      Institution previousLeadInstitution = null;
+      if (isExpected) {
+        User previousExpectedLeader = activityManager.getExpectedActivityLeader(activity.getId());
+        if (previousExpectedLeader != null) {
+          previousLeadInstitution = previousExpectedLeader.getCurrentInstitution();
+        }
+      } else {
+        previousLeadInstitution = activityManager.getActivityLeader(activity.getId()).getCurrentInstitution();
+      }
+      if (previousLeadInstitution != null) {
+        Institution currentLeadInstitution;
+        if (isExpected) {
+          currentLeadInstitution = activity.getExpectedLeader().getCurrentInstitution();
+        } else {
+          currentLeadInstitution = activity.getLeader().getCurrentInstitution();
+        }
+        if (!currentLeadInstitution.equals(previousLeadInstitution)) {
+          budgetManager.deleteActivityBudgetsByInstitution(activity.getId(), previousLeadInstitution.getId());
+        }
+      }
+
       if (activity.getExpectedLeader() != null) {
         // Saving the information of the expected leader.
         int result =
