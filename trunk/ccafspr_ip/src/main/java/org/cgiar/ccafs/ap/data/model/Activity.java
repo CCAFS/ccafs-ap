@@ -45,9 +45,12 @@ public class Activity {
   private List<IPIndicator> indicators;
   private List<Budget> budgets;
   private List<Deliverable> deliverables;
+  private IPOtherContribution ipOtherContribution;
+
 
   public Activity() {
   }
+
 
   public Activity(int id) {
     this.id = id;
@@ -130,10 +133,6 @@ public class Activity {
     return endDate;
   }
 
-// public ExpectedActivityLeader getExpectedLeader() {
-// return expectedLeader;
-// }
-
   public User getExpectedLeader() {
     return expectedLeader;
   }
@@ -142,8 +141,16 @@ public class Activity {
     return id;
   }
 
+// public ExpectedActivityLeader getExpectedLeader() {
+// return expectedLeader;
+// }
+
   public List<IPIndicator> getIndicators() {
     return indicators;
+  }
+
+  public IPOtherContribution getIpOtherContribution() {
+    return ipOtherContribution;
   }
 
   public User getLeader() {
@@ -183,13 +190,13 @@ public class Activity {
     return isGlobal;
   }
 
-// public void setExpectedLeader(ExpectedActivityLeader expectedLeader) {
-// this.expectedLeader = expectedLeader;
-// }
-
   public void setActivityPartners(List<ActivityPartner> partners) {
     this.activityPartners = partners;
   }
+
+// public void setExpectedLeader(ExpectedActivityLeader expectedLeader) {
+// this.expectedLeader = expectedLeader;
+// }
 
   public void setBudgets(List<Budget> budgets) {
     this.budgets = budgets;
@@ -229,6 +236,10 @@ public class Activity {
 
   public void setIndicators(List<IPIndicator> indicators) {
     this.indicators = indicators;
+  }
+
+  public void setIpOtherContribution(IPOtherContribution ipOtherContribution) {
+    this.ipOtherContribution = ipOtherContribution;
   }
 
 

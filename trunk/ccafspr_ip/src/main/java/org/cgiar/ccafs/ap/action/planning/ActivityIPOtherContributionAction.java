@@ -16,7 +16,9 @@ package org.cgiar.ccafs.ap.action.planning;
 import org.cgiar.ccafs.ap.action.BaseAction;
 import org.cgiar.ccafs.ap.config.APConfig;
 import org.cgiar.ccafs.ap.config.APConstants;
+import org.cgiar.ccafs.ap.data.manager.ActivityManager;
 import org.cgiar.ccafs.ap.data.manager.IPOtherContributionManager;
+import org.cgiar.ccafs.ap.data.model.Activity;
 import org.cgiar.ccafs.ap.data.model.IPOtherContribution;
 
 import com.google.inject.Inject;
@@ -36,9 +38,11 @@ public class ActivityIPOtherContributionAction extends BaseAction {
 
   // Manager
   private IPOtherContributionManager ipOtherContributionManager;
+  private ActivityManager activityManager;
 
   // Model for the back-end
   private IPOtherContribution ipOtherContribution;
+  private Activity activity;
 
 
   // Model for the front-end
@@ -46,11 +50,16 @@ public class ActivityIPOtherContributionAction extends BaseAction {
 
 
   @Inject
-  public ActivityIPOtherContributionAction(APConfig config, IPOtherContributionManager ipOtherContributionManager) {
+  public ActivityIPOtherContributionAction(APConfig config, IPOtherContributionManager ipOtherContributionManager,
+    ActivityManager activityManager) {
     super(config);
     this.ipOtherContributionManager = ipOtherContributionManager;
+    this.activityManager = activityManager;
   }
 
+  public Activity getActivity() {
+    return activity;
+  }
 
   public int getActivityID() {
     return activityID;
@@ -59,6 +68,17 @@ public class ActivityIPOtherContributionAction extends BaseAction {
 
   public IPOtherContribution getIpOtherContribution() {
     return ipOtherContribution;
+  }
+
+
+  @Override
+  public String next() {
+    String result = save();
+    if (result.equals(BaseAction.SUCCESS)) {
+      return BaseAction.NEXT;
+    } else {
+      return result;
+    }
   }
 
 
@@ -72,10 +92,36 @@ public class ActivityIPOtherContributionAction extends BaseAction {
       activityID = -1;
       return; // Stop here and go to execute method.
     }
-
+    // Getting the activity information
+    activity = activityManager.getActivityById(activityID);
     // Getting the information for the IP Other Contribution
     ipOtherContribution = ipOtherContributionManager.getIPOtherContributionByActivityId(activityID);
-    System.out.println(ipOtherContribution);
+
+    activity.setIpOtherContribution(ipOtherContribution);
+
+
+  }
+
+
+  @Override
+  public String save() {
+    // Saving Activity IP Other Contribution
+    System.out.println(activity.getIpOtherContribution());
+    boolean saved = ipOtherContributionManager.saveIPOtherContribution(activityID, activity.getIpOtherContribution());
+
+    if (!saved) {
+      addActionError(getText("saving.problem"));
+      return BaseAction.INPUT;
+    } else {
+      addActionMessage(getText("saving.success",
+        new String[] {getText("planning.impactPathways.otherContributions.title")}));
+      return BaseAction.SUCCESS;
+    }
+  }
+
+
+  public void setActivity(Activity activity) {
+    this.activity = activity;
   }
 
 
@@ -87,19 +133,6 @@ public class ActivityIPOtherContributionAction extends BaseAction {
   public void setIpOtherContribution(IPOtherContribution ipOtherContribution) {
     this.ipOtherContribution = ipOtherContribution;
   }
-
-
-// @Override
-// public String save() {
-// boolean success = true;
-// // Saving Project Outcome
-//
-// boolean saved = activityManager.saveActivity(1, activity);
-// if (!saved) {
-// success = false;
-// }
-// return INPUT;
-// }
 
 
 }
