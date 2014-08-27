@@ -59,14 +59,31 @@ public class MySQLDeliverableDAO implements DeliverableDAO {
   }
 
   @Override
-  public boolean deleteDeliverablesByActivity(int projectID) {
-    LOG.debug(">> deleteDeliverablesByActivity(projectId={})", projectID);
+  public boolean deleteDeliverableOutput(int deliverableID) {
+    LOG.debug(">> deleteDeliverableOutput(deliverableID={})", deliverableID);
+
+    StringBuilder query = new StringBuilder();
+    query.append("DELETE idc FROM ip_deliverable_contributions idc ");
+    query.append("WHERE idc.deliverable_id = ? ");
+
+    int rowsDeleted = databaseManager.delete(query.toString(), new Object[] {deliverableID});
+    if (rowsDeleted >= 0) {
+      LOG.debug("<< deleteDeliverableOutput():{}", true);
+      return true;
+    }
+    LOG.debug("<< deleteDeliverableOutput():{}", false);
+    return false;
+  }
+
+  @Override
+  public boolean deleteDeliverablesByActivity(int activityID) {
+    LOG.debug(">> deleteDeliverablesByActivity(activityID={})", activityID);
 
     StringBuilder query = new StringBuilder();
     query.append("DELETE d FROM deliverables d ");
     query.append("WHERE d.activity_id = ? ");
 
-    int rowsDeleted = databaseManager.delete(query.toString(), new Object[] {projectID});
+    int rowsDeleted = databaseManager.delete(query.toString(), new Object[] {activityID});
     if (rowsDeleted >= 0) {
       LOG.debug("<< deleteDeliverablesByActivity():{}", true);
       return true;
@@ -103,6 +120,7 @@ public class MySQLDeliverableDAO implements DeliverableDAO {
     return deliverablesList;
   }
 
+
   @Override
   public Map<String, String> getDeliverableById(int deliverableID) {
     Map<String, String> deliverableData = new HashMap<String, String>();
@@ -130,41 +148,33 @@ public class MySQLDeliverableDAO implements DeliverableDAO {
     return deliverableData;
   }
 
-
   @Override
-  public List<Map<String, String>> getDeliverableContributions(int deliverableID) {
-    List<Map<String, String>> deliverableContributionList = new ArrayList<>();
-    LOG.debug(">> getDeliverableContributions deliverableID = {} )", deliverableID);
+  public Map<String, String> getDeliverableOutput(int deliverableID) {
+    Map<String, String> deliverableContributionData = new HashMap<String, String>();
+    LOG.debug(">> getDeliverableOutput deliverableID = {} )", deliverableID);
 
     StringBuilder query = new StringBuilder();
     query.append("SELECT ipe.id,ipe.description ");
     query.append("FROM ip_deliverable_contributions ipd ");
     query.append("INNER JOIN deliverables d ON ipd.deliverable_id=d.id ");
     query.append("INNER JOIN ip_activity_contributions ipac ON ipd.activity_contribution_id=ipac.id ");
-    query.append("INNER JOIN ip_elements ipe ON ipac.ip_element_id=ipe.id ");
+    query.append("INNER JOIN ip_elements ipe ON ipac.mog_id=ipe.id ");
     query.append("WHERE ipd.deliverable_id= ");
     query.append(deliverableID);
-
     try (Connection con = databaseManager.getConnection()) {
       ResultSet rs = databaseManager.makeQuery(query.toString(), con);
-      while (rs.next()) {
-        Map<String, String> activityContributionData = new HashMap<String, String>();
-        activityContributionData.put("id", rs.getString("id"));
-        activityContributionData.put("description", rs.getString("description"));
-
-        deliverableContributionList.add(activityContributionData);
+      if (rs.next()) {
+        deliverableContributionData.put("id", rs.getString("id"));
+        deliverableContributionData.put("description", rs.getString("description"));
       }
       rs.close();
     } catch (SQLException e) {
       String exceptionMessage = "-- executeQuery() > Exception raised trying ";
       exceptionMessage += "to execute the following query " + query;
-
       LOG.error(exceptionMessage, e);
     }
-
-    LOG.debug("<< getDeliverableContributions():deliverableContributionList.size={}",
-      deliverableContributionList.size());
-    return deliverableContributionList;
+    LOG.debug("<< getDeliverableOutput()");
+    return deliverableContributionData;
   }
 
   @Override
@@ -218,5 +228,27 @@ public class MySQLDeliverableDAO implements DeliverableDAO {
     }
     LOG.debug("<< saveDeliverable():{}", result);
     return result;
+  }
+
+  @Override
+  public int saveDeliverableOutput(int deliverableID, int ipElementID, int activityID) {
+    LOG.debug(">> saveDeliverableOutput(deliverableData={})", new Object[] {deliverableID, ipElementID, activityID});
+    StringBuilder query = new StringBuilder();
+    int result = -1;
+    Object[] values;
+
+    query.append("INSERT INTO ip_deliverable_contributions (activity_contribution_id,deliverable_id) ");
+    query.append("VALUES ((SELECT id FROM ip_activity_contributions WHERE activity_id= ");
+    query.append(activityID);
+    query.append(" AND mog_id= ");
+    query.append(ipElementID);
+    query.append("),?)");
+    values = new Object[1];
+    values[0] = deliverableID;
+    result = databaseManager.saveData(query.toString(), values);
+
+    LOG.debug("<< saveDeliverableOutput():{}", result);
+    return result;
+
   }
 }

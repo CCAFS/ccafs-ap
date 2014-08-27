@@ -37,6 +37,14 @@ public interface DeliverableManager {
   public boolean deleteDeliverable(int deliverableId);
 
   /**
+   * This method removes a specific deliverable contribution value from the database.
+   * 
+   * @param deliverableID is the deliverable identifier.
+   * @return true if the deliverable was successfully deleted, false otherwise.
+   */
+  public boolean deleteDeliverableOutput(int deliverableID);
+
+  /**
    * This method removes a set of deliverables that belongs to a specific activity.
    * 
    * @param activityID is the activity identifier.
@@ -58,7 +66,7 @@ public interface DeliverableManager {
    * @param deliverableID - is the id of the Deliverable
    * @return a list of IPElement with the information related to a Deliverable as contributions
    */
-  public List<IPElement> getDeliverableContributions(int deliverableID);
+  public IPElement getDeliverableOutput(int deliverableID);
 
   /**
    * This method gets all the deliverables information by a given activity Id
@@ -78,5 +86,12 @@ public interface DeliverableManager {
    */
   public int saveDeliverable(int activityID, Deliverable deliverable);
 
+  /**
+   * @param deliverableID
+   * @param ipElementID
+   * @param activityID
+   * @return
+   */
+  public int saveDeliverableOutput(int deliverableID, int ipElementID, int activityID);
 
 }

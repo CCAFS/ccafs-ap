@@ -59,10 +59,15 @@ public class DeliverableManagerImpl implements DeliverableManager {
   }
 
   @Override
+  public boolean deleteDeliverableOutput(int deliverableID) {
+    return deliverableDAO.deleteDeliverableOutput(deliverableID);
+  }
+
+
+  @Override
   public boolean deleteDeliverablesByActivity(int activityID) {
     return deliverableDAO.deleteDeliverablesByActivity(activityID);
   }
-
 
   @Override
   public Deliverable getDeliverableById(int deliverableID) {
@@ -75,24 +80,22 @@ public class DeliverableManagerImpl implements DeliverableManager {
       deliverable
         .setType(deliverableTypeManager.getDeliverableTypeById(Integer.parseInt(deliverableData.get("type_id"))));
       deliverable.setNextUsers(nextUserManager.getNextUsersByDeliverableId(deliverableID));
+      deliverable.setOutput(this.getDeliverableOutput(deliverableID));
       return deliverable;
     }
     return null;
   }
 
   @Override
-  public List<IPElement> getDeliverableContributions(int deliverableID) {
-    List<IPElement> deliverableContributionsList = new ArrayList<>();
-    List<Map<String, String>> deliverableContributionDataList = deliverableDAO.getDeliverablesByActivity(deliverableID);
-    for (Map<String, String> deliverableData : deliverableContributionDataList) {
-      IPElement deliverableContributions = new IPElement();
-      deliverableContributions.setId(Integer.parseInt(deliverableData.get("id")));
-      deliverableContributions.setDescription(deliverableData.get("descritpion"));
-
-      // adding information of the object to the array
-      deliverableContributionsList.add(deliverableContributions);
+  public IPElement getDeliverableOutput(int deliverableID) {
+    IPElement deliverableOutput = new IPElement();
+    Map<String, String> deliverableOutputData = deliverableDAO.getDeliverableOutput(deliverableID);
+    if (!deliverableOutputData.isEmpty()) {
+      deliverableOutput.setId(Integer.parseInt(deliverableOutputData.get("id")));
+      deliverableOutput.setDescription(deliverableOutputData.get("description"));
+      return deliverableOutput;
     }
-    return deliverableContributionsList;
+    return null;
   }
 
   @Override
@@ -107,7 +110,7 @@ public class DeliverableManagerImpl implements DeliverableManager {
       deliverable
         .setType(deliverableTypeManager.getDeliverableTypeById(Integer.parseInt(deliverableData.get("type_id"))));
       deliverable.setNextUsers(nextUserManager.getNextUsersByDeliverableId(activityID));
-
+      deliverable.setOutput(this.getDeliverableOutput(Integer.parseInt(deliverableData.get("id"))));
       // adding information of the object to the array
       deliverableList.add(deliverable);
     }
@@ -138,5 +141,11 @@ public class DeliverableManagerImpl implements DeliverableManager {
 
     return result;
 
+  }
+
+  @Override
+  public int saveDeliverableOutput(int deliverableID, int ipElementID, int activityID) {
+    int result = deliverableDAO.saveDeliverableOutput(deliverableID, ipElementID, activityID);
+    return result;
   }
 }
