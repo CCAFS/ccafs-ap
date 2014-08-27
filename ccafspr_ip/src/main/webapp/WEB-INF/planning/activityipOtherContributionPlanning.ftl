@@ -37,15 +37,17 @@
       </p>
     [/#if]
     <h6 class="contentTitle">
-    [@customForm.textArea name="ipOtherContribution.contribution" i18nkey="planning.impactPathways.otherContributions.contribution" /]  
+    [@customForm.textArea name="activity.ipOtherContribution.contribution" i18nkey="planning.impactPathways.otherContributions.contribution" /]  
     </h6> <br/>
     <h6 class="contentTitle">
-    [@customForm.textArea name="ipOtherContribution.additionalContribution" i18nkey="planning.impactPathways.otherContributions.additionalcontribution" /]  
+    [@customForm.textArea name="activity.ipOtherContribution.additionalContribution" i18nkey="planning.impactPathways.otherContributions.additionalcontribution" /]  
     </h6> 
     </div>
      <!-- internal parameter -->
-    <input name="activityID" type="hidden" value="" />    
-    <input name="activity.ipOtherContribution.id" type="hidden" value="" />
+    <input name="activityID" type="hidden" value="${activity.id?c}" />
+    [#if activity.ipOtherContribution?has_content]
+      <input name="activity.ipOtherContribution.id" type="hidden" value="${activity.ipOtherContribution.id}"/>
+    [/#if]
     [#if saveable]
       <div class="buttons">
         [@s.submit type="button" name="save"][@s.text name="form.buttons.save" /][/@s.submit]
