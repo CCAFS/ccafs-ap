@@ -71,6 +71,9 @@ function setDeliverablesIndexes(){
     $(element).find("[name$='type']").attr("name", elementName + "type");
     $(element).find("[name$='year']").attr("name", elementName + "year");
     
+    $(element).find("[name$='mainType']").attr("id", "activityDeliverables_mainType");
+    $(element).find("[name$='type']").attr("id", "activityDeliverables_activity_deliverables_" + index + "__type");
+    
     // Update index for nexts users
     $(element).find(".activityNextUser").each(function(i,nextUser){
       var elementName = "activity.deliverables[" + index + "].nextUsers[" + i + "].";
@@ -89,13 +92,14 @@ function setDeliverablesIndexes(){
 function updateDeliverableSubTypeList(event){
   var $mainTypeSelect = $(event.target);
   var blockIndex = $("select[id$='mainType']").index($mainTypeSelect);
+  var $subTypeSelect;
   
   // Check that the select is not inside the template
   if($mainTypeSelect.attr("id") != "none_mainType"){
-    var $subTypeSelect = $("#activityDeliverable-" + blockIndex + " select[name$='type'] ");
+    $subTypeSelect = $("#activityDeliverable-" + blockIndex + " select[name$='type'] ");
   } else {
     // The template has index 999
-    var $subTypeSelect = $("#activityDeliverable-999 select[name$='type'] ");
+    $subTypeSelect = $("#activityDeliverable-999 select[name$='type'] ");
   }
 
   var source = "../../../json/deliverablesByType.do?deliverableTypeID=" + $mainTypeSelect.val();
@@ -104,8 +108,15 @@ function updateDeliverableSubTypeList(event){
     // First delete all the options already present in the subtype select
     $subTypeSelect.find("option").remove();
     
+    var selectedValue = $("#subTypeSelected_"+blockIndex).val();
+    var optionElement;
     $.each(data.subTypes, function(index, subType){
-      var optionElement = "<option value='"+ subType.id +"'>" + subType.name + "</option>";
+      if(selectedValue == subType.id){
+        optionElement = "<option value='"+ subType.id +"' selected >" + subType.name + "</option>";
+      } else {
+        optionElement = "<option value='"+ subType.id +"'>" + subType.name + "</option>";
+      }
+
       $subTypeSelect.append(optionElement);
     });
     // Refresh the plugin in order to show the changes
