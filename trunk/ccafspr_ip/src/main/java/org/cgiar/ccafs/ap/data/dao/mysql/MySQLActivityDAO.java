@@ -275,10 +275,12 @@ public class MySQLActivityDAO implements ActivityDAO {
     List<Map<String, String>> outputsDataList = new ArrayList<>();
 
     StringBuilder query = new StringBuilder();
-    query.append("SELECT ipe.id, ipe.description ");
+    query.append("SELECT ipe.id, ipe.description, pe.id as 'parent_id',  ");
+    query.append("pe.description as 'parent_description' ");
     query.append("FROM ip_elements ipe ");
-    query.append("INNER JOIN ip_activity_contributions iac ON ipe.id = iac.ip_element_id ");
-    query.append("WHERE iac.activity_id=  ");
+    query.append("INNER JOIN ip_activity_contributions ipc ON ipe.id = ipc.id ");
+    query.append("INNER JOIN ip_elements pe ON ipc.midOutcome_id = pe.id ");
+    query.append("WHERE ipc.activity_id=  ");
     query.append(activityID);
 
     try (Connection con = databaseManager.getConnection()) {
@@ -288,6 +290,8 @@ public class MySQLActivityDAO implements ActivityDAO {
 
         indicatorData.put("id", rs.getString("id"));
         indicatorData.put("description", rs.getString("description"));
+        indicatorData.put("parent_id", rs.getString("parent_id"));
+        indicatorData.put("parent_description", rs.getString("parent_description"));
 
         outputsDataList.add(indicatorData);
       }

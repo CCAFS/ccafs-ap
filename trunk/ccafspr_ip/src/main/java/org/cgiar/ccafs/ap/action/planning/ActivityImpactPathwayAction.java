@@ -58,6 +58,8 @@ public class ActivityImpactPathwayAction extends BaseAction {
   private List<IPProgram> projectFocusList;
   private Activity activity;
 
+  private List<IPElement> midOutcomesSelected;
+
   private List<IPElement> previousOutputs;
   private List<IPIndicator> previousIndicators;
 
@@ -110,6 +112,10 @@ public class ActivityImpactPathwayAction extends BaseAction {
     return midOutcomesMap;
   }
 
+  public List<IPElement> getMidOutcomesSelected() {
+    return midOutcomesSelected;
+  }
+
   public List<IPProgram> getProjectFocusList() {
     return projectFocusList;
   }
@@ -151,6 +157,30 @@ public class ActivityImpactPathwayAction extends BaseAction {
     // Get the indicators from database
     activity.setIndicators(activityManager.getActivityIndicators(activityID));
 
+    midOutcomesSelected = new ArrayList<>();
+
+    // First check the midOutcomes selected according to the indicators
+    for (IPElement midOutcome : midOutcomes) {
+      if (midOutcome.getIndicators() != null) {
+        for (IPIndicator indicator : activity.getIndicators()) {
+          if (midOutcome.getIndicators().contains(indicator.getParent())) {
+
+            // Check if the midOutcome is not already present
+            if (!midOutcomesSelected.contains(midOutcome)) {
+              midOutcomesSelected.add(midOutcome);
+            }
+          }
+        }
+      }
+    }
+
+    // First check the midOutcomes selected according to the outputs
+    for (IPElement output : activity.getOutputs()) {
+      IPElement midOutcome = output.getContributesTo().get(0);
+      if (!midOutcomesSelected.contains(midOutcome)) {
+        midOutcomesSelected.add(midOutcome);
+      }
+    }
 
     // Save the activity outputs brought from the database
     previousOutputs = new ArrayList<>();

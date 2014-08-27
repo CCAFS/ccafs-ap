@@ -13,6 +13,7 @@
  *****************************************************************/
 package org.cgiar.ccafs.ap.data.model;
 
+import org.apache.commons.lang3.builder.HashCodeBuilder;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 
 
@@ -31,6 +32,24 @@ public class IPIndicator {
     this.id = id;
   }
 
+  @Override
+  public boolean equals(Object obj) {
+    if (!(obj instanceof IPIndicator)) {
+      return false;
+    }
+
+    if (obj == this) {
+      return true;
+    }
+
+    IPIndicator element = (IPIndicator) obj;
+    if (this.id == element.id) {
+      return true;
+    }
+
+    return false;
+  }
+
   public String getDescription() {
     return description;
   }
@@ -45,6 +64,11 @@ public class IPIndicator {
 
   public String getTarget() {
     return target;
+  }
+
+  @Override
+  public int hashCode() {
+    return new HashCodeBuilder(17, 31).append(id).toHashCode();
   }
 
   public void setDescription(String description) {

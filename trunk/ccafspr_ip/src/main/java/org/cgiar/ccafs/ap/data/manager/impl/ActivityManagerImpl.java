@@ -220,6 +220,14 @@ public class ActivityManagerImpl implements ActivityManager {
       output.setId(Integer.parseInt(oData.get("id")));
       output.setDescription(oData.get("description"));
 
+      IPElement parent = new IPElement();
+      parent.setId(Integer.parseInt(oData.get("parent_id")));
+      parent.setDescription(oData.get("parent_description"));
+
+      List<IPElement> parentList = new ArrayList<>();
+      parentList.add(parent);
+      output.setContributesTo(parentList);
+
       outputs.add(output);
     }
 
