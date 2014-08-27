@@ -14,9 +14,13 @@
       </legend>
       [#-- Title --] 
       [@customForm.input name="activity.deliverables[${dl_index}].title" type="text" i18nkey="planning.deliverables.title" required=true /]
-      [#-- Type --]
+      [#-- Main Type --]
       <div class="halfPartBlock chosen">
-        [@customForm.select name="activity.deliverables[${dl_index}].type" label=""  disabled=false i18nkey="planning.deliverables.type" listName="deliverableTypes" keyFieldName="id"  displayFieldName="name" /]
+        [@customForm.select name="mainType" label=""  disabled=false i18nkey="planning.deliverables.mainType" listName="deliverableTypes" keyFieldName="id"  displayFieldName="name" /]
+      </div>
+      [#-- Sub Type --]
+      <div class="halfPartBlock chosen">
+        [@customForm.select name="activity.deliverables[${dl_index}].type" label=""  disabled=false i18nkey="planning.deliverables.subType" listName="" keyFieldName=""  displayFieldName="" /]
       </div>
       [#-- Year  --]
       <div class="halfPartBlock chosen">
@@ -41,9 +45,13 @@
     <legend>[@s.text name="planning.deliverables.expectedDeliverable" ][@s.param name="0"] <span id="deliverableIndex">${dl_index+1}</span>[/@s.param] [/@s.text]</legend>
     [#-- Title --] 
     [@customForm.input name="title" type="text" i18nkey="planning.deliverables.title" required=true /]
-    [#-- Type --]
+    [#-- Main Type --]
     <div class="halfPartBlock chosen">
-      [@customForm.select name="type" label=""  disabled=false i18nkey="planning.deliverables.type" listName="deliverableTypes" keyFieldName="id"  displayFieldName="name" /]
+      [@customForm.select name="mainType" label=""  disabled=false i18nkey="planning.deliverables.mainType" listName="deliverableTypes" keyFieldName="id"  displayFieldName="name" /]
+    </div>
+    [#-- Sub Type --]
+    <div class="halfPartBlock chosen">
+      [@customForm.select name="type" label=""  disabled=false i18nkey="planning.deliverables.subType" listName="" keyFieldName=""  displayFieldName="" /]
     </div>
     [#-- Year  --]
     <div class="halfPartBlock chosen">

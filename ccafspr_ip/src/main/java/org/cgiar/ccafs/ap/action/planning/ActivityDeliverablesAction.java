@@ -101,7 +101,7 @@ public class ActivityDeliverablesAction extends BaseAction {
     // Getting the project where this activity belongs to.
     project = projectManager.getProjectFromActivityId(activityID);
 
-    // Getting the Type of Deliverables
+    // Getting the Main Type of Deliverables.
     deliverableTypes = deliverableTypeManager.getDeliverableTypes();
 
     allYears = activity.getAllYears();
