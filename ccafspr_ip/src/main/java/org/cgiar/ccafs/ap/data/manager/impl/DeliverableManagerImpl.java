@@ -144,8 +144,8 @@ public class DeliverableManagerImpl implements DeliverableManager {
   }
 
   @Override
-  public int saveDeliverableOutput(int deliverableID, int ipElementID, int activityID) {
-    int result = deliverableDAO.saveDeliverableOutput(deliverableID, ipElementID, activityID);
-    return result;
+  public boolean saveDeliverableOutput(int deliverableID, int ipElementID, int activityID) {
+    boolean saved = deliverableDAO.saveDeliverableOutput(deliverableID, ipElementID, activityID);
+    return saved;
   }
 }

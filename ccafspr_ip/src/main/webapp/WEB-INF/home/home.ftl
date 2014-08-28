@@ -19,7 +19,10 @@
       <p class="alreadyLogged">[@s.text name="home.login.alreadyLogged" /]</p>
       <span class="alreadyLoggedEmail">${currentUser.email}</span>
     </div>
-      
+    <div id="activities">
+      If you want to check your current projects, please click 
+      <a target="_blank" href="[@s.url namespace="/pre-planning/" action='projects'][/@s.url]">here[@s.text name="footer.report.issue.second" /]</a>
+    </div>
     <br>
   </div>
 </article>

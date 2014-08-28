@@ -231,10 +231,11 @@ public class MySQLDeliverableDAO implements DeliverableDAO {
   }
 
   @Override
-  public int saveDeliverableOutput(int deliverableID, int ipElementID, int activityID) {
+  public boolean saveDeliverableOutput(int deliverableID, int ipElementID, int activityID) {
     LOG.debug(">> saveDeliverableOutput(deliverableData={})", new Object[] {deliverableID, ipElementID, activityID});
     StringBuilder query = new StringBuilder();
     int result = -1;
+    boolean saved = false;
     Object[] values;
 
     query.append("INSERT INTO ip_deliverable_contributions (activity_contribution_id,deliverable_id) ");
@@ -248,7 +249,10 @@ public class MySQLDeliverableDAO implements DeliverableDAO {
     result = databaseManager.saveData(query.toString(), values);
 
     LOG.debug("<< saveDeliverableOutput():{}", result);
-    return result;
+    if (result != -1) {
+      saved = true;
+    }
+    return saved;
 
   }
 }

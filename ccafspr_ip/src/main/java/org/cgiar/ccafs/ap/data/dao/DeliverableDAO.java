@@ -86,11 +86,13 @@ public interface DeliverableDAO {
   public int saveDeliverable(int activityID, Map<String, Object> deliverableData);
 
   /**
-   * @param deliverableID
-   * @param ipElementID
-   * @param activityID
-   * @return
+   * This method saves the Deliverable Contribution relation
+   * 
+   * @param deliverableID - is the Id of the deliverable
+   * @param ipElementID - is the Id of the IP Element
+   * @param activityID - is the Id of the activity
+   * @return true if the relation Deliverable Contribution is saved, false otherwise
    */
-  public int saveDeliverableOutput(int deliverableID, int ipElementID, int activityID);
+  public boolean saveDeliverableOutput(int deliverableID, int ipElementID, int activityID);
 
 }
