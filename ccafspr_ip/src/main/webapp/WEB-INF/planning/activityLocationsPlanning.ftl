@@ -40,7 +40,7 @@
     </h1>  
     <div id="activityGlobalBlock" class="borderBox">
       [@customForm.checkbox name="activity.global" i18nkey="planning.activities.locations.checkbox.isGlobal" checked=activity.global value="true" /]
-      [#-- ]@s.checkbox name="activity.global" label="planning.activities.locations.checkbox.isGlobal" /--]
+      [#-- ]@s.checkbox name="activity.global" label="planning.activities.locations.checkbox.isGlobal" /--] 
     </div>
     <div id="activityLocations-map"></div> 
     <div id="locationsBlock" class="clearfix">
@@ -154,6 +154,9 @@
     
 
       <!-- internal parameter -->
+      [#if activity.global]
+        <input type="hidden" id="isGlobal" value="${activity.global?string}">
+      [/#if]
       <input type="hidden" name="activityID" value="${activity.id?c}">
       <input type="hidden" id="isGlobalText" value="[@s.text name="planning.activities.locations.map.isGlobal" /]">
       <div class="buttons">

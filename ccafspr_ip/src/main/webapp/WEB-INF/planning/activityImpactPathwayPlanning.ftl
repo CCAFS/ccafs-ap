@@ -1,6 +1,6 @@
 [#ftl]
 [#assign title = "Activity Impact Pathway" /]
-[#assign globalLibs = ["jquery", "noty", "autoSave"] /]
+[#assign globalLibs = ["jquery", "noty", "autoSave", "chosen"] /]
 [#assign customJS = ["${baseUrl}/js/global/utils.js", "${baseUrl}/js/planning/activityImpactPathwayPlanning.js"] /]
 [#assign currentSection = "planning" /]
 [#assign currentPlanningSection = "activity" /]
@@ -48,7 +48,7 @@
       [/#list]
     </p>
     
-    <div id="contributionsBlock" class="borderBox">
+    <div id="contributionsBlock" class="">
       [#if midOutcomesSelected?has_content]
         [#list midOutcomesSelected as midOutcome]
 
@@ -66,16 +66,15 @@
             <div class="indicators">
               <h6>[@s.text name="planning.activityImpactPathways.indicators" /]</h6>
               [#if midOutcome.indicators?has_content]
+              <div class="indicatorsBlock">
                 [#list midOutcome.indicators as indicator]
-                  <div class="indicatorsBlock">
-                    <div class="midOutcomeIndicator" >
-                      [#if activity.indicators?has_content]
+                      [#if activity.indicators?has_content] 
                         [#list activity.indicators as activityIndicator]
                           [#if activityIndicator.parent.id == indicator.id]
+                          <div class="midOutcomeIndicator" >
                             <input type="hidden" disabled name="activity_indicator_id" value="${activityIndicator.id}" />
                             <input type="checkbox" name="activity.indicators" value="${activityIndicator.parent.id}" checked />
                             <label>${activityIndicator.parent.description}</label>
-                            
                             <div class="checkboxGroup vertical indicatorNarrative" >
                               [#-- Target value --]
                               <label> Target value </label>
@@ -83,8 +82,10 @@
                               
                               <label> Target narrative</label>
                               <textarea name="activity_indicator_description" >${activityIndicator.description}</textarea>
-                            </div>
+                            </div> 
+                          </div>  
                           [#else]
+                          <div class="midOutcomeIndicator" >
                             <input type="hidden" disabled name="activity_indicator_id" value="-1" />
                             <input type="checkbox" name="activity.indicators" value="${activityIndicator.parent.id}" />
                             <label>${activityIndicator.parent.description}</label>
@@ -96,16 +97,15 @@
                               
                               <label> Target narrative</label>
                               <textarea name="activity_indicator_description" > </textarea>
-                            </div>
+                            </div> 
                           </div>
                           [/#if]
                         [/#list]
-                      [/#if]
-                      
-                  </div>
+                      [/#if] 
                 [/#list]  
+              </div>
               [/#if]
-            </div>
+              </div>
           
             [#-- Major Output Group list --]
             <div class="mogs">
@@ -116,7 +116,7 @@
         [/#list]
       [/#if]
     </div>
-    
+     
     <div id="midOutcomesSelect">
       [@customForm.select name="midOutcomesList" i18nkey="planning.activityImpactPathways.outcome" listName="midOutcomes" className="midOutcomeSelect" /]
     </div>
