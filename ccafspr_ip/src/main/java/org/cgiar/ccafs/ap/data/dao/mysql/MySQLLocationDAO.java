@@ -373,9 +373,12 @@ public class MySQLLocationDAO implements LocationDAO {
     query.append("SELECT lo.id, lo.name, lo.code, ");
     query.append("lt.id as 'type_id', lt.name as 'type_name', ");
     query.append("lp.id as 'parent_id', lp.name as 'parent_name' ");
+    query.append("leg.id as 'loc_geo_id', leg.latitude as 'loc_geo_latitude', ");
+    query.append("leg.longitude as 'loc_geo_longitude' ");
     query.append("FROM loc_elements lo ");
     query.append("LEFT JOIN loc_elements lp ON lo.parent_id = lp.id   ");
     query.append("INNER JOIN loc_element_types lt ON lt.id = lo.element_type_id  ");
+    query.append("LEFT JOIN loc_geopositions leg ON le.geoposition_id = leg.id ");
     query.append("WHERE lo.id IN ( ");
 
     for (int c = 0; c < locationsIDs.length; c++) {
@@ -400,6 +403,9 @@ public class MySQLLocationDAO implements LocationDAO {
         locationData.put("type_name", rs.getString("type_name"));
         locationData.put("parent_id", rs.getString("parent_id"));
         locationData.put("parent_name", rs.getString("parent_name"));
+        locationData.put("loc_geo_id", rs.getString("loc_geo_id"));
+        locationData.put("loc_geo_latitude", rs.getString("loc_geo_latitude"));
+        locationData.put("loc_geo_longitude", rs.getString("loc_geo_longitude"));
 
         locationsList.add(locationData);
       }
@@ -423,9 +429,12 @@ public class MySQLLocationDAO implements LocationDAO {
     query.append("SELECT lo.id, lo.name, lo.code, ");
     query.append("lt.id as 'type_id', lt.name as 'type_name', ");
     query.append("lp.id as 'parent_id', lp.name as 'parent_name' ");
+    query.append("leg.id as 'loc_geo_id', leg.latitude as 'loc_geo_latitude', ");
+    query.append("leg.longitude as 'loc_geo_longitude' ");
     query.append("FROM loc_elements lo ");
     query.append("LEFT JOIN loc_elements lp ON lo.parent_id = lp.id   ");
     query.append("INNER JOIN loc_element_types lt ON lt.id = lo.element_type_id  ");
+    query.append("LEFT JOIN loc_geopositions leg ON le.geoposition_id = leg.id ");
     query.append("WHERE lt.id =  ");
     query.append(typeID);
     query.append(" ORDER BY lo.name ");
@@ -443,6 +452,9 @@ public class MySQLLocationDAO implements LocationDAO {
         locationData.put("type_name", rs.getString("type_name"));
         locationData.put("parent_id", rs.getString("parent_id"));
         locationData.put("parent_name", rs.getString("parent_name"));
+        locationData.put("loc_geo_id", rs.getString("loc_geo_id"));
+        locationData.put("loc_geo_latitude", rs.getString("loc_geo_latitude"));
+        locationData.put("loc_geo_longitude", rs.getString("loc_geo_longitude"));
 
         locationsList.add(locationData);
       }

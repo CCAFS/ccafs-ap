@@ -261,6 +261,12 @@ public class LocationManagerImpl implements LocationManager {
       country.setName(lData.get("parent_name"));
       location.setCountry(country);
 
+      LocationGeoposition geoposition = new LocationGeoposition();
+      geoposition.setId(Integer.parseInt(lData.get("loc_geo_id")));
+      geoposition.setLatitude(Double.parseDouble(lData.get("loc_geo_latitude")));
+      geoposition.setLongitude(Double.parseDouble(lData.get("loc_geo_longitude")));
+      location.setGeoPosition(geoposition);
+
       locations.add(location);
     }
     return locations;
@@ -282,14 +288,20 @@ public class LocationManagerImpl implements LocationManager {
 
       LocationType type = new LocationType();
       type.setId(Integer.parseInt(lData.get("type_id")));
-      ;
       type.setName(lData.get("type_name"));
+
       location.setType(type);
 
       Country country = new Country();
       country.setId(Integer.parseInt(lData.get("parent_id")));
       country.setName(lData.get("parent_name"));
       location.setCountry(country);
+
+      LocationGeoposition geoposition = new LocationGeoposition();
+      geoposition.setId(Integer.parseInt(lData.get("loc_geo_id")));
+      geoposition.setLatitude(Double.parseDouble(lData.get("loc_geo_latitude")));
+      geoposition.setLongitude(Double.parseDouble(lData.get("loc_geo_longitude")));
+      location.setGeoPosition(geoposition);
 
       locations.add(location);
     }
