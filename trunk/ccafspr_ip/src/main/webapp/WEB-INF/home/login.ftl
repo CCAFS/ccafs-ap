@@ -18,7 +18,9 @@
     </p>
     <div id="loginFormContainer">  
       [@s.form method="POST" action="login" cssClass="loginForm pure-form"]
-        [@s.fielderror cssClass="fieldError" fieldName="loginMesage"/]      
+        <p class="instructions">[@s.text name="home.login.message.cgiar" /]<br>
+        [@s.text name="home.login.message.nonCgiar" /]</p>
+        [@s.fielderror cssClass="fieldError" fieldName="loginMesage"/]
         [@customForm.input name="user.email" i18nkey="home.login.email" required=true /]
         [@customForm.input name="user.password" i18nkey="home.login.password" required=true type="password" /]
         [@s.submit key="home.login.button" name="login" /]      
