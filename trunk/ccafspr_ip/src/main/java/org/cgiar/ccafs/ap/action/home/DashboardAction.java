@@ -21,6 +21,7 @@ import org.cgiar.ccafs.ap.data.manager.ProjectManager;
 import org.cgiar.ccafs.ap.data.model.Activity;
 import org.cgiar.ccafs.ap.data.model.Project;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import com.google.inject.Inject;
@@ -29,7 +30,7 @@ import org.slf4j.LoggerFactory;
 
 /**
  * This action will be in charge of managing all the P&R Dashboard after the user logins.
- * 
+ *
  * @author Héctor Fabio Tobón R.
  */
 public class DashboardAction extends BaseAction {
@@ -87,9 +88,40 @@ public class DashboardAction extends BaseAction {
   @Override
   public void prepare() throws Exception {
     super.prepare();
-    // Test Objects
-    projects = projectManager.getAllProjects();
-    activities = activityManager.getActivitiesByProject(projects.get(0).getId());
+
+    if (this.getCurrentUser() != null) {
+
+      // ----- Listing Projects -----
+
+      // If user is admin.
+      if (this.getCurrentUser().isAdmin()) {
+        // Show all projects.
+        projects = projectManager.getAllProjects();
+      } else if (this.getCurrentUser().isFPL() || this.getCurrentUser().isFPL() || this.getCurrentUser().isCU()) {
+        // Getting the list of projects that belongs to the User program or where they are assigned as PO.
+        projects = new ArrayList<>();
+        List<Integer> ids = projectManager.getProjectIdsEditables(this.getCurrentUser());
+        for (Integer projectId : ids) {
+          projects.add(projectManager.getProject(projectId));
+        }
+
+        // In addition, add the projects where they are assigned as Project Leader.
+        List<Integer> idsPL = projectManager.getPLProjectIds(this.getCurrentUser());
+        for (Integer projectId : idsPL) {
+          // Do not add projects that are alraedy added.
+          if (!ids.contains(idsPL)) {
+            projects.add(projectManager.getProject(projectId));
+          }
+        }
+
+      } else if (this.getCurrentUser().isPL()) {
+        List<Integer> ids = projectManager.getPLProjectIds(this.getCurrentUser());
+        // TODO
+      }
+    }
+    if (projects != null) {
+      activities = activityManager.getActivitiesByProject(projects.get(0).getId());
+    }
 // System.out.println("PREPARE: ");
 // System.out.println("CURRENT USER" + this.getCurrentUser());
   }
