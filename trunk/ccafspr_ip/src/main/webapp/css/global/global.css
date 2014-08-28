@@ -1647,6 +1647,32 @@ margin-bottom: 8px;
 }
 /*************** HOME ****************/
 
+/*  Home page*/
+
+#leftSide{
+  float: left;
+  padding: 0px 12px 0px 15px;
+  width: 600px;
+  vertical-align: top;
+}
+#rightSide{
+  float: right;
+  padding: 12px 0;
+  width: 150px;
+  vertical-align: top;
+}
+
+#pandrDescription{
+  text-align: justify;
+}
+
+.homeTitle{
+  font-size: 14px;
+  color: #333;
+  padding-bottom: 5px;
+  padding-top: 5px;
+}
+
 /* Activities */
 .activityInformation .fullBlock.name{
   margin-bottom: 0px;
