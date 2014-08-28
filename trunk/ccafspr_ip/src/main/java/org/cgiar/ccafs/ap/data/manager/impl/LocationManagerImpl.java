@@ -95,6 +95,14 @@ public class LocationManagerImpl implements LocationManager {
         ccafsSite.setName(lData.get("location_parent_name"));
         location.setCcafsSite(ccafsSite);
 
+        if (lData.get("loc_geo_id") != null) {
+          LocationGeoposition geoposition = new LocationGeoposition();
+          geoposition.setId(Integer.parseInt(lData.get("loc_geo_id")));
+          geoposition.setLatitude(Double.parseDouble(lData.get("loc_geo_latitude")));
+          geoposition.setLongitude(Double.parseDouble(lData.get("loc_geo_longitude")));
+          location.setGeoPosition(geoposition);
+        }
+
         locations.add(location);
       } else {
         // Other location
@@ -308,10 +316,12 @@ public class LocationManagerImpl implements LocationManager {
 
       location.setType(type);
 
-      Country country = new Country();
-      country.setId(Integer.parseInt(lData.get("parent_id")));
-      country.setName(lData.get("parent_name"));
-      location.setCountry(country);
+      if (lData.get("parent_id") != null) {
+        Country country = new Country();
+        country.setId(Integer.parseInt(lData.get("parent_id")));
+        country.setName(lData.get("parent_name"));
+        location.setCountry(country);
+      }
 
       if (lData.get("loc_geo_id") != null) {
         LocationGeoposition geoposition = new LocationGeoposition();
