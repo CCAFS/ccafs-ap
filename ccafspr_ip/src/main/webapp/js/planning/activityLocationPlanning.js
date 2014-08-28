@@ -111,11 +111,15 @@ function setLocationIndex(){
       $(location).find("[name$='geoPosition.latitude']").attr("name", "geoPosition.latitude").attr("placeholder", "Latitude");
       $(location).find("[name$='geoPosition.longitude']").attr("name", "geoPosition.longitude").attr("placeholder", "Longitude");
       
-    } else if (locationTypeID == 11) {
+    } else if ((locationTypeID == 10) || (locationTypeID == 11)) {
       // If location is of type CCAFS Site
+      $(location).find("[name$='locations']").attr("name", "activity.locations");
+      $(location).find("[name$='name']").attr("name", "name");
+      $(location).find("[name$='type.id']").attr("name", "type.id");
+      $(location).find("[name$='geoPosition.id']").attr("name", "geoPosition.id");
+      $(location).find("[name$='geoPosition.latitude']").attr("name", "geoPosition.latitude").attr("placeholder", "Latitude");
+      $(location).find("[name$='geoPosition.longitude']").attr("name", "geoPosition.longitude").attr("placeholder", "Longitude");
       
-      elementName = "activity.locations";
-      $(location).find("[name$='locations']").attr("name", elementName + "");
     } else {
       // If location is of other type
       

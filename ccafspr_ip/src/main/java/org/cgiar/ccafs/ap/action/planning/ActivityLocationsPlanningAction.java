@@ -1,5 +1,11 @@
 package org.cgiar.ccafs.ap.action.planning;
 
+import java.io.File;
+import java.util.ArrayList;
+import java.util.List;
+
+import com.google.inject.Inject;
+import org.apache.commons.lang3.StringUtils;
 import org.cgiar.ccafs.ap.action.BaseAction;
 import org.cgiar.ccafs.ap.config.APConfig;
 import org.cgiar.ccafs.ap.config.APConstants;
@@ -16,13 +22,6 @@ import org.cgiar.ccafs.ap.data.model.Project;
 import org.cgiar.ccafs.ap.data.model.Region;
 import org.cgiar.ccafs.ap.util.FileManager;
 import org.cgiar.ccafs.ap.util.SendMail;
-
-import java.io.File;
-import java.util.ArrayList;
-import java.util.List;
-
-import com.google.inject.Inject;
-import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -88,6 +87,10 @@ public class ActivityLocationsPlanningAction extends BaseAction {
 
   public List<Location> getClimateSmartVillages() {
     return climateSmartVillages;
+  }
+
+  public int getClimateSmartVillageTypeID() {
+    return APConstants.LOCATION_TYPE_CLIMATE_SMART_VILLAGE;
   }
 
   public List<Country> getCountries() {
