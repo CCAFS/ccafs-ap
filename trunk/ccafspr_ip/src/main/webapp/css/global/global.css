@@ -1672,6 +1672,17 @@ margin-bottom: 8px;
     color: #636363;
 }
 
+#imgPandR{
+  align-content:center;
+  float:right;
+}
+
+#imgModal{
+  height: 300px;
+  width: 370px;
+  text-align: center;
+}
+
 .homeTitle{
   font-size: 1.4em;
   color: #333;

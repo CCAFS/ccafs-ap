@@ -102,6 +102,9 @@
           <b>[@s.text name="home.dashboard.description.title" /]</b>
         </div>
         <p>[@s.text name="home.dashboard.description.text" /]</p>
+        <div id="imgPandR">
+          <a href="#" onClick=""><img id="imgModal" src="${baseUrl}/images/global/pandrWorkflow.png"/></a>
+        </div>
       </div>
       [#-- End P&R Description --]
       [#-- Roles --]
@@ -209,4 +212,5 @@
     <br>
   </div>
 </article>
+
 [#include "/WEB-INF/global/pages/footer-logos.ftl"]
