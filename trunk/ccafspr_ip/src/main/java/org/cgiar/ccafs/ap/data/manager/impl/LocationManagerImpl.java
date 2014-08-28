@@ -313,11 +313,13 @@ public class LocationManagerImpl implements LocationManager {
       country.setName(lData.get("parent_name"));
       location.setCountry(country);
 
-      LocationGeoposition geoposition = new LocationGeoposition();
-      geoposition.setId(Integer.parseInt(lData.get("loc_geo_id")));
-      geoposition.setLatitude(Double.parseDouble(lData.get("loc_geo_latitude")));
-      geoposition.setLongitude(Double.parseDouble(lData.get("loc_geo_longitude")));
-      location.setGeoPosition(geoposition);
+      if (lData.get("loc_geo_id") != null) {
+        LocationGeoposition geoposition = new LocationGeoposition();
+        geoposition.setId(Integer.parseInt(lData.get("loc_geo_id")));
+        geoposition.setLatitude(Double.parseDouble(lData.get("loc_geo_latitude")));
+        geoposition.setLongitude(Double.parseDouble(lData.get("loc_geo_longitude")));
+        location.setGeoPosition(geoposition);
+      }
 
       locations.add(location);
     }
