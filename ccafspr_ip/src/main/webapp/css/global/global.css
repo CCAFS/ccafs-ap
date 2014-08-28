@@ -1664,6 +1664,12 @@ margin-bottom: 8px;
 
 #pandrDescription{
   text-align: justify;
+  margin-bottom: 10px;
+}
+
+#pandrDescription p {
+    padding: 0px 6px;
+    color: #636363;
 }
 
 .homeTitle{
