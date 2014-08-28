@@ -28,7 +28,7 @@ public interface IPElementManager {
   /**
    * Delete all the ipElement that appears as child of the ipElement
    * received as parameter.
-   * 
+   *
    * @param parentElement - Parent IP element
    * @return true if the information was removed successfully or if no child elements were removed. False otherwise
    */
@@ -39,7 +39,7 @@ public interface IPElementManager {
    * passed as parameter.
    * If the parameter program is the same as element.getProgram then the IPElement
    * is also deleted.
-   * 
+   *
    * @param element
    * @param program
    * @return true if the relation between the program and the element was successfully
@@ -50,7 +50,7 @@ public interface IPElementManager {
   /**
    * Delete all IP Elements which belongs to the program given and which are of
    * the same type given.
-   * 
+   *
    * @param program
    * @param type
    * @return true if the deletion process was successful.
@@ -58,15 +58,23 @@ public interface IPElementManager {
   public boolean deleteIPElements(IPProgram program, IPElementType type);
 
   /**
-   * Get all the ipElements existent in the database
+   * This methods gets an IPElement identified with the given id.
    * 
+   * @param elementID is the IPElement identifier.
+   * @return an IPElement object or null if nothing was found.
+   */
+  public IPElement getIPElement(int elementID);
+
+  /**
+   * Get all the ipElements existent in the database
+   *
    * @return an array of IPElement objects
    */
   public List<IPElement> getIPElementList();
 
   /**
    * Get a list of IPElement objects corresponding to the given array of ids
-   * 
+   *
    * @param ids - list of IPElement identifiers
    * @return a list of IPElement objects
    */
@@ -76,7 +84,7 @@ public interface IPElementManager {
    * This method return all the impact pathways elements
    * setted with the basic information id, description,
    * translatedOf and contributesTo
-   * 
+   *
    * @param program - Object with the program information
    * @return a list of ipElements present in the database.
    *         If the program has id -1 the full list of
@@ -88,7 +96,7 @@ public interface IPElementManager {
   /**
    * This method gets all the IPElements related to the IP program
    * given
-   * 
+   *
    * @param program - Object with the program information
    * @return a list with IPElements
    */
@@ -97,7 +105,7 @@ public interface IPElementManager {
   /**
    * This method gets all the IPElements of the type given and which are
    * related to the IP program given.
-   * 
+   *
    * @param program - IPProgram object
    * @param type - IPElementType object
    * @return a list of IPElements which fill the conditions.
@@ -107,7 +115,7 @@ public interface IPElementManager {
   /**
    * This method gets all the elements that are children of the element
    * passed as parameter.
-   * 
+   *
    * @param parent
    * @return a list of IPElements objects with the information
    */
@@ -115,7 +123,7 @@ public interface IPElementManager {
 
   /**
    * This method save into the database the information of the IPElements
-   * 
+   *
    * @param elements - List of objects to save
    * @return true if all the information was successfully saved, false otherwise.
    */

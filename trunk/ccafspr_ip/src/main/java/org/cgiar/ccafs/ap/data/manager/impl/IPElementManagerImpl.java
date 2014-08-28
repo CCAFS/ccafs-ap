@@ -79,8 +79,18 @@ public class IPElementManagerImpl implements IPElementManager {
   }
 
   @Override
+  public IPElement getIPElement(int elementID) {
+    List<Map<String, String>> ipElementsDataList = ipElementDAO.getIPElements(new String[] {String.valueOf(elementID)});
+    List<IPElement> elements = setDataToIPElementObjects(ipElementsDataList);
+    if (elements.size() == 1) {
+      return elements.get(0);
+    }
+    return null;
+  }
+
+  @Override
   public List<IPElement> getIPElementList() {
-    List<Map<String, String>> elementDataList = ipElementDAO.getIPElementList();
+    List<Map<String, String>> elementDataList = ipElementDAO.getAllIPElements();
     return setDataToIPElementObjects(elementDataList);
   }
 
@@ -96,9 +106,9 @@ public class IPElementManagerImpl implements IPElementManager {
     List<IPElement> elementsList = new ArrayList<>();
 
     if (_program.getId() == -1) {
-      ipElementDataList = ipElementDAO.getIPElementList();
+      ipElementDataList = ipElementDAO.getAllIPElements();
     } else {
-      ipElementDataList = ipElementDAO.getIPElement(_program.getId());
+      ipElementDataList = ipElementDAO.getIPElementByProgramID(_program.getId());
     }
 
     for (Map<String, String> elementData : ipElementDataList) {
@@ -150,7 +160,7 @@ public class IPElementManagerImpl implements IPElementManager {
 
   @Override
   public List<IPElement> getIPElements(IPProgram program) {
-    List<Map<String, String>> ipElementDataList = ipElementDAO.getIPElement(program.getId());
+    List<Map<String, String>> ipElementDataList = ipElementDAO.getIPElementByProgramID(program.getId());
     return setDataToIPElementObjects(ipElementDataList);
   }
 
@@ -242,7 +252,7 @@ public class IPElementManagerImpl implements IPElementManager {
         if (element.getTranslatedOf() != null) {
           for (IPElement parentElement : element.getTranslatedOf()) {
             ipRelationshipDAO
-              .saveIPRelation(parentElement.getId(), elementId, APConstants.ELEMENT_RELATION_TRANSLATION);
+            .saveIPRelation(parentElement.getId(), elementId, APConstants.ELEMENT_RELATION_TRANSLATION);
           }
         }
       } else {
@@ -258,7 +268,7 @@ public class IPElementManagerImpl implements IPElementManager {
   /**
    * This function takes the information of IPElements stored in a list of maps
    * to organize it in a list of IPElement objects
-   * 
+   *
    * @param ipElementDataList
    * @return
    */

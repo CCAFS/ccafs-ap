@@ -65,7 +65,11 @@
           <p>[@s.text name="planning.deliverables.empty"/]</p>
         [#else]
           <p>
-            [@s.text name="planning.deliverables.outputs.empty"] [/@s.text]
+            [@s.text name="planning.deliverables.outputs.empty"]
+              [@s.param]
+                [@s.url action='activityImpactPathway' includeParams='get'][/@s.url]
+              [/@s.param]
+            [/@s.text]
           </p>
         [/#if]
       [/#if]
