@@ -79,6 +79,10 @@ public class ActivityLocationsPlanningAction extends BaseAction {
     return ccafsSites;
   }
 
+  public int getCcafsSiteTypeID() {
+    return APConstants.LOCATION_TYPE_CCAFS_SITE;
+  }
+
   public List<Country> getCountries() {
     return countries;
   }
@@ -95,6 +99,7 @@ public class ActivityLocationsPlanningAction extends BaseAction {
     return locationTypes;
   }
 
+
   public List<OtherLocation> getOtherLocationsSaved() {
     return otherLocationsSaved;
   }
@@ -108,7 +113,6 @@ public class ActivityLocationsPlanningAction extends BaseAction {
   public List<Region> getRegions() {
     return regions;
   }
-
 
   public List<Region> getRegionsSaved() {
     return regionsSaved;
