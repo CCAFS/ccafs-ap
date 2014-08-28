@@ -82,8 +82,11 @@ function viewIDOsIndicators(event){
 
 function setIDOsIndicatorsLabel(){
   $("[for^=ido-]").each(function(index,ido){
-    var text = $(ido).text().split("-")[1] + $(ido).text().split("-")[2];
-    $(ido).html("<strong>" + $(ido).text().split("-")[0] + "</strong> - " + text);
+    var string = $(ido).text();
+    var index = string.indexOf("-"); // Gets the first index where a space occours
+    var id = string.substr(0, index); // Gets the first part
+    var text = string.substr(index + 1); // Gets the text part
+    $(ido).html("<strong>" + id + "</strong> - " + text);
   });
 }
 
