@@ -46,6 +46,7 @@ public class ActivityLocationsPlanningAction extends BaseAction {
   private List<Location> climateSmartVillages;
   private List<Location> ccafsSites;
   private List<Location> previousLocations;
+  private List<Location> locationsOrganized;
   private int activityID;
   private Project project;
 
@@ -128,6 +129,37 @@ public class ActivityLocationsPlanningAction extends BaseAction {
     return APConstants.LOCATION_ELEMENT_TYPE_REGION;
   }
 
+  /**
+   * As we receive the activity locations in several lists,
+   * we need to re-organize the locations elements in order to save them
+   * in the same order entered by the user
+   */
+  public List<Location> organizeActivityLocations() {
+    locationsOrganized = new ArrayList<>();
+    int maxSizeList, totalLocations;
+    maxSizeList = regionsSaved.size();
+    maxSizeList = (countriesSaved.size() > maxSizeList) ? countriesSaved.size() : maxSizeList;
+    maxSizeList = (otherLocationsSaved.size() > maxSizeList) ? otherLocationsSaved.size() : maxSizeList;
+
+    totalLocations = maxSizeList + activity.getLocations().size();
+    for (int i = 0, j = 0; i < totalLocations; i++) {
+
+      if (i < regionsSaved.size() && regionsSaved.get(i) != null) {
+        locationsOrganized.add(regionsSaved.get(i));
+      } else if (i < countriesSaved.size() && countriesSaved.get(i) != null) {
+        locationsOrganized.add(countriesSaved.get(i));
+      } else if (i < otherLocationsSaved.size() && otherLocationsSaved.get(i) != null) {
+        locationsOrganized.add(otherLocationsSaved.get(i));
+      } else {
+        if (j < activity.getLocations().size()) {
+          locationsOrganized.add(activity.getLocations().get(j));
+          j++;
+        }
+      }
+    }
+    return locationsOrganized;
+  }
+
   private void parseActivityID() {
     // Getting the activity id from the URL parameter
     try {
@@ -207,16 +239,15 @@ public class ActivityLocationsPlanningAction extends BaseAction {
         }
       }
 
-      // Get the CCAFS sites
-      locations.addAll(activity.getLocations());
+      locationsOrganized = organizeActivityLocations();
 
       // Removing the existing locations
-      removed = locationManager.removeActivityLocation(activity.getLocations(), activityID);
+      removed = locationManager.removeActivityLocation(locationsOrganized, activityID);
       if (!removed) {
         success = false;
       }
       // Then, saving locations received
-      boolean added = locationManager.saveActivityLocations(locations, activityID);
+      boolean added = locationManager.saveActivityLocations(locationsOrganized, activityID);
       if (!added) {
         success = false;
       }

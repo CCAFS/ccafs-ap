@@ -373,7 +373,7 @@ public class LocationManagerImpl implements LocationManager {
       } else {
         OtherLocation oLocation = (OtherLocation) location;
         int oLocationID = oLocation.getId();
-        if (oLocationID == -1) {
+        if (oLocation.getType().getId() != APConstants.LOCATION_TYPE_CCAFS_SITE) {
           oLocationID = saveLocation(oLocation);
         }
 
