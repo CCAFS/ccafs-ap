@@ -98,6 +98,15 @@ public interface LocationDAO {
 
 
   /**
+   * This method get the list of location elements
+   * identified by the values recieved as parameter.
+   * 
+   * @param locationsIDs - List of locations identifiers
+   * @return a list of maps with the information
+   */
+  public List<Map<String, String>> getLocationsByIDs(String[] locationsIDs);
+
+  /**
    * This method return all the Locations given by a type
    * 
    * @param typeID, identifier of the location element type

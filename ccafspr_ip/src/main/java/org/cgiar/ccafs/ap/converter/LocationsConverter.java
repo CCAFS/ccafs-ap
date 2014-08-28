@@ -13,7 +13,7 @@
  *****************************************************************/
 package org.cgiar.ccafs.ap.converter;
 
-import org.cgiar.ccafs.ap.data.manager.IPIndicatorManager;
+import org.cgiar.ccafs.ap.data.manager.LocationManager;
 import org.cgiar.ccafs.ap.data.model.IPIndicator;
 
 import java.util.ArrayList;
@@ -26,24 +26,23 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 
-public class IPIndicatorsConverter extends StrutsTypeConverter {
+public class LocationsConverter extends StrutsTypeConverter {
 
   // LOG
-  private static final Logger LOG = LoggerFactory.getLogger(IPIndicatorsConverter.class);
+  private static final Logger LOG = LoggerFactory.getLogger(LocationsConverter.class);
 
   // Manager
-  private IPIndicatorManager indicatorManager;
+  private LocationManager locationManager;
 
   @Inject
-  public IPIndicatorsConverter(IPIndicatorManager indicatorManager) {
-    this.indicatorManager = indicatorManager;
+  public LocationsConverter(LocationManager locationManager) {
+    this.locationManager = locationManager;
   }
 
-  @SuppressWarnings("rawtypes")
   @Override
   public Object convertFromString(Map context, String[] values, Class toClass) {
     if (toClass == List.class) {
-      return indicatorManager.getIndicatorsList(values);
+      return locationManager.getLocationsByIDs(values);
     }
     return null;
   }

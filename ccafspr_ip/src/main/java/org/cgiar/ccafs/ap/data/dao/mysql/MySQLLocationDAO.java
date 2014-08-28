@@ -22,6 +22,7 @@ import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -362,6 +363,56 @@ public class MySQLLocationDAO implements LocationDAO {
 
     LOG.debug("-- getLocation() > Calling method executeQuery to get the results");
     return locationData;
+  }
+
+  @Override
+  public List<Map<String, String>> getLocationsByIDs(String[] locationsIDs) {
+    LOG.debug(">> getLocationsByIDs( locationsIDs={} )", Arrays.toString(locationsIDs));
+
+    StringBuilder query = new StringBuilder();
+    query.append("SELECT lo.id, lo.name, lo.code, ");
+    query.append("lt.id as 'type_id', lt.name as 'type_name', ");
+    query.append("lp.id as 'parent_id', lp.name as 'parent_name' ");
+    query.append("FROM loc_elements lo ");
+    query.append("LEFT JOIN loc_elements lp ON lo.parent_id = lp.id   ");
+    query.append("INNER JOIN loc_element_types lt ON lt.id = lo.element_type_id  ");
+    query.append("WHERE lo.id IN ( ");
+
+    for (int c = 0; c < locationsIDs.length; c++) {
+      query.append(locationsIDs[c]);
+      if (c < locationsIDs.length - 1) {
+        query.append(", ");
+      }
+    }
+
+    query.append(" ) ORDER BY lo.name ");
+
+    List<Map<String, String>> locationsList = new ArrayList<>();
+
+    try (Connection con = databaseManager.getConnection()) {
+      ResultSet rs = databaseManager.makeQuery(query.toString(), con);
+      while (rs.next()) {
+        Map<String, String> locationData = new HashMap<String, String>();
+        locationData.put("id", rs.getString("id"));
+        locationData.put("name", rs.getString("name"));
+        locationData.put("code", rs.getString("code"));
+        locationData.put("type_id", rs.getString("type_id"));
+        locationData.put("type_name", rs.getString("type_name"));
+        locationData.put("parent_id", rs.getString("parent_id"));
+        locationData.put("parent_name", rs.getString("parent_name"));
+
+        locationsList.add(locationData);
+      }
+      rs.close();
+    } catch (SQLException e) {
+      String exceptionMessage = "-- getLocationsByIDs() > Exception raised trying ";
+      exceptionMessage += "to execute the following query " + query;
+      LOG.error(exceptionMessage, e);
+      return null;
+    }
+
+    LOG.debug("<< getLocationsByIDs():locationsList.size={}", locationsList.size());
+    return locationsList;
   }
 
   @Override

@@ -27,7 +27,7 @@ import org.slf4j.LoggerFactory;
 public class IPIndicatorConverter extends StrutsTypeConverter {
 
   // LOG
-  private static final Logger LOG = LoggerFactory.getLogger(UserConverter.class);
+  private static final Logger LOG = LoggerFactory.getLogger(IPIndicatorConverter.class);
 
   // Manager
   private IPIndicatorManager indicatorManager;
