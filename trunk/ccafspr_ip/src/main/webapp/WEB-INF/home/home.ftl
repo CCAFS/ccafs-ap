@@ -103,7 +103,7 @@
         </div>
         <p>[@s.text name="home.dashboard.description.text" /]</p>
         <div id="imgPandR">
-          <a href="#" onClick=""><img id="imgModal" src="${baseUrl}/images/global/pandrWorkflow.png"/></a>
+          <a href="#" onClick="workflowModal()"><img id="imgModal" src="${baseUrl}/images/global/pandrWorkflow.png"/></a>
         </div>
       </div>
       [#-- End P&R Description --]
@@ -212,5 +212,10 @@
     <br>
   </div>
 </article>
-
+[#-- Show P&R proccess workflow --]
+<div id="showPandRWorkflowDialog" style="display:none; height:100%;  width: 100%;" title="[@s.text name="home.dashboard.workflow" /]"> 
+  <div sytle="height:100%;  width: 100%;">
+    <img id="imgBigModal" src="${baseUrl}/images/global/pandrWorkflow.png"/>
+  </div>
+</div> 
 [#include "/WEB-INF/global/pages/footer-logos.ftl"]
