@@ -1683,6 +1683,17 @@ margin-bottom: 8px;
   text-align: center;
 }
 
+#imgBigModal{
+  height: 650px;
+  width: 600px;
+  text-align: center;
+}
+
+#showPandRWorkflowDialog{
+  height: 625px;
+  width: 650px;
+}
+
 .homeTitle{
   font-size: 1.4em;
   color: #333;
