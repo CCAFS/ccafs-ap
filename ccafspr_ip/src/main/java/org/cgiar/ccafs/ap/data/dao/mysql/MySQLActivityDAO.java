@@ -278,7 +278,7 @@ public class MySQLActivityDAO implements ActivityDAO {
     query.append("SELECT ipe.id, ipe.description, pe.id as 'parent_id',  ");
     query.append("pe.description as 'parent_description' ");
     query.append("FROM ip_elements ipe ");
-    query.append("INNER JOIN ip_activity_contributions ipc ON ipe.id = ipc.id ");
+    query.append("INNER JOIN ip_activity_contributions ipc ON ipc.mog_id = ipe.id ");
     query.append("INNER JOIN ip_elements pe ON ipc.midOutcome_id = pe.id ");
     query.append("WHERE ipc.activity_id=  ");
     query.append(activityID);
@@ -412,7 +412,7 @@ public class MySQLActivityDAO implements ActivityDAO {
     } else {
       // update activity record
       query
-        .append("UPDATE activities SET title = ?, description = ?, startDate = ?, endDate = ?, expected_leader_id = ?, is_global=? ");
+      .append("UPDATE activities SET title = ?, description = ?, startDate = ?, endDate = ?, expected_leader_id = ?, is_global=? ");
       query.append("WHERE id = ? ");
       values = new Object[7];
       values[0] = activityData.get("title");
@@ -451,9 +451,9 @@ public class MySQLActivityDAO implements ActivityDAO {
       int newId = databaseManager.saveData(query.toString(), values);
       if (newId <= 0) {
         LOG
-          .warn(
-            "-- saveActivityIndicators() > A problem happened trying to add a new activity indicator. Data tried to save was: {}",
-            indicatorData);
+        .warn(
+          "-- saveActivityIndicators() > A problem happened trying to add a new activity indicator. Data tried to save was: {}",
+          indicatorData);
         LOG.debug("<< saveActivityIndicators(): {}", false);
         return false;
       }
@@ -471,9 +471,9 @@ public class MySQLActivityDAO implements ActivityDAO {
       int result = databaseManager.saveData(query.toString(), values);
       if (result == -1) {
         LOG
-          .warn(
-            "-- saveActivityIndicators() > A problem happened trying to update an activity indicator. Data tried to save was: {}",
-            indicatorData);
+        .warn(
+          "-- saveActivityIndicators() > A problem happened trying to update an activity indicator. Data tried to save was: {}",
+          indicatorData);
         LOG.debug("<< saveActivityIndicators(): {}", false);
         return false;
       }
@@ -534,7 +534,7 @@ public class MySQLActivityDAO implements ActivityDAO {
 
   @Override
   public int
-    saveExpectedActivityLeader(int activityID, Map<String, Object> activityLeaderData, boolean isOfficialLeader) {
+  saveExpectedActivityLeader(int activityID, Map<String, Object> activityLeaderData, boolean isOfficialLeader) {
     LOG.debug(">> saveExpectedActivityLeader(activityLeaderData={})", activityLeaderData);
     StringBuilder query = new StringBuilder();
     int result = -1;

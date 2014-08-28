@@ -89,7 +89,7 @@ public interface IPElementDAO {
    * @return a list of maps with the information of all IP elements returned.
    */
 
-  public List<Map<String, String>> getIPElement(int programID);
+  public List<Map<String, String>> getIPElementByProgramID(int programID);
 
   /**
    * This method return all the IP elements of the type given and that correspond
@@ -115,7 +115,7 @@ public interface IPElementDAO {
    * 
    * @return all list of maps with the information of all ipElements
    */
-  public List<Map<String, String>> getIPElementList();
+  public List<Map<String, String>> getAllIPElements();
 
   /**
    * This method gets all the ipElements that are children of the element

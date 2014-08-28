@@ -16,7 +16,6 @@ package org.cgiar.ccafs.ap.action.planning;
 import java.util.List;
 
 import org.cgiar.ccafs.ap.data.model.IPElement;
-
 import org.cgiar.ccafs.ap.data.model.NextUser;
 import org.cgiar.ccafs.ap.data.manager.ActivityManager;
 import org.cgiar.ccafs.ap.data.model.Activity;
@@ -123,13 +122,12 @@ public class ActivityDeliverablesAction extends BaseAction {
     activity.setDeliverables(deliverables);
 
     outputs = activityManager.getActivityOutputs(activityID);
-    if (outputs.size() > 0) {
 
+    if (outputs.size() > 0) {
       // Getting the List of Next Users related to the expected Deliverable
       for (Deliverable deliverable : activity.getDeliverables()) {
         deliverable.setNextUsers(nextUserManager.getNextUsersByDeliverableId(deliverable.getId()));
       }
-
       if (getRequest().getMethod().equalsIgnoreCase("post")) {
         // Clear out the list if it has some element
         if (activity.getDeliverables() != null) {
@@ -171,6 +169,9 @@ public class ActivityDeliverablesAction extends BaseAction {
           } else {
             deliverableID = deliverable.getId();
           }
+
+          // saving output/MOG contribution.
+          deliverableManager.saveDeliverableOutput(deliverableID, deliverable.getOutput().getId(), activityID);
 
           // Getting previous nextUsers.
           previousNextUsers = nextUserManager.getNextUsersByDeliverableId(deliverableID);

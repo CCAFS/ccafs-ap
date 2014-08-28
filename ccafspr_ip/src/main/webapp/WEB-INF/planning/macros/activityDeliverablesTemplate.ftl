@@ -29,6 +29,10 @@
       <div class="halfPartBlock chosen">
         [@customForm.select name="activity.deliverables[${dl_index}].year" label=""  disabled=false i18nkey="planning.deliverables.year" listName="allYears" /]
       </div>
+      [#-- MOG  --]
+      <div class="halfPartBlock chosen">
+        [@customForm.select name="activity.deliverables[${dl_index}].output" label=""  disabled=false i18nkey="planning.deliverables.mog" listName="outputs" keyFieldName="id"  displayFieldName="description"  /]
+      </div>
       [#if dl.nextUsers?has_content]
         [#list dl.nextUsers as nu] 
           [#-- Next User block  --] 
