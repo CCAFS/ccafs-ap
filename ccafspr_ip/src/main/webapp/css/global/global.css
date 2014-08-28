@@ -1668,18 +1668,16 @@ margin-bottom: 8px;
 }
 
 #pandrDescription p {
-    padding: 0px 6px;
     color: #636363;
 }
 
 #imgPandR{
-  align-content:center;
-  float:right;
+  text-align: center;
+  padding: 10px 0px;
 }
 
 #imgModal{
-  height: 300px;
-  width: 370px;
+  width: 90%;
   text-align: center;
 }
 
@@ -1702,9 +1700,56 @@ margin-bottom: 8px;
 }
 
 .homeSubTitle{
-  font-size: 12px;
+  font-size: 0.9em;
   color: #333;
-  
+  margin-bottom: 5px;
+  margin-top: 8px;
+}
+
+.role-content {
+  padding: 0px 5px;
+  color: #636363;
+}
+
+/* Customize the position, size, border color and background color.*/
+aside[id="slider-breadcrumbs"] {
+  right: 50% !important;
+  margin-right: -41px !important;
+}
+
+aside[id="slider-breadcrumbs"] .slidr-breadcrumbs li {
+  width: 12px !important;
+  height: 12px !important;
+  margin: 3px !important;
+}
+
+aside[id="slider-breadcrumbs"] .slidr-breadcrumbs li.normal {
+  background-color: #74b9e4 !important;
+  border-color: #74b9e4 !important;
+}
+
+aside[id="slider-breadcrumbs"] .slidr-breadcrumbs li.active {
+  background-color: #fff !important;
+}
+
+/* Hide a single arrow within a single controller.*/
+aside[id="slider-control"] .slidr-control.right:after {
+  border-color: transparent !important;
+}
+
+/* Hide all arrows within a single controller.*/
+aside[id="slider-control"] .slidr-control:after {
+  border-color: transparent !important;
+}
+
+/* Hide all Slidr arrows.*/
+aside[id*="-control"] .slidr-control:after {
+  border-color: transparent !important;   
+}
+
+#slider .slide {
+  width: 100%;
+  height: 118px;
 }
 
 /* Activities */
@@ -1908,7 +1953,7 @@ ul#deliverablesFilesMessages > li {
 
 .borderBox, .publication, .caseStudy, .outcome, .output, .midOutcome, .leverage, .deliverable, .activityPartner, .otherSite {
   border: 1px solid #D1D1D1;
-  padding: 22px 15px 10px 15px;
+  padding: 20px 15px 18px 15px;
   border-radius: 4px;
   margin: 18px 0px;
   position: relative;

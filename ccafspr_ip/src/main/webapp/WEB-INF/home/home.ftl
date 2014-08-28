@@ -1,6 +1,6 @@
 [#ftl]
 [#assign title = "Welcome to CCAFS Activity Planning" /]
-[#assign globalLibs = ["jquery", "jreject", "dataTable"] /]
+[#assign globalLibs = ["jquery", "jreject", "dataTable", "slidr"] /]
 [#assign customJS = ["${baseUrl}/js/home/login.js","${baseUrl}/js/home/dashboard.js"] /]
 [#assign customCSS = ["${baseUrl}/css/libs/dataTables/jquery.dataTables-1.9.4.css", "${baseUrl}/css/global/customDataTable.css"] /]
 [#assign currentSection = "home" /]
@@ -65,7 +65,15 @@
           <b>[@s.text name="home.home.deadline.title" /]</b>
         </div>
         <div id="deadlineGraph">
-          [@s.text name="home.home.deadline.preplanning" /] - [@s.text name="home.home.deadline.planning" /] - [@s.text name="home.home.deadline.reporting" /]
+          <div id="preplanning" class"active step">
+            [@s.text name="home.home.deadline.preplanning" /] 
+          </div>  
+          <div id="planning" class"step">
+            [@s.text name="home.home.deadline.planning" /] 
+          </div> 
+          <div id="reporting" class"step">
+            [@s.text name="home.home.deadline.reporting" /]
+          </div> 
         </div>
         <div id="deadlineDates">
           <table>
@@ -112,91 +120,67 @@
         <div id="roleTitle" class="homeTitle">
           <b>[@s.text name="home.home.roles.title" /]</b>
         </div>
-        <div id="slider">
-          <div id="content">
-            <div id="slide1">
+        <div id="slider"> 
+            <div id="slide1" data-slidr="slide1" class="slide">
               <div id="title1" class="homeSubTitle">
-                [@s.text name="home.home.role.rpl" /]
+                <h6>[@s.text name="home.home.role.rpl" /]</h6>
               </div>
-              <div id="content1">
+              <div id="content1" class="role-content">
                 [@s.text name="home.home.role.rpl.description" /]
               </div>
             </div>
-            <div id="slide2">
+            <div id="slide2" data-slidr="slide2"  class="slide">
               <div id="title2" class="homeSubTitle">
-                [@s.text name="home.home.role.fpl" /]
+                <h6>[@s.text name="home.home.role.fpl" /]</h6>
               </div>
-              <div id="content2">
+              <div id="content2" class="role-content">
                 [@s.text name="home.home.role.fpl.description" /]
               </div>
             </div>
-            <div id="slide3">
+            <div id="slide3" data-slidr="slide3"  class="slide">
               <div id="title3" class="homeSubTitle">
-                [@s.text name="home.home.role.pl" /]
+                <h6>[@s.text name="home.home.role.pl" /]</h6>
               </div>
-              <div id="content3">
+              <div id="content3" class="role-content">
                 [@s.text name="home.home.role.pl.description" /]
               </div>
             </div>
-            <div id="slide4">
+            <div id="slide4" data-slidr="slide4"  class="slide">
               <div id="title4" class="homeSubTitle">
-                [@s.text name="home.home.role.po" /]
+                <h6>[@s.text name="home.home.role.po" /]</h6>
               </div>
-              <div id="content4">
+              <div id="content4" class="role-content">
                 [@s.text name="home.home.role.po.description" /]
               </div>
             </div>
-            <div id="slide5">
+            <div id="slide5" data-slidr="slide5"  class="slide">
               <div id="title5" class="homeSubTitle">
-                [@s.text name="home.home.role.cu" /]
+                <h6>[@s.text name="home.home.role.cu" /]</h6>
               </div>
-              <div id="content5">
+              <div id="content5" class="role-content">
                 [@s.text name="home.home.role.cu.description" /]
               </div>
             </div>
-            <div id="slide6">
+            <div id="slide6" data-slidr="slide6"  class="slide">
               <div id="title6" class="homeSubTitle">
-                [@s.text name="home.home.role.al" /]
+                <h6>[@s.text name="home.home.role.al" /]</h6>
               </div>
-              <div id="content6">
+              <div id="content6" class="role-content">
                 [@s.text name="home.home.role.al.description" /]
               </div>
             </div>
-            <div id="slide7">
+            <div id="slide7" data-slidr="slide7"  class="slide">
               <div id="title7" class="homeSubTitle">
-                [@s.text name="home.home.role.cp" /]
+                <h6>[@s.text name="home.home.role.cp" /]</h6>
               </div>
-              <div id="content7">
+              <div id="content7" class="role-content">
                 [@s.text name="home.home.role.cp.description" /]
-              </div>
-            </div>
+              </div> 
+            </div>  
           </div><!-- End Content Slider-->
-          <div id="">
-            <ul>
-              <li>
-                <a href="#"><img src=""/></a>
-              </li>
-              <li>
-                <a href="#"><img src=""/></a>
-              </li>
-              <li>
-                <a href="#"><img src=""/></a>
-              </li>
-              <li>
-                <a href="#"><img src=""/></a>
-              </li>
-              <li>
-                <a href="#"><img src=""/></a>
-              </li>
-              <li>
-                <a href="#"><img src=""/></a>
-              </li>
-              <li>
-                <a href="#"><img src=""/></a>
-              </li>
-            </ul>
-          </div>
-        </div>
+          
+          
+         
       </div>
       [#-- End Roles --]
       [#-- General Announcements --]

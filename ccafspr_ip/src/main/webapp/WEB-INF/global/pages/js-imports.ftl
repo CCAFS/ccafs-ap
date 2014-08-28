@@ -65,6 +65,9 @@
       [#if libraryName="cytoscapePanzoom"] 
         <script src="${baseUrl}/js/libs/cytoscapePanzoom/cytoscape.js-panzoom.js"></script>
       [/#if]
+      [#if libraryName="slidr"] 
+        <script src="${baseUrl}/js/libs/slidr/slidr.min.js"></script>
+      [/#if]
       
    [/#list]
   [/#if]
