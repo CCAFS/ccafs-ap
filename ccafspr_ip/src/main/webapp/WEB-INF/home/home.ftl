@@ -1,7 +1,8 @@
 [#ftl]
 [#assign title = "Welcome to CCAFS Activity Planning" /]
-[#assign globalLibs = ["jquery", "jreject"] /]
-[#assign customJS = ["${baseUrl}/js/home/login.js"] /]
+[#assign globalLibs = ["jquery", "jreject", "dataTable"] /]
+[#assign customJS = ["${baseUrl}/js/home/login.js","${baseUrl}/js/home/dashboard.js"] /]
+[#assign customCSS = ["${baseUrl}/css/libs/dataTables/jquery.dataTables-1.9.4.css", "${baseUrl}/css/global/customDataTable.css"] /]
 [#assign currentSection = "home" /]
 
 [#include "/WEB-INF/global/pages/header.ftl" /]
@@ -24,38 +25,38 @@
     
     <div id="leftSide">
       [#-- DashBoard --]
-      <div id="dashboard">
         <div id="dashboardTitle" class="homeTitle">
           <b>[@s.text name="home.home.dashboard.title" /]</b>
         </div>
-        <div id="dashboardTabs" class="ui-tabs ui-widget ui-widget-content ui-corner-all" >
-          <ul class="ui-tabs-nav ui-helper-reset ui-helper-clearfix ui-widget-header ui-corner-all">
-            <li class="ui-state-default ui-corner-top ui-tabs-active ui-state-active ui-state-hover">
-              [@s.text name="home.home.dashboard.projects" /]
+      <div id="dashboard"> 
+          <ul class="">
+          [#if projects?has_content]
+            <li class="">
+              <a href="#projects">[@s.text name="home.home.dashboard.projects" /]</a>
             </li>
-            <li class="ui-state-default ui-corner-top ui-tabs-active ui-state-active ui-state-hover">
-              [@s.text name="home.home.dashboard.activities" /]
+          [/#if]
+          [#if activities?has_content]  
+            <li class="">
+               <a href="#activities">[@s.text name="home.home.dashboard.activities" /]</a>
             </li>
-            <li class="ui-state-default ui-corner-top ui-tabs-active ui-state-active ui-state-hover">
-              [@s.text name="home.home.dashboard.impactPathway" /]
+          [/#if] 
+            <li class="">
+               <a href="#impacthPathwayGraph">[@s.text name="home.home.dashboard.impactPathway" /]</a>
             </li>
-          </ul>
-          <div id="dashboardContent">
+          </ul> 
           [#-- Test Variables  [#assign projects = []] - [#assign activities = []] [#-- End Test Variables --]
-            <div id="projects">
-              [#if projects?size>0]
-                [@projectList.projectsList projects=projects canValidate=true namespace="/planning/projects" /]
-              [/#if]
+          [#if projects?has_content]
+            <div id="projects"> 
+                [@projectList.projectsList projects=projects canValidate=true namespace="/planning/projects" tableID="projects-table" /]
             </div>
-            <div id="activities">
-              [#if activities?size > 0]
-                [@activitiesList.activitiesList activities=activities canValidate=true canEditProject=true namespace="/planning/projects/activities" tableID="activities" /]
-              [/#if]
+          [/#if]
+          [#if activities?has_content]
+            <div id="activities"> 
+                [@activitiesList.activitiesList activities=activities canValidate=true canEditProject=true namespace="/planning/projects/activities" tableID="activities-table" /]
             </div>
-            <div id="impacthPathwayGraph">
-            </div>
-          </div>
-        </div><!-- End DashboardTabs-->
+          [/#if]
+          <div id="impacthPathwayGraph">
+          </div>  
       </div>
       [#-- End DashBoard --]
       [#-- Deadline --]
@@ -94,13 +95,13 @@
       [#-- End Deadline --]
     </div>
     
-    <div class="rightSide">
+    <div id="rightSide">
       [#-- P&R Description --]
       <div id="pandrDescription">
         <div id="pandrTitle" class="homeTitle">
           <b>[@s.text name="home.home.pAndR.title" /]</b>
         </div>
-        [@s.text name="home.home.pAndR.description" /]
+        <p>[@s.text name="home.home.pAndR.description" /]</p>
       </div>
       [#-- End P&R Description --]
       [#-- Roles --]
