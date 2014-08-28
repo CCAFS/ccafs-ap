@@ -21,14 +21,23 @@ package org.cgiar.ccafs.ap.data.model;
 
 public class ClimateSmartVillage extends Location {
 
-  OtherLocation ccafsSite;
+  private OtherLocation ccafsSite;
+  private LocationGeoposition geoPosition;
 
   public OtherLocation getCcafsSite() {
     return ccafsSite;
   }
 
+  public LocationGeoposition getGeoPosition() {
+    return geoPosition;
+  }
+
   public void setCcafsSite(OtherLocation ccafsSite) {
     this.ccafsSite = ccafsSite;
+  }
+
+  public void setGeoPosition(LocationGeoposition geoPosition) {
+    this.geoPosition = geoPosition;
   }
 
   @Override
