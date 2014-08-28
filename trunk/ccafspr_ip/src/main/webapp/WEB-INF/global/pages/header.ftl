@@ -7,7 +7,7 @@
   <div class="container">  
     <header class="clearfix">
       <div id="mainLogo">Planning & Reporting Platform</div>
-      <div id="ccafsLogo"><img src="${baseUrl}/images/global/logo-ccafs.png" alt="CCAFS Logo" width="300px"></div>      
+      <div id="ccafsLogo"><img src="${baseUrl}/images/global/logo-ccafs.png" alt="CCAFS Logo" width="300px"></div>
       <div id="autoSavingMessages">
         <p id="saving" style="display:none;" >
           <img src="${baseUrl}/images/global/saving.gif" alt="Saving information" />

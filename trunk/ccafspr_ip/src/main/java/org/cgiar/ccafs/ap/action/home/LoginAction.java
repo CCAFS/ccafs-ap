@@ -29,6 +29,10 @@ import com.google.inject.Inject;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+/**
+ * @author Héctor Fabio Tobón R.
+ * @author Hernán David Carvajal
+ */
 public class LoginAction extends BaseAction {
 
   // Logging
