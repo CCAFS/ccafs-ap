@@ -14,6 +14,10 @@
  */
 package org.cgiar.ccafs.ap.data.dao.mysql;
 
+import org.cgiar.ccafs.ap.config.APConstants;
+import org.cgiar.ccafs.ap.data.dao.DAOManager;
+import org.cgiar.ccafs.ap.data.dao.LocationDAO;
+
 import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -23,9 +27,6 @@ import java.util.List;
 import java.util.Map;
 
 import com.google.inject.Inject;
-import org.cgiar.ccafs.ap.config.APConstants;
-import org.cgiar.ccafs.ap.data.dao.DAOManager;
-import org.cgiar.ccafs.ap.data.dao.LocationDAO;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -368,14 +369,15 @@ public class MySQLLocationDAO implements LocationDAO {
     LOG.debug(">> getLocationsByType( )");
 
     StringBuilder query = new StringBuilder();
-    query.append("SELECT leo.id, leo.name, leo.code, leo.element_type_id, leo.parent_id as region_id, ");
-    query.append("let.name as region_name, let.code as region_code, let.element_type_id as region_element_type ");
-    query.append("FROM loc_elements leo ");
-    query.append("LEFT JOIN loc_elements let ON leo.parent_id = let.id   ");
-    query.append("INNER JOIN loc_element_types letd ON letd.id = leo.element_type_id  ");
-    query.append("WHERE letd.id =  ");
+    query.append("SELECT lo.id, lo.name, lo.code, ");
+    query.append("lt.id as 'type_id', lt.name as 'type_name', ");
+    query.append("lp.id as 'parent_id', lp.name as 'parent_name' ");
+    query.append("FROM loc_elements lo ");
+    query.append("LEFT JOIN loc_elements lp ON lo.parent_id = lp.id   ");
+    query.append("INNER JOIN loc_element_types lt ON lt.id = lo.element_type_id  ");
+    query.append("WHERE lt.id =  ");
     query.append(typeID);
-    query.append(" ORDER BY leo.name ");
+    query.append(" ORDER BY lo.name ");
 
     List<Map<String, String>> locationsList = new ArrayList<>();
 
@@ -386,10 +388,10 @@ public class MySQLLocationDAO implements LocationDAO {
         locationData.put("id", rs.getString("id"));
         locationData.put("name", rs.getString("name"));
         locationData.put("code", rs.getString("code"));
-        // Region
-        // locationData.put("region_id", rs.getString("region_id"));
-        // locationData.put("region_name", rs.getString("region_name"));
-        // locationData.put("region_code", rs.getString("region_code"));
+        locationData.put("type_id", rs.getString("type_id"));
+        locationData.put("type_name", rs.getString("type_name"));
+        locationData.put("parent_id", rs.getString("parent_id"));
+        locationData.put("parent_name", rs.getString("parent_name"));
 
         locationsList.add(locationData);
       }

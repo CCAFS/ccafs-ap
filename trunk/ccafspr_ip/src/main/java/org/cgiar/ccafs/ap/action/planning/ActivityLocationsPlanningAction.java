@@ -43,6 +43,7 @@ public class ActivityLocationsPlanningAction extends BaseAction {
   private Activity activity;
   private List<Country> countries;
   private List<Region> regions;
+  private List<Location> ccafsSites;
   private int activityID;
   private Project project;
 
@@ -50,9 +51,9 @@ public class ActivityLocationsPlanningAction extends BaseAction {
   private File excelTemplate;
   private String excelTemplateContentType;
   private String excelTemplateFileName;
-
   // Temporal lists to save the locations
   private List<Region> regionsSaved;
+
   private List<Country> countriesSaved;
   private List<OtherLocation> otherLocationsSaved;
 
@@ -72,6 +73,10 @@ public class ActivityLocationsPlanningAction extends BaseAction {
 
   public int getActivityID() {
     return activityID;
+  }
+
+  public List<Location> getCcafsSites() {
+    return ccafsSites;
   }
 
   public List<Country> getCountries() {
@@ -135,10 +140,12 @@ public class ActivityLocationsPlanningAction extends BaseAction {
     locationTypes = locationTypeManager.getLocationTypes();
     countries = locationManager.getAllCountries();
     regions = locationManager.getAllRegions();
+    ccafsSites = locationManager.getLocationsByType(APConstants.LOCATION_TYPE_CCAFS_SITE);
 
     regionsSaved = new ArrayList<>();
     countriesSaved = new ArrayList<>();
     otherLocationsSaved = new ArrayList<>();
+
   }
 
   @Override

@@ -87,6 +87,15 @@ public interface LocationManager {
   public Location getLocation(int typeID, int locationID);
 
   /**
+   * This method returns all the locations which have the type
+   * identified by the value received as parameter
+   * 
+   * @param locationTypeID - type identifier
+   * @return a list of Location objects with the information
+   */
+  public List<Location> getLocationsByType(int locationTypeID);
+
+  /**
    * This method return the information of a Region by a given Region ID
    * 
    * @param regionID - is the ID of a Region

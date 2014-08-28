@@ -25,6 +25,7 @@ public class OtherLocation extends Location {
 
   private LocationType type;
   private LocationGeoposition geoPosition;
+
   private Country country;
 
   public OtherLocation() {
