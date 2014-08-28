@@ -1,11 +1,5 @@
 package org.cgiar.ccafs.ap.action.planning;
 
-import java.io.File;
-import java.util.ArrayList;
-import java.util.List;
-
-import com.google.inject.Inject;
-import org.apache.commons.lang3.StringUtils;
 import org.cgiar.ccafs.ap.action.BaseAction;
 import org.cgiar.ccafs.ap.config.APConfig;
 import org.cgiar.ccafs.ap.config.APConstants;
@@ -14,6 +8,7 @@ import org.cgiar.ccafs.ap.data.manager.LocationManager;
 import org.cgiar.ccafs.ap.data.manager.LocationTypeManager;
 import org.cgiar.ccafs.ap.data.manager.ProjectManager;
 import org.cgiar.ccafs.ap.data.model.Activity;
+import org.cgiar.ccafs.ap.data.model.ClimateSmartVillage;
 import org.cgiar.ccafs.ap.data.model.Country;
 import org.cgiar.ccafs.ap.data.model.Location;
 import org.cgiar.ccafs.ap.data.model.LocationType;
@@ -22,6 +17,13 @@ import org.cgiar.ccafs.ap.data.model.Project;
 import org.cgiar.ccafs.ap.data.model.Region;
 import org.cgiar.ccafs.ap.util.FileManager;
 import org.cgiar.ccafs.ap.util.SendMail;
+
+import java.io.File;
+import java.util.ArrayList;
+import java.util.List;
+
+import com.google.inject.Inject;
+import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -57,6 +59,7 @@ public class ActivityLocationsPlanningAction extends BaseAction {
   // Temporal lists to save the locations
   private List<Region> regionsSaved;
   private List<Country> countriesSaved;
+  private List<ClimateSmartVillage> csvSaved;
   private List<OtherLocation> otherLocationsSaved;
 
   @Inject
@@ -105,6 +108,11 @@ public class ActivityLocationsPlanningAction extends BaseAction {
     return APConstants.LOCATION_ELEMENT_TYPE_COUNTRY;
   }
 
+  public List<ClimateSmartVillage> getCsvSaved() {
+    return csvSaved;
+  }
+
+
   public List<LocationType> getLocationTypes() {
     return locationTypes;
   }
@@ -118,7 +126,6 @@ public class ActivityLocationsPlanningAction extends BaseAction {
   public Project getProject() {
     return project;
   }
-
 
   public List<Region> getRegions() {
     return regions;
@@ -163,16 +170,6 @@ public class ActivityLocationsPlanningAction extends BaseAction {
     return locationsOrganized;
   }
 
-  private void parseActivityID() {
-    // Getting the activity id from the URL parameter
-    try {
-      String _id = StringUtils.trim(this.getRequest().getParameter(APConstants.ACTIVITY_REQUEST_ID));
-      activityID = (_id != null) ? Integer.parseInt(_id) : -1;
-    } catch (NumberFormatException e) {
-      LOG.error("-- parseActivityID() > There was an error parsing the activity identifier '{}'.", activityID);
-      activityID = -1;
-    }
-  }
 
   @Override
   public void prepare() throws Exception {
@@ -180,7 +177,8 @@ public class ActivityLocationsPlanningAction extends BaseAction {
     activityID = Integer.parseInt(StringUtils.trim(this.getRequest().getParameter(APConstants.ACTIVITY_REQUEST_ID)));
     activity = activityManager.getActivityById(activityID);
     activity.setLocations(locationManager.getActivityLocations(activityID));
-    previousLocations = activity.getLocations();
+    previousLocations = new ArrayList<>();
+    previousLocations.addAll(activity.getLocations());
 
     project = projectManager.getProjectFromActivityId(activityID);
 
@@ -193,6 +191,7 @@ public class ActivityLocationsPlanningAction extends BaseAction {
     regionsSaved = new ArrayList<>();
     countriesSaved = new ArrayList<>();
     otherLocationsSaved = new ArrayList<>();
+    csvSaved = new ArrayList<>();
 
     if (getRequest().getMethod().equalsIgnoreCase("post")) {
       // Clear out the list if it has some element
@@ -201,6 +200,7 @@ public class ActivityLocationsPlanningAction extends BaseAction {
       }
     }
   }
+
 
   @Override
   public String save() {
@@ -242,15 +242,17 @@ public class ActivityLocationsPlanningAction extends BaseAction {
         }
       }
 
-      locationsOrganized = organizeActivityLocations();
-
-      // Removing the existing locations
-      removed = locationManager.removeActivityLocation(locationsOrganized, activityID);
-      if (!removed) {
-        success = false;
+      // Grouping csv locations to the locations list.
+      for (ClimateSmartVillage location : csvSaved) {
+        if (location != null) {
+          locations.add(location);
+        }
       }
+
+      locations.addAll(activity.getLocations());
+
       // Then, saving locations received
-      boolean added = locationManager.saveActivityLocations(locationsOrganized, activityID);
+      boolean added = locationManager.saveActivityLocations(locations, activityID);
       if (!added) {
         success = false;
       }
@@ -306,6 +308,10 @@ public class ActivityLocationsPlanningAction extends BaseAction {
 
   public void setCountriesSaved(List<Country> countriesSaved) {
     this.countriesSaved = countriesSaved;
+  }
+
+  public void setCsvSaved(List<ClimateSmartVillage> csvSaved) {
+    this.csvSaved = csvSaved;
   }
 
   public void setExcelTemplate(File excelTemplate) {
