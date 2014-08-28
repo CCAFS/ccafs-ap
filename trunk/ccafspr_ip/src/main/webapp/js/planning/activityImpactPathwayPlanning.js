@@ -108,7 +108,7 @@ function addIndicators(midOutcomeID,programID,$indicatorsBlock){
       
       // indexes will be adjusted in function setIndicatorsIndexes
       $newIndicator.find("input[type='checkbox']").val(indicator.id);
-      $newIndicator.find("label").text(indicator.description);
+      $newIndicator.find("label.indicatorDescription").text(indicator.description);
       
       $indicatorsBlock.append($newIndicator);
     });

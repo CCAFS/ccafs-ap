@@ -76,7 +76,7 @@
               <div class="locationIndex ">
                 <strong>${location_index+1}.</strong>
               </div>
-              <div class="locationLevel grid_2 ">
+              <div class="locationLevel grid_2 "> 
                 [#-- Type/Level --]
                 [#if location.region]
                   [@customForm.select name="regionsSaved[${location_index}].type.id" i18nkey="planning.activities.locations.level" listName="locationTypes" keyFieldName="id"  displayFieldName="name" showTitle=false value="${regionTypeID}"/]
@@ -90,11 +90,16 @@
                 [#-- Latitude --]
                 [#if location.country || location.region]
                   [@customForm.input name="geoPosition.latitude" className="notApplicable" type="text" value=notApplicableText i18nkey="planning.activities.locations.latitude" showTitle=false disabled=true  /]
-                [#else]
-                  [#-- Geo position ID --]
-                  <input type="hidden" name="otherLocationsSaved[${location_index}].geoPosition.id" value="${location.geoPosition.id?c}" >
-                  [#-- Latitude --]
-                  [@customForm.input name="otherLocationsSaved[${location_index}].geoPosition.latitude" value="${location.geoPosition.latitude}" type="text" i18nkey="planning.activities.locations.latitude" showTitle=false required=true  /]
+                [#else] 
+                  [#if location.type.id == ccafsSiteTypeID] 
+                    [#-- Latitude --]
+                    [@customForm.input name="geoPosition.latitude" value="${location.geoPosition.latitude}" type="text" i18nkey="planning.activities.locations.latitude" showTitle=false required=true disabled=true   /]                
+                  [#else]
+                    [#-- Geo position ID --]
+                    <input type="hidden" name="otherLocationsSaved[${location_index}].geoPosition.id" value="${location.geoPosition.id?c}" >
+                    [#-- Latitude --]
+                    [@customForm.input name="otherLocationsSaved[${location_index}].geoPosition.latitude" value="${location.geoPosition.latitude}" type="text" i18nkey="planning.activities.locations.latitude" showTitle=false required=true  /]
+                  [/#if]
                 [/#if]
               </div>
               [#-- Longitude --]
@@ -102,7 +107,12 @@
                 [#if location.country || location.region]
                   [@customForm.input name="geoPosition.longitude" className="notApplicable" value=notApplicableText type="text" i18nkey="planning.activities.locations.longitude" showTitle=false disabled=true  /]
                 [#else]
+                 [#if location.type.id == ccafsSiteTypeID]
+                  [@customForm.input name="geoPosition.longitude" value="${location.geoPosition.longitude}" type="text" i18nkey="planning.activities.locations.longitude" showTitle=false required=true disabled=true   /]                 
+                 [#else]
                   [@customForm.input name="otherLocationsSaved[${location_index}].geoPosition.longitude" value="${location.geoPosition.longitude}" type="text" i18nkey="planning.activities.locations.longitude" showTitle=false required=true  /]
+                 [/#if]
+                  
                 [/#if]
               </div>
               [#-- Name --]
@@ -112,8 +122,12 @@
                 [#elseif location.region]
                   [@customForm.select name="regionsSaved[${location_index}].id" i18nkey="planning.activities.locations.level" listName="regions" keyFieldName="id" showTitle=false  displayFieldName="name" value="${location.id?int}" /]
                 [#else]
-                  <input type="hidden" name="otherLocationsSaved[${location_index}].id" value="${location.id?int}">
-                  [@customForm.input name="otherLocationsSaved[${location_index}].name" value="${location.name}" type="text" i18nkey="planning.activities.locations.notApplicable" required=true showTitle=false  /]
+                 [#if location.type.id == ccafsSiteTypeID]
+                  [@customForm.input name="activity.locations" value="${location.id}" type="text" i18nkey="planning.activities.locations.notApplicable" required=true showTitle=false  /]                 
+                 [#else]
+                  [@customForm.input name="otherLocationsSaved[${location_index}].name" value="${location.name}" type="text" i18nkey="planning.activities.locations.notApplicable" required=true showTitle=false  /]                 
+                  <input type="hidden" name="otherLocationsSaved[${location_index}].id" value="${location.id}">
+                 [/#if]
                 [/#if]
               </div>
               [#if saveable]
@@ -198,6 +212,17 @@
 <div id="selectTemplate-2" style="display:none">
   [@customForm.select name="].id" i18nkey="planning.locations.level" listName="countries" keyFieldName="id" showTitle=false  displayFieldName="name" /]
 </div>
+
+[#-- List Template of Climate smart village with id: 10 --]
+<div id="selectTemplate-10" style="display:none">
+  [@customForm.select name="].id" i18nkey="planning.locations.level" listName="ccafsSites" keyFieldName="id" showTitle=false  displayFieldName="name" /]
+</div>
+
+[#-- List Template of CCAFS Sites with id: 11 --]
+<div id="selectTemplate-11" style="display:none">
+  [@customForm.select name="activity.locations" i18nkey="planning.locations.level" listName="ccafsSites" keyFieldName="id" showTitle=false  displayFieldName="name" /]
+</div>
+
 [#-- Input Template for name --]
 <div id="inputNameTemplate" style="display:none">
   <input type="hidden" name="].id" value="-1">

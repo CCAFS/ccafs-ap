@@ -1567,8 +1567,8 @@ p#fileUploadText {
 /* Activity Impact Pathway */
 
 #activityImpactPathway .indicatorsBlock {
-  padding: 7px 0px 6px 14px;
-  margin: 8px;
+  padding: 7px 0px 6px 12px;
+  margin: 8px 3px 6px 0px;
   border: 1px solid #E8E8E8;
   border-radius: 6px;
 }
@@ -1578,8 +1578,8 @@ p#fileUploadText {
 }
 
 .mogsBlock {
-    padding: 7px 0px 6px 14px;
-    margin: 8px !important;
+    padding: 7px 0px 6px 12px;
+  margin: 8px 3px 6px 0px !important;
     border: 1px solid #E8E8E8;
     border-radius: 6px;
 }
@@ -2080,3 +2080,4 @@ background: #E0E0E0;
   margin-top: 15px;
   font-weight: lighter;
 }
+

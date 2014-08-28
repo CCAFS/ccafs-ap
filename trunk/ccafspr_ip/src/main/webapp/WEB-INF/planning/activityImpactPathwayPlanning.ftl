@@ -51,7 +51,6 @@
     <div id="contributionsBlock" class="">
       [#if midOutcomesSelected?has_content]
         [#list midOutcomesSelected as midOutcome]
-
           <div class="contribution borderBox">
             [#-- Remove Contribution --]
             <div id="removeContribution" class="removeContribution removeElement removeLink" title="[@s.text name="preplanning.midOutcomes.removeMidOutcome" /]"></div>
@@ -74,13 +73,13 @@
                           <div class="midOutcomeIndicator" >
                             <input type="hidden" disabled name="activity_indicator_id" value="${activityIndicator.id}" />
                             <input type="checkbox" name="activity.indicators" value="${activityIndicator.parent.id}" checked />
-                            <label>${activityIndicator.parent.description}</label>
+                            <label class="indicatorDescription">${activityIndicator.parent.description}</label>
                             <div class="checkboxGroup vertical indicatorNarrative" >
                               [#-- Target value --]
-                              <label> Target value </label>
-                              <input type="input" name="activity_indicator_target" value="${activityIndicator.target}" >
+                              <label> <h6>[@s.text name="planning.activityImpactPathways.targetValue" /]</h6></label>
+                              <input type="text" name="activity_indicator_target" value="${activityIndicator.target}" >
                               
-                              <label> Target narrative</label>
+                              <label> <h6>[@s.text name="planning.activityImpactPathways.targetNarrative" /]</h6></label>
                               <textarea name="activity_indicator_description" >${activityIndicator.description}</textarea>
                             </div> 
                           </div>  
@@ -88,14 +87,13 @@
                           <div class="midOutcomeIndicator" >
                             <input type="hidden" disabled name="activity_indicator_id" value="-1" />
                             <input type="checkbox" name="activity.indicators" value="${activityIndicator.parent.id}" />
-                            <label>${activityIndicator.parent.description}</label>
-                            
+                            <label class="indicatorDescription">${activityIndicator.parent.description}</label> 
                             <div class="checkboxGroup vertical indicatorNarrative" style="display:none">
                               [#-- Target value --]
-                              <label> Target value </label>
-                              <input type="input" name="activity_indicator_target" >
+                              <label>  <h6>[@s.text name="planning.activityImpactPathways.targetValue" /]</h6></label>
+                              <input type="text" name="activity_indicator_target" >
                               
-                              <label> Target narrative</label>
+                              <label>  <h6>[@s.text name="planning.activityImpactPathways.targetNarrative" /]</h6></label>
                               <textarea name="activity_indicator_description" > </textarea>
                             </div> 
                           </div>
@@ -152,14 +150,14 @@
       <div class="midOutcomeIndicator" id="midOutcomeIndicatorTemplate">
         <input type="hidden" disabled name="activity_indicator_id" value="-1" />
         <input type="checkbox" name="activity.indicators" />
-        <label></label>
+        <label class="indicatorDescription"></label>
         
         <div class="checkboxGroup vertical indicatorNarrative" style="display:none">
           [#-- Target value --]
-          <label> Target value </label>
-          <input type="input" name="activity_indicator_target" >
+          <label> <h6>[@s.text name="planning.activityImpactPathways.targetValue" /]</h6></label>
+          <input type="text" name="activity_indicator_target" >
           
-          <label> Target narrative</label>
+          <label> <h6>[@s.text name="planning.activityImpactPathways.targetNarrative" /]</h6></label>
           <textarea name="activity_indicator_description" > </textarea>
         </div>
       </div>
