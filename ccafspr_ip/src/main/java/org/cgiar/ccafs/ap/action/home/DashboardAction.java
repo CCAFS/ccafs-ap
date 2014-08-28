@@ -60,12 +60,6 @@ public class DashboardAction extends BaseAction {
   }
 
 
-  @Override
-  public String execute() throws Exception {
-    return SUCCESS;
-  }
-
-
   public List<Activity> getActivities() {
     return activities;
   }
@@ -87,8 +81,6 @@ public class DashboardAction extends BaseAction {
 
   @Override
   public void prepare() throws Exception {
-    super.prepare();
-
     if (this.getCurrentUser() != null) {
 
       // ----- Listing Projects -----

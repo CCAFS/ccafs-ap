@@ -104,15 +104,10 @@
         <interceptor-ref name="accessibleStage" />
         <interceptor-ref name="validateActivityParameter" />
         <interceptor-ref name="grantActivityPlanningAccess" />
-        
         <interceptor-ref name="trimInputs" />
         <interceptor-ref name="defaultStack" />
       </interceptor-stack>
-      
-      
     </interceptors>
-    
-    
 
     <default-action-ref name="defaultAction" />
 
@@ -140,7 +135,6 @@
     </global-exception-mappings>
 
     <action name="defaultAction" class="org.cgiar.ccafs.ap.action.home.LoginAction" method="login">
-      <result name="success">/WEB-INF/home/home.ftl</result>
       <result name="input">/WEB-INF/home/login.ftl</result>
     </action>
     
