@@ -30,7 +30,7 @@ public interface DeliverableManager {
 
   /**
    * This method removes a specific deliverable value from the database.
-   *
+   * 
    * @param deliverableId is the deliverable identifier.
    * @return true if the deliverable was successfully deleted, false otherwise.
    */
@@ -38,7 +38,7 @@ public interface DeliverableManager {
 
   /**
    * This method removes a specific deliverable contribution value from the database.
-   *
+   * 
    * @param deliverableID is the deliverable identifier.
    * @return true if the deliverable was successfully deleted, false otherwise.
    */
@@ -46,7 +46,7 @@ public interface DeliverableManager {
 
   /**
    * This method removes a set of deliverables that belongs to a specific activity.
-   *
+   * 
    * @param activityID is the activity identifier.
    * @return true if the set of activities were successfully deleted, false otherwise.
    */
@@ -54,7 +54,7 @@ public interface DeliverableManager {
 
   /**
    * This method gets all the deliverable information by a given deliverable ID.
-   *
+   * 
    * @param deliverableID is the deliverable identifier.
    * @return a List of deliverables objects.
    */
@@ -62,7 +62,7 @@ public interface DeliverableManager {
 
   /**
    * This method gets the information of IP Element related with the MOG in which this deliverable contributes to.
-   *
+   * 
    * @param deliverableID - is the id of the Deliverable
    * @return an IPElement with the information related to a Deliverable as contributions.
    */
@@ -70,7 +70,7 @@ public interface DeliverableManager {
 
   /**
    * This method gets all the deliverables information by a given activity Id
-   *
+   * 
    * @param activityID - is the Id of the activity
    * @return a List of deliverables with the Information related with the activity
    */
@@ -78,7 +78,7 @@ public interface DeliverableManager {
 
   /**
    * This method saves the information of the given deliverable that belong to a specific activity into the database.
-   *
+   * 
    * @param activityID
    * @param deliverable
    * @return a number greater than 0 representing the new ID assigned by the databse, 0 if the deliverable was updated
@@ -87,11 +87,13 @@ public interface DeliverableManager {
   public int saveDeliverable(int activityID, Deliverable deliverable);
 
   /**
-   * @param deliverableID
-   * @param ipElementID
-   * @param activityID
-   * @return
+   * This method saves the Deliverable Contribution relation
+   * 
+   * @param deliverableID - is the Id of the deliverable
+   * @param ipElementID - is the Id of the IP Element
+   * @param activityID - is the Id of the activity
+   * @return true if the relation Deliverable Contribution is saved, false otherwise
    */
-  public int saveDeliverableOutput(int deliverableID, int ipElementID, int activityID);
+  public boolean saveDeliverableOutput(int deliverableID, int ipElementID, int activityID);
 
 }
