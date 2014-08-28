@@ -53,7 +53,7 @@ public class MySQLUserDAO implements UserDAO {
 
       StringBuilder query = new StringBuilder();
       query
-        .append("SELECT u.id,e.id as employee_id, pe.first_name, pe.last_name, u.email, e.institution_id, e.role_id, r.name as role_name, r.acronym as role_acronym ");
+      .append("SELECT u.id,e.id as employee_id, pe.first_name, pe.last_name, u.email, e.institution_id, e.role_id, r.name as role_name, r.acronym as role_acronym ");
       query.append("FROM employees e ");
       query.append("INNER JOIN users u  ON e.user_id=u.id ");
       query.append("INNER JOIN roles r  ON e.role_id=r.id ");
@@ -207,9 +207,31 @@ public class MySQLUserDAO implements UserDAO {
   }
 
   @Override
+  public String getEmailByUsername(String username) {
+    LOG.debug(">> getEmailByUsername (username={})", new Object[] {username});
+    String email = null;
+    try (Connection connection = dbManager.getConnection()) {
+      StringBuilder query = new StringBuilder();
+      query.append("SELECT email FROM users WHERE username = '");
+      query.append(username);
+      query.append("' ");
+      ResultSet rs = dbManager.makeQuery(query.toString(), connection);
+      if (rs.next()) {
+        email = rs.getString(1);
+      }
+      rs.close();
+    } catch (SQLException e) {
+      LOG.error("-- getEmailByUsername() > There was an error getting the data for the user with usernmae {}.",
+        username, e);
+    }
+    LOG.debug("<< getEmailByUsername():{}", email);
+    return email;
+  }
+
+  @Override
   public int getEmployeeID(int userId, int institutionId, int roleId) {
     LOG
-      .debug(">> getEmployeeID (userId={}, institutionId={}, roleId={})", new Object[] {userId, institutionId, roleId});
+    .debug(">> getEmployeeID (userId={}, institutionId={}, roleId={})", new Object[] {userId, institutionId, roleId});
     int result = -1;
     try (Connection connection = dbManager.getConnection()) {
       StringBuilder query = new StringBuilder();
@@ -350,8 +372,8 @@ public class MySQLUserDAO implements UserDAO {
     Map<String, String> userData = new HashMap<>();
     try (Connection connection = dbManager.getConnection()) {
       StringBuilder query = new StringBuilder();
-      query.append("SELECT u.id, u.password, u.is_ccafs_user, u.last_login, ");
-      query.append("p.first_name, p.last_name, u.email, p.phone ");
+      query.append("SELECT u.*, ");
+      query.append("p.* ");
       query.append("FROM users u ");
       query.append("INNER JOIN persons p ON u.person_id = p.id ");
       query.append("WHERE u.email = '");
@@ -366,8 +388,10 @@ public class MySQLUserDAO implements UserDAO {
         userData.put("last_login", rs.getString("last_login"));
         userData.put("first_name", rs.getString("first_name"));
         userData.put("last_name", rs.getString("last_name"));
+        userData.put("username", rs.getString("username"));
         userData.put("email", rs.getString("email"));
         userData.put("phone", rs.getString("phone"));
+        userData.put("is_active", rs.getString("is_active"));
       }
       rs.close();
     } catch (SQLException e) {

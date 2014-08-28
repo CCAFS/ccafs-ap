@@ -56,31 +56,29 @@ public class UserManagerImp implements UserManager {
   /**
    * This method make the login process against the active directory
    * if the user has an institutional account
-   * 
+   *
    * @param user
    * @return true if it was successfully logged in. False otherwise
    */
   private boolean activeDirectoryLogin(User user) {
     boolean logued = false;
 
-    // The username in the AD is the email without dots until the domain
-    String username = user.getEmail().substring(0, user.getEmail().indexOf('@'));
-    username = username.replace(".", "");
-
-    try {
-      ADConexion con = new ADConexion(username, user.getPassword());
-      if (con != null) {
-        if (con.getLogin() != null) {
-          logued = true;
+    if (user.getUsername() != null) {
+      try {
+        ADConexion con = new ADConexion(user.getUsername(), user.getPassword());
+        if (con != null) {
+          if (con.getLogin() != null) {
+            logued = true;
+          }
+          con.closeContext();
         }
-        con.closeContext();
+      } catch (Exception e) {
+        LOG.error("Exception raised trying to log in the user {} against the active directory.", user.getId(),
+          e.getMessage());
       }
-    } catch (Exception e) {
-      LOG.error("Exception raised trying to log in the user {} against the active directory.", user.getId(),
-        e.getMessage());
     }
-
     return logued;
+
   }
 
   @Override
@@ -269,6 +267,7 @@ public class UserManagerImp implements UserManager {
     return null;
   }
 
+
   @Override
   public User getUserByEmail(String email) {
     SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM");
@@ -284,6 +283,8 @@ public class UserManagerImp implements UserManager {
       user.setLastName(userData.get("last_name"));
       user.setEmail(userData.get("email"));
       user.setPhone(userData.get("phone"));
+      user.setActive(userData.get("is_active").equals("1"));
+      user.setUsername(userData.get("username"));
       try {
         // If the user has never logged in, this value is null.
         if (userData.get("last_login") != null) {
@@ -300,32 +301,52 @@ public class UserManagerImp implements UserManager {
     return null;
   }
 
+  public User getUserByUsername(String username) {
+    String email = userDAO.getEmailByUsername(username);
+    if (email != null) {
+      return this.getUserByEmail(email);
+    }
+    return null;
+  }
+
   @Override
   public User login(String email, String password) {
     if (email != null && password != null) {
-      User userFound = this.getUserByEmail(email);
-      if (userFound != null) {
-        if (userFound.isCcafsUser()) {
-          // User brought from the database has the pass
-          // encrypted with MD5, to connect to the AD the pass
-          // shouldn't be encrypted
-          userFound.setPassword(password);
 
-          if (activeDirectoryLogin(userFound)) {
-            // Encrypt the password again
-            userFound.setMD5Password(password);
-            return userFound;
-          }
-        } else {
-          User tempUser = new User();
-          tempUser.setMD5Password(password);
-          if (userFound.getPassword().equals(tempUser.getPassword())) {
-            return userFound;
+      User userFound;
+      // If user is logging-in with their email account.
+      if (email.contains("@")) {
+        userFound = this.getUserByEmail(email);
+      } else {
+        // if user is loggin with his username, we must attach the cgiar.org.
+        userFound = this.getUserByUsername(email);
+      }
+      if (userFound != null) {
+        if (userFound.isActive()) {
+          if (userFound.isCcafsUser()) {
+            // User brought from the database has the pass
+            // encrypted with MD5, to connect to the AD the pass
+            // shouldn't be encrypted
+            userFound.setPassword(password);
+
+            if (activeDirectoryLogin(userFound)) {
+              // Encrypt the password again
+              userFound.setMD5Password(password);
+              return userFound;
+            }
+          } else {
+            User tempUser = new User();
+            tempUser.setMD5Password(password);
+            if (userFound.getPassword().equals(tempUser.getPassword())) {
+              return userFound;
+            }
           }
         }
-
+      } else {
+        // TODO HT/HC - Do something in case user is not active.
       }
     }
+    System.out.println();
     return null;
   }
 
