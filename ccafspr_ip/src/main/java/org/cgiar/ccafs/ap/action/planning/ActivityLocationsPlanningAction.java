@@ -144,12 +144,24 @@ public class ActivityLocationsPlanningAction extends BaseAction {
   @Override
   public String save() {
     if (this.isSaveable()) {
-      boolean success = true;
 
+      boolean success = true;
+      // Saving the activity information again (with the new global attribute on it).
+      int saved = activityManager.saveActivity(project.getId(), activity);
+      if (saved == -1) {
+        success = false;
+      }
+
+      // If activity was marked as global.
       if (activity.isGlobal()) {
+        // removing all previous added locations.
+        boolean removed = locationManager.removeActivityLocation(activity.getLocations(), activityID);
+        if (removed == false) {
+          success = false;
+        }
 
       } else {
-
+        // if Activity is not global.
         List<Location> locations = new ArrayList<Location>();
         // Grouping regions in the locations list.
         for (Region region : regionsSaved) {

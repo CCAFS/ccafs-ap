@@ -39,7 +39,8 @@
     [@s.text name="planning.activities.locations.title" /] 
     </h1>  
     <div id="activityGlobalBlock" class="borderBox">
-      [@customForm.checkbox name="isGlobal" i18nkey="planning.activities.locations.checkbox.isGlobal" checked=isGlobal value="false"/]
+      [@customForm.checkbox name="activity.global" i18nkey="planning.activities.locations.checkbox.isGlobal" checked=activity.global value="true" /]
+      [#-- ]@s.checkbox name="activity.global" label="planning.activities.locations.checkbox.isGlobal" /--]
     </div>
     <div id="activityLocations-map"></div> 
     <div id="locationsBlock" class="clearfix">

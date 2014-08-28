@@ -19,7 +19,7 @@ function attachEvents(){
   $("[name$='type.id']").on("change", changeTypeEvent);
   
   // isGlobale Change
-  $("#isGlobal").on("change", changeGlobalState);
+  $("#activity\\.global").on("change", changeGlobalState);
   
   $("[name$='geoPosition.latitude'], [name$='geoPosition.longitude']").on("keyup", markerAction);
   $("[name$='geoPosition.latitude'], [name$='geoPosition.longitude']").on("focus", markerAction);
