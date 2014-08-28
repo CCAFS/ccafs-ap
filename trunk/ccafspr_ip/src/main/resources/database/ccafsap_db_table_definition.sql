@@ -3,15 +3,16 @@
 -- http://www.phpmyadmin.net
 --
 -- Servidor: davinci.ciat.cgiar.org
--- Tiempo de generación: 14-08-2014 a las 23:56:21
+-- Tiempo de generación: 28-08-2014 a las 17:28:22
 -- Versión del servidor: 5.5.30
 -- Versión de PHP: 5.3.8
 
+SET FOREIGN_KEY_CHECKS=0;
 SET SQL_MODE="NO_AUTO_VALUE_ON_ZERO";
 SET time_zone = "+00:00";
 
 --
--- Base de datos: `ccafspr_ip`
+-- Base de datos: `ccafspr_ip_test`
 --
 
 -- --------------------------------------------------------
@@ -27,7 +28,7 @@ CREATE TABLE IF NOT EXISTS `activities` (
   `description` text,
   `startDate` date DEFAULT NULL,
   `endDate` date DEFAULT NULL,
-  `is_global` tinyint(1) DEFAULT NULL,
+  `is_global` tinyint(1) NOT NULL DEFAULT '0',
   `expected_leader_id` bigint(20) DEFAULT NULL,
   `leader_id` bigint(20) DEFAULT NULL,
   `created` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
@@ -35,7 +36,7 @@ CREATE TABLE IF NOT EXISTS `activities` (
   KEY `FK_Projects_id_idx` (`project_id`),
   KEY `FK_activities_activity_leaders_idx` (`leader_id`),
   KEY `FK_activities_expected_leader_id_idx` (`expected_leader_id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=2021 ;
 
 -- --------------------------------------------------------
 
@@ -92,7 +93,20 @@ CREATE TABLE IF NOT EXISTS `activity_partners` (
   PRIMARY KEY (`id`),
   KEY `FL_activity_partners_institutions.id_idx` (`institution_id`),
   KEY `FK_activity_partners_activities_idx` (`activity_id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=45 ;
+
+-- --------------------------------------------------------
+
+--
+-- Estructura de tabla para la tabla `board_messages`
+--
+
+CREATE TABLE IF NOT EXISTS `board_messages` (
+  `id` bigint(20) NOT NULL AUTO_INCREMENT,
+  `message` text NOT NULL,
+  `created` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=8 ;
 
 -- --------------------------------------------------------
 
@@ -109,20 +123,7 @@ CREATE TABLE IF NOT EXISTS `budgets` (
   PRIMARY KEY (`id`),
   KEY `FK_institution_id_idx` (`institution_id`),
   KEY `FK_budget_type_idx` (`budget_type`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8;
-
--- --------------------------------------------------------
-
---
--- Estructura de tabla para la tabla `board_messages`
---
-
-CREATE TABLE IF NOT EXISTS `board_messages` (
-  `id` BIGINT NOT NULL AUTO_INCREMENT,
-  `message` TEXT NOT NULL,
-  `created` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
-  PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=568 ;
 
 -- --------------------------------------------------------
 
@@ -134,7 +135,7 @@ CREATE TABLE IF NOT EXISTS `budget_types` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `name` varchar(255) NOT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=7 ;
 
 -- --------------------------------------------------------
 
@@ -151,7 +152,7 @@ CREATE TABLE IF NOT EXISTS `deliverables` (
   PRIMARY KEY (`id`),
   KEY `deliverables_activities_idx` (`activity_id`),
   KEY `deliverables_deliverables_type_idx` (`type_id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=12 ;
 
 -- --------------------------------------------------------
 
@@ -166,7 +167,7 @@ CREATE TABLE IF NOT EXISTS `deliverable_types` (
   `timeline` int(11) DEFAULT NULL,
   PRIMARY KEY (`id`),
   KEY `deliverable_types_parent_id_idx` (`parent_id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=40 ;
 
 -- --------------------------------------------------------
 
@@ -184,7 +185,7 @@ CREATE TABLE IF NOT EXISTS `employees` (
   KEY `FK_employees_persons_idx` (`user_id`),
   KEY `FK_employees_institutions_idx` (`institution_id`),
   KEY `FK_employees_roles_idx` (`role_id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=40 ;
 
 -- --------------------------------------------------------
 
@@ -200,7 +201,7 @@ CREATE TABLE IF NOT EXISTS `expected_activity_leaders` (
   `is_official` tinyint(1) NOT NULL DEFAULT '0' COMMENT 'If the expected leader needs to be created as a user.',
   PRIMARY KEY (`id`),
   KEY `FK_activity_leaders_institutions_idx` (`institution_id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=12 ;
 
 -- --------------------------------------------------------
 
@@ -216,7 +217,7 @@ CREATE TABLE IF NOT EXISTS `expected_project_leaders` (
   `institution_id` bigint(20) NOT NULL COMMENT 'Foreign key to Institution id',
   PRIMARY KEY (`id`),
   KEY `PK_Institution_idx` (`institution_id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=18 ;
 
 -- --------------------------------------------------------
 
@@ -239,7 +240,7 @@ CREATE TABLE IF NOT EXISTS `institutions` (
   KEY `FK_ip_program_lead_institutions_idx` (`program_id`),
   KEY `FK_institutions_institution_types_idx` (`institution_type_id`),
   KEY `FK_loc_elements_id_idx` (`country_id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=1176 ;
 
 -- --------------------------------------------------------
 
@@ -255,7 +256,7 @@ CREATE TABLE IF NOT EXISTS `institution_locations` (
   PRIMARY KEY (`id`),
   KEY `FK_institution_locations_institutions_idx` (`institution_id`),
   KEY `FK_institution_locations_loc_elements_idx` (`country_id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;
 
 -- --------------------------------------------------------
 
@@ -268,7 +269,7 @@ CREATE TABLE IF NOT EXISTS `institution_types` (
   `name` varchar(255) NOT NULL,
   `acronym` varchar(200) DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=19 ;
 
 -- --------------------------------------------------------
 
@@ -279,14 +280,14 @@ CREATE TABLE IF NOT EXISTS `institution_types` (
 CREATE TABLE IF NOT EXISTS `ip_activity_contributions` (
   `id` bigint(20) NOT NULL AUTO_INCREMENT,
   `activity_id` bigint(20) NOT NULL COMMENT 'This field is a foreign key to the table activities.',
-  `mog_id` BIGINT NOT NULL COMMENT 'This field is a foreign key to the table IP Elements.\nThe vales referenced in this column should be of type \'Outputs\' but this constraint is checked at application level.' ,
-  `midOutcome_id` BIGINT NOT NULL COMMENT 'This field is a foreign key to the table IP Elements.\nThe vales referenced in this column should be of type \'midOutcome\' but this constraint is checked at application level.' ,
+  `mog_id` bigint(20) NOT NULL COMMENT 'This field is a foreign key to the table IP Elements.\nThe vales referenced in this column should be of type ''Outputs'' but this constraint is checked at application level.',
+  `midOutcome_id` bigint(20) NOT NULL COMMENT 'This field is a foreign key to the table IP Elements.\nThe vales referenced in this column should be of type ''midOutcome'' but this constraint is checked at application level.',
   PRIMARY KEY (`id`),
   UNIQUE KEY `UK_activity_contributions_unique` (`activity_id`,`mog_id`),
   KEY `FK_activities_ipElements_activityID_idx` (`activity_id`),
-  KEY `FK_activities_ipElements_ipElementID_idx` (`mog_id` ASC) ,
-  KEY `FK_activities_midOutcome_ipElementID_idx` (`midOutcome_id` ASC)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+  KEY `FK_activities_ipElements_ipElementID_idx` (`mog_id`),
+  KEY `FK_activities_midOutcome_ipElementID_idx` (`midOutcome_id`)
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=2 ;
 
 -- --------------------------------------------------------
 
@@ -303,7 +304,7 @@ CREATE TABLE IF NOT EXISTS `ip_activity_indicators` (
   PRIMARY KEY (`id`),
   KEY `FK_ipActivityIndicators_ipIndicators_parentID_idx` (`parent_id`),
   KEY `FK_ipActivityIndicators_ipIndicators_activityID_idx` (`activity_id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=5 ;
 
 -- --------------------------------------------------------
 
@@ -315,7 +316,7 @@ CREATE TABLE IF NOT EXISTS `ip_cross_cutting_themes` (
   `id` bigint(20) NOT NULL AUTO_INCREMENT,
   `name` varchar(255) NOT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=6 ;
 
 -- --------------------------------------------------------
 
@@ -324,22 +325,13 @@ CREATE TABLE IF NOT EXISTS `ip_cross_cutting_themes` (
 --
 
 CREATE TABLE IF NOT EXISTS `ip_deliverable_contributions` (
-  `activity_contribution_id` BIGINT NOT NULL COMMENT 'This column is a foreign key that references the table ip_activity_contributions.',
-  `deliverable_id` BIGINT NOT NULL COMMENT 'This column is a foreign key that references the table deliverables',
-  INDEX `FK_deliverables_ipActivityContributions_contributionID_idx` (`activity_contribution_id` ASC),
-  INDEX `FK_deliverables_ipActivityContributions_deliverableID_idx` (`deliverable_id` ASC),
-  INDEX `PK_deliverable_contributions` (`activity_contribution_id` ASC, `deliverable_id` ASC),
-  CONSTRAINT `FK_deliverables_ipActivityContributions_contributionID`
-    FOREIGN KEY (`activity_contribution_id`)
-    REFERENCES `ip_activity_contributions` (`id`)
-    ON DELETE CASCADE
-    ON UPDATE CASCADE,
-  CONSTRAINT `FK_deliverables_ipActivityContributions_deliverableID`
-    FOREIGN KEY (`deliverable_id`)
-    REFERENCES `deliverables` (`id`)
-    ON DELETE CASCADE
-    ON UPDATE CASCADE
-) ENGINE = InnoDB DEFAULT CHARSET=utf8;
+  `activity_contribution_id` bigint(20) NOT NULL COMMENT 'This column is a foreign key that references the table ip_activity_contributions.',
+  `deliverable_id` bigint(20) NOT NULL COMMENT 'This column is a foreign key that references the table deliverables',
+  PRIMARY KEY (`activity_contribution_id`,`deliverable_id`),
+  KEY `FK_deliverables_ipActivityContributions_contributionID_idx` (`activity_contribution_id`),
+  KEY `FK_deliverables_ipActivityContributions_deliverableID_idx` (`deliverable_id`),
+  KEY `PK_deliverable_contributions` (`activity_contribution_id`,`deliverable_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 -- --------------------------------------------------------
 
@@ -349,11 +341,11 @@ CREATE TABLE IF NOT EXISTS `ip_deliverable_contributions` (
 
 CREATE TABLE IF NOT EXISTS `ip_elements` (
   `id` bigint(20) NOT NULL AUTO_INCREMENT,
-  `description` text,
+  `description` text COLLATE latin1_general_ci,
   `element_type_id` bigint(20) NOT NULL COMMENT 'Foreign key to the table ip_element_types',
   PRIMARY KEY (`id`),
   KEY `FK_element_element_type_idx` (`element_type_id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1 COLLATE=latin1_general_ci AUTO_INCREMENT=271 ;
 
 -- --------------------------------------------------------
 
@@ -363,9 +355,9 @@ CREATE TABLE IF NOT EXISTS `ip_elements` (
 
 CREATE TABLE IF NOT EXISTS `ip_element_types` (
   `id` bigint(20) NOT NULL AUTO_INCREMENT,
-  `name` varchar(255) DEFAULT NULL,
+  `name` varchar(255) COLLATE latin1_general_ci DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1 COLLATE=latin1_general_ci AUTO_INCREMENT=5 ;
 
 -- --------------------------------------------------------
 
@@ -375,14 +367,14 @@ CREATE TABLE IF NOT EXISTS `ip_element_types` (
 
 CREATE TABLE IF NOT EXISTS `ip_indicators` (
   `id` bigint(20) NOT NULL AUTO_INCREMENT,
-  `description` text,
-  `target` text,
+  `description` text COLLATE latin1_general_ci,
+  `target` text COLLATE latin1_general_ci,
   `program_element_id` bigint(20) NOT NULL,
   `parent_id` bigint(20) DEFAULT NULL COMMENT 'Foreign key to ip_indicators table. This field shows if the indicator contributes to another indicator',
   PRIMARY KEY (`id`),
   KEY `FK_indicators_program_elements_idx` (`program_element_id`),
   KEY `FK_indicators_parent_indicator_idx` (`parent_id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1 COLLATE=latin1_general_ci AUTO_INCREMENT=718 ;
 
 -- --------------------------------------------------------
 
@@ -397,7 +389,7 @@ CREATE TABLE IF NOT EXISTS `ip_other_contributions` (
   `additional_contribution` text,
   PRIMARY KEY (`id`),
   KEY `GK_ip_other_contributions_idx` (`activity_id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=8 ;
 
 -- --------------------------------------------------------
 
@@ -407,14 +399,14 @@ CREATE TABLE IF NOT EXISTS `ip_other_contributions` (
 
 CREATE TABLE IF NOT EXISTS `ip_programs` (
   `id` bigint(20) NOT NULL AUTO_INCREMENT,
-  `name` text,
-  `acronym` varchar(45) DEFAULT NULL,
+  `name` text COLLATE latin1_general_ci,
+  `acronym` varchar(45) COLLATE latin1_general_ci DEFAULT NULL,
   `region_id` bigint(20) DEFAULT NULL,
   `type_id` bigint(20) NOT NULL,
   PRIMARY KEY (`id`),
   KEY `FK_ip_program_program_type_idx` (`type_id`),
   KEY `FK_ip_program_ip_region_idx` (`region_id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1 COLLATE=latin1_general_ci AUTO_INCREMENT=15 ;
 
 -- --------------------------------------------------------
 
@@ -432,7 +424,7 @@ CREATE TABLE IF NOT EXISTS `ip_program_elements` (
   KEY `FK_program_elements_program_idx` (`program_id`),
   KEY `FK_program_elements_elements_idx` (`element_id`),
   KEY `FK_program_elements_element_relation_types_idx` (`relation_type_id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=2331 ;
 
 -- --------------------------------------------------------
 
@@ -444,7 +436,7 @@ CREATE TABLE IF NOT EXISTS `ip_program_element_relation_types` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `name` varchar(255) NOT NULL COMMENT 'This field describe the relation between the element and the program',
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=3 ;
 
 -- --------------------------------------------------------
 
@@ -456,7 +448,7 @@ CREATE TABLE IF NOT EXISTS `ip_program_types` (
   `id` bigint(20) NOT NULL AUTO_INCREMENT,
   `name` varchar(255) NOT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=6 ;
 
 -- --------------------------------------------------------
 
@@ -474,7 +466,7 @@ CREATE TABLE IF NOT EXISTS `ip_relationships` (
   KEY `FK_element_relations_child_idx` (`parent_id`),
   KEY `test_idx` (`child_id`),
   KEY `FK_element_relations_relationship_types_idx` (`relation_type_id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1 COLLATE=latin1_general_ci AUTO_INCREMENT=2039 ;
 
 -- --------------------------------------------------------
 
@@ -486,7 +478,7 @@ CREATE TABLE IF NOT EXISTS `ip_relationship_type` (
   `id` bigint(20) NOT NULL AUTO_INCREMENT,
   `name` varchar(255) NOT NULL COMMENT 'This field describes the type of relation between the child element and the parent element',
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=3 ;
 
 -- --------------------------------------------------------
 
@@ -504,7 +496,7 @@ CREATE TABLE IF NOT EXISTS `loc_elements` (
   PRIMARY KEY (`id`),
   KEY `FK_loc_element_loc_element_type_id_idx` (`element_type_id`),
   KEY `FK_loc_elements_loc_geopositions_idx` (`geoposition_id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=359 ;
 
 -- --------------------------------------------------------
 
@@ -518,7 +510,7 @@ CREATE TABLE IF NOT EXISTS `loc_element_types` (
   `parent_id` bigint(20) DEFAULT NULL,
   PRIMARY KEY (`id`),
   KEY `FK_loc_element_type_parent_idx` (`parent_id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=12 ;
 
 -- --------------------------------------------------------
 
@@ -533,7 +525,7 @@ CREATE TABLE IF NOT EXISTS `loc_geopositions` (
   `parent_id` bigint(20) DEFAULT NULL,
   PRIMARY KEY (`id`),
   KEY `FK_loc_geoposition_loc_geopositon_idx` (`parent_id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=166 ;
 
 -- --------------------------------------------------------
 
@@ -549,7 +541,7 @@ CREATE TABLE IF NOT EXISTS `next_users` (
   `strategies` text,
   PRIMARY KEY (`id`),
   KEY `FL_next_users_deliverables_idx` (`deliverable_id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=10 ;
 
 -- --------------------------------------------------------
 
@@ -565,7 +557,7 @@ CREATE TABLE IF NOT EXISTS `permissions` (
   PRIMARY KEY (`id`),
   KEY `FK_permissions_elements_idx` (`element_id`),
   KEY `FK_permissions_roles_idx` (`role_id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;
 
 -- --------------------------------------------------------
 
@@ -579,7 +571,7 @@ CREATE TABLE IF NOT EXISTS `persons` (
   `last_name` varchar(255) NOT NULL,
   `phone` varchar(45) DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=18 ;
 
 -- --------------------------------------------------------
 
@@ -604,7 +596,7 @@ CREATE TABLE IF NOT EXISTS `projects` (
   KEY `FK_projects_owner_employees_idx` (`project_owner_id`),
   KEY `FK_projects_expected_project_leaders_idx` (`expected_project_leader_id`),
   KEY `FK_projects_program_id_idx` (`program_creator_id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=43 ;
 
 -- --------------------------------------------------------
 
@@ -619,7 +611,7 @@ CREATE TABLE IF NOT EXISTS `project_budgets` (
   PRIMARY KEY (`id`),
   KEY `FK_project_id_idx` (`project_id`),
   KEY `FK_budget_id_idx` (`budget_id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=493 ;
 
 -- --------------------------------------------------------
 
@@ -649,7 +641,7 @@ CREATE TABLE IF NOT EXISTS `project_outcomes` (
   `project_id` bigint(20) NOT NULL,
   PRIMARY KEY (`id`),
   KEY `FK_Projects_id_idx` (`project_id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=34 ;
 
 -- --------------------------------------------------------
 
@@ -667,7 +659,7 @@ CREATE TABLE IF NOT EXISTS `project_partners` (
   PRIMARY KEY (`id`),
   KEY `FK_project_partners_projects_idx` (`project_id`),
   KEY `FK_project_partners_institutions_idx` (`partner_id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=49 ;
 
 -- --------------------------------------------------------
 
@@ -684,7 +676,7 @@ CREATE TABLE IF NOT EXISTS `project_partner_budget` (
   `bilateral` int(11) DEFAULT NULL,
   PRIMARY KEY (`id`),
   KEY `FK_project_budget_projects_idx` (`project_id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;
 
 -- --------------------------------------------------------
 
@@ -697,7 +689,7 @@ CREATE TABLE IF NOT EXISTS `roles` (
   `name` varchar(255) NOT NULL,
   `acronym` varchar(45) DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=10 ;
 
 -- --------------------------------------------------------
 
@@ -711,7 +703,7 @@ CREATE TABLE IF NOT EXISTS `site_elements` (
   `site_element_type_id` bigint(20) NOT NULL COMMENT 'foreign key to the table site_elements_types',
   PRIMARY KEY (`id`),
   KEY `FK_elements_element_types_idx` (`site_element_type_id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;
 
 -- --------------------------------------------------------
 
@@ -723,7 +715,7 @@ CREATE TABLE IF NOT EXISTS `site_element_types` (
   `id` bigint(20) NOT NULL AUTO_INCREMENT,
   `name` varchar(255) NOT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;
 
 -- --------------------------------------------------------
 
@@ -742,7 +734,7 @@ CREATE TABLE IF NOT EXISTS `users` (
   PRIMARY KEY (`id`),
   KEY `FK_users_person_id_idx` (`person_id`),
   KEY `FK_users_user_id_idx` (`created_by`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=18 ;
 
 --
 -- Restricciones para tablas volcadas
@@ -843,9 +835,9 @@ ALTER TABLE `institution_locations`
 -- Filtros para la tabla `ip_activity_contributions`
 --
 ALTER TABLE `ip_activity_contributions`
-  ADD CONSTRAINT `FK_activitiesContributions_ipElements_activityID` FOREIGN KEY (`activity_id`) REFERENCES `activities` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
-  ADD CONSTRAINT `FK_activitiesContributions_mog_ipElementID` FOREIGN KEY (`mog_id`) REFERENCES `ip_elements` (`id` ) ON DELETE CASCADE ON UPDATE CASCADE,
-  ADD CONSTRAINT `FK_activitiesContributions_midOutcome_ipElementID` FOREIGN KEY (`midOutcome_id` ) REFERENCES `ip_elements` (`id` ) ON DELETE CASCADE ON UPDATE CASCADE;
+  ADD CONSTRAINT `aa` FOREIGN KEY (`activity_id`) REFERENCES `activities` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
+  ADD CONSTRAINT `dd` FOREIGN KEY (`mog_id`) REFERENCES `ip_elements` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
+  ADD CONSTRAINT `ff` FOREIGN KEY (`midOutcome_id`) REFERENCES `ip_elements` (`id`) ON DELETE CASCADE ON UPDATE CASCADE;
 
 --
 -- Filtros para la tabla `ip_activity_indicators`
@@ -853,6 +845,13 @@ ALTER TABLE `ip_activity_contributions`
 ALTER TABLE `ip_activity_indicators`
   ADD CONSTRAINT `FK_ipActivityIndicators_ipIndicators_parentID` FOREIGN KEY (`parent_id`) REFERENCES `ip_indicators` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
   ADD CONSTRAINT `FK_ipActivityIndicators_ipIndicators_activityID` FOREIGN KEY (`activity_id`) REFERENCES `activities` (`id`) ON DELETE CASCADE ON UPDATE CASCADE;
+
+--
+-- Filtros para la tabla `ip_deliverable_contributions`
+--
+ALTER TABLE `ip_deliverable_contributions`
+  ADD CONSTRAINT `FK_deliverables_ipActivityContributions_contributionID` FOREIGN KEY (`activity_contribution_id`) REFERENCES `ip_activity_contributions` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
+  ADD CONSTRAINT `FK_deliverables_ipActivityContributions_deliverableID` FOREIGN KEY (`deliverable_id`) REFERENCES `deliverables` (`id`) ON DELETE CASCADE ON UPDATE CASCADE;
 
 --
 -- Filtros para la tabla `ip_elements`
@@ -864,8 +863,8 @@ ALTER TABLE `ip_elements`
 -- Filtros para la tabla `ip_indicators`
 --
 ALTER TABLE `ip_indicators`
-  ADD CONSTRAINT `FK_indicators_program_elements` FOREIGN KEY (`program_element_id`) REFERENCES `ip_program_elements` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
-  ADD CONSTRAINT `FK_indicators_parent_indicator` FOREIGN KEY (`parent_id`) REFERENCES `ip_indicators` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION;
+  ADD CONSTRAINT `FK_indicators_parent_indicator` FOREIGN KEY (`parent_id`) REFERENCES `ip_indicators` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
+  ADD CONSTRAINT `FK_indicators_program_elements` FOREIGN KEY (`program_element_id`) REFERENCES `ip_program_elements` (`id`) ON DELETE CASCADE ON UPDATE CASCADE;
 
 --
 -- Filtros para la tabla `ip_other_contributions`
@@ -900,8 +899,8 @@ ALTER TABLE `ip_relationships`
 -- Filtros para la tabla `loc_elements`
 --
 ALTER TABLE `loc_elements`
-  ADD CONSTRAINT `FK_loc_element_loc_element_type_id` FOREIGN KEY (`element_type_id`) REFERENCES `loc_element_types` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
-  ADD CONSTRAINT `FK_loc_elements_loc_geopositions` FOREIGN KEY (`geoposition_id`) REFERENCES `loc_geopositions` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION;
+  ADD CONSTRAINT `FK_loc_elements_loc_geopositions` FOREIGN KEY (`geoposition_id`) REFERENCES `loc_geopositions` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION,
+  ADD CONSTRAINT `FK_loc_element_loc_element_type_id` FOREIGN KEY (`element_type_id`) REFERENCES `loc_element_types` (`id`) ON DELETE CASCADE ON UPDATE CASCADE;
 
 --
 -- Filtros para la tabla `loc_element_types`
@@ -975,3 +974,4 @@ ALTER TABLE `site_elements`
 ALTER TABLE `users`
   ADD CONSTRAINT `FK_users_person_id` FOREIGN KEY (`person_id`) REFERENCES `persons` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION,
   ADD CONSTRAINT `FK_users_user_id` FOREIGN KEY (`created_by`) REFERENCES `users` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION;
+SET FOREIGN_KEY_CHECKS=1;

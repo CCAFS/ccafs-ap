@@ -56,6 +56,10 @@ public abstract class Location {
     }
   }
 
+  public boolean isClimateSmartVillage() {
+    return (this instanceof ClimateSmartVillage);
+  }
+
   public boolean isCountry() {
     return (this instanceof Country);
   }
