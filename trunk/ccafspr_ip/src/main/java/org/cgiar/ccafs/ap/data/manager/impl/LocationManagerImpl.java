@@ -13,12 +13,6 @@
  *****************************************************************/
 package org.cgiar.ccafs.ap.data.manager.impl;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-
-import com.google.inject.Inject;
 import org.cgiar.ccafs.ap.config.APConstants;
 import org.cgiar.ccafs.ap.data.dao.LocationDAO;
 import org.cgiar.ccafs.ap.data.manager.LocationManager;
@@ -29,6 +23,13 @@ import org.cgiar.ccafs.ap.data.model.LocationGeoposition;
 import org.cgiar.ccafs.ap.data.model.LocationType;
 import org.cgiar.ccafs.ap.data.model.OtherLocation;
 import org.cgiar.ccafs.ap.data.model.Region;
+
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
+import com.google.inject.Inject;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -372,7 +373,7 @@ public class LocationManagerImpl implements LocationManager {
       } else {
         OtherLocation oLocation = (OtherLocation) location;
         int oLocationID = oLocation.getId();
-        if (oLocation.getType().getId() != APConstants.LOCATION_TYPE_CCAFS_SITE) {
+        if (oLocationID == -1) {
           oLocationID = saveLocation(oLocation);
         }
 
