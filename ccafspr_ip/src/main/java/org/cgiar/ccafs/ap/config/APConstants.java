@@ -81,4 +81,8 @@ public final class APConstants {
   public static final int ROLE_REGIONAL_PROGRAM_LEADER = 3;
   public static final int ROLE_COORDINATING_UNIT = 6;
 
+  // Location types identifiers
+  public static final int LOCATION_TYPE_CLIMATE_SMART_VILLAGE = 10;
+  public static final int LOCATION_TYPE_CCAFS_SITE = 11;
+
 }
