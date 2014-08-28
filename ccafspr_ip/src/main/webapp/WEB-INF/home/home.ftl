@@ -7,8 +7,8 @@
 [#include "/WEB-INF/global/pages/header.ftl" /]
 [#include "/WEB-INF/global/pages/main-menu.ftl" /]
 [#import "/WEB-INF/global/macros/forms.ftl" as customForm /]
-[#import "/WEB-INF/global/templates/projectsListTemplate.ftl" as projectList /]
-[#import "/WEB-INF/planning/macros/activitiesListTemplate.ftl" as activitiesList /]
+[#import "/WEB-INF/global/templates/homeProjectsListTemplate.ftl" as projectList /]
+[#import "/WEB-INF/global/templates/homeActivitiesListTemplate.ftl" as activitiesList /]
 
 <article>
   <div class="content">
@@ -111,7 +111,7 @@
         <div id="slider">
           <div id="content">
             <div id="slide1">
-              <div id="title1">
+              <div id="title1" class="homeSubTitle">
                 [@s.text name="home.home.role.rpl" /]
               </div>
               <div id="content1">
@@ -119,7 +119,7 @@
               </div>
             </div>
             <div id="slide2">
-              <div id="title2">
+              <div id="title2" class="homeSubTitle">
                 [@s.text name="home.home.role.fpl" /]
               </div>
               <div id="content2">
@@ -127,7 +127,7 @@
               </div>
             </div>
             <div id="slide3">
-              <div id="title3">
+              <div id="title3" class="homeSubTitle">
                 [@s.text name="home.home.role.pl" /]
               </div>
               <div id="content3">
@@ -135,7 +135,7 @@
               </div>
             </div>
             <div id="slide4">
-              <div id="title4">
+              <div id="title4" class="homeSubTitle">
                 [@s.text name="home.home.role.po" /]
               </div>
               <div id="content4">
@@ -143,7 +143,7 @@
               </div>
             </div>
             <div id="slide5">
-              <div id="title5">
+              <div id="title5" class="homeSubTitle">
                 [@s.text name="home.home.role.cu" /]
               </div>
               <div id="content5">
@@ -151,7 +151,7 @@
               </div>
             </div>
             <div id="slide6">
-              <div id="title6">
+              <div id="title6" class="homeSubTitle">
                 [@s.text name="home.home.role.al" /]
               </div>
               <div id="content6">
@@ -159,7 +159,7 @@
               </div>
             </div>
             <div id="slide7">
-              <div id="title7">
+              <div id="title7" class="homeSubTitle">
                 [@s.text name="home.home.role.cp" /]
               </div>
               <div id="content7">
