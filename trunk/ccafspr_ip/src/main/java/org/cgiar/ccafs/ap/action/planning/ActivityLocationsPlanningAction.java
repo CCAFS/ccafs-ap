@@ -195,6 +195,9 @@ public class ActivityLocationsPlanningAction extends BaseAction {
           }
         }
 
+        // Get the CCAFS sites
+        locations.addAll(activity.getLocations());
+
         // Removing the existing locations
         boolean removed = locationManager.removeActivityLocation(activity.getLocations(), activityID);
         if (!removed) {
