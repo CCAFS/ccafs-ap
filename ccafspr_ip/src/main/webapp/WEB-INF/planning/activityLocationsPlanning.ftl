@@ -23,7 +23,7 @@
     <p> [@s.text name="planning.activities.locations.help" /] </p>
   </div>
   [#include "/WEB-INF/planning/activityPlanningSubMenu.ftl" /]
-  
+
   [@s.form action="activityLocations" cssClass="pure-form" enctype="multipart/form-data"]  
   <article class="halfContent" id="activityLocations">
     [#-- Informing user that he/she doesn't have enough privileges to edit. See GrantActivityPlanningAccessInterceptor--]
@@ -83,7 +83,7 @@
                 [#elseif location.country]
                   [@customForm.select name="countriesSaved[${location_index}].type.id" i18nkey="planning.activities.locations.level" listName="locationTypes" keyFieldName="id"  displayFieldName="name" showTitle=false value="${countryTypeID}"/]
                 [#elseif location.climateSmartVillage]
-                  [@customForm.select name="type.id" i18nkey="planning.activities.locations.level" listName="locationTypes" keyFieldName="id"  displayFieldName="name" showTitle=false value="${climateSmartVillageTypeID}"/]   
+                  [@customForm.select name="csvSaved[${location_index}].type.id" i18nkey="planning.activities.locations.level" listName="locationTypes" keyFieldName="id"  displayFieldName="name" showTitle=false value="${climateSmartVillageTypeID}"/]   
                 [#else]
                   [#if location.type.id == ccafsSiteTypeID] 
                     [@customForm.select name="type.id" i18nkey="planning.activities.locations.level" listName="locationTypes" keyFieldName="id"  displayFieldName="name" showTitle=false value="${location.type.id}"/]               
@@ -97,9 +97,10 @@
                 [#if location.country || location.region]
                   [@customForm.input name="geoPosition.latitude" className="notApplicable" type="text" value=notApplicableText i18nkey="planning.activities.locations.latitude" showTitle=false disabled=true  /]
                 [#elseif location.climateSmartVillage] 
-                  [@customForm.input name="geoPosition.latitude" className="notApplicable" value="${location.geoPosition.latitude}" type="text" i18nkey="planning.activities.locations.latitude" showTitle=false required=true disabled=true   /]
+                  [#assign latitude] [#if location.geoPosition?has_content] ${location.geoPosition.latitude} [/#if] [/#assign]
+                  [@customForm.input name="geoPosition.latitude" className="notApplicable" value="${latitude}" type="text" i18nkey="planning.activities.locations.latitude" showTitle=false required=true disabled=true   /]
                 [#else] 
-                  [#if location.type.id == ccafsSiteTypeID]  
+                  [#if location.type.id == ccafsSiteTypeID]
                     [@customForm.input name="geoPosition.latitude" className="notApplicable" value="${location.geoPosition.latitude}" type="text" i18nkey="planning.activities.locations.latitude" showTitle=false required=true disabled=true   /]                
                   [#else] 
                     <input type="hidden" name="otherLocationsSaved[${location_index}].geoPosition.id" value="${location.geoPosition.id?c}" >
@@ -112,7 +113,8 @@
                 [#if location.country || location.region]
                   [@customForm.input name="geoPosition.longitude" className="notApplicable" value=notApplicableText type="text" i18nkey="planning.activities.locations.longitude" showTitle=false disabled=true  /]
                 [#elseif location.climateSmartVillage]
-                  [@customForm.input name="geoPosition.longitude" className="notApplicable" value="${location.geoPosition.longitude}" type="text" i18nkey="planning.activities.locations.longitude" showTitle=false required=true disabled=true   /]
+                  [#assign longitude] [#if location.geoPosition?has_content] ${location.geoPosition.longitude} [/#if] [/#assign]
+                  [@customForm.input name="geoPosition.longitude" className="notApplicable" value="${longitude}" type="text" i18nkey="planning.activities.locations.longitude" showTitle=false required=true disabled=true   /]
                 [#else]
                  [#if location.type.id == ccafsSiteTypeID]
                   [@customForm.input name="geoPosition.longitude" className="notApplicable" value="${location.geoPosition.longitude}" type="text" i18nkey="planning.activities.locations.longitude" showTitle=false required=true disabled=true   /]                 
@@ -129,7 +131,7 @@
                 [#elseif location.region]
                   [@customForm.select name="regionsSaved[${location_index}].id" i18nkey="planning.activities.locations.level" listName="regions" keyFieldName="id" showTitle=false  displayFieldName="name" value="${location.id}" /]
                 [#elseif location.climateSmartVillage]
-                  [@customForm.select name="activity.locations" i18nkey="planning.activities.locations.level" listName="climateSmartVillages" keyFieldName="id" showTitle=false  displayFieldName="name" value="${location.id}" /]
+                  [@customForm.select name="csvSaved[${location_index}].id" i18nkey="planning.activities.locations.level" listName="climateSmartVillages" keyFieldName="id" showTitle=false  displayFieldName="name" value="${location.id}" /]
                 [#else]
                  [#if location.type.id == ccafsSiteTypeID] 
                   [@customForm.select name="activity.locations" i18nkey="planning.activities.locations.level" listName="ccafsSites" keyFieldName="id" showTitle=false  displayFieldName="name" value="${location.id}" /]
@@ -224,7 +226,7 @@
 
 [#-- List Template of Climate smart village with id: 10 --]
 <div id="selectTemplate-10" style="display:none">
-  [@customForm.select name="activity.locations" i18nkey="planning.locations.level" listName="climateSmartVillages" keyFieldName="id" showTitle=false  displayFieldName="name" /]
+  [@customForm.select name="].id" i18nkey="planning.locations.level" listName="climateSmartVillages" keyFieldName="id" showTitle=false  displayFieldName="name" /]
 </div>
 
 [#-- List Template of CCAFS Sites with id: 11 --]

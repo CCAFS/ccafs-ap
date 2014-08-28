@@ -298,6 +298,8 @@ public class LocationManagerImpl implements LocationManager {
 
   @Override
   public List<Location> getLocationsByType(int locationTypeID) {
+    // TODO - HC At this moment, this method only returns other locations
+    // This method should be able to return any type of location (Region, country, etc)
     List<Location> locations = new ArrayList<>();
     List<Map<String, String>> locationsData = locationDAO.getLocationsByType(locationTypeID);
 

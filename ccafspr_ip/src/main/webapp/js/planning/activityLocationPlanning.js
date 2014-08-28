@@ -113,7 +113,8 @@ function setLocationIndex(){
       
     } else if ((locationTypeID == 10) || (locationTypeID == 11)) {
       // If location is of type CCAFS Site
-      $(location).find("[name$='locations']").attr("name", "activity.locations");
+      elementName = "csvSaved[" + index + "].";
+      $(location).find("[name$='].id']").attr("name", elementName + "id");
       $(location).find("[name$='name']").attr("name", "name");
       $(location).find("[name$='type.id']").attr("name", "type.id");
       $(location).find("[name$='geoPosition.id']").attr("name", "geoPosition.id");
