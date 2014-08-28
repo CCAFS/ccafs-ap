@@ -145,7 +145,6 @@ function setIndicatorIndexes(){
 function setMogsIndexes(){
   var $contributionsBlock = $("#contributionsBlock");
   var mogsName = "activity.outputs";
-  
   // Indicators indexes
   $contributionsBlock.find(".mog").each(function(index,mog){
     // Checkbox
