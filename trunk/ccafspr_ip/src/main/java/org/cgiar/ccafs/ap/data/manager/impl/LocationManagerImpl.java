@@ -347,6 +347,11 @@ public class LocationManagerImpl implements LocationManager {
 
     for (Location location : activityLocations) {
       if (location.isOtherLocation()) {
+        OtherLocation otherLocation = (OtherLocation) location;
+        if (otherLocation.getType().getId() == APConstants.LOCATION_TYPE_CCAFS_SITE) {
+          continue;
+        }
+
         removed = locationDAO.removeLocation(location.getId());
         allRemoved = (removed && allRemoved);
       }
