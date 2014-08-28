@@ -13,7 +13,7 @@
 
 <article>
   <div class="content">
-    <h1>[@s.text name="home.home.title" /]</h1>
+    <h1>[@s.text name="home.dashboard.title" /]</h1>
 
     [#-- Home introduction  
     <p> [@s.text name="home.home.introduction" /] </p>
@@ -26,22 +26,22 @@
     <div id="leftSide">
       [#-- DashBoard --]
         <div id="dashboardTitle" class="homeTitle">
-          <b>[@s.text name="home.home.dashboard.title" /]</b>
+          <b>[@s.text name="home.dashboard.name" /]</b>
         </div>
       <div id="dashboard"> 
           <ul class="">
           [#if projects?has_content]
             <li class="">
-              <a href="#projects">[@s.text name="home.home.dashboard.projects" /]</a>
+              <a href="#projects">[@s.text name="home.dashboard.projects" /]</a>
             </li>
           [/#if]
           [#if activities?has_content]  
             <li class="">
-               <a href="#activities">[@s.text name="home.home.dashboard.activities" /]</a>
+               <a href="#activities">[@s.text name="home.dashboard.activities" /]</a>
             </li>
           [/#if] 
             <li class="">
-               <a href="#impacthPathwayGraph">[@s.text name="home.home.dashboard.impactPathway" /]</a>
+               <a href="#impacthPathwayGraph">[@s.text name="home.dashboard.impactPathway" /]</a>
             </li>
           </ul> 
           [#-- Test Variables  [#assign projects = []] - [#assign activities = []] [#-- End Test Variables --]
@@ -99,9 +99,9 @@
       [#-- P&R Description --]
       <div id="pandrDescription">
         <div id="pandrTitle" class="homeTitle">
-          <b>[@s.text name="home.home.pAndR.title" /]</b>
+          <b>[@s.text name="home.dashboard.description.title" /]</b>
         </div>
-        <p>[@s.text name="home.home.pAndR.description" /]</p>
+        <p>[@s.text name="home.dashboard.description.text" /]</p>
       </div>
       [#-- End P&R Description --]
       [#-- Roles --]
