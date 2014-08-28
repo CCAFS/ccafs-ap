@@ -40,13 +40,14 @@
     <h1 class="contentTitle">
       [@s.text name="planning.activityImpactPathways.title" /] 
     </h1> 
-    
-    <p>
-      <b>[@s.text name="planning.activityImpactPathways.contributingTo" /]</b> 
-      [#list projectFocusList as program]
-        ${program.acronym}[#if program_has_next],[/#if]
-      [/#list]
-    </p>
+    <div class="borderBox">
+      <p>
+        <b>[@s.text name="planning.activityImpactPathways.contributingTo" /]</b> 
+        [#list projectFocusList as program]
+          ${program.acronym}[#if program_has_next],[/#if]
+        [/#list]
+      </p>
+    </div>
     
     <div id="contributionsBlock" class="">
       [#if midOutcomesSelected?has_content]
