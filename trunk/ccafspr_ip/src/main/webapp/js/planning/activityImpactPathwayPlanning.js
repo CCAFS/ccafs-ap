@@ -15,8 +15,10 @@ function attachEvents(){
 }
 
 function removeContributionBlock(event){
-  $(event.target).parent().fadeOut("slow");
-  $(event.target).parent().remove();
+  $(event.target).parent().fadeOut("slow", function(){
+    $(this).remove();
+  });
+  
 }
 
 /**

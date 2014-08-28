@@ -83,7 +83,12 @@
                 [#elseif location.country]
                   [@customForm.select name="countriesSaved[${location_index}].type.id" i18nkey="planning.activities.locations.level" listName="locationTypes" keyFieldName="id"  displayFieldName="name" showTitle=false value="${countryTypeID}"/]
                 [#else]
+                  [#if location.type.id == ccafsSiteTypeID] 
+                  [@customForm.select name="type.id" i18nkey="planning.activities.locations.level" listName="locationTypes" keyFieldName="id"  displayFieldName="name" showTitle=false value="${location.type.id?c}"/]               
+                 [#else]
                   [@customForm.select name="otherLocationsSaved[${location_index}].type.id" i18nkey="planning.activities.locations.level" listName="locationTypes" keyFieldName="id"  displayFieldName="name" showTitle=false value="${location.type.id?c}"/]
+                 [/#if]
+                  
                 [/#if]
               </div> 
               <div class="locationLatitude grid_2">
@@ -93,7 +98,7 @@
                 [#else] 
                   [#if location.type.id == ccafsSiteTypeID] 
                     [#-- Latitude --]
-                    [@customForm.input name="geoPosition.latitude" value="${location.geoPosition.latitude}" type="text" i18nkey="planning.activities.locations.latitude" showTitle=false required=true disabled=true   /]                
+                    [@customForm.input name="geoPosition.latitude" className="notApplicable" value="${location.geoPosition.latitude}" type="text" i18nkey="planning.activities.locations.latitude" showTitle=false required=true disabled=true   /]                
                   [#else]
                     [#-- Geo position ID --]
                     <input type="hidden" name="otherLocationsSaved[${location_index}].geoPosition.id" value="${location.geoPosition.id?c}" >
@@ -108,7 +113,7 @@
                   [@customForm.input name="geoPosition.longitude" className="notApplicable" value=notApplicableText type="text" i18nkey="planning.activities.locations.longitude" showTitle=false disabled=true  /]
                 [#else]
                  [#if location.type.id == ccafsSiteTypeID]
-                  [@customForm.input name="geoPosition.longitude" value="${location.geoPosition.longitude}" type="text" i18nkey="planning.activities.locations.longitude" showTitle=false required=true disabled=true   /]                 
+                  [@customForm.input name="geoPosition.longitude" className="notApplicable" value="${location.geoPosition.longitude}" type="text" i18nkey="planning.activities.locations.longitude" showTitle=false required=true disabled=true   /]                 
                  [#else]
                   [@customForm.input name="otherLocationsSaved[${location_index}].geoPosition.longitude" value="${location.geoPosition.longitude}" type="text" i18nkey="planning.activities.locations.longitude" showTitle=false required=true  /]
                  [/#if]
@@ -121,9 +126,9 @@
                   [@customForm.select name="countriesSaved[${location_index}].id" i18nkey="planning.activities.locations.level" listName="countries" keyFieldName="id" showTitle=false  displayFieldName="name" value="${location.id?int}" /]
                 [#elseif location.region]
                   [@customForm.select name="regionsSaved[${location_index}].id" i18nkey="planning.activities.locations.level" listName="regions" keyFieldName="id" showTitle=false  displayFieldName="name" value="${location.id?int}" /]
-                [#else]
-                 [#if location.type.id == ccafsSiteTypeID]
-                  [@customForm.input name="activity.locations" value="${location.id}" type="text" i18nkey="planning.activities.locations.notApplicable" required=true showTitle=false  /]                 
+                [#else] 
+                 [#if location.type.id == ccafsSiteTypeID] 
+                  [@customForm.select name="activity.locations" i18nkey="planning.activities.locations.level" listName="ccafsSites" keyFieldName="id" showTitle=false  displayFieldName="name" value="${location.id}" /]
                  [#else]
                   [@customForm.input name="otherLocationsSaved[${location_index}].name" value="${location.name}" type="text" i18nkey="planning.activities.locations.notApplicable" required=true showTitle=false  /]                 
                   <input type="hidden" name="otherLocationsSaved[${location_index}].id" value="${location.id}">

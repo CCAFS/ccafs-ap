@@ -751,7 +751,7 @@ a.currentReportingSection li #i-additionalInformation{
 
 h1#error{
     font-family: 'Open Sans', sans-serif; 
-    font-size: 8em;
+    font-size: 6em;
     color: #C0C0C0;
     border: 0;
     margin: 0;
@@ -763,7 +763,7 @@ p.errorText{
 }
 
 p.errorText.primary {
-    font-size: 2em;
+    font-size: 1.5em;
 }
 p.errorText.secondary {
     font-weight: lighter;
@@ -1527,6 +1527,10 @@ table tr.row:hover{
   margin: 0;
 }
 
+#activityLocations .location .select {
+margin-bottom: 0px !important;
+}
+
 #activityLocations .uploadFileMessage .left {
   width: 60%;
 }
@@ -1575,6 +1579,10 @@ p#fileUploadText {
 
 #activityImpactPathway  .midOutcomeIndicator {
   margin-bottom: 7px;
+}
+
+#activityImpactPathway .midOutcomeTitle p.description {
+margin-bottom: 8px;
 }
 
 .mogsBlock {

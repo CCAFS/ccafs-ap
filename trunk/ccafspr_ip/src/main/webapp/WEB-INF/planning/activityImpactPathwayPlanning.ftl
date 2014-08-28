@@ -71,30 +71,30 @@
                         [#list activity.indicators as activityIndicator]
                           [#if activityIndicator.parent.id == indicator.id]
                           <div class="midOutcomeIndicator" >
-                            <input type="hidden" disabled name="activity_indicator_id" value="${activityIndicator.id}" />
-                            <input type="checkbox" name="activity.indicators" value="${activityIndicator.parent.id}" checked />
+                            <input type="hidden" disabled name="activity.indicators[${activityIndicator_index}].id" value="${activityIndicator.id}" />
+                            <input type="checkbox" name="activity.indicators[${activityIndicator_index}].parent.id" value="${activityIndicator.parent.id}" checked />
                             <label class="indicatorDescription">${activityIndicator.parent.description}</label>
                             <div class="checkboxGroup vertical indicatorNarrative" >
                               [#-- Target value --]
                               <label> <h6>[@s.text name="planning.activityImpactPathways.targetValue" /]</h6></label>
-                              <input type="text" name="activity_indicator_target" value="${activityIndicator.target}" >
+                              <input type="text" name="activity.indicators[${activityIndicator_index}].target" value="${activityIndicator.target}" >
                               
                               <label> <h6>[@s.text name="planning.activityImpactPathways.targetNarrative" /]</h6></label>
-                              <textarea name="activity_indicator_description" >${activityIndicator.description}</textarea>
+                              <textarea name="activity.indicators[${activityIndicator_index}].description" >${activityIndicator.description}</textarea>
                             </div> 
                           </div>  
                           [#else]
                           <div class="midOutcomeIndicator" >
-                            <input type="hidden" disabled name="activity_indicator_id" value="-1" />
-                            <input type="checkbox" name="activity.indicators" value="${activityIndicator.parent.id}" />
+                            <input type="hidden" disabled name="activity.indicators[${activityIndicator_index}].id" value="-1" />
+                            <input type="checkbox" name="activity.indicators[${activityIndicator_index}].parent.id" value="${activityIndicator.parent.id}" />
                             <label class="indicatorDescription">${activityIndicator.parent.description}</label> 
                             <div class="checkboxGroup vertical indicatorNarrative" style="display:none">
                               [#-- Target value --]
                               <label>  <h6>[@s.text name="planning.activityImpactPathways.targetValue" /]</h6></label>
-                              <input type="text" name="activity_indicator_target" >
+                              <input type="text" name="activity.indicators[${activityIndicator_index}].target" >
                               
                               <label>  <h6>[@s.text name="planning.activityImpactPathways.targetNarrative" /]</h6></label>
-                              <textarea name="activity_indicator_description" > </textarea>
+                              <textarea name="activity.indicators[${activityIndicator_index}].description" > </textarea>
                             </div> 
                           </div>
                           [/#if]

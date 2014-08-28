@@ -260,6 +260,8 @@ function setLocationsMarkers(){
   $("#locationsBlock .location").each(function(index,location){
     var latitude = $(location).find("[name$='geoPosition.latitude']").val();
     var longitude = $(location).find("[name$='geoPosition.longitude']").val();
+    
+    console.log("coor > " + latitude + "," + longitude);
     // checks whether a coordinate is valid
     if (isCoordinateValid(latitude, longitude)) {
       makeMarker({
