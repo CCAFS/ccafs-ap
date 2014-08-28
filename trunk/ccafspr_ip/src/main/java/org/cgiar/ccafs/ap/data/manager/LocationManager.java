@@ -96,6 +96,15 @@ public interface LocationManager {
   public List<Location> getLocationsByType(int locationTypeID);
 
   /**
+   * This method get the list of location elements
+   * identified by the values recieved as parameter
+   * 
+   * @param locationsIDs - List of locations identifiers
+   * @return a list of Location objects with the information
+   */
+  public List<Location> getLocationsByIDs(String[] locationsIDs);
+
+  /**
    * This method return the information of a Region by a given Region ID
    * 
    * @param regionID - is the ID of a Region

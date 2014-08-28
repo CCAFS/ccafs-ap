@@ -34,6 +34,7 @@ import org.slf4j.LoggerFactory;
 
 /**
  * @author Javier Andres Gallego B.
+ * @author Hernán David Carvajal B.
  */
 public class LocationManagerImpl implements LocationManager {
 
@@ -234,6 +235,36 @@ public class LocationManagerImpl implements LocationManager {
     return null;
   }
 
+
+  @Override
+  public List<Location> getLocationsByIDs(String[] locationsIDs) {
+    List<Location> locations = new ArrayList<>();
+    List<Map<String, String>> locationsData = locationDAO.getLocationsByIDs(locationsIDs);
+
+    for (Map<String, String> lData : locationsData) {
+      OtherLocation location = new OtherLocation();
+      location.setId(Integer.parseInt(lData.get("id")));
+      location.setName(lData.get("name"));
+
+      if (lData.get("code") != null) {
+        location.setCode(lData.get("code"));
+      }
+
+      LocationType type = new LocationType();
+      type.setId(Integer.parseInt(lData.get("type_id")));
+      ;
+      type.setName(lData.get("type_name"));
+      location.setType(type);
+
+      Country country = new Country();
+      country.setId(Integer.parseInt(lData.get("parent_id")));
+      country.setName(lData.get("parent_name"));
+      location.setCountry(country);
+
+      locations.add(location);
+    }
+    return locations;
+  }
 
   @Override
   public List<Location> getLocationsByType(int locationTypeID) {
