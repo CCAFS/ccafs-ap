@@ -28,12 +28,14 @@ public class User {
 
   private int id;
   private int employeeId;
+  private String username;
   private String password;
   private String email;
   private String firstName;
   private String lastName;
   private String phone;
   private boolean isCcafsUser;
+  private boolean isActive;
   private Role role;
   private List<Institution> institutions;
   private Institution currentInstitution;
@@ -48,7 +50,6 @@ public class User {
   public String getComposedName() {
     return this.lastName + ", " + this.firstName + " <" + this.email + ">";
   }
-
 
   /**
    * This method returns a composed way to show a User with its institution and its role.
@@ -103,6 +104,14 @@ public class User {
 
   public Role getRole() {
     return role;
+  }
+
+  public String getUsername() {
+    return username;
+  }
+
+  public boolean isActive() {
+    return isActive;
   }
 
   /**
@@ -181,6 +190,10 @@ public class User {
     return this.role.getAcronym().equals(Role.UserRole.RPL.name());
   }
 
+  public void setActive(boolean isActive) {
+    this.isActive = isActive;
+  }
+
   public void setCcafsUser(boolean isCcafsUser) {
     this.isCcafsUser = isCcafsUser;
   }
@@ -237,6 +250,9 @@ public class User {
     this.role = role;
   }
 
+  public void setUsername(String username) {
+    this.username = username;
+  }
 
   @Override
   public String toString() {

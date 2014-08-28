@@ -26,7 +26,7 @@ public interface UserManager {
 
   /**
    * This method gets all the Employees from the system.
-   * 
+   *
    * @return a List of Users related on Employees. If there are not employees in the system, the method
    *         will return an empty list.
    */
@@ -34,14 +34,14 @@ public interface UserManager {
 
   /**
    * This method gets all the User information according to their roles. FPL's, RPL's, CU's
-   * 
+   *
    * @return a list of users. If there are no user, will return an empty list.
    */
   public List<User> getAllOwners();
 
   /**
    * This method gets a list of owners that belongs to a given program.
-   * 
+   *
    * @param program can be LAM, FP4, EA, CU, etc.
    * @return a List of User objects.
    */
@@ -49,7 +49,7 @@ public interface UserManager {
 
   /**
    * This method gets all the Users from the system.
-   * 
+   *
    * @return a List of Users. If there are not users in the system, the method
    *         will return an empty list.
    */
@@ -58,7 +58,7 @@ public interface UserManager {
   /**
    * This method returns the employee Identifier that is using the given user taking into account his current
    * institution.
-   * 
+   *
    * @param user is the user instance to be calculated.
    * @return the id that is used in the database for the table employee, 0 if nothing found or -1 if some error
    *         occur.
@@ -67,7 +67,7 @@ public interface UserManager {
 
   /**
    * This method returns an owner represented as User object.
-   * 
+   *
    * @param ownerId is the identifier from the Employee table.
    * @return an User object or null if nothing found.
    */
@@ -75,7 +75,7 @@ public interface UserManager {
 
   /**
    * This method gets the information of an User by a given project ID
-   * 
+   *
    * @param projectID - is the ID of the project
    * @return an Object User with the information requested, or Null if the relationship between project ID and user
    *         doesn't exist
@@ -84,7 +84,7 @@ public interface UserManager {
 
   /**
    * This method find an user identify with a given id.
-   * 
+   *
    * @param userId is the id of the user.
    * @return a User object.
    */
@@ -92,16 +92,25 @@ public interface UserManager {
 
   /**
    * Get the user identified by the specified email parameter.
-   * 
+   *
    * @param email of the user.
-   * @return User object representing the user identified by the email provided or Null in the user doesn't exist in the
+   * @return User object representing the user identified by the email provided or Null if the user doesn't exist in the
    *         database.
    */
   public User getUserByEmail(String email);
 
   /**
-   * Authenticate a user.
+   * Get the user identified by the specified username parameter.
    * 
+   * @param username of the user - cgiar account username.
+   * @return User object representing the user identifier by the username provided or Null if the user doesn't exist in
+   *         the database.
+   */
+  public User getUserByUsername(String username);
+
+  /**
+   * Authenticate a user.
+   *
    * @param email of the user.
    * @param password of the user.
    * @return a User object representing the user identified by the email provided or Null if login failed.
@@ -110,7 +119,7 @@ public interface UserManager {
 
   /**
    * Save in the database the date and time that the user made its last login.
-   * 
+   *
    * @param user - User information
    * @return - True if the information was successfully saved, false otherwise.
    */
@@ -119,7 +128,7 @@ public interface UserManager {
   /**
    * Create a new user in the system by saving the
    * user data in the database.
-   * 
+   *
    * @param user - The user information
    * @return true if it was successfully saved. False otherwise.
    */

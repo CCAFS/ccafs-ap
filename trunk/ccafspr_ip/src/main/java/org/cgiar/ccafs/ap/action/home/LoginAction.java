@@ -21,8 +21,6 @@ import org.cgiar.ccafs.ap.data.manager.InstitutionManager;
 import org.cgiar.ccafs.ap.data.manager.RoleManager;
 import org.cgiar.ccafs.ap.data.manager.UserManager;
 import org.cgiar.ccafs.ap.data.model.User;
-import org.cgiar.ccafs.ap.util.EmailValidator;
-
 import java.util.Date;
 
 import com.google.inject.Inject;
@@ -117,10 +115,12 @@ public class LoginAction extends BaseAction {
       if (user.getEmail().isEmpty()) {
         addFieldError("user.email", getText("validation.field.required"));
         user.setPassword(null);
-      } else if (!EmailValidator.isValidEmail(user.getEmail().trim())) {
-        addFieldError("user.email", getText("validation.invalid", new String[] {getText("home.login.email")}));
-        user.setPassword(null);
-      }
+      } /*
+         * else if (!EmailValidator.isValidEmail(user.getEmail().trim())) {
+         * addFieldError("user.email", getText("validation.invalid", new String[] {getText("home.login.email")}));
+         * user.setPassword(null);
+         * }
+         */
     }
 
   }
