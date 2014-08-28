@@ -43,7 +43,9 @@ public class ActivityLocationsPlanningAction extends BaseAction {
   private Activity activity;
   private List<Country> countries;
   private List<Region> regions;
+  private List<Location> climateSmartVillages;
   private List<Location> ccafsSites;
+  private List<Location> previousLocations;
   private int activityID;
   private Project project;
 
@@ -81,6 +83,10 @@ public class ActivityLocationsPlanningAction extends BaseAction {
 
   public int getCcafsSiteTypeID() {
     return APConstants.LOCATION_TYPE_CCAFS_SITE;
+  }
+
+  public List<Location> getClimateSmartVillages() {
+    return climateSmartVillages;
   }
 
   public List<Country> getCountries() {
@@ -139,17 +145,26 @@ public class ActivityLocationsPlanningAction extends BaseAction {
     activityID = Integer.parseInt(StringUtils.trim(this.getRequest().getParameter(APConstants.ACTIVITY_REQUEST_ID)));
     activity = activityManager.getActivityById(activityID);
     activity.setLocations(locationManager.getActivityLocations(activityID));
+    previousLocations = activity.getLocations();
+
     project = projectManager.getProjectFromActivityId(activityID);
 
     locationTypes = locationTypeManager.getLocationTypes();
     countries = locationManager.getAllCountries();
     regions = locationManager.getAllRegions();
     ccafsSites = locationManager.getLocationsByType(APConstants.LOCATION_TYPE_CCAFS_SITE);
+    climateSmartVillages = locationManager.getLocationsByType(APConstants.LOCATION_TYPE_CLIMATE_SMART_VILLAGE);
 
     regionsSaved = new ArrayList<>();
     countriesSaved = new ArrayList<>();
     otherLocationsSaved = new ArrayList<>();
 
+    if (getRequest().getMethod().equalsIgnoreCase("post")) {
+      // Clear out the list if it has some element
+      if (activity.getLocations() != null) {
+        activity.getLocations().clear();
+      }
+    }
   }
 
   @Override
@@ -164,60 +179,56 @@ public class ActivityLocationsPlanningAction extends BaseAction {
         success = false;
       }
 
-      // If activity was marked as global.
-      if (activity.isGlobal()) {
-        // removing all previous added locations.
-        boolean removed = locationManager.removeActivityLocation(activity.getLocations(), activityID);
-        if (removed == false) {
-          success = false;
-        }
+      // removing all previous added locations.
+      boolean removed = locationManager.removeActivityLocation(previousLocations, activityID);
+      if (removed == false) {
+        success = false;
+      }
 
-      } else {
-        // if Activity is not global.
-        List<Location> locations = new ArrayList<Location>();
-        // Grouping regions in the locations list.
-        for (Region region : regionsSaved) {
-          if (region != null) {
-            locations.add(region);
-          }
+      // if Activity is not global.
+      List<Location> locations = new ArrayList<Location>();
+      // Grouping regions in the locations list.
+      for (Region region : regionsSaved) {
+        if (region != null) {
+          locations.add(region);
         }
-        // Grouping countries in the locations list.
-        for (Country country : countriesSaved) {
-          if (country != null) {
-            locations.add(country);
-          }
+      }
+      // Grouping countries in the locations list.
+      for (Country country : countriesSaved) {
+        if (country != null) {
+          locations.add(country);
         }
+      }
 
-        // Grouping other locations to the locations list.
-        for (OtherLocation location : otherLocationsSaved) {
-          if (location != null) {
-            locations.add(location);
-          }
+      // Grouping other locations to the locations list.
+      for (OtherLocation location : otherLocationsSaved) {
+        if (location != null) {
+          locations.add(location);
         }
+      }
 
-        // Get the CCAFS sites
-        locations.addAll(activity.getLocations());
+      // Get the CCAFS sites
+      locations.addAll(activity.getLocations());
 
-        // Removing the existing locations
-        boolean removed = locationManager.removeActivityLocation(activity.getLocations(), activityID);
-        if (!removed) {
-          success = false;
-        }
-        // Then, saving locations received
-        boolean added = locationManager.saveActivityLocations(locations, activityID);
-        if (!added) {
-          success = false;
-        }
+      // Removing the existing locations
+      removed = locationManager.removeActivityLocation(activity.getLocations(), activityID);
+      if (!removed) {
+        success = false;
+      }
+      // Then, saving locations received
+      boolean added = locationManager.saveActivityLocations(locations, activityID);
+      if (!added) {
+        success = false;
+      }
 
-        // Check if user uploaded an excel file
-        if (excelTemplate != null) {
-          String fileLocation = config.getUploadsBaseFolder() + config.getLocationsTemplateFolder();
-          // First, move the uploaded file to the corresponding folder
-          FileManager.copyFile(excelTemplate, fileLocation + excelTemplateFileName);
-          LOG.trace("The locations template uploaded was moved to: " + fileLocation + excelTemplateFileName);
-          // Send a message with the file received
-          sendNotificationMessage(fileLocation, excelTemplateFileName);
-        }
+      // Check if user uploaded an excel file
+      if (excelTemplate != null) {
+        String fileLocation = config.getUploadsBaseFolder() + config.getLocationsTemplateFolder();
+        // First, move the uploaded file to the corresponding folder
+        FileManager.copyFile(excelTemplate, fileLocation + excelTemplateFileName);
+        LOG.trace("The locations template uploaded was moved to: " + fileLocation + excelTemplateFileName);
+        // Send a message with the file received
+        sendNotificationMessage(fileLocation, excelTemplateFileName);
       }
 
       // Displaying user messages.

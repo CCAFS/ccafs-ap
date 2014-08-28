@@ -16,6 +16,7 @@ package org.cgiar.ccafs.ap.data.manager.impl;
 import org.cgiar.ccafs.ap.config.APConstants;
 import org.cgiar.ccafs.ap.data.dao.LocationDAO;
 import org.cgiar.ccafs.ap.data.manager.LocationManager;
+import org.cgiar.ccafs.ap.data.model.ClimateSmartVillage;
 import org.cgiar.ccafs.ap.data.model.Country;
 import org.cgiar.ccafs.ap.data.model.Location;
 import org.cgiar.ccafs.ap.data.model.LocationGeoposition;
@@ -78,6 +79,21 @@ public class LocationManagerImpl implements LocationManager {
         region.setId(Integer.parseInt(lData.get("location_parent_id")));
         region.setName(lData.get("location_parent_name"));
         location.setRegion(region);
+
+        locations.add(location);
+      } else if (locationTypeID == APConstants.LOCATION_TYPE_CLIMATE_SMART_VILLAGE) {
+        // CSV Location
+        ClimateSmartVillage location = new ClimateSmartVillage();
+
+        location.setId(Integer.parseInt(lData.get("id")));
+        location.setCode(lData.get("code"));
+        location.setName(lData.get("name"));
+
+        // Set the parent location
+        OtherLocation ccafsSite = new OtherLocation();
+        ccafsSite.setId(Integer.parseInt(lData.get("location_parent_id")));
+        ccafsSite.setName(lData.get("location_parent_name"));
+        location.setCcafsSite(ccafsSite);
 
         locations.add(location);
       } else {
@@ -345,7 +361,7 @@ public class LocationManagerImpl implements LocationManager {
       Map<String, String> locationData = new HashMap<>();
       locationData.put("activity_id", String.valueOf(activityID));
 
-      if (location.isRegion() || location.isCountry()) {
+      if (location.isRegion() || location.isCountry() || location.isClimateSmartVillage()) {
         locationData.put("loc_element_id", String.valueOf(location.getId()));
       } else {
         OtherLocation oLocation = (OtherLocation) location;
