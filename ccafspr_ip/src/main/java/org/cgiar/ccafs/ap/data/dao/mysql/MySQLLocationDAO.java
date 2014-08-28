@@ -372,13 +372,13 @@ public class MySQLLocationDAO implements LocationDAO {
     StringBuilder query = new StringBuilder();
     query.append("SELECT lo.id, lo.name, lo.code, ");
     query.append("lt.id as 'type_id', lt.name as 'type_name', ");
-    query.append("lp.id as 'parent_id', lp.name as 'parent_name' ");
+    query.append("lp.id as 'parent_id', lp.name as 'parent_name', ");
     query.append("leg.id as 'loc_geo_id', leg.latitude as 'loc_geo_latitude', ");
     query.append("leg.longitude as 'loc_geo_longitude' ");
     query.append("FROM loc_elements lo ");
     query.append("LEFT JOIN loc_elements lp ON lo.parent_id = lp.id   ");
     query.append("INNER JOIN loc_element_types lt ON lt.id = lo.element_type_id  ");
-    query.append("LEFT JOIN loc_geopositions leg ON le.geoposition_id = leg.id ");
+    query.append("LEFT JOIN loc_geopositions leg ON lo.geoposition_id = leg.id ");
     query.append("WHERE lo.id IN ( ");
 
     for (int c = 0; c < locationsIDs.length; c++) {
@@ -428,13 +428,13 @@ public class MySQLLocationDAO implements LocationDAO {
     StringBuilder query = new StringBuilder();
     query.append("SELECT lo.id, lo.name, lo.code, ");
     query.append("lt.id as 'type_id', lt.name as 'type_name', ");
-    query.append("lp.id as 'parent_id', lp.name as 'parent_name' ");
+    query.append("lp.id as 'parent_id', lp.name as 'parent_name', ");
     query.append("leg.id as 'loc_geo_id', leg.latitude as 'loc_geo_latitude', ");
     query.append("leg.longitude as 'loc_geo_longitude' ");
     query.append("FROM loc_elements lo ");
     query.append("LEFT JOIN loc_elements lp ON lo.parent_id = lp.id   ");
     query.append("INNER JOIN loc_element_types lt ON lt.id = lo.element_type_id  ");
-    query.append("LEFT JOIN loc_geopositions leg ON le.geoposition_id = leg.id ");
+    query.append("LEFT JOIN loc_geopositions leg ON lo.geoposition_id = leg.id ");
     query.append("WHERE lt.id =  ");
     query.append(typeID);
     query.append(" ORDER BY lo.name ");
