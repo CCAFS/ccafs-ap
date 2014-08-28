@@ -16,13 +16,20 @@ package org.cgiar.ccafs.ap.action.home;
 
 import org.cgiar.ccafs.ap.action.BaseAction;
 import org.cgiar.ccafs.ap.config.APConfig;
+import org.cgiar.ccafs.ap.data.manager.ActivityManager;
+import org.cgiar.ccafs.ap.data.manager.ProjectManager;
+import org.cgiar.ccafs.ap.data.model.Activity;
+import org.cgiar.ccafs.ap.data.model.Project;
+
+import java.util.List;
+
 import com.google.inject.Inject;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 /**
  * This action will be in charge of managing all the P&R Dashboard after the user logins.
- *
+ * 
  * @author Héctor Fabio Tobón R.
  */
 public class DashboardAction extends BaseAction {
@@ -32,11 +39,25 @@ public class DashboardAction extends BaseAction {
   // Logging
   private static final Logger LOG = LoggerFactory.getLogger(DashboardAction.class);
 
+  // Test Objects
+  private List<Project> projects;
+  private List<Activity> activities;
+  private Project project;
+  private Activity activity;
+
+
+  // Manager
+  private ProjectManager projectManager;
+  private ActivityManager activityManager;
+
 
   @Inject
-  public DashboardAction(APConfig config) {
+  public DashboardAction(APConfig config, ProjectManager projectManager, ActivityManager activityManager) {
     super(config);
+    this.activityManager = activityManager;
+    this.projectManager = projectManager;
   }
+
 
   @Override
   public String execute() throws Exception {
@@ -44,11 +65,50 @@ public class DashboardAction extends BaseAction {
   }
 
 
+  public List<Activity> getActivities() {
+    return activities;
+  }
+
+  public Activity getActivity() {
+    return activity;
+  }
+
+
+  public Project getProject() {
+    return project;
+  }
+
+
+  public List<Project> getProjects() {
+    return projects;
+  }
+
+
   @Override
   public void prepare() throws Exception {
     super.prepare();
-    System.out.println("PREPARE: ");
-    System.out.println("CURRENT USER" + this.getCurrentUser());
+    // Test Objects
+    projects = projectManager.getAllProjects();
+    activities = activityManager.getActivitiesByProject(projects.get(0).getId());
+// System.out.println("PREPARE: ");
+// System.out.println("CURRENT USER" + this.getCurrentUser());
+  }
+
+  public void setActivities(List<Activity> activities) {
+    this.activities = activities;
+  }
+
+  public void setActivity(Activity activity) {
+    this.activity = activity;
+  }
+
+  public void setProject(Project project) {
+    this.project = project;
+  }
+
+
+  public void setProjects(List<Project> projects) {
+    this.projects = projects;
   }
 
 
