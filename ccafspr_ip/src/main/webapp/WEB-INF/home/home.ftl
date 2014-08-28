@@ -1,7 +1,7 @@
 [#ftl]
 [#assign title = "Welcome to CCAFS Activity Planning" /]
-[#assign globalLibs = ["jquery", "jreject", "dataTable", "slidr"] /]
-[#assign customJS = ["${baseUrl}/js/home/login.js","${baseUrl}/js/home/dashboard.js"] /]
+[#assign globalLibs = ["jquery", "jreject", "dataTable", "slidr", "cytoscape", "qtip","cytoscapePanzoom"] /]
+[#assign customJS = ["${baseUrl}/js/home/login.js","${baseUrl}/js/global/ipGraph.js","${baseUrl}/js/home/dashboard.js"] /]
 [#assign customCSS = ["${baseUrl}/css/libs/dataTables/jquery.dataTables-1.9.4.css", "${baseUrl}/css/global/customDataTable.css"] /]
 [#assign currentSection = "home" /]
 
@@ -41,7 +41,7 @@
             </li>
           [/#if] 
             <li class="">
-               <a href="#impacthPathwayGraph">[@s.text name="home.dashboard.impactPathway" /]</a>
+               <a href="#ipGraph-content">[@s.text name="home.dashboard.impactPathway" /]</a>
             </li>
           </ul> 
           [#-- Test Variables  [#assign projects = []] - [#assign activities = []] [#-- End Test Variables --]
@@ -55,7 +55,7 @@
                 [@activitiesList.activitiesList activities=activities canValidate=true canEditProject=true namespace="/planning/projects/activities" tableID="activities-table" /]
             </div>
           [/#if]
-          <div id="impacthPathwayGraph">
+          <div id="ipGraph-content">
           </div>  
       </div>
       [#-- End DashBoard --]

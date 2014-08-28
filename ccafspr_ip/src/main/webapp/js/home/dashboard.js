@@ -1,23 +1,9 @@
 $.fn.dataTableExt.sErrMode = 'throw';
 $(document).ready(function(){
-  $("#dashboard").tabs();
-  $('#projects-table').dataTable({
-    "iDisplayLength" : 5
-  });
-  $("#activities-table").dataTable({
-    "iDisplayLength" : 5
-  });
   
-  $("#deadlineDates table").dataTable();
-  
-  slidr.create('slider', {
-    breadcrumbs : true,
-    keyboard : true,
-    overflow : true,
-    pause : false,
-    theme : '#444',
-    touch : true
-  }).start();
+  initTabs();
+  initSlidr();
+  initDatatable();
   
 });
 
@@ -33,4 +19,40 @@ function workflowModal(){
     }
   });
   return false;
+}
+
+function initTabs(){
+  $("#dashboard").tabs({
+    select : function(event,ui){
+      var tabNumber = ui.index;
+      var tabName = $(ui.tab).text();
+      
+      console.log('Tab number ' + tabNumber + ' - ' + tabName + ' - clicked');
+      
+      console.log("Loading map...");
+      initGraph();
+    }
+  });
+}
+
+function initDatatable(){
+  $('#projects-table').dataTable({
+    "iDisplayLength" : 5
+  });
+  $("#activities-table").dataTable({
+    "iDisplayLength" : 5
+  });
+  
+  $("#deadlineDates table").dataTable();
+}
+
+function initSlidr(){
+  slidr.create('slider', {
+    breadcrumbs : true,
+    keyboard : true,
+    overflow : true,
+    pause : false,
+    theme : '#444',
+    touch : true
+  }).start();
 }
