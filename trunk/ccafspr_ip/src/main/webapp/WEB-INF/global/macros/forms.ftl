@@ -12,7 +12,7 @@
       </h6>
     [/#if]
     [#if errorField==""][@s.fielderror cssClass="fieldError" fieldName="${name}"/][#else][@s.fielderror cssClass="fieldError" fieldName="${errorfield}"/][/#if]
-    <input type="${type}" id="${name}" name="${name}" value="[#if value=="-NULL"][@s.property value="${name}"/][#else]${value}[/#if]" [#if disabled]disabled="disabled"[/#if] [#if className != "-NULL"] class="${className}" [/#if] />
+    <input type="${type}" id="${name}" name="${name}" value="[#if value=="-NULL"][@s.property value="${name?string}"/][#else]${value}[/#if]" [#if disabled]disabled="disabled"[/#if] [#if className != "-NULL"] class="${className}" [/#if] />
   </div>
 [/#macro]
 
@@ -49,6 +49,7 @@
       [/#if]
     </label>
     <input type="checkbox" id="${name}" name="${name}" value="${value}" [#if checked]checked="checked"[/#if] />
+    <input type="hidden" id="__checkbox_${name}" name="__checkbox_${name}" value="${value}" />
   </div>
 [/#macro]
 
