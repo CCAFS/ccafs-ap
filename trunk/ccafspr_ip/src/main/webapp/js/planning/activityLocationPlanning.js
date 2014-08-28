@@ -7,8 +7,12 @@ $(document).ready(init);
 function init(){
   countID = $("#locationsBlock .location").length;
   attachEvents();
-  loadMap();
-  setLocationsMarkers();
+  if ($("#isGlobal").exists()) {
+    $("#activity\\.global").trigger("change");
+  } else {
+    loadMap();
+    setLocationsMarkers();
+  }
 }
 
 function attachEvents(){
@@ -159,6 +163,7 @@ function changeTypeEvent(e){
 }
 
 function loadMap(){
+  console.log("loading map ...");
   var style = [
       {
         "featureType" : "water",
@@ -340,7 +345,6 @@ function removeMarker(id){
   marker = markers[id];
   marker.setMap(null);
   delete markers[id];
-  ;
 }
 
 // Sets the map on all markers in the array.

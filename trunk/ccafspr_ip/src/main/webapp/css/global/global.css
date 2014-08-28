@@ -1495,6 +1495,7 @@ table tr.row:hover{
     width: 99%; 
     height: 280px;
     border: 4px solid #EBEBEB;
+    position: relative;
 }
 #activityLocations-map p.global {
   position: absolute;
@@ -1562,6 +1563,38 @@ table tr.row:hover{
 p#fileUploadText {
   margin: 30px 0;
 }
+
+/* Activity Impact Pathway */
+
+#activityImpactPathway .indicatorsBlock {
+  padding: 7px 0px 6px 14px;
+  margin: 8px;
+  border: 1px solid #E8E8E8;
+  border-radius: 6px;
+}
+
+#activityImpactPathway  .midOutcomeIndicator {
+  margin-bottom: 7px;
+}
+
+.mogsBlock {
+    padding: 7px 0px 6px 14px;
+    margin: 8px !important;
+    border: 1px solid #E8E8E8;
+    border-radius: 6px;
+}
+
+.mogsBlock .mog{
+  margin-bottom: 7px;
+}
+
+
+#activityImpactPathway .indicatorNarrative {
+  padding: 5px 14px;
+  margin: 5px 5px;
+  border-left: 2px dotted #DEDEDE;
+}
+
 
 /****** REPORTING **********/
 /********* Activity Reporting Sub Menu **********/
