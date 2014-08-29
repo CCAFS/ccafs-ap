@@ -25,34 +25,33 @@
           <li class="">
             <a href="#projects">[@s.text name="home.dashboard.projects" /]</a>
           </li>  
-          [#-- ]/#if --]
-          [#if activities?has_content]  
-            <li class="">
-               <a href="#activities">[@s.text name="home.dashboard.activities" /]</a>
-            </li>
-          [/#if] 
+          <li class="">
+            <a href="#activities">[@s.text name="home.dashboard.activities" /]</a>
+          </li>
           <li class="">
              <a href="#ipGraph-content">[@s.text name="home.dashboard.impactPathway" /]</a>
           </li>
         </ul> <!-- End dashboardHeaders -->
-        [#if projects?has_content]
           <div id="projects"> 
+            [#if projects?has_content]
               [@projectList.projectsList projects=projects canValidate=true namespace="/planning/projects" tableID="projects-table" /]
+            [#else]
+              <p class="emptyMessage">
+                [@s.text name="home.dashboard.projects.empty"]
+                  [@s.param][@s.url namespace="/planning" action="projects" /][/@s.param]
+                [/@s.text]
+              <p>
+            [/#if]
           </div>
-        [#else]
-          <div id="projects"> 
-            <p class="emptyMessage">
-              [@s.text name="home.dashboard.projects.empty"]
-                [@s.param][@s.url namespace="/planning" action="projects" /][/@s.param]
-              [/@s.text]
-            <p>
-          </div>
-        [/#if]
-        [#if activities?has_content]
           <div id="activities"> 
-            [@activitiesList.activitiesList activities=activities canValidate=true canEditProject=true namespace="/planning/projects/activities" tableID="activities-table" /]
+            [#if activities?has_content]
+              [@activitiesList.activitiesList activities=activities canValidate=true canEditProject=true namespace="/planning/projects/activities" tableID="activities-table" /]
+            [#else]
+              <p class="emptyMessage">
+                [@s.text name="home.dashboard.activities.empty" /]
+              <p>
+            [/#if]
           </div>
-        [/#if]
         <div id="ipGraph-content">
         </div>
       </div> <!-- End dashboard -->
