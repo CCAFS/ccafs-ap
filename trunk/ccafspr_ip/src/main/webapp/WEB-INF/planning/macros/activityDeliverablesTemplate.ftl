@@ -66,6 +66,10 @@
     <div class="halfPartBlock chosen">
       [@customForm.select name="year" label=""  disabled=false i18nkey="planning.deliverables.year" listName="allYears" /]
     </div> 
+    [#-- MOG  --]
+    <div class="halfPartBlock chosen">
+      [@customForm.select name="activity.deliverables[${dl_index}].output" label=""  disabled=false i18nkey="planning.deliverables.mog" listName="outputs" keyFieldName="id"  displayFieldName="description"  /]
+    </div>
     [#-- Add next user button  --]
     <div id="addActivityNextUserBlock" class="addLink"><a href=""  class="addActivityNextUser addButton">[@s.text name="planning.deliverables.addNewUser" /]</a></div>
   </div>  
