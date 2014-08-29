@@ -116,7 +116,32 @@ public class DashboardAction extends BaseAction {
       // If user is AL or Guest, he/she won't be able to see any project listed.
 
       // ----- Listing Activities -----
-      // TODO HT
+
+      // If user is an Admin
+      if (this.getCurrentUser().isAdmin()) {
+        // Admins will be able to see all the activities entered in the system.
+        activities = activityManager.getAllActivities();
+      } else if (this.getCurrentUser().isFPL() || this.getCurrentUser().isRPL() || this.getCurrentUser().isCU()) {
+        // FPLs, RPLs and CUs users can edit activities that belongs to the projects that they are able to edit.
+        activities = new ArrayList<>();
+        for (Project project : projects) {
+          activities.addAll(activityManager.getActivitiesByProject(project.getId()));
+        }
+
+      } else if (this.getCurrentUser().isPL()) {
+        // PLs can edit all the activities that belong to their projects.
+        activities = new ArrayList<>();
+        for (Project project : projects) {
+          activities.addAll(activityManager.getActivitiesByProject(project.getId()));
+        }
+      } else if (this.getCurrentUser().isAL()) {
+        List<Integer> ledIds = activityManager.getLedActivityIds(this.getCurrentUser());
+        activities = new ArrayList<>();
+        for (Integer activityId : ledIds) {
+          activities.add(activityManager.getActivityById(activityId));
+        }
+      }
+
     }
     if (projects != null) {
       activities = activityManager.getActivitiesByProject(projects.get(0).getId());

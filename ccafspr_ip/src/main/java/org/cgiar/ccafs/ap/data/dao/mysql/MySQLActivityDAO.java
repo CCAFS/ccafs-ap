@@ -197,12 +197,12 @@ public class MySQLActivityDAO implements ActivityDAO {
       query.append(programID);
       ResultSet rs = databaseManager.makeQuery(query.toString(), connection);
       while (rs.next()) {
-        activityIds.add(rs.getInt("id"));
+        activityIds.add(rs.getInt(1));
       }
       rs.close();
     } catch (SQLException e) {
       LOG.error("-- getActivityIdsEditable() > There was an error getting the data for  programID={}.",
-        new Object[] {programID}, e);
+        new Object[] {programID}, e.getMessage());
       return null;
     }
     LOG.debug("<< getActivityIdsEditable():{}", activityIds);
@@ -308,6 +308,18 @@ public class MySQLActivityDAO implements ActivityDAO {
   }
 
 
+  @Override
+  public List<Map<String, String>> getAllActivities() {
+    LOG.debug(">> getAllActivities )");
+
+    StringBuilder query = new StringBuilder();
+    query.append("SELECT * ");
+    query.append("FROM activities ");
+
+    LOG.debug("-- getAllActivities() > Calling method executeQuery to get the results");
+    return getData(query.toString());
+  }
+
   private List<Map<String, String>> getData(String query) {
     LOG.debug(">> executeQuery(query='{}')", query);
     List<Map<String, String>> activitiesList = new ArrayList<>();
@@ -368,6 +380,30 @@ public class MySQLActivityDAO implements ActivityDAO {
       LOG.error("Exception arised getting the activity {}.", activityID, e);
     }
     return activityLeaderData;
+  }
+
+  @Override
+  public List<Integer> getLedActivities(int employeeId) {
+    LOG.debug(">> getLedActivities( employeeId={})", new Object[] {employeeId});
+    List<Integer> activityIds = new ArrayList<>();
+    try (Connection connection = databaseManager.getConnection()) {
+      StringBuilder query = new StringBuilder();
+      query.append("SELECT id ");
+      query.append("FROM activities ");
+      query.append("WHERE leader_id = ");
+      query.append(employeeId);
+      ResultSet rs = databaseManager.makeQuery(query.toString(), connection);
+      while (rs.next()) {
+        activityIds.add(rs.getInt(1));
+      }
+      rs.close();
+    } catch (SQLException e) {
+      LOG.error("-- getLedActivities() > There was an error getting the data for  employeeId={}.",
+        new Object[] {employeeId}, e.getMessage());
+      return null;
+    }
+    LOG.debug("<< getActivityIdsEditable():{}", activityIds);
+    return activityIds;
   }
 
   @Override

@@ -32,7 +32,7 @@ public interface ActivityManager {
 
   /**
    * This method removes a set of activities that belongs to a specific project.
-   * 
+   *
    * @param projectID is the project identifier.
    * @return true if the set of activities were successfully deleted, false otherwise.
    */
@@ -40,7 +40,7 @@ public interface ActivityManager {
 
   /**
    * This method removes a specific activity value from the database.
-   * 
+   *
    * @param activityId is the activity identifier.
    * @return true if the activity was successfully deleted, false otherwise.
    */
@@ -49,7 +49,7 @@ public interface ActivityManager {
   /**
    * This method delete the relation between the activity and the output
    * received.
-   * 
+   *
    * @param activityID - activity identifier
    * @param outputID - output identifier
    * @return true if the relation was successfully removed. False otherwise.
@@ -59,7 +59,7 @@ public interface ActivityManager {
   /**
    * This method delete the relation between the activity and the indicator
    * received.
-   * 
+   *
    * @param activityID - activity identifier
    * @param indicatorID - indicator identifier
    * @return true if the relation was successfully removed. False otherwise.
@@ -68,7 +68,7 @@ public interface ActivityManager {
 
   /**
    * This method validate if the activity identify with the given id exists in the system.
-   * 
+   *
    * @param activityID is an activity identifier.
    * @return true if the activity exists, false otherwise.
    */
@@ -76,7 +76,7 @@ public interface ActivityManager {
 
   /**
    * This method gets all the activity information by a given Project Id
-   * 
+   *
    * @param projectID - is the Id of the project
    * @return a List of activities with the activity Information related with the project
    */
@@ -84,7 +84,7 @@ public interface ActivityManager {
 
   /**
    * This method gets all the activity information by a given activity ID.
-   * 
+   *
    * @param activityID is the activity identifier.
    * @return a List of activities objects.
    */
@@ -92,7 +92,7 @@ public interface ActivityManager {
 
   /**
    * This method gets a list of activities identifiers related with the program of the given user.
-   * 
+   *
    * @param user is the user who belongs to a specific CCAFS program.
    * @return a list of activities identifiers.
    */
@@ -100,7 +100,7 @@ public interface ActivityManager {
 
   /**
    * This method gets all the indicators related to the activity passed as parameter
-   * 
+   *
    * @param activityID - activity identifier
    * @return a list of IPIndicator objects
    */
@@ -108,7 +108,7 @@ public interface ActivityManager {
 
   /**
    * this method gets the activity leader assigned to a specific activity.
-   * 
+   *
    * @param activityID is the activity identifier.
    * @return a User object representing the activity leader, or null if the activity leader was not found.
    */
@@ -117,24 +117,40 @@ public interface ActivityManager {
   /**
    * This method gets all the outputs related with the activity identified by the value
    * received as parameter.
-   * 
+   *
    * @param activityID - activity identifer
    * @return a list of IPElement objects
    */
   public List<IPElement> getActivityOutputs(int activityID);
 
   /**
+   * This method returns all the activities that are entered in the system.
+   *
+   * @return an Array of Activity objects.
+   */
+  public List<Activity> getAllActivities();
+
+  /**
    * This method gets all the information of an Expected Activity Leader of a given activity
-   * 
+   *
    * @param activityID - is the activity identifier
    * @return an user object representing the expected activity leader, or null if no information was found.
    */
   public User getExpectedActivityLeader(int activityID);
 
   /**
-   * This method lets you know if the Project Leader wants to create or not an account for the specified Activity
+   * This method returns a all the activity identifiers from the activities that the user was assigned as Activity
    * Leader.
    * 
+   * @param currentUser is the current user object representation.
+   * @return a List with activity identifiers or an empty list if nothing found.
+   */
+  public List<Integer> getLedActivityIds(User currentUser);
+
+  /**
+   * This method lets you know if the Project Leader wants to create or not an account for the specified Activity
+   * Leader.
+   *
    * @param activityID - is the activity identifier
    * @return true if the expected Activity Leader needs to be created, or false otherwise.
    */
@@ -142,7 +158,7 @@ public interface ActivityManager {
 
   /**
    * This method saves the information of the given activity that belong to a specific activity into the database.
-   * 
+   *
    * @param projectID
    * @param activity
    * @return A number greater than zero representing the new ID assigned by the database for the activity, 0 if the
@@ -153,7 +169,7 @@ public interface ActivityManager {
   /**
    * This method save into the database the relation between an activity and
    * some midOutcomes indicators
-   * 
+   *
    * @param indicators - List of indicators objects
    * @param activityID - activity identifier
    * @return true if ALL the indicators were saved successfully. False otherwise
@@ -162,7 +178,7 @@ public interface ActivityManager {
 
   /**
    * This method updates the activity, with the give activity Leader.
-   * 
+   *
    * @param user is the activity leader.
    * @param projectID is the activity identifier.
    * @return true if the activity leader was successfully saved, false otherwise.
@@ -172,7 +188,7 @@ public interface ActivityManager {
   /**
    * This method save into the database the relation between an activity and
    * the outputs
-   * 
+   *
    * @param outputs - A list of ipElmenet objects
    * @param activityID - activity identifier
    * @return true if ALL the relations were saved successfully. False otherwise.
@@ -181,7 +197,7 @@ public interface ActivityManager {
 
   /**
    * This method saves the information of a given expected activity leader
-   * 
+   *
    * @param expectedActivityLeader is the user to be saved.
    * @param activityID is the activity identifier
    * @param isOfficialLeader is true when the user wants to create a profile of this leader into the system.

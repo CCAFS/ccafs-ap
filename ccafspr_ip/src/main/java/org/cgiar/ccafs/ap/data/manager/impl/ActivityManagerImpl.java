@@ -235,6 +235,51 @@ public class ActivityManagerImpl implements ActivityManager {
   }
 
   @Override
+  public List<Activity> getAllActivities() {
+    DateFormat dateformatter = new SimpleDateFormat(APConstants.DATE_FORMAT);
+    List<Activity> activityList = new ArrayList<>();
+    List<Map<String, String>> activityDataList = activityDAO.getAllActivities();
+    for (Map<String, String> activityData : activityDataList) {
+      Activity activity = new Activity();
+      activity.setId(Integer.parseInt(activityData.get("id")));
+      activity.setTitle(activityData.get("title"));
+      activity.setDescription(activityData.get("description"));
+
+      // Format the date of the activity
+      if (activityData.get("startDate") != null) {
+        try {
+          Date startDate = dateformatter.parse(activityData.get("startDate"));
+          activity.setStartDate(startDate);
+        } catch (ParseException e) {
+          LOG.error("There was an error formatting the start date", e);
+        }
+      }
+      if (activityData.get("endDate") != null) {
+        try {
+          Date endDate = dateformatter.parse(activityData.get("endDate"));
+          activity.setEndDate(endDate);
+        } catch (ParseException e) {
+          LOG.error("There was an error formatting the end date", e);
+        }
+        if (activityData.get("expected_leader_id") != null) {
+          activity.setExpectedLeader(this.getExpectedActivityLeader(Integer.parseInt(activityData.get("id"))));
+        }
+        if (activityData.get("leader_id") != null) {
+          activity.setLeader(userManager.getOwner(Integer.parseInt(activityData.get("leader_id"))));
+        }
+        if (activityData.get("is_global") != null) {
+          activity.setGlobal((activityData.get("is_global").equals("1")));
+        }
+      }
+      activity.setCreated(Long.parseLong(activityData.get("created")));
+
+      // adding information of the object to the array
+      activityList.add(activity);
+    }
+    return activityList;
+  }
+
+  @Override
   public User getExpectedActivityLeader(int activityID) {
     Map<String, String> expectedActivityLeaderData = activityDAO.getExpectedActivityLeader(activityID);
     if (!expectedActivityLeaderData.isEmpty()) {
@@ -249,6 +294,11 @@ public class ActivityManagerImpl implements ActivityManager {
       return expectedActivityLeader;
     }
     return null;
+  }
+
+  @Override
+  public List<Integer> getLedActivityIds(User user) {
+    return activityDAO.getLedActivities(user.getEmployeeId());
   }
 
   @Override
@@ -361,9 +411,9 @@ public class ActivityManagerImpl implements ActivityManager {
         expectedActivityLeader.getId());
     } else {
       LOG
-        .error(
-          "saveExpectedActivityLeader > There was an error trying to save/update an Expected Activity Leader for activityId={}",
-          activityID);
+      .error(
+        "saveExpectedActivityLeader > There was an error trying to save/update an Expected Activity Leader for activityId={}",
+        activityID);
     }
 
     return result;
