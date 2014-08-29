@@ -119,7 +119,7 @@
         </div>
       </div>
       [#-- End P&R Description --]
-      [#-- Roles
+      [#-- Roles --]
       <div id="roles">
         <div id="roleTitle" class="homeTitle">
           <b>[@s.text name="home.dashboard.roles.title" /]</b>
