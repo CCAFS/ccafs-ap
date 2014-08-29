@@ -53,8 +53,10 @@
       [#if midOutcomesSelected?has_content]
         [#list midOutcomesSelected as midOutcome]
           <div class="contribution borderBox">
-            [#-- Remove Contribution --]
-            <div id="removeContribution" class="removeContribution removeElement removeLink" title="[@s.text name="preplanning.midOutcomes.removeMidOutcome" /]"></div>
+            [#if saveable]
+              [#-- Remove Contribution --]
+              <div id="removeContribution" class="removeContribution removeElement removeLink" title="[@s.text name="preplanning.midOutcomes.removeMidOutcome" /]"></div>
+            [/#if]
           
             [#-- Midoutcome title --]
             <div class="midOutcomeTitle">
@@ -127,14 +129,12 @@
         [/#list]
       [/#if]
     </div>
-     
-    <div id="midOutcomesSelect">
-      [@customForm.select name="midOutcomesList" i18nkey="planning.activityImpactPathways.outcome" listName="midOutcomes" className="midOutcomeSelect" /]
-    </div>
     
-    <input type="hidden" name="activityID" value="${activityID}" />
-
     [#if saveable]
+      <div id="midOutcomesSelect">
+        [@customForm.select name="midOutcomesList" i18nkey="planning.activityImpactPathways.outcome" listName="midOutcomes" className="midOutcomeSelect" /]
+      </div>
+      <input type="hidden" name="activityID" value="${activityID}" />
       <div class="buttons">
         [@s.submit type="button" name="save"][@s.text name="form.buttons.save" /][/@s.submit]
         [@s.submit type="button" name="next"][@s.text name="form.buttons.next" /][/@s.submit]
