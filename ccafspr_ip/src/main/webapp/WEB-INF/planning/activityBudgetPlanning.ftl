@@ -60,20 +60,20 @@
                   [#-- HEADERS --]
                   <tr class="ccafsBudget-head row">
                     [#-- Partner Name --]
-                    <td class="grid_8">
+                    <td class="grid_7">
                       <h6>[@s.text name="planning.activityBudget.partner" /]</h6>
                     </td> 
                     [#-- ACTIVITY title --]
-                    <td id="" class="grid_1">
-                      <h6 title="[@s.text name="planning.activityBudget.amount.tooltip" /]">[@s.text name="planning.activityBudget.amount" /]</h6>
+                    <td id="" class="grid_2">
+                      <h6>[@s.text name="planning.activityBudget.amount" /]</h6>
                     </td> 
                   </tr>  
                   [#if activity.leader?has_content]
                     <tr class="row">
                       [#-- Partner Leader Name --]
-                      <td class="grid_8">${activity.leader.currentInstitution.name} <strong>([@s.text name="planning.activityBudget.partnerLead" /])</strong> </td> 
+                      <td class="grid_7">${activity.leader.currentInstitution.name} <strong>([@s.text name="planning.activityBudget.partnerLead" /])</strong> </td> 
                       [#--Activity Type --]
-                      <td class="budgetContent grid_1">
+                      <td class="budgetContent grid_2">
                         <input type="hidden" name="activity.budgets[${counter}].id" value="${mapBudgets[year?c+'-'+activity.leader.currentInstitution.id?c+'-ACTIVITY'].id?c}" />
                         <input type="hidden" name="activity.budgets[${counter}].year" value="${year?c}" />
                         <input type="hidden" name="activity.budgets[${counter}].institution.id" value="${mapBudgets[year?c+'-'+activity.leader.currentInstitution.id?c+'-ACTIVITY'].institution.id?c}" />
@@ -86,9 +86,9 @@
                   [#list activityPartners as activityPartner ]
                     <tr id="partnerBudget-${activityPartner_index}" class="row">
                       [#-- Partner Name --]
-                      <td id="" class="grid_8">${activityPartner.partner.name}</td>
+                      <td id="" class="grid_7">${activityPartner.partner.name}</td>
                       [#-- Activity Type --]
-                      <td id="" class="budgetContent grid_1">
+                      <td id="" class="budgetContent grid_2">
                         <input type="hidden" name="activity.budgets[${counter}].id" value="${mapBudgets[year?c+'-'+activityPartner.partner.id?c+'-ACTIVITY'].id?c}" />
                         <input type="hidden" name="activity.budgets[${counter}].year" value="${year?c}" />
                         <input type="hidden" name="activity.budgets[${counter}].institution.id" value="${mapBudgets[year?c+'-'+activityPartner.partner.id?c+'-ACTIVITY'].institution.id?c}" />

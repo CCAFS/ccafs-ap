@@ -167,8 +167,7 @@ input.target {
 .checkboxGroup .checkboxLabel {
   display: inline-block;
   font-size: 11px;
-  width: 92%;
-  width: 29%\0/; /*hack for IE8 & IE9*/
+  width: 88%; /*hack for IE8 & IE9*/
 }
 
 div.checkboxGroup.vertical label {
@@ -1083,7 +1082,7 @@ h3.contentSubTitle {
 }
 
 #dashboard #deadline{
-	margin-top : 0;
+  margin-top : 0;
 }
 
 #dashboard #rightSide{
@@ -1156,7 +1155,7 @@ h3.contentSubTitle {
 }
 
 #dashboard #deadline .point {
-	margin: 0px 40px;
+  margin: 0px 40px;
 }
 
 #dashboard #deadline .active {
@@ -1458,7 +1457,7 @@ textarea[id$='summary'] {
 }
 
 #projectRegionsBlock .checkboxGroup label { 
-   width: 42%;
+   width: 41%;
 }
 
 #projects .note {
@@ -1616,10 +1615,13 @@ width: 280px;
 height: 110px;
 padding: 5px;
 background: #FFFFFF;
--webkit-border-radius: 6px;
+
+  color: #5E5E5E;
+  -webkit-border-radius: 6px;
 -moz-border-radius: 6px;
 border-radius: 6px;
-border: #7F7F7F solid 1px;
+
+  border: #B5B5B5 solid 1px;
   text-align:justify;
 }
 .crossCuttingDescription:after{
@@ -2307,4 +2309,3 @@ background: #E0E0E0;
   margin-top: 15px;
   font-weight: lighter;
 }
-
