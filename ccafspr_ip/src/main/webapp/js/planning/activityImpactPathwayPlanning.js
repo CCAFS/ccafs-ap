@@ -1,16 +1,16 @@
 $(document).ready(init);
 
 function init(){
-  attachEvents();
   addChosen();
-  loadMOGs();
   setIndicatorIndexes();
   setMogsIndexes();
+  attachEvents();
 }
 
 function attachEvents(){
   $("#activityImpactPathway_midOutcomesList").change(selectMidOutcomeEvent);
   $('input[name^="activity.indicators"]').click(toogleIndicatorInfo);
+  $('input[name^="activity.outputs"]').click(selectMogEvent);
   $(".removeContribution").click(removeContributionBlock);
 }
 
@@ -19,6 +19,22 @@ function removeContributionBlock(event){
     $(this).remove();
   });
   
+}
+
+
+function selectMogEvent(event){
+  var $checkbox = $(event.target);
+  var $hiddenInput = $checkbox.prev();
+  var index = $checkbox.attr("id").split("-")[1];
+  var name;
+
+  if($checkbox.is(":checked")){
+    $hiddenInput.attr("disabled", false);
+  }else{
+    $hiddenInput.attr("disabled", true);
+  }
+  
+  setMogsIndexes();
 }
 
 /**
@@ -42,6 +58,9 @@ function selectMidOutcomeEvent(event){
   var $newContribution = $("#contributionTemplate").clone(true);
   var $mogBlock = $newContribution.find(".mogsBlock");
   var $indicatorsBlock = $newContribution.find(".indicatorsBlock");
+  
+  //Add the midOutcome id
+  $newContribution.find("#midOutcomeID").val(midOutcomeID);
   
   // Add the midOutcome description
   $newContribution.find(".midOutcomeTitle p.description").html($optionSelected.text());
@@ -76,7 +95,9 @@ function addMOGs(midOutcomeID,$mogBlock){
     $.each(data.IPElementsList, function(index,mog){
       var $newMog = $mogTemplate.clone(true);
       $newMog.removeAttr("id");
-      $newMog.find("input").val(mog.id);
+      
+      $newMog.find("input[name$='contributesTo[0].id'] ").val(midOutcomeID);
+      $newMog.find("input[type='checkbox']").val(mog.id);
       $newMog.find("label").html(mog.description);
       
       $mogBlock.append($newMog);
@@ -133,6 +154,20 @@ function setIndicatorIndexes(){
     $(indicator).find("input[type='checkbox']").attr("id", "activity.indicators-" + index);
     $(indicator).find("input[type='checkbox']").attr("name", indicatorsName + "[" + index + "].parent.id");
     
+    if($(indicator).find("input[type='checkbox']").is(":checked")){
+      
+      $(indicator).find("input[type='hidden']").attr("disabled", false);
+      $(indicator).find(".indicatorNarrative input").attr("name", indicatorsName + "[" + index + "].target");
+      $(indicator).find(".indicatorNarrative textarea").attr("name", indicatorsName + "[" + index + "].description");
+      
+    }else{
+      
+      $(indicator).find("input[type='hidden']").attr("disabled", true);
+      $(indicator).find(".indicatorNarrative input").attr("name", "");
+      $(indicator).find(".indicatorNarrative textarea").attr("name", "");
+      
+    }
+    
     // Hidden
     $(indicator).find("input[type='hidden']").attr("id", "activity.indicators-" + index);
     $(indicator).find("input[type='hidden']").attr("name", indicatorsName + "[" + index + "].id");
@@ -144,12 +179,24 @@ function setIndicatorIndexes(){
 
 function setMogsIndexes(){
   var $contributionsBlock = $("#contributionsBlock");
-  var mogsName = "activity.outputs";
   // Indicators indexes
   $contributionsBlock.find(".mog").each(function(index,mog){
+    var mogsName = "activity.outputs[" + index + "]";
+    
     // Checkbox
-    $(mog).find("input").attr("id", "mog-" + index);
-    $(mog).find("input").attr("name", mogsName);
+    $(mog).find("input[type='checkbox']").attr("id", "mog-" + index);
+    $(mog).find("input[type='checkbox']").attr("name", mogsName + ".id");
+    
+    
+    
+    // Hidden input 
+    $(mog).find("input[type='hidden']").attr("name", mogsName + ".contributesTo[0].id");
+    if($(mog).find("input[type='checkbox']").is(":checked")){
+      $(mog).find("input[type='hidden']").attr("disabled", false);
+    }else{
+      $(mog).find("input[type='hidden']").attr("disabled", true);
+    }
+
     // Label
     $(mog).find("label").attr("for", "mog-" + index);
   });

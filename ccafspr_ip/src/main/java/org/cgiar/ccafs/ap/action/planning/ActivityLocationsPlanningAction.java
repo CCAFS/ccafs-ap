@@ -214,7 +214,6 @@ public class ActivityLocationsPlanningAction extends BaseAction {
 
   @Override
   public String save() {
-    System.out.println(activity.getLocations());
     if (this.isSaveable()) {
 
       boolean success = true;
