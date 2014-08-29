@@ -2,7 +2,7 @@ $.fn.dataTableExt.sErrMode = 'throw';
 $(document).ready(function(){
   
   initTabs();
-  initSlidr();
+  //initSlidr();
   initDatatable();
   
 });
