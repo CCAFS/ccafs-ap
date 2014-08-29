@@ -72,20 +72,22 @@
           <b>[@s.text name="home.dashboard.deadline.title" /]</b>
         </div>
         <div id="deadlineGraph">
-          <span class="deadlineCircle">1</span>
-          <div id="deadlineLine"></div>
-          <span class="deadlineCircle">2</span>
-          <div id="deadlineLine"></div>
-          <span class="deadlineCircle">3</span>
-          <div id="preplanning" class"active step">
+          <div id="deadlineCircle1" class="deadlineCircleActive">1</div>
+          
+          <div id="deadlineCircle2" class="deadlineCircleActive">2</div>
+          
+          <div id="deadlineCircle3" class="deadlineCircleInactive">3</div>
+        </div>
+        <div id="deadlineGraph">
+          <div id="deadlineCircle1" >
             [@s.text name="home.dashboard.deadline.preplanning" /] 
           </div>  
-          <div id="planning" class"step">
+          <div id="deadlineCircle2" >
             [@s.text name="home.dashboard.deadline.planning" /] 
           </div> 
-          <div id="reporting" class"step">
+          <div id="deadlineCircle3" >
             [@s.text name="home.dashboard.deadline.reporting" /]
-          </div> 
+          </div>
         </div>
         <div id="deadlineDates">
           <table>

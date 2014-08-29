@@ -1088,6 +1088,8 @@ h3.contentSubTitle {
 #pandrDescription{
   text-align: justify;
   margin-bottom: 10px;
+  padding-left: 10px;
+  border-left: solid 2px #707070;
 }
 
 #pandrDescription p {
@@ -1140,8 +1142,39 @@ h3.contentSubTitle {
   color: #636363;
 }
 
+#deadlineGraph{
+  margin-bottom:18px;
+  margin-top:10px;
+  text-align:center;
+  width:100%;
+}
 
-.deadlineCircle{
+#deadlineCircle1{
+  float:left;
+}
+
+#deadlineCircle2{
+  display:inblock;
+}
+
+#deadlineCircle3{
+  float:right;
+}
+
+.deadlineCircleActive{
+  background: #5178D0;
+  border-radius: 4.8em;
+  -moz-border-radius: 4.8em;
+  -webkit-border-radius: 4.8em;
+  color: #ffffff;
+  display: inline-block;
+  font-weight: bold;
+  line-height: 4.6em;
+  margin-right: 15px;
+  text-align: center;
+  width: 4.6em; 
+}
+.deadlineCircleInactive{
   background: #5178D0;
   border-radius: 4.8em;
   -moz-border-radius: 4.8em;
