@@ -63,18 +63,18 @@
       </div>
       <div id="deadline" class="borderBox">
         <div id="deadlineGraph" >
-          <div id="deadlineCircle1" class="deadlineCircleActive">1</div>
-          <div id="deadlineCircle2" class="deadlineCircleActive">2</div>
-          <div id="deadlineCircle3" class="deadlineCircleInactive">3</div>
+          <div class="point active">1</div>
+          <div class="point active">2</div>
+          <div class="point inactive">3</div>
         </div>
         <div id="deadlineGraph">
-          <div id="deadlineCircle1" >
+          <div class="textPoint" >
             [@s.text name="home.dashboard.deadline.preplanning" /] 
           </div>  
-          <div id="deadlineCircle2" >
+          <div class="textPoint">
             [@s.text name="home.dashboard.deadline.planning" /] 
           </div> 
-          <div id="deadlineCircle3" >
+          <div class="textPoint">
             [@s.text name="home.dashboard.deadline.reporting" /]
           </div>
         </div>

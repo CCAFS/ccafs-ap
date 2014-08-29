@@ -1082,25 +1082,25 @@ h3.contentSubTitle {
   font-style: italic;
 }
 
-#deadline{
+#dashboard #deadline{
 	margin-top : 0;
 }
 
-#rightSide{
+#dashboard #rightSide{
   float: right;
   padding: 12px 0;
   width: 35%;
   vertical-align: top;
 }
 
-#pandrDescription{
+#dashboard #pandrDescription{
   text-align: justify;
   margin-bottom: 10px;
   padding-left: 10px;
   border-left: dashed 1px #B4B7C2;
 }
 
-#pandrDescription p {
+#dashboard #pandrDescription p {
     color: #636363;
 }
 
@@ -1127,7 +1127,6 @@ h3.contentSubTitle {
 }
 
 #showPandRWorkflowDialog{
-  height: 625px;
   width: 650px;
 }
 
@@ -1150,28 +1149,18 @@ h3.contentSubTitle {
   color: #636363;
 }
 
-#deadlineGraph{
+#dashboard #deadline #deadlineGraph {
   margin-bottom: 18px;
   margin-top: 10px;
   text-align: center;
-  width: 50%;
-  margin-left: 150px;
 }
 
-#deadlineCircle1{
-  float:left;
+#dashboard #deadline .point {
+	margin: 0px 40px;
 }
 
-#deadlineCircle2{
-  display:inblock;
-}
-
-#deadlineCircle3{
-  float:right;
-}
-
-.deadlineCircleActive{
-  background: #5178D0;
+#dashboard #deadline .active {
+  background: #5498B3;
   border-radius: 4.8em;
   -moz-border-radius: 4.8em;
   -webkit-border-radius: 4.8em;
@@ -1179,12 +1168,11 @@ h3.contentSubTitle {
   display: inline-block;
   font-weight: bold;
   line-height: 4.6em;
-  margin-right: 15px;
   text-align: center;
   width: 4.6em; 
 }
-.deadlineCircleInactive{
-  background: #465474;
+#dashboard #deadline .inactive {
+  background: #C5DAE2;
   border-radius: 4.8em;
   -moz-border-radius: 4.8em;
   -webkit-border-radius: 4.8em;
@@ -1192,10 +1180,16 @@ h3.contentSubTitle {
   display: inline-block;
   font-weight: bold;
   line-height: 4.6em;
-  margin-right: 15px;
   text-align: center;
   width: 4.6em; 
 }
+
+#dashboard #deadline .textPoint {
+  display: inline-block;
+  text-align: center;
+  width: 135px;
+}
+
 #deadlineLine { 
 border-left: 1px solid #ccc; 
 height:5px; 
