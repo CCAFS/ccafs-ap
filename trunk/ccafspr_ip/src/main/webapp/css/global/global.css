@@ -1055,6 +1055,99 @@ h3.contentSubTitle {
   border-bottom: 1px solid #9D9D9D;
 }
 
+/*************** HOME DASHBOARD****************/
+
+/*  Home page*/
+
+#leftSide{
+  float: left;
+  padding: 0px 12px 0px 15px;
+  width: 61%;
+  vertical-align: top;
+}
+#rightSide{
+  float: right;
+  padding: 12px 0;
+  width: 35%;
+  vertical-align: top;
+}
+
+#pandrDescription{
+  text-align: justify;
+  margin-bottom: 10px;
+}
+
+#pandrDescription p {
+    color: #636363;
+}
+
+#imgPandR{
+  text-align: center;
+  padding: 10px 0px;
+}
+
+#imgModal{
+  -webkit-box-shadow: 5px 5px 5px 0px rgba(50, 50, 50, 0.75);
+  -moz-box-shadow:    5px 5px 5px 0px rgba(50, 50, 50, 0.75);
+  box-shadow:         5px 5px 5px 0px rgba(50, 50, 50, 0.75);
+  margin-bottom:17px;
+  margin-top:17px;
+  margin-left:10px;
+  text-align: center;
+  width: 90%;
+}
+
+#imgBigModal{
+  height: 650px;
+  width: 600px;
+  text-align: center;
+}
+
+#showPandRWorkflowDialog{
+  height: 625px;
+  width: 650px;
+}
+
+.homeTitle{
+  font-size: 1.4em;
+  color: #333;
+  padding-bottom: 14px;
+  padding-top: 5px;
+}
+
+.homeSubTitle{
+  font-size: 0.9em;
+  color: #333;
+  margin-bottom: 5px;
+  margin-top: 8px;
+}
+
+.role-content {
+  padding: 0px 5px;
+  color: #636363;
+}
+
+
+
+.deadlineCircle{
+  background: #5178D0;
+  border-radius: 4.8em;
+  -moz-border-radius: 4.8em;
+  -webkit-border-radius: 4.8em;
+  color: #ffffff;
+  display: inline-block;
+  font-weight: bold;
+  line-height: 4.6em;
+  margin-right: 15px;
+  text-align: center;
+  width: 4.6em; 
+}
+#deadlineLine { 
+border-left: 1px solid #ccc; 
+height:5px; 
+width:10px; 
+} 
+
 /*****************     PRE-PLANNING     ****************/
 
 .partnerListMsj {
@@ -1469,6 +1562,43 @@ table tr.row:hover{
   
 }
 
+.crossCuttingDescription{
+  position: relative;
+width: 280px;
+height: 110px;
+padding: 5px;
+background: #FFFFFF;
+-webkit-border-radius: 6px;
+-moz-border-radius: 6px;
+border-radius: 6px;
+border: #7F7F7F solid 1px;
+  text-align:justify;
+}
+.crossCuttingDescription:after{
+  content: '';
+position: absolute;
+border-style: solid;
+border-width: 20px 15px 20px 0;
+border-color: transparent #FFFFFF;
+display: block;
+width: 0;
+z-index: 1;
+left: -15px;
+top: 19px;
+}
+.crossCuttingDescription:before{
+  content: '';
+position: absolute;
+border-style: solid;
+border-width: 20px 15px 20px 0;
+border-color: transparent #7F7F7F;
+display: block;
+width: 0;
+z-index: 0;
+left: -16px;
+top: 19px;
+}
+
 /* Activity partners*/ 
 
 .activityPartner .filters-link {
@@ -1645,71 +1775,7 @@ margin-bottom: 8px;
   text-decoration: none;
   color: #444;
 }
-/*************** HOME ****************/
 
-/*  Home page*/
-
-#leftSide{
-  float: left;
-  padding: 0px 12px 0px 15px;
-  width: 61%;
-  vertical-align: top;
-}
-#rightSide{
-  float: right;
-  padding: 12px 0;
-  width: 35%;
-  vertical-align: top;
-}
-
-#pandrDescription{
-  text-align: justify;
-  margin-bottom: 10px;
-}
-
-#pandrDescription p {
-    color: #636363;
-}
-
-#imgPandR{
-  text-align: center;
-  padding: 10px 0px;
-}
-
-#imgModal{
-  width: 90%;
-  text-align: center;
-}
-
-#imgBigModal{
-  height: 650px;
-  width: 600px;
-  text-align: center;
-}
-
-#showPandRWorkflowDialog{
-  height: 625px;
-  width: 650px;
-}
-
-.homeTitle{
-  font-size: 1.4em;
-  color: #333;
-  padding-bottom: 14px;
-  padding-top: 5px;
-}
-
-.homeSubTitle{
-  font-size: 0.9em;
-  color: #333;
-  margin-bottom: 5px;
-  margin-top: 8px;
-}
-
-.role-content {
-  padding: 0px 5px;
-  color: #636363;
-}
 
 /* Customize the position, size, border color and background color.*/
 aside[id="slider-breadcrumbs"] {
