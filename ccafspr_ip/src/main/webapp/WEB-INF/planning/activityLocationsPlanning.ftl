@@ -167,7 +167,13 @@
       [#-- File upload --]
       <div class="uploadFileMessage">
         <div class="halfPartBlock left">
-          [@customForm.input name="excelTemplate" type="file" i18nkey="planning.activities.locations.uploadMessage" /]
+          [#if uploadFileName?has_content ]
+            [@s.text name="planning.activities.locations.alreadyUploaded" /] 
+            <a href="${locationsFileURL}" >${uploadFileName} </a>
+            [@customForm.input name="excelTemplate" type="file" i18nkey="planning.activities.locations.changeFileMessage" /]
+          [#else]
+            [@customForm.input name="excelTemplate" type="file" i18nkey="planning.activities.locations.uploadMessage" /]
+          [/#if]
         </div>
         <div class="halfPartBlock right">
           <a href="${baseUrl}/resources/locationTemplate/Activity_Location_Template.xlsx">

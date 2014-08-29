@@ -19,14 +19,15 @@ import org.cgiar.ccafs.ap.util.FileManager;
 import org.cgiar.ccafs.ap.util.SendMail;
 
 import java.io.File;
+import java.io.FilenameFilter;
 import java.util.ArrayList;
 import java.util.List;
 
 import com.google.inject.Inject;
+import org.apache.commons.io.FilenameUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-
 
 public class ActivityLocationsPlanningAction extends BaseAction {
 
@@ -80,6 +81,24 @@ public class ActivityLocationsPlanningAction extends BaseAction {
     return activityID;
   }
 
+  private File getActivityLocationsFile() {
+    String fileLocation = config.getUploadsBaseFolder() + config.getLocationsTemplateFolder();
+    File f = new File(fileLocation);
+
+    File[] matchingFiles = f.listFiles(new FilenameFilter() {
+
+      public boolean accept(File dir, String name) {
+        return name.startsWith(getLocationsFileName());
+      }
+    });
+
+    if (matchingFiles.length > 0) {
+      return matchingFiles[0];
+    } else {
+      return null;
+    }
+  }
+
   public List<Location> getCcafsSites() {
     return ccafsSites;
   }
@@ -112,20 +131,28 @@ public class ActivityLocationsPlanningAction extends BaseAction {
     return csvSaved;
   }
 
+
+  private String getLocationsFileName() {
+    return "ActivityLocationsTemplate-" + activity.getComposedId();
+  }
+
+
+  public String getLocationsFileURL() {
+    return config.getDownloadURL() + config.getLocationsTemplateFolder() + getUploadFileName();
+  }
+
+
   public List<LocationType> getLocationTypes() {
     return locationTypes;
   }
-
 
   public List<OtherLocation> getOtherLocationsSaved() {
     return otherLocationsSaved;
   }
 
-
   public Project getProject() {
     return project;
   }
-
 
   public List<Region> getRegions() {
     return regions;
@@ -135,8 +162,19 @@ public class ActivityLocationsPlanningAction extends BaseAction {
     return regionsSaved;
   }
 
+
   public int getRegionTypeID() {
     return APConstants.LOCATION_ELEMENT_TYPE_REGION;
+  }
+
+
+  public String getUploadFileName() {
+    File file = getActivityLocationsFile();
+    if (file == null) {
+      return "";
+    } else {
+      return file.getName();
+    }
   }
 
   @Override
@@ -180,7 +218,6 @@ public class ActivityLocationsPlanningAction extends BaseAction {
     return locationsOrganized;
   }
 
-
   @Override
   public void prepare() throws Exception {
     // parseActivityID();
@@ -210,7 +247,6 @@ public class ActivityLocationsPlanningAction extends BaseAction {
       }
     }
   }
-
 
   @Override
   public String save() {
@@ -269,9 +305,12 @@ public class ActivityLocationsPlanningAction extends BaseAction {
       // Check if user uploaded an excel file
       if (excelTemplate != null) {
         String fileLocation = config.getUploadsBaseFolder() + config.getLocationsTemplateFolder();
+        String fileExtension = FilenameUtils.getExtension(excelTemplateFileName);
+
         // First, move the uploaded file to the corresponding folder
-        FileManager.copyFile(excelTemplate, fileLocation + excelTemplateFileName);
-        LOG.trace("The locations template uploaded was moved to: " + fileLocation + excelTemplateFileName);
+        FileManager.copyFile(excelTemplate, fileLocation + getLocationsFileName() + "." + fileExtension);
+        LOG.trace("The locations template uploaded was moved to: " + fileLocation + getLocationsFileName()
+          + fileExtension);
         // Send a message with the file received
         sendNotificationMessage(fileLocation, excelTemplateFileName);
       }
