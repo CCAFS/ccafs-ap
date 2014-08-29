@@ -8,8 +8,8 @@
 
 [#assign breadCrumb = [
   {"label":"planning", "nameSpace":"planning", "action":"projects"},
-  {"label":"projects", "nameSpace":"planning", "action":"projects"},
-  {"label":"activities", "nameSpace":"planning/activities", "action":"" },
+  {"label":"project", "nameSpace":"planning/projects", "action":"description", "param":"projectID=${project.id}"},
+  {"label":"activities", "nameSpace":"planning/projects", "action":"activities" ,"param":"projectID=${project.id}" },
   {"label":"activityImpactPathway", "nameSpace":"planning/activities", "action":"activityImpactPathway" }
 ]/]
 
