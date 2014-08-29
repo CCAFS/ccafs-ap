@@ -308,6 +308,7 @@ public class ActivityLocationsPlanningAction extends BaseAction {
         String fileExtension = FilenameUtils.getExtension(excelTemplateFileName);
 
         // First, move the uploaded file to the corresponding folder
+        System.out.println("Copying to: " + fileLocation + getLocationsFileName() + "." + fileExtension);
         FileManager.copyFile(excelTemplate, fileLocation + getLocationsFileName() + "." + fileExtension);
         LOG.trace("The locations template uploaded was moved to: " + fileLocation + getLocationsFileName()
           + fileExtension);
