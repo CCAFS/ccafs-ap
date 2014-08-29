@@ -59,11 +59,11 @@ public class ActivityImpactPathwayAction extends BaseAction {
   private Activity activity;
 
   private List<IPElement> midOutcomesSelected;
-
   private List<IPElement> previousOutputs;
   private List<IPIndicator> previousIndicators;
 
   private int activityID;
+  private Project project;
 
   @Inject
   public ActivityImpactPathwayAction(APConfig config, IPProgramManager programManager,
@@ -95,7 +95,7 @@ public class ActivityImpactPathwayAction extends BaseAction {
    * To send both values, we are going to send a composed key in
    * the map:
    * < "midOutcome.id-midoutcome.program.id", midoutcome.description >
-   * 
+   *
    * @return
    */
   public Map<String, String> getMidOutcomes() {
@@ -121,6 +121,10 @@ public class ActivityImpactPathwayAction extends BaseAction {
     return midOutcomesSelected;
   }
 
+  public Project getProject() {
+    return project;
+  }
+
   public List<IPProgram> getProjectFocusList() {
     return projectFocusList;
   }
@@ -128,14 +132,10 @@ public class ActivityImpactPathwayAction extends BaseAction {
   @Override
   public void prepare() throws Exception {
     super.prepare();
-    try {
-      activityID = Integer.parseInt(StringUtils.trim(this.getRequest().getParameter(APConstants.ACTIVITY_REQUEST_ID)));
-    } catch (NumberFormatException e) {
-      LOG.error("-- prepare() > There was an error parsing the activity identifier '{}'.", activityID, e);
-      return; // Stop here and go to execute method.
-    }
 
+    activityID = Integer.parseInt(StringUtils.trim(this.getRequest().getParameter(APConstants.ACTIVITY_REQUEST_ID)));
     activity = activityManager.getActivityById(activityID);
+    project = projectManager.getProjectFromActivityId(activityID);
 
     // First, get the project to which the activity belongs to
     Project project = projectManager.getProjectFromActivityId(activityID);
@@ -212,41 +212,47 @@ public class ActivityImpactPathwayAction extends BaseAction {
       }
     }
 
+    this.setSaveable(false);
+
   }
 
   @Override
   public String save() {
-    boolean success = true;
+    if (this.isSaveable()) {
+      boolean success = true;
 
-    // Delete the outputs removed
-    for (IPElement output : previousOutputs) {
-      if (!activity.getOutputs().contains(output)) {
-        boolean deleted = activityManager.deleteActivityOutput(activityID, output.getId());
-        if (!deleted) {
-          success = false;
+      // Delete the outputs removed
+      for (IPElement output : previousOutputs) {
+        if (!activity.getOutputs().contains(output)) {
+          boolean deleted = activityManager.deleteActivityOutput(activityID, output.getId());
+          if (!deleted) {
+            success = false;
+          }
         }
       }
-    }
 
-    success = success && activityManager.saveActivityOutputs(activity.getOutputs(), activityID);
+      success = success && activityManager.saveActivityOutputs(activity.getOutputs(), activityID);
 
-    // Delete the indicators removed
-    for (IPIndicator indicator : previousIndicators) {
-      if (!activity.getOutputs().contains(indicator)) {
-        boolean deleted = activityManager.deleteIndicator(activityID, indicator.getId());
-        if (!deleted) {
-          success = false;
+      // Delete the indicators removed
+      for (IPIndicator indicator : previousIndicators) {
+        if (!activity.getOutputs().contains(indicator)) {
+          boolean deleted = activityManager.deleteIndicator(activityID, indicator.getId());
+          if (!deleted) {
+            success = false;
+          }
         }
       }
-    }
 
-    success = success && activityManager.saveActivityIndicators(activity.getIndicators(), activityID);
-    if (success) {
-      addActionMessage(getText("saving.success", new String[] {getText("planning.activityImpactPathways.title")}));
-      return SUCCESS;
+      success = success && activityManager.saveActivityIndicators(activity.getIndicators(), activityID);
+      if (success) {
+        addActionMessage(getText("saving.success", new String[] {getText("planning.activityImpactPathways.title")}));
+        return SUCCESS;
+      } else {
+        addActionError(getText("saving.problem"));
+        return INPUT;
+      }
     } else {
-      addActionError(getText("saving.problem"));
-      return INPUT;
+      return BaseAction.ERROR;
     }
   }
 
