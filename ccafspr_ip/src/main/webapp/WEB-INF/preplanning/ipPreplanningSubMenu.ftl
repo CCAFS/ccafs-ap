@@ -53,6 +53,7 @@
 	<div id="ipGraph-buttonsGroup">
 	  <button id="ipGraph-btnPrint" class="ipGraph-btn" title="Print" disabled></button>
 	  <button id="ipGraph-btnMax" class="ipGraph-btn" title="Fullscreen" disabled></button>
+	  <a id="download" style="display:none">Download as image</a>
 	  [#--<button id="ipGraph-btnMin" style="display:none">Min</button>--]
 	</div>
 </div>
