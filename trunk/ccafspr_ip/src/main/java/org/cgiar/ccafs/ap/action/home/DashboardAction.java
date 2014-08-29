@@ -141,7 +141,6 @@ public class DashboardAction extends BaseAction {
           activities.add(activityManager.getActivityById(activityId));
         }
       }
-
     }
     if (projects != null) {
       activities = activityManager.getActivitiesByProject(projects.get(0).getId());

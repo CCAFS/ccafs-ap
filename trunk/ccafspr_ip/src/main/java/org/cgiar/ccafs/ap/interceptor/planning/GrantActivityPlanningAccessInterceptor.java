@@ -70,8 +70,8 @@ public class GrantActivityPlanningAccessInterceptor extends AbstractInterceptor 
       // Admins are able to see all fields editable and save any information.
       baseAction.setFullEditable(true);
       baseAction.setSaveable(true);
-    } else if (user.isFPL() || user.isRPL()) {
-      // If the user is a FPL or RPL, let's figure out if he/she can have the enough privileges to edit the
+    } else if (user.isFPL() || user.isRPL() || user.isCU()) {
+      // If the user is a FPL, RPL or CU, let's figure out if he/she can have the enough privileges to edit the
       // activity.
       List<Integer> idsAllowedToEdit = activityManager.getActivityIdsEditable(user);
       if (idsAllowedToEdit.contains(new Integer(activityID))) {

@@ -69,7 +69,7 @@ public class GrantProjectPlanningAccessInterceptor extends AbstractInterceptor {
         // Admins are able to see all fields editable and save any information.
         baseAction.setFullEditable(true);
         baseAction.setSaveable(true);
-      } else if (user.isFPL() || user.isRPL()) {
+      } else if (user.isFPL() || user.isRPL() || user.isCU()) {
         // If the user is a FPL or RPL, let's figure out if he/she can have the enough privileges to edit the
         // project.
         List<Integer> idsAllowedToEdit = projectManager.getProjectIdsEditables(user);

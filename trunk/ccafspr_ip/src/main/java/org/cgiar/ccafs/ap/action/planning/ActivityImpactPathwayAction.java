@@ -211,9 +211,6 @@ public class ActivityImpactPathwayAction extends BaseAction {
         activity.getOutputs().clear();
       }
     }
-
-    this.setSaveable(false);
-
   }
 
   @Override
