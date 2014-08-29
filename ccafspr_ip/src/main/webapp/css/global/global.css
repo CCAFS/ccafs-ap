@@ -1143,10 +1143,11 @@ h3.contentSubTitle {
 }
 
 #deadlineGraph{
-  margin-bottom:18px;
-  margin-top:10px;
-  text-align:center;
-  width:100%;
+  margin-bottom: 18px;
+  margin-top: 10px;
+  text-align: center;
+  width: 50%;
+  margin-left: 150px;
 }
 
 #deadlineCircle1{
