@@ -7,9 +7,11 @@ var count = {};
 var present = {};
 var ycount = {};
 var yc = 0;
+var yco = {};
 var graphStarted = false;
 var fullImpact = false;
-var cutLine = 1000;
+var cutLine = 20;
+var cutLinePx = 1024;
 var cys;
 
 function initGraph(programID){
@@ -27,10 +29,7 @@ function initGraph(programID){
   
   $("#ipGraph-btnFullimpact").on("click", function(e){
 	  $( "#ipGraph-content" ).empty();
-	  elements['nodes'] = [];
-	  elements['edges'] = [];
-	  x = {};	 
-	  count = {};
+	  reinitCytos();
 	  fullImpact = true;
 	  $("#ipGraph-btnSingleimpact").show();
 	  $("#ipGraph-btnFullimpact").hide();
@@ -44,10 +43,7 @@ function initGraph(programID){
   
   $("#ipGraph-btnSingleimpact").on("click", function(e){
 	  $( "#ipGraph-content" ).empty();
-	  elements['nodes'] = [];
-	  elements['edges'] = [];
-	  x = {};
-	  count = {};
+	  reinitCytos();
 	  fullImpact = false;
 	  $("#ipGraph-btnFullimpact").show();
 	  $("#ipGraph-btnSingleimpact").hide();
@@ -87,12 +83,7 @@ function initGraph(programID){
 	    	  $('#ipGraph-btnPrint').attr('disabled','disabled');
 	    	  $( "#dialog-message" ).empty();
 	    	  $( "<div id=\"loading-dialog-message\" style=\"display:none;position:absolute; width:100%; height:100%;top: 45%;\"><img style=\"display: block; margin: 0 auto;\" src=\"../images/global/loading.gif\" alt=\"Loader\" /></div>" ).appendTo("#dialog-message");
-	    	  elements['nodes'] = [];
-	    	  elements['edges'] = [];
-	    	  x = {};	 
-	    	  count = {};
-	    	  ycount = {};
-	    	  yc = 0;
+	    	  reinitCytos();
 	    	  if (programID && !fullImpact) {
     	        callCytos("../json/json/ipComponents.do?programID=" + programID, "ipGraph-content");
     	      } else {
@@ -100,12 +91,7 @@ function initGraph(programID){
     	      }
 	      }
 	    });
-	  elements['nodes'] = [];
-	  elements['edges'] = [];
-	  x = {};	 
-	  count = {};
-	  ycount = {};
-	  yc = 0;
+	  reinitCytos();
 	  //$("#loading-"+contentDiv).show();
 	  if (programID && !fullImpact) {
         callCytos("../json/json/ipComponents.do?programID=" + programID, "dialog-message");
@@ -331,6 +317,7 @@ function callCytos(url,contentDiv) {
 	    	});
 	    	//}
 	    }
+	    
 	    cys = $('#'+contentDiv).cytoscape('get');
 
 	    function addElem(elem) {
@@ -375,7 +362,8 @@ function callCytos(url,contentDiv) {
 		//	          console.log(outFirst + ' - ' + lastpos + ' / 2 = ' + diff+ ' t:'+type);
 			          position = lastEles[0].position('x');
 			          cys.elements("node[nodeType=" + i + "][translate="+j+"]").each(function(k, ele) {
-			        	  if ((k)%cutLine==0) {
+			        	  //if (position >= cutLinePx) {
+		        		  if ((k)%cutLine==0) {
 				            	//y+=100;
 				            	position = lastEles[0].position('x');
 				            }
@@ -392,6 +380,8 @@ function callCytos(url,contentDiv) {
 	      	}
 	      }
 	    }
+	    
+	   
 
 	    function removeByEdges(edges, source) {
 	      if (edges) {
@@ -463,24 +453,29 @@ function callCytos(url,contentDiv) {
 		if (!ycount[idType+'.'+trans]) {
 			 ycount[idType+'.'+trans] = 0;
 		}
+		
+		if (!yco[idType+'.'+trans]) {
+			 yco[idType+'.'+trans] = yc;
+		}
 		 
-		 
-		 if (ycount[idType+'.'+trans]%cutLine==0) {
-			yc+=100;
+		//if (x[idType+'.'+trans] >= cutLinePx) {
+		if (ycount[idType+'.'+trans]%cutLine==0) {
+			yco[idType+'.'+trans] +=100;
 			x[idType+'.'+trans] = 100;
+			yc+=100;
 		 }
 		 if (!x[idType+'.'+trans])
 			x[idType+'.'+trans] = 100;
 		 if (idType == 1) {
 		
 		} else if (idType == 2) {
-			y = 300 + yc;
+			y = 300 + yco[idType+'.'+trans];
 		} else if (idType == 3) {
-			y = 400+ yc;
+			y = 400+ yco[idType+'.'+trans];
 		} else if (idType == 4) {
-			y = 600+ yc;
+			y = 600+ yco[idType+'.'+trans];
 		} else if (idType == 5) {
-			y = 800+ yc;
+			y = 800+ yco[idType+'.'+trans];
 		}
 		if (trans > 0) {		
 			y += 100;
@@ -535,23 +530,15 @@ function callCytos(url,contentDiv) {
 	function printCyto() {
 		$('#download').attr('href',cys.png({full:true}));
     	$('#download').attr('download','graph.png');
-    	//window.location.href = cy.png({full:true});
-    	//$('#download').trigger("click");
     	$('#download')[0].click();
-	  /*var dataUrl = document.querySelector('[data-id="layer4-node"]').toDataURL();
-	  var windowContent = '';
-	  windowContent += '<html>'
-	  windowContent += '<head><meta name="viewport" content="width=device-width, minimum-scale=0.1"><title>Print graph</title></head>';
-	  windowContent += '<body>'
-	  windowContent += '<img src="' + dataUrl + '">';
-	  windowContent += '</body>';
-	  windowContent += '</html>';
-	  var printWin = window.open(dataUrl, '', 'width=700,height=500');
-	  printWin.document.open();
-	  printWin.document.write(windowContent);
-	  printWin.document.close();
-	  printWin.focus();
-	  printWin.print();
-	  printWin.close();*/
-		  //return false;
 	}
+	
+	 function reinitCytos() {
+	    	elements['nodes'] = [];
+	    	elements['edges'] = [];
+	    	x = {};	 
+	    	count = {};
+	    	ycount = {};
+	    	yco = {};
+	    	yc = 0;
+	    }
