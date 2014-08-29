@@ -8,7 +8,7 @@
 
 [#assign breadCrumb = [
   {"label":"planning", "nameSpace":"planning", "action":"projects"},
-  {"label":"projects", "nameSpace":"planning", "action":"projects"},
+  {"label":"project", "nameSpace":"planning/projects", "action":"description", "param":"projectID=${project.id}"},
   {"label":"activities", "nameSpace":"planning/projects", "action":"activities" ,"param":"projectID=${project.id}" },
   {"label":"activityDeliverables", "nameSpace":"planning/activities", "action":"activityDeliverables" }
 ]/]
@@ -37,7 +37,7 @@
         </p>
       [/#if]
       <h1 class="contentTitle">
-        [@s.text name="planning.deliverables" /] 
+        [@s.text name="planning.activity" /]: ${activity.composedId} - [@s.text name="planning.deliverables" /] 
       </h1>
       [#if outputs?size > 0]
         [#if activity.deliverables?size > 0]

@@ -8,7 +8,7 @@
 
 [#assign breadCrumb = [
   {"label":"planning", "nameSpace":"planning", "action":"projects"},
-  {"label":"projects", "nameSpace":"planning", "action":"projects"},
+  {"label":"project", "nameSpace":"planning/projects", "action":"description", "param":"projectID=${project.id}"},
   {"label":"activities", "nameSpace":"planning/projects", "action":"activities" ,"param":"projectID=${project.id}" },
   {"label":"activityPartners", "nameSpace":"planning/activities", "action":"activityPartners" }
 ]/]
@@ -38,7 +38,7 @@
         </p>
       [/#if]
       <h1 class="contentTitle">
-        [@s.text name="planning.activityPartner.title" /] 
+        [@s.text name="planning.activity" /]: ${activity.composedId} - [@s.text name="planning.activityPartner.title" /] 
       </h1>
       [#-- Display message in case there are not Activity Partners and the user has not enough privileges to edit --]
       [#if !saveable && activity.activityPartners?size==0]
