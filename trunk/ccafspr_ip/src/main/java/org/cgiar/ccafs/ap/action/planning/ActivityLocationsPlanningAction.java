@@ -112,7 +112,6 @@ public class ActivityLocationsPlanningAction extends BaseAction {
     return csvSaved;
   }
 
-
   public List<LocationType> getLocationTypes() {
     return locationTypes;
   }
@@ -127,6 +126,7 @@ public class ActivityLocationsPlanningAction extends BaseAction {
     return project;
   }
 
+
   public List<Region> getRegions() {
     return regions;
   }
@@ -137,6 +137,16 @@ public class ActivityLocationsPlanningAction extends BaseAction {
 
   public int getRegionTypeID() {
     return APConstants.LOCATION_ELEMENT_TYPE_REGION;
+  }
+
+  @Override
+  public String next() {
+    String result = save();
+    if (result.equals(BaseAction.SUCCESS)) {
+      return BaseAction.NEXT;
+    } else {
+      return result;
+    }
   }
 
   /**

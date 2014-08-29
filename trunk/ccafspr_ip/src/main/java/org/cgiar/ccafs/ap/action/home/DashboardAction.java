@@ -85,31 +85,36 @@ public class DashboardAction extends BaseAction {
 
       // ----- Listing Projects -----
 
-      // If user is admin.
+      // If user is an Admin.
       if (this.getCurrentUser().isAdmin()) {
         // Show all projects.
         projects = projectManager.getAllProjects();
       } else if (this.getCurrentUser().isFPL() || this.getCurrentUser().isFPL() || this.getCurrentUser().isCU()) {
-        // Getting the list of projects that belongs to the User program or where they are assigned as PO.
+        // Getting the list of projects that belongs to the User program or where he is assigned as PO.
         projects = new ArrayList<>();
         List<Integer> ids = projectManager.getProjectIdsEditables(this.getCurrentUser());
         for (Integer projectId : ids) {
           projects.add(projectManager.getProject(projectId));
         }
 
-        // In addition, add the projects where they are assigned as Project Leader.
+        // In addition, add the projects where the user is assigned as Project Leader.
         List<Integer> idsPL = projectManager.getPLProjectIds(this.getCurrentUser());
         for (Integer projectId : idsPL) {
-          // Do not add projects that are alraedy added.
+          // Do not add projects that are already added.
           if (!ids.contains(idsPL)) {
             projects.add(projectManager.getProject(projectId));
           }
         }
 
       } else if (this.getCurrentUser().isPL()) {
-        List<Integer> ids = projectManager.getPLProjectIds(this.getCurrentUser());
-        // TODO
+        // Getting projects where the user is assigned as PL.
+        List<Integer> idsPL = projectManager.getPLProjectIds(this.getCurrentUser());
+        for (Integer projectId : idsPL) {
+          // Do not add projects that are already added.
+          projects.add(projectManager.getProject(projectId));
+        }
       }
+      // If user is AL or Guest, he/she won't be able to see any project listed.
     }
     if (projects != null) {
       activities = activityManager.getActivitiesByProject(projects.get(0).getId());
