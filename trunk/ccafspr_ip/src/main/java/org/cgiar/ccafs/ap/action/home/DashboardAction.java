@@ -46,11 +46,9 @@ public class DashboardAction extends BaseAction {
   private Project project;
   private Activity activity;
 
-
   // Manager
   private ProjectManager projectManager;
   private ActivityManager activityManager;
-
 
   @Inject
   public DashboardAction(APConfig config, ProjectManager projectManager, ActivityManager activityManager) {
@@ -89,7 +87,7 @@ public class DashboardAction extends BaseAction {
       if (this.getCurrentUser().isAdmin()) {
         // Show all projects.
         projects = projectManager.getAllProjects();
-      } else if (this.getCurrentUser().isFPL() || this.getCurrentUser().isFPL() || this.getCurrentUser().isCU()) {
+      } else if (this.getCurrentUser().isFPL() || this.getCurrentUser().isRPL() || this.getCurrentUser().isCU()) {
         // Getting the list of projects that belongs to the User program or where he is assigned as PO.
         projects = new ArrayList<>();
         List<Integer> ids = projectManager.getProjectIdsEditables(this.getCurrentUser());
@@ -109,12 +107,16 @@ public class DashboardAction extends BaseAction {
       } else if (this.getCurrentUser().isPL()) {
         // Getting projects where the user is assigned as PL.
         List<Integer> idsPL = projectManager.getPLProjectIds(this.getCurrentUser());
+        projects = new ArrayList<>();
         for (Integer projectId : idsPL) {
           // Do not add projects that are already added.
           projects.add(projectManager.getProject(projectId));
         }
       }
       // If user is AL or Guest, he/she won't be able to see any project listed.
+
+      // ----- Listing Activities -----
+      // TODO HT
     }
     if (projects != null) {
       activities = activityManager.getActivitiesByProject(projects.get(0).getId());

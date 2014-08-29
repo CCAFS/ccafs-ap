@@ -1,5 +1,5 @@
 [#ftl]
-[#assign title = "Welcome to CCAFS Activity Planning" /]
+[#assign title = "Welcome to CCAFS P&R" /]
 [#assign globalLibs = ["jquery", "jreject"] /]
 [#assign customJS = ["${baseUrl}/js/home/login.js"] /]
 [#assign currentSection = "home" /]
