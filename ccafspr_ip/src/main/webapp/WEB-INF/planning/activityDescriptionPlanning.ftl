@@ -128,11 +128,14 @@
           [@customForm.input name="activity.endDate" type="text" i18nkey="planning.activityDescription.endDate" required=true /]
         </div>
         [#-- Cross Cutting --]
-        <div id="activityCrossCutting" class="thirdPartBlock">
+        <div id="activityCrossCutting" class="thirdPartBlock" ">
           <h6>[@s.text name="planning.activityDescription.crossCutting" /]</h6>
           <div class="checkboxGroup">
             [@s.checkboxlist name="activity.crossCuttings" list="ipCrossCuttings" listKey="id" listValue="name" cssClass="checkbox" value="crossCuttingIds" /]
           </div>
+        </div>
+        <div id="activityCrossCuttingDescription" class="halfPartBlock">
+          <div id="crossCuttingDesc" class="crossCuttingDescription" >[@s.text name="planning.activityDescription.crossCutting.description" /]</div>
         </div>
       </div> <!-- End description .borderBox-->
       [#if saveable]

@@ -16,7 +16,7 @@
     <h1>[@s.text name="home.dashboard.title" /]</h1>
 
     [#-- Home introduction  
-    <p> [@s.text name="home.home.introduction" /] </p>
+    <p> [@s.text name="home.dashboard.introduction" /] </p>
     
     <div id="loginFormContainer">
       <p class="alreadyLogged">[@s.text name="home.login.alreadyLogged" /]</p>
@@ -62,40 +62,37 @@
       [#-- Deadline --]
       <div id="deadline">
         <div id="deadlineTitle"  class="homeTitle">
-          <b>[@s.text name="home.home.deadline.title" /]</b>
+          <b>[@s.text name="home.dashboard.deadline.title" /]</b>
         </div>
         <div id="deadlineGraph">
+          <span class="deadlineCircle">1</span>
+          <div id="deadlineLine"></div>
+          <span class="deadlineCircle">2</span>
+          <div id="deadlineLine"></div>
+          <span class="deadlineCircle">3</span>
           <div id="preplanning" class"active step">
-            [@s.text name="home.home.deadline.preplanning" /] 
+            [@s.text name="home.dashboard.deadline.preplanning" /] 
           </div>  
           <div id="planning" class"step">
-            [@s.text name="home.home.deadline.planning" /] 
+            [@s.text name="home.dashboard.deadline.planning" /] 
           </div> 
           <div id="reporting" class"step">
-            [@s.text name="home.home.deadline.reporting" /]
+            [@s.text name="home.dashboard.deadline.reporting" /]
           </div> 
         </div>
         <div id="deadlineDates">
           <table>
             <tr>
-              <td>[@s.text name="home.home.deadline.center" /]</td>
-              <td>31 August</td>
-              <td>Remaining 10 days</td>
+              <td>[@s.text name="home.dashboard.deadline.preplanning" /] LAM</td>
+              <td>1st September</td>
             </tr>
             <tr>
-              <td>[@s.text name="home.home.role.rpl" /]</td>
-              <td>15th September</td>
-              <td>Remaining 25 days</td>
+              <td>[@s.text name="home.dashboard.deadline.planning" /] LAM</td>
+              <td>2nd - 6th September</td>
             </tr>
             <tr>
-              <td>[@s.text name="home.home.role.fpl" /]</td>
-              <td>24th September</td>
-              <td>Remaining 30 days</td>
-            </tr>
-            <tr>
-              <td>[@s.text name="home.home.role.cu" /]</td>
-              <td>24th September</td>
-              <td>Remaining 34 days</td>
+              <td>[@s.text name="home.dashboard.deadline.planning" /] Others</td>
+              <td>19th September</td>
             </tr>
           </table>
         </div>
@@ -115,66 +112,66 @@
         </div>
       </div>
       [#-- End P&R Description --]
-      [#-- Roles --]
+      [#-- Roles
       <div id="roles">
         <div id="roleTitle" class="homeTitle">
-          <b>[@s.text name="home.home.roles.title" /]</b>
+          <b>[@s.text name="home.dashboard.roles.title" /]</b>
         </div>
         <div id="slider"> 
             <div id="slide1" data-slidr="slide1" class="slide">
               <div id="title1" class="homeSubTitle">
-                <h6>[@s.text name="home.home.role.rpl" /]</h6>
+                <h6>[@s.text name="home.dashboard.role.rpl" /]</h6>
               </div>
               <div id="content1" class="role-content">
-                [@s.text name="home.home.role.rpl.description" /]
+                [@s.text name="home.dashboard.role.rpl.description" /]
               </div>
             </div>
             <div id="slide2" data-slidr="slide2"  class="slide">
               <div id="title2" class="homeSubTitle">
-                <h6>[@s.text name="home.home.role.fpl" /]</h6>
+                <h6>[@s.text name="home.dashboard.role.fpl" /]</h6>
               </div>
               <div id="content2" class="role-content">
-                [@s.text name="home.home.role.fpl.description" /]
+                [@s.text name="home.dashboard.role.fpl.description" /]
               </div>
             </div>
             <div id="slide3" data-slidr="slide3"  class="slide">
               <div id="title3" class="homeSubTitle">
-                <h6>[@s.text name="home.home.role.pl" /]</h6>
+                <h6>[@s.text name="home.dashboard.role.pl" /]</h6>
               </div>
               <div id="content3" class="role-content">
-                [@s.text name="home.home.role.pl.description" /]
+                [@s.text name="home.dashboard.role.pl.description" /]
               </div>
             </div>
             <div id="slide4" data-slidr="slide4"  class="slide">
               <div id="title4" class="homeSubTitle">
-                <h6>[@s.text name="home.home.role.po" /]</h6>
+                <h6>[@s.text name="home.dashboard.role.po" /]</h6>
               </div>
               <div id="content4" class="role-content">
-                [@s.text name="home.home.role.po.description" /]
+                [@s.text name="home.dashboard.role.po.description" /]
               </div>
             </div>
             <div id="slide5" data-slidr="slide5"  class="slide">
               <div id="title5" class="homeSubTitle">
-                <h6>[@s.text name="home.home.role.cu" /]</h6>
+                <h6>[@s.text name="home.dashboard.role.cu" /]</h6>
               </div>
               <div id="content5" class="role-content">
-                [@s.text name="home.home.role.cu.description" /]
+                [@s.text name="home.dashboard.role.cu.description" /]
               </div>
             </div>
             <div id="slide6" data-slidr="slide6"  class="slide">
               <div id="title6" class="homeSubTitle">
-                <h6>[@s.text name="home.home.role.al" /]</h6>
+                <h6>[@s.text name="home.dashboard.role.al" /]</h6>
               </div>
               <div id="content6" class="role-content">
-                [@s.text name="home.home.role.al.description" /]
+                [@s.text name="home.dashboard.role.al.description" /]
               </div>
             </div>
             <div id="slide7" data-slidr="slide7"  class="slide">
               <div id="title7" class="homeSubTitle">
-                <h6>[@s.text name="home.home.role.cp" /]</h6>
+                <h6>[@s.text name="home.dashboard.role.cp" /]</h6>
               </div>
               <div id="content7" class="role-content">
-                [@s.text name="home.home.role.cp.description" /]
+                [@s.text name="home.dashboard.role.cp.description" /]
               </div> 
             </div>  
           </div><!-- End Content Slider-->
@@ -183,10 +180,10 @@
          
       </div>
       [#-- End Roles --]
-      [#-- General Announcements --]
+      [#-- General Announcements 
       <div id="generalAnnouncements">
         <div id="announcesTitle"  class="homeTitle">
-          <b>[@s.text name="home.home.generalannouncements" /]</b>
+          <b>[@s.text name="home.dashboard.generalannouncements" /]</b>
         </div>
         <div id="announces">
         </div>
