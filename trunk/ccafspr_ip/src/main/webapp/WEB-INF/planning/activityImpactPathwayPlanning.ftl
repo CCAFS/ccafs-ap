@@ -38,7 +38,7 @@
     [/#if]
     
     <h1 class="contentTitle">
-      [@s.text name="planning.activityImpactPathways.title" /] 
+      [@s.text name="planning.activity" /]: ${activity.composedId} - [@s.text name="planning.activityImpactPathways.title" /] 
     </h1> 
     <div class="borderBox">
       <p>

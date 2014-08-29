@@ -8,7 +8,7 @@
 
 [#assign breadCrumb = [
   {"label":"planning", "nameSpace":"planning", "action":"projects"},
-  {"label":"projects", "nameSpace":"planning", "action":"projects"},
+  {"label":"project", "nameSpace":"planning/projects", "action":"description", "param":"projectID=${project.id}"},
   {"label":"activities", "nameSpace":"planning/activities", "action":"" },
   {"label":"activityIpOtherContributions", "nameSpace":"planning/activities", "action":"" }
 ]/]
@@ -31,7 +31,7 @@
   [#if !saveable]
     <p class="readPrivileges">
       [@s.text name="saving.read.privileges"]
-        [@s.param][@s.text name="planning.impactPathways.otherContributions.title"/][/@s.param]
+        [@s.text name="planning.activity" /]: ${activity.composedId} - [@s.param][@s.text name="planning.impactPathways.otherContributions.title"/][/@s.param]
       [/@s.text]
     </p>
   [/#if]
