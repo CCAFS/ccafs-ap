@@ -58,8 +58,26 @@
           
             [#-- Midoutcome title --]
             <div class="midOutcomeTitle">
+              <input id="midOutcomeID" value="${midOutcome.id}" type="hidden" />
               <h6>[@s.text name="planning.activityImpactPathways.outcome2019" /]</h6>
               <p class="description"> ${midOutcome.description} </p>
+            </div>
+            
+            [#-- Major Output Group list --]
+            <div class="mogs">
+              <h6>[@s.text name="planning.activityImpactPathways.mogs" /]</h6>
+              [#if action.getMidOutcomeOutputs(midOutcome.id)?has_content]
+                [#assign outputs = action.getMidOutcomeOutputs(midOutcome.id)]
+                <div class="mogsBlock">
+                  [#list outputs as output]
+                      <div class="mog">
+                        <input name="activity.outputs.contributesTo[0].id" value="${midOutcome.id}"  type="hidden" />
+                        <input type="checkbox" name="outputs.id" value="${output.id}" [#if activity.containsOutput(output.id)] checked [/#if] />
+                        <label> ${output.description}</label>
+                      </div>
+                  [/#list]
+                </div>
+              [/#if]
             </div>
             
             [#-- Indicators list --]
@@ -68,49 +86,43 @@
               [#if midOutcome.indicators?has_content]
               <div class="indicatorsBlock">
                 [#list midOutcome.indicators as indicator]
-                      [#if activity.indicators?has_content] 
-                        [#list activity.indicators as activityIndicator]
-                          [#if activityIndicator.parent.id == indicator.id]
-                          <div class="midOutcomeIndicator" >
-                            <input type="hidden" disabled name="activity.indicators[${activityIndicator_index}].id" value="${activityIndicator.id}" />
-                            <input type="checkbox" name="activity.indicators[${activityIndicator_index}].parent.id" value="${activityIndicator.parent.id}" checked />
-                            <label class="indicatorDescription">${activityIndicator.parent.description}</label>
-                            <div class="checkboxGroup vertical indicatorNarrative" >
-                              [#-- Target value --]
-                              <label> <h6>[@s.text name="planning.activityImpactPathways.targetValue" /]</h6></label>
-                              <input type="text" name="activity.indicators[${activityIndicator_index}].target" value="${activityIndicator.target}" >
-                              
-                              <label> <h6>[@s.text name="planning.activityImpactPathways.targetNarrative" /]</h6></label>
-                              <textarea name="activity.indicators[${activityIndicator_index}].description" >${activityIndicator.description}</textarea>
-                            </div> 
-                          </div>  
-                          [#else]
-                          <div class="midOutcomeIndicator" >
-                            <input type="hidden" disabled name="activity.indicators[${activityIndicator_index}].id" value="-1" />
-                            <input type="checkbox" name="activity.indicators[${activityIndicator_index}].parent.id" value="${activityIndicator.parent.id}" />
-                            <label class="indicatorDescription">${activityIndicator.parent.description}</label> 
-                            <div class="checkboxGroup vertical indicatorNarrative" style="display:none">
-                              [#-- Target value --]
-                              <label>  <h6>[@s.text name="planning.activityImpactPathways.targetValue" /]</h6></label>
-                              <input type="text" name="activity.indicators[${activityIndicator_index}].target" >
-                              
-                              <label>  <h6>[@s.text name="planning.activityImpactPathways.targetNarrative" /]</h6></label>
-                              <textarea name="activity.indicators[${activityIndicator_index}].description" > </textarea>
-                            </div> 
-                          </div>
-                          [/#if]
-                        [/#list]
-                      [/#if] 
+                  [#if activity.getIndicatorByParent(indicator.id)?has_content]
+                    [#assign activityIndicator = activity.getIndicatorByParent(indicator.id) /]
+                    <div class="midOutcomeIndicator" >
+                      <input type="hidden" disabled name="activity.indicators.id" value="${activityIndicator.id}" />
+                      <input type="checkbox" name="activity.indicators.parent.id" value="${indicator.id}" checked />
+                      <label class="indicatorDescription">${indicator.description}</label>
+                      <div class="checkboxGroup vertical indicatorNarrative" >
+                        [#-- Target value --]
+                        <label> <h6>[@s.text name="planning.activityImpactPathways.targetValue" /]</h6></label>
+                        <input type="text" name="activity.indicators.target" value="${activityIndicator.target}" >
+                        
+                        <label> <h6>[@s.text name="planning.activityImpactPathways.targetNarrative" /]</h6></label>
+                        <textarea name="activity.indicators.description" >${activityIndicator.description}</textarea>
+                      </div> 
+                    </div>  
+                  [#else]
+                    <div class="midOutcomeIndicator" >
+                      <input type="hidden" disabled name="indicators.id" value="-1" />
+                      <input type="checkbox" name="activity.indicators.parent.id" value="${indicator.id}" />
+                      <label class="indicatorDescription">${indicator.description}</label> 
+                      
+                      <div class="checkboxGroup vertical indicatorNarrative" style="display:none">
+                        [#-- Target value --]
+                        <label>  <h6>[@s.text name="planning.activityImpactPathways.targetValue" /]</h6></label>
+                        <input type="text" name="activity.indicators.target" >
+                        
+                        <label>  <h6>[@s.text name="planning.activityImpactPathways.targetNarrative" /]</h6></label>
+                        <textarea name="activity.indicators.description" ></textarea>
+                      </div> 
+                      
+                    </div>
+                  [/#if]
                 [/#list]  
               </div>
               [/#if]
               </div>
           
-            [#-- Major Output Group list --]
-            <div class="mogs">
-              <h6>[@s.text name="planning.activityImpactPathways.mogs" /]</h6>
-            </div>
-            
           </div>
         [/#list]
       [/#if]
@@ -140,8 +152,21 @@
 
   [#-- Midoutcome title --]
   <div class="midOutcomeTitle">
+    <input id="midOutcomeID" value="" type="hidden" />
     <h6>[@s.text name="planning.activityImpactPathways.outcome2019" /]</h6>
     <p class="description"></p>
+  </div>
+  
+ [#-- Major Output Group template --]
+  <div class="mogs">
+    <h6>[@s.text name="planning.activityImpactPathways.mogs" /]</h6>
+    <div class="mogsBlock">
+      <div class="mog" id="mogTemplate">
+        <input name="contributesTo[0].id" type="hidden" />
+        <input type="checkbox" name="activity.outputs" />
+        <label></label>
+      </div>
+    </div>
   </div>
   
   [#-- Indicators template --]
@@ -159,23 +184,12 @@
           <input type="text" name="activity_indicator_target" >
           
           <label> <h6>[@s.text name="planning.activityImpactPathways.targetNarrative" /]</h6></label>
-          <textarea name="activity_indicator_description" > </textarea>
+          <textarea name="activity_indicator_description" ></textarea>
         </div>
       </div>
     </div>
   </div>
 
-  [#-- Major Output Group template --]
-  <div class="mogs">
-    <h6>[@s.text name="planning.activityImpactPathways.mogs" /]</h6>
-    <div class="mogsBlock">
-      <div class="mog" id="mogTemplate">
-        <input type="checkbox" name="activity.outputs" />
-        <label></label>
-      </div>
-    </div>
-  </div>
-  
 </div>
 
 [#include "/WEB-INF/global/pages/footer.ftl"]

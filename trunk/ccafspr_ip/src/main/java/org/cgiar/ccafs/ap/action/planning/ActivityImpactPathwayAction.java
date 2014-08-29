@@ -13,13 +13,6 @@
  *****************************************************************/
 package org.cgiar.ccafs.ap.action.planning;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
-import java.util.TreeMap;
-
-import com.google.inject.Inject;
-import org.apache.commons.lang3.StringUtils;
 import org.cgiar.ccafs.ap.action.BaseAction;
 import org.cgiar.ccafs.ap.config.APConfig;
 import org.cgiar.ccafs.ap.config.APConstants;
@@ -33,6 +26,14 @@ import org.cgiar.ccafs.ap.data.model.IPElementType;
 import org.cgiar.ccafs.ap.data.model.IPIndicator;
 import org.cgiar.ccafs.ap.data.model.IPProgram;
 import org.cgiar.ccafs.ap.data.model.Project;
+
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
+import java.util.TreeMap;
+
+import com.google.inject.Inject;
+import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -80,6 +81,11 @@ public class ActivityImpactPathwayAction extends BaseAction {
 
   public int getActivityID() {
     return activityID;
+  }
+
+  public List<IPElement> getMidOutcomeOutputs(int midOutcomeID) {
+    IPElement midOutcome = new IPElement(midOutcomeID);
+    return ipElementManager.getIPElementsByParent(midOutcome, APConstants.ELEMENT_RELATION_CONTRIBUTION);
   }
 
   /**
@@ -159,7 +165,8 @@ public class ActivityImpactPathwayAction extends BaseAction {
     midOutcomesSelected = new ArrayList<>();
 
     // First check the midOutcomes selected according to the indicators
-    for (IPElement midOutcome : midOutcomes) {
+    for (int i = 0; i < midOutcomes.size(); i++) {
+      IPElement midOutcome = midOutcomes.get(i);
       if (midOutcome.getIndicators() != null) {
         for (IPIndicator indicator : activity.getIndicators()) {
           if (midOutcome.getIndicators().contains(indicator.getParent())) {
@@ -167,6 +174,7 @@ public class ActivityImpactPathwayAction extends BaseAction {
             // Check if the midOutcome is not already present
             if (!midOutcomesSelected.contains(midOutcome)) {
               midOutcomesSelected.add(midOutcome);
+              midOutcomes.remove(i);
             }
           }
         }
@@ -175,20 +183,14 @@ public class ActivityImpactPathwayAction extends BaseAction {
 
     // First check the midOutcomes selected according to the outputs
     for (IPElement output : activity.getOutputs()) {
-      IPElement midOutcome = output.getContributesTo().get(0);
-      if (!midOutcomesSelected.contains(midOutcome)) {
-        midOutcomesSelected.add(midOutcome);
+      int index = midOutcomes.indexOf(output.getContributesTo().get(0));
+      if (index != -1) {
+        IPElement element = midOutcomes.get(index);
+        if (!midOutcomesSelected.contains(element)) {
+          midOutcomesSelected.add(element);
+          midOutcomes.remove(index);
+        }
       }
-    }
-
-    // Get the information of the midOutcomes selected
-
-    if (!midOutcomesSelected.isEmpty()) {
-      String[] midOutcomeIds = new String[midOutcomesSelected.size()];
-      for (int i = 0; i < midOutcomesSelected.size(); i++) {
-        midOutcomeIds[i] = midOutcomesSelected.get(i).getId() + "";
-      }
-      midOutcomesSelected = ipElementManager.getIPElementList(midOutcomeIds);
     }
 
     // Save the activity outputs brought from the database
@@ -229,9 +231,9 @@ public class ActivityImpactPathwayAction extends BaseAction {
     success = success && activityManager.saveActivityOutputs(activity.getOutputs(), activityID);
 
     // Delete the indicators removed
-    for (IPElement output : previousOutputs) {
-      if (!activity.getOutputs().contains(output)) {
-        boolean deleted = activityManager.deleteIndicator(activityID, output.getId());
+    for (IPIndicator indicator : previousIndicators) {
+      if (!activity.getOutputs().contains(indicator)) {
+        boolean deleted = activityManager.deleteIndicator(activityID, indicator.getId());
         if (!deleted) {
           success = false;
         }

@@ -23,7 +23,7 @@ import org.apache.commons.lang3.builder.ToStringBuilder;
 
 /**
  * This class represents a CCAFS Activity, which belongs to a specific Project.
- *
+ * 
  * @author Héctor Fabio Tobón R.
  */
 public class Activity {
@@ -51,9 +51,19 @@ public class Activity {
   public Activity() {
   }
 
-
   public Activity(int id) {
     this.id = id;
+  }
+
+  public boolean containsOutput(int outputID) {
+    if (this.outputs != null) {
+      for (IPElement output : this.outputs) {
+        if (output.getId() == outputID) {
+          return true;
+        }
+      }
+    }
+    return false;
   }
 
   @Override
@@ -71,7 +81,7 @@ public class Activity {
 
   /**
    * This method calculates all the years between the start date and the end date.
-   *
+   * 
    * @return a List of numbers representing all the years, or an empty list if nothing found.
    */
   public List<Integer> getAllYears() {
@@ -101,7 +111,7 @@ public class Activity {
    * This method returns a composed Identifier that is going to be used in the front-end.
    * The convention is going to be used depending on the creation date of the activity.
    * yyyy-activityID => e.g. 2014-12
-   *
+   * 
    * @return the composed identifier or null if the created date is null.
    */
   public String getComposedId() {
@@ -141,9 +151,25 @@ public class Activity {
     return id;
   }
 
-// public ExpectedActivityLeader getExpectedLeader() {
-// return expectedLeader;
-// }
+  /**
+   * This method search if the list of indicators contains an indicator
+   * which parent is identified by the value passed as parameter.
+   * 
+   * @param indicatorID - indicator identifier
+   * @return If the indicator is found, the method returns it. Otherwise, return null
+   */
+  public IPIndicator getIndicatorByParent(int parentIndicatorID) {
+    if (indicators != null) {
+      for (IPIndicator indicator : this.indicators) {
+        if (indicator.getParent() != null) {
+          if (indicator.getParent().getId() == parentIndicatorID) {
+            return indicator;
+          }
+        }
+      }
+    }
+    return null;
+  }
 
   public List<IPIndicator> getIndicators() {
     return indicators;

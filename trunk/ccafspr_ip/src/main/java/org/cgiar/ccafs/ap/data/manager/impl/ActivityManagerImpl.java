@@ -279,6 +279,9 @@ public class ActivityManagerImpl implements ActivityManager {
     boolean saved = true;
 
     for (IPIndicator indicator : indicators) {
+      if (indicator == null) {
+        continue;
+      }
       indicatorData = new HashMap<>();
       if (indicator.getId() == -1) {
         indicatorData.put("id", null);
@@ -323,9 +326,13 @@ public class ActivityManagerImpl implements ActivityManager {
     boolean saved = true;
 
     for (IPElement output : outputs) {
+      if (output == null) {
+        continue;
+      }
       outputData = new HashMap<>();
-      outputData.put("output_id", String.valueOf(output.getId()));
       outputData.put("activity_id", String.valueOf(activityID));
+      outputData.put("mog_id", String.valueOf(output.getId()));
+      outputData.put("midOutcome_id", String.valueOf(output.getContributesTo().get(0).getId()));
 
       int relationID = activityDAO.saveActivityOutput(outputData);
       saved = (relationID != -1) && saved;
