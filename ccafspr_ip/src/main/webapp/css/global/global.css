@@ -1072,10 +1072,18 @@ h3.contentSubTitle {
   vertical-align: top;
 }
 
+#dashboard {
+  margin-bottom: 15px;
+}
+
 #dashboard .emptyMessage {
   padding: 15px;
   font-size: 15px;
   font-style: italic;
+}
+
+#deadline{
+	margin-top : 0;
 }
 
 #rightSide{
@@ -1089,7 +1097,7 @@ h3.contentSubTitle {
   text-align: justify;
   margin-bottom: 10px;
   padding-left: 10px;
-  border-left: solid 2px #707070;
+  border-left: dashed 1px #B4B7C2;
 }
 
 #pandrDescription p {
