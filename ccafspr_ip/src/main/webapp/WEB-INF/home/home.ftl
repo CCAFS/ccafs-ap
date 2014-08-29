@@ -1,5 +1,5 @@
 [#ftl]
-[#assign title = "Welcome to CCAFS Activity Planning" /]
+[#assign title = "Dashboard - CCAFS P&R" /]
 [#assign globalLibs = ["jquery", "jreject", "dataTable", "slidr", "cytoscape", "qtip","cytoscapePanzoom"] /]
 [#assign customJS = ["${baseUrl}/js/home/login.js","${baseUrl}/js/global/ipGraph.js","${baseUrl}/js/home/dashboard.js"] /]
 [#assign customCSS = ["${baseUrl}/css/libs/dataTables/jquery.dataTables-1.9.4.css", "${baseUrl}/css/global/customDataTable.css"] /]
@@ -11,7 +11,7 @@
 [#import "/WEB-INF/global/templates/homeProjectsListTemplate.ftl" as projectList /]
 [#import "/WEB-INF/global/templates/homeActivitiesListTemplate.ftl" as activitiesList /]
 
-<article>
+<article id="dashboard">
   <div class="content">
     <h1>[@s.text name="home.dashboard.title" /]</h1>
 
@@ -30,11 +30,11 @@
         </div>
       <div id="dashboard"> 
           <ul class="">
-          [#if projects?has_content]
+          [#-- if projects?has_content --]
             <li class="">
               <a href="#projects">[@s.text name="home.dashboard.projects" /]</a>
-            </li>
-          [/#if]
+            </li>  
+          [#-- ]/#if --]
           [#if activities?has_content]  
             <li class="">
                <a href="#activities">[@s.text name="home.dashboard.activities" /]</a>
@@ -43,11 +43,18 @@
             <li class="">
                <a href="#ipGraph-content">[@s.text name="home.dashboard.impactPathway" /]</a>
             </li>
-          </ul> 
-          [#-- Test Variables  [#assign projects = []] - [#assign activities = []] [#-- End Test Variables --]
+          </ul>
           [#if projects?has_content]
             <div id="projects"> 
                 [@projectList.projectsList projects=projects canValidate=true namespace="/planning/projects" tableID="projects-table" /]
+            </div>
+          [#else]
+            <div id="projects"> 
+              <p class="emptyMessage">
+                [@s.text name="home.dashboard.projects.empty"]
+                  [@s.param][@s.url namespace="/planning" action="projects" /][/@s.param]
+                [/@s.text]
+              <p>
             </div>
           [/#if]
           [#if activities?has_content]

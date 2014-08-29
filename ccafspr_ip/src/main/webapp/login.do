@@ -11,11 +11,7 @@ Realmente pienso que el código fuente de este proyecto es un arte del cual nunc
 pensé aprender tanto. A sabiendas y asombro que dicho conocimiento es nada más una gota 
 de todo un mar lleno de poesía técnica que viene evolucionando exponencialmente.
 
-Es por esto que siempre fui de la generación en la que la simplificación de lo complejo 
-es clave en el éxito.
-
-
-Atentamente,
+La que la simplificación de lo complejo es clave en el éxito.
 
 Héctor Fabio Tobón R.
 Tehcnical Manager for Knowledge and Data Sharing.
