@@ -5,8 +5,12 @@ var x = {};
 var y = 100;
 var count = {};
 var present = {};
+var ycount = {};
+var yc = 0;
 var graphStarted = false;
 var fullImpact = false;
+var cutLine = 1000;
+var cys;
 
 function initGraph(programID){
   $("#ipGraph-button").on("click", function(e){
@@ -87,6 +91,8 @@ function initGraph(programID){
 	    	  elements['edges'] = [];
 	    	  x = {};	 
 	    	  count = {};
+	    	  ycount = {};
+	    	  yc = 0;
 	    	  if (programID && !fullImpact) {
     	        callCytos("../json/json/ipComponents.do?programID=" + programID, "ipGraph-content");
     	      } else {
@@ -98,6 +104,8 @@ function initGraph(programID){
 	  elements['edges'] = [];
 	  x = {};	 
 	  count = {};
+	  ycount = {};
+	  yc = 0;
 	  //$("#loading-"+contentDiv).show();
 	  if (programID && !fullImpact) {
         callCytos("../json/json/ipComponents.do?programID=" + programID, "dialog-message");
@@ -122,14 +130,14 @@ function callCytos(url,contentDiv) {
 	            elements['nodes'].push(
 	                    {data: {
 	                        id: item.id.toString(),
-	                        name: item.program.acronym + ' - ' + item.type.name+' #'+count[item.type.id+'-'+item.program.id],
-	                        weight: getWeight(item.program.acronym + ' - ' + item.type.name+' #'+count[item.type.id+'-'+item.program.id]),
+	                        name: getName(item),
+	                        weight: getWeight(getName(item)),
 	                        descr: item.description,
 	                        faveColor: getColorNode(item.type.id, item.translatedOf.length),
 	                        nodeType: item.type.id,
 	                        translate: (item.type.id, item.translatedOf.length>0)?1:0,
 	                        faveShape: 'roundrectangle'},
-	                      position: getPosition(item.type.id, item.translatedOf.length)
+	                      position: getPosition(item.type.id, (item.type.id, item.translatedOf.length>0)?1:0)
 	                    }
 	            );
 	            count[item.type.id+'-'+item.program.id] ++;
@@ -145,7 +153,7 @@ function callCytos(url,contentDiv) {
 	        });
 	      }
 	    });
-	    //console.log(JSON.stringify(present, null, 4));
+	    //console.log(JSON.stringify(ycount, null, 4));
 	    cy = cytoscape({
 	      container: $('#'+contentDiv)[0],
 	      style: cytoscape.stylesheet()
@@ -199,7 +207,26 @@ function callCytos(url,contentDiv) {
 	      },
 	      /*layout: {
 	    	  name: 'concentric',
-	    	    concentric: function(){ return (5-this.data('nodeType'))*100*(this.data('translate')+1); },
+	    	    concentric: function () {
+	    	    	y = 0;
+	    	    	idType= this.data('nodeType');
+	    	    	trans = this.data('translate');
+		    		if (idType == 1) {
+		    		
+		    		  } else if (idType == 2) {
+		    		    y = 1000;
+		    		  } else if (idType == 3) {
+		    		    y = 800;
+		    		  } else if (idType == 4) {
+		    		    y = 600;
+		    		  } else if (idType == 5) {
+		    		    y = 400;
+		    		  }
+		    		if (trans > 0) {
+		    			y -=100;
+		    		}
+		    		return y;
+	    	    },
 	    	    levelWidth: function( nodes ){ return 10; },
 	    	    padding: 10
 		      },*/
@@ -304,8 +331,8 @@ function callCytos(url,contentDiv) {
 	    	});
 	    	//}
 	    }
-//	    cys = $('#cy').cytoscape('get');
-//	      $('#btnAdd').click(addElem);
+	    cys = $('#'+contentDiv).cytoscape('get');
+
 	    function addElem(elem) {
 	      var obj = $.parseJSON(elem);
 	      var valid = validateIDcytoscape(obj.id);
@@ -337,19 +364,25 @@ function callCytos(url,contentDiv) {
 	      var lastpos = 0;
 	      var outFirst = 0;
 	      var lastEles = 0;
+	      var y = 0;
 	      for (var i=2;i<6;i++) {
 	    	  for (var j=0;j<2;j++) {
 	    		  if (cys.elements("node[nodeType=" + i + "][translate="+j+"]").length > 0) {
 			        var eles = cys.elements("node[nodeType=" + i + "][translate="+j+"]");
-			        outFirst = getDistance(eles[0].position('x'), eles[eles.length - 1].position('x'));
+			        outFirst = getDistance(eles[0].position('x'), eles[(eles[cutLine-1])?(cutLine-1):(eles.length - 1)].position('x'));
 			        if (lastEles != 0) {
 			          var diff = (outFirst - lastpos) / 2;
 		//	          console.log(outFirst + ' - ' + lastpos + ' / 2 = ' + diff+ ' t:'+type);
 			          position = lastEles[0].position('x');
-			          cys.elements("node[nodeType=" + i + "][translate="+j+"]").each(function(i, ele) {
+			          cys.elements("node[nodeType=" + i + "][translate="+j+"]").each(function(k, ele) {
+			        	  if ((k)%cutLine==0) {
+				            	//y+=100;
+				            	position = lastEles[0].position('x');
+				            }
 			            ele.position('x', position - diff);
+			            ele.position('y', ele.position('y') + y);
 			            position += 250;
-			            x[i] = ele.position('x');
+			            //x[i] = ele.position('x');			            
 			          });
 			        }
 			        lastpos = outFirst;
@@ -407,30 +440,62 @@ function callCytos(url,contentDiv) {
 	  }
 	  return color;
 	}
+	
+	function getConcentric (idType, trans) {
+		y = 0;
+		if (idType == 1) {
+		
+		  } else if (idType == 2) {
+		    y = 1000;
+		  } else if (idType == 3) {
+		    y = 800;
+		  } else if (idType == 4) {
+		    y = 600;
+		  } else if (idType == 5) {
+		    y = 400;
+		  }
+		if (trans > 0) {
+			y +=100;
+		}
+	}
 
 	function getPosition(idType, trans) {
-	  if (!x[idType])
-	    x[idType] = 100;
-	  if (idType == 1) {
-
-	  } else if (idType == 2) {
-	    y = 300;
-	  } else if (idType == 3) {
-	    y = 400;
-	  } else if (idType == 4) {
-	    y = 600;
-	  } else if (idType == 5) {
-	    y = 800;
-	  }
-	  if (trans > 0) {		
-	    y += 100;
-	    if (!x[idType+''+1])
-		    x[idType+''+1] = 100;
-	    x[idType+''+1] += 250;
-		  return {x: x[idType+''+1], y: y};
-	  }
-	  x[idType] += 250;
-	  return {x: x[idType], y: y};
+		if (!ycount[idType+'.'+trans]) {
+			 ycount[idType+'.'+trans] = 0;
+		}
+		 
+		 
+		 if (ycount[idType+'.'+trans]%cutLine==0) {
+			yc+=100;
+			x[idType+'.'+trans] = 100;
+		 }
+		 if (!x[idType+'.'+trans])
+			x[idType+'.'+trans] = 100;
+		 if (idType == 1) {
+		
+		} else if (idType == 2) {
+			y = 300 + yc;
+		} else if (idType == 3) {
+			y = 400+ yc;
+		} else if (idType == 4) {
+			y = 600+ yc;
+		} else if (idType == 5) {
+			y = 800+ yc;
+		}
+		if (trans > 0) {		
+			y += 100;
+		}	
+		x[idType+'.'+trans] += 250;
+		ycount[idType+'.'+trans] ++;
+		return {x: x[idType+'.'+trans], y: y};
+	}
+	
+	function getName(item) {
+		if (item.type.id == 2 && item.program.id > 4) {
+			return item.program.acronym + ' - ' + '2025 Vision'+' #'+count[item.type.id+'-'+item.program.id];
+		} else  {
+			return item.program.acronym + ' - ' + item.type.name+' #'+count[item.type.id+'-'+item.program.id];
+		}
 	}
 
 	function getWeight(text) {
@@ -468,7 +533,12 @@ function callCytos(url,contentDiv) {
 	}
 
 	function printCyto() {
-	  var dataUrl = document.querySelector('[data-id="layer4-node"]').toDataURL();
+		$('#download').attr('href',cys.png({full:true}));
+    	$('#download').attr('download','graph.png');
+    	//window.location.href = cy.png({full:true});
+    	//$('#download').trigger("click");
+    	$('#download')[0].click();
+	  /*var dataUrl = document.querySelector('[data-id="layer4-node"]').toDataURL();
 	  var windowContent = '';
 	  windowContent += '<html>'
 	  windowContent += '<head><meta name="viewport" content="width=device-width, minimum-scale=0.1"><title>Print graph</title></head>';
@@ -482,6 +552,6 @@ function callCytos(url,contentDiv) {
 	  printWin.document.close();
 	  printWin.focus();
 	  printWin.print();
-	  printWin.close();
+	  printWin.close();*/
 		  //return false;
 	}
