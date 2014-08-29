@@ -21,16 +21,17 @@ function workflowModal(){
   return false;
 }
 
+var graphStarted = false;
 function initTabs(){
   $("#dashboard").tabs({
-    select : function(event,ui){
-      var tabNumber = ui.index;
-      var tabName = $(ui.tab).text();
+    activate : function(event, ui){
       
-      console.log('Tab number ' + tabNumber + ' - ' + tabName + ' - clicked');
-      
-      console.log("Loading map...");
-      initGraph();
+      if(ui.newTab.index() == 2){
+        if (!graphStarted) {
+          callCytos("../ip/json/ipComponents.do", "ipGraph-content");
+          graphStarted = true;
+        }
+      }
     }
   });
 }

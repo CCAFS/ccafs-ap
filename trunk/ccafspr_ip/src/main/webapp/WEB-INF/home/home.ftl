@@ -58,11 +58,11 @@
       </div> <!-- End dashboard -->
       
       [#-- Deadline --]
-      <div id="deadline">
-        <div id="deadlineTitle"  class="homeTitle">
-          <b>[@s.text name="home.dashboard.deadline.title" /]</b>
-        </div>
-        <div id="deadlineGraph">
+      <div id="deadlineTitle"  class="homeTitle">
+        <b>[@s.text name="home.dashboard.deadline.title" /]</b>
+      </div>
+      <div id="deadline" class="borderBox">
+        <div id="deadlineGraph" >
           <div id="deadlineCircle1" class="deadlineCircleActive">1</div>
           <div id="deadlineCircle2" class="deadlineCircleActive">2</div>
           <div id="deadlineCircle3" class="deadlineCircleInactive">3</div>
