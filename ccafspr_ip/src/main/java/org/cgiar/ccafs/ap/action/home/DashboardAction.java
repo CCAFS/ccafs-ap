@@ -30,7 +30,7 @@ import org.slf4j.LoggerFactory;
 
 /**
  * This action will be in charge of managing all the P&R Dashboard after the user logins.
- *
+ * 
  * @author Héctor Fabio Tobón R.
  */
 public class DashboardAction extends BaseAction {
@@ -141,9 +141,6 @@ public class DashboardAction extends BaseAction {
           activities.add(activityManager.getActivityById(activityId));
         }
       }
-    }
-    if (projects != null) {
-      activities = activityManager.getActivitiesByProject(projects.get(0).getId());
     }
 // System.out.println("PREPARE: ");
 // System.out.println("CURRENT USER" + this.getCurrentUser());
