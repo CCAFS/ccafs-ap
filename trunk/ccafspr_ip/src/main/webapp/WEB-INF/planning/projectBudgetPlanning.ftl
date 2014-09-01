@@ -37,7 +37,13 @@
       </p>
     [#elseif !saveable && fullEditable]
       <p class="readPrivileges">
-        [@s.text name="planning.projectBudget.privileges" /]
+        [#if currentUser.PL]
+          [@s.text name="planning.projectBudget.privileges" /]
+        [#else]
+          [@s.text name="saving.read.privileges"]
+            [@s.param][@s.text name="preplanning.project"/][/@s.param]
+          [/@s.text]
+        [/#if]
       </p>
     [/#if]
     
