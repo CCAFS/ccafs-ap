@@ -167,6 +167,12 @@
       [#-- File upload --]
       <div class="uploadFileMessage">
         <div class="halfPartBlock left">
+          <a href="${baseUrl}/resources/locationTemplate/Activity_Location_Template.xlsx">
+            <img id="icon" src="${baseUrl}/images/global/icon-excel.png" />
+            <p id="downloadMessage">[@s.text name="planning.activities.locations.templateMessage" /]</p>
+          </a>
+        </div>
+        <div class="halfPartBlock right">
           [#if uploadFileName?has_content ]
             [@s.text name="planning.activities.locations.alreadyUploaded" /] 
             <a href="${locationsFileURL}" >${uploadFileName} </a>
@@ -174,12 +180,6 @@
           [#else]
             [@customForm.input name="excelTemplate" type="file" i18nkey="planning.activities.locations.uploadMessage" /]
           [/#if]
-        </div>
-        <div class="halfPartBlock right">
-          <a href="${baseUrl}/resources/locationTemplate/Activity_Location_Template.xlsx">
-            <img id="icon" src="${baseUrl}/images/global/icon-excel.png" />
-            <p id="downloadMessage">[@s.text name="planning.activities.locations.templateMessage" /]</p>
-          </a>
         </div>
       </div>
     

@@ -1715,12 +1715,12 @@ margin-bottom: 0px !important;
 }
 
 #activityLocations .uploadFileMessage .left {
-  width: 60%;
+  width: 26%;
 }
 
 #activityLocations .uploadFileMessage .right {
-  margin-left: 30px;
-  width: 30%;
+  margin-left: 10%;
+  width: 58%;
 }
 
 #activityLocations .uploadFileMessage #icon {
