@@ -1751,6 +1751,18 @@ p#fileUploadText {
   margin: 30px 0;
 }
 
+#excelTemplate-file {
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    padding: 5px;
+    margin-top: 8px;
+}
+
+#excelTemplate-file .removeButton{
+    top: 20%;
+    
+}
+
 /* Activity Impact Pathway */
 
 #activityImpactPathway .indicatorsBlock {
