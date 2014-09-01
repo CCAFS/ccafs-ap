@@ -2,10 +2,12 @@
 var map;
 var markers = [];
 var countID;
+var excelTemplate;
 $(document).ready(init);
 
 function init(){
   countID = $("#locationsBlock .location").length;
+  excelTemplate = $("#excelTemplate");
   attachEvents();
   if ($("#isGlobal").exists()) {
     $("#activity\\.global").trigger("change");
@@ -13,12 +15,15 @@ function init(){
     loadMap();
     setLocationsMarkers();
   }
+  
 }
 
 function attachEvents(){
   // Locations add/remove Events
   $("#addLocationLink").on("click", addLocationEvent);
   $("#locationsBlock .removeButton").on("click", removeLocationEvent);
+  
+  $("#excelTemplate-file .removeButton").on("click", removeFileEvent);
   // Change Location type
   $("[name$='type.id']").on("change", changeTypeEvent);
   
@@ -31,6 +36,12 @@ function attachEvents(){
   $("#fileBrowserLauncher").click(function(event){
     event.preventDefault();
     $("#excelTemplate").trigger("click");
+  });
+  
+  $('#excelTemplate').change(function(){
+    $('#excelTemplate-text').text(this.value);
+    $("#excelTemplate-file").show("slow");
+    
   });
   
 }
@@ -78,7 +89,13 @@ function removeLocationEvent(e){
     removeMarker(locationId);
     setLocationIndex();
   });
-  
+}
+
+function removeFileEvent(e){
+  e.preventDefault();
+  $(e.target).parent().hide("slow", function(){
+    excelTemplate.replaceWith(excelTemplate = excelTemplate.clone(true));
+  });
 }
 
 function setLocationIndex(){

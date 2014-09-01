@@ -173,13 +173,21 @@
           </a>
         </div>
         <div class="halfPartBlock right">
-          [#if uploadFileName?has_content ]
-            [@s.text name="planning.activities.locations.alreadyUploaded" /] 
-            <a href="${locationsFileURL}" >${uploadFileName} </a>
-            [@customForm.input name="excelTemplate" type="file" i18nkey="planning.activities.locations.changeFileMessage" /]
+          [#if uploadFileName?has_content ] 
+            [@customForm.input name="excelTemplate" type="file" i18nkey="planning.activities.locations.changeFileMessage" /] 
+            
+            <div id="excelTemplate-file" style="position:relative">
+              <span id="excelTemplate-text"><a href="${locationsFileURL}" >${uploadFileName} </a></span>
+              <img class="removeButton" src="${baseUrl}/images/global/icon-remove.png" />
+            </div>  
           [#else]
-            [@customForm.input name="excelTemplate" type="file" i18nkey="planning.activities.locations.uploadMessage" /]
+            [@customForm.input name="excelTemplate" type="file" i18nkey="planning.activities.locations.uploadMessage" /] 
+            <div id="excelTemplate-file" style="position:relative;display:none">
+              <span id="excelTemplate-text"></span>
+              <img class="removeButton" src="${baseUrl}/images/global/icon-remove.png" />
+            </div>   
           [/#if]
+               
         </div>
       </div>
     
