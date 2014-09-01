@@ -52,11 +52,12 @@
     [#-- Listing partners from partnersTemplate.ftl --]
     [@partnersTemplate.partnerSection projectPartners=project.projectPartners partnerTypes=partnerTypes countries=countries responsabilities=true canEdit=fullEditable canRemove=saveable /]
     
-    [#if saveable && fullEditable] 
+    [#if saveable] 
+      [#if fullEditable]
       <div id="addProjectPartner" class="addLink">
         <a href="" class="addProjectPartner addButton" >[@s.text name="preplanning.projectPartners.addProjectPartner" /]</a>
       </div>
-      
+      [/#if]
       [#-- Internal parameter --]
       <input name="projectID" type="hidden" value="${project.id?c}" />
     	<div class="buttons">
