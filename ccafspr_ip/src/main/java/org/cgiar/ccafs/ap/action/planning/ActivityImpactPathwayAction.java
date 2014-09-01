@@ -95,7 +95,7 @@ public class ActivityImpactPathwayAction extends BaseAction {
    * To send both values, we are going to send a composed key in
    * the map:
    * < "midOutcome.id-midoutcome.program.id", midoutcome.description >
-   *
+   * 
    * @return
    */
   public Map<String, String> getMidOutcomes() {
@@ -127,6 +127,16 @@ public class ActivityImpactPathwayAction extends BaseAction {
 
   public List<IPProgram> getProjectFocusList() {
     return projectFocusList;
+  }
+
+  @Override
+  public String next() {
+    String result = save();
+    if (result.equals(BaseAction.SUCCESS)) {
+      return BaseAction.NEXT;
+    } else {
+      return result;
+    }
   }
 
   @Override
