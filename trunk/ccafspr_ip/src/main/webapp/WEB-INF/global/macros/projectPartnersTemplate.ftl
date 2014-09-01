@@ -6,7 +6,7 @@
         [#-- Partner identifier --]
         <input id="id" type="hidden" name="project.projectPartners[${ap_index}].id" value="${ap.id?c}" />
         <legend>[@s.text name="preplanning.projectPartners.partner"][@s.param name="0"] <span id="partnerIndex">${ap_index+1}</span>[/@s.param] [/@s.text]</legend>
-        [#if canRemove]
+        [#if canRemove && canEdit]
           [#-- Remove link for all partners --]
           <div class="removeLink">
             <div id="removePartner" class="removePartner removeElement removeLink" title="[@s.text name="preplanning.projectPartners.removePartner" /]"></div>
