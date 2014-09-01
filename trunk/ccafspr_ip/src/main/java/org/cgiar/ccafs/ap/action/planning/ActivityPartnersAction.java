@@ -13,11 +13,6 @@
  *****************************************************************/
 package org.cgiar.ccafs.ap.action.planning;
 
-import java.util.ArrayList;
-import java.util.List;
-
-import com.google.inject.Inject;
-import org.apache.commons.lang3.StringUtils;
 import org.cgiar.ccafs.ap.action.BaseAction;
 import org.cgiar.ccafs.ap.config.APConfig;
 import org.cgiar.ccafs.ap.config.APConstants;
@@ -33,6 +28,12 @@ import org.cgiar.ccafs.ap.data.model.Country;
 import org.cgiar.ccafs.ap.data.model.Institution;
 import org.cgiar.ccafs.ap.data.model.InstitutionType;
 import org.cgiar.ccafs.ap.data.model.Project;
+
+import java.util.ArrayList;
+import java.util.List;
+
+import com.google.inject.Inject;
+import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -63,7 +64,6 @@ public class ActivityPartnersAction extends BaseAction {
   private List<Institution> allPartners;
   private List<InstitutionType> partnerTypes;
   private List<Country> countries;
-
 
   @Inject
   public ActivityPartnersAction(APConfig config, ActivityManager activityManager,
@@ -104,6 +104,16 @@ public class ActivityPartnersAction extends BaseAction {
 
   public Project getProject() {
     return project;
+  }
+
+  @Override
+  public String next() {
+    String result = save();
+    if (result.equals(BaseAction.SUCCESS)) {
+      return BaseAction.NEXT;
+    } else {
+      return result;
+    }
   }
 
   @Override
