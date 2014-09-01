@@ -167,8 +167,13 @@ input.target {
 .checkboxGroup .checkboxLabel {
   display: inline-block;
   font-size: 11px;
-  width: 91%; /*hack for IE8 & IE9*/
+  width: 88%; 
 }
+
+.grid_5 .checkboxGroup .checkboxLabel { 
+  width: 92%;
+}
+
 
 div.checkboxGroup.vertical label {
    width: 96%;
