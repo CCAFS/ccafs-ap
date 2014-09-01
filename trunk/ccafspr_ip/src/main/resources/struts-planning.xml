@@ -74,7 +74,6 @@
         <param name="projectID">${project.id}</param>		
       </result>
       <result name="next" type="redirectAction">
-        <param name="namespace">/planning/activities</param>
         <param name="actionName">activities</param>
         <param name="projectID">${project.id}</param>
       </result>
@@ -158,7 +157,7 @@
         <param name="year">${year}</param>
       </result>
       <result name="next" type="redirectAction">
-        <param name="actionName">activityImpactPathway</param>
+        <param name="actionName">activityLocations</param>
         <param name="activityID">${activity.id}</param>
       </result>
       <result name="cancel" type="redirectAction">
