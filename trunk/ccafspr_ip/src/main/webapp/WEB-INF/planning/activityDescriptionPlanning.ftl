@@ -36,9 +36,43 @@
           [/@s.text]
         </p>
       [/#if]
+      
+      [#-- Activity Main information --]
+      <h1 class="contentTitle">
+        [@s.text name="planning.activity" /]: ${activity.composedId} - [@s.text name="planning.activityDescription.mainInformation" /] 
+      </h1>
+      <div id="description" class="borderBox">
+        [#-- Activity Title --]
+        <div class="fullBlock">
+          [@customForm.textArea name="activity.title" i18nkey="planning.activityDescription.title" required=true /]
+        </div>
+        [#-- Activity Description --]
+        <div class="fullBlock">
+          [@customForm.textArea name="activity.description" i18nkey="planning.activityDescription.description" required=true  /]
+        </div>
+        [#-- Start Date --]
+        <div class="halfPartBlock">
+          [@customForm.input name="activity.startDate" type="text" i18nkey="planning.activityDescription.startDate" required=true /]
+        </div> 
+        [#-- End Date --]
+        <div class="halfPartBlock">
+          [@customForm.input name="activity.endDate" type="text" i18nkey="planning.activityDescription.endDate" required=true /]
+        </div>
+        [#-- Cross Cutting --]
+        <div id="activityCrossCutting" class="thirdPartBlock" ">
+          <h6>[@s.text name="planning.activityDescription.crossCutting" /]</h6>
+          <div class="checkboxGroup">
+            [@s.checkboxlist name="activity.crossCuttings" list="ipCrossCuttings" listKey="id" listValue="name" cssClass="checkbox" value="crossCuttingIds" /]
+          </div>
+        </div>
+        <div id="activityCrossCuttingDescription" class="halfPartBlock">
+          <div id="crossCuttingDesc" class="crossCuttingDescription" >[@s.text name="planning.activityDescription.crossCutting.description" /]</div>
+        </div>
+      </div> <!-- End description .borderBox-->
+      
       [#-- Activity Leader --]
       <h1 class="contentTitle">
-        [@s.text name="planning.activity" /]: ${activity.composedId} - [@s.text name="planning.activityDescription.leader" /] 
+        [@s.text name="planning.activityDescription.leader" /] 
       </h1>
       <div id="leader" class="borderBox clearfix">
         [#if activity.leader?has_content]
@@ -104,40 +138,8 @@
             [@customForm.checkbox name="officialLeader" i18nkey="planning.activityDescription.isOfficialLeader" checked=officialLeader value="true"/]
           </div>
         [/#if]
-      </div> <!-- End leader .borderBox -->
+      </div> <!-- End leader .borderBox --> 
       
-      [#-- Activity Main information --]
-      <h1 class="contentTitle">
-        [@s.text name="planning.activityDescription.mainInformation" /] 
-      </h1>
-      <div id="description" class="borderBox">
-        [#-- Activity Title --]
-        <div class="fullBlock">
-          [@customForm.textArea name="activity.title" i18nkey="planning.activityDescription.title" required=true /]
-        </div>
-        [#-- Activity Description --]
-        <div class="fullBlock">
-          [@customForm.textArea name="activity.description" i18nkey="planning.activityDescription.description" required=true  /]
-        </div>
-        [#-- Start Date --]
-        <div class="halfPartBlock">
-          [@customForm.input name="activity.startDate" type="text" i18nkey="planning.activityDescription.startDate" required=true /]
-        </div> 
-        [#-- End Date --]
-        <div class="halfPartBlock">
-          [@customForm.input name="activity.endDate" type="text" i18nkey="planning.activityDescription.endDate" required=true /]
-        </div>
-        [#-- Cross Cutting --]
-        <div id="activityCrossCutting" class="thirdPartBlock" ">
-          <h6>[@s.text name="planning.activityDescription.crossCutting" /]</h6>
-          <div class="checkboxGroup">
-            [@s.checkboxlist name="activity.crossCuttings" list="ipCrossCuttings" listKey="id" listValue="name" cssClass="checkbox" value="crossCuttingIds" /]
-          </div>
-        </div>
-        <div id="activityCrossCuttingDescription" class="halfPartBlock">
-          <div id="crossCuttingDesc" class="crossCuttingDescription" >[@s.text name="planning.activityDescription.crossCutting.description" /]</div>
-        </div>
-      </div> <!-- End description .borderBox-->
       [#if saveable]
         <input type="hidden" name="activityID" value="${activity.id?c}">
         <div class="buttons">
