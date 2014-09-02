@@ -33,17 +33,13 @@
     [#-- Informing user that he/she doesn't have enough privileges to edit. See GranProjectAccessInterceptor--]
     [#if saveable && !fullEditable]
       <p class="readPrivileges">
-        [@s.text name="saving.read.privileges.section" /]
+        [@s.text name="planning.projectBudget.privileges" /]
       </p>
     [#elseif !saveable && fullEditable]
       <p class="readPrivileges">
-        [#if currentUser.PL]
-          [@s.text name="planning.projectBudget.privileges" /]
-        [#else]
-          [@s.text name="saving.read.privileges"]
-            [@s.param][@s.text name="preplanning.project"/][/@s.param]
-          [/@s.text]
-        [/#if]
+        [@s.text name="saving.read.privileges"]
+          [@s.param][@s.text name="preplanning.project"/][/@s.param]
+        [/@s.text]
       </p>
     [/#if]
     

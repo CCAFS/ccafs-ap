@@ -163,7 +163,15 @@ public class ActivityImpactPathwayAction extends BaseAction {
 
     IPElementType midOutcomeType = new IPElementType(APConstants.ELEMENT_TYPE_OUTCOME2019);
     for (IPProgram program : projectFocusList) {
-      midOutcomes.addAll(ipElementManager.getIPElements(program, midOutcomeType));
+      List<IPElement> elements = ipElementManager.getIPElements(program, midOutcomeType);
+
+      for (int i = 0; i < elements.size(); i++) {
+        IPElement element = elements.get(i);
+        element.setDescription(program.getAcronym() + " - " + getText("planning.activityImpactPathways.outcome2019")
+          + " #" + i + ": " + element.getDescription());
+        midOutcomes.add(element);
+      }
+      // midOutcomes.addAll(ipElementManager.getIPElements(program, midOutcomeType));
     }
 
     // Get the outputs from database
