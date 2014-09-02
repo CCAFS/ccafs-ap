@@ -158,6 +158,9 @@ function changeTypeEvent(e){
   var $parent = $(e.target).parent().parent().parent().parent();
   var locationId = $parent.attr("id").split("-")[1];
   var $selectType = $("#selectTemplate-" + valId);
+  var $latitudeField = $parent.find("[name$='geoPosition.latitude']");
+  var $longitudeField = $parent.find("[name$='geoPosition.longitude']");
+  
   if ($selectType.exists()) {
     var $newSelectType = $selectType.clone(true);
     $parent.find(".locationName").empty().html($newSelectType.html());
@@ -168,11 +171,13 @@ function changeTypeEvent(e){
   } else {
     var $newInputType = $("#inputNameTemplate").clone(true);
     $parent.find(".locationName").empty().html($newInputType.html());
-    $parent.find("[name$='geoPosition.latitude'], [name$='geoPosition.longitude']").removeClass("notApplicable").attr("disabled", false).val("0.0");
+    $parent.find("[name$='geoPosition.latitude'], [name$='geoPosition.longitude']").removeClass("notApplicable").attr("disabled", false);
     $parent.find("[name$='name']").attr("placeholder", "Name");
+    $latitudeField.val(map.getCenter().k);
+    $longitudeField.val(map.getCenter().B);
     
-    var latitude = $parent.find("[name$='geoPosition.latitude']").val();
-    var longitude = $parent.find("[name$='geoPosition.longitude']").val();
+    var latitude = $latitudeField.val();
+    var longitude = $longitudeField.val();
     
     // If marker doesn't exist create the marker
     if (typeof markers[locationId] === 'undefined') {

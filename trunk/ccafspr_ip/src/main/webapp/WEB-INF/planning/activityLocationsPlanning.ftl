@@ -168,8 +168,10 @@
       <div class="uploadFileMessage">
       <p>
         [#if uploadFileName?has_content ] 
-          [@s.text name="planning.activities.locations.changeFileMessage" /]<br>
-          <img class="icon-check" src="${baseUrl}/images/global/icon-check.png" /> <a href="${locationsFileURL}" >${uploadFileName} </a>
+            [@s.text name="planning.activities.locations.changeFileMessage" /]<br>
+          <div id="excelTemplate-file-uploaded">
+            <img class="icon-check" src="${baseUrl}/images/global/icon-check.png" /> <a href="${locationsFileURL}" >${uploadFileName} </a>
+          </div>  
         [#else]
           [@s.text name="planning.activities.locations.uploadMessage" /]
         [/#if]
