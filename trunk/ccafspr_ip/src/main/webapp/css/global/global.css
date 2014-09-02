@@ -1763,6 +1763,10 @@ p#fileUploadText {
     
 }
 
+.uploadFileMessage img.icon-check {
+  vertical-align: bottom;
+}
+
 .step {
   width: 18px;
   height: 17px;
