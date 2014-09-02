@@ -166,28 +166,35 @@
     [#if saveable]
       [#-- File upload --]
       <div class="uploadFileMessage">
+      <p>
+        [#if uploadFileName?has_content ] 
+          [@s.text name="planning.activities.locations.changeFileMessage" /]
+        [#else]
+          [@s.text name="planning.activities.locations.uploadMessage" /]
+        [/#if]
+      </p>
+      <hr>  
         <div class="halfPartBlock left">
+          <div id="step1" class="step" title="Step 1">1</div>
           <a href="${baseUrl}/resources/locationTemplate/Activity_Location_Template.xlsx">
             <img id="icon" src="${baseUrl}/images/global/icon-excel.png" />
             <p id="downloadMessage">[@s.text name="planning.activities.locations.templateMessage" /]</p>
           </a>
         </div>
         <div class="halfPartBlock right">
+          <div id="step2" class="step" title="Step 2">2</div>
+            [@customForm.input name="excelTemplate" type="file" i18nkey="planning.activities.locations.attachTemplate" /] 
           [#if uploadFileName?has_content ] 
-            [@customForm.input name="excelTemplate" type="file" i18nkey="planning.activities.locations.changeFileMessage" /] 
-            
             <div id="excelTemplate-file" style="position:relative">
               <span id="excelTemplate-text"><a href="${locationsFileURL}" >${uploadFileName} </a></span>
               <img class="removeButton" src="${baseUrl}/images/global/icon-remove.png" />
             </div>  
           [#else]
-            [@customForm.input name="excelTemplate" type="file" i18nkey="planning.activities.locations.uploadMessage" /] 
             <div id="excelTemplate-file" style="position:relative;display:none">
               <span id="excelTemplate-text"></span>
               <img class="removeButton" src="${baseUrl}/images/global/icon-remove.png" />
             </div>   
-          [/#if]
-               
+          [/#if]  
         </div>
       </div>
     
