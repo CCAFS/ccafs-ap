@@ -93,8 +93,10 @@ public class NextUserManagerImpl implements NextUserManager {
 
     boolean allSaved = true;
     Map<String, Object> nextUserData = new HashMap<>();
-    if (nextUser.getId() > 0) {
+    if (nextUser.getId() != -1) {
       nextUserData.put("id", nextUser.getId());
+    } else {
+      nextUserData.put("id", null);
     }
     nextUserData.put("user", nextUser.getUser());
     nextUserData.put("expected_changes", nextUser.getExpectedChanges());

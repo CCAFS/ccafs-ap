@@ -120,8 +120,10 @@ public class DeliverableManagerImpl implements DeliverableManager {
   @Override
   public int saveDeliverable(int activityID, Deliverable deliverable) {
     Map<String, Object> deliverableData = new HashMap<>();
-    if (deliverable.getId() > 0) {
+    if (deliverable.getId() != -1) {
       deliverableData.put("id", deliverable.getId());
+    } else {
+      deliverableData.put("id", null);
     }
     deliverableData.put("activity_id", activityID);
     deliverableData.put("title", deliverable.getTitle());

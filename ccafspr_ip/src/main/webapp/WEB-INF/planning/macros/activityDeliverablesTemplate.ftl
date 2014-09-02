@@ -38,9 +38,9 @@
           [#-- Next User block  --] 
           [@nextUserTemplate dl_index="${dl_index}" nu_index="${nu_index}" nextUserValue="${nu.id}" canEdit=canEdit /]
         [/#list]
-        [#if canEdit]
-          <div id="addActivityNextUserBlock" class="addLink"><a href=""  class="addActivityNextUser addButton">[@s.text name="planning.deliverables.addNewUser" /]</a></div>
-        [/#if]
+      [/#if]
+      [#if canEdit]
+        <div id="addActivityNextUserBlock" class="addLink"><a href=""  class="addActivityNextUser addButton">[@s.text name="planning.deliverables.addNewUser" /]</a></div>
       [/#if]
       </div>
     [/#list] 
