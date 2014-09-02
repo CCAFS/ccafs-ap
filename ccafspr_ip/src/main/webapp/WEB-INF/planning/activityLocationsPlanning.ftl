@@ -168,7 +168,8 @@
       <div class="uploadFileMessage">
       <p>
         [#if uploadFileName?has_content ] 
-          [@s.text name="planning.activities.locations.changeFileMessage" /]
+          [@s.text name="planning.activities.locations.changeFileMessage" /]<br>
+          <img class="icon-check" src="${baseUrl}/images/global/icon-check.png" /> <a href="${locationsFileURL}" >${uploadFileName} </a>
         [#else]
           [@s.text name="planning.activities.locations.uploadMessage" /]
         [/#if]
@@ -184,17 +185,10 @@
         <div class="halfPartBlock right">
           <div id="step2" class="step" title="Step 2">2</div>
             [@customForm.input name="excelTemplate" type="file" i18nkey="planning.activities.locations.attachTemplate" /] 
-          [#if uploadFileName?has_content ] 
-            <div id="excelTemplate-file" style="position:relative">
-              <span id="excelTemplate-text"><a href="${locationsFileURL}" >${uploadFileName} </a></span>
-              <img class="removeButton" src="${baseUrl}/images/global/icon-remove.png" />
-            </div>  
-          [#else]
             <div id="excelTemplate-file" style="position:relative;display:none">
               <span id="excelTemplate-text"></span>
               <img class="removeButton" src="${baseUrl}/images/global/icon-remove.png" />
-            </div>   
-          [/#if]  
+            </div>    
         </div>
       </div>
     
