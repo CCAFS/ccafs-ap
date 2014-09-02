@@ -862,7 +862,7 @@ h3.contentSubTitle {
   display: inline-block;
   padding: 5px;
   width: 48%;
-  vertical-align: middle;
+  vertical-align: top;
 }
 
 .fullPartBlock {
@@ -1715,11 +1715,11 @@ margin-bottom: 0px !important;
 }
 
 #activityLocations .uploadFileMessage .left {
-  width: 26%;
+  width: 30%;
 }
 
 #activityLocations .uploadFileMessage .right {
-  margin-left: 10%;
+  margin-left: 8%;
   width: 58%;
 }
 
@@ -1761,6 +1761,20 @@ p#fileUploadText {
 #excelTemplate-file .removeButton{
     top: 20%;
     
+}
+
+.step {
+  width: 18px;
+  height: 17px;
+  /* position: absolute; */
+  float: left;
+  margin-right: 15px;
+  font-weight: bold;
+  color: #FFF;
+  padding: 5px;
+  background: #CCC;
+  text-align: center;
+  border-radius: 50%;
 }
 
 /* Activity Impact Pathway */
