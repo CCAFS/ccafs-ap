@@ -13,24 +13,25 @@
  *****************************************************************/
 package org.cgiar.ccafs.ap.action.planning;
 
-import java.util.List;
-
-import org.cgiar.ccafs.ap.data.model.IPElement;
-import org.cgiar.ccafs.ap.data.model.NextUser;
-import org.cgiar.ccafs.ap.data.manager.ActivityManager;
-import org.cgiar.ccafs.ap.data.model.Activity;
-import com.google.inject.Inject;
-import org.apache.commons.lang3.StringUtils;
 import org.cgiar.ccafs.ap.action.BaseAction;
 import org.cgiar.ccafs.ap.config.APConfig;
 import org.cgiar.ccafs.ap.config.APConstants;
+import org.cgiar.ccafs.ap.data.manager.ActivityManager;
 import org.cgiar.ccafs.ap.data.manager.DeliverableManager;
 import org.cgiar.ccafs.ap.data.manager.DeliverableTypeManager;
 import org.cgiar.ccafs.ap.data.manager.NextUserManager;
 import org.cgiar.ccafs.ap.data.manager.ProjectManager;
+import org.cgiar.ccafs.ap.data.model.Activity;
 import org.cgiar.ccafs.ap.data.model.Deliverable;
 import org.cgiar.ccafs.ap.data.model.DeliverableType;
+import org.cgiar.ccafs.ap.data.model.IPElement;
+import org.cgiar.ccafs.ap.data.model.NextUser;
 import org.cgiar.ccafs.ap.data.model.Project;
+
+import java.util.List;
+
+import com.google.inject.Inject;
+import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -148,7 +149,7 @@ public class ActivityDeliverablesAction extends BaseAction {
 
       // Identifying deleted deliverables in the interface to delete them from the database.
       for (Deliverable deliverable : previousDeliverables) {
-        if (!activity.getDeliverables().contains(deliverable)) {
+        if (activity.getDeliverables().contains(deliverable) || activity.getDeliverables().isEmpty()) {
           deleted = deliverableManager.deleteDeliverable(deliverable.getId());
           if (!deleted) {
             success = false;
@@ -173,23 +174,12 @@ public class ActivityDeliverablesAction extends BaseAction {
           // saving output/MOG contribution.
           deliverableManager.saveDeliverableOutput(deliverableID, deliverable.getOutput().getId(), activityID);
 
-          // Getting previous nextUsers.
-          previousNextUsers = nextUserManager.getNextUsersByDeliverableId(deliverableID);
-
-          // Identifying deleted next users in the interface to delete them from the database.
-          for (NextUser nextUser : previousNextUsers) {
-            if (!deliverable.getNextUsers().contains(nextUser)) {
-              deleted = nextUserManager.deleteNextUserById(nextUser.getId());
-              if (!deleted) {
+          // Saving next Users.
+          if (deliverable.getNextUsers() != null) {
+            for (NextUser nextUser : deliverable.getNextUsers()) {
+              if (!nextUserManager.saveNextUser(deliverableID, nextUser)) {
                 success = false;
               }
-            }
-          }
-
-          // Saving next Users.
-          for (NextUser nextUser : deliverable.getNextUsers()) {
-            if (!nextUserManager.saveNextUser(deliverableID, nextUser)) {
-              success = false;
             }
           }
         }
