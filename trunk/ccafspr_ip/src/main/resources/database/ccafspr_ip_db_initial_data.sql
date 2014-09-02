@@ -16,7 +16,7 @@ INSERT INTO `deliverable_types` (`id`, `name`, `parent_id`, `timeline`) VALUES
 (11, 'Datasets', 1, 12),
 (12, 'Databases', 1, 12),
 (13, 'Information outputs', 1, 6),
-(14, 'Research report (i.e. working paper, workshop report, consultant''s report, discussion paper, project report, student thesis, etc.)', 2, 3),
+(14, 'Research report (i.e. workshop report, consultant''s report, discussion paper, project report, student thesis, etc.)', 2, 3),
 (15, 'Policy briefs - Briefing paper', 2, 3),
 (16, 'Working Paper', 2, 3),
 (17, 'Conference proceedings/papere', 2, 3),
