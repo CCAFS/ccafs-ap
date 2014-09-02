@@ -184,7 +184,12 @@
         [@s.text name="home.glossary.partners"/]
       </div>
       <div class="wordDefinition">
-        [@s.text name="home.glossary.partners.definition"/]
+        [@s.text name="home.glossary.partners.definition1"/]
+        <ul>
+          <li>[@s.text name="home.glossary.partners.definition2"/]</li>
+          <li>[@s.text name="home.glossary.partners.definition3"/]</li>
+        </ul>
+        [@s.text name="home.glossary.partners.definition4"/]
       </div>
     </div>
     
