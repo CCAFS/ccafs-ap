@@ -18,7 +18,7 @@
     [@s.text name="home.glossary.contact"/] [@s.text name="home.glossary.mailto"/]
     <hr/>
     
-    <div class="word">
+    <div id="activity" class="word">
       <div class="wordTitle">
         [@s.text name="home.glossary.activities"/]
       </div>
@@ -54,7 +54,7 @@
       </div>
     </div>
     <hr/>
-    <div class="word">
+    <div id="budget" class="word">
       <div class="wordTitle">
         [@s.text name="home.glossary.budget"/]
       </div>
@@ -143,7 +143,7 @@
       </div>
     </div>
     
-    <div class="word">
+    <div id="managementLiaison" class="word">
       <div class="wordTitle">
         [@s.text name="home.glossary.managementLiason"/]
       </div>
@@ -152,7 +152,7 @@
       </div>
     </div>
     <hr/>
-    <div class="word">
+    <div id="next-users" class="word">
       <div class="wordTitle">
         [@s.text name="home.glossary.nextUsers"/]
       </div>
@@ -161,7 +161,7 @@
       </div>
     </div>
     <hr/>
-    <div class="word">
+    <div id="project-outcome" class="word">
       <div class="wordTitle">
         [@s.text name="home.glossary.outcome"/]
       </div>
@@ -179,7 +179,7 @@
       </div>
     </div>
     <hr/>
-    <div class="word">
+    <div id="partners" class="word">
       <div class="wordTitle">
         [@s.text name="home.glossary.partners"/]
       </div>

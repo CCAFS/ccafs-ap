@@ -19,8 +19,16 @@
 <section class="content">
   <div class="helpMessage">
     <img src="${baseUrl}/images/global/icon-help.png" />
-    <p>[@s.text name="planning.projectOutcome.help1" /]</p>
-    <p>[@s.text name="planning.projectOutcome.help2" /]</p>
+    <p>
+      [@s.text name="planning.projectOutcome.help1" /] 
+      <a href="[@s.url namespace="/" action='glossary'][/@s.url]#project-outcome">[@s.text name="planning.projectOutcome.projectOutcome" /]</a>
+      [@s.text name="planning.projectOutcome.help2" /] 
+      <a href="[@s.url namespace="/" action='glossary'][/@s.url]#next-users">[@s.text name="planning.projectOutcome.nextUsers" /]</a>
+      [@s.text name="planning.projectOutcome.help3" /] 
+      <a href="[@s.url namespace="/" action='glossary'][/@s.url]#activity">[@s.text name="planning.projectOutcome.activity" /]</a>
+      [@s.text name="planning.projectOutcome.help4" /] 
+    </p>  
+    <p>[@s.text name="planning.projectOutcome.help5" /]</p>
   </div>
   [#include "/WEB-INF/planning/planningProjectsSubMenu.ftl" /]
   

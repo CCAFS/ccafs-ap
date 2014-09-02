@@ -17,8 +17,11 @@
     
 <section class="content">
   <div class="helpMessage">
-    <img src="${baseUrl}/images/global/icon-help.png" />
-    <p>[@s.text name="planning.projectBudget.help" /]</p>
+    <img src="${baseUrl}/images/global/icon-help.png" /> 
+    <p> [@s.text name="planning.projectBudget.help1" /] 
+    <a href="[@s.url namespace="/" action='glossary'][/@s.url]#budget">[@s.text name="planning.projectBudget.budget" /]</a> [@s.text name="planning.projectBudget.help2" /]
+    <a href="[@s.url namespace="/" action='glossary'][/@s.url]#partners">[@s.text name="planning.projectBudget.partners" /]</a> [@s.text name="planning.projectBudget.help3" /] 
+    <a href="[@s.url namespace="/" action='glossary'][/@s.url]#managementLiaison"> [@s.text name="planning.projectBudget.managementLiaison" /]</a> [@s.text name="planning.projectBudget.help4" /]</p>
     <div class="quote">
       <p><strong>[@s.text name="preplanning.projectBudget.w1" /]: </strong> [@s.text name="preplanning.projectBudget.w1.tooltip" /]</p>
       <p><strong>[@s.text name="preplanning.projectBudget.w2" /]: </strong> [@s.text name="preplanning.projectBudget.w2.tooltip" /]</p>
