@@ -168,7 +168,7 @@ public class ActivityImpactPathwayAction extends BaseAction {
       for (int i = 0; i < elements.size(); i++) {
         IPElement element = elements.get(i);
         element.setDescription(program.getAcronym() + " - " + getText("planning.activityImpactPathways.outcome2019")
-          + " #" + i + ": " + element.getDescription());
+          + " #" + (i + 1) + ": " + element.getDescription());
         midOutcomes.add(element);
       }
       // midOutcomes.addAll(ipElementManager.getIPElements(program, midOutcomeType));
