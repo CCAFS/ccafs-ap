@@ -117,18 +117,20 @@
         [#else] [#-- Else - invalidYear --]
           <p>[@s.text name="planning.activityBudget.message.invalidYear" /]</p>
         [/#if]
+        
+        [#if saveable]
+          <input type="hidden" name="year" value="${year?c}">
+          <input type="hidden" name="activityID" value="${activity.id?c}">
+          <div class="buttons">
+            [@s.submit type="button" name="save"][@s.text name="form.buttons.save" /][/@s.submit]
+            [@s.submit type="button" name="next"][@s.text name="form.buttons.next" /][/@s.submit]
+            [@s.submit type="button" name="cancel"][@s.text name="form.buttons.cancel" /][/@s.submit]
+          </div>
+        [/#if]
+        
       [#else] [#-- Else - allYears has content --]
         [#-- If the activity has not an start date and/or end date defined --]
         <p>[@s.text name="planning.activityBudget.message.dateUndefined" /]</p>
-      [/#if]
-      [#if saveable]
-        <input type="hidden" name="year" value="${year?c}">
-        <input type="hidden" name="activityID" value="${activity.id?c}">
-        <div class="buttons">
-          [@s.submit type="button" name="save"][@s.text name="form.buttons.save" /][/@s.submit]
-          [@s.submit type="button" name="next"][@s.text name="form.buttons.next" /][/@s.submit]
-          [@s.submit type="button" name="cancel"][@s.text name="form.buttons.cancel" /][/@s.submit]
-        </div>
       [/#if]
     </article>
   [/@s.form]

@@ -105,6 +105,16 @@ public class ActivityDeliverablesAction extends BaseAction {
   }
 
   @Override
+  public String next() {
+    String result = save();
+    if (result.equals(BaseAction.SUCCESS)) {
+      return BaseAction.NEXT;
+    } else {
+      return result;
+    }
+  }
+
+  @Override
   public void prepare() throws Exception {
 
     activityID = Integer.parseInt(StringUtils.trim(this.getRequest().getParameter(APConstants.ACTIVITY_REQUEST_ID)));
@@ -156,8 +166,6 @@ public class ActivityDeliverablesAction extends BaseAction {
           }
         }
       }
-
-      List<NextUser> previousNextUsers;
 
       // Saving deliverables
       for (Deliverable deliverable : activity.getDeliverables()) {
