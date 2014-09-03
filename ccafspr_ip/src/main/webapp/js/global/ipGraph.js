@@ -18,9 +18,9 @@ function initGraph(programID){
   $("#ipGraph-button").on("click", function(e){
     if (!graphStarted) {
       if (programID && !fullImpact) {
-        callCytos("../json/json/prePlanningIpGraph.do?programID=" + programID, "ipGraph-content");
+        callCytos(baseURL+"/json/prePlanningIpGraph.do?programID=" + programID, "ipGraph-content");
       } else {
-        callCytos("../json/json/prePlanningIpGraph.do", "ipGraph-content");
+        callCytos(baseURL+"/json/prePlanningIpGraph.do", "ipGraph-content");
       }
       graphStarted = true;
     }
@@ -34,9 +34,9 @@ function initGraph(programID){
 	  $("#ipGraph-btnSingleimpact").show();
 	  $("#ipGraph-btnFullimpact").hide();
 	  if (programID && !fullImpact) {
-        callCytos("../json/json/prePlanningIpGraph.do?programID=" + programID, "ipGraph-content");
+        callCytos(baseURL+"/json/prePlanningIpGraph.do?programID=" + programID, "ipGraph-content");
       } else {
-        callCytos("../json/json/prePlanningIpGraph.do", "ipGraph-content");
+        callCytos(baseURL+"/json/prePlanningIpGraph.do", "ipGraph-content");
       }
 	  return false;
   });
@@ -48,9 +48,9 @@ function initGraph(programID){
 	  $("#ipGraph-btnFullimpact").show();
 	  $("#ipGraph-btnSingleimpact").hide();
 	  if (programID && !fullImpact) {
-        callCytos("../json/json/prePlanningIpGraph.do?programID=" + programID, "ipGraph-content");
+        callCytos(baseURL+"/json/json/prePlanningIpGraph.do?programID=" + programID, "ipGraph-content");
       } else {
-        callCytos("../json/json/prePlanningIpGraph.do", "ipGraph-content");
+        callCytos(baseURL+"/json/json/prePlanningIpGraph.do", "ipGraph-content");
       }
 	  return false;
   });
@@ -85,18 +85,18 @@ function initGraph(programID){
 	    	  $( "<div id=\"loading-dialog-message\" style=\"display:none;position:absolute; width:100%; height:100%;top: 45%;\"><img style=\"display: block; margin: 0 auto;\" src=\"../images/global/loading.gif\" alt=\"Loader\" /></div>" ).appendTo("#dialog-message");
 	    	  reinitCytos();
 	    	  if (programID && !fullImpact) {
-    	        callCytos("../json/json/prePlanningIpGraph.do?programID=" + programID, "ipGraph-content");
+    	        callCytos(baseURL+"/json/json/prePlanningIpGraph.do?programID=" + programID, "ipGraph-content");
     	      } else {
-    	        callCytos("../json/json/prePlanningIpGraph.do", "ipGraph-content");
+    	        callCytos(baseURL+"/json/json/prePlanningIpGraph.do", "ipGraph-content");
     	      }
 	      }
 	    });
 	  reinitCytos();
-	  //$("#loading-"+contentDiv).show();
+	  // $("#loading-"+contentDiv).show();
 	  if (programID && !fullImpact) {
-        callCytos("../json/json/prePlanningIpGraph.do?programID=" + programID, "dialog-message");
+        callCytos(baseURL+"/json/json/prePlanningIpGraph.do?programID=" + programID, "dialog-message");
       } else {
-        callCytos("../json/json/prePlanningIpGraph.do", "dialog-message");
+        callCytos(baseURL+"/json/json/prePlanningIpGraph.do", "dialog-message");
       }	  
 	  return false;
   });
@@ -139,7 +139,7 @@ function callCytos(url,contentDiv) {
 	        });
 	      }
 	    });
-	    //console.log(JSON.stringify(ycount, null, 4));
+	    // console.log(JSON.stringify(ycount, null, 4));
 	    cy = cytoscape({
 	      container: $('#'+contentDiv)[0],
 	      style: cytoscape.stylesheet()
@@ -154,7 +154,7 @@ function callCytos(url,contentDiv) {
 	                'background-color': 'data(faveColor)',
 	                'font-weight': 'bold',
 	                'font-size': '18px',
-//	                'font-family' : 'sans-serif',
+// 'font-family' : 'sans-serif',
 	                'color': '#fff'
 	              })
 	              .selector('$node > node')
@@ -182,40 +182,20 @@ function callCytos(url,contentDiv) {
 	      elements: elements,
 	      layout: {
 	        name: 'preset',
-//	        directed: true,
-//	        roots: '#191,#204,#197',
+// directed: true,
+// roots: '#191,#204,#197',
 	        zoom: 1,
 	        minZoom: 1e-50,
 	        maxZoom: 1e50,
 	        zoomingEnabled: true,
 	        userZoomingEnabled: true,
-//	        padding: 200
+// padding: 200
 	      },
-	      /*layout: {
-	    	  name: 'concentric',
-	    	    concentric: function () {
-	    	    	y = 0;
-	    	    	idType= this.data('nodeType');
-	    	    	trans = this.data('translate');
-		    		if (idType == 1) {
-		    		
-		    		  } else if (idType == 2) {
-		    		    y = 1000;
-		    		  } else if (idType == 3) {
-		    		    y = 800;
-		    		  } else if (idType == 4) {
-		    		    y = 600;
-		    		  } else if (idType == 5) {
-		    		    y = 400;
-		    		  }
-		    		if (trans > 0) {
-		    			y -=100;
-		    		}
-		    		return y;
-	    	    },
-	    	    levelWidth: function( nodes ){ return 10; },
-	    	    padding: 10
-		      },*/
+	      /*
+         * layout: { name: 'concentric', concentric: function () { y = 0; idType= this.data('nodeType'); trans = this.data('translate'); if (idType == 1) { } else if (idType == 2) { y = 1000; } else
+         * if (idType == 3) { y = 800; } else if (idType == 4) { y = 600; } else if (idType == 5) { y = 400; } if (trans > 0) { y -=100; } return y; }, levelWidth: function( nodes ){ return 10; },
+         * padding: 10 },
+         */
 	      boxSelectionEnabled: false,
 	      ready: function() {
 	        window.cy = this;
@@ -233,7 +213,7 @@ function callCytos(url,contentDiv) {
 	        };
 	        cy.elements("node").qtip({
 	          content: function() {
-	            return this.data('descr')
+	            return this.data('descr');
 	          },
 	          show: {
 	            event: 'mouseover'
@@ -256,7 +236,7 @@ function callCytos(url,contentDiv) {
 
 	        reline(cy);
 	      },
-//	      panningEnabled: true,
+// panningEnabled: true,
 	      userPanningEnabled: true
 	    });
 	    cy.panzoom({
@@ -311,11 +291,11 @@ function callCytos(url,contentDiv) {
 	    	sources.css( 'z-index', '3' );
 	    	sources.targets().css( 'background-opacity', '1' );
 	    	sources.targets().css( 'text-opacity', '1' );
-	    	//if (sources){
+	    	// if (sources){
 	    	sources.targets().each(function(i, ele){
 	    		paintSources(ele);
 	    	});
-	    	//}
+	    	// }
 	    }
 	    
 	    cys = $('#'+contentDiv).cytoscape('get');
@@ -328,7 +308,7 @@ function callCytos(url,contentDiv) {
 	        reline(cy);
 	      }
 	    }
-//	      $('#btnDel').click(delElem);
+// $('#btnDel').click(delElem);
 	    function delElem(Id) {
 	      var j = cy.$("#" + Id);
 	      var sons = j.connectedEdges();
@@ -346,8 +326,8 @@ function callCytos(url,contentDiv) {
 	    }
 
 	    function reline(cys) {
-	    	//var type = 2;
-	      //var trans = 0;
+	    	// var type = 2;
+	      // var trans = 0;
 	      var lastpos = 0;
 	      var outFirst = 0;
 	      var lastEles = 0;
@@ -359,23 +339,23 @@ function callCytos(url,contentDiv) {
 			        outFirst = getDistance(eles[0].position('x'), eles[(eles[cutLine-1])?(cutLine-1):(eles.length - 1)].position('x'));
 			        if (lastEles != 0) {
 			          var diff = (outFirst - lastpos) / 2;
-		//	          console.log(outFirst + ' - ' + lastpos + ' / 2 = ' + diff+ ' t:'+type);
+		// console.log(outFirst + ' - ' + lastpos + ' / 2 = ' + diff+ ' t:'+type);
 			          position = lastEles[0].position('x');
 			          cys.elements("node[nodeType=" + i + "][translate="+j+"]").each(function(k, ele) {
-			        	  //if (position >= cutLinePx) {
+			        	  // if (position >= cutLinePx) {
 		        		  if ((k)%cutLine==0) {
-				            	//y+=100;
+				            	// y+=100;
 				            	position = lastEles[0].position('x');
 				            }
 			            ele.position('x', position - diff);
 			            ele.position('y', ele.position('y') + y);
 			            position += 250;
-			            //x[i] = ele.position('x');			            
+			            // x[i] = ele.position('x');
 			          });
 			        }
 			        lastpos = outFirst;
 			        lastEles = eles;
-			        //type++;
+			        // type++;
     		  	}
 	      	}
 	      }
@@ -398,7 +378,7 @@ function callCytos(url,contentDiv) {
 
 	    function getDistance(point1, point2) {
 	      var dist = Math.sqrt(Math.pow((point1 - point2), 2));
-//	      console.log(dist + ' d');
+// console.log(dist + ' d');
 	      return dist;
 	    }
     	document.querySelector('[data-id="layer4-node"]').style.position = 'static';
@@ -458,7 +438,7 @@ function callCytos(url,contentDiv) {
 			 yco[idType+'.'+trans] = yc;
 		}
 		 
-		//if (x[idType+'.'+trans] >= cutLinePx) {
+		// if (x[idType+'.'+trans] >= cutLinePx) {
 		if (ycount[idType+'.'+trans]%cutLine==0) {
 			yco[idType+'.'+trans] +=100;
 			x[idType+'.'+trans] = 100;

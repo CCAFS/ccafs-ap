@@ -45,6 +45,14 @@ function attachEvents(){
     });
     return;
   });
+  
+  $("li.yearTab").click(function(e){
+    e.preventDefault();
+    var yearTarget = $(this).attr("id").split("-")[1];
+    $("input[name$='yearTarget']").val(yearTarget);
+    printOut();
+    $("form").submit();
+  });
 }
 
 // Leveraged Functions //

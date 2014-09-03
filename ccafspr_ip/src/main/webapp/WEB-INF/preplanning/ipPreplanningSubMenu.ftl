@@ -43,7 +43,7 @@
 
 <div id="content-ip" style="display:none;height: 270px;width: 100%;margin: 21px 0px;position:relative;" class="ui-widget-content">
 	<div id="loading-ipGraph-content" style="display:none;position:absolute; width:100%; height:100%;top: 45%;">
-        <img style="display: block; margin: 0 auto;" src="../images/global/loading.gif" alt="Loader" />
+        <img style="display: block; margin: 0 auto;" src="${baseUrl}/images/global/loading.gif" alt="Loader" />
     </div>
     <div id="ipGraph-content"></div>
       [#if currentUser.FPL]
@@ -60,6 +60,6 @@
 
 <div id="dialog-message" title="Full View">    
     <div id="loading-dialog-message" style="display:none;position:absolute; width:100%; height:100%;top: 45%;">
-        <img style="display: block; margin: 0 auto;" src="../images/global/loading.gif" alt="Loader" />
+        <img style="display: block; margin: 0 auto;" src="${baseUrl}/images/global/loading.gif" alt="Loader" />
     </div>
 </div>

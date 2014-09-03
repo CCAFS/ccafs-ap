@@ -73,6 +73,7 @@
   [/#if]
 
   [#-- Second, import global javascripts and templates. --]
+  <input type="hidden" id="baseURL" value="${baseUrl}" />
   <script type="text/javascript" src="${baseUrl}/js/global/global.js" ></script>
 
   [#-- import the custom JS and CSS --]
