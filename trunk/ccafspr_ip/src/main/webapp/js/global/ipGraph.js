@@ -18,9 +18,9 @@ function initGraph(programID){
   $("#ipGraph-button").on("click", function(e){
     if (!graphStarted) {
       if (programID && !fullImpact) {
-        callCytos("../json/json/ipComponents.do?programID=" + programID, "ipGraph-content");
+        callCytos("../json/json/prePlanningIpGraph.do?programID=" + programID, "ipGraph-content");
       } else {
-        callCytos("../json/json/ipComponents.do", "ipGraph-content");
+        callCytos("../json/json/prePlanningIpGraph.do", "ipGraph-content");
       }
       graphStarted = true;
     }
@@ -34,9 +34,9 @@ function initGraph(programID){
 	  $("#ipGraph-btnSingleimpact").show();
 	  $("#ipGraph-btnFullimpact").hide();
 	  if (programID && !fullImpact) {
-        callCytos("../json/json/ipComponents.do?programID=" + programID, "ipGraph-content");
+        callCytos("../json/json/prePlanningIpGraph.do?programID=" + programID, "ipGraph-content");
       } else {
-        callCytos("../json/json/ipComponents.do", "ipGraph-content");
+        callCytos("../json/json/prePlanningIpGraph.do", "ipGraph-content");
       }
 	  return false;
   });
@@ -48,9 +48,9 @@ function initGraph(programID){
 	  $("#ipGraph-btnFullimpact").show();
 	  $("#ipGraph-btnSingleimpact").hide();
 	  if (programID && !fullImpact) {
-        callCytos("../json/json/ipComponents.do?programID=" + programID, "ipGraph-content");
+        callCytos("../json/json/prePlanningIpGraph.do?programID=" + programID, "ipGraph-content");
       } else {
-        callCytos("../json/json/ipComponents.do", "ipGraph-content");
+        callCytos("../json/json/prePlanningIpGraph.do", "ipGraph-content");
       }
 	  return false;
   });
@@ -85,18 +85,18 @@ function initGraph(programID){
 	    	  $( "<div id=\"loading-dialog-message\" style=\"display:none;position:absolute; width:100%; height:100%;top: 45%;\"><img style=\"display: block; margin: 0 auto;\" src=\"../images/global/loading.gif\" alt=\"Loader\" /></div>" ).appendTo("#dialog-message");
 	    	  reinitCytos();
 	    	  if (programID && !fullImpact) {
-    	        callCytos("../json/json/ipComponents.do?programID=" + programID, "ipGraph-content");
+    	        callCytos("../json/json/prePlanningIpGraph.do?programID=" + programID, "ipGraph-content");
     	      } else {
-    	        callCytos("../json/json/ipComponents.do", "ipGraph-content");
+    	        callCytos("../json/json/prePlanningIpGraph.do", "ipGraph-content");
     	      }
 	      }
 	    });
 	  reinitCytos();
 	  //$("#loading-"+contentDiv).show();
 	  if (programID && !fullImpact) {
-        callCytos("../json/json/ipComponents.do?programID=" + programID, "dialog-message");
+        callCytos("../json/json/prePlanningIpGraph.do?programID=" + programID, "dialog-message");
       } else {
-        callCytos("../json/json/ipComponents.do", "dialog-message");
+        callCytos("../json/json/prePlanningIpGraph.do", "dialog-message");
       }	  
 	  return false;
   });

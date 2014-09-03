@@ -1,4 +1,4 @@
-package org.cgiar.ccafs.ap.action.json.global;
+package org.cgiar.ccafs.ap.action.json.planning;
 
 import org.cgiar.ccafs.ap.action.BaseAction;
 import org.cgiar.ccafs.ap.config.APConfig;
@@ -22,10 +22,11 @@ public class ImpactPathwayComponentsAction extends BaseAction {
 
   // Logger
   private static final Logger LOG = LoggerFactory.getLogger(ImpactPathwayComponentsAction.class);
-  private static final long serialVersionUID = -518901501302323594L;
+  private static final long serialVersionUID = 7009052475028216564L;
 
   // Model
   private List<IPElement> ipElements;
+  private List<Map<String, Object>> nodes;
   private List<Map<String, String>> relations;
   private int programID;
 
@@ -36,6 +37,58 @@ public class ImpactPathwayComponentsAction extends BaseAction {
   public ImpactPathwayComponentsAction(APConfig config, IPElementManager ipElementManager) {
     super(config);
     this.ipElementManager = ipElementManager;
+  }
+
+  private void addImpactPathwayElements() {
+    Map<String, Object> node = new HashMap<>();
+    Map<String, String> contributesTo;
+    Map<String, String> translatedOf;
+    Map<String, String> program;
+    Map<String, String> type;
+
+    for (IPElement element : ipElements) {
+      node = new HashMap<>();
+
+      List<Map<String, String>> contributionList = new ArrayList<>();
+      for (IPElement contribution : element.getContributesTo()) {
+        contributesTo = new HashMap<>();
+        contributesTo.put("description", contribution.getDescription());
+        contributesTo.put("id", contribution.getId() + "");
+
+        contributionList.add(contributesTo);
+      }
+      node.put("contributesTo", contributionList);
+
+      node.put("description", element.getDescription());
+      node.put("id", element.getId());
+
+      program = new HashMap<>();
+      program.put("id", element.getProgram().getId() + "");
+      program.put("acronym", element.getProgram().getAcronym());
+      program.put("composedName", element.getProgram().getComposedName());
+      node.put("program", program);
+
+      List<Map<String, String>> translationList = new ArrayList<>();
+      for (IPElement translation : element.getTranslatedOf()) {
+        translatedOf = new HashMap<>();
+        translatedOf.put("id", translation.getId() + "");
+        translatedOf.put("name", translation.getDescription());
+        translationList.add(translatedOf);
+      }
+      node.put("translatedOf", translationList);
+
+      type = new HashMap<>();
+      type.put("id", element.getType().getId() + "");
+      type.put("name", element.getType().getName());
+      node.put("type", type);
+
+    }
+
+    nodes.add(node);
+  }
+
+  private void addProjectsAndActivities() {
+
   }
 
   @Override
@@ -71,8 +124,9 @@ public class ImpactPathwayComponentsAction extends BaseAction {
     return SUCCESS;
   }
 
-  public List<IPElement> getIpElements() {
-    return ipElements;
+  public List<Map<String, Object>> getNodes() {
+    addImpactPathwayElements();
+    return nodes;
   }
 
   public List<Map<String, String>> getRelations() {

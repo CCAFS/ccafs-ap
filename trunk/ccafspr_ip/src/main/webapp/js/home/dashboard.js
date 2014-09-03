@@ -28,7 +28,7 @@ function initTabs(){
       
       if(ui.newTab.index() == 2){
         if (!graphStarted) {
-          callCytos("json/ipComponents.do", "ipGraph-content");
+          callCytos("json/prePlanningIpGraph.do", "ipGraph-content");
           graphStarted = true;
         }
       }
