@@ -165,6 +165,7 @@ function changeTypeEvent(e){
     var $newSelectType = $selectType.clone(true);
     $parent.find(".locationName").empty().html($newSelectType.html());
     $parent.find("[name$='geoPosition.latitude'], [name$='geoPosition.longitude']").addClass("notApplicable").attr("disabled", true).val($("#notApplicableText").val());
+    // If marker exist, remove the marker
     if (typeof markers[locationId] !== 'undefined') {
       removeMarker(locationId);
     }
@@ -287,8 +288,6 @@ function setLocationsMarkers(){
   $("#locationsBlock .location").each(function(index,location){
     var latitude = $(location).find("[name$='geoPosition.latitude']").val();
     var longitude = $(location).find("[name$='geoPosition.longitude']").val();
-    
-    console.log("coor > " + latitude + "," + longitude);
     // checks whether a coordinate is valid
     if (isCoordinateValid(latitude, longitude)) {
       makeMarker({
@@ -302,7 +301,6 @@ function setLocationsMarkers(){
 }
 
 function markerAction(e){
-  console.log(e.type);
   var $parent = $(e.target).parent().parent().parent();
   var locationId = $parent.attr("id").split("-")[1];
   var $coordinatesFields = $parent.find("[name$='geoPosition.longitude'],[name$='geoPosition.latitude']");

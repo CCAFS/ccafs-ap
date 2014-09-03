@@ -75,6 +75,9 @@
             </ul>
             [@s.set var="counter" value="0"/] 
               <div id="partnerTables-${year?c}" class="partnerTable ui-tabs-panel ui-widget-content ui-corner-bottom clearfix"> 
+                <div id="totalBudgetByYear"> 
+                  <p id="projectTotalByYear"><strong>Total ${year} budget:</strong>  US$ <span id="projectTotalBudgetByYear">${totalBudgetByYear?string(",##0.00")}</span></p>
+                </div>
                 <table class="ccafsBudget fullPartBlock">
                   [#-- HEADERS --]
                   <tr id="" class="ccafsBudget-head row">
@@ -172,8 +175,8 @@
                         [@s.set var="counter" value="${counter+1}"/]
                       </td> 
                     </tr>
-                  [/#list] 
-                </table>  
+                  [/#list]   
+                </table>   
                 <div class="partnerListMsj">
                   [@s.text name="preplanning.projectBudget.partnerNotList" /]
                   <a href="[@s.url action='partners' includeParams='get'][@s.param name='projectID']${project.id?c}[/@s.param][/@s.url]"> 

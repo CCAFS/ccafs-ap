@@ -111,7 +111,7 @@ pre {
       Firefox adds a 1px margin above and below textareas 
    3) Set font-size to match <body>'s, and font-family to sans-serif 
    4) Align to baseline */
-button, input, select, textarea { width: auto; overflow: visible; margin: 0; font-size: 100%; font-family: sans-serif; vertical-align: baseline; }
+button, input, select, textarea { width: auto; max-width: 100%; overflow: visible; margin: 0; font-size: 100%; font-family: sans-serif; vertical-align: baseline; }
 
 /* 1) Remove default scrollbar in IE: www.sitepoint.com/blogs/2010/08/20/ie-remove-textarea-scrollbars/
    2) Align to text-top */

@@ -1,5 +1,5 @@
 //Global VARS
-var projectTotalCCAFSBudget,projectTotalBudget,yearTotalCCAFSBudget,yearTotalBudget;
+var activityTotalBudget,yearTotalBudget;
 var $allBudgetInputs,$CCAFSBudgetInputs;
 
 $(document).ready(init);
