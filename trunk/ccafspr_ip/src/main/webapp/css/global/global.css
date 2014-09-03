@@ -108,7 +108,9 @@ input[type="radio"] {
   margin-right: 3px;
 }
 
-
+select{
+	width: 99% !important;
+}
 
 input[type="submit"], button, .addButton {
   background-color:#2BA6CB;
@@ -1561,6 +1563,12 @@ textarea[id$='summary'] {
 table tr.row:hover{
     background: #f5f5f5;
 }
+
+#totalBudgetByYear {
+	float: right;
+	padding: 0 24px 26px 0;
+}
+
 
 /***************** PLANNING ******************/
 
