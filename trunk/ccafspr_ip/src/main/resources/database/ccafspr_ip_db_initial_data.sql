@@ -659,7 +659,7 @@ INSERT INTO `institutions` (`id`, `name`, `acronym`, `contact_person_name`, `con
 (43, 'Université de Ouagadougou', NULL, NULL, NULL, 'Ouagadougou', NULL, NULL, 1, 27),
 (44, 'Banana research networks', NULL, NULL, NULL, NULL, 'http://banana-networks.org/', NULL, 11, 108),
 (45, 'International Institute of Tropical Agriculture', 'IITA', NULL, NULL, 'Ibadan', NULL, NULL, 3, 159),
-(46, 'Centro Internacional de agricultura Tropical', 'CIAT', NULL, NULL, 'Cali', NULL, NULL, 3, 53),
+(46, 'Centro Internacional de Agricultura Tropical', 'CIAT', NULL, NULL, 'Cali', NULL, NULL, 3, 53),
 (47, 'University of Western Australia', NULL, NULL, NULL, 'Perth', NULL, NULL, 1, 20),
 (48, 'Queensland Department of Primary Industries', NULL, NULL, NULL, 'Queensland', NULL, NULL, 7, 20),
 (49, 'Bioversity International', 'BI', NULL, NULL, 'Rome', NULL, NULL, 3, 108),
