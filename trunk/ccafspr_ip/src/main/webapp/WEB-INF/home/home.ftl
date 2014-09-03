@@ -52,7 +52,10 @@
               <p>
             [/#if]
           </div>
-        <div id="ipGraph-content">
+        <div id="ipGraph-content" style="position: relative;">
+          <div id="loading-ipGraph-content" style="display:none;position: absolute;top: 45%;right: 45%;">
+              <img style="display: block; margin: 0 auto;" src="./images/global/loading.gif" alt="Loader" />
+          </div>
         </div>
       </div> <!-- End dashboard -->
       

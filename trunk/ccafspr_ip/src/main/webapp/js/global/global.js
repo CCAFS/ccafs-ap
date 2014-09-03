@@ -1,9 +1,11 @@
+var baseURL;
 jQuery.fn.exists = function(){
   return this.length > 0;
 };
 
 // Global javascript must be here.
 $(document).ready(function(){
+  baseURL = $("#baseURL").val();
   showNotificationMessages();
   
   function showNotificationMessages(){

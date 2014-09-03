@@ -71,7 +71,7 @@
           <div id="budgetTables" class="ui-tabs ui-widget ui-widget-content ui-corner-all" style="display:none"> 
             <ul class="ui-tabs-nav ui-helper-reset ui-helper-clearfix ui-widget-header ui-corner-all">
               [#list allYears as yearMenu]
-                <li class="ui-state-default ui-corner-top [#if yearMenu=year ]ui-tabs-active ui-state-active ui-state-hover[/#if]">
+                <li id="year-${yearMenu}" class="yearTab ui-state-default ui-corner-top [#if yearMenu=year ]ui-tabs-active ui-state-active ui-state-hover[/#if]">
                   <a href="[@s.url action='budget' includeParams='get'][@s.param name='${projectRequest}']${project.id?c}[/@s.param][@s.param name='year']${yearMenu?c}[/@s.param][/@s.url]"> ${yearMenu?c} </a>
                 </li>
               [/#list]
@@ -239,7 +239,8 @@
       [#if allYears?has_content && !invalidYear && hasLeader]
         <!-- internal parameter -->
         <input name="projectID" type="hidden" value="${project.id?c}" />
-        <input name="year" type="hidden" value="${year?c}" />
+        <input name="year" type="hidden" value="${year?c}" /> 
+        <input type="hidden" name="yearTarget" value="${year?c}" />
         <div class="buttons">
           [@s.submit type="button" name="save"][@s.text name="form.buttons.save" /][/@s.submit]
           [@s.submit type="button" name="next"][@s.text name="form.buttons.next" /][/@s.submit]

@@ -5,6 +5,7 @@ function init(){
   setIndicatorIndexes();
   setMogsIndexes();
   attachEvents();
+  initGraph();
 }
 
 function attachEvents(){
@@ -21,16 +22,15 @@ function removeContributionBlock(event){
   
 }
 
-
 function selectMogEvent(event){
   var $checkbox = $(event.target);
   var $hiddenInput = $checkbox.prev();
   var index = $checkbox.attr("id").split("-")[1];
   var name;
-
-  if($checkbox.is(":checked")){
+  
+  if ($checkbox.is(":checked")) {
     $hiddenInput.attr("disabled", false);
-  }else{
+  } else {
     $hiddenInput.attr("disabled", true);
   }
   
@@ -59,7 +59,7 @@ function selectMidOutcomeEvent(event){
   var $mogBlock = $newContribution.find(".mogsBlock");
   var $indicatorsBlock = $newContribution.find(".indicatorsBlock");
   
-  //Add the midOutcome id
+  // Add the midOutcome id
   $newContribution.find("#midOutcomeID").val(midOutcomeID);
   
   // Add the midOutcome description
@@ -154,13 +154,13 @@ function setIndicatorIndexes(){
     $(indicator).find("input[type='checkbox']").attr("id", "activity.indicators-" + index);
     $(indicator).find("input[type='checkbox']").attr("name", indicatorsName + "[" + index + "].parent.id");
     
-    if($(indicator).find("input[type='checkbox']").is(":checked")){
+    if ($(indicator).find("input[type='checkbox']").is(":checked")) {
       
       $(indicator).find("input[type='hidden']").attr("disabled", false);
       $(indicator).find(".indicatorNarrative input").attr("name", indicatorsName + "[" + index + "].target");
       $(indicator).find(".indicatorNarrative textarea").attr("name", indicatorsName + "[" + index + "].description");
       
-    }else{
+    } else {
       
       $(indicator).find("input[type='hidden']").attr("disabled", true);
       $(indicator).find(".indicatorNarrative input").attr("name", "");
@@ -187,16 +187,14 @@ function setMogsIndexes(){
     $(mog).find("input[type='checkbox']").attr("id", "mog-" + index);
     $(mog).find("input[type='checkbox']").attr("name", mogsName + ".id");
     
-    
-    
-    // Hidden input 
+    // Hidden input
     $(mog).find("input[type='hidden']").attr("name", mogsName + ".contributesTo[0].id");
-    if($(mog).find("input[type='checkbox']").is(":checked")){
+    if ($(mog).find("input[type='checkbox']").is(":checked")) {
       $(mog).find("input[type='hidden']").attr("disabled", false);
-    }else{
+    } else {
       $(mog).find("input[type='hidden']").attr("disabled", true);
     }
-
+    
     // Label
     $(mog).find("label").attr("for", "mog-" + index);
   });

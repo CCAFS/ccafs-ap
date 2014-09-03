@@ -109,7 +109,10 @@ input[type="radio"] {
 }
 
 select{
-	width: 99% !important;
+  width: 99%;
+}
+.dataTables_wrapper select {
+  width: auto !important;
 }
 
 input[type="submit"], button, .addButton {
@@ -1322,7 +1325,7 @@ padding-left: 11px;
 }
 
 button#ipGraph-btnPrint {
-  background: url(../../images/global/printer-icon.png)no-repeat center #2BA6CB;
+  background: url(../../images/global/download-icon.png)no-repeat center #2BA6CB;
 }
 
 button#ipGraph-btnMax {
@@ -1374,7 +1377,7 @@ button.ipGraph-btn{
 }
 
 .btnPrint{
-  background: url(../../images/global/printer-icon.png)no-repeat center #47939C !important;
+  background: url(../../images/global/download-icon.png)no-repeat center #47939C !important;
   height: 30px;
   vertical-align: middle;
 }
@@ -1565,8 +1568,8 @@ table tr.row:hover{
 }
 
 #totalBudgetByYear {
-	float: right;
-	padding: 0 24px 26px 0;
+  float: right;
+  padding: 0 24px 26px 0;
 }
 
 
