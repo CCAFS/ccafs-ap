@@ -40,7 +40,14 @@
       </result>
     </action>
     
-    <action name="ipComponents" class="org.cgiar.ccafs.ap.action.json.global.ImpactPathwayComponentsAction">
+    <action name="prePlanningIpGraph" class="org.cgiar.ccafs.ap.action.json.preplanning.ImpactPathwayComponentsAction">
+      <result type="json">        
+        <param name="noCache">true</param>
+        <param name="excludeNullProperties">true</param>
+      </result>
+    </action>
+    
+    <action name="planningIpGraph" class="org.cgiar.ccafs.ap.action.json.planning.ImpactPathwayComponentsAction">
       <result type="json">        
         <param name="noCache">true</param>
         <param name="excludeNullProperties">true</param>
