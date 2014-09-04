@@ -65,6 +65,13 @@ a,a:active,a:visited,a:hover {
   color: red;
 }
 
+.fieldset {
+	padding: 10px 11px;
+	margin: 10px 0px;
+	border: 1px dotted #CCC;
+	border-radius: 15px 0px;
+}
+
 ul.fieldError li {
   color: red;
   list-style-type: none;
