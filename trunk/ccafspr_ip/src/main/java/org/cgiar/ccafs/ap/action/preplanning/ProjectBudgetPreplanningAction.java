@@ -50,7 +50,11 @@ public class ProjectBudgetPreplanningAction extends BaseAction {
 
   // Model for the back-end
   private int projectID;
+  // year contains the year in which the budget should be saved
   private int year;
+  // targetYear contains the year to which the users should
+  // be redirected once them press a tab
+  private int targetYear;
   private Project project;
 
   // Model for the front-end
@@ -70,6 +74,7 @@ public class ProjectBudgetPreplanningAction extends BaseAction {
   // Managers
   private ProjectManager projectManager;
   private BudgetManager budgetManager;
+
   private InstitutionManager institutionManager;
   private ProjectPartnerManager partnerManager;
 
@@ -289,6 +294,10 @@ public class ProjectBudgetPreplanningAction extends BaseAction {
     return APConstants.PROJECT_REQUEST_ID;
   }
 
+  public int getTargetYear() {
+    return targetYear;
+  }
+
   public double getTotalBudget() {
     return totalBudget;
   }
@@ -480,6 +489,10 @@ public class ProjectBudgetPreplanningAction extends BaseAction {
 
   public void setProjectID(int projectID) {
     this.projectID = projectID;
+  }
+
+  public void setTargetYear(int targetYear) {
+    this.targetYear = targetYear;
   }
 
   public void setTotalBudget(double totalBudget) {
