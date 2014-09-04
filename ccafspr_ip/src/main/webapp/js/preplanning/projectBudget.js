@@ -49,7 +49,7 @@ function attachEvents(){
   $("li.yearTab").click(function(e){
     e.preventDefault();
     var yearTarget = $(this).attr("id").split("-")[1];
-    $("input[name$='yearTarget']").val(yearTarget);
+    $("input[name$='targetYear']").val(yearTarget);
     printOut();
     $("form").submit();
   });
@@ -113,6 +113,7 @@ function addChosen(){
 function calculateOverallBudget(e){
   var Amount = totalBudget("form input[name$='amount']");
   var totalAmount = yearTotalBudget + Amount;
+  $("span#projectTotalBudgetByYear").text(setCurrencyFormat(Amount));
   $("span#projectTotalBudget").text(setCurrencyFormat(totalAmount));
 }
 
