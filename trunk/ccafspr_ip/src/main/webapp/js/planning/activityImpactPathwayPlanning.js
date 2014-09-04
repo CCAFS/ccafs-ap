@@ -138,8 +138,13 @@ function addIndicators(midOutcomeID,programID,$indicatorsBlock){
       
       // indexes will be adjusted in function setIndicatorsIndexes
       $newIndicator.find("input[type='checkbox']").val(indicator.id);
-      $newIndicator.find("label.indicatorDescription").text(indicator.parent.description);
-      
+      if (!(indicator.parent)) {
+        $newIndicator.find("label.indicatorDescription").text(indicator.description);
+        console.log("Loading indicator for FP");
+      } else {
+        $newIndicator.find("label.indicatorDescription").text(indicator.parent.description);
+        console.log("Loading indicator for RP");
+      }
       $indicatorsBlock.append($newIndicator);
     });
     
