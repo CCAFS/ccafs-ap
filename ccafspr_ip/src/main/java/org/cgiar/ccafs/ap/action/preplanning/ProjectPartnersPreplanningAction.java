@@ -186,15 +186,9 @@ public class ProjectPartnersPreplanningAction extends BaseAction {
     boolean success = true;
     boolean saved = true;
 
-    if (isExpected) {
-      // Saving Project leader
-      saved = projectManager.saveExpectedProjectLeader(project.getId(), project.getExpectedLeader());
-      if (!saved) {
-        success = false;
-      }
-    }
+    // ---------- PROJECT PARTNERS ------------
 
-    // Getting previous Project Partners.
+    // Getting previous Project Partners to identify those that need to be deleted.
     List<ProjectPartner> previousProjectPartners = projectPartnerManager.getProjectPartners(projectID);
 
     // Deleting project partners
@@ -207,20 +201,11 @@ public class ProjectPartnersPreplanningAction extends BaseAction {
       }
     }
 
-    // Getting previous Partner Institutions
-    List<Institution> previousInstitutions = new ArrayList<>();
-    for (ProjectPartner projectPartner : previousProjectPartners) {
-      previousInstitutions.add(projectPartner.getPartner());
-    }
-    // Getting current Partner Institutions
-    List<Institution> currentInstitutions = new ArrayList<>();
-    for (ProjectPartner projectPartner : project.getProjectPartners()) {
-      currentInstitutions.add(projectPartner.getPartner());
-    }
-    // Deleting Partner Institutions from budget section
-    for (Institution previousInstitution : previousInstitutions) {
-      if (!currentInstitutions.contains(previousInstitution)) {
-        budgetManager.deleteBudgetsByInstitution(project.getId(), previousInstitution.getId());
+    // Saving Project leader
+    if (isExpected) {
+      saved = projectManager.saveExpectedProjectLeader(project.getId(), project.getExpectedLeader());
+      if (!saved) {
+        success = false;
       }
     }
 
@@ -229,6 +214,42 @@ public class ProjectPartnersPreplanningAction extends BaseAction {
     if (!saved) {
       success = false;
     }
+
+    // ------------------------------------------
+
+
+    // ------------ PROJECT BUDGETS -------------
+
+    // Getting all the current institutions in order to delete from the budget those that changed.
+
+    // Getting current Partner Institutions
+    List<Institution> partnerInstitutions = new ArrayList<>();
+    if (isExpected) {
+      User expectedLeader = projectManager.getExpectedProjectLeader(project.getId());
+      if (expectedLeader != null) {
+        partnerInstitutions.add(expectedLeader.getCurrentInstitution());
+      }
+    } else {
+      partnerInstitutions.add(projectManager.getProjectLeader(project.getId()).getCurrentInstitution());
+    }
+    for (ProjectPartner projectPartner : project.getProjectPartners()) {
+      partnerInstitutions.add(projectPartner.getPartner());
+    }
+
+    // Getting all the current budget institutions from W1, W2, W3 and Bilateral.
+    System.out.println();
+    List<Institution> budgetInstitutions = budgetManager.getW1Institutions(project.getId());
+
+
+    // Deleting Institutions from budget section
+    for (Institution institutionToDelete : budgetInstitutions) {
+      if (!partnerInstitutions.contains(institutionToDelete)) {
+        budgetManager.deleteBudgetsByInstitution(project.getId(), institutionToDelete.getId());
+      }
+    }
+
+    // ------------------------------------------
+
 
     if (success) {
       addActionMessage(getText("saving.success", new String[] {getText("preplanning.projectPartners.leader.title")}));
