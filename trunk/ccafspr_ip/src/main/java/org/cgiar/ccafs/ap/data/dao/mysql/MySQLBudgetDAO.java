@@ -380,6 +380,47 @@ public class MySQLBudgetDAO implements BudgetDAO {
 
 
   @Override
+  public List<Map<String, String>> getActivityInstitutions(int activityID) {
+    LOG.debug(">> getActivityInstitutions activityID = {} )", activityID);
+    List<Map<String, String>> institutionDataList = new ArrayList<>();
+    StringBuilder query = new StringBuilder();
+    query.append("SELECT DISTINCT i.*   ");
+    query.append("FROM institutions as i ");
+    query.append("INNER JOIN budgets b ON b.institution_id = i.id ");
+    query.append("INNER JOIN activity_budgets pb ON b.id = pb.budget_id ");
+    query.append("INNER JOIN budget_types bt ON b.budget_type = bt.id ");
+    query.append("WHERE pb.activity_id = ");
+    query.append(activityID);
+    query.append(" AND b.budget_type = ");
+    query.append(BudgetType.ACTIVITY.getValue());
+
+    try (Connection con = databaseManager.getConnection()) {
+      ResultSet rs = databaseManager.makeQuery(query.toString(), con);
+      while (rs.next()) {
+        Map<String, String> institutionData = new HashMap<String, String>();
+        institutionData.put("id", rs.getString("id"));
+        institutionData.put("name", rs.getString("name"));
+        institutionData.put("acronym", rs.getString("acronym"));
+        institutionData.put("contact_person_name", rs.getString("contact_person_name"));
+        institutionData.put("contact_person_name", rs.getString("contact_person_name"));
+        institutionData.put("city", rs.getString("city"));
+        institutionData.put("website_link", rs.getString("website_link"));
+        institutionData.put("program_id", rs.getString("program_id"));
+        institutionData.put("institution_type_id", rs.getString("institution_type_id"));
+        institutionData.put("country_id", rs.getString("country_id"));
+
+        institutionDataList.add(institutionData);
+      }
+      con.close();
+    } catch (SQLException e) {
+      LOG.error("Exception arised getting the activity budget institutions for the activity {}.", activityID,
+        e.getMessage());
+    }
+    return institutionDataList;
+  }
+
+
+  @Override
   public List<Map<String, String>> getBudgetsByProject(int projectID) {
     LOG.debug(">> getBudgetsByProject projectID = {} )", projectID);
 
@@ -581,7 +622,7 @@ public class MySQLBudgetDAO implements BudgetDAO {
 
   @Override
   public List<Map<String, String>> getW1Institutions(int projectID) {
-    LOG.debug(">> getLeveragedInstitutions projectID = {} )", projectID);
+    LOG.debug(">> getW1Institutions projectID = {} )", projectID);
     List<Map<String, String>> leveragedInstitutionDataList = new ArrayList<>();
     StringBuilder query = new StringBuilder();
     query.append("SELECT DISTINCT i.*   ");
@@ -613,7 +654,7 @@ public class MySQLBudgetDAO implements BudgetDAO {
       }
       con.close();
     } catch (SQLException e) {
-      LOG.error("Exception arised getting the leveraged institutions for the project {}.", projectID, e);
+      LOG.error("Exception arised getting the WI institutions for the project {}.", projectID, e.getNextException());
     }
     return leveragedInstitutionDataList;
   }

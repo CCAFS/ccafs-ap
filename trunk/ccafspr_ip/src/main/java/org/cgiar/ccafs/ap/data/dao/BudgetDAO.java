@@ -156,6 +156,14 @@ public interface BudgetDAO {
   public List<Map<String, String>> getActivityBudgetsByYear(int activityID, int year);
 
   /**
+   * This method gets all the budget institutions that belong to a specific activity.
+   * 
+   * @param activityID is the activity identifier.
+   * @return a list of Maps with the information of institutions.
+   */
+  public List<Map<String, String>> getActivityInstitutions(int activityID);
+
+  /**
    * This method gets all the budget information by a given Project Id
    *
    * @param projectID - is the Id of the project
@@ -208,7 +216,7 @@ public interface BudgetDAO {
 
   /**
    * This method gets all the W1 budget institutions that belong to a specific project.
-   * 
+   *
    * @param projectID is the project identifier.
    * @return a list of Maps with the information of institutions.
    */

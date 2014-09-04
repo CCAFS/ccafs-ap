@@ -157,6 +157,37 @@ public class BudgetManagerImpl implements BudgetManager {
   }
 
   @Override
+  public List<Institution> getActivityInstitutionsBudgets(int activityID) {
+    List<Institution> institutions = new ArrayList<>();
+    List<Map<String, String>> institutionDataList = budgetDAO.getActivityInstitutions(activityID);
+    for (Map<String, String> iData : institutionDataList) {
+      Institution institution = new Institution();
+      institution.setId(Integer.parseInt(iData.get("id")));
+      institution.setName(iData.get("name"));
+      institution.setAcronym(iData.get("acronym"));
+      institution.setContactPersonName(iData.get("contactPersonName"));
+      institution.setContactPersonEmail(iData.get("contactPersonEmail"));
+
+      // InstitutionType Object
+      if (iData.get("institution_type_id") != null) {
+        institution.setType(institutionManager.getInstitutionType(Integer.parseInt(iData.get("institution_type_id"))));
+      }
+      // Program Object
+      if (iData.get("program_id") != null) {
+        institution.setProgram(ipProgramManager.getIPProgramById(Integer.parseInt(iData.get("program_id"))));
+      }
+      // Location Object
+      if (iData.get("loc_elements_id") != null) {
+        institution.setCountry(locationManger.getCountry(Integer.parseInt(iData.get("loc_elements_id"))));
+      }
+
+      // Adding object to the array.
+      institutions.add(institution);
+    }
+    return institutions;
+  }
+
+  @Override
   public List<Budget> getBudgetsByProject(Project project) {
 
     List<Integer> allYears = project.getAllYears();
@@ -368,6 +399,7 @@ public class BudgetManagerImpl implements BudgetManager {
     }
     return institutions;
   }
+
 
   @Override
   public boolean saveActivityBudget(int activityID, Budget activityBudget) {
