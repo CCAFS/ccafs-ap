@@ -267,6 +267,8 @@ function setContributesIndexes(i){
     // For new contributeTo outputs
     var elementName = "outputs[" + i + "].contributesTo[" + index + "].";
     $(element).find("[id^='contributeId']").attr("name", elementName + "id");
+    $(element).find("[id^='outputsRPL_outputs'].contributes").attr("name", elementName + "id");
+    
     // For existing translated outputs
     elementName = "outputs[" + i + "].translatedOf";
     $(element).find("[id^='outputsRPL_outputs'].translates").attr("name", elementName);
