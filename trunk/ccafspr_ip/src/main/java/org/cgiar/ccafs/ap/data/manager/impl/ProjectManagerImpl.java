@@ -197,42 +197,42 @@ public class ProjectManagerImpl implements ProjectManager {
     Project project = new Project(Integer.parseInt(projectData.get("id")));
     project.setTitle(projectData.get("title"));
 
+    Budget totalBudget = new Budget();
+    List<Budget> budgets = new ArrayList<>(1);
     if (projectData.get("total_budget_amount") != null) {
-      Budget totalBudget = new Budget();
       totalBudget.setAmount(Double.parseDouble(projectData.get("total_budget_amount")));
-      List<Budget> budgets = new ArrayList<>(1);
       budgets.add(totalBudget);
-      project.setBudgets(budgets);
     }
+    project.setBudgets(budgets);
 
     project.setCreated(Long.parseLong(projectData.get("created")));
 
     // Getting Project Focuses - Regions
+    List<IPProgram> regions = new ArrayList<>();
     if (projectData.get("regions") != null) {
       String[] regionsAcronyms = projectData.get("regions").split(",");
-      List<IPProgram> regions = new ArrayList<>();
       IPProgram region;
       for (String regionAcronym : regionsAcronyms) {
         region = new IPProgram();
         region.setAcronym(regionAcronym);
         regions.add(region);
       }
-      project.setRegions(regions);
     }
+    project.setRegions(regions);
 
 
     // Getting Project Focuses - Flagships
+    List<IPProgram> flagships = new ArrayList<>();
     if (projectData.get("flagships") != null) {
       String[] flagshipsAcronyms = projectData.get("flagships").split(",");
-      List<IPProgram> flagships = new ArrayList<>();
       IPProgram flagship;
       for (String flagshipAcronym : flagshipsAcronyms) {
         flagship = new IPProgram();
         flagship.setAcronym(flagshipAcronym);
         flagships.add(flagship);
       }
-      project.setFlagships(flagships);
     }
+    project.setFlagships(flagships);
 
     return project;
   }
