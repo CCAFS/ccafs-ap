@@ -50,8 +50,8 @@ function attachEvents(){
     e.preventDefault();
     var yearTarget = $(this).attr("id").split("-")[1];
     $("input[name$='targetYear']").val(yearTarget);
-    printOut();
-    $("form").submit();
+
+    $("#budget_save").trigger("click");
   });
 }
 
