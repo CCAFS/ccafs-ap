@@ -95,9 +95,9 @@ public class MySQLProjectDAO implements ProjectDAO {
     query.append("GROUP_CONCAT( DISTINCT ipp1.acronym ) as 'regions', ");
     query.append("GROUP_CONCAT( DISTINCT ipp2.acronym ) as 'flagships' ");
     query.append("FROM projects as p ");
-    query.append("INNER JOIN project_budgets pb ON p.id = pb.project_id ");
-    query.append("INNER JOIN budgets b ON pb.budget_id = b.id ");
-    query.append("INNER JOIN project_focuses pf ON p.id = pf.project_id ");
+    query.append("LEFT JOIN project_budgets pb ON p.id = pb.project_id ");
+    query.append("LEFT JOIN budgets b ON pb.budget_id = b.id ");
+    query.append("LEFT JOIN project_focuses pf ON p.id = pf.project_id ");
     query.append("LEFT JOIN ip_programs ipp1 ON pf.program_id = ipp1.id AND ipp1.type_id = ");
     query.append(APConstants.REGION_PROGRAM_TYPE);
     query.append(" LEFT JOIN ip_programs ipp2 ON pf.program_id = ipp2.id AND ipp2.type_id = ");
@@ -262,9 +262,9 @@ public class MySQLProjectDAO implements ProjectDAO {
     query.append("GROUP_CONCAT( DISTINCT ipp1.acronym ) as 'regions', ");
     query.append("GROUP_CONCAT( DISTINCT ipp2.acronym ) as 'flagships' ");
     query.append("FROM projects as p ");
-    query.append("INNER JOIN project_budgets pb ON p.id = pb.project_id ");
-    query.append("INNER JOIN budgets b ON pb.budget_id = b.id ");
-    query.append("INNER JOIN project_focuses pf ON p.id = pf.project_id ");
+    query.append("LEFT JOIN project_budgets pb ON p.id = pb.project_id ");
+    query.append("LEFT JOIN budgets b ON pb.budget_id = b.id ");
+    query.append("LEFT JOIN project_focuses pf ON p.id = pf.project_id ");
     query.append("LEFT JOIN ip_programs ipp1 ON pf.program_id = ipp1.id AND ipp1.type_id = ");
     query.append(APConstants.REGION_PROGRAM_TYPE);
     query.append(" LEFT JOIN ip_programs ipp2 ON pf.program_id = ipp2.id AND ipp2.type_id = ");
