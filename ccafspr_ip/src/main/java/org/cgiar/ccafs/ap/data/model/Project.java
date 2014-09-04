@@ -133,12 +133,15 @@ public class Project {
   public String getFlagshipsAcronym() {
     StringBuilder flagshipAcronym = new StringBuilder();
 
-    for (int i = 0; i < flagships.size(); i++) {
-      flagshipAcronym.append(flagships.get(i).getAcronym());
-      if (i != (flagships.size() - 1)) {
-        flagshipAcronym.append(", ");
+    if (flagships != null) {
+      for (int i = 0; i < flagships.size(); i++) {
+        flagshipAcronym.append(flagships.get(i).getAcronym());
+        if (i != (flagships.size() - 1)) {
+          flagshipAcronym.append(", ");
+        }
       }
     }
+
     return flagshipAcronym.toString();
   }
 
@@ -177,10 +180,12 @@ public class Project {
   public String getRegionsAcronym() {
     StringBuilder regionAcronym = new StringBuilder();
 
-    for (int i = 0; i < regions.size(); i++) {
-      regionAcronym.append(regions.get(i).getAcronym());
-      if (i != (regions.size() - 1)) {
-        regionAcronym.append(", ");
+    if (regions != null) {
+      for (int i = 0; i < regions.size(); i++) {
+        regionAcronym.append(regions.get(i).getAcronym());
+        if (i != (regions.size() - 1)) {
+          regionAcronym.append(", ");
+        }
       }
     }
     return regionAcronym.toString();
@@ -200,8 +205,10 @@ public class Project {
 
   public double getTotalCcafsBudget() {
     double totalBudget = 0.0;
-    for (Budget budget : this.getBudgets()) {
-      totalBudget += budget.getAmount();
+    if (budgets != null) {
+      for (Budget budget : this.getBudgets()) {
+        totalBudget += budget.getAmount();
+      }
     }
     return totalBudget;
   }
