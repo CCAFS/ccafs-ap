@@ -61,6 +61,7 @@
             [#-- Midoutcome title --]
             <div class="midOutcomeTitle">
               <input id="midOutcomeID" value="${midOutcome.id}" type="hidden" />
+              <input id="programID" value="${midOutcome.program.id}" type="hidden" /> 
               <h6>[@s.text name="planning.activityImpactPathways.outcome2019" /]</h6>
               <p class="description"> ${midOutcome.description} </p>
             </div>
@@ -93,7 +94,7 @@
                     <div class="midOutcomeIndicator" >
                       <input type="hidden" disabled name="activity.indicators.id" value="${activityIndicator.id}" />
                       <input type="checkbox" name="activity.indicators.parent.id" value="${indicator.id}" checked />
-                      <label class="indicatorDescription">${indicator.description}</label>
+                      <label class="indicatorDescription">${indicator.parent.description}</label>
                       <div class="checkboxGroup vertical indicatorNarrative" >
                         [#-- Target value --]
                         <label> <h6>[@s.text name="planning.activityImpactPathways.targetValue" /]</h6></label>
@@ -107,7 +108,7 @@
                     <div class="midOutcomeIndicator" >
                       <input type="hidden" disabled name="indicators.id" value="-1" />
                       <input type="checkbox" name="activity.indicators.parent.id" value="${indicator.id}" />
-                      <label class="indicatorDescription">${indicator.description}</label> 
+                      <label class="indicatorDescription">${indicator.parent.description}</label> 
                       
                       <div class="checkboxGroup vertical indicatorNarrative" style="display:none">
                         [#-- Target value --]
@@ -153,6 +154,7 @@
   [#-- Midoutcome title --]
   <div class="midOutcomeTitle">
     <input id="midOutcomeID" value="" type="hidden" />
+    <input id="programID" value="" type="hidden" /> 
     <h6>[@s.text name="planning.activityImpactPathways.outcome2019" /]</h6>
     <p class="description"></p>
   </div>
