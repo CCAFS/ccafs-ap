@@ -178,15 +178,6 @@ public class ProjectManagerImpl implements ProjectManager {
           .get("program_creator_id"))));
       }
 
-      // Getting Project Focuses - IPPrograms
-      project.setRegions(ipProgramManager.getProjectFocuses(Integer.parseInt(projectData.get("id")),
-        APConstants.REGION_PROGRAM_TYPE));
-      project.setFlagships(ipProgramManager.getProjectFocuses(Integer.parseInt(projectData.get("id")),
-        APConstants.FLAGSHIP_PROGRAM_TYPE));
-      // Getting Budget.
-      project.setBudgets(budgetManager.getCCAFSBudgets(Integer.parseInt(projectData.get("id"))));
-
-
       return project;
     }
     return null;
