@@ -17,9 +17,13 @@ function attachEvents(){
 
 function removeContributionBlock(event){
   $(event.target).parent().fadeOut("slow", function(){
+    var midOutcomeID = $(this).find("#midOutcomeID").val();
+    var programID = $(this).find("#programID").val();
+    var description = $(this).find("p.description").text();
+    $("#activityImpactPathway_midOutcomesList").append('<option value="' + midOutcomeID + '-' + programID + '">' + description + '</option>');
     $(this).remove();
+    $("#activityImpactPathway_midOutcomesList").trigger("liszt:updated");
   });
-  
 }
 
 function selectMogEvent(event){
@@ -61,6 +65,9 @@ function selectMidOutcomeEvent(event){
   
   // Add the midOutcome id
   $newContribution.find("#midOutcomeID").val(midOutcomeID);
+  
+  // Add the program id
+  $newContribution.find("#programID").val(programID);
   
   // Add the midOutcome description
   $newContribution.find(".midOutcomeTitle p.description").html($optionSelected.text());
@@ -131,7 +138,7 @@ function addIndicators(midOutcomeID,programID,$indicatorsBlock){
       
       // indexes will be adjusted in function setIndicatorsIndexes
       $newIndicator.find("input[type='checkbox']").val(indicator.id);
-      $newIndicator.find("label.indicatorDescription").text(indicator.description);
+      $newIndicator.find("label.indicatorDescription").text(indicator.parent.description);
       
       $indicatorsBlock.append($newIndicator);
     });
