@@ -79,9 +79,9 @@ public class ProjectsListPlanningAction extends BaseAction {
       newProject.setProgramCreator(userProgram);
     } else {
       LOG
-      .error(
-        "-- execute() > the current user identify with id={} and institution_id={} does not belong to a specific program!",
-        new Object[] {this.getCurrentUser().getId(), this.getCurrentUser().getCurrentInstitution().getId()});
+        .error(
+          "-- execute() > the current user identify with id={} and institution_id={} does not belong to a specific program!",
+          new Object[] {this.getCurrentUser().getId(), this.getCurrentUser().getCurrentInstitution().getId()});
     }
     newProject.setCreated(new Date().getTime());
     return projectManager.saveProjectDescription(newProject);
@@ -107,40 +107,38 @@ public class ProjectsListPlanningAction extends BaseAction {
   public void prepare() throws Exception {
     super.prepare();
 
-    // Depending on the user that is logged-in, the list of projects will be displayed. - currentUser.
+    projects = new ArrayList<>();
+    allProjects = projectManager.getAllProjectsBasicInfo();
 
+    // Depending on the user that is logged-in, the list of projects will be displayed. - currentUser.
     // If the user belongs to a specific CCAFS Program.
     List<Integer> projectIds = null;
     if (this.getCurrentUser().getCurrentInstitution().getProgram() != null) {
       // Getting the list of project ids that the user's program created, or those where the user is the project owner.
       projectIds = projectManager.getProjectIdsEditables(this.getCurrentUser());
+
+      for (Integer projectId : projectIds) {
+        Project temp = new Project(projectId);
+        int index = allProjects.indexOf(temp);
+        if (index != -1) {
+          projects.add(allProjects.remove(index));
+        }
+      }
     }
 
     // Getting the list of project ids that the user is assigned as Project Leader.
     List<Integer> projectIdsAsPL = projectManager.getPLProjectIds(this.getCurrentUser());
 
-    projects = new ArrayList<>();
-    // Adding program and owning projects.
-    if (projectIds != null && projectIds.size() > 0) {
-      for (Integer projectId : projectIds) {
-        projects.add(projectManager.getProject(projectId));
+
+    // We should remove from the allProjects list the project
+    // led by the user and also we should add them to a another list
+    for (Integer projectId : projectIdsAsPL) {
+      Project temp = new Project(projectId);
+      int index = allProjects.indexOf(temp);
+      if (index != -1) {
+        projects.add(allProjects.remove(index));
       }
     }
-
-    // Adding leadering projects.
-    if (projectIdsAsPL != null && projectIdsAsPL.size() > 0) {
-      for (Integer projectId : projectIdsAsPL) {
-        Project project = projectManager.getProject(projectId);
-        // Can happen that the project leader is a FPL or RPL.
-        if (!projects.contains(project)) {
-          projects.add(projectManager.getProject(projectId));
-        }
-      }
-    }
-
-    allProjects = projectManager.getAllProjects();
-    allProjects.removeAll(projects);
-
 
   }
 

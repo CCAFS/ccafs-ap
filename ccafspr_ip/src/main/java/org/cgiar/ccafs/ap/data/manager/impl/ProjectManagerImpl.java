@@ -20,6 +20,8 @@ import org.cgiar.ccafs.ap.data.manager.IPProgramManager;
 import org.cgiar.ccafs.ap.data.manager.InstitutionManager;
 import org.cgiar.ccafs.ap.data.manager.ProjectManager;
 import org.cgiar.ccafs.ap.data.manager.UserManager;
+import org.cgiar.ccafs.ap.data.model.Budget;
+import org.cgiar.ccafs.ap.data.model.IPProgram;
 import org.cgiar.ccafs.ap.data.model.Project;
 import org.cgiar.ccafs.ap.data.model.User;
 
@@ -70,43 +72,46 @@ public class ProjectManagerImpl implements ProjectManager {
   }
 
   @Override
-  public List<Project> getAllProjects() {
-    List<Map<String, String>> projectDataList = projectDAO.getAllProjects();
+  public List<Project> getAllProjectsBasicInfo() {
+    List<Map<String, String>> projectDataList = projectDAO.getAllProjectsBasicInfo();
     List<Project> projectsList = new ArrayList<>();
-    DateFormat dateformatter = new SimpleDateFormat(APConstants.DATE_FORMAT);
 
     for (Map<String, String> elementData : projectDataList) {
 
       Project project = new Project(Integer.parseInt(elementData.get("id")));
       project.setTitle(elementData.get("title"));
-      project.setSummary(elementData.get("summary"));
-      // Format to the Dates of the project
-      String sDate = elementData.get("start_date");
-      String eDate = elementData.get("end_date");
-      if (sDate != null && eDate != null) {
-        try {
-          Date startDate = dateformatter.parse(sDate);
-          Date endDate = dateformatter.parse(eDate);
-          project.setStartDate(startDate);
-          project.setEndDate(endDate);
-        } catch (ParseException e) {
-          LOG.error("There was an error formatting the dates", e);
-        }
-      }
-      // Setting program creator.
-      if (elementData.get("program_creator_id") != null) {
-        project.setProgramCreator(ipProgramManager.getIPProgramById(Integer.parseInt(elementData
-          .get("program_creator_id"))));
-      }
-      // Setting creation date.
+
+      Budget totalBudget = new Budget();
+      totalBudget.setAmount(Double.parseDouble(elementData.get("total_budget_amount")));
+      List<Budget> budgets = new ArrayList<>(1);
+      budgets.add(totalBudget);
+      project.setBudgets(budgets);
+
       project.setCreated(Long.parseLong(elementData.get("created")));
-      // Getting Project Focuses - IPPrograms
-      project.setRegions(ipProgramManager.getProjectFocuses(Integer.parseInt(elementData.get("id")),
-        APConstants.REGION_PROGRAM_TYPE));
-      project.setFlagships(ipProgramManager.getProjectFocuses(Integer.parseInt(elementData.get("id")),
-        APConstants.FLAGSHIP_PROGRAM_TYPE));
-      // Getting Budget.
-      project.setBudgets(budgetManager.getCCAFSBudgets(Integer.parseInt(elementData.get("id"))));
+
+      // Getting Project Focuses - Regions
+      String[] regionsAcronyms = elementData.get("regions").split(",");
+      List<IPProgram> regions = new ArrayList<>();
+      IPProgram region;
+      for (String regionAcronym : regionsAcronyms) {
+        region = new IPProgram();
+        region.setAcronym(regionAcronym);
+        regions.add(region);
+      }
+      project.setRegions(regions);
+
+
+      // Getting Project Focuses - Flagships
+      String[] flagshipsAcronyms = elementData.get("flagships").split(",");
+      List<IPProgram> flagships = new ArrayList<>();
+      IPProgram flagship;
+      for (String flagshipAcronym : flagshipsAcronyms) {
+        flagship = new IPProgram();
+        flagship.setAcronym(flagshipAcronym);
+        flagships.add(flagship);
+      }
+      project.setFlagships(flagships);
+
 
       // Adding project to the list
       projectsList.add(project);
@@ -185,6 +190,48 @@ public class ProjectManagerImpl implements ProjectManager {
       return project;
     }
     return null;
+  }
+
+  @Override
+  public Project getProjectBasicInfo(int projectID) {
+    Map<String, String> projectData = projectDAO.getProjectBasicInfo(projectID);
+
+
+    Project project = new Project(Integer.parseInt(projectData.get("id")));
+    project.setTitle(projectData.get("title"));
+
+    Budget totalBudget = new Budget();
+    totalBudget.setAmount(Double.parseDouble(projectData.get("total_budget_amount")));
+    List<Budget> budgets = new ArrayList<>(1);
+    budgets.add(totalBudget);
+    project.setBudgets(budgets);
+
+    project.setCreated(Long.parseLong(projectData.get("created")));
+
+    // Getting Project Focuses - Regions
+    String[] regionsAcronyms = projectData.get("regions").split(",");
+    List<IPProgram> regions = new ArrayList<>();
+    IPProgram region;
+    for (String regionAcronym : regionsAcronyms) {
+      region = new IPProgram();
+      region.setAcronym(regionAcronym);
+      regions.add(region);
+    }
+    project.setRegions(regions);
+
+
+    // Getting Project Focuses - Flagships
+    String[] flagshipsAcronyms = projectData.get("flagships").split(",");
+    List<IPProgram> flagships = new ArrayList<>();
+    IPProgram flagship;
+    for (String flagshipAcronym : flagshipsAcronyms) {
+      flagship = new IPProgram();
+      flagship.setAcronym(flagshipAcronym);
+      flagships.add(flagship);
+    }
+    project.setFlagships(flagships);
+
+    return project;
   }
 
   @Override
