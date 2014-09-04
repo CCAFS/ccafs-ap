@@ -26,22 +26,25 @@ public interface ProjectManager {
 
   /**
    * This method validate if the system has a project identified with the given parameter.
-   *
+   * 
    * @param projectId is the project identifier to be verified.
    * @return true if the project exists in the system and false otherwise.
    */
   public boolean existProject(int projectId);
 
   /**
-   * This method returns the list of all CCAFS projects.
-   *
+   * This method returns the list of all CCAFS projects
+   * but only with the basic information:
+   * ID, title, the regions and flagships to which the project contributes
+   * and the total budget
+   * 
    * @return a list with Project objects.
    */
-  public List<Project> getAllProjects();
+  public List<Project> getAllProjectsBasicInfo();
 
   /**
    * This method finds the Expected Project Leader user from a specific Project.
-   *
+   * 
    * @param projectId is the project id.
    * @return a User object who represents an expected Project Leader. Or NULL if no user was found.
    */
@@ -49,7 +52,7 @@ public interface ProjectManager {
 
   /**
    * This method returns the list of project identifiers where the given user is assigned as Project Leader.
-   *
+   * 
    * @param user is the user object.
    * @return a List of project identifiers (Integer numbers).
    */
@@ -57,11 +60,21 @@ public interface ProjectManager {
 
   /**
    * This method gets all the Project information given by a previous project selected
-   *
+   * 
    * @param projectID
    * @return an Project Object.
    */
   public Project getProject(int projectId);
+
+  /**
+   * This method returns the basic information of the project identified
+   * by the value received as parameter
+   * ID, title, the regions and flagships to which the project contributes
+   * and the total budget
+   * 
+   * @return a list with Project objects.
+   */
+  public Project getProjectBasicInfo(int projectID);
 
   /**
    * This method returns the Project in which the activity belongs to.
@@ -73,7 +86,7 @@ public interface ProjectManager {
 
   /**
    * This method returns the list of project identifiers that the given user is able to edit.
-   *
+   * 
    * @param user is the user object.
    * @return a List of project identifiers (Integer numbers).
    */
@@ -81,7 +94,7 @@ public interface ProjectManager {
 
   /**
    * This method finds the Project Leader user from a specific Project.
-   *
+   * 
    * @param projectId is the project id.
    * @return a User object who represents a Project Leader. Or NULL if no user was found.
    */
@@ -89,14 +102,14 @@ public interface ProjectManager {
 
   /**
    * This method returns the list of all CCAFS projects that belongs to a specific program.
-   *
+   * 
    * @return a list with Project objects.
    */
   public List<Project> getProjectsByProgram(int programId);
 
   /**
    * This method gets all the projects in which the given user is assigned as Project Owner
-   *
+   * 
    * @param user is the user object.
    * @return a List of projects.
    */
@@ -105,7 +118,7 @@ public interface ProjectManager {
   /**
    * This method saves or update an expected project leader possibly added in Pre-Planning step.
    * This expected project leader must belongs to a specific project.
-   *
+   * 
    * @param projectId is the project identifier.
    * @param expectedLeader is the project leader to be added/updated.
    * @return true if the save process finalized successfully, false otherwise.
@@ -114,12 +127,10 @@ public interface ProjectManager {
 
   /**
    * This method saves or create a project into the database.
-   *
+   * 
    * @param project is the Project object to be saved.
    * @return A number representing the new Id assigned to the new project, 0 if the project was updated or -1 if some
    *         error happened.
    */
   public int saveProjectDescription(Project project);
-
-
 }

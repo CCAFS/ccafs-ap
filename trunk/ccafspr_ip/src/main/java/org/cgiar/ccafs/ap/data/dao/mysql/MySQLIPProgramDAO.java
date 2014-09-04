@@ -172,8 +172,8 @@ public class MySQLIPProgramDAO implements IPProgramDAO {
     LOG.debug(">> getProjectFocuses projectID = {}, typeID ={} )", projectID, typeID);
     List<Map<String, String>> projectFocusesDataList = new ArrayList<>();
     StringBuilder query = new StringBuilder();
-    query
-      .append("SELECT ipr.id as program_id, ipr.name as program_name, ipr.acronym as program_acronym, le.id as region_id, le.name as region_name, le.code as region_code ");
+    query.append("SELECT ipr.id as program_id, ipr.name as program_name, ipr.acronym as program_acronym, ");
+    query.append("le.id as region_id, le.name as region_name, le.code as region_code ");
     query.append("FROM project_focuses pf ");
     query.append("INNER JOIN ip_programs ipr ON ipr.id = pf.program_id ");
     query.append("LEFT JOIN loc_elements le   ON le.id = ipr.region_id ");

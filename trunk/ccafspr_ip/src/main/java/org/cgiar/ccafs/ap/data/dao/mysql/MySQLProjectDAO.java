@@ -14,6 +14,7 @@
  */
 package org.cgiar.ccafs.ap.data.dao.mysql;
 
+import org.cgiar.ccafs.ap.config.APConstants;
 import org.cgiar.ccafs.ap.data.dao.DAOManager;
 import org.cgiar.ccafs.ap.data.dao.ProjectDAO;
 
@@ -83,6 +84,50 @@ public class MySQLProjectDAO implements ProjectDAO {
     return this.getData(query.toString());
   }
 
+
+  @Override
+  public List<Map<String, String>> getAllProjectsBasicInfo() {
+    LOG.debug(">> getAllProjectsBasicInfo( )");
+    List<Map<String, String>> projectList = new ArrayList<>();
+    StringBuilder query = new StringBuilder();
+
+    query.append("SELECT p.id, p.title, p.created, SUM(b.amount) as 'total_budget_amount', ");
+    query.append("GROUP_CONCAT( DISTINCT ipp1.acronym ) as 'regions', ");
+    query.append("GROUP_CONCAT( DISTINCT ipp2.acronym ) as 'flagships' ");
+    query.append("FROM projects as p ");
+    query.append("INNER JOIN project_budgets pb ON p.id = pb.project_id ");
+    query.append("INNER JOIN budgets b ON pb.budget_id = b.id ");
+    query.append("INNER JOIN project_focuses pf ON p.id = pf.project_id ");
+    query.append("LEFT JOIN ip_programs ipp1 ON pf.program_id = ipp1.id AND ipp1.type_id = ");
+    query.append(APConstants.REGION_PROGRAM_TYPE);
+    query.append(" LEFT JOIN ip_programs ipp2 ON pf.program_id = ipp2.id AND ipp2.type_id = ");
+    query.append(APConstants.FLAGSHIP_PROGRAM_TYPE);
+    query.append(" GROUP BY p.id  ");
+
+    try (Connection con = databaseManager.getConnection()) {
+      ResultSet rs = databaseManager.makeQuery(query.toString(), con);
+      while (rs.next()) {
+        Map<String, String> projectData = new HashMap<String, String>();
+        projectData.put("id", rs.getString("id"));
+        projectData.put("title", rs.getString("title"));
+        projectData.put("total_budget_amount", rs.getString("total_budget_amount"));
+        projectData.put("created", rs.getTimestamp("created").getTime() + "");
+        projectData.put("regions", rs.getString("regions"));
+        projectData.put("flagships", rs.getString("flagships"));
+        projectList.add(projectData);
+      }
+      rs.close();
+    } catch (SQLException e) {
+      String exceptionMessage = "-- getAllProjectsBasicInfo() > Exception raised trying ";
+      exceptionMessage += "to get the basic information of the projects " + query;
+
+      LOG.error(exceptionMessage, e);
+    }
+
+
+    LOG.debug("-- getAllProjectsBasicInfo() : projectList.size={} ", projectList.size());
+    return projectList;
+  }
 
   private List<Map<String, String>> getData(String query) {
     LOG.debug(">> executeQuery(query='{}')", query);
@@ -204,6 +249,49 @@ public class MySQLProjectDAO implements ProjectDAO {
       LOG.error("Exception arised getting the project with id {}.", projectID, e);
     }
     LOG.debug("-- getProject() > Calling method executeQuery to get the results");
+    return projectData;
+  }
+
+  @Override
+  public Map<String, String> getProjectBasicInfo(int projectID) {
+    LOG.debug(">> getProjectBasicInfo( id={} )", projectID);
+    Map<String, String> projectData = new HashMap<String, String>();
+    StringBuilder query = new StringBuilder();
+
+    query.append("SELECT p.id, p.title, p.created, SUM(b.amount) as 'total_budget_amount', ");
+    query.append("GROUP_CONCAT( DISTINCT ipp1.acronym ) as 'regions', ");
+    query.append("GROUP_CONCAT( DISTINCT ipp2.acronym ) as 'flagships' ");
+    query.append("FROM projects as p ");
+    query.append("INNER JOIN project_budgets pb ON p.id = pb.project_id ");
+    query.append("INNER JOIN budgets b ON pb.budget_id = b.id ");
+    query.append("INNER JOIN project_focuses pf ON p.id = pf.project_id ");
+    query.append("LEFT JOIN ip_programs ipp1 ON pf.program_id = ipp1.id AND ipp1.type_id = ");
+    query.append(APConstants.REGION_PROGRAM_TYPE);
+    query.append(" LEFT JOIN ip_programs ipp2 ON pf.program_id = ipp2.id AND ipp2.type_id = ");
+    query.append(APConstants.FLAGSHIP_PROGRAM_TYPE);
+    query.append(" WHERE p.id = " + projectID);
+    query.append(" GROUP BY p.id  ");
+
+    try (Connection con = databaseManager.getConnection()) {
+      ResultSet rs = databaseManager.makeQuery(query.toString(), con);
+      while (rs.next()) {
+        projectData.put("id", rs.getString("id"));
+        projectData.put("title", rs.getString("title"));
+        projectData.put("total_budget_amount", rs.getString("total_budget_amount"));
+        projectData.put("created", rs.getTimestamp("created").getTime() + "");
+        projectData.put("regions", rs.getString("regions"));
+        projectData.put("flagships", rs.getString("flagships"));
+      }
+      rs.close();
+    } catch (SQLException e) {
+      String exceptionMessage = "-- getAllProjectsBasicInfo() > Exception raised trying ";
+      exceptionMessage += "to get the basic information of the projects " + query;
+
+      LOG.error(exceptionMessage, e);
+    }
+
+
+    LOG.debug("-- getAllProjectsBasicInfo() : projectList.size={} ", projectData.size());
     return projectData;
   }
 
@@ -337,6 +425,7 @@ public class MySQLProjectDAO implements ProjectDAO {
     LOG.debug("-- getProjects() > Calling method executeQuery to get the results");
     return this.getData(query.toString());
   }
+
 
   @Override
   public List<Map<String, String>> getProjectsOwning(int institutionId, int userId) {

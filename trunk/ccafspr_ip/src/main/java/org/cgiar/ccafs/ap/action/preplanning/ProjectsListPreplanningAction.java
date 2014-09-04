@@ -132,16 +132,19 @@ public class ProjectsListPreplanningAction extends BaseAction {
 
     // Depending on the user that is logged-in, the list of projects will be displayed. - currentUser.
 
+    allProjects = projectManager.getAllProjectsBasicInfo();
+
     // Getting the list of projects that the user's program created and also those where the users is the project owner.
     List<Integer> projectIds = projectManager.getProjectIdsEditables(this.getCurrentUser());
 
     projects = new ArrayList<>();
     for (Integer projectId : projectIds) {
-      projects.add(projectManager.getProject(projectId));
+      Project temp = new Project(projectId);
+      int index = allProjects.indexOf(temp);
+      if (index != -1) {
+        projects.add(allProjects.remove(index));
+      }
     }
-    allProjects = projectManager.getAllProjects();
-    allProjects.removeAll(projects);
-
 
   }
 
