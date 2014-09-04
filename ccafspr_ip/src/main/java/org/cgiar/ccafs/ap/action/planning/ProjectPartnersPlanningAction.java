@@ -242,7 +242,6 @@ public class ProjectPartnersPlanningAction extends BaseAction {
         }
 
         // Getting all the current budget institutions from W1, W2, W3 and Bilateral.
-        System.out.println();
         List<Institution> budgetInstitutions = budgetManager.getW1Institutions(project.getId());
 
 
@@ -271,7 +270,7 @@ public class ProjectPartnersPlanningAction extends BaseAction {
         for (int c = 0; c < previousProject.getProjectPartners().size(); c++) {
           // Copying responsibilities.
           previousProject.getProjectPartners().get(c)
-          .setResponsabilities(project.getProjectPartners().get(c).getResponsabilities());
+            .setResponsabilities(project.getProjectPartners().get(c).getResponsabilities());
         }
         boolean result =
           projectPartnerManager.saveProjectPartner(previousProject.getId(), previousProject.getProjectPartners());
@@ -285,9 +284,9 @@ public class ProjectPartnersPlanningAction extends BaseAction {
       }
     } else {
       LOG
-      .warn(
-        "User (employee_id={}, email={}) tried to save information in Project Partners without having enough privileges!",
-        new Object[] {this.getCurrentUser().getEmployeeId(), this.getCurrentUser().getEmail()});
+        .warn(
+          "User (employee_id={}, email={}) tried to save information in Project Partners without having enough privileges!",
+          new Object[] {this.getCurrentUser().getEmployeeId(), this.getCurrentUser().getEmail()});
     }
     return BaseAction.ERROR;
 

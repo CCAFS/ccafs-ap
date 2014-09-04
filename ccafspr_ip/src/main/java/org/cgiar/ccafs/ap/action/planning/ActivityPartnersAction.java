@@ -157,8 +157,10 @@ public class ActivityPartnersAction extends BaseAction {
     // If user has privileges to save.
     if (this.isSaveable()) {
       boolean success = true;
+      boolean saved;
 
-      // Getting previous Activity Partners.
+      // ------------------ ACTIVIY PARTNERS -------------------
+      // Getting previous Activity Partners so we can identify which of them should be removed from the database.
       List<ActivityPartner> previousActivityPartners = activityPartnerManager.getActivityPartnersByActivity(activityID);
 
       // Deleting activity partners
@@ -171,29 +173,41 @@ public class ActivityPartnersAction extends BaseAction {
         }
       }
 
-      // --- Getting previous Activity Institutions
-      List<Institution> previousInstitutions = new ArrayList<>();
-      for (ActivityPartner activityPartner : previousActivityPartners) {
-        previousInstitutions.add(activityPartner.getPartner());
-      }
-      // Getting current Partner Institutions
-      List<Institution> currentInstitutions = new ArrayList<>();
-      for (ActivityPartner activityPartner : activity.getActivityPartners()) {
-        currentInstitutions.add(activityPartner.getPartner());
-      }
-      // Deleting Partner Institutions from budget section
-      for (Institution previousInstitution : previousInstitutions) {
-        if (!currentInstitutions.contains(previousInstitution)) {
-          budgetManager.deleteActivityBudgetsByInstitution(activity.getId(), previousInstitution.getId());
-        }
-      }
-      boolean saved;
       for (ActivityPartner activityPartner : activity.getActivityPartners()) {
         saved = activityPartnerManager.saveActivityPartner(activityID, activityPartner);
         if (!saved) {
           success = false;
         }
       }
+
+      // --------------------------------------------------------
+
+      // --------------- ACTIVITY BUDGETS -----------------------
+
+      // Getting Activity Institutions
+      List<Institution> activityInstitutions = new ArrayList<>();
+      for (ActivityPartner activityPartner : activity.getActivityPartners()) {
+        activityInstitutions.add(activityPartner.getPartner());
+      }
+      // Adding also the activity leader institution.
+      if (activity.getLeader() != null) {
+        activityInstitutions.add(activity.getLeader().getCurrentInstitution());
+      } else if (activity.getExpectedLeader() != null) {
+        activityInstitutions.add(activity.getExpectedLeader().getCurrentInstitution());
+      }
+
+      // Getting all the current budget institutions for the activity.
+      List<Institution> budgetInstitutions = budgetManager.getActivityInstitutionsBudgets(activity.getId());
+
+      // Deleting Institutions from budget section
+      for (Institution institutionToDelete : budgetInstitutions) {
+        if (!activityInstitutions.contains(institutionToDelete)) {
+          budgetManager.deleteActivityBudgetsByInstitution(activity.getId(), institutionToDelete.getId());
+        }
+      }
+
+      // -----------------------------------------------------------
+
 
       if (success == false) {
         addActionError(getText("saving.problem"));

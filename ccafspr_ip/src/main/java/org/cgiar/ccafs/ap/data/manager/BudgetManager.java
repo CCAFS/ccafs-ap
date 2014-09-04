@@ -159,6 +159,15 @@ public interface BudgetManager {
   public List<Budget> getActivityBudgetsByYear(int activityID, int year);
 
   /**
+   * This method gets all the institutions that are currently saved in the activity budget section.
+   * Only the institutions for activity are returned.
+   *
+   * @param activityID is the activity identifier.
+   * @return a list of Institution objects.
+   */
+  public List<Institution> getActivityInstitutionsBudgets(int activityID);
+
+  /**
    * This method gets all the budget information by a given Project Id
    *
    * @param projectID - is the Id of the project
