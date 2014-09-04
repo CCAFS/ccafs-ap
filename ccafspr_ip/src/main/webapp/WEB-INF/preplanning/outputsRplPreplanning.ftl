@@ -32,7 +32,6 @@
     [@s.text name="preplanning.outputsRPL.title" /]  
     </h1>
     
-    
     [#if midOutcomesList?has_content ]
       <div id="outputBlocks"> 
           [#if outputs?has_content]
@@ -57,22 +56,35 @@
                     [/@s.text]
                   [/#assign]
                   <legend>${outputDescription}</legend>
+                  
                   [#-- Flagships list --]
                   <div class="fullBlock chosen">
                     [@customForm.select name="flagships" label="" i18nkey="preplanning.outputsRPL.flagships" listName="flagshipsList" keyFieldName="id"  displayFieldName="getComposedName()" value="${output.translatedOf[0].program.id}" /]
                   </div>
-                  [#-- midOutcomes list --]
+                  
+                  [#-- flagship midOutcomes list --]
                   <div class="fullBlock chosen"> 
                     <input type="hidden" id="midOutcomeSelected" value="${output.translatedOf[0].contributesTo[0].id}">
-                    [@customForm.select name="midOutcomes" label="" i18nkey="preplanning.outputsRPL.midOutcomes" listName="" keyFieldName="id"  displayFieldName="name" value="${output.translatedOf[0].contributesTo[0].id}"/]
+                    [@customForm.select name="midOutcomes" label="" i18nkey="preplanning.outputsRPL.flagshipMidOutcomes" listName="" keyFieldName="id"  displayFieldName="name" value="${output.translatedOf[0].contributesTo[0].id}"/]
                   </div>
+                  
+                  [#-- flagship outputs list --]
                   <div class="fullBlock chosen translations">
                     <input type="hidden" id="outputSelected" value="${output.translatedOf[0].id}">
-                    [@customForm.select name="outputs[${output_index}].translatedOf" label="" i18nkey="preplanning.outputsRPL.outputs" listName="" keyFieldName="id"  displayFieldName="name" value="${output.translatedOf[0].id}"/]
+                    [@customForm.select name="outputs[${output_index}].translatedOf" label="" i18nkey="preplanning.outputsRPL.flagshipsOutputs" listName="" keyFieldName="id"  displayFieldName="name" value="${output.translatedOf[0].id}" className="translates"  /]
                   </div> 
+                  
+                  [#-- Regional midOutcomes list --]
+                  <div class="fullBlock addContributeBlock">
+                    [@customForm.select name="outputs[${output_index}].contributesTo[0].id" i18nkey="preplanning.outputsRPL.regionalMidOutcomes" listName="midOutcomesList" keyFieldName="id"  displayFieldName="description" className="contributes" /]
+                  </div> 
+                  
                   [#-- Description --]
                   [@customForm.textArea name="outputs[${output_index}].description" i18nkey="preplanning.outputsRPL.outputDescription" required=true /]
+                  
+                  [#-- End of translated MOGs --]
                 [#else]
+                
                   [#-- MOG created by the user --]
                   [#-- Title --]
                   [#assign outputDescription]
@@ -91,11 +103,12 @@
                       [/#list]
                     [/#if]
                     
-                    [#-- Add contribute --]
+                    [#-- regional midOutcome list (contribution) --]
                     <div class="fullBlock addContributeBlock">
                       [@customForm.select name="contributions" value="" showTitle=false listName="midOutcomesList" keyFieldName="id"  displayFieldName="description" className="contributes" /]
                     </div> 
                   </div> 
+                  
                   [#-- Description --]
                   [@customForm.textArea name="outputs[${output_index}].description" i18nkey="preplanning.outputsRPL.outputDescription" required=true /]
                 [/#if]
@@ -192,10 +205,10 @@
       [@customForm.select name="outputsRPL_flagships" label="" i18nkey="preplanning.outputsRPL.flagships" listName="flagshipsList" keyFieldName="id"  displayFieldName="getComposedName()" /]
     </div>
     <div class="fullBlock chosen">
-      [@customForm.select name="outputsRPL_midOutcomes" label="" i18nkey="preplanning.outputsRPL.midOutcomes" listName="" keyFieldName="id"  displayFieldName="name" disabled=true /]
+      [@customForm.select name="outputsRPL_midOutcomes" label="" i18nkey="preplanning.outputsRPL.flagshipMidOutcomes" listName="" keyFieldName="id"  displayFieldName="name" disabled=true /]
     </div>
     <div class="fullBlock chosen translations">
-      [@customForm.select name="outputsRPL_outputs" label="" i18nkey="preplanning.outputsRPL.outputs" listName="" keyFieldName="id"  displayFieldName="name" disabled=true /]
+      [@customForm.select name="outputsRPL_outputs" label="" i18nkey="preplanning.outputsRPL.flagshipsOutputs" listName="" keyFieldName="id"  displayFieldName="name" disabled=true /]
     </div> 
     [#-- Description --]
     [@customForm.textArea name="description" i18nkey="preplanning.outputsRPL.outputDescription" required=true /] 

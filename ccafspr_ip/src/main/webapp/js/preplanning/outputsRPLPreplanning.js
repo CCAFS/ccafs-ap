@@ -151,18 +151,18 @@ function updateOutputsList(event){
   var midOutcomeId = $target.val();
   var outputSelected = $parent.find("#outputSelected").val();
   $.getJSON("../json/ipElementsByParent.do?elementID=" + midOutcomeId, function(data){
-    $parent.find("select[id^='outputsRPL_outputs'] option").remove();
+    $parent.find("select[id^='outputsRPL_outputs'].translates option").remove();
     $.each(data.IPElementsList, function(){
       if (objectsListContains(this.contributesTo, midOutcomeId)) {
-        $parent.find("select[id^='outputsRPL_outputs']").append('<option value="' + this.id + '">' + this.description + '</option>');
+        $parent.find("select[id^='outputsRPL_outputs'].translates").append('<option value="' + this.id + '">' + this.description + '</option>');
       }
     });
   }).fail(function(){
     console.log("error");
-    $parent.find("select[id^='outputsRPL_outputs'] option").remove();
+    $parent.find("select[id^='outputsRPL_outputs'].translates option").remove();
   }).done(function(){
     if (outputSelected) {
-      $parent.find("select[id^='outputsRPL_outputs']").val(outputSelected);
+      $parent.find("select[id^='outputsRPL_outputs'].translates").val(outputSelected);
     }
     $parent.find("select[id^='outputs']").attr("disabled", false).trigger("liszt:updated");
     ;
@@ -269,7 +269,7 @@ function setContributesIndexes(i){
     $(element).find("[id^='contributeId']").attr("name", elementName + "id");
     // For existing translated outputs
     elementName = "outputs[" + i + "].translatedOf";
-    $(element).find("[id^='outputsRPL_outputs']").attr("name", elementName);
+    $(element).find("[id^='outputsRPL_outputs'].translates").attr("name", elementName);
   });
 }
 
