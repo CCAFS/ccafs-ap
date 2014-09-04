@@ -1,6 +1,7 @@
 //Global VARS
 var projectTotalCCAFSBudget,projectTotalBudget,yearTotalCCAFSBudget,yearTotalBudget;
 var $allBudgetInputs,$CCAFSBudgetInputs;
+var editable = true;
 
 $(document).ready(init);
 
@@ -46,13 +47,16 @@ function attachEvents(){
     return;
   });
   
-  $("li.yearTab").click(function(e){
-    e.preventDefault();
-    var yearTarget = $(this).attr("id").split("-")[1];
-    $("input[name$='targetYear']").val(yearTarget);
-
-    $("#budget_save").trigger("click");
-  });
+  // Enable save with tabs when is saveable
+  if ($("#targetYear").exists()) {
+    $("li.yearTab").click(function(e){
+      e.preventDefault();
+      var yearTarget = $(this).attr("id").split("-")[1];
+      $("input[name$='targetYear']").val(yearTarget);
+      $("#budget_save").trigger("click");
+    });
+  }
+  
 }
 
 // Leveraged Functions //
