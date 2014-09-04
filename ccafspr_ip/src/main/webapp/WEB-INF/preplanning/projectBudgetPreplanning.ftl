@@ -76,7 +76,7 @@
             [@s.set var="counter" value="0"/] 
               <div id="partnerTables-${year?c}" class="partnerTable ui-tabs-panel ui-widget-content ui-corner-bottom clearfix"> 
                 <div id="totalBudgetByYear"> 
-                  <p id="projectTotalByYear"><strong>Total ${year} budget:</strong>  US$ <span id="projectTotalBudgetByYear">${totalBudgetByYear?string(",##0.00")}</span></p>
+                  <p id="projectTotalByYear"><strong> [@s.text name="preplanning.projectBudget.totalYearBudget"][@s.param name="0"]${year}[/@s.param][/@s.text]</strong>  US$ <span id="projectTotalBudgetByYear">${totalBudgetByYear?string(",##0.00")}</span></p>
                 </div>
                 <table class="ccafsBudget fullPartBlock">
                   [#-- HEADERS --]

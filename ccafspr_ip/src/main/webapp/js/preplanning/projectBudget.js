@@ -47,7 +47,7 @@ function attachEvents(){
     return;
   });
   
-  // Enable save with tabs when is saveable
+  // Enable save with tabs when is saveable and exist an target
   if ($("#targetYear").exists()) {
     $("li.yearTab").click(function(e){
       e.preventDefault();
