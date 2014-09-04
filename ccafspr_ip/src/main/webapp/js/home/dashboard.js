@@ -2,7 +2,7 @@ $.fn.dataTableExt.sErrMode = 'throw';
 $(document).ready(function(){
   
   initTabs();
-  //initSlidr();
+  // initSlidr();
   initDatatable();
   
 });
@@ -24,11 +24,11 @@ function workflowModal(){
 var graphStarted = false;
 function initTabs(){
   $("#dashboard").tabs({
-    activate : function(event, ui){
+    activate : function(event,ui){
       
-      if(ui.newTab.index() == 2){
+      if (ui.newTab.index() == 2) {
         if (!graphStarted) {
-          callCytos("json/prePlanningIpGraph.do", "ipGraph-content");
+          callCytos(baseURL + "/json/prePlanningIpGraph.do", "ipGraph-content");
           graphStarted = true;
         }
       }

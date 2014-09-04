@@ -94,7 +94,11 @@
                     <div class="midOutcomeIndicator" >
                       <input type="hidden" disabled name="activity.indicators.id" value="${activityIndicator.id}" />
                       <input type="checkbox" name="activity.indicators.parent.id" value="${indicator.id}" checked />
-                      <label class="indicatorDescription">${indicator.parent.description}</label>
+                      [#if indicator.parent?has_content]
+                        <label class="indicatorDescription">${indicator.parent.description}</label>
+                      [#else]
+                        <label class="indicatorDescription">${indicator.description}</label>
+                      [/#if]
                       <div class="checkboxGroup vertical indicatorNarrative" >
                         [#-- Target value --]
                         <label> <h6>[@s.text name="planning.activityImpactPathways.targetValue" /]</h6></label>
@@ -108,8 +112,11 @@
                     <div class="midOutcomeIndicator" >
                       <input type="hidden" disabled name="indicators.id" value="-1" />
                       <input type="checkbox" name="activity.indicators.parent.id" value="${indicator.id}" />
-                      <label class="indicatorDescription">${indicator.parent.description}</label> 
-                      
+                      [#if indicator.parent?has_content]
+                        <label class="indicatorDescription">${indicator.parent.description}</label> 
+                      [#else]
+                        <label class="indicatorDescription">${indicator.description}</label> 
+                      [/#if]
                       <div class="checkboxGroup vertical indicatorNarrative" style="display:none">
                         [#-- Target value --]
                         <label>  <h6>[@s.text name="planning.activityImpactPathways.targetValue" /]</h6></label>
