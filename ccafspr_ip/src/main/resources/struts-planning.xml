@@ -155,7 +155,7 @@
       <result name="success" type="redirectAction">
         <param name="actionName">activityBudget</param>
         <param name="activityID">${activity.id}</param>
-        <param name="year">${year}</param>
+        <param name="year">${targetYear}</param>
       </result>
       <result name="next" type="redirectAction">
         <param name="actionName">activityLocations</param>

@@ -51,8 +51,11 @@ public class ActivityBudgetAction extends BaseAction {
   // Model for the back-end
   private int activityID;
   private Activity activity;
+  // year contains the year in which the budget should be saved
   private int year;
-
+  // targetYear contains the year to which the users should
+  // be redirected once them press a tab
+  private int targetYear;
 
   // Model for the front-end
   private List<Integer> allYears;
@@ -92,7 +95,7 @@ public class ActivityBudgetAction extends BaseAction {
    * e.g. 2014-9-ActivityID
    * Where 2014 is the year, 9 is the institution identifier and ActivityID is the budget type.
    * If the budget is not in the database, this method will create a new one with an id=-1 and amount=0.
-   *
+   * 
    * @return a Map of budgets as was described above.
    */
   private Map<String, Budget> generateMapBudgets(int year) {
@@ -182,6 +185,10 @@ public class ActivityBudgetAction extends BaseAction {
 
   public Project getProject() {
     return project;
+  }
+
+  public int getTargetYear() {
+    return targetYear;
   }
 
   public double getTotalActivitiesBudget() {
@@ -303,7 +310,6 @@ public class ActivityBudgetAction extends BaseAction {
     }
   }
 
-
   @Override
   public String save() {
     if (this.isSaveable()) {
@@ -369,8 +375,13 @@ public class ActivityBudgetAction extends BaseAction {
     this.invalidYear = invalidYear;
   }
 
+
   public void setProject(Project project) {
     this.project = project;
+  }
+
+  public void setTargetYear(int targetYear) {
+    this.targetYear = targetYear;
   }
 
   public void setTotalActivitiesBudget(double totalActivitiesBudget) {
