@@ -77,7 +77,7 @@
                   <div class="fieldset">
                     [#-- Regional midOutcomes list --]
                     <div class="fullBlock addContributeBlock">
-                      [@customForm.select name="outputs[${output_index}].contributesTo[0].id" i18nkey="preplanning.outputsRPL.regionalMidOutcomes" listName="midOutcomesList" keyFieldName="id"  displayFieldName="description" className="contributes" /]
+                      [@customForm.select name="outputs[${output_index}].contributesTo[0].id" i18nkey="preplanning.outputsRPL.regionalMidOutcomes" listName="midOutcomesList" keyFieldName="id"  displayFieldName="description" className="outputsRPL_outputs contributes" /]
                     </div> 
                   </div>
                     
@@ -215,7 +215,7 @@
     </div> 
     <div class="fieldset">
       <div class="fullBlock addContributeBlock"> 
-        [@customForm.select name="outputsRPL_outputs" i18nkey="preplanning.outputsRPL.regionalMidOutcomes" listName="midOutcomesList" keyFieldName="id"  displayFieldName="description" className="contributes" /]
+        [@customForm.select name="outputsRPL_outputs" i18nkey="preplanning.outputsRPL.regionalMidOutcomes" listName="midOutcomesList" keyFieldName="id"  displayFieldName="description" className="outputsRPL_outputs contributes" /]
       </div>
     </div>
     [#-- Description --]
