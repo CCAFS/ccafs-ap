@@ -41,6 +41,17 @@ function attachEvents(){
     });
     return;
   });
+  
+  // Enable save with tabs when is saveable and exist an target
+  if ($("#targetYear").exists()) {
+    $("li.yearTab").click(function(e){
+      e.preventDefault();
+      var yearTarget = $(this).attr("id").split("-")[1];
+      $("input[name$='targetYear']").val(yearTarget);
+      $("#activityBudget_save").trigger("click");
+    });
+  }
+  
 }
 
 // Leveraged Functions //
