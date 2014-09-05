@@ -225,6 +225,7 @@ function setOutputsIndexes(){
     $(element).find("[id^='outputTypeID']").attr("name", elementName + "type.id");
     $(element).find("[id^='outputProgramID']").attr("name", elementName + "program.id");
     $(element).find("[id$='description']").attr("name", elementName + "description").attr("placeholder", "Add output #" + (index + 1));
+    $(element).find("[id^='outputsRPL_outputs'].contributes").attr("name", elementName + "contributesTo[0].id");
     setContributesIndexes(index);
   });
 }
@@ -267,8 +268,6 @@ function setContributesIndexes(i){
     // For new contributeTo outputs
     var elementName = "outputs[" + i + "].contributesTo[" + index + "].";
     $(element).find("[id^='contributeId']").attr("name", elementName + "id");
-    $(element).find("[id^='outputsRPL_outputs'].contributes").attr("name", elementName + "id");
-    
     // For existing translated outputs
     elementName = "outputs[" + i + "].translatedOf";
     $(element).find("[id^='outputsRPL_outputs'].translates").attr("name", elementName);
