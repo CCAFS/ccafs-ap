@@ -50,20 +50,28 @@
     [#if allYears?has_content]
       [#if invalidYear == false]
         [#if hasLeader]
-          [#-- Total CCAFS budget--]
-          <div id="totalBudget" class="halfPartBlock">
-            <h6>[@s.text name="preplanning.projectBudget.totalBudget" /]</h6>
-            <p id="projectTotalCCAFS">US$ <span id="projectTotalCCAFSBudget">${totalCCAFSBudget?string(",##0.00")}</span></p>
-            <input type="hidden" id="projectTotalCCAFSBudget" value="${totalCCAFSBudget?c}" />
-            <input type="hidden" id="yearTotalCCAFSBudget" value="${totalCCAFSBudgetByYear?c}" />
-          </div>
           [#-- Total overall project budget:--]
-          <div id="totalBudget" class="halfPartBlock">
+          <div id="totalBudget" class="thirdPartBlock">
             <h6>[@s.text name="preplanning.projectBudget.totalOverallBudget" /]</h6>
             <p id="projectTotal">US$ <span id="projectTotalBudget">${totalBudget?string(",##0.00")}</span></p>
             <input type="hidden" id="projectTotalBudget" value="${totalBudget?c}" />
             <input type="hidden" id="yearTotalBudget" value="${totalBudgetByYear?c}" />
           </div>     
+          [#-- Total CCAFS budget--]
+          <div id="totalBudget" class="thirdPartBlock">
+            <h6>[@s.text name="preplanning.projectBudget.totalCCAFSBudget" /]</h6>
+            <p id="projectTotalCCAFS">US$ <span id="projectTotalCCAFSBudget">${totalCCAFSBudget?string(",##0.00")}</span></p>
+            <input type="hidden" id="projectTotalCCAFSBudget" value="${totalCCAFSBudget?c}" />
+            <input type="hidden" id="yearTotalCCAFSBudget" value="${totalCCAFSBudgetByYear?c}" />
+          </div>
+          [#-- Total WI + W2 budget--]
+          <div id="totalBudget" class="thirdPartBlock">
+            <h6>[@s.text name="preplanning.projectBudget.totalBudget" /]</h6>
+            <p id="projectTotalW1W2">US$ <span id="projectTotalW1W2Budget">${totalW1W2Budget?string(",##0.00")}</span></p>
+            <input type="hidden" id="projectTotalW1W2Budget" value="${totalW1W2Budget?c}" />
+            <input type="hidden" id="yearTotalW1W2Budget" value="${totalW1W2BudgetByYear?c}" />
+          </div> 
+          
           [#-- Tertiary Menu - All years --] 
           <div id="budgetTables" class="ui-tabs ui-widget ui-widget-content ui-corner-all" style="display:none"> 
             <ul class="ui-tabs-nav ui-helper-reset ui-helper-clearfix ui-widget-header ui-corner-all">
@@ -75,9 +83,17 @@
             </ul>
             [@s.set var="counter" value="0"/] 
               <div id="partnerTables-${year?c}" class="partnerTable ui-tabs-panel ui-widget-content ui-corner-bottom clearfix"> 
-                <div id="totalBudgetByYear"> 
-                  <p id="projectTotalByYear"><strong> [@s.text name="preplanning.projectBudget.totalYearBudget"][@s.param name="0"]${year}[/@s.param][/@s.text]</strong>  US$ <span id="projectTotalBudgetByYear">${totalBudgetByYear?string(",##0.00")}</span></p>
-                </div>
+                <div class="fieldset clearfix">
+                  <div id="totalBudgetByYear" class="BudgetByYear"> 
+                    <p id="projectTotalByYear"><strong> [@s.text name="preplanning.projectBudget.totalYearBudget"][@s.param name="0"]${year}[/@s.param][/@s.text]</strong>  US$ <span id="projectTotalBudgetByYear">${totalBudgetByYear?string(",##0.00")}</span></p>
+                  </div>
+                  <div id="totalCCAFSBudgetByYear" class="BudgetByYear"> 
+                    <p id="projectTotalByYear"><strong> [@s.text name="preplanning.projectBudget.totalYearCCAFSBudget"][@s.param name="0"]${year}[/@s.param][/@s.text]</strong>  US$ <span id="projectTotalCCAFSBudgetByYear">${totalCCAFSBudgetByYear?string(",##0.00")}</span></p>
+                  </div>
+                  <div id="totalw1w2BudgetByYear" class="BudgetByYear"> 
+                    <p id="projectTotalByYear"><strong> [@s.text name="preplanning.projectBudget.totalYearW1W2Budget"][@s.param name="0"]${year}[/@s.param][/@s.text]</strong>  US$ <span id="projectTotalW1W2BudgetByYear">${totalW1W2BudgetByYear?string(",##0.00")}</span></p>
+                  </div>
+                </div> 
                 <table class="ccafsBudget fullPartBlock">
                   [#-- HEADERS --]
                   <tr id="" class="ccafsBudget-head row">
@@ -97,7 +113,7 @@
                       [#-- Partner Leader Name --]
                       <td id="" class="grid_5">${project.leader.currentInstitution.name} <strong>([@s.text name="preplanning.projectBudget.partnerLead" /])</strong> </td> 
                       [#-- W1 --]
-                      <td id="" class="budgetContent grid_1">
+                      <td id="" class="budgetContent W1 grid_1">
                         <input type="hidden" name="project.budgets[${counter}].id" value="${mapBudgets[year?c+'-'+project.leader.currentInstitution.id?c+'-W1'].id?c}" />
                         <input type="hidden" name="project.budgets[${counter}].year" value="${year?c}" />
                         <input type="hidden" name="project.budgets[${counter}].institution.id" value="${mapBudgets[year?c+'-'+project.leader.currentInstitution.id?c+'-W1'].institution.id?c}" />
@@ -106,7 +122,7 @@
                         [@s.set var="counter" value="${counter+1}"/]
                       </td> 
                       [#-- W2 --]
-                      <td id="" class="budgetContent grid_1">
+                      <td id="" class="budgetContent W2 grid_1">
                         <input type="hidden" name="project.budgets[${counter}].id" value="${mapBudgets[year?c+'-'+project.leader.currentInstitution.id?c+'-W2'].id?c}" />
                         <input type="hidden" name="project.budgets[${counter}].year" value="${year?c}" />
                         <input type="hidden" name="project.budgets[${counter}].institution.id" value="${mapBudgets[year?c+'-'+project.leader.currentInstitution.id?c+'-W2'].institution.id?c}" />
@@ -115,7 +131,7 @@
                         [@s.set var="counter" value="${counter+1}"/] 
                       </td>
                       [#-- W3  --] 
-                      <td id="" class="budgetContent grid_1">
+                      <td id="" class="budgetContent W3 grid_1">
                         <input type="hidden" name="project.budgets[${counter}].id" value="${mapBudgets[year?c+'-'+project.leader.currentInstitution.id?c+'-W3'].id?c}" />
                         <input type="hidden" name="project.budgets[${counter}].year" value="${year?c}" />
                         <input type="hidden" name="project.budgets[${counter}].institution.id" value="${mapBudgets[year?c+'-'+project.leader.currentInstitution.id?c+'-W3'].institution.id?c}" />
@@ -124,7 +140,7 @@
                         [@s.set var="counter" value="${counter+1}"/]
                       </td>
                       [#-- Bilateral  --] 
-                      <td id="" class="budgetContent grid_1">
+                      <td id="" class="budgetContent BILATERAL grid_1">
                         <input type="hidden" name="project.budgets[${counter}].id" value="${mapBudgets[year?c+'-'+project.leader.currentInstitution.id?c+'-BILATERAL'].id?c}" />
                         <input type="hidden" name="project.budgets[${counter}].year" value="${year?c}" />
                         <input type="hidden" name="project.budgets[${counter}].institution.id" value="${mapBudgets[year?c+'-'+project.leader.currentInstitution.id?c+'-BILATERAL'].institution.id?c}" />
@@ -139,7 +155,7 @@
                       [#-- Partner Name --]
                       <td id="" class="grid_5">${projectPartner.partner.name}</td> 
                       [#-- W1 --]                
-                      <td id="" class="budgetContent grid_1">
+                      <td id="" class="budgetContent W1 grid_1">
                         <input type="hidden" name="project.budgets[${counter}].id" value="${mapBudgets[year?c+'-'+projectPartner.partner.id?c+'-W1'].id?c}" />
                         <input type="hidden" name="project.budgets[${counter}].year" value="${year?c}" />
                         <input type="hidden" name="project.budgets[${counter}].institution.id" value="${mapBudgets[year?c+'-'+projectPartner.partner.id?c+'-W1'].institution.id?c}" />
@@ -148,7 +164,7 @@
                         [@s.set var="counter" value="${counter+1}"/]
                       </td>
                       [#-- W2 --] 
-                      <td id="" class="budgetContent grid_1">
+                      <td id="" class="budgetContent W2 grid_1">
                         <input type="hidden" name="project.budgets[${counter}].id" value="${mapBudgets[year?c+'-'+projectPartner.partner.id?c+'-W2'].id?c}" />
                         <input type="hidden" name="project.budgets[${counter}].year" value="${year?c}" />
                         <input type="hidden" name="project.budgets[${counter}].institution.id" value="${mapBudgets[year?c+'-'+projectPartner.partner.id?c+'-W2'].institution.id?c}" />
@@ -157,7 +173,7 @@
                         [@s.set var="counter" value="${counter+1}"/]
                       </td> 
                       [#-- W3  --] 
-                      <td id="" class="budgetContent grid_1">
+                      <td id="" class="budgetContent W3 grid_1">
                         <input type="hidden" name="project.budgets[${counter}].id" value="${mapBudgets[year?c+'-'+projectPartner.partner.id?c+'-W3'].id?c}" />
                         <input type="hidden" name="project.budgets[${counter}].year" value="${year?c}" />
                         <input type="hidden" name="project.budgets[${counter}].institution.id" value="${mapBudgets[year?c+'-'+projectPartner.partner.id?c+'-W3'].institution.id?c}" />
@@ -166,7 +182,7 @@
                         [@s.set var="counter" value="${counter+1}"/]
                       </td> 
                       [#-- Bilateral  --] 
-                      <td id="" class="budgetContent grid_1">
+                      <td id="" class="budgetContent BILATERAL grid_1">
                         <input type="hidden" name="project.budgets[${counter}].id" value="${mapBudgets[year?c+'-'+projectPartner.partner.id?c+'-BILATERAL'].id?c}" />
                         <input type="hidden" name="project.budgets[${counter}].year" value="${year?c}" />
                         <input type="hidden" name="project.budgets[${counter}].institution.id" value="${mapBudgets[year?c+'-'+projectPartner.partner.id?c+'-BILATERAL'].institution.id?c}" />
@@ -193,7 +209,7 @@
                         [#-- Partner Name --]
                         <div id="partnerName" class="name">${partner.name}</div> 
                         [#-- Amount --]
-                        <div id="amount" class="amount">
+                        <div id="amount" class="LEVERAGED amount">
                           <input type="hidden" name="project.budgets[${counter}].id" value="${mapBudgets[year?c+'-'+partner.id?c+'-LEVERAGED'].id?c}" />
                           <input type="hidden" name="project.budgets[${counter}].year" value="${year?c}" />
                           <input type="hidden" name="project.budgets[${counter}].institution.id" value="${mapBudgets[year?c+'-'+partner.id?c+'-LEVERAGED'].institution.id?c}" id="${counter}-institution.id" />
@@ -251,7 +267,7 @@
   [#-- Partner Leveraged Template --] 
   <div id="leveragedPartnerTemplate" class="row" style="display:none"> 
     <div id="partnerName" class="name"> Partner Name </div> 
-    <div id="amount" class="amount">
+    <div id="amount" class="LEVERAGED amount">
       <input type="hidden" name="].id" value="-1" />
       <input type="hidden" name="year" value="${year?c}" />
       <input type="hidden" name="institution.id" value="-1" />

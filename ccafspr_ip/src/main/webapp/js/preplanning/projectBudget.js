@@ -1,5 +1,5 @@
 //Global VARS
-var projectTotalCCAFSBudget,projectTotalBudget,yearTotalCCAFSBudget,yearTotalBudget;
+var projectTotalCCAFSBudget,projectTotalBudget,yearTotalCCAFSBudget,yearTotalBudget,yearTotalW1W2Budget,projectTotalW1W2Budget;
 var $allBudgetInputs,$CCAFSBudgetInputs;
 var editable = true;
 
@@ -8,10 +8,16 @@ $(document).ready(init);
 function init(){
   // This function enables launch the pop up window
   popups();
+  
   projectTotalCCAFSBudget = parseFloat($("input#projectTotalCCAFSBudget").val());
   yearTotalCCAFSBudget = projectTotalCCAFSBudget - parseFloat($("input#yearTotalCCAFSBudget").val());
+  
   projectTotalBudget = parseFloat($("input#projectTotalBudget").val());
   yearTotalBudget = projectTotalBudget - parseFloat($("input#yearTotalBudget").val());
+  
+  projectTotalW1W2Budget = parseFloat($("input#projectTotalW1W2Budget").val());
+  yearTotalW1W2Budget = projectTotalW1W2Budget - parseFloat($("input#yearTotalW1W2Budget").val());
+  
   $allBudgetInputs = $("input[name$='amount']");
   $CCAFSBudgetInputs = $(".ccafsBudget input[name$='amount']");
   addChosen();
@@ -28,10 +34,11 @@ function attachEvents(){
   $("select.leveraged").change(addLeveragedEvent);
   $("#leveraged .leveragedPartner .removeButton").click(removeLeveragedEvent);
   
-  // Amount changes event
-  $CCAFSBudgetInputs.on("keyup", calculateCCAFSBudget);
-  
-  $allBudgetInputs.on("keyup", calculateOverallBudget);
+  $allBudgetInputs.on("keyup", function(){
+    calculateCCAFSBudget();
+    calculateOverallBudget();
+    calculateW1W2Budget();
+  });
   $allBudgetInputs.on("keydown", function(event){
     isNumber(event);
     // setCurrency(event);
@@ -124,7 +131,15 @@ function calculateOverallBudget(e){
 function calculateCCAFSBudget(e){
   var Amount = totalBudget("form .ccafsBudget input[name$='amount']");
   var totalAmount = yearTotalCCAFSBudget + Amount;
+  $("span#projectTotalCCAFSBudgetByYear").text(setCurrencyFormat(Amount));
   $("span#projectTotalCCAFSBudget").text(setCurrencyFormat(totalAmount));
+}
+
+function calculateW1W2Budget(e){
+  var Amount = totalBudget("form .W1 input[name$='amount'],form .W2 input[name$='amount']");
+  var totalAmount = yearTotalW1W2Budget + Amount;
+  $("span#projectTotalW1W2BudgetByYear").text(setCurrencyFormat(Amount));
+  $("span#projectTotalW1W2Budget").text(setCurrencyFormat(totalAmount));
 }
 
 function totalBudget(inputList){
