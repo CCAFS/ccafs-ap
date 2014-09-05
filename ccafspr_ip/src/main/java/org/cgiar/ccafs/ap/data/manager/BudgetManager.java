@@ -89,6 +89,23 @@ public interface BudgetManager {
   public double calculateTotalOverallBudgetByYear(int projectID, int year);
 
   /**
+   * This method calculates the total W1 + W2 budget from a given project.
+   * 
+   * @param projectID is the project identifier.
+   * @return a double representing this value, or -1 if some error found.
+   */
+  public double calculateTotalProjectW1W2(int projectID);
+
+  /**
+   * This method calculates the total W1 + W2 budget from a given project in a given year.
+   * 
+   * @param projectID is the project identifier.
+   * @param year is the year.
+   * @return a double representing this value, or -1 if some error found.
+   */
+  public double calculateTotalProjectW1W2ByYear(int projectID, int year);
+
+  /**
    * This method removes all the Activity budgets identified with the given projectID and year.
    *
    * @param activityID is the activity identifier
