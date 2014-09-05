@@ -29,11 +29,11 @@
             </div>
             [#-- Country list --]
             <div class="halfPartBlock countryListBlock chosen">
-              [#-- Name attribute is not needed, we just need to load the value, not save it it. --]
               [#-- Some partners like the Regional Programs, don't have country associated --]
               [#assign countryID]
                 [#if ap.partner.country?has_content]${ap.partner.country.code}[#else]-1[/#if]
               [/#assign]
+              [#-- Name attribute is not needed, we just need to load the value, not save it it. --]
               [@customForm.select name="" label="" disabled=!canEdit i18nkey="preplanning.projectPartners.country" listName="countries" keyFieldName="id"  displayFieldName="name" className="countryList" value="'${countryID}'" /]
             </div>
           </div>
