@@ -193,6 +193,7 @@ public class ActivityImpactPathwayAction extends BaseAction {
             if (!midOutcomesSelected.contains(midOutcome)) {
               midOutcomesSelected.add(midOutcome);
               midOutcomes.remove(i);
+              i--;
             }
           }
         }

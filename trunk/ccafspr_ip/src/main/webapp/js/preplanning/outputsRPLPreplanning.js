@@ -11,6 +11,7 @@ $(document).ready(function(){
   removeOutcomesAlreadySelected();
   applyWordCounter($("textarea"), lWordsElemetDesc);
   initGraph();
+  removePlaceholderRegionalMidOutcomes();
 });
 
 function attachEvents(){
@@ -30,6 +31,11 @@ function attachEvents(){
   $(".removeContribute").click(removeContributeEvent);
   
   $("#outputsRPL").submit(showTranslationMessage);
+}
+
+function removePlaceholderRegionalMidOutcomes(){
+  $("select[id^='outputsRPL_outputs'].contributes option[value='-1']").remove();
+  $("select[id^='outputsRPL_outputs'].contributes").trigger("liszt:updated");
 }
 
 /*
