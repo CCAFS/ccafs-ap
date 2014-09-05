@@ -90,6 +90,16 @@ public class BudgetManagerImpl implements BudgetManager {
   }
 
   @Override
+  public double calculateTotalProjectW1W2(int projectID) {
+    return budgetDAO.calculateTotalProjectW1W2(projectID);
+  }
+
+  @Override
+  public double calculateTotalProjectW1W2ByYear(int projectID, int year) {
+    return budgetDAO.calculateTotalProjectW1W2ByYear(projectID, year);
+  }
+
+  @Override
   public boolean deleteActivityBudgetByYear(int activityID, int year) {
     return budgetDAO.deleteActivityBudgetByYear(activityID, year);
   }
@@ -338,6 +348,7 @@ public class BudgetManagerImpl implements BudgetManager {
     return institutions;
   }
 
+
   @Override
   public List<Institution> getLeveragedInstitutions(int projectID, int year) {
     List<Institution> institutions = new ArrayList<>();
@@ -368,6 +379,7 @@ public class BudgetManagerImpl implements BudgetManager {
     }
     return institutions;
   }
+
 
   @Override
   public List<Institution> getW1Institutions(int projectID) {
@@ -421,7 +433,7 @@ public class BudgetManagerImpl implements BudgetManager {
       LOG.debug("saveActivityBudget > Budget with id={} was updated", activityBudget.getId());
     } else {
       LOG
-      .error("saveActivityBudget > There was an error trying to save/update a Budget from ActivityId={}", activityID);
+        .error("saveActivityBudget > There was an error trying to save/update a Budget from ActivityId={}", activityID);
       allSaved = false;
     }
     return allSaved;

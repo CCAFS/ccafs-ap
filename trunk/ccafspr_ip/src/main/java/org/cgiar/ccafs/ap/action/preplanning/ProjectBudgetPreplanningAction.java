@@ -38,7 +38,7 @@ import org.slf4j.LoggerFactory;
 
 /**
  * Project Budget Action.
- * 
+ *
  * @author Héctor Fabio Tobón R.
  */
 public class ProjectBudgetPreplanningAction extends BaseAction {
@@ -70,6 +70,8 @@ public class ProjectBudgetPreplanningAction extends BaseAction {
   private double totalBudgetByYear;
   private double totalCCAFSBudget;
   private double totalCCAFSBudgetByYear;
+  private double totalW1W2Budget;
+  private double totalW1W2BudgetByYear;
 
   // Managers
   private ProjectManager projectManager;
@@ -96,7 +98,7 @@ public class ProjectBudgetPreplanningAction extends BaseAction {
    * e.g. 2014-9-W1
    * Where 2014 is the year, 9 is the institution identifier and W1 is the budget type.
    * If the budget is not in the database, this method will create a new one with an id=-1 and amount=0.
-   * 
+   *
    * @return a Map of budgets as was described above.
    */
   private Map<String, Budget> generateMapBudgets(int year) {
@@ -122,7 +124,7 @@ public class ProjectBudgetPreplanningAction extends BaseAction {
           } else if (budget.getType().getValue() == BudgetType.BILATERAL.getValue()) {
             bilateral = true;
             budgetsMap
-              .put(year + "-" + projectPartner.getPartner().getId() + "-" + BudgetType.BILATERAL.name(), budget);
+            .put(year + "-" + projectPartner.getPartner().getId() + "-" + BudgetType.BILATERAL.name(), budget);
           }
         }
       }
@@ -229,8 +231,8 @@ public class ProjectBudgetPreplanningAction extends BaseAction {
       newBudget.setAmount(0);
       newBudget.setYear(year);
       budgetsMap
-        .put(year + "-" + project.getLeader().getCurrentInstitution().getId() + "-" + BudgetType.BILATERAL.name(),
-          newBudget);
+      .put(year + "-" + project.getLeader().getCurrentInstitution().getId() + "-" + BudgetType.BILATERAL.name(),
+        newBudget);
     }
 
     // Leveraged
@@ -388,6 +390,8 @@ public class ProjectBudgetPreplanningAction extends BaseAction {
           totalBudgetByYear = budgetManager.calculateTotalOverallBudgetByYear(projectID, year);
           totalCCAFSBudget = budgetManager.calculateTotalCCAFSBudget(projectID);
           totalCCAFSBudgetByYear = budgetManager.calculateTotalCCAFSBudgetByYear(projectID, year);
+          totalW1W2Budget = budgetManager.calculateTotalProjectW1W2(projectID);
+          totalW1W2BudgetByYear = budgetManager.calculateTotalProjectW1W2ByYear(projectID, year);
 
           // Getting the list of institutions that are funding the project as leveraged.
           leveragedInstitutions = budgetManager.getLeveragedInstitutions(projectID, year);

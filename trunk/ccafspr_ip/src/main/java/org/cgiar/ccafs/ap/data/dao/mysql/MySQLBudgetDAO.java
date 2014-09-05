@@ -46,7 +46,6 @@ public class MySQLBudgetDAO implements BudgetDAO {
     this.databaseManager = databaseManager;
   }
 
-
   @Override
   public double calculateTotalActivityBudget(int activityID) {
     Double total = 0.0;
@@ -73,6 +72,7 @@ public class MySQLBudgetDAO implements BudgetDAO {
     }
     return total;
   }
+
 
   @Override
   public double calculateTotalActivityBudgetByYear(int activityID, int year) {
@@ -102,7 +102,6 @@ public class MySQLBudgetDAO implements BudgetDAO {
     }
     return total;
   }
-
 
   @Override
   public double calculateTotalCCAFSBudget(int projectID) {
@@ -227,6 +226,68 @@ public class MySQLBudgetDAO implements BudgetDAO {
   }
 
   @Override
+  public double calculateTotalProjectW1W2(int projectID) {
+    Double total = 0.0;
+    StringBuilder query = new StringBuilder();
+    query.append("SELECT SUM(b.amount) as TOTAL ");
+    query.append("FROM budgets b ");
+    query.append("INNER JOIN project_budgets pb ON pb.budget_id = b.id ");
+    query.append("WHERE pb.project_id = ");
+    query.append(projectID);
+    query.append(" AND (b.budget_type = ");
+    query.append(BudgetType.W1.getValue());
+    query.append(" OR b.budget_type = ");
+    query.append(BudgetType.W2.getValue());
+    query.append(")");
+
+    try (Connection con = databaseManager.getConnection()) {
+      ResultSet rs = databaseManager.makeQuery(query.toString(), con);
+      if (rs.next()) {
+        if (rs.getString("total") != null) {
+          total = Double.parseDouble(rs.getString("total"));
+        }
+      }
+      con.close();
+    } catch (SQLException e) {
+      LOG.error("Exception arised calculating the total project budget W1+W2 {}.", projectID, e.getMessage());
+      total = -1.0;
+    }
+    return total;
+  }
+
+  @Override
+  public double calculateTotalProjectW1W2ByYear(int projectID, int year) {
+    Double total = 0.0;
+    StringBuilder query = new StringBuilder();
+    query.append("SELECT SUM(b.amount) as TOTAL ");
+    query.append("FROM budgets b ");
+    query.append("INNER JOIN project_budgets pb ON pb.budget_id = b.id ");
+    query.append("WHERE pb.project_id = ");
+    query.append(projectID);
+    query.append(" AND (b.budget_type = ");
+    query.append(BudgetType.W1.getValue());
+    query.append(" OR b.budget_type = ");
+    query.append(BudgetType.W2.getValue());
+    query.append(") AND b.year = ");
+    query.append(year);
+
+    try (Connection con = databaseManager.getConnection()) {
+      ResultSet rs = databaseManager.makeQuery(query.toString(), con);
+      if (rs.next()) {
+        if (rs.getString("total") != null) {
+          total = Double.parseDouble(rs.getString("total"));
+        }
+      }
+      con.close();
+    } catch (SQLException e) {
+      LOG.error("Exception arised calculating the total project budget W1+W2 {}.", projectID, e.getMessage());
+      total = -1.0;
+    }
+    return total;
+  }
+
+
+  @Override
   public boolean deleteActivityBudgetByYear(int activityID, int year) {
     LOG.debug(">> deleteActivityBudgetByYear(activityID={}, year={})", activityID, year);
 
@@ -243,6 +304,7 @@ public class MySQLBudgetDAO implements BudgetDAO {
     LOG.debug("<< deleteActivityBudgetByYear():{}", false);
     return false;
   }
+
 
   @Override
   public boolean deleteActivityBudgetsByActivityID(int activityID) {
