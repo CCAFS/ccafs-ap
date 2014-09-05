@@ -13,6 +13,12 @@
  *****************************************************************/
 package org.cgiar.ccafs.ap.action.preplanning;
 
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
+import com.google.inject.Inject;
+import org.apache.commons.lang3.StringUtils;
 import org.cgiar.ccafs.ap.action.BaseAction;
 import org.cgiar.ccafs.ap.config.APConfig;
 import org.cgiar.ccafs.ap.config.APConstants;
@@ -26,19 +32,12 @@ import org.cgiar.ccafs.ap.data.model.Institution;
 import org.cgiar.ccafs.ap.data.model.Project;
 import org.cgiar.ccafs.ap.data.model.ProjectPartner;
 import org.cgiar.ccafs.ap.data.model.User;
-
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-
-import com.google.inject.Inject;
-import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 /**
  * Project Budget Action.
- *
+ * 
  * @author Héctor Fabio Tobón R.
  */
 public class ProjectBudgetPreplanningAction extends BaseAction {
@@ -98,7 +97,7 @@ public class ProjectBudgetPreplanningAction extends BaseAction {
    * e.g. 2014-9-W1
    * Where 2014 is the year, 9 is the institution identifier and W1 is the budget type.
    * If the budget is not in the database, this method will create a new one with an id=-1 and amount=0.
-   *
+   * 
    * @return a Map of budgets as was described above.
    */
   private Map<String, Budget> generateMapBudgets(int year) {
@@ -124,7 +123,7 @@ public class ProjectBudgetPreplanningAction extends BaseAction {
           } else if (budget.getType().getValue() == BudgetType.BILATERAL.getValue()) {
             bilateral = true;
             budgetsMap
-            .put(year + "-" + projectPartner.getPartner().getId() + "-" + BudgetType.BILATERAL.name(), budget);
+              .put(year + "-" + projectPartner.getPartner().getId() + "-" + BudgetType.BILATERAL.name(), budget);
           }
         }
       }
@@ -231,8 +230,8 @@ public class ProjectBudgetPreplanningAction extends BaseAction {
       newBudget.setAmount(0);
       newBudget.setYear(year);
       budgetsMap
-      .put(year + "-" + project.getLeader().getCurrentInstitution().getId() + "-" + BudgetType.BILATERAL.name(),
-        newBudget);
+        .put(year + "-" + project.getLeader().getCurrentInstitution().getId() + "-" + BudgetType.BILATERAL.name(),
+          newBudget);
     }
 
     // Leveraged
@@ -314,6 +313,14 @@ public class ProjectBudgetPreplanningAction extends BaseAction {
 
   public double getTotalCCAFSBudgetByYear() {
     return totalCCAFSBudgetByYear;
+  }
+
+  public double getTotalW1W2Budget() {
+    return totalW1W2Budget;
+  }
+
+  public double getTotalW1W2BudgetByYear() {
+    return totalW1W2BudgetByYear;
   }
 
   public int getYear() {
