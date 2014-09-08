@@ -88,11 +88,11 @@
             </tr>
             <tr>
               <td>[@s.text name="home.dashboard.deadline.planning" /] LAM</td>
-              <td>2nd - 8th September</td>
+              <td>3rd - 8th September</td>
             </tr>
             <tr>
               <td>[@s.text name="home.dashboard.deadline.planning" /] Others</td>
-              <td>19th September</td>
+              <td>22th September</td>
             </tr>
           </table>
         </div>
