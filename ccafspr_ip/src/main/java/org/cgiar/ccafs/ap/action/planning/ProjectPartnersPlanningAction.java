@@ -30,7 +30,9 @@ import org.cgiar.ccafs.ap.data.model.ProjectPartner;
 import org.cgiar.ccafs.ap.data.model.User;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 import com.google.inject.Inject;
 import org.apache.commons.lang3.StringUtils;
@@ -270,7 +272,7 @@ public class ProjectPartnersPlanningAction extends BaseAction {
         for (int c = 0; c < previousProject.getProjectPartners().size(); c++) {
           // Copying responsibilities.
           previousProject.getProjectPartners().get(c)
-            .setResponsabilities(project.getProjectPartners().get(c).getResponsabilities());
+          .setResponsabilities(project.getProjectPartners().get(c).getResponsabilities());
         }
         boolean result =
           projectPartnerManager.saveProjectPartner(previousProject.getId(), previousProject.getProjectPartners());
@@ -284,9 +286,9 @@ public class ProjectPartnersPlanningAction extends BaseAction {
       }
     } else {
       LOG
-        .warn(
-          "User (employee_id={}, email={}) tried to save information in Project Partners without having enough privileges!",
-          new Object[] {this.getCurrentUser().getEmployeeId(), this.getCurrentUser().getEmail()});
+      .warn(
+        "User (employee_id={}, email={}) tried to save information in Project Partners without having enough privileges!",
+        new Object[] {this.getCurrentUser().getEmployeeId(), this.getCurrentUser().getEmail()});
     }
     return BaseAction.ERROR;
 
@@ -306,15 +308,25 @@ public class ProjectPartnersPlanningAction extends BaseAction {
 
   @Override
   public void validate() {
-    // Validate the email of all project partners
-// for (int c = 0; c < project.getProjectPartners().size(); c++) {
-// if (!EmailValidator.isValidEmail(project.getProjectPartners().get(c).getContactEmail())) {
-// addFieldError("project.projectPartners[" + c + "].contactEmail", getText("validation.incorrect.format"));
-// addActionError(getText("preplanning.projectPartners.invalid.contactEmail", new String[] {c + ""}));
-// }
-// }
+    // Validate if there are duplicate institutions.
+    boolean problem = false;
+    Set<Institution> institutions = new HashSet<>();
+    if (project.getLeader() != null) {
+      institutions.add(project.getLeader().getCurrentInstitution());
+    } else if (project.getExpectedLeader() != null) {
+      institutions.add(project.getExpectedLeader().getCurrentInstitution());
+    }
+    for (int c = 0; c < project.getProjectPartners().size(); c++) {
+      if (!institutions.add(project.getProjectPartners().get(c).getPartner())) {
+        addFieldError("project.projectPartners[" + c + "].partner",
+          getText("preplanning.projectPartners.duplicatedInstitution.field"));
+        problem = true;
+      }
+    }
 
-    // Validate fields are empty
+    if (problem) {
+      addActionError(getText("preplanning.projectPartners.duplicatedInstitution.general"));
+    }
 
     super.validate();
   }
