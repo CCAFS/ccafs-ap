@@ -53,20 +53,6 @@
     [#if allYears?has_content]
       [#if invalidYear == false]
         [#if hasLeader]
-          [#-- Total overall project budget:--]
-          <div id="totalBudget" class="thirdPartBlock">
-            <h6>[@s.text name="preplanning.projectBudget.totalOverallBudget" /]</h6>
-            <p id="projectTotal">US$ <span id="projectTotalBudget">${totalBudget?string(",##0.00")}</span></p>
-            <input type="hidden" id="projectTotalBudget" value="${totalBudget?c}" />
-            <input type="hidden" id="yearTotalBudget" value="${totalBudgetByYear?c}" />
-          </div>     
-          [#-- Total CCAFS budget--]
-          <div id="totalBudget" class="thirdPartBlock">
-            <h6>[@s.text name="preplanning.projectBudget.totalCCAFSBudget" /]</h6>
-            <p id="projectTotalCCAFS">US$ <span id="projectTotalCCAFSBudget">${totalCCAFSBudget?string(",##0.00")}</span></p>
-            <input type="hidden" id="projectTotalCCAFSBudget" value="${totalCCAFSBudget?c}" />
-            <input type="hidden" id="yearTotalCCAFSBudget" value="${totalCCAFSBudgetByYear?c}" />
-          </div>
           [#-- Total WI + W2 budget--]
           <div id="totalBudget" class="thirdPartBlock">
             <h6>[@s.text name="preplanning.projectBudget.totalBudget" /]</h6>
@@ -74,6 +60,20 @@
             <input type="hidden" id="projectTotalW1W2Budget" value="${totalW1W2Budget?c}" />
             <input type="hidden" id="yearTotalW1W2Budget" value="${totalW1W2BudgetByYear?c}" />
           </div> 
+          [#-- Total CCAFS budget--]
+          <div id="totalBudget" class="thirdPartBlock">
+            <h6>[@s.text name="preplanning.projectBudget.totalCCAFSBudget" /]</h6>
+            <p id="projectTotalCCAFS">US$ <span id="projectTotalCCAFSBudget">${totalCCAFSBudget?string(",##0.00")}</span></p>
+            <input type="hidden" id="projectTotalCCAFSBudget" value="${totalCCAFSBudget?c}" />
+            <input type="hidden" id="yearTotalCCAFSBudget" value="${totalCCAFSBudgetByYear?c}" />
+          </div>
+          [#-- Total overall project budget:--]
+          <div id="totalBudget" class="thirdPartBlock">
+            <h6>[@s.text name="preplanning.projectBudget.totalOverallBudget" /]</h6>
+            <p id="projectTotal">US$ <span id="projectTotalBudget">${totalBudget?string(",##0.00")}</span></p>
+            <input type="hidden" id="projectTotalBudget" value="${totalBudget?c}" />
+            <input type="hidden" id="yearTotalBudget" value="${totalBudgetByYear?c}" />
+          </div>     
           [#-- Tertiary Menu - All years --] 
           <div id="budgetTables" class="ui-tabs ui-widget ui-widget-content ui-corner-all" style="display:none"> 
             <ul class="ui-tabs-nav ui-helper-reset ui-helper-clearfix ui-widget-header ui-corner-all">
@@ -86,14 +86,14 @@
             [@s.set var="counter" value="0"/] 
               <div id="partnerTables-${year?c}" class="partnerTable ui-tabs-panel ui-widget-content ui-corner-bottom clearfix"> 
                 <div class="fieldset clearfix">
-                  <div id="totalBudgetByYear" class="BudgetByYear clearfix"> 
-                    <p id="projectTotalByYear"><strong> [@s.text name="preplanning.projectBudget.totalYearBudget"][@s.param name="0"]${year}[/@s.param][/@s.text]</strong>  US$ <span id="projectTotalBudgetByYear">${totalBudgetByYear?string(",##0.00")}</span></p>
+                  <div id="totalw1w2BudgetByYear" class="BudgetByYear clearfix"> 
+                    <p id="projectTotalByYear"><strong> [@s.text name="preplanning.projectBudget.totalYearW1W2Budget"][@s.param name="0"]${year}[/@s.param][/@s.text]</strong>  US$ <span id="projectTotalW1W2BudgetByYear">${totalW1W2BudgetByYear?string(",##0.00")}</span></p>
                   </div>
                   <div id="totalCCAFSBudgetByYear" class="BudgetByYear clearfix"> 
                     <p id="projectTotalByYear"><strong> [@s.text name="preplanning.projectBudget.totalYearCCAFSBudget"][@s.param name="0"]${year}[/@s.param][/@s.text]</strong>  US$ <span id="projectTotalCCAFSBudgetByYear">${totalCCAFSBudgetByYear?string(",##0.00")}</span></p>
                   </div>
-                  <div id="totalw1w2BudgetByYear" class="BudgetByYear clearfix"> 
-                    <p id="projectTotalByYear"><strong> [@s.text name="preplanning.projectBudget.totalYearW1W2Budget"][@s.param name="0"]${year}[/@s.param][/@s.text]</strong>  US$ <span id="projectTotalW1W2BudgetByYear">${totalW1W2BudgetByYear?string(",##0.00")}</span></p>
+                  <div id="totalBudgetByYear" class="BudgetByYear clearfix"> 
+                    <p id="projectTotalByYear"><strong> [@s.text name="preplanning.projectBudget.totalYearBudget"][@s.param name="0"]${year}[/@s.param][/@s.text]</strong>  US$ <span id="projectTotalBudgetByYear">${totalBudgetByYear?string(",##0.00")}</span></p>
                   </div>
                  </div>
                 <table class="ccafsBudget fullPartBlock">
