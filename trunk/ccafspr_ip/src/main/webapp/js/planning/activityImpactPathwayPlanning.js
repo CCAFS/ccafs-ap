@@ -112,9 +112,13 @@ function addMOGs(midOutcomeID,$mogBlock){
     
     // Once we have copied all the elements needed, remove the template
     $mogTemplate.remove();
+    
     setMogsIndexes();
   }).fail(function(){
     console.log("error");
+  }).always(function(){
+    // Hide ajax-loader icon
+    $mogBlock.find(".ajax-loader").fadeOut("slow");
   });
 }
 
@@ -127,10 +131,11 @@ function addMOGs(midOutcomeID,$mogBlock){
  */
 function addIndicators(midOutcomeID,programID,$indicatorsBlock){
   var source = "../../../json/ipIndicators.do?elementID=" + midOutcomeID + "&programID=" + programID;
-  
+  var onlyOneIndicator = false;
   $.getJSON(source).done(function(data){
     var $indicatorTemplate = $indicatorsBlock.find("#midOutcomeIndicatorTemplate");
-    
+    if (data.IPElementsList.length == 1)
+      onlyOneIndicator = true;
     // Iterate the list of indicators received.
     $.each(data.IPElementsList, function(index,indicator){
       var $newIndicator = $indicatorTemplate.clone(true);
@@ -138,12 +143,12 @@ function addIndicators(midOutcomeID,programID,$indicatorsBlock){
       
       // indexes will be adjusted in function setIndicatorsIndexes
       $newIndicator.find("input[type='checkbox']").val(indicator.id);
+      if (onlyOneIndicator)
+        $newIndicator.find("input[type='checkbox']").attr("checked", true);
       if (!(indicator.parent)) {
         $newIndicator.find("label.indicatorDescription").text(indicator.description);
-        console.log("Loading indicator for FP");
       } else {
         $newIndicator.find("label.indicatorDescription").text(indicator.parent.description);
-        console.log("Loading indicator for RP");
       }
       $indicatorsBlock.append($newIndicator);
     });
@@ -153,6 +158,9 @@ function addIndicators(midOutcomeID,programID,$indicatorsBlock){
     setIndicatorIndexes();
   }).fail(function(){
     console.log("error");
+  }).always(function(){
+    // Hide ajax-loader icon
+    $indicatorsBlock.find(".ajax-loader").fadeOut("slow");
   });
 }
 

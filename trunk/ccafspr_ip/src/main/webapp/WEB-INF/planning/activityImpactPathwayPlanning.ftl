@@ -170,6 +170,7 @@
   <div class="mogs">
     <h6>[@s.text name="planning.activityImpactPathways.mogs" /]</h6>
     <div class="mogsBlock">
+      <img class="ajax-loader" style="" src="${baseUrl}/images/global/loading.gif" alt="Loader ..." />
       <div class="mog" id="mogTemplate">
         <input name="contributesTo[0].id" type="hidden" />
         <input type="checkbox" name="activity.outputs" />
@@ -182,6 +183,7 @@
   <div class="indicators">
     <h6>[@s.text name="planning.activityImpactPathways.indicators" /]</h6>
     <div class="indicatorsBlock">
+      <img class="ajax-loader" style="" src="${baseUrl}/images/global/loading.gif" alt="Loader ..." />
       <div class="midOutcomeIndicator" id="midOutcomeIndicatorTemplate">
         <input type="hidden" disabled name="activity_indicator_id" value="-1" />
         <input type="checkbox" name="activity.indicators" />
