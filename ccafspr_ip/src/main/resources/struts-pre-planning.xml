@@ -34,6 +34,10 @@
        <result name="next" type="redirectAction">
         <param name="actionName">${nextActionName}</param>
        </result>
+       <result name="cancel" type="redirectAction">
+        <param name="namespace">/</param>
+        <param name="actionName">login</param>
+       </result>
     </action>
     
     <action name="midOutcomesRPL" class="org.cgiar.ccafs.ap.action.preplanning.MidOutcomesPreplanningAction">
@@ -46,6 +50,10 @@
       <result name="next" type="redirectAction">
        <param name="actionName">${nextActionName}</param>
       </result>
+      <result name="cancel" type="redirectAction">
+        <param name="namespace">/</param>
+        <param name="actionName">login</param>
+       </result>
      </action>
     
     <action name="outputs" class="org.cgiar.ccafs.ap.action.preplanning.OutputsPreplanningAction">
@@ -57,6 +65,10 @@
        </result>
        <result name="next" type="redirectAction">
         <param name="actionName">projects</param>
+       </result>
+       <result name="cancel" type="redirectAction">
+        <param name="namespace">/</param>
+        <param name="actionName">login</param>
        </result>
     </action>
     
@@ -70,6 +82,10 @@
       <result name="next" type="redirectAction">
         <param name="actionName">projects</param>
       </result>
+      <result name="cancel" type="redirectAction">
+        <param name="namespace">/</param>
+        <param name="actionName">login</param>
+       </result>
     </action>
     
     <!-- Section: Projects  -->
@@ -81,6 +97,10 @@
         <param name="actionName">description</param>
         <param name="projectID">${projectID}</param>
       </result>
+      <result name="cancel" type="redirectAction">
+        <param name="namespace">/</param>
+        <param name="actionName">login</param>
+       </result>
     </action>
     
   </package>
