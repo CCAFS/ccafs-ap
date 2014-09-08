@@ -109,7 +109,7 @@
                     <td id="" class="grid_1"><h6 title="[@s.text name="preplanning.projectBudget.w3.tooltip" /]">[@s.text name="preplanning.projectBudget.w3" /]</h6></td> 
                     [#-- Bilateral title --] 
                     <td id="" class="grid_1"><h6 title="[@s.text name="preplanning.projectBudget.bilateral.tooltip" /]">[@s.text name="preplanning.projectBudget.bilateral" /]</h6></td> 
-                  </tr>               
+                  </tr>
                   [#if project.leader?has_content]
                     <tr id="" class="row">
                       [#-- Partner Leader Name --]
@@ -258,7 +258,7 @@
         <!-- internal parameter -->
         <input name="projectID" type="hidden" value="${project.id?c}" />
         <input name="year" type="hidden" value="${year?c}" /> 
-        <input type="hidden" id="targetYear" name="targetYear" value="${targetYear?c}" />
+        <input type="hidden" id="targetYear" name="targetYear" value="${year?c}" />
         <div class="buttons">
           [@s.submit type="button" name="save"][@s.text name="form.buttons.save" /][/@s.submit]
           [@s.submit type="button" name="next"][@s.text name="form.buttons.next" /][/@s.submit]

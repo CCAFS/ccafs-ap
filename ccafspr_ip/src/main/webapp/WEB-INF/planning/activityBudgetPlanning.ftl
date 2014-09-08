@@ -121,7 +121,7 @@
         [#if saveable]
           <input type="hidden" name="activityID" value="${activity.id?c}">
           <input type="hidden" name="year" value="${year?c}">
-          <input type="hidden" id="targetYear" name="targetYear" value="${targetYear?c}" />
+          <input type="hidden" id="targetYear" name="targetYear" value="${year?c}" />
           <div class="buttons">
             [@s.submit type="button" name="save"][@s.text name="form.buttons.save" /][/@s.submit]
             [@s.submit type="button" name="next"][@s.text name="form.buttons.next" /][/@s.submit]
