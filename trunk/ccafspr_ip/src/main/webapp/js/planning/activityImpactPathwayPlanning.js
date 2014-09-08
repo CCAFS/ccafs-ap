@@ -143,14 +143,17 @@ function addIndicators(midOutcomeID,programID,$indicatorsBlock){
       
       // indexes will be adjusted in function setIndicatorsIndexes
       $newIndicator.find("input[type='checkbox']").val(indicator.id);
-      if (onlyOneIndicator)
-        $newIndicator.find("input[type='checkbox']").attr("checked", true);
+      
       if (!(indicator.parent)) {
         $newIndicator.find("label.indicatorDescription").text(indicator.description);
       } else {
         $newIndicator.find("label.indicatorDescription").text(indicator.parent.description);
       }
       $indicatorsBlock.append($newIndicator);
+      if (onlyOneIndicator) {
+        $newIndicator.find("input[type='checkbox']").attr("checked", true);
+        $newIndicator.find(".indicatorNarrative").show("slow");
+      }
     });
     
     // Once we have added all the indicators, remove the template
