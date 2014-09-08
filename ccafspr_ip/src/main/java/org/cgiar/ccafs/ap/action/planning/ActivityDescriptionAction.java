@@ -26,10 +26,13 @@ import org.cgiar.ccafs.ap.data.model.Institution;
 import org.cgiar.ccafs.ap.data.model.Project;
 import org.cgiar.ccafs.ap.data.model.User;
 
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
+
+import org.cgiar.ccafs.ap.data.manager.ActivityPartnerManager;
 
 import org.cgiar.ccafs.ap.data.manager.BudgetManager;
-
 import com.google.inject.Inject;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
@@ -47,6 +50,7 @@ public class ActivityDescriptionAction extends BaseAction {
 
   // Manager
   private ActivityManager activityManager;
+  private ActivityPartnerManager activityPartnerManager;
   private InstitutionManager institutionManager;
   private IPCrossCuttingManager ipCrossCuttingManager;
   private ProjectManager projectManager;
@@ -66,13 +70,14 @@ public class ActivityDescriptionAction extends BaseAction {
   @Inject
   public ActivityDescriptionAction(APConfig config, ActivityManager activityManager,
     InstitutionManager institutionManager, IPCrossCuttingManager ipCrossCuttingManager, ProjectManager projectManager,
-    BudgetManager budgetManager) {
+    BudgetManager budgetManager, ActivityPartnerManager activityPartnerManager) {
     super(config);
     this.activityManager = activityManager;
     this.institutionManager = institutionManager;
     this.ipCrossCuttingManager = ipCrossCuttingManager;
     this.projectManager = projectManager;
     this.budgetManager = budgetManager;
+    this.activityPartnerManager = activityPartnerManager;
   }
 
   public Activity getActivity() {
@@ -270,5 +275,30 @@ public class ActivityDescriptionAction extends BaseAction {
 
   public void setOfficialLeader(boolean isOfficialLeader) {
     this.isOfficialLeader = isOfficialLeader;
+  }
+
+  @Override
+  public void validate() {// Validate if there are duplicate institutions.
+    boolean problem = false;
+    Set<Institution> institutions = new HashSet<>();
+    if (activity.getLeader() != null) {
+      institutions.add(activity.getLeader().getCurrentInstitution());
+    } else if (activity.getExpectedLeader() != null) {
+      institutions.add(activity.getExpectedLeader().getCurrentInstitution());
+    }
+    activity.setActivityPartners(activityPartnerManager.getActivityPartnersByActivity(activity.getId()));
+    for (int c = 0; c < activity.getActivityPartners().size(); c++) {
+      if (!institutions.add(activity.getActivityPartners().get(c).getPartner())) {
+        addFieldError("activity.expectedLeader.currentInstitution",
+          getText("planning.activityPartner.duplicatedInstitution.field"));
+        problem = true;
+      }
+    }
+
+    if (problem) {
+      addActionError(getText("planning.activityPartner.duplicatedInstitution.general"));
+    }
+
+    super.validate();
   }
 }
