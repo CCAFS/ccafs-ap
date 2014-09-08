@@ -149,6 +149,8 @@ public class IPProgramManagerImpl implements IPProgramManager {
         ipProgram.setRegion(region);
       }
 
+      ipProgram.setType(new IPProgramType(typeID));
+
       projectFocusesList.add(ipProgram);
     }
     return projectFocusesList;

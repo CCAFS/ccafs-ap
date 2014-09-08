@@ -142,6 +142,7 @@ public class ActivityImpactPathwayAction extends BaseAction {
   @Override
   public void prepare() throws Exception {
     super.prepare();
+    boolean isGlobalProject;
 
     activityID = Integer.parseInt(StringUtils.trim(this.getRequest().getParameter(APConstants.ACTIVITY_REQUEST_ID)));
     activity = activityManager.getActivityById(activityID);
@@ -155,6 +156,8 @@ public class ActivityImpactPathwayAction extends BaseAction {
     projectFocusList.addAll(programManager.getProjectFocuses(project.getId(), APConstants.FLAGSHIP_PROGRAM_TYPE));
     projectFocusList.addAll(programManager.getProjectFocuses(project.getId(), APConstants.REGION_PROGRAM_TYPE));
 
+    isGlobalProject = projectFocusList.contains(new IPProgram(APConstants.GLOBAL_PROGRAM));
+
     // Then, we have to get all the midOutcomes that belongs to the project focuses
     midOutcomes = new ArrayList<>();
     IPElement placeHolder = new IPElement(-1);
@@ -163,6 +166,11 @@ public class ActivityImpactPathwayAction extends BaseAction {
 
     IPElementType midOutcomeType = new IPElementType(APConstants.ELEMENT_TYPE_OUTCOME2019);
     for (IPProgram program : projectFocusList) {
+
+      if (!isGlobalProject && program.isFlagshipProgram()) {
+        continue;
+      }
+
       List<IPElement> elements = ipElementManager.getIPElements(program, midOutcomeType);
 
       for (int i = 0; i < elements.size(); i++) {

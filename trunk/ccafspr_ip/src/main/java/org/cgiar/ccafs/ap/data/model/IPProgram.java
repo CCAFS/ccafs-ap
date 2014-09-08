@@ -13,6 +13,8 @@
  *****************************************************************/
 package org.cgiar.ccafs.ap.data.model;
 
+import org.cgiar.ccafs.ap.config.APConstants;
+
 import org.apache.commons.lang3.builder.ToStringBuilder;
 
 
@@ -81,6 +83,14 @@ public class IPProgram {
   @Override
   public int hashCode() {
     return id;
+  }
+
+  public boolean isFlagshipProgram() {
+    return (this.type.getId() == APConstants.FLAGSHIP_PROGRAM_TYPE);
+  }
+
+  public boolean isRegionalProgram() {
+    return (this.type.getId() == APConstants.REGION_PROGRAM_TYPE);
   }
 
   public void setAcronym(String acronym) {

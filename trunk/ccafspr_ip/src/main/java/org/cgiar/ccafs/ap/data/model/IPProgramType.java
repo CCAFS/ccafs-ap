@@ -21,6 +21,13 @@ public class IPProgramType {
   private int id;
   private String name;
 
+  public IPProgramType() {
+  }
+
+  public IPProgramType(int id) {
+    this.id = id;
+  }
+
   public int getId() {
     return id;
   }
