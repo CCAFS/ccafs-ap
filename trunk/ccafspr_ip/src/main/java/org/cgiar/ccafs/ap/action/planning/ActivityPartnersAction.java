@@ -30,7 +30,9 @@ import org.cgiar.ccafs.ap.data.model.InstitutionType;
 import org.cgiar.ccafs.ap.data.model.Project;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 import com.google.inject.Inject;
 import org.apache.commons.lang3.StringUtils;
@@ -231,6 +233,30 @@ public class ActivityPartnersAction extends BaseAction {
 
   public void setAllPartners(List<Institution> allPartners) {
     this.allPartners = allPartners;
+  }
+
+  @Override
+  public void validate() {// Validate if there are duplicate institutions.
+    boolean problem = false;
+    Set<Institution> institutions = new HashSet<>();
+    if (activity.getLeader() != null) {
+      institutions.add(activity.getLeader().getCurrentInstitution());
+    } else if (activity.getExpectedLeader() != null) {
+      institutions.add(activity.getExpectedLeader().getCurrentInstitution());
+    }
+    for (int c = 0; c < activity.getActivityPartners().size(); c++) {
+      if (!institutions.add(activity.getActivityPartners().get(c).getPartner())) {
+        addFieldError("activity.activityPartners[" + c + "].partner",
+          getText("planning.activityPartner.duplicatedInstitution.field"));
+        problem = true;
+      }
+    }
+
+    if (problem) {
+      addActionError(getText("planning.activityPartner.duplicatedInstitution.general"));
+    }
+
+    super.validate();
   }
 
 }
