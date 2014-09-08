@@ -50,10 +50,12 @@
         <div class="fullBlock">
           [@customForm.textArea name="activity.description" i18nkey="planning.activityDescription.description" required=true  /]
         </div>
+        
         [#-- Start Date --]
         <div class="halfPartBlock">
           [@customForm.input name="activity.startDate" type="text" i18nkey="planning.activityDescription.startDate" required=true /]
         </div> 
+        
         [#-- End Date --]
         <div class="halfPartBlock">
           [@customForm.input name="activity.endDate" type="text" i18nkey="planning.activityDescription.endDate" required=true /]
@@ -150,8 +152,17 @@
       [/#if]
     </article>
   [/@s.form]
-  [#-- Hidden values used by js --] 
-  <input id="minDateValue" value="${project.startDate?string("yyyy-MM-dd")}" type="hidden"/>
-  <input id="maxDateValue" value="${project.endDate?string("yyyy-MM-dd")}" type="hidden"/>   
+  [#-- Hidden values used by js --]
+  [#if project.startDate?has_content]
+    <input id="minDateValue" value="${project.startDate?string("yyyy-MM-dd")}" type="hidden"/>
+  [#else]
+    <input id="minDateValue" value="${startYear?string}-01-01" type="hidden"/>
+  [/#if]
+  
+  [#if project.endDate?has_content]
+    <input id="maxDateValue" value="${project.endDate?string("yyyy-MM-dd")}" type="hidden"/>   
+  [#else]
+    <input id="maxDateValue" value="${endYear?string}-12-31" type="hidden"/>   
+  [/#if]
 </section>
 [#include "/WEB-INF/global/pages/footer.ftl"]
