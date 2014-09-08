@@ -239,6 +239,11 @@ span.or {
   font-weight: bold;
 }
 
+.ajax-loader{
+	display: block; 
+	margin: 0 auto;
+}
+
 /* General Messages */
 #generalMessages {
   margin-top: 20px;
