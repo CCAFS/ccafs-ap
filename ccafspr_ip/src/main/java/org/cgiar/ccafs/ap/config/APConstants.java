@@ -70,6 +70,7 @@ public final class APConstants {
 
   // Identifiers for the IP Programs
   public static final int COORDINATING_UNIT_PROGRAM = 10;
+  public static final int GLOBAL_PROGRAM = 11;
   public static final int CCAFS_PROGRAM = 14;
   public static final int SYSTEM_ADMIN_PROGRAM = 13;
 
