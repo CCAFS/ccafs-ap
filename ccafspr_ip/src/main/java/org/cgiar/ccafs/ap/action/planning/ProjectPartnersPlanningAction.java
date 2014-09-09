@@ -272,7 +272,7 @@ public class ProjectPartnersPlanningAction extends BaseAction {
         for (int c = 0; c < previousProject.getProjectPartners().size(); c++) {
           // Copying responsibilities.
           previousProject.getProjectPartners().get(c)
-          .setResponsabilities(project.getProjectPartners().get(c).getResponsabilities());
+            .setResponsabilities(project.getProjectPartners().get(c).getResponsabilities());
         }
         boolean result =
           projectPartnerManager.saveProjectPartner(previousProject.getId(), previousProject.getProjectPartners());
@@ -286,9 +286,9 @@ public class ProjectPartnersPlanningAction extends BaseAction {
       }
     } else {
       LOG
-      .warn(
-        "User (employee_id={}, email={}) tried to save information in Project Partners without having enough privileges!",
-        new Object[] {this.getCurrentUser().getEmployeeId(), this.getCurrentUser().getEmail()});
+        .warn(
+          "User (employee_id={}, email={}) tried to save information in Project Partners without having enough privileges!",
+          new Object[] {this.getCurrentUser().getEmployeeId(), this.getCurrentUser().getEmail()});
     }
     return BaseAction.ERROR;
 
@@ -308,26 +308,29 @@ public class ProjectPartnersPlanningAction extends BaseAction {
 
   @Override
   public void validate() {
-    // Validate if there are duplicate institutions.
-    boolean problem = false;
-    Set<Institution> institutions = new HashSet<>();
-    if (project.getLeader() != null) {
-      institutions.add(project.getLeader().getCurrentInstitution());
-    } else if (project.getExpectedLeader() != null) {
-      institutions.add(project.getExpectedLeader().getCurrentInstitution());
-    }
-    for (int c = 0; c < project.getProjectPartners().size(); c++) {
-      if (!institutions.add(project.getProjectPartners().get(c).getPartner())) {
-        addFieldError("project.projectPartners[" + c + "].partner",
-          getText("preplanning.projectPartners.duplicatedInstitution.field"));
-        problem = true;
+    // Validate only in case the user has full privileges. Otherwise, the partner fields that are disabled won't be sent
+// here.
+    if (this.isFullEditable()) {
+      // Validate if there are duplicate institutions.
+      boolean problem = false;
+      Set<Institution> institutions = new HashSet<>();
+      if (project.getLeader() != null) {
+        institutions.add(project.getLeader().getCurrentInstitution());
+      } else if (project.getExpectedLeader() != null) {
+        institutions.add(project.getExpectedLeader().getCurrentInstitution());
+      }
+      for (int c = 0; c < project.getProjectPartners().size(); c++) {
+        if (!institutions.add(project.getProjectPartners().get(c).getPartner())) {
+          addFieldError("project.projectPartners[" + c + "].partner",
+            getText("preplanning.projectPartners.duplicatedInstitution.field"));
+          problem = true;
+        }
+      }
+
+      if (problem) {
+        addActionError(getText("preplanning.projectPartners.duplicatedInstitution.general"));
       }
     }
-
-    if (problem) {
-      addActionError(getText("preplanning.projectPartners.duplicatedInstitution.general"));
-    }
-
     super.validate();
   }
 
