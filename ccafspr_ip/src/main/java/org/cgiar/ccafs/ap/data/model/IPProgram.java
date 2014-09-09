@@ -86,11 +86,19 @@ public class IPProgram {
   }
 
   public boolean isFlagshipProgram() {
-    return (this.type.getId() == APConstants.FLAGSHIP_PROGRAM_TYPE);
+    if (type != null) {
+      return (this.type.getId() == APConstants.FLAGSHIP_PROGRAM_TYPE);
+    } else {
+      return false;
+    }
   }
 
   public boolean isRegionalProgram() {
-    return (this.type.getId() == APConstants.REGION_PROGRAM_TYPE);
+    if (type != null) {
+      return (this.type.getId() == APConstants.REGION_PROGRAM_TYPE);
+    } else {
+      return false;
+    }
   }
 
   public void setAcronym(String acronym) {
