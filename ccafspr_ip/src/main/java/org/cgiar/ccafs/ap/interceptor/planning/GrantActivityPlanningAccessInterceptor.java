@@ -93,9 +93,18 @@ public class GrantActivityPlanningAccessInterceptor extends AbstractInterceptor 
             baseAction.setFullEditable(true);
             baseAction.setSaveable(true);
           } else {
-            // If the user is not the project leader. Thus, he is able to see but not to edit.
-            baseAction.setFullEditable(true);
-            baseAction.setSaveable(false);
+            // If the user is not the project leader.
+            // Let's check if the user is the Activity Leader of the current activity
+            User activityLeader = activityManager.getActivityLeader(activityID);
+            // If user is assigned as activity leader of the current activity.
+            if (user.getEmployeeId() == activityLeader.getEmployeeId()) {
+              baseAction.setFullEditable(true);
+              baseAction.setSaveable(true);
+            } else {
+              // If user is not the activity leader of the current activity, he/she is not able to edit it.
+              baseAction.setFullEditable(true);
+              baseAction.setSaveable(false);
+            }
           }
         } else {
           // If the project doesn't have project leader associated the PL can not edit it.
