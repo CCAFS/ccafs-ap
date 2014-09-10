@@ -8,7 +8,7 @@
   </div>
   [/#if]
   [#if activity?has_content]
-  <div id="activityID-quote" class="quote-id" title="[#if activity.description?has_content][@s.text name="planning.activity" /]: ${activity.description}[/#if]">
+  <div id="activityID-quote" class="quote-id" title="[#if activity.title?has_content][@s.text name="planning.activity" /]: ${activity.title}[/#if]">
    <img class="icon" src="${baseUrl}/images/global/activity-icon.png"> ID: <span>${activity.composedId}</span>
   </div>
   [/#if]
