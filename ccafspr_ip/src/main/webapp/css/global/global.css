@@ -1419,7 +1419,7 @@ button.ipGraph-btn{
 /* projects List */
 
 .projectsList #ids {
-  width: 43px;
+  width: 50px;
 }
 
 .projectsList #projectTitles {
@@ -1435,7 +1435,7 @@ button.ipGraph-btn{
 }
 
 .projectsList #projectBudget {
-  width: 90px;
+  width: 100px;
 }
 
 .projectsList #lastModified {
