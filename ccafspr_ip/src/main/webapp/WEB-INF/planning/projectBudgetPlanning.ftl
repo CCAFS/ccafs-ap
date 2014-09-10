@@ -33,6 +33,7 @@
   
   [@s.form action="budget" cssClass="pure-form"]
     <article class="halfContent" id="projectBudget">
+    [#include "/WEB-INF/planning/planningDataSheet.ftl" /]
     [#-- Informing user that he/she doesn't have enough privileges to edit. See GranProjectAccessInterceptor--]
     [#if saveable && !fullEditable]
       <p class="readPrivileges">

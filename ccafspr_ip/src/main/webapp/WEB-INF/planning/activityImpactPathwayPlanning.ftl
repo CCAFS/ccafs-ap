@@ -27,6 +27,7 @@
 
   [@s.form action="activityImpactPathway" cssClass="pure-form"]  
   <article class="halfContent" id="activityImpactPathway">
+  [#include "/WEB-INF/planning/planningDataSheet.ftl" /]
   [#include "/WEB-INF/planning/activityIP-planning-sub-menu.ftl" /]
     [#-- Informing user that he/she doesn't have enough privileges to edit. See GrantActivityPlanningAccessInterceptor--]
     [#if !saveable]

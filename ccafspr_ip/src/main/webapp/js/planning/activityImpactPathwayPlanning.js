@@ -150,6 +150,8 @@ function addIndicators(midOutcomeID,programID,$indicatorsBlock){
         $newIndicator.find("label.indicatorDescription").text(indicator.parent.description);
       }
       $indicatorsBlock.append($newIndicator);
+      
+      // If the there is only one indicator, the target must be already selected.
       if (onlyOneIndicator) {
         $newIndicator.find("input[type='checkbox']").attr("checked", true);
         $newIndicator.find(".indicatorNarrative").show("slow");

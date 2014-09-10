@@ -29,6 +29,7 @@
 
   [@s.form action="activityPartners" cssClass="pure-form"]  
     <article class="halfContent" id="activityPartners">
+    [#include "/WEB-INF/planning/planningDataSheet.ftl" /]
       [#-- Informing user that he/she doesn't have enough privileges to edit. See GrantActivityPlanningAccessInterceptor--]
       [#if !saveable]
         <p class="readPrivileges">

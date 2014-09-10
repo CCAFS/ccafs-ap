@@ -1,4 +1,5 @@
 //Limits for textarea input
+var lWordsElemetTitle = 20;
 var lWordsElemetDesc = 300;
 
 $(document).ready(function(){
@@ -10,7 +11,8 @@ $(document).ready(function(){
   });
   setProgramId();
   addChosen();
-  applyWordCounter($("textarea"), lWordsElemetDesc);
+  applyWordCounter($("textarea.project-title"), lWordsElemetTitle);
+  applyWordCounter($("textarea.project-description"), lWordsElemetDesc);
 });
 
 /**

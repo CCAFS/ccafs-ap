@@ -24,6 +24,7 @@
   [#include "/WEB-INF/planning/activityPlanningSubMenu.ftl" /]
   [@s.form action="activityBudget" cssClass="pure-form"]  
     <article class="halfContent" id="activityBudget">
+    [#include "/WEB-INF/planning/planningDataSheet.ftl" /]
       [#-- Informing user that he/she doesn't have enough privileges to edit. See GrantActivityPlanningAccessInterceptor--]
       [#if !saveable]
         <p class="readPrivileges">

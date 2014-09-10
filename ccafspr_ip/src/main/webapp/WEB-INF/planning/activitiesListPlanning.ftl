@@ -33,6 +33,7 @@
 
   [@s.form action="activities" cssClass="pure-form"]
     <article class="halfContent" id="activities">
+    [#include "/WEB-INF/planning/planningDataSheet.ftl" /]
       <h1 class="contentTitle">
         [@s.text name="planning.activities.title" /]
       </h1>

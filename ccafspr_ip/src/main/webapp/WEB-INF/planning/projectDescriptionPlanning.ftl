@@ -40,7 +40,7 @@
     <div id="projectDescription" class="borderBox">
       <fieldset class="fullBlock">
         [#-- Project Title --]
-        [@customForm.textArea name="project.title" i18nkey="planning.projectDescription.projectTitle" required=true /]
+        [@customForm.textArea name="project.title" i18nkey="planning.projectDescription.projectTitle" required=true className="project-title" /]
         <div id="projectDescription" class="">
           [#-- Project Program Creator --]
           <div class="halfPartBlock">
@@ -61,7 +61,7 @@
           </div>
         </div>
         [#-- Project Summary --]
-        [@customForm.textArea name="project.summary" i18nkey="preplanning.projectDescription.projectSummary" required=true /]
+        [@customForm.textArea name="project.summary" i18nkey="preplanning.projectDescription.projectSummary" required=true className="project-description" /]
       </fieldset>
       <fieldset class="fullBlock">   
         <legend>[@s.text name="preplanning.projectDescription.projectWorking" /] </legend> 
