@@ -13,17 +13,16 @@
  *****************************************************************/
 package org.cgiar.ccafs.ap.interceptor.planning;
 
+import org.cgiar.ccafs.ap.action.BaseAction;
 import org.cgiar.ccafs.ap.config.APConstants;
+import org.cgiar.ccafs.ap.data.manager.ActivityManager;
+import org.cgiar.ccafs.ap.data.manager.ProjectManager;
+import org.cgiar.ccafs.ap.data.model.Project;
 import org.cgiar.ccafs.ap.data.model.User;
 
 import java.util.List;
 import java.util.Map;
 
-import org.cgiar.ccafs.ap.data.model.Project;
-
-import org.cgiar.ccafs.ap.data.manager.ActivityManager;
-import org.cgiar.ccafs.ap.data.manager.ProjectManager;
-import org.cgiar.ccafs.ap.action.BaseAction;
 import com.google.inject.Inject;
 import com.opensymphony.xwork2.ActionInvocation;
 import com.opensymphony.xwork2.interceptor.AbstractInterceptor;
@@ -33,7 +32,7 @@ import org.slf4j.LoggerFactory;
 /**
  * This interceptor will validate if the user who is trying to edit a specific activity is able to: Edit it or just read
  * it.
- *
+ * 
  * @author Héctor Fabio Tobón R.
  */
 public class GrantActivityPlanningAccessInterceptor extends AbstractInterceptor {
@@ -97,7 +96,7 @@ public class GrantActivityPlanningAccessInterceptor extends AbstractInterceptor 
             // Let's check if the user is the Activity Leader of the current activity
             User activityLeader = activityManager.getActivityLeader(activityID);
             // If user is assigned as activity leader of the current activity.
-            if (user.getEmployeeId() == activityLeader.getEmployeeId()) {
+            if (activityLeader != null && user.getEmployeeId() == activityLeader.getEmployeeId()) {
               baseAction.setFullEditable(true);
               baseAction.setSaveable(true);
             } else {
