@@ -159,7 +159,7 @@ public class ActivityDeliverablesAction extends BaseAction {
 
       // Identifying deleted deliverables in the interface to delete them from the database.
       for (Deliverable deliverable : previousDeliverables) {
-        if (activity.getDeliverables().contains(deliverable) || activity.getDeliverables().isEmpty()) {
+        if (!activity.getDeliverables().contains(deliverable) || activity.getDeliverables().isEmpty()) {
           deleted = deliverableManager.deleteDeliverable(deliverable.getId());
           if (!deleted) {
             success = false;

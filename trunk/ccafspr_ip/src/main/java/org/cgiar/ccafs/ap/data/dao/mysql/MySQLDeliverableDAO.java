@@ -198,15 +198,27 @@ public class MySQLDeliverableDAO implements DeliverableDAO {
     StringBuilder query = new StringBuilder();
     int result = -1;
     Object[] values;
-    // Insert new deliverable record
-    query.append("INSERT INTO deliverables (id, activity_id, title, type_id, year) ");
-    query.append("VALUES (?, ?,?,?,?) ");
-    values = new Object[5];
-    values[0] = deliverableData.get("id");
-    values[1] = activityID;
-    values[2] = deliverableData.get("title");
-    values[3] = deliverableData.get("type_id");
-    values[4] = deliverableData.get("year");
+    if (deliverableData.get("id") == null) {
+      // Insert new deliverable record
+      query.append("INSERT INTO deliverables (id, activity_id, title, type_id, year) ");
+      query.append("VALUES (?, ?,?,?,?) ");
+      values = new Object[5];
+      values[0] = deliverableData.get("id");
+      values[1] = activityID;
+      values[2] = deliverableData.get("title");
+      values[3] = deliverableData.get("type_id");
+      values[4] = deliverableData.get("year");
+    } else {
+      // Updating existing deliverable record
+      query.append("UPDATE deliverables SET activity_id = ?, title = ?, type_id = ?, year = ? ");
+      query.append("WHERE id = ? ");
+      values = new Object[5];
+      values[0] = activityID;
+      values[1] = deliverableData.get("title");
+      values[2] = deliverableData.get("type_id");
+      values[3] = deliverableData.get("year");
+      values[4] = deliverableData.get("id");
+    }
     result = databaseManager.saveData(query.toString(), values);
 
     LOG.debug("<< saveDeliverable():{}", result);
