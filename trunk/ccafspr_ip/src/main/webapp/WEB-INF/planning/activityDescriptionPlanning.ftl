@@ -17,7 +17,7 @@
 [#include "/WEB-INF/global/pages/main-menu.ftl" /]
 [#import "/WEB-INF/global/macros/forms.ftl" as customForm/]
     
-<section class="content">
+<section class="content"> 
   <div class="helpMessage">
     <img src="${baseUrl}/images/global/icon-help.png" />
     <p> [@s.text name="planning.activityDescription.help" /] </p>
@@ -28,6 +28,9 @@
 
   [@s.form action="activityDescription" cssClass="pure-form"]  
     <article class="halfContent" id="activityDescription">
+      [#include "/WEB-INF/planning/planningDataSheet.ftl" /]
+      
+    
       [#-- Informing user that he/she doesn't have enough privileges to edit. See GrantActivityPlanningAccessInterceptor --]
       [#if !saveable]
         <p class="readPrivileges">
@@ -44,11 +47,11 @@
       <div id="description" class="borderBox">
         [#-- Activity Title --]
         <div class="fullBlock">
-          [@customForm.textArea name="activity.title" i18nkey="planning.activityDescription.title" required=true /]
+          [@customForm.textArea name="activity.title" i18nkey="planning.activityDescription.title" required=true  className="activity-title" /]
         </div>
         [#-- Activity Description --]
         <div class="fullBlock">
-          [@customForm.textArea name="activity.description" i18nkey="planning.activityDescription.description" required=true  /]
+          [@customForm.textArea name="activity.description" i18nkey="planning.activityDescription.description" required=true className="activity-description"  /]
         </div>
         
         [#-- Start Date --]

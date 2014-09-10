@@ -1,5 +1,5 @@
 [#ftl]
-<nav id="stageMenu" class="clearfix">
+<nav id="stageMenu" class="clearfix"> 
   <ul> 
     <li [#if currentStage == "activityImpactPathway"] class="currentSection" [/#if]><a href="
         [@s.url action='activityImpactPathway' includeParams='get'][/@s.url]

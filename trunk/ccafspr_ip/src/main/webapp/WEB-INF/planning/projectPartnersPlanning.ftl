@@ -26,6 +26,7 @@
 
   [@s.form action="partners" cssClass="pure-form"]
   <article class="halfContent" id="projectPartners">
+  [#include "/WEB-INF/planning/planningDataSheet.ftl" /]
     [#-- Informing user that he/she doesn't have enough privileges to edit. See GranProjectPlanningAccessInterceptor--]
     [#if !saveable]
       <p class="readPrivileges">

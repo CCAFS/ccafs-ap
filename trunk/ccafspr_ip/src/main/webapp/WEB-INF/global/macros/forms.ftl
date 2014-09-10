@@ -16,7 +16,7 @@
   </div>
 [/#macro]
 
-[#macro textArea name value="-NULL" i18nkey="" disabled=false required=false errorfield="" help="" addButton=false showTitle=true display=true]
+[#macro textArea name value="-NULL" i18nkey="" disabled=false required=false errorfield="" help="" addButton=false showTitle=true display=true className="-NULL"]
   <div class="textArea [#if addButton] button[/#if]" [#if !display]style="display: none;"[/#if]> 
   	[#if showTitle]
 	    <h6>
@@ -29,7 +29,7 @@
 	    </h6>
     [/#if]
     [#if errorfield==""][@s.fielderror cssClass="fieldError" fieldName="${name}"/][#else][@s.fielderror cssClass="fieldError" fieldName="${errorfield}"/][/#if]
-    <textarea name="${name}" id="${name}" [#if disabled]disabled="disabled"[/#if] class="ckeditor" />[#if value=="-NULL"][@s.property value="${name}"/][#else]${value}[/#if]</textarea>
+    <textarea name="${name}" id="${name}" [#if disabled]disabled="disabled"[/#if] [#if className != "-NULL"] class="ckeditor ${className}" [/#if] />[#if value=="-NULL"][@s.property value="${name}"/][#else]${value}[/#if]</textarea>
   </div>
   [#if addButton]
      <input type="button" class="addButton [@s.text name='${i18nkey}' /]" name="" value="Add [@s.text name='${i18nkey}' /]" />

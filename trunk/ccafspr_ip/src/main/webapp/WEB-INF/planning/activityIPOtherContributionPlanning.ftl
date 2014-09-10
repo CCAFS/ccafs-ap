@@ -26,6 +26,7 @@
   
   [@s.form action="activityIpOtherContributions" cssClass="pure-form"]  
   <article class="halfContent" id=""> 
+  [#include "/WEB-INF/planning/planningDataSheet.ftl" /]
   [#include "/WEB-INF/planning/activityIP-planning-sub-menu.ftl" /]
   [#-- Informing user that he/she doesnt have enough privileges to edit. See GrantActivityPlanningAccessInterceptor--]
   [#if !saveable]

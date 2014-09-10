@@ -1,4 +1,5 @@
 //Limits for textarea input
+var lWordsElemetTitle = 20;
 var lWordsElemetDesc = 300;
 
 $(document).ready(function(){
@@ -9,7 +10,8 @@ $(document).ready(function(){
     defaultMaxDateValue : $("#maxDateValue").val()
   });
   addChosen();
-  applyWordCounter($("textarea"), lWordsElemetDesc);
+  applyWordCounter($("textarea.activity-title"), lWordsElemetTitle);
+  applyWordCounter($("textarea.activity-description"), lWordsElemetDesc);
 });
 
 /**
