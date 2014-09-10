@@ -112,15 +112,15 @@ public class ActivityManagerImpl implements ActivityManager {
         } catch (ParseException e) {
           LOG.error("There was an error formatting the end date", e);
         }
-        if (activityData.get("expected_leader_id") != null) {
-          activity.setExpectedLeader(this.getExpectedActivityLeader(Integer.parseInt(activityData.get("id"))));
-        }
-        if (activityData.get("leader_id") != null) {
-          activity.setLeader(userManager.getOwner(Integer.parseInt(activityData.get("leader_id"))));
-        }
-        if (activityData.get("is_global") != null) {
-          activity.setGlobal((activityData.get("is_global").equals("1")));
-        }
+      }
+      if (activityData.get("expected_leader_id") != null) {
+        activity.setExpectedLeader(this.getExpectedActivityLeader(Integer.parseInt(activityData.get("id"))));
+      }
+      if (activityData.get("leader_id") != null) {
+        activity.setLeader(userManager.getOwner(Integer.parseInt(activityData.get("leader_id"))));
+      }
+      if (activityData.get("is_global") != null) {
+        activity.setGlobal((activityData.get("is_global").equals("1")));
       }
       activity.setCreated(Long.parseLong(activityData.get("created")));
 
@@ -411,9 +411,9 @@ public class ActivityManagerImpl implements ActivityManager {
         expectedActivityLeader.getId());
     } else {
       LOG
-      .error(
-        "saveExpectedActivityLeader > There was an error trying to save/update an Expected Activity Leader for activityId={}",
-        activityID);
+        .error(
+          "saveExpectedActivityLeader > There was an error trying to save/update an Expected Activity Leader for activityId={}",
+          activityID);
     }
 
     return result;
