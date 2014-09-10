@@ -1,5 +1,6 @@
 [#ftl]
 <nav id="secondaryMenu"> 
+  <h3>[@s.text name="planning.activity" /] menu </h3>
   <ul>
     <a [#if currentStage == "activityDescription"] class="currentSection" [/#if] href="[@s.url action='activityDescription' includeParams='get'] [/@s.url]">
       <li>[@s.text name="menu.secondary.planning.activity.activityDescription" /]</li>
