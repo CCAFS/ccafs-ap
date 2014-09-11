@@ -91,18 +91,23 @@ public class MySQLProjectDAO implements ProjectDAO {
     List<Map<String, String>> projectList = new ArrayList<>();
     StringBuilder query = new StringBuilder();
 
+    String regionsSubquery =
+      "SELECT GROUP_CONCAT(ipp.acronym) "
+        + "FROM ip_programs ipp INNER JOIN project_focuses pf ON ipp.id = pf.program_id "
+        + "WHERE pf.project_id = p.id AND ipp.type_id = " + APConstants.REGION_PROGRAM_TYPE;
+
+    String flagshipsSubquery =
+      "SELECT GROUP_CONCAT(ipp.acronym) "
+        + "FROM ip_programs ipp INNER JOIN project_focuses pf ON ipp.id = pf.program_id "
+        + "WHERE pf.project_id = p.id AND ipp.type_id = " + APConstants.FLAGSHIP_PROGRAM_TYPE;
+
     query.append("SELECT p.id, p.title, p.created, SUM(b.amount) as 'total_budget_amount', ");
-    query.append("GROUP_CONCAT( DISTINCT ipp1.acronym ) as 'regions', ");
-    query.append("GROUP_CONCAT( DISTINCT ipp2.acronym ) as 'flagships' ");
+    query.append("( " + regionsSubquery + " )  as 'regions', ");
+    query.append("( " + flagshipsSubquery + " )  as 'flagships' ");
     query.append("FROM projects as p ");
     query.append("LEFT JOIN project_budgets pb ON p.id = pb.project_id ");
     query.append("LEFT JOIN budgets b ON pb.budget_id = b.id ");
-    query.append("LEFT JOIN project_focuses pf ON p.id = pf.project_id ");
-    query.append("LEFT JOIN ip_programs ipp1 ON pf.program_id = ipp1.id AND ipp1.type_id = ");
-    query.append(APConstants.REGION_PROGRAM_TYPE);
-    query.append(" LEFT JOIN ip_programs ipp2 ON pf.program_id = ipp2.id AND ipp2.type_id = ");
-    query.append(APConstants.FLAGSHIP_PROGRAM_TYPE);
-    query.append(" GROUP BY p.id  ");
+    query.append("GROUP BY p.id");
 
     try (Connection con = databaseManager.getConnection()) {
       ResultSet rs = databaseManager.makeQuery(query.toString(), con);
