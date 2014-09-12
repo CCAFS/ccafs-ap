@@ -54,6 +54,12 @@ function attachEvents(){
     return;
   });
   
+  $(".handlediv").on("click", function(e){
+    $(e.target).parent().siblings().fadeToggle("slow");
+    $(e.target).toggleClass("down");
+    $(e.target).parent().toggleClass("down");
+  });
+  
   // Enable save with tabs when is saveable and exist an target
   if ($("#targetYear").exists()) {
     $("li.yearTab").click(function(e){

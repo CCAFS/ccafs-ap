@@ -159,6 +159,23 @@
         <param name="namespace">/pre-planning</param>
       </result>
     </action>
+    
+    <action name="budgetRevamp" class="org.cgiar.ccafs.ap.action.preplanning.ProjectBudgetPreplanningAction">
+      <result name="input">/WEB-INF/preplanning/projectBudgetRevampPreplanning.ftl</result>
+      <result name="success" type="redirectAction">
+        <param name="actionName">budgetRevamp</param>
+        <param name="projectID">${project.id}</param>
+        <param name="year">${targetYear}</param> 
+      </result>
+      <result name="next" type="redirectAction">
+        <param name="actionName">projects</param>
+        <param name="namespace">/pre-planning</param>
+      </result>
+      <result name="cancel" type="redirectAction">
+        <param name="actionName">projects</param>
+        <param name="namespace">/pre-planning</param>
+      </result>
+    </action>
      
    <action name="partnerSave" class="org.cgiar.ccafs.ap.action.planning.PartnersSaveAction">
      <result name="input">/WEB-INF/global/pages/partnersSave.ftl</result>

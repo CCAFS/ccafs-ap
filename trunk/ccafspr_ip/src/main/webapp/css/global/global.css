@@ -1418,7 +1418,7 @@ button.ipGraph-btn{
 
 /* projects List */
 
-.projectsList #ids {
+.projectsList #ids, .activities #ids {
   width: 50px;
 }
 
@@ -1427,15 +1427,15 @@ button.ipGraph-btn{
 }
 
 .projectsList #projectRegions {
-  width: 70px;
+  width: 50px;
 }
 
 .projectsList #projectFlagships {
-  width: 64px;
+  width: 53px;
 }
 
 .projectsList #projectBudget {
-  width: 100px;
+  width: 110px;
 }
 
 .projectsList #lastModified {
@@ -1597,7 +1597,52 @@ table tr.row:hover{
 
 .BudgetByYear {
   float: left;
-  padding: 0 41px 4px 0;
+  padding: 0 2px 0px 0;
+  width: 33%;
+}
+
+.partnerBudget.row {
+    margin-bottom: 5px;
+    padding: 8px 0px 8px 19px;
+    border: 1px solid #CCD;
+    border-radius: 2px;
+}
+
+.budgetPartnerTitle {
+  padding-bottom: 4px;
+  font-size: 1.2em;
+  color: #4A6A2E;
+}
+
+.budgetTypeTitle {
+    vertical-align: middle;
+    font-weight: bold;
+    font-size: 1.1em;
+    color: #727171;
+}
+
+.budgetTypeHead {
+  font-weight: bold;
+  text-align: center;
+  margin-top: 15px;
+  margin-bottom: 4px;
+}
+
+.handlediv {
+  width: 20px;
+  height: 20px; 
+  position: absolute;
+  top: 0;
+  right: 0;
+  cursor: pointer;
+  background: url(../../images/global/arrow-up.png);
+} 
+.handlediv.down{
+  background: url(../../images/global/arrow-down.png);
+}
+
+.budgetPartnerTitle.down {
+  border-bottom: 2px solid #979E90; 
 }
 
 
