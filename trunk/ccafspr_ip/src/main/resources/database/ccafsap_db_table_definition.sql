@@ -172,6 +172,22 @@ CREATE TABLE IF NOT EXISTS `deliverable_types` (
 -- --------------------------------------------------------
 
 --
+-- Estructura de tabla para la tabla `deliverable_other_types`
+--
+
+CREATE  TABLE IF NOT EXISTS `ccafspr_ip`.`deliverable_other_types` (
+  `id` BIGINT NOT NULL AUTO_INCREMENT ,
+  `name` VARCHAR(255) NOT NULL ,
+  `deliverable_id` BIGINT NOT NULL ,
+  PRIMARY KEY (`id`) ,
+  INDEX `FK_deliverable_other_type_deliverables_idx` (`deliverable_id` ASC) ,
+  CONSTRAINT `FK_deliverable_other_type_deliverables` FOREIGN KEY (`deliverable_id` ) REFERENCES `ccafspr_ip`.`deliverables` (`id` )
+    ON DELETE CASCADE ON UPDATE CASCADE
+)ENGINE = InnoDB;
+
+-- --------------------------------------------------------
+
+--
 -- Estructura de tabla para la tabla `employees`
 --
 
