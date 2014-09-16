@@ -99,7 +99,7 @@ public class DashboardAction extends BaseAction {
         List<Integer> idsPL = projectManager.getPLProjectIds(this.getCurrentUser());
         for (Integer projectId : idsPL) {
           // Do not add projects that are already added.
-          if (!ids.contains(idsPL)) {
+          if (!ids.contains(projectId)) {
             projects.add(projectManager.getProjectBasicInfo(projectId));
           }
         }
@@ -143,8 +143,6 @@ public class DashboardAction extends BaseAction {
             activities.add(activityManager.getActivityById(activityId));
           }
         }
-
-
       } else if (this.getCurrentUser().isAL()) {
         List<Integer> ledIds = activityManager.getLedActivityIds(this.getCurrentUser());
         activities = new ArrayList<>();
@@ -153,8 +151,6 @@ public class DashboardAction extends BaseAction {
         }
       }
     }
-// System.out.println("PREPARE: ");
-// System.out.println("CURRENT USER" + this.getCurrentUser());
   }
 
   public void setActivities(List<Activity> activities) {
