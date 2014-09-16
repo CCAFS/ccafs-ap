@@ -169,6 +169,14 @@
         [@s.text name="home.glossary.outcome.definition"/]
       </div>
     </div>
+    <div id="outcome-statement" class="word">
+      <div class="wordTitle">
+        [@s.text name="home.glossary.outcomestatement"/]
+      </div>
+      <div class="wordTitle">
+        [@s.text name="home.glossary.outcomestory"/]
+      </div>
+    </div>
     
     <div class="word">
       <div class="wordTitle">
@@ -222,6 +230,15 @@
     
     <div class="word">
       <div class="wordTitle">
+        [@s.text name="home.glossary.projectOutcome.story"/]
+      </div>
+      <div class="wordDefinition">
+        [@s.text name="home.glossary.projectOutcome.story.definition"/]
+      </div>
+    </div>
+    
+    <div class="word">
+      <div class="wordTitle">
         [@s.text name="home.glossary.projectPartner"/]
       </div>
       <div class="wordDefinition">
@@ -240,6 +257,24 @@
     <hr/>
     <div class="word">
       <div class="wordTitle">
+        [@s.text name="home.glossary.targetvalue"/]
+      </div>
+      <div class="wordDefinition">
+        [@s.text name="home.glossary.targetvalue.definition"/]
+      </div>
+    </div>
+    
+    <div class="word">
+      <div class="wordTitle">
+        [@s.text name="home.glossary.targetnarrative"/]
+      </div>
+      <div class="wordDefinition">
+        [@s.text name="home.glossary.targetnarrative.definition"/]
+      </div>
+    </div>
+    
+    <div class="word">
+      <div class="wordTitle">
         [@s.text name="home.glossary.toc"/]
       </div>
       <div class="wordDefinition">
@@ -249,10 +284,10 @@
     <hr/>
     <div class="word">
       <div class="wordTitle">
-        [@s.text name="home.glossary.uptake"/]
+        [@s.text name="home.glossary.update"/]
       </div>
       <div class="wordDefinition">
-        [@s.text name="home.glossary.uptake.definition"/]
+        [@s.text name="home.glossary.update.definition"/]
       </div>
     </div>
     
