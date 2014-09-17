@@ -68,6 +68,8 @@
           <div class="point active">1</div>
           <div class="point active">2</div>
           <div class="point inactive">3</div>
+          <div class="point inactive">4</div>
+          <div class="point inactive">5</div>
         </div>
         <div id="deadlineGraph">
           <div class="textPoint" >
@@ -77,7 +79,13 @@
             [@s.text name="home.dashboard.deadline.planning" /] 
           </div> 
           <div class="textPoint">
+            [@s.text name="home.dashboard.deadline.summaries" /] 
+          </div>
+          <div class="textPoint">
             [@s.text name="home.dashboard.deadline.reporting" /]
+          </div>
+          <div class="textPoint">
+            [@s.text name="home.dashboard.deadline.learnValidation" /] 
           </div>
         </div>
         <div id="deadlineDates">

@@ -85,13 +85,16 @@
               <div id="partnerTables-${year?c}" class="partnerTable ui-tabs-panel ui-widget-content ui-corner-bottom clearfix"> 
                 <div class="fieldset clearfix">
                   <div id="totalw1w2BudgetByYear" class="BudgetByYear"> 
-                    <p id="projectTotalByYear"><strong> [@s.text name="preplanning.projectBudget.totalYearW1W2Budget"][@s.param name="0"]${year}[/@s.param][/@s.text]</strong>  US$ <span id="projectTotalW1W2BudgetByYear">${totalW1W2BudgetByYear?string(",##0.00")}</span></p>
+                    <p id="projectTotalByYear"><strong> [@s.text name="preplanning.projectBudget.totalYearW1W2Budget"][@s.param name="0"]${year}[/@s.param][/@s.text]</strong> 
+                    <br>US$ <span id="projectTotalW1W2BudgetByYear">${totalW1W2BudgetByYear?string(",##0.00")}</span></p>
                   </div>
                   <div id="totalCCAFSBudgetByYear" class="BudgetByYear"> 
-                    <p id="projectTotalByYear"><strong> [@s.text name="preplanning.projectBudget.totalYearCCAFSBudget"][@s.param name="0"]${year}[/@s.param][/@s.text]</strong>  US$ <span id="projectTotalCCAFSBudgetByYear">${totalCCAFSBudgetByYear?string(",##0.00")}</span></p>
+                    <p id="projectTotalByYear"><strong> [@s.text name="preplanning.projectBudget.totalYearCCAFSBudget"][@s.param name="0"]${year}[/@s.param][/@s.text]</strong> 
+                    <br>US$ <span id="projectTotalCCAFSBudgetByYear">${totalCCAFSBudgetByYear?string(",##0.00")}</span></p>
                   </div>
                   <div id="totalYearLeveragedBudget" class="BudgetByYear"> 
-                    <p id="projectTotalByYear"><strong> [@s.text name="preplanning.projectBudget.totalYearLeveragedBudget"][@s.param name="0"]${year}[/@s.param][/@s.text]</strong>  US$ <span id="projectTotalLeveragedBudgetByYear">0.00</span></p>
+                    <p id="projectTotalByYear"><strong> [@s.text name="preplanning.projectBudget.totalYearLeveragedBudget"][@s.param name="0"]${year}[/@s.param][/@s.text]</strong>
+                    <br>US$ <span id="projectTotalLeveragedBudgetByYear">0.00</span></p>
                   </div>
                 </div> 
                 <div class="ccafsBudget fullPartBlock clearfix">              
