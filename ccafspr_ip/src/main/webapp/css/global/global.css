@@ -1186,7 +1186,7 @@ h3.contentSubTitle {
 }
 
 #dashboard #deadline .point {
-  margin: 0px 40px;
+  margin: 0px 25px;
 }
 
 #dashboard #deadline .active {
@@ -1603,9 +1603,9 @@ table tr.row:hover{
 
 .partnerBudget.row {
     margin-bottom: 5px;
-    padding: 8px 0px 8px 19px;
+    padding: 4px 0px 1px 19px;
     border: 1px solid #CCD;
-    border-radius: 2px;
+    border-radius: 4px;
 }
 
 .budgetPartnerTitle {
@@ -1624,8 +1624,12 @@ table tr.row:hover{
 .budgetTypeHead {
   font-weight: bold;
   text-align: center;
-  margin-top: 15px;
+  margin-top: 11px;
   margin-bottom: 4px;
+}
+
+.budgetContent {
+  margin-bottom: 10px;
 }
 
 .handlediv {
@@ -1645,6 +1649,13 @@ table tr.row:hover{
   border-bottom: 2px solid #979E90; 
 }
 
+.budgetPartnerTitle p.totalBudget {
+  position: absolute;
+  top: 0;
+  right: 30px;
+  color: #626262;
+  font-size: 0.85em;
+}
 
 /* Project/Activities QUOTE */
 #top-quote {

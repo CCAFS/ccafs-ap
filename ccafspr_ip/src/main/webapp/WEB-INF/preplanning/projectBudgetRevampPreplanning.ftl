@@ -1,7 +1,7 @@
 [#ftl]
 [#assign title = "Project Budget" /]
 [#assign globalLibs = ["jquery", "noty","autoSave","chosen"] /]
-[#assign customJS = ["${baseUrl}/js/global/utils.js", "${baseUrl}/js/preplanning/projectBudget.js"] /]
+[#assign customJS = ["${baseUrl}/js/global/utils.js", "${baseUrl}/js/preplanning/projectBudgetRevamp.js"] /]
 [#assign currentSection = "preplanning" /]
 [#assign currentPrePlanningSection = "projects" /]
 [#assign currentStage = "budget" /]
@@ -50,27 +50,27 @@
     [#if allYears?has_content]
       [#if invalidYear == false]
         [#if hasLeader]
-          [#-- Total WI + W2 budget--]
+          [#-- Accumulative Total W1 W2 Budget --]
           <div id="totalBudget" class="thirdPartBlock">
             <h6>[@s.text name="preplanning.projectBudget.totalBudget" /]</h6>
             <p id="projectTotalW1W2">US$ <span id="projectTotalW1W2Budget">${totalW1W2Budget?string(",##0.00")}</span></p>
             <input type="hidden" id="projectTotalW1W2Budget" value="${totalW1W2Budget?c}" />
             <input type="hidden" id="yearTotalW1W2Budget" value="${totalW1W2BudgetByYear?c}" />
           </div> 
-          [#-- Total CCAFS budget--]
+          [#-- Accumulative Total W1 W2 + W3+ Bilateral Budget --]
           <div id="totalBudget" class="thirdPartBlock">
             <h6>[@s.text name="preplanning.projectBudget.totalCCAFSBudget" /]</h6>
             <p id="projectTotalCCAFS">US$ <span id="projectTotalCCAFSBudget">${totalCCAFSBudget?string(",##0.00")}</span></p>
             <input type="hidden" id="projectTotalCCAFSBudget" value="${totalCCAFSBudget?c}" />
             <input type="hidden" id="yearTotalCCAFSBudget" value="${totalCCAFSBudgetByYear?c}" />
           </div>
-          [#-- Total overall project budget:--]
+          [#-- Accumulative Leverage Funds --]
           <div id="totalBudget" class="thirdPartBlock">
-            <h6>[@s.text name="preplanning.projectBudget.totalOverallBudget" /]</h6>
-            <p id="projectTotal">US$ <span id="projectTotalBudget">${totalBudget?string(",##0.00")}</span></p>
-            <input type="hidden" id="projectTotalBudget" value="${totalBudget?c}" />
-            <input type="hidden" id="yearTotalBudget" value="${totalBudgetByYear?c}" />
-          </div>     
+            <h6>[@s.text name="preplanning.projectBudget.totalLeveragedBudget" /]</h6>
+            <p id="projectTotalLeveragedBudget">US$ <span id="projectTotalLeveragedBudget">0.00</span></p>
+            <input type="hidden" id="projectTotalLeveragedBudget" value="0" />
+            <input type="hidden" id="yearTotalLeveragedBudget" value="0" />
+          </div>
           
           [#-- Tertiary Menu - All years --] 
           <div id="budgetTables" class="ui-tabs ui-widget ui-widget-content ui-corner-all" style="display:none"> 
@@ -90,16 +90,17 @@
                   <div id="totalCCAFSBudgetByYear" class="BudgetByYear"> 
                     <p id="projectTotalByYear"><strong> [@s.text name="preplanning.projectBudget.totalYearCCAFSBudget"][@s.param name="0"]${year}[/@s.param][/@s.text]</strong>  US$ <span id="projectTotalCCAFSBudgetByYear">${totalCCAFSBudgetByYear?string(",##0.00")}</span></p>
                   </div>
-                  <div id="totalBudgetByYear" class="BudgetByYear"> 
-                    <p id="projectTotalByYear"><strong> [@s.text name="preplanning.projectBudget.totalYearBudget"][@s.param name="0"]${year}[/@s.param][/@s.text]</strong>  US$ <span id="projectTotalBudgetByYear">${totalBudgetByYear?string(",##0.00")}</span></p>
+                  <div id="totalYearLeveragedBudget" class="BudgetByYear"> 
+                    <p id="projectTotalByYear"><strong> [@s.text name="preplanning.projectBudget.totalYearLeveragedBudget"][@s.param name="0"]${year}[/@s.param][/@s.text]</strong>  US$ <span id="projectTotalLeveragedBudgetByYear">0.00</span></p>
                   </div>
                 </div> 
                 <div class="ccafsBudget fullPartBlock clearfix">              
                   [#if project.leader?has_content]
-                    <div id="" class="partnerBudget row clearfix">
+                    <div id="partnerBudget-lead" class="partnerBudget row clearfix">
                       [#-- Partner Leader Name --]
                       <div id="" class="grid_9 budgetPartnerTitle down">
                         ${project.leader.currentInstitution.name} <strong>([@s.text name="preplanning.projectBudget.partnerLead" /])</strong> 
+                        <p class="totalBudget"><strong>[@s.text name="preplanning.projectBudget.partner.totalBudget"/]</strong> US$ <span class="totalBudgetByPartner"> 0.00 </span></p>
                         <div class="handlediv"><br></div>
                       </div> 
                       
@@ -111,17 +112,17 @@
                       [#-- Budget type title --]
                       <div id="" class="grid_1 budgetTypeTitle">[@s.text name="preplanning.projectBudget.budget.title"/]</div>
                       [#-- W1 W2 --]                
-                      <div id="" class="budgetContent W1 grid_2">
-                        [@customForm.input name="project.budgets[${counter}].amount" showTitle=false disabled=!fullEditable value="${mapBudgets[year?c+'-'+project.leader.currentInstitution.id?c+'-W1'].amount?c}"/]
+                      <div id="" class="budgetContent W1_W2 grid_2">
+                        [@customForm.input name="project.budgets[${counter}].amount" showTitle=false disabled=true value="${mapBudgets[year?c+'-'+project.leader.currentInstitution.id?c+'-W1'].amount?c}"/]
                         [@s.set var="counter" value="${counter+1}"/]
                       </div>
                       [#-- W3/Bilateral Budget --] 
-                      <div id="" class="budgetContent W2 grid_2">
+                      <div id="" class="budgetContent W3_BILATERAL grid_2">
                         [@customForm.input name="project.budgets[${counter}].amount" showTitle=false disabled=!fullEditable value="${mapBudgets[year?c+'-'+project.leader.currentInstitution.id?c+'-W2'].amount?c}"/]
                         [@s.set var="counter" value="${counter+1}"/]
                       </div> 
                       [#-- Leveraged Budget  --] 
-                      <div id="" class="budgetContent W3 grid_2 suffix_2">
+                      <div id="" class="budgetContent LEVERAGED grid_2 suffix_2">
                         [@customForm.input name="project.budgets[${counter}].amount" showTitle=false disabled=!fullEditable value="${mapBudgets[year?c+'-'+project.leader.currentInstitution.id?c+'-W3'].amount?c}"/]
                         [@s.set var="counter" value="${counter+1}"/]
                       </div> 
@@ -135,22 +136,22 @@
                       [#-- Partnership type title --]
                       <div id="" class="grid_1 budgetTypeTitle">[@s.text name="preplanning.projectBudget.partnership.title"/]</div>
                       [#-- W1 W2 Collaborator Cost-Partners --]                
-                      <div id="" class="budgetContent W1 grid_2">
+                      <div id="" class="budgetContent grid_2">
                         [@customForm.input name="project.budgets[${counter}].amount" showTitle=false disabled=!fullEditable value="${mapBudgets[year?c+'-'+project.leader.currentInstitution.id?c+'-W1'].amount?c}"/]
                         [@s.set var="counter" value="${counter+1}"/]
                       </div>
                       [#-- W1 W2 Collaborator Cost-Other CGIAR Center --] 
-                      <div id="" class="budgetContent W2 grid_2">
+                      <div id="" class="budgetContent grid_2">
                         [@customForm.input name="project.budgets[${counter}].amount" showTitle=false disabled=!fullEditable value="${mapBudgets[year?c+'-'+project.leader.currentInstitution.id?c+'-W2'].amount?c}"/]
                         [@s.set var="counter" value="${counter+1}"/]
                       </div> 
                       [#-- W3/Bilateral Collaborator Cost-Partners  --] 
-                      <div id="" class="budgetContent W3 grid_2">
+                      <div id="" class="budgetContent grid_2">
                         [@customForm.input name="project.budgets[${counter}].amount" showTitle=false disabled=!fullEditable value="${mapBudgets[year?c+'-'+project.leader.currentInstitution.id?c+'-W3'].amount?c}"/]
                         [@s.set var="counter" value="${counter+1}"/]
                       </div> 
                       [#-- W3/Bilateral Collaborator Cost-Other CGIAR Center  --] 
-                      <div id="" class="budgetContent W3 grid_2">
+                      <div id="" class="budgetContent grid_2">
                         [@customForm.input name="project.budgets[${counter}].amount" showTitle=false disabled=!fullEditable value="${mapBudgets[year?c+'-'+project.leader.currentInstitution.id?c+'-W3'].amount?c}"/]
                         [@s.set var="counter" value="${counter+1}"/]
                       </div> 
@@ -162,12 +163,12 @@
                       [#-- Gender type title --]
                       <div id="" class="grid_1 budgetTypeTitle">[@s.text name="preplanning.projectBudget.gender.title"/] </div>
                       [#-- W1 W2 Budget --]                
-                      <div id="" class="budgetContent W1 grid_2">
+                      <div id="" class="budgetContent GENDER_W1_W2 grid_2">
                         [@customForm.input name="project.budgets[${counter}].amount" showTitle=false disabled=!fullEditable value="${mapBudgets[year?c+'-'+project.leader.currentInstitution.id?c+'-W1'].amount?c}"/]
                         [@s.set var="counter" value="${counter+1}"/]
                       </div> 
                       [#-- W3/Bilateral Budget  --] 
-                      <div id="" class="budgetContent W3 grid_2 suffix_4">
+                      <div id="" class="budgetContent GENDER_W3_BILATERAL grid_2 suffix_4">
                         [@customForm.input name="project.budgets[${counter}].amount" showTitle=false disabled=!fullEditable value="${mapBudgets[year?c+'-'+project.leader.currentInstitution.id?c+'-W3'].amount?c}"/]
                         [@s.set var="counter" value="${counter+1}"/]
                       </div> 
@@ -180,6 +181,7 @@
                       [#-- Partner Name --]
                       <div id="" class="grid_9 budgetPartnerTitle down">
                         ${projectPartner.partner.name}
+                        <p class="totalBudget"><strong>[@s.text name="preplanning.projectBudget.partner.totalBudget"/]</strong>  US$ <span class="totalBudgetByPartner"> 0.00</span></p>
                         <div class="handlediv"><br></div>
                       </div> 
                       
@@ -189,19 +191,21 @@
                       <div id="" class="grid_2 budgetTypeHead">[@s.text name="preplanning.projectBudget.budget.W3BilateralBudget"/] </div>
                       <div id="" class="grid_2 budgetTypeHead suffix_2">[@s.text name="preplanning.projectBudget.budget.leveragedBudget"/] </div>
                       [#-- Budget type title --]
-                      <div id="" class="grid_1 budgetTypeTitle">[@s.text name="preplanning.projectBudget.budget.title"/]</div>
+                      <div id="" class="grid_1 budgetTypeTitle">
+                        [@s.text name="preplanning.projectBudget.budget.title"/] 
+                      </div>
                       [#-- W1 W2 --]                
-                      <div id="" class="budgetContent W1 grid_2">
-                        [@customForm.input name="project.budgets[${counter}].amount" showTitle=false disabled=!fullEditable value="${mapBudgets[year?c+'-'+projectPartner.partner.id?c+'-W1'].amount?c}"/]
+                      <div id="" class="budgetContent W1_W2 grid_2">
+                        [@customForm.input name="project.budgets[${counter}].amount" showTitle=false disabled=true value="${mapBudgets[year?c+'-'+projectPartner.partner.id?c+'-W1'].amount?c}"/]
                         [@s.set var="counter" value="${counter+1}"/]
                       </div>
                       [#-- W3/Bilateral Budget --] 
-                      <div id="" class="budgetContent W2 grid_2">
+                      <div id="" class="budgetContent W3_BILATERAL grid_2">
                         [@customForm.input name="project.budgets[${counter}].amount" showTitle=false disabled=!fullEditable value="${mapBudgets[year?c+'-'+projectPartner.partner.id?c+'-W2'].amount?c}"/]
                         [@s.set var="counter" value="${counter+1}"/]
                       </div> 
                       [#-- Leveraged Budget  --] 
-                      <div id="" class="budgetContent W3 grid_2 suffix_2">
+                      <div id="" class="budgetContent LEVERAGED grid_2 suffix_2">
                         [@customForm.input name="project.budgets[${counter}].amount" showTitle=false disabled=!fullEditable value="${mapBudgets[year?c+'-'+projectPartner.partner.id?c+'-W3'].amount?c}"/]
                         [@s.set var="counter" value="${counter+1}"/]
                       </div> 
@@ -215,22 +219,22 @@
                       [#-- Partnership type title --]
                       <div id="" class="grid_1 budgetTypeTitle">[@s.text name="preplanning.projectBudget.partnership.title"/]</div>
                       [#-- W1 W2 Collaborator Cost-Partners --] 
-                      <div id="" class="budgetContent W1 grid_2">
+                      <div id="" class="budgetContent  grid_2">
                         [@customForm.input name="project.budgets[${counter}].amount" showTitle=false disabled=!fullEditable value="${mapBudgets[year?c+'-'+projectPartner.partner.id?c+'-W1'].amount?c}"/]
                         [@s.set var="counter" value="${counter+1}"/]
                       </div>
                       [#-- W1 W2 Collaborator Cost-Other CGIAR Center --] 
-                      <div id="" class="budgetContent W2 grid_2">
+                      <div id="" class="budgetContent  grid_2">
                         [@customForm.input name="project.budgets[${counter}].amount" showTitle=false disabled=!fullEditable value="${mapBudgets[year?c+'-'+projectPartner.partner.id?c+'-W2'].amount?c}"/]
                         [@s.set var="counter" value="${counter+1}"/]
                       </div> 
                       [#-- W3/Bilateral Collaborator Cost-Partners  --] 
-                      <div id="" class="budgetContent W3 grid_2">
+                      <div id="" class="budgetContent  grid_2">
                         [@customForm.input name="project.budgets[${counter}].amount" showTitle=false disabled=!fullEditable value="${mapBudgets[year?c+'-'+projectPartner.partner.id?c+'-W3'].amount?c}"/]
                         [@s.set var="counter" value="${counter+1}"/]
                       </div> 
                       [#-- W3/Bilateral Collaborator Cost-Other CGIAR Center  --] 
-                      <div id="" class="budgetContent W3 grid_2">
+                      <div id="" class="budgetContent  grid_2">
                         [@customForm.input name="project.budgets[${counter}].amount" showTitle=false disabled=!fullEditable value="${mapBudgets[year?c+'-'+projectPartner.partner.id?c+'-W3'].amount?c}"/]
                         [@s.set var="counter" value="${counter+1}"/]
                       </div> 
@@ -242,12 +246,12 @@
                       [#-- Gender type title --]
                       <div id="" class="grid_1 budgetTypeTitle">[@s.text name="preplanning.projectBudget.gender.title"/] </div>
                       [#-- W1 W2 Budget --]                
-                      <div id="" class="budgetContent W1 grid_2">
+                      <div id="" class="budgetContent GENDER_W1_W2 grid_2">
                         [@customForm.input name="project.budgets[${counter}].amount" showTitle=false disabled=!fullEditable value="${mapBudgets[year?c+'-'+projectPartner.partner.id?c+'-W1'].amount?c}"/]
                         [@s.set var="counter" value="${counter+1}"/]
                       </div> 
                       [#-- W3/Bilateral Budget  --] 
-                      <div id="" class="budgetContent W3 grid_2 suffix_4">
+                      <div id="" class="budgetContent GENDER_W3_BILATERAL grid_2 suffix_4">
                         [@customForm.input name="project.budgets[${counter}].amount" showTitle=false disabled=!fullEditable value="${mapBudgets[year?c+'-'+projectPartner.partner.id?c+'-W3'].amount?c}"/]
                         [@s.set var="counter" value="${counter+1}"/]
                       </div> 
