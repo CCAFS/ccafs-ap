@@ -30,6 +30,26 @@ import com.google.inject.ImplementedBy;
 @ImplementedBy(BudgetManagerImpl.class)
 public interface BudgetManager {
 
+
+  /**
+   * This method returns the total leveraged Budget for the given year
+   * 
+   * @param projectID is the project id.
+   * @param year
+   * @return a decimal number representing the amount, if no data found the method
+   *         will return 0.0 and if some error happen a -1.0 will be returned.
+   */
+  public double calculateProjectLeveragedBudgetByYear(int projectID, int year);
+
+  /**
+   * This method returns the total leveraged Budget for all years of the project
+   * 
+   * @param projectID is the project id.
+   * @return a decimal number representing the amount, if no data found the method
+   *         will return 0.0 and if some error happen a -1.0 will be returned.
+   */
+  public double calculateProjectTotalLeveragedBudget(int projectID);
+
   /**
    * This method calculates the total of the Activity Budget
    * 

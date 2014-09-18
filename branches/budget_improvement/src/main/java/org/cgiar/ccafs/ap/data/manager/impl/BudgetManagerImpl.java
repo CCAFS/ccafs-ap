@@ -60,6 +60,16 @@ public class BudgetManagerImpl implements BudgetManager {
 
 
   @Override
+  public double calculateProjectLeveragedBudgetByYear(int projectID, int year) {
+    return budgetDAO.calculateProjectLeveragedBudgetByYear(projectID, year);
+  }
+
+  @Override
+  public double calculateProjectTotalLeveragedBudget(int projectID) {
+    return budgetDAO.calculateProjectTotalLeveragedBudget(projectID);
+  }
+
+  @Override
   public double calculateTotalActivityBudget(int activityID) {
     return budgetDAO.calculateTotalActivityBudget(activityID);
   }
@@ -249,6 +259,7 @@ public class BudgetManagerImpl implements BudgetManager {
     return budgets;
   }
 
+
   @Override
   public List<Budget> getCCAFSBudgets(int projectID) {
     List<Budget> budgets = new ArrayList<>();
@@ -268,6 +279,7 @@ public class BudgetManagerImpl implements BudgetManager {
     }
     return budgets;
   }
+
 
   @Override
   public List<Institution> getW1Institutions(int projectID) {

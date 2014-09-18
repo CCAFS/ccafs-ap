@@ -67,7 +67,7 @@
           [#-- Accumulative Leverage Funds --]
           <div id="totalBudget" class="thirdPartBlock">
             <h6>[@s.text name="preplanning.projectBudget.totalLeveragedBudget" /]</h6>
-            <p id="projectTotalLeveragedBudget">US$ <span id="projectTotalLeveragedBudget">0.00</span></p>
+            <p id="projectTotalLeveragedBudget">US$ <span id="projectTotalLeveragedBudget">${totalLeveragedBudget}</span></p>
             <input type="hidden" id="projectTotalLeveragedBudget" value="0" />
             <input type="hidden" id="yearTotalLeveragedBudget" value="0" />
           </div>
@@ -94,7 +94,7 @@
                   </div>
                   <div id="totalYearLeveragedBudget" class="BudgetByYear"> 
                     <p id="projectTotalByYear"><strong> [@s.text name="preplanning.projectBudget.totalYearLeveragedBudget"][@s.param name="0"]${year}[/@s.param][/@s.text]</strong>
-                    <br>US$ <span id="projectTotalLeveragedBudgetByYear">0.00</span></p>
+                    <br>US$ <span id="projectTotalLeveragedBudgetByYear">${leveragedBudgetByYear}</span></p>
                   </div>
                 </div> 
                 <div class="ccafsBudget fullPartBlock clearfix">              

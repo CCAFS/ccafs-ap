@@ -21,7 +21,6 @@ import org.cgiar.ccafs.ap.data.manager.InstitutionManager;
 import org.cgiar.ccafs.ap.data.manager.ProjectManager;
 import org.cgiar.ccafs.ap.data.manager.ProjectPartnerManager;
 import org.cgiar.ccafs.ap.data.model.Budget;
-import org.cgiar.ccafs.ap.data.model.Budget;
 import org.cgiar.ccafs.ap.data.model.BudgetType;
 import org.cgiar.ccafs.ap.data.model.Institution;
 import org.cgiar.ccafs.ap.data.model.Project;
@@ -73,6 +72,8 @@ public class ProjectBudgetPreplanningAction extends BaseAction {
   private double totalCCAFSBudgetByYear;
   private double totalW1W2Budget;
   private double totalW1W2BudgetByYear;
+  private double totalLeveragedBudget;
+  private double leveragedBudgetByYear;
 
   // Managers
   private ProjectManager projectManager;
@@ -128,12 +129,12 @@ public class ProjectBudgetPreplanningAction extends BaseAction {
               budget);
           } else if (budget.getType().getValue() == BudgetType.LEVERAGED.getValue()) {
             leveraged = true;
-            budgetsMap.put(year + "-" + projectPartner.getPartner().getId() + "-" + BudgetType.LEVERAGED.name(),
-              budget);
+            budgetsMap
+              .put(year + "-" + projectPartner.getPartner().getId() + "-" + BudgetType.LEVERAGED.name(), budget);
           } else if (budget.getType().getValue() == BudgetType.W1_W2_PARTNERS.getValue()) {
             w1_w2_partners = true;
-            budgetsMap.put(
-              year + "-" + projectPartner.getPartner().getId() + "-" + BudgetType.W1_W2_PARTNERS.name(), budget);
+            budgetsMap.put(year + "-" + projectPartner.getPartner().getId() + "-" + BudgetType.W1_W2_PARTNERS.name(),
+              budget);
           } else if (budget.getType().getValue() == BudgetType.W1_W2_OTHER.getValue()) {
             w1_w2_others = true;
             budgetsMap.put(year + "-" + projectPartner.getPartner().getId() + "-" + BudgetType.W1_W2_OTHER.name(),
@@ -141,22 +142,19 @@ public class ProjectBudgetPreplanningAction extends BaseAction {
           } else if (budget.getType().getValue() == BudgetType.W3_BILATERAL_PARTNERS.getValue()) {
             w3_bilateral_partners = true;
             budgetsMap.put(
-              year + "-" + projectPartner.getPartner().getId() + "-" + BudgetType.W3_BILATERAL_PARTNERS.name(),
-              budget);
+              year + "-" + projectPartner.getPartner().getId() + "-" + BudgetType.W3_BILATERAL_PARTNERS.name(), budget);
           } else if (budget.getType().getValue() == BudgetType.W3_BILATERAL_OTHERS.getValue()) {
             w3_bilateral_others = true;
-            budgetsMap
-              .put(year + "-" + projectPartner.getPartner().getId() + "-" + BudgetType.W3_BILATERAL_OTHERS.name(),
-                budget);
+            budgetsMap.put(
+              year + "-" + projectPartner.getPartner().getId() + "-" + BudgetType.W3_BILATERAL_OTHERS.name(), budget);
           } else if (budget.getType().getValue() == BudgetType.W1_W2_GENDER.getValue()) {
             w1_w2_gender = true;
             budgetsMap.put(year + "-" + projectPartner.getPartner().getId() + "-" + BudgetType.W1_W2_GENDER.name(),
               budget);
           } else if (budget.getType().getValue() == BudgetType.W3_BILATERAL_GENDER.getValue()) {
             w3_bilateral_gender = true;
-            budgetsMap
-              .put(year + "-" + projectPartner.getPartner().getId() + "-" + BudgetType.W3_BILATERAL_GENDER.name(),
-                budget);
+            budgetsMap.put(
+              year + "-" + projectPartner.getPartner().getId() + "-" + BudgetType.W3_BILATERAL_GENDER.name(), budget);
           }
         }
       }
@@ -186,8 +184,7 @@ public class ProjectBudgetPreplanningAction extends BaseAction {
         newBudget.setType(BudgetType.LEVERAGED);
         newBudget.setAmount(0);
         newBudget.setYear(year);
-        budgetsMap.put(year + "-" + projectPartner.getPartner().getId() + "-" + BudgetType.LEVERAGED.name(),
-          newBudget);
+        budgetsMap.put(year + "-" + projectPartner.getPartner().getId() + "-" + BudgetType.LEVERAGED.name(), newBudget);
       }
       if (w1_w2_partners == false) {
         Budget newBudget = new Budget();
@@ -217,8 +214,7 @@ public class ProjectBudgetPreplanningAction extends BaseAction {
         newBudget.setAmount(0);
         newBudget.setYear(year);
         budgetsMap.put(
-          year + "-" + projectPartner.getPartner().getId() + "-" + BudgetType.W3_BILATERAL_PARTNERS.name(),
-          newBudget);
+          year + "-" + projectPartner.getPartner().getId() + "-" + BudgetType.W3_BILATERAL_PARTNERS.name(), newBudget);
       }
       if (w3_bilateral_others == false) {
         Budget newBudget = new Budget();
@@ -227,8 +223,8 @@ public class ProjectBudgetPreplanningAction extends BaseAction {
         newBudget.setType(BudgetType.W3_BILATERAL_OTHERS);
         newBudget.setAmount(0);
         newBudget.setYear(year);
-        budgetsMap.put(
-          year + "-" + projectPartner.getPartner().getId() + "-" + BudgetType.W3_BILATERAL_OTHERS.name(), newBudget);
+        budgetsMap.put(year + "-" + projectPartner.getPartner().getId() + "-" + BudgetType.W3_BILATERAL_OTHERS.name(),
+          newBudget);
       }
       if (w1_w2_gender == false) {
         Budget newBudget = new Budget();
@@ -247,8 +243,8 @@ public class ProjectBudgetPreplanningAction extends BaseAction {
         newBudget.setType(BudgetType.W3_BILATERAL_GENDER);
         newBudget.setAmount(0);
         newBudget.setYear(year);
-        budgetsMap.put(
-          year + "-" + projectPartner.getPartner().getId() + "-" + BudgetType.W3_BILATERAL_GENDER.name(), newBudget);
+        budgetsMap.put(year + "-" + projectPartner.getPartner().getId() + "-" + BudgetType.W3_BILATERAL_GENDER.name(),
+          newBudget);
       }
     }
     // Project leader
@@ -267,17 +263,17 @@ public class ProjectBudgetPreplanningAction extends BaseAction {
         && budget.getYear() == year) {
         if (budget.getType().getValue() == BudgetType.W1_W2.getValue()) {
           w1_w2 = true;
-          budgetsMap
-            .put(year + "-" + project.getLeader().getCurrentInstitution().getId() + "-" + BudgetType.W1_W2.name(),
-              budget);
+          budgetsMap.put(
+            year + "-" + project.getLeader().getCurrentInstitution().getId() + "-" + BudgetType.W1_W2.name(), budget);
         } else if (budget.getType().getValue() == BudgetType.W3_BILATERAL.getValue()) {
           w3_bilateral = true;
           budgetsMap.put(year + "-" + project.getLeader().getCurrentInstitution().getId() + "-"
             + BudgetType.W3_BILATERAL.name(), budget);
         } else if (budget.getType().getValue() == BudgetType.LEVERAGED.getValue()) {
           leveraged = true;
-          budgetsMap.put(year + "-" + project.getLeader().getCurrentInstitution().getId() + "-"
-            + BudgetType.LEVERAGED.name(), budget);
+          budgetsMap.put(
+            year + "-" + project.getLeader().getCurrentInstitution().getId() + "-" + BudgetType.LEVERAGED.name(),
+            budget);
         } else if (budget.getType().getValue() == BudgetType.W1_W2_PARTNERS.getValue()) {
           w1_w2_partners = true;
           budgetsMap.put(year + "-" + project.getLeader().getCurrentInstitution().getId() + "-"
@@ -312,8 +308,8 @@ public class ProjectBudgetPreplanningAction extends BaseAction {
       newBudget.setType(BudgetType.W1_W2);
       newBudget.setAmount(0);
       newBudget.setYear(year);
-      budgetsMap.put(
-        year + "-" + project.getLeader().getCurrentInstitution().getId() + "-" + BudgetType.W1_W2.name(), newBudget);
+      budgetsMap.put(year + "-" + project.getLeader().getCurrentInstitution().getId() + "-" + BudgetType.W1_W2.name(),
+        newBudget);
     }
     if (w3_bilateral == false) {
       Budget newBudget = new Budget();
@@ -322,8 +318,9 @@ public class ProjectBudgetPreplanningAction extends BaseAction {
       newBudget.setType(BudgetType.W3_BILATERAL);
       newBudget.setAmount(0);
       newBudget.setYear(year);
-      budgetsMap.put(year + "-" + project.getLeader().getCurrentInstitution().getId() + "-"
-        + BudgetType.W3_BILATERAL.name(), newBudget);
+      budgetsMap.put(
+        year + "-" + project.getLeader().getCurrentInstitution().getId() + "-" + BudgetType.W3_BILATERAL.name(),
+        newBudget);
     }
     if (leveraged == false) {
       Budget newBudget = new Budget();
@@ -332,9 +329,9 @@ public class ProjectBudgetPreplanningAction extends BaseAction {
       newBudget.setType(BudgetType.LEVERAGED);
       newBudget.setAmount(0);
       newBudget.setYear(year);
-      budgetsMap.put(
-        year + "-" + project.getLeader().getCurrentInstitution().getId() + "-" + BudgetType.LEVERAGED.name(),
-        newBudget);
+      budgetsMap
+        .put(year + "-" + project.getLeader().getCurrentInstitution().getId() + "-" + BudgetType.LEVERAGED.name(),
+          newBudget);
     }
     if (w1_w2_partners == false) {
       Budget newBudget = new Budget();
@@ -343,8 +340,9 @@ public class ProjectBudgetPreplanningAction extends BaseAction {
       newBudget.setType(BudgetType.W1_W2_PARTNERS);
       newBudget.setAmount(0);
       newBudget.setYear(year);
-      budgetsMap.put(year + "-" + project.getLeader().getCurrentInstitution().getId() + "-"
-        + BudgetType.W1_W2_PARTNERS.name(), newBudget);
+      budgetsMap.put(
+        year + "-" + project.getLeader().getCurrentInstitution().getId() + "-" + BudgetType.W1_W2_PARTNERS.name(),
+        newBudget);
     }
     if (w1_w2_others == false) {
       Budget newBudget = new Budget();
@@ -384,8 +382,9 @@ public class ProjectBudgetPreplanningAction extends BaseAction {
       newBudget.setType(BudgetType.W1_W2_GENDER);
       newBudget.setAmount(0);
       newBudget.setYear(year);
-      budgetsMap.put(year + "-" + project.getLeader().getCurrentInstitution().getId() + "-"
-        + BudgetType.W1_W2_GENDER.name(), newBudget);
+      budgetsMap.put(
+        year + "-" + project.getLeader().getCurrentInstitution().getId() + "-" + BudgetType.W1_W2_GENDER.name(),
+        newBudget);
     }
     if (w3_bilateral_gender == false) {
       Budget newBudget = new Budget();
@@ -407,6 +406,10 @@ public class ProjectBudgetPreplanningAction extends BaseAction {
 
   public List<Integer> getAllYears() {
     return allYears;
+  }
+
+  public double getLeveragedBudgetByYear() {
+    return leveragedBudgetByYear;
   }
 
   public List<Institution> getLeveragedInstitutions() {
@@ -457,6 +460,10 @@ public class ProjectBudgetPreplanningAction extends BaseAction {
     return totalCCAFSBudgetByYear;
   }
 
+  public double getTotalLeveragedBudget() {
+    return totalLeveragedBudget;
+  }
+
   public double getTotalW1W2Budget() {
     return totalW1W2Budget;
   }
@@ -477,6 +484,7 @@ public class ProjectBudgetPreplanningAction extends BaseAction {
     return invalidYear;
   }
 
+
   @Override
   public String next() {
     String result = save();
@@ -486,6 +494,7 @@ public class ProjectBudgetPreplanningAction extends BaseAction {
       return result;
     }
   }
+
 
   @Override
   public void prepare() throws Exception {
@@ -541,6 +550,8 @@ public class ProjectBudgetPreplanningAction extends BaseAction {
           totalCCAFSBudgetByYear = budgetManager.calculateTotalCCAFSBudgetByYear(projectID, year);
           totalW1W2Budget = budgetManager.calculateTotalProjectW1W2(projectID);
           totalW1W2BudgetByYear = budgetManager.calculateTotalProjectW1W2ByYear(projectID, year);
+          leveragedBudgetByYear = budgetManager.calculateProjectLeveragedBudgetByYear(projectID, year);
+          totalLeveragedBudget = budgetManager.calculateProjectTotalLeveragedBudget(projectID);
 
           // Getting all the project partners.
           projectPartners = partnerManager.getProjectPartners(projectID);
