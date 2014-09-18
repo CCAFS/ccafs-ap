@@ -41,7 +41,7 @@ import org.slf4j.LoggerFactory;
 
 /**
  * This class is used to manage the Project Partners section in the pre-planning step.
- *
+ * 
  * @author Héctor Tobón
  */
 public class ProjectPartnersPreplanningAction extends BaseAction {
@@ -237,7 +237,6 @@ public class ProjectPartnersPreplanningAction extends BaseAction {
     }
 
     // Getting all the current budget institutions from W1, W2, W3 and Bilateral.
-    System.out.println();
     List<Institution> budgetInstitutions = budgetManager.getW1Institutions(project.getId());
 
 

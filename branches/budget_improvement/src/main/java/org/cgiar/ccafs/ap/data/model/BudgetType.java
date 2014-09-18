@@ -20,14 +20,43 @@ import org.apache.commons.lang3.builder.ToStringBuilder;
  * The value for each enum corresponds with the ids that are assigned in the database.
  * 
  * @author Héctor Fabio Tobón R.
+ * @author Hernán David Carvajal.
  */
 public enum BudgetType {
-  W1(1), W2(2), W3(3), BILATERAL(4), LEVERAGED(5), ACTIVITY(6);
+
+  W1_W2(1), W3_BILATERAL(2), LEVERAGED(3), W1_W2_PARTNERS(4), W1_W2_OTHER(5), W3_BILATERAL_PARTNERS(6),
+  W3_BILATERAL_OTHERS(7), W1_W2_GENDER(8), W3_BILATERAL_GENDER(9), ACTIVITY(10);
 
   private int value;
 
   private BudgetType(int value) {
     this.value = value;
+  }
+
+  static public BudgetType getBudgetType(int id) {
+    switch (id) {
+      case 1:
+        return BudgetType.W1_W2;
+      case 2:
+        return BudgetType.W3_BILATERAL;
+      case 3:
+        return BudgetType.LEVERAGED;
+      case 4:
+        return BudgetType.W1_W2_PARTNERS;
+      case 5:
+        return BudgetType.W1_W2_OTHER;
+      case 6:
+        return BudgetType.W3_BILATERAL_PARTNERS;
+      case 7:
+        return BudgetType.W3_BILATERAL_OTHERS;
+      case 8:
+        return BudgetType.W1_W2_GENDER;
+      case 9:
+        return BudgetType.W3_BILATERAL_GENDER;
+      case 10:
+        return BudgetType.ACTIVITY;
+    }
+    return BudgetType.W1_W2;
   }
 
   public int getValue() {
