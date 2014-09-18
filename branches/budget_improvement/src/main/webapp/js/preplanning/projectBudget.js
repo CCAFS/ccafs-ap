@@ -54,6 +54,7 @@ function attachEvents(){
     calculateOverallBudget(e);
     calculateLeveragedBudget(e);
     calculateW1W2Budget(e);
+    verifyBudgetExceeded(e);
   });
   $allBudgetInputs.on("keydown", function(event){
     isNumber(event);
@@ -86,6 +87,11 @@ function attachEvents(){
     });
   }
   
+}
+
+function verifyBudgetExceeded(e){
+  var $parent = $(e.target).parent().parent().parent();
+  console.log($parent);
 }
 
 // Leveraged Functions //
