@@ -1,5 +1,5 @@
 //Global VARS
-var projectTotalCCAFSBudget,projectTotalBudget,yearTotalCCAFSBudget,yearTotalBudget,yearTotalW1W2Budget,projectTotalW1W2Budget;
+var projectTotalCCAFSBudget,projectTotalBudget,yearTotalCCAFSBudget,yearTotalBudget,yearTotalLeveragedBudget,yearTotalW1W2Budget,projectTotalW1W2Budget;
 var $allBudgetInputs,$CCAFSBudgetInputs;
 var editable = true;
 
@@ -15,11 +15,18 @@ function init(){
   projectTotalBudget = parseFloat($("input#projectTotalBudget").val());
   yearTotalBudget = projectTotalBudget - parseFloat($("input#yearTotalBudget").val());
   
+  projectTotalLeveragedBudget = parseFloat($("input#projectTotalLeveragedBudget").val());
+  yearTotalLeveragedBudget = projectTotalLeveragedBudget - parseFloat($("input#yearTotalLeveragedBudget").val());
+  
   projectTotalW1W2Budget = parseFloat($("input#projectTotalW1W2Budget").val());
   yearTotalW1W2Budget = projectTotalW1W2Budget - parseFloat($("input#yearTotalW1W2Budget").val());
   
   $allBudgetInputs = $("input[name$='amount']");
   $CCAFSBudgetInputs = $(".ccafsBudget input[name$='amount']");
+  
+  // Initial function to load total budget by partner
+  calculateTotalBudgetByPartner();
+  
   addChosen();
   attachEvents();
   // Show table when page is loaded
@@ -29,15 +36,24 @@ function init(){
   $allBudgetInputs.trigger("focusout");
 }
 
+function calculateTotalBudgetByPartner(){
+  $(".partnerBudget").each(function(index,partnerBudget){
+    var Amount = totalBudget($(partnerBudget).find(".W1_W2 input[name$='amount'],.W3_BILATERAL input[name$='amount']"));
+    $(partnerBudget).find("span.totalBudgetByPartner").text(setCurrencyFormat(Amount));
+  });
+}
+
 function attachEvents(){
   // Leveraged Events
   $("select.leveraged").change(addLeveragedEvent);
   $("#leveraged .leveragedPartner .removeButton").click(removeLeveragedEvent);
   
-  $allBudgetInputs.on("keyup", function(){
-    calculateCCAFSBudget();
-    calculateOverallBudget();
-    calculateW1W2Budget();
+  $allBudgetInputs.on("keyup", function(e){
+    calculateTotalBudgetByPartner();
+    calculateCCAFSBudget(e);
+    calculateOverallBudget(e);
+    calculateLeveragedBudget(e);
+    calculateW1W2Budget(e);
   });
   $allBudgetInputs.on("keydown", function(event){
     isNumber(event);
@@ -55,7 +71,7 @@ function attachEvents(){
   });
   
   $(".handlediv").on("click", function(e){
-    $(e.target).parent().siblings().fadeToggle("slow");
+    $(e.target).parent().siblings().slideToggle("slow");
     $(e.target).toggleClass("down");
     $(e.target).parent().toggleClass("down");
   });
@@ -128,29 +144,36 @@ function addChosen(){
 
 // Calculate budget functions
 function calculateOverallBudget(e){
-  var Amount = totalBudget("form input[name$='amount']");
+  var Amount = totalBudget($("form input[name$='amount']"));
   var totalAmount = yearTotalBudget + Amount;
   $("span#projectTotalBudgetByYear").text(setCurrencyFormat(Amount));
   $("span#projectTotalBudget").text(setCurrencyFormat(totalAmount));
 }
 
+function calculateLeveragedBudget(e){
+  var Amount = totalBudget($("form .LEVERAGED input[name$='amount']"));
+  var totalAmount = yearTotalLeveragedBudget + Amount;
+  $("span#projectTotalLeveragedBudgetByYear").text(setCurrencyFormat(Amount));
+  $("span#projectTotalLeveragedBudget").text(setCurrencyFormat(totalAmount));
+}
+
 function calculateCCAFSBudget(e){
-  var Amount = totalBudget("form .ccafsBudget input[name$='amount']");
+  var Amount = totalBudget($("form .W1_W2 input[name$='amount'],form .W3_BILATERAL input[name$='amount']"));
   var totalAmount = yearTotalCCAFSBudget + Amount;
   $("span#projectTotalCCAFSBudgetByYear").text(setCurrencyFormat(Amount));
   $("span#projectTotalCCAFSBudget").text(setCurrencyFormat(totalAmount));
 }
 
 function calculateW1W2Budget(e){
-  var Amount = totalBudget("form .W1 input[name$='amount'],form .W2 input[name$='amount']");
+  var Amount = totalBudget($("form .W1_W2 input[name$='amount']"));
   var totalAmount = yearTotalW1W2Budget + Amount;
   $("span#projectTotalW1W2BudgetByYear").text(setCurrencyFormat(Amount));
   $("span#projectTotalW1W2Budget").text(setCurrencyFormat(totalAmount));
 }
 
-function totalBudget(inputList){
+function totalBudget($inputList){
   var Amount = 0;
-  $(inputList).each(function(index,amount){
+  $inputList.each(function(index,amount){
     if (!$(amount).val().length == 0) {
       Amount += removeCurrencyFormat($(amount).val());
     }
