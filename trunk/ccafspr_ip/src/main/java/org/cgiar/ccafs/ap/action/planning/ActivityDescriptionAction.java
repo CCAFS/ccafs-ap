@@ -26,12 +26,10 @@ import org.cgiar.ccafs.ap.data.model.Institution;
 import org.cgiar.ccafs.ap.data.model.Project;
 import org.cgiar.ccafs.ap.data.model.User;
 
-import java.util.HashSet;
 import java.util.List;
-import java.util.Set;
+import org.cgiar.ccafs.ap.data.model.ActivityPartner;
 
 import org.cgiar.ccafs.ap.data.manager.ActivityPartnerManager;
-
 import org.cgiar.ccafs.ap.data.manager.BudgetManager;
 import com.google.inject.Inject;
 import org.apache.commons.lang3.StringUtils;
@@ -278,25 +276,30 @@ public class ActivityDescriptionAction extends BaseAction {
   }
 
   @Override
-  public void validate() {// Validate if there are duplicate institutions.
+  public void validate() {
+    // Validate if the activity leader organization already exists as activity partner.
     boolean problem = false;
-    Set<Institution> institutions = new HashSet<>();
+
+    Institution ledIntitution = null;
     if (activity.getLeader() != null) {
-      institutions.add(activity.getLeader().getCurrentInstitution());
+      ledIntitution = activity.getLeader().getCurrentInstitution();
     } else if (activity.getExpectedLeader() != null) {
-      institutions.add(activity.getExpectedLeader().getCurrentInstitution());
+      ledIntitution = activity.getExpectedLeader().getCurrentInstitution();
     }
-    activity.setActivityPartners(activityPartnerManager.getActivityPartnersByActivity(activity.getId()));
-    for (int c = 0; c < activity.getActivityPartners().size(); c++) {
-      if (!institutions.add(activity.getActivityPartners().get(c).getPartner())) {
-        addFieldError("activity.expectedLeader.currentInstitution",
-          getText("planning.activityPartner.duplicatedInstitution.field"));
-        problem = true;
+
+    if (ledIntitution != null) {
+      for (ActivityPartner partner : activityPartnerManager.getActivityPartnersByActivity(activity.getId())) {
+        if (partner.getPartner().equals(ledIntitution)) {
+          problem = true;
+          addFieldError("activity.expectedLeader.currentInstitution",
+            getText("preplanning.projectPartners.duplicatedInstitution.field"));
+        }
       }
     }
 
     if (problem) {
-      addActionError(getText("planning.activityPartner.duplicatedInstitution.general"));
+      addActionError(getText("planning.activityDescription.duplicatedInstitution",
+        new String[] {ledIntitution.getName()}));
     }
 
     super.validate();
