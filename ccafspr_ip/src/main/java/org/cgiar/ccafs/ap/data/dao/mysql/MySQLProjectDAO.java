@@ -331,6 +331,8 @@ public class MySQLProjectDAO implements ProjectDAO {
       query.append(programID);
       query.append(" OR p.project_owner_id = ");
       query.append(ownerID);
+      query.append(" OR p.project_leader_id = ");
+      query.append(ownerID);
       ResultSet rs = databaseManager.makeQuery(query.toString(), connection);
       while (rs.next()) {
         projectIds.add(rs.getInt(1));
