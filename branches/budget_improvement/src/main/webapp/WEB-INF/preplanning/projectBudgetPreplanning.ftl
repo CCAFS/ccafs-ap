@@ -116,16 +116,28 @@
                       <div id="" class="grid_1 budgetTypeTitle">[@s.text name="preplanning.projectBudget.budget.title"/]</div>
                       [#-- W1 W2 --]                
                       <div id="" class="budgetContent W1_W2 grid_2">
+                        <input type="hidden" name="project.budgets[${counter}].id" value="${mapBudgets[year?c+'-'+project.leader.currentInstitution.id?c+'-W1_W2'].id?c}" />
+                        <input type="hidden" name="project.budgets[${counter}].year" value="${year?c}" />
+                        <input type="hidden" name="project.budgets[${counter}].institution.id" value="${mapBudgets[year?c+'-'+project.leader.currentInstitution.id?c+'-W1_W2'].institution.id?c}" />
+                        <input type="hidden" name="project.budgets[${counter}].type" value="W1_W2" />
                         [@customForm.input name="project.budgets[${counter}].amount" showTitle=false disabled=!fullEditable value="${mapBudgets[year?c+'-'+project.leader.currentInstitution.id?c+'-W1_W2'].amount?c}"/]
                         [@s.set var="counter" value="${counter+1}"/]
                       </div>
                       [#-- W3/Bilateral Budget --] 
                       <div id="" class="budgetContent W3_BILATERAL grid_2">
+                        <input type="hidden" name="project.budgets[${counter}].id" value="${mapBudgets[year?c+'-'+project.leader.currentInstitution.id?c+'-W3_BILATERAL'].id?c}" />
+                        <input type="hidden" name="project.budgets[${counter}].year" value="${year?c}" />
+                        <input type="hidden" name="project.budgets[${counter}].institution.id" value="${mapBudgets[year?c+'-'+project.leader.currentInstitution.id?c+'-W3_BILATERAL'].institution.id?c}" />
+                        <input type="hidden" name="project.budgets[${counter}].type" value="W3_BILATERAL" />
                         [@customForm.input name="project.budgets[${counter}].amount" showTitle=false disabled=!fullEditable value="${mapBudgets[year?c+'-'+project.leader.currentInstitution.id?c+'-W3_BILATERAL'].amount?c}"/]
                         [@s.set var="counter" value="${counter+1}"/]
                       </div> 
                       [#-- Leveraged Budget  --] 
                       <div id="" class="budgetContent LEVERAGED grid_2 suffix_2">
+                        <input type="hidden" name="project.budgets[${counter}].id" value="${mapBudgets[year?c+'-'+project.leader.currentInstitution.id?c+'-LEVERAGED'].id?c}" />
+                        <input type="hidden" name="project.budgets[${counter}].year" value="${year?c}" />
+                        <input type="hidden" name="project.budgets[${counter}].institution.id" value="${mapBudgets[year?c+'-'+project.leader.currentInstitution.id?c+'-LEVERAGED'].institution.id?c}" />
+                        <input type="hidden" name="project.budgets[${counter}].type" value="LEVERAGED" />
                         [@customForm.input name="project.budgets[${counter}].amount" showTitle=false disabled=!fullEditable value="${mapBudgets[year?c+'-'+project.leader.currentInstitution.id?c+'-LEVERAGED'].amount?c}"/]
                         [@s.set var="counter" value="${counter+1}"/]
                       </div> 
@@ -140,21 +152,37 @@
                       <div id="" class="grid_1 budgetTypeTitle">[@s.text name="preplanning.projectBudget.partnership.title"/]</div>
                       [#-- W1 W2 Collaborator Cost-Partners --]                
                       <div id="" class="budgetContent grid_2">
+                        <input type="hidden" name="project.budgets[${counter}].id" value="${mapBudgets[year?c+'-'+project.leader.currentInstitution.id?c+'-W1_W2_PARTNERS'].id?c}" />
+                        <input type="hidden" name="project.budgets[${counter}].year" value="${year?c}" />
+                        <input type="hidden" name="project.budgets[${counter}].institution.id" value="${mapBudgets[year?c+'-'+project.leader.currentInstitution.id?c+'-W1_W2_PARTNERS'].institution.id?c}" />
+                        <input type="hidden" name="project.budgets[${counter}].type" value="W1_W2_PARTNERS" />
                         [@customForm.input name="project.budgets[${counter}].amount" showTitle=false disabled=!fullEditable value="${mapBudgets[year?c+'-'+project.leader.currentInstitution.id?c+'-W1_W2_PARTNERS'].amount?c}"/]
                         [@s.set var="counter" value="${counter+1}"/]
                       </div>
                       [#-- W1 W2 Collaborator Cost-Other CGIAR Center --] 
                       <div id="" class="budgetContent grid_2">
+                        <input type="hidden" name="project.budgets[${counter}].id" value="${mapBudgets[year?c+'-'+project.leader.currentInstitution.id?c+'-W1_W2_OTHER'].id?c}" />
+                        <input type="hidden" name="project.budgets[${counter}].year" value="${year?c}" />
+                        <input type="hidden" name="project.budgets[${counter}].institution.id" value="${mapBudgets[year?c+'-'+project.leader.currentInstitution.id?c+'-W1_W2_OTHER'].institution.id?c}" />
+                        <input type="hidden" name="project.budgets[${counter}].type" value="W1_W2_OTHER" />
                         [@customForm.input name="project.budgets[${counter}].amount" showTitle=false disabled=!fullEditable value="${mapBudgets[year?c+'-'+project.leader.currentInstitution.id?c+'-W1_W2_OTHER'].amount?c}"/]
                         [@s.set var="counter" value="${counter+1}"/]
                       </div> 
                       [#-- W3/Bilateral Collaborator Cost-Partners  --] 
                       <div id="" class="budgetContent grid_2">
+                        <input type="hidden" name="project.budgets[${counter}].id" value="${mapBudgets[year?c+'-'+project.leader.currentInstitution.id?c+'-W3_BILATERAL_PARTNERS'].id?c}" />
+                        <input type="hidden" name="project.budgets[${counter}].year" value="${year?c}" />
+                        <input type="hidden" name="project.budgets[${counter}].institution.id" value="${mapBudgets[year?c+'-'+project.leader.currentInstitution.id?c+'-W3_BILATERAL_PARTNERS'].institution.id?c}" />
+                        <input type="hidden" name="project.budgets[${counter}].type" value="W3_BILATERAL_PARTNERS" />
                         [@customForm.input name="project.budgets[${counter}].amount" showTitle=false disabled=!fullEditable value="${mapBudgets[year?c+'-'+project.leader.currentInstitution.id?c+'-W3_BILATERAL_PARTNERS'].amount?c}"/]
                         [@s.set var="counter" value="${counter+1}"/]
                       </div> 
                       [#-- W3/Bilateral Collaborator Cost-Other CGIAR Center  --] 
                       <div id="" class="budgetContent grid_2">
+                        <input type="hidden" name="project.budgets[${counter}].id" value="${mapBudgets[year?c+'-'+project.leader.currentInstitution.id?c+'-W3_BILATERAL_OTHERS'].id?c}" />
+                        <input type="hidden" name="project.budgets[${counter}].year" value="${year?c}" />
+                        <input type="hidden" name="project.budgets[${counter}].institution.id" value="${mapBudgets[year?c+'-'+project.leader.currentInstitution.id?c+'-W3_BILATERAL_OTHERS'].institution.id?c}" />
+                        <input type="hidden" name="project.budgets[${counter}].type" value="W3_BILATERAL_OTHERS" />
                         [@customForm.input name="project.budgets[${counter}].amount" showTitle=false disabled=!fullEditable value="${mapBudgets[year?c+'-'+project.leader.currentInstitution.id?c+'-W3_BILATERAL_OTHERS'].amount?c}"/]
                         [@s.set var="counter" value="${counter+1}"/]
                       </div> 
@@ -167,11 +195,19 @@
                       <div id="" class="grid_1 budgetTypeTitle">[@s.text name="preplanning.projectBudget.gender.title"/] </div>
                       [#-- W1 W2 Budget --]                
                       <div id="" class="budgetContent GENDER_W1_W2 grid_2">
+                        <input type="hidden" name="project.budgets[${counter}].id" value="${mapBudgets[year?c+'-'+project.leader.currentInstitution.id?c+'-W1_W2_GENDER'].id?c}" />
+                        <input type="hidden" name="project.budgets[${counter}].year" value="${year?c}" />
+                        <input type="hidden" name="project.budgets[${counter}].institution.id" value="${mapBudgets[year?c+'-'+project.leader.currentInstitution.id?c+'-W1_W2_GENDER'].institution.id?c}" />
+                        <input type="hidden" name="project.budgets[${counter}].type" value="W1_W2_GENDER" />
                         [@customForm.input name="project.budgets[${counter}].amount" showTitle=false disabled=!fullEditable value="${mapBudgets[year?c+'-'+project.leader.currentInstitution.id?c+'-W1_W2_GENDER'].amount?c}"/]
                         [@s.set var="counter" value="${counter+1}"/]
                       </div> 
                       [#-- W3/Bilateral Budget  --] 
                       <div id="" class="budgetContent GENDER_W3_BILATERAL grid_2 suffix_4">
+                        <input type="hidden" name="project.budgets[${counter}].id" value="${mapBudgets[year?c+'-'+project.leader.currentInstitution.id?c+'-W3_BILATERAL_GENDER'].id?c}" />
+                        <input type="hidden" name="project.budgets[${counter}].year" value="${year?c}" />
+                        <input type="hidden" name="project.budgets[${counter}].institution.id" value="${mapBudgets[year?c+'-'+project.leader.currentInstitution.id?c+'-W3_BILATERAL_GENDER'].institution.id?c}" />
+                        <input type="hidden" name="project.budgets[${counter}].type" value="W3_BILATERAL_GENDER" />
                         [@customForm.input name="project.budgets[${counter}].amount" showTitle=false disabled=!fullEditable value="${mapBudgets[year?c+'-'+project.leader.currentInstitution.id?c+'-W3_BILATERAL_GENDER'].amount?c}"/]
                         [@s.set var="counter" value="${counter+1}"/]
                       </div> 
@@ -199,16 +235,28 @@
                       </div>
                       [#-- W1 W2 --]                
                       <div id="" class="budgetContent W1_W2 grid_2">
+                        <input type="hidden" name="project.budgets[${counter}].id" value="${mapBudgets[year?c+'-'+projectPartner.partner.id?c+'-W1_W2'].id?c}" />
+                        <input type="hidden" name="project.budgets[${counter}].year" value="${year?c}" />
+                        <input type="hidden" name="project.budgets[${counter}].institution.id" value="${mapBudgets[year?c+'-'+projectPartner.partner.id?c+'-W1_W2'].institution.id?c}" />
+                        <input type="hidden" name="project.budgets[${counter}].type" value="W1_W2" />
                         [@customForm.input name="project.budgets[${counter}].amount" showTitle=false disabled=!fullEditable value="${mapBudgets[year?c+'-'+projectPartner.partner.id?c+'-W1_W2'].amount?c}"/]
                         [@s.set var="counter" value="${counter+1}"/]
                       </div>
                       [#-- W3/Bilateral Budget --] 
                       <div id="" class="budgetContent W3_BILATERAL grid_2">
+                        <input type="hidden" name="project.budgets[${counter}].id" value="${mapBudgets[year?c+'-'+projectPartner.partner.id?c+'-W3_BILATERAL'].id?c}" />
+                        <input type="hidden" name="project.budgets[${counter}].year" value="${year?c}" />
+                        <input type="hidden" name="project.budgets[${counter}].institution.id" value="${mapBudgets[year?c+'-'+projectPartner.partner.id?c+'-W3_BILATERAL'].institution.id?c}" />
+                        <input type="hidden" name="project.budgets[${counter}].type" value="W3_BILATERAL" />
                         [@customForm.input name="project.budgets[${counter}].amount" showTitle=false disabled=!fullEditable value="${mapBudgets[year?c+'-'+projectPartner.partner.id?c+'-W3_BILATERAL'].amount?c}"/]
                         [@s.set var="counter" value="${counter+1}"/]
                       </div> 
                       [#-- Leveraged Budget  --] 
                       <div id="" class="budgetContent LEVERAGED grid_2 suffix_2">
+                        <input type="hidden" name="project.budgets[${counter}].id" value="${mapBudgets[year?c+'-'+projectPartner.partner.id?c+'-LEVERAGED'].id?c}" />
+                        <input type="hidden" name="project.budgets[${counter}].year" value="${year?c}" />
+                        <input type="hidden" name="project.budgets[${counter}].institution.id" value="${mapBudgets[year?c+'-'+projectPartner.partner.id?c+'-LEVERAGED'].institution.id?c}" />
+                        <input type="hidden" name="project.budgets[${counter}].type" value="LEVERAGED" />
                         [@customForm.input name="project.budgets[${counter}].amount" showTitle=false disabled=!fullEditable value="${mapBudgets[year?c+'-'+projectPartner.partner.id?c+'-LEVERAGED'].amount?c}"/]
                         [@s.set var="counter" value="${counter+1}"/]
                       </div> 
@@ -223,21 +271,37 @@
                       <div id="" class="grid_1 budgetTypeTitle">[@s.text name="preplanning.projectBudget.partnership.title"/]</div>
                       [#-- W1 W2 Collaborator Cost-Partners --] 
                       <div id="" class="budgetContent  grid_2">
+                        <input type="hidden" name="project.budgets[${counter}].id" value="${mapBudgets[year?c+'-'+projectPartner.partner.id?c+'-W1_W2_PARTNERS'].id?c}" />
+                        <input type="hidden" name="project.budgets[${counter}].year" value="${year?c}" />
+                        <input type="hidden" name="project.budgets[${counter}].institution.id" value="${mapBudgets[year?c+'-'+projectPartner.partner.id?c+'-W1_W2_PARTNERS'].institution.id?c}" />
+                        <input type="hidden" name="project.budgets[${counter}].type" value="W1_W2_PARTNERS" />
                         [@customForm.input name="project.budgets[${counter}].amount" showTitle=false disabled=!fullEditable value="${mapBudgets[year?c+'-'+projectPartner.partner.id?c+'-W1_W2_PARTNERS'].amount?c}"/]
                         [@s.set var="counter" value="${counter+1}"/]
                       </div>
                       [#-- W1 W2 Collaborator Cost-Other CGIAR Center --] 
                       <div id="" class="budgetContent  grid_2">
+                        <input type="hidden" name="project.budgets[${counter}].id" value="${mapBudgets[year?c+'-'+projectPartner.partner.id?c+'-W1_W2_OTHER'].id?c}" />
+                        <input type="hidden" name="project.budgets[${counter}].year" value="${year?c}" />
+                        <input type="hidden" name="project.budgets[${counter}].institution.id" value="${mapBudgets[year?c+'-'+projectPartner.partner.id?c+'-W1_W2_OTHER'].institution.id?c}" />
+                        <input type="hidden" name="project.budgets[${counter}].type" value="W1_W2_OTHER" />
                         [@customForm.input name="project.budgets[${counter}].amount" showTitle=false disabled=!fullEditable value="${mapBudgets[year?c+'-'+projectPartner.partner.id?c+'-W1_W2_OTHER'].amount?c}"/]
                         [@s.set var="counter" value="${counter+1}"/]
                       </div> 
                       [#-- W3/Bilateral Collaborator Cost-Partners  --] 
                       <div id="" class="budgetContent  grid_2">
+                        <input type="hidden" name="project.budgets[${counter}].id" value="${mapBudgets[year?c+'-'+projectPartner.partner.id?c+'-W3_BILATERAL_PARTNERS'].id?c}" />
+                        <input type="hidden" name="project.budgets[${counter}].year" value="${year?c}" />
+                        <input type="hidden" name="project.budgets[${counter}].institution.id" value="${mapBudgets[year?c+'-'+projectPartner.partner.id?c+'-W3_BILATERAL_PARTNERS'].institution.id?c}" />
+                        <input type="hidden" name="project.budgets[${counter}].type" value="W3_BILATERAL_PARTNERS" />
                         [@customForm.input name="project.budgets[${counter}].amount" showTitle=false disabled=!fullEditable value="${mapBudgets[year?c+'-'+projectPartner.partner.id?c+'-W3_BILATERAL_PARTNERS'].amount?c}"/]
                         [@s.set var="counter" value="${counter+1}"/]
                       </div> 
                       [#-- W3/Bilateral Collaborator Cost-Other CGIAR Center  --] 
                       <div id="" class="budgetContent  grid_2">
+                        <input type="hidden" name="project.budgets[${counter}].id" value="${mapBudgets[year?c+'-'+projectPartner.partner.id?c+'-W3_BILATERAL_OTHERS'].id?c}" />
+                        <input type="hidden" name="project.budgets[${counter}].year" value="${year?c}" />
+                        <input type="hidden" name="project.budgets[${counter}].institution.id" value="${mapBudgets[year?c+'-'+projectPartner.partner.id?c+'-W3_BILATERAL_OTHERS'].institution.id?c}" />
+                        <input type="hidden" name="project.budgets[${counter}].type" value="W3_BILATERAL_OTHERS" />
                         [@customForm.input name="project.budgets[${counter}].amount" showTitle=false disabled=!fullEditable value="${mapBudgets[year?c+'-'+projectPartner.partner.id?c+'-W3_BILATERAL_OTHERS'].amount?c}"/]
                         [@s.set var="counter" value="${counter+1}"/]
                       </div> 
@@ -250,11 +314,19 @@
                       <div id="" class="grid_1 budgetTypeTitle">[@s.text name="preplanning.projectBudget.gender.title"/] </div>
                       [#-- W1 W2 Budget --]                
                       <div id="" class="budgetContent GENDER_W1_W2 grid_2">
+                        <input type="hidden" name="project.budgets[${counter}].id" value="${mapBudgets[year?c+'-'+projectPartner.partner.id?c+'-W1_W2_GENDER'].id?c}" />
+                        <input type="hidden" name="project.budgets[${counter}].year" value="${year?c}" />
+                        <input type="hidden" name="project.budgets[${counter}].institution.id" value="${mapBudgets[year?c+'-'+projectPartner.partner.id?c+'-W1_W2_GENDER'].institution.id?c}" />
+                        <input type="hidden" name="project.budgets[${counter}].type" value="W1_W2_GENDER" />
                         [@customForm.input name="project.budgets[${counter}].amount" showTitle=false disabled=!fullEditable value="${mapBudgets[year?c+'-'+projectPartner.partner.id?c+'-W1_W2_GENDER'].amount?c}"/]
                         [@s.set var="counter" value="${counter+1}"/]
                       </div> 
                       [#-- W3/Bilateral Budget  --] 
                       <div id="" class="budgetContent GENDER_W3_BILATERAL grid_2 suffix_4">
+                        <input type="hidden" name="project.budgets[${counter}].id" value="${mapBudgets[year?c+'-'+projectPartner.partner.id?c+'-W3_BILATERAL_GENDER'].id?c}" />
+                        <input type="hidden" name="project.budgets[${counter}].year" value="${year?c}" />
+                        <input type="hidden" name="project.budgets[${counter}].institution.id" value="${mapBudgets[year?c+'-'+projectPartner.partner.id?c+'-W3_BILATERAL_GENDER'].institution.id?c}" />
+                        <input type="hidden" name="project.budgets[${counter}].type" value="W3_BILATERAL_GENDER" />
                         [@customForm.input name="project.budgets[${counter}].amount" showTitle=false disabled=!fullEditable value="${mapBudgets[year?c+'-'+projectPartner.partner.id?c+'-W3_BILATERAL_GENDER'].amount?c}"/]
                         [@s.set var="counter" value="${counter+1}"/]
                       </div> 
