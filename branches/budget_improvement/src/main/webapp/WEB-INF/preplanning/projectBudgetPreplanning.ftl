@@ -67,9 +67,9 @@
           [#-- Accumulative Leverage Funds --]
           <div id="totalBudget" class="thirdPartBlock">
             <h6>[@s.text name="preplanning.projectBudget.totalLeveragedBudget" /]</h6>
-            <p id="projectTotalLeveragedBudget">US$ <span id="projectTotalLeveragedBudget">${totalLeveragedBudget}</span></p>
-            <input type="hidden" id="projectTotalLeveragedBudget" value="0" />
-            <input type="hidden" id="yearTotalLeveragedBudget" value="0" />
+            <p id="projectTotalLeveragedBudget">US$ <span id="projectTotalLeveragedBudget">${totalLeveragedBudget?string(",##0.00")}</span></p>
+            <input type="hidden" id="projectTotalLeveragedBudget" value="${totalLeveragedBudget}" />
+            <input type="hidden" id="yearTotalLeveragedBudget" value="${leveragedBudgetByYear}" />
           </div>
           
           [#-- Tertiary Menu - All years --] 
@@ -94,7 +94,7 @@
                   </div>
                   <div id="totalYearLeveragedBudget" class="BudgetByYear"> 
                     <p id="projectTotalByYear"><strong> [@s.text name="preplanning.projectBudget.totalYearLeveragedBudget"][@s.param name="0"]${year}[/@s.param][/@s.text]</strong>
-                    <br>US$ <span id="projectTotalLeveragedBudgetByYear">${leveragedBudgetByYear}</span></p>
+                    <br>US$ <span id="projectTotalLeveragedBudgetByYear">${leveragedBudgetByYear?string(",##0.00")}</span></p>
                   </div>
                 </div> 
                 <div class="ccafsBudget fullPartBlock clearfix">              
@@ -151,7 +151,7 @@
                       [#-- Partnership type title --]
                       <div id="" class="grid_1 budgetTypeTitle">[@s.text name="preplanning.projectBudget.partnership.title"/]</div>
                       [#-- W1 W2 Collaborator Cost-Partners --]                
-                      <div id="" class="budgetContent grid_2">
+                      <div id="" class="budgetContent W1_W2_PARTNERS grid_2">
                         <input type="hidden" name="project.budgets[${counter}].id" value="${mapBudgets[year?c+'-'+project.leader.currentInstitution.id?c+'-W1_W2_PARTNERS'].id?c}" />
                         <input type="hidden" name="project.budgets[${counter}].year" value="${year?c}" />
                         <input type="hidden" name="project.budgets[${counter}].institution.id" value="${mapBudgets[year?c+'-'+project.leader.currentInstitution.id?c+'-W1_W2_PARTNERS'].institution.id?c}" />
@@ -160,7 +160,7 @@
                         [@s.set var="counter" value="${counter+1}"/]
                       </div>
                       [#-- W1 W2 Collaborator Cost-Other CGIAR Center --] 
-                      <div id="" class="budgetContent grid_2">
+                      <div id="" class="budgetContent W1_W2_OTHER grid_2">
                         <input type="hidden" name="project.budgets[${counter}].id" value="${mapBudgets[year?c+'-'+project.leader.currentInstitution.id?c+'-W1_W2_OTHER'].id?c}" />
                         <input type="hidden" name="project.budgets[${counter}].year" value="${year?c}" />
                         <input type="hidden" name="project.budgets[${counter}].institution.id" value="${mapBudgets[year?c+'-'+project.leader.currentInstitution.id?c+'-W1_W2_OTHER'].institution.id?c}" />
@@ -169,7 +169,7 @@
                         [@s.set var="counter" value="${counter+1}"/]
                       </div> 
                       [#-- W3/Bilateral Collaborator Cost-Partners  --] 
-                      <div id="" class="budgetContent grid_2">
+                      <div id="" class="budgetContent W3_BILATERAL_PARTNERS grid_2">
                         <input type="hidden" name="project.budgets[${counter}].id" value="${mapBudgets[year?c+'-'+project.leader.currentInstitution.id?c+'-W3_BILATERAL_PARTNERS'].id?c}" />
                         <input type="hidden" name="project.budgets[${counter}].year" value="${year?c}" />
                         <input type="hidden" name="project.budgets[${counter}].institution.id" value="${mapBudgets[year?c+'-'+project.leader.currentInstitution.id?c+'-W3_BILATERAL_PARTNERS'].institution.id?c}" />
@@ -178,7 +178,7 @@
                         [@s.set var="counter" value="${counter+1}"/]
                       </div> 
                       [#-- W3/Bilateral Collaborator Cost-Other CGIAR Center  --] 
-                      <div id="" class="budgetContent grid_2">
+                      <div id="" class="budgetContent W3_BILATERAL_OTHERS grid_2">
                         <input type="hidden" name="project.budgets[${counter}].id" value="${mapBudgets[year?c+'-'+project.leader.currentInstitution.id?c+'-W3_BILATERAL_OTHERS'].id?c}" />
                         <input type="hidden" name="project.budgets[${counter}].year" value="${year?c}" />
                         <input type="hidden" name="project.budgets[${counter}].institution.id" value="${mapBudgets[year?c+'-'+project.leader.currentInstitution.id?c+'-W3_BILATERAL_OTHERS'].institution.id?c}" />
@@ -194,7 +194,7 @@
                       [#-- Gender type title --]
                       <div id="" class="grid_1 budgetTypeTitle">[@s.text name="preplanning.projectBudget.gender.title"/] </div>
                       [#-- W1 W2 Budget --]                
-                      <div id="" class="budgetContent GENDER_W1_W2 grid_2">
+                      <div id="" class="budgetContent W1_W2_GENDER grid_2">
                         <input type="hidden" name="project.budgets[${counter}].id" value="${mapBudgets[year?c+'-'+project.leader.currentInstitution.id?c+'-W1_W2_GENDER'].id?c}" />
                         <input type="hidden" name="project.budgets[${counter}].year" value="${year?c}" />
                         <input type="hidden" name="project.budgets[${counter}].institution.id" value="${mapBudgets[year?c+'-'+project.leader.currentInstitution.id?c+'-W1_W2_GENDER'].institution.id?c}" />
@@ -203,7 +203,7 @@
                         [@s.set var="counter" value="${counter+1}"/]
                       </div> 
                       [#-- W3/Bilateral Budget  --] 
-                      <div id="" class="budgetContent GENDER_W3_BILATERAL grid_2 suffix_4">
+                      <div id="" class="budgetContent W3_BILATERAL_GENDER grid_2 suffix_4">
                         <input type="hidden" name="project.budgets[${counter}].id" value="${mapBudgets[year?c+'-'+project.leader.currentInstitution.id?c+'-W3_BILATERAL_GENDER'].id?c}" />
                         <input type="hidden" name="project.budgets[${counter}].year" value="${year?c}" />
                         <input type="hidden" name="project.budgets[${counter}].institution.id" value="${mapBudgets[year?c+'-'+project.leader.currentInstitution.id?c+'-W3_BILATERAL_GENDER'].institution.id?c}" />
@@ -270,7 +270,7 @@
                       [#-- Partnership type title --]
                       <div id="" class="grid_1 budgetTypeTitle">[@s.text name="preplanning.projectBudget.partnership.title"/]</div>
                       [#-- W1 W2 Collaborator Cost-Partners --] 
-                      <div id="" class="budgetContent  grid_2">
+                      <div id="" class="budgetContent W1_W2_PARTNERS grid_2">
                         <input type="hidden" name="project.budgets[${counter}].id" value="${mapBudgets[year?c+'-'+projectPartner.partner.id?c+'-W1_W2_PARTNERS'].id?c}" />
                         <input type="hidden" name="project.budgets[${counter}].year" value="${year?c}" />
                         <input type="hidden" name="project.budgets[${counter}].institution.id" value="${mapBudgets[year?c+'-'+projectPartner.partner.id?c+'-W1_W2_PARTNERS'].institution.id?c}" />
@@ -279,7 +279,7 @@
                         [@s.set var="counter" value="${counter+1}"/]
                       </div>
                       [#-- W1 W2 Collaborator Cost-Other CGIAR Center --] 
-                      <div id="" class="budgetContent  grid_2">
+                      <div id="" class="budgetContent W1_W2_OTHER grid_2">
                         <input type="hidden" name="project.budgets[${counter}].id" value="${mapBudgets[year?c+'-'+projectPartner.partner.id?c+'-W1_W2_OTHER'].id?c}" />
                         <input type="hidden" name="project.budgets[${counter}].year" value="${year?c}" />
                         <input type="hidden" name="project.budgets[${counter}].institution.id" value="${mapBudgets[year?c+'-'+projectPartner.partner.id?c+'-W1_W2_OTHER'].institution.id?c}" />
@@ -288,7 +288,7 @@
                         [@s.set var="counter" value="${counter+1}"/]
                       </div> 
                       [#-- W3/Bilateral Collaborator Cost-Partners  --] 
-                      <div id="" class="budgetContent  grid_2">
+                      <div id="" class="budgetContent W3_BILATERAL_PARTNERS grid_2">
                         <input type="hidden" name="project.budgets[${counter}].id" value="${mapBudgets[year?c+'-'+projectPartner.partner.id?c+'-W3_BILATERAL_PARTNERS'].id?c}" />
                         <input type="hidden" name="project.budgets[${counter}].year" value="${year?c}" />
                         <input type="hidden" name="project.budgets[${counter}].institution.id" value="${mapBudgets[year?c+'-'+projectPartner.partner.id?c+'-W3_BILATERAL_PARTNERS'].institution.id?c}" />
@@ -297,7 +297,7 @@
                         [@s.set var="counter" value="${counter+1}"/]
                       </div> 
                       [#-- W3/Bilateral Collaborator Cost-Other CGIAR Center  --] 
-                      <div id="" class="budgetContent  grid_2">
+                      <div id="" class="budgetContent W3_BILATERAL_OTHERS grid_2">
                         <input type="hidden" name="project.budgets[${counter}].id" value="${mapBudgets[year?c+'-'+projectPartner.partner.id?c+'-W3_BILATERAL_OTHERS'].id?c}" />
                         <input type="hidden" name="project.budgets[${counter}].year" value="${year?c}" />
                         <input type="hidden" name="project.budgets[${counter}].institution.id" value="${mapBudgets[year?c+'-'+projectPartner.partner.id?c+'-W3_BILATERAL_OTHERS'].institution.id?c}" />
@@ -313,7 +313,7 @@
                       [#-- Gender type title --]
                       <div id="" class="grid_1 budgetTypeTitle">[@s.text name="preplanning.projectBudget.gender.title"/] </div>
                       [#-- W1 W2 Budget --]                
-                      <div id="" class="budgetContent GENDER_W1_W2 grid_2">
+                      <div id="" class="budgetContent W1_W2_GENDER grid_2">
                         <input type="hidden" name="project.budgets[${counter}].id" value="${mapBudgets[year?c+'-'+projectPartner.partner.id?c+'-W1_W2_GENDER'].id?c}" />
                         <input type="hidden" name="project.budgets[${counter}].year" value="${year?c}" />
                         <input type="hidden" name="project.budgets[${counter}].institution.id" value="${mapBudgets[year?c+'-'+projectPartner.partner.id?c+'-W1_W2_GENDER'].institution.id?c}" />
@@ -322,7 +322,7 @@
                         [@s.set var="counter" value="${counter+1}"/]
                       </div> 
                       [#-- W3/Bilateral Budget  --] 
-                      <div id="" class="budgetContent GENDER_W3_BILATERAL grid_2 suffix_4">
+                      <div id="" class="budgetContent W3_BILATERAL_GENDER grid_2 suffix_4">
                         <input type="hidden" name="project.budgets[${counter}].id" value="${mapBudgets[year?c+'-'+projectPartner.partner.id?c+'-W3_BILATERAL_GENDER'].id?c}" />
                         <input type="hidden" name="project.budgets[${counter}].year" value="${year?c}" />
                         <input type="hidden" name="project.budgets[${counter}].institution.id" value="${mapBudgets[year?c+'-'+projectPartner.partner.id?c+'-W3_BILATERAL_GENDER'].institution.id?c}" />
