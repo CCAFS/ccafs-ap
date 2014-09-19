@@ -1,17 +1,23 @@
 //Limits for textarea input
-var lWordsElemetTitle = 20;
+var lWordsElemetTitle = 50;
 var lWordsElemetDesc = 300;
 
 $(document).ready(function(){
+  
   datePickerConfig({
     "startDate" : "#activity\\.startDate",
     "endDate" : "#activity\\.endDate",
     defaultMinDateValue : $("#minDateValue").val(),
     defaultMaxDateValue : $("#maxDateValue").val()
   });
+  
   addChosen();
   applyWordCounter($("textarea.activity-title"), lWordsElemetTitle);
   applyWordCounter($("textarea.activity-description"), lWordsElemetDesc);
+  
+  $(".activity-gender-contribution-percentage").on("keydown", function(event){
+    isNumber(event);
+  });
 });
 
 /**
