@@ -49,7 +49,7 @@
         [/#list]
       </p>
     </div>
-    
+
     <div id="contributionsBlock" class="">
       [#if midOutcomesSelected?has_content]
         [#list midOutcomesSelected as midOutcome]
@@ -58,7 +58,7 @@
               [#-- Remove Contribution --]
               <div id="removeContribution" class="removeContribution removeElement removeLink" title="[@s.text name="preplanning.midOutcomes.removeMidOutcome" /]"></div>
             [/#if]
-          
+
             [#-- Midoutcome title --]
             <div class="midOutcomeTitle">
               <input id="midOutcomeID" value="${midOutcome.id}" type="hidden" />
@@ -66,24 +66,7 @@
               <h6>[@s.text name="planning.activityImpactPathways.outcome2019" /]</h6>
               <p class="description"> ${midOutcome.description} </p>
             </div>
-            
-            [#-- Major Output Group list --]
-            <div class="mogs">
-              <h6>[@s.text name="planning.activityImpactPathways.mogs" /]</h6>
-              [#if action.getMidOutcomeOutputs(midOutcome.id)?has_content]
-                [#assign outputs = action.getMidOutcomeOutputs(midOutcome.id)]
-                <div class="mogsBlock">
-                  [#list outputs as output]
-                      <div class="mog">
-                        <input name="activity.outputs.contributesTo[0].id" value="${midOutcome.id}"  type="hidden" />
-                        <input type="checkbox" name="outputs.id" value="${output.id}" [#if activity.containsOutput(output.id)] checked [/#if] />
-                        <label> ${output.description}</label>
-                      </div>
-                  [/#list]
-                </div>
-              [/#if]
-            </div>
-            
+
             [#-- Indicators list --]
             <div class="indicators">
               <h6>[@s.text name="planning.activityImpactPathways.indicators" /]</h6>
@@ -122,19 +105,36 @@
                         [#-- Target value --]
                         <label>  <h6>[@s.text name="planning.activityImpactPathways.targetValue" /]</h6></label>
                         <input type="text" name="activity.indicators.target" >
-                        
+
                         <label>  <h6>[@s.text name="planning.activityImpactPathways.targetNarrative" /]</h6></label>
                         <textarea name="activity.indicators.description" ></textarea>
                       </div> 
-                      
+
                     </div>
                   [/#if]
                 [/#list]  
               </div>
               [/#if]
               </div>
-          
+
+            [#-- Major Output Group list --]
+            <div class="mogs">
+              <h6>[@s.text name="planning.activityImpactPathways.mogs" /]</h6>
+              [#if action.getMidOutcomeOutputs(midOutcome.id)?has_content]
+                [#assign outputs = action.getMidOutcomeOutputs(midOutcome.id)]
+                <div class="mogsBlock">
+                  [#list outputs as output]
+                      <div class="mog">
+                        <input name="activity.outputs.contributesTo[0].id" value="${midOutcome.id}"  type="hidden" />
+                        <input type="checkbox" name="outputs.id" value="${output.id}" [#if activity.containsOutput(output.id)] checked [/#if] />
+                        <label> ${output.description}</label>
+                      </div>
+                  [/#list]
+                </div>
+              [/#if]
+            </div>
           </div>
+
         [/#list]
       [/#if]
     </div>
