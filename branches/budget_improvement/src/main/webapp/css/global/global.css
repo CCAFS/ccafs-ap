@@ -1623,10 +1623,11 @@ table tr.row:hover{
 }
 
 .budgetTypeHead {
-  font-weight: bold;
   text-align: center;
   margin-top: 11px;
   margin-bottom: 4px;
+  font-size: 0.95em;
+  color: #6F6F6F;
 }
 
 .budgetContent {
@@ -1648,6 +1649,10 @@ table tr.row:hover{
 
 .budgetPartnerTitle.down {
   border-bottom: 2px solid #979E90; 
+}
+
+p.partnerTitle {
+  padding-right: 205px;
 }
 
 .budgetPartnerTitle p.totalBudget {
