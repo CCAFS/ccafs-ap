@@ -61,40 +61,62 @@
                   [#-- HEADERS --]
                   <tr class="ccafsBudget-head row">
                     [#-- Partner Name --]
-                    <td class="grid_7">
+                    <td class="grid_5">
                       <h6>[@s.text name="planning.activityBudget.partner" /]</h6>
                     </td> 
-                    [#-- ACTIVITY title --]
+                    [#-- W1 W2 Budget title --]
                     <td id="" class="grid_2">
-                      <h6>[@s.text name="planning.activityBudget.amount" /]</h6>
+                      <h6>[@s.text name="planning.activityBudget.W1W2Budget" /]</h6>
+                    </td> 
+                    [#-- W3/Bilateral Budget title --]
+                    <td id="" class="grid_2">
+                      <h6>[@s.text name="planning.activityBudget.W3Bilateral" /]</h6>
                     </td> 
                   </tr>  
                   [#if activity.leader?has_content]
                     <tr class="row">
                       [#-- Partner Leader Name --]
-                      <td class="grid_7">${activity.leader.currentInstitution.name} <strong>([@s.text name="planning.activityBudget.partnerLead" /])</strong> </td> 
-                      [#--Activity Type --]
+                      <td class="grid_5">${activity.leader.currentInstitution.name} <strong>([@s.text name="planning.activityBudget.partnerLead" /])</strong> </td> 
+                      [#--W1W2 Type --]
                       <td class="budgetContent grid_2">
-                        <input type="hidden" name="activity.budgets[${counter}].id" value="${mapBudgets[year?c+'-'+activity.leader.currentInstitution.id?c+'-ACTIVITY'].id?c}" />
+                        <input type="hidden" name="activity.budgets[${counter}].id" value="${mapBudgets[year?c+'-'+activity.leader.currentInstitution.id?c+'-ACTIVITY_W1_W2'].id?c}" />
                         <input type="hidden" name="activity.budgets[${counter}].year" value="${year?c}" />
-                        <input type="hidden" name="activity.budgets[${counter}].institution.id" value="${mapBudgets[year?c+'-'+activity.leader.currentInstitution.id?c+'-ACTIVITY'].institution.id?c}" />
-                        <input type="hidden" name="activity.budgets[${counter}].type" value="ACTIVITY" />
-                        [@customForm.input name="activity.budgets[${counter}].amount" showTitle=false disabled=!fullEditable value="${mapBudgets[year?c+'-'+activity.leader.currentInstitution.id?c+'-ACTIVITY'].amount?c}" /]
+                        <input type="hidden" name="activity.budgets[${counter}].institution.id" value="${mapBudgets[year?c+'-'+activity.leader.currentInstitution.id?c+'-ACTIVITY_W1_W2'].institution.id?c}" />
+                        <input type="hidden" name="activity.budgets[${counter}].type" value="ACTIVITY_W1_W2" />
+                        [@customForm.input name="activity.budgets[${counter}].amount" showTitle=false disabled=!fullEditable value="${mapBudgets[year?c+'-'+activity.leader.currentInstitution.id?c+'-ACTIVITY_W1_W2'].amount?c}" /]
                         [@s.set var="counter" value="${counter+1}"/]
                       </td>  
+                      [#--W3Bilateral Type --]
+                      <td class="budgetContent grid_2">
+                        <input type="hidden" name="activity.budgets[${counter}].id" value="${mapBudgets[year?c+'-'+activity.leader.currentInstitution.id?c+'-ACTIVITY_W3_BILATERAL'].id?c}" />
+                        <input type="hidden" name="activity.budgets[${counter}].year" value="${year?c}" />
+                        <input type="hidden" name="activity.budgets[${counter}].institution.id" value="${mapBudgets[year?c+'-'+activity.leader.currentInstitution.id?c+'-ACTIVITY_W3_BILATERAL'].institution.id?c}" />
+                        <input type="hidden" name="activity.budgets[${counter}].type" value="ACTIVITY_W3_BILATERAL" />
+                        [@customForm.input name="activity.budgets[${counter}].amount" showTitle=false disabled=!fullEditable value="${mapBudgets[year?c+'-'+activity.leader.currentInstitution.id?c+'-ACTIVITY_W3_BILATERAL'].amount?c}" /]
+                        [@s.set var="counter" value="${counter+1}"/]
+                      </td>
                     </tr>
                   [/#if]  
                   [#list activityPartners as activityPartner ]
                     <tr id="partnerBudget-${activityPartner_index}" class="row">
                       [#-- Partner Name --]
-                      <td id="" class="grid_7">${activityPartner.partner.name}</td>
+                      <td id="" class="grid_5">${activityPartner.partner.name}</td>
                       [#-- Activity Type --]
                       <td id="" class="budgetContent grid_2">
-                        <input type="hidden" name="activity.budgets[${counter}].id" value="${mapBudgets[year?c+'-'+activityPartner.partner.id?c+'-ACTIVITY'].id?c}" />
+                        <input type="hidden" name="activity.budgets[${counter}].id" value="${mapBudgets[year?c+'-'+activityPartner.partner.id?c+'-ACTIVITY_W1_W2'].id?c}" />
                         <input type="hidden" name="activity.budgets[${counter}].year" value="${year?c}" />
-                        <input type="hidden" name="activity.budgets[${counter}].institution.id" value="${mapBudgets[year?c+'-'+activityPartner.partner.id?c+'-ACTIVITY'].institution.id?c}" />
-                        <input type="hidden" name="activity.budgets[${counter}].type" value="ACTIVITY" />
-                        [@customForm.input name="activity.budgets[${counter}].amount" showTitle=false disabled=!fullEditable value="${mapBudgets[year?c+'-'+activityPartner.partner.id?c+'-ACTIVITY'].amount?c}"/]
+                        <input type="hidden" name="activity.budgets[${counter}].institution.id" value="${mapBudgets[year?c+'-'+activityPartner.partner.id?c+'-ACTIVITY_W1_W2'].institution.id?c}" />
+                        <input type="hidden" name="activity.budgets[${counter}].type" value="ACTIVITY_W1_W2" />
+                        [@customForm.input name="activity.budgets[${counter}].amount" showTitle=false disabled=!fullEditable value="${mapBudgets[year?c+'-'+activityPartner.partner.id?c+'-ACTIVITY_W1_W2'].amount?c}"/]
+                        [@s.set var="counter" value="${counter+1}"/]
+                      </td>
+                      [#-- Activity Type --]
+                      <td id="" class="budgetContent grid_2">
+                        <input type="hidden" name="activity.budgets[${counter}].id" value="${mapBudgets[year?c+'-'+activityPartner.partner.id?c+'-ACTIVITY_W3_BILATERAL'].id?c}" />
+                        <input type="hidden" name="activity.budgets[${counter}].year" value="${year?c}" />
+                        <input type="hidden" name="activity.budgets[${counter}].institution.id" value="${mapBudgets[year?c+'-'+activityPartner.partner.id?c+'-ACTIVITY_W3_BILATERAL'].institution.id?c}" />
+                        <input type="hidden" name="activity.budgets[${counter}].type" value="ACTIVITY_W3_BILATERAL" />
+                        [@customForm.input name="activity.budgets[${counter}].amount" showTitle=false disabled=!fullEditable value="${mapBudgets[year?c+'-'+activityPartner.partner.id?c+'-ACTIVITY_W3_BILATERAL'].amount?c}"/]
                         [@s.set var="counter" value="${counter+1}"/]
                       </td>
                     </tr>

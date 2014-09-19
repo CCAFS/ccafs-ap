@@ -20,14 +20,58 @@ import org.apache.commons.lang3.builder.ToStringBuilder;
  * The value for each enum corresponds with the ids that are assigned in the database.
  * 
  * @author Héctor Fabio Tobón R.
+ * @author Hernán David Carvajal.
  */
 public enum BudgetType {
-  W1(1), W2(2), W3(3), BILATERAL(4), LEVERAGED(5), ACTIVITY(6);
+
+  W1(1), W2(2), W3(3), BILATERAL(4), _LEVERAGED(5), ACTIVITY(6), W1_W2(7), W3_BILATERAL(8), LEVERAGED(9),
+  W1_W2_PARTNERS(10), W1_W2_OTHER(11), W3_BILATERAL_PARTNERS(12), W3_BILATERAL_OTHERS(13), W1_W2_GENDER(14),
+  W3_BILATERAL_GENDER(15), ACTIVITY_W1_W2(16), ACTIVITY_W3_BILATERAL(17);
 
   private int value;
 
   private BudgetType(int value) {
     this.value = value;
+  }
+
+  static public BudgetType getBudgetType(int id) {
+    switch (id) {
+      case 1:
+        return BudgetType.W1;
+      case 2:
+        return BudgetType.W2;
+      case 3:
+        return BudgetType.W3;
+      case 4:
+        return BudgetType.BILATERAL;
+      case 5:
+        return BudgetType._LEVERAGED;
+      case 6:
+        return BudgetType.ACTIVITY;
+      case 7:
+        return BudgetType.W1_W2;
+      case 8:
+        return BudgetType.W3_BILATERAL;
+      case 9:
+        return BudgetType.LEVERAGED;
+      case 10:
+        return BudgetType.W1_W2_PARTNERS;
+      case 11:
+        return BudgetType.W1_W2_OTHER;
+      case 12:
+        return BudgetType.W3_BILATERAL_PARTNERS;
+      case 13:
+        return BudgetType.W3_BILATERAL_OTHERS;
+      case 14:
+        return BudgetType.W1_W2_GENDER;
+      case 15:
+        return BudgetType.W3_BILATERAL_GENDER;
+      case 16:
+        return BudgetType.ACTIVITY_W1_W2;
+      case 17:
+        return BudgetType.ACTIVITY_W3_BILATERAL;
+    }
+    return BudgetType.W1_W2;
   }
 
   public int getValue() {
