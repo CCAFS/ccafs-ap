@@ -13,16 +13,6 @@
  *****************************************************************/
 package org.cgiar.ccafs.ap.data.manager.impl;
 
-import org.cgiar.ccafs.ap.config.APConstants;
-import org.cgiar.ccafs.ap.data.dao.ActivityDAO;
-import org.cgiar.ccafs.ap.data.manager.ActivityManager;
-import org.cgiar.ccafs.ap.data.manager.InstitutionManager;
-import org.cgiar.ccafs.ap.data.manager.UserManager;
-import org.cgiar.ccafs.ap.data.model.Activity;
-import org.cgiar.ccafs.ap.data.model.IPElement;
-import org.cgiar.ccafs.ap.data.model.IPIndicator;
-import org.cgiar.ccafs.ap.data.model.User;
-
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -33,6 +23,15 @@ import java.util.List;
 import java.util.Map;
 
 import com.google.inject.Inject;
+import org.cgiar.ccafs.ap.config.APConstants;
+import org.cgiar.ccafs.ap.data.dao.ActivityDAO;
+import org.cgiar.ccafs.ap.data.manager.ActivityManager;
+import org.cgiar.ccafs.ap.data.manager.InstitutionManager;
+import org.cgiar.ccafs.ap.data.manager.UserManager;
+import org.cgiar.ccafs.ap.data.model.Activity;
+import org.cgiar.ccafs.ap.data.model.IPElement;
+import org.cgiar.ccafs.ap.data.model.IPIndicator;
+import org.cgiar.ccafs.ap.data.model.User;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -168,7 +167,9 @@ public class ActivityManagerImpl implements ActivityManager {
       }
       activity.setExpectedResearchOutputs(activityData.get("expected_research_outputs"));
       activity.setExpectedGenderContribution(activityData.get("expected_gender_contribution"));
-      activity.setGenderPercentage(Double.parseDouble(activityData.get("gender_percentage")));
+      if (activityData.get("gender_percentage") != null) {
+        activity.setGenderPercentage(Double.parseDouble(activityData.get("gender_percentage")));
+      }
 
       activity.setCreated(Long.parseLong(activityData.get("created")));
       return activity;
