@@ -1781,6 +1781,11 @@ top: 19px;
    height: 44px;
 }
 
+
+div#gender .fullBlock,div#gender .halfPartBlock {
+    margin-top: 15px;
+}
+
 /* Activity partners*/ 
 
 .activityPartner .filters-link {
