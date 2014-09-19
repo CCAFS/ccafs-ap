@@ -23,7 +23,8 @@ function init(){
   
   $allBudgetInputs = $("input[name$='amount']");
   $CCAFSBudgetInputs = $(".ccafsBudget input[name$='amount']");
-  
+  $W1W2Inputs = $("form .TYPE_W1W2 input[name$='amount']");
+  $W3BilateralInputs = $("form .TYPE_W3 input[name$='amount']");
   // Initial function to load total budget by partner
   calculateTotalBudgetByPartner();
   
@@ -48,13 +49,19 @@ function attachEvents(){
   $("select.leveraged").change(addLeveragedEvent);
   $("#leveraged .leveragedPartner .removeButton").click(removeLeveragedEvent);
   
+  $W1W2Inputs.on("keyup", function(e){
+    verifyBudgetExceeded(e, "W1W2");
+  });
+  $W3BilateralInputs.on("keyup", function(e){
+    verifyBudgetExceeded(e, "W3BILATERAL");
+  });
+  
   $allBudgetInputs.on("keyup", function(e){
     calculateTotalBudgetByPartner();
     calculateCCAFSBudget(e);
     calculateOverallBudget(e);
     calculateLeveragedBudget(e);
     calculateW1W2Budget(e);
-    verifyBudgetExceeded(e);
   });
   $allBudgetInputs.on("keydown", function(event){
     isNumber(event);
@@ -89,9 +96,33 @@ function attachEvents(){
   
 }
 
-function verifyBudgetExceeded(e){
+function verifyBudgetExceeded(e,type){
   var $parent = $(e.target).parent().parent().parent();
-  console.log($parent);
+  var budget = {
+    W1W2 : removeCurrencyFormat($parent.find(".W1_W2 input[name$='amount']").val() + ""),
+    W3BILATERAL : removeCurrencyFormat($parent.find(".W3_BILATERAL input[name$='amount']").val() + ""),
+    LEVERAGED : removeCurrencyFormat($parent.find(".LEVERAGED input[name$='amount']").val() + ""),
+    W1_W2_PARTNERS : removeCurrencyFormat($parent.find(".W1_W2_PARTNERS input[name$='amount']").val() + ""),
+    W1_W2_OTHER : removeCurrencyFormat($parent.find(".W1_W2_OTHER input[name$='amount']").val() + ""),
+    W3_BILATERAL_PARTNERS : removeCurrencyFormat($parent.find(".W3_BILATERAL_PARTNERS input[name$='amount']").val() + ""),
+    W3_BILATERAL_OTHERS : removeCurrencyFormat($parent.find(".W3_BILATERAL_OTHERS input[name$='amount']").val() + ""),
+    W1_W2_GENDER : removeCurrencyFormat($parent.find(".W1_W2_GENDER input[name$='amount']").val() + ""),
+    W3_BILATERAL_GENDER : removeCurrencyFormat($parent.find(".W3_BILATERAL_GENDER input[name$='amount']").val() + "")
+  };
+  $allBudgetInputs.removeClass("fieldError");
+  if (type == "W3BILATERAL") {
+    if ((budget.W3_BILATERAL_PARTNERS + budget.W3_BILATERAL_OTHERS + budget.W3_BILATERAL_GENDER) > budget.W3BILATERAL) {
+      $(e.target).addClass("fieldError");
+    } else {
+      $(e.target).removeClass("fieldError");
+    }
+  } else if (type == "W1W2") {
+    if ((budget.W1_W2_PARTNERS + budget.W1_W2_OTHER + budget.W1_W2_GENDER) > budget.W1W2) {
+      $(e.target).addClass("fieldError");
+    } else {
+      $(e.target).removeClass("fieldError");
+    }
+  }
 }
 
 // Leveraged Functions //
