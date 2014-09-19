@@ -60,6 +60,16 @@ public class BudgetManagerImpl implements BudgetManager {
 
 
   @Override
+  public double calculateProjectLeveragedBudgetByYear(int projectID, int year) {
+    return budgetDAO.calculateProjectLeveragedBudgetByYear(projectID, year);
+  }
+
+  @Override
+  public double calculateProjectTotalLeveragedBudget(int projectID) {
+    return budgetDAO.calculateProjectTotalLeveragedBudget(projectID);
+  }
+
+  @Override
   public double calculateTotalActivityBudget(int activityID) {
     return budgetDAO.calculateTotalActivityBudget(activityID);
   }
@@ -156,7 +166,7 @@ public class BudgetManagerImpl implements BudgetManager {
       Budget budget = new Budget();
       budget.setId(Integer.parseInt(budgetData.get("id")));
       budget.setYear(Integer.parseInt(budgetData.get("year")));
-      budget.setType(BudgetType.ACTIVITY);
+      budget.setType(BudgetType.getBudgetType(Integer.parseInt(budgetData.get("budget_type"))));
       budget.setAmount(Double.parseDouble(budgetData.get("amount")));
       // Institution as institution_id
       budget.setInstitution(institutionManager.getInstitution(Integer.parseInt(budgetData.get("institution_id"))));
@@ -217,23 +227,7 @@ public class BudgetManagerImpl implements BudgetManager {
       Budget budget = new Budget();
       budget.setId(Integer.parseInt(budgetData.get("id")));
       budget.setYear(Integer.parseInt(budgetData.get("year")));
-      switch (Integer.parseInt(budgetData.get("budget_type"))) {
-        case 1:
-          budget.setType(BudgetType.W1);
-          break;
-        case 2:
-          budget.setType(BudgetType.W2);
-          break;
-        case 3:
-          budget.setType(BudgetType.W3);
-          break;
-        case 4:
-          budget.setType(BudgetType.BILATERAL);
-          break;
-        case 5:
-          budget.setType(BudgetType.LEVERAGED);
-          break;
-      }
+      budget.setType(BudgetType.getBudgetType(Integer.parseInt(budgetData.get("budget_type"))));
       budget.setAmount(Double.parseDouble(budgetData.get("amount")));
 
       // Institution as institution_id
@@ -253,23 +247,7 @@ public class BudgetManagerImpl implements BudgetManager {
       Budget budget = new Budget();
       budget.setId(Integer.parseInt(budgetData.get("id")));
       budget.setYear(Integer.parseInt(budgetData.get("year")));
-      switch (Integer.parseInt(budgetData.get("budget_type"))) {
-        case 1:
-          budget.setType(BudgetType.W1);
-          break;
-        case 2:
-          budget.setType(BudgetType.W2);
-          break;
-        case 3:
-          budget.setType(BudgetType.W3);
-          break;
-        case 4:
-          budget.setType(BudgetType.BILATERAL);
-          break;
-        case 5:
-          budget.setType(BudgetType.LEVERAGED);
-          break;
-      }
+      budget.setType(BudgetType.getBudgetType(Integer.parseInt(budgetData.get("budget_type"))));
       budget.setAmount(Double.parseDouble(budgetData.get("amount")));
 
       // Institution as institution_id
@@ -280,6 +258,7 @@ public class BudgetManagerImpl implements BudgetManager {
     }
     return budgets;
   }
+
 
   @Override
   public List<Budget> getCCAFSBudgets(int projectID) {
@@ -289,23 +268,7 @@ public class BudgetManagerImpl implements BudgetManager {
       Budget budget = new Budget();
       budget.setId(Integer.parseInt(budgetData.get("id")));
       budget.setYear(Integer.parseInt(budgetData.get("year")));
-      switch (Integer.parseInt(budgetData.get("budget_type"))) {
-        case 1:
-          budget.setType(BudgetType.W1);
-          break;
-        case 2:
-          budget.setType(BudgetType.W2);
-          break;
-        case 3:
-          budget.setType(BudgetType.W3);
-          break;
-        case 4:
-          budget.setType(BudgetType.BILATERAL);
-          break;
-        case 5:
-          budget.setType(BudgetType.LEVERAGED);
-          break;
-      }
+      budget.setType(BudgetType.getBudgetType(Integer.parseInt(budgetData.get("budget_type"))));
       budget.setAmount(Double.parseDouble(budgetData.get("amount")));
 
       // Institution as institution_id
@@ -315,69 +278,6 @@ public class BudgetManagerImpl implements BudgetManager {
       budgets.add(budget);
     }
     return budgets;
-  }
-
-  @Override
-  public List<Institution> getLeveragedInstitutions(int projectID) {
-    List<Institution> institutions = new ArrayList<>();
-    List<Map<String, String>> institutionDataList = budgetDAO.getLeveragedInstitutions(projectID);
-    for (Map<String, String> iData : institutionDataList) {
-      Institution institution = new Institution();
-      institution.setId(Integer.parseInt(iData.get("id")));
-      institution.setName(iData.get("name"));
-      institution.setAcronym(iData.get("acronym"));
-      institution.setContactPersonName(iData.get("contactPersonName"));
-      institution.setContactPersonEmail(iData.get("contactPersonEmail"));
-
-      // InstitutionType Object
-      if (iData.get("institution_type_id") != null) {
-        institution.setType(institutionManager.getInstitutionType(Integer.parseInt(iData.get("institution_type_id"))));
-      }
-      // Program Object
-      if (iData.get("program_id") != null) {
-        institution.setProgram(ipProgramManager.getIPProgramById(Integer.parseInt(iData.get("program_id"))));
-      }
-      // Location Object
-      if (iData.get("loc_elements_id") != null) {
-        institution.setCountry(locationManger.getCountry(Integer.parseInt(iData.get("loc_elements_id"))));
-      }
-
-      // Adding object to the array.
-      institutions.add(institution);
-    }
-    return institutions;
-  }
-
-
-  @Override
-  public List<Institution> getLeveragedInstitutions(int projectID, int year) {
-    List<Institution> institutions = new ArrayList<>();
-    List<Map<String, String>> institutionDataList = budgetDAO.getLeveragedInstitutions(projectID, year);
-    for (Map<String, String> iData : institutionDataList) {
-      Institution institution = new Institution();
-      institution.setId(Integer.parseInt(iData.get("id")));
-      institution.setName(iData.get("name"));
-      institution.setAcronym(iData.get("acronym"));
-      institution.setContactPersonName(iData.get("contactPersonName"));
-      institution.setContactPersonEmail(iData.get("contactPersonEmail"));
-
-      // InstitutionType Object
-      if (iData.get("institution_type_id") != null) {
-        institution.setType(institutionManager.getInstitutionType(Integer.parseInt(iData.get("institution_type_id"))));
-      }
-      // Program Object
-      if (iData.get("program_id") != null) {
-        institution.setProgram(ipProgramManager.getIPProgramById(Integer.parseInt(iData.get("program_id"))));
-      }
-      // Location Object
-      if (iData.get("loc_elements_id") != null) {
-        institution.setCountry(locationManger.getCountry(Integer.parseInt(iData.get("loc_elements_id"))));
-      }
-
-      // Adding object to the array.
-      institutions.add(institution);
-    }
-    return institutions;
   }
 
 

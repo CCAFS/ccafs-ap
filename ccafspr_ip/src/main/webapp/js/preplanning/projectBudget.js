@@ -1,5 +1,5 @@
 //Global VARS
-var projectTotalCCAFSBudget,projectTotalBudget,yearTotalCCAFSBudget,yearTotalBudget,yearTotalW1W2Budget,projectTotalW1W2Budget;
+var projectTotalCCAFSBudget,projectTotalBudget,yearTotalCCAFSBudget,yearTotalBudget,yearTotalLeveragedBudget,yearTotalW1W2Budget,projectTotalW1W2Budget;
 var $allBudgetInputs,$CCAFSBudgetInputs;
 var editable = true;
 
@@ -15,11 +15,19 @@ function init(){
   projectTotalBudget = parseFloat($("input#projectTotalBudget").val());
   yearTotalBudget = projectTotalBudget - parseFloat($("input#yearTotalBudget").val());
   
+  projectTotalLeveragedBudget = parseFloat($("input#projectTotalLeveragedBudget").val());
+  yearTotalLeveragedBudget = projectTotalLeveragedBudget - parseFloat($("input#yearTotalLeveragedBudget").val());
+  
   projectTotalW1W2Budget = parseFloat($("input#projectTotalW1W2Budget").val());
   yearTotalW1W2Budget = projectTotalW1W2Budget - parseFloat($("input#yearTotalW1W2Budget").val());
   
   $allBudgetInputs = $("input[name$='amount']");
   $CCAFSBudgetInputs = $(".ccafsBudget input[name$='amount']");
+  $W1W2Inputs = $("form .TYPE_W1W2 input[name$='amount']");
+  $W3BilateralInputs = $("form .TYPE_W3 input[name$='amount']");
+  // Initial function to load total budget by partner
+  calculateTotalBudgetByPartner();
+  
   addChosen();
   attachEvents();
   // Show table when page is loaded
@@ -29,15 +37,31 @@ function init(){
   $allBudgetInputs.trigger("focusout");
 }
 
+function calculateTotalBudgetByPartner(){
+  $(".partnerBudget").each(function(index,partnerBudget){
+    var Amount = totalBudget($(partnerBudget).find(".W1_W2 input[name$='amount'],.W3_BILATERAL input[name$='amount']"));
+    $(partnerBudget).find("span.totalBudgetByPartner").text(setCurrencyFormat(Amount));
+  });
+}
+
 function attachEvents(){
   // Leveraged Events
   $("select.leveraged").change(addLeveragedEvent);
   $("#leveraged .leveragedPartner .removeButton").click(removeLeveragedEvent);
   
-  $allBudgetInputs.on("keyup", function(){
-    calculateCCAFSBudget();
-    calculateOverallBudget();
-    calculateW1W2Budget();
+  $W1W2Inputs.on("keyup", function(e){
+    verifyBudgetExceeded(e, "W1W2");
+  });
+  $W3BilateralInputs.on("keyup", function(e){
+    verifyBudgetExceeded(e, "W3BILATERAL");
+  });
+  
+  $allBudgetInputs.on("keyup", function(e){
+    calculateTotalBudgetByPartner();
+    calculateCCAFSBudget(e);
+    calculateOverallBudget(e);
+    calculateLeveragedBudget(e);
+    calculateW1W2Budget(e);
   });
   $allBudgetInputs.on("keydown", function(event){
     isNumber(event);
@@ -55,7 +79,7 @@ function attachEvents(){
   });
   
   $(".handlediv").on("click", function(e){
-    $(e.target).parent().siblings().fadeToggle("slow");
+    $(e.target).parent().siblings().slideToggle("slow");
     $(e.target).toggleClass("down");
     $(e.target).parent().toggleClass("down");
   });
@@ -70,6 +94,35 @@ function attachEvents(){
     });
   }
   
+}
+
+function verifyBudgetExceeded(e,type){
+  var $parent = $(e.target).parent().parent().parent();
+  var budget = {
+    W1W2 : removeCurrencyFormat($parent.find(".W1_W2 input[name$='amount']").val() + ""),
+    W3BILATERAL : removeCurrencyFormat($parent.find(".W3_BILATERAL input[name$='amount']").val() + ""),
+    LEVERAGED : removeCurrencyFormat($parent.find(".LEVERAGED input[name$='amount']").val() + ""),
+    W1_W2_PARTNERS : removeCurrencyFormat($parent.find(".W1_W2_PARTNERS input[name$='amount']").val() + ""),
+    W1_W2_OTHER : removeCurrencyFormat($parent.find(".W1_W2_OTHER input[name$='amount']").val() + ""),
+    W3_BILATERAL_PARTNERS : removeCurrencyFormat($parent.find(".W3_BILATERAL_PARTNERS input[name$='amount']").val() + ""),
+    W3_BILATERAL_OTHERS : removeCurrencyFormat($parent.find(".W3_BILATERAL_OTHERS input[name$='amount']").val() + ""),
+    W1_W2_GENDER : removeCurrencyFormat($parent.find(".W1_W2_GENDER input[name$='amount']").val() + ""),
+    W3_BILATERAL_GENDER : removeCurrencyFormat($parent.find(".W3_BILATERAL_GENDER input[name$='amount']").val() + "")
+  };
+  $allBudgetInputs.removeClass("fieldError");
+  if (type == "W3BILATERAL") {
+    if ((budget.W3_BILATERAL_PARTNERS + budget.W3_BILATERAL_OTHERS + budget.W3_BILATERAL_GENDER) > budget.W3BILATERAL) {
+      $(e.target).addClass("fieldError");
+    } else {
+      $(e.target).removeClass("fieldError");
+    }
+  } else if (type == "W1W2") {
+    if ((budget.W1_W2_PARTNERS + budget.W1_W2_OTHER + budget.W1_W2_GENDER) > budget.W1W2) {
+      $(e.target).addClass("fieldError");
+    } else {
+      $(e.target).removeClass("fieldError");
+    }
+  }
 }
 
 // Leveraged Functions //
@@ -128,29 +181,36 @@ function addChosen(){
 
 // Calculate budget functions
 function calculateOverallBudget(e){
-  var Amount = totalBudget("form input[name$='amount']");
+  var Amount = totalBudget($("form input[name$='amount']"));
   var totalAmount = yearTotalBudget + Amount;
   $("span#projectTotalBudgetByYear").text(setCurrencyFormat(Amount));
   $("span#projectTotalBudget").text(setCurrencyFormat(totalAmount));
 }
 
+function calculateLeveragedBudget(e){
+  var Amount = totalBudget($("form .LEVERAGED input[name$='amount']"));
+  var totalAmount = yearTotalLeveragedBudget + Amount;
+  $("span#projectTotalLeveragedBudgetByYear").text(setCurrencyFormat(Amount));
+  $("span#projectTotalLeveragedBudget").text(setCurrencyFormat(totalAmount));
+}
+
 function calculateCCAFSBudget(e){
-  var Amount = totalBudget("form .ccafsBudget input[name$='amount']");
+  var Amount = totalBudget($("form .W1_W2 input[name$='amount'],form .W3_BILATERAL input[name$='amount']"));
   var totalAmount = yearTotalCCAFSBudget + Amount;
   $("span#projectTotalCCAFSBudgetByYear").text(setCurrencyFormat(Amount));
   $("span#projectTotalCCAFSBudget").text(setCurrencyFormat(totalAmount));
 }
 
 function calculateW1W2Budget(e){
-  var Amount = totalBudget("form .W1 input[name$='amount'],form .W2 input[name$='amount']");
+  var Amount = totalBudget($("form .W1_W2 input[name$='amount']"));
   var totalAmount = yearTotalW1W2Budget + Amount;
   $("span#projectTotalW1W2BudgetByYear").text(setCurrencyFormat(Amount));
   $("span#projectTotalW1W2Budget").text(setCurrencyFormat(totalAmount));
 }
 
-function totalBudget(inputList){
+function totalBudget($inputList){
   var Amount = 0;
-  $(inputList).each(function(index,amount){
+  $inputList.each(function(index,amount){
     if (!$(amount).val().length == 0) {
       Amount += removeCurrencyFormat($(amount).val());
     }

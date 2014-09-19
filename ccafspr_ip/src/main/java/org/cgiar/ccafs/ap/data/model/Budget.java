@@ -17,7 +17,7 @@ import org.apache.commons.lang3.builder.ToStringBuilder;
 
 /**
  * This class represents a specific Budget value within the system.
- *
+ * 
  * @author Héctor Fabio Tobón R.
  */
 public class Budget {

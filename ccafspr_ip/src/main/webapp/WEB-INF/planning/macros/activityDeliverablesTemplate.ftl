@@ -16,23 +16,34 @@
       </legend>
       [#-- Title --] 
       [@customForm.input name="activity.deliverables[${dl_index}].title" type="text" i18nkey="planning.deliverables.title" required=true /]
+
+      [#-- MOG  --]
+      <div class="halfPartBlock chosen">
+        [@customForm.select name="activity.deliverables[${dl_index}].output" label=""  disabled=false i18nkey="planning.deliverables.mog" listName="outputs" keyFieldName="id"  displayFieldName="description"  /]
+      </div>
+
+      [#-- Year  --]
+      <div class="halfPartBlock chosen">
+        [@customForm.select name="activity.deliverables[${dl_index}].year" label=""  disabled=false i18nkey="planning.deliverables.year" listName="allYears" /]
+      </div>
+
       [#-- Main Type --]
       <div class="halfPartBlock chosen">
         [@customForm.select name="mainType" value="activity.deliverables[${dl_index}].type.category.id" label=""  disabled=false i18nkey="planning.deliverables.mainType" listName="deliverableTypes" keyFieldName="id"  displayFieldName="name" /]
       </div>
+
       [#-- Sub Type --]
       <div class="halfPartBlock chosen">
         [@customForm.select name="activity.deliverables[${dl_index}].type" label=""  disabled=false i18nkey="planning.deliverables.subType" listName="" keyFieldName=""  displayFieldName="" /]
         <input type="hidden" id="subTypeSelected_${dl_index}" value="${activity.deliverables[dl_index].type.id}" />
       </div>
-      [#-- Year  --]
+
+      [#-- Sub Type --]
       <div class="halfPartBlock chosen">
-        [@customForm.select name="activity.deliverables[${dl_index}].year" label=""  disabled=false i18nkey="planning.deliverables.year" listName="allYears" /]
+        [@customForm.input name="activity.deliverables[${dl_index}].type" i18nkey="planning.deliverables.subType" /]
+        <input type="hidden" id="" value="" />
       </div>
-      [#-- MOG  --]
-      <div class="halfPartBlock chosen">
-        [@customForm.select name="activity.deliverables[${dl_index}].output" label=""  disabled=false i18nkey="planning.deliverables.mog" listName="outputs" keyFieldName="id"  displayFieldName="description"  /]
-      </div>
+      
       [#if dl.nextUsers?has_content]
         [#list dl.nextUsers as nu] 
           [#-- Next User block  --] 
@@ -52,24 +63,36 @@
     <div id="removeDeliverable-${dl_index}"  class="removeDeliverable removeElement removeLink" title="[@s.text name="planning.deliverables.removeDeliverable" /]"></div>
     <input type="hidden" value="-1" name="].id">
     <legend>[@s.text name="planning.deliverables.expectedDeliverable" ][@s.param name="0"] <span id="deliverableIndex">${dl_index+1}</span>[/@s.param] [/@s.text]</legend>
+    
     [#-- Title --] 
     [@customForm.input name="title" type="text" i18nkey="planning.deliverables.title" required=true /]
-    [#-- Main Type --]
-    <div class="halfPartBlock chosen">
-      [@customForm.select name="mainType" label=""  disabled=false i18nkey="planning.deliverables.mainType" listName="deliverableTypes" keyFieldName="id"  displayFieldName="name" /]
-    </div>
-    [#-- Sub Type --]
-    <div class="halfPartBlock chosen">
-      [@customForm.select name="type" label=""  disabled=false i18nkey="planning.deliverables.subType" listName="" keyFieldName=""  displayFieldName="" /]
-    </div>
-    [#-- Year  --]
-    <div class="halfPartBlock chosen">
-      [@customForm.select name="year" label=""  disabled=false i18nkey="planning.deliverables.year" listName="allYears" /]
-    </div> 
+    
     [#-- MOG  --]
     <div class="halfPartBlock chosen">
       [@customForm.select name="activity.deliverables[${dl_index}].output" label=""  disabled=false i18nkey="planning.deliverables.mog" listName="outputs" keyFieldName="id"  displayFieldName="description"  /]
     </div>
+
+    [#-- Year  --]
+    <div class="halfPartBlock chosen">
+      [@customForm.select name="year" label=""  disabled=false i18nkey="planning.deliverables.year" listName="allYears" /]
+    </div> 
+    
+    [#-- Main Type --]
+    <div class="halfPartBlock chosen">
+      [@customForm.select name="mainType" label=""  disabled=false i18nkey="planning.deliverables.mainType" listName="deliverableTypes" keyFieldName="id"  displayFieldName="name" /]
+    </div>
+    
+    [#-- Sub Type --]
+    <div class="halfPartBlock chosen">
+      [@customForm.select name="type" label=""  disabled=false i18nkey="planning.deliverables.subType" listName="" keyFieldName=""  displayFieldName="" /]
+    </div>
+
+    [#-- Sub Type --]
+    <div class="halfPartBlock chosen">
+      [@customForm.input name="activity.deliverables[${dl_index}].type" i18nkey="planning.deliverables.subType" /]
+      <input type="hidden" id="" value="" />
+    </div>
+    
     [#-- Add next user button  --]
     <div id="addActivityNextUserBlock" class="addLink"><a href=""  class="addActivityNextUser addButton">[@s.text name="planning.deliverables.addNewUser" /]</a></div>
   </div>  

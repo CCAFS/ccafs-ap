@@ -15,8 +15,8 @@ function init(){
   projectTotalBudget = parseFloat($("input#projectTotalBudget").val());
   yearTotalBudget = projectTotalBudget - parseFloat($("input#yearTotalBudget").val());
   
-  projectTotalLeveragedBudget = 0;
-  yearTotalLeveragedBudget = projectTotalLeveragedBudget - parseFloat(0);
+  projectTotalLeveragedBudget = parseFloat($("input#projectTotalLeveragedBudget").val());
+  yearTotalLeveragedBudget = projectTotalLeveragedBudget - parseFloat($("input#yearTotalLeveragedBudget").val());
   
   projectTotalW1W2Budget = parseFloat($("input#projectTotalW1W2Budget").val());
   yearTotalW1W2Budget = projectTotalW1W2Budget - parseFloat($("input#yearTotalW1W2Budget").val());
@@ -39,7 +39,6 @@ function init(){
 function calculateTotalBudgetByPartner(){
   $(".partnerBudget").each(function(index,partnerBudget){
     var Amount = totalBudget($(partnerBudget).find(".W1_W2 input[name$='amount'],.W3_BILATERAL input[name$='amount']"));
-    console.log($(partnerBudget).find("span#totalBudgetByPartner"));
     $(partnerBudget).find("span.totalBudgetByPartner").text(setCurrencyFormat(Amount));
   });
 }
