@@ -166,7 +166,7 @@ public class BudgetManagerImpl implements BudgetManager {
       Budget budget = new Budget();
       budget.setId(Integer.parseInt(budgetData.get("id")));
       budget.setYear(Integer.parseInt(budgetData.get("year")));
-      budget.setType(BudgetType.ACTIVITY);
+      budget.setType(BudgetType.getBudgetType(Integer.parseInt(budgetData.get("budget_type"))));
       budget.setAmount(Double.parseDouble(budgetData.get("amount")));
       // Institution as institution_id
       budget.setInstitution(institutionManager.getInstitution(Integer.parseInt(budgetData.get("institution_id"))));

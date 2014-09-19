@@ -81,7 +81,8 @@ INSERT INTO `budget_types` (`id`, `name`) VALUES
 (13, 'W3/Bilateral Collaborator Cost-Other CGIAR Center'),
 (14, 'W1 W2 Gender Budget'),
 (15, 'W3/Bilateral Gender Budget'),
-(16, 'Activity budget');
+(16, 'Activity budget W1 W2');
+(17, 'Activity budget W3 bilateral');
 
 --
 -- Volcado de datos para la tabla `loc_element_types`
