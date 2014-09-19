@@ -140,8 +140,8 @@
                         <input type="hidden" name="project.budgets[${counter}].type" value="LEVERAGED" />
                         [@customForm.input name="project.budgets[${counter}].amount" showTitle=false disabled=!fullEditable value="${mapBudgets[year?c+'-'+project.leader.currentInstitution.id?c+'-LEVERAGED'].amount?c}"/]
                         [@s.set var="counter" value="${counter+1}"/]
-                      </div> 
-                      
+                      </div>
+
                       [#-- ------------------------------  Partnerships types ------------------------ --]
                       <div id="" class="grid_1 ">&nbsp;</div>
                       <div id="" class="grid_2 budgetTypeHead">[@s.text name="preplanning.projectBudget.partnership.W1W2CollaboratorPartners"/]</div>

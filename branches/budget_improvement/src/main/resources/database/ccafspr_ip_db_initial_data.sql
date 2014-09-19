@@ -66,16 +66,22 @@ INSERT INTO `ip_relationship_type` (`id`, `name`) VALUES
 --
 
 INSERT INTO `budget_types` (`id`, `name`) VALUES
-(1, 'W1 W2 Budget'),
-(2, 'W3/Bilateral Budget'),
-(3, 'Leveraged Budget'),
-(4, 'W1 W2 Collaborator Cost-Partners'),
-(5, 'W1 W2 Collaborator Cost-Other CGIAR Center'),
-(6, 'W3/Bilateral Collaborator Cost-Partners'),
-(7, 'W3/Bilateral Collaborator Cost-Other CGIAR Center'),
-(8, 'W1 W2 Gender Budget'),
-(9, 'W3/Bilateral Gender Budget'),
-(10, 'Activity budget');
+(1, 'W1'),
+(2, 'W2'),
+(3, 'W3'),
+(4, 'Bilateral'),
+(5, 'Leveraged'),
+(6, 'Activity Budget'),
+(7, 'W1 W2 Budget'),
+(8, 'W3/Bilateral Budget'),
+(9, 'Leveraged Budget'),
+(10, 'W1 W2 Collaborator Cost-Partners'),
+(11, 'W1 W2 Collaborator Cost-Other CGIAR Center'),
+(12, 'W3/Bilateral Collaborator Cost-Partners'),
+(13, 'W3/Bilateral Collaborator Cost-Other CGIAR Center'),
+(14, 'W1 W2 Gender Budget'),
+(15, 'W3/Bilateral Gender Budget'),
+(16, 'Activity budget');
 
 --
 -- Volcado de datos para la tabla `loc_element_types`

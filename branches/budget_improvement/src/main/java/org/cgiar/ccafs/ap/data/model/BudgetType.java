@@ -24,8 +24,9 @@ import org.apache.commons.lang3.builder.ToStringBuilder;
  */
 public enum BudgetType {
 
-  W1_W2(1), W3_BILATERAL(2), LEVERAGED(3), W1_W2_PARTNERS(4), W1_W2_OTHER(5), W3_BILATERAL_PARTNERS(6),
-  W3_BILATERAL_OTHERS(7), W1_W2_GENDER(8), W3_BILATERAL_GENDER(9), ACTIVITY(10);
+  W1(1), W2(2), W3(3), BILATERAL(4), _LEVERAGED(5), ACTIVITY(6), W1_W2(7), W3_BILATERAL(8), LEVERAGED(9),
+  W1_W2_PARTNERS(10), W1_W2_OTHER(11), W3_BILATERAL_PARTNERS(12), W3_BILATERAL_OTHERS(13), W1_W2_GENDER(14),
+  W3_BILATERAL_GENDER(15), ACTIVITY_W1_W2(16), ACTIVITY_W3_BILATERAL(17);
 
   private int value;
 
@@ -48,13 +49,27 @@ public enum BudgetType {
       case 6:
         return BudgetType.W3_BILATERAL_PARTNERS;
       case 7:
-        return BudgetType.W3_BILATERAL_OTHERS;
+        return BudgetType.W1_W2;
       case 8:
-        return BudgetType.W1_W2_GENDER;
+        return BudgetType.W3_BILATERAL;
       case 9:
-        return BudgetType.W3_BILATERAL_GENDER;
+        return BudgetType.LEVERAGED;
       case 10:
-        return BudgetType.ACTIVITY;
+        return BudgetType.W1_W2_PARTNERS;
+      case 11:
+        return BudgetType.W1_W2_OTHER;
+      case 12:
+        return BudgetType.W3_BILATERAL_PARTNERS;
+      case 13:
+        return BudgetType.W3_BILATERAL_OTHERS;
+      case 14:
+        return BudgetType.W1_W2_GENDER;
+      case 15:
+        return BudgetType.W3_BILATERAL_GENDER;
+      case 16:
+        return BudgetType.ACTIVITY_W1_W2;
+      case 17:
+        return BudgetType.ACTIVITY_W3_BILATERAL;
     }
     return BudgetType.W1_W2;
   }
