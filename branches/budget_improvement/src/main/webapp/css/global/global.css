@@ -118,6 +118,13 @@ input[type="radio"] {
 select{
   width: 99%;
 }
+
+.disabled-label {
+	background: #FFF !important; 
+	box-shadow: none !important;
+	color: #7E7E7E !important;
+}
+
 .dataTables_wrapper select {
   width: auto !important;
 }
