@@ -166,6 +166,10 @@ public class ActivityManagerImpl implements ActivityManager {
       if (activityData.get("is_global") != null) {
         activity.setGlobal(activityData.get("is_global").equals("1"));
       }
+      activity.setExpectedResearchOutputs(activityData.get("expected_research_outputs"));
+      activity.setExpectedGenderContribution(activityData.get("expected_gender_contribution"));
+      activity.setGenderPercentage(Double.parseDouble(activityData.get("gender_percentage")));
+
       activity.setCreated(Long.parseLong(activityData.get("created")));
       return activity;
     }
@@ -320,6 +324,9 @@ public class ActivityManagerImpl implements ActivityManager {
       activityData.put("expected_leader_id", activity.getExpectedLeader().getId());
     }
     activityData.put("is_global", activity.isGlobal());
+    activityData.put("expected_research_outputs", activity.getExpectedResearchOutputs());
+    activityData.put("expected_gender_contribution", activity.getExpectedGenderContribution());
+    activityData.put("gender_percentage", activity.getGenderPercentage());
     return activityDAO.saveActivity(projectID, activityData);
   }
 
