@@ -23,7 +23,7 @@ import org.apache.commons.lang3.builder.ToStringBuilder;
 
 /**
  * This class represents a CCAFS Activity, which belongs to a specific Project.
- * 
+ *
  * @author Héctor Fabio Tobón R.
  */
 public class Activity {
@@ -46,6 +46,9 @@ public class Activity {
   private List<Budget> budgets;
   private List<Deliverable> deliverables;
   private IPOtherContribution ipOtherContribution;
+  private String expectedResearchOutputs;
+  private String expectedGenderContribution;
+  private double genderPercentage;
 
 
   public Activity() {
@@ -81,7 +84,7 @@ public class Activity {
 
   /**
    * This method calculates all the years between the start date and the end date.
-   * 
+   *
    * @return a List of numbers representing all the years, or an empty list if nothing found.
    */
   public List<Integer> getAllYears() {
@@ -103,15 +106,17 @@ public class Activity {
     return allYears;
   }
 
+
   public List<Budget> getBudgets() {
     return budgets;
   }
+
 
   /**
    * This method returns a composed Identifier that is going to be used in the front-end.
    * The convention is going to be used depending on the creation date of the activity.
    * yyyy-activityID => e.g. 2014-12
-   * 
+   *
    * @return the composed identifier or null if the created date is null.
    */
   public String getComposedId() {
@@ -143,8 +148,20 @@ public class Activity {
     return endDate;
   }
 
+  public String getExpectedGenderContribution() {
+    return expectedGenderContribution;
+  }
+
   public User getExpectedLeader() {
     return expectedLeader;
+  }
+
+  public String getExpectedResearchOutputs() {
+    return expectedResearchOutputs;
+  }
+
+  public double getGenderPercentage() {
+    return genderPercentage;
   }
 
   public int getId() {
@@ -154,7 +171,7 @@ public class Activity {
   /**
    * This method search if the list of indicators contains an indicator
    * which parent is identified by the value passed as parameter.
-   * 
+   *
    * @param indicatorID - indicator identifier
    * @return If the indicator is found, the method returns it. Otherwise, return null
    */
@@ -220,10 +237,6 @@ public class Activity {
     this.activityPartners = partners;
   }
 
-// public void setExpectedLeader(ExpectedActivityLeader expectedLeader) {
-// this.expectedLeader = expectedLeader;
-// }
-
   public void setBudgets(List<Budget> budgets) {
     this.budgets = budgets;
   }
@@ -235,6 +248,10 @@ public class Activity {
   public void setCrossCuttings(List<IPCrossCutting> crossCuttings) {
     this.crossCuttings = crossCuttings;
   }
+
+// public void setExpectedLeader(ExpectedActivityLeader expectedLeader) {
+// this.expectedLeader = expectedLeader;
+// }
 
   public void setDeliverables(List<Deliverable> deliverables) {
     this.deliverables = deliverables;
@@ -248,8 +265,20 @@ public class Activity {
     this.endDate = endDate;
   }
 
+  public void setExpectedGenderContribution(String expectedGenderContribution) {
+    this.expectedGenderContribution = expectedGenderContribution;
+  }
+
   public void setExpectedLeader(User expectedLeader) {
     this.expectedLeader = expectedLeader;
+  }
+
+  public void setExpectedResearchOutputs(String expectedResearchOutputs) {
+    this.expectedResearchOutputs = expectedResearchOutputs;
+  }
+
+  public void setGenderPercentage(double genderPercentage) {
+    this.genderPercentage = genderPercentage;
   }
 
   public void setGlobal(boolean isGlobal) {
