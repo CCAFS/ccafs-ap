@@ -63,6 +63,10 @@
         <div class="halfPartBlock">
           [@customForm.input name="activity.endDate" type="text" i18nkey="planning.activityDescription.endDate" required=true /]
         </div>
+       </div> 
+       
+        <h1>[@s.text name="planning.activityDescription.genderTitle" /]</h1>
+       <div id="gender" class="borderBox">
         [#-- Cross Cutting --]
         <div id="activityCrossCutting" class="thirdPartBlock" ">
           <h6>[@s.text name="planning.activityDescription.crossCutting" /]</h6>
@@ -73,6 +77,22 @@
         <div id="activityCrossCuttingDescription" class="halfPartBlock">
           <div id="crossCuttingDesc" class="crossCuttingDescription" >[@s.text name="planning.activityDescription.crossCutting.description" /]</div>
         </div>
+        
+        [#-- Expected research outputs  --]
+        <div class="fullBlock">
+          [@customForm.textArea name="activity.expectedResearchOutputs" i18nkey="planning.activityDescription.expectedResearchOutputs" required=true className="activity-expected-research-outputs"  /]
+        </div>
+        
+        [#-- Expected gender contribution  --]
+        <div class="fullBlock">
+          [@customForm.textArea name="activity.expectedGenderContribution" i18nkey="planning.activityDescription.expectedGenderContribution" required=true className="activity-expected-gender-contribution"  /]
+        </div>
+        
+        [#-- Gender Percentage --]
+        <div class="halfPartBlock">
+          [@customForm.input name="activity.genderPercentage" type="text" i18nkey="planning.activityDescription.genderPercentage" className="activity-gender-contribution-percentage" required=true /]
+        </div>
+        
       </div> <!-- End description .borderBox-->
       
       [#-- Activity Leader --]
