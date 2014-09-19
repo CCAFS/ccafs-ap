@@ -65,19 +65,8 @@
         </div>
        </div> 
        
-        <h1>[@s.text name="planning.activityDescription.genderTitle" /]</h1>
-       <div id="gender" class="borderBox">
-        [#-- Cross Cutting --]
-        <div id="activityCrossCutting" class="thirdPartBlock" ">
-          <h6>[@s.text name="planning.activityDescription.crossCutting" /]</h6>
-          <div class="checkboxGroup">
-            [@s.checkboxlist name="activity.crossCuttings" list="ipCrossCuttings" listKey="id" listValue="name" cssClass="checkbox" value="crossCuttingIds" /]
-          </div>
-        </div>
-        <div id="activityCrossCuttingDescription" class="halfPartBlock">
-          <div id="crossCuttingDesc" class="crossCuttingDescription" >[@s.text name="planning.activityDescription.crossCutting.description" /]</div>
-        </div>
-        
+       <h1>[@s.text name="planning.activityDescription.genderTitle" /]</h1>
+       <div id="gender" class="borderBox"> 
         [#-- Expected research outputs  --]
         <div class="fullBlock">
           [@customForm.textArea name="activity.expectedResearchOutputs" i18nkey="planning.activityDescription.expectedResearchOutputs" required=true className="activity-expected-research-outputs"  /]
@@ -91,9 +80,23 @@
         [#-- Gender Percentage --]
         <div class="halfPartBlock">
           [@customForm.input name="activity.genderPercentage" type="text" i18nkey="planning.activityDescription.genderPercentage" className="activity-gender-contribution-percentage" required=true /]
-        </div>
-        
+        </div> 
       </div> <!-- End description .borderBox-->
+      
+      <h1>[@s.text name="planning.activityDescription.crossCuttingTitle" /]</h1>
+      <div id="gender" class="borderBox"> 
+        [#-- Cross Cutting --]
+        <div id="activityCrossCutting" class="thirdPartBlock" ">
+          <h6>[@s.text name="planning.activityDescription.crossCutting" /]</h6>
+          <div class="checkboxGroup">
+            [@s.checkboxlist name="activity.crossCuttings" list="ipCrossCuttings" listKey="id" listValue="name" cssClass="checkbox" value="crossCuttingIds" /]
+          </div>
+        </div>
+        <div id="activityCrossCuttingDescription" class="halfPartBlock">
+          <div id="crossCuttingDesc" class="crossCuttingDescription" >[@s.text name="planning.activityDescription.crossCutting.description" /]</div>
+        </div>
+      </div>  
+      
       
       [#-- Activity Leader --]
       <h1 class="contentTitle">
