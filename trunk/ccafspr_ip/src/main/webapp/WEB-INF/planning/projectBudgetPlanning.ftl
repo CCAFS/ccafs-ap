@@ -37,11 +37,7 @@
     <article class="halfContent" id="projectBudget">
     [#include "/WEB-INF/planning/planningDataSheet.ftl" /]
     [#-- Informing user that he/she doesn't have enough privileges to edit. See GranProjectAccessInterceptor--]
-    [#if saveable && !fullEditable]
-      <p class="readPrivileges">
-        [@s.text name="planning.projectBudget.privileges" /]
-      </p>
-    [#elseif !saveable && fullEditable]
+    [#if !saveable]
       <p class="readPrivileges">
         [@s.text name="saving.read.privileges"]
           [@s.param][@s.text name="preplanning.project"/][/@s.param]
@@ -369,7 +365,7 @@
     [/#if]
     [#-- Showing buttons only to users with enough privileges. See GranProjectAccessInterceptor--]
     
-    [#if fullEditable && saveable]
+    [#if saveable]
       [#if allYears?has_content && !invalidYear && hasLeader]
         <!-- internal parameter -->
         <input name="projectID" type="hidden" value="${project.id?c}" />
