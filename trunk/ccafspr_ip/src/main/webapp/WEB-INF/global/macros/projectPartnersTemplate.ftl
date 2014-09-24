@@ -19,7 +19,7 @@
         </div>
         
         [#-- Filters --]
-        [#if canEdit]
+        [#if canEdit && ap.id != -1]
           <div class="filters-link">[@s.text name="preplanning.projectPartners.filters" /]</div>
           <div class="filters-content">
             [#-- Partner type list --]

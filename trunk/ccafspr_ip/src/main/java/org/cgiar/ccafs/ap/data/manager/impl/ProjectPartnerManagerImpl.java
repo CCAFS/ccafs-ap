@@ -14,6 +14,7 @@
 package org.cgiar.ccafs.ap.data.manager.impl;
 
 import org.cgiar.ccafs.ap.data.dao.ProjectPartnerDAO;
+import org.cgiar.ccafs.ap.data.manager.InstitutionManager;
 import org.cgiar.ccafs.ap.data.manager.ProjectPartnerManager;
 import org.cgiar.ccafs.ap.data.model.Institution;
 import org.cgiar.ccafs.ap.data.model.Project;
@@ -24,11 +25,9 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import com.google.inject.Inject;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-
-import org.cgiar.ccafs.ap.data.manager.InstitutionManager;
-import com.google.inject.Inject;
 
 
 /**
@@ -87,6 +86,12 @@ public class ProjectPartnerManagerImpl implements ProjectPartnerManager {
     Map<String, Object> projectPartnerData = new HashMap<>();
     for (ProjectPartner projectPartner : projectPartners) {
       projectPartnerData.clear();
+
+      // Remove invalid project partners
+      if (projectPartner.getPartner().getId() == -1) {
+        continue;
+      }
+
       // if is a new project partner, do not assign an id.
       if (projectPartner.getId() > 0) {
         projectPartnerData.put("id", projectPartner.getId());

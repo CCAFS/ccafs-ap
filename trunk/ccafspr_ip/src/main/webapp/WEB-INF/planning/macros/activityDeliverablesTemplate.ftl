@@ -39,7 +39,7 @@
       </div>
 
       [#-- Sub Type --]
-      <div class="halfPartBlock chosen">
+      <div class="halfPartBlock chosen" style="display:none">
         [@customForm.input name="activity.deliverables[${dl_index}].type" i18nkey="planning.deliverables.subType" /]
         <input type="hidden" id="" value="" />
       </div>
@@ -88,7 +88,7 @@
     </div>
 
     [#-- Sub Type --]
-    <div class="halfPartBlock chosen">
+    <div class="halfPartBlock chosen" style="display:none">
       [@customForm.input name="activity.deliverables[${dl_index}].type" i18nkey="planning.deliverables.subType" /]
       <input type="hidden" id="" value="" />
     </div>
