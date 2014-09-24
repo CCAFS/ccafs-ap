@@ -41,7 +41,7 @@ import org.slf4j.LoggerFactory;
 
 /**
  * This class is used to manage the Project Partners section in the planning step.
- *
+ * 
  * @author Hernán Carvajal
  */
 public class ProjectPartnersPlanningAction extends BaseAction {
@@ -140,7 +140,13 @@ public class ProjectPartnersPlanningAction extends BaseAction {
     project.setProjectPartners(projectPartnerManager.getProjectPartners(projectID));
 
     // Getting all partners.
-    allPartners = institutionManager.getAllInstitutions();
+    allPartners = new ArrayList<>();
+    Institution placeHolder = new Institution(-1);
+    placeHolder.setType(new InstitutionType());
+    placeHolder.setName(getText("planning.projectPartners.selectInstitution"));
+
+    allPartners.add(placeHolder);
+    allPartners.addAll(institutionManager.getAllInstitutions());
 
     // Getting all the countries
     countries = locationManager.getInstitutionCountries();
@@ -210,7 +216,7 @@ public class ProjectPartnersPlanningAction extends BaseAction {
         }
 
         // Saving Project leader
-        if (isExpected) {
+        if (isExpected && project.getExpectedLeader().getCurrentInstitution() != null) {
           saved = projectManager.saveExpectedProjectLeader(project.getId(), project.getExpectedLeader());
           if (!saved) {
             success = false;
@@ -308,19 +314,50 @@ public class ProjectPartnersPlanningAction extends BaseAction {
 
   @Override
   public void validate() {
-    // Validate only in case the user has full privileges. Otherwise, the partner fields that are disabled won't be sent
-// here.
-    if (this.isFullEditable()) {
+    // Validate only in case the user has full privileges. Otherwise, the partner
+    // fields that are disabled won't be sent here.
+
+    if (save && this.isFullEditable()) {
       // Validate if there are duplicate institutions.
       boolean problem = false;
       Set<Institution> institutions = new HashSet<>();
       if (project.getLeader() != null) {
         institutions.add(project.getLeader().getCurrentInstitution());
       } else if (project.getExpectedLeader() != null) {
-        institutions.add(project.getExpectedLeader().getCurrentInstitution());
+
+        if (project.getExpectedLeader().getCurrentInstitution() == null) {
+          if (!project.getExpectedLeader().getEmail().isEmpty()
+            || !project.getExpectedLeader().getFirstName().isEmpty()
+            || !project.getExpectedLeader().getLastName().isEmpty()) {
+            // Show an error to prevent the loss of information
+            addFieldError("project.expectedLeader.currentInstitution",
+              getText("planning.projectPartners.selectInstitution"));
+            problem = true;
+          }
+        } else {
+          institutions.add(project.getExpectedLeader().getCurrentInstitution());
+        }
       }
+
       for (int c = 0; c < project.getProjectPartners().size(); c++) {
-        if (!institutions.add(project.getProjectPartners().get(c).getPartner())) {
+        ProjectPartner projectPartner = project.getProjectPartners().get(c);
+        // If the institution is undefined
+        if (projectPartner.getPartner().getId() == -1) {
+          // All the information is empty
+          if (projectPartner.getContactEmail().isEmpty() && projectPartner.getContactName().isEmpty()
+            && projectPartner.getResponsabilities().isEmpty()) {
+            project.getProjectPartners().remove(c);
+            c--;
+            continue;
+          } else {
+            // Show an error to prevent the loss of information
+            addFieldError("project.projectPartners[" + c + "].partner",
+              getText("planning.projectPartners.selectInstitution"));
+            problem = true;
+          }
+        }
+
+        if (!institutions.add(projectPartner.getPartner())) {
           addFieldError("project.projectPartners[" + c + "].partner",
             getText("preplanning.projectPartners.duplicatedInstitution.field"));
           problem = true;
@@ -328,10 +365,9 @@ public class ProjectPartnersPlanningAction extends BaseAction {
       }
 
       if (problem) {
-        addActionError(getText("preplanning.projectPartners.duplicatedInstitution.general"));
+        addActionError(getText("saving.fields.required"));
       }
     }
     super.validate();
   }
-
 }

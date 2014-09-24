@@ -7,7 +7,7 @@ $(document).ready(function(){
   if (!$("div.projectPartner").length) {
     $("a.addProjectPartner").trigger("click");
   }
-  
+
 });
 
 function attachEvents(){

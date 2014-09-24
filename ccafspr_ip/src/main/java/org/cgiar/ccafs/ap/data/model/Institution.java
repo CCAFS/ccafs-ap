@@ -42,6 +42,11 @@ public class Institution {
     super();
   }
 
+  public Institution(int id) {
+    super();
+    this.id = id;
+  }
+
   @Override
   public boolean equals(Object obj) {
     if (obj instanceof Institution) {
