@@ -112,8 +112,6 @@ public class MySQLBudgetDAO implements BudgetDAO {
     query.append("INNER JOIN activity_budgets ab ON b.id = ab.budget_id ");
     query.append(" WHERE ab.activity_id = ");
     query.append(activityID);
-    query.append(" AND b.budget_type =  ");
-    query.append(BudgetType.ACTIVITY.getValue());
 
     try (Connection con = databaseManager.getConnection()) {
       ResultSet rs = databaseManager.makeQuery(query.toString(), con);
@@ -141,8 +139,6 @@ public class MySQLBudgetDAO implements BudgetDAO {
     query.append(activityID);
     query.append(" AND b.year =  ");
     query.append(year);
-    query.append(" AND b.budget_type =  ");
-    query.append(BudgetType.ACTIVITY.getValue());
 
     try (Connection con = databaseManager.getConnection()) {
       ResultSet rs = databaseManager.makeQuery(query.toString(), con);
