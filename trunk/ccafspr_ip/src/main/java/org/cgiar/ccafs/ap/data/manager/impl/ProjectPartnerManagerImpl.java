@@ -88,7 +88,9 @@ public class ProjectPartnerManagerImpl implements ProjectPartnerManager {
       projectPartnerData.clear();
 
       // Remove invalid project partners
-      if (projectPartner.getPartner().getId() == -1) {
+      if (projectPartner.getPartner() == null) {
+        continue;
+      } else if (projectPartner.getPartner().getId() == -1) {
         continue;
       }
 
