@@ -309,10 +309,10 @@ public class ProjectPartnersPreplanningAction extends BaseAction {
       for (int c = 0; c < project.getProjectPartners().size(); c++) {
         ProjectPartner projectPartner = project.getProjectPartners().get(c);
         // If the institution is undefined
-        if (projectPartner.getPartner().getId() == -1) {
+        if (projectPartner.getPartner() == null || projectPartner.getPartner().getId() == -1) {
           // All the information is empty
           if (projectPartner.getContactEmail().isEmpty() && projectPartner.getContactName().isEmpty()
-            && projectPartner.getResponsabilities().isEmpty()) {
+            && (projectPartner.getResponsabilities() == null || projectPartner.getResponsabilities().isEmpty())) {
             project.getProjectPartners().remove(c);
             c--;
             continue;
