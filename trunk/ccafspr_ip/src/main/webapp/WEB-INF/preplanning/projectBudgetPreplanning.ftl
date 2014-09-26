@@ -105,7 +105,7 @@
                     <div id="partnerBudget-lead" class="partnerBudget row clearfix">
                       [#-- Partner Leader Name --]
                       <div id="" class="grid_9 budgetPartnerTitle down">
-                        ${project.leader.currentInstitution.name} <strong>([@s.text name="preplanning.projectBudget.partnerLead" /])</strong> 
+                        ${project.leader.currentInstitution.composedName} <strong>([@s.text name="preplanning.projectBudget.partnerLead" /])</strong> 
                         <p class="totalBudget"><strong>[@s.text name="preplanning.projectBudget.partner.totalBudget"/]</strong> US$ <span class="totalBudgetByPartner"> 0.00 </span></p>
                         <div class="handlediv"><br></div>
                       </div> 
@@ -222,7 +222,7 @@
                     <div id="partnerBudget-${projectPartner_index}" class="partnerBudget row clearfix">
                       [#-- Partner Name --]
                       <div id="" class="grid_9 budgetPartnerTitle down">
-                        ${projectPartner.partner.name}
+                        ${projectPartner.partner.composedName}
                         <p class="totalBudget"><strong>[@s.text name="preplanning.projectBudget.partner.totalBudget"/]</strong>  US$ <span class="totalBudgetByPartner"> 0.00</span></p>
                         <div class="handlediv"><br></div>
                       </div> 

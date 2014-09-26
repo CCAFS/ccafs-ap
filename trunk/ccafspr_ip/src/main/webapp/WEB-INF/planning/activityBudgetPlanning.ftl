@@ -76,7 +76,7 @@
                   [#if activity.leader?has_content]
                     <tr class="row">
                       [#-- Partner Leader Name --]
-                      <td class="grid_5">${activity.leader.currentInstitution.name} <strong>([@s.text name="planning.activityBudget.partnerLead" /])</strong> </td> 
+                      <td class="grid_5">${activity.leader.currentInstitution.composedName} <strong>([@s.text name="planning.activityBudget.partnerLead" /])</strong> </td> 
                       [#--W1W2 Type --]
                       <td class="budgetContent grid_2">
                         <input type="hidden" name="activity.budgets[${counter}].id" value="${mapBudgets[year?c+'-'+activity.leader.currentInstitution.id?c+'-ACTIVITY_W1_W2'].id?c}" />
@@ -100,7 +100,7 @@
                   [#list activityPartners as activityPartner ]
                     <tr id="partnerBudget-${activityPartner_index}" class="row">
                       [#-- Partner Name --]
-                      <td id="" class="grid_5">${activityPartner.partner.name}</td>
+                      <td id="" class="grid_5">${activityPartner.partner.composedName}</td>
                       [#-- Activity Type --]
                       <td id="" class="budgetContent grid_2">
                         <input type="hidden" name="activity.budgets[${counter}].id" value="${mapBudgets[year?c+'-'+activityPartner.partner.id?c+'-ACTIVITY_W1_W2'].id?c}" />
