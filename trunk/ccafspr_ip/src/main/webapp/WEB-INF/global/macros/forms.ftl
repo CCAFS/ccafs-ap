@@ -1,5 +1,5 @@
 [#ftl]
-[#macro input name value="-NULL" type="text" i18nkey="" disabled=false required=false errorField="" help="" display=true className="-NULL" showTitle=true]
+[#macro input name value="-NULL" type="text" i18nkey="" disabled=false required=false errorField="" help="" display=true className="-NULL" readOnly=false showTitle=true]
   <div class="input" [#if !display]style="display: none;"[/#if]>
     [#if showTitle]
       <h6>
@@ -12,7 +12,7 @@
       </h6>
     [/#if]
     [#if errorField==""][@s.fielderror cssClass="fieldError" fieldName="${name}"/][#else][@s.fielderror cssClass="fieldError" fieldName="${errorfield}"/][/#if]
-    <input type="${type}" id="${name}" name="${name}" value="[#if value=="-NULL"][@s.property value="${name?string}"/][#else]${value}[/#if]" [#if disabled]disabled="disabled"[/#if] [#if className != "-NULL"] class="${className}" [/#if] />
+    <input type="${type}" id="${name}" name="${name}" value="[#if value=="-NULL"][@s.property value="${name?string}"/][#else]${value}[/#if]"  [#if className != "-NULL"] class="${className}" [/#if][#if readOnly] readonly="readonly"[/#if] [#if disabled]disabled="disabled"[/#if] />
   </div>
 [/#macro]
 

@@ -125,8 +125,8 @@
                         <input type="hidden" name="project.budgets[${counter}].type" value="W1_W2" />
                         [#if fullEditable]
                           [@customForm.input name="project.budgets[${counter}].amount" showTitle=false disabled=!fullEditable value="${mapBudgets[year?c+'-'+project.leader.currentInstitution.id?c+'-W1_W2'].amount?c}"/]
-                        [#else]
-                          [@customForm.input name="project.budgets[${counter}].amount" disabled=true className="disabled-label" showTitle=false disabled=!fullEditable value="${mapBudgets[year?c+'-'+project.leader.currentInstitution.id?c+'-W1_W2'].amount?c}"/]
+                        [#else] 
+                          [@customForm.input name="project.budgets[${counter}].amount" readOnly=true className="disabled-label" showTitle=false value="${mapBudgets[year?c+'-'+project.leader.currentInstitution.id?c+'-W1_W2'].amount?c}"/]
                         [/#if]
                         [@s.set var="counter" value="${counter+1}"/]
                       </div>
@@ -249,7 +249,7 @@
                           [#if fullEditable]
                             [@customForm.input name="project.budgets[${counter}].amount" showTitle=false  value="${mapBudgets[year?c+'-'+projectPartner.partner.id?c+'-W1_W2'].amount?c}"/]
                           [#else] 
-                            [@customForm.input name="project.budgets[${counter}].amount" disabled=true className="disabled-label" showTitle=false  value="${mapBudgets[year?c+'-'+projectPartner.partner.id?c+'-W1_W2'].amount?c}"/]
+                            [@customForm.input name="project.budgets[${counter}].amount" readOnly=true className="disabled-label" showTitle=false  value="${mapBudgets[year?c+'-'+projectPartner.partner.id?c+'-W1_W2'].amount?c}"/]
                           [/#if]
                           [@s.set var="counter" value="${counter+1}"/]
                       </div>
