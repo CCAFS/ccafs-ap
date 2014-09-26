@@ -63,9 +63,9 @@
           [#-- Accumulative Total W1 W2 + W3+ Bilateral Budget --]
           <div id="totalBudget" class="thirdPartBlock">
             <h6>[@s.text name="preplanning.projectBudget.totalCCAFSBudget" /]</h6>
-            <p id="projectTotalCCAFS">US$ <span id="projectTotalCCAFSBudget">${totalCCAFSBudget?string(",##0.00")}</span></p>
-            <input type="hidden" id="projectTotalCCAFSBudget" value="${totalCCAFSBudget?c}" />
-            <input type="hidden" id="yearTotalCCAFSBudget" value="${totalCCAFSBudgetByYear?c}" />
+            <p id="projectTotalCCAFS">US$ <span id="projectTotalCCAFSBudget">${totalW1W2W3BilateralBudget?string(",##0.00")}</span></p>
+            <input type="hidden" id="projectTotalCCAFSBudget" value="${totalW1W2W3BilateralBudget?c}" />
+            <input type="hidden" id="yearTotalCCAFSBudget" value="${totalW1W2W3BilateralBudgetByYear?c}" />
           </div>
           [#-- Accumulative Leverage Funds --]
           <div id="totalBudget" class="thirdPartBlock">
@@ -93,7 +93,7 @@
                   </div>
                   <div id="totalCCAFSBudgetByYear" class="BudgetByYear"> 
                     <p id="projectTotalByYear"><strong> [@s.text name="preplanning.projectBudget.totalYearCCAFSBudget"][@s.param name="0"]${year}[/@s.param][/@s.text]</strong> 
-                    <br>US$ <span id="projectTotalCCAFSBudgetByYear">${totalCCAFSBudgetByYear?string(",##0.00")}</span></p>
+                    <br>US$ <span id="projectTotalCCAFSBudgetByYear">${totalW1W2W3BilateralBudgetByYear?string(",##0.00")}</span></p>
                   </div>
                   <div id="totalYearLeveragedBudget" class="BudgetByYear"> 
                     <p id="projectTotalByYear"><strong> [@s.text name="preplanning.projectBudget.totalYearLeveragedBudget"][@s.param name="0"]${year}[/@s.param][/@s.text]</strong>
