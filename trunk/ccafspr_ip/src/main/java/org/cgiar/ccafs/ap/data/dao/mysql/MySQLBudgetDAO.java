@@ -104,6 +104,69 @@ public class MySQLBudgetDAO implements BudgetDAO {
   }
 
   @Override
+  public double calculateProjectW1W2W3BilateralBudget(int projectID) {
+    Double total = 0.0;
+    StringBuilder query = new StringBuilder();
+    query.append("SELECT SUM(b.amount) as total ");
+    query.append("FROM budgets b ");
+    query.append("INNER JOIN project_budgets pb ON b.id = pb.budget_id ");
+    query.append(" WHERE pb.project_id = ");
+    query.append(projectID);
+    query.append(" AND ( b.budget_type = ");
+    query.append(BudgetType.W1_W2.getValue());
+    query.append(" OR b.budget_type = ");
+    query.append(BudgetType.W3_BILATERAL.getValue());
+    query.append(" ) ");
+
+
+    try (Connection con = databaseManager.getConnection()) {
+      ResultSet rs = databaseManager.makeQuery(query.toString(), con);
+      if (rs.next()) {
+        if (rs.getString("total") != null) {
+          total = Double.parseDouble(rs.getString("total"));
+        }
+      }
+      con.close();
+    } catch (SQLException e) {
+      LOG.error("Exception arised getting the institutions for the user {}.", projectID, e);
+      total = -1.0;
+    }
+    return total;
+  }
+
+  @Override
+  public double calculateProjectW1W2W3BilateralBudgetByYear(int projectID, int year) {
+    Double total = 0.0;
+    StringBuilder query = new StringBuilder();
+    query.append("SELECT SUM(b.amount) as total ");
+    query.append("FROM budgets b ");
+    query.append("INNER JOIN project_budgets pb ON b.id = pb.budget_id ");
+    query.append(" WHERE pb.project_id = ");
+    query.append(projectID);
+    query.append(" AND ( b.budget_type = ");
+    query.append(BudgetType.W1_W2.getValue());
+    query.append(" OR b.budget_type = ");
+    query.append(BudgetType.W3_BILATERAL.getValue());
+    query.append(" ) ");
+    query.append(" AND b.year = ");
+    query.append(year);
+
+    try (Connection con = databaseManager.getConnection()) {
+      ResultSet rs = databaseManager.makeQuery(query.toString(), con);
+      if (rs.next()) {
+        if (rs.getString("total") != null) {
+          total = Double.parseDouble(rs.getString("total"));
+        }
+      }
+      con.close();
+    } catch (SQLException e) {
+      LOG.error("Exception arised getting the institutions for the user {}.", projectID, e);
+      total = -1.0;
+    }
+    return total;
+  }
+
+  @Override
   public double calculateTotalActivityBudget(int activityID) {
     Double total = 0.0;
     StringBuilder query = new StringBuilder();
@@ -207,6 +270,7 @@ public class MySQLBudgetDAO implements BudgetDAO {
     return total;
   }
 
+
   @Override
   public double calculateTotalOverallBudget(int projectID) {
     Double total = 0.0;
@@ -231,6 +295,7 @@ public class MySQLBudgetDAO implements BudgetDAO {
     }
     return total;
   }
+
 
   @Override
   public double calculateTotalOverallBudgetByYear(int projectID, int year) {
@@ -531,7 +596,6 @@ public class MySQLBudgetDAO implements BudgetDAO {
     return getData(query.toString());
   }
 
-
   @Override
   public List<Map<String, String>> getBudgetsByType(int projectID, int BudgetTypeNew) {
     LOG.debug(">> getBudgetsByType projectID = {} )", projectID);
@@ -573,6 +637,7 @@ public class MySQLBudgetDAO implements BudgetDAO {
     return getData(query.toString());
   }
 
+
   @Override
   public List<Map<String, String>> getCCAFSBudgets(int projectID) {
     LOG.debug(">> getCCAFSBudgets projectID = {} )", projectID);
@@ -589,7 +654,6 @@ public class MySQLBudgetDAO implements BudgetDAO {
     LOG.debug("-- getCCAFSBudgets() > Calling method executeQuery to get the results");
     return getData(query.toString());
   }
-
 
   private List<Map<String, String>> getData(String query) {
     LOG.debug(">> executeQuery(query='{}')", query);
@@ -618,7 +682,6 @@ public class MySQLBudgetDAO implements BudgetDAO {
     LOG.debug("<< executeQuery():budgetList.size={}", budgetList.size());
     return budgetList;
   }
-
 
   @Override
   public List<Map<String, String>> getW1Institutions(int projectID) {

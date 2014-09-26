@@ -68,8 +68,8 @@ public class ProjectBudgetPreplanningAction extends BaseAction {
   private Map<String, Budget> mapBudgets;
   private double totalBudget;
   private double totalBudgetByYear;
-  private double totalCCAFSBudget;
-  private double totalCCAFSBudgetByYear;
+  private double totalW1W2W3BilateralBudget;
+  private double totalW1W2W3BilateralBudgetByYear;
   private double totalW1W2Budget;
   private double totalW1W2BudgetByYear;
   private double totalLeveragedBudget;
@@ -452,14 +452,6 @@ public class ProjectBudgetPreplanningAction extends BaseAction {
     return totalBudgetByYear;
   }
 
-  public double getTotalCCAFSBudget() {
-    return totalCCAFSBudget;
-  }
-
-  public double getTotalCCAFSBudgetByYear() {
-    return totalCCAFSBudgetByYear;
-  }
-
   public double getTotalLeveragedBudget() {
     return totalLeveragedBudget;
   }
@@ -470,6 +462,14 @@ public class ProjectBudgetPreplanningAction extends BaseAction {
 
   public double getTotalW1W2BudgetByYear() {
     return totalW1W2BudgetByYear;
+  }
+
+  public double getTotalW1W2W3BilateralBudget() {
+    return totalW1W2W3BilateralBudget;
+  }
+
+  public double getTotalW1W2W3BilateralBudgetByYear() {
+    return totalW1W2W3BilateralBudgetByYear;
   }
 
   public int getYear() {
@@ -546,8 +546,8 @@ public class ProjectBudgetPreplanningAction extends BaseAction {
           // Getting the Total Overall Project Budget
           totalBudget = budgetManager.calculateTotalOverallBudget(projectID);
           totalBudgetByYear = budgetManager.calculateTotalOverallBudgetByYear(projectID, year);
-          totalCCAFSBudget = budgetManager.calculateTotalCCAFSBudget(projectID);
-          totalCCAFSBudgetByYear = budgetManager.calculateTotalCCAFSBudgetByYear(projectID, year);
+          totalW1W2W3BilateralBudget = budgetManager.calculateProjectW1W2W3BilateralBudget(projectID);
+          totalW1W2W3BilateralBudgetByYear = budgetManager.calculateProjectW1W2W3BilateralBudgetByYear(projectID, year);
           totalW1W2Budget = budgetManager.calculateTotalProjectW1W2(projectID);
           totalW1W2BudgetByYear = budgetManager.calculateTotalProjectW1W2ByYear(projectID, year);
           leveragedBudgetByYear = budgetManager.calculateProjectLeveragedBudgetByYear(projectID, year);
@@ -644,12 +644,12 @@ public class ProjectBudgetPreplanningAction extends BaseAction {
     this.totalBudgetByYear = totalBudgetByYear;
   }
 
-  public void setTotalCCAFSBudget(double totalCCAFSBudget) {
-    this.totalCCAFSBudget = totalCCAFSBudget;
+  public void setTotalW1W2W3BilateralBudget(double totalW1W2W3BilateralBudget) {
+    this.totalW1W2W3BilateralBudget = totalW1W2W3BilateralBudget;
   }
 
-  public void setTotalCCAFSBudgetByYear(double totalCCAFSBudgetByYear) {
-    this.totalCCAFSBudgetByYear = totalCCAFSBudgetByYear;
+  public void setTotalW1W2W3BilateralBudgetByYear(double totalW1W2W3BilateralBudgetByYear) {
+    this.totalW1W2W3BilateralBudgetByYear = totalW1W2W3BilateralBudgetByYear;
   }
 
   public void setYear(int year) {
