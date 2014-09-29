@@ -86,10 +86,10 @@
                       <div class="checkboxGroup vertical indicatorNarrative" >
                         [#-- Target value --]
                         <label> <h6>[@s.text name="planning.activityImpactPathways.targetValue" /]</h6></label>
-                        <input type="text" name="activity.indicators.target" value="${activityIndicator.target}" >
+                        <input type="text" name="activity.indicators.target" value="${activityIndicator.target!}" >
                         
                         <label> <h6>[@s.text name="planning.activityImpactPathways.targetNarrative" /]</h6></label>
-                        <textarea name="activity.indicators.description" >${activityIndicator.description}</textarea>
+                        <textarea name="activity.indicators.description" >${activityIndicator.description!}</textarea>
                       </div> 
                     </div>  
                   [#else]
