@@ -57,6 +57,10 @@
               </ul>
               [@s.set var="counter" value="0"/]
               <div id="partnerTables-${year?c}" class="partnerTable ui-tabs-panel ui-widget-content ui-corner-bottom clearfix">
+                <div class="fieldset">
+                  <h6>[@s.text name="planning.activityBudget.totalBudgetPerYear"][@s.param name="0"]${year}[/@s.param][/@s.text]</h6>
+                  <p id="activityTotalPerYear">US$ <span id="activityTotalBudgetPerYear">${totalActivitiesBudgetByYear?string(",##0.00")}</span></p>
+                </div>
                 <table class="ccafsBudget fullPartBlock">
                   [#-- HEADERS --]
                   <tr class="ccafsBudget-head row">

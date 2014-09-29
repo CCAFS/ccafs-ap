@@ -112,6 +112,7 @@ function addChosen(){
 function calculateOverallBudget(e){
   var Amount = totalBudget("form input[name$='amount']");
   var totalAmount = yearTotalBudget + Amount;
+  $("span#activityTotalBudgetPerYear").text(setCurrencyFormat(Amount));
   $("span#activityTotalBudget").text(setCurrencyFormat(totalAmount));
 }
 
