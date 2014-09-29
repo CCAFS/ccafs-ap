@@ -32,7 +32,7 @@ import org.slf4j.LoggerFactory;
 /**
  * This interceptor will validate if the user who is trying to edit a specific activity is able to: Edit it or just read
  * it.
- * 
+ *
  * @author Héctor Fabio Tobón R.
  */
 public class GrantActivityPlanningAccessInterceptor extends AbstractInterceptor {
@@ -118,12 +118,19 @@ public class GrantActivityPlanningAccessInterceptor extends AbstractInterceptor 
     } else if (user.isAL()) {
       // User is AL or Guest.
       User activityLeader = activityManager.getActivityLeader(activityID);
-      // If user is assigned as activity leader of the current activity.
-      if (user.getEmployeeId() == activityLeader.getEmployeeId()) {
-        baseAction.setFullEditable(true);
-        baseAction.setSaveable(true);
+      // If activity leader is still as expected.
+      if (activityLeader != null) {
+        // If user is assigned as activity leader of the current activity.
+        if (user.getEmployeeId() == activityLeader.getEmployeeId()) {
+          baseAction.setFullEditable(true);
+          baseAction.setSaveable(true);
+        } else {
+          // If user is not the activity leader of the current activity, he/she is not able to edit it.
+          baseAction.setFullEditable(true);
+          baseAction.setSaveable(false);
+        }
       } else {
-        // If user is not the activity leader of the current activity, he/she is not able to edit it.
+        // Activity has its leader marked as expected.
         baseAction.setFullEditable(true);
         baseAction.setSaveable(false);
       }
