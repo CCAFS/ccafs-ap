@@ -120,9 +120,9 @@ select{
 }
 
 .disabled-label {
-	background: #FFF !important; 
-	box-shadow: none !important;
-	color: #7E7E7E !important;
+  background: #FFF !important; 
+  box-shadow: none !important;
+  color: #7E7E7E !important;
 }
 
 .dataTables_wrapper select {
@@ -2175,6 +2175,14 @@ button#activities_save{
 .activityList #lastModified {
   width: 80px;
   text-align: center;
+}
+
+.activitiesList #ids{
+  width: 10%;
+}
+
+.activitiesList #activitiesOrganizations{
+  width: 25%;
 }
 
 .activityList td {
