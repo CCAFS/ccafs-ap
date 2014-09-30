@@ -32,7 +32,7 @@ import org.slf4j.LoggerFactory;
 /**
  * This interceptor will validate if the user who is trying to edit a specific activity is able to: Edit it or just read
  * it.
- *
+ * 
  * @author Héctor Fabio Tobón R.
  */
 public class GrantActivityPlanningAccessInterceptor extends AbstractInterceptor {
@@ -77,9 +77,39 @@ public class GrantActivityPlanningAccessInterceptor extends AbstractInterceptor 
         baseAction.setFullEditable(true);
         baseAction.setSaveable(true);
       } else {
-        // User will see the the fields enable but without any save/delete button.
-        baseAction.setFullEditable(true);
-        baseAction.setSaveable(false);
+        // let's figure out if the user is the leader of the project in which the activity belongs to.
+        Project project = projectManager.getProjectFromActivityId(activityID);
+        if (project != null) {
+          User projectLeader = projectManager.getProjectLeader(project.getId());
+          if (projectLeader != null) {
+            // If the user is the project leader, he is able to fully edit the activity.
+            if (projectLeader.getId() == user.getId()) {
+              baseAction.setFullEditable(true);
+              baseAction.setSaveable(true);
+            } else {
+              // If the user is not the project leader.
+              // Let's check if the user is the Activity Leader of the current activity
+              User activityLeader = activityManager.getActivityLeader(activityID);
+              // If user is assigned as activity leader of the current activity.
+              if (activityLeader != null && user.getEmployeeId() == activityLeader.getEmployeeId()) {
+                baseAction.setFullEditable(true);
+                baseAction.setSaveable(true);
+              } else {
+                // If user is not the activity leader of the current activity, he/she is not able to edit it.
+                baseAction.setFullEditable(true);
+                baseAction.setSaveable(false);
+              }
+            }
+          } else {
+            // If the project doesn't have project leader associated the PL can not edit it.
+            baseAction.setFullEditable(true);
+            baseAction.setSaveable(false);
+          }
+        } else {
+          // If the activity does not belong to a project, no user is able to edit it.
+          baseAction.setFullEditable(true);
+          baseAction.setSaveable(false);
+        }
       }
     } else if (user.isPL()) {
       // If user is a PL, let's figure out if the user is the leader of the project in which the activity belongs to.
