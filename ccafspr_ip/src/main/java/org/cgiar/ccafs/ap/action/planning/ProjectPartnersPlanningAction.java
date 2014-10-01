@@ -342,6 +342,10 @@ public class ProjectPartnersPlanningAction extends BaseAction {
       for (int c = 0; c < project.getProjectPartners().size(); c++) {
         ProjectPartner projectPartner = project.getProjectPartners().get(c);
         // If the institution is undefined
+        if (projectPartner.getPartner() == null) {
+          project.getProjectPartners().remove(c);
+          c--;
+        }
         if (projectPartner.getPartner().getId() == -1) {
           // All the information is empty
           if (projectPartner.getContactEmail().isEmpty() && projectPartner.getContactName().isEmpty()
