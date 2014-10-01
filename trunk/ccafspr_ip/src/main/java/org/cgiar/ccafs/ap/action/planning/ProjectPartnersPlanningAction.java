@@ -345,6 +345,7 @@ public class ProjectPartnersPlanningAction extends BaseAction {
         if (projectPartner.getPartner() == null) {
           project.getProjectPartners().remove(c);
           c--;
+          continue;
         }
         if (projectPartner.getPartner().getId() == -1) {
           // All the information is empty
