@@ -107,8 +107,7 @@ public class MySQLProjectDAO implements ProjectDAO {
     query.append("( " + flagshipsSubquery + " )  as 'flagships' ");
     query.append("FROM projects as p ");
     query.append("LEFT JOIN project_budgets pb ON p.id = pb.project_id ");
-    query.append("LEFT JOIN budgets b ON pb.budget_id = b.id ");
-    query.append("WHERE b.budget_type IN ( ");
+    query.append("LEFT JOIN budgets b ON pb.budget_id = b.id AND b.budget_type IN ( ");
     query.append(BudgetType.W1_W2.getValue() + ", ");
     query.append(BudgetType.W3_BILATERAL.getValue() + " ) ");
     query.append("GROUP BY p.id");
