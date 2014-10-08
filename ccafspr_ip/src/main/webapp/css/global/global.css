@@ -209,6 +209,20 @@ span.or {
   padding: 10px;
 }
 
+img.icon {
+  vertical-align: middle;
+  padding: 0 5px !important;
+}
+
+#downloadGuidelineMessage {
+  margin-left: 27px;
+  border: 2px dotted #CCC;
+  border-radius: 3px;
+  width: 295px;
+  padding-right: 10px;
+  text-align: center;
+}
+
 .removeLink {
   display: block;
   text-align: right;

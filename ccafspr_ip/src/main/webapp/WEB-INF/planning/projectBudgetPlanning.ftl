@@ -31,6 +31,12 @@
       <p><strong>[@s.text name="preplanning.projectBudget.leveraged" /]: </strong> [@s.text name="preplanning.projectBudget.leveraged.tooltip" /]</p>
       <p><strong>[@s.text name="preplanning.projectBudget.partnership" /]: </strong> [@s.text name="preplanning.projectBudget.partnership.tooltip" /]</p>
     </div>
+    <div id="downloadGuidelineMessage">
+      <a  href="${baseUrl}/resources/guidelines/FP_Guidelines_Budget_20141007_to Liaison.pptx">  
+        <img class="icon" src="${baseUrl}/images/global/download-icon_636368.png" />
+        <p>[@s.text name="preplanning.projectBudget.guideline.title" /]</p>
+      </a>
+    </div>
   </div>
   [#include "/WEB-INF/planning/planningProjectsSubMenu.ftl" /]
   

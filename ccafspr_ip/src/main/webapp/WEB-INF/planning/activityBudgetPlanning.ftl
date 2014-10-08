@@ -20,6 +20,12 @@
   <div class="helpMessage">
     <img src="${baseUrl}/images/global/icon-help.png" />
     <p> [@s.text name="planning.activityBudget.help" /] </p>
+    <div id="downloadGuidelineMessage">
+      <a  href="${baseUrl}/resources/guidelines/FP_Guidelines_Budget_20141007_to Liaison.pptx">  
+        <img class="icon" src="${baseUrl}/images/global/download-icon_636368.png" />
+        <p>[@s.text name="preplanning.projectBudget.guideline.title" /]</p>
+      </a>
+    </div>
   </div>
   [#include "/WEB-INF/planning/activityPlanningSubMenu.ftl" /]
   [@s.form action="activityBudget" cssClass="pure-form"]  
