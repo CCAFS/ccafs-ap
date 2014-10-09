@@ -549,8 +549,11 @@ public class MySQLBudgetDAO implements BudgetDAO {
     query.append("INNER JOIN budget_types bt ON b.budget_type = bt.id ");
     query.append("WHERE pb.activity_id = ");
     query.append(activityID);
-    query.append(" AND b.budget_type = ");
-    query.append(BudgetType.ACTIVITY.getValue());
+    query.append(" AND (b.budget_type = ");
+    query.append(BudgetType.ACTIVITY_W1_W2.getValue());
+    query.append(" OR b.budget_type = ");
+    query.append(BudgetType.ACTIVITY_W3_BILATERAL.getValue());
+    query.append(" )");
 
     try (Connection con = databaseManager.getConnection()) {
       ResultSet rs = databaseManager.makeQuery(query.toString(), con);
@@ -780,31 +783,75 @@ public class MySQLBudgetDAO implements BudgetDAO {
     int result = -1;
     int newId = -1;
     Object[] values;
+    int recordExists = 0;
     if (budgetData.get("id") == null) {
-      // Insert new budget record
-      query.append("INSERT INTO budgets (year, budget_type, institution_id, amount) ");
-      query.append("VALUES (?,?,?,?) ");
-      values = new Object[4];
-      values[0] = budgetData.get("year");
-      values[1] = budgetData.get("budget_type");
-      values[2] = budgetData.get("institution_id");
-      values[3] = budgetData.get("amount");
-      newId = databaseManager.saveData(query.toString(), values);
-      if (newId <= 0) {
-        LOG.error("A problem happened trying to add a new budget with id={}", projectID);
-        return -1;
-      } else {
-        // Now, Addition the relation with project into table project_budgets
-        query.setLength(0); // Clearing query.
-        query.append("INSERT INTO project_budgets (project_id, budget_id) ");
-        query.append("VALUES (?,?) ");
-        values = new Object[2];
-        values[0] = projectID;
-        values[1] = newId;
-        result = databaseManager.saveData(query.toString(), values);
+      // Before adding the new record, let's check that there is a budget with the same year, type and institution. If
+      // so, we should update it, otherwise add the new record.
+      query.append("SELECT count(*) FROM budgets WHERE budget_type = ");
+      query.append(budgetData.get("budget_type"));
+      query.append(" AND institution_id = ");
+      query.append(budgetData.get("institution_id"));
+      query.append(" AND year = ");
+      query.append(budgetData.get("year"));
+
+      try (Connection con = databaseManager.getConnection()) {
+        ResultSet rs = databaseManager.makeQuery(query.toString(), con);
+        if (rs.next()) {
+          recordExists = rs.getInt(1);
+        }
+        con.close();
+      } catch (SQLException e) {
+        LOG.error("Exception arised trying to validate if a budget is duplicated", e.getMessage());
       }
-    } else {
+      // If the record already exists, then we have to find the budget id.
+      if (recordExists > 0) {
+        query.setLength(0);
+        query.append("SELECT id from budgets WHERE budget_type = ");
+        query.append(budgetData.get("budget_type"));
+        query.append(" AND institution_id = ");
+        query.append(budgetData.get("institution_id"));
+        query.append(" AND year = ");
+        query.append(budgetData.get("year"));
+
+        try (Connection con = databaseManager.getConnection()) {
+          ResultSet rs = databaseManager.makeQuery(query.toString(), con);
+          if (rs.next()) {
+            budgetData.put("id", rs.getInt(1));
+          }
+          con.close();
+        } catch (SQLException e) {
+          LOG.error("Exception arised trying to add the id of the budget", e.getMessage());
+        }
+      } else {
+        // Insert new budget record
+        query.setLength(0);
+        query.append("INSERT INTO budgets (year, budget_type, institution_id, amount) ");
+        query.append("VALUES (?,?,?,?) ");
+        values = new Object[4];
+        values[0] = budgetData.get("year");
+        values[1] = budgetData.get("budget_type");
+        values[2] = budgetData.get("institution_id");
+        values[3] = budgetData.get("amount");
+        newId = databaseManager.saveData(query.toString(), values);
+        if (newId <= 0) {
+          LOG.error("A problem happened trying to add a new budget with id={}", projectID);
+          return -1;
+        } else {
+          // Now, Addition the relation with project into table project_budgets
+          query.setLength(0); // Clearing query.
+          query.append("INSERT INTO project_budgets (project_id, budget_id) ");
+          query.append("VALUES (?,?) ");
+          values = new Object[2];
+          values[0] = projectID;
+          values[1] = newId;
+          result = databaseManager.saveData(query.toString(), values);
+        }
+      }
+    }
+
+    if (budgetData.get("id") != null) {
       // update budget record
+      query.setLength(0);
       query.append("UPDATE budgets SET year = ?, budget_type = ?, institution_id = ?, amount = ? ");
       query.append("WHERE id = ? ");
       values = new Object[5];
