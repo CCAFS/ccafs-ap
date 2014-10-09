@@ -38,7 +38,7 @@ import org.slf4j.LoggerFactory;
 
 /**
  * Project Budget Action.
- * 
+ *
  * @author Héctor Fabio Tobón R.
  */
 public class ProjectBudgetPreplanningAction extends BaseAction {
@@ -100,7 +100,7 @@ public class ProjectBudgetPreplanningAction extends BaseAction {
    * e.g. 2014-9-W1
    * Where 2014 is the year, 9 is the institution identifier and W1 is the budget type.
    * If the budget is not in the database, this method will create a new one with an id=-1 and amount=0.
-   * 
+   *
    * @return a Map of budgets as was described above.
    */
   private Map<String, Budget> generateMapBudgets(int year) {
@@ -130,7 +130,7 @@ public class ProjectBudgetPreplanningAction extends BaseAction {
           } else if (budget.getType().getValue() == BudgetType.LEVERAGED.getValue()) {
             leveraged = true;
             budgetsMap
-              .put(year + "-" + projectPartner.getPartner().getId() + "-" + BudgetType.LEVERAGED.name(), budget);
+            .put(year + "-" + projectPartner.getPartner().getId() + "-" + BudgetType.LEVERAGED.name(), budget);
           } else if (budget.getType().getValue() == BudgetType.W1_W2_PARTNERS.getValue()) {
             w1_w2_partners = true;
             budgetsMap.put(year + "-" + projectPartner.getPartner().getId() + "-" + BudgetType.W1_W2_PARTNERS.name(),
@@ -330,8 +330,8 @@ public class ProjectBudgetPreplanningAction extends BaseAction {
       newBudget.setAmount(0);
       newBudget.setYear(year);
       budgetsMap
-        .put(year + "-" + project.getLeader().getCurrentInstitution().getId() + "-" + BudgetType.LEVERAGED.name(),
-          newBudget);
+      .put(year + "-" + project.getLeader().getCurrentInstitution().getId() + "-" + BudgetType.LEVERAGED.name(),
+        newBudget);
     }
     if (w1_w2_partners == false) {
       Budget newBudget = new Budget();
@@ -580,23 +580,6 @@ public class ProjectBudgetPreplanningAction extends BaseAction {
   @Override
   public String save() {
     boolean success = true;
-    boolean deleted = true;
-
-    // ---- Identify those deleted budgets from leverages.
-    // Getting previous leverage budgets.
-    List<Budget> previousLeveragedBudgets =
-      budgetManager.getBudgetsByType(project.getId(), BudgetType.LEVERAGED.getValue());
-    // Deleting budgets removed
-    for (Budget budget : previousLeveragedBudgets) {
-      if (budget.getYear() == this.year) {
-        if (!project.getBudgets().contains(budget)) {
-          deleted = budgetManager.deleteBudget(budget.getId());
-          if (!deleted) {
-            success = false;
-          }
-        }
-      }
-    }
 
     // Saving project budgets
     for (Budget budget : project.getBudgets()) {
