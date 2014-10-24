@@ -165,8 +165,9 @@ public class ActivityDeliverablesAction extends BaseAction {
             success = false;
           }
         } else {
-          // If the deliverable was not deleted we should remove the next users
+          // If the deliverable was not deleted we should remove the next users and the outputs
           nextUserManager.deleteNextUserByDeliverable(deliverable.getId());
+          deliverableManager.deleteDeliverableOutput(deliverable.getId());
         }
       }
 
