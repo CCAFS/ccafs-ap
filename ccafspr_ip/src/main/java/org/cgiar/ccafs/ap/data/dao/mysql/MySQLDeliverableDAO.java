@@ -238,7 +238,9 @@ public class MySQLDeliverableDAO implements DeliverableDAO {
     query.append(activityID);
     query.append(" AND mog_id= ");
     query.append(ipElementID);
-    query.append("),?)");
+    query.append("), ?) ");
+    query.append("ON DUPLICATE KEY UPDATE activity_contribution_id = VALUES(activity_contribution_id), ");
+    query.append("deliverable_id = VALUES(deliverable_id) ");
     values = new Object[1];
     values[0] = deliverableID;
     result = databaseManager.saveData(query.toString(), values);
