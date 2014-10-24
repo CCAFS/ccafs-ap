@@ -39,6 +39,7 @@ import org.slf4j.LoggerFactory;
 
 /**
  * @author Javier Andrés Galllego B.
+ * @author Hernán David Carvajal B.
  */
 public class ActivityImpactPathwayAction extends BaseAction {
 
@@ -117,6 +118,30 @@ public class ActivityImpactPathwayAction extends BaseAction {
     return midOutcomesMap;
   }
 
+  private void getMidOutcomesByProjectFocuses() {
+    midOutcomes = new ArrayList<>();
+    IPElement placeHolder = new IPElement(-1);
+    placeHolder.setDescription(getText("planning.activityImpactPathways.outcome.placeholder"));
+    midOutcomes.add(placeHolder);
+
+    IPElementType midOutcomeType = new IPElementType(APConstants.ELEMENT_TYPE_OUTCOME2019);
+    for (IPProgram program : projectFocusList) {
+
+      // if (!isGlobalProject && program.isFlagshipProgram()) {
+      // continue;
+      // }
+
+      List<IPElement> elements = ipElementManager.getIPElements(program, midOutcomeType);
+
+      for (int i = 0; i < elements.size(); i++) {
+        IPElement element = elements.get(i);
+        element.setDescription(program.getAcronym() + " - " + getText("planning.activityImpactPathways.outcome2019")
+          + " #" + (i + 1) + ": " + element.getDescription());
+        midOutcomes.add(element);
+      }
+    }
+  }
+
   public List<IPElement> getMidOutcomesSelected() {
     return midOutcomesSelected;
   }
@@ -159,33 +184,12 @@ public class ActivityImpactPathwayAction extends BaseAction {
     isGlobalProject = projectFocusList.contains(new IPProgram(APConstants.GLOBAL_PROGRAM));
 
     // Then, we have to get all the midOutcomes that belongs to the project focuses
-    midOutcomes = new ArrayList<>();
-    IPElement placeHolder = new IPElement(-1);
-    placeHolder.setDescription(getText("planning.activityImpactPathways.outcome.placeholder"));
-    midOutcomes.add(placeHolder);
+    getMidOutcomesByProjectFocuses();
 
-    IPElementType midOutcomeType = new IPElementType(APConstants.ELEMENT_TYPE_OUTCOME2019);
-    for (IPProgram program : projectFocusList) {
-
-      if (!isGlobalProject && program.isFlagshipProgram()) {
-        continue;
-      }
-
-      List<IPElement> elements = ipElementManager.getIPElements(program, midOutcomeType);
-
-      for (int i = 0; i < elements.size(); i++) {
-        IPElement element = elements.get(i);
-        element.setDescription(program.getAcronym() + " - " + getText("planning.activityImpactPathways.outcome2019")
-          + " #" + (i + 1) + ": " + element.getDescription());
-        midOutcomes.add(element);
-      }
-      // midOutcomes.addAll(ipElementManager.getIPElements(program, midOutcomeType));
-    }
-
-    // Get the outputs from database
+    // Get activity the outputs from database
     activity.setOutputs(activityManager.getActivityOutputs(activityID));
 
-    // Get the indicators from database
+    // Get the activity indicators from database
     activity.setIndicators(activityManager.getActivityIndicators(activityID));
 
     midOutcomesSelected = new ArrayList<>();
