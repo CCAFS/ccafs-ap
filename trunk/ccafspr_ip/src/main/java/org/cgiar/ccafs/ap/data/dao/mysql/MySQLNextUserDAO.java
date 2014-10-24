@@ -155,27 +155,15 @@ public class MySQLNextUserDAO implements NextUserDAO {
     StringBuilder query = new StringBuilder();
     int result = -1;
     Object[] values;
-    if (nextUserData.get("id") == null) {
-      // Insert new next user record.
-      query.append("INSERT INTO next_users (id, deliverable_id, user, expected_changes, strategies) ");
-      query.append("VALUES (?, ?, ?, ?, ?) ");
-      values = new Object[5];
-      values[0] = nextUserData.get("id");
-      values[1] = deliverableID;
-      values[2] = nextUserData.get("user");
-      values[3] = nextUserData.get("expected_changes");
-      values[4] = nextUserData.get("strategies");
-    } else {
-      // Updating existing next user record.
-      query.append("UPDATE next_users SET deliverable_id = ?, user = ?, expected_changes = ?, strategies = ? ");
-      query.append("WHERE id = ? ");
-      values = new Object[5];
-      values[0] = deliverableID;
-      values[1] = nextUserData.get("user");
-      values[2] = nextUserData.get("expected_changes");
-      values[3] = nextUserData.get("strategies");
-      values[4] = nextUserData.get("id");
-    }
+    // Insert new next user record.
+    query.append("INSERT INTO next_users (id, deliverable_id, user, expected_changes, strategies) ");
+    query.append("VALUES (?, ?, ?, ?, ?) ");
+    values = new Object[5];
+    values[0] = nextUserData.get("id");
+    values[1] = deliverableID;
+    values[2] = nextUserData.get("user");
+    values[3] = nextUserData.get("expected_changes");
+    values[4] = nextUserData.get("strategies");
     result = databaseManager.saveData(query.toString(), values);
     if (result == -1) {
       LOG.error("A problem happened trying to add a new next user with deliverable id={}", deliverableID);
