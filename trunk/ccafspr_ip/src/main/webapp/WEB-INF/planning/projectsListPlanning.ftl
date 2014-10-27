@@ -40,11 +40,11 @@
             <p>[@s.text name="planning.projects.empty.PL" /]</p>
           [/#if]
         </div>
-        [#if currentUser.isRPL() || currentUser.isFPL() || currentUser.isAdmin()]
+      [/#if]
+      [#if currentUser.isRPL() || currentUser.isFPL() || currentUser.isCU() || currentUser.isAdmin()]
         <div class="buttons">
-          [@s.submit type="button" name="add"][@s.text name="form.buttons.add" /][/@s.submit]
+          [@s.submit type="button" name="add"][@s.text name="preplanning.projects.addProject" /][/@s.submit]
         </div>
-        [/#if]
       [/#if]
       <hr/>
       <h3 class="projectSubTitle">[@s.text name="preplanning.projects.otherProjects" /]</h3>

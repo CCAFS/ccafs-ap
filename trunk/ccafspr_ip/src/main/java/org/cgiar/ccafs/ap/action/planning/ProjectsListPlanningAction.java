@@ -60,16 +60,20 @@ public class ProjectsListPlanningAction extends BaseAction {
 
   @Override
   public String add() {
+
+    if (!isUserAuthorizedToCreateProjects()) {
+      return NOT_AUTHORIZED;
+    }
+
     // Create new project and redirect to project description using the new projectId assigned by the database.
     projectID = this.createNewProject();
     if (projectID > 0) {
       // Let's redirect the user to the Project Description section.
-      return BaseAction.INPUT;
+      return SUCCESS;
     }
     // Let's redirect the user to the Project Description section.
-    return BaseAction.ERROR;
+    return ERROR;
   }
-
 
   private int createNewProject() {
     Project newProject = new Project(-1);
@@ -101,6 +105,11 @@ public class ProjectsListPlanningAction extends BaseAction {
 
   public double getTotalBudget() {
     return totalBudget;
+  }
+
+  private boolean isUserAuthorizedToCreateProjects() {
+    return getCurrentUser().isAdmin() || getCurrentUser().isCU() || getCurrentUser().isFPL()
+      || getCurrentUser().isRPL();
   }
 
   @Override

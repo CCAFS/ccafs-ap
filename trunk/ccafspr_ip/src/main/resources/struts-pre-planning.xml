@@ -100,7 +100,7 @@
       <result name="cancel" type="redirectAction">
         <param name="namespace">/</param>
         <param name="actionName">login</param>
-       </result>
+      </result>
     </action>
     
   </package>
