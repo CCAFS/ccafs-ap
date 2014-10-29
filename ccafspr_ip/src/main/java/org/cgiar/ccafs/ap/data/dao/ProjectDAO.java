@@ -28,6 +28,25 @@ import com.google.inject.ImplementedBy;
 @ImplementedBy(MySQLProjectDAO.class)
 public interface ProjectDAO {
 
+  /**
+   * This method deletes from the database the relation between the project and the indicator
+   * received.
+   * 
+   * @param projectID - project identifier
+   * @param indicatorID - indicator identifier
+   * @return true if the relation was successfully removed. False otherwise.
+   */
+  public boolean deleteProjectIndicator(int projectID, int indicatorID);
+
+  /**
+   * This method deletes from the database the relation between the project and the output
+   * received.
+   * 
+   * @param projectID - project identifier
+   * @param outputID - output identifier
+   * @return true if the relation was successfully removed. False otherwise.s
+   */
+  public boolean deleteProjectOutput(int projectID, int outputID);
 
   /**
    * This method validate if the project exists in the database.
@@ -36,6 +55,7 @@ public interface ProjectDAO {
    * @return true if the project exists or false otherwise.
    */
   public boolean existProject(int projectId);
+
 
   /**
    * This method return all the Projects
@@ -108,6 +128,15 @@ public interface ProjectDAO {
   public List<Integer> getProjectIdsEditables(int programId, int ownerId);
 
   /**
+   * This method returns all the indicators related with the project
+   * identified by the value received as parameter.
+   * 
+   * @param projectID - project identifier
+   * @return a list of maps with the information
+   */
+  public List<Map<String, String>> getProjectIndicators(int projectID);
+
+  /**
    * Get a Project Leader information with a given Project Id
    * 
    * @param ProjectId is the id of a project
@@ -115,6 +144,15 @@ public interface ProjectDAO {
    *         be returned.
    */
   public Map<String, String> getProjectLeader(int projectID);
+
+  /**
+   * This method returns all the outputs related to the project identified
+   * by the value received as parameter.
+   * 
+   * @param projectID - Project identifier
+   * @return a list of maps with the information
+   */
+  public List<Map<String, String>> getProjectOutputs(int projectID);
 
   /**
    * This method return a list with the employees that belongs to a program
@@ -172,4 +210,21 @@ public interface ProjectDAO {
    */
   public int saveProject(Map<String, Object> projectData);
 
+  /**
+   * This method save into the database the relation between a project and
+   * some midOutcomes indicators
+   * 
+   * @param indicatorData - map with the information to be saved
+   * @return true if the relation was successfully added.s
+   */
+  public boolean saveProjectIndicators(Map<String, String> indicatorData);
+
+  /**
+   * This method save into the database the relation between a project and
+   * one output
+   * 
+   * @param outputData - information to be saved
+   * @return The last inserted id if there was a new record, 0 if the record was updated or -1 if any error happened.
+   */
+  public int saveProjectOutput(Map<String, String> outputData);
 }

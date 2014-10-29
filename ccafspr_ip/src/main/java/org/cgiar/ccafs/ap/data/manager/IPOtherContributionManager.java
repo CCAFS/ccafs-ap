@@ -20,6 +20,7 @@ import com.google.inject.ImplementedBy;
 
 /**
  * @author Javier Andrés Gallego
+ * @author Hernán David Carvajal
  */
 @ImplementedBy(IPOtherContributionManagerImpl.class)
 public interface IPOtherContributionManager {
@@ -34,21 +35,12 @@ public interface IPOtherContributionManager {
   public boolean deleteIPOtherContribution(int ipOtherContributionId);
 
   /**
-   * This method removes a set of IP Other Contributions that belongs to a specific activity.
+   * This method removes a set of IP Other Contributions that belongs to a specific project.
    * 
-   * @param activityID is the activity identifier.
+   * @param projectID is the project identifier.
    * @return true if the set of IP Other Contributions were successfully deleted, false otherwise.
    */
-  public boolean deleteIPOtherContributionsByActivityId(int activityID);
-
-  /**
-   * This method gets all the IP Other Contributions information by a given activity Id
-   * 
-   * @param activityID - is the Id of the activity
-   * @return a List of IP Other Contributions with the Information related to the activity
-   */
-  public IPOtherContribution getIPOtherContributionByActivityId(int activityID);
-
+  public boolean deleteIPOtherContributionsByProjectId(int projectID);
 
   /**
    * This method gets all the IP Other Contribution information by a given IP Other Contribution ID.
@@ -58,15 +50,24 @@ public interface IPOtherContributionManager {
    */
   public IPOtherContribution getIPOtherContributionById(int ipOtherContributionID);
 
+
   /**
-   * This method saves the information of the given IP Other Contribution that belongs to a specific activity into the
+   * This method gets all the IP Other Contributions information by a given project Id
+   * 
+   * @param activityID - is the Id of the project
+   * @return a List of IP Other Contributions with the Information related to the project
+   */
+  public IPOtherContribution getIPOtherContributionByProjectId(int projectID);
+
+  /**
+   * This method saves the information of the given IP Other Contribution that belongs to a specific project into the
    * database.
    * 
-   * @param activityID - is the Id of the activity
+   * @param projectID - is the Id of the project
    * @param ipOtherContribution
    * @return true if the IP Other Contribution was saved successfully, false otherwise.
    */
-  public boolean saveIPOtherContribution(int activityID, IPOtherContribution ipOtherContribution);
+  public boolean saveIPOtherContribution(int projectID, IPOtherContribution ipOtherContribution);
 
 
 }

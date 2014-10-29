@@ -14,6 +14,8 @@
 package org.cgiar.ccafs.ap.data.manager;
 
 import org.cgiar.ccafs.ap.data.manager.impl.ProjectManagerImpl;
+import org.cgiar.ccafs.ap.data.model.IPElement;
+import org.cgiar.ccafs.ap.data.model.IPIndicator;
 import org.cgiar.ccafs.ap.data.model.Project;
 import org.cgiar.ccafs.ap.data.model.User;
 
@@ -23,6 +25,26 @@ import com.google.inject.ImplementedBy;
 
 @ImplementedBy(ProjectManagerImpl.class)
 public interface ProjectManager {
+
+  /**
+   * This method delete the relation between the project and the indicator
+   * received.
+   * 
+   * @param projectID - project identifier
+   * @param indicatorID - indicator identifier
+   * @return true if the relation was successfully removed. False otherwise.
+   */
+  public boolean deleteIndicator(int projectID, int indicatorID);
+
+  /**
+   * This method delete the relation between the project and the output
+   * received.
+   * 
+   * @param projectID - project identifier
+   * @param outputID - output identifier
+   * @return true if the relation was successfully removed. False otherwise.
+   */
+  public boolean deleteProjectOutput(int projectID, int outputID);
 
   /**
    * This method validate if the system has a project identified with the given parameter.
@@ -93,12 +115,29 @@ public interface ProjectManager {
   public List<Integer> getProjectIdsEditables(User user);
 
   /**
+   * This method gets all the indicators related to the project passed as parameter
+   * 
+   * @param projectID - project identifier
+   * @return a list of IPIndicator objects
+   */
+  public List<IPIndicator> getProjectIndicators(int projectID);
+
+  /**
    * This method finds the Project Leader user from a specific Project.
    * 
    * @param projectId is the project id.
    * @return a User object who represents a Project Leader. Or NULL if no user was found.
    */
   public User getProjectLeader(int projectId);
+
+  /**
+   * This method gets all the outputs related with the project identified by the value
+   * received as parameter.
+   * 
+   * @param projectID - project identifer
+   * @return a list of IPElement objects
+   */
+  public List<IPElement> getProjectOutputs(int projectID);
 
   /**
    * This method returns the list of all CCAFS projects that belongs to a specific program.
@@ -133,4 +172,24 @@ public interface ProjectManager {
    *         error happened.
    */
   public int saveProjectDescription(Project project);
+
+  /**
+   * This method save into the database the relation between a project and
+   * some midOutcomes indicators
+   * 
+   * @param indicators - List of indicators objects
+   * @param projectID - project identifier
+   * @return true if ALL the indicators were saved successfully. False otherwise
+   */
+  public boolean saveProjectIndicators(List<IPIndicator> indicators, int projectID);
+
+  /**
+   * This method save into the database the relation between a project and
+   * the outputs
+   * 
+   * @param outputs - A list of ipElmenet objects
+   * @param projectID - project identifier
+   * @return true if ALL the relations were saved successfully. False otherwise.
+   */
+  public boolean saveProjectOutputs(List<IPElement> outputs, int projectID);
 }

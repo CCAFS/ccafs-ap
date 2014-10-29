@@ -16,6 +16,7 @@ package org.cgiar.ccafs.ap.data.dao;
 
 /**
  * @author Javier Andrés Gallego
+ * @author Hernán David Carvajal
  */
 import org.cgiar.ccafs.ap.data.dao.mysql.MySQLIPOtherContributionDAO;
 
@@ -37,21 +38,12 @@ public interface IPOtherContributionDAO {
 
 
   /**
-   * Deletes the information of the IP Other Contribution related by a given activity id
+   * Deletes the information of the IP Other Contribution related by a given project id
    * 
-   * @param activityID- is the Id of an activity
+   * @param projectID- is the Id of a project
    * @return true if the elements were deleted successfully. False otherwise
    */
-  public boolean deleteIPOtherContributionsByActivityId(int activityID);
-
-  /**
-   * This method gets all the IP Other Contributions information by a given activity Id
-   * 
-   * @param activityID - is the Id of the activity
-   * @return a List of Map of the IP Other Contributions Information related with the activity
-   */
-  public Map<String, String> getIPOtherContributionByActivityId(int activityID);
-
+  public boolean deleteIPOtherContributionsByProjectId(int projectID);
 
   /**
    * This method gets all the IP Other Contribution information by a given Id
@@ -61,14 +53,23 @@ public interface IPOtherContributionDAO {
    */
   public Map<String, String> getIPOtherContributionById(int ipOtherContributionId);
 
+
+  /**
+   * This method gets all the IP Other Contributions information by a given project Id
+   * 
+   * @param projectID - is the Id of the project
+   * @return a List of Map of the IP Other Contributions Information related with the project
+   */
+  public Map<String, String> getIPOtherContributionByProjectId(int projectID);
+
   /**
    * This method saves or update the IP Other Contribution information
    * 
    * @param ipOtherContributionData - is a Map with the information of the IP Other Contribution to be saved
-   * @param activityID - is the Id of the activity
+   * @param projectID - is the Id of the project
    * @return The last inserted id if there was a new record, 0 if the record was updated or -1 if any error happened.
    */
-  public int saveIPOtherContribution(int activityID, Map<String, Object> ipOtherContributionData);
+  public int saveIPOtherContribution(int projectID, Map<String, Object> ipOtherContributionData);
 
 
 }

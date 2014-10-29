@@ -84,6 +84,38 @@
         <param name="projectID">${project.id}</param>		
       </result>
       <result name="next" type="redirectAction">
+        <param name="actionName">impactPathway</param>
+        <param name="projectID">${project.id}</param>
+      </result>
+      <result name="cancel" type="redirectAction">
+        <param name="actionName">projects</param>
+        <param name="namespace">/planning</param>
+      </result>
+    </action>
+
+    <action name="impactPathway" class="org.cgiar.ccafs.ap.action.planning.ProjectImpactPathwayAction">
+      <result name="input">/WEB-INF/planning/projectImpactPathwayPlanning.ftl</result>   
+      <result name="success" type="redirectAction">   
+        <param name="actionName">impactPathway</param>    
+        <param name="projectID">${project.id}</param>   
+      </result>
+      <result name="next" type="redirectAction">
+        <param name="actionName">activities</param>
+        <param name="projectID">${project.id}</param>
+      </result>
+      <result name="cancel" type="redirectAction">
+        <param name="actionName">projects</param>
+        <param name="namespace">/planning</param>
+      </result>
+    </action>
+
+    <action name="projectIpOtherContributions" class="org.cgiar.ccafs.ap.action.planning.ProjectIPOtherContributionAction">
+      <result name="input">/WEB-INF/planning/projectIPOtherContributionPlanning.ftl</result>
+      <result name="success" type="redirectAction">   
+        <param name="actionName">projectIpOtherContributions</param>   
+        <param name="projectID">${project.id}</param>   
+      </result>
+      <result name="next" type="redirectAction">
         <param name="actionName">activities</param>
         <param name="projectID">${project.id}</param>
       </result>

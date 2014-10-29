@@ -47,6 +47,38 @@ public class MySQLProjectDAO implements ProjectDAO {
     this.databaseManager = databaseManager;
   }
 
+  @Override
+  public boolean deleteProjectIndicator(int projectID, int indicatorID) {
+    LOG.debug(">> deleteProjectIndicator(projectID={}, indicatorID={})", projectID, indicatorID);
+
+    String query = "DELETE FROM ip_project_indicators WHERE project_id = ? AND id = ?";
+
+    int rowsDeleted = databaseManager.delete(query, new Object[] {projectID, indicatorID});
+    if (rowsDeleted >= 0) {
+      LOG.debug("<< deleteProjectIndicator():{}", true);
+      return true;
+    }
+
+    LOG.debug("<< deleteProjectIndicator:{}", false);
+    return false;
+  }
+
+  @Override
+  public boolean deleteProjectOutput(int projectID, int outputID) {
+    LOG.debug(">> deleteProjectOutput(projectID={}, outputID={})", projectID, outputID);
+
+    String query = "DELETE FROM ip_project_contributions WHERE project_id = ? AND mog_id = ?";
+
+    int rowsDeleted = databaseManager.delete(query, new Object[] {projectID, outputID});
+    if (rowsDeleted >= 0) {
+      LOG.debug("<< deleteProjectOutput():{}", true);
+      return true;
+    }
+
+    LOG.debug("<< deleteProjectOutput:{}", false);
+    return false;
+  }
+
 
   @Override
   public boolean existProject(int projectID) {
@@ -70,6 +102,7 @@ public class MySQLProjectDAO implements ProjectDAO {
     return exists;
   }
 
+
   @Override
   public List<Map<String, String>> getAllProjects() {
     LOG.debug(">> getAllProjects )");
@@ -84,7 +117,6 @@ public class MySQLProjectDAO implements ProjectDAO {
     LOG.debug("-- getAllProjects() > Calling method executeQuery to get the results");
     return this.getData(query.toString());
   }
-
 
   @Override
   public List<Map<String, String>> getAllProjectsBasicInfo() {
@@ -171,6 +203,7 @@ public class MySQLProjectDAO implements ProjectDAO {
     LOG.debug("<< executeQuery():ProjectList.size={}", projectList.size());
     return projectList;
   }
+
 
   @Override
   public Map<String, String> getExpectedProjectLeader(int projectID) {
@@ -351,6 +384,45 @@ public class MySQLProjectDAO implements ProjectDAO {
   }
 
   @Override
+  public List<Map<String, String>> getProjectIndicators(int projectID) {
+    LOG.debug(">> getProjectIndicators( projectID = {} )", projectID);
+    List<Map<String, String>> indicatorsDataList = new ArrayList<>();
+
+    StringBuilder query = new StringBuilder();
+    query.append("SELECT ai.id, ai.description, ai.target, aip.id as 'parent_id', ");
+    query.append("aip.description as 'parent_description', aip.target as 'parent_target' ");
+    query.append("FROM ip_project_indicators as ai ");
+    query.append("INNER JOIN ip_indicators aip ON ai.parent_id = aip.id ");
+    query.append("WHERE ai.project_id=  ");
+    query.append(projectID);
+
+    try (Connection con = databaseManager.getConnection()) {
+      ResultSet rs = databaseManager.makeQuery(query.toString(), con);
+      while (rs.next()) {
+        Map<String, String> indicatorData = new HashMap<String, String>();
+
+        indicatorData.put("id", rs.getString("id"));
+        indicatorData.put("description", rs.getString("description"));
+        indicatorData.put("target", rs.getString("target"));
+        indicatorData.put("parent_id", rs.getString("parent_id"));
+        indicatorData.put("parent_description", rs.getString("parent_description"));
+        indicatorData.put("parent_target", rs.getString("parent_target"));
+
+        indicatorsDataList.add(indicatorData);
+      }
+      rs.close();
+    } catch (SQLException e) {
+      String exceptionMessage = "-- getProjectIndicators() > Exception raised trying ";
+      exceptionMessage += "to get the activity indicators for activity  " + projectID;
+
+      LOG.error(exceptionMessage, e);
+      return null;
+    }
+    LOG.debug("<< getProjectIndicators():indicatorsDataList.size={}", indicatorsDataList.size());
+    return indicatorsDataList;
+  }
+
+  @Override
   public Map<String, String> getProjectLeader(int projectID) {
     LOG.debug(">> getProjectLeader(projectID={})", projectID);
     Map<String, String> projectLeaderData = new HashMap<>();
@@ -382,6 +454,44 @@ public class MySQLProjectDAO implements ProjectDAO {
     }
     LOG.debug("<< getProjectLeader():{}", projectLeaderData);
     return projectLeaderData;
+  }
+
+  @Override
+  public List<Map<String, String>> getProjectOutputs(int projectID) {
+    LOG.debug(">> getProjectOutputs( projectID = {} )", projectID);
+    List<Map<String, String>> outputsDataList = new ArrayList<>();
+
+    StringBuilder query = new StringBuilder();
+    query.append("SELECT ipe.id, ipe.description, pe.id as 'parent_id',  ");
+    query.append("pe.description as 'parent_description' ");
+    query.append("FROM ip_elements ipe ");
+    query.append("INNER JOIN ip_project_contributions ipc ON ipc.mog_id = ipe.id ");
+    query.append("INNER JOIN ip_elements pe ON ipc.midOutcome_id = pe.id ");
+    query.append("WHERE ipc.project_id=  ");
+    query.append(projectID);
+
+    try (Connection con = databaseManager.getConnection()) {
+      ResultSet rs = databaseManager.makeQuery(query.toString(), con);
+      while (rs.next()) {
+        Map<String, String> indicatorData = new HashMap<String, String>();
+
+        indicatorData.put("id", rs.getString("id"));
+        indicatorData.put("description", rs.getString("description"));
+        indicatorData.put("parent_id", rs.getString("parent_id"));
+        indicatorData.put("parent_description", rs.getString("parent_description"));
+
+        outputsDataList.add(indicatorData);
+      }
+      rs.close();
+    } catch (SQLException e) {
+      String exceptionMessage = "-- getProjectOutputs() > Exception raised trying ";
+      exceptionMessage += "to get the activity outputs for activity  " + projectID;
+
+      LOG.error(exceptionMessage, e);
+      return null;
+    }
+    LOG.debug("<< getProjectOutputs():outputsDataList.size={}", outputsDataList.size());
+    return outputsDataList;
   }
 
   @Override
@@ -577,6 +687,63 @@ public class MySQLProjectDAO implements ProjectDAO {
     }
     LOG.debug(">> saveProject(projectData={})", projectData);
     return result;
+  }
+
+  @Override
+  public boolean saveProjectIndicators(Map<String, String> indicatorData) {
+    LOG.debug(">> saveProjectIndicators(indicatorData={})", indicatorData);
+    StringBuilder query = new StringBuilder();
+
+    Object[] values;
+    // Insert new activity indicator record
+    query.append("INSERT INTO ip_project_indicators (id, description, target, project_id, parent_id) ");
+    query.append("VALUES (?, ?, ?, ?, ?) ");
+    values = new Object[5];
+    values[0] = indicatorData.get("id");
+    values[1] = indicatorData.get("description");
+    values[2] = indicatorData.get("target");
+    values[3] = indicatorData.get("project_id");
+    values[4] = indicatorData.get("parent_id");
+
+    int newId = databaseManager.saveData(query.toString(), values);
+    if (newId == -1) {
+      LOG
+        .warn(
+          "-- saveProjectIndicators() > A problem happened trying to add a new project indicator. Data tried to save was: {}",
+          indicatorData);
+      LOG.debug("<< saveProjectIndicators(): {}", false);
+      return false;
+    }
+
+    LOG.debug("<< saveProjectIndicators(): {}", true);
+    return true;
+  }
+
+  @Override
+  public int saveProjectOutput(Map<String, String> outputData) {
+    LOG.debug(">> saveProjectOutput(outputData={})", outputData);
+    StringBuilder query = new StringBuilder();
+
+    Object[] values;
+    // Insert new activity indicator record
+    query.append("INSERT IGNORE INTO ip_project_contributions (project_id, mog_id, midOutcome_id) ");
+    query.append("VALUES (?, ?, ?) ");
+    values = new Object[3];
+    values[0] = outputData.get("project_id");
+    values[1] = outputData.get("mog_id");
+    values[2] = outputData.get("midOutcome_id");
+
+    int newId = databaseManager.saveData(query.toString(), values);
+    if (newId == -1) {
+      LOG.warn(
+        "-- saveProjectOutput() > A problem happened trying to add a new project output. Data tried to save was: {}",
+        outputData);
+      LOG.debug("<< saveProjectOutput(): {}", -1);
+      return -1;
+    }
+
+    LOG.debug("<< saveProjectOutput(): {}", newId);
+    return newId;
   }
 
 }

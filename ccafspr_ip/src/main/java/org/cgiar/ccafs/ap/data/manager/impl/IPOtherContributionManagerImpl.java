@@ -26,6 +26,7 @@ import org.slf4j.LoggerFactory;
 
 /**
  * @author Javier Andrés Gallego
+ * @author Hernán David Carvajal
  */
 public class IPOtherContributionManagerImpl implements IPOtherContributionManager {
 
@@ -44,27 +45,13 @@ public class IPOtherContributionManagerImpl implements IPOtherContributionManage
   }
 
   @Override
-  public boolean deleteIPOtherContribution(int activityId) {
-    return ipOtherContributionDAO.deleteIPOtherContribution(activityId);
+  public boolean deleteIPOtherContribution(int contributionId) {
+    return ipOtherContributionDAO.deleteIPOtherContribution(contributionId);
   }
 
   @Override
-  public boolean deleteIPOtherContributionsByActivityId(int activityID) {
-    return ipOtherContributionDAO.deleteIPOtherContributionsByActivityId(activityID);
-  }
-
-  @Override
-  public IPOtherContribution getIPOtherContributionByActivityId(int activityID) {
-    Map<String, String> ipOtherContributionData = ipOtherContributionDAO.getIPOtherContributionByActivityId(activityID);
-    if (!ipOtherContributionData.isEmpty()) {
-      IPOtherContribution ipOtherContribution = new IPOtherContribution();
-      ipOtherContribution.setId(Integer.parseInt(ipOtherContributionData.get("id")));
-      ipOtherContribution.setContribution(ipOtherContributionData.get("contribution"));
-      ipOtherContribution.setAdditionalContribution(ipOtherContributionData.get("additional_contribution"));
-
-      return ipOtherContribution;
-    }
-    return null;
+  public boolean deleteIPOtherContributionsByProjectId(int projectID) {
+    return ipOtherContributionDAO.deleteIPOtherContributionsByProjectId(projectID);
   }
 
   @Override
@@ -82,7 +69,21 @@ public class IPOtherContributionManagerImpl implements IPOtherContributionManage
   }
 
   @Override
-  public boolean saveIPOtherContribution(int activityID, IPOtherContribution ipOtherContribution) {
+  public IPOtherContribution getIPOtherContributionByProjectId(int projectID) {
+    Map<String, String> ipOtherContributionData = ipOtherContributionDAO.getIPOtherContributionByProjectId(projectID);
+    if (!ipOtherContributionData.isEmpty()) {
+      IPOtherContribution ipOtherContribution = new IPOtherContribution();
+      ipOtherContribution.setId(Integer.parseInt(ipOtherContributionData.get("id")));
+      ipOtherContribution.setContribution(ipOtherContributionData.get("contribution"));
+      ipOtherContribution.setAdditionalContribution(ipOtherContributionData.get("additional_contribution"));
+
+      return ipOtherContribution;
+    }
+    return null;
+  }
+
+  @Override
+  public boolean saveIPOtherContribution(int projectID, IPOtherContribution ipOtherContribution) {
     boolean allSaved = true;
     Map<String, Object> activityData = new HashMap<>();
     if (ipOtherContribution.getId() > 0) {
@@ -91,7 +92,7 @@ public class IPOtherContributionManagerImpl implements IPOtherContributionManage
     activityData.put("contribution", ipOtherContribution.getContribution());
     activityData.put("additional_contribution", ipOtherContribution.getAdditionalContribution());
 
-    int result = ipOtherContributionDAO.saveIPOtherContribution(activityID, activityData);
+    int result = ipOtherContributionDAO.saveIPOtherContribution(projectID, activityData);
 
     if (result > 0) {
       LOG.debug("saveIPOtherContribution > New IP Other Contribution added with id {}", result);
@@ -100,8 +101,8 @@ public class IPOtherContributionManagerImpl implements IPOtherContributionManage
     } else {
       LOG
         .error(
-          "saveIPOtherContribution > There was an error trying to save/update an IP Other Contribution from activityID={}",
-          activityID);
+          "saveIPOtherContribution > There was an error trying to save/update an IP Other Contribution from projectID={}",
+          projectID);
       allSaved = false;
     }
 

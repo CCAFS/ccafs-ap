@@ -21,6 +21,8 @@ import org.cgiar.ccafs.ap.data.manager.InstitutionManager;
 import org.cgiar.ccafs.ap.data.manager.ProjectManager;
 import org.cgiar.ccafs.ap.data.manager.UserManager;
 import org.cgiar.ccafs.ap.data.model.Budget;
+import org.cgiar.ccafs.ap.data.model.IPElement;
+import org.cgiar.ccafs.ap.data.model.IPIndicator;
 import org.cgiar.ccafs.ap.data.model.IPProgram;
 import org.cgiar.ccafs.ap.data.model.Project;
 import org.cgiar.ccafs.ap.data.model.User;
@@ -40,6 +42,7 @@ import org.slf4j.LoggerFactory;
 
 /**
  * @author Héctor Fabio Tobón R.
+ * @author Hernán David Carvajal.
  * @author Javier Andrés Gallego.
  */
 public class ProjectManagerImpl implements ProjectManager {
@@ -52,9 +55,9 @@ public class ProjectManagerImpl implements ProjectManager {
   private InstitutionManager institutionManager;
   private IPProgramManager ipProgramManager;
   private BudgetManager budgetManager;
-
   // LOG
   private static Logger LOG = LoggerFactory.getLogger(ProjectManagerImpl.class);
+
 
   @Inject
   public ProjectManagerImpl(ProjectDAO projectDAO, UserManager userManager, InstitutionManager institutionManager,
@@ -67,9 +70,21 @@ public class ProjectManagerImpl implements ProjectManager {
   }
 
   @Override
+  public boolean deleteIndicator(int projectID, int indicatorID) {
+    return projectDAO.deleteProjectIndicator(projectID, indicatorID);
+  }
+
+
+  @Override
+  public boolean deleteProjectOutput(int projectID, int outputID) {
+    return projectDAO.deleteProjectOutput(projectID, outputID);
+  }
+
+  @Override
   public boolean existProject(int projectId) {
     return projectDAO.existProject(projectId);
   }
+
 
   @Override
   public List<Project> getAllProjectsBasicInfo() {
@@ -252,6 +267,29 @@ public class ProjectManagerImpl implements ProjectManager {
   }
 
   @Override
+  public List<IPIndicator> getProjectIndicators(int projectID) {
+    List<IPIndicator> indicators = new ArrayList<>();
+    List<Map<String, String>> indicatorsData = projectDAO.getProjectIndicators(projectID);
+
+    for (Map<String, String> iData : indicatorsData) {
+      IPIndicator indicator = new IPIndicator();
+      indicator.setId(Integer.parseInt(iData.get("id")));
+      indicator.setDescription(iData.get("description"));
+      indicator.setTarget(iData.get("target"));
+
+      // Parent indicator
+      IPIndicator parent = new IPIndicator(Integer.parseInt(iData.get("parent_id")));
+      parent.setDescription(iData.get("parent_description"));
+      parent.setTarget(iData.get("parent_target"));
+      indicator.setParent(parent);
+
+      indicators.add(indicator);
+    }
+
+    return indicators;
+  }
+
+  @Override
   public User getProjectLeader(int projectId) {
     Map<String, String> pData = projectDAO.getProjectLeader(projectId);
     if (!pData.isEmpty()) {
@@ -268,6 +306,30 @@ public class ProjectManagerImpl implements ProjectManager {
       return projectLeader;
     }
     return null;
+  }
+
+  @Override
+  public List<IPElement> getProjectOutputs(int projectID) {
+    List<IPElement> outputs = new ArrayList<>();
+    List<Map<String, String>> outputsData = projectDAO.getProjectOutputs(projectID);
+
+    for (Map<String, String> oData : outputsData) {
+      IPElement output = new IPElement();
+      output.setId(Integer.parseInt(oData.get("id")));
+      output.setDescription(oData.get("description"));
+
+      IPElement parent = new IPElement();
+      parent.setId(Integer.parseInt(oData.get("parent_id")));
+      parent.setDescription(oData.get("parent_description"));
+
+      List<IPElement> parentList = new ArrayList<>();
+      parentList.add(parent);
+      output.setContributesTo(parentList);
+
+      outputs.add(output);
+    }
+
+    return outputs;
   }
 
   @Override
@@ -409,5 +471,50 @@ public class ProjectManagerImpl implements ProjectManager {
     return projectDAO.saveProject(projectData);
   }
 
+  @Override
+  public boolean saveProjectIndicators(List<IPIndicator> indicators, int projectID) {
+    Map<String, String> indicatorData;
+    boolean saved = true;
 
+    for (IPIndicator indicator : indicators) {
+      if (indicator == null) {
+        continue;
+      }
+      indicatorData = new HashMap<>();
+      if (indicator.getId() == -1) {
+        indicatorData.put("id", null);
+      } else {
+        indicatorData.put("id", String.valueOf(indicator.getId()));
+      }
+
+      indicatorData.put("description", indicator.getDescription());
+      indicatorData.put("target", indicator.getTarget());
+      indicatorData.put("parent_id", String.valueOf(indicator.getParent().getId()));
+      indicatorData.put("project_id", String.valueOf(projectID));
+
+      saved = projectDAO.saveProjectIndicators(indicatorData) && saved;
+    }
+
+    return saved;
+  }
+
+  @Override
+  public boolean saveProjectOutputs(List<IPElement> outputs, int projectID) {
+    Map<String, String> outputData;
+    boolean saved = true;
+
+    for (IPElement output : outputs) {
+      if (output == null) {
+        continue;
+      }
+      outputData = new HashMap<>();
+      outputData.put("project_id", String.valueOf(projectID));
+      outputData.put("mog_id", String.valueOf(output.getId()));
+      outputData.put("midOutcome_id", String.valueOf(output.getContributesTo().get(0).getId()));
+
+      int relationID = projectDAO.saveProjectOutput(outputData);
+      saved = (relationID != -1) && saved;
+    }
+    return saved;
+  }
 }
