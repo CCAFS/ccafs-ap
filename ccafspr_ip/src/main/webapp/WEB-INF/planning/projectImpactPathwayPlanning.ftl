@@ -128,7 +128,7 @@
                       <div class="mog">
                         <input name="project.outputs.contributesTo[0].id" value="${midOutcome.id}"  type="hidden" />
                         <input type="checkbox" name="outputs.id" value="${output.id}" [#if project.containsOutput(output.id)] checked [/#if] />
-                        <label> ${output.program.acronym} - MOG #${output_index}: ${output.description} </label>
+                        <label> ${output.program.acronym} - MOG #${output_index+1}: ${output.description} </label>
                       </div>
                   [/#list]
                 </div>
