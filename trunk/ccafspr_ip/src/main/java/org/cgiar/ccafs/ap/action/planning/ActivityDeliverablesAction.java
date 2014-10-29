@@ -132,7 +132,7 @@ public class ActivityDeliverablesAction extends BaseAction {
     List<Deliverable> deliverables = deliverableManager.getDeliverablesByActivity(activityID);
     activity.setDeliverables(deliverables);
 
-    outputs = activityManager.getActivityOutputs(activityID);
+    outputs = projectManager.getProjectOutputs(project.getId());
 
     if (outputs.size() > 0) {
       // Getting the List of Next Users related to the expected Deliverable
@@ -184,7 +184,7 @@ public class ActivityDeliverablesAction extends BaseAction {
           }
 
           // saving output/MOG contribution.
-          deliverableManager.saveDeliverableOutput(deliverableID, deliverable.getOutput().getId(), activityID);
+          deliverableManager.saveDeliverableOutput(deliverableID, deliverable.getOutput().getId(), project.getId());
 
           // Saving next Users.
           if (deliverable.getNextUsers() != null) {

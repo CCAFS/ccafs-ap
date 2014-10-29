@@ -16,10 +16,8 @@ package org.cgiar.ccafs.ap.action.planning;
 import org.cgiar.ccafs.ap.action.BaseAction;
 import org.cgiar.ccafs.ap.config.APConfig;
 import org.cgiar.ccafs.ap.config.APConstants;
-import org.cgiar.ccafs.ap.data.manager.ActivityManager;
 import org.cgiar.ccafs.ap.data.manager.IPOtherContributionManager;
 import org.cgiar.ccafs.ap.data.manager.ProjectManager;
-import org.cgiar.ccafs.ap.data.model.Activity;
 import org.cgiar.ccafs.ap.data.model.IPOtherContribution;
 import org.cgiar.ccafs.ap.data.model.Project;
 
@@ -29,44 +27,31 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 /**
- * @author Javier Andrés Galllego B.
- * @author Héctor fabio Tobón R.
+ * @author Hernán David Carvajal B.
  */
-public class ActivityIPOtherContributionAction extends BaseAction {
-
-  private static final long serialVersionUID = -3787446132042857817L;
+public class ProjectIPOtherContributionAction extends BaseAction {
 
   // LOG
-  private static Logger LOG = LoggerFactory.getLogger(ActivityIPOtherContributionAction.class);
+  private static Logger LOG = LoggerFactory.getLogger(ProjectIPOtherContributionAction.class);
+  private static final long serialVersionUID = 5866456304533553208L;
 
   // Manager
   private IPOtherContributionManager ipOtherContributionManager;
-  private ActivityManager activityManager;
   private ProjectManager projectManager;
 
   // Model for the back-end
   private IPOtherContribution ipOtherContribution;
-  private Activity activity;
 
   // Model for the front-end
-  private int activityID;
+  private int projectID;
   private Project project;
 
   @Inject
-  public ActivityIPOtherContributionAction(APConfig config, IPOtherContributionManager ipOtherContributionManager,
-    ActivityManager activityManager, ProjectManager projectManager) {
+  public ProjectIPOtherContributionAction(APConfig config, IPOtherContributionManager ipOtherContributionManager,
+    ProjectManager projectManager) {
     super(config);
     this.ipOtherContributionManager = ipOtherContributionManager;
-    this.activityManager = activityManager;
     this.projectManager = projectManager;
-  }
-
-  public Activity getActivity() {
-    return activity;
-  }
-
-  public int getActivityID() {
-    return activityID;
   }
 
   public IPOtherContribution getIpOtherContribution() {
@@ -75,6 +60,10 @@ public class ActivityIPOtherContributionAction extends BaseAction {
 
   public Project getProject() {
     return project;
+  }
+
+  public int getProjectID() {
+    return projectID;
   }
 
   @Override
@@ -91,24 +80,22 @@ public class ActivityIPOtherContributionAction extends BaseAction {
   public void prepare() throws Exception {
     super.prepare();
 
-    activityID = Integer.parseInt(StringUtils.trim(this.getRequest().getParameter(APConstants.ACTIVITY_REQUEST_ID)));
+    projectID = Integer.parseInt(StringUtils.trim(this.getRequest().getParameter(APConstants.PROJECT_REQUEST_ID)));
 
     // Getting the activity information
-    activity = activityManager.getActivityById(activityID);
-    // Getting the project information.
-    project = projectManager.getProjectFromActivityId(activityID);
+    project = projectManager.getProject(projectID);
 
     // Getting the information for the IP Other Contribution
-    // ipOtherContribution = ipOtherContributionManager.getIPOtherContributionByActivityId(activityID);
+    ipOtherContribution = ipOtherContributionManager.getIPOtherContributionByProjectId(projectID);
 
-    activity.setIpOtherContribution(ipOtherContribution);
+    project.setIpOtherContribution(ipOtherContribution);
   }
 
   @Override
   public String save() {
     if (this.isSaveable()) {
       // Saving Activity IP Other Contribution
-      boolean saved = ipOtherContributionManager.saveIPOtherContribution(activityID, activity.getIpOtherContribution());
+      boolean saved = ipOtherContributionManager.saveIPOtherContribution(projectID, project.getIpOtherContribution());
 
       if (!saved) {
         addActionError(getText("saving.problem"));
@@ -122,16 +109,16 @@ public class ActivityIPOtherContributionAction extends BaseAction {
     return BaseAction.ERROR;
   }
 
-  public void setActivity(Activity activity) {
-    this.activity = activity;
-  }
-
-  public void setActivityID(int activityID) {
-    this.activityID = activityID;
-  }
-
   public void setIpOtherContribution(IPOtherContribution ipOtherContribution) {
     this.ipOtherContribution = ipOtherContribution;
+  }
+
+  public void setProject(Project project) {
+    this.project = project;
+  }
+
+  public void setProjectID(int projectID) {
+    this.projectID = projectID;
   }
 
 

@@ -157,7 +157,7 @@ public class MySQLDeliverableDAO implements DeliverableDAO {
     query.append("SELECT ipe.id,ipe.description ");
     query.append("FROM ip_deliverable_contributions ipd ");
     query.append("INNER JOIN deliverables d ON ipd.deliverable_id=d.id ");
-    query.append("INNER JOIN ip_activity_contributions ipac ON ipd.activity_contribution_id=ipac.id ");
+    query.append("INNER JOIN ip_project_contributions ipac ON ipd.project_contribution_id=ipac.id ");
     query.append("INNER JOIN ip_elements ipe ON ipac.mog_id=ipe.id ");
     query.append("WHERE ipd.deliverable_id= ");
     query.append(deliverableID);
@@ -226,20 +226,20 @@ public class MySQLDeliverableDAO implements DeliverableDAO {
   }
 
   @Override
-  public boolean saveDeliverableOutput(int deliverableID, int ipElementID, int activityID) {
-    LOG.debug(">> saveDeliverableOutput(deliverableData={})", new Object[] {deliverableID, ipElementID, activityID});
+  public boolean saveDeliverableOutput(int deliverableID, int ipElementID, int projectID) {
+    LOG.debug(">> saveDeliverableOutput(deliverableData={})", new Object[] {deliverableID, ipElementID, projectID});
     StringBuilder query = new StringBuilder();
     int result = -1;
     boolean saved = false;
     Object[] values;
 
-    query.append("INSERT INTO ip_deliverable_contributions (activity_contribution_id,deliverable_id) ");
-    query.append("VALUES ((SELECT id FROM ip_activity_contributions WHERE activity_id= ");
-    query.append(activityID);
+    query.append("INSERT INTO ip_deliverable_contributions (project_contribution_id,deliverable_id) ");
+    query.append("VALUES ((SELECT id FROM ip_project_contributions WHERE project_id= ");
+    query.append(projectID);
     query.append(" AND mog_id= ");
     query.append(ipElementID);
     query.append("), ?) ");
-    query.append("ON DUPLICATE KEY UPDATE activity_contribution_id = VALUES(activity_contribution_id), ");
+    query.append("ON DUPLICATE KEY UPDATE project_contribution_id = VALUES(project_contribution_id), ");
     query.append("deliverable_id = VALUES(deliverable_id) ");
     values = new Object[1];
     values[0] = deliverableID;

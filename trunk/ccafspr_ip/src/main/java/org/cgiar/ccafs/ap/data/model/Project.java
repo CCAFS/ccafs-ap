@@ -44,14 +44,27 @@ public class Project {
   private List<Budget> budgets;
   private ProjectOutcome outcome;
   private List<Activity> activities;
+  private List<IPElement> outputs;
+  private List<IPIndicator> indicators;
+  private IPOtherContribution ipOtherContribution;
   private long created; // Timestamp number when the project was created
 
   public Project() {
-
   }
 
   public Project(int id) {
     this.id = id;
+  }
+
+  public boolean containsOutput(int outputID) {
+    if (this.outputs != null) {
+      for (IPElement output : this.outputs) {
+        if (output.getId() == outputID) {
+          return true;
+        }
+      }
+    }
+    return false;
   }
 
   /**
@@ -149,9 +162,38 @@ public class Project {
     return id;
   }
 
+  /**
+   * This method search if the list of indicators contains an indicator
+   * which parent is identified by the value passed as parameter.
+   * 
+   * @param indicatorID - indicator identifier
+   * @return If the indicator is found, the method returns it. Otherwise, return null
+   */
+  public IPIndicator getIndicatorByParent(int parentIndicatorID) {
+    if (indicators != null) {
+      for (IPIndicator indicator : this.indicators) {
+        if (indicator.getParent() != null) {
+          if (indicator.getParent().getId() == parentIndicatorID) {
+            return indicator;
+          }
+        }
+      }
+    }
+    return null;
+  }
+
+  public List<IPIndicator> getIndicators() {
+    return indicators;
+  }
+
+  public IPOtherContribution getIpOtherContribution() {
+    return ipOtherContribution;
+  }
+
   public User getLeader() {
     return leader;
   }
+
 
   public String getLeaderResponsabilities() {
     return leaderResponsabilities;
@@ -159,6 +201,10 @@ public class Project {
 
   public ProjectOutcome getOutcome() {
     return outcome;
+  }
+
+  public List<IPElement> getOutputs() {
+    return outputs;
   }
 
   public User getOwner() {
@@ -250,6 +296,14 @@ public class Project {
     this.id = id;
   }
 
+  public void setIndicators(List<IPIndicator> indicators) {
+    this.indicators = indicators;
+  }
+
+  public void setIpOtherContribution(IPOtherContribution ipOtherContribution) {
+    this.ipOtherContribution = ipOtherContribution;
+  }
+
   public void setLeader(User leader) {
     this.leader = leader;
   }
@@ -260,6 +314,10 @@ public class Project {
 
   public void setOutcome(ProjectOutcome outcome) {
     this.outcome = outcome;
+  }
+
+  public void setOutputs(List<IPElement> outputs) {
+    this.outputs = outputs;
   }
 
   public void setOwner(User owner) {

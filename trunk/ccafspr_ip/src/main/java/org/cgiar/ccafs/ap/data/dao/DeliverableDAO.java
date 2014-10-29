@@ -90,9 +90,9 @@ public interface DeliverableDAO {
    * 
    * @param deliverableID - is the Id of the deliverable
    * @param ipElementID - is the Id of the IP Element
-   * @param activityID - is the Id of the activity
+   * @param projectID - is the Id of the project
    * @return true if the relation Deliverable Contribution is saved, false otherwise
    */
-  public boolean saveDeliverableOutput(int deliverableID, int ipElementID, int activityID);
+  public boolean saveDeliverableOutput(int deliverableID, int ipElementID, int projectID);
 
 }
