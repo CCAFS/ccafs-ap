@@ -85,7 +85,7 @@
 [#macro outputs output_index="0" parent_index="0" value="-1" description="description" template=false canRemove=false ] 
   [#if template]
      <div id="contributeTemplate" class="contributions" style="display:none">  
-        <input id="contributeId" type="hidden" value="-1" />
+        <input name="_contributesTo" type="hidden" value="-1" />
         <p></p>  
   [#else] 
     <div class="contributions">  

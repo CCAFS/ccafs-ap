@@ -74,6 +74,8 @@ function setOutputsIndexes(){
     $(element).attr("id", "output-" + index);
     $(element).find("[id$='elementIndex']").html(index + 1);
     $(element).find("[id^='outputId']").attr("name", elementName + "id");
+    $(element).find("[id$='description']").attr("name", elementName + "description");
+    $(element).find("[id$='description']").attr("id", elementName + "description");
     $(element).find("[id^='outputProgramID']").attr("name", elementName + "program.id");
     $(element).find("[id^='outputTypeID']").attr("name", elementName + "type.id");
     $(element).find("[id^='outputDescription']").attr("name", elementName + "description").attr("placeholder", "Add output #" + (index + 1));
@@ -119,7 +121,7 @@ function setContributesIndexes(i){
   
   $("#output-" + i + " div.contributions").each(function(index,element){
     var elementName = "outputs[" + i + "].contributesTo[" + index + "].";
-    $(element).find("[id^='contributeId']").attr("name", elementName + "id");
+    $(element).find("input[type='hidden']").attr("name", elementName + "id");
   });
 }
 
