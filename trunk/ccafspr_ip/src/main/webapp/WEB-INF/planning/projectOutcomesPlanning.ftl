@@ -35,6 +35,7 @@
   [@s.form action="projectOutcomes" cssClass="pure-form"]
     <article class="halfContent" id="projectOutcomes">
     [#include "/WEB-INF/planning/planningDataSheet.ftl" /]
+    [#include "/WEB-INF/planning/projectIP-planning-sub-menu.ftl" /]
       [#-- Informing user that he/she doesn't have enough privileges to edit. See GrantProjectPlanningAccessInterceptor--]
       [#if !saveable]
         <p class="readPrivileges">
