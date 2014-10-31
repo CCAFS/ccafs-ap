@@ -276,6 +276,7 @@ public class ProjectManagerImpl implements ProjectManager {
       indicator.setId(Integer.parseInt(iData.get("id")));
       indicator.setDescription(iData.get("description"));
       indicator.setTarget(iData.get("target"));
+      indicator.setYear(Integer.parseInt(iData.get("year")));
 
       // Parent indicator
       IPIndicator parent = new IPIndicator(Integer.parseInt(iData.get("parent_id")));
@@ -489,6 +490,7 @@ public class ProjectManagerImpl implements ProjectManager {
 
       indicatorData.put("description", indicator.getDescription());
       indicatorData.put("target", indicator.getTarget());
+      indicatorData.put("year", String.valueOf(indicator.getYear()));
       indicatorData.put("parent_id", String.valueOf(indicator.getParent().getId()));
       indicatorData.put("project_id", String.valueOf(projectID));
 

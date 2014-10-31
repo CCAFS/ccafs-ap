@@ -23,7 +23,7 @@ public class IPIndicator {
   private String description;
   private String target;
   private IPIndicator parent;
-
+  private int year;
 
   public IPIndicator() {
   }
@@ -66,6 +66,10 @@ public class IPIndicator {
     return target;
   }
 
+  public int getYear() {
+    return year;
+  }
+
   @Override
   public int hashCode() {
     return new HashCodeBuilder(17, 31).append(id).toHashCode();
@@ -85,6 +89,10 @@ public class IPIndicator {
 
   public void setTarget(String target) {
     this.target = target;
+  }
+
+  public void setYear(int year) {
+    this.year = year;
   }
 
   @Override

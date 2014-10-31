@@ -20,6 +20,10 @@ import org.cgiar.ccafs.ap.data.manager.ProjectManager;
 import org.cgiar.ccafs.ap.data.manager.ProjectOutcomeManager;
 import org.cgiar.ccafs.ap.data.model.Project;
 import org.cgiar.ccafs.ap.data.model.ProjectOutcome;
+
+import java.util.HashMap;
+import java.util.Map;
+
 import com.google.inject.Inject;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
@@ -27,6 +31,7 @@ import org.slf4j.LoggerFactory;
 
 /**
  * @author Javier Andrés Gallego B.
+ * @author Hernán David Carvajal B.
  */
 public class ProjectOutcomeAction extends BaseAction {
 
@@ -44,7 +49,8 @@ public class ProjectOutcomeAction extends BaseAction {
 
   // Model for the front-end
   private int projectID;
-
+  private int currentPlanningYear;
+  private int midOutcomeYear;
 
   @Inject
   public ProjectOutcomeAction(APConfig config, ProjectOutcomeManager projectOutcomeManager,
@@ -52,6 +58,14 @@ public class ProjectOutcomeAction extends BaseAction {
     super(config);
     this.projectOutcomeManager = projectOutcomeManager;
     this.projectManager = projectManager;
+  }
+
+  public String getCurrentPlanningYear() {
+    return String.valueOf(currentPlanningYear);
+  }
+
+  public String getMidOutcomeYear() {
+    return String.valueOf(midOutcomeYear);
   }
 
   public Project getProject() {
@@ -72,29 +86,40 @@ public class ProjectOutcomeAction extends BaseAction {
     }
   }
 
-
   @Override
   public void prepare() throws Exception {
     projectID = Integer.parseInt(StringUtils.trim(this.getRequest().getParameter(APConstants.PROJECT_REQUEST_ID)));
+    currentPlanningYear = this.config.getPlanningCurrentYear();
+    midOutcomeYear = this.config.getMidOutcomeYear();
 
     // Getting the project.
     project = projectManager.getProject(projectID);
 
-    // Getting the current year from the properties file.
-    int currentPlanningYear = this.config.getPlanningCurrentYear();
-    ProjectOutcome projectOutcome = projectOutcomeManager.getProjectOutcomeByYear(projectID, currentPlanningYear);
-    if (projectOutcome == null) {
-      projectOutcome = new ProjectOutcome(-1);
-      projectOutcome.setYear(currentPlanningYear);
+    Map<String, ProjectOutcome> projectOutcomes = new HashMap<>();
+    for (int year = currentPlanningYear; year <= midOutcomeYear; year++) {
+      ProjectOutcome projectOutcome = projectOutcomeManager.getProjectOutcomeByYear(projectID, year);
+      if (projectOutcome == null) {
+        projectOutcome = new ProjectOutcome(-1);
+        projectOutcome.setYear(year);
+      }
+
+      projectOutcomes.put(String.valueOf(year), projectOutcome);
     }
-    project.setOutcome(projectOutcome);
+    project.setOutcomes(projectOutcomes);
+
   }
 
   @Override
   public String save() {
     if (this.isSaveable()) {
+      boolean saved = true;
+
       // Saving Project Outcome
-      boolean saved = projectOutcomeManager.saveProjectOutcome(projectID, project.getOutcome());
+      for (int year = currentPlanningYear; year <= midOutcomeYear; year++) {
+        saved =
+          saved && projectOutcomeManager.saveProjectOutcome(projectID, project.getOutcomes().get(String.valueOf(year)));
+      }
+
       if (!saved) {
         addActionError(getText("saving.problem"));
         return BaseAction.INPUT;
@@ -103,6 +128,14 @@ public class ProjectOutcomeAction extends BaseAction {
       return BaseAction.SUCCESS;
     }
     return BaseAction.ERROR;
+  }
+
+  public void setCurrentPlanningYear(int currentPlanningYear) {
+    this.currentPlanningYear = currentPlanningYear;
+  }
+
+  public void setMidOutcomeYear(int midOutcomeYear) {
+    this.midOutcomeYear = midOutcomeYear;
   }
 
 
