@@ -6,11 +6,12 @@ function init(){
   setMogsIndexes();
   attachEvents();
   initGraph();
+  $(".indicatorTargets").tabs();
 }
 
 function attachEvents(){
   $("#impactPathway_midOutcomesList").change(selectMidOutcomeEvent);
-  $('input[name^="project.indicators"]').click(toogleIndicatorInfo);
+  $('.projectIndicatorCheckbox').click(toogleIndicatorInfo);
   $('input[name^="project.outputs"]').click(selectMogEvent);
   $(".removeContribution").click(removeContributionBlock);
   $(".targetValue").on("keydown", function(event){
@@ -110,9 +111,9 @@ function addMOGs(midOutcomeID,$mogBlock){
       $newMog.find("input[name$='contributesTo[0].id'] ").val(midOutcomeID);
       $newMog.find("input[type='checkbox']").val(mog.id);
       
-      console.log( mog.program.acronym + "#" + index + ": " + mog.description) ;
+      console.log(mog.program.acronym + "#" + index + ": " + mog.description);
       
-      $newMog.find("label").html(mog.program.acronym + " - MOG #" + (index+1) + ": " + mog.description);
+      $newMog.find("label").html(mog.program.acronym + " - MOG #" + (index + 1) + ": " + mog.description);
       
       $mogBlock.append($newMog);
     });
@@ -161,7 +162,7 @@ function addIndicators(midOutcomeID,programID,$indicatorsBlock){
       // If the there is only one indicator, the target must be already selected.
       if (onlyOneIndicator) {
         $newIndicator.find("input[type='checkbox']").attr("checked", true);
-        $newIndicator.find(".indicatorNarrative").show("slow");
+        $newIndicator.find(".indicatorNarrative, .indicatorTargets").show("slow");
       }
     });
     
@@ -179,33 +180,42 @@ function addIndicators(midOutcomeID,programID,$indicatorsBlock){
 function setIndicatorIndexes(){
   var $contributionsBlock = $("#contributionsBlock");
   var indicatorsName = "project.indicators";
-  
+  var index = 0;
+  console.log("setIndicator()");
   // Indicators indexes
-  $contributionsBlock.find(".midOutcomeIndicator").each(function(index,indicator){
-    // Checkbox
-    $(indicator).find("input[type='checkbox']").attr("id", "project.indicators-" + index);
-    $(indicator).find("input[type='checkbox']").attr("name", indicatorsName + "[" + index + "].parent.id");
+  $contributionsBlock.find(".midOutcomeIndicator").each(function(indicatorIndex,indicator){
+    $(indicator).find(".targetIndicator").each(function(targetIndex,target){
+      // console.log("target ID ->" + $(target).html());
+      
+      // Hidden
+      $(indicator).find("input[type='hidden']").attr("id", "project.indicators-" + indicatorIndex);
+      $(indicator).find("input[type='hidden']").attr("name", indicatorsName + "[" + indicatorIndex + "].id");
+      
+      // Label
+      $(indicator).find("label").attr("for", "project.indicators-" + index);
+      
+      // Checkbox
+      $(indicator).find("input[type='checkbox']").attr("id", "project.indicators-" + indicatorIndex);
+      $(indicator).find("input[type='checkbox']").attr("name", indicatorsName + "[" + indicatorIndex + "].parent.id");
+      if ($(indicator).find("input[type='checkbox']").is(":checked")) {
+        console.log("Index ->" + index);
+        
+        $(target).find("input[type='hidden']").attr("disabled", false);
+        $(target).find(".projectIndicatorYear").attr("name", indicatorsName + "[" + index + "].year");
+        console.log($(target).find(".projectIndicatorYear").attr("name"));
+        $(target).find(".projectIndicatorTarget").attr("name", indicatorsName + "[" + index + "].target");
+        $(target).find(".projectIndicatorDescription").attr("name", indicatorsName + "[" + index + "].description");
+        
+        index++;
+      } else {
+        
+        $(target).find("input[type='hidden']").attr("disabled", true);
+        $(target).find(".indicatorNarrative textarea").attr("name", "");
+        
+      }
+      
+    });
     
-    if ($(indicator).find("input[type='checkbox']").is(":checked")) {
-      
-      $(indicator).find("input[type='hidden']").attr("disabled", false);
-      $(indicator).find(".indicatorNarrative input").attr("name", indicatorsName + "[" + index + "].target");
-      $(indicator).find(".indicatorNarrative textarea").attr("name", indicatorsName + "[" + index + "].description");
-      
-    } else {
-      
-      $(indicator).find("input[type='hidden']").attr("disabled", true);
-      $(indicator).find(".indicatorNarrative input").attr("name", "");
-      $(indicator).find(".indicatorNarrative textarea").attr("name", "");
-      
-    }
-    
-    // Hidden
-    $(indicator).find("input[type='hidden']").attr("id", "project.indicators-" + index);
-    $(indicator).find("input[type='hidden']").attr("name", indicatorsName + "[" + index + "].id");
-    
-    // Label
-    $(indicator).find("label").attr("for", "project.indicators-" + index);
   });
 }
 
@@ -243,15 +253,16 @@ function toogleIndicatorInfo(event){
     $indicatorBlock.find(".indicatorNarrative textarea").attr("name", indicatorsName + ".description");
     
     // Show the block
-    $indicatorBlock.find(".indicatorNarrative").show("slow");
+    $indicatorBlock.find(".indicatorNarrative, .indicatorTargets").show("slow");
   } else {
     $indicatorBlock.find("input[type='hidden']").attr("disabled", true);
     $indicatorBlock.find(".indicatorNarrative input").attr("name", "");
     $indicatorBlock.find(".indicatorNarrative textarea").attr("name", "");
     
     // Hide the block
-    $indicatorBlock.find(".indicatorNarrative").hide("slow");
+    $indicatorBlock.find(".indicatorNarrative, .indicatorTargets").hide("slow");
   }
+  setIndicatorIndexes();
 }
 
 function addChosen(){
