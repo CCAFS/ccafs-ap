@@ -389,7 +389,7 @@ public class MySQLProjectDAO implements ProjectDAO {
     List<Map<String, String>> indicatorsDataList = new ArrayList<>();
 
     StringBuilder query = new StringBuilder();
-    query.append("SELECT ai.id, ai.description, ai.target, aip.id as 'parent_id', ");
+    query.append("SELECT ai.id, ai.description, ai.target, ai.year, aip.id as 'parent_id', ");
     query.append("aip.description as 'parent_description', aip.target as 'parent_target' ");
     query.append("FROM ip_project_indicators as ai ");
     query.append("INNER JOIN ip_indicators aip ON ai.parent_id = aip.id ");
@@ -404,6 +404,7 @@ public class MySQLProjectDAO implements ProjectDAO {
         indicatorData.put("id", rs.getString("id"));
         indicatorData.put("description", rs.getString("description"));
         indicatorData.put("target", rs.getString("target"));
+        indicatorData.put("year", rs.getString("year"));
         indicatorData.put("parent_id", rs.getString("parent_id"));
         indicatorData.put("parent_description", rs.getString("parent_description"));
         indicatorData.put("parent_target", rs.getString("parent_target"));
@@ -696,14 +697,15 @@ public class MySQLProjectDAO implements ProjectDAO {
 
     Object[] values;
     // Insert new activity indicator record
-    query.append("INSERT INTO ip_project_indicators (id, description, target, project_id, parent_id) ");
-    query.append("VALUES (?, ?, ?, ?, ?) ");
-    values = new Object[5];
+    query.append("INSERT INTO ip_project_indicators (id, description, target, year, project_id, parent_id) ");
+    query.append("VALUES (?, ?, ?, ?, ?, ?) ");
+    values = new Object[6];
     values[0] = indicatorData.get("id");
     values[1] = indicatorData.get("description");
     values[2] = indicatorData.get("target");
-    values[3] = indicatorData.get("project_id");
-    values[4] = indicatorData.get("parent_id");
+    values[3] = indicatorData.get("year");
+    values[4] = indicatorData.get("project_id");
+    values[5] = indicatorData.get("parent_id");
 
     int newId = databaseManager.saveData(query.toString(), values);
     if (newId == -1) {

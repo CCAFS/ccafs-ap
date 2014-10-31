@@ -38,6 +38,7 @@ public class APConfig {
   private static final String PLANNING_CURRENT_YEAR = "ccafsap.planning.currentYear";
   private static final String START_YEAR = "ccafsap.startYear";
   private static final String END_YEAR = "ccafsap.endYear";
+  private static final String MIDOUTCOME_YEAR = "ccafsap.midOutcome.revisionYear";
   private static final String PLANNING_FUTURE_YEARS_ACTIVE = "ccafsap.planning.future.years.active";
   private static final String PLANNING_FUTURE_YEARS = "ccafsap.planning.future.years";
   private static final String PREPLANNING_ACTIVE = "ccafsap.preplanning.active";
@@ -215,6 +216,20 @@ public class APConfig {
       return properties.getPropertiesAsInt(MAX_CASE_STUDY_TYPES);
     } catch (Exception e) {
       LOG.error("there is not a number maximum of types that can have a case study configured.");
+    }
+    return -1;
+  }
+
+  /**
+   * Get the year of the midOutcome revision.
+   * 
+   * @return an integer identifying the midOutcome year.
+   */
+  public int getMidOutcomeYear() {
+    try {
+      return properties.getPropertiesAsInt(MIDOUTCOME_YEAR);
+    } catch (Exception e) {
+      LOG.error("There is not a midoutcome revision year configured.");
     }
     return -1;
   }

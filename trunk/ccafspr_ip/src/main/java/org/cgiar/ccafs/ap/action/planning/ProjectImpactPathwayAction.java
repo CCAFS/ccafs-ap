@@ -16,7 +16,6 @@ package org.cgiar.ccafs.ap.action.planning;
 import org.cgiar.ccafs.ap.action.BaseAction;
 import org.cgiar.ccafs.ap.config.APConfig;
 import org.cgiar.ccafs.ap.config.APConstants;
-import org.cgiar.ccafs.ap.data.manager.ActivityManager;
 import org.cgiar.ccafs.ap.data.manager.IPElementManager;
 import org.cgiar.ccafs.ap.data.manager.IPProgramManager;
 import org.cgiar.ccafs.ap.data.manager.ProjectManager;
@@ -47,7 +46,6 @@ public class ProjectImpactPathwayAction extends BaseAction {
   private static final long serialVersionUID = -3179251766947184219L;
 
   // Manager
-  private ActivityManager activityManager;
   private IPProgramManager programManager;
   private IPElementManager ipElementManager;
   private ProjectManager projectManager;
@@ -61,19 +59,20 @@ public class ProjectImpactPathwayAction extends BaseAction {
   private List<IPElement> previousOutputs;
   private List<IPIndicator> previousIndicators;
 
+  private int currentPlanningYear;
+  private int midOutcomeYear;
+
   private int activityID;
   private int projectID;
   private Project project;
 
-
   @Inject
   public ProjectImpactPathwayAction(APConfig config, IPProgramManager programManager,
-    IPElementManager ipElementManager, ProjectManager projectManager, ActivityManager activityManager) {
+    IPElementManager ipElementManager, ProjectManager projectManager) {
     super(config);
     this.programManager = programManager;
     this.ipElementManager = ipElementManager;
     this.projectManager = projectManager;
-    this.activityManager = activityManager;
   }
 
   public Activity getActivity() {
@@ -83,6 +82,11 @@ public class ProjectImpactPathwayAction extends BaseAction {
   public int getActivityID() {
     return activityID;
   }
+
+  public int getCurrentPlanningYear() {
+    return currentPlanningYear;
+  }
+
 
   public List<IPElement> getMidOutcomeOutputs(int midOutcomeID) {
     IPElement midOutcome = new IPElement(midOutcomeID);
@@ -173,6 +177,10 @@ public class ProjectImpactPathwayAction extends BaseAction {
     return midOutcomesSelected;
   }
 
+  public int getMidOutcomeYear() {
+    return midOutcomeYear;
+  }
+
   public Project getProject() {
     return project;
   }
@@ -224,6 +232,8 @@ public class ProjectImpactPathwayAction extends BaseAction {
   @Override
   public void prepare() throws Exception {
     super.prepare();
+    currentPlanningYear = this.config.getPlanningCurrentYear();
+    midOutcomeYear = this.config.getMidOutcomeYear();
 
     midOutcomes = new ArrayList<>();
     midOutcomesSelected = new ArrayList<>();
@@ -342,6 +352,14 @@ public class ProjectImpactPathwayAction extends BaseAction {
 
   public void setActivityID(int activityID) {
     this.activityID = activityID;
+  }
+
+  public void setCurrentPlanningYear(int currentPlanningYear) {
+    this.currentPlanningYear = currentPlanningYear;
+  }
+
+  public void setMidOutcomeYear(int midOutcomeYear) {
+    this.midOutcomeYear = midOutcomeYear;
   }
 
   public void setProjectID(int projectID) {

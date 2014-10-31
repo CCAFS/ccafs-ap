@@ -17,6 +17,7 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
+import java.util.Map;
 
 import org.apache.commons.lang3.builder.ToStringBuilder;
 
@@ -42,7 +43,7 @@ public class Project {
   private List<ProjectPartner> projectPartners; // Project partners.
   private User expectedLeader;
   private List<Budget> budgets;
-  private ProjectOutcome outcome;
+  private Map<String, ProjectOutcome> outcomes;
   private List<Activity> activities;
   private List<IPElement> outputs;
   private List<IPIndicator> indicators;
@@ -162,13 +163,6 @@ public class Project {
     return id;
   }
 
-  /**
-   * This method search if the list of indicators contains an indicator
-   * which parent is identified by the value passed as parameter.
-   * 
-   * @param indicatorID - indicator identifier
-   * @return If the indicator is found, the method returns it. Otherwise, return null
-   */
   public IPIndicator getIndicatorByParent(int parentIndicatorID) {
     if (indicators != null) {
       for (IPIndicator indicator : this.indicators) {
@@ -180,6 +174,28 @@ public class Project {
       }
     }
     return null;
+  }
+
+  /**
+   * This method search if the list of indicators contains an indicator
+   * which parent is identified by the value passed as parameter.
+   * 
+   * @param indicatorID - indicator identifier
+   * @return If the indicator is found, the method returns it. Otherwise, return null
+   */
+  public IPIndicator getIndicatorByParentAndYear(int parentIndicatorID, int year) {
+    IPIndicator emptyIndicator = new IPIndicator(-1);
+
+    if (indicators != null) {
+      for (IPIndicator indicator : this.indicators) {
+        if (indicator.getParent() != null) {
+          if (indicator.getParent().getId() == parentIndicatorID && indicator.getYear() == year) {
+            return indicator;
+          }
+        }
+      }
+    }
+    return emptyIndicator;
   }
 
   public List<IPIndicator> getIndicators() {
@@ -199,8 +215,8 @@ public class Project {
     return leaderResponsabilities;
   }
 
-  public ProjectOutcome getOutcome() {
-    return outcome;
+  public Map<String, ProjectOutcome> getOutcomes() {
+    return outcomes;
   }
 
   public List<IPElement> getOutputs() {
@@ -312,8 +328,8 @@ public class Project {
     this.leaderResponsabilities = leaderResponsabilities;
   }
 
-  public void setOutcome(ProjectOutcome outcome) {
-    this.outcome = outcome;
+  public void setOutcomes(Map<String, ProjectOutcome> outcomes) {
+    this.outcomes = outcomes;
   }
 
   public void setOutputs(List<IPElement> outputs) {
