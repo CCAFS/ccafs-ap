@@ -74,11 +74,11 @@
               [#if midOutcome.indicators?has_content]
               <div class="indicatorsBlock">
                 [#list midOutcome.indicators as indicator]
-                  [#if project.getIndicatorByParent(indicator.id)?has_content]
-                    [#assign projectIndicator = project.getIndicatorByParent(indicator.id) /]
+                  [#if project.getIndicatorByParentAndYear(indicator.id, midOutcomeYear)?has_content]
+                    [#assign projectIndicator = project.getIndicatorByParentAndYear(indicator.id, midOutcomeYear) /]
                     <div class="midOutcomeIndicator" >
-                      <input type="hidden" disabled name="project.indicators.id" value="${projectIndicator.id}" />
-                      <input type="checkbox" class="projectIndicatorCheckbox" name="project.indicators.parent.id" value="${indicator.id}" checked />
+                      <input type="hidden" disabled class="projectIndicatorID" name="project.indicators.id" value="${projectIndicator.id}" />
+                      <input type="checkbox" class="projectIndicatorCheckbox" name="project.indicators.parent.id-${indicator.id}"  value="${indicator.id}" checked />
                       [#if indicator.parent?has_content]
                         <label class="indicatorDescription">${indicator.parent.description}</label>
                       [#else]
@@ -93,6 +93,7 @@
                         [#list years as year]
                           [#assign projectIndicator = project.getIndicatorByParentAndYear(indicator.id, year) /]
                           <div id="target-${year}" class="targetIndicator"> 
+                            <input type="hidden" class="projectIndicatorParent" name="project.indicators.parent.id" value="${indicator.id}"  />
                             <input type="hidden" class="projectIndicatorYear" name="project.indicators.year"  value="${year}" /> 
                             <div class="checkboxGroup vertical indicatorNarrative" >
                               [#-- Target value --]
@@ -204,9 +205,9 @@
       <img class="ajax-loader" style="" src="${baseUrl}/images/global/loading.gif" alt="Loader ..." />
       <div class="midOutcomeIndicator" id="midOutcomeIndicatorTemplate">
         <input type="hidden" disabled name="activity_indicator_id" value="-1" />
-        <input type="checkbox" class="projectIndicatorCheckbox" name="project.indicators" />
+        <input type="checkbox" class="projectIndicatorCheckbox" />
         <label class="indicatorDescription"></label>
-        <div class="indicatorTargets">
+        <div class="indicatorTargetsTemplate">
           <ul class="">
             [#list years as year]
               <li class=""><a href="#target-${year}">${year}</a></li> 
@@ -214,6 +215,7 @@
           </ul>
           [#list years as year]
           <div id="target-${year}" class="targetIndicator" style="display:none">
+            <input type="hidden" class="projectIndicatorParent" name="project.indicators.parent.id"   />
             <input type="hidden" class="projectIndicatorYear" name="project_indicator_year"  value="${year}" />
             <div class="checkboxGroup vertical indicatorNarrative" style="display:none">
               [#-- Target value --]

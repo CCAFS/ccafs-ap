@@ -77,6 +77,7 @@ function selectMidOutcomeEvent(event){
   // Add the midOutcome description
   $newContribution.find(".midOutcomeTitle p.description").html($optionSelected.text());
   
+  
   // Add the elements into the contributesBlock
   addMOGs(midOutcomeID, $mogBlock);
   addIndicators(midOutcomeID, programID, $indicatorsBlock);
@@ -88,7 +89,10 @@ function selectMidOutcomeEvent(event){
   $newContribution.removeAttr("id");
   $("#contributionsBlock").append($newContribution);
   
-  $newContribution.show("slow");
+  $newContribution.show("slow",function(){
+    $newContribution.find(".indicatorTargetsTemplate").tabs();
+  });
+  
   $midOutcomesSelect.trigger("liszt:updated");
 }
 
@@ -153,8 +157,10 @@ function addIndicators(midOutcomeID,programID,$indicatorsBlock){
       $newIndicator.find("input[type='checkbox']").val(indicator.id);
       
       if (!(indicator.parent)) {
+        $newIndicator.find("input.projectIndicatorParent").val(indicator.id);
         $newIndicator.find("label.indicatorDescription").text(indicator.description);
       } else {
+        $newIndicator.find("input.projectIndicatorParent").val(indicator.parent.id);
         $newIndicator.find("label.indicatorDescription").text(indicator.parent.description);
       }
       $indicatorsBlock.append($newIndicator);
@@ -188,21 +194,19 @@ function setIndicatorIndexes(){
       // console.log("target ID ->" + $(target).html());
       
       // Hidden
-      $(indicator).find("input[type='hidden']").attr("id", "project.indicators-" + indicatorIndex);
-      $(indicator).find("input[type='hidden']").attr("name", indicatorsName + "[" + indicatorIndex + "].id");
+      $(indicator).find("input.projectIndicatorID").attr("id", "project.indicators-" + indicatorIndex);
+      $(indicator).find("input.projectIndicatorID").attr("name", indicatorsName + "[" + indicatorIndex + "].id");
       
       // Label
       $(indicator).find("label").attr("for", "project.indicators-" + index);
       
       // Checkbox
       $(indicator).find("input[type='checkbox']").attr("id", "project.indicators-" + indicatorIndex);
-      $(indicator).find("input[type='checkbox']").attr("name", indicatorsName + "[" + indicatorIndex + "].parent.id");
       if ($(indicator).find("input[type='checkbox']").is(":checked")) {
-        console.log("Index ->" + index);
         
+        $(target).find("input.projectIndicatorParent").attr("name", indicatorsName + "[" + index + "].parent.id");
         $(target).find("input[type='hidden']").attr("disabled", false);
         $(target).find(".projectIndicatorYear").attr("name", indicatorsName + "[" + index + "].year");
-        console.log($(target).find(".projectIndicatorYear").attr("name"));
         $(target).find(".projectIndicatorTarget").attr("name", indicatorsName + "[" + index + "].target");
         $(target).find(".projectIndicatorDescription").attr("name", indicatorsName + "[" + index + "].description");
         
