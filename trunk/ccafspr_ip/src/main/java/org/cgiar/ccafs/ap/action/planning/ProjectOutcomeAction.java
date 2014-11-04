@@ -16,13 +16,23 @@ package org.cgiar.ccafs.ap.action.planning;
 import org.cgiar.ccafs.ap.action.BaseAction;
 import org.cgiar.ccafs.ap.config.APConfig;
 import org.cgiar.ccafs.ap.config.APConstants;
+import org.cgiar.ccafs.ap.data.manager.IPElementManager;
+import org.cgiar.ccafs.ap.data.manager.IPProgramManager;
 import org.cgiar.ccafs.ap.data.manager.ProjectManager;
 import org.cgiar.ccafs.ap.data.manager.ProjectOutcomeManager;
+import org.cgiar.ccafs.ap.data.model.Activity;
+import org.cgiar.ccafs.ap.data.model.IPElement;
+import org.cgiar.ccafs.ap.data.model.IPElementType;
+import org.cgiar.ccafs.ap.data.model.IPIndicator;
+import org.cgiar.ccafs.ap.data.model.IPProgram;
 import org.cgiar.ccafs.ap.data.model.Project;
 import org.cgiar.ccafs.ap.data.model.ProjectOutcome;
 
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
+import java.util.TreeMap;
 
 import com.google.inject.Inject;
 import org.apache.commons.lang3.StringUtils;
@@ -30,50 +40,187 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 /**
- * @author Javier Andrés Gallego B.
  * @author Hernán David Carvajal B.
  */
 public class ProjectOutcomeAction extends BaseAction {
 
-  private static final long serialVersionUID = -4619407905666354050L;
-
-  // Managers
-  private ProjectOutcomeManager projectOutcomeManager;
-  private ProjectManager projectManager;
-
   // LOG
   private static Logger LOG = LoggerFactory.getLogger(ProjectOutcomeAction.class);
+  private static final long serialVersionUID = -3179251766947184219L;
 
-  // Model for the back-end
-  private Project project;
+  // Manager
+  private IPProgramManager programManager;
+  private IPElementManager ipElementManager;
+  private ProjectManager projectManager;
+  private ProjectOutcomeManager projectOutcomeManager;
 
-  // Model for the front-end
-  private int projectID;
+  // Model
+  private List<IPElement> midOutcomes;
+  private List<IPProgram> projectFocusList;
+  private Activity activity;
+
+  private List<IPElement> midOutcomesSelected;
+  private List<IPElement> previousOutputs;
+  private List<IPIndicator> previousIndicators;
+
   private int currentPlanningYear;
   private int midOutcomeYear;
 
+  private int activityID;
+  private int projectID;
+  private Project project;
+
   @Inject
-  public ProjectOutcomeAction(APConfig config, ProjectOutcomeManager projectOutcomeManager,
-    ProjectManager projectManager) {
+  public ProjectOutcomeAction(APConfig config, IPProgramManager programManager,
+    IPElementManager ipElementManager, ProjectManager projectManager, ProjectOutcomeManager projectOutcomeManager) {
     super(config);
-    this.projectOutcomeManager = projectOutcomeManager;
+    this.programManager = programManager;
+    this.ipElementManager = ipElementManager;
     this.projectManager = projectManager;
+    this.projectOutcomeManager = projectOutcomeManager;
   }
 
-  public String getCurrentPlanningYear() {
-    return String.valueOf(currentPlanningYear);
+  public Activity getActivity() {
+    return activity;
   }
 
-  public String getMidOutcomeYear() {
-    return String.valueOf(midOutcomeYear);
+  public int getActivityID() {
+    return activityID;
+  }
+
+  public int getCurrentPlanningYear() {
+    return currentPlanningYear;
+  }
+
+  public List<IPElement> getMidOutcomeOutputs(int midOutcomeID) {
+    IPElement midOutcome = new IPElement(midOutcomeID);
+    return ipElementManager.getIPElementsByParent(midOutcome, APConstants.ELEMENT_RELATION_CONTRIBUTION);
+  }
+
+  /**
+   * In order to get the indicators and the mogs associated to
+   * each midOutcome, we need the midOutcome identifier and the
+   * identifier of the program corresponding to the midOutcome.
+   * To send both values, we are going to send a composed key in
+   * the map:
+   * < "midOutcome.id-midoutcome.program.id", midoutcome.description >
+   * 
+   * @return
+   */
+  public Map<String, String> getMidOutcomes() {
+    Map<String, String> midOutcomesMap = new TreeMap<>();
+
+    for (IPElement midOutcome : midOutcomes) {
+
+      // The first value of the list is the placeHolder,
+      // therefore we should be omit the key concatenation
+      if (midOutcome.getId() == -1) {
+        midOutcomesMap.put(String.valueOf(midOutcome.getId()), midOutcome.getDescription());
+        continue;
+      }
+
+      String id = String.valueOf(midOutcome.getId()) + "-" + String.valueOf(midOutcome.getProgram().getId());
+      midOutcomesMap.put(id, midOutcome.getDescription());
+    }
+
+    return midOutcomesMap;
+  }
+
+  private void getMidOutcomesByOutputs() {
+    for (IPElement output : project.getOutputs()) {
+      for (int outcomeID : output.getContributesToIDs()) {
+        IPElement midoutcome = ipElementManager.getIPElement(outcomeID);
+        if (!midOutcomesSelected.contains(midoutcome)) {
+          String description =
+            midoutcome.getProgram().getAcronym() + " - " + getText("planning.activityImpactPathways.outcome2019")
+              + ": " + midoutcome.getDescription();
+          midoutcome.setDescription(description);
+
+          midOutcomesSelected.add(midoutcome);
+        }
+      }
+    }
+  }
+
+  /**
+   * This method is in charge of add the outcomes 2019 which correspond with the
+   * project focuses chose previously.
+   */
+  private void getMidOutcomesByProjectFocuses() {
+    boolean isGlobalProject;
+    isGlobalProject = projectFocusList.contains(new IPProgram(APConstants.GLOBAL_PROGRAM));
+
+    IPElement placeHolder = new IPElement(-1);
+    placeHolder.setDescription(getText("planning.activityImpactPathways.outcome.placeholder"));
+
+    midOutcomes.add(placeHolder);
+
+    IPElementType midOutcomeType = new IPElementType(APConstants.ELEMENT_TYPE_OUTCOME2019);
+    for (IPProgram program : projectFocusList) {
+
+      if (!isGlobalProject && program.isFlagshipProgram()) {
+        continue;
+      }
+
+      List<IPElement> elements = ipElementManager.getIPElements(program, midOutcomeType);
+
+      for (int i = 0; i < elements.size(); i++) {
+        IPElement midOutcome = elements.get(i);
+        if (isValidMidoutcome(midOutcome)) {
+          midOutcome.setDescription(program.getAcronym() + " - "
+            + getText("planning.activityImpactPathways.outcome2019") + " #" + (i + 1) + ": "
+            + midOutcome.getDescription());
+          midOutcomes.add(midOutcome);
+        }
+
+      }
+    }
+  }
+
+  public List<IPElement> getMidOutcomesSelected() {
+    return midOutcomesSelected;
+  }
+
+  public int getMidOutcomeYear() {
+    return midOutcomeYear;
   }
 
   public Project getProject() {
     return project;
   }
 
+  public List<IPProgram> getProjectFocusList() {
+    return projectFocusList;
+  }
+
   public int getProjectID() {
     return projectID;
+  }
+
+  /**
+   * The regional midOutcomes only can be selected if they are translation of
+   * an outcome that belongs to the project focuses.
+   * 
+   * @param midOutcome - The element to evaluate
+   * @return True if the midOutcome belongs to a flagship.
+   *         True if the midOutcome is regional but is translated from an
+   *         outcome that belongs to some of the project focuses.
+   *         False otherwise.
+   */
+  private boolean isValidMidoutcome(IPElement midOutcome) {
+    //
+    if (!midOutcome.getTranslatedOf().isEmpty()) {
+      for (IPElement parentElement : midOutcome.getTranslatedOf()) {
+        if (projectFocusList.contains(parentElement.getProgram())) {
+          return true;
+        }
+      }
+    } else {
+      // Is a flagship midOutcome
+      return true;
+    }
+
+    return false;
   }
 
   @Override
@@ -88,13 +235,16 @@ public class ProjectOutcomeAction extends BaseAction {
 
   @Override
   public void prepare() throws Exception {
-    projectID = Integer.parseInt(StringUtils.trim(this.getRequest().getParameter(APConstants.PROJECT_REQUEST_ID)));
+    super.prepare();
     currentPlanningYear = this.config.getPlanningCurrentYear();
     midOutcomeYear = this.config.getMidOutcomeYear();
 
-    // Getting the project.
+    midOutcomes = new ArrayList<>();
+    midOutcomesSelected = new ArrayList<>();
+    projectID = Integer.parseInt(StringUtils.trim(this.getRequest().getParameter(APConstants.PROJECT_REQUEST_ID)));
     project = projectManager.getProject(projectID);
 
+    // Load the project outcomes
     Map<String, ProjectOutcome> projectOutcomes = new HashMap<>();
     for (int year = currentPlanningYear; year <= midOutcomeYear; year++) {
       ProjectOutcome projectOutcome = projectOutcomeManager.getProjectOutcomeByYear(projectID, year);
@@ -107,27 +257,127 @@ public class ProjectOutcomeAction extends BaseAction {
     }
     project.setOutcomes(projectOutcomes);
 
+    // Load the project impact pathway
+
+    // Get the programs to which the project contributes
+    projectFocusList = new ArrayList<>();
+    projectFocusList.addAll(programManager.getProjectFocuses(projectID, APConstants.FLAGSHIP_PROGRAM_TYPE));
+    projectFocusList.addAll(programManager.getProjectFocuses(projectID, APConstants.REGION_PROGRAM_TYPE));
+
+    // Get the project outputs from database
+    project.setOutputs(projectManager.getProjectOutputs(projectID));
+
+    // Get the project indicators from database
+    project.setIndicators(projectManager.getProjectIndicators(projectID));
+
+    // Then, we have to get all the midOutcomes that belongs to the project focuses
+    getMidOutcomesByProjectFocuses();
+
+    // Get all the midOutcomes selected
+    getMidOutcomesByOutputs();
+
+    // Check the midOutcomes selected according to the project indicators
+    for (int i = 0; i < midOutcomes.size(); i++) {
+      IPElement midOutcome = midOutcomes.get(i);
+      if (midOutcome.getIndicators() != null) {
+        for (IPIndicator indicator : project.getIndicators()) {
+          if (midOutcome.getIndicators().contains(indicator.getParent())) {
+
+            // Check if the midOutcome is not already present
+            if (!midOutcomesSelected.contains(midOutcome)) {
+              midOutcomesSelected.add(midOutcome);
+              midOutcomes.remove(i);
+              i--;
+            }
+          }
+        }
+      }
+    }
+
+    removeOutcomesAlreadySelected();
+
+    // Save the activity outputs brought from the database
+    previousOutputs = new ArrayList<>();
+    previousOutputs.addAll(project.getOutputs());
+
+    // Save the activity indicators brought from the database
+    previousIndicators = new ArrayList<>();
+    previousIndicators.addAll(project.getIndicators());
+
+    if (getRequest().getMethod().equalsIgnoreCase("post")) {
+      // Clear out the list if it has some element
+      if (project.getIndicators() != null) {
+        project.getIndicators().clear();
+      }
+
+      if (project.getOutputs() != null) {
+        project.getOutputs().clear();
+      }
+    }
+  }
+
+  private void removeOutcomesAlreadySelected() {
+    for (int i = 0; i < midOutcomes.size(); i++) {
+      if (midOutcomesSelected.contains(midOutcomes.get(i))) {
+        midOutcomes.remove(i);
+        i--;
+      }
+    }
   }
 
   @Override
   public String save() {
     if (this.isSaveable()) {
-      boolean saved = true;
+      boolean success = true;
 
       // Saving Project Outcome
       for (int year = currentPlanningYear; year <= midOutcomeYear; year++) {
-        saved =
-          saved && projectOutcomeManager.saveProjectOutcome(projectID, project.getOutcomes().get(String.valueOf(year)));
+        success =
+          success
+            && projectOutcomeManager.saveProjectOutcome(projectID, project.getOutcomes().get(String.valueOf(year)));
       }
 
-      if (!saved) {
-        addActionError(getText("saving.problem"));
-        return BaseAction.INPUT;
+      // Delete the outputs removed
+      for (IPElement output : previousOutputs) {
+        if (!project.getOutputs().contains(output)) {
+          boolean deleted = projectManager.deleteProjectOutput(projectID, output.getId());
+          if (!deleted) {
+            success = false;
+          }
+        }
       }
-      addActionMessage(getText("saving.success", new String[] {getText("planning.projectOutcome.title")}));
-      return BaseAction.SUCCESS;
+
+      success = success && projectManager.saveProjectOutputs(project.getOutputs(), projectID);
+
+      // Delete the indicators removed
+      for (IPIndicator indicator : previousIndicators) {
+        if (!project.getOutputs().contains(indicator)) {
+          boolean deleted = projectManager.deleteIndicator(projectID, indicator.getId());
+          if (!deleted) {
+            success = false;
+          }
+        }
+      }
+
+      success = success && projectManager.saveProjectIndicators(project.getIndicators(), projectID);
+      if (success) {
+        addActionMessage(getText("saving.success", new String[] {getText("planning.activityImpactPathways.title")}));
+        return SUCCESS;
+      } else {
+        addActionError(getText("saving.problem"));
+        return INPUT;
+      }
+    } else {
+      return BaseAction.ERROR;
     }
-    return BaseAction.ERROR;
+  }
+
+  public void setActivity(Activity activity) {
+    this.activity = activity;
+  }
+
+  public void setActivityID(int activityID) {
+    this.activityID = activityID;
   }
 
   public void setCurrentPlanningYear(int currentPlanningYear) {
@@ -138,12 +388,8 @@ public class ProjectOutcomeAction extends BaseAction {
     this.midOutcomeYear = midOutcomeYear;
   }
 
-
-  public void setProject(Project project) {
-    this.project = project;
-  }
-
   public void setProjectID(int projectID) {
     this.projectID = projectID;
   }
+
 }
