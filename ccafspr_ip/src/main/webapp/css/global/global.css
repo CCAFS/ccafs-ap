@@ -1721,8 +1721,13 @@ p.partnerTitle {
   margin: 20px 0px;
 }
 
+#projectOutcomes textarea {
+  height: 50px;
+}
+
 .indicatorTargets.ui-tabs {
   padding-top: 12px;
+  margin-right: 12px;
 }
 
 /*** Activities ***/
