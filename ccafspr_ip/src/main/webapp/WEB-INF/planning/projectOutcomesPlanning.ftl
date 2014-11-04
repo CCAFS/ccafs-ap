@@ -40,12 +40,12 @@
     [/#if]
     
     <h1 class="contentTitle">
-      [@s.text name="planning.project" /]: ${project.composedId} - [@s.text name="planning.projectImpactPathways.title" /] 
+      [@s.text name="planning.projectOutcome.narrative" /] 
     </h1> 
     <div id="projectOutcomes" class="borderBox">
 
       [#-- Project Outcome statement --]
-      <div class="fullBlock">
+      <div class="fullBlock" id="projectOutcomeStatement">
         [@customForm.textArea name="project.outcomes[${midOutcomeYear}].statement" i18nkey="planning.projectOutcome.statement" /]
       </div>
 
@@ -59,6 +59,10 @@
       <input name="project.outcome[midOutcomeYear].id" type="hidden" value="${project.outcomes[midOutcomeYear+""].id?c}" />
 
     </div>
+    
+     <h1 class="contentTitle">
+      [@s.text name="planning.projectOutcome.contribution" /] 
+    </h1> 
       
     <div class="borderBox">
       <p>
