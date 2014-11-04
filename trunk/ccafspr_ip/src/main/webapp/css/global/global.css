@@ -1724,6 +1724,10 @@ p.partnerTitle {
 #projectOutcomes textarea {
   height: 50px;
 }
+#projectOutcomes #projectOutcomeStatement textarea {
+  height: 80px;
+}
+
 
 .indicatorTargets.ui-tabs {
   padding-top: 12px;
@@ -1994,7 +1998,7 @@ margin-bottom: 8px;
 /********* Activity Reporting Sub Menu **********/
 #stageMenu {
   display: block;
-  margin: 23px 35px 0px 36px;
+  margin: 23px 35px 14px 36px;
   text-align: center;
   position: relative;
 }
