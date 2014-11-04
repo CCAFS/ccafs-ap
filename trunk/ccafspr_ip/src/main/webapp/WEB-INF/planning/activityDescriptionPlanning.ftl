@@ -64,7 +64,16 @@
           [@customForm.input name="activity.endDate" type="text" i18nkey="planning.activityDescription.endDate" required=true /]
         </div>
        </div> 
-       
+
+
+        <h1>[@s.text name="planning.activityDescription.outcome" /]</h1>
+        <div id="outcome" class="borderBox"> 
+          [#-- Activity outcome --]
+          <div class="fullBlock">
+            [@customForm.textArea name="activity.outcome" i18nkey="planning.activityDescription.outcomeTitle" required=true /]
+          </div>
+        </div>
+
        <h1>[@s.text name="planning.activityDescription.genderTitle" /]</h1>
        <div id="gender" class="borderBox"> 
         [#-- Expected research outputs  --]

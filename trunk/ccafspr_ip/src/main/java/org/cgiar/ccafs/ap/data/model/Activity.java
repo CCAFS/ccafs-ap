@@ -23,7 +23,7 @@ import org.apache.commons.lang3.builder.ToStringBuilder;
 
 /**
  * This class represents a CCAFS Activity, which belongs to a specific Project.
- *
+ * 
  * @author Héctor Fabio Tobón R.
  */
 public class Activity {
@@ -49,7 +49,7 @@ public class Activity {
   private String expectedResearchOutputs;
   private String expectedGenderContribution;
   private double genderPercentage;
-
+  private String outcome;
 
   public Activity() {
   }
@@ -84,7 +84,7 @@ public class Activity {
 
   /**
    * This method calculates all the years between the start date and the end date.
-   *
+   * 
    * @return a List of numbers representing all the years, or an empty list if nothing found.
    */
   public List<Integer> getAllYears() {
@@ -106,17 +106,15 @@ public class Activity {
     return allYears;
   }
 
-
   public List<Budget> getBudgets() {
     return budgets;
   }
-
 
   /**
    * This method returns a composed Identifier that is going to be used in the front-end.
    * The convention is going to be used depending on the creation date of the activity.
    * yyyy-activityID => e.g. 2014-12
-   *
+   * 
    * @return the composed identifier or null if the created date is null.
    */
   public String getComposedId() {
@@ -128,9 +126,11 @@ public class Activity {
     return null;
   }
 
+
   public long getCreated() {
     return created;
   }
+
 
   public List<IPCrossCutting> getCrossCuttings() {
     return crossCuttings;
@@ -171,7 +171,7 @@ public class Activity {
   /**
    * This method search if the list of indicators contains an indicator
    * which parent is identified by the value passed as parameter.
-   *
+   * 
    * @param indicatorID - indicator identifier
    * @return If the indicator is found, the method returns it. Otherwise, return null
    */
@@ -202,6 +202,10 @@ public class Activity {
 
   public List<Location> getLocations() {
     return locations;
+  }
+
+  public String getOutcome() {
+    return outcome;
   }
 
   public List<IPElement> getOutputs() {
@@ -249,13 +253,13 @@ public class Activity {
     this.crossCuttings = crossCuttings;
   }
 
-// public void setExpectedLeader(ExpectedActivityLeader expectedLeader) {
-// this.expectedLeader = expectedLeader;
-// }
-
   public void setDeliverables(List<Deliverable> deliverables) {
     this.deliverables = deliverables;
   }
+
+// public void setExpectedLeader(ExpectedActivityLeader expectedLeader) {
+// this.expectedLeader = expectedLeader;
+// }
 
   public void setDescription(String description) {
     this.description = description;
@@ -297,13 +301,17 @@ public class Activity {
     this.ipOtherContribution = ipOtherContribution;
   }
 
-
   public void setLeader(User leader) {
     this.leader = leader;
   }
 
+
   public void setLocations(List<Location> locations) {
     this.locations = locations;
+  }
+
+  public void setOutcome(String outcome) {
+    this.outcome = outcome;
   }
 
   public void setOutputs(List<IPElement> outputs) {

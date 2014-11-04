@@ -17,20 +17,20 @@ import org.cgiar.ccafs.ap.action.BaseAction;
 import org.cgiar.ccafs.ap.config.APConfig;
 import org.cgiar.ccafs.ap.config.APConstants;
 import org.cgiar.ccafs.ap.data.manager.ActivityManager;
+import org.cgiar.ccafs.ap.data.manager.ActivityPartnerManager;
+import org.cgiar.ccafs.ap.data.manager.BudgetManager;
 import org.cgiar.ccafs.ap.data.manager.IPCrossCuttingManager;
 import org.cgiar.ccafs.ap.data.manager.InstitutionManager;
 import org.cgiar.ccafs.ap.data.manager.ProjectManager;
 import org.cgiar.ccafs.ap.data.model.Activity;
+import org.cgiar.ccafs.ap.data.model.ActivityPartner;
 import org.cgiar.ccafs.ap.data.model.IPCrossCutting;
 import org.cgiar.ccafs.ap.data.model.Institution;
 import org.cgiar.ccafs.ap.data.model.Project;
 import org.cgiar.ccafs.ap.data.model.User;
 
 import java.util.List;
-import org.cgiar.ccafs.ap.data.model.ActivityPartner;
 
-import org.cgiar.ccafs.ap.data.manager.ActivityPartnerManager;
-import org.cgiar.ccafs.ap.data.manager.BudgetManager;
 import com.google.inject.Inject;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
@@ -93,7 +93,7 @@ public class ActivityDescriptionAction extends BaseAction {
 
   /**
    * This method returns an array of cross cutting ids depending on the project.crossCuttings attribute.
-   *
+   * 
    * @return an array of integers.
    */
   public int[] getCrossCuttingIds() {
@@ -167,6 +167,9 @@ public class ActivityDescriptionAction extends BaseAction {
       }
     }
 
+    // Getting the activity outcome information
+    activity.setOutcome(activityManager.getActivityOutcome(activityID));
+
     // Getting the list of Cross Cutting Themes
     ipCrossCuttings = ipCrossCuttingManager.getIPCrossCuttings();
 
@@ -236,6 +239,10 @@ public class ActivityDescriptionAction extends BaseAction {
       ipCrossCuttingManager.deleteCrossCuttingsByActivity(activity.getId());
       for (IPCrossCutting ipCrossTheme : activity.getCrossCuttings()) {
         ipCrossCuttingManager.saveCrossCutting(activityID, ipCrossTheme.getId());
+      }
+
+      if (!activityManager.saveActivityOutcome(activity)) {
+        success = false;
       }
 
       if (success == false) {
