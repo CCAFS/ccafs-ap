@@ -14,9 +14,6 @@
     <a [#if currentStage == "projectOutcomes"] class="currentSection" [/#if] href="[@s.url action='projectOutcomes'  includeParams='get'][/@s.url]">
       <li>[@s.text name="menu.secondary.planning.project.outcome" /]</li>
     </a>
-    <a [#if currentStage == "impactPathway"] class="currentSection" [/#if] href="[@s.url action='impactPathway'  includeParams='get'][/@s.url]">
-      <li>[@s.text name="menu.secondary.planning.project.impactPathway" /]</li>
-    </a>
     <a [#if currentStage == "activities"] class="currentSection" [/#if] href="[@s.url action='activities' includeParams='get'][/@s.url]">
       <li>[@s.text name="menu.secondary.planning.project.activities" /]</li>
     </a> 
