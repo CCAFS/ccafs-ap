@@ -11,7 +11,7 @@ function init(){
 }
 
 function attachEvents(){
-  $("#impactPathway_midOutcomesList").change(selectMidOutcomeEvent);
+  $("#projectOutcomes_midOutcomesList").change(selectMidOutcomeEvent);
   $('.projectIndicatorCheckbox').click(toogleIndicatorInfo);
   $('input[name^="project.outputs"]').click(selectMogEvent);
   $(".removeContribution").click(removeContributionBlock);
@@ -57,7 +57,7 @@ function selectMidOutcomeEvent(event){
   var $midOutcomesSelect = $(event.target);
   var outcomeSelectedVal = $midOutcomesSelect.val();
   var $optionSelected = $midOutcomesSelect.find("option[value='" + outcomeSelectedVal + "']");
-  
+  console.log($(event.target));
   if (outcomeSelectedVal == -1)
     return;
   

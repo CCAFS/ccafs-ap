@@ -1,8 +1,8 @@
 [#ftl]
 <nav id="stageMenu" class="clearfix"> 
   <ul> 
-    <li [#if currentStage == "projectImpactPathway"] class="currentSection" [/#if]><a href="
-        [@s.url action='impactPathway' includeParams='get'][/@s.url]
+    <li [#if currentStage == "projectOutcomes"] class="currentSection" [/#if]><a href="
+        [@s.url action='projectOutcomes' includeParams='get'][/@s.url]
       ">[@s.text name="menu.planning.submenu.impactPathwayPrimary" /]</a></li>
     <li [#if currentStage == "projectIpOtherContributions" ] class="currentSection" [/#if]><a href="
         [@s.url action='projectIpOtherContributions' includeParams='get'][/@s.url]
