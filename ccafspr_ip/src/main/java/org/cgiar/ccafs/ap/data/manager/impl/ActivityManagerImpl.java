@@ -13,6 +13,16 @@
  *****************************************************************/
 package org.cgiar.ccafs.ap.data.manager.impl;
 
+import org.cgiar.ccafs.ap.config.APConstants;
+import org.cgiar.ccafs.ap.data.dao.ActivityDAO;
+import org.cgiar.ccafs.ap.data.manager.ActivityManager;
+import org.cgiar.ccafs.ap.data.manager.InstitutionManager;
+import org.cgiar.ccafs.ap.data.manager.UserManager;
+import org.cgiar.ccafs.ap.data.model.Activity;
+import org.cgiar.ccafs.ap.data.model.IPElement;
+import org.cgiar.ccafs.ap.data.model.IPIndicator;
+import org.cgiar.ccafs.ap.data.model.User;
+
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -23,15 +33,6 @@ import java.util.List;
 import java.util.Map;
 
 import com.google.inject.Inject;
-import org.cgiar.ccafs.ap.config.APConstants;
-import org.cgiar.ccafs.ap.data.dao.ActivityDAO;
-import org.cgiar.ccafs.ap.data.manager.ActivityManager;
-import org.cgiar.ccafs.ap.data.manager.InstitutionManager;
-import org.cgiar.ccafs.ap.data.manager.UserManager;
-import org.cgiar.ccafs.ap.data.model.Activity;
-import org.cgiar.ccafs.ap.data.model.IPElement;
-import org.cgiar.ccafs.ap.data.model.IPIndicator;
-import org.cgiar.ccafs.ap.data.model.User;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -216,6 +217,11 @@ public class ActivityManagerImpl implements ActivityManager {
   }
 
   @Override
+  public String getActivityOutcome(int activityID) {
+    return activityDAO.getActivityOutcome(activityID);
+  }
+
+  @Override
   public List<IPElement> getActivityOutputs(int activityID) {
     List<IPElement> outputs = new ArrayList<>();
     List<Map<String, String>> outputsData = activityDAO.getActivityOutputs(activityID);
@@ -376,6 +382,11 @@ public class ActivityManagerImpl implements ActivityManager {
     }
 
     return allSaved;
+  }
+
+  @Override
+  public boolean saveActivityOutcome(Activity activity) {
+    return activityDAO.saveActivityOutcome(activity.getId(), activity.getOutcome());
   }
 
   @Override

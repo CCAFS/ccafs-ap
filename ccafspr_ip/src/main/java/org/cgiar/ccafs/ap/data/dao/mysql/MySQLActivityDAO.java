@@ -272,6 +272,34 @@ public class MySQLActivityDAO implements ActivityDAO {
   }
 
   @Override
+  public String getActivityOutcome(int activityID) {
+    LOG.debug(">> getActivityOutcome( activityID = {} )", activityID);
+    String outcomeText = "";
+
+    StringBuilder query = new StringBuilder();
+    query.append("SELECT outcome ");
+    query.append("FROM activities ");
+    query.append("WHERE id = ");
+    query.append(activityID);
+
+    try (Connection con = databaseManager.getConnection()) {
+      ResultSet rs = databaseManager.makeQuery(query.toString(), con);
+      if (rs.next()) {
+        return rs.getString("outcome");
+      }
+      rs.close();
+    } catch (SQLException e) {
+      String exceptionMessage = "-- getActivityOutcome() > Exception raised trying ";
+      exceptionMessage += "to get the activity outcome for activity  " + activityID;
+
+      LOG.error(exceptionMessage, e);
+      return null;
+    }
+    LOG.debug("<< getActivityOutcome():'{}'", outcomeText);
+    return outcomeText;
+  }
+
+  @Override
   public List<Map<String, String>> getActivityOutputs(int activityID) {
     LOG.debug(">> getActivityOutputs( activityID = {} )", activityID);
     List<Map<String, String>> outputsDataList = new ArrayList<>();
@@ -308,7 +336,6 @@ public class MySQLActivityDAO implements ActivityDAO {
     LOG.debug("<< getActivityOutputs():outputsDataList.size={}", outputsDataList.size());
     return outputsDataList;
   }
-
 
   @Override
   public List<Map<String, String>> getAllActivities() {
@@ -525,6 +552,27 @@ public class MySQLActivityDAO implements ActivityDAO {
 
     LOG.debug("<< saveActivityLeader():{}", result);
     return result;
+  }
+
+  @Override
+  public boolean saveActivityOutcome(int activityID, String outcomeText) {
+    LOG.debug(">> saveActivityOutcome(activityID={}, outcomeText={})", new Object[] {activityID, outcomeText});
+
+    StringBuilder query = new StringBuilder();
+
+    // update activity record
+    query.append("UPDATE activities SET outcome = ? ");
+    query.append("WHERE id = ? ");
+
+    int result = databaseManager.saveData(query.toString(), new String[] {outcomeText, activityID + ""});
+    if (result == -1) {
+      LOG.error("A problem happened trying to update the activity leader with the id = {}", activityID);
+      LOG.debug("<< saveActivityLeader():{}", false);
+      return false;
+    }
+
+    LOG.debug("<< saveActivityLeader():{}", true);
+    return true;
   }
 
   @Override

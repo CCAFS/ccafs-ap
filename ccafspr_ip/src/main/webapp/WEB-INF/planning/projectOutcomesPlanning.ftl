@@ -25,7 +25,7 @@
 
   [#include "/WEB-INF/planning/planningProjectsSubMenu.ftl" /]
 
-  [@s.form action="impactPathway" cssClass="pure-form"]  
+  [@s.form action="projectOutcomes" cssClass="pure-form"]  
   <article class="halfContent" id="activityImpactPathway">
     [#include "/WEB-INF/planning/planningDataSheet.ftl" /]
     [#include "/WEB-INF/planning/projectIP-planning-sub-menu.ftl" /]
