@@ -1,12 +1,13 @@
 $(document).ready(init);
 
 function init(){
-  addChosen();
   setIndicatorIndexes();
   setMogsIndexes();
   attachEvents();
+  addChosen();
+  addTabs();
   initGraph();
-  $(".indicatorTargets").tabs();
+  
 }
 
 function attachEvents(){
@@ -24,10 +25,11 @@ function removeContributionBlock(event){
     var midOutcomeID = $(this).find("#midOutcomeID").val();
     var programID = $(this).find("#programID").val();
     var description = $(this).find("p.description").text();
-    console.log('<option value="' + midOutcomeID + '-' + programID + '">' + description + '</option>');
+    // console.log('<option value="' + midOutcomeID + '-' + programID + '">' + description + '</option>');
     $("#impactPathway_midOutcomesList").append('<option value="' + midOutcomeID + '-' + programID + '">' + description + '</option>');
     $(this).remove();
     $("#impactPathway_midOutcomesList").trigger("liszt:updated");
+    setIndicatorIndexes();
   });
 }
 
@@ -77,7 +79,6 @@ function selectMidOutcomeEvent(event){
   // Add the midOutcome description
   $newContribution.find(".midOutcomeTitle p.description").html($optionSelected.text());
   
-  
   // Add the elements into the contributesBlock
   addMOGs(midOutcomeID, $mogBlock);
   addIndicators(midOutcomeID, programID, $indicatorsBlock);
@@ -89,8 +90,8 @@ function selectMidOutcomeEvent(event){
   $newContribution.removeAttr("id");
   $("#contributionsBlock").append($newContribution);
   
-  $newContribution.show("slow",function(){
-    $newContribution.find(".indicatorTargetsTemplate").tabs();
+  $newContribution.show("slow", function(){
+    $newContribution.find(".indicatorTargetsTemplate").removeClass().addClass("indicatorTargets").tabs();
   });
   
   $midOutcomesSelect.trigger("liszt:updated");
@@ -115,7 +116,7 @@ function addMOGs(midOutcomeID,$mogBlock){
       $newMog.find("input[name$='contributesTo[0].id'] ").val(midOutcomeID);
       $newMog.find("input[type='checkbox']").val(mog.id);
       
-      console.log(mog.program.acronym + "#" + index + ": " + mog.description);
+      // console.log(mog.program.acronym + "#" + index + ": " + mog.description);
       
       $newMog.find("label").html(mog.program.acronym + " - MOG #" + (index + 1) + ": " + mog.description);
       
@@ -168,7 +169,8 @@ function addIndicators(midOutcomeID,programID,$indicatorsBlock){
       // If the there is only one indicator, the target must be already selected.
       if (onlyOneIndicator) {
         $newIndicator.find("input[type='checkbox']").attr("checked", true);
-        $newIndicator.find(".indicatorNarrative, .indicatorTargets").show("slow");
+        $newIndicator.find(".indicatorNarrative, .indicatorTargets, .indicatorTargetsTemplate").show("slow");
+        console.log($newIndicator.html());
       }
     });
     
@@ -187,11 +189,11 @@ function setIndicatorIndexes(){
   var $contributionsBlock = $("#contributionsBlock");
   var indicatorsName = "project.indicators";
   var index = 0;
-  console.log("setIndicator()");
+  console.log("-----------  setIndicator()");
   // Indicators indexes
   $contributionsBlock.find(".midOutcomeIndicator").each(function(indicatorIndex,indicator){
+    console.log("Indicator index ------>" + indicatorIndex);
     $(indicator).find(".targetIndicator").each(function(targetIndex,target){
-      // console.log("target ID ->" + $(target).html());
       
       // Hidden
       $(indicator).find("input.projectIndicatorID").attr("id", "project.indicators-" + indicatorIndex);
@@ -201,7 +203,7 @@ function setIndicatorIndexes(){
       $(indicator).find("label").attr("for", "project.indicators-" + index);
       
       // Checkbox
-      $(indicator).find("input[type='checkbox']").attr("id", "project.indicators-" + indicatorIndex);
+      $(indicator).find("input[type='checkbox']").attr("id", "indicatorIndex-" + indicatorIndex);
       if ($(indicator).find("input[type='checkbox']").is(":checked")) {
         
         $(target).find("input.projectIndicatorParent").attr("name", indicatorsName + "[" + index + "].parent.id");
@@ -209,6 +211,7 @@ function setIndicatorIndexes(){
         $(target).find(".projectIndicatorYear").attr("name", indicatorsName + "[" + index + "].year");
         $(target).find(".projectIndicatorTarget").attr("name", indicatorsName + "[" + index + "].target");
         $(target).find(".projectIndicatorDescription").attr("name", indicatorsName + "[" + index + "].description");
+        console.log("projectIndicatorDescription name ->" + $(target).find(".projectIndicatorDescription").attr("name"));
         
         index++;
       } else {
@@ -248,20 +251,20 @@ function setMogsIndexes(){
 
 function toogleIndicatorInfo(event){
   var $indicatorBlock = $(event.target).parent();
-  var indicatorIndex = $(event.target).attr("name").split("[")[1].split("]")[0];
-  var indicatorsName = "project.indicators[" + indicatorIndex + "]";
+  var indicatorIndex = $(event.target).attr("id").split("-")[1];
+  // var indicatorsName = "project.indicators[" + indicatorIndex + "]";
   
   if (event.target.checked) {
     $indicatorBlock.find("input[type='hidden']").attr("disabled", false);
-    $indicatorBlock.find(".indicatorNarrative input").attr("name", indicatorsName + ".target");
-    $indicatorBlock.find(".indicatorNarrative textarea").attr("name", indicatorsName + ".description");
+    // $indicatorBlock.find(".indicatorNarrative input").attr("name", indicatorsName + ".target");
+    // $indicatorBlock.find(".indicatorNarrative textarea").attr("name", indicatorsName + ".description");
     
     // Show the block
     $indicatorBlock.find(".indicatorNarrative, .indicatorTargets").show("slow");
   } else {
     $indicatorBlock.find("input[type='hidden']").attr("disabled", true);
-    $indicatorBlock.find(".indicatorNarrative input").attr("name", "");
-    $indicatorBlock.find(".indicatorNarrative textarea").attr("name", "");
+    // $indicatorBlock.find(".indicatorNarrative input").attr("name", "");
+    // $indicatorBlock.find(".indicatorNarrative textarea").attr("name", "");
     
     // Hide the block
     $indicatorBlock.find(".indicatorNarrative, .indicatorTargets").hide("slow");
@@ -271,4 +274,8 @@ function toogleIndicatorInfo(event){
 
 function addChosen(){
   $("select").chosen();
+}
+
+function addTabs(){
+  $("form .indicatorTargets").tabs();
 }

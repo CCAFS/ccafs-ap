@@ -1721,6 +1721,10 @@ p.partnerTitle {
   margin: 20px 0px;
 }
 
+.indicatorTargets.ui-tabs {
+  padding-top: 12px;
+}
+
 /*** Activities ***/
 .location.row, #location-head {
   padding: 8px 10px;
@@ -1975,9 +1979,9 @@ margin-bottom: 8px;
 
 
 #activityImpactPathway .indicatorNarrative {
-  padding: 5px 14px;
+  padding: 5px 7px;
   margin: 5px 5px;
-  border-left: 2px dotted #DEDEDE;
+  /* border-left: 2px dotted #DEDEDE; */
 }
 
 

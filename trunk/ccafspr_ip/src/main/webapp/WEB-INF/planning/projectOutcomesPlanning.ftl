@@ -96,7 +96,7 @@
                     [#assign projectIndicator = project.getIndicatorByParentAndYear(indicator.id, midOutcomeYear) /]
                     <div class="midOutcomeIndicator" >
                       <input type="hidden" disabled class="projectIndicatorID" name="project.indicators.id" value="${projectIndicator.id}" />
-                      <input type="checkbox" class="projectIndicatorCheckbox" name="project.indicators.parent.id-${indicator.id}"  value="${indicator.id}" checked />
+                      <input type="checkbox" class="projectIndicatorCheckbox" id="indicatorIndex-${indicator_index}" checked />
                       [#if indicator.parent?has_content]
                         <label class="indicatorDescription">${indicator.parent.description}</label>
                       [#else]
@@ -131,7 +131,7 @@
                   [#else]
                     <div class="midOutcomeIndicator" >
                       <input type="hidden" disabled name="indicators.id" value="-1" />
-                      <input type="checkbox" class="projectIndicatorCheckbox" name="project.indicators.parent.id" value="${indicator.id}" />
+                      <input type="checkbox" class="projectIndicatorCheckbox" id="indicatorIndex-${indicator_index}" />
                       [#if indicator.parent?has_content]
                         <label class="indicatorDescription">${indicator.parent.description}</label> 
                       [#else]
@@ -225,17 +225,17 @@
         <input type="hidden" disabled name="activity_indicator_id" value="-1" />
         <input type="checkbox" class="projectIndicatorCheckbox" />
         <label class="indicatorDescription"></label>
-        <div class="indicatorTargetsTemplate">
+        <div class="indicatorTargetsTemplate" style="display:none">
           <ul class="">
             [#list years as year]
               <li class=""><a href="#target-${year}">${year}</a></li> 
             [/#list]   
           </ul>
           [#list years as year]
-          <div id="target-${year}" class="targetIndicator" style="display:none">
+          <div id="target-${year}" class="targetIndicator" >
             <input type="hidden" class="projectIndicatorParent" name="project.indicators.parent.id"   />
             <input type="hidden" class="projectIndicatorYear" name="project_indicator_year"  value="${year}" />
-            <div class="checkboxGroup vertical indicatorNarrative" style="display:none">
+            <div class="checkboxGroup vertical indicatorNarrative">
               [#-- Target value --]
               <label> <h6>[@s.text name="planning.projectImpactPathways.targetValue" /]</h6></label>
               <textarea  class="projectIndicatorTarget" name="project_indicator_target" ></textarea>
