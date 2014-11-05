@@ -113,9 +113,17 @@
                           [/#list]   
                         </ul>
                         [#list years as year]
-                          [#assign projectIndicator = project.getIndicatorByParentAndYear(indicator.id, year) /]
+                          [#if indicator.parent?has_content]
+                            [#assign projectIndicator = project.getIndicatorByParentAndYear(indicator.parent.id, year) /]
+                          [#else]
+                            [#assign projectIndicator = project.getIndicatorByParentAndYear(indicator.id, year) /]
+                          [/#if]
                           <div id="target-${year}" class="targetIndicator"> 
-                            <input type="hidden" class="projectIndicatorParent" name="project.indicators.parent.id" value="${indicator.id}"  />
+                            [#if indicator.parent?has_content]
+                              <input type="hidden" class="projectIndicatorParent" name="project.indicators.parent.id" value="${indicator.parent.id}"  />
+                            [#else]
+                              <input type="hidden" class="projectIndicatorParent" name="project.indicators.parent.id" value="${indicator.id}"  />
+                            [/#if]
                             <input type="hidden" class="projectIndicatorYear" name="project.indicators.year"  value="${year}" /> 
                             <div class="checkboxGroup vertical indicatorNarrative" >
                               [#-- Target value --]
