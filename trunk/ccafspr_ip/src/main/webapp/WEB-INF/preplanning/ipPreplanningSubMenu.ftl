@@ -18,12 +18,6 @@
         </a>
       </li>
       
-      <li [#if currentStage == "outputs"] class="currentSection" [/#if]>
-        <a href="[@s.url action='outputsRPL' includeParams='get'][/@s.url]">
-          [@s.text name="menu.preplanning.submenu.outputs" /]
-        </a>
-      </li>
-    
     [#elseif currentUser.FPL ] 
       <li [#if currentStage == "midOutcomes"] class="currentSection" [/#if]>
         <a href="[@s.url action='midOutcomes' includeParams='get'][/@s.url]">
