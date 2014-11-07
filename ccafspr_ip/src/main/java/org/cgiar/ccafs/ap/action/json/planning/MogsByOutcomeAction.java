@@ -49,7 +49,11 @@ public class MogsByOutcomeAction extends BaseAction {
       List<IPElement> mogs = new ArrayList<>();
       for (IPElement fsOutcome : parent.getTranslatedOf()) {
         mogs.addAll(ipElementManager.getIPElementsByParent(fsOutcome, APConstants.ELEMENT_RELATION_CONTRIBUTION));
-        ipElements.addAll(mogs);
+        for (IPElement mog : mogs) {
+          if (!ipElements.contains(mog)) {
+            ipElements.add(mog);
+          }
+        }
       }
     } else {
       ipElements = ipElementManager.getIPElementsByParent(parent, APConstants.ELEMENT_RELATION_CONTRIBUTION);
