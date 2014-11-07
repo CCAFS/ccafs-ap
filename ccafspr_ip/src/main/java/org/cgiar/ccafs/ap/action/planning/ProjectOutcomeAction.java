@@ -93,8 +93,23 @@ public class ProjectOutcomeAction extends BaseAction {
   }
 
   public List<IPElement> getMidOutcomeOutputs(int midOutcomeID) {
-    IPElement midOutcome = new IPElement(midOutcomeID);
-    return ipElementManager.getIPElementsByParent(midOutcome, APConstants.ELEMENT_RELATION_CONTRIBUTION);
+    List<IPElement> outputs = new ArrayList<>();
+    IPElement midOutcome = ipElementManager.getIPElement(midOutcomeID);
+
+    if (isRegionalOutcome(midOutcome)) {
+      List<IPElement> mogs = new ArrayList<>();
+      for (IPElement fsOutcome : midOutcome.getTranslatedOf()) {
+        mogs.addAll(ipElementManager.getIPElementsByParent(fsOutcome, APConstants.ELEMENT_RELATION_CONTRIBUTION));
+        for (IPElement mog : mogs) {
+          if (!outputs.contains(mog)) {
+            outputs.add(mog);
+          }
+        }
+      }
+    } else {
+      outputs = ipElementManager.getIPElementsByParent(midOutcome, APConstants.ELEMENT_RELATION_CONTRIBUTION);
+    }
+    return outputs;
   }
 
   /**
@@ -199,6 +214,19 @@ public class ProjectOutcomeAction extends BaseAction {
     return midOutcomeYear;
   }
 
+  public int getMOGIndex(IPElement mog) {
+    int index = 0;
+    List<IPElement> allMOGs = ipElementManager.getIPElements(mog.getProgram(), mog.getType());
+
+    for (int i = 0; i < allMOGs.size(); i++) {
+      if (allMOGs.get(i).getId() == mog.getId()) {
+        return (i + 1);
+      }
+    }
+
+    return index;
+  }
+
   public Project getProject() {
     return project;
   }
@@ -209,6 +237,10 @@ public class ProjectOutcomeAction extends BaseAction {
 
   public int getProjectID() {
     return projectID;
+  }
+
+  public boolean isRegionalOutcome(IPElement outcome) {
+    return !outcome.getTranslatedOf().isEmpty();
   }
 
   /**

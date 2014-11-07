@@ -14,6 +14,10 @@
  */
 package org.cgiar.ccafs.ap.data.dao.mysql;
 
+import org.cgiar.ccafs.ap.config.APConstants;
+import org.cgiar.ccafs.ap.data.dao.DAOManager;
+import org.cgiar.ccafs.ap.data.dao.IPElementDAO;
+
 import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -24,9 +28,6 @@ import java.util.List;
 import java.util.Map;
 
 import com.google.inject.Inject;
-import org.cgiar.ccafs.ap.config.APConstants;
-import org.cgiar.ccafs.ap.data.dao.DAOManager;
-import org.cgiar.ccafs.ap.data.dao.IPElementDAO;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -311,7 +312,8 @@ public class MySQLIPElementDAO implements IPElementDAO {
     query.append("FROM ip_elements e ");
     query.append("INNER JOIN ip_relationships r ON e.id = r.child_id ");
     query.append("INNER JOIN ip_element_types et ON e.element_type_id = et.id ");
-    query.append("INNER JOIN ip_program_elements pel ON e.id = pel.element_id ");
+    query.append("INNER JOIN ip_program_elements pel ON e.id = pel.element_id AND pel.relation_type_id = "
+      + APConstants.PROGRAM_ELEMENT_RELATION_USE + " ");
     query.append("INNER JOIN ip_programs pro ON pel.program_id = pro.id ");
     query.append("WHERE r.relation_type_id = ");
     query.append(relationTypeID);
