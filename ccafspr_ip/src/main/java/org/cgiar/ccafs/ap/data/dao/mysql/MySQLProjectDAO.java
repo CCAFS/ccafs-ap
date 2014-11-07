@@ -390,9 +390,11 @@ public class MySQLProjectDAO implements ProjectDAO {
 
     StringBuilder query = new StringBuilder();
     query.append("SELECT ai.id, ai.description, ai.target, ai.year, aip.id as 'parent_id', ");
-    query.append("aip.description as 'parent_description', aip.target as 'parent_target' ");
+    query.append("aip.description as 'parent_description', aip.target as 'parent_target', ");
+    query.append("ie.id as 'outcome_id', ie.description as 'outcome_description' ");
     query.append("FROM ip_project_indicators as ai ");
     query.append("INNER JOIN ip_indicators aip ON ai.parent_id = aip.id ");
+    query.append("INNER JOIN ip_elements ie ON ai.outcome_id = ie.id ");
     query.append("WHERE ai.project_id=  ");
     query.append(projectID);
 
@@ -408,6 +410,8 @@ public class MySQLProjectDAO implements ProjectDAO {
         indicatorData.put("parent_id", rs.getString("parent_id"));
         indicatorData.put("parent_description", rs.getString("parent_description"));
         indicatorData.put("parent_target", rs.getString("parent_target"));
+        indicatorData.put("outcome_id", rs.getString("outcome_id"));
+        indicatorData.put("outcome_description", rs.getString("outcome_description"));
 
         indicatorsDataList.add(indicatorData);
       }
@@ -463,12 +467,12 @@ public class MySQLProjectDAO implements ProjectDAO {
     List<Map<String, String>> outputsDataList = new ArrayList<>();
 
     StringBuilder query = new StringBuilder();
-    query.append("SELECT ipe.id, ipe.description, pe.id as 'parent_id',  ");
-    query.append("pe.description as 'parent_description' ");
-    query.append("FROM ip_elements ipe ");
-    query.append("INNER JOIN ip_project_contributions ipc ON ipc.mog_id = ipe.id ");
-    query.append("INNER JOIN ip_elements pe ON ipc.midOutcome_id = pe.id ");
-    query.append("WHERE ipc.project_id=  ");
+    query.append("SELECT mog.id, mog.description, outcome.id as 'parent_id', ");
+    query.append("outcome.description as 'parent_description'  ");
+    query.append("FROM `ip_project_contributions` ipc ");
+    query.append("INNER JOIN ip_elements mog ON ipc.mog_id = mog.id ");
+    query.append("INNER JOIN ip_elements outcome ON ipc.`midOutcome_id` = outcome.id ");
+    query.append("WHERE project_id =  ");
     query.append(projectID);
 
     try (Connection con = databaseManager.getConnection()) {
@@ -697,15 +701,17 @@ public class MySQLProjectDAO implements ProjectDAO {
 
     Object[] values;
     // Insert new activity indicator record
-    query.append("INSERT INTO ip_project_indicators (id, description, target, year, project_id, parent_id) ");
-    query.append("VALUES (?, ?, ?, ?, ?, ?) ");
-    values = new Object[6];
+    query
+      .append("INSERT INTO ip_project_indicators (id, description, target, year, project_id, parent_id, outcome_id) ");
+    query.append("VALUES (?, ?, ?, ?, ?, ?, ?) ");
+    values = new Object[7];
     values[0] = indicatorData.get("id");
     values[1] = indicatorData.get("description");
     values[2] = indicatorData.get("target");
     values[3] = indicatorData.get("year");
     values[4] = indicatorData.get("project_id");
     values[5] = indicatorData.get("parent_id");
+    values[6] = indicatorData.get("outcome_id");
 
     int newId = databaseManager.saveData(query.toString(), values);
     if (newId == -1) {

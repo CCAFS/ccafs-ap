@@ -32,6 +32,13 @@
         <param name="excludeNullProperties">true</param>
       </result>
     </action>
+    
+    <action name="ipIndicatorsByProject" class="org.cgiar.ccafs.ap.action.json.planning.IPIndicatorsByProjectAction">
+      <result type="json">        
+        <param name="noCache">true</param>
+        <param name="excludeNullProperties">true</param>
+      </result>
+    </action>
 
     <action name="institutionsByTypeAndCountry" class="org.cgiar.ccafs.ap.action.json.global.InstitutionsByFilterAction">
       <result type="json">        
@@ -55,6 +62,13 @@
     </action>
     
     <action name="deliverablesByType" class="org.cgiar.ccafs.ap.action.json.planning.DeliverablesSubTypeByTypeAction">
+      <result type="json">        
+        <param name="noCache">true</param>
+        <param name="excludeNullProperties">true</param>
+      </result>
+    </action>
+    
+    <action name="mogsByOutcome" class="org.cgiar.ccafs.ap.action.json.planning.MogsByOutcomeAction">
       <result type="json">        
         <param name="noCache">true</param>
         <param name="excludeNullProperties">true</param>

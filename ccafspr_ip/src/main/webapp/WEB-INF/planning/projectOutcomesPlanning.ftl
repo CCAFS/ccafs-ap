@@ -1,5 +1,5 @@
 [#ftl]
-[#assign title = "Project Impact Pathway" /]
+[#assign title = "Project Outcomes" /]
 [#assign globalLibs = ["jquery", "noty", "chosen", "cytoscape", "qtip","cytoscapePanzoom"] /]
 [#assign customJS = ["${baseUrl}/js/global/utils.js", "${baseUrl}/js/global/ipGraph.js", "${baseUrl}/js/planning/projectImpactPathwayPlanning.js"] /]
 [#assign currentSection = "planning" /]
@@ -96,11 +96,12 @@
               [#if midOutcome.indicators?has_content]
               <div class="indicatorsBlock">
                 [#list midOutcome.indicators as indicator]
-                  [#if project.getIndicatorByParentAndYear(indicator.id, midOutcomeYear)?has_content]
-                    [#assign projectIndicator = project.getIndicatorByParentAndYear(indicator.id, midOutcomeYear) /]
+                  [#assign projectIndicator = project.getIndicator(indicator.id, midOutcome.id,  midOutcomeYear) /]
+                  [#assign isUniqueIndicator = (indicator_index == 0 && !indicator_has_next)]
+                  [#if projectIndicator.id != -1 || isUniqueIndicator]
                     <div class="midOutcomeIndicator" >
                       <input type="hidden" disabled class="projectIndicatorID" name="project.indicators.id" value="${projectIndicator.id}" />
-                      <input type="checkbox" class="projectIndicatorCheckbox" id="indicatorIndex-${indicator_index}" checked />
+                      <input type="checkbox" class="projectIndicatorCheckbox" id="indicatorIndex-${indicator_index}" [#if projectIndicator.id != -1 || isUniqueIndicator] checked [/#if] />
                       [#if indicator.parent?has_content]
                         <label class="indicatorDescription">${indicator.parent.description}</label>
                       [#else]
@@ -119,20 +120,25 @@
                             [#assign projectIndicator = project.getIndicatorByParentAndYear(indicator.id, year) /]
                           [/#if]
                           <div id="target-${year}" class="targetIndicator"> 
+                            [#-- Indicator ID --]
                             [#if indicator.parent?has_content]
                               <input type="hidden" class="projectIndicatorParent" name="project.indicators.parent.id" value="${indicator.parent.id}"  />
                             [#else]
                               <input type="hidden" class="projectIndicatorParent" name="project.indicators.parent.id" value="${indicator.id}"  />
                             [/#if]
+                            
+                            [#-- Hidden values --]
                             <input type="hidden" class="projectIndicatorYear" name="project.indicators.year"  value="${year}" /> 
+                            <input type="hidden" class="projectIndicatorOutcome" name="project.indicators.outcome"  value="${midOutcome.id}" /> 
+                            
+                            [#-- Indicator target value --]
                             <div class="checkboxGroup vertical indicatorNarrative" >
-                              [#-- Target value --]
                               <label> <h6>[@s.text name="planning.projectImpactPathways.targetValue" /]</h6></label>
-                              [#--  input type="text" name="project.indicators.target" value="${projectIndicator.target!}" --]
                               <textarea class="projectIndicatorTarget" name="project.indicators.target" >${projectIndicator.target!}</textarea>
                             </div> 
+                            
+                            [#-- Indicator target description --]
                             <div class="checkboxGroup vertical indicatorNarrative" >
-                              [#-- Target description --]
                               <label> <h6>[@s.text name="planning.projectImpactPathways.targetNarrative" /]</h6></label>
                               <textarea class="projectIndicatorDescription" name="project.indicators.description" >${projectIndicator.description!}</textarea>
                             </div>
@@ -158,12 +164,16 @@
                         [#list years as year]
                         <div id="target-${year}" class="targetIndicator"> 
                           <input type="hidden" class="projectIndicatorYear" name="project.indicators.year"  value="${year}" />
+                          <input type="hidden" class="projectIndicatorOutcome" name="project.indicators.outcome"  value="${midOutcome.id}" /> 
+                          
+                          [#-- Target value --]
                           <div class="checkboxGroup vertical indicatorNarrative">
-                            [#-- Target value --]
                             <label>  <h6>[@s.text name="planning.projectImpactPathways.targetValue" /]</h6></label>
-                            [#--<input type="text" name="project.indicators.target" >--]
                             <textarea class="projectIndicatorTarget" name="project.indicators.target" ></textarea>
-                            [#-- Target description --]
+                          </div>
+                          
+                          [#-- Target description --]
+                          <div class="checkboxGroup vertical indicatorNarrative">
                             <label>  <h6>[@s.text name="planning.projectImpactPathways.targetNarrative" /]</h6></label>
                             <textarea class="projectIndicatorDescription" name="project.indicators.description" ></textarea>
                           </div>
@@ -186,7 +196,7 @@
                   [#list outputs as output]
                       <div class="mog">
                         <input name="project.outputs.contributesTo[0].id" value="${midOutcome.id}"  type="hidden" />
-                        <input type="checkbox" name="outputs.id" value="${output.id}" [#if project.containsOutput(output.id)] checked [/#if] />
+                        <input type="checkbox" name="outputs.id" value="${output.id}" [#if project.containsOutput(output.id, midOutcome.id)] checked [/#if] />
                         <label> ${output.program.acronym} - MOG #${output_index+1}: ${output.description} </label>
                       </div>
                   [/#list]
@@ -204,7 +214,7 @@
         [@customForm.select name="midOutcomesList" i18nkey="planning.projectImpactPathways.outcome" listName="midOutcomes" className="midOutcomeSelect" /]
       </div>
       
-      <input type="hidden" name="projectID" value="${projectID}" />
+      <input type="hidden" id="projectID" name="projectID" value="${projectID}" />
       <div class="buttons">
         [@s.submit type="button" name="save"][@s.text name="form.buttons.save" /][/@s.submit]
         [@s.submit type="button" name="next"][@s.text name="form.buttons.next" /][/@s.submit]
@@ -247,6 +257,7 @@
           <div id="target-${year}" class="targetIndicator" >
             <input type="hidden" class="projectIndicatorParent" name="project.indicators.parent.id"   />
             <input type="hidden" class="projectIndicatorYear" name="project_indicator_year"  value="${year}" />
+            <input type="hidden" class="projectIndicatorOutcome" name="project.indicators.outcome" /> 
             <div class="checkboxGroup vertical indicatorNarrative">
               [#-- Target value --]
               <label> <h6>[@s.text name="planning.projectImpactPathways.targetValue" /]</h6></label>

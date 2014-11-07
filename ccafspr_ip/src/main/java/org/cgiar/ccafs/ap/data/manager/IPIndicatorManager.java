@@ -17,6 +17,7 @@ import org.cgiar.ccafs.ap.data.manager.impl.IPIndicatorManagerImpl;
 import org.cgiar.ccafs.ap.data.model.IPElement;
 import org.cgiar.ccafs.ap.data.model.IPIndicator;
 import org.cgiar.ccafs.ap.data.model.IPProgram;
+import org.cgiar.ccafs.ap.data.model.Project;
 
 import java.util.List;
 
@@ -50,6 +51,15 @@ public interface IPIndicatorManager {
    * @return a list of indicators object
    */
   public List<IPIndicator> getIndicatorsByParent(IPIndicator indicator);
+
+  /**
+   * This method gets all the indicators related with the project
+   * received as parameter.
+   * 
+   * @param project - Project object
+   * @return a list of ip indicators object with the information.
+   */
+  public List<IPIndicator> getIndicatorsByProject(Project project);
 
   /**
    * This method get all the indicators present in the database.

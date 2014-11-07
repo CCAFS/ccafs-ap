@@ -68,6 +68,38 @@ public class Project {
     return false;
   }
 
+  public boolean containsOutput(int outputID, int outcomeID) {
+    if (this.outputs != null) {
+      for (IPElement output : this.outputs) {
+        if (output.getId() == outputID) {
+          if (output.getContributesTo().contains(new IPElement(outcomeID))) {
+            return true;
+          }
+        }
+      }
+    }
+    return false;
+  }
+
+  public boolean containsOutput(IPElement output) {
+    if (this.outputs != null) {
+      for (IPElement projectOutput : this.outputs) {
+        if (projectOutput == null) {
+          continue;
+        }
+        if (projectOutput.getId() == output.getId()) {
+          int projectOutcome = projectOutput.getContributesToIDs()[0];
+          int outcome = output.getContributesToIDs()[0];
+
+          if (outcome == projectOutcome) {
+            return true;
+          }
+        }
+      }
+    }
+    return false;
+  }
+
   /**
    * Equals based on the the project id.
    */
@@ -163,8 +195,25 @@ public class Project {
     return id;
   }
 
+  public IPIndicator getIndicator(int parentIndicatorID, int outcomeID, int year) {
+    IPIndicator emptyIndicator = new IPIndicator(-1);
+
+    if (indicators != null) {
+      for (IPIndicator indicator : this.indicators) {
+        if (indicator.getParent() != null) {
+          if (indicator.getParent().getId() == parentIndicatorID && indicator.getYear() == year
+            && indicator.getOutcome().getId() == outcomeID) {
+            return indicator;
+          }
+        }
+      }
+    }
+    return emptyIndicator;
+  }
+
   public IPIndicator getIndicatorByParent(int parentIndicatorID) {
     if (indicators != null) {
+      getIndicatorByParentAndYear(parentIndicatorID, 2019);
       for (IPIndicator indicator : this.indicators) {
         if (indicator.getParent() != null) {
           if (indicator.getParent().getId() == parentIndicatorID) {
