@@ -120,10 +120,14 @@
 
 
       <p class="note">
+        [#--  Add existing MOG
+        
         <span>
         [@s.text name="preplanning.outputsRPL.addAlignedMOG"]
           [@s.param][@s.text name="preplanning.outputsRPL.addExistingOutput" /][/@s.param]
         [/@s.text]
+        
+        --]
           
         </span> 
         <span>

@@ -72,22 +72,6 @@
        </result>
     </action>
     
-    <action name="outputsRPL" class="org.cgiar.ccafs.ap.action.preplanning.OutputsPreplanningAction">
-      <interceptor-ref name="preplanningStackIP" />
-      <interceptor-ref name="RPLAccessOnly" />
-      <result name="input">/WEB-INF/preplanning/outputsRplPreplanning.ftl</result>
-      <result name="success" type="redirectAction">
-        <param name="actionName">outputsRPL</param>
-      </result>
-      <result name="next" type="redirectAction">
-        <param name="actionName">projects</param>
-      </result>
-      <result name="cancel" type="redirectAction">
-        <param name="namespace">/</param>
-        <param name="actionName">login</param>
-       </result>
-    </action>
-    
     <!-- Section: Projects  -->
     
     <action name="projects" class="org.cgiar.ccafs.ap.action.preplanning.ProjectsListPreplanningAction">
