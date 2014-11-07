@@ -96,9 +96,15 @@
               [#if midOutcome.indicators?has_content]
               <div class="indicatorsBlock">
                 [#list midOutcome.indicators as indicator]
-                  [#assign projectIndicator = project.getIndicator(indicator.id, midOutcome.id,  midOutcomeYear) /]
+
+                  [#if indicator.parent?has_content ]
+                    [#assign projectIndicator = project.getIndicator(indicator.parent.id, midOutcome.id,  midOutcomeYear) /]
+                  [#else]
+                    [#assign projectIndicator = project.getIndicator(indicator.id, midOutcome.id,  midOutcomeYear) /]
+                  [/#if]
                   [#assign isUniqueIndicator = (indicator_index == 0 && !indicator_has_next)]
                   [#if projectIndicator.id != -1 || isUniqueIndicator]
+
                     <div class="midOutcomeIndicator" >
                       <input type="hidden" disabled class="projectIndicatorID" name="project.indicators.id" value="${projectIndicator.id}" />
                       <input type="checkbox" class="projectIndicatorCheckbox" id="indicatorIndex-${indicator_index}" [#if projectIndicator.id != -1 || isUniqueIndicator] checked [/#if] />
@@ -115,9 +121,9 @@
                         </ul>
                         [#list years as year]
                           [#if indicator.parent?has_content]
-                            [#assign projectIndicator = project.getIndicatorByParentAndYear(indicator.parent.id, year) /]
+                            [#assign projectIndicator = project.getIndicator(indicator.parent.id, midOutcome.id, year) /]
                           [#else]
-                            [#assign projectIndicator = project.getIndicatorByParentAndYear(indicator.id, year) /]
+                            [#assign projectIndicator = project.getIndicator(indicator.id, midOutcome.id,  year) /]
                           [/#if]
                           <div id="target-${year}" class="targetIndicator"> 
                             [#-- Indicator ID --]
@@ -147,6 +153,7 @@
                       </div>   
                     </div>  
                   [#else]
+
                     <div class="midOutcomeIndicator" >
                       <input type="hidden" disabled name="indicators.id" value="-1" />
                       <input type="checkbox" class="projectIndicatorCheckbox" id="indicatorIndex-${indicator_index}" />
@@ -163,6 +170,12 @@
                         </ul>
                         [#list years as year]
                         <div id="target-${year}" class="targetIndicator"> 
+                          [#-- Indicator ID --]
+                          [#if indicator.parent?has_content]
+                            <input type="hidden" class="projectIndicatorParent" name="project.indicators.parent.id" value="${indicator.parent.id}"  />
+                          [#else]
+                            <input type="hidden" class="projectIndicatorParent" name="project.indicators.parent.id" value="${indicator.id}"  />
+                          [/#if]
                           <input type="hidden" class="projectIndicatorYear" name="project.indicators.year"  value="${year}" />
                           <input type="hidden" class="projectIndicatorOutcome" name="project.indicators.outcome"  value="${midOutcome.id}" /> 
                           
@@ -197,7 +210,7 @@
                       <div class="mog">
                         <input name="project.outputs.contributesTo[0].id" value="${midOutcome.id}"  type="hidden" />
                         <input type="checkbox" name="outputs.id" value="${output.id}" [#if project.containsOutput(output.id, midOutcome.id)] checked [/#if] />
-                        <label> ${output.program.acronym} - MOG #${output_index+1}: ${output.description} </label>
+                        <label> ${output.program.acronym} - MOG #${action.getMOGIndex(output)}: ${output.description} </label>
                       </div>
                   [/#list]
                 </div>
