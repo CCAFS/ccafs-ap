@@ -25,10 +25,9 @@ function removeContributionBlock(event){
     var midOutcomeID = $(this).find("#midOutcomeID").val();
     var programID = $(this).find("#programID").val();
     var description = $(this).find("p.description").text();
-    // console.log('<option value="' + midOutcomeID + '-' + programID + '">' + description + '</option>');
-    $("#impactPathway_midOutcomesList").append('<option value="' + midOutcomeID + '-' + programID + '">' + description + '</option>');
+    $("#projectOutcomes_midOutcomesList").append('<option value="' + midOutcomeID + '-' + programID + '">' + description + '</option>');
     $(this).remove();
-    $("#impactPathway_midOutcomesList").trigger("liszt:updated");
+    $("#projectOutcomes_midOutcomesList").trigger("liszt:updated");
     setIndicatorIndexes();
   });
 }
@@ -57,7 +56,6 @@ function selectMidOutcomeEvent(event){
   var $midOutcomesSelect = $(event.target);
   var outcomeSelectedVal = $midOutcomesSelect.val();
   var $optionSelected = $midOutcomesSelect.find("option[value='" + outcomeSelectedVal + "']");
-  console.log($(event.target));
   if (outcomeSelectedVal == -1)
     return;
   
@@ -98,13 +96,14 @@ function selectMidOutcomeEvent(event){
 }
 
 /**
- * This function load the MOGs which contributes to the midOutcome identified by the value received as parameter and put them in the interface as a list of checkboxes
+ * This function load the MOGs which contributes to the midOutcome identified by 
+ * the value received as parameter and put them in the interface as a list of checkboxes
  * 
  * @param midOutcomeID - midOutcome identifier
  */
 function addMOGs(midOutcomeID,$mogBlock){
   
-  var source = "../../json/ipElementsByParent.do?elementID=" + midOutcomeID;
+  var source = "../../json/mogsByOutcome.do?elementID=" + midOutcomeID;
   $.getJSON(source).done(function(data){
     var $mogTemplate = $mogBlock.find("#mogTemplate");
     
@@ -115,8 +114,6 @@ function addMOGs(midOutcomeID,$mogBlock){
       
       $newMog.find("input[name$='contributesTo[0].id'] ").val(midOutcomeID);
       $newMog.find("input[type='checkbox']").val(mog.id);
-      
-      // console.log(mog.program.acronym + "#" + index + ": " + mog.description);
       
       $newMog.find("label").html(mog.program.acronym + " - MOG #" + (index + 1) + ": " + mog.description);
       
@@ -156,7 +153,8 @@ function addIndicators(midOutcomeID,programID,$indicatorsBlock){
       
       // indexes will be adjusted in function setIndicatorsIndexes
       $newIndicator.find("input[type='checkbox']").val(indicator.id);
-      
+      $newIndicator.find("input.projectIndicatorOutcome").val(midOutcomeID);
+
       if (!(indicator.parent)) {
         $newIndicator.find("input.projectIndicatorParent").val(indicator.id);
         $newIndicator.find("label.indicatorDescription").text(indicator.description);
@@ -170,7 +168,6 @@ function addIndicators(midOutcomeID,programID,$indicatorsBlock){
       if (onlyOneIndicator) {
         $newIndicator.find("input[type='checkbox']").attr("checked", true);
         $newIndicator.find(".indicatorNarrative, .indicatorTargets, .indicatorTargetsTemplate").show("slow");
-        console.log($newIndicator.html());
       }
     });
     
@@ -189,10 +186,8 @@ function setIndicatorIndexes(){
   var $contributionsBlock = $("#contributionsBlock");
   var indicatorsName = "project.indicators";
   var index = 0;
-  console.log("-----------  setIndicator()");
   // Indicators indexes
   $contributionsBlock.find(".midOutcomeIndicator").each(function(indicatorIndex,indicator){
-    console.log("Indicator index ------>" + indicatorIndex);
     $(indicator).find(".targetIndicator").each(function(targetIndex,target){
       
       // Hidden
@@ -209,9 +204,9 @@ function setIndicatorIndexes(){
         $(target).find("input.projectIndicatorParent").attr("name", indicatorsName + "[" + index + "].parent.id");
         $(target).find("input[type='hidden']").attr("disabled", false);
         $(target).find(".projectIndicatorYear").attr("name", indicatorsName + "[" + index + "].year");
+        $(target).find(".projectIndicatorOutcome").attr("name", indicatorsName + "[" + index + "].outcome.id");
         $(target).find(".projectIndicatorTarget").attr("name", indicatorsName + "[" + index + "].target");
         $(target).find(".projectIndicatorDescription").attr("name", indicatorsName + "[" + index + "].description");
-        console.log("projectIndicatorDescription name ->" + $(target).find(".projectIndicatorDescription").attr("name"));
         
         index++;
       } else {

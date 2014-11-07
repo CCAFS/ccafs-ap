@@ -23,6 +23,7 @@ public class IPIndicator {
   private String description;
   private String target;
   private IPIndicator parent;
+  private IPElement outcome;
   private int year;
 
   public IPIndicator() {
@@ -58,6 +59,10 @@ public class IPIndicator {
     return id;
   }
 
+  public IPElement getOutcome() {
+    return outcome;
+  }
+
   public IPIndicator getParent() {
     return parent;
   }
@@ -81,6 +86,10 @@ public class IPIndicator {
 
   public void setId(int id) {
     this.id = id;
+  }
+
+  public void setOutcome(IPElement outcome) {
+    this.outcome = outcome;
   }
 
   public void setParent(IPIndicator parent) {

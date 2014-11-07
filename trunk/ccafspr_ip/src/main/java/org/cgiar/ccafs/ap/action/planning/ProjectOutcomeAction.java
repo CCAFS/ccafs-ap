@@ -71,8 +71,8 @@ public class ProjectOutcomeAction extends BaseAction {
   private Project project;
 
   @Inject
-  public ProjectOutcomeAction(APConfig config, IPProgramManager programManager,
-    IPElementManager ipElementManager, ProjectManager projectManager, ProjectOutcomeManager projectOutcomeManager) {
+  public ProjectOutcomeAction(APConfig config, IPProgramManager programManager, IPElementManager ipElementManager,
+    ProjectManager projectManager, ProjectOutcomeManager projectOutcomeManager) {
     super(config);
     this.programManager = programManager;
     this.ipElementManager = ipElementManager;
@@ -126,10 +126,24 @@ public class ProjectOutcomeAction extends BaseAction {
     return midOutcomesMap;
   }
 
+  private void getMidOutcomesByIndicators() {
+    for (IPIndicator indicator : project.getIndicators()) {
+      IPElement midoutcome = ipElementManager.getIPElement(indicator.getOutcome().getId());
+      if (!midOutcomesSelected.contains(midoutcome)) {
+        String description =
+          midoutcome.getProgram().getAcronym() + " - " + getText("planning.activityImpactPathways.outcome2019") + ": "
+            + midoutcome.getDescription();
+        midoutcome.setDescription(description);
+
+        midOutcomesSelected.add(midoutcome);
+      }
+    }
+  }
+
   private void getMidOutcomesByOutputs() {
     for (IPElement output : project.getOutputs()) {
-      for (int outcomeID : output.getContributesToIDs()) {
-        IPElement midoutcome = ipElementManager.getIPElement(outcomeID);
+      for (IPElement parent : output.getContributesTo()) {
+        IPElement midoutcome = ipElementManager.getIPElement(parent.getId());
         if (!midOutcomesSelected.contains(midoutcome)) {
           String description =
             midoutcome.getProgram().getAcronym() + " - " + getText("planning.activityImpactPathways.outcome2019")
@@ -276,27 +290,12 @@ public class ProjectOutcomeAction extends BaseAction {
     // Get all the midOutcomes selected
     getMidOutcomesByOutputs();
 
-    // Check the midOutcomes selected according to the project indicators
-    for (int i = 0; i < midOutcomes.size(); i++) {
-      IPElement midOutcome = midOutcomes.get(i);
-      if (midOutcome.getIndicators() != null) {
-        for (IPIndicator indicator : project.getIndicators()) {
-          if (midOutcome.getIndicators().contains(indicator.getParent())) {
-
-            // Check if the midOutcome is not already present
-            if (!midOutcomesSelected.contains(midOutcome)) {
-              midOutcomesSelected.add(midOutcome);
-              midOutcomes.remove(i);
-              i--;
-            }
-          }
-        }
-      }
-    }
+    // Get all the midOutcomes selected through the indicators
+    getMidOutcomesByIndicators();
 
     removeOutcomesAlreadySelected();
 
-    // Save the activity outputs brought from the database
+    // Keep the activity outputs brought from the database
     previousOutputs = new ArrayList<>();
     previousOutputs.addAll(project.getOutputs());
 
@@ -339,7 +338,7 @@ public class ProjectOutcomeAction extends BaseAction {
 
       // Delete the outputs removed
       for (IPElement output : previousOutputs) {
-        if (!project.getOutputs().contains(output)) {
+        if (!project.containsOutput(output)) {
           boolean deleted = projectManager.deleteProjectOutput(projectID, output.getId());
           if (!deleted) {
             success = false;
@@ -361,7 +360,7 @@ public class ProjectOutcomeAction extends BaseAction {
 
       success = success && projectManager.saveProjectIndicators(project.getIndicators(), projectID);
       if (success) {
-        addActionMessage(getText("saving.success", new String[] {getText("planning.activityImpactPathways.title")}));
+        addActionMessage(getText("saving.success", new String[] {getText("planning.projectOutcome.title")}));
         return SUCCESS;
       } else {
         addActionError(getText("saving.problem"));

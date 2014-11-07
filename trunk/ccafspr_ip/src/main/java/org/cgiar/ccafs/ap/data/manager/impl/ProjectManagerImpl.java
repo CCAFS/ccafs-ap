@@ -284,6 +284,11 @@ public class ProjectManagerImpl implements ProjectManager {
       parent.setTarget(iData.get("parent_target"));
       indicator.setParent(parent);
 
+      // Outcome
+      IPElement outcome = new IPElement(Integer.parseInt(iData.get("outcome_id")));
+      outcome.setDescription(iData.get("outcome_description"));
+      indicator.setOutcome(outcome);
+
       indicators.add(indicator);
     }
 
@@ -493,6 +498,7 @@ public class ProjectManagerImpl implements ProjectManager {
       indicatorData.put("year", String.valueOf(indicator.getYear()));
       indicatorData.put("parent_id", String.valueOf(indicator.getParent().getId()));
       indicatorData.put("project_id", String.valueOf(projectID));
+      indicatorData.put("outcome_id", String.valueOf(indicator.getOutcome().getId()));
 
       saved = projectDAO.saveProjectIndicators(indicatorData) && saved;
     }
