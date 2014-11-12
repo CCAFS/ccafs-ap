@@ -107,7 +107,7 @@
 
                     <div class="midOutcomeIndicator" >
                       <input type="hidden" disabled class="projectIndicatorID" name="project.indicators.id" value="${projectIndicator.id}" />
-                      <input type="checkbox" class="projectIndicatorCheckbox" id="indicatorIndex-${indicator_index}" [#if projectIndicator.id != -1 || isUniqueIndicator] checked [/#if] />
+                      <input type="checkbox" class="projectIndicatorCheckbox" id="indicatorIndex-${indicator_index}" [#if projectIndicator.id != -1 || isUniqueIndicator] checked [/#if] [#if isUniqueIndicator] disabled [/#if]  />
                       [#if indicator.parent?has_content]
                         <label class="indicatorDescription">${indicator.parent.description}</label>
                       [#else]
