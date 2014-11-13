@@ -163,5 +163,6 @@
   <include file="struts-pre-planning.xml" />
   <include file="struts-user.xml" />
   <include file="struts-json.xml" />
+  <include file="struts-summaries.xml" />
 
 </struts>
