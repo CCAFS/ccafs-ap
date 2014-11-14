@@ -38,6 +38,7 @@ import org.slf4j.LoggerFactory;
 /**
  * @author Javier Andrés Gallego B.
  * @author Héctor Fabio Tobón R.
+ * @author Hernán David Carvajal B.
  */
 public class ActivityDeliverablesAction extends BaseAction {
 
