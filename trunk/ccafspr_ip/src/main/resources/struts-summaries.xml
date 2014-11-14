@@ -4,7 +4,7 @@
 
   <package extends="ccafsap-default" name="summaries" namespace="/summaries">
 
-  <action class="org.cgiar.ccafs.ap.action.summaries.ProjectSummariesAction" name="project">
+  <action class="org.cgiar.ccafs.ap.action.summaries.ProjectSummaryAction" name="project">
       <result name="input">/WEB-INF/summaries/activitiesSummaries.ftl</result>
       <result name="success" type="stream">
         <param name="inputName">inputStream</param>

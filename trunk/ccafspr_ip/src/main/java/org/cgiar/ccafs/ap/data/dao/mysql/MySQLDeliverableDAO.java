@@ -233,16 +233,21 @@ public class MySQLDeliverableDAO implements DeliverableDAO {
     boolean saved = false;
     Object[] values;
 
-    query.append("INSERT INTO ip_deliverable_contributions (project_contribution_id,deliverable_id) ");
-    query.append("VALUES ((SELECT id FROM ip_project_contributions WHERE project_id= ");
-    query.append(projectID);
-    query.append(" AND mog_id= ");
-    query.append(ipElementID);
-    query.append("), ?) ");
+    /**
+     * This query relates the deliverable with each project impact pathways which contains
+     * the MOG selected
+     */
+    query.append("INSERT INTO ip_deliverable_contributions (deliverable_id, project_contribution_id) ");
+    query.append("SELECT ?, id ");
+    query.append("FROM ip_project_contributions ");
+    query.append("WHERE project_id= ? AND mog_id= ? ");
     query.append("ON DUPLICATE KEY UPDATE project_contribution_id = VALUES(project_contribution_id), ");
     query.append("deliverable_id = VALUES(deliverable_id) ");
-    values = new Object[1];
+
+    values = new Object[3];
     values[0] = deliverableID;
+    values[1] = projectID;
+    values[2] = ipElementID;
     result = databaseManager.saveData(query.toString(), values);
 
     LOG.debug("<< saveDeliverableOutput():{}", result);
