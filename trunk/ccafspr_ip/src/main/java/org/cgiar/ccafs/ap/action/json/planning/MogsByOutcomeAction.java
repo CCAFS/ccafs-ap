@@ -7,7 +7,9 @@ import org.cgiar.ccafs.ap.data.manager.IPElementManager;
 import org.cgiar.ccafs.ap.data.model.IPElement;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import com.google.inject.Inject;
 import org.apache.commons.lang3.StringUtils;
@@ -23,7 +25,7 @@ public class MogsByOutcomeAction extends BaseAction {
 
   // Model
   private String outcomeID;
-  private List<IPElement> ipElements;
+  private Map<Integer, IPElement> ipElements;
 
   // Managers
   private IPElementManager ipElementManager;
@@ -36,7 +38,7 @@ public class MogsByOutcomeAction extends BaseAction {
 
   @Override
   public String execute() throws Exception {
-    ipElements = new ArrayList<>();
+    ipElements = new HashMap<>();
     IPElement parent = new IPElement();
 
     try {
@@ -50,20 +52,35 @@ public class MogsByOutcomeAction extends BaseAction {
       for (IPElement fsOutcome : parent.getTranslatedOf()) {
         mogs.addAll(ipElementManager.getIPElementsByParent(fsOutcome, APConstants.ELEMENT_RELATION_CONTRIBUTION));
         for (IPElement mog : mogs) {
-          if (!ipElements.contains(mog)) {
-            ipElements.add(mog);
+          if (!ipElements.containsValue(mog)) {
+            ipElements.put(getMOGIndex(mog), mog);
           }
         }
       }
     } else {
-      ipElements = ipElementManager.getIPElementsByParent(parent, APConstants.ELEMENT_RELATION_CONTRIBUTION);
+      for (IPElement mog : ipElementManager.getIPElementsByParent(parent, APConstants.ELEMENT_RELATION_CONTRIBUTION)) {
+        ipElements.put(getMOGIndex(mog), mog);
+      }
     }
 
     return SUCCESS;
   }
 
-  public List<IPElement> getIPElementsList() {
+  public Map<Integer, IPElement> getIPElementsList() {
     return ipElements;
+  }
+
+  public int getMOGIndex(IPElement mog) {
+    int index = 0;
+    List<IPElement> allMOGs = ipElementManager.getIPElements(mog.getProgram(), mog.getType());
+
+    for (int i = 0; i < allMOGs.size(); i++) {
+      if (allMOGs.get(i).getId() == mog.getId()) {
+        return (i + 1);
+      }
+    }
+
+    return index;
   }
 
   public boolean isRegionalOutcome(IPElement outcome) {
