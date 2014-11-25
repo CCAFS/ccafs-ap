@@ -216,7 +216,7 @@
         <param name="activityID">${activity.id}</param>   
       </result>
       <result name="next" type="redirectAction">
-        <param name="actionName">activityImpactPathway</param>
+        <param name="actionName">activityDeliverables</param>
         <param name="activityID">${activity.id}</param>
       </result>
       <result name="cancel" type="redirectAction">
