@@ -332,9 +332,7 @@ public class ProjectManagerImpl implements ProjectManager {
       parentList.add(parent);
       output.setContributesTo(parentList);
 
-      if (!outputs.contains(output)) {
-        outputs.add(output);
-      }
+      outputs.add(output);
     }
 
     return outputs;
