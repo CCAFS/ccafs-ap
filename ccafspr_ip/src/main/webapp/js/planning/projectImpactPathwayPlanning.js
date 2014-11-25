@@ -115,7 +115,7 @@ function addMOGs(midOutcomeID,$mogBlock){
       $newMog.find("input[name$='contributesTo[0].id'] ").val(midOutcomeID);
       $newMog.find("input[type='checkbox']").val(mog.id);
       
-      $newMog.find("label").html(mog.program.acronym + " - MOG #" + (index + 1) + ": " + mog.description);
+      $newMog.find("label").html(mog.program.acronym + " - MOG #" + (index) + ": " + mog.description);
       
       $mogBlock.append($newMog);
     });
