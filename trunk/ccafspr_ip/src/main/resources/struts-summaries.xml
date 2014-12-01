@@ -9,8 +9,7 @@
       <result name="success" type="stream">
         <param name="inputName">inputStream</param>
         <param name="contentType">application/pdf</param>
-        <!-- param name="contentDisposition">attachment;filename="test.pdf"</param -->
-        <param name="contentDisposition">filename="test.pdf"</param>
+        <param name="contentDisposition">attachment;filename="${fileName}"</param>
      </result>
 	 </action>
 
