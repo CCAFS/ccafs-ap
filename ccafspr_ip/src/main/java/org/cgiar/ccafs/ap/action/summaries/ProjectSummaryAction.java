@@ -26,16 +26,11 @@ import org.cgiar.ccafs.ap.data.manager.ProjectOutcomeManager;
 import org.cgiar.ccafs.ap.data.manager.ProjectPartnerManager;
 import org.cgiar.ccafs.ap.data.model.Project;
 
-import java.io.ByteArrayInputStream;
-import java.io.ByteArrayOutputStream;
 import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.List;
 
 import com.google.inject.Inject;
-import com.lowagie.text.Document;
-import com.lowagie.text.pdf.PdfCopy;
-import com.lowagie.text.pdf.PdfReader;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -130,33 +125,4 @@ public class ProjectSummaryAction extends BaseAction implements Summary {
     project.setActivities(activityManager.getActivitiesByProject(project.getId()));
   }
 
-  public InputStream testing(List<InputStream> streamOfPDFFiles) {
-    ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
-
-    try {
-      System.out.println("Entrando");
-      Document PDFCombineUsingJava = new Document();
-      PdfCopy copy = new PdfCopy(PDFCombineUsingJava, outputStream);
-      PDFCombineUsingJava.open();
-      PdfReader readInputPDF;
-
-      int number_of_pages;
-      for (int i = 0; i < streamOfPDFFiles.size(); i++) {
-        System.out.println(i);
-        readInputPDF = new PdfReader(streamOfPDFFiles.get(i));
-        System.out.println(i);
-        number_of_pages = readInputPDF.getNumberOfPages();
-        for (int page = 0; page < number_of_pages;) {
-          copy.addPage(copy.getImportedPage(readInputPDF, ++page));
-        }
-      }
-      System.out.println("Fuera");
-      PDFCombineUsingJava.close();
-
-    } catch (Exception i) {
-      System.out.println(i);
-    }
-
-    return (new ByteArrayInputStream(outputStream.toByteArray()));
-  }
 }

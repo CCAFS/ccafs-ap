@@ -97,7 +97,6 @@ public class ProjectSummaryPDF extends BasePDF {
 
   // Budget
   @Inject
-  // public TestSummaryPdf(IPProgramManager programManager) {
   public ProjectSummaryPDF(APConfig config, BudgetManager budgetManager, IPElementManager elementManager,
     ActivityManager activityManager, IPCrossCuttingManager ipCrossCuttingManager,
     ActivityPartnerManager activityPartnerManager, LocationManager locationManager,
@@ -523,7 +522,6 @@ public class ProjectSummaryPDF extends BasePDF {
       if (activity.getLeader() != null) {
         cellContent = new Paragraph(activity.getLeader().getComposedName(), TABLE_BODY_FONT);
       } else {
-        System.out.println(activity.getId());
         cellContent = new Paragraph(activity.getExpectedLeader().getComposedName(), TABLE_BODY_FONT);
       }
       addTableBodyCell(table, cellContent, Element.ALIGN_LEFT, 1);
