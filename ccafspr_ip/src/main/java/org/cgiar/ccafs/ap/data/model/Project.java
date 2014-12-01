@@ -140,6 +140,16 @@ public class Project {
     return allYears;
   }
 
+  public Budget getBudget(int institutionID, int budgetType, int year) {
+    for (Budget budget : budgets) {
+      if (budget.getInstitution().getId() == institutionID && budget.getType().getValue() == budgetType
+        && budget.getYear() == year) {
+        return budget;
+      }
+    }
+    return null;
+  }
+
   public List<Budget> getBudgets() {
     return budgets;
   }
@@ -211,20 +221,6 @@ public class Project {
     return emptyIndicator;
   }
 
-  public IPIndicator getIndicatorByParent(int parentIndicatorID) {
-    if (indicators != null) {
-      getIndicatorByParentAndYear(parentIndicatorID, 2019);
-      for (IPIndicator indicator : this.indicators) {
-        if (indicator.getParent() != null) {
-          if (indicator.getParent().getId() == parentIndicatorID) {
-            return indicator;
-          }
-        }
-      }
-    }
-    return null;
-  }
-
   /**
    * This method search if the list of indicators contains an indicator
    * which parent is identified by the value passed as parameter.
@@ -232,7 +228,7 @@ public class Project {
    * @param indicatorID - indicator identifier
    * @return If the indicator is found, the method returns it. Otherwise, return null
    */
-  public IPIndicator getIndicatorByParentAndYear(int parentIndicatorID, int year) {
+  public IPIndicator getIndicatorsByParentAndYear(int parentIndicatorID, int year) {
     IPIndicator emptyIndicator = new IPIndicator(-1);
 
     if (indicators != null) {
@@ -248,6 +244,21 @@ public class Project {
   }
 
   public List<IPIndicator> getIndicators() {
+    return indicators;
+  }
+
+  public List<IPIndicator> getIndicatorsByParent(int parentIndicatorID) {
+    List<IPIndicator> indicators = new ArrayList<>();
+    if (indicators != null) {
+      getIndicatorsByParentAndYear(parentIndicatorID, 2019);
+      for (IPIndicator indicator : this.indicators) {
+        if (indicator.getParent() != null) {
+          if (indicator.getParent().getId() == parentIndicatorID) {
+            indicators.add(indicator);
+          }
+        }
+      }
+    }
     return indicators;
   }
 

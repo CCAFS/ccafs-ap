@@ -17,7 +17,7 @@ import org.cgiar.ccafs.ap.data.manager.impl.ProjectOutcomeManagerImpl;
 import org.cgiar.ccafs.ap.data.model.BudgetType;
 import org.cgiar.ccafs.ap.data.model.ProjectOutcome;
 
-import java.util.List;
+import java.util.Map;
 
 import com.google.inject.ImplementedBy;
 
@@ -62,7 +62,7 @@ public interface ProjectOutcomeManager {
    * @param type is the type of budget see ({@link BudgetType}
    * @return a list of Budget objects.
    */
-  public List<ProjectOutcome> getProjectOutcomesByProject(int projectID);
+  public Map<String, ProjectOutcome> getProjectOutcomesByProject(int projectID);
 
   /**
    * This method saves the information of the given budget that belong to a specific project into the database.

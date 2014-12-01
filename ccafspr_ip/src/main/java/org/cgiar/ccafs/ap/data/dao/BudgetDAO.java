@@ -17,6 +17,7 @@ package org.cgiar.ccafs.ap.data.dao;
 /**
  * @author Javier Andrés Gallego
  * @author Héctor Fabio Tobón R.
+ * @author Hernán David Carvajal.
  */
 import org.cgiar.ccafs.ap.data.dao.mysql.MySQLBudgetDAO;
 
@@ -28,6 +29,37 @@ import com.google.inject.ImplementedBy;
 @ImplementedBy(MySQLBudgetDAO.class)
 public interface BudgetDAO {
 
+  /**
+   * This method return the total budget amount the type received as parameter for
+   * the activity identified by the value received as paarmeter.
+   * 
+   * @param activityID - Activity identifier
+   * @param budgetTypeID - Budget type identifier
+   * @return budget amount
+   */
+  public double calculateActivityBudgetByType(int activityID, int budgetTypeID);
+
+  /**
+   * This method return the budget amount of the activity of the type received as
+   * parameter and for the year received as parameter.
+   * 
+   * @param activityID - Activity identifier
+   * @param budgetTypeID - Budget type identifier
+   * @param year
+   * @return budget amount
+   */
+  public double calculateActivityBudgetByTypeAndYear(int activityID, int budgetTypeID, int year);
+
+  /**
+   * This method return the budget amount of the project of the type received as
+   * parameter and for the year received as parameter.
+   * 
+   * @param projectID - Project identifier
+   * @param budgetTypeID - Budget type identifier
+   * @param year
+   * @return budget amount
+   */
+  public double calculateProjectBudgetByTypeAndYear(int projectID, int budgetTypeID, int year);
 
   /**
    * This method returns the total leveraged Budget for the given year

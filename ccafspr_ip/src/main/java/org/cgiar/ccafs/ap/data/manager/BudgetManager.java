@@ -30,6 +30,37 @@ import com.google.inject.ImplementedBy;
 @ImplementedBy(BudgetManagerImpl.class)
 public interface BudgetManager {
 
+  /**
+   * This method return the total budget amount of type received for the activity
+   * identified with the value received as parameter.
+   * 
+   * @param activityID - Activity identifier
+   * @param budgetTypeID - Budget type identifier
+   * @return budget amount
+   */
+  public double calculateActivityBudgetByType(int activityID, int budgetTypeID);
+
+  /**
+   * This method return the budget amount of the activity of the type received as
+   * parameter and for the year received as parameter.
+   * 
+   * @param activityID - Activity identifier
+   * @param budgetTypeID - Budget type identifier
+   * @param year
+   * @return budget amount
+   */
+  public double calculateActivityBudgetByTypeAndYear(int activityID, int budgetTypeID, int year);
+
+  /**
+   * This method return the budget amount of the project of the type received as
+   * parameter and for the year received as parameter.
+   * 
+   * @param projectID - Project identifier
+   * @param budgetTypeID - Budget type identifier
+   * @param year
+   * @return budget amount
+   */
+  public double calculateProjectBudgetByTypeAndYear(int projectID, int budgetTypeID, int year);
 
   /**
    * This method returns the total leveraged Budget for the given year

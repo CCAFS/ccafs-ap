@@ -40,6 +40,14 @@ public class ActivityPartner {
     return false;
   }
 
+  public String getComposedName() {
+    String composedName = contactName;
+    if (contactEmail != null && !contactEmail.isEmpty()) {
+      composedName += " <" + contactEmail + "> ";
+    }
+    return composedName;
+  }
+
   public String getContactEmail() {
     return contactEmail;
   }
