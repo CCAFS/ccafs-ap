@@ -17,7 +17,7 @@ import org.apache.commons.lang3.builder.ToStringBuilder;
 
 /**
  * This class represents a Partner that belongs to a project with contact information.
- *
+ * 
  * @author Héctor Fabio Tobón R.
  */
 public class ProjectPartner {
@@ -42,6 +42,14 @@ public class ProjectPartner {
     return false;
   }
 
+  public String getComposedName() {
+    String composedName = contactName;
+    if (!contactEmail.isEmpty()) {
+      composedName += " <" + contactEmail + "> ";
+    }
+    return composedName;
+  }
+
   public String getContactEmail() {
     return contactEmail;
   }
@@ -49,7 +57,6 @@ public class ProjectPartner {
   public String getContactName() {
     return contactName;
   }
-
 
   public int getId() {
     return id;

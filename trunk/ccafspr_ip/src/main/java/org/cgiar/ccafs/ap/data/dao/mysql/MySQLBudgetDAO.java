@@ -47,6 +47,88 @@ public class MySQLBudgetDAO implements BudgetDAO {
   }
 
   @Override
+  public double calculateActivityBudgetByType(int activityID, int budgetTypeID) {
+    Double total = 0.0;
+    StringBuilder query = new StringBuilder();
+    query.append("SELECT SUM(b.amount) as total ");
+    query.append("FROM budgets b ");
+    query.append("INNER JOIN activity_budgets ab ON b.id = ab.budget_id ");
+    query.append("WHERE ab.activity_id = " + activityID);
+    query.append(" AND  b.budget_type = " + budgetTypeID);
+
+    try (Connection con = databaseManager.getConnection()) {
+      ResultSet rs = databaseManager.makeQuery(query.toString(), con);
+      if (rs.next()) {
+        if (rs.getString("total") != null) {
+          total = Double.parseDouble(rs.getString("total"));
+        }
+      }
+      con.close();
+    } catch (SQLException e) {
+      LOG.error("Exception arised getting activity budget amount for activity {} in the year {}.", activityID,
+        budgetTypeID);
+      total = -1.0;
+    }
+    return total;
+  }
+
+  @Override
+  public double calculateActivityBudgetByTypeAndYear(int activityID, int budgetTypeID, int year) {
+    Double total = 0.0;
+    StringBuilder query = new StringBuilder();
+    query.append("SELECT SUM(b.amount) as total ");
+    query.append("FROM budgets b ");
+    query.append("INNER JOIN activity_budgets ab ON b.id = ab.budget_id ");
+    query.append("WHERE ab.activity_id = " + activityID);
+    query.append(" AND  b.budget_type = " + budgetTypeID);
+    query.append(" AND  b.year = " + year);
+
+
+    try (Connection con = databaseManager.getConnection()) {
+      ResultSet rs = databaseManager.makeQuery(query.toString(), con);
+      if (rs.next()) {
+        if (rs.getString("total") != null) {
+          total = Double.parseDouble(rs.getString("total"));
+        }
+      }
+      con.close();
+    } catch (SQLException e) {
+      LOG.error("Exception arised getting activity budget amount for activity {} in the year {}.", activityID,
+        budgetTypeID);
+      total = -1.0;
+    }
+    return total;
+  }
+
+  @Override
+  public double calculateProjectBudgetByTypeAndYear(int projectID, int budgetTypeID, int year) {
+    Double total = 0.0;
+    StringBuilder query = new StringBuilder();
+    query.append("SELECT SUM(b.amount) as total ");
+    query.append("FROM budgets b ");
+    query.append("INNER JOIN project_budgets pb ON b.id = pb.budget_id ");
+    query.append("WHERE pb.project_id = " + projectID);
+    query.append(" AND  b.budget_type = " + budgetTypeID);
+    query.append(" AND  b.year = " + year);
+
+
+    try (Connection con = databaseManager.getConnection()) {
+      ResultSet rs = databaseManager.makeQuery(query.toString(), con);
+      if (rs.next()) {
+        if (rs.getString("total") != null) {
+          total = Double.parseDouble(rs.getString("total"));
+        }
+      }
+      con.close();
+    } catch (SQLException e) {
+      LOG.error("Exception arised getting the institutions for the user {}.", projectID, e);
+      total = -1.0;
+    }
+    return total;
+  }
+
+
+  @Override
   public double calculateProjectLeveragedBudgetByYear(int projectID, int year) {
     Double total = 0.0;
     StringBuilder query = new StringBuilder();
@@ -74,7 +156,6 @@ public class MySQLBudgetDAO implements BudgetDAO {
     }
     return total;
   }
-
 
   @Override
   public double calculateProjectTotalLeveragedBudget(int projectID) {
@@ -242,6 +323,7 @@ public class MySQLBudgetDAO implements BudgetDAO {
     }
     return total;
   }
+
 
   @Override
   public double calculateTotalCCAFSBudgetByYear(int projectID, int year) {
@@ -580,7 +662,6 @@ public class MySQLBudgetDAO implements BudgetDAO {
     return institutionDataList;
   }
 
-
   @Override
   public List<Map<String, String>> getBudgetsByProject(int projectID) {
     LOG.debug(">> getBudgetsByProject projectID = {} )", projectID);
@@ -598,6 +679,7 @@ public class MySQLBudgetDAO implements BudgetDAO {
     LOG.debug("-- getBudgetsByProject() > Calling method executeQuery to get the results");
     return getData(query.toString());
   }
+
 
   @Override
   public List<Map<String, String>> getBudgetsByType(int projectID, int BudgetTypeNew) {
@@ -639,7 +721,6 @@ public class MySQLBudgetDAO implements BudgetDAO {
     LOG.debug("-- getBudgetsByYear() > Calling method executeQuery to get the results");
     return getData(query.toString());
   }
-
 
   @Override
   public List<Map<String, String>> getCCAFSBudgets(int projectID) {

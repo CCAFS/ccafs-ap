@@ -10,6 +10,7 @@
         <th id="projectRegions">[@s.text name="preplanning.projects.projectRegions" /]</th>
 	      <th id="projectFlagships">[@s.text name="preplanning.projects.projectFlagships" /]</th>
 	      <th id="projectBudget">[@s.text name="preplanning.projects.projectBudget" /]</th>
+	      <th id="projectDownload"></th>
 	      [#if isPlanning]
 	      <th id="projectBudget">[@s.text name="planning.projects.completion" /]</th>
 	      [/#if]
@@ -75,6 +76,13 @@
               </a>
           </td>
           [/#if]
+          [#-- Summary download --]
+          <td> 
+              <a href="[@s.url namespace="/summaries" action='project' includeParams='get'][@s.param name='projectID']${project.id?c}[/@s.param][/@s.url]" target="__BLANK">
+                <img src="${baseUrl}/images/global/download-summary.png" height="25" alt="[@s.text name="summaries.project.download" /]" title="[@s.text name="summaries.project.download" /]" />
+              </a>
+          </td>
+          
         </tr>  
       [/#list]
 	  </tbody>

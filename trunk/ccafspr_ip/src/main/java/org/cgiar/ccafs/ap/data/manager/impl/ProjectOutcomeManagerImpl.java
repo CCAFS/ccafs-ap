@@ -17,7 +17,6 @@ import org.cgiar.ccafs.ap.data.dao.ProjectOutcomeDAO;
 import org.cgiar.ccafs.ap.data.manager.ProjectOutcomeManager;
 import org.cgiar.ccafs.ap.data.model.ProjectOutcome;
 
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -72,8 +71,8 @@ public class ProjectOutcomeManagerImpl implements ProjectOutcomeManager {
 
 
   @Override
-  public List<ProjectOutcome> getProjectOutcomesByProject(int projectID) {
-    List<ProjectOutcome> projectOutcomes = new ArrayList<>();
+  public Map<String, ProjectOutcome> getProjectOutcomesByProject(int projectID) {
+    Map<String, ProjectOutcome> projectOutcomes = new HashMap();
     List<Map<String, String>> projectOutcomeDataList = projectOutcomeDAO.getProjectOutcomesByProject(projectID);
     for (Map<String, String> projectOutcomeData : projectOutcomeDataList) {
       ProjectOutcome projectOutcome = new ProjectOutcome();
@@ -84,7 +83,7 @@ public class ProjectOutcomeManagerImpl implements ProjectOutcomeManager {
 
 
       // adding information of the object to the array
-      projectOutcomes.add(projectOutcome);
+      projectOutcomes.put(String.valueOf(projectOutcome.getYear()), projectOutcome);
     }
     return projectOutcomes;
   }
