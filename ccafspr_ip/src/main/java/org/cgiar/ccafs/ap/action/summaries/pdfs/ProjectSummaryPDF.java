@@ -122,7 +122,8 @@ public class ProjectSummaryPDF extends BasePDF {
       document.add(paragraph);
       document.add(new Chunk().NEWLINE);
     } catch (DocumentException e) {
-      LOG.error("There was an error trying to add the project summary to the project summary pdf", e);
+      LOG.error("There was an error trying to add the project activities to the project summary pdf of project {} ", e,
+        project.getId());
     }
 
     for (Activity activity : project.getActivities()) {
@@ -174,7 +175,8 @@ public class ProjectSummaryPDF extends BasePDF {
       document.add(crossCutting);
       document.add(new Chunk().NEWLINE);
     } catch (DocumentException e) {
-      LOG.error("There was an error trying to add the activity outcome to the project summary pdf", e);
+      LOG.error("There was an error trying to add the activity cross cutting themes to the summary pdf of project {}",
+        e, project.getId());
     }
 
   }
@@ -290,7 +292,8 @@ public class ProjectSummaryPDF extends BasePDF {
         i++;
       }
     } catch (DocumentException e) {
-      LOG.error("There was an error trying to add the project title to the project summary pdf", e);
+      LOG.error("There was an error trying to add the activity deliverables summary pdf of project {}", e,
+        project.getId());
     }
   }
 
@@ -329,7 +332,8 @@ public class ProjectSummaryPDF extends BasePDF {
       document.add(genderOutcomes);
       document.add(new Chunk().NEWLINE);
     } catch (DocumentException e) {
-      LOG.error("There was an error trying to add the activity outcome to the project summary pdf", e);
+      LOG.error("There was an error trying to add the activity gender to the summary pdf of project {}", e,
+        project.getId());
     }
   }
 
@@ -357,7 +361,8 @@ public class ProjectSummaryPDF extends BasePDF {
         document.add(activityLocation);
         document.add(new Chunk().NEWLINE);
       } catch (DocumentException e) {
-        LOG.error("There was an error trying to add the project title to the project summary pdf", e);
+        LOG.error("There was an error trying to add the activity locations to the summary pdf of project {}", e,
+          project.getId());
       }
       return;
     }
@@ -436,7 +441,8 @@ public class ProjectSummaryPDF extends BasePDF {
       document.add(table);
       document.add(new Chunk().NEWLINE);
     } catch (DocumentException e) {
-      LOG.error("There was an error trying to add the project title to the project summary pdf", e);
+      LOG.error("There was an error trying to add the activity locations to the summary pdf of project {}", e,
+        project.getId());
     }
   }
 
@@ -473,7 +479,7 @@ public class ProjectSummaryPDF extends BasePDF {
       document.add(activityDescription);
       document.add(new Chunk().NEWLINE);
     } catch (DocumentException e) {
-      LOG.error("There was an error trying to add the project title to the project summary pdf", e);
+      LOG.error("There was an error trying to add the activity main information to the project summary pdf", e);
     }
   }
 
@@ -1020,7 +1026,7 @@ public class ProjectSummaryPDF extends BasePDF {
     body.add(new Chunk().NEWLINE);
 
     body.setFont(BODY_TEXT_FONT);
-    if (project.getOutcomes() != null) {
+    if (project.getOutcomes() != null && project.getOutcomes().get(String.valueOf(midOutcomeYear)) != null) {
       body.add(project.getOutcomes().get(String.valueOf(midOutcomeYear)).getStatement());
     } else {
       body.add(getText("summaries.project.empty"));
