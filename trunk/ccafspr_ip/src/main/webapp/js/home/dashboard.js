@@ -38,9 +38,11 @@ function initTabs(){
 
 function initDatatable(){
   $('#projects-table').dataTable({
+    "aLengthMenu": [[5, 10], [5, 10]],
     "iDisplayLength" : 5
   });
   $("#activities-table").dataTable({
+    "aLengthMenu": [[5, 10], [5, 10]],
     "iDisplayLength" : 5
   });
   
