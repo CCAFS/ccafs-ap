@@ -301,9 +301,13 @@ public class ProjectSummaryPDF extends BasePDF {
     researchOutputs.setFont(HEADING4_FONT);
     researchOutputs.add(getText("summaries.project.activities.genderNarrative"));
 
-    String text =
-      (activity.getExpectedResearchOutputs().isEmpty()) ? getText("summaries.project.empty") : activity
-        .getExpectedResearchOutputs();
+    String text;
+    if (activity.getExpectedResearchOutputs() != null && activity.getExpectedResearchOutputs().isEmpty()) {
+      text = getText("summaries.project.empty");
+    } else {
+      text = activity.getExpectedResearchOutputs();
+    }
+
     researchOutputs.setFont(BODY_TEXT_FONT);
     researchOutputs.add(text);
 
@@ -1014,7 +1018,11 @@ public class ProjectSummaryPDF extends BasePDF {
     body.add(new Chunk().NEWLINE);
 
     body.setFont(BODY_TEXT_FONT);
-    body.add(project.getOutcomes().get(String.valueOf(midOutcomeYear)).getStatement());
+    if (project.getOutcomes() != null) {
+      body.add(project.getOutcomes().get(String.valueOf(midOutcomeYear)).getStatement());
+    } else {
+      body.add(getText("summaries.project.empty"));
+    }
     body.add(new Chunk().NEWLINE);
     outcomesBlock.add(body);
 
