@@ -320,9 +320,11 @@ public class ProjectSummaryPDF extends BasePDF {
     genderOutcomes.setFont(HEADING4_FONT);
     genderOutcomes.add(getText("summaries.project.activities.genderOutcome"));
 
-    text =
-      (activity.getExpectedGenderContribution().isEmpty()) ? getText("summaries.project.empty") : activity
-        .getExpectedGenderContribution();
+    if (activity.getExpectedGenderContribution() != null && activity.getExpectedGenderContribution().isEmpty()) {
+      text = getText("summaries.project.empty");
+    } else {
+      text = activity.getExpectedGenderContribution();
+    }
     genderOutcomes.setFont(BODY_TEXT_FONT);
     genderOutcomes.add(text);
     genderOutcomes.add(new Chunk().NEWLINE);
