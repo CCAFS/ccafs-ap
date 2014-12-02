@@ -44,7 +44,7 @@ public class ProjectPartner {
 
   public String getComposedName() {
     String composedName = contactName;
-    if (!contactEmail.isEmpty()) {
+    if (contactEmail != null && !contactEmail.isEmpty()) {
       composedName += " <" + contactEmail + "> ";
     }
     return composedName;
