@@ -370,6 +370,8 @@ public class ProjectSummaryPDF extends BasePDF {
       table.setLockedWidth(true);
       table.setTotalWidth(480);
       table.setWidths(new int[] {5, 3, 3, 5});
+      table.setKeepTogether(true);
+      table.setHeaderRows(1);
 
       // Table header
       cellContent = new Paragraph(getText("summaries.project.activities.locationType"), TABLE_HEADER_FONT);
@@ -1041,7 +1043,7 @@ public class ProjectSummaryPDF extends BasePDF {
       outcomesBlock.add(getText("summaries.project.outcomeAnnualProgress", new String[] {String.valueOf(year)}));
       outcomesBlock.add(new Chunk().NEWLINE);
 
-      if (project.getOutcomes().get(year) == null) {
+      if (project.getOutcomes().get(String.valueOf(year)) == null) {
         outcomeProgress = getText("summaries.project.empty");
       } else {
         outcomeProgress = project.getOutcomes().get(String.valueOf(midOutcomeYear)).getStatement();
