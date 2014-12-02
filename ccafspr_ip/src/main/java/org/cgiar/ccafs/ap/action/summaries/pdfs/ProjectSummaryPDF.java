@@ -1058,7 +1058,7 @@ public class ProjectSummaryPDF extends BasePDF {
       if (project.getOutcomes().get(String.valueOf(year)) == null) {
         outcomeProgress = getText("summaries.project.empty");
       } else {
-        outcomeProgress = project.getOutcomes().get(String.valueOf(midOutcomeYear)).getStatement();
+        outcomeProgress = project.getOutcomes().get(String.valueOf(year)).getStatement();
       }
 
 
