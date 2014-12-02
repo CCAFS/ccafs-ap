@@ -535,8 +535,10 @@ public class ProjectSummaryPDF extends BasePDF {
 
       if (activity.getLeader() != null) {
         cellContent = new Paragraph(activity.getLeader().getComposedName(), TABLE_BODY_FONT);
-      } else {
+      } else if (activity.getExpectedLeader() != null) {
         cellContent = new Paragraph(activity.getExpectedLeader().getComposedName(), TABLE_BODY_FONT);
+      } else {
+        cellContent = new Paragraph(getText("summaries.project.empty"), TABLE_BODY_FONT);
       }
       addTableBodyCell(table, cellContent, Element.ALIGN_LEFT, 1);
 
@@ -545,8 +547,10 @@ public class ProjectSummaryPDF extends BasePDF {
 
       if (activity.getLeader() != null) {
         cellContent = new Paragraph(activity.getLeader().getCurrentInstitution().getName(), TABLE_BODY_FONT);
-      } else {
+      } else if (activity.getExpectedLeader() != null) {
         cellContent = new Paragraph(activity.getExpectedLeader().getCurrentInstitution().getName(), TABLE_BODY_FONT);
+      } else {
+        cellContent = new Paragraph(getText("summaries.project.empty"), TABLE_BODY_FONT);
       }
 
       addTableBodyCell(table, cellContent, Element.ALIGN_LEFT, 1);
