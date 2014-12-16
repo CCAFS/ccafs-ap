@@ -78,5 +78,56 @@ $(document).ready(function() {
       $(this).remove();
       renameOutcomes();
     });
-  });  
+  });
+  
+  applyWordCounters();
+  
 });
+
+function applyWordCounters(){
+  
+  // Title
+  $("[id$='title']").each(function(index, textArea){
+    applyWordCounter($(textArea), 15);
+  });
+
+  // Outcome statement
+  $("[id$='outcome']").each(function(index, textArea){
+    applyWordCounter($(textArea), 80);
+  });
+
+  // Research outputs
+  $("[id$='outputs']").each(function(index, textArea){
+    applyWordCounter($(textArea), 150);
+  });
+
+  // Research partners
+  $("[id$='partners']").each(function(index, textArea){
+    applyWordCounter($(textArea), 150);
+  });
+
+  // Activities
+  $("[id$='activities']").each(function(index, textArea){
+    applyWordCounter($(textArea), 150);
+  });
+
+  // Non research partners
+  $("[id$='nonResearchPartners']").each(function(index, textArea){
+    applyWordCounter($(textArea), 150);
+  });
+
+  // User of the output
+  $("[id$='outputUser']").each(function(index, textArea){
+    applyWordCounter($(textArea), 50);
+  });
+
+  // How the output was used
+  $("[id$='howUsed']").each(function(index, textArea){
+    applyWordCounter($(textArea), 50);
+  });
+
+  // Evidence of the outcome
+  $("[id$='evidence']").each(function(index, textArea){
+    applyWordCounter($(textArea), 50);
+  });
+}
