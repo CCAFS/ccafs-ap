@@ -7,6 +7,8 @@ public class Outcome {
   private String title;
   private String outcome;
   private String outputs;
+  private String activities;
+  private String nonResearchPartners;
   private String partners;
   private String outputUser;
   private String howUsed;
@@ -15,6 +17,10 @@ public class Outcome {
   private Leader leader;
 
   public Outcome() {
+  }
+
+  public String getActivities() {
+    return activities;
   }
 
   public String getEvidence() {
@@ -37,6 +43,10 @@ public class Outcome {
     return logframe;
   }
 
+  public String getNonResearchPartners() {
+    return nonResearchPartners;
+  }
+
   public String getOutcome() {
     return outcome;
   }
@@ -57,6 +67,10 @@ public class Outcome {
     return title;
   }
 
+  public void setActivities(String activities) {
+    this.activities = activities;
+  }
+
   public void setEvidence(String evidence) {
     this.evidence = evidence;
   }
@@ -75,6 +89,10 @@ public class Outcome {
 
   public void setLogframe(Logframe logframe) {
     this.logframe = logframe;
+  }
+
+  public void setNonResearchPartners(String nonResearchPartners) {
+    this.nonResearchPartners = nonResearchPartners;
   }
 
   public void setOutcome(String outcome) {

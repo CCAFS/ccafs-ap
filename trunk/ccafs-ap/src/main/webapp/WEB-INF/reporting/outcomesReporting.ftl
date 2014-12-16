@@ -31,37 +31,47 @@
       
       [#-- Title --]
       <div class="fullBlock">
-        [@customForm.textArea name="outcomes[${outcome_index}].title" i18nkey="reporting.outcomes.title" /]
+        [@customForm.textArea name="outcomes[${outcome_index}].title" i18nkey="reporting.outcomes.title" help="reporting.outcomes.title.help" /]
       </div>
       
       [#-- Outcome --]
       <div class="fullBlock">
-        [@customForm.textArea name="outcomes[${outcome_index}].outcome" i18nkey="reporting.outcomes.outcome" /]
+        [@customForm.textArea name="outcomes[${outcome_index}].outcome" i18nkey="reporting.outcomes.outcome" help="reporting.outcomes.outcome.help" /]
       </div>
       
       [#-- Output --]
       <div class="fullBlock">
-        [@customForm.textArea name="outcomes[${outcome_index}].outputs" i18nkey="reporting.outcomes.outputs" /]
+        [@customForm.textArea name="outcomes[${outcome_index}].outputs" i18nkey="reporting.outcomes.outputs" help="reporting.outcomes.outputs.help" /]
       </div>
       
       [#-- partners --]
       <div class="fullBlock">
-        [@customForm.textArea name="outcomes[${outcome_index}].partners" i18nkey="reporting.outcomes.partners" /]
+        [@customForm.textArea name="outcomes[${outcome_index}].partners" i18nkey="reporting.outcomes.partners" help="reporting.outcomes.partners.help" /]
+      </div>
+      
+      [#-- Activities --]
+      <div class="fullBlock">
+        [@customForm.textArea name="outcomes[${outcome_index}].activities" i18nkey="reporting.outcomes.activities" help="reporting.outcomes.activities.help" /]
+      </div>
+      
+      [#-- Non research partners --]
+      <div class="fullBlock">
+        [@customForm.textArea name="outcomes[${outcome_index}].nonResearchPartners" i18nkey="reporting.outcomes.nonResearchPartners" help="reporting.outcomes.nonResearchPartners.help" /]
       </div>
       
       [#-- Output User --]
       <div class="fullBlock">
-        [@customForm.textArea name="outcomes[${outcome_index}].outputUser" i18nkey="reporting.outcomes.outputUser" /]
+        [@customForm.textArea name="outcomes[${outcome_index}].outputUser" i18nkey="reporting.outcomes.outputUser" help="reporting.outcomes.outputUser.help" /]
       </div>
       
       [#-- How Used --]
       <div class="fullBlock">
-        [@customForm.textArea name="outcomes[${outcome_index}].howUsed" i18nkey="reporting.outcomes.howUsed" /]
+        [@customForm.textArea name="outcomes[${outcome_index}].howUsed" i18nkey="reporting.outcomes.howUsed" help="reporting.outcomes.howUsed.help" /]
       </div>
       
       [#-- Evidence --]
       <div class="fullBlock">
-        [@customForm.textArea name="outcomes[${outcome_index}].evidence" i18nkey="reporting.outcomes.evidence" /]
+        [@customForm.textArea name="outcomes[${outcome_index}].evidence" i18nkey="reporting.outcomes.evidence" help="reporting.outcomes.evidence.help" /]
       </div>
       
     </div> <!-- End outcomes-${outcome_index} -->
@@ -111,37 +121,47 @@
           
           [#-- Title --]
           <div class="fullBlock">
-            [@customForm.textArea name="title" i18nkey="reporting.outcomes.title" /]
+            [@customForm.textArea name="title" i18nkey="reporting.outcomes.title" help="reporting.outcomes.title.help" /]
           </div>
           
           [#-- Outcome --]
           <div class="fullBlock">
-            [@customForm.textArea name="outcome" i18nkey="reporting.outcomes.outcome" /]
+            [@customForm.textArea name="outcome" i18nkey="reporting.outcomes.outcome" help="reporting.outcomes.outcomes.help" /]
           </div>
           
           [#-- Output --]
           <div class="fullBlock">
-            [@customForm.textArea name="outputs" i18nkey="reporting.outcomes.outputs" /]
+            [@customForm.textArea name="outputs" i18nkey="reporting.outcomes.outputs" help="reporting.outcomes.outputs.help" /]
           </div>
           
           [#-- partners --]
           <div class="fullBlock">
-            [@customForm.textArea name="partners" i18nkey="reporting.outcomes.partners" /]
+            [@customForm.textArea name="partners" i18nkey="reporting.outcomes.partners" help="reporting.outcomes.partners.help" /]
+          </div>
+          
+          [#-- Activities --]
+          <div class="fullBlock">
+            [@customForm.textArea name="activities" i18nkey="reporting.outcomes.activities" help="reporting.outcomes.activities.help" /]
+          </div>
+          
+          [#-- Non research partners --]
+          <div class="fullBlock">
+            [@customForm.textArea name="nonResearchPartners" i18nkey="reporting.outcomes.nonResearchPartners" help="reporting.outcomes.nonResearchPartners.help" /]
           </div>
           
           [#-- Output User --]
           <div class="fullBlock">
-            [@customForm.textArea name="outputUser" i18nkey="reporting.outcomes.outputUser" /]
+            [@customForm.textArea name="outputUser" i18nkey="reporting.outcomes.outputUser" help="reporting.outcomes.outputUser.help" /]
           </div>
           
           [#-- How Used --]
           <div class="fullBlock">
-            [@customForm.textArea name="howUsed" i18nkey="reporting.outcomes.howUsed" /]
+            [@customForm.textArea name="howUsed" i18nkey="reporting.outcomes.howUsed" help="reporting.outcomes.howUsed.help" /]
           </div>
           
           [#-- Evidence --]
           <div class="fullBlock">
-            [@customForm.textArea name="evidence" i18nkey="reporting.outcomes.evidence" /]
+            [@customForm.textArea name="evidence" i18nkey="reporting.outcomes.evidence" help="reporting.outcomes.evidence.help" /]
           </div>
         </div> <!-- End outcome template -->
       </div> <!-- End template -->
