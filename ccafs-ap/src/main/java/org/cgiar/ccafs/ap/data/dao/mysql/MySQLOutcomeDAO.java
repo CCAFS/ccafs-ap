@@ -32,12 +32,15 @@ public class MySQLOutcomeDAO implements OutcomeDAO {
     LOG.debug(">> addOutcomes(newOutcomes={})", newOutcomes);
     boolean problem = false;
     try (Connection connection = dbManager.getConnection()) {
-      String preparedQuery;
+      StringBuilder query;
       Object[] values;
       for (Map<String, String> outcomeData : newOutcomes) {
-        preparedQuery =
-          "INSERT INTO outcomes (id, title, outcome, outputs, partners, output_user, how_used, evidence, logframe_id, activity_leader_id) VALUES (?,?,?,?,?,?,?,?,?,?)";
-        values = new Object[10];
+        query = new StringBuilder();
+        query.append("INSERT INTO outcomes (id, title, outcome, outputs, partners, output_user, ");
+        query.append("how_used, evidence, activities, non_research_partners, logframe_id, activity_leader_id) ");
+        query.append("VALUES (?,?,?,?,?,?,?,?,?,?,?,?) ");
+
+        values = new Object[12];
         values[0] = outcomeData.get("id"); // identifier
         values[1] = outcomeData.get("title"); // title
         values[2] = outcomeData.get("outcome"); // outcome
@@ -46,9 +49,12 @@ public class MySQLOutcomeDAO implements OutcomeDAO {
         values[5] = outcomeData.get("output_user"); // output_user
         values[6] = outcomeData.get("how_used"); // how_used
         values[7] = outcomeData.get("evidence"); // evidence
-        values[8] = outcomeData.get("logframe_id"); // logframe_id
-        values[9] = outcomeData.get("activity_leader_id"); // activity_leader_id
-        int rows = dbManager.makeChangeSecure(connection, preparedQuery, values);
+        values[8] = outcomeData.get("activities"); // Activities
+        values[9] = outcomeData.get("non_research_partners"); // non research partners
+        values[10] = outcomeData.get("logframe_id"); // logframe_id
+        values[11] = outcomeData.get("activity_leader_id"); // activity_leader_id
+
+        int rows = dbManager.makeChangeSecure(connection, query.toString(), values);
         if (rows < 1) {
           LOG.warn("There was an error saving the data into 'outcomes' table");
           problem = true;
@@ -81,6 +87,8 @@ public class MySQLOutcomeDAO implements OutcomeDAO {
         outcomeData.put("output_user", rs.getString("output_user"));
         outcomeData.put("how_used", rs.getString("how_used"));
         outcomeData.put("evidence", rs.getString("evidence"));
+        outcomeData.put("activities", rs.getString("activities"));
+        outcomeData.put("non_research_partners", rs.getString("non_research_partners"));
         outcomes.add(outcomeData);
       }
       rs.close();

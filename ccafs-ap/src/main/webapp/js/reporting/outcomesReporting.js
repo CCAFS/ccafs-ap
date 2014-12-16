@@ -29,6 +29,14 @@ $(document).ready(function() {
           $(this).find("[id$='partners']").attr("id", "outcomes[" + index + "].partners");
           $(this).find("[name$='partners']").attr("name", "outcomes[" + index + "].partners");
           $(this).find("[for$='partners']").attr("for", "outcomes[" + index + "].partners");
+          // Activities.
+          $(this).find("[id$='activities']").attr("id", "outcomes[" + index + "].activities");
+          $(this).find("[name$='activities']").attr("name", "outcomes[" + index + "].activities");
+          $(this).find("[for$='activities']").attr("for", "outcomes[" + index + "].activities");
+          // Non research partners.
+          $(this).find("[id$='nonResearchPartners']").attr("id", "outcomes[" + index + "].nonResearchPartners");
+          $(this).find("[name$='nonResearchPartners']").attr("name", "outcomes[" + index + "].nonResearchPartners");
+          $(this).find("[for$='nonResearchPartners']").attr("for", "outcomes[" + index + "].nonResearchPartners");
           // Output User.
           $(this).find("[id$='outputUser']").attr("id", "outcomes[" + index + "].outputUser");
           $(this).find("[name$='outputUser']").attr("name", "outcomes[" + index + "].outputUser");

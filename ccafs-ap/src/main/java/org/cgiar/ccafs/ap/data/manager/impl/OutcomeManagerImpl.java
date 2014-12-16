@@ -45,6 +45,8 @@ public class OutcomeManagerImpl implements OutcomeManager {
       outcomeData.put("output_user", outcome.getOutputUser());
       outcomeData.put("how_used", outcome.getHowUsed());
       outcomeData.put("evidence", outcome.getEvidence());
+      outcomeData.put("activities", outcome.getActivities());
+      outcomeData.put("non_research_partners", outcome.getNonResearchPartners());
       outcomeData.put("logframe_id", logframe.getId() + "");
       outcomeData.put("activity_leader_id", leader.getId() + "");
       outcomes.add(outcomeData);
@@ -66,6 +68,8 @@ public class OutcomeManagerImpl implements OutcomeManager {
       outcome.setOutputUser(outcomeData.get("output_user"));
       outcome.setHowUsed(outcomeData.get("how_used"));
       outcome.setEvidence(outcomeData.get("evidence"));
+      outcome.setActivities(outcomeData.get("activities"));
+      outcome.setNonResearchPartners(outcomeData.get("non_research_partners"));
       outcome.setLogframe(logframe);
       outcome.setLeader(leader);
       outcomes.add(outcome);
