@@ -74,6 +74,27 @@
           </otherSites>
         </location>
       </locations>
+      <objectives>
+        [#if activity.objectives?has_content]
+          [#list activity.objectives as objective]
+            <objective>
+              ${objective.description}
+            </objective>
+          [/#list]
+        [/#if]
+      </objectives>
+      <deliverables>
+        [#if activity.deliverables?has_content]
+          [#list activity.deliverables as deliverable]
+            <deliverable>
+              <title> ${deliverable.description} </title>
+              <year> ${deliverable.year?c} </year>
+              <status> ${deliverable.status.name} </status>
+              <type> ${deliverable.type.name} </type>
+            </deliverable>
+          [/#list]
+        [/#if]
+      </deliverables>
       <keywords>
         [#if activity.keywords?has_content]
           [#list activity.keywords as keyword]
