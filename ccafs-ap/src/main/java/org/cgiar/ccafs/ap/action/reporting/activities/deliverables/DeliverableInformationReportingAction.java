@@ -19,6 +19,7 @@ import org.cgiar.ccafs.ap.config.APConfig;
 import org.cgiar.ccafs.ap.config.APConstants;
 import org.cgiar.ccafs.ap.data.manager.DeliverableManager;
 import org.cgiar.ccafs.ap.data.manager.DeliverableStatusManager;
+import org.cgiar.ccafs.ap.data.manager.DeliverableTrafficLightManager;
 import org.cgiar.ccafs.ap.data.manager.DeliverableTypeManager;
 import org.cgiar.ccafs.ap.data.manager.LogframeManager;
 import org.cgiar.ccafs.ap.data.model.Deliverable;
@@ -48,6 +49,7 @@ public class DeliverableInformationReportingAction extends BaseAction {
   DeliverableManager deliverableManager;
   DeliverableTypeManager deliverableTypeManager;
   DeliverableStatusManager deliverableStatusManager;
+  DeliverableTrafficLightManager trafficLightManager;
 
   // Model
   private Deliverable deliverable;
@@ -62,11 +64,12 @@ public class DeliverableInformationReportingAction extends BaseAction {
   @Inject
   public DeliverableInformationReportingAction(APConfig config, LogframeManager logframeManager,
     DeliverableManager deliverableManager, DeliverableTypeManager deliverableTypeManager,
-    DeliverableStatusManager deliverableStatusManager) {
+    DeliverableStatusManager deliverableStatusManager, DeliverableTrafficLightManager trafficLightManager) {
     super(config, logframeManager);
     this.deliverableManager = deliverableManager;
     this.deliverableTypeManager = deliverableTypeManager;
     this.deliverableStatusManager = deliverableStatusManager;
+    this.trafficLightManager = trafficLightManager;
   }
 
   public int getActivityID() {
@@ -113,6 +116,7 @@ public class DeliverableInformationReportingAction extends BaseAction {
     deliverableTypes = deliverableTypeManager.getDeliverableTypes();
     deliverableSubTypes = deliverableTypeManager.getDeliverableSubTypes();
     deliverableStatusList = deliverableStatusManager.getDeliverableStatus();
+    deliverable.setTrafficLight(trafficLightManager.getDeliverableTrafficLight(deliverableID));
 
     // Create options for the yes/no radio buttons
     yesNoRadio = new LinkedHashMap<>();
@@ -123,8 +127,8 @@ public class DeliverableInformationReportingAction extends BaseAction {
 
   @Override
   public String save() {
-
     deliverableManager.addDeliverable(deliverable, activityID);
+    trafficLightManager.saveDeliverableTrafficLight(deliverable.getTrafficLight(), deliverable.getId());
     System.out.println("--------- Guardando ----------------");
     return super.save();
   }

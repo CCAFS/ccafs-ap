@@ -18,6 +18,7 @@ import org.cgiar.ccafs.ap.data.manager.DeliverableTrafficLightDAO;
 import org.cgiar.ccafs.ap.data.manager.DeliverableTrafficLightManager;
 import org.cgiar.ccafs.ap.data.model.DeliverableTrafficLight;
 
+import java.util.HashMap;
 import java.util.Map;
 
 import com.google.inject.Inject;
@@ -41,17 +42,29 @@ public class DeliverableTrafficLightManagerImpl implements DeliverableTrafficLig
     DeliverableTrafficLight trafficLight = new DeliverableTrafficLight();
     Map<String, String> trafficLightData = trafficLightDAO.getTrafficLightData(deliverableID);
 
-    trafficLight.setHaveCollectionTools(trafficLightData.get("is_metadata_documented").equals("1"));
-    trafficLight.setMetadataDocumented(trafficLightData.get("have_collection_tools").equals("1"));
-    trafficLight.setQualityDocumented(trafficLightData.get("is_quality_documented").equals("1"));
+    if (trafficLightData.get("is_metadata_documented") != null) {
+      trafficLight.setHaveCollectionTools(trafficLightData.get("have_collection_tools").equals("1"));
+    }
+    if (trafficLightData.get("have_collection_tools") != null) {
+      trafficLight.setMetadataDocumented(trafficLightData.get("is_metadata_documented").equals("1"));
+    }
+    if (trafficLightData.get("is_quality_documented") != null) {
+      trafficLight.setQualityDocumented(trafficLightData.get("is_quality_documented").equals("1"));
+    }
 
     return trafficLight;
   }
 
   @Override
   public boolean saveDeliverableTrafficLight(DeliverableTrafficLight trafficLight, int deliverableID) {
-    // TODO Auto-generated method stub
-    return false;
+    Map<String, Object> trafficLightData = new HashMap<>();
+
+    trafficLightData.put("is_metadata_documented", trafficLight.isMetadataDocumented());
+    trafficLightData.put("have_collection_tools", trafficLight.isHaveCollectionTools());
+    trafficLightData.put("is_quality_documented", trafficLight.isQualityDocumented());
+    trafficLightData.put("deliverable_id", deliverableID);
+
+    return trafficLightDAO.saveDeliverableTrafficLight(trafficLightData);
   }
 
 }
