@@ -28,7 +28,7 @@
         </tr>
       </thead>
       <tbody>
-        [#list activity.products as product]
+        [#list activity.deliverables as product]
           <tr>
             <td class="left">
               <a href="
@@ -37,7 +37,7 @@
                 [@s.param name='${deliverableRequestParameter}']${activity.id?c}[/@s.param]
               [/@s.url]
               " title="${product.description}">
-                [#if activity.title?length < 50] ${product.description}</a> [#else] [@utilities.wordCutter string=activity.title maxPos=50 /]...</a> [/#if]
+                [#if activity.title?length < 50] ${product.description}</a> [#else] [@utilities.wordCutter string=product.description maxPos=50 /]...</a> [/#if]
             </td>
             <td> ${product.type.name}</td>
             <td> ${product.year} </td>
