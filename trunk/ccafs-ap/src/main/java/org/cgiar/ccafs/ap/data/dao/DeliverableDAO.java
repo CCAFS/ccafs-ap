@@ -19,13 +19,31 @@ public interface DeliverableDAO {
   public int addDeliverable(Map<String, Object> deliverableData);
 
   /**
+   * This method returns the information of the deliverable identified
+   * by the value received as parameter.
+   * 
+   * @param deliverableID - deliverable identifier
+   * @return a map with the information of the deliverable.
+   */
+  public Map<String, String> getDeliverable(int deliverableID);
+
+  /**
+   * This method gets all the metadata related to the deliverable
+   * identified by the value received as parameter.
+   * 
+   * @param deliverableID - Product identifier
+   * @return a list of maps with the information
+   */
+  public List<Map<String, String>> getDeliverableMetadata(int deliverableID);
+
+  /**
    * Get a list of deliverables that belongs to the activity
    * identified whit activityID
    * 
    * @param activity identifier
    * @return a list whit Map of deliverables.
    */
-  public List<Map<String, String>> getDeliverables(int activityID);
+  public List<Map<String, String>> getDeliverablesByActivityID(int activityID);
 
   /**
    * Get the number of deliverables that has a specific activity.

@@ -64,7 +64,73 @@ public class MySQLDeliverableDAO implements DeliverableDAO {
   }
 
   @Override
-  public List<Map<String, String>> getDeliverables(int activityID) {
+  public Map<String, String> getDeliverable(int deliverableID) {
+    LOG.debug(">> getDeliverable(deliverableID={})", deliverableID);
+    Map<String, String> deliverable = new HashMap<>();
+
+    StringBuilder query = new StringBuilder();
+    query.append("SELECT d.*, ds.name as 'deliverable_status_name' FROM deliverables d ");
+    query.append("INNER JOIN deliverable_status ds ON d.deliverable_status_id = ds.id ");
+    query.append("WHERE d.id =" + deliverableID);
+
+    try (Connection con = databaseManager.getConnection()) {
+      ResultSet rs = databaseManager.makeQuery(query.toString(), con);
+      while (rs.next()) {
+        deliverable.put("id", rs.getString("id"));
+        deliverable.put("description", rs.getString("description"));
+        deliverable.put("year", rs.getString("year"));
+        deliverable.put("is_expected", rs.getString("is_expected"));
+        deliverable.put("description_update", rs.getString("description_update"));
+        deliverable.put("deliverable_status_id", rs.getString("deliverable_status_id"));
+        deliverable.put("deliverable_status_name", rs.getString("deliverable_status_name"));
+        deliverable.put("deliverable_type_id", rs.getString("deliverable_type_id"));
+      }
+      rs.close();
+    } catch (SQLException e) {
+      LOG.error("There was a problem getting deliverables for activity {}.", deliverableID, e);
+      LOG.debug("<< getDeliverables():null");
+      return null;
+    }
+
+    LOG.debug("<< getDeliverable():{}", deliverable);
+    return deliverable;
+  }
+
+  @Override
+  public List<Map<String, String>> getDeliverableMetadata(int deliverableID) {
+    LOG.debug(">> getDeliverableMetadata(deliverableID={})", deliverableID);
+    List<Map<String, String>> deliverableMetadata = new ArrayList<>();
+
+    StringBuilder query = new StringBuilder();
+    query.append("SELECT m.id, m.description, m.name, dm.value ");
+    query.append("FROM deliverable_metadata dm ");
+    query.append("INNER JOIN metadata_questions m ON dm.metadata_id = m.id ");
+    query.append("WHERE dm.deliverable_id = ");
+    query.append(deliverableID);
+
+    try (Connection connection = databaseManager.getConnection()) {
+      ResultSet rs = databaseManager.makeQuery(query.toString(), connection);
+      if (rs.next()) {
+        Map<String, String> metadata = new HashMap<>();
+        metadata.put("id", rs.getString("id"));
+        metadata.put("description", rs.getString("description"));
+        metadata.put("name", rs.getString("name"));
+        metadata.put("value", rs.getString("value"));
+
+        deliverableMetadata.add(metadata);
+      }
+      rs.close();
+    } catch (SQLException e) {
+      LOG.error("-- getDeliverableMetadata() > There was a problem getting the metadata for deliverable {}.",
+        deliverableID, e);
+    }
+
+    LOG.debug("<< getDeliverableMetadata():deliverableMetadata.size={}", deliverableMetadata.size());
+    return deliverableMetadata;
+  }
+
+  @Override
+  public List<Map<String, String>> getDeliverablesByActivityID(int activityID) {
     LOG.debug(">> getDeliverables(activityID={})", activityID);
     List<Map<String, String>> deliverables = new ArrayList<>();
     String query =

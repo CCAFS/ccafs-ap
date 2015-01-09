@@ -139,7 +139,7 @@ public class ActivitiesXMLAction extends BaseAction {
         // Objectives
         activity.setObjectives(activityObjectiveManager.getActivityObjectives(activityID));
         // Deliverables
-        activity.setDeliverables(deliverableManager.getDeliverables(activityID));
+        activity.setDeliverables(deliverableManager.getDeliverableByActivityID(activityID));
       }
     }
   }

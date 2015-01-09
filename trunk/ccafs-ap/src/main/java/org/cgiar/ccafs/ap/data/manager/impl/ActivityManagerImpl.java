@@ -147,7 +147,7 @@ public class ActivityManagerImpl implements ActivityManager {
       activity.setGenderIntegrationsDescription(statusInfo.get("gender_description"));
 
       /* --- DELIVERABLES --- */
-      activity.setDeliverables(deliverableManager.getDeliverables(activity.getId()));
+      activity.setDeliverables(deliverableManager.getDeliverableByActivityID(activity.getId()));
 
       /* --- PARTNERS --- */
       activity.setActivityPartners(activityPartnerManager.getActivityPartners(activity.getId()));
@@ -260,7 +260,7 @@ public class ActivityManagerImpl implements ActivityManager {
       activity.setActivityPartners(activityPartnerManager.getActivityPartners(activity.getId()));
 
       // Deliverables
-      activity.setDeliverables(deliverableManager.getDeliverables(activity.getId()));
+      activity.setDeliverables(deliverableManager.getDeliverableByActivityID(activity.getId()));
     }
 
     return activities;
@@ -461,7 +461,7 @@ public class ActivityManagerImpl implements ActivityManager {
       activity.setMilestone(null);
     }
     // Deliverables
-    activity.setDeliverables(deliverableManager.getDeliverables(activity.getId()));
+    activity.setDeliverables(deliverableManager.getDeliverableByActivityID(activity.getId()));
     // Partners
     activity.setActivityPartners(activityPartnerManager.getActivityPartners(activity.getId()));
     // Gender Integrations
@@ -771,7 +771,7 @@ public class ActivityManagerImpl implements ActivityManager {
 
       // Deliverables
       if (activity.getDeliverables() != null && activity.getDeliverables().size() > 0) {
-        deliverableManager.saveDeliverables(activity.getDeliverables(), activityID);
+        deliverableManager.saveDeliverable(activity.getDeliverables(), activityID);
       }
 
       return true;

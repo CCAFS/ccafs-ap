@@ -39,7 +39,7 @@ public class DeliverableStatusManagerImpl implements DeliverableStatusManager {
       return deliverableStatus;
     }
 
-    LOG.warn("Deliverable status list loaded is empty.");
+    LOG.warn("Product status list loaded is empty.");
     return null;
   }
 

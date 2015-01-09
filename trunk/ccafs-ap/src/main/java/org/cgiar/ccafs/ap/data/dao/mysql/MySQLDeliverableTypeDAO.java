@@ -27,10 +27,34 @@ public class MySQLDeliverableTypeDAO implements DeliverableTypeDAO {
   }
 
   @Override
+  public List<Map<String, String>> getDeliverableSubTypes() {
+    LOG.debug(">> getDeliverableSubTypes()");
+    List<Map<String, String>> deliverableTypesList = new ArrayList<>();
+    String query = "SELECT * from deliverable_types WHERE parent_id IS NOT NULL";
+
+    try (Connection con = databaseManager.getConnection()) {
+      ResultSet rs = databaseManager.makeQuery(query, con);
+      while (rs.next()) {
+        Map<String, String> typesData = new HashMap<>();
+        typesData.put("id", rs.getString("id"));
+        typesData.put("name", rs.getString("name"));
+        typesData.put("parent_id", rs.getString("parent_id"));
+        deliverableTypesList.add(typesData);
+      }
+      rs.close();
+    } catch (SQLException e) {
+      LOG.error("-- getDeliverableSubTypes() > There was an error getting the deliverable types list. \n{}", query, e);
+    }
+
+    LOG.debug("<< getDeliverableSubTypes():deliverableTypesList.size={}", deliverableTypesList.size());
+    return deliverableTypesList;
+  }
+
+  @Override
   public List<Map<String, String>> getDeliverableTypes() {
     LOG.debug(">> getDeliverableTypes()");
     List<Map<String, String>> deliverableTypesList = new ArrayList<>();
-    String query = "SELECT * from deliverable_types";
+    String query = "SELECT * from deliverable_types WHERE parent_id IS NULL";
     try (Connection con = databaseManager.getConnection()) {
       ResultSet rs = databaseManager.makeQuery(query, con);
       while (rs.next()) {
@@ -45,6 +69,36 @@ public class MySQLDeliverableTypeDAO implements DeliverableTypeDAO {
     }
 
     LOG.debug("<< getDeliverableTypes():deliverableTypesList.size={}", deliverableTypesList.size());
+    return deliverableTypesList;
+  }
+
+  @Override
+  public List<Map<String, String>> getDeliverableTypesAndSubTypes() {
+    LOG.debug(">> getDeliverableAndSubTypes()");
+    List<Map<String, String>> deliverableTypesList = new ArrayList<>();
+    StringBuilder query = new StringBuilder();
+    query.append("SELECT dt.id, dt.name, dtp.id as 'parent_id', dtp.name as 'parent_name' ");
+    query.append("FROM deliverable_types dt ");
+    query.append("INNER JOIN deliverable_types dtp ON dt.parent_id = dtp.id ");
+
+
+    try (Connection con = databaseManager.getConnection()) {
+      ResultSet rs = databaseManager.makeQuery(query.toString(), con);
+      while (rs.next()) {
+        Map<String, String> typesData = new HashMap<>();
+        typesData.put("id", rs.getString("id"));
+        typesData.put("name", rs.getString("name"));
+        typesData.put("parent_id", rs.getString("parent_id"));
+        typesData.put("parent_name", rs.getString("parent_name"));
+        deliverableTypesList.add(typesData);
+      }
+      rs.close();
+    } catch (SQLException e) {
+      LOG.error("-- getDeliverableAndSubTypes() > There was an error getting the deliverable types list. \n{}", query,
+        e);
+    }
+
+    LOG.debug("<< getDeliverableAndSubTypes():deliverableTypesList.size={}", deliverableTypesList.size());
     return deliverableTypesList;
   }
 }

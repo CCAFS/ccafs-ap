@@ -290,7 +290,7 @@ public class DeliverablesReportingAction extends BaseAction {
     activity = activityManager.getSimpleActivity(activityID);
 
     // get information of deliverables that belong to the activity whit activityID
-    activity.setDeliverables(deliverableManager.getDeliverables(activityID));
+    activity.setDeliverables(deliverableManager.getDeliverableByActivityID(activityID));
 
     // Deliverables types that need a file format specification:
     // ID = 1 - Data

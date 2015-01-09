@@ -8,7 +8,7 @@ import java.util.List;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 
 
-public class CaseStudy {
+public class CaseStudy extends Deliverable {
 
   private int id;
   private String title;
@@ -29,7 +29,6 @@ public class CaseStudy {
   private Leader leader;
   private boolean isGlobal;
   private List<CaseStudyType> types;
-
 
   public CaseStudy() {
   }

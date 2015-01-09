@@ -69,7 +69,7 @@ public class ActivityAction extends BaseAction {
     // Get the basic information about the activity
     activity = activityManager.getActivityStatusInfo(activityID);
     // Set activity deliverables
-    activity.setDeliverables(deliverableManager.getDeliverables(activityID));
+    activity.setDeliverables(deliverableManager.getDeliverableByActivityID(activityID));
     // Set activity partners
     activity.setActivityPartners(activityPartnerManager.getActivityPartners(activityID));
     // Set contact persons

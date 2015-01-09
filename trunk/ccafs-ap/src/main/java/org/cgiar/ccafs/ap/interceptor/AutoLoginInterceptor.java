@@ -31,7 +31,7 @@ public class AutoLoginInterceptor extends AbstractInterceptor {
     Map<String, Object> session = invocation.getInvocationContext().getSession();
     User user = (User) session.get(APConstants.SESSION_USER);
     if (user == null) {
-      user = userManager.getUser("h.f.tobon@cgiar.org");
+      user = userManager.getUser("h.d.carvajal@cgiar.org");
       session.put(APConstants.SESSION_USER, user);
       LOG.debug("Auto logged as " + user.getEmail());
     }

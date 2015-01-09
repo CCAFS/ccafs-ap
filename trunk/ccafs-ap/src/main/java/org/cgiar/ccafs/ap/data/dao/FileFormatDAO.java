@@ -14,7 +14,7 @@ public interface FileFormatDAO {
   /**
    * Add a set of file formats related to a given deliverable.
    * 
-   * @param deliverableId - Deliverable identifier to which the set of file formats belongs.
+   * @param deliverableId - Product identifier to which the set of file formats belongs.
    * @param fileFormatsIds
    * @return
    */

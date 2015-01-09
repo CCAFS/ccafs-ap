@@ -1,12 +1,18 @@
 package org.cgiar.ccafs.ap.data.manager.impl;
 
+import org.cgiar.ccafs.ap.config.APConstants;
 import org.cgiar.ccafs.ap.data.dao.DeliverableDAO;
 import org.cgiar.ccafs.ap.data.dao.FileFormatDAO;
 import org.cgiar.ccafs.ap.data.manager.DeliverableManager;
+import org.cgiar.ccafs.ap.data.manager.DeliverableTypeManager;
+import org.cgiar.ccafs.ap.data.model.CaseStudy;
 import org.cgiar.ccafs.ap.data.model.Deliverable;
 import org.cgiar.ccafs.ap.data.model.DeliverableStatus;
 import org.cgiar.ccafs.ap.data.model.DeliverableType;
 import org.cgiar.ccafs.ap.data.model.FileFormat;
+import org.cgiar.ccafs.ap.data.model.Metadata;
+import org.cgiar.ccafs.ap.data.model.Product;
+import org.cgiar.ccafs.ap.data.model.Publication;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -24,11 +30,14 @@ public class DeliverableManagerImpl implements DeliverableManager {
   private static final Logger LOG = LoggerFactory.getLogger(DeliverableManagerImpl.class);
   private DeliverableDAO deliverableDAO;
   private FileFormatDAO fileFormatDAO;
+  private DeliverableTypeManager deliverableTypeManager;
 
   @Inject
-  public DeliverableManagerImpl(DeliverableDAO deliverableDAO, FileFormatDAO fileFormatDAO) {
+  public DeliverableManagerImpl(DeliverableDAO deliverableDAO, FileFormatDAO fileFormatDAO,
+    DeliverableTypeManager deliverableTypeManager) {
     this.deliverableDAO = deliverableDAO;
     this.fileFormatDAO = fileFormatDAO;
+    this.deliverableTypeManager = deliverableTypeManager;
   }
 
   @Override
@@ -45,11 +54,7 @@ public class DeliverableManagerImpl implements DeliverableManager {
     deliverableData.put("deliverable_type_id", deliverable.getType().getId());
     deliverableData.put("is_expected", deliverable.isExpected());
     deliverableData.put("deliverable_status_id", deliverable.getStatus().getId());
-    if (deliverable.getFileName() == null || deliverable.getFileName().isEmpty()) {
-      deliverableData.put("filename", null);
-    } else {
-      deliverableData.put("filename", deliverable.getFileName());
-    }
+
     // When deliverable is new, the attribute descriptionUpdate is null
     if (deliverable.getDescriptionUpdate() == null) {
       deliverableData.put("description_update", null);
@@ -60,7 +65,6 @@ public class DeliverableManagerImpl implements DeliverableManager {
         deliverableData.put("description_update", deliverable.getDescriptionUpdate());
       }
     }
-    deliverableData.put("file_format_ids", deliverable.getFileFormatsIds());
 
     int deliverableId = deliverableDAO.addDeliverable(deliverableData);
     // If deliverable has an id the addDeliverable function return 0 as id,
@@ -68,53 +72,121 @@ public class DeliverableManagerImpl implements DeliverableManager {
     deliverableId = (deliverable.getId() != -1) ? deliverable.getId() : deliverableId;
 
     // If it is a new deliverable insert the file formats
-    if (deliverable.getId() == -1) {
-      // Check if the deliverable has file formats
-      if (!deliverable.getFileFormatsIds().isEmpty()) {
-        // lets add the file format list.
-        boolean fileFormatsAdded = fileFormatDAO.addFileFormats(deliverableId, deliverable.getFileFormatsIds());
-        if (!fileFormatsAdded) {
-          LOG.warn("There was a problem saving the file formats for the deliverable {}.", deliverableId);
-          return false;
-        }
-      }
-    }
-    // LOG.debug("The deliverable {} was successfully saved", deliverableId);
+    /*
+     * deliverableData.put("file_format_ids", deliverable.getFileFormatsIds());
+     * if (deliverable.getId() == -1) {
+     * // Check if the deliverable has file formats
+     * if (!deliverable.getFileFormatsIds().isEmpty()) {
+     * // lets add the file format list.
+     * boolean fileFormatsAdded = fileFormatDAO.addFileFormats(deliverableId, deliverable.getFileFormatsIds());
+     * if (!fileFormatsAdded) {
+     * LOG.warn("There was a problem saving the file formats for the deliverable {}.", deliverableId);
+     * return false;
+     * }
+     * }
+     * }
+     */
+    /***************************************************
+     * TODO
+     * TODO
+     * // If it is a new deliverable insert the file names
+     * if (product.getId() == -1) {
+     * if (product.getFileName() == null || product.getFileName().isEmpty()) {
+     * deliverableData.put("filename", null);
+     * } else {
+     * deliverableData.put("filename", product.getFileName());
+     * }
+     * }
+     */
+
     return true;
   }
 
   @Override
-  public List<Deliverable> getDeliverables(int activityId) {
-    List<Map<String, String>> fileFormatsDB;
-    List<Map<String, String>> deliverablesDB = deliverableDAO.getDeliverables(activityId);
+  public Deliverable getDeliverable(int deliverableID) {
+    Deliverable deliverable;
+    int typeID;
 
-    List<Deliverable> deliverables = new ArrayList<Deliverable>();
+    Map<String, String> deliverableData = deliverableDAO.getDeliverable(deliverableID);
+
+    // Create the deliverable type
+    typeID = Integer.parseInt(deliverableData.get("deliverable_type_id"));
+
+    DeliverableType type = deliverableTypeManager.getDeliverableType(typeID + "");
+    type.setParent(deliverableTypeManager.getDeliverableTypeBySubType(type.getId()));
+
+    switch (type.getParent().getId()) {
+      case APConstants.DELIVERABLE_TYPE_PUBLICATION:
+        deliverable = new Publication();
+        break;
+
+      case APConstants.DELIVERABLE_TYPE_CASE_STUDIES:
+        deliverable = new CaseStudy();
+        break;
+
+      default:
+        deliverable = new Product();
+        break;
+    }
+
+    deliverable.setYear(Integer.parseInt(deliverableData.get("year")));
+    deliverable.setId(Integer.parseInt(deliverableData.get("year")));
+    deliverable.setDescription(deliverableData.get("description"));
+    deliverable.setDescriptionUpdate(deliverableData.get("description_update"));
+    deliverable.setType(type);
+
+    if (deliverableData.get("isExpected") != null) {
+      deliverable.setExpected(deliverableData.get("isExpected").equals("1"));
+    } else {
+      deliverable.setExpected(false);
+    }
+
+    DeliverableStatus status = new DeliverableStatus();
+    status.setId(Integer.parseInt(deliverableData.get("deliverable_status_id")));
+    status.setName(deliverableData.get("deliverable_status_name"));
+    deliverable.setStatus(status);
+
+    return deliverable;
+  }
+
+  @Override
+  public List<Deliverable> getDeliverableByActivityID(int activityId) {
+    List<Map<String, String>> fileFormatsDB;
+    List<Map<String, String>> deliverablesDB = deliverableDAO.getDeliverablesByActivityID(activityId);
+
+    List<Deliverable> products = new ArrayList<Deliverable>();
     if (deliverablesDB != null) {
       for (int c = 0; c < deliverablesDB.size(); c++) {
 
-        Deliverable deliverable = new Deliverable();
-        deliverable.setId(Integer.parseInt(deliverablesDB.get(c).get("id")));
-        deliverable.setDescription(deliverablesDB.get(c).get("description"));
-        deliverable.setYear(Integer.parseInt(deliverablesDB.get(c).get("year")));
-        deliverable.setFileName(deliverablesDB.get(c).get("filename"));
-        deliverable.setDescriptionUpdate(deliverablesDB.get(c).get("description_update"));
-        deliverable.setExpected(Integer.parseInt(deliverablesDB.get(c).get("is_expected")) == 1);
+        Deliverable product = new Product();
+        product.setId(Integer.parseInt(deliverablesDB.get(c).get("id")));
+        product.setDescription(deliverablesDB.get(c).get("description"));
+        product.setYear(Integer.parseInt(deliverablesDB.get(c).get("year")));
+
+
+        /**
+         * TODO - Load the filenames related to this product
+         */
+        // product.setFileName(deliverablesDB.get(c).get("filename"));
+
+        product.setDescriptionUpdate(deliverablesDB.get(c).get("description_update"));
+        product.setExpected(Integer.parseInt(deliverablesDB.get(c).get("is_expected")) == 1);
 
         // DeliverableStatus
         DeliverableStatus status = new DeliverableStatus();
         status.setId(Integer.parseInt(deliverablesDB.get(c).get("deliverable_status_id")));
         status.setName(deliverablesDB.get(c).get("deliverable_status_name"));
-        deliverable.setStatus(status);
+        product.setStatus(status);
 
         // DeliverableType
         DeliverableType type = new DeliverableType();
         type.setId(Integer.parseInt(deliverablesDB.get(c).get("deliverable_type_id")));
         type.setName(deliverablesDB.get(c).get("deliverable_type_name"));
-        deliverable.setType(type);
+        product.setType(type);
 
         // File Format
         // LOG.debug("Getting file formats for deliverable {}.", deliverable.getId());
-        fileFormatsDB = fileFormatDAO.getFileFormats(deliverable.getId());
+        fileFormatsDB = fileFormatDAO.getFileFormats(product.getId());
 
         if (fileFormatsDB != null) {
           List<FileFormat> fileFormats = new ArrayList<>();
@@ -122,15 +194,30 @@ public class DeliverableManagerImpl implements DeliverableManager {
             fileFormats.add(new FileFormat(Integer.parseInt(fileFormatsDB.get(i).get("id")), fileFormatsDB.get(i).get(
               "name")));
           }
-          deliverable.setFileFormats(fileFormats);
+          product.setFileFormats(fileFormats);
         } else {
-          deliverable.setFileFormats(null);
+          product.setFileFormats(null);
         }
-        deliverables.add(deliverable);
+
+        // Metadata
+        List<Map<String, String>> metadataList = deliverableDAO.getDeliverableMetadata(product.getId());
+        Map<Metadata, String> deliverableMetadata = new HashMap<>();
+
+        for (Map<String, String> data : metadataList) {
+          Metadata metadata = new Metadata();
+          metadata.setId(Integer.parseInt(data.get("id")));
+          metadata.setDescription(data.get("description"));
+          metadata.setName(data.get("name"));
+
+          deliverableMetadata.put(metadata, data.get("value"));
+        }
+        product.setMetadata(deliverableMetadata);
+
+        products.add(product);
       }
     }
 
-    return deliverables;
+    return products;
   }
 
   @Override
@@ -144,10 +231,10 @@ public class DeliverableManagerImpl implements DeliverableManager {
   }
 
   @Override
-  public boolean saveDeliverables(List<Deliverable> deliverables, int activityID) {
+  public boolean saveDeliverable(List<Deliverable> products, int activityID) {
     boolean problem = false;
-    for (Deliverable deliverable : deliverables) {
-      if (!this.addDeliverable(deliverable, activityID)) {
+    for (Deliverable product : products) {
+      if (!this.addDeliverable(product, activityID)) {
         problem = true;
       }
     }

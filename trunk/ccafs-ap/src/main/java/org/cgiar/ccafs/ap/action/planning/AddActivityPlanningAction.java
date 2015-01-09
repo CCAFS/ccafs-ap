@@ -183,15 +183,15 @@ public class AddActivityPlanningAction extends BaseAction {
         ap.setId(-1);
       }
       // Deliverables
-      List<Deliverable> newDeliverables = new ArrayList<>();
+      List<Deliverable> newProducts = new ArrayList<>();
       for (Deliverable deliverable : oldActivity.getDeliverables()) {
         // Only keep deliverables that end in the the current year or in the future.
         if (deliverable.getYear() >= this.getCurrentPlanningLogframe().getYear()) {
           deliverable.setId(-1);
-          newDeliverables.add(deliverable);
+          newProducts.add(deliverable);
         }
       }
-      activity.setDeliverables(newDeliverables);
+      activity.setDeliverables(newProducts);
     }
 
     boolean saved = activityManager.saveActivity(activity);

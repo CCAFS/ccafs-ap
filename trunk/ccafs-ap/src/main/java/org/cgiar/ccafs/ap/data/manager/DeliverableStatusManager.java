@@ -12,14 +12,14 @@ public interface DeliverableStatusManager {
   /**
    * Get all the deliverables status
    * 
-   * @return a List whit all the Deliverable status.
+   * @return a List whit all the Product status.
    */
   public DeliverableStatus[] getDeliverableStatus();
 
   /**
    * Find the deliverable status object identified with the given id.
    * 
-   * @param id - Deliverable status identifier.
+   * @param id - Product status identifier.
    * @return a DeliverableStatus object identified with the given id or null if nothing found.
    */
   public DeliverableStatus getDeliverableStatus(String id);
