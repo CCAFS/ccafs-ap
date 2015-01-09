@@ -43,5 +43,5 @@ public interface DeliverableTrafficLightDAO {
    * @param trafficLightData - information to save
    * @return true if the information was saved successfully. False otherwise.
    */
-  public boolean saveDeliverableTrafficLight(Map<String, String> trafficLightData);
+  public boolean saveDeliverableTrafficLight(Map<String, Object> trafficLightData);
 }

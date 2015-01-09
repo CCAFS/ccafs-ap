@@ -23,9 +23,14 @@ import org.apache.commons.lang3.builder.ToStringBuilder;
 
 public class DeliverableTrafficLight {
 
+  private int id;
   private boolean isMetadataDocumented;
   private boolean haveCollectionTools;
   private boolean isQualityDocumented;
+
+  public int getId() {
+    return id;
+  }
 
   public boolean isHaveCollectionTools() {
     return haveCollectionTools;
@@ -41,6 +46,10 @@ public class DeliverableTrafficLight {
 
   public void setHaveCollectionTools(boolean haveCollectionTools) {
     this.haveCollectionTools = haveCollectionTools;
+  }
+
+  public void setId(int id) {
+    this.id = id;
   }
 
   public void setMetadataDocumented(boolean isMetadataDocumented) {
