@@ -204,7 +204,7 @@ public class PublicationsReportingAction extends BaseAction {
         }
 
         for (int typeId : publicationTypeAccessNeed) {
-          if (publication.getType() == null || publication.getType().getId() == typeId) {
+          if (publication.getPublicationType() == null || publication.getPublicationType().getId() == typeId) {
             problem = needAccessType = true;
             break;
           }

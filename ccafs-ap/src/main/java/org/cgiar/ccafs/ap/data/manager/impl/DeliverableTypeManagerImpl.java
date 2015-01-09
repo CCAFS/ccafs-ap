@@ -24,10 +24,45 @@ public class DeliverableTypeManagerImpl implements DeliverableTypeManager {
   }
 
   @Override
-  public Object getDeliverableType(String id) {
-    for (DeliverableType dType : getDeliverableTypes()) {
+  public DeliverableType[] getDeliverableSubTypes() {
+    List<Map<String, String>> deliverableTypesList = deliverableTypeDAO.getDeliverableSubTypes();
+    Map<String, String> deliverableTypeData;
+
+    DeliverableType[] deliverableTypes = new DeliverableType[deliverableTypesList.size()];
+    for (int c = 0; c < deliverableTypesList.size(); c++) {
+      deliverableTypeData = deliverableTypesList.get(c);
+
+      DeliverableType type = new DeliverableType();
+      type.setId(Integer.parseInt(deliverableTypeData.get("id")));
+      type.setName(deliverableTypeData.get("name"));
+
+      DeliverableType parent = new DeliverableType();
+      parent.setId(Integer.parseInt(deliverableTypeData.get("parent_id")));
+      type.setParent(parent);
+
+      deliverableTypes[c] = type;
+    }
+
+    return deliverableTypes;
+  }
+
+  @Override
+  public DeliverableType getDeliverableType(String id) {
+    for (DeliverableType dType : getDeliverableTypesAndSubtypes()) {
       if (Integer.parseInt(id) == dType.getId()) {
         return dType;
+      }
+    }
+    return null;
+  }
+
+  @Override
+  public DeliverableType getDeliverableTypeBySubType(int deliverableSubTypeID) {
+    for (DeliverableType dType : getDeliverableTypesAndSubtypes()) {
+      if (deliverableSubTypeID == dType.getId()) {
+        if (dType.getParent() != null) {
+          return dType.getParent();
+        }
       }
     }
     return null;
@@ -49,7 +84,31 @@ public class DeliverableTypeManagerImpl implements DeliverableTypeManager {
       return deliverableTypes;
     }
 
-    LOG.warn("Deliverable type list loaded id empty.");
+    LOG.warn("Product type list loaded id empty.");
     return null;
+  }
+
+  @Override
+  public DeliverableType[] getDeliverableTypesAndSubtypes() {
+    List<Map<String, String>> deliverableTypesList = deliverableTypeDAO.getDeliverableTypesAndSubTypes();
+    Map<String, String> deliverableTypeData;
+
+    DeliverableType[] deliverableTypes = new DeliverableType[deliverableTypesList.size()];
+    for (int c = 0; c < deliverableTypesList.size(); c++) {
+      deliverableTypeData = deliverableTypesList.get(c);
+
+      DeliverableType type = new DeliverableType();
+      type.setId(Integer.parseInt(deliverableTypeData.get("id")));
+      type.setName(deliverableTypeData.get("name"));
+
+      DeliverableType parent = new DeliverableType();
+      parent.setId(Integer.parseInt(deliverableTypeData.get("parent_id")));
+      parent.setName(deliverableTypeData.get("parent_name"));
+      type.setParent(parent);
+
+      deliverableTypes[c] = type;
+    }
+
+    return deliverableTypes;
   }
 }

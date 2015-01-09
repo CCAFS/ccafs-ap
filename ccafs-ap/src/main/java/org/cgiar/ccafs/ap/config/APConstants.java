@@ -9,6 +9,7 @@ public final class APConstants {
 
   public static final String SESSION_USER = "current_user";
   public static final String ACTIVITY_REQUEST_ID = "activityID";
+  public static final String DELIVERABLE_REQUEST_ID = "deliverableID";
   public static final String PUBLIC_ACTIVITY_ID = "id";
   public static final String ACTIVITY_YEAR_REQUEST = "year";
   public static final String ACTIVITY_LIMIT_REQUEST = "limit";
@@ -19,4 +20,7 @@ public final class APConstants {
   public static final String PLANNING_SECTION = "Planning";
   public static final String REPORTING_SECTION = "Reporting";
 
+  // Constants for the deliverables types
+  public static final int DELIVERABLE_TYPE_PUBLICATION = 3;
+  public static final int DELIVERABLE_TYPE_CASE_STUDIES = 5;
 }

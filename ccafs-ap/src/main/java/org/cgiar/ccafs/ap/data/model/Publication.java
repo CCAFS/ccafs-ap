@@ -3,7 +3,7 @@ package org.cgiar.ccafs.ap.data.model;
 import java.util.ArrayList;
 
 
-public class Publication {
+public class Publication extends Deliverable {
 
   private int id;
   private PublicationType type;
@@ -50,6 +50,10 @@ public class Publication {
     return logframe;
   }
 
+  public PublicationType getPublicationType() {
+    return type;
+  }
+
   public PublicationTheme[] getRelatedThemes() {
     return relatedThemes;
   }
@@ -60,10 +64,6 @@ public class Publication {
       ids.add(getRelatedThemes()[c].getId() + "");
     }
     return ids;
-  }
-
-  public PublicationType getType() {
-    return type;
   }
 
   public boolean isCcafsAcknowledge() {

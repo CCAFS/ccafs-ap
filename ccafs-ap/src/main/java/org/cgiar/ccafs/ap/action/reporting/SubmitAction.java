@@ -421,7 +421,7 @@ public class SubmitAction extends BaseAction {
       }
 
       for (int typeId : publicationTypeAccessNeed) {
-        if (publication.getType().getId() == typeId) {
+        if (publication.getPublicationType().getId() == typeId) {
           needAccessType = true;
           break;
         }

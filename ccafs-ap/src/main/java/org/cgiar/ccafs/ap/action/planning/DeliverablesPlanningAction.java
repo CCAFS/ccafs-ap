@@ -150,7 +150,7 @@ public class DeliverablesPlanningAction extends BaseAction {
     activity = activityManager.getSimpleActivity(activityID);
 
     // Get the deliverables related to the activity
-    activity.setDeliverables(deliverableManager.getDeliverables(activityID));
+    activity.setDeliverables(deliverableManager.getDeliverableByActivityID(activityID));
 
     // If the workplan was submitted before the user can't save new information
     Submission submission =

@@ -144,6 +144,7 @@ public class OutcomesReportingAction extends BaseAction {
         if (o.getEvidence() == null || o.getEvidence().isEmpty()) {
           missingField = true;
         }
+
       }
 
       if (missingField) {

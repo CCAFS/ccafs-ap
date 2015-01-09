@@ -100,10 +100,6 @@ public class Activity {
     return dateAdded;
   }
 
-  public List<Deliverable> getDeliverables() {
-    return deliverables;
-  }
-
   public String getDescription() {
     return description;
   }
@@ -148,6 +144,10 @@ public class Activity {
 
   public List<OtherSite> getOtherLocations() {
     return otherLocations;
+  }
+
+  public List<Deliverable> getDeliverables() {
+    return deliverables;
   }
 
   public List<Region> getRegions() {
@@ -242,8 +242,8 @@ public class Activity {
     this.dateAdded = dateAdded;
   }
 
-  public void setDeliverables(List<Deliverable> deliverables) {
-    this.deliverables = deliverables;
+  public void setDeliverables(List<Deliverable> deliverable) {
+    this.deliverables = deliverable;
   }
 
   public void setDescription(String description) {

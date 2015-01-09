@@ -7,6 +7,7 @@ public class DeliverableType {
 
   private int id;
   private String name;
+  private DeliverableType parent;
 
   public DeliverableType() {
   }
@@ -24,6 +25,10 @@ public class DeliverableType {
     return name;
   }
 
+  public DeliverableType getParent() {
+    return parent;
+  }
+
   public void setId(int id) {
     this.id = id;
   }
@@ -32,9 +37,12 @@ public class DeliverableType {
     this.name = name;
   }
 
+  public void setParent(DeliverableType parent) {
+    this.parent = parent;
+  }
+
   @Override
   public String toString() {
     return ToStringBuilder.reflectionToString(this);
   }
-
 }
