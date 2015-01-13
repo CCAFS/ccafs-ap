@@ -7,6 +7,7 @@ import org.cgiar.ccafs.ap.data.manager.DeliverableManager;
 import org.cgiar.ccafs.ap.data.manager.DeliverableTypeManager;
 import org.cgiar.ccafs.ap.data.model.CaseStudy;
 import org.cgiar.ccafs.ap.data.model.Deliverable;
+import org.cgiar.ccafs.ap.data.model.DeliverableMetadata;
 import org.cgiar.ccafs.ap.data.model.DeliverableStatus;
 import org.cgiar.ccafs.ap.data.model.DeliverableType;
 import org.cgiar.ccafs.ap.data.model.FileFormat;
@@ -201,7 +202,7 @@ public class DeliverableManagerImpl implements DeliverableManager {
 
         // Metadata
         List<Map<String, String>> metadataList = deliverableDAO.getDeliverableMetadata(product.getId());
-        Map<Metadata, String> deliverableMetadata = new HashMap<>();
+        List<DeliverableMetadata> deliverableMetadata = new ArrayList<>();
 
         for (Map<String, String> data : metadataList) {
           Metadata metadata = new Metadata();
@@ -209,7 +210,10 @@ public class DeliverableManagerImpl implements DeliverableManager {
           metadata.setDescription(data.get("description"));
           metadata.setName(data.get("name"));
 
-          deliverableMetadata.put(metadata, data.get("value"));
+          DeliverableMetadata dm = new DeliverableMetadata();
+          dm.setValue(data.get("value"));
+          dm.setMetadata(metadata);
+          deliverableMetadata.add(dm);
         }
         product.setMetadata(deliverableMetadata);
 

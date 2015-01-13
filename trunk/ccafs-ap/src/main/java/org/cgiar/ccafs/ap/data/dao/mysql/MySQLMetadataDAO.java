@@ -48,7 +48,7 @@ public class MySQLMetadataDAO implements MetadataDAO {
   public List<Map<String, String>> getMetadataList() {
     LOG.debug(">> getMetadataList()");
     List<Map<String, String>> metadataList = new ArrayList<>();
-    String query = "SELECT * FROM metadata ";
+    String query = "SELECT * FROM metadata_questions ";
 
     try (Connection con = databaseManager.getConnection()) {
       ResultSet rs = databaseManager.makeQuery(query, con);

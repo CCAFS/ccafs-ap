@@ -18,15 +18,19 @@ import org.cgiar.ccafs.ap.action.BaseAction;
 import org.cgiar.ccafs.ap.config.APConfig;
 import org.cgiar.ccafs.ap.config.APConstants;
 import org.cgiar.ccafs.ap.data.manager.DeliverableManager;
+import org.cgiar.ccafs.ap.data.manager.DeliverableMetadataManager;
 import org.cgiar.ccafs.ap.data.manager.DeliverableStatusManager;
 import org.cgiar.ccafs.ap.data.manager.DeliverableTrafficLightManager;
 import org.cgiar.ccafs.ap.data.manager.DeliverableTypeManager;
 import org.cgiar.ccafs.ap.data.manager.LogframeManager;
+import org.cgiar.ccafs.ap.data.manager.MetadataManager;
 import org.cgiar.ccafs.ap.data.model.Deliverable;
 import org.cgiar.ccafs.ap.data.model.DeliverableStatus;
 import org.cgiar.ccafs.ap.data.model.DeliverableType;
+import org.cgiar.ccafs.ap.data.model.Metadata;
 
 import java.util.LinkedHashMap;
+import java.util.List;
 import java.util.Map;
 
 import com.google.inject.Inject;
@@ -50,6 +54,9 @@ public class DeliverableInformationReportingAction extends BaseAction {
   DeliverableTypeManager deliverableTypeManager;
   DeliverableStatusManager deliverableStatusManager;
   DeliverableTrafficLightManager trafficLightManager;
+  DeliverableMetadataManager deliverableMetadataManager;
+  MetadataManager metadataManager;
+
 
   // Model
   private Deliverable deliverable;
@@ -60,16 +67,20 @@ public class DeliverableInformationReportingAction extends BaseAction {
   private DeliverableType[] deliverableSubTypes;
   private DeliverableStatus[] deliverableStatusList;
   private Map<Boolean, String> yesNoRadio;
+  private List<Metadata> metadataList;
 
   @Inject
   public DeliverableInformationReportingAction(APConfig config, LogframeManager logframeManager,
     DeliverableManager deliverableManager, DeliverableTypeManager deliverableTypeManager,
-    DeliverableStatusManager deliverableStatusManager, DeliverableTrafficLightManager trafficLightManager) {
+    DeliverableStatusManager deliverableStatusManager, DeliverableTrafficLightManager trafficLightManager,
+    MetadataManager metadataManager, DeliverableMetadataManager deliverableMetadataManager) {
     super(config, logframeManager);
     this.deliverableManager = deliverableManager;
     this.deliverableTypeManager = deliverableTypeManager;
     this.deliverableStatusManager = deliverableStatusManager;
     this.trafficLightManager = trafficLightManager;
+    this.metadataManager = metadataManager;
+    this.deliverableMetadataManager = deliverableMetadataManager;
   }
 
   public int getActivityID() {
@@ -96,6 +107,10 @@ public class DeliverableInformationReportingAction extends BaseAction {
     return deliverableTypes;
   }
 
+  public List<Metadata> getMetadataList() {
+    return metadataList;
+  }
+
   public Map<Boolean, String> getYesNoRadio() {
     return yesNoRadio;
   }
@@ -117,19 +132,25 @@ public class DeliverableInformationReportingAction extends BaseAction {
     deliverableSubTypes = deliverableTypeManager.getDeliverableSubTypes();
     deliverableStatusList = deliverableStatusManager.getDeliverableStatus();
     deliverable.setTrafficLight(trafficLightManager.getDeliverableTrafficLight(deliverableID));
+    deliverable.setMetadata(deliverableMetadataManager.getDeliverableMetadata(deliverableID));
 
     // Create options for the yes/no radio buttons
     yesNoRadio = new LinkedHashMap<>();
     yesNoRadio.put(true, getText("reporting.activityDeliverables.yes"));
     yesNoRadio.put(false, getText("reporting.activityDeliverables.no"));
 
+    metadataList = metadataManager.getMetadataList();
   }
+
 
   @Override
   public String save() {
     deliverableManager.addDeliverable(deliverable, activityID);
     trafficLightManager.saveDeliverableTrafficLight(deliverable.getTrafficLight(), deliverable.getId());
+    deliverableMetadataManager.saveDeliverableMetadata(deliverable.getMetadata(), deliverable.getId());
+
     System.out.println("--------- Guardando ----------------");
+    System.out.println(deliverable);
     return super.save();
   }
 
@@ -139,6 +160,10 @@ public class DeliverableInformationReportingAction extends BaseAction {
 
   public void setDeliverable(Deliverable deliverable) {
     this.deliverable = deliverable;
+  }
+
+  public void setMetadataList(List<Metadata> metadataList) {
+    this.metadataList = metadataList;
   }
 
   public void setYesNoRadio(Map<Boolean, String> yesNoRadio) {

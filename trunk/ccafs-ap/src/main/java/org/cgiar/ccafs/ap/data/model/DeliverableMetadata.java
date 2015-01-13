@@ -21,34 +21,25 @@ import org.apache.commons.lang3.builder.ToStringBuilder;
  * @author Hernán David Carvajal
  */
 
-public class DeliverableTrafficLight {
+public class DeliverableMetadata {
 
-  private boolean isMetadataDocumented;
-  private boolean haveCollectionTools;
-  private boolean isQualityDocumented;
+  private Metadata metadata;
+  private String value;
 
-  public boolean isHaveCollectionTools() {
-    return haveCollectionTools;
+  public Metadata getMetadata() {
+    return metadata;
   }
 
-  public boolean isMetadataDocumented() {
-    return isMetadataDocumented;
+  public String getValue() {
+    return value;
   }
 
-  public boolean isQualityDocumented() {
-    return isQualityDocumented;
+  public void setMetadata(Metadata metadata) {
+    this.metadata = metadata;
   }
 
-  public void setHaveCollectionTools(boolean haveCollectionTools) {
-    this.haveCollectionTools = haveCollectionTools;
-  }
-
-  public void setMetadataDocumented(boolean isMetadataDocumented) {
-    this.isMetadataDocumented = isMetadataDocumented;
-  }
-
-  public void setQualityDocumented(boolean isQualityDocumented) {
-    this.isQualityDocumented = isQualityDocumented;
+  public void setValue(String value) {
+    this.value = value;
   }
 
   @Override

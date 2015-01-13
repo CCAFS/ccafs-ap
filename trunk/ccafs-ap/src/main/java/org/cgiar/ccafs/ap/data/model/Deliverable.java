@@ -19,7 +19,8 @@
 package org.cgiar.ccafs.ap.data.model;
 
 import java.util.List;
-import java.util.Map;
+
+import org.apache.commons.lang3.builder.ToStringBuilder;
 
 
 public abstract class Deliverable {
@@ -33,7 +34,7 @@ public abstract class Deliverable {
   protected DeliverableType type;
   protected List<String> filesNames;
   protected List<FileFormat> fileFormats;
-  protected Map<Metadata, String> metadata;
+  protected List<DeliverableMetadata> metadata;
   protected DeliverableTrafficLight trafficLight;
 
   public String getDescription() {
@@ -56,8 +57,19 @@ public abstract class Deliverable {
     return id;
   }
 
-  public Map<Metadata, String> getMetadata() {
+  public List<DeliverableMetadata> getMetadata() {
     return metadata;
+  }
+
+  public String getMetadataValue(int metadataID) {
+    String value = "";
+    for (DeliverableMetadata dmetadata : metadata) {
+      if (dmetadata.getMetadata().getId() == metadataID) {
+        value = dmetadata.getValue();
+      }
+    }
+
+    return value;
   }
 
   public DeliverableStatus getStatus() {
@@ -104,7 +116,7 @@ public abstract class Deliverable {
     this.id = id;
   }
 
-  public void setMetadata(Map<Metadata, String> metadata) {
+  public void setMetadata(List<DeliverableMetadata> metadata) {
     this.metadata = metadata;
   }
 
@@ -122,5 +134,10 @@ public abstract class Deliverable {
 
   public void setYear(int year) {
     this.year = year;
+  }
+
+  @Override
+  public String toString() {
+    return ToStringBuilder.reflectionToString(this);
   }
 }
