@@ -17,6 +17,7 @@ package org.cgiar.ccafs.ap.action.reporting.activities.deliverables;
 import org.cgiar.ccafs.ap.action.BaseAction;
 import org.cgiar.ccafs.ap.config.APConfig;
 import org.cgiar.ccafs.ap.config.APConstants;
+import org.cgiar.ccafs.ap.data.manager.DeliverableAccessManager;
 import org.cgiar.ccafs.ap.data.manager.DeliverableManager;
 import org.cgiar.ccafs.ap.data.manager.DeliverableMetadataManager;
 import org.cgiar.ccafs.ap.data.manager.DeliverableStatusManager;
@@ -50,12 +51,13 @@ public class DeliverableInformationReportingAction extends BaseAction {
   private static final long serialVersionUID = 6180698449849134459L;
 
   // Managers
-  DeliverableManager deliverableManager;
-  DeliverableTypeManager deliverableTypeManager;
-  DeliverableStatusManager deliverableStatusManager;
-  DeliverableTrafficLightManager trafficLightManager;
-  DeliverableMetadataManager deliverableMetadataManager;
-  MetadataManager metadataManager;
+  private DeliverableManager deliverableManager;
+  private DeliverableTypeManager deliverableTypeManager;
+  private DeliverableStatusManager deliverableStatusManager;
+  private DeliverableTrafficLightManager trafficLightManager;
+  private DeliverableMetadataManager deliverableMetadataManager;
+  private DeliverableAccessManager deliverableAccessManager;
+  private MetadataManager metadataManager;
 
 
   // Model
@@ -73,14 +75,16 @@ public class DeliverableInformationReportingAction extends BaseAction {
   public DeliverableInformationReportingAction(APConfig config, LogframeManager logframeManager,
     DeliverableManager deliverableManager, DeliverableTypeManager deliverableTypeManager,
     DeliverableStatusManager deliverableStatusManager, DeliverableTrafficLightManager trafficLightManager,
-    MetadataManager metadataManager, DeliverableMetadataManager deliverableMetadataManager) {
+    MetadataManager metadataManager, DeliverableMetadataManager deliverableMetadataManager,
+    DeliverableAccessManager deliverableAccessManager) {
     super(config, logframeManager);
     this.deliverableManager = deliverableManager;
     this.deliverableTypeManager = deliverableTypeManager;
     this.deliverableStatusManager = deliverableStatusManager;
     this.trafficLightManager = trafficLightManager;
-    this.metadataManager = metadataManager;
     this.deliverableMetadataManager = deliverableMetadataManager;
+    this.deliverableAccessManager = deliverableAccessManager;
+    this.metadataManager = metadataManager;
   }
 
   public int getActivityID() {
@@ -133,6 +137,7 @@ public class DeliverableInformationReportingAction extends BaseAction {
     deliverableStatusList = deliverableStatusManager.getDeliverableStatus();
     deliverable.setTrafficLight(trafficLightManager.getDeliverableTrafficLight(deliverableID));
     deliverable.setMetadata(deliverableMetadataManager.getDeliverableMetadata(deliverableID));
+    deliverable.setAccessDetails(deliverableAccessManager.getDeliverableAccessData(deliverableID));
 
     // Create options for the yes/no radio buttons
     yesNoRadio = new LinkedHashMap<>();
@@ -148,6 +153,7 @@ public class DeliverableInformationReportingAction extends BaseAction {
     deliverableManager.addDeliverable(deliverable, activityID);
     trafficLightManager.saveDeliverableTrafficLight(deliverable.getTrafficLight(), deliverable.getId());
     deliverableMetadataManager.saveDeliverableMetadata(deliverable.getMetadata(), deliverable.getId());
+    deliverableAccessManager.saveDeliverableAccessData(deliverable.getAccessDetails(), deliverable.getId());
 
     System.out.println("--------- Guardando ----------------");
     System.out.println(deliverable);
