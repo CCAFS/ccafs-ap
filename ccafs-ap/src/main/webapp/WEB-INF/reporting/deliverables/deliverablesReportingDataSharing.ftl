@@ -49,7 +49,11 @@
 
 
     <h6>[@s.text name="reporting.activityDeliverables.dataSharing.deliverableFiles" /]</h6>
-    <div id="dragAndDrop" class="dropzone"> 
+    <div id="fileURL" class="fullBlock" style="display:none">
+      [@customForm.input name="deliverable.fileURL" type="text" i18nkey="reporting.activityDeliverables.filename" /]
+    </div> 
+    [#-- This is used for run a JQuery (dropzone) plugin to drag and drop deliverables files--]
+    <div id="dragAndDrop" class="dropzone">
     </div>
     
     
