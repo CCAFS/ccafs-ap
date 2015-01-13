@@ -74,6 +74,13 @@
     <div id="metadataQuestions">
       <h6>[@s.text name="reporting.activityDeliverables.metadata" /]</h6>
       
+      [#list metadataList as metadata]
+        <div id="metadata-${metadata_index}}" class="halfPartBlock" >
+          <input type="hidden" name="deliverable.metadata[${metadata_index}].metadata.id" value="${metadata.id}" />
+          [@customForm.input name="deliverable.metadata[${metadata_index}].value" type="text" i18nkey="reporting.deliverables.metadata.${metadata.name?lower_case}" /]
+        </div>
+      [/#list]
+      
     </div>
     
     

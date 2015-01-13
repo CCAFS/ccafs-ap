@@ -63,4 +63,5 @@ public interface DeliverableManager {
    * @return true if the list of the deliverables was successfully added into the DAO, or false if any problem occur.
    */
   public boolean saveDeliverable(List<Deliverable> deliverables, int activityID);
+
 }

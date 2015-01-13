@@ -12,10 +12,11 @@
  * along with CCAFS P&R. If not, see <http://www.gnu.org/licenses/>.
  *****************************************************************/
 
-package org.cgiar.ccafs.ap.data.manager;
+package org.cgiar.ccafs.ap.data.dao;
 
-import org.cgiar.ccafs.ap.data.manager.impl.MySQLDeliverableTrafficLightDAO;
+import org.cgiar.ccafs.ap.data.dao.mysql.MySQLDeliverableMetadataDAO;
 
+import java.util.List;
 import java.util.Map;
 
 import com.google.inject.ImplementedBy;
@@ -25,23 +26,23 @@ import com.google.inject.ImplementedBy;
  * @author Hernán David Carvajal
  */
 
-@ImplementedBy(MySQLDeliverableTrafficLightDAO.class)
-public interface DeliverableTrafficLightDAO {
+@ImplementedBy(MySQLDeliverableMetadataDAO.class)
+public interface DeliverableMetadataDAO {
 
   /**
-   * Get the traffic light information of the deliverable
-   * identified with the value received as parameter.
+   * This method get from the database all the metadata related to the
+   * deliverable identified by the value received as parameter.
    * 
-   * @param deliverableID - deliverable identifier
-   * @return a map with the information.
+   * @param deliverableID - Deliverable identifier
+   * @return a map that contains the metadata of the deliverable
    */
-  public Map<String, String> getTrafficLightData(int deliverableID);
+  public List<Map<String, String>> getDeliverableMetadata(int deliverableID);
 
   /**
-   * Save the traffic light information in the database.
+   * This method save in the database the deliverable metadata information.
    * 
-   * @param trafficLightData - information to save
-   * @return true if the information was saved successfully. False otherwise.
+   * @param deliverableMetadata - Map containing the information
+   * @return true if all the information was saved successfully.
    */
-  public boolean saveDeliverableTrafficLight(Map<String, Object> trafficLightData);
+  public boolean saveDeliverableMetadata(Map<String, Object> deliverableMetadata);
 }

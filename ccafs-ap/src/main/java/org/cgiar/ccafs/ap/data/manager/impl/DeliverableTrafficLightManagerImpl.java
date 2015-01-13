@@ -14,7 +14,7 @@
 
 package org.cgiar.ccafs.ap.data.manager.impl;
 
-import org.cgiar.ccafs.ap.data.manager.DeliverableTrafficLightDAO;
+import org.cgiar.ccafs.ap.data.dao.DeliverableTrafficLightDAO;
 import org.cgiar.ccafs.ap.data.manager.DeliverableTrafficLightManager;
 import org.cgiar.ccafs.ap.data.model.DeliverableTrafficLight;
 

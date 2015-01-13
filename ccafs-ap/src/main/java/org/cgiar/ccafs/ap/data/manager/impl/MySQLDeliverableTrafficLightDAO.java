@@ -15,7 +15,7 @@
 package org.cgiar.ccafs.ap.data.manager.impl;
 
 import org.cgiar.ccafs.ap.data.dao.DAOManager;
-import org.cgiar.ccafs.ap.data.manager.DeliverableTrafficLightDAO;
+import org.cgiar.ccafs.ap.data.dao.DeliverableTrafficLightDAO;
 
 import java.sql.Connection;
 import java.sql.ResultSet;
