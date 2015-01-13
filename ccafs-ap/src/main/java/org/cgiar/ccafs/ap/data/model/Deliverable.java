@@ -36,6 +36,11 @@ public abstract class Deliverable {
   protected List<FileFormat> fileFormats;
   protected List<DeliverableMetadata> metadata;
   protected DeliverableTrafficLight trafficLight;
+  protected DeliverableAccess accessDetails;
+
+  public DeliverableAccess getAccessDetails() {
+    return accessDetails;
+  }
 
   public String getDescription() {
     return description;
@@ -90,6 +95,10 @@ public abstract class Deliverable {
 
   public boolean isExpected() {
     return isExpected;
+  }
+
+  public void setAccessDetails(DeliverableAccess accessDetails) {
+    this.accessDetails = accessDetails;
   }
 
   public void setDescription(String description) {
