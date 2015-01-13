@@ -7,7 +7,7 @@
       [/#if]
       
       [#if libraryName="dataTable"]
-        <script src="${baseUrl}/js/libs/dataTables/jquery.dataTables-1.9.4.min.js"></script>
+        <script src="${baseUrl}/js/libs/dataTables/jquery.dataTables-1.10.4.min.js"></script>
       [/#if]
       
       [#if libraryName="googleAPI"]
@@ -43,6 +43,10 @@
       
       [#if libraryName="jreject"]          
         <script src="${baseUrl}/js/libs/jreject/jquery.reject-1.0.2.js"></script>
+      [/#if]
+      
+      [#if libraryName="dropzone"]          
+        <script src="${baseUrl}/js/libs/dropzone/dropzone-3.12.0.js"></script>
       [/#if]
       
    [/#list]

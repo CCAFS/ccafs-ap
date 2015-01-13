@@ -20,7 +20,7 @@ table tr:first-child th:last-child{
 
 
 .dataTables_wrapper {
-	  
+    
   margin-bottom: 30px;
 }
 
@@ -28,7 +28,16 @@ table tr:first-child th:last-child{
 .dataTables_filter {
   float: none;
   padding-top: 10px;
-  margin-bottom: 20px;
+  margin-bottom: 10px;
+}
+
+/* Show entries Bar */
+.dataTables_length {
+  float: left;
+}
+
+.dataTables_length select {
+   width: 36%;
 }
 
 /* Table */
@@ -36,6 +45,8 @@ table tr:first-child th:last-child{
 table.dataTable thead {
    
   background-color: #F1D023;
+  color: #fff;
+  text-shadow: 1px 1px 4px rgba(0, 0, 0, 0.1);
 }
 
 table.dataTable tr.odd {
@@ -72,13 +83,16 @@ table.dataTable tr.even td.sorting_3 {
 
 table.dataTable thead th {
   text-align: center;
-  border: 1px solid #d4d4d4;
+  border: 0;
+  padding: 10px 11px;
   font-size: 13px;
   vertical-align: middle;
 }
 
 table.dataTable td {
   border: 1px solid #d4d4d4;
+  vertical-align: middle;
+  padding: 8px 6px;
 }
 
 /*
@@ -169,4 +183,25 @@ table.dataTable td {
 .dataTables_info {
   font-style: italic;
   margin-top: 5px;
+}
+
+table.dataTable tfoot th { 
+border: 0;
+ 
+}
+
+
+/* Module filter by */
+
+#filterBy {
+  margin-top: 16px;
+  margin-bottom: 0px;
+  width: 100%;
+  float: left;
+}
+
+#filterBy .filter {
+    width: 21%;
+    float: left;
+    margin-right: 28px;
 }

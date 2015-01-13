@@ -1,21 +1,19 @@
 [#ftl]
+
 <nav id="stageMenu">
   <ul>
-    <a [#if currentStage == "metadata"] class="currentReportingSection" [/#if] href="
-        [@s.url action='deliverableMetadata' includeParams='get'][/@s.url]
-      "><li>[@s.text name="menu.activitiesReporting.submenu.deliverable.metadata" /]</li>
-    </a>
-    <a [#if currentStage == "nextUsers"] class="currentReportingSection" [/#if] href="
+    <li [#if currentStage == "metadata"] class="currentReportingSection" [/#if]><a href="
         [@s.url action='deliverables' includeParams='get'][/@s.url]
-      "><li>[@s.text name="menu.activitiesReporting.submenu.deliverable.nextUsers" /]</li>
-    </a>
-    <a [#if currentStage == "dataSharing"] class="currentReportingSection" [/#if] href="
-        [@s.url action='partners' includeParams='get'][/@s.url]
-      "><li>[@s.text name="menu.activitiesReporting.submenu.deliverable.dataSharing" /]</li>
-    </a>
-    <a [#if currentStage == "ranking"] class="currentReportingSection" [/#if] href="
-        [@s.url action='partners' includeParams='get'][/@s.url]
-      "><li>[@s.text name="menu.activitiesReporting.submenu.deliverable.ranking" /]</li>
-    </a>
+      ">[@s.text name="menu.activitiesReporting.submenu.deliverable.metadata" /]
+    </a> </li>
+    <li [#if currentStage == "dataSharing"] class="currentReportingSection" [/#if]><a href="
+        [@s.url action='deliverablesData' includeParams='get'][/@s.url]
+      ">[@s.text name="menu.activitiesReporting.submenu.deliverable.dataSharing" /]
+    </a></li>
+    <li [#if currentStage == "ranking"] class="currentReportingSection" [/#if]><a href="
+        [@s.url action='deliverablesRank' includeParams='get'][/@s.url]
+      ">[@s.text name="menu.activitiesReporting.submenu.deliverable.ranking" /]
+    </a></li>
   </ul>
+  <div class="clearfix"></div>
 </nav>

@@ -64,6 +64,10 @@
           <link rel="stylesheet" type="text/css" href="${baseUrl}/css/libs/jreject/jquery.reject.css" />
         [/#if]
         
+        [#if libraryName="dropzone"]          
+          <link rel="stylesheet" type="text/css" href="${baseUrl}/js/libs/dropzone/css/dropzone.css" />
+        [/#if]
+        
   	 [/#list]
   	[/#if]
   	
