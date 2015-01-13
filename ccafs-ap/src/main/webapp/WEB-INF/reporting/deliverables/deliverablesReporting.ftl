@@ -4,7 +4,7 @@
 [#assign customJS = ["${baseUrl}/js/reporting/deliverablesReporting.js"] /]
 [#assign currentSection = "reporting" /]
 [#assign currentReportingSection = "activities" /]
-[#assign currentStage = "deliverables" /]
+[#assign currentStage = "metadata" /]
 [#assign userRole = "${currentUser.role}"]
 
 [#include "/WEB-INF/global/pages/header.ftl" /]
@@ -22,65 +22,72 @@
   <article class="halfContent">
     [#include "/WEB-INF/reporting/deliverables/deliverablesReportingSubMenu.ftl" /]
     <h1 class="contentTitle">
-      Algo: [@s.text name="reporting.activityList.activity" /] algo
-    </h1>
-
+      [@s.text name="reporting.activityDeliverables.deliverable" /] - ${deliverableID}
+    </h1> 
+    
+    
+    
     <div id="deliverableInformation">
-      <div id="deliverableTitle">
-        [@customForm.input name="deliverable.description" type="text" i18nkey="reporting.activityDeliverables.deliverableTitle" /]
+      <div id="deliverableTitle" class="fullBlock ">
+       [@customForm.textArea name="deliverable.description" i18nkey="reporting.activityDeliverables.deliverableTitle" /]
       </div>
 
-      <div id="deliverableTitle" class="halfPartBlock">
+      <div id="deliverableType" class="halfPartBlock">
         <h6>[@s.text name="reporting.activityDeliverables.type" /]</h6>
         <span>${deliverable.type.parent.name}</span>
       </div>
 
-      <div id="deliverableTitle" class="halfPartBlock">
+      <div id="deliverableSubtype" class="halfPartBlock">
         <h6>[@s.text name="reporting.activityDeliverables.subtype" /]</h6>
         <span>${deliverable.type.name}</span>
       </div>
 
-      <div id="deliverableTitle" class="halfPartBlock">
+      <div id="deliverableYear" class="halfPartBlock">
         <h6>[@s.text name="reporting.activityDeliverables.year" /]</h6>
         <span>${deliverable.year}</span>
       </div>
 
-      <div id="deliverableTitle" class="halfPartBlock">
+      <div id="deliverableStatus" class="halfPartBlock">
         [@customForm.select name="deliverable.status" i18nkey="reporting.activityDeliverables.status" listName="deliverableStatusList" keyFieldName="id"  displayFieldName="name" className="deliverableStatus" /]
       </div>
       
-      <div id="deliverableDescriptionUpdate">
+      <div id="deliverableDescriptionUpdate" class="fullBlock">
         [@customForm.textArea name="deliverable.descriptionUpdate" i18nkey="reporting.activityDeliverables.descriptionUpdate" help="reporting.activityDeliverables.descriptionUpdate.help" /]
       </div>
     </div>
     
-    <div id="trafficLightQuestions" >
+    <div id="trafficLightQuestions" class="fullBlock">
       <h6>[@s.text name="reporting.activityDeliverables.trafficLight" /]</h6>
-      <div>
-        [@s.text name="reporting.activityDeliverables.trafficLight.metadataDocumented" /]
-        [@s.radio name="deliverable.trafficLight.metadataDocumented" list="yesNoRadio" /]
-      </div>
-      
-      <div>
-        [@s.text name="reporting.activityDeliverables.trafficLight.collectionTools" /]
-        [@s.radio name="deliverable.trafficLight.haveCollectionTools" list="yesNoRadio" /]
-      </div>
-      <div>
-        [@s.text name="reporting.activityDeliverables.trafficLight.qualityDocumented" /]
-        [@s.radio name="deliverable.trafficLight.qualityDocumented" list="yesNoRadio" /]
-      </div>
+      <table>
+        <tbody>
+          <tr>
+            <td class="question"> [@s.text name="reporting.activityDeliverables.trafficLight.metadataDocumented" /]</td>
+            <td class="answer"> [@s.radio name="deliverable.trafficLight.metadataDocumented" list="yesNoRadio" /]</td>
+          </tr>
+          
+          <tr>
+            <td class="question"> [@s.text name="reporting.activityDeliverables.trafficLight.collectionTools" /]<span class="quote"> [@s.text name="reporting.activityDeliverables.trafficLight.collectionTools.quote" /]<span> </td>
+            <td class="answer"> [@s.radio name="deliverable.trafficLight.haveCollectionTools" list="yesNoRadio" /]</td>
+          </tr>
+          
+          <tr>
+            <td class="question"> [@s.text name="reporting.activityDeliverables.trafficLight.qualityDocumented" /]</td>
+            <td class="answer"> [@s.radio name="deliverable.trafficLight.qualityDocumented" list="yesNoRadio" /]</td>
+          </tr>
+          
+        </tbody>  
+      </table> 
     </div>
     
-    <div id="metadataQuestions">
-      <h6>[@s.text name="reporting.activityDeliverables.metadata" /]</h6>
-      
+    <h6>[@s.text name="reporting.activityDeliverables.metadata" /]</h6>
+    
+    <div id="metadataQuestions" class="fullBlock"> 
       [#list metadataList as metadata]
-        <div id="metadata-${metadata_index}}" class="halfPartBlock" >
+        <div id="metadata-${metadata_index}" class="halfPartBlock" >
           <input type="hidden" name="deliverable.metadata[${metadata_index}].metadata.id" value="${metadata.id}" />
           [@customForm.input name="deliverable.metadata[${metadata_index}].value" type="text" i18nkey="reporting.deliverables.metadata.${metadata.name?lower_case}" /]
         </div>
-      [/#list]
-      
+      [/#list] 
     </div>
     
     

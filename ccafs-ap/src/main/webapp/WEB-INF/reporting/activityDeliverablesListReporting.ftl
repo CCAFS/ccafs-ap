@@ -17,8 +17,21 @@
   
   <article class="halfContent">
     <h1>[#if currentUser.leader??]${currentUser.leader.name}[/#if] ([@s.text name="reporting.activityDeliverablesList" /] ${currentReportingLogframe.year?c})</h1>    
-
-    <table id="deliverableList">
+    <div id="filterBy">
+      <div id="filter-title" class="filter" style="display:none">
+      <h4>Filter by [@s.text name="reporting.activityDeliverablesList.title" /]:<h4>
+      </div>
+      <div id="filter-type" class="filter">
+      <h4>Filter by [@s.text name="reporting.activityDeliverablesList.type" /]:<h4>
+      </div>
+      <div id="filter-year" class="filter">
+      <h4>Filter by [@s.text name="reporting.activityDeliverablesList.year" /]:<h4>
+      </div>
+      <div id="filter-status" class="filter">
+       <h4>Filter by [@s.text name="reporting.activityDeliverablesList.status" /]:<h4>
+      </div>
+    </div>
+    <table id="deliverableList">  
       <thead>
         <tr>
           <th id="title">[@s.text name="reporting.activityDeliverablesList.title" /]</th>
@@ -26,7 +39,8 @@
           <th id="year">[@s.text name="reporting.activityDeliverablesList.year" /]</th>
           <th id="status">[@s.text name="reporting.activityDeliverablesList.status" /]</th>
         </tr>
-      </thead>
+      </thead> 
+      
       <tbody>
         [#list activity.deliverables as product]
           <tr>
@@ -34,19 +48,19 @@
               <a href="
               [@s.url action='deliverables' includeParams='get']
                 [@s.param name='${activityRequestParameter}']${activity.id?c}[/@s.param]
-                [@s.param name='${deliverableRequestParameter}']${activity.id?c}[/@s.param]
+                [@s.param name='${deliverableRequestParameter}']${product.id?c}[/@s.param]
               [/@s.url]
               " title="${product.description}">
-                [#if activity.title?length < 50] ${product.description}</a> [#else] [@utilities.wordCutter string=product.description maxPos=50 /]...</a> [/#if]
-            </td>
+                [#if product.description?length < 50] ${product.description}</a> [#else] [@utilities.wordCutter string=product.description maxPos=50 /]...</a> [/#if]
+            </td> 
             <td> ${product.type.name}</td>
             <td> ${product.year} </td>
             <td> ${product.status.name} </td>               
           </tr>
         [/#list]  
-      </tbody>
-      <ul></ul>
+      </tbody> 
     </table>
+
   </article>
   </section>
 [#include "/WEB-INF/global/pages/footer.ftl"]
