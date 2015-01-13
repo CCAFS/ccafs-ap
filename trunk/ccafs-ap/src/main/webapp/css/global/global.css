@@ -1017,6 +1017,10 @@ ul#deliverablesFilesMessages > li {
     
 }
 
+#dragAndDrop.dropzone {
+    min-height: 170px;
+}
+
 /*** Contact Persons (popup) ***/
 #contactPersons {
   display: none;
