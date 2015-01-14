@@ -14,16 +14,39 @@ $(document).ready(function(){
   function checkOption(){
     if ($("input#option-3").is(":checked")) {
       $("div#fileURL").hide();
-      $("div#dragAndDrop").show();
+      $("div#ccafsFiles").show();
     } else {
-      $("div#dragAndDrop").hide();
+      if ($("#filesUploaded ul").children().length) {
+        console.log("If you change to this option, the files uploaded will be deleted");
+      }
+      $("div#ccafsFiles").hide();
       $("div#fileURL").show();
     }
   }
   
   function addDropzone(){
     $("div#dragAndDrop").dropzone({
-      url : "/file/post"
+      init : initDropzone,
+      paramName : "file", // The name that will be used to transfer the file
+      params : {
+        activityID : $("input[name^='activityID']").val(),
+        deliverableID : $("input[name^='deliverableID']").val()
+      },
+      url : "uploadDeliverable.do",
+      maxFilesize : 30
+    });
+  }
+  
+  function initDropzone(){
+    this.on("success", function(file){
+      console.log(file);
+      var $newElement = $("#deliberableFileTemplate").clone(true).removeAttr("id");
+      $newElement.find(".fileName").html(file.name);
+      $newElement.find(".fileFormat").html(file.type);
+      $newElement.find(".fileSize").html((file.size / 1024).toFixed(1) + " KB");
+      $("#filesUploaded ul").append($newElement);
+      $newElement.show("slow");
+      this.removeFile(file);
     });
   }
   

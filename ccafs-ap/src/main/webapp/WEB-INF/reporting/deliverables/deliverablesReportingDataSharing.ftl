@@ -29,13 +29,13 @@
     
     <div id="dataSharingOptions">
       <label for="option-1">
-          <input id="option-1" type="radio" name="dataSharingOptions" value="option1" checked>
+          <input id="option-1" type="radio" name="dataSharingOptions" value="option1" >
           [@s.text name="reporting.activityDeliverables.dataSharing.hostedInstitutional" /]
           <span class="quote">[@s.text name="reporting.activityDeliverables.dataSharing.hostedInstitutional.help" /]</span>
       </label> 
       
       <label for="option-2">
-          <input id="option-2" type="radio" name="dataSharingOptions" value="option2">
+          <input id="option-2" type="radio" name="dataSharingOptions" value="option2" checked>
           [@s.text name="reporting.activityDeliverables.dataSharing.fileGreater" /]
           <span class="quote">[@s.text name="reporting.activityDeliverables.dataSharing.fileGreater.help" /]</span>
       </label> 
@@ -47,14 +47,35 @@
       </label> 
     </div>
 
-
-    <h6>[@s.text name="reporting.activityDeliverables.dataSharing.deliverableFiles" /]</h6>
+    <h6>[@s.text name="reporting.activityDeliverables.dataSharing.uploadFiles" /]</h6>
     <div id="fileURL" class="fullBlock" style="display:none">
       [@customForm.input name="deliverable.fileURL" type="text" i18nkey="reporting.activityDeliverables.filename" /]
     </div> 
-    [#-- This is used for run a JQuery (dropzone) plugin to drag and drop deliverables files--]
-    <div id="dragAndDrop" class="dropzone">
+    <div id="ccafsFiles">
+      [#-- This is used for run a JQuery (dropzone) plugin to drag and drop deliverables files--]
+      <div id="dragAndDrop" class="dropzone">
+      </div>
+      <br>
+      <h6>[@s.text name="reporting.activityDeliverables.dataSharing.deliverableFiles" /]</h6>
+      <div id="filesUploaded">
+        <ul>
+           <li id="deliberableFile-1" class="fileUploaded">
+             <div class="fileName">Filename #1</div>
+             <div class="fileFormat">PDF</div>
+             <div class="fileSize">50 KB</div>
+             <span>Remove</span>
+           </li>
+           
+           <li id="deliberableFile-2" class="fileUploaded">
+             <div class="fileName">Filename #2</div>
+             <div class="fileFormat">PDF</div>
+             <div class="fileSize">20 KB</div>
+             <span>Remove</span>
+           </li>
+        </ul>
+      </div>
     </div>
+
     
     
     <!-- internal parameter -->
@@ -73,5 +94,14 @@
   [/@s.form]
  
   </section>
-  
+
+ 
+ [#-- File uploaded template --]
+ <li id="deliberableFileTemplate" class="fileUploaded" style="display:none">
+   <div class="fileName">filename</div>
+   <div class="fileFormat">format</div>
+   <div class="fileSize">size</div>
+   <span>Remove</span>
+ </li>
+
 [#include "/WEB-INF/global/pages/footer.ftl"]

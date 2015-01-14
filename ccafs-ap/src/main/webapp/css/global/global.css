@@ -1021,6 +1021,38 @@ ul#deliverablesFilesMessages > li {
     min-height: 170px;
 }
 
+#filesUploaded ul {
+    margin: 0;
+}
+
+li.fileUploaded {
+    list-style: none;
+    border: 1px solid rgba(0, 0, 0, 0.03);    -webkit-border-radius: 3px;  border-radius: 3px;  background: rgba(0, 0, 0, 0.03);  
+    padding: 6px;
+    margin-bottom: 4px;
+}
+
+li.fileUploaded div {
+    float:left;
+}
+
+li.fileUploaded .fileName {
+    width: 60%;
+}
+
+li.fileUploaded .fileFormat {
+    width: 15%;
+}
+
+li.fileUploaded .fileSize {
+    width: 15%;
+}
+
+li.fileUploaded span {
+    width:10%;
+}
+
+
 /*** Contact Persons (popup) ***/
 #contactPersons {
   display: none;
