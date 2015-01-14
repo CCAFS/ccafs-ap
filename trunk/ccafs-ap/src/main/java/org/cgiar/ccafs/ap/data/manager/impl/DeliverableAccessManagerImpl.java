@@ -14,16 +14,15 @@
 
 package org.cgiar.ccafs.ap.data.manager.impl;
 
-import org.cgiar.ccafs.ap.data.dao.DeliverableAccessDAO;
-import org.cgiar.ccafs.ap.data.manager.DeliverableAccessManager;
-import org.cgiar.ccafs.ap.data.model.DeliverableAccess;
-
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.HashMap;
 import java.util.Map;
 
 import com.google.inject.Inject;
+import org.cgiar.ccafs.ap.data.dao.DeliverableAccessDAO;
+import org.cgiar.ccafs.ap.data.manager.DeliverableAccessManager;
+import org.cgiar.ccafs.ap.data.model.DeliverableAccess;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -48,11 +47,13 @@ public class DeliverableAccessManagerImpl implements DeliverableAccessManager {
     SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM");
     Map<String, String> deliverableAccessData = deliverableAccessDAO.getDeliverableAccessData(deliverableID);
 
+
     if (deliverableAccessData.get("data_dictionary") != null) {
       deliverableAccess.setDataDictionary(deliverableAccessData.get("data_dictionary").equals("1"));
     } else {
       deliverableAccess.setDataDictionary(false);
     }
+
     deliverableAccess.setQualityProcedures(deliverableAccessData.get("quality_procedures"));
     deliverableAccess.setAccessRestrictions(deliverableAccessData.get("access_restrictions"));
     deliverableAccess.setAccessLimits(deliverableAccessData.get("access_limits"));
@@ -70,11 +71,13 @@ public class DeliverableAccessManagerImpl implements DeliverableAccessManager {
       LOG.error("-- getDeliverableAccessData() > There was an exception trying to parse the access limit dates.", e);
     }
 
+
     if (deliverableAccessData.get("harvesting_protocols") != null) {
       deliverableAccess.setHarvestingProtocols(deliverableAccessData.get("harvesting_protocols").equals("1"));
     } else {
       deliverableAccess.setHarvestingProtocols(false);
     }
+
     deliverableAccess.setHarvestingProtocolDetails(deliverableAccessData.get("harvesting_protocol_details"));
 
     return deliverableAccess;
