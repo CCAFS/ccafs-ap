@@ -24,12 +24,11 @@
     <h1 class="contentTitle">
       [@s.text name="reporting.activityDeliverables.deliverable" /] - ${deliverableID}
     </h1> 
-    
-    
-    
+
     <div id="deliverableInformation">
       <div id="deliverableTitle" class="fullBlock ">
-       [@customForm.textArea name="deliverable.description" i18nkey="reporting.activityDeliverables.deliverableTitle" /]
+        <h6>[@s.text name="reporting.activityDeliverables.description" /]</h6>
+        <span>${deliverable.description}</span>
       </div>
 
       <div id="deliverableType" class="halfPartBlock">
@@ -79,8 +78,48 @@
       </table> 
     </div>
     
-    <h6>[@s.text name="reporting.activityDeliverables.metadata" /]</h6>
+    <div id="dataAccessQuestions" class="fullBlock">
+      
+      <div>
+        [@s.text name="reporting.deliverables.dataAccess.dataDictionary" /]
+        [@s.radio name="deliverable.dataAccess.dataDictionary" list="yesNoRadio" /]
+      </div>
+
+      <div>
+        [@customForm.input name="deliverable.dataAccess.qualityProcedures" type="text" i18nkey="reporting.deliverables.dataAccess.dataQuality" /]
+      </div>
+
+      <div>
+        [@s.text name="reporting.deliverables.dataAccess.dataRestriction" /]
+        [@s.radio name="deliverable.dataAccess.accessRestrictions" list="notApplicableRadio" /]
+      </div>
+      
+      <div id="accessLimitOptions">
+        <div>
+          [@s.text name="reporting.deliverables.dataAccess.accessLimits" /]
+          [@s.radio name="deliverable.dataAccess.accessLimits" list="accessLimitsRadio" /]
+        </div>
+  
+        <div class="halfPartBlock">
+          [@customForm.input name="deliverable.dataAccess.accessLimitStartDate" type="text" i18nkey="reporting.deliverables.dataAccess.accessLimits.startDate" /]
+        </div>
+
+        <div class="halfPartBlock">
+          [@customForm.input name="deliverable.dataAccess.accessLimitEndDate" type="text" i18nkey="reporting.deliverables.dataAccess.accessLimits.endDate" /]
+        </div>
+      </div>
+      
+      <div>
+        [@s.text name="reporting.deliverables.dataAccess.harvestingProtocols" /]
+        [@s.radio name="deliverable.dataAccess.harvestingProtocols" list="yesNoRadio" /]
+      </div>
+
+      <div>
+        [@customForm.input name="deliverable.dataAccess.harvestingProtocolDetails" type="text" i18nkey="reporting.deliverables.dataAccess.harvestingProtocols.specify" /]
+      </div>
+    </div>
     
+    <h6>[@s.text name="reporting.activityDeliverables.metadata" /]</h6>
     <div id="metadataQuestions" class="fullBlock"> 
       [#list metadataList as metadata]
         <div id="metadata-${metadata_index}" class="halfPartBlock" >

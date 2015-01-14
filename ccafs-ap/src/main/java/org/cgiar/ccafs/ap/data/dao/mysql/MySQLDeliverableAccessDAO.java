@@ -77,11 +77,11 @@ public class MySQLDeliverableAccessDAO implements DeliverableAccessDAO {
     LOG.debug(">> saveDeliverableAccessData(deliverableAccessData={})", deliverableAccessData);
     boolean saved = false;
     StringBuilder query = new StringBuilder();
-    query.append("INSERT INTO deliverable_access (description, data_dictionary, quality_procedures, ");
+    query.append("INSERT INTO deliverable_access (data_dictionary, quality_procedures, ");
     query.append("access_restrictions, access_limits, access_limit_start_date, access_limit_end_date, ");
     query.append("harvesting_protocols, harvesting_protocol_details, deliverable_id) ");
-    query.append("VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?) ");
-    query.append("ON DUPLICATE KEY UPDATE description = VALUES(description), ");
+    query.append("VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?) ");
+    query.append("ON DUPLICATE KEY UPDATE ");
     query.append("data_dictionary = VALUES(data_dictionary), quality_procedures = VALUES(quality_procedures), ");
     query.append("access_restrictions = VALUES(access_restrictions), access_limits = VALUES(access_limits), ");
     query.append("access_limit_start_date = VALUES(access_limit_start_date), ");
@@ -90,16 +90,15 @@ public class MySQLDeliverableAccessDAO implements DeliverableAccessDAO {
     query.append("harvesting_protocol_details = VALUES(harvesting_protocol_details) ");
 
     Object[] values = new Object[deliverableAccessData.size()];
-    values[0] = deliverableAccessData.get("description");
-    values[1] = deliverableAccessData.get("data_dictionary");
-    values[2] = deliverableAccessData.get("quality_procedures");
-    values[3] = deliverableAccessData.get("access_restrictions");
-    values[4] = deliverableAccessData.get("access_limits");
-    values[5] = deliverableAccessData.get("access_limit_start_date");
-    values[6] = deliverableAccessData.get("access_limit_end_date");
-    values[7] = deliverableAccessData.get("harvesting_protocols");
-    values[8] = deliverableAccessData.get("harvesting_protocol_details");
-    values[9] = deliverableAccessData.get("deliverable_id");
+    values[0] = deliverableAccessData.get("data_dictionary");
+    values[1] = deliverableAccessData.get("quality_procedures");
+    values[2] = deliverableAccessData.get("access_restrictions");
+    values[3] = deliverableAccessData.get("access_limits");
+    values[4] = deliverableAccessData.get("access_limit_start_date");
+    values[5] = deliverableAccessData.get("access_limit_end_date");
+    values[6] = deliverableAccessData.get("harvesting_protocols");
+    values[7] = deliverableAccessData.get("harvesting_protocol_details");
+    values[8] = deliverableAccessData.get("deliverable_id");
 
     try (Connection con = daoManager.getConnection()) {
       int affectedRows = daoManager.makeChangeSecure(con, query.toString(), values);
