@@ -163,7 +163,7 @@ public class DeliverableInformationReportingAction extends BaseAction {
     // Create options for the access limit radio buttons
     accessLimitsRadio = new LinkedHashMap<>();
     accessLimitsRadio.put("inmediate", getText("reporting.deliverables.dataAccess.accessLimits.inmediate"));
-    accessLimitsRadio.put("embargoed", getText("reporting.deliverables.dataAccess.accessLimits.embargoed"));
+    accessLimitsRadio.put("embargued", getText("reporting.deliverables.dataAccess.accessLimits.embargoed"));
     accessLimitsRadio.put("restricted", getText("reporting.deliverables.dataAccess.accessLimits.restricted"));
 
     metadataList = metadataManager.getMetadataList();

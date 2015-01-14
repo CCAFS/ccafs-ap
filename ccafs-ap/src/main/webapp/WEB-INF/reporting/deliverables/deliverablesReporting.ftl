@@ -82,40 +82,40 @@
       
       <div>
         [@s.text name="reporting.deliverables.dataAccess.dataDictionary" /]
-        [@s.radio name="deliverable.dataAccess.dataDictionary" list="yesNoRadio" /]
+        [@s.radio name="deliverable.accessDetails.dataDictionary" list="yesNoRadio" /]
       </div>
 
       <div>
-        [@customForm.input name="deliverable.dataAccess.qualityProcedures" type="text" i18nkey="reporting.deliverables.dataAccess.dataQuality" /]
+        [@customForm.input name="deliverable.accessDetails.qualityProcedures" type="text" i18nkey="reporting.deliverables.dataAccess.dataQuality" /]
       </div>
 
       <div>
         [@s.text name="reporting.deliverables.dataAccess.dataRestriction" /]
-        [@s.radio name="deliverable.dataAccess.accessRestrictions" list="notApplicableRadio" /]
+        [@s.radio name="deliverable.accessDetails.accessRestrictions" list="notApplicableRadio" /]
       </div>
       
       <div id="accessLimitOptions">
         <div>
           [@s.text name="reporting.deliverables.dataAccess.accessLimits" /]
-          [@s.radio name="deliverable.dataAccess.accessLimits" list="accessLimitsRadio" /]
+          [@s.radio name="deliverable.accessDetails.accessLimits" list="accessLimitsRadio" /]
         </div>
   
         <div class="halfPartBlock">
-          [@customForm.input name="deliverable.dataAccess.accessLimitStartDate" type="text" i18nkey="reporting.deliverables.dataAccess.accessLimits.startDate" /]
+          [@customForm.input name="deliverable.accessDetails.accessLimitStartDate" type="text" i18nkey="reporting.deliverables.dataAccess.accessLimits.startDate" /]
         </div>
 
         <div class="halfPartBlock">
-          [@customForm.input name="deliverable.dataAccess.accessLimitEndDate" type="text" i18nkey="reporting.deliverables.dataAccess.accessLimits.endDate" /]
+          [@customForm.input name="deliverable.accessDetails.accessLimitEndDate" type="text" i18nkey="reporting.deliverables.dataAccess.accessLimits.endDate" /]
         </div>
       </div>
       
       <div>
         [@s.text name="reporting.deliverables.dataAccess.harvestingProtocols" /]
-        [@s.radio name="deliverable.dataAccess.harvestingProtocols" list="yesNoRadio" /]
+        [@s.radio name="deliverable.accessDetails.harvestingProtocols" list="yesNoRadio" /]
       </div>
 
       <div>
-        [@customForm.input name="deliverable.dataAccess.harvestingProtocolDetails" type="text" i18nkey="reporting.deliverables.dataAccess.harvestingProtocols.specify" /]
+        [@customForm.input name="deliverable.accessDetails.harvestingProtocolDetails" type="text" i18nkey="reporting.deliverables.dataAccess.harvestingProtocols.specify" /]
       </div>
     </div>
     

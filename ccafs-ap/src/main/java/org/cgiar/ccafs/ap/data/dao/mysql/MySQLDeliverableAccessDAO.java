@@ -54,7 +54,6 @@ public class MySQLDeliverableAccessDAO implements DeliverableAccessDAO {
     try (Connection con = daoManager.getConnection()) {
       ResultSet rs = daoManager.makeQuery(query.toString(), con);
       if (rs.next()) {
-        deliverableAccessData.put("description", rs.getString("description"));
         deliverableAccessData.put("data_dictionary", rs.getString("data_dictionary"));
         deliverableAccessData.put("quality_procedures", rs.getString("quality_procedures"));
         deliverableAccessData.put("access_restrictions", rs.getString("access_restrictions"));
@@ -65,7 +64,7 @@ public class MySQLDeliverableAccessDAO implements DeliverableAccessDAO {
         deliverableAccessData.put("harvesting_protocol_details", rs.getString("harvesting_protocol_details"));
       }
     } catch (SQLException e) {
-      LOG.error("-- getDeliverableAccessData(): There was an error ");
+      LOG.error("-- getDeliverableAccessData(): There was an error ", e);
     }
 
     LOG.debug("<< getDeliverableAccessData():deliverableAccessData.size={}", deliverableAccessData.size());

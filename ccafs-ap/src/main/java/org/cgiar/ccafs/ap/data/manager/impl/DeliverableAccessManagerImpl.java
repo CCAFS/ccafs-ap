@@ -90,8 +90,19 @@ public class DeliverableAccessManagerImpl implements DeliverableAccessManager {
     values.put("quality_procedures", deliverableAccess.getQualityProcedures());
     values.put("access_restrictions", deliverableAccess.getAccessRestrictions());
     values.put("access_limits", deliverableAccess.getAccessLimits());
-    values.put("access_limit_start_date", dateFormat.format(deliverableAccess.getAccessLimitStartDate()));
-    values.put("access_limit_end_date", dateFormat.format(deliverableAccess.getAccessLimitEndDate()));
+
+    if (deliverableAccess.getAccessLimitStartDate() != null) {
+      values.put("access_limit_start_date", dateFormat.format(deliverableAccess.getAccessLimitStartDate()));
+    } else {
+      values.put("access_limit_start_date", null);
+    }
+
+    if (deliverableAccess.getAccessLimitEndDate() != null) {
+      values.put("access_limit_end_date", dateFormat.format(deliverableAccess.getAccessLimitEndDate()));
+    } else {
+      values.put("access_limit_end_date", null);
+    }
+
     values.put("harvesting_protocols", deliverableAccess.isHarvestingProtocols());
     values.put("harvesting_protocol_details", deliverableAccess.getHarvestingProtocolDetails());
     values.put("deliverable_id", deliverableID);
