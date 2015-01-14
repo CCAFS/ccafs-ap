@@ -25,7 +25,6 @@ import org.apache.commons.lang3.builder.ToStringBuilder;
 
 public class DeliverableAccess {
 
-  private String description;
   private boolean dataDictionary;
   private String qualityProcedures;
   private String accessRestrictions;
@@ -33,7 +32,6 @@ public class DeliverableAccess {
   private Date accessLimitStartDate;
   private Date accessLimitEndDate;
   private boolean harvestingProtocols;
-
   private String harvestingProtocolDetails;
 
   public Date getAccessLimitEndDate() {
@@ -50,10 +48,6 @@ public class DeliverableAccess {
 
   public String getAccessRestrictions() {
     return accessRestrictions;
-  }
-
-  public String getDescription() {
-    return description;
   }
 
   public String getHarvestingProtocolDetails() {
@@ -90,10 +84,6 @@ public class DeliverableAccess {
 
   public void setDataDictionary(boolean dataDictionary) {
     this.dataDictionary = dataDictionary;
-  }
-
-  public void setDescription(String description) {
-    this.description = description;
   }
 
   public void setHarvestingProtocolDetails(String harvestingProtocolDetails) {

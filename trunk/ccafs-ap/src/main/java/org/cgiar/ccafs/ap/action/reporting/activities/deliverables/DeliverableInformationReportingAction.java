@@ -69,6 +69,8 @@ public class DeliverableInformationReportingAction extends BaseAction {
   private DeliverableType[] deliverableSubTypes;
   private DeliverableStatus[] deliverableStatusList;
   private Map<Boolean, String> yesNoRadio;
+  private Map<String, String> notApplicableRadio;
+  private Map<String, String> accessLimitsRadio;
   private List<Metadata> metadataList;
 
   @Inject
@@ -85,6 +87,10 @@ public class DeliverableInformationReportingAction extends BaseAction {
     this.deliverableMetadataManager = deliverableMetadataManager;
     this.deliverableAccessManager = deliverableAccessManager;
     this.metadataManager = metadataManager;
+  }
+
+  public Map<String, String> getAccessLimitsRadio() {
+    return accessLimitsRadio;
   }
 
   public int getActivityID() {
@@ -113,6 +119,10 @@ public class DeliverableInformationReportingAction extends BaseAction {
 
   public List<Metadata> getMetadataList() {
     return metadataList;
+  }
+
+  public Map<String, String> getNotApplicableRadio() {
+    return notApplicableRadio;
   }
 
   public Map<Boolean, String> getYesNoRadio() {
@@ -144,9 +154,20 @@ public class DeliverableInformationReportingAction extends BaseAction {
     yesNoRadio.put(true, getText("reporting.activityDeliverables.yes"));
     yesNoRadio.put(false, getText("reporting.activityDeliverables.no"));
 
+    // Create options for the not applicable radio buttons
+    notApplicableRadio = new LinkedHashMap<>();
+    notApplicableRadio.put("Yes", getText("reporting.activityDeliverables.yes"));
+    notApplicableRadio.put("No", getText("reporting.activityDeliverables.no"));
+    notApplicableRadio.put("Not applicable", getText("reporting.activityDeliverables.notApplicable"));
+
+    // Create options for the access limit radio buttons
+    accessLimitsRadio = new LinkedHashMap<>();
+    accessLimitsRadio.put("inmediate", getText("reporting.deliverables.dataAccess.accessLimits.inmediate"));
+    accessLimitsRadio.put("embargoed", getText("reporting.deliverables.dataAccess.accessLimits.embargoed"));
+    accessLimitsRadio.put("restricted", getText("reporting.deliverables.dataAccess.accessLimits.restricted"));
+
     metadataList = metadataManager.getMetadataList();
   }
-
 
   @Override
   public String save() {
