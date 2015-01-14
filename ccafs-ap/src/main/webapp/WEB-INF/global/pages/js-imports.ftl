@@ -49,6 +49,10 @@
         <script src="${baseUrl}/js/libs/dropzone/dropzone-3.12.0.js"></script>
       [/#if]
       
+      [#if libraryName="star-rating"]          
+        <script src="${baseUrl}/js/libs/star-rating/jquery.rating.js"></script>
+      [/#if]
+      
    [/#list]
   [/#if]
   
