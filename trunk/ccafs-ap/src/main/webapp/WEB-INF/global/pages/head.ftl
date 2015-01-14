@@ -68,6 +68,10 @@
           <link rel="stylesheet" type="text/css" href="${baseUrl}/js/libs/dropzone/css/dropzone.css" />
         [/#if]
         
+        [#if libraryName="star-rating"]
+          <link rel="stylesheet" type="text/css" href="${baseUrl}/js/libs/star-rating/jquery.rating.css" />
+        [/#if]
+        
   	 [/#list]
   	[/#if]
   	

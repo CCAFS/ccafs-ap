@@ -1,7 +1,7 @@
 [#ftl]
-[#assign title = "Activity deliverables Report" /]
-[#assign globalLibs = ["jquery", "noty"] /]
-[#assign customJS = ["${baseUrl}/js/reporting/deliverablesReporting.js"] /]
+[#assign title = "Activity deliverables ranking Report" /]
+[#assign globalLibs = ["jquery", "noty", "star-rating"] /]
+[#assign customJS = ["${baseUrl}/js/reporting/deliverables/deliverablesReportingRank.js"] /]
 [#assign currentSection = "reporting" /]
 [#assign currentReportingSection = "activities" /]
 [#assign currentStage = "ranking" /]
@@ -25,8 +25,36 @@
       [@s.text name="reporting.activityDeliverables.deliverable" /] - ${deliverableID}
     </h1> 
     
+    <h6>[@s.text name="reporting.activityDeliverables.ranking.rankDeliverable" /]</h6>
+    <div class="borderBox">
+      <p>[@s.text name="reporting.activityDeliverables.ranking.rankDeliverableText" /]</p>
+      <div id="rankingBlock"> 
+        <input class="hover-star" type="radio" name="deliverable.rank" value="1" title="[@s.text name='reporting.activityDeliverables.ranking.level.notImportant' /]"/>
+        <input class="hover-star" type="radio" name="deliverable.rank" value="2" title="[@s.text name='reporting.activityDeliverables.ranking.level.lowImportance' /]"/>
+        <input class="hover-star" type="radio" name="deliverable.rank" value="3" title="[@s.text name='reporting.activityDeliverables.ranking.level.good' /]"/>
+        <input class="hover-star" type="radio" name="deliverable.rank" value="4" title="[@s.text name='reporting.activityDeliverables.ranking.level.important' /]"/>
+        <input class="hover-star" type="radio" name="deliverable.rank" value="5" title="[@s.text name='reporting.activityDeliverables.ranking.level.veryImportant' /]" />
+        <div id="hover-test" style=""></div> 
+        <div class="clearfix"></div>
+      </div>
+     
+    </div>
     
-    
+    <div id="rate-legend">
+      <ul>
+        <li><strong>[@s.text name='reporting.activityDeliverables.ranking.level.veryImportant' /] </strong> -
+        [@s.text name='reporting.activityDeliverables.ranking.level.veryImportant.help' /] </li>
+        <li><strong>[@s.text name='reporting.activityDeliverables.ranking.level.important' /] </strong> -
+        [@s.text name='reporting.activityDeliverables.ranking.level.important.help' /] </li>
+        <li><strong>[@s.text name='reporting.activityDeliverables.ranking.level.good' /] </strong> -
+        [@s.text name='reporting.activityDeliverables.ranking.level.good.help' /] </li>
+        <li><strong>[@s.text name='reporting.activityDeliverables.ranking.level.lowImportance' /] </strong> -
+        [@s.text name='reporting.activityDeliverables.ranking.level.lowImportance.help' /] </li>
+        <li><strong>[@s.text name='reporting.activityDeliverables.ranking.level.notImportant' /] </strong> -
+        [@s.text name='reporting.activityDeliverables.ranking.level.notImportant.help' /] </li>
+      </ul>
+    </div>
+     
     
     <!-- internal parameter -->
     <input name="activityID" type="hidden" value="${activityID}" />
