@@ -29,7 +29,7 @@
     <div class="borderBox">
       <p>[@s.text name="reporting.activityDeliverables.ranking.rankDeliverableText" /]</p>
       <div id="rankingBlock"> 
-        <input class="hover-star" type="radio" name="deliverable.rank" value="1" title="[@s.text name='reporting.activityDeliverables.ranking.level.notImportant' /]"/>
+        <input class="hover-star required" type="radio" name="deliverable.rank" value="1" title="[@s.text name='reporting.activityDeliverables.ranking.level.notImportant' /]"/>
         <input class="hover-star" type="radio" name="deliverable.rank" value="2" title="[@s.text name='reporting.activityDeliverables.ranking.level.lowImportance' /]"/>
         <input class="hover-star" type="radio" name="deliverable.rank" value="3" title="[@s.text name='reporting.activityDeliverables.ranking.level.good' /]"/>
         <input class="hover-star" type="radio" name="deliverable.rank" value="4" title="[@s.text name='reporting.activityDeliverables.ranking.level.important' /]"/>

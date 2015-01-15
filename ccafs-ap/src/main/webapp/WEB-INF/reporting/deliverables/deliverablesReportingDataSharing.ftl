@@ -54,6 +54,9 @@
     <div id="ccafsFiles">
       [#-- This is used for run a JQuery (dropzone) plugin to drag and drop deliverables files--]
       <div id="dragAndDrop" class="dropzone">
+        <div class="fallback"> 
+          <div id="addFileInput">[@s.text name="reporting.activityDeliverables.dataSharing.addFile" /]</div>
+        </div>
       </div>
       <br>
       <h6>[@s.text name="reporting.activityDeliverables.dataSharing.deliverableFiles" /]</h6>
@@ -95,6 +98,11 @@
  
   </section>
 
+  [#-- File Input template --]
+ <div id="fileInputTemplate" class="fileInput" style="display:none">
+   <img class="removeInput" src="${baseUrl}/images/global/icon-remove.png" alt="Remove"> 
+   <input name="file" type="file" multiple />
+ </div>
  
  [#-- File uploaded template --]
  <li id="deliberableFileTemplate" class="fileUploaded" style="display:none">
