@@ -1060,6 +1060,27 @@ li.fileUploaded span {
     width:10%;
 }
 
+.fallback .fileInput{
+    margin-bottom: 5px;
+}
+
+.fallback .fileInput .removeInput{
+    vertical-align: middle;
+}
+
+.fallback #addFileInput{
+	width: 100px;
+	padding: 4px;
+	margin: 6px 0;
+	color: #fff;
+	background: #2BA6CB;
+	font-weight: bold;
+	cursor:pointer;
+}
+
+.fallback #input{}
+
+
 #rankingBlock{
 	padding: 10px 3px;
 }

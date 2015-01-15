@@ -27,6 +27,8 @@ $(document).ready(function(){
   function addDropzone(){
     $("div#dragAndDrop").dropzone({
       init : initDropzone,
+      fallback : fallBackDropzone,
+      uploadMultiple : true,
       paramName : "file", // The name that will be used to transfer the file
       params : {
         activityID : $("input[name^='activityID']").val(),
@@ -48,6 +50,18 @@ $(document).ready(function(){
       $newElement.show("slow");
       this.removeFile(file);
     });
+  }
+  
+  function fallBackDropzone(){
+    $("#addFileInput").on("click", function(){
+      var $newElement = $("#fileInputTemplate").clone(true).removeAttr("id");
+      $(this).parent().prepend($newElement);
+      $newElement.fadeIn();
+    });
+    $(".removeInput").on("click", function(){
+      $(this).parent().remove();
+    });
+    $("#addFileInput").trigger("click", true);
   }
   
 });

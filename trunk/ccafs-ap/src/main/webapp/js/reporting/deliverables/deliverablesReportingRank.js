@@ -1,6 +1,8 @@
 $(document).ready(function(){
   console.log("rank");
   
+  $(this).tooltip("destroy");
+  
   $('.hover-star').rating({
     cancel : 'Cancel',
     cancelValue : '0',
