@@ -28,9 +28,11 @@ public class APConfig {
   private static final String SUMMARIES_ACTIVE = "ccafsap.summaries.active";
   private static final String GMAIL_USER = "gmail.user";
   private static final String GMAIL_PASSWORD = "gmail.password";
+
   private static final String FILE_CASE_STUDIES_IMAGE_URL = "file.caseStudiesImagesUrl";
   private static final String FILE_CASE_STUDIES_IMAGE_PATH = "file.caseStudiesImagesPath";
   private static final String MAX_CASE_STUDY_TYPES = "ccafsap.reporting.caseStudy.types.max";
+  private static final String DELIVERABLE_FILE_PATH = "file.deliverables.path";
 
   // Logging.
   private static final Logger LOG = LoggerFactory.getLogger(APConfig.class);
@@ -91,6 +93,20 @@ public class APConfig {
       return url;
     }
     return url;
+  }
+
+  /**
+   * Get the path where the deliverables files should be stored
+   * 
+   * @return a string with the path
+   */
+  public String getDeliverablesFilesPath() {
+    try {
+      return properties.getPropertiesAsString(DELIVERABLE_FILE_PATH);
+    } catch (Exception e) {
+      LOG.error("there is not a path for the deliverables files configured.");
+    }
+    return null;
   }
 
   /**

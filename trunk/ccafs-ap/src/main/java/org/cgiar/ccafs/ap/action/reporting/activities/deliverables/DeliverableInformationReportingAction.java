@@ -189,6 +189,10 @@ public class DeliverableInformationReportingAction extends BaseAction {
     this.deliverable = deliverable;
   }
 
+  public void setDeliverableID(int deliverableID) {
+    this.deliverableID = deliverableID;
+  }
+
   public void setMetadataList(List<Metadata> metadataList) {
     this.metadataList = metadataList;
   }
