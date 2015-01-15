@@ -55,4 +55,10 @@ public class MetadataManagerImpl implements MetadataManager {
     return metadataList;
   }
 
+  @Override
+  public List<Metadata> getRequiredMetadata(int deliverableTypeID) {
+    // TODO Auto-generated method stub
+    return null;
+  }
+
 }

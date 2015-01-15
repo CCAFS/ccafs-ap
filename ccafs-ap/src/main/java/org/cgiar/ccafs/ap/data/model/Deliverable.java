@@ -32,7 +32,7 @@ public abstract class Deliverable {
   protected String descriptionUpdate;
   protected DeliverableStatus status;
   protected DeliverableType type;
-  protected List<String> filesNames;
+  protected List<DeliverableFile> files;
   protected List<FileFormat> fileFormats;
   protected List<DeliverableMetadata> metadata;
   protected DeliverableTrafficLight trafficLight;
@@ -54,8 +54,8 @@ public abstract class Deliverable {
     return fileFormats;
   }
 
-  public List<String> getFilesNames() {
-    return filesNames;
+  public List<DeliverableFile> getFilesNames() {
+    return files;
   }
 
   public int getId() {
@@ -117,8 +117,8 @@ public abstract class Deliverable {
     this.fileFormats = fileFormats;
   }
 
-  public void setFilesNames(List<String> filesNames) {
-    this.filesNames = filesNames;
+  public void setFilesNames(List<DeliverableFile> files) {
+    this.files = files;
   }
 
   public void setId(int id) {

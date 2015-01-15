@@ -12,36 +12,49 @@
  * along with CCAFS P&R. If not, see <http://www.gnu.org/licenses/>.
  *****************************************************************/
 
-package org.cgiar.ccafs.ap.data.manager;
-
-import org.cgiar.ccafs.ap.data.manager.impl.MetadataManagerImpl;
-import org.cgiar.ccafs.ap.data.model.Metadata;
-
-import java.util.List;
-
-import com.google.inject.ImplementedBy;
+package org.cgiar.ccafs.ap.data.model;
 
 
 /**
  * @author Hernán David Carvajal
  */
 
-@ImplementedBy(MetadataManagerImpl.class)
-public interface MetadataManager {
+public class DeliverableFile {
 
-  /**
-   * This method gets all the metadata elements
-   * present in the database.
-   * 
-   * @return a list of metadata objects with the information
-   */
-  public List<Metadata> getMetadataList();
+  private int id;
+  private String name;
+  private String link;
+  private String hosted;
 
-  /**
-   * This method get if the all the metadata
-   * 
-   * @param deliverableTypeID
-   * @return
-   */
-  public List<Metadata> getRequiredMetadata(int deliverableTypeID);
+  public String getHosted() {
+    return hosted;
+  }
+
+  public int getId() {
+    return id;
+  }
+
+  public String getLink() {
+    return link;
+  }
+
+  public String getName() {
+    return name;
+  }
+
+  public void setHosted(String hosted) {
+    this.hosted = hosted;
+  }
+
+  public void setId(int id) {
+    this.id = id;
+  }
+
+  public void setLink(String link) {
+    this.link = link;
+  }
+
+  public void setName(String name) {
+    this.name = name;
+  }
 }

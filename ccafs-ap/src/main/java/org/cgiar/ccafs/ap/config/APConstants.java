@@ -23,4 +23,9 @@ public final class APConstants {
   // Constants for the deliverables types
   public static final int DELIVERABLE_TYPE_PUBLICATION = 3;
   public static final int DELIVERABLE_TYPE_CASE_STUDIES = 5;
+
+  // Constants for the type of host used in the deliverable type
+  public static final String DELIVERABLE_FILE_LOCALLY_HOSTED = "Locally";
+  public static final String DELIVERABLE_FILE_EXTERNALLY_HOSTED = "Externally";
+  public static final String DELIVERABLE_FILE_TO_DOWNLOAD = "To download";
 }

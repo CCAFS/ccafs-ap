@@ -12,12 +12,12 @@
  * along with CCAFS P&R. If not, see <http://www.gnu.org/licenses/>.
  *****************************************************************/
 
-package org.cgiar.ccafs.ap.data.manager;
+package org.cgiar.ccafs.ap.data.dao;
 
-import org.cgiar.ccafs.ap.data.manager.impl.MetadataManagerImpl;
-import org.cgiar.ccafs.ap.data.model.Metadata;
+import org.cgiar.ccafs.ap.data.dao.mysql.MySQLDeliverableFileDAO;
 
 import java.util.List;
+import java.util.Map;
 
 import com.google.inject.ImplementedBy;
 
@@ -26,22 +26,26 @@ import com.google.inject.ImplementedBy;
  * @author Hernán David Carvajal
  */
 
-@ImplementedBy(MetadataManagerImpl.class)
-public interface MetadataManager {
+@ImplementedBy(MySQLDeliverableFileDAO.class)
+public interface DeliverableFileDAO {
 
   /**
-   * This method gets all the metadata elements
-   * present in the database.
+   * Get all the deliverable files related to the deliverable
+   * identified by the value received as parameter.
    * 
-   * @return a list of metadata objects with the information
+   * @param deliverableID - deliverable identifier
+   * @return a list of maps with the information
    */
-  public List<Metadata> getMetadataList();
+  List<Map<String, String>> getDeliverableFiles(int deliverableID);
 
   /**
-   * This method get if the all the metadata
+   * This method save in the database the information of the file
+   * received.
    * 
-   * @param deliverableTypeID
-   * @return
+   * @param fileData - Map with the information
+   * @return the id of the record inserted, 0 if the record was
+   *         updated or -1 if any error occurred.
    */
-  public List<Metadata> getRequiredMetadata(int deliverableTypeID);
+  int saveDeliverableFile(Map<String, Object> fileData);
+
 }

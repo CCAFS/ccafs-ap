@@ -221,6 +221,7 @@ public class CaseStudiesAction extends BaseAction {
         boolean added =
           caseStudyManager.saveCaseStudy(caseStudies.get(c), getCurrentUser().getLeader().getId(),
             getCurrentReportingLogframe().getId());
+
         if (!added) {
           problem = true;
         } else {
