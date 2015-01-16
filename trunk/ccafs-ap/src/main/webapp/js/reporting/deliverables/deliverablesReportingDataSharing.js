@@ -99,7 +99,7 @@ $(document).ready(function(){
       file.name = (file.name).substring(0, 70) + "...";
     
     $newElement.find(".fileName").html(file.name);
-    $newElement.find(".fileFormat").html(file.type);
+    $newElement.find(".fileFormat").html(file.hosted);
     
     $("#filesUploaded ul").prepend($newElement);
     $newElement.show("slow");
