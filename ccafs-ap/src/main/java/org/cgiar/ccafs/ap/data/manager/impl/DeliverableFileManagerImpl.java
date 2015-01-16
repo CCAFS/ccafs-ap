@@ -58,6 +58,11 @@ public class DeliverableFileManagerImpl implements DeliverableFileManager {
   }
 
   @Override
+  public boolean removeDeliverableFile(int deliverableFileID) {
+    return deliverableFileDAO.removeDeliverableFile(deliverableFileID);
+  }
+
+  @Override
   public int saveDeliverableFile(DeliverableFile file, int deliverableID) {
     int fileID = -1;
 

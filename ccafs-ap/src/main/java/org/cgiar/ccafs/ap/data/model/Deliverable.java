@@ -54,7 +54,7 @@ public abstract class Deliverable {
     return fileFormats;
   }
 
-  public List<DeliverableFile> getFilesNames() {
+  public List<DeliverableFile> getFiles() {
     return files;
   }
 
@@ -117,7 +117,7 @@ public abstract class Deliverable {
     this.fileFormats = fileFormats;
   }
 
-  public void setFilesNames(List<DeliverableFile> files) {
+  public void setFiles(List<DeliverableFile> files) {
     this.files = files;
   }
 
@@ -149,4 +149,5 @@ public abstract class Deliverable {
   public String toString() {
     return ToStringBuilder.reflectionToString(this);
   }
+
 }

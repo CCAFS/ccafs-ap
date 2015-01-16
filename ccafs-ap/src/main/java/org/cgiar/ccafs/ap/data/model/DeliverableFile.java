@@ -14,6 +14,8 @@
 
 package org.cgiar.ccafs.ap.data.model;
 
+import org.apache.commons.lang3.builder.ToStringBuilder;
+
 
 /**
  * @author Hernán David Carvajal
@@ -25,6 +27,15 @@ public class DeliverableFile {
   private String name;
   private String link;
   private String hosted;
+
+  @Override
+  public boolean equals(Object obj) {
+    if (obj instanceof DeliverableFile) {
+      DeliverableFile v = (DeliverableFile) obj;
+      return v.id == this.id;
+    }
+    return false;
+  }
 
   public String getHosted() {
     return hosted;
@@ -42,6 +53,11 @@ public class DeliverableFile {
     return name;
   }
 
+  @Override
+  public int hashCode() {
+    return this.id;
+  }
+
   public void setHosted(String hosted) {
     this.hosted = hosted;
   }
@@ -56,5 +72,10 @@ public class DeliverableFile {
 
   public void setName(String name) {
     this.name = name;
+  }
+
+  @Override
+  public String toString() {
+    return ToStringBuilder.reflectionToString(this);
   }
 }
