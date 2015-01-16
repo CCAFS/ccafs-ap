@@ -22,15 +22,15 @@
         [#-- JQuery Core --]
         <script src="${baseUrl}/js/libs/jquery/jquery-1.8.2.min.js"></script>
         [#-- JQuery UI --]
-        <script src="${baseUrl}/js/libs/jqueryUI/jquery-ui-1.10.0.custom.min.js"></script>
+        <script src="${baseUrl}/js/libs/jqueryUI/jquery-ui-1.9.2.custom.js"></script>
       [/#if]
       
       [#if libraryName="jqueryUI"]
-        <script src="${baseUrl}/js/libs/jqueryUI/jquery-ui-1.10.0.custom.min.js"></script>
+        <script src="${baseUrl}/js/libs/jqueryUI/jquery-ui-1.9.2.custom.js"></script>
       [/#if]
       
       [#if libraryName="jqueryAndUI"]          
-        <script src="${baseUrl}/js/libs/jqueryUI/jquery-ui-1.10.0.custom.min.js"></script>
+        <script src="${baseUrl}/js/libs/jqueryUI/jquery-ui-1.9.2.custom.js"></script>
       [/#if]
       
       [#if libraryName="noty"]

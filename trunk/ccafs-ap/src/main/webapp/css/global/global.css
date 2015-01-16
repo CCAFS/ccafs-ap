@@ -46,11 +46,11 @@ margin-bottom: 0.5em;
 }
 
 .borderBox {
-	background: rgba(0, 0, 0, 0.02);
-	border: 1px solid rgba(0, 0, 0, 0.03);
-	-webkit-border-radius: 3px;
-	border-radius: 3px;
-	padding: 10px;
+  background: rgba(0, 0, 0, 0.02);
+  border: 1px solid rgba(0, 0, 0, 0.03);
+  -webkit-border-radius: 3px;
+  border-radius: 3px;
+  padding: 10px;
 }
 
 .red {
@@ -1029,15 +1029,25 @@ ul#deliverablesFilesMessages > li {
     min-height: 170px;
 }
 
+
+#filesUploaded {
+  max-height: 200px;
+  /* overflow: auto; */
+  /* overflow-x: hidden; */
+  overflow-y: auto;
+  margin-bottom: 25px;
+}
+
 #filesUploaded ul {
     margin: 0;
 }
 
 li.fileUploaded {
     list-style: none;
-    border: 1px solid rgba(0, 0, 0, 0.03);    -webkit-border-radius: 3px;  border-radius: 3px;  background: rgba(0, 0, 0, 0.03);  
+    border: 1px solid rgba(0, 0, 0, 0.05);    -webkit-border-radius: 3px;  border-radius: 3px;  background: rgba(0, 0, 0, 0.03);  
     padding: 6px;
     margin-bottom: 4px;
+    font-size: 0.9em;
 }
 
 li.fileUploaded div {
@@ -1045,19 +1055,22 @@ li.fileUploaded div {
 }
 
 li.fileUploaded .fileName {
-    width: 60%;
+    width: 67%;
 }
 
 li.fileUploaded .fileFormat {
     width: 15%;
+    color: #696969;
 }
 
 li.fileUploaded .fileSize {
-    width: 15%;
+    width: 15%;  color: #535353;
 }
 
 li.fileUploaded span {
     width:10%;
+    cursor:pointer;
+    background: #fff;
 }
 
 .fallback .fileInput{
@@ -1069,20 +1082,29 @@ li.fileUploaded span {
 }
 
 .fallback #addFileInput{
-	width: 100px;
-	padding: 4px;
-	margin: 6px 0;
-	color: #fff;
-	background: #2BA6CB;
-	font-weight: bold;
-	cursor:pointer;
+  
+}
+
+.uploadBlock {
+  margin-left: 28px;
+}
+
+.addButton{
+  width: 100px;
+  padding: 4px;
+  margin: 6px 0;
+  color: #fff;
+  background: #2BA6CB;
+  font-weight: bold;
+  cursor:pointer;
+  text-align: center;
 }
 
 .fallback #input{}
 
 
 #rankingBlock{
-	padding: 10px 3px;
+  padding: 10px 3px;
 }
 
 #rate-legend {

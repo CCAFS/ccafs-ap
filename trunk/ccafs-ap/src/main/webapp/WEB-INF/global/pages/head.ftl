@@ -46,17 +46,17 @@
         
         [#if libraryName="jquery"]
           [#-- JQuery UI --]
-          <link rel="stylesheet" type="text/css" href="${baseUrl}/css/libs/jqueryUI/jquery-ui-1.10.css" />
+          <!--link rel="stylesheet" type="text/css" href="${baseUrl}/css/libs/jqueryUI/jquery-ui-1.10.css" /-->
           <link rel="stylesheet" type="text/css" href="${baseUrl}/css/global/jquery-ui.custom.css" />
         [/#if]
         
         [#if libraryName="jqueryUI"]
-          <link rel="stylesheet" type="text/css" href="${baseUrl}/css/libs/jqueryUI/jquery-ui-1.10.css" />
+          <!--link rel="stylesheet" type="text/css" href="${baseUrl}/css/libs/jqueryUI/jquery-ui-1.10.css" /-->
           <link rel="stylesheet" type="text/css" href="${baseUrl}/css/global/jquery-ui.custom.css" />
         [/#if]
         
         [#if libraryName="jqueryAndUI"]          
-          <link rel="stylesheet" type="text/css" href="${baseUrl}/css/libs/jqueryUI/jquery-ui-1.10.css" />
+          <!--link rel="stylesheet" type="text/css" href="${baseUrl}/css/libs/jqueryUI/jquery-ui-1.10.css" /-->
           <link rel="stylesheet" type="text/css" href="${baseUrl}/css/global/jquery-ui.custom.css" />
         [/#if]
         
