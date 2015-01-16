@@ -39,6 +39,14 @@ public interface DeliverableFileManager {
   public List<DeliverableFile> getDeliverableFiles(int deliverableID);
 
   /**
+   * This method remove from the deliverable file information from the database.
+   * 
+   * @param deliverableFileID - deliverable file identifier
+   * @return true if the record was deleted successfully. False otherwise.
+   */
+  public boolean removeDeliverableFile(int deliverableFileID);
+
+  /**
    * This method save the information of the deliverable files received
    * into the database.
    * 

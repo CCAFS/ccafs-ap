@@ -59,7 +59,6 @@ public class DeliverableInformationReportingAction extends BaseAction {
   private DeliverableAccessManager deliverableAccessManager;
   private MetadataManager metadataManager;
 
-
   // Model
   private Deliverable deliverable;
   private int deliverableID;
@@ -188,6 +187,7 @@ public class DeliverableInformationReportingAction extends BaseAction {
   public void setDeliverable(Deliverable deliverable) {
     this.deliverable = deliverable;
   }
+
 
   public void setDeliverableID(int deliverableID) {
     this.deliverableID = deliverableID;

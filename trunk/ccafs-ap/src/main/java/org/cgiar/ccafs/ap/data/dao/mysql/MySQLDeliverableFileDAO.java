@@ -73,6 +73,29 @@ public class MySQLDeliverableFileDAO implements DeliverableFileDAO {
   }
 
   @Override
+  public boolean removeDeliverableFile(int deliverableFileID) {
+    LOG.debug(">> removeDeliverableFile(deliverableFileID={})", deliverableFileID);
+    boolean removed = false;
+    StringBuilder query = new StringBuilder();
+    query.append("DELETE FROM deliverable_files WHERE id = ");
+    query.append(deliverableFileID);
+
+    try (Connection con = daoManager.getConnection()) {
+      int rowsDeleted = daoManager.makeChange(query.toString(), con);
+      if (rowsDeleted < 0) {
+        LOG.debug("-- removeDeliverableFile():There was an error trying to remove the deliverable file.");
+      } else {
+        removed = true;
+      }
+    } catch (SQLException e) {
+      LOG.debug("-- removeDeliverableFile():There was an exception trying to remove the deliverable file.", e);
+    }
+
+    LOG.debug("<< removeDeliverableFile():{}", removed);
+    return removed;
+  }
+
+  @Override
   public int saveDeliverableFile(Map<String, Object> fileData) {
     LOG.debug(">> saveDeliverableFile(fileData={})", fileData);
     int rowID = -1;

@@ -39,6 +39,14 @@ public interface DeliverableFileDAO {
   List<Map<String, String>> getDeliverableFiles(int deliverableID);
 
   /**
+   * This method remove from the deliverable file information from the database.
+   * 
+   * @param deliverableFileID - deliverable file identifier
+   * @return true if the record was deleted successfully. False otherwise.
+   */
+  boolean removeDeliverableFile(int deliverableFileID);
+
+  /**
    * This method save in the database the information of the file
    * received.
    * 

@@ -43,7 +43,7 @@
     <action name="deliverables" class="org.cgiar.ccafs.ap.action.reporting.activities.deliverables.DeliverableInformationReportingAction">
       <interceptor-ref name="reportingStack" />
       <interceptor-ref name="accessibleActivity" />
-      <result name="cancel" type="redirectAction">activities</result>
+      <result name="cancel" type="redirectAction">deliverablesList</result>
       <result name="input">/WEB-INF/reporting/deliverables/deliverablesReporting.ftl</result>
       <result name="success" type="redirectAction">
         <param name="actionName">deliverables</param>
@@ -64,10 +64,10 @@
       <result name="success">/WEB-INF/reporting/deliverables/uploadDeliverableReporting.ftl</result>
     </action>
     
-    <action name="deliverablesData" class="org.cgiar.ccafs.ap.action.reporting.activities.deliverables.DeliverableInformationReportingAction">
+    <action name="deliverablesData" class="org.cgiar.ccafs.ap.action.reporting.activities.deliverables.DeliverableDataReportingAction">
       <interceptor-ref name="reportingStack" />
       <interceptor-ref name="accessibleActivity" />
-      <result name="cancel" type="redirectAction">activities</result>
+      <result name="cancel" type="redirectAction">deliverablesList</result>
       <result name="input">/WEB-INF/reporting/deliverables/deliverablesReportingDataSharing.ftl</result>
       <result name="success" type="redirectAction">
         <param name="actionName">deliverablesData</param>
@@ -75,7 +75,7 @@
         <param name="deliverableID">${deliverableID}</param>
       </result>
       <result name="next" type="redirectAction">
-        <param name="actionName">partners</param>
+        <param name="actionName">deliverablesRank</param>
         <param name="activityID">${activityID}</param>
         <param name="deliverableID">${deliverableID}</param>
       </result>
