@@ -14,7 +14,7 @@
 <section class="content">
   <div class="helpMessage">
     <img src="${baseUrl}/images/global/icon-help.png" />
-    <p>[@s.text name="reporting.activityDeliverables.help" /]</p>
+    <p>[@s.text name="reporting.activityDeliverables.ranking.help" /]</p>
   </div>
   [#include "/WEB-INF/global/pages/reporting-secondary-menu.ftl" /]
   

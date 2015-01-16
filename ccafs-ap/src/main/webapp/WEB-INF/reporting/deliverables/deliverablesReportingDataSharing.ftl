@@ -1,7 +1,7 @@
 [#ftl]
 [#assign title = "Activity deliverables Data Sharing Report" /]
 [#assign globalLibs = ["jquery", "noty", "dropzone"] /]
-[#assign customJS = ["${baseUrl}/js/reporting/deliverables/deliverablesReportingDataSharing.js"] /]
+[#assign customJS = ["${baseUrl}/js/reporting/deliverables/deliverablesReportingDataSharing.js" ,"${baseUrl}/js/global/utils.js"] /]
 [#assign currentSection = "reporting" /]
 [#assign currentReportingSection = "activities" /]
 [#assign currentStage = "dataSharing" /]
@@ -24,63 +24,55 @@
     <h1 class="contentTitle">
       [@s.text name="reporting.activityDeliverables.deliverable" /] - ${deliverableID}
     </h1> 
+    [#-- Deliverable file List --]
+    <h6>[@s.text name="reporting.activityDeliverables.dataSharing.deliverableFiles" /]</h6>
+    <div id="filesUploaded">
+      <ul>
+        
+      </ul>
+    </div>
     
-    <h6>[@s.text name="reporting.activityDeliverables.dataSharing.chooseOptions" /]</h6>
     
+    [#-- Deliverable options to upload --]
+    <h6>[@s.text name="reporting.activityDeliverables.dataSharing.chooseOptions" /]</h6> 
     <div id="dataSharingOptions">
       <label for="option-1">
-          <input id="option-1" type="radio" name="dataSharingOptions" value="option1" >
+          <input id="option-1" type="radio" name="sharingOption" value="Externally" checked>
           [@s.text name="reporting.activityDeliverables.dataSharing.hostedInstitutional" /]
           <span class="quote">[@s.text name="reporting.activityDeliverables.dataSharing.hostedInstitutional.help" /]</span>
+          
+          <div id="fileURL" class="fullBlock uploadBlock" style="display:none">
+            [@customForm.input name="" type="text" i18nkey="reporting.activityDeliverables.filename" value="http://"/]
+            <div id="addFileURL-external" class="addButton addFileURL">[@s.text name="reporting.activityDeliverables.dataSharing.addURL" /]</div>
+          </div> 
       </label> 
       
       <label for="option-2">
-          <input id="option-2" type="radio" name="dataSharingOptions" value="option2" checked>
+          <input id="option-2" type="radio" name="sharingOption" value="Todownload" >
           [@s.text name="reporting.activityDeliverables.dataSharing.fileGreater" /]
           <span class="quote">[@s.text name="reporting.activityDeliverables.dataSharing.fileGreater.help" /]</span>
+          
+          <div id="fileURL" class="fullBlock uploadBlock" style="display:none">
+            [@customForm.input name="" type="text" i18nkey="reporting.activityDeliverables.filename" value="http://" /]
+            <div id="addFileURL-ccafs" class="addButton addFileURL">[@s.text name="reporting.activityDeliverables.dataSharing.addURL" /]</div>
+          </div> 
       </label> 
       
       <label for="option-3">
-          <input id="option-3" type="radio" name="dataSharingOptions" value="option3">
+          <input id="option-3" type="radio" name="sharingOption" value="Locally">
           [@s.text name="reporting.activityDeliverables.dataSharing.fileSmaller" /]
           <span class="quote">[@s.text name="reporting.activityDeliverables.dataSharing.fileSmaller.help" /]</span>
+          
+          [#-- This is used for run a JQuery (dropzone) plugin to drag and drop deliverables files--]
+          <div id="dragAndDrop" class="dropzone uploadBlock" style="display:none">
+            <div class="fallback"> 
+              <div id="addFileInput" class="addButton">[@s.text name="reporting.activityDeliverables.dataSharing.addFile" /]</div>
+            </div>
+          </div>
       </label> 
-    </div>
-
-    <h6>[@s.text name="reporting.activityDeliverables.dataSharing.uploadFiles" /]</h6>
-    <div id="fileURL" class="fullBlock" style="display:none">
-      [@customForm.input name="deliverable.fileURL" type="text" i18nkey="reporting.activityDeliverables.filename" /]
-    </div> 
-    <div id="ccafsFiles">
-      [#-- This is used for run a JQuery (dropzone) plugin to drag and drop deliverables files--]
-      <div id="dragAndDrop" class="dropzone">
-        <div class="fallback"> 
-          <div id="addFileInput">[@s.text name="reporting.activityDeliverables.dataSharing.addFile" /]</div>
-        </div>
-      </div>
-      <br>
-      <h6>[@s.text name="reporting.activityDeliverables.dataSharing.deliverableFiles" /]</h6>
-      <div id="filesUploaded">
-        <ul>
-           <li id="deliberableFile-1" class="fileUploaded">
-             <div class="fileName">Filename #1</div>
-             <div class="fileFormat">PDF</div>
-             <div class="fileSize">50 KB</div>
-             <span>Remove</span>
-           </li>
-           
-           <li id="deliberableFile-2" class="fileUploaded">
-             <div class="fileName">Filename #2</div>
-             <div class="fileFormat">PDF</div>
-             <div class="fileSize">20 KB</div>
-             <span>Remove</span>
-           </li>
-        </ul>
-      </div>
-    </div>
-
+    </div>  
     
-    
+        
     <!-- internal parameter -->
     <input name="activityID" type="hidden" value="${activityID}" />
     <input name="deliverableID" type="hidden" value="${deliverable.id?c}" />
@@ -101,15 +93,24 @@
   [#-- File Input template --]
  <div id="fileInputTemplate" class="fileInput" style="display:none">
    <img class="removeInput" src="${baseUrl}/images/global/icon-remove.png" alt="Remove"> 
-   <input name="file" type="file" multiple />
+   <input name="fileTemplate" type="file" multiple />
  </div>
  
  [#-- File uploaded template --]
- <li id="deliberableFileTemplate" class="fileUploaded" style="display:none">
-   <div class="fileName">filename</div>
-   <div class="fileFormat">format</div>
-   <div class="fileSize">size</div>
-   <span>Remove</span>
- </li>
+ <ul>
+   <li id="deliverableFileTemplate" class="fileUploaded" style="display:none">
+     <input class="fileID" name="" type="hidden">
+     <input class="fileHosted" name="" type="hidden">
+     <input class="fileLink" name="" type="hidden">
+     <div class="fileName">filename</div>
+     <div class="fileFormat">- -</div>
+     <div class="fileSize">- -</div>
+     <img class="removeInput" src="${baseUrl}/images/global/icon-remove.png" alt="Remove"/> 
+   </li>
+ </ul>
+ [#-- Remove deliverable files modal  template --]
+<div id="removeDeliverableFiles" style="display:none" title="Modal title"> 
+ Modal content
+</div> 
 
 [#include "/WEB-INF/global/pages/footer.ftl"]
