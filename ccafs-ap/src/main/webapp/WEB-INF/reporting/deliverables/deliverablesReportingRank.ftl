@@ -25,6 +25,29 @@
       [@s.text name="reporting.activityDeliverables.deliverable" /] - ${deliverableID}
     </h1> 
     
+    <div id="trafficLightQuestions" class="fullBlock">
+      <h6>[@s.text name="reporting.activityDeliverables.trafficLight" /]</h6>
+      <table class="borderBox">
+        <tbody>
+          <tr>
+            <td class="question"> [@s.text name="reporting.activityDeliverables.trafficLight.metadataDocumented" /]</td>
+            <td class="answer"> [@s.radio name="deliverable.trafficLight.metadataDocumented" list="yesNoRadio" /]</td>
+          </tr>
+          
+          <tr>
+            <td class="question"> [@s.text name="reporting.activityDeliverables.trafficLight.collectionTools" /]<span class="quote"> [@s.text name="reporting.activityDeliverables.trafficLight.collectionTools.quote" /]<span> </td>
+            <td class="answer"> [@s.radio name="deliverable.trafficLight.haveCollectionTools" list="yesNoRadio" /]</td>
+          </tr>
+          
+          <tr>
+            <td class="question"> [@s.text name="reporting.activityDeliverables.trafficLight.qualityDocumented" /]</td>
+            <td class="answer"> [@s.radio name="deliverable.trafficLight.qualityDocumented" list="yesNoRadio" /]</td>
+          </tr>
+          
+        </tbody>  
+      </table> 
+    </div>
+    
     <h6>[@s.text name="reporting.activityDeliverables.ranking.rankDeliverable" /]</h6>
     <div class="borderBox">
       <p>[@s.text name="reporting.activityDeliverables.ranking.rankDeliverableText" /]</p>

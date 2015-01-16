@@ -976,8 +976,8 @@ ul#deliverablesFilesMessages > li {
 }
 
 #trafficLightQuestions table { 
-    border: 1px solid #ccc;
-    width: 94%;
+    /* border: 1px solid #ccc; */
+    /* width: 94%; */
 }
 
 #trafficLightQuestions td {
