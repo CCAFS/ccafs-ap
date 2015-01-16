@@ -2,12 +2,30 @@ package org.cgiar.ccafs.ap.data.dao;
 
 import org.cgiar.ccafs.ap.data.dao.mysql.MySQLUserDAO;
 
+import java.util.List;
 import java.util.Map;
 
 import com.google.inject.ImplementedBy;
 
 @ImplementedBy(MySQLUserDAO.class)
 public interface UserDAO {
+
+
+  /**
+   * Get all Users
+   * 
+   * @return a List of Maps with the users found
+   */
+  public List<Map<String, String>> getAllUsers();
+
+
+  /**
+   * Get the user's email that relates with the given username.
+   * 
+   * @param username is the user nickname.
+   * @return a String with the user's email, or null if nothing was found.
+   */
+  public String getEmailByUsername(String username);
 
   /**
    * Get a user with the given email.
@@ -32,4 +50,13 @@ public interface UserDAO {
    * @return true if the information was successfully saved. False otherwise.
    */
   public boolean saveUser(Map<String, String> userData);
+
+  /**
+   * Update the user if belongs to the Active Directory
+   * 
+   * @param userId the Id of the user to be updated
+   * @param userName is the string to be add at the given user
+   * @return true if the information was succesfully updated. False Otherwise
+   */
+  public boolean updateCCAFSUser(int userId, String userName);
 }
