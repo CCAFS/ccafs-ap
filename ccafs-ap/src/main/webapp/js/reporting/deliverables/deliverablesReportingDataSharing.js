@@ -35,6 +35,7 @@ $(document).ready(function(){
       init : initDropzone,
       fallback : fallBackDropzone, // Run this function if the browser not support dropzone plugin
       paramName : "file", // The name that will be used to transfer the file
+      addRemoveLinks : true,
       params : {
         activityID : $("input[name^='activityID']").val(),
         deliverableID : $("input[name^='deliverableID']").val()
@@ -51,6 +52,19 @@ $(document).ready(function(){
       file.fileID = result.fileID;
       addFileToUploaded(file);
       this.removeFile(file);
+    });
+    
+    this.on("addedfile", function(file,done){
+      var alreadyExist = false;
+      $("form .fileUploaded .fileName").each(function(i,element){
+        if (file.name == $(element).text()) {
+          alreadyExist = true;
+        }
+      });
+      if (alreadyExist) {
+        console.log("already here");
+        this.removeFile(file);
+      }
     });
   }
   
@@ -94,7 +108,6 @@ $(document).ready(function(){
     }
     $newElement.find(".fileHosted").val(file.hosted);
     $newElement.find(".fileLink").val(file.name);
-    console.log((file.name).length);
     if ((file.name).length > 70)
       file.name = (file.name).substring(0, 70) + "...";
     

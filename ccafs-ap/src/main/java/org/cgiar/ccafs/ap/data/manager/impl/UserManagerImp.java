@@ -1,5 +1,13 @@
 package org.cgiar.ccafs.ap.data.manager.impl;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
+import com.google.inject.Inject;
 import org.cgiar.ccafs.ap.data.dao.UserDAO;
 import org.cgiar.ccafs.ap.data.manager.UserManager;
 import org.cgiar.ccafs.ap.data.model.Leader;
@@ -9,15 +17,6 @@ import org.cgiar.ccafs.ap.data.model.Theme;
 import org.cgiar.ccafs.ap.data.model.User;
 import org.cgiar.ccafs.ap.util.MD5Convert;
 import org.cgiar.ciat.auth.ADConexion;
-
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-
-import com.google.inject.Inject;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -85,7 +84,7 @@ public class UserManagerImp implements UserManager {
       user.setName(userData.get("name"));
       user.setEmail(email);
       user.setUsername(userData.get("username"));
-      user.setMD5Password(userData.get("password"));
+      user.setPassword(userData.get("password"));
       user.setRole(userData.get("role"));
       // Leader
       Leader leader = new Leader();
@@ -132,6 +131,7 @@ public class UserManagerImp implements UserManager {
       user.setCcafsUser(userData.get("is_ccafs_user").equals("1"));
       user.setName(userData.get("name"));
       user.setEmail(userData.get("email"));
+      user.setRole(userData.get("role"));
       user.setUsername(userData.get("username"));
       try {
         // If the user has never logged in, this value is null.
@@ -153,7 +153,7 @@ public class UserManagerImp implements UserManager {
   public User getUserByUsername(String username) {
     String email = userDAO.getEmailByUsername(username);
     if (email != null) {
-      return this.getUserByEmail(email);
+      return this.getUser(email);
     }
     return null;
   }
@@ -165,7 +165,7 @@ public class UserManagerImp implements UserManager {
       User userFound;
       // If user is logging-in with their email account.
       if (email.contains("@")) {
-        userFound = this.getUserByEmail(email);
+        userFound = this.getUser(email);
       } else {
         // if user is loggin with his username, we must attach the cgiar.org.
         userFound = this.getUserByUsername(email);
