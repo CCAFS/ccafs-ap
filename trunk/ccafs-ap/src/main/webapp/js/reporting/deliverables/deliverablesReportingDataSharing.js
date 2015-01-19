@@ -127,7 +127,7 @@ $(document).ready(function(){
   
   function setDeliverableFilesIndexes(){
     $("form .fileUploaded").each(function(i,element){
-      var elementName = "deiverableFile[" + i + "].";
+      var elementName = "deliverable.files[" + i + "].";
       $(element).find("input[type='hidden'].fileID").attr("name", elementName + "id");
       $(element).find("input[type='hidden'].fileHosted").attr("name", elementName + "hosted");
       $(element).find("input[type='hidden'].fileLink").attr("name", elementName + "link");
