@@ -18,7 +18,7 @@
   </div>
   [#include "/WEB-INF/global/pages/reporting-secondary-menu.ftl" /]
   
-  [@s.form action="deliverables"]
+  [@s.form action="deliverablesData"]
   <article class="halfContent">
     [#include "/WEB-INF/reporting/deliverables/deliverablesReportingSubMenu.ftl" /]
     <h1 class="contentTitle">

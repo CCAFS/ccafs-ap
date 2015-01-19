@@ -26,6 +26,7 @@ public class DeliverableFile {
   private int id;
   private String name;
   private String link;
+  private int size;
   private String hosted;
 
   @Override
@@ -53,6 +54,10 @@ public class DeliverableFile {
     return name;
   }
 
+  public int getSize() {
+    return size;
+  }
+
   @Override
   public int hashCode() {
     return this.id;
@@ -72,6 +77,10 @@ public class DeliverableFile {
 
   public void setName(String name) {
     this.name = name;
+  }
+
+  public void setSize(int size) {
+    this.size = size;
   }
 
   @Override

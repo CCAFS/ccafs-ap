@@ -25,10 +25,12 @@ import org.cgiar.ccafs.ap.data.manager.DeliverableTrafficLightManager;
 import org.cgiar.ccafs.ap.data.manager.DeliverableTypeManager;
 import org.cgiar.ccafs.ap.data.manager.LogframeManager;
 import org.cgiar.ccafs.ap.data.manager.MetadataManager;
+import org.cgiar.ccafs.ap.data.manager.SubmissionManager;
 import org.cgiar.ccafs.ap.data.model.Deliverable;
 import org.cgiar.ccafs.ap.data.model.DeliverableStatus;
 import org.cgiar.ccafs.ap.data.model.DeliverableType;
 import org.cgiar.ccafs.ap.data.model.Metadata;
+import org.cgiar.ccafs.ap.data.model.Submission;
 
 import java.util.LinkedHashMap;
 import java.util.List;
@@ -58,6 +60,7 @@ public class DeliverableInformationReportingAction extends BaseAction {
   private DeliverableMetadataManager deliverableMetadataManager;
   private DeliverableAccessManager deliverableAccessManager;
   private MetadataManager metadataManager;
+  private SubmissionManager submissionManager;
 
   // Model
   private Deliverable deliverable;
@@ -77,7 +80,7 @@ public class DeliverableInformationReportingAction extends BaseAction {
     DeliverableManager deliverableManager, DeliverableTypeManager deliverableTypeManager,
     DeliverableStatusManager deliverableStatusManager, DeliverableTrafficLightManager trafficLightManager,
     MetadataManager metadataManager, DeliverableMetadataManager deliverableMetadataManager,
-    DeliverableAccessManager deliverableAccessManager) {
+    DeliverableAccessManager deliverableAccessManager, SubmissionManager submissionManager) {
     super(config, logframeManager);
     this.deliverableManager = deliverableManager;
     this.deliverableTypeManager = deliverableTypeManager;
@@ -86,6 +89,7 @@ public class DeliverableInformationReportingAction extends BaseAction {
     this.deliverableMetadataManager = deliverableMetadataManager;
     this.deliverableAccessManager = deliverableAccessManager;
     this.metadataManager = metadataManager;
+    this.submissionManager = submissionManager;
   }
 
   public Map<String, String> getAccessLimitsRadio() {
@@ -129,7 +133,7 @@ public class DeliverableInformationReportingAction extends BaseAction {
   }
 
   public boolean isCanSubmit() {
-    return true;
+    return canSubmit;
   }
 
   @Override
@@ -166,6 +170,13 @@ public class DeliverableInformationReportingAction extends BaseAction {
     accessLimitsRadio.put("restricted", getText("reporting.deliverables.dataAccess.accessLimits.restricted"));
 
     metadataList = metadataManager.getMetadataList();
+
+    /* --------- Checking if the user can submit ------------- */
+    Submission submission =
+      submissionManager.getSubmission(getCurrentUser().getLeader(), getCurrentReportingLogframe(),
+        APConstants.REPORTING_SECTION);
+
+    canSubmit = (submission == null) ? true : false;
   }
 
   @Override

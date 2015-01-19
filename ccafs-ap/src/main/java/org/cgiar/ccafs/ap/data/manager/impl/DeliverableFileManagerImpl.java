@@ -49,6 +49,9 @@ public class DeliverableFileManagerImpl implements DeliverableFileManager {
       file.setId(Integer.parseInt(fileData.get("id")));
       file.setLink(fileData.get("link"));
       file.setHosted(fileData.get("hosted"));
+      if (fileData.get("filesize") != null) {
+        file.setSize(Integer.parseInt(fileData.get("filesize")));
+      }
       file.setName(fileData.get("filename"));
 
       files.add(file);
@@ -75,6 +78,7 @@ public class DeliverableFileManagerImpl implements DeliverableFileManager {
     fileData.put("link", file.getLink());
     fileData.put("hosted", file.getHosted());
     fileData.put("filename", file.getName());
+    fileData.put("filesize", file.getSize());
     fileData.put("deliverable_id", deliverableID);
 
     fileID = deliverableFileDAO.saveDeliverableFile(fileData);

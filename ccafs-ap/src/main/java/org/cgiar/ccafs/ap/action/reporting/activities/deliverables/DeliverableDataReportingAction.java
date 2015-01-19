@@ -26,8 +26,11 @@ import org.cgiar.ccafs.ap.config.APConstants;
 import org.cgiar.ccafs.ap.data.manager.DeliverableFileManager;
 import org.cgiar.ccafs.ap.data.manager.DeliverableManager;
 import org.cgiar.ccafs.ap.data.manager.LogframeManager;
+import org.cgiar.ccafs.ap.data.manager.SubmissionManager;
 import org.cgiar.ccafs.ap.data.model.Deliverable;
 import org.cgiar.ccafs.ap.data.model.DeliverableFile;
+import org.cgiar.ccafs.ap.data.model.Submission;
+import org.cgiar.ccafs.ap.util.FileManager;
 
 
 /**
@@ -36,9 +39,10 @@ import org.cgiar.ccafs.ap.data.model.DeliverableFile;
 
 public class DeliverableDataReportingAction extends BaseAction {
 
-// Managers
+  // Managers
   private DeliverableManager deliverableManager;
   private DeliverableFileManager deliverableFileManager;
+  private SubmissionManager submissionManager;
 
   // Model
   private Deliverable deliverable;
@@ -53,10 +57,12 @@ public class DeliverableDataReportingAction extends BaseAction {
 
   @Inject
   public DeliverableDataReportingAction(APConfig config, LogframeManager logframeManager,
-    DeliverableManager deliverableManager, DeliverableFileManager deliverableFileManager) {
+    DeliverableManager deliverableManager, DeliverableFileManager deliverableFileManager,
+    SubmissionManager submissionManager) {
     super(config, logframeManager);
     this.deliverableManager = deliverableManager;
     this.deliverableFileManager = deliverableFileManager;
+    this.submissionManager = submissionManager;
   }
 
   public int getActivityID() {
@@ -102,6 +108,13 @@ public class DeliverableDataReportingAction extends BaseAction {
     filesUploadedContentType = new ArrayList<>();
     filesUploadedFileName = new ArrayList<>();
 
+    /* --------- Checking if the user can submit ------------- */
+    Submission submission =
+      submissionManager.getSubmission(getCurrentUser().getLeader(), getCurrentReportingLogframe(),
+        APConstants.REPORTING_SECTION);
+
+    canSubmit = (submission == null) ? true : false;
+
     if (getRequest().getMethod().equalsIgnoreCase("post")) {
       // Clear out the list if it has some element
       if (deliverable.getFiles() != null) {
@@ -113,21 +126,50 @@ public class DeliverableDataReportingAction extends BaseAction {
   @Override
   public String save() {
     boolean success = true;
-    deliverableFileManager.saveDeliverableFiles(deliverable.getFiles(), deliverable.getId());
 
     // Remove the deliverables that were delete in the user interface
     for (DeliverableFile previousFile : previousFiles) {
       if (!deliverable.getFiles().contains(previousFile) || deliverable.getFiles().isEmpty()) {
         boolean deleted = deliverableFileManager.removeDeliverableFile(previousFile.getId());
-        // FileManager.deleteFile(fileName)
+        if (previousFile.getHosted().equals(APConstants.DELIVERABLE_FILE_LOCALLY_HOSTED)) {
+          deleted = deleted && FileManager.deleteFile(previousFile.getName());
+        }
+
         success = success && deleted;
       }
     }
 
-    // Save the deliverable files
+    // Save the information of the deliverable files
     for (DeliverableFile file : deliverable.getFiles()) {
-
+      deliverableFileManager.saveDeliverableFile(file, deliverableID);
     }
+
+    // For Internet Explorer we should copy the files to the repository and
+    // add them to the database
+    int c = 0;
+    for (File file : filesUploaded) {
+      StringBuilder finalPath = new StringBuilder();
+      finalPath.append(config.getDeliverablesFilesPath());
+      finalPath.append("/");
+      finalPath.append(getCurrentUser().getLeader().getAcronym());
+      finalPath.append("/");
+      finalPath.append(config.getReportingCurrentYear());
+      finalPath.append("/");
+      finalPath.append(deliverable.getType().getName());
+      finalPath.append("/");
+      finalPath.append(deliverableID);
+      finalPath.append("/");
+
+      FileManager.copyFile(file, finalPath.toString() + filesUploadedFileName.get(c));
+      DeliverableFile deliverableFile = new DeliverableFile();
+      deliverableFile.setHosted(APConstants.DELIVERABLE_FILE_LOCALLY_HOSTED);
+      deliverableFile.setId(-1);
+      deliverableFile.setName(filesUploadedFileName.get(c));
+
+      deliverableFileManager.saveDeliverableFile(deliverableFile, deliverableID);
+      c++;
+    }
+
     return super.save();
   }
 
