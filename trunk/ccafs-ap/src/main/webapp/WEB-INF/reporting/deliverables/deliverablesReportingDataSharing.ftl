@@ -28,7 +28,7 @@
     <h6>[@s.text name="reporting.activityDeliverables.dataSharing.deliverableFiles" /]</h6>
     <div id="filesUploaded">
       <ul>
-        
+        ${deliverable.files}
       </ul>
     </div>
     
@@ -48,7 +48,7 @@
       </label> 
       
       <label for="option-2">
-          <input id="option-2" type="radio" name="sharingOption" value="Todownload" >
+          <input id="option-2" type="radio" name="sharingOption" value="To download" >
           [@s.text name="reporting.activityDeliverables.dataSharing.fileGreater" /]
           <span class="quote">[@s.text name="reporting.activityDeliverables.dataSharing.fileGreater.help" /]</span>
           
@@ -105,7 +105,7 @@
      <div class="fileName">filename</div>
      <div class="fileFormat">- -</div>
      <div class="fileSize">- -</div>
-     <img class="removeInput" src="${baseUrl}/images/global/icon-remove.png" alt="Remove"/> 
+     <img class="removeInput" src="${baseUrl}/images/global/icon-remove.png" alt="Remove"/>
    </li>
  </ul>
  [#-- Remove deliverable files modal  template --]

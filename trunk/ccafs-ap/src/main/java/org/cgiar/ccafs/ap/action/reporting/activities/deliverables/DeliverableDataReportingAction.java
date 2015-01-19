@@ -14,6 +14,12 @@
 
 package org.cgiar.ccafs.ap.action.reporting.activities.deliverables;
 
+import java.io.File;
+import java.util.ArrayList;
+import java.util.List;
+
+import com.google.inject.Inject;
+import org.apache.commons.lang3.StringUtils;
 import org.cgiar.ccafs.ap.action.BaseAction;
 import org.cgiar.ccafs.ap.config.APConfig;
 import org.cgiar.ccafs.ap.config.APConstants;
@@ -22,13 +28,6 @@ import org.cgiar.ccafs.ap.data.manager.DeliverableManager;
 import org.cgiar.ccafs.ap.data.manager.LogframeManager;
 import org.cgiar.ccafs.ap.data.model.Deliverable;
 import org.cgiar.ccafs.ap.data.model.DeliverableFile;
-
-import java.io.File;
-import java.util.ArrayList;
-import java.util.List;
-
-import com.google.inject.Inject;
-import org.apache.commons.lang3.StringUtils;
 
 
 /**
@@ -96,6 +95,7 @@ public class DeliverableDataReportingAction extends BaseAction {
 
     deliverable = deliverableManager.getDeliverable(deliverableID);
     deliverable.setFiles(deliverableFileManager.getDeliverableFiles(deliverable.getId()));
+    previousFiles = new ArrayList<>();
     previousFiles.addAll(deliverable.getFiles());
 
     filesUploaded = new ArrayList<>();
