@@ -14,12 +14,6 @@
 
 package org.cgiar.ccafs.ap.action.reporting.activities.deliverables;
 
-import java.io.File;
-import java.util.ArrayList;
-import java.util.List;
-
-import com.google.inject.Inject;
-import org.apache.commons.lang3.StringUtils;
 import org.cgiar.ccafs.ap.action.BaseAction;
 import org.cgiar.ccafs.ap.config.APConfig;
 import org.cgiar.ccafs.ap.config.APConstants;
@@ -31,6 +25,13 @@ import org.cgiar.ccafs.ap.data.model.Deliverable;
 import org.cgiar.ccafs.ap.data.model.DeliverableFile;
 import org.cgiar.ccafs.ap.data.model.Submission;
 import org.cgiar.ccafs.ap.util.FileManager;
+
+import java.io.File;
+import java.util.ArrayList;
+import java.util.List;
+
+import com.google.inject.Inject;
+import org.apache.commons.lang3.StringUtils;
 
 
 /**
@@ -52,8 +53,6 @@ public class DeliverableDataReportingAction extends BaseAction {
   private List<File> filesUploaded = new ArrayList<File>();
   private List<String> filesUploadedContentType = new ArrayList<String>();
   private List<String> filesUploadedFileName = new ArrayList<String>();
-  private List<DeliverableFile> previousFiles;
-
 
   @Inject
   public DeliverableDataReportingAction(APConfig config, LogframeManager logframeManager,
@@ -101,8 +100,6 @@ public class DeliverableDataReportingAction extends BaseAction {
 
     deliverable = deliverableManager.getDeliverable(deliverableID);
     deliverable.setFiles(deliverableFileManager.getDeliverableFiles(deliverable.getId()));
-    previousFiles = new ArrayList<>();
-    previousFiles.addAll(deliverable.getFiles());
 
     filesUploaded = new ArrayList<>();
     filesUploadedContentType = new ArrayList<>();
@@ -126,6 +123,8 @@ public class DeliverableDataReportingAction extends BaseAction {
   @Override
   public String save() {
     boolean success = true;
+
+    List<DeliverableFile> previousFiles = deliverableFileManager.getDeliverableFiles(deliverable.getId());
 
     // Remove the deliverables that were delete in the user interface
     for (DeliverableFile previousFile : previousFiles) {
@@ -163,6 +162,7 @@ public class DeliverableDataReportingAction extends BaseAction {
       FileManager.copyFile(file, finalPath.toString() + filesUploadedFileName.get(c));
       DeliverableFile deliverableFile = new DeliverableFile();
       deliverableFile.setHosted(APConstants.DELIVERABLE_FILE_LOCALLY_HOSTED);
+      deliverableFile.setSize(filesUploaded.get(c).length());
       deliverableFile.setId(-1);
       deliverableFile.setName(filesUploadedFileName.get(c));
 
