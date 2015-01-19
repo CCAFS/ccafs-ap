@@ -50,7 +50,7 @@ public class DeliverableFileManagerImpl implements DeliverableFileManager {
       file.setLink(fileData.get("link"));
       file.setHosted(fileData.get("hosted"));
       if (fileData.get("filesize") != null) {
-        file.setSize(Integer.parseInt(fileData.get("filesize")));
+        file.setSize(Long.parseLong(fileData.get("filesize")));
       }
       file.setName(fileData.get("filename"));
 
@@ -99,6 +99,7 @@ public class DeliverableFileManagerImpl implements DeliverableFileManager {
       }
       fileData.put("link", file.getLink());
       fileData.put("hosted", file.getHosted());
+      fileData.put("filesize", file.getSize());
       fileData.put("filename", file.getName());
       fileData.put("deliverable_id", deliverableID);
 

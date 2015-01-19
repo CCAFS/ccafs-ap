@@ -26,7 +26,7 @@ public class DeliverableFile {
   private int id;
   private String name;
   private String link;
-  private int size;
+  private long size;
   private String hosted;
 
   @Override
@@ -54,7 +54,7 @@ public class DeliverableFile {
     return name;
   }
 
-  public int getSize() {
+  public long getSize() {
     return size;
   }
 
@@ -79,7 +79,7 @@ public class DeliverableFile {
     this.name = name;
   }
 
-  public void setSize(int size) {
+  public void setSize(long size) {
     this.size = size;
   }
 

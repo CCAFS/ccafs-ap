@@ -93,6 +93,7 @@ public class UploadDeliverableAction extends BaseAction {
     DeliverableFile file = new DeliverableFile();
     file.setHosted(APConstants.DELIVERABLE_FILE_LOCALLY_HOSTED);
     file.setId(-1);
+    file.setSize(this.file.length());
     file.setName(fileFileName);
 
     fileID = deliverableFileManager.saveDeliverableFile(file, deliverableID);
