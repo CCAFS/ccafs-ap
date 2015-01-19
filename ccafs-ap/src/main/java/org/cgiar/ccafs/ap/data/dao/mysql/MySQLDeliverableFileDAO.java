@@ -105,8 +105,9 @@ public class MySQLDeliverableFileDAO implements DeliverableFileDAO {
     values[0] = fileData.get("filename");
     values[1] = fileData.get("hosted");
     values[2] = fileData.get("link");
-    values[3] = fileData.get("deliverable_id");
-    values[4] = fileData.get("id");
+    values[3] = fileData.get("filesize");
+    values[4] = fileData.get("deliverable_id");
+    values[5] = fileData.get("id");
 
     int deliverableID = Integer.parseInt(fileData.get("deliverable_id") + "");
     query.append("SELECT * FROM deliverable_files WHERE id = ");
@@ -117,15 +118,16 @@ public class MySQLDeliverableFileDAO implements DeliverableFileDAO {
       if (rs.next()) {
         // If record exists update
         query.setLength(0);
-        query.append("UPDATE deliverableFile SET filename = ?, hosted = ?, link=?, deliverable_id = ? WHERE id = ?");
+        query.append("UPDATE deliverableFile SET filename = ?, hosted = ?, ");
+        query.append("link=?, filesize=? deliverable_id = ? WHERE id = ? ");
 
         int updatedRows = daoManager.makeChangeSecure(con, query.toString(), values);
         rowID = Integer.parseInt(fileData.get("id") + "");
       } else {
         // If record not exists insert it
         query.setLength(0);
-        query.append("INSERT INTO deliverable_files (filename, hosted, link, deliverable_id, id) ");
-        query.append("VALUES (?, ?, ?, ?, ?) ");
+        query.append("INSERT INTO deliverable_files (filename, hosted, link, filesize, deliverable_id, id) ");
+        query.append("VALUES (?, ?, ?, ?, ?, ?) ");
 
         int insertedRows = daoManager.makeChangeSecure(con, query.toString(), values);
         query.setLength(0);
