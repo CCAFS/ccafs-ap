@@ -18,7 +18,7 @@
   </div>
   [#include "/WEB-INF/global/pages/reporting-secondary-menu.ftl" /]
   
-  [@s.form action="deliverablesData"]
+  [@s.form action="deliverablesData" enctype="multipart/form-data"]
   <article class="halfContent">
     [#include "/WEB-INF/reporting/deliverables/deliverablesReportingSubMenu.ftl" /]
     <h1 class="contentTitle">
@@ -28,8 +28,26 @@
     <h6>[@s.text name="reporting.activityDeliverables.dataSharing.deliverableFiles" /]</h6>
     <div id="filesUploaded">
       <ul>
-        ${deliverable.files}
-      </ul>
+      
+       [#if deliverable.files?has_content]
+        [#list deliverable.files as file] 
+         <li class="fileUploaded">
+           <input class="fileID" name="" type="hidden" value="${file.id}">
+           <input class="fileHosted" name="" type="hidden" value="${file.hosted}">
+           <input class="fileLink" name="" type="hidden" value="">
+           <div class="fileName">${file.name}</div>
+           <div class="fileFormat">${file.hosted}</div>
+           <div class="fileSize">- -</div>
+           <img class="removeInput" src="${baseUrl}/images/global/icon-remove.png" alt="Remove"/>
+         </li>
+        [/#list]
+       </ul>
+       [#else]
+        </ul>
+         <p class="text">Use the following options to upload deliverable files</p>
+       [/#if]
+         
+     
     </div>
     
     
@@ -42,18 +60,18 @@
           <span class="quote">[@s.text name="reporting.activityDeliverables.dataSharing.hostedInstitutional.help" /]</span>
           
           <div id="fileURL" class="fullBlock uploadBlock" style="display:none">
-            [@customForm.input name="" type="text" i18nkey="reporting.activityDeliverables.filename" value="http://"/]
+            [@customForm.input name="linkExternally" type="text" i18nkey="reporting.activityDeliverables.filename" value="http://"/]
             <div id="addFileURL-external" class="addButton addFileURL">[@s.text name="reporting.activityDeliverables.dataSharing.addURL" /]</div>
           </div> 
       </label> 
       
       <label for="option-2">
-          <input id="option-2" type="radio" name="sharingOption" value="To download" >
+          <input id="option-2" type="radio" name="sharingOption" value="Todownload" >
           [@s.text name="reporting.activityDeliverables.dataSharing.fileGreater" /]
           <span class="quote">[@s.text name="reporting.activityDeliverables.dataSharing.fileGreater.help" /]</span>
           
           <div id="fileURL" class="fullBlock uploadBlock" style="display:none">
-            [@customForm.input name="" type="text" i18nkey="reporting.activityDeliverables.filename" value="http://" /]
+            [@customForm.input name="linkLocally" type="text" i18nkey="reporting.activityDeliverables.filename" value="http://" /]
             <div id="addFileURL-ccafs" class="addButton addFileURL">[@s.text name="reporting.activityDeliverables.dataSharing.addURL" /]</div>
           </div> 
       </label> 
@@ -72,10 +90,15 @@
       </label> 
     </div>  
     
+    <div id="dragAndDrop" class="dropzone uploadBlock" style="display:none">
+      <div class="fallback"> 
+        <div id="addFileInput" class="addButton">[@s.text name="reporting.activityDeliverables.dataSharing.addFile" /]</div>
+      </div>
+    </div>
         
     <!-- internal parameter -->
     <input name="activityID" type="hidden" value="${activityID}" />
-    <input name="deliverableID" type="hidden" value="${deliverable.id?c}" />
+    <input name="deliverableID" type="hidden" value="${deliverableID?c}" />
     
     [#if canSubmit]
       <div class="buttons">
@@ -93,7 +116,7 @@
   [#-- File Input template --]
  <div id="fileInputTemplate" class="fileInput" style="display:none">
    <img class="removeInput" src="${baseUrl}/images/global/icon-remove.png" alt="Remove"> 
-   <input name="fileTemplate" type="file" multiple />
+   <input name="filesUploaded" type="file" />
  </div>
  
  [#-- File uploaded template --]

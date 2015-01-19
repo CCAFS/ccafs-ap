@@ -7,6 +7,9 @@ $(document).ready(function(){
   // Check option selected
   checkOption();
   
+  // Set names to deliverable files already uploaded
+  setDeliverableFilesIndexes();
+  
   function attachEvents(){
     // This event is for check if files smaller than 30MB will be hosted in CCAFS
     $("#dataSharingOptions input[type=radio]").on("click", checkOption);
@@ -34,6 +37,7 @@ $(document).ready(function(){
     $("div#dragAndDrop").dropzone({
       init : initDropzone,
       fallback : fallBackDropzone, // Run this function if the browser not support dropzone plugin
+      forceFallback : false,
       paramName : "file", // The name that will be used to transfer the file
       addRemoveLinks : true,
       params : {
@@ -114,6 +118,8 @@ $(document).ready(function(){
     $newElement.find(".fileName").html(file.name);
     $newElement.find(".fileFormat").html(file.hosted);
     
+    $("#filesUploaded .text").hide();
+    // Show file uploaded
     $("#filesUploaded ul").prepend($newElement);
     $newElement.show("slow");
     setDeliverableFilesIndexes();

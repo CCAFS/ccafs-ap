@@ -1,17 +1,18 @@
 [#ftl]
 <nav id="stageMenu">
   <ul>
-    <a [#if currentStage == "status"] class="currentReportingSection" [/#if] href="
+    <li [#if currentStage == "status"] class="currentReportingSection" [/#if]><a href="
         [@s.url action='status' includeParams='get'][/@s.url]
-      "><li>[@s.text name="menu.activitiesReporting.submenu.status" /]</li>
-    </a>
-    <a [#if currentStage == "deliverables"] class="currentReportingSection" [/#if] href="
-        [@s.url action='deliverables' includeParams='get'][/@s.url]
-      "><li>[@s.text name="menu.activitiesReporting.submenu.deliverables" /]</li>
-    </a>
-    <a [#if currentStage == "partners"] class="currentReportingSection" [/#if] href="
+      "><p>[@s.text name="menu.activitiesReporting.submenu.status" /]</p>
+    </a></li>
+    <li [#if currentStage == "deliverables"] class="currentReportingSection" [/#if]><a href="
+        [@s.url action='deliverablesList' includeParams='get'][/@s.url]
+      "><p>[@s.text name="menu.activitiesReporting.submenu.deliverables" /]</p>
+    </a></li>
+    <li [#if currentStage == "partners"] class="currentReportingSection" [/#if]><a href="
         [@s.url action='partners' includeParams='get'][/@s.url]
-      "><li>[@s.text name="menu.activitiesReporting.submenu.partners" /]</li>
-    </a>
+      "><p>[@s.text name="menu.activitiesReporting.submenu.partners" /]</p>
+    </a></li>
   </ul>
 </nav>
+<div class="clearfix"></div>

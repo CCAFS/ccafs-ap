@@ -5,7 +5,7 @@
 [#assign customCSS = ["${baseUrl}/css/libs/dataTables/jquery.dataTables-1.9.4.css", "${baseUrl}/css/global/customDataTable.css"] /]
 [#assign currentSection = "reporting" /]
 [#assign currentReportingSection = "activities" /]
-[#assign currentStage = "status" /]
+[#assign currentStage = "deliverables" /]
 [#assign userRole = "${currentUser.role}"]
 
 [#include "/WEB-INF/global/pages/header.ftl" /]
@@ -16,6 +16,7 @@
   [#include "/WEB-INF/global/pages/reporting-secondary-menu.ftl" /]
   
   <article class="halfContent">
+    [#include "/WEB-INF/reporting/activitiesReportingSubMenu.ftl" /]
     <h1>[#if currentUser.leader??]${currentUser.leader.name}[/#if] ([@s.text name="reporting.activityDeliverablesList" /] ${currentReportingLogframe.year?c})</h1>    
     <div id="filterBy">
       <div id="filter-title" class="filter" style="display:none">
