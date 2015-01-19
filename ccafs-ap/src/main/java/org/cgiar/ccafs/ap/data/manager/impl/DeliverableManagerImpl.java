@@ -1,5 +1,11 @@
 package org.cgiar.ccafs.ap.data.manager.impl;
 
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
+import com.google.inject.Inject;
 import org.cgiar.ccafs.ap.config.APConstants;
 import org.cgiar.ccafs.ap.data.dao.DeliverableDAO;
 import org.cgiar.ccafs.ap.data.dao.FileFormatDAO;
@@ -14,13 +20,6 @@ import org.cgiar.ccafs.ap.data.model.FileFormat;
 import org.cgiar.ccafs.ap.data.model.Metadata;
 import org.cgiar.ccafs.ap.data.model.Product;
 import org.cgiar.ccafs.ap.data.model.Publication;
-
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-
-import com.google.inject.Inject;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -131,7 +130,7 @@ public class DeliverableManagerImpl implements DeliverableManager {
     }
 
     deliverable.setYear(Integer.parseInt(deliverableData.get("year")));
-    deliverable.setId(Integer.parseInt(deliverableData.get("year")));
+    deliverable.setId(Integer.parseInt(deliverableData.get("id")));
     deliverable.setDescription(deliverableData.get("description"));
     deliverable.setDescriptionUpdate(deliverableData.get("description_update"));
     deliverable.setType(type);
