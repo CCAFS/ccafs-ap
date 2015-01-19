@@ -32,12 +32,12 @@
        [#if deliverable.files?has_content]
         [#list deliverable.files as file] 
          <li class="fileUploaded">
-           <input class="fileID" name="" type="hidden" value="${file.id}">
-           <input class="fileHosted" name="" type="hidden" value="${file.hosted}">
-           <input class="fileLink" name="" type="hidden" value="">
-           <div class="fileName">${file.name}</div>
+           <input class="fileID" name="deliverable.files[${file_index}].id" type="hidden" value="${file.id}">
+           <input class="fileHosted" name="deliverable.files[${file_index}].hosted" type="hidden" value="${file.hosted}">
+           <input class="fileLink" name="deliverable.files[${file_index}].link" type="hidden" value="">
+           <div class="fileName">${file.name!file.link}</div>
            <div class="fileFormat">${file.hosted}</div>
-           <div class="fileSize">- -</div>
+           <div class="fileSize">[#if file.size > 0]${file.size}[#else] - - [/#if]</div>
            <img class="removeInput" src="${baseUrl}/images/global/icon-remove.png" alt="Remove"/>
          </li>
         [/#list]

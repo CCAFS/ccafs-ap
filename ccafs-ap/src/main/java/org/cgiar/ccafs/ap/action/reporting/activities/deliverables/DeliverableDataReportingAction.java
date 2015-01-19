@@ -76,6 +76,22 @@ public class DeliverableDataReportingAction extends BaseAction {
     return deliverableID;
   }
 
+  private String getDeliverablesFolder() {
+    StringBuilder finalPath = new StringBuilder();
+    finalPath.append(config.getDeliverablesFilesPath());
+    finalPath.append("/");
+    finalPath.append(getCurrentUser().getLeader().getAcronym());
+    finalPath.append("/");
+    finalPath.append(config.getReportingCurrentYear());
+    finalPath.append("/");
+    finalPath.append(deliverable.getType().getName());
+    finalPath.append("/");
+    finalPath.append(deliverableID);
+    finalPath.append("/");
+
+    return finalPath.toString();
+  }
+
   public List<File> getFilesUploaded() {
     return filesUploaded;
   }
@@ -122,44 +138,38 @@ public class DeliverableDataReportingAction extends BaseAction {
 
   @Override
   public String save() {
-    boolean success = true;
+    boolean success = true, deleteRecord, deleteFile = true;
 
     List<DeliverableFile> previousFiles = deliverableFileManager.getDeliverableFiles(deliverable.getId());
 
     // Remove the deliverables that were delete in the user interface
     for (DeliverableFile previousFile : previousFiles) {
       if (!deliverable.getFiles().contains(previousFile) || deliverable.getFiles().isEmpty()) {
-        boolean deleted = deliverableFileManager.removeDeliverableFile(previousFile.getId());
+        deleteRecord = deliverableFileManager.removeDeliverableFile(previousFile.getId());
         if (previousFile.getHosted().equals(APConstants.DELIVERABLE_FILE_LOCALLY_HOSTED)) {
-          deleted = deleted && FileManager.deleteFile(previousFile.getName());
+          String fileName = getDeliverablesFolder() + previousFile.getName();
+          deleteFile = FileManager.deleteFile(fileName);
         }
 
-        success = success && deleted;
+        success = success && deleteRecord && deleteFile;
       }
     }
 
     // Save the information of the deliverable files
     for (DeliverableFile file : deliverable.getFiles()) {
-      deliverableFileManager.saveDeliverableFile(file, deliverableID);
+      // Save only the new deliverable files, the old are in the list to know when they
+      // should be deleted
+      if (file.getId() == -1) {
+        deliverableFileManager.saveDeliverableFile(file, deliverableID);
+      }
     }
 
     // For Internet Explorer we should copy the files to the repository and
     // add them to the database
     int c = 0;
     for (File file : filesUploaded) {
-      StringBuilder finalPath = new StringBuilder();
-      finalPath.append(config.getDeliverablesFilesPath());
-      finalPath.append("/");
-      finalPath.append(getCurrentUser().getLeader().getAcronym());
-      finalPath.append("/");
-      finalPath.append(config.getReportingCurrentYear());
-      finalPath.append("/");
-      finalPath.append(deliverable.getType().getName());
-      finalPath.append("/");
-      finalPath.append(deliverableID);
-      finalPath.append("/");
 
-      FileManager.copyFile(file, finalPath.toString() + filesUploadedFileName.get(c));
+      FileManager.copyFile(file, getDeliverablesFolder() + filesUploadedFileName.get(c));
       DeliverableFile deliverableFile = new DeliverableFile();
       deliverableFile.setHosted(APConstants.DELIVERABLE_FILE_LOCALLY_HOSTED);
       deliverableFile.setSize(filesUploaded.get(c).length());
