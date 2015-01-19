@@ -20,8 +20,10 @@ import org.cgiar.ccafs.ap.config.APConstants;
 import org.cgiar.ccafs.ap.data.manager.DeliverableFileManager;
 import org.cgiar.ccafs.ap.data.manager.DeliverableManager;
 import org.cgiar.ccafs.ap.data.manager.LogframeManager;
+import org.cgiar.ccafs.ap.data.manager.SubmissionManager;
 import org.cgiar.ccafs.ap.data.model.Deliverable;
 import org.cgiar.ccafs.ap.data.model.DeliverableFile;
+import org.cgiar.ccafs.ap.data.model.Submission;
 import org.cgiar.ccafs.ap.util.FileManager;
 
 import java.io.File;
@@ -43,6 +45,7 @@ public class UploadDeliverableAction extends BaseAction {
   // Manager
   private DeliverableManager deliverableManager;
   private DeliverableFileManager deliverableFileManager;
+  private SubmissionManager submissionManager;
 
   // Model
   private File file;
@@ -52,20 +55,25 @@ public class UploadDeliverableAction extends BaseAction {
   private int deliverableID;
   private Deliverable deliverable;
   private boolean saved;
+  private boolean canSubmit;
   private int fileID;
 
   @Inject
   public UploadDeliverableAction(APConfig config, LogframeManager logframeManager,
-    DeliverableManager deliverableManager, DeliverableFileManager deliverableFileManager) {
+    DeliverableManager deliverableManager, DeliverableFileManager deliverableFileManager,
+    SubmissionManager submissionManager) {
     super(config, logframeManager);
     this.deliverableManager = deliverableManager;
     this.deliverableFileManager = deliverableFileManager;
+    this.submissionManager = submissionManager;
   }
 
   @Override
   public String execute() throws Exception {
     deliverable = deliverableManager.getDeliverable(deliverableID);
-    if (deliverable.getType() == null) {
+    if (!canSubmit || deliverable.getType() == null) {
+      saved = false;
+      fileID = -1;
       return INPUT;
     }
 
@@ -88,6 +96,7 @@ public class UploadDeliverableAction extends BaseAction {
     file.setName(fileFileName);
 
     fileID = deliverableFileManager.saveDeliverableFile(file, deliverableID);
+    saved = (fileID != -1) ? true : false;
     return SUCCESS;
   }
 
@@ -117,6 +126,16 @@ public class UploadDeliverableAction extends BaseAction {
 
   public boolean isSaved() {
     return saved;
+  }
+
+  @Override
+  public void prepare() throws Exception {
+    /* --------- Checking if the user can submit ------------- */
+    Submission submission =
+      submissionManager.getSubmission(getCurrentUser().getLeader(), getCurrentReportingLogframe(),
+        APConstants.REPORTING_SECTION);
+
+    canSubmit = (submission == null) ? true : false;
   }
 
   public void setActivityID(int activityID) {
