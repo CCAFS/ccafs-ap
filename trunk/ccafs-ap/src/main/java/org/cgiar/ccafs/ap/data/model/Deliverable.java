@@ -81,6 +81,27 @@ public abstract class Deliverable {
     return metadata;
   }
 
+
+  public int getMetadataID(String metadataName) {
+    for (DeliverableMetadata mData : metadata) {
+      if (mData.getMetadata().getName().equals(metadataName)) {
+        return mData.getMetadata().getId();
+      }
+    }
+    return -1;
+  }
+
+  public int getMetadataIndex(String metadataName) {
+    int c = 0;
+    for (DeliverableMetadata mData : metadata) {
+      if (mData.getMetadata().getName().equals(metadataName)) {
+        return c;
+      }
+      c++;
+    }
+    return -1;
+  }
+
   public String getMetadataValue(int metadataID) {
     String value = "";
     for (DeliverableMetadata dmetadata : metadata) {
@@ -90,6 +111,17 @@ public abstract class Deliverable {
     }
 
     return value;
+  }
+
+  public String getMetadataValue(String metadataName) {
+    int c = 0;
+    for (DeliverableMetadata mData : metadata) {
+      if (mData.getMetadata().getName().equals(metadataName)) {
+        return mData.getValue();
+      }
+      c++;
+    }
+    return "";
   }
 
   public double getScoreByLeader(int activityLeaderID) {
