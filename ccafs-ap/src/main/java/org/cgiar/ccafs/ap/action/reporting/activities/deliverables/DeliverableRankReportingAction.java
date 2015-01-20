@@ -24,6 +24,7 @@ import org.cgiar.ccafs.ap.data.manager.LogframeManager;
 import org.cgiar.ccafs.ap.data.manager.SubmissionManager;
 import org.cgiar.ccafs.ap.data.model.Deliverable;
 import org.cgiar.ccafs.ap.data.model.Submission;
+import org.cgiar.ccafs.ap.util.Capitalize;
 
 import java.util.LinkedHashMap;
 import java.util.Map;
@@ -52,6 +53,7 @@ public class DeliverableRankReportingAction extends BaseAction {
   private int activityID;
   private boolean canSubmit;
   private Map<Boolean, String> yesNoRadio;
+  private StringBuilder validationMessage;
 
   @Inject
   public DeliverableRankReportingAction(APConfig config, LogframeManager logframeManager,
@@ -89,6 +91,12 @@ public class DeliverableRankReportingAction extends BaseAction {
   }
 
   @Override
+  public String next() {
+    save();
+    return super.next();
+  }
+
+  @Override
   public void prepare() throws Exception {
     deliverableID =
       Integer.parseInt(StringUtils.trim(this.getRequest().getParameter(APConstants.DELIVERABLE_REQUEST_ID)));
@@ -112,12 +120,27 @@ public class DeliverableRankReportingAction extends BaseAction {
 
   @Override
   public String save() {
+    boolean success = true;
     int activityLeaderID = getCurrentUser().getLeader().getId();
     double score = deliverable.getScores().get(getCurrentUser().getLeader().getId());
 
     trafficLightManager.saveDeliverableTrafficLight(deliverable.getTrafficLight(), deliverable.getId());
     deliverableScoreManager.saveDeliverableScore(deliverable.getId(), activityLeaderID, score);
-    return super.save();
+
+    if (success) {
+      if (validationMessage.toString().isEmpty()) {
+        addActionMessage(getText("saving.success", new String[] {getText("reporting.activityDeliverables.ranking")}));
+      } else {
+        String finalMessage =
+          getText("saving.success", new String[] {getText("reporting.activityDeliverables.ranking")});
+        finalMessage += getText("saving.keepInMind", new String[] {validationMessage.toString()});
+        addActionWarning(Capitalize.capitalizeString(finalMessage));
+      }
+      return SUCCESS;
+    } else {
+      addActionError(getText("saving.problem"));
+      return INPUT;
+    }
   }
 
   public void setActivityID(int activityID) {
@@ -134,5 +157,10 @@ public class DeliverableRankReportingAction extends BaseAction {
 
   public void setYesNoRadio(Map<Boolean, String> yesNoRadio) {
     this.yesNoRadio = yesNoRadio;
+  }
+
+  @Override
+  public void validate() {
+    validationMessage = new StringBuilder();
   }
 }

@@ -91,7 +91,11 @@ public abstract class Deliverable {
   }
 
   public double getScoreByLeader(int activityLeaderID) {
-    return scores.get(activityLeaderID);
+    if (scores != null && !scores.isEmpty()) {
+      return scores.get(activityLeaderID);
+    } else {
+      return -1;
+    }
   }
 
   public Map<Integer, Double> getScores() {

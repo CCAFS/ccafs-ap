@@ -52,7 +52,7 @@
     <h6>[@s.text name="reporting.activityDeliverables.dataSharing.chooseOptions" /]</h6> 
     <div id="dataSharingOptions">
       <label for="option-1">
-          <input id="option-1" type="radio" name="sharingOption" value="Externally" checked>
+          <input id="option-1" type="radio" name="sharingOption" value="Externally" >
           [@s.text name="reporting.activityDeliverables.dataSharing.hostedInstitutional" /]
           <span class="quote">[@s.text name="reporting.activityDeliverables.dataSharing.hostedInstitutional.help" /]</span>
           

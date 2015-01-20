@@ -6,7 +6,7 @@ import java.util.ArrayList;
 public class Publication extends Deliverable {
 
   private int id;
-  private PublicationType type;
+  private PublicationType publicationType;
   private String identifier;
   private String citation;
   private String fileUrl;
@@ -34,6 +34,7 @@ public class Publication extends Deliverable {
     return fileUrl;
   }
 
+  @Override
   public int getId() {
     return id;
   }
@@ -51,7 +52,7 @@ public class Publication extends Deliverable {
   }
 
   public PublicationType getPublicationType() {
-    return type;
+    return publicationType;
   }
 
   public PublicationTheme[] getRelatedThemes() {
@@ -102,6 +103,7 @@ public class Publication extends Deliverable {
     this.fileUrl = fileUrl;
   }
 
+  @Override
   public void setId(int id) {
     this.id = id;
   }
@@ -126,11 +128,15 @@ public class Publication extends Deliverable {
     this.narsCoauthor = narsCoauthor;
   }
 
+  public void setPublicationType(PublicationType publicationType) {
+    this.publicationType = publicationType;
+  }
+
   public void setRelatedThemes(PublicationTheme[] relatedThemes) {
     this.relatedThemes = relatedThemes;
   }
 
   public void setType(PublicationType type) {
-    this.type = type;
+    this.publicationType = type;
   }
 }
