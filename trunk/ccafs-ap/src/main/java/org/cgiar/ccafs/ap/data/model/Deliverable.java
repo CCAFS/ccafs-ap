@@ -19,6 +19,8 @@
 package org.cgiar.ccafs.ap.data.model;
 
 import java.util.List;
+import java.util.Map;
+import java.util.Map.Entry;
 
 import org.apache.commons.lang3.builder.ToStringBuilder;
 
@@ -37,9 +39,20 @@ public abstract class Deliverable {
   protected List<DeliverableMetadata> metadata;
   protected DeliverableTrafficLight trafficLight;
   protected DeliverableAccess accessDetails;
+  protected Map<Integer, Double> scores;
 
   public DeliverableAccess getAccessDetails() {
     return accessDetails;
+  }
+
+  public double getAverageScore() {
+    double sum = 0;
+    int records = 0;
+    for (Entry<Integer, Double> entry : scores.entrySet()) {
+      sum += entry.getValue();
+      records++;
+    }
+    return (records > 0) ? sum / records : 0;
   }
 
   public String getDescription() {
@@ -75,6 +88,14 @@ public abstract class Deliverable {
     }
 
     return value;
+  }
+
+  public double getScoreByLeader(int activityLeaderID) {
+    return scores.get(activityLeaderID);
+  }
+
+  public Map<Integer, Double> getScores() {
+    return scores;
   }
 
   public DeliverableStatus getStatus() {
@@ -127,6 +148,10 @@ public abstract class Deliverable {
 
   public void setMetadata(List<DeliverableMetadata> metadata) {
     this.metadata = metadata;
+  }
+
+  public void setScores(Map<Integer, Double> scores) {
+    this.scores = scores;
   }
 
   public void setStatus(DeliverableStatus status) {

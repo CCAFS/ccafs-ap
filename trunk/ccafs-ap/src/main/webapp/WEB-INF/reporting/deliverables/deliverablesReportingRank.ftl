@@ -18,7 +18,7 @@
   </div>
   [#include "/WEB-INF/global/pages/reporting-secondary-menu.ftl" /]
   
-  [@s.form action="deliverables"]
+  [@s.form action="deliverablesRank"]
   <article class="halfContent">
     [#include "/WEB-INF/reporting/deliverables/deliverablesReportingSubMenu.ftl" /]
     <h1 class="contentTitle">
@@ -52,11 +52,12 @@
     <div class="borderBox">
       <p>[@s.text name="reporting.activityDeliverables.ranking.rankDeliverableText" /]</p>
       <div id="rankingBlock"> 
-        <input class="hover-star required" type="radio" name="deliverable.rank" value="1" title="[@s.text name='reporting.activityDeliverables.ranking.level.notImportant' /]"/>
-        <input class="hover-star" type="radio" name="deliverable.rank" value="2" title="[@s.text name='reporting.activityDeliverables.ranking.level.lowImportance' /]"/>
-        <input class="hover-star" type="radio" name="deliverable.rank" value="3" title="[@s.text name='reporting.activityDeliverables.ranking.level.good' /]"/>
-        <input class="hover-star" type="radio" name="deliverable.rank" value="4" title="[@s.text name='reporting.activityDeliverables.ranking.level.important' /]"/>
-        <input class="hover-star" type="radio" name="deliverable.rank" value="5" title="[@s.text name='reporting.activityDeliverables.ranking.level.veryImportant' /]" />
+        [#assign score = deliverable.getScoreByLeader(activityLeaderID) /]
+        <input class="hover-star required" type="radio" name="deliverable.scores[${activityLeaderID}]" value="1" [#if score == 1] checked [/#if] title="[@s.text name='reporting.activityDeliverables.ranking.level.notImportant' /]"/>
+        <input class="hover-star" type="radio" name="deliverable.scores[${activityLeaderID}]" value="2" [#if score == 2] checked [/#if] title="[@s.text name='reporting.activityDeliverables.ranking.level.lowImportance' /]"/>
+        <input class="hover-star" type="radio" name="deliverable.scores[${activityLeaderID}]" value="3" [#if score == 3] checked [/#if] title="[@s.text name='reporting.activityDeliverables.ranking.level.good' /]"/>
+        <input class="hover-star" type="radio" name="deliverable.scores[${activityLeaderID}]" value="4" [#if score == 4] checked [/#if] title="[@s.text name='reporting.activityDeliverables.ranking.level.important' /]"/>
+        <input class="hover-star" type="radio" name="deliverable.scores[${activityLeaderID}]" value="5" [#if score == 5] checked [/#if] title="[@s.text name='reporting.activityDeliverables.ranking.level.veryImportant' /]" />
         <div id="hover-test" style=""></div> 
         <div class="clearfix"></div>
       </div>

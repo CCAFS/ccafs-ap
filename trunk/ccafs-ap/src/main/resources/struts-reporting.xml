@@ -81,10 +81,10 @@
       </result>
     </action>
     
-    <action name="deliverablesRank" class="org.cgiar.ccafs.ap.action.reporting.activities.deliverables.DeliverableInformationReportingAction">
+    <action name="deliverablesRank" class="org.cgiar.ccafs.ap.action.reporting.activities.deliverables.DeliverableRankReportingAction">
       <interceptor-ref name="reportingStack" />
       <interceptor-ref name="accessibleActivity" />
-      <result name="cancel" type="redirectAction">activities</result>
+      <result name="cancel" type="redirectAction">deliverablesList</result>
       <result name="input">/WEB-INF/reporting/deliverables/deliverablesReportingRank.ftl</result>
       <result name="success" type="redirectAction">
         <param name="actionName">deliverablesRank</param>
@@ -92,7 +92,7 @@
         <param name="deliverableID">${deliverableID}</param>
       </result>
       <result name="next" type="redirectAction">
-        <param name="actionName">deliverablesRank</param>
+        <param name="actionName">deliverablesList</param>
         <param name="activityID">${activityID}</param>
         <param name="deliverableID">${deliverableID}</param>
       </result>
