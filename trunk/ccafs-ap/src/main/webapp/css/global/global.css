@@ -47,10 +47,12 @@ margin-bottom: 0.5em;
 
 .borderBox {
   background: rgba(0, 0, 0, 0.02);
-  border: 1px solid rgba(0, 0, 0, 0.03);
+  border: 1px solid rgba(0, 0, 0, 0.04);
   -webkit-border-radius: 3px;
   border-radius: 3px;
   padding: 10px;
+  box-shadow: 0px 0px 4px rgba(0, 0, 0, 0.05);
+  margin-top: 1em;
 }
 
 .red {
@@ -995,6 +997,32 @@ ul#deliverablesFilesMessages > li {
     
     font-size: 0.9em;
     font-style: italic;
+}
+
+ 
+.verticallyRadio input[type=radio]{
+    display: block;
+    width: 2%;
+    float: left;
+}
+.verticallyRadio label{
+    display: block;
+    margin: 9px;
+}
+
+.verticallyCheckBox input{
+  float: left;
+  margin-left: 10px;
+}
+
+.verticallyCheckBox label{
+  float: right;
+  width: 95%;
+}
+
+.verticallyCheckBox h6 {
+  font-weight: normal;
+  font-size: 0.95em;
 }
 
 #metadataQuestions {

@@ -28,7 +28,6 @@
     <h6>[@s.text name="reporting.activityDeliverables.dataSharing.deliverableFiles" /]</h6>
     <div id="filesUploaded">
       <ul>
-      
        [#if deliverable.files?has_content]
         [#list deliverable.files as file] 
          <li class="fileUploaded">
@@ -45,9 +44,7 @@
        [#else]
         </ul>
          <p class="text">Use the following options to upload deliverable files</p>
-       [/#if]
-         
-     
+       [/#if] 
     </div>
     
     
@@ -66,7 +63,7 @@
       </label> 
       
       <label for="option-2">
-          <input id="option-2" type="radio" name="sharingOption" value="Todownload" >
+          <input id="option-2" type="radio" name="sharingOption" value="To download" >
           [@s.text name="reporting.activityDeliverables.dataSharing.fileGreater" /]
           <span class="quote">[@s.text name="reporting.activityDeliverables.dataSharing.fileGreater.help" /]</span>
           
@@ -90,11 +87,7 @@
       </label> 
     </div>  
     
-    <div id="dragAndDrop" class="dropzone uploadBlock" style="display:none">
-      <div class="fallback"> 
-        <div id="addFileInput" class="addButton">[@s.text name="reporting.activityDeliverables.dataSharing.addFile" /]</div>
-      </div>
-    </div>
+   
         
     <!-- internal parameter -->
     <input name="activityID" type="hidden" value="${activityID}" />
