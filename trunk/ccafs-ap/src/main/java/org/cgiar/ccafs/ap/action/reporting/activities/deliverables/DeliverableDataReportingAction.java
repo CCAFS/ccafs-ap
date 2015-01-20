@@ -24,6 +24,7 @@ import org.cgiar.ccafs.ap.data.manager.SubmissionManager;
 import org.cgiar.ccafs.ap.data.model.Deliverable;
 import org.cgiar.ccafs.ap.data.model.DeliverableFile;
 import org.cgiar.ccafs.ap.data.model.Submission;
+import org.cgiar.ccafs.ap.util.Capitalize;
 import org.cgiar.ccafs.ap.util.FileManager;
 
 import java.io.File;
@@ -40,6 +41,8 @@ import org.apache.commons.lang3.StringUtils;
 
 public class DeliverableDataReportingAction extends BaseAction {
 
+  private static final long serialVersionUID = 1250639690718680350L;
+
   // Managers
   private DeliverableManager deliverableManager;
   private DeliverableFileManager deliverableFileManager;
@@ -53,6 +56,7 @@ public class DeliverableDataReportingAction extends BaseAction {
   private List<File> filesUploaded = new ArrayList<File>();
   private List<String> filesUploadedContentType = new ArrayList<String>();
   private List<String> filesUploadedFileName = new ArrayList<String>();
+  private StringBuilder validationMessage;
 
   @Inject
   public DeliverableDataReportingAction(APConfig config, LogframeManager logframeManager,
@@ -109,6 +113,12 @@ public class DeliverableDataReportingAction extends BaseAction {
   }
 
   @Override
+  public String next() {
+    save();
+    return super.next();
+  }
+
+  @Override
   public void prepare() throws Exception {
     activityID = Integer.parseInt(StringUtils.trim(this.getRequest().getParameter(APConstants.ACTIVITY_REQUEST_ID)));
     deliverableID =
@@ -160,7 +170,8 @@ public class DeliverableDataReportingAction extends BaseAction {
       // Save only the new deliverable files, the old are in the list to know when they
       // should be deleted
       if (file.getId() == -1) {
-        deliverableFileManager.saveDeliverableFile(file, deliverableID);
+        int fileID = deliverableFileManager.saveDeliverableFile(file, deliverableID);
+        success = success && (fileID != -1);
       }
     }
 
@@ -176,11 +187,25 @@ public class DeliverableDataReportingAction extends BaseAction {
       deliverableFile.setId(-1);
       deliverableFile.setName(filesUploadedFileName.get(c));
 
-      deliverableFileManager.saveDeliverableFile(deliverableFile, deliverableID);
+      int fileID = deliverableFileManager.saveDeliverableFile(deliverableFile, deliverableID);
+      success = success && (fileID != -1);
       c++;
     }
 
-    return super.save();
+    if (success) {
+      if (validationMessage.toString().isEmpty()) {
+        addActionMessage(getText("saving.success", new String[] {getText("reporting.activityDeliverables.dataSharing")}));
+      } else {
+        String finalMessage =
+          getText("saving.success", new String[] {getText("reporting.activityDeliverables.dataSharing")});
+        finalMessage += getText("saving.keepInMind", new String[] {validationMessage.toString()});
+        addActionWarning(Capitalize.capitalizeString(finalMessage));
+      }
+      return SUCCESS;
+    } else {
+      addActionError(getText("saving.problem"));
+      return INPUT;
+    }
   }
 
   public void setActivityID(int activityID) {
@@ -201,5 +226,10 @@ public class DeliverableDataReportingAction extends BaseAction {
 
   public void setFilesUploadedFileName(List<String> filesUploadedFileName) {
     this.filesUploadedFileName = filesUploadedFileName;
+  }
+
+  @Override
+  public void validate() {
+    validationMessage = new StringBuilder();
   }
 }

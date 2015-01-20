@@ -31,7 +31,7 @@
       
       [#-- Publication type --]
       <div class="halfPartBlock">
-        [@customForm.select name="publications[${publication_index}].type" label="" i18nkey="reporting.publications.type.name" listName="publicationTypes" keyFieldName="id"  displayFieldName="name" /]
+        [@customForm.select name="publications[${publication_index}].publicationType" label="" i18nkey="reporting.publications.type.name" listName="publicationTypes" keyFieldName="id"  displayFieldName="name" /]
       </div>
 
       [#-- Publication identifier --]
@@ -40,7 +40,7 @@
       </div>
 
       [#-- Publication access --]
-      [#if publicationTypeAccessNeed?seq_contains(publication.type.id)]
+      [#if publicationTypeAccessNeed?seq_contains(publication.publicationType.id)]
         <div class="fullBlock accessType">
       [#else]
         <div class="fullBlock accessType" style="display: none;">
@@ -49,7 +49,7 @@
       </div>
 
       [#-- Indicators for journal articles --]
-      [#if publicationTypeAccessNeed?seq_contains(publication.type.id)]
+      [#if publicationTypeAccessNeed?seq_contains(publication.publicationType.id)]
         <div class="fullBlock journalArticlesIndicators" >
       [#else]
         <div class="fullBlock journalArticlesIndicators" style="display: none;">

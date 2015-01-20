@@ -105,6 +105,8 @@ public class MySQLDeliverableAccessDAO implements DeliverableAccessDAO {
         LOG.error("-- saveDeliverableAccessData(): there was a problem getting the deliverable access data");
         LOG.error("Query: {}", query);
         LOG.error("Values: {}", values);
+      } else {
+        saved = true;
       }
     } catch (SQLException e) {
       LOG.error("-- saveDeliverableAccessData(): there was an exception getting the delvierable access data", e);
