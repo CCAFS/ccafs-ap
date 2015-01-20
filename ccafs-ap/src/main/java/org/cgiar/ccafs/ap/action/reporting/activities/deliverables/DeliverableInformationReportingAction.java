@@ -24,14 +24,18 @@ import org.cgiar.ccafs.ap.data.manager.DeliverableStatusManager;
 import org.cgiar.ccafs.ap.data.manager.DeliverableTypeManager;
 import org.cgiar.ccafs.ap.data.manager.LogframeManager;
 import org.cgiar.ccafs.ap.data.manager.MetadataManager;
+import org.cgiar.ccafs.ap.data.manager.OpenAccessManager;
 import org.cgiar.ccafs.ap.data.manager.PublicationThemeManager;
+import org.cgiar.ccafs.ap.data.manager.PublicationTypeManager;
 import org.cgiar.ccafs.ap.data.manager.SubmissionManager;
 import org.cgiar.ccafs.ap.data.model.Deliverable;
 import org.cgiar.ccafs.ap.data.model.DeliverableStatus;
 import org.cgiar.ccafs.ap.data.model.DeliverableType;
 import org.cgiar.ccafs.ap.data.model.Metadata;
+import org.cgiar.ccafs.ap.data.model.OpenAccess;
 import org.cgiar.ccafs.ap.data.model.Publication;
 import org.cgiar.ccafs.ap.data.model.PublicationTheme;
+import org.cgiar.ccafs.ap.data.model.PublicationType;
 import org.cgiar.ccafs.ap.data.model.Submission;
 import org.cgiar.ccafs.ap.util.Capitalize;
 
@@ -64,6 +68,8 @@ public class DeliverableInformationReportingAction extends BaseAction {
   private DeliverableAccessManager deliverableAccessManager;
   private MetadataManager metadataManager;
   private PublicationThemeManager publicationThemeManager;
+  private OpenAccessManager openAccessManager;
+  private PublicationTypeManager publicationTypeManager;
   private SubmissionManager submissionManager;
 
   // Model
@@ -81,13 +87,18 @@ public class DeliverableInformationReportingAction extends BaseAction {
   private List<Metadata> metadataList;
   private Map<String, String> publicationThemeList;
   private StringBuilder validationMessage;
+  // This array contains the publication types which need an access type specification.
+  private int[] publicationTypeAccessNeed;
+  private OpenAccess[] publicationAccessList;
+  private PublicationType[] publicationTypes;
 
   @Inject
   public DeliverableInformationReportingAction(APConfig config, LogframeManager logframeManager,
     DeliverableManager deliverableManager, DeliverableTypeManager deliverableTypeManager,
     DeliverableStatusManager deliverableStatusManager, MetadataManager metadataManager,
     DeliverableMetadataManager deliverableMetadataManager, DeliverableAccessManager deliverableAccessManager,
-    PublicationThemeManager publicationThemeManager, SubmissionManager submissionManager) {
+    PublicationThemeManager publicationThemeManager, SubmissionManager submissionManager,
+    OpenAccessManager openAccessManager, PublicationTypeManager publicationTypeManager) {
     super(config, logframeManager);
     this.deliverableManager = deliverableManager;
     this.deliverableTypeManager = deliverableTypeManager;
@@ -96,6 +107,8 @@ public class DeliverableInformationReportingAction extends BaseAction {
     this.deliverableAccessManager = deliverableAccessManager;
     this.metadataManager = metadataManager;
     this.publicationThemeManager = publicationThemeManager;
+    this.openAccessManager = openAccessManager;
+    this.publicationTypeManager = publicationTypeManager;
     this.submissionManager = submissionManager;
   }
 
@@ -133,6 +146,14 @@ public class DeliverableInformationReportingAction extends BaseAction {
 
   public Map<String, String> getNotApplicableRadio() {
     return notApplicableRadio;
+  }
+
+  public int[] getPublicationTypeAccessNeed() {
+    return publicationTypeAccessNeed;
+  }
+
+  public PublicationType[] getPublicationTypes() {
+    return publicationTypes;
   }
 
   public Map<Boolean, String> getYesNoRadio() {
@@ -191,6 +212,14 @@ public class DeliverableInformationReportingAction extends BaseAction {
       String themeName = getText("reporting.publications.Theme") + " " + pubTheme.getCode() + ": " + pubTheme.getName();
       publicationThemeList.put(String.valueOf(pubTheme.getId()), themeName);
     }
+
+    publicationTypes = publicationTypeManager.getPublicationTypes();
+    publicationAccessList = openAccessManager.getOpenAccessList();
+
+    // Publication types which need an access type specification
+    // ID = 1 - Journal paper
+    publicationTypeAccessNeed = new int[1];
+    publicationTypeAccessNeed[0] = publicationTypes[0].getId();
 
 
     /* --------- Checking if the user can submit ------------- */
