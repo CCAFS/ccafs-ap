@@ -21,7 +21,6 @@ import org.cgiar.ccafs.ap.data.manager.DeliverableAccessManager;
 import org.cgiar.ccafs.ap.data.manager.DeliverableManager;
 import org.cgiar.ccafs.ap.data.manager.DeliverableMetadataManager;
 import org.cgiar.ccafs.ap.data.manager.DeliverableStatusManager;
-import org.cgiar.ccafs.ap.data.manager.DeliverableTrafficLightManager;
 import org.cgiar.ccafs.ap.data.manager.DeliverableTypeManager;
 import org.cgiar.ccafs.ap.data.manager.LogframeManager;
 import org.cgiar.ccafs.ap.data.manager.MetadataManager;
@@ -56,7 +55,6 @@ public class DeliverableInformationReportingAction extends BaseAction {
   private DeliverableManager deliverableManager;
   private DeliverableTypeManager deliverableTypeManager;
   private DeliverableStatusManager deliverableStatusManager;
-  private DeliverableTrafficLightManager trafficLightManager;
   private DeliverableMetadataManager deliverableMetadataManager;
   private DeliverableAccessManager deliverableAccessManager;
   private MetadataManager metadataManager;
@@ -78,14 +76,13 @@ public class DeliverableInformationReportingAction extends BaseAction {
   @Inject
   public DeliverableInformationReportingAction(APConfig config, LogframeManager logframeManager,
     DeliverableManager deliverableManager, DeliverableTypeManager deliverableTypeManager,
-    DeliverableStatusManager deliverableStatusManager, DeliverableTrafficLightManager trafficLightManager,
-    MetadataManager metadataManager, DeliverableMetadataManager deliverableMetadataManager,
-    DeliverableAccessManager deliverableAccessManager, SubmissionManager submissionManager) {
+    DeliverableStatusManager deliverableStatusManager, MetadataManager metadataManager,
+    DeliverableMetadataManager deliverableMetadataManager, DeliverableAccessManager deliverableAccessManager,
+    SubmissionManager submissionManager) {
     super(config, logframeManager);
     this.deliverableManager = deliverableManager;
     this.deliverableTypeManager = deliverableTypeManager;
     this.deliverableStatusManager = deliverableStatusManager;
-    this.trafficLightManager = trafficLightManager;
     this.deliverableMetadataManager = deliverableMetadataManager;
     this.deliverableAccessManager = deliverableAccessManager;
     this.metadataManager = metadataManager;
@@ -148,7 +145,6 @@ public class DeliverableInformationReportingAction extends BaseAction {
     deliverableTypes = deliverableTypeManager.getDeliverableTypes();
     deliverableSubTypes = deliverableTypeManager.getDeliverableSubTypes();
     deliverableStatusList = deliverableStatusManager.getDeliverableStatus();
-    deliverable.setTrafficLight(trafficLightManager.getDeliverableTrafficLight(deliverableID));
     deliverable.setMetadata(deliverableMetadataManager.getDeliverableMetadata(deliverableID));
     deliverable.setAccessDetails(deliverableAccessManager.getDeliverableAccessData(deliverableID));
 
@@ -182,7 +178,6 @@ public class DeliverableInformationReportingAction extends BaseAction {
   @Override
   public String save() {
     deliverableManager.addDeliverable(deliverable, activityID);
-    trafficLightManager.saveDeliverableTrafficLight(deliverable.getTrafficLight(), deliverable.getId());
     deliverableMetadataManager.saveDeliverableMetadata(deliverable.getMetadata(), deliverable.getId());
     deliverableAccessManager.saveDeliverableAccessData(deliverable.getAccessDetails(), deliverable.getId());
 
