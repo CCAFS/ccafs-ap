@@ -18,6 +18,8 @@
 
 package org.cgiar.ccafs.ap.data.model;
 
+import org.cgiar.ccafs.ap.config.APConstants;
+
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
@@ -120,6 +122,10 @@ public abstract class Deliverable {
 
   public boolean isExpected() {
     return isExpected;
+  }
+
+  public boolean isPublication() {
+    return type.getId() == APConstants.DELIVERABLE_TYPE_PUBLICATION;
   }
 
   public void setAccessDetails(DeliverableAccess accessDetails) {
