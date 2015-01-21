@@ -52,8 +52,8 @@ public class MySQLDeliverableMetadataDAO implements DeliverableMetadataDAO {
     StringBuilder query = new StringBuilder();
     query.append("SELECT m.id as 'metadata_id', m.name as 'metadata_name', dm.value ");
     query.append("FROM deliverable_metadata dm ");
-    query.append("INNER JOIN metadata_questions m ON dm.metadata_id = m.id ");
-    query.append("WHERE dm.deliverable_id = ");
+    query.append("RIGHT JOIN metadata_questions m ON dm.metadata_id = m.id ");
+    query.append("AND dm.deliverable_id = ");
     query.append(deliverableID);
 
     try (Connection con = daoManager.getConnection()) {

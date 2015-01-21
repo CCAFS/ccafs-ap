@@ -29,6 +29,44 @@ public class MySQLPublicationDAO implements PublicationDAO {
   }
 
   @Override
+  public Map<String, String> getPublication(int deliverableID) {
+    LOG.debug(">> getPublication(deliverableID={})", deliverableID);
+    Map<String, String> publicationData = new HashMap<>();
+    try (Connection connection = dbManager.getConnection()) {
+      String query =
+        "SELECT p.id, p.identifier, p.citation, p.file_url, p.isi_publication, p.nars_coauthor, "
+          + "p.earth_system_coauthor, p.ccafs_acknowledge, pt.id as 'publication_type_id', "
+          + "pt.name as 'publication_type_name', oa.id as 'publication_access_id', "
+          + "oa.name as 'publication_access_name' " + "FROM publications p "
+          + "INNER JOIN publication_types pt ON pt.id = p.publication_type_id "
+          + "LEFT JOIN open_access oa ON p.open_access_id = oa.id " + "WHERE deliverable_id = " + deliverableID;
+
+      ResultSet rs = dbManager.makeQuery(query, connection);
+      if (rs.next()) {
+        publicationData.put("id", rs.getString("id"));
+        publicationData.put("identifier", rs.getString("identifier"));
+        publicationData.put("citation", rs.getString("citation"));
+        publicationData.put("file_url", rs.getString("file_url"));
+        publicationData.put("ccafs_acknowledge", rs.getString("ccafs_acknowledge"));
+        publicationData.put("isi_publication", rs.getString("isi_publication"));
+        publicationData.put("nars_coauthor", rs.getString("nars_coauthor"));
+        publicationData.put("earth_system_coauthor", rs.getString("earth_system_coauthor"));
+        publicationData.put("publication_type_id", rs.getString("publication_type_id"));
+        publicationData.put("publication_type_name", rs.getString("publication_type_name"));
+        publicationData.put("publication_access_id", rs.getString("publication_access_id"));
+        publicationData.put("publication_access_name", rs.getString("publication_access_name"));
+      }
+      rs.close();
+    } catch (SQLException e) {
+      LOG.error("-- getPublication() > Exception rised getting the publication linked to the deliverable {}",
+        deliverableID, e);
+    }
+
+    LOG.debug("<< getPublications():publication={}", publicationData);
+    return publicationData;
+  }
+
+  @Override
   public List<Map<String, String>> getPublications(int leaderId, int logframeId) {
     LOG.debug(">> getPublications(leaderId={}, logframeId={})", leaderId, logframeId);
     List<Map<String, String>> publications = new ArrayList<>();

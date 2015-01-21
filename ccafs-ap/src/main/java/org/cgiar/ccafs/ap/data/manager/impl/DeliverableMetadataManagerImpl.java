@@ -14,16 +14,17 @@
 
 package org.cgiar.ccafs.ap.data.manager.impl;
 
+import org.cgiar.ccafs.ap.data.dao.DeliverableMetadataDAO;
+import org.cgiar.ccafs.ap.data.manager.DeliverableMetadataManager;
+import org.cgiar.ccafs.ap.data.model.DeliverableMetadata;
+import org.cgiar.ccafs.ap.data.model.Metadata;
+
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
 import com.google.inject.Inject;
-import org.cgiar.ccafs.ap.data.dao.DeliverableMetadataDAO;
-import org.cgiar.ccafs.ap.data.manager.DeliverableMetadataManager;
-import org.cgiar.ccafs.ap.data.model.DeliverableMetadata;
-import org.cgiar.ccafs.ap.data.model.Metadata;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -69,6 +70,10 @@ public class DeliverableMetadataManagerImpl implements DeliverableMetadataManage
     int c = 0;
     for (DeliverableMetadata dMetadata : deliverableMetadata) {
       System.out.println(c);
+      if (dMetadata.getValue() == null || dMetadata.getValue().isEmpty()) {
+        continue;
+      }
+
       Map<String, Object> dMetadataInfo = new HashMap<>();
       dMetadataInfo.put("deliverable_id", deliverableID);
       dMetadataInfo.put("metadata_id", dMetadata.getMetadata().getId());
@@ -80,5 +85,4 @@ public class DeliverableMetadataManagerImpl implements DeliverableMetadataManage
 
     return saved;
   }
-
 }

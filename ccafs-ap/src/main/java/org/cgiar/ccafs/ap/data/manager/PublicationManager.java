@@ -13,6 +13,15 @@ import com.google.inject.ImplementedBy;
 public interface PublicationManager {
 
   /**
+   * Get the publication that belongs to the deliverable identified by the value
+   * received as parameter.
+   * 
+   * @param deliverableID - Deliverable identifier
+   * @return a Publication object
+   */
+  public Publication getPublicationByDeliverableID(int deliverableID);
+
+  /**
    * Get a list of publications that belong to a specific leader in a certain logframe.
    * 
    * @param leader - Leader that owns the publication list.
