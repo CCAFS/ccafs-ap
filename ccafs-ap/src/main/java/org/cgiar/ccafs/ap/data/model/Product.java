@@ -30,10 +30,16 @@ public class Product extends Deliverable {
   public Product() {
   }
 
+  public Product(int id) {
+    this.id = id;
+  }
+
+  @Override
   public String getDescription() {
     return description;
   }
 
+  @Override
   public String getDescriptionUpdate() {
     return descriptionUpdate;
   }
@@ -55,14 +61,17 @@ public class Product extends Deliverable {
     return ids;
   }
 
+  @Override
   public int getId() {
     return id;
   }
 
+  @Override
   public void setDescription(String description) {
     this.description = description;
   }
 
+  @Override
   public void setDescriptionUpdate(String desriptionUpdate) {
     this.descriptionUpdate = desriptionUpdate;
   }
@@ -72,6 +81,7 @@ public class Product extends Deliverable {
     this.isExpected = isExpected;
   }
 
+  @Override
   public void setId(int id) {
     this.id = id;
   }

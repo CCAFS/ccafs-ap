@@ -21,6 +21,15 @@ public interface DeliverableManager {
   public boolean addDeliverable(Deliverable deliverable, int activityID);
 
   /**
+   * Create a new deliverable in the database.
+   * 
+   * @param deliverable - Deliverable data
+   * @param activityID - activity identifier
+   * @return true if the deliverable was created. False otherwise.
+   */
+  public int createDeliverable(Deliverable deliverable, int activityID);
+
+  /**
    * Get the information of the deliverable identified by the value
    * received as parameter.
    * 

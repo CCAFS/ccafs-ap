@@ -10,6 +10,7 @@ public final class APConstants {
   public static final String SESSION_USER = "current_user";
   public static final String ACTIVITY_REQUEST_ID = "activityID";
   public static final String DELIVERABLE_REQUEST_ID = "deliverableID";
+  public static final String DELIVERABLE_TYPE_REQUEST_ID = "deliverableTypeID";
   public static final String PUBLIC_ACTIVITY_ID = "id";
   public static final String ACTIVITY_YEAR_REQUEST = "year";
   public static final String ACTIVITY_LIMIT_REQUEST = "limit";

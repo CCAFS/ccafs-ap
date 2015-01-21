@@ -291,7 +291,6 @@ public class DeliverableInformationReportingAction extends BaseAction {
     }
   }
 
-
   public void setActivityID(int activityID) {
     this.activityID = activityID;
   }
