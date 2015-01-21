@@ -2,6 +2,10 @@
 
 <nav id="stageMenu">
   <ul>
+    <li class="goBack"><a href="
+        [@s.url action='deliverablesList' includeParams='get'][/@s.url]
+      ">[@s.text name="menu.activitiesReporting.submenu.deliverable.activityeliverables" /]
+    </a> </li>
     <li [#if currentStage == "metadata"] class="currentReportingSection" [/#if]><a href="
         [@s.url action='deliverables' includeParams='get'][/@s.url]
       ">[@s.text name="menu.activitiesReporting.submenu.deliverable.metadata" /]

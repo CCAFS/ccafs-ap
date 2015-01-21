@@ -7,6 +7,8 @@
 [#assign currentStage = "metadata" /]
 [#assign userRole = "${currentUser.role}"]
 
+[#assign isNewDeliverable = true]
+
 [#include "/WEB-INF/global/pages/header.ftl" /]
 [#include "/WEB-INF/global/pages/main-menu.ftl" /]
 [#import "/WEB-INF/global/macros/forms.ftl" as customForm /]
@@ -32,18 +34,30 @@
       </div> 
       
       <div id="deliverableType" class="halfPartBlock">
-        <h6>[@s.text name="reporting.activityDeliverables.type" /]</h6>
-        <span>${deliverable.type.parent.name}</span>
+        [#if isNewDeliverable]
+          [@customForm.select name="deliverable.type" i18nkey="reporting.activityDeliverables.type" listName="deliverableTypes" keyFieldName="id"  displayFieldName="name" className="deliverableTypes" /]
+        [#else]
+          <h6>[@s.text name="reporting.activityDeliverables.type" /]</h6>
+          <span>${deliverable.type.parent.name}</span>      
+        [/#if]
       </div>
-
+      
       <div id="deliverableSubtype" class="halfPartBlock">
-        <h6>[@s.text name="reporting.activityDeliverables.subtype" /]</h6>
-        <span>${deliverable.type.name}</span>
+        [#if isNewDeliverable]
+          [@customForm.select name="deliverable.subType" i18nkey="reporting.activityDeliverables.subtype" listName="deliverableSubTypes" keyFieldName="id"  displayFieldName="name" className="deliverableSubTypes" /]
+        [#else]
+          <h6>[@s.text name="reporting.activityDeliverables.subtype" /]</h6>
+          <span>${deliverable.type.name}</span>  
+        [/#if]
       </div> 
 
       <div id="deliverableDescription" class="fullBlock ">
-        <h6>[@s.text name="reporting.activityDeliverables.description" /]</h6>
-        <span>${deliverable.description}</span>
+        [#if isNewDeliverable]
+          [@customForm.textArea name="deliverable.description" i18nkey="reporting.activityDeliverables.description" /]
+        [#else]
+          <h6>[@s.text name="reporting.activityDeliverables.description" /]</h6>
+          <span>${deliverable.description}</span>        
+        [/#if]
       </div>
       
       <div id="deliverableIndentifier" class="fullBlock ">
@@ -60,14 +74,14 @@
         [@customForm.select name="deliverable.status" i18nkey="reporting.activityDeliverables.status" listName="deliverableStatusList" keyFieldName="id"  displayFieldName="name" className="deliverableStatus" /]
       </div>
       
-      <div id="deliverableStatus" class="halfPartBlock">
+      <div class="halfPartBlock">
         [#-- This block is only to keep the format --]
       </div>
       
       <div id="deliverableStatusJustification" class="fullBlock" style="disply:none">
         [@customForm.textArea name="deliverable.statusJustification" i18nkey="reporting.activityDeliverables.statusJustification" help="reporting.activityDeliverables.statusJustification.help" /]
       </div>
-      
+          
       <div id="deliverableSubject" class="halfPartBlock" >
         <input type="hidden" name="deliverable.metadata[${deliverable.getMetadataIndex('Subject')}].metadata.id" value="${deliverable.getMetadataID('Subject')}" />
         [@customForm.input name="deliverable.metadata[${deliverable.getMetadataIndex('Subject')}].value" type="text" i18nkey="reporting.activityDeliverables.subject" /] 
@@ -115,65 +129,11 @@
       
     </div>
     
-    
-    [#-- Deliverable Data access questions --]
-    <h1 class="contentTitle" [#if !deliverable.data]style="display:none"[/#if]>[@s.text name="reporting.activityDeliverables.deliverableDataAccess" /] </h1> 
-    <div id="dataAccessQuestions" class="fullBlock borderBox" [#if !deliverable.data]style="display:none"[/#if]>
-      
-      <div id="" class="fullBlock">
-        <h6>[@s.text name="reporting.deliverables.dataAccess.dataDictionary" /]</h6>
-        <div>
-          [@s.radio name="deliverable.accessDetails.dataDictionary" list="yesNoRadio" /]
-        </div>
-      </div>
-
-      <div class="fullBlock">
-        [@customForm.input name="deliverable.accessDetails.qualityProcedures" type="text" i18nkey="reporting.deliverables.dataAccess.dataQuality" /]
-      </div>
-
-      <div id="restrictionImposed" class="fullBlock">
-        <h6>[@s.text name="reporting.deliverables.dataAccess.dataRestriction" /]</h6> 
-        <div>
-          [@s.radio name="deliverable.accessDetails.accessRestrictions" list="notApplicableRadio" /]
-        </div>
-      </div>
-      
-      <div id="accessLimitOptions" style="display:none">
-        <p>[@s.text name="reporting.deliverables.dataAccess.accessLimits" /]</p>
-        <div class="verticallyRadio">
-          [@s.radio name="deliverable.accessDetails.accessLimits" list="accessLimitsRadio" /]
-        </div> 
-          
-        <div class="halfPartBlock accessLimit" style="display:none" >
-          [@customForm.input name="deliverable.accessDetails.accessLimitStartDate" type="text" i18nkey="reporting.deliverables.dataAccess.accessLimits.startDate" /]
-        </div>
-
-        <div class="halfPartBlock accessLimit" style="display:none" >
-          [@customForm.input name="deliverable.accessDetails.accessLimitEndDate" type="text" i18nkey="reporting.deliverables.dataAccess.accessLimits.endDate" /]
-        </div>
-      </div>
-      
-      <div id="deliverableRights" class="fullBlock">
-        <input type="hidden" name="deliverable.metadata[${deliverable.getMetadataIndex('Rights')}].metadata.id" value="${deliverable.getMetadataID('Rights')}" /> 
-        [@customForm.textArea name="deliverable.metadata[${deliverable.getMetadataIndex('Rights')}].value" i18nkey="reporting.deliverables.metadata.rights" help="reporting.deliverables.metadata.rights.help" /]
-      </div>
-      
-      <div id="metadataProtocols" class="fullBlock">
-        [@s.text name="reporting.deliverables.dataAccess.harvestingProtocols" /]
-        [@s.radio name="deliverable.accessDetails.harvestingProtocols" list="yesNoRadio" /]
-      </div>
-
-      <div id="specifyProtocols" class="fullBlock" style="display:none">
-        [@customForm.input name="deliverable.accessDetails.harvestingProtocolDetails" type="text" i18nkey="reporting.deliverables.dataAccess.harvestingProtocols.specify" /]
-      </div>
-      
-    </div> 
-    
     [#-- Deliverable Publications questions --]  
-    <h1 class="contentTitle" [#if !deliverable.publication]style="display:none"[/#if]>[@s.text name="reporting.activityDeliverables.deliverablePublications" /] </h1> 
-    <div id="publicationQuestions" class="fullBlock borderBox" [#if !deliverable.publication]style="display:none"[/#if]> 
-
-      <div id="JournalQuestions" [#if !deliverable.journalArticle]style="display:none"[/#if]>
+    <h1 class="contentTitle publicationQuestions" [#if !deliverable.publication]style="display:none"[/#if]>[@s.text name="reporting.activityDeliverables.deliverablePublications" /] </h1> 
+    <div class="publicationQuestions" id="publicationQuestions" class="fullBlock borderBox" [#if !deliverable.publication]style="display:none"[/#if]> 
+    
+       <div id="JournalQuestions" [#if !deliverable.journalArticle]style="display:none"[/#if]>
         <div id="publicationOpenAccess" class="fullBlock accessType">
           [@customForm.radioButtonGroup name="publication.access" label="" i18nkey="reporting.publications.access" listName="publicationAccessList" keyFieldName="id" displayFieldName="name" value="" help="reporting.publications.access.help"/]
         </div>
@@ -205,6 +165,62 @@
       </div>
     
     </div>
+    
+    
+    [#-- Deliverable Data access questions --]
+    <h1 class="contentTitle" [#if !deliverable.data]style="display:none"[/#if]>[@s.text name="reporting.activityDeliverables.deliverableDataAccess" /] </h1> 
+    <div id="dataAccessQuestions" class="fullBlock borderBox" [#if !deliverable.data]style="display:none"[/#if]>
+      
+      <div id="" class="fullBlock">
+        <h6>[@s.text name="reporting.deliverables.dataAccess.dataDictionary" /]</h6>
+        <div>
+          [@s.radio name="deliverable.accessDetails.dataDictionary" list="yesNoRadio" /]
+        </div>
+      </div>
+
+      <div class="fullBlock">
+        [@customForm.input name="deliverable.accessDetails.qualityProcedures" type="text" i18nkey="reporting.deliverables.dataAccess.dataQuality" /]
+      </div>
+
+      <div id="restrictionImposed" class="fullBlock">
+        <h6>[@s.text name="reporting.deliverables.dataAccess.dataRestriction" /]</h6> 
+        <div>
+          [@s.radio name="deliverable.accessDetails.accessRestrictions" list="notApplicableRadio" /]
+        </div>
+      </div>
+      
+      <div id="accessLimitOptions" style="display:none">
+        <p>[@s.text name="reporting.deliverables.dataAccess.accessLimits" /]</p>
+        <div class="verticallyRadio">
+          [@s.radio name="deliverable.accessDetails.accessLimits" list="accessLimitsRadio" /]
+        </div> 
+          
+        <div id="accessLimitStartDate" class="halfPartBlock accessLimit" style="display:none" >
+          [@customForm.input name="deliverable.accessDetails.accessLimitStartDate" type="text" i18nkey="reporting.deliverables.dataAccess.accessLimits.startDate" /]
+        </div>
+
+        <div id="accessLimitEndDate" class="halfPartBlock accessLimit" style="display:none" >
+          [@customForm.input name="deliverable.accessDetails.accessLimitEndDate" type="text" i18nkey="reporting.deliverables.dataAccess.accessLimits.endDate" /]
+        </div>
+      </div>
+      
+      <div id="deliverableRights" class="fullBlock">
+        <input type="hidden" name="deliverable.metadata[${deliverable.getMetadataIndex('Rights')}].metadata.id" value="${deliverable.getMetadataID('Rights')}" /> 
+        [@customForm.textArea name="deliverable.metadata[${deliverable.getMetadataIndex('Rights')}].value" i18nkey="reporting.deliverables.metadata.rights" help="reporting.deliverables.metadata.rights.help" /]
+      </div>
+      
+      <div id="metadataProtocols" class="fullBlock">
+        [@s.text name="reporting.deliverables.dataAccess.harvestingProtocols" /]
+        [@s.radio name="deliverable.accessDetails.harvestingProtocols" list="yesNoRadio" /]
+      </div>
+
+      <div id="specifyProtocols" class="fullBlock" style="display:none">
+        [@customForm.input name="deliverable.accessDetails.harvestingProtocolDetails" type="text" i18nkey="reporting.deliverables.dataAccess.harvestingProtocols.specify" /]
+      </div>
+      
+    </div> 
+     
+
     
     <!-- internal parameter -->
     <input name="activityID" type="hidden" value="${activityID}" />
