@@ -38,7 +38,7 @@ public class MySQLPublicationDAO implements PublicationDAO {
           + "p.earth_system_coauthor, p.ccafs_acknowledge, pt.id as 'publication_type_id', "
           + "pt.name as 'publication_type_name', oa.id as 'publication_access_id', "
           + "oa.name as 'publication_access_name' " + "FROM publications p "
-          + "INNER JOIN publication_types pt ON pt.id = p.publication_type_id "
+          + "LEFT JOIN publication_types pt ON pt.id = p.publication_type_id "
           + "LEFT JOIN open_access oa ON p.open_access_id = oa.id " + "WHERE deliverable_id = " + deliverableID;
 
       ResultSet rs = dbManager.makeQuery(query, connection);
@@ -132,6 +132,28 @@ public class MySQLPublicationDAO implements PublicationDAO {
   }
 
   @Override
+  public boolean removePublicationByDeliverable(int deliverableID) {
+    LOG.debug(">> removePublicationByDeliverable(deliverableID={})", deliverableID);
+    boolean problem = false;
+    try (Connection connection = dbManager.getConnection()) {
+      String removeQuery = "DELETE FROM publications WHERE deliverable_id = " + deliverableID;
+      int rows = dbManager.makeChange(removeQuery, connection);
+      if (rows < 0) {
+        LOG.warn(
+          "-- removePublicationByDeliverable() > Error deleting the publication linked with the deliverable {}.",
+          deliverableID);
+        problem = true;
+      }
+    } catch (SQLException e) {
+      LOG.error("-- removePublicationByDeliverable() > Exception deleting publications linked to deliverable {}.",
+        deliverableID, e);
+      e.printStackTrace();
+    }
+    LOG.debug("<< removePublicationByDeliverable():{}", !problem);
+    return !problem;
+  }
+
+  @Override
   public int savePublication(Map<String, String> publication) {
     LOG.debug(">> savePublication(publication={})");
     int generatedId = -1;
@@ -140,9 +162,9 @@ public class MySQLPublicationDAO implements PublicationDAO {
       Object[] values;
       addQueryPrepared =
         "INSERT INTO publications (id, publication_type_id, identifier, citation, file_url, logframe_id, "
-          + "activity_leader_id, open_access_id, ccafs_acknowledge, isi_publication, nars_coauthor, earth_system_coauthor) "
-          + "VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
-      values = new Object[12];
+          + "activity_leader_id, open_access_id, ccafs_acknowledge, isi_publication, nars_coauthor, earth_system_coauthor, "
+          + "deliverable_id) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
+      values = new Object[13];
       values[0] = publication.get("id");
       values[1] = publication.get("publication_type_id");
       values[2] = publication.get("identifier");
@@ -155,6 +177,7 @@ public class MySQLPublicationDAO implements PublicationDAO {
       values[9] = publication.get("isi_publication");
       values[10] = publication.get("nars_coauthor");
       values[11] = publication.get("earth_system_coauthor");
+      values[12] = publication.get("deliverable_id");
 
       int rows = dbManager.makeChangeSecure(connection, addQueryPrepared, values);
       if (rows > 0) {

@@ -38,6 +38,16 @@ public interface PublicationDAO {
   public boolean removeAllPublications(int leaderId, int logframeId);
 
   /**
+   * This method removes the publications linked with the deliverable
+   * identified by the value received as parameter.
+   * 
+   * @param deliverableID - Deliverable identifier
+   * @return true if the publication was removed or if any publication
+   *         was linked to the deliverable. False if any error occurred.
+   */
+  public boolean removePublicationByDeliverable(int deliverableID);
+
+  /**
    * Save a list of publications into the database.
    * 
    * @param publications - List of Maps with all the information of publications.

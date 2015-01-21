@@ -38,7 +38,11 @@ public class PublicationManagerImpl implements PublicationManager {
     Map<String, String> pubData = publicationDAO.getPublication(deliverableID);
 
     Publication publication = new Publication();
-    publication.setId(Integer.parseInt(pubData.get("id")));
+    if (pubData.get("id") != null) {
+      publication.setId(Integer.parseInt(pubData.get("id")));
+    } else {
+      publication.setId(-1);
+    }
     publication.setIdentifier(pubData.get("identifier"));
     publication.setCitation(pubData.get("citation"));
     publication.setFileUrl(pubData.get("file_url"));
@@ -68,15 +72,19 @@ public class PublicationManagerImpl implements PublicationManager {
     }
 
     PublicationType publicationType = new PublicationType();
-    publicationType.setId(Integer.parseInt(pubData.get("publication_type_id")));
-    publicationType.setName(pubData.get("publication_type_name"));
+    if (pubData.get("publication_type_id") != null) {
+      publicationType.setId(Integer.parseInt(pubData.get("publication_type_id")));
+      publicationType.setName(pubData.get("publication_type_name"));
+    }
     publication.setType(publicationType);
-    OpenAccess publicationAccess = new OpenAccess();
 
+    OpenAccess publicationAccess = new OpenAccess();
     if (pubData.get("publication_access_id") != null) {
-      publicationAccess.setId(Integer.parseInt(pubData.get("publication_access_id")));
-    } else {
-      // publicationAccess.setId(-1);
+      if (pubData.get("publication_access_id") != null) {
+        publicationAccess.setId(Integer.parseInt(pubData.get("publication_access_id")));
+      } else {
+        // publicationAccess.setId(-1);
+      }
     }
 
     List<Map<String, String>> themes = publicationThemeDAO.getPublicationThemes(publication.getId());
@@ -168,6 +176,11 @@ public class PublicationManagerImpl implements PublicationManager {
   }
 
   @Override
+  public boolean removePublicationByDeliverableID(int deliverableID) {
+    return publicationDAO.removePublicationByDeliverable(deliverableID);
+  }
+
+  @Override
   public boolean savePublications(List<Publication> publications, Logframe logframe, Leader leader) {
     for (Publication publication : publications) {
       Map<String, String> pubData = new HashMap<>();
@@ -176,8 +189,13 @@ public class PublicationManagerImpl implements PublicationManager {
       } else {
         pubData.put("id", null);
       }
-      pubData.put("publication_type_id", publication.getPublicationType().getId() + "");
-      if (publication.getIdentifier().isEmpty()) {
+
+      if (publication.getPublicationType().getId() < 1) {
+        pubData.put("publication_type_id", null);
+      } else {
+        pubData.put("publication_type_id", publication.getPublicationType().getId() + "");
+      }
+      if (publication.getIdentifier() != null && publication.getIdentifier().isEmpty()) {
         pubData.put("identifier", null);
       } else {
         pubData.put("identifier", publication.getIdentifier());
@@ -194,13 +212,19 @@ public class PublicationManagerImpl implements PublicationManager {
       pubData.put("earth_system_coauthor", publication.isEarthSystemCoauthor() ? "1" : "0");
 
       pubData.put("citation", publication.getCitation());
-      if (publication.getFileUrl().isEmpty()) {
+      if (publication.getFileUrl() != null && publication.getFileUrl().isEmpty()) {
         pubData.put("file_url", null);
       } else {
         pubData.put("file_url", publication.getFileUrl());
       }
       pubData.put("logframe_id", logframe.getId() + "");
       pubData.put("activity_leader_id", leader.getId() + "");
+
+      if (publication.getDeliverableID() < 0) {
+        pubData.put("deliverable_id", null);
+      } else {
+        pubData.put("deliverable_id", publication.getDeliverableID() + "");
+      }
 
       int publicationId = publicationDAO.savePublication(pubData);
 

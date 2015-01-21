@@ -30,6 +30,10 @@ public class Publication extends Deliverable {
     return citation;
   }
 
+  public int getDeliverableID() {
+    return super.getId();
+  }
+
   public String getFileUrl() {
     return fileUrl;
   }
@@ -93,6 +97,10 @@ public class Publication extends Deliverable {
 
   public void setCitation(String citation) {
     this.citation = citation;
+  }
+
+  public void setDeliverableID(int id) {
+    super.id = id;
   }
 
   public void setEarthSystemCoauthor(boolean earthSystemCoauthor) {
