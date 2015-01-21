@@ -14,6 +14,13 @@
 
 package org.cgiar.ccafs.ap.action.reporting.activities.deliverables;
 
+import java.util.LinkedHashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.TreeMap;
+
+import com.google.inject.Inject;
+import org.apache.commons.lang3.StringUtils;
 import org.cgiar.ccafs.ap.action.BaseAction;
 import org.cgiar.ccafs.ap.config.APConfig;
 import org.cgiar.ccafs.ap.config.APConstants;
@@ -38,14 +45,6 @@ import org.cgiar.ccafs.ap.data.model.PublicationTheme;
 import org.cgiar.ccafs.ap.data.model.PublicationType;
 import org.cgiar.ccafs.ap.data.model.Submission;
 import org.cgiar.ccafs.ap.util.Capitalize;
-
-import java.util.LinkedHashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.TreeMap;
-
-import com.google.inject.Inject;
-import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -148,6 +147,15 @@ public class DeliverableInformationReportingAction extends BaseAction {
     return notApplicableRadio;
   }
 
+  public OpenAccess[] getPublicationAccessList() {
+    return publicationAccessList;
+  }
+
+
+  public Map<String, String> getPublicationThemeList() {
+    return publicationThemeList;
+  }
+
   public int[] getPublicationTypeAccessNeed() {
     return publicationTypeAccessNeed;
   }
@@ -233,11 +241,14 @@ public class DeliverableInformationReportingAction extends BaseAction {
   @Override
   public String save() {
     boolean success = true;
-
+    System.out.println(1);
     success = success && deliverableManager.addDeliverable(deliverable, activityID);
-    success = success && deliverableMetadataManager.saveDeliverableMetadata(deliverable.getMetadata(), deliverableID);
+    System.out.println(2);
     success =
       success && deliverableAccessManager.saveDeliverableAccessData(deliverable.getAccessDetails(), deliverableID);
+    System.out.println(3);
+    success = success && deliverableMetadataManager.saveDeliverableMetadata(deliverable.getMetadata(), deliverableID);
+    System.out.println(4);
 
     if (success) {
       if (validationMessage.toString().isEmpty()) {
