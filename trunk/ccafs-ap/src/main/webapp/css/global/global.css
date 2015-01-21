@@ -117,6 +117,14 @@ input[type="radio"] {
   width: 29%\0/; /*hack for IE8 & IE9*/
 }
 
+#publicationRelatedThemes .checkboxLabel { 
+  margin:4px 0;
+  width: 46%;
+  width: 46%\0/; /*hack for IE8 & IE9*/
+}
+
+
+
 .removeLink {
   display: block;
   text-align: right;

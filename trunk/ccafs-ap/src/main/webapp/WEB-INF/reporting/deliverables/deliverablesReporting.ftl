@@ -1,7 +1,7 @@
 [#ftl]
 [#assign title = "Activity deliverables Report" /]
 [#assign globalLibs = ["jquery", "noty"] /]
-[#assign customJS = ["${baseUrl}/js/reporting/deliverablesReporting.js"] /]
+[#assign customJS = ["${baseUrl}/js/reporting/deliverables/deliverablesReportingInformation.js"] /]
 [#assign currentSection = "reporting" /]
 [#assign currentReportingSection = "activities" /]
 [#assign currentStage = "metadata" /]
@@ -25,19 +25,23 @@
     [#-- Deliverable Main Information --] 
     <h1 class="contentTitle">[@s.text name="reporting.activityDeliverables.mainInformation" /] </h1> 
     <div id="deliverableInformation" class="borderBox">
-      <div id="deliverableTitle" class="fullBlock ">
-        [@customForm.input name="deliverable.title" type="text" i18nkey="reporting.activityDeliverables.title" /]
-      </div>
     
-      <div id="deliverableTitle" class="fullBlock ">
+      <div id="deliverableTitle" class="fullBlock "> 
+        <input type="hidden" name="deliverable.metadata[${deliverable.getMetadataIndex('Title')}].metadata.id" value="${deliverable.getMetadataID('Title')}" />
+        [@customForm.input name="deliverable.metadata[${deliverable.getMetadataIndex('Title')}].value" type="text" i18nkey="reporting.deliverables.metadata.title" /]
+      </div> 
+          
+      <div id="deliverableDescription" class="fullBlock ">
         <h6>[@s.text name="reporting.activityDeliverables.description" /]</h6>
         <span>${deliverable.description}</span>
       </div>
       
       <div id="deliverableIndentifier" class="fullBlock ">
-        [@customForm.input name="deliverable.identifier" type="text" i18nkey="reporting.activityDeliverables.identifier" /]
+        <input type="hidden" name="deliverable.metadata[${deliverable.getMetadataIndex('Identifier')}].metadata.id" value="${deliverable.getMetadataID('Identifier')}" />
+        [@customForm.input name="deliverable.metadata[${deliverable.getMetadataIndex('Identifier')}].value" type="text" i18nkey="reporting.activityDeliverables.identifier" /]
+         
       </div>
-
+        
       <div id="deliverableDescriptionDissemination" class="fullBlock">
         [@customForm.textArea name="deliverable.descriptionDissemination" i18nkey="reporting.activityDeliverables.descriptionDissemination" help="reporting.activityDeliverables.descriptionDissemination.help" /]
       </div>
@@ -59,31 +63,38 @@
       </div> 
       
       <div id="deliverableSubject" class="halfPartBlock" >
-        [@customForm.input name="deliverable.subject" type="text" i18nkey="reporting.activityDeliverables.subject" /]
+        <input type="hidden" name="deliverable.metadata[${deliverable.getMetadataIndex('Subject')}].metadata.id" value="${deliverable.getMetadataID('Subject')}" />
+        [@customForm.input name="deliverable.metadata[${deliverable.getMetadataIndex('Subject')}].value" type="text" i18nkey="reporting.activityDeliverables.subject" /] 
       </div>
       
-      <div id="deliverableContributor" class="halfPartBlock" >
-        [@customForm.input name="deliverable.contributor" type="text" i18nkey="reporting.activityDeliverables.contributor" /]
+      <div id="deliverableContributor" class="halfPartBlock" > 
+        <input type="hidden" name="deliverable.metadata[${deliverable.getMetadataIndex('Contributor')}].metadata.id" value="${deliverable.getMetadataID('Contributor')}" />
+        [@customForm.input name="deliverable.metadata[${deliverable.getMetadataIndex('Contributor')}].value" type="text" i18nkey="reporting.activityDeliverables.contributor" /] 
       </div>
       
       <div id="deliverableCreator" class="halfPartBlock" >
-        [@customForm.input name="deliverable.creator" type="text" i18nkey="reporting.activityDeliverables.creator" /]
+        <input type="hidden" name="deliverable.metadata[${deliverable.getMetadataIndex('Creator')}].metadata.id" value="${deliverable.getMetadataID('Creator')}" />
+        [@customForm.input name="deliverable.metadata[${deliverable.getMetadataIndex('Creator')}].value" type="text" i18nkey="reporting.activityDeliverables.creator" /]  
       </div>
       
       <div id="deliverablePublisher" class="halfPartBlock" >
-        [@customForm.input name="deliverable.publisher" type="text" i18nkey="reporting.activityDeliverables.publisher" /]
+        <input type="hidden" name="deliverable.metadata[${deliverable.getMetadataIndex('Publisher')}].metadata.id" value="${deliverable.getMetadataID('Publisher')}" />
+        [@customForm.input name="deliverable.metadata[${deliverable.getMetadataIndex('Publisher')}].value" type="text" i18nkey="reporting.activityDeliverables.publisher" /]   
       </div>
       
       <div id="deliverableSubjectRelation" class="halfPartBlock" >
-        [@customForm.input name="deliverable.relation" type="text" i18nkey="reporting.activityDeliverables.relation" /]
+        <input type="hidden" name="deliverable.metadata[${deliverable.getMetadataIndex('Relation')}].metadata.id" value="${deliverable.getMetadataID('Relation')}" />
+        [@customForm.input name="deliverable.metadata[${deliverable.getMetadataIndex('Relation')}].value" type="text" i18nkey="reporting.activityDeliverables.relation" /]
       </div>
       
       <div id="deliverableCoverage" class="halfPartBlock" >
-        [@customForm.input name="deliverable.coverage" type="text" i18nkey="reporting.activityDeliverables.coverage" /]
+        <input type="hidden" name="deliverable.metadata[${deliverable.getMetadataIndex('Coverage')}].metadata.id" value="${deliverable.getMetadataID('Coverage')}" />
+        [@customForm.input name="deliverable.metadata[${deliverable.getMetadataIndex('Coverage')}].value" type="text" i18nkey="reporting.activityDeliverables.coverage" /]
       </div> 
       
       <div id="deliverableLanguage" class="halfPartBlock" >
-        [@customForm.input name="deliverable.language" type="text" i18nkey="reporting.activityDeliverables.language" /]
+        <input type="hidden" name="deliverable.metadata[${deliverable.getMetadataIndex('Language')}].metadata.id" value="${deliverable.getMetadataID('Language')}" />
+        [@customForm.input name="deliverable.metadata[${deliverable.getMetadataIndex('Language')}].value" type="text" i18nkey="reporting.activityDeliverables.language" /]
       </div>
       
       <div id="deliverableYear" class="halfPartBlock">
@@ -92,7 +103,8 @@
       </div>
       
       <div id="deliverableFormat" class="halfPartBlock" >
-        [@customForm.input name="deliverable.format" type="text" i18nkey="reporting.activityDeliverables.format" /]
+        <input type="hidden" name="deliverable.metadata[${deliverable.getMetadataIndex('Format')}].metadata.id" value="${deliverable.getMetadataID('Format')}" />
+        [@customForm.input name="deliverable.metadata[${deliverable.getMetadataIndex('Format')}].value" type="text" i18nkey="reporting.activityDeliverables.format" /]
       </div>
       
       <div id="deliverableStatus" class="halfPartBlock">
@@ -110,7 +122,7 @@
     <h1 class="contentTitle">[@s.text name="reporting.activityDeliverables.deliverableDataAccess" /] </h1> 
     <div id="dataAccessQuestions" class="fullBlock borderBox">
       
-      <div class="fullBlock">
+      <div id="" class="fullBlock">
         <h6>[@s.text name="reporting.deliverables.dataAccess.dataDictionary" /]</h6>
         <div>
           [@s.radio name="deliverable.accessDetails.dataDictionary" list="yesNoRadio" /]
@@ -144,114 +156,53 @@
       </div>
       
       <div id="deliverableRights" class="fullBlock">
-        [@customForm.textArea name="deliverable.metadata.rights" i18nkey="reporting.deliverables.metadata.rights" help="reporting.deliverables.metadata.rights.help" /]
+        <input type="hidden" name="deliverable.metadata[${deliverable.getMetadataIndex('Rights')}].metadata.id" value="${deliverable.getMetadataID('Rights')}" /> 
+        [@customForm.textArea name="deliverable.metadata[${deliverable.getMetadataIndex('Rights')}].value" i18nkey="reporting.deliverables.metadata.rights" help="reporting.deliverables.metadata.rights.help" /]
       </div>
       
-      <div class="fullBlock">
+      <div id="metadataProtocols" class="fullBlock">
         [@s.text name="reporting.deliverables.dataAccess.harvestingProtocols" /]
         [@s.radio name="deliverable.accessDetails.harvestingProtocols" list="yesNoRadio" /]
       </div>
 
-      <div class="fullBlock">
+      <div id="specifyProtocols" class="fullBlock">
         [@customForm.input name="deliverable.accessDetails.harvestingProtocolDetails" type="text" i18nkey="reporting.deliverables.dataAccess.harvestingProtocols.specify" /]
       </div>
       
-    </div>
-    
-    [#-- Deliverable Case Studies questions --]
-    <h1 class="contentTitle">[@s.text name="reporting.activityDeliverables.deliverableCaseStudies" /] </h1> 
-    <div id="caseStudyQuestions" class="fullBlock borderBox">
-    
-      <div id="caseStudyType" class="fullBlock">
-        <h6>[@s.text name="reporting.activityDeliverables.caseStudies.type" /]</h6>
-        <div>[@s.radio name="reporting.activityDeliverables.caseStudies.type" list="yesNoRadio" /]</div>
-      </div>
-      
-      <div id="caseStudyStartDate" class="halfPartBlock">
-        [@customForm.input name="deliverable.caseStudies.startDate" type="text" i18nkey="reporting.activityDeliverables.caseStudies.startDate" /]
-      </div>
-      
-      <div id="caseStudyEndDate" class="halfPartBlock">
-        [@customForm.input name="deliverable.caseStudies.endDate" type="text" i18nkey="reporting.activityDeliverables.caseStudies.endDate" /]
-      </div>
-      
-      <div id="caseStudyIsGlobal" class="halfPartBlock">
-        [@customForm.checkbox  name="deliverable.caseStudies.global" i18nkey="reporting.activityDeliverables.caseStudies.isGlobal" value="false" /]
-      </div>
-      
-      <div id="caseStudyCountry" class="halfPartBlock">
-        [@customForm.input name="deliverable.caseStudies.country" type="text" i18nkey="reporting.activityDeliverables.caseStudies.country" /]
-      </div>
-      
-      <div id="caseStudyImage" class="fullBlock imageBlock">
-        <div class="halfPartBlock browseInput">
-          [@customForm.input name="caseStudies[{caseStudy_index}].image" type="file" i18nkey="reporting.caseStudies.image" /]
-        </div>                            
-        <div id="caseStudies[{caseStudy_index}].image" class="halfPartBlock image">
-          <img src="{caseStudiesImagesUrl}/{caseStudy.imageFileName}" width="100%">
-        </div>
-        <div class="clearfix"></div>
-      </div> 
-            
-      <div id="caseStudyKeywords" class="fullBlock">
-        [@customForm.input name="deliverable.caseStudies.keywords" type="text" i18nkey="reporting.activityDeliverables.caseStudies.keywords" /]
-      </div>
-      
-      <div id="caseStudyDescription" class="fullBlock">
-        [@customForm.textArea name="deliverable.caseStudies.projectDescription" i18nkey="reporting.activityDeliverables.caseStudies.projectDescription" /]
-      </div>
-      
-      <div id="caseStudyResults" class="fullBlock">
-        [@customForm.textArea name="deliverable.caseStudies.projectResults" i18nkey="reporting.activityDeliverables.caseStudies.projectResults" /]
-      </div>
-      
-      <div id="caseStudyIntroductionObjectives" class="fullBlock">
-        [@customForm.textArea name="deliverable.caseStudies.introductionObjectives" i18nkey="reporting.activityDeliverables.caseStudies.introductionObjectives" /]
-      </div>
-      
-      <div id="caseStudyPartners" class="fullBlock">
-        [@customForm.textArea name="deliverable.caseStudies.partners" i18nkey="reporting.activityDeliverables.caseStudies.partners" /]
-      </div>
-      
-      <div id="caseStudyLinks" class="fullBlock">
-        [@customForm.textArea name="deliverable.caseStudies.links" i18nkey="reporting.activityDeliverables.caseStudies.links" /]
-      </div>
-      
-    </div>
+    </div> 
     
     [#-- Deliverable Publications questions --]
     <h1 class="contentTitle">[@s.text name="reporting.activityDeliverables.deliverablePublications" /] </h1> 
-    <div id="publicationsQuestions" class="fullBlock borderBox">
+    <div id="publicationQuestions" class="fullBlock borderBox"> 
     
-      <div id="publicationsLinks" class="fullBlock">
-          <h6>[@s.text name="reporting.activityDeliverables.publications.sopenAccessStatus" /]</h6>
-          <div class="verticallyRadio">
-            [@s.radio name="deliverable.publications.links" list="accessLimitsRadio" /]
-          </div> 
-      </div> 
-      
-      <div id="publicationsJournalIndicators" class="fullBlock ">
-      <h6>[@s.text name="reporting.activityDeliverables.publications.journalIndicators" /]</h6>
-        <div class="fullBlock verticallyCheckBox">
-          [@customForm.checkbox name="deliverable.publications.isiPublication" i18nkey="reporting.publications.isiPublication" value="true" /]
-          [@customForm.checkbox name="deliverable.publications.narsCoauthor" i18nkey="reporting.publications.narsCoauthor" value="true" /]
-          [@customForm.checkbox name="deliverable.publications.earthSystemCoauthor" i18nkey="reporting.publications.earthSystemCoauthor" value="true" /]
+      <div id="JournalQuestions">
+        <div id="publicationOpenAccess" class="fullBlock accessType">
+          [@customForm.radioButtonGroup name="publication.access" label="" i18nkey="reporting.publications.access" listName="publicationAccessList" keyFieldName="id" displayFieldName="name" value="" help="reporting.publications.access.help"/]
         </div>
+        
+        <div id="publicationJournalIndicators" class="fullBlock ">
+        <h6>[@s.text name="reporting.activityDeliverables.publications.journalIndicators" /]</h6>
+          <div class="fullBlock verticallyCheckBox">
+            [@customForm.checkbox name="publication.isiPublication" i18nkey="reporting.publications.isiPublication" value="true" /]
+            [@customForm.checkbox name="publication.publications.narsCoauthor" i18nkey="reporting.publications.narsCoauthor" value="true" /]
+            [@customForm.checkbox name="publication.publications.earthSystemCoauthor" i18nkey="reporting.publications.earthSystemCoauthor" value="true" /]
+          </div>
+        </div> 
       </div> 
       
-      <div id="publicationsCitation" class="fullBlock">
-        [@customForm.textArea name="deliverable.publications.citation" i18nkey="reporting.activityDeliverables.publications.citation" /]
+      <div id="publicationCitation" class="fullBlock">
+        [@customForm.textArea name="publication.citation" i18nkey="reporting.activityDeliverables.publications.citation" /]
       </div> 
       
-      <div id="ccafsAcknowledge" class="fullBlock">
-        [@customForm.checkbox name="deliverable.publications.ccafsAcknowledge" i18nkey="reporting.activityDeliverables.publications.citation.acknowledgeCCAFS" value="true" /]
+      <div id="ccafsAcknowledge" class="fullBlock verticallyCheckBox">
+        [@customForm.checkbox name="publication.ccafsAcknowledge" i18nkey="reporting.activityDeliverables.publications.acknowledgeCCAFS" value="true" /]
       </div>
  
-      <div id="publicationsRelatedThemes" class="fullBlock">
+      <div id="publicationRelatedThemes" class="fullBlock">
         <h6>[@s.text name="reporting.activityDeliverables.publications.outputPublication" help="reporting.activityDeliverables.publications.outputPublication.help"/]</h6>
         <div class="checkboxGroup">
           [@s.fielderror cssClass="fieldError" fieldName="deliverable.publications.themeRelated"/]
-          [@s.checkboxlist name="deliverable.publications.relatedThemes" list="publicationThemeList" value="deliverable.publications.relatedThemesIds" cssClass="checkbox" /]
+          [@s.checkboxlist name="publication.relatedThemes" list="publicationThemeList" value="deliverable.publications.relatedThemesIds" cssClass="checkbox" /]
         </div>
       </div>
     
