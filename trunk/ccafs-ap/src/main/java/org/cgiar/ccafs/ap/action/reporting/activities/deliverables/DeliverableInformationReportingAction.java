@@ -14,13 +14,6 @@
 
 package org.cgiar.ccafs.ap.action.reporting.activities.deliverables;
 
-import java.util.LinkedHashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.TreeMap;
-
-import com.google.inject.Inject;
-import org.apache.commons.lang3.StringUtils;
 import org.cgiar.ccafs.ap.action.BaseAction;
 import org.cgiar.ccafs.ap.config.APConfig;
 import org.cgiar.ccafs.ap.config.APConstants;
@@ -32,6 +25,7 @@ import org.cgiar.ccafs.ap.data.manager.DeliverableTypeManager;
 import org.cgiar.ccafs.ap.data.manager.LogframeManager;
 import org.cgiar.ccafs.ap.data.manager.MetadataManager;
 import org.cgiar.ccafs.ap.data.manager.OpenAccessManager;
+import org.cgiar.ccafs.ap.data.manager.PublicationManager;
 import org.cgiar.ccafs.ap.data.manager.PublicationThemeManager;
 import org.cgiar.ccafs.ap.data.manager.PublicationTypeManager;
 import org.cgiar.ccafs.ap.data.manager.SubmissionManager;
@@ -45,6 +39,15 @@ import org.cgiar.ccafs.ap.data.model.PublicationTheme;
 import org.cgiar.ccafs.ap.data.model.PublicationType;
 import org.cgiar.ccafs.ap.data.model.Submission;
 import org.cgiar.ccafs.ap.util.Capitalize;
+
+import java.util.ArrayList;
+import java.util.LinkedHashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.TreeMap;
+
+import com.google.inject.Inject;
+import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -69,6 +72,7 @@ public class DeliverableInformationReportingAction extends BaseAction {
   private PublicationThemeManager publicationThemeManager;
   private OpenAccessManager openAccessManager;
   private PublicationTypeManager publicationTypeManager;
+  private PublicationManager publicationManager;
   private SubmissionManager submissionManager;
 
   // Model
@@ -97,7 +101,8 @@ public class DeliverableInformationReportingAction extends BaseAction {
     DeliverableStatusManager deliverableStatusManager, MetadataManager metadataManager,
     DeliverableMetadataManager deliverableMetadataManager, DeliverableAccessManager deliverableAccessManager,
     PublicationThemeManager publicationThemeManager, SubmissionManager submissionManager,
-    OpenAccessManager openAccessManager, PublicationTypeManager publicationTypeManager) {
+    OpenAccessManager openAccessManager, PublicationTypeManager publicationTypeManager,
+    PublicationManager publicationManager) {
     super(config, logframeManager);
     this.deliverableManager = deliverableManager;
     this.deliverableTypeManager = deliverableTypeManager;
@@ -108,6 +113,7 @@ public class DeliverableInformationReportingAction extends BaseAction {
     this.publicationThemeManager = publicationThemeManager;
     this.openAccessManager = openAccessManager;
     this.publicationTypeManager = publicationTypeManager;
+    this.publicationManager = publicationManager;
     this.submissionManager = submissionManager;
   }
 
@@ -145,6 +151,10 @@ public class DeliverableInformationReportingAction extends BaseAction {
 
   public Map<String, String> getNotApplicableRadio() {
     return notApplicableRadio;
+  }
+
+  public Publication getPublication() {
+    return publication;
   }
 
   public OpenAccess[] getPublicationAccessList() {
@@ -193,6 +203,10 @@ public class DeliverableInformationReportingAction extends BaseAction {
     deliverable.setMetadata(deliverableMetadataManager.getDeliverableMetadata(deliverableID));
     deliverable.setAccessDetails(deliverableAccessManager.getDeliverableAccessData(deliverableID));
 
+    if (deliverable.isPublication()) {
+      publication = publicationManager.getPublicationByDeliverableID(deliverableID);
+    }
+
     // Create options for the yes/no radio buttons
     yesNoRadio = new LinkedHashMap<>();
     yesNoRadio.put(true, getText("reporting.activityDeliverables.yes"));
@@ -212,7 +226,7 @@ public class DeliverableInformationReportingAction extends BaseAction {
 
     metadataList = metadataManager.getMetadataList();
 
-    publication = new Publication();
+    // publication = new Publication();
     PublicationTheme[] publicationThemeListObjects = publicationThemeManager.getPublicationThemes();
     publicationThemeList = new TreeMap<>();
 
@@ -238,6 +252,7 @@ public class DeliverableInformationReportingAction extends BaseAction {
     canSubmit = (submission == null) ? true : false;
   }
 
+
   @Override
   public String save() {
     boolean success = true;
@@ -249,6 +264,12 @@ public class DeliverableInformationReportingAction extends BaseAction {
     System.out.println(3);
     success = success && deliverableMetadataManager.saveDeliverableMetadata(deliverable.getMetadata(), deliverableID);
     System.out.println(4);
+
+    if (deliverable.isPublication()) {
+      List<Publication> publications = new ArrayList<>();
+      publications.add(publication);
+      publicationManager.savePublications(publications, getCurrentReportingLogframe(), getCurrentUser().getLeader());
+    }
 
     if (success) {
       if (validationMessage.toString().isEmpty()) {
@@ -265,6 +286,7 @@ public class DeliverableInformationReportingAction extends BaseAction {
     }
   }
 
+
   public void setActivityID(int activityID) {
     this.activityID = activityID;
   }
@@ -273,13 +295,17 @@ public class DeliverableInformationReportingAction extends BaseAction {
     this.deliverable = deliverable;
   }
 
-
   public void setDeliverableID(int deliverableID) {
     this.deliverableID = deliverableID;
   }
 
+
   public void setMetadataList(List<Metadata> metadataList) {
     this.metadataList = metadataList;
+  }
+
+  public void setPublication(Publication publication) {
+    this.publication = publication;
   }
 
   public void setYesNoRadio(Map<Boolean, String> yesNoRadio) {

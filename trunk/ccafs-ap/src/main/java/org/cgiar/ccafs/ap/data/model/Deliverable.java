@@ -152,8 +152,16 @@ public abstract class Deliverable {
     return year;
   }
 
+  public boolean isData() {
+    return type.getId() == APConstants.DELIVERABLE_TYPE_DATA;
+  }
+
   public boolean isExpected() {
     return isExpected;
+  }
+
+  public boolean isJournalArticle() {
+    return type.getId() == APConstants.DELIVERABLE_SUBTYPE_JOURNAL;
   }
 
   public boolean isPublication() {

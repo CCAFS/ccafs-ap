@@ -34,6 +34,70 @@ public class PublicationManagerImpl implements PublicationManager {
   }
 
   @Override
+  public Publication getPublicationByDeliverableID(int deliverableID) {
+    Map<String, String> pubData = publicationDAO.getPublication(deliverableID);
+
+    Publication publication = new Publication();
+    publication.setId(Integer.parseInt(pubData.get("id")));
+    publication.setIdentifier(pubData.get("identifier"));
+    publication.setCitation(pubData.get("citation"));
+    publication.setFileUrl(pubData.get("file_url"));
+
+    if (pubData.get("ccafs_acknowledge") != null) {
+      publication.setCcafsAcknowledge(pubData.get("ccafs_acknowledge").equals("1"));
+    } else {
+      publication.setCcafsAcknowledge(false);
+    }
+
+    if (pubData.get("isi_publication") != null) {
+      publication.setIsiPublication(pubData.get("isi_publication").equals("1"));
+    } else {
+      publication.setIsiPublication(false);
+    }
+
+    if (pubData.get("nars_coauthor") != null) {
+      publication.setNarsCoauthor(pubData.get("nars_coauthor").equals("1"));
+    } else {
+      publication.setNarsCoauthor(false);
+    }
+
+    if (pubData.get("earth_system_coauthor") != null) {
+      publication.setEarthSystemCoauthor(pubData.get("earth_system_coauthor").equals("1"));
+    } else {
+      publication.setEarthSystemCoauthor(false);
+    }
+
+    PublicationType publicationType = new PublicationType();
+    publicationType.setId(Integer.parseInt(pubData.get("publication_type_id")));
+    publicationType.setName(pubData.get("publication_type_name"));
+    publication.setType(publicationType);
+    OpenAccess publicationAccess = new OpenAccess();
+
+    if (pubData.get("publication_access_id") != null) {
+      publicationAccess.setId(Integer.parseInt(pubData.get("publication_access_id")));
+    } else {
+      // publicationAccess.setId(-1);
+    }
+
+    List<Map<String, String>> themes = publicationThemeDAO.getPublicationThemes(publication.getId());
+    PublicationTheme[] relatedThemes = new PublicationTheme[themes.size()];
+    for (int c = 0; c < themes.size(); c++) {
+      PublicationTheme theme = new PublicationTheme();
+      theme.setId(Integer.parseInt(themes.get(c).get("id")));
+      theme.setCode(themes.get(c).get("code"));
+      theme.setName(themes.get(c).get("name"));
+      relatedThemes[c] = theme;
+    }
+
+    publication.setRelatedThemes(relatedThemes);
+    publicationAccess.setName(pubData.get("publication_access_name"));
+    publication.setAccess(publicationAccess);
+
+    return publication;
+
+  }
+
+  @Override
   public List<Publication> getPublications(Leader leader, Logframe logframe) {
     List<Publication> publications = new ArrayList<>();
     List<Map<String, String>> pubsData = publicationDAO.getPublications(leader.getId(), logframe.getId());
@@ -47,7 +111,7 @@ public class PublicationManagerImpl implements PublicationManager {
       if (pubData.get("ccafs_acknowledge") != null) {
         publication.setCcafsAcknowledge(pubData.get("ccafs_acknowledge").equals("1"));
       } else {
-        publication.setIsiPublication(false);
+        publication.setCcafsAcknowledge(false);
       }
 
       if (pubData.get("isi_publication") != null) {

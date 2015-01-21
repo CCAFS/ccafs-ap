@@ -30,7 +30,17 @@
         <input type="hidden" name="deliverable.metadata[${deliverable.getMetadataIndex('Title')}].metadata.id" value="${deliverable.getMetadataID('Title')}" />
         [@customForm.input name="deliverable.metadata[${deliverable.getMetadataIndex('Title')}].value" type="text" i18nkey="reporting.deliverables.metadata.title" /]
       </div> 
-          
+      
+      <div id="deliverableType" class="halfPartBlock">
+        <h6>[@s.text name="reporting.activityDeliverables.type" /]</h6>
+        <span>${deliverable.type.parent.name}</span>
+      </div>
+
+      <div id="deliverableSubtype" class="halfPartBlock">
+        <h6>[@s.text name="reporting.activityDeliverables.subtype" /]</h6>
+        <span>${deliverable.type.name}</span>
+      </div> 
+
       <div id="deliverableDescription" class="fullBlock ">
         <h6>[@s.text name="reporting.activityDeliverables.description" /]</h6>
         <span>${deliverable.description}</span>
@@ -50,25 +60,13 @@
         [@customForm.select name="deliverable.status" i18nkey="reporting.activityDeliverables.status" listName="deliverableStatusList" keyFieldName="id"  displayFieldName="name" className="deliverableStatus" /]
       </div>
       
+      <div id="deliverableStatus" class="halfPartBlock">
+        [#-- This block is only to keep the format --]
+      </div>
+      
       <div id="deliverableStatusJustification" class="fullBlock" style="disply:none">
         [@customForm.textArea name="deliverable.statusJustification" i18nkey="reporting.activityDeliverables.statusJustification" help="reporting.activityDeliverables.statusJustification.help" /]
       </div>
-      
-    </div>
-    
-    [#-- Deliverable Metadata --]
-    <h1 class="contentTitle">[@s.text name="reporting.activityDeliverables.deliverableMetadata" /] </h1> 
-    <div id="deliverableMetadata" class="borderBox"> 
-    
-      <div id="deliverableType" class="halfPartBlock">
-        <h6>[@s.text name="reporting.activityDeliverables.type" /]</h6>
-        <span>${deliverable.type.parent.name}</span>
-      </div>
-
-      <div id="deliverableSubtype" class="halfPartBlock">
-        <h6>[@s.text name="reporting.activityDeliverables.subtype" /]</h6>
-        <span>${deliverable.type.name}</span>
-      </div> 
       
       <div id="deliverableSubject" class="halfPartBlock" >
         <input type="hidden" name="deliverable.metadata[${deliverable.getMetadataIndex('Subject')}].metadata.id" value="${deliverable.getMetadataID('Subject')}" />
@@ -119,8 +117,8 @@
     
     
     [#-- Deliverable Data access questions --]
-    <h1 class="contentTitle">[@s.text name="reporting.activityDeliverables.deliverableDataAccess" /] </h1> 
-    <div id="dataAccessQuestions" class="fullBlock borderBox">
+    <h1 class="contentTitle" [#if !deliverable.data]style="display:none"[/#if]>[@s.text name="reporting.activityDeliverables.deliverableDataAccess" /] </h1> 
+    <div id="dataAccessQuestions" class="fullBlock borderBox" [#if !deliverable.data]style="display:none"[/#if]>
       
       <div id="" class="fullBlock">
         <h6>[@s.text name="reporting.deliverables.dataAccess.dataDictionary" /]</h6>
@@ -172,10 +170,10 @@
     </div> 
     
     [#-- Deliverable Publications questions --]  
-    <h1 class="contentTitle" [#if deliverable.publication]style="display:none"[/#if]>[@s.text name="reporting.activityDeliverables.deliverablePublications" /] </h1> 
-    <div id="publicationQuestions" class="fullBlock borderBox" [#if deliverable.publication]style="display:none"[/#if]> 
-    
-      <div id="JournalQuestions">
+    <h1 class="contentTitle" [#if !deliverable.publication]style="display:none"[/#if]>[@s.text name="reporting.activityDeliverables.deliverablePublications" /] </h1> 
+    <div id="publicationQuestions" class="fullBlock borderBox" [#if !deliverable.publication]style="display:none"[/#if]> 
+
+      <div id="JournalQuestions" [#if !deliverable.journalArticle]style="display:none"[/#if]>
         <div id="publicationOpenAccess" class="fullBlock accessType">
           [@customForm.radioButtonGroup name="publication.access" label="" i18nkey="reporting.publications.access" listName="publicationAccessList" keyFieldName="id" displayFieldName="name" value="" help="reporting.publications.access.help"/]
         </div>

@@ -11,6 +11,15 @@ import com.google.inject.ImplementedBy;
 public interface PublicationDAO {
 
   /**
+   * Get the publication that belongs to the deliverable identified by the value
+   * received as parameter.
+   * 
+   * @param deliverableID - Deliverable identifier
+   * @return a Publication object
+   */
+  public Map<String, String> getPublication(int deliverableID);
+
+  /**
    * get a list of publications depending on a given leader and logframe identifiers.
    * 
    * @param leaderId - leader identifier

@@ -21,8 +21,10 @@ public final class APConstants {
   public static final String REPORTING_SECTION = "Reporting";
 
   // Constants for the deliverables types
+  public static final int DELIVERABLE_TYPE_DATA = 1;
   public static final int DELIVERABLE_TYPE_PUBLICATION = 3;
   public static final int DELIVERABLE_TYPE_CASE_STUDIES = 5;
+  public static final int DELIVERABLE_SUBTYPE_JOURNAL = 21;
 
   // Constants for the type of host used in the deliverable type
   public static final String DELIVERABLE_FILE_LOCALLY_HOSTED = "Locally";
