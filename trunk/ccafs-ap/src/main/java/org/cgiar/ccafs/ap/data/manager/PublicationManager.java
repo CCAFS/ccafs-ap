@@ -40,6 +40,15 @@ public interface PublicationManager {
   public boolean removeAllPublications(Leader leader, Logframe logframe);
 
   /**
+   * This method removes from the database the deliverables linked with
+   * the values received as parameter.
+   * 
+   * @param deliverableID - Deliverable identifier.
+   * @return true if the publication was removed. False otherwise.
+   */
+  public boolean removePublicationByDeliverableID(int deliverableID);
+
+  /**
    * Save a list of publications into the database.
    * 
    * @param publications - List of Publication objects.

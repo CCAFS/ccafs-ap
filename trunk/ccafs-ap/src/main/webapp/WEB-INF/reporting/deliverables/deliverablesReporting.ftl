@@ -30,7 +30,7 @@
     
       <div id="deliverableTitle" class="fullBlock "> 
         <input type="hidden" name="deliverable.metadata[${deliverable.getMetadataIndex('Title')}].metadata.id" value="${deliverable.getMetadataID('Title')}" />
-        [@customForm.input name="deliverable.metadata[${deliverable.getMetadataIndex('Title')}].value" type="text" i18nkey="reporting.deliverables.metadata.title" /]
+        [@customForm.input name="deliverable.metadata[${deliverable.getMetadataIndex('Title')}].value" type="text" i18nkey="reporting.activityDeliverables.metadata.title" /]
       </div> 
       
       <div id="deliverableType" class="halfPartBlock">
@@ -67,7 +67,8 @@
       </div>
         
       <div id="deliverableDescriptionDissemination" class="fullBlock">
-        [@customForm.textArea name="deliverable.descriptionDissemination" i18nkey="reporting.activityDeliverables.descriptionDissemination" help="reporting.activityDeliverables.descriptionDissemination.help" /]
+        <input type="hidden" name="deliverable.metadata[${deliverable.getMetadataIndex('DisseminationDescription')}].metadata.id" value="${deliverable.getMetadataID('DisseminationDescription')}" />
+        [@customForm.textArea name="deliverable.metadata[${deliverable.getMetadataIndex('DisseminationDescription')}].value" i18nkey="reporting.activityDeliverables.metadata.disseminationDescription" /]
       </div>
       
       <div id="deliverableStatus" class="halfPartBlock">
@@ -84,37 +85,37 @@
           
       <div id="deliverableSubject" class="halfPartBlock" >
         <input type="hidden" name="deliverable.metadata[${deliverable.getMetadataIndex('Subject')}].metadata.id" value="${deliverable.getMetadataID('Subject')}" />
-        [@customForm.input name="deliverable.metadata[${deliverable.getMetadataIndex('Subject')}].value" type="text" i18nkey="reporting.activityDeliverables.subject" /] 
+        [@customForm.input name="deliverable.metadata[${deliverable.getMetadataIndex('Subject')}].value" type="text" i18nkey="reporting.activityDeliverables.metadata.subject" /] 
       </div>
       
       <div id="deliverableContributor" class="halfPartBlock" > 
         <input type="hidden" name="deliverable.metadata[${deliverable.getMetadataIndex('Contributor')}].metadata.id" value="${deliverable.getMetadataID('Contributor')}" />
-        [@customForm.input name="deliverable.metadata[${deliverable.getMetadataIndex('Contributor')}].value" type="text" i18nkey="reporting.activityDeliverables.contributor" /] 
+        [@customForm.input name="deliverable.metadata[${deliverable.getMetadataIndex('Contributor')}].value" type="text" i18nkey="reporting.activityDeliverables.metadata.contributor" /] 
       </div>
       
       <div id="deliverableCreator" class="halfPartBlock" >
         <input type="hidden" name="deliverable.metadata[${deliverable.getMetadataIndex('Creator')}].metadata.id" value="${deliverable.getMetadataID('Creator')}" />
-        [@customForm.input name="deliverable.metadata[${deliverable.getMetadataIndex('Creator')}].value" type="text" i18nkey="reporting.activityDeliverables.creator" /]  
+        [@customForm.input name="deliverable.metadata[${deliverable.getMetadataIndex('Creator')}].value" type="text" i18nkey="reporting.activityDeliverables.metadata.creator" /]  
       </div>
       
       <div id="deliverablePublisher" class="halfPartBlock" >
         <input type="hidden" name="deliverable.metadata[${deliverable.getMetadataIndex('Publisher')}].metadata.id" value="${deliverable.getMetadataID('Publisher')}" />
-        [@customForm.input name="deliverable.metadata[${deliverable.getMetadataIndex('Publisher')}].value" type="text" i18nkey="reporting.activityDeliverables.publisher" /]   
+        [@customForm.input name="deliverable.metadata[${deliverable.getMetadataIndex('Publisher')}].value" type="text" i18nkey="reporting.activityDeliverables.metadata.publisher" /]   
       </div>
       
       <div id="deliverableSubjectRelation" class="halfPartBlock" >
         <input type="hidden" name="deliverable.metadata[${deliverable.getMetadataIndex('Relation')}].metadata.id" value="${deliverable.getMetadataID('Relation')}" />
-        [@customForm.input name="deliverable.metadata[${deliverable.getMetadataIndex('Relation')}].value" type="text" i18nkey="reporting.activityDeliverables.relation" /]
+        [@customForm.input name="deliverable.metadata[${deliverable.getMetadataIndex('Relation')}].value" type="text" i18nkey="reporting.activityDeliverables.metadata.relation" /]
       </div>
       
       <div id="deliverableCoverage" class="halfPartBlock" >
         <input type="hidden" name="deliverable.metadata[${deliverable.getMetadataIndex('Coverage')}].metadata.id" value="${deliverable.getMetadataID('Coverage')}" />
-        [@customForm.input name="deliverable.metadata[${deliverable.getMetadataIndex('Coverage')}].value" type="text" i18nkey="reporting.activityDeliverables.coverage" /]
+        [@customForm.input name="deliverable.metadata[${deliverable.getMetadataIndex('Coverage')}].value" type="text" i18nkey="reporting.activityDeliverables.metadata.coverage" /]
       </div> 
       
       <div id="deliverableLanguage" class="halfPartBlock" >
         <input type="hidden" name="deliverable.metadata[${deliverable.getMetadataIndex('Language')}].metadata.id" value="${deliverable.getMetadataID('Language')}" />
-        [@customForm.input name="deliverable.metadata[${deliverable.getMetadataIndex('Language')}].value" type="text" i18nkey="reporting.activityDeliverables.language" /]
+        [@customForm.input name="deliverable.metadata[${deliverable.getMetadataIndex('Language')}].value" type="text" i18nkey="reporting.activityDeliverables.metadata.language" /]
       </div>
       
       <div id="deliverableYear" class="halfPartBlock">
@@ -124,7 +125,7 @@
       
       <div id="deliverableFormat" class="halfPartBlock" >
         <input type="hidden" name="deliverable.metadata[${deliverable.getMetadataIndex('Format')}].metadata.id" value="${deliverable.getMetadataID('Format')}" />
-        [@customForm.input name="deliverable.metadata[${deliverable.getMetadataIndex('Format')}].value" type="text" i18nkey="reporting.activityDeliverables.format" /]
+        [@customForm.input name="deliverable.metadata[${deliverable.getMetadataIndex('Format')}].value" type="text" i18nkey="reporting.activityDeliverables.metadata.format" /]
       </div> 
       
     </div>
@@ -225,6 +226,7 @@
     <!-- internal parameter -->
     <input name="activityID" type="hidden" value="${activityID}" />
     <input name="deliverableID" type="hidden" value="${deliverable.id?c}" />
+    <input type="hidden" name="publication.id" value="${publication.id}" />
     
     [#if canSubmit]
       <div class="buttons">

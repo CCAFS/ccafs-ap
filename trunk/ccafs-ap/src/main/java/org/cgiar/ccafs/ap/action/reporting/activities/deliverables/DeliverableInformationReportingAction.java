@@ -259,15 +259,20 @@ public class DeliverableInformationReportingAction extends BaseAction {
     System.out.println(1);
     success = success && deliverableManager.addDeliverable(deliverable, activityID);
     System.out.println(2);
-    success =
-      success && deliverableAccessManager.saveDeliverableAccessData(deliverable.getAccessDetails(), deliverableID);
+    if (deliverable.isData()) {
+      success =
+        success && deliverableAccessManager.saveDeliverableAccessData(deliverable.getAccessDetails(), deliverableID);
+    }
     System.out.println(3);
     success = success && deliverableMetadataManager.saveDeliverableMetadata(deliverable.getMetadata(), deliverableID);
     System.out.println(4);
 
     if (deliverable.isPublication()) {
+      publication.setDeliverableID(deliverableID);
       List<Publication> publications = new ArrayList<>();
       publications.add(publication);
+      // First delete publication related if any
+      publicationManager.removePublicationByDeliverableID(deliverableID);
       publicationManager.savePublications(publications, getCurrentReportingLogframe(), getCurrentUser().getLeader());
     }
 

@@ -153,7 +153,11 @@ public abstract class Deliverable {
   }
 
   public boolean isData() {
-    return type.getId() == APConstants.DELIVERABLE_TYPE_DATA;
+    if (type.getParent() == null) {
+      return type.getId() == APConstants.DELIVERABLE_TYPE_DATA;
+    } else {
+      return type.getParent().getId() == APConstants.DELIVERABLE_TYPE_DATA;
+    }
   }
 
   public boolean isExpected() {
@@ -165,7 +169,11 @@ public abstract class Deliverable {
   }
 
   public boolean isPublication() {
-    return type.getId() == APConstants.DELIVERABLE_TYPE_PUBLICATION;
+    if (type.getParent() == null) {
+      return type.getId() == APConstants.DELIVERABLE_TYPE_PUBLICATION;
+    } else {
+      return type.getParent().getId() == APConstants.DELIVERABLE_TYPE_PUBLICATION;
+    }
   }
 
   public void setAccessDetails(DeliverableAccess accessDetails) {
