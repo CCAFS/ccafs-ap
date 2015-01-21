@@ -153,7 +153,9 @@ public abstract class Deliverable {
   }
 
   public boolean isData() {
-    if (type.getParent() == null) {
+    if (type == null) {
+      return false;
+    } else if (type.getParent() == null) {
       return type.getId() == APConstants.DELIVERABLE_TYPE_DATA;
     } else {
       return type.getParent().getId() == APConstants.DELIVERABLE_TYPE_DATA;
@@ -165,10 +167,16 @@ public abstract class Deliverable {
   }
 
   public boolean isJournalArticle() {
+    if (type == null) {
+      return false;
+    }
     return type.getId() == APConstants.DELIVERABLE_SUBTYPE_JOURNAL;
   }
 
   public boolean isPublication() {
+    if (type == null) {
+      return false;
+    }
     if (type.getParent() == null) {
       return type.getId() == APConstants.DELIVERABLE_TYPE_PUBLICATION;
     } else {

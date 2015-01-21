@@ -22,6 +22,7 @@ import org.cgiar.ccafs.ap.data.manager.DeliverableManager;
 import org.cgiar.ccafs.ap.data.manager.LogframeManager;
 import org.cgiar.ccafs.ap.data.manager.SubmissionManager;
 import org.cgiar.ccafs.ap.data.model.Activity;
+import org.cgiar.ccafs.ap.data.model.Product;
 import org.cgiar.ccafs.ap.data.model.Submission;
 
 import com.google.inject.Inject;
@@ -47,6 +48,7 @@ public class DeliverablesListReportingAction extends BaseAction {
   // Model
   private Activity activity;
   private int activityID;
+  private int deliverableID;
   private boolean canSubmit;
 
   @Inject
@@ -58,6 +60,22 @@ public class DeliverablesListReportingAction extends BaseAction {
     this.submissionManager = submissionManager;
   }
 
+  public String add() {
+    // Create a new deliverable and redirect to deliverable information using
+    // the new deliverableID assigned by the database.
+    Product deliverable = new Product(-1);
+    deliverableID = deliverableManager.createDeliverable(deliverable, activityID);
+
+    if (activityID > 0) {
+      addActionMessage(getText("saving.add.new", new String[] {getText("planning.activityDeliverables.deliverable")}));
+      // Let's redirect the user to the Activity Description section.
+      return BaseAction.SUCCESS;
+    }
+    // Let's redirect the user to the error page.
+    return BaseAction.ERROR;
+  }
+
+
   public Activity getActivity() {
     return activity;
   }
@@ -68,6 +86,10 @@ public class DeliverablesListReportingAction extends BaseAction {
 
   public String getActivityRequestParameter() {
     return APConstants.ACTIVITY_REQUEST_ID;
+  }
+
+  public int getDeliverableID() {
+    return deliverableID;
   }
 
   public String getDeliverableRequestParameter() {

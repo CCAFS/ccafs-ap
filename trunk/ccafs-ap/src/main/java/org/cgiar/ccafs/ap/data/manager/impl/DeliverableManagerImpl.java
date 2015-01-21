@@ -1,11 +1,5 @@
 package org.cgiar.ccafs.ap.data.manager.impl;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-
-import com.google.inject.Inject;
 import org.cgiar.ccafs.ap.config.APConstants;
 import org.cgiar.ccafs.ap.data.dao.DeliverableDAO;
 import org.cgiar.ccafs.ap.data.dao.FileFormatDAO;
@@ -20,6 +14,13 @@ import org.cgiar.ccafs.ap.data.model.FileFormat;
 import org.cgiar.ccafs.ap.data.model.Metadata;
 import org.cgiar.ccafs.ap.data.model.Product;
 import org.cgiar.ccafs.ap.data.model.Publication;
+
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
+import com.google.inject.Inject;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -42,6 +43,11 @@ public class DeliverableManagerImpl implements DeliverableManager {
 
   @Override
   public boolean addDeliverable(Deliverable deliverable, int activityID) {
+    int deliverableID = createDeliverable(deliverable, activityID);
+    return (deliverableID > 0);
+  }
+
+  public int createDeliverable(Deliverable deliverable, int activityID) {
     Map<String, Object> deliverableData = new HashMap<>();
     if (deliverable.getId() != -1) {
       deliverableData.put("id", deliverable.getId());
@@ -51,9 +57,17 @@ public class DeliverableManagerImpl implements DeliverableManager {
     deliverableData.put("description", deliverable.getDescription());
     deliverableData.put("year", deliverable.getYear());
     deliverableData.put("activity_id", activityID);
-    deliverableData.put("deliverable_type_id", deliverable.getType().getId());
+    if (deliverable.getType() != null) {
+      deliverableData.put("deliverable_type_id", deliverable.getType().getId());
+    } else {
+      deliverableData.put("deliverable_type_id", null);
+    }
     deliverableData.put("is_expected", deliverable.isExpected());
-    deliverableData.put("deliverable_status_id", deliverable.getStatus().getId());
+    if (deliverable.getStatus() != null) {
+      deliverableData.put("deliverable_status_id", deliverable.getStatus().getId());
+    } else {
+      deliverableData.put("deliverable_status_id", null);
+    }
 
     // When deliverable is new, the attribute descriptionUpdate is null
     if (deliverable.getDescriptionUpdate() == null) {
@@ -70,67 +84,48 @@ public class DeliverableManagerImpl implements DeliverableManager {
     // If deliverable has an id the addDeliverable function return 0 as id,
     // so, the id must be set to its original value
     deliverableId = (deliverable.getId() != -1) ? deliverable.getId() : deliverableId;
-
-    // If it is a new deliverable insert the file formats
-    /*
-     * deliverableData.put("file_format_ids", deliverable.getFileFormatsIds());
-     * if (deliverable.getId() == -1) {
-     * // Check if the deliverable has file formats
-     * if (!deliverable.getFileFormatsIds().isEmpty()) {
-     * // lets add the file format list.
-     * boolean fileFormatsAdded = fileFormatDAO.addFileFormats(deliverableId, deliverable.getFileFormatsIds());
-     * if (!fileFormatsAdded) {
-     * LOG.warn("There was a problem saving the file formats for the deliverable {}.", deliverableId);
-     * return false;
-     * }
-     * }
-     * }
-     */
-    /***************************************************
-     * TODO
-     * TODO
-     * // If it is a new deliverable insert the file names
-     * if (product.getId() == -1) {
-     * if (product.getFileName() == null || product.getFileName().isEmpty()) {
-     * deliverableData.put("filename", null);
-     * } else {
-     * deliverableData.put("filename", product.getFileName());
-     * }
-     * }
-     */
-
-    return true;
+    return deliverableId;
   }
 
   @Override
   public Deliverable getDeliverable(int deliverableID) {
     Deliverable deliverable;
+    DeliverableType type;
     int typeID;
 
     Map<String, String> deliverableData = deliverableDAO.getDeliverable(deliverableID);
 
     // Create the deliverable type
-    typeID = Integer.parseInt(deliverableData.get("deliverable_type_id"));
+    if (deliverableData.get("deliverable_type_id") != null) {
+      typeID = Integer.parseInt(deliverableData.get("deliverable_type_id"));
 
-    DeliverableType type = deliverableTypeManager.getDeliverableType(typeID + "");
-    type.setParent(deliverableTypeManager.getDeliverableTypeBySubType(type.getId()));
+      type = deliverableTypeManager.getDeliverableType(typeID + "");
+      type.setParent(deliverableTypeManager.getDeliverableTypeBySubType(type.getId()));
 
-    switch (type.getParent().getId()) {
-      case APConstants.DELIVERABLE_TYPE_PUBLICATION:
-        deliverable = new Publication();
-        break;
+      switch (type.getParent().getId()) {
+        case APConstants.DELIVERABLE_TYPE_PUBLICATION:
+          deliverable = new Publication();
+          break;
 
-      case APConstants.DELIVERABLE_TYPE_CASE_STUDIES:
-        deliverable = new CaseStudy();
-        break;
+        case APConstants.DELIVERABLE_TYPE_CASE_STUDIES:
+          deliverable = new CaseStudy();
+          break;
 
-      default:
-        deliverable = new Product();
-        break;
+        default:
+          deliverable = new Product();
+          break;
+      }
+    } else {
+      deliverable = new Product();
+      type = null;
     }
 
-    deliverable.setYear(Integer.parseInt(deliverableData.get("year")));
-    deliverable.setId(Integer.parseInt(deliverableData.get("id")));
+    if (deliverableData.get("year") != null) {
+      deliverable.setYear(Integer.parseInt(deliverableData.get("year")));
+    }
+    if (deliverableData.get("id") != null) {
+      deliverable.setId(Integer.parseInt(deliverableData.get("id")));
+    }
     deliverable.setDescription(deliverableData.get("description"));
     deliverable.setDescriptionUpdate(deliverableData.get("description_update"));
     deliverable.setType(type);
@@ -141,10 +136,12 @@ public class DeliverableManagerImpl implements DeliverableManager {
       deliverable.setExpected(false);
     }
 
-    DeliverableStatus status = new DeliverableStatus();
-    status.setId(Integer.parseInt(deliverableData.get("deliverable_status_id")));
-    status.setName(deliverableData.get("deliverable_status_name"));
-    deliverable.setStatus(status);
+    if (deliverableData.get("deliverable_status_id") != null) {
+      DeliverableStatus status = new DeliverableStatus();
+      status.setId(Integer.parseInt(deliverableData.get("deliverable_status_id")));
+      status.setName(deliverableData.get("deliverable_status_name"));
+      deliverable.setStatus(status);
+    }
 
     return deliverable;
   }

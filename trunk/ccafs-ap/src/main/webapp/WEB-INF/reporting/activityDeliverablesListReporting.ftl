@@ -62,6 +62,14 @@
       </tbody> 
     </table>
 
+  [@s.form action="addNewDeliverable"]
+    [#if canSubmit]
+      <div class="buttons">
+        <input type="hidden" name="activityID" value="${activityID}" />
+        [@s.submit type="button" name="add"][@s.text name="reporting.activityDeliverablesList.addDeliverable" /][/@s.submit]
+      </div>
+    [/#if]
+  [/@s.form]  
   </article>
   </section>
 [#include "/WEB-INF/global/pages/footer.ftl"]

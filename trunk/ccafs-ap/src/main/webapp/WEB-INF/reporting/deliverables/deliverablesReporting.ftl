@@ -226,7 +226,9 @@
     <!-- internal parameter -->
     <input name="activityID" type="hidden" value="${activityID}" />
     <input name="deliverableID" type="hidden" value="${deliverable.id?c}" />
-    <input type="hidden" name="publication.id" value="${publication.id}" />
+    [#if publication?has_content]
+      <input type="hidden" name="publication.id" value="${publication.id}" />
+    [/#if]
     
     [#if canSubmit]
       <div class="buttons">
