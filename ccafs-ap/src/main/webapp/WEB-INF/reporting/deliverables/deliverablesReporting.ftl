@@ -46,6 +46,14 @@
         [@customForm.textArea name="deliverable.descriptionDissemination" i18nkey="reporting.activityDeliverables.descriptionDissemination" help="reporting.activityDeliverables.descriptionDissemination.help" /]
       </div>
       
+      <div id="deliverableStatus" class="halfPartBlock">
+        [@customForm.select name="deliverable.status" i18nkey="reporting.activityDeliverables.status" listName="deliverableStatusList" keyFieldName="id"  displayFieldName="name" className="deliverableStatus" /]
+      </div>
+      
+      <div id="deliverableStatusJustification" class="fullBlock" style="disply:none">
+        [@customForm.textArea name="deliverable.statusJustification" i18nkey="reporting.activityDeliverables.statusJustification" help="reporting.activityDeliverables.statusJustification.help" /]
+      </div>
+      
     </div>
     
     [#-- Deliverable Metadata --]
@@ -105,15 +113,7 @@
       <div id="deliverableFormat" class="halfPartBlock" >
         <input type="hidden" name="deliverable.metadata[${deliverable.getMetadataIndex('Format')}].metadata.id" value="${deliverable.getMetadataID('Format')}" />
         [@customForm.input name="deliverable.metadata[${deliverable.getMetadataIndex('Format')}].value" type="text" i18nkey="reporting.activityDeliverables.format" /]
-      </div>
-      
-      <div id="deliverableStatus" class="halfPartBlock">
-        [@customForm.select name="deliverable.status" i18nkey="reporting.activityDeliverables.status" listName="deliverableStatusList" keyFieldName="id"  displayFieldName="name" className="deliverableStatus" /]
-      </div>
-      
-      <div id="deliverableStatusJustification" class="fullBlock">
-        [@customForm.textArea name="deliverable.statusJustification" i18nkey="reporting.activityDeliverables.statusJustification" help="reporting.activityDeliverables.statusJustification.help" /]
-      </div>
+      </div> 
       
     </div>
     
@@ -133,24 +133,24 @@
         [@customForm.input name="deliverable.accessDetails.qualityProcedures" type="text" i18nkey="reporting.deliverables.dataAccess.dataQuality" /]
       </div>
 
-      <div class="fullBlock">
+      <div id="restrictionImposed" class="fullBlock">
         <h6>[@s.text name="reporting.deliverables.dataAccess.dataRestriction" /]</h6> 
         <div>
           [@s.radio name="deliverable.accessDetails.accessRestrictions" list="notApplicableRadio" /]
         </div>
       </div>
       
-      <div id="accessLimitOptions">
+      <div id="accessLimitOptions" style="display:none">
         <p>[@s.text name="reporting.deliverables.dataAccess.accessLimits" /]</p>
         <div class="verticallyRadio">
           [@s.radio name="deliverable.accessDetails.accessLimits" list="accessLimitsRadio" /]
         </div> 
           
-        <div class="halfPartBlock">
+        <div class="halfPartBlock accessLimit" style="display:none" >
           [@customForm.input name="deliverable.accessDetails.accessLimitStartDate" type="text" i18nkey="reporting.deliverables.dataAccess.accessLimits.startDate" /]
         </div>
 
-        <div class="halfPartBlock">
+        <div class="halfPartBlock accessLimit" style="display:none" >
           [@customForm.input name="deliverable.accessDetails.accessLimitEndDate" type="text" i18nkey="reporting.deliverables.dataAccess.accessLimits.endDate" /]
         </div>
       </div>
@@ -165,15 +165,15 @@
         [@s.radio name="deliverable.accessDetails.harvestingProtocols" list="yesNoRadio" /]
       </div>
 
-      <div id="specifyProtocols" class="fullBlock">
+      <div id="specifyProtocols" class="fullBlock" style="display:none">
         [@customForm.input name="deliverable.accessDetails.harvestingProtocolDetails" type="text" i18nkey="reporting.deliverables.dataAccess.harvestingProtocols.specify" /]
       </div>
       
     </div> 
     
-    [#-- Deliverable Publications questions --]
-    <h1 class="contentTitle">[@s.text name="reporting.activityDeliverables.deliverablePublications" /] </h1> 
-    <div id="publicationQuestions" class="fullBlock borderBox"> 
+    [#-- Deliverable Publications questions --]  
+    <h1 class="contentTitle" [#if deliverable.publication]style="display:none"[/#if]>[@s.text name="reporting.activityDeliverables.deliverablePublications" /] </h1> 
+    <div id="publicationQuestions" class="fullBlock borderBox" [#if deliverable.publication]style="display:none"[/#if]> 
     
       <div id="JournalQuestions">
         <div id="publicationOpenAccess" class="fullBlock accessType">
