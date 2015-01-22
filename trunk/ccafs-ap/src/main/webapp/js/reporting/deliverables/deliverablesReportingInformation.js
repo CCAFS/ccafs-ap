@@ -1,5 +1,4 @@
 $(document).ready(function(){
-  
   // Add event listeners
   attachEvents();
   
@@ -7,7 +6,9 @@ $(document).ready(function(){
   checkDeliverableStatus();
   
   // Check if deliverable type is a publication
-  checkDeliverableType();
+  if (isNewDelverable) {
+    checkDeliverableType();
+  }
   
   // Check if there be data access restriction imposed
   checkRestrictionImposed();
@@ -42,6 +43,7 @@ $(document).ready(function(){
   }
   
   function checkDeliverableType(){
+    
     var typeID = $("#deliverableType select").val();
     var source = "../json/deliverableSubTypes.do?deliverableTypeID=" + typeID;
     $.getJSON(source, function(){

@@ -238,4 +238,6 @@
  
   </section>
   
+  <script>var isNewDelverable = [#if isNewDeliverable]true[#else]false[/#if];</script>
+  
 [#include "/WEB-INF/global/pages/footer.ftl"]
