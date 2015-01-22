@@ -7,7 +7,7 @@
 [#assign currentStage = "metadata" /]
 [#assign userRole = "${currentUser.role}"]
 
-[#assign isNewDeliverable = deliverable.expected && deliverable.year == currentReportingLogframe.year]
+[#assign isNewDeliverable = !deliverable.expected && deliverable.year == currentReportingLogframe.year]
 
 [#include "/WEB-INF/global/pages/header.ftl" /]
 [#include "/WEB-INF/global/pages/main-menu.ftl" /]
@@ -58,7 +58,7 @@
           <span>${deliverable.description}</span>        
         [/#if]
       </div>
-      
+      ${action.isMetadataNotRequired('Identifier')?string}
       <div id="deliverableIndentifier" class="fullBlock ">
         <input type="hidden" name="deliverable.metadata[${deliverable.getMetadataIndex('Identifier')}].metadata.id" value="${deliverable.getMetadataID('Identifier')}" />
         [@customForm.input name="deliverable.metadata[${deliverable.getMetadataIndex('Identifier')}].value"  required=action.isMetadataMandatory('Identifier') disabled=action.isMetadataNotRequired('Identifier') type="text" i18nkey="reporting.activityDeliverables.identifier" /]
