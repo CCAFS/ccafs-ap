@@ -7,7 +7,7 @@
 [#assign currentStage = "metadata" /]
 [#assign userRole = "${currentUser.role}"]
 
-[#assign isNewDeliverable = true]
+[#assign isNewDeliverable = deliverable.expected && deliverable.year == currentReportingLogframe.year]
 
 [#include "/WEB-INF/global/pages/header.ftl" /]
 [#include "/WEB-INF/global/pages/main-menu.ftl" /]
@@ -27,7 +27,6 @@
     [#-- Deliverable Main Information --] 
     <h1 class="contentTitle">[@s.text name="reporting.activityDeliverables.mainInformation" /] </h1> 
     <div id="deliverableInformation" class="borderBox">
-    
       <div id="deliverableTitle" class="fullBlock "> 
         <input type="hidden" name="deliverable.metadata[${deliverable.getMetadataIndex('Title')}].metadata.id" value="${deliverable.getMetadataID('Title')}" />
         [@customForm.input name="deliverable.metadata[${deliverable.getMetadataIndex('Title')}].value" type="text" i18nkey="reporting.activityDeliverables.metadata.title" /]
@@ -35,7 +34,7 @@
       
       <div id="deliverableType" class="halfPartBlock">
         [#if isNewDeliverable]
-          [@customForm.select name="deliverable.type" i18nkey="reporting.activityDeliverables.type" listName="deliverableTypes" keyFieldName="id"  displayFieldName="name" className="deliverableTypes" /]
+          [@customForm.select name="deliverable.parentType" value="deliverable.type.parent.id" i18nkey="reporting.activityDeliverables.type" listName="deliverableTypes" keyFieldName="id"  displayFieldName="name" className="deliverableTypes" /]
         [#else]
           <h6>[@s.text name="reporting.activityDeliverables.type" /]</h6>
           <span>${deliverable.type.parent.name}</span>      
@@ -44,7 +43,7 @@
       
       <div id="deliverableSubtype" class="halfPartBlock">
         [#if isNewDeliverable]
-          [@customForm.select name="deliverable.subType" i18nkey="reporting.activityDeliverables.subtype" listName="deliverableSubTypes" keyFieldName="id"  displayFieldName="name" className="deliverableSubTypes" /]
+          [@customForm.select name="deliverable.type" value="deliverable.type.id" i18nkey="reporting.activityDeliverables.subtype" listName="deliverableSubTypes" keyFieldName="id"  displayFieldName="name" className="deliverableSubTypes" /]
         [#else]
           <h6>[@s.text name="reporting.activityDeliverables.subtype" /]</h6>
           <span>${deliverable.type.name}</span>  

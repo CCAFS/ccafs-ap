@@ -58,7 +58,7 @@
 
     <action name="deliverables" class="org.cgiar.ccafs.ap.action.reporting.activities.deliverables.DeliverableInformationReportingAction">
       <interceptor-ref name="reportingStack" />
-      <interceptor-ref name="accessibleActivity" />
+      <!-- <interceptor-ref name="accessibleActivity" /> -->
       <result name="cancel" type="redirectAction">
         <param name="actionName">deliverablesList</param>
         <param name="activityID">${activityID}</param>

@@ -69,6 +69,7 @@ public class DeliverablesListReportingAction extends BaseAction {
     deliverable.setYear(getCurrentReportingLogframe().getYear());
     deliverable.setStatus(new DeliverableStatus(APConstants.DELIVERABLE_STATUS_INCOMPLETE));
     deliverable.setType(new DeliverableType(APConstants.DELIVERABLE_SUBTYPE_DATA));
+    deliverable.setExpected(false);
     deliverableID = deliverableManager.createDeliverable(deliverable, activityID);
 
     if (activityID > 0) {
