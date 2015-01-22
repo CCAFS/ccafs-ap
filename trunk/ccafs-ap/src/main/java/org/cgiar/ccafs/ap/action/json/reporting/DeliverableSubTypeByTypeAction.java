@@ -34,6 +34,8 @@ import org.apache.commons.lang3.StringUtils;
 
 public class DeliverableSubTypeByTypeAction extends BaseAction {
 
+  private static final long serialVersionUID = -8876205346017565687L;
+
   // Managers
   private DeliverableTypeManager deliverableTypeManager;
 

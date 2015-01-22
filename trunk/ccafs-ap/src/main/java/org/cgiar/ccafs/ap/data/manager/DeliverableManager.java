@@ -48,6 +48,46 @@ public interface DeliverableManager {
   public List<Deliverable> getDeliverableByActivityID(int activityId);
 
   /**
+   * This method gets all the deliverables that belongs to activities
+   * made by the leader identified with the value received as parameter.
+   * 
+   * @param activityLeaderID - Activity leader identifier
+   * @return a List of Deliverable objects.
+   */
+  public List<Deliverable> getDeliverablesListByLeader(int activityLeaderID);
+
+  /**
+   * This method gets all the deliverables that belongs to activities
+   * carried out in the year given and that were made by the leader
+   * identified with the value received as parameter.
+   * 
+   * @param activityLeaderID - Activity leader identifier
+   * @param year
+   * @return a List of Deliverable objects.
+   */
+  public List<Deliverable> getDeliverablesListByLeader(int activityLeaderID, int year);
+
+  /**
+   * This method gets all the deliverables that belongs to activities
+   * that contributes to the theme received as parameter.
+   * 
+   * @param themeID - theme identifier
+   * @return a List of Deliverable objects.
+   */
+  public List<Deliverable> getDeliverablesListByTheme(int themeID);
+
+  /**
+   * This method gets all the deliverables that belongs to activities
+   * that contributes to the theme received as parameter and that were
+   * carried out in the year given.
+   * 
+   * @param themeID - theme identifier
+   * @param year
+   * @return a List of Deliverable objects.
+   */
+  public List<Deliverable> getDeliverablesListByTheme(int themeID, int year);
+
+  /**
    * Remove all those expected deliverables that belongs to the specified activity id.
    * 
    * @param activityID - activity identifier.

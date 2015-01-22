@@ -39,6 +39,8 @@ import org.slf4j.LoggerFactory;
 
 public class DeliverablesListReportingAction extends BaseAction {
 
+  private static final long serialVersionUID = -3575430811594869534L;
+
   // Logger
   public static Logger LOG = LoggerFactory.getLogger(DeliverablesListReportingAction.class);
 

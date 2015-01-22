@@ -68,4 +68,33 @@ public class MySQLMetadataDAO implements MetadataDAO {
     return metadataList;
   }
 
+  @Override
+  public List<Map<String, String>> getRequiredMetadata(int deliverableTypeID) {
+    LOG.debug(">> getRequiredMetadata(deliverableTypeID={})", deliverableTypeID);
+    List<Map<String, String>> metadataList = new ArrayList<>();
+    StringBuilder query = new StringBuilder();
+    query.append("SELECT m.id, m.name, mr.required ");
+    query.append("FROM metadata_questions m ");
+    query.append("INNER JOIN metadata_required mr ON m.id = mr.metadata_id  ");
+    query.append("AND mr.deliverable_type_id = ");
+    query.append(deliverableTypeID);
+
+    try (Connection con = databaseManager.getConnection()) {
+      ResultSet rs = databaseManager.makeQuery(query.toString(), con);
+      while (rs.next()) {
+        Map<String, String> metadata = new HashMap<>();
+        metadata.put("id", rs.getString("id"));
+        metadata.put("name", rs.getString("name"));
+        metadata.put("required", rs.getString("required"));
+        metadataList.add(metadata);
+      }
+      rs.close();
+    } catch (SQLException e) {
+      LOG.error("--  getMetadataList() > There was a problem getting the list of metadata.", e);
+    }
+
+    LOG.debug("<< getMetadataList():metadataList.size={}", metadataList.size());
+    return metadataList;
+  }
+
 }
