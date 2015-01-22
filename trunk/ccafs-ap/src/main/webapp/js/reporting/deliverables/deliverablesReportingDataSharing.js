@@ -50,14 +50,6 @@ $(document).ready(function(){
   }
   
   function initDropzone(){
-    this.on("success", function(file,done){
-      var result = jQuery.parseJSON(done);
-      file.hosted = "Locally";
-      file.fileID = result.fileID;
-      addFileToUploaded(file);
-      this.removeFile(file);
-    });
-    
     this.on("addedfile", function(file,done){
       var alreadyExist = false;
       $("form .fileUploaded .fileName").each(function(i,element){
@@ -67,6 +59,17 @@ $(document).ready(function(){
       });
       if (alreadyExist) {
         console.log("already here");
+        this.removeFile(file);
+      }
+    });
+    
+    this.on("success", function(file,done){
+      var result = jQuery.parseJSON(done);
+      if (result.fileSaved) {
+        file.hosted = "Locally";
+        file.fileID = result.fileID;
+        console.log(result);
+        addFileToUploaded(file);
         this.removeFile(file);
       }
     });
@@ -100,7 +103,6 @@ $(document).ready(function(){
   }
   
   function addFileToUploaded(file){
-    console.log(file);
     var $newElement = $("#deliverableFileTemplate").clone(true).removeAttr("id");
     
     // Filling information obtained

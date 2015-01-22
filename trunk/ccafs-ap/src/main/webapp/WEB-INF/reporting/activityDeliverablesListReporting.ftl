@@ -40,6 +40,8 @@
           <th id="type">[@s.text name="reporting.activityDeliverablesList.type" /]</th>
           <th id="year">[@s.text name="reporting.activityDeliverablesList.year" /]</th>
           <th id="status">[@s.text name="reporting.activityDeliverablesList.status" /]</th>
+          <th id=""></th>
+          <th id=""></th>
         </tr>
       </thead> 
       
@@ -60,15 +62,19 @@
             </td> 
             <td> ${product.type.name}</td>
             <td> ${product.year} </td>
-            <td> ${product.status.name} </td>               
+            <td> ${product.status.name} </td>
+            <td> Planned </td>  
+            <td> <img src="${baseUrl}/images/global/trash.png"> </td> 
           </tr>
         [/#list]  
       </tbody> 
     </table>
+    
+
 
   [@s.form action="addNewDeliverable"]
     [#if canSubmit]
-      <div class="buttons">
+      <div class="addButtonSubmit">
         <input type="hidden" name="activityID" value="${activityID}" />
         [@s.submit type="button" name="add"][@s.text name="reporting.activityDeliverablesList.addDeliverable" /][/@s.submit]
       </div>

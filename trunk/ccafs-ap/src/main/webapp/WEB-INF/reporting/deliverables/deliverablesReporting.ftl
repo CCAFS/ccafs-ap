@@ -75,8 +75,9 @@
         [@customForm.select name="deliverable.status" i18nkey="reporting.activityDeliverables.status" listName="deliverableStatusList" keyFieldName="id"  displayFieldName="name" className="deliverableStatus" /]
       </div>
       
-      <div class="halfPartBlock">
-        [#-- This block is only to keep the format --]
+      <div id="deliverableYear" class="halfPartBlock">
+        <h6>[@s.text name="reporting.activityDeliverables.year" /]</h6>
+        <span>${deliverable.year}</span>
       </div>
       
       <div id="deliverableStatusJustification" class="fullBlock" style="disply:none">
@@ -116,11 +117,6 @@
       <div id="deliverableLanguage" class="halfPartBlock" >
         <input type="hidden" name="deliverable.metadata[${deliverable.getMetadataIndex('Language')}].metadata.id" value="${deliverable.getMetadataID('Language')}" />
         [@customForm.input name="deliverable.metadata[${deliverable.getMetadataIndex('Language')}].value" type="text" i18nkey="reporting.activityDeliverables.metadata.language" /]
-      </div>
-      
-      <div id="deliverableYear" class="halfPartBlock">
-        <h6>[@s.text name="reporting.activityDeliverables.year" /]</h6>
-        <span>${deliverable.year}</span>
       </div>
       
       <div id="deliverableFormat" class="halfPartBlock" >
@@ -169,8 +165,8 @@
     
     
     [#-- Deliverable Data access questions --]
-    <h1 class="contentTitle" [#if !deliverable.data]style="display:none"[/#if]>[@s.text name="reporting.activityDeliverables.deliverableDataAccess" /] </h1> 
-    <div id="dataAccessQuestions" class="fullBlock borderBox" [#if !deliverable.data]style="display:none"[/#if]>
+  <h1 class="contentTitle dataAccessQuestions" [#if !isNewDeliverable || !deliverable.data]style="display:none"[/#if]>[@s.text name="reporting.activityDeliverables.deliverableDataAccess" /] </h1> 
+    <div class="dataAccessQuestions" id="dataAccessQuestions" class="fullBlock borderBox" [#if !isNewDeliverable || !deliverable.data]style="display:none"[/#if]>
       
       <div id="" class="fullBlock">
         <h6>[@s.text name="reporting.deliverables.dataAccess.dataDictionary" /]</h6>

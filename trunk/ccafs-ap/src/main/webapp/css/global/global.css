@@ -52,7 +52,17 @@ margin-bottom: 0.5em;
   border-radius: 3px;
   padding: 10px;
   box-shadow: 0px 0px 4px rgba(0, 0, 0, 0.05);
-  margin-top: 1em;
+  margin: 0.8em 0 2em 0;
+}
+
+.addButtonSubmit button{
+  background-color: #2BA6CB;
+	color: #FFF;
+	border: 0;
+	padding: 4px 20px 4px 20px;
+	font-weight: bold;
+	border-bottom: 3px solid #1E94B8;
+	border-radius: 2px;	
 }
 
 .red {
@@ -446,7 +456,7 @@ a.currentReportingSection li #i-additionalInformation{
 .halfContent h1 {
   border-bottom: 2px solid #663300;
   color: #663300;
-  font-size: 25px;
+  font-size: 22px;
   font-weight: normal;
   margin-bottom: 10px;
 }
@@ -482,7 +492,7 @@ a.currentReportingSection li #i-additionalInformation{
 }
 
 .halfPartBlock input {
-  width: 80%;
+  width: 92%;
 }
 
 .itemIndex {
@@ -786,7 +796,7 @@ a.currentReportingSection li #i-additionalInformation{
   list-style-type: none;
   text-align: center;
   width: 100%;
-  margin-left: 137px;
+  margin-left: 22px;
 }
 
 #stageMenu li {
@@ -796,13 +806,21 @@ a.currentReportingSection li #i-additionalInformation{
   color: #585858;
   height: 46px;
   width: 180px;
-  display: inline;
-   
+  display: inline; 
   margin-left: -34px;
 }
 
-#stageMenu li a{
-  
+#stageMenu li.goBack {
+  background-image: url("../../images/global/sub-menu-goback.png");
+  width: 150px;  
+  margin-right: 20px;
+}
+#stageMenu li.goBack a {
+    padding: 1em 0 0 2em;
+    line-height: 1em;
+}
+
+#stageMenu li a{ 
   color: #585858; 
   margin-left: -34px;
   width: 70%;
@@ -973,9 +991,17 @@ button#activities_save{
 /* Deliverable List */
 
 #deliverableList th#type{
-  width: 120px;
+  width: 110px;
 }
 
+#deliverableList tbody tr{
+    font-size: 0.9em;
+  
+}
+
+#addDeliverable {
+	width: 169px;
+}
 /* Deliverables */
 #items #fileNameMessage {
   display: none;
