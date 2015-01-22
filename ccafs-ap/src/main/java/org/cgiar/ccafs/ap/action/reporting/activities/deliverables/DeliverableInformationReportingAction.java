@@ -33,6 +33,7 @@ import org.cgiar.ccafs.ap.data.model.Deliverable;
 import org.cgiar.ccafs.ap.data.model.DeliverableStatus;
 import org.cgiar.ccafs.ap.data.model.DeliverableType;
 import org.cgiar.ccafs.ap.data.model.Metadata;
+import org.cgiar.ccafs.ap.data.model.MetadataRequirement;
 import org.cgiar.ccafs.ap.data.model.OpenAccess;
 import org.cgiar.ccafs.ap.data.model.Publication;
 import org.cgiar.ccafs.ap.data.model.PublicationTheme;
@@ -44,6 +45,7 @@ import java.util.ArrayList;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Map.Entry;
 import java.util.TreeMap;
 
 import com.google.inject.Inject;
@@ -94,6 +96,7 @@ public class DeliverableInformationReportingAction extends BaseAction {
   private int[] publicationTypeAccessNeed;
   private OpenAccess[] publicationAccessList;
   private PublicationType[] publicationTypes;
+  private Map<Metadata, MetadataRequirement> metadataRequired;
 
   @Inject
   public DeliverableInformationReportingAction(APConfig config, LogframeManager logframeManager,
@@ -149,6 +152,10 @@ public class DeliverableInformationReportingAction extends BaseAction {
     return metadataList;
   }
 
+  public Map<Metadata, MetadataRequirement> getMetadataRequired() {
+    return metadataRequired;
+  }
+
   public Map<String, String> getNotApplicableRadio() {
     return notApplicableRadio;
   }
@@ -161,10 +168,10 @@ public class DeliverableInformationReportingAction extends BaseAction {
     return publicationAccessList;
   }
 
-
   public Map<String, String> getPublicationThemeList() {
     return publicationThemeList;
   }
+
 
   public int[] getPublicationTypeAccessNeed() {
     return publicationTypeAccessNeed;
@@ -182,11 +189,30 @@ public class DeliverableInformationReportingAction extends BaseAction {
     return canSubmit;
   }
 
+  public boolean isMetadataMandatory(String metadataName) {
+    for (Entry<Metadata, MetadataRequirement> entry : metadataRequired.entrySet()) {
+      if (entry.getKey().getName().equals(metadataName)) {
+        return entry.getValue().isMandatory();
+      }
+    }
+    return false;
+  }
+
+  public boolean isMetadataNotRequired(String metadataName) {
+    for (Entry<Metadata, MetadataRequirement> entry : metadataRequired.entrySet()) {
+      if (entry.getKey().getName().equals(metadataName)) {
+        return entry.getValue().isNotRequired();
+      }
+    }
+    return false;
+  }
+
   @Override
   public String next() {
     save();
     return super.next();
   }
+
 
   @Override
   public void prepare() throws Exception {
@@ -225,6 +251,7 @@ public class DeliverableInformationReportingAction extends BaseAction {
     accessLimitsRadio.put("restricted", getText("reporting.deliverables.dataAccess.accessLimits.restricted"));
 
     metadataList = metadataManager.getMetadataList();
+    metadataRequired = metadataManager.getRequiredMetadata(deliverable.getType().getId());
 
     // publication = new Publication();
     PublicationTheme[] publicationThemeListObjects = publicationThemeManager.getPublicationThemes();
@@ -251,7 +278,6 @@ public class DeliverableInformationReportingAction extends BaseAction {
 
     canSubmit = (submission == null) ? true : false;
   }
-
 
   @Override
   public String save() {

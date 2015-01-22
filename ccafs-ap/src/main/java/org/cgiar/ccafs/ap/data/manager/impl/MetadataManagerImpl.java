@@ -17,8 +17,10 @@ package org.cgiar.ccafs.ap.data.manager.impl;
 import org.cgiar.ccafs.ap.data.dao.MetadataDAO;
 import org.cgiar.ccafs.ap.data.manager.MetadataManager;
 import org.cgiar.ccafs.ap.data.model.Metadata;
+import org.cgiar.ccafs.ap.data.model.MetadataRequirement;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -56,9 +58,19 @@ public class MetadataManagerImpl implements MetadataManager {
   }
 
   @Override
-  public List<Metadata> getRequiredMetadata(int deliverableTypeID) {
-    // TODO Auto-generated method stub
-    return null;
+  public Map<Metadata, MetadataRequirement> getRequiredMetadata(int deliverableTypeID) {
+    Map<Metadata, MetadataRequirement> metadataList = new HashMap<Metadata, MetadataRequirement>();
+    List<Map<String, String>> dataList = metadataDAO.getRequiredMetadata(deliverableTypeID);
+
+    for (Map<String, String> data : dataList) {
+      Metadata metadata = new Metadata();
+      metadata.setId(Integer.parseInt(data.get("id")));
+      metadata.setName(data.get("name"));
+
+      metadataList.put(metadata, MetadataRequirement.getMetadataRequirement(data.get("required")));
+    }
+
+    return metadataList;
   }
 
 }

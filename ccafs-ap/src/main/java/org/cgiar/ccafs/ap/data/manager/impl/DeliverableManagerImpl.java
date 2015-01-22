@@ -221,6 +221,30 @@ public class DeliverableManagerImpl implements DeliverableManager {
   }
 
   @Override
+  public List<Deliverable> getDeliverablesListByLeader(int activityLeaderID) {
+    // TODO Auto-generated method stub
+    return null;
+  }
+
+  @Override
+  public List<Deliverable> getDeliverablesListByLeader(int activityLeaderID, int year) {
+    // TODO Auto-generated method stub
+    return null;
+  }
+
+  @Override
+  public List<Deliverable> getDeliverablesListByTheme(int themeID) {
+    // TODO Auto-generated method stub
+    return null;
+  }
+
+  @Override
+  public List<Deliverable> getDeliverablesListByTheme(int themeID, int year) {
+    // TODO Auto-generated method stub
+    return null;
+  }
+
+  @Override
   public boolean removeExpected(int activityID) {
     return deliverableDAO.removeExpected(activityID);
   }

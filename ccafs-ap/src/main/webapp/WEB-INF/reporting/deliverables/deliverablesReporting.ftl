@@ -29,7 +29,7 @@
     <div id="deliverableInformation" class="borderBox">
       <div id="deliverableTitle" class="fullBlock "> 
         <input type="hidden" name="deliverable.metadata[${deliverable.getMetadataIndex('Title')}].metadata.id" value="${deliverable.getMetadataID('Title')}" />
-        [@customForm.input name="deliverable.metadata[${deliverable.getMetadataIndex('Title')}].value" type="text" i18nkey="reporting.activityDeliverables.metadata.title" /]
+        [@customForm.input name="deliverable.metadata[${deliverable.getMetadataIndex('Title')}].value" required=action.isMetadataMandatory('Title') disabled=action.isMetadataNotRequired('Title') type="text" i18nkey="reporting.activityDeliverables.metadata.title" /]
       </div> 
       
       <div id="deliverableType" class="halfPartBlock">
@@ -61,13 +61,13 @@
       
       <div id="deliverableIndentifier" class="fullBlock ">
         <input type="hidden" name="deliverable.metadata[${deliverable.getMetadataIndex('Identifier')}].metadata.id" value="${deliverable.getMetadataID('Identifier')}" />
-        [@customForm.input name="deliverable.metadata[${deliverable.getMetadataIndex('Identifier')}].value" type="text" i18nkey="reporting.activityDeliverables.identifier" /]
+        [@customForm.input name="deliverable.metadata[${deliverable.getMetadataIndex('Identifier')}].value"  required=action.isMetadataMandatory('Identifier') disabled=action.isMetadataNotRequired('Identifier') type="text" i18nkey="reporting.activityDeliverables.identifier" /]
          
       </div>
         
       <div id="deliverableDescriptionDissemination" class="fullBlock">
         <input type="hidden" name="deliverable.metadata[${deliverable.getMetadataIndex('DisseminationDescription')}].metadata.id" value="${deliverable.getMetadataID('DisseminationDescription')}" />
-        [@customForm.textArea name="deliverable.metadata[${deliverable.getMetadataIndex('DisseminationDescription')}].value" i18nkey="reporting.activityDeliverables.metadata.disseminationDescription" /]
+        [@customForm.textArea name="deliverable.metadata[${deliverable.getMetadataIndex('DisseminationDescription')}].value" required=action.isMetadataMandatory('DisseminationDescription') disabled=action.isMetadataNotRequired('DisseminationDescription') i18nkey="reporting.activityDeliverables.metadata.disseminationDescription" /]
       </div>
       
       <div id="deliverableStatus" class="halfPartBlock">
@@ -85,42 +85,42 @@
           
       <div id="deliverableSubject" class="halfPartBlock" >
         <input type="hidden" name="deliverable.metadata[${deliverable.getMetadataIndex('Subject')}].metadata.id" value="${deliverable.getMetadataID('Subject')}" />
-        [@customForm.input name="deliverable.metadata[${deliverable.getMetadataIndex('Subject')}].value" type="text" i18nkey="reporting.activityDeliverables.metadata.subject" /] 
+        [@customForm.input name="deliverable.metadata[${deliverable.getMetadataIndex('Subject')}].value" required=action.isMetadataMandatory('Subject') disabled=action.isMetadataNotRequired('Subject') type="text" i18nkey="reporting.activityDeliverables.metadata.subject" /] 
       </div>
       
       <div id="deliverableContributor" class="halfPartBlock" > 
         <input type="hidden" name="deliverable.metadata[${deliverable.getMetadataIndex('Contributor')}].metadata.id" value="${deliverable.getMetadataID('Contributor')}" />
-        [@customForm.input name="deliverable.metadata[${deliverable.getMetadataIndex('Contributor')}].value" type="text" i18nkey="reporting.activityDeliverables.metadata.contributor" /] 
+        [@customForm.input name="deliverable.metadata[${deliverable.getMetadataIndex('Contributor')}].value" required=action.isMetadataMandatory('Contributor') disabled=action.isMetadataNotRequired('Contributor') type="text" i18nkey="reporting.activityDeliverables.metadata.contributor" /] 
       </div>
       
       <div id="deliverableCreator" class="halfPartBlock" >
         <input type="hidden" name="deliverable.metadata[${deliverable.getMetadataIndex('Creator')}].metadata.id" value="${deliverable.getMetadataID('Creator')}" />
-        [@customForm.input name="deliverable.metadata[${deliverable.getMetadataIndex('Creator')}].value" type="text" i18nkey="reporting.activityDeliverables.metadata.creator" /]  
+        [@customForm.input name="deliverable.metadata[${deliverable.getMetadataIndex('Creator')}].value" required=action.isMetadataMandatory('Creator') disabled=action.isMetadataNotRequired('Creator') type="text" i18nkey="reporting.activityDeliverables.metadata.creator" /]  
       </div>
       
       <div id="deliverablePublisher" class="halfPartBlock" >
         <input type="hidden" name="deliverable.metadata[${deliverable.getMetadataIndex('Publisher')}].metadata.id" value="${deliverable.getMetadataID('Publisher')}" />
-        [@customForm.input name="deliverable.metadata[${deliverable.getMetadataIndex('Publisher')}].value" type="text" i18nkey="reporting.activityDeliverables.metadata.publisher" /]   
+        [@customForm.input name="deliverable.metadata[${deliverable.getMetadataIndex('Publisher')}].value" required=action.isMetadataMandatory('Publisher') disabled=action.isMetadataNotRequired('Publisher') type="text" i18nkey="reporting.activityDeliverables.metadata.publisher" /]   
       </div>
       
       <div id="deliverableSubjectRelation" class="halfPartBlock" >
         <input type="hidden" name="deliverable.metadata[${deliverable.getMetadataIndex('Relation')}].metadata.id" value="${deliverable.getMetadataID('Relation')}" />
-        [@customForm.input name="deliverable.metadata[${deliverable.getMetadataIndex('Relation')}].value" type="text" i18nkey="reporting.activityDeliverables.metadata.relation" /]
+        [@customForm.input name="deliverable.metadata[${deliverable.getMetadataIndex('Relation')}].value" required=action.isMetadataMandatory('Relation') disabled=action.isMetadataNotRequired('Relation') type="text" i18nkey="reporting.activityDeliverables.metadata.relation" /]
       </div>
       
       <div id="deliverableCoverage" class="halfPartBlock" >
         <input type="hidden" name="deliverable.metadata[${deliverable.getMetadataIndex('Coverage')}].metadata.id" value="${deliverable.getMetadataID('Coverage')}" />
-        [@customForm.input name="deliverable.metadata[${deliverable.getMetadataIndex('Coverage')}].value" type="text" i18nkey="reporting.activityDeliverables.metadata.coverage" /]
+        [@customForm.input name="deliverable.metadata[${deliverable.getMetadataIndex('Coverage')}].value" required=action.isMetadataMandatory('Coverage') disabled=action.isMetadataNotRequired('Coverage') type="text" i18nkey="reporting.activityDeliverables.metadata.coverage" /]
       </div> 
       
       <div id="deliverableLanguage" class="halfPartBlock" >
         <input type="hidden" name="deliverable.metadata[${deliverable.getMetadataIndex('Language')}].metadata.id" value="${deliverable.getMetadataID('Language')}" />
-        [@customForm.input name="deliverable.metadata[${deliverable.getMetadataIndex('Language')}].value" type="text" i18nkey="reporting.activityDeliverables.metadata.language" /]
+        [@customForm.input name="deliverable.metadata[${deliverable.getMetadataIndex('Language')}].value" required=action.isMetadataMandatory('Language') disabled=action.isMetadataNotRequired('Language') type="text" i18nkey="reporting.activityDeliverables.metadata.language" /]
       </div>
       
       <div id="deliverableFormat" class="halfPartBlock" >
         <input type="hidden" name="deliverable.metadata[${deliverable.getMetadataIndex('Format')}].metadata.id" value="${deliverable.getMetadataID('Format')}" />
-        [@customForm.input name="deliverable.metadata[${deliverable.getMetadataIndex('Format')}].value" type="text" i18nkey="reporting.activityDeliverables.metadata.format" /]
+        [@customForm.input name="deliverable.metadata[${deliverable.getMetadataIndex('Format')}].value" required=action.isMetadataMandatory('Format') disabled=action.isMetadataNotRequired('Format') type="text" i18nkey="reporting.activityDeliverables.metadata.format" /]
       </div> 
       
     </div>
@@ -202,7 +202,7 @@
       
       <div id="deliverableRights" class="fullBlock">
         <input type="hidden" name="deliverable.metadata[${deliverable.getMetadataIndex('Rights')}].metadata.id" value="${deliverable.getMetadataID('Rights')}" /> 
-        [@customForm.textArea name="deliverable.metadata[${deliverable.getMetadataIndex('Rights')}].value" i18nkey="reporting.deliverables.metadata.rights" help="reporting.deliverables.metadata.rights.help" /]
+        [@customForm.textArea name="deliverable.metadata[${deliverable.getMetadataIndex('Rights')}].value" required=action.isMetadataMandatory('Rights') disabled=action.isMetadataNotRequired('Rights') i18nkey="reporting.deliverables.metadata.rights" help="reporting.deliverables.metadata.rights.help" /]
       </div>
       
       <div id="metadataProtocols" class="fullBlock">

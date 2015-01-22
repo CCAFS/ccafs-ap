@@ -16,8 +16,10 @@ package org.cgiar.ccafs.ap.data.manager;
 
 import org.cgiar.ccafs.ap.data.manager.impl.MetadataManagerImpl;
 import org.cgiar.ccafs.ap.data.model.Metadata;
+import org.cgiar.ccafs.ap.data.model.MetadataRequirement;
 
 import java.util.List;
+import java.util.Map;
 
 import com.google.inject.ImplementedBy;
 
@@ -43,5 +45,5 @@ public interface MetadataManager {
    * @param deliverableTypeID
    * @return
    */
-  public List<Metadata> getRequiredMetadata(int deliverableTypeID);
+  public Map<Metadata, MetadataRequirement> getRequiredMetadata(int deliverableTypeID);
 }

@@ -36,4 +36,13 @@ public interface MetadataDAO {
    * @return a list of map objects with the information.
    */
   public List<Map<String, String>> getMetadataList();
+
+  /**
+   * This method gets all the metadata required according
+   * to the deliverable type received as parameter.
+   * 
+   * @param deliverableTypeID - deliverable type identifier
+   * @return a list of maps with the information of the metadata.
+   */
+  public List<Map<String, String>> getRequiredMetadata(int deliverableTypeID);
 }
