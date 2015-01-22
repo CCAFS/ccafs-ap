@@ -1,13 +1,5 @@
 package org.cgiar.ccafs.ap.data.manager.impl;
 
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-
-import com.google.inject.Inject;
 import org.cgiar.ccafs.ap.data.dao.UserDAO;
 import org.cgiar.ccafs.ap.data.manager.UserManager;
 import org.cgiar.ccafs.ap.data.model.Leader;
@@ -16,7 +8,15 @@ import org.cgiar.ccafs.ap.data.model.Region;
 import org.cgiar.ccafs.ap.data.model.Theme;
 import org.cgiar.ccafs.ap.data.model.User;
 import org.cgiar.ccafs.ap.util.MD5Convert;
-import org.cgiar.ciat.auth.ADConexion;
+
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
+import com.google.inject.Inject;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -85,6 +85,7 @@ public class UserManagerImp implements UserManager {
       user.setEmail(email);
       user.setUsername(userData.get("username"));
       user.setPassword(userData.get("password"));
+      user.setCcafsUser(userData.get("is_ccafs_user").equals("1"));
       user.setRole(userData.get("role"));
       // Leader
       Leader leader = new Leader();
