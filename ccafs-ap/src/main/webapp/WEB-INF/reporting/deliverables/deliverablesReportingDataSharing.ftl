@@ -74,7 +74,7 @@
       </label> 
       
       <label for="option-3">
-          <input id="option-3" type="radio" name="sharingOption" value="Locally">
+          <input id="option-3" type="radio" name="sharingOption" value="Locally" >
           [@s.text name="reporting.activityDeliverables.dataSharing.fileSmaller" /]
           <span class="quote">[@s.text name="reporting.activityDeliverables.dataSharing.fileSmaller.help" /]</span>
           
