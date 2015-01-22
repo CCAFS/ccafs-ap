@@ -50,14 +50,14 @@ public enum MetadataRequirement {
   }
 
   public boolean isMandatory() {
-    return this.name.equals(Mandatory.name());
+    return this.name.equals(Mandatory.name);
   }
 
   public boolean isNotRequired() {
-    return this.name.equals(NotRequired.name());
+    return this.name.equals(NotRequired.name);
   }
 
   public boolean isOptional() {
-    return this.name.equals(Optional.name());
+    return this.name.equals(Optional.name);
   }
 }
