@@ -120,12 +120,12 @@ public class DeliverableManagerImpl implements DeliverableManager {
       type = null;
     }
 
+    deliverable.setId(Integer.parseInt(deliverableData.get("id")));
+
     if (deliverableData.get("year") != null) {
       deliverable.setYear(Integer.parseInt(deliverableData.get("year")));
     }
-    if (deliverableData.get("id") != null) {
-      deliverable.setId(Integer.parseInt(deliverableData.get("id")));
-    }
+
     deliverable.setDescription(deliverableData.get("description"));
     deliverable.setDescriptionUpdate(deliverableData.get("description_update"));
     deliverable.setType(type);

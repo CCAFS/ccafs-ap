@@ -11,6 +11,10 @@ public class DeliverableStatus {
   public DeliverableStatus() {
   }
 
+  public DeliverableStatus(int id) {
+    this.id = id;
+  }
+
   public DeliverableStatus(int id, String name) {
     this.id = id;
     this.name = name;
