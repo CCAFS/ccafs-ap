@@ -9,9 +9,6 @@ $(document).ready(function(){
   // Check if deliverable type is a publication
   checkDeliverableType();
   
-  // Check if deliverable subtype is a journal paper
-  checkDeliverableSubType();
-  
   // Check if there be data access restriction imposed
   checkRestrictionImposed();
   
@@ -45,23 +42,39 @@ $(document).ready(function(){
   }
   
   function checkDeliverableType(){
+    var typeID = $("#deliverableType select").val();
+    var source = "../json/deliverableSubTypes.do?deliverableTypeID=" + typeID;
+    $.getJSON(source, function(){
+    }).done(function(data){
+      $("#deliverableSubtype select").empty();
+      $.each(data.subTypes, function(i,subType){
+        $("#deliverableSubtype select").append('<option value="' + subType.id + '">' + subType.name + '</option>');
+      });
+      checkDeliverableSubType();
+    }).fail(function(){
+      alert("Error");
+    });
+    
     // if deliverable type is Publication
-    if ($("#deliverableType select").val() == "3") {
+    if (typeID == "3") {
       $(".publicationQuestions").show("slow");
     } else {
       $(".publicationQuestions").hide("slow");
     }
     // if deliverable type is Data
-    if ($("#deliverableType select").val() == "1") {
+    if (typeID == "1") {
       $(".dataAccessQuestions").show("slow");
     } else {
       $(".dataAccessQuestions").hide("slow");
     }
+    
   }
   
   function checkDeliverableSubType(){
+    var subTypeID = $("#deliverableSubtype select").val();
+    console.log(subTypeID);
     // if deliverable subtype is Journal Paper
-    if ($("#deliverableSubtype select").val() == "21") {
+    if (subTypeID == "21") {
       $("#JournalQuestions").show("slow");
     } else {
       $("#JournalQuestions").hide("slow");
