@@ -8,6 +8,7 @@ import org.cgiar.ccafs.ap.data.model.Region;
 import org.cgiar.ccafs.ap.data.model.Theme;
 import org.cgiar.ccafs.ap.data.model.User;
 import org.cgiar.ccafs.ap.util.MD5Convert;
+import org.cgiar.ciat.auth.ADConexion;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
