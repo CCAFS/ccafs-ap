@@ -12,6 +12,10 @@ public class DeliverableType {
   public DeliverableType() {
   }
 
+  public DeliverableType(int id) {
+    this.id = id;
+  }
+
   public DeliverableType(int id, String name) {
     this.id = id;
     this.name = name;

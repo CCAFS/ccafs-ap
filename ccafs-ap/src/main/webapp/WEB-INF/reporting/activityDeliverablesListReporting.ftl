@@ -32,6 +32,7 @@
        <h4>Filter by [@s.text name="reporting.activityDeliverablesList.status" /]:<h4>
       </div>
     </div>
+
     <table id="deliverableList">  
       <thead>
         <tr>
@@ -46,13 +47,16 @@
         [#list activity.deliverables as product]
           <tr>
             <td class="left">
+              [#assign title]
+                [#if product.description?has_content]${product.description}[#else][@s.text name="reporting.activityDeliverablesList.notDefined" /][/#if]
+              [/#assign]
               <a href="
               [@s.url action='deliverables' includeParams='get']
                 [@s.param name='${activityRequestParameter}']${activity.id?c}[/@s.param]
                 [@s.param name='${deliverableRequestParameter}']${product.id?c}[/@s.param]
               [/@s.url]
-              " title="${product.description}">
-                [#if product.description?length < 50] ${product.description}</a> [#else] [@utilities.wordCutter string=product.description maxPos=50 /]...</a> [/#if]
+              " title="${title}">
+                [#if title?length < 50] ${title}</a> [#else] [@utilities.wordCutter string=title maxPos=50 /]...</a> [/#if]
             </td> 
             <td> ${product.type.name}</td>
             <td> ${product.year} </td>

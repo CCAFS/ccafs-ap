@@ -22,6 +22,8 @@ import org.cgiar.ccafs.ap.data.manager.DeliverableManager;
 import org.cgiar.ccafs.ap.data.manager.LogframeManager;
 import org.cgiar.ccafs.ap.data.manager.SubmissionManager;
 import org.cgiar.ccafs.ap.data.model.Activity;
+import org.cgiar.ccafs.ap.data.model.DeliverableStatus;
+import org.cgiar.ccafs.ap.data.model.DeliverableType;
 import org.cgiar.ccafs.ap.data.model.Product;
 import org.cgiar.ccafs.ap.data.model.Submission;
 
@@ -64,6 +66,9 @@ public class DeliverablesListReportingAction extends BaseAction {
     // Create a new deliverable and redirect to deliverable information using
     // the new deliverableID assigned by the database.
     Product deliverable = new Product(-1);
+    deliverable.setYear(getCurrentReportingLogframe().getYear());
+    deliverable.setStatus(new DeliverableStatus(APConstants.DELIVERABLE_STATUS_INCOMPLETE));
+    deliverable.setType(new DeliverableType(APConstants.DELIVERABLE_SUBTYPE_DATA));
     deliverableID = deliverableManager.createDeliverable(deliverable, activityID);
 
     if (activityID > 0) {
