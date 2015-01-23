@@ -30,7 +30,7 @@ public class MySQLDeliverableTypeDAO implements DeliverableTypeDAO {
   public List<Map<String, String>> getDeliverableSubTypes() {
     LOG.debug(">> getDeliverableSubTypes()");
     List<Map<String, String>> deliverableTypesList = new ArrayList<>();
-    String query = "SELECT * from deliverable_types WHERE parent_id IS NOT NULL";
+    String query = "SELECT * from deliverable_types WHERE parent_id IS NOT NULL AND is_active = TRUE";
 
     try (Connection con = databaseManager.getConnection()) {
       ResultSet rs = databaseManager.makeQuery(query, con);
@@ -54,7 +54,7 @@ public class MySQLDeliverableTypeDAO implements DeliverableTypeDAO {
   public List<Map<String, String>> getDeliverableTypes() {
     LOG.debug(">> getDeliverableTypes()");
     List<Map<String, String>> deliverableTypesList = new ArrayList<>();
-    String query = "SELECT * from deliverable_types WHERE parent_id IS NULL";
+    String query = "SELECT * from deliverable_types WHERE parent_id IS NULL AND is_active = TRUE";
     try (Connection con = databaseManager.getConnection()) {
       ResultSet rs = databaseManager.makeQuery(query, con);
       while (rs.next()) {
@@ -80,6 +80,7 @@ public class MySQLDeliverableTypeDAO implements DeliverableTypeDAO {
     query.append("SELECT dt.id, dt.name, dtp.id as 'parent_id', dtp.name as 'parent_name' ");
     query.append("FROM deliverable_types dt ");
     query.append("INNER JOIN deliverable_types dtp ON dt.parent_id = dtp.id ");
+    query.append("WHERE dt.is_active = TRUE ");
 
 
     try (Connection con = databaseManager.getConnection()) {
