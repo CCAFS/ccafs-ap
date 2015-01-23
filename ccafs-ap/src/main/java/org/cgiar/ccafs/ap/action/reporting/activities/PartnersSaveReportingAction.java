@@ -113,7 +113,7 @@ public class PartnersSaveReportingAction extends BaseAction {
       }
     }
     // message subject
-    subject = "Partner verification - " + partnerName;
+    subject = "[CCAFS P&R - Logframes] Partner verification - " + partnerName;
     // Message content
     message.append(getCurrentUser().getName() + " ");
     message.append("(" + getCurrentUser().getEmail() + ") ");
