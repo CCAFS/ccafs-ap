@@ -55,6 +55,13 @@
         <param name="deliverableID">${deliverableID}</param>
       </result>
     </action>
+    
+    <action name="removeDeliverable" class="org.cgiar.ccafs.ap.action.reporting.activities.DeliverablesListReportingAction" method="remove">
+      <interceptor-ref name="reportingStack" />
+      <interceptor-ref name="accessibleActivity" />
+      <result name="input">/WEB-INF/reporting/activityDeliverablesListReporting.ftl</result>
+      <result name="success">/WEB-INF/reporting/activityDeliverablesListReporting.ftl</result>
+    </action>
 
     <action name="deliverables" class="org.cgiar.ccafs.ap.action.reporting.activities.deliverables.DeliverableInformationReportingAction">
       <interceptor-ref name="reportingStack" />

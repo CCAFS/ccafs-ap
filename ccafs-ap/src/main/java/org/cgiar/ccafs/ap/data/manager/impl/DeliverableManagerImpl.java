@@ -245,6 +245,11 @@ public class DeliverableManagerImpl implements DeliverableManager {
   }
 
   @Override
+  public boolean removeDeliverable(int deliverableID) {
+    return deliverableDAO.removeDeliverable(deliverableID);
+  }
+
+  @Override
   public boolean removeExpected(int activityID) {
     return deliverableDAO.removeExpected(activityID);
   }

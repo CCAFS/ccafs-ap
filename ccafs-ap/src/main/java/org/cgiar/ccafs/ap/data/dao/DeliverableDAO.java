@@ -54,6 +54,15 @@ public interface DeliverableDAO {
   public int getDeliverablesCount(int activityID);
 
   /**
+   * This method removes the deliverable identified by the value received as
+   * parameter.
+   * 
+   * @param deliverableID - Deliverable identifier
+   * @return true if the deliverable was removed successfully. False otherwise.
+   */
+  public boolean removeDeliverable(int deliverableID);
+
+  /**
    * Remove all expected deliverables that belongs of a given activity.
    * 
    * @param activityID - activity identifier.

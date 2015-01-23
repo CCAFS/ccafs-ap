@@ -47,6 +47,7 @@
       
       <tbody>
         [#list activity.deliverables as product]
+          [#assign isNewDeliverable = !product.expected && product.year == currentReportingLogframe.year]
           <tr>
             <td class="left">
               [#assign title]
@@ -63,8 +64,22 @@
             <td> ${product.type.name}</td>
             <td> ${product.year} </td>
             <td> ${product.status.name} </td>
-            <td> Planned </td>  
-            <td> <img src="${baseUrl}/images/global/trash.png"> </td> 
+            <td> [#if isNewDeliverable] [@s.text name="reporting.activityDeliverablesList.new" /] [#else] [@s.text name="reporting.activityDeliverablesList.planned" /] [/#if]</td>  
+            <td>
+              [#if isNewDeliverable] 
+                <a href="
+                [@s.url action='removeDeliverable' includeParams='get'] 
+                  [@s.param name='${activityRequestParameter}']${activity.id?c}[/@s.param]
+                  [@s.param name='${deliverableRequestParameter}']${product.id?c}[/@s.param]
+                [/@s.url]
+                " title="">
+                  <img src="${baseUrl}/images/global/trash.png"> 
+                </a>
+              [#else]
+                <img src="${baseUrl}/images/global/trash.png"> 
+              [/#if]
+                              
+            </td> 
           </tr>
         [/#list]  
       </tbody> 

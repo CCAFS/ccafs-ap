@@ -74,15 +74,14 @@ public class DeliverablesListReportingAction extends BaseAction {
     deliverable.setExpected(false);
     deliverableID = deliverableManager.createDeliverable(deliverable, activityID);
 
-    if (activityID > 0) {
-      addActionMessage(getText("saving.add.new", new String[] {getText("planning.activityDeliverables.deliverable")}));
+    if (deliverableID > 0) {
+      addActionMessage(getText("reporting.activityDeliverablesList.added"));
       // Let's redirect the user to the Activity Description section.
       return BaseAction.SUCCESS;
     }
     // Let's redirect the user to the error page.
     return BaseAction.ERROR;
   }
-
 
   public Activity getActivity() {
     return activity;
@@ -125,11 +124,25 @@ public class DeliverablesListReportingAction extends BaseAction {
     canSubmit = (submission == null) ? true : false;
   }
 
+  public String remove() {
+    boolean removed = deliverableManager.removeDeliverable(deliverableID);
+    if (removed) {
+      addActionMessage(getText("reporting.activityDeliverablesList.removed"));
+      return BaseAction.SUCCESS;
+    }
+    addActionWarning(getText("reporting.activityDeliverablesList.notRemoved"));
+    return INPUT;
+  }
+
   public void setActivity(Activity activity) {
     this.activity = activity;
   }
 
   public void setActivityID(int activityID) {
     this.activityID = activityID;
+  }
+
+  public void setDeliverableID(int deliverableID) {
+    this.deliverableID = deliverableID;
   }
 }

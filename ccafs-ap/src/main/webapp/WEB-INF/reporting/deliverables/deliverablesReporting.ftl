@@ -58,22 +58,21 @@
           <span>${deliverable.description}</span>        
         [/#if]
       </div>
-      ${action.isMetadataNotRequired('Identifier')?string}
+
       <div id="deliverableIndentifier" class="fullBlock ">
         <input type="hidden" name="deliverable.metadata[${deliverable.getMetadataIndex('Identifier')}].metadata.id" value="${deliverable.getMetadataID('Identifier')}" />
         [@customForm.input name="deliverable.metadata[${deliverable.getMetadataIndex('Identifier')}].value"  required=action.isMetadataMandatory('Identifier') disabled=action.isMetadataNotRequired('Identifier') type="text" i18nkey="reporting.activityDeliverables.identifier" /]
-         
       </div>
-        
+
       <div id="deliverableDescriptionDissemination" class="fullBlock">
         <input type="hidden" name="deliverable.metadata[${deliverable.getMetadataIndex('DisseminationDescription')}].metadata.id" value="${deliverable.getMetadataID('DisseminationDescription')}" />
         [@customForm.textArea name="deliverable.metadata[${deliverable.getMetadataIndex('DisseminationDescription')}].value" required=action.isMetadataMandatory('DisseminationDescription') disabled=action.isMetadataNotRequired('DisseminationDescription') i18nkey="reporting.activityDeliverables.metadata.disseminationDescription" /]
       </div>
-      
+
       <div id="deliverableStatus" class="halfPartBlock">
         [@customForm.select name="deliverable.status" i18nkey="reporting.activityDeliverables.status" listName="deliverableStatusList" keyFieldName="id"  displayFieldName="name" className="deliverableStatus" /]
       </div>
-      
+
       <div id="deliverableYear" class="halfPartBlock">
         <h6>[@s.text name="reporting.activityDeliverables.year" /]</h6>
         <span>${deliverable.year}</span>
@@ -202,7 +201,7 @@
       
       <div id="deliverableRights" class="fullBlock">
         <input type="hidden" name="deliverable.metadata[${deliverable.getMetadataIndex('Rights')}].metadata.id" value="${deliverable.getMetadataID('Rights')}" /> 
-        [@customForm.textArea name="deliverable.metadata[${deliverable.getMetadataIndex('Rights')}].value" required=action.isMetadataMandatory('Rights') disabled=action.isMetadataNotRequired('Rights') i18nkey="reporting.deliverables.metadata.rights" help="reporting.deliverables.metadata.rights.help" /]
+        [@customForm.textArea name="deliverable.metadata[${deliverable.getMetadataIndex('Rights')}].value" required=action.isMetadataMandatory('Rights') disabled=action.isMetadataNotRequired('Rights') i18nkey="reporting.activityDeliverables.metadata.rights" help="reporting.activityDeliverables.metadata.rights" /]
       </div>
       
       <div id="metadataProtocols" class="fullBlock">
