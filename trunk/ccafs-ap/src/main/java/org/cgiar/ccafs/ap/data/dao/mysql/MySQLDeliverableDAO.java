@@ -195,6 +195,27 @@ public class MySQLDeliverableDAO implements DeliverableDAO {
   }
 
   @Override
+  public boolean removeDeliverable(int deliverableID) {
+    LOG.debug(">> removeDeliverable(deliverableID={})", deliverableID);
+    boolean success = true;
+    StringBuilder query = new StringBuilder();
+    query.append("DELETE FROM deliverables WHERE id = ?");
+
+    try (Connection con = databaseManager.getConnection()) {
+      int rowsDeleted = databaseManager.makeChangeSecure(con, query.toString(), new String[] {deliverableID + ""});
+      if (rowsDeleted >= 0) {
+        LOG.debug("<< removeDeliverable():", true);
+        return true;
+      }
+    } catch (SQLException e) {
+      LOG.error("-- removeDeliverable(): Exception trying to delete the deliverable {}", deliverableID, e);
+    }
+
+    LOG.debug("<< removeDeliverable():", success);
+    return success;
+  }
+
+  @Override
   public boolean removeExpected(int activityID) {
     LOG.debug(">> removeExpected(activityID={})", activityID);
 

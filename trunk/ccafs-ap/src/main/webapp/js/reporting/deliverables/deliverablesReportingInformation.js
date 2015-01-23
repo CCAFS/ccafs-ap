@@ -31,7 +31,6 @@ $(document).ready(function(){
     $("#restrictionImposed input[type=radio]").on("change", checkRestrictionImposed);
     $("#metadataProtocols input[type=radio]").on("change", checkMetadataProtocols);
     $("#accessLimitOptions input[type=radio]").on("change", checkAccessLimitOptions);
-    
   }
   
   function checkDeliverableStatus(){
@@ -80,6 +79,37 @@ $(document).ready(function(){
       $("#JournalQuestions").show("slow");
     } else {
       $("#JournalQuestions").hide("slow");
+    }
+    
+    var source = "../json/metadataRequiredByDeliverableType.do?deliverableTypeID=" + subTypeID;
+    $.getJSON(source, function(){
+    }).done(function(data){
+      $.each(data.result, function(metadata,required){
+        var metadata = metadata.replace("{", "").replace("}", "").split("=");
+        adjustMetadataRestrictions(metadata[0], required);
+      });
+    }).fail(function(){
+      alert("Error");
+    });
+  }
+  
+  function adjustMetadataRestrictions(metadataIndex,requirements){
+    var $input = $("#deliverable\\.metadata\\[" + metadataIndex + "\\]\\.value");
+    var $label = $input.prev().find("label");
+    
+    // First remove all the formating
+    $input.attr("disabled", false);
+    if ($label.find("span").length) {
+      $label.remove("span");
+    }
+    
+    // Then apply as required
+    if (requirements == "Mandatory") {
+      if ($label.find("span").length == 0) {
+        $label.append('<span class="red">*</span>');
+      }
+    } else if (requirements == "NotRequired") {
+      $input.attr("disabled", true);
     }
   }
   

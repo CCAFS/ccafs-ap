@@ -88,6 +88,15 @@ public interface DeliverableManager {
   public List<Deliverable> getDeliverablesListByTheme(int themeID, int year);
 
   /**
+   * This method removes the deliverable identified by the value received as parameter.
+   * 
+   * @param deliverableID - Deliverable identifier
+   * @return true if the deliverable was removed successfully or if there was not deliverable identified
+   *         with this value. False otherwise.
+   */
+  public boolean removeDeliverable(int deliverableID);
+
+  /**
    * Remove all those expected deliverables that belongs to the specified activity id.
    * 
    * @param activityID - activity identifier.
@@ -112,5 +121,4 @@ public interface DeliverableManager {
    * @return true if the list of the deliverables was successfully added into the DAO, or false if any problem occur.
    */
   public boolean saveDeliverable(List<Deliverable> deliverables, int activityID);
-
 }

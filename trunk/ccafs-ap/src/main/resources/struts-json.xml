@@ -39,6 +39,13 @@
         <param name="excludeNullProperties">true</param>
       </result>
     </action>
+    
+    <action name="metadataRequiredByDeliverableType" class="org.cgiar.ccafs.ap.action.json.reporting.MetadataRequiredByDeliverableTypeAction">
+      <result type="json">        
+        <param name="noCache">true</param>
+        <param name="excludeNullProperties">true</param>
+      </result>
+    </action>
 
   </package>
 </struts>
