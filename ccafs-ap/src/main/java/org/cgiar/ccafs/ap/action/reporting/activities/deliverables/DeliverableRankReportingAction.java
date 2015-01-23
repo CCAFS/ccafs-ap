@@ -122,10 +122,14 @@ public class DeliverableRankReportingAction extends BaseAction {
   public String save() {
     boolean success = true;
     int activityLeaderID = getCurrentUser().getLeader().getId();
-    double score = deliverable.getScores().get(getCurrentUser().getLeader().getId());
 
+    // Save the traffic light questions
     trafficLightManager.saveDeliverableTrafficLight(deliverable.getTrafficLight(), deliverable.getId());
-    deliverableScoreManager.saveDeliverableScore(deliverable.getId(), activityLeaderID, score);
+
+    if (deliverable.getScores() != null && !deliverable.getScores().isEmpty()) {
+      double score = deliverable.getScores().get(getCurrentUser().getLeader().getId());
+      deliverableScoreManager.saveDeliverableScore(deliverable.getId(), activityLeaderID, score);
+    }
 
     if (success) {
       if (validationMessage.toString().isEmpty()) {
