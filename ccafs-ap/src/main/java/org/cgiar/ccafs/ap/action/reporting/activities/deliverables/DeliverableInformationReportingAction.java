@@ -282,16 +282,14 @@ public class DeliverableInformationReportingAction extends BaseAction {
   @Override
   public String save() {
     boolean success = true;
-    System.out.println(1);
     success = success && deliverableManager.addDeliverable(deliverable, activityID);
-    System.out.println(2);
+
     if (deliverable.isData()) {
       success =
         success && deliverableAccessManager.saveDeliverableAccessData(deliverable.getAccessDetails(), deliverableID);
     }
-    System.out.println(3);
+
     success = success && deliverableMetadataManager.saveDeliverableMetadata(deliverable.getMetadata(), deliverableID);
-    System.out.println(4);
 
     if (deliverable.isPublication()) {
       publication.setDeliverableID(deliverableID);

@@ -1,5 +1,4 @@
 $(document).ready(function(){
-  console.log("rank");
   
   $(this).tooltip("destroy");
   

@@ -73,7 +73,6 @@ $(document).ready(function(){
   
   function checkDeliverableSubType(){
     var subTypeID = $("#deliverableSubtype select").val();
-    console.log(subTypeID);
     // if deliverable subtype is Journal Paper
     if (subTypeID == "21") {
       $("#JournalQuestions").show("slow");
