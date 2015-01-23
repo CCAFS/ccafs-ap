@@ -29,7 +29,7 @@
         <param name="activityID">${activity.id}</param>
       </result>
       <result name="next" type="redirectAction">
-        <param name="actionName">deliverables</param>
+        <param name="actionName">deliverablesList</param>
         <param name="activityID">${activity.id}</param>
       </result>
     </action>
