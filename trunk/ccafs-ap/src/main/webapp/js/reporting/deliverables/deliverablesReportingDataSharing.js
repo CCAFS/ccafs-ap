@@ -58,7 +58,6 @@ $(document).ready(function(){
         }
       });
       if (alreadyExist) {
-        console.log("already here");
         this.removeFile(file);
       }
     });
@@ -68,7 +67,6 @@ $(document).ready(function(){
       if (result.fileSaved) {
         file.hosted = "Locally";
         file.fileID = result.fileID;
-        console.log(result);
         addFileToUploaded(file);
         this.removeFile(file);
       }

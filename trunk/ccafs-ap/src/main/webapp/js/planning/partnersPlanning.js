@@ -57,7 +57,6 @@ function togglePartnersDiv(event){
   
   // If user indicates that the activity will have partners
   // show the fieldset to select them
-  console.log($(element).val() == 'true');
   if($(element).val() == 'true'){
     $("#items").fadeIn();
   }else{
