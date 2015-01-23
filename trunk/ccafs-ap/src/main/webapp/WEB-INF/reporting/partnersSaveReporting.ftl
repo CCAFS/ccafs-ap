@@ -10,7 +10,7 @@
   <section>
     <article class="content">
       <h1>[@s.text name="reporting.activityPartners.addPartner" /]</h1>
-      [@s.form action="partnerSave!save"]
+      [@s.form action="partnerSave"]
       
       [#-- Partner Name --]
       <div class="halfPartBlock">

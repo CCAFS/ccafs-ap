@@ -112,12 +112,17 @@
       <result name="next" type="redirectAction">activities</result>
     </action>
     
-    <action name="partnerSave" class="org.cgiar.ccafs.ap.action.reporting.activities.PartnersSaveReportingAction">
+    <action name="partnerSave" class="org.cgiar.ccafs.ap.action.reporting.activities.PartnersSaveReportingAction"  method="save">
       <interceptor-ref name="reportingStack" />
       <result name="input">/WEB-INF/reporting/partnersSaveReporting.ftl</result>
       <result name="success" type="redirectAction">
-        <param name="actionName">partnerSave</param>
+        <param name="actionName">requestPartner</param>
       </result>
+    </action>
+    
+    <action name="requestPartner" class="org.cgiar.ccafs.ap.action.reporting.activities.PartnersSaveReportingAction">
+      <interceptor-ref name="reportingStack" />
+      <result name="input">/WEB-INF/reporting/partnersSaveReporting.ftl</result>
     </action>
     
   </package>
