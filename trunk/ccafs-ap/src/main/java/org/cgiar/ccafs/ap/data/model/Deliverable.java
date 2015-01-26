@@ -125,14 +125,12 @@ public abstract class Deliverable {
   }
 
   public double getScoreByLeader(int activityLeaderID) {
-    if (this.id == 1079) {
-      System.out.println("error");
-    }
     if (scores != null && !scores.isEmpty()) {
-      return scores.get(activityLeaderID);
-    } else {
-      return -1;
+      if (scores.containsKey(activityLeaderID)) {
+        return scores.get(activityLeaderID);
+      }
     }
+    return -1;
   }
 
   public Map<Integer, Double> getScores() {
