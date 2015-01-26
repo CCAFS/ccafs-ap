@@ -10,3 +10,7 @@ div.star-rating-readonly a{cursor:default !important}
 /* Partial Star CSS */
 div.star-rating{background:transparent!important;overflow:hidden!important}
 /* END jQuery.Rating Plugin CSS */
+
+.star-rating.star-rating-readonly, .star-rating.star-rating-readonly a {
+background: url(star.gif) no-repeat 0 -75px !important;
+}

@@ -126,7 +126,7 @@
     
     [#-- Deliverable Publications questions --]  
     <h1 class="contentTitle publicationQuestions" [#if !deliverable.publication]style="display:none"[/#if]>[@s.text name="reporting.activityDeliverables.deliverablePublications" /] </h1> 
-    <div class="publicationQuestions" id="publicationQuestions" class="fullBlock borderBox" [#if !deliverable.publication]style="display:none"[/#if]> 
+    <div id="publicationQuestions" class="fullBlock borderBox publicationQuestions" [#if !deliverable.publication]style="display:none"[/#if]> 
     
        <div id="JournalQuestions" [#if !deliverable.journalArticle]style="display:none"[/#if]>
         <div id="publicationOpenAccess" class="fullBlock accessType">
@@ -222,7 +222,7 @@
     <input name="deliverableID" type="hidden" value="${deliverable.id?c}" />
     [#if publication?has_content]
       <input type="hidden" name="publication.id" value="${publication.id}" />
-    [/#if]
+    [/#if] 
     
     [#if canSubmit]
       <div class="buttons">
