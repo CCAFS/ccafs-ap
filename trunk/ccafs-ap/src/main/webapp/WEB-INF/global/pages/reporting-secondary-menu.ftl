@@ -5,8 +5,8 @@
 <nav id="secondaryMenu">  
   <ul>
     <a [#if currentReportingSection == "activities"] class="currentReportingSection" [/#if] href="${baseUrl}/reporting/activities.do"><li>[@s.text name="menu.secondary.reporting.activities" /]</li></a>
+    <a [#if currentReportingSection == "overallDeliverables"] class="currentReportingSection" [/#if] href="${baseUrl}/reporting/overallDeliverables.do"><li>[@s.text name="menu.secondary.reporting.overallDeliverables" /]</li></a>
     <a [#if currentReportingSection == "outputs"] class="currentReportingSection" [/#if] href="${baseUrl}/reporting/outputSummary.do"><li>[@s.text name="menu.secondary.reporting.outputSummaries" /]</li></a>
-    <a [#if currentReportingSection == "publications"] class="currentReportingSection" [/#if] href="${baseUrl}/reporting/publications.do"><li>[@s.text name="menu.secondary.reporting.publications" /]</li></a>
     <a [#if currentReportingSection == "communications"] class="currentReportingSection" [/#if] href="${baseUrl}/reporting/communications.do"><li>[@s.text name="menu.secondary.reporting.communications" /]</li></a>
     <a [#if currentReportingSection == "caseStudies"] class="currentReportingSection" [/#if] href="${baseUrl}/reporting/caseStudies.do"><li>[@s.text name="menu.secondary.reporting.caseStudies" /]</li></a>
     <a [#if currentReportingSection == "outcomes"] class="currentReportingSection" [/#if] href="${baseUrl}/reporting/outcomes.do"><li>[@s.text name="menu.secondary.reporting.outcomes" /]</li></a>
