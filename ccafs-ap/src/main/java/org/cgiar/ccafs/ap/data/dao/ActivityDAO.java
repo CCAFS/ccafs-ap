@@ -55,6 +55,14 @@ public interface ActivityDAO {
   public List<Map<String, String>> getActivitiesToContinue(int year, int leaderID);
 
   /**
+   * Return the information of the activity that owns the deliverable.
+   * 
+   * @param deliverableID - Deliverable identifier
+   * @return a map with the information.
+   */
+  public Map<String, String> getActivityByDeliverable(int deliverableID);
+
+  /**
    * Get a basic information for each activity.
    * 
    * @param year - The year in which the activities belong.
@@ -167,6 +175,7 @@ public interface ActivityDAO {
    */
   public boolean saveHasPartners(int activityID, boolean hasPartners);
 
+
   /**
    * Add a new activity to the DAO.
    * 
@@ -174,7 +183,6 @@ public interface ActivityDAO {
    * @return the id that represents the added activity, or -1 if some error happened.
    */
   public int saveSimpleActivity(Map<String, Object> activityData);
-
 
   /**
    * Save the status reporting information of the given activity.

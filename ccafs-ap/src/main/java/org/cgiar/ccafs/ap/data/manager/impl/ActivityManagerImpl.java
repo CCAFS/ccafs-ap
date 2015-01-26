@@ -147,7 +147,7 @@ public class ActivityManagerImpl implements ActivityManager {
       activity.setGenderIntegrationsDescription(statusInfo.get("gender_description"));
 
       /* --- DELIVERABLES --- */
-      activity.setDeliverables(deliverableManager.getDeliverableByActivityID(activity.getId()));
+      activity.setDeliverables(deliverableManager.getDeliverablesByActivityID(activity.getId()));
 
       /* --- PARTNERS --- */
       activity.setActivityPartners(activityPartnerManager.getActivityPartners(activity.getId()));
@@ -260,7 +260,7 @@ public class ActivityManagerImpl implements ActivityManager {
       activity.setActivityPartners(activityPartnerManager.getActivityPartners(activity.getId()));
 
       // Deliverables
-      activity.setDeliverables(deliverableManager.getDeliverableByActivityID(activity.getId()));
+      activity.setDeliverables(deliverableManager.getDeliverablesByActivityID(activity.getId()));
     }
 
     return activities;
@@ -461,11 +461,22 @@ public class ActivityManagerImpl implements ActivityManager {
       activity.setMilestone(null);
     }
     // Deliverables
-    activity.setDeliverables(deliverableManager.getDeliverableByActivityID(activity.getId()));
+    activity.setDeliverables(deliverableManager.getDeliverablesByActivityID(activity.getId()));
     // Partners
     activity.setActivityPartners(activityPartnerManager.getActivityPartners(activity.getId()));
     // Gender Integrations
     activity.setGenderIntegrationsDescription(activityData.get("gender_description"));
+
+    return activity;
+  }
+
+  @Override
+  public Activity getActivityByDeliverable(int deliverableID) {
+    Activity activity = new Activity();
+    Map<String, String> activityData = activityDAO.getActivityByDeliverable(deliverableID);
+
+    activity.setActivityId(activityData.get("id"));
+    activity.setTitle(activityData.get("title"));
 
     return activity;
   }

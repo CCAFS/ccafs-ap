@@ -4,14 +4,14 @@
 [#assign customJS = ["${baseUrl}/js/reporting/overallDeliverablesReporting.js"] /]
 [#assign customCSS = ["${baseUrl}/css/libs/dataTables/jquery.dataTables-1.9.4.css", "${baseUrl}/css/global/customDataTable.css"] /]
 [#assign currentSection = "reporting" /]
-[#assign currentReportingSection = "activities" /]
+[#assign currentReportingSection = "overallDeliverables" /]
 [#assign currentStage = "deliverables" /]
 [#assign userRole = "${currentUser.role}"]
 
 [#include "/WEB-INF/global/pages/header.ftl" /]
 [#include "/WEB-INF/global/pages/main-menu.ftl" /]
 [#import "/WEB-INF/global/macros/utils.ftl" as utilities/]
-    
+
 <section class="content">
   [#include "/WEB-INF/global/pages/reporting-secondary-menu.ftl" /]
 
@@ -63,10 +63,10 @@
                 [#if product.description?has_content]${product.description}[#else][@s.text name="reporting.activityDeliverablesList.notDefined" /][/#if]
               [/#assign]
               <a href="
-              [#-- @s.url action='deliverables' includeParams='get']
-                [@s.param name='${activityRequestParameter}']${activity.id?c}[/@s.param]
+              [@s.url action='deliverables' includeParams='get']
+                [@s.param name='${activityRequestParameter}']${action.getDeliverableActivity(product.id)}[/@s.param]
                 [@s.param name='${deliverableRequestParameter}']${product.id?c}[/@s.param]
-              [/@s.url --]
+              [/@s.url]
               " title="${title}">
                 [#if title?length < 50] ${title}</a> [#else] [@utilities.wordCutter string=title maxPos=50 /]...</a> [/#if]
             </td> 
@@ -105,7 +105,6 @@
         [/#list]  
       </tbody> 
     </table>
-
     [#if canSubmit]
       <div class="buttons">
         [@s.submit type="button" name="save"][@s.text name="form.buttons.save" /][/@s.submit]

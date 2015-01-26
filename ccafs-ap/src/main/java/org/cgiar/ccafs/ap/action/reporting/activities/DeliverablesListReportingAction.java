@@ -115,7 +115,7 @@ public class DeliverablesListReportingAction extends BaseAction {
     LOG.info("There user {} is loading the list of deliverables for the activity {}", getCurrentUser().getEmail(),
       String.valueOf(activityID));
 
-    activity.setDeliverables(deliverableManager.getDeliverableByActivityID(activityID));
+    activity.setDeliverables(deliverableManager.getDeliverablesByActivityID(activityID));
 
     /* --------- Checking if the user can submit ------------- */
     Submission submission =

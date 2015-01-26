@@ -93,6 +93,14 @@ public interface ActivityManager {
   public Activity getActivity(int id);
 
   /**
+   * Returns the activity that owns the deliverable.
+   * 
+   * @param deliverableID - Deliverable identifier
+   * @return an activity object.
+   */
+  public Activity getActivityByDeliverable(int deliverableID);
+
+  /**
    * Get a list of activities to show in the activity table.
    * 
    * @param year - An integer representing the year in which the activities belong.

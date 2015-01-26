@@ -148,7 +148,7 @@ public class DeliverableManagerImpl implements DeliverableManager {
   }
 
   @Override
-  public List<Deliverable> getDeliverableByActivityID(int activityId) {
+  public List<Deliverable> getDeliverablesByActivityID(int activityId) {
     List<Map<String, String>> fileFormatsDB;
     List<Map<String, String>> deliverablesDB = deliverableDAO.getDeliverablesByActivityID(activityId);
 
@@ -273,9 +273,9 @@ public class DeliverableManagerImpl implements DeliverableManager {
   }
 
   @Override
-  public List<Deliverable> getDeliverablesListByTheme(int themeID) {
+  public List<Deliverable> getDeliverablesListByTheme(int themeCode) {
     List<Deliverable> deliverables = new ArrayList<>();
-    List<Map<String, String>> deliverablesData = deliverableDAO.getDeliverablesListByLeader(themeID);
+    List<Map<String, String>> deliverablesData = deliverableDAO.getDeliverablesListByTheme(themeCode);
 
     for (Map<String, String> dData : deliverablesData) {
       Deliverable deliverable = new Product();
@@ -306,7 +306,7 @@ public class DeliverableManagerImpl implements DeliverableManager {
   }
 
   @Override
-  public List<Deliverable> getDeliverablesListByTheme(int themeID, int year) {
+  public List<Deliverable> getDeliverablesListByTheme(int themeCode, int year) {
     // TODO Auto-generated method stub
     return null;
   }

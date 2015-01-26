@@ -46,7 +46,7 @@ public class MySQLDeliverableScoreDAO implements DeliverableScoreDAO {
 
   @Override
   public List<Map<String, String>> getDeliverableScores(int deliverableID) {
-    LOG.debug(">> getDeliverableScores(deliverableID = {})");
+    LOG.debug(">> getDeliverableScores(deliverableID = {})", deliverableID);
     List<Map<String, String>> scores = new ArrayList<>();
     StringBuilder query = new StringBuilder();
     query.append("SELECT * FROM deliverable_scores WHERE deliverable_id = ");
