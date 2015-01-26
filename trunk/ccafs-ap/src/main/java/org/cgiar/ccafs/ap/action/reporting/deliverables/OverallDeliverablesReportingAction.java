@@ -17,10 +17,12 @@ package org.cgiar.ccafs.ap.action.reporting.deliverables;
 import org.cgiar.ccafs.ap.action.BaseAction;
 import org.cgiar.ccafs.ap.config.APConfig;
 import org.cgiar.ccafs.ap.config.APConstants;
+import org.cgiar.ccafs.ap.data.manager.ActivityManager;
 import org.cgiar.ccafs.ap.data.manager.DeliverableManager;
 import org.cgiar.ccafs.ap.data.manager.DeliverableScoreManager;
 import org.cgiar.ccafs.ap.data.manager.LogframeManager;
 import org.cgiar.ccafs.ap.data.manager.SubmissionManager;
+import org.cgiar.ccafs.ap.data.model.Activity;
 import org.cgiar.ccafs.ap.data.model.Deliverable;
 import org.cgiar.ccafs.ap.data.model.Leader;
 import org.cgiar.ccafs.ap.data.model.Submission;
@@ -39,6 +41,7 @@ import com.google.inject.Inject;
 public class OverallDeliverablesReportingAction extends BaseAction {
 
   // Managers
+  private ActivityManager activityManager;
   private DeliverableManager deliverableManager;
   private DeliverableScoreManager deliverableScoreManager;
   private SubmissionManager submissionManager;
@@ -53,15 +56,25 @@ public class OverallDeliverablesReportingAction extends BaseAction {
   @Inject
   public OverallDeliverablesReportingAction(APConfig config, LogframeManager logframeManager,
     DeliverableManager deliverableManager, DeliverableScoreManager deliverableScoreManager,
-    SubmissionManager submissionManager) {
+    ActivityManager activityManager, SubmissionManager submissionManager) {
     super(config, logframeManager);
     this.deliverableManager = deliverableManager;
     this.deliverableScoreManager = deliverableScoreManager;
     this.submissionManager = submissionManager;
+    this.activityManager = activityManager;
   }
 
   public int getActivityLeaderID() {
     return getCurrentUser().getLeader().getId();
+  }
+
+  public String getActivityRequestParameter() {
+    return APConstants.ACTIVITY_REQUEST_ID;
+  }
+
+  public int getDeliverableActivity(int deliverableID) {
+    Activity activity = activityManager.getActivityByDeliverable(deliverableID);
+    return activity.getId();
   }
 
   public String getDeliverableLeader(int deliverableID) {
@@ -69,13 +82,21 @@ public class OverallDeliverablesReportingAction extends BaseAction {
     return leader.getAcronym();
   }
 
+  public String getDeliverableRequestParameter() {
+    return APConstants.DELIVERABLE_REQUEST_ID;
+  }
+
   public List<Deliverable> getDeliverables() {
     return deliverables;
   }
 
   public int getDeliverableThemeLeader(int deliverableID) {
-    Leader leader = deliverableManager.getDeliverableThemeLeader(deliverableID);
-    return leader.getId();
+    if (getCurrentUser().isTL()) {
+      return getCurrentUser().getLeader().getId();
+    } else {
+      Leader leader = deliverableManager.getDeliverableThemeLeader(deliverableID);
+      return leader.getId();
+    }
   }
 
   public boolean isCanSubmit() {

@@ -73,6 +73,15 @@ public interface DeliverableDAO {
   public List<Map<String, String>> getDeliverablesListByLeader(int activityLeaderID);
 
   /**
+   * Return all the deliverables that belong to activities which contribute
+   * to the theme received as parameter.
+   * 
+   * @param themeCode
+   * @return a list of maps with the information to save.
+   */
+  public List<Map<String, String>> getDeliverablesListByTheme(int themeCode);
+
+  /**
    * Returns the theme to which the deliverable contributes to.
    * 
    * @param deliverableID - Deliverable identifier

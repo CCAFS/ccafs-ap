@@ -262,6 +262,50 @@ public class MySQLDeliverableDAO implements DeliverableDAO {
   }
 
   @Override
+  public List<Map<String, String>> getDeliverablesListByTheme(int themeCode) {
+    LOG.debug(">> getDeliverablesListByTheme(themeCode = {})", themeCode);
+
+    List<Map<String, String>> deliverables = new ArrayList<>();
+    StringBuilder query = new StringBuilder();
+    query.append("SELECT de.id, de.description, de.year, de.is_expected, ");
+    query.append("ds.id as 'deliverable_status_id', ds.name as 'deliverable_status_name', ");
+    query.append("dt.id as 'deliverable_type_id', dt.name as 'deliverable_type_name' ");
+    query.append("FROM deliverables de ");
+    query.append("INNER JOIN deliverable_types dt ON de.deliverable_type_id = dt.id ");
+    query.append("INNER JOIN deliverable_status ds ON de.deliverable_status_id = ds.id ");
+    query.append("INNER JOIN activities a ON de.activity_id = a.id ");
+    query.append("INNER JOIN milestones m ON a.milestone_id = m.id ");
+    query.append("INNER JOIN outputs ou ON m.output_id = ou.id ");
+    query.append("INNER JOIN objectives ob ON ou.objective_id = ob.id ");
+    query.append("INNER JOIN themes th ON ob.theme_id = th.id ");
+    query.append("WHERE th.code = ");
+    query.append(themeCode);
+
+    try (Connection con = databaseManager.getConnection()) {
+      ResultSet rs = databaseManager.makeQuery(query.toString(), con);
+      while (rs.next()) {
+        Map<String, String> deliverable = new HashMap<>();
+        deliverable.put("id", rs.getString("id"));
+        deliverable.put("description", rs.getString("description"));
+        deliverable.put("year", rs.getString("year"));
+        deliverable.put("is_expected", rs.getString("is_expected"));
+        deliverable.put("deliverable_status_id", rs.getString("deliverable_status_id"));
+        deliverable.put("deliverable_status_name", rs.getString("deliverable_status_name"));
+        deliverable.put("deliverable_type_id", rs.getString("deliverable_type_id"));
+        deliverable.put("deliverable_type_name", rs.getString("deliverable_type_name"));
+
+        deliverables.add(deliverable);
+      }
+      rs.close();
+    } catch (SQLException e) {
+      LOG.error("-- getDeliverablesListByTheme() > Exception getting deliverables of theme {}.", themeCode, e);
+    }
+
+    LOG.debug("<< getDeliverablesListByTheme(): {}.", deliverables);
+    return deliverables;
+  }
+
+  @Override
   public Map<String, String> getDeliverableTheme(int deliverableID) {
     LOG.debug(">> getDeliverableTheme(deliverableID={})", deliverableID);
 

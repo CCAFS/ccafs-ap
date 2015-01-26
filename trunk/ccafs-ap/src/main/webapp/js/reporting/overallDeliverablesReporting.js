@@ -37,7 +37,7 @@ $(document).ready(function(){
   
   
   // Initiate the deliverable ranking plugin
-  /*
+  
   $(this).tooltip("destroy");
   
   $('.hover-star').rating({
@@ -53,5 +53,5 @@ $(document).ready(function(){
       $('#hover-test').html(tip[0].data || '');
     }
   });
-  */
+  
 });

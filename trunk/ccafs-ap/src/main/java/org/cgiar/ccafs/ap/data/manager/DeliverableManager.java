@@ -40,15 +40,6 @@ public interface DeliverableManager {
   public Deliverable getDeliverable(int deliverableID);
 
   /**
-   * Get all the deliverables objects belongs to an activity identified
-   * with the given id.
-   * 
-   * @param id
-   * @return a Deliverables array or null if no deliverables was found.
-   */
-  public List<Deliverable> getDeliverableByActivityID(int activityId);
-
-  /**
    * This method return the activity leader of the activity that owns
    * the deliverable identified by the value received as parameter.
    * 
@@ -56,6 +47,15 @@ public interface DeliverableManager {
    * @return a Leader object with the information.
    */
   public Leader getDeliverableLeader(int deliverableID);
+
+  /**
+   * Get all the deliverables objects belongs to an activity identified
+   * with the given id.
+   * 
+   * @param id
+   * @return a Deliverables array or null if no deliverables was found.
+   */
+  public List<Deliverable> getDeliverablesByActivityID(int activityId);
 
   /**
    * This method gets all the deliverables that belongs to activities
@@ -81,21 +81,21 @@ public interface DeliverableManager {
    * This method gets all the deliverables that belongs to activities
    * that contributes to the theme received as parameter.
    * 
-   * @param themeID - theme identifier
+   * @param themeCode - theme code
    * @return a List of Deliverable objects.
    */
-  public List<Deliverable> getDeliverablesListByTheme(int themeID);
+  public List<Deliverable> getDeliverablesListByTheme(int themeCode);
 
   /**
    * This method gets all the deliverables that belongs to activities
    * that contributes to the theme received as parameter and that were
    * carried out in the year given.
    * 
-   * @param themeID - theme identifier
+   * @param themeCode - theme code
    * @param year
    * @return a List of Deliverable objects.
    */
-  public List<Deliverable> getDeliverablesListByTheme(int themeID, int year);
+  public List<Deliverable> getDeliverablesListByTheme(int themeCode, int year);
 
   /**
    * Returns the leader of the theme to which the deliverable contributes to.
@@ -139,4 +139,5 @@ public interface DeliverableManager {
    * @return true if the list of the deliverables was successfully added into the DAO, or false if any problem occur.
    */
   public boolean saveDeliverable(List<Deliverable> deliverables, int activityID);
+
 }

@@ -253,6 +253,31 @@ public class MySQLActivityDAO implements ActivityDAO {
   }
 
   @Override
+  public Map<String, String> getActivityByDeliverable(int deliverableID) {
+    LOG.debug(">> getActivityByDeliverable(deliverableID={})", deliverableID);
+    Map<String, String> activity = new HashMap<>();
+
+    String query =
+      "SELECT a.id, a.title FROM activities a " + "INNER JOIN deliverables d ON a.id = d.activity_id "
+        + " WHERE d.id = " + deliverableID;
+    try (Connection con = databaseManager.getConnection()) {
+      ResultSet rs = databaseManager.makeQuery(query, con);
+      if (rs.next()) {
+        activity.put("id", rs.getString("id"));
+        activity.put("title", rs.getString("title"));
+      }
+      rs.close();
+    } catch (SQLException e) {
+      LOG.error("--getActivityByDeliverable() > There was an error getting the activity that owns the deliverable {}.",
+        deliverableID, e);
+    }
+
+    LOG.debug("<< getActivityByDeliverable():{}", activity);
+    return activity;
+  }
+
+
+  @Override
   public List<Map<String, String>> getActivityListByYear(int year) {
     LOG.debug(">> getActivityListByYear(year={})", year);
     List<Map<String, String>> activitiesData = new ArrayList<>();
@@ -489,7 +514,6 @@ public class MySQLActivityDAO implements ActivityDAO {
     return activitiesData;
   }
 
-
   @Override
   public List<Map<String, String>> getPlanningActivityListForTL(int year, int leaderId, int themeCode) {
     LOG.debug(">> getPlanningActivityListForTL(year={}, themeCode={})", year, themeCode);
@@ -596,6 +620,7 @@ public class MySQLActivityDAO implements ActivityDAO {
       return activity;
     }
   }
+
 
   @Override
   public List<Map<String, String>> getTitles(int year) {

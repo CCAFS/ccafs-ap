@@ -125,6 +125,9 @@ public abstract class Deliverable {
   }
 
   public double getScoreByLeader(int activityLeaderID) {
+    if (this.id == 1079) {
+      System.out.println("error");
+    }
     if (scores != null && !scores.isEmpty()) {
       return scores.get(activityLeaderID);
     } else {

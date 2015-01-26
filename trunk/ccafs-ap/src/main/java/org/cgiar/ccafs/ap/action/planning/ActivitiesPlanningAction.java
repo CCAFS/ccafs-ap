@@ -177,7 +177,7 @@ public class ActivitiesPlanningAction extends BaseAction {
     // Set contact persons
     activity.setContactPersons(contactPersonManager.getContactPersons(activityID));
     // Set the deliverables
-    activity.setDeliverables(deliverableManager.getDeliverableByActivityID(activityID));
+    activity.setDeliverables(deliverableManager.getDeliverablesByActivityID(activityID));
     // Set activity partners
     activity.setActivityPartners(activityPartnerManager.getActivityPartners(activityID));
     // Set the activity objectives
