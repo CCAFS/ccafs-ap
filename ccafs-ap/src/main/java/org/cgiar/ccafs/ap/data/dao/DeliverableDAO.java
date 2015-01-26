@@ -28,6 +28,15 @@ public interface DeliverableDAO {
   public Map<String, String> getDeliverable(int deliverableID);
 
   /**
+   * This method gets the leader of the activity that owns the deliverable
+   * identified with the value received as parameter.
+   * 
+   * @param deliverableID - deliverable identifier
+   * @return a map with the leader information.
+   */
+  public Map<String, String> getDeliverableLeader(int deliverableID);
+
+  /**
    * This method gets all the metadata related to the deliverable
    * identified by the value received as parameter.
    * 
@@ -52,6 +61,24 @@ public interface DeliverableDAO {
    * @return an integer representing the number of deliverables that has the specified activity.
    */
   public int getDeliverablesCount(int activityID);
+
+  /**
+   * Get the description, year, status and type of the deliverables which
+   * belong to activities carried out by the activity leader identified by
+   * the value received as parameter.
+   * 
+   * @param activityLeaderID - activity leader identifier
+   * @return a list of maps with the information
+   */
+  public List<Map<String, String>> getDeliverablesListByLeader(int activityLeaderID);
+
+  /**
+   * Returns the theme to which the deliverable contributes to.
+   * 
+   * @param deliverableID - Deliverable identifier
+   * @return a Map with the information of the theme.
+   */
+  public Map<String, String> getDeliverableTheme(int deliverableID);
 
   /**
    * This method removes the deliverable identified by the value received as

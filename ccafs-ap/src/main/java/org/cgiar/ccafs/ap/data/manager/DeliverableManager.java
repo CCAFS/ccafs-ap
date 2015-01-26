@@ -2,6 +2,7 @@ package org.cgiar.ccafs.ap.data.manager;
 
 import org.cgiar.ccafs.ap.data.manager.impl.DeliverableManagerImpl;
 import org.cgiar.ccafs.ap.data.model.Deliverable;
+import org.cgiar.ccafs.ap.data.model.Leader;
 
 import java.util.List;
 
@@ -48,6 +49,15 @@ public interface DeliverableManager {
   public List<Deliverable> getDeliverableByActivityID(int activityId);
 
   /**
+   * This method return the activity leader of the activity that owns
+   * the deliverable identified by the value received as parameter.
+   * 
+   * @param deliverableID - Deliverable identifier
+   * @return a Leader object with the information.
+   */
+  public Leader getDeliverableLeader(int deliverableID);
+
+  /**
    * This method gets all the deliverables that belongs to activities
    * made by the leader identified with the value received as parameter.
    * 
@@ -86,6 +96,14 @@ public interface DeliverableManager {
    * @return a List of Deliverable objects.
    */
   public List<Deliverable> getDeliverablesListByTheme(int themeID, int year);
+
+  /**
+   * Returns the leader of the theme to which the deliverable contributes to.
+   * 
+   * @param deliverableID - Deliverable identifier
+   * @return a theme object.
+   */
+  public Leader getDeliverableThemeLeader(int deliverableID);
 
   /**
    * This method removes the deliverable identified by the value received as parameter.

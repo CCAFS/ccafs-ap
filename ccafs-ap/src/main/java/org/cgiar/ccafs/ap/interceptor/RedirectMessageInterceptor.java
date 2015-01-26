@@ -68,7 +68,6 @@ public class RedirectMessageInterceptor extends MethodFilterInterceptor {
    * Retrieve the errors and messages from the session and add them to the action.
    */
   protected void before(ActionInvocation invocation, BaseAction action) throws Exception {
-    @SuppressWarnings("unchecked")
     Map<String, ?> session = invocation.getInvocationContext().getSession();
 
     @SuppressWarnings("unchecked")

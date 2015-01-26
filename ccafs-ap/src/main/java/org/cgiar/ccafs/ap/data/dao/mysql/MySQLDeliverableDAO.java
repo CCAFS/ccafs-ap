@@ -97,6 +97,36 @@ public class MySQLDeliverableDAO implements DeliverableDAO {
   }
 
   @Override
+  public Map<String, String> getDeliverableLeader(int deliverableID) {
+    LOG.debug(">> getDeliverableLeader(deliverableID={})", deliverableID);
+
+    Map<String, String> leader = new HashMap<>();
+    StringBuilder query = new StringBuilder();
+    query.append("SELECT l.id, l.name, l.acronym ");
+    query.append("FROM deliverables d ");
+    query.append("INNER JOIN activities a ON d.activity_id = a.id ");
+    query.append("INNER JOIN activity_leaders l ON a.activity_leader_id = l.id ");
+    query.append("WHERE d.id = ");
+    query.append(deliverableID);
+
+    try (Connection con = databaseManager.getConnection()) {
+      ResultSet rs = databaseManager.makeQuery(query.toString(), con);
+      if (rs.next()) {
+        leader.put("id", rs.getString("id"));
+        leader.put("name", rs.getString("name"));
+        leader.put("acronym", rs.getString("acronym"));
+      }
+    } catch (SQLException e) {
+      String message =
+        "-- getDeliverableLeader(): Exception occurred trying to get the leader to which the deliverable {} contributes to.";
+      LOG.debug(message, deliverableID, e);
+    }
+
+    LOG.debug("<< getDeliverableLeader():", leader);
+    return leader;
+  }
+
+  @Override
   public List<Map<String, String>> getDeliverableMetadata(int deliverableID) {
     LOG.debug(">> getDeliverableMetadata(deliverableID={})", deliverableID);
     List<Map<String, String>> deliverableMetadata = new ArrayList<>();
@@ -192,6 +222,77 @@ public class MySQLDeliverableDAO implements DeliverableDAO {
 
     LOG.debug("<< getDeliverablesCount():{}", deliverableCount);
     return deliverableCount;
+  }
+
+  @Override
+  public List<Map<String, String>> getDeliverablesListByLeader(int activityLeaderID) {
+    List<Map<String, String>> deliverables = new ArrayList<>();
+    StringBuilder query = new StringBuilder();
+    query.append("SELECT de.id, de.description, de.year, de.is_expected, ");
+    query.append("ds.id as 'deliverable_status_id', ds.name as 'deliverable_status_name', ");
+    query.append("dt.id as 'deliverable_type_id', dt.name as 'deliverable_type_name' ");
+    query.append("FROM deliverables de ");
+    query.append("INNER JOIN activities a ON de.activity_id = a.id ");
+    query.append("INNER JOIN deliverable_types dt ON de.deliverable_type_id = dt.id ");
+    query.append("INNER JOIN deliverable_status ds ON de.deliverable_status_id = ds.id ");
+    query.append("WHERE a.activity_leader_id = ");
+    query.append(activityLeaderID);
+
+    try (Connection con = databaseManager.getConnection()) {
+      ResultSet rs = databaseManager.makeQuery(query.toString(), con);
+      while (rs.next()) {
+        Map<String, String> deliverable = new HashMap<>();
+        deliverable.put("id", rs.getString("id"));
+        deliverable.put("description", rs.getString("description"));
+        deliverable.put("year", rs.getString("year"));
+        deliverable.put("is_expected", rs.getString("is_expected"));
+        deliverable.put("deliverable_status_id", rs.getString("deliverable_status_id"));
+        deliverable.put("deliverable_status_name", rs.getString("deliverable_status_name"));
+        deliverable.put("deliverable_type_id", rs.getString("deliverable_type_id"));
+        deliverable.put("deliverable_type_name", rs.getString("deliverable_type_name"));
+
+        deliverables.add(deliverable);
+      }
+      rs.close();
+    } catch (SQLException e) {
+      LOG.error("There was a problem getting deliverables for activity {}.", activityLeaderID, e);
+    }
+
+    return deliverables;
+  }
+
+  @Override
+  public Map<String, String> getDeliverableTheme(int deliverableID) {
+    LOG.debug(">> getDeliverableTheme(deliverableID={})", deliverableID);
+
+    Map<String, String> theme = new HashMap<>();
+    StringBuilder query = new StringBuilder();
+    query.append("SELECT al.id, al.acronym, al.name ");
+    query.append("FROM activity_leaders al ");
+    query.append("INNER JOIN themes t ON al.theme_id = t.code ");
+    query.append("INNER JOIN objectives ob ON t.id = ob.theme_id ");
+    query.append("INNER JOIN outputs op ON ob.id = op.objective_id ");
+    query.append("INNER JOIN milestones m ON op.id = m.output_id  ");
+    query.append("INNER JOIN activities a ON m.id = a.milestone_id ");
+    query.append("INNER JOIN deliverables d ON a.id = d.activity_id ");
+    query.append("WHERE d.id = ");
+    query.append(deliverableID);
+
+    try (Connection con = databaseManager.getConnection()) {
+      ResultSet rs = databaseManager.makeQuery(query.toString(), con);
+      if (rs.next()) {
+        theme.put("id", rs.getString("id"));
+        theme.put("acronym", rs.getString("acronym"));
+        theme.put("name", rs.getString("name"));
+      }
+    } catch (SQLException e) {
+      String message =
+        "-- getDeliverableTheme(): Exception occurred trying to get the theme to which the deliverable {} contributes to.";
+      LOG.debug(message, deliverableID, e);
+    }
+
+    LOG.debug("<< getDeliverableTheme():", theme);
+    return theme;
   }
 
   @Override

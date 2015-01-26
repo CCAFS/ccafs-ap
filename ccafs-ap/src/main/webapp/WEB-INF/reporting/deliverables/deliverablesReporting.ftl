@@ -201,7 +201,7 @@
       
       <div id="deliverableRights" class="fullBlock">
         <input type="hidden" name="deliverable.metadata[${deliverable.getMetadataIndex('Rights')}].metadata.id" value="${deliverable.getMetadataID('Rights')}" /> 
-        [@customForm.textArea name="deliverable.metadata[${deliverable.getMetadataIndex('Rights')}].value" required=action.isMetadataMandatory('Rights') disabled=action.isMetadataNotRequired('Rights') i18nkey="reporting.activityDeliverables.metadata.rights" help="reporting.activityDeliverables.metadata.rights" /]
+        [@customForm.textArea name="deliverable.metadata[${deliverable.getMetadataIndex('Rights')}].value" required=action.isMetadataMandatory('Rights') disabled=action.isMetadataNotRequired('Rights') i18nkey="reporting.activityDeliverables.metadata.rights" help="reporting.activityDeliverables.metadata.rights.help" /]
       </div>
       
       <div id="metadataProtocols" class="fullBlock">

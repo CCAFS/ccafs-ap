@@ -39,8 +39,8 @@ public class DeliverableScoreManagerImpl implements DeliverableScoreManager {
 
   @Override
   public Map<Integer, Double> getDeliverableScores(int deliverableID) {
-    Map<Integer, Double> scores = new HashMap<Integer, Double>();
     List<Map<String, String>> scoresData = deliverableScoreDAO.getDeliverableScores(deliverableID);
+    Map<Integer, Double> scores = new HashMap<Integer, Double>(scoresData.size());
 
     for (Map<String, String> sData : scoresData) {
       int leaderID = Integer.parseInt(sData.get("activity_leader_id"));

@@ -11,6 +11,7 @@ import org.cgiar.ccafs.ap.data.model.DeliverableMetadata;
 import org.cgiar.ccafs.ap.data.model.DeliverableStatus;
 import org.cgiar.ccafs.ap.data.model.DeliverableType;
 import org.cgiar.ccafs.ap.data.model.FileFormat;
+import org.cgiar.ccafs.ap.data.model.Leader;
 import org.cgiar.ccafs.ap.data.model.Metadata;
 import org.cgiar.ccafs.ap.data.model.Product;
 import org.cgiar.ccafs.ap.data.model.Publication;
@@ -221,9 +222,48 @@ public class DeliverableManagerImpl implements DeliverableManager {
   }
 
   @Override
+  public Leader getDeliverableLeader(int deliverableID) {
+    Leader leader = new Leader();
+    Map<String, String> leaderData = deliverableDAO.getDeliverableLeader(deliverableID);
+
+    leader.setId(Integer.parseInt(leaderData.get("id")));
+    leader.setAcronym(leaderData.get("acronym"));
+    leader.setName(leaderData.get("name"));
+
+    return leader;
+  }
+
+  @Override
   public List<Deliverable> getDeliverablesListByLeader(int activityLeaderID) {
-    // TODO Auto-generated method stub
-    return null;
+    List<Deliverable> deliverables = new ArrayList<>();
+    List<Map<String, String>> deliverablesData = deliverableDAO.getDeliverablesListByLeader(activityLeaderID);
+
+    for (Map<String, String> dData : deliverablesData) {
+      Deliverable deliverable = new Product();
+      deliverable.setId(Integer.parseInt(dData.get("id")));
+      deliverable.setDescription(dData.get("description"));
+      deliverable.setExpected(dData.get("is_expected").equals("1"));
+
+      if (dData.get("year") != null) {
+        deliverable.setYear(Integer.parseInt(dData.get("year")));
+      }
+
+      // DeliverableStatus
+      DeliverableStatus status = new DeliverableStatus();
+      status.setId(Integer.parseInt(dData.get("deliverable_status_id")));
+      status.setName(dData.get("deliverable_status_name"));
+      deliverable.setStatus(status);
+
+      // DeliverableType
+      DeliverableType type = new DeliverableType();
+      type.setId(Integer.parseInt(dData.get("deliverable_type_id")));
+      type.setName(dData.get("deliverable_type_name"));
+      deliverable.setType(type);
+
+      deliverables.add(deliverable);
+    }
+
+    return deliverables;
   }
 
   @Override
@@ -234,14 +274,53 @@ public class DeliverableManagerImpl implements DeliverableManager {
 
   @Override
   public List<Deliverable> getDeliverablesListByTheme(int themeID) {
-    // TODO Auto-generated method stub
-    return null;
+    List<Deliverable> deliverables = new ArrayList<>();
+    List<Map<String, String>> deliverablesData = deliverableDAO.getDeliverablesListByLeader(themeID);
+
+    for (Map<String, String> dData : deliverablesData) {
+      Deliverable deliverable = new Product();
+      deliverable.setId(Integer.parseInt(dData.get("id")));
+      deliverable.setDescription(dData.get("description"));
+      deliverable.setExpected(dData.get("is_expected").equals("1"));
+
+      if (dData.get("year") != null) {
+        deliverable.setYear(Integer.parseInt(dData.get("year")));
+      }
+
+      // DeliverableStatus
+      DeliverableStatus status = new DeliverableStatus();
+      status.setId(Integer.parseInt(dData.get("deliverable_status_id")));
+      status.setName(dData.get("deliverable_status_name"));
+      deliverable.setStatus(status);
+
+      // DeliverableType
+      DeliverableType type = new DeliverableType();
+      type.setId(Integer.parseInt(dData.get("deliverable_type_id")));
+      type.setName(dData.get("deliverable_type_name"));
+      deliverable.setType(type);
+
+      deliverables.add(deliverable);
+    }
+
+    return deliverables;
   }
 
   @Override
   public List<Deliverable> getDeliverablesListByTheme(int themeID, int year) {
     // TODO Auto-generated method stub
     return null;
+  }
+
+  @Override
+  public Leader getDeliverableThemeLeader(int deliverableID) {
+    Leader leader = new Leader();
+    Map<String, String> leaderData = deliverableDAO.getDeliverableTheme(deliverableID);
+
+    leader.setId(Integer.parseInt(leaderData.get("id")));
+    leader.setAcronym(leaderData.get("acronym"));
+    leader.setName(leaderData.get("name"));
+
+    return leader;
   }
 
   @Override
