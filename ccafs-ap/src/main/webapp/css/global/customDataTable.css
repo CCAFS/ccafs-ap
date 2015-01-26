@@ -92,7 +92,11 @@ table.dataTable thead th {
 table.dataTable td {
   border: 1px solid #d4d4d4;
   vertical-align: middle;
-  padding: 8px 6px;
+  padding: 2px 5px;
+}
+
+table.dataTable tbody tr {
+  font-size:0.9em;
 }
 
 /*

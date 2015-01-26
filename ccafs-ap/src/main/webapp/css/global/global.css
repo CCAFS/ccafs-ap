@@ -999,6 +999,17 @@ button#activities_save{
   
 }
 
+th#cp-rank{
+  width: 125px;
+}
+th#tl-rank{
+  width: 125px;
+}
+
+.rankBlock{
+	padding:3px 0;
+}
+
 #addDeliverable {
 	width: 169px;
 }
