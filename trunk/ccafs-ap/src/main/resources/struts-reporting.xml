@@ -143,6 +143,18 @@
         <param name="actionName">activities</param>
       </result>
     </action>
+    
+    <action name="overallDeliverables" class="org.cgiar.ccafs.ap.action.reporting.deliverables.OverallDeliverablesReportingAction">
+      <interceptor-ref name="reportingStack" />
+      <result name="cancel" type="redirectAction">activities</result>
+      <result name="input">/WEB-INF/reporting/overallDeliverablesReporting.ftl</result>
+      <result name="success" type="redirectAction">
+        <param name="actionName">overallDeliverables</param>
+      </result>
+      <result name="next" type="redirectAction">
+        <param name="actionName">outputSummary</param>
+      </result>
+    </action>
 
     <action name="outputSummary" class="org.cgiar.ccafs.ap.action.reporting.summaries.OutputSummaryAction">
       <interceptor-ref name="reportingStack" />
