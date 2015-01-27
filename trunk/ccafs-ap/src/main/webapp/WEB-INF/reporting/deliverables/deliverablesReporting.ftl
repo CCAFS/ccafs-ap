@@ -8,7 +8,6 @@
 [#assign userRole = "${currentUser.role}"]
 
 [#assign isNewDeliverable = !deliverable.expected && deliverable.year == currentReportingLogframe.year]
-
 [#include "/WEB-INF/global/pages/header.ftl" /]
 [#include "/WEB-INF/global/pages/main-menu.ftl" /]
 [#import "/WEB-INF/global/macros/forms.ftl" as customForm /]
@@ -33,21 +32,11 @@
       </div> 
       
       <div id="deliverableType" class="halfPartBlock">
-        [#if isNewDeliverable]
           [@customForm.select name="deliverable.parentType" value="deliverable.type.parent.id" i18nkey="reporting.activityDeliverables.type" listName="deliverableTypes" keyFieldName="id"  displayFieldName="name" className="deliverableTypes" /]
-        [#else]
-          <h6>[@s.text name="reporting.activityDeliverables.type" /]</h6>
-          <span>${deliverable.type.parent.name}</span>      
-        [/#if]
       </div>
       
       <div id="deliverableSubtype" class="halfPartBlock">
-        [#if isNewDeliverable]
           [@customForm.select name="deliverable.type" value="deliverable.type.id" i18nkey="reporting.activityDeliverables.subtype" listName="deliverableSubTypes" keyFieldName="id"  displayFieldName="name" className="deliverableSubTypes" /]
-        [#else]
-          <h6>[@s.text name="reporting.activityDeliverables.subtype" /]</h6>
-          <span>${deliverable.type.name}</span>  
-        [/#if]
       </div> 
 
       <div id="deliverableDescription" class="fullBlock ">

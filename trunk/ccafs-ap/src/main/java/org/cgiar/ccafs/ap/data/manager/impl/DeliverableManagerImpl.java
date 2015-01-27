@@ -132,9 +132,9 @@ public class DeliverableManagerImpl implements DeliverableManager {
     deliverable.setType(type);
 
     if (deliverableData.get("isExpected") != null) {
-      deliverable.setExpected(deliverableData.get("isExpected").equals("1"));
-    } else {
       deliverable.setExpected(false);
+    } else {
+      deliverable.setExpected(deliverableData.get("is_expected").equals("1"));
     }
 
     if (deliverableData.get("deliverable_status_id") != null) {
