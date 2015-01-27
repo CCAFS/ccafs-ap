@@ -230,7 +230,8 @@ public class MySQLDeliverableDAO implements DeliverableDAO {
     StringBuilder query = new StringBuilder();
     query.append("SELECT de.id, de.description, de.year, de.is_expected, ");
     query.append("ds.id as 'deliverable_status_id', ds.name as 'deliverable_status_name', ");
-    query.append("dt.id as 'deliverable_type_id', dt.name as 'deliverable_type_name' ");
+    query.append("dt.parent_id as 'deliverable_type_id', ");
+    query.append("dt.id as 'deliverable_subtype_id', dt.name as 'deliverable_subtype_name' ");
     query.append("FROM deliverables de ");
     query.append("INNER JOIN activities a ON de.activity_id = a.id ");
     query.append("INNER JOIN deliverable_types dt ON de.deliverable_type_id = dt.id ");
@@ -249,7 +250,8 @@ public class MySQLDeliverableDAO implements DeliverableDAO {
         deliverable.put("deliverable_status_id", rs.getString("deliverable_status_id"));
         deliverable.put("deliverable_status_name", rs.getString("deliverable_status_name"));
         deliverable.put("deliverable_type_id", rs.getString("deliverable_type_id"));
-        deliverable.put("deliverable_type_name", rs.getString("deliverable_type_name"));
+        deliverable.put("deliverable_subtype_id", rs.getString("deliverable_subtype_id"));
+        deliverable.put("deliverable_subtype_name", rs.getString("deliverable_subtype_name"));
 
         deliverables.add(deliverable);
       }
@@ -269,7 +271,8 @@ public class MySQLDeliverableDAO implements DeliverableDAO {
     StringBuilder query = new StringBuilder();
     query.append("SELECT de.id, de.description, de.year, de.is_expected, ");
     query.append("ds.id as 'deliverable_status_id', ds.name as 'deliverable_status_name', ");
-    query.append("dt.id as 'deliverable_type_id', dt.name as 'deliverable_type_name' ");
+    query.append("dt.parent_id as 'deliverable_type_id', ");
+    query.append("dt.id as 'deliverable_subtype_id', dt.name as 'deliverable_subtype_name' ");
     query.append("FROM deliverables de ");
     query.append("INNER JOIN deliverable_types dt ON de.deliverable_type_id = dt.id ");
     query.append("INNER JOIN deliverable_status ds ON de.deliverable_status_id = ds.id ");
@@ -292,7 +295,8 @@ public class MySQLDeliverableDAO implements DeliverableDAO {
         deliverable.put("deliverable_status_id", rs.getString("deliverable_status_id"));
         deliverable.put("deliverable_status_name", rs.getString("deliverable_status_name"));
         deliverable.put("deliverable_type_id", rs.getString("deliverable_type_id"));
-        deliverable.put("deliverable_type_name", rs.getString("deliverable_type_name"));
+        deliverable.put("deliverable_subtype_id", rs.getString("deliverable_subtype_id"));
+        deliverable.put("deliverable_subtype_name", rs.getString("deliverable_subtype_name"));
 
         deliverables.add(deliverable);
       }

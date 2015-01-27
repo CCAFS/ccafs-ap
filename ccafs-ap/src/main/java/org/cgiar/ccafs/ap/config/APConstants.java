@@ -23,6 +23,7 @@ public final class APConstants {
 
   // Constants for the deliverables types
   public static final int DELIVERABLE_TYPE_DATA = 1;
+  public static final int DELIVERABLE_TYPE_TOOLS = 7;
   public static final int DELIVERABLE_TYPE_PUBLICATION = 3;
   public static final int DELIVERABLE_TYPE_CASE_STUDIES = 5;
   public static final int DELIVERABLE_SUBTYPE_JOURNAL = 21;

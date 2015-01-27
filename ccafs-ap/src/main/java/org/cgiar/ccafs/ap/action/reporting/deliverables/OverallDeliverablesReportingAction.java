@@ -99,6 +99,16 @@ public class OverallDeliverablesReportingAction extends BaseAction {
     }
   }
 
+  private boolean hasValidType(Deliverable deliverable) {
+    int typeID = deliverable.getType().getParent().getId();
+    return (typeID == APConstants.DELIVERABLE_TYPE_DATA || typeID == APConstants.DELIVERABLE_TYPE_TOOLS);
+  }
+
+  private boolean hasValidYear(Deliverable deliverable) {
+    int year = deliverable.getYear();
+    return (year >= 2012 && year <= 2014);
+  }
+
   public boolean isCanSubmit() {
     return canSubmit;
   }
@@ -117,13 +127,23 @@ public class OverallDeliverablesReportingAction extends BaseAction {
       deliverables = deliverableManager.getDeliverablesListByTheme(Integer.parseInt(themeCode));
 
       for (int c = 0; c < deliverables.size(); c++) {
-        deliverables.get(c).setScores(deliverableScoreManager.getDeliverableScores(deliverables.get(c).getId()));
+        if (hasValidType(deliverables.get(c)) && hasValidYear(deliverables.get(c))) {
+          deliverables.get(c).setScores(deliverableScoreManager.getDeliverableScores(deliverables.get(c).getId()));
+        } else {
+          deliverables.remove(c);
+          c--;
+        }
       }
     } else {
 
       deliverables = deliverableManager.getDeliverablesListByLeader(getCurrentUser().getLeader().getId());
       for (int c = 0; c < deliverables.size(); c++) {
-        deliverables.get(c).setScores(deliverableScoreManager.getDeliverableScores(deliverables.get(c).getId()));
+        if (hasValidType(deliverables.get(c)) && hasValidYear(deliverables.get(c))) {
+          deliverables.get(c).setScores(deliverableScoreManager.getDeliverableScores(deliverables.get(c).getId()));
+        } else {
+          deliverables.remove(c);
+          c--;
+        }
       }
     }
 
