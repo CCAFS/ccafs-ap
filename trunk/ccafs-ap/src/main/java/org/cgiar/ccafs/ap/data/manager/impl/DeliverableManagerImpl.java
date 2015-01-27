@@ -148,6 +148,18 @@ public class DeliverableManagerImpl implements DeliverableManager {
   }
 
   @Override
+  public Leader getDeliverableLeader(int deliverableID) {
+    Leader leader = new Leader();
+    Map<String, String> leaderData = deliverableDAO.getDeliverableLeader(deliverableID);
+
+    leader.setId(Integer.parseInt(leaderData.get("id")));
+    leader.setAcronym(leaderData.get("acronym"));
+    leader.setName(leaderData.get("name"));
+
+    return leader;
+  }
+
+  @Override
   public List<Deliverable> getDeliverablesByActivityID(int activityId) {
     List<Map<String, String>> fileFormatsDB;
     List<Map<String, String>> deliverablesDB = deliverableDAO.getDeliverablesByActivityID(activityId);
@@ -222,18 +234,6 @@ public class DeliverableManagerImpl implements DeliverableManager {
   }
 
   @Override
-  public Leader getDeliverableLeader(int deliverableID) {
-    Leader leader = new Leader();
-    Map<String, String> leaderData = deliverableDAO.getDeliverableLeader(deliverableID);
-
-    leader.setId(Integer.parseInt(leaderData.get("id")));
-    leader.setAcronym(leaderData.get("acronym"));
-    leader.setName(leaderData.get("name"));
-
-    return leader;
-  }
-
-  @Override
   public List<Deliverable> getDeliverablesListByLeader(int activityLeaderID) {
     List<Deliverable> deliverables = new ArrayList<>();
     List<Map<String, String>> deliverablesData = deliverableDAO.getDeliverablesListByLeader(activityLeaderID);
@@ -256,10 +256,14 @@ public class DeliverableManagerImpl implements DeliverableManager {
 
       // DeliverableType
       DeliverableType type = new DeliverableType();
-      type.setId(Integer.parseInt(dData.get("deliverable_type_id")));
-      type.setName(dData.get("deliverable_type_name"));
-      deliverable.setType(type);
+      type.setId(Integer.parseInt(dData.get("deliverable_subtype_id")));
+      type.setName(dData.get("deliverable_subtype_name"));
 
+      DeliverableType parent = new DeliverableType();
+      parent.setId(Integer.parseInt(dData.get("deliverable_type_id")));
+      type.setParent(parent);
+
+      deliverable.setType(type);
       deliverables.add(deliverable);
     }
 
@@ -295,10 +299,14 @@ public class DeliverableManagerImpl implements DeliverableManager {
 
       // DeliverableType
       DeliverableType type = new DeliverableType();
-      type.setId(Integer.parseInt(dData.get("deliverable_type_id")));
-      type.setName(dData.get("deliverable_type_name"));
-      deliverable.setType(type);
+      type.setId(Integer.parseInt(dData.get("deliverable_subtype_id")));
+      type.setName(dData.get("deliverable_subtype_name"));
 
+      DeliverableType parent = new DeliverableType();
+      parent.setId(Integer.parseInt(dData.get("deliverable_type_id")));
+      type.setParent(parent);
+
+      deliverable.setType(type);
       deliverables.add(deliverable);
     }
 
