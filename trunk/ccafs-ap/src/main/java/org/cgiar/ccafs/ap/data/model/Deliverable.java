@@ -34,6 +34,7 @@ public abstract class Deliverable {
   protected boolean isExpected;
   protected String description;
   protected String descriptionUpdate;
+  protected String disseminationDescription;
   protected DeliverableStatus status;
   protected DeliverableType type;
   protected List<DeliverableFile> files;
@@ -65,6 +66,10 @@ public abstract class Deliverable {
     return descriptionUpdate;
   }
 
+  public String getDisseminationDescription() {
+    return disseminationDescription;
+  }
+
   public List<FileFormat> getFileFormats() {
     return fileFormats;
   }
@@ -81,7 +86,6 @@ public abstract class Deliverable {
     return metadata;
   }
 
-
   public int getMetadataID(String metadataName) {
     for (DeliverableMetadata mData : metadata) {
       if (mData.getMetadata().getName().equals(metadataName)) {
@@ -90,6 +94,7 @@ public abstract class Deliverable {
     }
     return -1;
   }
+
 
   public int getMetadataIndex(String metadataName) {
     int c = 0;
@@ -197,6 +202,10 @@ public abstract class Deliverable {
     this.descriptionUpdate = descriptionUpdate;
   }
 
+  public void setDisseminationDescription(String disseminationDescription) {
+    this.disseminationDescription = disseminationDescription;
+  }
+
   public void setExpected(boolean isExpected) {
     this.isExpected = isExpected;
   }
@@ -241,5 +250,4 @@ public abstract class Deliverable {
   public String toString() {
     return ToStringBuilder.reflectionToString(this);
   }
-
 }
