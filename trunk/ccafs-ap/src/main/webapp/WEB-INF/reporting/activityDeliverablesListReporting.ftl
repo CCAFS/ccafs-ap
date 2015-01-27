@@ -76,7 +76,7 @@
                   <img src="${baseUrl}/images/global/trash.png"> 
                 </a>
               [#else]
-                <img src="${baseUrl}/images/global/trash.png"> 
+                <img src="${baseUrl}/images/global/trash_disable.png"> 
               [/#if]
                               
             </td> 
