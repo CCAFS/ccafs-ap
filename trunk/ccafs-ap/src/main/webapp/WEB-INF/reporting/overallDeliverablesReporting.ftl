@@ -21,7 +21,7 @@
 
     <div id="filterBy">
       <div id="filter-title" class="filter" style="display:none">
-      <h4>Filter by [@s.text name="reporting.activityDeliverablesList.title" /]:<h4>
+      <h4>Filter by [@s.text name="reporting.activityDeliverablesList.description" /]:<h4>
       </div>
       <div id="filter-type" class="filter">
       <h4>Filter by [@s.text name="reporting.activityDeliverablesList.type" /]:<h4>
@@ -42,7 +42,7 @@
     <table id="deliverableList">  
       <thead>
         <tr>
-          <th id="title">[@s.text name="reporting.activityDeliverablesList.title" /]</th>
+          <th id="title">[@s.text name="reporting.activityDeliverablesList.description" /]</th>
           <th id="type">[@s.text name="reporting.activityDeliverablesList.type" /]</th>
           <th id="year">[@s.text name="reporting.activityDeliverablesList.year" /]</th>
           <th id="status">[@s.text name="reporting.activityDeliverablesList.status" /]</th>
