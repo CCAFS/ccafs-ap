@@ -270,6 +270,15 @@ public class DeliverableInformationReportingAction extends BaseAction {
     publicationTypeAccessNeed = new int[1];
     publicationTypeAccessNeed[0] = publicationTypes[0].getId();
 
+    // Remove the publication so it can be added again in the save method.
+    if (this.getRequest().getMethod().equalsIgnoreCase("post")) {
+      if (deliverable.isPublication()) {
+        publication.setIsiPublication(false);
+        publication.setNarsCoauthor(false);
+        publication.setEarthSystemCoauthor(false);
+        publication.setCcafsAcknowledge(false);
+      }
+    }
 
     /* --------- Checking if the user can submit ------------- */
     Submission submission =

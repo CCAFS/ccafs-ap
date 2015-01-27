@@ -79,7 +79,7 @@
       </div>
       
       <div id="deliverableStatusJustification" class="fullBlock" style="disply:none">
-        [@customForm.textArea name="deliverable.statusJustification" i18nkey="reporting.activityDeliverables.statusJustification" help="reporting.activityDeliverables.statusJustification.help" /]
+        [@customForm.textArea name="deliverable.descriptionUpdate" i18nkey="reporting.activityDeliverables.statusJustification" help="reporting.activityDeliverables.statusJustification.help" /]
       </div>
           
       <div id="deliverableSubject" class="halfPartBlock" >
@@ -127,18 +127,18 @@
     [#-- Deliverable Publications questions --]  
     <h1 class="contentTitle publicationQuestions" [#if !deliverable.publication]style="display:none"[/#if]>[@s.text name="reporting.activityDeliverables.deliverablePublications" /] </h1> 
     <div id="publicationQuestions" class="fullBlock borderBox publicationQuestions" [#if !deliverable.publication]style="display:none"[/#if]> 
-    
+
        <div id="JournalQuestions" [#if !deliverable.journalArticle]style="display:none"[/#if]>
         <div id="publicationOpenAccess" class="fullBlock accessType">
-          [@customForm.radioButtonGroup name="publication.access" label="" i18nkey="reporting.publications.access" listName="publicationAccessList" keyFieldName="id" displayFieldName="name" value="" help="reporting.publications.access.help"/]
+          [@customForm.radioButtonGroup name="publication.access" label="" i18nkey="reporting.publications.access" listName="publicationAccessList" keyFieldName="id" displayFieldName="name" help="reporting.publications.access.help"/]
         </div>
         
         <div id="publicationJournalIndicators" class="fullBlock ">
         <h6>[@s.text name="reporting.activityDeliverables.publications.journalIndicators" /]</h6>
           <div class="fullBlock verticallyCheckBox">
-            [@customForm.checkbox name="publication.isiPublication" i18nkey="reporting.publications.isiPublication" value="true" /]
-            [@customForm.checkbox name="publication.publications.narsCoauthor" i18nkey="reporting.publications.narsCoauthor" value="true" /]
-            [@customForm.checkbox name="publication.publications.earthSystemCoauthor" i18nkey="reporting.publications.earthSystemCoauthor" value="true" /]
+            [@customForm.checkbox name="publication.isiPublication" i18nkey="reporting.publications.isiPublication" checked=publication.isiPublication value="true" /]
+            [@customForm.checkbox name="publication.narsCoauthor" i18nkey="reporting.publications.narsCoauthor" checked=publication.narsCoauthor value="true" /]
+            [@customForm.checkbox name="publication.earthSystemCoauthor" i18nkey="reporting.publications.earthSystemCoauthor" checked=publication.earthSystemCoauthor value="true" /]
           </div>
         </div> 
       </div> 
@@ -148,14 +148,14 @@
       </div> 
       
       <div id="ccafsAcknowledge" class="fullBlock verticallyCheckBox">
-        [@customForm.checkbox name="publication.ccafsAcknowledge" i18nkey="reporting.activityDeliverables.publications.acknowledgeCCAFS" value="true" /]
+        [@customForm.checkbox name="publication.ccafsAcknowledge" i18nkey="reporting.activityDeliverables.publications.acknowledgeCCAFS" checked=publication.ccafsAcknowledge value="true" /]
       </div>
  
       <div id="publicationRelatedThemes" class="fullBlock">
         <h6>[@s.text name="reporting.activityDeliverables.publications.outputPublication" help="reporting.activityDeliverables.publications.outputPublication.help"/]</h6>
         <div class="checkboxGroup">
           [@s.fielderror cssClass="fieldError" fieldName="deliverable.publications.themeRelated"/]
-          [@s.checkboxlist name="publication.relatedThemes" list="publicationThemeList" value="deliverable.publications.relatedThemesIds" cssClass="checkbox" /]
+          [@s.checkboxlist name="publication.relatedThemes" list="publicationThemeList" value="publication.relatedThemesIds" cssClass="checkbox" /]
         </div>
       </div>
     

@@ -36,7 +36,7 @@
     <table id="deliverableList">  
       <thead>
         <tr>
-          <th id="title">[@s.text name="reporting.activityDeliverablesList.title" /]</th>
+          <th id="title">[@s.text name="reporting.activityDeliverablesList.description" /]</th>
           <th id="type">[@s.text name="reporting.activityDeliverablesList.type" /]</th>
           <th id="year">[@s.text name="reporting.activityDeliverablesList.year" /]</th>
           <th id="status">[@s.text name="reporting.activityDeliverablesList.status" /]</th>
