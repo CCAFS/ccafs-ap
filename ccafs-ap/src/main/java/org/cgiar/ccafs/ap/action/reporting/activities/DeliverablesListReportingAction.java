@@ -117,6 +117,14 @@ public class DeliverablesListReportingAction extends BaseAction {
 
     activity.setDeliverables(deliverableManager.getDeliverablesByActivityID(activityID));
 
+    // Only report the deliverables for the current year
+    for (int c = 0; c < activity.getDeliverables().size(); c++) {
+      if (activity.getDeliverables().get(c).getYear() != getCurrentReportingLogframe().getYear()) {
+        activity.getDeliverables().remove(c);
+        c--;
+      }
+    }
+
     /* --------- Checking if the user can submit ------------- */
     Submission submission =
       submissionManager.getSubmission(getCurrentUser().getLeader(), getCurrentReportingLogframe(),
