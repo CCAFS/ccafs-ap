@@ -102,7 +102,7 @@
         [@customForm.input name="deliverable.metadata[${deliverable.getMetadataIndex('Publisher')}].value" required=action.isMetadataMandatory('Publisher') disabled=action.isMetadataNotRequired('Publisher') type="text" i18nkey="reporting.activityDeliverables.metadata.publisher" help="reporting.activityDeliverables.metadata.publisher.help" /]   
       </div>
       
-      <div id="deliverableSubjectRelation" class="halfPartBlock" >
+      <div id="deliverableRelation" class="halfPartBlock" >
         <input type="hidden" name="deliverable.metadata[${deliverable.getMetadataIndex('Relation')}].metadata.id" value="${deliverable.getMetadataID('Relation')}" />
         [@customForm.input name="deliverable.metadata[${deliverable.getMetadataIndex('Relation')}].value" required=action.isMetadataMandatory('Relation') disabled=action.isMetadataNotRequired('Relation') type="text" i18nkey="reporting.activityDeliverables.metadata.relation" help="reporting.activityDeliverables.metadata.relation.help" /]
       </div>
