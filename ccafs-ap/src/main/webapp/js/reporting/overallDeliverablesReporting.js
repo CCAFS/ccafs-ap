@@ -6,6 +6,16 @@ $(document).ready(function(){
   // JSON response: http://madebyknight.com/optimizing-datatables-performance/
   // JS variable: http://ihatebugs.net/2014/04/how-to-increase-jquery-datatable-loading-speed/
   
+  
+  // Initiate the deliverable ranking plugin
+  
+  // Initiate the deliverable ranking plugin
+  
+  $('.hover-star').rating({
+    cancel : 'Cancel',
+    cancelValue : '0'
+  });
+  
   $('#deliverableList').DataTable({
     "dom" : '<"top"f<"clear">>rt<"bottom"ip<"clear">>',
     "columnDefs" : [
@@ -37,11 +47,5 @@ $(document).ready(function(){
     }
   });
   
-  // Initiate the deliverable ranking plugin
-  
-  $('.hover-star').rating({
-    cancel : 'Cancel',
-    cancelValue : '0'
-  });
   
 });
