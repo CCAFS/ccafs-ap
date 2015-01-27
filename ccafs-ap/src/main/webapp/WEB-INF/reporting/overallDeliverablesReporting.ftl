@@ -79,11 +79,11 @@
             <td> 
               <div class="rankBlock"> 
                 [#assign score = product.getScoreByLeader(activityLeaderID) /]
-                <input class="hover-star required" type="radio" [#if currentUser.TL]disabled[/#if] name="deliverables[${product_index}].scores[${activityLeaderID}]" value="1" [#if score == 1] checked [/#if] title="[@s.text name='reporting.activityDeliverables.ranking.level.notImportant' /]"/>
-                <input class="hover-star" type="radio" [#if currentUser.TL]disabled[/#if] name="deliverables[${product_index}].scores[${activityLeaderID}]" value="2" [#if score == 2] checked [/#if] title="[@s.text name='reporting.activityDeliverables.ranking.level.lowImportance' /]"/>
-                <input class="hover-star" type="radio" [#if currentUser.TL]disabled[/#if] name="deliverables[${product_index}].scores[${activityLeaderID}]" value="3" [#if score == 3] checked [/#if] title="[@s.text name='reporting.activityDeliverables.ranking.level.good' /]"/>
-                <input class="hover-star" type="radio" [#if currentUser.TL]disabled[/#if] name="deliverables[${product_index}].scores[${activityLeaderID}]" value="4" [#if score == 4] checked [/#if] title="[@s.text name='reporting.activityDeliverables.ranking.level.important' /]"/>
-                <input class="hover-star" type="radio" [#if currentUser.TL]disabled[/#if] name="deliverables[${product_index}].scores[${activityLeaderID}]" value="5" [#if score == 5] checked [/#if] title="[@s.text name='reporting.activityDeliverables.ranking.level.veryImportant' /]" />
+                <input class="hover-star required" type="radio" [#if currentUser.TL]disabled [#else] name="deliverables[${product_index}].scores[${activityLeaderID}]" [/#if] name="deliverables[${product_index}].scores[${activityLeaderID}]" value="1" [#if score == 1] checked [/#if] title="[@s.text name='reporting.activityDeliverables.ranking.level.notImportant' /]"/>
+                <input class="hover-star" type="radio" [#if currentUser.TL]disabled [#else] name="deliverables[${product_index}].scores[${activityLeaderID}]" [/#if] value="2" [#if score == 2] checked [/#if] title="[@s.text name='reporting.activityDeliverables.ranking.level.lowImportance' /]"/>
+                <input class="hover-star" type="radio" [#if currentUser.TL]disabled [#else] name="deliverables[${product_index}].scores[${activityLeaderID}]" [/#if] value="3" [#if score == 3] checked [/#if] title="[@s.text name='reporting.activityDeliverables.ranking.level.good' /]"/>
+                <input class="hover-star" type="radio" [#if currentUser.TL]disabled [#else] name="deliverables[${product_index}].scores[${activityLeaderID}]" [/#if] value="4" [#if score == 4] checked [/#if] title="[@s.text name='reporting.activityDeliverables.ranking.level.important' /]"/>
+                <input class="hover-star" type="radio" [#if currentUser.TL]disabled [#else] name="deliverables[${product_index}].scores[${activityLeaderID}]" [/#if] value="5" [#if score == 5] checked [/#if] title="[@s.text name='reporting.activityDeliverables.ranking.level.veryImportant' /]" />
                 <div class="clearfix"></div>
               </div>
             </td>
