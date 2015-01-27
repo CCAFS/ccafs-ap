@@ -47,22 +47,22 @@ margin-bottom: 0.5em;
 
 .borderBox {
   background: rgba(0, 0, 0, 0.02);
-  border: 1px solid rgba(0, 0, 0, 0.04);
+  border: 1px solid #D9D9D9;
   -webkit-border-radius: 3px;
   border-radius: 3px;
   padding: 10px;
-  box-shadow: 0px 0px 4px rgba(0, 0, 0, 0.05);
+  box-shadow: 0px 0px 4px rgba(0, 0, 0, 0.08);
   margin: 0.8em 0 2em 0;
 }
 
 .addButtonSubmit button{
   background-color: #2BA6CB;
-	color: #FFF;
-	border: 0;
-	padding: 4px 20px 4px 20px;
-	font-weight: bold;
-	border-bottom: 3px solid #1E94B8;
-	border-radius: 2px;	
+  color: #FFF;
+  border: 0;
+  padding: 4px 20px 4px 20px;
+  font-weight: bold;
+  border-bottom: 3px solid #1E94B8;
+  border-radius: 2px; 
 }
 
 .red {
@@ -517,8 +517,8 @@ a.currentReportingSection li #i-additionalInformation{
   background-color: #fafafa;
   height: 160px;
   text-align: center;
-  margin-right: 91px;
-  width: 235px;
+  margin-right: 22px;
+  width: 262px;
   float: right;  
 }
 
@@ -530,7 +530,7 @@ a.currentReportingSection li #i-additionalInformation{
 }
 
 .imageBlock .browseInput {
-  padding: 65px 0;
+  padding: 7px 0;
   float: left;
 }
 
@@ -1007,11 +1007,11 @@ th#tl-rank{
 }
 
 .rankBlock{
-	padding:3px 0;
+  padding:3px 0;
 }
 
 #addDeliverable {
-	width: 169px;
+  width: 169px;
 }
 /* Deliverables */
 #items #fileNameMessage {
@@ -1283,6 +1283,19 @@ div#hover-test {
 }
 /*********** PUBLICATIONS **************/
 /*********** CASE STUDIES **************/
+
+fieldset#caseStudiesGroup {
+  padding: 0;
+  margin: 0;
+  border: 0;
+}
+
+#caseStudiesGroup .itemIndex {
+  font-size: 1.5em;
+  font-weight: bold;
+  text-align: center; 
+}
+
 /************* OUTCOMES ****************/
 .outcome .textArea h6 {
   font-weight: normal;
