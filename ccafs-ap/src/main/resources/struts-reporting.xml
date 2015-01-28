@@ -149,6 +149,7 @@
     
     <action name="overallDeliverables" class="org.cgiar.ccafs.ap.action.reporting.deliverables.OverallDeliverablesReportingAction">
       <interceptor-ref name="reportingStack" />
+      <interceptor-ref name="tlRplAuthorizedUsers" />
       <result name="cancel" type="redirectAction">activities</result>
       <result name="input">/WEB-INF/reporting/overallDeliverablesReporting.ftl</result>
       <result name="success" type="redirectAction">
