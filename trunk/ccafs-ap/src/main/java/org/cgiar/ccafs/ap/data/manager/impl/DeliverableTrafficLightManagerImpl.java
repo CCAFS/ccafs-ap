@@ -51,6 +51,9 @@ public class DeliverableTrafficLightManagerImpl implements DeliverableTrafficLig
     if (trafficLightData.get("is_quality_documented") != null) {
       trafficLight.setQualityDocumented(trafficLightData.get("is_quality_documented").equals("1"));
     }
+    if (trafficLightData.get("is_supporting_dissemination") != null) {
+      trafficLight.setSupportingDissemination(trafficLightData.get("is_supporting_dissemination").equals("1"));
+    }
 
     return trafficLight;
   }
@@ -62,6 +65,7 @@ public class DeliverableTrafficLightManagerImpl implements DeliverableTrafficLig
     trafficLightData.put("is_metadata_documented", trafficLight.isMetadataDocumented());
     trafficLightData.put("have_collection_tools", trafficLight.isHaveCollectionTools());
     trafficLightData.put("is_quality_documented", trafficLight.isQualityDocumented());
+    trafficLightData.put("is_supporting_dissemination", trafficLight.isSupportingDissemination());
     trafficLightData.put("deliverable_id", deliverableID);
 
     return trafficLightDAO.saveDeliverableTrafficLight(trafficLightData);

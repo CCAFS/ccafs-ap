@@ -55,6 +55,7 @@ public class MySQLDeliverableTrafficLightDAO implements DeliverableTrafficLightD
         trafficLightData.put("is_metadata_documented", rs.getString("is_metadata_documented"));
         trafficLightData.put("have_collection_tools", rs.getString("have_collection_tools"));
         trafficLightData.put("is_quality_documented", rs.getString("is_quality_documented"));
+        trafficLightData.put("is_supporting_dissemination", rs.getString("is_supporting_dissemination"));
       }
       rs.close();
     } catch (SQLException e) {
@@ -78,15 +79,17 @@ public class MySQLDeliverableTrafficLightDAO implements DeliverableTrafficLightD
     values[1] = trafficLightData.get("is_metadata_documented");
     values[2] = trafficLightData.get("have_collection_tools");
     values[3] = trafficLightData.get("is_quality_documented");
+    values[4] = trafficLightData.get("is_supporting_dissemination");
 
     StringBuilder query = new StringBuilder();
     query.append("INSERT INTO deliverable_traffic_light ");
-    query.append("(deliverable_id, is_metadata_documented, have_collection_tools, is_quality_documented) ");
-    query.append("VALUES (?, ?, ?, ?) ");
+    query.append("(deliverable_id, is_metadata_documented, have_collection_tools, is_quality_documented,  ");
+    query.append("is_supporting_dissemination ) VALUES (?, ?, ?, ?, ?) ");
     query.append("ON DUPLICATE KEY UPDATE  ");
     query.append("is_metadata_documented = VALUES(is_metadata_documented), ");
     query.append("have_collection_tools = VALUES(have_collection_tools), ");
-    query.append("is_quality_documented = VALUES(is_quality_documented)  ");
+    query.append("is_quality_documented = VALUES(is_quality_documented),  ");
+    query.append("is_supporting_dissemination = VALUES(is_supporting_dissemination) ");
 
     try (Connection con = databaseManager.getConnection()) {
       int rows = databaseManager.makeChangeSecure(con, query.toString(), values);
