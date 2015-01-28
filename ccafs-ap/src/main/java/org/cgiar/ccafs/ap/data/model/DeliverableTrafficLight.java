@@ -26,6 +26,7 @@ public class DeliverableTrafficLight {
   private boolean isMetadataDocumented;
   private boolean haveCollectionTools;
   private boolean isQualityDocumented;
+  private boolean isSupportingDissemination;
 
   public boolean isHaveCollectionTools() {
     return haveCollectionTools;
@@ -39,6 +40,10 @@ public class DeliverableTrafficLight {
     return isQualityDocumented;
   }
 
+  public boolean isSupportingDissemination() {
+    return isSupportingDissemination;
+  }
+
   public void setHaveCollectionTools(boolean haveCollectionTools) {
     this.haveCollectionTools = haveCollectionTools;
   }
@@ -49,6 +54,10 @@ public class DeliverableTrafficLight {
 
   public void setQualityDocumented(boolean isQualityDocumented) {
     this.isQualityDocumented = isQualityDocumented;
+  }
+
+  public void setSupportingDissemination(boolean isSupportingDissemination) {
+    this.isSupportingDissemination = isSupportingDissemination;
   }
 
   @Override
