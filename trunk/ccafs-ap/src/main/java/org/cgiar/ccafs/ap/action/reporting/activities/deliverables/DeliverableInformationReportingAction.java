@@ -231,7 +231,10 @@ public class DeliverableInformationReportingAction extends BaseAction {
 
     if (deliverable.isPublication()) {
       publication = publicationManager.getPublicationByDeliverableID(deliverableID);
+    } else {
+      publication = new Publication();
     }
+
 
     // Create options for the yes/no radio buttons
     yesNoRadio = new LinkedHashMap<>();

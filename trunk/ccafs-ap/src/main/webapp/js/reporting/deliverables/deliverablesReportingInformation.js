@@ -94,19 +94,15 @@ $(document).ready(function(){
   
   function adjustMetadataRestrictions(metadataIndex,requirements){
     var $input = $("#deliverable\\.metadata\\[" + metadataIndex + "\\]\\.value");
-    var $label = $input.prev().find("label");
+    var label = $input.prev().find("label");
     
     // First remove all the formating
     $input.attr("disabled", false);
-    if ($label.find("span").length) {
-      $label.remove("span");
-    }
-    
+    $(label).find("span").remove();
+
     // Then apply as required
     if (requirements == "Mandatory") {
-      if ($label.find("span").length == 0) {
-        $label.append('<span class="red">*</span>');
-      }
+      $(label).append('<span class="red">*</span>');
     } else if (requirements == "NotRequired") {
       $input.attr("disabled", true);
     }
