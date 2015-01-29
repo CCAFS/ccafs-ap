@@ -22,4 +22,9 @@ $(document).ready(function(){
     }
   });
   
+  
+  $(".removeDeliverable").on("click", function(){
+    return(confirm($("#removeConfirmation").val()));
+  });
+  
 });
