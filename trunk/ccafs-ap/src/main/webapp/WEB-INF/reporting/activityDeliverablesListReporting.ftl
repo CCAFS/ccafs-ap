@@ -47,7 +47,7 @@
       
       <tbody>
         [#list activity.deliverables as product]
-          [#assign isNewDeliverable = !product.expected && product.year == currentReportingLogframe.year]
+          [#assign isNewDeliverable = !product.expected && product.year == currentReportingLogframe.year /]
           <tr>
             <td class="left">
               [#assign title]
@@ -66,19 +66,18 @@
             <td> ${product.status.name} </td>
             <td> [#if isNewDeliverable] [@s.text name="reporting.activityDeliverablesList.new" /] [#else] [@s.text name="reporting.activityDeliverablesList.planned" /] [/#if]</td>  
             <td>
-              [#if isNewDeliverable] 
+              [#if isNewDeliverable]
                 <a href="
                 [@s.url action='removeDeliverable' includeParams='get'] 
                   [@s.param name='${activityRequestParameter}']${activity.id?c}[/@s.param]
                   [@s.param name='${deliverableRequestParameter}']${product.id?c}[/@s.param]
                 [/@s.url]
-                " title="">
-                  <img src="${baseUrl}/images/global/trash.png"> 
+                " title="" class="removeDeliverable">
+                  <img src="${baseUrl}/images/global/trash.png" title="[@s.text name="reporting.activityDeliverablesList.deleteDeliverable" /]" /> 
                 </a>
               [#else]
-                <img src="${baseUrl}/images/global/trash_disable.png"> 
+                <img src="${baseUrl}/images/global/trash.png" />
               [/#if]
-                              
             </td> 
           </tr>
         [/#list]  
@@ -86,7 +85,7 @@
     </table>
     
 
-
+  <input type="hidden" id="removeConfirmation" value="[@s.text name="reporting.activityDeliverablesList.deleteDeliverable.message"/]" />
   [@s.form action="addNewDeliverable"]
     [#if canSubmit]
       <div class="addButtonSubmit">
