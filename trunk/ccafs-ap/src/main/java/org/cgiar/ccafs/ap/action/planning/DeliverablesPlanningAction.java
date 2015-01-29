@@ -131,7 +131,7 @@ public class DeliverablesPlanningAction extends BaseAction {
     LOG.info("-- prepare() > User {} load the deliverables for activity {} in planing section", getCurrentUser()
       .getEmail(), activityID);
 
-    deliverableTypesList = deliverableTypeManager.getDeliverableTypes();
+    deliverableTypesList = deliverableTypeManager.getDeliverableSubTypes();
     deliverableStatusList = deliverableStatusManager.getDeliverableStatus();
     fileFormatsList = fileFormatManager.getFileFormats();
 
