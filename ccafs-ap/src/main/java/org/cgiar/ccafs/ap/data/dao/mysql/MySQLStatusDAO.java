@@ -32,7 +32,7 @@ public class MySQLStatusDAO implements StatusDAO {
     LOG.debug(">> getStatusList()");
     List<Map<String, String>> statusList = new ArrayList<>();
     try (Connection con = databaseManager.getConnection()) {
-      String query = "SELECT * from activity_status";
+      String query = "SELECT * from activity_status WHERE is_active = 1";
       ResultSet rs = databaseManager.makeQuery(query, con);
       while (rs.next()) {
         Map<String, String> statusData = new HashMap<>();
