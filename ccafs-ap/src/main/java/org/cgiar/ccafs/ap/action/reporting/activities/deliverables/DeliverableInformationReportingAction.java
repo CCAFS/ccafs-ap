@@ -361,9 +361,5 @@ public class DeliverableInformationReportingAction extends BaseAction {
   @Override
   public void validate() {
     validationMessage = new StringBuilder();
-    if (save || next) {
-      validator.validate(deliverable);
-      System.out.println(validator.isValid());
-    }
   }
 }
