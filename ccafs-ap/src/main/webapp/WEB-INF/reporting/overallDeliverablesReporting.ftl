@@ -20,7 +20,8 @@
     [#include "/WEB-INF/reporting/tlRplSubMenu.ftl" /]
     <h1>[@s.text name="reporting.overallDeliverables" /]: [#if currentUser.leader??]${currentUser.leader.name}[/#if]</h1>    
 
-    <div id="filterBy">
+    <div class="loader" style="text-align:center"><img src="${baseUrl}/images/global/loader.gif" alt="Loading"></div>
+    <div id="filterBy" style="display:none">
       <div id="filter-title" class="filter" style="display:none">
       <h4>Filter by [@s.text name="reporting.activityDeliverablesList.description" /]:<h4>
       </div>
@@ -39,8 +40,7 @@
         </div>
       [/#if]
     </div>
-
-    <table id="deliverableList">  
+    <table id="deliverableList" style="display:none">  
       <thead>
         <tr>
           <th id="title">[@s.text name="reporting.activityDeliverablesList.description" /]</th>
