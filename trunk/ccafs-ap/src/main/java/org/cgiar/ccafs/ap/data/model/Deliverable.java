@@ -98,7 +98,7 @@ public abstract class Deliverable {
 
 
   public int getMetadataIndex(String metadataName) {
-    int c = 1;
+    int c = 0;
     for (DeliverableMetadata mData : metadata) {
       if (mData.getMetadata().getName().equals(metadataName)) {
         return c;
@@ -120,12 +120,10 @@ public abstract class Deliverable {
   }
 
   public String getMetadataValue(String metadataName) {
-    int c = 0;
     for (DeliverableMetadata mData : metadata) {
       if (mData.getMetadata().getName().equals(metadataName)) {
         return mData.getValue();
       }
-      c++;
     }
     return "";
   }

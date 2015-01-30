@@ -17,6 +17,15 @@ public interface DeliverableTypeManager {
   public DeliverableType[] getDeliverableSubTypes();
 
   /**
+   * This method returns all the deliverable subTypes contained
+   * in the category received as parameter.
+   * 
+   * @param deliverableSubTypeID - Deliverable type identifier
+   * @return a list of deliverables types or categories.
+   */
+  DeliverableType[] getDeliverableSubTypesByType(int deliverableTypeID);
+
+  /**
    * Get the deliverable type identified with the given id.
    * 
    * @param id - Identifier.
