@@ -76,7 +76,7 @@
                   <img src="${baseUrl}/images/global/trash.png" title="[@s.text name="reporting.activityDeliverablesList.deleteDeliverable" /]" /> 
                 </a>
               [#else]
-                <img src="${baseUrl}/images/global/trash.png" />
+                <img src="${baseUrl}/images/global/trash_disable.png" />
               [/#if]
             </td> 
           </tr>

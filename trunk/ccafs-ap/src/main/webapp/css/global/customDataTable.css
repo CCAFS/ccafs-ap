@@ -92,11 +92,15 @@ table.dataTable thead th {
 table.dataTable td {
   border: 1px solid #d4d4d4;
   vertical-align: middle;
-  padding: 2px 5px;
+  padding: 2px 5px !important;
 }
 
 table.dataTable tbody tr {
   font-size:0.9em;
+}
+
+table.dataTable.no-footer {
+border-bottom: none;  
 }
 
 /*
@@ -135,6 +139,10 @@ table.dataTable tbody tr {
 .paginate_disabled_next {
   background: url('../../images/libs/dataTables/forward_disabled.png')
     no-repeat top right;
+}
+
+.dataTables_wrapper .dataTables_paginate .paginate_button {
+  padding: 0.2em 0.5em;
 }
 
 /* Two button pagination - previous / next */

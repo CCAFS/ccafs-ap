@@ -6,6 +6,7 @@ $(document).ready(function(){
    */
   $('#deliverableList').DataTable({
     "dom" : '<"top"f<"clear">>rt<"bottom"ip<"clear">>',
+    paging : false,
     initComplete : function(){
       var api = this.api();
       api.columns().indexes().flatten().each(function(i){
@@ -22,9 +23,8 @@ $(document).ready(function(){
     }
   });
   
-  
   $(".removeDeliverable").on("click", function(){
-    return(confirm($("#removeConfirmation").val()));
+    return (confirm($("#removeConfirmation").val()));
   });
   
 });
