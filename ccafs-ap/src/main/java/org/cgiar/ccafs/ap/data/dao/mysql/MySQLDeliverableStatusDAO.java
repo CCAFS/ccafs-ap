@@ -30,7 +30,7 @@ public class MySQLDeliverableStatusDAO implements DeliverableStatusDAO {
   public List<Map<String, String>> getDeliverableStatus() {
     LOG.debug(">> getDeliverableStatus()");
     List<Map<String, String>> deliverableTypesList = new ArrayList<>();
-    String query = "SELECT * from deliverable_status";
+    String query = "SELECT * from deliverable_status WHERE is_active = TRUE";
     try (Connection con = databaseManager.getConnection()) {
       ResultSet rs = databaseManager.makeQuery(query, con);
       while (rs.next()) {

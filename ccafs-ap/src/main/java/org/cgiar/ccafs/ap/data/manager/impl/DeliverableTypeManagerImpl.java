@@ -4,6 +4,7 @@ import org.cgiar.ccafs.ap.data.dao.DeliverableTypeDAO;
 import org.cgiar.ccafs.ap.data.manager.DeliverableTypeManager;
 import org.cgiar.ccafs.ap.data.model.DeliverableType;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
@@ -44,6 +45,19 @@ public class DeliverableTypeManagerImpl implements DeliverableTypeManager {
     }
 
     return deliverableTypes;
+  }
+
+  @Override
+  public DeliverableType[] getDeliverableSubTypesByType(int deliverableTypeID) {
+    List<DeliverableType> types = new ArrayList<>();
+
+    for (DeliverableType dType : getDeliverableTypesAndSubtypes()) {
+      if (dType.getParent().getId() == deliverableTypeID) {
+        types.add(dType);
+      }
+    }
+
+    return types.toArray(new DeliverableType[types.size()]);
   }
 
   @Override

@@ -40,6 +40,7 @@ import org.cgiar.ccafs.ap.data.model.PublicationTheme;
 import org.cgiar.ccafs.ap.data.model.PublicationType;
 import org.cgiar.ccafs.ap.data.model.Submission;
 import org.cgiar.ccafs.ap.util.Capitalize;
+import org.cgiar.ccafs.ap.validation.reporting.activities.deliverables.DeliverableInformationReportingActionValidation;
 
 import java.util.ArrayList;
 import java.util.LinkedHashMap;
@@ -77,6 +78,9 @@ public class DeliverableInformationReportingAction extends BaseAction {
   private PublicationManager publicationManager;
   private SubmissionManager submissionManager;
 
+  // Validation
+  DeliverableInformationReportingActionValidation validator;
+
   // Model
   private Deliverable deliverable;
   private Publication publication;
@@ -105,7 +109,7 @@ public class DeliverableInformationReportingAction extends BaseAction {
     DeliverableMetadataManager deliverableMetadataManager, DeliverableAccessManager deliverableAccessManager,
     PublicationThemeManager publicationThemeManager, SubmissionManager submissionManager,
     OpenAccessManager openAccessManager, PublicationTypeManager publicationTypeManager,
-    PublicationManager publicationManager) {
+    PublicationManager publicationManager, DeliverableInformationReportingActionValidation validator) {
     super(config, logframeManager);
     this.deliverableManager = deliverableManager;
     this.deliverableTypeManager = deliverableTypeManager;
@@ -118,6 +122,7 @@ public class DeliverableInformationReportingAction extends BaseAction {
     this.publicationTypeManager = publicationTypeManager;
     this.publicationManager = publicationManager;
     this.submissionManager = submissionManager;
+    this.validator = validator;
   }
 
   public Map<String, String> getAccessLimitsRadio() {
@@ -224,7 +229,8 @@ public class DeliverableInformationReportingAction extends BaseAction {
     // received as parameter
     deliverable = deliverableManager.getDeliverable(deliverableID);
     deliverableTypes = deliverableTypeManager.getDeliverableTypes();
-    deliverableSubTypes = deliverableTypeManager.getDeliverableSubTypes();
+    deliverableSubTypes =
+      deliverableTypeManager.getDeliverableSubTypesByType(deliverable.getType().getParent().getId());
     deliverableStatusList = deliverableStatusManager.getDeliverableStatus();
     deliverable.setMetadata(deliverableMetadataManager.getDeliverableMetadata(deliverableID));
     deliverable.setAccessDetails(deliverableAccessManager.getDeliverableAccessData(deliverableID));
@@ -355,5 +361,9 @@ public class DeliverableInformationReportingAction extends BaseAction {
   @Override
   public void validate() {
     validationMessage = new StringBuilder();
+    if (save || next) {
+      validator.validate(deliverable);
+      System.out.println(validator.isValid());
+    }
   }
 }
