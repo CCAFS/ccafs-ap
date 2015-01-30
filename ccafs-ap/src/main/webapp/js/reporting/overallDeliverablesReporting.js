@@ -6,8 +6,7 @@ $(document).ready(function(){
   // JSON response: http://madebyknight.com/optimizing-datatables-performance/
   // JS variable: http://ihatebugs.net/2014/04/how-to-increase-jquery-datatable-loading-speed/
   
-  $('#deliverableList')
-  .DataTable({
+  $('#deliverableList').DataTable({
     "dom" : '<"top"f<"clear">>rt<"bottom"ip<"clear">>',
     "columnDefs" : [
         {
@@ -22,7 +21,7 @@ $(document).ready(function(){
           "visible" : false
         }
     ],
-    "drawCallback": function( settings ) {
+    "drawCallback" : function(settings){
       $('.hover-star').rating({
         cancel : 'Cancel',
         cancelValue : '0'
@@ -51,4 +50,3 @@ $(document).ready(function(){
   });
   
 });
-
