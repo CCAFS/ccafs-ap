@@ -200,7 +200,7 @@
       <interceptor-ref name="reportingStack" />
       <interceptor-ref name="fileUpload">
         <param name="allowedTypes">image/bmp,image/gif,image/jpeg,image/png</param>
-        <param name="maximumSize">10485760</param>
+        <param name="maximumSize">31457280</param>
       </interceptor-ref> 
       <result name="cancel" type="redirectAction">activities</result>
       <result name="input">/WEB-INF/reporting/caseStudiesReporting.ftl</result>
