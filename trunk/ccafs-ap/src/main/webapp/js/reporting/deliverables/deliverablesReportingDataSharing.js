@@ -58,7 +58,18 @@ $(document).ready(function(){
         }
       });
       if (alreadyExist) {
-        this.removeFile(file);
+        // this.removeFile(file);
+        // done.code = 403;
+        file.previewElement.classList.add("dz-error");
+        _ref = file.previewElement.querySelectorAll("[data-dz-errormessage]");
+        $(_ref).find(".data-dz-errormessage span").text("This file already uploaded");
+        _results = [];
+        // var message = "Any";
+        for (_i = 0, _len = _ref.length; _i < _len; _i++) {
+          node = _ref[_i];
+          _results.push(node.textContent = message);
+        }
+        return _results;
       }
     });
     

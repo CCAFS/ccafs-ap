@@ -64,7 +64,11 @@
 
       <div id="deliverableYear" class="halfPartBlock">
         <h6>[@s.text name="reporting.activityDeliverables.year" /]</h6>
-        <span>${deliverable.year}</span>
+        [#if isNewDeliverable]
+          <span>${deliverable.year}</span>  
+        [#else] 
+          <span>${deliverable.year}</span>     
+        [/#if]
       </div>
       
       <div id="deliverableStatusJustification" class="fullBlock" style="disply:none">

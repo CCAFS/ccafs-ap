@@ -36,7 +36,7 @@
            <input class="fileLink" name="deliverable.files[${file_index}].link" type="hidden" value="">
            <div class="fileName">${file.name!file.link}</div>
            <div class="fileFormat">${file.hosted}</div>
-           <div class="fileSize">[#if file.size > 0]${file.size}[#else] - - [/#if]</div>
+           <div class="fileSize">[#if file.size > 0]${(file.size/1024)?string("0.00")} KB[#else] <span title="Unknown size">- -</span> [/#if]</div>
            <img class="removeInput" src="${baseUrl}/images/global/icon-remove.png" alt="Remove"/>
          </li>
         [/#list]
