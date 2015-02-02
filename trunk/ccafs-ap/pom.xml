@@ -160,43 +160,11 @@
       <version>${jfreechart.version}</version>
     </dependency>
     
-    <!-- Shiro dependencies: -->
-    <dependency>
-	    <groupId>org.apache.shiro</groupId>
-	    <artifactId>shiro-core</artifactId>
-	    <version>${shiro.version}</version>
-    </dependency>
-    <dependency>
-	    <groupId>org.apache.shiro</groupId>
-	    <artifactId>shiro-web</artifactId>
-	    <version>${shiro.version}</version>
-    </dependency>
-
-    <!-- Stormpath support for quick Realm deployment: -->
-    <dependency>
-      <groupId>com.stormpath.shiro</groupId>
-      <artifactId>stormpath-shiro-core</artifactId>
-      <version>0.5.0</version>
-    </dependency>
-    <dependency>
-      <groupId>com.stormpath.sdk</groupId>
-      <artifactId>stormpath-sdk-httpclient</artifactId>
-      <version>0.9.1</version>
-      <scope>runtime</scope>
-    </dependency>
-    <dependency>
-      <groupId>javax.servlet</groupId>
-      <artifactId>javax.servlet-api</artifactId>
-      <version>3.1.0</version>
-      <scope>provided</scope>
-    </dependency>
-    
     <dependency>
       <groupId>org.cgiar.ciat.auth</groupId>
       <artifactId>adauth</artifactId>
       <version>1.1</version>
     </dependency>
-    
     
   </dependencies>
   

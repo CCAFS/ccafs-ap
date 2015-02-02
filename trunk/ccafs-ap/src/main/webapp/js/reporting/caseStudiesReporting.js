@@ -180,15 +180,6 @@ function renameCaseStudies(){
     // Remove link.
     $(this).find("[id^='removeCaseStudy-']").attr("id", "removeCaseStudy-" + index);
     
-    // Metadata
-    $(caseStudy).find("div.metadata input").each(function(i,metadataInput){
-      var deliverableName = $(metadataInput).attr("name");
-      var firstPart = deliverableName.substring(0, deliverableName.indexOf("[") + 1);
-      var secondPart = deliverableName.substr(deliverableName.indexOf("]"));
-      $(metadataInput).attr("id", firstPart + index + secondPart);
-      $(metadataInput).attr("name", firstPart + index + secondPart);
-    });
-    
     // case study identifier.
     $(this).find("[name$='].id']").attr("name", elementName + "id");
     // title.
@@ -248,5 +239,23 @@ function renameCaseStudies(){
     // Links.
     $(this).find("[id$='links']").attr("id", elementName + "links");
     $(this).find("[name$='links']").attr("name", elementName + "links");
+ // Subject.
+    $(this).find("[id$='subject']").attr("id", elementName + "subject");
+    $(this).find("[name$='subject']").attr("name", elementName + "subject");
+    // Contributor
+    $(this).find("[id$='contributor']").attr("id", elementName + "contributor");
+    $(this).find("[name$='contributor']").attr("name", elementName + "contributor");
+    // Publisher
+    $(this).find("[id$='publisher']").attr("id", elementName + "publisher");
+    $(this).find("[name$='publisher']").attr("name", elementName + "publisher");
+    // Relation
+    $(this).find("[id$='relation']").attr("id", elementName + "relation");
+    $(this).find("[name$='relation']").attr("name", elementName + "relation");
+    // Coverage
+    $(this).find("[id$='coverage']").attr("id", elementName + "coverage");
+    $(this).find("[name$='coverage']").attr("name", elementName + "coverage");
+    // Rights
+    $(this).find("[id$='rights']").attr("id", elementName + "rights");
+    $(this).find("[name$='rights']").attr("name", elementName + "rights");
   });
 }

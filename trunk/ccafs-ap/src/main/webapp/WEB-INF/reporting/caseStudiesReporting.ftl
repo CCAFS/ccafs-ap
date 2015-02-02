@@ -51,44 +51,40 @@
           <div class="fullBlock">
             [@customForm.input name="caseStudies[${caseStudy_index}].title" type="text" i18nkey="reporting.caseStudies.title" /]
           </div>
-          
-          
 
           [#-- Author --]
           <div class="fullBlock authorBlock">
             [@customForm.input name="caseStudies[${caseStudy_index}].author" type="text" i18nkey="reporting.caseStudies.author" /]
           </div>
-          
-           
-          [#-- Metadata --]
-          <div id="deliverableSubject" class="halfPartBlock metadata" >
-            <input type="hidden" name="deliverables[${caseStudy_index}].metadata[0].metadata.id" value="" />
-            [@customForm.input name="deliverables[${caseStudy_index}].metadata[0].value"  type="text" i18nkey="reporting.activityDeliverables.metadata.subject" help="reporting.activityDeliverables.metadata.subject.help" /] 
+
+          [#-- Subject --]
+          <div class="halfPartBlock" >
+            [@customForm.input name="caseStudies[${caseStudy_index}].subject"  type="text" i18nkey="reporting.activityDeliverables.metadata.subject" help="reporting.activityDeliverables.metadata.subject.help" /] 
           </div>
-          
-          <div id="deliverableContributor" class="halfPartBlock metadata" > 
-            <input type="hidden" name="deliverables[${caseStudy_index}].metadata[1].metadata.id" value="" />
-            [@customForm.input name="deliverables[${caseStudy_index}].metadata[1].value"  type="text" i18nkey="reporting.activityDeliverables.metadata.contributor" help="reporting.activityDeliverables.metadata.contributor.help" /] 
+
+          [#-- Contributor --]
+          <div class="halfPartBlock" > 
+            [@customForm.input name="caseStudies[${caseStudy_index}].contributor"  type="text" i18nkey="reporting.activityDeliverables.metadata.contributor" help="reporting.activityDeliverables.metadata.contributor.help" /] 
           </div> 
-          
-          <div id="deliverablePublisher" class="halfPartBlock metadata" >
-            <input type="hidden" name="deliverables[${caseStudy_index}].metadata[3].metadata.id" value="" />
-            [@customForm.input name="deliverables[${caseStudy_index}].metadata[3].value" type="text" i18nkey="reporting.activityDeliverables.metadata.publisher" help="reporting.activityDeliverables.metadata.publisher.help" /]   
+
+          [#-- Publisher --]
+          <div class="halfPartBlock" >
+            [@customForm.input name="caseStudies[${caseStudy_index}].publisher" type="text" i18nkey="reporting.activityDeliverables.metadata.publisher" help="reporting.activityDeliverables.metadata.publisher.help" /]   
           </div>
-          
-          <div id="deliverableRelation" class="halfPartBlock metadata" >
-            <input type="hidden" name="deliverables[${caseStudy_index}].metadata[4].metadata.id" value="" />
-            [@customForm.input name="deliverables[${caseStudy_index}].metadata[4].value" type="text" i18nkey="reporting.activityDeliverables.metadata.relation" help="reporting.activityDeliverables.metadata.relation.help" /]
+
+          [#-- Relation --]
+          <div class="halfPartBlock" >
+            [@customForm.input name="caseStudies[${caseStudy_index}].relation" type="text" i18nkey="reporting.activityDeliverables.metadata.relation" help="reporting.activityDeliverables.metadata.relation.help" /]
           </div>
-          
-          <div id="deliverableCoverage" class="halfPartBlock metadata" >
-            <input type="hidden" name="deliverables[${caseStudy_index}].metadata[5].metadata.id" value="" />
-            [@customForm.input name="deliverables[${caseStudy_index}].metadata[5].value" type="text" i18nkey="reporting.activityDeliverables.metadata.coverage" help="reporting.activityDeliverables.metadata.coverage.help" /]
+
+          [#-- Coverage --]
+          <div class="halfPartBlock" >
+            [@customForm.input name="caseStudies[${caseStudy_index}].coverage" type="text" i18nkey="reporting.activityDeliverables.metadata.coverage" help="reporting.activityDeliverables.metadata.coverage.help" /]
           </div>
-          
-          <div id="deliverableRights" class="fullBlock metadata">
-            <input type="hidden" name="deliverables[${caseStudy_index}].metadata[6].metadata.id" value="" /> 
-            [@customForm.textArea name="deliverables[${caseStudy_index}].metadata[6].value" i18nkey="reporting.activityDeliverables.metadata.rights" help="reporting.activityDeliverables.metadata.rights.help" /]
+
+          [#-- Rights --]
+          <div class="fullBlock">
+            [@customForm.textArea name="caseStudies[${caseStudy_index}].rights" i18nkey="reporting.activityDeliverables.metadata.rights" help="reporting.activityDeliverables.metadata.rights.help" /]
           </div>
 
           [#-- Types --]
@@ -194,7 +190,7 @@
     <div id="template" style="display: none;">
       <div id="caseStudy-999" class="caseStudy borderBox">
         [#-- CaseStudy identifier --]
-        <input name="id" type="hidden" value="-1">
+        <input name="cs[].id" type="hidden" value="-1">
 
         [#-- Item index --]
         <div class="itemIndex">
@@ -219,36 +215,35 @@
           [@customForm.input name="author" type="text" i18nkey="reporting.caseStudies.author" /]
         </div>
         
-        [#-- Metadata --]
-          <div id="deliverableSubject" class="halfPartBlock metadata" >
-            <input type="hidden" name="deliverables[999].metadata[0].metadata.id" value="" />
-            [@customForm.input name="deliverables[999].metadata[0].value"  type="text" i18nkey="reporting.activityDeliverables.metadata.subject" help="reporting.activityDeliverables.metadata.subject.help" /] 
-          </div>
-          
-          <div id="deliverableContributor" class="halfPartBlock metadata" > 
-            <input type="hidden" name="deliverables[999].metadata[1].metadata.id" value="" />
-            [@customForm.input name="deliverables[999].metadata[1].value"  type="text" i18nkey="reporting.activityDeliverables.metadata.contributor" help="reporting.activityDeliverables.metadata.contributor.help" /] 
-          </div> 
-          
-          <div id="deliverablePublisher" class="halfPartBlock metadata" >
-            <input type="hidden" name="deliverables[999].metadata[3].metadata.id" value="" />
-            [@customForm.input name="deliverables[999].metadata[3].value" type="text" i18nkey="reporting.activityDeliverables.metadata.publisher" help="reporting.activityDeliverables.metadata.publisher.help" /]   
-          </div>
-          
-          <div id="deliverableRelation" class="halfPartBlock metadata" >
-            <input type="hidden" name="deliverables[999].metadata[4].metadata.id" value="" />
-            [@customForm.input name="deliverables[999].metadata[4].value" type="text" i18nkey="reporting.activityDeliverables.metadata.relation" help="reporting.activityDeliverables.metadata.relation.help" /]
-          </div>
-          
-          <div id="deliverableCoverage" class="halfPartBlock metadata" >
-            <input type="hidden" name="deliverables[999].metadata[5].metadata.id" value="" />
-            [@customForm.input name="deliverables[999].metadata[5].value" type="text" i18nkey="reporting.activityDeliverables.metadata.coverage" help="reporting.activityDeliverables.metadata.coverage.help" /]
-          </div>
-          
-          <div id="deliverableRights" class="fullBlock metadata">
-            <input type="hidden" name="deliverables[999].metadata[6].metadata.id" value="" /> 
-            [@customForm.textArea name="deliverables[999].metadata[6].value" i18nkey="reporting.activityDeliverables.metadata.rights" help="reporting.activityDeliverables.metadata.rights.help" /]
-          </div>
+        [#-- Subject --]
+        <div class="halfPartBlock" >
+          [@customForm.input name="subject"  type="text" i18nkey="reporting.activityDeliverables.metadata.subject" help="reporting.activityDeliverables.metadata.subject.help" /] 
+        </div>
+        
+        [#-- Contributor --]
+        <div class="halfPartBlock" > 
+          [@customForm.input name="contributor"  type="text" i18nkey="reporting.activityDeliverables.metadata.contributor" help="reporting.activityDeliverables.metadata.contributor.help" /] 
+        </div> 
+        
+        [#-- Publisher --]
+        <div class="halfPartBlock" >
+          [@customForm.input name="publisher" type="text" i18nkey="reporting.activityDeliverables.metadata.publisher" help="reporting.activityDeliverables.metadata.publisher.help" /]   
+        </div>
+
+        [#-- Relation --]
+        <div class="halfPartBlock" >
+          [@customForm.input name="relation" type="text" i18nkey="reporting.activityDeliverables.metadata.relation" help="reporting.activityDeliverables.metadata.relation.help" /]
+        </div>
+        
+        [#-- Coverage --]
+        <div class="halfPartBlock" >
+          [@customForm.input name="coverage" type="text" i18nkey="reporting.activityDeliverables.metadata.coverage" help="reporting.activityDeliverables.metadata.coverage.help" /]
+        </div>
+        
+        [#-- Rights --]
+        <div class="fullBlock">
+          [@customForm.textArea name="rights" i18nkey="reporting.activityDeliverables.metadata.rights" help="reporting.activityDeliverables.metadata.rights.help" /]
+        </div>
 
         [#-- Types --]
         <div class="fullBlock">

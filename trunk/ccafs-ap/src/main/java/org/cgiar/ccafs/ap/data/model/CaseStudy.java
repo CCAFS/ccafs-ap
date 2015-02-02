@@ -24,6 +24,12 @@ public class CaseStudy extends Deliverable {
   private String partners;
   private String links;
   private String keywords;
+  private String subject;
+  private String contributor;
+  private String publisher;
+  private String relation;
+  private String coverage;
+  private String rights;
   private List<Country> countries;
   private Logframe logframe;
   private Leader leader;
@@ -41,6 +47,10 @@ public class CaseStudy extends Deliverable {
     return author;
   }
 
+  public String getContributor() {
+    return contributor;
+  }
+
   public List<Country> getCountries() {
     return countries;
   }
@@ -53,6 +63,11 @@ public class CaseStudy extends Deliverable {
     return ids;
   }
 
+  public String getCoverage() {
+    return coverage;
+  }
+
+  @Override
   public String getDescription() {
     return description;
   }
@@ -61,6 +76,7 @@ public class CaseStudy extends Deliverable {
     return endDate;
   }
 
+  @Override
   public int getId() {
     return id;
   }
@@ -101,12 +117,28 @@ public class CaseStudy extends Deliverable {
     return partners;
   }
 
+  public String getPublisher() {
+    return publisher;
+  }
+
+  public String getRelation() {
+    return relation;
+  }
+
   public String getResults() {
     return results;
   }
 
+  public String getRights() {
+    return rights;
+  }
+
   public Date getStartDate() {
     return startDate;
+  }
+
+  public String getSubject() {
+    return subject;
   }
 
   public String getTitle() {
@@ -133,45 +165,55 @@ public class CaseStudy extends Deliverable {
     this.author = author;
   }
 
+  public void setContributor(String contributor) {
+    this.contributor = contributor;
+  }
+
   public void setCountries(List<Country> countries) {
     this.countries = countries;
   }
 
+  public void setCoverage(String coverage) {
+    this.coverage = coverage;
+  }
+
+  @Override
   public void setDescription(String description) {
     this.description = description;
   }
-
 
   public void setEndDate(Date endDate) {
     this.endDate = endDate;
   }
 
-
   public void setGlobal(boolean isGlobal) {
     this.isGlobal = isGlobal;
   }
 
-
+  @Override
   public void setId(int id) {
     this.id = id;
   }
-
 
   public void setImage(File image) {
     this.image = image;
   }
 
+
   public void setImageContentType(String photoContentType) {
     this.imageContentType = photoContentType;
   }
+
 
   public void setImageFileName(String photoFileName) {
     this.imageFileName = photoFileName;
   }
 
+
   public void setKeywords(String keywords) {
     this.keywords = keywords;
   }
+
 
   public void setLeader(Leader leader) {
     this.leader = leader;
@@ -193,12 +235,28 @@ public class CaseStudy extends Deliverable {
     this.partners = partners;
   }
 
+  public void setPublisher(String publisher) {
+    this.publisher = publisher;
+  }
+
+  public void setRelation(String relation) {
+    this.relation = relation;
+  }
+
   public void setResults(String results) {
     this.results = results;
   }
 
+  public void setRights(String rights) {
+    this.rights = rights;
+  }
+
   public void setStartDate(Date startDate) {
     this.startDate = startDate;
+  }
+
+  public void setSubject(String subject) {
+    this.subject = subject;
   }
 
   public void setTitle(String title) {
