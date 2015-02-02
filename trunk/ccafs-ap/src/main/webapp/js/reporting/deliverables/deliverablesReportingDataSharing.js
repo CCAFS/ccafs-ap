@@ -1,4 +1,5 @@
 Dropzone.autoDiscover = false;
+var canAddFile;
 $(document).ready(function(){
   
   attachEvents();
@@ -45,31 +46,35 @@ $(document).ready(function(){
         deliverableID : $("input[name^='deliverableID']").val()
       },
       url : "uploadDeliverable.do",
-      maxFilesize : 30
+      maxFilesize : 30,
+      accept : function(file,done){
+        canAddFile = true;
+        console.log(file.name);
+        // Check is file is already uploaded
+        if (checkDuplicateFile(file.name)) {
+          $.prompt("Do you want replace this file (" + file.name + ") ?", {
+            title : "There is already a file with the same name.",
+            buttons : {
+              "Yes" : true,
+              "No" : false
+            },
+            submit : function(e,v,m,f){
+              if (v == true) {
+                done();
+                canAddFile = false;
+              } else {
+                done("There is already a file with the same name");
+              }
+            }
+          });
+        } else {
+          done();
+        }
+      }
     });
   }
   
   function initDropzone(){
-    var canAddFile;
-    this.on("addedfile", function(file,done){
-      var alreadyExist = false;
-      canAddFile = true;
-      // Check is file is already uploaded
-      $("form .fileUploaded .fileName").each(function(i,element){
-        if (file.name == $(element).text())
-          alreadyExist = true;
-      });
-      if (alreadyExist) {
-        var v = confirm("There is already a file with the same name./n Do you want replace this file ?");
-        if (v == true) {
-          canAddFile = false;
-        } else {
-          this.removeFile(file);
-        }
-        
-      }
-    });
-    
     this.on("success", function(file,done){
       var result = jQuery.parseJSON(done);
       if (result.fileSaved) {
@@ -106,7 +111,29 @@ $(document).ready(function(){
       $(this).parent().prepend($newElement);
       $newElement.fadeIn();
     });
+    $('#fileInputTemplate input').on("change", checkDublicateFileInput);
     $("#addFileInput").trigger("click", true);
+  }
+  
+  function checkDublicateFileInput(e){
+    var $file = $(this);
+    var fileName = $file.val().split('/').pop().split('\\').pop();
+    
+    if (checkDuplicateFile(fileName)) {
+      $.prompt("Do you want replace this file (" + fileName + ") ?", {
+        title : "There is already a file with the same name.",
+        buttons : {
+          "Yes" : true,
+          "No" : false
+        },
+        submit : function(e,v,m,f){
+          if (v == true) {
+          } else {
+            $file.replaceWith($('#fileInputTemplate input').clone(true));
+          }
+        }
+      });
+    }
   }
   
   function addFileToUploaded(file){
@@ -151,6 +178,15 @@ $(document).ready(function(){
   
   function checkUrl(url){
     return url.match(/(http|ftp|https):\/\/[\w\-_]+(\.[\w\-_]+)+([\w\-\.,@?^=%&amp;:/~\+#]*[\w\-\@?^=%&amp;/~\+#])?/);
+  }
+  
+  function checkDuplicateFile(fileName){
+    var alreadyExist = false;
+    $("form .fileUploaded .fileName").each(function(i,element){
+      if (fileName == $(element).text())
+        alreadyExist = true;
+    });
+    return alreadyExist;
   }
   
 });
