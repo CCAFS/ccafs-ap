@@ -50,26 +50,23 @@ $(document).ready(function(){
   }
   
   function initDropzone(){
+    var canAddFile;
     this.on("addedfile", function(file,done){
       var alreadyExist = false;
+      canAddFile = true;
+      // Check is file is already uploaded
       $("form .fileUploaded .fileName").each(function(i,element){
-        if (file.name == $(element).text()) {
+        if (file.name == $(element).text())
           alreadyExist = true;
-        }
       });
       if (alreadyExist) {
-        // this.removeFile(file);
-        // done.code = 403;
-        file.previewElement.classList.add("dz-error");
-        _ref = file.previewElement.querySelectorAll("[data-dz-errormessage]");
-        $(_ref).find(".data-dz-errormessage span").text("This file already uploaded");
-        _results = [];
-        // var message = "Any";
-        for (_i = 0, _len = _ref.length; _i < _len; _i++) {
-          node = _ref[_i];
-          _results.push(node.textContent = message);
+        var v = confirm("There is already a file with the same name./n Do you want replace this file ?");
+        if (v == true) {
+          canAddFile = false;
+        } else {
+          this.removeFile(file);
         }
-        return _results;
+        
       }
     });
     
@@ -78,7 +75,8 @@ $(document).ready(function(){
       if (result.fileSaved) {
         file.hosted = "Locally";
         file.fileID = result.fileID;
-        addFileToUploaded(file);
+        if (canAddFile)
+          addFileToUploaded(file);
         this.removeFile(file);
       }
     });
@@ -97,7 +95,7 @@ $(document).ready(function(){
       addFileToUploaded(file);
       $target.find("input").val("http://");
     } else {
-      alert("Invalid URL");
+      $.prompt("Invalid URL");
     }
   }
   
@@ -142,6 +140,11 @@ $(document).ready(function(){
       $(element).find("input[type='hidden'].fileID").attr("name", elementName + "id");
       $(element).find("input[type='hidden'].fileHosted").attr("name", elementName + "hosted");
       $(element).find("input[type='hidden'].fileLink").attr("name", elementName + "link");
+      
+      var fileName = $(element).find(".fileName").html();
+      if ((fileName).length > 70)
+        $(element).find(".fileName").html((fileName).substring(0, 70) + "...");
+      $(element).find(".fileName").attr("title", fileName);
       
     });
   }
