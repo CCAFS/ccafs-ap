@@ -45,6 +45,24 @@ public class MySQLDeliverableFileDAO implements DeliverableFileDAO {
   }
 
   @Override
+  public boolean existsDeliverableFile(String fileName, int deliverableID) {
+    LOG.debug(">> existsDeliverableFile(fileName={})", fileName);
+    boolean exists = true;
+    String query =
+      "SELECT * FROM deliverable_files WHERE filename = '" + fileName + "' AND deliverable_id = " + deliverableID;
+
+    try (Connection con = daoManager.getConnection()) {
+      ResultSet rs = daoManager.makeQuery(query, con);
+      exists = rs.next();
+    } catch (SQLException e) {
+      LOG.error("Exception rised verifyin if the file {} is present in the deliverables files table", fileName, e);
+    }
+
+    LOG.debug("<< existsDeliverableFile():{}", exists);
+    return exists;
+  }
+
+  @Override
   public List<Map<String, String>> getDeliverableFiles(int deliverableID) {
     LOG.debug(">> getDeliverableFiles(deliverableID={})", deliverableID);
     List<Map<String, String>> deliverableFiles = new ArrayList<>();

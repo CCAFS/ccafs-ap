@@ -30,6 +30,15 @@ import com.google.inject.ImplementedBy;
 public interface DeliverableFileDAO {
 
   /**
+   * This method verifies if exists some deliverable file in the database with the
+   * name received as parameter.
+   * 
+   * @param fileName
+   * @return true if the filename is present in the database. False otherwise.
+   */
+  boolean existsDeliverableFile(String fileName, int deliverableID);
+
+  /**
    * Get all the deliverable files related to the deliverable
    * identified by the value received as parameter.
    * 

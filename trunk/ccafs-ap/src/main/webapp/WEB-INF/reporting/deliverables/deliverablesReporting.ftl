@@ -32,11 +32,11 @@
       </div> 
       
       <div id="deliverableType" class="halfPartBlock">
-          [@customForm.select name="deliverable.parentType" value="deliverable.type.parent.id" i18nkey="reporting.activityDeliverables.type" listName="deliverableTypes" keyFieldName="id"  displayFieldName="name" className="deliverableTypes" /]
+          [@customForm.select name="deliverable.parentType" value="deliverable.type.parent.id" i18nkey="reporting.activityDeliverables.type" listName="deliverableTypes" keyFieldName="id"  displayFieldName="name" required=true className="deliverableTypes" /]
       </div>
       
       <div id="deliverableSubtype" class="halfPartBlock">
-          [@customForm.select name="deliverable.type" value="deliverable.type.id" i18nkey="reporting.activityDeliverables.subtype" listName="deliverableSubTypes" keyFieldName="id"  displayFieldName="name" className="deliverableSubTypes" /]
+          [@customForm.select name="deliverable.type" value="deliverable.type.id" i18nkey="reporting.activityDeliverables.subtype" listName="deliverableSubTypes" keyFieldName="id"  displayFieldName="name" required=true className="deliverableSubTypes" /]
       </div> 
 
       <div id="deliverableDescription" class="fullBlock ">
@@ -55,7 +55,7 @@
 
       <div id="deliverableDescriptionDissemination" class="fullBlock">
         <input type="hidden" name="deliverable.metadata[${deliverable.getMetadataIndex('DisseminationDescription')}].metadata.id" value="${deliverable.getMetadataID('DisseminationDescription')}" />
-        [@customForm.textArea name="deliverable.metadata[${deliverable.getMetadataIndex('DisseminationDescription')}].value" required=action.isMetadataMandatory('DisseminationDescription') disabled=action.isMetadataNotRequired('DisseminationDescription') i18nkey="reporting.activityDeliverables.metadata.disseminationDescription" /]
+        [@customForm.textArea name="deliverable.metadata[${deliverable.getMetadataIndex('DisseminationDescription')}].value" required=action.isMetadataMandatory('DisseminationDescription') disabled=action.isMetadataNotRequired('DisseminationDescription') i18nkey="reporting.activityDeliverables.metadata.disseminationDescription"  required=true /]
       </div>
 
       <div id="deliverableStatus" class="halfPartBlock">
@@ -72,7 +72,7 @@
       </div>
       
       <div id="deliverableStatusJustification" class="fullBlock" style="disply:none">
-        [@customForm.textArea name="deliverable.descriptionUpdate" i18nkey="reporting.activityDeliverables.statusJustification" help="reporting.activityDeliverables.statusJustification.help" /]
+        [@customForm.textArea name="deliverable.descriptionUpdate" i18nkey="reporting.activityDeliverables.statusJustification" help="reporting.activityDeliverables.statusJustification.help"  required=true /]
       </div>
           
       <div id="deliverableSubject" class="halfPartBlock" >
@@ -123,7 +123,7 @@
 
        <div id="JournalQuestions" [#if !deliverable.journalArticle]style="display:none"[/#if]>
         <div id="publicationOpenAccess" class="fullBlock accessType">
-          [@customForm.radioButtonGroup name="publication.access" label="" i18nkey="reporting.publications.access" listName="publicationAccessList" keyFieldName="id" displayFieldName="name" help="reporting.publications.access.help"/]
+          [@customForm.radioButtonGroup name="publication.access" label="" i18nkey="reporting.publications.access" listName="publicationAccessList" keyFieldName="id" displayFieldName="name" help="reporting.publications.access.help" required=true /]
         </div>
         
         <div id="publicationJournalIndicators" class="fullBlock ">
@@ -137,7 +137,7 @@
       </div> 
       
       <div id="publicationCitation" class="fullBlock">
-        [@customForm.textArea name="publication.citation" i18nkey="reporting.activityDeliverables.publications.citation" /]
+        [@customForm.textArea name="publication.citation" i18nkey="reporting.activityDeliverables.publications.citation" required=true /]
       </div> 
       
       <div id="ccafsAcknowledge" class="fullBlock verticallyCheckBox">
@@ -145,7 +145,7 @@
       </div>
  
       <div id="publicationRelatedThemes" class="fullBlock">
-        <h6>[@s.text name="reporting.activityDeliverables.publications.outputPublication" help="reporting.activityDeliverables.publications.outputPublication.help"/]</h6>
+        <h6>[@s.text name="reporting.activityDeliverables.publications.outputPublication" help="reporting.activityDeliverables.publications.outputPublication.help" required=true /]</h6>
         <div class="checkboxGroup">
           [@s.fielderror cssClass="fieldError" fieldName="deliverable.publications.themeRelated"/]
           [@s.checkboxlist name="publication.relatedThemes" list="publicationThemeList" value="publication.relatedThemesIds" cssClass="checkbox" /]
@@ -167,7 +167,7 @@
       </div>
 
       <div class="fullBlock">
-        [@customForm.input name="deliverable.accessDetails.qualityProcedures" type="text" i18nkey="reporting.deliverables.dataAccess.dataQuality" /]
+        [@customForm.input name="deliverable.accessDetails.qualityProcedures" type="text" i18nkey="reporting.deliverables.dataAccess.dataQuality"  required=true /]
       </div>
 
       <div id="restrictionImposed" class="fullBlock">
