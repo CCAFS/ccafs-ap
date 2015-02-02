@@ -96,8 +96,10 @@ public class UploadDeliverableAction extends BaseAction {
     file.setSize(this.file.length());
     file.setName(fileFileName);
 
-    fileID = deliverableFileManager.saveDeliverableFile(file, deliverableID);
-    saved = (fileID != -1) ? true : false;
+    if (!deliverableFileManager.existsDeliverableFile(file.getName(), deliverableID)) {
+      fileID = deliverableFileManager.saveDeliverableFile(file, deliverableID);
+      saved = (fileID != -1) ? true : false;
+    }
     return SUCCESS;
   }
 

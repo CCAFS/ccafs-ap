@@ -40,6 +40,11 @@ public class DeliverableFileManagerImpl implements DeliverableFileManager {
   }
 
   @Override
+  public boolean existsDeliverableFile(String fileName, int deliverableID) {
+    return deliverableFileDAO.existsDeliverableFile(fileName, deliverableID);
+  }
+
+  @Override
   public List<DeliverableFile> getDeliverableFiles(int deliverableID) {
     List<DeliverableFile> files = new ArrayList<>();
     List<Map<String, String>> filesData = deliverableFileDAO.getDeliverableFiles(deliverableID);

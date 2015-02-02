@@ -30,6 +30,15 @@ import com.google.inject.ImplementedBy;
 public interface DeliverableFileManager {
 
   /**
+   * This method verifies if exists some deliverable file in the database with the
+   * name received as parameter.
+   * 
+   * @param fileName
+   * @return true if the filename is present in the database. False otherwise.
+   */
+  public boolean existsDeliverableFile(String fileName, int deliverableID);
+
+  /**
    * This method get all the files related with the
    * deliverable identified with the value received a
    * 
