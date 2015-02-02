@@ -3,9 +3,11 @@ package org.cgiar.ccafs.ap.action;
 import org.cgiar.ccafs.ap.config.APConfig;
 import org.cgiar.ccafs.ap.config.APConstants;
 import org.cgiar.ccafs.ap.data.manager.LogframeManager;
+import org.cgiar.ccafs.ap.data.model.BoardMessage;
 import org.cgiar.ccafs.ap.data.model.Logframe;
 import org.cgiar.ccafs.ap.data.model.User;
 
+import java.util.List;
 import java.util.Locale;
 import java.util.Map;
 
@@ -100,6 +102,10 @@ public class BaseAction extends ActionSupport implements Preparable, SessionAwar
     return config.getBaseUrl();
   }
 
+  public List<BoardMessage> getBoardMessages() {
+    return config.getBoardMessages();
+  }
+
   /**
    * Get the current planning logframe based on the variable ccafsap.planning.currentYear which is in the configuration
    * file.
@@ -175,6 +181,10 @@ public class BaseAction extends ActionSupport implements Preparable, SessionAwar
     return config.isSummariesActive();
   }
 
+  public String next() {
+    return NEXT;
+  }
+
   @Override
   public void prepare() throws Exception {
     // So far, do nothing here!
@@ -183,10 +193,6 @@ public class BaseAction extends ActionSupport implements Preparable, SessionAwar
   /* Override this method depending of the save action. */
   public String save() {
     return SUCCESS;
-  }
-
-  public String next() {
-    return NEXT;
   }
 
 
@@ -198,13 +204,13 @@ public class BaseAction extends ActionSupport implements Preparable, SessionAwar
     this.delete = delete;
   }
 
-  public void setSave(boolean save) {
-    this.save = true;
+  public void setNext(boolean next) {
+    this.next = true;
   }
 
 
-  public void setNext(boolean next) {
-    this.next = true;
+  public void setSave(boolean save) {
+    this.save = true;
   }
 
   @Override
