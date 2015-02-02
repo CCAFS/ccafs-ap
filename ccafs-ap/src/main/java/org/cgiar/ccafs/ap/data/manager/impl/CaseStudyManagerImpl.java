@@ -80,6 +80,12 @@ public class CaseStudyManagerImpl implements CaseStudyManager {
       temporalCaseStudy.setPartners(caseStudyData.get("partners"));
       temporalCaseStudy.setLinks(caseStudyData.get("links"));
       temporalCaseStudy.setKeywords(caseStudyData.get("keywords"));
+      temporalCaseStudy.setSubject(caseStudyData.get("subject"));
+      temporalCaseStudy.setContributor(caseStudyData.get("contributor"));
+      temporalCaseStudy.setPublisher(caseStudyData.get("publisher"));
+      temporalCaseStudy.setRelation(caseStudyData.get("relation"));
+      temporalCaseStudy.setCoverage(caseStudyData.get("coverage"));
+      temporalCaseStudy.setRights(caseStudyData.get("rights"));
       temporalCaseStudy.setGlobal(Integer.parseInt(caseStudyData.get("is_global")) == 1);
 
       // Add the object to the list
@@ -171,6 +177,12 @@ public class CaseStudyManagerImpl implements CaseStudyManager {
       csData.put("links", caseStudy.getLinks());
     }
     csData.put("keywords", caseStudy.getKeywords());
+    csData.put("subject", caseStudy.getSubject());
+    csData.put("contributor", caseStudy.getContributor());
+    csData.put("publisher", caseStudy.getPublisher());
+    csData.put("relation", caseStudy.getRelation());
+    csData.put("coverage", caseStudy.getCoverage());
+    csData.put("rights", caseStudy.getRights());
     csData.put("activity_leader_id", activityLeaderId);
     csData.put("logframe_id", logframeId);
     csData.put("is_global", caseStudy.isGlobal());
@@ -179,7 +191,7 @@ public class CaseStudyManagerImpl implements CaseStudyManager {
 
     // If the case study id is not equal to -1, the database return zero as identifier
     // after the record insertion, so, set caseStudyId with its original value
-    caseStudyId = (caseStudy.getId() != -1) ? caseStudy.getId() : caseStudyId;
+    caseStudyId = (caseStudy.getId() < 1) ? caseStudy.getId() : caseStudyId;
 
     // if the case study was successfully saved, save the countries related and the case study types.
     if (caseStudyId >= 0) {
