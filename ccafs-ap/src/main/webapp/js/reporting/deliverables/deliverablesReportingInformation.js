@@ -85,7 +85,7 @@ $(document).ready(function(){
     }).done(function(data){
       $.each(data.result, function(metadata,required){
         var metadata = metadata.replace("{", "").replace("}", "").split("=");
-        adjustMetadataRestrictions(metadata[0], required);
+        adjustMetadataRestrictions(metadata[0]-1, required);
       });
     }).fail(function(){
       alert("Error");
@@ -104,6 +104,7 @@ $(document).ready(function(){
     if (requirements == "Mandatory") {
       $(label).append('<span class="red">*</span>');
     } else if (requirements == "NotRequired") {
+      $input.val("");
       $input.attr("disabled", true);
     }
   }
