@@ -53,6 +53,11 @@
         <script src="${baseUrl}/js/libs/star-rating/jquery.rating.js"></script>
       [/#if]
       
+      [#if libraryName="impromptu"]          
+        <script src="${baseUrl}/js/libs/impromptu/jquery-impromptu.js"></script>
+      [/#if]
+      
+      
    [/#list]
   [/#if]
   

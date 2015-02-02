@@ -1,6 +1,6 @@
 [#ftl]
 [#assign title = "Activity deliverables Data Sharing Report" /]
-[#assign globalLibs = ["jquery", "noty", "dropzone"] /]
+[#assign globalLibs = ["jquery", "noty", "dropzone","impromptu"] /]
 [#assign customJS = ["${baseUrl}/js/reporting/deliverables/deliverablesReportingDataSharing.js" ,"${baseUrl}/js/global/utils.js"] /]
 [#assign currentSection = "reporting" /]
 [#assign currentReportingSection = "activities" /]
@@ -9,6 +9,7 @@
 
 [#include "/WEB-INF/global/pages/header.ftl" /]
 [#include "/WEB-INF/global/pages/main-menu.ftl" /]
+[#import "/WEB-INF/global/macros/utils.ftl" as utilities/]
 [#import "/WEB-INF/global/macros/forms.ftl" as customForm /]
 
 <section class="content">
@@ -30,7 +31,7 @@
       <ul>
        [#if deliverable.files?has_content]
         [#list deliverable.files as file] 
-         <li class="fileUploaded">
+         <li class="fileUploaded"> 
            <input class="fileID" name="deliverable.files[${file_index}].id" type="hidden" value="${file.id}">
            <input class="fileHosted" name="deliverable.files[${file_index}].hosted" type="hidden" value="${file.hosted}">
            <input class="fileLink" name="deliverable.files[${file_index}].link" type="hidden" value="">

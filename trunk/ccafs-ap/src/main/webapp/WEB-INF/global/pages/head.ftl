@@ -72,6 +72,10 @@
           <link rel="stylesheet" type="text/css" href="${baseUrl}/js/libs/star-rating/jquery.rating.css" />
         [/#if]
         
+        [#if libraryName="impromptu"]
+          <link rel="stylesheet" type="text/css" href="${baseUrl}/js/libs/impromptu/jquery-impromptu.css" />
+        [/#if]
+        
   	 [/#list]
   	[/#if]
   	
