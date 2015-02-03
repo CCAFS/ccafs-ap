@@ -172,7 +172,7 @@
       </result>
     </action>
 
-    <action name="publications" class="org.cgiar.ccafs.ap.action.reporting.publications.PublicationsReportingAction">
+    <!-- <action name="publications" class="org.cgiar.ccafs.ap.action.reporting.publications.PublicationsReportingAction">
       <interceptor-ref name="reportingStack" />
       <result name="cancel" type="redirectAction">activities</result>
       <result name="input">/WEB-INF/reporting/publicationsReporting.ftl</result>
@@ -182,7 +182,7 @@
       <result name="next" type="redirectAction">
         <param name="actionName">communications</param>
       </result>
-    </action>
+    </action> -->
 
     <action name="communications" class="org.cgiar.ccafs.ap.action.reporting.communications.CommunicationsReportingAction">
       <interceptor-ref name="reportingStack" />
