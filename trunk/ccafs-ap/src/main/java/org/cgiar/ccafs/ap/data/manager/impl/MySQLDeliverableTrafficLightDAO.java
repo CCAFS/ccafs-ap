@@ -47,7 +47,7 @@ public class MySQLDeliverableTrafficLightDAO implements DeliverableTrafficLightD
   public Map<String, String> getTrafficLightData(int deliverableID) {
     LOG.debug(">> getTrafficLightData()");
     Map<String, String> trafficLightData = new HashMap<>();
-    String query = "SELECT * FROM deliverable_traffic_light";
+    String query = "SELECT * FROM deliverable_traffic_light WHERE deliverable_id = " + deliverableID;
 
     try (Connection con = databaseManager.getConnection()) {
       ResultSet rs = databaseManager.makeQuery(query, con);
