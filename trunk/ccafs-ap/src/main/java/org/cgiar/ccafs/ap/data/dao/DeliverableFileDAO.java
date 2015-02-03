@@ -34,9 +34,9 @@ public interface DeliverableFileDAO {
    * name received as parameter.
    * 
    * @param fileName
-   * @return true if the filename is present in the database. False otherwise.
+   * @return the identifier of the record in the database if exists. -1 Otherwise.
    */
-  boolean existsDeliverableFile(String fileName, int deliverableID);
+  public int existsDeliverableFile(String fileName, int deliverableID);
 
   /**
    * Get all the deliverable files related to the deliverable
@@ -45,7 +45,7 @@ public interface DeliverableFileDAO {
    * @param deliverableID - deliverable identifier
    * @return a list of maps with the information
    */
-  List<Map<String, String>> getDeliverableFiles(int deliverableID);
+  public List<Map<String, String>> getDeliverableFiles(int deliverableID);
 
   /**
    * This method remove from the deliverable file information from the database.
@@ -53,7 +53,7 @@ public interface DeliverableFileDAO {
    * @param deliverableFileID - deliverable file identifier
    * @return true if the record was deleted successfully. False otherwise.
    */
-  boolean removeDeliverableFile(int deliverableFileID);
+  public boolean removeDeliverableFile(int deliverableFileID);
 
   /**
    * This method save in the database the information of the file
@@ -63,6 +63,6 @@ public interface DeliverableFileDAO {
    * @return the id of the record inserted, 0 if the record was
    *         updated or -1 if any error occurred.
    */
-  int saveDeliverableFile(Map<String, Object> fileData);
+  public int saveDeliverableFile(Map<String, Object> fileData);
 
 }
