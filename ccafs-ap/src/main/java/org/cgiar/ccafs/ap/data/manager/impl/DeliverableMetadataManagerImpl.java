@@ -69,7 +69,7 @@ public class DeliverableMetadataManagerImpl implements DeliverableMetadataManage
 
     int c = 0;
     for (DeliverableMetadata dMetadata : deliverableMetadata) {
-      if (dMetadata.getValue() == null || dMetadata.getValue().isEmpty()) {
+      if (dMetadata.getValue() == null) {
         continue;
       }
 
