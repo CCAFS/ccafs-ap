@@ -40,7 +40,7 @@ public class DeliverableFileManagerImpl implements DeliverableFileManager {
   }
 
   @Override
-  public boolean existsDeliverableFile(String fileName, int deliverableID) {
+  public int existsDeliverableFile(String fileName, int deliverableID) {
     return deliverableFileDAO.existsDeliverableFile(fileName, deliverableID);
   }
 

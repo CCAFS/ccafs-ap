@@ -34,9 +34,9 @@ public interface DeliverableFileManager {
    * name received as parameter.
    * 
    * @param fileName
-   * @return true if the filename is present in the database. False otherwise.
+   * @return the identifier of the record in the database if exists. -1 Otherwise.
    */
-  public boolean existsDeliverableFile(String fileName, int deliverableID);
+  public int existsDeliverableFile(String fileName, int deliverableID);
 
   /**
    * This method get all the files related with the

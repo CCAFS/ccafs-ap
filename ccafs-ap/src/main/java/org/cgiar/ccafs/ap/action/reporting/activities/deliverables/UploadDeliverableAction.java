@@ -70,6 +70,7 @@ public class UploadDeliverableAction extends BaseAction {
 
   @Override
   public String execute() throws Exception {
+    boolean fileCopied = false;
     deliverable = deliverableManager.getDeliverable(deliverableID);
     if (!canSubmit || deliverable.getType() == null) {
       saved = false;
@@ -89,17 +90,19 @@ public class UploadDeliverableAction extends BaseAction {
     finalPath.append(deliverableID);
     finalPath.append("/");
 
-    FileManager.copyFile(file, finalPath.toString() + fileFileName);
+    fileCopied = FileManager.copyFile(file, finalPath.toString() + fileFileName);
+
     DeliverableFile file = new DeliverableFile();
     file.setHosted(APConstants.DELIVERABLE_FILE_LOCALLY_HOSTED);
-    file.setId(-1);
     file.setSize(this.file.length());
     file.setName(fileFileName);
 
-    if (!deliverableFileManager.existsDeliverableFile(file.getName(), deliverableID)) {
-      fileID = deliverableFileManager.saveDeliverableFile(file, deliverableID);
-      saved = (fileID != -1) ? true : false;
-    }
+    int deliverableFileID = deliverableFileManager.existsDeliverableFile(file.getName(), deliverableID);
+    file.setId(deliverableFileID);
+
+    fileID = deliverableFileManager.saveDeliverableFile(file, deliverableID);
+    saved = (fileID != -1) && fileCopied ? true : false;
+
     return SUCCESS;
   }
 
