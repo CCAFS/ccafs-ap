@@ -89,6 +89,9 @@
     <action name="uploadDeliverable" class="org.cgiar.ccafs.ap.action.reporting.activities.deliverables.UploadDeliverableAction">
       <interceptor-ref name="reportingStack" />
       <interceptor-ref name="accessibleActivity" />
+      <interceptor-ref name="fileUpload">
+        <param name="maximumSize">314572900</param>
+      </interceptor-ref> 
       <result name="input">/WEB-INF/reporting/deliverables/uploadDeliverableReporting.ftl</result>
       <result name="success">/WEB-INF/reporting/deliverables/uploadDeliverableReporting.ftl</result>
     </action>
@@ -96,6 +99,9 @@
     <action name="deliverablesData" class="org.cgiar.ccafs.ap.action.reporting.activities.deliverables.DeliverableDataReportingAction">
       <interceptor-ref name="reportingStack" />
       <interceptor-ref name="accessibleActivity" />
+      <interceptor-ref name="fileUpload">
+        <param name="maximumSize">314572900</param>
+      </interceptor-ref>
       <result name="cancel" type="redirectAction">
         <param name="actionName">deliverablesList</param>
         <param name="activityID">${activityID}</param>
