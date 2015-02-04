@@ -41,10 +41,8 @@
            <img class="removeInput" src="${baseUrl}/images/global/icon-remove.png" alt="Remove"/>
          </li>
         [/#list]
-       </ul>
-       [#else]
-        </ul>
-         <p class="text">Use the following options to upload deliverable files</p>
+       </ul> 
+       <p class="text" style="display:none">Use the following options to upload here the deliverable files or links</p>
        [/#if] 
     </div>
     

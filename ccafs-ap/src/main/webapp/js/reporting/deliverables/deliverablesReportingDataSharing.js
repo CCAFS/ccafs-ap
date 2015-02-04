@@ -174,6 +174,8 @@ $(document).ready(function(){
       $(element).find(".fileName").attr("title", fileName);
       
     });
+    if ($("form .fileUploaded").length == 0)
+      $("#filesUploaded .text").show();
   }
   
   function checkUrl(url){
