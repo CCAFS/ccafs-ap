@@ -18,6 +18,7 @@ import org.cgiar.ccafs.ap.action.BaseAction;
 import org.cgiar.ccafs.ap.config.APConfig;
 import org.cgiar.ccafs.ap.config.APConstants;
 import org.cgiar.ccafs.ap.data.manager.DeliverableAccessManager;
+import org.cgiar.ccafs.ap.data.manager.DeliverableFileManager;
 import org.cgiar.ccafs.ap.data.manager.DeliverableManager;
 import org.cgiar.ccafs.ap.data.manager.DeliverableMetadataManager;
 import org.cgiar.ccafs.ap.data.manager.DeliverableStatusManager;
@@ -40,8 +41,10 @@ import org.cgiar.ccafs.ap.data.model.PublicationTheme;
 import org.cgiar.ccafs.ap.data.model.PublicationType;
 import org.cgiar.ccafs.ap.data.model.Submission;
 import org.cgiar.ccafs.ap.util.Capitalize;
+import org.cgiar.ccafs.ap.util.FileManager;
 import org.cgiar.ccafs.ap.validation.reporting.activities.deliverables.DeliverableInformationReportingActionValidation;
 
+import java.io.File;
 import java.util.ArrayList;
 import java.util.LinkedHashMap;
 import java.util.List;
@@ -77,14 +80,16 @@ public class DeliverableInformationReportingAction extends BaseAction {
   private PublicationTypeManager publicationTypeManager;
   private PublicationManager publicationManager;
   private SubmissionManager submissionManager;
+  private DeliverableFileManager deliverableFileManager;
 
   // Validation
-  DeliverableInformationReportingActionValidation validator;
+  private DeliverableInformationReportingActionValidation validator;
 
   // Model
   private Deliverable deliverable;
   private Publication publication;
   private int deliverableID;
+  private DeliverableType previousDeliverableType;
   private int activityID;
   private boolean canSubmit;
   private DeliverableType[] deliverableTypes;
@@ -109,12 +114,14 @@ public class DeliverableInformationReportingAction extends BaseAction {
     DeliverableMetadataManager deliverableMetadataManager, DeliverableAccessManager deliverableAccessManager,
     PublicationThemeManager publicationThemeManager, SubmissionManager submissionManager,
     OpenAccessManager openAccessManager, PublicationTypeManager publicationTypeManager,
-    PublicationManager publicationManager, DeliverableInformationReportingActionValidation validator) {
+    DeliverableFileManager deliverableFileManager, PublicationManager publicationManager,
+    DeliverableInformationReportingActionValidation validator) {
     super(config, logframeManager);
     this.deliverableManager = deliverableManager;
     this.deliverableTypeManager = deliverableTypeManager;
     this.deliverableStatusManager = deliverableStatusManager;
     this.deliverableMetadataManager = deliverableMetadataManager;
+    this.deliverableFileManager = deliverableFileManager;
     this.deliverableAccessManager = deliverableAccessManager;
     this.metadataManager = metadataManager;
     this.publicationThemeManager = publicationThemeManager;
@@ -212,12 +219,45 @@ public class DeliverableInformationReportingAction extends BaseAction {
     return false;
   }
 
+  private boolean moveDeliverableFiles() {
+    boolean moved = false, deleted = false;
+
+    StringBuilder basePath = new StringBuilder();
+    basePath.append(config.getDeliverablesFilesPath());
+    basePath.append("/");
+    basePath.append(getCurrentUser().getLeader().getAcronym());
+    basePath.append("/");
+    basePath.append(config.getReportingCurrentYear());
+    basePath.append("/");
+
+    StringBuilder oldPath = new StringBuilder();
+    oldPath.append(basePath.toString());
+    oldPath.append(previousDeliverableType.getName());
+    oldPath.append("/");
+    oldPath.append(deliverableID);
+    oldPath.append("/");
+
+    StringBuilder newPath = new StringBuilder();
+    newPath.append(basePath.toString());
+    newPath.append(deliverable.getType().getName());
+    newPath.append("/");
+
+    File src = new File(oldPath.toString());
+    File dest = new File(newPath.toString());
+    moved = FileManager.copyFolder(src, dest);
+    if (moved) {
+      deleted = FileManager.deleteDirectory(src);
+    }
+
+    return moved && deleted;
+  }
+
+
   @Override
   public String next() {
     save();
     return super.next();
   }
-
 
   @Override
   public void prepare() throws Exception {
@@ -289,6 +329,9 @@ public class DeliverableInformationReportingAction extends BaseAction {
       }
     }
 
+    previousDeliverableType = new DeliverableType(deliverable.getType().getId());
+    previousDeliverableType.setName(deliverable.getType().getName());
+
     /* --------- Checking if the user can submit ------------- */
     Submission submission =
       submissionManager.getSubmission(getCurrentUser().getLeader(), getCurrentReportingLogframe(),
@@ -301,6 +344,15 @@ public class DeliverableInformationReportingAction extends BaseAction {
   public String save() {
     boolean success = true;
     success = success && deliverableManager.addDeliverable(deliverable, activityID);
+
+    // After save the deliverable information we need to check if the deliverable type
+    // was changed in order to re organize the files if exists.
+    if (deliverable.getType().getId() != previousDeliverableType.getId()) {
+      deliverable.setFiles(deliverableFileManager.getDeliverableFiles(deliverable.getId()));
+      if (!deliverable.getFiles().isEmpty()) {
+        moveDeliverableFiles();
+      }
+    }
 
     if (deliverable.isData()) {
       success =
