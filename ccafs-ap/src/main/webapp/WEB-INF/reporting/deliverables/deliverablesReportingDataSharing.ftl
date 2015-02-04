@@ -43,6 +43,9 @@
         [/#list]
        </ul> 
        <p class="text" style="display:none">Use the following options to upload here the deliverable files or links</p>
+       [#else]
+       </ul>
+       <p class="text">Use the following options to upload here the deliverable files or links</p>
        [/#if] 
     </div>
     
