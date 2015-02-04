@@ -16,11 +16,11 @@
       <ol>
         <li>Four kinds of reports are required (where applicable):</li>
         <ul>
-          <li>Report based on Center Annual Activity Plans - deadline <span class="red">31st January</span> of each year.</li>
-          <li>Report for Theme Leaders - deadline <span class="red">15th February</span> of each year.</li>
-          <li>Report for Regional Program Leaders - deadline <span class="red">15th February</span> of each year.</li>
-          <li>Report for Coordinating Unit - deadline <span class="red">24th February</span> of each year.</li>
-        </ul>      
+          <li>Report based on Center Annual Activity Plans - deadline <span class="red">22nd February</span>.</li>
+          <li>Report for Theme Leaders - deadline <span class="red">15th February</span>.</li>
+          <li>Report for Regional Program Leaders - deadline <span class="red">15th February</span>.</li>
+          <li>Report for Coordinating Unit - deadline <span class="red">24th February</span>.</li>
+        </ul>
         <li>Three levels of funding are recognised for annual Activity Plans, each with their specific reporting requirements (based on total budget from Fund Council, bilateral funding and other funding sources):</li>
         <ul>
           <li>Small: < US$1.5 million/annum.</li>
