@@ -36,7 +36,7 @@
       </div>
       
       <div id="deliverableSubtype" class="halfPartBlock">
-        [@customForm.select name="deliverable.type" value="${deliverable.type.id}" i18nkey="reporting.activityDeliverables.subtype" listName="deliverableSubTypes" keyFieldName="id"  displayFieldName="name" required=true className="deliverableSubTypes" /]
+        [@customForm.select name="deliverable.type.id" i18nkey="reporting.activityDeliverables.subtype" listName="deliverableSubTypes" keyFieldName="id"  displayFieldName="name" required=true className="deliverableSubTypes" /]
       </div> 
 
       <div id="deliverableDescription" class="fullBlock ">
