@@ -191,7 +191,7 @@ public class CaseStudyManagerImpl implements CaseStudyManager {
 
     // If the case study id is not equal to -1, the database return zero as identifier
     // after the record insertion, so, set caseStudyId with its original value
-    caseStudyId = (caseStudy.getId() < 1) ? caseStudy.getId() : caseStudyId;
+    caseStudyId = (caseStudyId < 1) ? caseStudy.getId() : caseStudyId;
 
     // if the case study was successfully saved, save the countries related and the case study types.
     if (caseStudyId >= 0) {
