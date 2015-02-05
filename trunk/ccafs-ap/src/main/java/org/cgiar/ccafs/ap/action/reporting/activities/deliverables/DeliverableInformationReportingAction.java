@@ -349,6 +349,7 @@ public class DeliverableInformationReportingAction extends BaseAction {
     // was changed in order to re organize the files if exists.
     if (deliverable.getType().getId() != previousDeliverableType.getId()) {
       deliverable.setFiles(deliverableFileManager.getDeliverableFiles(deliverable.getId()));
+      deliverable.setType(deliverableTypeManager.getDeliverableType(deliverable.getType().getId() + ""));
       if (!deliverable.getFiles().isEmpty()) {
         moveDeliverableFiles();
       }
