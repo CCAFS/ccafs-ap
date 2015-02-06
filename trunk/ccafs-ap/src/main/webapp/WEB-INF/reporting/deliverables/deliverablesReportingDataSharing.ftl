@@ -54,39 +54,40 @@
     <h6>[@s.text name="reporting.activityDeliverables.dataSharing.chooseOptions" /]</h6> 
     <div id="dataSharingOptions">
       <label for="option-1">
-          <input id="option-1" type="radio" name="sharingOption" value="Externally" >
-          [@s.text name="reporting.activityDeliverables.dataSharing.hostedInstitutional" /]
-          <span class="quote">[@s.text name="reporting.activityDeliverables.dataSharing.hostedInstitutional.help" /]</span>
-          
-          <div id="fileURL" class="fullBlock uploadBlock" style="display:none">
-            [@customForm.input name="linkExternally" type="text" i18nkey="reporting.activityDeliverables.filename" value="http://"/]
-            <div id="addFileURL-external" class="addButton addFileURL">[@s.text name="reporting.activityDeliverables.dataSharing.addURL" /]</div>
-          </div> 
+        <input id="option-1" type="radio" name="sharingOption" value="Externally" >
+        [@s.text name="reporting.activityDeliverables.dataSharing.hostedInstitutional" /]
+        <span class="quote">[@s.text name="reporting.activityDeliverables.dataSharing.hostedInstitutional.help" /]</span>
       </label> 
+          
+      <div id="fileURL" class="fullBlock uploadBlock" style="display:none">
+        [@customForm.input name="linkExternally" type="text" i18nkey="reporting.activityDeliverables.filename" value="http://"/]
+        <div id="addFileURL-external" class="addButton addFileURL">[@s.text name="reporting.activityDeliverables.dataSharing.addURL" /]</div>
+      </div> 
       
       <label for="option-2">
-          <input id="option-2" type="radio" name="sharingOption" value="To download" >
-          [@s.text name="reporting.activityDeliverables.dataSharing.fileGreater" /]
-          <span class="quote">[@s.text name="reporting.activityDeliverables.dataSharing.fileGreater.help" /]</span>
-          
-          <div id="fileURL" class="fullBlock uploadBlock" style="display:none">
-            [@customForm.input name="linkLocally" type="text" i18nkey="reporting.activityDeliverables.filename" value="http://" /]
-            <div id="addFileURL-ccafs" class="addButton addFileURL">[@s.text name="reporting.activityDeliverables.dataSharing.addURL" /]</div>
-          </div> 
+        <input id="option-2" type="radio" name="sharingOption" value="To download" >
+        [@s.text name="reporting.activityDeliverables.dataSharing.fileGreater" /]
+        <span class="quote">[@s.text name="reporting.activityDeliverables.dataSharing.fileGreater.help" /]</span>
       </label> 
+          
+      <div id="fileURL" class="fullBlock uploadBlock" style="display:none">
+        [@customForm.input name="linkLocally" type="text" i18nkey="reporting.activityDeliverables.filename" value="http://" /]
+        <div id="addFileURL-ccafs" class="addButton addFileURL">[@s.text name="reporting.activityDeliverables.dataSharing.addURL" /]</div>
+      </div> 
       
       <label for="option-3">
-          <input id="option-3" type="radio" name="sharingOption" value="Locally" >
-          [@s.text name="reporting.activityDeliverables.dataSharing.fileSmaller" /]
-          <span class="quote">[@s.text name="reporting.activityDeliverables.dataSharing.fileSmaller.help" /]</span>
-          
-          [#-- This is used for run a JQuery (dropzone) plugin to drag and drop deliverables files--]
-          <div id="dragAndDrop" class="dropzone uploadBlock" style="display:none">
-            <div class="fallback"> 
-              <div id="addFileInput" class="addButton">[@s.text name="reporting.activityDeliverables.dataSharing.addFile" /]</div>
-            </div>
-          </div>
+        <input id="option-3" type="radio" name="sharingOption" value="Locally" >
+        [@s.text name="reporting.activityDeliverables.dataSharing.fileSmaller" /]
+        <span class="quote">[@s.text name="reporting.activityDeliverables.dataSharing.fileSmaller.help" /]</span>
       </label> 
+      
+      [#-- This is used for run a JQuery (dropzone) plugin to drag and drop deliverables files--]
+      <div id="dragAndDrop" class="dropzone uploadBlock" style="display:none">
+        <div class="fallback"> 
+          <div id="addFileInput" class="addButton">[@s.text name="reporting.activityDeliverables.dataSharing.addFile" /]</div>
+        </div>
+      </div>
+      
     </div>  
      
    

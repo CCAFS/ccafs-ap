@@ -31,7 +31,7 @@ $(document).ready(function(){
   function checkOption(){
     var $optionSelectd = $('#dataSharingOptions input[type=radio]:checked');
     $(".uploadBlock").hide();
-    $optionSelectd.parent().find(".uploadBlock").fadeIn();
+    $optionSelectd.parent().next().fadeIn();
   }
   
   function addDropzone(){
