@@ -215,6 +215,8 @@
     <input name="deliverableID" type="hidden" value="${deliverable.id?c}" />
     [#if publication?has_content]
       <input type="hidden" name="publication.id" value="${publication.id}" />
+    [#else]
+      <input type="hidden" name="publication.id" value="-1" />
     [/#if] 
     
     [#if canSubmit]

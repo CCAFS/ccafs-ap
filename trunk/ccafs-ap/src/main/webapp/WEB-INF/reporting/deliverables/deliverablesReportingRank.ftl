@@ -53,33 +53,31 @@
       </table> 
     </div>
     
-    [#if deliverable.data]
-      <h6>[@s.text name="reporting.activityDeliverables.ranking.rankDeliverable" /]</h6>
-      <div class="borderBox">
-        <p>[@s.text name="reporting.activityDeliverables.ranking.rankDeliverableText" /]</p>
-        <div id="rankingBlock" style="text-align:center;"> 
-          [#assign score = deliverable.getScoreByLeader(activityLeaderID) /]
-          <input class="hover-star required" type="radio" name="deliverable.scores[${activityLeaderID}]" value="1" [#if score == 1] checked [/#if] title="[@s.text name='reporting.activityDeliverables.ranking.level.notImportant' /]"/>
-          <input class="hover-star" type="radio" name="deliverable.scores[${activityLeaderID}]" value="2" [#if score == 2] checked [/#if] title="[@s.text name='reporting.activityDeliverables.ranking.level.important' /]"/>
-          <input class="hover-star" type="radio" name="deliverable.scores[${activityLeaderID}]" value="3" [#if score == 3] checked [/#if] title="[@s.text name='reporting.activityDeliverables.ranking.level.veryImportant' /]" />
-          <div id="hover-test" style=""></div> 
-          <div class="clearfix"></div>
-        </div>
-       
+    <h6>[@s.text name="reporting.activityDeliverables.ranking.rankDeliverable" /]</h6>
+    <div class="borderBox">
+      <p>[@s.text name="reporting.activityDeliverables.ranking.rankDeliverableText" /]</p>
+      <div id="rankingBlock" style="text-align:center;"> 
+        [#assign score = deliverable.getScoreByLeader(activityLeaderID) /]
+        <input class="hover-star required" type="radio" name="deliverable.scores[${activityLeaderID}]" value="1" [#if score == 1] checked [/#if] title="[@s.text name='reporting.activityDeliverables.ranking.level.notImportant' /]"/>
+        <input class="hover-star" type="radio" name="deliverable.scores[${activityLeaderID}]" value="2" [#if score == 2] checked [/#if] title="[@s.text name='reporting.activityDeliverables.ranking.level.important' /]"/>
+        <input class="hover-star" type="radio" name="deliverable.scores[${activityLeaderID}]" value="3" [#if score == 3] checked [/#if] title="[@s.text name='reporting.activityDeliverables.ranking.level.veryImportant' /]" />
+        <div id="hover-test" style=""></div> 
+        <div class="clearfix"></div>
       </div>
-    
-      <div id="rate-legend">
-        <ul>
-          <li><strong>[@s.text name='reporting.activityDeliverables.ranking.level.veryImportant' /] </strong> -
-          [@s.text name='reporting.activityDeliverables.ranking.level.veryImportant.help' /] </li>
-          <li><strong>[@s.text name='reporting.activityDeliverables.ranking.level.important' /] </strong> -
-          [@s.text name='reporting.activityDeliverables.ranking.level.important.help' /] </li>
-          <li><strong>[@s.text name='reporting.activityDeliverables.ranking.level.notImportant' /] </strong> -
-          [@s.text name='reporting.activityDeliverables.ranking.level.notImportant.help' /] </li>
-        </ul>
-      </div>
-    [/#if]
      
+    </div>
+  
+    <div id="rate-legend">
+      <ul>
+        <li><strong>[@s.text name='reporting.activityDeliverables.ranking.level.veryImportant' /] </strong> -
+        [@s.text name='reporting.activityDeliverables.ranking.level.veryImportant.help' /] </li>
+        <li><strong>[@s.text name='reporting.activityDeliverables.ranking.level.important' /] </strong> -
+        [@s.text name='reporting.activityDeliverables.ranking.level.important.help' /] </li>
+        <li><strong>[@s.text name='reporting.activityDeliverables.ranking.level.notImportant' /] </strong> -
+        [@s.text name='reporting.activityDeliverables.ranking.level.notImportant.help' /] </li>
+      </ul>
+    </div>
+   
     
     <!-- internal parameter -->
     <input name="activityID" type="hidden" value="${activityID}" />

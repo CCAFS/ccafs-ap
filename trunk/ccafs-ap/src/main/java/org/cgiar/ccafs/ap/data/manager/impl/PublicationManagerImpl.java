@@ -184,18 +184,18 @@ public class PublicationManagerImpl implements PublicationManager {
   public boolean savePublications(List<Publication> publications, Logframe logframe, Leader leader) {
     for (Publication publication : publications) {
       Map<String, String> pubData = new HashMap<>();
-      if (publication.getId() != -1) {
+      if (publication.getId() < -1) {
         pubData.put("id", publication.getId() + "");
       } else {
         pubData.put("id", null);
       }
 
-      if (publication.getPublicationType().getId() < 1) {
+      if (publication.getPublicationType() == null || publication.getPublicationType().getId() < 1) {
         pubData.put("publication_type_id", null);
       } else {
         pubData.put("publication_type_id", publication.getPublicationType().getId() + "");
       }
-      if (publication.getIdentifier() != null && publication.getIdentifier().isEmpty()) {
+      if (publication.getIdentifier() == null || publication.getIdentifier().isEmpty()) {
         pubData.put("identifier", null);
       } else {
         pubData.put("identifier", publication.getIdentifier());
@@ -212,7 +212,7 @@ public class PublicationManagerImpl implements PublicationManager {
       pubData.put("earth_system_coauthor", publication.isEarthSystemCoauthor() ? "1" : "0");
 
       pubData.put("citation", publication.getCitation());
-      if (publication.getFileUrl() != null && publication.getFileUrl().isEmpty()) {
+      if (publication.getFileUrl() == null || publication.getFileUrl().isEmpty()) {
         pubData.put("file_url", null);
       } else {
         pubData.put("file_url", publication.getFileUrl());
