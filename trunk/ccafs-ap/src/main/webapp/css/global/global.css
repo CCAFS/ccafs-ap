@@ -789,8 +789,8 @@ a.currentReportingSection li #i-additionalInformation{
 /****** REPORTING **********/
 /********* Activity Reporting Sub Menu **********/
 #stageMenu {
-  display: block;
-  margin: 12px;
+  display: table;
+  margin: 0 auto;
   text-align: center;
 }
 
