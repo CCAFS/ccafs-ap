@@ -14,10 +14,12 @@
         [@s.url action='deliverablesData' includeParams='get'][/@s.url]
       ">[@s.text name="menu.activitiesReporting.submenu.deliverable.dataSharing" /]
     </a></li>
-    <li [#if currentStage == "ranking"] class="currentReportingSection" [/#if]><a href="
-        [@s.url action='deliverablesRank' includeParams='get'][/@s.url]
-      ">[@s.text name="menu.activitiesReporting.submenu.deliverable.ranking" /]
-    </a></li>
+    [#if deliverable.data]
+      <li [#if currentStage == "ranking"] class="currentReportingSection" [/#if]><a href="
+          [@s.url action='deliverablesRank' includeParams='get'][/@s.url]
+        ">[@s.text name="menu.activitiesReporting.submenu.deliverable.ranking" /]
+      </a></li>
+    [/#if]
   </ul>
   <div class="clearfix"></div>
 </nav>
