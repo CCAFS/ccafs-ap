@@ -5,11 +5,6 @@ $(document).ready(function(){
   // Check deliverable status to justification
   checkDeliverableStatus();
   
-  // Check if deliverable type is a publication
-  if (isNewDelverable) {
-    checkDeliverableType();
-  }
-  
   // Check if there be data access restriction imposed
   checkRestrictionImposed();
   
