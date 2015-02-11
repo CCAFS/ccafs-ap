@@ -66,6 +66,10 @@ function applyWordCounter($textArea,wordCount){
 function word_count(field){
   var value = $(field).val();
   var regex = /\s+/gi;
-  var wordCount = value.trim().replace(regex, ' ').split(' ').length;
-  return wordCount;
+  var arrayValue = value.trim().replace(regex, ' ').split(' ');
+  var wordCount = arrayValue.length;
+  if (arrayValue[0] == 0)
+    return 0;
+  else
+    return wordCount;
 }
