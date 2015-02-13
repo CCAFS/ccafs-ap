@@ -157,6 +157,14 @@ public abstract class Deliverable {
     return year;
   }
 
+  public boolean isComplete() {
+    if (status == null) {
+      return false;
+    } else {
+      return status.getName().equals("Complete");
+    }
+  }
+
   public boolean isData() {
     if (type == null) {
       return false;
@@ -186,6 +194,16 @@ public abstract class Deliverable {
       return type.getId() == APConstants.DELIVERABLE_TYPE_PUBLICATION;
     } else {
       return type.getParent().getId() == APConstants.DELIVERABLE_TYPE_PUBLICATION;
+    }
+  }
+
+  public boolean isTool() {
+    if (type == null) {
+      return false;
+    } else if (type.getParent() == null) {
+      return type.getId() == APConstants.DELIVERABLE_TYPE_TOOLS;
+    } else {
+      return type.getParent().getId() == APConstants.DELIVERABLE_TYPE_TOOLS;
     }
   }
 
