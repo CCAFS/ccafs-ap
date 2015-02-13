@@ -52,6 +52,7 @@ public class BoardMessageManagerImpl implements BoardMessageManager {
       BoardMessage boardMessage = new BoardMessage();
       boardMessage.setId(Integer.parseInt(boardMessageData.get("id")));
       boardMessage.setMessage(boardMessageData.get("message"));
+      boardMessage.setType(boardMessageData.get("type"));
       boardMessage.setCreated(Long.parseLong(boardMessageData.get("created")));
 
       boardMessageList.add(boardMessage);

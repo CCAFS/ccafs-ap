@@ -80,6 +80,15 @@ margin-bottom: 0.5em;
   font-style: italic;
 }
 
+.note-urgent {
+  background-color: #FFF7CF;
+  padding: 5px;
+  text-align: center;
+  font-style: italic;
+  position: fixed;
+  width: 100%;
+}
+
 ul.fieldError li {
   color: red;
   list-style-type: none;
