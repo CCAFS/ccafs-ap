@@ -1,12 +1,7 @@
 [#ftl]
 [#list boardMessages as bm]
-
-  [#if bm.urgent]
-    <p class="note-urgent">
-  [#else]
-    <p class="note">
-  [/#if]
-      ${bm.message}
-  </p>
+  <div class="note [#if bm.urgent]note-urgent[/#if]"> 
+      [#if bm.urgent]<img src="${baseUrl}/images/global/alert.gif"> [/#if] <p>${bm.message}</p>
+  </div>
   
 [/#list]
