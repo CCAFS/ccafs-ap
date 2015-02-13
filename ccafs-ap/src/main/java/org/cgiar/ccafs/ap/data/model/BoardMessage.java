@@ -25,6 +25,7 @@ public class BoardMessage {
 
   private int id;
   private String message;
+  private String type;
   private long created;
 
   public BoardMessage() {
@@ -43,18 +44,21 @@ public class BoardMessage {
     return false;
   }
 
-
   public long getCreated() {
     return created;
   }
-
 
   public int getId() {
     return id;
   }
 
+
   public String getMessage() {
     return message;
+  }
+
+  public String getType() {
+    return type;
   }
 
   @Override
@@ -62,10 +66,13 @@ public class BoardMessage {
     return id;
   }
 
+  public boolean isUrgent() {
+    return type.equals("urgent");
+  }
+
   public void setCreated(long created) {
     this.created = created;
   }
-
 
   public void setId(int id) {
     this.id = id;
@@ -76,10 +83,12 @@ public class BoardMessage {
     this.message = message;
   }
 
+  public void setType(String type) {
+    this.type = type;
+  }
 
   @Override
   public String toString() {
     return ToStringBuilder.reflectionToString(this);
   }
-
 }

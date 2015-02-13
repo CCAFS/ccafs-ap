@@ -58,6 +58,7 @@ public class MySQLBoardMessageDAO implements BoardMessageDAO {
         Map<String, String> boardMessageData = new HashMap<String, String>();
         boardMessageData.put("id", rs.getString("id"));
         boardMessageData.put("message", rs.getString("message"));
+        boardMessageData.put("type", rs.getString("type"));
         boardMessageData.put("created", rs.getTimestamp("created").getTime() + "");
 
         boardMessagesDataList.add(boardMessageData);
