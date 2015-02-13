@@ -34,6 +34,10 @@ public class Publication extends Deliverable {
     return super.getId();
   }
 
+  public DeliverableType getDeliverableType() {
+    return super.getType();
+  }
+
   public String getFileUrl() {
     return fileUrl;
   }

@@ -25,6 +25,17 @@
         <param name="contentDisposition">filename="${fileName}"</param>
        </result>
    </action>
+   
+   <action class="org.cgiar.ccafs.ap.action.summaries.InstitutionalSummaryAction" name="institutional">
+    <interceptor-ref name="reportingStack" />
+      <!--  <result name="input">/WEB-INF/summaries/institutionalSummaries.ftl</result>   -->
+      <result name="input" type="stream">
+        <param name="inputName">inputStream</param>
+        <param name="contentType">application/pdf</param>
+         <param name="contentDisposition">attachment;filename="test.pdf"</param>
+        <param name="contentDisposition">filename="${fileName}"</param>
+       </result>
+   </action>
 
 	 <action class="org.cgiar.ccafs.ap.action.summaries.OutcomesSummaryAction" name="outcomes">
     <interceptor-ref name="reportingStack" />
