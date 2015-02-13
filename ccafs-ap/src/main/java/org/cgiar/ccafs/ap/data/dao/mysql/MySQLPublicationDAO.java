@@ -73,7 +73,7 @@ public class MySQLPublicationDAO implements PublicationDAO {
     try (Connection connection = dbManager.getConnection()) {
       String query =
         "SELECT p.id, p.identifier, p.citation, p.file_url, p.isi_publication, p.nars_coauthor, "
-          + "p.earth_system_coauthor, p.ccafs_acknowledge, pt.id as 'publication_type_id', "
+          + "p.earth_system_coauthor, p.ccafs_acknowledge, p.deliverable_id, pt.id as 'publication_type_id', "
           + "pt.name as 'publication_type_name', oa.id as 'publication_access_id', "
           + "oa.name as 'publication_access_name' " + "FROM publications p "
           + "INNER JOIN publication_types pt ON pt.id = p.publication_type_id "
@@ -87,6 +87,7 @@ public class MySQLPublicationDAO implements PublicationDAO {
         publicationData.put("citation", rs.getString("citation"));
         publicationData.put("file_url", rs.getString("file_url"));
         publicationData.put("ccafs_acknowledge", rs.getString("ccafs_acknowledge"));
+        publicationData.put("deliverable_id", rs.getString("deliverable_id"));
         publicationData.put("isi_publication", rs.getString("isi_publication"));
         publicationData.put("nars_coauthor", rs.getString("nars_coauthor"));
         publicationData.put("earth_system_coauthor", rs.getString("earth_system_coauthor"));

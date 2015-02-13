@@ -121,7 +121,9 @@ public class PublicationManagerImpl implements PublicationManager {
       } else {
         publication.setCcafsAcknowledge(false);
       }
-
+      if (pubData.get("deliverable_id") != null) {
+        publication.setDeliverableID(Integer.parseInt(pubData.get("deliverable_id")));
+      }
       if (pubData.get("isi_publication") != null) {
         publication.setIsiPublication(pubData.get("isi_publication").equals("1"));
       } else {
