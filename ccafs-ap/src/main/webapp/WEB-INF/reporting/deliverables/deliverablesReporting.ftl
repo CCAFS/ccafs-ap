@@ -156,8 +156,8 @@
     
     
     [#-- Deliverable Data access questions --]
-  <h1 class="contentTitle dataAccessQuestions" [#if !isNewDeliverable || !deliverable.data]style="display:none"[/#if]>[@s.text name="reporting.activityDeliverables.deliverableDataAccess" /] </h1> 
-    <div class="dataAccessQuestions borderBox" id="dataAccessQuestions" class="fullBlock borderBox" [#if !isNewDeliverable || !deliverable.data]style="display:none"[/#if]>
+  <h1 class="contentTitle dataAccessQuestions" [#if !deliverable.data]style="display:none"[/#if]>[@s.text name="reporting.activityDeliverables.deliverableDataAccess" /] </h1> 
+    <div class="dataAccessQuestions borderBox" id="dataAccessQuestions" class="fullBlock borderBox" [#if !deliverable.data]style="display:none"[/#if]>
       
       <div id="" class="fullBlock">
         <h6>[@s.text name="reporting.deliverables.dataAccess.dataDictionary" /]</h6>

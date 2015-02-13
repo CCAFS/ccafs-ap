@@ -5,11 +5,14 @@ import org.cgiar.ccafs.ap.config.APConfig;
 import org.cgiar.ccafs.ap.config.APConstants;
 import org.cgiar.ccafs.ap.data.manager.ActivityManager;
 import org.cgiar.ccafs.ap.data.manager.LogframeManager;
+import org.cgiar.ccafs.ap.data.manager.PublicationManager;
 import org.cgiar.ccafs.ap.data.manager.SubmissionManager;
 import org.cgiar.ccafs.ap.data.model.Activity;
 import org.cgiar.ccafs.ap.data.model.ActivityPartner;
 import org.cgiar.ccafs.ap.data.model.Deliverable;
+import org.cgiar.ccafs.ap.data.model.Publication;
 import org.cgiar.ccafs.ap.data.model.Submission;
+import org.cgiar.ccafs.ap.validation.reporting.activities.deliverables.DeliverableInformationReportingActionValidation;
 
 import java.util.List;
 
@@ -27,18 +30,23 @@ public class ActivitiesReportingAction extends BaseAction {
   // Managers
   protected ActivityManager activityManager;
   private SubmissionManager submissionManager;
+  private DeliverableInformationReportingActionValidation validator;
 
   // Model
   private Activity[] currentActivities;
   private String[] activityStatuses;
   private boolean canSubmit;
+  private PublicationManager publicationManager;
 
   @Inject
   public ActivitiesReportingAction(APConfig config, LogframeManager logframeManager, ActivityManager activityManager,
-    SubmissionManager submissionManager) {
+    SubmissionManager submissionManager, DeliverableInformationReportingActionValidation validator,
+    PublicationManager publicationManager) {
     super(config, logframeManager);
     this.activityManager = activityManager;
     this.submissionManager = submissionManager;
+    this.validator = validator;
+    this.publicationManager = publicationManager;
   }
 
   /**
@@ -62,11 +70,13 @@ public class ActivitiesReportingAction extends BaseAction {
       Deliverable deliverable;
       for (int c = 0; !problem && c < deliverables.size(); c++) {
         deliverable = deliverables.get(c);
-        if (deliverable.getType().getId() == 1 || deliverable.getType().getId() == 4) {
-          if (deliverable.getFileFormats().size() == 0) {
-            problem = true;
-            problemDescription += getText("reporting.activityList.missingDeliverable");
-          }
+        Publication publication =
+          (deliverable.isPublication()) ? publicationManager.getPublicationByDeliverableID(deliverable.getId())
+            : new Publication();
+        validator.validate(deliverable, publication);
+        if (!validator.isValid()) {
+          problem = true;
+          problemDescription += getText("reporting.activityList.missingDeliverable");
         }
       }
     }

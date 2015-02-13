@@ -100,7 +100,6 @@ public class DeliverableInformationReportingAction extends BaseAction {
   private Map<String, String> accessLimitsRadio;
   private List<Metadata> metadataList;
   private Map<String, String> publicationThemeList;
-  private StringBuilder validationMessage;
   // This array contains the publication types which need an access type specification.
   private int[] publicationTypeAccessNeed;
   private OpenAccess[] publicationAccessList;
@@ -372,11 +371,11 @@ public class DeliverableInformationReportingAction extends BaseAction {
     }
 
     if (success) {
-      if (validationMessage.toString().isEmpty()) {
+      if (validator.isValid()) {
         addActionMessage(getText("saving.success", new String[] {getText("reporting.activityDeliverables")}));
       } else {
         String finalMessage = getText("saving.success", new String[] {getText("reporting.activityDeliverables")});
-        finalMessage += getText("saving.keepInMind", new String[] {validationMessage.toString()});
+        finalMessage += getText("saving.keepInMind", new String[] {validator.getValidationMessage()});
         addActionWarning(Capitalize.capitalizeString(finalMessage));
       }
       return SUCCESS;
@@ -413,6 +412,8 @@ public class DeliverableInformationReportingAction extends BaseAction {
 
   @Override
   public void validate() {
-    validationMessage = new StringBuilder();
+    if (save) {
+      validator.validate(deliverable, publication);
+    }
   }
 }
