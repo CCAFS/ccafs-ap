@@ -14,7 +14,7 @@
         [@s.url action='deliverablesData' includeParams='get'][/@s.url]
       ">[@s.text name="menu.activitiesReporting.submenu.deliverable.dataSharing" /]
     </a></li>
-    [#if deliverable.data]
+    [#if (deliverable.data || deliverable.tool) && deliverable.complete ]
       <li [#if currentStage == "ranking"] class="currentReportingSection" [/#if]><a href="
           [@s.url action='deliverablesRank' includeParams='get'][/@s.url]
         ">[@s.text name="menu.activitiesReporting.submenu.deliverable.ranking" /]
