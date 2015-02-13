@@ -92,15 +92,11 @@ $(document).ready(function(){
     var label = $input.prev().find("label");
     
     // First remove all the formating
-    $input.attr("disabled", false);
     $(label).find("span").remove();
 
     // Then apply as required
     if (requirements == "Mandatory") {
       $(label).append('<span class="red">*</span>');
-    } else if (requirements == "NotRequired") {
-      $input.val("");
-      $input.attr("disabled", true);
     }
   }
   
