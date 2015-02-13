@@ -37,6 +37,7 @@ import org.cgiar.ccafs.ap.data.model.Submission;
 import org.cgiar.ccafs.ap.data.model.TLOutputSummary;
 import org.cgiar.ccafs.ap.util.Capitalize;
 import org.cgiar.ccafs.ap.util.SendMail;
+import org.cgiar.ccafs.ap.validation.reporting.activities.deliverables.DeliverableInformationReportingActionValidation;
 
 import java.util.List;
 
@@ -66,6 +67,7 @@ public class SubmitAction extends BaseAction {
   private TLOutputSummaryManager tlOutputManager;
   private SubmissionManager submissionManager;
   private MilestoneReportManager milestoneReportManager;
+  private DeliverableInformationReportingActionValidation validator;
 
   // Model
   private List<CaseStudy> caseStudies;
@@ -90,7 +92,8 @@ public class SubmitAction extends BaseAction {
     OutputSummaryManager outputSummaryManager, RPLSynthesisReportManager synthesisReportManager,
     TLOutputSummaryManager tlOutputManager, SubmissionManager submissionManager,
     MilestoneReportManager milestoneReportManager, ActivityManager activityManager,
-    CaseStudyCountriesManager caseStudyCountriesManager, CaseStudyTypeManager caseStudyTypeManager) {
+    CaseStudyCountriesManager caseStudyCountriesManager, CaseStudyTypeManager caseStudyTypeManager,
+    DeliverableInformationReportingActionValidation validator) {
     super(config, logframeManager);
     this.caseStudyManager = caseStudyManager;
     this.communicationManager = communicationManager;
@@ -106,60 +109,102 @@ public class SubmitAction extends BaseAction {
     this.activityManager = activityManager;
     this.caseStudyCountriesManager = caseStudyCountriesManager;
     this.caseStudyTypeManager = caseStudyTypeManager;
+    this.validator = validator;
 
     validationMessage = new StringBuilder();
   }
 
   private void activitiesValidation() {
+    StringBuilder activityMessage;
+    boolean activityMissing;
+
     for (Activity activity : activities) {
+      int missingCounter = 1;
+      activityMessage = new StringBuilder();
+      activityMissing = false;
+
+      activityMessage.append("For the activity ");
+      activityMessage.append(activity.getActivityId());
+      activityMessage.append(" you should fill: ");
 
       /* Activity Status */
-      boolean problem = false;
       if (activity.getStatusDescription() == null || activity.getStatusDescription().isEmpty()) {
-        validationMessage.append(getText("reporting.validation.activity.status",
-          new String[] {String.valueOf(activity.getId())})
-          + ", ");
+        activityMessage.append(missingCounter);
+        activityMessage.append("- The activity status; ");
+        missingCounter++;
       }
 
       /* Deliverables */
-      problem = false;
       List<Deliverable> deliverables = activity.getDeliverables();
       if (activity.getDeliverables() != null) {
         Deliverable deliverable;
-        for (int c = 0; !problem && c < deliverables.size(); c++) {
+        for (int c = 0; c < deliverables.size(); c++) {
           deliverable = deliverables.get(c);
-          if (deliverable.getType().getId() == 1 || deliverable.getType().getId() == 4) {
-            if (deliverable.getFileFormats().size() == 0) {
-              problem = true;
-            }
+          Publication publication =
+            (deliverable.isPublication()) ? publicationManager.getPublicationByDeliverableID(deliverable.getId())
+              : new Publication();
+          validator.validate(deliverable, publication);
+          if (!validator.isValid()) {
+            activityMissing = true;
+
+            activityMessage.append(missingCounter);
+            activityMessage.append("- The information of the deliverable #");
+            activityMessage.append(c + 1);
+            activityMessage.append(" ( ");
+            activityMessage.append(validator.getValidationMessage());
+            activityMessage.append(" ); ");
+            missingCounter++;
           }
         }
-      }
-
-      if (problem) {
-        validationMessage.append(getText("reporting.validation.activity.deliverableFileFormat",
-          new String[] {String.valueOf(activity.getId())})
-          + ", ");
       }
 
       /* Partners */
-      problem = false;
       List<ActivityPartner> activityPartners = activity.getActivityPartners();
       if (activityPartners != null) {
         ActivityPartner activityPartner;
-        for (int c = 0; !problem && c < activityPartners.size(); c++) {
+        for (int c = 0; c < activityPartners.size(); c++) {
+          boolean partnerValid = true;
           activityPartner = activityPartners.get(c);
-          if (activityPartner.getContactName() == null || activityPartner.getContactName().isEmpty()
-            || activityPartner.getContactEmail() == null || activityPartner.getContactEmail().isEmpty()) {
-            problem = true;
+
+          // Contact name
+          if (activityPartner.getContactName() == null || activityPartner.getContactName().isEmpty()) {
+            if (partnerValid) {
+              activityMessage.append(missingCounter);
+              activityMessage.append("- The information of the partner #");
+              activityMessage.append(c + 1);
+              activityMessage.append(" ( ");
+
+              partnerValid = false;
+            }
+
+            activityMessage.append(" Contact name, ");
+            activityMissing = true;
+          }
+
+          // Contact email
+          if (activityPartner.getContactEmail() == null || activityPartner.getContactEmail().isEmpty()) {
+            if (partnerValid) {
+              activityMessage.append(missingCounter);
+              activityMessage.append("- The information of the partner #");
+              activityMessage.append(c + 1);
+              activityMessage.append(" ( ");
+
+              partnerValid = false;
+            }
+
+            activityMessage.append(" Contact email, ");
+            activityMissing = true;
+          }
+
+          if (!partnerValid) {
+            activityMessage.append(" ); ");
           }
         }
       }
 
-      if (problem) {
-        validationMessage.append(getText("reporting.validation.activity.partners",
-          new String[] {String.valueOf(activity.getId())})
-          + ", ");
+      if (activityMissing) {
+        validationMessage.append(activityMessage.toString());
+        validationMessage.append("  -- / -- ");
       }
     }
   }
@@ -330,14 +375,21 @@ public class SubmitAction extends BaseAction {
   private void outputsValidation() {
     boolean missingDescription = false;
 
+    StringBuilder message = new StringBuilder();
     for (OutputSummary os : outputSummaries) {
+
       if (os.getDescription() == null || os.getDescription().isEmpty()) {
+        String outputCode =
+          os.getOutput().getCode() + "." + os.getOutput().getObjective().getCode() + "."
+            + os.getOutput().getObjective().getTheme().getCode();
+        message.append("Output " + outputCode + ", ");
         missingDescription = true;
       }
     }
 
     if (missingDescription) {
-      validationMessage.append(getText("reporting.tlOutputSummaries.validation") + ", ");
+      validationMessage.append(" Fill the summary by outputs section (" + message.toString() + ").");
+      validationMessage.append(" -- / --");
     }
   }
 
@@ -489,7 +541,8 @@ public class SubmitAction extends BaseAction {
       String subject;
       subject = "[CCAFS P&R] " + getCurrentUser().getLeader().getAcronym() + " has sent its technical report";
 
-      String recipients = "g.c.rengifo@cgiar.org d.abreu@cgiar.org h.f.tobon@cgiar.org h.d.carvajal@cgiar.org";
+      String recipients = "d.abreu@cgiar.org h.f.tobon@cgiar.org h.d.carvajal@cgiar.org";
+      // String recipients = "h.d.carvajal@cgiar.org";
 
       StringBuilder message = new StringBuilder();
       message.append("The user " + getCurrentUser().getName() + " ");
@@ -515,7 +568,7 @@ public class SubmitAction extends BaseAction {
 
     if (!validationMessage.toString().isEmpty()) {
       validationMessage.setCharAt(validationMessage.lastIndexOf(","), '.');
-      addActionError(getText("submit.error") + " " + Capitalize.capitalizeString(validationMessage.toString()));
+      addActionWarning(getText("submit.error") + " " + Capitalize.capitalizeString(validationMessage.toString()));
       return INPUT;
     }
 

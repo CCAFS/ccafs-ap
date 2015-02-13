@@ -339,7 +339,7 @@
       </result>
     </action>
     
-    <action name="submit" class="org.cgiar.ccafs.ap.action.reporting.SubmitAction">
+    <action name="submit" class="org.cgiar.ccafs.ap.action.reporting.SubmitAction" method="submit">
       <interceptor-ref name="reportingStack" />
       <result name="input" type="redirectAction">
         <param name="actionName">activities</param>

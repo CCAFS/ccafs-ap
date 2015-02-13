@@ -45,7 +45,6 @@ public class DeliverableInformationReportingActionValidation extends BaseValidat
   @Inject
   public DeliverableInformationReportingActionValidation(MetadataManager metadataManager) {
     this.metadataManager = metadataManager;
-    validationMessage = new StringBuilder();
   }
 
   private void addMessage(String fieldName) {
@@ -81,6 +80,7 @@ public class DeliverableInformationReportingActionValidation extends BaseValidat
 
   public void validate(Deliverable deliverable, Publication publication) {
     isValid = true;
+    validationMessage = new StringBuilder();
 
     validateMetadata(deliverable);
 
