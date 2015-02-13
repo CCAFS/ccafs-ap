@@ -57,7 +57,9 @@ public class DeliverableInformationReportingActionValidation extends BaseValidat
 
   public String getValidationMessage() {
     int index = validationMessage.lastIndexOf(",");
-    validationMessage.setCharAt(index, '.');
+    if (index != -1) {
+      validationMessage.setCharAt(index, '.');
+    }
 
     return validationMessage.toString();
   }
