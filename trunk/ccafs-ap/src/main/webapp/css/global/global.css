@@ -833,6 +833,14 @@ a.currentReportingSection li #i-additionalInformation{
   display: inline; 
   margin-left: -34px;
 }
+#stageMenu li.menu-disabled {
+  background-image: url("../../images/global/sub-menu-disabled.png");  
+  opacity: 0.8;
+}
+
+#stageMenu li.menu-disabled a {
+   color: #A4A4A4;
+}
 
 #stageMenu li.goBack {
   background-image: url("../../images/global/sub-menu-goback.png");
