@@ -25,7 +25,9 @@ input, select, textarea {
   padding: 0.2em;
   box-shadow: 2px 2px 6px -1px rgba(0, 0, 0, 0.1) inset;
   border-radius: 2px;
-  color: #616161;
+  color: #4C4C4C;
+  line-height: 1.3em;
+  font-size: 1.02em;
 }
 
 h1, h2, h3, h4, h5, h6 { 
@@ -78,15 +80,24 @@ margin-bottom: 0.5em;
   padding: 5px;
   text-align: center;
   font-style: italic;
+  width:100%
 }
 
 .note-urgent {
-  background-color: #FFF7CF;
-  padding: 5px;
-  text-align: center;
-  font-style: italic;
-  position: fixed;
-  width: 100%;
+ z-index: 999;
+  padding: 9px 0 9px 11px;  
+  position: fixed; 
+  margin: 0 auto;
+}
+
+.note-urgent img {
+    height: 20px;
+    vertical-align: middle;
+  
+}
+.note-urgent p {
+    display: inline;
+  
 }
 
 ul.fieldError li {
