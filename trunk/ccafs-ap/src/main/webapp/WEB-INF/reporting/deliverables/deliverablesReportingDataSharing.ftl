@@ -96,7 +96,9 @@
     [#if canSubmit]
       <div class="buttons">
         [@s.submit type="button" name="save"][@s.text name="form.buttons.save" /][/@s.submit]
-        [@s.submit type="button" name="next"][@s.text name="form.buttons.next" /][/@s.submit]
+        [#if (deliverable.data || deliverable.tool) && deliverable.complete ]
+          [@s.submit type="button" name="next"][@s.text name="form.buttons.next" /][/@s.submit]
+        [/#if]
         [@s.submit type="button" name="cancel"][@s.text name="form.buttons.cancel" /][/@s.submit]
       </div>
     [/#if]
