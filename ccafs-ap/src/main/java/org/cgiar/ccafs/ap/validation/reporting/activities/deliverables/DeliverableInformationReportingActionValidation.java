@@ -55,12 +55,14 @@ public class DeliverableInformationReportingActionValidation extends BaseValidat
   }
 
   public String getValidationMessage() {
-    int index = validationMessage.lastIndexOf(",");
-    if (index != -1) {
-      validationMessage.setCharAt(index, '.');
+    if (validationMessage != null) {
+      int index = validationMessage.lastIndexOf(",");
+      if (index != -1) {
+        validationMessage.setCharAt(index, '.');
+      }
+      return validationMessage.toString();
     }
-
-    return validationMessage.toString();
+    return "";
   }
 
   private boolean isMetadataFilled(Deliverable deliverable, String metadataName) {
