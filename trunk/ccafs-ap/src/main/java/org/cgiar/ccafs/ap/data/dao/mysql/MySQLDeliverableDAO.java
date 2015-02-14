@@ -140,7 +140,7 @@ public class MySQLDeliverableDAO implements DeliverableDAO {
 
     try (Connection connection = databaseManager.getConnection()) {
       ResultSet rs = databaseManager.makeQuery(query.toString(), connection);
-      if (rs.next()) {
+      while (rs.next()) {
         Map<String, String> metadata = new HashMap<>();
         metadata.put("id", rs.getString("id"));
         metadata.put("description", rs.getString("description"));
