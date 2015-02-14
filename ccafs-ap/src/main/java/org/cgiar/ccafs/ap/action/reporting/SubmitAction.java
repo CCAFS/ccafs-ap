@@ -629,7 +629,7 @@ public class SubmitAction extends BaseAction {
   private void validateWorkplan() {
     activitiesValidation();
     outputsValidation();
-    publicationsValidation();
+    // publicationsValidation();
     communicationsValidation();
     caseStudiesValidation();
     outcomesValidation();
