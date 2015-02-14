@@ -103,7 +103,8 @@ public class DeliverableInformationReportingActionValidation extends BaseValidat
     metadataRequired = metadataManager.getRequiredMetadata(deliverable.getType().getId());
 
     for (Entry<Metadata, MetadataRequirement> entry : metadataRequired.entrySet()) {
-      if (entry.getKey().getName().equals("Description") || entry.getKey().getName().equals("Date")) {
+      if (entry.getKey().getName().equals("Description") || entry.getKey().getName().equals("Date")
+        || entry.getKey().getName().equals("Source")) {
         continue;
       }
       if (entry.getKey().getName().equals("Rights") && !deliverable.isData()) {
