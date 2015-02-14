@@ -68,15 +68,19 @@ public class ActivitiesReportingAction extends BaseAction {
     List<Deliverable> deliverables = activity.getDeliverables();
     if (activity.getDeliverables() != null) {
       Deliverable deliverable;
-      for (int c = 0; !problem && c < deliverables.size(); c++) {
+      for (int c = 0; c < deliverables.size(); c++) {
         deliverable = deliverables.get(c);
         Publication publication =
           (deliverable.isPublication()) ? publicationManager.getPublicationByDeliverableID(deliverable.getId())
             : new Publication();
         validator.validate(deliverable, publication);
         if (!validator.isValid()) {
+          problemDescription += "<br /> - The information of the deliverable #";
+          problemDescription += (c + 1);
+          problemDescription += " ( ";
+          problemDescription += validator.getValidationMessage();
+          problemDescription += " ); ";
           problem = true;
-          problemDescription += getText("reporting.activityList.missingDeliverable");
         }
       }
     }
@@ -86,12 +90,12 @@ public class ActivitiesReportingAction extends BaseAction {
     List<ActivityPartner> activityPartners = activity.getActivityPartners();
     if (activityPartners != null) {
       ActivityPartner activityPartner;
-      for (int c = 0; !problem && c < activityPartners.size(); c++) {
+      for (int c = 0; c < activityPartners.size(); c++) {
         activityPartner = activityPartners.get(c);
         if (activityPartner.getContactName() == null || activityPartner.getContactName().isEmpty()
           || activityPartner.getContactEmail() == null || activityPartner.getContactEmail().isEmpty()) {
           problem = true;
-          problemDescription += getText("reporting.activityList.missingPartner");
+          problemDescription += "<br />-The contact information for partner #" + (c + 1) + " is incomplete";
         }
       }
     }
