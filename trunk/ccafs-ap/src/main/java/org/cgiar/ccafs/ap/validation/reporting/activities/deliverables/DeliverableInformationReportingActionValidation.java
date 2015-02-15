@@ -84,6 +84,10 @@ public class DeliverableInformationReportingActionValidation extends BaseValidat
     isValid = true;
     validationMessage = new StringBuilder();
 
+    // TODO - Remove the 2014 and put the current reporting logframe
+    if (deliverable.getYear() != 2014) {
+      return;
+    }
     validateMetadata(deliverable);
 
     if (deliverable.isData()) {
