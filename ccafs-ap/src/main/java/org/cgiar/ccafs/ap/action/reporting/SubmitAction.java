@@ -211,9 +211,11 @@ public class SubmitAction extends BaseAction {
 
   private void caseStudiesValidation() {
     for (int c = 0; c < caseStudies.size(); c++) {
+      StringBuilder caseStudyMesagge = new StringBuilder();
+
       // Title
       if (caseStudies.get(c).getTitle().isEmpty()) {
-        validationMessage.append(getText("reporting.caseStudies.validation.title") + ", ");
+        caseStudyMesagge.append(getText("reporting.caseStudies.validation.title") + ", ");
       }
       // Author
       if (caseStudies.get(c).getAuthor().isEmpty()) {
@@ -221,51 +223,58 @@ public class SubmitAction extends BaseAction {
       // Type
       // If a new case study don't select a type the attribute is null
       if (caseStudies.get(c).getTypes() == null) {
-        validationMessage.append(getText("reporting.caseStudies.validation.type") + ", ");
+        caseStudyMesagge.append(getText("reporting.caseStudies.validation.type") + ", ");
       } else if (caseStudies.get(c).getTypes().size() == 0) {
-        validationMessage.append(getText("reporting.caseStudies.validation.type") + ", ");
+        caseStudyMesagge.append(getText("reporting.caseStudies.validation.type") + ", ");
       }
 
       // Start date, if the user don't enter a value, the object is null
       if (caseStudies.get(c).getStartDate() == null) {
-        validationMessage.append(getText("reporting.caseStudies.validation.startDate") + ", ");
+        caseStudyMesagge.append(getText("reporting.caseStudies.validation.startDate") + ", ");
       }
       // End date, if the user don't enter a value, the object is null
       if (caseStudies.get(c).getEndDate() == null) {
-        validationMessage.append(getText("reporting.caseStudies.validation.endDate") + ", ");
+        caseStudyMesagge.append(getText("reporting.caseStudies.validation.endDate") + ", ");
       }
       // Countries
       // If the case study is not global check if there are countries
       if (!caseStudies.get(c).isGlobal()) {
         if (caseStudies.get(c).getCountries() == null) {
-          validationMessage.append(getText("reporting.caseStudies.validation.location") + ", ");
+          caseStudyMesagge.append(getText("reporting.caseStudies.validation.location") + ", ");
         } else if (caseStudies.get(c).getCountries().size() == 0) {
-          validationMessage.append(getText("reporting.caseStudies.validation.location") + ", ");
+          caseStudyMesagge.append(getText("reporting.caseStudies.validation.location") + ", ");
         }
       }
       // Keywords
       if (caseStudies.get(c).getKeywords().isEmpty()) {
-        validationMessage.append(getText("reporting.caseStudies.validation.keywords") + ", ");
+        caseStudyMesagge.append(getText("reporting.caseStudies.validation.keywords") + ", ");
       }
       // Objectives
       if (caseStudies.get(c).getObjectives().isEmpty()) {
-        validationMessage.append(getText("reporting.caseStudies.validation.objectives") + ", ");
+        caseStudyMesagge.append(getText("reporting.caseStudies.validation.objectives") + ", ");
       }
       // Description
       if (caseStudies.get(c).getDescription().isEmpty()) {
-        validationMessage.append(getText("reporting.caseStudies.validation.description") + ", ");
+        caseStudyMesagge.append(getText("reporting.caseStudies.validation.description") + ", ");
       }
       // Results
       if (caseStudies.get(c).getResults().isEmpty()) {
-        validationMessage.append(getText("reporting.caseStudies.validation.results") + ", ");
+        caseStudyMesagge.append(getText("reporting.caseStudies.validation.results") + ", ");
       }
       // Partners
       if (caseStudies.get(c).getPartners().isEmpty()) {
-        validationMessage.append(getText("reporting.caseStudies.validation.partners") + ", ");
+        caseStudyMesagge.append(getText("reporting.caseStudies.validation.partners") + ", ");
       }
       // Type
       if (caseStudies.get(c).getTypes() == null || caseStudies.get(c).getTypes().size() > config.getMaxCaseStudyTypes()) {
-        validationMessage.append(getText("reporting.caseStudies.validation.types") + ", ");
+        caseStudyMesagge.append(getText("reporting.caseStudies.validation.types") + ", ");
+      }
+
+      if (caseStudyMesagge.length() > 0) {
+        validationMessage.append("There are some empty fields in the case study #" + (c + 1));
+        validationMessage.append(" ( ");
+        validationMessage.append(caseStudyMesagge.toString());
+        validationMessage.append(" ) ");
       }
     }
   }
@@ -306,14 +315,15 @@ public class SubmitAction extends BaseAction {
     }
 
     if (problem) {
-      validationMessage.append(getText("reporting.communications.validation") + ", ");
+      validationMessage.append("Please fill all the fields in the communications section");
     }
   }
 
   private void leveragesValidation() {
-    boolean missingTitle = false, missingPartnerName = false, missingBudget = false;
+    int c = 1;
 
     for (Leverage l : leverages) {
+      boolean missingTitle = false, missingPartnerName = false, missingBudget = false;
       if (l.getTitle() == null || l.getTitle().isEmpty()) {
         missingTitle = true;
       }
@@ -324,26 +334,28 @@ public class SubmitAction extends BaseAction {
 
       if (l.getBudget() == 0) {
         missingBudget = true;
+
+
+        if (missingTitle) {
+          validationMessage.append("Fill the title of the levarage fund #" + c);
+        }
+
+        if (missingPartnerName) {
+          validationMessage.append("Fill the partner name of the levarage fund #" + c);
+        }
+
+        if (missingBudget) {
+          validationMessage.append("Fill the budget of the levarage fund #" + c);
+        }
       }
-    }
-
-    if (missingTitle) {
-      validationMessage.append(getText("reporting.leverages.validation.title") + ", ");
-    }
-
-    if (missingPartnerName) {
-      validationMessage.append(getText("reporting.leverages.validation.partnerName") + ", ");
-    }
-
-    if (missingBudget) {
-      validationMessage.append(getText("reporting.leverages.validation.budget") + ", ");
     }
   }
 
   private void outcomesValidation() {
-    boolean missingField = false;
-
+    int c = 1;
     for (Outcome o : outcomes) {
+      boolean missingField = false;
+
       if (o.getTitle() == null || o.getTitle().isEmpty()) {
         missingField = true;
       }
@@ -365,11 +377,13 @@ public class SubmitAction extends BaseAction {
       if (o.getEvidence() == null || o.getEvidence().isEmpty()) {
         missingField = true;
       }
+
+      if (missingField) {
+        validationMessage.append("Please fill all the fields for the outcome story #" + c);
+      }
+      c++;
     }
 
-    if (missingField) {
-      validationMessage.append(getText("reporting.outcomes.validation") + ", ");
-    }
   }
 
   private void outputsValidation() {
