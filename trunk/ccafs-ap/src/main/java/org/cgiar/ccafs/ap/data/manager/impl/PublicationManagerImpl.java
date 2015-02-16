@@ -186,7 +186,7 @@ public class PublicationManagerImpl implements PublicationManager {
   public boolean savePublications(List<Publication> publications, Logframe logframe, Leader leader) {
     for (Publication publication : publications) {
       Map<String, String> pubData = new HashMap<>();
-      if (publication.getId() < -1) {
+      if (publication.getId() > -1) {
         pubData.put("id", publication.getId() + "");
       } else {
         pubData.put("id", null);
