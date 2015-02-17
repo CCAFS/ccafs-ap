@@ -58,6 +58,10 @@ public class ActivitiesReportingAction extends BaseAction {
   private String calculateStatus(Activity activity) {
     String problemDescription = "";
 
+    if (activity.getStatus().getName().equals("Cancelled")) {
+      return null;
+    }
+
     /* Activity Status */
     boolean problem = false;
     if (activity.getStatusDescription() == null || activity.getStatusDescription().isEmpty()) {

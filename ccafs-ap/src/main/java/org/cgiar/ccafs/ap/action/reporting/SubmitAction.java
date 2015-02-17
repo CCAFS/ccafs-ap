@@ -119,6 +119,11 @@ public class SubmitAction extends BaseAction {
     boolean activityMissing;
 
     for (Activity activity : activities) {
+
+      if (activity.getStatus().getName().equals("Cancelled")) {
+        continue;
+      }
+
       int missingCounter = 1;
       activityMessage = new StringBuilder();
       activityMissing = false;
