@@ -277,7 +277,7 @@ public class DeliverableInformationReportingAction extends BaseAction {
     if (deliverable.isPublication()) {
       publication = publicationManager.getPublicationByDeliverableID(deliverableID);
     } else {
-      publication = new Publication();
+      publication = new Publication(-1);
     }
 
 

@@ -22,6 +22,10 @@ public class Publication extends Deliverable {
   public Publication() {
   }
 
+  public Publication(int id) {
+    this.id = id;
+  }
+
   public OpenAccess getAccess() {
     return access;
   }
