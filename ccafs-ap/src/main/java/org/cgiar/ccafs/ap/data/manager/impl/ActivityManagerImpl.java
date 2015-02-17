@@ -475,7 +475,7 @@ public class ActivityManagerImpl implements ActivityManager {
     Activity activity = new Activity();
     Map<String, String> activityData = activityDAO.getActivityByDeliverable(deliverableID);
 
-    activity.setActivityId(activityData.get("id"));
+    activity.setId(Integer.parseInt(activityData.get("id")));
     activity.setTitle(activityData.get("title"));
 
     return activity;

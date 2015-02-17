@@ -65,7 +65,7 @@
               [/#assign]
               <a href="
               [@s.url action='deliverables' includeParams='get']
-                [@s.param name='${activityRequestParameter}']0[/@s.param]
+                [@s.param name='${activityRequestParameter}']${action.getDeliverableActivity(product.id)}[/@s.param]
                 [@s.param name='${deliverableRequestParameter}']${product.id?c}[/@s.param]
               [/@s.url]
               " title="${title}">

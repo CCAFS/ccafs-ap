@@ -120,7 +120,7 @@ public class SubmitAction extends BaseAction {
 
     for (Activity activity : activities) {
 
-      if (activity.getStatus().getName().equals("Cancelled")) {
+      if (activity.getStatus() != null && activity.getStatus().getName().equals("Cancelled")) {
         continue;
       }
 
