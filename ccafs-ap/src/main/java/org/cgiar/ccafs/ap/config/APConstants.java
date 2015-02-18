@@ -31,6 +31,7 @@ public final class APConstants {
 
 
   // Constants for the deliverables status
+  public static final int DELIVERABLE_STATUS_COMPLETE = 1;
   public static final int DELIVERABLE_STATUS_INCOMPLETE = 3;
 
   // Constants for the type of host used in the deliverable type

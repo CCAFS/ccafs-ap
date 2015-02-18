@@ -55,7 +55,7 @@
 
       <div id="deliverableDescriptionDissemination" class="fullBlock">
         <input type="hidden" name="deliverable.metadata[${deliverable.getMetadataIndex('DisseminationDescription')}].metadata.id" value="${deliverable.getMetadataID('DisseminationDescription')}" />
-        [@customForm.textArea name="deliverable.metadata[${deliverable.getMetadataIndex('DisseminationDescription')}].value" i18nkey="reporting.activityDeliverables.metadata.disseminationDescription"  required=true /]
+        [@customForm.textArea name="deliverable.metadata[${deliverable.getMetadataIndex('DisseminationDescription')}].value" i18nkey="reporting.activityDeliverables.metadata.disseminationDescription" help="reporting.activityDeliverables.metadata.disseminationDescription.help" /]
       </div>
 
       <div id="deliverableStatus" class="halfPartBlock">
