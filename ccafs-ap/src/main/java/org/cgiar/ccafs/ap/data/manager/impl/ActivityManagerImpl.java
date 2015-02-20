@@ -87,7 +87,11 @@ public class ActivityManagerImpl implements ActivityManager {
       activity.setActivityId(activitiesDAO.get(c).get("activity_id"));
       activity.setTitle(activitiesDAO.get(c).get("title"));
       activity.setDescription(activitiesDAO.get(c).get("description"));
-
+      if (activitiesDAO.get(c).get("is_global") != null) {
+        activity.setGlobal(activitiesDAO.get(c).get("is_global").equals("1"));
+      } else {
+        activity.setGlobal(false);
+      }
       try {
         if (activitiesDAO.get(c).get("start_date") != null) {
           activity.setStartDate(dateFormat.parse(activitiesDAO.get(c).get("start_date")));
@@ -423,6 +427,7 @@ public class ActivityManagerImpl implements ActivityManager {
     activity.setTitle(activityData.get("title"));
     activity.setDescription(activityData.get("description"));
     activity.setHasPartners(activityData.get("has_partners").equals("1"));
+    activity.setGlobal(activityData.get("is_global").equals("1"));
     SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM");
     if (activityData.get("start_date") == null) {
       activity.setStartDate(null);
