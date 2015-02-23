@@ -586,7 +586,6 @@ public class SubmitAction extends BaseAction {
     validateWorkplan();
 
     if (!validationMessage.toString().isEmpty()) {
-      validationMessage.setCharAt(validationMessage.lastIndexOf(","), '.');
       addActionWarning(getText("submit.error") + " " + Capitalize.capitalizeString(validationMessage.toString()));
       return INPUT;
     }
