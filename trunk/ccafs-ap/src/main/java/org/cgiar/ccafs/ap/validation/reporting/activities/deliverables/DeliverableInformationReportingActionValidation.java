@@ -14,7 +14,6 @@
 
 package org.cgiar.ccafs.ap.validation.reporting.activities.deliverables;
 
-import org.cgiar.ccafs.ap.config.APConstants;
 import org.cgiar.ccafs.ap.data.manager.MetadataManager;
 import org.cgiar.ccafs.ap.data.model.Deliverable;
 import org.cgiar.ccafs.ap.data.model.Metadata;
@@ -88,12 +87,6 @@ public class DeliverableInformationReportingActionValidation extends BaseValidat
     // TODO - Remove the 2014 and put the current reporting logframe
     if (deliverable.getYear() != 2014) {
       return;
-    }
-
-    if (deliverable.getStatus() != null && deliverable.getStatus().getId() != APConstants.DELIVERABLE_STATUS_COMPLETE) {
-      if (!isValidString(deliverable.getDescriptionUpdate())) {
-        addMessage("Status justification");
-      }
     }
 
     validateMetadata(deliverable);
