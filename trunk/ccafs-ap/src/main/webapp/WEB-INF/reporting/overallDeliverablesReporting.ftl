@@ -18,7 +18,18 @@
   [@s.form action="overallDeliverables"]  
   <article class="halfContent">
     [#include "/WEB-INF/reporting/tlRplSubMenu.ftl" /]
-    <h1>[@s.text name="reporting.overallDeliverables" /]: [#if currentUser.leader??]${currentUser.leader.name}[/#if]</h1>    
+    <h1>[@s.text name="reporting.overallDeliverables" /]: [#if currentUser.leader??]${currentUser.leader.name}[/#if]</h1> 
+    
+    <div id="rate-legend">
+      <ul>
+        <li><strong>[@s.text name='reporting.activityDeliverables.ranking.level.veryImportant' /] </strong> -
+        [@s.text name='reporting.activityDeliverables.ranking.level.veryImportant.help' /] </li>
+        <li><strong>[@s.text name='reporting.activityDeliverables.ranking.level.important' /] </strong> -
+        [@s.text name='reporting.activityDeliverables.ranking.level.important.help' /] </li>
+        <li><strong>[@s.text name='reporting.activityDeliverables.ranking.level.notImportant' /] </strong> -
+        [@s.text name='reporting.activityDeliverables.ranking.level.notImportant.help' /] </li>
+      </ul>
+    </div>
 
     <div class="loader" style="text-align:center"><img src="${baseUrl}/images/global/loader.gif" alt="Loading"></div>
     <div id="filterBy" style="display:none">
