@@ -19,6 +19,7 @@ import org.cgiar.ccafs.ap.config.APConfig;
 import org.cgiar.ccafs.ap.config.APConstants;
 import org.cgiar.ccafs.ap.data.manager.ActivityManager;
 import org.cgiar.ccafs.ap.data.manager.DeliverableManager;
+import org.cgiar.ccafs.ap.data.manager.DeliverableMetadataManager;
 import org.cgiar.ccafs.ap.data.manager.LogframeManager;
 import org.cgiar.ccafs.ap.data.model.Activity;
 import org.cgiar.ccafs.ap.data.model.Deliverable;
@@ -36,8 +37,9 @@ public class TLDeliverableOverviewReportingAction extends BaseAction {
   private static final long serialVersionUID = -7048066940093818514L;
 
   // Managers
-  private DeliverableManager deliverableManager;
   private ActivityManager activityManager;
+  private DeliverableManager deliverableManager;
+  private DeliverableMetadataManager deliverableMetadataManager;
 
   // Data
   private Deliverable deliverable;
@@ -46,10 +48,12 @@ public class TLDeliverableOverviewReportingAction extends BaseAction {
 
   @Inject
   public TLDeliverableOverviewReportingAction(APConfig config, LogframeManager logframeManager,
-    DeliverableManager deliverableManager, ActivityManager activityManager) {
+    DeliverableManager deliverableManager, ActivityManager activityManager,
+    DeliverableMetadataManager deliverableMetadataManager) {
     super(config, logframeManager);
     this.deliverableManager = deliverableManager;
     this.activityManager = activityManager;
+    this.deliverableMetadataManager = deliverableMetadataManager;
   }
 
   public Activity getActivity() {
@@ -67,5 +71,7 @@ public class TLDeliverableOverviewReportingAction extends BaseAction {
 
     deliverable = deliverableManager.getDeliverable(deliverableID);
     activity = activityManager.getActivityByDeliverable(deliverableID);
+
+    deliverable.setMetadata(deliverableMetadataManager.getDeliverableMetadata(deliverableID));
   }
 }

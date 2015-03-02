@@ -418,6 +418,7 @@ public class ActivityManagerImpl implements ActivityManager {
 
     Activity activity = new Activity();
     activity.setId(id);
+    activity.setActivityId(activityData.get("activity_id"));
     // Leader
     Leader leader = new Leader();
     leader.setId(Integer.parseInt(activityData.get("leader_id")));
@@ -427,8 +428,8 @@ public class ActivityManagerImpl implements ActivityManager {
     // Main information
     activity.setTitle(activityData.get("title"));
     activity.setDescription(activityData.get("description"));
-    activity.setHasPartners(activityData.get("has_partners").equals("1"));
-    activity.setGlobal(activityData.get("is_global").equals("1"));
+    activity.setHasPartners(activityData.get("has_partners") != null && activityData.get("has_partners").equals("1"));
+    activity.setGlobal(activityData.get("is_global") != null && activityData.get("is_global").equals("1"));
     SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM");
     if (activityData.get("start_date") == null) {
       activity.setStartDate(null);
@@ -455,6 +456,19 @@ public class ActivityManagerImpl implements ActivityManager {
         LOG.error(msg, e);
       }
     }
+
+    /* --- ACTIVITY STATUS --- */
+    Map<String, String> statusInfo = activityDAO.getActivityStatusInfo(activity.getId());
+
+    if (statusInfo.get("status_id") != null) {
+      Status status = new Status();
+      status.setId(Integer.parseInt(statusInfo.get("status_id")));
+      status.setName(statusInfo.get("status_name"));
+      activity.setStatus(status);
+    }
+
+    // Status Description
+    activity.setStatusDescription(statusInfo.get("status_description"));
 
     // Objectives
     activity.setObjectives(activityObjectiveManager.getActivityObjectives(activity.getId()));
