@@ -165,6 +165,12 @@
         <param name="actionName">outputSummary</param>
       </result>
     </action>
+    
+    <action name="deliverableOverview" class="org.cgiar.ccafs.ap.action.reporting.tlrpl.TLDeliverableOverviewReportingAction">
+      <interceptor-ref name="reportingStack" />
+      <interceptor-ref name="tlRplAuthorizedUsers" />
+      <result name="input">/WEB-INF/reporting/tlDeliverableOverviewReporting.ftl</result>
+    </action>
 
     <action name="outputSummary" class="org.cgiar.ccafs.ap.action.reporting.summaries.OutputSummaryAction">
       <interceptor-ref name="reportingStack" />
