@@ -50,9 +50,9 @@ public class BasePdf {
   // Fonts
   private final static Font TITLE_FONT = new Font(
     FontFactory.getFont("calibri", 24, Font.BOLD, new Color(153, 102, 51)));
-  private final static Font BODY_TEXT_FONT = new Font(FontFactory.getFont("calibri", 12, Color.BLACK));
-  private final static Font TABLE_HEADER_FONT = new Font(FontFactory.getFont("calibri", 11, Font.BOLD, Color.WHITE));
-  private final static Font TABLE_BODY_FONT = new Font(FontFactory.getFont("calibri", 10, new Color(34, 34, 34)));
+  private final static Font BODY_TEXT_FONT = new Font(FontFactory.getFont("openSans", 12, Color.BLACK));
+  private final static Font TABLE_HEADER_FONT = new Font(FontFactory.getFont("openSans", 12, Font.BOLD, Color.WHITE));
+  private final static Font TABLE_BODY_FONT = new Font(FontFactory.getFont("openSans", 11, new Color(34, 34, 34)));
 
   // Backgrounds colors
   private final static Color TABLE_HEADER_BACKGROUND = new Color(155, 187, 89);
@@ -66,7 +66,7 @@ public class BasePdf {
   private static String HEADER_IMAGE_PATH;
   private static String FOOTER_IMAGE_PATH;
   private static String CIAT_LOGO_PATH;
-  private static String CCAFS_LOGO_PATH;
+  public static String CCAFS_LOGO_PATH;
 
   @Inject
   public BasePdf(APConfig config) {

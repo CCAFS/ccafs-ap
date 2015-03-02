@@ -12,7 +12,7 @@
  * along with CCAFS P&R. If not, see <http://www.gnu.org/licenses/>.
  *****************************************************************/
 
-package org.cgiar.ccafs.ap.action.reporting.deliverables;
+package org.cgiar.ccafs.ap.action.reporting.tlrpl;
 
 import org.cgiar.ccafs.ap.action.BaseAction;
 import org.cgiar.ccafs.ap.config.APConfig;
@@ -38,7 +38,7 @@ import com.google.inject.Inject;
  * @author Hernán David Carvajal
  */
 
-public class OverallDeliverablesReportingAction extends BaseAction {
+public class TLOverallDeliverablesReportingAction extends BaseAction {
 
   // Managers
   private ActivityManager activityManager;
@@ -54,7 +54,7 @@ public class OverallDeliverablesReportingAction extends BaseAction {
   private static final long serialVersionUID = 2492835373748627301L;
 
   @Inject
-  public OverallDeliverablesReportingAction(APConfig config, LogframeManager logframeManager,
+  public TLOverallDeliverablesReportingAction(APConfig config, LogframeManager logframeManager,
     DeliverableManager deliverableManager, DeliverableScoreManager deliverableScoreManager,
     ActivityManager activityManager, SubmissionManager submissionManager) {
     super(config, logframeManager);

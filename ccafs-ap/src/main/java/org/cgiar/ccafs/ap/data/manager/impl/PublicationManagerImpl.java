@@ -145,7 +145,9 @@ public class PublicationManagerImpl implements PublicationManager {
       publication.setLogframe(logframe);
       publication.setLeader(leader);
       PublicationType publicationType = new PublicationType();
-      publicationType.setId(Integer.parseInt(pubData.get("publication_type_id")));
+      if (pubData.get("publication_type_id") != null) {
+        publicationType.setId(Integer.parseInt(pubData.get("publication_type_id")));
+      }
       publicationType.setName(pubData.get("publication_type_name"));
       publication.setType(publicationType);
       OpenAccess publicationAccess = new OpenAccess();

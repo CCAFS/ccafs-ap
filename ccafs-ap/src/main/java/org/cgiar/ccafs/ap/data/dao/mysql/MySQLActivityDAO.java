@@ -36,7 +36,8 @@ public class MySQLActivityDAO implements ActivityDAO {
     query.append("SELECT a.id, a.activity_id, a.title, a.start_date, a.end_date, a.description, ");
     query.append("(av.activity_id IS NOT NULL) as 'is_validated', m.id as 'milestone_id', ");
     query.append("m.code as 'milestone_code', th.id as 'theme_id', th.code as 'theme_code', ");
-    query.append("al.id as 'leader_id', al.acronym as 'leader_acronym', al.name as 'leader_name' ");
+    query.append("al.id as 'leader_id', al.acronym as 'leader_acronym', al.name as 'leader_name', ");
+    query.append("a.is_global ");
     query.append("FROM activities a ");
     query.append("LEFT JOIN activity_validations av ON a.id = av.activity_id ");
     query.append("LEFT JOIN milestones m ON a.milestone_id = m.id ");
@@ -59,6 +60,7 @@ public class MySQLActivityDAO implements ActivityDAO {
         activity.put("end_date", rs.getString("end_date"));
         activity.put("description", rs.getString("description"));
         activity.put("is_validated", rs.getString("is_validated"));
+        activity.put("is_global", rs.getString("is_global"));
         activity.put("milestone_id", rs.getString("milestone_id"));
         activity.put("milestone_code", rs.getString("milestone_code"));
         activity.put("theme_id", rs.getString("theme_id"));
@@ -85,7 +87,7 @@ public class MySQLActivityDAO implements ActivityDAO {
     StringBuilder query = new StringBuilder();
 
     query.append("SELECT a.id, a.activity_id, a.title, a.start_date, a.end_date, a.description, ");
-    query.append("(av.activity_id IS NOT NULL) as 'is_validated', ");
+    query.append("(av.activity_id IS NOT NULL) as 'is_validated', a.is_global, ");
     query.append("m.id as 'milestone_id', m.code as 'milestone_code', ast.id as 'status_id', ");
     query.append("ast.name as 'status_name', th.id as 'theme_id', th.code as 'theme_code', ");
     query.append("al.id as 'leader_id', al.acronym as 'leader_acronym', al.name as 'leader_name', ");
@@ -122,6 +124,7 @@ public class MySQLActivityDAO implements ActivityDAO {
         activity.put("end_date", rs.getString("end_date"));
         activity.put("description", rs.getString("description"));
         activity.put("is_validated", rs.getString("is_validated"));
+        activity.put("is_global", rs.getString("is_global"));
         activity.put("status_id", rs.getString("status_id"));
         activity.put("status_name", rs.getString("status_name"));
         activity.put("milestone_id", rs.getString("milestone_id"));
