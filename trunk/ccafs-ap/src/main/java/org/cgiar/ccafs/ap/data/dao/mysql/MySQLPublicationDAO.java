@@ -76,7 +76,7 @@ public class MySQLPublicationDAO implements PublicationDAO {
           + "p.earth_system_coauthor, p.ccafs_acknowledge, p.deliverable_id, pt.id as 'publication_type_id', "
           + "pt.name as 'publication_type_name', oa.id as 'publication_access_id', "
           + "oa.name as 'publication_access_name' " + "FROM publications p "
-          + "INNER JOIN publication_types pt ON pt.id = p.publication_type_id "
+          + "LEFT JOIN publication_types pt ON pt.id = p.publication_type_id "
           + "LEFT JOIN open_access oa ON p.open_access_id = oa.id " + "WHERE activity_leader_id = " + leaderId
           + " AND logframe_id = " + logframeId;
       ResultSet rs = dbManager.makeQuery(query, connection);

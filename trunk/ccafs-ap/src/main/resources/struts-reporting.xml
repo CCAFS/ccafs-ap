@@ -153,11 +153,11 @@
       </result>
     </action>
     
-    <action name="overallDeliverables" class="org.cgiar.ccafs.ap.action.reporting.deliverables.OverallDeliverablesReportingAction">
+    <action name="overallDeliverables" class="org.cgiar.ccafs.ap.action.reporting.tlrpl.TLOverallDeliverablesReportingAction">
       <interceptor-ref name="reportingStack" />
       <interceptor-ref name="tlRplAuthorizedUsers" />
       <result name="cancel" type="redirectAction">activities</result>
-      <result name="input">/WEB-INF/reporting/overallDeliverablesReporting.ftl</result>
+      <result name="input">/WEB-INF/reporting/tlOverallDeliverablesReporting.ftl</result>
       <result name="success" type="redirectAction">
         <param name="actionName">overallDeliverables</param>
       </result>

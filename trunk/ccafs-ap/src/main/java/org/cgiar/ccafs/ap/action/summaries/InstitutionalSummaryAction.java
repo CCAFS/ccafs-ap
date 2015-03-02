@@ -153,7 +153,6 @@ public class InstitutionalSummaryAction extends BaseAction {
   @Override
   public void prepare() throws Exception {
 
-
     Activity[] activities = activityManager.getActivities(getCurrentReportingLogframe().getYear(), getCurrentUser());
     OutputSummary[] outputSummaries =
       outputSummaryManager.getOutputSummaries(getCurrentUser().getLeader(), getCurrentReportingLogframe());
@@ -170,18 +169,15 @@ public class InstitutionalSummaryAction extends BaseAction {
     List<Leverage> leverages =
       leverageManager.getLeverages(getCurrentUser().getLeader(), getCurrentReportingLogframe());
 
-
-    institutionalPdf.setSummaryTitle(getCurrentUser().getLeader().getAcronym() + " - "
-      + getCurrentReportingLogframe().getYear() + " " + getText("summaries.institutional.pdf.title"));// TODO add
-// Institution
+    institutionalPdf.setSummaryTitle(getCurrentUser().getLeader().getAcronym() + " "
+      + getCurrentReportingLogframe().getYear() + " technical report");// TODO add
+    // Institution
     institutionalPdf.generatePdf(activities, outputSummaries, publications, communications, caseStudies, outcomes,
       outcomeIndicatorReport, leverages);
   }
 
   @Override
   public String save() {
-
-
     return SUCCESS;
   }
 

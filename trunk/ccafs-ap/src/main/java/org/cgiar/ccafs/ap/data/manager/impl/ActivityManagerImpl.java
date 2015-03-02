@@ -92,6 +92,7 @@ public class ActivityManagerImpl implements ActivityManager {
       } else {
         activity.setGlobal(false);
       }
+
       try {
         if (activitiesDAO.get(c).get("start_date") != null) {
           activity.setStartDate(dateFormat.parse(activitiesDAO.get(c).get("start_date")));

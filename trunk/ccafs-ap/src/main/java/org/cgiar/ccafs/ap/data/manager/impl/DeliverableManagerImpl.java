@@ -152,10 +152,11 @@ public class DeliverableManagerImpl implements DeliverableManager {
     Leader leader = new Leader();
     Map<String, String> leaderData = deliverableDAO.getDeliverableLeader(deliverableID);
 
-    leader.setId(Integer.parseInt(leaderData.get("id")));
-    leader.setAcronym(leaderData.get("acronym"));
-    leader.setName(leaderData.get("name"));
-
+    if (!leaderData.isEmpty()) {
+      leader.setId(Integer.parseInt(leaderData.get("id")));
+      leader.setAcronym(leaderData.get("acronym"));
+      leader.setName(leaderData.get("name"));
+    }
     return leader;
   }
 

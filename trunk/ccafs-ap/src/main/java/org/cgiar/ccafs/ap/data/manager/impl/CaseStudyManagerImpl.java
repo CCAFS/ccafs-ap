@@ -87,6 +87,7 @@ public class CaseStudyManagerImpl implements CaseStudyManager {
       temporalCaseStudy.setCoverage(caseStudyData.get("coverage"));
       temporalCaseStudy.setRights(caseStudyData.get("rights"));
       temporalCaseStudy.setGlobal(Integer.parseInt(caseStudyData.get("is_global")) == 1);
+      temporalCaseStudy.setLeader(leader);
 
       // Add the object to the list
       caseStudies.add(temporalCaseStudy);
