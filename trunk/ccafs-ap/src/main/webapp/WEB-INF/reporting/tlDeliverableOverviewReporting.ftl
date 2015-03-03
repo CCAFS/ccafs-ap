@@ -46,32 +46,33 @@
       [#-- Status --]
       <div>
         <h6>[@s.text name="reporting.deliverableOverview.status" /]</h6>
+        <p> 
         [#if deliverable.status?has_content]
           ${deliverable.status.name}
         [#else]  
           ${notDefined} 
         [/#if]
-       <br>
+        </p> 
     
-      [#-- Type --]
-       
+        [#-- Type --] 
         <h6>[@s.text name="reporting.deliverableOverview.type" /]</h6>
+        <p> 
         [#if deliverable.type.parent?has_content]
           ${deliverable.type.parent.name}
         [#else]  
           ${notDefined} 
         [/#if]
-       <br>
+        </p> 
       
-      [#-- Sub Type --]
-       
+        [#-- Sub Type --] 
         <h6>[@s.text name="reporting.deliverableOverview.subtype" /]</h6>
+        <p> 
         [#if deliverable.type?has_content]
           ${deliverable.type.name}
         [#else]  
           ${notDefined} 
         [/#if]
-        <br>
+        </p> 
       </div>
       
       [#-- Metadata --]
@@ -79,62 +80,63 @@
       [#-- Creator --]
       <div>
         <h6>[@s.text name="reporting.deliverableOverview.metadata.creator" /]</h6>
+        <p> 
         [#if deliverable.getMetadataValue('Creator')?has_content]
           ${deliverable.getMetadataValue('Creator')}
         [#else]  
           ${notDefined} 
         [/#if]
-      <br>
+        </p> 
     
-      [#-- Publisher --]
-       
+        [#-- Publisher --] 
         <h6>[@s.text name="reporting.deliverableOverview.metadata.publisher" /]</h6>
+        <p>
         [#if deliverable.getMetadataValue('Publisher')?has_content]
           ${deliverable.getMetadataValue('Publisher')}
         [#else]  
           ${notDefined} 
         [/#if]
-       <br>
+        </p> 
       
-      [#-- Format --]
-       
+        [#-- Format --] 
         <h6>[@s.text name="reporting.deliverableOverview.metadata.format" /]</h6>
+        <p> 
         [#if deliverable.getMetadataValue('Format')?has_content]
           ${deliverable.getMetadataValue('Format')!notDefined}
         [#else]  
           ${notDefined} 
         [/#if]
-      <br>
+        </p> 
       
-      [#-- Language --]
-       
+        [#-- Language --] 
         <h6>[@s.text name="reporting.deliverableOverview.metadata.language" /]</h6>
+        <p> 
         [#if deliverable.getMetadataValue('Language')?has_content]
           ${deliverable.getMetadataValue('Language')!notDefined}
         [#else]  
           ${notDefined} 
         [/#if]
-       <br>
+        </p> 
     
-      [#-- Coverage --]
-      
+        [#-- Coverage --] 
         <h6>[@s.text name="reporting.deliverableOverview.metadata.coverage" /]</h6>
+        <p> 
         [#if deliverable.getMetadataValue('Coverage')?has_content]
           ${deliverable.getMetadataValue('Coverage')}
         [#else]  
           ${notDefined} 
         [/#if]
-       <br>
+        </p> 
       
-      [#-- Rights --]
-       
+        [#-- Rights --] 
         <h6>[@s.text name="reporting.deliverableOverview.metadata.rights" /]</h6>
+        <p>
         [#if deliverable.getMetadataValue('Rights')?has_content]
           ${deliverable.getMetadataValue('Rights')}
         [#else]  
           ${notDefined} 
         [/#if]
-        <br>
+        </p> 
       </div>
       
     </div>
