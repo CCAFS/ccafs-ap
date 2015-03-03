@@ -35,9 +35,9 @@ public abstract class Deliverable {
   protected boolean isExpected;
   protected String description;
   protected String descriptionUpdate;
-  protected String disseminationDescription;
   protected DeliverableStatus status;
   protected DeliverableType type;
+  protected String otherType;
   protected List<DeliverableFile> files;
   protected List<FileFormat> fileFormats;
   protected List<DeliverableMetadata> metadata;
@@ -67,10 +67,6 @@ public abstract class Deliverable {
     return descriptionUpdate;
   }
 
-  public String getDisseminationDescription() {
-    return disseminationDescription;
-  }
-
   public List<FileFormat> getFileFormats() {
     return fileFormats;
   }
@@ -96,7 +92,6 @@ public abstract class Deliverable {
     return -1;
   }
 
-
   public int getMetadataIndex(String metadataName) {
     int c = 0;
     for (DeliverableMetadata mData : metadata) {
@@ -119,6 +114,7 @@ public abstract class Deliverable {
     return value;
   }
 
+
   public String getMetadataValue(String metadataName) {
     for (DeliverableMetadata mData : metadata) {
       if (mData.getMetadata().getName().equals(metadataName)) {
@@ -126,6 +122,10 @@ public abstract class Deliverable {
       }
     }
     return "";
+  }
+
+  public String getOtherType() {
+    return otherType;
   }
 
   public double getScoreByLeader(int activityLeaderID) {
@@ -219,10 +219,6 @@ public abstract class Deliverable {
     this.descriptionUpdate = descriptionUpdate;
   }
 
-  public void setDisseminationDescription(String disseminationDescription) {
-    this.disseminationDescription = disseminationDescription;
-  }
-
   public void setExpected(boolean isExpected) {
     this.isExpected = isExpected;
   }
@@ -241,6 +237,10 @@ public abstract class Deliverable {
 
   public void setMetadata(List<DeliverableMetadata> metadata) {
     this.metadata = metadata;
+  }
+
+  public void setOtherType(String otherType) {
+    this.otherType = otherType;
   }
 
   public void setScores(Map<Integer, Double> scores) {

@@ -39,6 +39,11 @@
         [@customForm.select name="deliverable.type.id" i18nkey="reporting.activityDeliverables.subtype" listName="deliverableSubTypes" keyFieldName="id"  displayFieldName="name" required=true className="deliverableSubTypes" /]
       </div> 
 
+
+      <div id="deliverableOtherType" class="fullBlock" [#if deliverable.type.id != 25]style="display:none" [/#if]>
+        [@customForm.input name="deliverable.otherType" i18nkey="reporting.activityDeliverables.otherType" /]
+      </div>
+
       <div id="deliverableDescription" class="fullBlock ">
         [#if isNewDeliverable]
           [@customForm.textArea name="deliverable.description" i18nkey="reporting.activityDeliverables.description" /]

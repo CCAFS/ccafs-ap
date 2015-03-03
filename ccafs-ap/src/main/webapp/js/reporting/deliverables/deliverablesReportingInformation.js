@@ -68,11 +68,19 @@ $(document).ready(function(){
   
   function checkDeliverableSubType(){
     var subTypeID = $("#deliverableSubtype select").val();
+
     // if deliverable subtype is Journal Paper
     if (subTypeID == "21") {
       $("#JournalQuestions").show("slow");
     } else {
       $("#JournalQuestions").hide("slow");
+    }
+    
+    if(subTypeID == "25") {
+      $("#deliverableOtherType").show("slow");
+    } else{
+      $("#deliverableOtherType").hide("slow");
+      $("#deliverableOtherType").find("input").val("");
     }
     
     var source = "../json/metadataRequiredByDeliverableType.do?deliverableTypeID=" + subTypeID;
