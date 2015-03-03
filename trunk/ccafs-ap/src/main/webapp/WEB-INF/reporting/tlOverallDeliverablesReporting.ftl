@@ -1,7 +1,7 @@
 [#ftl]
 [#assign title = "Activity Deliverables List" /]
 [#assign globalLibs = ["jquery", "dataTable", "noty", "star-rating"] /]
-[#assign customJS = ["${baseUrl}/js/reporting/overallDeliverablesReporting.js"] /]
+[#assign customJS = ["${baseUrl}/js/reporting/overallDeliverablesReporting.js", "${baseUrl}/js/global/utils.js"] /]
 [#assign customCSS = ["${baseUrl}/css/libs/dataTables/jquery.dataTables-1.9.4.css", "${baseUrl}/css/global/customDataTable.css"] /]
 [#assign currentSection = "reporting" /]
 [#assign currentReportingSection = "tlRpl" /]
@@ -75,11 +75,10 @@
                 [#if product.description?has_content]${product.description}[#else][@s.text name="reporting.activityDeliverablesList.notDefined" /][/#if]
               [/#assign]
               <a href="
-              [@s.url action='deliverables' includeParams='get']
-                [@s.param name='${activityRequestParameter}']${action.getDeliverableActivity(product.id)}[/@s.param]
+              [@s.url action='deliverableOverview' includeParams='get'] 
                 [@s.param name='${deliverableRequestParameter}']${product.id?c}[/@s.param]
               [/@s.url]
-              " title="${title}">
+              " title="${title}" class="popup">
                 [#if title?length < 50] ${title}</a> [#else] [@utilities.wordCutter string=title maxPos=50 /]...</a> [/#if]
             </td> 
             <td> ${product.type.name}</td>
