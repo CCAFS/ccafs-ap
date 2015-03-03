@@ -63,6 +63,7 @@ public class DeliverableManagerImpl implements DeliverableManager {
     } else {
       deliverableData.put("deliverable_type_id", null);
     }
+    deliverableData.put("other_type", deliverable.getOtherType());
     deliverableData.put("is_expected", deliverable.isExpected());
     if (deliverable.getStatus() != null) {
       deliverableData.put("deliverable_status_id", deliverable.getStatus().getId());
@@ -130,6 +131,7 @@ public class DeliverableManagerImpl implements DeliverableManager {
     deliverable.setDescription(deliverableData.get("description"));
     deliverable.setDescriptionUpdate(deliverableData.get("description_update"));
     deliverable.setType(type);
+    deliverable.setOtherType(deliverableData.get("other_type"));
 
     if (deliverableData.get("isExpected") != null) {
       deliverable.setExpected(false);

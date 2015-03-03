@@ -31,12 +31,23 @@ public class MySQLDeliverableDAO implements DeliverableDAO {
     LOG.debug(">> addDeliverable(deliverableData={})", deliverableData);
     int generatedId = -1;
     try (Connection connection = databaseManager.getConnection()) {
+      StringBuilder query = new StringBuilder();
+      query.append("INSERT INTO deliverables ( ");
+      query.append("id, description, year, activity_id, deliverable_type_id, ");
+      query.append("is_expected, deliverable_status_id, filename, ");
+      query.append("description_update, other_type ) ");
+      query.append("VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?) ");
+      query.append("ON DUPLICATE KEY UPDATE ");
+      query.append("description = VALUES(description), year = VALUES(year), ");
+      query.append("activity_id = VALUES(activity_id), ");
+      query.append("deliverable_type_id = VALUES(deliverable_type_id), ");
+      query.append("is_expected = VALUES(is_expected), ");
+      query.append("deliverable_status_id = VALUES(deliverable_status_id), ");
+      query.append("filename = VALUES(filename), ");
+      query.append("description_update = VALUES(description_update), ");
+      query.append("other_type = VALUES(other_type) ");
 
-      String addDeliveryQuery =
-        "INSERT INTO deliverables (id, description, year, activity_id, deliverable_type_id, is_expected, deliverable_status_id, filename, description_update) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?) "
-          + "ON DUPLICATE KEY UPDATE description = VALUES(description), year = VALUES(year), activity_id = VALUES(activity_id), "
-          + "deliverable_type_id = VALUES(deliverable_type_id), is_expected = VALUES(is_expected), deliverable_status_id = VALUES(deliverable_status_id), filename = VALUES(filename), description_update = VALUES(description_update)";
-      Object[] values = new Object[9];
+      Object[] values = new Object[10];
       values[0] = deliverableData.get("id");
       values[1] = deliverableData.get("description");
       values[2] = deliverableData.get("year");
@@ -46,7 +57,8 @@ public class MySQLDeliverableDAO implements DeliverableDAO {
       values[6] = deliverableData.get("deliverable_status_id");
       values[7] = deliverableData.get("filename");
       values[8] = deliverableData.get("description_update");
-      int deliverableAdded = databaseManager.makeChangeSecure(connection, addDeliveryQuery, values);
+      values[9] = deliverableData.get("other_type");
+      int deliverableAdded = databaseManager.makeChangeSecure(connection, query.toString(), values);
       if (deliverableAdded > 0) {
         // get the id assigned to this new record.
         ResultSet rs = databaseManager.makeQuery("SELECT LAST_INSERT_ID()", connection);
@@ -79,6 +91,7 @@ public class MySQLDeliverableDAO implements DeliverableDAO {
         deliverable.put("id", rs.getString("id"));
         deliverable.put("description", rs.getString("description"));
         deliverable.put("year", rs.getString("year"));
+        deliverable.put("other_type", rs.getString("other_type"));
         deliverable.put("is_expected", rs.getString("is_expected"));
         deliverable.put("description_update", rs.getString("description_update"));
         deliverable.put("deliverable_status_id", rs.getString("deliverable_status_id"));
