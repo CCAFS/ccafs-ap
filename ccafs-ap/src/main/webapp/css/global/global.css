@@ -1281,6 +1281,13 @@ div#hover-test {
  background: #fff;
 }
 
+#deliverableOverview .overview-column > div p{
+    margin-bottom: 15px;
+}
+#deliverableOverview .overview-column > div h6{
+    margin-bottom: 2px;
+}
+
 
 /*** Contact Persons (popup) ***/
 #contactPersons {
