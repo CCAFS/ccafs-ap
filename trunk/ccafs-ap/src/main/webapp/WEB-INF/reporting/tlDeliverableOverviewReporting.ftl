@@ -6,35 +6,43 @@
 [#assign notDefined][@s.text name="reporting.deliverableOverview.notDefined" /][/#assign]
 <section class="content">
   
-  <article class="halfContent">
+  <article id="deliverableOverview">
 
     [#-- Left column --]
-    <div class="halfPartBlock">
+    <div class="overview-column overview-left">
     
       [#-- Title --]
       <div>
-        <h6>[@s.text name="reporting.deliverableOverview.title" /]</h6>
+        <h6>[@s.text name="reporting.deliverableOverview.title" /]</h6> 
         [#if deliverable.getMetadataValue('Title')?has_content]
           ${deliverable.getMetadataValue('Title')}
-        [#else]  
+        [#else]
           ${notDefined} 
         [/#if]
       </div>
     
       [#-- Description --]
       <div>
-        <h6>[@s.text name="reporting.deliverableOverview.description" /]</h6>
-        [#if deliverable.description?has_content]
+        <h6>[@s.text name="reporting.deliverableOverview.description" /]</h6> 
+        [#if deliverable.getMetadataValue('DisseminationDescription')?has_content]
+         ${deliverable.getMetadataValue('DisseminationDescription')}
+        [#elseif deliverable.description?has_content]
           ${deliverable.description}
         [#else]  
           ${notDefined} 
         [/#if]
       </div>
       
+       [#-- Activity title --]
+      <div>
+        <h6>Belong to the activity</h6> 
+         ${activity.title}
+      </div>
+      
     </div>
     
     [#-- Right column --]
-    <div class="halfPartBlock">
+    <div class="overview-column overview-right">
       [#-- Status --]
       <div>
         <h6>[@s.text name="reporting.deliverableOverview.status" /]</h6>
@@ -43,30 +51,31 @@
         [#else]  
           ${notDefined} 
         [/#if]
-      </div>
+       <br>
     
       [#-- Type --]
-      <div>
+       
         <h6>[@s.text name="reporting.deliverableOverview.type" /]</h6>
         [#if deliverable.type.parent?has_content]
           ${deliverable.type.parent.name}
         [#else]  
           ${notDefined} 
         [/#if]
-      </div>
+       <br>
       
       [#-- Sub Type --]
-      <div>
+       
         <h6>[@s.text name="reporting.deliverableOverview.subtype" /]</h6>
         [#if deliverable.type?has_content]
           ${deliverable.type.name}
         [#else]  
           ${notDefined} 
         [/#if]
+        <br>
       </div>
       
       [#-- Metadata --]
-      
+      <h5>Metadata</h5>
       [#-- Creator --]
       <div>
         <h6>[@s.text name="reporting.deliverableOverview.metadata.creator" /]</h6>
@@ -75,60 +84,62 @@
         [#else]  
           ${notDefined} 
         [/#if]
-      </div>
+      <br>
     
       [#-- Publisher --]
-      <div>
+       
         <h6>[@s.text name="reporting.deliverableOverview.metadata.publisher" /]</h6>
         [#if deliverable.getMetadataValue('Publisher')?has_content]
           ${deliverable.getMetadataValue('Publisher')}
         [#else]  
           ${notDefined} 
         [/#if]
-      </div>
+       <br>
       
       [#-- Format --]
-      <div>
+       
         <h6>[@s.text name="reporting.deliverableOverview.metadata.format" /]</h6>
         [#if deliverable.getMetadataValue('Format')?has_content]
           ${deliverable.getMetadataValue('Format')!notDefined}
         [#else]  
           ${notDefined} 
         [/#if]
-      </div>
+      <br>
       
       [#-- Language --]
-      <div>
+       
         <h6>[@s.text name="reporting.deliverableOverview.metadata.language" /]</h6>
         [#if deliverable.getMetadataValue('Language')?has_content]
           ${deliverable.getMetadataValue('Language')!notDefined}
         [#else]  
           ${notDefined} 
         [/#if]
-      </div>
+       <br>
     
       [#-- Coverage --]
-      <div>
+      
         <h6>[@s.text name="reporting.deliverableOverview.metadata.coverage" /]</h6>
         [#if deliverable.getMetadataValue('Coverage')?has_content]
           ${deliverable.getMetadataValue('Coverage')}
         [#else]  
           ${notDefined} 
         [/#if]
-      </div>
+       <br>
       
       [#-- Rights --]
-      <div>
+       
         <h6>[@s.text name="reporting.deliverableOverview.metadata.rights" /]</h6>
         [#if deliverable.getMetadataValue('Rights')?has_content]
           ${deliverable.getMetadataValue('Rights')}
         [#else]  
           ${notDefined} 
         [/#if]
+        <br>
       </div>
       
     </div>
-
+    <div class="clearfix"></div>
   </article>
+  
   </section>
 </body>

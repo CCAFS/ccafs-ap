@@ -223,7 +223,8 @@ body {
 }
 
 .popup_container {
-  width: 600px;
+  margin: 0 auto;
+  width: 660px;
   text-align: center;
 }
 
@@ -233,8 +234,9 @@ body {
 }
 
 .popup_container .content {
-  width: 570px;
-  padding-top: 0;
+  width: 100%;
+  padding: 0;
+  margin: 0;
 }
 
 .popup_container h1 {
@@ -459,9 +461,9 @@ a.currentReportingSection li #i-additionalInformation{
 }
 
 .halfContent {
-  float: right;
-  padding: 10px;
-  width: 700px;
+   float: right;  
+   padding: 10px;  
+   width: 700px;  
 }
 
 .content a,.halfContent a, #footerContainer a, 
@@ -1249,6 +1251,36 @@ div#hover-test {
     background: rgba(0,0,0,0.2);
     border-radius: 2px;
 }
+
+/*** Deliverable overview popup  ***/
+
+#deliverableOverview {
+  text-align: justify;
+  background: #F1F1F1;
+  border: 1px solid #E2E2E2;  border-radius: 2px;
+  padding: 2px 10px;
+}
+
+#deliverableOverview .overview-left {
+    float: left;
+   
+    width: 60%;
+    padding-right: 10px;
+}
+
+#deliverableOverview .overview-right{
+    width: 38%; 
+    float: left;
+}
+
+#deliverableOverview .overview-column > div{ 
+ margin: 10px 0;
+ padding: 11px;
+ border: 1px solid #E2E2E2;
+ border-radius: 2px;
+ background: #fff;
+}
+
 
 /*** Contact Persons (popup) ***/
 #contactPersons {

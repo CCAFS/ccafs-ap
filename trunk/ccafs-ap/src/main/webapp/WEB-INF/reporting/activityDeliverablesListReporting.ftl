@@ -32,7 +32,7 @@
        <h4>Filter by [@s.text name="reporting.activityDeliverablesList.status" /]:<h4>
       </div>
     </div>
-
+    
     <table id="deliverableList">  
       <thead>
         <tr>
@@ -48,10 +48,16 @@
       <tbody>
         [#list activity.deliverables as product]
           [#assign isNewDeliverable = !product.expected && product.year == currentReportingLogframe.year /]
-          <tr>
-            <td class="left">
+          <tr> 
+            <td class="left">  
               [#assign title]
-                [#if product.description?has_content]${product.description}[#else][@s.text name="reporting.activityDeliverablesList.notDefined" /][/#if]
+                [#if product.description?has_content]
+                  ${product.description} 
+                [#elseif product.metadata?has_content]
+                  ${product.id} - ${product.metadata[product.getMetadataIndex('Title')].value} 
+                [#else]
+                  ${product.id} - [@s.text name="reporting.activityDeliverablesList.notDefined" /]
+                [/#if]
               [/#assign]
               <a href="
               [@s.url action='deliverables' includeParams='get']
@@ -59,7 +65,7 @@
                 [@s.param name='${deliverableRequestParameter}']${product.id?c}[/@s.param]
               [/@s.url]
               " title="${title}">
-                [#if title?length < 50] ${title}</a> [#else] [@utilities.wordCutter string=title maxPos=50 /]...</a> [/#if]
+                [#if title?length < 80] ${title}</a> [#else] [@utilities.wordCutter string=title maxPos=80 /]...</a> [/#if]
             </td> 
             <td> ${product.type.name}</td>
             <td> ${product.year} </td>
