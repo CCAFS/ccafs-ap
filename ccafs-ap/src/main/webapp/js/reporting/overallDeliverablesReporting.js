@@ -46,6 +46,8 @@ $(document).ready(function(){
     }
   });
   
+  // Call the needed function to open a link in a popup
+  popups();
   // Initiate the deliverable ranking plugin
   $('.hover-star').rating({
     cancel : 'Cancel',
