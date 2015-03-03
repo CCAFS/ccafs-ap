@@ -9,7 +9,7 @@
     <header class="clearfix">
       [#if logged]
         <div id="userInfo">
-          <span class="email">${currentUser.email}</span>
+          <span class="email">[ ${currentUser.role} - ${currentUser.leader.acronym} ] - ${currentUser.email}</span>
           <span class="logout"><a href="[@s.url action="logout" namespace="/" /]">[@s.text name="header.logout" /]</a></span>
         </div>
       [/#if]
