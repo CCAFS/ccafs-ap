@@ -40,6 +40,7 @@
           </theme>
         [/#if]
       </themes>
+      <isActive>${action.isPartnerActive(partner.id)?string}</isActive>
     </partner>
   [/#list]
 </partners>
