@@ -5,17 +5,13 @@ import org.cgiar.ccafs.ap.action.summaries.pdf.InstitutionalSummaryPdf;
 import org.cgiar.ccafs.ap.config.APConfig;
 import org.cgiar.ccafs.ap.data.manager.ActivityManager;
 import org.cgiar.ccafs.ap.data.manager.CaseStudyManager;
-import org.cgiar.ccafs.ap.data.manager.CaseStudyTypeManager;
 import org.cgiar.ccafs.ap.data.manager.CommunicationManager;
-import org.cgiar.ccafs.ap.data.manager.CountryManager;
-import org.cgiar.ccafs.ap.data.manager.LeaderManager;
 import org.cgiar.ccafs.ap.data.manager.LeverageManager;
 import org.cgiar.ccafs.ap.data.manager.LogframeManager;
 import org.cgiar.ccafs.ap.data.manager.OutcomeIndicatorReportManager;
 import org.cgiar.ccafs.ap.data.manager.OutcomeManager;
 import org.cgiar.ccafs.ap.data.manager.OutputSummaryManager;
 import org.cgiar.ccafs.ap.data.manager.PublicationManager;
-import org.cgiar.ccafs.ap.data.manager.PublicationTypeManager;
 import org.cgiar.ccafs.ap.data.model.Activity;
 import org.cgiar.ccafs.ap.data.model.CaseStudy;
 import org.cgiar.ccafs.ap.data.model.CaseStudyType;
@@ -49,15 +45,10 @@ public class InstitutionalSummaryAction extends BaseAction {
   private ActivityManager activityManager;
   private OutputSummaryManager outputSummaryManager;
   private PublicationManager publicationManager;
-  private PublicationTypeManager publicationTypeManager;
   private CommunicationManager communicationManager;
   private CaseStudyManager caseStudyManager;
   private OutcomeManager outcomeManager;
   private OutcomeIndicatorReportManager outcomeIndicatorReportManager;
-  // TODO Seek if there is a leverage fund manager
-  private LeaderManager leaderManager;
-  private CountryManager countryManager;
-  private CaseStudyTypeManager caseStudyTypeManager;
   private LeverageManager leverageManager;
 
   // Model
@@ -75,23 +66,17 @@ public class InstitutionalSummaryAction extends BaseAction {
   @Inject
   public InstitutionalSummaryAction(APConfig config, LogframeManager logframeManager, ActivityManager activityManager,
     OutputSummaryManager outputSummaryManager, PublicationManager publicationManager,
-    PublicationTypeManager publicationTypeManager, CommunicationManager communicationManager,
-    CaseStudyManager caseStudyManager, OutcomeManager outcomeManager,
-    OutcomeIndicatorReportManager outcomeIndicatorReportManager, LeaderManager leaderManager,
-    CountryManager countryManager, CaseStudyTypeManager caseStudyTypeManager, LeverageManager leverageManager,
+    CommunicationManager communicationManager, CaseStudyManager caseStudyManager, OutcomeManager outcomeManager,
+    OutcomeIndicatorReportManager outcomeIndicatorReportManager, LeverageManager leverageManager,
     InstitutionalSummaryPdf institutionalPdf) {
     super(config, logframeManager);
     this.activityManager = activityManager;
     this.outputSummaryManager = outputSummaryManager;
     this.publicationManager = publicationManager;
-    this.publicationTypeManager = publicationTypeManager;
     this.communicationManager = communicationManager;
     this.caseStudyManager = caseStudyManager;
     this.outcomeManager = outcomeManager;
     this.outcomeIndicatorReportManager = outcomeIndicatorReportManager;
-    this.leaderManager = leaderManager;
-    this.countryManager = countryManager;
-    this.caseStudyTypeManager = caseStudyTypeManager;
     this.leverageManager = leverageManager;
     this.institutionalPdf = institutionalPdf;
   }
@@ -170,8 +155,8 @@ public class InstitutionalSummaryAction extends BaseAction {
       leverageManager.getLeverages(getCurrentUser().getLeader(), getCurrentReportingLogframe());
 
     institutionalPdf.setSummaryTitle(getCurrentUser().getLeader().getAcronym() + " "
-      + getCurrentReportingLogframe().getYear() + " technical report");// TODO add
-    // Institution
+      + getCurrentReportingLogframe().getYear() + " Activities");
+
     institutionalPdf.generatePdf(activities, outputSummaries, publications, communications, caseStudies, outcomes,
       outcomeIndicatorReport, leverages);
   }

@@ -8,8 +8,6 @@ import org.cgiar.ccafs.ap.data.manager.ActivityRegionManager;
 import org.cgiar.ccafs.ap.data.manager.CaseStudyTypeManager;
 import org.cgiar.ccafs.ap.data.manager.DeliverableManager;
 import org.cgiar.ccafs.ap.data.manager.DeliverableMetadataManager;
-import org.cgiar.ccafs.ap.data.manager.PublicationThemeManager;
-import org.cgiar.ccafs.ap.data.manager.PublicationTypeManager;
 import org.cgiar.ccafs.ap.data.model.Activity;
 import org.cgiar.ccafs.ap.data.model.ActivityObjective;
 import org.cgiar.ccafs.ap.data.model.ActivityPartner;
@@ -58,7 +56,6 @@ import com.lowagie.text.pdf.PdfPCell;
 import com.lowagie.text.pdf.PdfPTable;
 import com.lowagie.text.pdf.PdfWriter;
 import com.lowagie.text.pdf.draw.LineSeparator;
-import com.lowagie.text.rtf.table.RtfCell;
 import com.opensymphony.xwork2.DefaultTextProvider;
 import com.opensymphony.xwork2.TextProvider;
 import org.slf4j.Logger;
@@ -83,13 +80,11 @@ public class InstitutionalSummaryPdf {
   // Manager for specific sections - to avoid this, it will have to do some new report function on the manager
   private ActivityObjectiveManager activityObjectiveManager;
   private CaseStudyTypeManager caseStudyTypeManager;
-  private PublicationTypeManager publicationTypeManager;
   private DeliverableManager deliverableManager;
   private DeliverableMetadataManager deliverableMetadataManager;
   private ActivityCountryManager activityCountryManager;
   private ActivityBenchmarkSiteManager activityBenchmarkSiteManager;
   private ActivityRegionManager activityRegionManager;
-  private PublicationThemeManager publicationThemeManager;
 
   // Text provider to read the internationalization file
   private TextProvider textProvider;
@@ -117,26 +112,22 @@ public class InstitutionalSummaryPdf {
 
   @Inject
   public InstitutionalSummaryPdf(APConfig config, BasePdf basePdf, ActivityObjectiveManager activityObjectiveManager,
-    CaseStudyTypeManager caseStudyTypeManager, PublicationTypeManager publicationTypeManager,
-    DeliverableManager deliverableManager, ActivityCountryManager activityCountryManager,
-    ActivityBenchmarkSiteManager activityBenchmarkSiteManager, ActivityRegionManager activityRegionManager,
-    DeliverableMetadataManager deliverableMetadataManager, PublicationThemeManager publicationThemeManager) {
+    CaseStudyTypeManager caseStudyTypeManager, DeliverableManager deliverableManager,
+    ActivityCountryManager activityCountryManager, ActivityBenchmarkSiteManager activityBenchmarkSiteManager,
+    ActivityRegionManager activityRegionManager, DeliverableMetadataManager deliverableMetadataManager) {
     this.basePdf = basePdf;
     this.config = config;
     textProvider = new DefaultTextProvider();
     this.activityObjectiveManager = activityObjectiveManager;
     this.caseStudyTypeManager = caseStudyTypeManager;
-    this.publicationTypeManager = publicationTypeManager;
     this.deliverableManager = deliverableManager;
     this.activityCountryManager = activityCountryManager;
     this.activityBenchmarkSiteManager = activityBenchmarkSiteManager;
     this.activityRegionManager = activityRegionManager;
     this.deliverableMetadataManager = deliverableMetadataManager;
-    this.publicationThemeManager = publicationThemeManager;
   }
 
   private void addActivities(Activity[] activities) throws DocumentException {
-    RtfCell cell = new RtfCell("");
     if (activities.length != 0) {
       int c = 0;
       for (Activity activity : activities) {
@@ -178,20 +169,24 @@ public class InstitutionalSummaryPdf {
     cell.addElement(paragraph);
 
 
-    PdfPTable deliverablesTable = new PdfPTable(3);
-    deliverablesTable.setWidthPercentage(95);
-    deliverablesTable.setWidths(new int[] {10, 4, 2});
+    PdfPTable deliverablesTable = new PdfPTable(5);
+    deliverablesTable.setWidthPercentage(99);
+    deliverablesTable.setWidths(new int[] {10, 4, 3, 4, 10});
     deliverablesTable.setKeepTogether(true);
     deliverablesTable.setHeaderRows(1);
 
     basePdf.addCustomTableCell(deliverablesTable, "Description", Element.ALIGN_CENTER, HEADING4_FONT, Color.white, 0);
     basePdf.addCustomTableCell(deliverablesTable, "Type", Element.ALIGN_CENTER, HEADING4_FONT, Color.white, 0);
     basePdf.addCustomTableCell(deliverablesTable, "Year", Element.ALIGN_CENTER, HEADING4_FONT, Color.white, 0);
+    basePdf.addCustomTableCell(deliverablesTable, "Status", Element.ALIGN_CENTER, HEADING4_FONT, Color.white, 0);
+    basePdf.addCustomTableCell(deliverablesTable, "Justification", Element.ALIGN_CENTER, HEADING4_FONT, Color.white, 0);
 
     for (Deliverable deliverable : activity.getDeliverables()) {
       basePdf.addTableBodyCell(deliverablesTable, deliverable.getDescription(), Element.ALIGN_LEFT, 1);
       basePdf.addTableBodyCell(deliverablesTable, deliverable.getType().getName(), Element.ALIGN_LEFT, 1);
       basePdf.addTableBodyCell(deliverablesTable, deliverable.getYear() + "", Element.ALIGN_CENTER, 1);
+      basePdf.addTableBodyCell(deliverablesTable, deliverable.getStatus().getName(), Element.ALIGN_CENTER, 1);
+      basePdf.addTableBodyCell(deliverablesTable, deliverable.getDescriptionUpdate(), Element.ALIGN_LEFT, 1);
     }
 
     cell.addElement(deliverablesTable);
@@ -474,7 +469,7 @@ public class InstitutionalSummaryPdf {
           paragraph.setFont(HEADING4_FONT);
           paragraph.add("Type: ");
           paragraph.setFont(BODY_TEXT_FONT);
-          // TODO validar por que no está trayendo info
+
           List<CaseStudyType> caseStudyTypes = caseStudyTypeManager.getCaseStudyTypes(caseStudy);
           for (CaseStudyType caseStudyType : caseStudyTypes) {
             paragraph.add(caseStudyType.getName() + "; ");
@@ -1041,29 +1036,23 @@ public class InstitutionalSummaryPdf {
     // Cover page
     // basePdf.addCover(document, summaryTitle);
 
-    // Summary title
-    // basePdf.addTitle(document, summaryTitle);
-
-    // Add content
-    // //////////////////////////////////Activity Reporting
-
     try {
       addActivities(activities);
-      document.newPage();
-      addSummaryByOutputs(outputSummaries);
-      document.newPage();
-      addCommunications(communications);
-      document.newPage();
-      addCaseStudies(caseStudies);
-      document.newPage();
-      addOutcomes(outcomes);
-      document.newPage();
-      addOutcomeIndicators(outcomeIndicatorReport);
-      document.newPage();
-      addLeverages(leverages);
-      document.newPage();
-      addPublications(publications);
-      document.newPage();
+// document.newPage();
+// addSummaryByOutputs(outputSummaries);
+// document.newPage();
+// addCommunications(communications);
+// document.newPage();
+// addCaseStudies(caseStudies);
+// document.newPage();
+// addOutcomes(outcomes);
+// document.newPage();
+// addOutcomeIndicators(outcomeIndicatorReport);
+// document.newPage();
+// addLeverages(leverages);
+// document.newPage();
+// addPublications(publications);
+// document.newPage();
 
     } catch (DocumentException e2) {
       // TODO Auto-generated catch block
