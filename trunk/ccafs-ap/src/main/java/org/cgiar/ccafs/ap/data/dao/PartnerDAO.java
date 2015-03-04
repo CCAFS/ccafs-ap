@@ -51,4 +51,14 @@ public interface PartnerDAO {
    * @return a List of Maps with the information.
    */
   public List<Map<String, String>> getPartnersList(int activityID);
+
+  /**
+   * This method verifies if the partner is related with some activity for the year
+   * received as parameter.
+   * 
+   * @param partnerID - partner identifier
+   * @param year
+   * @return true if the partner is linked with some activity in the year given. False otherwise.
+   */
+  public boolean isCurrentlyActive(int partnerID, int year);
 }

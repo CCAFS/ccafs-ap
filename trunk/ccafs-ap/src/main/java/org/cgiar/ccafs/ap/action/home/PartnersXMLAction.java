@@ -29,6 +29,7 @@ public class PartnersXMLAction extends BaseAction {
   // Models
   private Partner[] partners;
   private Map<Integer, Theme[]> themesByPartner;
+  private int year;
 
   @Inject
   public PartnersXMLAction(APConfig config, LogframeManager logframeManager, PartnerManager partnerManager,
@@ -51,9 +52,14 @@ public class PartnersXMLAction extends BaseAction {
     return themesByPartner;
   }
 
+  public boolean isPartnerActive(int partnerID) {
+    return partnerManager.isCurrentlyActive(partnerID, year);
+  }
+
   @Override
   public void prepare() throws Exception {
     super.prepare();
+    year = getCurrentReportingLogframe().getYear();
 
     LOG.info("The Partner XML file with partner list is being generated.");
     partners = partnerManager.getPartnerForXML();
