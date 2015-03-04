@@ -53,10 +53,8 @@
               [#assign title]
                 [#if product.description?has_content]
                   ${product.description} 
-                [#elseif product.metadata?has_content]
-                  ${product.id} - ${product.metadata[product.getMetadataIndex('Title')].value} 
                 [#else]
-                  ${product.id} - [@s.text name="reporting.activityDeliverablesList.notDefined" /]
+                  [@s.text name="reporting.activityDeliverablesList.notDefined" /]
                 [/#if]
               [/#assign]
               <a href="
