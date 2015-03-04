@@ -207,4 +207,29 @@ public class MySQLPartnerDAO implements PartnerDAO {
     return statusList;
   }
 
+  @Override
+  public boolean isCurrentlyActive(int partnerID, int year) {
+    StringBuilder query = new StringBuilder();
+    boolean isActive = false;
+
+    query.append("SELECT ap.partner_id, a.id ");
+    query.append("FROM `activity_partners` ap ");
+    query.append("INNER JOIN activities a ON ap.activity_id = a.id ");
+    query.append("WHERE a.year = ");
+    query.append(year);
+    query.append(" AND ap.partner_id = ");
+    query.append(partnerID);
+
+    try (Connection con = databaseManager.getConnection()) {
+      ResultSet rs = databaseManager.makeQuery(query.toString(), con);
+      if (rs.next()) {
+        isActive = true;
+      }
+    } catch (SQLException e) {
+      LOG.debug("-- isCurrentlyActive(): There was an exception verifying if the partner {} is active", partnerID, e);
+    }
+
+    return isActive;
+  }
+
 }

@@ -135,4 +135,9 @@ public class PartnerManagerImpl implements PartnerManager {
     }
     return partners;
   }
+
+  @Override
+  public boolean isCurrentlyActive(int partnerID, int year) {
+    return partnerDAO.isCurrentlyActive(partnerID, year);
+  }
 }
