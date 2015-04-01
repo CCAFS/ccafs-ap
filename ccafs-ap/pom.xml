@@ -23,8 +23,7 @@
     <logback-classic.version>1.0.7</logback-classic.version>
     <janino.version>2.6.1</janino.version>    
     <itext.version>2.1.7</itext.version>
-    <jfreechart.version>1.0.15</jfreechart.version>
-    <shiro.version>1.2.2</shiro.version>
+    <adauth.version>1.1</adauth.version>
   </properties>
 
   <developers>
@@ -32,6 +31,7 @@
       <name>Héctor F. Tobón R.</name>
       <email>h.f.tobon@cgiar.org</email>
     </developer>
+    
     <developer>
       <name>Hernán D. Carvajal B.</name>
       <email>h.d.carvajal@cgiar.org</email>
@@ -39,8 +39,8 @@
   </developers>
 
   <issueManagement>
-    <system>Google Code</system>
-    <url>http://code.google.com/p/ccafs-ap/issues/list</url>
+    <system>Github Issues</system>
+    <url>https://github.com/CCAFS/ccafs-ap/issues</url>
   </issueManagement>
 
   <dependencies>
@@ -82,11 +82,13 @@
         </exclusion>
       </exclusions>
     </dependency>
+    
     <dependency>
       <groupId>com.google.inject.extensions</groupId>
       <artifactId>guice-assistedinject</artifactId>
       <version>${guice.version}</version>
     </dependency>
+    
     <dependency>
       <groupId>com.google.inject.extensions</groupId>
       <artifactId>guice-servlet</artifactId>
@@ -141,6 +143,7 @@
       <version>${java-mail.version}</version>
     </dependency>
 
+    <!-- Json plugin -->
     <dependency>
       <groupId>org.apache.struts</groupId>
 	    <artifactId>struts2-json-plugin</artifactId>
@@ -154,16 +157,10 @@
 		  <version>${itext.version}</version>
 		</dependency>
 		
-		<dependency>
-      <groupId>org.jfree</groupId>
-      <artifactId>jfreechart</artifactId>
-      <version>${jfreechart.version}</version>
-    </dependency>
-    
     <dependency>
       <groupId>org.cgiar.ciat.auth</groupId>
       <artifactId>adauth</artifactId>
-      <version>1.1</version>
+      <version>${adauth.version}</version>
     </dependency>
     
   </dependencies>
@@ -196,6 +193,7 @@
           </scanTargets>
         </configuration>
       </plugin>
+      
       <!-- Tomcat plugin just to test compatibilities with Tomcat. -->
       <plugin>
         <groupId>org.apache.tomcat.maven</groupId>
@@ -209,6 +207,41 @@
           <keystorePass>d5jtY68oBqWj</keystorePass>
         </configuration>
       </plugin>
+
+      <!--  Database versionning plugin -->
+      <plugin>
+        <groupId>org.flywaydb</groupId>
+        <artifactId>flyway-maven-plugin</artifactId>
+        <version>3.2.1</version>
+        <configuration>          
+          <driver>com.mysql.jdbc.Driver</driver>
+          <url>${mysql.url}</url>
+          <user>${mysql.user}</user>
+          <password>${mysql.password}</password>
+        </configuration>
+      </plugin>
+      
+      <!--  Maven plugin to read the properties file -->
+      <plugin>
+        <groupId>org.codehaus.mojo</groupId>
+        <artifactId>properties-maven-plugin</artifactId>
+        <version>1.0-alpha-2</version>
+        <executions>
+          <execution>
+            <phase>initialize</phase>
+            <goals>
+              <goal>read-project-properties</goal>
+		        </goals>
+            <configuration>
+              <files>
+                <file>src/main/resources/ccafsap.properties</file>
+              </files>
+            </configuration>
+          </execution>
+        </executions>
+      </plugin>
+
+      <!--  Maven compiler -->
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-compiler-plugin</artifactId>
@@ -219,6 +252,8 @@
           <debug>true</debug>
         </configuration>
       </plugin>
+      
+      <!--  Maven eclipse plugin -->
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-eclipse-plugin</artifactId>
@@ -236,6 +271,7 @@
           </additionalConfig>
         </configuration>
       </plugin>
+      
       <plugin>
 	      <artifactId>maven-war-plugin</artifactId>
 	      <version>2.3</version>
