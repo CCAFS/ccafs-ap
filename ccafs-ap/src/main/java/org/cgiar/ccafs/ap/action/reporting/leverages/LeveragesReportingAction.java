@@ -18,7 +18,6 @@ import java.util.List;
 import java.util.Map;
 
 import com.google.inject.Inject;
-import org.jfree.util.Log;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -112,7 +111,7 @@ public class LeveragesReportingAction extends BaseAction {
     if (leverageManager.removeLeverages(getCurrentUser().getLeader(), getCurrentReportingLogframe())) {
       saved = leverageManager.saveLeverages(leverages, getCurrentUser().getLeader());
     } else {
-      Log.warn("There was an error removing the leverages from the database.");
+      LOG.warn("There was an error removing the leverages from the database.");
     }
 
     if (saved) {
