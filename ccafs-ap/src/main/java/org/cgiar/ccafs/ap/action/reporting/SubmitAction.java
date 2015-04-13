@@ -625,6 +625,9 @@ public class SubmitAction extends BaseAction {
     boolean missing = false;
 
     for (MilestoneReport milestoneReport : milestoneReports) {
+      if (milestoneReport.getMilestone().getYear() != getCurrentReportingLogframe().getYear()) {
+        continue;
+      }
 
       if (getCurrentUser().isTL()) {
         if (milestoneReport.getThemeLeaderDescription().isEmpty()) {

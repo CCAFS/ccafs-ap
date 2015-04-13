@@ -13,7 +13,6 @@ import org.cgiar.ccafs.ap.util.Capitalize;
 import java.util.List;
 
 import com.google.inject.Inject;
-import org.jfree.util.Log;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -88,7 +87,7 @@ public class OutcomesReportingAction extends BaseAction {
       saved =
         outcomeManager.addOutcomes(outcomes, this.getCurrentUser().getLeader(), this.getCurrentReportingLogframe());
     } else {
-      Log.warn("There was an error removing the outcomes from the database.");
+      LOG.warn("There was an error removing the outcomes from the database.");
     }
 
     if (saved) {

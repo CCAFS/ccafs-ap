@@ -23,8 +23,8 @@
     <logback-classic.version>1.0.7</logback-classic.version>
     <janino.version>2.6.1</janino.version>    
     <itext.version>2.1.7</itext.version>
-    <jfreechart.version>1.0.15</jfreechart.version>
-    <shiro.version>1.2.2</shiro.version>
+    <adauth.version>1.1</adauth.version>
+    <flyway.version>3.2.1</flyway.version>
   </properties>
 
   <developers>
@@ -32,6 +32,7 @@
       <name>Héctor F. Tobón R.</name>
       <email>h.f.tobon@cgiar.org</email>
     </developer>
+    
     <developer>
       <name>Hernán D. Carvajal B.</name>
       <email>h.d.carvajal@cgiar.org</email>
@@ -39,8 +40,8 @@
   </developers>
 
   <issueManagement>
-    <system>Google Code</system>
-    <url>http://code.google.com/p/ccafs-ap/issues/list</url>
+    <system>Github Issues</system>
+    <url>https://github.com/CCAFS/ccafs-ap/issues</url>
   </issueManagement>
 
   <dependencies>
@@ -82,11 +83,13 @@
         </exclusion>
       </exclusions>
     </dependency>
+    
     <dependency>
       <groupId>com.google.inject.extensions</groupId>
       <artifactId>guice-assistedinject</artifactId>
       <version>${guice.version}</version>
     </dependency>
+    
     <dependency>
       <groupId>com.google.inject.extensions</groupId>
       <artifactId>guice-servlet</artifactId>
@@ -141,6 +144,7 @@
       <version>${java-mail.version}</version>
     </dependency>
 
+    <!-- Json plugin -->
     <dependency>
       <groupId>org.apache.struts</groupId>
 	    <artifactId>struts2-json-plugin</artifactId>
@@ -153,19 +157,20 @@
 		  <artifactId>itext</artifactId>
 		  <version>${itext.version}</version>
 		</dependency>
-		
-		<dependency>
-      <groupId>org.jfree</groupId>
-      <artifactId>jfreechart</artifactId>
-      <version>${jfreechart.version}</version>
-    </dependency>
-    
+
+    <!-- Plugin used to connect to the active directory -->
     <dependency>
       <groupId>org.cgiar.ciat.auth</groupId>
       <artifactId>adauth</artifactId>
-      <version>1.1</version>
+      <version>${adauth.version}</version>
     </dependency>
     
+    <!-- Database version control -->
+    <dependency>
+      <groupId>org.flywaydb</groupId>
+      <artifactId>flyway-core</artifactId>
+      <version>${flyway.version}</version>
+    </dependency>
   </dependencies>
   
   <repositories>
@@ -196,6 +201,7 @@
           </scanTargets>
         </configuration>
       </plugin>
+      
       <!-- Tomcat plugin just to test compatibilities with Tomcat. -->
       <plugin>
         <groupId>org.apache.tomcat.maven</groupId>
@@ -209,6 +215,8 @@
           <keystorePass>d5jtY68oBqWj</keystorePass>
         </configuration>
       </plugin>
+
+      <!--  Maven compiler -->
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-compiler-plugin</artifactId>
@@ -219,6 +227,8 @@
           <debug>true</debug>
         </configuration>
       </plugin>
+      
+      <!--  Maven eclipse plugin -->
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-eclipse-plugin</artifactId>
@@ -236,6 +246,7 @@
           </additionalConfig>
         </configuration>
       </plugin>
+      
       <plugin>
 	      <artifactId>maven-war-plugin</artifactId>
 	      <version>2.3</version>
