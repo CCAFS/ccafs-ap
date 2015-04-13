@@ -23,8 +23,7 @@
     <logback-classic.version>1.0.7</logback-classic.version>
     <janino.version>2.6.1</janino.version>    
     <itext.version>2.1.7</itext.version>
-    <jfreechart.version>1.0.15</jfreechart.version>
-    <shiro.version>1.2.2</shiro.version>
+    <flyway.version>3.2.1</flyway.version>
   </properties>
 
   <developers>
@@ -87,11 +86,13 @@
         </exclusion>
       </exclusions>
     </dependency>
+    
     <dependency>
       <groupId>com.google.inject.extensions</groupId>
       <artifactId>guice-assistedinject</artifactId>
       <version>${guice.version}</version>
     </dependency>
+    
     <dependency>
       <groupId>com.google.inject.extensions</groupId>
       <artifactId>guice-servlet</artifactId>
@@ -159,18 +160,18 @@
 		  <version>${itext.version}</version>
 		</dependency>
 		
-		<dependency>
-      <groupId>org.jfree</groupId>
-      <artifactId>jfreechart</artifactId>
-      <version>${jfreechart.version}</version>
-    </dependency>
-    
     <dependency>
       <groupId>org.cgiar.ciat.auth</groupId>
       <artifactId>adauth</artifactId>
       <version>1.1</version>
     </dependency>
     
+    <!-- Database version control -->
+    <dependency>
+      <groupId>org.flywaydb</groupId>
+      <artifactId>flyway-core</artifactId>
+      <version>${flyway.version}</version>
+    </dependency>
   </dependencies>
   
   <repositories>

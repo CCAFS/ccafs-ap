@@ -23,6 +23,11 @@
     </filter-class>
   </filter>
   
+  <!--  Flyway listener  -->
+  <listener>
+    <listener-class>org.cgiar.ccafs.ap.config.FlywayContextListener</listener-class>
+  </listener>
+  
   <!-- Setting cache specification in headers  -->
   <!-- Comment this filter in order to run jetty server -->
   
