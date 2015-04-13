@@ -24,6 +24,7 @@
     <janino.version>2.6.1</janino.version>    
     <itext.version>2.1.7</itext.version>
     <adauth.version>1.1</adauth.version>
+    <flyway.version>3.2.1</flyway.version>
   </properties>
 
   <developers>
@@ -156,13 +157,20 @@
 		  <artifactId>itext</artifactId>
 		  <version>${itext.version}</version>
 		</dependency>
-		
+
+    <!-- Plugin used to connect to the active directory -->
     <dependency>
       <groupId>org.cgiar.ciat.auth</groupId>
       <artifactId>adauth</artifactId>
       <version>${adauth.version}</version>
     </dependency>
     
+    <!-- Database version control -->
+    <dependency>
+      <groupId>org.flywaydb</groupId>
+      <artifactId>flyway-core</artifactId>
+      <version>${flyway.version}</version>
+    </dependency>
   </dependencies>
   
   <repositories>
@@ -206,39 +214,6 @@
           <keystoreFile>${basedir}/.keystore</keystoreFile>
           <keystorePass>d5jtY68oBqWj</keystorePass>
         </configuration>
-      </plugin>
-
-      <!--  Database versionning plugin -->
-      <plugin>
-        <groupId>org.flywaydb</groupId>
-        <artifactId>flyway-maven-plugin</artifactId>
-        <version>3.2.1</version>
-        <configuration>          
-          <driver>com.mysql.jdbc.Driver</driver>
-          <url>${mysql.url}</url>
-          <user>${mysql.user}</user>
-          <password>${mysql.password}</password>
-        </configuration>
-      </plugin>
-      
-      <!--  Maven plugin to read the properties file -->
-      <plugin>
-        <groupId>org.codehaus.mojo</groupId>
-        <artifactId>properties-maven-plugin</artifactId>
-        <version>1.0-alpha-2</version>
-        <executions>
-          <execution>
-            <phase>initialize</phase>
-            <goals>
-              <goal>read-project-properties</goal>
-		        </goals>
-            <configuration>
-              <files>
-                <file>src/main/resources/ccafsap.properties</file>
-              </files>
-            </configuration>
-          </execution>
-        </executions>
       </plugin>
 
       <!--  Maven compiler -->
