@@ -571,7 +571,7 @@ public class InstitutionalSummaryPdf {
       paragraph.setFont(HEADING4_FONT);
       paragraph.add("Social Media Campaigns: \n");
       paragraph.setFont(BODY_TEXT_FONT);
-      paragraph.add(addLinksToText(communications.getMediaCampaings()));
+      paragraph.add(addLinksToText(communications.getSociaMediaCampaigns()));
       paragraph.add(Chunk.NEWLINE);
 
       paragraph.setFont(HEADING4_FONT);
@@ -1038,21 +1038,21 @@ public class InstitutionalSummaryPdf {
 
     try {
       addActivities(activities);
-// document.newPage();
-// addSummaryByOutputs(outputSummaries);
-// document.newPage();
-// addCommunications(communications);
-// document.newPage();
-// addCaseStudies(caseStudies);
-// document.newPage();
-// addOutcomes(outcomes);
-// document.newPage();
-// addOutcomeIndicators(outcomeIndicatorReport);
-// document.newPage();
-// addLeverages(leverages);
-// document.newPage();
-// addPublications(publications);
-// document.newPage();
+      document.newPage();
+      addSummaryByOutputs(outputSummaries);
+      document.newPage();
+      addCommunications(communications);
+      document.newPage();
+      addCaseStudies(caseStudies);
+      document.newPage();
+      addOutcomes(outcomes);
+      document.newPage();
+      addOutcomeIndicators(outcomeIndicatorReport);
+      document.newPage();
+      addLeverages(leverages);
+      document.newPage();
+      addPublications(publications);
+      document.newPage();
 
     } catch (DocumentException e2) {
       // TODO Auto-generated catch block

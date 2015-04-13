@@ -155,7 +155,7 @@ public class InstitutionalSummaryAction extends BaseAction {
       leverageManager.getLeverages(getCurrentUser().getLeader(), getCurrentReportingLogframe());
 
     institutionalPdf.setSummaryTitle(getCurrentUser().getLeader().getAcronym() + " "
-      + getCurrentReportingLogframe().getYear() + " Activities");
+      + getCurrentReportingLogframe().getYear() + " Technical Report");
 
     institutionalPdf.generatePdf(activities, outputSummaries, publications, communications, caseStudies, outcomes,
       outcomeIndicatorReport, leverages);
