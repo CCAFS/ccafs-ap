@@ -24,6 +24,7 @@ BEGIN
   IF NOT EXISTS ((SELECT * FROM information_schema.columns WHERE table_schema=DATABASE() AND table_name='activities' AND column_name='modified_by')) THEN
     ALTER TABLE `activities` ADD `modified_by` BIGINT NOT NULL ;
     UPDATE activities SET modified_by = created_by;
+    ALTER TABLE activities ADD CONSTRAINT fk_activities_employees_modified_by FOREIGN KEY (`modified_by`)  REFERENCES employees(id);
   END IF;
   
   -- Add the modification_justification column to the activities table, if it doesn't already exist
@@ -82,6 +83,7 @@ BEGIN
   IF NOT EXISTS ((SELECT * FROM information_schema.columns WHERE table_schema=DATABASE() AND table_name='activity_budgets' AND column_name='modified_by')) THEN
     ALTER TABLE `activity_budgets` ADD `modified_by` BIGINT NOT NULL ;
     UPDATE activity_budgets SET modified_by = created_by;
+    ALTER TABLE activity_budgets ADD CONSTRAINT fk_activity_budgets_employees_modified_by FOREIGN KEY (`modified_by`)  REFERENCES employees(id);
   END IF;
   
   -- Add the modification_justification column to the activities table, if it doesn't already exist
@@ -136,6 +138,7 @@ BEGIN
   IF NOT EXISTS ((SELECT * FROM information_schema.columns WHERE table_schema=DATABASE() AND table_name='activity_cross_cutting_themes' AND column_name='modified_by')) THEN
     ALTER TABLE `activity_cross_cutting_themes` ADD `modified_by` BIGINT NOT NULL ;
     UPDATE activity_cross_cutting_themes SET modified_by = created_by;
+    ALTER TABLE activity_cross_cutting_themes ADD CONSTRAINT fk_activity_cross_cutting_themes_employees_modified_by FOREIGN KEY (`modified_by`)  REFERENCES employees(id);
   END IF;
   
   -- Add the modification_justification column to the activities table, if it doesn't already exist
@@ -188,6 +191,7 @@ BEGIN
   IF NOT EXISTS ((SELECT * FROM information_schema.columns WHERE table_schema=DATABASE() AND table_name='activity_locations' AND column_name='modified_by')) THEN
     ALTER TABLE `activity_locations` ADD `modified_by` BIGINT NOT NULL ;
     UPDATE activity_locations SET modified_by = created_by;
+    ALTER TABLE activity_locations ADD CONSTRAINT fk_activity_locations_employees_modified_by FOREIGN KEY (`modified_by`)  REFERENCES employees(id);
   END IF;
   
   -- Add the modification_justification column to the activities table, if it doesn't already exist
@@ -241,6 +245,7 @@ BEGIN
   IF NOT EXISTS ((SELECT * FROM information_schema.columns WHERE table_schema=DATABASE() AND table_name='activity_partners' AND column_name='modified_by')) THEN
     ALTER TABLE `activity_partners` ADD `modified_by` BIGINT NOT NULL ;
     UPDATE activity_partners SET modified_by = created_by;
+    ALTER TABLE activity_partners ADD CONSTRAINT fk_activity_partners_employees_modified_by FOREIGN KEY (`modified_by`)  REFERENCES employees(id);
   END IF;
   
   -- Add the modification_justification column to the activities table, if it doesn't already exist
@@ -294,6 +299,7 @@ BEGIN
   IF NOT EXISTS ((SELECT * FROM information_schema.columns WHERE table_schema=DATABASE() AND table_name='deliverables' AND column_name='modified_by')) THEN
     ALTER TABLE `deliverables` ADD `modified_by` BIGINT NOT NULL ;
     UPDATE deliverables SET modified_by = created_by;
+    ALTER TABLE deliverables ADD CONSTRAINT fk_deliverables_employees_modified_by FOREIGN KEY (`modified_by`)  REFERENCES employees(id);
   END IF;
   
   -- Add the modification_justification column to the activities table, if it doesn't already exist
@@ -347,6 +353,7 @@ BEGIN
   IF NOT EXISTS ((SELECT * FROM information_schema.columns WHERE table_schema=DATABASE() AND table_name='ip_activity_contributions' AND column_name='modified_by')) THEN
     ALTER TABLE `ip_activity_contributions` ADD `modified_by` BIGINT NOT NULL ;
     UPDATE ip_activity_contributions SET modified_by = created_by;
+    ALTER TABLE ip_activity_contributions ADD CONSTRAINT fk_ip_activity_contributions_employees_modified_by FOREIGN KEY (`modified_by`)  REFERENCES employees(id);
   END IF;
   
   -- Add the modification_justification column to the activities table, if it doesn't already exist
@@ -400,6 +407,7 @@ BEGIN
   IF NOT EXISTS ((SELECT * FROM information_schema.columns WHERE table_schema=DATABASE() AND table_name='ip_activity_indicators' AND column_name='modified_by')) THEN
     ALTER TABLE `ip_activity_indicators` ADD `modified_by` BIGINT NOT NULL ;
     UPDATE ip_activity_indicators SET modified_by = created_by;
+    ALTER TABLE ip_activity_indicators ADD CONSTRAINT fk_ip_activity_indicators_employees_modified_by FOREIGN KEY (`modified_by`)  REFERENCES employees(id);
   END IF;
   
   -- Add the modification_justification column to the activities table, if it doesn't already exist
@@ -418,4 +426,115 @@ DROP PROCEDURE IF EXISTS update_ip_activity_indicators_table;
 
 -- -----------------------------------------------------------------------------
 --            End of modifications to the ip activity indicators table
+-- -----------------------------------------------------------------------------
+
+
+-- -----------------------------------------------------------------------------
+--            Modifications to the ip deliverable contributions table
+-- -----------------------------------------------------------------------------
+
+DROP PROCEDURE IF EXISTS update_ip_deliverable_contributions_table;
+DELIMITER $$
+
+-- Create the stored procedure to perform the migration
+CREATE PROCEDURE update_ip_deliverable_contributions_table()
+BEGIN
+
+  -- Add the is_active column to the activities table, if it doesn't already exist
+  IF NOT EXISTS ((SELECT * FROM information_schema.columns WHERE table_schema=DATABASE() AND table_name='ip_deliverable_contributions' AND column_name='is_active')) THEN
+    ALTER TABLE `ip_deliverable_contributions` ADD `is_active` BOOLEAN NOT NULL DEFAULT TRUE;
+  END IF;
+
+  -- Add the created_by column to the activities table, if it doesn't already exist
+  IF NOT EXISTS ((SELECT * FROM information_schema.columns WHERE table_schema=DATABASE() AND table_name='ip_deliverable_contributions' AND column_name='active_since')) THEN
+    ALTER TABLE `ip_deliverable_contributions` ADD `active_since` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP;    
+    UPDATE ip_deliverable_contributions ab SET ab.active_since = (SELECT a.active_since FROM activities a INNER JOIN deliverables d ON a.id = d.activity_id WHERE d.id = ab.deliverable_id);
+  END IF;
+
+  -- Add the created_by column to the activities table, if it doesn't already exist
+  IF NOT EXISTS ((SELECT * FROM information_schema.columns WHERE table_schema=DATABASE() AND table_name='ip_deliverable_contributions' AND column_name='created_by')) THEN
+    ALTER TABLE `ip_deliverable_contributions` ADD `created_by` BIGINT NOT NULL;
+    UPDATE ip_deliverable_contributions ab SET ab.created_by = (SELECT IFNULL(a.leader_id, a.created_by) FROM activities a INNER JOIN deliverables d ON a.id = d.activity_id WHERE d.id = ab.deliverable_id);
+    ALTER TABLE ip_deliverable_contributions ADD CONSTRAINT fk_ip_deliverable_contributions_employees_created_by FOREIGN KEY (`created_by`)  REFERENCES employees(id);
+  END IF;
+
+  -- Add the modified_by column to the activities table, if it doesn't already exist
+  IF NOT EXISTS ((SELECT * FROM information_schema.columns WHERE table_schema=DATABASE() AND table_name='ip_deliverable_contributions' AND column_name='modified_by')) THEN
+    ALTER TABLE `ip_deliverable_contributions` ADD `modified_by` BIGINT NOT NULL ;
+    UPDATE ip_deliverable_contributions SET modified_by = created_by;
+    ALTER TABLE ip_deliverable_contributions ADD CONSTRAINT fk_ip_deliverable_contributions_employees_modified_by FOREIGN KEY (`modified_by`)  REFERENCES employees(id);
+  END IF;
+  
+  -- Add the modification_justification column to the activities table, if it doesn't already exist
+  IF NOT EXISTS ((SELECT * FROM information_schema.columns WHERE table_schema=DATABASE() AND table_name='ip_deliverable_contributions' AND column_name='modification_justification')) THEN
+    ALTER TABLE `ip_deliverable_contributions` ADD `modification_justification` TEXT NOT NULL ;
+  END IF;
+ 
+END $$
+DELIMITER ;
+
+-- Execute the stored procedure
+CALL update_ip_deliverable_contributions_table();
+ 
+-- Don't forget to drop the stored procedure when you're done!
+DROP PROCEDURE IF EXISTS update_ip_deliverable_contributions_table;
+
+-- -----------------------------------------------------------------------------
+--            End of modifications to the ip deliverable contributions table
+-- -----------------------------------------------------------------------------
+
+-- -----------------------------------------------------------------------------
+--            Modifications to the ip elements table
+-- -----------------------------------------------------------------------------
+
+DROP PROCEDURE IF EXISTS update_ip_elements_table;
+DELIMITER $$
+
+-- Create the stored procedure to perform the migration
+CREATE PROCEDURE update_ip_elements_table()
+BEGIN
+
+  -- Add the is_active column to the activities table, if it doesn't already exist
+  IF NOT EXISTS ((SELECT * FROM information_schema.columns WHERE table_schema=DATABASE() AND table_name='ip_elements' AND column_name='is_active')) THEN
+    ALTER TABLE `ip_elements` ADD `is_active` BOOLEAN NOT NULL DEFAULT TRUE;
+  END IF;
+
+  -- Add the active_since column to the activities table, if it doesn't already exist
+  -- This value is assigned arbitrarily given that we don't have a value for this, the date used is an estimated of when the ip elements were created
+  IF NOT EXISTS ((SELECT * FROM information_schema.columns WHERE table_schema=DATABASE() AND table_name='ip_elements' AND column_name='active_since')) THEN
+    ALTER TABLE `ip_elements` ADD `active_since` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP;    
+    UPDATE ip_elements ab SET ab.active_since = '2014-08-01 10:00:00';
+  END IF;
+
+  -- Add the created_by column to the activities table, if it doesn't already exist
+  -- The created_by value is assigned arbitrarily to the leader of the program
+  IF NOT EXISTS ((SELECT * FROM information_schema.columns WHERE table_schema=DATABASE() AND table_name='ip_elements' AND column_name='created_by')) THEN
+    ALTER TABLE `ip_elements` ADD `created_by` BIGINT NOT NULL;
+    UPDATE ip_elements ab SET ab.created_by = (SELECT IF( pe.program_id = 1, 51, IF( pe.program_id = 2, 52, IF( pe.program_id = 3,  54, 26 ))) FROM ip_program_elements pe  WHERE pe.element_id = 1 and relation_type_id = 2); 
+    ALTER TABLE ip_elements ADD CONSTRAINT fk_ip_elements_employees_created_by FOREIGN KEY (`created_by`)  REFERENCES employees(id);
+  END IF;
+
+  -- Add the modified_by column to the activities table, if it doesn't already exist
+  IF NOT EXISTS ((SELECT * FROM information_schema.columns WHERE table_schema=DATABASE() AND table_name='ip_elements' AND column_name='modified_by')) THEN
+    ALTER TABLE `ip_elements` ADD `modified_by` BIGINT NOT NULL ;
+    UPDATE ip_elements SET modified_by = created_by;
+    ALTER TABLE ip_elements ADD CONSTRAINT fk_ip_elements_employees_modified_by FOREIGN KEY (`modified_by`)  REFERENCES employees(id);
+  END IF;
+  
+  -- Add the modification_justification column to the activities table, if it doesn't already exist
+  IF NOT EXISTS ((SELECT * FROM information_schema.columns WHERE table_schema=DATABASE() AND table_name='ip_elements' AND column_name='modification_justification')) THEN
+    ALTER TABLE `ip_elements` ADD `modification_justification` TEXT NOT NULL ;
+  END IF;
+ 
+END $$
+DELIMITER ;
+
+-- Execute the stored procedure
+CALL update_ip_elements_table();
+ 
+-- Don't forget to drop the stored procedure when you're done!
+DROP PROCEDURE IF EXISTS update_ip_elements_table;
+
+-- -----------------------------------------------------------------------------
+--            End of modifications to the ip elements table
 -- -----------------------------------------------------------------------------
