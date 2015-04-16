@@ -930,33 +930,33 @@ CREATE PROCEDURE update_project_outcomes_table()
 BEGIN
 
   -- Add the is_active column to the table, if it doesn't already exist
-  IF NOT EXISTS ((SELECT * FROM information_schema.columns WHERE table_schema=DATABASE() AND table_name='project_outcomes' AND column_name='is_active')) THEN
-    ALTER TABLE `project_outcomes` ADD `is_active` BOOLEAN NOT NULL DEFAULT TRUE;
+  IF NOT EXISTS ((SELECT * FROM information_schema.columns WHERE table_schema=DATABASE() AND table_name='project_focuses' AND column_name='is_active')) THEN
+    ALTER TABLE `project_focuses` ADD `is_active` BOOLEAN NOT NULL DEFAULT TRUE;
   END IF;
 
   -- Add the `active_since` column to the table, if it doesn't already exist
-  IF NOT EXISTS ((SELECT * FROM information_schema.columns WHERE table_schema=DATABASE() AND table_name='project_outcomes' AND column_name='active_since')) THEN
-    ALTER TABLE `project_outcomes` ADD `active_since` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP;    
-    UPDATE project_outcomes ii SET ii.active_since = (SELECT active_since FROM projects p WHERE p.id = ii.project_id);
+  IF NOT EXISTS ((SELECT * FROM information_schema.columns WHERE table_schema=DATABASE() AND table_name='project_focuses' AND column_name='active_since')) THEN
+    ALTER TABLE `project_focuses` ADD `active_since` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP;    
+    UPDATE project_focuses ii SET ii.active_since = (SELECT active_since FROM projects p WHERE p.id = ii.project_id);
   END IF;
 
   -- Add the `created_by` column to the table, if it doesn't already exist
-  IF NOT EXISTS ((SELECT * FROM information_schema.columns WHERE table_schema=DATABASE() AND table_name='project_outcomes' AND column_name='created_by')) THEN
-    ALTER TABLE `project_outcomes` ADD `created_by` BIGINT NOT NULL;
-    UPDATE project_outcomes ii SET ii.created_by = (SELECT p.created_by FROM projects p WHERE p.id = ii.project_id); 
-    ALTER TABLE project_outcomes ADD CONSTRAINT fk_project_outcomes_employees_created_by FOREIGN KEY (`created_by`)  REFERENCES employees(id);
+  IF NOT EXISTS ((SELECT * FROM information_schema.columns WHERE table_schema=DATABASE() AND table_name='project_focuses' AND column_name='created_by')) THEN
+    ALTER TABLE `project_focuses` ADD `created_by` BIGINT NOT NULL;
+    UPDATE project_focuses ii SET ii.created_by = (SELECT p.created_by FROM projects p WHERE p.id = ii.project_id); 
+    ALTER TABLE project_focuses ADD CONSTRAINT fk_project_focuses_employees_created_by FOREIGN KEY (`created_by`)  REFERENCES employees(id);
   END IF;
 
   -- Add the `modified_by` column to the table, if it doesn't already exist
-  IF NOT EXISTS ((SELECT * FROM information_schema.columns WHERE table_schema=DATABASE() AND table_name='project_outcomes' AND column_name='modified_by')) THEN
-    ALTER TABLE `project_outcomes` ADD `modified_by` BIGINT NOT NULL ;
-    UPDATE project_outcomes SET modified_by = created_by;
-    ALTER TABLE project_outcomes ADD CONSTRAINT fk_project_outcomes_employees_modified__by FOREIGN KEY (`modified_by`)  REFERENCES employees(id);
+  IF NOT EXISTS ((SELECT * FROM information_schema.columns WHERE table_schema=DATABASE() AND table_name='project_focuses' AND column_name='modified_by')) THEN
+    ALTER TABLE `project_focuses` ADD `modified_by` BIGINT NOT NULL ;
+    UPDATE project_focuses SET modified_by = created_by;
+    ALTER TABLE project_focuses ADD CONSTRAINT fk_project_focuses_employees_modified__by FOREIGN KEY (`modified_by`)  REFERENCES employees(id);
   END IF;
   
   -- Add the modification_justification column to the activities table, if it doesn't already exist
-  IF NOT EXISTS ((SELECT * FROM information_schema.columns WHERE table_schema=DATABASE() AND table_name='project_outcomes' AND column_name='modification_justification')) THEN
-    ALTER TABLE `project_outcomes` ADD `modification_justification` TEXT NOT NULL ;
+  IF NOT EXISTS ((SELECT * FROM information_schema.columns WHERE table_schema=DATABASE() AND table_name='project_focuses' AND column_name='modification_justification')) THEN
+    ALTER TABLE `project_focuses` ADD `modification_justification` TEXT NOT NULL ;
   END IF;
  
 END $$
