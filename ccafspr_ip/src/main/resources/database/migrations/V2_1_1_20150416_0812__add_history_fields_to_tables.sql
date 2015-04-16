@@ -651,54 +651,54 @@ DROP PROCEDURE IF EXISTS update_projects_table;
 --            Modifications to the ip other contributions table
 -- -----------------------------------------------------------------------------
 
-DROP PROCEDURE IF EXISTS update_ip_project_contributions_table;
+DROP PROCEDURE IF EXISTS update_ip_other_contributions_table;
 DELIMITER $$
 
 -- Create the stored procedure to perform the migration
-CREATE PROCEDURE update_ip_project_contributions_table()
+CREATE PROCEDURE update_ip_other_contributions_table()
 BEGIN
 
   -- Add the is_active column to the table, if it doesn't already exist
-  IF NOT EXISTS ((SELECT * FROM information_schema.columns WHERE table_schema=DATABASE() AND table_name='ip_project_contributions' AND column_name='is_active')) THEN
-    ALTER TABLE `ip_project_contributions` ADD `is_active` BOOLEAN NOT NULL DEFAULT TRUE;
+  IF NOT EXISTS ((SELECT * FROM information_schema.columns WHERE table_schema=DATABASE() AND table_name='ip_other_contributions' AND column_name='is_active')) THEN
+    ALTER TABLE `ip_other_contributions` ADD `is_active` BOOLEAN NOT NULL DEFAULT TRUE;
   END IF;
 
   -- Add the `active_since` column to the table, if it doesn't already exist
-  IF NOT EXISTS ((SELECT * FROM information_schema.columns WHERE table_schema=DATABASE() AND table_name='ip_project_contributions' AND column_name='active_since')) THEN
-    ALTER TABLE `ip_project_contributions` ADD `active_since` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP;    
-    UPDATE ip_project_contributions ii SET ii.active_since = (SELECT active_since FROM projects p WHERE p.id = ii.project_id);
+  IF NOT EXISTS ((SELECT * FROM information_schema.columns WHERE table_schema=DATABASE() AND table_name='ip_other_contributions' AND column_name='active_since')) THEN
+    ALTER TABLE `ip_other_contributions` ADD `active_since` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP;    
+    UPDATE ip_other_contributions ii SET ii.active_since = (SELECT active_since FROM projects p WHERE p.id = ii.project_id);
   END IF;
 
   -- Add the `created_by` column to the table, if it doesn't already exist
-  IF NOT EXISTS ((SELECT * FROM information_schema.columns WHERE table_schema=DATABASE() AND table_name='ip_project_contributions' AND column_name='created_by')) THEN
-    ALTER TABLE `ip_project_contributions` ADD `created_by` BIGINT NOT NULL;
-    UPDATE ip_project_contributions ii SET ii.created_by = (SELECT p.created_by FROM projects p WHERE p.id = ii.project_id); 
-    ALTER TABLE ip_project_contributions ADD CONSTRAINT fk_ip_project_contributions_employees_created_by FOREIGN KEY (`created_by`)  REFERENCES employees(id);
+  IF NOT EXISTS ((SELECT * FROM information_schema.columns WHERE table_schema=DATABASE() AND table_name='ip_other_contributions' AND column_name='created_by')) THEN
+    ALTER TABLE `ip_other_contributions` ADD `created_by` BIGINT NOT NULL;
+    UPDATE ip_other_contributions ii SET ii.created_by = (SELECT p.created_by FROM projects p WHERE p.id = ii.project_id); 
+    ALTER TABLE ip_other_contributions ADD CONSTRAINT fk_ip_other_contributions_employees_created_by FOREIGN KEY (`created_by`)  REFERENCES employees(id);
   END IF;
 
   -- Add the `modified_by` column to the table, if it doesn't already exist
-  IF NOT EXISTS ((SELECT * FROM information_schema.columns WHERE table_schema=DATABASE() AND table_name='ip_project_contributions' AND column_name='modified_by')) THEN
-    ALTER TABLE `ip_project_contributions` ADD `modified_by` BIGINT NOT NULL ;
-    UPDATE ip_project_contributions SET modified_by = created_by;
-    ALTER TABLE ip_project_contributions ADD CONSTRAINT fk_ip_project_contributions_employees_modified_by FOREIGN KEY (`modified_by`)  REFERENCES employees(id);
+  IF NOT EXISTS ((SELECT * FROM information_schema.columns WHERE table_schema=DATABASE() AND table_name='ip_other_contributions' AND column_name='modified_by')) THEN
+    ALTER TABLE `ip_other_contributions` ADD `modified_by` BIGINT NOT NULL ;
+    UPDATE ip_other_contributions SET modified_by = created_by;
+    ALTER TABLE ip_other_contributions ADD CONSTRAINT fk_ip_other_contributions_employees_modified_by FOREIGN KEY (`modified_by`)  REFERENCES employees(id);
   END IF;
   
   -- Add the modification_justification column to the activities table, if it doesn't already exist
-  IF NOT EXISTS ((SELECT * FROM information_schema.columns WHERE table_schema=DATABASE() AND table_name='ip_project_contributions' AND column_name='modification_justification')) THEN
-    ALTER TABLE `ip_project_contributions` ADD `modification_justification` TEXT NOT NULL ;
+  IF NOT EXISTS ((SELECT * FROM information_schema.columns WHERE table_schema=DATABASE() AND table_name='ip_other_contributions' AND column_name='modification_justification')) THEN
+    ALTER TABLE `ip_other_contributions` ADD `modification_justification` TEXT NOT NULL ;
   END IF;
  
 END $$
 DELIMITER ;
 
 -- Execute the stored procedure
-CALL update_ip_project_contributions_table();
+CALL update_ip_other_contributions_table();
  
 -- Don't forget to drop the stored procedure when you're done!
-DROP PROCEDURE IF EXISTS update_ip_project_contributions_table;
+DROP PROCEDURE IF EXISTS update_ip_other_contributions_table;
 
 -- -----------------------------------------------------------------------------
---            End of modifications to the ip elements table
+--            End of modifications to the ip other contributions table
 -- -----------------------------------------------------------------------------
 
 -- -----------------------------------------------------------------------------
