@@ -366,3 +366,56 @@ DROP PROCEDURE IF EXISTS update_ip_activity_contributions_table;
 -- -----------------------------------------------------------------------------
 --            End of modifications to the ip activity contributions table
 -- -----------------------------------------------------------------------------
+
+-- -----------------------------------------------------------------------------
+--            Modifications to the ip activity indicators table
+-- -----------------------------------------------------------------------------
+
+DROP PROCEDURE IF EXISTS update_ip_activity_indicators_table;
+DELIMITER $$
+
+-- Create the stored procedure to perform the migration
+CREATE PROCEDURE update_ip_activity_indicators_table()
+BEGIN
+
+  -- Add the is_active column to the activities table, if it doesn't already exist
+  IF NOT EXISTS ((SELECT * FROM information_schema.columns WHERE table_schema=DATABASE() AND table_name='ip_activity_indicators' AND column_name='is_active')) THEN
+    ALTER TABLE `ip_activity_indicators` ADD `is_active` BOOLEAN NOT NULL DEFAULT TRUE;
+  END IF;
+
+  -- Add the created_by column to the activities table, if it doesn't already exist
+  IF NOT EXISTS ((SELECT * FROM information_schema.columns WHERE table_schema=DATABASE() AND table_name='ip_activity_indicators' AND column_name='active_since')) THEN
+    ALTER TABLE `ip_activity_indicators` ADD `active_since` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP;    
+    UPDATE ip_activity_indicators ab SET ab.active_since = (SELECT a.active_since FROM activities a WHERE ab.activity_id = a.id);
+  END IF;
+
+  -- Add the created_by column to the activities table, if it doesn't already exist
+  IF NOT EXISTS ((SELECT * FROM information_schema.columns WHERE table_schema=DATABASE() AND table_name='ip_activity_indicators' AND column_name='created_by')) THEN
+    ALTER TABLE `ip_activity_indicators` ADD `created_by` BIGINT NOT NULL;
+    UPDATE ip_activity_indicators ab SET ab.created_by = (SELECT IFNULL(a.leader_id, a.created_by) FROM activities a WHERE ab.activity_id = a.id);
+    ALTER TABLE ip_activity_indicators ADD CONSTRAINT fk_ip_activity_indicators_employees_created_by FOREIGN KEY (`created_by`)  REFERENCES employees(id);
+  END IF;
+
+  -- Add the modified_by column to the activities table, if it doesn't already exist
+  IF NOT EXISTS ((SELECT * FROM information_schema.columns WHERE table_schema=DATABASE() AND table_name='ip_activity_indicators' AND column_name='modified_by')) THEN
+    ALTER TABLE `ip_activity_indicators` ADD `modified_by` BIGINT NOT NULL ;
+    UPDATE ip_activity_indicators SET modified_by = created_by;
+  END IF;
+  
+  -- Add the modification_justification column to the activities table, if it doesn't already exist
+  IF NOT EXISTS ((SELECT * FROM information_schema.columns WHERE table_schema=DATABASE() AND table_name='ip_activity_indicators' AND column_name='modification_justification')) THEN
+    ALTER TABLE `ip_activity_indicators` ADD `modification_justification` TEXT NOT NULL ;
+  END IF;
+ 
+END $$
+DELIMITER ;
+
+-- Execute the stored procedure
+CALL update_ip_activity_indicators_table();
+ 
+-- Don't forget to drop the stored procedure when you're done!
+DROP PROCEDURE IF EXISTS update_ip_activity_indicators_table;
+
+-- -----------------------------------------------------------------------------
+--            End of modifications to the ip activity indicators table
+-- -----------------------------------------------------------------------------
