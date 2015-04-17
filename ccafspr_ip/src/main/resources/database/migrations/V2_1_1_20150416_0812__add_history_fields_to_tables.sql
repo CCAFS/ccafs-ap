@@ -922,11 +922,11 @@ DROP PROCEDURE IF EXISTS update_project_budgets_table;
 --            Modifications to the project focuses table
 -- -----------------------------------------------------------------------------
 
-DROP PROCEDURE IF EXISTS update_project_outcomes_table;
+DROP PROCEDURE IF EXISTS update_project_focuses_table;
 DELIMITER $$
 
 -- Create the stored procedure to perform the migration
-CREATE PROCEDURE update_project_outcomes_table()
+CREATE PROCEDURE update_project_focuses_table()
 BEGIN
 
   -- Add the is_active column to the table, if it doesn't already exist
@@ -943,7 +943,7 @@ BEGIN
   -- Add the `created_by` column to the table, if it doesn't already exist
   IF NOT EXISTS ((SELECT * FROM information_schema.columns WHERE table_schema=DATABASE() AND table_name='project_focuses' AND column_name='created_by')) THEN
     ALTER TABLE `project_focuses` ADD `created_by` BIGINT NOT NULL;
-    UPDATE project_focuses ii SET ii.created_by = (SELECT p.created_by FROM projects p WHERE p.id = ii.project_id); 
+    UPDATE project_focuses pf INNER JOIN projects p ON pf.project_id = p.id SET pf.created_by = p.created_by;
     ALTER TABLE project_focuses ADD CONSTRAINT fk_project_focuses_employees_created_by FOREIGN KEY (`created_by`)  REFERENCES employees(id);
   END IF;
 
@@ -963,10 +963,10 @@ END $$
 DELIMITER ;
 
 -- Execute the stored procedure
-CALL update_project_outcomes_table();
+CALL update_project_focuses_table();
  
 -- Don't forget to drop the stored procedure when you're done!
-DROP PROCEDURE IF EXISTS update_project_outcomes_table;
+DROP PROCEDURE IF EXISTS update_project_focuses_table;
 
 -- -----------------------------------------------------------------------------
 --            End of modifications to the ip project focuses table
