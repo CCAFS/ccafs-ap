@@ -24,10 +24,6 @@ BEGIN
 	IF NOT EXISTS ((SELECT * FROM information_schema.columns WHERE table_schema=DATABASE() AND table_name='activities' AND column_name='record_id')) THEN
   	ALTER TABLE `activities` ADD `record_id` BIGINT NOT NULL AFTER `id`;
   END IF;
-
-  IF EXISTS ((SELECT * FROM information_schema.columns WHERE table_schema=DATABASE() AND table_name='activities' AND column_name='is_active')) THEN
-  	ALTER TABLE `activities` DROP `is_active`;
-  END IF;
   
   IF EXISTS ((SELECT * FROM information_schema.columns WHERE table_schema=DATABASE() AND table_name='activities' AND column_name='created_by')) THEN
     ALTER TABLE `activities` DROP `created_by`;
@@ -38,7 +34,7 @@ BEGIN
   END IF;
   
   IF NOT EXISTS ((SELECT * FROM information_schema.columns WHERE table_schema=DATABASE() AND table_name='activities' AND column_name='active_until')) THEN
-  	ALTER TABLE `activities` ADD `active_until` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP AFTER `active_since`;
+  	ALTER TABLE `activities` ADD `active_until` DATETIME NULL AFTER `active_since`;
   END IF;
   
   IF NOT EXISTS ((SELECT * FROM information_schema.columns WHERE table_schema=DATABASE() AND table_name='activities' AND column_name='action')) THEN
@@ -73,10 +69,6 @@ BEGIN
 	IF NOT EXISTS ((SELECT * FROM information_schema.columns WHERE table_schema=DATABASE() AND table_name='activity_budgets' AND column_name='record_id')) THEN
     ALTER TABLE `activity_budgets` ADD `record_id` BIGINT NOT NULL AFTER `id`;
   END IF;
-
-  IF EXISTS ((SELECT * FROM information_schema.columns WHERE table_schema=DATABASE() AND table_name='activity_budgets' AND column_name='is_active')) THEN
-    ALTER TABLE `activity_budgets` DROP `is_active`;
-  END IF;
   
   IF EXISTS ((SELECT * FROM information_schema.columns WHERE table_schema=DATABASE() AND table_name='activity_budgets' AND column_name='created_by')) THEN
     ALTER TABLE `activity_budgets` DROP `created_by`;
@@ -87,7 +79,7 @@ BEGIN
   END IF;
   
   IF NOT EXISTS ((SELECT * FROM information_schema.columns WHERE table_schema=DATABASE() AND table_name='activity_budgets' AND column_name='active_until')) THEN
-    ALTER TABLE `activity_budgets` ADD `active_until` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP AFTER `active_since`;
+    ALTER TABLE `activity_budgets` ADD `active_until` DATETIME NULL AFTER `active_since`;
   END IF;
   
   IF NOT EXISTS ((SELECT * FROM information_schema.columns WHERE table_schema=DATABASE() AND table_name='activity_budgets' AND column_name='action')) THEN
@@ -122,10 +114,6 @@ BEGIN
 	IF NOT EXISTS ((SELECT * FROM information_schema.columns WHERE table_schema=DATABASE() AND table_name='activity_cross_cutting_themes' AND column_name='record_id')) THEN
     ALTER TABLE `activity_cross_cutting_themes` ADD `record_id` BIGINT NOT NULL AFTER `id`;
   END IF;
-
-  IF EXISTS ((SELECT * FROM information_schema.columns WHERE table_schema=DATABASE() AND table_name='activity_cross_cutting_themes' AND column_name='is_active')) THEN
-    ALTER TABLE `activity_cross_cutting_themes` DROP `is_active`;
-  END IF;
   
   IF EXISTS ((SELECT * FROM information_schema.columns WHERE table_schema=DATABASE() AND table_name='activity_cross_cutting_themes' AND column_name='created_by')) THEN
     ALTER TABLE `activity_cross_cutting_themes` DROP `created_by`;
@@ -136,7 +124,7 @@ BEGIN
   END IF;
   
   IF NOT EXISTS ((SELECT * FROM information_schema.columns WHERE table_schema=DATABASE() AND table_name='activity_cross_cutting_themes' AND column_name='active_until')) THEN
-    ALTER TABLE `activity_cross_cutting_themes` ADD `active_until` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP AFTER `active_since`;
+    ALTER TABLE `activity_cross_cutting_themes` ADD `active_until` DATETIME NULL AFTER `active_since`;
   END IF;
   
   IF NOT EXISTS ((SELECT * FROM information_schema.columns WHERE table_schema=DATABASE() AND table_name='activity_cross_cutting_themes' AND column_name='action')) THEN
@@ -171,10 +159,6 @@ BEGIN
   IF NOT EXISTS ((SELECT * FROM information_schema.columns WHERE table_schema=DATABASE() AND table_name='activity_locations' AND column_name='record_id')) THEN
     ALTER TABLE `activity_locations` ADD `record_id` BIGINT NOT NULL AFTER `id`;
   END IF;
-
-  IF EXISTS ((SELECT * FROM information_schema.columns WHERE table_schema=DATABASE() AND table_name='activity_locations' AND column_name='is_active')) THEN
-    ALTER TABLE `activity_locations` DROP `is_active`;
-  END IF;
   
   IF EXISTS ((SELECT * FROM information_schema.columns WHERE table_schema=DATABASE() AND table_name='activity_locations' AND column_name='created_by')) THEN
     ALTER TABLE `activity_locations` DROP `created_by`;
@@ -185,7 +169,7 @@ BEGIN
   END IF;
   
   IF NOT EXISTS ((SELECT * FROM information_schema.columns WHERE table_schema=DATABASE() AND table_name='activity_locations' AND column_name='active_until')) THEN
-    ALTER TABLE `activity_locations` ADD `active_until` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP AFTER `active_since`;
+    ALTER TABLE `activity_locations` ADD `active_until` DATETIME NULL AFTER `active_since`;
   END IF;
   
   IF NOT EXISTS ((SELECT * FROM information_schema.columns WHERE table_schema=DATABASE() AND table_name='activity_locations' AND column_name='action')) THEN
@@ -220,10 +204,6 @@ BEGIN
   IF NOT EXISTS ((SELECT * FROM information_schema.columns WHERE table_schema=DATABASE() AND table_name='activity_partners' AND column_name='record_id')) THEN
     ALTER TABLE `activity_partners` ADD `record_id` BIGINT NOT NULL AFTER `id`;
   END IF;
-
-  IF EXISTS ((SELECT * FROM information_schema.columns WHERE table_schema=DATABASE() AND table_name='activity_partners' AND column_name='is_active')) THEN
-    ALTER TABLE `activity_partners` DROP `is_active`;
-  END IF;
   
   IF EXISTS ((SELECT * FROM information_schema.columns WHERE table_schema=DATABASE() AND table_name='activity_partners' AND column_name='created_by')) THEN
     ALTER TABLE `activity_partners` DROP `created_by`;
@@ -234,7 +214,7 @@ BEGIN
   END IF;
   
   IF NOT EXISTS ((SELECT * FROM information_schema.columns WHERE table_schema=DATABASE() AND table_name='activity_partners' AND column_name='active_until')) THEN
-    ALTER TABLE `activity_partners` ADD `active_until` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP AFTER `active_since`;
+    ALTER TABLE `activity_partners` ADD `active_until` DATETIME NULL AFTER `active_since`;
   END IF;
   
   IF NOT EXISTS ((SELECT * FROM information_schema.columns WHERE table_schema=DATABASE() AND table_name='activity_partners' AND column_name='action')) THEN
@@ -269,10 +249,6 @@ BEGIN
   IF NOT EXISTS ((SELECT * FROM information_schema.columns WHERE table_schema=DATABASE() AND table_name='deliverables' AND column_name='record_id')) THEN
     ALTER TABLE `deliverables` ADD `record_id` BIGINT NOT NULL AFTER `id`;
   END IF;
-
-  IF EXISTS ((SELECT * FROM information_schema.columns WHERE table_schema=DATABASE() AND table_name='deliverables' AND column_name='is_active')) THEN
-    ALTER TABLE `deliverables` DROP `is_active`;
-  END IF;
   
   IF EXISTS ((SELECT * FROM information_schema.columns WHERE table_schema=DATABASE() AND table_name='deliverables' AND column_name='created_by')) THEN
     ALTER TABLE `deliverables` DROP `created_by`;
@@ -283,7 +259,7 @@ BEGIN
   END IF;
   
   IF NOT EXISTS ((SELECT * FROM information_schema.columns WHERE table_schema=DATABASE() AND table_name='deliverables' AND column_name='active_until')) THEN
-    ALTER TABLE `deliverables` ADD `active_until` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP AFTER `active_since`;
+    ALTER TABLE `deliverables` ADD `active_until` DATETIME NULL AFTER `active_since`;
   END IF;
   
   IF NOT EXISTS ((SELECT * FROM information_schema.columns WHERE table_schema=DATABASE() AND table_name='deliverables' AND column_name='action')) THEN
@@ -318,10 +294,6 @@ BEGIN
   IF NOT EXISTS ((SELECT * FROM information_schema.columns WHERE table_schema=DATABASE() AND table_name='ip_activity_contributions' AND column_name='record_id')) THEN
     ALTER TABLE `ip_activity_contributions` ADD `record_id` BIGINT NOT NULL AFTER `id`;
   END IF;
-
-  IF EXISTS ((SELECT * FROM information_schema.columns WHERE table_schema=DATABASE() AND table_name='ip_activity_contributions' AND column_name='is_active')) THEN
-    ALTER TABLE `ip_activity_contributions` DROP `is_active`;
-  END IF;
   
   IF EXISTS ((SELECT * FROM information_schema.columns WHERE table_schema=DATABASE() AND table_name='ip_activity_contributions' AND column_name='created_by')) THEN
     ALTER TABLE `ip_activity_contributions` DROP `created_by`;
@@ -332,7 +304,7 @@ BEGIN
   END IF;
   
   IF NOT EXISTS ((SELECT * FROM information_schema.columns WHERE table_schema=DATABASE() AND table_name='ip_activity_contributions' AND column_name='active_until')) THEN
-    ALTER TABLE `ip_activity_contributions` ADD `active_until` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP AFTER `active_since`;
+    ALTER TABLE `ip_activity_contributions` ADD `active_until` DATETIME NULL AFTER `active_since`;
   END IF;
   
   IF NOT EXISTS ((SELECT * FROM information_schema.columns WHERE table_schema=DATABASE() AND table_name='ip_activity_contributions' AND column_name='action')) THEN
@@ -367,10 +339,6 @@ BEGIN
   IF NOT EXISTS ((SELECT * FROM information_schema.columns WHERE table_schema=DATABASE() AND table_name='ip_activity_indicators' AND column_name='record_id')) THEN
     ALTER TABLE `ip_activity_indicators` ADD `record_id` BIGINT NOT NULL AFTER `id`;
   END IF;
-
-  IF EXISTS ((SELECT * FROM information_schema.columns WHERE table_schema=DATABASE() AND table_name='ip_activity_indicators' AND column_name='is_active')) THEN
-    ALTER TABLE `ip_activity_indicators` DROP `is_active`;
-  END IF;
   
   IF EXISTS ((SELECT * FROM information_schema.columns WHERE table_schema=DATABASE() AND table_name='ip_activity_indicators' AND column_name='created_by')) THEN
     ALTER TABLE `ip_activity_indicators` DROP `created_by`;
@@ -381,7 +349,7 @@ BEGIN
   END IF;
   
   IF NOT EXISTS ((SELECT * FROM information_schema.columns WHERE table_schema=DATABASE() AND table_name='ip_activity_indicators' AND column_name='active_until')) THEN
-    ALTER TABLE `ip_activity_indicators` ADD `active_until` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP AFTER `active_since`;
+    ALTER TABLE `ip_activity_indicators` ADD `active_until` DATETIME NULL AFTER `active_since`;
   END IF;
   
   IF NOT EXISTS ((SELECT * FROM information_schema.columns WHERE table_schema=DATABASE() AND table_name='ip_activity_indicators' AND column_name='action')) THEN
@@ -416,10 +384,6 @@ BEGIN
   IF NOT EXISTS ((SELECT * FROM information_schema.columns WHERE table_schema=DATABASE() AND table_name='ip_deliverable_contributions' AND column_name='record_id')) THEN
     ALTER TABLE `ip_deliverable_contributions` ADD `record_id` BIGINT NOT NULL AFTER `id`;
   END IF;
-
-  IF EXISTS ((SELECT * FROM information_schema.columns WHERE table_schema=DATABASE() AND table_name='ip_deliverable_contributions' AND column_name='is_active')) THEN
-    ALTER TABLE `ip_deliverable_contributions` DROP `is_active`;
-  END IF;
   
   IF EXISTS ((SELECT * FROM information_schema.columns WHERE table_schema=DATABASE() AND table_name='ip_deliverable_contributions' AND column_name='created_by')) THEN
     ALTER TABLE `ip_deliverable_contributions` DROP `created_by`;
@@ -430,7 +394,7 @@ BEGIN
   END IF;
   
   IF NOT EXISTS ((SELECT * FROM information_schema.columns WHERE table_schema=DATABASE() AND table_name='ip_deliverable_contributions' AND column_name='active_until')) THEN
-    ALTER TABLE `ip_deliverable_contributions` ADD `active_until` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP AFTER `active_since`;
+    ALTER TABLE `ip_deliverable_contributions` ADD `active_until` DATETIME NULL AFTER `active_since`;
   END IF;
   
   IF NOT EXISTS ((SELECT * FROM information_schema.columns WHERE table_schema=DATABASE() AND table_name='ip_deliverable_contributions' AND column_name='action')) THEN
@@ -466,10 +430,6 @@ BEGIN
     ALTER TABLE `ip_elements` ADD `record_id` BIGINT NOT NULL AFTER `id`;
   END IF;
 
-  IF EXISTS ((SELECT * FROM information_schema.columns WHERE table_schema=DATABASE() AND table_name='ip_elements' AND column_name='is_active')) THEN
-    ALTER TABLE `ip_elements` DROP `is_active`;
-  END IF;
-
   IF EXISTS ((SELECT * FROM information_schema.columns WHERE table_schema=DATABASE() AND table_name='ip_elements' AND column_name='created_by')) THEN
     ALTER TABLE `ip_elements` DROP `created_by`;
   END IF;
@@ -480,7 +440,7 @@ BEGIN
   END IF;
   
   IF NOT EXISTS ((SELECT * FROM information_schema.columns WHERE table_schema=DATABASE() AND table_name='ip_elements' AND column_name='active_until')) THEN
-    ALTER TABLE `ip_elements` ADD `active_until` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP AFTER `active_since`;
+    ALTER TABLE `ip_elements` ADD `active_until` DATETIME NULL AFTER `active_since`;
   END IF;
   
   IF NOT EXISTS ((SELECT * FROM information_schema.columns WHERE table_schema=DATABASE() AND table_name='ip_elements' AND column_name='action')) THEN
@@ -516,10 +476,6 @@ BEGIN
     ALTER TABLE `ip_indicators` ADD `record_id` BIGINT NOT NULL AFTER `id`;
   END IF;
 
-  IF EXISTS ((SELECT * FROM information_schema.columns WHERE table_schema=DATABASE() AND table_name='ip_indicators' AND column_name='is_active')) THEN
-    ALTER TABLE `ip_indicators` DROP `is_active`;
-  END IF;
-
   IF EXISTS ((SELECT * FROM information_schema.columns WHERE table_schema=DATABASE() AND table_name='ip_indicators' AND column_name='created_by')) THEN
     ALTER TABLE `ip_indicators` DROP `created_by`;
   END IF;
@@ -529,7 +485,7 @@ BEGIN
   END IF;
   
   IF NOT EXISTS ((SELECT * FROM information_schema.columns WHERE table_schema=DATABASE() AND table_name='ip_indicators' AND column_name='active_until')) THEN
-    ALTER TABLE `ip_indicators` ADD `active_until` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP AFTER `active_since`;
+    ALTER TABLE `ip_indicators` ADD `active_until` DATETIME NULL AFTER `active_since`;
   END IF;
   
   IF NOT EXISTS ((SELECT * FROM information_schema.columns WHERE table_schema=DATABASE() AND table_name='ip_indicators' AND column_name='action')) THEN
@@ -565,10 +521,6 @@ BEGIN
     ALTER TABLE `projects` ADD `record_id` BIGINT NOT NULL AFTER `id`;
   END IF;
 
-  IF EXISTS ((SELECT * FROM information_schema.columns WHERE table_schema=DATABASE() AND table_name='projects' AND column_name='is_active')) THEN
-    ALTER TABLE `projects` DROP `is_active`;
-  END IF;
-
   IF EXISTS ((SELECT * FROM information_schema.columns WHERE table_schema=DATABASE() AND table_name='projects' AND column_name='created_by')) THEN
     ALTER TABLE `projects` DROP `created_by`;
   END IF;
@@ -578,7 +530,7 @@ BEGIN
   END IF;
   
   IF NOT EXISTS ((SELECT * FROM information_schema.columns WHERE table_schema=DATABASE() AND table_name='projects' AND column_name='active_until')) THEN
-    ALTER TABLE `projects` ADD `active_until` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP AFTER `active_since`;
+    ALTER TABLE `projects` ADD `active_until` DATETIME NULL AFTER `active_since`;
   END IF;
   
   IF NOT EXISTS ((SELECT * FROM information_schema.columns WHERE table_schema=DATABASE() AND table_name='projects' AND column_name='action')) THEN
@@ -614,10 +566,6 @@ BEGIN
     ALTER TABLE `ip_other_contributions` ADD `record_id` BIGINT NOT NULL AFTER `id`;
   END IF;
 
-  IF EXISTS ((SELECT * FROM information_schema.columns WHERE table_schema=DATABASE() AND table_name='ip_other_contributions' AND column_name='is_active')) THEN
-    ALTER TABLE `ip_other_contributions` DROP `is_active`;
-  END IF;
-
   IF EXISTS ((SELECT * FROM information_schema.columns WHERE table_schema=DATABASE() AND table_name='ip_other_contributions' AND column_name='created_by')) THEN
     ALTER TABLE `ip_other_contributions` DROP `created_by`;
   END IF;
@@ -627,7 +575,7 @@ BEGIN
   END IF;
   
   IF NOT EXISTS ((SELECT * FROM information_schema.columns WHERE table_schema=DATABASE() AND table_name='ip_other_contributions' AND column_name='active_until')) THEN
-    ALTER TABLE `ip_other_contributions` ADD `active_until` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP AFTER `active_since`;
+    ALTER TABLE `ip_other_contributions` ADD `active_until` DATETIME NULL AFTER `active_since`;
   END IF;
   
   IF NOT EXISTS ((SELECT * FROM information_schema.columns WHERE table_schema=DATABASE() AND table_name='ip_other_contributions' AND column_name='action')) THEN
@@ -662,10 +610,6 @@ BEGIN
   IF NOT EXISTS ((SELECT * FROM information_schema.columns WHERE table_schema=DATABASE() AND table_name='ip_project_contributions' AND column_name='record_id')) THEN
     ALTER TABLE `ip_project_contributions` ADD `record_id` BIGINT NOT NULL AFTER `id`;
   END IF;
-
-  IF EXISTS ((SELECT * FROM information_schema.columns WHERE table_schema=DATABASE() AND table_name='ip_project_contributions' AND column_name='is_active')) THEN
-    ALTER TABLE `ip_project_contributions` DROP `is_active`;
-  END IF;
  
   IF EXISTS ((SELECT * FROM information_schema.columns WHERE table_schema=DATABASE() AND table_name='ip_project_contributions' AND column_name='created_by')) THEN
     ALTER TABLE `ip_project_contributions` DROP `created_by`;
@@ -676,7 +620,7 @@ BEGIN
   END IF;
   
   IF NOT EXISTS ((SELECT * FROM information_schema.columns WHERE table_schema=DATABASE() AND table_name='ip_project_contributions' AND column_name='active_until')) THEN
-    ALTER TABLE `ip_project_contributions` ADD `active_until` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP AFTER `active_since`;
+    ALTER TABLE `ip_project_contributions` ADD `active_until` DATETIME NULL AFTER `active_since`;
   END IF;
   
   IF NOT EXISTS ((SELECT * FROM information_schema.columns WHERE table_schema=DATABASE() AND table_name='ip_project_contributions' AND column_name='action')) THEN
@@ -711,10 +655,6 @@ BEGIN
   IF NOT EXISTS ((SELECT * FROM information_schema.columns WHERE table_schema=DATABASE() AND table_name='ip_project_indicators' AND column_name='record_id')) THEN
     ALTER TABLE `ip_project_indicators` ADD `record_id` BIGINT NOT NULL AFTER `id`;
   END IF;
-
-  IF EXISTS ((SELECT * FROM information_schema.columns WHERE table_schema=DATABASE() AND table_name='ip_project_indicators' AND column_name='is_active')) THEN
-    ALTER TABLE `ip_project_indicators` DROP `is_active`;
-  END IF;
  
   IF EXISTS ((SELECT * FROM information_schema.columns WHERE table_schema=DATABASE() AND table_name='ip_project_indicators' AND column_name='created_by')) THEN
     ALTER TABLE `ip_project_indicators` DROP `created_by`;
@@ -725,7 +665,7 @@ BEGIN
   END IF;
   
   IF NOT EXISTS ((SELECT * FROM information_schema.columns WHERE table_schema=DATABASE() AND table_name='ip_project_indicators' AND column_name='active_until')) THEN
-    ALTER TABLE `ip_project_indicators` ADD `active_until` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP AFTER `active_since`;
+    ALTER TABLE `ip_project_indicators` ADD `active_until` DATETIME NULL AFTER `active_since`;
   END IF;
   
   IF NOT EXISTS ((SELECT * FROM information_schema.columns WHERE table_schema=DATABASE() AND table_name='ip_project_indicators' AND column_name='action')) THEN
@@ -761,10 +701,6 @@ BEGIN
     ALTER TABLE `next_users` ADD `record_id` BIGINT NOT NULL AFTER `id`;
   END IF;
 
-  IF EXISTS ((SELECT * FROM information_schema.columns WHERE table_schema=DATABASE() AND table_name='next_users' AND column_name='is_active')) THEN
-    ALTER TABLE `next_users` DROP `is_active`;
-  END IF;
-
   IF EXISTS ((SELECT * FROM information_schema.columns WHERE table_schema=DATABASE() AND table_name='next_users' AND column_name='created_by')) THEN
     ALTER TABLE `next_users` DROP `created_by`;
   END IF;
@@ -774,7 +710,7 @@ BEGIN
   END IF;
   
   IF NOT EXISTS ((SELECT * FROM information_schema.columns WHERE table_schema=DATABASE() AND table_name='next_users' AND column_name='active_until')) THEN
-    ALTER TABLE `next_users` ADD `active_until` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP AFTER `active_since`;
+    ALTER TABLE `next_users` ADD `active_until` DATETIME NULL AFTER `active_since`;
   END IF;
   
   IF NOT EXISTS ((SELECT * FROM information_schema.columns WHERE table_schema=DATABASE() AND table_name='next_users' AND column_name='action')) THEN
@@ -810,10 +746,6 @@ BEGIN
     ALTER TABLE `project_budgets` ADD `record_id` BIGINT NOT NULL AFTER `id`;
   END IF;
 
-  IF EXISTS ((SELECT * FROM information_schema.columns WHERE table_schema=DATABASE() AND table_name='project_budgets' AND column_name='is_active')) THEN
-    ALTER TABLE `project_budgets` DROP `is_active`;
-  END IF;
-
   IF EXISTS ((SELECT * FROM information_schema.columns WHERE table_schema=DATABASE() AND table_name='project_budgets' AND column_name='created_by')) THEN
     ALTER TABLE `project_budgets` DROP `created_by`;
   END IF;
@@ -823,7 +755,7 @@ BEGIN
   END IF;
   
   IF NOT EXISTS ((SELECT * FROM information_schema.columns WHERE table_schema=DATABASE() AND table_name='project_budgets' AND column_name='active_until')) THEN
-    ALTER TABLE `project_budgets` ADD `active_until` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP AFTER `active_since`;
+    ALTER TABLE `project_budgets` ADD `active_until` DATETIME NULL AFTER `active_since`;
   END IF;
   
   IF NOT EXISTS ((SELECT * FROM information_schema.columns WHERE table_schema=DATABASE() AND table_name='project_budgets' AND column_name='action')) THEN
@@ -858,10 +790,6 @@ BEGIN
   IF NOT EXISTS ((SELECT * FROM information_schema.columns WHERE table_schema=DATABASE() AND table_name='project_outcomes' AND column_name='record_id')) THEN
     ALTER TABLE `project_outcomes` ADD `record_id` BIGINT NOT NULL AFTER `id`;
   END IF;
-
-  IF EXISTS ((SELECT * FROM information_schema.columns WHERE table_schema=DATABASE() AND table_name='project_outcomes' AND column_name='is_active')) THEN
-    ALTER TABLE `project_outcomes` DROP `is_active`;
-  END IF;
  
   IF EXISTS ((SELECT * FROM information_schema.columns WHERE table_schema=DATABASE() AND table_name='project_outcomes' AND column_name='created_by')) THEN
     ALTER TABLE `project_outcomes` DROP `created_by`;
@@ -872,7 +800,7 @@ BEGIN
   END IF;
   
   IF NOT EXISTS ((SELECT * FROM information_schema.columns WHERE table_schema=DATABASE() AND table_name='project_outcomes' AND column_name='active_until')) THEN
-    ALTER TABLE `project_outcomes` ADD `active_until` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP AFTER `active_since`;
+    ALTER TABLE `project_outcomes` ADD `active_until` DATETIME NULL AFTER `active_since`;
   END IF;
   
   IF NOT EXISTS ((SELECT * FROM information_schema.columns WHERE table_schema=DATABASE() AND table_name='project_outcomes' AND column_name='action')) THEN
@@ -908,10 +836,6 @@ BEGIN
     ALTER TABLE `project_focuses` ADD `record_id` BIGINT NOT NULL AFTER `id`;
   END IF;
 
-  IF EXISTS ((SELECT * FROM information_schema.columns WHERE table_schema=DATABASE() AND table_name='project_focuses' AND column_name='is_active')) THEN
-    ALTER TABLE `project_focuses` DROP `is_active`;
-  END IF;
-
   IF EXISTS ((SELECT * FROM information_schema.columns WHERE table_schema=DATABASE() AND table_name='project_focuses' AND column_name='created_by')) THEN
     ALTER TABLE `project_focuses` DROP `created_by`;
   END IF;
@@ -921,7 +845,7 @@ BEGIN
   END IF;
   
   IF NOT EXISTS ((SELECT * FROM information_schema.columns WHERE table_schema=DATABASE() AND table_name='project_focuses' AND column_name='active_until')) THEN
-    ALTER TABLE `project_focuses` ADD `active_until` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP AFTER `active_since`;
+    ALTER TABLE `project_focuses` ADD `active_until` DATETIME NULL AFTER `active_since`;
   END IF;
   
   IF NOT EXISTS ((SELECT * FROM information_schema.columns WHERE table_schema=DATABASE() AND table_name='project_focuses' AND column_name='action')) THEN
@@ -957,10 +881,6 @@ BEGIN
     ALTER TABLE `project_partners` ADD `record_id` BIGINT NOT NULL AFTER `id`;
   END IF;
 
-  IF EXISTS ((SELECT * FROM information_schema.columns WHERE table_schema=DATABASE() AND table_name='project_partners' AND column_name='is_active')) THEN
-    ALTER TABLE `project_partners` DROP `is_active`;
-  END IF;
-
   IF EXISTS ((SELECT * FROM information_schema.columns WHERE table_schema=DATABASE() AND table_name='project_partners' AND column_name='created_by')) THEN
     ALTER TABLE `project_partners` DROP `created_by`;
   END IF;
@@ -970,7 +890,7 @@ BEGIN
   END IF;
   
   IF NOT EXISTS ((SELECT * FROM information_schema.columns WHERE table_schema=DATABASE() AND table_name='project_partners' AND column_name='active_until')) THEN
-    ALTER TABLE `project_partners` ADD `active_until` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP AFTER `active_since`;
+    ALTER TABLE `project_partners` ADD `active_until` DATETIME NULL AFTER `active_since`;
   END IF;
   
   IF NOT EXISTS ((SELECT * FROM information_schema.columns WHERE table_schema=DATABASE() AND table_name='project_partners' AND column_name='action')) THEN
@@ -989,3 +909,6 @@ DROP PROCEDURE IF EXISTS update_project_partners_history_table;
 -- -----------------------------------------------------------------------------
 --      End of creation and modifications to the project_partners table
 -- -----------------------------------------------------------------------------
+
+-- We must change again the database used
+USE $[database];
