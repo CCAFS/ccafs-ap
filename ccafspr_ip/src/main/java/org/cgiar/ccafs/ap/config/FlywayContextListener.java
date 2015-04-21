@@ -46,13 +46,17 @@ public class FlywayContextListener implements ServletContextListener {
     // Show the changes to be applied
     LOG.info("-------------------------------------------------------------");
     for (MigrationInfo i : flyway.info().all()) {
-      LOG.info("migrate task: " + i.getVersion() + " : " + i.getDescription() + " from file: " + i.getScript());
+      LOG.info("migrate task: " + i.getVersion() + " : " + i.getDescription() + " from file: " + i.getScript()
+        + " with state: " + i.getState());
     }
     LOG.info("-------------------------------------------------------------");
 
     // Migrate
-    flyway.clean();
+    // flyway.clean();
+    // flyway.validate();
+    flyway.repair();
     flyway.migrate();
+
   }
 
   private DataSource getDataSource() {
