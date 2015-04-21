@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE struts PUBLIC "-//Apache Software Foundation//DTD Struts Configuration 2.3//EN" "http://struts.apache.org/dtds/struts-2.3.dtd">
+<struts>
+
+  <!-- Add addition packages and configuration here. -->
+  <package name="home" namespace="/" extends="ccafsap-default">
+
+    <action name="login" class="org.cgiar.ccafs.ap.action.home.LoginAction" method="login">
+      <result name="success">/WEB-INF/home/home.ftl</result>
+      <result name="input">/WEB-INF/home/login.ftl</result>
+    </action>
+    <action name="logout" class="org.cgiar.ccafs.ap.action.home.LoginAction" method="logout">
+      <result name="success">/WEB-INF/home/login.ftl</result>
+    </action>
+    
+    <action name="activity" class="org.cgiar.ccafs.ap.action.home.ActivityAction">
+      <result name="input" type="freemarker">/WEB-INF/home/activity.ftl</result>
+      <result name="success" type="freemarker">/WEB-INF/home/activity.ftl</result>
+    </action>
+    
+    <action name="xml" class="org.cgiar.ccafs.ap.action.home.ActivitiesXMLAction">
+      <result name="input" type="freemarker">/WEB-INF/home/activitiesXML.ftl</result>
+      <param name="contentType">text/xml</param>
+    </action>
+     
+    <action name="partnersXml" class="org.cgiar.ccafs.ap.action.home.PartnersXMLAction">
+      <result name="input" type="freemarker">/WEB-INF/home/partnersXML.ftl</result>
+      <param name="contentType">text/xml</param>
+    </action> 
+
+  </package>
+</struts>
