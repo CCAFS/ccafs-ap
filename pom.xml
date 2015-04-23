@@ -15,8 +15,120 @@
     <module>impactPathways</module>
     <module>logframes</module>
   </modules>
+  
+  <properties>
+    <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+    <junit.version>4.5</junit.version>
+    <guice.version>3.0</guice.version>
+    <logback-classic.version>1.0.7</logback-classic.version>
+    <janino.version>2.6.1</janino.version> 
+  </properties>
+  
+  <dependencies>
+
+    <!-- Google Guice -->
+    <!-- connector to use guice natively with struts2 -->
+    <dependency>
+      <groupId>com.google.inject.extensions</groupId>
+      <artifactId>guice-struts2</artifactId>
+      <version>${guice.version}</version>
+      <scope>compile</scope>
+      <exclusions>
+        <!-- clashes with newer version included in struts2.1.6 -->
+        <exclusion>
+          <groupId>opensymphony</groupId>
+          <artifactId>xwork</artifactId>
+        </exclusion>
+        <exclusion>
+          <groupId>ognl</groupId>
+          <artifactId>ognl</artifactId>
+        </exclusion>
+      </exclusions>
+    </dependency>
+    
+    <dependency>
+      <groupId>com.google.inject.extensions</groupId>
+      <artifactId>guice-assistedinject</artifactId>
+      <version>${guice.version}</version>
+    </dependency>
+    
+    <dependency>
+      <groupId>com.google.inject.extensions</groupId>
+      <artifactId>guice-servlet</artifactId>
+      <version>${guice.version}</version>
+    </dependency>
+
+    <!-- Logging Management -->
+    <dependency>
+      <groupId>ch.qos.logback</groupId>
+      <artifactId>logback-classic</artifactId>
+      <version>${logback-classic.version}</version>
+    </dependency>
+    
+    <!-- This dependency allows conditions in logger configuration -->
+    <dependency>
+      <groupId>org.codehaus.janino</groupId>
+      <artifactId>janino</artifactId>
+      <version>${janino.version}</version>
+    </dependency>
+    
+    <dependency>
+      <groupId>junit</groupId>
+      <artifactId>junit</artifactId>
+      <version>${junit.version}</version>
+      <scope>test</scope>
+    </dependency>
+
+  </dependencies>
 
   <build>
+
+    <!-- Plugin to copy the resources -->
+    <plugins>
+      <plugin>
+        <artifactId>maven-resources-plugin</artifactId>
+        <version>2.7</version>
+        <executions>
+          <!--  Copy properties to security module -->
+          <execution>
+            <id>copy-properties-to-security-module</id>
+            <phase>generate-resources</phase>
+            <goals>
+                <goal>copy-resources</goal>
+            </goals>
+            <configuration>
+              <outputDirectory>security/src/main/resources</outputDirectory>
+              <overwrite>true</overwrite>
+              <resources>
+                <resource>
+                  <directory>configuration</directory>
+                </resource>
+              </resources>
+            </configuration>
+          </execution>
+
+          <!--  Copy properties to impactPathways module -->
+          <execution>
+            <id>copy-properties-to-impactPathways-module</id>
+            <phase>package</phase>
+            <goals>
+                <goal>copy-resources</goal>
+            </goals>
+            <configuration>
+              <outputDirectory>impactPathways/src/main/resources</outputDirectory>
+              <overwrite>true</overwrite>
+              <resources>
+                <resource>
+                  <directory>configuration</directory>
+                </resource>
+              </resources>
+            </configuration>
+          </execution>
+        </executions>
+      </plugin> 
+    </plugins>
+
+    
     <pluginManagement>
 	    <plugins>
 	      <plugin>
@@ -28,7 +140,7 @@
 	          <target>1.7</target>
 	          <debug>true</debug>
 	        </configuration>
-	      </plugin>
+	      </plugin>	      
 	    </plugins>
     </pluginManagement>
   </build>
