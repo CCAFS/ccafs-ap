@@ -14,30 +14,35 @@
 
 package org.cgiar.ccafs.security.data.manager;
 
-import org.cgiar.ccafs.security.data.model.User;
+
+import org.cgiar.ccafs.security.data.dao.CredentialsDAO;
+
+import com.google.inject.Inject;
 
 
 /**
  * @author Hernán David Carvajal
  */
 
-public interface UserManager {
+public class DBAuthenticationManager {
+
+  private CredentialsDAO credentialsDao;
+
+  @Inject
+  public DBAuthenticationManager(CredentialsDAO credentialsDao) {
+    this.credentialsDao = credentialsDao;
+  }
+
 
   /**
-   * Get the user identified by the specified email parameter.
+   * This method verifies if the credentials received as parameter
+   * corresponds with the credentials of some user in the database.
    * 
-   * @param email of the user.
-   * @return User object representing the user identified by the email provided or Null if the user doesn't exist in the
-   *         database.
+   * @param email
+   * @param password - password encrypted with MD5.
+   * @return true if the credentials are valid. False otherwise.
    */
-  public User getUserByEmail(String email);
-
-  /**
-   * Get the user identified by the specified username parameter.
-   * 
-   * @param username of the user - cgiar account username.
-   * @return User object representing the user identifier by the username provided or Null if the user doesn't exist in
-   *         the database.
-   */
-  public User getUserByUsername(String username);
+  public boolean veirifyCredentials(String email, String password) {
+    return credentialsDao.verifiyCredentials(email, password);
+  }
 }

@@ -14,19 +14,34 @@
 
 package org.cgiar.ccafs.security.authentication;
 
+import org.cgiar.ccafs.security.data.manager.DBAuthenticationManager;
+import org.cgiar.ccafs.utils.MD5Convert;
+
+import com.google.inject.Inject;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 
 /**
  * @author Hernán David Carvajal
  */
 
-public interface Authenticator {
+public class DBAuthenticator implements Authenticator {
 
-  /**
-   * Authenticates a user based on the credentials received as parameter.
-   * 
-   * @param email - This can be the email or the CCAFS username
-   * @param password
-   * @return true if the user was authenticated successfully. False otherwise
-   */
-  public boolean authenticate(String email, String password);
+  public static Logger LOG = LoggerFactory.getLogger(DBAuthenticator.class);
+
+  private DBAuthenticationManager authenticationManager;
+
+  @Inject
+  public DBAuthenticator(DBAuthenticationManager authenticationManager) {
+    this.authenticationManager = authenticationManager;
+  }
+
+
+  @Override
+  public boolean authenticate(String email, String password) {
+    String md5Pass = MD5Convert.stringToMD5(password);
+
+    return authenticationManager.veirifyCredentials(email, md5Pass);
+  }
 }

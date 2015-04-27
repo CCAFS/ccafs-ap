@@ -12,26 +12,27 @@
  * along with CCAFS P&R. If not, see <http://www.gnu.org/licenses/>.
  *****************************************************************/
 
-package org.cgiar.ccafs.security;
+package org.cgiar.ccafs.security.data.dao;
 
-import com.google.inject.Inject;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import org.cgiar.ccafs.security.data.dao.mysql.MySQLCredentialsDAO;
+
+import com.google.inject.ImplementedBy;
 
 
 /**
- * @author Hernan David Carvajal
+ * @author Hernán David Carvajal
  */
 
-public class Test {
+@ImplementedBy(MySQLCredentialsDAO.class)
+public interface CredentialsDAO {
 
-  public static Logger LOG = LoggerFactory.getLogger(Test.class);
-
-  @Inject
-  public Test() {
-  }
-
-  public static void message() {
-    LOG.info("Testing");
-  }
+  /**
+   * This method checks if the credentials received as parameter
+   * correspond with the credentials of some user in the database.
+   * 
+   * @param email
+   * @param password - password encrypted with MD5
+   * @return true if the credentials are valid. False otherwise.
+   */
+  public boolean verifiyCredentials(String email, String password);
 }

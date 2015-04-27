@@ -14,8 +14,7 @@
 
 package org.cgiar.ccafs.security.authentication;
 
-import org.cgiar.ccafs.security.data.manager.UserManager;
-import org.cgiar.ccafs.security.data.model.User;
+import org.cgiar.ciat.auth.ADConexion;
 
 import com.google.inject.Inject;
 import org.slf4j.Logger;
@@ -26,37 +25,31 @@ import org.slf4j.LoggerFactory;
  * @author Hernán David Carvajal
  */
 
-public class BaseAuthenticator implements Authenticator {
+public class LDAPAuthenticator implements Authenticator {
 
-  public static Logger LOG = LoggerFactory.getLogger(BaseAuthenticator.class);
-  private UserManager userManager;
+  public static Logger LOG = LoggerFactory.getLogger(LDAPAuthenticator.class);
 
   @Inject
-  public BaseAuthenticator(UserManager userManager) {
-    this.userManager = userManager;
+  public LDAPAuthenticator() {
   }
 
   @Override
-  public User authenticate(String email, String password) {
-    User user;
+  public boolean authenticate(String username, String password) {
+    boolean logued = false;
 
-    if (email.contains("@")) {
-      user = userManager.getUserByEmail(email);
-    } else {
-      user = userManager.getUserByUsername(email);
+    try {
+      ADConexion con = new ADConexion(username, password);
+      if (con != null) {
+        if (con.getLogin() != null) {
+          logued = true;
+        }
+        con.closeContext();
+      }
+    } catch (Exception e) {
+      LOG.error("Exception raised trying to log in the user '{}' against the active directory.", username,
+        e.getMessage());
     }
-
-    if (user.isCcafsUser()) {
-
-    } else {
-
-    }
-
-    return null;
+    return logued;
   }
 
-  public boolean ccafsAuthentication(User user) {
-
-    return false;
-  }
 }
