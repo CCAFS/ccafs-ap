@@ -14,8 +14,8 @@
  */
 package org.cgiar.ccafs.ap.data.dao.mysql;
 
-import org.cgiar.ccafs.ap.data.dao.DAOManager;
 import org.cgiar.ccafs.ap.data.dao.IPRelationshipDAO;
+import org.cgiar.ccafs.utils.db.DAOManager;
 
 import com.google.inject.Inject;
 import org.slf4j.Logger;

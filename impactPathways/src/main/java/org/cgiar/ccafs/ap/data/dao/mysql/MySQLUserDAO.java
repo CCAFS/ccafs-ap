@@ -15,8 +15,8 @@
 package org.cgiar.ccafs.ap.data.dao.mysql;
 
 import org.cgiar.ccafs.ap.config.APConstants;
-import org.cgiar.ccafs.ap.data.dao.DAOManager;
 import org.cgiar.ccafs.ap.data.dao.UserDAO;
+import org.cgiar.ccafs.utils.db.DAOManager;
 
 import java.sql.Connection;
 import java.sql.ResultSet;
@@ -53,7 +53,7 @@ public class MySQLUserDAO implements UserDAO {
 
       StringBuilder query = new StringBuilder();
       query
-      .append("SELECT u.id,e.id as employee_id, pe.first_name, pe.last_name, u.email, e.institution_id, e.role_id, r.name as role_name, r.acronym as role_acronym ");
+        .append("SELECT u.id,e.id as employee_id, pe.first_name, pe.last_name, u.email, e.institution_id, e.role_id, r.name as role_name, r.acronym as role_acronym ");
       query.append("FROM employees e ");
       query.append("INNER JOIN users u  ON e.user_id=u.id ");
       query.append("INNER JOIN roles r  ON e.role_id=r.id ");
@@ -231,7 +231,7 @@ public class MySQLUserDAO implements UserDAO {
   @Override
   public int getEmployeeID(int userId, int institutionId, int roleId) {
     LOG
-    .debug(">> getEmployeeID (userId={}, institutionId={}, roleId={})", new Object[] {userId, institutionId, roleId});
+      .debug(">> getEmployeeID (userId={}, institutionId={}, roleId={})", new Object[] {userId, institutionId, roleId});
     int result = -1;
     try (Connection connection = dbManager.getConnection()) {
       StringBuilder query = new StringBuilder();

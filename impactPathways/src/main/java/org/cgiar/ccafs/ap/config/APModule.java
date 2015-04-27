@@ -13,17 +13,25 @@
  *****************************************************************/
 package org.cgiar.ccafs.ap.config;
 
+import org.cgiar.ccafs.security.authentication.Authenticator;
+import org.cgiar.ccafs.security.authentication.DBAuthenticator;
+import org.cgiar.ccafs.security.authentication.LDAPAuthenticator;
+
+import com.google.inject.Binder;
+import com.google.inject.Module;
+import com.google.inject.name.Names;
+import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.apache.commons.lang3.builder.ToStringStyle;
 
-import org.apache.commons.lang3.builder.ToStringBuilder;
-import com.google.inject.AbstractModule;
 
-
-public class APModule extends AbstractModule {
+public class APModule implements Module {
 
   @Override
-  protected void configure() {
+  public void configure(Binder binder) {
     // We are configuring google guice using annotation. However you can do it here if you want.
+    binder.bind(Authenticator.class).annotatedWith(Names.named("LDAP")).to(LDAPAuthenticator.class);
+    binder.bind(Authenticator.class).annotatedWith(Names.named("DB")).to(DBAuthenticator.class);
+
 
     // In addition, we are using this place to configure other stuffs.
     ToStringBuilder.setDefaultStyle(ToStringStyle.MULTI_LINE_STYLE);

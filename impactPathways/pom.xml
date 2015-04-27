@@ -48,17 +48,27 @@
   </developers>
 
   <issueManagement>
-    <system>Google Code</system>
-    <url>http://code.google.com/p/ccafs-ap/issues/list</url>
+    <system>Github issue tracker</system>
+    <url>https://github.com/CCAFS/ccafs-ap/issues</url>
   </issueManagement>
 
   <dependencies>
   
+    <!--  Project dependecies -->
+    
     <dependency>
       <groupId>org.cgiar.ccafs</groupId>
       <artifactId>security</artifactId>
       <version>0.0.1-SNAPSHOT</version>
     </dependency>
+    
+    <dependency>
+      <groupId>org.cgiar.ccafs</groupId>
+      <artifactId>utils</artifactId>
+      <version>2.0-SNAPSHOT</version>
+    </dependency>
+    
+    <!--  End of project dependecies -->
 
     <dependency>
       <groupId>org.apache.struts</groupId>
@@ -171,13 +181,7 @@
 		  <artifactId>itext</artifactId>
 		  <version>${itext.version}</version>
 		</dependency>
-		
-    <dependency>
-      <groupId>org.cgiar.ciat.auth</groupId>
-      <artifactId>adauth</artifactId>
-      <version>1.1</version>
-    </dependency>
-    
+
     <!-- Database version control -->
     <dependency>
       <groupId>org.flywaydb</groupId>
@@ -274,14 +278,28 @@
           <webXml>src/main/webapp/WEB-INF/web.xml</webXml>
 	      </configuration>
       </plugin>
-      <!-- Avoid the inheritance of the copy resources plugin-->
+      <!-- Plugin to copy the resources -->
       <plugin>
         <artifactId>maven-resources-plugin</artifactId>
         <version>2.7</version>
         <executions>
+
+          <!--  Copy properties to impactPathways module -->
           <execution>
-            <id>copy-properties-to-security-module</id>
-            <phase>none</phase>
+            <id>copy-properties-to-module</id>
+            <phase>compile</phase>
+            <goals>
+                <goal>copy-resources</goal>
+            </goals>
+            <configuration>
+              <outputDirectory>target/classes</outputDirectory>
+              <overwrite>true</overwrite>
+              <resources>
+                <resource>
+                  <directory>../configuration</directory>
+                </resource>
+              </resources>
+            </configuration>
           </execution>
         </executions>
       </plugin> 

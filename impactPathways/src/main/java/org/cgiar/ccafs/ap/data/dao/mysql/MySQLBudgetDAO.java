@@ -15,8 +15,8 @@
 package org.cgiar.ccafs.ap.data.dao.mysql;
 
 import org.cgiar.ccafs.ap.data.dao.BudgetDAO;
-import org.cgiar.ccafs.ap.data.dao.DAOManager;
 import org.cgiar.ccafs.ap.data.model.BudgetType;
+import org.cgiar.ccafs.utils.db.DAOManager;
 
 import java.sql.Connection;
 import java.sql.ResultSet;

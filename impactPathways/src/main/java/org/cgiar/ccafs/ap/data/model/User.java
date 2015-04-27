@@ -13,7 +13,7 @@
  *****************************************************************/
 package org.cgiar.ccafs.ap.data.model;
 
-import org.cgiar.ccafs.ap.util.MD5Convert;
+import org.cgiar.ccafs.utils.MD5Convert;
 
 import java.util.Date;
 import java.util.List;

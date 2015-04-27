@@ -21,7 +21,6 @@ import org.cgiar.ccafs.ap.data.manager.InstitutionManager;
 import org.cgiar.ccafs.ap.data.manager.RoleManager;
 import org.cgiar.ccafs.ap.data.manager.UserManager;
 import org.cgiar.ccafs.ap.data.model.User;
-import org.cgiar.ccafs.security.Test;
 
 import java.util.Date;
 
@@ -66,7 +65,6 @@ public class LoginAction extends BaseAction {
   }
 
   public String login() {
-    Test.message();
     // attribute user is not null when the user try to login
     if (user != null) {
       // Check if is a valid user
