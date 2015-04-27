@@ -14,6 +14,7 @@
     <module>security</module>
     <module>impactPathways</module>
     <module>logframes</module>
+    <module>utils</module>
   </modules>
   
   <properties>
@@ -23,7 +24,19 @@
     <logback-classic.version>1.0.7</logback-classic.version>
     <janino.version>2.6.1</janino.version> 
   </properties>
-  
+
+  <developers>
+    <developer>
+      <name>Hernán D. Carvajal B.</name>
+      <email>h.d.carvajal@cgiar.org</email>
+    </developer>
+  </developers>
+
+  <issueManagement>
+    <system>Github issue tracker</system>
+    <url>https://github.com/CCAFS/ccafs-ap/issues</url>
+  </issueManagement>
+
   <dependencies>
 
     <!-- Google Guice -->
@@ -82,53 +95,6 @@
   </dependencies>
 
   <build>
-
-    <!-- Plugin to copy the resources -->
-    <plugins>
-      <plugin>
-        <artifactId>maven-resources-plugin</artifactId>
-        <version>2.7</version>
-        <executions>
-          <!--  Copy properties to security module -->
-          <execution>
-            <id>copy-properties-to-security-module</id>
-            <phase>generate-resources</phase>
-            <goals>
-                <goal>copy-resources</goal>
-            </goals>
-            <configuration>
-              <outputDirectory>security/src/main/resources</outputDirectory>
-              <overwrite>true</overwrite>
-              <resources>
-                <resource>
-                  <directory>configuration</directory>
-                </resource>
-              </resources>
-            </configuration>
-          </execution>
-
-          <!--  Copy properties to impactPathways module -->
-          <execution>
-            <id>copy-properties-to-impactPathways-module</id>
-            <phase>package</phase>
-            <goals>
-                <goal>copy-resources</goal>
-            </goals>
-            <configuration>
-              <outputDirectory>impactPathways/src/main/resources</outputDirectory>
-              <overwrite>true</overwrite>
-              <resources>
-                <resource>
-                  <directory>configuration</directory>
-                </resource>
-              </resources>
-            </configuration>
-          </execution>
-        </executions>
-      </plugin> 
-    </plugins>
-
-    
     <pluginManagement>
 	    <plugins>
 	      <plugin>
