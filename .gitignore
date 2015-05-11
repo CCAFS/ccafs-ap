@@ -1,0 +1,10 @@
+# General
+
+target
+.*
+*.jks
+!.gitignore
+
+
+# Configuration 
+/configuration/ccafsap.properties
