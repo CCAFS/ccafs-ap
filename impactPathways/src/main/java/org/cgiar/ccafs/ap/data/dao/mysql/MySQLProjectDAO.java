@@ -134,7 +134,7 @@ public class MySQLProjectDAO implements ProjectDAO {
         + "FROM ip_programs ipp INNER JOIN project_focuses pf ON ipp.id = pf.program_id "
         + "WHERE pf.project_id = p.id AND ipp.type_id = " + APConstants.FLAGSHIP_PROGRAM_TYPE;
 
-    query.append("SELECT p.id, p.title, p.created, SUM(b.amount) as 'total_budget_amount', ");
+    query.append("SELECT p.id, p.title, p.active_since, SUM(b.amount) as 'total_budget_amount', ");
     query.append("( " + regionsSubquery + " )  as 'regions', ");
     query.append("( " + flagshipsSubquery + " )  as 'flagships' ");
     query.append("FROM projects as p ");
@@ -151,7 +151,7 @@ public class MySQLProjectDAO implements ProjectDAO {
         projectData.put("id", rs.getString("id"));
         projectData.put("title", rs.getString("title"));
         projectData.put("total_budget_amount", rs.getString("total_budget_amount"));
-        projectData.put("created", rs.getTimestamp("created").getTime() + "");
+        projectData.put("created", rs.getTimestamp("active_since").getTime() + "");
         projectData.put("regions", rs.getString("regions"));
         projectData.put("flagships", rs.getString("flagships"));
         projectList.add(projectData);
@@ -188,7 +188,7 @@ public class MySQLProjectDAO implements ProjectDAO {
         projectData.put("project_leader_id", rs.getString("project_leader_id"));
         projectData.put("program_creator_id", rs.getString("program_creator_id"));
         projectData.put("project_owner_id", rs.getString("project_owner_id"));
-        projectData.put("created", rs.getTimestamp("created").getTime() + "");
+        projectData.put("created", rs.getTimestamp("active_since").getTime() + "");
 
         projectList.add(projectData);
       }
@@ -283,7 +283,7 @@ public class MySQLProjectDAO implements ProjectDAO {
         projectData.put("program_creator_id", rs.getString("program_creator_id"));
         projectData.put("project_owner_id", rs.getString("owner_id"));
         // projectData.put("project_owner_institution_id", rs.getString("owner_institution_id"));
-        projectData.put("created", rs.getTimestamp("created").getTime() + "");
+        projectData.put("created", rs.getTimestamp("active_since").getTime() + "");
       }
       con.close();
     } catch (SQLException e) {
@@ -299,7 +299,7 @@ public class MySQLProjectDAO implements ProjectDAO {
     Map<String, String> projectData = new HashMap<String, String>();
     StringBuilder query = new StringBuilder();
 
-    query.append("SELECT p.id, p.title, p.created, SUM(b.amount) as 'total_budget_amount', ");
+    query.append("SELECT p.id, p.title, p.active_since, SUM(b.amount) as 'total_budget_amount', ");
     query.append("GROUP_CONCAT( DISTINCT ipp1.acronym ) as 'regions', ");
     query.append("GROUP_CONCAT( DISTINCT ipp2.acronym ) as 'flagships' ");
     query.append("FROM projects as p ");
@@ -319,7 +319,7 @@ public class MySQLProjectDAO implements ProjectDAO {
         projectData.put("id", rs.getString("id"));
         projectData.put("title", rs.getString("title"));
         projectData.put("total_budget_amount", rs.getString("total_budget_amount"));
-        projectData.put("created", rs.getTimestamp("created").getTime() + "");
+        projectData.put("created", rs.getTimestamp("active_since").getTime() + "");
         projectData.put("regions", rs.getString("regions"));
         projectData.put("flagships", rs.getString("flagships"));
       }
@@ -584,7 +584,7 @@ public class MySQLProjectDAO implements ProjectDAO {
         projectData.put("project_owner_id", rs.getString("project_owner_id"));
         projectData.put("project_owner_user_id", rs.getString("owner_user_id"));
         projectData.put("project_owner_institution_id", rs.getString("owner_institution_id"));
-        projectData.put("created", rs.getTimestamp("created").getTime() + "");
+        projectData.put("created", rs.getTimestamp("active_since").getTime() + "");
 
         projectList.add(projectData);
       }
