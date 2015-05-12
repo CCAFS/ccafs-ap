@@ -14,8 +14,8 @@
  */
 package org.cgiar.ccafs.ap.data.dao.mysql;
 
-import org.cgiar.ccafs.ap.data.dao.DAOManager;
 import org.cgiar.ccafs.ap.data.dao.ProjectPartnerDAO;
+import org.cgiar.ccafs.utils.db.DAOManager;
 
 import java.sql.Connection;
 import java.sql.ResultSet;
@@ -131,7 +131,7 @@ public class MySQLProjectPartnerDAO implements ProjectPartnerDAO {
     if (projectPartnerData.get("id") == null) {
       // Insert new record
       query
-      .append("INSERT INTO project_partners (id, project_id, partner_id, contact_name, contact_email, responsabilities) ");
+        .append("INSERT INTO project_partners (id, project_id, partner_id, contact_name, contact_email, responsabilities) ");
       query.append("VALUES (?, ?, ?, ?, ?, ?) ");
       values = new Object[6];
       values[0] = projectPartnerData.get("id");
@@ -143,7 +143,7 @@ public class MySQLProjectPartnerDAO implements ProjectPartnerDAO {
     } else {
       // update record
       query
-      .append("UPDATE project_partners SET project_id = ?, partner_id = ?, contact_name = ?, contact_email = ?, responsabilities = ? ");
+        .append("UPDATE project_partners SET project_id = ?, partner_id = ?, contact_name = ?, contact_email = ?, responsabilities = ? ");
       query.append("WHERE id = ? ");
       values = new Object[6];
       values[0] = projectPartnerData.get("project_id");

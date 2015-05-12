@@ -19,7 +19,8 @@ import org.cgiar.ccafs.ap.data.manager.UserManager;
 import org.cgiar.ccafs.ap.data.model.IPProgram;
 import org.cgiar.ccafs.ap.data.model.Role;
 import org.cgiar.ccafs.ap.data.model.User;
-import org.cgiar.ccafs.ap.util.MD5Convert;
+import org.cgiar.ccafs.security.authentication.Authenticator;
+import org.cgiar.ccafs.utils.MD5Convert;
 import org.cgiar.ciat.auth.ADConexion;
 
 import java.text.ParseException;
@@ -29,7 +30,10 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import com.google.inject.Guice;
 import com.google.inject.Inject;
+import com.google.inject.Injector;
+import com.google.inject.name.Named;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -44,13 +48,27 @@ public class UserManagerImp implements UserManager {
   // DAO
   private UserDAO userDAO;
 
+  @Named("DB")
+  Authenticator dbAuthenticator;
+
+  @Named("LDAP")
+  Authenticator ldapAuthenticator;
+
+  Injector injector;
+
   // Managers
   private InstitutionManager institutionManager;
 
   @Inject
-  public UserManagerImp(UserDAO userDAO, InstitutionManager institutionManager) {
+  public UserManagerImp(UserDAO userDAO, InstitutionManager institutionManager,
+    @Named("DB") Authenticator dbAuthenticator, @Named("LDAP") Authenticator ldapAuthenticator) {
     this.userDAO = userDAO;
     this.institutionManager = institutionManager;
+    this.ldapAuthenticator = ldapAuthenticator;
+    this.dbAuthenticator = dbAuthenticator;
+
+    injector = Guice.createInjector();
+
   }
 
   /**
@@ -61,6 +79,9 @@ public class UserManagerImp implements UserManager {
    * @return true if it was successfully logged in. False otherwise
    */
   private boolean activeDirectoryLogin(User user) {
+
+    // TODO - Delete this method once it is moved to the security plugin
+
     boolean logued = false;
 
     if (user.getUsername() != null) {
@@ -311,6 +332,7 @@ public class UserManagerImp implements UserManager {
 
   @Override
   public User login(String email, String password) {
+
     if (email != null && password != null) {
 
       User userFound;
@@ -321,20 +343,17 @@ public class UserManagerImp implements UserManager {
         // if user is loggin with his username, we must attach the cgiar.org.
         userFound = this.getUserByUsername(email);
       }
+
       if (userFound != null) {
         if (userFound.isActive()) {
           if (userFound.isCcafsUser()) {
-            // User brought from the database has the pass
-            // encrypted with MD5, to connect to the AD the pass
-            // shouldn't be encrypted
-            userFound.setPassword(password);
-
-            if (activeDirectoryLogin(userFound)) {
+            if (ldapAuthenticator.authenticate(userFound.getUsername(), password)) {
               // Encrypt the password again
               userFound.setMD5Password(password);
               return userFound;
             }
           } else {
+            dbAuthenticator.authenticate(email, password);
             User tempUser = new User();
             tempUser.setMD5Password(password);
             if (userFound.getPassword().equals(tempUser.getPassword())) {

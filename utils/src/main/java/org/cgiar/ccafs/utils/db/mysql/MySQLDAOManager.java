@@ -12,11 +12,11 @@
  * along with CCAFS P&R. If not, see <http://www.gnu.org/licenses/>.
  * ***************************************************************
  */
-package org.cgiar.ccafs.ap.data.dao.mysql;
+package org.cgiar.ccafs.utils.db.mysql;
 
-import org.cgiar.ccafs.ap.config.APConfig;
-import org.cgiar.ccafs.ap.data.dao.DAOManager;
-import org.cgiar.ccafs.ap.util.PropertiesManager;
+import org.cgiar.ccafs.utils.APConfig;
+import org.cgiar.ccafs.utils.PropertiesManager;
+import org.cgiar.ccafs.utils.db.DAOManager;
 
 import java.sql.Connection;
 import java.sql.DriverManager;
@@ -62,6 +62,7 @@ public class MySQLDAOManager extends DAOManager {
       .getPropertiesAsString(APConfig.MYSQL_PASSWORD), this.getProperties().getPropertiesAsString(APConfig.MYSQL_HOST),
       this.getProperties().getPropertiesAsString(APConfig.MYSQL_PORT),
       this.getProperties().getPropertiesAsString(APConfig.MYSQL_DATABASE));
+// return null;
   }
 
   @Override

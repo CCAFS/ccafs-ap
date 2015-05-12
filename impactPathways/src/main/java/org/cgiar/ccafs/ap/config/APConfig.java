@@ -15,7 +15,7 @@ package org.cgiar.ccafs.ap.config;
 
 import org.cgiar.ccafs.ap.data.manager.BoardMessageManager;
 import org.cgiar.ccafs.ap.data.model.BoardMessage;
-import org.cgiar.ccafs.ap.util.PropertiesManager;
+import org.cgiar.ccafs.utils.PropertiesManager;
 
 import java.util.List;
 

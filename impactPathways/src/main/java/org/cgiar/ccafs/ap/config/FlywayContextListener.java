@@ -1,6 +1,7 @@
 package org.cgiar.ccafs.ap.config;
 
-import org.cgiar.ccafs.ap.util.PropertiesManager;
+
+import org.cgiar.ccafs.utils.PropertiesManager;
 
 import java.util.HashMap;
 import java.util.Map;

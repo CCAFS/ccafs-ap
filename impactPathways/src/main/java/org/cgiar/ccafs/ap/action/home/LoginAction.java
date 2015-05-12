@@ -21,6 +21,7 @@ import org.cgiar.ccafs.ap.data.manager.InstitutionManager;
 import org.cgiar.ccafs.ap.data.manager.RoleManager;
 import org.cgiar.ccafs.ap.data.manager.UserManager;
 import org.cgiar.ccafs.ap.data.model.User;
+
 import java.util.Date;
 
 import com.google.inject.Inject;
@@ -51,6 +52,7 @@ public class LoginAction extends BaseAction {
     this.userManager = userManager;
     this.institutionManager = institutionManager;
     this.roleManager = roleManager;
+
   }
 
   @Override

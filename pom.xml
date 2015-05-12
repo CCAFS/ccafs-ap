@@ -14,7 +14,85 @@
     <module>security</module>
     <module>impactPathways</module>
     <module>logframes</module>
+    <module>utils</module>
   </modules>
+  
+  <properties>
+    <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+    <junit.version>4.5</junit.version>
+    <guice.version>3.0</guice.version>
+    <logback-classic.version>1.0.7</logback-classic.version>
+    <janino.version>2.6.1</janino.version> 
+  </properties>
+
+  <developers>
+    <developer>
+      <name>Hernán D. Carvajal B.</name>
+      <email>h.d.carvajal@cgiar.org</email>
+    </developer>
+  </developers>
+
+  <issueManagement>
+    <system>Github issue tracker</system>
+    <url>https://github.com/CCAFS/ccafs-ap/issues</url>
+  </issueManagement>
+
+  <dependencies>
+
+    <!-- Google Guice -->
+    <!-- connector to use guice natively with struts2 -->
+    <dependency>
+      <groupId>com.google.inject.extensions</groupId>
+      <artifactId>guice-struts2</artifactId>
+      <version>${guice.version}</version>
+      <scope>compile</scope>
+      <exclusions>
+        <!-- clashes with newer version included in struts2.1.6 -->
+        <exclusion>
+          <groupId>opensymphony</groupId>
+          <artifactId>xwork</artifactId>
+        </exclusion>
+        <exclusion>
+          <groupId>ognl</groupId>
+          <artifactId>ognl</artifactId>
+        </exclusion>
+      </exclusions>
+    </dependency>
+    
+    <dependency>
+      <groupId>com.google.inject.extensions</groupId>
+      <artifactId>guice-assistedinject</artifactId>
+      <version>${guice.version}</version>
+    </dependency>
+    
+    <dependency>
+      <groupId>com.google.inject.extensions</groupId>
+      <artifactId>guice-servlet</artifactId>
+      <version>${guice.version}</version>
+    </dependency>
+
+    <!-- Logging Management -->
+    <dependency>
+      <groupId>ch.qos.logback</groupId>
+      <artifactId>logback-classic</artifactId>
+      <version>${logback-classic.version}</version>
+    </dependency>
+    
+    <!-- This dependency allows conditions in logger configuration -->
+    <dependency>
+      <groupId>org.codehaus.janino</groupId>
+      <artifactId>janino</artifactId>
+      <version>${janino.version}</version>
+    </dependency>
+    
+    <dependency>
+      <groupId>junit</groupId>
+      <artifactId>junit</artifactId>
+      <version>${junit.version}</version>
+      <scope>test</scope>
+    </dependency>
+
+  </dependencies>
 
   <build>
     <pluginManagement>
@@ -28,7 +106,7 @@
 	          <target>1.7</target>
 	          <debug>true</debug>
 	        </configuration>
-	      </plugin>
+	      </plugin>	      
 	    </plugins>
     </pluginManagement>
   </build>
