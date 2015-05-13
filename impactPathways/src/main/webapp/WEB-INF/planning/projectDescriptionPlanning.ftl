@@ -5,6 +5,7 @@
 [#assign currentSection = "planning" /]
 [#assign currentPlanningSection = "projects" /]
 [#assign currentStage = "description" /]
+[#assign currentSubStage = "description" /]
 
 [#assign breadCrumb = [
   {"label":"planning", "nameSpace":"planning", "action":"projects"},
@@ -26,6 +27,7 @@
   
   [@s.form action="description" cssClass="pure-form"]
   <article class="halfContent" id="mainInformation">
+    [#include "/WEB-INF/planning/projectDescription-planning-sub-menu.ftl" /]
     [#-- Informing user that he/she doesn't have enough privileges to edit. See GrantProjectPlanningAccessInterceptor--]
     [#if !saveable]
       <p class="readPrivileges">

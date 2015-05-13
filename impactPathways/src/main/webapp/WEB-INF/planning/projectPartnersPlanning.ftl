@@ -2,8 +2,11 @@
 [#assign title = "Project Partners" /]
 [#assign globalLibs = ["jquery", "noty", "autoSave", "chosen"] /]
 [#assign customJS = ["${baseUrl}/js/global/utils.js", "${baseUrl}/js/planning/projectPartners.js"] /]
+
 [#assign currentSection = "planning" /]
-[#assign currentStage = "partners" /]
+[#assign currentPlanningSection = "projects" /]
+[#assign currentStage = "description" /]
+[#assign currentSubStage = "partners" /]
 
 [#assign breadCrumb = [
   {"label":"planning", "nameSpace":"planning", "action":"projects"},
@@ -26,7 +29,9 @@
 
   [@s.form action="partners" cssClass="pure-form"]
   <article class="halfContent" id="projectPartners">
-  [#include "/WEB-INF/planning/planningDataSheet.ftl" /]
+    [#include "/WEB-INF/planning/projectDescription-planning-sub-menu.ftl" /]
+    [#include "/WEB-INF/planning/planningDataSheet.ftl" /]
+    
     [#-- Informing user that he/she doesn't have enough privileges to edit. See GranProjectPlanningAccessInterceptor--]
     [#if !saveable]
       <p class="readPrivileges">
