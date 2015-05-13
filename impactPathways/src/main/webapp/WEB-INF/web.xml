@@ -15,6 +15,12 @@
     <filter-name>guice</filter-name>
     <filter-class>com.google.inject.servlet.GuiceFilter</filter-class>
   </filter>
+  
+  <!-- Google Guice configuration for all requests -->
+  <filter-mapping>
+    <filter-name>guice</filter-name>
+    <url-pattern>/*</url-pattern>
+  </filter-mapping>
 
   <filter>
     <filter-name>struts2</filter-name>
@@ -22,6 +28,10 @@
       org.apache.struts2.dispatcher.ng.filter.StrutsPrepareAndExecuteFilter
     </filter-class>
   </filter>
+  <filter-mapping>
+    <filter-name>struts2</filter-name>
+    <url-pattern>/*</url-pattern>
+  </filter-mapping> 
   
   <!--  Flyway listener  -->
   <listener>
@@ -47,17 +57,6 @@
       <param-value>modification plus 1 hours</param-value>
     </init-param>
   </filter>
-  <!--  -->
-  
-  <filter-mapping>
-    <filter-name>struts2</filter-name>
-    <url-pattern>/*</url-pattern>
-  </filter-mapping> 
-  <!-- Google Guice configuration for all requests -->
-  <filter-mapping>
-    <filter-name>guice</filter-name>
-    <url-pattern>/*</url-pattern>
-  </filter-mapping>
   
   <!-- 
   <filter-mapping>

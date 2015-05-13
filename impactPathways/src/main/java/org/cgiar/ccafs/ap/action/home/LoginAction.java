@@ -67,6 +67,7 @@ public class LoginAction extends BaseAction {
   public String login() {
     // attribute user is not null when the user try to login
     if (user != null) {
+
       // Check if is a valid user
       String userEmail = user.getEmail().trim().toLowerCase();
       User loggedUser = userManager.login(userEmail, user.getPassword());
