@@ -11,8 +11,8 @@
         [@s.text name="menu.planning.submenu.projectPartners" /]
       </a>
     </li>
-    <li [#if currentSubStage == "projectLocations" ] class="currentSection" [/#if]>
-      <a href="[@s.url action='projectLocations' includeParams='get'][/@s.url]">
+    <li [#if currentSubStage == "locations" ] class="currentSection" [/#if]>
+      <a href="[@s.url action='locations' includeParams='get'][/@s.url]">
         [@s.text name="menu.planning.submenu.projectLocations" /]
       </a>
     </li> 
