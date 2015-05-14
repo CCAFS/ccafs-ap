@@ -36,6 +36,7 @@ table tr:first-child th:last-child{
 
 table.dataTable {  
   font-size: 0.95em;
+  border-left: 1px solid #CCC;
 }
 
 table.dataTable thead {
@@ -45,7 +46,7 @@ table.dataTable thead {
 }
 
 table.dataTable tr.odd {
-  background-color: white;
+  background-color: #FAFAFA;
 }
 
 table.dataTable tr.even {
@@ -53,7 +54,6 @@ table.dataTable tr.even {
 }
 
 table.dataTable tr.odd td.sorting_1 {
-  background-color: white;
 }
 
 table.dataTable tr.odd td.sorting_2 {
@@ -86,8 +86,13 @@ table.dataTable thead th {
   cursor: pointer;
 }
 
+table.dataTable tr {
+  
+}
+
 table.dataTable td {
-  border: 1px solid #CCCCCC;
+  border-bottom: 1px solid #AEAEAE;
+  border-right: 1px solid #CCC;
 }
 
 table.dataTable a {

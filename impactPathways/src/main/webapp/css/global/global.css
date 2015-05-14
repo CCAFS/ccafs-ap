@@ -632,8 +632,8 @@ nav#mainMenu ul a.disabled li{
     font-size: 1.5em; 
     font-weight: lighter;
     color: #5E5E5E;
-    margin-top: 20px;
-    padding-left: 5px;
+    margin: 24px 0 14px 0;
+    padding-left: 0px;
 }
 
 #secondaryMenu ul {
@@ -734,6 +734,16 @@ a.currentReportingSection li #i-additionalInformation{
   text-decoration: none;
 }
 
+#secondaryMenu a.goBack {
+  background: url("../../images/global/sub-menu-goback.png") no-repeat;
+  background-size: 62%;
+  width: 50px;  
+  text-align: left;
+  padding: 5px 0 0 33px;
+  text-decoration: none;
+  color: #444;
+}
+
 
 #secondaryMenu ul a.currentReportingSection, #secondaryMenu ul a.currentSection {
   color: white;
@@ -783,7 +793,7 @@ a.currentReportingSection li #i-additionalInformation{
 .halfContent {
   float: right;
   padding: 17px 0;
-  width: 820px;
+  width: 800px;
   vertical-align: top;
   position: relative;
 }
@@ -1519,7 +1529,7 @@ textarea[id$='summary'] {
 }
 
 #projectRegionsBlock .checkboxGroup label { 
-   width: 43%;
+   width: 41%;
 }
 
 #projects .note {
@@ -2007,7 +2017,7 @@ margin-bottom: 8px;
 /********* Activity Reporting Sub Menu **********/
 #stageMenu {
   display: block;
-  margin: 23px 35px 14px 36px;
+  margin: 21px 30px 15px 0px;
   text-align: center;
   position: relative;
 }
@@ -2043,6 +2053,16 @@ margin-bottom: 8px;
   padding-top: 13px;
   text-decoration: none;
   color: #444;
+}
+
+#stageMenu li.goBack {
+  background-image: url("../../images/global/sub-menu-goback.png");
+  width: 50px;  
+  margin-right: 20px;
+  text-align: left;
+  padding: 0px 0 0 37px;
+}
+#stageMenu li.goBack a {
 }
 
 

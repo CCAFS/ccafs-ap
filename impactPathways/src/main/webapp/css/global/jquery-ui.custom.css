@@ -660,7 +660,7 @@ html, body{background-color:#ffffff;}
 
 
 /* Button states */
-.ui-state-default, .ui-widget-content .ui-state-default{background-color: #47939C;border-color: #47939C;color: #F7F7F7;}
+.ui-state-default, .ui-widget-content .ui-state-default{background-color: #47939C;border-color: rgba(71, 147, 156, 0.79);color: #F7F7F7;}
 .ui-state-focus, .ui-widget-content .ui-state-focus{background-color:#47939C;border-color:#47939C;color:#ffffff;}
 .ui-state-hover, .ui-widget-content .ui-state-hover{background-color:#47939C;border-color:#47939C;color:#ffffff;}
 .ui-state-active, .ui-widget-content .ui-state-active{background-color:#47939C;border-color:#47939C;color:#ffffff;}
@@ -683,7 +683,7 @@ html, body{background-color:#ffffff;}
 
 
 /* Tabs states */
-.ui-tabs-nav > .ui-state-default a{border-color:#47939C;background:#47939C;color:#ffffff;}
+.ui-tabs-nav > .ui-state-default a{border-color: rgba(71, 147, 156, 0);background: rgba(71, 147, 156, 0.91);color:#ffffff;}
 .ui-tabs-nav > .ui-state-active a{border-color:#d4d4d4 !important;background:#ffffff !important;color:#525252 !important;}
 .ui-tabs-nav > .ui-state-hover a{background:#47939C;border-color:#47939C;color:#ffffff;}
 .ui-tabs-nav > .ui-state-focus a{background:#47939C;border-color:;color:#ffffff;}

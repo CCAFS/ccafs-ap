@@ -43,13 +43,13 @@
     
     <div id="PartnersTabs" class="ui-tabs ui-widget ui-widget-content ui-corner-all"> 
       <ul class="ui-tabs-nav ui-helper-reset ui-helper-clearfix ui-widget-header ui-corner-all"> 
-          <li id="" class="partnerTab ui-state-default ui-corner-top ">
+          <li id="" class="partnerTab ui-state-default ui-corner-top ui-tabs-active ui-state-active ui-state-hover">
             <a href="[@s.url action='partnerLead' includeParams='get'][/@s.url]"> Partner Lead </a>
           </li>
           <li id="" class="partnerTab ui-state-default ui-corner-top ">
             <a href="[@s.url action='ppaPartners' includeParams='get'][/@s.url]"> PPA Partners </a>
           </li> 
-          <li id="" class="partnerTab ui-state-default ui-corner-top ui-tabs-active ui-state-active ui-state-hover">
+          <li id="" class="partnerTab ui-state-default ui-corner-top ">
             <a href="[@s.url action='partners' includeParams='get'][/@s.url]"> Project Partners </a>
           </li> 
           <li id="" class="partnerTab ui-state-default ui-corner-top ">
@@ -57,23 +57,23 @@
           </li> 
       </ul>
       <div id="partnerTables-partnerLead" class="partnerTable ui-tabs-panel ui-widget-content ui-corner-bottom clearfix"> 
-        <h1 class="contentTitle">
-          [@s.text name="preplanning.projectPartners.partners.title" /]  
-        </h1> 
-        [#-- Listing partners from partnersTemplate.ftl --]
-        [@partnersTemplate.partnerSection projectPartners=project.projectPartners partnerTypes=partnerTypes countries=countries responsabilities=true canEdit=fullEditable canRemove=saveable /]
-        
-        [#if saveable] 
-          [#if fullEditable]
-          <div id="addProjectPartner" class="addLink">
-            <a href="" class="addProjectPartner addButton" >[@s.text name="preplanning.projectPartners.addProjectPartner" /]</a>
-          </div>
-          [/#if]
-        [/#if]  
+        [#-- Project Title --]
+        <h1 class="contentTitle" >
+          ${project.composedId} - [@s.text name="preplanning.projectPartners.leader.title" /]
+        </h1>
+        [#-- Displaying partner leader from partnersTemplate.ftl --]
+        [#if expected]
+          [@partnersTemplate.projectLeader leader=project.expectedLeader canEdit=fullEditable /]
+        [#else]
+          [@partnersTemplate.projectLeader leader=project.leader canEdit=fullEditable /]
+        [/#if] 
       </div>
-    </div>   
+    </div>  
     
-    [#if saveable]  
+     
+
+    
+    [#if saveable] 
       [#-- Internal parameter --]
       <input name="projectID" type="hidden" value="${project.id?c}" />
     	<div class="buttons">

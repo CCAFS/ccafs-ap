@@ -49,27 +49,15 @@
           <li id="" class="partnerTab ui-state-default ui-corner-top ">
             <a href="[@s.url action='ppaPartners' includeParams='get'][/@s.url]"> PPA Partners </a>
           </li> 
-          <li id="" class="partnerTab ui-state-default ui-corner-top ui-tabs-active ui-state-active ui-state-hover">
+          <li id="" class="partnerTab ui-state-default ui-corner-top">
             <a href="[@s.url action='partners' includeParams='get'][/@s.url]"> Project Partners </a>
           </li> 
-          <li id="" class="partnerTab ui-state-default ui-corner-top ">
+          <li id="" class="partnerTab ui-state-default ui-corner-top ui-tabs-active ui-state-active ui-state-hover">
             <a href="[@s.url action='crps' includeParams='get'][/@s.url]"> CRPs </a>
           </li> 
       </ul>
       <div id="partnerTables-partnerLead" class="partnerTable ui-tabs-panel ui-widget-content ui-corner-bottom clearfix"> 
-        <h1 class="contentTitle">
-          [@s.text name="preplanning.projectPartners.partners.title" /]  
-        </h1> 
-        [#-- Listing partners from partnersTemplate.ftl --]
-        [@partnersTemplate.partnerSection projectPartners=project.projectPartners partnerTypes=partnerTypes countries=countries responsabilities=true canEdit=fullEditable canRemove=saveable /]
         
-        [#if saveable] 
-          [#if fullEditable]
-          <div id="addProjectPartner" class="addLink">
-            <a href="" class="addProjectPartner addButton" >[@s.text name="preplanning.projectPartners.addProjectPartner" /]</a>
-          </div>
-          [/#if]
-        [/#if]  
       </div>
     </div>   
     
