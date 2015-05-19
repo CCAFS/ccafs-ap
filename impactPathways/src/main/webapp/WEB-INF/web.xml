@@ -41,7 +41,7 @@
   <!-- Setting cache specification in headers  -->
   <!-- Comment this filter in order to run jetty server -->
   
-	<filter>
+  <!-- filter>
     <filter-name>ExpiresFilter</filter-name>
     <filter-class>org.apache.catalina.filters.ExpiresFilter</filter-class>
     <init-param>
@@ -56,7 +56,7 @@
       <param-name>ExpiresByType application/javascript</param-name>
       <param-value>modification plus 1 hours</param-value>
     </init-param>
-  </filter>
+  </filter -->
   
   <!-- 
   <filter-mapping>
