@@ -39,6 +39,7 @@ import org.apache.shiro.authc.IncorrectCredentialsException;
 import org.apache.shiro.authc.LockedAccountException;
 import org.apache.shiro.authc.UnknownAccountException;
 import org.apache.shiro.authc.UsernamePasswordToken;
+import org.apache.shiro.subject.Subject;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -337,70 +338,42 @@ public class UserManagerImp implements UserManager {
 
   @Override
   public User login(String email, String password) {
+    User userFound = null;
 
     if (email != null && password != null) {
+      Subject currentUser = SecurityUtils.getSubject();
 
-      User userFound;
-      // If user is logging-in with their email account.
-      if (email.contains("@")) {
-        userFound = this.getUserByEmail(email);
-      } else {
-        // if user is loggin with his username, we must attach the cgiar.org.
-        userFound = this.getUserByUsername(email);
-      }
+      if (!currentUser.isAuthenticated()) {
+        UsernamePasswordToken token = new UsernamePasswordToken(email, password);
+        // this is all you have to do to support 'remember me' (no config - built in!):
+        // token.setRememberMe(rememberMe);
 
-      if (userFound != null) {
-        if (userFound.isActive()) {
-          if (userFound.isCcafsUser()) {
-            if (ldapAuthenticator.authenticate(userFound.getUsername(), password)) {
-              // Encrypt the password again
-              userFound.setMD5Password(password);
-              return userFound;
-            }
+        try {
+          LOG.info("Trying to log in the user {} against the database.", email);
+          currentUser.login(token);
+
+          // If user is logging-in with their email account.
+          if (email.contains("@")) {
+            userFound = this.getUserByEmail(email);
           } else {
-            org.apache.shiro.subject.Subject currentUser = SecurityUtils.getSubject();
-
-            if (!currentUser.isAuthenticated()) {
-              UsernamePasswordToken token = new UsernamePasswordToken(email, password);
-              // this is all you have to do to support 'remember me' (no config - built in!):
-              // token.setRememberMe(rememberMe);
-
-              try {
-                LOG.info("Trying to log in the user {} against the database.", email);
-                currentUser.login(token);
-
-                // save current username in the session, so we have access to our User model
-                currentUser.getSession().setAttribute("username", email);
-
-                return userFound;
-              } catch (UnknownAccountException uae) {
-                LOG.warn("There is no user with email of " + token.getPrincipal());
-              } catch (IncorrectCredentialsException ice) {
-                LOG.warn("Password for account " + token.getPrincipal() + " was incorrect!");
-              } catch (LockedAccountException lae) {
-                LOG.warn("The account for username " + token.getPrincipal() + " is locked.  "
-                  + "Please contact your administrator to unlock it.");
-              }
-            } else {
-              LOG.info("Already logged in");
-            }
-
-            // TODO - Adjust the authentication to use all the potential of shiro.
-
-
-            // dbAuthenticator.authenticate(email, password);
-            // User tempUser = new User();
-            // tempUser.setMD5Password(password);
-            // if (userFound.getPassword().equals(tempUser.getPassword())) {
-            // return userFound;
-            // }
+            // if user is loggin with his username, we must attach the cgiar.org.
+            userFound = this.getUserByUsername(email);
           }
+
+        } catch (UnknownAccountException uae) {
+          LOG.warn("There is no user with email of " + token.getPrincipal());
+        } catch (IncorrectCredentialsException ice) {
+          LOG.warn("Password for account " + token.getPrincipal() + " was incorrect!");
+        } catch (LockedAccountException lae) {
+          LOG.warn("The account for username " + token.getPrincipal() + " is locked.  "
+            + "Please contact your administrator to unlock it.");
         }
       } else {
-        // TODO HT/HC - Do something in case user is not active.
+        LOG.info("Already logged in");
       }
+
     }
-    return null;
+    return userFound;
   }
 
   @Override

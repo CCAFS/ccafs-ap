@@ -42,6 +42,27 @@ public class MySQLUserDAO implements UserDAO {
     this.daoManager = daoManager;
   }
 
+  public String getEmailByUsername(String username) {
+    LOG.debug(">> getEmailByUsername (username={})", new Object[] {username});
+    String email = null;
+    try (Connection connection = daoManager.getConnection()) {
+      StringBuilder query = new StringBuilder();
+      query.append("SELECT email FROM users WHERE username = '");
+      query.append(username);
+      query.append("' ");
+      ResultSet rs = daoManager.makeQuery(query.toString(), connection);
+      if (rs.next()) {
+        email = rs.getString(1);
+      }
+      rs.close();
+    } catch (SQLException e) {
+      LOG.error("-- getEmailByUsername() > There was an error getting the data for the user with usernmae {}.",
+        username, e);
+    }
+    LOG.debug("<< getEmailByUsername():{}", email);
+    return email;
+  }
+
   @Override
   public Map<String, String> getUserByEmail(String email) {
     Map<String, String> userData = new HashMap<>();
@@ -57,11 +78,12 @@ public class MySQLUserDAO implements UserDAO {
         userData.put("id", rs.getString("id"));
         userData.put("password", rs.getString("password"));
         userData.put("username", rs.getString("username"));
+        userData.put("is_active", rs.getString("is_active"));
+        userData.put("is_ccafs_user", rs.getString("is_ccafs_user"));
       }
     } catch (SQLException e) {
       LOG.error("getUserByEmail() > There was an error getting the information of the user  {}", email, e);
     }
     return userData;
   }
-
 }

@@ -29,6 +29,14 @@ import com.google.inject.ImplementedBy;
 public interface UserDAO {
 
   /**
+   * Get the user's email that relates with the given username.
+   * 
+   * @param username is the user nickname.
+   * @return a String with the user's email, or null if nothing was found.
+   */
+  public String getEmailByUsername(String username);
+
+  /**
    * This method gets the user identified by the email given by parameter.
    * 
    * @param email

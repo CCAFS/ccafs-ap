@@ -14,17 +14,27 @@
 
 package org.cgiar.ccafs.security.realms;
 
+import org.cgiar.ccafs.security.authentication.Authenticator;
 import org.cgiar.ccafs.security.data.manager.UserManagerImpl;
 import org.cgiar.ccafs.security.data.model.User;
-import org.cgiar.ccafs.security.util.Md5CredentialsMatcher;
 
+import com.google.inject.Guice;
 import com.google.inject.Inject;
+import com.google.inject.Injector;
+import com.google.inject.name.Named;
 import org.apache.shiro.authc.AuthenticationException;
 import org.apache.shiro.authc.AuthenticationInfo;
 import org.apache.shiro.authc.AuthenticationToken;
+import org.apache.shiro.authc.IncorrectCredentialsException;
+import org.apache.shiro.authc.LockedAccountException;
 import org.apache.shiro.authc.SimpleAuthenticationInfo;
+import org.apache.shiro.authc.UnknownAccountException;
 import org.apache.shiro.authc.UsernamePasswordToken;
+import org.apache.shiro.authc.credential.AllowAllCredentialsMatcher;
+import org.apache.shiro.authc.credential.CredentialsMatcher;
 import org.apache.shiro.authz.AuthorizationInfo;
+import org.apache.shiro.authz.SimpleAuthorizationInfo;
+import org.apache.shiro.authz.permission.WildcardPermission;
 import org.apache.shiro.realm.AuthorizingRealm;
 import org.apache.shiro.subject.PrincipalCollection;
 import org.slf4j.Logger;
@@ -37,17 +47,29 @@ import org.slf4j.LoggerFactory;
 
 public class APCustomRealm extends AuthorizingRealm {
 
+  // Logger
   public static Logger LOG = LoggerFactory.getLogger(APCustomRealm.class);
+
+  // Variables
+  final AllowAllCredentialsMatcher credentialsMatcher = new AllowAllCredentialsMatcher();
   private UserManagerImpl userManager;
-  private Md5CredentialsMatcher matcher;
+
+  @Named("DB")
+  Authenticator dbAuthenticator;
+
+  @Named("LDAP")
+  Authenticator ldapAuthenticator;
+  Injector injector;
+
 
   @Inject
-  public APCustomRealm(UserManagerImpl userManager, Md5CredentialsMatcher matcher) {
+  public APCustomRealm(UserManagerImpl userManager, @Named("DB") Authenticator dbAuthenticator,
+    @Named("LDAP") Authenticator ldapAuthenticator) {
     this.userManager = userManager;
-    this.matcher = matcher;
-
+    this.dbAuthenticator = dbAuthenticator;
+    this.ldapAuthenticator = ldapAuthenticator;
+    injector = Guice.createInjector();
     setName("APCustomRealm");
-    setCredentialsMatcher(matcher);
   }
 
   @Override
@@ -55,27 +77,61 @@ public class APCustomRealm extends AuthorizingRealm {
     // identify account to log to
     UsernamePasswordToken userPassToken = (UsernamePasswordToken) token;
     final String username = userPassToken.getUsername();
-
-    if (username == null) {
-      LOG.info("doGetAuthenticationInfo() > The username received is null.");
-      return null;
-    }
+    final String password = new String(userPassToken.getPassword());
+    User user;
+    boolean authenticated = false;
 
     // Get user info from db
-    final User user = userManager.getUserByEmail(username);
+    if (username.contains("@")) {
+      user = userManager.getUserByEmail(username);
+    } else {
+      // if user is loggin with his username, we must attach the cgiar.org.
+      user = userManager.getUserByUsername(username);
+    }
 
     if (user == null) {
       LOG.info("doGetAuthenticationInfo() > No account found for user {}.", username);
-      return null;
+      throw new UnknownAccountException();
     }
 
-    SimpleAuthenticationInfo info = new SimpleAuthenticationInfo(user.getEmail(), user.getPassword(), getName());
+    if (!user.isActive()) {
+      LOG.info("doGetAuthenticationInfo() > Account of user {} is NOT active.", username);
+      throw new LockedAccountException();
+    }
 
+    if (user.isCcafsUser()) {
+      authenticated = ldapAuthenticator.authenticate(user.getUsername(), password);
+    } else {
+      authenticated = dbAuthenticator.authenticate(user.getEmail(), password);
+    }
+
+    if (!authenticated) {
+      throw new IncorrectCredentialsException();
+    }
+
+    SimpleAuthenticationInfo info = new SimpleAuthenticationInfo(user.getId(), user.getPassword(), getName());
     return info;
   }
 
   @Override
   protected AuthorizationInfo doGetAuthorizationInfo(PrincipalCollection principals) {
-    return null;
+    int userID = (Integer) principals.getPrimaryPrincipal();
+
+
+    LOG.info(userID + "");
+
+    SimpleAuthorizationInfo authorizationInfo = new SimpleAuthorizationInfo();
+    authorizationInfo.addRole("role1");
+    authorizationInfo.addRole("role2");
+    authorizationInfo.addObjectPermission(new WildcardPermission("user1:*"));
+    authorizationInfo.addStringPermission("+user2+10");
+    authorizationInfo.addStringPermission("user2:*");
+    return authorizationInfo;
+    // return null;
+  }
+
+  @Override
+  public CredentialsMatcher getCredentialsMatcher() {
+    return credentialsMatcher;
   }
 }

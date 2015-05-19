@@ -24,7 +24,8 @@ public class User {
   private Integer id;
   private String username;
   private String email;
-
+  private boolean active;
+  private boolean ccafsUser;
   private String password;
 
   public String getEmail() {
@@ -41,6 +42,22 @@ public class User {
 
   public String getUsername() {
     return username;
+  }
+
+  public boolean isActive() {
+    return active;
+  }
+
+  public boolean isCcafsUser() {
+    return ccafsUser;
+  }
+
+  public void setActive(boolean active) {
+    this.active = active;
+  }
+
+  public void setCcafsUser(boolean ccafsUser) {
+    this.ccafsUser = ccafsUser;
   }
 
   public void setEmail(String email) {

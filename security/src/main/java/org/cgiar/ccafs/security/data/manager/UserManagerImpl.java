@@ -47,9 +47,20 @@ public class UserManagerImpl {
     Map<String, String> userData = userDao.getUserByEmail(email);
 
     user.setEmail(email);
+    user.setUsername(userData.get("username"));
     user.setPassword(userData.get("password"));
     user.setId(Integer.parseInt(userData.get("id")));
+    user.setActive(userData.get("is_active").equals("1"));
+    user.setCcafsUser(userData.get("is_ccafs_user").equals("1"));
 
     return user;
+  }
+
+  public User getUserByUsername(String username) {
+    String email = userDao.getEmailByUsername(username);
+    if (email != null) {
+      return this.getUserByEmail(email);
+    }
+    return null;
   }
 }
