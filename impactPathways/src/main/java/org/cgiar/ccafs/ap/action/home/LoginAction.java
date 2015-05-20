@@ -25,6 +25,7 @@ import org.cgiar.ccafs.ap.data.model.User;
 import java.util.Date;
 
 import com.google.inject.Inject;
+import org.apache.shiro.SecurityUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -67,6 +68,7 @@ public class LoginAction extends BaseAction {
   public String login() {
     // attribute user is not null when the user try to login
     if (user != null) {
+
       // Check if is a valid user
       String userEmail = user.getEmail().trim().toLowerCase();
       User loggedUser = userManager.login(userEmail, user.getPassword());
@@ -102,6 +104,7 @@ public class LoginAction extends BaseAction {
     if (user != null) {
       LOG.info("User {} logout succesfully", user.getEmail());
     }
+    SecurityUtils.getSubject().logout();
     this.getSession().clear();
     return SUCCESS;
   }

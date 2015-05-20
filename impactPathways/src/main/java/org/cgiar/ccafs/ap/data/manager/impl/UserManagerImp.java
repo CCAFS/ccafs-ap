@@ -19,9 +19,7 @@ import org.cgiar.ccafs.ap.data.manager.UserManager;
 import org.cgiar.ccafs.ap.data.model.IPProgram;
 import org.cgiar.ccafs.ap.data.model.Role;
 import org.cgiar.ccafs.ap.data.model.User;
-import org.cgiar.ccafs.security.authentication.Authenticator;
 import org.cgiar.ccafs.utils.MD5Convert;
-import org.cgiar.ciat.auth.ADConexion;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -30,10 +28,13 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import com.google.inject.Guice;
 import com.google.inject.Inject;
-import com.google.inject.Injector;
-import com.google.inject.name.Named;
+import org.apache.shiro.SecurityUtils;
+import org.apache.shiro.authc.IncorrectCredentialsException;
+import org.apache.shiro.authc.LockedAccountException;
+import org.apache.shiro.authc.UnknownAccountException;
+import org.apache.shiro.authc.UsernamePasswordToken;
+import org.apache.shiro.subject.Subject;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -48,59 +49,16 @@ public class UserManagerImp implements UserManager {
   // DAO
   private UserDAO userDAO;
 
-  @Named("DB")
-  Authenticator dbAuthenticator;
-
-  @Named("LDAP")
-  Authenticator ldapAuthenticator;
-
-  Injector injector;
-
   // Managers
   private InstitutionManager institutionManager;
 
   @Inject
-  public UserManagerImp(UserDAO userDAO, InstitutionManager institutionManager,
-    @Named("DB") Authenticator dbAuthenticator, @Named("LDAP") Authenticator ldapAuthenticator) {
+  public UserManagerImp(UserDAO userDAO, InstitutionManager institutionManager) {
     this.userDAO = userDAO;
     this.institutionManager = institutionManager;
-    this.ldapAuthenticator = ldapAuthenticator;
-    this.dbAuthenticator = dbAuthenticator;
-
-    injector = Guice.createInjector();
 
   }
 
-  /**
-   * This method make the login process against the active directory
-   * if the user has an institutional account
-   * 
-   * @param user
-   * @return true if it was successfully logged in. False otherwise
-   */
-  private boolean activeDirectoryLogin(User user) {
-
-    // TODO - Delete this method once it is moved to the security plugin
-
-    boolean logued = false;
-
-    if (user.getUsername() != null) {
-      try {
-        ADConexion con = new ADConexion(user.getUsername(), user.getPassword());
-        if (con != null) {
-          if (con.getLogin() != null) {
-            logued = true;
-          }
-          con.closeContext();
-        }
-      } catch (Exception e) {
-        LOG.error("Exception raised trying to log in the user {} against the active directory.", user.getId(),
-          e.getMessage());
-      }
-    }
-    return logued;
-
-  }
 
   @Override
   public List<User> getAllEmployees() {
@@ -332,40 +290,42 @@ public class UserManagerImp implements UserManager {
 
   @Override
   public User login(String email, String password) {
+    User userFound = null;
 
     if (email != null && password != null) {
+      Subject currentUser = SecurityUtils.getSubject();
 
-      User userFound;
-      // If user is logging-in with their email account.
-      if (email.contains("@")) {
-        userFound = this.getUserByEmail(email);
-      } else {
-        // if user is loggin with his username, we must attach the cgiar.org.
-        userFound = this.getUserByUsername(email);
-      }
+      if (!currentUser.isAuthenticated()) {
+        UsernamePasswordToken token = new UsernamePasswordToken(email, password);
+        // this is all you have to do to support 'remember me' (no config - built in!):
+        // token.setRememberMe(rememberMe);
 
-      if (userFound != null) {
-        if (userFound.isActive()) {
-          if (userFound.isCcafsUser()) {
-            if (ldapAuthenticator.authenticate(userFound.getUsername(), password)) {
-              // Encrypt the password again
-              userFound.setMD5Password(password);
-              return userFound;
-            }
+        try {
+          LOG.info("Trying to log in the user {} against the database.", email);
+          currentUser.login(token);
+
+          // If user is logging-in with their email account.
+          if (email.contains("@")) {
+            userFound = this.getUserByEmail(email);
           } else {
-            dbAuthenticator.authenticate(email, password);
-            User tempUser = new User();
-            tempUser.setMD5Password(password);
-            if (userFound.getPassword().equals(tempUser.getPassword())) {
-              return userFound;
-            }
+            // if user is loggin with his username, we must attach the cgiar.org.
+            userFound = this.getUserByUsername(email);
           }
+
+        } catch (UnknownAccountException uae) {
+          LOG.warn("There is no user with email of " + token.getPrincipal());
+        } catch (IncorrectCredentialsException ice) {
+          LOG.warn("Password for account " + token.getPrincipal() + " was incorrect!");
+        } catch (LockedAccountException lae) {
+          LOG.warn("The account for username " + token.getPrincipal() + " is locked.  "
+            + "Please contact your administrator to unlock it.");
         }
       } else {
-        // TODO HT/HC - Do something in case user is not active.
+        LOG.info("Already logged in");
       }
+
     }
-    return null;
+    return userFound;
   }
 
   @Override

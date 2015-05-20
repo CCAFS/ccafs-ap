@@ -136,10 +136,10 @@
     
     <!-- This dependency allows conditions in logger configuration -->
     <dependency>
-		  <groupId>org.codehaus.janino</groupId>
-		  <artifactId>janino</artifactId>
-		  <version>${janino.version}</version>
-		</dependency>
+	  <groupId>org.codehaus.janino</groupId>
+	  <artifactId>janino</artifactId>
+	  <version>${janino.version}</version>
+	</dependency>
     
     <dependency>
       <groupId>junit</groupId>
