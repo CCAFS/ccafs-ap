@@ -12,16 +12,23 @@
  * along with CCAFS P&R. If not, see <http://www.gnu.org/licenses/>.
  *****************************************************************/
 
-package org.cgiar.ccafs.security.authorization;
+package org.cgiar.ccafs.security.util;
 
-import javax.management.relation.Role;
+import org.cgiar.ccafs.utils.MD5Convert;
+
+import org.apache.shiro.authc.credential.SimpleCredentialsMatcher;
 
 
 /**
  * @author Hernán David Carvajal
  */
 
-public interface Authorizer {
+public class Md5CredentialsMatcher extends SimpleCredentialsMatcher {
 
-  public boolean hasRole(Role role, int userID);
+  @Override
+  protected boolean equals(Object tokenCredentials, Object accountCredentials) {
+    String tokenPassword = new String((char[]) tokenCredentials);
+    String encryptPassword = MD5Convert.stringToMD5(tokenPassword);
+    return ((String) accountCredentials).equals(encryptPassword);
+  }
 }
