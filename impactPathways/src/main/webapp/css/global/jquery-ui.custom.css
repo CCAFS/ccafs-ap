@@ -683,8 +683,8 @@ html, body{background-color:#ffffff;}
 
 
 /* Tabs states */
-.ui-tabs-nav > .ui-state-default a{border-color: rgba(71, 147, 156, 0);background: rgba(71, 147, 156, 0.91);color:#ffffff;}
-.ui-tabs-nav > .ui-state-active a{border-color:#d4d4d4 !important;background:#ffffff !important;color:#525252 !important;}
+.ui-tabs-nav > .ui-state-default a{border-color: rgba(71, 147, 156, 0);background: rgba(51, 154, 166, 0.91);color:#ffffff;}
+.ui-tabs-nav > .ui-state-active a{border-color:#d4d4d4 !important;background:#ffffff !important;/* color:#525252 !important; */}
 .ui-tabs-nav > .ui-state-hover a{background:#47939C;border-color:#47939C;color:#ffffff;}
 .ui-tabs-nav > .ui-state-focus a{background:#47939C;border-color:;color:#ffffff;}
 .ui-tabs .ui-widget-content{border-color:#d4d4d4 !important;background-color:#ffffff;}

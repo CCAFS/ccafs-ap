@@ -1,5 +1,5 @@
 [#ftl]
-[#macro input name value="-NULL" type="text" i18nkey="" disabled=false required=false errorField="" help="" display=true className="-NULL" readOnly=false showTitle=true]
+[#macro input name value="-NULL" type="text" i18nkey="" disabled=false required=false errorField="" help="" display=true className="-NULL" readOnly=false showTitle=true editable=true]
   <div class="input" [#if !display]style="display: none;"[/#if]>
     [#if showTitle]
       <h6>
@@ -12,11 +12,15 @@
       </h6>
     [/#if]
     [#if errorField==""][@s.fielderror cssClass="fieldError" fieldName="${name}"/][#else][@s.fielderror cssClass="fieldError" fieldName="${errorfield}"/][/#if]
-    <input type="${type}" id="${name}" name="${name}" value="[#if value=="-NULL"][@s.property value="${name?string}"/][#else]${value}[/#if]"  [#if className != "-NULL"] class="${className}" [/#if][#if readOnly] readonly="readonly"[/#if] [#if disabled]disabled="disabled"[/#if] />
+    [#if editable]
+      <input type="${type}" id="${name}" name="${name}" value="[#if value=="-NULL"][@s.property value="${name?string}"/][#else]${value}[/#if]"  [#if className != "-NULL"] class="${className}" [/#if][#if readOnly] readonly="readonly"[/#if] [#if disabled]disabled="disabled"[/#if] />
+    [#else]
+      <p>[#if value=="-NULL"][@s.property value="${name?string}"/][#else]${value}[/#if]</p>
+    [/#if]
   </div>
 [/#macro]
 
-[#macro textArea name value="-NULL" i18nkey="" disabled=false required=false errorfield="" help="" addButton=false showTitle=true display=true className="-NULL"]
+[#macro textArea name value="-NULL" i18nkey="" disabled=false required=false errorfield="" help="" addButton=false showTitle=true display=true className="-NULL" editable=true]
   <div class="textArea [#if addButton] button[/#if]" [#if !display]style="display: none;"[/#if]> 
   	[#if showTitle]
 	    <h6>
@@ -29,7 +33,11 @@
 	    </h6>
     [/#if]
     [#if errorfield==""][@s.fielderror cssClass="fieldError" fieldName="${name}"/][#else][@s.fielderror cssClass="fieldError" fieldName="${errorfield}"/][/#if]
-    <textarea name="${name}" id="${name}" [#if disabled]disabled="disabled"[/#if] [#if className != "-NULL"] class="ckeditor ${className}" [/#if] />[#if value=="-NULL"][@s.property value="${name}"/][#else]${value}[/#if]</textarea>
+    [#if editable]
+      <textarea name="${name}" id="${name}" [#if disabled]disabled="disabled"[/#if] [#if className != "-NULL"] class="ckeditor ${className}" [/#if] />[#if value=="-NULL"][@s.property value="${name}"/][#else]${value}[/#if]</textarea>
+    [#else]
+      <p>[#if value=="-NULL"][@s.property value="${name}"/][#else]${value}[/#if]</p>
+    [/#if] 
   </div>
   [#if addButton]
      <input type="button" class="addButton [@s.text name='${i18nkey}' /]" name="" value="Add [@s.text name='${i18nkey}' /]" />

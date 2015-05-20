@@ -7,6 +7,7 @@
 [#assign currentPlanningSection = "projects" /]
 [#assign currentStage = "description" /]
 [#assign currentSubStage = "partners" /]
+[#assign partnerStage = "crps" /]
 
 [#assign breadCrumb = [
   {"label":"planning", "nameSpace":"planning", "action":"projects"},
@@ -41,21 +42,9 @@
       </p>
     [/#if]
     
-    <div id="PartnersTabs" class="ui-tabs ui-widget ui-widget-content ui-corner-all"> 
-      <ul class="ui-tabs-nav ui-helper-reset ui-helper-clearfix ui-widget-header ui-corner-all"> 
-          <li id="" class="partnerTab ui-state-default ui-corner-top ">
-            <a href="[@s.url action='partnerLead' includeParams='get'][/@s.url]"> Partner Lead </a>
-          </li>
-          <li id="" class="partnerTab ui-state-default ui-corner-top ">
-            <a href="[@s.url action='ppaPartners' includeParams='get'][/@s.url]"> PPA Partners </a>
-          </li> 
-          <li id="" class="partnerTab ui-state-default ui-corner-top">
-            <a href="[@s.url action='partners' includeParams='get'][/@s.url]"> Project Partners </a>
-          </li> 
-          <li id="" class="partnerTab ui-state-default ui-corner-top ui-tabs-active ui-state-active ui-state-hover">
-            <a href="[@s.url action='crps' includeParams='get'][/@s.url]"> CRPs </a>
-          </li> 
-      </ul>
+    <div id="PartnersTabs" class="ui-tabs ui-widget ui-widget-content ui-corner-all">
+      [#-- Project Partners Sub-menu --]
+      [#include "/WEB-INF/planning/projectPartners-sub-menu.ftl" /]
       <div id="partnerTables-partnerLead" class="partnerTable ui-tabs-panel ui-widget-content ui-corner-bottom clearfix"> 
         
       </div>
