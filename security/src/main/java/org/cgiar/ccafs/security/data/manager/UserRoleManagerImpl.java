@@ -17,6 +17,8 @@ package org.cgiar.ccafs.security.data.manager;
 import org.cgiar.ccafs.security.data.dao.UserRoleDAO;
 import org.cgiar.ccafs.security.data.model.UserRole;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Map;
 
 import com.google.inject.Inject;
@@ -35,13 +37,20 @@ public class UserRoleManagerImpl {
     this.userRoleDAO = userRoleDAO;
   }
 
-  public UserRole getUserRolesByEmail(String email) {
-    UserRole userRole = new UserRole();
-    Map<String, String> userRoleData = userRoleDAO.getUserRolesByEmail(email);
+  public List<UserRole> getUserRolesByUserID(String userID) {
+    List<UserRole> roles = new ArrayList<>();
+    List<Map<String, String>> userRoleData = userRoleDAO.getUserRolesByUserID(userID);
 
-    userRole.setId(Integer.parseInt(userRoleData.get("id")));
-    userRole.setRoleName(userRoleData.get("role"));
+    for (Map<String, String> roleData : userRoleData) {
+      UserRole userRole = new UserRole();
+      userRole.setId(Integer.parseInt(roleData.get("id")));
+      userRole.setName(roleData.get("name"));
+      userRole.setAcronym(roleData.get("acronym"));
+      userRole.setPermissions(userRoleDAO.getRolePermissions(roleData.get("id")));
 
-    return userRole;
+      roles.add(userRole);
+    }
+
+    return roles;
   }
 }

@@ -16,7 +16,11 @@ package org.cgiar.ccafs.security.realms;
 
 import org.cgiar.ccafs.security.authentication.Authenticator;
 import org.cgiar.ccafs.security.data.manager.UserManagerImpl;
+import org.cgiar.ccafs.security.data.manager.UserRoleManagerImpl;
 import org.cgiar.ccafs.security.data.model.User;
+import org.cgiar.ccafs.security.data.model.UserRole;
+
+import java.util.List;
 
 import com.google.inject.Guice;
 import com.google.inject.Inject;
@@ -34,7 +38,6 @@ import org.apache.shiro.authc.credential.AllowAllCredentialsMatcher;
 import org.apache.shiro.authc.credential.CredentialsMatcher;
 import org.apache.shiro.authz.AuthorizationInfo;
 import org.apache.shiro.authz.SimpleAuthorizationInfo;
-import org.apache.shiro.authz.permission.WildcardPermission;
 import org.apache.shiro.realm.AuthorizingRealm;
 import org.apache.shiro.subject.PrincipalCollection;
 import org.slf4j.Logger;
@@ -53,6 +56,7 @@ public class APCustomRealm extends AuthorizingRealm {
   // Variables
   final AllowAllCredentialsMatcher credentialsMatcher = new AllowAllCredentialsMatcher();
   private UserManagerImpl userManager;
+  private UserRoleManagerImpl userRoleManager;
 
   @Named("DB")
   Authenticator dbAuthenticator;
@@ -63,9 +67,10 @@ public class APCustomRealm extends AuthorizingRealm {
 
 
   @Inject
-  public APCustomRealm(UserManagerImpl userManager, @Named("DB") Authenticator dbAuthenticator,
-    @Named("LDAP") Authenticator ldapAuthenticator) {
+  public APCustomRealm(UserManagerImpl userManager, UserRoleManagerImpl userRoleManager,
+    @Named("DB") Authenticator dbAuthenticator, @Named("LDAP") Authenticator ldapAuthenticator) {
     this.userManager = userManager;
+    this.userRoleManager = userRoleManager;
     this.dbAuthenticator = dbAuthenticator;
     this.ldapAuthenticator = ldapAuthenticator;
     injector = Guice.createInjector();
@@ -116,18 +121,16 @@ public class APCustomRealm extends AuthorizingRealm {
   @Override
   protected AuthorizationInfo doGetAuthorizationInfo(PrincipalCollection principals) {
     int userID = (Integer) principals.getPrimaryPrincipal();
-
-
-    LOG.info(userID + "");
+    List<UserRole> roles = userRoleManager.getUserRolesByUserID(String.valueOf(userID));
 
     SimpleAuthorizationInfo authorizationInfo = new SimpleAuthorizationInfo();
-    authorizationInfo.addRole("role1");
-    authorizationInfo.addRole("role2");
-    authorizationInfo.addObjectPermission(new WildcardPermission("user1:*"));
-    authorizationInfo.addStringPermission("+user2+10");
-    authorizationInfo.addStringPermission("user2:*");
+    for (UserRole role : roles) {
+      authorizationInfo.addRole(role.getAcronym());
+      for (String permission : role.getPermissions()) {
+        authorizationInfo.addStringPermission(permission);
+      }
+    }
     return authorizationInfo;
-    // return null;
   }
 
   @Override

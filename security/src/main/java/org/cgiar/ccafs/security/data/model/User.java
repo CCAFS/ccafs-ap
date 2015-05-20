@@ -14,6 +14,8 @@
 
 package org.cgiar.ccafs.security.data.model;
 
+import java.util.List;
+
 
 /**
  * @author Hernán David Carvajal
@@ -27,6 +29,7 @@ public class User {
   private boolean active;
   private boolean ccafsUser;
   private String password;
+  private List<UserRole> roles;
 
   public String getEmail() {
     return email;
@@ -38,6 +41,10 @@ public class User {
 
   public String getPassword() {
     return password;
+  }
+
+  public List<UserRole> getRoles() {
+    return roles;
   }
 
   public String getUsername() {
@@ -70,6 +77,10 @@ public class User {
 
   public void setPassword(String password) {
     this.password = password;
+  }
+
+  public void setRoles(List<UserRole> roles) {
+    this.roles = roles;
   }
 
   public void setUsername(String username) {

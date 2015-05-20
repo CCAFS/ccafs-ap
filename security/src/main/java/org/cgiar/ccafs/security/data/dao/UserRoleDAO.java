@@ -16,6 +16,7 @@ package org.cgiar.ccafs.security.data.dao;
 
 import org.cgiar.ccafs.security.data.dao.mysql.MySQLUserRoleDAO;
 
+import java.util.List;
 import java.util.Map;
 
 import com.google.inject.ImplementedBy;
@@ -29,11 +30,20 @@ import com.google.inject.ImplementedBy;
 public interface UserRoleDAO {
 
   /**
+   * This method gets all the permissions assigned to the role
+   * identified by the value received by parameter.
+   * 
+   * @param roleID
+   * @return a list of strings with the permissions.
+   */
+  public List<String> getRolePermissions(String roleID);
+
+  /**
    * This method gets all the roles that belong to the user
    * identified by the email received as parameter
    * 
    * @param email
    * @return a list of maps with the information.
    */
-  public Map<String, String> getUserRolesByEmail(String email);
+  public List<Map<String, String>> getUserRolesByUserID(String userID);
 }

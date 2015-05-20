@@ -14,6 +14,8 @@
 
 package org.cgiar.ccafs.security.data.model;
 
+import java.util.List;
+
 
 /**
  * @author Hernán David Carvajal
@@ -22,30 +24,39 @@ package org.cgiar.ccafs.security.data.model;
 public class UserRole {
 
   private Integer id;
-  private String permission;
-  private String roleName;
+  private String name;
+  private String acronym;
+  private List<String> permissions;
+
+  public String getAcronym() {
+    return acronym;
+  }
 
   public Integer getId() {
     return id;
   }
 
-  public String getPermission() {
-    return permission;
+  public String getName() {
+    return name;
   }
 
-  public String getRoleName() {
-    return roleName;
+  public List<String> getPermissions() {
+    return permissions;
+  }
+
+  public void setAcronym(String acronym) {
+    this.acronym = acronym;
   }
 
   public void setId(Integer id) {
     this.id = id;
   }
 
-  public void setPermission(String permission) {
-    this.permission = permission;
+  public void setName(String roleName) {
+    this.name = roleName;
   }
 
-  public void setRoleName(String roleName) {
-    this.roleName = roleName;
+  public void setPermissions(List<String> permissions) {
+    this.permissions = permissions;
   }
 }

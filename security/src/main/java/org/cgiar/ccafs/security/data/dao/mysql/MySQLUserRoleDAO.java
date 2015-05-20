@@ -45,26 +45,47 @@ public class MySQLUserRoleDAO implements UserRoleDAO {
   }
 
   @Override
-  public Map<String, String> getUserRolesByEmail(String email) {
-    List<Map<String, String>> userRolesList = new ArrayList<>();
+  public List<String> getRolePermissions(String roleID) {
+    List<String> permissions = new ArrayList<>();
     StringBuilder query = new StringBuilder();
-    query.append("SELECT * FROM user_roles WHERE ");
-    query.append("email = '");
-    query.append(email);
-    query.append("'; ");
+    query.append("SELECT p.permission FROM role_permissions rp ");
+    query.append("INNER JOIN permissions p ON rp.permission_id = p.id ");
+    query.append("WHERE role_id = ");
+    query.append(roleID);
 
-    Map<String, String> userRole = new HashMap<>();
     try (Connection con = daoManager.getConnection()) {
       ResultSet rs = daoManager.makeQuery(query.toString(), con);
       while (rs.next()) {
+        permissions.add(rs.getString("permission"));
+      }
+    } catch (SQLException e) {
+      LOG.error("getRolePermissions() > There was an error getting the permissions assigned to the role {}", roleID, e);
+    }
+    return permissions;
+  }
+
+  @Override
+  public List<Map<String, String>> getUserRolesByUserID(String userID) {
+    List<Map<String, String>> userRolesList = new ArrayList<>();
+    StringBuilder query = new StringBuilder();
+    query.append("SELECT r.id, r.name, r.acronym FROM user_roles ur ");
+    query.append("INNER JOIN roles r ON ur.role_id = r.id ");
+    query.append("WHERE ur.user_id = ");
+    query.append(userID);
+
+    try (Connection con = daoManager.getConnection()) {
+      ResultSet rs = daoManager.makeQuery(query.toString(), con);
+      while (rs.next()) {
+        Map<String, String> userRole = new HashMap<>();
         userRole.put("id", rs.getString("id"));
-        userRole.put("role", rs.getString("role"));
+        userRole.put("name", rs.getString("name"));
+        userRole.put("acronym", rs.getString("acronym"));
         userRolesList.add(userRole);
       }
     } catch (SQLException e) {
-      LOG.error("verifiyCredentials() > There was an error verifiying the credentials of {}", email, e);
+      LOG.error("verifiyCredentials() > There was an error verifiying the credentials of {}", userID, e);
     }
-    return userRole;
+    return userRolesList;
   }
 
 }
