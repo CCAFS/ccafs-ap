@@ -19,9 +19,7 @@ import org.cgiar.ccafs.ap.data.manager.UserManager;
 import org.cgiar.ccafs.ap.data.model.IPProgram;
 import org.cgiar.ccafs.ap.data.model.Role;
 import org.cgiar.ccafs.ap.data.model.User;
-import org.cgiar.ccafs.security.authentication.Authenticator;
 import org.cgiar.ccafs.utils.MD5Convert;
-import org.cgiar.ciat.auth.ADConexion;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -30,10 +28,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import com.google.inject.Guice;
 import com.google.inject.Inject;
-import com.google.inject.Injector;
-import com.google.inject.name.Named;
 import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.authc.IncorrectCredentialsException;
 import org.apache.shiro.authc.LockedAccountException;
@@ -54,59 +49,16 @@ public class UserManagerImp implements UserManager {
   // DAO
   private UserDAO userDAO;
 
-  @Named("DB")
-  Authenticator dbAuthenticator;
-
-  @Named("LDAP")
-  Authenticator ldapAuthenticator;
-
-  Injector injector;
-
   // Managers
   private InstitutionManager institutionManager;
 
   @Inject
-  public UserManagerImp(UserDAO userDAO, InstitutionManager institutionManager,
-    @Named("DB") Authenticator dbAuthenticator, @Named("LDAP") Authenticator ldapAuthenticator) {
+  public UserManagerImp(UserDAO userDAO, InstitutionManager institutionManager) {
     this.userDAO = userDAO;
     this.institutionManager = institutionManager;
-    this.ldapAuthenticator = ldapAuthenticator;
-    this.dbAuthenticator = dbAuthenticator;
-
-    injector = Guice.createInjector();
 
   }
 
-  /**
-   * This method make the login process against the active directory
-   * if the user has an institutional account
-   * 
-   * @param user
-   * @return true if it was successfully logged in. False otherwise
-   */
-  private boolean activeDirectoryLogin(User user) {
-
-    // TODO - Delete this method once it is moved to the security plugin
-
-    boolean logued = false;
-
-    if (user.getUsername() != null) {
-      try {
-        ADConexion con = new ADConexion(user.getUsername(), user.getPassword());
-        if (con != null) {
-          if (con.getLogin() != null) {
-            logued = true;
-          }
-          con.closeContext();
-        }
-      } catch (Exception e) {
-        LOG.error("Exception raised trying to log in the user {} against the active directory.", user.getId(),
-          e.getMessage());
-      }
-    }
-    return logued;
-
-  }
 
   @Override
   public List<User> getAllEmployees() {
