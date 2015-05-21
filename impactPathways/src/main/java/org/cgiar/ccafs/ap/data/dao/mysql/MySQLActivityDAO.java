@@ -14,9 +14,6 @@
  */
 package org.cgiar.ccafs.ap.data.dao.mysql;
 
-import org.cgiar.ccafs.ap.data.dao.ActivityDAO;
-import org.cgiar.ccafs.utils.db.DAOManager;
-
 import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -26,6 +23,8 @@ import java.util.List;
 import java.util.Map;
 
 import com.google.inject.Inject;
+import org.cgiar.ccafs.ap.data.dao.ActivityDAO;
+import org.cgiar.ccafs.utils.db.DAOManager;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -169,7 +168,7 @@ public class MySQLActivityDAO implements ActivityDAO {
         }
         activityData.put("leader_id", rs.getString("leader_id"));
         activityData.put("expected_leader_id", rs.getString("expected_leader_id"));
-        activityData.put("created", rs.getTimestamp("created").getTime() + "");
+        activityData.put("created", rs.getTimestamp("active_since").getTime() + "");
         if (rs.getString("is_global") != null) {
           activityData.put("is_global", rs.getString("is_global"));
         }
@@ -368,7 +367,7 @@ public class MySQLActivityDAO implements ActivityDAO {
         }
         activityData.put("leader_id", rs.getString("leader_id"));
         activityData.put("expected_leader_id", rs.getString("expected_leader_id"));
-        activityData.put("created", rs.getTimestamp("created").getTime() + "");
+        activityData.put("created", rs.getTimestamp("active_since").getTime() + "");
         if (rs.getString("is_global") != null) {
           activityData.put("is_global", rs.getString("is_global"));
         }
