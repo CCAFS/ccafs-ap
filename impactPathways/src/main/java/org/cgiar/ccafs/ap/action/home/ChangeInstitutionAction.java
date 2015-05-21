@@ -28,7 +28,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 /**
- * @author Hernán David Carvajal.
+ * @author Hernán David Carvajal .
  */
 public class ChangeInstitutionAction extends BaseAction {
 
