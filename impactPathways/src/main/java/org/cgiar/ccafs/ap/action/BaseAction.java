@@ -17,6 +17,8 @@ import org.cgiar.ccafs.ap.config.APConfig;
 import org.cgiar.ccafs.ap.config.APConstants;
 import org.cgiar.ccafs.ap.data.model.BoardMessage;
 import org.cgiar.ccafs.ap.data.model.User;
+import org.cgiar.ccafs.security.BaseSecurityContext;
+import org.cgiar.ccafs.security.SecurityContext;
 
 import java.util.List;
 import java.util.Locale;
@@ -70,6 +72,9 @@ public class BaseAction extends ActionSupport implements Preparable, SessionAwar
 
   // Config
   protected APConfig config;
+
+  @Inject
+  protected SecurityContext securityContext;
 
   @Inject
   public BaseAction(APConfig config) {
@@ -142,7 +147,6 @@ public class BaseAction extends ActionSupport implements Preparable, SessionAwar
     return u;
   }
 
-
   /**
    * Define default locale while we decide to support other languages in the future.
    */
@@ -151,8 +155,13 @@ public class BaseAction extends ActionSupport implements Preparable, SessionAwar
     return Locale.ENGLISH;
   }
 
+
   public HttpServletRequest getRequest() {
     return request;
+  }
+
+  public BaseSecurityContext getSecurityContext() {
+    return this.securityContext;
   }
 
   public Map<String, Object> getSession() {
@@ -173,10 +182,7 @@ public class BaseAction extends ActionSupport implements Preparable, SessionAwar
    * @return true if the user is logged in, false otherwise.
    */
   public boolean isLogged() {
-    if (this.getCurrentUser() == null) {
-      return false;
-    }
-    return true;
+    return securityContext.isAuthenticated();
   }
 
   public boolean isPlanningActive() {
