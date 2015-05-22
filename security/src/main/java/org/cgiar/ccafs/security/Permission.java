@@ -191,6 +191,4 @@ public class Permission {
    * Can update the planning project budget section
    */
   public static final String PLANNING_PROJECT_BUDGET_UPDATE = "planning:projectBudget:update";
-
-
 }
