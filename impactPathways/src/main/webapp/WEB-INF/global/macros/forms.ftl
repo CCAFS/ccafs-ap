@@ -51,13 +51,14 @@
 [#macro checkbox name value="-NULL" label="" i18nkey="" disabled=false checked=false required=false display=true help=""]
   <div class="checkbox" [#if !display]style="display: none;"[/#if]>
     <label for="${name}">
+      <input type="checkbox" id="${name}" name="${name}" value="${value}" [#if checked]checked="checked"[/#if] />
+      <input type="hidden" id="__checkbox_${name}" name="__checkbox_${name}" value="${value}" />
       <h6>[#if i18nkey==""]${label}[#else][@s.text name="${i18nkey}" /][/#if][#if required]<span class="red">*</span>[/#if]</h6>
       [#if help != ""]
         <img src="${baseUrl}/images/global/icon-help2.png" title="[@s.text name="${help}"/]" />
       [/#if]
     </label>
-    <input type="checkbox" id="${name}" name="${name}" value="${value}" [#if checked]checked="checked"[/#if] />
-    <input type="hidden" id="__checkbox_${name}" name="__checkbox_${name}" value="${value}" />
+    
   </div>
 [/#macro]
 
@@ -85,14 +86,14 @@
     <h6>[#if i18nkey==""]${label}[#else][@s.text name="${i18nkey}" /][/#if][#if required]<span class="red">*</span>[/#if]</h6>
     [#if errorField==""][@s.fielderror cssClass="fieldError" fieldName="${name}"/][#else][@s.fielderror cssClass="fieldError" fieldName="${errorfield}"/][/#if]
     <div class="radiosList">
-    [#if value=="-NULL"][#assign customValue][@s.property value="${name}" /][/#assign][#else][#assign customValue]${value}[/#assign][/#if]
-    [#if class==""][#assign className="${name}"][#else][#assign className="${class}"][/#if]
-    [#if help!=""][#assign helpTitle][@s.text name="${help}" /][/#assign][#else][#assign helpTitle=""][/#if]
-    [#if keyFieldName == ""]
-      [@s.radio name="${name}" cssClass="${className}" list="${listName}" value="${customValue}" disabled="${disabled?string}" title="${helpTitle}" /]
-    [#else]
-      [@s.radio name="${name}" cssClass="${className}" list="${listName}" listKey="${keyFieldName}" listValue="${displayFieldName}" value="${customValue}" disabled="${disabled?string}" title="${helpTitle}" /]
-    [/#if]
+      [#if value=="-NULL"][#assign customValue][@s.property value="${name}" /][/#assign][#else][#assign customValue]${value}[/#assign][/#if]
+      [#if class==""][#assign className="${name}"][#else][#assign className="${class}"][/#if]
+      [#if help!=""][#assign helpTitle][@s.text name="${help}" /][/#assign][#else][#assign helpTitle=""][/#if]
+      [#if keyFieldName == ""]
+        [@s.radio name="${name}" cssClass="${className}" list="${listName}" value="${customValue}" disabled="${disabled?string}" title="${helpTitle}" /]
+      [#else]
+        [@s.radio name="${name}" cssClass="${className}" list="${listName}" listKey="${keyFieldName}" listValue="${displayFieldName}" value="${customValue}" disabled="${disabled?string}" title="${helpTitle}" /]
+      [/#if]
     </div>
   </div>
 [/#macro]

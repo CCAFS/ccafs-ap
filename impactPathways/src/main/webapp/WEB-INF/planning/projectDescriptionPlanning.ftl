@@ -36,14 +36,12 @@
         [/@s.text]
       </p>
     [/#if]
-    <h1 class="contentTitle">
-      ${project.composedId} - [@s.text name="planning.projectDescription.title" /]
-    </h1> 
+    <h1 class="contentTitle"> ${project.composedId} - [@s.text name="planning.projectDescription.title" /] </h1> 
     <div id="projectDescription" class="borderBox">
       <fieldset class="fullBlock">
         [#-- Project Title --]
         [@customForm.textArea name="project.title" i18nkey="planning.projectDescription.projectTitle" required=true className="project-title" /]
-        <div id="projectDescription" class="">
+        <div id="projectDescription" class="fullBlock">
           [#-- Project Program Creator --]
           <div class="halfPartBlock">
             <h6>[@s.text name="planning.projectDescription.programCreator" /]</h6>
@@ -61,6 +59,20 @@
           <div class="halfPartBlock">
               [@customForm.input name="project.endDate" type="text" disabled=!fullEditable i18nkey="preplanning.projectDescription.endDate" required=true /]
           </div>
+        </div>
+        [#-- Project upload work plan --]
+        <div id="uploadWorkPlan" class="fullBlock">
+          [@customForm.checkbox name="project.isRequiredUploadworkplan" value=""  i18nkey="preplanning.projectDescription.isRequiredUploadworkplan"/]
+          <div class="uploadContainer">
+            <div class="halfPartBlock">
+              <p>[@s.text name="preplanning.projectDescription.uploadProjectWorkplan" /]</p>
+              <input type="file" name="fileToUpload" id="fileToUpload"> 
+            </div>
+            <div class="halfPartBlock">
+              <p>[@s.text name="preplanning.projectDescription.uploadBilateral" /]</p>
+              <input type="file" name="fileToUpload" id="fileToUpload">  
+            </div>
+          </div>  
         </div>
         [#-- Project Summary --]
         [@customForm.textArea name="project.summary" i18nkey="preplanning.projectDescription.projectSummary" required=true className="project-description" /]
@@ -97,6 +109,27 @@
         </div> 
       </fieldset>
     </div> 
+    
+    <h1 class="contentTitle"> [@s.text name="planning.projectDescription.coreProjects" /] </h1> 
+    <div id="projectCoreProjects" class="borderBox"> 
+      <div class="isLinked fullBlock"> 
+        [#assign yesnoOptions = {"1": "Yes", "0": "No"} /]  
+        <h6>[@s.text name="planning.projectDescription.isLinkedCoreProjects" /]</h6>
+        <div>[@s.radio name="project.isLinked" list=yesnoOptions listKey="key" listValue="value" /]</div>
+      </div>
+      <div class="coreProjects fullBlock" style="display:none">
+        <p>[@s.text name="planning.projectDescription.chouseCoreProject" /]</p>
+        <div class="coreProjectsList">
+          [#assign coreProjects = [
+            {"id":"1", "name":"Core Project #1"},
+            {"id":"2", "name":"Core Project #2"},
+            {"id":"3", "name":"Core Project #3"}
+          ] /] 
+          [@s.checkboxlist name="project.coreProjects"  list="coreProjects" listKey="id" listValue="name" cssClass="checkbox" value="" /]
+        </div>
+      </div> 
+    </div> 
+    
     [#if saveable]
       [#-- Project identifier --]
       <input name="projectID" type="hidden" value="${project.id?c}" />
