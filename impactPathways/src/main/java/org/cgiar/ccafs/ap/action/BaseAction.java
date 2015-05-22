@@ -17,10 +17,6 @@ import org.cgiar.ccafs.ap.config.APConfig;
 import org.cgiar.ccafs.ap.config.APConstants;
 import org.cgiar.ccafs.ap.data.model.BoardMessage;
 import org.cgiar.ccafs.ap.data.model.User;
-<<<<<<< HEAD
-=======
-import org.cgiar.ccafs.security.BaseSecurityContext;
->>>>>>> origin/securityImprovements
 import org.cgiar.ccafs.security.SecurityContext;
 
 import java.util.List;
