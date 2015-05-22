@@ -669,25 +669,27 @@ public class MySQLProjectDAO implements ProjectDAO {
     StringBuilder query = new StringBuilder();
     if (projectData.get("id") == null) {
       // Insert a new project record.
-      query.append("INSERT INTO projects (project_owner_id, program_creator_id) ");
-      query.append("VALUES (?, ?) ");
-      Object[] values = new Object[2];
+      query.append("INSERT INTO projects (project_owner_id, program_creator_id, is_core) ");
+      query.append("VALUES (?, ?, ?) ");
+      Object[] values = new Object[3];
       values[0] = projectData.get("project_owner_id");
       values[1] = projectData.get("program_creator_id");
+      values[2] = projectData.get("is_core");
       result = databaseManager.saveData(query.toString(), values);
       LOG.debug("<< saveProject():{}", result);
     } else {
       // Update project.
       query.append("UPDATE projects SET title = ?, summary = ?, start_date = ?, end_date = ?, ");
-      query.append("project_owner_id = ? ");
+      query.append("project_owner_id = ?, is_core = ? ");
       query.append("WHERE id = ?");
-      Object[] values = new Object[6];
+      Object[] values = new Object[7];
       values[0] = projectData.get("title");
       values[1] = projectData.get("summary");
       values[2] = projectData.get("start_date");
       values[3] = projectData.get("end_date");
       values[4] = projectData.get("project_owner_id");
-      values[5] = projectData.get("id");
+      values[5] = projectData.get("is_core");
+      values[6] = projectData.get("id");
       result = databaseManager.saveData(query.toString(), values);
     }
     LOG.debug(">> saveProject(projectData={})", projectData);

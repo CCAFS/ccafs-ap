@@ -459,11 +459,13 @@ public class ProjectManagerImpl implements ProjectManager {
       int ownerId = userManager.getEmployeeID(project.getOwner());
       projectData.put("project_owner_id", ownerId);
       projectData.put("program_creator_id", project.getProgramCreator().getId());
+      projectData.put("is_core", project.isCoreProject());
     } else {
       // Update project
       projectData.put("id", project.getId());
       projectData.put("title", project.getTitle());
       projectData.put("summary", project.getSummary());
+      projectData.put("is_core", project.isCoreProject());
       SimpleDateFormat format = new SimpleDateFormat(APConstants.DATE_FORMAT);
       if (project.getStartDate() != null) {
         projectData.put("start_date", format.format(project.getStartDate()));

@@ -48,6 +48,7 @@ public class Project {
   private List<IPElement> outputs;
   private List<IPIndicator> indicators;
   private IPOtherContribution ipOtherContribution;
+  private boolean isCoreProject;
   private long created; // Timestamp number when the project was created
 
   public Project() {
@@ -221,6 +222,25 @@ public class Project {
     return emptyIndicator;
   }
 
+  public List<IPIndicator> getIndicators() {
+    return indicators;
+  }
+
+  public List<IPIndicator> getIndicatorsByParent(int parentIndicatorID) {
+    List<IPIndicator> indicators = new ArrayList<>();
+    if (indicators != null) {
+      getIndicatorsByParentAndYear(parentIndicatorID, 2019);
+      for (IPIndicator indicator : this.indicators) {
+        if (indicator.getParent() != null) {
+          if (indicator.getParent().getId() == parentIndicatorID) {
+            indicators.add(indicator);
+          }
+        }
+      }
+    }
+    return indicators;
+  }
+
   /**
    * This method search if the list of indicators contains an indicator
    * which parent is identified by the value passed as parameter.
@@ -243,25 +263,6 @@ public class Project {
     return emptyIndicator;
   }
 
-  public List<IPIndicator> getIndicators() {
-    return indicators;
-  }
-
-  public List<IPIndicator> getIndicatorsByParent(int parentIndicatorID) {
-    List<IPIndicator> indicators = new ArrayList<>();
-    if (indicators != null) {
-      getIndicatorsByParentAndYear(parentIndicatorID, 2019);
-      for (IPIndicator indicator : this.indicators) {
-        if (indicator.getParent() != null) {
-          if (indicator.getParent().getId() == parentIndicatorID) {
-            indicators.add(indicator);
-          }
-        }
-      }
-    }
-    return indicators;
-  }
-
   public IPOtherContribution getIpOtherContribution() {
     return ipOtherContribution;
   }
@@ -270,7 +271,6 @@ public class Project {
     return leader;
   }
 
-
   public String getLeaderResponsabilities() {
     return leaderResponsabilities;
   }
@@ -278,6 +278,7 @@ public class Project {
   public Map<String, ProjectOutcome> getOutcomes() {
     return outcomes;
   }
+
 
   public List<IPElement> getOutputs() {
     return outputs;
@@ -344,12 +345,20 @@ public class Project {
     return this.getId();
   }
 
+  public boolean isCoreProject() {
+    return isCoreProject;
+  }
+
   public void setActivities(List<Activity> activities) {
     this.activities = activities;
   }
 
   public void setBudgets(List<Budget> budgets) {
     this.budgets = budgets;
+  }
+
+  public void setCoreProject(boolean isCoreProject) {
+    this.isCoreProject = isCoreProject;
   }
 
   public void setCreated(long created) {
