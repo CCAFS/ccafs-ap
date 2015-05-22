@@ -27,7 +27,7 @@ a,a:active,a:visited,a:hover {
 }
 
 .select .selectList {
-  margin-left: 5px;
+  margin: 6px 0;
 }
 
 .select.button, .textArea.button {
@@ -175,6 +175,10 @@ input.target {
   display: inline;
   width: 30%;
   width: 29%\0/; /*hack for IE8 & IE9*/
+}
+
+.halfPartBlock .input {
+    width: 95%;
 }
 
 .checkboxGroup input {
@@ -926,8 +930,8 @@ h3.contentSubTitle {
 }
 
 .fullPartBlock {
-  padding: 4px;
-  width: 99%;
+  padding: 4px 0;
+  width: 100%;
   vertical-align: middle;
 }
 
@@ -983,6 +987,7 @@ h3.contentSubTitle {
   display: block;
   margin: 0;
   text-align: right;
+  margin: 15px 0;
 }
 
 .buttons button[name=save] {
@@ -1024,6 +1029,7 @@ h3.contentSubTitle {
   padding: 10px;
   border: 1px solid #EEE;
   background: #F8F8F8;  
+  margin: 6px 0;
 }
 
 .helpMessage:before,.helpMessage:after {
@@ -1062,6 +1068,22 @@ h3.contentSubTitle {
   font-weight: bold;
   color: red;
   margin-top: 23px;
+}
+
+.searchUser {
+    width: 91px;
+    padding: 2px 0px;
+    text-align: center;
+    background: #668FDA;
+    color: #fff;
+    border-radius: 4px;
+    margin: 2px 18px;
+    float: right;
+    cursor: pointer;
+}
+
+.searchUser:hover { 
+    background: #5980C7; 
 }
 
 /************* LOGIN *****************/
@@ -1559,6 +1581,10 @@ textarea[id$='summary'] {
 }
 
 /* Project Partners*/
+
+#projectLeader {
+    padding: 10px 20px;
+}
 
 .projectPartner .filters-link {
   cursor: pointer;

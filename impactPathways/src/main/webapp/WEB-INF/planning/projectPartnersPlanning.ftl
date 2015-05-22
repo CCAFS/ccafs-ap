@@ -50,7 +50,7 @@
           [@s.text name="preplanning.projectPartners.partners.title" /]  
         </h1> 
         [#-- Listing partners from partnersTemplate.ftl --]
-        [@partnersTemplate.partnerSection projectPartners=project.projectPartners partnerTypes=partnerTypes countries=countries responsabilities=true canEdit=fullEditable canRemove=saveable /]
+        [@partnersTemplate.partnerSection projectPartners=project.projectPartners partnerTypes=partnerTypes countries=countries responsabilities=true canEdit=fullEditable canRemove=saveable isSecondLvlPartners=true /]
         
         [#if saveable] 
           [#if fullEditable]
@@ -80,6 +80,6 @@
   </article>
   [/@s.form] 
   [#-- Single partner TEMPLATE from partnersTemplate.ftl --]
-  [@partnersTemplate.partnerTemplate showResponsabilities=true /]  
+  [@partnersTemplate.partnerTemplate showResponsabilities=true isSecondLvlPartners=true /]  
 </section>
 [#include "/WEB-INF/global/pages/footer.ftl"]
