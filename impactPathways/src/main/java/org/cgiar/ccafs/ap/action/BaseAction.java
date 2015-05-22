@@ -17,7 +17,6 @@ import org.cgiar.ccafs.ap.config.APConfig;
 import org.cgiar.ccafs.ap.config.APConstants;
 import org.cgiar.ccafs.ap.data.model.BoardMessage;
 import org.cgiar.ccafs.ap.data.model.User;
-import org.cgiar.ccafs.security.BaseSecurityContext;
 import org.cgiar.ccafs.security.SecurityContext;
 
 import java.util.List;
@@ -160,7 +159,7 @@ public class BaseAction extends ActionSupport implements Preparable, SessionAwar
     return request;
   }
 
-  public BaseSecurityContext getSecurityContext() {
+  public SecurityContext getSecurityContext() {
     return this.securityContext;
   }
 

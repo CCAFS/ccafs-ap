@@ -23,10 +23,9 @@ public class Permission {
 
   // Permission settings
 
-  /*
+  /**
    * FULL PRIVILEGES
    */
-
   public static final String FULL_PRIVILEGES = "*";
 
   /*
@@ -41,7 +40,7 @@ public class Permission {
   /**
    * Can update all the planning contents
    */
-  public static final String PLANNING_UPDATE = "planning:update";
+  public static final String PLANNING_ALL = "planning:*";
 
   /**
    * Can read the projects list in the planning section
