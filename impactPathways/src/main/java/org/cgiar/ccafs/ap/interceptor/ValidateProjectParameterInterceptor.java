@@ -13,23 +13,23 @@
  *****************************************************************/
 package org.cgiar.ccafs.ap.interceptor;
 
+import org.cgiar.ccafs.ap.action.BaseAction;
+import org.cgiar.ccafs.ap.config.APConstants;
+import org.cgiar.ccafs.ap.data.manager.ProjectManager;
+
 import java.util.Map;
 
-import org.apache.struts2.ServletActionContext;
-
-import org.cgiar.ccafs.ap.data.manager.ProjectManager;
-import org.apache.commons.lang3.StringUtils;
-import org.cgiar.ccafs.ap.config.APConstants;
-import org.cgiar.ccafs.ap.action.BaseAction;
 import com.google.inject.Inject;
 import com.opensymphony.xwork2.ActionInvocation;
 import com.opensymphony.xwork2.interceptor.AbstractInterceptor;
+import org.apache.commons.lang3.StringUtils;
+import org.apache.struts2.ServletActionContext;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 /**
  * This interceptor is used to validate if the project parameter is well passed.
- *
+ * 
  * @author Héctor Fabio Tobón R.
  */
 public class ValidateProjectParameterInterceptor extends AbstractInterceptor {
@@ -50,8 +50,9 @@ public class ValidateProjectParameterInterceptor extends AbstractInterceptor {
     LOG.debug("=> ValidateProjectParameterInterceptor");
 
     String actionName = ServletActionContext.getActionMapping().getName();
-    // if user is not in project list.
-    if (!actionName.equals("projects")) {
+    // if user is not in project list or creating a project.
+    if (!actionName.equals("projects") && !actionName.equals("addNewCoreProject")
+      && !actionName.equals("addNewBilateralProject")) {
       Map<String, Object> parameters = invocation.getInvocationContext().getParameters();
       // Validate if project parameter exists in the URL.
       if (parameters.get(APConstants.PROJECT_REQUEST_ID) != null) {

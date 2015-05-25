@@ -13,26 +13,25 @@
  *****************************************************************/
 package org.cgiar.ccafs.ap.interceptor.planning;
 
+import org.cgiar.ccafs.ap.action.BaseAction;
 import org.cgiar.ccafs.ap.config.APConstants;
+import org.cgiar.ccafs.ap.data.manager.ProjectManager;
 import org.cgiar.ccafs.ap.data.model.User;
 
 import java.util.List;
 import java.util.Map;
 
-import org.apache.struts2.ServletActionContext;
-
-import org.cgiar.ccafs.ap.data.manager.ProjectManager;
-import org.cgiar.ccafs.ap.action.BaseAction;
 import com.google.inject.Inject;
 import com.opensymphony.xwork2.ActionInvocation;
 import com.opensymphony.xwork2.interceptor.AbstractInterceptor;
+import org.apache.struts2.ServletActionContext;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 /**
  * This interceptor will validate if the user who is trying to edit a specific project is able to: Fully edit, partially
  * edit or just read the project.
- *
+ * 
  * @author Héctor Fabio Tobón R.
  */
 public class GrantProjectPlanningAccessInterceptor extends AbstractInterceptor {
@@ -59,7 +58,8 @@ public class GrantProjectPlanningAccessInterceptor extends AbstractInterceptor {
     BaseAction baseAction = (BaseAction) invocation.getAction();
 
     String actionName = ServletActionContext.getActionMapping().getName();
-    if (!actionName.equals("projects")) {
+    if (!actionName.equals("projects") && !actionName.equals("addNewCoreProject")
+      && !actionName.equals("addNewBilateralProject")) {
       // Project parameter is validated in the ValidateProjectParameterInterceptor.
       String projectParameter = ((String[]) parameters.get(APConstants.PROJECT_REQUEST_ID))[0];
       int projectID = Integer.parseInt(projectParameter);
