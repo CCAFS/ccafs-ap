@@ -1198,7 +1198,7 @@ public class ProjectSummaryPDF extends BasePDF {
     addProjectContributions();
     addSummary();
     addProjectPartners();
-    addProjectBudget();
+    //addProjectBudget();
     addProjectOutcome();
     addProjectIndicators();
     addActivities();
