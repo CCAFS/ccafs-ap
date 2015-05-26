@@ -53,6 +53,25 @@
         [@s.text name="home.glossary.baseline.definition"/]
       </div>
     </div>
+    
+    <div class="word">
+      <div class="wordTitle">
+        [@s.text name="home.glossary.bilaterals"/]
+      </div>
+      <div class="wordDefinition">
+        [@s.text name="home.glossary.bilaterals.definition"/]
+      </div>
+    </div>
+    
+    <div class="word">
+      <div class="wordTitle">
+        [@s.text name="home.glossary.boundaryPartners"/]
+      </div>
+      <div class="wordDefinition">
+        [@s.text name="home.glossary.boundaryPartners.definition"/]
+      </div>
+    </div>
+    
     <hr/>
     <div id="budget" class="word">
       <div class="wordTitle">
@@ -131,6 +150,16 @@
       </div>
       <div class="wordDefinition">
         [@s.text name="home.glossary.ido.definition"/]
+      </div>
+    </div>
+    <hr/>
+    
+    <div class="word">
+      <div class="wordTitle">
+        [@s.text name="home.glossary.leveragedFunds"/]
+      </div>
+      <div class="wordDefinition">
+        [@s.text name="home.glossary.leveragedFunds.definition"/]
       </div>
     </div>
     <hr/>
@@ -297,6 +326,17 @@
       </div>
       <div class="wordDefinition">
         [@s.text name="home.glossary.use.definition"/]
+      </div>
+    </div>
+    
+    <hr/>
+    
+    <div class="word">
+      <div class="wordTitle">
+        [@s.text name="home.glossary.windows"/]
+      </div>
+      <div class="wordDefinition">
+        [@s.text name="home.glossary.windows.definition"/]
       </div>
     </div>
     <div class="lastUpdate">
