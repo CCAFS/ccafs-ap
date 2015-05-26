@@ -59,7 +59,7 @@ CREATE TABLE `activities` (
 /*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
 /*!50003 SET sql_mode              = 'STRICT_TRANS_TABLES,NO_AUTO_CREATE_USER,NO_ENGINE_SUBSTITUTION' */ ;
 DELIMITER ;;
-/*!50003 CREATE*/ /*!50017 DEFINER=CURRENT_USER*/ /*!50003 TRIGGER `activity_id_insert_trigger` BEFORE INSERT ON `activities`
+/*!50003 CREATE*/ /*!50017 DEFINER=CURRENT_USER()*/ /*!50003 TRIGGER `activity_id_insert_trigger` BEFORE INSERT ON `activities`
  FOR EACH ROW IF( NEW.continuous_activity_id IS NULL ) THEN
     SET NEW.activity_id = CONCAT( (SELECT `AUTO_INCREMENT` FROM INFORMATION_SCHEMA.TABLES WHERE TABLE_SCHEMA = '$[database]' AND TABLE_NAME = 'activities'), "-", NEW.`year`);
     ELSE
@@ -79,7 +79,7 @@ DELIMITER ;
 /*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
 /*!50003 SET sql_mode              = 'STRICT_TRANS_TABLES,NO_AUTO_CREATE_USER,NO_ENGINE_SUBSTITUTION' */ ;
 DELIMITER ;;
-/*!50003 CREATE*/ /*!50017 DEFINER=CURRENT_USER*/ /*!50003 TRIGGER `activity_id_update_trigger` BEFORE UPDATE ON `activities`
+/*!50003 CREATE*/ /*!50017 DEFINER=CURRENT_USER()*/ /*!50003 TRIGGER `activity_id_update_trigger` BEFORE UPDATE ON `activities`
  FOR EACH ROW IF( NEW.continuous_activity_id IS NULL ) THEN
     SET NEW.activity_id = CONCAT( NEW.id, "-", NEW.`year`);
     ELSE
