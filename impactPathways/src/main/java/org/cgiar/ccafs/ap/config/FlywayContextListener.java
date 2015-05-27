@@ -19,7 +19,8 @@ import org.slf4j.LoggerFactory;
 
 public class FlywayContextListener implements ServletContextListener {
 
-  private final String MIGRATIONS_PATH = "database/migrations";
+  private final String SQL_MIGRATIONS_PATH = "database/migrations";
+  private final String JAVA_MIGRATIONS_PATH = "classpath:/org/cgiar/ccafs/ap/db/migrations";
 
   Logger LOG = LoggerFactory.getLogger(FlywayContextListener.class);
   private PropertiesManager properties;
@@ -32,7 +33,7 @@ public class FlywayContextListener implements ServletContextListener {
     properties = new PropertiesManager();
 
     flyway.setDataSource(getDataSource());
-    flyway.setLocations(MIGRATIONS_PATH);
+    flyway.setLocations(SQL_MIGRATIONS_PATH, JAVA_MIGRATIONS_PATH);
 
     // Placeholders configuration
     Map<String, String> placeHolders = new HashMap<>();
