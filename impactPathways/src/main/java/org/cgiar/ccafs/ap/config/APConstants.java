@@ -85,5 +85,11 @@ public final class APConstants {
   // Location types identifiers
   public static final int LOCATION_TYPE_CLIMATE_SMART_VILLAGE = 10;
   public static final int LOCATION_TYPE_CCAFS_SITE = 11;
+  
+  // Types of Project Partners
+  public static final String PROJECT_PARTNER_PL = "PL";
+  public static final String PROJECT_PARTNER_PC = "PC";
+  public static final String PROJECT_PARTNER_PPA = "PPA";
+  public static final String PROJECT_PARTNER_PP = "PP";  
 
 }

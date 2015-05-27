@@ -1,15 +1,10 @@
 /*****************************************************************
- * This file is part of CCAFS Planning and Reporting Platform.
- * CCAFS P&R is free software: you can redistribute it and/or modify
- * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation, either version 3 of the License, or
- * at your option) any later version.
- * CCAFS P&R is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
- * GNU General Public License for more details.
- * You should have received a copy of the GNU General Public License
- * along with CCAFS P&R. If not, see <http://www.gnu.org/licenses/>.
+ * This file is part of CCAFS Planning and Reporting Platform. CCAFS P&R is free software: you can redistribute it
+ * and/or modify it under the terms of the GNU General Public License as published by the Free Software Foundation,
+ * either version 3 of the License, or at your option) any later version. CCAFS P&R is distributed in the hope that it
+ * will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A
+ * PARTICULAR PURPOSE. See the GNU General Public License for more details. You should have received a copy of the GNU
+ * General Public License along with CCAFS P&R. If not, see <http://www.gnu.org/licenses/>.
  *****************************************************************/
 package org.cgiar.ccafs.ap.data.manager;
 
@@ -27,8 +22,7 @@ import com.google.inject.ImplementedBy;
 public interface ProjectManager {
 
   /**
-   * This method delete the relation between the project and the indicator
-   * received.
+   * This method delete the relation between the project and the indicator received.
    * 
    * @param projectID - project identifier
    * @param indicatorID - indicator identifier
@@ -37,8 +31,7 @@ public interface ProjectManager {
   public boolean deleteIndicator(int projectID, int indicatorID);
 
   /**
-   * This method delete the relation between the project and the output
-   * received.
+   * This method delete the relation between the project and the output received.
    * 
    * @param projectID - project identifier
    * @param outputID - output identifier
@@ -55,10 +48,8 @@ public interface ProjectManager {
   public boolean existProject(int projectId);
 
   /**
-   * This method returns the list of all CCAFS projects
-   * but only with the basic information:
-   * ID, title, the regions and flagships to which the project contributes
-   * and the total budget
+   * This method returns the list of all CCAFS projects but only with the basic information: ID, title, the regions and
+   * flagships to which the project contributes and the total budget
    * 
    * @return a list with Project objects.
    */
@@ -69,6 +60,8 @@ public interface ProjectManager {
    * 
    * @param projectId is the project id.
    * @return a User object who represents an expected Project Leader. Or NULL if no user was found.
+   * @deprecated This method is deprecated as we do not have expected Project Leaders any more. Instead, all the PLs
+   *             will be created in the users table but some of them will be active or not.
    */
   public User getExpectedProjectLeader(int projectId);
 
@@ -89,10 +82,8 @@ public interface ProjectManager {
   public Project getProject(int projectId);
 
   /**
-   * This method returns the basic information of the project identified
-   * by the value received as parameter
-   * ID, title, the regions and flagships to which the project contributes
-   * and the total budget
+   * This method returns the basic information of the project identified by the value received as parameter ID, title,
+   * the regions and flagships to which the project contributes and the total budget
    * 
    * @return a list with Project objects.
    */
@@ -131,8 +122,7 @@ public interface ProjectManager {
   public User getProjectLeader(int projectId);
 
   /**
-   * This method gets all the outputs related with the project identified by the value
-   * received as parameter.
+   * This method gets all the outputs related with the project identified by the value received as parameter.
    * 
    * @param projectID - project identifer
    * @return a list of IPElement objects
@@ -155,8 +145,8 @@ public interface ProjectManager {
   public List<Project> getProjectsOwning(User user);
 
   /**
-   * This method saves or update an expected project leader possibly added in Pre-Planning step.
-   * This expected project leader must belongs to a specific project.
+   * This method saves or update an expected project leader possibly added in Pre-Planning step. This expected project
+   * leader must belongs to a specific project.
    * 
    * @param projectId is the project identifier.
    * @param expectedLeader is the project leader to be added/updated.
@@ -174,8 +164,7 @@ public interface ProjectManager {
   public int saveProjectDescription(Project project);
 
   /**
-   * This method save into the database the relation between a project and
-   * some midOutcomes indicators
+   * This method save into the database the relation between a project and some midOutcomes indicators
    * 
    * @param indicators - List of indicators objects
    * @param projectID - project identifier
@@ -184,8 +173,7 @@ public interface ProjectManager {
   public boolean saveProjectIndicators(List<IPIndicator> indicators, int projectID);
 
   /**
-   * This method save into the database the relation between a project and
-   * the outputs
+   * This method save into the database the relation between a project and the outputs
    * 
    * @param outputs - A list of ipElmenet objects
    * @param projectID - project identifier

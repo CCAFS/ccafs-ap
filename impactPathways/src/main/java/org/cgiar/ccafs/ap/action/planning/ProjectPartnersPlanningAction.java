@@ -1,15 +1,10 @@
 /*****************************************************************
- * This file is part of CCAFS Planning and Reporting Platform.
- * CCAFS P&R is free software: you can redistribute it and/or modify
- * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation, either version 3 of the License, or
- * at your option) any later version.
- * CCAFS P&R is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
- * GNU General Public License for more details.
- * You should have received a copy of the GNU General Public License
- * along with CCAFS P&R. If not, see <http://www.gnu.org/licenses/>.
+ * This file is part of CCAFS Planning and Reporting Platform. CCAFS P&R is free software: you can redistribute it
+ * and/or modify it under the terms of the GNU General Public License as published by the Free Software Foundation,
+ * either version 3 of the License, or at your option) any later version. CCAFS P&R is distributed in the hope that it
+ * will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A
+ * PARTICULAR PURPOSE. See the GNU General Public License for more details. You should have received a copy of the GNU
+ * General Public License along with CCAFS P&R. If not, see <http://www.gnu.org/licenses/>.
  *****************************************************************/
 package org.cgiar.ccafs.ap.action.planning;
 
@@ -60,7 +55,6 @@ public class ProjectPartnersPlanningAction extends BaseAction {
   // Model for the back-end
   private int projectID;
   private Project project;
-  private boolean isExpected;
   private Project previousProject;
 
   // Model for the view
@@ -110,10 +104,6 @@ public class ProjectPartnersPlanningAction extends BaseAction {
     return APConstants.PROJECT_REQUEST_ID;
   }
 
-  public boolean isExpected() {
-    return isExpected;
-  }
-
   @Override
   public String next() {
     String result = save();
@@ -135,9 +125,6 @@ public class ProjectPartnersPlanningAction extends BaseAction {
 
     // Getting the project identified with the id parameter.
     project = projectManager.getProject(projectID);
-
-    // if there are not partners, please return an empty List.
-    project.setProjectPartners(projectPartnerManager.getProjectPartners(projectID));
 
     // Getting all partners.
     allPartners = new ArrayList<>();
@@ -162,19 +149,11 @@ public class ProjectPartnersPlanningAction extends BaseAction {
     // information and show it as label in the front-end.
     // If not, we just load the form for the expected project leader.
     User projectLeader = projectManager.getProjectLeader(project.getId());
-    // if the official leader is defined.
-    if (projectLeader != null) {
-      isExpected = false;
+
+    if (projectLeader == null) {
+      projectLeader = new User();
+      projectLeader.setId(-1);
       project.setLeader(projectLeader);
-    } else {
-      isExpected = true;
-      project.setExpectedLeader(projectManager.getExpectedProjectLeader(projectID));
-      // In case there is not a partner leader defined, an empty partner will be used for the view.
-      if (project.getExpectedLeader() == null) {
-        User exptectedProjectLeader = new User();
-        exptectedProjectLeader.setId(-1);
-        project.setExpectedLeader(exptectedProjectLeader);
-      }
     }
 
     // If the user is not admin or the project owner, we should keep some information
@@ -216,12 +195,12 @@ public class ProjectPartnersPlanningAction extends BaseAction {
         }
 
         // Saving Project leader
-        if (isExpected && project.getExpectedLeader().getCurrentInstitution() != null) {
-          saved = projectManager.saveExpectedProjectLeader(project.getId(), project.getExpectedLeader());
-          if (!saved) {
-            success = false;
-          }
-        }
+        // if (isExpected && project.getExpectedLeader().getCurrentInstitution() != null) {
+        // saved = projectManager.saveExpectedProjectLeader(project.getId(), project.getExpectedLeader());
+        // if (!saved) {
+        // success = false;
+        // }
+        // }
 
         // Saving new and old project partners
         saved = projectPartnerManager.saveProjectPartner(project.getId(), project.getProjectPartners());
@@ -237,14 +216,14 @@ public class ProjectPartnersPlanningAction extends BaseAction {
 
         // Getting current Partner Institutions
         List<Institution> partnerInstitutions = new ArrayList<>();
-        if (isExpected) {
-          User expectedLeader = projectManager.getExpectedProjectLeader(project.getId());
-          if (expectedLeader != null) {
-            partnerInstitutions.add(expectedLeader.getCurrentInstitution());
-          }
-        } else {
-          partnerInstitutions.add(projectManager.getProjectLeader(project.getId()).getCurrentInstitution());
-        }
+        // if (isExpected) {
+        // User expectedLeader = projectManager.getExpectedProjectLeader(project.getId());
+        // if (expectedLeader != null) {
+        // partnerInstitutions.add(expectedLeader.getCurrentInstitution());
+        // }
+        // } else {
+        partnerInstitutions.add(projectManager.getProjectLeader(project.getId()).getCurrentInstitution());
+        // }
         for (ProjectPartner projectPartner : project.getProjectPartners()) {
           partnerInstitutions.add(projectPartner.getPartner());
         }
@@ -291,10 +270,9 @@ public class ProjectPartnersPlanningAction extends BaseAction {
         }
       }
     } else {
-      LOG
-        .warn(
-          "User (employee_id={}, email={}) tried to save information in Project Partners without having enough privileges!",
-          new Object[] {this.getCurrentUser().getEmployeeId(), this.getCurrentUser().getEmail()});
+      LOG.warn(
+        "User (employee_id={}, email={}) tried to save information in Project Partners without having enough privileges!",
+        new Object[] {this.getCurrentUser().getEmployeeId(), this.getCurrentUser().getEmail()});
     }
     return BaseAction.ERROR;
 
@@ -326,8 +304,7 @@ public class ProjectPartnersPlanningAction extends BaseAction {
       } else if (project.getExpectedLeader() != null) {
 
         if (project.getExpectedLeader().getCurrentInstitution() == null) {
-          if (!project.getExpectedLeader().getEmail().isEmpty()
-            || !project.getExpectedLeader().getFirstName().isEmpty()
+          if (!project.getExpectedLeader().getEmail().isEmpty() || !project.getExpectedLeader().getFirstName().isEmpty()
             || !project.getExpectedLeader().getLastName().isEmpty()) {
             // Show an error to prevent the loss of information
             addFieldError("project.expectedLeader.currentInstitution",

@@ -41,11 +41,9 @@
       ${project.composedId} - [@s.text name="preplanning.projectPartners.leader.title" /]
     </h1>
   	[#-- Displaying partner leader from partnersTemplate.ftl --]
-  	[#if expected]
-      [@partnersTemplate.projectLeader leader=project.expectedLeader canEdit=fullEditable /]
-    [#else]
-      [@partnersTemplate.projectLeader leader=project.leader canEdit=fullEditable /]
-    [/#if] 
+  	
+  	[#@partnersTemplate.projectLeader leader=project.leader canEdit=fullEditable /]
+     
 
     <h1 class="contentTitle">
 		  [@s.text name="preplanning.projectPartners.partners.title" /]  

@@ -1,15 +1,10 @@
 /*****************************************************************
- * This file is part of CCAFS Planning and Reporting Platform.
- * CCAFS P&R is free software: you can redistribute it and/or modify
- * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation, either version 3 of the License, or
- * at your option) any later version.
- * CCAFS P&R is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
- * GNU General Public License for more details.
- * You should have received a copy of the GNU General Public License
- * along with CCAFS P&R. If not, see <http://www.gnu.org/licenses/>.
+ * This file is part of CCAFS Planning and Reporting Platform. CCAFS P&R is free software: you can redistribute it
+ * and/or modify it under the terms of the GNU General Public License as published by the Free Software Foundation,
+ * either version 3 of the License, or at your option) any later version. CCAFS P&R is distributed in the hope that it
+ * will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A
+ * PARTICULAR PURPOSE. See the GNU General Public License for more details. You should have received a copy of the GNU
+ * General Public License along with CCAFS P&R. If not, see <http://www.gnu.org/licenses/>.
  * ***************************************************************
  */
 package org.cgiar.ccafs.ap.data.dao;
@@ -49,9 +44,21 @@ public interface ProjectPartnerDAO {
    * This method gets the project partners information given the project Id
    *
    * @param projectId - is the id of a project
-   * @return true if the elements were deleted successfully. If an error occurs, a NULL will be returned.
+   * @return a list of project partners that belong to the given project; an empty list if nothing was found or NULL if
+   *         an error occurred.
    */
   public List<Map<String, String>> getProjectPartners(int projectId);
+
+  /**
+   * This method gets the project partners information given the project Id and type of project partner
+   * 
+   * @param projectId is the id of a project
+   * @param projectPartnerType is the type of a project partner (PPA, PL, PC, etc.).
+   * @return a list of project partners that belong to the given project and project partner type; an empty list if
+   *         nothing was found or NULL if an error occurred.
+   */
+  public List<Map<String, String>> getProjectPartners(int projectId, String projectPartnerType);
+
 
   /**
    * This method saves into the database a new Project Partner

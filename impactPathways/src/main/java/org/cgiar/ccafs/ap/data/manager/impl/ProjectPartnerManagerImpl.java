@@ -1,15 +1,10 @@
 /*****************************************************************
- * This file is part of CCAFS Planning and Reporting Platform.
- * CCAFS P&R is free software: you can redistribute it and/or modify
- * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation, either version 3 of the License, or
- * at your option) any later version.
- * CCAFS P&R is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
- * GNU General Public License for more details.
- * You should have received a copy of the GNU General Public License
- * along with CCAFS P&R. If not, see <http://www.gnu.org/licenses/>.
+ * This file is part of CCAFS Planning and Reporting Platform. CCAFS P&R is free software: you can redistribute it
+ * and/or modify it under the terms of the GNU General Public License as published by the Free Software Foundation,
+ * either version 3 of the License, or at your option) any later version. CCAFS P&R is distributed in the hope that it
+ * will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A
+ * PARTICULAR PURPOSE. See the GNU General Public License for more details. You should have received a copy of the GNU
+ * General Public License along with CCAFS P&R. If not, see <http://www.gnu.org/licenses/>.
  *****************************************************************/
 package org.cgiar.ccafs.ap.data.manager.impl;
 
@@ -79,6 +74,26 @@ public class ProjectPartnerManagerImpl implements ProjectPartnerManager {
     }
     return projectPartners;
   }
+  
+  @Override
+  public List<ProjectPartner> getProjectPartners(int projectId, String projectPartnerType) {
+    List<ProjectPartner> projectPartners = new ArrayList<>();
+    List<Map<String, String>> projectPartnerDataList = projecPartnerDAO.getProjectPartners(projectId, projectPartnerType);
+    for (Map<String, String> pData : projectPartnerDataList) {
+      ProjectPartner projectPartner = new ProjectPartner();
+      projectPartner.setId(Integer.parseInt(pData.get("id")));
+      projectPartner.setContactName(pData.get("contact_name"));
+      projectPartner.setContactEmail(pData.get("contact_email"));
+      projectPartner.setResponsabilities(pData.get("responsabilities"));
+      
+      // Institution as partner_id
+      projectPartner.setPartner(institutionManager.getInstitution(Integer.parseInt(pData.get("partner_id"))));
+
+      // adding information of the object to the array
+      projectPartners.add(projectPartner);
+    }
+    return projectPartners;
+  }
 
   @Override
   public boolean saveProjectPartner(int projectId, List<ProjectPartner> projectPartners) {
@@ -116,6 +131,6 @@ public class ProjectPartnerManagerImpl implements ProjectPartnerManager {
       }
     }
     return allSaved;
-  }
+  }  
 
 }

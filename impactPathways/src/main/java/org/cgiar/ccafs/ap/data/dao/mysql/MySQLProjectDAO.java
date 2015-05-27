@@ -279,7 +279,7 @@ public class MySQLProjectDAO implements ProjectDAO {
         if (rs.getDate("end_date") != null) {
           projectData.put("end_date", rs.getDate("end_date").toString());
         }
-        projectData.put("project_leader_id", rs.getString("project_leader_id"));
+        //projectData.put("project_leader_id", rs.getString("project_leader_id"));
         projectData.put("program_creator_id", rs.getString("program_creator_id"));
         projectData.put("project_owner_id", rs.getString("owner_id"));
         // projectData.put("project_owner_institution_id", rs.getString("owner_institution_id"));
@@ -434,13 +434,13 @@ public class MySQLProjectDAO implements ProjectDAO {
     try (Connection connection = databaseManager.getConnection()) {
 
       StringBuilder query = new StringBuilder();
-      query.append("SELECT u.id, pe.first_name, pe.last_name, u.email, e.institution_id, ");
-      query.append("e.id as employee_id ");
-      query.append("FROM users u  ");
-      query.append("INNER JOIN persons pe  ON u.person_id=pe.id ");
-      query.append("INNER JOIN employees e ON u.id=e.user_id ");
-      query.append("INNER JOIN projects p ON e.id=p.project_leader_id ");
-      query.append("WHERE p.id= ");
+      query.append("SELECT u.id, pe.first_name, pe.last_name, u.email, i.id as 'institution_id'");
+      query.append("FROM project_partners pp ");
+      query.append("INNER JOIN users u ON u.id = pp.user_id ");
+      query.append("INNER JOIN persons pe ON pe.id = u.person_id ");
+      query.append("INNER JOIN institutions i ON i.id = pp.partner_id ");
+      query.append("AND pp.partner_type = '"+APConstants.PROJECT_PARTNER_PL+"' ");
+      query.append("AND pp.project_id = ");
       query.append(projectID);
 
       ResultSet rs = databaseManager.makeQuery(query.toString(), connection);
@@ -450,7 +450,7 @@ public class MySQLProjectDAO implements ProjectDAO {
         projectLeaderData.put("last_name", rs.getString("last_name"));
         projectLeaderData.put("email", rs.getString("email"));
         projectLeaderData.put("institution_id", rs.getString("institution_id"));
-        projectLeaderData.put("employee_id", rs.getString("employee_id"));
+        //projectLeaderData.put("employee_id", rs.getString("employee_id")); NOT used any more.
       }
       rs.close();
     } catch (SQLException e) {

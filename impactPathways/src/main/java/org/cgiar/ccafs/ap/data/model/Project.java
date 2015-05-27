@@ -36,7 +36,7 @@ public class Project {
   private Date endDate;
   private List<IPProgram> regions; // The list of regions in which this project works with.
   private List<IPProgram> flagships; // The list of flagships in which this project works with.
-  private User leader; // Project leader will be a user too.
+  private User leader; // Project leader.
   private String leaderResponsabilities;
   private IPProgram programCreator; // Creator program. e.g. LAM, FP4, CU, etc.
   private User owner;
