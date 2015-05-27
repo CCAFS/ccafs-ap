@@ -933,6 +933,7 @@ h3.contentSubTitle {
   padding: 4px 0;
   width: 100%;
   vertical-align: middle;
+  position: relative;
 }
 
 .itemIndex {
@@ -1077,9 +1078,12 @@ h3.contentSubTitle {
     background: #668FDA;
     color: #fff;
     border-radius: 4px;
-    margin: 2px 18px;
+    margin: 2px 1px;
     float: right;
     cursor: pointer;
+    position: absolute;
+    bottom: 10%;
+    right: 0;
 }
 
 .searchUser:hover { 
@@ -2361,7 +2365,7 @@ ul#deliverablesFilesMessages > li {
   border-radius: 4px;
   margin: 18px 0px;
   position: relative;
-  transition:box-shadow 0.1s linear;*
+  transition: box-shadow 0.3s cubic-bezier(0.18, 0.89, 0.32, 1.28);*
   
 ;
   background: #fff;

@@ -186,13 +186,12 @@ $(document).ready(function(){
       duration : 500
     },
     buttons : {
-      "Search an user" : addUser,
+      "Create an user" : addUser,
       Cancel : function(){
         $(this).dialog("close");
       }
     },
     close : function(){
-      form[0].reset();
       allFields.removeClass("ui-state-error");
     }
   });
