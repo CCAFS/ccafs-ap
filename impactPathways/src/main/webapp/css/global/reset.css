@@ -143,6 +143,7 @@ body, select, input, textarea {
   color: #444;
   /* Set your base font here, to apply evenly */
   /* font-family: Georgia, serif;  */
+  background: #FCFCFC;
 }
 
 /* Headers (h1, h2, etc) have no default font-size or margin; define those yourself */

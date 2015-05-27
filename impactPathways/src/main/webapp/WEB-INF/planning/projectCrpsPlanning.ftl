@@ -7,7 +7,7 @@
 [#assign currentPlanningSection = "projects" /]
 [#assign currentStage = "description" /]
 [#assign currentSubStage = "partners" /]
-[#assign partnerStage = "partners" /]
+[#assign partnerStage = "crps" /]
 
 [#assign breadCrumb = [
   {"label":"planning", "nameSpace":"planning", "action":"projects"},
@@ -42,23 +42,11 @@
       </p>
     [/#if]
     
-    <div id="PartnersTabs" class="ui-tabs ui-widget ui-widget-content ui-corner-all"> 
+    <div id="PartnersTabs" class="ui-tabs ui-widget ui-widget-content ui-corner-all">
       [#-- Project Partners Sub-menu --]
       [#include "/WEB-INF/planning/projectPartners-sub-menu.ftl" /]
       <div id="partnerTables-partnerLead" class="partnerTable ui-tabs-panel ui-widget-content ui-corner-bottom clearfix"> 
-        <h1 class="contentTitle">
-          [@s.text name="preplanning.projectPartners.partners.title" /]  
-        </h1> 
-        [#-- Listing partners from partnersTemplate.ftl --]
-        [@partnersTemplate.partnerSection projectPartners=project.projectPartners partnerTypes=partnerTypes countries=countries responsabilities=true canEdit=fullEditable canRemove=saveable /]
         
-        [#if saveable] 
-          [#if fullEditable]
-          <div id="addProjectPartner" class="addLink">
-            <a href="" class="addProjectPartner addButton" >[@s.text name="preplanning.projectPartners.addProjectPartner" /]</a>
-          </div>
-          [/#if]
-        [/#if]  
       </div>
     </div>   
     
@@ -80,9 +68,6 @@
   </article>
   [/@s.form] 
   [#-- Single partner TEMPLATE from partnersTemplate.ftl --]
-  [@partnersTemplate.partnerTemplate showResponsabilities=true isSecondLvlPartners=true /]  
-  
-  
-  
+  [@partnersTemplate.partnerTemplate showResponsabilities=true /]  
 </section>
 [#include "/WEB-INF/global/pages/footer.ftl"]
