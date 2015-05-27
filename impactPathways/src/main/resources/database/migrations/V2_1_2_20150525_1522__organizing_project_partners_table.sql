@@ -16,7 +16,7 @@ BEGIN
   -- -----------------------------------------------------------------------------
   -- Adding column partner_type in Project Partners
   -- -----------------------------------------------------------------------------
-  IF NOT EXISTS ((SELECT * FROM information_schema.columns WHERE table_schema=DATABASE() AND table_name='project_partners' AND column_name='contact_person_email')) THEN
+  IF NOT EXISTS ((SELECT * FROM information_schema.columns WHERE table_schema=DATABASE() AND table_name='project_partners' AND column_name='partner_type')) THEN
     ALTER TABLE `project_partners` 
     ADD COLUMN `partner_type` ENUM('PPA', 'PL', 'PP', 'PC') NULL AFTER `contact_email`;    
   END IF;
