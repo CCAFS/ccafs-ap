@@ -53,8 +53,7 @@ public class InstitutionManagerImpl implements InstitutionManager {
       institution.setId(Integer.parseInt(iData.get("id")));
       institution.setName(iData.get("name"));
       institution.setAcronym(iData.get("acronym"));
-      institution.setContactPersonName(iData.get("contactPersonName"));
-      institution.setContactPersonEmail(iData.get("contactPersonEmail"));
+      institution.setPPA(Boolean.parseBoolean(iData.get("is_ppa")));
 
       // InstitutionType Object
       InstitutionType type = new InstitutionType();
@@ -111,8 +110,7 @@ public class InstitutionManagerImpl implements InstitutionManager {
       institution.setId(Integer.parseInt(iData.get("id")));
       institution.setName(iData.get("name"));
       institution.setAcronym(iData.get("acronym"));
-      institution.setContactPersonName(iData.get("contactPersonName"));
-      institution.setContactPersonEmail(iData.get("contactPersonEmail"));
+      institution.setPPA(Boolean.parseBoolean(iData.get("is_ppa")));
 
       // InstitutionType Object
       InstitutionType type = new InstitutionType();
@@ -153,8 +151,7 @@ public class InstitutionManagerImpl implements InstitutionManager {
       institution.setId(Integer.parseInt(iData.get("id")));
       institution.setName(iData.get("name"));
       institution.setAcronym(iData.get("acronym"));
-      institution.setContactPersonName(iData.get("contactPersonName"));
-      institution.setContactPersonEmail(iData.get("contactPersonEmail"));
+      institution.setPPA(Boolean.parseBoolean(iData.get("is_ppa")));
 
       // InstitutionType Object
       InstitutionType _type = new InstitutionType();

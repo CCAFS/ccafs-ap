@@ -210,8 +210,7 @@ public class BudgetManagerImpl implements BudgetManager {
       institution.setId(Integer.parseInt(iData.get("id")));
       institution.setName(iData.get("name"));
       institution.setAcronym(iData.get("acronym"));
-      institution.setContactPersonName(iData.get("contactPersonName"));
-      institution.setContactPersonEmail(iData.get("contactPersonEmail"));
+      institution.setPPA(Boolean.parseBoolean(iData.get("is_ppa")));
 
       // InstitutionType Object
       if (iData.get("institution_type_id") != null) {
@@ -318,8 +317,7 @@ public class BudgetManagerImpl implements BudgetManager {
       institution.setId(Integer.parseInt(iData.get("id")));
       institution.setName(iData.get("name"));
       institution.setAcronym(iData.get("acronym"));
-      institution.setContactPersonName(iData.get("contactPersonName"));
-      institution.setContactPersonEmail(iData.get("contactPersonEmail"));
+      institution.setPPA(Boolean.parseBoolean(iData.get("is_ppa")));
 
       // InstitutionType Object
       if (iData.get("institution_type_id") != null) {

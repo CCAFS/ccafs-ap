@@ -49,7 +49,7 @@ public class MySQLInstitutionDAO implements InstitutionDAO {
 
     StringBuilder query = new StringBuilder();
     query
-      .append("SELECT i.id, i.name, i.acronym, i.contact_person_name, i.contact_person_email, i.institution_type_id,i.program_id, ");
+      .append("SELECT i.id, i.name, i.acronym, i.is_ppa, i.institution_type_id,i.program_id, ");
     query.append("lc.id as loc_elements_id, lc.name as loc_elements_name,lc.code as loc_elements_code, ");
     query.append("it.name as institution_type_name, it.acronym as institution_type_acronym, ");
     query.append("ip.id as program_id, ip.name as program_name, ip.acronym as program_acronym ");
@@ -100,8 +100,7 @@ public class MySQLInstitutionDAO implements InstitutionDAO {
         institutionData.put("id", rs.getString("id"));
         institutionData.put("name", rs.getString("name"));
         institutionData.put("acronym", rs.getString("acronym"));
-        institutionData.put("contact_person_name", rs.getString("contact_person_name"));
-        institutionData.put("contact_person_email", rs.getString("contact_person_email"));
+        institutionData.put("is_ppa", rs.getString("is_ppa"));
         institutionData.put("loc_elements_id", rs.getString("loc_elements_id"));
         institutionData.put("loc_elements_name", rs.getString("loc_elements_name"));
         institutionData.put("loc_elements_code", rs.getString("loc_elements_code"));
@@ -172,7 +171,7 @@ public class MySQLInstitutionDAO implements InstitutionDAO {
   public List<Map<String, String>> getInstitutionsByTypeAndCountry(int typeID, int countryID) {
     StringBuilder query = new StringBuilder();
     query
-      .append("SELECT i.id, i.name, i.acronym, i.contact_person_name, i.contact_person_email, i.institution_type_id,i.program_id, ");
+      .append("SELECT i.id, i.name, i.acronym, i.is_ppa i.institution_type_id,i.program_id, ");
     query.append("lc.id as loc_elements_id, lc.name as loc_elements_name,lc.code as loc_elements_code, ");
     query.append("it.name as institution_type_name, it.acronym as institution_type_acronym, ");
     query.append("ip.id as program_id, ip.name as program_name, ip.acronym as program_acronym ");
