@@ -81,5 +81,8 @@
   [/@s.form] 
   [#-- Single partner TEMPLATE from partnersTemplate.ftl --]
   [@partnersTemplate.partnerTemplate showResponsabilities=true isSecondLvlPartners=true /]  
+  
+  
+  
 </section>
 [#include "/WEB-INF/global/pages/footer.ftl"]

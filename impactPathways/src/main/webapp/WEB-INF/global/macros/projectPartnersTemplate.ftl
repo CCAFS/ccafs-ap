@@ -1,7 +1,11 @@
 [#ftl]
 [#macro partnerSection projectPartners partnerTypes countries canEdit=true canRemove=true responsabilities=false isSecondLvlPartners=false]
   [#if projectPartners?has_content]
-    [#list projectPartners as ap]    	
+    [#list projectPartners as ap]  
+      ${ap.partner.PPA?string}
+      [#if ap.partner.PPA]
+        IS PPA
+      [/#if]
       <div id="projectPartner-${ap_index}" class="projectPartner borderBox">
         [#-- Partner identifier --]
         <input id="id" type="hidden" name="project.projectPartners[${ap_index}].id" value="${ap.id?c}" />
