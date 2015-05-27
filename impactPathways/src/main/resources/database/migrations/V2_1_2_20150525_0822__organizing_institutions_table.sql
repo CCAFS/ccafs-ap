@@ -25,10 +25,11 @@ BEGIN
 
   -- Adding new column named as 'is_ppa' and setting up values
   IF NOT EXISTS ((SELECT * FROM information_schema.columns WHERE table_schema=DATABASE() AND table_name='institutions' AND column_name='is_ppa')) THEN
-    
     ALTER TABLE `institutions`	
-    ADD COLUMN `is_ppa` TINYINT(1) NOT NULL DEFAULT 0 AFTER `city`;
-    -- Identifying PPA partners
+    ADD COLUMN `is_ppa` TINYINT(1) NOT NULL DEFAULT 0 AFTER `city`; 
+  END IF;
+  
+  -- Identifying PPA partners
     UPDATE `institutions` SET `is_ppa`='1' WHERE `id`='52';
     UPDATE `institutions` SET `is_ppa`='1' WHERE `id`='49';
     UPDATE `institutions` SET `is_ppa`='1' WHERE `id`='46';
@@ -57,8 +58,6 @@ BEGIN
     UPDATE `institutions` SET `is_ppa`='1' WHERE `id`='114';
     UPDATE `institutions` SET `is_ppa`='1' WHERE `id`='134';
     UPDATE `institutions` SET `is_ppa`='1' WHERE `id`='1053';
- 
-  END IF;
  
 END $$
 DELIMITER ;
