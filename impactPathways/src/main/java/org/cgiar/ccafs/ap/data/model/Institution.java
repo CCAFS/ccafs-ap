@@ -20,7 +20,7 @@ import org.apache.commons.lang3.builder.ToStringBuilder;
  * This class represents any kind of institution inside the system.
  * An institution can be represented as project partner, activity partner, project leader, etc.
  * 
- * @author Héctor fabio Tobón R.
+ * @author Héctor Fabio Tobón R.
  */
 public class Institution {
 
@@ -31,12 +31,11 @@ public class Institution {
   private String name;
 
   private String acronym;
-  private String contactPersonName;
-  private String contactPersonEmail;
   private IPProgram program;
   private InstitutionType type;
   private Country country;
   private String city;
+  private boolean isPPA;
 
   public Institution() {
     super();
@@ -80,14 +79,6 @@ public class Institution {
     }
   }
 
-  public String getContactPersonEmail() {
-    return contactPersonEmail;
-  }
-
-  public String getContactPersonName() {
-    return contactPersonName;
-  }
-
   public Country getCountry() {
     return country;
   }
@@ -121,14 +112,6 @@ public class Institution {
     this.city = city;
   }
 
-  public void setContactPersonEmail(String contactPersonEmail) {
-    this.contactPersonEmail = contactPersonEmail;
-  }
-
-  public void setContactPersonName(String contactPersonName) {
-    this.contactPersonName = contactPersonName;
-  }
-
   public void setCountry(Country country) {
     this.country = country;
   }
@@ -153,6 +136,14 @@ public class Institution {
   public String toString() {
     return ToStringBuilder.reflectionToString(this);
   }
+
+public boolean isPPA() {
+	return isPPA;
+}
+
+public void setPPA(boolean isPPA) {
+	this.isPPA = isPPA;
+}
 
 
 }

@@ -37,10 +37,19 @@
           </div>
         [/#if]        
         [#-- Contact Name --] 
+        <div class="fullPartBlock">
+          [#-- Contact Person information is going to come from the users table, not from project_partner table (refer to the table project_partners in the database) --] 
+          [#--]@customForm.input name="project.projectPartners[${ap_index}].contactName" type="text" disabled=!canEdit i18nkey="preplanning.projectPartners.contactPersonName" required=true /--]
+        </div>
+        
+        [#-- Contact Email --]
         <div class="fullPartBlock clearfix">
-          [@customForm.input name="project.projectPartners[${ap_index}].contactName" type="text" disabled=!canEdit i18nkey="preplanning.projectPartners.contactPersonName" required=true /]
+          [#-- Contact Person information is going to come from the users table, not from project_partner table (refer to the table project_partners in the database) --] 
+          [@customForm.input name="project.projectPartners[${ap_index}].contactEmail" type="text" disabled=!canEdit i18nkey="preplanning.projectPartners.contactPersonEmail" required=true /]
           <div class="searchUser">[@s.text name="form.buttons.searchUser" /]</div>
-        </div> 
+        </div>
+        
+
         [#if responsabilities]
           [#-- Responsabilities --]
           <div class="fullPartBlock partnerResponsabilities chosen">        
