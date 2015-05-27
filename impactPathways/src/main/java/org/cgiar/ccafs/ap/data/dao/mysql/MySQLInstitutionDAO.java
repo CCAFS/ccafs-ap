@@ -100,7 +100,7 @@ public class MySQLInstitutionDAO implements InstitutionDAO {
         institutionData.put("id", rs.getString("id"));
         institutionData.put("name", rs.getString("name"));
         institutionData.put("acronym", rs.getString("acronym"));
-        institutionData.put("is_ppa", rs.getString("is_ppa"));
+        institutionData.put("is_ppa", Boolean.toString(rs.getBoolean("is_ppa")));
         institutionData.put("loc_elements_id", rs.getString("loc_elements_id"));
         institutionData.put("loc_elements_name", rs.getString("loc_elements_name"));
         institutionData.put("loc_elements_code", rs.getString("loc_elements_code"));
@@ -131,7 +131,7 @@ public class MySQLInstitutionDAO implements InstitutionDAO {
     LOG.debug(">> getInstitution( institutionID = {} )", institutionID);
 
     StringBuilder query = new StringBuilder();
-    query.append("SELECT i.id, i.name, i.acronym, i.institution_type_id,i.program_id, ");
+    query.append("SELECT i.id, i.name, i.acronym, i.is_ppa, i.institution_type_id,i.program_id, ");
     query.append("lc.id as loc_elements_id, lc.name as loc_elements_name,lc.code as loc_elements_code, ");
     query.append("it.name as institution_type_name, it.acronym as institution_type_acronym, ");
     query.append("ip.id as program_id, ip.name as program_name, ip.acronym as program_acronym ");
@@ -148,6 +148,7 @@ public class MySQLInstitutionDAO implements InstitutionDAO {
         institutionData.put("id", rs.getString("id"));
         institutionData.put("name", rs.getString("name"));
         institutionData.put("acronym", rs.getString("acronym"));
+        institutionData.put("is_ppa", Boolean.toString(rs.getBoolean("is_ppa")));
         institutionData.put("loc_elements_id", rs.getString("loc_elements_id"));
         institutionData.put("loc_elements_name", rs.getString("loc_elements_name"));
         institutionData.put("loc_elements_code", rs.getString("loc_elements_code"));
@@ -206,9 +207,10 @@ public class MySQLInstitutionDAO implements InstitutionDAO {
     StringBuilder query = new StringBuilder();
 
     query.append("SELECT e.id as 'employee_id', ");
-    query.append("i.id 'institution_id', ");
+    query.append("i.id as 'institution_id', ");
     query.append("i.name as 'institution_name', ");
     query.append("i.acronym as 'institution_acronym',");
+    query.append("i.is_ppa as 'institution_is_ppa',");
     query.append("p.id as 'program_id', ");
     query.append("p.name as 'program_name', ");
     query.append("p.acronym as 'program_acronym',");
@@ -228,6 +230,7 @@ public class MySQLInstitutionDAO implements InstitutionDAO {
         institutionData.put("id", rs.getString("institution_id"));
         institutionData.put("name", rs.getString("institution_name"));
         institutionData.put("acronym", rs.getString("institution_acronym"));
+        institutionData.put("is_ppa", Boolean.toString(rs.getBoolean("institution_is_ppa")));
         institutionData.put("program_id", rs.getString("program_id"));
         institutionData.put("program_name", rs.getString("program_name"));
         institutionData.put("program_acronym", rs.getString("program_acronym"));
@@ -275,9 +278,9 @@ public class MySQLInstitutionDAO implements InstitutionDAO {
   public Map<String, String> getUserMainInstitution(int userID) {
     Map<String, String> institutionData = new HashMap<>();
     StringBuilder query = new StringBuilder();
-    query.append("SELECT i.id, i.name, i.acronym, ");
+    query.append("SELECT i.id, i.name, i.acronym, i.is_ppa, ");
     query.append("p.id as program_id, p.name as program_name, p.acronym as 'program_acronym', ");
-    query.append("it.id as institution_type_id, it.acronym as 'institution_type_acronym' ");
+    query.append("it.id as institution_type_id, it.acronym as 'institution_type_acronym'");
     query.append("FROM institutions i ");
     query.append("LEFT JOIN ip_programs p ON i.program_id = p.id ");
     query.append("LEFT JOIN institution_types it ON i.institution_type_id = it.id ");
@@ -293,6 +296,7 @@ public class MySQLInstitutionDAO implements InstitutionDAO {
         institutionData.put("id", rs.getString("id"));
         institutionData.put("name", rs.getString("name"));
         institutionData.put("acronym", rs.getString("acronym"));
+        institutionData.put("is_ppa", Boolean.toString(rs.getBoolean("is_ppa")));
         institutionData.put("program_id", rs.getString("program_id"));
         institutionData.put("program_name", rs.getString("program_name"));
         institutionData.put("program_acronym", rs.getString("program_acronym"));
