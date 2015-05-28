@@ -27,7 +27,7 @@ a,a:active,a:visited,a:hover {
 }
 
 .select .selectList {
-  margin-left: 5px;
+  margin: 6px 0;
 }
 
 .select.button, .textArea.button {
@@ -71,6 +71,7 @@ a,a:active,a:visited,a:hover {
   border: 1px dotted #CCC;
   border-radius: 15px 0px;
 }
+
 
 ul.fieldError li {
   color: red;
@@ -174,6 +175,10 @@ input.target {
   display: inline;
   width: 30%;
   width: 29%\0/; /*hack for IE8 & IE9*/
+}
+
+.halfPartBlock .input {
+    width: 95%;
 }
 
 .checkboxGroup input {
@@ -620,7 +625,7 @@ nav#mainMenu ul a.disabled li{
 
 /*************** SECONDARY MENU ***********/
 #secondaryMenu {
-  background-color: #FFFFFF;
+  /* background-color: #FFFFFF; */
   float: left; 
   padding: 0px;
   width: 184px;
@@ -629,11 +634,11 @@ nav#mainMenu ul a.disabled li{
 }
 
 #secondaryMenu h3{
-    font-size: 1.5em; 
+    font-size: 1.6em; 
     font-weight: lighter;
-    color: #5E5E5E;
-    margin-top: 20px;
-    padding-left: 5px;
+    color: #494949;
+    margin: 24px 0 14px 0;
+    padding-left: 0px;
 }
 
 #secondaryMenu ul {
@@ -642,6 +647,7 @@ nav#mainMenu ul a.disabled li{
   border: 1px solid #dbdbdb;
   border-radius: 8px;
   margin-top: 8px;
+  background: #fff;
 }
 
 #secondaryMenuBar {
@@ -732,6 +738,16 @@ a.currentReportingSection li #i-additionalInformation{
   border-bottom: 1px solid #dbdbdb;
   color: #535353;
   text-decoration: none;
+}
+
+#secondaryMenu a.goBack {
+  background: url("../../images/global/sub-menu-goback.png") no-repeat;
+  background-size: 62%;
+  width: 50px;  
+  text-align: left;
+  padding: 5px 0 0 33px;
+  text-decoration: none;
+  color: #444;
 }
 
 
@@ -870,8 +886,8 @@ h3.contentSubTitle {
 
 .fullBlock {
   display: block;
-  margin-bottom: 0px;
-  width: 98%;
+  margin: 5px 0 15px 0;
+  width: 100%;
 }
 
 .fullBlock .input input{
@@ -908,15 +924,16 @@ h3.contentSubTitle {
 
 .halfPartBlock {
   display: inline-block;
-  padding: 5px;
+  padding: 0 5px 14px 0;
   width: 48%;
   vertical-align: top;
 }
 
 .fullPartBlock {
-  padding: 4px;
-  width: 99%;
+  padding: 4px 0;
+  width: 100%;
   vertical-align: middle;
+  position: relative;
 }
 
 .itemIndex {
@@ -969,8 +986,9 @@ h3.contentSubTitle {
 
 .buttons {
   display: block;
-  margin: 10px;
+  margin: 0;
   text-align: right;
+  margin: 15px 0;
 }
 
 .buttons button[name=save] {
@@ -1012,6 +1030,7 @@ h3.contentSubTitle {
   padding: 10px;
   border: 1px solid #EEE;
   background: #F8F8F8;  
+  margin: 6px 0;
 }
 
 .helpMessage:before,.helpMessage:after {
@@ -1049,7 +1068,27 @@ h3.contentSubTitle {
   padding: 5px 0px;
   font-weight: bold;
   color: red;
-  margin-top: 23px;
+  margin: 23px 0;
+  border-radius: 4px;
+}
+
+.searchUser {
+    width: 91px;
+    padding: 2px 0px;
+    text-align: center;
+    background: #668FDA;
+    color: #fff;
+    border-radius: 4px;
+    margin: 2px 1px;
+    float: right;
+    cursor: pointer;
+    position: absolute;
+    bottom: 10%;
+    right: 0;
+}
+
+.searchUser:hover { 
+    background: #5980C7; 
 }
 
 /************* LOGIN *****************/
@@ -1440,7 +1479,7 @@ button.ipGraph-btn{
 /* projects List */
 
 .projectsList #ids, .activities #ids {
-  width: 50px;
+  width: 15px;
 }
 
 .projectsList #projectTitles {
@@ -1456,7 +1495,15 @@ button.ipGraph-btn{
 }
 
 .projectsList #projectBudget {
-  width: 110px;
+  width: 156px;
+}
+
+.projectsList #projectReportStatus {
+  width: 89px;
+}
+
+.projectsList #projectType {
+  width: 114px;
 }
 
 .projectsList #lastModified {
@@ -1493,7 +1540,8 @@ textarea[id$='summary'] {
 }
 
 #projects .buttons {
-  text-align: left;
+  text-align: right;
+  margin-top: 40px;
 }
 
 #projectRegionsBlock {
@@ -1510,7 +1558,20 @@ textarea[id$='summary'] {
 }
 
 #projectRegionsBlock .checkboxGroup label { 
-   width: 41%;
+   width: 42.5%;
+}
+
+#uploadWorkPlan .checkbox input {
+    float: left;
+    margin: 2px 9px 0 0;
+}
+
+#uploadWorkPlan .checkbox   { 
+    margin: 0px 0px 10px 0;
+}
+
+#uploadWorkPlan p   { 
+    margin: 0px 0px 5px 0;
 }
 
 #projects .note {
@@ -1525,6 +1586,10 @@ textarea[id$='summary'] {
 }
 
 /* Project Partners*/
+
+#projectLeader {
+    padding: 10px 20px;
+}
 
 .projectPartner .filters-link {
   cursor: pointer;
@@ -1998,7 +2063,7 @@ margin-bottom: 8px;
 /********* Activity Reporting Sub Menu **********/
 #stageMenu {
   display: block;
-  margin: 23px 35px 14px 36px;
+  margin: 21px 30px 15px 0px;
   text-align: center;
   position: relative;
 }
@@ -2034,6 +2099,16 @@ margin-bottom: 8px;
   padding-top: 13px;
   text-decoration: none;
   color: #444;
+}
+
+#stageMenu li.goBack {
+  background-image: url("../../images/global/sub-menu-goback.png");
+  width: 50px;  
+  margin-right: 20px;
+  text-align: left;
+  padding: 0px 0 0 37px;
+}
+#stageMenu li.goBack a {
 }
 
 
@@ -2291,13 +2366,15 @@ ul#deliverablesFilesMessages > li {
   border-radius: 4px;
   margin: 18px 0px;
   position: relative;
-  transition:box-shadow 0.1s linear;*
+  transition: box-shadow 0.3s cubic-bezier(0.18, 0.89, 0.32, 1.28);*
   
+;
+  background: #fff;
 }
 
 .borderBox:hover{
-  box-shadow: 0px 0px 10px rgba(0,0,0,0.18);
-  border: 1px solid #D3D3D3;
+  box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.25);
+  border: 1px solid #C7C7C7;
 }
 
 .borderBox:active{

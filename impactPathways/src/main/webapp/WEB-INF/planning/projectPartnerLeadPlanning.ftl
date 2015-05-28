@@ -7,7 +7,7 @@
 [#assign currentPlanningSection = "projects" /]
 [#assign currentStage = "description" /]
 [#assign currentSubStage = "partners" /]
-[#assign partnerStage = "partners" /]
+[#assign partnerStage = "partnerLead" /]
 
 [#assign breadCrumb = [
   {"label":"planning", "nameSpace":"planning", "action":"projects"},
@@ -46,24 +46,14 @@
     <div id="PartnersTabs" class="ui-tabs ui-widget ui-widget-content ui-corner-all"> 
       [#-- Project Partners Sub-menu --]
       [#include "/WEB-INF/planning/projectPartners-sub-menu.ftl" /]
-      <div id="partnerTables-partnerLead" class="partnerTable ui-tabs-panel ui-widget-content ui-corner-bottom clearfix"> 
-        <h1 class="contentTitle">
-          [@s.text name="preplanning.projectPartners.partners.title" /]  
-        </h1> 
-        [#-- Listing partners from partnersTemplate.ftl --]
-        [@partnersTemplate.partnerSection projectPartners=project.projectPartners partnerTypes=partnerTypes countries=countries responsabilities=true canEdit=fullEditable canRemove=saveable /]
-        
-        [#if saveable] 
-          [#if fullEditable]
-          <div id="addProjectPartner" class="addLink">
-            <a href="" class="addProjectPartner addButton" >[@s.text name="preplanning.projectPartners.addProjectPartner" /]</a>
-          </div>
-          [/#if]
-        [/#if]  
+      <div id="partnerTables-partnerLead" class="partnerTable ui-tabs-panel ui-widget-content ui-corner-bottom clearfix">  
+        [#-- Project Title --]
+        [#-- Displaying partner leader from partnersTemplate.ftl --] 
+        [@partnersTemplate.projectLeader leader=project.leader /] 
       </div>
-    </div>   
+    </div>
     
-    [#if saveable]  
+    [#if saveable] 
       [#-- Internal parameter --]
       <input name="projectID" type="hidden" value="${project.id?c}" />
     	<div class="buttons">
@@ -81,9 +71,9 @@
   </article>
   [/@s.form] 
   [#-- Single partner TEMPLATE from partnersTemplate.ftl --]
-  [@partnersTemplate.partnerTemplate showResponsabilities=true isSecondLvlPartners=true /]  
-  [#-- Search users Interface --]
-  [@usersForm.searchUsers/] 
+  [@partnersTemplate.partnerTemplate showResponsabilities=true /]  
+  [#-- Search users Interface Popup --]
+  [@usersForm.searchUsers/]
   
 </section>
 [#include "/WEB-INF/global/pages/footer.ftl"]

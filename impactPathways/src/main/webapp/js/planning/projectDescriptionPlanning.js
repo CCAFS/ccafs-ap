@@ -1,8 +1,11 @@
 //Limits for textarea input
 var lWordsElemetTitle = 50;
-var lWordsElemetDesc = 300;
+var lWordsElemetDesc = 300; 
 
 $(document).ready(function(){
+  var $uploadWp= $('#uploadWorkPlan .checkbox input'); 
+  var $uploadWpCont= $('#uploadWorkPlan .uploadContainer');
+  
   datePickerConfig({
     "startDate" : "#project\\.startDate",
     "endDate" : "#project\\.endDate",
@@ -13,6 +16,28 @@ $(document).ready(function(){
   addChosen();
   applyWordCounter($("textarea.project-title"), lWordsElemetTitle);
   applyWordCounter($("textarea.project-description"), lWordsElemetDesc);
+  
+  
+  
+  $uploadWp.on('change', toggleUploadInputs); 
+  if(getUploadWpState())$uploadWpCont.show();else $uploadWpCont.hide();
+  
+  $("#projectCoreProjects .isLinked input").on('click', checkBilateralProjectType);
+  
+  function checkBilateralProjectType(e) {
+    var $coreProjects= $("#projectCoreProjects .coreProjects");
+    if($(this).val()==1)
+      $coreProjects.fadeIn();
+    else
+      $coreProjects.fadeOut();
+  } 
+  
+  function toggleUploadInputs(){ 
+    $uploadWpCont.slideToggle(getUploadWpState()); 
+  }
+  function getUploadWpState(){
+    return $uploadWp.is(':checked');
+  }
 });
 
 /**
@@ -74,7 +99,10 @@ function addChosen(){
   
 }
 
+// Set default Program ID
 function setProgramId(){
   var programId = $("input#programID").val();
   $("input[value='" + programId + "'][name$='regions'], input[value='" + programId + "'][name$='flagships']").attr("checked", true).attr("disabled", true);
 }
+
+

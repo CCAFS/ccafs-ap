@@ -105,7 +105,7 @@ public class InstitutionManagerImpl implements InstitutionManager {
   @Override
   public Institution getInstitution(int institutionId) {
     Map<String, String> iData = institutionDAO.getInstitution(institutionId);
-    if (!iData.isEmpty()) {
+    if (!iData.isEmpty()) { 
       Institution institution = new Institution();
       institution.setId(Integer.parseInt(iData.get("id")));
       institution.setName(iData.get("name"));

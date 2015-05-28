@@ -265,7 +265,7 @@
 .ui-corner-all, .ui-corner-bottom, .ui-corner-right, .ui-corner-br { -moz-border-radius-bottomright: 0; -webkit-border-bottom-right-radius: 0; -khtml-border-bottom-right-radius: 0; border-bottom-right-radius: 0; }
 
 /* Overlays */
-.ui-widget-overlay { background: #eeeeee; opacity: .80;filter:Alpha(Opacity=80); }
+.ui-widget-overlay { background: #eeeeee; opacity: 0.5;                        }
 .ui-widget-shadow { margin: -4px 0 0 -4px; padding: 4px; background: #aaaaaa; opacity: .60;filter:Alpha(Opacity=60); -moz-border-radius: 0px; -khtml-border-radius: 0px; -webkit-border-radius: 0px; border-radius: 0px; }/*
  * jQuery UI Resizable 1.8.16
  *
@@ -444,7 +444,7 @@ button.ui-button::-moz-focus-inner { border: 0; padding: 0; } /* reset extra pad
 .ui-dialog .ui-dialog-content { position: relative; border: 0; padding: .5em 1em; background: none; overflow: auto; zoom: 1; }
 .ui-dialog .ui-dialog-buttonpane { text-align: left; border-width: 1px 0 0 0; background-image: none; margin: .5em 0 0 0; padding: .3em 1em .5em .4em; }
 .ui-dialog .ui-dialog-buttonpane .ui-dialog-buttonset { float: right; }
-.ui-dialog .ui-dialog-buttonpane button { margin: .5em .4em .5em 0; cursor: pointer; }
+.ui-dialog .ui-dialog-buttonpane button { margin: 0.2em .4em .2em 0; cursor: pointer; }
 .ui-dialog .ui-resizable-se { width: 14px; height: 14px; right: 2px; bottom: 2px; }
 .ui-draggable .ui-dialog-titlebar { cursor: move; }
 /*
@@ -573,7 +573,7 @@ html, body{background-color:#ffffff;}
 
 /* Interaction states
 ----------------------------------*/
-.ui-state-default, .ui-widget-content .ui-state-default, .ui-widget-header .ui-state-default { border:2px solid #dddddd;background:inherit; font-weight: bold; text-decoration:none; }
+.ui-state-default, .ui-widget-content .ui-state-default, .ui-widget-header .ui-state-default { border: 1px solid #DDD;background:inherit; font-weight: bold; text-decoration:none; }
 .ui-state-default a, .ui-state-default a:link, .ui-state-default a:visited { text-decoration: none; }
 .ui-state-hover, .ui-widget-content .ui-state-hover, .ui-widget-header .ui-state-hover, .ui-state-focus, .ui-widget-content .ui-state-focus, .ui-widget-header .ui-state-focus { font-weight: bold; color: #ffffff; border-width:2px;}
 .ui-state-hover a, .ui-state-hover a:hover { color: #ffffff; text-decoration: none; }
@@ -606,7 +606,7 @@ html, body{background-color:#ffffff;}
 /* Dialog */
 .ui-dialog{border-width:2px;padding:0;}
 .ui-dialog-titlebar {border:none;border-bottom-width:2px;padding:.6em 1em .6em 1em !important;font-weight:bold;font-size:1.1em;}
-.ui-dialog-buttonpane{border-top-width:2px !important;margin-top:0 !important;}
+.ui-dialog-buttonpane{border-top-width: 0px !important;margin-top:0 !important;}
 .ui-dialog .ui-dialog-titlebar-close{width: 29px;height: 31px;margin:-13px 0px 0px 0px;padding:0;}
 .ui-dialog-titlebar-close > .ui-icon{/* margin:4px !important; */}
 
@@ -652,7 +652,7 @@ html, body{background-color:#ffffff;}
 .ui-icon, .ui-widget-content .ui-icon, .ui-widget-header .ui-icon  {background-image:url(images/ui-icons_d4d4d4_0.png)}
 .ui-state-default .ui-icon {background-image:url(images/ui-icons_525252_0.png)}
 .ui-state-active .ui-icon, .ui-state-hover .ui-icon{background-image:url(images/ui-icons_ffffff_0.png);}
-.ui-widget-overlay{background:#ffffff;}
+.ui-widget-overlay{background: #FFF;}
 .ui-widget-content{color:#525252;}
 
 
@@ -660,10 +660,10 @@ html, body{background-color:#ffffff;}
 
 
 /* Button states */
-.ui-state-default, .ui-widget-content .ui-state-default{background-color: #47939C;border-color: #47939C;color: #F7F7F7;}
-.ui-state-focus, .ui-widget-content .ui-state-focus{background-color:#47939C;border-color:#47939C;color:#ffffff;}
-.ui-state-hover, .ui-widget-content .ui-state-hover{background-color:#47939C;border-color:#47939C;color:#ffffff;}
-.ui-state-active, .ui-widget-content .ui-state-active{background-color:#47939C;border-color:#47939C;color:#ffffff;}
+.ui-state-default, .ui-widget-content .ui-state-default{background-color: #2BA6CB;border-color: #2BA6CB;color: #F7F7F7;border-radius: 4px;}
+.ui-state-focus, .ui-widget-content .ui-state-focus{background-color:#2693B3;border-color:#2693B3;color:#ffffff;}
+.ui-state-hover, .ui-widget-content .ui-state-hover{background-color:#2BA6CB;border-color:#2BA6CB;color:#ffffff;}
+.ui-state-active, .ui-widget-content .ui-state-active{background-color:#2BA6CB;border-color:#2BA6CB;color:#ffffff;}
 
 
 /* Accordion */
@@ -683,17 +683,17 @@ html, body{background-color:#ffffff;}
 
 
 /* Tabs states */
-.ui-tabs-nav > .ui-state-default a{border-color:#47939C;background:#47939C;color:#ffffff;}
-.ui-tabs-nav > .ui-state-active a{border-color:#d4d4d4 !important;background:#ffffff !important;color:#525252 !important;}
+.ui-tabs-nav > .ui-state-default a{border-color: rgba(71, 147, 156, 0);background: rgba(51, 154, 166, 0.91);color:#ffffff;}
+.ui-tabs-nav > .ui-state-active a{border-color:#d4d4d4 !important;background:#ffffff !important;/* color:#525252 !important; */}
 .ui-tabs-nav > .ui-state-hover a{background:#47939C;border-color:#47939C;color:#ffffff;}
 .ui-tabs-nav > .ui-state-focus a{background:#47939C;border-color:;color:#ffffff;}
 .ui-tabs .ui-widget-content{border-color:#d4d4d4 !important;background-color:#ffffff;}
 .ui-tabs-nav{border-color:#d4d4d4;}
 
 /* Dialog states */
-.ui-dialog{border-color:#47939C;background-color:#ffffff !important;}
-.ui-dialog-titlebar{border-color:#47939C;color:#ffffff;background-color:#47939C;}
-.ui-dialog-buttonpane{border-color:#47939C !important;background-color:#ffffff;}
+.ui-dialog{border-color: #2BA6CB;background-color:#ffffff !important;border-radius: 4px;box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.2);}
+.ui-dialog-titlebar{border-color: #2BA6CB;color:#ffffff;background-color: #2BA6CB;}
+.ui-dialog-buttonpane{border-color: #B6D9DD !important;background-color:#ffffff;}
 .ui-dialog-content{background-color:#ffffff !important;}
 .ui-dialog-titlebar .ui-icon{background-image:url(images/ui-icons_ffffff_0.png);}
 .ui-dialog-titlebar .ui-state-hover .ui-icon{background-image:url(images/ui-icons_47939C_0.png) !important;}

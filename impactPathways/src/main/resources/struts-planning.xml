@@ -53,6 +53,38 @@
       </result>
     </action>
     
+    <action name="partnerLead" class="org.cgiar.ccafs.ap.action.planning.ProjectPartnersPlanningAction">
+      <result name="input">/WEB-INF/planning/projectPartnerLeadPlanning.ftl</result>
+      <result name="success" type="redirectAction">
+        <param name="actionName">partnerLead</param>
+        <param name="projectID">${project.id}</param>
+      </result>
+      <result name="next" type="redirectAction">
+        <param name="actionName">ppaPartners</param>
+        <param name="projectID">${project.id}</param>
+      </result>
+      <result name="cancel" type="redirectAction">
+        <param name="actionName">projects</param>
+        <param name="namespace">/planning</param>
+      </result>
+    </action>
+    
+    <action name="ppaPartners" class="org.cgiar.ccafs.ap.action.planning.ProjectPartnersPlanningAction">
+      <result name="input">/WEB-INF/planning/projectPpaPartnersPlanning.ftl</result>
+      <result name="success" type="redirectAction">
+        <param name="actionName">ppaPartners</param>
+        <param name="projectID">${project.id}</param>
+      </result>
+      <result name="next" type="redirectAction">
+        <param name="actionName">partners</param>
+        <param name="projectID">${project.id}</param>
+      </result>
+      <result name="cancel" type="redirectAction">
+        <param name="actionName">projects</param>
+        <param name="namespace">/planning</param>
+      </result>
+    </action>
+    
     <action name="partners" class="org.cgiar.ccafs.ap.action.planning.ProjectPartnersPlanningAction">
       <result name="input">/WEB-INF/planning/projectPartnersPlanning.ftl</result>
       <result name="success" type="redirectAction">
@@ -67,6 +99,26 @@
         <param name="actionName">projects</param>
         <param name="namespace">/planning</param>
       </result>
+    </action>
+    
+    <action name="crps" class="org.cgiar.ccafs.ap.action.planning.ProjectPartnersPlanningAction">
+      <result name="input">/WEB-INF/planning/projectCrpsPlanning.ftl</result>
+      <result name="success" type="redirectAction">
+        <param name="actionName">crps</param>
+        <param name="projectID">${project.id}</param>
+      </result>
+      <result name="next" type="redirectAction">
+        <param name="actionName">projectOutcomes</param>
+        <param name="projectID">${project.id}</param>
+      </result>
+      <result name="cancel" type="redirectAction">
+        <param name="actionName">projects</param>
+        <param name="namespace">/planning</param>
+      </result>
+    </action>
+    
+    <action name="locations" class="org.cgiar.ccafs.ap.action.planning.ProjectDescriptionPlanningAction">
+      <result name="input">/WEB-INF/planning/projectlocationsPlanning.ftl</result>      
     </action>
     
     <action name="budget" class="org.cgiar.ccafs.ap.action.preplanning.ProjectBudgetPreplanningAction">
@@ -100,6 +152,10 @@
         <param name="actionName">projects</param>
         <param name="namespace">/planning</param>
       </result>
+    </action>
+    
+    <action name="projectOutputs" class="org.cgiar.ccafs.ap.action.planning.ProjectOutcomeAction">
+      <result name="input">/WEB-INF/planning/projectOutputsPlanning.ftl</result>   
     </action>
 
     <action name="impactPathway" class="org.cgiar.ccafs.ap.action.planning.ProjectImpactPathwayAction">
