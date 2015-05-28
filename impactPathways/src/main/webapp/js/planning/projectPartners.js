@@ -176,10 +176,10 @@ $(document).ready(function(){
     return valid;
   }
   
-  dialog = $("#dialog-form").dialog({
+  dialog = $("#dialog-searchUsers").dialog({
     autoOpen : false,
     height : 300,
-    width : 350,
+    width : 500,
     modal : true,
     show : {
       effect : "size",
