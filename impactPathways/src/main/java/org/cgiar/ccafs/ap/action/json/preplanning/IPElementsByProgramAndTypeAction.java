@@ -1,7 +1,6 @@
 package org.cgiar.ccafs.ap.action.json.preplanning;
 
 import org.cgiar.ccafs.ap.action.BaseAction;
-import org.cgiar.ccafs.ap.config.APConfig;
 import org.cgiar.ccafs.ap.config.APConstants;
 import org.cgiar.ccafs.ap.data.manager.IPElementManager;
 import org.cgiar.ccafs.ap.data.model.IPElementType;
@@ -10,6 +9,7 @@ import org.cgiar.ccafs.ap.data.model.IPProgram;
 import java.util.List;
 
 import org.cgiar.ccafs.ap.data.model.IPElement;
+import org.cgiar.ccafs.utils.APConfig;
 
 import com.google.inject.Inject;
 import org.apache.commons.lang3.StringUtils;

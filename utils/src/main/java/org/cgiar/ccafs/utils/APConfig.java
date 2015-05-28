@@ -13,6 +13,7 @@
  *****************************************************************/
 package org.cgiar.ccafs.utils;
 
+
 import com.google.inject.Inject;
 import com.google.inject.Singleton;
 import org.slf4j.Logger;
@@ -78,6 +79,7 @@ public class APConfig {
     }
     return base;
   }
+
 
   /**
    * Get the folder where the case studies images uploaded should be saved
