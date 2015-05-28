@@ -37,6 +37,15 @@ public interface ProjectManager {
   public boolean deleteIndicator(int projectID, int indicatorID);
 
   /**
+   * This method deletes the project identified by the value received by
+   * parameter.
+   * 
+   * @param projectID
+   * @return True if the project was deleted, false otherwise.
+   */
+  public boolean deleteProject(int projectID);
+
+  /**
    * This method delete the relation between the project and the output
    * received.
    * 

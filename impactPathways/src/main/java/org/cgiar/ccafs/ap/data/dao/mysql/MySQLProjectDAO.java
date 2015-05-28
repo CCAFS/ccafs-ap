@@ -48,6 +48,22 @@ public class MySQLProjectDAO implements ProjectDAO {
   }
 
   @Override
+  public boolean deleteProject(int projectID) {
+    LOG.debug(">> deleteProject(projectID={})", projectID);
+
+    String query = "DELETE FROM projects WHERE id = ?";
+
+    int rowsDeleted = databaseManager.delete(query, new Object[] {projectID});
+    if (rowsDeleted >= 0) {
+      LOG.debug("<< deleteProject():{}", true);
+      return true;
+    }
+
+    LOG.debug("<< deleteProject:{}", false);
+    return false;
+  }
+
+  @Override
   public boolean deleteProjectIndicator(int projectID, int indicatorID) {
     LOG.debug(">> deleteProjectIndicator(projectID={}, indicatorID={})", projectID, indicatorID);
 
@@ -62,6 +78,7 @@ public class MySQLProjectDAO implements ProjectDAO {
     LOG.debug("<< deleteProjectIndicator:{}", false);
     return false;
   }
+
 
   @Override
   public boolean deleteProjectOutput(int projectID, int outputID) {
@@ -101,7 +118,6 @@ public class MySQLProjectDAO implements ProjectDAO {
     LOG.debug("-- existProject() > Calling method executeQuery to get the results");
     return exists;
   }
-
 
   @Override
   public List<Map<String, String>> getAllProjects() {
@@ -169,6 +185,7 @@ public class MySQLProjectDAO implements ProjectDAO {
     return projectList;
   }
 
+
   private List<Map<String, String>> getData(String query) {
     LOG.debug(">> executeQuery(query='{}')", query);
     List<Map<String, String>> projectList = new ArrayList<>();
@@ -203,7 +220,6 @@ public class MySQLProjectDAO implements ProjectDAO {
     LOG.debug("<< executeQuery():ProjectList.size={}", projectList.size());
     return projectList;
   }
-
 
   @Override
   public Map<String, String> getExpectedProjectLeader(int projectID) {
@@ -534,6 +550,7 @@ public class MySQLProjectDAO implements ProjectDAO {
     return getData(query.toString());
   }
 
+
   @Override
   public List<Map<String, String>> getProjectsByProgram(int programID) {
     LOG.debug(">> getProjects programID = {} )", programID);
@@ -660,7 +677,6 @@ public class MySQLProjectDAO implements ProjectDAO {
     }
     return result;
   }
-
 
   @Override
   public int saveProject(Map<String, Object> projectData) {
