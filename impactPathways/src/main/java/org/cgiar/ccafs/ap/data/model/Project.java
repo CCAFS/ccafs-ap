@@ -57,6 +57,18 @@ public class Project {
     this.id = id;
   }
 
+  /**
+   * Return if the project can be deleted.
+   * A project only can be deleted if it was created in the planning 
+   * phase for the current year
+   * 
+   * @param currentPlanningYear
+   * @return
+   */
+  public boolean isErasable(int currentPlanningYear) {
+    return getCreationYear() == currentPlanningYear;
+  }
+
   public boolean containsOutput(int outputID) {
     if (this.outputs != null) {
       for (IPElement output : this.outputs) {
@@ -174,6 +186,12 @@ public class Project {
     return created;
   }
 
+  public int getCreationYear() {
+    Calendar cal = Calendar.getInstance();
+    cal.setTimeInMillis(getCreated());
+    return cal.get(Calendar.YEAR);
+  }
+
   public Date getEndDate() {
     return endDate;
   }
@@ -221,6 +239,25 @@ public class Project {
     return emptyIndicator;
   }
 
+  public List<IPIndicator> getIndicators() {
+    return indicators;
+  }
+
+  public List<IPIndicator> getIndicatorsByParent(int parentIndicatorID) {
+    List<IPIndicator> indicators = new ArrayList<>();
+    if (indicators != null) {
+      getIndicatorsByParentAndYear(parentIndicatorID, 2019);
+      for (IPIndicator indicator : this.indicators) {
+        if (indicator.getParent() != null) {
+          if (indicator.getParent().getId() == parentIndicatorID) {
+            indicators.add(indicator);
+          }
+        }
+      }
+    }
+    return indicators;
+  }
+
   /**
    * This method search if the list of indicators contains an indicator
    * which parent is identified by the value passed as parameter.
@@ -241,25 +278,6 @@ public class Project {
       }
     }
     return emptyIndicator;
-  }
-
-  public List<IPIndicator> getIndicators() {
-    return indicators;
-  }
-
-  public List<IPIndicator> getIndicatorsByParent(int parentIndicatorID) {
-    List<IPIndicator> indicators = new ArrayList<>();
-    if (indicators != null) {
-      getIndicatorsByParentAndYear(parentIndicatorID, 2019);
-      for (IPIndicator indicator : this.indicators) {
-        if (indicator.getParent() != null) {
-          if (indicator.getParent().getId() == parentIndicatorID) {
-            indicators.add(indicator);
-          }
-        }
-      }
-    }
-    return indicators;
   }
 
   public IPOtherContribution getIpOtherContribution() {
