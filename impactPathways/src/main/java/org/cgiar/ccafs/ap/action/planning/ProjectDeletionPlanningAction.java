@@ -72,6 +72,8 @@ public class ProjectDeletionPlanningAction extends BaseAction {
       projectID = -1;
       return; // Stop here and go to execute method.
     }
+
+    project = projectManager.getProjectBasicInfo(projectID);
   }
 
   public void setProjectID(int projectID) {

@@ -99,16 +99,17 @@
           </td>
           [#-- Delete Project--]
           <td>
-              [#-- if isNewProject]
+              [#if securityContext.canDeleteProject() && project.isErasable(2014) ]
                 <a href="
-                [@s.url action='removeDeliverable' includeParams='get'] 
-                  [@s.param name='${projectRequestParameter}']${project.id?c}[/@s.param]
+                [@s.url action='deleteProject' includeParams='get' namespace='/planning/projects' ] 
+                  [@s.param name='${projectRequest}' ]${project.id?c}[/@s.param]
                 [/@s.url]
                 " title="" class="removeDeliverable">
-                  <img src="${baseUrl}/images/global/trash.png" title="[@s.text name="reporting.activityDeliverablesList.deleteDeliverable" /]" /> 
+                  <img src="${baseUrl}/images/global/trash.png" title="[@s.text name="preplanning.projects.deleteProject" /]" /> 
                 </a>
-              [#else  --]
-              <img src="${baseUrl}/images/global/trash_disable.png" />
+              [#else]
+                <img src="${baseUrl}/images/global/trash_disable.png" title="[@s.text name="preplanning.projects.cantDeleteProject" /]" />
+              [/#if]
           </td>
         </tr>  
       [/#list]
