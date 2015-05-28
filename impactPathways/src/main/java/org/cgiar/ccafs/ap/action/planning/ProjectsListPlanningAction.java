@@ -93,8 +93,8 @@ public class ProjectsListPlanningAction extends BaseAction {
     return allProjects;
   }
 
-  public int getCurrentPlanningYear() {
-    return config.getPlanningCurrentYear();
+  public Date getCurrentPlanningStartDate() {
+    return config.getCurrentPlanningStartDate();
   }
 
   public int getProjectID() {
@@ -121,7 +121,7 @@ public class ProjectsListPlanningAction extends BaseAction {
   @Override
   public void prepare() throws Exception {
     super.prepare();
-
+    getCurrentPlanningStartDate();
     projects = new ArrayList<>();
     allProjects = projectManager.getAllProjectsBasicInfo();
 

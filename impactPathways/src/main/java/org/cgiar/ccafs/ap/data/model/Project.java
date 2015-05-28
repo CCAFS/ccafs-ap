@@ -59,14 +59,14 @@ public class Project {
 
   /**
    * Return if the project can be deleted.
-   * A project only can be deleted if it was created in the planning 
+   * A project only can be deleted if it was created in the planning
    * phase for the current year
    * 
    * @param currentPlanningYear
    * @return
    */
-  public boolean isErasable(int currentPlanningYear) {
-    return getCreationYear() == currentPlanningYear;
+  public boolean canDelete(Date planningStartDate) {
+    return getCreationDate().after(planningStartDate);
   }
 
   public boolean containsOutput(int outputID) {
@@ -186,10 +186,8 @@ public class Project {
     return created;
   }
 
-  public int getCreationYear() {
-    Calendar cal = Calendar.getInstance();
-    cal.setTimeInMillis(getCreated());
-    return cal.get(Calendar.YEAR);
+  public Date getCreationDate() {
+    return new Date(created);
   }
 
   public Date getEndDate() {

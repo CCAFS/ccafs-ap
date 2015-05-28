@@ -99,7 +99,7 @@
           </td>
           [#-- Delete Project--]
           <td>
-              [#if securityContext.canDeleteProject() && project.isErasable(2014) ]
+              [#if securityContext.canDeleteProject() && project.canDelete(currentPlanningStartDate) ]
                 <a href="
                 [@s.url action='deleteProject' includeParams='get' namespace='/planning/projects' ] 
                   [@s.param name='${projectRequest}' ]${project.id?c}[/@s.param]
