@@ -29,6 +29,14 @@ import com.google.inject.ImplementedBy;
 public interface ProjectDAO {
 
   /**
+   * This method deletes the project identified by the value received by parameter.
+   * 
+   * @param projectID
+   * @return True if the project was deleted successfully, false otherwise.
+   */
+  public boolean deleteProject(int projectID);
+
+  /**
    * This method deletes from the database the relation between the project and the indicator
    * received.
    * 
@@ -48,6 +56,7 @@ public interface ProjectDAO {
    */
   public boolean deleteProjectOutput(int projectID, int outputID);
 
+
   /**
    * This method validate if the project exists in the database.
    * 
@@ -55,7 +64,6 @@ public interface ProjectDAO {
    * @return true if the project exists or false otherwise.
    */
   public boolean existProject(int projectId);
-
 
   /**
    * This method return all the Projects

@@ -181,7 +181,10 @@ public class BaseAction extends ActionSupport implements Preparable, SessionAwar
    * @return true if the user is logged in, false otherwise.
    */
   public boolean isLogged() {
-    return securityContext.isAuthenticated();
+    if (this.getCurrentUser() == null) {
+      return false;
+    }
+    return true;
   }
 
   public boolean isPlanningActive() {
