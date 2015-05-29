@@ -14,16 +14,16 @@
     <a [#if currentReportingSection == "indicators"] class="currentReportingSection" [/#if] href="${baseUrl}/reporting/indicators.do"><li>[@s.text name="menu.secondary.reporting.indicators" /]</li></a>
     <a [#if currentReportingSection == "leverages"] class="currentReportingSection" [/#if] href="${baseUrl}/reporting/leverages.do"><li>[@s.text name="menu.secondary.reporting.leverages" /]</li></a>
     <!-- a [#if currentReportingSection == "leverage"] class="currentReportingSection" [/#if] href=""><li>Leverage</li></a -->
-    [#if currentUser.isTL() || currentUser.isAdmin()]
+    [#if securityContext.FPL || securityContext.Admin ]
       <a [#if currentReportingSection == "tlRpl"] class="currentReportingSection" [/#if] href="${baseUrl}/reporting/tlOutputs.do"><li>[@s.text name="menu.secondary.reporting.tlRplOnly" /]</li></a>
     [/#if]
     
-    [#if currentUser.isRPL()]
+    [#if securityContext.RPL]
       <a [#if currentReportingSection == "tlRpl"] class="currentReportingSection" [/#if] href="${baseUrl}/reporting/rplSynthesis.do"><li>[@s.text name="menu.secondary.reporting.tlRplOnly" /]</li></a>
     [/#if]
   </ul>
   
-  [#if !currentUser.isPI() ]
+  [#if !securityContext.PI ]
     [#if canSubmit ]
       <div id="submitButtonBlock" class="buttons">
         [@s.form action="submit" id="submitForm" ]

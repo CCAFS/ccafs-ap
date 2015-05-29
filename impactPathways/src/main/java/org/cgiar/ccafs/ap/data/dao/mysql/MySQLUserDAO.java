@@ -93,14 +93,14 @@ public class MySQLUserDAO implements UserDAO {
       query.append("u.id, u.first_name, u.last_name, u.email, ");
       query.append("ro.id as role_id, ro.name as role_name, ro.acronym as role_acronym ");
       query.append("FROM users u ");
+      query.append("INNER JOIN user_roles ur ON u.id = ur.user_id ");
       query.append("INNER JOIN employees emp ON u.id=emp.user_id ");
-      query.append("INNER JOIN roles ro ON emp.role_id=ro.id ");
       query.append("INNER JOIN institutions ins ON emp.institution_id = ins.id ");
-      query.append("WHERE ro.id= ");
+      query.append("WHERE ur.role_id = ");
       query.append(APConstants.ROLE_FLAGSHIP_PROGRAM_LEADER);
-      query.append(" OR ro.id= ");
+      query.append(" OR ur.role_id = ");
       query.append(APConstants.ROLE_REGIONAL_PROGRAM_LEADER);
-      query.append(" OR ro.id= ");
+      query.append(" OR ur.role_id = ");
       query.append(APConstants.ROLE_COORDINATING_UNIT);
       query.append(" ORDER BY u.last_name, ins.name ");
 

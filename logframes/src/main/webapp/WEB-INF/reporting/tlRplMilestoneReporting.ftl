@@ -55,14 +55,14 @@
           
             [#-- Milestone status --]
             [#-- Only the TL can set the milestone status --]
-            [#if currentUser.TL || currentUser.admin]
+            [#if currentUser.TL || securityContext.Admin]
               <div class="milestoneReportStatus">
                 [@customForm.radioButtonGroup name="milestoneReports[${milestoneReport_index}].status.id" label="" i18nkey="reporting.tlRplMilestoneReport.milestoneStatus" listName="milestoneStatusList" keyFieldName="id" displayFieldName="name" value="${milestoneReport.status.id}" /]
               </div>           
             [/#if]
             
             [#-- TL/RPL Milestone description --]
-            [#if currentUser.RPL || currentUser.admin]
+            [#if securityContext.RPL || securityContext.Admin]
               [#-- Theme leader description field disabled --]
               <div class="tlDescription disabled">
                 [@customForm.textArea value="${milestoneReport.themeLeaderDescription}" name="milestoneReports[${milestoneReport_index}].themeLeaderDescription" i18nkey="reporting.tlRplMilestoneReport.TLdescription" disabled=true /]
@@ -70,7 +70,7 @@
               <div class="rplDescription">
                 [@customForm.textArea value="${milestoneReport.regionalLeaderDescription}" name="milestoneReports[${milestoneReport_index}].regionalLeaderDescription" i18nkey="reporting.tlRplMilestoneReport.RPLdescription" required=true /]
               </div>
-            [#elseif currentUser.TL || currentUser.admin]
+            [#elseif currentUser.TL || securityContext.Admin]
               <div class="tlDescription">
                 [@customForm.textArea value="${milestoneReport.themeLeaderDescription}" name="milestoneReports[${milestoneReport_index}].themeLeaderDescription" i18nkey="reporting.tlRplMilestoneReport.TLdescription" required=true /]
               </div>

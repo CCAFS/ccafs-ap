@@ -33,7 +33,7 @@
 
       [#-- Commisioned activity ? --]
       <div class="halfPartBlock">
-        [#if currentUser.TL || currentUser.RPL]
+        [#if currentUser.TL || securityContext.RPL]
           [@customForm.checkbox  name="activity.commissioned" i18nkey="planning.addActivity.isCommissioned" value="true" /]
         [/#if]
       </div>
@@ -54,7 +54,7 @@
       </div>
 
       [#-- Leader --]
-      [#if currentUser.admin]
+      [#if securityContext.Admin]
         <div class="thirdPartBlock" id="leaderBlock" >
           [@customForm.select name="activity.leader" label="" i18nkey="planning.addActivity.leader" listName="leaders" keyFieldName="id"  displayFieldName="acronym" /]
         </div>

@@ -28,7 +28,7 @@
       
       <div class="reportOptions" >
         <div id="activityLeaderBlock">
-          [#if currentUser.admin]
+          [#if securityContext.Admin]
             <div class="thirdPartBlock">
               <label>[@s.text name="summaries.activities.leader" /]:</label>
               <img src="${baseUrl}/images/global/icon-help2.png" title="[@s.text name="summaries.activities.leaderHelp"/]" />

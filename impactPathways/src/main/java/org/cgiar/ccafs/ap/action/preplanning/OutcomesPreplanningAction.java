@@ -85,7 +85,7 @@ public class OutcomesPreplanningAction extends BaseAction {
   }
 
   public String getNextActionName() {
-    if (getCurrentUser().isFPL()) {
+    if (securityContext.isFPL()) {
       return "midOutcomes";
     } else {
       return "midOutcomesRPL";
@@ -144,7 +144,7 @@ public class OutcomesPreplanningAction extends BaseAction {
 
     // If the user is RPL they should see a list with all the indicators
     // filled by the FPL
-    if (getCurrentUser().isRPL()) {
+    if (securityContext.isRPL()) {
       fplOutcomesIndicators = new ArrayList<>();
       List<IPProgram> flagshipPrograms = ipProgramManager.getProgramsByType(APConstants.FLAGSHIP_PROGRAM_TYPE);
       IPElementType outcomesType = new IPElementType(APConstants.ELEMENT_TYPE_OUTCOME2025);
@@ -192,9 +192,9 @@ public class OutcomesPreplanningAction extends BaseAction {
     }
 
     if (ipElementManager.saveIPElements(outcomes)) {
-      if (getCurrentUser().isFPL()) {
+      if (securityContext.isFPL()) {
         addActionMessage(getText("saving.success", new String[] {getText("preplanning.outcomes.title")}));
-      } else if (getCurrentUser().isRPL()) {
+      } else if (securityContext.isRPL()) {
         addActionMessage(getText("saving.success", new String[] {getText("preplanning.outcomes.titleRPL")}));
       }
       return SUCCESS;

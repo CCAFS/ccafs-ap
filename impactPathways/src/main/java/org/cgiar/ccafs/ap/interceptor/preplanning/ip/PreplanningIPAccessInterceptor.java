@@ -16,6 +16,7 @@ package org.cgiar.ccafs.ap.interceptor.preplanning.ip;
 import org.cgiar.ccafs.ap.action.BaseAction;
 import org.cgiar.ccafs.ap.config.APConstants;
 import org.cgiar.ccafs.ap.data.model.User;
+import org.cgiar.ccafs.security.SecurityContext;
 
 import java.util.Map;
 
@@ -35,8 +36,10 @@ import org.slf4j.LoggerFactory;
 public class PreplanningIPAccessInterceptor extends AbstractInterceptor {
 
   private static final long serialVersionUID = 557204822452161234L;
-
   private static final Logger LOG = LoggerFactory.getLogger(PreplanningIPAccessInterceptor.class);
+
+  @Inject
+  protected SecurityContext securityContext;
 
   @Inject
   public PreplanningIPAccessInterceptor() {
@@ -49,7 +52,7 @@ public class PreplanningIPAccessInterceptor extends AbstractInterceptor {
     User user = (User) session.get(APConstants.SESSION_USER);
     if (user != null) {
       // Only Admins, FPLs and RPLs can access to define the Impact Pathway.
-      if (user.isAdmin() || user.isFPL() || user.isRPL() || user.isCU()) {
+      if (securityContext.isAdmin() || securityContext.isFPL() || securityContext.isRPL() || securityContext.isCU()) {
         invocation.invoke();
       } else {
         LOG.info("User identify with id={}, email={}, role={} tried to access pre-planning section.", new Object[] {
