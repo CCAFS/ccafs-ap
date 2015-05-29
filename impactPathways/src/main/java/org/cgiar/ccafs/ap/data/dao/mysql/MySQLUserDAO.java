@@ -52,13 +52,12 @@ public class MySQLUserDAO implements UserDAO {
     try (Connection connection = dbManager.getConnection()) {
 
       StringBuilder query = new StringBuilder();
-      query
-        .append("SELECT u.id,e.id as employee_id, pe.first_name, pe.last_name, u.email, e.institution_id, e.role_id, r.name as role_name, r.acronym as role_acronym ");
+      query.append("SELECT u.id,e.id as employee_id, u.first_name, u.last_name, ");
+      query.append("u.email, e.institution_id, e.role_id, r.name as role_name, r.acronym as role_acronym ");
       query.append("FROM employees e ");
       query.append("INNER JOIN users u  ON e.user_id=u.id ");
       query.append("INNER JOIN roles r  ON e.role_id=r.id ");
-      query.append("INNER JOIN persons pe  ON u.person_id=pe.id ");
-      query.append("ORDER BY pe.last_name");
+      query.append("ORDER BY u.last_name");
 
       ResultSet rs = dbManager.makeQuery(query.toString(), connection);
       while (rs.next()) {
@@ -91,10 +90,9 @@ public class MySQLUserDAO implements UserDAO {
 
       StringBuilder query = new StringBuilder();
       query.append("SELECT ins.id as institution_id, emp.id as employee_id, ");
-      query.append("u.id, pe.first_name, pe.last_name, u.email, ");
+      query.append("u.id, u.first_name, u.last_name, u.email, ");
       query.append("ro.id as role_id, ro.name as role_name, ro.acronym as role_acronym ");
       query.append("FROM users u ");
-      query.append("INNER JOIN persons pe  ON u.person_id=pe.id ");
       query.append("INNER JOIN employees emp ON u.id=emp.user_id ");
       query.append("INNER JOIN roles ro ON emp.role_id=ro.id ");
       query.append("INNER JOIN institutions ins ON emp.institution_id = ins.id ");
@@ -104,7 +102,7 @@ public class MySQLUserDAO implements UserDAO {
       query.append(APConstants.ROLE_REGIONAL_PROGRAM_LEADER);
       query.append(" OR ro.id= ");
       query.append(APConstants.ROLE_COORDINATING_UNIT);
-      query.append(" ORDER BY pe.last_name, ins.name ");
+      query.append(" ORDER BY u.last_name, ins.name ");
 
       ResultSet rs = dbManager.makeQuery(query.toString(), connection);
       while (rs.next()) {
@@ -136,10 +134,9 @@ public class MySQLUserDAO implements UserDAO {
     try (Connection connection = dbManager.getConnection()) {
       StringBuilder query = new StringBuilder();
       query.append("SELECT ins.id as institution_id, emp.id as employee_id, ");
-      query.append("u.id, pe.first_name, pe.last_name, u.email, ");
+      query.append("u.id, u.first_name, u.last_name, u.email, ");
       query.append("ro.id as role_id, ro.name as role_name, ro.acronym as role_acronym ");
       query.append("FROM users u ");
-      query.append("INNER JOIN persons pe ON u.person_id=pe.id ");
       query.append("INNER JOIN employees emp ON u.id=emp.user_id ");
       query.append("INNER JOIN roles ro ON emp.role_id=ro.id ");
       query.append("INNER JOIN institutions ins ON emp.institution_id = ins.id ");
@@ -151,7 +148,7 @@ public class MySQLUserDAO implements UserDAO {
       query.append(APConstants.ROLE_COORDINATING_UNIT);
       query.append(") AND ins.program_id = ");
       query.append(programId);
-      query.append(" ORDER BY pe.last_name, ins.name ");
+      query.append(" ORDER BY u.last_name, ins.name ");
 
       ResultSet rs = dbManager.makeQuery(query.toString(), connection);
       while (rs.next()) {
@@ -184,9 +181,8 @@ public class MySQLUserDAO implements UserDAO {
     try (Connection connection = dbManager.getConnection()) {
 
       StringBuilder query = new StringBuilder();
-      query.append("SELECT u.id, pe.first_name, pe.last_name, u.email ");
+      query.append("SELECT u.id, u.first_name, u.last_name, u.email ");
       query.append("FROM users u ");
-      query.append("INNER JOIN persons pe  ON u.person_id=pe.id");
 
       ResultSet rs = dbManager.makeQuery(query.toString(), connection);
       while (rs.next()) {
@@ -262,10 +258,9 @@ public class MySQLUserDAO implements UserDAO {
     try (Connection connection = dbManager.getConnection()) {
       StringBuilder query = new StringBuilder();
       query.append("SELECT ins.id as institution_id, emp.id as employee_id, ");
-      query.append("u.id, pe.first_name, pe.last_name, u.email, ");
+      query.append("u.id, u.first_name, u.last_name, u.email, ");
       query.append("ro.id as role_id, ro.name as role_name, ro.acronym as role_acronym ");
       query.append("FROM users u ");
-      query.append("INNER JOIN persons pe  ON u.person_id=pe.id ");
       query.append("INNER JOIN employees emp ON u.id=emp.user_id ");
       query.append("INNER JOIN roles ro ON emp.role_id=ro.id ");
       query.append("INNER JOIN institutions ins ON emp.institution_id = ins.id ");
@@ -301,10 +296,9 @@ public class MySQLUserDAO implements UserDAO {
 
       StringBuilder query = new StringBuilder();
       query.append("SELECT ins.id as institution_id, u.id, emp.id as employee_id, ");
-      query.append("pe.first_name, pe.last_name, u.email, ");
+      query.append("u.first_name, u.last_name, u.email, ");
       query.append("ro.id as role_id, ro.name as role_name, ro.acronym as role_acronym ");
       query.append("FROM users u ");
-      query.append("INNER JOIN persons pe  ON u.person_id=pe.id ");
       query.append("INNER JOIN employees emp ON u.id=emp.user_id ");
       query.append("INNER JOIN projects pro ON emp.id=pro.project_owner_id ");
       query.append("INNER JOIN institutions ins ON emp.institution_id = ins.id ");
@@ -339,9 +333,8 @@ public class MySQLUserDAO implements UserDAO {
     try (Connection connection = dbManager.getConnection()) {
       StringBuilder query = new StringBuilder();
       query.append("SELECT u.id, u.password, u.is_ccafs_user, u.last_login, ");
-      query.append("p.first_name, p.last_name, u.email, p.phone ");
+      query.append("u.first_name, u.last_name, u.email ");
       query.append("FROM users u ");
-      query.append("INNER JOIN persons p ON u.person_id = p.id ");
       query.append("WHERE u.id = '");
       query.append(userId);
       query.append("'; ");
@@ -355,7 +348,6 @@ public class MySQLUserDAO implements UserDAO {
         userData.put("first_name", rs.getString("first_name"));
         userData.put("last_name", rs.getString("last_name"));
         userData.put("email", rs.getString("email"));
-        userData.put("phone", rs.getString("phone"));
       }
       rs.close();
     } catch (SQLException e) {
@@ -372,10 +364,8 @@ public class MySQLUserDAO implements UserDAO {
     Map<String, String> userData = new HashMap<>();
     try (Connection connection = dbManager.getConnection()) {
       StringBuilder query = new StringBuilder();
-      query.append("SELECT u.*, ");
-      query.append("p.* ");
+      query.append("SELECT * ");
       query.append("FROM users u ");
-      query.append("INNER JOIN persons p ON u.person_id = p.id ");
       query.append("WHERE u.email = '");
       query.append(email);
       query.append("'; ");
@@ -390,7 +380,6 @@ public class MySQLUserDAO implements UserDAO {
         userData.put("last_name", rs.getString("last_name"));
         userData.put("username", rs.getString("username"));
         userData.put("email", rs.getString("email"));
-        userData.put("phone", rs.getString("phone"));
         userData.put("is_active", rs.getString("is_active"));
       }
       rs.close();

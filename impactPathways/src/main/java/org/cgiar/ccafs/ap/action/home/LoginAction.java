@@ -104,8 +104,8 @@ public class LoginAction extends BaseAction {
     if (user != null) {
       LOG.info("User {} logout succesfully", user.getEmail());
     }
-    SecurityUtils.getSubject().logout();
     this.getSession().clear();
+    SecurityUtils.getSubject().logout();
     return SUCCESS;
   }
 

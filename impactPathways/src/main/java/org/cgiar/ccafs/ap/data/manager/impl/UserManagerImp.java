@@ -261,7 +261,6 @@ public class UserManagerImp implements UserManager {
       user.setFirstName(userData.get("first_name"));
       user.setLastName(userData.get("last_name"));
       user.setEmail(userData.get("email"));
-      user.setPhone(userData.get("phone"));
       user.setActive(userData.get("is_active").equals("1"));
       user.setUsername(userData.get("username"));
       try {
@@ -321,6 +320,8 @@ public class UserManagerImp implements UserManager {
             + "Please contact your administrator to unlock it.");
         }
       } else {
+        int userID = (Integer) currentUser.getPrincipals().getPrimaryPrincipal();
+        userFound = this.getUser(userID);
         LOG.info("Already logged in");
       }
 
