@@ -13,6 +13,10 @@
  *****************************************************************/
 package org.cgiar.ccafs.utils;
 
+
+import java.text.SimpleDateFormat;
+import java.util.Date;
+
 import com.google.inject.Inject;
 import com.google.inject.Singleton;
 import org.slf4j.Logger;
@@ -29,7 +33,9 @@ public class APConfig {
 
   private static final String BASE_URL = "ccafsap.baseUrl";
   private static final String REPORTING_CURRENT_YEAR = "ccafsap.reporting.currentYear";
+  private static final String CURRENT_REPORTING_START_DATE = "ccafsap.reporting.startDate";
   private static final String PLANNING_CURRENT_YEAR = "ccafsap.planning.currentYear";
+  private static final String CURRENT_PLANNING_START_DATE = "ccafsap.planning.startDate";
   private static final String START_YEAR = "ccafsap.startYear";
   private static final String END_YEAR = "ccafsap.endYear";
   private static final String MIDOUTCOME_YEAR = "ccafsap.midOutcome.revisionYear";
@@ -79,6 +85,7 @@ public class APConfig {
     return base;
   }
 
+
   /**
    * Get the folder where the case studies images uploaded should be saved
    * 
@@ -91,6 +98,44 @@ public class APConfig {
       LOG.error("there is not a base folder to save the uploaded files configured.");
     }
     return null;
+  }
+
+  /**
+   * Get the date when the current planning phase started.
+   * 
+   * @return a date.
+   */
+  public Date getCurrentPlanningStartDate() {
+    SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
+    Date date = null;
+
+    try {
+      String stringDate = properties.getPropertiesAsString(CURRENT_PLANNING_START_DATE);
+      date = formatter.parse(stringDate);
+
+    } catch (Exception e) {
+      LOG.error("There is not a current year configured for the planning section or has an invalid format.");
+    }
+    return date;
+  }
+
+  /**
+   * Get the date when the current reporting phase started.
+   * 
+   * @return a date.
+   */
+  public Date getCurrentReportingStartDate() {
+    SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
+    Date date = null;
+
+    try {
+      String stringDate = properties.getPropertiesAsString(CURRENT_REPORTING_START_DATE);
+      date = formatter.parse(stringDate);
+
+    } catch (Exception e) {
+      LOG.error("There is not a current year configured for the planning section or has an invalid format.");
+    }
+    return date;
   }
 
   /**

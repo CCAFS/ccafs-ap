@@ -14,10 +14,11 @@
 package org.cgiar.ccafs.ap.action.planning;
 
 import org.cgiar.ccafs.ap.action.BaseAction;
-import org.cgiar.ccafs.ap.config.APConfig;
+import org.cgiar.ccafs.ap.config.APConstants;
 import org.cgiar.ccafs.ap.data.manager.ProjectManager;
 import org.cgiar.ccafs.ap.data.model.IPProgram;
 import org.cgiar.ccafs.ap.data.model.Project;
+import org.cgiar.ccafs.utils.APConfig;
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -46,10 +47,7 @@ public class ProjectsListPlanningAction extends BaseAction {
 
   // Model for the front-end
   private int projectID;
-
-
   private double totalBudget;
-
 
   @Inject
   public ProjectsListPlanningAction(APConfig config, ProjectManager projectManager) {
@@ -95,8 +93,16 @@ public class ProjectsListPlanningAction extends BaseAction {
     return allProjects;
   }
 
+  public Date getCurrentPlanningStartDate() {
+    return config.getCurrentPlanningStartDate();
+  }
+
   public int getProjectID() {
     return projectID;
+  }
+
+  public String getProjectRequest() {
+    return APConstants.PROJECT_REQUEST_ID;
   }
 
   public List<Project> getProjects() {
@@ -115,7 +121,7 @@ public class ProjectsListPlanningAction extends BaseAction {
   @Override
   public void prepare() throws Exception {
     super.prepare();
-
+    getCurrentPlanningStartDate();
     projects = new ArrayList<>();
     allProjects = projectManager.getAllProjectsBasicInfo();
 

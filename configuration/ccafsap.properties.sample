@@ -19,8 +19,10 @@ mysql.port=3306
 ccafsap.baseUrl=localhost:8443/impactPathways/
 
 # Application properties
-ccafsap.reporting.currentYear=2014
 ccafsap.planning.currentYear=2015
+ccafsap.planning.startDate=YYYY-MM-DD
+ccafsap.reporting.currentYear=2014
+ccafsap.reporting.startDate=YYYY-MM-DD
 ccafsap.startYear=2010
 ccafsap.endYear=2015
 ccafsap.midOutcome.revisionYear=2019

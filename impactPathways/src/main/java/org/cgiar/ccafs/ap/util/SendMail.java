@@ -13,7 +13,7 @@
  *****************************************************************/
 package org.cgiar.ccafs.ap.util;
 
-import org.cgiar.ccafs.ap.config.APConfig;
+import org.cgiar.ccafs.utils.APConfig;
 
 import java.util.Date;
 import java.util.Properties;

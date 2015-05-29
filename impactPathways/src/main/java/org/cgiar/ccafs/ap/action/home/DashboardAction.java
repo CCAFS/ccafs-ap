@@ -15,11 +15,11 @@
 package org.cgiar.ccafs.ap.action.home;
 
 import org.cgiar.ccafs.ap.action.BaseAction;
-import org.cgiar.ccafs.ap.config.APConfig;
 import org.cgiar.ccafs.ap.data.manager.ActivityManager;
 import org.cgiar.ccafs.ap.data.manager.ProjectManager;
 import org.cgiar.ccafs.ap.data.model.Activity;
 import org.cgiar.ccafs.ap.data.model.Project;
+import org.cgiar.ccafs.utils.APConfig;
 
 import java.util.ArrayList;
 import java.util.List;

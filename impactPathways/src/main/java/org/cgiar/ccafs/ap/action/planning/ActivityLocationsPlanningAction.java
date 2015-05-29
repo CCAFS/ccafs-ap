@@ -1,7 +1,6 @@
 package org.cgiar.ccafs.ap.action.planning;
 
 import org.cgiar.ccafs.ap.action.BaseAction;
-import org.cgiar.ccafs.ap.config.APConfig;
 import org.cgiar.ccafs.ap.config.APConstants;
 import org.cgiar.ccafs.ap.data.manager.ActivityManager;
 import org.cgiar.ccafs.ap.data.manager.LocationManager;
@@ -17,6 +16,7 @@ import org.cgiar.ccafs.ap.data.model.Project;
 import org.cgiar.ccafs.ap.data.model.Region;
 import org.cgiar.ccafs.ap.util.FileManager;
 import org.cgiar.ccafs.ap.util.SendMail;
+import org.cgiar.ccafs.utils.APConfig;
 
 import java.io.File;
 import java.io.FilenameFilter;

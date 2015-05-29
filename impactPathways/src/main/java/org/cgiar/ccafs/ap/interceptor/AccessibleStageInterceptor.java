@@ -17,7 +17,8 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import org.cgiar.ccafs.ap.action.BaseAction;
-import org.cgiar.ccafs.ap.config.APConfig;
+import org.cgiar.ccafs.utils.APConfig;
+
 import com.google.inject.Inject;
 import com.opensymphony.xwork2.ActionInvocation;
 import com.opensymphony.xwork2.interceptor.AbstractInterceptor;

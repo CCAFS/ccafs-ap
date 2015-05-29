@@ -28,6 +28,18 @@
     <!-- Sections -->
     
     <!-- Section: Projects  -->
+    
+    <action name="deleteProject" class="org.cgiar.ccafs.ap.action.planning.ProjectDeletionPlanningAction">
+      <result name="input" type="redirectAction">
+        <param name="actionName">projects</param>
+        <param name="namespace">/planning</param>
+      </result>
+      <result name="success" type="redirectAction">
+        <param name="actionName">projects</param>
+        <param name="namespace">/planning</param>
+      </result>
+    </action>
+    
     <action name="description" class="org.cgiar.ccafs.ap.action.planning.ProjectDescriptionPlanningAction">
       <result name="input">/WEB-INF/planning/projectDescriptionPlanning.ftl</result>
       <result name="success" type="redirectAction">

@@ -18,6 +18,7 @@
 [#include "/WEB-INF/global/pages/header.ftl" /]
 [#include "/WEB-INF/global/pages/main-menu.ftl" /]
 [#import "/WEB-INF/global/macros/forms.ftl" as customForm/]
+[#import "/WEB-INF/global/macros/usersPopup.ftl" as usersForm/]
 [#import "/WEB-INF/global/macros/projectPartnersTemplate.ftl" as partnersTemplate /]
 
 <section class="content">
@@ -71,16 +72,8 @@
   [/@s.form] 
   [#-- Single partner TEMPLATE from partnersTemplate.ftl --]
   [@partnersTemplate.partnerTemplate showResponsabilities=true /]  
+  [#-- Search users Interface Popup --]
+  [@usersForm.searchUsers/]
   
-  [#-- Search users Interface --]
-  <div id="dialog-form" title="Search User">
-    <p class="validateTips">All form fields are required.</p>
-    [@customForm.input name="" type="text" i18nkey="users.searchByName" required=true readOnly=true/]
-    <div id="usersList">
-      <h6>Users Lists <span></span><h6>
-      <ul>
-      </ul>
-     </div>  
-  </div>
 </section>
 [#include "/WEB-INF/global/pages/footer.ftl"]

@@ -1,6 +1,7 @@
 [#ftl]
 [#macro partnerSection projectPartners partnerTypes countries canEdit=true canRemove=true responsabilities=false ppaPartners=false]
   [#if projectPartners?has_content]
+    [#assign i=0]
     [#list projectPartners as ap]    
       [#if ap.partner.PPA && ppaPartners] 
         [@partner ap ap_index canEdit=canEdit canRemove=canRemove responsabilities=responsabilities /]
@@ -65,6 +66,11 @@
     [#if !ap.partner.PPA]
     <div class="fullPartBlock">        
       <h6>[@s.text name="preplanning.projectPartners.indicatePpaPartners" /]</h6>
+      <div class="ppaPartnersList">
+        <ul>
+        </ul>
+        [@customForm.select name="" label="" disabled=!canEdit i18nkey="" listName="partnerTypes" keyFieldName="id"  displayFieldName="name" className="ppaPartnersSelect" value="" /]
+      </div> 
     </div>
     [/#if]
   </div> <!-- End projectPartner-${ap_index} -->

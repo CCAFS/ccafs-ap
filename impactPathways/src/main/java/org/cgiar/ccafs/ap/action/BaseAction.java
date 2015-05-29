@@ -13,11 +13,12 @@
  *****************************************************************/
 package org.cgiar.ccafs.ap.action;
 
-import org.cgiar.ccafs.ap.config.APConfig;
 import org.cgiar.ccafs.ap.config.APConstants;
+import org.cgiar.ccafs.ap.data.manager.BoardMessageManager;
 import org.cgiar.ccafs.ap.data.model.BoardMessage;
 import org.cgiar.ccafs.ap.data.model.User;
 import org.cgiar.ccafs.security.SecurityContext;
+import org.cgiar.ccafs.utils.APConfig;
 
 import java.util.List;
 import java.util.Locale;
@@ -76,6 +77,9 @@ public class BaseAction extends ActionSupport implements Preparable, SessionAwar
   protected SecurityContext securityContext;
 
   @Inject
+  private BoardMessageManager boardMessageManager;
+
+  @Inject
   public BaseAction(APConfig config) {
     this.config = config;
     this.saveable = true;
@@ -127,8 +131,13 @@ public class BaseAction extends ActionSupport implements Preparable, SessionAwar
     return config.getBaseUrl();
   }
 
+  /**
+   * This method gets all the board Messages
+   * 
+   * @return a Board Message list with the board message information
+   */
   public List<BoardMessage> getBoardMessages() {
-    return config.getBoardMessages();
+    return boardMessageManager.getAllBoardMessages();
   }
 
   /**
@@ -181,7 +190,10 @@ public class BaseAction extends ActionSupport implements Preparable, SessionAwar
    * @return true if the user is logged in, false otherwise.
    */
   public boolean isLogged() {
-    return securityContext.isAuthenticated();
+    if (this.getCurrentUser() == null) {
+      return false;
+    }
+    return true;
   }
 
   public boolean isPlanningActive() {

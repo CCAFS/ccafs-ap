@@ -14,7 +14,6 @@
 package org.cgiar.ccafs.ap.action.planning;
 
 import org.cgiar.ccafs.ap.action.BaseAction;
-import org.cgiar.ccafs.ap.config.APConfig;
 import org.cgiar.ccafs.ap.config.APConstants;
 import org.cgiar.ccafs.ap.data.manager.ActivityManager;
 import org.cgiar.ccafs.ap.data.manager.IPOtherContributionManager;
@@ -22,6 +21,7 @@ import org.cgiar.ccafs.ap.data.manager.ProjectManager;
 import org.cgiar.ccafs.ap.data.model.Activity;
 import org.cgiar.ccafs.ap.data.model.IPOtherContribution;
 import org.cgiar.ccafs.ap.data.model.Project;
+import org.cgiar.ccafs.utils.APConfig;
 
 import com.google.inject.Inject;
 import org.apache.commons.lang3.StringUtils;
