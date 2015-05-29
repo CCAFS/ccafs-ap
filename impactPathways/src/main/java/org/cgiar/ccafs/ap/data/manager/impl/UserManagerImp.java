@@ -350,4 +350,24 @@ public class UserManagerImp implements UserManager {
 
     return userDAO.saveUser(userData);
   }
+
+
+  @Override
+  public List<User> searchUser(String searchValue) {
+    List<User> users = new ArrayList<>();
+    List<Map<String, String>> usersData = userDAO.searchUser(searchValue);
+
+    for (Map<String, String> userData : usersData) {
+      User user = new User();
+      user.setId(Integer.parseInt(userData.get("id")));
+      user.setActive(userData.get("is_active").equals("1"));
+      user.setEmail(userData.get("email"));
+      user.setFirstName(userData.get("first_name"));
+      user.setLastName(userData.get("last_name"));
+
+      users.add(user);
+    }
+
+    return users;
+  }
 }

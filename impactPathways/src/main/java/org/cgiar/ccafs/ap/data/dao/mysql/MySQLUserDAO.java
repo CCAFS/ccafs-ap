@@ -417,4 +417,52 @@ public class MySQLUserDAO implements UserDAO {
     // TODO HC - To implement
     return true;
   }
+
+  @Override
+  public List<Map<String, String>> searchUser(String searchValue) {
+    LOG.debug(">> searchUser(searchValue={})", searchValue);
+    List<Map<String, String>> users = new ArrayList<>();
+
+    try (Connection connection = dbManager.getConnection()) {
+
+      StringBuilder query = new StringBuilder();
+      query.append("SELECT u.* ");
+      query.append("FROM users u ");
+      query.append("WHERE ");
+      query.append("first_name like '%" + searchValue + "%' ");
+      query.append("OR last_name like '%" + searchValue + "%' ");
+      query.append("OR email like '%" + searchValue + "%'");
+      query.append("GROUP BY email ");
+      query.append("ORDER BY CASE ");
+      query.append("WHEN email like '" + searchValue + "%' THEN 0 ");
+      query.append("WHEN email like '% %" + searchValue + "% %' THEN 1 ");
+      query.append("WHEN email like '%" + searchValue + "' THEN 2 ");
+      query.append("WHEN last_name like '" + searchValue + "%' THEN 3 ");
+      query.append("WHEN last_name like '% %" + searchValue + "% %' THEN 4 ");
+      query.append("WHEN last_name like '%" + searchValue + "' THEN 5 ");
+      query.append("WHEN first_name like '" + searchValue + "%' THEN 6 ");
+      query.append("WHEN first_name like '% %" + searchValue + "% %' THEN 7 ");
+      query.append("WHEN first_name like '%" + searchValue + "' THEN 8 ");
+      query.append("ELSE 9 ");
+      query.append("END, email, last_name, first_name ");
+
+      ResultSet rs = dbManager.makeQuery(query.toString(), connection);
+      while (rs.next()) {
+        Map<String, String> userData = new HashMap<>();
+        userData.put("id", rs.getString("id"));
+        userData.put("first_name", rs.getString("first_name"));
+        userData.put("last_name", rs.getString("last_name"));
+        userData.put("email", rs.getString("email"));
+        userData.put("is_active", rs.getString("is_active"));
+        users.add(userData);
+      }
+      rs.close();
+    } catch (SQLException e) {
+      LOG.error("-- searchUser() > There was an error looking for users with the following search value {}.",
+        searchValue, e);
+      return null;
+    }
+    LOG.debug("<< searchUser():{}", users);
+    return users;
+  }
 }
