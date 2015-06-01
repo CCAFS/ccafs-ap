@@ -20,7 +20,7 @@
 	      </a>
 	      
 	      [#-- PRE-Planning section --]
-	      [#if securityContext.FPL || securityContext.RPL || securityContext.CU || securityContext.Admin ]
+	      [#if securityContext.FPL || securityContext.RPL || securityContext.CU || securityContext.admin ]
 	        [#if preplanningActive ]
 	          [#if securityContext.CU ]
   	          <a  href="[@s.url namespace="/pre-planning" action='projects'/]">
@@ -59,7 +59,7 @@
 	      --]
 	      [#-- Summaries section --]
 	      [#--
-	      [#if securityContext.CU || securityContext.FPL || securityContext.RPL || securityContext.Admin ]
+	      [#if securityContext.CU || securityContext.FPL || securityContext.RPL || securityContext.admin ]
 	        [#if summariesActive ]
 	          <a href="${baseUrl}/summaries/activities.do" /]" >
 	              <li [#if currentSection?? && currentSection == "summaries"]class="currentSection"[/#if]>[@s.text name="menu.summaries" /]</li>
@@ -73,7 +73,7 @@
 	      --]
 	      [#-- Admin section --]
 	      [#--
-	      [#if securityContext.Admin ]
+	      [#if securityContext.admin ]
 	        <a href="javascript:void(0);">
 	          <li [#if currentSection?? && currentSection == "admin"] class="currentSection" [/#if]>[@s.text name="menu.admin" /]</li>
 	        </a>

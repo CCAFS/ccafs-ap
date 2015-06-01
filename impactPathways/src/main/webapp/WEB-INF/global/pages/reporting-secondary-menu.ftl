@@ -14,7 +14,7 @@
     <a [#if currentReportingSection == "indicators"] class="currentReportingSection" [/#if] href="${baseUrl}/reporting/indicators.do"><li>[@s.text name="menu.secondary.reporting.indicators" /]</li></a>
     <a [#if currentReportingSection == "leverages"] class="currentReportingSection" [/#if] href="${baseUrl}/reporting/leverages.do"><li>[@s.text name="menu.secondary.reporting.leverages" /]</li></a>
     <!-- a [#if currentReportingSection == "leverage"] class="currentReportingSection" [/#if] href=""><li>Leverage</li></a -->
-    [#if securityContext.FPL || securityContext.Admin ]
+    [#if securityContext.FPL || securityContext.admin ]
       <a [#if currentReportingSection == "tlRpl"] class="currentReportingSection" [/#if] href="${baseUrl}/reporting/tlOutputs.do"><li>[@s.text name="menu.secondary.reporting.tlRplOnly" /]</li></a>
     [/#if]
     
