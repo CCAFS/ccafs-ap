@@ -65,7 +65,11 @@ CREATE PROCEDURE delete_persons_table()
 BEGIN
   
   IF EXISTS ((SELECT * FROM information_schema.columns WHERE table_schema=DATABASE() AND table_name='users' AND column_name='person_id')) THEN
-    ALTER TABLE `users` DROP COLUMN `person_id`;
+    ALTER TABLE `users` 
+    DROP FOREIGN KEY `FK_users_person_id`;
+    ALTER TABLE `users` 
+    DROP COLUMN `person_id`,
+    DROP INDEX `FK_users_person_id_idx` ;
   END IF;
 
 END $$
