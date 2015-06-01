@@ -80,10 +80,9 @@ public class ProjectsListPlanningAction extends BaseAction {
     if (userProgram != null) {
       newProject.setProgramCreator(userProgram);
     } else {
-      LOG
-        .error(
-          "-- execute() > the current user identify with id={} and institution_id={} does not belong to a specific program!",
-          new Object[] {this.getCurrentUser().getId(), this.getCurrentUser().getCurrentInstitution().getId()});
+      LOG.error(
+        "-- execute() > the current user identify with id={} and institution_id={} does not belong to a specific program!",
+        new Object[] {this.getCurrentUser().getId(), this.getCurrentUser().getCurrentInstitution().getId()});
     }
     newProject.setCreated(new Date().getTime());
     return projectManager.saveProjectDescription(newProject);
@@ -130,15 +129,19 @@ public class ProjectsListPlanningAction extends BaseAction {
     List<Integer> projectIds = null;
     if (this.getCurrentUser().getCurrentInstitution().getProgram() != null) {
       // Getting the list of project ids that the user's program created, or those where the user is the project owner.
-      projectIds = projectManager.getProjectIdsEditables(this.getCurrentUser());
 
-      for (Integer projectId : projectIds) {
-        Project temp = new Project(projectId);
-        int index = allProjects.indexOf(temp);
-        if (index != -1) {
-          projects.add(allProjects.remove(index));
-        }
-      }
+      // ----------------------------------------------------------------
+      // TODO Get list of projects that the user is able to edit.
+      // projectIds = projectManager.getProjectIdsEditables(this.getCurrentUser());
+
+      // for (Integer projectId : projectIds) {
+      // Project temp = new Project(projectId);
+      // int index = allProjects.indexOf(temp);
+      // if (index != -1) {
+      // projects.add(allProjects.remove(index));
+      // }
+      // }
+      // ---------------------------------------------------------
     }
 
     // Getting the list of project ids that the user is assigned as Project Leader.

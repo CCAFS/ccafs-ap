@@ -252,13 +252,17 @@ public class MySQLProjectDAO implements ProjectDAO {
   }
 
   @Override
-  public List<Integer> getPLProjectIds(int employeeId) {
-    LOG.debug(">> getPLProjectIds(employeeId={})", new Object[] {employeeId});
+  public List<Integer> getPLProjectIds(int userID) {
+    LOG.debug(">> getPLProjectIds(employeeId={})", new Object[] {userID});
     List<Integer> projectIds = new ArrayList<>();
     try (Connection connection = databaseManager.getConnection()) {
       StringBuilder query = new StringBuilder();
-      query.append("SELECT p.id FROM projects p WHERE p.project_leader_id = ");
-      query.append(employeeId);
+      query.append("SELECT project_id FROM project_partners pp WHERE (pp.partner_type = '");
+      query.append(APConstants.PROJECT_PARTNER_PL);
+      query.append("' or pp.partner_type = '");
+      query.append(APConstants.PROJECT_PARTNER_PC);
+      query.append("') AND pp.user_id = ");
+      query.append(userID);
       ResultSet rs = databaseManager.makeQuery(query.toString(), connection);
       while (rs.next()) {
         projectIds.add(rs.getInt(1));
@@ -266,7 +270,7 @@ public class MySQLProjectDAO implements ProjectDAO {
       rs.close();
     } catch (SQLException e) {
       LOG.error("-- getPLProjectIds() > There was an error getting the data for employeeId={}.",
-        new Object[] {employeeId}, e.getMessage());
+        new Object[] {userID}, e.getMessage());
       return null;
     }
     LOG.debug("<< getPLProjectIds():{}", projectIds);

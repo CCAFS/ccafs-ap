@@ -92,12 +92,13 @@ public interface ProjectDAO {
   public Map<String, String> getExpectedProjectLeader(int projectId);
 
   /**
-   * This method returns a list of project identifiers where the user is assigned as Project Leader.
+   * This method returns a list of project identifiers where the user is assigned as Project Leader or Project
+   * Coordinator.
    * 
-   * @param employeeId is the employee identifier.
+   * @param userID is the user identifier.
    * @return a list of Integers representing the project identifiers.
    */
-  public List<Integer> getPLProjectIds(int employeeId);
+  public List<Integer> getPLProjectIds(int userID);
 
   /**
    * This method return the project information of the selected list

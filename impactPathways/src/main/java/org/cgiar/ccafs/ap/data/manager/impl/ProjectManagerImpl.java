@@ -165,7 +165,7 @@ public class ProjectManagerImpl implements ProjectManager {
 
   @Override
   public List<Integer> getPLProjectIds(User user) {
-    return projectDAO.getPLProjectIds(user.getEmployeeId());
+    return projectDAO.getPLProjectIds(user.getId());
   }
 
   @Override
