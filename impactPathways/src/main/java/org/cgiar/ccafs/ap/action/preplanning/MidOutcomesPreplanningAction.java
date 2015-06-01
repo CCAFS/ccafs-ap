@@ -73,7 +73,7 @@ public class MidOutcomesPreplanningAction extends BaseAction {
   }
 
   public String getNextActionName() {
-    if (getCurrentUser().isFPL()) {
+    if (securityContext.isFPL()) {
       return "outputs";
     } else {
       return "outputsRPL";
@@ -156,7 +156,7 @@ public class MidOutcomesPreplanningAction extends BaseAction {
     for (IPElement midOutcome : midOutcomes) {
       if (midOutcome.getIndicators() != null) {
         for (int i = 0; i < midOutcome.getIndicators().size(); i++) {
-          if (getCurrentUser().isRPL()) {
+          if (securityContext.isRPL()) {
             if (midOutcome.getIndicators().get(i).getId() == 0) {
               midOutcome.getIndicators().get(i).setId(-1);
             }

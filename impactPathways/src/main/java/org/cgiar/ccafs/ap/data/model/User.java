@@ -58,8 +58,9 @@ public class User {
    *         e.g. Tobón, Héctor (CIAT) - FPL
    */
   public String getComposedOwnerName() {
-    return this.lastName + ", " + this.firstName + " (" + this.currentInstitution.getAcronym() + ") - "
-      + this.getRole().getAcronym();
+    // return this.lastName + ", " + this.firstName + " (" + this.currentInstitution.getAcronym() + ") - "
+    // + this.getRole().getAcronym();
+    return this.lastName + ", " + this.firstName;
   }
 
   public Institution getCurrentInstitution() {
@@ -114,80 +115,8 @@ public class User {
     return isActive;
   }
 
-  /**
-   * Validate if the current user is an Administrator.
-   * 
-   * @return true if the user is actually an Administrator, or false otherwise.
-   */
-  public boolean isAdmin() {
-    return this.role.getAcronym().equals(Role.UserRole.Admin.name());
-  }
-
-  /**
-   * Validate if the current user is a Principal Investigator.
-   * 
-   * @return true if the user is actually a Principal Investigator, or false otherwise.
-   */
-  public boolean isAL() {
-    return this.role.getAcronym().equals(Role.UserRole.AL.name());
-  }
-
   public boolean isCcafsUser() {
     return isCcafsUser;
-  }
-
-  /**
-   * Validate if the current user is a Contact Point.
-   * 
-   * @return true if the user is actually a Contact Point, or false otherwise.
-   */
-  public boolean isCP() {
-    return this.role.getAcronym().equals(Role.UserRole.CP.name());
-  }
-
-  /**
-   * Validate if the current user is a coordinating unit member.
-   * 
-   * @return true if the user is actually a member of the coordinating unit, or false otherwise.
-   */
-  public boolean isCU() {
-    return this.role.getAcronym().equals(Role.UserRole.CU.name());
-  }
-
-  /**
-   * Validate if the current user is a Theme Leader.
-   * 
-   * @return true if the user is actually a Flagship program Leader, or false otherwise.
-   */
-  public boolean isFPL() {
-    return this.role.getAcronym().equals(Role.UserRole.FPL.name());
-  }
-
-  /**
-   * Validate if the current user is a Guest.
-   * 
-   * @return true if the user is actually a guest, or false otherwise.
-   */
-  public boolean isGuest() {
-    return this.role.getAcronym().equals(Role.UserRole.Guest.name());
-  }
-
-  /**
-   * Validate if the current user is a project leader.
-   * 
-   * @return true if the user is actually a Project leader, or false otherwise.
-   */
-  public boolean isPL() {
-    return this.role.getAcronym().equals(Role.UserRole.PL.name());
-  }
-
-  /**
-   * Validate if the current user is a Regional Program Leader.
-   * 
-   * @return true if the user is actually a Regional Program Leader, or false otherwise.
-   */
-  public boolean isRPL() {
-    return this.role.getAcronym().equals(Role.UserRole.RPL.name());
   }
 
   public void setActive(boolean isActive) {

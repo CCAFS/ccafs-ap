@@ -105,4 +105,76 @@ public class SecurityContext extends BaseSecurityContext {
   public boolean canUploadProjectWorkplan() {
     return hasPermission(Permission.PLANNING_PROJECT_WORKPLAN_UPDATE);
   }
+
+  /**
+   * Verify if the user has the administrator role
+   * 
+   * @return
+   */
+  public boolean isAdmin() {
+    return hasRole(Role.ADMIN);
+  }
+
+  /**
+   * Verify if the user has the activity leader role
+   * 
+   * @return
+   */
+  public boolean isAL() {
+    return hasRole(Role.AL);
+  }
+
+  /**
+   * Verify if the user has the Contact point role
+   * 
+   * @return
+   */
+  public boolean isCP() {
+    return hasRole(Role.CP);
+  }
+
+  /**
+   * Verify if the user has the coordinating unit role
+   * 
+   * @return
+   */
+  public boolean isCU() {
+    return hasRole(Role.CU);
+  }
+
+  /**
+   * Verify if the user has the FPL role
+   * 
+   * @return
+   */
+  public boolean isFPL() {
+    return hasRole(Role.FPL);
+  }
+
+  /**
+   * Verify if the user has the guest role
+   * 
+   * @return
+   */
+  public boolean isGuest() {
+    return hasRole(Role.GUEST);
+  }
+
+  /**
+   * Verify if the user has the Project leader role
+   * 
+   * @return
+   */
+  public boolean isPL() {
+    return hasRole(Role.PL);
+  }
+
+  /**
+   * Verify if the user has the RPL role
+   * 
+   * @return
+   */
+  public boolean isRPL() {
+    return hasRole(Role.RPL);
+  }
 }

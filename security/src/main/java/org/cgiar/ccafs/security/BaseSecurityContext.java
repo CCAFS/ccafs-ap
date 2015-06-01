@@ -79,6 +79,17 @@ public class BaseSecurityContext {
   }
 
   /**
+   * Verify that the user has the role received by parameter.
+   * 
+   * @param role
+   * @return
+   */
+  public boolean hasRole(String role) {
+    Subject subject = getSubject();
+    return subject == null ? false : subject.hasRole(role);
+  }
+
+  /**
    * Validates if the user has started a session
    * 
    * @return true if the session exists, false otherwise.

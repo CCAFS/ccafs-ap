@@ -40,7 +40,7 @@
               <div class="output borderBox" id="output-${output_index}">
                 [#-- RPL output identifier --] 
                 <input name="outputs[${output_index}].id" id="outputId" value="${output.id}" type="hidden" />
-                <input name="outputs[${output_index}].program.id" id="outputProgramID" value="${currentUser.currentInstitution.program.id}" type="hidden" />
+                <input name="outputs[${output_index}].program.id" id="outputProgramID" value="${securityContext.CUrrentInstitution.program.id}" type="hidden" />
                 <input name="outputs[${output_index}].type.id" id="outputTypeID" value="${elementTypeID}" type="hidden" />
               
                 [#-- Remove Output --]
@@ -51,7 +51,7 @@
                   [#-- Title --]
                   [#assign outputDescription]
                     [@s.text name="preplanning.outputsRPL.output"] 
-                      [@s.param name="0"]${currentUser.currentInstitution.program.acronym}[/@s.param] 
+                      [@s.param name="0"]${securityContext.CUrrentInstitution.program.acronym}[/@s.param] 
                       [@s.param name="1"]<span id="elementIndex">${output_index+1}</span>[/@s.param] 
                     [/@s.text]
                   [/#assign]
@@ -90,7 +90,7 @@
                   [#-- Title --]
                   [#assign outputDescription]
                     [@s.text name="preplanning.outputsRPL.output"] 
-                      [@s.param name="0"]${currentUser.currentInstitution.program.acronym}[/@s.param] 
+                      [@s.param name="0"]${securityContext.CUrrentInstitution.program.acronym}[/@s.param] 
                       [@s.param name="1"]<span id="elementIndex">${output_index+1}</span>[/@s.param] 
                     [/@s.text]
                   [/#assign]
@@ -166,14 +166,14 @@
   <div id="outputTemplate" class="output borderBox" style="display:none">
     [#-- RPL Output identifier --]
     <input id="outputId" type="hidden" value="-1" />
-    <input id="outputProgramID" value="${currentUser.currentInstitution.program.id}" type="hidden" />
+    <input id="outputProgramID" value="${securityContext.CUrrentInstitution.program.id}" type="hidden" />
     <input id="outputTypeID" value="${elementTypeID}" type="hidden" />
     [#-- Remove Output --]
     <div id="removeOutput" class="removeOutput removeElement removeLink" title="[@s.text name="preplanning.outputsRPL.removeOutput" /]"></div>
     [#-- Title --]
     [#assign outputDescription]
       [@s.text name="preplanning.outputsRPL.output"] 
-        [@s.param name="0"]${currentUser.currentInstitution.program.acronym}[/@s.param] 
+        [@s.param name="0"]${securityContext.CUrrentInstitution.program.acronym}[/@s.param] 
         [@s.param name="1"]<span id="elementIndex">{0}</span>[/@s.param] 
       [/@s.text]
     [/#assign]
@@ -193,7 +193,7 @@
   [#---- Existent  RPL Output TEMPLATE hidden ----]
   <div id="newOutputTemplate" class="output borderBox" style="display:none">
     [#-- RPL output identifier --]
-    <input id="outputProgramID" value="${currentUser.currentInstitution.program.id}" type="hidden" />
+    <input id="outputProgramID" value="${securityContext.CUrrentInstitution.program.id}" type="hidden" />
     <input id="outputTypeID" value="${elementTypeID}" type="hidden" />
     <input id="outputId" type="hidden" value="-1" />
     [#-- Remove Output --]
@@ -201,7 +201,7 @@
     [#-- Title --]
     [#assign outputDescription]
       [@s.text name="preplanning.outputsRPL.output"] 
-        [@s.param name="0"]${currentUser.currentInstitution.program.acronym}[/@s.param] 
+        [@s.param name="0"]${securityContext.CUrrentInstitution.program.acronym}[/@s.param] 
         [@s.param name="1"]<span id="elementIndex">{0}</span>[/@s.param] 
       [/@s.text]
     [/#assign]

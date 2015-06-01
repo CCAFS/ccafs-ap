@@ -30,7 +30,7 @@ import org.slf4j.LoggerFactory;
 
 /**
  * This action will be in charge of managing all the P&R Dashboard after the user logins.
- *
+ * 
  * @author Héctor Fabio Tobón R.
  */
 public class DashboardAction extends BaseAction {
@@ -84,10 +84,10 @@ public class DashboardAction extends BaseAction {
       // ----- Listing Projects -----
 
       // If user is an Admin.
-      if (this.getCurrentUser().isAdmin()) {
+      if (securityContext.isAdmin()) {
         // Show all projects.
         projects = projectManager.getAllProjectsBasicInfo();
-      } else if (this.getCurrentUser().isFPL() || this.getCurrentUser().isRPL() || this.getCurrentUser().isCU()) {
+      } else if (securityContext.isFPL() || securityContext.isRPL() || securityContext.isCU()) {
         // Getting the list of projects that belongs to the User program or where he is assigned as PO.
         projects = new ArrayList<>();
         List<Integer> ids = projectManager.getProjectIdsEditables(this.getCurrentUser());
@@ -104,7 +104,7 @@ public class DashboardAction extends BaseAction {
           }
         }
 
-      } else if (this.getCurrentUser().isPL()) {
+      } else if (securityContext.isPL()) {
         // Getting projects where the user is assigned as PL.
         List<Integer> idsPL = projectManager.getPLProjectIds(this.getCurrentUser());
         projects = new ArrayList<>();
@@ -118,17 +118,17 @@ public class DashboardAction extends BaseAction {
       // ----- Listing Activities -----
 
       // If user is an Admin
-      if (this.getCurrentUser().isAdmin()) {
+      if (securityContext.isAdmin()) {
         // Admins will be able to see all the activities entered in the system.
         activities = activityManager.getAllActivities();
-      } else if (this.getCurrentUser().isFPL() || this.getCurrentUser().isRPL() || this.getCurrentUser().isCU()) {
+      } else if (securityContext.isFPL() || securityContext.isRPL() || securityContext.isCU()) {
         // FPLs, RPLs and CUs users can edit activities that belongs to the projects that they are able to edit.
         activities = new ArrayList<>();
         for (Project project : projects) {
           activities.addAll(activityManager.getActivitiesByProject(project.getId()));
         }
 
-      } else if (this.getCurrentUser().isPL()) {
+      } else if (securityContext.isPL()) {
         // PLs can edit all the activities that belong to their projects.
         activities = new ArrayList<>();
         for (Project project : projects) {
@@ -143,7 +143,7 @@ public class DashboardAction extends BaseAction {
             activities.add(activityManager.getActivityById(activityId));
           }
         }
-      } else if (this.getCurrentUser().isAL()) {
+      } else if (securityContext.isAL()) {
         List<Integer> ledIds = activityManager.getLedActivityIds(this.getCurrentUser());
         activities = new ArrayList<>();
         for (Integer activityId : ledIds) {

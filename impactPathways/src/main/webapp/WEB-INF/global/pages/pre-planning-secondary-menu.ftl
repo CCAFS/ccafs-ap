@@ -1,7 +1,7 @@
 [#ftl]
 <nav id="secondaryMenu">
   <ul>
-    [#if !currentUser.CU]
+    [#if !securityContext.CU]
       <a [#if currentPrePlanningSection == "impactPathways"] class="currentSection" [/#if] href="[@s.url namespace="/pre-planning" action='outcomes'][/@s.url]">
         <li>[@s.text name="menu.secondary.preplanning.impactPathways" /]</li>
       </a>

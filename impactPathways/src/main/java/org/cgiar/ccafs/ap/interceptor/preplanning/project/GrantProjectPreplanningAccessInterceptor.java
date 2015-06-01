@@ -13,33 +13,35 @@
  *****************************************************************/
 package org.cgiar.ccafs.ap.interceptor.preplanning.project;
 
+import org.cgiar.ccafs.ap.action.BaseAction;
 import org.cgiar.ccafs.ap.config.APConstants;
+import org.cgiar.ccafs.ap.data.manager.ProjectManager;
 import org.cgiar.ccafs.ap.data.model.User;
+import org.cgiar.ccafs.security.SecurityContext;
 
 import java.util.List;
 import java.util.Map;
 
-import org.apache.struts2.ServletActionContext;
-
-import org.cgiar.ccafs.ap.data.manager.ProjectManager;
-import org.cgiar.ccafs.ap.action.BaseAction;
 import com.google.inject.Inject;
 import com.opensymphony.xwork2.ActionInvocation;
 import com.opensymphony.xwork2.interceptor.AbstractInterceptor;
+import org.apache.struts2.ServletActionContext;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 /**
  * This interceptor will validate if the user who is trying to edit a specific project is able to: Fully edit, partially
  * edit or just read the project.
- *
+ * 
  * @author Héctor Fabio Tobón R.
  */
 public class GrantProjectPreplanningAccessInterceptor extends AbstractInterceptor {
 
   private static final long serialVersionUID = 3416451095136457226L;
-
   private static final Logger LOG = LoggerFactory.getLogger(GrantProjectPreplanningAccessInterceptor.class);
+
+  @Inject
+  protected SecurityContext securityContext;
 
   // Managers
   ProjectManager projectManager;
@@ -65,7 +67,7 @@ public class GrantProjectPreplanningAccessInterceptor extends AbstractIntercepto
       BaseAction baseAction = (BaseAction) invocation.getAction();
       // Listing all projects that the user is able to edit.
       // Getting project list that belongs to the program that you belongs to.
-      if (user.isAdmin()) {
+      if (securityContext.isAdmin()) {
         // Admins are able to see all fields editable and save any information.
         baseAction.setSaveable(true);
       } else {

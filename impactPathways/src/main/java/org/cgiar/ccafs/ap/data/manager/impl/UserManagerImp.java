@@ -98,19 +98,9 @@ public class UserManagerImp implements UserManager {
       // User
       User projectContact = new User();
       projectContact.setId(Integer.parseInt(pData.get("id")));
-      projectContact.setEmployeeId(Integer.parseInt(pData.get("employee_id")));
       projectContact.setFirstName(pData.get("first_name"));
       projectContact.setLastName(pData.get("last_name"));
       projectContact.setEmail(pData.get("email"));
-      // Role
-      Role role = new Role();
-      role.setId(Integer.parseInt(pData.get("role_id")));
-      role.setName(pData.get("role_name"));
-      role.setAcronym(pData.get("role_acronym"));
-      projectContact.setRole(role);
-      // Institution
-      projectContact.setCurrentInstitution(institutionManager.getInstitution(Integer.parseInt(pData
-        .get("institution_id"))));
       // Adding object to the array.
       projectContacts.add(projectContact);
     }
@@ -261,7 +251,6 @@ public class UserManagerImp implements UserManager {
       user.setFirstName(userData.get("first_name"));
       user.setLastName(userData.get("last_name"));
       user.setEmail(userData.get("email"));
-      user.setPhone(userData.get("phone"));
       user.setActive(userData.get("is_active").equals("1"));
       user.setUsername(userData.get("username"));
       try {
@@ -321,6 +310,8 @@ public class UserManagerImp implements UserManager {
             + "Please contact your administrator to unlock it.");
         }
       } else {
+        int userID = (Integer) currentUser.getPrincipals().getPrimaryPrincipal();
+        userFound = this.getUser(userID);
         LOG.info("Already logged in");
       }
 
@@ -348,5 +339,25 @@ public class UserManagerImp implements UserManager {
     userData.put("role", String.valueOf(user.getRole()));
 
     return userDAO.saveUser(userData);
+  }
+
+
+  @Override
+  public List<User> searchUser(String searchValue) {
+    List<User> users = new ArrayList<>();
+    List<Map<String, String>> usersData = userDAO.searchUser(searchValue);
+
+    for (Map<String, String> userData : usersData) {
+      User user = new User();
+      user.setId(Integer.parseInt(userData.get("id")));
+      user.setActive(userData.get("is_active").equals("1"));
+      user.setEmail(userData.get("email"));
+      user.setFirstName(userData.get("first_name"));
+      user.setLastName(userData.get("last_name"));
+
+      users.add(user);
+    }
+
+    return users;
   }
 }

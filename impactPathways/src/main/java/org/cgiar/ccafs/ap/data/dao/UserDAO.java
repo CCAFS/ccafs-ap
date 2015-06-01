@@ -30,21 +30,21 @@ public interface UserDAO {
 
   /**
    * Get a list with All the Employees information
-   *
+   * 
    * @return a list of Map objects with the employees information or an empty list if no users found.
    */
   public List<Map<String, String>> getAllEmployees();
 
   /**
    * Get a list with the Important users according to their role. RPLs, FPLs and CUs.
-   *
+   * 
    * @return a list of Map objects with the important users information or an empty list if no users found.
    */
   public List<Map<String, String>> getAllOwners();
 
   /**
    * This method gets all the employees that belongs to a given program identifier
-   *
+   * 
    * @param programId is an integer that represents the program identifier within the system.
    * @return a List of Maps with the information from the employees table.
    */
@@ -52,14 +52,14 @@ public interface UserDAO {
 
   /**
    * Get a list with All Users information
-   *
+   * 
    * @return a list of Map objects with the users information or an empty list if no users found.
    */
   public List<Map<String, String>> getAllUsers();
 
   /**
    * Get the user's email that relates with the given username.
-   *
+   * 
    * @param username is the user nickname.
    * @return a String with the user's email, or null if nothing was found.
    */
@@ -68,7 +68,7 @@ public interface UserDAO {
   /**
    * This method returns the employee Identifier that is using the given user id taking into account his current
    * institution id and role id.
-   *
+   * 
    * @param userId is the user identifier.
    * @param institutionId is the user's institution identifier.
    * @param roleId is the user's role identifier.
@@ -79,7 +79,7 @@ public interface UserDAO {
 
   /**
    * This method return the user information from a employee identifier given.
-   *
+   * 
    * @param ownerId is the employee identifier.
    * @return a Map with the information requested.
    */
@@ -87,7 +87,7 @@ public interface UserDAO {
 
   /**
    * This method get the User information (Project Owner Contact Person) by a given project ID
-   *
+   * 
    * @param projectID - is the ID of the project
    * @return a Map with the User information associated to a project
    */
@@ -95,7 +95,7 @@ public interface UserDAO {
 
   /**
    * This method gets the data of a User identified with a given id.
-   *
+   * 
    * @param userId is the id of the User.
    * @return a Map with the user data.
    */
@@ -103,7 +103,7 @@ public interface UserDAO {
 
   /**
    * Get a user with the given email.
-   *
+   * 
    * @param email is the user email
    * @return a Map with the user information or null if no user found.
    */
@@ -111,7 +111,7 @@ public interface UserDAO {
 
   /**
    * Save in the database the date and time that the user made its last login.
-   *
+   * 
    * @param userData - User information
    * @return - True if the information was succesfully saved, false otherwise.
    */
@@ -119,9 +119,18 @@ public interface UserDAO {
 
   /**
    * Save the user data into the database.
-   *
+   * 
    * @param userData - Information to be saved.
    * @return true if the information was successfully saved. False otherwise.
    */
   public boolean saveUser(Map<String, String> userData);
+
+  /**
+   * This method looks for the active users that contains the
+   * searchValue in its name, last name or email
+   * 
+   * @param searchValue
+   * @return a list of maps with the information of the users found.
+   */
+  public List<Map<String, String>> searchUser(String searchValue);
 }

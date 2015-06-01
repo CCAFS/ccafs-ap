@@ -28,9 +28,9 @@
   [@s.form action="outcomes" cssClass="pure-form"]
     <article class="halfContent" id="outcomes" class="impactPathway">
       [#include "/WEB-INF/preplanning/ipPreplanningSubMenu.ftl" /]
-      [#if currentUser.FPL]
+      [#if securityContext.FPL]
         <h1 class="contentTitle">  [@s.text name="preplanning.outcomes.title" /]  </h1>
-      [#elseif currentUser.RPL]
+      [#elseif securityContext.RPL]
         <h1 class="contentTitle">  [@s.text name="preplanning.outcomes.titleRPL" /]  </h1>
       [/#if]
       [#if outcomes?has_content]
@@ -38,19 +38,19 @@
           <div id="outcomesBlock" class="outcome borderBox">
             [#-- Outcome identifier --]
             <input type="hidden" name="outcomes[${outcome_index}].id" value="${outcome.id}" />
-            <input type="hidden" name="outcomes[${outcome_index}].program.id" value="${currentUser.currentInstitution.program.id}" />
+            <input type="hidden" name="outcomes[${outcome_index}].program.id" value="${securityContext.CUrrentInstitution.program.id}" />
             <input type="hidden" name="outcomes[${outcome_index}].type.id" value="${elementTypeID}" />
 
             [#-- Title --]
             [#assign outcomeDescription]
-              [#if currentUser.FPL]
+              [#if securityContext.FPL]
                 [@s.text name="preplanning.outcomes.outcome"] 
-                  [@s.param name="0"]${currentUser.currentInstitution.program.acronym}[/@s.param] 
+                  [@s.param name="0"]${securityContext.CUrrentInstitution.program.acronym}[/@s.param] 
                   [@s.param name="1"]<span id="elementIndex">${outcome_index+1}</span>[/@s.param] 
                 [/@s.text]
-              [#elseif currentUser.RPL]
+              [#elseif securityContext.RPL]
                 [@s.text name="preplanning.outcomes.outcomeRPL"] 
-                  [@s.param name="0"]${currentUser.currentInstitution.program.acronym}[/@s.param] 
+                  [@s.param name="0"]${securityContext.CUrrentInstitution.program.acronym}[/@s.param] 
                   [@s.param name="1"]<span id="elementIndex">${outcome_index+1}</span>[/@s.param] 
                 [/@s.text]
               [/#if]
@@ -58,7 +58,7 @@
             <legend>${outcomeDescription}</legend> 
             [@customForm.textArea name="outcomes[${outcome_index}].description" i18nkey="preplanning.outcomes.outcomeDescription" required=true /]
             
-            [#if currentUser.FPL]
+            [#if securityContext.FPL]
             
               [#-- Indicators --]
               <div class="contentElements outcomeIndicatorsBlock"> 
@@ -126,7 +126,7 @@
                     [/#list]
                 [/#if] 
               [/#if]
-              [#if currentUser.RPL]
+              [#if securityContext.RPL]
                 [#-- FPL Indicators --]
                 <div id="idosBlock" class="contentElements">
                   <div class="itemIndex">[@s.text name="preplanning.outcomes.indicatorsFPL" /]</div>
@@ -174,12 +174,12 @@
         <div id="outcomesBlock" class="outcome borderBox">
           [#-- Outcome identifier --]
           <input type="hidden" name="outcomes[0].id" value="-1" /> 
-          <input type="hidden" name="outcomes[0].program.id" value="${currentUser.currentInstitution.program.id}" />
+          <input type="hidden" name="outcomes[0].program.id" value="${securityContext.CUrrentInstitution.program.id}" />
           <input type="hidden" name="outcomes[0].type.id" value="${elementTypeID}" />
           [#-- Title --]
           [#assign outcomeDescription]
             [@s.text name="preplanning.outcomes.outcome"] 
-              [@s.param name="0"]${currentUser.currentInstitution.program.acronym}[/@s.param] 
+              [@s.param name="0"]${securityContext.CUrrentInstitution.program.acronym}[/@s.param] 
               [@s.param name="1"]<span id="elementIndex">1</span>[/@s.param] 
             [/@s.text]
           [/#assign]
@@ -190,7 +190,7 @@
             <div class="itemIndex">[@s.text name="preplanning.outcomes.indicators" /] </div>
               [#@indicatorTemplate.outcomes template=true i18nkey="preplanning.outcomes.indicators.description" show_remove_link=false /]
           </div>
-          [#if currentUser.FPL]
+          [#if securityContext.FPL]
             [#-- IDOs --]
             [#if idos?has_content]
               <div id="idosBlock" class="contentElements">
@@ -221,14 +221,14 @@
     </article>
   [/@s.form] 
   
-[#if currentUser.FPL]
-  <input type="hidden" id="isFPL" value="${currentUser.currentInstitution.program.id}" />
+[#if securityContext.FPL]
+  <input type="hidden" id="isFPL" value="${securityContext.CUrrentInstitution.program.id}" />
 [/#if]  
 [#-- Outcome 2025 template --]
 <div id="outcomeTemplate" class="outcome borderBox" style="display:none">
   [#-- Outcome identifier --]
   <input type="hidden" name="id" value="-1" /> 
-  <input type="hidden" id="programID" value="${currentUser.currentInstitution.program.id}" />
+  <input type="hidden" id="programID" value="${securityContext.CUrrentInstitution.program.id}" />
   <input type="hidden" id="typeID" value="${elementTypeID}" />
   [#-- Title --]
   [@customForm.textArea name="description" i18nkey="preplanning.outcomes.outcome" required=true /] 

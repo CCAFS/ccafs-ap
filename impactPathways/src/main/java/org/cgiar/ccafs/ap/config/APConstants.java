@@ -92,4 +92,6 @@ public final class APConstants {
   public static final String PROJECT_PARTNER_PPA = "PPA";
   public static final String PROJECT_PARTNER_PP = "PP";  
 
+  // Query parameter
+  public static final String QUERY_PARAMETER = "q";
 }
