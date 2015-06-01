@@ -32,7 +32,7 @@
         <input id="countryListDefault" type="hidden" value="[@s.text name="summaries.caseStudies.selectCountry" /]" />
         
         [#-- Leader --]        
-        [#if currentUser.admin]
+        [#if securityContext.Admin]
           <div class="halfPartBlock">
             [@customForm.select name="leadersSelected" label="" i18nkey="summaries.caseStudies.leader" listName="leaders" keyFieldName="id" displayFieldName="acronym" /]
           </div>

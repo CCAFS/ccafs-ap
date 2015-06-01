@@ -28,7 +28,7 @@
         <h6>[@s.text name="summaries.outcomes.selectFilter" /]</h6>
 
         [#-- Leader --]        
-        [#if currentUser.admin]
+        [#if securityContext.Admin]
           <div class="halfPartBlock">
             [@customForm.select name="leadersSelected" label="" i18nkey="summaries.outcomes.leader" listName="leaders" keyFieldName="id" displayFieldName="acronym" /]
           </div>

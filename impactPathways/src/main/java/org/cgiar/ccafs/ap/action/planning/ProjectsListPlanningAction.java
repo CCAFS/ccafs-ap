@@ -113,8 +113,7 @@ public class ProjectsListPlanningAction extends BaseAction {
   }
 
   private boolean isUserAuthorizedToCreateProjects() {
-    return getCurrentUser().isAdmin() || getCurrentUser().isCU() || getCurrentUser().isFPL()
-      || getCurrentUser().isRPL();
+    return securityContext.isAdmin() || securityContext.isCU() || securityContext.isFPL() || securityContext.isRPL();
   }
 
   @Override

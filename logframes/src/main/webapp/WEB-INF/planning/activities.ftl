@@ -26,7 +26,7 @@
         [#-- Current Activities --]
         [#if currentUser.TL]
           <li><a href="#activityTables-1"> [@s.text name="planning.activityList.themeActivities" /] </a></li>
-        [#elseif currentUser.RPL ]
+        [#elseif securityContext.RPL ]
           <li><a href="#activityTables-1"> [@s.text name="planning.activityList.regionActivities" /] </a></li>
         [#else]
           <li><a href="#activityTables-1"> [@s.text name="planning.activityList.activities" /] ${currentYear?c} </a></li>
@@ -40,7 +40,7 @@
         [#-- Related activities --]
         [#if currentUser.TL]
           <li><a href="#activityTables-4"> [@s.text name="planning.activityList.themeLedActivities" ] [@s.param] ${currentUser.leader.theme.code} [/@s.param] [/@s.text] </a></li>
-        [#elseif currentUser.RPL ]
+        [#elseif securityContext.RPL ]
           <li><a href="#activityTables-4"> [@s.text name="planning.activityList.regionLedActivities" ] [@s.param] ${currentUser.leader.region.name} [/@s.param] [/@s.text] </a></li>
         [/#if]
       </ul>
@@ -153,7 +153,7 @@
       </div>
 
       [#-- Related activities --]      
-      [#if currentUser.TL || currentUser.RPL ]
+      [#if currentUser.TL || securityContext.RPL ]
         <div id="activityTables-4" class="activityTable">
           [#if relatedActivities?has_content]
             [@activityList.activitiesList activities=relatedActivities canValidate=false canEditActivity=true owned=false /]

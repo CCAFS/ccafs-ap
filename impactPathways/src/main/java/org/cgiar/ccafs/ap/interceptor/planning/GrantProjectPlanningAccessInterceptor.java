@@ -13,33 +13,35 @@
  *****************************************************************/
 package org.cgiar.ccafs.ap.interceptor.planning;
 
+import org.cgiar.ccafs.ap.action.BaseAction;
 import org.cgiar.ccafs.ap.config.APConstants;
+import org.cgiar.ccafs.ap.data.manager.ProjectManager;
 import org.cgiar.ccafs.ap.data.model.User;
+import org.cgiar.ccafs.security.SecurityContext;
 
 import java.util.List;
 import java.util.Map;
 
-import org.apache.struts2.ServletActionContext;
-
-import org.cgiar.ccafs.ap.data.manager.ProjectManager;
-import org.cgiar.ccafs.ap.action.BaseAction;
 import com.google.inject.Inject;
 import com.opensymphony.xwork2.ActionInvocation;
 import com.opensymphony.xwork2.interceptor.AbstractInterceptor;
+import org.apache.struts2.ServletActionContext;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 /**
  * This interceptor will validate if the user who is trying to edit a specific project is able to: Fully edit, partially
  * edit or just read the project.
- *
+ * 
  * @author Héctor Fabio Tobón R.
  */
 public class GrantProjectPlanningAccessInterceptor extends AbstractInterceptor {
 
   private static final long serialVersionUID = 3416451095136457226L;
-
   private static final Logger LOG = LoggerFactory.getLogger(GrantProjectPlanningAccessInterceptor.class);
+
+  @Inject
+  protected SecurityContext securityContext;
 
   // Managers
   ProjectManager projectManager;
@@ -65,11 +67,11 @@ public class GrantProjectPlanningAccessInterceptor extends AbstractInterceptor {
       int projectID = Integer.parseInt(projectParameter);
       // Listing all projects that the user is able to edit.
       // Getting project list that belongs to the program that you belongs to.
-      if (user.isAdmin()) {
+      if (securityContext.isAdmin()) {
         // Admins are able to see all fields editable and save any information.
         baseAction.setFullEditable(true);
         baseAction.setSaveable(true);
-      } else if (user.isFPL() || user.isRPL() || user.isCU()) {
+      } else if (securityContext.isFPL() || securityContext.isRPL() || securityContext.isCU()) {
         // If the user is a FPL or RPL, let's figure out if he/she can have the enough privileges to edit the
         // project.
         List<Integer> idsAllowedToEdit = projectManager.getProjectIdsEditables(user);
@@ -81,7 +83,7 @@ public class GrantProjectPlanningAccessInterceptor extends AbstractInterceptor {
           baseAction.setFullEditable(true);
           baseAction.setSaveable(false);
         }
-      } else if (user.isPL()) {
+      } else if (securityContext.isPL()) {
         User projectLeader = projectManager.getProjectLeader(projectID);
         if (projectLeader != null) {
           // If the user is the project leader, he is able to save and partially edit.
@@ -106,7 +108,7 @@ public class GrantProjectPlanningAccessInterceptor extends AbstractInterceptor {
     } else {
       // if the user is in the projects list section.
       // If user is Admin, FPL or RPL, he/she will be able to add new projects.
-      if (user.isAdmin() || user.isFPL() || user.isRPL()) {
+      if (securityContext.isAdmin() || securityContext.isFPL() || securityContext.isRPL()) {
         baseAction.setFullEditable(true);
         baseAction.setSaveable(true);
       } else {
