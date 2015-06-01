@@ -98,19 +98,9 @@ public class UserManagerImp implements UserManager {
       // User
       User projectContact = new User();
       projectContact.setId(Integer.parseInt(pData.get("id")));
-      projectContact.setEmployeeId(Integer.parseInt(pData.get("employee_id")));
       projectContact.setFirstName(pData.get("first_name"));
       projectContact.setLastName(pData.get("last_name"));
       projectContact.setEmail(pData.get("email"));
-      // Role
-      Role role = new Role();
-      role.setId(Integer.parseInt(pData.get("role_id")));
-      role.setName(pData.get("role_name"));
-      role.setAcronym(pData.get("role_acronym"));
-      projectContact.setRole(role);
-      // Institution
-      projectContact.setCurrentInstitution(institutionManager.getInstitution(Integer.parseInt(pData
-        .get("institution_id"))));
       // Adding object to the array.
       projectContacts.add(projectContact);
     }

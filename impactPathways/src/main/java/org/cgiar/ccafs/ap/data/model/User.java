@@ -58,8 +58,9 @@ public class User {
    *         e.g. Tobón, Héctor (CIAT) - FPL
    */
   public String getComposedOwnerName() {
-    return this.lastName + ", " + this.firstName + " (" + this.currentInstitution.getAcronym() + ") - "
-      + this.getRole().getAcronym();
+    // return this.lastName + ", " + this.firstName + " (" + this.currentInstitution.getAcronym() + ") - "
+    // + this.getRole().getAcronym();
+    return this.lastName + ", " + this.firstName;
   }
 
   public Institution getCurrentInstitution() {

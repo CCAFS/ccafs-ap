@@ -16,6 +16,7 @@ package org.cgiar.ccafs.ap.data.dao.mysql;
 
 import org.cgiar.ccafs.ap.config.APConstants;
 import org.cgiar.ccafs.ap.data.dao.UserDAO;
+import org.cgiar.ccafs.security.Role;
 import org.cgiar.ccafs.utils.db.DAOManager;
 
 import java.sql.Connection;
@@ -89,33 +90,26 @@ public class MySQLUserDAO implements UserDAO {
     try (Connection connection = dbManager.getConnection()) {
 
       StringBuilder query = new StringBuilder();
-      query.append("SELECT ins.id as institution_id, emp.id as employee_id, ");
-      query.append("u.id, u.first_name, u.last_name, u.email, ");
-      query.append("ro.id as role_id, ro.name as role_name, ro.acronym as role_acronym ");
+      query.append("SELECT u.id, u.first_name, u.last_name, u.email ");
       query.append("FROM users u ");
       query.append("INNER JOIN user_roles ur ON u.id = ur.user_id ");
-      query.append("INNER JOIN employees emp ON u.id=emp.user_id ");
-      query.append("INNER JOIN institutions ins ON emp.institution_id = ins.id ");
-      query.append("WHERE ur.role_id = ");
-      query.append(APConstants.ROLE_FLAGSHIP_PROGRAM_LEADER);
-      query.append(" OR ur.role_id = ");
-      query.append(APConstants.ROLE_REGIONAL_PROGRAM_LEADER);
-      query.append(" OR ur.role_id = ");
-      query.append(APConstants.ROLE_COORDINATING_UNIT);
-      query.append(" ORDER BY u.last_name, ins.name ");
+      query.append("INNER JOIN roles ro ON ur.role_id = ro.id ");
+      query.append("WHERE ro.acronym = '");
+      query.append(Role.FPL);
+      query.append("' OR ro.acronym = '");
+      query.append(Role.RPL);
+      query.append("' OR ro.acronym = '");
+      query.append(Role.CU);
+      query.append("' GROUP BY u.id ");
+      query.append("ORDER BY u.last_name ");
 
       ResultSet rs = dbManager.makeQuery(query.toString(), connection);
       while (rs.next()) {
         Map<String, String> projectContactPersonData = new HashMap<>();
-        projectContactPersonData.put("institution_id", rs.getString("institution_id"));
         projectContactPersonData.put("id", rs.getString("id"));
-        projectContactPersonData.put("employee_id", rs.getString("employee_id"));
         projectContactPersonData.put("first_name", rs.getString("first_name"));
         projectContactPersonData.put("last_name", rs.getString("last_name"));
         projectContactPersonData.put("email", rs.getString("email"));
-        projectContactPersonData.put("role_id", rs.getString("role_id"));
-        projectContactPersonData.put("role_name", rs.getString("role_name"));
-        projectContactPersonData.put("role_acronym", rs.getString("role_acronym"));
         projectContactPersonList.add(projectContactPersonData);
       }
       rs.close();
@@ -140,13 +134,13 @@ public class MySQLUserDAO implements UserDAO {
       query.append("INNER JOIN employees emp ON u.id=emp.user_id ");
       query.append("INNER JOIN roles ro ON emp.role_id=ro.id ");
       query.append("INNER JOIN institutions ins ON emp.institution_id = ins.id ");
-      query.append("WHERE (ro.id= ");
+      query.append("WHERE (ro.id= '");
       query.append(APConstants.ROLE_FLAGSHIP_PROGRAM_LEADER);
-      query.append(" OR ro.id= ");
+      query.append("' OR ro.id= '");
       query.append(APConstants.ROLE_REGIONAL_PROGRAM_LEADER);
-      query.append(" OR ro.id= ");
+      query.append("' OR ro.id= '");
       query.append(APConstants.ROLE_COORDINATING_UNIT);
-      query.append(") AND ins.program_id = ");
+      query.append("') AND ins.program_id = ");
       query.append(programId);
       query.append(" ORDER BY u.last_name, ins.name ");
 
