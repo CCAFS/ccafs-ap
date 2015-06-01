@@ -64,8 +64,8 @@ DELIMITER $$
 CREATE PROCEDURE delete_persons_table()
 BEGIN
   
-  IF NOT EXISTS ((SELECT * FROM information_schema.columns WHERE table_schema=DATABASE() AND table_name='users' AND column_name='person_id')) THEN
-    ALTER TABLE `users` DROP COLUMN `first_name`;
+  IF EXISTS ((SELECT * FROM information_schema.columns WHERE table_schema=DATABASE() AND table_name='users' AND column_name='person_id')) THEN
+    ALTER TABLE `users` DROP COLUMN `person_id`;
   END IF;
 
 END $$
