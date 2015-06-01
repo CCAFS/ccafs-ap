@@ -86,4 +86,6 @@ public final class APConstants {
   public static final int LOCATION_TYPE_CLIMATE_SMART_VILLAGE = 10;
   public static final int LOCATION_TYPE_CCAFS_SITE = 11;
 
+  // Query parameter
+  public static final String QUERY_PARAMETER = "q";
 }

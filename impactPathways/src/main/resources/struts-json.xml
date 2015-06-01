@@ -75,5 +75,11 @@
       </result>
     </action>
     
+    <action name="searchUsers" class="org.cgiar.ccafs.ap.action.json.global.SearchUserAction">
+      <result type="json">        
+        <param name="noCache">true</param>
+        <param name="excludeNullProperties">true</param>
+      </result>
+    </action>
   </package>
 </struts>
