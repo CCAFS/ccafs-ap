@@ -100,6 +100,7 @@ public class ProjectManagerImpl implements ProjectManager {
 
       Project project = new Project(Integer.parseInt(projectData.get("id")));
       project.setTitle(projectData.get("title"));
+      project.setType(projectData.get("type"));
 
       if (projectData.get("total_budget_amount") != null) {
         Budget totalBudget = new Budget();

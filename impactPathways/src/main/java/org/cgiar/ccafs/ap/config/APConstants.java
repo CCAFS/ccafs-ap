@@ -86,11 +86,16 @@ public final class APConstants {
   public static final int LOCATION_TYPE_CLIMATE_SMART_VILLAGE = 10;
   public static final int LOCATION_TYPE_CCAFS_SITE = 11;
   
+  // Types of project
+  public static final String PROJECT_CORE = "CORE";
+  public static final String PROJECT_BILATERAL_COFUNDED = "BILATERAL_COFUNDED";
+  public static final String PROJECT_BILATERAL_STANDALONE = "BILATERAL_STANDALONE";
+  
   // Types of Project Partners
   public static final String PROJECT_PARTNER_PL = "PL";
   public static final String PROJECT_PARTNER_PC = "PC";
   public static final String PROJECT_PARTNER_PPA = "PPA";
-  public static final String PROJECT_PARTNER_PP = "PP";  
+  public static final String PROJECT_PARTNER_PP = "PP";
 
   // Query parameter
   public static final String QUERY_PARAMETER = "q";

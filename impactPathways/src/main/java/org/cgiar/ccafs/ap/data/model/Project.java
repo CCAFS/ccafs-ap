@@ -25,12 +25,14 @@ import org.apache.commons.lang3.builder.ToStringBuilder;
  * This class represents a Project.
  * 
  * @author Javier Andrés Gallego
- * @author Héctor Fabio Tobón R
+ * @author Héctor Fabio Tobón R.
+ * @author Hernán David Carvajal B.
  */
 public class Project {
 
   private int id;
   private String title;
+  private String type; // Type of project see APConstants. e.g. CCAFS Core, Bilateral Stand-alone or Bilateral Co-Funded.
   private String summary;
   private Date startDate;
   private Date endDate;
@@ -351,10 +353,6 @@ public class Project {
     return totalBudget;
   }
 
-  public List<IPProgram> getTypes() {
-    return regions;
-  }
-
   @Override
   public int hashCode() {
     return this.getId();
@@ -440,12 +438,16 @@ public class Project {
     this.title = title;
   }
 
-  public void setTypes(List<IPProgram> types) {
-    this.regions = types;
-  }
-
   @Override
   public String toString() {
     return ToStringBuilder.reflectionToString(this);
+  }
+
+  public String getType() {
+    return type;
+  }
+
+  public void setType(String type) {
+    this.type = type;
   }
 }
