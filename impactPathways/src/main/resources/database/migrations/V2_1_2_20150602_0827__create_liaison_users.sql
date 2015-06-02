@@ -56,3 +56,5 @@ INSERT INTO `liaison_users` (`user_id`, `institution_id`) VALUES ('108', '23');
 INSERT INTO `liaison_users` (`user_id`, `institution_id`) VALUES ('275', '24');
 INSERT INTO `liaison_users` (`user_id`, `institution_id`) VALUES ('83', '18');
 INSERT INTO `liaison_users` (`user_id`, `institution_id`) VALUES ('101', '25');
+INSERT INTO `liaison_users` (`user_id`, `institution_id`) VALUES ('27', '9');
+INSERT INTO `liaison_users` (`user_id`, `institution_id`) VALUES ('131', '1');
