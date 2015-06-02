@@ -294,7 +294,7 @@ public class MySQLUserDAO implements UserDAO {
       query.append("ro.id as role_id, ro.name as role_name, ro.acronym as role_acronym ");
       query.append("FROM users u ");
       query.append("INNER JOIN employees emp ON u.id=emp.user_id ");
-      query.append("INNER JOIN projects pro ON emp.id=pro.project_owner_id ");
+      query.append("INNER JOIN projects pro ON emp.id=pro.management_liaison_id ");
       query.append("INNER JOIN institutions ins ON emp.institution_id = ins.id ");
       query.append("INNER JOIN roles ro ON ro.id = emp.role_id ");
       query.append("WHERE pro.id= ");

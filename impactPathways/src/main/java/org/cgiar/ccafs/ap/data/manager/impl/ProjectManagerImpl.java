@@ -195,7 +195,7 @@ public class ProjectManagerImpl implements ProjectManager {
       }
 
       // Getting the project Owner.
-      project.setOwner(userManager.getOwner(Integer.parseInt(projectData.get("project_owner_id"))));
+      project.setOwner(userManager.getOwner(Integer.parseInt(projectData.get("management_liaison_id"))));
       // Getting the creation date timestamp.
       project.setCreated(Long.parseLong(projectData.get("created")));
       // Getting the Program creator
@@ -462,7 +462,7 @@ public class ProjectManagerImpl implements ProjectManager {
       // This is a new project. we need to add it to the database.
       // Getting the employee identifier which is the owner_id.
       int ownerId = userManager.getEmployeeID(project.getOwner());
-      projectData.put("project_owner_id", ownerId);
+      projectData.put("management_liaison_id", ownerId);
       projectData.put("program_creator_id", project.getProgramCreator().getId());
     } else {
       // Update project
@@ -476,7 +476,7 @@ public class ProjectManagerImpl implements ProjectManager {
       if (project.getEndDate() != null) {
         projectData.put("end_date", format.format(project.getEndDate()));
       }
-      projectData.put("project_owner_id", project.getOwner().getEmployeeId());
+      projectData.put("management_liaison_id", project.getOwner().getEmployeeId());
     }
 
     return projectDAO.saveProject(projectData);
