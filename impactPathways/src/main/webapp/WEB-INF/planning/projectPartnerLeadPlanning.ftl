@@ -46,10 +46,9 @@
     <div id="PartnersTabs" class="ui-tabs ui-widget ui-widget-content ui-corner-all"> 
       [#-- Project Partners Sub-menu --]
       [#include "/WEB-INF/planning/projectPartners-sub-menu.ftl" /]
-      <div id="partnerTables-partnerLead" class="partnerTable ui-tabs-panel ui-widget-content ui-corner-bottom clearfix">  
-        [#-- Project Title --]
-        [#-- Displaying partner leader from partnersTemplate.ftl --] 
-        [@partnersTemplate.projectLeader leader=project.leader /] 
+      <div id="partnerTables-partnerLead" class="partnerTable ui-tabs-panel ui-widget-content ui-corner-bottom clearfix">   
+        [#-- Displaying partner leader from partnersTemplate.ftl --]  
+        [@partnersTemplate.projectLeader leader={"name":"Project leader"} /] 
       </div>
     </div>
     

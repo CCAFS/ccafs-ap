@@ -135,6 +135,7 @@
 [/#macro]
 
 [#macro projectLeader leader showResponsabilities=false canEdit=true]
+  
   [#if leader?has_content]
       <div id="projectLeader" class="projectLeader clearfix">
           [#-- Lead List --]
@@ -143,12 +144,14 @@
           </div> 
           [#-- Project Leader contact --] 
           <div class="fullPartBlock clearfix"> 
-            [@customForm.input name="preplanning.projectPartners.projectLeader" type="text" disabled=!canEdit i18nkey="preplanning.projectPartners.projectLeader" required=true readOnly=true/]
+            [@customForm.input name="preplanning.projectPartners.projectLeader" className="userName" type="text" disabled=!canEdit i18nkey="preplanning.projectPartners.projectLeader" required=true readOnly=true/]
+            <input class="userId" type="hidden" name="preplanning.projectPartners.projectLeader" value="{userId}">
             <div class="searchUser">[@s.text name="form.buttons.searchUser" /]</div>
           </div>
           [#-- Project Coordinator --] 
           <div class="fullPartBlock clearfix">
-            [@customForm.input name="preplanning.projectPartners.projectCoordinator" type="text" disabled=!canEdit i18nkey="preplanning.projectPartners.projectCoordinator"  readOnly=true/]
+            [@customForm.input name="preplanning.projectPartners.projectCoordinator" className="userName" type="text" disabled=!canEdit i18nkey="preplanning.projectPartners.projectCoordinator"  readOnly=true/]
+            <input class="userId" type="hidden" name="preplanning.projectPartners.projectCoordinator" value="{userId}">
             <div class="searchUser">[@s.text name="form.buttons.searchUser" /]</div>
           </div> 
           [#-- Responsabilities --]

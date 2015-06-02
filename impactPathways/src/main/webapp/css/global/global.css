@@ -357,7 +357,7 @@ select#partnerSave_activityPartner_partner_type_id {
     font-weight: bold;
 }
 .panel .panel-body {
-    padding: 0px 10px;
+    padding: 0px 3px 0px 10px;
     min-height: 28px;
 }
 
@@ -397,6 +397,22 @@ select#partnerSave_activityPartner_partner_type_id {
     color: #fff;
 }
 
+.search-input{
+    width: 86%; 
+    position: relative;
+}
+
+.search-loader {
+    position: absolute;
+    bottom: 0.4em;
+    right: 0.5em;
+}
+
+.search-loader img {
+    width: 32px;
+ 
+}
+
 .search-button {
     background: #E6E6E6;
     padding: 4px 0;
@@ -415,6 +431,18 @@ select#partnerSave_activityPartner_partner_type_id {
 .search-content {
     position: relative;
     margin-bottom: 20px;
+}
+
+.usersList ul {
+  max-height: 110px;
+  overflow: auto;
+}
+
+.usersList p.userMessage {
+  text-align: center;
+  margin-top: 1em;
+  font-style: italic;
+  font-size: 1.1em;
 }
 
 
