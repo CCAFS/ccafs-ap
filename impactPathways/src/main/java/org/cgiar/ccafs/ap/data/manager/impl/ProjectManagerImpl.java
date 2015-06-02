@@ -100,6 +100,7 @@ public class ProjectManagerImpl implements ProjectManager {
 
       Project project = new Project(Integer.parseInt(projectData.get("id")));
       project.setTitle(projectData.get("title"));
+      project.setType(projectData.get("type"));
 
       if (projectData.get("total_budget_amount") != null) {
         Budget totalBudget = new Budget();
@@ -175,6 +176,7 @@ public class ProjectManagerImpl implements ProjectManager {
     if (!projectData.isEmpty()) {
       Project project = new Project(Integer.parseInt(projectData.get("id")));
       project.setTitle(projectData.get("title"));
+      project.setType(projectData.get("type"));
       project.setSummary(projectData.get("summary"));
       // Format to the Dates of the project
       if (projectData.get("start_date") != null) {

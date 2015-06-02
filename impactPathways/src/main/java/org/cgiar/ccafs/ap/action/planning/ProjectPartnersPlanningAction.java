@@ -38,6 +38,7 @@ import org.slf4j.LoggerFactory;
  * This class is used to manage the Project Partners section in the planning step.
  * 
  * @author Hernán Carvajal
+ * @author Héctor Fabio Tobón R. - CIAT/CCAFS
  */
 public class ProjectPartnersPlanningAction extends BaseAction {
 
@@ -153,6 +154,8 @@ public class ProjectPartnersPlanningAction extends BaseAction {
     if (projectLeader == null) {
       projectLeader = new User();
       projectLeader.setId(-1);
+      project.setLeader(projectLeader);
+    } else {
       project.setLeader(projectLeader);
     }
 

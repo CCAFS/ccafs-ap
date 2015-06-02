@@ -143,7 +143,6 @@
             [@customForm.select name="project.expectedLeader.currentInstitution" disabled=!canEdit i18nkey="preplanning.projectPartners.leader.institutionName" listName="allPartners" keyFieldName="id"  displayFieldName="getComposedName()" /]
           </div> 
           [#-- Project Leader contact --] 
-          <div class="fullPartBlock clearfix"> 
             [@customForm.input name="preplanning.projectPartners.projectLeader" className="userName" type="text" disabled=!canEdit i18nkey="preplanning.projectPartners.projectLeader" required=true readOnly=true/]
             <input class="userId" type="hidden" name="preplanning.projectPartners.projectLeader" value="{userId}">
             <div class="searchUser">[@s.text name="form.buttons.searchUser" /]</div>

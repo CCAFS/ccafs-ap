@@ -132,7 +132,7 @@ public class ProjectsListPlanningAction extends BaseAction {
       // ----------------------------------------------------------------
       // TODO Get list of projects that the user is able to edit.
       // projectIds = projectManager.getProjectIdsEditables(this.getCurrentUser());
-
+      //
       // for (Integer projectId : projectIds) {
       // Project temp = new Project(projectId);
       // int index = allProjects.indexOf(temp);
