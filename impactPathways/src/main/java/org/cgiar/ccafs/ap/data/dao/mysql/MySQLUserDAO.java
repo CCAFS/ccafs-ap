@@ -16,6 +16,7 @@ package org.cgiar.ccafs.ap.data.dao.mysql;
 
 import org.cgiar.ccafs.ap.config.APConstants;
 import org.cgiar.ccafs.ap.data.dao.UserDAO;
+import org.cgiar.ccafs.security.Role;
 import org.cgiar.ccafs.utils.db.DAOManager;
 
 import java.sql.Connection;
@@ -52,13 +53,12 @@ public class MySQLUserDAO implements UserDAO {
     try (Connection connection = dbManager.getConnection()) {
 
       StringBuilder query = new StringBuilder();
-      query
-        .append("SELECT u.id,e.id as employee_id, pe.first_name, pe.last_name, u.email, e.institution_id, e.role_id, r.name as role_name, r.acronym as role_acronym ");
+      query.append("SELECT u.id,e.id as employee_id, u.first_name, u.last_name, ");
+      query.append("u.email, e.institution_id, e.role_id, r.name as role_name, r.acronym as role_acronym ");
       query.append("FROM employees e ");
       query.append("INNER JOIN users u  ON e.user_id=u.id ");
       query.append("INNER JOIN roles r  ON e.role_id=r.id ");
-      query.append("INNER JOIN persons pe  ON u.person_id=pe.id ");
-      query.append("ORDER BY pe.last_name");
+      query.append("ORDER BY u.last_name");
 
       ResultSet rs = dbManager.makeQuery(query.toString(), connection);
       while (rs.next()) {
@@ -90,34 +90,26 @@ public class MySQLUserDAO implements UserDAO {
     try (Connection connection = dbManager.getConnection()) {
 
       StringBuilder query = new StringBuilder();
-      query.append("SELECT ins.id as institution_id, emp.id as employee_id, ");
-      query.append("u.id, pe.first_name, pe.last_name, u.email, ");
-      query.append("ro.id as role_id, ro.name as role_name, ro.acronym as role_acronym ");
+      query.append("SELECT u.id, u.first_name, u.last_name, u.email ");
       query.append("FROM users u ");
-      query.append("INNER JOIN persons pe  ON u.person_id=pe.id ");
-      query.append("INNER JOIN employees emp ON u.id=emp.user_id ");
-      query.append("INNER JOIN roles ro ON emp.role_id=ro.id ");
-      query.append("INNER JOIN institutions ins ON emp.institution_id = ins.id ");
-      query.append("WHERE ro.id= ");
-      query.append(APConstants.ROLE_FLAGSHIP_PROGRAM_LEADER);
-      query.append(" OR ro.id= ");
-      query.append(APConstants.ROLE_REGIONAL_PROGRAM_LEADER);
-      query.append(" OR ro.id= ");
-      query.append(APConstants.ROLE_COORDINATING_UNIT);
-      query.append(" ORDER BY pe.last_name, ins.name ");
+      query.append("INNER JOIN user_roles ur ON u.id = ur.user_id ");
+      query.append("INNER JOIN roles ro ON ur.role_id = ro.id ");
+      query.append("WHERE ro.acronym = '");
+      query.append(Role.FPL);
+      query.append("' OR ro.acronym = '");
+      query.append(Role.RPL);
+      query.append("' OR ro.acronym = '");
+      query.append(Role.CU);
+      query.append("' GROUP BY u.id ");
+      query.append("ORDER BY u.last_name ");
 
       ResultSet rs = dbManager.makeQuery(query.toString(), connection);
       while (rs.next()) {
         Map<String, String> projectContactPersonData = new HashMap<>();
-        projectContactPersonData.put("institution_id", rs.getString("institution_id"));
         projectContactPersonData.put("id", rs.getString("id"));
-        projectContactPersonData.put("employee_id", rs.getString("employee_id"));
         projectContactPersonData.put("first_name", rs.getString("first_name"));
         projectContactPersonData.put("last_name", rs.getString("last_name"));
         projectContactPersonData.put("email", rs.getString("email"));
-        projectContactPersonData.put("role_id", rs.getString("role_id"));
-        projectContactPersonData.put("role_name", rs.getString("role_name"));
-        projectContactPersonData.put("role_acronym", rs.getString("role_acronym"));
         projectContactPersonList.add(projectContactPersonData);
       }
       rs.close();
@@ -136,22 +128,21 @@ public class MySQLUserDAO implements UserDAO {
     try (Connection connection = dbManager.getConnection()) {
       StringBuilder query = new StringBuilder();
       query.append("SELECT ins.id as institution_id, emp.id as employee_id, ");
-      query.append("u.id, pe.first_name, pe.last_name, u.email, ");
+      query.append("u.id, u.first_name, u.last_name, u.email, ");
       query.append("ro.id as role_id, ro.name as role_name, ro.acronym as role_acronym ");
       query.append("FROM users u ");
-      query.append("INNER JOIN persons pe ON u.person_id=pe.id ");
       query.append("INNER JOIN employees emp ON u.id=emp.user_id ");
       query.append("INNER JOIN roles ro ON emp.role_id=ro.id ");
       query.append("INNER JOIN institutions ins ON emp.institution_id = ins.id ");
-      query.append("WHERE (ro.id= ");
+      query.append("WHERE (ro.id= '");
       query.append(APConstants.ROLE_FLAGSHIP_PROGRAM_LEADER);
-      query.append(" OR ro.id= ");
+      query.append("' OR ro.id= '");
       query.append(APConstants.ROLE_REGIONAL_PROGRAM_LEADER);
-      query.append(" OR ro.id= ");
+      query.append("' OR ro.id= '");
       query.append(APConstants.ROLE_COORDINATING_UNIT);
-      query.append(") AND ins.program_id = ");
+      query.append("') AND ins.program_id = ");
       query.append(programId);
-      query.append(" ORDER BY pe.last_name, ins.name ");
+      query.append(" ORDER BY u.last_name, ins.name ");
 
       ResultSet rs = dbManager.makeQuery(query.toString(), connection);
       while (rs.next()) {
@@ -184,9 +175,8 @@ public class MySQLUserDAO implements UserDAO {
     try (Connection connection = dbManager.getConnection()) {
 
       StringBuilder query = new StringBuilder();
-      query.append("SELECT u.id, pe.first_name, pe.last_name, u.email ");
+      query.append("SELECT u.id, u.first_name, u.last_name, u.email ");
       query.append("FROM users u ");
-      query.append("INNER JOIN persons pe  ON u.person_id=pe.id");
 
       ResultSet rs = dbManager.makeQuery(query.toString(), connection);
       while (rs.next()) {
@@ -262,10 +252,9 @@ public class MySQLUserDAO implements UserDAO {
     try (Connection connection = dbManager.getConnection()) {
       StringBuilder query = new StringBuilder();
       query.append("SELECT ins.id as institution_id, emp.id as employee_id, ");
-      query.append("u.id, pe.first_name, pe.last_name, u.email, ");
+      query.append("u.id, u.first_name, u.last_name, u.email, ");
       query.append("ro.id as role_id, ro.name as role_name, ro.acronym as role_acronym ");
       query.append("FROM users u ");
-      query.append("INNER JOIN persons pe  ON u.person_id=pe.id ");
       query.append("INNER JOIN employees emp ON u.id=emp.user_id ");
       query.append("INNER JOIN roles ro ON emp.role_id=ro.id ");
       query.append("INNER JOIN institutions ins ON emp.institution_id = ins.id ");
@@ -301,10 +290,9 @@ public class MySQLUserDAO implements UserDAO {
 
       StringBuilder query = new StringBuilder();
       query.append("SELECT ins.id as institution_id, u.id, emp.id as employee_id, ");
-      query.append("pe.first_name, pe.last_name, u.email, ");
+      query.append("u.first_name, u.last_name, u.email, ");
       query.append("ro.id as role_id, ro.name as role_name, ro.acronym as role_acronym ");
       query.append("FROM users u ");
-      query.append("INNER JOIN persons pe  ON u.person_id=pe.id ");
       query.append("INNER JOIN employees emp ON u.id=emp.user_id ");
       query.append("INNER JOIN projects pro ON emp.id=pro.project_owner_id ");
       query.append("INNER JOIN institutions ins ON emp.institution_id = ins.id ");
@@ -339,9 +327,8 @@ public class MySQLUserDAO implements UserDAO {
     try (Connection connection = dbManager.getConnection()) {
       StringBuilder query = new StringBuilder();
       query.append("SELECT u.id, u.password, u.is_ccafs_user, u.last_login, ");
-      query.append("p.first_name, p.last_name, u.email, p.phone ");
+      query.append("u.first_name, u.last_name, u.email ");
       query.append("FROM users u ");
-      query.append("INNER JOIN persons p ON u.person_id = p.id ");
       query.append("WHERE u.id = '");
       query.append(userId);
       query.append("'; ");
@@ -355,7 +342,6 @@ public class MySQLUserDAO implements UserDAO {
         userData.put("first_name", rs.getString("first_name"));
         userData.put("last_name", rs.getString("last_name"));
         userData.put("email", rs.getString("email"));
-        userData.put("phone", rs.getString("phone"));
       }
       rs.close();
     } catch (SQLException e) {
@@ -372,10 +358,8 @@ public class MySQLUserDAO implements UserDAO {
     Map<String, String> userData = new HashMap<>();
     try (Connection connection = dbManager.getConnection()) {
       StringBuilder query = new StringBuilder();
-      query.append("SELECT u.*, ");
-      query.append("p.* ");
+      query.append("SELECT * ");
       query.append("FROM users u ");
-      query.append("INNER JOIN persons p ON u.person_id = p.id ");
       query.append("WHERE u.email = '");
       query.append(email);
       query.append("'; ");
@@ -390,7 +374,6 @@ public class MySQLUserDAO implements UserDAO {
         userData.put("last_name", rs.getString("last_name"));
         userData.put("username", rs.getString("username"));
         userData.put("email", rs.getString("email"));
-        userData.put("phone", rs.getString("phone"));
         userData.put("is_active", rs.getString("is_active"));
       }
       rs.close();
@@ -427,5 +410,53 @@ public class MySQLUserDAO implements UserDAO {
   public boolean saveUser(Map<String, String> userData) {
     // TODO HC - To implement
     return true;
+  }
+
+  @Override
+  public List<Map<String, String>> searchUser(String searchValue) {
+    LOG.debug(">> searchUser(searchValue={})", searchValue);
+    List<Map<String, String>> users = new ArrayList<>();
+
+    try (Connection connection = dbManager.getConnection()) {
+
+      StringBuilder query = new StringBuilder();
+      query.append("SELECT u.* ");
+      query.append("FROM users u ");
+      query.append("WHERE ");
+      query.append("first_name like '%" + searchValue + "%' ");
+      query.append("OR last_name like '%" + searchValue + "%' ");
+      query.append("OR email like '%" + searchValue + "%'");
+      query.append("GROUP BY email ");
+      query.append("ORDER BY CASE ");
+      query.append("WHEN email like '" + searchValue + "%' THEN 0 ");
+      query.append("WHEN email like '% %" + searchValue + "% %' THEN 1 ");
+      query.append("WHEN email like '%" + searchValue + "' THEN 2 ");
+      query.append("WHEN last_name like '" + searchValue + "%' THEN 3 ");
+      query.append("WHEN last_name like '% %" + searchValue + "% %' THEN 4 ");
+      query.append("WHEN last_name like '%" + searchValue + "' THEN 5 ");
+      query.append("WHEN first_name like '" + searchValue + "%' THEN 6 ");
+      query.append("WHEN first_name like '% %" + searchValue + "% %' THEN 7 ");
+      query.append("WHEN first_name like '%" + searchValue + "' THEN 8 ");
+      query.append("ELSE 9 ");
+      query.append("END, email, last_name, first_name ");
+
+      ResultSet rs = dbManager.makeQuery(query.toString(), connection);
+      while (rs.next()) {
+        Map<String, String> userData = new HashMap<>();
+        userData.put("id", rs.getString("id"));
+        userData.put("first_name", rs.getString("first_name"));
+        userData.put("last_name", rs.getString("last_name"));
+        userData.put("email", rs.getString("email"));
+        userData.put("is_active", rs.getString("is_active"));
+        users.add(userData);
+      }
+      rs.close();
+    } catch (SQLException e) {
+      LOG.error("-- searchUser() > There was an error looking for users with the following search value {}.",
+        searchValue, e);
+      return null;
+    }
+    LOG.debug("<< searchUser():{}", users);
+    return users;
   }
 }

@@ -14,10 +14,11 @@
 package org.cgiar.ccafs.ap.action.planning;
 
 import org.cgiar.ccafs.ap.action.BaseAction;
-import org.cgiar.ccafs.ap.config.APConfig;
+import org.cgiar.ccafs.ap.config.APConstants;
 import org.cgiar.ccafs.ap.data.manager.ProjectManager;
 import org.cgiar.ccafs.ap.data.model.IPProgram;
 import org.cgiar.ccafs.ap.data.model.Project;
+import org.cgiar.ccafs.utils.APConfig;
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -46,10 +47,7 @@ public class ProjectsListPlanningAction extends BaseAction {
 
   // Model for the front-end
   private int projectID;
-
-
   private double totalBudget;
-
 
   @Inject
   public ProjectsListPlanningAction(APConfig config, ProjectManager projectManager) {
@@ -82,10 +80,9 @@ public class ProjectsListPlanningAction extends BaseAction {
     if (userProgram != null) {
       newProject.setProgramCreator(userProgram);
     } else {
-      LOG
-        .error(
-          "-- execute() > the current user identify with id={} and institution_id={} does not belong to a specific program!",
-          new Object[] {this.getCurrentUser().getId(), this.getCurrentUser().getCurrentInstitution().getId()});
+      LOG.error(
+        "-- execute() > the current user identify with id={} and institution_id={} does not belong to a specific program!",
+        new Object[] {this.getCurrentUser().getId(), this.getCurrentUser().getCurrentInstitution().getId()});
     }
     newProject.setCreated(new Date().getTime());
     return projectManager.saveProjectDescription(newProject);
@@ -95,8 +92,16 @@ public class ProjectsListPlanningAction extends BaseAction {
     return allProjects;
   }
 
+  public Date getCurrentPlanningStartDate() {
+    return config.getCurrentPlanningStartDate();
+  }
+
   public int getProjectID() {
     return projectID;
+  }
+
+  public String getProjectRequest() {
+    return APConstants.PROJECT_REQUEST_ID;
   }
 
   public List<Project> getProjects() {
@@ -108,14 +113,13 @@ public class ProjectsListPlanningAction extends BaseAction {
   }
 
   private boolean isUserAuthorizedToCreateProjects() {
-    return getCurrentUser().isAdmin() || getCurrentUser().isCU() || getCurrentUser().isFPL()
-      || getCurrentUser().isRPL();
+    return securityContext.isAdmin() || securityContext.isCU() || securityContext.isFPL() || securityContext.isRPL();
   }
 
   @Override
   public void prepare() throws Exception {
     super.prepare();
-
+    getCurrentPlanningStartDate();
     projects = new ArrayList<>();
     allProjects = projectManager.getAllProjectsBasicInfo();
 
@@ -124,15 +128,19 @@ public class ProjectsListPlanningAction extends BaseAction {
     List<Integer> projectIds = null;
     if (this.getCurrentUser().getCurrentInstitution().getProgram() != null) {
       // Getting the list of project ids that the user's program created, or those where the user is the project owner.
-      projectIds = projectManager.getProjectIdsEditables(this.getCurrentUser());
 
-      for (Integer projectId : projectIds) {
-        Project temp = new Project(projectId);
-        int index = allProjects.indexOf(temp);
-        if (index != -1) {
-          projects.add(allProjects.remove(index));
-        }
-      }
+      // ----------------------------------------------------------------
+      // TODO Get list of projects that the user is able to edit.
+      // projectIds = projectManager.getProjectIdsEditables(this.getCurrentUser());
+
+      // for (Integer projectId : projectIds) {
+      // Project temp = new Project(projectId);
+      // int index = allProjects.indexOf(temp);
+      // if (index != -1) {
+      // projects.add(allProjects.remove(index));
+      // }
+      // }
+      // ---------------------------------------------------------
     }
 
     // Getting the list of project ids that the user is assigned as Project Leader.

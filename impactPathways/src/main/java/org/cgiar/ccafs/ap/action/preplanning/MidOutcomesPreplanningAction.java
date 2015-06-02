@@ -14,7 +14,6 @@
 package org.cgiar.ccafs.ap.action.preplanning;
 
 import org.cgiar.ccafs.ap.action.BaseAction;
-import org.cgiar.ccafs.ap.config.APConfig;
 import org.cgiar.ccafs.ap.config.APConstants;
 import org.cgiar.ccafs.ap.data.manager.IPElementManager;
 import org.cgiar.ccafs.ap.data.manager.IPElementRelationManager;
@@ -23,6 +22,7 @@ import org.cgiar.ccafs.ap.data.manager.IPProgramManager;
 import org.cgiar.ccafs.ap.data.model.IPElement;
 import org.cgiar.ccafs.ap.data.model.IPElementType;
 import org.cgiar.ccafs.ap.data.model.IPProgram;
+import org.cgiar.ccafs.utils.APConfig;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -73,7 +73,7 @@ public class MidOutcomesPreplanningAction extends BaseAction {
   }
 
   public String getNextActionName() {
-    if (getCurrentUser().isFPL()) {
+    if (securityContext.isFPL()) {
       return "outputs";
     } else {
       return "outputsRPL";
@@ -156,7 +156,7 @@ public class MidOutcomesPreplanningAction extends BaseAction {
     for (IPElement midOutcome : midOutcomes) {
       if (midOutcome.getIndicators() != null) {
         for (int i = 0; i < midOutcome.getIndicators().size(); i++) {
-          if (getCurrentUser().isRPL()) {
+          if (securityContext.isRPL()) {
             if (midOutcome.getIndicators().get(i).getId() == 0) {
               midOutcome.getIndicators().get(i).setId(-1);
             }

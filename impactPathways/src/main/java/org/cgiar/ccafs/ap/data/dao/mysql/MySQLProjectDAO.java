@@ -48,6 +48,22 @@ public class MySQLProjectDAO implements ProjectDAO {
   }
 
   @Override
+  public boolean deleteProject(int projectID) {
+    LOG.debug(">> deleteProject(projectID={})", projectID);
+
+    String query = "DELETE FROM projects WHERE id = ?";
+
+    int rowsDeleted = databaseManager.delete(query, new Object[] {projectID});
+    if (rowsDeleted >= 0) {
+      LOG.debug("<< deleteProject():{}", true);
+      return true;
+    }
+
+    LOG.debug("<< deleteProject:{}", false);
+    return false;
+  }
+
+  @Override
   public boolean deleteProjectIndicator(int projectID, int indicatorID) {
     LOG.debug(">> deleteProjectIndicator(projectID={}, indicatorID={})", projectID, indicatorID);
 
@@ -62,6 +78,7 @@ public class MySQLProjectDAO implements ProjectDAO {
     LOG.debug("<< deleteProjectIndicator:{}", false);
     return false;
   }
+
 
   @Override
   public boolean deleteProjectOutput(int projectID, int outputID) {
@@ -101,7 +118,6 @@ public class MySQLProjectDAO implements ProjectDAO {
     LOG.debug("-- existProject() > Calling method executeQuery to get the results");
     return exists;
   }
-
 
   @Override
   public List<Map<String, String>> getAllProjects() {
@@ -169,6 +185,7 @@ public class MySQLProjectDAO implements ProjectDAO {
     return projectList;
   }
 
+
   private List<Map<String, String>> getData(String query) {
     LOG.debug(">> executeQuery(query='{}')", query);
     List<Map<String, String>> projectList = new ArrayList<>();
@@ -204,7 +221,6 @@ public class MySQLProjectDAO implements ProjectDAO {
     return projectList;
   }
 
-
   @Override
   public Map<String, String> getExpectedProjectLeader(int projectID) {
     LOG.debug(">> getExpectedProjectLeader(projectID={})", projectID);
@@ -236,13 +252,17 @@ public class MySQLProjectDAO implements ProjectDAO {
   }
 
   @Override
-  public List<Integer> getPLProjectIds(int employeeId) {
-    LOG.debug(">> getPLProjectIds(employeeId={})", new Object[] {employeeId});
+  public List<Integer> getPLProjectIds(int userID) {
+    LOG.debug(">> getPLProjectIds(employeeId={})", new Object[] {userID});
     List<Integer> projectIds = new ArrayList<>();
     try (Connection connection = databaseManager.getConnection()) {
       StringBuilder query = new StringBuilder();
-      query.append("SELECT p.id FROM projects p WHERE p.project_leader_id = ");
-      query.append(employeeId);
+      query.append("SELECT project_id FROM project_partners pp WHERE (pp.partner_type = '");
+      query.append(APConstants.PROJECT_PARTNER_PL);
+      query.append("' or pp.partner_type = '");
+      query.append(APConstants.PROJECT_PARTNER_PC);
+      query.append("') AND pp.user_id = ");
+      query.append(userID);
       ResultSet rs = databaseManager.makeQuery(query.toString(), connection);
       while (rs.next()) {
         projectIds.add(rs.getInt(1));
@@ -250,7 +270,7 @@ public class MySQLProjectDAO implements ProjectDAO {
       rs.close();
     } catch (SQLException e) {
       LOG.error("-- getPLProjectIds() > There was an error getting the data for employeeId={}.",
-        new Object[] {employeeId}, e.getMessage());
+        new Object[] {userID}, e.getMessage());
       return null;
     }
     LOG.debug("<< getPLProjectIds():{}", projectIds);
@@ -279,7 +299,7 @@ public class MySQLProjectDAO implements ProjectDAO {
         if (rs.getDate("end_date") != null) {
           projectData.put("end_date", rs.getDate("end_date").toString());
         }
-        projectData.put("project_leader_id", rs.getString("project_leader_id"));
+        //projectData.put("project_leader_id", rs.getString("project_leader_id"));
         projectData.put("program_creator_id", rs.getString("program_creator_id"));
         projectData.put("project_owner_id", rs.getString("owner_id"));
         // projectData.put("project_owner_institution_id", rs.getString("owner_institution_id"));
@@ -434,13 +454,13 @@ public class MySQLProjectDAO implements ProjectDAO {
     try (Connection connection = databaseManager.getConnection()) {
 
       StringBuilder query = new StringBuilder();
-      query.append("SELECT u.id, pe.first_name, pe.last_name, u.email, e.institution_id, ");
-      query.append("e.id as employee_id ");
-      query.append("FROM users u  ");
-      query.append("INNER JOIN persons pe  ON u.person_id=pe.id ");
-      query.append("INNER JOIN employees e ON u.id=e.user_id ");
-      query.append("INNER JOIN projects p ON e.id=p.project_leader_id ");
-      query.append("WHERE p.id= ");
+      query.append("SELECT u.id, pe.first_name, pe.last_name, u.email, i.id as 'institution_id'");
+      query.append("FROM project_partners pp ");
+      query.append("INNER JOIN users u ON u.id = pp.user_id ");
+      query.append("INNER JOIN persons pe ON pe.id = u.person_id ");
+      query.append("INNER JOIN institutions i ON i.id = pp.partner_id ");
+      query.append("AND pp.partner_type = '"+APConstants.PROJECT_PARTNER_PL+"' ");
+      query.append("AND pp.project_id = ");
       query.append(projectID);
 
       ResultSet rs = databaseManager.makeQuery(query.toString(), connection);
@@ -450,7 +470,7 @@ public class MySQLProjectDAO implements ProjectDAO {
         projectLeaderData.put("last_name", rs.getString("last_name"));
         projectLeaderData.put("email", rs.getString("email"));
         projectLeaderData.put("institution_id", rs.getString("institution_id"));
-        projectLeaderData.put("employee_id", rs.getString("employee_id"));
+        //projectLeaderData.put("employee_id", rs.getString("employee_id")); NOT used any more.
       }
       rs.close();
     } catch (SQLException e) {
@@ -533,6 +553,7 @@ public class MySQLProjectDAO implements ProjectDAO {
     LOG.debug("-- getProjectOwnerId() > Calling method executeQuery to get the results");
     return getData(query.toString());
   }
+
 
   @Override
   public List<Map<String, String>> getProjectsByProgram(int programID) {
@@ -660,7 +681,6 @@ public class MySQLProjectDAO implements ProjectDAO {
     }
     return result;
   }
-
 
   @Override
   public int saveProject(Map<String, Object> projectData) {

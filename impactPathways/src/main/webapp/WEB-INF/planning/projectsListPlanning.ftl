@@ -41,7 +41,7 @@
           [/#if]
         </div>
       [/#if]
-      [#if currentUser.isRPL() || currentUser.isFPL() || currentUser.isCU() || currentUser.isAdmin()]
+      [#if securityContext.RPL || securityContext.FPL || securityContext.CU || securityContext.admin]
         <div class="buttons">
           [@s.submit type="button" name="add"][@s.text name="preplanning.projects.addCoreProject" /][/@s.submit]
           [@s.submit type="button" name="add"][@s.text name="preplanning.projects.addBilateralProject" /][/@s.submit]

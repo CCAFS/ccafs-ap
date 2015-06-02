@@ -19,7 +19,7 @@
       </a>
       
       [#-- Planning section --]
-      [#if currentUser.CP || currentUser.TL || currentUser.RPL || currentUser.PI || currentUser.admin ]
+      [#if securityContext.CP || currentUser.TL || securityContext.RPL || currentUser.PI || securityContext.Admin ]
         [#if planningActive ]               
           <a  href="${baseUrl}/planning/activities.do">
         [#else]
@@ -30,7 +30,7 @@
       [/#if]
       
       [#-- Reporting section --]
-      [#if currentUser.CP || currentUser.TL || currentUser.RPL || currentUser.PI || currentUser.admin ] 
+      [#if securityContext.CP || currentUser.TL || securityContext.RPL || currentUser.PI || securityContext.Admin ] 
         [#if reportingActive ]               
           <a href="${baseUrl}/reporting/introduction.do" >
         [#else]
@@ -41,7 +41,7 @@
       [/#if]
       
       [#-- Summaries section --]
-      [#if currentUser.TL || currentUser.RPL || currentUser.admin ]
+      [#if currentUser.TL || securityContext.RPL || securityContext.Admin ]
         [#if summariesActive ]
           <a href="${baseUrl}/summaries/activities.do" /]" >
               <li [#if currentSection?? && currentSection == "summaries"]class="currentSection"[/#if]>[@s.text name="menu.summaries" /]</li>
@@ -54,7 +54,7 @@
       [/#if]
       
       [#-- Admin section --]
-      [#if currentUser.admin ]                
+      [#if securityContext.Admin ]                
         <a href="javascript:void(0);">
           <li [#if currentSection?? && currentSection == "admin"] class="currentSection" [/#if]>[@s.text name="menu.admin" /]</li>
         </a>

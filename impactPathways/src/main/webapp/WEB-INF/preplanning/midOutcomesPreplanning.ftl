@@ -39,14 +39,14 @@
             <div class="midOutcome borderBox" id="midOutcome-${midOutcome_index}">
               [#-- Mid outcome identifier --]
               <input id="midOutcomeId" type="hidden" name="midOutcomes[${midOutcome_index}].id" value="${midOutcome.id}" />
-              <input id="midOutcomeProgramID" type="hidden" name="midOutcomes[${midOutcome_index}].program.id" value="${currentUser.currentInstitution.program.id}" />
+              <input id="midOutcomeProgramID" type="hidden" name="midOutcomes[${midOutcome_index}].program.id" value="${securityContext.CUrrentInstitution.program.id}" />
               <input id="midOutcomeTypeID" type="hidden" name="midOutcomes[${midOutcome_index}].type.id" value="${elementTypeID}" />
               [#-- Remove midOutcome --]
               <div id="removeMidOutcome" class="removeMidOutcome removeElement removeLink" title="[@s.text name="preplanning.midOutcomes.removeMidOutcome" /]"></div>
               [#-- Title --] 
               [#assign midOutcomeDescription]
                 [@s.text name="preplanning.midOutcomes.outcome"]
-                  [@s.param name="0"]${currentUser.currentInstitution.program.id}[/@s.param] 
+                  [@s.param name="0"]${securityContext.CUrrentInstitution.program.id}[/@s.param] 
                   [@s.param name="1"]<span id="elementIndex">${midOutcome_index+1}</span>[/@s.param] 
                 [/@s.text]
               [/#assign]
@@ -91,7 +91,7 @@
         <a href="" class="addMidOutcome addButton" >[@s.text name="preplanning.midOutcomes.addOutcome" /]</a>
       </div>
       
-      <input type="hidden" id="programID" value="${currentUser.currentInstitution.program.id}" />
+      <input type="hidden" id="programID" value="${securityContext.CUrrentInstitution.program.id}" />
       <div class="buttons">
         [@s.submit type="button" name="save"][@s.text name="form.buttons.save" /][/@s.submit]
         [@s.submit type="button" name="next"][@s.text name="form.buttons.next" /][/@s.submit]
@@ -110,14 +110,14 @@
 <div id="midOutcomeTemplate" class="midOutcome borderBox" style="display:none">
   [#-- Objective identifier --]
   <input id="midOutcomeId" type="hidden" value="-1" />
-  <input type="hidden" id="midOutcomeProgramID" value="${currentUser.currentInstitution.program.id}" />
+  <input type="hidden" id="midOutcomeProgramID" value="${securityContext.CUrrentInstitution.program.id}" />
   <input type="hidden" id="midOutcomeTypeID" value="${elementTypeID}" />
   [#-- Remove midOutcome --]
   <div id="removeMidOutcome" class="removeMidOutcome removeElement removeLink" title="[@s.text name="preplanning.midOutcomes.removeMidOutcome" /]"></div>
   [#-- Title --]
   [#assign midOutcomeDescription]
     [@s.text name="preplanning.midOutcomes.outcome"]
-      [@s.param name="0"]${currentUser.currentInstitution.program.id}[/@s.param] 
+      [@s.param name="0"]${securityContext.CUrrentInstitution.program.id}[/@s.param] 
       [@s.param name="1"]<span id="elementIndex">{0}</span>[/@s.param] 
     [/@s.text]
   [/#assign]

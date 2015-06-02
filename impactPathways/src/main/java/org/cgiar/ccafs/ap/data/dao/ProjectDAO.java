@@ -29,6 +29,14 @@ import com.google.inject.ImplementedBy;
 public interface ProjectDAO {
 
   /**
+   * This method deletes the project identified by the value received by parameter.
+   * 
+   * @param projectID
+   * @return True if the project was deleted successfully, false otherwise.
+   */
+  public boolean deleteProject(int projectID);
+
+  /**
    * This method deletes from the database the relation between the project and the indicator
    * received.
    * 
@@ -48,6 +56,7 @@ public interface ProjectDAO {
    */
   public boolean deleteProjectOutput(int projectID, int outputID);
 
+
   /**
    * This method validate if the project exists in the database.
    * 
@@ -55,7 +64,6 @@ public interface ProjectDAO {
    * @return true if the project exists or false otherwise.
    */
   public boolean existProject(int projectId);
-
 
   /**
    * This method return all the Projects
@@ -84,12 +92,13 @@ public interface ProjectDAO {
   public Map<String, String> getExpectedProjectLeader(int projectId);
 
   /**
-   * This method returns a list of project identifiers where the user is assigned as Project Leader.
+   * This method returns a list of project identifiers where the user is assigned as Project Leader or Project
+   * Coordinator.
    * 
-   * @param employeeId is the employee identifier.
+   * @param userID is the user identifier.
    * @return a list of Integers representing the project identifiers.
    */
-  public List<Integer> getPLProjectIds(int employeeId);
+  public List<Integer> getPLProjectIds(int userID);
 
   /**
    * This method return the project information of the selected list

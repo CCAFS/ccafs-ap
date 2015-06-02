@@ -14,7 +14,6 @@
 package org.cgiar.ccafs.ap.action.preplanning;
 
 import org.cgiar.ccafs.ap.action.BaseAction;
-import org.cgiar.ccafs.ap.config.APConfig;
 import org.cgiar.ccafs.ap.config.APConstants;
 import org.cgiar.ccafs.ap.data.manager.BudgetManager;
 import org.cgiar.ccafs.ap.data.manager.InstitutionManager;
@@ -26,6 +25,7 @@ import org.cgiar.ccafs.ap.data.model.Institution;
 import org.cgiar.ccafs.ap.data.model.Project;
 import org.cgiar.ccafs.ap.data.model.ProjectPartner;
 import org.cgiar.ccafs.ap.data.model.User;
+import org.cgiar.ccafs.utils.APConfig;
 
 import java.util.HashMap;
 import java.util.List;

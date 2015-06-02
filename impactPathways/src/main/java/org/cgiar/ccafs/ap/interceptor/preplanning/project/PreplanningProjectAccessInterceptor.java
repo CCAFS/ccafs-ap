@@ -16,6 +16,7 @@ package org.cgiar.ccafs.ap.interceptor.preplanning.project;
 import org.cgiar.ccafs.ap.action.BaseAction;
 import org.cgiar.ccafs.ap.config.APConstants;
 import org.cgiar.ccafs.ap.data.model.User;
+import org.cgiar.ccafs.security.SecurityContext;
 
 import java.util.Map;
 
@@ -27,14 +28,16 @@ import org.slf4j.LoggerFactory;
 
 /**
  * This interceptor is used to validate what kind of users are able to access to the pre-planning/projects section.
- *
+ * 
  * @author Héctor Fabio Tobón R.
  */
 public class PreplanningProjectAccessInterceptor extends AbstractInterceptor {
 
   private static final long serialVersionUID = -5970028237143387666L;
-
   private static final Logger LOG = LoggerFactory.getLogger(PreplanningProjectAccessInterceptor.class);
+
+  @Inject
+  protected SecurityContext securityContext;
 
   @Inject
   public PreplanningProjectAccessInterceptor() {
@@ -46,7 +49,7 @@ public class PreplanningProjectAccessInterceptor extends AbstractInterceptor {
     Map<String, Object> session = invocation.getInvocationContext().getSession();
     User user = (User) session.get(APConstants.SESSION_USER);
     if (user != null) {
-      if (user.isAdmin() || user.isFPL() || user.isRPL() || user.isCU()) {
+      if (securityContext.isAdmin() || securityContext.isFPL() || securityContext.isRPL() || securityContext.isCU()) {
         invocation.invoke();
       } else {
         LOG.info("User identify with id={}, email={}, role={} tried to access pre-planning section.", new Object[] {

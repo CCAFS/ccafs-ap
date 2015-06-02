@@ -121,6 +121,23 @@ public class MySQLProjectPartnerDAO implements ProjectPartnerDAO {
     LOG.debug("-- getProject() > Calling method executeQuery to get the results");
     return getData(query.toString());
   }
+  
+  @Override
+  public List<Map<String, String>> getProjectPartners(int projectID, String projectPartnerType) {
+    LOG.debug(">> getProjectPartners projectID = {},  projectPartnerType = {})", new Object[]{projectID, projectPartnerType});
+
+    StringBuilder query = new StringBuilder();
+    query.append("SELECT pp.*   ");
+    query.append("FROM project_partners as pp ");
+    query.append("WHERE pp.project_id = ");
+    query.append(projectID);
+    query.append(" AND partner_type = '");
+    query.append(projectPartnerType);
+    query.append("'");
+
+    LOG.debug("-- getProjectPartners() > Calling method executeQuery to get the results");
+    return getData(query.toString());
+  }
 
 
   @Override

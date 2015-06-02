@@ -15,12 +15,12 @@
 package org.cgiar.ccafs.ap.action.home;
 
 import org.cgiar.ccafs.ap.action.BaseAction;
-import org.cgiar.ccafs.ap.config.APConfig;
 import org.cgiar.ccafs.ap.config.APConstants;
 import org.cgiar.ccafs.ap.data.manager.RoleManager;
 import org.cgiar.ccafs.ap.data.manager.UserManager;
 import org.cgiar.ccafs.ap.data.model.Institution;
 import org.cgiar.ccafs.ap.data.model.User;
+import org.cgiar.ccafs.utils.APConfig;
 
 import com.google.inject.Inject;
 import org.apache.commons.lang3.StringUtils;

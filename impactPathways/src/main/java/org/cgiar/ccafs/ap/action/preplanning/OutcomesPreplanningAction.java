@@ -14,7 +14,6 @@
 package org.cgiar.ccafs.ap.action.preplanning;
 
 import org.cgiar.ccafs.ap.action.BaseAction;
-import org.cgiar.ccafs.ap.config.APConfig;
 import org.cgiar.ccafs.ap.config.APConstants;
 import org.cgiar.ccafs.ap.data.manager.IPElementManager;
 import org.cgiar.ccafs.ap.data.manager.IPElementRelationManager;
@@ -24,6 +23,7 @@ import org.cgiar.ccafs.ap.data.model.IPElement;
 import org.cgiar.ccafs.ap.data.model.IPElementType;
 import org.cgiar.ccafs.ap.data.model.IPIndicator;
 import org.cgiar.ccafs.ap.data.model.IPProgram;
+import org.cgiar.ccafs.utils.APConfig;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -85,7 +85,7 @@ public class OutcomesPreplanningAction extends BaseAction {
   }
 
   public String getNextActionName() {
-    if (getCurrentUser().isFPL()) {
+    if (securityContext.isFPL()) {
       return "midOutcomes";
     } else {
       return "midOutcomesRPL";
@@ -144,7 +144,7 @@ public class OutcomesPreplanningAction extends BaseAction {
 
     // If the user is RPL they should see a list with all the indicators
     // filled by the FPL
-    if (getCurrentUser().isRPL()) {
+    if (securityContext.isRPL()) {
       fplOutcomesIndicators = new ArrayList<>();
       List<IPProgram> flagshipPrograms = ipProgramManager.getProgramsByType(APConstants.FLAGSHIP_PROGRAM_TYPE);
       IPElementType outcomesType = new IPElementType(APConstants.ELEMENT_TYPE_OUTCOME2025);
@@ -192,9 +192,9 @@ public class OutcomesPreplanningAction extends BaseAction {
     }
 
     if (ipElementManager.saveIPElements(outcomes)) {
-      if (getCurrentUser().isFPL()) {
+      if (securityContext.isFPL()) {
         addActionMessage(getText("saving.success", new String[] {getText("preplanning.outcomes.title")}));
-      } else if (getCurrentUser().isRPL()) {
+      } else if (securityContext.isRPL()) {
         addActionMessage(getText("saving.success", new String[] {getText("preplanning.outcomes.titleRPL")}));
       }
       return SUCCESS;

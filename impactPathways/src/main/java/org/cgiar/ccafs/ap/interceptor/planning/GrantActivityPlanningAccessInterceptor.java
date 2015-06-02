@@ -19,6 +19,7 @@ import org.cgiar.ccafs.ap.data.manager.ActivityManager;
 import org.cgiar.ccafs.ap.data.manager.ProjectManager;
 import org.cgiar.ccafs.ap.data.model.Project;
 import org.cgiar.ccafs.ap.data.model.User;
+import org.cgiar.ccafs.security.SecurityContext;
 
 import java.util.List;
 import java.util.Map;
@@ -38,8 +39,10 @@ import org.slf4j.LoggerFactory;
 public class GrantActivityPlanningAccessInterceptor extends AbstractInterceptor {
 
   private static final long serialVersionUID = 715145701059810847L;
-
   private static final Logger LOG = LoggerFactory.getLogger(GrantActivityPlanningAccessInterceptor.class);
+
+  @Inject
+  protected SecurityContext securityContext;
 
   // Managers
   ActivityManager activityManager;
@@ -65,11 +68,11 @@ public class GrantActivityPlanningAccessInterceptor extends AbstractInterceptor 
     BaseAction baseAction = (BaseAction) invocation.getAction();
     // Listing all activities that the user is able to edit.
     // And getting activity list that belongs to the program that you belongs to.
-    if (user.isAdmin()) {
+    if (securityContext.isAdmin()) {
       // Admins are able to see all fields editable and save any information.
       baseAction.setFullEditable(true);
       baseAction.setSaveable(true);
-    } else if (user.isFPL() || user.isRPL() || user.isCU()) {
+    } else if (securityContext.isFPL() || securityContext.isRPL() || securityContext.isCU()) {
       // If the user is a FPL, RPL or CU, let's figure out if he/she can have the enough privileges to edit the
       // activity.
       List<Integer> idsAllowedToEdit = activityManager.getActivityIdsEditable(user);
@@ -111,7 +114,7 @@ public class GrantActivityPlanningAccessInterceptor extends AbstractInterceptor 
           baseAction.setSaveable(false);
         }
       }
-    } else if (user.isPL()) {
+    } else if (securityContext.isPL()) {
       // If user is a PL, let's figure out if the user is the leader of the project in which the activity belongs to.
       Project project = projectManager.getProjectFromActivityId(activityID);
       if (project != null) {
@@ -145,7 +148,7 @@ public class GrantActivityPlanningAccessInterceptor extends AbstractInterceptor 
         baseAction.setFullEditable(true);
         baseAction.setSaveable(false);
       }
-    } else if (user.isAL()) {
+    } else if (securityContext.isAL()) {
       // User is AL or Guest.
       User activityLeader = activityManager.getActivityLeader(activityID);
       // If activity leader is still as expected.
