@@ -8,6 +8,8 @@ DELIMITER $$
 -- Create the stored procedure to perform the migration
 CREATE PROCEDURE change_project_users_relation()
 BEGIN
+  -- As we are changing the table structure, we need to disable the trigger
+  DROP TRIGGER IF EXISTS after_projects_update;
 
   IF NOT EXISTS ((SELECT * FROM information_schema.columns WHERE table_schema=DATABASE() AND table_name='projects' AND column_name='management_liaison_id')) THEN
     ALTER TABLE projects ADD `management_liaison_id` bigint(20) DEFAULT NULL COMMENT 'foreign key to the table users' AFTER `project_owner_id`;
@@ -51,8 +53,6 @@ BEGIN
   END IF;
 
   IF EXISTS ((SELECT * FROM information_schema.columns WHERE table_schema=DATABASE() AND table_name='projects' AND column_name='created_by')) THEN
-		-- As we are changing the table structure, we need to disable the trigger
-		DROP TRIGGER IF EXISTS after_projects_update;
 		
     UPDATE projects p SET `created` = (SELECT u.id FROM users u INNER JOIN employees e ON u.id = e.user_id WHERE e.id = p.created_by);
   

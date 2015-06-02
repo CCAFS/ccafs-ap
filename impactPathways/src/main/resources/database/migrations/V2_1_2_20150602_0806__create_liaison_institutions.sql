@@ -2,57 +2,42 @@
 -- Create table to store what insitutions can be management liaison
 -- -----------------------------------------------------------------------------
 
-CREATE  TABLE IF NOT EXISTS `liaison_users` (
+CREATE  TABLE IF NOT EXISTS `liaison_institutions` (
   `id` BIGINT NOT NULL AUTO_INCREMENT ,
-  `user_id` BIGINT NOT NULL COMMENT 'This field is a link to the table users',
-  `institution_id` BIGINT NOT NULL COMMENT 'This field is a link to the table liaison_institutions' ,
+  `institution_id` BIGINT NOT NULL ,
+  `name` VARCHAR(255) NOT NULL ,
+  `acronym` VARCHAR(255) NULL ,
   PRIMARY KEY (`id`) ,
-  INDEX `FK_liaison_users_users_idx` (`user_id` ASC) ,
-  INDEX `FK_liaison_users_institutions_idx` (`institution_id` ASC) ,
-  CONSTRAINT `FK_liaison_users_users`
-    FOREIGN KEY (`user_id` )
-    REFERENCES `users` (`id` )
-    ON DELETE NO ACTION
-    ON UPDATE NO ACTION,
-  CONSTRAINT `FK_liaison_users_liaison_institutions`
+  INDEX `FK_liaison_institutions_institutions_idx` (`institution_id` ASC) ,
+  CONSTRAINT `FK_liaison_institutions_institutions` 
     FOREIGN KEY (`institution_id` )
-    REFERENCES `liaison_institutions` (`id` )
+    REFERENCES `institutions` (`id` )
     ON DELETE NO ACTION
     ON UPDATE NO ACTION)
 DEFAULT CHARACTER SET = utf8;
 
-INSERT INTO `liaison_users` (`user_id`, `institution_id`) VALUES ('122', '1');
-INSERT INTO `liaison_users` (`user_id`, `institution_id`) VALUES ('132', '1');
-INSERT INTO `liaison_users` (`user_id`, `institution_id`) VALUES ('28', '2');
-INSERT INTO `liaison_users` (`user_id`, `institution_id`) VALUES ('17', '2');
-INSERT INTO `liaison_users` (`user_id`, `institution_id`) VALUES ('29', '3');
-INSERT INTO `liaison_users` (`user_id`, `institution_id`) VALUES ('30', '3');
-INSERT INTO `liaison_users` (`user_id`, `institution_id`) VALUES ('31', '4');
-INSERT INTO `liaison_users` (`user_id`, `institution_id`) VALUES ('32', '4');
-INSERT INTO `liaison_users` (`user_id`, `institution_id`) VALUES ('7', '5');
-INSERT INTO `liaison_users` (`user_id`, `institution_id`) VALUES ('5', '5');
-INSERT INTO `liaison_users` (`user_id`, `institution_id`) VALUES ('24', '6');
-INSERT INTO `liaison_users` (`user_id`, `institution_id`) VALUES ('25', '6');
-INSERT INTO `liaison_users` (`user_id`, `institution_id`) VALUES ('19', '7');
-INSERT INTO `liaison_users` (`user_id`, `institution_id`) VALUES ('18', '7');
-INSERT INTO `liaison_users` (`user_id`, `institution_id`) VALUES ('20', '8');
-INSERT INTO `liaison_users` (`user_id`, `institution_id`) VALUES ('21', '8');
-INSERT INTO `liaison_users` (`user_id`, `institution_id`) VALUES ('26', '9');
-INSERT INTO `liaison_users` (`user_id`, `institution_id`) VALUES ('193', '9');
-INSERT INTO `liaison_users` (`user_id`, `institution_id`) VALUES ('22', '10');
-INSERT INTO `liaison_users` (`user_id`, `institution_id`) VALUES ('61', '12');
-INSERT INTO `liaison_users` (`user_id`, `institution_id`) VALUES ('66', '13');
-INSERT INTO `liaison_users` (`user_id`, `institution_id`) VALUES ('69', '13');
-INSERT INTO `liaison_users` (`user_id`, `institution_id`) VALUES ('119', '14');
-INSERT INTO `liaison_users` (`user_id`, `institution_id`) VALUES ('88', '15');
-INSERT INTO `liaison_users` (`user_id`, `institution_id`) VALUES ('67', '16');
-INSERT INTO `liaison_users` (`user_id`, `institution_id`) VALUES ('84', '19');
-INSERT INTO `liaison_users` (`user_id`, `institution_id`) VALUES ('162', '19');
-INSERT INTO `liaison_users` (`user_id`, `institution_id`) VALUES ('51', '20');
-INSERT INTO `liaison_users` (`user_id`, `institution_id`) VALUES ('52', '20');
-INSERT INTO `liaison_users` (`user_id`, `institution_id`) VALUES ('81', '21');
-INSERT INTO `liaison_users` (`user_id`, `institution_id`) VALUES ('82', '22');
-INSERT INTO `liaison_users` (`user_id`, `institution_id`) VALUES ('108', '23');
-INSERT INTO `liaison_users` (`user_id`, `institution_id`) VALUES ('275', '24');
-INSERT INTO `liaison_users` (`user_id`, `institution_id`) VALUES ('83', '18');
-INSERT INTO `liaison_users` (`user_id`, `institution_id`) VALUES ('101', '25');
+INSERT INTO `liaison_institutions` (`institution_id`, `name`, `acronym`) VALUES ('697', 'Coordinating Unit', 'CU');
+INSERT INTO `liaison_institutions` (`institution_id`, `name`, `acronym`) VALUES ('46', 'Flagship One', 'FP1');
+INSERT INTO `liaison_institutions` (`institution_id`, `name`, `acronym`) VALUES ('46', 'Flagship Two', 'FP2');
+INSERT INTO `liaison_institutions` (`institution_id`, `name`, `acronym`) VALUES ('1053', 'Flagship Three', 'FP3');
+INSERT INTO `liaison_institutions` (`institution_id`, `name`, `acronym`) VALUES ('46', 'Flagship Four', 'FP4');
+INSERT INTO `liaison_institutions` (`institution_id`, `name`, `acronym`) VALUES ('46', 'East Africa Region', 'RP EA');
+INSERT INTO `liaison_institutions` (`institution_id`, `name`, `acronym`) VALUES ('46', 'Latin America Region', 'RP LAM');
+INSERT INTO `liaison_institutions` (`institution_id`, `name`, `acronym`) VALUES ('46', 'South Asia Region', 'RP SAs');
+INSERT INTO `liaison_institutions` (`institution_id`, `name`, `acronym`) VALUES ('46', 'South East Asia Region', 'RP SEA');
+INSERT INTO `liaison_institutions` (`institution_id`, `name`, `acronym`) VALUES ('46', 'West Africa Region', 'RP WA');
+INSERT INTO `liaison_institutions` (`institution_id`, `name`, `acronym`) VALUES ('52', 'Africa Rice Center', 'AfricaRice');
+INSERT INTO `liaison_institutions` (`institution_id`, `name`, `acronym`) VALUES ('49', 'Bioversity International', 'BI');
+INSERT INTO `liaison_institutions` (`institution_id`, `name`, `acronym`) VALUES ('46', 'Centro Internacional de Agricultura Tropical', 'CIAT');
+INSERT INTO `liaison_institutions` (`institution_id`, `name`, `acronym`) VALUES ('115', 'Center for International Forestry Research', 'CIFOR');
+INSERT INTO `liaison_institutions` (`institution_id`, `name`, `acronym`) VALUES ('50', 'International Maize and Wheat Improvement Center', 'CIMMYT');
+INSERT INTO `liaison_institutions` (`institution_id`, `name`, `acronym`) VALUES ('67', 'Centro Internacional de la Papa', 'CIP');
+INSERT INTO `liaison_institutions` (`institution_id`, `name`, `acronym`) VALUES ('51', 'International Center for Agricultural Research in the Dry Areas', 'ICARDA');
+INSERT INTO `liaison_institutions` (`institution_id`, `name`, `acronym`) VALUES ('88', 'World Agroforestry Centre', 'ICRAF');
+INSERT INTO `liaison_institutions` (`institution_id`, `name`, `acronym`) VALUES ('103', 'International Crops Research Institute for the Semi-Arid Tropics', 'ICRISAT');
+INSERT INTO `liaison_institutions` (`institution_id`, `name`, `acronym`) VALUES ('89', 'International Food Policy Research Institute', 'IFPRI');
+INSERT INTO `liaison_institutions` (`institution_id`, `name`, `acronym`) VALUES ('45', 'International Institute of Tropical Agriculture', 'IITA');
+INSERT INTO `liaison_institutions` (`institution_id`, `name`, `acronym`) VALUES ('66', 'International Livestock Research Institute', 'ILRI');
+INSERT INTO `liaison_institutions` (`institution_id`, `name`, `acronym`) VALUES ('5', 'International Rice Research Institute', 'IRRI');
+INSERT INTO `liaison_institutions` (`institution_id`, `name`, `acronym`) VALUES ('172', 'International Water Management Institute', 'IWMI');
+INSERT INTO `liaison_institutions` (`institution_id`, `name`, `acronym`) VALUES ('99', 'WorldFish Center', 'WorldFish');
