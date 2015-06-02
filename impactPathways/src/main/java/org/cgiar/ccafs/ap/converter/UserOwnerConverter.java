@@ -13,15 +13,16 @@
  *****************************************************************/
 package org.cgiar.ccafs.ap.converter;
 
+import org.cgiar.ccafs.ap.data.manager.InstitutionManager;
+import org.cgiar.ccafs.ap.data.manager.UserManager;
+import org.cgiar.ccafs.ap.data.model.User;
+
 import java.util.Map;
 
-import org.cgiar.ccafs.ap.data.manager.InstitutionManager;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-import org.cgiar.ccafs.ap.data.model.User;
-import org.cgiar.ccafs.ap.data.manager.UserManager;
 import com.google.inject.Inject;
 import org.apache.struts2.util.StrutsTypeConverter;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 
 public class UserOwnerConverter extends StrutsTypeConverter {
@@ -62,8 +63,8 @@ public class UserOwnerConverter extends StrutsTypeConverter {
   @Override
   public String convertToString(Map context, Object o) {
     User user = (User) o;
-    LOG.debug(">> convertToString > id = {} ", user.getEmployeeId());
-    return user.getEmployeeId() + "";
+    LOG.debug(">> convertToString > id = {} ", user.getId());
+    return user.getId() + "";
   }
 
 }

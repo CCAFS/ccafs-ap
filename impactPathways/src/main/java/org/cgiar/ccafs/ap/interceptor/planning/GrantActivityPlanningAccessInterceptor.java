@@ -94,7 +94,7 @@ public class GrantActivityPlanningAccessInterceptor extends AbstractInterceptor 
               // Let's check if the user is the Activity Leader of the current activity
               User activityLeader = activityManager.getActivityLeader(activityID);
               // If user is assigned as activity leader of the current activity.
-              if (activityLeader != null && user.getEmployeeId() == activityLeader.getEmployeeId()) {
+              if (activityLeader != null && user.getId() == activityLeader.getId()) {
                 baseAction.setFullEditable(true);
                 baseAction.setSaveable(true);
               } else {
@@ -129,7 +129,7 @@ public class GrantActivityPlanningAccessInterceptor extends AbstractInterceptor 
             // Let's check if the user is the Activity Leader of the current activity
             User activityLeader = activityManager.getActivityLeader(activityID);
             // If user is assigned as activity leader of the current activity.
-            if (activityLeader != null && user.getEmployeeId() == activityLeader.getEmployeeId()) {
+            if (activityLeader != null && user.getId() == activityLeader.getId()) {
               baseAction.setFullEditable(true);
               baseAction.setSaveable(true);
             } else {
@@ -154,7 +154,7 @@ public class GrantActivityPlanningAccessInterceptor extends AbstractInterceptor 
       // If activity leader is still as expected.
       if (activityLeader != null) {
         // If user is assigned as activity leader of the current activity.
-        if (user.getEmployeeId() == activityLeader.getEmployeeId()) {
+        if (user.getId() == activityLeader.getId()) {
           baseAction.setFullEditable(true);
           baseAction.setSaveable(true);
         } else {

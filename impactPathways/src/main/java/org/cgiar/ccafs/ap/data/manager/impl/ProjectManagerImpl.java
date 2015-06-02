@@ -268,7 +268,7 @@ public class ProjectManagerImpl implements ProjectManager {
 
   @Override
   public List<Integer> getProjectIdsEditables(User user) {
-    return projectDAO.getProjectIdsEditables(user.getCurrentInstitution().getProgram().getId(), user.getEmployeeId());
+    return projectDAO.getProjectIdsEditables(user.getCurrentInstitution().getProgram().getId(), user.getId());
   }
 
   @Override
@@ -309,7 +309,7 @@ public class ProjectManagerImpl implements ProjectManager {
       projectLeader.setFirstName(pData.get("first_name"));
       projectLeader.setLastName(pData.get("last_name"));
       projectLeader.setEmail(pData.get("email"));
-      //projectLeader.setEmployeeId(Integer.parseInt(pData.get("employee_id"))); Not used anymore
+      // projectLeader.setEmployeeId(Integer.parseInt(pData.get("employee_id"))); Not used anymore
       // Getting Project leader institution and saving it in currentInstitution.
       projectLeader.setCurrentInstitution(institutionManager.getInstitution(Integer.parseInt(pData
         .get("institution_id"))));
@@ -476,7 +476,7 @@ public class ProjectManagerImpl implements ProjectManager {
       if (project.getEndDate() != null) {
         projectData.put("end_date", format.format(project.getEndDate()));
       }
-      projectData.put("management_liaison_id", project.getOwner().getEmployeeId());
+      projectData.put("management_liaison_id", project.getOwner().getId());
     }
 
     return projectDAO.saveProject(projectData);

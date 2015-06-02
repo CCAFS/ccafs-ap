@@ -63,8 +63,8 @@ public class ChangeInstitutionAction extends BaseAction {
     for (Institution inst : user.getInstitutions()) {
       if (inst.getId() == institutionID) {
         user.setCurrentInstitution(inst);
-        user.setRole(roleManager.getRole(user));
-        user.setEmployeeId(userManager.getEmployeeID(user));
+        // user.setRole(roleManager.getRole(user));
+        // user.setEmployeeId(userManager.getEmployeeID(user));
         // Change the user in the session object
         this.getSession().put(APConstants.SESSION_USER, user);
       }

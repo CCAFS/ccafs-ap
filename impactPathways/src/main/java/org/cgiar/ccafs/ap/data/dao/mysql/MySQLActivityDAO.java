@@ -14,6 +14,9 @@
  */
 package org.cgiar.ccafs.ap.data.dao.mysql;
 
+import org.cgiar.ccafs.ap.data.dao.ActivityDAO;
+import org.cgiar.ccafs.utils.db.DAOManager;
+
 import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -23,8 +26,6 @@ import java.util.List;
 import java.util.Map;
 
 import com.google.inject.Inject;
-import org.cgiar.ccafs.ap.data.dao.ActivityDAO;
-import org.cgiar.ccafs.utils.db.DAOManager;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -411,23 +412,22 @@ public class MySQLActivityDAO implements ActivityDAO {
   }
 
   @Override
-  public List<Integer> getLedActivities(int employeeId) {
-    LOG.debug(">> getLedActivities( employeeId={})", new Object[] {employeeId});
+  public List<Integer> getLedActivities(int userID) {
+    LOG.debug(">> getLedActivities( userID={})", new Object[] {userID});
     List<Integer> activityIds = new ArrayList<>();
     try (Connection connection = databaseManager.getConnection()) {
       StringBuilder query = new StringBuilder();
       query.append("SELECT id ");
       query.append("FROM activities ");
       query.append("WHERE leader_id = ");
-      query.append(employeeId);
+      query.append(userID);
       ResultSet rs = databaseManager.makeQuery(query.toString(), connection);
       while (rs.next()) {
         activityIds.add(rs.getInt(1));
       }
       rs.close();
     } catch (SQLException e) {
-      LOG.error("-- getLedActivities() > There was an error getting the data for  employeeId={}.",
-        new Object[] {employeeId}, e.getMessage());
+      LOG.error("-- getLedActivities() > There was an error getting the data for userID = {}.", userID, e.getMessage());
       return null;
     }
     LOG.debug("<< getActivityIdsEditable():{}", activityIds);
@@ -531,8 +531,8 @@ public class MySQLActivityDAO implements ActivityDAO {
   }
 
   @Override
-  public int saveActivityLeader(int activityID, int employeeID) {
-    LOG.debug(">> saveActivityLeader(employeeID={}, activityID={})", new Object[] {employeeID, activityID});
+  public int saveActivityLeader(int activityID, int userID) {
+    LOG.debug(">> saveActivityLeader(employeeID={}, activityID={})", new Object[] {userID, activityID});
     StringBuilder query = new StringBuilder();
     int result = -1;
     Object[] values;
@@ -541,7 +541,7 @@ public class MySQLActivityDAO implements ActivityDAO {
     query.append("UPDATE activities SET leader_id = ? ");
     query.append("WHERE id = ? ");
     values = new Object[2];
-    values[0] = employeeID;
+    values[0] = userID;
     values[1] = activityID;
     result = databaseManager.saveData(query.toString(), values);
     if (result == -1) {

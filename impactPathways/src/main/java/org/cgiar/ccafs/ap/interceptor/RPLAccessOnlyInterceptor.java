@@ -48,8 +48,8 @@ public class RPLAccessOnlyInterceptor extends AbstractInterceptor {
       if (securityContext.isAdmin() || securityContext.isRPL()) {
         invocation.invoke();
       } else {
-        LOG.info("User identify with id={}, email={}, role={} tried to access a section only for RPLs.", new Object[] {
-          user.getId(), user.getEmail(), user.getRole().getName()});
+        LOG.info("User identify with id={}, email={}, tried to access a section only for RPLs.",
+          new Object[] {user.getId(), user.getEmail()});
         return BaseAction.NOT_AUTHORIZED;
       }
     }
