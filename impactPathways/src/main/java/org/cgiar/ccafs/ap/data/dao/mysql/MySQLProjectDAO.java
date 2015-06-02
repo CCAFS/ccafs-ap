@@ -126,7 +126,7 @@ public class MySQLProjectDAO implements ProjectDAO {
 
     query.append("SELECT p.* ");
     query.append("FROM projects as p ");
-    query.append("INNER JOIN employees emp ON emp.id = p.management_liaison_id ");
+    query.append("INNER JOIN employees emp ON emp.id = p.liaison_user_id ");
     query.append("INNER JOIN institutions i ON i.id = emp.institution_id ");
     query.append("INNER JOIN ip_programs ip ON ip.id = i.program_id ");
 
@@ -203,8 +203,8 @@ public class MySQLProjectDAO implements ProjectDAO {
           projectData.put("end_date", rs.getDate("end_date").toString());
         }
         projectData.put("project_leader_id", rs.getString("project_leader_id"));
-        projectData.put("program_creator_id", rs.getString("program_creator_id"));
-        projectData.put("management_liaison_id", rs.getString("management_liaison_id"));
+        projectData.put("liaison_institution_id", rs.getString("liaison_institution_id"));
+        projectData.put("liaison_user_id", rs.getString("liaison_user_id"));
         projectData.put("created", rs.getTimestamp("active_since").getTime() + "");
 
         projectList.add(projectData);
@@ -284,7 +284,7 @@ public class MySQLProjectDAO implements ProjectDAO {
     StringBuilder query = new StringBuilder();
     query.append("SELECT p.*, emp.id as 'owner_id', emp.institution_id as 'owner_institution_id'");
     query.append("FROM projects as p ");
-    query.append("INNER JOIN employees emp ON emp.id = p.management_liaison_id ");
+    query.append("INNER JOIN employees emp ON emp.id = p.liaison_user_id ");
     query.append("WHERE p.id = ");
     query.append(projectID);
     try (Connection con = databaseManager.getConnection()) {
@@ -300,8 +300,8 @@ public class MySQLProjectDAO implements ProjectDAO {
           projectData.put("end_date", rs.getDate("end_date").toString());
         }
         //projectData.put("project_leader_id", rs.getString("project_leader_id"));
-        projectData.put("program_creator_id", rs.getString("program_creator_id"));
-        projectData.put("management_liaison_id", rs.getString("owner_id"));
+        projectData.put("liaison_institution_id", rs.getString("liaison_institution_id"));
+        projectData.put("liaison_user_id", rs.getString("owner_id"));
         // projectData.put("project_owner_institution_id", rs.getString("owner_institution_id"));
         projectData.put("created", rs.getTimestamp("active_since").getTime() + "");
       }
@@ -383,9 +383,9 @@ public class MySQLProjectDAO implements ProjectDAO {
     List<Integer> projectIds = new ArrayList<>();
     try (Connection connection = databaseManager.getConnection()) {
       StringBuilder query = new StringBuilder();
-      query.append("SELECT p.id FROM projects p WHERE p.program_creator_id = ");
+      query.append("SELECT p.id FROM projects p WHERE p.liaison_institution_id = ");
       query.append(programID);
-      query.append(" OR p.management_liaison_id = ");
+      query.append(" OR p.liaison_user_id = ");
       query.append(ownerID);
       query.append(" OR p.project_leader_id = ");
       query.append(ownerID);
@@ -561,7 +561,7 @@ public class MySQLProjectDAO implements ProjectDAO {
 
     query.append("SELECT p.* ");
     query.append("FROM projects as p ");
-    query.append("INNER JOIN employees emp ON emp.id = p.management_liaison_id ");
+    query.append("INNER JOIN employees emp ON emp.id = p.liaison_user_id ");
     query.append("INNER JOIN institutions i ON i.id = emp.institution_id ");
     query.append("INNER JOIN ip_programs ip ON ip.id = i.program_id ");
     query.append("WHERE ip.id = ");
@@ -580,7 +580,7 @@ public class MySQLProjectDAO implements ProjectDAO {
     StringBuilder query = new StringBuilder();
     query.append("SELECT p.*, emp.user_id as 'owner_user_id', emp.institution_id as 'owner_institution_id' ");
     query.append("FROM projects p ");
-    query.append("INNER JOIN employees emp ON p.management_liaison_id=emp.id ");
+    query.append("INNER JOIN employees emp ON p.liaison_user_id=emp.id ");
     query.append("WHERE emp.user_id= ");
     query.append(userId);
     query.append(" AND emp.institution_id= ");
@@ -600,8 +600,8 @@ public class MySQLProjectDAO implements ProjectDAO {
           projectData.put("end_date", rs.getDate("end_date").toString());
         }
         projectData.put("project_leader_id", rs.getString("project_leader_id"));
-        projectData.put("program_creator_id", rs.getString("program_creator_id"));
-        projectData.put("management_liaison_id", rs.getString("management_liaison_id"));
+        projectData.put("liaison_institution_id", rs.getString("liaison_institution_id"));
+        projectData.put("liaison_user_id", rs.getString("liaison_user_id"));
         projectData.put("project_owner_user_id", rs.getString("owner_user_id"));
         projectData.put("project_owner_institution_id", rs.getString("owner_institution_id"));
         projectData.put("created", rs.getTimestamp("active_since").getTime() + "");
@@ -688,24 +688,24 @@ public class MySQLProjectDAO implements ProjectDAO {
     StringBuilder query = new StringBuilder();
     if (projectData.get("id") == null) {
       // Insert a new project record.
-      query.append("INSERT INTO projects (management_liaison_id, program_creator_id) ");
+      query.append("INSERT INTO projects (liaison_user_id, liaison_institution_id) ");
       query.append("VALUES (?, ?) ");
       Object[] values = new Object[2];
-      values[0] = projectData.get("management_liaison_id");
-      values[1] = projectData.get("program_creator_id");
+      values[0] = projectData.get("liaison_user_id");
+      values[1] = projectData.get("liaison_institution_id");
       result = databaseManager.saveData(query.toString(), values);
       LOG.debug("<< saveProject():{}", result);
     } else {
       // Update project.
       query.append("UPDATE projects SET title = ?, summary = ?, start_date = ?, end_date = ?, ");
-      query.append("management_liaison_id = ? ");
+      query.append("liaison_user_id = ? ");
       query.append("WHERE id = ?");
       Object[] values = new Object[6];
       values[0] = projectData.get("title");
       values[1] = projectData.get("summary");
       values[2] = projectData.get("start_date");
       values[3] = projectData.get("end_date");
-      values[4] = projectData.get("management_liaison_id");
+      values[4] = projectData.get("liaison_user_id");
       values[5] = projectData.get("id");
       result = databaseManager.saveData(query.toString(), values);
     }

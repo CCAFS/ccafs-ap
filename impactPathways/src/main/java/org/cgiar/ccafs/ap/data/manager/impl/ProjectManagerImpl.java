@@ -195,13 +195,13 @@ public class ProjectManagerImpl implements ProjectManager {
       }
 
       // Getting the project Owner.
-      project.setOwner(userManager.getOwner(Integer.parseInt(projectData.get("management_liaison_id"))));
+      project.setOwner(userManager.getOwner(Integer.parseInt(projectData.get("liaison_user_id"))));
       // Getting the creation date timestamp.
       project.setCreated(Long.parseLong(projectData.get("created")));
       // Getting the Program creator
-      if (projectData.get("program_creator_id") != null) {
+      if (projectData.get("liaison_institution_id") != null) {
         project.setProgramCreator(ipProgramManager.getIPProgramById(Integer.parseInt(projectData
-          .get("program_creator_id"))));
+          .get("liaison_institution_id"))));
       }
 
       return project;
@@ -368,9 +368,9 @@ public class ProjectManagerImpl implements ProjectManager {
         }
       }
       // Setting program creator.
-      if (elementData.get("program_creator_id") != null) {
+      if (elementData.get("liaison_institution_id") != null) {
         project.setProgramCreator(ipProgramManager.getIPProgramById(Integer.parseInt(elementData
-          .get("program_creator_id"))));
+          .get("liaison_institution_id"))));
       }
       // Setting creation date.
       project.setCreated(Long.parseLong(elementData.get("created")));
@@ -414,7 +414,7 @@ public class ProjectManagerImpl implements ProjectManager {
           }
         }
         project.setProgramCreator(ipProgramManager.getIPProgramById(Integer.parseInt(elementData
-          .get("program_creator_id"))));
+          .get("liaison_institution_id"))));
 
         project.setOwner(userManager.getUser(Integer.parseInt(elementData.get("project_owner_user_id"))));
         project.getOwner().setCurrentInstitution(
@@ -462,8 +462,8 @@ public class ProjectManagerImpl implements ProjectManager {
       // This is a new project. we need to add it to the database.
       // Getting the employee identifier which is the owner_id.
       int ownerId = userManager.getEmployeeID(project.getOwner());
-      projectData.put("management_liaison_id", ownerId);
-      projectData.put("program_creator_id", project.getProgramCreator().getId());
+      projectData.put("liaison_user_id", ownerId);
+      projectData.put("liaison_institution_id", project.getProgramCreator().getId());
     } else {
       // Update project
       projectData.put("id", project.getId());
@@ -476,7 +476,7 @@ public class ProjectManagerImpl implements ProjectManager {
       if (project.getEndDate() != null) {
         projectData.put("end_date", format.format(project.getEndDate()));
       }
-      projectData.put("management_liaison_id", project.getOwner().getId());
+      projectData.put("liaison_user_id", project.getOwner().getId());
     }
 
     return projectDAO.saveProject(projectData);
