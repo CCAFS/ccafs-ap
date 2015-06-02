@@ -32,13 +32,15 @@ public class Project {
 
   private int id;
   private String title;
-  private String type; // Type of project see APConstants. e.g. CCAFS Core, Bilateral Stand-alone or Bilateral Co-Funded.
+  private String type; // Type of project see APConstants. e.g. CCAFS Core, Bilateral Stand-alone or Bilateral
+                       // Co-Funded.
   private String summary;
   private Date startDate;
   private Date endDate;
   private List<IPProgram> regions; // The list of regions in which this project works with.
   private List<IPProgram> flagships; // The list of flagships in which this project works with.
-  private User leader; // Project leader.
+  private User leader; // Project Leader.
+  private User coordinator; // Project Coordinator.
   private String leaderResponsabilities;
   private IPProgram programCreator; // Creator program. e.g. LAM, FP4, CU, etc.
   private User owner;
@@ -449,5 +451,13 @@ public class Project {
 
   public void setType(String type) {
     this.type = type;
+  }
+
+  public User getCoordinator() {
+    return coordinator;
+  }
+
+  public void setCoordinator(User coordinator) {
+    this.coordinator = coordinator;
   }
 }

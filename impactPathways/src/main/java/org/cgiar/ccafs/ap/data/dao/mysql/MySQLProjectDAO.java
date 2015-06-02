@@ -293,6 +293,7 @@ public class MySQLProjectDAO implements ProjectDAO {
       if (rs.next()) {
         projectData.put("id", rs.getString("id"));
         projectData.put("title", rs.getString("title"));
+        projectData.put("type", rs.getString("type"));
         projectData.put("summary", rs.getString("summary"));
         if (rs.getDate("start_date") != null) {
           projectData.put("start_date", rs.getDate("start_date").toString());

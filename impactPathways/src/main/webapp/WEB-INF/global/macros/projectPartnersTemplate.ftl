@@ -129,7 +129,7 @@
           </div> 
           [#-- Project Leader contact --] 
           <div class="fullPartBlock clearfix"> 
-            [@customForm.input name="preplanning.projectPartners.projectLeader" type="text" disabled=!canEdit i18nkey="preplanning.projectPartners.projectLeader" required=true readOnly=true/]
+            [@customForm.input name="project.leader.firstName" type="text" disabled=!canEdit i18nkey="preplanning.projectPartners.projectLeader" required=true readOnly=true/]
             <div class="searchUser">[@s.text name="form.buttons.searchUser" /]</div>
           </div>
           [#-- Project Coordinator --] 
