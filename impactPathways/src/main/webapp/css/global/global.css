@@ -1642,15 +1642,17 @@ textarea[id$='summary'] {
 
 #projectRegionsBlock {
     border: 1px dotted#ccc;
-    padding: 12px 3px 23px 3px;
+    padding: 10px 3px 12px 3px;
+    min-height: 110px;
 }
 #projectFlagshipsBlock {
     border: 1px dotted#CCC;  
     padding: 11px 2px;
+    min-height: 110px;
 }
 
 #projectRegionsBlock .checkboxGroup { 
-   height: 67px;
+   /* height: 67px; */
 }
 
 #projectRegionsBlock .checkboxGroup label { 
