@@ -11,14 +11,14 @@ BEGIN
   -- As we are changing the table structure, we need to disable the trigger
   DROP TRIGGER IF EXISTS after_projects_update;
 
-  IF NOT EXISTS ((SELECT * FROM information_schema.columns WHERE table_schema=DATABASE() AND table_name='projects' AND column_name='management_liaison_id')) THEN
-    ALTER TABLE projects ADD `management_liaison_id` bigint(20) DEFAULT NULL COMMENT 'foreign key to the table users' AFTER `project_owner_id`;
-    ALTER TABLE projects ADD KEY `FK_projects_management_liaison_users_idx` (`management_liaison_id`);
-    ALTER TABLE projects ADD CONSTRAINT `FK_projects_management_liaison_users` FOREIGN KEY (`management_liaison_id`) REFERENCES `users` (`id`) ON DELETE CASCADE ON UPDATE CASCADE;
+  IF NOT EXISTS ((SELECT * FROM information_schema.columns WHERE table_schema=DATABASE() AND table_name='projects' AND column_name='liaison_user_id')) THEN
+    ALTER TABLE projects ADD `liaison_user_id` bigint(20) DEFAULT NULL COMMENT 'foreign key to the table users' AFTER `project_owner_id`;
+    ALTER TABLE projects ADD KEY `FK_projects_liaison_users_idx` (`liaison_user_id`);
+    ALTER TABLE projects ADD CONSTRAINT `FK_projects_liaison_users` FOREIGN KEY (`liaison_user_id`) REFERENCES `users` (`id`) ON DELETE CASCADE ON UPDATE CASCADE;
   END IF;
 
   IF EXISTS ((SELECT * FROM information_schema.columns WHERE table_schema=DATABASE() AND table_name='projects' AND column_name='project_owner_id')) THEN
-    UPDATE projects p SET `management_liaison_id` = (SELECT u.id FROM users u INNER JOIN employees e ON u.id = e.user_id WHERE e.id = p.project_owner_id);
+    UPDATE projects p SET `liaison_user_id` = (SELECT u.id FROM users u INNER JOIN employees e ON u.id = e.user_id WHERE e.id = p.project_owner_id);
   
     ALTER TABLE `projects` 
     DROP FOREIGN KEY `FK_projects_owner_employees`;
