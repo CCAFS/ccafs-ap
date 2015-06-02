@@ -113,6 +113,11 @@ $(document).ready(function(){
       search_contains : true
     });
     
+    $("form .ppaPartnersSelect").chosen({
+      allow_single_deselect : true,
+      search_contains : true
+    });
+    
     $("form .countryList").chosen({
       allow_single_deselect : true,
       search_contains : true
@@ -122,59 +127,8 @@ $(document).ready(function(){
   
   // -------------- Search users functions ------------------ //
   
-  var dialog, form;
-  var emailRegex = /^[a-zA-Z0-9.!#$%&'*+\/=?^_`{|}~-]+@[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?(?:\.[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?)*$/;
-  var name = $("#name");
-  var email = $("#email");
-  var password = $("#password");
-  var allFields = $([]).add(name).add(email).add(password);
-  var tips = $(".validateTips");
-  
-  function updateTips(t){
-    tips.text(t).addClass("ui-state-highlight");
-    setTimeout(function(){
-      tips.removeClass("ui-state-highlight", 1500);
-    }, 500);
-  }
-  
-  function checkLength(o,n,min,max){
-    if (o.val().length > max || o.val().length < min) {
-      o.addClass("ui-state-error");
-      updateTips("Length of " + n + " must be between " + min + " and " + max + ".");
-      return false;
-    } else {
-      return true;
-    }
-  }
-  
-  function checkRegexp(o,regexp,n){
-    if (!(regexp.test(o.val()))) {
-      o.addClass("ui-state-error");
-      updateTips(n);
-      return false;
-    } else {
-      return true;
-    }
-  }
-  
-  function addUser(){
-    var valid = true;
-    allFields.removeClass("ui-state-error");
-    
-    valid = valid && checkLength(name, "username", 3, 16);
-    valid = valid && checkLength(email, "email", 6, 80);
-    valid = valid && checkLength(password, "password", 5, 16);
-    
-    valid = valid && checkRegexp(name, /^[a-z]([0-9a-z_\s])+$/i, "Username may consist of a-z, 0-9, underscores, spaces and must begin with a letter.");
-    valid = valid && checkRegexp(email, emailRegex, "eg. ui@jquery.com");
-    valid = valid && checkRegexp(password, /^([0-9a-zA-Z])+$/, "Password field only allow : a-z 0-9");
-    
-    if (valid) {
-      $("#users tbody").append("<tr>" + "<td>" + name.val() + "</td>" + "<td>" + email.val() + "</td>" + "<td>" + password.val() + "</td>" + "</tr>");
-      dialog.dialog("close");
-    }
-    return valid;
-  }
+  var dialog;
+  var $elementSelected;
   
   dialog = $("#dialog-searchUsers").dialog({
     autoOpen : false,
@@ -183,27 +137,27 @@ $(document).ready(function(){
     modal : true,
     show : {
       effect : "size",
-      duration : 500
+      duration : 100
     },
     buttons : {
-      "Create an user" : addUser,
       Cancel : function(){
         $(this).dialog("close");
       }
-    },
-    close : function(){
-      allFields.removeClass("ui-state-error");
     }
-  });
-  
-  form = dialog.find("form").on("submit", function(event){
-    event.preventDefault();
-    addUser();
   });
   
   $(".searchUser").on("click", function(){
     event.preventDefault();
+    $elementSelected = $(this).parent();
     dialog.dialog("open");
+  });
+  
+  $("#dialog-searchUsers span.select").on("click", function(){
+    var name = $(this).parent().find(".name").text();
+    var email = $(this).parent().find(".email").text();
+    $elementSelected.find("input").val(name + " <" + email + ">").hide().fadeIn("slow");
+    ;
+    dialog.dialog("close");
   });
   
 });

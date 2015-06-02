@@ -256,6 +256,7 @@ img.icon {
 
 .addLink{
   margin: 15px 5px 12px 0px;
+  text-align: right;
 }
 
 .addLink img, .addLink a {
@@ -322,6 +323,98 @@ padding: 1px 10px;
 /* partners Save*/
 select#partnerSave_activityPartner_partner_type_id {
   width: 99%;
+}
+
+
+.dialog-content {
+    text-align: left;
+    margin-top: 6px;
+}
+
+/* P&R Panel Style */
+
+.panel { 
+    border: 1px solid rgba(0,0,0,0.2);
+    border-radius: 6px;
+    margin: 8px 0;
+}
+
+.panel.primary{
+  
+}
+.panel.secondary .panel-head{
+  font-size: 1em;
+  background: #CBCBCB;
+  padding: 4px;
+}
+.panel .panel-head {
+    background: #8EA786;
+    color: #fff;
+    padding: 6px;
+    text-align: center;
+    border-radius: 4px 4px 0px 0px;
+    font-size: 1.1em;
+    font-weight: bold;
+}
+.panel .panel-body {
+    padding: 0px 10px;
+    min-height: 28px;
+}
+
+.panel .panel-body ul{
+    margin: 0;    
+    padding: 0 10px;
+ 
+}
+
+.panel .panel-body ul li {
+    list-style: none; 
+    padding: 5px 0 8px 0;
+    border-bottom: 1px solid #ccc;
+}
+.panel .panel-body ul li:hover { 
+  color: #444;
+  background: #F7F7F7;
+}
+.panel .panel-body ul li.last { 
+    border-bottom: none;
+}
+
+.panel span.listButton {
+  float:right;
+  cursor:pointer;
+  padding: 2px 8px;
+  border-radius: 3px;
+}
+
+.panel span.listButton.select {
+    background: #E6E6E6;
+ 
+}
+.panel span.listButton.remove {
+    background: #D5504C;
+ 
+    color: #fff;
+}
+
+.search-button {
+    background: #E6E6E6;
+    padding: 4px 0;
+    width: 61px;
+    border-radius: 4px;
+    cursor:pointer;
+    position: absolute;
+    bottom: 0;
+    right: 0;
+    text-align: center;
+}
+.search-button:hover {
+    background: #D8D8D8; 
+}
+
+.search-content {
+    position: relative;
+    margin-bottom: 20px;
 }
 
 
@@ -988,7 +1081,7 @@ h3.contentSubTitle {
   display: block;
   margin: 0;
   text-align: right;
-  margin: 15px 0;
+  margin: 50px 0 15px 0;
 }
 
 .buttons button[name=save] {
@@ -1090,6 +1183,9 @@ h3.contentSubTitle {
 .searchUser:hover { 
     background: #5980C7; 
 }
+
+
+
 
 /************* LOGIN *****************/
 #loginFormContainer {
