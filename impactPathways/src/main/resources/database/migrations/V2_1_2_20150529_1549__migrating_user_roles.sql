@@ -24,3 +24,4 @@ CALL migrate_user_roles_table();
  
 -- Don't forget to drop the stored procedure when you're done!
 DROP PROCEDURE IF EXISTS migrate_user_roles_table;
+

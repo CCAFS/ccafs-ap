@@ -15,18 +15,17 @@ package org.cgiar.ccafs.ap.action.planning;
 
 import org.cgiar.ccafs.ap.action.BaseAction;
 import org.cgiar.ccafs.ap.config.APConstants;
+import org.cgiar.ccafs.ap.data.manager.BudgetManager;
 import org.cgiar.ccafs.ap.data.manager.IPProgramManager;
 import org.cgiar.ccafs.ap.data.manager.ProjectManager;
 import org.cgiar.ccafs.ap.data.manager.UserManager;
 import org.cgiar.ccafs.ap.data.model.IPProgram;
 import org.cgiar.ccafs.ap.data.model.Project;
 import org.cgiar.ccafs.ap.data.model.User;
+import org.cgiar.ccafs.utils.APConfig;
 
 import java.util.Iterator;
 import java.util.List;
-
-import org.cgiar.ccafs.ap.data.manager.BudgetManager;
-import org.cgiar.ccafs.utils.APConfig;
 
 import com.google.inject.Inject;
 import org.apache.commons.lang3.StringUtils;
@@ -76,7 +75,7 @@ public class ProjectDescriptionPlanningAction extends BaseAction {
   /**
    * This method returns a composed name with the Acronym and Name.
    * e.g. FP4: Policies and Institutions for Climate-Resilient Food Systems
-   *
+   * 
    * @param ipProgramId is the program identifier.
    * @return the composed name described above.
    */
@@ -96,7 +95,7 @@ public class ProjectDescriptionPlanningAction extends BaseAction {
 
   /**
    * This method returns an array of flagship ids depending on the project.flagships attribute.
-   *
+   * 
    * @return an array of integers.
    */
   public int[] getFlagshipIds() {
@@ -134,7 +133,7 @@ public class ProjectDescriptionPlanningAction extends BaseAction {
 
   /**
    * This method returns an array of region ids depending on the project.regions attribute.
-   *
+   * 
    * @return an array of integers.
    */
   public int[] getRegionIds() {
@@ -344,10 +343,8 @@ public class ProjectDescriptionPlanningAction extends BaseAction {
         return BaseAction.SUCCESS;
       }
     } else {
-      LOG
-      .warn(
-        "User (employee_id={}, email={}) tried to save information in Project Description without having enough privileges!",
-        new Object[] {this.getCurrentUser().getEmployeeId(), this.getCurrentUser().getEmail()});
+      LOG.warn("User {} tried to save information in Project Description without having enough privileges!", this
+        .getCurrentUser().getId());
     }
     return BaseAction.ERROR;
 

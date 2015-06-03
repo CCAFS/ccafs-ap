@@ -17,7 +17,6 @@ import org.cgiar.ccafs.ap.data.dao.UserDAO;
 import org.cgiar.ccafs.ap.data.manager.InstitutionManager;
 import org.cgiar.ccafs.ap.data.manager.UserManager;
 import org.cgiar.ccafs.ap.data.model.IPProgram;
-import org.cgiar.ccafs.ap.data.model.Role;
 import org.cgiar.ccafs.ap.data.model.User;
 import org.cgiar.ccafs.utils.MD5Convert;
 
@@ -67,7 +66,6 @@ public class UserManagerImp implements UserManager {
     for (Map<String, String> eData : employeesDataList) {
       User employee = new User();
       employee.setId(Integer.parseInt(eData.get("id")));
-      employee.setEmployeeId(Integer.parseInt(eData.get("employee_id")));
       employee.setFirstName(eData.get("first_name"));
       employee.setLastName(eData.get("last_name"));
       employee.setEmail(eData.get("email"));
@@ -76,14 +74,7 @@ public class UserManagerImp implements UserManager {
         employee
           .setCurrentInstitution(institutionManager.getInstitution(Integer.parseInt(eData.get("institution_id"))));
       }
-      // Role
-      if (eData.get("role_id") != null) {
-        Role role = new Role();
-        role.setId(Integer.parseInt(eData.get("role_id")));
-        role.setName(eData.get("role_name"));
-        role.setAcronym(eData.get("role_acronym"));
-        employee.setRole(role);
-      }
+
       // Adding object to the array.
       employees.add(employee);
     }
@@ -115,16 +106,10 @@ public class UserManagerImp implements UserManager {
       // User
       User projectContact = new User();
       projectContact.setId(Integer.parseInt(pData.get("id")));
-      projectContact.setEmployeeId(Integer.parseInt(pData.get("employee_id")));
       projectContact.setFirstName(pData.get("first_name"));
       projectContact.setLastName(pData.get("last_name"));
       projectContact.setEmail(pData.get("email"));
-      // Role
-      Role role = new Role();
-      role.setId(Integer.parseInt(pData.get("role_id")));
-      role.setName(pData.get("role_name"));
-      role.setAcronym(pData.get("role_acronym"));
-      projectContact.setRole(role);
+
       // Institution
       projectContact.setCurrentInstitution(institutionManager.getInstitution(Integer.parseInt(pData
         .get("institution_id"))));
@@ -154,7 +139,8 @@ public class UserManagerImp implements UserManager {
   public int getEmployeeID(User user) {
     int userId = user.getId();
     int institutionId = user.getCurrentInstitution().getId();
-    int roleId = user.getRole().getId();
+    // TODO HC - Adjust this code, perhaps we can delete it.
+    int roleId = -1; // user.getRole().getId();
     int result = userDAO.getEmployeeID(userId, institutionId, roleId);
 
     return result;
@@ -168,16 +154,9 @@ public class UserManagerImp implements UserManager {
     // User
     User owner = new User();
     owner.setId(Integer.parseInt(userData.get("id")));
-    owner.setEmployeeId(Integer.parseInt(userData.get("employee_id")));
     owner.setFirstName(userData.get("first_name"));
     owner.setLastName(userData.get("last_name"));
     owner.setEmail(userData.get("email"));
-    // Role
-    Role role = new Role();
-    role.setId(Integer.parseInt(userData.get("role_id")));
-    role.setName(userData.get("role_name"));
-    role.setAcronym(userData.get("role_acronym"));
-    owner.setRole(role);
     // Institution
     owner.setCurrentInstitution(institutionManager.getInstitution(Integer.parseInt(userData.get("institution_id"))));
 
@@ -190,16 +169,9 @@ public class UserManagerImp implements UserManager {
     if (!userData.isEmpty()) {
       User user = new User();
       user.setId(Integer.parseInt(userData.get("id")));
-      user.setEmployeeId(Integer.parseInt(userData.get("employee_id")));
       user.setFirstName(userData.get("first_name"));
       user.setLastName(userData.get("last_name"));
       user.setEmail(userData.get("email"));
-      // Role
-      Role role = new Role();
-      role.setId(Integer.parseInt(userData.get("role_id")));
-      role.setName(userData.get("role_name"));
-      role.setAcronym(userData.get("role_acronym"));
-      user.setRole(role);
       // Institution
       user.setCurrentInstitution(institutionManager.getInstitution(Integer.parseInt(userData.get("institution_id"))));
 
@@ -336,7 +308,6 @@ public class UserManagerImp implements UserManager {
     userData.put("email", user.getEmail());
     userData.put("password", MD5Convert.stringToMD5(user.getPassword()));
     // userData.put("activity_leader_id", String.valueOf(user.getLeader().getId()));
-    userData.put("role", String.valueOf(user.getRole()));
 
     return userDAO.saveUser(userData);
   }

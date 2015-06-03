@@ -309,7 +309,7 @@ public class ActivityManagerImpl implements ActivityManager {
 
   @Override
   public List<Integer> getLedActivityIds(User user) {
-    return activityDAO.getLedActivities(user.getEmployeeId());
+    return activityDAO.getLedActivities(user.getId());
   }
 
   @Override
@@ -368,12 +368,12 @@ public class ActivityManagerImpl implements ActivityManager {
   public boolean saveActivityLeader(int activityID, User user) {
     boolean allSaved = true;
 
-    int result = activityDAO.saveActivityLeader(activityID, user.getEmployeeId());
+    int result = activityDAO.saveActivityLeader(activityID, user.getId());
 
     if (result > 0) {
       LOG.debug("saveExpectedActivityLeader > New Activity Leader added with id {}", result);
     } else if (result == 0) {
-      LOG.debug("saveExpectedActivityLeader > Activity Leader with id={} was updated", user.getEmployeeId());
+      LOG.debug("saveExpectedActivityLeader > Activity Leader with id={} was updated", user.getId());
     } else {
       LOG.error(
         "saveExpectedActivityLeader > There was an error trying to save/update an Activity Leader for activityID={}",
