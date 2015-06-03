@@ -33,7 +33,7 @@ public class Project {
   private int id;
   private String title;
   private String type; // Type of project see APConstants. e.g. CCAFS Core, Bilateral Stand-alone or Bilateral
-                       // Co-Funded.
+  // Co-Funded.
   private String summary;
   private Date startDate;
   private Date endDate;
@@ -70,7 +70,7 @@ public class Project {
    * @return
    */
   public boolean canDelete(Date planningStartDate) {
-    return getCreationDate().after(planningStartDate);
+    return this.getCreationDate().after(planningStartDate);
   }
 
   public boolean containsOutput(int outputID) {
@@ -186,6 +186,10 @@ public class Project {
     return null;
   }
 
+  public User getCoordinator() {
+    return coordinator;
+  }
+
   public long getCreated() {
     return created;
   }
@@ -248,7 +252,7 @@ public class Project {
   public List<IPIndicator> getIndicatorsByParent(int parentIndicatorID) {
     List<IPIndicator> indicators = new ArrayList<>();
     if (indicators != null) {
-      getIndicatorsByParentAndYear(parentIndicatorID, 2019);
+      this.getIndicatorsByParentAndYear(parentIndicatorID, 2019);
       for (IPIndicator indicator : this.indicators) {
         if (indicator.getParent() != null) {
           if (indicator.getParent().getId() == parentIndicatorID) {
@@ -286,10 +290,10 @@ public class Project {
     return ipOtherContribution;
   }
 
+
   public User getLeader() {
     return leader;
   }
-
 
   public String getLeaderResponsabilities() {
     return leaderResponsabilities;
@@ -355,6 +359,10 @@ public class Project {
     return totalBudget;
   }
 
+  public String getType() {
+    return type;
+  }
+
   @Override
   public int hashCode() {
     return this.getId();
@@ -366,6 +374,10 @@ public class Project {
 
   public void setBudgets(List<Budget> budgets) {
     this.budgets = budgets;
+  }
+
+  public void setCoordinator(User coordinator) {
+    this.coordinator = coordinator;
   }
 
   public void setCreated(long created) {
@@ -440,24 +452,12 @@ public class Project {
     this.title = title;
   }
 
-  @Override
-  public String toString() {
-    return ToStringBuilder.reflectionToString(this);
-  }
-
-  public String getType() {
-    return type;
-  }
-
   public void setType(String type) {
     this.type = type;
   }
 
-  public User getCoordinator() {
-    return coordinator;
-  }
-
-  public void setCoordinator(User coordinator) {
-    this.coordinator = coordinator;
+  @Override
+  public String toString() {
+    return ToStringBuilder.reflectionToString(this);
   }
 }

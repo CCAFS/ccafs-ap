@@ -87,7 +87,7 @@ public class GrantProjectPlanningAccessInterceptor extends AbstractInterceptor {
         User projectLeader = projectManager.getProjectLeader(projectID);
         if (projectLeader != null) {
           // If the user is the project leader, he is able to save and partially edit.
-          if (projectLeader.getEmployeeId() == user.getEmployeeId()) {
+          if (projectLeader.getId() == user.getId()) {
             baseAction.setFullEditable(false);
             baseAction.setSaveable(true);
           } else {

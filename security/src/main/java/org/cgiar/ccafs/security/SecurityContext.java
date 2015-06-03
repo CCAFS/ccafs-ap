@@ -106,13 +106,14 @@ public class SecurityContext extends BaseSecurityContext {
     return hasPermission(Permission.PLANNING_PROJECT_WORKPLAN_UPDATE);
   }
 
+
   /**
    * Verify if the user has the administrator role
    * 
    * @return
    */
   public boolean isAdmin() {
-    return hasRole(Role.ADMIN);
+    return hasRole(Role.Admin);
   }
 
   /**

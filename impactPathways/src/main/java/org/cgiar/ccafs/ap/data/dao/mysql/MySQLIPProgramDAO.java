@@ -125,7 +125,7 @@ public class MySQLIPProgramDAO implements IPProgramDAO {
     StringBuilder query = new StringBuilder();
     query.append("SELECT ipr.*, type.name as 'type_name' ");
     query.append("FROM ip_programs as ipr ");
-    query.append("INNER JOIN projects p ON ipr.id=p.program_creator_id ");
+    query.append("INNER JOIN projects p ON ipr.id=p.liaison_institution_id ");
     query.append("INNER JOIN ip_program_types type ON type.id = ipr.type_id ");
     query.append("WHERE p.id= ");
     query.append(projectID);
