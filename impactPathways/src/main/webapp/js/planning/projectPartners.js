@@ -195,7 +195,7 @@ $(document).ready(
         // Start a timer that will search when finished
         timeoutID = setTimeout(function() {
           getData(query);
-        }, 1000);
+        }, 500);
       }
 
       function getData(query) {

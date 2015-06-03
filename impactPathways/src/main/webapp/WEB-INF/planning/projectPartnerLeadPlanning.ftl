@@ -48,7 +48,7 @@
       [#include "/WEB-INF/planning/projectPartners-sub-menu.ftl" /]
       <div id="partnerTables-partnerLead" class="partnerTable ui-tabs-panel ui-widget-content ui-corner-bottom clearfix">   
         [#-- Displaying partner leader from partnersTemplate.ftl --]  
-        [@partnersTemplate.projectLeader leader={"name":"Project leader"} /] 
+        [@partnersTemplate.projectLeader leader=project.leader /] 
       </div>
     </div>
     
