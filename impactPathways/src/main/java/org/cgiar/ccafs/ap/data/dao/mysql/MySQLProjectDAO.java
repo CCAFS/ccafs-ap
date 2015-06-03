@@ -269,8 +269,8 @@ public class MySQLProjectDAO implements ProjectDAO {
       }
       rs.close();
     } catch (SQLException e) {
-      LOG.error("-- getPLProjectIds() > There was an error getting the data for employeeId={}.",
-        new Object[] {userID}, e.getMessage());
+      LOG.error("-- getPLProjectIds() > There was an error getting the data for employeeId={}.", new Object[] {userID},
+        e.getMessage());
       return null;
     }
     LOG.debug("<< getPLProjectIds():{}", projectIds);
@@ -299,7 +299,7 @@ public class MySQLProjectDAO implements ProjectDAO {
         if (rs.getDate("end_date") != null) {
           projectData.put("end_date", rs.getDate("end_date").toString());
         }
-        //projectData.put("project_leader_id", rs.getString("project_leader_id"));
+        // projectData.put("project_leader_id", rs.getString("project_leader_id"));
         projectData.put("liaison_institution_id", rs.getString("liaison_institution_id"));
         projectData.put("liaison_user_id", rs.getString("owner_id"));
         // projectData.put("project_owner_institution_id", rs.getString("owner_institution_id"));
@@ -383,12 +383,16 @@ public class MySQLProjectDAO implements ProjectDAO {
     List<Integer> projectIds = new ArrayList<>();
     try (Connection connection = databaseManager.getConnection()) {
       StringBuilder query = new StringBuilder();
-      query.append("SELECT p.id FROM projects p WHERE p.liaison_institution_id = ");
-      query.append(programID);
-      query.append(" OR p.liaison_user_id = ");
+      query.append("SELECT p.id FROM projects p WHERE ");
+      query.append("p.liaison_user_id = (SELECT id FROM liaison_users WHERE user_id =  ");
       query.append(ownerID);
-      query.append(" OR p.project_leader_id = ");
+      query.append(") OR p.liaison_institution_id = (SELECT institution_id FROM liaison_users WHERE user_id = ");
       query.append(ownerID);
+      query.append(") OR EXISTS (SELECT project_id FROM project_partners WHERE  partner_type = '");
+      query.append(APConstants.PROJECT_PARTNER_PL);
+      query.append("' AND project_id = p.id AND user_id = ");
+      query.append(ownerID);
+      query.append(") ");
       ResultSet rs = databaseManager.makeQuery(query.toString(), connection);
       while (rs.next()) {
         projectIds.add(rs.getInt(1));
@@ -458,7 +462,7 @@ public class MySQLProjectDAO implements ProjectDAO {
       query.append("FROM project_partners pp ");
       query.append("INNER JOIN users u ON u.id = pp.user_id ");
       query.append("INNER JOIN institutions i ON i.id = pp.partner_id ");
-      query.append("AND pp.partner_type = '"+APConstants.PROJECT_PARTNER_PL+"' ");
+      query.append("AND pp.partner_type = '" + APConstants.PROJECT_PARTNER_PL + "' ");
       query.append("AND pp.project_id = ");
       query.append(projectID);
 
@@ -469,7 +473,7 @@ public class MySQLProjectDAO implements ProjectDAO {
         projectLeaderData.put("last_name", rs.getString("last_name"));
         projectLeaderData.put("email", rs.getString("email"));
         projectLeaderData.put("institution_id", rs.getString("institution_id"));
-        //projectLeaderData.put("employee_id", rs.getString("employee_id")); NOT used any more.
+        // projectLeaderData.put("employee_id", rs.getString("employee_id")); NOT used any more.
       }
       rs.close();
     } catch (SQLException e) {

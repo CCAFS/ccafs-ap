@@ -16,7 +16,9 @@ BEGIN
     DROP FOREIGN KEY `FK_projects_liaison_users`;
     ALTER TABLE `projects` 
     DROP INDEX `FK_projects_liaison_users_idx`;
-  
+    
+    ALTER TABLE `projects` CHANGE COLUMN `liaison_user_id` `liaison_user_id` BIGINT(20) NULL DEFAULT NULL COMMENT 'foreign key to the table liaison_users';
+
     UPDATE projects SET liaison_user_id = (SELECT id FROM liaison_users WHERE user_id = liaison_user_id);
   
     ALTER TABLE projects ADD KEY `FK_projects_liaison_liaison_users_idx` (`liaison_user_id`);
