@@ -19,7 +19,7 @@ BEGIN
   IF EXISTS ((SELECT * FROM information_schema.columns WHERE table_schema=DATABASE() AND table_name='projects' AND column_name='expected_project_leader_id')) THEN
     ALTER TABLE `projects` 
     DROP FOREIGN KEY `FK_projects_expected_project_leaders`;
-		ALTER TABLE `ccafs_pr`.`projects` 
+		ALTER TABLE `projects` 
 		DROP COLUMN `expected_project_leader_id`,
 		DROP INDEX `FK_projects_expected_project_leaders_idx`;
   END IF;
