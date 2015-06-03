@@ -45,6 +45,32 @@ public class MySQLUserRoleDAO implements UserRoleDAO {
   }
 
   @Override
+  public List<Map<String, String>> getProjectUserRoles(String userID) {
+    List<Map<String, String>> userRolesList = new ArrayList<>();
+    StringBuilder query = new StringBuilder();
+    query.append("SELECT r.id, r.name, r.acronym, pr.project_id ");
+    query.append("FROM project_roles pr ");
+    query.append("INNER JOIN roles r ON pr.role_id = r.id ");
+    query.append("WHERE pr.user_id = ");
+    query.append(userID);
+
+    try (Connection con = daoManager.getConnection()) {
+      ResultSet rs = daoManager.makeQuery(query.toString(), con);
+      while (rs.next()) {
+        Map<String, String> userRole = new HashMap<>();
+        userRole.put("id", rs.getString("id"));
+        userRole.put("name", rs.getString("name"));
+        userRole.put("acronym", rs.getString("acronym"));
+        userRole.put("project_id", rs.getString("project_id"));
+        userRolesList.add(userRole);
+      }
+    } catch (SQLException e) {
+      LOG.error("verifiyCredentials() > There was an error verifiying the credentials of {}", userID, e);
+    }
+    return userRolesList;
+  }
+
+  @Override
   public List<String> getRolePermissions(String roleID) {
     List<String> permissions = new ArrayList<>();
     StringBuilder query = new StringBuilder();
