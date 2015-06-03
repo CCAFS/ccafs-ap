@@ -46,16 +46,16 @@ import org.slf4j.LoggerFactory;
  */
 public class ProjectManagerImpl implements ProjectManager {
 
+  // LOG
+  private static Logger LOG = LoggerFactory.getLogger(ProjectManagerImpl.class);
+
   // DAOs
   private ProjectDAO projectDAO;
-
   // Managers
   private UserManager userManager;
   private InstitutionManager institutionManager;
   private IPProgramManager ipProgramManager;
   private BudgetManager budgetManager;
-  // LOG
-  private static Logger LOG = LoggerFactory.getLogger(ProjectManagerImpl.class);
 
 
   @Inject
@@ -155,8 +155,8 @@ public class ProjectManagerImpl implements ProjectManager {
       projectLeader.setLastName(pData.get("contact_last_name"));
       projectLeader.setEmail(pData.get("contact_email"));
       // Getting Project leader institution and saving it in currentInstitution.
-      projectLeader.setCurrentInstitution(institutionManager.getInstitution(Integer.parseInt(pData
-        .get("institution_id"))));
+      projectLeader
+      .setCurrentInstitution(institutionManager.getInstitution(Integer.parseInt(pData.get("institution_id"))));
 
       return projectLeader;
     }
@@ -201,8 +201,8 @@ public class ProjectManagerImpl implements ProjectManager {
       project.setCreated(Long.parseLong(projectData.get("created")));
       // Getting the Program creator
       if (projectData.get("liaison_institution_id") != null) {
-        project.setProgramCreator(ipProgramManager.getIPProgramById(Integer.parseInt(projectData
-          .get("liaison_institution_id"))));
+        project.setProgramCreator(
+          ipProgramManager.getIPProgramById(Integer.parseInt(projectData.get("liaison_institution_id"))));
       }
 
       return project;
@@ -259,6 +259,20 @@ public class ProjectManagerImpl implements ProjectManager {
   }
 
   @Override
+  public User getProjectCoordinator(int projectID) {
+    Map<String, String> pData = projectDAO.getProjectCoordinator(projectID);
+    if (!pData.isEmpty()) {
+      User projectCoordinator = new User();
+      projectCoordinator.setId(Integer.parseInt(pData.get("id")));
+      projectCoordinator.setFirstName(pData.get("first_name"));
+      projectCoordinator.setLastName(pData.get("last_name"));
+      projectCoordinator.setEmail(pData.get("email"));
+      return projectCoordinator;
+    }
+    return null;
+  }
+
+  @Override
   public Project getProjectFromActivityId(int activityID) {
     int projectID = projectDAO.getProjectIdFromActivityId(activityID);
     if (projectID != -1) {
@@ -312,8 +326,8 @@ public class ProjectManagerImpl implements ProjectManager {
       projectLeader.setEmail(pData.get("email"));
       // projectLeader.setEmployeeId(Integer.parseInt(pData.get("employee_id"))); Not used anymore
       // Getting Project leader institution and saving it in currentInstitution.
-      projectLeader.setCurrentInstitution(institutionManager.getInstitution(Integer.parseInt(pData
-        .get("institution_id"))));
+      projectLeader
+      .setCurrentInstitution(institutionManager.getInstitution(Integer.parseInt(pData.get("institution_id"))));
 
       return projectLeader;
     }
@@ -370,16 +384,16 @@ public class ProjectManagerImpl implements ProjectManager {
       }
       // Setting program creator.
       if (elementData.get("liaison_institution_id") != null) {
-        project.setProgramCreator(ipProgramManager.getIPProgramById(Integer.parseInt(elementData
-          .get("liaison_institution_id"))));
+        project.setProgramCreator(
+          ipProgramManager.getIPProgramById(Integer.parseInt(elementData.get("liaison_institution_id"))));
       }
       // Setting creation date.
       project.setCreated(Long.parseLong(elementData.get("created")));
       // Getting Project Focuses - IPPrograms
-      project.setRegions(ipProgramManager.getProjectFocuses(Integer.parseInt(elementData.get("id")),
-        APConstants.REGION_PROGRAM_TYPE));
-      project.setFlagships(ipProgramManager.getProjectFocuses(Integer.parseInt(elementData.get("id")),
-        APConstants.FLAGSHIP_PROGRAM_TYPE));
+      project.setRegions(
+        ipProgramManager.getProjectFocuses(Integer.parseInt(elementData.get("id")), APConstants.REGION_PROGRAM_TYPE));
+      project.setFlagships(
+        ipProgramManager.getProjectFocuses(Integer.parseInt(elementData.get("id")), APConstants.FLAGSHIP_PROGRAM_TYPE));
       // Getting Budget.
       project.setBudgets(budgetManager.getCCAFSBudgets(Integer.parseInt(elementData.get("id"))));
 
@@ -414,8 +428,8 @@ public class ProjectManagerImpl implements ProjectManager {
             LOG.error("There was an error formatting the dates", e);
           }
         }
-        project.setProgramCreator(ipProgramManager.getIPProgramById(Integer.parseInt(elementData
-          .get("liaison_institution_id"))));
+        project.setProgramCreator(
+          ipProgramManager.getIPProgramById(Integer.parseInt(elementData.get("liaison_institution_id"))));
 
         project.setOwner(userManager.getUser(Integer.parseInt(elementData.get("project_owner_user_id"))));
         project.getOwner().setCurrentInstitution(

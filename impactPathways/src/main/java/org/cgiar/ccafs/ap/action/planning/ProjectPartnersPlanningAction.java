@@ -107,7 +107,7 @@ public class ProjectPartnersPlanningAction extends BaseAction {
 
   @Override
   public String next() {
-    String result = save();
+    String result = this.save();
     if (result.equals(BaseAction.SUCCESS)) {
       return BaseAction.NEXT;
     } else {
@@ -131,7 +131,7 @@ public class ProjectPartnersPlanningAction extends BaseAction {
     allPartners = new ArrayList<>();
     Institution placeHolder = new Institution(-1);
     placeHolder.setType(new InstitutionType());
-    placeHolder.setName(getText("planning.projectPartners.selectInstitution"));
+    placeHolder.setName(this.getText("planning.projectPartners.selectInstitution"));
 
     allPartners.add(placeHolder);
     allPartners.addAll(institutionManager.getAllInstitutions());
@@ -146,18 +146,20 @@ public class ProjectPartnersPlanningAction extends BaseAction {
     allProjectLeaders = userManager.getAllUsers();
 
     // Getting the project partner leader.
-    // We validate if the partner leader is already in the employees table. If so, we need to get this
-    // information and show it as label in the front-end.
-    // If not, we just load the form for the expected project leader.
     User projectLeader = projectManager.getProjectLeader(project.getId());
-
     if (projectLeader == null) {
       projectLeader = new User();
       projectLeader.setId(-1);
-      project.setLeader(projectLeader);
-    } else {
-      project.setLeader(projectLeader);
     }
+    project.setLeader(projectLeader);
+
+    // Getting Project Coordinator
+    User projectCoordinator = projectManager.getProjectCoordinator(project.getId());
+    if (projectCoordinator == null) {
+      projectCoordinator = new User();
+      projectCoordinator.setId(-1);
+    }
+    project.setCoordinator(projectCoordinator);
 
     // If the user is not admin or the project owner, we should keep some information
     // unmutable
@@ -165,8 +167,7 @@ public class ProjectPartnersPlanningAction extends BaseAction {
     previousProject.setId(project.getId());
     previousProject.setProjectPartners(project.getProjectPartners());
 
-
-    if (getRequest().getMethod().equalsIgnoreCase("post")) {
+    if (this.getRequest().getMethod().equalsIgnoreCase("post")) {
       // Clear out the list if it has some element
       if (project.getProjectPartners() != null) {
         project.getProjectPartners().clear();
@@ -245,10 +246,10 @@ public class ProjectPartnersPlanningAction extends BaseAction {
         // ----------------------------------------------------------
 
         if (success) {
-          addActionMessage(getText("saving.saved"));
+          this.addActionMessage(this.getText("saving.saved"));
           return SUCCESS;
         } else {
-          addActionError(getText("saving.problem"));
+          this.addActionError(this.getText("saving.problem"));
           return INPUT;
         }
       } else {
@@ -260,21 +261,21 @@ public class ProjectPartnersPlanningAction extends BaseAction {
         for (int c = 0; c < previousProject.getProjectPartners().size(); c++) {
           // Copying responsibilities.
           previousProject.getProjectPartners().get(c)
-            .setResponsabilities(project.getProjectPartners().get(c).getResponsabilities());
+          .setResponsabilities(project.getProjectPartners().get(c).getResponsabilities());
         }
         boolean result =
           projectPartnerManager.saveProjectPartner(previousProject.getId(), previousProject.getProjectPartners());
         if (result) {
-          addActionMessage(getText("saving.saved"));
+          this.addActionMessage(this.getText("saving.saved"));
           return SUCCESS;
         } else {
-          addActionError(getText("saving.problem"));
+          this.addActionError(this.getText("saving.problem"));
           return BaseAction.INPUT;
         }
       }
     } else {
-      LOG.warn("User {} tried to save information in Project Partners without having enough privileges!", this
-        .getCurrentUser().getId());
+      LOG.warn("User {} tried to save information in Project Partners without having enough privileges!",
+        this.getCurrentUser().getId());
     }
     return BaseAction.ERROR;
 
@@ -306,12 +307,11 @@ public class ProjectPartnersPlanningAction extends BaseAction {
       } else if (project.getExpectedLeader() != null) {
 
         if (project.getExpectedLeader().getCurrentInstitution() == null) {
-          if (!project.getExpectedLeader().getEmail().isEmpty()
-            || !project.getExpectedLeader().getFirstName().isEmpty()
+          if (!project.getExpectedLeader().getEmail().isEmpty() || !project.getExpectedLeader().getFirstName().isEmpty()
             || !project.getExpectedLeader().getLastName().isEmpty()) {
             // Show an error to prevent the loss of information
-            addFieldError("project.expectedLeader.currentInstitution",
-              getText("planning.projectPartners.selectInstitution"));
+            this.addFieldError("project.expectedLeader.currentInstitution",
+              this.getText("planning.projectPartners.selectInstitution"));
             problem = true;
           }
         } else {
@@ -336,21 +336,21 @@ public class ProjectPartnersPlanningAction extends BaseAction {
             continue;
           } else {
             // Show an error to prevent the loss of information
-            addFieldError("project.projectPartners[" + c + "].partner",
-              getText("planning.projectPartners.selectInstitution"));
+            this.addFieldError("project.projectPartners[" + c + "].partner",
+              this.getText("planning.projectPartners.selectInstitution"));
             problem = true;
           }
         }
 
         if (!institutions.add(projectPartner.getPartner())) {
-          addFieldError("project.projectPartners[" + c + "].partner",
-            getText("preplanning.projectPartners.duplicatedInstitution.field"));
+          this.addFieldError("project.projectPartners[" + c + "].partner",
+            this.getText("preplanning.projectPartners.duplicatedInstitution.field"));
           problem = true;
         }
       }
 
       if (problem) {
-        addActionError(getText("saving.fields.required"));
+        this.addActionError(this.getText("saving.fields.required"));
       }
     }
     super.validate();

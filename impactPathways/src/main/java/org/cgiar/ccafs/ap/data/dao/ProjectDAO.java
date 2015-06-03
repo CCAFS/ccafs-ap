@@ -120,6 +120,15 @@ public interface ProjectDAO {
   public Map<String, String> getProjectBasicInfo(int projectID);
 
   /**
+   * Get a Project Coordinator information with a given Project ID
+   * 
+   * @param ProjectID is the id of a project
+   * @return a Map with the project coordinator information or an empty map if no user found. If an error occurs, a NULL
+   *         will be returned.
+   */
+  public Map<String, String> getProjectCoordinator(int projectID);
+
+  /**
    * this method returns the project id in which the given activity belongs to.
    * 
    * @param activityID is the activity identifier.
