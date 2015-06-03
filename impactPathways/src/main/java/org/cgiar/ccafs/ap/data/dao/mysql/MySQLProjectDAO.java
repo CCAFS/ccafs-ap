@@ -14,11 +14,6 @@
  */
 package org.cgiar.ccafs.ap.data.dao.mysql;
 
-import org.cgiar.ccafs.ap.config.APConstants;
-import org.cgiar.ccafs.ap.data.dao.ProjectDAO;
-import org.cgiar.ccafs.ap.data.model.BudgetType;
-import org.cgiar.ccafs.utils.db.DAOManager;
-
 import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -28,6 +23,10 @@ import java.util.List;
 import java.util.Map;
 
 import com.google.inject.Inject;
+import org.cgiar.ccafs.ap.config.APConstants;
+import org.cgiar.ccafs.ap.data.dao.ProjectDAO;
+import org.cgiar.ccafs.ap.data.model.BudgetType;
+import org.cgiar.ccafs.utils.db.DAOManager;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -281,9 +280,12 @@ public class MySQLProjectDAO implements ProjectDAO {
     LOG.debug(">> getProject projectID = {} )", projectID);
     Map<String, String> projectData = new HashMap<String, String>();
     StringBuilder query = new StringBuilder();
-    query.append("SELECT p.*, emp.id as 'owner_id', emp.institution_id as 'owner_institution_id'");
+    query.append("SELECT p.*, u.id as 'owner_id', i.id as 'owner_institution_id'");
     query.append("FROM projects as p ");
-    query.append("INNER JOIN employees emp ON emp.id = p.liaison_user_id ");
+    query.append("INNER JOIN liaison_users lu ON p.liaison_user_id = lu.id ");
+    query.append("INNER JOIN users u ON lu.user_id = u.id ");
+    query.append("INNER JOIN liaison_institutions li ON p.liaison_institution_id = li.id  ");
+    query.append("INNER JOIN institutions i ON li.institution_id = i.id ");
     query.append("WHERE p.id = ");
     query.append(projectID);
     try (Connection con = databaseManager.getConnection()) {

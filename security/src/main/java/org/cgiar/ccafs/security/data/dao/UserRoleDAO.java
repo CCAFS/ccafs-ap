@@ -30,6 +30,15 @@ import com.google.inject.ImplementedBy;
 public interface UserRoleDAO {
 
   /**
+   * This method gets the permissions that the user has assigned to
+   * specific projects if any.
+   * 
+   * @param UserID
+   * @return a list of maps with the information
+   */
+  public List<Map<String, String>> getProjectUserRoles(String userID);
+
+  /**
    * This method gets all the permissions assigned to the role
    * identified by the value received by parameter.
    * 
@@ -42,8 +51,8 @@ public interface UserRoleDAO {
    * This method gets all the roles that belong to the user
    * identified by the email received as parameter
    * 
-   * @param email
-   * @return a list of maps with the information.
+   * @param userID
+   * @return a list of maps with the permissions.
    */
   public List<Map<String, String>> getUserRolesByUserID(String userID);
 }
