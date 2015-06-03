@@ -13,12 +13,11 @@
  *****************************************************************/
 package org.cgiar.ccafs.ap.data.model;
 
-import org.cgiar.ccafs.utils.MD5Convert;
-
 import java.util.Date;
 import java.util.List;
 
 import org.apache.commons.lang3.builder.ToStringBuilder;
+import org.cgiar.ccafs.utils.MD5Convert;
 
 /**
  * @author Hernan David Carvajal.
@@ -46,6 +45,9 @@ public class User {
    *         e.g. Tobón, Héctor <h.f.tobon@cgiar.org>
    */
   public String getComposedName() {
+    if (this.id == -1) {
+      return "";
+    }
     return this.lastName + ", " + this.firstName + " <" + this.email + ">";
   }
 
