@@ -81,6 +81,7 @@ public interface ProjectManager {
    * @deprecated This method is deprecated as we do not have expected Project Leaders any more. Instead, all the PLs
    *             will be created in the users table but some of them will be active or not.
    */
+  @Deprecated
   public User getExpectedProjectLeader(int projectId);
 
   /**
@@ -108,6 +109,14 @@ public interface ProjectManager {
    * @return a list with Project objects.
    */
   public Project getProjectBasicInfo(int projectID);
+
+  /**
+   * Get the project coordinator.
+   * 
+   * @param projectID is the project identifier.
+   * @return a User object or null if nothing found.
+   */
+  public User getProjectCoordinator(int projectID);
 
   /**
    * This method returns the Project in which the activity belongs to.

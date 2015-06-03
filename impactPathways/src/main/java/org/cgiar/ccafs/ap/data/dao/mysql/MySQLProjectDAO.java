@@ -140,15 +140,13 @@ public class MySQLProjectDAO implements ProjectDAO {
     List<Map<String, String>> projectList = new ArrayList<>();
     StringBuilder query = new StringBuilder();
 
-    String regionsSubquery =
-      "SELECT GROUP_CONCAT(ipp.acronym) "
-        + "FROM ip_programs ipp INNER JOIN project_focuses pf ON ipp.id = pf.program_id "
-        + "WHERE pf.project_id = p.id AND ipp.type_id = " + APConstants.REGION_PROGRAM_TYPE;
+    String regionsSubquery = "SELECT GROUP_CONCAT(ipp.acronym) "
+      + "FROM ip_programs ipp INNER JOIN project_focuses pf ON ipp.id = pf.program_id "
+      + "WHERE pf.project_id = p.id AND ipp.type_id = " + APConstants.REGION_PROGRAM_TYPE;
 
-    String flagshipsSubquery =
-      "SELECT GROUP_CONCAT(ipp.acronym) "
-        + "FROM ip_programs ipp INNER JOIN project_focuses pf ON ipp.id = pf.program_id "
-        + "WHERE pf.project_id = p.id AND ipp.type_id = " + APConstants.FLAGSHIP_PROGRAM_TYPE;
+    String flagshipsSubquery = "SELECT GROUP_CONCAT(ipp.acronym) "
+      + "FROM ip_programs ipp INNER JOIN project_focuses pf ON ipp.id = pf.program_id "
+      + "WHERE pf.project_id = p.id AND ipp.type_id = " + APConstants.FLAGSHIP_PROGRAM_TYPE;
 
     query.append("SELECT p.id, p.title, p.type, p.active_since, SUM(b.amount) as 'total_budget_amount', ");
     query.append("( " + regionsSubquery + " )  as 'regions', ");
@@ -359,6 +357,38 @@ public class MySQLProjectDAO implements ProjectDAO {
   }
 
   @Override
+  public Map<String, String> getProjectCoordinator(int projectID) {
+    LOG.debug(">> getProjectCoordinator(projectID={})", projectID);
+    Map<String, String> projectCoordinatorData = new HashMap<>();
+    try (Connection connection = databaseManager.getConnection()) {
+
+      StringBuilder query = new StringBuilder();
+      query.append("SELECT u.id, u.first_name, u.last_name, u.email, i.id as 'institution_id'");
+      query.append("FROM project_partners pp ");
+      query.append("INNER JOIN users u ON u.id = pp.user_id ");
+      query.append("INNER JOIN institutions i ON i.id = pp.partner_id ");
+      query.append("AND pp.partner_type = '" + APConstants.PROJECT_PARTNER_PC + "' ");
+      query.append("AND pp.project_id = ");
+      query.append(projectID);
+
+      ResultSet rs = databaseManager.makeQuery(query.toString(), connection);
+      if (rs.next()) {
+        projectCoordinatorData.put("id", rs.getString("id"));
+        projectCoordinatorData.put("first_name", rs.getString("first_name"));
+        projectCoordinatorData.put("last_name", rs.getString("last_name"));
+        projectCoordinatorData.put("email", rs.getString("email"));
+        projectCoordinatorData.put("institution_id", rs.getString("institution_id"));
+      }
+      rs.close();
+    } catch (SQLException e) {
+      LOG.error("-- getProjectCoordinator() > There was an error getting the data for user {}.", projectID, e);
+      return null;
+    }
+    LOG.debug("<< getProjectCoordinator():{}", projectCoordinatorData);
+    return projectCoordinatorData;
+  }
+
+  @Override
   public int getProjectIdFromActivityId(int activityID) {
     LOG.debug(">> getProjectIdFromActivityId(activityID={})", new Object[] {activityID});
     int projectID = -1;
@@ -539,8 +569,9 @@ public class MySQLProjectDAO implements ProjectDAO {
 
 
     LOG.debug("-- getProjectOwnerContact() > Calling method executeQuery to get the results");
-    return getData(query.toString());
+    return this.getData(query.toString());
   }
+
 
   @Override
   public List<Map<String, String>> getProjectOwnerId(int programId) {
@@ -556,7 +587,7 @@ public class MySQLProjectDAO implements ProjectDAO {
 
 
     LOG.debug("-- getProjectOwnerId() > Calling method executeQuery to get the results");
-    return getData(query.toString());
+    return this.getData(query.toString());
   }
 
 
@@ -626,7 +657,6 @@ public class MySQLProjectDAO implements ProjectDAO {
     return projectList;
   }
 
-
   @Override
   public int saveExpectedProjectLeader(int projectId, Map<String, Object> expectedProjectLeaderData) {
     LOG.debug(">> saveExpectedProjectLeader(projectData={})", projectId);
@@ -635,8 +665,8 @@ public class MySQLProjectDAO implements ProjectDAO {
     int newId = -1;
     if (expectedProjectLeaderData.get("id") == null) {
       // Add the record into the database and assign it to the projects table (column expected_project_leader_id).
-      query
-        .append("INSERT INTO expected_project_leaders (contact_first_name, contact_last_name, contact_email, institution_id) ");
+      query.append(
+        "INSERT INTO expected_project_leaders (contact_first_name, contact_last_name, contact_email, institution_id) ");
       query.append("VALUES (?, ?, ?, ?) ");
       Object[] values = new Object[4];
       values[0] = expectedProjectLeaderData.get("contact_first_name");
@@ -668,8 +698,8 @@ public class MySQLProjectDAO implements ProjectDAO {
       }
     } else {
       // UPDATE the record into the database.
-      query
-        .append("UPDATE expected_project_leaders SET contact_first_name = ?, contact_last_name = ?, contact_email = ?, institution_id = ? ");
+      query.append(
+        "UPDATE expected_project_leaders SET contact_first_name = ?, contact_last_name = ?, contact_email = ?, institution_id = ? ");
       query.append("WHERE id = ?");
       Object[] values = new Object[5];
       values[0] = expectedProjectLeaderData.get("contact_first_name");
@@ -740,10 +770,9 @@ public class MySQLProjectDAO implements ProjectDAO {
 
     int newId = databaseManager.saveData(query.toString(), values);
     if (newId == -1) {
-      LOG
-        .warn(
-          "-- saveProjectIndicators() > A problem happened trying to add a new project indicator. Data tried to save was: {}",
-          indicatorData);
+      LOG.warn(
+        "-- saveProjectIndicators() > A problem happened trying to add a new project indicator. Data tried to save was: {}",
+        indicatorData);
       LOG.debug("<< saveProjectIndicators(): {}", false);
       return false;
     }
