@@ -13,6 +13,16 @@
  *****************************************************************/
 package org.cgiar.ccafs.ap.data.manager.impl;
 
+import java.text.DateFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
+import com.google.inject.Inject;
 import org.cgiar.ccafs.ap.config.APConstants;
 import org.cgiar.ccafs.ap.data.dao.ProjectDAO;
 import org.cgiar.ccafs.ap.data.manager.BudgetManager;
@@ -26,17 +36,6 @@ import org.cgiar.ccafs.ap.data.model.IPIndicator;
 import org.cgiar.ccafs.ap.data.model.IPProgram;
 import org.cgiar.ccafs.ap.data.model.Project;
 import org.cgiar.ccafs.ap.data.model.User;
-
-import java.text.DateFormat;
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-
-import com.google.inject.Inject;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -197,7 +196,7 @@ public class ProjectManagerImpl implements ProjectManager {
       }
 
       // Getting the project Owner.
-      project.setOwner(userManager.getOwner(Integer.parseInt(projectData.get("liaison_user_id"))));
+      project.setOwner(userManager.getUser(Integer.parseInt(projectData.get("liaison_user_id"))));
       // Getting the creation date timestamp.
       project.setCreated(Long.parseLong(projectData.get("created")));
       // Getting the Program creator

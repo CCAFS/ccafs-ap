@@ -21,6 +21,7 @@ import org.cgiar.ccafs.security.data.model.User;
 import org.cgiar.ccafs.security.data.model.UserRole;
 
 import java.util.List;
+import java.util.Map;
 
 import com.google.inject.Guice;
 import com.google.inject.Inject;
@@ -122,14 +123,30 @@ public class APCustomRealm extends AuthorizingRealm {
   protected AuthorizationInfo doGetAuthorizationInfo(PrincipalCollection principals) {
     int userID = (Integer) principals.getPrimaryPrincipal();
     List<UserRole> roles = userRoleManager.getUserRolesByUserID(String.valueOf(userID));
+    Map<String, UserRole> projectRoles = userRoleManager.getProjectUserRoles(String.valueOf(userID));
 
     SimpleAuthorizationInfo authorizationInfo = new SimpleAuthorizationInfo();
+
+    // Get the roles general to the platform
     for (UserRole role : roles) {
       authorizationInfo.addRole(role.getAcronym());
       for (String permission : role.getPermissions()) {
         authorizationInfo.addStringPermission(permission);
       }
     }
+
+    // Get the roles specific to the projects
+    for (Map.Entry<String, UserRole> entry : projectRoles.entrySet()) {
+      String projectID = entry.getKey();
+      UserRole role = entry.getValue();
+
+      for (String permission : role.getPermissions()) {
+        // Add the project identifier to the permission
+        String projectPermission = permission.replace("project:", "project:" + projectID + ":");
+        authorizationInfo.addStringPermission(projectPermission);
+      }
+    }
+
     return authorizationInfo;
   }
 
