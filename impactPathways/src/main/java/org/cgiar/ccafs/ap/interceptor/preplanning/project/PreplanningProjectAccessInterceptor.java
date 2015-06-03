@@ -52,8 +52,8 @@ public class PreplanningProjectAccessInterceptor extends AbstractInterceptor {
       if (securityContext.isAdmin() || securityContext.isFPL() || securityContext.isRPL() || securityContext.isCU()) {
         invocation.invoke();
       } else {
-        LOG.info("User identify with id={}, email={}, role={} tried to access pre-planning section.", new Object[] {
-          user.getId(), user.getEmail(), user.getRole().getName()});
+        LOG.info("User identify with id={}, email={} tried to access pre-planning section.", new Object[] {
+          user.getId(), user.getEmail()});
         return BaseAction.NOT_AUTHORIZED;
       }
     }

@@ -27,7 +27,6 @@ import org.apache.commons.lang3.builder.ToStringBuilder;
 public class User {
 
   private int id;
-  private int employeeId;
   private String username;
   private String password;
   private String email;
@@ -36,7 +35,6 @@ public class User {
   private String phone;
   private boolean isCcafsUser;
   private boolean isActive;
-  private Role role;
   private List<Institution> institutions;
   private Institution currentInstitution;
   private Date lastLogin;
@@ -71,10 +69,6 @@ public class User {
     return email;
   }
 
-  public int getEmployeeId() {
-    return employeeId;
-  }
-
   public String getFirstName() {
     return firstName;
   }
@@ -103,10 +97,6 @@ public class User {
     return phone;
   }
 
-  public Role getRole() {
-    return role;
-  }
-
   public String getUsername() {
     return username;
   }
@@ -133,10 +123,6 @@ public class User {
 
   public void setEmail(String email) {
     this.email = email;
-  }
-
-  public void setEmployeeId(int employeeId) {
-    this.employeeId = employeeId;
   }
 
   public void setFirstName(String firstName) {
@@ -173,10 +159,6 @@ public class User {
 
   public void setPhone(String phone) {
     this.phone = phone;
-  }
-
-  public void setRole(Role role) {
-    this.role = role;
   }
 
   public void setUsername(String username) {

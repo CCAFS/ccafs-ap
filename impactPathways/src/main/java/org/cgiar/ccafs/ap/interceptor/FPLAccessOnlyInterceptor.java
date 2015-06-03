@@ -48,8 +48,8 @@ public class FPLAccessOnlyInterceptor extends AbstractInterceptor {
       if (securityContext.isAdmin() || securityContext.isFPL()) {
         invocation.invoke();
       } else {
-        LOG.info("User identify with id={}, email={}, role={} tried to access a section only for FPLs.", new Object[] {
-          user.getId(), user.getEmail(), user.getRole().getName()});
+        LOG.info("User identify with id={}, email={} tried to access a section only for FPLs.",
+          new Object[] {user.getId(), user.getEmail()});
         return BaseAction.NOT_AUTHORIZED;
       }
     }

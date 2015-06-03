@@ -273,9 +273,8 @@ public class ProjectPartnersPlanningAction extends BaseAction {
         }
       }
     } else {
-      LOG.warn(
-        "User (employee_id={}, email={}) tried to save information in Project Partners without having enough privileges!",
-        new Object[] {this.getCurrentUser().getEmployeeId(), this.getCurrentUser().getEmail()});
+      LOG.warn("User {} tried to save information in Project Partners without having enough privileges!", this
+        .getCurrentUser().getId());
     }
     return BaseAction.ERROR;
 
@@ -307,7 +306,8 @@ public class ProjectPartnersPlanningAction extends BaseAction {
       } else if (project.getExpectedLeader() != null) {
 
         if (project.getExpectedLeader().getCurrentInstitution() == null) {
-          if (!project.getExpectedLeader().getEmail().isEmpty() || !project.getExpectedLeader().getFirstName().isEmpty()
+          if (!project.getExpectedLeader().getEmail().isEmpty()
+            || !project.getExpectedLeader().getFirstName().isEmpty()
             || !project.getExpectedLeader().getLastName().isEmpty()) {
             // Show an error to prevent the loss of information
             addFieldError("project.expectedLeader.currentInstitution",

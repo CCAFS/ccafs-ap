@@ -14,6 +14,9 @@
 
 package org.cgiar.ccafs.security;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.subject.Subject;
 import org.slf4j.Logger;
@@ -28,6 +31,22 @@ public class BaseSecurityContext {
 
   private static Logger LOG = LoggerFactory.getLogger(BaseSecurityContext.class);
 
+  public List<Role> getRoles() {
+    List<Role> roles = new ArrayList<>();
+    Subject subject = getSubject();
+
+    if (subject != null) {
+
+      for (Role role : Role.values()) {
+        if (subject.hasRole(role.toString())) {
+          roles.add(role);
+        }
+      }
+    }
+
+    return roles;
+  }
+
   public Subject getSubject() {
     try {
       return SecurityUtils.getSubject();
@@ -36,6 +55,7 @@ public class BaseSecurityContext {
       return null;
     }
   }
+
 
   /**
    * Verify that the current user has all the following permissions.
@@ -84,9 +104,9 @@ public class BaseSecurityContext {
    * @param role
    * @return
    */
-  public boolean hasRole(String role) {
+  public boolean hasRole(Role role) {
     Subject subject = getSubject();
-    return subject == null ? false : subject.hasRole(role);
+    return subject == null ? false : subject.hasRole(role.toString());
   }
 
   /**

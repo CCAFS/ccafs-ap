@@ -57,6 +57,7 @@ public class FlywayContextListener implements ServletContextListener {
     // flyway.clean();
     // flyway.validate();
     flyway.repair();
+    flyway.setValidateOnMigrate(false);
     flyway.migrate();
 
   }

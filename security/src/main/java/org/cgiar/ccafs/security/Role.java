@@ -19,46 +19,15 @@ package org.cgiar.ccafs.security;
  * @author Hernán David Carvajal
  */
 
-public class Role {
+public enum Role {
+
+  Admin("Admin"), FPL("FPL"), RPL("RPL"), CP("CP"), AL("AL"), CU("CU"), GUEST("G"), PL("PL");
+
+  private String acronym;
 
 
-  /**
-   * Administrator
-   */
-  public static final String ADMIN = "Admin";
+  private Role(String acronym) {
+    this.acronym = acronym;
+  }
 
-  /**
-   * Flagship program leader
-   */
-  public static final String FPL = "FPL";
-
-  /**
-   * Regional program leader
-   */
-  public static final String RPL = "RPL";
-
-  /**
-   * Coordinating Unit
-   */
-  public static final String CU = "CU";
-
-  /**
-   * Project leader
-   */
-  public static final String PL = "PL";
-
-  /**
-   * Activity leader
-   */
-  public static final String AL = "AL";
-
-  /**
-   * Contact Point
-   */
-  public static final String CP = "CP";
-
-  /**
-   * Guest
-   */
-  public static final String GUEST = "G";
 }
