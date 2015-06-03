@@ -30,9 +30,7 @@ import org.cgiar.ccafs.ap.data.model.User;
 import org.cgiar.ccafs.utils.APConfig;
 
 import java.util.ArrayList;
-import java.util.HashSet;
 import java.util.List;
-import java.util.Set;
 
 import com.google.inject.Inject;
 import org.apache.commons.lang3.StringUtils;
@@ -116,7 +114,7 @@ public class ProjectPartnersPreplanningAction extends BaseAction {
 
   @Override
   public String next() {
-    String result = save();
+    String result = this.save();
     if (result.equals(BaseAction.SUCCESS)) {
       return BaseAction.NEXT;
     } else {
@@ -143,7 +141,7 @@ public class ProjectPartnersPreplanningAction extends BaseAction {
     allPartners = new ArrayList<>();
     Institution placeHolder = new Institution(-1);
     placeHolder.setType(new InstitutionType());
-    placeHolder.setName(getText("planning.projectPartners.selectInstitution"));
+    placeHolder.setName(this.getText("planning.projectPartners.selectInstitution"));
 
     allPartners.add(placeHolder);
     allPartners.addAll(institutionManager.getAllInstitutions());
@@ -157,28 +155,29 @@ public class ProjectPartnersPreplanningAction extends BaseAction {
     // Getting all Project Leaders
     allProjectLeaders = userManager.getAllUsers();
 
-    // Getting the project partner leader.
-    // We validate if the partner leader is already in the employees table. If so, we need to get this
-    // information and show it as label in the front-end.
-    // If not, we just load the form for the expected project leader.
-    User projectLeader = projectManager.getProjectLeader(project.getId());
-    // if the official leader is defined.
-    if (projectLeader != null) {
-      isExpected = false;
-      project.setLeader(projectLeader);
-    } else {
-      isExpected = true;
-      project.setExpectedLeader(projectManager.getExpectedProjectLeader(projectID));
-      // In case there is not a partner leader defined, an empty partner will be used for the view.
-      if (project.getExpectedLeader() == null) {
-        User exptectedProjectLeader = new User();
-        exptectedProjectLeader.setId(-1);
-        project.setExpectedLeader(exptectedProjectLeader);
-      }
-    }
+    // THIS CODE IS DEPRECATED
+    // // Getting the project partner leader.
+    // // We validate if the partner leader is already in the employees table. If so, we need to get this
+    // // information and show it as label in the front-end.
+    // // If not, we just load the form for the expected project leader.
+    // User projectLeader = projectManager.getProjectLeader(project.getId());
+    // // if the official leader is defined.
+    // if (projectLeader != null) {
+    // isExpected = false;
+    // project.setLeader(projectLeader);
+    // } else {
+    // isExpected = true;
+    // project.setExpectedLeader(projectManager.getExpectedProjectLeader(projectID));
+    // // In case there is not a partner leader defined, an empty partner will be used for the view.
+    // if (project.getExpectedLeader() == null) {
+    // User exptectedProjectLeader = new User();
+    // exptectedProjectLeader.setId(-1);
+    // project.setExpectedLeader(exptectedProjectLeader);
+    // }
+    // }
 
 
-    if (getRequest().getMethod().equalsIgnoreCase("post")) {
+    if (this.getRequest().getMethod().equalsIgnoreCase("post")) {
       // Clear out the list if it has some element
       if (project.getProjectPartners() != null) {
         project.getProjectPartners().clear();
@@ -208,12 +207,13 @@ public class ProjectPartnersPreplanningAction extends BaseAction {
     }
 
     // Saving Project leader
-    if (isExpected && project.getExpectedLeader().getCurrentInstitution() != null) {
-      saved = projectManager.saveExpectedProjectLeader(project.getId(), project.getExpectedLeader());
-      if (!saved) {
-        success = false;
-      }
-    }
+    // This code is deprecated
+    // if (isExpected && project.getExpectedLeader().getCurrentInstitution() != null) {
+    // saved = projectManager.saveExpectedProjectLeader(project.getId(), project.getExpectedLeader());
+    // if (!saved) {
+    // success = false;
+    // }
+    // }
 
     // Saving new and old project partners
     saved = projectPartnerManager.saveProjectPartner(project.getId(), project.getProjectPartners());
@@ -239,7 +239,7 @@ public class ProjectPartnersPreplanningAction extends BaseAction {
       partnerInstitutions.add(projectManager.getProjectLeader(project.getId()).getCurrentInstitution());
     }
     for (ProjectPartner projectPartner : project.getProjectPartners()) {
-      partnerInstitutions.add(projectPartner.getPartner());
+      partnerInstitutions.add(projectPartner.getInstitution());
     }
 
     // Getting all the current budget institutions from W1, W2, W3 and Bilateral.
@@ -257,10 +257,11 @@ public class ProjectPartnersPreplanningAction extends BaseAction {
 
 
     if (success) {
-      addActionMessage(getText("saving.success", new String[] {getText("preplanning.projectPartners.leader.title")}));
+      this.addActionMessage(
+        this.getText("saving.success", new String[] {this.getText("preplanning.projectPartners.leader.title")}));
       return SUCCESS;
     } else {
-      addActionError(getText("saving.problem"));
+      this.addActionError(this.getText("saving.problem"));
       return INPUT;
     }
 
@@ -288,53 +289,53 @@ public class ProjectPartnersPreplanningAction extends BaseAction {
     // Validate if there are duplicate institutions.
     boolean problem = false;
 
-    if (save) {
-      Set<Institution> institutions = new HashSet<>();
-      if (project.getLeader() != null) {
-        institutions.add(project.getLeader().getCurrentInstitution());
-      } else if (project.getExpectedLeader() != null) {
-        if (project.getExpectedLeader().getCurrentInstitution() == null) {
-          if (!project.getExpectedLeader().getEmail().isEmpty()
-            || !project.getExpectedLeader().getFirstName().isEmpty()
-            || !project.getExpectedLeader().getLastName().isEmpty()) {
-            // Show an error to prevent the loss of information
-            addFieldError("project.expectedLeader.currentInstitution",
-              getText("planning.projectPartners.selectInstitution"));
-            problem = true;
-          }
-        } else {
-          institutions.add(project.getExpectedLeader().getCurrentInstitution());
-        }
-      }
-      for (int c = 0; c < project.getProjectPartners().size(); c++) {
-        ProjectPartner projectPartner = project.getProjectPartners().get(c);
-        // If the institution is undefined
-        if (projectPartner.getPartner() == null || projectPartner.getPartner().getId() == -1) {
-          // All the information is empty
-          if (projectPartner.getContactEmail().isEmpty() && projectPartner.getContactName().isEmpty()
-            && (projectPartner.getResponsabilities() == null || projectPartner.getResponsabilities().isEmpty())) {
-            project.getProjectPartners().remove(c);
-            c--;
-            continue;
-          } else {
-            // Show an error to prevent the loss of information
-            addFieldError("project.projectPartners[" + c + "].partner",
-              getText("planning.projectPartners.selectInstitution"));
-            problem = true;
-          }
-        }
-
-        if (!institutions.add(projectPartner.getPartner())) {
-          addFieldError("project.projectPartners[" + c + "].partner",
-            getText("preplanning.projectPartners.duplicatedInstitution.field"));
-          problem = true;
-        }
-      }
-
-      if (problem) {
-        addActionError(getText("preplanning.projectPartners.duplicatedInstitution.general"));
-      }
-    }
+    // This code is deprecated
+    // if (save) {
+    // Set<Institution> institutions = new HashSet<>();
+    // if (project.getLeader() != null) {
+    // institutions.add(project.getLeader().getCurrentInstitution());
+    // } else if (project.getExpectedLeader() != null) {
+    // if (project.getExpectedLeader().getCurrentInstitution() == null) {
+    // if (!project.getExpectedLeader().getEmail().isEmpty() || !project.getExpectedLeader().getFirstName().isEmpty()
+    // || !project.getExpectedLeader().getLastName().isEmpty()) {
+    // // Show an error to prevent the loss of information
+    // this.addFieldError("project.expectedLeader.currentInstitution",
+    // this.getText("planning.projectPartners.selectInstitution"));
+    // problem = true;
+    // }
+    // } else {
+    // institutions.add(project.getExpectedLeader().getCurrentInstitution());
+    // }
+    // }
+    // for (int c = 0; c < project.getProjectPartners().size(); c++) {
+    // ProjectPartner projectPartner = project.getProjectPartners().get(c);
+    // // If the institution is undefined
+    // if (projectPartner.getPartner() == null || projectPartner.getPartner().getId() == -1) {
+    // // All the information is empty
+    // if (projectPartner.getContactEmail().isEmpty() && projectPartner.getContactName().isEmpty()
+    // && (projectPartner.getResponsabilities() == null || projectPartner.getResponsabilities().isEmpty())) {
+    // project.getProjectPartners().remove(c);
+    // c--;
+    // continue;
+    // } else {
+    // // Show an error to prevent the loss of information
+    // this.addFieldError("project.projectPartners[" + c + "].partner",
+    // this.getText("planning.projectPartners.selectInstitution"));
+    // problem = true;
+    // }
+    // }
+    //
+    // if (!institutions.add(projectPartner.getPartner())) {
+    // this.addFieldError("project.projectPartners[" + c + "].partner",
+    // this.getText("preplanning.projectPartners.duplicatedInstitution.field"));
+    // problem = true;
+    // }
+    // }
+    //
+    // if (problem) {
+    // this.addActionError(this.getText("preplanning.projectPartners.duplicatedInstitution.general"));
+    // }
+    // }
     super.validate();
   }
 

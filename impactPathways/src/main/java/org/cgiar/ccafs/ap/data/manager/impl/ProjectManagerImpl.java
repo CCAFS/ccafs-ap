@@ -13,16 +13,6 @@
  *****************************************************************/
 package org.cgiar.ccafs.ap.data.manager.impl;
 
-import java.text.DateFormat;
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-
-import com.google.inject.Inject;
 import org.cgiar.ccafs.ap.config.APConstants;
 import org.cgiar.ccafs.ap.data.dao.ProjectDAO;
 import org.cgiar.ccafs.ap.data.manager.BudgetManager;
@@ -36,6 +26,17 @@ import org.cgiar.ccafs.ap.data.model.IPIndicator;
 import org.cgiar.ccafs.ap.data.model.IPProgram;
 import org.cgiar.ccafs.ap.data.model.Project;
 import org.cgiar.ccafs.ap.data.model.User;
+
+import java.text.DateFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
+import com.google.inject.Inject;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -256,20 +257,6 @@ public class ProjectManagerImpl implements ProjectManager {
     project.setFlagships(flagships);
 
     return project;
-  }
-
-  @Override
-  public User getProjectCoordinator(int projectID) {
-    Map<String, String> pData = projectDAO.getProjectCoordinator(projectID);
-    if (!pData.isEmpty()) {
-      User projectCoordinator = new User();
-      projectCoordinator.setId(Integer.parseInt(pData.get("id")));
-      projectCoordinator.setFirstName(pData.get("first_name"));
-      projectCoordinator.setLastName(pData.get("last_name"));
-      projectCoordinator.setEmail(pData.get("email"));
-      return projectCoordinator;
-    }
-    return null;
   }
 
   @Override

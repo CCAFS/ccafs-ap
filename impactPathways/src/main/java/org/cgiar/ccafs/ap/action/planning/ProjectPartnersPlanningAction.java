@@ -25,9 +25,7 @@ import org.cgiar.ccafs.ap.data.model.User;
 import org.cgiar.ccafs.utils.APConfig;
 
 import java.util.ArrayList;
-import java.util.HashSet;
 import java.util.List;
-import java.util.Set;
 
 import com.google.inject.Inject;
 import org.apache.commons.lang3.StringUtils;
@@ -145,21 +143,31 @@ public class ProjectPartnersPlanningAction extends BaseAction {
     // Getting all Project Leaders
     allProjectLeaders = userManager.getAllUsers();
 
-    // Getting the project partner leader.
-    User projectLeader = projectManager.getProjectLeader(project.getId());
-    if (projectLeader == null) {
-      projectLeader = new User();
+    // Getting the Project Leader.
+    List<ProjectPartner> ppArray =
+      projectPartnerManager.getProjectPartners(project.getId(), APConstants.PROJECT_PARTNER_PL);
+    ProjectPartner projectLeader;
+    if (ppArray.size() == 0) {
+      projectLeader = new ProjectPartner();
       projectLeader.setId(-1);
+    } else {
+      projectLeader = ppArray.get(0);
     }
     project.setLeader(projectLeader);
 
     // Getting Project Coordinator
-    User projectCoordinator = projectManager.getProjectCoordinator(project.getId());
-    if (projectCoordinator == null) {
-      projectCoordinator = new User();
+    ppArray = projectPartnerManager.getProjectPartners(project.getId(), APConstants.PROJECT_PARTNER_PC);
+    ProjectPartner projectCoordinator;
+    if (ppArray.size() == 0) {
+      projectCoordinator = new ProjectPartner();
       projectCoordinator.setId(-1);
+    } else {
+      projectCoordinator = ppArray.get(0);
     }
     project.setCoordinator(projectCoordinator);
+
+    // Getting PPA Partners
+
 
     // If the user is not admin or the project owner, we should keep some information
     // unmutable
@@ -229,7 +237,7 @@ public class ProjectPartnersPlanningAction extends BaseAction {
         partnerInstitutions.add(projectManager.getProjectLeader(project.getId()).getCurrentInstitution());
         // }
         for (ProjectPartner projectPartner : project.getProjectPartners()) {
-          partnerInstitutions.add(projectPartner.getPartner());
+          partnerInstitutions.add(projectPartner.getInstitution());
         }
 
         // Getting all the current budget institutions from W1, W2, W3 and Bilateral.
@@ -298,61 +306,61 @@ public class ProjectPartnersPlanningAction extends BaseAction {
     // Validate only in case the user has full privileges. Otherwise, the partner
     // fields that are disabled won't be sent here.
 
-    if (save && this.isFullEditable()) {
-      // Validate if there are duplicate institutions.
-      boolean problem = false;
-      Set<Institution> institutions = new HashSet<>();
-      if (project.getLeader() != null) {
-        institutions.add(project.getLeader().getCurrentInstitution());
-      } else if (project.getExpectedLeader() != null) {
-
-        if (project.getExpectedLeader().getCurrentInstitution() == null) {
-          if (!project.getExpectedLeader().getEmail().isEmpty() || !project.getExpectedLeader().getFirstName().isEmpty()
-            || !project.getExpectedLeader().getLastName().isEmpty()) {
-            // Show an error to prevent the loss of information
-            this.addFieldError("project.expectedLeader.currentInstitution",
-              this.getText("planning.projectPartners.selectInstitution"));
-            problem = true;
-          }
-        } else {
-          institutions.add(project.getExpectedLeader().getCurrentInstitution());
-        }
-      }
-
-      for (int c = 0; c < project.getProjectPartners().size(); c++) {
-        ProjectPartner projectPartner = project.getProjectPartners().get(c);
-        // If the institution is undefined
-        if (projectPartner.getPartner() == null) {
-          project.getProjectPartners().remove(c);
-          c--;
-          continue;
-        }
-        if (projectPartner.getPartner().getId() == -1) {
-          // All the information is empty
-          if (projectPartner.getContactEmail().isEmpty() && projectPartner.getContactName().isEmpty()
-            && projectPartner.getResponsabilities().isEmpty()) {
-            project.getProjectPartners().remove(c);
-            c--;
-            continue;
-          } else {
-            // Show an error to prevent the loss of information
-            this.addFieldError("project.projectPartners[" + c + "].partner",
-              this.getText("planning.projectPartners.selectInstitution"));
-            problem = true;
-          }
-        }
-
-        if (!institutions.add(projectPartner.getPartner())) {
-          this.addFieldError("project.projectPartners[" + c + "].partner",
-            this.getText("preplanning.projectPartners.duplicatedInstitution.field"));
-          problem = true;
-        }
-      }
-
-      if (problem) {
-        this.addActionError(this.getText("saving.fields.required"));
-      }
-    }
+    // if (save && this.isFullEditable()) {
+    // // Validate if there are duplicate institutions.
+    // boolean problem = false;
+    // Set<Institution> institutions = new HashSet<>();
+    // if (project.getLeader() != null) {
+    // institutions.add(project.getLeader().getCurrentInstitution());
+    // } else if (project.getExpectedLeader() != null) {
+    //
+    // if (project.getExpectedLeader().getCurrentInstitution() == null) {
+    // if (!project.getExpectedLeader().getEmail().isEmpty() || !project.getExpectedLeader().getFirstName().isEmpty()
+    // || !project.getExpectedLeader().getLastName().isEmpty()) {
+    // // Show an error to prevent the loss of information
+    // this.addFieldError("project.expectedLeader.currentInstitution",
+    // this.getText("planning.projectPartners.selectInstitution"));
+    // problem = true;
+    // }
+    // } else {
+    // institutions.add(project.getExpectedLeader().getCurrentInstitution());
+    // }
+    // }
+    //
+    // for (int c = 0; c < project.getProjectPartners().size(); c++) {
+    // ProjectPartner projectPartner = project.getProjectPartners().get(c);
+    // // If the institution is undefined
+    // if (projectPartner.getPartner() == null) {
+    // project.getProjectPartners().remove(c);
+    // c--;
+    // continue;
+    // }
+    // if (projectPartner.getPartner().getId() == -1) {
+    // // All the information is empty
+    // if (projectPartner.getContactEmail().isEmpty() && projectPartner.getContactName().isEmpty()
+    // && projectPartner.getResponsabilities().isEmpty()) {
+    // project.getProjectPartners().remove(c);
+    // c--;
+    // continue;
+    // } else {
+    // // Show an error to prevent the loss of information
+    // this.addFieldError("project.projectPartners[" + c + "].partner",
+    // this.getText("planning.projectPartners.selectInstitution"));
+    // problem = true;
+    // }
+    // }
+    //
+    // if (!institutions.add(projectPartner.getPartner())) {
+    // this.addFieldError("project.projectPartners[" + c + "].partner",
+    // this.getText("preplanning.projectPartners.duplicatedInstitution.field"));
+    // problem = true;
+    // }
+    // }
+    //
+    // if (problem) {
+    // this.addActionError(this.getText("saving.fields.required"));
+    // }
+    // }
     super.validate();
   }
 }

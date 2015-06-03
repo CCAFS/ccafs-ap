@@ -111,14 +111,6 @@ public interface ProjectManager {
   public Project getProjectBasicInfo(int projectID);
 
   /**
-   * Get the project coordinator.
-   * 
-   * @param projectID is the project identifier.
-   * @return a User object or null if nothing found.
-   */
-  public User getProjectCoordinator(int projectID);
-
-  /**
    * This method returns the Project in which the activity belongs to.
    * 
    * @param activityID is the Activity identifier.
@@ -147,7 +139,10 @@ public interface ProjectManager {
    * 
    * @param projectId is the project id.
    * @return a User object who represents a Project Leader. Or NULL if no user was found.
+   * @deprecated Deprecated as of P&R v2.1, replaced by ProjectPartnerManager.getProjectPartners(int projectId, String
+   *             projectPartnerType).
    */
+  @Deprecated
   public User getProjectLeader(int projectId);
 
   /**

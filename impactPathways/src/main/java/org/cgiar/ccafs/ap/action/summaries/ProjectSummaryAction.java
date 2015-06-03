@@ -24,6 +24,7 @@ import org.cgiar.ccafs.ap.data.manager.ProjectManager;
 import org.cgiar.ccafs.ap.data.manager.ProjectOutcomeManager;
 import org.cgiar.ccafs.ap.data.manager.ProjectPartnerManager;
 import org.cgiar.ccafs.ap.data.model.Project;
+import org.cgiar.ccafs.ap.data.model.ProjectPartner;
 import org.cgiar.ccafs.utils.APConfig;
 
 import java.io.InputStream;
@@ -86,14 +87,17 @@ public class ProjectSummaryAction extends BaseAction implements Summary {
     return SUCCESS;
   }
 
+  @Override
   public int getContentLength() {
     return projectPDF.getContentLength();
   }
 
+  @Override
   public String getFileName() {
     return projectPDF.getFileName();
   }
 
+  @Override
   public InputStream getInputStream() {
     return projectPDF.getInputStream();
   }
@@ -112,7 +116,12 @@ public class ProjectSummaryAction extends BaseAction implements Summary {
     project.setFlagships(ipProgramManager.getProjectFocuses(project.getId(), APConstants.FLAGSHIP_PROGRAM_TYPE));
 
     // Getting the project leader
-    project.setLeader(projectManager.getProjectLeader(project.getId()));
+    // Getting the Project Leader.
+    List<ProjectPartner> ppArray = partnerManager.getProjectPartners(project.getId(), APConstants.PROJECT_PARTNER_PL);
+    ProjectPartner projectLeader;
+    if (ppArray.size() != 0) {
+      project.setLeader(ppArray.get(0));
+    }
 
     project.setProjectPartners(partnerManager.getProjectPartners(project.getId()));
 

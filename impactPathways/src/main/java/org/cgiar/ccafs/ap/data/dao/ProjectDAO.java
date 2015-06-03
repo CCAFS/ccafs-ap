@@ -160,7 +160,10 @@ public interface ProjectDAO {
    * @param ProjectId is the id of a project
    * @return a Map with the project leader information or an empty map if no user found. If an error occurs, a NULL will
    *         be returned.
+   * @deprecated Deprecated as of P&R v2.1, replaced by ProjectPartnerDAO.getProjectPartners(int projectId, String
+   *             projectPartnerType).
    */
+  @Deprecated
   public Map<String, String> getProjectLeader(int projectID);
 
   /**
