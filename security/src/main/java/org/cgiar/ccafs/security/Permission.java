@@ -191,4 +191,90 @@ public class Permission {
    * Can update the planning project budget section
    */
   public static final String PLANNING_PROJECT_BUDGET_UPDATE = "planning:projectBudget:update";
+
+
+  /*
+   * PLANNING SECTION - Project specific permissions
+   */
+
+  /**
+   * Can read the project information section
+   */
+  public static final String PROJECT_INFO_READ = "project:projectInfo:read";
+
+  /**
+   * Can update the project information section
+   */
+  public static final String PROJECT_INFO_UPDATE = "project:projectInfo:update";
+
+  /**
+   * Can read the project partners section
+   */
+  public static final String PROJECT_PARTNERS_READ = "project:projectPartners:read";
+
+  /**
+   * Can update the project partners section
+   */
+  public static final String PROJECT_PARTNERS_UPDATE = "project:projectPartners:update";
+
+  /**
+   * Can read the project locations section
+   */
+  public static final String PROJECT_LOCATIONS_READ = "project:projectLocations:read";
+
+  /**
+   * Can update the project locations section
+   */
+  public static final String PROJECT_LOCATIONS_UPDATE = "project:projectLocations:update";
+
+  /**
+   * Can read the project outcomes section
+   */
+  public static final String PROJECT_OUTCOMES_READ = "project:projectOutcomes:read";
+
+  /**
+   * Can update the project outcomes section
+   */
+  public static final String PROJECT_OUTCOMES_UPDATE = "project:projectOutcomes:update";
+
+  /**
+   * Can read the planning project outputs section
+   */
+  public static final String PROJECT_OUTPUTS_READ = "project:projectOutputs:read";
+
+  /**
+   * Can update the planning project outputs section
+   */
+  public static final String PROJECT_OUTPUTS_UPDATE = "project:projectOutputs:update";
+
+  /**
+   * Can read the planning project activities list section
+   */
+  public static final String PROJECT_ACTIVITIES_LIST_READ = "project:projectActivitiesList:read";
+
+  /**
+   * Can update the planning project activities list section
+   */
+  public static final String PROJECT_ACTIVITIES_LIST_UPDATE = "project:projectActivitiesList:update";
+
+  /**
+   * Can read the planning project activities section
+   */
+  public static final String PROJECT_ACTIVITIES_READ = "project:projectActivities:read";
+
+  /**
+   * Can update the planning project activities section
+   */
+  public static final String PROJECT_ACTIVITIES_UPDATE = "project:projectActivities:update";
+
+  /**
+   * Can read the planning project budget section
+   */
+  public static final String PROJECT_BUDGET_READ = "project:projectBudget:read";
+
+  /**
+   * Can update the planning project budget section
+   */
+  public static final String PROJECT_BUDGET_UPDATE = "project:projectBudget:update";
+
 }
