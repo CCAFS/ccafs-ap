@@ -48,8 +48,7 @@ public class MySQLInstitutionDAO implements InstitutionDAO {
     LOG.debug(">> getAllInstitutions( )");
 
     StringBuilder query = new StringBuilder();
-    query
-      .append("SELECT i.id, i.name, i.acronym, i.is_ppa, i.institution_type_id,i.program_id, ");
+    query.append("SELECT i.id, i.name, i.acronym, i.is_ppa, i.institution_type_id,i.program_id, ");
     query.append("lc.id as loc_elements_id, lc.name as loc_elements_name,lc.code as loc_elements_code, ");
     query.append("it.name as institution_type_name, it.acronym as institution_type_acronym, ");
     query.append("ip.id as program_id, ip.name as program_name, ip.acronym as program_acronym ");
@@ -60,7 +59,7 @@ public class MySQLInstitutionDAO implements InstitutionDAO {
     query.append("ORDER BY i.acronym, i.name, loc_elements_name ASC ");
 
     LOG.debug("-- getAllInstitutions() > Calling method executeQuery to get the results");
-    return getData(query.toString());
+    return this.getData(query.toString());
   }
 
   @Override
@@ -87,6 +86,26 @@ public class MySQLInstitutionDAO implements InstitutionDAO {
     }
 
     return institutionsTypeDataList;
+  }
+
+  @Override
+  public List<Map<String, String>> getAllPPAInstitutions() {
+    LOG.debug(">> getAllPPAInstitutions( )");
+
+    StringBuilder query = new StringBuilder();
+    query.append("SELECT i.id, i.name, i.acronym, i.is_ppa, i.institution_type_id,i.program_id, ");
+    query.append("lc.id as loc_elements_id, lc.name as loc_elements_name,lc.code as loc_elements_code, ");
+    query.append("it.name as institution_type_name, it.acronym as institution_type_acronym, ");
+    query.append("ip.id as program_id, ip.name as program_name, ip.acronym as program_acronym ");
+    query.append("FROM institutions i ");
+    query.append("INNER JOIN institution_types it ON it.id=i.institution_type_id ");
+    query.append("LEFT JOIN loc_elements lc ON lc.id=i.country_id ");
+    query.append("LEFT JOIN ip_programs ip ON ip.id=i.program_id ");
+    query.append("WHERE i.is_ppa = 1 ");
+    query.append("ORDER BY i.acronym, i.name, loc_elements_name ASC ");
+
+    LOG.debug("-- getAllPPAInstitutions() > Calling method executeQuery to get the results");
+    return this.getData(query.toString());
   }
 
   private List<Map<String, String>> getData(String query) {
@@ -171,8 +190,7 @@ public class MySQLInstitutionDAO implements InstitutionDAO {
   @Override
   public List<Map<String, String>> getInstitutionsByTypeAndCountry(int typeID, int countryID) {
     StringBuilder query = new StringBuilder();
-    query
-      .append("SELECT i.id, i.name, i.acronym, i.is_ppa i.institution_type_id,i.program_id, ");
+    query.append("SELECT i.id, i.name, i.acronym, i.is_ppa i.institution_type_id,i.program_id, ");
     query.append("lc.id as loc_elements_id, lc.name as loc_elements_name,lc.code as loc_elements_code, ");
     query.append("it.name as institution_type_name, it.acronym as institution_type_acronym, ");
     query.append("ip.id as program_id, ip.name as program_name, ip.acronym as program_acronym ");
@@ -198,7 +216,7 @@ public class MySQLInstitutionDAO implements InstitutionDAO {
     query.append(" ORDER BY i.acronym, i.name, loc_elements_name ASC ");
 
     LOG.debug("-- getAllInstitutions() > Calling method executeQuery to get the results");
-    return getData(query.toString());
+    return this.getData(query.toString());
   }
 
   @Override

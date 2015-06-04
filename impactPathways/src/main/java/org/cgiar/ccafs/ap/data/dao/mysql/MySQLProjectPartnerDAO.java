@@ -91,8 +91,6 @@ public class MySQLProjectPartnerDAO implements ProjectPartnerDAO {
         projectPartnerData.put("project_id", rs.getString("project_id"));
         projectPartnerData.put("partner_id", rs.getString("partner_id"));
         projectPartnerData.put("user_id", rs.getString("user_id"));
-        projectPartnerData.put("contact_name", rs.getString("contact_name"));
-        projectPartnerData.put("contact_email", rs.getString("contact_email"));
         projectPartnerData.put("responsabilities", rs.getString("responsabilities"));
 
         projectPartnerList.add(projectPartnerData);
@@ -150,28 +148,24 @@ public class MySQLProjectPartnerDAO implements ProjectPartnerDAO {
     Object[] values;
     if (projectPartnerData.get("id") == null) {
       // Insert new record
-      query.append(
-        "INSERT INTO project_partners (id, project_id, partner_id, contact_name, contact_email, responsabilities) ");
-      query.append("VALUES (?, ?, ?, ?, ?, ?) ");
-      values = new Object[6];
+      query.append("INSERT INTO project_partners (id, project_id, partner_id, user_id, responsabilities) ");
+      query.append("VALUES (?, ?, ?, ?, ?) ");
+      values = new Object[5];
       values[0] = projectPartnerData.get("id");
       values[1] = projectPartnerData.get("project_id");
       values[2] = projectPartnerData.get("partner_id");
-      values[3] = projectPartnerData.get("contact_name");
-      values[4] = projectPartnerData.get("contact_email");
-      values[5] = projectPartnerData.get("responsabilities");
+      values[3] = projectPartnerData.get("user_id");
+      values[4] = projectPartnerData.get("responsabilities");
     } else {
       // update record
-      query.append(
-        "UPDATE project_partners SET project_id = ?, partner_id = ?, contact_name = ?, contact_email = ?, responsabilities = ? ");
+      query.append("UPDATE project_partners SET project_id = ?, partner_id = ?, user_id = ?, responsabilities = ? ");
       query.append("WHERE id = ? ");
-      values = new Object[6];
+      values = new Object[5];
       values[0] = projectPartnerData.get("project_id");
       values[1] = projectPartnerData.get("partner_id");
-      values[2] = projectPartnerData.get("contact_name");
-      values[3] = projectPartnerData.get("contact_email");
-      values[4] = projectPartnerData.get("responsabilities");
-      values[5] = projectPartnerData.get("id");
+      values[2] = projectPartnerData.get("user_id");
+      values[3] = projectPartnerData.get("responsabilities");
+      values[4] = projectPartnerData.get("id");
     }
 
     int result = databaseManager.saveData(query.toString(), values);

@@ -45,6 +45,13 @@ public interface InstitutionDAO {
   public List<Map<String, String>> getAllInstitutionTypes();
 
   /**
+   * Get a list of institutions where is_ppa column is 1.
+   * 
+   * @return a list of map with the information requested.
+   */
+  public List<Map<String, String>> getAllPPAInstitutions();
+
+  /**
    * This method returns the information from Institution given by an institutionID
    * 
    * @param institutionID, identifier of the institution

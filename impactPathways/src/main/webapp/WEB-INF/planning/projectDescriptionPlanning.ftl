@@ -8,14 +8,10 @@
 [#assign currentSubStage = "description" /]
 
 [#assign breadCrumb = [
-  {"label":"planning", "nameSpace":"planning", "action":"projects"},
-  {"label":"projects", "nameSpace":"planning", "action":"projects"},
+  {"label":"planning", "nameSpace":"planning", "action":"projectsList"},
+  {"label":"projects", "nameSpace":"planning", "action":"projectsList"},
   {"label":"description", "nameSpace":"planning/projects", "action":""}
 ] /]
-
-
-
-
 
 [#include "/WEB-INF/global/pages/header.ftl" /]
 [#include "/WEB-INF/global/pages/main-menu.ftl" /]
@@ -95,7 +91,7 @@
             <div class="checkboxGroup">  
               [#if editable]
                 [@s.fielderror cssClass="fieldError" fieldName="project.flagships"/]
-                [@s.checkboxlist name="project.flagships" disabled=!fullEditable list="ipProgramFlagships" listKey="id" listValue="getComposedName(id)" cssClass="checkbox" value="flagshipIds" /]
+                [@s.checkboxlist name="project.flagships" disabled=( !editable || !securityContext.canEditProjectFlagships() ) list="ipProgramFlagships" listKey="id" listValue="getComposedName(id)" cssClass="checkbox" value="flagshipIds" /]
               [#else] 
                 [#list project.flagships as element]
                  <p class="checked">${element.name}</p>

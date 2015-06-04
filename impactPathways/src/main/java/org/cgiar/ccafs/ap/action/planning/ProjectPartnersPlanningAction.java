@@ -59,7 +59,8 @@ public class ProjectPartnersPlanningAction extends BaseAction {
   // Model for the view
   private List<InstitutionType> partnerTypes;
   private List<Country> countries;
-  private List<Institution> allPartners; // will be used to list all the partners that have the system.
+  private List<Institution> allPartners; // Is used to list all the partners that have the system.
+  private List<Institution> allPPAPartners; // Is used to list all the PPA partners
   private List<User> allProjectLeaders; // will be used to list all the project leaders that have the system.
 
   @Inject
@@ -125,14 +126,20 @@ public class ProjectPartnersPlanningAction extends BaseAction {
     // Getting the project identified with the id parameter.
     project = projectManager.getProject(projectID);
 
-    // Getting all partners.
-    allPartners = new ArrayList<>();
+
     Institution placeHolder = new Institution(-1);
     placeHolder.setType(new InstitutionType());
     placeHolder.setName(this.getText("planning.projectPartners.selectInstitution"));
 
+    // Getting the list of all institutions
+    allPartners = new ArrayList<>();
     allPartners.add(placeHolder);
     allPartners.addAll(institutionManager.getAllInstitutions());
+
+    // Getting the list of all PPA institutions
+    allPPAPartners = new ArrayList<>();
+    allPPAPartners.add(placeHolder);
+    allPPAPartners.addAll(institutionManager.getAllPPAInstitutions());
 
     // Getting all the countries
     countries = locationManager.getInstitutionCountries();
