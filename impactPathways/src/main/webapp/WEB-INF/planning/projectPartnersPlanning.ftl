@@ -51,7 +51,7 @@
           [@s.text name="preplanning.projectPartners.partners.title" /]  
         </h1> 
         [#-- Listing partners from partnersTemplate.ftl --]
-        [@partnersTemplate.partnerSection projectPartners=project.projectPartners partnerTypes=partnerTypes countries=countries responsabilities=true canEdit=fullEditable canRemove=saveable /]
+        [@partnersTemplate.partnerSection projectPartners=project.projectPartners ap_name='project.projectPartners' partnerTypes=partnerTypes countries=countries ppaPartner=false responsabilities=true canEdit=fullEditable canRemove=saveable /]
         
         [#if saveable] 
           [#if fullEditable]

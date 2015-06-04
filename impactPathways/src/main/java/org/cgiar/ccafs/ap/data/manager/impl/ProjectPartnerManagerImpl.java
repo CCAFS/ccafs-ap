@@ -8,6 +8,12 @@
  *****************************************************************/
 package org.cgiar.ccafs.ap.data.manager.impl;
 
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
+import com.google.inject.Inject;
 import org.cgiar.ccafs.ap.data.dao.ProjectPartnerDAO;
 import org.cgiar.ccafs.ap.data.manager.InstitutionManager;
 import org.cgiar.ccafs.ap.data.manager.ProjectPartnerManager;
@@ -15,13 +21,7 @@ import org.cgiar.ccafs.ap.data.manager.UserManager;
 import org.cgiar.ccafs.ap.data.model.Institution;
 import org.cgiar.ccafs.ap.data.model.Project;
 import org.cgiar.ccafs.ap.data.model.ProjectPartner;
-
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-
-import com.google.inject.Inject;
+import org.cgiar.ccafs.ap.data.model.User;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -86,7 +86,13 @@ public class ProjectPartnerManagerImpl implements ProjectPartnerManager {
       ProjectPartner projectPartner = new ProjectPartner();
       projectPartner.setId(Integer.parseInt(pData.get("id")));
       // User as user_id
-      projectPartner.setUser(userManager.getUser(Integer.parseInt(pData.get("user_id"))));
+      if (pData.get("user_id") != null) {
+        projectPartner.setUser(userManager.getUser(Integer.parseInt(pData.get("user_id"))));
+      } else {
+        User user = new User();
+        user.setId(-1);
+        projectPartner.setUser(user);
+      }
       projectPartner.setResponsabilities(pData.get("responsabilities"));
 
       // Institution as partner_id

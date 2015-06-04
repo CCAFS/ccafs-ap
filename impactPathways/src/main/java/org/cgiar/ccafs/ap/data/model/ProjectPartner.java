@@ -14,6 +14,7 @@
 package org.cgiar.ccafs.ap.data.model;
 
 import org.apache.commons.lang3.builder.ToStringBuilder;
+import org.cgiar.ccafs.ap.config.APConstants;
 
 /**
  * This class represents a Partner that belongs to a project with contact information.
@@ -68,6 +69,15 @@ public class ProjectPartner {
   @Override
   public int hashCode() {
     return id;
+  }
+
+  /**
+   * Validate if a project partner is a PPA Partner.
+   * 
+   * @return true if is a PPA Partner, false otherwise.
+   */
+  public boolean isPPA() {
+    return this.type.equals(APConstants.PROJECT_PARTNER_PPA);
   }
 
   public void setId(int id) {
