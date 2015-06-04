@@ -10,6 +10,7 @@
   {"label":"projects", "nameSpace":"planning", "action":""}
 ]/]
 
+
 [#include "/WEB-INF/global/pages/header.ftl" /]
 [#include "/WEB-INF/global/pages/main-menu.ftl" /]
 [#import "/WEB-INF/global/macros/forms.ftl" as customForm /]

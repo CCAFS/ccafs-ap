@@ -1,11 +1,11 @@
 [#ftl]
 <nav id="stageMenu" class="clearfix"> 
   <ul> 
-    <li [#if currentStage == "projectOutcomes"] class="currentSection" [/#if]><a href="
-        [@s.url action='projectOutcomes' includeParams='get'][/@s.url]
+    <li [#if currentStage == "outcomes"] class="currentSection" [/#if]><a href="
+        [@s.url action='outcomes' includeParams='get'][/@s.url]
       ">[@s.text name="menu.planning.submenu.impactPathwayPrimary" /]</a></li>
-    <li [#if currentStage == "projectIpOtherContributions" ] class="currentSection" [/#if]><a href="
-        [@s.url action='projectIpOtherContributions' includeParams='get'][/@s.url]
+    <li [#if currentStage == "ipOtherContributions" ] class="currentSection" [/#if]><a href="
+        [@s.url action='ipOtherContributions' includeParams='get'][/@s.url]
       ">[@s.text name="menu.planning.submenu.impactPathwayOther" /]</a></li>  
   </ul>
   <div id="ipGraph-button" title="[@s.text name="menu.preplanning.submenu.ipGraph" /]"></div>

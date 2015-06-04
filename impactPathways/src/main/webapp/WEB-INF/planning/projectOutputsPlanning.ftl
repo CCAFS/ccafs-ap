@@ -4,11 +4,11 @@
 [#assign customJS = ["${baseUrl}/js/global/utils.js", "${baseUrl}/js/planning/projectDescriptionPlanning.js"] /]
 [#assign currentSection = "planning" /]
 [#assign currentPlanningSection = "projects" /]
-[#assign currentStage = "projectOutputs" /]
+[#assign currentStage = "outputs" /]
 
 [#assign breadCrumb = [
   {"label":"planning", "nameSpace":"planning", "action":"projects"},
-  {"label":"projects", "nameSpace":"planning", "action":"projects"},
+  {"label":"projects", "nameSpace":"planning", "action":"projectsList"},
   {"label":"description", "nameSpace":"planning/projects", "action":""}
 ] /]
 

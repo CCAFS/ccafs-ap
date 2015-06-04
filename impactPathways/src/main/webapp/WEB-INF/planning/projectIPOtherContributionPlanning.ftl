@@ -1,15 +1,15 @@
 [#ftl]
 [#assign title = "Impact Pathways - Other Contribution" /]
 [#assign globalLibs = ["jquery", "noty", "cytoscape", "qtip","cytoscapePanzoom"] /]
-[#assign customJS = ["${baseUrl}/js/global/utils.js", "${baseUrl}/js/global/ipGraph.js", "${baseUrl}/js/planning/projectIpOtherContributions.js"] /]
+[#assign customJS = ["${baseUrl}/js/global/utils.js", "${baseUrl}/js/global/ipGraph.js", "${baseUrl}/js/planning/ipOtherContributions.js"] /]
 [#assign currentSection = "planning" /]
 [#assign currentPlanningSection = "projects" /]
-[#assign currentStage = "projectIpOtherContributions" /]
+[#assign currentStage = "ipOtherContributions" /]
 
 
 [#assign breadCrumb = [
   {"label":"planning", "nameSpace":"planning", "action":"projects"},
-  {"label":"projects", "nameSpace":"planning", "action":"projects"},
+  {"label":"projects", "nameSpace":"planning", "action":"projectsList"},
   {"label":"description", "nameSpace":"planning/projects", "action":""}
 ] /]
 
@@ -24,7 +24,7 @@
   </div>
   [#include "/WEB-INF/planning/planningProjectsSubMenu.ftl" /]
   
-  [@s.form action="projectIpOtherContributions" cssClass="pure-form"]  
+  [@s.form action="ipOtherContributions" cssClass="pure-form"]  
   <article class="halfContent" id=""> 
   [#include "/WEB-INF/planning/planningDataSheet.ftl" /]
   [#include "/WEB-INF/planning/projectIP-planning-sub-menu.ftl" /]

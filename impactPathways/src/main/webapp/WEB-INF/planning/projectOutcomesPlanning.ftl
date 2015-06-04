@@ -4,7 +4,7 @@
 [#assign customJS = ["${baseUrl}/js/global/utils.js", "${baseUrl}/js/global/ipGraph.js", "${baseUrl}/js/planning/projectImpactPathwayPlanning.js"] /]
 [#assign currentSection = "planning" /]
 [#assign currentPlanningSection = "projects" /]
-[#assign currentStage = "projectOutcomes" /]
+[#assign currentStage = "outcomes" /]
 
 [#assign breadCrumb = [
   {"label":"planning", "nameSpace":"planning", "action":"projects"},
@@ -25,7 +25,7 @@
 
   [#include "/WEB-INF/planning/planningProjectsSubMenu.ftl" /]
 
-  [@s.form action="projectOutcomes" cssClass="pure-form"]  
+  [@s.form action="outcomes" cssClass="pure-form"]  
   <article class="halfContent" id="activityImpactPathway">
     [#include "/WEB-INF/planning/planningDataSheet.ftl" /]
     [#include "/WEB-INF/planning/projectIP-planning-sub-menu.ftl" /]

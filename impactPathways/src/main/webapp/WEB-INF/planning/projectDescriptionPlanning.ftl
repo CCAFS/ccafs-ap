@@ -9,12 +9,12 @@
 
 [#assign breadCrumb = [
   {"label":"planning", "nameSpace":"planning", "action":"projects"},
-  {"label":"projects", "nameSpace":"planning", "action":"projects"},
+  {"label":"projects", "nameSpace":"planning", "action":"projectsList"},
   {"label":"description", "nameSpace":"planning/projects", "action":""}
 ] /]
 
-[#assign editable=false/]
-
+${editable?string}
+${securityContext.canEditProjectFlagships()?string}
 [#include "/WEB-INF/global/pages/header.ftl" /]
 [#include "/WEB-INF/global/pages/main-menu.ftl" /]
 [#import "/WEB-INF/global/macros/forms.ftl" as customForm/]
@@ -88,7 +88,7 @@
             <div class="checkboxGroup">  
               [#if editable]
                 [@s.fielderror cssClass="fieldError" fieldName="project.flagships"/]
-                [@s.checkboxlist name="project.flagships" disabled=!fullEditable list="ipProgramFlagships" listKey="id" listValue="getComposedName(id)" cssClass="checkbox" value="flagshipIds" /]
+                [@s.checkboxlist name="project.flagships" disabled=( !editable || !securityContext.canEditProjectFlagships() ) list="ipProgramFlagships" listKey="id" listValue="getComposedName(id)" cssClass="checkbox" value="flagshipIds" /]
               [#else] 
                  
                 [#list project.flagships as element]
