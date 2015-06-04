@@ -50,6 +50,7 @@
       
       <!-- Custom interceptor to grant access to the users when accessing a specific project -->
       <interceptor name="grantProjectPlanningAccess" class="org.cgiar.ccafs.ap.interceptor.planning.GrantProjectPlanningAccessInterceptor" />
+      <interceptor name="canEditProjectPlanning" class="org.cgiar.ccafs.ap.interceptor.planning.EditProjectPlanningInterceptor" />
       
       <!-- ************************** Interceptors for Planning (Activities) ****************************** -->
       
@@ -91,7 +92,7 @@
         <interceptor-ref name="accessibleStage" />
         <interceptor-ref name="validateProjectParameter" />
         <interceptor-ref name="grantProjectPlanningAccess" />
-        
+        <interceptor-ref name="canEditProjectPlanning" />
         <interceptor-ref name="trimInputs" />
         <interceptor-ref name="defaultStack" />
       </interceptor-stack>

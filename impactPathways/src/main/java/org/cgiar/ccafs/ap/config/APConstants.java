@@ -40,6 +40,7 @@ public final class APConstants {
   public static final String INDICATOR_ID = "indicatorID";
   public static final String EMPLOYEE_REQUEST_ID = "employeeID";
   public static final String DELIVERABLE_TYPE_REQUEST_ID = "deliverableTypeID";
+  public static final String EDITABLE_REQUEST = "edit";
 
   // Identifiers for element types which come from the database
   public static final int ELEMENT_TYPE_IDOS = 1;
@@ -85,12 +86,12 @@ public final class APConstants {
   // Location types identifiers
   public static final int LOCATION_TYPE_CLIMATE_SMART_VILLAGE = 10;
   public static final int LOCATION_TYPE_CCAFS_SITE = 11;
-  
+
   // Types of project
   public static final String PROJECT_CORE = "CORE";
   public static final String PROJECT_BILATERAL_COFUNDED = "BILATERAL_COFUNDED";
   public static final String PROJECT_BILATERAL_STANDALONE = "BILATERAL_STANDALONE";
-  
+
   // Types of Project Partners
   public static final String PROJECT_PARTNER_PL = "PL";
   public static final String PROJECT_PARTNER_PC = "PC";

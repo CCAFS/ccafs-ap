@@ -61,6 +61,7 @@ public class BaseAction extends ActionSupport implements Preparable, SessionAwar
   protected boolean add;
 
   // User actions
+  private boolean isEditable; // If user is able to edit the form.
   private boolean saveable; // If user is able to see the save, cancel, delete buttons
   private boolean fullEditable; // If user is able to edit all the form.
 
@@ -155,6 +156,11 @@ public class BaseAction extends ActionSupport implements Preparable, SessionAwar
     return u;
   }
 
+  public String getEditableRequest() {
+    return APConstants.EDITABLE_REQUEST;
+  }
+
+
   /**
    * Define default locale while we decide to support other languages in the future.
    */
@@ -162,7 +168,6 @@ public class BaseAction extends ActionSupport implements Preparable, SessionAwar
   public Locale getLocale() {
     return Locale.ENGLISH;
   }
-
 
   public HttpServletRequest getRequest() {
     return request;
@@ -178,6 +183,10 @@ public class BaseAction extends ActionSupport implements Preparable, SessionAwar
 
   public boolean isDataSaved() {
     return dataSaved;
+  }
+
+  public boolean isEditable() {
+    return isEditable;
   }
 
   public boolean isFullEditable() {
@@ -225,11 +234,11 @@ public class BaseAction extends ActionSupport implements Preparable, SessionAwar
     // So far, do nothing here!
   }
 
-
   /* Override this method depending of the save action. */
   public String save() {
     return SUCCESS;
   }
+
 
   public void setAdd(boolean add) {
     this.add = true;
@@ -245,6 +254,10 @@ public class BaseAction extends ActionSupport implements Preparable, SessionAwar
 
   public void setDelete(boolean delete) {
     this.delete = delete;
+  }
+
+  public void setEditable(boolean isEditable) {
+    this.isEditable = isEditable;
   }
 
   public void setFullEditable(boolean fullEditable) {

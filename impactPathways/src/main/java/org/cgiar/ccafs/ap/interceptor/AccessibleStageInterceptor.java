@@ -13,9 +13,6 @@
  *****************************************************************/
 package org.cgiar.ccafs.ap.interceptor;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
 import org.cgiar.ccafs.ap.action.BaseAction;
 import org.cgiar.ccafs.utils.APConfig;
 
@@ -23,6 +20,8 @@ import com.google.inject.Inject;
 import com.opensymphony.xwork2.ActionInvocation;
 import com.opensymphony.xwork2.interceptor.AbstractInterceptor;
 import org.apache.struts2.ServletActionContext;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 
 public class AccessibleStageInterceptor extends AbstractInterceptor {
@@ -44,6 +43,7 @@ public class AccessibleStageInterceptor extends AbstractInterceptor {
     String stageName = ServletActionContext.getActionMapping().getNamespace();
     // Check what section is the user loading and
     // validate if it is active
+
     if (stageName.startsWith("/pre-planning")) {
       if (config.isPrePlanningActive()) {
         return invocation.invoke();
