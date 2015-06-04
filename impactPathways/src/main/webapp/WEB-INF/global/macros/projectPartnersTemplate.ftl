@@ -136,13 +136,13 @@
           [#-- Project Leader contact --] 
           <div class="fullPartBlock clearfix">
             [@customForm.input name="project.leader.composedName" className="userName" type="text" disabled=!canEdit i18nkey="preplanning.projectPartners.projectLeader" required=true readOnly=true/]
-            <input class="userId" type="hidden" name="preplanning.projectPartners.projectLeader" value="${project.leader.id}">
+            <input class="userId" type="hidden" name="project.leader.id" value="${project.leader.id}">
             <div class="searchUser">[@s.text name="form.buttons.searchUser" /]</div>
           </div>
           [#-- Project Coordinator --] 
           <div class="fullPartBlock clearfix">
             [@customForm.input name="project.coordinator.composedName" className="userName" type="text" disabled=!canEdit i18nkey="preplanning.projectPartners.projectCoordinator"  readOnly=true/]
-            <input class="userId" type="hidden" name="preplanning.projectPartners.projectCoordinator" value="${project.coordinator.id}">
+            <input class="userId" type="hidden" name="project.coordinator.id" value="${project.coordinator.id}">
             <div class="searchUser">[@s.text name="form.buttons.searchUser" /]</div>
           </div> 
           [#-- Responsabilities --]
