@@ -45,6 +45,7 @@ public class InstitutionManagerImpl implements InstitutionManager {
   }
 
 
+  @Override
   public List<Institution> getAllInstitutions() {
     List<Institution> institutions = new ArrayList<>();
     List<Map<String, String>> institutionDataList = institutionDAO.getAllInstitutions();
@@ -103,9 +104,51 @@ public class InstitutionManagerImpl implements InstitutionManager {
 
 
   @Override
+  public List<Institution> getAllPPAInstitutions() {
+    List<Institution> institutions = new ArrayList<>();
+    List<Map<String, String>> institutionDataList = institutionDAO.getAllPPAInstitutions();
+    for (Map<String, String> iData : institutionDataList) {
+      Institution institution = new Institution();
+      institution.setId(Integer.parseInt(iData.get("id")));
+      institution.setName(iData.get("name"));
+      institution.setAcronym(iData.get("acronym"));
+      institution.setPPA(Boolean.parseBoolean(iData.get("is_ppa")));
+
+      // InstitutionType Object
+      InstitutionType type = new InstitutionType();
+      if (iData.get("institution_type_id") != null) {
+        type.setId(Integer.parseInt(iData.get("institution_type_id")));
+        type.setName(iData.get("institution_type_name"));
+        type.setAcronym(iData.get("institution_type_acronym"));
+        institution.setType(type);
+      }
+      // Program Object
+      IPProgram program = new IPProgram();
+      if (iData.get("program_id") != null) {
+        program.setId(Integer.parseInt(iData.get("program_id")));
+        program.setName(iData.get("program_name"));
+        program.setAcronym(iData.get("program_acronym"));
+        institution.setProgram(program);
+      }
+      // Location Object
+      Country country = new Country();
+      if (iData.get("loc_elements_id") != null) {
+        country.setId(Integer.parseInt(iData.get("loc_elements_id")));
+        country.setName(iData.get("loc_elements_name"));
+        country.setCode(iData.get("loc_elements_code"));
+        institution.setCountry(country);
+      }
+
+      // Adding object to the array.
+      institutions.add(institution);
+    }
+    return institutions;
+  }
+
+  @Override
   public Institution getInstitution(int institutionId) {
     Map<String, String> iData = institutionDAO.getInstitution(institutionId);
-    if (!iData.isEmpty()) { 
+    if (!iData.isEmpty()) {
       Institution institution = new Institution();
       institution.setId(Integer.parseInt(iData.get("id")));
       institution.setName(iData.get("name"));
@@ -183,6 +226,7 @@ public class InstitutionManagerImpl implements InstitutionManager {
     }
     return institutions;
   }
+
 
   @Override
   public List<Institution> getInstitutionsByUser(User user) {

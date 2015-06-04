@@ -34,7 +34,6 @@ public interface InstitutionManager {
   /**
    * Return all the institutions.
    * 
-   * @param none
    * @return an Institution object or null if the id does not exist in the database.
    */
   public List<Institution> getAllInstitutions();
@@ -45,6 +44,13 @@ public interface InstitutionManager {
    * @return a List of InstitutionType objects.
    */
   public List<InstitutionType> getAllInstitutionTypes();
+
+  /**
+   * Get all the institutions that are part of the CCAFS PPA (Program Participant Agreement)
+   * 
+   * @return the list of PPA institutions or an empty list if nothing found.
+   */
+  public List<Institution> getAllPPAInstitutions();
 
   /**
    * Get an institution identified with the given id.
