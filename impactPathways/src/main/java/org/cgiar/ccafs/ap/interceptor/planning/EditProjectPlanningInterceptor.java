@@ -16,8 +16,11 @@ package org.cgiar.ccafs.ap.interceptor.planning;
 
 import org.cgiar.ccafs.ap.action.BaseAction;
 import org.cgiar.ccafs.ap.config.APConstants;
+import org.cgiar.ccafs.ap.data.manager.ProjectManager;
+import org.cgiar.ccafs.ap.data.model.User;
 import org.cgiar.ccafs.security.SecurityContext;
 
+import java.util.List;
 import java.util.Map;
 
 import com.google.inject.Inject;
@@ -40,10 +43,12 @@ public class EditProjectPlanningInterceptor extends AbstractInterceptor {
   private static final long serialVersionUID = -6564226368433104079L;
 
   private SecurityContext securityContext;
+  private ProjectManager projectManager;
 
   @Inject
-  public EditProjectPlanningInterceptor(SecurityContext securityContext) {
+  public EditProjectPlanningInterceptor(SecurityContext securityContext, ProjectManager projectManager) {
     this.securityContext = securityContext;
+    this.projectManager = projectManager;
   }
 
   @Override
@@ -52,26 +57,37 @@ public class EditProjectPlanningInterceptor extends AbstractInterceptor {
     Map<String, Object> parameters = invocation.getInvocationContext().getParameters();
     String actionName = ServletActionContext.getActionMapping().getName();
 
-    boolean isEditable = false;
+    Map<String, Object> session = invocation.getInvocationContext().getSession();
+    User user = (User) session.get(APConstants.SESSION_USER);
 
-    if (!actionName.equals("projectsList") && parameters.get(APConstants.EDITABLE_REQUEST) != null) {
-      String stringEditable = ((String[]) parameters.get(APConstants.EDITABLE_REQUEST))[0];
-      isEditable = stringEditable.equals("true");
+    boolean canEditProject = false, hasPermissionToEdit = false;
 
-      // If the user is not asking for edition privileges we don't need to validate it.
-      if (!isEditable) {
-        baseAction.setEditableParameter(isEditable);
-        return invocation.invoke();
-      }
-
-      // Project parameter is already validated in the ValidateProjectParameterInterceptor.
+    if (!actionName.equals("projectsList")) {
+      // First, check if the user can edit the project
       String projectParameter = ((String[]) parameters.get(APConstants.PROJECT_REQUEST_ID))[0];
       int projectID = Integer.parseInt(projectParameter);
 
-      isEditable = securityContext.canEditProjectPlanningSection(actionName, projectID);
+      // Get the identifiers of the projects that the user can edit and validate if that list contains the projectID.
+      List<Integer> projectsEditable = projectManager.getProjectIdsEditables(user);
+      canEditProject = projectsEditable.contains(new Integer(projectID));
+
+      if (parameters.get(APConstants.EDITABLE_REQUEST) != null) {
+        String stringEditable = ((String[]) parameters.get(APConstants.EDITABLE_REQUEST))[0];
+        boolean editParameter = stringEditable.equals("true");
+
+        // If the user is not asking for edition privileges we don't need to validate them.
+        if (!editParameter) {
+          baseAction.setEditableParameter(hasPermissionToEdit);
+          return invocation.invoke();
+        }
+
+        hasPermissionToEdit = securityContext.canEditProjectPlanningSection(actionName, projectID);
+      }
     }
 
-    baseAction.setEditableParameter(isEditable);
+    // Set the variable that indicates if the user can edit the section
+    baseAction.setEditableParameter(hasPermissionToEdit);
+    baseAction.setCanEdit(canEditProject);
     return invocation.invoke();
   }
 }
