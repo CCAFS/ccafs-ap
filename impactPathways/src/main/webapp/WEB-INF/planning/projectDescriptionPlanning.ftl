@@ -8,13 +8,11 @@
 [#assign currentSubStage = "description" /]
 
 [#assign breadCrumb = [
-  {"label":"planning", "nameSpace":"planning", "action":"projects"},
+  {"label":"planning", "nameSpace":"planning", "action":"projectsList"},
   {"label":"projects", "nameSpace":"planning", "action":"projectsList"},
   {"label":"description", "nameSpace":"planning/projects", "action":""}
 ] /]
 
-${editable?string}
-${securityContext.canEditProjectFlagships()?string}
 [#include "/WEB-INF/global/pages/header.ftl" /]
 [#include "/WEB-INF/global/pages/main-menu.ftl" /]
 [#import "/WEB-INF/global/macros/forms.ftl" as customForm/]
@@ -36,9 +34,13 @@ ${securityContext.canEditProjectFlagships()?string}
           [@s.param][@s.text name="planning.project"/][/@s.param]
         [/@s.text]
       </p>
-    [/#if]
-    <h1 class="contentTitle"> ${project.composedId} - [@s.text name="planning.projectDescription.title" /] </h1> 
+    [/#if] 
     <div id="projectDescription" class="borderBox">
+      [#-- Button for edit this section --] 
+      [#if !editable]
+        <div class="editButton"><a href="[@s.url includeParams='get'][@s.param name="editable"]true[/@s.param][/@s.url]">[@s.text name="form.buttons.edit" /]</a></div>
+      [/#if]
+      <h1 class="contentTitle"> ${project.composedId} - [@s.text name="planning.projectDescription.title" /] </h1>  
       <fieldset class="fullBlock">
         [#-- Project Title --]
         [@customForm.textArea name="project.title" i18nkey="planning.projectDescription.projectTitle" required=true className="project-title" editable=editable/]
@@ -51,8 +53,7 @@ ${securityContext.canEditProjectFlagships()?string}
           [#--  Project Owner Contact Person --]
           <div class="halfPartBlock">
             [@customForm.select name="project.owner" label="" disabled=!fullEditable i18nkey="preplanning.projectDescription.projectownercontactperson" listName="allOwners" keyFieldName="employeeId"  displayFieldName="composedOwnerName" editable=editable/]
-          </div>
-
+          </div> 
           [#-- Start Date --]
           <div class="halfPartBlock">
             [@customForm.input name="project.startDate" type="text" disabled=!fullEditable i18nkey="preplanning.projectDescription.startDate" required=true editable=editable /]
@@ -63,18 +64,20 @@ ${securityContext.canEditProjectFlagships()?string}
           </div>
         </div>
         [#-- Project upload work plan --]
-        <div id="uploadWorkPlan" class="fullBlock">
-          [@customForm.checkbox name="project.isRequiredUploadworkplan" value=""  i18nkey="preplanning.projectDescription.isRequiredUploadworkplan" editable=editable /]
-          <div class="uploadContainer">
-            <div class="halfPartBlock">
-              <p>[@s.text name="preplanning.projectDescription.uploadProjectWorkplan" /]</p>
-              <input type="file" name="fileToUpload" id="fileToUpload"> 
-            </div>
-            <div class="halfPartBlock">
-              <p>[@s.text name="preplanning.projectDescription.uploadBilateral" /]</p>
-              <input type="file" name="fileToUpload" id="fileToUpload">  
-            </div>
-          </div>  
+        <div id="uploadWorkPlan" class="tickBox-wrapper fullBlock">
+          [@customForm.checkbox name="project.isRequiredUploadworkplan" value=""  i18nkey="preplanning.projectDescription.isRequiredUploadworkplan" disabled=!editable /]
+          [#if editable]
+            <div class="tickBox-toggle uploadContainer">
+              <div class="halfPartBlock">
+                <p>[@s.text name="preplanning.projectDescription.uploadProjectWorkplan" /]</p>
+                <input type="file" name="fileToUpload" id="fileToUpload"> 
+              </div>
+              <div class="halfPartBlock">
+                <p>[@s.text name="preplanning.projectDescription.uploadBilateral" /]</p>
+                <input type="file" name="fileToUpload" id="fileToUpload">  
+              </div>
+            </div> 
+          [/#if] 
         </div>
         [#-- Project Summary --]
         [@customForm.textArea name="project.summary" i18nkey="preplanning.projectDescription.projectSummary" required=true className="project-description" editable=editable /]
@@ -90,9 +93,8 @@ ${securityContext.canEditProjectFlagships()?string}
                 [@s.fielderror cssClass="fieldError" fieldName="project.flagships"/]
                 [@s.checkboxlist name="project.flagships" disabled=( !editable || !securityContext.canEditProjectFlagships() ) list="ipProgramFlagships" listKey="id" listValue="getComposedName(id)" cssClass="checkbox" value="flagshipIds" /]
               [#else] 
-                 
                 [#list project.flagships as element]
-                 ${element.name}  <br>
+                 <p class="checked">${element.name}</p>
                 [/#list]
               [/#if]
             </div>
@@ -104,46 +106,32 @@ ${securityContext.canEditProjectFlagships()?string}
               [#if editable]
                 [@s.fielderror cssClass="fieldError" fieldName="project.regions"/]
                 [@s.checkboxlist name="project.regions" disabled=!fullEditable list="ipProgramRegions" listKey="id" listValue="name" cssClass="checkbox" value="regionIds" /]
-              [#else] 
-                 
+              [#else]  
                 [#list project.regions as element]
-                  ${element.name} <br>
+                  <p class="checked">${element.name}</p>
                 [/#list]
               [/#if]
             </div>
           </div> 
-          [#-- Cross Cutting --] 
-          [#--
-          <div id="projectGender" class="thirdPartBlock">
-            <h6>[@s.text name="preplanning.projectDescription.crossCutting" /]</h6>
-            <div class="checkboxGroup">
-              [@s.fielderror cssClass="fieldError" fieldName="project.crossCuttings"/]
-              [@s.checkboxlist name="project.crossCuttings" disabled=!canEdit list="ipCrossCuttings" listKey="id" listValue="name" cssClass="checkbox" value="crossCuttingIds" /]
-            </div>
-          </div>
-          --]  
         </div> 
       </fieldset>
-    </div> 
-    
-    <h1 class="contentTitle"> [@s.text name="planning.projectDescription.coreProjects" /] </h1> 
-    <div id="projectCoreProjects" class="borderBox"> 
-      <div class="isLinked fullBlock"> 
-        [#assign yesnoOptions = {"1": "Yes", "0": "No"} /]  
-        <h6>[@s.text name="planning.projectDescription.isLinkedCoreProjects" /]</h6>
-        <div>[@s.radio name="project.isLinked" list=yesnoOptions listKey="key" listValue="value" /]</div>
-      </div>
-      <div class="coreProjects fullBlock" style="display:none">
-        <p>[@s.text name="planning.projectDescription.chouseCoreProject" /]</p>
-        <div class="coreProjectsList">
-          [#assign coreProjects = [
-            {"id":"1", "name":"Core Project #1"},
-            {"id":"2", "name":"Core Project #2"},
-            {"id":"3", "name":"Core Project #3"}
-          ] /] 
-          [@s.checkboxlist name="project.coreProjects"  list="coreProjects" listKey="id" listValue="name" cssClass="checkbox" value="" /]
-        </div>
+      
+      [#-- Core Projects for Bilateral project type --] 
+      <h1 class="contentTitle"> [@s.text name="planning.projectDescription.coreProjects" /] </h1> 
+      <div id="projectCoreProjects" class="isLinked tickBox-wrapper fullBlock"> 
+        [@customForm.checkbox name="project.isLinked" value=""  i18nkey="planning.projectDescription.isLinkedCoreProjects" disabled=!editable  /]
+        [#if editable]
+          <div class="tickBox-toggle coreProjects fullBlock">
+            <div class="usersList panel primary">
+              <div class="panel-head"> [@s.text name="planning.projectDescription.chouseCoreProject" /]</div>
+              <div class="panel-body"> 
+                [@s.checkboxlist name="project.coreProjects"  list="coreProjects" listKey="id" listValue="name" cssClass="checkbox" value="" /]
+              </div>
+            </div>
+          </div>
+        [/#if]
       </div> 
+      
     </div> 
     
     [#if saveable]

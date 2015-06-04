@@ -69,7 +69,13 @@ function applyWordCounter($textArea,wordCount){
   $textArea.trigger("keyup");
 }
 
-function word_count(field){
-  var matches = $(field).val().match(/\b/g);
-  return number = (matches) ? matches.length / 2 : 0;
+function word_count(field){ 
+  var value = $(field).val();
+  if (typeof value === "undefined") {
+    return 0;
+  }else{
+    var matches = $(field).val().match(/\b/g);
+    return number = (matches) ? matches.length / 2 : 0;
+  }
+  
 }

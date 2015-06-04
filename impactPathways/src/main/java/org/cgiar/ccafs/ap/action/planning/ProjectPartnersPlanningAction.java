@@ -167,18 +167,25 @@ public class ProjectPartnersPlanningAction extends BaseAction {
     project.setCoordinator(projectCoordinator);
 
     // Getting PPA Partners
+    project.setPPAPartners(projectPartnerManager.getProjectPartners(project.getId(), APConstants.PROJECT_PARTNER_PPA));
 
+    // Getting 2-level Project Partners
+    project
+    .setProjectPartners(projectPartnerManager.getProjectPartners(project.getId(), APConstants.PROJECT_PARTNER_PP));
 
     // If the user is not admin or the project owner, we should keep some information
     // unmutable
     previousProject = new Project();
     previousProject.setId(project.getId());
-    previousProject.setProjectPartners(project.getProjectPartners());
+    previousProject.setPPAPartners(project.getPPAPartners());
 
     if (this.getRequest().getMethod().equalsIgnoreCase("post")) {
       // Clear out the list if it has some element
       if (project.getProjectPartners() != null) {
         project.getProjectPartners().clear();
+      }
+      if (project.getPPAPartners() != null) {
+        project.getPPAPartners().clear();
       }
     }
 
