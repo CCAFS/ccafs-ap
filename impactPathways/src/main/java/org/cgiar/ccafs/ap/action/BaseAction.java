@@ -156,11 +156,6 @@ public class BaseAction extends ActionSupport implements Preparable, SessionAwar
     return u;
   }
 
-  public String getEditableRequest() {
-    return APConstants.EDITABLE_REQUEST;
-  }
-
-
   /**
    * Define default locale while we decide to support other languages in the future.
    */
@@ -256,7 +251,7 @@ public class BaseAction extends ActionSupport implements Preparable, SessionAwar
     this.delete = delete;
   }
 
-  public void setEditable(boolean isEditable) {
+  public void setEditableParameter(boolean isEditable) {
     this.isEditable = isEditable;
   }
 

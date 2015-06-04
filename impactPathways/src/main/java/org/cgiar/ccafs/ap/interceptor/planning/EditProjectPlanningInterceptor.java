@@ -23,6 +23,7 @@ import java.util.Map;
 import com.google.inject.Inject;
 import com.opensymphony.xwork2.ActionInvocation;
 import com.opensymphony.xwork2.interceptor.AbstractInterceptor;
+import org.apache.struts2.ServletActionContext;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -49,16 +50,17 @@ public class EditProjectPlanningInterceptor extends AbstractInterceptor {
   public String intercept(ActionInvocation invocation) throws Exception {
     BaseAction baseAction = (BaseAction) invocation.getAction();
     Map<String, Object> parameters = invocation.getInvocationContext().getParameters();
+    String actionName = ServletActionContext.getActionMapping().getName();
 
     boolean isEditable = false;
 
-    if (parameters.get(APConstants.EDITABLE_REQUEST) != null) {
+    if (!actionName.equals("projectsList") && parameters.get(APConstants.EDITABLE_REQUEST) != null) {
       String stringEditable = ((String[]) parameters.get(APConstants.EDITABLE_REQUEST))[0];
       isEditable = stringEditable.equals("true");
 
       // If the user is not asking for edition privileges we don't need to validate it.
       if (!isEditable) {
-        baseAction.setEditable(isEditable);
+        baseAction.setEditableParameter(isEditable);
         return invocation.invoke();
       }
 
@@ -66,10 +68,10 @@ public class EditProjectPlanningInterceptor extends AbstractInterceptor {
       String projectParameter = ((String[]) parameters.get(APConstants.PROJECT_REQUEST_ID))[0];
       int projectID = Integer.parseInt(projectParameter);
 
-      // securityContext.
+      isEditable = securityContext.canEditProjectPlanningSection(actionName, projectID);
     }
 
-    baseAction.setEditable(isEditable);
+    baseAction.setEditableParameter(isEditable);
     return invocation.invoke();
   }
 }
