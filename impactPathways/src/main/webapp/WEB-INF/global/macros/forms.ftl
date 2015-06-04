@@ -51,7 +51,7 @@
 [#macro checkbox name value="-NULL" label="" i18nkey="" disabled=false checked=false required=false display=true help="" editable=true]
   <div class="checkbox" [#if !display]style="display: none;"[/#if]>
     <label for="${name}">
-      <input type="checkbox" id="${name}" name="${name}" value="${value}" [#if checked]checked="checked"[/#if] />
+      <input type="checkbox" id="${name}" name="${name}" value="${value}" [#if checked]checked="checked"[/#if] [#if disabled]disabled="disabled[/#if] />
       <input type="hidden" id="__checkbox_${name}" name="__checkbox_${name}" value="${value}" />
       <h6>[#if i18nkey==""]${label}[#else][@s.text name="${i18nkey}" /][/#if][#if required]<span class="red">*</span>[/#if]</h6>
       [#if help != ""]

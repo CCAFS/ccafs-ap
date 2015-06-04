@@ -133,8 +133,7 @@
       </div> <!-- End projectPartner-Template -->
 [/#macro]
 
-[#macro projectLeader leader showResponsabilities=false canEdit=true]
-  
+[#macro projectLeader leader showResponsabilities=false canEdit=true] 
   [#if leader?has_content]
       <div id="projectLeader" class="projectLeader clearfix">
           [#-- Lead List --]
