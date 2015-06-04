@@ -1,7 +1,6 @@
 [#ftl]
 [#macro partnerSection projectPartners partnerTypes countries canEdit=true canRemove=true responsabilities=false ppaPartners=false]
   [#if projectPartners?has_content]
-    [#assign i=0]
     [#list projectPartners as ap]    
       [#if ap.partner.PPA && ppaPartners] 
         [@partner ap ap_index canEdit=canEdit canRemove=canRemove responsabilities=responsabilities /]
@@ -16,7 +15,9 @@
   <div id="projectPartner-${ap_index}" class="projectPartner borderBox">
     [#-- Partner identifier --]
     <input id="id" type="hidden" name="project.projectPartners[${ap_index}].id" value="${ap.id?c}" />
-    <legend>[@s.text name="preplanning.projectPartners.partner"][@s.param name="0"] <span id="partnerIndex">${ap_index+1}</span>[/@s.param] [/@s.text]</legend>
+    <input id="isPPA" type="hidden" name="project.projectPartners[${ap_index}].isPPA" value="${ap.partner.PPA?string("1", "0")}" />
+    [#assign nameLegend]${ap.partner.PPA?string("preplanning.projectPartners.ppaPartner", "preplanning.projectPartners.partner")}[/#assign]
+    <legend>[@s.text name=nameLegend][@s.param name="0"] <span id="partnerIndex">${ap_index+1}</span>[/@s.param] [/@s.text]</legend>
     [#if canRemove && canEdit]
       [#-- Remove link for all partners --]
       <div class="removeLink">
@@ -53,7 +54,7 @@
     [#-- Contact Email --]
     <div class="fullPartBlock clearfix">
       [#-- Contact Person information is going to come from the users table, not from project_partner table (refer to the table project_partners in the database) --] 
-      [@customForm.input name="project.projectPartners[${ap_index}].contactEmail" type="text" disabled=!canEdit i18nkey="preplanning.projectPartners.contactPersonEmail" required=true /]
+      [@customForm.input name="project.projectPartners[${ap_index}].contactEmail" type="text" disabled=!canEdit i18nkey="preplanning.projectPartners.contactPersonEmail" required=true readOnly=true/]
       <div class="searchUser">[@s.text name="form.buttons.searchUser" /]</div>
     </div>  
     [#-- Responsabilities --]
@@ -64,12 +65,24 @@
     [/#if]
     [#-- Indicate which PPA Partners for second level partners --]
     [#if !ap.partner.PPA]
-    <div class="fullPartBlock">        
-      <h6>[@s.text name="preplanning.projectPartners.indicatePpaPartners" /]</h6>
-      <div class="ppaPartnersList">
-        <ul>
-        </ul>
-        [@customForm.select name="" label="" disabled=!canEdit i18nkey="" listName="partnerTypes" keyFieldName="id"  displayFieldName="name" className="ppaPartnersSelect" value="" /]
+    <div class="fullPartBlock">      
+      <div class="ppaPartnersList panel primary">
+        <div class="panel-head">
+          [@s.text name="preplanning.projectPartners.indicatePpaPartners" /]
+        </div>
+        [#assign ppaPartnersList = [
+          {"id":"1", "name":"PPA Partner #1 Bioversity International"},
+          {"id":"2", "name":"PPA Partner #2 CIAT - Centro Internacional de Agricultura tropial"},
+          {"id":"3", "name":"PPA Partner #3 CIP - Centro Internacional de la papa"}
+        ]/]
+        <div class="panel-body">
+          <ul> 
+            [#list ppaPartnersList as ppaPartner]
+              <li class="[#if !ppaPartner_has_next]last[/#if]">${ppaPartner.name}<span class="listButton remove">Remove</span></li>
+            [/#list]
+          </ul>
+          [@customForm.select name="" label="" disabled=!canEdit i18nkey="" listName="partnerTypes" keyFieldName="id"  displayFieldName="name" className="ppaPartnersSelect" value="" /]
+        </div>
       </div> 
     </div>
     [/#if]
@@ -121,6 +134,7 @@
 [/#macro]
 
 [#macro projectLeader leader showResponsabilities=false canEdit=true]
+  
   [#if leader?has_content]
       <div id="projectLeader" class="projectLeader clearfix">
           [#-- Lead List --]
@@ -128,13 +142,15 @@
             [@customForm.select name="project.expectedLeader.currentInstitution" disabled=!canEdit i18nkey="preplanning.projectPartners.leader.institutionName" listName="allPartners" keyFieldName="id"  displayFieldName="getComposedName()" /]
           </div> 
           [#-- Project Leader contact --] 
-          <div class="fullPartBlock clearfix"> 
-            [@customForm.input name="project.leader.firstName" type="text" disabled=!canEdit i18nkey="preplanning.projectPartners.projectLeader" required=true readOnly=true/]
+          <div class="fullPartBlock clearfix">
+            [@customForm.input name="project.leader.composedName" className="userName" type="text" disabled=!canEdit i18nkey="preplanning.projectPartners.projectLeader" required=true readOnly=true/]
+            <input class="userId" type="hidden" name="preplanning.projectPartners.projectLeader" value="${project.leader.id}">
             <div class="searchUser">[@s.text name="form.buttons.searchUser" /]</div>
           </div>
           [#-- Project Coordinator --] 
           <div class="fullPartBlock clearfix">
-            [@customForm.input name="preplanning.projectPartners.projectCoordinator" type="text" disabled=!canEdit i18nkey="preplanning.projectPartners.projectCoordinator"  readOnly=true/]
+            [@customForm.input name="project.coordinator.composedName" className="userName" type="text" disabled=!canEdit i18nkey="preplanning.projectPartners.projectCoordinator"  readOnly=true/]
+            <input class="userId" type="hidden" name="preplanning.projectPartners.projectCoordinator" value="${project.coordinator.id}">
             <div class="searchUser">[@s.text name="form.buttons.searchUser" /]</div>
           </div> 
           [#-- Responsabilities --]

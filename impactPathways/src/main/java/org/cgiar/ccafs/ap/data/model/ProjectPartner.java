@@ -23,11 +23,10 @@ import org.apache.commons.lang3.builder.ToStringBuilder;
 public class ProjectPartner {
 
   private int id;
-  private Institution partner;
-  private String contactName;
-  private String contactEmail;
+  private Institution institution;
+  private User user;
   private String responsabilities;
-
+  private String type;
 
   public ProjectPartner() {
     super();
@@ -43,31 +42,27 @@ public class ProjectPartner {
   }
 
   public String getComposedName() {
-    String composedName = contactName;
-    if (contactEmail != null && !contactEmail.isEmpty()) {
-      composedName += " <" + contactEmail + "> ";
-    }
-    return composedName;
-  }
-
-  public String getContactEmail() {
-    return contactEmail;
-  }
-
-  public String getContactName() {
-    return contactName;
+    return this.user.getComposedName();
   }
 
   public int getId() {
     return id;
   }
 
-  public Institution getPartner() {
-    return partner;
+  public Institution getInstitution() {
+    return institution;
   }
 
   public String getResponsabilities() {
     return responsabilities;
+  }
+
+  public String getType() {
+    return type;
+  }
+
+  public User getUser() {
+    return user;
   }
 
   @Override
@@ -75,25 +70,24 @@ public class ProjectPartner {
     return id;
   }
 
-  public void setContactEmail(String contactEmail) {
-    this.contactEmail = contactEmail;
-  }
-
-  public void setContactName(String contactName) {
-    this.contactName = contactName;
-  }
-
-
   public void setId(int id) {
     this.id = id;
   }
 
-  public void setPartner(Institution partner) {
-    this.partner = partner;
+  public void setInstitution(Institution institution) {
+    this.institution = institution;
   }
 
   public void setResponsabilities(String responsabilities) {
     this.responsabilities = responsabilities;
+  }
+
+  public void setType(String type) {
+    this.type = type;
+  }
+
+  public void setUser(User user) {
+    this.user = user;
   }
 
   @Override

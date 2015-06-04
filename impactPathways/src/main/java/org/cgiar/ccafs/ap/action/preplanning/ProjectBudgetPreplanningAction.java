@@ -119,131 +119,139 @@ public class ProjectBudgetPreplanningAction extends BaseAction {
       boolean w3_bilateral_gender = false;
 
       for (Budget budget : project.getBudgets()) {
-        if (budget.getInstitution().getId() == projectPartner.getPartner().getId() && budget.getYear() == year) {
+        if (budget.getInstitution().getId() == projectPartner.getInstitution().getId() && budget.getYear() == year) {
           if (budget.getType().getValue() == BudgetType.W1_W2.getValue()) {
             w1_w2 = true;
-            budgetsMap.put(year + "-" + projectPartner.getPartner().getId() + "-" + BudgetType.W1_W2.name(), budget);
+            budgetsMap.put(year + "-" + projectPartner.getInstitution().getId() + "-" + BudgetType.W1_W2.name(),
+              budget);
           } else if (budget.getType().getValue() == BudgetType.W3_BILATERAL.getValue()) {
             w3_bilateral = true;
-            budgetsMap.put(year + "-" + projectPartner.getPartner().getId() + "-" + BudgetType.W3_BILATERAL.name(),
+            budgetsMap.put(year + "-" + projectPartner.getInstitution().getId() + "-" + BudgetType.W3_BILATERAL.name(),
               budget);
           } else if (budget.getType().getValue() == BudgetType.LEVERAGED.getValue()) {
             leveraged = true;
-            budgetsMap
-            .put(year + "-" + projectPartner.getPartner().getId() + "-" + BudgetType.LEVERAGED.name(), budget);
+            budgetsMap.put(year + "-" + projectPartner.getInstitution().getId() + "-" + BudgetType.LEVERAGED.name(),
+              budget);
           } else if (budget.getType().getValue() == BudgetType.W1_W2_PARTNERS.getValue()) {
             w1_w2_partners = true;
-            budgetsMap.put(year + "-" + projectPartner.getPartner().getId() + "-" + BudgetType.W1_W2_PARTNERS.name(),
-              budget);
+            budgetsMap.put(
+              year + "-" + projectPartner.getInstitution().getId() + "-" + BudgetType.W1_W2_PARTNERS.name(), budget);
           } else if (budget.getType().getValue() == BudgetType.W1_W2_OTHER.getValue()) {
             w1_w2_others = true;
-            budgetsMap.put(year + "-" + projectPartner.getPartner().getId() + "-" + BudgetType.W1_W2_OTHER.name(),
+            budgetsMap.put(year + "-" + projectPartner.getInstitution().getId() + "-" + BudgetType.W1_W2_OTHER.name(),
               budget);
           } else if (budget.getType().getValue() == BudgetType.W3_BILATERAL_PARTNERS.getValue()) {
             w3_bilateral_partners = true;
             budgetsMap.put(
-              year + "-" + projectPartner.getPartner().getId() + "-" + BudgetType.W3_BILATERAL_PARTNERS.name(), budget);
+              year + "-" + projectPartner.getInstitution().getId() + "-" + BudgetType.W3_BILATERAL_PARTNERS.name(),
+              budget);
           } else if (budget.getType().getValue() == BudgetType.W3_BILATERAL_OTHERS.getValue()) {
             w3_bilateral_others = true;
             budgetsMap.put(
-              year + "-" + projectPartner.getPartner().getId() + "-" + BudgetType.W3_BILATERAL_OTHERS.name(), budget);
+              year + "-" + projectPartner.getInstitution().getId() + "-" + BudgetType.W3_BILATERAL_OTHERS.name(),
+              budget);
           } else if (budget.getType().getValue() == BudgetType.W1_W2_GENDER.getValue()) {
             w1_w2_gender = true;
-            budgetsMap.put(year + "-" + projectPartner.getPartner().getId() + "-" + BudgetType.W1_W2_GENDER.name(),
+            budgetsMap.put(year + "-" + projectPartner.getInstitution().getId() + "-" + BudgetType.W1_W2_GENDER.name(),
               budget);
           } else if (budget.getType().getValue() == BudgetType.W3_BILATERAL_GENDER.getValue()) {
             w3_bilateral_gender = true;
             budgetsMap.put(
-              year + "-" + projectPartner.getPartner().getId() + "-" + BudgetType.W3_BILATERAL_GENDER.name(), budget);
+              year + "-" + projectPartner.getInstitution().getId() + "-" + BudgetType.W3_BILATERAL_GENDER.name(),
+              budget);
           }
         }
       }
       if (w1_w2 == false) {
         Budget newBudget = new Budget();
         newBudget.setId(-1);
-        newBudget.setInstitution(projectPartner.getPartner());
+        newBudget.setInstitution(projectPartner.getInstitution());
         newBudget.setType(BudgetType.W1_W2);
         newBudget.setAmount(0);
         newBudget.setYear(year);
-        budgetsMap.put(year + "-" + projectPartner.getPartner().getId() + "-" + BudgetType.W1_W2.name(), newBudget);
+        budgetsMap.put(year + "-" + projectPartner.getInstitution().getId() + "-" + BudgetType.W1_W2.name(), newBudget);
       }
       if (w3_bilateral == false) {
         Budget newBudget = new Budget();
         newBudget.setId(-1);
-        newBudget.setInstitution(projectPartner.getPartner());
+        newBudget.setInstitution(projectPartner.getInstitution());
         newBudget.setType(BudgetType.W3_BILATERAL);
         newBudget.setAmount(0);
         newBudget.setYear(year);
-        budgetsMap.put(year + "-" + projectPartner.getPartner().getId() + "-" + BudgetType.W3_BILATERAL.name(),
+        budgetsMap.put(year + "-" + projectPartner.getInstitution().getId() + "-" + BudgetType.W3_BILATERAL.name(),
           newBudget);
       }
       if (leveraged == false) {
         Budget newBudget = new Budget();
         newBudget.setId(-1);
-        newBudget.setInstitution(projectPartner.getPartner());
+        newBudget.setInstitution(projectPartner.getInstitution());
         newBudget.setType(BudgetType.LEVERAGED);
         newBudget.setAmount(0);
         newBudget.setYear(year);
-        budgetsMap.put(year + "-" + projectPartner.getPartner().getId() + "-" + BudgetType.LEVERAGED.name(), newBudget);
+        budgetsMap.put(year + "-" + projectPartner.getInstitution().getId() + "-" + BudgetType.LEVERAGED.name(),
+          newBudget);
       }
       if (w1_w2_partners == false) {
         Budget newBudget = new Budget();
         newBudget.setId(-1);
-        newBudget.setInstitution(projectPartner.getPartner());
+        newBudget.setInstitution(projectPartner.getInstitution());
         newBudget.setType(BudgetType.W1_W2_PARTNERS);
         newBudget.setAmount(0);
         newBudget.setYear(year);
-        budgetsMap.put(year + "-" + projectPartner.getPartner().getId() + "-" + BudgetType.W1_W2_PARTNERS.name(),
+        budgetsMap.put(year + "-" + projectPartner.getInstitution().getId() + "-" + BudgetType.W1_W2_PARTNERS.name(),
           newBudget);
       }
       if (w1_w2_others == false) {
         Budget newBudget = new Budget();
         newBudget.setId(-1);
-        newBudget.setInstitution(projectPartner.getPartner());
+        newBudget.setInstitution(projectPartner.getInstitution());
         newBudget.setType(BudgetType.W1_W2_OTHER);
         newBudget.setAmount(0);
         newBudget.setYear(year);
-        budgetsMap.put(year + "-" + projectPartner.getPartner().getId() + "-" + BudgetType.W1_W2_OTHER.name(),
+        budgetsMap.put(year + "-" + projectPartner.getInstitution().getId() + "-" + BudgetType.W1_W2_OTHER.name(),
           newBudget);
       }
       if (w3_bilateral_partners == false) {
         Budget newBudget = new Budget();
         newBudget.setId(-1);
-        newBudget.setInstitution(projectPartner.getPartner());
+        newBudget.setInstitution(projectPartner.getInstitution());
         newBudget.setType(BudgetType.W3_BILATERAL_PARTNERS);
         newBudget.setAmount(0);
         newBudget.setYear(year);
         budgetsMap.put(
-          year + "-" + projectPartner.getPartner().getId() + "-" + BudgetType.W3_BILATERAL_PARTNERS.name(), newBudget);
+          year + "-" + projectPartner.getInstitution().getId() + "-" + BudgetType.W3_BILATERAL_PARTNERS.name(),
+          newBudget);
       }
       if (w3_bilateral_others == false) {
         Budget newBudget = new Budget();
         newBudget.setId(-1);
-        newBudget.setInstitution(projectPartner.getPartner());
+        newBudget.setInstitution(projectPartner.getInstitution());
         newBudget.setType(BudgetType.W3_BILATERAL_OTHERS);
         newBudget.setAmount(0);
         newBudget.setYear(year);
-        budgetsMap.put(year + "-" + projectPartner.getPartner().getId() + "-" + BudgetType.W3_BILATERAL_OTHERS.name(),
+        budgetsMap.put(
+          year + "-" + projectPartner.getInstitution().getId() + "-" + BudgetType.W3_BILATERAL_OTHERS.name(),
           newBudget);
       }
       if (w1_w2_gender == false) {
         Budget newBudget = new Budget();
         newBudget.setId(-1);
-        newBudget.setInstitution(projectPartner.getPartner());
+        newBudget.setInstitution(projectPartner.getInstitution());
         newBudget.setType(BudgetType.W1_W2_GENDER);
         newBudget.setAmount(0);
         newBudget.setYear(year);
-        budgetsMap.put(year + "-" + projectPartner.getPartner().getId() + "-" + BudgetType.W1_W2_GENDER.name(),
+        budgetsMap.put(year + "-" + projectPartner.getInstitution().getId() + "-" + BudgetType.W1_W2_GENDER.name(),
           newBudget);
       }
       if (w3_bilateral_gender == false) {
         Budget newBudget = new Budget();
         newBudget.setId(-1);
-        newBudget.setInstitution(projectPartner.getPartner());
+        newBudget.setInstitution(projectPartner.getInstitution());
         newBudget.setType(BudgetType.W3_BILATERAL_GENDER);
         newBudget.setAmount(0);
         newBudget.setYear(year);
-        budgetsMap.put(year + "-" + projectPartner.getPartner().getId() + "-" + BudgetType.W3_BILATERAL_GENDER.name(),
+        budgetsMap.put(
+          year + "-" + projectPartner.getInstitution().getId() + "-" + BudgetType.W3_BILATERAL_GENDER.name(),
           newBudget);
       }
     }
@@ -259,142 +267,141 @@ public class ProjectBudgetPreplanningAction extends BaseAction {
     boolean w3_bilateral_gender = false;
 
     for (Budget budget : project.getBudgets()) {
-      if (budget.getInstitution().getId() == project.getLeader().getCurrentInstitution().getId()
-        && budget.getYear() == year) {
+      if (budget.getInstitution().getId() == project.getLeader().getInstitution().getId() && budget.getYear() == year) {
         if (budget.getType().getValue() == BudgetType.W1_W2.getValue()) {
           w1_w2 = true;
-          budgetsMap.put(
-            year + "-" + project.getLeader().getCurrentInstitution().getId() + "-" + BudgetType.W1_W2.name(), budget);
+          budgetsMap.put(year + "-" + project.getLeader().getInstitution().getId() + "-" + BudgetType.W1_W2.name(),
+            budget);
         } else if (budget.getType().getValue() == BudgetType.W3_BILATERAL.getValue()) {
           w3_bilateral = true;
-          budgetsMap.put(year + "-" + project.getLeader().getCurrentInstitution().getId() + "-"
-            + BudgetType.W3_BILATERAL.name(), budget);
+          budgetsMap.put(
+            year + "-" + project.getLeader().getInstitution().getId() + "-" + BudgetType.W3_BILATERAL.name(), budget);
         } else if (budget.getType().getValue() == BudgetType.LEVERAGED.getValue()) {
           leveraged = true;
-          budgetsMap.put(
-            year + "-" + project.getLeader().getCurrentInstitution().getId() + "-" + BudgetType.LEVERAGED.name(),
+          budgetsMap.put(year + "-" + project.getLeader().getInstitution().getId() + "-" + BudgetType.LEVERAGED.name(),
             budget);
         } else if (budget.getType().getValue() == BudgetType.W1_W2_PARTNERS.getValue()) {
           w1_w2_partners = true;
-          budgetsMap.put(year + "-" + project.getLeader().getCurrentInstitution().getId() + "-"
-            + BudgetType.W1_W2_PARTNERS.name(), budget);
+          budgetsMap.put(
+            year + "-" + project.getLeader().getInstitution().getId() + "-" + BudgetType.W1_W2_PARTNERS.name(), budget);
         } else if (budget.getType().getValue() == BudgetType.W1_W2_OTHER.getValue()) {
           w1_w2_others = true;
-          budgetsMap.put(year + "-" + project.getLeader().getCurrentInstitution().getId() + "-"
-            + BudgetType.W1_W2_OTHER.name(), budget);
+          budgetsMap.put(
+            year + "-" + project.getLeader().getInstitution().getId() + "-" + BudgetType.W1_W2_OTHER.name(), budget);
         } else if (budget.getType().getValue() == BudgetType.W3_BILATERAL_PARTNERS.getValue()) {
           w3_bilateral_partners = true;
-          budgetsMap.put(year + "-" + project.getLeader().getCurrentInstitution().getId() + "-"
-            + BudgetType.W3_BILATERAL_PARTNERS.name(), budget);
+          budgetsMap.put(
+            year + "-" + project.getLeader().getInstitution().getId() + "-" + BudgetType.W3_BILATERAL_PARTNERS.name(),
+            budget);
         } else if (budget.getType().getValue() == BudgetType.W3_BILATERAL_OTHERS.getValue()) {
           w3_bilateral_others = true;
-          budgetsMap.put(year + "-" + project.getLeader().getCurrentInstitution().getId() + "-"
-            + BudgetType.W3_BILATERAL_OTHERS.name(), budget);
+          budgetsMap.put(
+            year + "-" + project.getLeader().getInstitution().getId() + "-" + BudgetType.W3_BILATERAL_OTHERS.name(),
+            budget);
         } else if (budget.getType().getValue() == BudgetType.W1_W2_GENDER.getValue()) {
           w1_w2_gender = true;
-          budgetsMap.put(year + "-" + project.getLeader().getCurrentInstitution().getId() + "-"
-            + BudgetType.W1_W2_GENDER.name(), budget);
+          budgetsMap.put(
+            year + "-" + project.getLeader().getInstitution().getId() + "-" + BudgetType.W1_W2_GENDER.name(), budget);
         } else if (budget.getType().getValue() == BudgetType.W3_BILATERAL_GENDER.getValue()) {
           w3_bilateral_gender = true;
-          budgetsMap.put(year + "-" + project.getLeader().getCurrentInstitution().getId() + "-"
-            + BudgetType.W3_BILATERAL_GENDER.name(), budget);
+          budgetsMap.put(
+            year + "-" + project.getLeader().getInstitution().getId() + "-" + BudgetType.W3_BILATERAL_GENDER.name(),
+            budget);
         }
       }
     }
     if (w1_w2 == false) {
       Budget newBudget = new Budget();
       newBudget.setId(-1);
-      newBudget.setInstitution(project.getLeader().getCurrentInstitution());
+      newBudget.setInstitution(project.getLeader().getInstitution());
       newBudget.setType(BudgetType.W1_W2);
       newBudget.setAmount(0);
       newBudget.setYear(year);
-      budgetsMap.put(year + "-" + project.getLeader().getCurrentInstitution().getId() + "-" + BudgetType.W1_W2.name(),
+      budgetsMap.put(year + "-" + project.getLeader().getInstitution().getId() + "-" + BudgetType.W1_W2.name(),
         newBudget);
     }
     if (w3_bilateral == false) {
       Budget newBudget = new Budget();
       newBudget.setId(-1);
-      newBudget.setInstitution(project.getLeader().getCurrentInstitution());
+      newBudget.setInstitution(project.getLeader().getInstitution());
       newBudget.setType(BudgetType.W3_BILATERAL);
       newBudget.setAmount(0);
       newBudget.setYear(year);
-      budgetsMap.put(
-        year + "-" + project.getLeader().getCurrentInstitution().getId() + "-" + BudgetType.W3_BILATERAL.name(),
+      budgetsMap.put(year + "-" + project.getLeader().getInstitution().getId() + "-" + BudgetType.W3_BILATERAL.name(),
         newBudget);
     }
     if (leveraged == false) {
       Budget newBudget = new Budget();
       newBudget.setId(-1);
-      newBudget.setInstitution(project.getLeader().getCurrentInstitution());
+      newBudget.setInstitution(project.getLeader().getInstitution());
       newBudget.setType(BudgetType.LEVERAGED);
       newBudget.setAmount(0);
       newBudget.setYear(year);
-      budgetsMap
-      .put(year + "-" + project.getLeader().getCurrentInstitution().getId() + "-" + BudgetType.LEVERAGED.name(),
+      budgetsMap.put(year + "-" + project.getLeader().getInstitution().getId() + "-" + BudgetType.LEVERAGED.name(),
         newBudget);
     }
     if (w1_w2_partners == false) {
       Budget newBudget = new Budget();
       newBudget.setId(-1);
-      newBudget.setInstitution(project.getLeader().getCurrentInstitution());
+      newBudget.setInstitution(project.getLeader().getInstitution());
       newBudget.setType(BudgetType.W1_W2_PARTNERS);
       newBudget.setAmount(0);
       newBudget.setYear(year);
-      budgetsMap.put(
-        year + "-" + project.getLeader().getCurrentInstitution().getId() + "-" + BudgetType.W1_W2_PARTNERS.name(),
+      budgetsMap.put(year + "-" + project.getLeader().getInstitution().getId() + "-" + BudgetType.W1_W2_PARTNERS.name(),
         newBudget);
     }
     if (w1_w2_others == false) {
       Budget newBudget = new Budget();
       newBudget.setId(-1);
-      newBudget.setInstitution(project.getLeader().getCurrentInstitution());
+      newBudget.setInstitution(project.getLeader().getInstitution());
       newBudget.setType(BudgetType.W1_W2_OTHER);
       newBudget.setAmount(0);
       newBudget.setYear(year);
-      budgetsMap.put(
-        year + "-" + project.getLeader().getCurrentInstitution().getId() + "-" + BudgetType.W1_W2_OTHER.name(),
+      budgetsMap.put(year + "-" + project.getLeader().getInstitution().getId() + "-" + BudgetType.W1_W2_OTHER.name(),
         newBudget);
     }
     if (w3_bilateral_partners == false) {
       Budget newBudget = new Budget();
       newBudget.setId(-1);
-      newBudget.setInstitution(project.getLeader().getCurrentInstitution());
+      newBudget.setInstitution(project.getLeader().getInstitution());
       newBudget.setType(BudgetType.W3_BILATERAL_PARTNERS);
       newBudget.setAmount(0);
       newBudget.setYear(year);
-      budgetsMap.put(year + "-" + project.getLeader().getCurrentInstitution().getId() + "-"
-        + BudgetType.W3_BILATERAL_PARTNERS.name(), newBudget);
+      budgetsMap.put(
+        year + "-" + project.getLeader().getInstitution().getId() + "-" + BudgetType.W3_BILATERAL_PARTNERS.name(),
+        newBudget);
     }
     if (w3_bilateral_others == false) {
       Budget newBudget = new Budget();
       newBudget.setId(-1);
-      newBudget.setInstitution(project.getLeader().getCurrentInstitution());
+      newBudget.setInstitution(project.getLeader().getInstitution());
       newBudget.setType(BudgetType.W3_BILATERAL_OTHERS);
       newBudget.setAmount(0);
       newBudget.setYear(year);
-      budgetsMap.put(year + "-" + project.getLeader().getCurrentInstitution().getId() + "-"
-        + BudgetType.W3_BILATERAL_OTHERS.name(), newBudget);
+      budgetsMap.put(
+        year + "-" + project.getLeader().getInstitution().getId() + "-" + BudgetType.W3_BILATERAL_OTHERS.name(),
+        newBudget);
     }
     if (w1_w2_gender == false) {
       Budget newBudget = new Budget();
       newBudget.setId(-1);
-      newBudget.setInstitution(project.getLeader().getCurrentInstitution());
+      newBudget.setInstitution(project.getLeader().getInstitution());
       newBudget.setType(BudgetType.W1_W2_GENDER);
       newBudget.setAmount(0);
       newBudget.setYear(year);
-      budgetsMap.put(
-        year + "-" + project.getLeader().getCurrentInstitution().getId() + "-" + BudgetType.W1_W2_GENDER.name(),
+      budgetsMap.put(year + "-" + project.getLeader().getInstitution().getId() + "-" + BudgetType.W1_W2_GENDER.name(),
         newBudget);
     }
     if (w3_bilateral_gender == false) {
       Budget newBudget = new Budget();
       newBudget.setId(-1);
-      newBudget.setInstitution(project.getLeader().getCurrentInstitution());
+      newBudget.setInstitution(project.getLeader().getInstitution());
       newBudget.setType(BudgetType.W3_BILATERAL_GENDER);
       newBudget.setAmount(0);
       newBudget.setYear(year);
-      budgetsMap.put(year + "-" + project.getLeader().getCurrentInstitution().getId() + "-"
-        + BudgetType.W3_BILATERAL_GENDER.name(), newBudget);
+      budgetsMap.put(
+        year + "-" + project.getLeader().getInstitution().getId() + "-" + BudgetType.W3_BILATERAL_GENDER.name(),
+        newBudget);
     }
 
     return budgetsMap;
@@ -487,7 +494,7 @@ public class ProjectBudgetPreplanningAction extends BaseAction {
 
   @Override
   public String next() {
-    String result = save();
+    String result = this.save();
     if (result.equals(BaseAction.SUCCESS)) {
       return BaseAction.NEXT;
     } else {
@@ -531,15 +538,16 @@ public class ProjectBudgetPreplanningAction extends BaseAction {
       if (allYears.contains(new Integer(year))) {
 
 
+        // This code needs to be updated.
         // We validate if the partner leader is already in the employees table. If so, we get this
         // information. If not, we load the information from expected project leader.
-        User projectLeader = projectManager.getProjectLeader(project.getId());
+        // User projectLeader = projectManager.getProjectLeader(project.getId());
         // if the official leader is defined.
-        if (projectLeader != null) {
-          project.setLeader(projectLeader);
-        } else {
-          project.setLeader(projectManager.getExpectedProjectLeader(projectID));
-        }
+        // if (projectLeader != null) {
+        // project.setLeader(projectLeader);
+        // } else {
+        // project.setLeader(projectManager.getExpectedProjectLeader(projectID));
+        // }
         // if the project leader is not defined, stop here.
         if (project.getLeader() != null) {
 
@@ -559,9 +567,9 @@ public class ProjectBudgetPreplanningAction extends BaseAction {
           // Getting the list of budgets.
           project.setBudgets(budgetManager.getBudgetsByYear(project.getId(), year));
           // Creating budgets that do not exist.
-          mapBudgets = generateMapBudgets(year);
+          mapBudgets = this.generateMapBudgets(year);
 
-          if (getRequest().getMethod().equalsIgnoreCase("post")) {
+          if (this.getRequest().getMethod().equalsIgnoreCase("post")) {
             // Clear out the list if it has some element
             if (project.getBudgets() != null) {
               project.getBudgets().clear();
@@ -591,10 +599,11 @@ public class ProjectBudgetPreplanningAction extends BaseAction {
     }
 
     if (!success) {
-      addActionError(getText("saving.problem"));
+      this.addActionError(this.getText("saving.problem"));
       return BaseAction.INPUT;
     } else {
-      addActionMessage(getText("saving.success", new String[] {getText("preplanning.projectBudget.title")}));
+      this.addActionMessage(
+        this.getText("saving.success", new String[] {this.getText("preplanning.projectBudget.title")}));
       return BaseAction.SUCCESS;
     }
   }

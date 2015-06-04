@@ -39,13 +39,13 @@ public class Project {
   private Date endDate;
   private List<IPProgram> regions; // The list of regions in which this project works with.
   private List<IPProgram> flagships; // The list of flagships in which this project works with.
-  private User leader; // Project Leader.
-  private User coordinator; // Project Coordinator.
+  private ProjectPartner leader; // Project Leader.
+  private ProjectPartner coordinator; // Project Coordinator.
   private String leaderResponsabilities;
   private IPProgram programCreator; // Creator program. e.g. LAM, FP4, CU, etc.
   private User owner;
-  private List<ProjectPartner> projectPartners; // Project partners.
-  private User expectedLeader;
+  private List<ProjectPartner> projectPartners; // Project partners or 2-level partners.
+  private List<ProjectPartner> ppaPartners; // PPA Partners or CCAFS Program Partners.
   private List<Budget> budgets;
   private Map<String, ProjectOutcome> outcomes;
   private List<Activity> activities;
@@ -186,7 +186,7 @@ public class Project {
     return null;
   }
 
-  public User getCoordinator() {
+  public ProjectPartner getCoordinator() {
     return coordinator;
   }
 
@@ -200,10 +200,6 @@ public class Project {
 
   public Date getEndDate() {
     return endDate;
-  }
-
-  public User getExpectedLeader() {
-    return expectedLeader;
   }
 
   public List<IPProgram> getFlagships() {
@@ -291,7 +287,7 @@ public class Project {
   }
 
 
-  public User getLeader() {
+  public ProjectPartner getLeader() {
     return leader;
   }
 
@@ -309,6 +305,10 @@ public class Project {
 
   public User getOwner() {
     return owner;
+  }
+
+  public List<ProjectPartner> getPpaPartners() {
+    return ppaPartners;
   }
 
   public IPProgram getProgramCreator() {
@@ -376,7 +376,7 @@ public class Project {
     this.budgets = budgets;
   }
 
-  public void setCoordinator(User coordinator) {
+  public void setCoordinator(ProjectPartner coordinator) {
     this.coordinator = coordinator;
   }
 
@@ -386,10 +386,6 @@ public class Project {
 
   public void setEndDate(Date endDate) {
     this.endDate = endDate;
-  }
-
-  public void setExpectedLeader(User expectedLeader) {
-    this.expectedLeader = expectedLeader;
   }
 
   public void setFlagships(List<IPProgram> flagships) {
@@ -408,7 +404,7 @@ public class Project {
     this.ipOtherContribution = ipOtherContribution;
   }
 
-  public void setLeader(User leader) {
+  public void setLeader(ProjectPartner leader) {
     this.leader = leader;
   }
 
@@ -426,6 +422,10 @@ public class Project {
 
   public void setOwner(User owner) {
     this.owner = owner;
+  }
+
+  public void setPpaPartners(List<ProjectPartner> ppaPartners) {
+    this.ppaPartners = ppaPartners;
   }
 
   public void setProgramCreator(IPProgram creator) {

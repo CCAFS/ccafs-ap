@@ -1,5 +1,5 @@
 [#ftl]
-[#macro input name value="-NULL" type="text" i18nkey="" disabled=false required=false errorField="" help="" display=true className="-NULL" readOnly=false showTitle=true editable=true]
+[#macro input name value="-NULL" type="text" i18nkey="" disabled=false required=false errorField="" help="" display=true className="-NULL" readOnly=false showTitle=true editable=true ]
   <div class="input" [#if !display]style="display: none;"[/#if]>
     [#if showTitle]
       <h6>
@@ -20,7 +20,7 @@
   </div>
 [/#macro]
 
-[#macro textArea name value="-NULL" i18nkey="" disabled=false required=false errorfield="" help="" addButton=false showTitle=true display=true className="-NULL" editable=true]
+[#macro textArea name editable value="-NULL" i18nkey="" disabled=false required=false errorfield="" help="" addButton=false showTitle=true display=true className="-NULL" editable=true ]
   <div class="textArea [#if addButton] button[/#if]" [#if !display]style="display: none;"[/#if]> 
   	[#if showTitle]
 	    <h6>
@@ -44,11 +44,11 @@
   [/#if]
 [/#macro]
 
-[#macro button i18nkey class="" id=""]
+[#macro button i18nkey class="" id="" editable=true]
   <input type="button" class="${class}" id="${id}" value="[@s.text name='${i18nkey}' /]" />
 [/#macro]
 
-[#macro checkbox name value="-NULL" label="" i18nkey="" disabled=false checked=false required=false display=true help=""]
+[#macro checkbox name value="-NULL" label="" i18nkey="" disabled=false checked=false required=false display=true help="" editable=true]
   <div class="checkbox" [#if !display]style="display: none;"[/#if]>
     <label for="${name}">
       <input type="checkbox" id="${name}" name="${name}" value="${value}" [#if checked]checked="checked"[/#if] />
@@ -62,7 +62,7 @@
   </div>
 [/#macro]
 
-[#macro checkboxGroup label name listName displayFieldName="" keyFieldName="" value="-NULL" i18nkey="" disabled=false required=false errorField="" checked=false display=true]
+[#macro checkboxGroup label name listName displayFieldName="" keyFieldName="" value="-NULL" i18nkey="" disabled=false required=false errorField="" checked=false display=true editable=true]
   <div class="checkbox" [#if !display]style="display: none;"[/#if]>
     <h6>[#if i18nkey==""]${label}[#else][@s.text name="${i18nkey}" /][/#if][#if required]<span class="red">*</span>[/#if]</h6>
     [#if errorField==""][@s.fielderror cssClass="fieldError" fieldName="${name}"/][#else][@s.fielderror cssClass="fieldError" fieldName="${errorfield}"/][/#if]
@@ -72,16 +72,22 @@
     [#else]
       [#assign customValue]${value}[/#assign]
     [/#if]
-    [#if keyFieldName == ""]
-      [@s.checkboxlist name="${name}" list="${listName}" value="${customValue}" disabled="${disabled?string}" /]
+    [#if editable]
+      [#if keyFieldName == ""]
+        [@s.checkboxlist name="${name}" list="${listName}" value="${customValue}" disabled="${disabled?string}" /]
+      [#else]
+        [@s.checkboxlist name="${name}" list="${listName}" listKey="${keyFieldName}" listValue="${displayFieldName}" value="${customValue}" disabled="${disabled?string}" /]
+      [/#if]
+    [#elseif keyFieldName == ""]  
+      No Data
     [#else]
-      [@s.checkboxlist name="${name}" list="${listName}" listKey="${keyFieldName}" listValue="${displayFieldName}" value="${customValue}" disabled="${disabled?string}" /]
-    [/#if]
+      ${customValue}
+    [/#if] 
     </div>    
   </div> 
 [/#macro]
 
-[#macro radioButtonGroup label name listName class="" displayFieldName="" keyFieldName="" value="-NULL" i18nkey="" disabled=false required=false errorField="" checked=false help="" display=true]
+[#macro radioButtonGroup label name listName class="" displayFieldName="" keyFieldName="" value="-NULL" i18nkey="" disabled=false required=false errorField="" checked=false help="" display=true editable=true]
   <div class="radioGroup" [#if !display]style="display: none;"[/#if]>
     <h6>[#if i18nkey==""]${label}[#else][@s.text name="${i18nkey}" /][/#if][#if required]<span class="red">*</span>[/#if]</h6>
     [#if errorField==""][@s.fielderror cssClass="fieldError" fieldName="${name}"/][#else][@s.fielderror cssClass="fieldError" fieldName="${errorfield}"/][/#if]
@@ -89,16 +95,17 @@
       [#if value=="-NULL"][#assign customValue][@s.property value="${name}" /][/#assign][#else][#assign customValue]${value}[/#assign][/#if]
       [#if class==""][#assign className="${name}"][#else][#assign className="${class}"][/#if]
       [#if help!=""][#assign helpTitle][@s.text name="${help}" /][/#assign][#else][#assign helpTitle=""][/#if]
-      [#if keyFieldName == ""]
-        [@s.radio name="${name}" cssClass="${className}" list="${listName}" value="${customValue}" disabled="${disabled?string}" title="${helpTitle}" /]
-      [#else]
-        [@s.radio name="${name}" cssClass="${className}" list="${listName}" listKey="${keyFieldName}" listValue="${displayFieldName}" value="${customValue}" disabled="${disabled?string}" title="${helpTitle}" /]
-      [/#if]
+        [#if keyFieldName == ""]
+          [@s.radio name="${name}" cssClass="${className}" list="${listName}" value="${customValue}" disabled="${disabled?string}" title="${helpTitle}" /]
+        [#else]
+          [@s.radio name="${name}" cssClass="${className}" list="${listName}" listKey="${keyFieldName}" listValue="${displayFieldName}" value="${customValue}" disabled="${disabled?string}" title="${helpTitle}" /]
+        [/#if]
+      
     </div>
   </div>
 [/#macro]
 
-[#macro select name listName label="" keyFieldName="" displayFieldName="" value="-NULL" i18nkey="" disabled=false required=false errorField="" selected=false className="" multiple=false help="" headerKey="" headerValue="" display=true showTitle=true addButton=false]
+[#macro select name listName label="" keyFieldName="" displayFieldName="" value="-NULL" i18nkey="" disabled=false required=false errorField="" selected=false className="" multiple=false help="" headerKey="" headerValue="" display=true showTitle=true addButton=false editable=true]
   <div class="select[#if addButton] button[/#if]" [#if !display]style="display: none;"[/#if]>
     [#if showTitle]
       <h6>
@@ -120,19 +127,26 @@
       [#else]
         [#assign helpText][/#assign]
       [/#if]
-      [#if keyFieldName == ""]
-        [#if multiple]
-          [@s.select name="${name}" list="${listName}" value="${customValue}" disabled="${disabled?string}" cssClass="${className}" multiple="true" tooltip="${helpText}"  /]
+      [#if editable] 
+        [#if keyFieldName == ""]
+          [#if multiple]
+            [@s.select name="${name}" list="${listName}" value="${customValue}" disabled="${disabled?string}" cssClass="${className}" multiple="true" tooltip="${helpText}"  /]
+          [#else]
+            [@s.select name="${name}" list="${listName}" value="${customValue}" disabled="${disabled?string}" cssClass="${className}" tooltip="${helpText}"  /]
+          [/#if]
         [#else]
-          [@s.select name="${name}" list="${listName}" value="${customValue}" disabled="${disabled?string}" cssClass="${className}" tooltip="${helpText}"  /]
+          [#if multiple]
+            [@s.select name="${name}" list="${listName}" listKey="${keyFieldName}" listValue="${displayFieldName}" value="${customValue}" disabled="${disabled?string}" cssClass="${className}" multiple="true" tooltip="${helpText}" /]
+          [#else]
+            [@s.select name="${name}" list="${listName}" listKey="${keyFieldName}" listValue="${displayFieldName}" value="${customValue}" disabled="${disabled?string}" cssClass="${className}" tooltip="${helpText}" /]
+          [/#if]
         [/#if]
-      [#else]
-        [#if multiple]
-          [@s.select name="${name}" list="${listName}" listKey="${keyFieldName}" listValue="${displayFieldName}" value="${customValue}" disabled="${disabled?string}" cssClass="${className}" multiple="true" tooltip="${helpText}" /]
-        [#else]
-          [@s.select name="${name}" list="${listName}" listKey="${keyFieldName}" listValue="${displayFieldName}" value="${customValue}" disabled="${disabled?string}" cssClass="${className}" tooltip="${helpText}" /]
-        [/#if]
-      [/#if]
+      [#elseif keyFieldName == ""] 
+        Not data 
+      [#else] 
+        [#assign nameValue = "${name}.${displayFieldName}" /]
+        ${nameValue?eval}
+      [/#if]  
     </div> 
   </div>  
   [#if addButton]

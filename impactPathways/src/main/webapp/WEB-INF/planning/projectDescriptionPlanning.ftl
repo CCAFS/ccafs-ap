@@ -13,6 +13,7 @@
   {"label":"description", "nameSpace":"planning/projects", "action":""}
 ] /]
 
+[#assign editable=false/]
 
 [#include "/WEB-INF/global/pages/header.ftl" /]
 [#include "/WEB-INF/global/pages/main-menu.ftl" /]
@@ -40,7 +41,7 @@
     <div id="projectDescription" class="borderBox">
       <fieldset class="fullBlock">
         [#-- Project Title --]
-        [@customForm.textArea name="project.title" i18nkey="planning.projectDescription.projectTitle" required=true className="project-title" /]
+        [@customForm.textArea name="project.title" i18nkey="planning.projectDescription.projectTitle" required=true className="project-title" editable=editable/]
         <div id="projectDescription" class="fullBlock">
           [#-- Project Program Creator --]
           <div class="halfPartBlock">
@@ -49,20 +50,21 @@
           </div>
           [#--  Project Owner Contact Person --]
           <div class="halfPartBlock">
-            [@customForm.select name="project.owner" label="" disabled=!fullEditable i18nkey="preplanning.projectDescription.projectownercontactperson" listName="allOwners" keyFieldName="employeeId"  displayFieldName="composedOwnerName" /]
+            [@customForm.select name="project.owner" label="" disabled=!fullEditable i18nkey="preplanning.projectDescription.projectownercontactperson" listName="allOwners" keyFieldName="employeeId"  displayFieldName="composedOwnerName" editable=editable/]
           </div>
+
           [#-- Start Date --]
           <div class="halfPartBlock">
-            [@customForm.input name="project.startDate" type="text" disabled=!fullEditable i18nkey="preplanning.projectDescription.startDate" required=true /]
+            [@customForm.input name="project.startDate" type="text" disabled=!fullEditable i18nkey="preplanning.projectDescription.startDate" required=true editable=editable /]
           </div> 
           [#-- End Date --]
           <div class="halfPartBlock">
-              [@customForm.input name="project.endDate" type="text" disabled=!fullEditable i18nkey="preplanning.projectDescription.endDate" required=true /]
+              [@customForm.input name="project.endDate" type="text" disabled=!fullEditable i18nkey="preplanning.projectDescription.endDate" required=true editable=editable /]
           </div>
         </div>
         [#-- Project upload work plan --]
         <div id="uploadWorkPlan" class="fullBlock">
-          [@customForm.checkbox name="project.isRequiredUploadworkplan" value=""  i18nkey="preplanning.projectDescription.isRequiredUploadworkplan"/]
+          [@customForm.checkbox name="project.isRequiredUploadworkplan" value=""  i18nkey="preplanning.projectDescription.isRequiredUploadworkplan" editable=editable /]
           <div class="uploadContainer">
             <div class="halfPartBlock">
               <p>[@s.text name="preplanning.projectDescription.uploadProjectWorkplan" /]</p>
@@ -75,7 +77,7 @@
           </div>  
         </div>
         [#-- Project Summary --]
-        [@customForm.textArea name="project.summary" i18nkey="preplanning.projectDescription.projectSummary" required=true className="project-description" /]
+        [@customForm.textArea name="project.summary" i18nkey="preplanning.projectDescription.projectSummary" required=true className="project-description" editable=editable /]
       </fieldset>
       <fieldset class="fullBlock">   
         <legend>[@s.text name="preplanning.projectDescription.projectWorking" /] </legend> 
@@ -84,16 +86,30 @@
           <div id="projectFlagshipsBlock" class="grid_5">
             <h6>[@s.text name="preplanning.projectDescription.flagships" /]</h6>
             <div class="checkboxGroup">  
-              [@s.fielderror cssClass="fieldError" fieldName="project.flagships"/]
-              [@s.checkboxlist name="project.flagships" disabled=!fullEditable list="ipProgramFlagships" listKey="id" listValue="getComposedName(id)" cssClass="checkbox" value="flagshipIds" /]
+              [#if editable]
+                [@s.fielderror cssClass="fieldError" fieldName="project.flagships"/]
+                [@s.checkboxlist name="project.flagships" disabled=!fullEditable list="ipProgramFlagships" listKey="id" listValue="getComposedName(id)" cssClass="checkbox" value="flagshipIds" /]
+              [#else] 
+                 
+                [#list project.flagships as element]
+                 ${element.name}  <br>
+                [/#list]
+              [/#if]
             </div>
           </div> 
           [#-- Regions --]
           <div id="projectRegionsBlock" class="grid_4">
             <h6>[@s.text name="preplanning.projectDescription.regions" /]</h6>
             <div class="checkboxGroup">
-              [@s.fielderror cssClass="fieldError" fieldName="project.regions"/]
-              [@s.checkboxlist name="project.regions" disabled=!fullEditable list="ipProgramRegions" listKey="id" listValue="name" cssClass="checkbox" value="regionIds" /]
+              [#if editable]
+                [@s.fielderror cssClass="fieldError" fieldName="project.regions"/]
+                [@s.checkboxlist name="project.regions" disabled=!fullEditable list="ipProgramRegions" listKey="id" listValue="name" cssClass="checkbox" value="regionIds" /]
+              [#else] 
+                 
+                [#list project.regions as element]
+                  ${element.name} <br>
+                [/#list]
+              [/#if]
             </div>
           </div> 
           [#-- Cross Cutting --] 

@@ -11,6 +11,7 @@ package org.cgiar.ccafs.ap.data.manager.impl;
 import org.cgiar.ccafs.ap.data.dao.ProjectPartnerDAO;
 import org.cgiar.ccafs.ap.data.manager.InstitutionManager;
 import org.cgiar.ccafs.ap.data.manager.ProjectPartnerManager;
+import org.cgiar.ccafs.ap.data.manager.UserManager;
 import org.cgiar.ccafs.ap.data.model.Institution;
 import org.cgiar.ccafs.ap.data.model.Project;
 import org.cgiar.ccafs.ap.data.model.ProjectPartner;
@@ -38,11 +39,14 @@ public class ProjectPartnerManagerImpl implements ProjectPartnerManager {
 
   // Managers
   private InstitutionManager institutionManager;
+  private UserManager userManager;
 
   @Inject
-  public ProjectPartnerManagerImpl(ProjectPartnerDAO projectPartnerDAO, InstitutionManager institutionManager) {
+  public ProjectPartnerManagerImpl(ProjectPartnerDAO projectPartnerDAO, InstitutionManager institutionManager,
+    UserManager userManager) {
     this.projecPartnerDAO = projectPartnerDAO;
     this.institutionManager = institutionManager;
+    this.userManager = userManager;
   }
 
   @Override
@@ -62,32 +66,31 @@ public class ProjectPartnerManagerImpl implements ProjectPartnerManager {
     for (Map<String, String> pData : projectPartnerDataList) {
       ProjectPartner projectPartner = new ProjectPartner();
       projectPartner.setId(Integer.parseInt(pData.get("id")));
-      projectPartner.setContactName(pData.get("contact_name"));
-      projectPartner.setContactEmail(pData.get("contact_email"));
       projectPartner.setResponsabilities(pData.get("responsabilities"));
-
+      // User as user_id
+      projectPartner.setUser(userManager.getUser(Integer.parseInt(pData.get("user_id"))));
       // Institution as partner_id
-      projectPartner.setPartner(institutionManager.getInstitution(Integer.parseInt(pData.get("partner_id"))));
-
+      projectPartner.setInstitution(institutionManager.getInstitution(Integer.parseInt(pData.get("partner_id"))));
       // adding information of the object to the array
       projectPartners.add(projectPartner);
     }
     return projectPartners;
   }
-  
+
   @Override
   public List<ProjectPartner> getProjectPartners(int projectId, String projectPartnerType) {
     List<ProjectPartner> projectPartners = new ArrayList<>();
-    List<Map<String, String>> projectPartnerDataList = projecPartnerDAO.getProjectPartners(projectId, projectPartnerType);
+    List<Map<String, String>> projectPartnerDataList =
+      projecPartnerDAO.getProjectPartners(projectId, projectPartnerType);
     for (Map<String, String> pData : projectPartnerDataList) {
       ProjectPartner projectPartner = new ProjectPartner();
       projectPartner.setId(Integer.parseInt(pData.get("id")));
-      projectPartner.setContactName(pData.get("contact_name"));
-      projectPartner.setContactEmail(pData.get("contact_email"));
+      // User as user_id
+      projectPartner.setUser(userManager.getUser(Integer.parseInt(pData.get("user_id"))));
       projectPartner.setResponsabilities(pData.get("responsabilities"));
-      
+
       // Institution as partner_id
-      projectPartner.setPartner(institutionManager.getInstitution(Integer.parseInt(pData.get("partner_id"))));
+      projectPartner.setInstitution(institutionManager.getInstitution(Integer.parseInt(pData.get("partner_id"))));
 
       // adding information of the object to the array
       projectPartners.add(projectPartner);
@@ -103,9 +106,9 @@ public class ProjectPartnerManagerImpl implements ProjectPartnerManager {
       projectPartnerData.clear();
 
       // Remove invalid project partners
-      if (projectPartner.getPartner() == null) {
+      if (projectPartner.getInstitution() == null) {
         continue;
-      } else if (projectPartner.getPartner().getId() == -1) {
+      } else if (projectPartner.getInstitution().getId() == -1) {
         continue;
       }
 
@@ -114,9 +117,8 @@ public class ProjectPartnerManagerImpl implements ProjectPartnerManager {
         projectPartnerData.put("id", projectPartner.getId());
       }
       projectPartnerData.put("project_id", projectId);
-      projectPartnerData.put("partner_id", projectPartner.getPartner().getId());
-      projectPartnerData.put("contact_name", projectPartner.getContactName());
-      projectPartnerData.put("contact_email", projectPartner.getContactEmail());
+      projectPartnerData.put("partner_id", projectPartner.getInstitution().getId());
+      projectPartnerData.put("user_id", projectPartner.getUser().getId());
       projectPartnerData.put("responsabilities", projectPartner.getResponsabilities());
 
       int result = projecPartnerDAO.saveProjectPartner(projectPartnerData);
@@ -131,6 +133,6 @@ public class ProjectPartnerManagerImpl implements ProjectPartnerManager {
       }
     }
     return allSaved;
-  }  
+  }
 
 }

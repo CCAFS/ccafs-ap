@@ -13,16 +13,6 @@
  *****************************************************************/
 package org.cgiar.ccafs.ap.data.manager.impl;
 
-import java.text.DateFormat;
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-
-import com.google.inject.Inject;
 import org.cgiar.ccafs.ap.config.APConstants;
 import org.cgiar.ccafs.ap.data.dao.ProjectDAO;
 import org.cgiar.ccafs.ap.data.manager.BudgetManager;
@@ -36,6 +26,17 @@ import org.cgiar.ccafs.ap.data.model.IPIndicator;
 import org.cgiar.ccafs.ap.data.model.IPProgram;
 import org.cgiar.ccafs.ap.data.model.Project;
 import org.cgiar.ccafs.ap.data.model.User;
+
+import java.text.DateFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
+import com.google.inject.Inject;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -46,16 +47,16 @@ import org.slf4j.LoggerFactory;
  */
 public class ProjectManagerImpl implements ProjectManager {
 
+  // LOG
+  private static Logger LOG = LoggerFactory.getLogger(ProjectManagerImpl.class);
+
   // DAOs
   private ProjectDAO projectDAO;
-
   // Managers
   private UserManager userManager;
   private InstitutionManager institutionManager;
   private IPProgramManager ipProgramManager;
   private BudgetManager budgetManager;
-  // LOG
-  private static Logger LOG = LoggerFactory.getLogger(ProjectManagerImpl.class);
 
 
   @Inject
@@ -155,8 +156,8 @@ public class ProjectManagerImpl implements ProjectManager {
       projectLeader.setLastName(pData.get("contact_last_name"));
       projectLeader.setEmail(pData.get("contact_email"));
       // Getting Project leader institution and saving it in currentInstitution.
-      projectLeader.setCurrentInstitution(institutionManager.getInstitution(Integer.parseInt(pData
-        .get("institution_id"))));
+      projectLeader
+      .setCurrentInstitution(institutionManager.getInstitution(Integer.parseInt(pData.get("institution_id"))));
 
       return projectLeader;
     }
@@ -201,8 +202,8 @@ public class ProjectManagerImpl implements ProjectManager {
       project.setCreated(Long.parseLong(projectData.get("created")));
       // Getting the Program creator
       if (projectData.get("liaison_institution_id") != null) {
-        project.setProgramCreator(ipProgramManager.getIPProgramById(Integer.parseInt(projectData
-          .get("liaison_institution_id"))));
+        project.setProgramCreator(
+          ipProgramManager.getIPProgramById(Integer.parseInt(projectData.get("liaison_institution_id"))));
       }
 
       return project;
@@ -312,8 +313,8 @@ public class ProjectManagerImpl implements ProjectManager {
       projectLeader.setEmail(pData.get("email"));
       // projectLeader.setEmployeeId(Integer.parseInt(pData.get("employee_id"))); Not used anymore
       // Getting Project leader institution and saving it in currentInstitution.
-      projectLeader.setCurrentInstitution(institutionManager.getInstitution(Integer.parseInt(pData
-        .get("institution_id"))));
+      projectLeader
+      .setCurrentInstitution(institutionManager.getInstitution(Integer.parseInt(pData.get("institution_id"))));
 
       return projectLeader;
     }
@@ -370,16 +371,16 @@ public class ProjectManagerImpl implements ProjectManager {
       }
       // Setting program creator.
       if (elementData.get("liaison_institution_id") != null) {
-        project.setProgramCreator(ipProgramManager.getIPProgramById(Integer.parseInt(elementData
-          .get("liaison_institution_id"))));
+        project.setProgramCreator(
+          ipProgramManager.getIPProgramById(Integer.parseInt(elementData.get("liaison_institution_id"))));
       }
       // Setting creation date.
       project.setCreated(Long.parseLong(elementData.get("created")));
       // Getting Project Focuses - IPPrograms
-      project.setRegions(ipProgramManager.getProjectFocuses(Integer.parseInt(elementData.get("id")),
-        APConstants.REGION_PROGRAM_TYPE));
-      project.setFlagships(ipProgramManager.getProjectFocuses(Integer.parseInt(elementData.get("id")),
-        APConstants.FLAGSHIP_PROGRAM_TYPE));
+      project.setRegions(
+        ipProgramManager.getProjectFocuses(Integer.parseInt(elementData.get("id")), APConstants.REGION_PROGRAM_TYPE));
+      project.setFlagships(
+        ipProgramManager.getProjectFocuses(Integer.parseInt(elementData.get("id")), APConstants.FLAGSHIP_PROGRAM_TYPE));
       // Getting Budget.
       project.setBudgets(budgetManager.getCCAFSBudgets(Integer.parseInt(elementData.get("id"))));
 
@@ -414,8 +415,8 @@ public class ProjectManagerImpl implements ProjectManager {
             LOG.error("There was an error formatting the dates", e);
           }
         }
-        project.setProgramCreator(ipProgramManager.getIPProgramById(Integer.parseInt(elementData
-          .get("liaison_institution_id"))));
+        project.setProgramCreator(
+          ipProgramManager.getIPProgramById(Integer.parseInt(elementData.get("liaison_institution_id"))));
 
         project.setOwner(userManager.getUser(Integer.parseInt(elementData.get("project_owner_user_id"))));
         project.getOwner().setCurrentInstitution(

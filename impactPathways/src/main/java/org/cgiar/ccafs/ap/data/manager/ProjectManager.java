@@ -81,6 +81,7 @@ public interface ProjectManager {
    * @deprecated This method is deprecated as we do not have expected Project Leaders any more. Instead, all the PLs
    *             will be created in the users table but some of them will be active or not.
    */
+  @Deprecated
   public User getExpectedProjectLeader(int projectId);
 
   /**
@@ -138,7 +139,10 @@ public interface ProjectManager {
    * 
    * @param projectId is the project id.
    * @return a User object who represents a Project Leader. Or NULL if no user was found.
+   * @deprecated Deprecated as of P&R v2.1, replaced by ProjectPartnerManager.getProjectPartners(int projectId, String
+   *             projectPartnerType).
    */
+  @Deprecated
   public User getProjectLeader(int projectId);
 
   /**
