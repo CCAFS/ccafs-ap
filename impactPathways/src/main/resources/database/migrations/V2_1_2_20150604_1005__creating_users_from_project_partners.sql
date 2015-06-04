@@ -4,7 +4,7 @@ UPDATE `project_partners` SET `contact_name`='Julie Ojango', `contact_email`='J.
 
 -- Creating inactive users
 INSERT INTO users(first_name, email, password, is_ccafs_user, created_by, is_active)
-SELECT pp.contact_name, pp.contact_email, " ", 0, 1, 0 FROM project_partners pp WHERE pp.user_id IS NULL AND pp.contact_email != ""
+SELECT pp.contact_name, pp.contact_email, " ", 0, 1, 0 FROM project_partners pp WHERE pp.user_id IS NULL AND pp.contact_email != "";
 
 -- Fixing first names and last names
 UPDATE `users` SET `first_name`='V Padmma', `last_name`='Kumar' WHERE `email`='v.padmakumar@cgiar.org';
@@ -42,10 +42,10 @@ INSERT INTO user_roles(user_id, role_id) SELECT u.id, 8 FROM users u WHERE email
 UPDATE project_partners pp
 INNER JOIN users u ON u.email = pp.contact_email
 SET pp.user_id = u.id
-WHERE pp.user_id IS NULL AND pp.contact_email != ""
+WHERE pp.user_id IS NULL AND pp.contact_email != "";
 
 -- Adding deatilas for Sandra Russo
-UPDATE `ccafs_pr`.`project_partners` SET `contact_email`='srusso@ufic.ufl.edu' WHERE `id`='494';
+UPDATE `project_partners` SET `contact_email`='srusso@ufic.ufl.edu' WHERE `id`='494';
 INSERT INTO `users` (`first_name`, `last_name`, `email`, `password`, `is_ccafs_user`, `created_by`, `is_active`) 
 VALUES ('Sandra', 'Russo', 'srusso@ufic.ufl.edu', ' ', '0', '1', '0');
 INSERT INTO `user_roles` (`user_id`, `role_id`) SELECT u.id, 8 FROM users u WHERE u.email = 'srusso@ufic.ufl.edu';
