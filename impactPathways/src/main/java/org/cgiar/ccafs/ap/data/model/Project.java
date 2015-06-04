@@ -307,7 +307,7 @@ public class Project {
     return owner;
   }
 
-  public List<ProjectPartner> getPpaPartners() {
+  public List<ProjectPartner> getPPAPartners() {
     return ppaPartners;
   }
 
@@ -424,7 +424,7 @@ public class Project {
     this.owner = owner;
   }
 
-  public void setPpaPartners(List<ProjectPartner> ppaPartners) {
+  public void setPPAPartners(List<ProjectPartner> ppaPartners) {
     this.ppaPartners = ppaPartners;
   }
 
