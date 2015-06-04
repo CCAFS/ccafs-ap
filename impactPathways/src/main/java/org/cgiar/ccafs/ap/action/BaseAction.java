@@ -62,18 +62,18 @@ public class BaseAction extends ActionSupport implements Preparable, SessionAwar
 
   // User actions
   private boolean isEditable; // If user is able to edit the form.
+  private boolean canEdit; // If user is able to edit the form.
   private boolean saveable; // If user is able to see the save, cancel, delete buttons
   private boolean fullEditable; // If user is able to edit all the form.
 
   // Loggin
   private static final Logger LOG = LoggerFactory.getLogger(BaseAction.class);
-
   private Map<String, Object> session;
+
   private HttpServletRequest request;
 
   // Config
   protected APConfig config;
-
   @Inject
   protected SecurityContext securityContext;
 
@@ -102,7 +102,6 @@ public class BaseAction extends ActionSupport implements Preparable, SessionAwar
     this.addActionMessage("--warn--" + message);
   }
 
-
   /* Override this method depending of the cancel action. */
   public String cancel() {
     return CANCEL;
@@ -112,6 +111,7 @@ public class BaseAction extends ActionSupport implements Preparable, SessionAwar
   public String delete() {
     return SUCCESS;
   }
+
 
   @Override
   public String execute() throws Exception {
@@ -177,6 +177,10 @@ public class BaseAction extends ActionSupport implements Preparable, SessionAwar
     return session;
   }
 
+  public boolean isCanEdit() {
+    return canEdit;
+  }
+
   public boolean isDataSaved() {
     return dataSaved;
   }
@@ -235,13 +239,17 @@ public class BaseAction extends ActionSupport implements Preparable, SessionAwar
     return SUCCESS;
   }
 
-
   public void setAdd(boolean add) {
     this.add = true;
   }
 
+
   public void setCancel(boolean cancel) {
     this.cancel = true;
+  }
+
+  public void setCanEdit(boolean canEdit) {
+    this.canEdit = canEdit;
   }
 
   public void setDataSaved(boolean dataSaved) {
