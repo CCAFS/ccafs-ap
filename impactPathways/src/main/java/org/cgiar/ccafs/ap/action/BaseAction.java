@@ -99,8 +99,9 @@ public class BaseAction extends ActionSupport implements Preparable, SessionAwar
    * @param message
    */
   public void addActionWarning(String message) {
-    addActionMessage("--warn--" + message);
+    this.addActionMessage("--warn--" + message);
   }
+
 
   /* Override this method depending of the cancel action. */
   public String cancel() {
@@ -115,15 +116,15 @@ public class BaseAction extends ActionSupport implements Preparable, SessionAwar
   @Override
   public String execute() throws Exception {
     if (save) {
-      return save();
+      return this.save();
     } else if (delete) {
-      return delete();
+      return this.delete();
     } else if (cancel) {
-      return cancel();
+      return this.cancel();
     } else if (next) {
-      return next();
+      return this.next();
     } else if (add) {
-      return add();
+      return this.add();
     }
     return INPUT;
   }

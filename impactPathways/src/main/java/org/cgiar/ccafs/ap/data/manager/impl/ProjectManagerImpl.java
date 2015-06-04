@@ -147,6 +147,22 @@ public class ProjectManagerImpl implements ProjectManager {
   }
 
   @Override
+  public List<Project> getCoreProjects() {
+    List<Project> projects = new ArrayList<>();
+    List<Map<String, String>> projectsData = projectDAO.getCoreProjects();
+
+    for (Map<String, String> projectData : projectsData) {
+      Project project = new Project();
+      project.setId(Integer.parseInt(projectData.get("id")));
+      project.setTitle(projectData.get("title"));
+
+      projects.add(project);
+    }
+
+    return projects;
+  }
+
+  @Override
   public User getExpectedProjectLeader(int projectId) {
     Map<String, String> pData = projectDAO.getExpectedProjectLeader(projectId);
     if (!pData.isEmpty()) {
@@ -156,8 +172,8 @@ public class ProjectManagerImpl implements ProjectManager {
       projectLeader.setLastName(pData.get("contact_last_name"));
       projectLeader.setEmail(pData.get("contact_email"));
       // Getting Project leader institution and saving it in currentInstitution.
-      projectLeader
-      .setCurrentInstitution(institutionManager.getInstitution(Integer.parseInt(pData.get("institution_id"))));
+      projectLeader.setCurrentInstitution(institutionManager.getInstitution(Integer.parseInt(pData
+        .get("institution_id"))));
 
       return projectLeader;
     }
@@ -202,8 +218,8 @@ public class ProjectManagerImpl implements ProjectManager {
       project.setCreated(Long.parseLong(projectData.get("created")));
       // Getting the Program creator
       if (projectData.get("liaison_institution_id") != null) {
-        project.setProgramCreator(
-          ipProgramManager.getIPProgramById(Integer.parseInt(projectData.get("liaison_institution_id"))));
+        project.setProgramCreator(ipProgramManager.getIPProgramById(Integer.parseInt(projectData
+          .get("liaison_institution_id"))));
       }
 
       return project;
@@ -313,8 +329,8 @@ public class ProjectManagerImpl implements ProjectManager {
       projectLeader.setEmail(pData.get("email"));
       // projectLeader.setEmployeeId(Integer.parseInt(pData.get("employee_id"))); Not used anymore
       // Getting Project leader institution and saving it in currentInstitution.
-      projectLeader
-      .setCurrentInstitution(institutionManager.getInstitution(Integer.parseInt(pData.get("institution_id"))));
+      projectLeader.setCurrentInstitution(institutionManager.getInstitution(Integer.parseInt(pData
+        .get("institution_id"))));
 
       return projectLeader;
     }
@@ -371,16 +387,16 @@ public class ProjectManagerImpl implements ProjectManager {
       }
       // Setting program creator.
       if (elementData.get("liaison_institution_id") != null) {
-        project.setProgramCreator(
-          ipProgramManager.getIPProgramById(Integer.parseInt(elementData.get("liaison_institution_id"))));
+        project.setProgramCreator(ipProgramManager.getIPProgramById(Integer.parseInt(elementData
+          .get("liaison_institution_id"))));
       }
       // Setting creation date.
       project.setCreated(Long.parseLong(elementData.get("created")));
       // Getting Project Focuses - IPPrograms
-      project.setRegions(
-        ipProgramManager.getProjectFocuses(Integer.parseInt(elementData.get("id")), APConstants.REGION_PROGRAM_TYPE));
-      project.setFlagships(
-        ipProgramManager.getProjectFocuses(Integer.parseInt(elementData.get("id")), APConstants.FLAGSHIP_PROGRAM_TYPE));
+      project.setRegions(ipProgramManager.getProjectFocuses(Integer.parseInt(elementData.get("id")),
+        APConstants.REGION_PROGRAM_TYPE));
+      project.setFlagships(ipProgramManager.getProjectFocuses(Integer.parseInt(elementData.get("id")),
+        APConstants.FLAGSHIP_PROGRAM_TYPE));
       // Getting Budget.
       project.setBudgets(budgetManager.getCCAFSBudgets(Integer.parseInt(elementData.get("id"))));
 
@@ -415,8 +431,8 @@ public class ProjectManagerImpl implements ProjectManager {
             LOG.error("There was an error formatting the dates", e);
           }
         }
-        project.setProgramCreator(
-          ipProgramManager.getIPProgramById(Integer.parseInt(elementData.get("liaison_institution_id"))));
+        project.setProgramCreator(ipProgramManager.getIPProgramById(Integer.parseInt(elementData
+          .get("liaison_institution_id"))));
 
         project.setOwner(userManager.getUser(Integer.parseInt(elementData.get("project_owner_user_id"))));
         project.getOwner().setCurrentInstitution(

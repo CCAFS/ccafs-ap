@@ -74,6 +74,13 @@ public interface ProjectManager {
   public List<Project> getAllProjectsBasicInfo();
 
   /**
+   * This method returns all the core projects.
+   * 
+   * @return a list of projects that only contains the id and title
+   */
+  public List<Project> getCoreProjects();
+
+  /**
    * This method finds the Expected Project Leader user from a specific Project.
    * 
    * @param projectId is the project id.
