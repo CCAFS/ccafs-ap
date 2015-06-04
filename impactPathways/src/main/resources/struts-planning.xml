@@ -6,7 +6,7 @@
     <default-interceptor-ref name="planningStackProjects" />
     <default-action-ref name="projects" />
     
-    <action name="projects" class="org.cgiar.ccafs.ap.action.planning.ProjectsListPlanningAction">
+    <action name="projectsList" class="org.cgiar.ccafs.ap.action.planning.ProjectsListPlanningAction">
       <result name="input">/WEB-INF/planning/projectsListPlanning.ftl</result>
       <result name="success" type="redirectAction">
         <param name="namespace">/planning/projects</param>
@@ -141,14 +141,14 @@
       </result>
     </action>
     
-    <action name="projectOutcomes" class="org.cgiar.ccafs.ap.action.planning.ProjectOutcomeAction">
+    <action name="outcomes" class="org.cgiar.ccafs.ap.action.planning.ProjectOutcomeAction">
       <result name="input">/WEB-INF/planning/projectOutcomesPlanning.ftl</result>		
       <result name="success" type="redirectAction">		
         <param name="actionName">projectOutcomes</param>		
         <param name="projectID">${project.id}</param>		
       </result>
       <result name="next" type="redirectAction">
-        <param name="actionName">projectIpOtherContributions</param>
+        <param name="actionName">ipOtherContributions</param>
         <param name="projectID">${project.id}</param>
       </result>
       <result name="cancel" type="redirectAction">
@@ -156,15 +156,11 @@
         <param name="namespace">/planning</param>
       </result>
     </action>
-    
-    <action name="projectOutputs" class="org.cgiar.ccafs.ap.action.planning.ProjectOutcomeAction">
-      <result name="input">/WEB-INF/planning/projectOutputsPlanning.ftl</result>   
-    </action>
 
-    <action name="impactPathway" class="org.cgiar.ccafs.ap.action.planning.ProjectImpactPathwayAction">
-      <result name="input">/WEB-INF/planning/projectImpactPathwayPlanning.ftl</result>   
+    <action name="ipOtherContributions" class="org.cgiar.ccafs.ap.action.planning.ProjectIPOtherContributionAction">
+      <result name="input">/WEB-INF/planning/projectIPOtherContributionPlanning.ftl</result>
       <result name="success" type="redirectAction">   
-        <param name="actionName">impactPathway</param>    
+        <param name="actionName">ipOtherContributions</param>   
         <param name="projectID">${project.id}</param>   
       </result>
       <result name="next" type="redirectAction">
@@ -176,11 +172,15 @@
         <param name="namespace">/planning</param>
       </result>
     </action>
+    
+    <action name="outputs" class="org.cgiar.ccafs.ap.action.planning.ProjectOutcomeAction">
+      <result name="input">/WEB-INF/planning/projectOutputsPlanning.ftl</result>   
+    </action>
 
-    <action name="projectIpOtherContributions" class="org.cgiar.ccafs.ap.action.planning.ProjectIPOtherContributionAction">
-      <result name="input">/WEB-INF/planning/projectIPOtherContributionPlanning.ftl</result>
+    <action name="impactPathway" class="org.cgiar.ccafs.ap.action.planning.ProjectImpactPathwayAction">
+      <result name="input">/WEB-INF/planning/projectImpactPathwayPlanning.ftl</result>   
       <result name="success" type="redirectAction">   
-        <param name="actionName">projectIpOtherContributions</param>   
+        <param name="actionName">impactPathway</param>    
         <param name="projectID">${project.id}</param>   
       </result>
       <result name="next" type="redirectAction">

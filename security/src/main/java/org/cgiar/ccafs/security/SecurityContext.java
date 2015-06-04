@@ -70,6 +70,13 @@ public class SecurityContext extends BaseSecurityContext {
     return hasPermission(Permission.PLANNING_PROJECT_FLAGSHIPS_UPDATE);
   }
 
+  public boolean canEditProjectPlanningSection(String sectionName, int projectID) {
+    String generalPermission = "planning:projects:" + sectionName + ":update";
+    String projectPermission = "project:" + projectID + ":" + sectionName + ":update";
+
+    return hasPermission(generalPermission) || hasPermission(projectPermission);
+  }
+
   /**
    * Verify if can edit the regions linked to the project in the planning section
    * 
@@ -105,7 +112,6 @@ public class SecurityContext extends BaseSecurityContext {
   public boolean canUploadProjectWorkplan() {
     return hasPermission(Permission.PLANNING_PROJECT_WORKPLAN_UPDATE);
   }
-
 
   /**
    * Verify if the user has the administrator role

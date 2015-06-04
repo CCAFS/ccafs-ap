@@ -6,9 +6,10 @@
 [#assign currentSection = "planning" /]
 
 [#assign breadCrumb = [
-  {"label":"planning", "nameSpace":"planning", "action":"projects"},
+  {"label":"planning", "nameSpace":"planning", "action":"projectsList"},
   {"label":"projects", "nameSpace":"planning", "action":""}
 ]/]
+
 
 [#include "/WEB-INF/global/pages/header.ftl" /]
 [#include "/WEB-INF/global/pages/main-menu.ftl" /]

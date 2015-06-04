@@ -7,7 +7,7 @@
 [#assign currentStage = "activityLocations" /]
 
 [#assign breadCrumb = [
-  {"label":"planning", "nameSpace":"planning", "action":"projects"},
+  {"label":"planning", "nameSpace":"planning", "action":"projectsList"},
   {"label":"project", "nameSpace":"planning/projects", "action":"description", "param":"projectID=${project.id}"},
   {"label":"activities", "nameSpace":"planning/projects", "action":"activities" ,"param":"projectID=${project.id}" },
   {"label":"activityLocations", "nameSpace":"planning/activities", "action":"activityLocations" }
