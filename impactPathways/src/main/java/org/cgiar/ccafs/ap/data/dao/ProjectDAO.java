@@ -24,6 +24,7 @@ import com.google.inject.ImplementedBy;
 /**
  * @author Javier Andrés Gallego
  * @author Héctor Fabio Tobón R.
+ * @author Hernán David Carvajal.
  */
 @ImplementedBy(MySQLProjectDAO.class)
 public interface ProjectDAO {
@@ -82,6 +83,13 @@ public interface ProjectDAO {
    * @return a list of maps with the information
    */
   public List<Map<String, String>> getAllProjectsBasicInfo();
+
+  /**
+   * This method return all the core projects.
+   * 
+   * @return a list of maps with the information.
+   */
+  public List<Map<String, String>> getCoreProjects();
 
   /**
    * This method returns the information of an expected project leader.
