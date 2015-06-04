@@ -108,7 +108,7 @@ $(document).ready(
           search_contains: true
         });
 
-        $("form select[name$='currentInstitution']").chosen({
+        $("form select[name$='institution']").chosen({
           search_contains: true
         });
 

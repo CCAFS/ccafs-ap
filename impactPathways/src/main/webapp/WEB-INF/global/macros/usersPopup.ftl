@@ -16,8 +16,8 @@
             <p class="userMessage">We have not been found users according to search field</p>
             <ul></ul>
           </div>
-      </div>   
-     </form>
+        </div>   
+      </form>
     [#-- User Template --]
     <ul style="display:none"> 
       <li id="userTemplate">

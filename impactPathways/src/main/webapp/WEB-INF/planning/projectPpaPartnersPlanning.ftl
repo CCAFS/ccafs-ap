@@ -46,13 +46,13 @@
     <div id="PartnersTabs" class="ui-tabs ui-widget ui-widget-content ui-corner-all"> 
       [#-- Project Partners Sub-menu --]
       [#include "/WEB-INF/planning/projectPartners-sub-menu.ftl" /]
+      
       <div id="partnerTables-partnerLead" class="partnerTable ui-tabs-panel ui-widget-content ui-corner-bottom clearfix"> 
           <h1 class="contentTitle">
             [@s.text name="preplanning.projectPartners.partners.title" /]  
-          </h1> 
+          </h1>
           [#-- Listing partners from partnersTemplate.ftl --]
-          [@partnersTemplate.partnerSection projectPartners=project.projectPartners partnerTypes=partnerTypes countries=countries responsabilities=true canEdit=fullEditable canRemove=saveable ppaPartners=true /]
-          
+          [@partnersTemplate.partnerSection projectPartners=project.PPAPartners ap_name='project.PPAPartner' partnerTypes=partnerTypes countries=countries ppaPartner=true responsabilities=true canEdit=fullEditable canRemove=saveable/]
           [#if saveable] 
             [#if fullEditable]
             <div id="addProjectPartner" class="addLink">
