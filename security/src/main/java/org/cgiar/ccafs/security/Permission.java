@@ -29,252 +29,291 @@ public class Permission {
   public static final String FULL_PRIVILEGES = "*";
 
   /*
-   * PLANNING SECTION
+   * --------------------------------------------------------------
+   * PERMISSIONS APPLIED TO ALL THE PLANNING SECTION
+   * --------------------------------------------------------------
    */
-
-  /**
-   * Can see all the planning contents
-   */
-  public static final String PLANNING_READ = "planning:read";
 
   /**
    * Can update all the planning contents
    */
   public static final String PLANNING_ALL = "planning:*";
 
-  /**
-   * Can read the projects list in the planning section
-   */
-  public static final String PLANNING_PROJECT_LIST_READ = "planning:projectList:read";
+  // ---------- Project list ---------------------------------
 
   /**
    * Can use all the functions in the planning projects list
    */
-  public static final String PLANNING_PROJECT_LIST_ALL = "planning:projectList:*";
+  public static final String PLANNING_PROJECT_LIST_ALL = "planning:projects:projectList:*";
 
   /**
-   * Can use the "add core project" button in the planning section
+   * Can use the "add core project" button in the planning projects list section
    */
-  public static final String PLANNING_CORE_PROJECT_BUTTON = "planning:projectList:coreProjectButton:*";
+  public static final String PLANNING_CORE_PROJECT_BUTTON = "planning:projects:projectList:coreProjectButton:*";
 
   /**
-   * Can use the "add bilateral project" button in the planning section
+   * Can use the "add bilateral project" button in the planning projects list section
    */
-  public static final String PLANNING_BILATERAL_PROJECT_BUTTON = "planning:projectList:bilateralProjectButton:*";
+  public static final String PLANNING_BILATERAL_PROJECT_BUTTON =
+    "planning:projects:projectList:bilateralProjectButton:*";
 
   /**
    * Can use the "Submit" button in the planning section
    */
-  public static final String PLANNING_SUBMIT_BUTTON = "planning:projectList:submitButton:*";
+  public static final String PLANNING_SUBMIT_BUTTON = "planning:projects:projectList:submitButton:*";
 
   /**
    * Can use the "Delete project" button in the planning section
    */
-  public static final String PLANNING_DELETE_PROJECT_BUTTON = "planning:projectList:deleteProjectButton:*";
+  public static final String PLANNING_DELETE_PROJECT_BUTTON = "planning:projects:projectList:deleteProjectButton:*";
+
+  // --------------------------- End of Project list ---------------------------------
+
+  // --------------------------- Project Description ---------------------------------
 
   /**
-   * Can read the planning project information section
+   * Can update the planning project information section
    */
-  public static final String PLANNING_PROJECT_INFO_READ = "planning:projectInfo:read";
+  public static final String PLANNING_PROJECT_INFO_ALL = "planning:projects:description:*";
 
   /**
-   * Can read the planning project information section
+   * Can update the planning project information section
    */
-  public static final String PLANNING_PROJECT_INFO_UPDATE = "planning:projectInfo:update";
-
-  /**
-   * Can read the planning project information section
-   */
-  public static final String PLANNING_PROJECT_INFO_ALL = "planning:projectInfo:*";
+  public static final String PLANNING_PROJECT_INFO_UPDATE = "planning:projects:description:update";
 
   /**
    * Can update the management liaison of a project in the planning section
    */
-  public static final String PLANNING_MANAGEMENT_LIAISON_UPDATE = "planning:projectInfo:managementLiaison:update";
+  public static final String PLANNING_MANAGEMENT_LIAISON_UPDATE = "planning:projects:description:managementLiaison:*";
 
   /**
    * Can update the start date of a project in the planning section
    */
-  public static final String PLANNING_PROJECT_START_DATE_UPDATE = "planning:projectInfo:startDate:update";
+  public static final String PLANNING_PROJECT_START_DATE_UPDATE = "planning:projects:description:startDate:*";
+
+  /**
+   * Can update the end date of a project in the planning section
+   */
+  public static final String PLANNING_PROJECT_END_DATE_UPDATE = "planning:projects:description::endDate:*";
 
   /**
    * Can upload a project work plan for a project in the planning section
    */
-  public static final String PLANNING_PROJECT_WORKPLAN_UPDATE = "planning:projectInfo:workplan:*";
+  public static final String PLANNING_PROJECT_WORKPLAN_UPDATE = "planning:projects:description:workplan:*";
 
   /**
    * Can upload a bilateral contract proposal for a project in the planning section
    */
-  public static final String PLANNING_PROJECT_BILATERAL_CONTRACT_UPDATE = "planning:projectInfo:bilateralContract:*";
+  public static final String PLANNING_PROJECT_BILATERAL_CONTRACT_UPDATE =
+    "planning:projects:description:bilateralContract:*";
 
   /**
    * Can update the flagships linked to a project in the planning section
    */
-  public static final String PLANNING_PROJECT_FLAGSHIPS_UPDATE = "planning:projectInfo:flagships:*";
+  public static final String PLANNING_PROJECT_FLAGSHIPS_UPDATE = "planning:projects:description:flagships:*";
 
   /**
    * Can update the end date of a project in the planning section
    */
-  public static final String PLANNING_PROJECT_REGIONS_UPDATE = "planning:projectInfo:regions:update";
+  public static final String PLANNING_PROJECT_REGIONS_UPDATE = "planning:projects:description:regions:*";
+
+  // --------------------------- End of project Description ---------------------------------
+
+  // --------------------------- Project Partners ---------------------------------
 
   /**
-   * Can update the end date of a project in the planning section
+   * Can update the planning project Lead partner section
    */
-  public static final String PLANNING_PROJECT_END_DATE_UPDATE = "planning:projectInfo:endDate:update";
+  public static final String PLANNING_PROJECT_LEAD_PARTNER_UPDATE = "planning:projects:partnerLead:update";
 
   /**
-   * Can read the planning project partners section
+   * Can update the planning project PPA partners section
    */
-  public static final String PLANNING_PROJECT_PARTNERS_READ = "planning:projectPartners:read";
+  public static final String PLANNING_PROJECT_PPA_PARTNER_UPDATE = "planning:projects:ppaPartners:update";
 
   /**
    * Can update the planning project partners section
    */
-  public static final String PLANNING_PROJECT_PARTNERS_UPDATE = "planning:projectPartners:update";
+  public static final String PLANNING_PROJECT_PARTNER_UPDATE = "planning:projects:partners:update";
 
-  /**
-   * Can read the planning project locations section
-   */
-  public static final String PLANNING_PROJECT_LOCATIONS_READ = "planning:projectLocations:read";
+  // --------------------------- End of Project Partners ---------------------------------
+
+  // --------------------------- Project Location ---------------------------------
 
   /**
    * Can update the planning project locations section
    */
-  public static final String PLANNING_PROJECT_LOCATIONS_UPDATE = "planning:projectLocations:update";
+  public static final String PLANNING_PROJECT_LOCATIONS_UPDATE = "planning:projects:locations:update";
 
-  /**
-   * Can read the planning project outcomes section
-   */
-  public static final String PLANNING_PROJECT_OUTCOMES_READ = "planning:projectOutcomes:read";
+  // --------------------------- End of project Location ---------------------------------
+
+  // --------------------------- Project outcomes ---------------------------------
 
   /**
    * Can update the planning project outcomes section
    */
-  public static final String PLANNING_PROJECT_OUTCOMES_UPDATE = "planning:projectOutcomes:update";
+  public static final String PLANNING_PROJECT_OUTCOMES_UPDATE = "planning:projects:outcomes:update";
 
   /**
-   * Can read the planning project outputs section
+   * Can update the planning project ip other contributions section
    */
-  public static final String PLANNING_PROJECT_OUTPUTS_READ = "planning:projectOutputs:read";
+  public static final String PLANNING_PROJECT_OTHER_CONTRIBUTIONS_UPDATE =
+    "planning:projects:ipOtherContributions:update";
+
+  // --------------------------- End of Project outcomes ---------------------------------
+
+  // --------------------------- Project outputs ---------------------------------
 
   /**
    * Can update the planning project outputs section
    */
-  public static final String PLANNING_PROJECT_OUTPUTS_UPDATE = "planning:projectOutputs:update";
+  public static final String PLANNING_PROJECT_OUTPUTS_UPDATE = "planning:projects:outputs:update";
 
-  /**
-   * Can read the planning project activities list section
-   */
-  public static final String PLANNING_PROJECT_ACTIVITIES_LIST_READ = "planning:projectActivitiesList:read";
+  // --------------------------- End of Project outputs ---------------------------------
+
+  // --------------------------- Project activities list---------------------------------
 
   /**
    * Can update the planning project activities list section
    */
-  public static final String PLANNING_PROJECT_ACTIVITIES_LIST_UPDATE = "planning:projectActivitiesList:update";
+  public static final String PLANNING_PROJECT_ACTIVITIES_LIST_UPDATE = "planning:projects:activities:update";
 
-  /**
-   * Can read the planning project activities section
-   */
-  public static final String PLANNING_PROJECT_ACTIVITIES_READ = "planning:projectActivities:read";
+  // --------------------------- End of Project activities list---------------------------------
 
-  /**
-   * Can update the planning project activities section
-   */
-  public static final String PLANNING_PROJECT_ACTIVITIES_UPDATE = "planning:projectActivities:update";
+  // TODO - HC create permission to the new section of activity
 
-  /**
-   * Can read the planning project budget section
-   */
-  public static final String PLANNING_PROJECT_BUDGET_READ = "planning:projectBudget:read";
+  // --------------------------- Project Budget ---------------------------------
 
   /**
    * Can update the planning project budget section
    */
-  public static final String PLANNING_PROJECT_BUDGET_UPDATE = "planning:projectBudget:update";
+  public static final String PLANNING_PROJECT_BUDGET_UPDATE = "planning:projects:budget:update";
+
+  // --------------------------- End of project Budget ---------------------------------
 
 
   /*
-   * PLANNING SECTION - Project specific permissions
+   * PROJECTS PLANNING - The following permissions are applied specific to projects
    */
 
-  /**
-   * Can read the project information section
-   */
-  public static final String PROJECT_INFO_READ = "project:projectInfo:read";
+  // --------------------------- Project Description ---------------------------------
 
   /**
-   * Can update the project information section
+   * Can change all the project description information of some specific project
    */
-  public static final String PROJECT_INFO_UPDATE = "project:projectInfo:update";
+  public static final String PROJECT_INFO_ALL = "project:description:*";
 
   /**
-   * Can read the project partners section
+   * Can update the project description information of some specific project
    */
-  public static final String PROJECT_PARTNERS_READ = "project:projectPartners:read";
+  public static final String PROJECT_INFO_UPDATE = "project:description:update";
 
   /**
-   * Can update the project partners section
+   * Can update the management liaison of some specific project
    */
-  public static final String PROJECT_PARTNERS_UPDATE = "project:projectPartners:update";
+  public static final String MANAGEMENT_LIAISON_UPDATE = "project:description:managementLiaison:*";
 
   /**
-   * Can read the project locations section
+   * Can update the start date of some specific project
    */
-  public static final String PROJECT_LOCATIONS_READ = "project:projectLocations:read";
+  public static final String PROJECT_START_DATE_UPDATE = "project:description:startDate:*";
 
   /**
-   * Can update the project locations section
+   * Can update the end date of some specific project
    */
-  public static final String PROJECT_LOCATIONS_UPDATE = "project:projectLocations:update";
+  public static final String PROJECT_END_DATE_UPDATE = "project:description::endDate:*";
 
   /**
-   * Can read the project outcomes section
+   * Can upload a project work plan of some specific project
    */
-  public static final String PROJECT_OUTCOMES_READ = "project:projectOutcomes:read";
+  public static final String PROJECT_WORKPLAN_UPDATE = "project:description:workplan:*";
 
   /**
-   * Can update the project outcomes section
+   * Can upload a bilateral contract proposal of some specific project
    */
-  public static final String PROJECT_OUTCOMES_UPDATE = "project:projectOutcomes:update";
+  public static final String PROJECT_BILATERAL_CONTRACT_UPDATE = "project:description:bilateralContract:*";
 
   /**
-   * Can read the planning project outputs section
+   * Can update the flagships linked to a some specific project
    */
-  public static final String PROJECT_OUTPUTS_READ = "project:projectOutputs:read";
+  public static final String PROJECT_FLAGSHIPS_UPDATE = "project:description:flagships:*";
 
   /**
-   * Can update the planning project outputs section
+   * Can update the end date of some specific project
    */
-  public static final String PROJECT_OUTPUTS_UPDATE = "project:projectOutputs:update";
+  public static final String PROJECT_REGIONS_UPDATE = "project:description:regions:*";
+
+  // --------------------------- End of project Description ---------------------------------
+
+  // --------------------------- Project Partners ---------------------------------
 
   /**
-   * Can read the planning project activities list section
+   * Can update the Lead partner section of some specific project
    */
-  public static final String PROJECT_ACTIVITIES_LIST_READ = "project:projectActivitiesList:read";
+  public static final String PROJECT_LEAD_PARTNER_UPDATE = "project:partnerLead:update";
 
   /**
-   * Can update the planning project activities list section
+   * Can update the project PPA partners section of some specific project
    */
-  public static final String PROJECT_ACTIVITIES_LIST_UPDATE = "project:projectActivitiesList:update";
+  public static final String PROJECT_PPA_PARTNER_UPDATE = "project:ppaPartners:update";
 
   /**
-   * Can read the planning project activities section
+   * Can update the project partners section of some specific project
    */
-  public static final String PROJECT_ACTIVITIES_READ = "project:projectActivities:read";
+  public static final String PROJECT_PARTNER_UPDATE = "project:partners:update";
+
+  // --------------------------- End of Project Partners ---------------------------------
+
+  // --------------------------- Project Location ---------------------------------
 
   /**
-   * Can update the planning project activities section
+   * Can update the project locations section of some specific project
    */
-  public static final String PROJECT_ACTIVITIES_UPDATE = "project:projectActivities:update";
+  public static final String PROJECT_LOCATIONS_UPDATE = "project:locations:update";
+
+  // --------------------------- End of project Location ---------------------------------
+
+  // --------------------------- Project outcomes ---------------------------------
 
   /**
-   * Can read the planning project budget section
+   * Can update the project outcomes section of some specific project
    */
-  public static final String PROJECT_BUDGET_READ = "project:projectBudget:read";
+  public static final String PROJECT_OUTCOMES_UPDATE = "project:outcomes:update";
 
   /**
-   * Can update the planning project budget section
+   * Can update the project ip other contributions section of some specific project
    */
-  public static final String PROJECT_BUDGET_UPDATE = "project:projectBudget:update";
+  public static final String PROJECT_OTHER_CONTRIBUTIONS_UPDATE = "project:ipOtherContributions:update";
+
+  // --------------------------- End of Project outcomes ---------------------------------
+
+  // --------------------------- Project outputs ---------------------------------
+
+  /**
+   * Can update the project outputs section of some specific project
+   */
+  public static final String PROJECT_OUTPUTS_UPDATE = "project:outputs:update";
+
+  // --------------------------- End of Project outputs ---------------------------------
+
+  // --------------------------- Project activities list---------------------------------
+
+  /**
+   * Can update the project activities list section of some specific project
+   */
+  public static final String PROJECT_ACTIVITIES_LIST_UPDATE = "project:activities:update";
+
+  // --------------------------- End of Project activities list---------------------------------
+
+  // TODO - HC create permission to the new section of activity
+
+  // --------------------------- Project Budget ---------------------------------
+
+  /**
+   * Can update the project budget section of some specific project
+   */
+  public static final String PROJECT_BUDGET_UPDATE = "project:budget:update";
+
+  // --------------------------- End of project Budget ---------------------------------
 
 }
