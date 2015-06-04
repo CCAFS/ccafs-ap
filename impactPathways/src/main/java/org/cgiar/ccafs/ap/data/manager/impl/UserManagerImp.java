@@ -196,7 +196,11 @@ public class UserManagerImp implements UserManager {
       user.setEmail(userData.get("email"));
       user.setPhone(userData.get("phone"));
       try {
-        user.setLastLogin(dateFormat.parse(userData.get("last_login")));
+        if (userData.get("last_login") != null) {
+          user.setLastLogin(dateFormat.parse(userData.get("last_login")));
+        } else {
+          user.setLastLogin(null);
+        }
       } catch (ParseException e) {
         String msg = "There was an error parsing the last login date of user " + user.getId() + ".";
         LOG.error(msg, e);
