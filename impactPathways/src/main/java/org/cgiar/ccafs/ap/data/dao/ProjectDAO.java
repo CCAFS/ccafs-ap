@@ -85,11 +85,12 @@ public interface ProjectDAO {
   public List<Map<String, String>> getAllProjectsBasicInfo();
 
   /**
-   * This method return all the core projects.
+   * This method returns the core projects that contributes with the flagship and the regions received by parameter.
+   * If the parameters are '-1' they are not used to filter the list.
    * 
    * @return a list of maps with the information.
    */
-  public List<Map<String, String>> getCoreProjects();
+  public List<Map<String, String>> getCoreProjects(int flagshipID, int regionID);
 
   /**
    * This method returns the information of an expected project leader.
