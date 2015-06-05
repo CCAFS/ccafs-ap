@@ -38,7 +38,7 @@
     <div id="projectDescription" class="borderBox">
       [#-- Button for edit this section --] 
       [#if !editable]
-        <div class="editButton"><a href="[@s.url includeParams='get'][@s.param name="editable"]true[/@s.param][/@s.url]">[@s.text name="form.buttons.edit" /]</a></div>
+        <div class="editButton"><a href="[@s.url includeParams='get'][@s.param name="edit"]true[/@s.param][/@s.url]">[@s.text name="form.buttons.edit" /]</a></div>
       [/#if]
       <h1 class="contentTitle"> ${project.composedId} - [@s.text name="planning.projectDescription.title" /] </h1>  
       <fieldset class="fullBlock">
@@ -48,7 +48,7 @@
           [#-- Project Program Creator --]
           <div class="halfPartBlock">
             <h6>[@s.text name="planning.projectDescription.programCreator" /]</h6>
-            <p>${project.programCreator.acronym}</p>
+            <p>${project.liaisonInstitution.acronym}</p>
           </div>
           [#--  Project Owner Contact Person --]
           <div class="halfPartBlock">
@@ -149,6 +149,6 @@
   [#-- Hidden values used by js --]
   <input id="minDateValue" value="${startYear?c}-01-01" type="hidden"/>
   <input id="maxDateValue" value="${endYear?c}-12-31" type="hidden"/> 
-  <input id="programID" value="${project.programCreator.id?c}" type="hidden"/>
+  <input id="programID" value="${project.liaisonInstitution.id?c}" type="hidden"/>
 </section>
 [#include "/WEB-INF/global/pages/footer.ftl"]

@@ -42,7 +42,7 @@ public class Project {
   private ProjectPartner leader; // Project Leader.
   private ProjectPartner coordinator; // Project Coordinator.
   private String leaderResponsabilities;
-  private IPProgram programCreator; // Creator program. e.g. LAM, FP4, CU, etc.
+  private LiaisonInstitution liaisonInstitution; // Creator program. e.g. LAM, FP4, CU, etc.
   private User owner;
   private List<ProjectPartner> projectPartners; // Project partners or 2-level partners.
   private List<ProjectPartner> ppaPartners; // PPA Partners or CCAFS Program Partners.
@@ -295,6 +295,10 @@ public class Project {
     return leaderResponsabilities;
   }
 
+  public LiaisonInstitution getLiaisonInstitution() {
+    return liaisonInstitution;
+  }
+
   public Map<String, ProjectOutcome> getOutcomes() {
     return outcomes;
   }
@@ -309,10 +313,6 @@ public class Project {
 
   public List<ProjectPartner> getPPAPartners() {
     return ppaPartners;
-  }
-
-  public IPProgram getProgramCreator() {
-    return programCreator;
   }
 
   public List<ProjectPartner> getProjectPartners() {
@@ -412,6 +412,10 @@ public class Project {
     this.leaderResponsabilities = leaderResponsabilities;
   }
 
+  public void setLiaisonInstitution(LiaisonInstitution liaisonInstitution) {
+    this.liaisonInstitution = liaisonInstitution;
+  }
+
   public void setOutcomes(Map<String, ProjectOutcome> outcomes) {
     this.outcomes = outcomes;
   }
@@ -426,10 +430,6 @@ public class Project {
 
   public void setPPAPartners(List<ProjectPartner> ppaPartners) {
     this.ppaPartners = ppaPartners;
-  }
-
-  public void setProgramCreator(IPProgram creator) {
-    this.programCreator = creator;
   }
 
   public void setProjectPartners(List<ProjectPartner> projectPartners) {
