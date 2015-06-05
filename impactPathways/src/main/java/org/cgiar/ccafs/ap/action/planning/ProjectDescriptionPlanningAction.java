@@ -22,6 +22,7 @@ import org.cgiar.ccafs.ap.data.manager.UserManager;
 import org.cgiar.ccafs.ap.data.model.IPProgram;
 import org.cgiar.ccafs.ap.data.model.Project;
 import org.cgiar.ccafs.ap.data.model.User;
+import org.cgiar.ccafs.ap.validation.planning.ProjectDescriptionValidator;
 import org.cgiar.ccafs.utils.APConfig;
 
 import java.util.Iterator;
@@ -49,7 +50,7 @@ public class ProjectDescriptionPlanningAction extends BaseAction {
   // Model for the front-end
   private List<IPProgram> ipProgramRegions;
   private List<IPProgram> ipProgramFlagships;
-// private List<IPCrossCutting> ipCrossCuttings;
+  // private List<IPCrossCutting> ipCrossCuttings;
   private List<User> allOwners;
 
   // Model for the back-end
@@ -57,15 +58,18 @@ public class ProjectDescriptionPlanningAction extends BaseAction {
   private Project project;
   private int projectID;
 
+  private ProjectDescriptionValidator validator;
 
   @Inject
   public ProjectDescriptionPlanningAction(APConfig config, ProjectManager projectManager,
-    IPProgramManager ipProgramManager, UserManager userManager, BudgetManager budgetManager) {
+    IPProgramManager ipProgramManager, UserManager userManager, BudgetManager budgetManager,
+    ProjectDescriptionValidator validator) {
     super(config);
     this.projectManager = projectManager;
     this.ipProgramManager = ipProgramManager;
     this.userManager = userManager;
     this.budgetManager = budgetManager;
+    this.validator = validator;
   }
 
   public List<User> getAllOwners() {
@@ -153,7 +157,7 @@ public class ProjectDescriptionPlanningAction extends BaseAction {
 
   @Override
   public String next() {
-    String result = save();
+    String result = this.save();
     if (result.equals(BaseAction.SUCCESS)) {
       return BaseAction.NEXT;
     } else {
@@ -225,7 +229,7 @@ public class ProjectDescriptionPlanningAction extends BaseAction {
         result = projectManager.saveProjectDescription(project);
 
         if (result < 0) {
-          addActionError(getText("saving.problem"));
+          this.addActionError(this.getText("saving.problem"));
           return BaseAction.INPUT;
         }
 
@@ -245,10 +249,10 @@ public class ProjectDescriptionPlanningAction extends BaseAction {
         // }
 
         if (project.getRegions().isEmpty()) {
-          addActionWarning(getText("preplanning.projectDescription.noRegions"));
+          this.addActionWarning(this.getText("preplanning.projectDescription.noRegions"));
         }
         if (project.getFlagships().isEmpty()) {
-          addActionWarning(getText("preplanning.projectDescription.noFlagships"));
+          this.addActionWarning(this.getText("preplanning.projectDescription.noFlagships"));
         }
 
         // Identifying regions that were unchecked in the front-end
@@ -280,7 +284,7 @@ public class ProjectDescriptionPlanningAction extends BaseAction {
           }
           // Stop here if a something bad happened.
           if (!success) {
-            addActionError(getText("saving.problem"));
+            this.addActionError(this.getText("saving.problem"));
             return BaseAction.INPUT;
           }
         }
@@ -314,7 +318,7 @@ public class ProjectDescriptionPlanningAction extends BaseAction {
           }
           // Stop here if a something bad happened.
           if (!success) {
-            addActionError(getText("saving.problem"));
+            this.addActionError(this.getText("saving.problem"));
             return BaseAction.INPUT;
           }
         }
@@ -329,17 +333,18 @@ public class ProjectDescriptionPlanningAction extends BaseAction {
         previousProject.setSummary(project.getSummary()); // setting the possible new summary.
         result = projectManager.saveProjectDescription(previousProject);
         if (result < 0) {
-          addActionError(getText("saving.problem"));
+          this.addActionError(this.getText("saving.problem"));
           return BaseAction.INPUT;
         }
       }
 
       // If there are some warnings, show a different message: Saving with problems
-      if (getActionMessages().size() > 0) {
-        addActionMessage(getText("saving.saved.problem"));
+      if (this.getActionMessages().size() > 0) {
+        this.addActionMessage(this.getText("saving.saved.problem"));
         return BaseAction.INPUT;
       } else {
-        addActionMessage(getText("saving.success", new String[] {getText("preplanning.projectDescription.title")}));
+        this.addActionMessage(this.getText("saving.success",
+          new String[] {this.getText("preplanning.projectDescription.title")}));
         return BaseAction.SUCCESS;
       }
     } else {
@@ -364,5 +369,12 @@ public class ProjectDescriptionPlanningAction extends BaseAction {
 
   public void setProjectID(int projectID) {
     this.projectID = projectID;
+  }
+
+  @Override
+  public void validate() {
+    if (this.isHttpPost()) {
+      validator.validate(this, project);
+    }
   }
 }

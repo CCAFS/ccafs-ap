@@ -15,6 +15,7 @@
 package org.cgiar.ccafs.ap.action.json.planning;
 
 import org.cgiar.ccafs.ap.action.BaseAction;
+import org.cgiar.ccafs.ap.config.APConstants;
 import org.cgiar.ccafs.ap.data.manager.ProjectManager;
 import org.cgiar.ccafs.ap.data.model.Project;
 import org.cgiar.ccafs.utils.APConfig;
@@ -22,6 +23,7 @@ import org.cgiar.ccafs.utils.APConfig;
 import java.util.List;
 
 import com.google.inject.Inject;
+import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -37,6 +39,7 @@ public class CoreProjectsAction extends BaseAction {
 
   private ProjectManager projectManager;
   private List<Project> projects;
+  private int flagshipID, regionID;
 
   @Inject
   public CoreProjectsAction(APConfig config, ProjectManager projectManager) {
@@ -46,8 +49,8 @@ public class CoreProjectsAction extends BaseAction {
 
   @Override
   public String execute() {
-    projects = projectManager.getCoreProjects();
-
+    projects = projectManager.getCoreProjects(flagshipID, regionID);
+    LOG.info("They were loaded {} core projects", projects.size());
     return SUCCESS;
   }
 
@@ -57,6 +60,25 @@ public class CoreProjectsAction extends BaseAction {
 
   @Override
   public void prepare() throws Exception {
+
+    // Verify if there is a programID parameter
+    String stringFlagshipID = StringUtils.trim(this.getRequest().getParameter(APConstants.PROGRAM_REQUEST_ID));
+    try {
+      flagshipID = (stringFlagshipID != null) ? Integer.parseInt(stringFlagshipID) : -1;
+    } catch (NumberFormatException e) {
+      LOG.warn("There was an exception trying to convert to int the parameter {}", stringFlagshipID);
+      flagshipID = -1;
+    }
+
+    // Verify if there is a regionID parameter
+    String stringRegionID = StringUtils.trim(this.getRequest().getParameter(APConstants.REGION_REQUEST_ID));
+    try {
+      regionID = (stringRegionID != null) ? Integer.parseInt(stringRegionID) : -1;
+    } catch (NumberFormatException e) {
+      LOG.warn("There was an exception trying to convert to int the parameter {}", stringRegionID);
+      regionID = -1;
+    }
+
 
   }
 }

@@ -147,9 +147,9 @@ public class ProjectManagerImpl implements ProjectManager {
   }
 
   @Override
-  public List<Project> getCoreProjects() {
+  public List<Project> getCoreProjects(int flagshipID, int regionID) {
     List<Project> projects = new ArrayList<>();
-    List<Map<String, String>> projectsData = projectDAO.getCoreProjects();
+    List<Map<String, String>> projectsData = projectDAO.getCoreProjects(flagshipID, regionID);
 
     for (Map<String, String> projectData : projectsData) {
       Project project = new Project();

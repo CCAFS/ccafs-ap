@@ -34,6 +34,7 @@ import org.slf4j.LoggerFactory;
 /**
  * @author Héctor Fabio Tobón R.
  * @author Javier Andrés Gallego.
+ * @author Hernán David Carvajal B.
  */
 public class MySQLProjectDAO implements ProjectDAO {
 
@@ -188,7 +189,7 @@ public class MySQLProjectDAO implements ProjectDAO {
 
 
   @Override
-  public List<Map<String, String>> getCoreProjects() {
+  public List<Map<String, String>> getCoreProjects(int flagshipID, int regionID) {
     LOG.debug(">> getAllProjects )");
     List<Map<String, String>> coreProjects = new ArrayList<>();
 
@@ -197,7 +198,19 @@ public class MySQLProjectDAO implements ProjectDAO {
     query.append("FROM projects as p ");
     query.append("WHERE p.type = '");
     query.append(APConstants.PROJECT_CORE);
-    query.append("';");
+    query.append("' ");
+
+    if (flagshipID != -1) {
+      query.append(" AND p.id IN (SELECT project_id FROM project_focuses WHERE program_id = ");
+      query.append(flagshipID);
+      query.append(") ");
+    }
+
+    if (regionID != -1) {
+      query.append(" AND p.id IN (SELECT project_id FROM project_focuses WHERE program_id = ");
+      query.append(regionID);
+      query.append(") ");
+    }
 
     try (Connection con = databaseManager.getConnection()) {
       ResultSet rs = databaseManager.makeQuery(query.toString(), con);

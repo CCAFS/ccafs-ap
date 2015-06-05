@@ -74,11 +74,12 @@ public interface ProjectManager {
   public List<Project> getAllProjectsBasicInfo();
 
   /**
-   * This method returns all the core projects.
+   * This method returns the core projects that contributes with the flagship and the regions received by parameter.
+   * If the parameters are '-1' they are not used to filter the list.
    * 
-   * @return a list of projects that only contains the id and title
+   * @return a list of projects that only contains the id and title.
    */
-  public List<Project> getCoreProjects();
+  public List<Project> getCoreProjects(int flagshipID, int regionID);
 
   /**
    * This method finds the Expected Project Leader user from a specific Project.

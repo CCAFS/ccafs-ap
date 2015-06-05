@@ -193,6 +193,13 @@ public class BaseAction extends ActionSupport implements Preparable, SessionAwar
     return fullEditable;
   }
 
+  protected boolean isHttpPost() {
+    if (this.getRequest().getMethod().equalsIgnoreCase("post")) {
+      return true;
+    }
+    return false;
+  }
+
   /**
    * Validate if the user is already logged in or not.
    * 
@@ -239,10 +246,10 @@ public class BaseAction extends ActionSupport implements Preparable, SessionAwar
     return SUCCESS;
   }
 
+
   public void setAdd(boolean add) {
     this.add = true;
   }
-
 
   public void setCancel(boolean cancel) {
     this.cancel = true;
