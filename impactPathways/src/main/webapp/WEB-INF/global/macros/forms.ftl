@@ -15,7 +15,13 @@
     [#if editable]
       <input type="${type}" id="${name}" name="${name}" value="[#if value=="-NULL"][@s.property value="${name?string}"/][#else]${value}[/#if]"  [#if className != "-NULL"] class="${className}" [/#if][#if readOnly] readonly="readonly"[/#if] [#if disabled]disabled="disabled"[/#if] />
     [#else]
-      <p>[#if value=="-NULL"][@s.property value="${name?string}"/][#else]${value}[/#if]</p>
+      <p>
+        [#if value=="-NULL"]
+          [@s.property value="${name?string}"/]
+        [#else]
+          ${value}
+        [/#if]
+      </p>
     [/#if]
   </div>
 [/#macro]
@@ -107,6 +113,7 @@
 
 [#macro select name listName label="" keyFieldName="" displayFieldName="" value="-NULL" i18nkey="" disabled=false required=false errorField="" selected=false className="" multiple=false help="" headerKey="" headerValue="" display=true showTitle=true addButton=false editable=true]
   <div class="select[#if addButton] button[/#if]" [#if !display]style="display: none;"[/#if]>
+    [#assign placeholderText][@s.text name="form.select.placeholder" /][/#assign]
     [#if showTitle]
       <h6>
         [#if i18nkey==""]${label}[#else][@s.text name="${i18nkey}" /][/#if][#if required]<span class="red">*</span>[/#if]
@@ -122,30 +129,25 @@
       [#else]
         [#assign customValue]${value}[/#assign]        
       [/#if]
-      [#if help!=""]
-        [#assign helpText][@s.text name="${help}" /][/#assign]
-      [#else]
-        [#assign helpText][/#assign]
-      [/#if]
+      [#-- Help text --]
+      [#if help!=""][#assign helpText][@s.text name="${help}" /][/#assign][#else][#assign helpText][/#assign][/#if]
       [#if editable] 
         [#if keyFieldName == ""]
           [#if multiple]
-            [@s.select name="${name}" list="${listName}" value="${customValue}" disabled="${disabled?string}" cssClass="${className}" multiple="true" tooltip="${helpText}"  /]
+            [@s.select name="${name}" list="${listName}" value="${customValue}" disabled="${disabled?string}" cssClass="${className}" multiple="true" tooltip="${helpText}" headerKey="-1" headerValue=placeholderText  /]
           [#else]
-            [@s.select name="${name}" list="${listName}" value="${customValue}" disabled="${disabled?string}" cssClass="${className}" tooltip="${helpText}"  /]
+            [@s.select name="${name}" list="${listName}" value="${customValue}" disabled="${disabled?string}" cssClass="${className}" tooltip="${helpText}" headerKey="-1" headerValue=headerValue=placeholderText  /]
           [/#if]
         [#else]
           [#if multiple]
-            [@s.select name="${name}" list="${listName}" listKey="${keyFieldName}" listValue="${displayFieldName}" value="${customValue}" disabled="${disabled?string}" cssClass="${className}" multiple="true" tooltip="${helpText}" /]
+            [@s.select name="${name}" list="${listName}" listKey="${keyFieldName}" listValue="${displayFieldName}" value="${customValue}" disabled="${disabled?string}" cssClass="${className}" multiple="true" tooltip="${helpText}" headerKey="-1" headerValue=placeholderText /]
           [#else]
-            [@s.select name="${name}" list="${listName}" listKey="${keyFieldName}" listValue="${displayFieldName}" value="${customValue}" disabled="${disabled?string}" cssClass="${className}" tooltip="${helpText}" /]
+            [@s.select name="${name}" list="${listName}" listKey="${keyFieldName}" listValue="${displayFieldName}" value="${customValue}" disabled="${disabled?string}" cssClass="${className}" tooltip="${helpText}" headerKey="-1" headerValue=placeholderText /]
           [/#if]
-        [/#if]
-      [#elseif keyFieldName == ""] 
-        Not data 
+        [/#if] 
       [#else] 
         [#assign nameValue = "${name}.${displayFieldName}" /]
-        ${nameValue?eval}
+        ${(nameValue?eval)}
       [/#if]  
     </div> 
   </div>  

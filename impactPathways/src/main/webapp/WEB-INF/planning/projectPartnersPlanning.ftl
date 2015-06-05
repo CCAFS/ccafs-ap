@@ -15,6 +15,7 @@
   {"label":"partners", "nameSpace":"planning/projects", "action":""}
 ]/]
 
+
 [#include "/WEB-INF/global/pages/header.ftl" /]
 [#include "/WEB-INF/global/pages/main-menu.ftl" /]
 [#import "/WEB-INF/global/macros/forms.ftl" as customForm/]
@@ -28,14 +29,14 @@
     <p> [@s.text name="planning.projectPartners.help3" /] <a href="[@s.url namespace="/" action='glossary'][/@s.url]#managementLiaison">[@s.text name="planning.projectPartners.managementLiaison" /]</a> [@s.text name="planning.projectPartners.help4" /]</p>
   </div>
   [#include "/WEB-INF/planning/planningProjectsSubMenu.ftl" /]
-
+  
   [@s.form action="partners" cssClass="pure-form"]
   <article class="halfContent" id="projectPartners">
     [#include "/WEB-INF/planning/projectDescription-planning-sub-menu.ftl" /]
     [#include "/WEB-INF/planning/planningDataSheet.ftl" /]
     
     [#-- Informing user that he/she doesn't have enough privileges to edit. See GranProjectPlanningAccessInterceptor--]
-    [#if !saveable]
+    [#if !canEdit]
       <p class="readPrivileges">
         [@s.text name="saving.read.privileges"]
           [@s.param][@s.text name="preplanning.project"/][/@s.param]
@@ -47,23 +48,20 @@
       [#-- Project Partners Sub-menu --]
       [#include "/WEB-INF/planning/projectPartners-sub-menu.ftl" /]
       <div id="partnerTables-partnerLead" class="partnerTable ui-tabs-panel ui-widget-content ui-corner-bottom clearfix"> 
-        <h1 class="contentTitle">
-          [@s.text name="preplanning.projectPartners.partners.title" /]  
-        </h1> 
+        [#if (!editable && canEdit)]
+          <div class="editButton"><a href="[@s.url includeParams='get'][@s.param name="edit"]true[/@s.param][/@s.url]">[@s.text name="form.buttons.edit" /]</a></div>
+        [/#if]
         [#-- Listing partners from partnersTemplate.ftl --]
-        [@partnersTemplate.partnerSection projectPartners=project.projectPartners ap_name='project.projectPartners' partnerTypes=partnerTypes countries=countries ppaPartner=false responsabilities=true canEdit=fullEditable canRemove=saveable /]
-        
-        [#if saveable] 
-          [#if fullEditable]
+        [@partnersTemplate.partnerSection projectPartners=project.projectPartners ap_name='project.projectPartners' editable=editable partnerTypes=partnerTypes countries=countries ppaPartner=false responsabilities=true canEdit=fullEditable canRemove=saveable /]
+        [#if (editable && canEdit)]  
           <div id="addProjectPartner" class="addLink">
             <a href="" class="addProjectPartner addButton" >[@s.text name="preplanning.projectPartners.addProjectPartner" /]</a>
-          </div>
-          [/#if]
+          </div> 
         [/#if]  
       </div>
     </div>   
     
-    [#if saveable]  
+    [#if (editable && canEdit)]  
       [#-- Internal parameter --]
       <input name="projectID" type="hidden" value="${project.id?c}" />
     	<div class="buttons">
@@ -81,7 +79,7 @@
   </article>
   [/@s.form] 
   [#-- Single partner TEMPLATE from partnersTemplate.ftl --]
-  [@partnersTemplate.partnerTemplate showResponsabilities=true isSecondLvlPartners=true /]  
+  [@partnersTemplate.partnerTemplate showResponsabilities=true /]  
   [#-- Search users Interface --]
   [@usersForm.searchUsers/] 
   
