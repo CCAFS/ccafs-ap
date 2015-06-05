@@ -37,6 +37,35 @@ $(document).ready(function() {
     return $(item).is(':checked');
   }
 
+  /**
+   * Loading Core projects with Ajax action
+   */
+
+  var $coreSelect = $('#coreProjectsList select');
+
+  loadInitialCoreProjects();
+
+  function loadInitialCoreProjects() {
+    var source = '../../coreProjects.do';
+    $.ajax({
+        'url': source,
+        'data': {},
+        beforeSend: function() {
+          $coreSelect.empty();
+          $coreSelect.append("<option value='-1'>Please select a Core-Project</option>");
+        },
+        success: function(data) {
+          $.each(data.projects, function(i,project) {
+            $coreSelect.append("<option value='" + project.id + "'>" + project.title + "</option>");
+          });
+        },
+        complete: function() {
+          $coreSelect.trigger("liszt:updated");
+        }
+    });
+
+  }
+
 });
 
 /**

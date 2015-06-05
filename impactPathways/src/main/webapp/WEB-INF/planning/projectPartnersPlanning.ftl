@@ -48,12 +48,12 @@
       [#-- Project Partners Sub-menu --]
       [#include "/WEB-INF/planning/projectPartners-sub-menu.ftl" /]
       <div id="partnerTables-partnerLead" class="partnerTable ui-tabs-panel ui-widget-content ui-corner-bottom clearfix"> 
-        [#if !editable]
+        [#if (!editable && canEdit)]
           <div class="editButton"><a href="[@s.url includeParams='get'][@s.param name="edit"]true[/@s.param][/@s.url]">[@s.text name="form.buttons.edit" /]</a></div>
         [/#if]
         [#-- Listing partners from partnersTemplate.ftl --]
         [@partnersTemplate.partnerSection projectPartners=project.projectPartners ap_name='project.projectPartners' editable=editable partnerTypes=partnerTypes countries=countries ppaPartner=false responsabilities=true canEdit=fullEditable canRemove=saveable /]
-        [#if editable]  
+        [#if (editable && canEdit)]  
           <div id="addProjectPartner" class="addLink">
             <a href="" class="addProjectPartner addButton" >[@s.text name="preplanning.projectPartners.addProjectPartner" /]</a>
           </div> 
@@ -61,7 +61,7 @@
       </div>
     </div>   
     
-    [#if saveable]  
+    [#if (editable && canEdit)]  
       [#-- Internal parameter --]
       <input name="projectID" type="hidden" value="${project.id?c}" />
     	<div class="buttons">
@@ -79,7 +79,7 @@
   </article>
   [/@s.form] 
   [#-- Single partner TEMPLATE from partnersTemplate.ftl --]
-  [@partnersTemplate.partnerTemplate showResponsabilities=true isSecondLvlPartners=true /]  
+  [@partnersTemplate.partnerTemplate showResponsabilities=true /]  
   [#-- Search users Interface --]
   [@usersForm.searchUsers/] 
   

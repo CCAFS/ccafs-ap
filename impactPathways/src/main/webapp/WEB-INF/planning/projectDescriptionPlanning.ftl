@@ -122,10 +122,15 @@
         [@customForm.checkbox name="project.isLinked" value=""  i18nkey="planning.projectDescription.isLinkedCoreProjects" disabled=!editable  /]
         [#if editable]
           <div class="tickBox-toggle coreProjects fullBlock">
-            <div class="usersList panel primary">
+            <div class="panel primary">
               <div class="panel-head"> [@s.text name="planning.projectDescription.chouseCoreProject" /]</div>
-              <div class="panel-body"> 
-                [@s.checkboxlist name="project.coreProjects"  list="coreProjects" listKey="id" listValue="name" cssClass="checkbox" value="" /]
+              <div id="coreProjectsList" class="panel-body"> 
+                <ul>
+                  [#list project.regions as element]
+                    <li>${element.name}</li>
+                  [/#list]
+                </ul>
+                [@customForm.select name="" label="" disabled=!canEdit i18nkey="" listName="allPPAPartners" keyFieldName="id" displayFieldName="getComposedName()" className="ppaPartnersSelect" value="" /]
               </div>
             </div>
           </div>

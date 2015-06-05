@@ -166,6 +166,7 @@ input[type="submit"], button, .addButton {
   
   cursor:pointer;
   font-size: 1.1em;
+  border-radius: 0 0 0 5px;
 }
 .editButton a{
   color: #fff;
