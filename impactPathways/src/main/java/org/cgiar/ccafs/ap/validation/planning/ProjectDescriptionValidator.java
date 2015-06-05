@@ -16,17 +16,32 @@ package org.cgiar.ccafs.ap.validation.planning;
 
 import org.cgiar.ccafs.ap.action.BaseAction;
 import org.cgiar.ccafs.ap.data.model.Project;
+import org.cgiar.ccafs.ap.validation.BaseValidator;
+
+import java.util.Collection;
 
 
 /**
  * @author Hernán David Carvajal B. - CIAT/CCAFS
  */
 
-public class ProjectDescriptionValidator {
+public class ProjectDescriptionValidator extends BaseValidator {
 
   public void validate(BaseAction action, Project project) {
     if (project != null) {
-      System.out.println("---------- Validating -------------");
+      this.validateTitle(action, project.getTitle());
+    }
+  }
+
+  public void validateTitle(BaseAction action, String title) {
+    action.addActionMessage("Mensaje 1");
+    action.addActionMessage("Mensaje 2");
+    action.addActionMessage("Mensaje 3");
+    action.addActionMessage("Mensaje 4");
+
+    Collection<String> messages = action.getActionMessages();
+
+    if (!this.isValidString(title)) {
     }
   }
 }
