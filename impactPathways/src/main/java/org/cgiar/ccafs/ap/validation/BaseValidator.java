@@ -11,6 +11,22 @@ public class BaseValidator extends ActionSupport {
 
   private static final Logger LOG = LoggerFactory.getLogger(BaseValidator.class);
 
+  private StringBuilder validationMessage;
+
+
+  public BaseValidator() {
+    validationMessage = new StringBuilder();
+  }
+
+  protected void addMessage(String message) {
+    if (message.isEmpty()) {
+      validationMessage.append(message);
+    } else {
+      validationMessage.append(", ");
+      validationMessage.append(message);
+    }
+  }
+
   protected boolean isValidEmail(String email) {
     if (email != null) {
       try {

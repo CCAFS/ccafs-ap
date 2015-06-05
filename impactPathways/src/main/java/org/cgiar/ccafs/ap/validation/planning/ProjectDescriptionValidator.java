@@ -18,7 +18,7 @@ import org.cgiar.ccafs.ap.action.BaseAction;
 import org.cgiar.ccafs.ap.data.model.Project;
 import org.cgiar.ccafs.ap.validation.BaseValidator;
 
-import java.util.Collection;
+import java.util.Date;
 
 
 /**
@@ -27,21 +27,39 @@ import java.util.Collection;
 
 public class ProjectDescriptionValidator extends BaseValidator {
 
+  public ProjectDescriptionValidator() {
+    super();
+  }
+
   public void validate(BaseAction action, Project project) {
     if (project != null) {
       this.validateTitle(action, project.getTitle());
     }
   }
 
+  public void validateEndDate(BaseAction action, Date endDate) {
+
+  }
+
+  public void validateLiaisonContactPerson(BaseAction action, String title) {
+
+  }
+
+  public void validateManagementLiaison(BaseAction action, Date startDate) {
+
+  }
+
+  public void validateProjectSummary(BaseAction action, Date startDate) {
+  }
+
+  public void validateStartDate(BaseAction action, Date startDate) {
+
+  }
+
   public void validateTitle(BaseAction action, String title) {
-    action.addActionMessage("Mensaje 1");
-    action.addActionMessage("Mensaje 2");
-    action.addActionMessage("Mensaje 3");
-    action.addActionMessage("Mensaje 4");
-
-    Collection<String> messages = action.getActionMessages();
-
     if (!this.isValidString(title)) {
+      this.addMessage(this.getText("validation.required", this.getText("planning.projectDescription.projectTitle")));
     }
   }
+
 }
