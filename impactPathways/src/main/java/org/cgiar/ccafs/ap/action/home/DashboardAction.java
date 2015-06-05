@@ -82,38 +82,15 @@ public class DashboardAction extends BaseAction {
     if (this.getCurrentUser() != null) {
 
       // ----- Listing Projects -----
-
-      // If user is an Admin.
       if (securityContext.isAdmin()) {
-        // Show all projects.
         projects = projectManager.getAllProjectsBasicInfo();
-      } else if (securityContext.isFPL() || securityContext.isRPL() || securityContext.isCU()) {
-        // Getting the list of projects that belongs to the User program or where he is assigned as PO.
-        projects = new ArrayList<>();
+      } else {
         List<Integer> ids = projectManager.getProjectIdsEditables(this.getCurrentUser());
+        projects = new ArrayList<>();
         for (Integer projectId : ids) {
           projects.add(projectManager.getProjectBasicInfo(projectId));
         }
-
-        // In addition, add the projects where the user is assigned as Project Leader.
-        List<Integer> idsPL = projectManager.getPLProjectIds(this.getCurrentUser());
-        for (Integer projectId : idsPL) {
-          // Do not add projects that are already added.
-          if (!ids.contains(projectId)) {
-            projects.add(projectManager.getProjectBasicInfo(projectId));
-          }
-        }
-
-      } else if (securityContext.isPL()) {
-        // Getting projects where the user is assigned as PL.
-        List<Integer> idsPL = projectManager.getPLProjectIds(this.getCurrentUser());
-        projects = new ArrayList<>();
-        for (Integer projectId : idsPL) {
-          // Do not add projects that are already added.
-          projects.add(projectManager.getProjectBasicInfo(projectId));
-        }
       }
-      // If user is AL or Guest, he/she won't be able to see any project listed.
 
       // ----- Listing Activities -----
 
