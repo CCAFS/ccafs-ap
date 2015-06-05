@@ -76,7 +76,8 @@ public class ProjectsListPreplanningAction extends BaseAction {
     newProject.setOwner(this.getCurrentUser());
     IPProgram userProgram = this.getCurrentUser().getCurrentInstitution().getProgram();
     if (userProgram != null) {
-      newProject.setProgramCreator(userProgram);
+      // Now the creator is a liaison isntitution not a ipProgram
+      // newProject.setProgramCreator(userProgram);
     } else {
       LOG
         .error(
@@ -97,26 +98,26 @@ public class ProjectsListPreplanningAction extends BaseAction {
     return projectID;
   }
 
-// @Override
-// public String execute() throws Exception {
-// // If there are not projects to be listed.
-// if (projects.size() <= 0) {
-// // Create new project and redirect to project description using the new projectId assigned by the database.
-// projectID = this.createNewProject();
-// if (projectID > 0) {
-// // Let's redirect the user to the Project Description section.
-// return BaseAction.INPUT;
-// }
-// addActionError(getText("preplanning.projects.creatingProject.error"));
-// // An error happened, lets redirect it to the list, even if there are not projects.
-// }
-// // If user clicks on Add button.
-// if (add) {
-// return add();
-// }
-//
-// return BaseAction.SUCCESS;
-// }
+  // @Override
+  // public String execute() throws Exception {
+  // // If there are not projects to be listed.
+  // if (projects.size() <= 0) {
+  // // Create new project and redirect to project description using the new projectId assigned by the database.
+  // projectID = this.createNewProject();
+  // if (projectID > 0) {
+  // // Let's redirect the user to the Project Description section.
+  // return BaseAction.INPUT;
+  // }
+  // addActionError(getText("preplanning.projects.creatingProject.error"));
+  // // An error happened, lets redirect it to the list, even if there are not projects.
+  // }
+  // // If user clicks on Add button.
+  // if (add) {
+  // return add();
+  // }
+  //
+  // return BaseAction.SUCCESS;
+  // }
 
   public List<Project> getProjects() {
     return projects;

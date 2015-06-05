@@ -2,11 +2,12 @@ package org.cgiar.ccafs.ap.validation;
 
 import javax.mail.internet.InternetAddress;
 
+import com.opensymphony.xwork2.ActionSupport;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 
-public class BaseValidator {
+public class BaseValidator extends ActionSupport {
 
   private static final Logger LOG = LoggerFactory.getLogger(BaseValidator.class);
 
