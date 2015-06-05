@@ -22,7 +22,7 @@ a,a:active,a:visited,a:hover {
   color: #A9A9A9;
 }
 
-.select {
+.select, .input {
   margin-bottom: 8px;
 }
 
@@ -160,17 +160,19 @@ input[type="submit"], button, .addButton {
   position: absolute;
   right: 0;
   top: 0;
-  background: url(../../images/global/icon-edit.png) #8B8B8B no-repeat 11px 6px;
-  background-size: 20%;
-  padding: 5px 11px 5px 27px;
+  background: url(../../images/global/icon-edit.png) #8B8B8B no-repeat 11px 5px;
+  background-size: 25%;
+  padding: 6px 0px 6px 0px;
   
   cursor:pointer;
+  font-size: 1.1em;
 }
 .editButton a{
   color: #fff;
   font-weight: bold;
   text-shadow: 1px 1px 7px rgba(0, 0, 0, 0.1);
   text-decoration: none;
+  padding: 6px 11px 6px 33px; */;
 }
 .editButton:hover{
   background-color: #6C6C6C;
@@ -423,8 +425,11 @@ select#partnerSave_activityPartner_partner_type_id {
 }
 .panel span.listButton.remove {
     background: #D5504C;
- 
     color: #fff;
+}
+
+.panel span.listButton.remove:hover {
+    background: #BD3D3A; 
 }
 
 .search-input{
@@ -1225,7 +1230,7 @@ h3.contentSubTitle {
 
 .searchUser {
     width: 91px;
-    padding: 2px 0px;
+    padding: 3px 0px;
     text-align: center;
     background: #668FDA;
     color: #fff;
@@ -1234,7 +1239,7 @@ h3.contentSubTitle {
     float: right;
     cursor: pointer;
     position: absolute;
-    bottom: 10%;
+    bottom: 22%;
     right: 0;
 }
 
@@ -1726,6 +1731,10 @@ textarea[id$='summary'] {
     margin: 2px 9px 0 0;
 }
 
+.tickBox-wrapper {
+    margin: 20px 0;
+}
+
 #uploadWorkPlan .checkbox   { 
     margin: 0px 0px 10px 0;
 }
@@ -1748,7 +1757,7 @@ textarea[id$='summary'] {
 /* Project Partners*/
 
 #projectLeader {
-    padding: 10px 20px;
+    padding: 10px 0px;
 }
 
 .projectPartner .filters-link {

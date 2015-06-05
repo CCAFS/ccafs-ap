@@ -28,7 +28,7 @@
   <article class="halfContent" id="mainInformation">
     [#include "/WEB-INF/planning/projectDescription-planning-sub-menu.ftl" /]
     [#-- Informing user that he/she doesn't have enough privileges to edit. See GrantProjectPlanningAccessInterceptor--]
-    [#if !saveable]
+    [#if !canEdit ]
       <p class="readPrivileges">
         [@s.text name="saving.read.privileges"]
           [@s.param][@s.text name="planning.project"/][/@s.param]
@@ -37,8 +37,8 @@
     [/#if] 
     <div id="projectDescription" class="borderBox">
       [#-- Button for edit this section --] 
-      [#if !editable]
-        <div class="editButton"><a href="[@s.url includeParams='get'][@s.param name="editable"]true[/@s.param][/@s.url]">[@s.text name="form.buttons.edit" /]</a></div>
+      [#if (!editable && canEdit)]
+        <div class="editButton"><a href="[@s.url includeParams='get'][@s.param name="edit"]true[/@s.param][/@s.url]">[@s.text name="form.buttons.edit" /]</a></div>
       [/#if]
       <h1 class="contentTitle"> ${project.composedId} - [@s.text name="planning.projectDescription.title" /] </h1>  
       <fieldset class="fullBlock">
@@ -52,15 +52,15 @@
           </div>
           [#--  Project Owner Contact Person --]
           <div class="halfPartBlock">
-            [@customForm.select name="project.owner" label="" disabled=!fullEditable i18nkey="preplanning.projectDescription.projectownercontactperson" listName="allOwners" keyFieldName="employeeId"  displayFieldName="composedOwnerName" editable=editable/]
+            [@customForm.select name="project.owner" label="" disabled=!editable i18nkey="preplanning.projectDescription.projectownercontactperson" listName="allOwners" keyFieldName="employeeId"  displayFieldName="composedOwnerName" editable=editable/]
           </div> 
           [#-- Start Date --]
           <div class="halfPartBlock">
-            [@customForm.input name="project.startDate" type="text" disabled=!fullEditable i18nkey="preplanning.projectDescription.startDate" required=true editable=editable /]
+            [@customForm.input name="project.startDate" type="text" disabled=!editable i18nkey="preplanning.projectDescription.startDate" required=true editable=editable /]
           </div> 
           [#-- End Date --]
           <div class="halfPartBlock">
-              [@customForm.input name="project.endDate" type="text" disabled=!fullEditable i18nkey="preplanning.projectDescription.endDate" required=true editable=editable /]
+              [@customForm.input name="project.endDate" type="text" disabled=!editable i18nkey="preplanning.projectDescription.endDate" required=true editable=editable /]
           </div>
         </div>
         [#-- Project upload work plan --]
@@ -134,7 +134,7 @@
       
     </div> 
     
-    [#if saveable]
+    [#if editable]
       [#-- Project identifier --]
       <input name="projectID" type="hidden" value="${project.id?c}" />
       <div class="buttons">

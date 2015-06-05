@@ -35,7 +35,7 @@
     [#include "/WEB-INF/planning/planningDataSheet.ftl" /]
     
     [#-- Informing user that he/she doesn't have enough privileges to edit. See GranProjectPlanningAccessInterceptor--]
-    [#if !saveable]
+    [#if !canEdit]
       <p class="readPrivileges">
         [@s.text name="saving.read.privileges"]
           [@s.param][@s.text name="preplanning.project"/][/@s.param]
@@ -46,24 +46,21 @@
     <div id="PartnersTabs" class="ui-tabs ui-widget ui-widget-content ui-corner-all"> 
       [#-- Project Partners Sub-menu --]
       [#include "/WEB-INF/planning/projectPartners-sub-menu.ftl" /]
-      
       <div id="partnerTables-partnerLead" class="partnerTable ui-tabs-panel ui-widget-content ui-corner-bottom clearfix"> 
-          <h1 class="contentTitle">
-            [@s.text name="preplanning.projectPartners.partners.title" /]  
-          </h1>
-          [#-- Listing partners from partnersTemplate.ftl --]
-          [@partnersTemplate.partnerSection projectPartners=project.PPAPartners ap_name='project.PPAPartner' partnerTypes=partnerTypes countries=countries ppaPartner=true responsabilities=true canEdit=fullEditable canRemove=saveable/]
-          [#if saveable] 
-            [#if fullEditable]
-            <div id="addProjectPartner" class="addLink">
-              <a href="" class="addProjectPartner addButton" >[@s.text name="preplanning.projectPartners.addProjectPartner" /]</a>
-            </div>
-            [/#if]
-          [/#if]  
+        [#if !editable]
+          <div class="editButton"><a href="[@s.url includeParams='get'][@s.param name="edit"]true[/@s.param][/@s.url]">[@s.text name="form.buttons.edit" /]</a></div>
+        [/#if]
+        [#-- Listing partners from partnersTemplate.ftl --]
+        [@partnersTemplate.partnerSection projectPartners=project.PPAPartners ap_name='project.PPAPartner' editable=editable partnerTypes=partnerTypes countries=countries ppaPartner=true responsabilities=true canEdit=canEdit /]
+        [#if canEdit] 
+          <div id="addProjectPartner" class="addLink">
+            <a href="" class="addProjectPartner addButton" >[@s.text name="preplanning.projectPartners.addProjectPartner" /]</a>
+          </div>
+        [/#if]  
       </div>
     </div>   
     
-    [#if saveable]  
+    [#if canEdit]  
       [#-- Internal parameter --]
       <input name="projectID" type="hidden" value="${project.id?c}" />
     	<div class="buttons">

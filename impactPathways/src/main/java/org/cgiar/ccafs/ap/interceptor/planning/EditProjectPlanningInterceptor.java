@@ -86,7 +86,7 @@ public class EditProjectPlanningInterceptor extends AbstractInterceptor {
     }
 
     // Set the variable that indicates if the user can edit the section
-    baseAction.setEditableParameter(hasPermissionToEdit);
+    baseAction.setEditableParameter(hasPermissionToEdit && canEditProject);
     baseAction.setCanEdit(canEditProject);
     return invocation.invoke();
   }
