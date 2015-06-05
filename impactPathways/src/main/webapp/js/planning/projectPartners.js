@@ -16,8 +16,9 @@ $(document).ready(
         // Partners filters
         $(".filters-link").click(function(event) {
           var $filterContent = $(event.target).next();
-          if($filterContent.is(":visible"))
+          if($filterContent.is(":visible")) {
             updateOrganizationsList(event);
+          }
           $filterContent.slideToggle();
         });
         // When Partner Type change
@@ -27,8 +28,9 @@ $(document).ready(
       function updateOrganizationsList(e) {
         var eventType = $(e.target).attr("class");
         var $parent = $(e.target).parent().parent().parent().parent().parent();
-        if(eventType == "filters-link")
+        if(eventType == "filters-link") {
           $parent = $(e.target).parent();
+        }
         var $selectInstitutions = $parent.find("select[name$='partner']");
         var partnerTypes = $parent.find("select.partnerTypes").find('option:selected').val();
         var countryList = $parent.find("select.countryList").find('option:selected').val();
@@ -36,8 +38,9 @@ $(document).ready(
             "../../json/institutionsByTypeAndCountry.do?institutionTypeID=" + partnerTypes + "&countryID="
                 + countryList;
 
-        if(eventType == "filters-link")
+        if(eventType == "filters-link") {
           source = "../../json/institutionsByTypeAndCountry.do";
+        }
         var institutionsList = "";
 
         $.getJSON(source, function(data) {
@@ -104,29 +107,15 @@ $(document).ready(
       // partners lists.
       function addChosen() {
 
-        $("form select[name$='partner']").chosen({
+        $("form select").chosen({
           search_contains: true
         });
-
-        $("form select[name$='institution']").chosen({
-          search_contains: true
-        });
-
-        $("form .partnerTypes").chosen({
-            allow_single_deselect: true,
-            search_contains: true
-        });
-
-        $("form .ppaPartnersSelect").chosen({
-            allow_single_deselect: true,
-            search_contains: true
-        });
-
-        $("form .countryList").chosen({
-            allow_single_deselect: true,
-            search_contains: true
-        });
-
+/*
+ * $("form select[name$='partner']").chosen({ search_contains: true }); $("form select[name$='institution']").chosen({
+ * search_contains: true }); $("form .partnerTypes").chosen({ allow_single_deselect: true, search_contains: true });
+ * $("form .ppaPartnersSelect").chosen({ allow_single_deselect: true, search_contains: true }); $("form
+ * .countryList").chosen({ allow_single_deselect: true, search_contains: true });
+ */
       }
       /*
        * ----------------------- Search users functions --------------------------
@@ -190,8 +179,9 @@ $(document).ready(
 
       function searchUsersEvent(e) {
         var query = $(this).val();
-        if(timeoutID)
+        if(timeoutID) {
           clearTimeout(timeoutID);
+        }
         // Start a timer that will search when finished
         timeoutID = setTimeout(function() {
           getData(query);
@@ -218,8 +208,9 @@ $(document).ready(
                     var $item = $dialogContent.find("li#userTemplate").clone(true).removeAttr("id");
                     $item.find('.name').html(escapeHtml(user.composedName));
                     $item.find('.contactId').html(user.id);
-                    if(i == usersFound - 1)
+                    if(i == usersFound - 1) {
                       $item.addClass('last');
+                    }
                     $dialogContent.find(".panel-body ul").append($item);
                   });
                 } else {
