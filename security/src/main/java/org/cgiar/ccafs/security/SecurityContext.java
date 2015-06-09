@@ -27,7 +27,7 @@ public class SecurityContext extends BaseSecurityContext {
    * @return
    */
   public boolean canAddBilateralProject() {
-    return hasPermission(Permission.PLANNING_BILATERAL_PROJECT_BUTTON);
+    return this.hasPermission(Permission.PLANNING_BILATERAL_PROJECT_BUTTON);
   }
 
   /**
@@ -36,7 +36,16 @@ public class SecurityContext extends BaseSecurityContext {
    * @return
    */
   public boolean canAddCoreProject() {
-    return hasPermission(Permission.PLANNING_CORE_PROJECT_BUTTON);
+    return this.hasPermission(Permission.PLANNING_CORE_PROJECT_BUTTON);
+  }
+
+  /**
+   * Verify if can upload a project workplan in the planning section
+   * 
+   * @return
+   */
+  public boolean canAllowProjectWorkplanUpload() {
+    return this.hasPermission(Permission.PLANNING_PROJECT_WORKPLAN_UPDATE);
   }
 
   /**
@@ -45,7 +54,7 @@ public class SecurityContext extends BaseSecurityContext {
    * @return
    */
   public boolean canDeleteProject() {
-    return hasPermission(Permission.PLANNING_DELETE_PROJECT_BUTTON);
+    return this.hasPermission(Permission.PLANNING_DELETE_PROJECT_BUTTON);
   }
 
   /**
@@ -54,7 +63,7 @@ public class SecurityContext extends BaseSecurityContext {
    * @return
    */
   public boolean canEditEndDate() {
-    return hasPermission(Permission.PLANNING_PROJECT_END_DATE_UPDATE);
+    return this.hasPermission(Permission.PLANNING_PROJECT_END_DATE_UPDATE);
   }
 
   /**
@@ -63,18 +72,18 @@ public class SecurityContext extends BaseSecurityContext {
    * @return
    */
   public boolean canEditManagementLiaison() {
-    return hasPermission(Permission.PLANNING_MANAGEMENT_LIAISON_UPDATE);
+    return this.hasPermission(Permission.PLANNING_MANAGEMENT_LIAISON_UPDATE);
   }
 
   public boolean canEditProjectFlagships() {
-    return hasPermission(Permission.PLANNING_PROJECT_FLAGSHIPS_UPDATE);
+    return this.hasPermission(Permission.PLANNING_PROJECT_FLAGSHIPS_UPDATE);
   }
 
   public boolean canEditProjectPlanningSection(String sectionName, int projectID) {
     String generalPermission = "planning:projects:" + sectionName + ":update";
     String projectPermission = "project:" + projectID + ":" + sectionName + ":update";
 
-    return hasPermission(generalPermission) || hasPermission(projectPermission);
+    return this.hasPermission(generalPermission) || this.hasPermission(projectPermission);
   }
 
   /**
@@ -83,7 +92,7 @@ public class SecurityContext extends BaseSecurityContext {
    * @return
    */
   public boolean canEditProjectRegions() {
-    return hasPermission(Permission.PLANNING_PROJECT_REGIONS_UPDATE);
+    return this.hasPermission(Permission.PLANNING_PROJECT_REGIONS_UPDATE);
   }
 
   /**
@@ -92,7 +101,7 @@ public class SecurityContext extends BaseSecurityContext {
    * @return
    */
   public boolean canEditStartDate() {
-    return hasPermission(Permission.PLANNING_PROJECT_START_DATE_UPDATE);
+    return this.hasPermission(Permission.PLANNING_PROJECT_START_DATE_UPDATE);
   }
 
   /**
@@ -101,16 +110,7 @@ public class SecurityContext extends BaseSecurityContext {
    * @return
    */
   public boolean canUploadBilateralContract() {
-    return hasPermission(Permission.PLANNING_PROJECT_BILATERAL_CONTRACT_UPDATE);
-  }
-
-  /**
-   * Verify if can upload a project workplan in the planning section
-   * 
-   * @return
-   */
-  public boolean canUploadProjectWorkplan() {
-    return hasPermission(Permission.PLANNING_PROJECT_WORKPLAN_UPDATE);
+    return this.hasPermission(Permission.PLANNING_PROJECT_BILATERAL_CONTRACT_UPDATE);
   }
 
   /**
@@ -119,7 +119,7 @@ public class SecurityContext extends BaseSecurityContext {
    * @return
    */
   public boolean isAdmin() {
-    return hasRole(Role.Admin);
+    return this.hasRole(Role.Admin);
   }
 
   /**
@@ -128,7 +128,7 @@ public class SecurityContext extends BaseSecurityContext {
    * @return
    */
   public boolean isAL() {
-    return hasRole(Role.AL);
+    return this.hasRole(Role.AL);
   }
 
   /**
@@ -137,7 +137,7 @@ public class SecurityContext extends BaseSecurityContext {
    * @return
    */
   public boolean isCP() {
-    return hasRole(Role.CP);
+    return this.hasRole(Role.CP);
   }
 
   /**
@@ -146,7 +146,7 @@ public class SecurityContext extends BaseSecurityContext {
    * @return
    */
   public boolean isCU() {
-    return hasRole(Role.CU);
+    return this.hasRole(Role.CU);
   }
 
   /**
@@ -155,7 +155,7 @@ public class SecurityContext extends BaseSecurityContext {
    * @return
    */
   public boolean isFPL() {
-    return hasRole(Role.FPL);
+    return this.hasRole(Role.FPL);
   }
 
   /**
@@ -164,7 +164,7 @@ public class SecurityContext extends BaseSecurityContext {
    * @return
    */
   public boolean isGuest() {
-    return hasRole(Role.GUEST);
+    return this.hasRole(Role.GUEST);
   }
 
   /**
@@ -173,7 +173,7 @@ public class SecurityContext extends BaseSecurityContext {
    * @return
    */
   public boolean isPL() {
-    return hasRole(Role.PL);
+    return this.hasRole(Role.PL);
   }
 
   /**
@@ -182,6 +182,6 @@ public class SecurityContext extends BaseSecurityContext {
    * @return
    */
   public boolean isRPL() {
-    return hasRole(Role.RPL);
+    return this.hasRole(Role.RPL);
   }
 }
