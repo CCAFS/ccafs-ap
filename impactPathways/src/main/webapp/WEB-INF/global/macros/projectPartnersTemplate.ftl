@@ -76,7 +76,8 @@
             [#list ppaPartnersList as ppaPartner]
               <li class="[#if !ppaPartner_has_next]last[/#if]">
                 ${ppaPartner.name}
-                [#if editable]<span class="listButton remove">Remove</span></li>[/#if] 
+                [#if editable]<span class="listButton remove">Remove</span>[/#if] 
+              </li>
             [/#list]
           </ul>
           [#if editable]

@@ -42,28 +42,65 @@ $(document).ready(function() {
    */
 
   var $coreSelect = $('#coreProjectsList select');
+  var $coreProjects = $('#coreProjectsList .list');
 
   loadInitialCoreProjects();
 
+  // Events
+  $coreSelect.on('change', function(e) {
+    addItemList($(this).find('option:selected'));
+  });
+
+  $('ul li .remove').on('click', function(e) {
+    removeItemList($(this).parents('li'));
+  });
+
+  // Functions
   function loadInitialCoreProjects() {
-    var source = '../../coreProjects.do';
     $.ajax({
-        'url': source,
-        'data': {},
+        'url': '../../coreProjects.do',
         beforeSend: function() {
-          $coreSelect.empty();
-          $coreSelect.append("<option value='-1'>Please select a Core-Project</option>");
+          $coreSelect.empty().append(setOption(-1, "Please select a Core-Project"));
         },
         success: function(data) {
           $.each(data.projects, function(i,project) {
-            $coreSelect.append("<option value='" + project.id + "'>" + project.title + "</option>");
+            $coreSelect.append(setOption(project.id, project.title));
           });
         },
         complete: function() {
           $coreSelect.trigger("liszt:updated");
         }
     });
+  }
 
+  function addItemList($item) {
+    var $listElement = $("#cpListTemplate").clone(true).removeAttr("id");
+    $listElement.find('.coreProject_name').html($item.text());
+    $listElement.find('.coreProject_id').val($item.val());
+    $coreProjects.prepend($listElement);
+    $item.remove();
+    $coreSelect.trigger("liszt:updated");
+    setIndexes();
+  }
+
+  function removeItemList($item) {
+    var data = {
+        id: $item.find('.coreProject_id').val(),
+        'name': $item.find('.coreProject_name').text()
+    };
+    $coreSelect.append(setOption(data.id, data.name));
+    $coreSelect.trigger("liszt:updated");
+    $item.hide("slow", function() {
+      $item.remove();
+      setIndexes();
+    });
+  }
+
+  function setIndexes() {
+    $coreProjects.find('li').each(function(i,item) {
+      var elementName = "project.coreProjects[" + i + "].";
+      $(item).find('.coreProject_id').attr('name', elementName + 'id');
+    });
   }
 
 });

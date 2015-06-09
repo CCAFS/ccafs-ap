@@ -77,6 +77,7 @@ public class ProjectDescriptionPlanningAction extends BaseAction {
     this.userManager = userManager;
     this.budgetManager = budgetManager;
     this.liaisonInstitutionManager = liaisonInstitutionManager;
+    this.linkedCoreProjectManager = linkedCoreProjectManager;
     this.validator = validator;
   }
 
@@ -217,7 +218,6 @@ public class ProjectDescriptionPlanningAction extends BaseAction {
     if (project.getType().equals(APConstants.PROJECT_BILATERAL_COFUNDED)) {
       project.setLinkedCoreProjects(linkedCoreProjectManager.getLinkedCoreProjects(projectID));
     }
-
     // If the user is not admin or the project owner, we should keep some information
     // unmutable
     previousProject = new Project();

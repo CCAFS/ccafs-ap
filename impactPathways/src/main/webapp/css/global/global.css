@@ -166,7 +166,7 @@ input[type="submit"], button, .addButton {
   
   cursor:pointer;
   font-size: 1.1em;
-  border-radius: 0 0 0 5px;
+  border-radius: 0 0 0 3px;
 }
 .editButton a{
   color: #fff;
@@ -1753,6 +1753,12 @@ textarea[id$='summary'] {
 
 .project-title {
   height: 44px;
+}
+
+.coreProject_name {
+  display: block;
+  width: 90%;
+  float: left;
 }
 
 /* Project Partners*/
