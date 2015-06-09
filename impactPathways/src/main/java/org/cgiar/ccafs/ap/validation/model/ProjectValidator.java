@@ -30,6 +30,8 @@ import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
+import com.google.inject.Inject;
+
 
 /**
  * @author Hernán David Carvajal B. - CIAT/CCAFS
@@ -39,83 +41,87 @@ public class ProjectValidator extends BaseValidator {
 
   private static final long serialVersionUID = -4351021637951625199L;
 
-  public boolean validateActivities(List<Activity> activities) {
+  @Inject
+  public ProjectValidator() {
+  }
+
+  public boolean isValidActivities(List<Activity> activities) {
     return false;
   }
 
-  public boolean validateBudget(List<Budget> budgets) {
+  public boolean isValidBudget(List<Budget> budgets) {
     return false;
   }
 
-  public boolean validateCoordinator(ProjectPartner coordinator) {
+  public boolean isValidCoordinator(ProjectPartner coordinator) {
     return false;
   }
 
-  public boolean validateEndDate(Date endDate) {
+  public boolean isValidEndDate(Date endDate) {
     return (endDate != null) ? true : false;
   }
 
-  public boolean validateFlagships(List<IPProgram> flagships) {
+  public boolean isValidFlagships(List<IPProgram> flagships) {
     return false;
   }
 
-  public boolean validateIndicators(List<IPIndicator> indicators) {
+  public boolean isValidIndicators(List<IPIndicator> indicators) {
     return false;
   }
 
-  public boolean validateIPOtherContributions(IPOtherContribution ipOtherContribution) {
+  public boolean isValidIPOtherContributions(IPOtherContribution ipOtherContribution) {
     return false;
   }
 
-  public boolean validateLeader(ProjectPartner leader) {
+  public boolean isValidLeader(ProjectPartner leader) {
     return false;
   }
 
-  public boolean validateLeaderResponsabilities(String leaderResponsabilities) {
+  public boolean isValidLeaderResponsabilities(String leaderResponsabilities) {
     return (this.isValidString(leaderResponsabilities)) ? true : false;
   }
 
-  public boolean validateLiaisonInstitution(LiaisonInstitution liaisonInstitution) {
+  public boolean isValidLiaisonInstitution(LiaisonInstitution liaisonInstitution) {
     return false;
   }
 
-  public boolean validateOutcomes(Map<String, ProjectOutcome> outcomes) {
+  public boolean isValidOutcomes(Map<String, ProjectOutcome> outcomes) {
     return false;
   }
 
-  public boolean validateOutputs(List<IPElement> outputs) {
+  public boolean isValidOutputs(List<IPElement> outputs) {
     return false;
   }
 
-  public boolean validateOwner(User owner) {
+  public boolean isValidOwner(User owner) {
     return false;
   }
 
-  public boolean validatePPAPartners(List<ProjectPartner> ppaPartners) {
+  public boolean isValidPPAPartners(List<ProjectPartner> ppaPartners) {
     return false;
   }
 
-  public boolean validateProjectPartners(List<ProjectPartner> projectPartners) {
+  public boolean isValidProjectPartners(List<ProjectPartner> projectPartners) {
     return false;
   }
 
-  public boolean validateRegions(List<IPProgram> regions) {
+  public boolean isValidRegions(List<IPProgram> regions) {
     return false;
   }
 
-  public boolean validateStartDate(Date startDate) {
+  public boolean isValidStartDate(Date startDate) {
     return (startDate != null) ? true : false;
   }
 
-  public boolean validateSummary(String summary) {
+  public boolean isValidSummary(String summary) {
     return (this.isValidString(summary)) ? true : false;
   }
 
-  public boolean validateTitle(String title) {
+  public boolean isValidTitle(String title) {
     return (this.isValidString(title)) ? true : false;
   }
 
-  public boolean validateType() {
+  public boolean isValidType() {
     return false;
   }
 

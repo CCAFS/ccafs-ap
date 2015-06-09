@@ -2,6 +2,7 @@ package org.cgiar.ccafs.ap.validation;
 
 import javax.mail.internet.InternetAddress;
 
+import com.google.inject.Inject;
 import com.opensymphony.xwork2.ActionSupport;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -11,15 +12,15 @@ public class BaseValidator extends ActionSupport {
 
   private static final Logger LOG = LoggerFactory.getLogger(BaseValidator.class);
 
-  private StringBuilder validationMessage;
+  protected StringBuilder validationMessage;
 
-
+  @Inject
   public BaseValidator() {
     validationMessage = new StringBuilder();
   }
 
   protected void addMessage(String message) {
-    if (message.isEmpty()) {
+    if (validationMessage.length() == 0) {
       validationMessage.append(message);
     } else {
       validationMessage.append(", ");
