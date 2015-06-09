@@ -76,7 +76,7 @@ public class ProjectDescriptionPreplanningAction extends BaseAction {
   /**
    * This method returns a composed name with the Acronym and Name.
    * e.g. FP4: Policies and Institutions for Climate-Resilient Food Systems
-   *
+   * 
    * @param ipProgramId is the program identifier.
    * @return the composed name described above.
    */
@@ -95,7 +95,7 @@ public class ProjectDescriptionPreplanningAction extends BaseAction {
 
   /**
    * This method returns an array of flagship ids depending on the project.flagships attribute.
-   *
+   * 
    * @return an array of integers.
    */
   public int[] getFlagshipIds() {
@@ -131,7 +131,7 @@ public class ProjectDescriptionPreplanningAction extends BaseAction {
 
   /**
    * This method returns an array of region ids depending on the project.regions attribute.
-   *
+   * 
    * @return an array of integers.
    */
   public int[] getRegionIds() {
@@ -151,7 +151,7 @@ public class ProjectDescriptionPreplanningAction extends BaseAction {
 
   @Override
   public String next() {
-    String result = save();
+    String result = this.save();
     if (result.equals(BaseAction.SUCCESS)) {
       return BaseAction.NEXT;
     } else {
@@ -178,7 +178,9 @@ public class ProjectDescriptionPreplanningAction extends BaseAction {
     if (project != null) {
 
       // Getting all project owners that belongs to the project's program creator.
-      allOwners = userManager.getAllOwners(project.getProgramCreator());
+
+      // TODO HC - The owner are not ipPrograms anymore, are liaison institutions.
+      // allOwners = userManager.getAllOwners(project.getProgramCreator());
       // Getting the information of the Flagships Program associated with the project
       project.setRegions(ipProgramManager.getProjectFocuses(projectID, APConstants.REGION_PROGRAM_TYPE));
       // Getting the information of the Regions Program associated with the project
@@ -204,7 +206,7 @@ public class ProjectDescriptionPreplanningAction extends BaseAction {
     // ----- SAVING Project description -----
     int result = projectManager.saveProjectDescription(project);
     if (result < 0) {
-      addActionError(getText("saving.problem"));
+      this.addActionError(this.getText("saving.problem"));
       return BaseAction.INPUT;
     }
 
@@ -224,10 +226,10 @@ public class ProjectDescriptionPreplanningAction extends BaseAction {
     // }
 
     if (project.getRegions().isEmpty()) {
-      addActionWarning(getText("preplanning.projectDescription.noRegions"));
+      this.addActionWarning(this.getText("preplanning.projectDescription.noRegions"));
     }
     if (project.getFlagships().isEmpty()) {
-      addActionWarning(getText("preplanning.projectDescription.noFlagships"));
+      this.addActionWarning(this.getText("preplanning.projectDescription.noFlagships"));
     }
 
     // Identifying regions that were unchecked in the front-end
@@ -259,7 +261,7 @@ public class ProjectDescriptionPreplanningAction extends BaseAction {
       }
       // Stop here if a something bad happened.
       if (!success) {
-        addActionError(getText("saving.problem"));
+        this.addActionError(this.getText("saving.problem"));
         return BaseAction.INPUT;
       }
     }
@@ -292,7 +294,7 @@ public class ProjectDescriptionPreplanningAction extends BaseAction {
       }
       // Stop here if something bad happened.
       if (!success) {
-        addActionError(getText("saving.problem"));
+        this.addActionError(this.getText("saving.problem"));
         return BaseAction.INPUT;
       }
     }
@@ -300,53 +302,54 @@ public class ProjectDescriptionPreplanningAction extends BaseAction {
 
     // ----- SAVING Cross Cutting Themes -----
 
-// if (project.getCrossCuttings() != null) {
-// // Identifying deleted Cross Cutting Themes
-// List<IPCrossCutting> previousCrossCuttingElements =
-// ipCrossCuttingManager.getIPCrossCuttingByProject(project.getId());
-//
-// for (IPCrossCutting ipCrossCuttingElement : previousCrossCuttingElements) {
-// if (!project.getCrossCuttings().contains(ipCrossCuttingElement)) {
-// deleted = ipCrossCuttingManager.deleteCrossCutting(project.getId(), ipCrossCuttingElement.getId());
-// if (!deleted) {
-// success = false;
-// }
-// }
-// }
-// // Identifying existing flagships in the database, so we don't have to insert them again.
-// Iterator<IPCrossCutting> iteratorTwo = project.getCrossCuttings().iterator();
-// while (iteratorTwo.hasNext()) {
-// if (previousCrossCuttingElements.contains(iteratorTwo.next())) {
-// iteratorTwo.remove();
-// }
-// }
-// // Adding new Flagship Project Focuses.
-// for (IPCrossCutting ipCrossCuttingElement : project.getCrossCuttings()) {
-// saved = ipCrossCuttingManager.saveCrossCutting(project.getId(), ipCrossCuttingElement.getId());
-// if (!saved) {
-// success = false;
-// }
-// }
-// // Stop here if something bad happened.
-// if (!success) {
-// addActionError(getText("saving.problem"));
-// return BaseAction.INPUT;
-// }
-// }
+    // if (project.getCrossCuttings() != null) {
+    // // Identifying deleted Cross Cutting Themes
+    // List<IPCrossCutting> previousCrossCuttingElements =
+    // ipCrossCuttingManager.getIPCrossCuttingByProject(project.getId());
+    //
+    // for (IPCrossCutting ipCrossCuttingElement : previousCrossCuttingElements) {
+    // if (!project.getCrossCuttings().contains(ipCrossCuttingElement)) {
+    // deleted = ipCrossCuttingManager.deleteCrossCutting(project.getId(), ipCrossCuttingElement.getId());
+    // if (!deleted) {
+    // success = false;
+    // }
+    // }
+    // }
+    // // Identifying existing flagships in the database, so we don't have to insert them again.
+    // Iterator<IPCrossCutting> iteratorTwo = project.getCrossCuttings().iterator();
+    // while (iteratorTwo.hasNext()) {
+    // if (previousCrossCuttingElements.contains(iteratorTwo.next())) {
+    // iteratorTwo.remove();
+    // }
+    // }
+    // // Adding new Flagship Project Focuses.
+    // for (IPCrossCutting ipCrossCuttingElement : project.getCrossCuttings()) {
+    // saved = ipCrossCuttingManager.saveCrossCutting(project.getId(), ipCrossCuttingElement.getId());
+    // if (!saved) {
+    // success = false;
+    // }
+    // }
+    // // Stop here if something bad happened.
+    // if (!success) {
+    // addActionError(getText("saving.problem"));
+    // return BaseAction.INPUT;
+    // }
+    // }
 
     // If there are some warnings, show a different message: Saving with problems
-    if (getActionMessages().size() > 0) {
-      addActionMessage(getText("saving.saved.problem"));
+    if (this.getActionMessages().size() > 0) {
+      this.addActionMessage(this.getText("saving.saved.problem"));
       return BaseAction.INPUT;
     } else {
-      addActionMessage(getText("saving.success", new String[] {getText("preplanning.projectDescription.title")}));
+      this.addActionMessage(this.getText("saving.success",
+        new String[] {this.getText("preplanning.projectDescription.title")}));
       return BaseAction.SUCCESS;
     }
   }
 
-// public void setIpCrossCuttings(List<IPCrossCutting> ipCrossCuttings) {
-// this.ipCrossCuttings = ipCrossCuttings;
-// }
+  // public void setIpCrossCuttings(List<IPCrossCutting> ipCrossCuttings) {
+  // this.ipCrossCuttings = ipCrossCuttings;
+  // }
 
   public void setIpProgramFlagships(List<IPProgram> ipProgramFlagships) {
     this.ipProgramFlagships = ipProgramFlagships;

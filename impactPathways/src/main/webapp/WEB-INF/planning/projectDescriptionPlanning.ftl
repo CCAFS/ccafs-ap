@@ -48,7 +48,7 @@
           [#-- Project Program Creator --]
           <div class="halfPartBlock">
             <h6>[@s.text name="planning.projectDescription.programCreator" /]</h6>
-            <p>${project.programCreator.acronym}</p>
+            <p>${project.liaisonInstitution.acronym}</p>
           </div>
           [#--  Project Owner Contact Person --]
           <div class="halfPartBlock">
@@ -131,8 +131,8 @@
                   [#list ipProgramFlagships as element]
                     <li class="clearfix [#if !element_has_next]last[/#if]">
                       <span class="coreProject_name">${element.name}</span> 
-                      <input class="coreProject_id" type="hidden" name="project.coreProjects[${element_index}].id" value="${element.id?c}" />
                       [#if editable]<span class="listButton remove">Remove</span>[/#if] 
+                      <input class="coreProject_id" type="hidden" name="project.coreProjects[${element_index}].id" value="${element.id?c}" />
                     </li>
                   [/#list]
                 </ul>
@@ -161,15 +161,16 @@
   [#-- Hidden values used by js --]
   <input id="minDateValue" value="${startYear?c}-01-01" type="hidden"/>
   <input id="maxDateValue" value="${endYear?c}-12-31" type="hidden"/> 
-  <input id="programID" value="${project.programCreator.id?c}" type="hidden"/>
+  <input id="programID" value="${project.liaisonInstitution.id?c}" type="hidden"/>
   
   [#-- Core project list template --]
   <ul style="display:none">
     <li id="cpListTemplate" class="clearfix">
       <span class="coreProject_name">{element.name}</span> 
-      <input class="coreProject_id" type="hidden" name="project.coreProjects[{element_index}].id" value="{element.id?c}" />
       <span class="listButton remove">Remove</span>
+      <input class="coreProject_id" type="hidden" name="project.coreProjects[{element_index}].id" value="{element.id?c}" />
     </li>
   </ul>
+  
 </section>
 [#include "/WEB-INF/global/pages/footer.ftl"]

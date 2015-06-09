@@ -17,9 +17,11 @@ import org.cgiar.ccafs.ap.action.BaseAction;
 import org.cgiar.ccafs.ap.config.APConstants;
 import org.cgiar.ccafs.ap.data.manager.BudgetManager;
 import org.cgiar.ccafs.ap.data.manager.IPProgramManager;
+import org.cgiar.ccafs.ap.data.manager.LiaisonInstitutionManager;
 import org.cgiar.ccafs.ap.data.manager.ProjectManager;
 import org.cgiar.ccafs.ap.data.manager.UserManager;
 import org.cgiar.ccafs.ap.data.model.IPProgram;
+import org.cgiar.ccafs.ap.data.model.LiaisonInstitution;
 import org.cgiar.ccafs.ap.data.model.Project;
 import org.cgiar.ccafs.ap.data.model.User;
 import org.cgiar.ccafs.ap.validation.planning.ProjectDescriptionValidator;
@@ -42,6 +44,7 @@ public class ProjectDescriptionPlanningAction extends BaseAction {
   // Manager
   private ProjectManager projectManager;
   private IPProgramManager ipProgramManager;
+  private LiaisonInstitutionManager liaisonInstitutionManager;
   private UserManager userManager;
   private BudgetManager budgetManager;
 
@@ -50,6 +53,7 @@ public class ProjectDescriptionPlanningAction extends BaseAction {
   // Model for the front-end
   private List<IPProgram> ipProgramRegions;
   private List<IPProgram> ipProgramFlagships;
+  private List<LiaisonInstitution> liaisonInstitutions;
   // private List<IPCrossCutting> ipCrossCuttings;
   private List<User> allOwners;
 
@@ -63,12 +67,13 @@ public class ProjectDescriptionPlanningAction extends BaseAction {
   @Inject
   public ProjectDescriptionPlanningAction(APConfig config, ProjectManager projectManager,
     IPProgramManager ipProgramManager, UserManager userManager, BudgetManager budgetManager,
-    ProjectDescriptionValidator validator) {
+    LiaisonInstitutionManager liaisonInstitutionManager, ProjectDescriptionValidator validator) {
     super(config);
     this.projectManager = projectManager;
     this.ipProgramManager = ipProgramManager;
     this.userManager = userManager;
     this.budgetManager = budgetManager;
+    this.liaisonInstitutionManager = liaisonInstitutionManager;
     this.validator = validator;
   }
 
@@ -123,6 +128,10 @@ public class ProjectDescriptionPlanningAction extends BaseAction {
   }
 
 
+  public List<LiaisonInstitution> getLiaisonInstitutions() {
+    return liaisonInstitutions;
+  }
+
   public Project getProject() {
     return project;
   }
@@ -165,6 +174,7 @@ public class ProjectDescriptionPlanningAction extends BaseAction {
     }
   }
 
+
   @Override
   public void prepare() throws Exception {
     super.prepare();
@@ -185,6 +195,9 @@ public class ProjectDescriptionPlanningAction extends BaseAction {
 
     // Getting the information of the Flagships program for the View
     ipProgramFlagships = ipProgramManager.getProgramsByType(APConstants.FLAGSHIP_PROGRAM_TYPE);
+
+    // Get the list of institutions that can be management liaison of a project.
+    liaisonInstitutions = liaisonInstitutionManager.getLiaisonInstitutions();
 
     // Getting project
     project = projectManager.getProject(projectID);
@@ -210,6 +223,9 @@ public class ProjectDescriptionPlanningAction extends BaseAction {
   @Override
   public String save() {
     if (this.isSaveable()) {
+      if (1 == 1) {
+        return SUCCESS;
+      }
       // ----- SAVING Project description -----
       int result = 0;
       // if user is project owner or FPL/RPL, he is able to fully edit.

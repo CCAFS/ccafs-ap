@@ -42,7 +42,7 @@ public class Project {
   private ProjectPartner leader; // Project Leader.
   private ProjectPartner coordinator; // Project Coordinator.
   private String leaderResponsabilities;
-  private IPProgram programCreator; // Creator program. e.g. LAM, FP4, CU, etc.
+  private LiaisonInstitution liaisonInstitution; // Creator program. e.g. LAM, FP4, CU, etc.
   private User owner;
   private List<ProjectPartner> projectPartners; // Project partners or 2-level partners.
   private List<ProjectPartner> ppaPartners; // PPA Partners or CCAFS Program Partners.
@@ -52,6 +52,10 @@ public class Project {
   private List<IPElement> outputs;
   private List<IPIndicator> indicators;
   private IPOtherContribution ipOtherContribution;
+  private boolean projectWorkplanRequired;
+  private String projectWorkplanName;
+  private String bilateralContractProposalName;
+  private List<Project> linkedCoreProjects;
   private long created; // Timestamp number when the project was created
 
   public Project() {
@@ -154,6 +158,10 @@ public class Project {
     }
 
     return allYears;
+  }
+
+  public String getBilateralContractProposalName() {
+    return bilateralContractProposalName;
   }
 
   public Budget getBudget(int institutionID, int budgetType, int year) {
@@ -286,13 +294,20 @@ public class Project {
     return ipOtherContribution;
   }
 
-
   public ProjectPartner getLeader() {
     return leader;
   }
 
   public String getLeaderResponsabilities() {
     return leaderResponsabilities;
+  }
+
+  public LiaisonInstitution getLiaisonInstitution() {
+    return liaisonInstitution;
+  }
+
+  public List<Project> getLinkedCoreProjects() {
+    return linkedCoreProjects;
   }
 
   public Map<String, ProjectOutcome> getOutcomes() {
@@ -307,16 +322,21 @@ public class Project {
     return owner;
   }
 
+  public List<ProjectPartner> getPpaPartners() {
+    return ppaPartners;
+  }
+
   public List<ProjectPartner> getPPAPartners() {
     return ppaPartners;
   }
 
-  public IPProgram getProgramCreator() {
-    return programCreator;
-  }
 
   public List<ProjectPartner> getProjectPartners() {
     return projectPartners;
+  }
+
+  public String getProjectWorkplanName() {
+    return projectWorkplanName;
   }
 
   public List<IPProgram> getRegions() {
@@ -368,8 +388,16 @@ public class Project {
     return this.getId();
   }
 
+  public boolean isProjectWorkplanRequired() {
+    return projectWorkplanRequired;
+  }
+
   public void setActivities(List<Activity> activities) {
     this.activities = activities;
+  }
+
+  public void setBilateralContractProposalName(String bilateralContractProposalName) {
+    this.bilateralContractProposalName = bilateralContractProposalName;
   }
 
   public void setBudgets(List<Budget> budgets) {
@@ -412,6 +440,14 @@ public class Project {
     this.leaderResponsabilities = leaderResponsabilities;
   }
 
+  public void setLiaisonInstitution(LiaisonInstitution liaisonInstitution) {
+    this.liaisonInstitution = liaisonInstitution;
+  }
+
+  public void setLinkedCoreProjects(List<Project> linkedCoreProjects) {
+    this.linkedCoreProjects = linkedCoreProjects;
+  }
+
   public void setOutcomes(Map<String, ProjectOutcome> outcomes) {
     this.outcomes = outcomes;
   }
@@ -424,16 +460,24 @@ public class Project {
     this.owner = owner;
   }
 
+  public void setPpaPartners(List<ProjectPartner> ppaPartners) {
+    this.ppaPartners = ppaPartners;
+  }
+
   public void setPPAPartners(List<ProjectPartner> ppaPartners) {
     this.ppaPartners = ppaPartners;
   }
 
-  public void setProgramCreator(IPProgram creator) {
-    this.programCreator = creator;
-  }
-
   public void setProjectPartners(List<ProjectPartner> projectPartners) {
     this.projectPartners = projectPartners;
+  }
+
+  public void setProjectWorkplanName(String projectWorkplanName) {
+    this.projectWorkplanName = projectWorkplanName;
+  }
+
+  public void setProjectWorkplanRequired(boolean projectWorkplanRequired) {
+    this.projectWorkplanRequired = projectWorkplanRequired;
   }
 
   public void setRegions(List<IPProgram> regions) {

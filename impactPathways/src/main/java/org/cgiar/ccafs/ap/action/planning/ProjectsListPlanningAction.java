@@ -78,7 +78,8 @@ public class ProjectsListPlanningAction extends BaseAction {
     newProject.setOwner(this.getCurrentUser());
     IPProgram userProgram = this.getCurrentUser().getCurrentInstitution().getProgram();
     if (userProgram != null) {
-      newProject.setProgramCreator(userProgram);
+      // TODO HC - Set the liaison institution as creator
+      // newProject.setLCreator(userProgram);
     } else {
       LOG
         .error(

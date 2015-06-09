@@ -18,6 +18,7 @@ import org.cgiar.ccafs.ap.data.dao.ProjectDAO;
 import org.cgiar.ccafs.ap.data.manager.BudgetManager;
 import org.cgiar.ccafs.ap.data.manager.IPProgramManager;
 import org.cgiar.ccafs.ap.data.manager.InstitutionManager;
+import org.cgiar.ccafs.ap.data.manager.LiaisonInstitutionManager;
 import org.cgiar.ccafs.ap.data.manager.ProjectManager;
 import org.cgiar.ccafs.ap.data.manager.UserManager;
 import org.cgiar.ccafs.ap.data.model.Budget;
@@ -57,16 +58,18 @@ public class ProjectManagerImpl implements ProjectManager {
   private InstitutionManager institutionManager;
   private IPProgramManager ipProgramManager;
   private BudgetManager budgetManager;
+  private LiaisonInstitutionManager liaisonInstitutionManager;
 
 
   @Inject
   public ProjectManagerImpl(ProjectDAO projectDAO, UserManager userManager, InstitutionManager institutionManager,
-    IPProgramManager ipProgramManager, BudgetManager budgetManager) {
+    IPProgramManager ipProgramManager, BudgetManager budgetManager, LiaisonInstitutionManager liaisonInstitutionManager) {
     this.projectDAO = projectDAO;
     this.userManager = userManager;
     this.institutionManager = institutionManager;
     this.ipProgramManager = ipProgramManager;
     this.budgetManager = budgetManager;
+    this.liaisonInstitutionManager = liaisonInstitutionManager;
   }
 
   @Override
@@ -218,8 +221,8 @@ public class ProjectManagerImpl implements ProjectManager {
       project.setCreated(Long.parseLong(projectData.get("created")));
       // Getting the Program creator
       if (projectData.get("liaison_institution_id") != null) {
-        project.setProgramCreator(ipProgramManager.getIPProgramById(Integer.parseInt(projectData
-          .get("liaison_institution_id"))));
+        int institutionID = Integer.parseInt(projectData.get("liaison_institution_id"));
+        project.setLiaisonInstitution(liaisonInstitutionManager.getLiaisonInstitution(institutionID));
       }
 
       return project;
@@ -387,8 +390,8 @@ public class ProjectManagerImpl implements ProjectManager {
       }
       // Setting program creator.
       if (elementData.get("liaison_institution_id") != null) {
-        project.setProgramCreator(ipProgramManager.getIPProgramById(Integer.parseInt(elementData
-          .get("liaison_institution_id"))));
+        int institutionID = Integer.parseInt(elementData.get("liaison_institution_id"));
+        project.setLiaisonInstitution(liaisonInstitutionManager.getLiaisonInstitution(institutionID));
       }
       // Setting creation date.
       project.setCreated(Long.parseLong(elementData.get("created")));
@@ -431,8 +434,8 @@ public class ProjectManagerImpl implements ProjectManager {
             LOG.error("There was an error formatting the dates", e);
           }
         }
-        project.setProgramCreator(ipProgramManager.getIPProgramById(Integer.parseInt(elementData
-          .get("liaison_institution_id"))));
+        int institutionID = Integer.parseInt(elementData.get("liaison_institution_id"));
+        project.setLiaisonInstitution(liaisonInstitutionManager.getLiaisonInstitution(institutionID));
 
         project.setOwner(userManager.getUser(Integer.parseInt(elementData.get("project_owner_user_id"))));
         project.getOwner().setCurrentInstitution(
@@ -481,7 +484,7 @@ public class ProjectManagerImpl implements ProjectManager {
       // Getting the employee identifier which is the owner_id.
       int ownerId = userManager.getEmployeeID(project.getOwner());
       projectData.put("liaison_user_id", ownerId);
-      projectData.put("liaison_institution_id", project.getProgramCreator().getId());
+      projectData.put("liaison_institution_id", project.getLiaisonInstitution().getId());
     } else {
       // Update project
       projectData.put("id", project.getId());
