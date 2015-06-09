@@ -18,6 +18,7 @@ import org.cgiar.ccafs.ap.config.APConstants;
 import org.cgiar.ccafs.ap.data.manager.BudgetManager;
 import org.cgiar.ccafs.ap.data.manager.IPProgramManager;
 import org.cgiar.ccafs.ap.data.manager.LiaisonInstitutionManager;
+import org.cgiar.ccafs.ap.data.manager.LinkedCoreProjectManager;
 import org.cgiar.ccafs.ap.data.manager.ProjectManager;
 import org.cgiar.ccafs.ap.data.manager.UserManager;
 import org.cgiar.ccafs.ap.data.model.IPProgram;
@@ -47,6 +48,7 @@ public class ProjectDescriptionPlanningAction extends BaseAction {
   private LiaisonInstitutionManager liaisonInstitutionManager;
   private UserManager userManager;
   private BudgetManager budgetManager;
+  private LinkedCoreProjectManager linkedCoreProjectManager;
 
   private static Logger LOG = LoggerFactory.getLogger(ProjectDescriptionPlanningAction.class);
 
@@ -67,7 +69,8 @@ public class ProjectDescriptionPlanningAction extends BaseAction {
   @Inject
   public ProjectDescriptionPlanningAction(APConfig config, ProjectManager projectManager,
     IPProgramManager ipProgramManager, UserManager userManager, BudgetManager budgetManager,
-    LiaisonInstitutionManager liaisonInstitutionManager, ProjectDescriptionValidator validator) {
+    LiaisonInstitutionManager liaisonInstitutionManager, LinkedCoreProjectManager linkedCoreProjectManager,
+    ProjectDescriptionValidator validator) {
     super(config);
     this.projectManager = projectManager;
     this.ipProgramManager = ipProgramManager;
@@ -208,6 +211,11 @@ public class ProjectDescriptionPlanningAction extends BaseAction {
       project.setFlagships(ipProgramManager.getProjectFocuses(projectID, APConstants.FLAGSHIP_PROGRAM_TYPE));
       // Getting the information of the Cross Cutting Theme associated with the project
       // project.setCrossCuttings(ipCrossCuttingManager.getIPCrossCuttingByProject(projectID));
+    }
+
+    // If project is bilateral cofounded, we should load the core projects linked to it.
+    if (project.getType().equals(APConstants.PROJECT_BILATERAL_COFUNDED)) {
+      project.setLinkedCoreProjects(linkedCoreProjectManager.getLinkedCoreProjects(projectID));
     }
 
     // If the user is not admin or the project owner, we should keep some information
