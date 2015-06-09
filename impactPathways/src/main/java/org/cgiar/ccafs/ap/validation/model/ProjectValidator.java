@@ -21,6 +21,7 @@ import org.cgiar.ccafs.ap.data.model.IPIndicator;
 import org.cgiar.ccafs.ap.data.model.IPOtherContribution;
 import org.cgiar.ccafs.ap.data.model.IPProgram;
 import org.cgiar.ccafs.ap.data.model.LiaisonInstitution;
+import org.cgiar.ccafs.ap.data.model.Project;
 import org.cgiar.ccafs.ap.data.model.ProjectOutcome;
 import org.cgiar.ccafs.ap.data.model.ProjectPartner;
 import org.cgiar.ccafs.ap.data.model.User;
@@ -49,11 +50,19 @@ public class ProjectValidator extends BaseValidator {
     return false;
   }
 
+  public boolean isValidBilateralContractProposalName(String proposalName) {
+    return (this.isValidString(proposalName)) ? true : false;
+  }
+
   public boolean isValidBudget(List<Budget> budgets) {
     return false;
   }
 
   public boolean isValidCoordinator(ProjectPartner coordinator) {
+    return false;
+  }
+
+  public boolean isValidCoreProjects(List<Project> linkedCoreProjects) {
     return false;
   }
 
@@ -103,6 +112,10 @@ public class ProjectValidator extends BaseValidator {
 
   public boolean isValidProjectPartners(List<ProjectPartner> projectPartners) {
     return false;
+  }
+
+  public boolean isValidProjectWorkplanName(String workplanName) {
+    return (this.isValidString(workplanName)) ? true : false;
   }
 
   public boolean isValidRegions(List<IPProgram> regions) {
