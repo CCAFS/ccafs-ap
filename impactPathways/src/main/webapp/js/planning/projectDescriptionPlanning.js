@@ -60,11 +60,11 @@ $(document).ready(function() {
     $.ajax({
         'url': '../../coreProjects.do',
         beforeSend: function() {
-          $coreSelect.empty().append("<option value='-1'>Please select a Core-Project</option>");
+          $coreSelect.empty().append(setOption(-1, "Please select a Core-Project"));
         },
         success: function(data) {
           $.each(data.projects, function(i,project) {
-            $coreSelect.append("<option value='" + project.id + "'>" + project.title + "</option>");
+            $coreSelect.append(setOption(project.id, project.title));
           });
         },
         complete: function() {
@@ -74,38 +74,32 @@ $(document).ready(function() {
   }
 
   function addItemList($item) {
-    var data = {
-        id: $item.val(),
-        'name': $item.text()
-    };
-    var $option = $("#cpListTemplate").clone(true).removeAttr("id");
-    $option.find('.coreProject_name').html(data.name);
-    $option.find('.coreProject_id').val(data.id);
-    $coreProjects.prepend($option);
+    var $listElement = $("#cpListTemplate").clone(true).removeAttr("id");
+    $listElement.find('.coreProject_name').html($item.text());
+    $listElement.find('.coreProject_id').val($item.val());
+    $coreProjects.prepend($listElement);
     $item.remove();
-    setIndexes();
     $coreSelect.trigger("liszt:updated");
+    setIndexes();
   }
 
   function removeItemList($item) {
-    $item.hide("slow", function() {
-      $item.remove();
-      setIndexes();
-    });
     var data = {
         id: $item.find('.coreProject_id').val(),
         'name': $item.find('.coreProject_name').text()
     };
-    $coreSelect.append("<option value='" + data.id + "'>" + data.name + "</option>");
+    $coreSelect.append(setOption(data.id, data.name));
     $coreSelect.trigger("liszt:updated");
+    $item.hide("slow", function() {
+      $item.remove();
+      setIndexes();
+    });
   }
 
   function setIndexes() {
     $coreProjects.find('li').each(function(i,item) {
-      var elementName = function(attr) {
-        return "project.coreProjects[" + i + "]." + attr;
-      };
-      $(item).find('.coreProject_id').attr('name', elementName('id'));
+      var elementName = "project.coreProjects[" + i + "].";
+      $(item).find('.coreProject_id').attr('name', elementName + 'id');
     });
   }
 

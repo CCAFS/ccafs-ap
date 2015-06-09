@@ -36,7 +36,7 @@
       </p>
     [/#if] 
     <div id="projectDescription" class="borderBox">
-      [#-- Button for edit this section --] 
+      [#-- Button for edit this section --]
       [#if (!editable && canEdit)]
         <div class="editButton"><a href="[@s.url includeParams='get'][@s.param name="edit"]true[/@s.param][/@s.url]">[@s.text name="form.buttons.edit" /]</a></div>
       [/#if]
@@ -46,27 +46,27 @@
         [@customForm.textArea name="project.title" i18nkey="planning.projectDescription.projectTitle" required=true className="project-title" editable=editable/]
         <div id="projectDescription" class="fullBlock">
           [#-- Project Program Creator --]
-          <div class="halfPartBlock">
-            <h6>[@s.text name="planning.projectDescription.programCreator" /]</h6>
-            <p>${project.liaisonInstitution.acronym}</p>
+          <div class="halfPartBlock">  
+            [@customForm.select name="project.liaisonInstitution" label="" disabled=( !editable ) i18nkey="planning.projectDescription.programCreator" listName="liaisonInstitutions" keyFieldName="id"  displayFieldName="name" value="project.liaisonInstitution.id" editable=editable/]
           </div>
           [#--  Project Owner Contact Person --]
           <div class="halfPartBlock">
-            [@customForm.select name="project.owner" label="" disabled=!editable i18nkey="preplanning.projectDescription.projectownercontactperson" listName="allOwners" keyFieldName="employeeId"  displayFieldName="composedOwnerName" editable=editable/]
+            [@customForm.select name="project.owner" label="" disabled=( !editable || !securityContext.canEditManagementLiaison() ) i18nkey="preplanning.projectDescription.projectownercontactperson" listName="allOwners" keyFieldName="employeeId"  displayFieldName="composedOwnerName" editable=editable/]
           </div> 
           [#-- Start Date --]
           <div class="halfPartBlock">
-            [@customForm.input name="project.startDate" type="text" disabled=!editable i18nkey="preplanning.projectDescription.startDate" required=true editable=editable /]
+            [@customForm.input name="project.startDate" type="text" disabled=( !editable || !securityContext.canEditStartDate() ) i18nkey="preplanning.projectDescription.startDate" required=true editable=editable /]
           </div> 
           [#-- End Date --]
           <div class="halfPartBlock">
-              [@customForm.input name="project.endDate" type="text" disabled=!editable i18nkey="preplanning.projectDescription.endDate" required=true editable=editable /]
+              [@customForm.input name="project.endDate" type="text" disabled=( !editable || !securityContext.canEditEndDate() ) i18nkey="preplanning.projectDescription.endDate" required=true editable=editable /]
           </div>
         </div>
         [#-- Project upload work plan --]
         <div id="uploadWorkPlan" class="tickBox-wrapper fullBlock">
           [@customForm.checkbox name="project.isRequiredUploadworkplan" value=""  i18nkey="preplanning.projectDescription.isRequiredUploadworkplan" disabled=!editable /]
-          [#if editable]
+          [#if editable] 
+            [#-- TODO Verify permissions for canUploadProjectWorkplan and canUploadBilateralContract --]
             <div class="tickBox-toggle uploadContainer">
               <div class="halfPartBlock">
                 <p>[@s.text name="preplanning.projectDescription.uploadProjectWorkplan" /]</p>
@@ -91,7 +91,7 @@
             <div class="checkboxGroup">  
               [#if editable]
                 [@s.fielderror cssClass="fieldError" fieldName="project.flagships"/]
-                [@s.checkboxlist name="project.flagships" disabled=( !editable || !securityContext.canEditProjectFlagships() ) list="ipProgramFlagships" listKey="id" listValue="getComposedName(id)" cssClass="checkbox" value="flagshipIds" /]
+                [@s.checkboxlist name="project.flagships" disabled=!securityContext.canEditProjectFlagships() list="ipProgramFlagships" listKey="id" listValue="getComposedName(id)" cssClass="checkbox" value="flagshipIds" /]
               [#else] 
                 [#list project.flagships as element]
                  <p class="checked">${element.name}</p>
@@ -105,7 +105,7 @@
             <div class="checkboxGroup">
               [#if editable]
                 [@s.fielderror cssClass="fieldError" fieldName="project.regions"/]
-                [@s.checkboxlist name="project.regions" disabled=!fullEditable list="ipProgramRegions" listKey="id" listValue="name" cssClass="checkbox" value="regionIds" /]
+                [@s.checkboxlist name="project.regions" disabled=!securityContext.canEditProjectRegions()  list="ipProgramRegions" listKey="id" listValue="name" cssClass="checkbox" value="regionIds" /]
               [#else]  
                 [#list project.regions as element]
                   <p class="checked">${element.name}</p>
@@ -118,19 +118,18 @@
       
       
       [#if project.type !='CORE']
-      [#-- Core Projects for Bilateral project type --] 
+      [#-- Core Projects for Bilateral project type --]
       <h1 class="contentTitle"> [@s.text name="planning.projectDescription.coreProjects" /] </h1> 
-      <div id="projectCoreProjects" class="isLinked tickBox-wrapper fullBlock"> 
-        ${project.linkedCoreProjects}
+      <div id="projectCoreProjects" class="isLinked tickBox-wrapper fullBlock">  
         [@customForm.checkbox name="project.isLinked" value=""  i18nkey="planning.projectDescription.isLinkedCoreProjects" disabled=!editable /]
           <div class="tickBox-toggle coreProjects fullBlock">
             <div class="panel primary">
               <div class="panel-head"> [@s.text name="planning.projectDescription.chouseCoreProject" /]</div>
               <div id="coreProjectsList" class="panel-body"> 
                 <ul class="list">
-                  [#list ipProgramFlagships as element]
+                  [#list project.linkedCoreProjects as element]
                     <li class="clearfix [#if !element_has_next]last[/#if]">
-                      <span class="coreProject_name">${element.name}</span> 
+                      <span class="coreProject_name">${element.title}</span> 
                       [#if editable]<span class="listButton remove">Remove</span>[/#if] 
                       <input class="coreProject_id" type="hidden" name="project.coreProjects[${element_index}].id" value="${element.id?c}" />
                     </li>
