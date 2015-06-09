@@ -222,14 +222,17 @@ public class ProjectDescriptionPlanningAction extends BaseAction {
     // unmutable
     previousProject = new Project();
     previousProject.setId(project.getId());
-    previousProject.setOwner(project.getOwner());
     previousProject.setTitle(project.getTitle());
+    previousProject.setLiaisonInstitution(project.getLiaisonInstitution());
+    previousProject.setOwner(project.getOwner());
     previousProject.setStartDate(project.getStartDate());
     previousProject.setEndDate(project.getEndDate());
+    previousProject.setSummary(project.getSummary());
+    previousProject.setFlagships(project.getFlagships());
+    previousProject.setRegions(project.getRegions());
   }
 
-  @Override
-  public String save() {
+  public String previousSave() {
     if (this.isSaveable()) {
       if (1 == 1) {
         return SUCCESS;
@@ -377,6 +380,25 @@ public class ProjectDescriptionPlanningAction extends BaseAction {
     }
     return BaseAction.ERROR;
 
+  }
+
+  @Override
+  public String save() {
+    if (this.isEditable()) {
+      // Update only the values to which the user is authorized to modify
+      previousProject.setTitle(project.getTitle());
+
+      if (securityContext.canEditManagementLiaison()) {
+        previousProject.setLiaisonInstitution(project.getLiaisonInstitution());
+      }
+
+      if (securityContext.canEditManagementLiaison()) {
+        previousProject.setOwner(project.getOwner());
+      }
+
+
+    }
+    return NOT_AUTHORIZED;
   }
 
   public void setIpProgramFlagships(List<IPProgram> ipProgramFlagships) {

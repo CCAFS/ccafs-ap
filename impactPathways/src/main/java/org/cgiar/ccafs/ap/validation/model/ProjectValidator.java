@@ -90,7 +90,7 @@ public class ProjectValidator extends BaseValidator {
   }
 
   public boolean isValidLiaisonInstitution(LiaisonInstitution liaisonInstitution) {
-    return false;
+    return (liaisonInstitution != null) ? true : false;
   }
 
   public boolean isValidLinkedCoreProjects(List<Project> linkedCoreProjects) {
