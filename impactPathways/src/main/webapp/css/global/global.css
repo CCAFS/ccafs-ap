@@ -1755,6 +1755,12 @@ textarea[id$='summary'] {
   height: 44px;
 }
 
+.coreProject_name {
+  display: block;
+  width: 90%;
+  float: left;
+}
+
 /* Project Partners*/
 
 #projectLeader {

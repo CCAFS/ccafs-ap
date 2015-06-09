@@ -25,7 +25,7 @@
   [#include "/WEB-INF/planning/planningProjectsSubMenu.ftl" /]
   
   [@s.form action="description" cssClass="pure-form"]
-  <article class="halfContent" id="mainInformation">
+  <article class="halfContent" id="mainInformation"> 
     [#include "/WEB-INF/planning/projectDescription-planning-sub-menu.ftl" /]
     [#-- Informing user that he/she doesn't have enough privileges to edit. See GrantProjectPlanningAccessInterceptor--]
     [#if !canEdit ]
@@ -116,27 +116,34 @@
         </div> 
       </fieldset>
       
+      
+      [#if project.type !='CORE']
       [#-- Core Projects for Bilateral project type --] 
       <h1 class="contentTitle"> [@s.text name="planning.projectDescription.coreProjects" /] </h1> 
       <div id="projectCoreProjects" class="isLinked tickBox-wrapper fullBlock"> 
-        [@customForm.checkbox name="project.isLinked" value=""  i18nkey="planning.projectDescription.isLinkedCoreProjects" disabled=!editable  /]
-        [#if editable]
+        ${project.linkedCoreProjects}
+        [@customForm.checkbox name="project.isLinked" value=""  i18nkey="planning.projectDescription.isLinkedCoreProjects" disabled=!editable /]
           <div class="tickBox-toggle coreProjects fullBlock">
             <div class="panel primary">
               <div class="panel-head"> [@s.text name="planning.projectDescription.chouseCoreProject" /]</div>
               <div id="coreProjectsList" class="panel-body"> 
-                <ul>
-                  [#list project.regions as element]
-                    <li>${element.name}</li>
+                <ul class="list">
+                  [#list ipProgramFlagships as element]
+                    <li class="clearfix [#if !element_has_next]last[/#if]">
+                      <span class="coreProject_name">${element.name}</span> 
+                      <input class="coreProject_id" type="hidden" name="project.coreProjects[${element_index}].id" value="${element.id?c}" />
+                      [#if editable]<span class="listButton remove">Remove</span>[/#if] 
+                    </li>
                   [/#list]
                 </ul>
-                [@customForm.select name="" label="" disabled=!canEdit i18nkey="" listName="allPPAPartners" keyFieldName="id" displayFieldName="getComposedName()" className="ppaPartnersSelect" value="" /]
+                [#if editable]
+                  [@customForm.select name="" label="" disabled=!canEdit i18nkey="" listName="allPPAPartners" keyFieldName="id" displayFieldName="getComposedName()" className="ppaPartnersSelect" value="" /]
+                [/#if] 
               </div>
             </div>
-          </div>
-        [/#if]
-      </div> 
-      
+          </div> 
+      </div>   
+      [/#if]
     </div> 
     
     [#if editable]
@@ -155,5 +162,14 @@
   <input id="minDateValue" value="${startYear?c}-01-01" type="hidden"/>
   <input id="maxDateValue" value="${endYear?c}-12-31" type="hidden"/> 
   <input id="programID" value="${project.programCreator.id?c}" type="hidden"/>
+  
+  [#-- Core project list template --]
+  <ul style="display:none">
+    <li id="cpListTemplate" class="clearfix">
+      <span class="coreProject_name">{element.name}</span> 
+      <input class="coreProject_id" type="hidden" name="project.coreProjects[{element_index}].id" value="{element.id?c}" />
+      <span class="listButton remove">Remove</span>
+    </li>
+  </ul>
 </section>
 [#include "/WEB-INF/global/pages/footer.ftl"]
