@@ -62,7 +62,7 @@ public class ProjectDescriptionValidator extends BaseValidator {
   public void validateBilateralContractProposalName(BaseAction action, String proposalName) {
     if (!projectValidator.isValidBilateralContractProposalName(proposalName)) {
       // TODO - Add the i18n key
-      this.addMessage(this.getText("").toLowerCase());
+      this.addMessage(this.getText("--------").toLowerCase());
     }
   }
 
@@ -71,6 +71,11 @@ public class ProjectDescriptionValidator extends BaseValidator {
     this.validateStartDate(action, project.getStartDate());
     this.validateEndDate(action, project.getEndDate());
     this.validateBilateralContractProposalName(action, project.getBilateralContractProposalName());
+
+    // If project is bilateral co-founded, it should be linked to some core project(s)
+    if (project.getType().equals(APConstants.PROJECT_BILATERAL_COFUNDED)) {
+      this.validateLinkedCoreProjects(action, project.getLinkedCoreProjects());
+    }
   }
 
   private void validateCoreProject(BaseAction action, Project project) {
@@ -103,6 +108,13 @@ public class ProjectDescriptionValidator extends BaseValidator {
   public void validateLiaisonContactPerson(BaseAction action, User user) {
     if (!projectValidator.isValidOwner(user)) {
       this.addMessage(this.getText("preplanning.projectDescription.projectownercontactperson").toLowerCase());
+    }
+  }
+
+  public void validateLinkedCoreProjects(BaseAction action, List<Project> linkedCoreProjects) {
+    if (!projectValidator.isValidLinkedCoreProjects(linkedCoreProjects)) {
+      // TODO HC - Add i18n key
+      this.addMessage(this.getText("----").toLowerCase());
     }
   }
 

@@ -62,15 +62,14 @@ public class ProjectValidator extends BaseValidator {
     return false;
   }
 
-  public boolean isValidCoreProjects(List<Project> linkedCoreProjects) {
-    return false;
-  }
-
   public boolean isValidEndDate(Date endDate) {
     return (endDate != null) ? true : false;
   }
 
   public boolean isValidFlagships(List<IPProgram> flagships) {
+    if (flagships != null && !flagships.isEmpty()) {
+      return true;
+    }
     return false;
   }
 
@@ -94,6 +93,13 @@ public class ProjectValidator extends BaseValidator {
     return false;
   }
 
+  public boolean isValidLinkedCoreProjects(List<Project> linkedCoreProjects) {
+    if (linkedCoreProjects != null && !linkedCoreProjects.isEmpty()) {
+      return true;
+    }
+    return false;
+  }
+
   public boolean isValidOutcomes(Map<String, ProjectOutcome> outcomes) {
     return false;
   }
@@ -103,6 +109,9 @@ public class ProjectValidator extends BaseValidator {
   }
 
   public boolean isValidOwner(User owner) {
+    if (owner != null) {
+      return true;
+    }
     return false;
   }
 
@@ -119,6 +128,9 @@ public class ProjectValidator extends BaseValidator {
   }
 
   public boolean isValidRegions(List<IPProgram> regions) {
+    if (regions != null && !regions.isEmpty()) {
+      return true;
+    }
     return false;
   }
 
