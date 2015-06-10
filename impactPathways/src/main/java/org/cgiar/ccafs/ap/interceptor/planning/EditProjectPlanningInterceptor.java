@@ -69,7 +69,7 @@ public class EditProjectPlanningInterceptor extends AbstractInterceptor {
 
       // Get the identifiers of the projects that the user can edit and validate if that list contains the projectID.
       List<Integer> projectsEditable = projectManager.getProjectIdsEditables(user);
-      canEditProject = projectsEditable.contains(new Integer(projectID));
+      canEditProject = (securityContext.isAdmin()) ? true : projectsEditable.contains(new Integer(projectID));
 
       boolean editParameter = false;
       if (parameters.get(APConstants.EDITABLE_REQUEST) != null) {
@@ -85,7 +85,8 @@ public class EditProjectPlanningInterceptor extends AbstractInterceptor {
 
       // Check the permission if user want to edit or save the form
       if (editParameter || parameters.get("save") != null) {
-        hasPermissionToEdit = securityContext.canEditProjectPlanningSection(actionName, projectID);
+        hasPermissionToEdit =
+          (securityContext.isAdmin()) ? true : securityContext.canEditProjectPlanningSection(actionName, projectID);
       }
     }
 

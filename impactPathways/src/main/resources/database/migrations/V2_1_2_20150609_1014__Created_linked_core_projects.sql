@@ -9,12 +9,12 @@ CREATE  TABLE IF NOT EXISTS `linked_core_projects` (
   INDEX `FK_linked_core_projects_core_projects_idx` (`core_project_id` ASC) ,
   CONSTRAINT `FK_linked_core_projects_bilateral_projects`
     FOREIGN KEY (`bilateral_project_id` )
-    REFERENCES `ccafspr_ip`.`projects` (`id` )
+    REFERENCES `projects` (`id` )
     ON DELETE CASCADE
     ON UPDATE CASCADE,
   CONSTRAINT `FK_linked_core_projects_core_projects`
     FOREIGN KEY (`core_project_id` )
-    REFERENCES `ccafspr_ip`.`projects` (`id` )
+    REFERENCES `projects` (`id` )
     ON DELETE CASCADE
     ON UPDATE CASCADE)
 DEFAULT CHARACTER SET = utf8
