@@ -514,7 +514,7 @@ public class ProjectManagerImpl implements ProjectManager {
         projectData.put("end_date", format.format(project.getEndDate()));
       }
       projectData.put("requires_workplan_upload", project.isWorkplanRequired());
-      projectData.put("liaison_user_id", project.getOwner().getId());
+      projectData.put("user_id", project.getOwner().getId());
       projectData.put("liaison_institution_id", project.getLiaisonInstitution().getId());
     }
 

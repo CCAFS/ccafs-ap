@@ -782,14 +782,15 @@ public class MySQLProjectDAO implements ProjectDAO {
     } else {
       // Update project.
       query.append("UPDATE projects SET title = ?, summary = ?, start_date = ?, end_date = ?, ");
-      query.append("liaison_user_id = ?, requires_workplan_upload = ?, liaison_institution_id = ? ");
+      query.append("liaison_user_id = (SELECT id FROM liaison_users WHERE user_id = ?), ");
+      query.append("requires_workplan_upload = ?, liaison_institution_id = ? ");
       query.append("WHERE id = ?");
       Object[] values = new Object[8];
       values[0] = projectData.get("title");
       values[1] = projectData.get("summary");
       values[2] = projectData.get("start_date");
       values[3] = projectData.get("end_date");
-      values[4] = projectData.get("liaison_user_id");
+      values[4] = projectData.get("user_id");
       values[5] = projectData.get("requires_workplan_upload");
       values[6] = projectData.get("liaison_institution_id");
       values[7] = projectData.get("id");
