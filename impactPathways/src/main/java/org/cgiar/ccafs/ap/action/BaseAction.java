@@ -66,14 +66,17 @@ public class BaseAction extends ActionSupport implements Preparable, SessionAwar
   private boolean saveable; // If user is able to see the save, cancel, delete buttons
   private boolean fullEditable; // If user is able to edit all the form.
 
+  // Justification of the changes
+  protected String justification;
+
   // Loggin
   private static final Logger LOG = LoggerFactory.getLogger(BaseAction.class);
   private Map<String, Object> session;
-
   private HttpServletRequest request;
 
   // Config
   protected APConfig config;
+
   @Inject
   protected SecurityContext securityContext;
 
@@ -112,7 +115,6 @@ public class BaseAction extends ActionSupport implements Preparable, SessionAwar
     return SUCCESS;
   }
 
-
   @Override
   public String execute() throws Exception {
     if (save) {
@@ -132,6 +134,7 @@ public class BaseAction extends ActionSupport implements Preparable, SessionAwar
   public String getBaseUrl() {
     return config.getBaseUrl();
   }
+
 
   /**
    * This method gets all the board Messages
@@ -155,6 +158,10 @@ public class BaseAction extends ActionSupport implements Preparable, SessionAwar
       LOG.warn("There was a problem trying to find the user in the session.");
     }
     return u;
+  }
+
+  public String getJustification() {
+    return justification;
   }
 
   /**
@@ -246,10 +253,10 @@ public class BaseAction extends ActionSupport implements Preparable, SessionAwar
     return SUCCESS;
   }
 
-
   public void setAdd(boolean add) {
     this.add = true;
   }
+
 
   public void setCancel(boolean cancel) {
     this.cancel = true;
@@ -273,6 +280,10 @@ public class BaseAction extends ActionSupport implements Preparable, SessionAwar
 
   public void setFullEditable(boolean fullEditable) {
     this.fullEditable = fullEditable;
+  }
+
+  public void setJustification(String justification) {
+    this.justification = justification;
   }
 
   public void setNext(boolean next) {
