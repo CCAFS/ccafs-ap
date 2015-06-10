@@ -21,6 +21,7 @@ import org.cgiar.ccafs.ap.data.model.Country;
 import org.cgiar.ccafs.ap.data.model.IPProgram;
 import org.cgiar.ccafs.ap.data.model.Institution;
 import org.cgiar.ccafs.ap.data.model.InstitutionType;
+import org.cgiar.ccafs.ap.data.model.ProjectPartner;
 import org.cgiar.ccafs.ap.data.model.User;
 
 import java.util.ArrayList;
@@ -272,6 +273,43 @@ public class InstitutionManagerImpl implements InstitutionManager {
 
     }
     return null;
+  }
+
+
+  @Override
+  public List<Institution> getProjectPartnerContributeInstitutions(ProjectPartner projectPartner) {
+    List<Institution> institutions = new ArrayList<>();
+    List<Map<String, String>> institutionDataList =
+      institutionDAO.getProjectPartnerContributeInstitutions(projectPartner.getId());
+    for (Map<String, String> iData : institutionDataList) {
+      Institution institution = new Institution();
+      institution.setId(Integer.parseInt(iData.get("id")));
+      institution.setName(iData.get("name"));
+      institution.setAcronym(iData.get("acronym"));
+      institution.setPPA(Boolean.parseBoolean(iData.get("is_ppa")));
+
+      // InstitutionType Object
+      InstitutionType type = new InstitutionType();
+      if (iData.get("institution_type_id") != null) {
+        type.setId(Integer.parseInt(iData.get("institution_type_id")));
+        type.setName(iData.get("institution_type_name"));
+        type.setAcronym(iData.get("institution_type_acronym"));
+        institution.setType(type);
+      }
+
+      // Location Object
+      Country country = new Country();
+      if (iData.get("loc_elements_id") != null) {
+        country.setId(Integer.parseInt(iData.get("loc_elements_id")));
+        country.setName(iData.get("loc_elements_name"));
+        country.setCode(iData.get("loc_elements_code"));
+        institution.setCountry(country);
+      }
+
+      // Adding object to the array.
+      institutions.add(institution);
+    }
+    return institutions;
   }
 
 

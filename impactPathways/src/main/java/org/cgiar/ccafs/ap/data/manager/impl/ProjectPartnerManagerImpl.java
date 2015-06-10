@@ -8,12 +8,6 @@
  *****************************************************************/
 package org.cgiar.ccafs.ap.data.manager.impl;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-
-import com.google.inject.Inject;
 import org.cgiar.ccafs.ap.data.dao.ProjectPartnerDAO;
 import org.cgiar.ccafs.ap.data.manager.InstitutionManager;
 import org.cgiar.ccafs.ap.data.manager.ProjectPartnerManager;
@@ -22,6 +16,13 @@ import org.cgiar.ccafs.ap.data.model.Institution;
 import org.cgiar.ccafs.ap.data.model.Project;
 import org.cgiar.ccafs.ap.data.model.ProjectPartner;
 import org.cgiar.ccafs.ap.data.model.User;
+
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
+import com.google.inject.Inject;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -71,6 +72,9 @@ public class ProjectPartnerManagerImpl implements ProjectPartnerManager {
       projectPartner.setUser(userManager.getUser(Integer.parseInt(pData.get("user_id"))));
       // Institution as partner_id
       projectPartner.setInstitution(institutionManager.getInstitution(Integer.parseInt(pData.get("partner_id"))));
+      // Getting the institutions which this partner is contributing to.
+      projectPartner
+        .setContributeInstitutions(institutionManager.getProjectPartnerContributeInstitutions(projectPartner));
       // adding information of the object to the array
       projectPartners.add(projectPartner);
     }
@@ -97,6 +101,10 @@ public class ProjectPartnerManagerImpl implements ProjectPartnerManager {
 
       // Institution as partner_id
       projectPartner.setInstitution(institutionManager.getInstitution(Integer.parseInt(pData.get("partner_id"))));
+
+      // Getting the institutions which this partner is contributing to.
+      projectPartner
+        .setContributeInstitutions(institutionManager.getProjectPartnerContributeInstitutions(projectPartner));
 
       // adding information of the object to the array
       projectPartners.add(projectPartner);
