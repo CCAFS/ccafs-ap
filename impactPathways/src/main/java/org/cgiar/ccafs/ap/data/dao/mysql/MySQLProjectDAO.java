@@ -52,10 +52,10 @@ public class MySQLProjectDAO implements ProjectDAO {
   public boolean deleteProject(int projectID) {
     LOG.debug(">> deleteProject(projectID={})", projectID);
 
-    String query = "DELETE FROM projects WHERE id = ?";
+    String query = "UPDATE projects SET is_active = 0 WHERE id = ?";
 
-    int rowsDeleted = databaseManager.delete(query, new Object[] {projectID});
-    if (rowsDeleted >= 0) {
+    int rowsUpdated = databaseManager.saveData(query, new Object[] {projectID});
+    if (rowsUpdated >= 0) {
       LOG.debug("<< deleteProject():{}", true);
       return true;
     }
@@ -333,6 +333,8 @@ public class MySQLProjectDAO implements ProjectDAO {
     query.append("INNER JOIN institutions i ON li.institution_id = i.id ");
     query.append("WHERE p.id = ");
     query.append(projectID);
+    query.append("AND p.is_active = 1");
+
     try (Connection con = databaseManager.getConnection()) {
       ResultSet rs = databaseManager.makeQuery(query.toString(), con);
       if (rs.next()) {
