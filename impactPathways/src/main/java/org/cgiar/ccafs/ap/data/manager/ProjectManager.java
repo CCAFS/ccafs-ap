@@ -196,13 +196,15 @@ public interface ProjectManager {
   public boolean saveExpectedProjectLeader(int projectId, User expectedLeader);
 
   /**
-   * This method saves or create a project into the database.
+   * This method create or updates a project into the database.
    * 
    * @param project is the Project object to be saved.
+   * @param user - The user who is creating/updating the project
+   * @param justification - Why the user made the change
    * @return A number representing the new Id assigned to the new project, 0 if the project was updated or -1 if some
    *         error happened.
    */
-  public int saveProjectDescription(Project project);
+  public int saveProjectDescription(Project project, User user, String justification);
 
   /**
    * This method save into the database the relation between a project and

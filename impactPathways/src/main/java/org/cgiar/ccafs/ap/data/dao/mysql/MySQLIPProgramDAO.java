@@ -181,6 +181,7 @@ public class MySQLIPProgramDAO implements IPProgramDAO {
     query.append(projectID);
     query.append(" AND ipr.type_id= ");
     query.append(typeID);
+    query.append(" AND pf.is_active = 1 ");
     query.append(" ORDER BY ipr.name");
 
     try (Connection con = databaseManager.getConnection()) {
@@ -193,7 +194,7 @@ public class MySQLIPProgramDAO implements IPProgramDAO {
         projectFocusesData.put("region_id", rs.getString("region_id"));
         projectFocusesData.put("region_name", rs.getString("region_name"));
         projectFocusesData.put("region_code", rs.getString("region_code"));
-        projectFocusesData.put("active_since", rs.getString("active_since"));
+        projectFocusesData.put("active_since", rs.getTimestamp("active_since").getTime() + "");
 
         projectFocusesDataList.add(projectFocusesData);
       }
@@ -209,8 +210,8 @@ public class MySQLIPProgramDAO implements IPProgramDAO {
   public boolean saveProjectFocuses(Map<String, Object> ipElementData) {
     LOG.debug(">> saveProjectFocuses(ipElementData={})", ipElementData);
     StringBuilder query = new StringBuilder();
-    query.append("INSERT INTO project_focuses (project_id, program_id) ");
-    query.append("VALUES (?, ?) ");
+    query.append("INSERT INTO project_focuses (project_id, program_id, created_by) ");
+    query.append("VALUES (?, ?, ?) ");
 
     Object[] values = new Object[2];
     values[0] = ipElementData.get("project_id");

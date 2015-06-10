@@ -493,7 +493,7 @@ public class ProjectManagerImpl implements ProjectManager {
   }
 
   @Override
-  public int saveProjectDescription(Project project) {
+  public int saveProjectDescription(Project project, User user, String justification) {
     Map<String, Object> projectData = new HashMap<>();
     if (project.getId() == -1) {
       // This is a new project. we need to add it to the database.
@@ -501,6 +501,8 @@ public class ProjectManagerImpl implements ProjectManager {
       int ownerId = userManager.getEmployeeID(project.getOwner());
       projectData.put("liaison_user_id", ownerId);
       projectData.put("liaison_institution_id", project.getLiaisonInstitution().getId());
+      projectData.put("created_by", user.getId());
+
     } else {
       // Update project
       projectData.put("id", project.getId());
@@ -516,6 +518,7 @@ public class ProjectManagerImpl implements ProjectManager {
       projectData.put("requires_workplan_upload", project.isWorkplanRequired());
       projectData.put("user_id", project.getOwner().getId());
       projectData.put("liaison_institution_id", project.getLiaisonInstitution().getId());
+      projectData.put("modified_by", user.getId());
     }
 
     return projectDAO.saveProject(projectData);

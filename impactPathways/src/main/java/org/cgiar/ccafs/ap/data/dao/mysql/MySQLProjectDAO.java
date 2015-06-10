@@ -774,20 +774,22 @@ public class MySQLProjectDAO implements ProjectDAO {
     StringBuilder query = new StringBuilder();
     if (projectData.get("id") == null) {
       // Insert a new project record.
-      query.append("INSERT INTO projects (liaison_user_id, liaison_institution_id) ");
-      query.append("VALUES (?, ?) ");
-      Object[] values = new Object[2];
+      query.append("INSERT INTO projects (liaison_user_id, liaison_institution_id, created_by) ");
+      query.append("VALUES (?, ?, ? ) ");
+      Object[] values = new Object[projectData.size()];
       values[0] = projectData.get("liaison_user_id");
       values[1] = projectData.get("liaison_institution_id");
+      values[2] = projectData.get("created_by");
       result = databaseManager.saveData(query.toString(), values);
       LOG.debug("<< saveProject():{}", result);
+
     } else {
       // Update project.
       query.append("UPDATE projects SET title = ?, summary = ?, start_date = ?, end_date = ?, ");
       query.append("liaison_user_id = (SELECT id FROM liaison_users WHERE user_id = ?), ");
-      query.append("requires_workplan_upload = ?, liaison_institution_id = ? ");
+      query.append("requires_workplan_upload = ?, liaison_institution_id = ?, modified_by = ? ");
       query.append("WHERE id = ?");
-      Object[] values = new Object[8];
+      Object[] values = new Object[projectData.size()];
       values[0] = projectData.get("title");
       values[1] = projectData.get("summary");
       values[2] = projectData.get("start_date");
@@ -795,7 +797,8 @@ public class MySQLProjectDAO implements ProjectDAO {
       values[4] = projectData.get("user_id");
       values[5] = projectData.get("requires_workplan_upload");
       values[6] = projectData.get("liaison_institution_id");
-      values[7] = projectData.get("id");
+      values[7] = projectData.get("modified_by");
+      values[8] = projectData.get("id");
       result = databaseManager.saveData(query.toString(), values);
     }
     LOG.debug(">> saveProject(projectData={})", projectData);
