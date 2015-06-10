@@ -47,7 +47,7 @@
         <div id="projectDescription" class="fullBlock">
           [#-- Project Program Creator --]
           <div class="halfPartBlock">  
-            [@customForm.select name="project.liaisonInstitution" label="" disabled=( !editable ) i18nkey="planning.projectDescription.programCreator" listName="liaisonInstitutions" keyFieldName="id"  displayFieldName="name" value="project.liaisonInstitution.id" editable=editable/]
+            [@customForm.select name="project.liaisonInstitution" label="" disabled=( !editable || !securityContext.canEditManagementLiaison() ) i18nkey="planning.projectDescription.programCreator" listName="liaisonInstitutions" keyFieldName="id"  displayFieldName="name" value="project.liaisonInstitution.id" editable=editable/]
           </div>
           [#--  Project Owner Contact Person --]
           <div class="halfPartBlock">
@@ -64,21 +64,25 @@
         </div>
         [#-- Project upload work plan --]
         <div id="uploadWorkPlan" class="tickBox-wrapper fullBlock">
-          [@customForm.checkbox name="project.isRequiredUploadworkplan" value=""  i18nkey="preplanning.projectDescription.isRequiredUploadworkplan" disabled=!editable /]
-          [#if editable] 
-            [#-- TODO Verify permissions for canUploadProjectWorkplan and canUploadBilateralContract --]
-            <div class="tickBox-toggle uploadContainer">
-              <div class="halfPartBlock">
-                <p>[@s.text name="preplanning.projectDescription.uploadProjectWorkplan" /]</p>
-                <input type="file" name="fileToUpload" id="fileToUpload"> 
-              </div>
-              <div class="halfPartBlock">
-                <p>[@s.text name="preplanning.projectDescription.uploadBilateral" /]</p>
-                <input type="file" name="fileToUpload" id="fileToUpload">  
-              </div>
+          [#if securityContext.canAllowProjectWorkplanUpload() ]
+            [@customForm.checkbox name="project.projectWorkplanRequired" value=""  i18nkey="preplanning.projectDescription.isRequiredUploadworkplan" disabled=!editable /]
+          [/#if]
+          <div class="tickBox-toggle uploadContainer" [#if (editable && !project.projectWorkplanRequired )]style="display:none"[/#if]>
+            <div class="halfPartBlock fileUpload projectWorkplan">
+              <p>[@s.text name="preplanning.projectDescription.uploadProjectWorkplan" /]</p>
+              <input type="file" id="projectWorkplan" class="upload" name="projectWorkplan"> 
             </div> 
-          [/#if] 
+          </div> 
+           
         </div>
+        
+        [#if (!project.coreProject && securityContext.canUploadBilateralContract())]
+        <div class="fullBlock fileUpload bilateralContract">
+          <h6>[@s.text name="preplanning.projectDescription.uploadBilateral" /]</h6>
+          <input type="file" id="bilateralContract" class="upload" name="bilateralContract" >   
+        </div>
+        [/#if]
+        
         [#-- Project Summary --]
         [@customForm.textArea name="project.summary" i18nkey="preplanning.projectDescription.projectSummary" required=true className="project-description" editable=editable /]
       </fieldset>
@@ -117,7 +121,7 @@
       </fieldset>
       
       
-      [#if project.type !='CORE']
+      [#if !project.coreProject]
       [#-- Core Projects for Bilateral project type --]
       <h1 class="contentTitle"> [@s.text name="planning.projectDescription.coreProjects" /] </h1> 
       <div id="projectCoreProjects" class="isLinked tickBox-wrapper fullBlock">  
