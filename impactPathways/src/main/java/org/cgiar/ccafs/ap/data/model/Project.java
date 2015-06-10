@@ -54,11 +54,10 @@ public class Project {
   private List<IPElement> outputs;
   private List<IPIndicator> indicators;
   private IPOtherContribution ipOtherContribution;
-  private boolean projectWorkplanRequired;
+  private boolean workplanRequired;
   private String projectWorkplanName;
   private String bilateralContractProposalName;
   private List<Project> linkedCoreProjects;
-  private boolean workplanRequired;
   private long created; // Timestamp number when the project was created
 
   public Project() {
@@ -395,14 +394,9 @@ public class Project {
     return (type != null) ? type.equals(APConstants.PROJECT_CORE) : false;
   }
 
-  public boolean isProjectWorkplanRequired() {
-    return projectWorkplanRequired;
-  }
-
   public boolean isWorkplanRequired() {
     return workplanRequired;
   }
-
 
   public void setActivities(List<Activity> activities) {
     this.activities = activities;
@@ -486,10 +480,6 @@ public class Project {
 
   public void setProjectWorkplanName(String projectWorkplanName) {
     this.projectWorkplanName = projectWorkplanName;
-  }
-
-  public void setProjectWorkplanRequired(boolean projectWorkplanRequired) {
-    this.projectWorkplanRequired = projectWorkplanRequired;
   }
 
   public void setRegions(List<IPProgram> regions) {
