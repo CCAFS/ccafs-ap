@@ -1,4 +1,4 @@
--- Sentences for separate all last name of  first name.
+-- Separating frist names and last names in users table.
 UPDATE `users` SET `first_name`='Arega ', `last_name`='Alene' WHERE `id`='313';
 UPDATE `users` SET `first_name`='Anousith ', `last_name`='Keophoxay' WHERE `id`='314';
 UPDATE `users` SET `first_name`='Agustin ', `last_name`='Molina' WHERE `id`='315';
