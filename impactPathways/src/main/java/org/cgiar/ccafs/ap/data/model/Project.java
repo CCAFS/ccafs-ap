@@ -13,6 +13,8 @@
  *****************************************************************/
 package org.cgiar.ccafs.ap.data.model;
 
+import org.cgiar.ccafs.ap.config.APConstants;
+
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
@@ -388,9 +390,14 @@ public class Project {
     return this.getId();
   }
 
+  public boolean isCoreProject() {
+    return (type != null) ? type.equals(APConstants.PROJECT_CORE) : false;
+  }
+
   public boolean isProjectWorkplanRequired() {
     return projectWorkplanRequired;
   }
+
 
   public void setActivities(List<Activity> activities) {
     this.activities = activities;
