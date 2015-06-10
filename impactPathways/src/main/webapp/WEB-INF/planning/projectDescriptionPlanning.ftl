@@ -51,7 +51,7 @@
           </div>
           [#--  Project Owner Contact Person --]
           <div class="halfPartBlock">
-            [@customForm.select name="project.owner" label="" disabled=( !editable || !securityContext.canEditManagementLiaison() ) i18nkey="preplanning.projectDescription.projectownercontactperson" listName="allOwners" keyFieldName="employeeId"  displayFieldName="composedOwnerName" editable=editable/]
+            [@customForm.select name="project.owner" label="" disabled=( !editable || !securityContext.canEditManagementLiaison() ) i18nkey="preplanning.projectDescription.projectownercontactperson" listName="allOwners" keyFieldName="id"  displayFieldName="composedOwnerName" editable=editable/]
           </div> 
           [#-- Start Date --]
           <div class="halfPartBlock">
