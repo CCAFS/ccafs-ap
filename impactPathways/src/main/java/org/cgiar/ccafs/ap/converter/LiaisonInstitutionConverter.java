@@ -13,7 +13,7 @@
  *****************************************************************/
 package org.cgiar.ccafs.ap.converter;
 
-import org.cgiar.ccafs.ap.data.manager.InstitutionManager;
+import org.cgiar.ccafs.ap.data.manager.LiaisonInstitutionManager;
 import org.cgiar.ccafs.ap.data.model.LiaisonInstitution;
 
 import java.util.Map;
@@ -32,17 +32,27 @@ public class LiaisonInstitutionConverter extends StrutsTypeConverter {
   private static final Logger LOG = LoggerFactory.getLogger(LiaisonInstitutionConverter.class);
 
   // Manager
-  private InstitutionManager institutionManager;
+  private LiaisonInstitutionManager liaisonInstitutionManager;
 
   @Inject
-  public LiaisonInstitutionConverter(InstitutionManager institutionManager) {
-    this.institutionManager = institutionManager;
+  public LiaisonInstitutionConverter(LiaisonInstitutionManager liaisonInstitutionManager) {
+    this.liaisonInstitutionManager = liaisonInstitutionManager;
   }
 
   @SuppressWarnings("rawtypes")
   @Override
   public Object convertFromString(Map context, String[] values, Class toClass) {
-    // TODO
+    if (toClass == LiaisonInstitution.class) {
+      String id = values[0];
+      try {
+        LiaisonInstitution institution = liaisonInstitutionManager.getLiaisonInstitution(Integer.parseInt(id));
+        LOG.debug(">> convertFromString > id = {} ", id);
+        return institution;
+      } catch (NumberFormatException e) {
+        // Do Nothing
+        LOG.error("Problem to convert User from String (convertFromString) for user_id = {} ", id, e.getMessage());
+      }
+    }
     return null;
   }
 
