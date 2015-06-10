@@ -47,7 +47,7 @@
         <div id="projectDescription" class="fullBlock">
           [#-- Project Program Creator --]
           <div class="halfPartBlock">  
-            [@customForm.select name="project.liaisonInstitution" label="" disabled=( !editable || !securityContext.canEditManagementLiaison() ) i18nkey="planning.projectDescription.programCreator" listName="liaisonInstitutions" keyFieldName="id"  displayFieldName="name" value="project.liaisonInstitution.id" editable=editable/]
+            [@customForm.select name="project.liaisonInstitution" label="" disabled=( !editable || !securityContext.canEditManagementLiaison() ) i18nkey="planning.projectDescription.programCreator" listName="liaisonInstitutions" keyFieldName="id"  displayFieldName="name" editable=editable/]
           </div>
           [#--  Project Owner Contact Person --]
           <div class="halfPartBlock">
@@ -59,7 +59,7 @@
           </div> 
           [#-- End Date --]
           <div class="halfPartBlock">
-              [@customForm.input name="project.endDate" type="text" disabled=( !editable || !securityContext.canEditEndDate() ) i18nkey="preplanning.projectDescription.endDate" required=true editable=editable /]
+            [@customForm.input name="project.endDate" type="text" disabled=( !editable || !securityContext.canEditEndDate() ) i18nkey="preplanning.projectDescription.endDate" required=true editable=editable /]
           </div>
         </div>
         [#-- Project upload work plan --]
@@ -72,10 +72,10 @@
               <p>[@s.text name="preplanning.projectDescription.uploadProjectWorkplan" /]</p>
               <input type="file" id="projectWorkplan" class="upload" name="projectWorkplan"> 
             </div> 
-          </div> 
-           
+          </div>  
         </div>
         
+        [#-- Project upload bilateral contract --]
         [#if (!project.coreProject && securityContext.canUploadBilateralContract())]
         <div class="fullBlock fileUpload bilateralContract">
           <h6>[@s.text name="preplanning.projectDescription.uploadBilateral" /]</h6>
@@ -121,8 +121,8 @@
       </fieldset>
       
       
-      [#if !project.coreProject]
       [#-- Core Projects for Bilateral project type --]
+      [#if !project.coreProject]
       <h1 class="contentTitle"> [@s.text name="planning.projectDescription.coreProjects" /] </h1> 
       <div id="projectCoreProjects" class="isLinked tickBox-wrapper fullBlock">  
         [@customForm.checkbox name="project.isLinked" value=""  i18nkey="planning.projectDescription.isLinkedCoreProjects" disabled=!editable /]
@@ -133,7 +133,7 @@
                 <ul class="list">
                   [#list project.linkedCoreProjects as element]
                     <li class="clearfix [#if !element_has_next]last[/#if]">
-                      <span class="coreProject_name">${element.title}</span> 
+                      <span class="coreProject_name">${element.id} - ${element.title}</span> 
                       [#if editable]<span class="listButton remove">Remove</span>[/#if] 
                       <input class="coreProject_id" type="hidden" name="project.coreProjects[${element_index}].id" value="${element.id?c}" />
                     </li>

@@ -38,7 +38,7 @@ $(document).ready(function() {
   }
 
   /**
-   * Loading Core projects with Ajax action
+   * CORE-Projects
    */
 
   var $coreSelect = $('#coreProjectsList select');
@@ -46,16 +46,21 @@ $(document).ready(function() {
 
   loadInitialCoreProjects();
 
-  // Events
+  /** Events */
+
+  // Event to add an item to core Project list from select option
   $coreSelect.on('change', function(e) {
     addItemList($(this).find('option:selected'));
   });
 
+  // Event to remove an element 'li' from core project list
   $('ul li .remove').on('click', function(e) {
     removeItemList($(this).parents('li'));
   });
 
-  // Functions
+  /** Functions */
+
+  // Function to load all core projects with ajax
   function loadInitialCoreProjects() {
     $.ajax({
         'url': '../../coreProjects.do',
@@ -64,7 +69,7 @@ $(document).ready(function() {
         },
         success: function(data) {
           $.each(data.projects, function(i,project) {
-            $coreSelect.append(setOption(project.id, project.title));
+            $coreSelect.append(setOption(project.id, project.id + " - " + project.title));
           });
         },
         complete: function() {
@@ -80,7 +85,7 @@ $(document).ready(function() {
     $coreProjects.prepend($listElement);
     $item.remove();
     $coreSelect.trigger("liszt:updated");
-    setIndexes();
+    setcoreProjectsIndexes();
   }
 
   function removeItemList($item) {
@@ -92,11 +97,11 @@ $(document).ready(function() {
     $coreSelect.trigger("liszt:updated");
     $item.hide("slow", function() {
       $item.remove();
-      setIndexes();
+      setcoreProjectsIndexes();
     });
   }
 
-  function setIndexes() {
+  function setcoreProjectsIndexes() {
     $coreProjects.find('li').each(function(i,item) {
       var elementName = "project.coreProjects[" + i + "].";
       $(item).find('.coreProject_id').attr('name', elementName + 'id');
