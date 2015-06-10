@@ -17,6 +17,7 @@ import org.cgiar.ccafs.ap.data.manager.impl.InstitutionManagerImpl;
 import org.cgiar.ccafs.ap.data.model.Country;
 import org.cgiar.ccafs.ap.data.model.Institution;
 import org.cgiar.ccafs.ap.data.model.InstitutionType;
+import org.cgiar.ccafs.ap.data.model.ProjectPartner;
 import org.cgiar.ccafs.ap.data.model.User;
 
 import java.util.List;
@@ -86,6 +87,14 @@ public interface InstitutionManager {
    * @return an Institution Type Object with the information
    */
   public InstitutionType getInstitutionType(int institutionTypeId);
+
+  /**
+   * Get the list of institutions which a given partner is contributing to.
+   * 
+   * @param projectPartner is the project partner object.
+   * @return a list of Institutions, an empty list if nothing found and a null reference if an error occurred.
+   */
+  public List<Institution> getProjectPartnerContributeInstitutions(ProjectPartner projectPartner);
 
   /**
    * This method returns the user's main institution defined in the database.

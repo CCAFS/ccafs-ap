@@ -41,6 +41,7 @@ public interface ProjectPartnerManager {
    */
   public boolean deleteProjectPartner(Project project, Institution partner);
 
+
   /**
    * This method is used to get the list of Project Partners that belongs to a specific project.
    *

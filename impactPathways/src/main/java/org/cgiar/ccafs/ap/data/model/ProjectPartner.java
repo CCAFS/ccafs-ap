@@ -13,8 +13,11 @@
  *****************************************************************/
 package org.cgiar.ccafs.ap.data.model;
 
-import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.cgiar.ccafs.ap.config.APConstants;
+
+import java.util.List;
+
+import org.apache.commons.lang3.builder.ToStringBuilder;
 
 /**
  * This class represents a Partner that belongs to a project with contact information.
@@ -28,6 +31,8 @@ public class ProjectPartner {
   private User user;
   private String responsabilities;
   private String type;
+  private List<Institution> contributeInstitutions; // CCAFS PPA institutions this project partner is collaborating
+  // with.
 
   public ProjectPartner() {
     super();
@@ -44,6 +49,15 @@ public class ProjectPartner {
 
   public String getComposedName() {
     return this.user.getComposedName();
+  }
+
+  /**
+   * Get the list of CCAFS PPA institutions that this project partner is collaborating with.
+   * 
+   * @return a list of PPA Institutions
+   */
+  public List<Institution> getContributeInstitutions() {
+    return contributeInstitutions;
   }
 
   public int getId() {
@@ -78,6 +92,10 @@ public class ProjectPartner {
    */
   public boolean isPPA() {
     return this.type.equals(APConstants.PROJECT_PARTNER_PPA);
+  }
+
+  public void setContributeInstitutions(List<Institution> contributeInstitutions) {
+    this.contributeInstitutions = contributeInstitutions;
   }
 
   public void setId(int id) {
