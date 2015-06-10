@@ -233,7 +233,8 @@ public class ProjectPartnersPlanningAction extends BaseAction {
         // }
 
         // Saving new and old project partners
-        saved = projectPartnerManager.saveProjectPartner(project.getId(), project.getProjectPartners());
+        saved = projectPartnerManager.saveProjectPartners(project.getId(), project.getProjectPartners(),
+          this.getCurrentUser(), "");
         if (!saved) {
           success = false;
         }
@@ -289,8 +290,8 @@ public class ProjectPartnersPlanningAction extends BaseAction {
           previousProject.getProjectPartners().get(c)
             .setResponsabilities(project.getProjectPartners().get(c).getResponsabilities());
         }
-        boolean result =
-          projectPartnerManager.saveProjectPartner(previousProject.getId(), previousProject.getProjectPartners());
+        boolean result = projectPartnerManager.saveProjectPartners(previousProject.getId(),
+          previousProject.getProjectPartners(), this.getCurrentUser(), "");
         if (result) {
           this.addActionMessage(this.getText("saving.saved"));
           return SUCCESS;
@@ -300,8 +301,8 @@ public class ProjectPartnersPlanningAction extends BaseAction {
         }
       }
     } else {
-      LOG.warn("User {} tried to save information in Project Partners without having enough privileges!", this
-        .getCurrentUser().getId());
+      LOG.warn("User {} tried to save information in Project Partners without having enough privileges!",
+        this.getCurrentUser().getId());
     }
     return BaseAction.ERROR;
 
