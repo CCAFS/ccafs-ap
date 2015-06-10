@@ -170,6 +170,14 @@ public interface ProjectManager {
   public List<Project> getProjectsByProgram(int programId);
 
   /**
+   * This method returns a list of projects identified by the values received by parameter.
+   * 
+   * @param values
+   * @return a list of Project objects.
+   */
+  public List<Project> getProjectsList(String[] values);
+
+  /**
    * This method gets all the projects in which the given user is assigned as Project Owner
    * 
    * @param user is the user object.

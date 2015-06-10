@@ -32,6 +32,7 @@ import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
@@ -408,6 +409,20 @@ public class ProjectManagerImpl implements ProjectManager {
       projectsList.add(project);
     }
     return projectsList;
+  }
+
+  @Override
+  public List<Project> getProjectsList(String[] values) {
+    List<Project> projects = new ArrayList<>();
+    List<String> ids = new ArrayList<String>(Arrays.asList(values));
+
+
+    for (Project project : this.getAllProjectsBasicInfo()) {
+      if (ids.contains(String.valueOf(project.getId()))) {
+        projects.add(project);
+      }
+    }
+    return projects;
   }
 
   @Override
