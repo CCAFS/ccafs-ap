@@ -140,6 +140,7 @@ public class IPProgramManagerImpl implements IPProgramManager {
       ipProgram.setId(Integer.parseInt(projectFocusesData.get("program_id")));
       ipProgram.setName(projectFocusesData.get("program_name"));
       ipProgram.setAcronym(projectFocusesData.get("program_acronym"));
+      ipProgram.setCreated(Long.parseLong(projectFocusesData.get("active_since")));
       // Region
       if (projectFocusesData.get("region_id") != null) {
         Region region = new Region();

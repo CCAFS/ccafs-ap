@@ -62,19 +62,21 @@
               [@customForm.input name="project.endDate" type="text" disabled=( !editable || !securityContext.canEditEndDate() ) i18nkey="preplanning.projectDescription.endDate" required=true editable=editable /]
           </div>
         </div>
+
         [#-- Project upload work plan --]
-        <div id="uploadWorkPlan" class="tickBox-wrapper fullBlock">
-          [#if securityContext.canAllowProjectWorkplanUpload() ]
-            [@customForm.checkbox name="project.workplanRequired" value="true"  i18nkey="preplanning.projectDescription.isRequiredUploadworkplan" disabled=!editable /]
-          [/#if]
-          <div class="tickBox-toggle uploadContainer" [#if (editable && !project.workplanRequired )]style="display:none"[/#if]>
-            <div class="halfPartBlock fileUpload projectWorkplan">
-              <p>[@s.text name="preplanning.projectDescription.uploadProjectWorkplan" /]</p>
-              <input type="file" id="projectWorkplan" class="upload" name="projectWorkplan"> 
+        [#if project.coreProject]
+          <div id="uploadWorkPlan" class="tickBox-wrapper fullBlock">
+            [#if securityContext.canAllowProjectWorkplanUpload() ]
+              [@customForm.checkbox name="project.workplanRequired" value="true"  i18nkey="preplanning.projectDescription.isRequiredUploadworkplan" disabled=!editable /]
+            [/#if]
+            <div class="tickBox-toggle uploadContainer" [#if (editable && !project.workplanRequired )]style="display:none"[/#if]>
+              <div class="halfPartBlock fileUpload projectWorkplan">
+                <p>[@s.text name="preplanning.projectDescription.uploadProjectWorkplan" /]</p>
+                <input type="file" id="projectWorkplan" class="upload" name="projectWorkplan"> 
+              </div> 
             </div> 
-          </div> 
-           
-        </div>
+          </div>
+        [/#if]
         
         [#if (!project.coreProject && securityContext.canUploadBilateralContract())]
         <div class="fullBlock fileUpload bilateralContract">
@@ -86,6 +88,7 @@
         [#-- Project Summary --]
         [@customForm.textArea name="project.summary" i18nkey="preplanning.projectDescription.projectSummary" required=true className="project-description" editable=editable /]
       </fieldset>
+      
       <fieldset class="fullBlock">   
         <legend>[@s.text name="preplanning.projectDescription.projectWorking" /] </legend> 
         <div id="projectWorking">
@@ -122,30 +125,30 @@
       
       
       [#if !project.coreProject]
-      [#-- Core Projects for Bilateral project type --]
-      <h1 class="contentTitle"> [@s.text name="planning.projectDescription.coreProjects" /] </h1> 
-      <div id="projectCoreProjects" class="isLinked tickBox-wrapper fullBlock">  
-        [@customForm.checkbox name="project.isLinked" value=""  i18nkey="planning.projectDescription.isLinkedCoreProjects" disabled=!editable /]
-          <div class="tickBox-toggle coreProjects fullBlock">
-            <div class="panel primary">
-              <div class="panel-head"> [@s.text name="planning.projectDescription.chouseCoreProject" /]</div>
-              <div id="coreProjectsList" class="panel-body"> 
-                <ul class="list">
-                  [#list project.linkedCoreProjects as element]
-                    <li class="clearfix [#if !element_has_next]last[/#if]">
-                      <span class="coreProject_name">${element.title}</span> 
-                      [#if editable]<span class="listButton remove">Remove</span>[/#if] 
-                      <input class="coreProject_id" type="hidden" name="project.coreProjects[${element_index}].id" value="${element.id?c}" />
-                    </li>
-                  [/#list]
-                </ul>
-                [#if editable]
-                  [@customForm.select name="" label="" disabled=!canEdit i18nkey="" listName="allPPAPartners" keyFieldName="id" displayFieldName="getComposedName()" className="ppaPartnersSelect" value="" /]
-                [/#if] 
+        [#-- Core Projects for Bilateral project type --]
+        <h1 class="contentTitle"> [@s.text name="planning.projectDescription.coreProjects" /] </h1> 
+        <div id="projectCoreProjects" class="isLinked tickBox-wrapper fullBlock">  
+          [@customForm.checkbox name="project.isLinked" value=""  i18nkey="planning.projectDescription.isLinkedCoreProjects" disabled=!editable /]
+            <div class="tickBox-toggle coreProjects fullBlock">
+              <div class="panel primary">
+                <div class="panel-head"> [@s.text name="planning.projectDescription.chouseCoreProject" /]</div>
+                <div id="coreProjectsList" class="panel-body"> 
+                  <ul class="list">
+                    [#list project.linkedCoreProjects as element]
+                      <li class="clearfix [#if !element_has_next]last[/#if]">
+                        <span class="coreProject_name">${element.title}</span> 
+                        [#if editable]<span class="listButton remove">Remove</span>[/#if] 
+                        <input class="coreProject_id" type="hidden" name="project.coreProjects[${element_index}].id" value="${element.id?c}" />
+                      </li>
+                    [/#list]
+                  </ul>
+                  [#if editable]
+                    [@customForm.select name="" label="" disabled=!canEdit i18nkey="" listName="allPPAPartners" keyFieldName="id" displayFieldName="getComposedName()" className="ppaPartnersSelect" value="" /]
+                  [/#if] 
+                </div>
               </div>
-            </div>
-          </div> 
-      </div>   
+            </div> 
+        </div>   
       [/#if]
     </div> 
     

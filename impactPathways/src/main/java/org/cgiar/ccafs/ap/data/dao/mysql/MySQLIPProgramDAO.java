@@ -164,7 +164,7 @@ public class MySQLIPProgramDAO implements IPProgramDAO {
 
 
     LOG.debug("-- getProgramsByType() > Calling method executeQuery to get the results");
-    return getData(query.toString());
+    return this.getData(query.toString());
   }
 
   @Override
@@ -173,7 +173,7 @@ public class MySQLIPProgramDAO implements IPProgramDAO {
     List<Map<String, String>> projectFocusesDataList = new ArrayList<>();
     StringBuilder query = new StringBuilder();
     query.append("SELECT ipr.id as program_id, ipr.name as program_name, ipr.acronym as program_acronym, ");
-    query.append("le.id as region_id, le.name as region_name, le.code as region_code ");
+    query.append("le.id as region_id, le.name as region_name, le.code as region_code, pf.active_since ");
     query.append("FROM project_focuses pf ");
     query.append("INNER JOIN ip_programs ipr ON ipr.id = pf.program_id ");
     query.append("LEFT JOIN loc_elements le   ON le.id = ipr.region_id ");
@@ -193,6 +193,7 @@ public class MySQLIPProgramDAO implements IPProgramDAO {
         projectFocusesData.put("region_id", rs.getString("region_id"));
         projectFocusesData.put("region_name", rs.getString("region_name"));
         projectFocusesData.put("region_code", rs.getString("region_code"));
+        projectFocusesData.put("active_since", rs.getString("active_since"));
 
         projectFocusesDataList.add(projectFocusesData);
       }

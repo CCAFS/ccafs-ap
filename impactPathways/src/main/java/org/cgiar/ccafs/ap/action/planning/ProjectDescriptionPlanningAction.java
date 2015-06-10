@@ -458,33 +458,58 @@ public class ProjectDescriptionPlanningAction extends BaseAction {
 
       if (securityContext.canEditProjectFlagships()) {
         List<IPProgram> previousFlagships = previousProject.getFlagships();
-        boolean saved = false;
-        // Save only the new flagships, previous selections can't be deleted.
-        for (IPProgram flagship : project.getFlagships()) {
-          if (!previousFlagships.contains(flagship)) {
-            saved = ipProgramManager.saveProjectFocus(previousProject.getId(), flagship.getId());
-            if (!saved) {
-              this.addActionError(this.getText("saving.problem"));
-              LOG.warn("There was a problem saving the project flagships.");
-              return BaseAction.INPUT;
+        List<IPProgram> flagships = previousProject.getFlagships();
+        boolean saved = true;
+
+        // Delete the flagships un-selected.
+        for (IPProgram prevFlagship : previousFlagships) {
+          if (!flagships.contains(prevFlagship)) {
+            // Only can be deleted the flagships selected in the current plannning phase.
+            if (prevFlagship.getCreationDate().after(config.getCurrentPlanningStartDate())) {
+              saved = saved && ipProgramManager.deleteProjectFocus(project.getId(), prevFlagship.getId());
             }
           }
+        }
+
+        // Save only the new flagships
+        for (IPProgram flagship : flagships) {
+          if (!previousFlagships.contains(flagship)) {
+            saved = true && ipProgramManager.saveProjectFocus(project.getId(), flagship.getId());
+          }
+        }
+        if (!saved) {
+          this.addActionError(this.getText("saving.problem"));
+          LOG.warn("There was a problem saving the project flagships.");
+          return BaseAction.INPUT;
         }
       }
 
       if (securityContext.canEditProjectRegions()) {
         List<IPProgram> previousRegions = previousProject.getRegions();
-        boolean saved = false;
+        List<IPProgram> regions = project.getRegions();
+        boolean saved = true;
+
+        // Delete the flagships un-selected.
+        for (IPProgram prevRegion : previousRegions) {
+          if (!regions.contains(prevRegion)) {
+            // Only can be deleted the flagships selected in the current plannning phase.
+            if (prevRegion.getCreationDate().after(config.getCurrentPlanningStartDate())) {
+              ipProgramManager.deleteProjectFocus(project.getId(), prevRegion.getId());
+            }
+          }
+        }
+
         // Save only the new flagships, previous selections can't be deleted.
         for (IPProgram region : project.getRegions()) {
           if (!previousRegions.contains(region)) {
-            saved = ipProgramManager.saveProjectFocus(previousProject.getId(), region.getId());
-            if (!saved) {
-              this.addActionError(this.getText("saving.problem"));
-              LOG.warn("There was a problem saving the project regions.");
-              return BaseAction.INPUT;
-            }
+            saved = saved && ipProgramManager.saveProjectFocus(project.getId(), region.getId());
           }
+        }
+
+        if (!saved) {
+          this.addActionError(this.getText("saving.problem"));
+          LOG.warn("There was a problem saving the project regions.");
+          return BaseAction.INPUT;
         }
       }
 

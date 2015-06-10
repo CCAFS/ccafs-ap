@@ -15,6 +15,8 @@ package org.cgiar.ccafs.ap.data.model;
 
 import org.cgiar.ccafs.ap.config.APConstants;
 
+import java.util.Date;
+
 import org.apache.commons.lang3.builder.ToStringBuilder;
 
 
@@ -25,6 +27,7 @@ public class IPProgram {
   private String acronym;
   private Region region;
   private IPProgramType type;
+  private long created;
 
   public IPProgram() {
   }
@@ -62,6 +65,14 @@ public class IPProgram {
       builder.append(name);
     }
     return builder.toString();
+  }
+
+  public long getCreated() {
+    return created;
+  }
+
+  public Date getCreationDate() {
+    return new Date(created);
   }
 
   public int getId() {
@@ -103,6 +114,10 @@ public class IPProgram {
 
   public void setAcronym(String acronym) {
     this.acronym = acronym;
+  }
+
+  public void setCreated(long created) {
+    this.created = created;
   }
 
   public void setId(int id) {
