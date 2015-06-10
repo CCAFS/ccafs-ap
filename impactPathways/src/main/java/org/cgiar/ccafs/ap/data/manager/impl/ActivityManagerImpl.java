@@ -117,7 +117,7 @@ public class ActivityManagerImpl implements ActivityManager {
         activity.setExpectedLeader(this.getExpectedActivityLeader(Integer.parseInt(activityData.get("id"))));
       }
       if (activityData.get("leader_id") != null) {
-        activity.setLeader(userManager.getOwner(Integer.parseInt(activityData.get("leader_id"))));
+        activity.setLeader(userManager.getUser(Integer.parseInt(activityData.get("leader_id"))));
       }
       if (activityData.get("is_global") != null) {
         activity.setGlobal((activityData.get("is_global").equals("1")));
