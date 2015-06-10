@@ -215,7 +215,7 @@ public class ProjectDescriptionPlanningAction extends BaseAction {
     }
 
     // If project is bilateral cofounded, we should load the core projects linked to it.
-    if (project.getType().equals(APConstants.PROJECT_BILATERAL_COFUNDED)) {
+    if (!project.isCoreProject()) {
       project.setLinkedCoreProjects(linkedCoreProjectManager.getLinkedCoreProjects(projectID));
     }
     // If the user is not admin or the project owner, we should keep some information
@@ -230,6 +230,9 @@ public class ProjectDescriptionPlanningAction extends BaseAction {
     previousProject.setSummary(project.getSummary());
     previousProject.setFlagships(project.getFlagships());
     previousProject.setRegions(project.getRegions());
+    previousProject.setType(project.getType());
+    previousProject.setWorkplanRequired(project.isWorkplanRequired());
+    previousProject.setLinkedCoreProjects(project.getLinkedCoreProjects());
   }
 
   public String previousSave() {
@@ -385,7 +388,21 @@ public class ProjectDescriptionPlanningAction extends BaseAction {
   @Override
   public String save() {
     if (this.isEditable()) {
+
+      // If the user can edit the dates, delete the budgets that correspond to years that are not linked to the
+      // project anymore to prevent errors in the project budget section.
+      if (securityContext.canEditStartDate() || securityContext.canEditEndDate()) {
+        List<Integer> currentYears = project.getAllYears();
+        List<Integer> previousYears = previousProject.getAllYears();
+        for (Integer previousYear : previousYears) {
+          if (!currentYears.contains(previousYear)) {
+            budgetManager.deleteBudgetsByYear(projectID, previousYear.intValue());
+          }
+        }
+      }
+
       // Update only the values to which the user is authorized to modify
+
       previousProject.setTitle(project.getTitle());
 
       if (securityContext.canEditManagementLiaison()) {
@@ -405,6 +422,70 @@ public class ProjectDescriptionPlanningAction extends BaseAction {
       }
 
       if (securityContext.canAllowProjectWorkplanUpload()) {
+        // TODO - Check if this permission changes when the checkbox is disabled.
+        previousProject.setWorkplanRequired(project.isWorkplanRequired());
+
+        if (previousProject.isCoreProject() && previousProject.isWorkplanRequired()) {
+          // TODO - Check if user attached a file, upload it and save the file name.
+          // uploadFile();
+        }
+      }
+
+      if (!project.isCoreProject()) {
+        if (securityContext.canUploadBilateralContract()) {
+          // TODO - Check if user attached a file, upload it and save the file name.
+          // uploadFile();
+        }
+      }
+
+      previousProject.setSummary(project.getSummary());
+
+
+      if (!project.isCoreProject()) {
+        previousProject.setLinkedCoreProjects(project.getLinkedCoreProjects());
+      }
+
+      // Save the information
+      int result = projectManager.saveProjectDescription(project);
+
+      if (result < 0) {
+        this.addActionError(this.getText("saving.problem"));
+        LOG.warn("There was a problem saving the project description.");
+        return BaseAction.INPUT;
+      }
+
+      // Save the regions and flagships
+
+      if (securityContext.canEditProjectFlagships()) {
+        List<IPProgram> previousFlagships = previousProject.getFlagships();
+        boolean saved = false;
+        // Save only the new flagships, previous selections can't be deleted.
+        for (IPProgram flagship : project.getFlagships()) {
+          if (!previousFlagships.contains(flagship)) {
+            saved = ipProgramManager.saveProjectFocus(previousProject.getId(), flagship.getId());
+            if (!saved) {
+              this.addActionError(this.getText("saving.problem"));
+              LOG.warn("There was a problem saving the project flagships.");
+              return BaseAction.INPUT;
+            }
+          }
+        }
+      }
+
+      if (securityContext.canEditProjectRegions()) {
+        List<IPProgram> previousRegions = previousProject.getRegions();
+        boolean saved = false;
+        // Save only the new flagships, previous selections can't be deleted.
+        for (IPProgram region : project.getRegions()) {
+          if (!previousRegions.contains(region)) {
+            saved = ipProgramManager.saveProjectFocus(previousProject.getId(), region.getId());
+            if (!saved) {
+              this.addActionError(this.getText("saving.problem"));
+              LOG.warn("There was a problem saving the project regions.");
+              return BaseAction.INPUT;
+            }
+          }
+        }
       }
 
       return SUCCESS;

@@ -65,9 +65,9 @@
         [#-- Project upload work plan --]
         <div id="uploadWorkPlan" class="tickBox-wrapper fullBlock">
           [#if securityContext.canAllowProjectWorkplanUpload() ]
-            [@customForm.checkbox name="project.projectWorkplanRequired" value=""  i18nkey="preplanning.projectDescription.isRequiredUploadworkplan" disabled=!editable /]
+            [@customForm.checkbox name="project.workplanRequired" value="true"  i18nkey="preplanning.projectDescription.isRequiredUploadworkplan" disabled=!editable /]
           [/#if]
-          <div class="tickBox-toggle uploadContainer" [#if (editable && !project.projectWorkplanRequired )]style="display:none"[/#if]>
+          <div class="tickBox-toggle uploadContainer" [#if (editable && !project.workplanRequired )]style="display:none"[/#if]>
             <div class="halfPartBlock fileUpload projectWorkplan">
               <p>[@s.text name="preplanning.projectDescription.uploadProjectWorkplan" /]</p>
               <input type="file" id="projectWorkplan" class="upload" name="projectWorkplan"> 
