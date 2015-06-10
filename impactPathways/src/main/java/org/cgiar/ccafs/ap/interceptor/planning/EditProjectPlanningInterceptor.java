@@ -71,16 +71,20 @@ public class EditProjectPlanningInterceptor extends AbstractInterceptor {
       List<Integer> projectsEditable = projectManager.getProjectIdsEditables(user);
       canEditProject = projectsEditable.contains(new Integer(projectID));
 
+      boolean editParameter = false;
       if (parameters.get(APConstants.EDITABLE_REQUEST) != null) {
         String stringEditable = ((String[]) parameters.get(APConstants.EDITABLE_REQUEST))[0];
-        boolean editParameter = stringEditable.equals("true");
+        editParameter = stringEditable.equals("true");
 
         // If the user is not asking for edition privileges we don't need to validate them.
         if (!editParameter) {
           baseAction.setEditableParameter(hasPermissionToEdit);
           return invocation.invoke();
         }
+      }
 
+      // Check the permission if user want to edit or save the form
+      if (editParameter || parameters.get("save") != null) {
         hasPermissionToEdit = securityContext.canEditProjectPlanningSection(actionName, projectID);
       }
     }

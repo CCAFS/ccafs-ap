@@ -396,7 +396,18 @@ public class ProjectDescriptionPlanningAction extends BaseAction {
         previousProject.setOwner(project.getOwner());
       }
 
+      if (securityContext.canEditStartDate()) {
+        previousProject.setStartDate(project.getStartDate());
+      }
 
+      if (securityContext.canEditEndDate()) {
+        previousProject.setEndDate(project.getEndDate());
+      }
+
+      if (securityContext.canAllowProjectWorkplanUpload()) {
+      }
+
+      return SUCCESS;
     }
     return NOT_AUTHORIZED;
   }
