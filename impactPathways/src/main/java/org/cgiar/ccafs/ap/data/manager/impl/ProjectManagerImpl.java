@@ -197,6 +197,7 @@ public class ProjectManagerImpl implements ProjectManager {
       project.setTitle(projectData.get("title"));
       project.setType(projectData.get("type"));
       project.setSummary(projectData.get("summary"));
+      project.setWorkplanRequired(projectData.get("requires_workplan_upload").equals("1"));
       // Format to the Dates of the project
       if (projectData.get("start_date") != null) {
         try {
@@ -497,6 +498,7 @@ public class ProjectManagerImpl implements ProjectManager {
       if (project.getEndDate() != null) {
         projectData.put("end_date", format.format(project.getEndDate()));
       }
+      projectData.put("requires_workplan_upload", project.isWorkplanRequired());
       projectData.put("liaison_user_id", project.getOwner().getId());
     }
 

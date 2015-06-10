@@ -349,6 +349,7 @@ public class MySQLProjectDAO implements ProjectDAO {
         // projectData.put("project_leader_id", rs.getString("project_leader_id"));
         projectData.put("liaison_institution_id", rs.getString("liaison_institution_id"));
         projectData.put("liaison_user_id", rs.getString("owner_id"));
+        projectData.put("requires_workplan_upload", rs.getString("requires_workplan_upload"));
         // projectData.put("project_owner_institution_id", rs.getString("owner_institution_id"));
         projectData.put("created", rs.getTimestamp("active_since").getTime() + "");
       }
@@ -781,15 +782,16 @@ public class MySQLProjectDAO implements ProjectDAO {
     } else {
       // Update project.
       query.append("UPDATE projects SET title = ?, summary = ?, start_date = ?, end_date = ?, ");
-      query.append("liaison_user_id = ? ");
+      query.append("liaison_user_id = ?, requires_workplan_upload = ? ");
       query.append("WHERE id = ?");
-      Object[] values = new Object[6];
+      Object[] values = new Object[7];
       values[0] = projectData.get("title");
       values[1] = projectData.get("summary");
       values[2] = projectData.get("start_date");
       values[3] = projectData.get("end_date");
       values[4] = projectData.get("liaison_user_id");
-      values[5] = projectData.get("id");
+      values[5] = projectData.get("requires_workplan_upload");
+      values[6] = projectData.get("id");
       result = databaseManager.saveData(query.toString(), values);
     }
     LOG.debug(">> saveProject(projectData={})", projectData);
