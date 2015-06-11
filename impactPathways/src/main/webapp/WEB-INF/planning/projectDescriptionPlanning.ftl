@@ -24,7 +24,7 @@
   </div>
   [#include "/WEB-INF/planning/planningProjectsSubMenu.ftl" /]
   
-  [@s.form action="description" enctype="multipart/form-data" cssClass="pure-form"]
+  [@s.form action="description" method="POST" enctype="multipart/form-data" cssClass="pure-form"]
   <article class="halfContent" id="mainInformation"> 
     [#include "/WEB-INF/planning/projectDescription-planning-sub-menu.ftl" /]
     [#-- Informing user that he/she doesn't have enough privileges to edit. See GrantProjectPlanningAccessInterceptor--]

@@ -18,6 +18,7 @@ import org.cgiar.ccafs.ap.data.manager.IPProgramManager;
 import org.cgiar.ccafs.ap.data.model.IPProgram;
 import org.cgiar.ccafs.ap.data.model.IPProgramType;
 import org.cgiar.ccafs.ap.data.model.Region;
+import org.cgiar.ccafs.ap.data.model.User;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -159,10 +160,12 @@ public class IPProgramManagerImpl implements IPProgramManager {
 
 
   @Override
-  public boolean saveProjectFocus(int projectID, int programID) {
+  public boolean saveProjectFocus(int projectID, int programID, User user, String justification) {
     Map<String, Object> elementData = new HashMap<>();
     elementData.put("project_id", projectID);
     elementData.put("program_id", programID);
+    elementData.put("user_id", user.getId());
+    elementData.put("justification", justification);
     return ipProgramDAO.saveProjectFocuses(elementData);
   }
 

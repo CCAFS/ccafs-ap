@@ -210,12 +210,16 @@ public class MySQLIPProgramDAO implements IPProgramDAO {
   public boolean saveProjectFocuses(Map<String, Object> ipElementData) {
     LOG.debug(">> saveProjectFocuses(ipElementData={})", ipElementData);
     StringBuilder query = new StringBuilder();
-    query.append("INSERT INTO project_focuses (project_id, program_id, created_by) ");
-    query.append("VALUES (?, ?, ?) ");
+    query.append("INSERT INTO project_focuses (project_id, program_id, ");
+    query.append("created_by, modified_by, modification_justification)  ");
+    query.append("VALUES (?, ?, ?, ?, ?) ");
 
-    Object[] values = new Object[2];
+    Object[] values = new Object[5];
     values[0] = ipElementData.get("project_id");
     values[1] = ipElementData.get("program_id");
+    values[2] = ipElementData.get("user_id");
+    values[3] = ipElementData.get("user_id");
+    values[4] = ipElementData.get("justification");
     int result = databaseManager.saveData(query.toString(), values);
     LOG.debug("<< saveProjectFocuses():{}", result);
     return true;

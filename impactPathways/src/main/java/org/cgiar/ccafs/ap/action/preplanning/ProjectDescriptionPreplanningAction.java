@@ -254,7 +254,9 @@ public class ProjectDescriptionPreplanningAction extends BaseAction {
       }
       // Adding new Regional Project Focuses.
       for (IPProgram programToAdd : project.getRegions()) {
-        saved = ipProgramManager.saveProjectFocus(project.getId(), programToAdd.getId());
+        saved =
+          ipProgramManager
+            .saveProjectFocus(project.getId(), programToAdd.getId(), this.getCurrentUser(), justification);
         if (!saved) {
           success = false;
         }
@@ -287,7 +289,9 @@ public class ProjectDescriptionPreplanningAction extends BaseAction {
       }
       // Adding new Flagship Project Focuses.
       for (IPProgram programToAdd : project.getFlagships()) {
-        saved = ipProgramManager.saveProjectFocus(project.getId(), programToAdd.getId());
+        saved =
+          ipProgramManager
+            .saveProjectFocus(project.getId(), programToAdd.getId(), this.getCurrentUser(), justification);
         if (!saved) {
           success = false;
         }
