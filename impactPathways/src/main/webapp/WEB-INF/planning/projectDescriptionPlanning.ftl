@@ -67,13 +67,12 @@
         [#if project.coreProject]
           <div id="uploadWorkPlan" class="tickBox-wrapper fullBlock">
             [#if securityContext.canAllowProjectWorkplanUpload() ]
-              [@customForm.checkbox name="project.projectWorkplanRequired" value=""  i18nkey="preplanning.projectDescription.isRequiredUploadworkplan" disabled=!editable editable=editable /]
+              [@customForm.checkbox name="project.workplanRequired" value=""  i18nkey="preplanning.projectDescription.isRequiredUploadworkplan" disabled=!editable editable=editable /]
             [/#if]
-            <div class="tickBox-toggle uploadContainer" [#if (editable && !project.projectWorkplanRequired )]style="display:none"[/#if]>
+            <div class="tickBox-toggle uploadContainer" [#if (editable && !project.workplanRequired )]style="display:none"[/#if]>
               <div class="halfPartBlock fileUpload projectWorkplan"> 
-                [#assign workPlanFile=true /] 
-                [#if workPlanFile]
-                  <p> {workPlanFileName.pdf}  [#if editable]<span id="remove-projectWorkplan" class="ui-icon ui-icon-closethick remove"></span>[/#if] </p>
+                [#if project.workplanName?has_content]
+                  <p> ${project.workplanName}  [#if editable]<span id="remove-projectWorkplan" class="ui-icon ui-icon-closethick remove"></span>[/#if] </p>
                 [#else]
                   [#if editable]
                     [@customForm.inputFile name="project.projectWorkplan"  /]
@@ -91,9 +90,8 @@
         <div class="halfPartBlock fileUpload bilateralContract">
           <h6>[@s.text name="preplanning.projectDescription.uploadBilateral" /]</h6>
           <div class="uploadContainer">
-          [#assign bilateralFile=true /]
-            [#if bilateralFile]
-              <p>{bilateralFileName.pdf}  [#if editable]<span id="remove-bilateralContract" class="ui-icon ui-icon-closethick remove"></span>[/#if] </p>
+            [#if project.bilateralContractProposalName?has_content]
+              <p>${project.bilateralContractProposalName}  [#if editable]<span id="remove-bilateralContract" class="ui-icon ui-icon-closethick remove"></span>[/#if] </p>
             [#else]
               [#if editable] 
                 [@customForm.inputFile name="project.bilateralContract"  /]

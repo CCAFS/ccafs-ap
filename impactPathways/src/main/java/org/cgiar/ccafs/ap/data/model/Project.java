@@ -55,7 +55,7 @@ public class Project {
   private List<IPIndicator> indicators;
   private IPOtherContribution ipOtherContribution;
   private boolean workplanRequired;
-  private String projectWorkplanName;
+  private String workplanName;
   private String bilateralContractProposalName;
   private List<Project> linkedCoreProjects;
   private long created; // Timestamp number when the project was created
@@ -336,11 +336,6 @@ public class Project {
     return projectPartners;
   }
 
-  public String getProjectWorkplanName() {
-    return projectWorkplanName;
-  }
-
-
   public List<IPProgram> getRegions() {
     return regions;
   }
@@ -383,6 +378,10 @@ public class Project {
 
   public String getType() {
     return type;
+  }
+
+  public String getWorkplanName() {
+    return workplanName;
   }
 
   @Override
@@ -478,10 +477,6 @@ public class Project {
     this.projectPartners = projectPartners;
   }
 
-  public void setProjectWorkplanName(String projectWorkplanName) {
-    this.projectWorkplanName = projectWorkplanName;
-  }
-
   public void setRegions(List<IPProgram> regions) {
     this.regions = regions;
   }
@@ -500,6 +495,10 @@ public class Project {
 
   public void setType(String type) {
     this.type = type;
+  }
+
+  public void setWorkplanName(String projectWorkplanName) {
+    this.workplanName = projectWorkplanName;
   }
 
   public void setWorkplanRequired(boolean workplanRequired) {
