@@ -15,8 +15,10 @@ package org.cgiar.ccafs.ap.data.manager;
 
 import org.cgiar.ccafs.ap.data.manager.impl.IPProgramManagerImpl;
 import org.cgiar.ccafs.ap.data.model.IPProgram;
+import org.cgiar.ccafs.ap.data.model.User;
 
 import java.util.List;
+
 import com.google.inject.ImplementedBy;
 
 @ImplementedBy(IPProgramManagerImpl.class)
@@ -24,7 +26,7 @@ public interface IPProgramManager {
 
   /**
    * this method removes a specific project focus.
-   *
+   * 
    * @param projectId is the project identifier where the project focus to be removed belongs to.
    * @param ipProgramID is the program identifier where the project focus to be removed is related to.
    * @return true if the project focus was deleted, false otherwise.
@@ -33,7 +35,7 @@ public interface IPProgramManager {
 
   /**
    * This method gets the information of an IP Program given an Id
-   *
+   * 
    * @param ipProgramID - is the Id of the IP Program.
    * @return an IPProgram object with the result information.
    */
@@ -41,7 +43,7 @@ public interface IPProgramManager {
 
   /**
    * This method gets the IP Program information by a given project Id
-   *
+   * 
    * @param projectID - is the id of the project
    * @return an IPProgram object with the result information.
    */
@@ -51,7 +53,7 @@ public interface IPProgramManager {
   /**
    * This method gets from the database a list of ipElements
    * which have the same type as passed as parameter
-   *
+   * 
    * @param ipProgramTypeID - IP Program type identifier
    * @return a list of IPProgram objects with the information.
    */
@@ -59,7 +61,7 @@ public interface IPProgramManager {
 
   /**
    * This method gets all the IPPrograms where the projec is focusing (project_focuses).
-   *
+   * 
    * @param projectID - is the id of the project.
    * @param typeID - is the id of a program type. Can be Flagship Program or Regional Program.
    * @return a List of IPProgram objects that correspond to Project focuses initially saved in the Project Description
@@ -69,12 +71,14 @@ public interface IPProgramManager {
 
   /**
    * This method will assign IPPrograms to a specific project and will save them as "Project Focuses".
-   *
+   * 
    * @param projectID is the project identifier.
    * @param programID is the program identifier.
+   * @param user is the user who is making the change.
+   * @param justification text explaining the change.
    * @return true if the information was successfully saved, or false if any error happened.
    */
-  public boolean saveProjectFocus(int projectID, int programID);
+  public boolean saveProjectFocus(int projectID, int programID, User user, String justification);
 
 
 }
