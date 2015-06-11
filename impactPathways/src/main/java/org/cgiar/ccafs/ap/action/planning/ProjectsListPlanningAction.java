@@ -87,7 +87,7 @@ public class ProjectsListPlanningAction extends BaseAction {
           new Object[] {this.getCurrentUser().getId(), this.getCurrentUser().getCurrentInstitution().getId()});
     }
     newProject.setCreated(new Date().getTime());
-    return projectManager.saveProjectDescription(newProject);
+    return projectManager.saveProjectDescription(newProject, this.getCurrentUser(), justification);
   }
 
   public List<Project> getAllProjects() {

@@ -333,7 +333,7 @@ public class MySQLProjectDAO implements ProjectDAO {
     query.append("INNER JOIN institutions i ON li.institution_id = i.id ");
     query.append("WHERE p.id = ");
     query.append(projectID);
-    query.append("AND p.is_active = 1");
+    query.append(" AND p.is_active = 1");
 
     try (Connection con = databaseManager.getConnection()) {
       ResultSet rs = databaseManager.makeQuery(query.toString(), con);

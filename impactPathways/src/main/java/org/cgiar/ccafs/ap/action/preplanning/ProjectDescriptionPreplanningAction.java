@@ -204,7 +204,7 @@ public class ProjectDescriptionPreplanningAction extends BaseAction {
     }
 
     // ----- SAVING Project description -----
-    int result = projectManager.saveProjectDescription(project);
+    int result = projectManager.saveProjectDescription(project, this.getCurrentUser(), justification);
     if (result < 0) {
       this.addActionError(this.getText("saving.problem"));
       return BaseAction.INPUT;

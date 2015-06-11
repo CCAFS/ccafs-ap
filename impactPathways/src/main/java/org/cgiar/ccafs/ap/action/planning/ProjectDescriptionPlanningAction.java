@@ -256,7 +256,7 @@ public class ProjectDescriptionPlanningAction extends BaseAction {
           }
         }
 
-        result = projectManager.saveProjectDescription(project);
+        result = projectManager.saveProjectDescription(project, this.getCurrentUser(), justification);
 
         if (result < 0) {
           this.addActionError(this.getText("saving.problem"));
@@ -361,7 +361,7 @@ public class ProjectDescriptionPlanningAction extends BaseAction {
         // in order to prevent unauthorized changes.
         previousProject.setTitle(project.getTitle()); // setting the possible new title.
         previousProject.setSummary(project.getSummary()); // setting the possible new summary.
-        result = projectManager.saveProjectDescription(previousProject);
+        result = projectManager.saveProjectDescription(previousProject, this.getCurrentUser(), justification);
         if (result < 0) {
           this.addActionError(this.getText("saving.problem"));
           return BaseAction.INPUT;
@@ -446,7 +446,7 @@ public class ProjectDescriptionPlanningAction extends BaseAction {
       }
 
       // Save the information
-      int result = projectManager.saveProjectDescription(project);
+      int result = projectManager.saveProjectDescription(project, this.getCurrentUser(), justification);
 
       if (result < 0) {
         this.addActionError(this.getText("saving.problem"));
@@ -458,7 +458,7 @@ public class ProjectDescriptionPlanningAction extends BaseAction {
 
       if (securityContext.canEditProjectFlagships()) {
         List<IPProgram> previousFlagships = previousProject.getFlagships();
-        List<IPProgram> flagships = previousProject.getFlagships();
+        List<IPProgram> flagships = project.getFlagships();
         boolean saved = true;
 
         // Delete the flagships un-selected.
@@ -489,17 +489,17 @@ public class ProjectDescriptionPlanningAction extends BaseAction {
         List<IPProgram> regions = project.getRegions();
         boolean saved = true;
 
-        // Delete the flagships un-selected.
+        // Delete the regions un-selected.
         for (IPProgram prevRegion : previousRegions) {
           if (!regions.contains(prevRegion)) {
-            // Only can be deleted the flagships selected in the current plannning phase.
+            // Only can be deleted the regions selected in the current plannning phase.
             if (prevRegion.getCreationDate().after(config.getCurrentPlanningStartDate())) {
               ipProgramManager.deleteProjectFocus(project.getId(), prevRegion.getId());
             }
           }
         }
 
-        // Save only the new flagships, previous selections can't be deleted.
+        // Save only the new regions
         for (IPProgram region : project.getRegions()) {
           if (!previousRegions.contains(region)) {
             saved = saved && ipProgramManager.saveProjectFocus(project.getId(), region.getId());
