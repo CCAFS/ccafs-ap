@@ -8,7 +8,6 @@
  *****************************************************************/
 package org.cgiar.ccafs.ap.data.manager.impl;
 
-import org.cgiar.ccafs.ap.config.APModule;
 import org.cgiar.ccafs.ap.data.dao.ProjectPartnerDAO;
 import org.cgiar.ccafs.ap.data.manager.InstitutionManager;
 import org.cgiar.ccafs.ap.data.manager.ProjectPartnerManager;
@@ -23,9 +22,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import com.google.inject.Guice;
 import com.google.inject.Inject;
-import com.google.inject.Injector;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -51,25 +48,6 @@ public class ProjectPartnerManagerImpl implements ProjectPartnerManager {
     this.projecPartnerDAO = projectPartnerDAO;
     this.institutionManager = institutionManager;
     this.userManager = userManager;
-  }
-
-  // TODO - TEST - If you see this, please REMOVE IT!
-  public static void main(String[] args) {
-    Injector in = Guice.createInjector(new APModule());
-    ProjectPartnerManager partnerManager = in.getInstance(ProjectPartnerManager.class);
-    UserManager userManager = in.getInstance(UserManager.class);
-
-    User user = userManager.getUser(1);
-    int projectID = 2;
-    List<ProjectPartner> partners = partnerManager.getProjectPartners(projectID);
-    ProjectPartner pp = partners.get(0);
-    pp.setResponsabilities("TEST - " + pp.getResponsabilities());
-    pp = partners.get(1);
-    pp.setResponsabilities("TEST - " + pp.getResponsabilities());
-    // TODO - created_by and modified_by are referencing the employees table.
-    // TODO - Once it is fixed, test both methods (save and update)
-    // System.out.println(partnerManager.saveProjectPartners(projectID, partners, "justificacion"));
-    System.out.println(partnerManager.saveProjectPartner(projectID, pp, user, "La justificacion"));
   }
 
   @Override
@@ -98,7 +76,7 @@ public class ProjectPartnerManagerImpl implements ProjectPartnerManager {
       projectPartner.setInstitution(institutionManager.getInstitution(Integer.parseInt(pData.get("partner_id"))));
       // Getting the institutions which this partner is contributing to.
       projectPartner
-      .setContributeInstitutions(institutionManager.getProjectPartnerContributeInstitutions(projectPartner));
+        .setContributeInstitutions(institutionManager.getProjectPartnerContributeInstitutions(projectPartner));
       // adding information of the object to the array
       projectPartners.add(projectPartner);
     }
@@ -130,7 +108,7 @@ public class ProjectPartnerManagerImpl implements ProjectPartnerManager {
 
       // Getting the institutions which this partner is contributing to.
       projectPartner
-      .setContributeInstitutions(institutionManager.getProjectPartnerContributeInstitutions(projectPartner));
+        .setContributeInstitutions(institutionManager.getProjectPartnerContributeInstitutions(projectPartner));
 
       // adding information of the object to the array
       projectPartners.add(projectPartner);
