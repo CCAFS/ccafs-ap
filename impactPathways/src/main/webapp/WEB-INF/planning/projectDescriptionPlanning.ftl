@@ -65,24 +65,24 @@
 
         [#-- Project upload work plan --]
         [#if project.coreProject]
-          <div id="uploadWorkPlan" class="tickBox-wrapper fullBlock">
-            [#if securityContext.canAllowProjectWorkplanUpload() ]
-              [@customForm.checkbox name="project.workplanRequired" value=""  i18nkey="preplanning.projectDescription.isRequiredUploadworkplan" disabled=!editable editable=editable /]
-            [/#if]
-            <div class="tickBox-toggle uploadContainer" [#if (editable && !project.workplanRequired )]style="display:none"[/#if]>
-              <div class="halfPartBlock fileUpload projectWorkplan"> 
-                [#if project.workplanName?has_content]
-                  <p> ${project.workplanName}  [#if editable]<span id="remove-projectWorkplan" class="ui-icon ui-icon-closethick remove"></span>[/#if] </p>
-                [#else]
-                  [#if (editable && !project.workplanRequired )]
-                    [@customForm.inputFile name="project.projectWorkplan"  /]
-                  [#else]  
-                    Not file uploaded
-                  [/#if] 
+        <div id="uploadWorkPlan" class="tickBox-wrapper fullBlock">
+          [#if securityContext.canAllowProjectWorkplanUpload() ]
+            [@customForm.checkbox name="project.workplanRequired" value=""  i18nkey="preplanning.projectDescription.isRequiredUploadworkplan" disabled=!editable editable=editable /]
+          [/#if]
+          <div class="tickBox-toggle uploadContainer" [#if (editable && !project.workplanRequired )]style="display:none"[/#if]>
+            <div class="halfPartBlock fileUpload projectWorkplan"> 
+              [#if project.workplanName?has_content]
+                <p> ${project.workplanName}  [#if editable]<span id="remove-projectWorkplan" class="ui-icon ui-icon-closethick remove"></span>[/#if] </p>
+              [#else]
+                [#if (editable && !project.workplanRequired )]
+                  [@customForm.inputFile name="project.projectWorkplan"  /]
+                [#else]  
+                  Not file uploaded
                 [/#if] 
-              </div> 
-            </div>  
-          </div>
+              [/#if] 
+            </div> 
+          </div>  
+        </div>
         [/#if]
         
         [#-- Project upload bilateral contract --]
@@ -107,7 +107,7 @@
         <div class="fullBlock">
           [@customForm.textArea name="project.summary" i18nkey="preplanning.projectDescription.projectSummary" required=true className="project-description" editable=editable /]
         </div>
-      
+        
         <h6>[@customForm.text name="preplanning.projectDescription.projectWorking" readText=!editable /]: </h6> 
         <div id="projectWorking">
           [#-- Flagships --] 
@@ -148,9 +148,7 @@
         [@customForm.checkbox name="project.isLinked" value=""  i18nkey="planning.projectDescription.isLinkedCoreProjects" disabled=!editable checked=true editable=editable/]
         <div class="tickBox-toggle coreProjects fullBlock">
           <div class="panel primary">
-            <div class="panel-head">
-             [@customForm.text name="planning.projectDescription.selectCoreProject" readText=!editable /]:
-            </div>
+            <div class="panel-head">[@customForm.text name="planning.projectDescription.selectCoreProject" readText=!editable /]:</div>
             <div id="coreProjectsList" class="panel-body"> 
               <ul class="list">
                 [#list project.linkedCoreProjects as element]
@@ -167,17 +165,19 @@
             </div>
           </div> 
         </div>   
+      </div> 
       [/#if]
-    </div> 
     </div> 
     [#if editable]
       [#-- Project identifier --]
-      <input name="projectID" type="hidden" value="${project.id?c}" />
-      [@customForm.textArea name="justification" i18nkey="saving.justification" required=true className="justification"/]
-      <div class="buttons">
-        [@s.submit type="button" name="save"][@s.text name="form.buttons.save" /][/@s.submit]
-        [@s.submit type="button" name="next"][@s.text name="form.buttons.next" /][/@s.submit]
-        [@s.submit type="button" name="cancel"][@s.text name="form.buttons.cancel" /][/@s.submit]
+      <div class="borderBox">
+        <input name="projectID" type="hidden" value="${project.id?c}" />
+        [@customForm.textArea name="justification" i18nkey="saving.justification" required=true className="justification"/]
+        <div class="buttons">
+          [@s.submit type="button" name="save"][@s.text name="form.buttons.save" /][/@s.submit]
+          [@s.submit type="button" name="next"][@s.text name="form.buttons.next" /][/@s.submit]
+          [@s.submit type="button" name="cancel"][@s.text name="form.buttons.cancel" /][/@s.submit]
+        </div>
       </div>
     [/#if]
      
