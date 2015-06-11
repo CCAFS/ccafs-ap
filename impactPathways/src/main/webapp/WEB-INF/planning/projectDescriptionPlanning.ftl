@@ -24,7 +24,7 @@
   </div>
   [#include "/WEB-INF/planning/planningProjectsSubMenu.ftl" /]
   
-  [@s.form action="description" cssClass="pure-form"]
+  [@s.form action="description" enctype="multipart/form-data" cssClass="pure-form"]
   <article class="halfContent" id="mainInformation"> 
     [#include "/WEB-INF/planning/projectDescription-planning-sub-menu.ftl" /]
     [#-- Informing user that he/she doesn't have enough privileges to edit. See GrantProjectPlanningAccessInterceptor--]
@@ -65,29 +65,49 @@
         [#-- Project upload work plan --]
         <div id="uploadWorkPlan" class="tickBox-wrapper fullBlock">
           [#if securityContext.canAllowProjectWorkplanUpload() ]
-            [@customForm.checkbox name="project.projectWorkplanRequired" value=""  i18nkey="preplanning.projectDescription.isRequiredUploadworkplan" disabled=!editable /]
+            [@customForm.checkbox name="project.projectWorkplanRequired" value=""  i18nkey="preplanning.projectDescription.isRequiredUploadworkplan" disabled=!editable editable=editable /]
           [/#if]
           <div class="tickBox-toggle uploadContainer" [#if (editable && !project.projectWorkplanRequired )]style="display:none"[/#if]>
-            <div class="halfPartBlock fileUpload projectWorkplan">
-              <p>[@s.text name="preplanning.projectDescription.uploadProjectWorkplan" /]</p>
-              <input type="file" id="projectWorkplan" class="upload" name="projectWorkplan"> 
+            <div class="halfPartBlock fileUpload projectWorkplan"> 
+              [#assign workPlanFile=true /] 
+              [#if workPlanFile]
+                <p> {workPlanFileName.pdf}  [#if editable]<span id="remove-projectWorkplan" class="ui-icon ui-icon-closethick remove"></span>[/#if] </p>
+              [#else]
+                [#if editable]
+                  [@customForm.inputFile name="project.projectWorkplan"  /]
+                [#else]
+                  No file uploaded
+                [/#if] 
+              [/#if] 
             </div> 
           </div>  
         </div>
         
         [#-- Project upload bilateral contract --]
         [#if (!project.coreProject && securityContext.canUploadBilateralContract())]
-        <div class="fullBlock fileUpload bilateralContract">
+        <div class="halfPartBlock fileUpload bilateralContract">
           <h6>[@s.text name="preplanning.projectDescription.uploadBilateral" /]</h6>
-          <input type="file" id="bilateralContract" class="upload" name="bilateralContract" >   
+          <div class="uploadContainer">
+          [#assign bilateralFile=true /]
+            [#if bilateralFile]
+              <p>{bilateralFileName.pdf}  [#if editable]<span id="remove-bilateralContract" class="ui-icon ui-icon-closethick remove"></span>[/#if] </p>
+            [#else]
+              [#if editable] 
+                [@customForm.inputFile name="project.bilateralContract"  /]
+              [#else]
+                No file uploaded
+              [/#if] 
+            [/#if]
+          </div>  
         </div>
         [/#if]
         
         [#-- Project Summary --]
-        [@customForm.textArea name="project.summary" i18nkey="preplanning.projectDescription.projectSummary" required=true className="project-description" editable=editable /]
-      </fieldset>
-      <fieldset class="fullBlock">   
-        <legend>[@s.text name="preplanning.projectDescription.projectWorking" /] </legend> 
+        <div class="fullBlock">
+          [@customForm.textArea name="project.summary" i18nkey="preplanning.projectDescription.projectSummary" required=true className="project-description" editable=editable /]
+        </div>
+      
+        <h6>[@s.text name="preplanning.projectDescription.projectWorking" /] </h6> 
         <div id="projectWorking">
           [#-- Flagships --] 
           <div id="projectFlagshipsBlock" class="grid_5">
@@ -120,12 +140,11 @@
         </div> 
       </fieldset>
       
-      
       [#-- Core Projects for Bilateral project type --]
       [#if !project.coreProject]
       <h1 class="contentTitle"> [@s.text name="planning.projectDescription.coreProjects" /] </h1> 
       <div id="projectCoreProjects" class="isLinked tickBox-wrapper fullBlock">  
-        [@customForm.checkbox name="project.isLinked" value=""  i18nkey="planning.projectDescription.isLinkedCoreProjects" disabled=!editable checked=true/]
+        [@customForm.checkbox name="project.isLinked" value=""  i18nkey="planning.projectDescription.isLinkedCoreProjects" disabled=!editable checked=true editable=editable/]
           <div class="tickBox-toggle coreProjects fullBlock">
             <div class="panel primary">
               <div class="panel-head"> [@s.text name="planning.projectDescription.chouseCoreProject" /]</div>
@@ -173,7 +192,13 @@
       <span class="name"></span> 
       <span class="listButton remove">[@s.text name="form.buttons.remove" /]</span>
     </li>
-  </ul>
+  </ul> 
+  
+  [#-- File projectWorkplan upload Template--]
+  [@customForm.inputFile name="project.projectWorkplan" template=true /]
+  
+  [#-- File bilateralContractTemplate upload Template--] 
+  [@customForm.inputFile name="project.bilateralContract" template=true /] 
   
 </section>
 [#include "/WEB-INF/global/pages/footer.ftl"]

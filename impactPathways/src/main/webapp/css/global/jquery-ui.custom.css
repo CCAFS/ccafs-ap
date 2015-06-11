@@ -649,8 +649,8 @@ html, body{background-color:#ffffff;}
 /* Icon states */
 .ui-icon { width: 16px; height: 16px; }
 /* General */
-.ui-icon, .ui-widget-content .ui-icon, .ui-widget-header .ui-icon  {background-image:url(images/ui-icons_d4d4d4_0.png)}
-.ui-state-default .ui-icon {background-image:url(images/ui-icons_525252_0.png)}
+.ui-icon, .ui-widget-content .ui-icon, .ui-widget-header .ui-icon  {background-image:url(images/ui-icons_ffffff_0.png)}
+.ui-state-default .ui-icon {background-image:url(images/ui-icons_ffffff_0.png)}
 .ui-state-active .ui-icon, .ui-state-hover .ui-icon{background-image:url(images/ui-icons_ffffff_0.png);}
 .ui-widget-overlay{background: #FFF;}
 .ui-widget-content{color:#525252;}
@@ -674,7 +674,7 @@ html, body{background-color:#ffffff;}
 .ui-accordion-header.ui-state-default a{ color: #ffffff;}
 .ui-accordion-header.ui-state-hover{background:#47939C;border-color:#47939C;}
 .ui-accordion-header.ui-state-hover a{color:#ffffff;}
-.ui-accordion-header.ui-state-active .ui-icon{background-image:url(images/ui-icons_d4d4d4_0.png) !important;}
+.ui-accordion-header.ui-state-active .ui-icon{background-image:url(images/ui-icons_ffffff_0.png) !important;}
 .ui-accordion-header.ui-state-default .ui-icon{background-image:url(images/ui-icons_ffffff_0.png);display: none;}
 .ui-accordion-header.ui-state-hover .ui-icon{background-image:url(images/ui-icons_47939C_0.png);}
 .ui-accordion-header{background-image:url(images/ui-icons_ffffff_0.png) !important;background-position: -230px -214px !important;background-repeat:no-repeat !important;}

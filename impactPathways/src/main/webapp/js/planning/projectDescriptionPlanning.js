@@ -17,6 +17,18 @@ $(document).ready(function() {
   applyWordCounter($("textarea.project-description"), lWordsElemetDesc);
 
   /**
+   * Upload files functions
+   */
+
+  $('.fileUpload .remove').on('click', function(e) {
+    var context = $(this).attr('id').split('-')[1];
+    var $parent = $(this).parent().parent();
+    var $inputFile = $('[id$=' + context + '-template]').clone(true).removeAttr("id");
+    $parent.empty().append($inputFile);
+    $inputFile.hide().fadeIn('slow');
+  });
+
+  /**
    * Tick Box functions
    */
   var $tickBoxWp = $('.tickBox-wrapper input[type=checkbox]');

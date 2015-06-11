@@ -92,8 +92,18 @@ p.fieldError{
 
 p.checked {
     background: url(../../images/global/icon-check.png) no-repeat 0;
-    padding: 3px 0  3px 20px;
+    padding: 3px 0  3px 23px;
 }
+
+h6.checked-true {
+    background: url(../../images/global/checked-true.png) no-repeat 0;
+    padding: 3px 0  3px 23px;
+}
+h6.checked-false {
+    background: url(../../images/global/checked-false.png) no-repeat 0;
+    padding: 3px 0  3px 23px;
+}
+
 
 .hasDatepicker {
     background: url(../../images/global/calendar.png) no-repeat scroll 99% 2px;
@@ -277,7 +287,20 @@ input.target {
   border-color: #fff;
 }
 .fileUpload .upload:active::before {
-  background: #2BA6CB;
+  background-color: #2BA6CB;
+}
+
+.fileUpload .remove{
+    float: left;
+    margin-right: 7px;
+}
+
+.fileUpload h6{
+  margin-bottom: 0.6em !important;
+}
+
+.uploadContainer {
+    padding-left: 0.5em;
 }
 
 .grid_5 .checkboxGroup .checkboxLabel { 
@@ -461,7 +484,7 @@ select#partnerSave_activityPartner_partner_type_id {
 }
 .panel .panel-body ul li:hover { 
   color: #444;
-  background: #F7F7F7;
+  background-color: #F7F7F7;
 }
 .panel .panel-body ul li.last { 
     border-bottom: none;
@@ -469,22 +492,22 @@ select#partnerSave_activityPartner_partner_type_id {
 
 .panel span.listButton {
   float:right;
-  cursor:pointer;
   padding: 2px 8px;
-  border-radius: 3px;
 }
 
 .panel span.listButton.select {
-    background: #E6E6E6;
+    background-color: #E6E6E6;
  
 }
-.panel span.listButton.remove {
-    background: #D5504C;
+.remove {
+    background-color: #D5504C;
     color: #fff;
+    border-radius: 3px;
+    cursor: pointer;
 }
 
 .panel span.listButton.remove:hover {
-    background: #BD3D3A; 
+    background-color: #BD3D3A; 
 }
 
 .search-input{
@@ -1139,7 +1162,7 @@ h3.contentSubTitle {
 
 .halfPartBlock {
   display: inline-block;
-  padding: 0 5px 14px 0;
+  padding: 0 5px 12px 0;
   width: 48%;
   vertical-align: top;
 }
