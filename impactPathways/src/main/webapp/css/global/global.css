@@ -126,6 +126,10 @@ textarea {
   height: 85px;
 }
 
+textarea#justification {
+    height: 60px;
+}
+
 .textArea p {
     text-align: justify;
     width: 98%;
@@ -1226,7 +1230,7 @@ h3.contentSubTitle {
   display: block;
   margin: 0;
   text-align: right;
-  margin: 50px 0 15px 0;
+  margin: 17px 0 -1px 0;
 }
 
 .buttons button[name=save] {
