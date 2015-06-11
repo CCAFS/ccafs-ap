@@ -28,6 +28,7 @@ import org.cgiar.ccafs.ap.data.model.User;
 import org.cgiar.ccafs.ap.validation.planning.ProjectDescriptionValidator;
 import org.cgiar.ccafs.utils.APConfig;
 
+import java.util.Collection;
 import java.util.Iterator;
 import java.util.List;
 
@@ -307,7 +308,9 @@ public class ProjectDescriptionPlanningAction extends BaseAction {
           }
           // Adding new Regional Project Focuses.
           for (IPProgram programToAdd : project.getRegions()) {
-            saved = ipProgramManager.saveProjectFocus(project.getId(), programToAdd.getId());
+            saved =
+              ipProgramManager.saveProjectFocus(project.getId(), programToAdd.getId(), this.getCurrentUser(),
+                justification);
             if (!saved) {
               success = false;
             }
@@ -341,7 +344,9 @@ public class ProjectDescriptionPlanningAction extends BaseAction {
           }
           // Adding new Flagship Project Focuses.
           for (IPProgram programToAdd : project.getFlagships()) {
-            saved = ipProgramManager.saveProjectFocus(project.getId(), programToAdd.getId());
+            saved =
+              ipProgramManager.saveProjectFocus(project.getId(), programToAdd.getId(), this.getCurrentUser(),
+                justification);
             if (!saved) {
               success = false;
             }
@@ -446,7 +451,7 @@ public class ProjectDescriptionPlanningAction extends BaseAction {
       }
 
       // Save the information
-      int result = projectManager.saveProjectDescription(project, this.getCurrentUser(), justification);
+      int result = projectManager.saveProjectDescription(previousProject, this.getCurrentUser(), justification);
 
       if (result < 0) {
         this.addActionError(this.getText("saving.problem"));
@@ -461,22 +466,18 @@ public class ProjectDescriptionPlanningAction extends BaseAction {
         List<IPProgram> flagships = project.getFlagships();
         boolean saved = true;
 
-        // Delete the flagships un-selected.
-        for (IPProgram prevFlagship : previousFlagships) {
-          if (!flagships.contains(prevFlagship)) {
-            // Only can be deleted the flagships selected in the current plannning phase.
-            if (prevFlagship.getCreationDate().after(config.getCurrentPlanningStartDate())) {
-              saved = saved && ipProgramManager.deleteProjectFocus(project.getId(), prevFlagship.getId());
-            }
-          }
-        }
+        // TODO - To allow de-select flagships and regions we need to make
+        // validations in the project outcomes
 
         // Save only the new flagships
         for (IPProgram flagship : flagships) {
           if (!previousFlagships.contains(flagship)) {
-            saved = true && ipProgramManager.saveProjectFocus(project.getId(), flagship.getId());
+            saved =
+              true && ipProgramManager.saveProjectFocus(project.getId(), flagship.getId(), this.getCurrentUser(),
+                justification);
           }
         }
+
         if (!saved) {
           this.addActionError(this.getText("saving.problem"));
           LOG.warn("There was a problem saving the project flagships.");
@@ -489,20 +490,13 @@ public class ProjectDescriptionPlanningAction extends BaseAction {
         List<IPProgram> regions = project.getRegions();
         boolean saved = true;
 
-        // Delete the regions un-selected.
-        for (IPProgram prevRegion : previousRegions) {
-          if (!regions.contains(prevRegion)) {
-            // Only can be deleted the regions selected in the current plannning phase.
-            if (prevRegion.getCreationDate().after(config.getCurrentPlanningStartDate())) {
-              ipProgramManager.deleteProjectFocus(project.getId(), prevRegion.getId());
-            }
-          }
-        }
-
         // Save only the new regions
         for (IPProgram region : project.getRegions()) {
           if (!previousRegions.contains(region)) {
-            saved = saved && ipProgramManager.saveProjectFocus(project.getId(), region.getId());
+            saved =
+              saved
+                && ipProgramManager.saveProjectFocus(project.getId(), region.getId(), this.getCurrentUser(),
+                  justification);
           }
         }
 
@@ -513,6 +507,15 @@ public class ProjectDescriptionPlanningAction extends BaseAction {
         }
       }
 
+      // Get the validation messages and append them to the save message
+      Collection<String> messages = this.getActionMessages();
+      if (!messages.isEmpty()) {
+        String validationMessage = messages.iterator().next();
+        this.setActionMessages(null);
+        this.addActionWarning(this.getText("saving.saved") + validationMessage);
+      } else {
+        this.addActionMessage(this.getText("saving.saved"));
+      }
       return SUCCESS;
     }
     return NOT_AUTHORIZED;
