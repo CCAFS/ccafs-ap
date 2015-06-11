@@ -1814,7 +1814,7 @@ textarea[id$='summary'] {
 }
 
 .tickBox-wrapper {
-    /* margin: 6px 0; */
+    margin: 6px 0;
 }
 
 #uploadWorkPlan .checkbox   { 

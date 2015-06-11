@@ -29,9 +29,11 @@ public interface ProjectPartnerManager {
    * This method deletes a specific project partner from the database
    *
    * @param id of the project partner that will be deleted.
+   * @param user the user that is deleting the record.
+   * @param justification is the justification statement.
    * @return true if the project partner was deleted or false otherwise.
    */
-  public boolean deleteProjectPartner(int id);
+  public boolean deleteProjectPartner(int id, User user, String justifications);
 
   /**
    * Delete a Project Partners information which belongs to the project Id and Institution Id given
@@ -39,7 +41,10 @@ public interface ProjectPartnerManager {
    * @param projectId is the id of the project
    * @param partnerId from institution
    * @return true if the deletion process was successful or false otherwise.
+   * @deprecated This method must not be used since institutions can now be repeated per project. Thus, the only
+   *             differentiation between partners would be the identifier. Please use deleteProjectPartner(id).
    */
+  @Deprecated
   public boolean deleteProjectPartner(Project project, Institution partner);
 
 

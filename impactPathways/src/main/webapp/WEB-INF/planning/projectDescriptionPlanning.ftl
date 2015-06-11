@@ -40,7 +40,7 @@
       [#if (!editable && canEdit)]
         <div class="editButton"><a href="[@s.url includeParams='get'][@s.param name="edit"]true[/@s.param][/@s.url]">[@s.text name="form.buttons.edit" /]</a></div>
       [/#if]
-      <h1 class="contentTitle"> ${project.composedId} - [@s.text name="planning.projectDescription.title" /] </h1>  
+      <h1 class="contentTitle"> P${project.id} -  [@s.text name="${project.type}" /]- [@s.text name="planning.projectDescription.title" /] </h1>  
       <fieldset class="fullBlock">
         [#-- Project Title --]
         [@customForm.textArea name="project.title" i18nkey="planning.projectDescription.projectTitle" required=true className="project-title" editable=editable/]
@@ -74,10 +74,10 @@
                 [#if project.workplanName?has_content]
                   <p> ${project.workplanName}  [#if editable]<span id="remove-projectWorkplan" class="ui-icon ui-icon-closethick remove"></span>[/#if] </p>
                 [#else]
-                  [#if editable]
+                  [#if (editable && !project.workplanRequired )]
                     [@customForm.inputFile name="project.projectWorkplan"  /]
-                  [#else]
-                    No file uploaded
+                  [#else]  
+                    Not file uploaded
                   [/#if] 
                 [/#if] 
               </div> 
@@ -88,15 +88,15 @@
         [#-- Project upload bilateral contract --]
         [#if (!project.coreProject && securityContext.canUploadBilateralContract())]
         <div class="halfPartBlock fileUpload bilateralContract">
-          <h6>[@s.text name="preplanning.projectDescription.uploadBilateral" /]</h6>
+          <h6>[@customForm.text name="preplanning.projectDescription.uploadBilateral" readText=!editable /]:</h6>
           <div class="uploadContainer">
             [#if project.bilateralContractProposalName?has_content]
               <p>${project.bilateralContractProposalName}  [#if editable]<span id="remove-bilateralContract" class="ui-icon ui-icon-closethick remove"></span>[/#if] </p>
             [#else]
               [#if editable] 
                 [@customForm.inputFile name="project.bilateralContract"  /]
-              [#else]
-                No file uploaded
+              [#else]  
+                Not file uploaded
               [/#if] 
             [/#if]
           </div>  
@@ -108,7 +108,7 @@
           [@customForm.textArea name="project.summary" i18nkey="preplanning.projectDescription.projectSummary" required=true className="project-description" editable=editable /]
         </div>
       
-        <h6>[@s.text name="preplanning.projectDescription.projectWorking" /] </h6> 
+        <h6>[@customForm.text name="preplanning.projectDescription.projectWorking" readText=!editable /]: </h6> 
         <div id="projectWorking">
           [#-- Flagships --] 
           <div id="projectFlagshipsBlock" class="grid_5">
@@ -146,31 +146,34 @@
       <h1 class="contentTitle"> [@s.text name="planning.projectDescription.coreProjects" /] </h1> 
       <div id="projectCoreProjects" class="isLinked tickBox-wrapper fullBlock">  
         [@customForm.checkbox name="project.isLinked" value=""  i18nkey="planning.projectDescription.isLinkedCoreProjects" disabled=!editable checked=true editable=editable/]
-          <div class="tickBox-toggle coreProjects fullBlock">
-            <div class="panel primary">
-              <div class="panel-head"> [@s.text name="planning.projectDescription.chouseCoreProject" /]</div>
-              <div id="coreProjectsList" class="panel-body"> 
-                <ul class="list">
-                  [#list project.linkedCoreProjects as element]
-                    <li class="clearfix [#if !element_has_next]last[/#if]">
-                      <input class="id" type="hidden" name="project.coreProjects[${element_index}].id" value="${element.id?c}" />
-                      <span class="name">${element.id} - ${element.title}</span> 
-                      [#if editable]<span class="listButton remove">[@s.text name="form.buttons.remove" /]</span>[/#if] 
-                    </li>
-                  [/#list]
-                </ul>
-                [#if editable]
-                  [@customForm.select name="" label="" disabled=!canEdit i18nkey="" listName="allPPAPartners" keyFieldName="id" displayFieldName="getComposedName()" className="ppaPartnersSelect" value="" /]
-                [/#if] 
-              </div>
-            </div> 
+        <div class="tickBox-toggle coreProjects fullBlock">
+          <div class="panel primary">
+            <div class="panel-head">
+             [@customForm.text name="planning.projectDescription.selectCoreProject" readText=!editable /]:
+            </div>
+            <div id="coreProjectsList" class="panel-body"> 
+              <ul class="list">
+                [#list project.linkedCoreProjects as element]
+                  <li class="clearfix [#if !element_has_next]last[/#if]">
+                    <input class="id" type="hidden" name="project.coreProjects[${element_index}].id" value="${element.id?c}" />
+                    <span class="name">${element.id} - ${element.title}</span> 
+                    [#if editable]<span class="listButton remove">[@s.text name="form.buttons.remove" /]</span>[/#if] 
+                  </li>
+                [/#list]
+              </ul>
+              [#if editable]
+                [@customForm.select name="" label="" disabled=!canEdit i18nkey="" listName="allPPAPartners" keyFieldName="id" displayFieldName="getComposedName()" className="ppaPartnersSelect" value="" /]
+              [/#if] 
+            </div>
+          </div> 
         </div>   
       [/#if]
     </div> 
-    
+    </div> 
     [#if editable]
       [#-- Project identifier --]
       <input name="projectID" type="hidden" value="${project.id?c}" />
+      [@customForm.textArea name="justification" i18nkey="saving.justification" required=true className="justification"/]
       <div class="buttons">
         [@s.submit type="button" name="save"][@s.text name="form.buttons.save" /][/@s.submit]
         [@s.submit type="button" name="next"][@s.text name="form.buttons.next" /][/@s.submit]

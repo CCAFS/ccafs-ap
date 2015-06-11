@@ -46,22 +46,6 @@ public class MySQLProjectPartnerDAO implements ProjectPartnerDAO {
   }
 
   @Override
-  public boolean deleteProjectPartner(int id) {
-    LOG.debug(">> deleteProjectPartner(id={})", id);
-
-    String query = "DELETE FROM project_partners WHERE id = ?";
-
-    int rowsDeleted = databaseManager.delete(query, new Object[] {id});
-    if (rowsDeleted >= 0) {
-      LOG.debug("<< deleteProjectPartner():{}", true);
-      return true;
-    }
-
-    LOG.debug("<< deleteProjectPartner:{}", false);
-    return false;
-  }
-
-  @Override
   public boolean deleteProjectPartner(int projectId, int institutionId) {
     LOG.debug(">> deleteProjectPartner(projectId={}, institutionId={})", projectId, institutionId);
 
@@ -75,6 +59,26 @@ public class MySQLProjectPartnerDAO implements ProjectPartnerDAO {
       return true;
     }
     LOG.debug("<< deleteProjectPartner():{}", false);
+    return false;
+  }
+
+  @Override
+  public boolean deleteProjectPartner(int id, int userID, String justification) {
+    StringBuilder query = new StringBuilder();
+    // updating record is_active to false.
+    query.append("UPDATE project_partners SET is_active = 0, modified_by = ?, modification_justification = ? ");
+    query.append("WHERE id = ? ");
+    Object[] values = new Object[3];
+    values[0] = userID;
+    values[1] = justification;
+    values[2] = id;
+
+    int result = databaseManager.saveData(query.toString(), values);
+    if (result == 0) {
+      LOG.debug("<< deleteProjectPartner():{}", true);
+      return true;
+    }
+    LOG.debug("<< deleteProjectPartner:{}", false);
     return false;
   }
 
@@ -117,7 +121,8 @@ public class MySQLProjectPartnerDAO implements ProjectPartnerDAO {
     query.append("FROM project_partners as pp ");
     query.append("WHERE pp.project_id= ");
     query.append(projectID);
-    query.append(" AND pp.is_active = 1");
+    query.append(" AND pp.is_active = 1 ");
+    query.append("ORDER BY partner_id, partner_type");
 
 
     LOG.debug("-- getProject() > Calling method executeQuery to get the results");
@@ -137,7 +142,8 @@ public class MySQLProjectPartnerDAO implements ProjectPartnerDAO {
     query.append(" AND partner_type = '");
     query.append(projectPartnerType);
     query.append("'");
-    query.append(" AND is_active = 1");
+    query.append(" AND is_active = 1 ");
+    query.append("ORDER BY partner_id");
 
     LOG.debug("-- getProjectPartners() > Calling method executeQuery to get the results");
     return this.getData(query.toString());
@@ -153,7 +159,7 @@ public class MySQLProjectPartnerDAO implements ProjectPartnerDAO {
       // Insert new record
       query.append(
         "INSERT INTO project_partners (id, project_id, partner_id, user_id, partner_type, responsabilities, created_by, modified_by, modification_justification) ");
-      query.append("VALUES (?, ?, ?, ?, ?, ?) ");
+      query.append("VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?) ");
       values = new Object[9];
       values[0] = projectPartnerData.get("id");
       values[1] = projectPartnerData.get("project_id");

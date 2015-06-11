@@ -182,7 +182,7 @@ public class ProjectPartnersPlanningAction extends BaseAction {
 
     // Getting 2-level Project Partners
     project
-      .setProjectPartners(projectPartnerManager.getProjectPartners(project.getId(), APConstants.PROJECT_PARTNER_PP));
+    .setProjectPartners(projectPartnerManager.getProjectPartners(project.getId(), APConstants.PROJECT_PARTNER_PP));
 
     // If the user is not admin or the project owner, we should keep some information
     // unmutable
@@ -217,7 +217,8 @@ public class ProjectPartnersPlanningAction extends BaseAction {
         // Deleting project partners
         for (ProjectPartner projectPartner : previousProjectPartners) {
           if (!project.getProjectPartners().contains(projectPartner)) {
-            boolean deleted = projectPartnerManager.deleteProjectPartner(projectPartner.getId());
+            boolean deleted =
+              projectPartnerManager.deleteProjectPartner(projectPartner.getId(), this.getCurrentUser(), "");
             if (!deleted) {
               success = false;
             }
@@ -288,7 +289,7 @@ public class ProjectPartnersPlanningAction extends BaseAction {
         for (int c = 0; c < previousProject.getProjectPartners().size(); c++) {
           // Copying responsibilities.
           previousProject.getProjectPartners().get(c)
-            .setResponsabilities(project.getProjectPartners().get(c).getResponsabilities());
+          .setResponsabilities(project.getProjectPartners().get(c).getResponsabilities());
         }
         boolean result = projectPartnerManager.saveProjectPartners(previousProject.getId(),
           previousProject.getProjectPartners(), this.getCurrentUser(), "");

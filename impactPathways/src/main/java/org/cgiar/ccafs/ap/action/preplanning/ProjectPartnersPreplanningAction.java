@@ -199,7 +199,7 @@ public class ProjectPartnersPreplanningAction extends BaseAction {
     // Deleting project partners
     for (ProjectPartner projectPartner : previousProjectPartners) {
       if (!project.getProjectPartners().contains(projectPartner)) {
-        boolean deleted = projectPartnerManager.deleteProjectPartner(projectPartner.getId());
+        boolean deleted = projectPartnerManager.deleteProjectPartner(projectPartner.getId(), this.getCurrentUser(), "");
         if (!deleted) {
           success = false;
         }

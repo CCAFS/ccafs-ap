@@ -24,14 +24,6 @@ import com.google.inject.ImplementedBy;
 public interface ProjectPartnerDAO {
 
   /**
-   * This method deletes a project partner from the database.
-   *
-   * @param id of the project partner to be deleted.
-   * @return true if the record could be successfully deleted, false otherwise.
-   */
-  public boolean deleteProjectPartner(int id);
-
-  /**
    * This method deletes the project partner given the project Id and the institution Id
    *
    * @param projectId - is the id of a project
@@ -39,6 +31,16 @@ public interface ProjectPartnerDAO {
    * @return true if the elements were deleted successfully. False otherwise
    */
   public boolean deleteProjectPartner(int projectId, int partnerId);
+
+  /**
+   * This method deletes a project partner from the database.
+   *
+   * @param id of the project partner to be deleted.
+   * @param userID is the user identifier that wants to delete it.
+   * @param justification is the justification statement.
+   * @return true if the record could be successfully deleted, false otherwise.
+   */
+  public boolean deleteProjectPartner(int id, int userID, String justification);
 
   /**
    * This method gets the project partners information given the project Id
