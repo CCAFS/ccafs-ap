@@ -46,6 +46,10 @@ public class UserManagerImpl {
     User user = new User();
     Map<String, String> userData = userDao.getUserByEmail(email);
 
+    if (userData.isEmpty()) {
+      return null;
+    }
+
     user.setEmail(email);
     user.setUsername(userData.get("username"));
     user.setPassword(userData.get("password"));
