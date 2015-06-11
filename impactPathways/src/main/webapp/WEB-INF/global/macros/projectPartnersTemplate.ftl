@@ -24,7 +24,7 @@
     [#-- Partner Name --]
     <div class="fullPartBlock partnerName chosen">
       [#assign institutionList]${isPPA?string("allPPAPartners", "allPartners")}[/#assign]
-      [@customForm.select name="${ap_name}[${ap_index}].partner" label=""  disabled=!editable i18nkey="preplanning.projectPartners.partner.name" listName=institutionList keyFieldName="id"  displayFieldName="getComposedName()" value="${ap.institution.id?c}" /]
+      [@customForm.select name="${ap_name}[${ap_index}].institution" label=""  disabled=!editable i18nkey="preplanning.projectPartners.partner.name" listName=institutionList keyFieldName="id"  displayFieldName="getComposedName()" value="${ap.institution.id?c}" /]
     </div>
     [#-- Filters --]
     [#if editable]
@@ -50,7 +50,7 @@
     <div class="fullPartBlock clearfix">
       [#-- Contact Person information is going to come from the users table, not from project_partner table (refer to the table project_partners in the database) --] 
       [@customForm.input name="" value="${ap.user.composedName}" className="userName" type="text" disabled=!canEdit i18nkey="preplanning.projectPartners.contactPersonEmail" required=true readOnly=true editable=editable/]
-      <input class="userId" type="hidden" name="preplanning.projectPartners.projectLeader" value="${ap.user.id}">
+      <input class="userId" type="hidden" name="${ap_name}[${ap_index}].projectLeader" value="${ap.user.id}">
       [#if editable]<div class="searchUser">[@s.text name="form.buttons.searchUser" /]</div>[/#if] 
     </div>  
     [#-- Responsabilities --]
@@ -65,18 +65,14 @@
       <div class="ppaPartnersList panel primary">
         <div class="panel-head">
           [@s.text name="preplanning.projectPartners.indicatePpaPartners" /]
-        </div>
-        [#assign ppaPartnersList = [
-          {"id":"1", "name":"PPA Partner #1 Bioversity International"},
-          {"id":"2", "name":"PPA Partner #2 CIAT - Centro Internacional de Agricultura tropial"},
-          {"id":"3", "name":"PPA Partner #3 CIP - Centro Internacional de la papa"}
-        ]/]
+        </div> 
         <div class="panel-body">
-          <ul> 
-            [#list ppaPartnersList as ppaPartner]
-              <li class="[#if !ppaPartner_has_next]last[/#if]">
-                ${ppaPartner.name}
-                [#if editable]<span class="listButton remove">Remove</span>[/#if] 
+          <ul class="list"> 
+            [#list ap.contributeInstitutions as ppaPartner]
+              <li class="clearfix [#if !ppaPartner_has_next]last[/#if]">
+                <input class="id" type="hidden" name="${ap_name}[${ap_index}].contributeInstitutions[${ppaPartner_index}].id" value="${ppaPartner.id}" />
+                <span class="name">${ppaPartner.name}</span> 
+                [#if editable]<span class="listButton remove">[@s.text name="form.buttons.remove" /]</span>[/#if]
               </li>
             [/#list]
           </ul>
@@ -90,7 +86,7 @@
   </div> <!-- End projectPartner-${ap_index} -->
 [/#macro]
 
-[#macro partnerTemplate isPPA=false showResponsabilities=false canEdit=true isSecondLvlPartners=false ]
+[#macro partnerTemplate isPPA=false showResponsabilities=false canEdit=true ]
   <div id="projectPartnerTemplate" class="borderBox" style="display:none">
         [#-- Partner identifier --]
         <input id="id" type="hidden" name="" value="-1" />
@@ -103,7 +99,7 @@
         [#-- Partner Name --]
         <div class="fullPartBlock partnerName chosen">
         [#assign institutionList]${isPPA?string("allPPAPartners", "allPartners")}[/#assign]
-          [@customForm.select name="partner" label=""  disabled=!canEdit i18nkey="preplanning.projectPartners.partner.name" listName=institutionList keyFieldName="id"  displayFieldName="getComposedName()" /]
+          [@customForm.select name="institution" className="institution" label=""  disabled=!canEdit i18nkey="preplanning.projectPartners.partner.name" listName=institutionList keyFieldName="id"  displayFieldName="getComposedName()" /]
         </div>
         <div class="filters-link">[@s.text name="preplanning.projectPartners.filters" /]</div>
         <div class="filters-content">
@@ -120,7 +116,7 @@
         <div class="fullPartBlock clearfix">
           [#-- Contact Person information is going to come from the users table, not from project_partner table (refer to the table project_partners in the database) --] 
           [@customForm.input name="" value="" className="userName" type="text" disabled=!canEdit i18nkey="preplanning.projectPartners.contactPersonEmail" required=true readOnly=true /]
-          <input class="userId" type="hidden" name="preplanning.projectPartners.projectLeader" value="-1">
+          <input class="userId" type="hidden" name="projectLeader" value="-1">
           <div class="searchUser">[@s.text name="form.buttons.searchUser" /]</div>
         </div>
         [#-- Responsabilities --]
@@ -137,7 +133,7 @@
               [@s.text name="preplanning.projectPartners.indicatePpaPartners" /]
             </div>
             <div class="panel-body">
-              <ul>  
+              <ul class="list">  
               </ul> 
               [@customForm.select name="" label="" disabled=!canEdit i18nkey="" listName="allPPAPartners" keyFieldName="id" displayFieldName="getComposedName()" className="ppaPartnersSelect" value="" /]
             </div>

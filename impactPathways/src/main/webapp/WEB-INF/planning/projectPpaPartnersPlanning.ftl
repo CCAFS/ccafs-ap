@@ -77,6 +77,8 @@
     [/#if]
   </article>
   [/@s.form] 
+  [#-- Hidden Parameters Interface --]
+  <input id="partners-name" type="hidden" value="project.PPAPartner" />
   [#-- Single partner TEMPLATE from partnersTemplate.ftl --]
   [@partnersTemplate.partnerTemplate isPPA=true showResponsabilities=true /]  
   [#-- Search users Interface --]

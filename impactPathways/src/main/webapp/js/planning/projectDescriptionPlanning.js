@@ -11,6 +11,7 @@ $(document).ready(function() {
       defaultMaxDateValue: $("#maxDateValue").val()
   });
   setProgramId();
+  setDisabledCheckedBoxes();
   addChosen();
   applyWordCounter($("textarea.project-title"), lWordsElemetTitle);
   applyWordCounter($("textarea.project-description"), lWordsElemetDesc);
@@ -80,8 +81,8 @@ $(document).ready(function() {
 
   function addItemList($item) {
     var $listElement = $("#cpListTemplate").clone(true).removeAttr("id");
-    $listElement.find('.coreProject_name').html($item.text());
-    $listElement.find('.coreProject_id').val($item.val());
+    $listElement.find('.id').val($item.val());
+    $listElement.find('.name').html($item.text());
     $coreProjects.prepend($listElement);
     $item.remove();
     $coreSelect.trigger("liszt:updated");
@@ -89,12 +90,15 @@ $(document).ready(function() {
   }
 
   function removeItemList($item) {
+    // Adding to select list
     var data = {
-        id: $item.find('.coreProject_id').val(),
-        'name': $item.find('.coreProject_name').text()
+        id: $item.find('.id').val(),
+        'name': $item.find('.name').text()
     };
-    $coreSelect.append(setOption(data.id, data.name));
-    $coreSelect.trigger("liszt:updated");
+    var $select = $item.parents('.panel').find('select');
+    $select.append(setOption(data.id, data.name));
+    $select.trigger("liszt:updated");
+    // Removing from list
     $item.hide("slow", function() {
       $item.remove();
       setcoreProjectsIndexes();
@@ -104,7 +108,7 @@ $(document).ready(function() {
   function setcoreProjectsIndexes() {
     $coreProjects.find('li').each(function(i,item) {
       var elementName = "project.coreProjects[" + i + "].";
-      $(item).find('.coreProject_id').attr('name', elementName + 'id');
+      $(item).find('.id').attr('name', elementName + 'id');
     });
   }
 
@@ -171,6 +175,9 @@ function addChosen() {
 // Set default Program ID
 function setProgramId() {
   var programId = $("input#programID").val();
-  $("input[value='" + programId + "'][name$='regions'], input[value='" + programId + "'][name$='flagships']").attr(
-      "checked", true).attr("disabled", true);
+  $("#projectWorking input[value='" + programId + "']").attr("checked", true).attr("disabled", true);
+}
+
+function setDisabledCheckedBoxes() {
+  $('#projectWorking input[type=checkbox]:checked').attr("disabled", true);
 }

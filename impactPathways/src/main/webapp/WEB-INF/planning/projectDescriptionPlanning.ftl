@@ -125,7 +125,7 @@
       [#if !project.coreProject]
       <h1 class="contentTitle"> [@s.text name="planning.projectDescription.coreProjects" /] </h1> 
       <div id="projectCoreProjects" class="isLinked tickBox-wrapper fullBlock">  
-        [@customForm.checkbox name="project.isLinked" value=""  i18nkey="planning.projectDescription.isLinkedCoreProjects" disabled=!editable /]
+        [@customForm.checkbox name="project.isLinked" value=""  i18nkey="planning.projectDescription.isLinkedCoreProjects" disabled=!editable checked=true/]
           <div class="tickBox-toggle coreProjects fullBlock">
             <div class="panel primary">
               <div class="panel-head"> [@s.text name="planning.projectDescription.chouseCoreProject" /]</div>
@@ -133,9 +133,9 @@
                 <ul class="list">
                   [#list project.linkedCoreProjects as element]
                     <li class="clearfix [#if !element_has_next]last[/#if]">
-                      <span class="coreProject_name">${element.id} - ${element.title}</span> 
-                      [#if editable]<span class="listButton remove">Remove</span>[/#if] 
-                      <input class="coreProject_id" type="hidden" name="project.coreProjects[${element_index}].id" value="${element.id?c}" />
+                      <input class="id" type="hidden" name="project.coreProjects[${element_index}].id" value="${element.id?c}" />
+                      <span class="name">${element.id} - ${element.title}</span> 
+                      [#if editable]<span class="listButton remove">[@s.text name="form.buttons.remove" /]</span>[/#if] 
                     </li>
                   [/#list]
                 </ul>
@@ -169,9 +169,9 @@
   [#-- Core project list template --]
   <ul style="display:none">
     <li id="cpListTemplate" class="clearfix">
-      <span class="coreProject_name">{element.name}</span> 
-      <span class="listButton remove">Remove</span>
-      <input class="coreProject_id" type="hidden" name="project.coreProjects[{element_index}].id" value="{element.id?c}" />
+      <input class="id" type="hidden" name="" value="" />
+      <span class="name"></span> 
+      <span class="listButton remove">[@s.text name="form.buttons.remove" /]</span>
     </li>
   </ul>
   

@@ -78,8 +78,18 @@
     [/#if]
   </article>
   [/@s.form] 
+  [#-- Hidden Parameters Interface --]
+  <input id="partners-name" type="hidden" value="project.projectPartners" />
   [#-- Single partner TEMPLATE from partnersTemplate.ftl --]
   [@partnersTemplate.partnerTemplate showResponsabilities=true /]  
+  [#-- PPA list Template --]
+  <ul style="display:none">
+    <li id="ppaListTemplate" class="clearfix">
+      <input class="id" type="hidden" name="" value="" />
+      <span class="name"></span> 
+      [#if editable]<span class="listButton remove">[@s.text name="form.buttons.remove" /]</span>[/#if] 
+    </li>
+  </ul>
   [#-- Search users Interface --]
   [@usersForm.searchUsers/] 
   
