@@ -216,7 +216,8 @@ public class ProjectPartnersPreplanningAction extends BaseAction {
     // }
 
     // Saving new and old project partners
-    saved = projectPartnerManager.saveProjectPartner(project.getId(), project.getProjectPartners());
+    saved = projectPartnerManager.saveProjectPartners(project.getId(), project.getProjectPartners(),
+      this.getCurrentUser(), "");
     if (!saved) {
       success = false;
     }

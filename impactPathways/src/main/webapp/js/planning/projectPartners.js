@@ -21,6 +21,15 @@ $(document).ready(
           }
           $filterContent.slideToggle();
         });
+
+        $('.ppaPartnersList select').on('change', function(e) {
+          addItemList($(this).find('option:selected'));
+        });
+
+        $('ul li .remove').on('click', function(e) {
+          removeItemList($(this).parents('li'));
+        });
+
         // When Partner Type change
         $("select.partnerTypes, select.countryList").change(updateOrganizationsList);
       }
@@ -37,12 +46,10 @@ $(document).ready(
         var source =
             "../../json/institutionsByTypeAndCountry.do?institutionTypeID=" + partnerTypes + "&countryID="
                 + countryList;
-
         if(eventType == "filters-link") {
           source = "../../json/institutionsByTypeAndCountry.do";
         }
         var institutionsList = "";
-
         $.getJSON(source, function(data) {
           $.each(data.institutions, function(index,institution) {
             institutionsList += "<option value=" + institution.id + ">" + institution.composedName + "</option>";
@@ -66,6 +73,30 @@ $(document).ready(
         });
       }
 
+      function removeItemList($item) {
+        // Adding to select list
+        var $select = $item.parents('.panel').find('select');
+        $select.append(setOption($item.find('.id').val(), $item.find('.name').text()));
+        $select.trigger("liszt:updated");
+        // Removing from list
+        $item.hide("slow", function() {
+          $item.remove();
+        });
+        setProjectPartnersIndexes();
+      }
+
+      function addItemList($option) {
+        var $select = $option.parent();
+        var $list = $option.parents('.panel').find('ul.list');
+        var $li = $("#ppaListTemplate").clone(true).removeAttr("id");
+        $li.find('.id').val($option.val());
+        $li.find('.name').html($option.text());
+        $list.prepend($li);
+        $option.remove();
+        $select.trigger("liszt:updated");
+        setProjectPartnersIndexes();
+      }
+
       function addPartnerEvent(e) {
         e.preventDefault();
         var $newElement = $("#projectPartnerTemplate").clone(true).removeAttr("id").addClass("projectPartner");
@@ -73,33 +104,29 @@ $(document).ready(
         $newElement.show("slow");
 
         // Activate the chosen plugin
-        $newElement.find("select[name$='partner']").chosen({
+        $newElement.find("select").chosen({
             no_results_text: $("#noResultText").val(),
             search_contains: true
         });
-        $newElement.find(".partnerTypes").chosen({
-            allow_single_deselect: true,
-            search_contains: true
-        });
-        $newElement.find(".countryList").chosen({
-            allow_single_deselect: true,
-            search_contains: true
-        });
+
         setProjectPartnersIndexes();
       }
 
       function setProjectPartnersIndexes() {
         $("div.projectPartner").each(function(index,element) {
-          var elementName = "project.projectPartners[" + index + "].";
+          var elementName = $('#partners-name').val() + "[" + index + "].";
           $(element).attr("id", "projectPartner-" + index);
-          // CSS selector div[id$=parent] Get any DIV element where the ID attribute
-          // value ends with "parent".
+          // CSS selector div[id$=parent] Get any DIV element where the ID attribute value ends with "parent".
           $(element).find("[id$='partnerIndex']").html(index + 1);
           $(element).find("[id$='id']").attr("name", elementName + "id");
-          $(element).find("[id$='partner']").attr("name", elementName + "partner");
-          $(element).find("[id$='contactName']").attr("name", elementName + "contactName");
-          $(element).find("[id$='contactEmail']").attr("name", elementName + "contactEmail");
+          $(element).find("[id$='institution']").attr("name", elementName + "institution");
+          $(element).find(".userId").attr("name", elementName + "projectLeader");
           $(element).find("[id$='responsabilities']").attr("name", elementName + "responsabilities");
+
+          // Update index for CCAFS Partners
+          $(element).find('.ppaPartnersList ul.list li').each(function(li_index,li) {
+            $(li).find('.id').attr("name", elementName + "contributeInstitutions" + "[" + li_index + "].id");
+          });
         });
       }
 
@@ -117,7 +144,7 @@ $(document).ready(
  * .countryList").chosen({ allow_single_deselect: true, search_contains: true });
  */
       }
-      /*
+      /**
        * ----------------------- Search users functions --------------------------
        */
 
@@ -129,8 +156,8 @@ $(document).ready(
       var $dialogContent = $("#dialog-searchUsers");
       var dialogOptions = {
           autoOpen: false,
-          height: 320,
-          width: 500,
+          height: 400,
+          width: 600,
           modal: true,
           show: {
               effect: "size",
@@ -146,6 +173,12 @@ $(document).ready(
 
       dialog = $dialogContent.dialog(dialogOptions);
 
+      $dialogContent.find(".accordion").on('click', function() {
+        $(this).parent().find('.accordion span').removeClass('ui-icon-triangle-1-s').addClass('ui-icon-triangle-1-e');
+        $(this).siblings('.accordion-block').hide('slow');
+        $(this).next().slideToggle();
+        $(this).find('span').addClass('ui-icon-triangle-1-s');
+      });
       /* ----- Events ----- */
 
       // Event to open dialog box and search an contact person
@@ -154,14 +187,19 @@ $(document).ready(
       $dialogContent.find("span.select").on("click", addUser);
       // Event to find an user according to search field
       $dialogContent.find(".search-content input").on("keyup", searchUsersEvent);
+
       $dialogContent.find(".search-button").on("click", function() {
         getData($('.search-input .input').val());
+      });
+
+      $dialogContent.find("form").on("submit", function(e) {
+        event.preventDefault();
       });
 
       /* ----- Functions ----- */
 
       function openSearchDialog(e) {
-        event.preventDefault();
+        e.preventDefault();
         $elementSelected = $(this).parent();
         dialog.dialog("open");
         $dialogContent.find(".search-loader").fadeOut("slow");
@@ -179,63 +217,55 @@ $(document).ready(
 
       function searchUsersEvent(e) {
         var query = $(this).val();
-        if(timeoutID) {
-          clearTimeout(timeoutID);
+        if(query.length > 1) {
+          if(timeoutID) {
+            clearTimeout(timeoutID);
+          }
+          // Start a timer that will search when finished
+          timeoutID = setTimeout(function() {
+            getData(query);
+          }, 500);
+        } else {
+          $dialogContent.find(".panel-body .userMessage").show();
+          $dialogContent.find(".panel-body ul").empty();
         }
-        // Start a timer that will search when finished
-        timeoutID = setTimeout(function() {
-          getData(query);
-        }, 500);
+
       }
 
       function getData(query) {
-        if(query.length > 1) {
-          $.ajax({
-              'url': '../../searchUsers.do',
-              'data': {
-                q: query
-              },
-              'dataType': "json",
-              beforeSend: function() {
-                $dialogContent.find(".search-loader").show();
-                $dialogContent.find(".panel-body ul").empty();
-              },
-              success: function(data) {
-                var usersFound = (data.users).length;
-                if(usersFound > 0) {
-                  $dialogContent.find(".panel-body .userMessage").hide();
-                  $.each(data.users, function(i,user) {
-                    var $item = $dialogContent.find("li#userTemplate").clone(true).removeAttr("id");
-                    $item.find('.name').html(escapeHtml(user.composedName));
-                    $item.find('.contactId').html(user.id);
-                    if(i == usersFound - 1) {
-                      $item.addClass('last');
-                    }
-                    $dialogContent.find(".panel-body ul").append($item);
-                  });
-                } else {
-                  $dialogContent.find(".panel-body .userMessage").show();
-                }
-
-              },
-              complete: function() {
-                $dialogContent.find(".search-loader").fadeOut("slow");
+        $.ajax({
+            'url': '../../searchUsers.do',
+            'data': {
+              q: query
+            },
+            'dataType': "json",
+            beforeSend: function() {
+              $dialogContent.find(".search-loader").show();
+              $dialogContent.find(".panel-body ul").empty();
+            },
+            success: function(data) {
+              var usersFound = (data.users).length;
+              if(usersFound > 0) {
+                $dialogContent.find(".panel-body .userMessage").hide();
+                $.each(data.users, function(i,user) {
+                  var $item = $dialogContent.find("li#userTemplate").clone(true).removeAttr("id");
+                  $item.find('.name').html(escapeHtml(user.composedName));
+                  $item.find('.contactId').html(user.id);
+                  if(i == usersFound - 1) {
+                    $item.addClass('last');
+                  }
+                  $dialogContent.find(".panel-body ul").append($item);
+                });
+              } else {
+                $dialogContent.find(".panel-body .userMessage").show();
               }
-          });
-        }
-      }
 
-      function escapeHtml(text) {
-        var map = {
-            '&': '&amp;',
-            '<': '&lt;',
-            '>': '&gt;',
-            '"': '&quot;',
-            "'": '&#039;'
-        };
-        return text.replace(/[&<>"']/g, function(m) {
-          return map[m];
+            },
+            complete: function() {
+              $dialogContent.find(".search-loader").fadeOut("slow");
+            }
         });
+
       }
 
     });

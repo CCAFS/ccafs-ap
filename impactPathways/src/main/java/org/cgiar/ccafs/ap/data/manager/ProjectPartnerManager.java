@@ -12,6 +12,7 @@ import org.cgiar.ccafs.ap.data.manager.impl.ProjectPartnerManagerImpl;
 import org.cgiar.ccafs.ap.data.model.Institution;
 import org.cgiar.ccafs.ap.data.model.Project;
 import org.cgiar.ccafs.ap.data.model.ProjectPartner;
+import org.cgiar.ccafs.ap.data.model.User;
 
 import java.util.List;
 
@@ -41,6 +42,7 @@ public interface ProjectPartnerManager {
    */
   public boolean deleteProjectPartner(Project project, Institution partner);
 
+
   /**
    * This method is used to get the list of Project Partners that belongs to a specific project.
    *
@@ -63,12 +65,27 @@ public interface ProjectPartnerManager {
   public List<ProjectPartner> getProjectPartners(int projectId, String projectPartnerType);
 
   /**
+   * This method saves a Project Partner individually.
+   * This method could be used for saving a Project Leader or a Project Coordinator.
+   * 
+   * @param projectId is the project identifier
+   * @param partner is the partner object that is going to be saved.
+   * @param user is the user that is making the change.
+   * @param justification is the justification for the change made.
+   * @return the id of the project partner inserted, 0 if the record was updated and -1 if some error occurred.
+   */
+  public int saveProjectPartner(int projectId, ProjectPartner partner, User user, String justification);
+
+  /**
    * This method save the project partner of a specific project
    *
    * @param projectId is the project identifier in which these projects partners belong to.
    * @param projectpartnerData is the information to be saved
-   * @return the last inserted id if any or 0 if some record was updated or -1 if any error occurred.
+   * @param user is the user that is making the change.
+   * @param justification is the justification for the change made.
+   * @return true if all partners were successfully saved; or false otherwise.
    */
-  public boolean saveProjectPartner(int projectId, List<ProjectPartner> partners);
+  public boolean saveProjectPartners(int projectId, List<ProjectPartner> partners, User user, String justification);
+
 
 }

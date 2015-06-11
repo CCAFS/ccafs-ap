@@ -56,14 +56,16 @@
 
 [#macro checkbox name value="-NULL" label="" i18nkey="" disabled=false checked=false required=false display=true help="" editable=true]
   <div class="checkbox" [#if !display]style="display: none;"[/#if]>
-    <label for="${name}">
-      <input type="checkbox" id="${name}" name="${name}" value="${value}" [#if checked]checked="checked"[/#if] [#if disabled]disabled="disabled[/#if] />
-      <input type="hidden" id="__checkbox_${name}" name="__checkbox_${name}" value="${value}" />
-      <h6>[#if i18nkey==""]${label}[#else][@s.text name="${i18nkey}" /][/#if][#if required]<span class="red">*</span>[/#if]</h6>
-      [#if help != ""]
-        <img src="${baseUrl}/images/global/icon-help2.png" title="[@s.text name="${help}"/]" />
-      [/#if]
-    </label>
+    [#if editable]
+      <label for="${name}">
+        <input type="checkbox" id="${name}" name="${name}" value="${value}" [#if checked]checked="checked"[/#if] [#if disabled]disabled="disabled[/#if] />
+        <input type="hidden" id="__checkbox_${name}" name="__checkbox_${name}" value="${value}" />
+        <h6>[#if i18nkey==""]${label}[#else][@s.text name="${i18nkey}" /][/#if][#if required]<span class="red">*</span>[/#if]</h6>
+        [#if help != ""]<img src="${baseUrl}/images/global/icon-help2.png" title="[@s.text name="${help}"/]" />[/#if]
+      </label>
+    [#else]
+      <h6 class="checked-${checked?string}">[#if i18nkey==""]${label}[#else][@s.text name="${i18nkey}" /][/#if]</h6>
+    [/#if]
     
   </div>
 [/#macro]
@@ -155,6 +157,12 @@
      <input type="button" class="addButton [@s.text name='${i18nkey}' /]" name="" value="Add [@s.text name='${i18nkey}' /]" />
   [/#if]
 [/#macro]
+
+[#macro inputFile name template=false ]
+  [#assign customId][#if template]${name}-template[#else]${name}[/#if][/#assign]
+  <!-- Input File ${customId} -->
+  [@s.file name="${name}" id="${customId}" cssClass="upload" cssStyle="${template?string('display:none','')}"  /]
+[/#macro] 
 
 [#-- The following macros aren't tested yet. --]
 

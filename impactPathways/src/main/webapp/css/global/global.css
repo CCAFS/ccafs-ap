@@ -92,8 +92,18 @@ p.fieldError{
 
 p.checked {
     background: url(../../images/global/icon-check.png) no-repeat 0;
-    padding: 3px 0  3px 20px;
+    padding: 3px 0  3px 23px;
 }
+
+h6.checked-true {
+    background: url(../../images/global/checked-true.png) no-repeat 0;
+    padding: 3px 0  3px 23px;
+}
+h6.checked-false {
+    background: url(../../images/global/checked-false.png) no-repeat 0;
+    padding: 3px 0  3px 23px;
+}
+
 
 .hasDatepicker {
     background: url(../../images/global/calendar.png) no-repeat scroll 99% 2px;
@@ -179,6 +189,34 @@ input[type="submit"], button, .addButton {
   background-color: #6C6C6C;
 }
 
+
+.accordion {
+    color: #fff;
+    background: #408088;
+    padding: 6px;
+    border-radius: 4px;
+    cursor: pointer;
+    margin-top: 4px;
+}
+
+.accordion span{
+    float: left;
+}
+
+.accordion-block {
+    padding: 12px 6px 0 6px;
+ 
+    margin-bottom: 14px;
+    height: 220px;
+    border: 1px solid #E5E5E5;
+    border-top: 0;
+    margin-top: -2px;
+}
+
+.create-button {
+    padding: 2px 5px;
+}
+
 input[type="submit"], button:hover, .addButton:hover {
   background-color: #239FC5;
 }
@@ -235,7 +273,8 @@ input.target {
   display: inline-block;
   background: #2BA6CB;
   border-radius: 3px;
-  padding: 5px 6px;
+  margin-top: 1px;
+  padding: 3px 6px;
   outline: none;
   white-space: nowrap;
   -webkit-user-select: none;
@@ -248,7 +287,20 @@ input.target {
   border-color: #fff;
 }
 .fileUpload .upload:active::before {
-  background: #2BA6CB;
+  background-color: #2BA6CB;
+}
+
+.fileUpload .remove{
+    float: left;
+    margin-right: 7px;
+}
+
+.fileUpload h6{
+  margin-bottom: 0.6em !important;
+}
+
+.uploadContainer {
+    padding-left: 0.5em;
 }
 
 .grid_5 .checkboxGroup .checkboxLabel { 
@@ -385,6 +437,7 @@ select#partnerSave_activityPartner_partner_type_id {
 
 .dialog-content {
     text-align: left;
+    height: 96%;
     margin-top: 6px;
 }
 
@@ -392,7 +445,7 @@ select#partnerSave_activityPartner_partner_type_id {
 
 .panel { 
     border: 1px solid rgba(0,0,0,0.2);
-    border-radius: 6px;
+    border-radius: 4px;
     margin: 8px 0;
 }
 
@@ -409,7 +462,7 @@ select#partnerSave_activityPartner_partner_type_id {
     color: #fff;
     padding: 6px;
     text-align: center;
-    border-radius: 4px 4px 0px 0px;
+    border-radius: 3px 3px 0px 0px;
     font-size: 1.1em;
     font-weight: bold;
 }
@@ -431,7 +484,7 @@ select#partnerSave_activityPartner_partner_type_id {
 }
 .panel .panel-body ul li:hover { 
   color: #444;
-  background: #F7F7F7;
+  background-color: #F7F7F7;
 }
 .panel .panel-body ul li.last { 
     border-bottom: none;
@@ -439,22 +492,22 @@ select#partnerSave_activityPartner_partner_type_id {
 
 .panel span.listButton {
   float:right;
-  cursor:pointer;
   padding: 2px 8px;
-  border-radius: 3px;
 }
 
 .panel span.listButton.select {
-    background: #E6E6E6;
+    background-color: #E6E6E6;
  
 }
-.panel span.listButton.remove {
-    background: #D5504C;
+.remove {
+    background-color: #D5504C;
     color: #fff;
+    border-radius: 3px;
+    cursor: pointer;
 }
 
 .panel span.listButton.remove:hover {
-    background: #BD3D3A; 
+    background-color: #BD3D3A; 
 }
 
 .search-input{
@@ -475,12 +528,12 @@ select#partnerSave_activityPartner_partner_type_id {
 
 .search-button {
     background: #E6E6E6;
-    padding: 4px 0;
-    width: 61px;
+    padding: 5px 0;
+    width: 62px;
     border-radius: 4px;
     cursor:pointer;
     position: absolute;
-    bottom: 0;
+    bottom: 0.6em;
     right: 0;
     text-align: center;
 }
@@ -490,7 +543,7 @@ select#partnerSave_activityPartner_partner_type_id {
 
 .search-content {
     position: relative;
-    margin-bottom: 20px;
+    margin-bottom: 0px;
 }
 
 .usersList ul {
@@ -504,7 +557,11 @@ select#partnerSave_activityPartner_partner_type_id {
   font-style: italic;
   font-size: 1.1em;
 }
-
+.usersList span.link {
+    text-decoration: underline;
+ 
+    cursor: pointer;
+}
 
 /************* 2. HEADER ***************/
 body { 
@@ -1038,7 +1095,7 @@ a#backHome {
   border-bottom: 2px solid #562B00;
   color: #663300;
   font-size: 1.6em;
-  margin-bottom: 10px;
+  margin: 13px 0;
   font-weight: lighter;
   font-family: 'Open Sans', sans-serif;
 }
@@ -1105,7 +1162,7 @@ h3.contentSubTitle {
 
 .halfPartBlock {
   display: inline-block;
-  padding: 0 5px 14px 0;
+  padding: 0 5px 12px 0;
   width: 48%;
   vertical-align: top;
 }
@@ -1794,8 +1851,10 @@ textarea[id$='summary'] {
 .projectPartner .filters-link {
   cursor: pointer;
   color: #848484;
-  padding-left: 7px;
+  padding-left: 16px;
   margin-bottom: 7px;
+  background: url(../../images/global/filter.png) no-repeat 0px 3px;
+  background-size: 12px;
 }
 
 .projectPartner .filters-link:hover {

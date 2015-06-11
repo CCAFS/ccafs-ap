@@ -87,3 +87,20 @@ function word_count(field) {
 function setOption(val,name) {
   return "<option value='" + val + "'>" + name + "</option>";
 }
+
+/**
+ * Escape HTML text
+ */
+
+function escapeHtml(text) {
+  var map = {
+      '&': '&amp;',
+      '<': '&lt;',
+      '>': '&gt;',
+      '"': '&quot;',
+      "'": '&#039;'
+  };
+  return text.replace(/[&<>"']/g, function(m) {
+    return map[m];
+  });
+}
