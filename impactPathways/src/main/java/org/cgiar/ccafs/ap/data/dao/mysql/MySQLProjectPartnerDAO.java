@@ -91,6 +91,7 @@ public class MySQLProjectPartnerDAO implements ProjectPartnerDAO {
         projectPartnerData.put("project_id", rs.getString("project_id"));
         projectPartnerData.put("partner_id", rs.getString("partner_id"));
         projectPartnerData.put("user_id", rs.getString("user_id"));
+        projectPartnerData.put("partner_type", rs.getString("partner_type"));
         projectPartnerData.put("responsabilities", rs.getString("responsabilities"));
 
         projectPartnerList.add(projectPartnerData);
@@ -116,6 +117,7 @@ public class MySQLProjectPartnerDAO implements ProjectPartnerDAO {
     query.append("FROM project_partners as pp ");
     query.append("WHERE pp.project_id= ");
     query.append(projectID);
+    query.append(" AND pp.is_active = 1");
 
 
     LOG.debug("-- getProject() > Calling method executeQuery to get the results");
@@ -128,13 +130,14 @@ public class MySQLProjectPartnerDAO implements ProjectPartnerDAO {
       new Object[] {projectID, projectPartnerType});
 
     StringBuilder query = new StringBuilder();
-    query.append("SELECT pp.*   ");
-    query.append("FROM project_partners as pp ");
-    query.append("WHERE pp.project_id = ");
+    query.append("SELECT *   ");
+    query.append("FROM project_partners ");
+    query.append("WHERE project_id = ");
     query.append(projectID);
     query.append(" AND partner_type = '");
     query.append(projectPartnerType);
     query.append("'");
+    query.append(" AND is_active = 1");
 
     LOG.debug("-- getProjectPartners() > Calling method executeQuery to get the results");
     return this.getData(query.toString());
@@ -148,24 +151,33 @@ public class MySQLProjectPartnerDAO implements ProjectPartnerDAO {
     Object[] values;
     if (projectPartnerData.get("id") == null) {
       // Insert new record
-      query.append("INSERT INTO project_partners (id, project_id, partner_id, user_id, responsabilities) ");
-      query.append("VALUES (?, ?, ?, ?, ?) ");
-      values = new Object[5];
+      query.append(
+        "INSERT INTO project_partners (id, project_id, partner_id, user_id, partner_type, responsabilities, created_by, modified_by, modification_justification) ");
+      query.append("VALUES (?, ?, ?, ?, ?, ?) ");
+      values = new Object[9];
       values[0] = projectPartnerData.get("id");
       values[1] = projectPartnerData.get("project_id");
       values[2] = projectPartnerData.get("partner_id");
       values[3] = projectPartnerData.get("user_id");
-      values[4] = projectPartnerData.get("responsabilities");
+      values[4] = projectPartnerData.get("partner_type");
+      values[5] = projectPartnerData.get("responsabilities");
+      values[6] = projectPartnerData.get("created_by");
+      values[7] = projectPartnerData.get("modified_by");
+      values[8] = projectPartnerData.get("modification_justification");
     } else {
       // update record
-      query.append("UPDATE project_partners SET project_id = ?, partner_id = ?, user_id = ?, responsabilities = ? ");
+      query.append(
+        "UPDATE project_partners SET project_id = ?, partner_id = ?, user_id = ?, partner_type = ?, responsabilities = ?, modified_by = ?, modification_justification = ? ");
       query.append("WHERE id = ? ");
-      values = new Object[5];
+      values = new Object[8];
       values[0] = projectPartnerData.get("project_id");
       values[1] = projectPartnerData.get("partner_id");
       values[2] = projectPartnerData.get("user_id");
-      values[3] = projectPartnerData.get("responsabilities");
-      values[4] = projectPartnerData.get("id");
+      values[3] = projectPartnerData.get("partner_type");
+      values[4] = projectPartnerData.get("responsabilities");
+      values[5] = projectPartnerData.get("modified_by");
+      values[6] = projectPartnerData.get("modification_justification");
+      values[7] = projectPartnerData.get("id");
     }
 
     int result = databaseManager.saveData(query.toString(), values);
