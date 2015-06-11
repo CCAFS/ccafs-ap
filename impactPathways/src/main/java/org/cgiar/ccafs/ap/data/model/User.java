@@ -13,11 +13,12 @@
  *****************************************************************/
 package org.cgiar.ccafs.ap.data.model;
 
+import org.cgiar.ccafs.utils.MD5Convert;
+
 import java.util.Date;
 import java.util.List;
 
 import org.apache.commons.lang3.builder.ToStringBuilder;
-import org.cgiar.ccafs.utils.MD5Convert;
 
 /**
  * @author Hernan David Carvajal.

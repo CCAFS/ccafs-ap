@@ -121,9 +121,9 @@ public interface UserDAO {
    * Save the user data into the database.
    * 
    * @param userData - Information to be saved.
-   * @return true if the information was successfully saved. False otherwise.
+   * @return the id of the user that was created, 0 if the user was updated or -1 if some error appeared.
    */
-  public boolean saveUser(Map<String, String> userData);
+  public int saveUser(Map<String, Object> userData);
 
   /**
    * This method looks for the active users that contains the
