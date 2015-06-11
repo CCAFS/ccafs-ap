@@ -89,7 +89,7 @@ public class ProjectDescriptionValidator extends BaseValidator {
     this.validateFlagships(action, project.getFlagships());
 
     if (project.isWorkplanRequired()) {
-      projectValidator.isValidProjectWorkplanName(project.getProjectWorkplanName());
+      projectValidator.isValidProjectWorkplanName(project.getWorkplanName());
     }
   }
 
