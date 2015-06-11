@@ -51,8 +51,8 @@ public class ProjectPartnerManagerImpl implements ProjectPartnerManager {
   }
 
   @Override
-  public boolean deleteProjectPartner(int id) {
-    return projecPartnerDAO.deleteProjectPartner(id);
+  public boolean deleteProjectPartner(int id, User user, String justification) {
+    return projecPartnerDAO.deleteProjectPartner(id, user.getId(), justification);
   }
 
   @Override

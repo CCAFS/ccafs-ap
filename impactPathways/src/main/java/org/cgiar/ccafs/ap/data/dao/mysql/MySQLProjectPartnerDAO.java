@@ -46,22 +46,6 @@ public class MySQLProjectPartnerDAO implements ProjectPartnerDAO {
   }
 
   @Override
-  public boolean deleteProjectPartner(int id) {
-    LOG.debug(">> deleteProjectPartner(id={})", id);
-
-    String query = "DELETE FROM project_partners WHERE id = ?";
-
-    int rowsDeleted = databaseManager.delete(query, new Object[] {id});
-    if (rowsDeleted >= 0) {
-      LOG.debug("<< deleteProjectPartner():{}", true);
-      return true;
-    }
-
-    LOG.debug("<< deleteProjectPartner:{}", false);
-    return false;
-  }
-
-  @Override
   public boolean deleteProjectPartner(int projectId, int institutionId) {
     LOG.debug(">> deleteProjectPartner(projectId={}, institutionId={})", projectId, institutionId);
 
@@ -75,6 +59,26 @@ public class MySQLProjectPartnerDAO implements ProjectPartnerDAO {
       return true;
     }
     LOG.debug("<< deleteProjectPartner():{}", false);
+    return false;
+  }
+
+  @Override
+  public boolean deleteProjectPartner(int id, int userID, String justification) {
+    StringBuilder query = new StringBuilder();
+    // updating record is_active to false.
+    query.append("UPDATE project_partners SET is_active = 0, modified_by = ?, modification_justification = ? ");
+    query.append("WHERE id = ? ");
+    Object[] values = new Object[3];
+    values[0] = userID;
+    values[1] = justification;
+    values[2] = id;
+
+    int result = databaseManager.saveData(query.toString(), values);
+    if (result == 0) {
+      LOG.debug("<< deleteProjectPartner():{}", true);
+      return true;
+    }
+    LOG.debug("<< deleteProjectPartner:{}", false);
     return false;
   }
 
