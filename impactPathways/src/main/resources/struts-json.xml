@@ -48,42 +48,42 @@
     </action>
     
     <action name="prePlanningIpGraph" class="org.cgiar.ccafs.ap.action.json.preplanning.ImpactPathwayComponentsAction">
-      <result type="json">        
+      <result type="json"> 
         <param name="noCache">true</param>
         <param name="excludeNullProperties">true</param>
       </result>
     </action>
     
     <action name="planningIpGraph" class="org.cgiar.ccafs.ap.action.json.planning.ImpactPathwayComponentsAction">
-      <result type="json">        
+      <result type="json">
         <param name="noCache">true</param>
         <param name="excludeNullProperties">true</param>
       </result>
     </action>
     
     <action name="deliverablesByType" class="org.cgiar.ccafs.ap.action.json.planning.DeliverablesSubTypeByTypeAction">
-      <result type="json">        
+      <result type="json">
         <param name="noCache">true</param>
         <param name="excludeNullProperties">true</param>
       </result>
     </action>
     
     <action name="mogsByOutcome" class="org.cgiar.ccafs.ap.action.json.planning.MogsByOutcomeAction">
-      <result type="json">        
+      <result type="json">
         <param name="noCache">true</param>
         <param name="excludeNullProperties">true</param>
       </result>
     </action>
     
     <action name="searchUsers" class="org.cgiar.ccafs.ap.action.json.global.ManageUsersAction" method="search">
-      <result type="json">        
+      <result type="json">
         <param name="noCache">true</param>
         <param name="excludeNullProperties">true</param>
       </result>
     </action>
     
     <action name="createUser" class="org.cgiar.ccafs.ap.action.json.global.ManageUsersAction" method="create">
-      <result type="json">        
+      <result type="json">
         <param name="noCache">true</param>
         <param name="excludeNullProperties">true</param>
       </result>

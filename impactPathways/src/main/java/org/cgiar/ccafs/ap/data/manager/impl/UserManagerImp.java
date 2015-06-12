@@ -71,7 +71,7 @@ public class UserManagerImp implements UserManager {
       // Institution
       if (eData.get("institution_id") != null) {
         employee
-        .setCurrentInstitution(institutionManager.getInstitution(Integer.parseInt(eData.get("institution_id"))));
+          .setCurrentInstitution(institutionManager.getInstitution(Integer.parseInt(eData.get("institution_id"))));
       }
 
       // Adding object to the array.
@@ -111,7 +111,7 @@ public class UserManagerImp implements UserManager {
 
       // Institution
       projectContact
-        .setCurrentInstitution(institutionManager.getInstitution(Integer.parseInt(pData.get("institution_id"))));
+      .setCurrentInstitution(institutionManager.getInstitution(Integer.parseInt(pData.get("institution_id"))));
       // Adding object to the array.
       projectContacts.add(projectContact);
     }
@@ -315,7 +315,11 @@ public class UserManagerImp implements UserManager {
     } else {
       // If user doesn't exist, the password would have to be converter to MD5 format.
       userData.put("created_by", modifiedBy.getId());
-      userData.put("password", MD5Convert.stringToMD5(user.getPassword()));
+      if (user.getPassword() == null) {
+        userData.put("password", " ");
+      } else {
+        userData.put("password", MD5Convert.stringToMD5(user.getPassword()));
+      }
     }
     userData.put("first_name", user.getFirstName());
     userData.put("last_name", user.getLastName());
