@@ -44,6 +44,7 @@ public class ManageUsersAction extends BaseAction {
   private static String PARAM_FIRST_NAME = "firstName";
   private static String PARAM_LAST_NAME = "lastName";
   private static String PARAM_EMAIL = "email";
+  private static String PARAM_IS_ACTIVE = "isActive";
 
   private UserManager userManager;
   private String queryParameter;
@@ -55,6 +56,22 @@ public class ManageUsersAction extends BaseAction {
   public ManageUsersAction(APConfig config, UserManager userManager) {
     super(config);
     this.userManager = userManager;
+  }
+
+  /**
+   * Add a new user into the database;
+   */
+  private void addUser() {
+    // User temp = userManager.getUser(1); // TODO REMOVE THIS!
+    int id = userManager.saveUser(newUser, this.getCurrentUser());
+    // If successfully added.
+    if (id > 0) {
+      newUser.setId(id);
+    } else if (id <= 0) {
+      // If some error occurred.
+      newUser = null;
+      message = "Something happened! Please take a screenshot and contact the technical staff.";
+    }
   }
 
   public String create() throws Exception {
@@ -95,16 +112,41 @@ public class ManageUsersAction extends BaseAction {
       newUser.setFirstName(StringUtils.trim(this.getRequest().getParameter(PARAM_FIRST_NAME)));
       newUser.setLastName(StringUtils.trim(this.getRequest().getParameter(PARAM_LAST_NAME)));
       newUser.setEmail(StringUtils.trim(this.getRequest().getParameter(PARAM_EMAIL)));
+      newUser.setActive(StringUtils.trim(this.getRequest().getParameter(PARAM_IS_ACTIVE)).equals("1") ? true : false);
 
       if (newUser.getEmail() != null) {
+        boolean emailExists = false;
+        // We need to validate that the email does not exist yet into our database.
+        emailExists = userManager.getUserByEmail(newUser.getEmail()) == null ? false : true;
+
+        // If email already exists.
+        if (emailExists) {
+          // If email already exists into our database.
+          message = "The email you are trying to add already exist into our database.";
+          newUser = null;
+          return; // Stop here!
+        }
+
+        // Validate if is a CGIAR email.
         if (newUser.getEmail().toLowerCase().endsWith(APConstants.OUTLOOK_EMAIL)) {
+          newUser.setCcafsUser(true); // marking it as CCAFS user.
+
+          // Validate and populate the information that is coming from the CGIAR Outlook Active Directory.
           newUser = this.validateOutlookUser(newUser.getEmail());
+          // If user was not found in the Active Directory.
           if (newUser == null) {
             message = "It seems that the email does not exist in the CGIAR Active Directory.";
+            return; // Stop here!
+          } else {
+            // If user was found, let's add it into our database.
+            this.addUser();
           }
+        } else {
+          // If the email does not belong to the CGIAR.
+          newUser.setCcafsUser(false);
+          this.addUser();
         }
       }
-
     }
 
   }
@@ -122,6 +164,12 @@ public class ManageUsersAction extends BaseAction {
     return SUCCESS;
   }
 
+  /**
+   * Validate if a given user exists in the Outlook Active Directory .
+   * 
+   * @param email is the CGIAR email.
+   * @return a populated user with all the information that is coming from the OAD, or null if the email does not exist.
+   */
   private User validateOutlookUser(String email) {
     LDAPUser user = LDAPService.searchUserByEmail(email);
     if (user != null) {
