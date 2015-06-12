@@ -143,8 +143,12 @@ public class ManageUsersAction extends BaseAction {
           }
         } else {
           // If the email does not belong to the CGIAR.
-          newUser.setCcafsUser(false);
-          this.addUser();
+          if (newUser.getFirstName() != null && newUser.getLastName() != null) {
+            newUser.setCcafsUser(false);
+            this.addUser();
+          } else {
+            message = "First Name and Last Name are needed.";
+          }
         }
       }
     }
