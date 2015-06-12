@@ -76,8 +76,6 @@
               [#else]
                 [#if (editable && !project.workplanRequired )]
                   [@customForm.inputFile name="project.projectWorkplan"  /]
-                [#else]  
-                  Not file uploaded
                 [/#if] 
               [/#if] 
             </div> 

@@ -55,7 +55,6 @@ public class UserManagerImp implements UserManager {
   public UserManagerImp(UserDAO userDAO, InstitutionManager institutionManager) {
     this.userDAO = userDAO;
     this.institutionManager = institutionManager;
-
   }
 
 
@@ -111,8 +110,8 @@ public class UserManagerImp implements UserManager {
       projectContact.setEmail(pData.get("email"));
 
       // Institution
-      projectContact.setCurrentInstitution(institutionManager.getInstitution(Integer.parseInt(pData
-        .get("institution_id"))));
+      projectContact
+      .setCurrentInstitution(institutionManager.getInstitution(Integer.parseInt(pData.get("institution_id"))));
       // Adding object to the array.
       projectContacts.add(projectContact);
     }
@@ -135,6 +134,7 @@ public class UserManagerImp implements UserManager {
     return projectLeaders;
   }
 
+
   @Override
   public int getEmployeeID(User user) {
     int userId = user.getId();
@@ -145,7 +145,6 @@ public class UserManagerImp implements UserManager {
 
     return result;
   }
-
 
   @Override
   public User getOwner(int ownerId) {
@@ -182,6 +181,7 @@ public class UserManagerImp implements UserManager {
     return null;
   }
 
+
   @Override
   public User getUser(int userId) {
     Map<String, String> userData = userDAO.getUser(userId);
@@ -211,7 +211,6 @@ public class UserManagerImp implements UserManager {
 
     return null;
   }
-
 
   @Override
   public User getUserByEmail(String email) {
@@ -245,6 +244,7 @@ public class UserManagerImp implements UserManager {
     return null;
   }
 
+  @Override
   public User getUserByUsername(String username) {
     String email = userDAO.getEmailByUsername(username);
     if (email != null) {
@@ -306,12 +306,26 @@ public class UserManagerImp implements UserManager {
   }
 
   @Override
-  public boolean saveUser(User user) {
-    Map<String, String> userData = new HashMap<>();
-    // userData.put("name", user.getName());
+  public int saveUser(User user, User modifiedBy) {
+    Map<String, Object> userData = new HashMap<>();
+    if (user.getId() > 0) {
+      // If user already exists, the password would be saved in MD5 format.
+      userData.put("id", user.getId());
+      userData.put("password", user.getPassword());
+    } else {
+      // If user doesn't exist, the password would have to be converter to MD5 format.
+      userData.put("created_by", modifiedBy.getId());
+      if (user.getPassword() == null) {
+        userData.put("password", " ");
+      } else {
+        userData.put("password", MD5Convert.stringToMD5(user.getPassword()));
+      }
+    }
+    userData.put("first_name", user.getFirstName());
+    userData.put("last_name", user.getLastName());
     userData.put("email", user.getEmail());
-    userData.put("password", MD5Convert.stringToMD5(user.getPassword()));
-    // userData.put("activity_leader_id", String.valueOf(user.getLeader().getId()));
+    userData.put("is_ccafs_user", user.isCcafsUser() ? 1 : 0);
+    userData.put("is_active", user.isActive() ? 1 : 0);
 
     return userDAO.saveUser(userData);
   }

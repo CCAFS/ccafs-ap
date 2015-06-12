@@ -87,7 +87,7 @@ public class LoginAction extends BaseAction {
       } else {
         LOG.info("User " + user.getEmail() + " tried to logged in but failed.");
         user.setPassword(null);
-        addFieldError("loginMesage", getText("home.login.error"));
+        this.addFieldError("loginMesage", this.getText("home.login.error"));
         return INPUT;
       }
     } else {
@@ -115,14 +115,14 @@ public class LoginAction extends BaseAction {
     // If is the first time the user is loading the page
     if (user != null) {
       if (user.getEmail().isEmpty()) {
-        addFieldError("user.email", getText("validation.field.required"));
+        this.addFieldError("user.email", this.getText("validation.field.required"));
         user.setPassword(null);
       } /*
-         * else if (!EmailValidator.isValidEmail(user.getEmail().trim())) {
-         * addFieldError("user.email", getText("validation.invalid", new String[] {getText("home.login.email")}));
-         * user.setPassword(null);
-         * }
-         */
+       * else if (!EmailValidator.isValidEmail(user.getEmail().trim())) {
+       * addFieldError("user.email", getText("validation.invalid", new String[] {getText("home.login.email")}));
+       * user.setPassword(null);
+       * }
+       */
     }
 
   }

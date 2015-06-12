@@ -62,7 +62,9 @@ public interface UserManager {
    * @param user is the user instance to be calculated.
    * @return the id that is used in the database for the table employee, 0 if nothing found or -1 if some error
    *         occur.
+   * @deprecated This method is deprecated as we don't use employees any more.
    */
+  @Deprecated
   public int getEmployeeID(User user);
 
   /**
@@ -70,7 +72,10 @@ public interface UserManager {
    * 
    * @param ownerId is the identifier from the Employee table.
    * @return an User object or null if nothing found.
+   * @deprecated this method is deprecated as we don't use the employees table any more. Please use the method
+   *             getUser(userId).
    */
+  @Deprecated
   public User getOwner(int ownerId);
 
   /**
@@ -126,13 +131,13 @@ public interface UserManager {
   public boolean saveLastLogin(User user);
 
   /**
-   * Create a new user in the system by saving the
-   * user data in the database.
+   * Create or update a user in the system by saving it into the the database.
    * 
    * @param user - The user information
-   * @return true if it was successfully saved. False otherwise.
+   * @param modifiedBy - is the user that is creating/updating the given user.
+   * @return the id of the user id that was created, 0 if the user was updated and -1 if some error occurred.
    */
-  public boolean saveUser(User user);
+  public int saveUser(User user, User modifiedBy);
 
   /**
    * This method looks for the active users that contains the

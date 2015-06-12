@@ -1,12 +1,11 @@
 [#ftl] 
-[#macro searchUsers]
+[#macro searchUsers isActive=false ]
   <div id="dialog-searchUsers" title="Manage Users"> 
     <div class="dialog-content"> 
       <form class="pure-form">
         [#-- Search Users Form --]
-        <div class="accordion">
-          <span class="ui-icon ui-icon-triangle-1-s"></span>
-          <h6>[@s.text name="users.searchUsers" /]</h6>
+        <div id="search-users" class="accordion">
+          <span class="ui-icon ui-icon-triangle-1-s"></span><h6>[@s.text name="users.searchUsers" /]</h6>
         </div>
         <div class="accordion-block">
           <div class="search-content clearfix">
@@ -19,28 +18,35 @@
           <div class="usersList panel secondary">
             <div class="panel-head"> [@s.text name="users.usersList" /]</div>
             <div class="panel-body"> 
-              <p class="userMessage">[@s.text name="users.notUsersFound" /] <span class="link">[@s.text name="users.createUser" /]</span></p>
+              <p class="userMessage">
+                [@s.text name="users.notUsersFound"]
+                  [@s.param name="0"]<span class="link">[@s.text name="form.buttons.clickingHere" /]</span>[/@s.param]
+                [/@s.text] 
+              </p>
               <ul></ul>
             </div>
           </div> 
         </div>
         
         [#-- Create User Form --]    
-        <div class="accordion">
-          <span class="ui-icon ui-icon-triangle-1-e"></span>
-          <h6>Create User</h6>
+        <div id="create-user" class="accordion">
+          <span class="ui-icon ui-icon-triangle-1-e"></span><h6>[@s.text name="users.createUser" /]</h6>
         </div>
         <div class="accordion-block create-user clearfix" style="display:none">
-          <div class="halfPartBlock">
-            [@customForm.input name="" className="fname" type="text" i18nkey="users.firstName"/] 
-          </div>
-          <div class="halfPartBlock">
-            [@customForm.input name="" className="lname" type="text" i18nkey="users.lastName"/] 
-          </div>
-          <div class="fullPartBlock">
-            [@customForm.input name="" className="email"  type="text" i18nkey="users.email"/] 
+          <div class="loading" style="display:none"></div>
+          <p class="warning-info" style="display:none"></p> 
+          <div id="" class="tickBox-wrapper fullBlock">
+            [@customForm.checkbox name="isCCAFS" value="" i18nkey="users.isCCAFS" /]
+            <div class="tickBox-toggle">
+              <br />
+              <div class="halfPartBlock">[@customForm.input name="firstName" type="text" i18nkey="users.firstName"/] </div>
+              <div class="halfPartBlock">[@customForm.input name="lastName" type="text" i18nkey="users.lastName"/] </div>
+            </div>  
           </div> 
-          <div class="create-button">[@s.text name="users.createUser" /]</div>
+          <div class="fullPartBlock">[@customForm.input name="email" type="text" i18nkey="users.email"/] </div> 
+          <input id="isActive" value="${isActive?string('1','0')}" type="hidden"/>
+          <div class="button create-button">[@s.text name="users.createUser" /]</div>
+          
         </div> 
         
         <!-- Allow form submission with keyboard without duplicating the dialog button -->

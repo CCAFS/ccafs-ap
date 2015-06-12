@@ -220,8 +220,8 @@ public class MySQLUserDAO implements UserDAO {
 
   @Override
   public int getEmployeeID(int userId, int institutionId, int roleId) {
-    LOG
-      .debug(">> getEmployeeID (userId={}, institutionId={}, roleId={})", new Object[] {userId, institutionId, roleId});
+    LOG.debug(">> getEmployeeID (userId={}, institutionId={}, roleId={})",
+      new Object[] {userId, institutionId, roleId});
     int result = -1;
     try (Connection connection = dbManager.getConnection()) {
       StringBuilder query = new StringBuilder();
@@ -407,9 +407,44 @@ public class MySQLUserDAO implements UserDAO {
   }
 
   @Override
-  public boolean saveUser(Map<String, String> userData) {
-    // TODO HC - To implement
-    return true;
+  public int saveUser(Map<String, Object> userData) {
+    LOG.debug(">> saveUser(userData)", userData);
+    StringBuilder query = new StringBuilder();
+    Object[] values;
+    if (userData.get("id") == null) {
+      // Insert new record
+      query.append(
+        "INSERT INTO users (id, first_name, last_name, username, email, password, is_ccafs_user, created_by, is_active) ");
+      query.append("VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?) ");
+      values = new Object[9];
+      values[0] = userData.get("id");
+      values[1] = userData.get("first_name");
+      values[2] = userData.get("last_name");
+      values[3] = userData.get("username");
+      values[4] = userData.get("email");
+      values[5] = userData.get("password");
+      values[6] = userData.get("is_ccafs_user");
+      values[7] = userData.get("created_by");
+      values[8] = userData.get("is_active");
+    } else {
+      // update record
+      query.append(
+        "UPDATE users SET first_name = ?, last_name = ?, username = ?, email = ?, password = ?, is_ccafs_user = ?, is_active = ? ");
+      query.append("WHERE id = ? ");
+      values = new Object[8];
+      values[0] = userData.get("first_name");
+      values[1] = userData.get("last_name");
+      values[2] = userData.get("username");
+      values[3] = userData.get("email");
+      values[4] = userData.get("password");
+      values[5] = userData.get("is_ccafs_user");
+      values[6] = userData.get("is_active");
+      values[7] = userData.get("id");
+    }
+
+    int result = dbManager.saveData(query.toString(), values);
+    LOG.debug("<< saveUser(userData):{}", result);
+    return result;
   }
 
   @Override

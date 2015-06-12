@@ -23,7 +23,7 @@ a,a:active,a:visited,a:hover {
 }
 
 .select, .input {
-  margin-bottom: 8px;
+  margin-bottom: 10px;
 }
 
 .select .selectList {
@@ -42,6 +42,16 @@ a,a:active,a:visited,a:hover {
 
 .addButton.outcome{
   padding: 6px 8px !important;
+}
+
+.button {
+    background: #E6E6E6;    padding: 5px 0;        
+    width: 20%;
+    border-radius: 4px;    cursor: pointer;                text-align: center;
+}
+
+.button:hover {
+    background: #E0E0E0;
 }
 
 .clearfix:before,.clearfix:after {
@@ -88,6 +98,14 @@ textarea.fieldError, input.fieldError,textarea.fieldError:focus, input.fieldErro
 p.fieldError{
   color: #F52626;
   font-weight: bold;
+}
+
+p.warning-info {
+    background-color: #F6BB42;    border-color: #F6BB42;
+    color: #fff;
+    margin-bottom: 10px;
+    padding: 5px 10px;
+    border-radius: 5px;
 }
 
 p.checked {
@@ -208,17 +226,17 @@ input[type="submit"], button, .addButton {
 }
 
 .accordion-block {
-    padding: 12px 6px 0 6px;
+    padding: 16px 15px 0 15px;
  
     margin-bottom: 14px;
     height: 220px;
     border: 1px solid #E5E5E5;
     border-top: 0;
+    position: relative;
     margin-top: -2px;
 }
 
 .create-button {
-    padding: 2px 5px;
 }
 
 input[type="submit"], button:hover, .addButton:hover {
@@ -252,8 +270,8 @@ input.target {
   width: 29%\0/; /*hack for IE8 & IE9*/
 }
 
-.halfPartBlock .input {
-    width: 95%;
+.halfPartBlock .input, .fullPartBlock .input {
+    width: 100%;
 }
 
 .checkboxGroup input {
@@ -384,6 +402,15 @@ img.icon {
   margin: 0 auto;
 }
 
+.loading {
+  width: 98%;
+  height: 91%;
+  background: url(../../images/global/loading.gif) #FFF no-repeat 50%;
+  position: absolute;
+  z-index: 99;
+  opacity: 0.3;
+}
+
 /* General Messages */
 #generalMessages {
   margin-top: 20px;
@@ -497,6 +524,7 @@ select#partnerSave_activityPartner_partner_type_id {
 .panel span.listButton {
   float:right;
   padding: 2px 8px;
+  cursor: pointer;
 }
 
 .panel span.listButton.select {
@@ -551,7 +579,7 @@ select#partnerSave_activityPartner_partner_type_id {
 }
 
 .usersList ul {
-  max-height: 110px;
+  max-height: 145px;
   overflow: auto;
 }
 
@@ -1166,13 +1194,13 @@ h3.contentSubTitle {
 
 .halfPartBlock {
   display: inline-block;
-  padding: 0 5px 12px 0;
+  padding: 0 8px 12px 0;
   width: 48%;
   vertical-align: top;
 }
 
 .fullPartBlock {
-  padding: 4px 0;
+  padding: 0 9px 10px 0;
   width: 100%;
   vertical-align: middle;
   position: relative;
@@ -1316,7 +1344,7 @@ h3.contentSubTitle {
 
 .searchUser {
     width: 91px;
-    padding: 3px 0px;
+    padding: 2px 0px;
     text-align: center;
     background: #668FDA;
     color: #fff;
@@ -1325,8 +1353,8 @@ h3.contentSubTitle {
     float: right;
     cursor: pointer;
     position: absolute;
-    bottom: 22%;
-    right: 0;
+    bottom: 1.70em;
+    right: 0.8em;
 }
 
 .searchUser:hover { 
