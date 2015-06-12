@@ -28,6 +28,7 @@ import org.cgiar.ccafs.ap.data.model.User;
 import org.cgiar.ccafs.ap.validation.planning.ProjectDescriptionValidator;
 import org.cgiar.ccafs.utils.APConfig;
 
+import java.util.Collection;
 import java.util.Iterator;
 import java.util.List;
 
@@ -506,6 +507,15 @@ public class ProjectDescriptionPlanningAction extends BaseAction {
         }
       }
 
+      // Get the validation messages and append them to the save message
+      Collection<String> messages = this.getActionMessages();
+      if (!messages.isEmpty()) {
+        String validationMessage = messages.iterator().next();
+        this.setActionMessages(null);
+        this.addActionWarning(this.getText("saving.saved") + validationMessage);
+      } else {
+        this.addActionMessage(this.getText("saving.saved"));
+      }
       return SUCCESS;
     }
     return NOT_AUTHORIZED;

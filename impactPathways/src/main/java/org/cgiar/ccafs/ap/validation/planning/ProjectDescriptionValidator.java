@@ -54,7 +54,8 @@ public class ProjectDescriptionValidator extends BaseValidator {
       }
 
       if (validationMessage.length() > 0) {
-        action.addActionWarning(this.getText("saving.missingFields", new String[] {validationMessage.toString()}));
+        action
+          .addActionMessage(" " + this.getText("saving.missingFields", new String[] {validationMessage.toString()}));
       }
     }
   }
