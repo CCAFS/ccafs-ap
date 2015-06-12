@@ -64,7 +64,7 @@
     <div class="fullPartBlock">      
       <div class="ppaPartnersList panel primary">
         <div class="panel-head">
-          [@s.text name="preplanning.projectPartners.indicatePpaPartners" /]
+          [@customForm.text name="preplanning.projectPartners.indicatePpaPartners" readText=!editable /]
         </div> 
         <div class="panel-body">
           <ul class="list"> 

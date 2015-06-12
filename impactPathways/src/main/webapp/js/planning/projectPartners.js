@@ -192,6 +192,14 @@ $(document).ready(
         getData($('.search-input .input').val());
       });
 
+      // Create an user
+      $dialogContent.find(".create-button").on("click", function() {
+        var fname = $dialogContent.find(".fname").val();
+        var lname = $dialogContent.find(".lname").val();
+        var email = $dialogContent.find(".email").val();
+        console.log("Form: " + fname + " " + lname + " - " + email);
+      });
+
       $dialogContent.find("form").on("submit", function(e) {
         event.preventDefault();
       });

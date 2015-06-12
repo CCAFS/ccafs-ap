@@ -33,14 +33,12 @@
 
 [#macro textArea name editable value="-NULL" i18nkey="" disabled=false required=false errorfield="" help="" addButton=false showTitle=true display=true className="-NULL" editable=true ]
   <div class="textArea [#if addButton] button[/#if]" [#if !display]style="display: none;"[/#if]> 
+    [#assign customName]${(i18nkey?has_content)?string(i18nkey,name)}[/#assign]  
+    [#assign customLabel][#if !editable]${customName}.readText[#else]${customName}[/#if][/#assign]
   	[#if showTitle]
-	    <h6>
-	      <label for="${name}">[#if i18nkey==""][@s.text name="${name}"/]:[#else][@s.text name="${i18nkey}"/]:[/#if]
-	      [#if required]<span class="red">*</span>[/#if]
-	      </label>
-	      [#if help != ""]
-	        <img src="${baseUrl}/images/global/icon-help2.png" title="[@s.text name="${help}"/]" />
-	      [/#if]
+	    <h6> 
+	      <label for="${name}"> [@s.text name="${customLabel}"/]:[#if required]<span class="red">*</span>[/#if]</label>
+	      [#if help != ""]<img src="${baseUrl}/images/global/icon-help2.png" title="[@s.text name="${help}"/]" />[/#if]
 	    </h6>
     [/#if]
     [#if errorfield==""][@s.fielderror cssClass="fieldError" fieldName="${name}"/][#else][@s.fielderror cssClass="fieldError" fieldName="${errorfield}"/][/#if]

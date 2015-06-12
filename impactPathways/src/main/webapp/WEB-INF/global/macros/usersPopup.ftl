@@ -40,7 +40,7 @@
           <div class="fullPartBlock">
             [@customForm.input name="" className="email"  type="text" i18nkey="users.email"/] 
           </div> 
-          <div class="create-button">[@s.text name="users.createUser" /]</div>
+          <div class="button create-button">[@s.text name="users.createUser" /]</div>
         </div> 
         
         <!-- Allow form submission with keyboard without duplicating the dialog button -->
