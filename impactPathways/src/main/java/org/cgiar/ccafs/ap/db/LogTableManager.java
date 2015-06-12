@@ -15,7 +15,6 @@
 package org.cgiar.ccafs.ap.db;
 
 import java.sql.Connection;
-import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 
@@ -33,14 +32,12 @@ public class LogTableManager {
 
   private Connection connection;
   private String tableName;
-  private String databaseName;
-  private String logDatabaseName;
+  private String originalDbName;
 
   public LogTableManager(Connection connection, String dbName, String tableName) {
     this.connection = connection;
-    this.databaseName = dbName;
+    this.originalDbName = dbName;
     this.tableName = tableName;
-    this.logDatabaseName = dbName + "_history";
   }
 
 
@@ -55,14 +52,11 @@ public class LogTableManager {
     Statement statement = connection.createStatement();
     StringBuilder query = new StringBuilder();
 
-    // Use the history database.
-    this.useHistoryDatabase(databaseName);
-
-    // First, create a copy of the table in the original db
+    // First, create a copy of the original table in the log db
     query.append("CREATE TABLE IF NOT EXISTS ");
     query.append(tableName);
     query.append(" LIKE ");
-    query.append(databaseName + "." + tableName);
+    query.append(originalDbName + "." + tableName);
     query.append(";");
 
     // Then add the additional fields using an stored procedure to keep the script idempotent
@@ -129,11 +123,6 @@ public class LogTableManager {
     query.append("CALL adjust_history_table(); ");
     query.append("DROP PROCEDURE IF EXISTS adjust_history_table; ");
 
-    // Finally change to the original database
-    query.append("USE ");
-    query.append(databaseName);
-    query.append("; ");
-
     try {
       statement.execute(query.toString());
     } catch (SQLException e) {
@@ -153,13 +142,8 @@ public class LogTableManager {
     Statement statement = connection.createStatement();
     StringBuilder query = new StringBuilder();
 
-    this.useHistoryDatabase(databaseName);
     query.append("DROP TABLE IF EXISTS ");
     query.append(tableName);
-    query.append("; ");
-
-    query.append("USE ");
-    query.append(databaseName);
     query.append("; ");
 
     try {
@@ -172,112 +156,6 @@ public class LogTableManager {
     }
   }
 
-  private String getAfterInsertTriggerDeclaration(String tableName) {
-
-    return null;
-  }
-
-  private String getLogTableColumns() throws SQLException {
-    Statement statement = connection.createStatement();
-
-    if (!this.isValidTable(tableName, logDatabaseName)) {
-      return null;
-    }
-
-    StringBuilder query = new StringBuilder();
-    query.append("SELECT GROUP_CONCAT( DISTINCT column_name SEPARATOR ', ') as columnNames ");
-    query.append("FROM INFORMATION_SCHEMA.COLUMNS ");
-    query.append("WHERE TABLE_SCHEMA='");
-    query.append(logDatabaseName);
-    query.append("' AND TABLE_NAME = '");
-    query.append(tableName);
-    query.append("'; ");
-
-    try {
-      ResultSet rs = statement.executeQuery(query.toString());
-      if (rs.next()) {
-        return rs.getString("columnNames");
-      }
-    } catch (SQLException e) {
-      LOG.error("Exception raised trying to get the columns of the table {}.", tableName);
-      throw e;
-    } finally {
-      statement.close();
-    }
-
-    return null;
-  }
-
-  private String getTableValues(String triggerAction) throws SQLException {
-    Statement statement = connection.createStatement();
-
-    if (!this.isValidTable(tableName, logDatabaseName)) {
-      return null;
-    }
-
-    StringBuilder query = new StringBuilder();
-    query.append("SELECT GROUP_CONCAT( DISTINCT ");
-    query.append("          CASE column_name ");
-    query.append("          WHEN 'active_since' THEN 'NOW()' ");
-    query.append("          WHEN 'active_until' THEN 'NULL' ");
-    query.append("          WHEN 'action' THEN '" + triggerAction + "' ");
-    query.append("          ELSE CONCAT('OLD.', column_name) ");
-    query.append("          END ");
-    query.append("       SEPARATOR ', ') as tableValues ");
-    query.append("FROM INFORMATION_SCHEMA.COLUMNS ");
-    query.append("WHERE TABLE_SCHEMA='");
-    query.append(logDatabaseName);
-    query.append("' AND TABLE_NAME = '");
-    query.append(tableName);
-    query.append("'; ");
-
-    try {
-      ResultSet rs = statement.executeQuery(query.toString());
-      if (rs.next()) {
-        return rs.getString("tableValues");
-      }
-    } catch (SQLException e) {
-      LOG.error("Exception raised trying to get the columns of the table {}.", tableName);
-      throw e;
-    } finally {
-      statement.close();
-    }
-
-    return null;
-  }
-
-  public String getTriggersForLogTable(String databaseName, String tableName) throws SQLException {
-    StringBuilder query = new StringBuilder();
-
-    // We don't need to insert the id in the history table, that is way we remove from the list of columns
-    String columnsToInsert = this.getLogTableColumns().replace("id", "");
-    String valuesToInsert = this.getTableValues("insert");
-
-    // DROP TRIGGER IF EXISTS after_activities_update;
-    // DELIMITER $$
-    // CREATE TRIGGER after_activities_update
-    // AFTER UPDATE ON activities h
-    // FOR EACH ROW BEGIN
-    //
-    // -- Insert the new record
-    // INSERT INTO
-    // (`record_id`, `project_id`, `title`, `description`, `startDate`, `endDate`, `is_global`, `expected_leader_id`,
-    // `leader_id`, `expected_research_outputs`, `expected_gender_contribution`, `outcome`, `gender_percentage`,
-    // `is_active`, `active_since`, `active_until`, `modified_by`, `modification_justification`, `action`)
-    // VALUES
-    // (OLD.`id`, OLD.`project_id`, OLD.`title`, OLD.`description`, OLD.`startDate`, OLD.`endDate`, OLD.`is_global`,
-    // OLD.`expected_leader_id`,
-    // OLD.`leader_id`, OLD.`expected_research_outputs`, OLD.`expected_gender_contribution`, OLD.`outcome`,
-    // OLD.`gender_percentage`,
-    // OLD.`is_active`, OLD.`active_since`, NOW(), OLD.`modified_by`, OLD.`modification_justification`, 'update');
-    //
-    // END$$
-    // DELIMITER ;
-
-
-    return query.toString();
-  }
-
   /**
    * This method verifies if the table named with the value received by parameter exists.
    * 
@@ -285,11 +163,16 @@ public class LogTableManager {
    * @param databaseName
    * @return true if tableName exists. False otherwise
    */
-  private boolean isValidTable(String tableName, String databaseName) {
+  public boolean isTableAvailable(String tableName, String databaseName) {
     Statement statement = null;
     StringBuilder query = new StringBuilder();
     query.append("SHOW TABLES LIKE '");
-    query.append(databaseName + "." + tableName);
+    query.append("SELECT COUNT(*) FROM information_schema.tables  ");
+    query.append("WHERE table_schema = '");
+    query.append(databaseName);
+    query.append("' AND ");
+    query.append("table_name = '");
+    query.append(tableName);
     query.append("'; ");
 
     try {
@@ -308,7 +191,7 @@ public class LogTableManager {
   }
 
   public void setDatabaseName(String databaseName) {
-    this.databaseName = databaseName;
+    this.originalDbName = databaseName;
   }
 
   public void setTableName(String tableName) {

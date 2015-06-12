@@ -126,7 +126,7 @@ public class LogDatabaseManager {
   public boolean isLogDatabaseAvailable() {
     Statement statement = null;
     StringBuilder query = new StringBuilder();
-    query.append("SHOW DATABASES LIKE '");
+    query.append("SELECT schema_name FROM INFORMATION_SCHEMA.schemata WHERE schema_name = '");
     query.append(databaseName);
     query.append("'; ");
 
