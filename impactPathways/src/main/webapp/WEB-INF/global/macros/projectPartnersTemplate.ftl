@@ -1,15 +1,15 @@
 [#ftl]
-[#macro partnerSection projectPartners ap_name editable partnerTypes countries ppaPartner=false canEdit=true canRemove=true responsabilities=false ]
+[#macro partnerSection projectPartners ap_name editable partnerTypes countries ppaPartner=false responsabilities=false ]
   [#if projectPartners?has_content]
     [#list projectPartners as ap]   
-        [@partner ap ap_index ap_name editable ppaPartner  canEdit=canEdit  responsabilities=responsabilities  /]
+        [@partner ap ap_index ap_name editable ppaPartner responsabilities=responsabilities  /]
     [/#list]
   [#else]  
     [#if !editable]This project not has partners[/#if]
   [/#if]  
 [/#macro]
 
-[#macro partner ap ap_index ap_name  editable=false isPPA=false canEdit=true  responsabilities=false   ]
+[#macro partner ap ap_index ap_name  editable=false isPPA=false responsabilities=false   ]
   <div id="projectPartner-${ap_index}" class="projectPartner borderBox">
     [#-- Partner identifier --]
     <input id="id" type="hidden" name="${ap_name}[${ap_index}].id" value="${ap.id?c}" />

@@ -29,28 +29,6 @@ $(document).ready(function() {
   });
 
   /**
-   * Tick Box functions
-   */
-  var $tickBoxWp = $('.tickBox-wrapper input[type=checkbox]');
-
-  $tickBoxWp.on('change', toggleInputs);
-  $tickBoxWp.each(function() {
-    if(getTickState(this)) {
-      $(this).closest('.tickBox-wrapper').find('.tickBox-toggle').show();
-    } else {
-      $(this).closest('.tickBox-wrapper').find('.tickBox-toggle').hide();
-    }
-  });
-
-  function toggleInputs(e) {
-    $(this).parent().parent().parent().find('.tickBox-toggle').slideToggle(getTickState(e.target));
-  }
-
-  function getTickState(item) {
-    return $(item).is(':checked');
-  }
-
-  /**
    * CORE-Projects
    */
 

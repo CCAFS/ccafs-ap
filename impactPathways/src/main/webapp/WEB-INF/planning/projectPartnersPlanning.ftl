@@ -52,7 +52,7 @@
           <div class="editButton"><a href="[@s.url includeParams='get'][@s.param name="edit"]true[/@s.param][/@s.url]">[@s.text name="form.buttons.edit" /]</a></div>
         [/#if]
         [#-- Listing partners from partnersTemplate.ftl --]
-        [@partnersTemplate.partnerSection projectPartners=project.projectPartners ap_name='project.projectPartners' editable=editable partnerTypes=partnerTypes countries=countries ppaPartner=false responsabilities=true canEdit=fullEditable canRemove=saveable /]
+        [@partnersTemplate.partnerSection projectPartners=project.projectPartners ap_name='project.projectPartners' editable=editable partnerTypes=partnerTypes countries=countries ppaPartner=false responsabilities=true  /]
         [#if (editable && canEdit)]  
           <div id="addProjectPartner" class="addLink">
             <a href="" class="addProjectPartner addButton" >[@s.text name="preplanning.projectPartners.addProjectPartner" /]</a>

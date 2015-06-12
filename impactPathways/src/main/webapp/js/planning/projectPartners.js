@@ -171,33 +171,93 @@ $(document).ready(
           }
       };
 
+      // Initializing Manage users dialog
       dialog = $dialogContent.dialog(dialogOptions);
 
+      // Loading initial data with all users
+      getData('');
+
+      /* ----- Events ----- */
+
+      // Event for manage the accordion function
       $dialogContent.find(".accordion").on('click', function() {
         $(this).parent().find('.accordion span').removeClass('ui-icon-triangle-1-s').addClass('ui-icon-triangle-1-e');
         $(this).siblings('.accordion-block').hide('slow');
         $(this).next().slideToggle();
         $(this).find('span').addClass('ui-icon-triangle-1-s');
       });
-      /* ----- Events ----- */
 
       // Event to open dialog box and search an contact person
       $(".searchUser").on("click", openSearchDialog);
+
       // Event when the user select the contact person
-      $dialogContent.find("span.select").on("click", addUser);
+      $dialogContent.find("span.select").on("click", function() {
+        var userId = $(this).parent().find(".contactId").text();
+        var composedName = $(this).parent().find(".name").text();
+        // Add user
+        addUser(composedName, userId);
+      });
+
       // Event to find an user according to search field
       $dialogContent.find(".search-content input").on("keyup", searchUsersEvent);
 
+      // Event to search users clicking in "Search" button
       $dialogContent.find(".search-button").on("click", function() {
         getData($('.search-input .input').val());
       });
 
-      // Create an user
+      // Trigger to open create user section
+      $dialogContent.find("span.link").on("click", function() {
+        $dialogContent.find("#create-user").trigger('click');
+      });
+
+      // Event to Create an user clicking in the button
       $dialogContent.find(".create-button").on("click", function() {
-        var fname = $dialogContent.find(".fname").val();
-        var lname = $dialogContent.find(".lname").val();
-        var email = $dialogContent.find(".email").val();
-        console.log("Form: " + fname + " " + lname + " - " + email);
+        $dialogContent.find('.warning-info').empty().hide();
+        var invalidFields = [];
+        var user = {};
+        if($dialogContent.find("#isCCAFS").is(':checked')) {
+          user.firstName = $dialogContent.find("#firstName").val();
+          user.lastName = $dialogContent.find("#lastName").val();
+        }
+        user.email = $dialogContent.find("#email").val().trim();
+        user.isActive = $dialogContent.find("#isActive").val();
+
+        // Validate if fields are filled
+        $.each(user, function(key,value) {
+          if(value.length < 1) {
+            invalidFields.push($('label[for="' + key + '"]').text().trim().replace(':', ''));
+          }
+        });
+        // Validate Email
+        var emailReg = /^([\w-\.]+@([\w-]+\.)+[\w-]{2,4})?$/;
+        if(!emailReg.test(user.email)) {
+          invalidFields.push('valid email');
+        }
+
+        if(invalidFields.length > 0) {
+          var msj = "You must fill " + invalidFields.join(', ');
+          $dialogContent.find('.warning-info').text(msj).fadeIn('slow');
+        } else {
+          $.ajax({
+              'url': '../../createUser.do',
+              data: user,
+              beforeSend: function() {
+                $dialogContent.find('.loading').show();
+              },
+              success: function(data) {
+                if(data.message) {
+                  $dialogContent.find('.warning-info').text(data.message).fadeIn('slow');
+                } else {
+                  addUser(data.newUser.composedName, data.newUser.id);
+                }
+              },
+              complete: function(data) {
+                $dialogContent.find('.loading').fadeOut();
+              }
+          });
+        }
+
       });
 
       $dialogContent.find("form").on("submit", function(e) {
@@ -211,12 +271,9 @@ $(document).ready(
         $elementSelected = $(this).parent();
         dialog.dialog("open");
         $dialogContent.find(".search-loader").fadeOut("slow");
-        $dialogContent.find(".panel-body ul").empty();
       }
 
-      function addUser(e) {
-        var composedName = $(this).parent().find(".name").text();
-        var userId = $(this).parent().find(".contactId").text();
+      function addUser(composedName,userId) {
         $elementSelected.find("input.userName").val(composedName).hide().fadeIn("slow");
         $elementSelected.find("input.userId").val(userId);
         dialog.dialog("close");
@@ -234,8 +291,7 @@ $(document).ready(
             getData(query);
           }, 500);
         } else {
-          $dialogContent.find(".panel-body .userMessage").show();
-          $dialogContent.find(".panel-body ul").empty();
+          getData('');
         }
 
       }

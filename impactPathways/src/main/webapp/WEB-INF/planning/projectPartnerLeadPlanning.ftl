@@ -78,7 +78,7 @@
   [#-- Single partner TEMPLATE from partnersTemplate.ftl --]
   [@partnersTemplate.partnerTemplate showResponsabilities=true /]  
   [#-- Search users Interface Popup --]
-  [@usersForm.searchUsers/]
+  [@usersForm.searchUsers isActive=true/]
   
 </section>
 [#include "/WEB-INF/global/pages/footer.ftl"]

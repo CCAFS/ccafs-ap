@@ -33,6 +33,25 @@ $(document).ready(function() {
     track: true
   });
 
+  /**
+   * Tick Box functions
+   */
+  var $tickBoxWp = $('.tickBox-wrapper input[type=checkbox]');
+
+  $tickBoxWp.on('change', toggleInputs);
+  $tickBoxWp.each(function() {
+    var $toggle = $(this).closest('.tickBox-wrapper').find('.tickBox-toggle');
+    if($(this).is(':checked')) {
+      $toggle.show();
+    } else {
+      $toggle.hide();
+    }
+  });
+
+  function toggleInputs(e) {
+    $(this).parent().parent().parent().find('.tickBox-toggle').slideToggle($(e.target).is(':checked'));
+  }
+
 });
 
 /* Add a char counter to a specific text area */

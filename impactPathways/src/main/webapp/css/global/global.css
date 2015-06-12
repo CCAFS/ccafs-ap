@@ -100,6 +100,14 @@ p.fieldError{
   font-weight: bold;
 }
 
+p.warning-info {
+    background-color: #F6BB42;    border-color: #F6BB42;
+    color: #fff;
+    margin-bottom: 10px;
+    padding: 5px 10px;
+    border-radius: 5px;
+}
+
 p.checked {
     background: url(../../images/global/icon-check.png) no-repeat 0;
     padding: 3px 0  3px 23px;
@@ -224,6 +232,7 @@ input[type="submit"], button, .addButton {
     height: 220px;
     border: 1px solid #E5E5E5;
     border-top: 0;
+    position: relative;
     margin-top: -2px;
 }
 
@@ -393,6 +402,15 @@ img.icon {
   margin: 0 auto;
 }
 
+.loading {
+  width: 98%;
+  height: 91%;
+  background: url(../../images/global/loading.gif) #FFF no-repeat 50%;
+  position: absolute;
+  z-index: 99;
+  opacity: 0.3;
+}
+
 /* General Messages */
 #generalMessages {
   margin-top: 20px;
@@ -506,6 +524,7 @@ select#partnerSave_activityPartner_partner_type_id {
 .panel span.listButton {
   float:right;
   padding: 2px 8px;
+  cursor: pointer;
 }
 
 .panel span.listButton.select {
@@ -560,7 +579,7 @@ select#partnerSave_activityPartner_partner_type_id {
 }
 
 .usersList ul {
-  max-height: 110px;
+  max-height: 145px;
   overflow: auto;
 }
 
@@ -1175,7 +1194,7 @@ h3.contentSubTitle {
 
 .halfPartBlock {
   display: inline-block;
-  padding: 0 9px 12px 0;
+  padding: 0 8px 12px 0;
   width: 48%;
   vertical-align: top;
 }
@@ -1325,7 +1344,7 @@ h3.contentSubTitle {
 
 .searchUser {
     width: 91px;
-    padding: 3px 0px;
+    padding: 2px 0px;
     text-align: center;
     background: #668FDA;
     color: #fff;
@@ -1334,7 +1353,7 @@ h3.contentSubTitle {
     float: right;
     cursor: pointer;
     position: absolute;
-    bottom: 1.65em;
+    bottom: 1.70em;
     right: 0.8em;
 }
 
