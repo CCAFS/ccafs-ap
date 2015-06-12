@@ -75,7 +75,14 @@
       </result>
     </action>
     
-    <action name="searchUsers" class="org.cgiar.ccafs.ap.action.json.global.SearchUserAction">
+    <action name="searchUsers" class="org.cgiar.ccafs.ap.action.json.global.ManageUsersAction" method="search">
+      <result type="json">        
+        <param name="noCache">true</param>
+        <param name="excludeNullProperties">true</param>
+      </result>
+    </action>
+    
+    <action name="createUser" class="org.cgiar.ccafs.ap.action.json.global.ManageUsersAction" method="create">
       <result type="json">        
         <param name="noCache">true</param>
         <param name="excludeNullProperties">true</param>
