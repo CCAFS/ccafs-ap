@@ -19,10 +19,13 @@ import org.cgiar.ccafs.ap.config.APConstants;
 import org.cgiar.ccafs.ap.data.manager.UserManager;
 import org.cgiar.ccafs.ap.data.model.User;
 import org.cgiar.ccafs.utils.APConfig;
+import org.cgiar.ccafs.utils.MD5Convert;
 
 import org.cgiar.ciat.auth.LDAPService;
 import org.cgiar.ciat.auth.LDAPUser;
 
+import java.math.BigInteger;
+import java.security.SecureRandom;
 import java.util.List;
 
 import com.google.inject.Inject;
@@ -34,6 +37,7 @@ import org.slf4j.LoggerFactory;
 
 /**
  * @author Hernán David Carvajal
+ * @author Héctor F. Tobón R. - CIAT/CCAFS
  */
 
 public class ManageUsersAction extends BaseAction {
@@ -145,6 +149,7 @@ public class ManageUsersAction extends BaseAction {
           // If the email does not belong to the CGIAR.
           if (newUser.getFirstName() != null && newUser.getLastName() != null) {
             newUser.setCcafsUser(false);
+            newUser.setPassword(MD5Convert.stringToMD5(new BigInteger(130, new SecureRandom()).toString(6)));
             this.addUser();
           } else {
             message = "First Name and Last Name are needed.";
