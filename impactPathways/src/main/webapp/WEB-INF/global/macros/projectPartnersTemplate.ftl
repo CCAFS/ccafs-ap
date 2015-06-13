@@ -162,9 +162,9 @@
             <input class="userId" type="hidden" name="project.coordinator.id" value="${project.coordinator.id}">
             [#if editable]<div class="searchUser">[@s.text name="form.buttons.searchUser" /]</div>[/#if]
           </div> 
-          [#-- Responsabilities --]
+          [#-- Responsibilities --]
           [#if showResponsabilities]
-          <div class="fullBlock leaderResponsabilities chosen">        
+          <div class="fullBlock leaderResponsabilities chosen">
             [@customForm.textArea name="project.leaderResponsabilities" i18nkey="preplanning.projectPartners.leader.responsabilities" required=true editable=editable/]
           </div>
           [/#if] 

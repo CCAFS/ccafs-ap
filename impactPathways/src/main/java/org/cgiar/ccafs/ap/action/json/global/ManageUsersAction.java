@@ -66,7 +66,6 @@ public class ManageUsersAction extends BaseAction {
    * Add a new user into the database;
    */
   private void addUser() {
-    // User temp = userManager.getUser(1); // TODO REMOVE THIS!
     int id = userManager.saveUser(newUser, this.getCurrentUser());
     // If successfully added.
     if (id > 0) {
@@ -126,6 +125,7 @@ public class ManageUsersAction extends BaseAction {
         // If email already exists.
         if (emailExists) {
           // If email already exists into our database.
+          // TODO We need to internationalize this message.
           message = "The email you are trying to add already exist into our database.";
           newUser = null;
           return; // Stop here!
@@ -139,6 +139,7 @@ public class ManageUsersAction extends BaseAction {
           newUser = this.validateOutlookUser(newUser.getEmail());
           // If user was not found in the Active Directory.
           if (newUser == null) {
+            // TODO We need to internationalize this message.
             message = "It seems that the email does not exist in the CGIAR Active Directory.";
             return; // Stop here!
           } else {
@@ -152,6 +153,7 @@ public class ManageUsersAction extends BaseAction {
             newUser.setPassword(MD5Convert.stringToMD5(new BigInteger(130, new SecureRandom()).toString(6)));
             this.addUser();
           } else {
+            // TODO We need to internationalize this message.
             message = "First Name and Last Name are needed.";
           }
         }
