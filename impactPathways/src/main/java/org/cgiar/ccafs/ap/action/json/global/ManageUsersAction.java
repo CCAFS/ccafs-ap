@@ -18,6 +18,7 @@ import org.cgiar.ccafs.ap.action.BaseAction;
 import org.cgiar.ccafs.ap.config.APConstants;
 import org.cgiar.ccafs.ap.data.manager.UserManager;
 import org.cgiar.ccafs.ap.data.model.User;
+import org.cgiar.ccafs.ap.util.SendMail;
 import org.cgiar.ccafs.utils.APConfig;
 import org.cgiar.ccafs.utils.MD5Convert;
 
@@ -51,32 +52,37 @@ public class ManageUsersAction extends BaseAction {
   private static String PARAM_IS_ACTIVE = "isActive";
 
   private UserManager userManager;
+  private SendMail sendMail;
+
   private String queryParameter;
   private List<User> users;
   private User newUser;
   private String message;
 
   @Inject
-  public ManageUsersAction(APConfig config, UserManager userManager) {
+  public ManageUsersAction(APConfig config, UserManager userManager, SendMail sendMail) {
     super(config);
     this.userManager = userManager;
+    this.sendMail = sendMail;
   }
 
   /**
    * Add a new user into the database;
+   * 
+   * @return true if the user was successfully added, false otherwise.
    */
-  private int addUser() {
+  private boolean addUser() {
+    // int id = userManager.saveUser(newUser, userManager.getUser(1)); // For testing purposes:
+    int id = userManager.saveUser(newUser, this.getCurrentUser());
 
-    int id = userManager.saveUser(newUser, /* this.getCurrentUser() */ userManager.getUser(1));
     // If successfully added.
     if (id > 0) {
       newUser.setId(id);
-    } else if (id <= 0) {
+      return true;
+    } else {
       // If some error occurred.
-      newUser = null;
-      message = "Something happened! Please take a screenshot and contact the technical staff.";
+      return false;
     }
-    return id;
   }
 
   /**
@@ -115,13 +121,29 @@ public class ManageUsersAction extends BaseAction {
         } else {
           // If user was found, let's add it into our database.
           this.addUser();
+          // If user is active, we need to send an email with the instructions on how to login:
+          if (newUser.isActive()) {
+            this.sendNewUserEmail(null);
+          }
         }
       } else {
         // If the email does not belong to the CGIAR.
         if (newUser.getFirstName() != null && newUser.getLastName() != null) {
           newUser.setCcafsUser(false);
-          newUser.setPassword(MD5Convert.stringToMD5(new BigInteger(130, new SecureRandom()).toString(6)));
-          this.addUser();
+          // Generating a random password
+          String newPassword = new BigInteger(130, new SecureRandom()).toString(6);
+          newUser.setPassword(MD5Convert.stringToMD5(newPassword));
+          if (this.addUser()) {
+            // If user was successfully added and is active, we need to send an email with the instructions on how to
+            // login:
+            if (newUser.isActive()) {
+              this.sendNewUserEmail(newPassword);
+            }
+          } else {
+            // If user could not be added.
+            newUser = null;
+            message = "Something happened! Please take a screenshot and contact the technical staff.";
+          }
           return SUCCESS;
         } else {
           // TODO We need to internationalize this message.
@@ -184,6 +206,42 @@ public class ManageUsersAction extends BaseAction {
 
     LOG.info("The search of users by '{}' was made successfully.", queryParameter);
     return SUCCESS;
+  }
+
+  /**
+   * This method sends an email to the user confirming the password assigned by the system and the instructions on how
+   * to login.
+   * 
+   * @param newPassword is the generated password.
+   */
+  private void sendNewUserEmail(String newPassword) {
+    StringBuilder message = new StringBuilder();
+
+    // Building the message:
+    message.append("Dear ");
+    message.append(newUser.getFirstName());
+    message.append(", \n\n");
+
+    message.append(
+      "You have been assigned as Project Leader in the CCAFS Planning and Reporting platform (CCAFS P&R) <https://activities.ccafs.cgiar.org/ip>\n");
+    message.append("To access you can use the following credentials:\n\n");
+    message.append("Username: ");
+    message.append(newUser.getEmail());
+    message.append("\n");
+    message.append("Password: ");
+    if (newPassword == null) {
+      message.append("<Your Outlook Password>");
+    } else {
+      message.append(newPassword);
+    }
+    message.append("\n\n");
+    message.append("Regards,\n\n");
+    message.append("P&R Team");
+
+    // To
+    String emails = this.config.getGmailUsername() + " " + newUser.getEmail();
+    sendMail.send(emails, "[CCAFS P&R] Credentials to access P&R", message.toString());
+
   }
 
   /**
