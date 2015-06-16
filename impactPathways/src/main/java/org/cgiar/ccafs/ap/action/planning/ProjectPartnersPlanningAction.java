@@ -148,35 +148,36 @@ public class ProjectPartnersPlanningAction extends BaseAction {
     // Getting all Project Leaders
     allProjectLeaders = userManager.getAllUsers();
 
+    // Creating empty project partner:
+    ProjectPartner emptyProjectPartner = new ProjectPartner();
+    emptyProjectPartner.setId(-1);
+    User emptyUser = new User();
+    emptyUser.setId(-1);
+    emptyProjectPartner.setUser(emptyUser);
+
     // Getting the Project Leader.
     List<ProjectPartner> ppArray =
       projectPartnerManager.getProjectPartners(project.getId(), APConstants.PROJECT_PARTNER_PL);
-    ProjectPartner projectLeader;
     if (ppArray.size() == 0) {
-      projectLeader = new ProjectPartner();
-      projectLeader.setId(-1);
+      project.setLeader(emptyProjectPartner);
     } else {
-      projectLeader = ppArray.get(0);
+      project.setLeader(ppArray.get(0));
     }
-    project.setLeader(projectLeader);
 
     // Getting Project Coordinator
     ppArray = projectPartnerManager.getProjectPartners(project.getId(), APConstants.PROJECT_PARTNER_PC);
-    ProjectPartner projectCoordinator;
     if (ppArray.size() == 0) {
-      projectCoordinator = new ProjectPartner();
-      projectCoordinator.setId(-1);
+      project.setCoordinator(emptyProjectPartner);
     } else {
-      projectCoordinator = ppArray.get(0);
+      project.setCoordinator(ppArray.get(0));
     }
-    project.setCoordinator(projectCoordinator);
 
     // Getting PPA Partners
     project.setPPAPartners(projectPartnerManager.getProjectPartners(project.getId(), APConstants.PROJECT_PARTNER_PPA));
 
     // Getting 2-level Project Partners
     project
-    .setProjectPartners(projectPartnerManager.getProjectPartners(project.getId(), APConstants.PROJECT_PARTNER_PP));
+      .setProjectPartners(projectPartnerManager.getProjectPartners(project.getId(), APConstants.PROJECT_PARTNER_PP));
 
     // If the user is not admin or the project owner, we should keep some information
     // unmutable
@@ -198,10 +199,8 @@ public class ProjectPartnersPlanningAction extends BaseAction {
 
   @Override
   public String save() {
-
-
     if (ActionContext.getContext().getName().equals("partnerLead")) {
-      System.out.println("partnerLead");
+      return this.savePartnerLead();
     }
     System.out.println(ActionContext.getContext().getName());
     return BaseAction.INPUT;
@@ -309,6 +308,13 @@ public class ProjectPartnersPlanningAction extends BaseAction {
     // }
     // return BaseAction.ERROR;
 
+  }
+
+  private String savePartnerLead() {
+    // Saving Project leader
+    System.out.println("TEST");
+
+    return SUCCESS;
   }
 
   public void setAllProjectLeaders(List<User> allProjectLeaders) {

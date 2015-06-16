@@ -706,7 +706,7 @@ public class ProjectSummaryPDF extends BasePDF {
       cellContent = new Paragraph(this.getText("summaries.project.projectLeader"), TABLE_BODY_BOLD_FONT);
       this.addTableBodyCell(table, cellContent, Element.ALIGN_RIGHT, 0);
 
-      cellContent = new Paragraph(project.getLeader().getComposedName(), TABLE_BODY_FONT);
+      cellContent = new Paragraph(project.getLeader().getUser().getComposedName(), TABLE_BODY_FONT);
       this.addTableBodyCell(table, cellContent, Element.ALIGN_LEFT, 0);
 
       document.add(table);
@@ -1093,7 +1093,7 @@ public class ProjectSummaryPDF extends BasePDF {
       paragraph.add(partnerLabel);
 
       paragraph.setFont(BODY_TEXT_FONT);
-      paragraph.add(partner.getComposedName());
+      paragraph.add(partner.getUser().getComposedName());
       paragraph.add(new Chunk().NEWLINE);
 
       // Organization

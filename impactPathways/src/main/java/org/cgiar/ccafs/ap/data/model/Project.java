@@ -325,10 +325,6 @@ public class Project {
     return owner;
   }
 
-  public List<ProjectPartner> getPpaPartners() {
-    return ppaPartners;
-  }
-
   public List<ProjectPartner> getPPAPartners() {
     return ppaPartners;
   }
