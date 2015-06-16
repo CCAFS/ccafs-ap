@@ -56,25 +56,35 @@ public class ProjectsListPlanningAction extends BaseAction {
     this.totalBudget = 0;
   }
 
-  @Override
-  public String add() {
-
-    if (!this.isUserAuthorizedToCreateProjects()) {
+  public String addBilateralProject() {
+    if (!securityContext.canAddBilateralProject()) {
       return NOT_AUTHORIZED;
     }
 
     // Create new project and redirect to project description using the new projectId assigned by the database.
-    projectID = this.createNewProject();
-    if (projectID > 0) {
-      // Let's redirect the user to the Project Description section.
-      return SUCCESS;
-    }
-    // Let's redirect the user to the Project Description section.
-    return ERROR;
+    projectID = this.createNewProject(false);
+    return (projectID > 0) ? SUCCESS : ERROR;
   }
 
-  private int createNewProject() {
+  public String addCoreProject() {
+    if (!securityContext.canAddCoreProject()) {
+      return NOT_AUTHORIZED;
+    }
+
+    // Create new project and redirect to project description using the new projectId assigned by the database.
+    this.createNewProject(true);
+    return (projectID > 0) ? SUCCESS : ERROR;
+  }
+
+  private int createNewProject(boolean isCoreProject) {
     Project newProject = new Project(-1);
+
+    if (isCoreProject) {
+      newProject.setType(APConstants.PROJECT_CORE);
+    } else {
+      newProject.setType(APConstants.PROJECT_BILATERAL_STANDALONE);
+    }
+
     newProject.setOwner(this.getCurrentUser());
     IPProgram userProgram = this.getCurrentUser().getCurrentInstitution().getProgram();
     if (userProgram != null) {
@@ -114,10 +124,6 @@ public class ProjectsListPlanningAction extends BaseAction {
     return totalBudget;
   }
 
-  private boolean isUserAuthorizedToCreateProjects() {
-    return securityContext.isAdmin() || securityContext.isCU() || securityContext.isFPL() || securityContext.isRPL();
-  }
-
   @Override
   public void prepare() throws Exception {
     projects = new ArrayList<>();
@@ -140,7 +146,6 @@ public class ProjectsListPlanningAction extends BaseAction {
   public void setAllProjects(List<Project> allProjects) {
     this.allProjects = allProjects;
   }
-
 
   public void setProjectID(int projectID) {
     this.projectID = projectID;
