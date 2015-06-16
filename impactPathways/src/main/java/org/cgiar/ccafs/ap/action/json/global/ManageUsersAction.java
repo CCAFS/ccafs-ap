@@ -20,7 +20,6 @@ import org.cgiar.ccafs.ap.data.manager.UserManager;
 import org.cgiar.ccafs.ap.data.model.User;
 import org.cgiar.ccafs.ap.util.SendMail;
 import org.cgiar.ccafs.utils.APConfig;
-import org.cgiar.ccafs.utils.MD5Convert;
 
 import org.cgiar.ciat.auth.LDAPService;
 import org.cgiar.ciat.auth.LDAPUser;
@@ -65,14 +64,19 @@ public class ManageUsersAction extends BaseAction {
     this.sendMail = sendMail;
   }
 
+  public static void main(String[] args) {
+    String newPassword = RandomStringUtils.random(6, "0123456789abcdefghijkmnpqrstuvwxyz");
+    System.out.println(newPassword);
+  }
+
   /**
    * Add a new user into the database;
    * 
    * @return true if the user was successfully added, false otherwise.
    */
   private boolean addUser() {
-    // int id = userManager.saveUser(newUser, userManager.getUser(1)); // For testing purposes:
-    int id = userManager.saveUser(newUser, this.getCurrentUser());
+    int id = userManager.saveUser(newUser, userManager.getUser(1)); // For testing purposes:
+    // int id = userManager.saveUser(newUser, this.getCurrentUser());
 
     // If successfully added.
     if (id > 0) {
@@ -129,9 +133,10 @@ public class ManageUsersAction extends BaseAction {
         // If the email does not belong to the CGIAR.
         if (newUser.getFirstName() != null && newUser.getLastName() != null) {
           newUser.setCcafsUser(false);
-          // Generating a random password
-          String newPassword = RandomStringUtils.random(5, false, true); // Random passwrod with numbers only.
-          newUser.setPassword(MD5Convert.stringToMD5(newPassword));
+          // Generating a random password.
+          // String newPassword = RandomStringUtils.random(6, "0123456789abcdefghijkmnpqrstuvwxyz");
+          String newPassword = RandomStringUtils.randomNumeric(6);
+          newUser.setPassword(newPassword);
           if (this.addUser()) {
             // If user was successfully added and is active, we need to send an email with the instructions on how to
             // login:
