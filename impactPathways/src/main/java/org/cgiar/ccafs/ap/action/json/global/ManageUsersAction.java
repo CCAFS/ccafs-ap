@@ -25,12 +25,11 @@ import org.cgiar.ccafs.utils.MD5Convert;
 import org.cgiar.ciat.auth.LDAPService;
 import org.cgiar.ciat.auth.LDAPUser;
 
-import java.math.BigInteger;
-import java.security.SecureRandom;
 import java.util.List;
 
 import com.google.inject.Inject;
 import com.opensymphony.xwork2.ActionContext;
+import org.apache.commons.lang3.RandomStringUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -131,7 +130,7 @@ public class ManageUsersAction extends BaseAction {
         if (newUser.getFirstName() != null && newUser.getLastName() != null) {
           newUser.setCcafsUser(false);
           // Generating a random password
-          String newPassword = new BigInteger(130, new SecureRandom()).toString(6);
+          String newPassword = RandomStringUtils.random(5, false, true); // Random passwrod with numbers only.
           newUser.setPassword(MD5Convert.stringToMD5(newPassword));
           if (this.addUser()) {
             // If user was successfully added and is active, we need to send an email with the instructions on how to
