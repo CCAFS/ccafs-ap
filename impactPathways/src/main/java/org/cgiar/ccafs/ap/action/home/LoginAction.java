@@ -97,7 +97,7 @@ public class LoginAction extends BaseAction {
   }
 
   public String logout() {
-    User user = (User) this.getSession().get("currentUser");
+    User user = (User) this.getSession().get(APConstants.SESSION_USER);
     if (user != null) {
       LOG.info("User {} logout succesfully", user.getEmail());
     }

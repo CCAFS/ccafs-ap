@@ -502,12 +502,12 @@ public class ProjectManagerImpl implements ProjectManager {
       projectData.put("liaison_user_id", ownerId);
       projectData.put("liaison_institution_id", project.getLiaisonInstitution().getId());
       projectData.put("created_by", user.getId());
-
     } else {
       // Update project
       projectData.put("id", project.getId());
       projectData.put("title", project.getTitle());
       projectData.put("summary", project.getSummary());
+      projectData.put("is_core", project.isCoreProject());
       SimpleDateFormat format = new SimpleDateFormat(APConstants.DATE_FORMAT);
       if (project.getStartDate() != null) {
         projectData.put("start_date", format.format(project.getStartDate()));
