@@ -50,7 +50,7 @@ public class LogTriggersManager {
 
     // We don't need to insert the id in the history table, that is why we remove it from the list of columns
     String columnsToInsert = this.getLogTableColumns().replace("`id`,", "");
-    String valuesToInsert = this.getTriggerValues("insert");
+    String valuesToInsert = this.getTriggerValues();
 
     query.append("DROP TRIGGER IF EXISTS after_" + tableName + "_" + triggerAction + "; ");
     query.append("DELIMITER $$ ");
@@ -58,11 +58,38 @@ public class LogTriggersManager {
     query.append("CREATE TRIGGER after_" + tableName + "_" + triggerAction + " ");
     query.append("AFTER UPDATE ON " + tableName);
     query.append("FOR EACH ROW BEGIN ");
+
+    // Declare the action
+    query.append("DECLARE trigger_action VARCHAR(50);");
+    // Set the value of the variable according to the trigger and the action
+
+    if (triggerAction.equals("insert")) {
+      query.append("SET @trigger_action := 'insert'; ");
+    } else if (triggerAction.equals("update")) {
+      // If the trigger is updating the record we need to check if the record is being deleted.
+      query.append("IF OLD.`is_active` = 1 AND NEW.`is_active` = 0 ");
+      query.append("  SET @trigger_action := 'delete'; ");
+      query.append("ELSE ");
+      query.append("  SET @trigger_action := 'update'; ");
+      query.append("END IF; ");
+    }
+
+    // In the log table update the active_until of the last row with the same record_id with the value of NOW()
+    query.append("CALL updateActiveUntilDate('" + tableName + "', OLD.`id`); ");
+
+    // Insert the new record into the log table
     query.append("INSERT INTO ( ");
     query.append(columnsToInsert);
     query.append(") VALUES ( ");
     query.append(valuesToInsert);
     query.append("); ");
+
+    query.append("SET @query = CONCAT('INSERT INTO ( " + columnsToInsert + " ) VALUES (" + valuesToInsert
+      + ", \'', @trigger_action, '\' );");
+    query.append("PREPARE stmt FROM @query; ");
+    query.append("EXECUTE stmt; ");
+    query.append("DEALLOCATE PREPARE stmt; ");
+
     query.append("END$$ ");
     query.append("DELIMITER ; ");
 
@@ -113,13 +140,14 @@ public class LogTriggersManager {
 
 
   /**
-   * This method returns the values to be inserted by the trigger that populates the history tables.
+   * This method returns the values to be inserted by the trigger that populates the history tables. Keep in mind that
+   * the 'action' column is filled by the trigger in charge of insert the values.
    * 
    * @param triggerAction - ['insert', 'update']
    * @return an string with the values to be inserted by the trigger.
    * @throws SQLException
    */
-  private String getTriggerValues(String triggerAction) throws SQLException {
+  private String getTriggerValues() throws SQLException {
     Statement statement = connection.createStatement();
 
     StringBuilder query = new StringBuilder();
@@ -127,7 +155,6 @@ public class LogTriggersManager {
     query.append("          CASE column_name ");
     query.append("          WHEN 'active_since' THEN 'NOW()' ");
     query.append("          WHEN 'active_until' THEN 'NULL' ");
-    query.append("          WHEN 'action' THEN '" + triggerAction + "' ");
     query.append("          ELSE CONCAT('OLD.`', column_name, '`') ");
     query.append("          END ");
     query.append("       SEPARATOR ', ') as tableValues ");

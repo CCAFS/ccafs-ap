@@ -43,23 +43,41 @@ public class LogDatabaseManager {
   private void addLogDatabaseProcedures() throws SQLException {
     Statement statement = connection.createStatement();
 
-    StringBuilder query = new StringBuilder();
-    query.append("DROP PROCEDURE IF EXISTS updateActiveUntilDate; ");
-    query.append("DELIMITER $$ ");
+    statement.addBatch("DROP PROCEDURE IF EXISTS updateActiveUntilDate; ");
+    statement.addBatch("DELIMITER $$ ");
 
+    StringBuilder query = new StringBuilder();
     query.append("CREATE PROCEDURE updateActiveUntilDate(IN tableName varchar(255), IN id BIGINT) ");
     query.append("BEGIN ");
-    query.append("SET @query = CONCAT('UPDATE ', tableName, ' SET active_until=NOW() WHERE record_id = ', id, ");
-    query.append(" ' ORDER BY active_since DESC LIMIT 1'); ");
-    query.append("PREPARE stmt FROM @query; ");
-    query.append("EXECUTE stmt; ");
-    query.append("DEALLOCATE PREPARE stmt; ");
+    query.append("  SET @query = CONCAT('UPDATE ', tableName, ' SET active_until=NOW() WHERE record_id = ', id, ");
+    query.append("    ' ORDER BY active_since DESC LIMIT 1'); \n");
+    query.append("  PREPARE stmt FROM @query; \n");
+    query.append("  EXECUTE stmt; \n");
+    query.append("  DEALLOCATE PREPARE stmt; \n");
+    query.append("END$$ \n");
 
-    query.append("END$$ ");
-    query.append("DELIMITER ; ");
+    statement.addBatch(query.toString());
+    statement.addBatch("DELIMITER ; ");
+
+
+    // StringBuilder query = new StringBuilder();
+    // query.append("DROP PROCEDURE IF EXISTS updateActiveUntilDate; ");
+    // query.append("DELIMITER $$ ");
+    //
+    // query.append("CREATE PROCEDURE updateActiveUntilDate(IN tableName varchar(255), IN id BIGINT) ");
+    // query.append("BEGIN ");
+    // query.append("SET @query = CONCAT('UPDATE ', tableName, ' SET active_until=NOW() WHERE record_id = ', id, ");
+    // query.append(" ' ORDER BY active_since DESC LIMIT 1'); \n");
+    // query.append("PREPARE stmt FROM @query; \n");
+    // query.append("EXECUTE stmt; \n");
+    // query.append("DEALLOCATE PREPARE stmt; \n");
+    //
+    // query.append("END$$ \n");
+    // query.append("DELIMITER ;");
 
     try {
-      statement.execute(query.toString());
+      // statement.execute(query.toString());
+      statement.executeBatch();
     } catch (SQLException e) {
       LOG.error("Exception raised trying to create the stored procedures in the database {}.", logDatabaseName);
       throw e;
@@ -107,7 +125,6 @@ public class LogDatabaseManager {
 
     try {
       statement.execute(query.toString());
-      this.addLogDatabaseProcedures();
     } catch (SQLException e) {
       LOG.error("Exception raised trying to drop the database {}.", logDatabaseName);
       throw e;
