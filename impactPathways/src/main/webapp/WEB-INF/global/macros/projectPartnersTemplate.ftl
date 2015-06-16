@@ -148,7 +148,7 @@
       <div id="projectLeader" class="projectLeader clearfix">
           [#-- Lead List --]
           <div class="fullPartBlock organizationName chosen">
-            [@customForm.select name="prRoject.leader.institution" disabled=!canEdit i18nkey="preplanning.projectPartners.leader.institutionName" listName="allPartners" keyFieldName="id"  displayFieldName="getComposedName()" value="${project.leader.institution.id?c}" editable=editable /]
+            [@customForm.select name="project.leader.institution" disabled=!canEdit i18nkey="preplanning.projectPartners.leader.institutionName" listName="allPartners" keyFieldName="id"  displayFieldName="getComposedName()" value="${project.leader.institution.id?c}" editable=editable /]
           </div> 
           [#-- Project Leader contact --] 
           <div class="fullPartBlock clearfix">
