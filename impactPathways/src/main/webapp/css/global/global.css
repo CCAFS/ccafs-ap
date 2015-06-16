@@ -411,6 +411,47 @@ img.icon {
   opacity: 0.3;
 }
 
+/* Log History */
+
+.log-table {
+    width: 100%;
+}
+
+.log-table tr th {
+    font-weight: bold;
+    border-bottom: 2px solid #444;
+    padding: 4px;
+}
+
+.log-table tr td {
+    padding: 4px;
+ 
+}
+
+.log-table tr{ 
+}
+
+/* Log Histoy type colors */
+
+span.logType {
+    width: 5px;
+    display: block;
+}
+
+span.logType.update {
+    background-color: #CCC;
+ 
+}
+
+span.logType.delete { 
+  background-color: #E07070;
+}
+
+span.logType.create {
+    background-color: #5BA55B;
+ 
+}
+
 /* General Messages */
 #generalMessages {
   margin-top: 20px;
@@ -1123,11 +1164,12 @@ a#backHome {
   font-size: 15px;
 }
 
+
 .halfContent h1 {
   border-bottom: 2px solid #562B00;
   color: #663300;
   font-size: 1.6em;
-  margin: 13px 0;
+  margin: 0  0 14px 0;
   font-weight: lighter;
   font-family: 'Open Sans', sans-serif;
 }
@@ -1146,6 +1188,10 @@ h3.contentSubTitle {
   font-weight: bold;
   color: #939393;
   border-bottom: 1px solid #939393;
+}
+
+h1.simpleTitle {
+    border: none;
 }
 
 .fullContent h6+*, .halfContent h6+* {

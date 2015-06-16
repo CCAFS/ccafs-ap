@@ -133,22 +133,15 @@ $(document).ready(
       // Activate the chosen plugin to the countries, partner types and
       // partners lists.
       function addChosen() {
-
         $("form select").chosen({
           search_contains: true
         });
-/*
- * $("form select[name$='partner']").chosen({ search_contains: true }); $("form select[name$='institution']").chosen({
- * search_contains: true }); $("form .partnerTypes").chosen({ allow_single_deselect: true, search_contains: true });
- * $("form .ppaPartnersSelect").chosen({ allow_single_deselect: true, search_contains: true }); $("form
- * .countryList").chosen({ allow_single_deselect: true, search_contains: true });
- */
       }
       /**
        * ----------------------- Search users functions --------------------------
        */
 
-      /* ----- Initialize ----- */
+      /** Initialize */
 
       var dialog;
       var timeoutID;
@@ -177,7 +170,7 @@ $(document).ready(
       // Loading initial data with all users
       getData('');
 
-      /* ----- Events ----- */
+      /** Events */
 
       // Event for manage the accordion function
       $dialogContent.find(".accordion").on('click', function() {
@@ -264,7 +257,7 @@ $(document).ready(
         event.preventDefault();
       });
 
-      /* ----- Functions ----- */
+      /** Functions */
 
       function openSearchDialog(e) {
         e.preventDefault();

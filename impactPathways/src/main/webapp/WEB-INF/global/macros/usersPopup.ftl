@@ -1,6 +1,6 @@
 [#ftl] 
 [#macro searchUsers isActive=false ]
-  <div id="dialog-searchUsers" title="Manage Users"> 
+  <div id="dialog-searchUsers" title="Manage Users" style="display:none"> 
     <div class="dialog-content"> 
       <form class="pure-form">
         [#-- Search Users Form --]
@@ -45,8 +45,7 @@
           </div> 
           <div class="fullPartBlock">[@customForm.input name="email" type="text" i18nkey="users.email"/] </div> 
           <input id="isActive" value="${isActive?string('1','0')}" type="hidden"/>
-          <div class="button create-button">[@s.text name="users.createUser" /]</div>
-          
+          <div class="button create-button">[@s.text name="users.createUser" /]</div> 
         </div> 
         
         <!-- Allow form submission with keyboard without duplicating the dialog button -->
