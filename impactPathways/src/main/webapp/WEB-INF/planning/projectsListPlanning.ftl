@@ -45,10 +45,10 @@
       [#if securityContext.RPL || securityContext.FPL || securityContext.CU || securityContext.admin]
         <div class="buttons">
           [#if securityContext.canAddCoreProject()]
-            [@s.submit type="button" name="add"][@s.text name="preplanning.projects.addCoreProject" /][/@s.submit]
+            <a class="addButton" href="[@s.url namespace="/planning" action='addNewCoreProject'/]">[@s.text name="preplanning.projects.addCoreProject" /]</a>
           [/#if]
           [#if securityContext.canAddBilateralProject()]
-            [@s.submit type="button" name="add"][@s.text name="preplanning.projects.addBilateralProject" /][/@s.submit]
+            <a class="addButton" href="[@s.url namespace="/planning" action='addNewBilateralProject'/]">[@s.text name="preplanning.projects.addBilateralProject" /]</a>
           [/#if]  
         </div>
       [/#if]

@@ -74,7 +74,7 @@
           [#-- Project Type --]
           <td> 
               <a href="[@s.url namespace=namespace action='description' includeParams='get'][@s.param name='projectID']${project.id?c}[/@s.param][/@s.url]">
-                <p id="">${project.type}</p> 
+                <p id="">[@s.text name="${project.type}" /]</p> 
               </a>
           </td>
           [#-- Project Report Status --]
