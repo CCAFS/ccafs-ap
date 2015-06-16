@@ -61,7 +61,7 @@ public class GrantProjectPlanningAccessInterceptor extends AbstractInterceptor {
     BaseAction baseAction = (BaseAction) invocation.getAction();
 
     String actionName = ServletActionContext.getActionMapping().getName();
-    if (!actionName.equals("projects") && !actionName.equals("addNewCoreProject")
+    if (!actionName.equals("projectsList") && !actionName.equals("addNewCoreProject")
       && !actionName.equals("addNewBilateralProject")) {
       // Project parameter is validated in the ValidateProjectParameterInterceptor.
       String projectParameter = ((String[]) parameters.get(APConstants.PROJECT_REQUEST_ID))[0];
