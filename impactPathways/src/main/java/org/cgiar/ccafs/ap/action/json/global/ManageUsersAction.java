@@ -64,11 +64,6 @@ public class ManageUsersAction extends BaseAction {
     this.sendMail = sendMail;
   }
 
-  public static void main(String[] args) {
-    String newPassword = RandomStringUtils.random(6, "0123456789abcdefghijkmnpqrstuvwxyz");
-    System.out.println(newPassword);
-  }
-
   /**
    * Add a new user into the database;
    * 
