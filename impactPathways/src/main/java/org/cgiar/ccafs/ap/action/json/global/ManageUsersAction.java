@@ -121,7 +121,10 @@ public class ManageUsersAction extends BaseAction {
         } else {
           // If user was found, let's add it into our database.
           this.addUser();
-          this.sendNewUserEmail(null);
+          // If user is active, we need to send an email with the instructions on how to login:
+          if (newUser.isActive()) {
+            this.sendNewUserEmail(null);
+          }
         }
       } else {
         // If the email does not belong to the CGIAR.
@@ -131,9 +134,11 @@ public class ManageUsersAction extends BaseAction {
           String newPassword = new BigInteger(130, new SecureRandom()).toString(6);
           newUser.setPassword(MD5Convert.stringToMD5(newPassword));
           if (this.addUser()) {
-            // If user was successfully added.
-            // Let's send the email to inform the password.
-            this.sendNewUserEmail(newPassword);
+            // If user was successfully added and is active, we need to send an email with the instructions on how to
+            // login:
+            if (newUser.isActive()) {
+              this.sendNewUserEmail(newPassword);
+            }
           } else {
             // If user could not be added.
             newUser = null;
