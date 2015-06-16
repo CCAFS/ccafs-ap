@@ -65,8 +65,9 @@ public class ManageUsersAction extends BaseAction {
   /**
    * Add a new user into the database;
    */
-  private void addUser() {
-    int id = userManager.saveUser(newUser, this.getCurrentUser());
+  private int addUser() {
+
+    int id = userManager.saveUser(newUser, /* this.getCurrentUser() */ userManager.getUser(1));
     // If successfully added.
     if (id > 0) {
       newUser.setId(id);
@@ -75,9 +76,60 @@ public class ManageUsersAction extends BaseAction {
       newUser = null;
       message = "Something happened! Please take a screenshot and contact the technical staff.";
     }
+    return id;
   }
 
+  /**
+   * Create a new user in the system.
+   * 
+   * @return SUCCESS if user could be successfully created, INPUT if some information is needed and ERROR if some error
+   *         appeared.
+   * @throws Exception
+   */
   public String create() throws Exception {
+    if (newUser.getEmail() != null) {
+      boolean emailExists = false;
+      // We need to validate that the email does not exist yet into our database.
+      emailExists = userManager.getUserByEmail(newUser.getEmail()) == null ? false : true;
+
+      // If email already exists.
+      if (emailExists) {
+        // If email already exists into our database.
+        // TODO We need to internationalize this message.
+        message = "The email you are trying to add already exist into our database.";
+        newUser = null;
+        return SUCCESS; // Stop here!
+      }
+
+      // Validate if is a CGIAR email.
+      if (newUser.getEmail().toLowerCase().endsWith(APConstants.OUTLOOK_EMAIL)) {
+        newUser.setCcafsUser(true); // marking it as CCAFS user.
+
+        // Validate and populate the information that is coming from the CGIAR Outlook Active Directory.
+        newUser = this.validateOutlookUser(newUser.getEmail());
+        // If user was not found in the Active Directory.
+        if (newUser == null) {
+          // TODO We need to internationalize this message.
+          message = "It seems that the email does not exist in the CGIAR Active Directory.";
+          return SUCCESS; // Stop here!
+        } else {
+          // If user was found, let's add it into our database.
+          this.addUser();
+        }
+      } else {
+        // If the email does not belong to the CGIAR.
+        if (newUser.getFirstName() != null && newUser.getLastName() != null) {
+          newUser.setCcafsUser(false);
+          newUser.setPassword(MD5Convert.stringToMD5(new BigInteger(130, new SecureRandom()).toString(6)));
+          this.addUser();
+          return SUCCESS;
+        } else {
+          // TODO We need to internationalize this message.
+          message = "First Name and Last Name are needed.";
+          return SUCCESS;
+        }
+      }
+    }
     return SUCCESS;
   }
 
@@ -106,58 +158,17 @@ public class ManageUsersAction extends BaseAction {
 
   @Override
   public void prepare() throws Exception {
-    // If there is a country ID take its values
+    // if searching a user, we need to get the queried String.
     if (ActionContext.getContext().getName().equals("searchUsers")) {
       queryParameter = StringUtils.trim(this.getRequest().getParameter(APConstants.QUERY_PARAMETER));
     } else if (ActionContext.getContext().getName().equals("createUser")) {
+      // if Adding a new user, we need to get the info to be added.
       newUser = new User();
       newUser.setId(-1);
       newUser.setFirstName(StringUtils.trim(this.getRequest().getParameter(PARAM_FIRST_NAME)));
       newUser.setLastName(StringUtils.trim(this.getRequest().getParameter(PARAM_LAST_NAME)));
       newUser.setEmail(StringUtils.trim(this.getRequest().getParameter(PARAM_EMAIL)));
       newUser.setActive(StringUtils.trim(this.getRequest().getParameter(PARAM_IS_ACTIVE)).equals("1") ? true : false);
-
-      if (newUser.getEmail() != null) {
-        boolean emailExists = false;
-        // We need to validate that the email does not exist yet into our database.
-        emailExists = userManager.getUserByEmail(newUser.getEmail()) == null ? false : true;
-
-        // If email already exists.
-        if (emailExists) {
-          // If email already exists into our database.
-          // TODO We need to internationalize this message.
-          message = "The email you are trying to add already exist into our database.";
-          newUser = null;
-          return; // Stop here!
-        }
-
-        // Validate if is a CGIAR email.
-        if (newUser.getEmail().toLowerCase().endsWith(APConstants.OUTLOOK_EMAIL)) {
-          newUser.setCcafsUser(true); // marking it as CCAFS user.
-
-          // Validate and populate the information that is coming from the CGIAR Outlook Active Directory.
-          newUser = this.validateOutlookUser(newUser.getEmail());
-          // If user was not found in the Active Directory.
-          if (newUser == null) {
-            // TODO We need to internationalize this message.
-            message = "It seems that the email does not exist in the CGIAR Active Directory.";
-            return; // Stop here!
-          } else {
-            // If user was found, let's add it into our database.
-            this.addUser();
-          }
-        } else {
-          // If the email does not belong to the CGIAR.
-          if (newUser.getFirstName() != null && newUser.getLastName() != null) {
-            newUser.setCcafsUser(false);
-            newUser.setPassword(MD5Convert.stringToMD5(new BigInteger(130, new SecureRandom()).toString(6)));
-            this.addUser();
-          } else {
-            // TODO We need to internationalize this message.
-            message = "First Name and Last Name are needed.";
-          }
-        }
-      }
     }
 
   }
