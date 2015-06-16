@@ -60,7 +60,7 @@ public class V2_1_2_20150616_1138__create_history_table_for_projects implements 
     dbManager.dropHistoryDatabase();
 
     // Create the database again
-    dbManager.createHistoryDatabase();
+    // dbManager.createHistoryDatabase();
 
     throw new Exception();
   }
