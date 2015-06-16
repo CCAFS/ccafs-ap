@@ -40,17 +40,24 @@ import org.slf4j.LoggerFactory;
 
 public class SendMail {
 
-  // Managers
-  private APConfig config;
-
   // LOG
   private static final Logger LOG = LoggerFactory.getLogger(SendMail.class);
+
+  // Managers
+  private APConfig config;
 
   @Inject
   public SendMail(APConfig config) {
     this.config = config;
   }
 
+  /**
+   * This method send an email from the main email system.
+   * 
+   * @param toEmail is the email or the list of emails separated by a single space.
+   * @param subject
+   * @param messageContent the content of the email
+   */
   public void send(String toEmail, String subject, String messageContent) {
 
     // Get a Properties object
@@ -78,8 +85,8 @@ public class SendMail {
 
     // Set the FROM and TO fields
     try {
-      msg.setFrom(new InternetAddress(config.getGmailUsername().contains("@") ? config.getGmailUsername() : config
-        .getGmailUsername() + "@gmail.com"));
+      msg.setFrom(new InternetAddress(config.getGmailUsername().contains("@") ? config.getGmailUsername()
+        : config.getGmailUsername() + "@gmail.com"));
       msg.setRecipients(Message.RecipientType.TO, InternetAddress.parse(toEmail, false));
       msg.setSubject(subject);
       msg.setText(messageContent);
@@ -122,8 +129,8 @@ public class SendMail {
     // Set the FROM and TO fields
     try {
       // Headers
-      msg.setFrom(new InternetAddress(config.getGmailUsername().contains("@") ? config.getGmailUsername() : config
-        .getGmailUsername() + "@gmail.com"));
+      msg.setFrom(new InternetAddress(config.getGmailUsername().contains("@") ? config.getGmailUsername()
+        : config.getGmailUsername() + "@gmail.com"));
       msg.setRecipients(Message.RecipientType.TO, InternetAddress.parse(toEmail, false));
       msg.setSubject(subject);
       msg.setSentDate(new Date());
