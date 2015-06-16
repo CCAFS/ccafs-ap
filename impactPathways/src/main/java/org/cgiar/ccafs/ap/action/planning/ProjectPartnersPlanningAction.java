@@ -109,6 +109,22 @@ public class ProjectPartnersPlanningAction extends BaseAction {
     return APConstants.PROJECT_REQUEST_ID;
   }
 
+  public String getTypeProjectCoordinator() {
+    return APConstants.PROJECT_PARTNER_PC;
+  }
+
+  public String getTypeProjectLeader() {
+    return APConstants.PROJECT_PARTNER_PL;
+  }
+
+  public String getTypeProjectPartner() {
+    return APConstants.PROJECT_PARTNER_PP;
+  }
+
+  public String getTypeProjectPPA() {
+    return APConstants.PROJECT_PARTNER_PPA;
+  }
+
   @Override
   public String next() {
     String result = this.save();
@@ -177,7 +193,7 @@ public class ProjectPartnersPlanningAction extends BaseAction {
 
     // Getting 2-level Project Partners
     project
-      .setProjectPartners(projectPartnerManager.getProjectPartners(project.getId(), APConstants.PROJECT_PARTNER_PP));
+    .setProjectPartners(projectPartnerManager.getProjectPartners(project.getId(), APConstants.PROJECT_PARTNER_PP));
 
     // If the user is not admin or the project owner, we should keep some information
     // unmutable
