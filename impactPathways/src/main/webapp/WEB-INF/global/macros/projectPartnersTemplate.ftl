@@ -152,14 +152,16 @@
           </div> 
           [#-- Project Leader contact --] 
           <div class="fullPartBlock clearfix">
-            [@customForm.input name="project.leader.user.composedName" className="userName" type="text" disabled=!canEdit i18nkey="preplanning.projectPartners.projectLeader" required=true readOnly=true editable=editable/]
-            <input class="userId" type="hidden" name="project.leader.id" value="${project.leader.id}">
+            [@customForm.input name="" value="${project.leader.user.composedName}" className="userName" type="text" disabled=!canEdit i18nkey="preplanning.projectPartners.projectLeader" required=true readOnly=true editable=editable/]
+            <input class="projectLeaderType" type="hidden" name="project.leader.type" value="${project.leader.type}">
+            <input class="userId" type="hidden" name="project.leader.user" value="${project.leader.user.id}">
             [#if editable]<div class="searchUser">[@s.text name="form.buttons.searchUser" /]</div>[/#if]
           </div>
-          [#-- Project Coordinator --] 
+          [#-- Project Coordinator --]
           <div class="fullPartBlock clearfix">
-            [@customForm.input name="project.coordinator.composedName" className="userName" type="text" disabled=!canEdit i18nkey="preplanning.projectPartners.projectCoordinator"  readOnly=true editable=editable/]
-            <input class="userId" type="hidden" name="project.coordinator.id" value="${project.coordinator.id}">
+            [@customForm.input name="" value="${project.coordinator.user.composedName}" className="userName" type="text" disabled=!canEdit i18nkey="preplanning.projectPartners.projectCoordinator"  readOnly=true editable=editable/]
+            <input class="projectLeaderType" type="hidden" name="project.coordinator.type" value="${project.coordinator.type}">
+            <input class="userId" type="hidden" name="project.coordinator.user" value="${project.coordinator.user.id}">
             [#if editable]<div class="searchUser">[@s.text name="form.buttons.searchUser" /]</div>[/#if]
           </div> 
           [#-- Responsibilities --]
