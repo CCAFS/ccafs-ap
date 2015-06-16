@@ -53,7 +53,6 @@ public class LogTriggersManager {
     String valuesToInsert = this.getTriggerValues();
 
     query.append("DROP TRIGGER IF EXISTS after_" + tableName + "_" + triggerAction + "; ");
-    query.append("DELIMITER $$ ");
 
     query.append("CREATE TRIGGER after_" + tableName + "_" + triggerAction + " ");
     query.append("AFTER UPDATE ON " + tableName);
@@ -90,8 +89,7 @@ public class LogTriggersManager {
     query.append("EXECUTE stmt; ");
     query.append("DEALLOCATE PREPARE stmt; ");
 
-    query.append("END$$ ");
-    query.append("DELIMITER ; ");
+    query.append("END; ");
 
     try {
       statement.execute(query.toString());

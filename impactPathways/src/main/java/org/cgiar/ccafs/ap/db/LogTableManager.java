@@ -61,7 +61,6 @@ public class LogTableManager {
 
     // Then add the additional fields using an stored procedure to keep the script idempotent
     query.append("DROP PROCEDURE IF EXISTS adjust_history_table; ");
-    query.append("DELIMITER $$ ");
 
     query.append("-- Create the stored procedure to perform the adjustments ");
     query.append("CREATE PROCEDURE adjust_history_table() ");
@@ -116,8 +115,7 @@ public class LogTableManager {
     query.append("END IF; ");
 
     // Close the procedure definition
-    query.append("END $$ ");
-    query.append("DELIMITER ; ");
+    query.append("END; ");
 
     // Call the procedure and close it.
     query.append("CALL adjust_history_table(); ");
