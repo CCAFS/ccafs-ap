@@ -64,19 +64,14 @@ public class ManageUsersAction extends BaseAction {
     this.sendMail = sendMail;
   }
 
-  public static void main(String[] args) {
-    String newPassword = RandomStringUtils.random(6, "0123456789abcdefghijkmnpqrstuvwxyz");
-    System.out.println(newPassword);
-  }
-
   /**
    * Add a new user into the database;
    * 
    * @return true if the user was successfully added, false otherwise.
    */
   private boolean addUser() {
-    int id = userManager.saveUser(newUser, userManager.getUser(1)); // For testing purposes:
-    // int id = userManager.saveUser(newUser, this.getCurrentUser());
+    // int id = userManager.saveUser(newUser, userManager.getUser(1)); // For testing purposes:
+    int id = userManager.saveUser(newUser, this.getCurrentUser());
 
     // If successfully added.
     if (id > 0) {
