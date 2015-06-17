@@ -52,7 +52,7 @@ public class LogTableManager {
     Statement statement = connection.createStatement();
 
     // Create temporary table
-    statement.addBatch("CREATE TEMPORARY TABLE temp LIKE " + tableName);
+    statement.addBatch("CREATE TABLE temp LIKE " + tableName);
 
     // De-activate the foreing key checks
     statement.addBatch("SET FOREIGN_KEY_CHECKS=0;");
