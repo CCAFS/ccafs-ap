@@ -16,6 +16,7 @@
 [#include "/WEB-INF/global/pages/header.ftl" /]
 [#include "/WEB-INF/global/pages/main-menu.ftl" /]
 [#import "/WEB-INF/global/macros/forms.ftl" as customForm/]
+[#import "/WEB-INF/global/macros/logHistory.ftl" as log/]
     
 <section class="content">
   <div class="helpMessage">
@@ -165,6 +166,7 @@
         </div>   
       </div> 
       [/#if]
+      
     </div> 
     [#if editable]
       [#-- Project identifier --]
@@ -177,6 +179,14 @@
           [@s.submit type="button" name="cancel"][@s.text name="form.buttons.cancel" /][/@s.submit]
         </div>
       </div>
+    [#else]
+        [#assign logList=[
+          {"type":"update", "date":"09/02/2015", "person":"Sebastian Amariles", "justification": "Nunc fringilla magna vitae leo vehicula, scelerisque faucibus libero facilisis."},
+          {"type":"create", "date":"04/05/2015", "person":"Héctor Tobón", "justification":"Just for test "},
+          {"type":"delete", "date":"09/02/2015", "person":"Hernan Carvajal", "justification": "Proin vel orci ac purus fermentum luctus auctor vel lectus."}
+        ] /]
+        [#-- Display Log History --]
+        [@log.logList list=logList /]
     [/#if]
      
   </article>

@@ -23,11 +23,11 @@ a,a:active,a:visited,a:hover {
 }
 
 .select, .input {
-  margin-bottom: 10px;
+  margin-bottom: 0px;
 }
 
 .select .selectList {
-  margin: 6px 0;
+  /* margin: 6px 0; */
 }
 
 .select.button, .textArea.button {
@@ -186,6 +186,11 @@ input[type="submit"], button, .addButton {
   background: url('../../images/global/add.png') no-repeat 4px #2BA6CB;
   padding: 4px 25px 4px 28px;
   margin: 5px 0;
+  text-decoration: none;
+}
+
+a.addButton, a.addButton:active, a.addButton:visited, a.addButton:hover{
+  color: #fff; 
 }
 
 .editButton {
@@ -411,6 +416,47 @@ img.icon {
   opacity: 0.3;
 }
 
+/* Log History */
+
+.log-table {
+    width: 100%;
+}
+
+.log-table tr th {
+    font-weight: bold;
+    border-bottom: 2px solid #444;
+    padding: 4px;
+}
+
+.log-table tr td {
+    padding: 4px;
+ 
+}
+
+.log-table tr{ 
+}
+
+/* Log Histoy type colors */
+
+span.logType {
+    width: 5px;
+    display: block;
+}
+
+span.logType.update {
+    background-color: #CCC;
+ 
+}
+
+span.logType.delete { 
+  background-color: #E07070;
+}
+
+span.logType.create {
+    background-color: #5BA55B;
+ 
+}
+
 /* General Messages */
 #generalMessages {
   margin-top: 20px;
@@ -498,7 +544,7 @@ select#partnerSave_activityPartner_partner_type_id {
     font-weight: bold;
 }
 .panel .panel-body {
-    padding: 0px 3px 0px 10px;
+    padding: 4px 3px 10px 10px;
     min-height: 28px;
 }
 
@@ -561,11 +607,11 @@ select#partnerSave_activityPartner_partner_type_id {
 .search-button {
     background: #E6E6E6;
     padding: 5px 0;
-    width: 62px;
+    width: 74px;
     border-radius: 4px;
     cursor:pointer;
     position: absolute;
-    bottom: 0.6em;
+    bottom: 0em;
     right: 0;
     text-align: center;
 }
@@ -1123,11 +1169,12 @@ a#backHome {
   font-size: 15px;
 }
 
+
 .halfContent h1 {
   border-bottom: 2px solid #562B00;
   color: #663300;
   font-size: 1.6em;
-  margin: 13px 0;
+  margin: 0  0 14px 0;
   font-weight: lighter;
   font-family: 'Open Sans', sans-serif;
 }
@@ -1146,6 +1193,10 @@ h3.contentSubTitle {
   font-weight: bold;
   color: #939393;
   border-bottom: 1px solid #939393;
+}
+
+h1.simpleTitle {
+    border: none;
 }
 
 .fullContent h6+*, .halfContent h6+* {
@@ -1353,7 +1404,7 @@ h3.contentSubTitle {
     float: right;
     cursor: pointer;
     position: absolute;
-    bottom: 1.70em;
+    bottom: 1em;
     right: 0.8em;
 }
 
@@ -2226,18 +2277,18 @@ div#gender .fullBlock,div#gender .halfPartBlock {
   text-align: center;
 }
 
-#activityGlobalBlock {
+#locationsGlobalBlock {
     padding-bottom: 20px;
 }
 
-#activityGlobalBlock input {
+#locationsGlobalBlock input {
     vertical-align: middle;
+    float: left;
+    margin-right: .5em;
+    margin-top: 2px;
 }
 
-#activityGlobalBlock label {
-  width: 97%;
-  float: right;
-  margin: 0;
+#locationsGlobalBlock label {
 }
 
 #activityLocations .location .select {

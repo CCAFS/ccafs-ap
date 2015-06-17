@@ -76,7 +76,7 @@ public class ProjectPartnerManagerImpl implements ProjectPartnerManager {
       projectPartner.setInstitution(institutionManager.getInstitution(Integer.parseInt(pData.get("partner_id"))));
       // Getting the institutions which this partner is contributing to.
       projectPartner
-        .setContributeInstitutions(institutionManager.getProjectPartnerContributeInstitutions(projectPartner));
+      .setContributeInstitutions(institutionManager.getProjectPartnerContributeInstitutions(projectPartner));
       // adding information of the object to the array
       projectPartners.add(projectPartner);
     }
@@ -108,7 +108,7 @@ public class ProjectPartnerManagerImpl implements ProjectPartnerManager {
 
       // Getting the institutions which this partner is contributing to.
       projectPartner
-        .setContributeInstitutions(institutionManager.getProjectPartnerContributeInstitutions(projectPartner));
+      .setContributeInstitutions(institutionManager.getProjectPartnerContributeInstitutions(projectPartner));
 
       // adding information of the object to the array
       projectPartners.add(projectPartner);
@@ -121,9 +121,7 @@ public class ProjectPartnerManagerImpl implements ProjectPartnerManager {
     Map<String, Object> projectPartnerData = new HashMap<>();
 
     // Validate if the Project Partner is invalid.
-    if (projectPartner.getInstitution() == null) {
-      return -1;
-    } else if (projectPartner.getInstitution().getId() == -1) {
+    if (projectPartner.getInstitution() == null || projectPartner.getInstitution().getId() == -1) {
       return -1;
     }
 

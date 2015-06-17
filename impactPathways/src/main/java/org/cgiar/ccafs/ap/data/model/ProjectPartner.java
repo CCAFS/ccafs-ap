@@ -47,10 +47,6 @@ public class ProjectPartner {
     return false;
   }
 
-  public String getComposedName() {
-    return this.user.getComposedName();
-  }
-
   /**
    * Get the list of CCAFS PPA institutions that this project partner is collaborating with.
    * 

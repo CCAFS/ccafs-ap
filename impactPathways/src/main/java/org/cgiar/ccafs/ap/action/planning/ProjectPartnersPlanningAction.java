@@ -109,6 +109,22 @@ public class ProjectPartnersPlanningAction extends BaseAction {
     return APConstants.PROJECT_REQUEST_ID;
   }
 
+  public String getTypeProjectCoordinator() {
+    return APConstants.PROJECT_PARTNER_PC;
+  }
+
+  public String getTypeProjectLeader() {
+    return APConstants.PROJECT_PARTNER_PL;
+  }
+
+  public String getTypeProjectPartner() {
+    return APConstants.PROJECT_PARTNER_PP;
+  }
+
+  public String getTypeProjectPPA() {
+    return APConstants.PROJECT_PARTNER_PPA;
+  }
+
   @Override
   public String next() {
     String result = this.save();
@@ -151,32 +167,22 @@ public class ProjectPartnersPlanningAction extends BaseAction {
     // Getting the Project Leader.
     List<ProjectPartner> ppArray =
       projectPartnerManager.getProjectPartners(project.getId(), APConstants.PROJECT_PARTNER_PL);
-    ProjectPartner projectLeader;
-    if (ppArray.size() == 0) {
-      projectLeader = new ProjectPartner();
-      projectLeader.setId(-1);
-    } else {
-      projectLeader = ppArray.get(0);
+    if (ppArray.size() != 0) {
+      project.setLeader(ppArray.get(0));
     }
-    project.setLeader(projectLeader);
 
     // Getting Project Coordinator
     ppArray = projectPartnerManager.getProjectPartners(project.getId(), APConstants.PROJECT_PARTNER_PC);
-    ProjectPartner projectCoordinator;
-    if (ppArray.size() == 0) {
-      projectCoordinator = new ProjectPartner();
-      projectCoordinator.setId(-1);
-    } else {
-      projectCoordinator = ppArray.get(0);
+    if (ppArray.size() != 0) {
+      project.setCoordinator(ppArray.get(0));
     }
-    project.setCoordinator(projectCoordinator);
 
     // Getting PPA Partners
     project.setPPAPartners(projectPartnerManager.getProjectPartners(project.getId(), APConstants.PROJECT_PARTNER_PPA));
 
     // Getting 2-level Project Partners
     project
-    .setProjectPartners(projectPartnerManager.getProjectPartners(project.getId(), APConstants.PROJECT_PARTNER_PP));
+      .setProjectPartners(projectPartnerManager.getProjectPartners(project.getId(), APConstants.PROJECT_PARTNER_PP));
 
     // If the user is not admin or the project owner, we should keep some information
     // unmutable
@@ -198,12 +204,9 @@ public class ProjectPartnersPlanningAction extends BaseAction {
 
   @Override
   public String save() {
-
-
     if (ActionContext.getContext().getName().equals("partnerLead")) {
-      System.out.println("partnerLead");
+      return this.savePartnerLead();
     }
-    System.out.println(ActionContext.getContext().getName());
     return BaseAction.INPUT;
 
     // if (this.isSaveable()) {
@@ -311,6 +314,31 @@ public class ProjectPartnersPlanningAction extends BaseAction {
 
   }
 
+  private String savePartnerLead() {
+    boolean success = true;
+
+    // Saving Project leader
+    int id = projectPartnerManager.saveProjectPartner(projectID, project.getLeader(), this.getCurrentUser(),
+      this.getJustification());
+    if (id < 0) {
+      success = false;
+    }
+
+    // Saving Project Coordinator
+    // Setting the same institution that was selected for the Project Leader.
+    project.getCoordinator().setInstitution(project.getLeader().getInstitution());
+    id = projectPartnerManager.saveProjectPartner(projectID, project.getCoordinator(), this.getCurrentUser(),
+      this.getJustification());
+    if (id < 0) {
+      success = false;
+    }
+
+    if (success) {
+      return SUCCESS;
+    }
+    return INPUT;
+  }
+
   public void setAllProjectLeaders(List<User> allProjectLeaders) {
     this.allProjectLeaders = allProjectLeaders;
   }
@@ -325,6 +353,12 @@ public class ProjectPartnersPlanningAction extends BaseAction {
 
   @Override
   public void validate() {
+    if (this.isHttpPost()) {
+      if (ActionContext.getContext().getName().equals("partnerLead")) {
+        this.validateLeadPartner();
+      }
+    }
+
     // Validate only in case the user has full privileges. Otherwise, the partner
     // fields that are disabled won't be sent here.
 
@@ -385,4 +419,21 @@ public class ProjectPartnersPlanningAction extends BaseAction {
     // }
     // super.validate();
   }
+
+  private void validateLeadPartner() {
+
+    boolean problem = false;
+    if (project.getLeader().getInstitution() == null) {
+      // Indicate problem in the missing field.
+      this.addFieldError("project.leader.institution", this.getText("planning.projectPartners.selectInstitution"));
+      problem = true;
+    }
+
+    if (problem) {
+      this.addActionError(this.getText("saving.fields.required"));
+    }
+
+
+  }
+
 }
