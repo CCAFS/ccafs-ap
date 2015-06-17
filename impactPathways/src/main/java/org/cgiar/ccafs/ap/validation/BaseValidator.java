@@ -10,6 +10,8 @@ import org.slf4j.LoggerFactory;
 
 public class BaseValidator extends ActionSupport {
 
+  private static final long serialVersionUID = -7486776113435920241L;
+
   private static final Logger LOG = LoggerFactory.getLogger(BaseValidator.class);
 
   protected StringBuilder validationMessage;
