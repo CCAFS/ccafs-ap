@@ -51,6 +51,8 @@ public class LogTableManager {
   private void createHistoryForPreviousRecords(String tableName) throws SQLException {
     Statement statement = connection.createStatement();
 
+    statement.clearBatch();
+
     // Create temporary table
     statement.addBatch("CREATE TABLE temp LIKE " + tableName);
 
@@ -131,8 +133,8 @@ public class LogTableManager {
     query.append("END IF; ");
 
     // Validate if the column `active_until` exists to create it if needed
-    query
-      .append("IF NOT EXISTS ((SELECT * FROM information_schema.columns WHERE table_schema=DATABASE() AND table_name='");
+    query.append(
+      "IF NOT EXISTS ((SELECT * FROM information_schema.columns WHERE table_schema=DATABASE() AND table_name='");
     query.append(tableName);
     query.append("' AND column_name='active_until')) THEN ");
     query.append("ALTER TABLE `");
@@ -141,8 +143,8 @@ public class LogTableManager {
     query.append("END IF; ");
 
     // Validate if the column `action` exists to create it if needed
-    query
-      .append("IF NOT EXISTS ((SELECT * FROM information_schema.columns WHERE table_schema=DATABASE() AND table_name='");
+    query.append(
+      "IF NOT EXISTS ((SELECT * FROM information_schema.columns WHERE table_schema=DATABASE() AND table_name='");
     query.append(tableName);
     query.append("' AND column_name='action')) THEN ");
     query.append("ALTER TABLE `");

@@ -29,7 +29,7 @@
   </div>
   [#include "/WEB-INF/planning/planningProjectsSubMenu.ftl" /]
 
-  [@s.form action="partners" cssClass="pure-form"]
+  [@s.form action="ppaPartners" cssClass="pure-form"]
   <article class="halfContent" id="projectPartners">
     [#include "/WEB-INF/planning/projectDescription-planning-sub-menu.ftl" /]
     [#include "/WEB-INF/planning/planningDataSheet.ftl" /]

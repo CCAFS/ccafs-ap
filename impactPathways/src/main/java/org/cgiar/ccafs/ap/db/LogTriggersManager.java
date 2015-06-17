@@ -99,15 +99,8 @@ public class LogTriggersManager {
       query.append(") VALUES ( ");
       query.append(valuesToInsert);
       query.append(", 'update'); ");
-
       query.append("END IF; ");
     }
-
-    // TODO - delete the following line used to debug the procedure
-    query
-      .append("INSERT INTO `ccafspr_ip`.`board_messages` (`message`, `created`) VALUES ('Exiting PROCEDURE TRIGGER after_"
-        + tableName + "_" + triggerAction + "()', CURRENT_TIMESTAMP);");
-
 
     query.append("END; ");
     statement.addBatch(query.toString());
