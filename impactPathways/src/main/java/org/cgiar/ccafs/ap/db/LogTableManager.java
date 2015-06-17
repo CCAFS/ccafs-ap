@@ -136,8 +136,7 @@ public class LogTableManager {
 
       // Then add the triggers
       triggerManager = new LogTriggersManager(connection, originalDbName, tableName);
-      triggerManager.createTrigger("insert");
-      triggerManager.createTrigger("update");
+      triggerManager.createTrigger();
     } catch (SQLException e) {
       LOG.error("Exception raised trying to create the history table {}.", tableName);
       throw e;
