@@ -52,6 +52,8 @@ public class BaseAction extends ActionSupport implements Preparable, SessionAwar
 
   public static final String SAVED_STATUS = "savedStatus";
 
+  // Loggin
+  private static final Logger LOG = LoggerFactory.getLogger(BaseAction.class);
   // button actions
   protected boolean save;
   protected boolean next;
@@ -64,13 +66,12 @@ public class BaseAction extends ActionSupport implements Preparable, SessionAwar
   private boolean isEditable; // If user is able to edit the form.
   private boolean canEdit; // If user is able to edit the form.
   private boolean saveable; // If user is able to see the save, cancel, delete buttons
+
   private boolean fullEditable; // If user is able to edit all the form.
 
   // Justification of the changes
-  protected String justification;
+  private String justification;
 
-  // Loggin
-  private static final Logger LOG = LoggerFactory.getLogger(BaseAction.class);
   private Map<String, Object> session;
   private HttpServletRequest request;
 

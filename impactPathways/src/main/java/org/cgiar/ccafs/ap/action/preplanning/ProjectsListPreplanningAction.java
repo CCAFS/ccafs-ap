@@ -33,11 +33,11 @@ public class ProjectsListPreplanningAction extends BaseAction {
 
   private static final long serialVersionUID = 2845677913596494699L;
 
-  // Manager
-  private ProjectManager projectManager;
-
   // LOG
   private static Logger LOG = LoggerFactory.getLogger(ProjectsListPreplanningAction.class);
+
+  // Manager
+  private ProjectManager projectManager;
 
   // Model for the back-end
   private List<Project> projects;
@@ -79,13 +79,12 @@ public class ProjectsListPreplanningAction extends BaseAction {
       // Now the creator is a liaison isntitution not a ipProgram
       // newProject.setProgramCreator(userProgram);
     } else {
-      LOG
-        .error(
-          "-- execute() > the current user identify with id={} and institution_id={} does not belong to a specific program!",
-          new Object[] {this.getCurrentUser().getId(), this.getCurrentUser().getCurrentInstitution().getId()});
+      LOG.error(
+        "-- execute() > the current user identify with id={} and institution_id={} does not belong to a specific program!",
+        new Object[] {this.getCurrentUser().getId(), this.getCurrentUser().getCurrentInstitution().getId()});
     }
     newProject.setCreated(new Date().getTime());
-    return projectManager.saveProjectDescription(newProject, this.getCurrentUser(), justification);
+    return projectManager.saveProjectDescription(newProject, this.getCurrentUser(), this.getJustification());
 
   }
 

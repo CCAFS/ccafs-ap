@@ -193,7 +193,7 @@ public class ProjectPartnersPlanningAction extends BaseAction {
 
     // Getting 2-level Project Partners
     project
-    .setProjectPartners(projectPartnerManager.getProjectPartners(project.getId(), APConstants.PROJECT_PARTNER_PP));
+      .setProjectPartners(projectPartnerManager.getProjectPartners(project.getId(), APConstants.PROJECT_PARTNER_PP));
 
     // If the user is not admin or the project owner, we should keep some information
     // unmutable
@@ -327,10 +327,28 @@ public class ProjectPartnersPlanningAction extends BaseAction {
   }
 
   private String savePartnerLead() {
-    // Saving Project leader
-    System.out.println("TEST");
+    boolean success = true;
 
-    return SUCCESS;
+    // Saving Project leader
+    int id = projectPartnerManager.saveProjectPartner(projectID, project.getLeader(), this.getCurrentUser(),
+      this.getJustification());
+    if (id < 0) {
+      success = false;
+    }
+
+    // Saving Project Coordinator
+    // Setting the same institution that was selected for the Project Leader.
+    project.getCoordinator().setInstitution(project.getLeader().getInstitution());
+    id = projectPartnerManager.saveProjectPartner(projectID, project.getCoordinator(), this.getCurrentUser(),
+      this.getJustification());
+    if (id < 0) {
+      success = false;
+    }
+
+    if (success) {
+      return SUCCESS;
+    }
+    return INPUT;
   }
 
   public void setAllProjectLeaders(List<User> allProjectLeaders) {
@@ -407,4 +425,5 @@ public class ProjectPartnersPlanningAction extends BaseAction {
     // }
     // super.validate();
   }
+
 }

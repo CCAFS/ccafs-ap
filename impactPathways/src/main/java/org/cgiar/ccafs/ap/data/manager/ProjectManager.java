@@ -192,7 +192,9 @@ public interface ProjectManager {
    * @param projectId is the project identifier.
    * @param expectedLeader is the project leader to be added/updated.
    * @return true if the save process finalized successfully, false otherwise.
+   * @deprecated Please use ProjectPartnerManager.saveProjectPartner(...).
    */
+  @Deprecated
   public boolean saveExpectedProjectLeader(int projectId, User expectedLeader);
 
   /**

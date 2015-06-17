@@ -43,15 +43,15 @@ public class ProjectDescriptionPlanningAction extends BaseAction {
 
   private static final long serialVersionUID = 2845669913596494699L;
 
+  private static Logger LOG = LoggerFactory.getLogger(ProjectDescriptionPlanningAction.class);
   // Manager
   private ProjectManager projectManager;
   private IPProgramManager ipProgramManager;
   private LiaisonInstitutionManager liaisonInstitutionManager;
   private UserManager userManager;
   private BudgetManager budgetManager;
-  private LinkedCoreProjectManager linkedCoreProjectManager;
 
-  private static Logger LOG = LoggerFactory.getLogger(ProjectDescriptionPlanningAction.class);
+  private LinkedCoreProjectManager linkedCoreProjectManager;
 
   // Model for the front-end
   private List<IPProgram> ipProgramRegions;
@@ -257,7 +257,7 @@ public class ProjectDescriptionPlanningAction extends BaseAction {
           }
         }
 
-        result = projectManager.saveProjectDescription(project, this.getCurrentUser(), justification);
+        result = projectManager.saveProjectDescription(project, this.getCurrentUser(), this.getJustification());
 
         if (result < 0) {
           this.addActionError(this.getText("saving.problem"));
@@ -308,9 +308,8 @@ public class ProjectDescriptionPlanningAction extends BaseAction {
           }
           // Adding new Regional Project Focuses.
           for (IPProgram programToAdd : project.getRegions()) {
-            saved =
-              ipProgramManager.saveProjectFocus(project.getId(), programToAdd.getId(), this.getCurrentUser(),
-                justification);
+            saved = ipProgramManager.saveProjectFocus(project.getId(), programToAdd.getId(), this.getCurrentUser(),
+              this.getJustification());
             if (!saved) {
               success = false;
             }
@@ -344,9 +343,8 @@ public class ProjectDescriptionPlanningAction extends BaseAction {
           }
           // Adding new Flagship Project Focuses.
           for (IPProgram programToAdd : project.getFlagships()) {
-            saved =
-              ipProgramManager.saveProjectFocus(project.getId(), programToAdd.getId(), this.getCurrentUser(),
-                justification);
+            saved = ipProgramManager.saveProjectFocus(project.getId(), programToAdd.getId(), this.getCurrentUser(),
+              this.getJustification());
             if (!saved) {
               success = false;
             }
@@ -366,7 +364,7 @@ public class ProjectDescriptionPlanningAction extends BaseAction {
         // in order to prevent unauthorized changes.
         previousProject.setTitle(project.getTitle()); // setting the possible new title.
         previousProject.setSummary(project.getSummary()); // setting the possible new summary.
-        result = projectManager.saveProjectDescription(previousProject, this.getCurrentUser(), justification);
+        result = projectManager.saveProjectDescription(previousProject, this.getCurrentUser(), this.getJustification());
         if (result < 0) {
           this.addActionError(this.getText("saving.problem"));
           return BaseAction.INPUT;
@@ -378,13 +376,13 @@ public class ProjectDescriptionPlanningAction extends BaseAction {
         this.addActionMessage(this.getText("saving.saved.problem"));
         return BaseAction.INPUT;
       } else {
-        this.addActionMessage(this.getText("saving.success",
-          new String[] {this.getText("preplanning.projectDescription.title")}));
+        this.addActionMessage(
+          this.getText("saving.success", new String[] {this.getText("preplanning.projectDescription.title")}));
         return BaseAction.SUCCESS;
       }
     } else {
-      LOG.warn("User {} tried to save information in Project Description without having enough privileges!", this
-        .getCurrentUser().getId());
+      LOG.warn("User {} tried to save information in Project Description without having enough privileges!",
+        this.getCurrentUser().getId());
     }
     return BaseAction.ERROR;
 
@@ -451,7 +449,8 @@ public class ProjectDescriptionPlanningAction extends BaseAction {
       }
 
       // Save the information
-      int result = projectManager.saveProjectDescription(previousProject, this.getCurrentUser(), justification);
+      int result =
+        projectManager.saveProjectDescription(previousProject, this.getCurrentUser(), this.getJustification());
 
       if (result < 0) {
         this.addActionError(this.getText("saving.problem"));
@@ -472,9 +471,8 @@ public class ProjectDescriptionPlanningAction extends BaseAction {
         // Save only the new flagships
         for (IPProgram flagship : flagships) {
           if (!previousFlagships.contains(flagship)) {
-            saved =
-              true && ipProgramManager.saveProjectFocus(project.getId(), flagship.getId(), this.getCurrentUser(),
-                justification);
+            saved = true && ipProgramManager.saveProjectFocus(project.getId(), flagship.getId(), this.getCurrentUser(),
+              this.getJustification());
           }
         }
 
@@ -493,10 +491,8 @@ public class ProjectDescriptionPlanningAction extends BaseAction {
         // Save only the new regions
         for (IPProgram region : project.getRegions()) {
           if (!previousRegions.contains(region)) {
-            saved =
-              saved
-                && ipProgramManager.saveProjectFocus(project.getId(), region.getId(), this.getCurrentUser(),
-                  justification);
+            saved = saved && ipProgramManager.saveProjectFocus(project.getId(), region.getId(), this.getCurrentUser(),
+              this.getJustification());
           }
         }
 
