@@ -19,6 +19,7 @@ import org.cgiar.ccafs.ap.db.LogTableManager;
 
 import java.sql.Connection;
 import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.sql.Statement;
 
 import org.flywaydb.core.Flyway;
@@ -43,7 +44,7 @@ public class V2_1_2_20150616_1555__create_history_table_for_projects implements 
   @Override
   public void migrate(Connection connection) throws Exception {
     Statement statement = connection.createStatement();
-    String tableName = "activities";
+    String tableName = "projects";
 
     String query = "SELECT DATABASE() as dbName ;";
     String dbName = "";
@@ -60,16 +61,21 @@ public class V2_1_2_20150616_1555__create_history_table_for_projects implements 
     LogDatabaseManager dbManager = new LogDatabaseManager(connection, dbName);
     LogTableManager tableManager = new LogTableManager(connection, dbName);
 
-    // First, drop the history database if it already exists
-    dbManager.dropHistoryDatabase();
+    try {
+      // As I am sure that we haven't used the database previously, I am going to drop it
+      dbManager.dropHistoryDatabase();
 
-    // Create the database again
-    dbManager.createHistoryDatabase();
+      // And create the database again
+      dbManager.createHistoryDatabase();
 
-    dbManager.useHistoryDatabase();
+      // Don't forget to ensure the history database before create the new table
+      dbManager.useHistoryDatabase();
 
-    // We don't need to validate if the table exists since we recently created the database
-    tableManager.createLogTable(tableName);
-    throw new Exception();
+      // We don't need to validate if the table exists since we recently created the database
+      tableManager.createLogTable(tableName);
+    } catch (SQLException e) {
+      LOG.error("There was an error running the migration.");
+      throw e;
+    }
   }
 }

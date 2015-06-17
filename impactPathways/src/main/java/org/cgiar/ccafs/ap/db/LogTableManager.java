@@ -15,6 +15,7 @@
 package org.cgiar.ccafs.ap.db;
 
 import java.sql.Connection;
+import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 
@@ -40,6 +41,37 @@ public class LogTableManager {
 
   }
 
+
+  /**
+   * This method "fire" the triggers on records already present in the table called tableName by copying the records in
+   * a a temporal table and re-inserting them in the original table.
+   * 
+   * @param tableName
+   */
+  private void createHistoryForPreviousRecords(String tableName) throws SQLException {
+    Statement statement = connection.createStatement();
+
+    // Create temporary table
+    statement.addBatch("CREATE TEMPORARY TABLE temp LIKE " + tableName);
+
+    // De-activate the foreing key checks
+    statement.addBatch("SET FOREIGN_KEY_CHECKS=0;");
+
+    statement.addBatch("INSERT INTO temp SELECT * FROM " + tableName + ";");
+    statement.addBatch("TRUNCATE TABLE " + tableName + ";");
+    statement.addBatch("INSERT INTO " + tableName + " SELECT * FROM temp;");
+    statement.addBatch("DROP TABLE temp;");
+
+    statement.addBatch("SET FOREIGN_KEY_CHECKS=1;");
+
+    try {
+      statement.executeBatch();
+    } catch (SQLException e) {
+      LOG.error("");
+      throw e;
+    }
+
+  }
 
   /**
    * This method creates a copy of the table databaseName.tableName into the table
@@ -136,7 +168,13 @@ public class LogTableManager {
 
       // Then add the triggers
       triggerManager = new LogTriggersManager(connection, originalDbName, tableName);
-      triggerManager.createTrigger();
+      triggerManager.createTrigger("insert");
+      triggerManager.createTrigger("update");
+
+      // If the table is not empty we should "fire" the triggers for the records already existent.
+      if (!this.isTableEmpty(tableName)) {
+        this.createHistoryForPreviousRecords(tableName);
+      }
     } catch (SQLException e) {
       LOG.error("Exception raised trying to create the history table {}.", tableName);
       throw e;
@@ -144,6 +182,7 @@ public class LogTableManager {
       statement.close();
     }
   }
+
 
   /**
    * This method drop the table tableName of the history database.
@@ -200,6 +239,13 @@ public class LogTableManager {
     }
 
     return false;
+  }
+
+  private boolean isTableEmpty(String tableName) throws SQLException {
+    Statement statement = connection.createStatement();
+
+    ResultSet rs = statement.executeQuery("SELECT 1 FROM " + originalDbName + "." + tableName);
+    return !rs.next();
   }
 
   public void setDatabaseName(String databaseName) {
