@@ -31,13 +31,13 @@ public class LogTableManager {
   private static Logger LOG = LoggerFactory.getLogger(LogTableManager.class);
 
   private Connection connection;
-  private String tableName;
   private String originalDbName;
+  private LogTriggersManager triggerManager;
 
-  public LogTableManager(Connection connection, String dbName, String tableName) {
+  public LogTableManager(Connection connection, String dbName) {
     this.connection = connection;
     this.originalDbName = dbName;
-    this.tableName = tableName;
+
   }
 
 
@@ -48,7 +48,7 @@ public class LogTableManager {
    * 
    * @throws SQLException
    */
-  public void createLogTable() throws SQLException {
+  public void createLogTable(String tableName) throws SQLException {
     Statement statement = connection.createStatement();
     StringBuilder query = new StringBuilder();
 
@@ -58,11 +58,15 @@ public class LogTableManager {
     query.append(" LIKE ");
     query.append(originalDbName + "." + tableName);
     query.append(";");
+    statement.addBatch(query.toString());
 
     // Then add the additional fields using an stored procedure to keep the script idempotent
+    query.setLength(0);
     query.append("DROP PROCEDURE IF EXISTS adjust_history_table; ");
+    statement.addBatch(query.toString());
 
-    query.append("-- Create the stored procedure to perform the adjustments ");
+    query.setLength(0);
+    // Create the stored procedure to perform the adjustments
     query.append("CREATE PROCEDURE adjust_history_table() ");
     query.append("BEGIN ");
 
@@ -116,13 +120,24 @@ public class LogTableManager {
 
     // Close the procedure definition
     query.append("END; ");
+    statement.addBatch(query.toString());
 
     // Call the procedure and close it.
+    query.setLength(0);
     query.append("CALL adjust_history_table(); ");
+    statement.addBatch(query.toString());
+
+    query.setLength(0);
     query.append("DROP PROCEDURE IF EXISTS adjust_history_table; ");
+    statement.addBatch(query.toString());
 
     try {
-      statement.execute(query.toString());
+      statement.executeBatch();
+
+      // Then add the triggers
+      triggerManager = new LogTriggersManager(connection, originalDbName, tableName);
+      triggerManager.createTrigger("insert");
+      triggerManager.createTrigger("update");
     } catch (SQLException e) {
       LOG.error("Exception raised trying to create the history table {}.", tableName);
       throw e;
@@ -136,7 +151,7 @@ public class LogTableManager {
    * 
    * @throws SQLException
    */
-  public void dropLogTable() throws SQLException {
+  public void dropLogTable(String tableName) throws SQLException {
     Statement statement = connection.createStatement();
     StringBuilder query = new StringBuilder();
 
@@ -190,10 +205,6 @@ public class LogTableManager {
 
   public void setDatabaseName(String databaseName) {
     this.originalDbName = databaseName;
-  }
-
-  public void setTableName(String tableName) {
-    this.tableName = tableName;
   }
 
 }

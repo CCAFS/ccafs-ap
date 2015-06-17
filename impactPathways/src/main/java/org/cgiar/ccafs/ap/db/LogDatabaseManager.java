@@ -40,32 +40,6 @@ public class LogDatabaseManager {
     this.logDatabaseName = dbName + "_history";
   }
 
-  private void addLogDatabaseProcedures() throws SQLException {
-    Statement statement = connection.createStatement();
-
-    try {
-      statement.addBatch("DROP PROCEDURE IF EXISTS updateActiveUntilDate; ");
-
-      StringBuilder query = new StringBuilder();
-      query.append("CREATE PROCEDURE updateActiveUntilDate(IN tableName varchar(255), IN id BIGINT) ");
-      query.append("BEGIN ");
-      query.append("  SET @query = CONCAT('UPDATE ', tableName, ' SET active_until=NOW() WHERE record_id = ', id, ");
-      query.append("    ' ORDER BY active_since DESC LIMIT 1'); ");
-      query.append("  PREPARE stmt FROM @query; ");
-      query.append("  EXECUTE stmt; ");
-      query.append("  DEALLOCATE PREPARE stmt; ");
-      query.append("END; ");
-
-      statement.addBatch(query.toString());
-
-      statement.executeBatch();
-    } catch (SQLException e) {
-      LOG.error("Exception raised trying to create the stored procedures in the database {}.", logDatabaseName);
-      throw e;
-    } finally {
-      statement.close();
-    }
-  }
 
   /**
    * This method creates the history database if not exists.
@@ -83,7 +57,6 @@ public class LogDatabaseManager {
     try {
       statement.execute(query.toString());
       this.useHistoryDatabase();
-      this.addLogDatabaseProcedures();
     } catch (SQLException e) {
       LOG.error("Exception raised trying to create the database {}.", logDatabaseName);
       throw e;
@@ -113,6 +86,10 @@ public class LogDatabaseManager {
     } finally {
       statement.close();
     }
+  }
+
+  public String getLogDatabaseName() {
+    return logDatabaseName;
   }
 
   /**

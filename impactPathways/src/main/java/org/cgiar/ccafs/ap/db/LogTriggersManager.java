@@ -50,49 +50,70 @@ public class LogTriggersManager {
 
     // We don't need to insert the id in the history table, that is why we remove it from the list of columns
     String columnsToInsert = this.getLogTableColumns().replace("`id`,", "");
-    String valuesToInsert = this.getTriggerValues();
+    String valuesToInsert = this.getTriggerValues(triggerAction).replace("record_id, ", "").replace(", action", "");
+
+    // Add the trigger in the production database
+    statement.addBatch("USE " + databaseName + ";");
 
     query.append("DROP TRIGGER IF EXISTS after_" + tableName + "_" + triggerAction + "; ");
+    statement.addBatch(query.toString());
 
+    query.setLength(0);
     query.append("CREATE TRIGGER after_" + tableName + "_" + triggerAction + " ");
-    query.append("AFTER UPDATE ON " + tableName);
-    query.append("FOR EACH ROW BEGIN ");
+    query.append("AFTER " + triggerAction.toUpperCase() + " ON " + tableName);
+    query.append(" FOR EACH ROW BEGIN ");
 
-    // Declare the action
-    query.append("DECLARE trigger_action VARCHAR(50);");
-    // Set the value of the variable according to the trigger and the action
+    // Update the last record with the same ID to set the 'active_until' column to NOW()
+    query.append("UPDATE ");
+    query.append(logDatabaseName);
+    query.append(".");
+    query.append(tableName);
+    query.append(" SET active_until=NOW() WHERE record_id = NEW.`id` ");
+    query.append("ORDER BY active_since DESC LIMIT 1; ");
 
     if (triggerAction.equals("insert")) {
-      query.append("SET @trigger_action := 'insert'; ");
+
+      // Set the trigger action to 'insert'
+      query.append("  INSERT INTO " + logDatabaseName + "." + tableName + "( ");
+      query.append(columnsToInsert);
+      query.append(") VALUES ( ");
+      query.append(valuesToInsert);
+      query.append(", 'insert'); ");
+
     } else if (triggerAction.equals("update")) {
       // If the trigger is updating the record we need to check if the record is being deleted.
-      query.append("IF OLD.`is_active` = 1 AND NEW.`is_active` = 0 ");
-      query.append("  SET @trigger_action := 'delete'; ");
+      query.append("IF OLD.`is_active` = 1 AND NEW.`is_active` = 0 THEN ");
+
+      // If the is_active column change from 1 to 0, the action is delete
+      query.append("  INSERT INTO " + logDatabaseName + "." + tableName + "( ");
+      query.append(columnsToInsert);
+      query.append(") VALUES ( ");
+      query.append(valuesToInsert);
+      query.append(", 'delete'); ");
+
       query.append("ELSE ");
-      query.append("  SET @trigger_action := 'update'; ");
+
+      // Otherwise the action is update
+      query.append("  INSERT INTO " + logDatabaseName + "." + tableName + "( ");
+      query.append(columnsToInsert);
+      query.append(") VALUES ( ");
+      query.append(valuesToInsert);
+      query.append(", 'update'); ");
+
       query.append("END IF; ");
     }
 
-    // In the log table update the active_until of the last row with the same record_id with the value of NOW()
-    query.append("CALL updateActiveUntilDate('" + tableName + "', OLD.`id`); ");
+    // TODO - delete the following line used to debug the procedure
+    query
+      .append("INSERT INTO `ccafspr_ip`.`board_messages` (`message`, `created`) VALUES ('Exiting PROCEDURE TRIGGER after_"
+        + tableName + "_" + triggerAction + "()', CURRENT_TIMESTAMP);");
 
-    // Insert the new record into the log table
-    query.append("INSERT INTO ( ");
-    query.append(columnsToInsert);
-    query.append(") VALUES ( ");
-    query.append(valuesToInsert);
-    query.append("); ");
-
-    query.append("SET @query = CONCAT('INSERT INTO ( " + columnsToInsert + " ) VALUES (" + valuesToInsert
-      + ", \'', @trigger_action, '\' );");
-    query.append("PREPARE stmt FROM @query; ");
-    query.append("EXECUTE stmt; ");
-    query.append("DEALLOCATE PREPARE stmt; ");
 
     query.append("END; ");
+    statement.addBatch(query.toString());
 
     try {
-      statement.execute(query.toString());
+      statement.executeBatch();
     } catch (SQLException e) {
       LOG.error("Exception raised trying to create the trigger after_{}_{}.", tableName, triggerAction);
       throw e;
@@ -145,7 +166,7 @@ public class LogTriggersManager {
    * @return an string with the values to be inserted by the trigger.
    * @throws SQLException
    */
-  private String getTriggerValues() throws SQLException {
+  private String getTriggerValues(String triggerAction) throws SQLException {
     Statement statement = connection.createStatement();
 
     StringBuilder query = new StringBuilder();
@@ -153,7 +174,15 @@ public class LogTriggersManager {
     query.append("          CASE column_name ");
     query.append("          WHEN 'active_since' THEN 'NOW()' ");
     query.append("          WHEN 'active_until' THEN 'NULL' ");
-    query.append("          ELSE CONCAT('OLD.`', column_name, '`') ");
+    query.append("          WHEN 'record_id' THEN 'record_id' ");
+    query.append("          WHEN 'action' THEN 'action' ");
+
+    if (triggerAction.equals("insert")) {
+      query.append("          ELSE CONCAT('NEW.`', column_name, '`') ");
+    } else if (triggerAction.equals("update")) {
+      query.append("          ELSE CONCAT('OLD.`', column_name, '`') ");
+    }
+
     query.append("          END ");
     query.append("       SEPARATOR ', ') as tableValues ");
     query.append("FROM INFORMATION_SCHEMA.COLUMNS ");
