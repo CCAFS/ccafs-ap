@@ -164,27 +164,16 @@ public class ProjectPartnersPlanningAction extends BaseAction {
     // Getting all Project Leaders
     allProjectLeaders = userManager.getAllUsers();
 
-    // Creating empty project partner:
-    ProjectPartner emptyProjectPartner = new ProjectPartner();
-    emptyProjectPartner.setId(-1);
-    User emptyUser = new User();
-    emptyUser.setId(-1);
-    emptyProjectPartner.setUser(emptyUser);
-
     // Getting the Project Leader.
     List<ProjectPartner> ppArray =
       projectPartnerManager.getProjectPartners(project.getId(), APConstants.PROJECT_PARTNER_PL);
-    if (ppArray.size() == 0) {
-      project.setLeader(emptyProjectPartner);
-    } else {
+    if (ppArray.size() != 0) {
       project.setLeader(ppArray.get(0));
     }
 
     // Getting Project Coordinator
     ppArray = projectPartnerManager.getProjectPartners(project.getId(), APConstants.PROJECT_PARTNER_PC);
-    if (ppArray.size() == 0) {
-      project.setCoordinator(emptyProjectPartner);
-    } else {
+    if (ppArray.size() != 0) {
       project.setCoordinator(ppArray.get(0));
     }
 
@@ -218,7 +207,6 @@ public class ProjectPartnersPlanningAction extends BaseAction {
     if (ActionContext.getContext().getName().equals("partnerLead")) {
       return this.savePartnerLead();
     }
-    System.out.println(ActionContext.getContext().getName());
     return BaseAction.INPUT;
 
     // if (this.isSaveable()) {
@@ -365,6 +353,12 @@ public class ProjectPartnersPlanningAction extends BaseAction {
 
   @Override
   public void validate() {
+    if (this.isHttpPost()) {
+      if (ActionContext.getContext().getName().equals("partnerLead")) {
+        this.validateLeadPartner();
+      }
+    }
+
     // Validate only in case the user has full privileges. Otherwise, the partner
     // fields that are disabled won't be sent here.
 
@@ -424,6 +418,22 @@ public class ProjectPartnersPlanningAction extends BaseAction {
     // }
     // }
     // super.validate();
+  }
+
+  private void validateLeadPartner() {
+
+    boolean problem = false;
+    if (project.getLeader().getInstitution() == null) {
+      // Indicate problem in the missing field.
+      this.addFieldError("project.leader.institution", this.getText("planning.projectPartners.selectInstitution"));
+      problem = true;
+    }
+
+    if (problem) {
+      this.addActionError(this.getText("saving.fields.required"));
+    }
+
+
   }
 
 }
