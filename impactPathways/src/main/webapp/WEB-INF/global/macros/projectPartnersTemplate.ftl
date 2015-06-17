@@ -50,7 +50,8 @@
     <div class="fullPartBlock clearfix">
       [#-- Contact Person information is going to come from the users table, not from project_partner table (refer to the table project_partners in the database) --] 
       [@customForm.input name="" value="${ap.user.composedName}" className="userName" type="text" disabled=!canEdit i18nkey="preplanning.projectPartners.contactPersonEmail" required=true readOnly=true editable=editable/]
-      <input class="userId" type="hidden" name="${ap_name}[${ap_index}].projectLeader" value="${ap.user.id}">
+      <input class="type" type="hidden" name="${ap_name}[${ap_index}].type" value="${isPPA?string(typeProjectPPA, typeProjectPartner)}">
+      <input class="userId" type="hidden" name="${ap_name}[${ap_index}].user" value="${ap.user.id}">   
       [#if editable]<div class="searchUser">[@s.text name="form.buttons.searchUser" /]</div>[/#if] 
     </div>  
     [#-- Responsabilities --]
@@ -77,7 +78,7 @@
             [/#list]
           </ul>
           [#if editable]
-          [@customForm.select name="" label="" disabled=!canEdit i18nkey="" listName="allPPAPartners" keyFieldName="id"  displayFieldName="name" className="ppaPartnersSelect" value="" /]
+          [@customForm.select name="" label="" disabled=!canEdit i18nkey="" listName="allPPAPartners" keyFieldName="id"  displayFieldName="getComposedName()" className="ppaPartnersSelect" value="" /]
           [/#if] 
         </div>
       </div> 
@@ -116,7 +117,9 @@
         <div class="fullPartBlock clearfix">
           [#-- Contact Person information is going to come from the users table, not from project_partner table (refer to the table project_partners in the database) --] 
           [@customForm.input name="" value="" className="userName" type="text" disabled=!canEdit i18nkey="preplanning.projectPartners.contactPersonEmail" required=true readOnly=true /]
-          <input class="userId" type="hidden" name="projectLeader" value="-1">
+          <input class="partnerId" type="hidden" name="" value="-1">
+          <input class="type" type="hidden" name="" value="${isPPA?string(typeProjectPPA, typeProjectPartner)}">
+          <input class="userId" type="hidden" name="" value="-1">  
           <div class="searchUser">[@s.text name="form.buttons.searchUser" /]</div>
         </div>
         [#-- Responsabilities --]
@@ -129,12 +132,9 @@
         [#if !isPPA]
         <div class="fullPartBlock">      
           <div class="ppaPartnersList panel primary">
-            <div class="panel-head">
-              [@s.text name="preplanning.projectPartners.indicatePpaPartners" /]
-            </div>
+            <div class="panel-head">[@s.text name="preplanning.projectPartners.indicatePpaPartners" /]</div>
             <div class="panel-body">
-              <ul class="list">  
-              </ul> 
+              <ul class="list"></ul> 
               [@customForm.select name="" label="" disabled=!canEdit i18nkey="" listName="allPPAPartners" keyFieldName="id" displayFieldName="getComposedName()" className="ppaPartnersSelect" value="" /]
             </div>
           </div> 
@@ -147,23 +147,23 @@
   [#if leader?has_content]
       <div id="projectLeader" class="projectLeader clearfix">
           [#-- Lead List --]
-          <div class="fullPartBlock organizationName chosen">
-            [@customForm.select name="project.leader.institution" disabled=!canEdit i18nkey="preplanning.projectPartners.leader.institutionName" listName="allPartners" keyFieldName="id"  displayFieldName="getComposedName()" value="${project.leader.institution.id?c}" editable=editable /]
+          <div class="fullPartBlock organizationName chosen">  
+            [@customForm.select name="project.leader.institution" value="${(project.leader.institution??)?string(project.leader.institution.id,'-1')}" disabled=!canEdit i18nkey="preplanning.projectPartners.leader.institutionName" listName="allPartners" keyFieldName="id"  displayFieldName="getComposedName()"  editable=editable /]
           </div> 
           [#-- Project Leader contact --] 
           <div class="fullPartBlock clearfix">
             [@customForm.input name="" value="${project.leader.user.composedName}" className="userName" type="text" disabled=!canEdit i18nkey="preplanning.projectPartners.projectLeader" required=true readOnly=true editable=editable/]
-            <input class="type" type="hidden" name="project.leader.id" value="${project.leader.id}">
+            <input class="partnerId" type="hidden" name="project.leader.id" value="${project.leader.id}">
             <input class="type" type="hidden" name="project.leader.type" value="${typeProjectLeader}">
-            <input class="userId" type="hidden" name="project.leader.user" value="${project.leader.user.id}">
+            <input class="userId" type="hidden" name="project.leader.user" value="${(project.leader.user??)?string(project.leader.user.id,'-1')}">
             [#if editable]<div class="searchUser">[@s.text name="form.buttons.searchUser" /]</div>[/#if]
           </div>
           [#-- Project Coordinator --]
           <div class="fullPartBlock clearfix">
             [@customForm.input name="" value="${project.coordinator.user.composedName}" className="userName" type="text" disabled=!canEdit i18nkey="preplanning.projectPartners.projectCoordinator"  readOnly=true editable=editable/]
-            <input class="type" type="hidden" name="project.coordinator.id" value="${project.coordinator.id}">
+            <input class="partnerId" type="hidden" name="project.coordinator.id" value="${project.coordinator.id}">
             <input class="type" type="hidden" name="project.coordinator.type" value="${typeProjectCoordinator}">
-            <input class="userId" type="hidden" name="project.coordinator.user" value="${project.coordinator.user.id}">
+            <input class="userId" type="hidden" name="project.coordinator.user" value="${(project.coordinator.user??)?string(project.coordinator.user.id,'-1')}">
             [#if editable]<div class="searchUser">[@s.text name="form.buttons.searchUser" /]</div>[/#if]
           </div> 
           [#-- Responsibilities --]
