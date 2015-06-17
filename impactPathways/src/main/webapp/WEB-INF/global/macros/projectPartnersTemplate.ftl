@@ -148,22 +148,25 @@
       <div id="projectLeader" class="projectLeader clearfix">
           [#-- Lead List --]
           <div class="fullPartBlock organizationName chosen">  
-            [@customForm.select name="project.leader.institution" value="${(project.leader.institution??)?string(project.leader.institution.id,'-1')}" disabled=!canEdit i18nkey="preplanning.projectPartners.leader.institutionName" listName="allPartners" keyFieldName="id"  displayFieldName="getComposedName()"  editable=editable /]
+            [#assign institutionValue][#if project.leader.institution?has_content ]${project.leader.institution.id}[#else]-1[/#if][/#assign]  
+            [@customForm.select name="project.leader.institution" value="${institutionValue}" disabled=!canEdit i18nkey="preplanning.projectPartners.leader.institutionName" listName="allPartners" keyFieldName="id"  displayFieldName="getComposedName()"  editable=editable /]
           </div> 
           [#-- Project Leader contact --] 
-          <div class="fullPartBlock clearfix">
+          <div class="fullPartBlock clearfix"> 
             [@customForm.input name="" value="${project.leader.user.composedName}" className="userName" type="text" disabled=!canEdit i18nkey="preplanning.projectPartners.projectLeader" required=true readOnly=true editable=editable/]
             <input class="partnerId" type="hidden" name="project.leader.id" value="${project.leader.id}">
             <input class="type" type="hidden" name="project.leader.type" value="${typeProjectLeader}">
-            <input class="userId" type="hidden" name="project.leader.user" value="${(project.leader.user??)?string(project.leader.user.id,'-1')}">
+            [#assign leaderUserValue][#if project.leader.user?has_content ]${project.leader.user.id}[#else]-1[/#if][/#assign] 
+            <input class="userId" type="hidden" name="project.leader.user" value="${leaderUserValue}">
             [#if editable]<div class="searchUser">[@s.text name="form.buttons.searchUser" /]</div>[/#if]
           </div>
           [#-- Project Coordinator --]
-          <div class="fullPartBlock clearfix">
+          <div class="fullPartBlock clearfix"> 
             [@customForm.input name="" value="${project.coordinator.user.composedName}" className="userName" type="text" disabled=!canEdit i18nkey="preplanning.projectPartners.projectCoordinator"  readOnly=true editable=editable/]
             <input class="partnerId" type="hidden" name="project.coordinator.id" value="${project.coordinator.id}">
             <input class="type" type="hidden" name="project.coordinator.type" value="${typeProjectCoordinator}">
-            <input class="userId" type="hidden" name="project.coordinator.user" value="${(project.coordinator.user??)?string(project.coordinator.user.id,'-1')}">
+            [#assign coordinatorUserValue][#if project.coordinator.user?has_content ]${project.coordinator.user.id}[#else]-1[/#if][/#assign] 
+            <input class="userId" type="hidden" name="project.coordinator.user" value="${coordinatorUserValue}">
             [#if editable]<div class="searchUser">[@s.text name="form.buttons.searchUser" /]</div>[/#if]
           </div> 
           [#-- Responsibilities --]

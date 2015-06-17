@@ -150,8 +150,11 @@
           [/#if]
         [/#if] 
       [#else] 
-        [#assign nameValue = "${name}.${displayFieldName}" /]
-        ${(nameValue?eval)}
+        [#if value!="-1"]
+          [#assign nameValue = "${name}.${displayFieldName}" /] ${(nameValue?eval)}
+        [#else]
+          Not option selected
+        [/#if]
       [/#if]  
     </div> 
   </div>  
