@@ -39,6 +39,15 @@ public class User {
   private Institution currentInstitution;
   private Date lastLogin;
 
+  public User() {
+    super();
+  }
+
+  public User(int id) {
+    super();
+    this.id = id;
+  }
+
   /**
    * This method returns a composed way to show a User.
    * 

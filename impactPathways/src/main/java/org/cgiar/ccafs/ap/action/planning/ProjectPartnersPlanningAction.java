@@ -206,6 +206,8 @@ public class ProjectPartnersPlanningAction extends BaseAction {
   public String save() {
     if (ActionContext.getContext().getName().equals("partnerLead")) {
       return this.savePartnerLead();
+    } else if (ActionContext.getContext().getName().equals("ppaPartners")) {
+      return this.savePPAPartners();
     }
     return BaseAction.INPUT;
 
@@ -339,6 +341,37 @@ public class ProjectPartnersPlanningAction extends BaseAction {
     return INPUT;
   }
 
+  private String savePPAPartners() {
+    boolean success = true;
+
+    List<ProjectPartner> partners = project.getPPAPartners();
+    boolean saved =
+      projectPartnerManager.saveProjectPartners(projectID, partners, this.getCurrentUser(), this.getJustification());
+    if (!saved) {
+      saved = false;
+    }
+    // Saving Project leader
+    // int id = projectPartnerManager.saveProjectPartner(projectID, project.getLeader(), this.getCurrentUser(),
+    // this.getJustification());
+    // if (id < 0) {
+    // success = false;
+    // }
+
+    // Saving Project Coordinator
+    // Setting the same institution that was selected for the Project Leader.
+    // project.getCoordinator().setInstitution(project.getLeader().getInstitution());
+    // id = projectPartnerManager.saveProjectPartner(projectID, project.getCoordinator(), this.getCurrentUser(),
+    // this.getJustification());
+    // if (id < 0) {
+    // success = false;
+    // }
+
+    if (success) {
+      return SUCCESS;
+    }
+    return INPUT;
+  }
+
   public void setAllProjectLeaders(List<User> allProjectLeaders) {
     this.allProjectLeaders = allProjectLeaders;
   }
@@ -353,6 +386,30 @@ public class ProjectPartnersPlanningAction extends BaseAction {
 
   @Override
   public void validate() {
+
+    // Sending empty objects to the FTL view.
+    if (project.getLeader() == null) {
+      project.setLeader(new ProjectPartner(-1));
+    }
+    if (project.getLeader().getInstitution() == null) {
+      project.getLeader().setInstitution(new Institution(-1));
+    }
+    if (project.getLeader().getUser() == null) {
+      project.getLeader().setUser(new User(-1));
+    }
+
+    if (project.getCoordinator() == null) {
+      project.setCoordinator(new ProjectPartner(-1));
+    }
+    if (project.getCoordinator().getInstitution() == null) {
+      project.getCoordinator().setInstitution(new Institution(-1));
+    }
+    if (project.getCoordinator().getUser() == null) {
+      project.getCoordinator().setUser(new User(-1));
+    }
+
+
+    // validate only if user cicks any save button.
     if (this.isHttpPost()) {
       if (ActionContext.getContext().getName().equals("partnerLead")) {
         this.validateLeadPartner();
@@ -423,9 +480,15 @@ public class ProjectPartnersPlanningAction extends BaseAction {
   private void validateLeadPartner() {
 
     boolean problem = false;
-    if (project.getLeader().getInstitution() == null) {
+    if (project.getLeader().getInstitution() == null || project.getLeader().getInstitution().getId() == -1) {
       // Indicate problem in the missing field.
       this.addFieldError("project.leader.institution", this.getText("planning.projectPartners.selectInstitution"));
+      problem = true;
+    }
+
+    if (this.getJustification().trim().isEmpty()) {
+      this.addFieldError("justification",
+        this.getText("validation.required", new String[] {this.getText("saving.justification")}));
       problem = true;
     }
 
