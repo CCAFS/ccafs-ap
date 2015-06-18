@@ -51,7 +51,7 @@
           <div class="editButton"><a href="[@s.url includeParams='get'][@s.param name="edit"]true[/@s.param][/@s.url]">[@s.text name="form.buttons.edit" /]</a></div>
         [/#if]  
         [#-- Displaying partner leader from partnersTemplate.ftl --]  
-        [@partnersTemplate.projectLeader leader=project.leader editable=editable /] 
+        [@partnersTemplate.projectLeader leader=project.leader coordinator=project.coordinator editable=editable /] 
       </div>
     </div>
     
