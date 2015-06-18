@@ -789,7 +789,7 @@ public class MySQLProjectDAO implements ProjectDAO {
       query.append("liaison_user_id = (SELECT id FROM liaison_users WHERE user_id = ?), ");
       query.append("requires_workplan_upload = ?, liaison_institution_id = ?, modified_by = ? ");
       query.append("WHERE id = ?");
-      Object[] values = new Object[projectData.size()];
+      Object[] values = new Object[9];
       values[0] = projectData.get("title");
       values[1] = projectData.get("summary");
       values[2] = projectData.get("start_date");
