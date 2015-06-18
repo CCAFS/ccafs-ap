@@ -165,9 +165,9 @@ function addChosen() {
 // Set default Program ID
 function setProgramId() {
   var programId = $("input#programID").val();
-  $("#projectWorking input[value='" + programId + "']").attr("checked", true).attr("disabled", true);
+  $("#projectWorking input[value='" + programId + "']").attr("checked", true).attr("onclick", "return false");
 }
 
 function setDisabledCheckedBoxes() {
-  $('#projectWorking input[type=checkbox]:checked').attr("disabled", true);
+  $('#projectWorking input[type=checkbox]:checked').attr("onclick", "return false");
 }

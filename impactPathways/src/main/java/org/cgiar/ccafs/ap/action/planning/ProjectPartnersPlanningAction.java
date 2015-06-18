@@ -182,7 +182,7 @@ public class ProjectPartnersPlanningAction extends BaseAction {
 
     // Getting 2-level Project Partners
     project
-    .setProjectPartners(projectPartnerManager.getProjectPartners(project.getId(), APConstants.PROJECT_PARTNER_PP));
+      .setProjectPartners(projectPartnerManager.getProjectPartners(project.getId(), APConstants.PROJECT_PARTNER_PP));
 
     // If the user is not admin or the project owner, we should keep some information
     // unmutable
@@ -207,7 +207,9 @@ public class ProjectPartnersPlanningAction extends BaseAction {
     if (ActionContext.getContext().getName().equals("partnerLead")) {
       return this.savePartnerLead();
     } else if (ActionContext.getContext().getName().equals("ppaPartners")) {
-      return this.savePPAPartners();
+      return this.savePartners(APConstants.PROJECT_PARTNER_PPA);
+    } else if (ActionContext.getContext().getName().equals("partners")) {
+      return this.savePartners(APConstants.PROJECT_PARTNER_PP);
     }
     return BaseAction.INPUT;
 
@@ -342,20 +344,27 @@ public class ProjectPartnersPlanningAction extends BaseAction {
     return INPUT;
   }
 
-  private String savePPAPartners() {
+  private String savePartners(String partnerType) {
     boolean success = true;
 
-    List<ProjectPartner> ppaPartners = project.getPPAPartners();
+    // Getting the partners coming from the view.
+    List<ProjectPartner> partners;
+    if (partnerType.equals(APConstants.PROJECT_PARTNER_PPA)) {
+      partners = project.getPPAPartners();
+    } else if (partnerType.equals(APConstants.PROJECT_PARTNER_PP)) {
+      partners = project.getProjectPartners();
+    } else {
+      partners = new ArrayList<>();
+    }
 
-    // ----------------- PPA PARTNERS ----------------------
-    // Getting previous PPA Partners to identify those that need to be deleted.
-    List<ProjectPartner> previousPPAPartners =
-      projectPartnerManager.getProjectPartners(projectID, APConstants.PROJECT_PARTNER_PPA);
+    // ----------------- PARTNERS ----------------------
+    // Getting previous partners to identify those that need to be deleted.
+    List<ProjectPartner> previousPartners = projectPartnerManager.getProjectPartners(projectID, partnerType);
 
     // Deleting project partners
-    for (ProjectPartner ppaPartner : previousPPAPartners) {
-      if (!project.getPPAPartners().contains(ppaPartner)) {
-        boolean deleted = projectPartnerManager.deleteProjectPartner(ppaPartner.getId(), this.getCurrentUser(),
+    for (ProjectPartner previousPartner : previousPartners) {
+      if (!partners.contains(previousPartner)) {
+        boolean deleted = projectPartnerManager.deleteProjectPartner(previousPartner.getId(), this.getCurrentUser(),
           this.getJustification());
         if (!deleted) {
           success = false;
@@ -365,7 +374,7 @@ public class ProjectPartnersPlanningAction extends BaseAction {
 
     // Saving new and old PPA Partners
     boolean saved =
-      projectPartnerManager.saveProjectPartners(projectID, ppaPartners, this.getCurrentUser(), this.getJustification());
+      projectPartnerManager.saveProjectPartners(projectID, partners, this.getCurrentUser(), this.getJustification());
     if (!saved) {
       saved = false;
     }
@@ -421,7 +430,18 @@ public class ProjectPartnersPlanningAction extends BaseAction {
           ppaPartner.setUser(new User(-1));
         }
       }
+    } else if (ActionContext.getContext().getName().equals("partners")) {
+      for (ProjectPartner partner : project.getProjectPartners()) {
+        if (partner.getInstitution() == null) {
+          partner.setInstitution(new Institution(-1));
+        }
+        if (partner.getUser() == null) {
+          partner.setUser(new User(-1));
+        }
+      }
     }
+
+
     // validate only if user cicks any save button.
     if (this.isHttpPost()) {
       boolean problem = false;
@@ -429,6 +449,8 @@ public class ProjectPartnersPlanningAction extends BaseAction {
         problem = this.validateLeadPartner();
       } else if (ActionContext.getContext().getName().equals("ppaPartners")) {
         problem = this.validatePPAPartners();
+      } else if (ActionContext.getContext().getName().equals("partners")) {
+        problem = this.validatePartners();
       }
 
       // Validate justification always.
@@ -505,16 +527,27 @@ public class ProjectPartnersPlanningAction extends BaseAction {
   }
 
   private boolean validateLeadPartner() {
-
     boolean problem = false;
     if (project.getLeader().getInstitution() == null || project.getLeader().getInstitution().getId() == -1) {
       // Indicate problem in the missing field.
       this.addFieldError("project.leader.institution", this.getText("planning.projectPartners.selectInstitution"));
       problem = true;
     }
-
     return problem;
+  }
 
+  private boolean validatePartners() {
+    boolean problem = false;
+    for (int c = 0; c < project.getProjectPartners().size(); c++) {
+      if (project.getProjectPartners().get(c).getInstitution() == null
+        || project.getProjectPartners().get(c).getInstitution().getId() == -1) {
+        // Indicate problem in the missing field.
+        this.addFieldError("project.projectPartners[" + c + "].institution",
+          this.getText("planning.projectPartners.selectInstitution"));
+        problem = true;
+      }
+    }
+    return problem;
   }
 
   private boolean validatePPAPartners() {
@@ -528,9 +561,7 @@ public class ProjectPartnersPlanningAction extends BaseAction {
         problem = true;
       }
     }
-
     return problem;
-
   }
 
 }
