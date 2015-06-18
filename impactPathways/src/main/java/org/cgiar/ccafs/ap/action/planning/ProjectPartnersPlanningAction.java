@@ -182,7 +182,7 @@ public class ProjectPartnersPlanningAction extends BaseAction {
 
     // Getting 2-level Project Partners
     project
-      .setProjectPartners(projectPartnerManager.getProjectPartners(project.getId(), APConstants.PROJECT_PARTNER_PP));
+    .setProjectPartners(projectPartnerManager.getProjectPartners(project.getId(), APConstants.PROJECT_PARTNER_PP));
 
     // If the user is not admin or the project owner, we should keep some information
     // unmutable
@@ -336,6 +336,7 @@ public class ProjectPartnersPlanningAction extends BaseAction {
     }
 
     if (success) {
+      this.addActionMessage(this.getText("saving.saved"));
       return SUCCESS;
     }
     return INPUT;
@@ -344,29 +345,33 @@ public class ProjectPartnersPlanningAction extends BaseAction {
   private String savePPAPartners() {
     boolean success = true;
 
-    List<ProjectPartner> partners = project.getPPAPartners();
+    List<ProjectPartner> ppaPartners = project.getPPAPartners();
+
+    // ----------------- PPA PARTNERS ----------------------
+    // Getting previous PPA Partners to identify those that need to be deleted.
+    List<ProjectPartner> previousPPAPartners =
+      projectPartnerManager.getProjectPartners(projectID, APConstants.PROJECT_PARTNER_PPA);
+
+    // Deleting project partners
+    for (ProjectPartner ppaPartner : previousPPAPartners) {
+      if (!project.getPPAPartners().contains(ppaPartner)) {
+        boolean deleted = projectPartnerManager.deleteProjectPartner(ppaPartner.getId(), this.getCurrentUser(),
+          this.getJustification());
+        if (!deleted) {
+          success = false;
+        }
+      }
+    }
+
+    // Saving new and old PPA Partners
     boolean saved =
-      projectPartnerManager.saveProjectPartners(projectID, partners, this.getCurrentUser(), this.getJustification());
+      projectPartnerManager.saveProjectPartners(projectID, ppaPartners, this.getCurrentUser(), this.getJustification());
     if (!saved) {
       saved = false;
     }
-    // Saving Project leader
-    // int id = projectPartnerManager.saveProjectPartner(projectID, project.getLeader(), this.getCurrentUser(),
-    // this.getJustification());
-    // if (id < 0) {
-    // success = false;
-    // }
-
-    // Saving Project Coordinator
-    // Setting the same institution that was selected for the Project Leader.
-    // project.getCoordinator().setInstitution(project.getLeader().getInstitution());
-    // id = projectPartnerManager.saveProjectPartner(projectID, project.getCoordinator(), this.getCurrentUser(),
-    // this.getJustification());
-    // if (id < 0) {
-    // success = false;
-    // }
 
     if (success) {
+      this.addActionMessage(this.getText("saving.saved"));
       return SUCCESS;
     }
     return INPUT;
@@ -386,33 +391,55 @@ public class ProjectPartnersPlanningAction extends BaseAction {
 
   @Override
   public void validate() {
-
     // Sending empty objects to the FTL view.
-    if (project.getLeader() == null) {
-      project.setLeader(new ProjectPartner(-1));
-    }
-    if (project.getLeader().getInstitution() == null) {
-      project.getLeader().setInstitution(new Institution(-1));
-    }
-    if (project.getLeader().getUser() == null) {
-      project.getLeader().setUser(new User(-1));
-    }
+    if (ActionContext.getContext().getName().equals("partnerLead")) {
+      if (project.getLeader() == null) {
+        project.setLeader(new ProjectPartner(-1));
+      }
+      if (project.getLeader().getInstitution() == null) {
+        project.getLeader().setInstitution(new Institution(-1));
+      }
+      if (project.getLeader().getUser() == null) {
+        project.getLeader().setUser(new User(-1));
+      }
 
-    if (project.getCoordinator() == null) {
-      project.setCoordinator(new ProjectPartner(-1));
+      if (project.getCoordinator() == null) {
+        project.setCoordinator(new ProjectPartner(-1));
+      }
+      if (project.getCoordinator().getInstitution() == null) {
+        project.getCoordinator().setInstitution(new Institution(-1));
+      }
+      if (project.getCoordinator().getUser() == null) {
+        project.getCoordinator().setUser(new User(-1));
+      }
+    } else if (ActionContext.getContext().getName().equals("ppaPartners")) {
+      for (ProjectPartner ppaPartner : project.getPPAPartners()) {
+        if (ppaPartner.getInstitution() == null) {
+          ppaPartner.setInstitution(new Institution(-1));
+        }
+        if (ppaPartner.getUser() == null) {
+          ppaPartner.setUser(new User(-1));
+        }
+      }
     }
-    if (project.getCoordinator().getInstitution() == null) {
-      project.getCoordinator().setInstitution(new Institution(-1));
-    }
-    if (project.getCoordinator().getUser() == null) {
-      project.getCoordinator().setUser(new User(-1));
-    }
-
-
     // validate only if user cicks any save button.
     if (this.isHttpPost()) {
+      boolean problem = false;
       if (ActionContext.getContext().getName().equals("partnerLead")) {
-        this.validateLeadPartner();
+        problem = this.validateLeadPartner();
+      } else if (ActionContext.getContext().getName().equals("ppaPartners")) {
+        problem = this.validatePPAPartners();
+      }
+
+      // Validate justification always.
+      if (this.getJustification().trim().isEmpty()) {
+        this.addFieldError("justification",
+          this.getText("validation.required", new String[] {this.getText("saving.justification")}));
+        problem = true;
+      }
+
+      if (problem) {
+        this.addActionError(this.getText("saving.fields.required"));
       }
     }
 
@@ -477,7 +504,7 @@ public class ProjectPartnersPlanningAction extends BaseAction {
     // super.validate();
   }
 
-  private void validateLeadPartner() {
+  private boolean validateLeadPartner() {
 
     boolean problem = false;
     if (project.getLeader().getInstitution() == null || project.getLeader().getInstitution().getId() == -1) {
@@ -486,16 +513,23 @@ public class ProjectPartnersPlanningAction extends BaseAction {
       problem = true;
     }
 
-    if (this.getJustification().trim().isEmpty()) {
-      this.addFieldError("justification",
-        this.getText("validation.required", new String[] {this.getText("saving.justification")}));
-      problem = true;
+    return problem;
+
+  }
+
+  private boolean validatePPAPartners() {
+    boolean problem = false;
+    for (int c = 0; c < project.getPPAPartners().size(); c++) {
+      if (project.getPPAPartners().get(c).getInstitution() == null
+        || project.getPPAPartners().get(c).getInstitution().getId() == -1) {
+        // Indicate problem in the missing field.
+        this.addFieldError("project.PPAPartners[" + c + "].institution",
+          this.getText("planning.projectPartners.selectInstitution"));
+        problem = true;
+      }
     }
 
-    if (problem) {
-      this.addActionError(this.getText("saving.fields.required"));
-    }
-
+    return problem;
 
   }
 
