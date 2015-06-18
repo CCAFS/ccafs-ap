@@ -159,6 +159,7 @@ public class MySQLProjectDAO implements ProjectDAO {
     query.append("LEFT JOIN budgets b ON pb.budget_id = b.id AND b.budget_type IN ( ");
     query.append(BudgetType.W1_W2.getValue() + ", ");
     query.append(BudgetType.W3_BILATERAL.getValue() + " ) ");
+    query.append("WHERE p.is_active = TRUE ");
     query.append("GROUP BY p.id");
 
     try (Connection con = databaseManager.getConnection()) {
@@ -460,30 +461,30 @@ public class MySQLProjectDAO implements ProjectDAO {
   }
 
   @Override
-  public List<Integer> getProjectIdsEditables(int programID, int ownerID) {
-    LOG.debug(">> getProjectIdsEditables(projectID={}, ownerId={})", new Object[] {programID, ownerID});
+  public List<Integer> getProjectIdsEditables(int userID) {
+    LOG.debug(">> getProjectIdsEditables(projectID={}, ownerId={})", userID);
     List<Integer> projectIds = new ArrayList<>();
     try (Connection connection = databaseManager.getConnection()) {
       StringBuilder query = new StringBuilder();
       query.append("SELECT p.id FROM projects p WHERE ");
       query.append("p.liaison_user_id = (SELECT id FROM liaison_users WHERE user_id =  ");
-      query.append(ownerID);
+      query.append(userID);
       query.append(") OR p.liaison_institution_id = (SELECT institution_id FROM liaison_users WHERE user_id = ");
-      query.append(ownerID);
+      query.append(userID);
       query.append(") OR EXISTS (SELECT project_id FROM project_partners WHERE  partner_type = '");
       query.append(APConstants.PROJECT_PARTNER_PL);
       query.append("' AND project_id = p.id AND user_id = ");
-      query.append(ownerID);
+      query.append(userID);
       query.append(") ");
+      query.append("AND p.is_active = TRUE ");
       ResultSet rs = databaseManager.makeQuery(query.toString(), connection);
       while (rs.next()) {
         projectIds.add(rs.getInt(1));
       }
       rs.close();
     } catch (SQLException e) {
-      LOG.error("-- getProjectIdsEditables() > There was an error getting the data for projectID={}, ownerId={}.",
-        new Object[] {programID, ownerID}, e);
-      return null;
+      LOG
+        .error("-- getProjectIdsEditables() > Exception raised getting the projects editables for user {}.", userID, e);
     }
     LOG.debug("<< getProjectIdsEditables():{}", projectIds);
     return projectIds;
