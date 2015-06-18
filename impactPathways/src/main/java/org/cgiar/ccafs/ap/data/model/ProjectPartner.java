@@ -38,6 +38,11 @@ public class ProjectPartner {
     super();
   }
 
+  public ProjectPartner(int id) {
+    super();
+    this.id = id;
+  }
+
   @Override
   public boolean equals(Object obj) {
     if (obj instanceof ProjectPartner) {
