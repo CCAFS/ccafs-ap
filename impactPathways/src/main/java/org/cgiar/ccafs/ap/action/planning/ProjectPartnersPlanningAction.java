@@ -62,6 +62,7 @@ public class ProjectPartnersPlanningAction extends BaseAction {
   private List<Country> countries;
   private List<Institution> allPartners; // Is used to list all the partners that have the system.
   private List<Institution> allPPAPartners; // Is used to list all the PPA partners
+  private List<Institution> projectPPAPartners; // Is used to list all the PPA partners selected in the current project.
   private List<User> allProjectLeaders; // will be used to list all the project leaders that have the system.
 
   @Inject
@@ -105,6 +106,10 @@ public class ProjectPartnersPlanningAction extends BaseAction {
     return projectID;
   }
 
+  public List<Institution> getProjectPPAPartners() {
+    return projectPPAPartners;
+  }
+
   public String getProjectRequest() {
     return APConstants.PROJECT_REQUEST_ID;
   }
@@ -125,6 +130,7 @@ public class ProjectPartnersPlanningAction extends BaseAction {
     return APConstants.PROJECT_PARTNER_PPA;
   }
 
+
   @Override
   public String next() {
     String result = this.save();
@@ -134,7 +140,6 @@ public class ProjectPartnersPlanningAction extends BaseAction {
       return result;
     }
   }
-
 
   @Override
   public void prepare() throws Exception {
@@ -179,6 +184,12 @@ public class ProjectPartnersPlanningAction extends BaseAction {
 
     // Getting PPA Partners
     project.setPPAPartners(projectPartnerManager.getProjectPartners(project.getId(), APConstants.PROJECT_PARTNER_PPA));
+
+    // Getting the list of PPA Partner institutions
+    projectPPAPartners = new ArrayList<Institution>();
+    for (ProjectPartner ppaPartner : project.getPPAPartners()) {
+      projectPPAPartners.add(ppaPartner.getInstitution());
+    }
 
     // Getting 2-level Project Partners
     project
@@ -567,5 +578,6 @@ public class ProjectPartnersPlanningAction extends BaseAction {
     }
     return problem;
   }
+
 
 }
