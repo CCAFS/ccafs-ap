@@ -68,8 +68,9 @@ public class MySQLLiaisonInstitutionDAO implements LiaisonInstitutionDAO {
   public Map<String, String> getLiaisonInstitutionByUser(int userID) {
     Map<String, String> liaisonInstitution = new HashMap<>();
     StringBuilder query = new StringBuilder();
-    query.append("SELECT * FROM liaison_institutions li ");
-    query.append("INNER JOIN liaison_users lu ON li.id = lu.institution_id = li.id ");
+    query.append("SELECT li.id, li.name, li.acronym FROM liaison_institutions li ");
+    query.append("INNER JOIN liaison_users lu ON li.id = lu.institution_id ");
+    query.append("INNER JOIN users u ON lu.user_id = u.id ");
     query.append("WHERE u.id = ");
     query.append(userID);
 

@@ -54,6 +54,10 @@ public class LiaisonInstitutionManagerImpl implements LiaisonInstitutionManager 
     LiaisonInstitution liaisonInstitution = new LiaisonInstitution();
     Map<String, String> liaisonInstitutionData = liaisonInstitutionDAO.getLiaisonInstitutionByUser(userID);
 
+    if (liaisonInstitutionData.isEmpty()) {
+      return null;
+    }
+
     liaisonInstitution.setId(Integer.parseInt(liaisonInstitutionData.get("id")));
     liaisonInstitution.setName(liaisonInstitutionData.get("name"));
     liaisonInstitution.setAcronym(liaisonInstitutionData.get("acronym"));
