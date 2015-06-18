@@ -50,7 +50,7 @@ public class LogTriggersManager {
 
     // We don't need to insert the id in the history table, that is why we remove it from the list of columns
     String columnsToInsert = this.getLogTableColumns().replace("`id`,", "");
-    String valuesToInsert = this.getTriggerValues(triggerAction).replace("record_id, ", "").replace(", action", "");
+    String valuesToInsert = this.getTriggerValues().replace("record_id, ", "").replace(", action", "");
 
     // Add the trigger in the production database
     statement.addBatch("USE " + databaseName + ";");
@@ -159,7 +159,7 @@ public class LogTriggersManager {
    * @return an string with the values to be inserted by the trigger.
    * @throws SQLException
    */
-  private String getTriggerValues(String triggerAction) throws SQLException {
+  private String getTriggerValues() throws SQLException {
     Statement statement = connection.createStatement();
 
     StringBuilder query = new StringBuilder();
@@ -169,13 +169,7 @@ public class LogTriggersManager {
     query.append("          WHEN 'active_until' THEN 'NULL' ");
     query.append("          WHEN 'record_id' THEN 'record_id' ");
     query.append("          WHEN 'action' THEN 'action' ");
-
-    if (triggerAction.equals("insert")) {
-      query.append("          ELSE CONCAT('NEW.`', column_name, '`') ");
-    } else if (triggerAction.equals("update")) {
-      query.append("          ELSE CONCAT('OLD.`', column_name, '`') ");
-    }
-
+    query.append("          ELSE CONCAT('NEW.`', column_name, '`') ");
     query.append("          END ");
     query.append("       SEPARATOR ', ') as tableValues ");
     query.append("FROM INFORMATION_SCHEMA.COLUMNS ");

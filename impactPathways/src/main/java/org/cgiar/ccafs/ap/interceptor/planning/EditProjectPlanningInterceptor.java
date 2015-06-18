@@ -62,7 +62,8 @@ public class EditProjectPlanningInterceptor extends AbstractInterceptor {
 
     boolean canEditProject = false, hasPermissionToEdit = false;
 
-    if (!actionName.equals("projectsList")) {
+    if (!actionName.equals("projectsList") && !actionName.equals("addNewCoreProject")
+      && !actionName.equals("addNewBilateralProject")) {
       // First, check if the user can edit the project
       String projectParameter = ((String[]) parameters.get(APConstants.PROJECT_REQUEST_ID))[0];
       int projectID = Integer.parseInt(projectParameter);

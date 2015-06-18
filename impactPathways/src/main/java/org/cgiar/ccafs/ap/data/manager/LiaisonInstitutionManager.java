@@ -38,6 +38,15 @@ public interface LiaisonInstitutionManager {
   public LiaisonInstitution getLiaisonInstitution(int liaisionInstitutionID);
 
   /**
+   * This method gets the liaison institution to which the user identified by the value recieved by parameter is linked
+   * if any
+   * 
+   * @param userID - user identifier
+   * @return a liaison institution object if the user is linked to any. False otherwise.
+   */
+  public LiaisonInstitution getLiaisonInstitutionByUser(int userID);
+
+  /**
    * This method return all the liaison institutions contained in the database.
    * 
    * @return a List of maps with the information.

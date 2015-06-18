@@ -15,7 +15,7 @@
         [#list list as log]
         <tr>
           <td class="type"><span class="logType ${log.action}" title="${log.action}">&nbsp;</span></td>
-          <td class="date">${log.date?date}</td>
+          <td class="date">${log.date?datetime}</td>
           <td class="person">${log.user.composedName}</td>
           <td class="justification">${log.justification}</td>
         </tr>
