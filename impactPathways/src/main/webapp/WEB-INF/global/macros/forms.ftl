@@ -11,18 +11,18 @@
         <label for="${name}">[#if i18nkey==""][@s.text name="${name}"/]:[#else][@s.text name="${i18nkey}"/]:[/#if]
           [#if required]<span class="red">*</span>[/#if]
         </label>
-        [#if help != ""]
-          <img src="${baseUrl}/images/global/icon-help2.png" title="[@s.text name="${help}"/]" />
-        [/#if]
+        [#if help != ""]<img src="${baseUrl}/images/global/icon-help2.png" title="[@s.text name="${help}"/]" />[/#if]
       </h6>
     [/#if]
     [#if errorField==""][@s.fielderror cssClass="fieldError" fieldName="${name}"/][#else][@s.fielderror cssClass="fieldError" fieldName="${errorfield}"/][/#if]
     [#if editable]
       <input type="${type}" id="${name}" name="${name}" value="[#if value=="-NULL"][@s.property value="${name?string}"/][#else]${value}[/#if]"  [#if className != "-NULL"] class="${className}" [/#if][#if readOnly] readonly="readonly"[/#if] [#if disabled]disabled="disabled"[/#if] />
     [#else]
-      <p>
+      <p> 
         [#if value=="-NULL"]
           [@s.property value="${name?string}"/]
+        [#elseif !value?has_content]
+          [@s.text name="form.values.fieldEmpty" /]
         [#else]
           ${value}
         [/#if]
@@ -90,7 +90,7 @@
         [@s.checkboxlist name="${name}" list="${listName}" listKey="${keyFieldName}" listValue="${displayFieldName}" value="${customValue}" disabled="${disabled?string}" /]
       [/#if]
     [#elseif keyFieldName == ""]  
-      No Data
+      [@s.text name="form.values.fieldEmpty" /]
     [#else]
       ${customValue}
     [/#if] 
@@ -153,7 +153,7 @@
         [#if value!="-1"]
           [#assign nameValue = "${name}.${displayFieldName}" /] ${(nameValue?eval)}
         [#else]
-          Not option selected
+          [@s.text name="form.values.fieldEmpty" /]
         [/#if]
       [/#if]  
     </div> 
