@@ -452,7 +452,7 @@ span.logType.delete {
   background-color: #E07070;
 }
 
-span.logType.create {
+span.logType.insert {
     background-color: #5BA55B;
  
 }

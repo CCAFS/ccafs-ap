@@ -51,7 +51,7 @@
           <div class="editButton"><a href="[@s.url includeParams='get'][@s.param name="edit"]true[/@s.param][/@s.url]">[@s.text name="form.buttons.edit" /]</a></div>
         [/#if]
         [#-- Listing partners from partnersTemplate.ftl --]
-        [@partnersTemplate.partnerSection projectPartners=project.PPAPartners ap_name='project.PPAPartner' editable=editable partnerTypes=partnerTypes countries=countries ppaPartner=true responsabilities=true /]
+        [@partnersTemplate.partnerSection projectPartners=project.PPAPartners ap_name='project.PPAPartners' editable=editable partnerTypes=partnerTypes countries=countries ppaPartner=true responsabilities=true /]
         [#if (editable && canEdit)] 
           <div id="addProjectPartner" class="addLink">
             <a href="" class="addProjectPartner addButton" >[@s.text name="preplanning.projectPartners.addProjectPartner" /]</a>
@@ -81,7 +81,7 @@
   </article>
   [/@s.form] 
   [#-- Hidden Parameters Interface --]
-  <input id="partners-name" type="hidden" value="project.PPAPartner" />
+  <input id="partners-name" type="hidden" value="project.PPAPartners" />
   [#-- Single partner TEMPLATE from partnersTemplate.ftl --]
   [@partnersTemplate.partnerTemplate isPPA=true showResponsabilities=true /]  
   [#-- Search users Interface --]

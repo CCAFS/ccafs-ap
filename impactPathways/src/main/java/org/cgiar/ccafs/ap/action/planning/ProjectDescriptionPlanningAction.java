@@ -16,6 +16,7 @@ package org.cgiar.ccafs.ap.action.planning;
 import org.cgiar.ccafs.ap.action.BaseAction;
 import org.cgiar.ccafs.ap.config.APConstants;
 import org.cgiar.ccafs.ap.data.manager.BudgetManager;
+import org.cgiar.ccafs.ap.data.manager.HistoryManager;
 import org.cgiar.ccafs.ap.data.manager.IPProgramManager;
 import org.cgiar.ccafs.ap.data.manager.LiaisonInstitutionManager;
 import org.cgiar.ccafs.ap.data.manager.LinkedCoreProjectManager;
@@ -50,6 +51,7 @@ public class ProjectDescriptionPlanningAction extends BaseAction {
   private LiaisonInstitutionManager liaisonInstitutionManager;
   private UserManager userManager;
   private BudgetManager budgetManager;
+  private HistoryManager historyManager;
 
   private LinkedCoreProjectManager linkedCoreProjectManager;
 
@@ -71,7 +73,7 @@ public class ProjectDescriptionPlanningAction extends BaseAction {
   public ProjectDescriptionPlanningAction(APConfig config, ProjectManager projectManager,
     IPProgramManager ipProgramManager, UserManager userManager, BudgetManager budgetManager,
     LiaisonInstitutionManager liaisonInstitutionManager, LinkedCoreProjectManager linkedCoreProjectManager,
-    ProjectDescriptionValidator validator) {
+    HistoryManager historyManager, ProjectDescriptionValidator validator) {
     super(config);
     this.projectManager = projectManager;
     this.ipProgramManager = ipProgramManager;
@@ -79,6 +81,7 @@ public class ProjectDescriptionPlanningAction extends BaseAction {
     this.budgetManager = budgetManager;
     this.liaisonInstitutionManager = liaisonInstitutionManager;
     this.linkedCoreProjectManager = linkedCoreProjectManager;
+    this.historyManager = historyManager;
     this.validator = validator;
   }
 
@@ -234,6 +237,8 @@ public class ProjectDescriptionPlanningAction extends BaseAction {
     previousProject.setType(project.getType());
     previousProject.setWorkplanRequired(project.isWorkplanRequired());
     previousProject.setLinkedCoreProjects(project.getLinkedCoreProjects());
+
+    super.setHistory(historyManager.getLogHistory("projects", project.getId()));
   }
 
   public String previousSave() {
@@ -308,8 +313,9 @@ public class ProjectDescriptionPlanningAction extends BaseAction {
           }
           // Adding new Regional Project Focuses.
           for (IPProgram programToAdd : project.getRegions()) {
-            saved = ipProgramManager.saveProjectFocus(project.getId(), programToAdd.getId(), this.getCurrentUser(),
-              this.getJustification());
+            saved =
+              ipProgramManager.saveProjectFocus(project.getId(), programToAdd.getId(), this.getCurrentUser(),
+                this.getJustification());
             if (!saved) {
               success = false;
             }
@@ -343,8 +349,9 @@ public class ProjectDescriptionPlanningAction extends BaseAction {
           }
           // Adding new Flagship Project Focuses.
           for (IPProgram programToAdd : project.getFlagships()) {
-            saved = ipProgramManager.saveProjectFocus(project.getId(), programToAdd.getId(), this.getCurrentUser(),
-              this.getJustification());
+            saved =
+              ipProgramManager.saveProjectFocus(project.getId(), programToAdd.getId(), this.getCurrentUser(),
+                this.getJustification());
             if (!saved) {
               success = false;
             }
@@ -376,13 +383,13 @@ public class ProjectDescriptionPlanningAction extends BaseAction {
         this.addActionMessage(this.getText("saving.saved.problem"));
         return BaseAction.INPUT;
       } else {
-        this.addActionMessage(
-          this.getText("saving.success", new String[] {this.getText("preplanning.projectDescription.title")}));
+        this.addActionMessage(this.getText("saving.success",
+          new String[] {this.getText("preplanning.projectDescription.title")}));
         return BaseAction.SUCCESS;
       }
     } else {
-      LOG.warn("User {} tried to save information in Project Description without having enough privileges!",
-        this.getCurrentUser().getId());
+      LOG.warn("User {} tried to save information in Project Description without having enough privileges!", this
+        .getCurrentUser().getId());
     }
     return BaseAction.ERROR;
 
@@ -471,8 +478,9 @@ public class ProjectDescriptionPlanningAction extends BaseAction {
         // Save only the new flagships
         for (IPProgram flagship : flagships) {
           if (!previousFlagships.contains(flagship)) {
-            saved = true && ipProgramManager.saveProjectFocus(project.getId(), flagship.getId(), this.getCurrentUser(),
-              this.getJustification());
+            saved =
+              true && ipProgramManager.saveProjectFocus(project.getId(), flagship.getId(), this.getCurrentUser(),
+                this.getJustification());
           }
         }
 
@@ -491,8 +499,10 @@ public class ProjectDescriptionPlanningAction extends BaseAction {
         // Save only the new regions
         for (IPProgram region : project.getRegions()) {
           if (!previousRegions.contains(region)) {
-            saved = saved && ipProgramManager.saveProjectFocus(project.getId(), region.getId(), this.getCurrentUser(),
-              this.getJustification());
+            saved =
+              saved
+                && ipProgramManager.saveProjectFocus(project.getId(), region.getId(), this.getCurrentUser(),
+                  this.getJustification());
           }
         }
 
