@@ -291,7 +291,7 @@ public class ProjectManagerImpl implements ProjectManager {
 
   @Override
   public List<Integer> getProjectIdsEditables(User user) {
-    return projectDAO.getProjectIdsEditables(user.getCurrentInstitution().getProgram().getId(), user.getId());
+    return projectDAO.getProjectIdsEditables(user.getId());
   }
 
   @Override
