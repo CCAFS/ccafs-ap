@@ -65,6 +65,31 @@ public class MySQLLiaisonInstitutionDAO implements LiaisonInstitutionDAO {
   }
 
   @Override
+  public Map<String, String> getLiaisonInstitutionByUser(int userID) {
+    Map<String, String> liaisonInstitution = new HashMap<>();
+    StringBuilder query = new StringBuilder();
+    query.append("SELECT * FROM liaison_institutions li ");
+    query.append("INNER JOIN liaison_users lu ON li.id = lu.institution_id = li.id ");
+    query.append("WHERE u.id = ");
+    query.append(userID);
+
+    try (Connection con = daoManager.getConnection()) {
+      ResultSet rs = daoManager.makeQuery(query.toString(), con);
+      if (rs.next()) {
+        liaisonInstitution.put("id", rs.getString("id"));
+        liaisonInstitution.put("name", rs.getString("name"));
+        liaisonInstitution.put("acronym", rs.getString("acronym"));
+      }
+    } catch (SQLException e) {
+      LOG.error(
+        "getLiaisonInstitution() > Exception raised trying to get the liaison institution linked to the user {}.",
+        userID, e);
+    }
+
+    return liaisonInstitution;
+  }
+
+  @Override
   public List<Map<String, String>> getLiaisonInstitutions() {
     List<Map<String, String>> liaisonInstitutions = new ArrayList<>();
     StringBuilder query = new StringBuilder();

@@ -15,6 +15,7 @@ package org.cgiar.ccafs.ap.data.manager.impl;
 
 import org.cgiar.ccafs.ap.data.dao.UserDAO;
 import org.cgiar.ccafs.ap.data.manager.InstitutionManager;
+import org.cgiar.ccafs.ap.data.manager.LiaisonInstitutionManager;
 import org.cgiar.ccafs.ap.data.manager.UserManager;
 import org.cgiar.ccafs.ap.data.model.IPProgram;
 import org.cgiar.ccafs.ap.data.model.User;
@@ -49,15 +50,19 @@ public class UserManagerImp implements UserManager {
   private UserDAO userDAO;
 
   // Managers
+  private LiaisonInstitutionManager liaisonInstitutionManager;
   private InstitutionManager institutionManager;
 
   @Inject
-  public UserManagerImp(UserDAO userDAO, InstitutionManager institutionManager) {
+  public UserManagerImp(UserDAO userDAO, InstitutionManager institutionManager,
+    LiaisonInstitutionManager liaisonInstitutionManager) {
     this.userDAO = userDAO;
     this.institutionManager = institutionManager;
+    this.liaisonInstitutionManager = liaisonInstitutionManager;
   }
 
 
+  @Deprecated
   @Override
   public List<User> getAllEmployees() {
     List<User> employees = new ArrayList<>();
@@ -110,8 +115,8 @@ public class UserManagerImp implements UserManager {
       projectContact.setEmail(pData.get("email"));
 
       // Institution
-      projectContact
-      .setCurrentInstitution(institutionManager.getInstitution(Integer.parseInt(pData.get("institution_id"))));
+      projectContact.setCurrentInstitution(institutionManager.getInstitution(Integer.parseInt(pData
+        .get("institution_id"))));
       // Adding object to the array.
       projectContacts.add(projectContact);
     }
@@ -135,6 +140,7 @@ public class UserManagerImp implements UserManager {
   }
 
 
+  @Deprecated
   @Override
   public int getEmployeeID(User user) {
     int userId = user.getId();
@@ -195,6 +201,7 @@ public class UserManagerImp implements UserManager {
       user.setLastName(userData.get("last_name"));
       user.setEmail(userData.get("email"));
       user.setPhone(userData.get("phone"));
+      user.setLiaisonInstitution(liaisonInstitutionManager.getLiaisonInstitutionByUser(user.getId()));
       try {
         if (userData.get("last_login") != null) {
           user.setLastLogin(dateFormat.parse(userData.get("last_login")));
@@ -228,6 +235,7 @@ public class UserManagerImp implements UserManager {
       user.setEmail(userData.get("email"));
       user.setActive(userData.get("is_active").equals("1"));
       user.setUsername(userData.get("username"));
+      user.setLiaisonInstitution(liaisonInstitutionManager.getLiaisonInstitutionByUser(user.getId()));
       try {
         // If the user has never logged in, this value is null.
         if (userData.get("last_login") != null) {
