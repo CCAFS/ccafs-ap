@@ -69,16 +69,16 @@
         </div> 
         <div class="panel-body">
           <ul class="list"> 
-            [#list ap.contributeInstitutions as ppaPartner]
-              <li class="clearfix [#if !ppaPartner_has_next]last[/#if]">
-                <input class="id" type="hidden" name="${ap_name}[${ap_index}].contributeInstitutions[${ppaPartner_index}].id" value="${ppaPartner.id}" />
-                <span class="name">${ppaPartner.name}</span> 
+            [#list ap.contributeInstitutions as institution]
+              <li class="clearfix [#if !institution_has_next]last[/#if]">
+                <input class="id" type="hidden" name="${ap_name}[${ap_index}].contributeInstitutions[${institution_index}]" />
+                <span class="name">${institution.name}</span> 
                 [#if editable]<span class="listButton remove">[@s.text name="form.buttons.remove" /]</span>[/#if]
               </li>
             [/#list]
           </ul>
           [#if editable]
-          [@customForm.select name="" label="" disabled=!canEdit i18nkey="" listName="allPPAPartners" keyFieldName="id"  displayFieldName="getComposedName()" className="ppaPartnersSelect" value="" /]
+          [@customForm.select name="" label="" disabled=!canEdit i18nkey="" listName="project.PPAPartners" keyFieldName="id"  displayFieldName="getComposedName()" className="ppaPartnersSelect" value="" /]
           [/#if] 
         </div>
       </div> 
