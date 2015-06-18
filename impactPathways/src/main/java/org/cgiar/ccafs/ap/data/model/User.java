@@ -73,6 +73,7 @@ public class User {
     return this.lastName + ", " + this.firstName;
   }
 
+  @Deprecated
   public Institution getCurrentInstitution() {
     return currentInstitution;
   }
@@ -89,6 +90,7 @@ public class User {
     return id;
   }
 
+  @Deprecated
   public List<Institution> getInstitutions() {
     return institutions;
   }
@@ -129,6 +131,7 @@ public class User {
     this.isCcafsUser = isCcafsUser;
   }
 
+  @Deprecated
   public void setCurrentInstitution(Institution currentInstitution) {
     this.currentInstitution = currentInstitution;
   }
@@ -145,6 +148,7 @@ public class User {
     this.id = id;
   }
 
+  @Deprecated
   public void setInstitutions(List<Institution> institutions) {
     this.institutions = institutions;
   }
