@@ -1,14 +1,14 @@
 [#ftl] 
 [#macro logList list] 
   <div id="log-history" class="borderBox">
-    <h1 class="simpleTitle"> Log History</h1> 
+    <h1 class="simpleTitle"> [@s.text name="logHistory.title" /]</h1> 
     <table class="log-table">
       <thead>
         <tr>
           <th class="type">&nbsp;</th>
-          <th class="date">Date</th>
-          <th class="person">Person</th>
-          <th class="justification">Justification</th>
+          <th class="date">[@s.text name="logHistory.date" /]</th>
+          <th class="person">[@s.text name="logHistory.person" /]</th>
+          <th class="justification">[@s.text name="logHistory.justification" /]</th>
         </tr>
       </thead>
       <tbody>
