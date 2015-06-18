@@ -16,6 +16,7 @@ package org.cgiar.ccafs.ap.action;
 import org.cgiar.ccafs.ap.config.APConstants;
 import org.cgiar.ccafs.ap.data.manager.BoardMessageManager;
 import org.cgiar.ccafs.ap.data.model.BoardMessage;
+import org.cgiar.ccafs.ap.data.model.LogHistory;
 import org.cgiar.ccafs.ap.data.model.User;
 import org.cgiar.ccafs.security.SecurityContext;
 import org.cgiar.ccafs.utils.APConfig;
@@ -70,6 +71,7 @@ public class BaseAction extends ActionSupport implements Preparable, SessionAwar
   private boolean fullEditable; // If user is able to edit all the form.
 
   // Justification of the changes
+  private List<LogHistory> history;
   private String justification;
 
   private Map<String, Object> session;
@@ -77,7 +79,6 @@ public class BaseAction extends ActionSupport implements Preparable, SessionAwar
 
   // Config
   protected APConfig config;
-
   @Inject
   protected SecurityContext securityContext;
 
@@ -136,7 +137,6 @@ public class BaseAction extends ActionSupport implements Preparable, SessionAwar
     return config.getBaseUrl();
   }
 
-
   /**
    * This method gets all the board Messages
    * 
@@ -159,6 +159,11 @@ public class BaseAction extends ActionSupport implements Preparable, SessionAwar
       LOG.warn("There was a problem trying to find the user in the session.");
     }
     return u;
+  }
+
+
+  public List<LogHistory> getHistory() {
+    return history;
   }
 
   public String getJustification() {
@@ -258,10 +263,10 @@ public class BaseAction extends ActionSupport implements Preparable, SessionAwar
     this.add = true;
   }
 
-
   public void setCancel(boolean cancel) {
     this.cancel = true;
   }
+
 
   public void setCanEdit(boolean canEdit) {
     this.canEdit = canEdit;
@@ -281,6 +286,10 @@ public class BaseAction extends ActionSupport implements Preparable, SessionAwar
 
   public void setFullEditable(boolean fullEditable) {
     this.fullEditable = fullEditable;
+  }
+
+  public void setHistory(List<LogHistory> history) {
+    this.history = history;
   }
 
   public void setJustification(String justification) {

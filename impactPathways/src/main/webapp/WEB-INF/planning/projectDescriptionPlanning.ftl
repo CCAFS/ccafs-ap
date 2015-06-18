@@ -180,13 +180,8 @@
         </div>
       </div>
     [#else]
-        [#assign logList=[
-          {"type":"update", "date":"09/02/2015", "person":"Sebastian Amariles", "justification": "Nunc fringilla magna vitae leo vehicula, scelerisque faucibus libero facilisis."},
-          {"type":"create", "date":"04/05/2015", "person":"Héctor Tobón", "justification":"Just for test "},
-          {"type":"delete", "date":"09/02/2015", "person":"Hernan Carvajal", "justification": "Proin vel orci ac purus fermentum luctus auctor vel lectus."}
-        ] /]
         [#-- Display Log History --]
-        [@log.logList list=logList /]
+        [@log.logList list=history /]
     [/#if]
      
   </article>
