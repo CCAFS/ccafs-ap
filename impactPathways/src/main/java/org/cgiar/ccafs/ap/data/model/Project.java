@@ -462,10 +462,6 @@ public class Project {
     this.owner = owner;
   }
 
-  public void setPpaPartners(List<ProjectPartner> ppaPartners) {
-    this.ppaPartners = ppaPartners;
-  }
-
   public void setPPAPartners(List<ProjectPartner> ppaPartners) {
     this.ppaPartners = ppaPartners;
   }

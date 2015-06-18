@@ -76,7 +76,7 @@ public class ProjectPartnerManagerImpl implements ProjectPartnerManager {
       projectPartner.setInstitution(institutionManager.getInstitution(Integer.parseInt(pData.get("partner_id"))));
       // Getting the institutions which this partner is contributing to.
       projectPartner
-      .setContributeInstitutions(institutionManager.getProjectPartnerContributeInstitutions(projectPartner));
+        .setContributeInstitutions(institutionManager.getProjectPartnerContributeInstitutions(projectPartner));
       // adding information of the object to the array
       projectPartners.add(projectPartner);
     }
@@ -108,7 +108,7 @@ public class ProjectPartnerManagerImpl implements ProjectPartnerManager {
 
       // Getting the institutions which this partner is contributing to.
       projectPartner
-      .setContributeInstitutions(institutionManager.getProjectPartnerContributeInstitutions(projectPartner));
+        .setContributeInstitutions(institutionManager.getProjectPartnerContributeInstitutions(projectPartner));
 
       // adding information of the object to the array
       projectPartners.add(projectPartner);
@@ -120,7 +120,7 @@ public class ProjectPartnerManagerImpl implements ProjectPartnerManager {
   public int saveProjectPartner(int projectId, ProjectPartner projectPartner, User user, String justification) {
     Map<String, Object> projectPartnerData = new HashMap<>();
 
-    // Validate if the Project Partner is invalid.
+    // Project partners must have an institution associated.
     if (projectPartner.getInstitution() == null || projectPartner.getInstitution().getId() == -1) {
       return -1;
     }
@@ -134,7 +134,7 @@ public class ProjectPartnerManagerImpl implements ProjectPartnerManager {
     }
     projectPartnerData.put("project_id", projectId);
     projectPartnerData.put("partner_id", projectPartner.getInstitution().getId());
-    projectPartnerData.put("user_id", projectPartner.getUser().getId());
+    projectPartnerData.put("user_id", projectPartner.getUser().getId() == -1 ? null : projectPartner.getUser().getId());
     projectPartnerData.put("partner_type", projectPartner.getType());
     projectPartnerData.put("responsabilities", projectPartner.getResponsabilities());
     // Logs data
@@ -158,38 +158,10 @@ public class ProjectPartnerManagerImpl implements ProjectPartnerManager {
   public boolean saveProjectPartners(int projectId, List<ProjectPartner> projectPartners, User user,
     String justification) {
     boolean allSaved = true;
-    Map<String, Object> projectPartnerData = new HashMap<>();
+    int result;
     for (ProjectPartner projectPartner : projectPartners) {
-      projectPartnerData.clear();
-
-      // Remove invalid project partners
-      if (projectPartner.getInstitution() == null) {
-        continue;
-      } else if (projectPartner.getInstitution().getId() == -1) {
-        continue;
-      }
-
-      // if is a new project partner, do not assign an id.
-      if (projectPartner.getId() > 0) {
-        projectPartnerData.put("id", projectPartner.getId());
-      }
-      projectPartnerData.put("project_id", projectId);
-      projectPartnerData.put("partner_id", projectPartner.getInstitution().getId());
-      projectPartnerData.put("user_id", projectPartner.getUser().getId());
-      projectPartnerData.put("partner_type", projectPartner.getType());
-      projectPartnerData.put("responsabilities", projectPartner.getResponsabilities());
-      // Logs data
-      projectPartnerData.put("modified_by", user.getId());
-      projectPartnerData.put("modification_justification", justification);
-
-      int result = projecPartnerDAO.saveProjectPartner(projectPartnerData);
-      if (result > 0) {
-        LOG.debug("saveProjectPartner > New Project Partner added with id {}", result);
-      } else if (result == 0) {
-        LOG.debug("saveProjectPartner > Project partner with id={} was updated", projectPartner.getId());
-      } else {
-        LOG.error("saveProjectPartner > There was an error trying to save/update a project partner from projectId={}",
-          projectId);
+      result = this.saveProjectPartner(projectId, projectPartner, user, justification);
+      if (result == -1) {
         allSaved = false;
       }
     }
