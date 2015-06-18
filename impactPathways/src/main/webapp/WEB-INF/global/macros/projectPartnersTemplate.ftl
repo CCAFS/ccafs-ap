@@ -24,24 +24,24 @@
     [#-- Partner Name --]
     <div class="fullPartBlock partnerName chosen">
       [#assign institutionList]${isPPA?string("allPPAPartners", "allPartners")}[/#assign]
-      [@customForm.select name="${ap_name}[${ap_index}].institution" label=""  disabled=!editable i18nkey="preplanning.projectPartners.partner.name" listName=institutionList keyFieldName="id"  displayFieldName="getComposedName()" value="${ap.institution.id?c}" /]
+      [@customForm.select name="${ap_name}[${ap_index}].institution" value="${ap.institution.id?c}" label=""  disabled=!editable i18nkey="preplanning.projectPartners.partner.name" listName=institutionList keyFieldName="id"  displayFieldName="getComposedName()" /]
     </div>
     [#-- Filters --]
     [#if editable]
-      [#if canEdit && ap.id != -1]
+      [#if ap.id != -1]
         <div class="filters-link">[@s.text name="preplanning.projectPartners.filters" /]</div>
         <div class="filters-content">
           [#-- Partner type list --]
           <div class="halfPartBlock partnerTypeName chosen">
             [#-- Name attribute is not needed, we just need to load the value, not save it it. --]
-            [@customForm.select name="" label="" disabled=!canEdit i18nkey="preplanning.projectPartners.partnerType" listName="partnerTypes" keyFieldName="id"  displayFieldName="name" className="partnerTypes" value="${ap.institution.type.id?c}" /]
+            [@customForm.select name="" label="" disabled=!editable i18nkey="preplanning.projectPartners.partnerType" listName="partnerTypes" keyFieldName="id"  displayFieldName="name" className="partnerTypes" value="${ap.institution.type.id?c}" /]
           </div>
           [#-- Country list --]
           <div class="halfPartBlock countryListBlock chosen">
             [#-- Some partners like the Regional Programs, don't have country associated --]
             [#assign countryID][#if ap.country?has_content]${ap.country.code}[#else]-1[/#if][/#assign]
             [#-- Name attribute is not needed, we just need to load the value, not save it it. --]
-            [@customForm.select name="" label="" disabled=!canEdit i18nkey="preplanning.projectPartners.country" listName="countries" keyFieldName="id"  displayFieldName="name" className="countryList" value="'${ap.institution.country.id?c}'" /]
+            [@customForm.select name="" label="" disabled=!editable i18nkey="preplanning.projectPartners.country" listName="countries" keyFieldName="id"  displayFieldName="name" className="countryList" value="'${ap.institution.country.id?c}'" /]
           </div>
         </div>
       [/#if]  
@@ -64,21 +64,19 @@
     [#if !isPPA]
     <div class="fullPartBlock">      
       <div class="ppaPartnersList panel primary">
-        <div class="panel-head">
-          [@customForm.text name="preplanning.projectPartners.indicatePpaPartners" readText=!editable /]
-        </div> 
+        <div class="panel-head">[@customForm.text name="preplanning.projectPartners.indicatePpaPartners" readText=!editable /]</div> 
         <div class="panel-body">
           <ul class="list"> 
-            [#list ap.contributeInstitutions as institution]
-              <li class="clearfix [#if !institution_has_next]last[/#if]">
-                <input class="id" type="hidden" name="${ap_name}[${ap_index}].contributeInstitutions[${institution_index}]" />
-                <span class="name">${institution.name}</span> 
+            [#list ap.contributeInstitutions as ppaPartner]
+              <li class="clearfix [#if !ppaPartner_has_next]last[/#if]">
+                <input class="id" type="hidden" name="${ap_name}[${ap_index}].contributeInstitutions[${ppaPartner_index}].id" value="${ppaPartner.id}" />
+                <span class="name">${ppaPartner.name}</span> 
                 [#if editable]<span class="listButton remove">[@s.text name="form.buttons.remove" /]</span>[/#if]
               </li>
             [/#list]
           </ul>
           [#if editable]
-          [@customForm.select name="" label="" disabled=!canEdit i18nkey="" listName="project.PPAPartners" keyFieldName="id"  displayFieldName="getComposedName()" className="ppaPartnersSelect" value="" /]
+            [@customForm.select name="" label="" disabled=!canEdit i18nkey="" listName="allPPAPartners" keyFieldName="id"  displayFieldName="getComposedName()" className="ppaPartnersSelect" value="" /]
           [/#if] 
         </div>
       </div> 
@@ -131,7 +129,7 @@
         [#-- Indicate which PPA Partners for second level partners --]
         [#if !isPPA]
         <div class="fullPartBlock">      
-          <div class="ppaPartnersList panel primary">
+          <div class="ppaPartnersList panel primary"> 
             <div class="panel-head">[@s.text name="preplanning.projectPartners.indicatePpaPartners" /]</div>
             <div class="panel-body">
               <ul class="list"></ul> 
@@ -143,38 +141,43 @@
       </div> <!-- End projectPartner-Template -->
 [/#macro]
 
-[#macro projectLeader leader showResponsabilities=false canEdit=true editable=false] 
-  [#if leader?has_content]
-      <div id="projectLeader" class="projectLeader clearfix">
+[#macro projectLeader leader={} coordinator={} showResponsabilities=false canEdit=true editable=false]  
+    <div id="projectLeader" class="projectLeader clearfix">        
+        [#if leader?has_content]
+          [#if leader.institution??]
           [#-- Lead List --]
-          <div class="fullPartBlock organizationName chosen">  
-            [#assign institutionValue][#if project.leader.institution?has_content ]${project.leader.institution.id}[#else]-1[/#if][/#assign]  
-            [@customForm.select name="project.leader.institution" value="${institutionValue}" disabled=!canEdit i18nkey="preplanning.projectPartners.leader.institutionName" listName="allPartners" keyFieldName="id"  displayFieldName="getComposedName()"  editable=editable /]
-          </div> 
-          [#-- Project Leader contact --] 
-          <div class="fullPartBlock clearfix"> 
-            [@customForm.input name="" value="${project.leader.user.composedName}" className="userName" type="text" disabled=!canEdit i18nkey="preplanning.projectPartners.projectLeader" required=true readOnly=true editable=editable/]
-            <input class="partnerId" type="hidden" name="project.leader.id" value="${project.leader.id}">
-            <input class="type" type="hidden" name="project.leader.type" value="${typeProjectLeader}">
-            [#assign leaderUserValue][#if project.leader.user?has_content ]${project.leader.user.id}[#else]-1[/#if][/#assign] 
-            <input class="userId" type="hidden" name="project.leader.user" value="${leaderUserValue}">
-            [#if editable]<div class="searchUser">[@s.text name="form.buttons.searchUser" /]</div>[/#if]
+          <div class="fullPartBlock organizationName chosen">   
+            [@customForm.select name="project.leader.institution" value="${leader.institution.id}" disabled=!canEdit i18nkey="preplanning.projectPartners.leader.institutionName" listName="allPartners" keyFieldName="id"  displayFieldName="getComposedName()"  editable=editable /]
           </div>
-          [#-- Project Coordinator --]
-          <div class="fullPartBlock clearfix"> 
-            [@customForm.input name="" value="${project.coordinator.user.composedName}" className="userName" type="text" disabled=!canEdit i18nkey="preplanning.projectPartners.projectCoordinator"  readOnly=true editable=editable/]
-            <input class="partnerId" type="hidden" name="project.coordinator.id" value="${project.coordinator.id}">
-            <input class="type" type="hidden" name="project.coordinator.type" value="${typeProjectCoordinator}">
-            [#assign coordinatorUserValue][#if project.coordinator.user?has_content ]${project.coordinator.user.id}[#else]-1[/#if][/#assign] 
-            <input class="userId" type="hidden" name="project.coordinator.user" value="${coordinatorUserValue}">
-            [#if editable]<div class="searchUser">[@s.text name="form.buttons.searchUser" /]</div>[/#if]
-          </div> 
-          [#-- Responsibilities --]
-          [#if showResponsabilities]
-          <div class="fullBlock leaderResponsabilities chosen">
-            [@customForm.textArea name="project.leaderResponsabilities" i18nkey="preplanning.projectPartners.leader.responsabilities" required=true editable=editable/]
-          </div>
-          [/#if] 
-      </div> <!-- End projectLeader -->  
-  [/#if]  
+          [/#if]
+        [#-- Project Leader contact --] 
+        <div class="fullPartBlock clearfix"> 
+          [#if leader.user??]
+            [@customForm.input name="" value="${leader.user.composedName}" className="userName" type="text" disabled=!canEdit i18nkey="preplanning.projectPartners.projectLeader" required=true readOnly=true editable=editable/]
+            <input class="userId" type="hidden" name="project.leader.user" value="${leader.user.id}">
+          [/#if]
+          <input class="partnerId" type="hidden" name="project.leader.id" value="${leader.id}">
+          <input class="type" type="hidden" name="project.leader.type" value="${typeProjectLeader}"> 
+          [#if editable]<div class="searchUser">[@s.text name="form.buttons.searchUser" /]</div>[/#if]
+        </div>
+        [/#if]
+        
+        [#-- Project Coordinator --]
+        [#if coordinator?has_content]
+        <div class="fullPartBlock clearfix">  
+          [#assign coordinatorUserValue][#if coordinator.user?has_content ]${coordinator.user.id}[#else]-1[/#if][/#assign] 
+          [@customForm.input name="" value="${coordinator.user.composedName}" className="userName" type="text" disabled=!canEdit i18nkey="preplanning.projectPartners.projectCoordinator"  readOnly=true editable=editable/]
+          <input class="partnerId" type="hidden" name="project.coordinator.id" value="${coordinator.id}">
+          <input class="type" type="hidden" name="project.coordinator.type" value="${typeProjectCoordinator}">
+          <input class="userId" type="hidden" name="project.coordinator.user" value="${coordinatorUserValue}">
+          [#if editable]<div class="searchUser">[@s.text name="form.buttons.searchUser" /]</div>[/#if]
+        </div> 
+        [/#if]
+        [#-- Responsibilities --]
+        [#if showResponsabilities]
+        <div class="fullBlock leaderResponsabilities chosen">
+          [@customForm.textArea name="project.leaderResponsabilities" i18nkey="preplanning.projectPartners.leader.responsabilities" required=true editable=editable/]
+        </div>
+        [/#if] 
+    </div> <!-- End projectLeader -->   
 [/#macro]
