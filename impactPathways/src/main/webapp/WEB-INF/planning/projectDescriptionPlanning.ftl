@@ -44,8 +44,10 @@
       <h1 class="contentTitle"> P${project.id} -  [@s.text name="${project.type}" /]- [@s.text name="planning.projectDescription.title" /] </h1>  
       <fieldset class="fullBlock">
         [#-- Project Title --]
-        [@customForm.textArea name="project.title" i18nkey="planning.projectDescription.projectTitle" required=true className="project-title" editable=editable/]
-        <div id="projectDescription" class="fullBlock">
+        <div class="fullBlock">
+          [@customForm.textArea name="project.title" i18nkey="planning.projectDescription.projectTitle" required=true className="project-title" editable=editable/]
+        </div>
+        <div class="fullBlock">
           [#-- Project Program Creator --]
           <div class="halfPartBlock">  
             [@customForm.select name="project.liaisonInstitution" label="" disabled=( !editable || !securityContext.canEditManagementLiaison() ) i18nkey="planning.projectDescription.programCreator" listName="liaisonInstitutions" keyFieldName="id"  displayFieldName="name" editable=editable/]
@@ -54,6 +56,8 @@
           <div class="halfPartBlock">
             [@customForm.select name="project.owner" label="" disabled=( !editable || !securityContext.canEditManagementLiaison() ) i18nkey="preplanning.projectDescription.projectownercontactperson" listName="allOwners" keyFieldName="id"  displayFieldName="composedOwnerName" editable=editable/]
           </div> 
+        </div>  
+        <div class="fullBlock">  
           [#-- Start Date --]
           <div class="halfPartBlock">
             [@customForm.input name="project.startDate" type="text" disabled=( !editable || !securityContext.canEditStartDate() ) i18nkey="preplanning.projectDescription.startDate" required=true editable=editable /]
@@ -66,7 +70,8 @@
 
         [#-- Project upload work plan --]
         [#if project.coreProject]
-        <div id="uploadWorkPlan" class="tickBox-wrapper fullBlock">
+        
+        <div id="uploadWorkPlan" class="tickBox-wrapper fullBlock" style="[#if !project.workplanName?has_content && !editable]display:none[/#if]">
           [#if securityContext.canAllowProjectWorkplanUpload() ]
             [@customForm.checkbox name="project.workplanRequired" value=""  i18nkey="preplanning.projectDescription.isRequiredUploadworkplan" disabled=!editable editable=editable /]
           [/#if]
@@ -86,7 +91,7 @@
         
         [#-- Project upload bilateral contract --]
         [#if (!project.coreProject && securityContext.canUploadBilateralContract())]
-        <div class="halfPartBlock fileUpload bilateralContract">
+        <div class="fullBlock fileUpload bilateralContract">
           <h6>[@customForm.text name="preplanning.projectDescription.uploadBilateral" readText=!editable /]:</h6>
           <div class="uploadContainer">
             [#if project.bilateralContractProposalName?has_content]
@@ -108,7 +113,7 @@
         </div>
         
         <h6>[@customForm.text name="preplanning.projectDescription.projectWorking" readText=!editable /]: </h6> 
-        <div id="projectWorking">
+        <div id="projectWorking" class="fullBlock clearfix">
           [#-- Flagships --] 
           <div id="projectFlagshipsBlock" class="grid_5">
             <h6>[@s.text name="preplanning.projectDescription.flagships" /]</h6>
