@@ -70,13 +70,13 @@
             [#list ap.contributeInstitutions as ppaPartner]
               <li class="clearfix [#if !ppaPartner_has_next]last[/#if]">
                 <input class="id" type="hidden" name="${ap_name}[${ap_index}].contributeInstitutions[${ppaPartner_index}].id" value="${ppaPartner.id}" />
-                <span class="name">${ppaPartner.name}</span> 
+                <span class="name">${ppaPartner.getComposedName()}</span> 
                 [#if editable]<span class="listButton remove">[@s.text name="form.buttons.remove" /]</span>[/#if]
               </li>
             [/#list]
           </ul>
           [#if editable]
-            [@customForm.select name="" label="" disabled=!canEdit i18nkey="" listName="allPPAPartners" keyFieldName="id"  displayFieldName="getComposedName()" className="ppaPartnersSelect" value="" /]
+            [@customForm.select name="" label="" disabled=!canEdit i18nkey="" listName="projectPPAPartners" keyFieldName="id"  displayFieldName="getComposedName()" className="ppaPartnersSelect" value="" /]
           [/#if] 
         </div>
       </div> 
@@ -133,7 +133,7 @@
             <div class="panel-head">[@s.text name="preplanning.projectPartners.indicatePpaPartners" /]</div>
             <div class="panel-body">
               <ul class="list"></ul> 
-              [@customForm.select name="" label="" disabled=!canEdit i18nkey="" listName="allPPAPartners" keyFieldName="id" displayFieldName="getComposedName()" className="ppaPartnersSelect" value="" /]
+              [@customForm.select name="" label="" disabled=!canEdit i18nkey="" listName="projectPPAPartners" keyFieldName="id" displayFieldName="getComposedName()" className="ppaPartnersSelect" value="" /]
             </div>
           </div> 
         </div>
