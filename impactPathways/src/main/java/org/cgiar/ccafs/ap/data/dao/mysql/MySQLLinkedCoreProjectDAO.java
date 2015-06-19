@@ -71,6 +71,30 @@ public class MySQLLinkedCoreProjectDAO implements LinkedCoreProjectDAO {
   }
 
   @Override
+  public boolean removeLinkedCoreProjects(int bilateralProjectID, List<Integer> coreProjects, int userID,
+    String justification) {
+    Object[] values = new Object[3 + coreProjects.size()];
+    StringBuilder query = new StringBuilder();
+    query.append("UPDATE linked_core_projects ");
+    query.append("SET is_active = FALSE, modified_by = ?, modification_justification = ? ");
+    query.append("WHERE bilateral_project_id = ? ");
+    query.append("AND core_project_id IN (");
+
+    values[0] = userID;
+    values[1] = justification;
+    values[2] = bilateralProjectID;
+
+    for (int c = 0; c < coreProjects.size(); c++) {
+      query.append((c == 0) ? " ?" : ", ?");
+      values[3 + c] = coreProjects.get(c);
+    }
+    query.append("); ");
+
+    int result = daoManager.delete(query.toString(), values);
+    return (result == -1) ? false : true;
+  }
+
+  @Override
   public boolean saveLinkedCoreProjects(int bilateralProjectID, List<Integer> listCoreProjectsIDs, int userID,
     String justification) {
     boolean saved = false;

@@ -40,6 +40,12 @@ public class LinkedCoreProjectManagerImpl implements LinkedCoreProjectManager {
   }
 
   @Override
+  public boolean
+    deletedLinkedCoreProjects(Project project, List<Integer> coreProjects, User user, String justification) {
+    return linkedCoreProjectsDAO.removeLinkedCoreProjects(project.getId(), coreProjects, user.getId(), justification);
+  }
+
+  @Override
   public List<Project> getLinkedCoreProjects(int projectID) {
     List<Project> projects = new ArrayList<>();
     List<Map<String, String>> projectsInfo = linkedCoreProjectsDAO.getLinkedCoreProjects(projectID);
