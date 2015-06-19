@@ -18,13 +18,18 @@
     [#if editable]
       <input type="${type}" id="${name}" name="${name}" value="[#if value=="-NULL"][@s.property value="${name?string}"/][#else]${value}[/#if]"  [#if className != "-NULL"] class="${className}" [/#if][#if readOnly] readonly="readonly"[/#if] [#if disabled]disabled="disabled"[/#if] />
     [#else]
-      <p> 
+      <p>  
         [#if value=="-NULL"]
           [@s.property value="${name?string}"/]
-        [#elseif !value?has_content]
-          [@s.text name="form.values.fieldEmpty" /]
+          [#if !(name?eval)?has_content] 
+            [@s.text name="form.values.fieldEmpty" /]
+          [/#if]  
         [#else]
-          ${value}
+          [#if !value?has_content] 
+            [@s.text name="form.values.fieldEmpty" /]
+          [#else] 
+            ${value}
+          [/#if] 
         [/#if]
       </p>
     [/#if]
@@ -45,7 +50,21 @@
     [#if editable]
       <textarea name="${name}" id="${name}" [#if disabled]disabled="disabled"[/#if] [#if className != "-NULL"] class="ckeditor ${className}" [/#if] />[#if value=="-NULL"][@s.property value="${name}"/][#else]${value}[/#if]</textarea>
     [#else]
-      <p>[#if value=="-NULL"][@s.property value="${name}"/][#else]${value}[/#if]</p>
+      <p>
+        [#if value=="-NULL"]
+          [@s.property value="${name?string}"/]
+          [#if !(name?eval)?has_content] 
+            [@s.text name="form.values.fieldEmpty" /]
+          [/#if]  
+        [#else]
+          [#if !value?has_content] 
+            [@s.text name="form.values.fieldEmpty" /]
+          [#else] 
+            ${value}
+          [/#if] 
+        [/#if]
+      </p>
+      
     [/#if] 
   </div>
   [#if addButton]

@@ -323,11 +323,11 @@ input.target {
 }
 
 .fileUpload h6{
-  margin-bottom: 0.6em !important;
+  /* margin-bottom: 0.6em !important; */
 }
 
 .uploadContainer {
-    padding-left: 0.5em;
+    /* padding-left: 0.5em; */
 }
 
 .grid_5 .checkboxGroup .checkboxLabel { 
@@ -1207,7 +1207,7 @@ h1.simpleTitle {
 
 .fullBlock {
   display: block;
-  margin: 14px 0 22px 0;
+  margin: 0px 0 10px 0;
   width: 100%;
 }
 
@@ -1245,7 +1245,7 @@ h1.simpleTitle {
 
 .halfPartBlock {
   display: inline-block;
-  padding: 0 8px 12px 0;
+  padding: 0 8px 5px 0;
   width: 48%;
   vertical-align: top;
 }
@@ -1859,12 +1859,20 @@ textarea[id$='summary'] {
   margin-top: 10px;
 }
 
+#projectWorking {
+    border: 1px dotted #ccc;
+    padding-bottom: 15px;
+    border-radius: 3px;
+}
+
 #projectWorking .checkboxGroup { 
   margin-left:8px
 }
 
 #projectWorking h6 {
-    padding-left: 9px;
+    padding-left: 7px;
+    margin-bottom: 5px;
+    color: #797979;
 }
 
 #projects .buttons {
@@ -1873,14 +1881,13 @@ textarea[id$='summary'] {
 }
 
 #projectRegionsBlock {
-    border: 1px dotted#ccc;
-    padding: 10px 3px 12px 3px;
-    min-height: 110px;
+    padding: 11px 3px 8px 3px;
+    margin-bottom: -2000px;    padding-bottom: 2000px;
 }
-#projectFlagshipsBlock {
-    border: 1px dotted#CCC;  
-    padding: 11px 2px;
-    min-height: 110px;
+#projectFlagshipsBlock {     
+    padding: 11px 0px 9px 3px;
+    margin-bottom: -2000px; 
+    padding-bottom: 2000px;
 }
 
 #projectRegionsBlock .checkboxGroup { 

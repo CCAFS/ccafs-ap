@@ -35,7 +35,7 @@
         [@s.text name="saving.read.privileges"][@s.param][@s.text name="planning.project.locations.title"/][/@s.param][/@s.text]
       </p>
     [/#if] 
-    <div class="borderBox"> 
+    <div id="" class="borderBox"> 
       [#-- Can edit button --]
       [#if (!editable && canEdit)]
         <div class="editButton"><a href="[@s.url includeParams='get'][@s.param name="edit"]true[/@s.param][/@s.url]">[@s.text name="form.buttons.edit" /]</a></div>
@@ -111,12 +111,11 @@
                       [#assign longitude] [#if location.geoPosition?has_content] ${location.geoPosition.longitude} [/#if] [/#assign]
                       [@customForm.input name="geoPosition.longitude" className="notApplicable" value="${longitude}" type="text" i18nkey="planning.project.locations.longitude" showTitle=false required=true disabled=true   /]
                     [#else]
-                     [#if location.type.id == ccafsSiteTypeID]
-                      [@customForm.input name="geoPosition.longitude" className="notApplicable" value="${location.geoPosition.longitude}" type="text" i18nkey="planning.project.locations.longitude" showTitle=false required=true disabled=true   /]                 
-                     [#else]
-                      [@customForm.input name="otherLocationsSaved[${location_index}].geoPosition.longitude" value="${location.geoPosition.longitude}" type="text" i18nkey="planning.project.locations.longitude" showTitle=false required=true  /]
-                     [/#if]
-                      
+                      [#if location.type.id == ccafsSiteTypeID]
+                        [@customForm.input name="geoPosition.longitude" className="notApplicable" value="${location.geoPosition.longitude}" type="text" i18nkey="planning.project.locations.longitude" showTitle=false required=true disabled=true   /]                 
+                      [#else]
+                        [@customForm.input name="otherLocationsSaved[${location_index}].geoPosition.longitude" value="${location.geoPosition.longitude}" type="text" i18nkey="planning.project.locations.longitude" showTitle=false required=true  /]
+                      [/#if] 
                     [/#if]
                   </div>
                   [#-- Name --]
