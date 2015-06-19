@@ -1,18 +1,17 @@
 
 -- *****************************************************************************************
--- *********** Enter leaders activities as Projects Partner when the leaders is confirmed.
+-- *********** Migrating Activity Leaders at Projects Partner level when the leaders are active in the system.
 -- ************ ******************************************************************************
 
--- Update the partner type to PPA when that atributte is outdated.
+-- Update the partner type to PPA when that attribute is outdated.
 UPDATE project_partners pp INNER JOIN institutions i ON i.id = pp.partner_id
 SET pp.partner_type = 'PPA' 
 WHERE i.is_ppa = 1;
 
--- Delete activities that don't have leader_id or expected_activity_leader
+-- Deleting empty activities that were created in the system by mistake.
 DELETE FROM `activities` WHERE `id`='294';
 DELETE FROM `activities` WHERE `id`='449';
 
--- Enter leaders activities as Projects Partner when the leaders is confirmed.
 /*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
 /*!40101 SET @OLD_CHARACTER_SET_RESULTS=@@CHARACTER_SET_RESULTS */;
 /*!40101 SET @OLD_COLLATION_CONNECTION=@@COLLATION_CONNECTION */;
@@ -57,6 +56,7 @@ CREATE TABLE `project_partners` (
   CONSTRAINT `fk_project_partners_users_modified__by` FOREIGN KEY (`modified_by`) REFERENCES `users` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
 ) ENGINE=InnoDB AUTO_INCREMENT=1648 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
+
 
 LOCK TABLES `project_partners` WRITE;
 /*!40000 ALTER TABLE `project_partners` DISABLE KEYS */;
@@ -124,13 +124,18 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
+-- ----------------------------------------
+-- NOTA: Podrías por favor agregar la siguiente frase al inicio de todos los resposibilities?
+-- Activity #000 Leader. <-- el código de la actividad.
+-------------------------------------------
 
--- Insert data from table project_partners
-INSERT INTO project_partners ( `project_id`,`partner_id`,`user_id`,   `partner_type`, `activity_partner`, `is_active`, `created_by`, `modified_by` , activity_id ) 
- select  
+-- Inserting data to project_partners coming from temporal table activities1.
+-- The inner join is filtering the records that have some value in leader_id.
+INSERT INTO project_partners ( `project_id`,`partner_id`,`user_id`, `partner_type`, `activity_partner`, `is_active`, `created_by`, `modified_by` , activity_id ) 
+ SELECT  
  act.project_id, e.institution_id, e.user_id, 'PP', 1, 1, act.created_by, act.created_by  , a.id
  FROM activities1 a
- INNER JOIN employees  e ON a.leader_id = e.id 
+ INNER JOIN employees e ON a.leader_id = e.id 
  INNER JOIN activities act ON a.id = act.id ;
  
  -- Delete temporal table activities
@@ -139,41 +144,66 @@ drop table if exists activities1;
 -- ******************************************************************************************************************************
 -- *************** Enter expected leaders activities as Projects Partner 
 -- ************ ***************************************************************************************************************
-
+-------------------------------------------------
+-- NOTA: Serías tan amable de explicar de donde sacaste estos cambios?
+-------------------------------------------------
 -- Fixed the email for expected_activity_leader #391, 420 and 196
 UPDATE `expected_activity_leaders` SET `email`='albert.tuinhof@acaciawater.com' WHERE `id`='196';
 UPDATE `expected_activity_leaders` SET `email`='albert.tuinhof@acaciawater.com' WHERE `id`='391';
 UPDATE `expected_activity_leaders` SET `email`='albert.tuinhof@acaciawater.com' WHERE `id`='420';
 
--- Get the data expected_activity_leaders 
+-- Get the data from expected_activity_leaders and inserting it to a new table. 
 drop table if exists data_user_expected_leaders;
 create table data_user_expected_leaders  as (select  u.id as user_id  ,  el.name , u.last_name  , el.email , el.institution_id  as partner_id ,
 a.project_id as project_id , a.active_since , a.created_by , a.modified_by , a.modification_justification , a.id as activity_id
  from expected_activity_leaders el inner join  activities a on  a.expected_leader_id = el.id  left join users u on el.email = u.email );
 
-
+--------------------------------------------------
+-- NOTA: 
+-- 1. El password de estos nuevos usuarios debes ponerlo con un espacio en blanco por términos de seguridad.
+-- 2. Debes validar que el email termine en "@cgiar.org", de ser así la variable is_ccafs_user es 1, de lo contrario
+-- sería 0.
+-- 3. En teoría, todos los expected_activity_leaders son líderes que no tienen acceso al sistema y por eso
+-- están en dicha tabla. Por tal motivo la variable is_active debe ser 0.
+--------------------------------------------------
 -- Enter of the users table
 insert into users (first_name , last_name , username , `password` , email , is_ccafs_user , is_active , last_login)
 select  name , last_name , null , MD5("123") , email , 0 , 1, null from  data_user_expected_leaders where user_id is null ;
 
--- Enten again the users 
+------------------------------------------------
+-- NOTA: Podrías por favor explicar por qué estás creando una segunda tabla tempral?
+------------------------------------------------
+-- Inserting again the users 
 drop table if exists data_user_expected_leaders_2;
-create table data_user_expected_leaders_2 (select  u.id as user_id  ,   u.first_name , u.last_name  , u.email , partner_id , 
-a.project_id as project_id , a.active_since , a.created_by , a.modified_by , a.modification_justification , activity_id from 
-users  u inner join data_user_expected_leaders a where a.email = u.email); 
+create table data_user_expected_leaders_2 (
+select  u.id as user_id  ,   u.first_name , u.last_name  , u.email , partner_id , 
+a.project_id as project_id , a.active_since , a.created_by , a.modified_by , a.modification_justification , activity_id 
+from users  u 
+inner join data_user_expected_leaders a 
+where a.email = u.email); 
 
+--------------------------------------
+-- NOTA: 
+-- 1. debes ser consistente, si estás explicando en inglés o en español?
+-- 2. Podrías por favor ingresar en responsibilities la actividad de donde proviene dicho partner? Tal cual como el
+-- ejercicio anterior.
+--------------------------------------
 -- Enter los expected_leaders a la tabla project_partners
 INSERT INTO project_partners ( `project_id`,`partner_id`,`user_id`,   `partner_type`, `activity_partner`, `is_active`, `created_by`, `modified_by` , activity_id) 
  select  project_id , partner_id , user_id , 'PP' , 1 ,  1, created_by , created_by  , activity_id from  data_user_expected_leaders_2;
 
 -- Delete the temporal tables
 drop table if exists data_user_expected_leaders , data_user_expected_leaders_2;
- 
--- Alter table for include the project_partner_id column
+
+----------------------
+-- NOTA: por qué al ingresar una columna que no puede ser nula, en una tabla con datos existentes, no te generó un error?
+---------------------
+-- Adding new column project_partner_id in activities table.
 alter table activities add project_partner_id  bigint(20)  not null after gender_percentage;
 
  -- Enter la tabla activities 
-UPDATE activities act INNER JOIN  project_partners pp ON pp.activity_id = act.id
+UPDATE activities act 
+INNER JOIN  project_partners pp ON pp.activity_id = act.id
 SET act.project_partner_id = pp.id ;
 
 -- Foreign Key between activities and project partners
@@ -185,7 +215,7 @@ alter table activities ADD CONSTRAINT  FK_activities_project_partner_id FOREIGN 
 -- alter table activities drop leader_id;  
 -- alter table activities drop expected_leader_id;  
 
--- Delete activity_id of project_partners
+-- Delete activity_id column in project_partners table.
 alter table project_partners drop activity_id;  
 
 
