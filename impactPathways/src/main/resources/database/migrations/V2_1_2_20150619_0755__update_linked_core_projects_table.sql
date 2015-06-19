@@ -37,7 +37,7 @@ BEGIN
     ALTER TABLE `linked_core_projects` ADD `modification_justification` TEXT NOT NULL ;
   END IF;
   
-  
+  ALTER TABLE `linked_core_projects` ADD UNIQUE INDEX `uk_linked_core_projects` (`bilateral_project_id` ASC, `core_project_id` ASC) ;
 END $$
 DELIMITER ;
 
