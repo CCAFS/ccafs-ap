@@ -1,5 +1,5 @@
 [#ftl] 
-[#macro logList list] 
+[#macro logList list ] 
   <div id="log-history" class="borderBox">
     <h1 class="simpleTitle"> [@s.text name="logHistory.title" /]</h1> 
     <table class="log-table">

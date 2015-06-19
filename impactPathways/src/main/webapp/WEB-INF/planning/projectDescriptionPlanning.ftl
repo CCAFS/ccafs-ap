@@ -186,7 +186,7 @@
       </div>
     [#else]
         [#-- Display Log History --]
-        [@log.logList list=history /]
+        [#if history??][@log.logList list=history /][/#if] 
     [/#if]
      
   </article>
