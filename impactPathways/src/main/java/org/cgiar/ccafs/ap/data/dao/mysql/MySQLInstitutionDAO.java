@@ -44,6 +44,25 @@ public class MySQLInstitutionDAO implements InstitutionDAO {
   }
 
   @Override
+  public boolean deleteProjectPartnerContributeInstitution(int projectPartnerID, int institutionID) {
+    LOG.debug(">> deleteProjectPartnerContributeInstitution(projectPartnerID={}, institutionID={})", projectPartnerID,
+      institutionID);
+
+    String query =
+      "DELETE FROM project_partner_contributions WHERE project_partner_id = ? AND contribution_institution_id = ?";
+
+    int rowsUpdated = databaseManager.delete(query, new Object[] {projectPartnerID, institutionID});
+    if (rowsUpdated >= 0) {
+      LOG.debug("<< deleteProjectPartnerContributeInstitution():{}", true);
+      return true;
+    }
+
+    LOG.debug("<< deleteProjectPartnerContributeInstitution:{}", false);
+    return false;
+
+  }
+
+  @Override
   public List<Map<String, String>> getAllInstitutions() {
     LOG.debug(">> getAllInstitutions( )");
 
@@ -351,6 +370,24 @@ public class MySQLInstitutionDAO implements InstitutionDAO {
       LOG.error("Exception arised getting the institutions for the user {}.", userID, e);
     }
     return institutionData;
+  }
+
+  @Override
+  public int saveProjectPartnerContributeInstitution(Map<String, Object> contributionData) {
+    LOG.debug(">> saveProjectPartnerContributeInstitution(contributionData)", contributionData);
+    StringBuilder query = new StringBuilder();
+    Object[] values;
+    // Inserting new record
+    query.append("INSERT IGNORE INTO project_partner_contributions (project_partner_id, contribution_institution_id) ");
+    query.append("VALUES (?, ?) ");
+
+    values = new Object[2];
+    values[0] = contributionData.get("project_partner_id");
+    values[1] = contributionData.get("contribution_institution_id");
+
+    int result = databaseManager.saveData(query.toString(), values);
+    LOG.debug("<< saveProjectPartnerContributeInstitution():{}", result);
+    return result;
   }
 
 

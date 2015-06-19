@@ -29,6 +29,15 @@ import com.google.inject.ImplementedBy;
 public interface InstitutionDAO {
 
   /**
+   * This method deletes a specific record in the project_partner_contributions table.
+   * 
+   * @param projectPartnerID is the project partner identifier.
+   * @param institutionID is the institution identifier.
+   * @return true if the record was successfully deleted, false otherwise.
+   */
+  public boolean deleteProjectPartnerContributeInstitution(int projectPartnerID, int institutionID);
+
+  /**
    * This method returns all the Institutions
    * indicated by parameter.
    * 
@@ -104,4 +113,12 @@ public interface InstitutionDAO {
    * @return a list of maps with the information of the Institution
    */
   public Map<String, String> getUserMainInstitution(int userID);
+
+  /**
+   * This method inserts a new record in the project_partner_contributions table
+   * 
+   * @param contributionData is the data to be inserted.
+   * @return 0 if the record was added or if the record already exists, or -1 if some error occurred.
+   */
+  public int saveProjectPartnerContributeInstitution(Map<String, Object> contributionData);
 }
