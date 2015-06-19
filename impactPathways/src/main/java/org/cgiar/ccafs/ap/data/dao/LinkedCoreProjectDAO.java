@@ -44,7 +44,10 @@ public interface LinkedCoreProjectDAO {
    * 
    * @param bilateralProjectID
    * @param listCoreProjectsIDs - a list of core projects' IDs
+   * @param user - Identifier of the user who is making the change
+   * @param justification
    * @return true if the information was saved successfully, false otherwise.
    */
-  public boolean saveLinkedCoreProjects(int bilateralProjectID, List<Integer> listCoreProjectsIDs);
+  public boolean saveLinkedCoreProjects(int bilateralProjectID, List<Integer> listCoreProjectsIDs, int userID,
+    String justification);
 }

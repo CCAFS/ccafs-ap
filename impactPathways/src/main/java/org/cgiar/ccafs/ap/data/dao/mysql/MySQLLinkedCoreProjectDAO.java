@@ -71,27 +71,31 @@ public class MySQLLinkedCoreProjectDAO implements LinkedCoreProjectDAO {
   }
 
   @Override
-  public boolean saveLinkedCoreProjects(int bilateralProjectID, List<Integer> listCoreProjectsIDs) {
+  public boolean saveLinkedCoreProjects(int bilateralProjectID, List<Integer> listCoreProjectsIDs, int userID,
+    String justification) {
     boolean saved = false;
-    Object[] values = new Object[listCoreProjectsIDs.size() * 2];
-    StringBuilder preparedQuery = new StringBuilder();
-    preparedQuery.append("INSERT INTO linked_core_projects (bilateral_project_id, core_project_id) VALUES ");
+    Object[] values = new Object[listCoreProjectsIDs.size() * 4];
+    StringBuilder query = new StringBuilder();
+    query.append("INSERT INTO linked_core_projects ");
+    query.append("(bilateral_project_id, core_project_id, modified_by, modification_justification) VALUES ");
 
     for (int i = 0; i < listCoreProjectsIDs.size(); i++) {
       if (i == 0) {
-        preparedQuery.append(" (?, ?) ");
+        query.append(" (?, ?, ?, ?) ");
       } else {
-        preparedQuery.append(", (?, ?) ");
+        query.append(", (?, ?, ?, ?) ");
       }
-      preparedQuery.append("; ");
+      query.append("; ");
 
       int c = i * 2;
       values[c] = bilateralProjectID;
       values[c + 1] = listCoreProjectsIDs.get(i);
+      values[c + 2] = userID;
+      values[c + 3] = justification;
     }
-    preparedQuery.append("; ");
+    query.append("; ");
 
-    int result = daoManager.saveData(preparedQuery.toString(), values);
+    int result = daoManager.saveData(query.toString(), values);
     saved = (result == -1) ? false : true;
     return saved;
   }

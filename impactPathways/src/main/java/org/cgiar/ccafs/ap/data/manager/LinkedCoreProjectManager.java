@@ -16,6 +16,7 @@ package org.cgiar.ccafs.ap.data.manager;
 
 import org.cgiar.ccafs.ap.data.manager.impl.LinkedCoreProjectManagerImpl;
 import org.cgiar.ccafs.ap.data.model.Project;
+import org.cgiar.ccafs.ap.data.model.User;
 
 import java.util.List;
 
@@ -43,7 +44,9 @@ public interface LinkedCoreProjectManager {
    * received by parameter.
    * 
    * @param project - Bilateral project that will be linked to some core project(s)
+   * @param user - User who is making the change
+   * @param justification
    * @return true if the information was saved successfully, false otherwise.
    */
-  public boolean saveLinkedCoreProjects(Project project);
+  public boolean saveLinkedCoreProjects(Project project, User user, String justification);
 }
