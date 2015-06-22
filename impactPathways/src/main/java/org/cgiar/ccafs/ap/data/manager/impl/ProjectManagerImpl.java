@@ -524,6 +524,7 @@ public class ProjectManagerImpl implements ProjectManager {
       projectData.put("liaison_institution_id", project.getLiaisonInstitution().getId());
       projectData.put("modified_by", user.getId());
       projectData.put("justification", justification);
+      projectData.put("type", project.getType());
     }
 
     return projectDAO.saveProject(projectData);
