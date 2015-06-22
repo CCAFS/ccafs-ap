@@ -53,7 +53,8 @@ public class MySQLCrpDAO implements CrpDAO {
     query.append("WHERE ");
     query.append("project_id = ");
     query.append(projectID);
-    query.append(" AND is_active = TRUE ");
+    query.append(" AND pcc.is_active = TRUE ");
+    query.append(" AND c.is_active = TRUE ");
 
     try (Connection con = daoManager.getConnection()) {
       ResultSet rs = daoManager.makeQuery(query.toString(), con);

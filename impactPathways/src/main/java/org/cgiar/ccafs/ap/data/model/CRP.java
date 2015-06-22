@@ -14,6 +14,8 @@
 
 package org.cgiar.ccafs.ap.data.model;
 
+import org.apache.commons.lang3.builder.ToStringBuilder;
+
 
 /**
  * @author Hernán David Carvajal B. - CIAT/CCAFS
@@ -47,5 +49,10 @@ public class CRP {
 
   public void setName(String name) {
     this.name = name;
+  }
+
+  @Override
+  public String toString() {
+    return ToStringBuilder.reflectionToString(this);
   }
 }

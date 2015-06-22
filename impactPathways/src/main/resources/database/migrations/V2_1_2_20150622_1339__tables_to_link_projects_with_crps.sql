@@ -8,7 +8,7 @@ CREATE  TABLE IF NOT EXISTS `crps` (
   `acronym` VARCHAR(45) NULL ,
   PRIMARY KEY (`id`) );
   
-CREATE  TABLE `project_crp_contributions` (
+CREATE  TABLE IF NOT EXISTS `project_crp_contributions` (
   `id` BIGINT NOT NULL AUTO_INCREMENT ,
   `project_id` BIGINT NOT NULL ,
   `crp_id` INT NOT NULL ,
