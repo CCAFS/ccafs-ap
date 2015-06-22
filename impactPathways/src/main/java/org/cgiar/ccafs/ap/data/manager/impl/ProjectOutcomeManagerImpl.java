@@ -36,22 +36,9 @@ public class ProjectOutcomeManagerImpl implements ProjectOutcomeManager {
   // DAO's
   private ProjectOutcomeDAO projectOutcomeDAO;
 
-  // Managers
-
-
   @Inject
   public ProjectOutcomeManagerImpl(ProjectOutcomeDAO projectOutcomeDAO) {
     this.projectOutcomeDAO = projectOutcomeDAO;
-  }
-
-  @Override
-  public boolean deleteProjectOutcomeById(int projectOutcomeID) {
-    return projectOutcomeDAO.deleteProjectOutcomeById(projectOutcomeID);
-  }
-
-  @Override
-  public boolean deleteProjectOutcomesByProject(int projectID) {
-    return projectOutcomeDAO.deleteProjectOutcomesByProject(projectID);
   }
 
   @Override

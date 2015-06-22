@@ -27,24 +27,6 @@ import com.google.inject.ImplementedBy;
 @ImplementedBy(ProjectOutcomeManagerImpl.class)
 public interface ProjectOutcomeManager {
 
-
-  /**
-   * This method removes a specific budget value from the database.
-   * 
-   * @param projectOutcomeID is the budget identifier.
-   * @return true if the budget was successfully deleted, false otherwise.
-   */
-  public boolean deleteProjectOutcomeById(int projectOutcomeID);
-
-  /**
-   * This method removes a set of budgets that belongs to a specific project and institution.
-   * 
-   * @param projectID is the project identifier.
-   * @param institutionID is the institution identifier.
-   * @return true if the set of budgets were successfully deleted, false otherwise.
-   */
-  public boolean deleteProjectOutcomesByProject(int projectID);
-
   /**
    * This method gets all the budget information that belongs to a project in a specific year.
    * 
