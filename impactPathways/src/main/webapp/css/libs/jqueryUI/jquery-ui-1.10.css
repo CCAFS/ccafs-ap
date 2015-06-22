@@ -642,7 +642,7 @@ html, body{background-color:#ffffff;}
 .ui-state-default .ui-icon {background-image:url(../../../images/libs/jqueryUI/ui-icons_525252_0.png)}
 .ui-state-active .ui-icon, .ui-state-hover .ui-icon{background-image:url(../../../images/libs/jqueryUI/ui-icons_ffffff_0.png);}
 .ui-widget-overlay{background:#ffffff;}
-.ui-widget-content{color:#525252;}
+.ui-widget-content{color: #525254;}
 
 
 

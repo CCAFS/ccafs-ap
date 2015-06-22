@@ -534,6 +534,24 @@ select#partnerSave_activityPartner_partner_type_id {
   background: #CBCBCB;
   padding: 4px;
 }
+
+.panel.tertiary {
+    border: none;
+}
+.panel.tertiary .panel-head{
+  font-size: 1em;
+  background: #FFFFFF;
+  color: #525254;
+  padding: 2px 0 6px 0;
+  text-align: left;
+}
+
+.panel.tertiary .panel-body {
+    padding: 4px 3px 10px 3px; 
+    border-left: 4px solid #E7E6E6;
+    margin-left: 5px;
+}
+
 .panel .panel-head {
     background: #8EA786;
     color: #fff;
@@ -565,6 +583,12 @@ select#partnerSave_activityPartner_partner_type_id {
 }
 .panel .panel-body ul li.last { 
     border-bottom: none;
+}
+
+.panel-body .list span.name {
+    width: 89%;
+    display: block;
+    float: left;
 }
 
 .panel span.listButton {
@@ -1196,8 +1220,14 @@ h3.contentSubTitle {
 }
 
 h1.simpleTitle {
-    border: none;
+  border: none;
 }
+
+h1.simpleTitle span {
+  font-size: 0.8em;   
+  color: #747474;
+}
+
 
 .fullContent h6+*, .halfContent h6+* {
   margin-left: 1px;
@@ -1882,9 +1912,13 @@ textarea[id$='summary'] {
 
 #projectRegionsBlock {
     padding: 11px 3px 8px 3px;
+    /* margin-bottom: -2000px; */    
+    /* padding-bottom: 2000px; */
 }
 #projectFlagshipsBlock {     
     padding: 11px 0px 9px 3px;
+    /* margin-bottom: -2000px; */ 
+    /* padding-bottom: 2000px; */
 }
 
 #projectRegionsBlock .checkboxGroup { 

@@ -155,10 +155,15 @@ public class Permission {
   public static final String PLANNING_PROJECT_OUTCOMES_UPDATE = "planning:projects:outcomes:update";
 
   /**
+   * Can update the planning project CCAFS outcomes section
+   */
+  public static final String PLANNING_PROJECT_CCAFS_OUTCOMES_UPDATE = "planning:projects:ccafsOutcomes:update";
+
+  /**
    * Can update the planning project ip other contributions section
    */
   public static final String PLANNING_PROJECT_OTHER_CONTRIBUTIONS_UPDATE =
-    "planning:projects:ipOtherContributions:update";
+    "planning:projects:otherContributions:update";
 
   // --------------------------- End of Project outcomes ---------------------------------
 
@@ -281,9 +286,14 @@ public class Permission {
   public static final String PROJECT_OUTCOMES_UPDATE = "project:outcomes:update";
 
   /**
+   * Can update the project CCAFS outcomes section of some specific project
+   */
+  public static final String PROJECT_CCAFS_OUTCOMES_UPDATE = "project:ccafsOutcomes:update";
+
+  /**
    * Can update the project ip other contributions section of some specific project
    */
-  public static final String PROJECT_OTHER_CONTRIBUTIONS_UPDATE = "project:ipOtherContributions:update";
+  public static final String PROJECT_OTHER_CONTRIBUTIONS_UPDATE = "project:otherContributions:update";
 
   // --------------------------- End of Project outcomes ---------------------------------
 

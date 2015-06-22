@@ -8,6 +8,7 @@ $(document).ready(
       if(!$("div.projectPartner").length) {
         $("a.addProjectPartner").trigger("click");
       }
+      setInitialPPAPartners();
 
       function attachEvents() {
         // Partners Events
@@ -73,37 +74,13 @@ $(document).ready(
         });
       }
 
-      function removeItemList($item) {
-        // Adding to select list
-        var $select = $item.parents('.panel').find('select');
-        $select.append(setOption($item.find('.id').val(), $item.find('.name').text()));
-        $select.trigger("liszt:updated");
-        // Removing from list
-        $item.hide("slow", function() {
-          $item.remove();
-          setProjectPartnersIndexes();
-        });
-      }
-
-      function addItemList($option) {
-        var $select = $option.parent();
-        var $list = $option.parents('.panel').find('ul.list');
-        var $li = $("#ppaListTemplate").clone(true).removeAttr("id");
-        $li.find('.id').val($option.val());
-        $li.find('.name').html($option.text());
-        $list.prepend($li);
-        $option.remove();
-        $select.trigger("liszt:updated");
-        setProjectPartnersIndexes();
-      }
-
       function addPartnerEvent(e) {
         e.preventDefault();
         var $newElement = $("#projectPartnerTemplate").clone(true).removeAttr("id").addClass("projectPartner");
         $(e.target).parent().before($newElement);
         $newElement.show("slow");
 
-        // Activate the chosen plugin
+        // Activate the chosen plugin for new partners created
         $newElement.find("select").chosen({
             no_results_text: $("#noResultText").val(),
             search_contains: true
@@ -129,6 +106,43 @@ $(document).ready(
             $(li).find('.id').attr("name", elementName + "contributeInstitutions" + "[" + li_index + "].id");
           });
         });
+      }
+
+      // Items list functions
+
+      function setInitialPPAPartners() {
+        $("div.projectPartner").each(function(index,element) {
+          // Getting PPA Partners previously selected by project partner
+          var $select = $(element).find('select');
+          $(element).find('li input.id').each(function(i_id,id) {
+            $select.find('option[value=' + $(id).val() + ']').remove();
+          });
+          $select.trigger("liszt:updated");
+        });
+      }
+
+      function removeItemList($item) {
+        // Adding to select list
+        var $select = $item.parents('.panel').find('select');
+        $select.append(setOption($item.find('.id').val(), $item.find('.name').text()));
+        $select.trigger("liszt:updated");
+        // Removing from list
+        $item.hide("slow", function() {
+          $item.remove();
+          setProjectPartnersIndexes();
+        });
+      }
+
+      function addItemList($option) {
+        var $select = $option.parent();
+        var $list = $option.parents('.panel').find('ul.list');
+        var $li = $("#ppaListTemplate").clone(true).removeAttr("id");
+        $li.find('.id').val($option.val());
+        $li.find('.name').html($option.text());
+        $li.appendTo($list).hide().show('slow');
+        $option.remove();
+        $select.trigger("liszt:updated");
+        setProjectPartnersIndexes();
       }
 
       // Activate the chosen plugin to the countries, partner types and

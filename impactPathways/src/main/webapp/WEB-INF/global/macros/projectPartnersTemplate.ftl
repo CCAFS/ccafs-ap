@@ -66,6 +66,9 @@
       <div class="ppaPartnersList panel primary">
         <div class="panel-head">[@customForm.text name="preplanning.projectPartners.indicatePpaPartners" readText=!editable /]</div> 
         <div class="panel-body">
+          [#if !(ap.contributeInstitutions?has_content) && !editable]
+            <p>[@s.text name="planning.projectPartners.noSelectedCCAFSPartners" /] </p>
+          [/#if]
           <ul class="list"> 
             [#list ap.contributeInstitutions as ppaPartner]
               <li class="clearfix [#if !ppaPartner_has_next]last[/#if]">

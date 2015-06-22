@@ -3,6 +3,12 @@
   width: 100% !important;
 }
 
+.chzn-disabled a.chzn-single{ 
+  border: 1px solid #E8E8E8;
+  background:none;
+  box-shadow: none;
+}
+
 .chzn-container-single .chzn-single abbr {
   background: url('../../images/libs/chosen/chosen-sprite.png') -42px 1px no-repeat;
 }
