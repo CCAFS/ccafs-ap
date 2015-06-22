@@ -238,8 +238,10 @@ public class ManageUsersAction extends BaseAction {
     message.append("P&R Team");
 
     // To
-    String emails = this.config.getGmailUsername() + " " + newUser.getEmail();
-    sendMail.send(emails, "[CCAFS P&R] Credentials to access P&R", message.toString());
+    String toEmail = newUser.getEmail();
+    // CC
+    String ccEmails = this.getCurrentUser().getEmail() + " " + this.config.getGmailUsername();
+    sendMail.send(toEmail, ccEmails, "[CCAFS P&R] Credentials to access P&R", message.toString());
 
   }
 

@@ -88,12 +88,12 @@ public class PartnersSaveAction extends BaseAction {
 
     if (this.getRequest().getParameter(APConstants.ACTIVITY_REQUEST_ID) != null) {
       activityID = Integer.parseInt(StringUtils.trim(this.getRequest().getParameter(APConstants.ACTIVITY_REQUEST_ID)));
-      LOG.info("The user {} load the request partner section related to the activity {}.", getCurrentUser().getEmail(),
-        activityID);
+      LOG.info("The user {} load the request partner section related to the activity {}.",
+        this.getCurrentUser().getEmail(), activityID);
     } else if (this.getRequest().getParameter(APConstants.PROJECT_REQUEST_ID) != null) {
       projectID = Integer.parseInt(StringUtils.trim(this.getRequest().getParameter(APConstants.PROJECT_REQUEST_ID)));
-      LOG.info("The user {} load the request partner section related to the project {}.", getCurrentUser().getEmail(),
-        projectID);
+      LOG.info("The user {} load the request partner section related to the project {}.",
+        this.getCurrentUser().getEmail(), projectID);
     }
 
     this.countriesList = locationManager.getAllCountries();
@@ -131,9 +131,9 @@ public class PartnersSaveAction extends BaseAction {
     // message subject
     subject = "Partner verification - " + institutionName;
     // Message content
-    message.append(getCurrentUser().getFirstName() + " " + getCurrentUser().getLastName() + " ");
-    message.append("(" + getCurrentUser().getEmail() + ") ");
-    message.append("who is the user in charge of \"" + getCurrentUser().getCurrentInstitution().getName()
+    message.append(this.getCurrentUser().getFirstName() + " " + this.getCurrentUser().getLastName() + " ");
+    message.append("(" + this.getCurrentUser().getEmail() + ") ");
+    message.append("who is the user in charge of \"" + this.getCurrentUser().getCurrentInstitution().getName()
       + "\" is requesting to add the following partner information:");
     message.append("\n\n");
     message.append("Partner Name: ");
@@ -172,10 +172,10 @@ public class PartnersSaveAction extends BaseAction {
     message.append(".\n");
     message.append("\n");
     SendMail sendMail = new SendMail(this.config);
-    sendMail.send(config.getGmailUsername(), subject, message.toString());
+    sendMail.send(config.getGmailUsername(), null, subject, message.toString());
     messageSent = true;
 
-    LOG.info("The user {} send a message requesting add partners to the activity {}", getCurrentUser().getEmail(),
+    LOG.info("The user {} send a message requesting add partners to the activity {}", this.getCurrentUser().getEmail(),
       activityID);
     return INPUT;
   }
@@ -202,16 +202,16 @@ public class PartnersSaveAction extends BaseAction {
     boolean anyError = false;
 
     // If the page is loading don't validate
-    if (getRequest().getMethod().equalsIgnoreCase("post")) {
+    if (this.getRequest().getMethod().equalsIgnoreCase("post")) {
 
       // Check the partner name
       if (activityPartner.getPartner().getName().isEmpty()) {
-        addFieldError("activityPartner.partner.name", getText("validation.field.required"));
+        this.addFieldError("activityPartner.partner.name", this.getText("validation.field.required"));
         anyError = true;
       }
 
       if (anyError) {
-        addActionError(getText("saving.fields.required"));
+        this.addActionError(this.getText("saving.fields.required"));
       }
     }
     super.validate();
