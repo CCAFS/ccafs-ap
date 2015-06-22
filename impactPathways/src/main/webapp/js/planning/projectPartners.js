@@ -80,7 +80,7 @@ $(document).ready(
         $(e.target).parent().before($newElement);
         $newElement.show("slow");
 
-        // Activate the chosen plugin
+        // Activate the chosen plugin for new partners created
         $newElement.find("select").chosen({
             no_results_text: $("#noResultText").val(),
             search_contains: true
@@ -115,8 +115,7 @@ $(document).ready(
           // Getting PPA Partners previously selected by project partner
           var $select = $(element).find('select');
           $(element).find('li input.id').each(function(i_id,id) {
-            var $option = $select.find('option[value=' + $(id).val() + ']');
-            $option.remove();
+            $select.find('option[value=' + $(id).val() + ']').remove();
           });
           $select.trigger("liszt:updated");
         });

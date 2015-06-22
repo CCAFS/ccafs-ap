@@ -1,7 +1,7 @@
 [#ftl] 
 [#macro logList list ] 
   <div id="log-history" class="borderBox">
-    <h1 class="simpleTitle"> [@s.text name="logHistory.title" /]</h1> 
+    <h1 class="simpleTitle"> [@s.text name="logHistory.title" /] <span>[@s.text name="logHistory.subTitle" /]</span></h1> 
     <table class="log-table">
       <thead>
         <tr>
