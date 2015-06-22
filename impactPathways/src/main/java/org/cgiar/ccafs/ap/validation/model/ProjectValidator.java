@@ -18,7 +18,7 @@ import org.cgiar.ccafs.ap.data.model.Activity;
 import org.cgiar.ccafs.ap.data.model.Budget;
 import org.cgiar.ccafs.ap.data.model.IPElement;
 import org.cgiar.ccafs.ap.data.model.IPIndicator;
-import org.cgiar.ccafs.ap.data.model.IPOtherContribution;
+import org.cgiar.ccafs.ap.data.model.OtherContribution;
 import org.cgiar.ccafs.ap.data.model.IPProgram;
 import org.cgiar.ccafs.ap.data.model.LiaisonInstitution;
 import org.cgiar.ccafs.ap.data.model.Project;
@@ -77,7 +77,7 @@ public class ProjectValidator extends BaseValidator {
     return false;
   }
 
-  public boolean isValidIPOtherContributions(IPOtherContribution ipOtherContribution) {
+  public boolean isValidIPOtherContributions(OtherContribution ipOtherContribution) {
     return false;
   }
 

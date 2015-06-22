@@ -14,7 +14,7 @@
  */
 package org.cgiar.ccafs.ap.data.dao.mysql;
 
-import org.cgiar.ccafs.ap.data.dao.IPOtherContributionDAO;
+import org.cgiar.ccafs.ap.data.dao.ProjectOtherContributionDAO;
 import org.cgiar.ccafs.utils.db.DAOManager;
 
 import java.sql.Connection;
@@ -30,51 +30,17 @@ import org.slf4j.LoggerFactory;
 /**
  * @author Javier Andrés Gallego B.
  */
-public class MySQLIPOtherContributionDAO implements IPOtherContributionDAO {
+public class MySQLProjectOtherContributionDAO implements ProjectOtherContributionDAO {
 
   // Logger
-  private static Logger LOG = LoggerFactory.getLogger(MySQLIPOtherContributionDAO.class);
+  private static Logger LOG = LoggerFactory.getLogger(MySQLProjectOtherContributionDAO.class);
 
   private DAOManager databaseManager;
 
   @Inject
-  public MySQLIPOtherContributionDAO(DAOManager databaseManager) {
+  public MySQLProjectOtherContributionDAO(DAOManager databaseManager) {
     this.databaseManager = databaseManager;
   }
-
-  @Override
-  public boolean deleteIPOtherContribution(int ipOtherContributionId) {
-    LOG.debug(">> deleteIPOtherContribution(id={})", ipOtherContributionId);
-
-    String query = "DELETE FROM ip_other_contributions WHERE id= ?";
-
-    int rowsDeleted = databaseManager.delete(query, new Object[] {ipOtherContributionId});
-    if (rowsDeleted >= 0) {
-      LOG.debug("<< deleteIPOtherContribution():{}", true);
-      return true;
-    }
-
-    LOG.debug("<< deleteIPOtherContribution:{}", false);
-    return false;
-  }
-
-  @Override
-  public boolean deleteIPOtherContributionsByProjectId(int projectID) {
-    LOG.debug(">> deleteIPOtherContributionsByProjectId(projectID={})", projectID);
-
-    StringBuilder query = new StringBuilder();
-    query.append("DELETE ipo FROM ip_other_contributions ipo ");
-    query.append("WHERE ipo.project_id = ? ");
-
-    int rowsDeleted = databaseManager.delete(query.toString(), new Object[] {projectID});
-    if (rowsDeleted >= 0) {
-      LOG.debug("<< deleteIPOtherContributionsByProjectId():{}", true);
-      return true;
-    }
-    LOG.debug("<< deleteIPOtherContributionsByProjectId():{}", false);
-    return false;
-  }
-
 
   @Override
   public Map<String, String> getIPOtherContributionById(int ipOtherContributionId) {
@@ -82,7 +48,7 @@ public class MySQLIPOtherContributionDAO implements IPOtherContributionDAO {
     LOG.debug(">> getIPOtherContributionById( ipOtherContributionId = {} )", ipOtherContributionId);
     StringBuilder query = new StringBuilder();
     query.append("SELECT ipo.*   ");
-    query.append("FROM ip_other_contributions as ipo ");
+    query.append("FROM project_other_contributions as ipo ");
     query.append("WHERE ipo.id=  ");
     query.append(ipOtherContributionId);
     try (Connection con = databaseManager.getConnection()) {
@@ -92,7 +58,7 @@ public class MySQLIPOtherContributionDAO implements IPOtherContributionDAO {
         ipOtherContributionData.put("project_id", rs.getString("project_id"));
         ipOtherContributionData.put("contribution", rs.getString("contribution"));
         ipOtherContributionData.put("additional_contribution", rs.getString("additional_contribution"));
-
+        ipOtherContributionData.put("crp_contributions_nature", rs.getString("crp_contributions_nature"));
       }
       con.close();
     } catch (SQLException e) {
@@ -108,7 +74,7 @@ public class MySQLIPOtherContributionDAO implements IPOtherContributionDAO {
     Map<String, String> ipOtherContributionData = new HashMap<String, String>();
     StringBuilder query = new StringBuilder();
     query.append("SELECT ipo.*   ");
-    query.append("FROM ip_other_contributions as ipo ");
+    query.append("FROM project_other_contributions as ipo ");
     query.append("INNER JOIN projects p ON ipo.project_id = p.id ");
     query.append("WHERE ipo.project_id=  ");
     query.append(projectID);
@@ -119,6 +85,7 @@ public class MySQLIPOtherContributionDAO implements IPOtherContributionDAO {
         ipOtherContributionData.put("project_id", rs.getString("project_id"));
         ipOtherContributionData.put("contribution", rs.getString("contribution"));
         ipOtherContributionData.put("additional_contribution", rs.getString("additional_contribution"));
+        ipOtherContributionData.put("crp_contributions_nature", rs.getString("crp_contributions_nature"));
 
       }
       con.close();
@@ -139,7 +106,7 @@ public class MySQLIPOtherContributionDAO implements IPOtherContributionDAO {
     Object[] values;
     if (ipOtherContributionData.get("id") == null) {
       // Insert new IP Other Contribution record
-      query.append("INSERT INTO ip_other_contributions (project_id, contribution, additional_contribution) ");
+      query.append("INSERT INTO project_other_contributions (project_id, contribution, additional_contribution) ");
       query.append("VALUES (?,?,?) ");
       values = new Object[3];
       values[0] = projectID;
@@ -152,7 +119,8 @@ public class MySQLIPOtherContributionDAO implements IPOtherContributionDAO {
       }
     } else {
       // update IP Other Contribution record
-      query.append("UPDATE ip_other_contributions SET project_id = ?, contribution = ?, additional_contribution = ? ");
+      query
+        .append("UPDATE project_other_contributions SET project_id = ?, contribution = ?, additional_contribution = ? ");
       query.append("WHERE id = ? ");
       values = new Object[4];
       values[0] = projectID;

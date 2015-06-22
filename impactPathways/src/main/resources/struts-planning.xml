@@ -114,23 +114,7 @@
         <param name="namespace">/planning</param>
       </result>
     </action>
-    
-    <action name="crps" class="org.cgiar.ccafs.ap.action.planning.ProjectPartnersPlanningAction">
-      <result name="input">/WEB-INF/planning/projectCrpsPlanning.ftl</result>
-      <result name="success" type="redirectAction">
-        <param name="actionName">crps</param>
-        <param name="projectID">${project.id}</param>
-      </result>
-      <result name="next" type="redirectAction">
-        <param name="actionName">projectOutcomes</param>
-        <param name="projectID">${project.id}</param>
-      </result>
-      <result name="cancel" type="redirectAction">
-        <param name="actionName">projects</param>
-        <param name="namespace">/planning</param>
-      </result>
-    </action>
-    
+
     <action name="locations" class="org.cgiar.ccafs.ap.action.planning.ProjectDescriptionPlanningAction">
       <result name="input">/WEB-INF/planning/projectlocationsPlanning.ftl</result>      
     </action>
@@ -160,6 +144,22 @@
       </result>
       <result name="next" type="redirectAction">
         <param name="actionName">ipOtherContributions</param>
+        <param name="projectID">${project.id}</param>
+      </result>
+      <result name="cancel" type="redirectAction">
+        <param name="actionName">projects</param>
+        <param name="namespace">/planning</param>
+      </result>
+    </action>
+
+    <action name="crps" class="org.cgiar.ccafs.ap.action.planning.ProjectOtherContributionsPlanningAction">
+      <result name="input">/WEB-INF/planning/projectCrpsPlanning.ftl</result>
+      <result name="success" type="redirectAction">
+        <param name="actionName">crps</param>
+        <param name="projectID">${project.id}</param>
+      </result>
+      <result name="next" type="redirectAction">
+        <param name="actionName">projectOutcomes</param>
         <param name="projectID">${project.id}</param>
       </result>
       <result name="cancel" type="redirectAction">

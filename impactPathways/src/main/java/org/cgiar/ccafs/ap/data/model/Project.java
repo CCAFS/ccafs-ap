@@ -53,7 +53,7 @@ public class Project {
   private List<Activity> activities;
   private List<IPElement> outputs;
   private List<IPIndicator> indicators;
-  private IPOtherContribution ipOtherContribution;
+  private OtherContribution ipOtherContribution;
   private List<CRP> crpContributions;
   private String crpContributionsNature;
   private boolean workplanRequired;
@@ -290,7 +290,7 @@ public class Project {
     return emptyIndicator;
   }
 
-  public IPOtherContribution getIpOtherContribution() {
+  public OtherContribution getIpOtherContribution() {
     return ipOtherContribution;
   }
 
@@ -447,7 +447,7 @@ public class Project {
     this.indicators = indicators;
   }
 
-  public void setIpOtherContribution(IPOtherContribution ipOtherContribution) {
+  public void setIpOtherContribution(OtherContribution ipOtherContribution) {
     this.ipOtherContribution = ipOtherContribution;
   }
 

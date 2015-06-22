@@ -20,58 +20,59 @@ import org.apache.commons.lang3.builder.ToStringBuilder;
  * This class represents Other Contributions for a specific activity.
  * 
  * @author Javier Andrés Gallego B.
+ * @author Hernán David Carvajal B.
  */
-public class IPOtherContribution {
+public class OtherContribution {
 
   private int id;
   private String contribution;
   private String additionalContribution;
+  private String crpCollaborationNature;
 
-
-  public IPOtherContribution() {
-
+  public OtherContribution() {
   }
 
   @Override
   public boolean equals(Object obj) {
-    if (obj instanceof IPOtherContribution) {
-      IPOtherContribution n = (IPOtherContribution) obj;
+    if (obj instanceof OtherContribution) {
+      OtherContribution n = (OtherContribution) obj;
       return n.id == this.id;
     }
     return false;
   }
 
-
   public String getAdditionalContribution() {
     return additionalContribution;
   }
-
 
   public String getContribution() {
     return contribution;
   }
 
+  public String getCrpCollaborationNature() {
+    return crpCollaborationNature;
+  }
 
   public int getId() {
     return id;
   }
-
 
   @Override
   public int hashCode() {
     return this.id;
   }
 
-
   public void setAdditionalContribution(String additionalContribution) {
     this.additionalContribution = additionalContribution;
   }
-
 
   public void setContribution(String contribution) {
     this.contribution = contribution;
   }
 
+  public void setCrpCollaborationNature(String crpCollaborationNature) {
+    this.crpCollaborationNature = crpCollaborationNature;
+  }
 
   public void setId(int id) {
     this.id = id;
