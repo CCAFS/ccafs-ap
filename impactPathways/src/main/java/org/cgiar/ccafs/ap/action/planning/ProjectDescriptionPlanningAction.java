@@ -240,10 +240,6 @@ public class ProjectDescriptionPlanningAction extends BaseAction {
     previousProject.setLinkedCoreProjects(project.getLinkedCoreProjects());
 
     super.setHistory(historyManager.getLogHistory("projects", project.getId()));
-
-    if (this.isHttpPost()) {
-      project.getLinkedCoreProjects().clear();
-    }
   }
 
   @Override
@@ -300,11 +296,6 @@ public class ProjectDescriptionPlanningAction extends BaseAction {
       }
 
       previousProject.setSummary(project.getSummary());
-
-
-      if (!project.isCoreProject()) {
-        previousProject.setLinkedCoreProjects(project.getLinkedCoreProjects());
-      }
 
       // Save the information
       int result =
@@ -416,7 +407,7 @@ public class ProjectDescriptionPlanningAction extends BaseAction {
 
   @Override
   public void validate() {
-    if (this.isHttpPost()) {
+    if (save) {
       validator.validate(this, project, config.getCurrentPlanningStartDate());
     }
   }
