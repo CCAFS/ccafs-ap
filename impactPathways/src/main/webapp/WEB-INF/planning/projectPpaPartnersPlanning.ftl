@@ -60,7 +60,7 @@
       </div>
     </div>   
     
-    [#if (editable && canEdit)]  
+    [#if editable]  
       [#-- Project identifier --]
       <div class="borderBox">
         <input name="projectID" type="hidden" value="${project.id?c}" />
@@ -77,6 +77,9 @@
           [@s.text name="preplanning.projectPartners.addPartnerMessage.second" /]
         </a>
       </p>
+    [#else]
+      [#-- Display Log History --]
+      [#if history??][@log.logList list=history /][/#if]  
     [/#if]
   </article>
   [/@s.form] 

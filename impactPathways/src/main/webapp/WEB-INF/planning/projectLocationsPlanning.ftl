@@ -197,6 +197,9 @@
           [@s.submit type="button" name="cancel"][@s.text name="form.buttons.cancel" /][/@s.submit]
         </div>
       </div>  
+    [#else]
+      [#-- Display Log History --]
+      [#if history??][@log.logList list=history /][/#if] 
     [/#if]
   </article>
   [/@s.form] 
