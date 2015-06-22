@@ -157,7 +157,7 @@
               <ul class="list">
                 [#list project.linkedCoreProjects as element]
                   <li class="clearfix [#if !element_has_next]last[/#if]">
-                    <input class="id" type="hidden" name="project.linkedCoreProjects[${element_index}].id" value="${element.id?c}" />
+                    <input class="id" type="hidden" name="project.linkedCoreProjects" value="${element.id?c}" />
                     <span class="name">${element.id} - ${element.title}</span> 
                     [#if editable]<span class="listButton remove">[@s.text name="form.buttons.remove" /]</span>[/#if] 
                   </li>
