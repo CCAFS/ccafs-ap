@@ -567,6 +567,12 @@ select#partnerSave_activityPartner_partner_type_id {
     border-bottom: none;
 }
 
+.panel-body .list span.name {
+    width: 89%;
+    display: block;
+    float: left;
+}
+
 .panel span.listButton {
   float:right;
   padding: 2px 8px;
