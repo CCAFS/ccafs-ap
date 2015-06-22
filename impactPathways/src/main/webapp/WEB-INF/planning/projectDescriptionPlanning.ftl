@@ -70,7 +70,6 @@
 
         [#-- Project upload work plan --]
         [#if project.coreProject]
-        
         <div id="uploadWorkPlan" class="tickBox-wrapper fullBlock" style="[#if !project.workplanName?has_content && !editable]display:none[/#if]">
           [#if securityContext.canAllowProjectWorkplanUpload() ]
             [@customForm.checkbox name="project.workplanRequired" value=""  i18nkey="preplanning.projectDescription.isRequiredUploadworkplan" disabled=!editable editable=editable /]
@@ -100,7 +99,7 @@
               [#if editable] 
                 [@customForm.inputFile name="project.bilateralContract"  /]
               [#else]  
-                Not file uploaded
+                [@s.text name="form.values.notFileUploaded" /]
               [/#if] 
             [/#if]
           </div>  
@@ -177,6 +176,7 @@
       [#-- Project identifier --]
       <div class="borderBox">
         <input name="projectID" type="hidden" value="${project.id?c}" />
+        ${project.isNew?string}
         [@customForm.textArea name="justification" i18nkey="saving.justification" required=true className="justification"/]
         <div class="buttons">
           [@s.submit type="button" name="save"][@s.text name="form.buttons.save" /][/@s.submit]

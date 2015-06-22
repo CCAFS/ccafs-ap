@@ -1882,12 +1882,13 @@ textarea[id$='summary'] {
 
 #projectRegionsBlock {
     padding: 11px 3px 8px 3px;
-    margin-bottom: -2000px;    padding-bottom: 2000px;
+    /* margin-bottom: -2000px; */    
+    /* padding-bottom: 2000px; */
 }
 #projectFlagshipsBlock {     
     padding: 11px 0px 9px 3px;
-    margin-bottom: -2000px; 
-    padding-bottom: 2000px;
+    /* margin-bottom: -2000px; */ 
+    /* padding-bottom: 2000px; */
 }
 
 #projectRegionsBlock .checkboxGroup { 
