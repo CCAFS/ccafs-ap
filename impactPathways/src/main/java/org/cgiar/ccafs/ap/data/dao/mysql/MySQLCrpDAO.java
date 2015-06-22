@@ -25,6 +25,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import com.google.inject.Inject;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -38,8 +39,36 @@ public class MySQLCrpDAO implements CrpDAO {
   private static Logger LOG = LoggerFactory.getLogger(MySQLCrpDAO.class);
   private DAOManager daoManager;
 
+  @Inject
   public MySQLCrpDAO(DAOManager daoManager) {
     this.daoManager = daoManager;
+  }
+
+  @Override
+  public List<Map<String, String>> getCrpContributions(int projectID) {
+    List<Map<String, String>> crps = new ArrayList<>();
+    StringBuilder query = new StringBuilder();
+    query.append("SELECT * FROM crps c ");
+    query.append("INNER JOIN project_crp_contributions pcc ON c.id = pcc.crp_id ");
+    query.append("WHERE ");
+    query.append("project_id = ");
+    query.append(projectID);
+    query.append(" AND is_active = TRUE ");
+
+    try (Connection con = daoManager.getConnection()) {
+      ResultSet rs = daoManager.makeQuery(query.toString(), con);
+      while (rs.next()) {
+        Map<String, String> crp = new HashMap<>();
+        crp.put("id", rs.getString("id"));
+        crp.put("name", rs.getString("name"));
+        crp.put("acronym", rs.getString("acronym"));
+        crps.add(crp);
+      }
+    } catch (SQLException e) {
+      LOG.error("getCrpsList() > Exception raised trying to get the list of CRPs.", e);
+    }
+
+    return crps;
   }
 
   @Override
