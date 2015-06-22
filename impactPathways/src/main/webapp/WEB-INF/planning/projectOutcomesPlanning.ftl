@@ -40,16 +40,12 @@
       </p>
     [/#if]
     
-    <h1 class="contentTitle">
-      [@s.text name="planning.projectOutcome.narrative" /] 
-    </h1> 
-    <div id="projectOutcomes" class="borderBox">
-
+    <div id="projectOutcomes-narrative" class="borderBox">
+      <h1 class="contentTitle">[@s.text name="planning.projectOutcome.narrative" /] </h1> 
       [#-- Project Outcome statement --]
       <div class="fullBlock" id="projectOutcomeStatement">
         [@customForm.textArea name="project.outcomes[${midOutcomeYear}].statement" i18nkey="planning.projectOutcome.statement" /]
       </div>
-
       [#-- Annual progress --]
       [#list currentPlanningYear?number..midOutcomeYear?number-1 as year]
         <div class="fullBlock">
@@ -58,8 +54,24 @@
         </div>
       [/#list]
       <input name="project.outcome[midOutcomeYear].id" type="hidden" value="${project.outcomes[midOutcomeYear+""].id?c}" />
-
+    </div>  
+    
+    <div id="projectOutcomes-contribution" class="borderBox">
+      <h1 class="contentTitle">[@s.text name="planning.projectOutcome.genderAndSocialNarrative" /] </h1> 
+      [#-- Gender and Social Narrative --]
+      <div class="fullBlock" id="projectOutcome-genderAndSocialNarrative">
+        [@customForm.textArea name="project.outcomes[${midOutcomeYear}].genderAndSocialStatement" i18nkey="planning.projectOutcome.genderAndSocialStatement" /]
+      </div>
+      [#-- Annual for the expected Gender and Social contribution --]
+      [#list currentPlanningYear?number..midOutcomeYear?number-1 as year]
+        <div class="fullBlock">
+          [#assign label][@s.text name="planning.projectOutcome.genderAndSocialAnnualProgress"][@s.param]${year}[/@s.param][/@s.text][/#assign]
+          [@customForm.textArea name="project.outcomes[${year?string}].genderAndSocialStatement" i18nkey="${label}" /]
+        </div>
+      [/#list]
+      <input name="project.outcome[midOutcomeYear].id" type="hidden" value="${project.outcomes[midOutcomeYear+""].id?c}" />
     </div>   
+    
     [#if editable] 
       <input type="hidden" id="projectID" name="projectID" value="${projectID}" />
       <div class="buttons">
