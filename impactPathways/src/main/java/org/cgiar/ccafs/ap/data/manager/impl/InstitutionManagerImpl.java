@@ -25,10 +25,13 @@ import org.cgiar.ccafs.ap.data.model.ProjectPartner;
 import org.cgiar.ccafs.ap.data.model.User;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
 import com.google.inject.Inject;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
  * @author Héctor Fabio Tobón R.
@@ -37,12 +40,19 @@ import com.google.inject.Inject;
  */
 public class InstitutionManagerImpl implements InstitutionManager {
 
+  // LOG
+  public static Logger LOG = LoggerFactory.getLogger(InstitutionManagerImpl.class);
 
   private InstitutionDAO institutionDAO;
 
   @Inject
   public InstitutionManagerImpl(InstitutionDAO institutionDAO) {
     this.institutionDAO = institutionDAO;
+  }
+
+  @Override
+  public boolean deleteProjectPartnerContributeInstitution(int projectPartnerID, int institutionID) {
+    return institutionDAO.deleteProjectPartnerContributeInstitution(projectPartnerID, institutionID);
   }
 
 
@@ -103,7 +113,6 @@ public class InstitutionManagerImpl implements InstitutionManager {
     return institutiontypes;
   }
 
-
   @Override
   public List<Institution> getAllPPAInstitutions() {
     List<Institution> institutions = new ArrayList<>();
@@ -146,6 +155,7 @@ public class InstitutionManagerImpl implements InstitutionManager {
     return institutions;
   }
 
+
   @Override
   public Institution getInstitution(int institutionId) {
     Map<String, String> iData = institutionDAO.getInstitution(institutionId);
@@ -184,6 +194,7 @@ public class InstitutionManagerImpl implements InstitutionManager {
     }
     return null;
   }
+
 
   @Override
   public List<Institution> getInstitutionsByTypeAndCountry(InstitutionType type, Country country) {
@@ -312,7 +323,6 @@ public class InstitutionManagerImpl implements InstitutionManager {
     return institutions;
   }
 
-
   @Override
   public Institution getUserMainInstitution(User user) {
     Map<String, String> iData = institutionDAO.getUserMainInstitution(user.getId());
@@ -340,6 +350,46 @@ public class InstitutionManagerImpl implements InstitutionManager {
       return institution;
     }
     return null;
+  }
+
+  @Override
+  public int saveProjectPartnerContributeInstitution(int projectPartnerID, int institutionID) {
+    Map<String, Object> contributionData = new HashMap<>();
+
+    // Project partners must have an institution associated.
+    if (institutionID == -1 || projectPartnerID == -1) {
+      return -1;
+    }
+
+    contributionData.put("project_partner_id", projectPartnerID);
+    contributionData.put("contribution_institution_id", institutionID);
+
+    int result = institutionDAO.saveProjectPartnerContributeInstitution(contributionData);
+    if (result == 0) {
+      LOG.debug(
+        "saveProjectPartnerContributeInstitution > New Project Partner Contribution added with projectPartnerID={}, institutionID={} ",
+        projectPartnerID, institutionID);
+    } else {
+      LOG.error(
+        "saveProjectPartnerContributeInstitution > There was an error trying to save/update a project partner contribution from projectPartnerID={} and institutionID={}",
+        projectPartnerID, institutionID);
+    }
+
+    return result;
+  }
+
+  @Override
+  public boolean saveProjectPartnerContributeInstitutions(int projectPartnerID,
+    List<Institution> contributeInstitutions) {
+    boolean allSaved = true;
+    int result;
+    for (Institution institution : contributeInstitutions) {
+      result = this.saveProjectPartnerContributeInstitution(projectPartnerID, institution.getId());
+      if (result == -1) {
+        allSaved = false;
+      }
+    }
+    return allSaved;
   }
 
 }

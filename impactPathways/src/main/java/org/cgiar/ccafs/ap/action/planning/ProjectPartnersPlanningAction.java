@@ -394,6 +394,37 @@ public class ProjectPartnersPlanningAction extends BaseAction {
       saved = false;
     }
 
+    // Saving project partner contributions
+    if (partnerType.equals(APConstants.PROJECT_PARTNER_PP)) {
+      // iterating each project partner
+      for (ProjectPartner projectPartner : partners) {
+        // Getting previous partner contributions to identify those that need to be deleted.
+        List<Institution> previousPartnerContributions =
+          institutionManager.getProjectPartnerContributeInstitutions(projectPartner);
+        // Deleting project partner contributions
+        for (Institution previousPartnerContribution : previousPartnerContributions) {
+          if (projectPartner.getContributeInstitutions() == null
+            || !projectPartner.getContributeInstitutions().contains(previousPartnerContribution)) {
+            boolean deleted = institutionManager.deleteProjectPartnerContributeInstitution(projectPartner.getId(),
+              previousPartnerContribution.getId());
+            if (!deleted) {
+              success = false;
+            }
+          }
+        }
+
+        // if the project partner has contribute institutions.
+        if (projectPartner.getContributeInstitutions() != null) {
+          // Saving new and old Project Partner Contributions
+          saved = institutionManager.saveProjectPartnerContributeInstitutions(projectPartner.getId(),
+            projectPartner.getContributeInstitutions());
+          if (!saved) {
+            saved = false;
+          }
+        }
+      } // End loop
+    }
+
     if (success) {
       this.addActionMessage(this.getText("saving.saved"));
       return SUCCESS;

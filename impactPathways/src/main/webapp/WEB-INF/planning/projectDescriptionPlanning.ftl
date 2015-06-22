@@ -70,7 +70,6 @@
 
         [#-- Project upload work plan --]
         [#if project.coreProject]
-        
         <div id="uploadWorkPlan" class="tickBox-wrapper fullBlock" style="[#if !project.workplanName?has_content && !editable]display:none[/#if]">
           [#if securityContext.canAllowProjectWorkplanUpload() ]
             [@customForm.checkbox name="project.workplanRequired" value=""  i18nkey="preplanning.projectDescription.isRequiredUploadworkplan" disabled=!editable editable=editable /]
@@ -100,7 +99,7 @@
               [#if editable] 
                 [@customForm.inputFile name="project.bilateralContract"  /]
               [#else]  
-                Not file uploaded
+                [@s.text name="form.values.notFileUploaded" /]
               [/#if] 
             [/#if]
           </div>  
@@ -157,14 +156,15 @@
               <ul class="list">
                 [#list project.linkedCoreProjects as element]
                   <li class="clearfix [#if !element_has_next]last[/#if]">
-                    <input class="id" type="hidden" name="project.coreProjects[${element_index}].id" value="${element.id?c}" />
+                    <input class="id" type="hidden" name="project.linkedCoreProjects" value="${element.id?c}" />
                     <span class="name">${element.id} - ${element.title}</span> 
                     [#if editable]<span class="listButton remove">[@s.text name="form.buttons.remove" /]</span>[/#if] 
                   </li>
                 [/#list]
               </ul>
               [#if editable]
-                [@customForm.select name="" label="" disabled=!canEdit i18nkey="" listName="allPPAPartners" keyFieldName="id" displayFieldName="getComposedName()" className="ppaPartnersSelect" value="" /]
+                 [#-- The values of this list are loaded via ajax --]
+                [@customForm.select name="" label="" disabled=!canEdit i18nkey="" listName="" keyFieldName="id" displayFieldName="" className="" value="" /]
               [/#if] 
             </div>
           </div> 
@@ -186,7 +186,7 @@
       </div>
     [#else]
         [#-- Display Log History --]
-        [@log.logList list=history /]
+        [#if history??][@log.logList list=history /][/#if] 
     [/#if]
      
   </article>

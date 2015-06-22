@@ -16,6 +16,7 @@ package org.cgiar.ccafs.ap.data.manager;
 
 import org.cgiar.ccafs.ap.data.manager.impl.LinkedCoreProjectManagerImpl;
 import org.cgiar.ccafs.ap.data.model.Project;
+import org.cgiar.ccafs.ap.data.model.User;
 
 import java.util.List;
 
@@ -30,6 +31,19 @@ import com.google.inject.ImplementedBy;
 public interface LinkedCoreProjectManager {
 
   /**
+   * This method remove from the database the link between the bilateral project and the core projects received by
+   * parameter.
+   * 
+   * @param project - The bilateral project
+   * @param coreProjects - A list with the identifiers of the core projects to be un-linked of the bilateral project.
+   * @param user
+   * @param justification
+   * @return
+   */
+  public boolean
+    deletedLinkedCoreProjects(Project project, List<Integer> coreProjects, User user, String justification);
+
+  /**
    * This method gets the basic information (id, title) of the projects that are linked to the bilateral project
    * identified by the value received by parameter.
    * 
@@ -39,11 +53,12 @@ public interface LinkedCoreProjectManager {
   public List<Project> getLinkedCoreProjects(int projectID);
 
   /**
-   * This method saves into the database the core projects linked to the bilateral project identified by the value
-   * received by parameter.
+   * This method saves into the database the core projects linked to the project received by parameter.
    * 
    * @param project - Bilateral project that will be linked to some core project(s)
+   * @param user - User who is making the change
+   * @param justification
    * @return true if the information was saved successfully, false otherwise.
    */
-  public boolean saveLinkedCoreProjects(Project project);
+  public boolean saveLinkedCoreProjects(Project project, User user, String justification);
 }

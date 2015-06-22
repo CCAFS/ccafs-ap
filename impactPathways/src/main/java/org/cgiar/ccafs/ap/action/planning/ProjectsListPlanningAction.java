@@ -107,6 +107,10 @@ public class ProjectsListPlanningAction extends BaseAction {
     return config.getCurrentPlanningStartDate();
   }
 
+  public String getEditParameter() {
+    return APConstants.EDITABLE_REQUEST;
+  }
+
   public int getProjectID() {
     return projectID;
   }
@@ -149,7 +153,6 @@ public class ProjectsListPlanningAction extends BaseAction {
   public void setProjectID(int projectID) {
     this.projectID = projectID;
   }
-
 
   public void setTotalBudget(double totalBudget) {
     this.totalBudget = totalBudget;

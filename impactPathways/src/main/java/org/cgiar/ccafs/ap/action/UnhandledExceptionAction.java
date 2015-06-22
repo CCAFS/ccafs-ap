@@ -42,7 +42,7 @@ public class UnhandledExceptionAction extends BaseAction {
   public String execute() throws Exception {
     // Print the exception in the log
     LOG.error("There was an unexpected exception", exception);
-    sendExceptionMessage();
+    this.sendExceptionMessage();
     return super.execute();
   }
 
@@ -64,16 +64,17 @@ public class UnhandledExceptionAction extends BaseAction {
     }
 
     subject = "Exception occurred in CCAFS P&R";
-    message.append("The user " + getCurrentUser().getFirstName() + " " + getCurrentUser().getLastName() + " ");
+    message
+      .append("The user " + this.getCurrentUser().getFirstName() + " " + this.getCurrentUser().getLastName() + " ");
     message.append("has experienced an exception on the platform. \n");
     message.append("This execption occurs in the server: " + config.getBaseUrl() + ".\n");
     message.append("The exception message was: \n\n");
     message.append(writer.toString());
 
     SendMail sendMail = new SendMail(this.config);
-    sendMail.send(config.getGmailUsername(), subject, message.toString());
-    LOG.info("sendExceptionMessage() > The platform has sent a message reporting a exception.", getCurrentUser()
-      .getEmail());
+    sendMail.send(config.getGmailUsername(), null, subject, message.toString());
+    LOG.info("sendExceptionMessage() > The platform has sent a message reporting a exception.",
+      this.getCurrentUser().getEmail());
   }
 
   public void setException(Exception exception) {
