@@ -75,6 +75,7 @@ public class MySQLHistoryDAO implements HistoryDAO {
     query.append("WHERE record_id = ");
     query.append(record_id);
     query.append(" ORDER BY t.active_since DESC ");
+    query.append(" LIMIT 0, 5 ");
 
     try (Connection con = daoManager.getConnection()) {
       ResultSet rs = daoManager.makeQuery(query.toString(), con);
