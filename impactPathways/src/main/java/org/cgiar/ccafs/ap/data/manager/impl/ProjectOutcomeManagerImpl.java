@@ -51,6 +51,7 @@ public class ProjectOutcomeManagerImpl implements ProjectOutcomeManager {
       projectOutcome.setYear(Integer.parseInt(projectOutcomeData.get("year")));
       projectOutcome.setStatement(projectOutcomeData.get("statement"));
       projectOutcome.setStories(projectOutcomeData.get("stories"));
+      projectOutcome.setGenderDimension(projectOutcomeData.get("gender_dimension"));
       return projectOutcome;
     }
     return null;
@@ -67,7 +68,7 @@ public class ProjectOutcomeManagerImpl implements ProjectOutcomeManager {
       projectOutcome.setYear(Integer.parseInt(projectOutcomeData.get("year")));
       projectOutcome.setStatement(projectOutcomeData.get("statement"));
       projectOutcome.setStories(projectOutcomeData.get("stories"));
-
+      projectOutcome.setGenderDimension(projectOutcomeData.get("gender_dimension"));
 
       // adding information of the object to the array
       projectOutcomes.put(String.valueOf(projectOutcome.getYear()), projectOutcome);
