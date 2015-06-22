@@ -1,8 +1,8 @@
 [#ftl]
 <nav id="stageMenu" class="clearfix"> 
   <ul> 
-    <li [#if currentSubStage == "projectOutcomes"] class="currentSection" [/#if]>
-      <a href="[@s.url action='projectOutcomes' includeParams='get'][/@s.url]">[@s.text name="menu.planning.submenu.projectOutcomes" /]</a>
+    <li [#if currentSubStage == "outcomes"] class="currentSection" [/#if]>
+      <a href="[@s.url action='outcomes' includeParams='get'][/@s.url]">[@s.text name="menu.planning.submenu.projectOutcomes" /]</a>
     </li>
     <li [#if currentSubStage == "ccafsOutcomes" ] class="currentSection" [/#if]>
       <a href="[@s.url action='ccafsOutcomes' includeParams='get'][/@s.url]">[@s.text name="menu.planning.submenu.ccafsOutcomes" /]</a>
