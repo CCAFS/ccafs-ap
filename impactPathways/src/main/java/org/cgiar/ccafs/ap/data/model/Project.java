@@ -67,18 +67,6 @@ public class Project {
     this.id = id;
   }
 
-  /**
-   * Return if the project can be deleted.
-   * A project only can be deleted if it was created in the planning
-   * phase for the current year
-   * 
-   * @param currentPlanningYear
-   * @return
-   */
-  public boolean canDelete(Date planningStartDate) {
-    return this.getCreationDate().after(planningStartDate);
-  }
-
   public boolean containsOutput(int outputID) {
     if (this.outputs != null) {
       for (IPElement output : this.outputs) {
@@ -316,10 +304,10 @@ public class Project {
     return outcomes;
   }
 
-
   public List<IPElement> getOutputs() {
     return outputs;
   }
+
 
   public User getOwner() {
     return owner;
@@ -388,6 +376,17 @@ public class Project {
 
   public boolean isCoreProject() {
     return (type != null) ? type.equals(APConstants.PROJECT_CORE) : false;
+  }
+
+  /**
+   * Return if the is new.
+   * A project is new when it was created in the planning phase for the current year
+   * 
+   * @param currentPlanningYear
+   * @return
+   */
+  public boolean isNew(Date planningStartDate) {
+    return this.getCreationDate().after(planningStartDate);
   }
 
   public boolean isWorkplanRequired() {

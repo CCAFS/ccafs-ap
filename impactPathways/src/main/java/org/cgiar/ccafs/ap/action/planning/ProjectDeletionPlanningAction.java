@@ -51,7 +51,7 @@ public class ProjectDeletionPlanningAction extends BaseAction {
   @Override
   public String execute() throws Exception {
 
-    if (securityContext.canDeleteProject() && project.canDelete(config.getCurrentPlanningStartDate())) {
+    if (securityContext.canDeleteProject() && project.isNew(config.getCurrentPlanningStartDate())) {
       projectManager.deleteProject(project.getId());
     } else {
       return BaseAction.NOT_AUTHORIZED;

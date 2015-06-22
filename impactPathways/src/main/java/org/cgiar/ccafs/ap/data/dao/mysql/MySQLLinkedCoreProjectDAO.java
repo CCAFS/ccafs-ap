@@ -98,24 +98,25 @@ public class MySQLLinkedCoreProjectDAO implements LinkedCoreProjectDAO {
   public boolean saveLinkedCoreProjects(int bilateralProjectID, List<Integer> listCoreProjectsIDs, int userID,
     String justification) {
     boolean saved = false;
-    Object[] values = new Object[listCoreProjectsIDs.size() * 4];
+    Object[] values = new Object[listCoreProjectsIDs.size() * 5];
     StringBuilder query = new StringBuilder();
     query.append("INSERT INTO linked_core_projects ");
-    query.append("(bilateral_project_id, core_project_id, modified_by, modification_justification) VALUES ");
+    query.append("(bilateral_project_id, core_project_id, created_by, modified_by, modification_justification) ");
+    query.append("VALUES ");
 
     for (int i = 0; i < listCoreProjectsIDs.size(); i++) {
       if (i == 0) {
-        query.append(" (?, ?, ?, ?) ");
+        query.append(" (?, ?, ?, ?, ?) ");
       } else {
-        query.append(", (?, ?, ?, ?) ");
+        query.append(", (?, ?, ?, ?, ?) ");
       }
-      query.append("; ");
 
-      int c = i * 2;
+      int c = i * 5;
       values[c] = bilateralProjectID;
       values[c + 1] = listCoreProjectsIDs.get(i);
       values[c + 2] = userID;
-      values[c + 3] = justification;
+      values[c + 3] = userID;
+      values[c + 4] = justification;
     }
     query.append("; ");
 

@@ -44,8 +44,17 @@ public class ProjectDescriptionValidator extends BaseValidator {
     this.projectValidator = projectValidator;
   }
 
-  public void validate(BaseAction action, Project project) {
+  public void validate(BaseAction action, Project project, Date currentPlanningStartDate) {
     if (project != null) {
+      // If the project is not new the user should provide a justification of the changes
+      Date a = project.getCreationDate();
+      if (!project.isNew(currentPlanningStartDate)) {
+        if (action.getJustification() == null || action.getJustification().isEmpty()) {
+          action.addActionError(this.getText("validation.justification"));
+          action.addFieldError("justification", this.getText("validation.field.required"));
+        }
+      }
+
       // The projects will be validated according to their type
       if (project.getType().equals(APConstants.PROJECT_CORE)) {
         this.validateCoreProject(action, project);
@@ -63,7 +72,7 @@ public class ProjectDescriptionValidator extends BaseValidator {
   public void validateBilateralContractProposalName(BaseAction action, String proposalName) {
     if (!projectValidator.isValidBilateralContractProposalName(proposalName)) {
       // TODO - Add the i18n key
-      this.addMessage(this.getText("--------").toLowerCase());
+      this.addMessage(this.getText("preplanning.projectDescription.uploadBilateral.readText").toLowerCase());
     }
   }
 
