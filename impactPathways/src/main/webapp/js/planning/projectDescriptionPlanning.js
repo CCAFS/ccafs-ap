@@ -97,7 +97,7 @@ $(document).ready(function() {
 
   function setcoreProjectsIndexes() {
     $coreProjects.find('li').each(function(i,item) {
-      var elementName = "project.coreProjects[" + i + "].";
+      var elementName = "project.linkedCoreProjects[" + i + "].";
       $(item).find('.id').attr('name', elementName + 'id');
     });
   }

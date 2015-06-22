@@ -17,6 +17,7 @@ package org.cgiar.ccafs.ap.data.manager.impl;
 import org.cgiar.ccafs.ap.data.dao.LinkedCoreProjectDAO;
 import org.cgiar.ccafs.ap.data.manager.LinkedCoreProjectManager;
 import org.cgiar.ccafs.ap.data.model.Project;
+import org.cgiar.ccafs.ap.data.model.User;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -39,6 +40,12 @@ public class LinkedCoreProjectManagerImpl implements LinkedCoreProjectManager {
   }
 
   @Override
+  public boolean
+    deletedLinkedCoreProjects(Project project, List<Integer> coreProjects, User user, String justification) {
+    return linkedCoreProjectsDAO.removeLinkedCoreProjects(project.getId(), coreProjects, user.getId(), justification);
+  }
+
+  @Override
   public List<Project> getLinkedCoreProjects(int projectID) {
     List<Project> projects = new ArrayList<>();
     List<Map<String, String>> projectsInfo = linkedCoreProjectsDAO.getLinkedCoreProjects(projectID);
@@ -53,13 +60,13 @@ public class LinkedCoreProjectManagerImpl implements LinkedCoreProjectManager {
   }
 
   @Override
-  public boolean saveLinkedCoreProjects(Project project) {
+  public boolean saveLinkedCoreProjects(Project project, User user, String justification) {
     List<Integer> coreProjectsIDs = new ArrayList<>();
     for (Project coreProject : project.getLinkedCoreProjects()) {
       coreProjectsIDs.add(coreProject.getId());
     }
 
-    return linkedCoreProjectsDAO.saveLinkedCoreProjects(project.getId(), coreProjectsIDs);
+    return linkedCoreProjectsDAO.saveLinkedCoreProjects(project.getId(), coreProjectsIDs, user.getId(), justification);
   }
 
 }

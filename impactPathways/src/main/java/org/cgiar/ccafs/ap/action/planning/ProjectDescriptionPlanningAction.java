@@ -29,8 +29,8 @@ import org.cgiar.ccafs.ap.data.model.User;
 import org.cgiar.ccafs.ap.validation.planning.ProjectDescriptionValidator;
 import org.cgiar.ccafs.utils.APConfig;
 
+import java.util.ArrayList;
 import java.util.Collection;
-import java.util.Iterator;
 import java.util.List;
 
 import com.google.inject.Inject;
@@ -221,6 +221,7 @@ public class ProjectDescriptionPlanningAction extends BaseAction {
     // If project is bilateral cofounded, we should load the core projects linked to it.
     if (!project.isCoreProject()) {
       project.setLinkedCoreProjects(linkedCoreProjectManager.getLinkedCoreProjects(projectID));
+
     }
     // If the user is not admin or the project owner, we should keep some information
     // unmutable
@@ -239,160 +240,10 @@ public class ProjectDescriptionPlanningAction extends BaseAction {
     previousProject.setLinkedCoreProjects(project.getLinkedCoreProjects());
 
     super.setHistory(historyManager.getLogHistory("projects", project.getId()));
-  }
 
-  public String previousSave() {
-    if (this.isSaveable()) {
-      if (1 == 1) {
-        return SUCCESS;
-      }
-      // ----- SAVING Project description -----
-      int result = 0;
-      // if user is project owner or FPL/RPL, he is able to fully edit.
-      if (this.isFullEditable()) {
-
-        // Reviewing some change in the year range from start date to end date in order to reflect those changes in the
-        // project budget section.
-        List<Integer> currentYears = project.getAllYears();
-        List<Integer> previousYears = projectManager.getProject(project.getId()).getAllYears();
-        // Deleting unused years from project budget.
-        for (Integer previousYear : previousYears) {
-          if (!currentYears.contains(previousYear)) {
-            budgetManager.deleteBudgetsByYear(projectID, previousYear.intValue());
-          }
-        }
-
-        result = projectManager.saveProjectDescription(project, this.getCurrentUser(), this.getJustification());
-
-        if (result < 0) {
-          this.addActionError(this.getText("saving.problem"));
-          return BaseAction.INPUT;
-        }
-
-        // ----- SAVING IPPrograms (Flagships and Regions) -----
-        boolean success = true;
-        boolean saved = true;
-        boolean deleted;
-
-        // Adding the program that was disabled in the interface, and validate that at least one item was selected.
-        IPProgram programDisabled = ipProgramManager.getIPProgramByProjectId(project.getId());
-        if (programDisabled.getType().getId() == APConstants.FLAGSHIP_PROGRAM_TYPE) {
-          project.getFlagships().add(programDisabled);
-        } else if (programDisabled.getType().getId() == APConstants.REGION_PROGRAM_TYPE) {
-          project.getRegions().add(programDisabled);
-        } // else if (programDisabled.getType().getId() == APConstants.COORDINATION_PROGRAM_TYPE) {
-        // project.getFlagships().add(programDisabled); // Which should be Global.
-        // }
-
-        if (project.getRegions().isEmpty()) {
-          this.addActionWarning(this.getText("preplanning.projectDescription.noRegions"));
-        }
-        if (project.getFlagships().isEmpty()) {
-          this.addActionWarning(this.getText("preplanning.projectDescription.noFlagships"));
-        }
-
-        // Identifying regions that were unchecked in the front-end
-        if (project.getRegions() != null) {
-          List<IPProgram> previousRegions =
-            ipProgramManager.getProjectFocuses(project.getId(), APConstants.REGION_PROGRAM_TYPE);
-          for (IPProgram programRegion : previousRegions) {
-            if (!project.getRegions().contains(programRegion)) {
-              deleted = ipProgramManager.deleteProjectFocus(project.getId(), programRegion.getId());
-              if (!deleted) {
-                success = false;
-              }
-            }
-          }
-
-          // Identifying existing regions in the database, so we don't have to insert them again.
-          Iterator<IPProgram> iterator = project.getRegions().iterator();
-          while (iterator.hasNext()) {
-            if (previousRegions.contains(iterator.next())) {
-              iterator.remove();
-            }
-          }
-          // Adding new Regional Project Focuses.
-          for (IPProgram programToAdd : project.getRegions()) {
-            saved =
-              ipProgramManager.saveProjectFocus(project.getId(), programToAdd.getId(), this.getCurrentUser(),
-                this.getJustification());
-            if (!saved) {
-              success = false;
-            }
-          }
-          // Stop here if a something bad happened.
-          if (!success) {
-            this.addActionError(this.getText("saving.problem"));
-            return BaseAction.INPUT;
-          }
-        }
-
-        // Identifying flagships that were unchecked in the front-end
-        if (project.getFlagships() != null) {
-          // Identifying deleted flagships
-          List<IPProgram> previousFlagships =
-            ipProgramManager.getProjectFocuses(project.getId(), APConstants.FLAGSHIP_PROGRAM_TYPE);
-          for (IPProgram programFlagship : previousFlagships) {
-            if (!project.getFlagships().contains(programFlagship)) {
-              deleted = ipProgramManager.deleteProjectFocus(project.getId(), programFlagship.getId());
-              if (!deleted) {
-                success = false;
-              }
-            }
-          }
-          // Identifying existing flagships in the database, so we don't have to insert them again.
-          Iterator<IPProgram> iterator = project.getFlagships().iterator();
-          while (iterator.hasNext()) {
-            if (previousFlagships.contains(iterator.next())) {
-              iterator.remove();
-            }
-          }
-          // Adding new Flagship Project Focuses.
-          for (IPProgram programToAdd : project.getFlagships()) {
-            saved =
-              ipProgramManager.saveProjectFocus(project.getId(), programToAdd.getId(), this.getCurrentUser(),
-                this.getJustification());
-            if (!saved) {
-              success = false;
-            }
-          }
-          // Stop here if a something bad happened.
-          if (!success) {
-            this.addActionError(this.getText("saving.problem"));
-            return BaseAction.INPUT;
-          }
-        }
-        // ----- END SAVING IPPrograms (Flagships and Regions) -----
-
-      } else {
-        // User is PL, thus, only save title and summary.
-
-        // We set the values that changed to the previous project
-        // in order to prevent unauthorized changes.
-        previousProject.setTitle(project.getTitle()); // setting the possible new title.
-        previousProject.setSummary(project.getSummary()); // setting the possible new summary.
-        result = projectManager.saveProjectDescription(previousProject, this.getCurrentUser(), this.getJustification());
-        if (result < 0) {
-          this.addActionError(this.getText("saving.problem"));
-          return BaseAction.INPUT;
-        }
-      }
-
-      // If there are some warnings, show a different message: Saving with problems
-      if (this.getActionMessages().size() > 0) {
-        this.addActionMessage(this.getText("saving.saved.problem"));
-        return BaseAction.INPUT;
-      } else {
-        this.addActionMessage(this.getText("saving.success",
-          new String[] {this.getText("preplanning.projectDescription.title")}));
-        return BaseAction.SUCCESS;
-      }
-    } else {
-      LOG.warn("User {} tried to save information in Project Description without having enough privileges!", this
-        .getCurrentUser().getId());
+    if (this.isHttpPost()) {
+      project.getLinkedCoreProjects().clear();
     }
-    return BaseAction.ERROR;
-
   }
 
   @Override
@@ -513,6 +364,26 @@ public class ProjectDescriptionPlanningAction extends BaseAction {
         }
       }
 
+      // Save the contributing core projects if any
+      if (!project.isCoreProject()) {
+        // First delete the core projects un-selected
+        List<Integer> coreProjectsToDelete = new ArrayList<>();
+        for (Project p : previousProject.getLinkedCoreProjects()) {
+          if (!project.getLinkedCoreProjects().contains(p)) {
+            coreProjectsToDelete.add(p.getId());
+          }
+        }
+        if (!coreProjectsToDelete.isEmpty()) {
+          linkedCoreProjectManager.deletedLinkedCoreProjects(project, coreProjectsToDelete, this.getCurrentUser(),
+            this.getJustification());
+        }
+
+        // Then save the new core projects linked
+        if (!project.getLinkedCoreProjects().isEmpty()) {
+          linkedCoreProjectManager.saveLinkedCoreProjects(project, this.getCurrentUser(), this.getJustification());
+        }
+      }
+
       // Get the validation messages and append them to the save message
       Collection<String> messages = this.getActionMessages();
       if (!messages.isEmpty()) {
@@ -546,7 +417,7 @@ public class ProjectDescriptionPlanningAction extends BaseAction {
   @Override
   public void validate() {
     if (this.isHttpPost()) {
-      validator.validate(this, project);
+      validator.validate(this, project, config.getCurrentPlanningStartDate());
     }
   }
 }

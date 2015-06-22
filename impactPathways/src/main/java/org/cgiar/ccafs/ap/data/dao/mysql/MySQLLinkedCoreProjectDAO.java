@@ -71,27 +71,56 @@ public class MySQLLinkedCoreProjectDAO implements LinkedCoreProjectDAO {
   }
 
   @Override
-  public boolean saveLinkedCoreProjects(int bilateralProjectID, List<Integer> listCoreProjectsIDs) {
+  public boolean removeLinkedCoreProjects(int bilateralProjectID, List<Integer> coreProjects, int userID,
+    String justification) {
+    Object[] values = new Object[3 + coreProjects.size()];
+    StringBuilder query = new StringBuilder();
+    query.append("UPDATE linked_core_projects ");
+    query.append("SET is_active = FALSE, modified_by = ?, modification_justification = ? ");
+    query.append("WHERE bilateral_project_id = ? ");
+    query.append("AND core_project_id IN (");
+
+    values[0] = userID;
+    values[1] = justification;
+    values[2] = bilateralProjectID;
+
+    for (int c = 0; c < coreProjects.size(); c++) {
+      query.append((c == 0) ? " ?" : ", ?");
+      values[3 + c] = coreProjects.get(c);
+    }
+    query.append("); ");
+
+    int result = daoManager.delete(query.toString(), values);
+    return (result == -1) ? false : true;
+  }
+
+  @Override
+  public boolean saveLinkedCoreProjects(int bilateralProjectID, List<Integer> listCoreProjectsIDs, int userID,
+    String justification) {
     boolean saved = false;
-    Object[] values = new Object[listCoreProjectsIDs.size() * 2];
-    StringBuilder preparedQuery = new StringBuilder();
-    preparedQuery.append("INSERT INTO linked_core_projects (bilateral_project_id, core_project_id) VALUES ");
+    Object[] values = new Object[listCoreProjectsIDs.size() * 5];
+    StringBuilder query = new StringBuilder();
+    query.append("INSERT INTO linked_core_projects ");
+    query.append("(bilateral_project_id, core_project_id, created_by, modified_by, modification_justification) ");
+    query.append("VALUES ");
 
     for (int i = 0; i < listCoreProjectsIDs.size(); i++) {
       if (i == 0) {
-        preparedQuery.append(" (?, ?) ");
+        query.append(" (?, ?, ?, ?, ?) ");
       } else {
-        preparedQuery.append(", (?, ?) ");
+        query.append(", (?, ?, ?, ?, ?) ");
       }
-      preparedQuery.append("; ");
 
-      int c = i * 2;
+      int c = i * 5;
       values[c] = bilateralProjectID;
       values[c + 1] = listCoreProjectsIDs.get(i);
+      values[c + 2] = userID;
+      values[c + 3] = userID;
+      values[c + 4] = justification;
     }
-    preparedQuery.append("; ");
+    query.append("; ");
 
-    int result = daoManager.saveData(preparedQuery.toString(), values);
+    int result = daoManager.saveData(query.toString(), values);
     saved = (result == -1) ? false : true;
     return saved;
   }
