@@ -321,7 +321,7 @@
 /* @end */
 /* @group Disabled Support */
 .chzn-disabled {
-  opacity: 0.5 !important;
+  opacity: 0.7 !important;
   cursor: default;
 }
 .chzn-disabled .chzn-single {

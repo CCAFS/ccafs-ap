@@ -177,7 +177,6 @@
       [#-- Project identifier --]
       <div class="borderBox">
         <input name="projectID" type="hidden" value="${project.id?c}" />
-        ${project.isNew?string}
         [@customForm.textArea name="justification" i18nkey="saving.justification" required=true className="justification"/]
         <div class="buttons">
           [@s.submit type="button" name="save"][@s.text name="form.buttons.save" /][/@s.submit]

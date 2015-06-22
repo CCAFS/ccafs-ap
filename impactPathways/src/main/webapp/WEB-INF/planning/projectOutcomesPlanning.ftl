@@ -4,7 +4,8 @@
 [#assign customJS = ["${baseUrl}/js/global/utils.js", "${baseUrl}/js/global/ipGraph.js", "${baseUrl}/js/planning/projectImpactPathwayPlanning.js"] /]
 [#assign currentSection = "planning" /]
 [#assign currentPlanningSection = "projects" /]
-[#assign currentStage = "outcomes" /]
+[#assign currentStage = "outcomes" /] 
+[#assign currentSubStage = "projectOutcomes" /]
 
 [#assign breadCrumb = [
   {"label":"planning", "nameSpace":"planning", "action":"projectsList"},
@@ -286,7 +287,7 @@
     </div>
   </div>
   
- [#-- Major Output Group template --]
+  [#-- Major Output Group template --]
   <div class="mogs">
     <h6>[@s.text name="planning.projectImpactPathways.mogs" /]</h6>
     <div class="mogsBlock">

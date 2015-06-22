@@ -150,14 +150,30 @@
       </result>
     </action>
     
-    <action name="outcomes" class="org.cgiar.ccafs.ap.action.planning.ProjectOutcomeAction">
+    <action name="projectOutcomes" class="org.cgiar.ccafs.ap.action.planning.ProjectOutcomeAction">
       <result name="input">/WEB-INF/planning/projectOutcomesPlanning.ftl</result>		
       <result name="success" type="redirectAction">		
         <param name="actionName">projectOutcomes</param>		
         <param name="projectID">${project.id}</param>		
       </result>
       <result name="next" type="redirectAction">
-        <param name="actionName">ipOtherContributions</param>
+        <param name="actionName">ccafsOutcomes</param>
+        <param name="projectID">${project.id}</param>
+      </result>
+      <result name="cancel" type="redirectAction">
+        <param name="actionName">projects</param>
+        <param name="namespace">/planning</param>
+      </result>
+    </action>
+    
+    <action name="ccafsOutcomes" class="org.cgiar.ccafs.ap.action.planning.ProjectOutcomeAction">
+      <result name="input">/WEB-INF/planning/projectOutcomesPlanning.ftl</result>   
+      <result name="success" type="redirectAction">   
+        <param name="actionName">ccafsOutcomes</param>    
+        <param name="projectID">${project.id}</param>   
+      </result>
+      <result name="next" type="redirectAction">
+        <param name="actionName">otherContributions</param>
         <param name="projectID">${project.id}</param>
       </result>
       <result name="cancel" type="redirectAction">
@@ -166,10 +182,10 @@
       </result>
     </action>
 
-    <action name="ipOtherContributions" class="org.cgiar.ccafs.ap.action.planning.ProjectIPOtherContributionAction">
-      <result name="input">/WEB-INF/planning/projectIPOtherContributionPlanning.ftl</result>
+    <action name="otherContributions" class="org.cgiar.ccafs.ap.action.planning.ProjectIPOtherContributionAction">
+      <result name="input">/WEB-INF/planning/projectOtherContributionPlanning.ftl</result>
       <result name="success" type="redirectAction">   
-        <param name="actionName">ipOtherContributions</param>   
+        <param name="actionName">otherContributions</param>   
         <param name="projectID">${project.id}</param>   
       </result>
       <result name="next" type="redirectAction">
