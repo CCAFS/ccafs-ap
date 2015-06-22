@@ -54,7 +54,8 @@ public class Project {
   private List<IPElement> outputs;
   private List<IPIndicator> indicators;
   private IPOtherContribution ipOtherContribution;
-  private Map<CRP, String> crpContributions;
+  private List<CRP> crpContributions;
+  private String crpContributionsNature;
   private boolean workplanRequired;
   private String workplanName;
   private String bilateralContractProposalName;
@@ -197,6 +198,14 @@ public class Project {
     return new Date(created);
   }
 
+  public List<CRP> getCrpContributions() {
+    return crpContributions;
+  }
+
+  public String getCrpContributionsNature() {
+    return crpContributionsNature;
+  }
+
   public Date getEndDate() {
     return endDate;
   }
@@ -309,7 +318,6 @@ public class Project {
     return outputs;
   }
 
-
   public User getOwner() {
     return owner;
   }
@@ -317,6 +325,7 @@ public class Project {
   public List<ProjectPartner> getPPAPartners() {
     return ppaPartners;
   }
+
 
   public List<ProjectPartner> getProjectPartners() {
     return projectPartners;
@@ -412,6 +421,14 @@ public class Project {
 
   public void setCreated(long created) {
     this.created = created;
+  }
+
+  public void setCrpContributions(List<CRP> crpContributions) {
+    this.crpContributions = crpContributions;
+  }
+
+  public void setCrpContributionsNature(String crpContributionsNature) {
+    this.crpContributionsNature = crpContributionsNature;
   }
 
   public void setEndDate(Date endDate) {
