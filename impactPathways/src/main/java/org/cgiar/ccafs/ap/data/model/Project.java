@@ -54,6 +54,7 @@ public class Project {
   private List<IPElement> outputs;
   private List<IPIndicator> indicators;
   private IPOtherContribution ipOtherContribution;
+  private Map<CRP, String> crpContributions;
   private boolean workplanRequired;
   private String workplanName;
   private String bilateralContractProposalName;

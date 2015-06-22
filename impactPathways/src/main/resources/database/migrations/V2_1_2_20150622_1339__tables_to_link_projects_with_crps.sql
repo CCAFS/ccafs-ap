@@ -52,3 +52,4 @@ INSERT INTO `crps` (`name`) VALUES ('Genebank');
 
 ALTER TABLE `crps` ADD COLUMN `is_active` TINYINT(1) NOT NULL DEFAULT '1'  AFTER `acronym` ;
 
+ALTER TABLE `project_crp_contributions` ADD COLUMN `collaboration_nature` TEXT NULL  AFTER `crp_id` ;
