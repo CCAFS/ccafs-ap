@@ -238,11 +238,14 @@ public class ProjectDescriptionPlanningAction extends BaseAction {
     previousProject.setType(project.getType());
     previousProject.setWorkplanRequired(project.isWorkplanRequired());
 
-    List<Project> coreProjects = new ArrayList<>();
-    for (Project p : project.getLinkedCoreProjects()) {
-      coreProjects.add(new Project(p.getId()));
+    if (project.getLinkedCoreProjects() != null) {
+      List<Project> coreProjects = new ArrayList<>();
+      for (Project p : project.getLinkedCoreProjects()) {
+        coreProjects.add(new Project(p.getId()));
+      }
+
+      previousProject.setLinkedCoreProjects(coreProjects);
     }
-    previousProject.setLinkedCoreProjects(coreProjects);
 
     super.setHistory(historyManager.getLogHistory("projects", project.getId()));
 
