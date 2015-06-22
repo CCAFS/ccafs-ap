@@ -53,6 +53,7 @@ public class MySQLLinkedCoreProjectDAO implements LinkedCoreProjectDAO {
     query.append("INNER JOIN linked_core_projects lcp ON p.id = lcp.core_project_id ");
     query.append("WHERE lcp.bilateral_project_id = ");
     query.append(projectID);
+    query.append(" AND lcp.is_active = TRUE");
 
     try (Connection con = daoManager.getConnection()) {
       ResultSet rs = daoManager.makeQuery(query.toString(), con);
@@ -100,7 +101,7 @@ public class MySQLLinkedCoreProjectDAO implements LinkedCoreProjectDAO {
     boolean saved = false;
     Object[] values = new Object[listCoreProjectsIDs.size() * 5];
     StringBuilder query = new StringBuilder();
-    query.append("INSERT INTO linked_core_projects ");
+    query.append("INSERT IGNORE INTO linked_core_projects ");
     query.append("(bilateral_project_id, core_project_id, created_by, modified_by, modification_justification) ");
     query.append("VALUES ");
 
