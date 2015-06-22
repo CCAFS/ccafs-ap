@@ -16,6 +16,7 @@
         <param name="namespace">/planning/projects</param>
         <param name="actionName">description</param>
         <param name="projectID">${projectID}</param>
+        <param name="edit">true</param>
       </result>
     </action>
     
@@ -25,6 +26,7 @@
         <param name="namespace">/planning/projects</param>
         <param name="actionName">description</param>
         <param name="projectID">${projectID}</param>
+        <param name="edit">true</param>
       </result>
     </action>
     
@@ -40,11 +42,11 @@
     
     <action name="deleteProject" class="org.cgiar.ccafs.ap.action.planning.ProjectDeletionPlanningAction">
       <result name="input" type="redirectAction">
-        <param name="actionName">projects</param>
+        <param name="actionName">projectsList</param>
         <param name="namespace">/planning</param>
       </result>
       <result name="success" type="redirectAction">
-        <param name="actionName">projects</param>
+        <param name="actionName">projectsList</param>
         <param name="namespace">/planning</param>
       </result>
     </action>
@@ -60,8 +62,8 @@
         <param name="projectID">${project.id}</param>
       </result>
       <result name="cancel" type="redirectAction">
-        <param name="actionName">projects</param>
-        <param name="namespace">/planning</param>
+        <param name="actionName">description</param>
+        <param name="projectID">${project.id}</param>
       </result>
     </action>
     
