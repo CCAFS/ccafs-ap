@@ -13,9 +13,9 @@
  *****************************************************************/
 package org.cgiar.ccafs.ap.data.manager.impl;
 
-import org.cgiar.ccafs.ap.data.dao.IPOtherContributionDAO;
-import org.cgiar.ccafs.ap.data.manager.IPOtherContributionManager;
-import org.cgiar.ccafs.ap.data.model.IPOtherContribution;
+import org.cgiar.ccafs.ap.data.dao.ProjectOtherContributionDAO;
+import org.cgiar.ccafs.ap.data.manager.ProjectOtherContributionManager;
+import org.cgiar.ccafs.ap.data.model.OtherContribution;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -28,62 +28,53 @@ import org.slf4j.LoggerFactory;
  * @author Javier Andrés Gallego
  * @author Hernán David Carvajal
  */
-public class IPOtherContributionManagerImpl implements IPOtherContributionManager {
+public class ProjectOtherContributionManagerImpl implements ProjectOtherContributionManager {
 
   // LOG
-  private static Logger LOG = LoggerFactory.getLogger(IPOtherContributionManagerImpl.class);
+  private static Logger LOG = LoggerFactory.getLogger(ProjectOtherContributionManagerImpl.class);
 
   // DAO's
-  private IPOtherContributionDAO ipOtherContributionDAO;
+  private ProjectOtherContributionDAO ipOtherContributionDAO;
 
   // Managers
 
 
   @Inject
-  public IPOtherContributionManagerImpl(IPOtherContributionDAO ipOtherContributionDAO) {
+  public ProjectOtherContributionManagerImpl(ProjectOtherContributionDAO ipOtherContributionDAO) {
     this.ipOtherContributionDAO = ipOtherContributionDAO;
   }
 
   @Override
-  public boolean deleteIPOtherContribution(int contributionId) {
-    return ipOtherContributionDAO.deleteIPOtherContribution(contributionId);
-  }
-
-  @Override
-  public boolean deleteIPOtherContributionsByProjectId(int projectID) {
-    return ipOtherContributionDAO.deleteIPOtherContributionsByProjectId(projectID);
-  }
-
-  @Override
-  public IPOtherContribution getIPOtherContributionById(int ipOtherContributionID) {
+  public OtherContribution getIPOtherContributionById(int ipOtherContributionID) {
     Map<String, String> ipOtherContributionData =
       ipOtherContributionDAO.getIPOtherContributionById(ipOtherContributionID);
     if (!ipOtherContributionData.isEmpty()) {
-      IPOtherContribution ipOtherContribution = new IPOtherContribution();
+      OtherContribution ipOtherContribution = new OtherContribution();
       ipOtherContribution.setId(Integer.parseInt(ipOtherContributionData.get("id")));
       ipOtherContribution.setContribution(ipOtherContributionData.get("contribution"));
       ipOtherContribution.setAdditionalContribution(ipOtherContributionData.get("additional_contribution"));
+      ipOtherContribution.setCrpCollaborationNature(ipOtherContributionData.get("crp_contributions_nature"));
       return ipOtherContribution;
     }
     return null;
   }
 
   @Override
-  public IPOtherContribution getIPOtherContributionByProjectId(int projectID) {
+  public OtherContribution getIPOtherContributionByProjectId(int projectID) {
     Map<String, String> ipOtherContributionData = ipOtherContributionDAO.getIPOtherContributionByProjectId(projectID);
     if (!ipOtherContributionData.isEmpty()) {
-      IPOtherContribution ipOtherContribution = new IPOtherContribution();
+      OtherContribution ipOtherContribution = new OtherContribution();
       ipOtherContribution.setId(Integer.parseInt(ipOtherContributionData.get("id")));
       ipOtherContribution.setContribution(ipOtherContributionData.get("contribution"));
       ipOtherContribution.setAdditionalContribution(ipOtherContributionData.get("additional_contribution"));
-
+      ipOtherContribution.setCrpCollaborationNature(ipOtherContributionData.get("crp_contributions_nature"));
       return ipOtherContribution;
     }
     return null;
   }
 
   @Override
-  public boolean saveIPOtherContribution(int projectID, IPOtherContribution ipOtherContribution) {
+  public boolean saveIPOtherContribution(int projectID, OtherContribution ipOtherContribution) {
     boolean allSaved = true;
     Map<String, Object> activityData = new HashMap<>();
     if (ipOtherContribution.getId() > 0) {

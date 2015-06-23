@@ -237,9 +237,23 @@ public class ProjectDescriptionPlanningAction extends BaseAction {
     previousProject.setRegions(project.getRegions());
     previousProject.setType(project.getType());
     previousProject.setWorkplanRequired(project.isWorkplanRequired());
-    previousProject.setLinkedCoreProjects(project.getLinkedCoreProjects());
+
+    if (project.getLinkedCoreProjects() != null) {
+      List<Project> coreProjects = new ArrayList<>();
+      for (Project p : project.getLinkedCoreProjects()) {
+        coreProjects.add(new Project(p.getId()));
+      }
+
+      previousProject.setLinkedCoreProjects(coreProjects);
+    }
 
     super.setHistory(historyManager.getLogHistory("projects", project.getId()));
+
+    if (this.isHttpPost()) {
+      if (project.getLinkedCoreProjects() != null) {
+        project.getLinkedCoreProjects().clear();
+      }
+    }
   }
 
   @Override
@@ -288,7 +302,17 @@ public class ProjectDescriptionPlanningAction extends BaseAction {
         }
       }
 
+      previousProject.setType(project.getType());
+
+      // Bilateral project
       if (!project.isCoreProject()) {
+
+        if (project.getLinkedCoreProjects() != null && !project.getLinkedCoreProjects().isEmpty()) {
+          previousProject.setType(APConstants.PROJECT_BILATERAL_COFUNDED);
+        } else {
+          previousProject.setType(APConstants.PROJECT_BILATERAL_STANDALONE);
+        }
+
         if (securityContext.canUploadBilateralContract()) {
           // TODO - Check if user attached a file, upload it and save the file name.
           // uploadFile();
@@ -372,6 +396,16 @@ public class ProjectDescriptionPlanningAction extends BaseAction {
         // Then save the new core projects linked
         if (!project.getLinkedCoreProjects().isEmpty()) {
           linkedCoreProjectManager.saveLinkedCoreProjects(project, this.getCurrentUser(), this.getJustification());
+        }
+      } else {
+        // If the project is 'Core', it should not have relations to other core projects.
+        if (project.getLinkedCoreProjects() != null && !project.getLinkedCoreProjects().isEmpty()) {
+          List<Integer> coreProjectsToDelete = new ArrayList<>();
+          for (Project p : project.getLinkedCoreProjects()) {
+            coreProjectsToDelete.add(p.getId());
+          }
+          linkedCoreProjectManager.deletedLinkedCoreProjects(project, coreProjectsToDelete, this.getCurrentUser(),
+            this.getJustification());
         }
       }
 

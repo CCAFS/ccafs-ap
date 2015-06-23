@@ -13,8 +13,8 @@
  *****************************************************************/
 package org.cgiar.ccafs.ap.data.manager;
 
-import org.cgiar.ccafs.ap.data.manager.impl.IPOtherContributionManagerImpl;
-import org.cgiar.ccafs.ap.data.model.IPOtherContribution;
+import org.cgiar.ccafs.ap.data.manager.impl.ProjectOtherContributionManagerImpl;
+import org.cgiar.ccafs.ap.data.model.OtherContribution;
 
 import com.google.inject.ImplementedBy;
 
@@ -22,25 +22,8 @@ import com.google.inject.ImplementedBy;
  * @author Javier Andrés Gallego
  * @author Hernán David Carvajal
  */
-@ImplementedBy(IPOtherContributionManagerImpl.class)
-public interface IPOtherContributionManager {
-
-
-  /**
-   * This method removes a specific IP Other Contribution value from the database.
-   * 
-   * @param ipOtherContributionId is the IP Other Contribution identifier.
-   * @return true if the IP Other Contribution was successfully deleted, false otherwise.
-   */
-  public boolean deleteIPOtherContribution(int ipOtherContributionId);
-
-  /**
-   * This method removes a set of IP Other Contributions that belongs to a specific project.
-   * 
-   * @param projectID is the project identifier.
-   * @return true if the set of IP Other Contributions were successfully deleted, false otherwise.
-   */
-  public boolean deleteIPOtherContributionsByProjectId(int projectID);
+@ImplementedBy(ProjectOtherContributionManagerImpl.class)
+public interface ProjectOtherContributionManager {
 
   /**
    * This method gets all the IP Other Contribution information by a given IP Other Contribution ID.
@@ -48,7 +31,7 @@ public interface IPOtherContributionManager {
    * @param ipOtherContributionID is the IP Other Contribution identifier.
    * @return an IP Other Contributions object, or null if no information were found.
    */
-  public IPOtherContribution getIPOtherContributionById(int ipOtherContributionID);
+  public OtherContribution getIPOtherContributionById(int ipOtherContributionID);
 
 
   /**
@@ -57,7 +40,7 @@ public interface IPOtherContributionManager {
    * @param activityID - is the Id of the project
    * @return a List of IP Other Contributions with the Information related to the project
    */
-  public IPOtherContribution getIPOtherContributionByProjectId(int projectID);
+  public OtherContribution getIPOtherContributionByProjectId(int projectID);
 
   /**
    * This method saves the information of the given IP Other Contribution that belongs to a specific project into the
@@ -67,7 +50,7 @@ public interface IPOtherContributionManager {
    * @param ipOtherContribution
    * @return true if the IP Other Contribution was saved successfully, false otherwise.
    */
-  public boolean saveIPOtherContribution(int projectID, IPOtherContribution ipOtherContribution);
+  public boolean saveIPOtherContribution(int projectID, OtherContribution ipOtherContribution);
 
 
 }

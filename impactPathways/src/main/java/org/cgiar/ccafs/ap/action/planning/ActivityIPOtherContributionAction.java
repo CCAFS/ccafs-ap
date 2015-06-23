@@ -16,10 +16,10 @@ package org.cgiar.ccafs.ap.action.planning;
 import org.cgiar.ccafs.ap.action.BaseAction;
 import org.cgiar.ccafs.ap.config.APConstants;
 import org.cgiar.ccafs.ap.data.manager.ActivityManager;
-import org.cgiar.ccafs.ap.data.manager.IPOtherContributionManager;
+import org.cgiar.ccafs.ap.data.manager.ProjectOtherContributionManager;
 import org.cgiar.ccafs.ap.data.manager.ProjectManager;
 import org.cgiar.ccafs.ap.data.model.Activity;
-import org.cgiar.ccafs.ap.data.model.IPOtherContribution;
+import org.cgiar.ccafs.ap.data.model.OtherContribution;
 import org.cgiar.ccafs.ap.data.model.Project;
 import org.cgiar.ccafs.utils.APConfig;
 
@@ -40,12 +40,12 @@ public class ActivityIPOtherContributionAction extends BaseAction {
   private static Logger LOG = LoggerFactory.getLogger(ActivityIPOtherContributionAction.class);
 
   // Manager
-  private IPOtherContributionManager ipOtherContributionManager;
+  private ProjectOtherContributionManager ipOtherContributionManager;
   private ActivityManager activityManager;
   private ProjectManager projectManager;
 
   // Model for the back-end
-  private IPOtherContribution ipOtherContribution;
+  private OtherContribution ipOtherContribution;
   private Activity activity;
 
   // Model for the front-end
@@ -53,7 +53,7 @@ public class ActivityIPOtherContributionAction extends BaseAction {
   private Project project;
 
   @Inject
-  public ActivityIPOtherContributionAction(APConfig config, IPOtherContributionManager ipOtherContributionManager,
+  public ActivityIPOtherContributionAction(APConfig config, ProjectOtherContributionManager ipOtherContributionManager,
     ActivityManager activityManager, ProjectManager projectManager) {
     super(config);
     this.ipOtherContributionManager = ipOtherContributionManager;
@@ -69,7 +69,7 @@ public class ActivityIPOtherContributionAction extends BaseAction {
     return activityID;
   }
 
-  public IPOtherContribution getIpOtherContribution() {
+  public OtherContribution getIpOtherContribution() {
     return ipOtherContribution;
   }
 
@@ -130,7 +130,7 @@ public class ActivityIPOtherContributionAction extends BaseAction {
     this.activityID = activityID;
   }
 
-  public void setIpOtherContribution(IPOtherContribution ipOtherContribution) {
+  public void setIpOtherContribution(OtherContribution ipOtherContribution) {
     this.ipOtherContribution = ipOtherContribution;
   }
 

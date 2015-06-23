@@ -44,39 +44,6 @@ public class MySQLProjectOutcomeDAO implements ProjectOutcomeDAO {
     this.databaseManager = databaseManager;
   }
 
-  @Override
-  public boolean deleteProjectOutcomeById(int projectOutcomeID) {
-    LOG.debug(">> deleteProjectOutcomeById(id={})", projectOutcomeID);
-
-    String query = "DELETE po FROM project_outcomes as po WHERE po.id= ?";
-
-    int rowsDeleted = databaseManager.delete(query, new Object[] {projectOutcomeID});
-    if (rowsDeleted >= 0) {
-      LOG.debug("<< deleteProjectOutcomeById():{}", true);
-      return true;
-    }
-
-    LOG.debug("<< deleteProjectOutcomeById:{}", false);
-    return false;
-  }
-
-  @Override
-  public boolean deleteProjectOutcomesByProject(int projectID) {
-    LOG.debug(">> deleteProjectOutcomesByProject(projectId={})", projectID);
-
-    StringBuilder query = new StringBuilder();
-    query.append("DELETE po FROM project_outcomes as po  ");
-    query.append("WHERE po.project_id = ? ");
-
-    int rowsDeleted = databaseManager.delete(query.toString(), new Object[] {projectID});
-    if (rowsDeleted >= 0) {
-      LOG.debug("<< deleteProjectOutcomesByProject():{}", true);
-      return true;
-    }
-    LOG.debug("<< deleteProjectOutcomesByProject():{}", false);
-    return false;
-  }
-
   private List<Map<String, String>> getData(String query) {
     LOG.debug(">> executeQuery(query='{}')", query);
     List<Map<String, String>> projectOutcomeList = new ArrayList<>();
@@ -89,6 +56,7 @@ public class MySQLProjectOutcomeDAO implements ProjectOutcomeDAO {
         projectOutcomeData.put("year", rs.getString("year"));
         projectOutcomeData.put("statement", rs.getString("statement"));
         projectOutcomeData.put("stories", rs.getString("stories"));
+        projectOutcomeData.put("gender_dimension", rs.getString("gender_dimension"));
         projectOutcomeData.put("project_id", rs.getString("project_id"));
 
         projectOutcomeList.add(projectOutcomeData);
@@ -118,7 +86,7 @@ public class MySQLProjectOutcomeDAO implements ProjectOutcomeDAO {
 
 
     LOG.debug("-- getProjectOutcomesByProject() > Calling method executeQuery to get the results");
-    return getData(query.toString());
+    return this.getData(query.toString());
   }
 
 
@@ -142,6 +110,7 @@ public class MySQLProjectOutcomeDAO implements ProjectOutcomeDAO {
         projectOutcomeData.put("year", rs.getString("year"));
         projectOutcomeData.put("statement", rs.getString("statement"));
         projectOutcomeData.put("stories", rs.getString("stories"));
+        projectOutcomeData.put("gender_dimension", rs.getString("gender_dimension"));
       }
       con.close();
     } catch (SQLException e) {
