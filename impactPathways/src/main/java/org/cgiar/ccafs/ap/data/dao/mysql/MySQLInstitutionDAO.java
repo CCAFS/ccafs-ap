@@ -112,7 +112,7 @@ public class MySQLInstitutionDAO implements InstitutionDAO {
     LOG.debug(">> getAllPPAInstitutions( )");
 
     StringBuilder query = new StringBuilder();
-    query.append("SELECT i.id, i.name, i.acronym, i.is_ppa, i.institution_type_id,i.program_id, ");
+    query.append("SELECT i.id, i.name, i.acronym, i.is_ppa, i.institution_type_id, i.program_id, ");
     query.append("lc.id as loc_elements_id, lc.name as loc_elements_name,lc.code as loc_elements_code, ");
     query.append("it.name as institution_type_name, it.acronym as institution_type_acronym, ");
     query.append("ip.id as program_id, ip.name as program_name, ip.acronym as program_acronym ");
@@ -209,7 +209,7 @@ public class MySQLInstitutionDAO implements InstitutionDAO {
   @Override
   public List<Map<String, String>> getInstitutionsByTypeAndCountry(int typeID, int countryID) {
     StringBuilder query = new StringBuilder();
-    query.append("SELECT i.id, i.name, i.acronym, i.is_ppa i.institution_type_id,i.program_id, ");
+    query.append("SELECT i.id, i.name, i.acronym, i.is_ppa, i.institution_type_id,i.program_id, ");
     query.append("lc.id as loc_elements_id, lc.name as loc_elements_name,lc.code as loc_elements_code, ");
     query.append("it.name as institution_type_name, it.acronym as institution_type_acronym, ");
     query.append("ip.id as program_id, ip.name as program_name, ip.acronym as program_acronym ");
