@@ -100,7 +100,7 @@ public class ManageUsersAction extends BaseAction {
       if (emailExists) {
         // If email already exists into our database.
         // TODO We need to internationalize this message.
-        message = "The email you are trying to add already exist into our database.";
+        message = this.getText("planning.manageUsers.email.existing");
         newUser = null;
         return SUCCESS; // Stop here!
       }
@@ -114,7 +114,7 @@ public class ManageUsersAction extends BaseAction {
         // If user was not found in the Active Directory.
         if (newUser == null) {
           // TODO We need to internationalize this message.
-          message = "It seems that the email does not exist in the CGIAR Active Directory.";
+          message = this.getText("planning.manageUsers.email.doesNotExist");
           return SUCCESS; // Stop here!
         } else {
           // If user was found, let's add it into our database.
@@ -141,12 +141,12 @@ public class ManageUsersAction extends BaseAction {
           } else {
             // If user could not be added.
             newUser = null;
-            message = "Something happened! Please take a screenshot and contact the technical staff.";
+            message = this.getText("planning.manageUsers.email.notAdded");
           }
           return SUCCESS;
         } else {
           // TODO We need to internationalize this message.
-          message = "First Name and Last Name are needed.";
+          message = this.getText("planning.manageUsers.email.validation");
           return SUCCESS;
         }
       }
@@ -217,31 +217,28 @@ public class ManageUsersAction extends BaseAction {
     StringBuilder message = new StringBuilder();
 
     // Building the message:
-    message.append("Dear ");
+    message.append(this.getText("planning.manageUsers.email.arrangement.part1"));
     message.append(newUser.getFirstName());
-    message.append(", \n\n");
+    message.append(this.getText("planning.manageUsers.email.arrangement.part2"));
 
-    message.append(
-      "You have been assigned as Project Leader in the CCAFS Planning and Reporting platform (CCAFS P&R) <https://activities.ccafs.cgiar.org/ip>\n");
-    message.append("To access you can use the following credentials:\n\n");
-    message.append("Username: ");
+    message.append(this.getText("planning.manageUsers.email.arrangement.part3"));
+    message.append(this.getText("planning.manageUsers.email.arrangement.part4"));
+    message.append(this.getText("planning.manageUsers.email.arrangement.part5"));
     message.append(newUser.getEmail());
-    message.append("\n");
-    message.append("Password: ");
+    message.append(this.getText("planning.manageUsers.email.arrangement.part6"));
     if (newPassword == null) {
-      message.append("<Your Outlook Password>");
+      message.append(this.getText("planning.manageUsers.email.arrangement.part7"));
     } else {
       message.append(newPassword);
     }
-    message.append("\n\n");
-    message.append("Regards,\n\n");
-    message.append("P&R Team");
+    message.append(this.getText("planning.manageUsers.email.arrangement.part8"));
 
     // To
     String toEmail = newUser.getEmail();
     // CC
     String ccEmails = this.getCurrentUser().getEmail() + " " + this.config.getGmailUsername();
-    sendMail.send(toEmail, ccEmails, "[CCAFS P&R] Credentials to access P&R", message.toString());
+    sendMail.send(toEmail, ccEmails, this.getText("planning.manageUsers.email.arrangement.credentials"),
+      message.toString());
 
   }
 
