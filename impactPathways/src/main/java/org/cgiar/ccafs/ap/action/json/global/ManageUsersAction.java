@@ -226,7 +226,6 @@ public class ManageUsersAction extends BaseAction {
     message.append(this.getText("planning.manageUsers.email.arrangement.part5"));
     message.append(newUser.getEmail());
     message.append(this.getText("planning.manageUsers.email.arrangement.part6"));
-    message.append("Password: ");
     if (newPassword == null) {
       message.append(this.getText("planning.manageUsers.email.arrangement.part7"));
     } else {
