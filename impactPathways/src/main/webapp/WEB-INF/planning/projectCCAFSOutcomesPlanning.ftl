@@ -254,7 +254,7 @@
 </section>
 
 [#-- Contribution template --]
-<div class="contribution borderBox" id="contributionTemplate" style="display:none">
+<div class="contribution" id="contributionTemplate" style="display:none">
   [#-- Remove Contribution --]
   <div id="removeContribution" class="removeContribution removeElement removeLink" title="[@s.text name="preplanning.midOutcomes.removeMidOutcome" /]"></div>
 
