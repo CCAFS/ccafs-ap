@@ -15,11 +15,15 @@ package org.cgiar.ccafs.ap.action.planning;
 
 import org.cgiar.ccafs.ap.action.BaseAction;
 import org.cgiar.ccafs.ap.config.APConstants;
-import org.cgiar.ccafs.ap.data.manager.IPOtherContributionManager;
+import org.cgiar.ccafs.ap.data.manager.CRPManager;
+import org.cgiar.ccafs.ap.data.manager.ProjectOtherContributionManager;
 import org.cgiar.ccafs.ap.data.manager.ProjectManager;
-import org.cgiar.ccafs.ap.data.model.IPOtherContribution;
+import org.cgiar.ccafs.ap.data.model.CRP;
+import org.cgiar.ccafs.ap.data.model.OtherContribution;
 import org.cgiar.ccafs.ap.data.model.Project;
 import org.cgiar.ccafs.utils.APConfig;
+
+import java.util.List;
 
 import com.google.inject.Inject;
 import org.apache.commons.lang3.StringUtils;
@@ -36,25 +40,33 @@ public class ProjectIPOtherContributionAction extends BaseAction {
   private static final long serialVersionUID = 5866456304533553208L;
 
   // Manager
-  private IPOtherContributionManager ipOtherContributionManager;
+  private ProjectOtherContributionManager ipOtherContributionManager;
+  private CRPManager crpManager;
   private ProjectManager projectManager;
 
   // Model for the back-end
-  private IPOtherContribution ipOtherContribution;
+  private OtherContribution ipOtherContribution;
+
 
   // Model for the front-end
   private int projectID;
   private Project project;
+  private List<CRP> crps;
 
   @Inject
-  public ProjectIPOtherContributionAction(APConfig config, IPOtherContributionManager ipOtherContributionManager,
-    ProjectManager projectManager) {
+  public ProjectIPOtherContributionAction(APConfig config, ProjectOtherContributionManager ipOtherContributionManager,
+    ProjectManager projectManager, CRPManager crpManager) {
     super(config);
     this.ipOtherContributionManager = ipOtherContributionManager;
     this.projectManager = projectManager;
+    this.crpManager = crpManager;
   }
 
-  public IPOtherContribution getIpOtherContribution() {
+  public List<CRP> getCrps() {
+    return crps;
+  }
+
+  public OtherContribution getIpOtherContribution() {
     return ipOtherContribution;
   }
 
@@ -68,7 +80,7 @@ public class ProjectIPOtherContributionAction extends BaseAction {
 
   @Override
   public String next() {
-    String result = save();
+    String result = this.save();
     if (result.equals(BaseAction.SUCCESS)) {
       return BaseAction.NEXT;
     } else {
@@ -84,10 +96,12 @@ public class ProjectIPOtherContributionAction extends BaseAction {
 
     // Getting the activity information
     project = projectManager.getProject(projectID);
+    crps = crpManager.getCRPsList();
 
     // Getting the information for the IP Other Contribution
     ipOtherContribution = ipOtherContributionManager.getIPOtherContributionByProjectId(projectID);
 
+    project.setCrpContributions(crpManager.getCrpContributions(projectID));
     project.setIpOtherContribution(ipOtherContribution);
   }
 
@@ -98,18 +112,18 @@ public class ProjectIPOtherContributionAction extends BaseAction {
       boolean saved = ipOtherContributionManager.saveIPOtherContribution(projectID, project.getIpOtherContribution());
 
       if (!saved) {
-        addActionError(getText("saving.problem"));
+        this.addActionError(this.getText("saving.problem"));
         return BaseAction.INPUT;
       } else {
-        addActionMessage(getText("saving.success",
-          new String[] {getText("planning.impactPathways.otherContributions.title")}));
+        this.addActionMessage(this.getText("saving.success",
+          new String[] {this.getText("planning.impactPathways.otherContributions.title")}));
         return BaseAction.SUCCESS;
       }
     }
     return BaseAction.ERROR;
   }
 
-  public void setIpOtherContribution(IPOtherContribution ipOtherContribution) {
+  public void setIpOtherContribution(OtherContribution ipOtherContribution) {
     this.ipOtherContribution = ipOtherContribution;
   }
 

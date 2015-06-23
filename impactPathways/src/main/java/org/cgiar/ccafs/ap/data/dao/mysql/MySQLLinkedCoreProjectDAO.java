@@ -119,7 +119,8 @@ public class MySQLLinkedCoreProjectDAO implements LinkedCoreProjectDAO {
       values[c + 3] = userID;
       values[c + 4] = justification;
     }
-    query.append("; ");
+
+    query.append(" ON DUPLICATE KEY UPDATE is_active = TRUE; ");
 
     int result = daoManager.saveData(query.toString(), values);
     saved = (result == -1) ? false : true;

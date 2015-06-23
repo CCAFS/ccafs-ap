@@ -11,70 +11,44 @@
  * You should have received a copy of the GNU General Public License
  * along with CCAFS P&R. If not, see <http://www.gnu.org/licenses/>.
  *****************************************************************/
+
 package org.cgiar.ccafs.ap.data.model;
 
 import org.apache.commons.lang3.builder.ToStringBuilder;
 
 
 /**
- * This class represents Other Contributions for a specific activity.
- * 
- * @author Javier Andrés Gallego B.
+ * @author Hernán David Carvajal B. - CIAT/CCAFS
  */
-public class IPOtherContribution {
+
+public class CRP {
 
   private int id;
-  private String contribution;
-  private String additionalContribution;
+  private String name;
+  private String acronym;
 
-
-  public IPOtherContribution() {
-
+  public String getAcronym() {
+    return acronym;
   }
-
-  @Override
-  public boolean equals(Object obj) {
-    if (obj instanceof IPOtherContribution) {
-      IPOtherContribution n = (IPOtherContribution) obj;
-      return n.id == this.id;
-    }
-    return false;
-  }
-
-
-  public String getAdditionalContribution() {
-    return additionalContribution;
-  }
-
-
-  public String getContribution() {
-    return contribution;
-  }
-
 
   public int getId() {
     return id;
   }
 
-
-  @Override
-  public int hashCode() {
-    return this.id;
+  public String getName() {
+    return name;
   }
 
-
-  public void setAdditionalContribution(String additionalContribution) {
-    this.additionalContribution = additionalContribution;
+  public void setAcronym(String acronym) {
+    this.acronym = acronym;
   }
-
-
-  public void setContribution(String contribution) {
-    this.contribution = contribution;
-  }
-
 
   public void setId(int id) {
     this.id = id;
+  }
+
+  public void setName(String name) {
+    this.name = name;
   }
 
   @Override

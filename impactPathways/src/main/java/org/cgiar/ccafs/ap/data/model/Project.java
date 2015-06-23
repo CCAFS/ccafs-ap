@@ -53,7 +53,9 @@ public class Project {
   private List<Activity> activities;
   private List<IPElement> outputs;
   private List<IPIndicator> indicators;
-  private IPOtherContribution ipOtherContribution;
+  private OtherContribution ipOtherContribution;
+  private List<CRP> crpContributions;
+  private String crpContributionsNature;
   private boolean workplanRequired;
   private String workplanName;
   private String bilateralContractProposalName;
@@ -196,6 +198,14 @@ public class Project {
     return new Date(created);
   }
 
+  public List<CRP> getCrpContributions() {
+    return crpContributions;
+  }
+
+  public String getCrpContributionsNature() {
+    return crpContributionsNature;
+  }
+
   public Date getEndDate() {
     return endDate;
   }
@@ -280,7 +290,7 @@ public class Project {
     return emptyIndicator;
   }
 
-  public IPOtherContribution getIpOtherContribution() {
+  public OtherContribution getIpOtherContribution() {
     return ipOtherContribution;
   }
 
@@ -308,7 +318,6 @@ public class Project {
     return outputs;
   }
 
-
   public User getOwner() {
     return owner;
   }
@@ -316,6 +325,7 @@ public class Project {
   public List<ProjectPartner> getPPAPartners() {
     return ppaPartners;
   }
+
 
   public List<ProjectPartner> getProjectPartners() {
     return projectPartners;
@@ -413,6 +423,14 @@ public class Project {
     this.created = created;
   }
 
+  public void setCrpContributions(List<CRP> crpContributions) {
+    this.crpContributions = crpContributions;
+  }
+
+  public void setCrpContributionsNature(String crpContributionsNature) {
+    this.crpContributionsNature = crpContributionsNature;
+  }
+
   public void setEndDate(Date endDate) {
     this.endDate = endDate;
   }
@@ -429,7 +447,7 @@ public class Project {
     this.indicators = indicators;
   }
 
-  public void setIpOtherContribution(IPOtherContribution ipOtherContribution) {
+  public void setIpOtherContribution(OtherContribution ipOtherContribution) {
     this.ipOtherContribution = ipOtherContribution;
   }
 

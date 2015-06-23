@@ -36,22 +36,9 @@ public class ProjectOutcomeManagerImpl implements ProjectOutcomeManager {
   // DAO's
   private ProjectOutcomeDAO projectOutcomeDAO;
 
-  // Managers
-
-
   @Inject
   public ProjectOutcomeManagerImpl(ProjectOutcomeDAO projectOutcomeDAO) {
     this.projectOutcomeDAO = projectOutcomeDAO;
-  }
-
-  @Override
-  public boolean deleteProjectOutcomeById(int projectOutcomeID) {
-    return projectOutcomeDAO.deleteProjectOutcomeById(projectOutcomeID);
-  }
-
-  @Override
-  public boolean deleteProjectOutcomesByProject(int projectID) {
-    return projectOutcomeDAO.deleteProjectOutcomesByProject(projectID);
   }
 
   @Override
@@ -64,6 +51,7 @@ public class ProjectOutcomeManagerImpl implements ProjectOutcomeManager {
       projectOutcome.setYear(Integer.parseInt(projectOutcomeData.get("year")));
       projectOutcome.setStatement(projectOutcomeData.get("statement"));
       projectOutcome.setStories(projectOutcomeData.get("stories"));
+      projectOutcome.setGenderDimension(projectOutcomeData.get("gender_dimension"));
       return projectOutcome;
     }
     return null;
@@ -80,7 +68,7 @@ public class ProjectOutcomeManagerImpl implements ProjectOutcomeManager {
       projectOutcome.setYear(Integer.parseInt(projectOutcomeData.get("year")));
       projectOutcome.setStatement(projectOutcomeData.get("statement"));
       projectOutcome.setStories(projectOutcomeData.get("stories"));
-
+      projectOutcome.setGenderDimension(projectOutcomeData.get("gender_dimension"));
 
       // adding information of the object to the array
       projectOutcomes.put(String.valueOf(projectOutcome.getYear()), projectOutcome);

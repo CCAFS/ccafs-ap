@@ -18,32 +18,14 @@ package org.cgiar.ccafs.ap.data.dao;
  * @author Javier Andrés Gallego
  * @author Hernán David Carvajal
  */
-import org.cgiar.ccafs.ap.data.dao.mysql.MySQLIPOtherContributionDAO;
+import org.cgiar.ccafs.ap.data.dao.mysql.MySQLProjectOtherContributionDAO;
 
 import java.util.Map;
 
 import com.google.inject.ImplementedBy;
 
-@ImplementedBy(MySQLIPOtherContributionDAO.class)
-public interface IPOtherContributionDAO {
-
-
-  /**
-   * Deletes the information of a IP Other Contribution associated by a given id
-   * 
-   * @param ipOtherContributionId - is the Id of an IP Other Contribution
-   * @return true if the element were deleted successfully. False otherwise
-   */
-  public boolean deleteIPOtherContribution(int ipOtherContributionId);
-
-
-  /**
-   * Deletes the information of the IP Other Contribution related by a given project id
-   * 
-   * @param projectID- is the Id of a project
-   * @return true if the elements were deleted successfully. False otherwise
-   */
-  public boolean deleteIPOtherContributionsByProjectId(int projectID);
+@ImplementedBy(MySQLProjectOtherContributionDAO.class)
+public interface ProjectOtherContributionDAO {
 
   /**
    * This method gets all the IP Other Contribution information by a given Id

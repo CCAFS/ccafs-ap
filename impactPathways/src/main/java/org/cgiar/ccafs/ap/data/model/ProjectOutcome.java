@@ -28,12 +28,17 @@ public class ProjectOutcome {
   private int year;
   private String statement;
   private String stories;
+  private String genderDimension;
 
   public ProjectOutcome() {
   }
 
   public ProjectOutcome(int id) {
     this.id = id;
+  }
+
+  public String getGenderDimension() {
+    return genderDimension;
   }
 
   public int getId() {
@@ -50,6 +55,10 @@ public class ProjectOutcome {
 
   public int getYear() {
     return year;
+  }
+
+  public void setGenderDimension(String genderDimension) {
+    this.genderDimension = genderDimension;
   }
 
   public void setId(int id) {
@@ -72,6 +81,4 @@ public class ProjectOutcome {
   public String toString() {
     return ToStringBuilder.reflectionToString(this);
   }
-
-
 }

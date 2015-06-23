@@ -45,7 +45,7 @@ public class Activity {
   private List<IPIndicator> indicators;
   private List<Budget> budgets;
   private List<Deliverable> deliverables;
-  private IPOtherContribution ipOtherContribution;
+  private OtherContribution ipOtherContribution;
   private String expectedResearchOutputs;
   private String expectedGenderContribution;
   private double genderPercentage;
@@ -192,7 +192,7 @@ public class Activity {
     return indicators;
   }
 
-  public IPOtherContribution getIpOtherContribution() {
+  public OtherContribution getIpOtherContribution() {
     return ipOtherContribution;
   }
 
@@ -297,7 +297,7 @@ public class Activity {
     this.indicators = indicators;
   }
 
-  public void setIpOtherContribution(IPOtherContribution ipOtherContribution) {
+  public void setIpOtherContribution(OtherContribution ipOtherContribution) {
     this.ipOtherContribution = ipOtherContribution;
   }
 
