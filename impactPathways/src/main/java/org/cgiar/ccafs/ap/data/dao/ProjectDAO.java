@@ -146,13 +146,13 @@ public interface ProjectDAO {
   public int getProjectIdFromActivityId(int activityID);
 
   /**
-   * This method returns a list of project identifiers that belongs to a specific program and/or a specific owner.
+   * This method returns a list of project identifiers that can be edited by the user identified with the value received
+   * by parameter.
    * 
-   * @param programId is the program identifier.
-   * @param ownerId is the owner identifier.
+   * @param userId is the owner identifier.
    * @return a list of Integers which represent the project identifiers.
    */
-  public List<Integer> getProjectIdsEditables(int programId, int ownerId);
+  public List<Integer> getProjectIdsEditables(int userId);
 
   /**
    * This method returns all the indicators related with the project

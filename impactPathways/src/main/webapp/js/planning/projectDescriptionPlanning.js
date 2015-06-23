@@ -10,7 +10,7 @@ $(document).ready(function() {
       defaultMinDateValue: $("#minDateValue").val(),
       defaultMaxDateValue: $("#maxDateValue").val()
   });
-  setProgramId();
+  // setProgramId();
   setDisabledCheckedBoxes();
   addChosen();
   applyWordCounter($("textarea.project-title"), lWordsElemetTitle);
@@ -59,8 +59,16 @@ $(document).ready(function() {
           $coreSelect.empty().append(setOption(-1, "Please select a Core-Project"));
         },
         success: function(data) {
+          // Getting core projects previously selected
+          var coreProjectsIds = [];
+          $coreProjects.find('li input.id').each(function(i_id,id) {
+            coreProjectsIds.push($(id).val().toString());
+          });
+          // Setting core projects allowed to select
           $.each(data.projects, function(i,project) {
-            $coreSelect.append(setOption(project.id, project.id + " - " + project.title));
+            if($.inArray(project.id.toString(), coreProjectsIds) == -1) {
+              $coreSelect.append(setOption(project.id, project.id + " - " + project.title));
+            }
           });
         },
         complete: function() {
@@ -73,7 +81,7 @@ $(document).ready(function() {
     var $listElement = $("#cpListTemplate").clone(true).removeAttr("id");
     $listElement.find('.id').val($item.val());
     $listElement.find('.name').html($item.text());
-    $coreProjects.prepend($listElement);
+    $listElement.appendTo($coreProjects).hide().show('slow');
     $item.remove();
     $coreSelect.trigger("liszt:updated");
     setcoreProjectsIndexes();
@@ -97,8 +105,8 @@ $(document).ready(function() {
 
   function setcoreProjectsIndexes() {
     $coreProjects.find('li').each(function(i,item) {
-      var elementName = "project.coreProjects[" + i + "].";
-      $(item).find('.id').attr('name', elementName + 'id');
+      var elementName = "project.linkedCoreProjects";
+      $(item).find('.id').attr('name', elementName);
     });
   }
 

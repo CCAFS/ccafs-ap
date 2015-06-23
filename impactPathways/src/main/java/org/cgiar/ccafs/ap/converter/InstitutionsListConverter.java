@@ -16,6 +16,8 @@ package org.cgiar.ccafs.ap.converter;
 import org.cgiar.ccafs.ap.data.manager.InstitutionManager;
 import org.cgiar.ccafs.ap.data.model.Institution;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Map;
 
 import com.google.inject.Inject;
@@ -26,45 +28,45 @@ import org.slf4j.LoggerFactory;
 /**
  * @author Héctor Fabio Tobón R.
  */
-public class InstitutionConverter extends StrutsTypeConverter {
+public class InstitutionsListConverter extends StrutsTypeConverter {
 
   // LOG
-  private static final Logger LOG = LoggerFactory.getLogger(InstitutionConverter.class);
+  private static final Logger LOG = LoggerFactory.getLogger(InstitutionsListConverter.class);
 
   // Manager
   private InstitutionManager institutionManager;
 
   @Inject
-  public InstitutionConverter(InstitutionManager institutionManager) {
+  public InstitutionsListConverter(InstitutionManager institutionManager) {
     this.institutionManager = institutionManager;
   }
 
   @SuppressWarnings("rawtypes")
   @Override
   public Object convertFromString(Map context, String[] values, Class toClass) {
-    if (toClass == Institution.class) {
-      String id = values[0];
-      try {
-        LOG.debug(">> convertFromString > id = {} ", id);
-        return institutionManager.getInstitution(Integer.parseInt(id));
-      } catch (NumberFormatException e) {
-        // Do Nothing
-        LOG.error("Problem to convert Institution from String (convertFromString) for institution_id = {} ", id,
-          e.getMessage());
+    List<Institution> institutions = new ArrayList<Institution>();
+    try {
+      for (String value : values) {
+        institutions.add(institutionManager.getInstitution(Integer.parseInt(value)));
+        LOG.debug(">> convertFromString > id = {} ", value);
       }
+    } catch (NumberFormatException e) {
+      // Do Nothing
+      LOG.error("Problem to convert Institutions List from String (convertFromString) for values = {} ", values,
+        e.getMessage());
     }
-    return null;
+    return institutions;
   }
 
   @SuppressWarnings("rawtypes")
   @Override
   public String convertToString(Map context, Object o) {
-    if (o != null) {
-      Institution institution = (Institution) o;
-      LOG.debug(">> convertToString > id = {} ", institution.getId());
-      return institution.getId() + "";
+    List<Institution> institutions = (List<Institution>) o;
+    ArrayList<String> temp = new ArrayList<>();
+    for (Institution institution : institutions) {
+      temp.add(institution.getId() + "");
     }
-    return null;
+    return temp.toString();
   }
 
 }

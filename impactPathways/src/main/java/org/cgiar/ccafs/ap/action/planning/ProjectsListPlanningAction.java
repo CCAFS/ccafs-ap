@@ -16,7 +16,7 @@ package org.cgiar.ccafs.ap.action.planning;
 import org.cgiar.ccafs.ap.action.BaseAction;
 import org.cgiar.ccafs.ap.config.APConstants;
 import org.cgiar.ccafs.ap.data.manager.ProjectManager;
-import org.cgiar.ccafs.ap.data.model.IPProgram;
+import org.cgiar.ccafs.ap.data.model.LiaisonInstitution;
 import org.cgiar.ccafs.ap.data.model.Project;
 import org.cgiar.ccafs.utils.APConfig;
 
@@ -72,7 +72,7 @@ public class ProjectsListPlanningAction extends BaseAction {
     }
 
     // Create new project and redirect to project description using the new projectId assigned by the database.
-    this.createNewProject(true);
+    projectID = this.createNewProject(true);
     return (projectID > 0) ? SUCCESS : ERROR;
   }
 
@@ -86,15 +86,15 @@ public class ProjectsListPlanningAction extends BaseAction {
     }
 
     newProject.setOwner(this.getCurrentUser());
-    IPProgram userProgram = this.getCurrentUser().getCurrentInstitution().getProgram();
-    if (userProgram != null) {
-      // TODO HC - Set the liaison institution as creator
-      // newProject.setLCreator(userProgram);
+    LiaisonInstitution liaisonInstitution = this.getCurrentUser().getLiaisonInstitution();
+    if (liaisonInstitution != null) {
+      newProject.setLiaisonInstitution(liaisonInstitution);
     } else {
-      LOG.error(
-        "-- execute() > the current user identify with id={} and institution_id={} does not belong to a specific program!",
-        new Object[] {this.getCurrentUser().getId(), this.getCurrentUser().getCurrentInstitution().getId()});
+      LOG.error("-- execute() > the user identified with id={} and is not linked to any liaison institution!", this
+        .getCurrentUser().getId());
+      return -1;
     }
+
     newProject.setCreated(new Date().getTime());
     return projectManager.saveProjectDescription(newProject, this.getCurrentUser(), this.getJustification());
   }
@@ -105,6 +105,10 @@ public class ProjectsListPlanningAction extends BaseAction {
 
   public Date getCurrentPlanningStartDate() {
     return config.getCurrentPlanningStartDate();
+  }
+
+  public String getEditParameter() {
+    return APConstants.EDITABLE_REQUEST;
   }
 
   public int getProjectID() {
@@ -149,7 +153,6 @@ public class ProjectsListPlanningAction extends BaseAction {
   public void setProjectID(int projectID) {
     this.projectID = projectID;
   }
-
 
   public void setTotalBudget(double totalBudget) {
     this.totalBudget = totalBudget;

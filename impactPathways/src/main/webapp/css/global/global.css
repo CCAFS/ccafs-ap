@@ -323,11 +323,11 @@ input.target {
 }
 
 .fileUpload h6{
-  margin-bottom: 0.6em !important;
+  /* margin-bottom: 0.6em !important; */
 }
 
 .uploadContainer {
-    padding-left: 0.5em;
+    /* padding-left: 0.5em; */
 }
 
 .grid_5 .checkboxGroup .checkboxLabel { 
@@ -534,6 +534,24 @@ select#partnerSave_activityPartner_partner_type_id {
   background: #CBCBCB;
   padding: 4px;
 }
+
+.panel.tertiary {
+    border: none;
+}
+.panel.tertiary .panel-head{
+  font-size: 1em;
+  background: #FFFFFF;
+  color: #525254;
+  padding: 2px 0 6px 0;
+  text-align: left;
+}
+
+.panel.tertiary .panel-body {
+    padding: 4px 3px 10px 3px; 
+    border-left: 4px solid #E7E6E6;
+    margin-left: 5px;
+}
+
 .panel .panel-head {
     background: #8EA786;
     color: #fff;
@@ -565,6 +583,12 @@ select#partnerSave_activityPartner_partner_type_id {
 }
 .panel .panel-body ul li.last { 
     border-bottom: none;
+}
+
+.panel-body .list span.name {
+    width: 89%;
+    display: block;
+    float: left;
 }
 
 .panel span.listButton {
@@ -1196,8 +1220,14 @@ h3.contentSubTitle {
 }
 
 h1.simpleTitle {
-    border: none;
+  border: none;
 }
+
+h1.simpleTitle span {
+  font-size: 0.8em;   
+  color: #747474;
+}
+
 
 .fullContent h6+*, .halfContent h6+* {
   margin-left: 1px;
@@ -1207,7 +1237,7 @@ h1.simpleTitle {
 
 .fullBlock {
   display: block;
-  margin: 14px 0 22px 0;
+  margin: 0px 0 10px 0;
   width: 100%;
 }
 
@@ -1245,7 +1275,7 @@ h1.simpleTitle {
 
 .halfPartBlock {
   display: inline-block;
-  padding: 0 8px 12px 0;
+  padding: 0 8px 5px 0;
   width: 48%;
   vertical-align: top;
 }
@@ -1859,12 +1889,20 @@ textarea[id$='summary'] {
   margin-top: 10px;
 }
 
+#projectWorking {
+    border: 1px dotted #ccc;
+    padding-bottom: 15px;
+    border-radius: 3px;
+}
+
 #projectWorking .checkboxGroup { 
   margin-left:8px
 }
 
 #projectWorking h6 {
-    padding-left: 9px;
+    padding-left: 7px;
+    margin-bottom: 5px;
+    color: #797979;
 }
 
 #projects .buttons {
@@ -1873,14 +1911,14 @@ textarea[id$='summary'] {
 }
 
 #projectRegionsBlock {
-    border: 1px dotted#ccc;
-    padding: 10px 3px 12px 3px;
-    min-height: 110px;
+    padding: 11px 3px 8px 3px;
+    /* margin-bottom: -2000px; */    
+    /* padding-bottom: 2000px; */
 }
-#projectFlagshipsBlock {
-    border: 1px dotted#CCC;  
-    padding: 11px 2px;
-    min-height: 110px;
+#projectFlagshipsBlock {     
+    padding: 11px 0px 9px 3px;
+    /* margin-bottom: -2000px; */ 
+    /* padding-bottom: 2000px; */
 }
 
 #projectRegionsBlock .checkboxGroup { 
@@ -2143,9 +2181,13 @@ p.partnerTitle {
 
 /*** Activities ***/
 .location.row, #location-head {
-  padding: 8px 10px;
-  /* border: 1px solid #D6D6D6; */
+  padding: 6px 11px;
   margin: 3px;
+  position: relative;
+}
+.location.row { 
+  border: 1px solid #E7E7E7;
+  border-radius: 5px;
 }
 
 .location.selected {
@@ -2317,7 +2359,7 @@ margin-bottom: 0px !important;
   position: relative;
   -webkit-box-shadow: 1px 2px 8px rgba(0, 0, 0, 0.3);
   -moz-box-shadow: 1px 2px 8px rgba(0,0,0,.3);
-  box-shadow: 1px 2px 8px rgba(0, 0, 0, 0.3);
+  box-shadow: 1px 1px 4px rgba(0, 0, 0, 0.2);
   -webkit-border-radius: 2px;
   -moz-border-radius: 2px;
   border-radius: 2px;

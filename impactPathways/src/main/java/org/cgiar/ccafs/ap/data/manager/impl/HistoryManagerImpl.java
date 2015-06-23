@@ -52,7 +52,7 @@ public class HistoryManagerImpl implements HistoryManager {
   @Override
   public List<LogHistory> getLogHistory(String tableName, int record_id) {
     List<Map<String, String>> logHistoryData = historyDAO.getHistoryList(tableName, record_id);
-    DateFormat dateformatter = new SimpleDateFormat(APConstants.DATE_FORMAT);
+    DateFormat dateformatter = new SimpleDateFormat(APConstants.DATE_FORMAT + " HH:mm:ss");
     List historyList = new ArrayList<>();
 
     for (Map<String, String> historyData : logHistoryData) {

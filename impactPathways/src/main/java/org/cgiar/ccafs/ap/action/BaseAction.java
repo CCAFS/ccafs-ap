@@ -146,6 +146,10 @@ public class BaseAction extends ActionSupport implements Preparable, SessionAwar
     return boardMessageManager.getAllBoardMessages();
   }
 
+  public APConfig getConfig() {
+    return config;
+  }
+
   /**
    * Get the user that is currently saved in the session.
    * 

@@ -55,10 +55,12 @@ public class SendMail {
    * This method send an email from the main email system.
    * 
    * @param toEmail is the email or the list of emails separated by a single space.
-   * @param subject
+   * @param ccEmail is the email or the list of emails separated by a single space that will be as CC. This parameter
+   *        can be null.
+   * @param subject is the email title.
    * @param messageContent the content of the email
    */
-  public void send(String toEmail, String subject, String messageContent) {
+  public void send(String toEmail, String ccEmail, String subject, String messageContent) {
 
     // Get a Properties object
     Properties properties = System.getProperties();
@@ -88,6 +90,9 @@ public class SendMail {
       msg.setFrom(new InternetAddress(config.getGmailUsername().contains("@") ? config.getGmailUsername()
         : config.getGmailUsername() + "@gmail.com"));
       msg.setRecipients(Message.RecipientType.TO, InternetAddress.parse(toEmail, false));
+      if (ccEmail != null) {
+        msg.setRecipients(Message.RecipientType.CC, InternetAddress.parse(ccEmail, false));
+      }
       msg.setSubject(subject);
       msg.setText(messageContent);
       msg.setSentDate(new Date());

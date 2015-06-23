@@ -50,6 +50,21 @@ public class LiaisonInstitutionManagerImpl implements LiaisonInstitutionManager 
   }
 
   @Override
+  public LiaisonInstitution getLiaisonInstitutionByUser(int userID) {
+    LiaisonInstitution liaisonInstitution = new LiaisonInstitution();
+    Map<String, String> liaisonInstitutionData = liaisonInstitutionDAO.getLiaisonInstitutionByUser(userID);
+
+    if (liaisonInstitutionData.isEmpty()) {
+      return null;
+    }
+
+    liaisonInstitution.setId(Integer.parseInt(liaisonInstitutionData.get("id")));
+    liaisonInstitution.setName(liaisonInstitutionData.get("name"));
+    liaisonInstitution.setAcronym(liaisonInstitutionData.get("acronym"));
+    return liaisonInstitution;
+  }
+
+  @Override
   public List<LiaisonInstitution> getLiaisonInstitutions() {
     List<LiaisonInstitution> liaisonInstitutions = new ArrayList<>();
     List<Map<String, String>> liaisonInsitutionsData = liaisonInstitutionDAO.getLiaisonInstitutions();

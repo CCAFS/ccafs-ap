@@ -35,7 +35,10 @@ public class User {
   private String phone;
   private boolean isCcafsUser;
   private boolean isActive;
+  private LiaisonInstitution liaisonInstitution;
+  @Deprecated
   private List<Institution> institutions;
+  @Deprecated
   private Institution currentInstitution;
   private Date lastLogin;
 
@@ -73,6 +76,7 @@ public class User {
     return this.lastName + ", " + this.firstName;
   }
 
+  @Deprecated
   public Institution getCurrentInstitution() {
     return currentInstitution;
   }
@@ -89,6 +93,7 @@ public class User {
     return id;
   }
 
+  @Deprecated
   public List<Institution> getInstitutions() {
     return institutions;
   }
@@ -99,6 +104,10 @@ public class User {
 
   public String getLastName() {
     return lastName;
+  }
+
+  public LiaisonInstitution getLiaisonInstitution() {
+    return liaisonInstitution;
   }
 
   public String getPassword() {
@@ -129,6 +138,7 @@ public class User {
     this.isCcafsUser = isCcafsUser;
   }
 
+  @Deprecated
   public void setCurrentInstitution(Institution currentInstitution) {
     this.currentInstitution = currentInstitution;
   }
@@ -145,6 +155,7 @@ public class User {
     this.id = id;
   }
 
+  @Deprecated
   public void setInstitutions(List<Institution> institutions) {
     this.institutions = institutions;
   }
@@ -155,6 +166,10 @@ public class User {
 
   public void setLastName(String lastName) {
     this.lastName = lastName;
+  }
+
+  public void setLiaisonInstitution(LiaisonInstitution liaisonInstitution) {
+    this.liaisonInstitution = liaisonInstitution;
   }
 
   public void setMD5Password(String password) {

@@ -4,7 +4,8 @@
 [#assign customJS = ["${baseUrl}/js/global/utils.js", "${baseUrl}/js/global/ipGraph.js", "${baseUrl}/js/planning/ipOtherContributions.js"] /]
 [#assign currentSection = "planning" /]
 [#assign currentPlanningSection = "projects" /]
-[#assign currentStage = "ipOtherContributions" /]
+[#assign currentStage = "outcomes" /]
+[#assign currentSubStage = "otherContributions" /]
 
 
 [#assign breadCrumb = [

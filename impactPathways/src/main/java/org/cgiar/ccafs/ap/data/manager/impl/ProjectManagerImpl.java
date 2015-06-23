@@ -131,7 +131,7 @@ public class ProjectManagerImpl implements ProjectManager {
 
 
       // Getting Project Focuses - Flagships
-      if (projectData.get("regions") != null) {
+      if (projectData.get("flagships") != null) {
         String[] flagshipsAcronyms = projectData.get("flagships").split(",");
         List<IPProgram> flagships = new ArrayList<>();
         IPProgram flagship;
@@ -291,7 +291,7 @@ public class ProjectManagerImpl implements ProjectManager {
 
   @Override
   public List<Integer> getProjectIdsEditables(User user) {
-    return projectDAO.getProjectIdsEditables(user.getCurrentInstitution().getProgram().getId(), user.getId());
+    return projectDAO.getProjectIdsEditables(user.getId());
   }
 
   @Override
@@ -496,12 +496,16 @@ public class ProjectManagerImpl implements ProjectManager {
   public int saveProjectDescription(Project project, User user, String justification) {
     Map<String, Object> projectData = new HashMap<>();
     if (project.getId() == -1) {
-      // This is a new project. we need to add it to the database.
-      // Getting the employee identifier which is the owner_id.
-      int ownerId = userManager.getEmployeeID(project.getOwner());
-      projectData.put("liaison_user_id", ownerId);
+      projectData.put("user_id", user.getId());
       projectData.put("liaison_institution_id", project.getLiaisonInstitution().getId());
       projectData.put("created_by", user.getId());
+      projectData.put("justification", justification);
+
+      if (project.isCoreProject()) {
+        projectData.put("type", APConstants.PROJECT_CORE);
+      } else {
+        projectData.put("type", APConstants.PROJECT_BILATERAL_STANDALONE);
+      }
     } else {
       // Update project
       projectData.put("id", project.getId());
@@ -519,6 +523,8 @@ public class ProjectManagerImpl implements ProjectManager {
       projectData.put("user_id", project.getOwner().getId());
       projectData.put("liaison_institution_id", project.getLiaisonInstitution().getId());
       projectData.put("modified_by", user.getId());
+      projectData.put("justification", justification);
+      projectData.put("type", project.getType());
     }
 
     return projectDAO.saveProject(projectData);

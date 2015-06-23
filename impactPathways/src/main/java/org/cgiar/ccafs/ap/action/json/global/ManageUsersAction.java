@@ -221,22 +221,25 @@ public class ManageUsersAction extends BaseAction {
     message.append(newUser.getFirstName());
     message.append(this.getText("planning.manageUsers.email.arrangement.part2"));
 
-    message.append("planning.manageUsers.email.arrangement.part3");
-    message.append("planning.manageUsers.email.arrangement.part4");
-    message.append("planning.manageUsers.email.arrangement.part5");
+    message.append(this.getText("planning.manageUsers.email.arrangement.part3"));
+    message.append(this.getText("planning.manageUsers.email.arrangement.part4"));
+    message.append(this.getText("planning.manageUsers.email.arrangement.part5"));
     message.append(newUser.getEmail());
-    message.append("planning.manageUsers.email.arrangement.part6");
+    message.append(this.getText("planning.manageUsers.email.arrangement.part6"));
     message.append("Password: ");
     if (newPassword == null) {
-      message.append("planning.manageUsers.email.arrangement.part7");
+      message.append(this.getText("planning.manageUsers.email.arrangement.part7"));
     } else {
       message.append(newPassword);
     }
-    message.append("planning.manageUsers.email.arrangement.part8");
+    message.append(this.getText("planning.manageUsers.email.arrangement.part8"));
 
     // To
-    String emails = this.config.getGmailUsername() + " " + newUser.getEmail();
-    sendMail.send(emails, "planning.manageUsers.email.arrangement.credentials", message.toString());
+    String toEmail = newUser.getEmail();
+    // CC
+    String ccEmails = this.getCurrentUser().getEmail() + " " + this.config.getGmailUsername();
+    sendMail.send(toEmail, ccEmails, this.getText("planning.manageUsers.email.arrangement.credentials"),
+      message.toString());
 
   }
 

@@ -62,6 +62,7 @@ public class ProjectPartnersPlanningAction extends BaseAction {
   private List<Country> countries;
   private List<Institution> allPartners; // Is used to list all the partners that have the system.
   private List<Institution> allPPAPartners; // Is used to list all the PPA partners
+  private List<Institution> projectPPAPartners; // Is used to list all the PPA partners selected in the current project.
   private List<User> allProjectLeaders; // will be used to list all the project leaders that have the system.
 
   @Inject
@@ -105,6 +106,10 @@ public class ProjectPartnersPlanningAction extends BaseAction {
     return projectID;
   }
 
+  public List<Institution> getProjectPPAPartners() {
+    return projectPPAPartners;
+  }
+
   public String getProjectRequest() {
     return APConstants.PROJECT_REQUEST_ID;
   }
@@ -125,6 +130,7 @@ public class ProjectPartnersPlanningAction extends BaseAction {
     return APConstants.PROJECT_PARTNER_PPA;
   }
 
+
   @Override
   public String next() {
     String result = this.save();
@@ -134,7 +140,6 @@ public class ProjectPartnersPlanningAction extends BaseAction {
       return result;
     }
   }
-
 
   @Override
   public void prepare() throws Exception {
@@ -180,9 +185,19 @@ public class ProjectPartnersPlanningAction extends BaseAction {
     // Getting PPA Partners
     project.setPPAPartners(projectPartnerManager.getProjectPartners(project.getId(), APConstants.PROJECT_PARTNER_PPA));
 
+    // Getting the list of PPA Partner institutions
+    projectPPAPartners = new ArrayList<Institution>();
+    for (ProjectPartner ppaPartner : project.getPPAPartners()) {
+      projectPPAPartners.add(ppaPartner.getInstitution());
+    }
+
     // Getting 2-level Project Partners
     project
-      .setProjectPartners(projectPartnerManager.getProjectPartners(project.getId(), APConstants.PROJECT_PARTNER_PP));
+    .setProjectPartners(projectPartnerManager.getProjectPartners(project.getId(), APConstants.PROJECT_PARTNER_PP));
+    // Getting the 2-level Project Partner contributions
+    for (ProjectPartner partner : project.getProjectPartners()) {
+      partner.setContributeInstitutions(institutionManager.getProjectPartnerContributeInstitutions(partner));
+    }
 
     // If the user is not admin or the project owner, we should keep some information
     // unmutable
@@ -379,6 +394,37 @@ public class ProjectPartnersPlanningAction extends BaseAction {
       saved = false;
     }
 
+    // Saving project partner contributions
+    if (partnerType.equals(APConstants.PROJECT_PARTNER_PP)) {
+      // iterating each project partner
+      for (ProjectPartner projectPartner : partners) {
+        // Getting previous partner contributions to identify those that need to be deleted.
+        List<Institution> previousPartnerContributions =
+          institutionManager.getProjectPartnerContributeInstitutions(projectPartner);
+        // Deleting project partner contributions
+        for (Institution previousPartnerContribution : previousPartnerContributions) {
+          if (projectPartner.getContributeInstitutions() == null
+            || !projectPartner.getContributeInstitutions().contains(previousPartnerContribution)) {
+            boolean deleted = institutionManager.deleteProjectPartnerContributeInstitution(projectPartner.getId(),
+              previousPartnerContribution.getId());
+            if (!deleted) {
+              success = false;
+            }
+          }
+        }
+
+        // if the project partner has contribute institutions.
+        if (projectPartner.getContributeInstitutions() != null) {
+          // Saving new and old Project Partner Contributions
+          saved = institutionManager.saveProjectPartnerContributeInstitutions(projectPartner.getId(),
+            projectPartner.getContributeInstitutions());
+          if (!saved) {
+            saved = false;
+          }
+        }
+      } // End loop
+    }
+
     if (success) {
       this.addActionMessage(this.getText("saving.saved"));
       return SUCCESS;
@@ -563,5 +609,6 @@ public class ProjectPartnersPlanningAction extends BaseAction {
     }
     return problem;
   }
+
 
 }

@@ -74,6 +74,7 @@ public class MySQLHistoryDAO implements HistoryDAO {
     query.append("INNER JOIN users u ON t.modified_by = u.id ");
     query.append("WHERE record_id = ");
     query.append(record_id);
+    query.append(" ORDER BY t.active_since DESC ");
 
     try (Connection con = daoManager.getConnection()) {
       ResultSet rs = daoManager.makeQuery(query.toString(), con);

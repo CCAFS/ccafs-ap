@@ -33,6 +33,15 @@ import com.google.inject.ImplementedBy;
 public interface InstitutionManager {
 
   /**
+   * This method deletes a project partner contribution.
+   * 
+   * @param projectPartnerID is the project partner id
+   * @param institutionID is the institution id.
+   * @return true if the information was successfully deleted, false otherwise.
+   */
+  public boolean deleteProjectPartnerContributeInstitution(int projectPartnerID, int institutionID);
+
+  /**
    * Return all the institutions.
    * 
    * @return an Institution object or null if the id does not exist in the database.
@@ -103,4 +112,23 @@ public interface InstitutionManager {
    * @return an Institution Object with the information
    */
   public Institution getUserMainInstitution(User user);
+
+  /**
+   * Save a single project partner contribution.
+   * 
+   * @param projectPartnerID is the project partner id.
+   * @param institutionID is the institution id
+   * @return 0 if the record was saved or -1 if some error occurred.
+   */
+  public int saveProjectPartnerContributeInstitution(int projectPartnerID, int institutionID);
+
+  /**
+   * This method add or update a project partner contributions.
+   * 
+   * @param projectPartnerID is the project partner id
+   * @param contributeInstitutions is the list of institutions that this project partner is contributing to.
+   * @return true if the information was successfully saved, false otherwise.
+   */
+  public boolean saveProjectPartnerContributeInstitutions(int projectPartnerID,
+    List<Institution> contributeInstitutions);
 }
