@@ -24,7 +24,7 @@
     [#-- Partner Name --]
     <div class="fullPartBlock partnerName chosen">
       [#assign institutionList]${isPPA?string("allPPAPartners", "allPartners")}[/#assign]
-      [@customForm.select name="${ap_name}[${ap_index}].institution" value="${ap.institution.id?c}" label=""  disabled=!editable i18nkey="preplanning.projectPartners.partner.name" listName=institutionList keyFieldName="id"  displayFieldName="getComposedName()" /]
+      [@customForm.select name="${ap_name}[${ap_index}].institution" value="${ap.institution.id?c}" label=""  disabled=!editable i18nkey="preplanning.projectPartners.partner.name" listName=institutionList keyFieldName="id"  displayFieldName="getComposedName()" editable=editable /]
     </div>
     [#-- Filters --]
     [#if editable]
@@ -49,7 +49,7 @@
     [#-- Contact Person --]
     <div class="fullPartBlock clearfix">
       [#-- Contact Person information is going to come from the users table, not from project_partner table (refer to the table project_partners in the database) --] 
-      [@customForm.input name="" value="${ap.user.composedName}" className="userName" type="text" disabled=!canEdit i18nkey="preplanning.projectPartners.contactPersonEmail" required=true readOnly=true editable=editable/]
+      [@customForm.input name="" value="${ap.user.composedName?html}" className="userName" type="text" disabled=!canEdit i18nkey="preplanning.projectPartners.contactPersonEmail" required=true readOnly=true editable=editable/]
       <input class="type" type="hidden" name="${ap_name}[${ap_index}].type" value="${isPPA?string(typeProjectPPA, typeProjectPartner)}">
       <input class="userId" type="hidden" name="${ap_name}[${ap_index}].user" value="${ap.user.id}">   
       [#if editable]<div class="searchUser">[@s.text name="form.buttons.searchUser" /]</div>[/#if] 
@@ -63,7 +63,7 @@
     [#-- Indicate which PPA Partners for second level partners --]
     [#if !isPPA]
     <div class="fullPartBlock">      
-      <div class="ppaPartnersList panel primary">
+      <div class="ppaPartnersList panel tertiary">
         <div class="panel-head">[@customForm.text name="preplanning.projectPartners.indicatePpaPartners" readText=!editable /]</div> 
         <div class="panel-body">
           [#if !(ap.contributeInstitutions?has_content) && !editable]
@@ -132,7 +132,7 @@
         [#-- Indicate which PPA Partners for second level partners --]
         [#if !isPPA]
         <div class="fullPartBlock">      
-          <div class="ppaPartnersList panel primary"> 
+          <div class="ppaPartnersList panel tertiary"> 
             <div class="panel-head">[@s.text name="preplanning.projectPartners.indicatePpaPartners" /]</div>
             <div class="panel-body">
               <ul class="list"></ul> 
@@ -156,7 +156,7 @@
         [#-- Project Leader contact --] 
         <div class="fullPartBlock clearfix"> 
           [#if leader.user??]
-            [@customForm.input name="" value="${leader.user.composedName}" className="userName" type="text" disabled=!canEdit i18nkey="preplanning.projectPartners.projectLeader" required=true readOnly=true editable=editable/]
+            [@customForm.input name="" value="${leader.user.composedName?html}" className="userName" type="text" disabled=!canEdit i18nkey="preplanning.projectPartners.projectLeader" required=true readOnly=true editable=editable/]
             <input class="userId" type="hidden" name="project.leader.user" value="${leader.user.id}">
           [/#if]
           <input class="partnerId" type="hidden" name="project.leader.id" value="${leader.id}">
