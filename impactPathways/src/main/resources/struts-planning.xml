@@ -80,8 +80,8 @@
         <param name="projectID">${project.id}</param>
       </result>
       <result name="cancel" type="redirectAction">
-        <param name="actionName">projects</param>
-        <param name="namespace">/planning</param>
+        <param name="actionName">partnerLead</param>
+        <param name="projectID">${project.id}</param>
       </result>
     </action>
     
@@ -96,8 +96,8 @@
         <param name="projectID">${project.id}</param>
       </result>
       <result name="cancel" type="redirectAction">
-        <param name="actionName">projects</param>
-        <param name="namespace">/planning</param>
+        <param name="actionName">ppaPartners</param>
+        <param name="projectID">${project.id}</param>
       </result>
     </action>
     
@@ -112,8 +112,8 @@
         <param name="projectID">${project.id}</param>
       </result>
       <result name="cancel" type="redirectAction">
-        <param name="actionName">projects</param>
-        <param name="namespace">/planning</param>
+        <param name="actionName">partners</param>
+        <param name="projectID">${project.id}</param>
       </result>
     </action>
 
