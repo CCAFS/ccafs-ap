@@ -22,8 +22,8 @@ CREATE TABLE `activities1` (
   `project_id` bigint(20) NOT NULL,
   `title` text,
   `description` text,
-  `startDate` date DEFAULT NULL,
-  `endDate` date DEFAULT NULL,
+  `startDate` DATE DEFAULT NULL,
+  `endDate` DATE DEFAULT NULL,
   `is_global` tinyint(1) NOT NULL DEFAULT '0',
   `expected_leader_id` bigint(20) DEFAULT NULL,
   `leader_id` bigint(20) DEFAULT NULL,
@@ -31,7 +31,7 @@ CREATE TABLE `activities1` (
   `expected_gender_contribution` text,
   `outcome` text,
   `gender_percentage` double DEFAULT NULL,
-  `created` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  `created` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
   PRIMARY KEY (`id`),
   KEY `FK_Projects_id_idx_1` (`project_id`),
   KEY `FK_activities_activity_leaders_idx_1` (`leader_id`),
@@ -48,13 +48,12 @@ INSERT INTO `activities1` VALUES (3,57,'Site & crop specific CSA identified by e
 ALTER TABLE `project_partners` CHANGE COLUMN `modification_justification` `modification_justification` TEXT NULL ;
 
 -- Add temporal column activity_id in table project_partners for save the reference of activity.
-ALTER TABLE project_partners ADD activity_id  bigint(20)  not null;
+ALTER TABLE project_partners ADD activity_id  bigint(20)  NOT NULL;
 
 -- Inserting data to project_partners coming from temporal table activities1.
 -- The inner join is filtering the records that have some value in leader_id.
 INSERT INTO project_partners ( `project_id`,`partner_id`,`user_id`, responsabilities,`partner_type`, `activity_partner`, `is_active`, `created_by`, `modified_by` , activity_id ) 
-SELECT  
-act.project_id, e.institution_id, e.user_id, CONCAT("Activity#" , a.id),'PP', 1, 1, act.created_by, act.created_by  , a.id 
+SELECT act.project_id, e.institution_id, e.user_id, CONCAT("Activity 2014-" , a.id),'PP', 1, 1, act.created_by, act.created_by  , a.id 
 FROM activities1 a
 INNER JOIN employees  e ON a.leader_id = e.id 
 INNER JOIN activities act ON a.id = act.id ;
@@ -78,34 +77,32 @@ UPDATE expected_activity_leaders SET email='' WHERE `id`='161';
 ALTER TABLE users ADD UNIQUE (email);
 
 INSERT INTO users (first_name ,last_name, username, `password`, email, is_ccafs_user, is_active, last_login)
-SELECT  nombre, "", NULL , "", email, IF(email LIKE '@cgiar.org', 1, 0),  0, NULL 
-FROM (SELECT el.name as nombre, el.email   
-			FROM expected_activity_leaders el 
-    	INNER JOIN activities a ON  a.expected_leader_id = el.id 
-			LEFT JOIN users u ON el.email = u.email 
-			WHERE u.id is NULL AND el.email != '' GROUP BY el.email ) AS Y;
-          
+SELECT  el.name, "", NULL , "", el.email, IF(el.email LIKE '@cgiar.org', 1, 0),  0, NULL 
+FROM expected_activity_leaders el 
+INNER JOIN activities a ON  a.expected_leader_id = el.id 
+LEFT JOIN users u ON el.email = u.email 
+WHERE u.id is NULL AND el.email != '' GROUP BY el.email;
+
 -- Enter the expected_leaders in the table project_partners
 INSERT INTO project_partners (project_id, partner_id, user_id, responsabilities, partner_type, activity_partner, is_active, created_by, modified_by, activity_id) 
-SELECT project_id, partner_id, IF(email = '', NULL, user_id), CONCAT("Activity#", activity_id),'PP', 1 , 1, created_by, created_by, activity_id
-FROM (SELECT  a.project_id , el.institution_id  as partner_id, u.id as user_id , a.id as activity_id , a.created_by , el.email
+SELECT a.project_id, el.institution_id  as partner_id, IF(el.email = '', NULL, u.id),  CONCAT("Activity 2014-", a.id)  ,'PP', 1 , 1, a.created_by, a.created_by, a.id
 FROM expected_activity_leaders el 
 INNER JOIN activities a ON el.id = a.expected_leader_id  
-INNER JOIN users u ON el.email = u.email) AS Y;
-     
--- Entering data of special cases project partners (they don't have  user_id) Activities 173 and 181
+INNER JOIN users u ON el.email = u.email;
+
+-- Entering data of special cases project partners (they don't have  user_id) Activities 173, 181 and 215
 INSERT INTO project_partners (project_id, partner_id, user_id, responsabilities, partner_type, activity_partner, is_active, created_by, modified_by, activity_id) VALUES 
-(28, 46, NULL, 'Activity#181','PP', 1, 1, 90,90,181) , (28, 46, NULL, 'Activity#173','PP', 1, 1, 90,90,173) , (41, 172, NULL, 'Activity#215','PP', 1, 1, 97,97,215);
+(28, 46, NULL, 'Activity 2014-181','PP', 1, 1, 90,90,181) , (28, 46, NULL, 'Activity 2014-173','PP', 1, 1, 90,90,173) , (41, 172, NULL, 'Activity 2014-215','PP', 1, 1, 97,97,215);
 
 -- Adding new column project_partner_id in activities table.
 ALTER TABLE activities ADD project_partner_id  BIGINT(20) NOT NULL AFTER gender_percentage;
 
  -- Updating the project_partner_id in table activities 
-UPDATE activities act INNER JOIN  project_partners pp ON pp.activity_id = act.id
+UPDATE activities act INNER JOIN  project_partners pp ON pp.activity_id = act.id 
 SET act.project_partner_id = pp.id ;
 
 -- Foreign Key between activities and project partners with project_partner_id.
 ALTER TABLE activities ADD CONSTRAINT  FK_activities_project_partner_id FOREIGN KEY (project_partner_id) REFERENCES project_partners(id);
 
 -- Delete activity_id column in project_partners table.
-alter table project_partners drop activity_id;  
+ALTER TABLE project_partners DROP activity_id;  
