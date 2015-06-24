@@ -20,12 +20,12 @@ function initItemListEvents() {
     "#justification"
   ]);
 
-  setInitialPPAPartners();
+  setInitialList();
 }
 
-function setInitialPPAPartners() {
+function setInitialList() {
   $("div.crpContribution").each(function(index,element) {
-    // Getting PPA Partners previously selected by project partner
+    // Getting previously selected by project partner
     var $select = $(element).find('select');
     $(element).find('li input.id').each(function(i_id,id) {
       $select.find('option[value=' + $(id).val() + ']').remove();
@@ -42,7 +42,6 @@ function removeItemList($item) {
   // Removing from list
   $item.hide("slow", function() {
     $item.remove();
-    setProjectPartnersIndexes();
   });
 }
 
@@ -55,7 +54,13 @@ function addItemList($option) {
   $li.appendTo($list).hide().show('slow');
   $option.remove();
   $select.trigger("liszt:updated");
-  setProjectPartnersIndexes();
+  setIndexes($list, $('#crpsName').val());
+}
+
+function setIndexes($element,elementName) {
+  $element.find('li').each(function(i,item) {
+    $(item).find('.id').attr('name', elementName);
+  });
 }
 
 // Activate the chosen plugin to the countries, partner types and partners lists.

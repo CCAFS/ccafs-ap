@@ -68,7 +68,7 @@
               <div class="midOutcomeTitle">
                 <input id="midOutcomeID" value="${midOutcome.id}" type="hidden" />
                 <input id="programID" value="${midOutcome.program.id}" type="hidden" /> 
-                <h6>${midOutcome.program.acronym} - [@s.text name="planning.projectImpactPathways.outcome2019" /]</h6>
+                <h6 class="title">${midOutcome.program.acronym} - [@s.text name="planning.projectImpactPathways.outcome2019" /]</h6>
                 
                 <p class="description"> ${midOutcome.description} </p>
               </div>
@@ -263,7 +263,7 @@
   <div class="midOutcomeTitle">
     <input id="midOutcomeID" value="" type="hidden" />
     <input id="programID" value="" type="hidden" /> 
-    <h6>[@s.text name="planning.projectImpactPathways.outcome2019" /]</h6>
+    <h6 class="title">[@s.text name="planning.projectImpactPathways.outcome2019" /]</h6>
     <p class="description"></p>
   </div>
   

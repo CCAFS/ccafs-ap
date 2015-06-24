@@ -1747,6 +1747,12 @@ width:10px;
 padding-left: 11px;
 }
 
+#midOutcomesSelect {
+  border-top: 1px dashed #E4E4E4;
+  margin-top: 14px;
+  padding-top: 12px;
+}
+
 .indicator h6,.indicator label{
   float: left; 
 }

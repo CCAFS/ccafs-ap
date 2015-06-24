@@ -1,6 +1,10 @@
+// Global vars
+var $midOutcomesList;
+
 $(document).ready(init);
 
 function init() {
+  $midOutcomesList = $('#outcomes_midOutcomesList');
   setIndicatorIndexes();
   setMogsIndexes();
   attachEvents();
@@ -11,7 +15,8 @@ function init() {
 }
 
 function attachEvents() {
-  $("#projectOutcomes_midOutcomesList").change(selectMidOutcomeEvent);
+
+  $midOutcomesList.change(selectMidOutcomeEvent);
   $('.projectIndicatorCheckbox').click(toogleIndicatorInfo);
   $('input[name^="project.outputs"]').click(selectMogEvent);
   $(".removeContribution").click(removeContributionBlock);
@@ -24,18 +29,15 @@ function attachEvents() {
 }
 
 function removeContributionBlock(event) {
-  $(event.target).parent().fadeOut(
-      "slow",
-      function() {
-        var midOutcomeID = $(this).find("#midOutcomeID").val();
-        var programID = $(this).find("#programID").val();
-        var description = $(this).find("p.description").text();
-        $("#projectOutcomes_midOutcomesList").append(
-            '<option value="' + midOutcomeID + '-' + programID + '">' + description + '</option>');
-        $(this).remove();
-        $("#projectOutcomes_midOutcomesList").trigger("liszt:updated");
-        setIndicatorIndexes();
-      });
+  $(event.target).parent().fadeOut("slow", function() {
+    var midOutcomeID = $(this).find("#midOutcomeID").val();
+    var programID = $(this).find("#programID").val();
+    var description = $(this).find("p.description").text();
+    $midOutcomesList.append('<option value="' + midOutcomeID + '-' + programID + '">' + description + '</option>');
+    $(this).remove();
+    $midOutcomesList.trigger("liszt:updated");
+    setIndicatorIndexes();
+  });
 }
 
 function selectMogEvent(event) {
