@@ -43,7 +43,6 @@ public class LogTriggersManager {
     this.tableName = tableName;
   }
 
-
   public void createTrigger(String triggerAction) throws SQLException {
     Statement statement = connection.createStatement();
     StringBuilder query = new StringBuilder();
@@ -63,15 +62,17 @@ public class LogTriggersManager {
     query.append("AFTER " + triggerAction.toUpperCase() + " ON " + tableName);
     query.append(" FOR EACH ROW BEGIN ");
 
-    // Update the last record with the same ID to set the 'active_until' column to NOW()
-    query.append("UPDATE ");
-    query.append(logDatabaseName);
-    query.append(".");
-    query.append(tableName);
-    query.append(" SET active_until=NOW() WHERE record_id = NEW.`id` ");
-    query.append("ORDER BY active_since DESC LIMIT 1; ");
-
     if (triggerAction.equals("insert")) {
+
+
+      // Update the last record with the same ID to set the 'active_until' column to NOW()
+      query.append("UPDATE ");
+      query.append(logDatabaseName);
+      query.append(".");
+      query.append(tableName);
+      query.append(" SET active_until=NOW() WHERE record_id = NEW.`id` ");
+      query.append("ORDER BY active_since DESC LIMIT 1; ");
+
 
       // Set the trigger action to 'insert'
       query.append("  INSERT INTO " + logDatabaseName + "." + tableName + "( ");
@@ -81,6 +82,27 @@ public class LogTriggersManager {
       query.append(", 'insert'); ");
 
     } else if (triggerAction.equals("update")) {
+      // If the only columns updated were the modified_by and the justification, we won't add a record in the log
+      String oldColumns = this.getTableColumns(tableName, "OLD.");
+      oldColumns = oldColumns.replace(", OLD.`modified_by`, OLD.`modification_justification`", "");
+      String newColumns = this.getTableColumns(tableName, "NEW.");
+      newColumns = newColumns.replace(", NEW.`modified_by`, NEW.`modification_justification`", "");
+
+      query.append("DECLARE old_concat, new_concat text; ");
+      query.append("SET old_concat = CONCAT_WS(',', " + oldColumns + "); ");
+      query.append("SET new_concat = CONCAT_WS(',', " + newColumns + "); ");
+
+      query.append("IF old_concat <> new_concat THEN ");
+
+      // Update the last record with the same ID to set the 'active_until' column to NOW()
+      query.append("UPDATE ");
+      query.append(logDatabaseName);
+      query.append(".");
+      query.append(tableName);
+      query.append(" SET active_until=NOW() WHERE record_id = NEW.`id` ");
+      query.append("ORDER BY active_since DESC LIMIT 1; ");
+
+
       // If the trigger is updating the record we need to check if the record is being deleted.
       query.append("IF OLD.`is_active` = 1 AND NEW.`is_active` = 0 THEN ");
 
@@ -99,6 +121,8 @@ public class LogTriggersManager {
       query.append(") VALUES ( ");
       query.append(valuesToInsert);
       query.append(", 'update'); ");
+      query.append("END IF; ");
+
       query.append("END IF; ");
     }
 
@@ -150,6 +174,43 @@ public class LogTriggersManager {
     return null;
   }
 
+  /**
+   * This method returns a String with the columns of the table called tableName separated by comma.
+   * If the parameter prefix is not null the column name will be preceded by its value.
+   * For example:
+   * prefix -> "OLD."
+   * returns: " OLD.`column1`, OLD.`column2` "
+   * 
+   * @return a String with the columns of the table separated by comma.
+   */
+  private String getTableColumns(String tableName, String prefix) throws SQLException {
+    Statement statement = connection.createStatement();
+
+    StringBuilder query = new StringBuilder();
+    query.append("SELECT GROUP_CONCAT( DISTINCT ");
+    query.append("          CONCAT('" + prefix + "`', column_name, '`') ");
+    query.append("       SEPARATOR ', ') as tableValues ");
+    query.append("FROM INFORMATION_SCHEMA.COLUMNS ");
+    query.append("WHERE TABLE_SCHEMA='");
+    query.append(databaseName);
+    query.append("' AND TABLE_NAME = '");
+    query.append(tableName);
+    query.append("'; ");
+
+    try {
+      ResultSet rs = statement.executeQuery(query.toString());
+      if (rs.next()) {
+        return rs.getString("tableValues");
+      }
+    } catch (SQLException e) {
+      LOG.error("Exception raised trying to get the columns of the table {}.", tableName);
+      throw e;
+    } finally {
+      statement.close();
+    }
+
+    return null;
+  }
 
   /**
    * This method returns the values to be inserted by the trigger that populates the history tables. Keep in mind that
