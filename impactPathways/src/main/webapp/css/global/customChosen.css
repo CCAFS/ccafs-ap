@@ -91,7 +91,7 @@
 /*-----------------  Half part block elements  --------------*/
 
 .halfPartBlock.chosen .selectList{
-  width: 250px !important;
+  /* width: 250px !important; */
 }
 
 .halfPartBlock .chzn-container-single .chzn-single {

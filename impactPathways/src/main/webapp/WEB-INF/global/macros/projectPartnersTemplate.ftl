@@ -27,7 +27,7 @@
       [@customForm.select name="${ap_name}[${ap_index}].institution" value="${ap.institution.id?c}" label=""  disabled=!editable i18nkey="preplanning.projectPartners.partner.name" listName=institutionList keyFieldName="id"  displayFieldName="getComposedName()" editable=editable /]
     </div>
     [#-- Filters --]
-    [#if editable]
+    [#if editable && !isPPA]
       [#if ap.id != -1]
         <div class="filters-link">[@s.text name="preplanning.projectPartners.filters" /]</div>
         <div class="filters-content">
