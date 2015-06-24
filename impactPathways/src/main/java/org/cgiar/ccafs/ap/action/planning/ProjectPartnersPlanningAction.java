@@ -11,6 +11,7 @@ package org.cgiar.ccafs.ap.action.planning;
 import org.cgiar.ccafs.ap.action.BaseAction;
 import org.cgiar.ccafs.ap.config.APConstants;
 import org.cgiar.ccafs.ap.data.manager.BudgetManager;
+import org.cgiar.ccafs.ap.data.manager.HistoryManager;
 import org.cgiar.ccafs.ap.data.manager.InstitutionManager;
 import org.cgiar.ccafs.ap.data.manager.LocationManager;
 import org.cgiar.ccafs.ap.data.manager.ProjectManager;
@@ -51,6 +52,7 @@ public class ProjectPartnersPlanningAction extends BaseAction {
   private ProjectManager projectManager;
   private UserManager userManager;
   private BudgetManager budgetManager;
+  private HistoryManager historyManager;
 
   // Model for the back-end
   private int projectID;
@@ -68,7 +70,7 @@ public class ProjectPartnersPlanningAction extends BaseAction {
   @Inject
   public ProjectPartnersPlanningAction(APConfig config, ProjectPartnerManager projectPartnerManager,
     InstitutionManager institutionManager, LocationManager locationManager, ProjectManager projectManager,
-    UserManager userManager, BudgetManager budgetManager) {
+    UserManager userManager, BudgetManager budgetManager, HistoryManager historyManager) {
     super(config);
     this.projectPartnerManager = projectPartnerManager;
     this.institutionManager = institutionManager;
@@ -76,6 +78,7 @@ public class ProjectPartnersPlanningAction extends BaseAction {
     this.projectManager = projectManager;
     this.userManager = userManager;
     this.budgetManager = budgetManager;
+    this.historyManager = historyManager;
   }
 
   public List<Institution> getAllPartners() {
@@ -193,7 +196,7 @@ public class ProjectPartnersPlanningAction extends BaseAction {
 
     // Getting 2-level Project Partners
     project
-    .setProjectPartners(projectPartnerManager.getProjectPartners(project.getId(), APConstants.PROJECT_PARTNER_PP));
+      .setProjectPartners(projectPartnerManager.getProjectPartners(project.getId(), APConstants.PROJECT_PARTNER_PP));
     // Getting the 2-level Project Partner contributions
     for (ProjectPartner partner : project.getProjectPartners()) {
       partner.setContributeInstitutions(institutionManager.getProjectPartnerContributeInstitutions(partner));
@@ -204,6 +207,8 @@ public class ProjectPartnersPlanningAction extends BaseAction {
     previousProject = new Project();
     previousProject.setId(project.getId());
     previousProject.setPPAPartners(project.getPPAPartners());
+
+    super.setHistory(historyManager.getLogHistory("project_partners", project.getId()));
 
     if (this.getRequest().getMethod().equalsIgnoreCase("post")) {
       // Clear out the list if it has some element
@@ -337,8 +342,9 @@ public class ProjectPartnersPlanningAction extends BaseAction {
     boolean success = true;
 
     // Saving Project leader
-    int id = projectPartnerManager.saveProjectPartner(projectID, project.getLeader(), this.getCurrentUser(),
-      this.getJustification());
+    int id =
+      projectPartnerManager.saveProjectPartner(projectID, project.getLeader(), this.getCurrentUser(),
+        this.getJustification());
     if (id < 0) {
       success = false;
     }
@@ -346,8 +352,9 @@ public class ProjectPartnersPlanningAction extends BaseAction {
     // Saving Project Coordinator
     // Setting the same institution that was selected for the Project Leader.
     project.getCoordinator().setInstitution(project.getLeader().getInstitution());
-    id = projectPartnerManager.saveProjectPartner(projectID, project.getCoordinator(), this.getCurrentUser(),
-      this.getJustification());
+    id =
+      projectPartnerManager.saveProjectPartner(projectID, project.getCoordinator(), this.getCurrentUser(),
+        this.getJustification());
     if (id < 0) {
       success = false;
     }
@@ -379,8 +386,9 @@ public class ProjectPartnersPlanningAction extends BaseAction {
     // Deleting project partners
     for (ProjectPartner previousPartner : previousPartners) {
       if (!partners.contains(previousPartner)) {
-        boolean deleted = projectPartnerManager.deleteProjectPartner(previousPartner.getId(), this.getCurrentUser(),
-          this.getJustification());
+        boolean deleted =
+          projectPartnerManager.deleteProjectPartner(previousPartner.getId(), this.getCurrentUser(),
+            this.getJustification());
         if (!deleted) {
           success = false;
         }
@@ -405,8 +413,9 @@ public class ProjectPartnersPlanningAction extends BaseAction {
         for (Institution previousPartnerContribution : previousPartnerContributions) {
           if (projectPartner.getContributeInstitutions() == null
             || !projectPartner.getContributeInstitutions().contains(previousPartnerContribution)) {
-            boolean deleted = institutionManager.deleteProjectPartnerContributeInstitution(projectPartner.getId(),
-              previousPartnerContribution.getId());
+            boolean deleted =
+              institutionManager.deleteProjectPartnerContributeInstitution(projectPartner.getId(),
+                previousPartnerContribution.getId());
             if (!deleted) {
               success = false;
             }
@@ -416,8 +425,9 @@ public class ProjectPartnersPlanningAction extends BaseAction {
         // if the project partner has contribute institutions.
         if (projectPartner.getContributeInstitutions() != null) {
           // Saving new and old Project Partner Contributions
-          saved = institutionManager.saveProjectPartnerContributeInstitutions(projectPartner.getId(),
-            projectPartner.getContributeInstitutions());
+          saved =
+            institutionManager.saveProjectPartnerContributeInstitutions(projectPartner.getId(),
+              projectPartner.getContributeInstitutions());
           if (!saved) {
             saved = false;
           }
@@ -489,7 +499,7 @@ public class ProjectPartnersPlanningAction extends BaseAction {
 
 
     // validate only if user cicks any save button.
-    if (this.isHttpPost()) {
+    if (save) {
       boolean problem = false;
       if (ActionContext.getContext().getName().equals("partnerLead")) {
         problem = this.validateLeadPartner();
