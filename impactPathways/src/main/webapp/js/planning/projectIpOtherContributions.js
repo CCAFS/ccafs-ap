@@ -16,6 +16,10 @@ function initItemListEvents() {
     removeItemList($(this).parents('li'));
   });
 
+  validateEvent('[name=save], [name=next]', [
+    "#justification"
+  ]);
+
   setInitialPPAPartners();
 }
 

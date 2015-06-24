@@ -10,6 +10,9 @@ $(document).ready(
       }
       setInitialPPAPartners();
       initItemListEvents();
+      validateEvent('[name=save], [name=next]', [
+        "#justification"
+      ]);
 
       function attachEvents() {
         // Partners Events
@@ -100,13 +103,14 @@ $(document).ready(
         });
       }
 
-      // Items list functions
+      /**
+       * Items list functions
+       */
 
       function initItemListEvents() {
         $('.ppaPartnersList select').on('change', function(e) {
           addItemList($(this).find('option:selected'));
         });
-
         $('ul li .remove').on('click', function(e) {
           removeItemList($(this).parents('li'));
         });

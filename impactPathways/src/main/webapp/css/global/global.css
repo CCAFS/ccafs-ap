@@ -153,6 +153,7 @@ textarea#justification {
     width: 98%;
     font-size: 1.07em;
     line-height: 1.3em;
+    padding-left: 1px;
 }
 
 input[type="radio"] {
@@ -543,7 +544,7 @@ select#partnerSave_activityPartner_partner_type_id {
 .panel.tertiary .panel-head{
   font-size: 1em;
   background: #FFFFFF;
-  color: #525254;
+  color: #5D5D5E;
   padding: 2px 0 4px 0;
   margin-bottom: 4px;
   text-align: left;
@@ -560,7 +561,7 @@ select#partnerSave_activityPartner_partner_type_id {
     list-style: none; 
     padding: 5px 10px; 
     background-color: #F7F7F7;
-    border: 1px solid #EAEAEA !important;
+    border: 1px solid #E0E0E0 !important;
     box-shadow: 1px 1px 0px rgba(0, 0, 0, 0.1);
     border-radius: 4px;
     margin-bottom: 5px;
