@@ -44,40 +44,10 @@ public class MySQLHistoryDAO implements HistoryDAO {
     this.daoManager = daoManager;
   }
 
-  private String getDatabaseName() {
-    String query = "SELECT DATABASE() as dbName;";
-
-    try (Connection con = daoManager.getConnection()) {
-      ResultSet rs = daoManager.makeQuery(query, con);
-      if (rs.next()) {
-        return rs.getString("dbName");
-      }
-    } catch (SQLException e) {
-      LOG.error("getDatabaseName() > Error getting the database name.", e);
-    }
-    return null;
-  }
-
-  @Override
-  public List<Map<String, String>> getHistoryList(String tableName, int record_id) {
+  private List<Map<String, String>> getData(String query) {
     List<Map<String, String>> historyData = new ArrayList<>();
-    String dbName = this.getDatabaseName();
-
-    StringBuilder query = new StringBuilder();
-    query.append("SELECT u.id as 'user_id', u.first_name, u.last_name, u.email, t.action, ");
-    query.append("t.active_since, t.modification_justification ");
-    query.append("FROM ");
-    query.append(dbName);
-    query.append("_history.");
-    query.append(tableName);
-    query.append(" t ");
-    query.append("INNER JOIN users u ON t.modified_by = u.id ");
-    query.append("WHERE record_id = ");
-    query.append(record_id);
-    query.append(" ORDER BY t.active_since DESC ");
-    query.append(" LIMIT 0, 5 ");
-
     try (Connection con = daoManager.getConnection()) {
+
       ResultSet rs = daoManager.makeQuery(query.toString(), con);
       while (rs.next()) {
         Map<String, String> data = new HashMap<>();
@@ -93,8 +63,70 @@ public class MySQLHistoryDAO implements HistoryDAO {
       }
 
     } catch (SQLException e) {
-      LOG.error("There was an exception trying to get log history for table {}.", tableName, e);
+      LOG.error("There was an exception trying to get the version history.", e);
     }
     return historyData;
+  }
+
+  private String getDatabaseName() {
+    String query = "SELECT DATABASE() as dbName;";
+
+    try (Connection con = daoManager.getConnection()) {
+      ResultSet rs = daoManager.makeQuery(query, con);
+      if (rs.next()) {
+        return rs.getString("dbName");
+      }
+    } catch (SQLException e) {
+      LOG.error("getDatabaseName() > Error getting the database name.", e);
+    }
+    return null;
+  }
+
+  @Override
+  public List<Map<String, String>> getProjectDescriptionHistory(int projectID) {
+    String dbName = this.getDatabaseName();
+
+    StringBuilder query = new StringBuilder();
+    query.append("SELECT u.id as 'user_id', u.first_name, u.last_name, u.email, t.action, ");
+    query.append("t.active_since, t.modification_justification ");
+    query.append("FROM ");
+    query.append(dbName);
+    query.append("_history.projects t ");
+    query.append("INNER JOIN users u ON t.modified_by = u.id ");
+    query.append("WHERE record_id = ");
+    query.append(projectID);
+    query.append(" ORDER BY t.active_since DESC ");
+    query.append(" LIMIT 0, 5 ");
+
+    return this.getData(query.toString());
+  }
+
+  @Override
+  public List<Map<String, String>> getProjectPartnerHistory(int projectID, String[] partnerTypes) {
+    String dbName = this.getDatabaseName();
+
+    StringBuilder query = new StringBuilder();
+    query.append("SELECT u.id as 'user_id', u.first_name, u.last_name, u.email, t.action, ");
+    query.append("t.active_since, t.modification_justification ");
+    query.append("FROM ");
+    query.append(dbName);
+    query.append("_history.project_partners t ");
+    query.append("INNER JOIN users u ON t.modified_by = u.id ");
+    query.append("WHERE project_id = ");
+    query.append(projectID);
+    query.append(" AND partner_type IN ( ");
+
+    for (int c = 0; c < partnerTypes.length; c++) {
+      query.append((c == 0) ? " '" + partnerTypes[c] + "' " : ", '" + partnerTypes[c] + "' ");
+    }
+
+    query.append(" ) ");
+    query.append(" GROUP BY u.email, t.action, t.modification_justification, ");
+    // This line group the row that have the value of active_since in the range of +/- 2 seconds
+    query.append(" UNIX_TIMESTAMP(t.active_since) DIV 2 ");
+    query.append(" ORDER BY t.active_since DESC, t.action DESC ");
+    query.append(" LIMIT 0, 5 ");
+
+    return this.getData(query.toString());
   }
 }

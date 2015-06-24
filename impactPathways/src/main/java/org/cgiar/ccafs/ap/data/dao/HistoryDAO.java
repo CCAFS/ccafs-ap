@@ -30,11 +30,21 @@ import com.google.inject.ImplementedBy;
 public interface HistoryDAO {
 
   /**
-   * This method return the list of changes (only the user, date, action and justification) recorded in the history
-   * table corresponding to the table received by parameter.
+   * This method return the last five changes (only the user, date, action and justification) made in the interface of
+   * project description to the project identified by the value received by parameter.
    * 
-   * @param tableName
+   * @param projectID - Project identifier
    * @return a list of maps with the information
    */
-  public List<Map<String, String>> getHistoryList(String tableName, int record_id);
+  public List<Map<String, String>> getProjectDescriptionHistory(int projectID);
+
+  /**
+   * This method return the last five changes (only the user, date, action and justification) made in the interface of
+   * project partners (Partner lead) to the project identified by the value received by parameter.
+   * 
+   * @param projectID - Project identifier
+   * @param partnerType - Array of string with the type of partners (ex. 'PL', 'PPA')
+   * @return a list of maps with the information
+   */
+  public List<Map<String, String>> getProjectPartnerHistory(int projectID, String[] partnerType);
 }
