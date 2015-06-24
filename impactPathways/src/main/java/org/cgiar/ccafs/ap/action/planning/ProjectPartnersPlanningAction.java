@@ -58,6 +58,7 @@ public class ProjectPartnersPlanningAction extends BaseAction {
   private int projectID;
   private Project project;
   private Project previousProject;
+  private String actionName;
 
   // Model for the view
   private List<InstitutionType> partnerTypes;
@@ -147,7 +148,7 @@ public class ProjectPartnersPlanningAction extends BaseAction {
   @Override
   public void prepare() throws Exception {
     super.prepare();
-
+    actionName = ActionContext.getContext().getName();
     // Getting the project id from the URL parameter
     // It's assumed that the project parameter is ok. (@See ValidateProjectParameterInterceptor)
     projectID = Integer.parseInt(StringUtils.trim(this.getRequest().getParameter(APConstants.PROJECT_REQUEST_ID)));
@@ -208,7 +209,16 @@ public class ProjectPartnersPlanningAction extends BaseAction {
     previousProject.setId(project.getId());
     previousProject.setPPAPartners(project.getPPAPartners());
 
-    super.setHistory(historyManager.getLogHistory("project_partners", project.getId()));
+    if (actionName.equals("partnerLead")) {
+      super.setHistory(historyManager.getProjectPartnersHistory(project.getId(), new String[] {
+        APConstants.PROJECT_PARTNER_PL, APConstants.PROJECT_PARTNER_PC}));
+    } else if (actionName.equals("ppaPartners")) {
+      super.setHistory(historyManager.getProjectPartnersHistory(project.getId(),
+        new String[] {APConstants.PROJECT_PARTNER_PPA}));
+    } else if (actionName.equals("partners")) {
+      super.setHistory(historyManager.getProjectPartnersHistory(project.getId(),
+        new String[] {APConstants.PROJECT_PARTNER_PP}));
+    }
 
     if (this.getRequest().getMethod().equalsIgnoreCase("post")) {
       // Clear out the list if it has some element
@@ -224,11 +234,11 @@ public class ProjectPartnersPlanningAction extends BaseAction {
 
   @Override
   public String save() {
-    if (ActionContext.getContext().getName().equals("partnerLead")) {
+    if (actionName.equals("partnerLead")) {
       return this.savePartnerLead();
-    } else if (ActionContext.getContext().getName().equals("ppaPartners")) {
+    } else if (actionName.equals("ppaPartners")) {
       return this.savePartners(APConstants.PROJECT_PARTNER_PPA);
-    } else if (ActionContext.getContext().getName().equals("partners")) {
+    } else if (actionName.equals("partners")) {
       return this.savePartners(APConstants.PROJECT_PARTNER_PP);
     }
     return BaseAction.INPUT;
@@ -477,7 +487,7 @@ public class ProjectPartnersPlanningAction extends BaseAction {
       if (project.getCoordinator().getUser() == null) {
         project.getCoordinator().setUser(new User(-1));
       }
-    } else if (ActionContext.getContext().getName().equals("ppaPartners")) {
+    } else if (actionName.equals("ppaPartners")) {
       for (ProjectPartner ppaPartner : project.getPPAPartners()) {
         if (ppaPartner.getInstitution() == null) {
           ppaPartner.setInstitution(new Institution(-1));
@@ -486,7 +496,7 @@ public class ProjectPartnersPlanningAction extends BaseAction {
           ppaPartner.setUser(new User(-1));
         }
       }
-    } else if (ActionContext.getContext().getName().equals("partners")) {
+    } else if (actionName.equals("partners")) {
       for (ProjectPartner partner : project.getProjectPartners()) {
         if (partner.getInstitution() == null) {
           partner.setInstitution(new Institution(-1));

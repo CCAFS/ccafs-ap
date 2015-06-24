@@ -247,7 +247,7 @@ public class ProjectDescriptionPlanningAction extends BaseAction {
       previousProject.setLinkedCoreProjects(coreProjects);
     }
 
-    super.setHistory(historyManager.getLogHistory("projects", project.getId()));
+    super.setHistory(historyManager.getProjectDescriptionHistory(project.getId()));
 
     if (this.isHttpPost()) {
       if (project.getLinkedCoreProjects() != null) {
