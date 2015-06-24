@@ -1,7 +1,7 @@
 [#ftl]
-[#macro text name readText=false ]
+[#macro text name readText=false param="" ]
   [#assign customName][#if readText]${name}.readText[#else]${name}[/#if][/#assign]
-  [@s.text name="${customName}" /]
+  [@s.text name="${customName}"][@s.param]${param}[/@s.param][/@s.text]
 [/#macro]
 
 [#macro input name value="-NULL" type="text" i18nkey="" disabled=false required=false errorField="" help="" display=true className="-NULL" readOnly=false showTitle=true editable=true ]
@@ -19,15 +19,17 @@
       <input type="${type}" id="${name}" name="${name}" value="[#if value=="-NULL"][@s.property value="${name?string}"/][#else]${value}[/#if]"  [#if className != "-NULL"] class="${className}" [/#if][#if readOnly] readonly="readonly"[/#if] [#if disabled]disabled="disabled"[/#if] />
     [#else]
       <p>  
-        [#if value=="-NULL"]
-          [@s.property value="${name?string}"/]
-          [#if !(name?eval)?has_content] 
+        [#if value=="-NULL"] 
+          [#assign customValue][@s.property value="${name?string}"/][/#assign] 
+          [#if !(customValue)?has_content] 
             [@s.text name="form.values.fieldEmpty" /]
-          [/#if]  
+          [#else]
+            ${customValue}
+          [/#if]
         [#else]
           [#if !value?has_content] 
             [@s.text name="form.values.fieldEmpty" /]
-          [#else] 
+          [#else]
             ${value}
           [/#if] 
         [/#if]
@@ -51,15 +53,17 @@
       <textarea name="${name}" id="${name}" [#if disabled]disabled="disabled"[/#if] [#if className != "-NULL"] class="ckeditor ${className}" [/#if] />[#if value=="-NULL"][@s.property value="${name}"/][#else]${value}[/#if]</textarea>
     [#else]
       <p>
-        [#if value=="-NULL"]
-          [@s.property value="${name?string}"/]
-          [#if !(name?eval)?has_content] 
+        [#if value=="-NULL"] 
+          [#assign customValue][@s.property value="${name?string}"/][/#assign] 
+          [#if !(customValue)?has_content] 
             [@s.text name="form.values.fieldEmpty" /]
-          [/#if]  
+          [#else]
+            ${customValue}
+          [/#if]
         [#else]
           [#if !value?has_content] 
             [@s.text name="form.values.fieldEmpty" /]
-          [#else] 
+          [#else]
             ${value}
           [/#if] 
         [/#if]
@@ -169,11 +173,22 @@
           [/#if]
         [/#if] 
       [#else] 
-        [#if value!="-1"]
-          [#assign nameValue = "${name}.${displayFieldName}" /] ${(nameValue?eval)}
-        [#else]
-          [@s.text name="form.values.fieldEmpty" /]
+        <p>
+        [#if value=="-NULL"] 
+          [#assign customValue][@s.property value="${name}.${displayFieldName}"/][/#assign] 
+          [#if !(customValue)?has_content] 
+            [@s.text name="form.values.fieldEmpty" /]
+          [#else]
+            ${customValue}
+          [/#if]
+        [#else] 
+          [#if !value?has_content] 
+            [@s.text name="form.values.fieldEmpty" /]
+          [#else]
+            [@s.property value="${name}.${displayFieldName}"/]
+          [/#if] 
         [/#if]
+        </p>
       [/#if]  
     </div> 
   </div>  

@@ -108,7 +108,7 @@ p.warning-info {
     border-radius: 5px;
 }
 
-p.checked {
+p.checked, label.checked {
     background: url(../../images/global/icon-check.png) no-repeat 0;
     padding: 3px 0  3px 23px;
 }
@@ -148,9 +148,11 @@ textarea#justification {
     height: 60px;
 }
 
-.textArea p {
+.textArea p, .input p, .select p {
     text-align: justify;
     width: 98%;
+    font-size: 1.07em;
+    line-height: 1.3em;
 }
 
 input[type="radio"] {
@@ -542,14 +544,30 @@ select#partnerSave_activityPartner_partner_type_id {
   font-size: 1em;
   background: #FFFFFF;
   color: #525254;
-  padding: 2px 0 6px 0;
+  padding: 2px 0 4px 0;
+  margin-bottom: 4px;
   text-align: left;
+  border-bottom: 1px solid #DBDBDB;
 }
 
 .panel.tertiary .panel-body {
-    padding: 4px 3px 10px 3px; 
+    padding: 5px 3px 3px 3px; 
     border-left: 4px solid #E7E6E6;
-    margin-left: 5px;
+    margin-left: 1px;
+}
+
+.panel.tertiary .panel-body ul.list li {
+    list-style: none; 
+    padding: 5px 10px; 
+    background-color: #F7F7F7;
+    border: 1px solid #EAEAEA !important;
+    box-shadow: 1px 1px 0px rgba(0, 0, 0, 0.1);
+    border-radius: 4px;
+    margin-bottom: 5px;
+}
+
+.panel.tertiary .panel-body ul li.last {
+  /* border-bottom: 1px solid #EFEFEF; */
 }
 
 .panel .panel-head {
@@ -568,7 +586,7 @@ select#partnerSave_activityPartner_partner_type_id {
 
 .panel .panel-body ul{
     margin: 0;    
-    padding: 0 10px;
+    padding: 0 6px;
  
 }
 
@@ -577,9 +595,9 @@ select#partnerSave_activityPartner_partner_type_id {
     padding: 5px 0 8px 0;
     border-bottom: 1px solid #ccc;
 }
-.panel .panel-body ul li:hover { 
+.panel .panel-body ul.list li:hover { 
   color: #444;
-  background-color: #F7F7F7;
+  background-color: #F4F4F4;
 }
 .panel .panel-body ul li.last { 
     border-bottom: none;
@@ -1195,9 +1213,10 @@ a#backHome {
 
 
 .halfContent h1 {
-  border-bottom: 2px solid #562B00;
+  border-bottom: 2px solid rgba(136, 72, 9, 1);
   color: #663300;
-  font-size: 1.6em;
+  font-size: 1.7em;
+  padding-bottom: 2px;
   margin: 0  0 14px 0;
   font-weight: lighter;
   font-family: 'Open Sans', sans-serif;
@@ -1237,7 +1256,7 @@ h1.simpleTitle span {
 
 .fullBlock {
   display: block;
-  margin: 0px 0 10px 0;
+  margin: 0px 0 20px 0;
   width: 100%;
 }
 
@@ -1434,7 +1453,7 @@ h1.simpleTitle span {
     float: right;
     cursor: pointer;
     position: absolute;
-    bottom: 1em;
+    bottom: 0.9em;
     right: 0.8em;
 }
 
@@ -1698,6 +1717,24 @@ width:10px;
     border-bottom: 2px dotted #C3D4E7;
     margin: 2px 0px;
     background: #FFFFFF;
+}
+
+#contributionsBlock .contribution {
+    margin: 20px 0;
+    padding: 9px 15px;
+    border: 1px solid rgba(15, 114, 150, 0.31);
+    border-radius: 2px;
+    position: relative;
+}
+
+#contributionsBlock .contribution .midOutcomeTitle h6 {
+  color: #0F7296;
+  font-size: 1.3em;
+  font-weight: normal;
+  border-bottom: 1px solid #0F7296;
+  margin: 0px 0 7px -2px;    
+  padding-top: 0px;
+  padding-bottom: 4px;
 }
 
 .contributions p#description {

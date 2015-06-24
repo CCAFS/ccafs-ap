@@ -9,6 +9,7 @@ $(document).ready(
         $("a.addProjectPartner").trigger("click");
       }
       setInitialPPAPartners();
+      initItemListEvents();
 
       function attachEvents() {
         // Partners Events
@@ -22,15 +23,6 @@ $(document).ready(
           }
           $filterContent.slideToggle();
         });
-
-        $('.ppaPartnersList select').on('change', function(e) {
-          addItemList($(this).find('option:selected'));
-        });
-
-        $('ul li .remove').on('click', function(e) {
-          removeItemList($(this).parents('li'));
-        });
-
         // When Partner Type change
         $("select.partnerTypes, select.countryList").change(updateOrganizationsList);
       }
@@ -109,6 +101,16 @@ $(document).ready(
       }
 
       // Items list functions
+
+      function initItemListEvents() {
+        $('.ppaPartnersList select').on('change', function(e) {
+          addItemList($(this).find('option:selected'));
+        });
+
+        $('ul li .remove').on('click', function(e) {
+          removeItemList($(this).parents('li'));
+        });
+      }
 
       function setInitialPPAPartners() {
         $("div.projectPartner").each(function(index,element) {
