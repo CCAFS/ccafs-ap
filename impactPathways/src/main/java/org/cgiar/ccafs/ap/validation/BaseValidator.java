@@ -1,5 +1,9 @@
 package org.cgiar.ccafs.ap.validation;
 
+import org.cgiar.ccafs.ap.action.BaseAction;
+import org.cgiar.ccafs.ap.data.model.Project;
+import org.cgiar.ccafs.utils.APConfig;
+
 import javax.mail.internet.InternetAddress;
 
 import com.google.inject.Inject;
@@ -14,6 +18,8 @@ public class BaseValidator extends ActionSupport {
 
   private static final Logger LOG = LoggerFactory.getLogger(BaseValidator.class);
 
+  @Inject
+  protected APConfig config;
   protected StringBuilder validationMessage;
 
   @Inject
@@ -42,6 +48,22 @@ public class BaseValidator extends ActionSupport {
       }
     }
     return false;
+  }
+
+  /**
+   * This method verify if the project was created in the current planning phase, if it was created previously the user
+   * should provide a justification of the changes.
+   * 
+   * @param project
+   * @return
+   */
+  protected void validateProjectJustification(BaseAction action, Project project) {
+    if (!project.isNew(config.getCurrentPlanningStartDate())) {
+      if (action.getJustification() == null || action.getJustification().isEmpty()) {
+        action.addActionError(this.getText("validation.justification"));
+        action.addFieldError("justification", this.getText("validation.field.required"));
+      }
+    }
   }
 
   /**
