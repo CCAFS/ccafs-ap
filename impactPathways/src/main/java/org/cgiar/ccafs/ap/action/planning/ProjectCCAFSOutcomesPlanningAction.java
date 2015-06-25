@@ -19,22 +19,20 @@ import org.cgiar.ccafs.ap.config.APConstants;
 import org.cgiar.ccafs.ap.data.manager.IPElementManager;
 import org.cgiar.ccafs.ap.data.manager.IPProgramManager;
 import org.cgiar.ccafs.ap.data.manager.ProjectManager;
-import org.cgiar.ccafs.ap.data.manager.ProjectOutcomeManager;
 import org.cgiar.ccafs.ap.data.model.Activity;
 import org.cgiar.ccafs.ap.data.model.IPElement;
 import org.cgiar.ccafs.ap.data.model.IPElementType;
 import org.cgiar.ccafs.ap.data.model.IPIndicator;
 import org.cgiar.ccafs.ap.data.model.IPProgram;
 import org.cgiar.ccafs.ap.data.model.Project;
-import org.cgiar.ccafs.ap.data.model.ProjectOutcome;
 import org.cgiar.ccafs.utils.APConfig;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.TreeMap;
 
+import com.google.inject.Inject;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -54,7 +52,6 @@ public class ProjectCCAFSOutcomesPlanningAction extends BaseAction {
   private IPProgramManager programManager;
   private IPElementManager ipElementManager;
   private ProjectManager projectManager;
-  private ProjectOutcomeManager projectOutcomeManager;
 
   // Model
   private List<IPElement> midOutcomes;
@@ -65,16 +62,17 @@ public class ProjectCCAFSOutcomesPlanningAction extends BaseAction {
   private List<IPElement> previousOutputs;
   private List<IPIndicator> previousIndicators;
 
-  private int currentPlanningYear;
-  private int midOutcomeYear;
-
   private int activityID;
   private int projectID;
   private Project project;
 
-
-  public ProjectCCAFSOutcomesPlanningAction(APConfig config) {
+  @Inject
+  public ProjectCCAFSOutcomesPlanningAction(APConfig config, IPProgramManager programManager,
+    IPElementManager ipElementManager, ProjectManager projectManager) {
     super(config);
+    this.programManager = programManager;
+    this.ipElementManager = ipElementManager;
+    this.projectManager = projectManager;
   }
 
   public Activity getActivity() {
@@ -83,10 +81,6 @@ public class ProjectCCAFSOutcomesPlanningAction extends BaseAction {
 
   public int getActivityID() {
     return activityID;
-  }
-
-  public int getCurrentPlanningYear() {
-    return currentPlanningYear;
   }
 
   public List<IPElement> getMidOutcomeOutputs(int midOutcomeID) {
@@ -207,10 +201,6 @@ public class ProjectCCAFSOutcomesPlanningAction extends BaseAction {
     return midOutcomesSelected;
   }
 
-  public int getMidOutcomeYear() {
-    return midOutcomeYear;
-  }
-
   public int getMOGIndex(IPElement mog) {
     int index = 0;
     List<IPElement> allMOGs = ipElementManager.getIPElements(mog.getProgram(), mog.getType());
@@ -279,26 +269,12 @@ public class ProjectCCAFSOutcomesPlanningAction extends BaseAction {
   @Override
   public void prepare() throws Exception {
     super.prepare();
-    currentPlanningYear = this.config.getPlanningCurrentYear();
-    midOutcomeYear = this.config.getMidOutcomeYear();
 
     midOutcomes = new ArrayList<>();
     midOutcomesSelected = new ArrayList<>();
     projectID = Integer.parseInt(StringUtils.trim(this.getRequest().getParameter(APConstants.PROJECT_REQUEST_ID)));
     project = projectManager.getProject(projectID);
 
-    // Load the project outcomes
-    Map<String, ProjectOutcome> projectOutcomes = new HashMap<>();
-    for (int year = currentPlanningYear; year <= midOutcomeYear; year++) {
-      ProjectOutcome projectOutcome = projectOutcomeManager.getProjectOutcomeByYear(projectID, year);
-      if (projectOutcome == null) {
-        projectOutcome = new ProjectOutcome(-1);
-        projectOutcome.setYear(year);
-      }
-
-      projectOutcomes.put(String.valueOf(year), projectOutcome);
-    }
-    project.setOutcomes(projectOutcomes);
 
     // Load the project impact pathway
 
@@ -400,14 +376,6 @@ public class ProjectCCAFSOutcomesPlanningAction extends BaseAction {
 
   public void setActivityID(int activityID) {
     this.activityID = activityID;
-  }
-
-  public void setCurrentPlanningYear(int currentPlanningYear) {
-    this.currentPlanningYear = currentPlanningYear;
-  }
-
-  public void setMidOutcomeYear(int midOutcomeYear) {
-    this.midOutcomeYear = midOutcomeYear;
   }
 
   public void setProjectID(int projectID) {
