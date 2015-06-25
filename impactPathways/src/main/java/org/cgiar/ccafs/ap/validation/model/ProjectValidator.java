@@ -18,9 +18,9 @@ import org.cgiar.ccafs.ap.data.model.Activity;
 import org.cgiar.ccafs.ap.data.model.Budget;
 import org.cgiar.ccafs.ap.data.model.IPElement;
 import org.cgiar.ccafs.ap.data.model.IPIndicator;
-import org.cgiar.ccafs.ap.data.model.OtherContribution;
 import org.cgiar.ccafs.ap.data.model.IPProgram;
 import org.cgiar.ccafs.ap.data.model.LiaisonInstitution;
+import org.cgiar.ccafs.ap.data.model.OtherContribution;
 import org.cgiar.ccafs.ap.data.model.Project;
 import org.cgiar.ccafs.ap.data.model.ProjectOutcome;
 import org.cgiar.ccafs.ap.data.model.ProjectPartner;
@@ -100,7 +100,27 @@ public class ProjectValidator extends BaseValidator {
     return false;
   }
 
-  public boolean isValidOutcomes(Map<String, ProjectOutcome> outcomes) {
+  public boolean isValidOutcomeGenderDimension(Map<String, ProjectOutcome> outcomes, int year) {
+    if (outcomes != null && !outcomes.isEmpty()) {
+      ProjectOutcome outcome = outcomes.get(String.valueOf(year));
+      if (outcome != null) {
+        if (outcome.getGenderDimension() != null && !outcome.getGenderDimension().isEmpty()) {
+          return true;
+        }
+      }
+    }
+    return false;
+  }
+
+  public boolean isValidOutcomeStatement(Map<String, ProjectOutcome> outcomes, int year) {
+    if (outcomes != null && !outcomes.isEmpty()) {
+      ProjectOutcome outcome = outcomes.get(String.valueOf(year));
+      if (outcome != null) {
+        if (outcome.getStatement() != null && !outcome.getStatement().isEmpty()) {
+          return true;
+        }
+      }
+    }
     return false;
   }
 

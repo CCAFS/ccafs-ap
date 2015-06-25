@@ -44,16 +44,9 @@ public class ProjectDescriptionValidator extends BaseValidator {
     this.projectValidator = projectValidator;
   }
 
-  public void validate(BaseAction action, Project project, Date currentPlanningStartDate) {
+  public void validate(BaseAction action, Project project) {
     if (project != null) {
-      // If the project is not new the user should provide a justification of the changes
-      Date a = project.getCreationDate();
-      if (!project.isNew(currentPlanningStartDate)) {
-        if (action.getJustification() == null || action.getJustification().isEmpty()) {
-          action.addActionError(this.getText("validation.justification"));
-          action.addFieldError("justification", this.getText("validation.field.required"));
-        }
-      }
+      this.validateProjectJustification(action, project);
 
       // The projects will be validated according to their type
       if (project.getType().equals(APConstants.PROJECT_CORE)) {
