@@ -156,7 +156,7 @@
       </result>
     </action>
     
-    <action name="ccafsOutcomes" class="org.cgiar.ccafs.ap.action.planning.ProjectOutcomeAction">
+    <action name="ccafsOutcomes" class="org.cgiar.ccafs.ap.action.planning.ProjectCCAFSOutcomesPlanningAction">
       <result name="input">/WEB-INF/planning/projectCCAFSOutcomesPlanning.ftl</result>   
       <result name="success" type="redirectAction">   
         <param name="actionName">ccafsOutcomes</param>    
