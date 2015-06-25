@@ -1,4 +1,5 @@
 [#ftl]
+[#compress]
 <!DOCTYPE html>
 <html lang="en">
   <head>
@@ -71,3 +72,4 @@
     [#-- import the JS files --]
     [#include "/WEB-INF/global/pages/js-imports.ftl"]
   </head>
+  [/#compress]
