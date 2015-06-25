@@ -188,8 +188,14 @@
       </result>
     </action>
     
+    <!-- Project Outputs  -->
+    
     <action name="outputs" class="org.cgiar.ccafs.ap.action.planning.ProjectOutcomeAction">
       <result name="input">/WEB-INF/planning/projectOutputsPlanning.ftl</result>   
+    </action>
+    
+    <action name="deliverables" class="org.cgiar.ccafs.ap.action.planning.ProjectOutcomeAction">
+      <result name="input">/WEB-INF/planning/projectDeliverablesPlanning.ftl</result>   
     </action>
 
     <action name="impactPathway" class="org.cgiar.ccafs.ap.action.planning.ProjectImpactPathwayAction">
