@@ -14,9 +14,6 @@
  */
 package org.cgiar.ccafs.ap.data.dao.mysql;
 
-import org.cgiar.ccafs.ap.data.dao.DeliverableDAO;
-import org.cgiar.ccafs.utils.db.DAOManager;
-
 import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -25,9 +22,12 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import com.google.inject.Inject;
+import org.cgiar.ccafs.ap.data.dao.DeliverableDAO;
+import org.cgiar.ccafs.utils.db.DAOManager;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+
+import com.google.inject.Inject;
 
 /**
  * @author Javier Andrés Gallego B.
@@ -46,50 +46,71 @@ public class MySQLDeliverableDAO implements DeliverableDAO {
 
   @Override
   public boolean deleteDeliverable(int deliverableId) {
-    LOG.debug(">> deleteDeliverable(id={})", deliverableId);
 
-    String query = "DELETE FROM deliverables WHERE id= ?";
-    int rowsDeleted = databaseManager.delete(query, new Object[] {deliverableId});
-    if (rowsDeleted >= 0) {
-      LOG.debug("<< deleteDeliverable():{}", true);
-      return true;
+    LOG.debug(">> deleteDeliverable(id={})", deliverableId);
+    int result = -1;
+    boolean saved = false;
+    Object[] values;
+
+    StringBuilder query = new StringBuilder();
+    query.append("UPDATE deliverables d SET d.is_active = 0 ");
+    query.append("WHERE d.id = ? ");
+    values = new Object[1];
+    values[0] = deliverableId;
+    result = databaseManager.saveData(query.toString(), values);
+
+    LOG.debug("<< deleteDeliverable():{}", result);
+    if (result != -1) {
+      saved = true;
     }
-    LOG.debug("<< deleteDeliverable:{}", false);
-    return false;
+
+    return saved;
   }
 
   @Override
   public boolean deleteDeliverableOutput(int deliverableID) {
     LOG.debug(">> deleteDeliverableOutput(deliverableID={})", deliverableID);
+    int result = -1;
+    boolean saved = false;
+    Object[] values;
 
     StringBuilder query = new StringBuilder();
-    query.append("DELETE idc FROM ip_deliverable_contributions idc ");
-    query.append("WHERE idc.deliverable_id = ? ");
+    query.append("UPDATE ip_deliverable_contributions SET is_active = 0 ");
+    query.append("WHERE deliverable_id = ? ");
+    values = new Object[1];
+    values[0] = deliverableID;
+    result = databaseManager.saveData(query.toString(), values);
 
-    int rowsDeleted = databaseManager.delete(query.toString(), new Object[] {deliverableID});
-    if (rowsDeleted >= 0) {
-      LOG.debug("<< deleteDeliverableOutput():{}", true);
-      return true;
+    LOG.debug("<< deleteDeliverableOutput():{}", result);
+    if (result != -1) {
+      saved = true;
     }
-    LOG.debug("<< deleteDeliverableOutput():{}", false);
-    return false;
+
+    return saved;
   }
 
   @Override
-  public boolean deleteDeliverablesByActivity(int activityID) {
-    LOG.debug(">> deleteDeliverablesByActivity(activityID={})", activityID);
+  public boolean deleteDeliverablesByProject(int projectID) {
+
+
+    LOG.debug(">> deleteDeliverablesByProject(projectID={})", projectID);
+    int result = -1;
+    boolean saved = false;
+    Object[] values;
 
     StringBuilder query = new StringBuilder();
-    query.append("DELETE d FROM deliverables d ");
-    query.append("WHERE d.activity_id = ? ");
+    query.append("UPDATE deliverables d SET d.is_active = 0 ");
+    query.append("WHERE d.project_id = ? ");
+    values = new Object[1];
+    values[0] = projectID;
+    result = databaseManager.saveData(query.toString(), values);
 
-    int rowsDeleted = databaseManager.delete(query.toString(), new Object[] {activityID});
-    if (rowsDeleted >= 0) {
-      LOG.debug("<< deleteDeliverablesByActivity():{}", true);
-      return true;
+    LOG.debug("<< deleteDeliverablesByProject():{}", result);
+    if (result != -1) {
+      saved = true;
     }
-    LOG.debug("<< deleteDeliverablesByActivity():{}", false);
-    return false;
+
+    return saved;
   }
 
   private List<Map<String, String>> getData(String query) {
@@ -130,11 +151,12 @@ public class MySQLDeliverableDAO implements DeliverableDAO {
     query.append("FROM deliverables as d ");
     query.append("WHERE d.id=  ");
     query.append(deliverableID);
+    query.append(" AND d.is_active = 1");
     try (Connection con = databaseManager.getConnection()) {
       ResultSet rs = databaseManager.makeQuery(query.toString(), con);
       if (rs.next()) {
         deliverableData.put("id", rs.getString("id"));
-        deliverableData.put("activity_id", rs.getString("activity_id"));
+        deliverableData.put("project_id", rs.getString("project_id"));
         deliverableData.put("title", rs.getString("title"));
         deliverableData.put("type_id", rs.getString("type_id"));
         deliverableData.put("year", rs.getString("year"));
@@ -178,46 +200,58 @@ public class MySQLDeliverableDAO implements DeliverableDAO {
   }
 
   @Override
-  public List<Map<String, String>> getDeliverablesByActivity(int activityID) {
-    LOG.debug(">> getDeliverablesByActivity activityID = {} )", activityID);
+  public List<Map<String, String>> getDeliverablesByProject(int projectID) {
+    LOG.debug(">> getDeliverablesByProject projectID = {} )", projectID);
 
     StringBuilder query = new StringBuilder();
     query.append("SELECT d.*   ");
     query.append("FROM deliverables as d ");
-    query.append("INNER JOIN activities a ON d.activity_id = a.id ");
-    query.append("WHERE d.activity_id=  ");
-    query.append(activityID);
+    query.append("INNER JOIN projects a ON d.project_id = a.id ");
+    query.append("WHERE d.project_id=  ");
+    query.append(projectID);
+    query.append(" AND d.is_active = 1");
 
-    LOG.debug("-- getDeliverablesByActivity() > Calling method executeQuery to get the results");
-    return getData(query.toString());
+    LOG.debug("-- getDeliverablesByProject() > Calling method executeQuery to get the results");
+    return this.getData(query.toString());
   }
 
   @Override
-  public int saveDeliverable(int activityID, Map<String, Object> deliverableData) {
+  public int saveDeliverable(int projectID, Map<String, Object> deliverableData) {
     LOG.debug(">> saveDeliverable(deliverableData={})", deliverableData);
     StringBuilder query = new StringBuilder();
     int result = -1;
     Object[] values;
     if (deliverableData.get("id") == null) {
       // Insert new deliverable record
-      query.append("INSERT INTO deliverables (id, activity_id, title, type_id, year) ");
-      query.append("VALUES (?, ?,?,?,?) ");
-      values = new Object[5];
+      query.append("INSERT INTO deliverables (id, project_id,  title, type_id, year, activity_id , created_by, ");
+      query.append("modified_by, modification_justification) ");
+      query.append("VALUES (?,?,?,?,?,?,?,?,?) ");
+      values = new Object[9];
       values[0] = deliverableData.get("id");
-      values[1] = activityID;
+      values[1] = projectID;
       values[2] = deliverableData.get("title");
       values[3] = deliverableData.get("type_id");
       values[4] = deliverableData.get("year");
+      // temporal
+      values[5] = deliverableData.get("activity_id");
+      values[6] = deliverableData.get("created_by");
+      values[7] = deliverableData.get("modified_by");
+      values[8] = deliverableData.get("modification_justification");
     } else {
       // Updating existing deliverable record
-      query.append("UPDATE deliverables SET activity_id = ?, title = ?, type_id = ?, year = ? ");
+      query
+        .append("UPDATE deliverables SET project_id = ?, title = ?, type_id = ?, year = ?, activity_id = ?, created_by = ?, modified_by = ?, modification_justification = ? ");
       query.append("WHERE id = ? ");
-      values = new Object[5];
-      values[0] = activityID;
+      values = new Object[9];
+      values[0] = projectID;
       values[1] = deliverableData.get("title");
       values[2] = deliverableData.get("type_id");
       values[3] = deliverableData.get("year");
-      values[4] = deliverableData.get("id");
+      values[4] = deliverableData.get("activity_id");
+      values[5] = deliverableData.get("created_by");
+      values[6] = deliverableData.get("modified_by");
+      values[7] = deliverableData.get("modification_justification");
+      values[8] = deliverableData.get("id");
     }
     result = databaseManager.saveData(query.toString(), values);
 
@@ -226,8 +260,8 @@ public class MySQLDeliverableDAO implements DeliverableDAO {
   }
 
   @Override
-  public boolean saveDeliverableOutput(int deliverableID, int ipElementID, int projectID) {
-    LOG.debug(">> saveDeliverableOutput(deliverableData={})", new Object[] {deliverableID, ipElementID, projectID});
+  public boolean saveDeliverableOutput(int deliverableID, int projectID, int userID, String justification) {
+    LOG.debug(">> saveDeliverableOutput(deliverableData={})", new Object[] {deliverableID, projectID});
     StringBuilder query = new StringBuilder();
     int result = -1;
     boolean saved = false;
@@ -237,17 +271,20 @@ public class MySQLDeliverableDAO implements DeliverableDAO {
      * This query relates the deliverable with each project impact pathways which contains
      * the MOG selected
      */
-    query.append("INSERT INTO ip_deliverable_contributions (deliverable_id, project_contribution_id) ");
-    query.append("SELECT ?, id ");
+    query.append("INSERT INTO ip_deliverable_contributions (deliverable_id, project_contribution_id, created_by,");
+    query.append(" modified_by, modification_justification ) ");
+    query.append("SELECT ?, id, ?, ?, ? ");
     query.append("FROM ip_project_contributions ");
-    query.append("WHERE project_id= ? AND mog_id= ? ");
+    query.append("WHERE project_id= ? ");
     query.append("ON DUPLICATE KEY UPDATE project_contribution_id = VALUES(project_contribution_id), ");
-    query.append("deliverable_id = VALUES(deliverable_id) ");
-
-    values = new Object[3];
+    query.append("deliverable_id = VALUES(deliverable_id), modified_by = VALUES(modified_by), ");
+    query.append("modification_justification = VALUES(modification_justification) ");
+    values = new Object[5];
     values[0] = deliverableID;
-    values[1] = projectID;
-    values[2] = ipElementID;
+    values[1] = userID;
+    values[2] = userID;
+    values[3] = justification;
+    values[4] = projectID;
     result = databaseManager.saveData(query.toString(), values);
 
     LOG.debug("<< saveDeliverableOutput():{}", result);

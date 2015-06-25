@@ -13,11 +13,11 @@
  *****************************************************************/
 package org.cgiar.ccafs.ap.data.manager;
 
+import java.util.List;
+
 import org.cgiar.ccafs.ap.data.manager.impl.DeliverableManagerImpl;
 import org.cgiar.ccafs.ap.data.model.Deliverable;
 import org.cgiar.ccafs.ap.data.model.IPElement;
-
-import java.util.List;
 
 import com.google.inject.ImplementedBy;
 
@@ -47,10 +47,10 @@ public interface DeliverableManager {
   /**
    * This method removes a set of deliverables that belongs to a specific activity.
    * 
-   * @param activityID is the activity identifier.
+   * @param projectID is the activity identifier.
    * @return true if the set of activities were successfully deleted, false otherwise.
    */
-  public boolean deleteDeliverablesByActivity(int activityID);
+  public boolean deleteDeliverablesByProject(int projectID);
 
   /**
    * This method gets all the deliverable information by a given deliverable ID.
@@ -74,26 +74,26 @@ public interface DeliverableManager {
    * @param activityID - is the Id of the activity
    * @return a List of deliverables with the Information related with the activity
    */
-  public List<Deliverable> getDeliverablesByActivity(int activityID);
+  public List<Deliverable> getDeliverablesByProject(int projectID);
 
   /**
    * This method saves the information of the given deliverable that belong to a specific activity into the database.
    * 
-   * @param activityID
+   * @param projectID
    * @param deliverable
    * @return a number greater than 0 representing the new ID assigned by the databse, 0 if the deliverable was updated
    *         or -1 is some error occurred.
    */
-  public int saveDeliverable(int activityID, Deliverable deliverable);
+  public int saveDeliverable(int projectID, Deliverable deliverable);
 
   /**
    * This method saves the Deliverable Contribution relation
    * 
    * @param deliverableID - is the Id of the deliverable
-   * @param ipElementID - is the Id of the IP Element
-   * @param activityID - is the Id of the activity
-   * @return true if the relation Deliverable Contribution is saved, false otherwise
+   * @param projectID - is the Id of the project
+   * @return true if the relation Deliverable Contribution is saved,
+   *         false otherwise
    */
-  public boolean saveDeliverableOutput(int deliverableID, int ipElementID, int activityID);
+  public boolean saveDeliverableOutput(int deliverableID, int projectID, int userID, String justification);
 
 }

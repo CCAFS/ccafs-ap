@@ -13,21 +13,25 @@
  *****************************************************************/
 package org.cgiar.ccafs.ap.data.manager.impl;
 
-import org.cgiar.ccafs.ap.data.dao.DeliverableDAO;
-import org.cgiar.ccafs.ap.data.manager.DeliverableManager;
-import org.cgiar.ccafs.ap.data.manager.DeliverableTypeManager;
-import org.cgiar.ccafs.ap.data.manager.NextUserManager;
-import org.cgiar.ccafs.ap.data.model.Deliverable;
-import org.cgiar.ccafs.ap.data.model.IPElement;
 
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import com.google.inject.Inject;
+import org.cgiar.ccafs.ap.config.APModule;
+import org.cgiar.ccafs.ap.data.dao.DeliverableDAO;
+import org.cgiar.ccafs.ap.data.manager.DeliverableManager;
+import org.cgiar.ccafs.ap.data.manager.DeliverableTypeManager;
+import org.cgiar.ccafs.ap.data.manager.NextUserManager;
+import org.cgiar.ccafs.ap.data.model.Deliverable;
+import org.cgiar.ccafs.ap.data.model.IPElement;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+
+import com.google.inject.Guice;
+import com.google.inject.Inject;
+import com.google.inject.Injector;
 
 /**
  * @author Javier Andrés Gallego
@@ -37,13 +41,66 @@ public class DeliverableManagerImpl implements DeliverableManager {
   // LOG
   private static Logger LOG = LoggerFactory.getLogger(DeliverableManagerImpl.class);
 
+  /**
+   * @param args
+   */
+  public static void main(String[] args) {
+    Injector in = Guice.createInjector(new APModule());
+    DeliverableDAO deliverableDAO = in.getInstance(DeliverableDAO.class);
+
+    // Test getDeliverableById
+    // System.out.println("Deliverable by id : " + deliverableDAO.getDeliverableById(573).toString());
+
+    // Test getDeliverablesByProject
+    // List<Map<String, String>> a = deliverableDAO.getDeliverablesByProject(53);
+    // System.out.println("Deliverables by project : " + a);
+
+
+    // TEST saveDeliverable
+    // java.util.Date date = new java.util.Date();
+    // Map<String, Object> b = new HashMap<String, Object>();
+    // b.put("title", "deliverable test 110");
+    // b.put("id", 1311);
+    // b.put("activity_id", 11);
+    // b.put("created_by", 90);
+    // b.put("modified_by", 90);
+    // b.put("modification_justification", "");
+    // b.put("year", 1880);
+    // b.put("type_id", 1);
+    // b.put("is_active", 1);
+    // b.put("active_since", new java.sql.Timestamp(date.getTime()));
+    // System.out.println("Save a deliverable : " + deliverableDAO.saveDeliverable(1, b));
+
+    // Test deleteDeriverable
+    // System.out.println("Delete a deliverable : " + deliverableDAO.deleteDeliverable(13));
+
+
+    // Test deleteDeliverablesByProject
+    // System.out.println("Delete a deliverable : " + deliverableDAO.deleteDeliverablesByProject(7));
+
+    // Test delete deleteDeliverableOutput
+    // System.out.println("Delete a deliverable output: " + deliverableDAO.deleteDeliverableOutput(677));
+
+    // Test delete getDeliverableOutput
+    // System.out.println("get a deliverable output: " + deliverableDAO.getDeliverableOutput(311).toString()); //
+    // QUEDAMOS ACA queda pendiemnte
+
+    // Test delete getDeliverableOutput
+    System.out.println("save a deliverable output: " + deliverableDAO.saveDeliverableOutput(311, 40, 90, "prueba 1"));
+
+
+    // Test
+    System.out.println("test");
+
+
+  }
+
   // DAO's
   private DeliverableDAO deliverableDAO;
-
   // Managers
   private DeliverableTypeManager deliverableTypeManager;
-  private NextUserManager nextUserManager;
 
+  private NextUserManager nextUserManager;
 
   @Inject
   public DeliverableManagerImpl(DeliverableDAO deliverableDAO, DeliverableTypeManager deliverableTypeManager,
@@ -65,8 +122,8 @@ public class DeliverableManagerImpl implements DeliverableManager {
 
 
   @Override
-  public boolean deleteDeliverablesByActivity(int activityID) {
-    return deliverableDAO.deleteDeliverablesByActivity(activityID);
+  public boolean deleteDeliverablesByProject(int projectID) {
+    return deliverableDAO.deleteDeliverablesByProject(projectID);
   }
 
   @Override
@@ -99,9 +156,9 @@ public class DeliverableManagerImpl implements DeliverableManager {
   }
 
   @Override
-  public List<Deliverable> getDeliverablesByActivity(int activityID) {
+  public List<Deliverable> getDeliverablesByProject(int projectID) {
     List<Deliverable> deliverableList = new ArrayList<>();
-    List<Map<String, String>> deliverableDataList = deliverableDAO.getDeliverablesByActivity(activityID);
+    List<Map<String, String>> deliverableDataList = deliverableDAO.getDeliverablesByProject(projectID);
     for (Map<String, String> deliverableData : deliverableDataList) {
       Deliverable deliverable = new Deliverable();
       deliverable.setId(Integer.parseInt(deliverableData.get("id")));
@@ -109,7 +166,7 @@ public class DeliverableManagerImpl implements DeliverableManager {
       deliverable.setYear(Integer.parseInt(deliverableData.get("year")));
       deliverable
         .setType(deliverableTypeManager.getDeliverableTypeById(Integer.parseInt(deliverableData.get("type_id"))));
-      deliverable.setNextUsers(nextUserManager.getNextUsersByDeliverableId(activityID));
+      deliverable.setNextUsers(nextUserManager.getNextUsersByDeliverableId(projectID));
       deliverable.setOutput(this.getDeliverableOutput(Integer.parseInt(deliverableData.get("id"))));
       // adding information of the object to the array
       deliverableList.add(deliverable);
@@ -118,27 +175,27 @@ public class DeliverableManagerImpl implements DeliverableManager {
   }
 
   @Override
-  public int saveDeliverable(int activityID, Deliverable deliverable) {
+  public int saveDeliverable(int projectID, Deliverable deliverable) {
     Map<String, Object> deliverableData = new HashMap<>();
     if (deliverable.getId() != -1) {
       deliverableData.put("id", deliverable.getId());
     } else {
       deliverableData.put("id", null);
     }
-    deliverableData.put("activity_id", activityID);
+    deliverableData.put("project_id", projectID);
     deliverableData.put("title", deliverable.getTitle());
     deliverableData.put("type_id", deliverable.getType().getId());
     deliverableData.put("year", deliverable.getYear());
 
-    int result = deliverableDAO.saveDeliverable(activityID, deliverableData);
+    int result = deliverableDAO.saveDeliverable(projectID, deliverableData);
 
     if (result > 0) {
       LOG.debug("saveDeliverable > New Deliverable added with id {}", result);
     } else if (result == 0) {
       LOG.debug("saveDeliverable > Deliverable with id={} was updated", deliverable.getId());
     } else {
-      LOG.error("saveDeliverable > There was an error trying to save/update a Deliverable from projectId={}",
-        activityID);
+      LOG
+      .error("saveDeliverable > There was an error trying to save/update a Deliverable from projectId={}", projectID);
     }
 
     return result;
@@ -146,8 +203,8 @@ public class DeliverableManagerImpl implements DeliverableManager {
   }
 
   @Override
-  public boolean saveDeliverableOutput(int deliverableID, int ipElementID, int projectID) {
-    boolean saved = deliverableDAO.saveDeliverableOutput(deliverableID, ipElementID, projectID);
+  public boolean saveDeliverableOutput(int deliverableID, int projectID, int userID, String justification) {
+    boolean saved = deliverableDAO.saveDeliverableOutput(deliverableID, projectID, userID, justification);
     return saved;
   }
 }
