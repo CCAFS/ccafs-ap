@@ -39,6 +39,15 @@ public interface HistoryManager {
   public <T> List<LogHistory> getProjectDescriptionHistory(int projectID);
 
   /**
+   * This method return the last five changes made in the interface of project outcomes to the project identified by the
+   * value received by parameter.
+   * 
+   * @param projectID - Project identifier
+   * @return a list of logHistory objects that contains the information.
+   */
+  public List<LogHistory> getProjectOutcomeHistory(int projectID);
+
+  /**
    * This method return the last five changes made in the interface of project partners (Partner lead) to the project
    * identified by the value received by parameter.
    * 
