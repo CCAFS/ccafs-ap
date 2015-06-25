@@ -442,7 +442,7 @@ public class ProjectDescriptionPlanningAction extends BaseAction {
   @Override
   public void validate() {
     if (save) {
-      validator.validate(this, project, config.getCurrentPlanningStartDate());
+      validator.validate(this, project);
     }
   }
 }
