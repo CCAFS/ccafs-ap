@@ -15,6 +15,7 @@ package org.cgiar.ccafs.ap.action.planning;
 
 import org.cgiar.ccafs.ap.action.BaseAction;
 import org.cgiar.ccafs.ap.config.APConstants;
+import org.cgiar.ccafs.ap.data.manager.HistoryManager;
 import org.cgiar.ccafs.ap.data.manager.ProjectManager;
 import org.cgiar.ccafs.ap.data.manager.ProjectOutcomeManager;
 import org.cgiar.ccafs.ap.data.model.Project;
@@ -44,6 +45,7 @@ public class ProjectOutcomeAction extends BaseAction {
   private ProjectManager projectManager;
   private ProjectOutcomeManager projectOutcomeManager;
   private ProjectOutcomeValidator validator;
+  private HistoryManager historyManager;
 
   private int currentPlanningYear;
   private int midOutcomeYear;
@@ -52,11 +54,12 @@ public class ProjectOutcomeAction extends BaseAction {
 
   @Inject
   public ProjectOutcomeAction(APConfig config, ProjectManager projectManager,
-    ProjectOutcomeManager projectOutcomeManager, ProjectOutcomeValidator validator) {
+    ProjectOutcomeManager projectOutcomeManager, ProjectOutcomeValidator validator, HistoryManager historyManager) {
     super(config);
     this.projectManager = projectManager;
     this.projectOutcomeManager = projectOutcomeManager;
     this.validator = validator;
+    this.historyManager = historyManager;
   }
 
 
@@ -108,6 +111,7 @@ public class ProjectOutcomeAction extends BaseAction {
     }
     project.setOutcomes(projectOutcomes);
 
+    super.setHistory(historyManager.getProjectOutcomeHistory(project.getId()));
   }
 
   @Override
