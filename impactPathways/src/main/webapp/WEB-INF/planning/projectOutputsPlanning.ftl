@@ -41,10 +41,41 @@
     <div id="projectOutputs" class="borderBox">
       <h1 class="contentTitle">${project.composedId} - [@s.text name="planning.projectOutputs.title" /]</h1> 
       [#if (!editable && canEdit)]
-          <div class="editButton"><a href="[@s.url includeParams='get'][@s.param name="edit"]true[/@s.param][/@s.url]">[@s.text name="form.buttons.edit" /]</a></div>
-        [/#if]
-      <div class="fullBlock">
-      </div>
+        <div class="editButton"><a href="[@s.url includeParams='get'][@s.param name="edit"]true[/@s.param][/@s.url]">[@s.text name="form.buttons.edit" /]</a></div>
+      [/#if]  
+      [#assign years= [midOutcomeYear, currentPlanningYear, currentPlanningYear+1] /]
+      
+      [#list years as year]  
+        [#-- Major Output Group list --]
+        <div class="mogsBlock"> 
+          [#-- Title --]
+          <div class="midOutcomeTitle"><h6 class="title">[@s.text name="planning.projectImpactPathways.mogs" /] - ${year}</h6></div>
+          [#if midOutcomesSelected?has_content]
+            [#list midOutcomesSelected as midOutcome]
+              [#if action.getMidOutcomeOutputs(midOutcome.id)?has_content]
+                [#assign outputs = action.getMidOutcomeOutputs(midOutcome.id)] 
+                [#list outputs as output]
+                  <div class="mog fullBlock clearfix">
+                    [#if project.containsOutput(output.id, midOutcome.id)] 
+                      <div class="fullPartBlock">
+                        <p class="checked">${output.program.acronym} - MOG #${action.getMOGIndex(output)}: ${output.description} </p>
+                      </div>
+                      <div class="fullBlock">
+                        <h6>[@customForm.text name="planning.projectOutputs.expectedBulletPoints" readText=!editable param="${year}" /]</h6>  
+                        [@customForm.textArea name="" i18nkey="planning.projectOutputs.expectedBulletPoints" required=true showTitle=false editable=editable /]
+                      </div>
+                      <div class="fullBlock">
+                        [@customForm.textArea name="" i18nkey="planning.projectOutputs.expectedSocialAndGenderPlan" required=true editable=editable /]
+                      </div> 
+                    [/#if] 
+                  </div>
+                [/#list] [#-- End MOGs list --] 
+              [/#if] 
+            [/#list] [#-- End Outcomes 2019 list --] 
+          [/#if]
+        </div> 
+      [/#list] [#-- End years list --] 
+       
     </div>
     
     [#if editable]  
