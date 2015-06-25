@@ -358,13 +358,6 @@ public class ProjectCCAFSOutcomesPlanningAction extends BaseAction {
     if (this.isSaveable()) {
       boolean success = true;
 
-      // Saving Project Outcome
-      for (int year = currentPlanningYear; year <= midOutcomeYear; year++) {
-        success =
-          success
-            && projectOutcomeManager.saveProjectOutcome(projectID, project.getOutcomes().get(String.valueOf(year)));
-      }
-
       // Delete the outputs removed
       for (IPElement output : previousOutputs) {
         if (!project.containsOutput(output)) {
