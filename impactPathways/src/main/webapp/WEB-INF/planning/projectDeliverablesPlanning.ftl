@@ -1,11 +1,11 @@
 [#ftl]
-[#assign title = "Project Outputs" /]
+[#assign title = "Project Deliverables" /]
 [#assign globalLibs = ["jquery", "noty", "autoSave", "chosen"] /]
-[#assign customJS = ["${baseUrl}/js/global/utils.js", "${baseUrl}/js/planning/projectOutputsPlanning.js"] /]
+[#assign customJS = ["${baseUrl}/js/global/utils.js", "${baseUrl}/js/planning/projectDeliverablesPlanning.js"] /]
 [#assign currentSection = "planning" /]
 [#assign currentPlanningSection = "projects" /]
 [#assign currentStage = "outputs" /]
-[#assign currentSubStage = "overviewByMogs" /]
+[#assign currentSubStage = "deliverables" /]
 
 [#assign breadCrumb = [
   {"label":"planning", "nameSpace":"planning", "action":"projectsList"},
@@ -22,11 +22,11 @@
 <section class="content">
   <div class="helpMessage">
     <img src="${baseUrl}/images/global/icon-help.png" />
-    <p> [@s.text name="planning.projectOutputs.help" /] </p>
+    <p> [@s.text name="planning.projectDeliverables.help" /] </p>
   </div>
   [#include "/WEB-INF/planning/planningProjectsSubMenu.ftl" /]
   
-  [@s.form action="outputs" cssClass="pure-form"]
+  [@s.form action="deliverables" cssClass="pure-form"]
   <article class="halfContent" id="mainInformation"> 
     [#include "/WEB-INF/planning/projectOutputs-sub-menu.ftl" /]
     [#include "/WEB-INF/planning/planningDataSheet.ftl" /]
@@ -38,8 +38,8 @@
         [/@s.text]
       </p>
     [/#if]
-    <div id="projectOutputs" class="borderBox">
-      <h1 class="contentTitle">${project.composedId} - [@s.text name="planning.projectOutputs.title" /]</h1> 
+    <div id="projectDeliverables" class="borderBox">
+      <h1 class="contentTitle">${project.composedId} - [@s.text name="planning.projectDeliverables.title" /]</h1> 
       [#if (!editable && canEdit)]
           <div class="editButton"><a href="[@s.url includeParams='get'][@s.param name="edit"]true[/@s.param][/@s.url]">[@s.text name="form.buttons.edit" /]</a></div>
         [/#if]

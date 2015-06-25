@@ -17,6 +17,7 @@
 [#include "/WEB-INF/global/pages/header.ftl" /]
 [#include "/WEB-INF/global/pages/main-menu.ftl" /]
 [#import "/WEB-INF/global/macros/forms.ftl" as customForm/]
+[#import "/WEB-INF/global/macros/logHistory.ftl" as log/]
     
 <section class="content">
   <div class="helpMessage">
@@ -56,20 +57,23 @@
       </div>
       
       [#-- Collaborating with other CRPs --]
+      [#assign crpsName= "project.ipOtherContribution.crps"/]
       <div class="fullPartBlock">      
         <div class="crpContribution panel tertiary">
           <div class="panel-head">[@customForm.text name="planning.impactPathways.otherContributions.collaboratingCRPs" readText=!editable /]</div> 
           <div class="panel-body"> 
             <ul class="list">  
-             [#--  
+              [#assign list = [
+                {"id":"1", "name":"Agriculture for Nutrition and Health"},
+                {"id":"2", "name":"Aquatic Agricultural Systems"}
+              ] /]
               [#list list as crp]
                 <li class="clearfix [#if !crp_has_next]last[/#if]">
-                  <input class="id" type="hidden" name="project.ipOtherContribution.crps[${crp_index}].id" value="${crp.id}" />
+                  <input class="id" type="hidden" name=crpsName value="${crp.id}" />
                   <span class="name">${crp.name}</span> 
                   [#if editable]<span class="listButton remove">[@s.text name="form.buttons.remove" /]</span>[/#if]
                 </li>
-              [/#list]
-              --]
+              [/#list] 
             </ul>
             [#if editable]
               [@customForm.select name="" label="" disabled=!canEdit i18nkey="" listName="crps" keyFieldName="id"  displayFieldName="name" className="crpsSelect" value="" /]
@@ -89,9 +93,10 @@
       <input name="project.ipOtherContribution.id" type="hidden" value="${project.ipOtherContribution.id}"/>
     [/#if]
     [#if editable] 
+      <input type="hidden" id="crpsName" value="${crpsName}"/>
       [#-- Project identifier --]
+      <input name="projectID" type="hidden" value="${project.id?c}" />
       <div class="borderBox">
-        <input name="projectID" type="hidden" value="${project.id?c}" />
         [@customForm.textArea name="justification" i18nkey="saving.justification" required=true className="justification"/]
         <div class="buttons">
           [@s.submit type="button" name="save"][@s.text name="form.buttons.save" /][/@s.submit]
@@ -101,7 +106,7 @@
       </div>
     [#else]
         [#-- Display Log History --]
-        [#if history??][@log.logList list=history /][/#if]   
+        [#if history??][@log.logList list=history /][/#if]
     [/#if]
   </article>
   [/@s.form]  

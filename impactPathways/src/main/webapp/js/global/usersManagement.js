@@ -11,15 +11,18 @@ $(document).ready(function() {
       height: 400,
       width: 600,
       modal: true,
-      show: {
-          effect: "size",
-          duration: 100
-      },
+
       buttons: {
         Cancel: function() {
           $(this).dialog("close");
-          $dialogContent.find("form")[0].reset();
         }
+      },
+      close: function(event,ui) {
+        $dialogContent.find("form")[0].reset();
+        $dialogContent.find("#search-users").trigger('click');
+        $dialogContent.find(".tickBox-toggle").hide();
+        $dialogContent.find('.warning-info').hide();
+        getData('');
       }
   };
 
@@ -92,7 +95,7 @@ $(document).ready(function() {
       $dialogContent.find('.warning-info').text(msj).fadeIn('slow');
     } else {
       $.ajax({
-          'url': '../../createUser.do',
+          'url': baseURL + '/createUser.do',
           data: user,
           beforeSend: function() {
             $dialogContent.find('.loading').show();
@@ -129,7 +132,6 @@ $(document).ready(function() {
     $elementSelected.find("input.userName").val(composedName).hide().fadeIn("slow");
     $elementSelected.find("input.userId").val(userId);
     dialog.dialog("close");
-    $dialogContent.find("form")[0].reset();
   }
 
   function searchUsersEvent(e) {

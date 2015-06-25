@@ -150,7 +150,7 @@
       <div id="projectCoreProjects" class="isLinked tickBox-wrapper fullBlock">  
         [@customForm.checkbox name="project.isLinked" value=""  i18nkey="planning.projectDescription.isLinkedCoreProjects" disabled=!editable checked=true editable=editable/]
         <div class="tickBox-toggle coreProjects fullBlock">
-          <div class="panel primary">
+          <div class="panel tertiary">
             <div class="panel-head">[@customForm.text name="planning.projectDescription.selectCoreProject" readText=!editable /]:</div>
             <div id="coreProjectsList" class="panel-body"> 
               <ul class="list">
