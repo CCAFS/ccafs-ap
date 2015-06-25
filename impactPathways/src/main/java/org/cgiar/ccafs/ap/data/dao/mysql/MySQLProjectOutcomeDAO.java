@@ -129,24 +129,36 @@ public class MySQLProjectOutcomeDAO implements ProjectOutcomeDAO {
     Object[] values;
     if (projectOutcomeData.get("id") == null) {
       // Insert new projectOutcome record
-      query.append("INSERT INTO project_outcomes (year, statement, stories, project_id) ");
-      query.append("VALUES (?,?,?,?) ");
-      values = new Object[4];
+      query.append("INSERT INTO project_outcomes (year, statement, stories, gender_dimension, ");
+      query.append("project_id, created_by, modified_by, modification_justification) ");
+      query.append("VALUES (?,?,?,?,?,?,?,?) ");
+
+      values = new Object[8];
       values[0] = projectOutcomeData.get("year");
       values[1] = projectOutcomeData.get("statement");
       values[2] = projectOutcomeData.get("stories");
-      values[3] = projectID;
+      values[3] = projectOutcomeData.get("gender_dimension");
+      values[4] = projectID;
+      values[5] = projectOutcomeData.get("user_id");
+      values[6] = projectOutcomeData.get("user_id");
+      values[7] = projectOutcomeData.get("modification_justification");
+
       result = databaseManager.saveData(query.toString(), values);
     } else {
       // update projectOutcome record
-      query.append("UPDATE project_outcomes SET year = ?, statement = ?, stories = ?, project_id = ? ");
+      query.append("UPDATE project_outcomes SET year = ?, statement = ?, stories = ?, project_id = ?, ");
+      query.append("gender_dimension = ?, modified_by = ?, modification_justification = ? ");
       query.append("WHERE id = ? ");
-      values = new Object[5];
+      values = new Object[8];
       values[0] = projectOutcomeData.get("year");
       values[1] = projectOutcomeData.get("statement");
       values[2] = projectOutcomeData.get("stories");
       values[3] = projectID;
-      values[4] = projectOutcomeData.get("id");
+      values[4] = projectOutcomeData.get("gender_dimension");
+      values[5] = projectOutcomeData.get("user_id");
+      values[6] = projectOutcomeData.get("modification_justification");
+      values[7] = projectOutcomeData.get("id");
+
       result = databaseManager.saveData(query.toString(), values);
       if (result == -1) {
         LOG.error("A problem happened trying to update a project Outcome identified with the id = {}",

@@ -22,6 +22,7 @@ import org.cgiar.ccafs.ap.data.model.ProjectOutcome;
 import org.cgiar.ccafs.ap.validation.planning.ProjectOutcomeValidator;
 import org.cgiar.ccafs.utils.APConfig;
 
+import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -116,14 +117,25 @@ public class ProjectOutcomeAction extends BaseAction {
 
       // Saving Project Outcome
       for (int year = currentPlanningYear; year <= midOutcomeYear; year++) {
+        ProjectOutcome outcome = project.getOutcomes().get(String.valueOf(year));
         success =
           success
-            && projectOutcomeManager.saveProjectOutcome(projectID, project.getOutcomes().get(String.valueOf(year)));
+            && projectOutcomeManager.saveProjectOutcome(projectID, outcome, this.getCurrentUser(),
+              this.getJustification());
       }
 
       if (success) {
-        this.addActionMessage(this.getText("saving.success",
-          new String[] {this.getText("planning.projectOutcome.title")}));
+        // Get the validation messages and append them to the save message if any
+        Collection<String> messages = this.getActionMessages();
+        if (!messages.isEmpty()) {
+          String validationMessage = messages.iterator().next();
+          this.setActionMessages(null);
+          this.addActionWarning(this.getText("saving.saved") + validationMessage);
+        } else {
+          this.addActionMessage(this.getText("saving.success",
+            new String[] {this.getText("planning.projectOutcome.title")}));
+        }
+
         return SUCCESS;
       } else {
         this.addActionError(this.getText("saving.problem"));

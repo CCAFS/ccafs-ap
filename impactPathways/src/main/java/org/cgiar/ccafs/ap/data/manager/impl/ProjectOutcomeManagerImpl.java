@@ -16,6 +16,7 @@ package org.cgiar.ccafs.ap.data.manager.impl;
 import org.cgiar.ccafs.ap.data.dao.ProjectOutcomeDAO;
 import org.cgiar.ccafs.ap.data.manager.ProjectOutcomeManager;
 import org.cgiar.ccafs.ap.data.model.ProjectOutcome;
+import org.cgiar.ccafs.ap.data.model.User;
 
 import java.util.HashMap;
 import java.util.List;
@@ -27,6 +28,7 @@ import org.slf4j.LoggerFactory;
 
 /**
  * @author Javier Andrés Gallego B.
+ * @author Hernán David Carvajal B.
  */
 public class ProjectOutcomeManagerImpl implements ProjectOutcomeManager {
 
@@ -77,7 +79,7 @@ public class ProjectOutcomeManagerImpl implements ProjectOutcomeManager {
   }
 
   @Override
-  public boolean saveProjectOutcome(int projectID, ProjectOutcome projectOutcome) {
+  public boolean saveProjectOutcome(int projectID, ProjectOutcome projectOutcome, User user, String justification) {
     boolean allSaved = true;
     Map<String, Object> projectOutcomeData = new HashMap<>();
     if (projectOutcome.getId() > 0) {
@@ -86,16 +88,19 @@ public class ProjectOutcomeManagerImpl implements ProjectOutcomeManager {
     projectOutcomeData.put("year", projectOutcome.getYear());
     projectOutcomeData.put("statement", projectOutcome.getStatement());
     projectOutcomeData.put("stories", projectOutcome.getStories());
-
+    projectOutcomeData.put("gender_dimension", projectOutcome.getGenderDimension());
+    projectOutcomeData.put("user_id", user.getId());
+    projectOutcomeData.put("modification_justification", justification);
 
     int result = projectOutcomeDAO.saveProjectOutcome(projectID, projectOutcomeData);
 
     if (result > 0) {
-      LOG.debug("saveBudget > New Budget and Project Budget added with id {}", result);
+      LOG.debug("saveProjectOutcome > Project outcome added with id {}", result);
     } else if (result == 0) {
-      LOG.debug("saveBudget > Budget with id={} was updated", projectOutcome.getId());
+      LOG.debug("saveProjectOutcome > Project outcome with id={} was updated", projectOutcome.getId());
     } else {
-      LOG.error("saveBudget > There was an error trying to save/update a Budget from projectId={}", projectID);
+      LOG.error("saveProjectOutcome > There was an error trying to save/update a Project outcome from projectId={}",
+        projectID);
       allSaved = false;
     }
 
