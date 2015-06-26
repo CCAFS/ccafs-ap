@@ -15,6 +15,7 @@
 package org.cgiar.ccafs.ap.data.dao.mysql;
 
 import org.cgiar.ccafs.ap.config.APConstants;
+import org.cgiar.ccafs.ap.config.APModule;
 import org.cgiar.ccafs.ap.data.dao.IPElementDAO;
 import org.cgiar.ccafs.utils.db.DAOManager;
 
@@ -27,12 +28,15 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import com.google.inject.Guice;
 import com.google.inject.Inject;
+import com.google.inject.Injector;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 /**
  * @author Héctor Fabio Tobón R.
+ * @author Hernán David Carvajal B.
  */
 public class MySQLIPElementDAO implements IPElementDAO {
 
@@ -46,26 +50,53 @@ public class MySQLIPElementDAO implements IPElementDAO {
     this.databaseManager = databaseManager;
   }
 
+  public static void main(String[] args) {
+    Injector in = Guice.createInjector(new APModule());
+    IPElementDAO elementDAO = in.getInstance(MySQLIPElementDAO.class);
+
+    Map<String, Object> data = new HashMap<>();
+    data.put("id", 193);
+    data.put("description", "Modifying IP Element");
+    data.put("element_type_id", "2");
+    data.put("ip_program_id", "2");
+    data.put("created_by", "2");
+    data.put("modified_by", "2");
+    data.put("modification_justification", "Updating");
+    // elementDAO.createIPElement(data);
+
+    List<Map<String, String>> a = elementDAO.getIPElementsByParent(38, 1);
+
+    System.out.println("Exit");
+  }
+
   @Override
   public int createIPElement(Map<String, Object> ipElementData) {
     LOG.debug(">> createIPElement(ipElementData)", ipElementData);
     StringBuilder query = new StringBuilder();
-    Object[] values = new Object[3];
+    Object[] values = new Object[6];
 
     if (ipElementData.get("id") == null) {
-      query.append("INSERT INTO ip_elements (id, description, element_type_id ) ");
-      query.append("VALUES (?, ?, ?) ");
-
-      values[0] = ipElementData.get("id");
-      values[1] = ipElementData.get("description");
-      values[2] = ipElementData.get("element_type_id");
-    } else {
-      query.append("UPDATE ip_elements SET description = ?, element_type_id =? ");
-      query.append("WHERE id = ? ");
+      query.append("INSERT INTO ip_elements (description, element_type_id, ip_program_id, created_by, ");
+      query.append("modified_by, modification_justification ) ");
+      query.append("VALUES (?, ?, ?, ?, ?, ?) ");
 
       values[0] = ipElementData.get("description");
       values[1] = ipElementData.get("element_type_id");
-      values[2] = ipElementData.get("id");
+      values[2] = ipElementData.get("ip_program_id");
+      values[3] = ipElementData.get("created_by");
+      values[4] = ipElementData.get("modified_by");
+      values[5] = ipElementData.get("modification_justification");
+
+    } else {
+      query.append("UPDATE ip_elements SET description = ?, element_type_id =?, ip_program_id=?, modified_by=?, ");
+      query.append("modification_justification=? WHERE id=? ");
+
+      values[0] = ipElementData.get("description");
+      values[1] = ipElementData.get("element_type_id");
+      values[2] = ipElementData.get("ip_program_id");
+      values[3] = ipElementData.get("modified_by");
+      values[4] = ipElementData.get("modification_justification");
+      values[5] = ipElementData.get("id");
     }
 
     int result = databaseManager.saveData(query.toString(), values);
@@ -76,6 +107,8 @@ public class MySQLIPElementDAO implements IPElementDAO {
 
   @Override
   public boolean deleteChildIPElements(int parentElmentID) {
+    // TODO - Check if this method need to be changed to manage the deletion with the column is_active instead of making
+    // a phisical delete
     LOG.debug(">> deleteChildIPElements(parentElmentID={})", parentElmentID);
 
     StringBuilder query = new StringBuilder();
@@ -98,7 +131,7 @@ public class MySQLIPElementDAO implements IPElementDAO {
     LOG.debug(">> deleteIPElement(ipElementID={})", ipElementID);
 
     StringBuilder query = new StringBuilder();
-    query.append("DELETE FROM ip_elements ");
+    query.append("UPDATE ip_elements SET is_active = FALSE ");
     query.append("WHERE id = ? ");
 
     int rowsDeleted = databaseManager.delete(query.toString(), new Object[] {ipElementID});
@@ -112,6 +145,7 @@ public class MySQLIPElementDAO implements IPElementDAO {
   }
 
   @Override
+  @Deprecated
   public boolean deleteIpElements(int programId, int typeId) {
     LOG.debug(">> deleteIpElements(programId={}, typeId={})", programId, typeId);
 
@@ -131,6 +165,7 @@ public class MySQLIPElementDAO implements IPElementDAO {
   }
 
   @Override
+  @Deprecated
   public boolean deleteProgramElement(int programElementID) {
     LOG.debug(">> deleteProgramElement(programElementID={})", programElementID);
 
@@ -153,18 +188,17 @@ public class MySQLIPElementDAO implements IPElementDAO {
     LOG.debug(">> getIPElementList( )");
 
     StringBuilder query = new StringBuilder();
-    query.append("SELECT e.id, e.description, pel.id as 'program_element_id', ");
+    query.append("SELECT e.id, e.description,  ");
     query.append("et.id as 'element_type_id', et.name as 'element_type_name', ");
     query.append("pro.id as 'program_id', pro.acronym as 'program_acronym' ");
     query.append("FROM ip_elements e ");
     query.append("INNER JOIN ip_element_types et ON e.element_type_id = et.id ");
-    query.append("INNER JOIN ip_program_elements pel ON e.id = pel.element_id ");
-    query.append("INNER JOIN ip_programs pro ON pel.program_id = pro.id ");
+    query.append("INNER JOIN ip_programs pro ON e.ip_program_id = pro.id ");
     query.append("GROUP BY e.id ");
     query.append("ORDER BY et.id, pro.type_id ");
 
     LOG.debug("-- getIPElementList () > Calling method executeQuery to get the results");
-    return getData(query.toString());
+    return this.getData(query.toString());
   }
 
   private List<Map<String, String>> getData(String query) {
@@ -181,7 +215,9 @@ public class MySQLIPElementDAO implements IPElementDAO {
         ipElementData.put("element_type_name", rs.getString("element_type_name"));
         ipElementData.put("program_id", rs.getString("program_id"));
         ipElementData.put("program_acronym", rs.getString("program_acronym"));
-        ipElementData.put("program_element_id", rs.getString("program_element_id"));
+
+        // TODO - delete this line once we are sure it doesn't generate errors
+        ipElementData.put("program_element_id", null);
 
         ipElementList.add(ipElementData);
       }
@@ -201,14 +237,11 @@ public class MySQLIPElementDAO implements IPElementDAO {
   public Map<String, String> getElementCreator(int ipElementID) {
     Map<String, String> programData = new HashMap<>();
     StringBuilder query = new StringBuilder();
-    query.append("SELECT ipp.id, ipp.name, ipp.type_id as 'program_type_id' ");
-    query.append("FROM ip_programs ipp ");
-    query.append("INNER JOIN ip_program_elements ipe ON ipp.id = ipe.program_id ");
-    query.append("INNER JOIN ip_program_element_relation_types ipt ON ipe.relation_type_id = ipt.id ");
-    query.append("WHERE ipe.element_id = ");
+    query.append("SELECT ip.id, ip.name, ip.type_id as 'program_type_id' ");
+    query.append("FROM ip_programs ip ");
+    query.append("INNER JOIN ip_elements ie ON ip.id = ie.ip_program_id ");
+    query.append("WHERE ie.id = ");
     query.append(ipElementID);
-    query.append(" AND ipt.id = ");
-    query.append(APConstants.PROGRAM_ELEMENT_RELATION_CREATION);
 
     try (Connection con = databaseManager.getConnection()) {
       ResultSet rs = databaseManager.makeQuery(query.toString(), con);
@@ -232,22 +265,19 @@ public class MySQLIPElementDAO implements IPElementDAO {
     LOG.debug(">> getIPElement( programID = {}, elementTypeID = {} )", programID, elementTypeID);
 
     StringBuilder query = new StringBuilder();
-    query.append("SELECT e.id, e.description,  pel.id as 'program_element_id', ");
+    query.append("SELECT e.id, e.description,  ");
     query.append("et.id as 'element_type_id', et.name as 'element_type_name', ");
     query.append("pro.id as 'program_id', pro.acronym as 'program_acronym' ");
     query.append("FROM ip_elements e ");
     query.append("INNER JOIN ip_element_types et ON e.element_type_id = et.id ");
-    query.append("INNER JOIN ip_program_elements pel ON e.id = pel.element_id ");
-    query.append("INNER JOIN ip_programs pro ON pel.program_id = pro.id ");
-    query.append("WHERE pel.program_id = ");
+    query.append("INNER JOIN ip_programs pro ON e.ip_program_id = pro.id ");
+    query.append("WHERE pro.id = ");
     query.append(programID);
     query.append(" AND et.id = ");
     query.append(elementTypeID);
-    query.append(" AND pel.relation_type_id = ");
-    query.append(APConstants.PROGRAM_ELEMENT_RELATION_USE);
 
     LOG.debug("-- getIPElement() > Calling method executeQuery to get the results");
-    return getData(query.toString());
+    return this.getData(query.toString());
   }
 
   @Override
@@ -255,21 +285,20 @@ public class MySQLIPElementDAO implements IPElementDAO {
     LOG.debug(">> getIPElement( programID = {} )", programID);
 
     StringBuilder query = new StringBuilder();
-    query.append("SELECT e.id, e.description,  pel.id as 'program_element_id',  ");
+    query.append("SELECT e.id, e.description,  ");
     query.append("et.id as 'element_type_id', et.name as 'element_type_name', ");
     query.append("pro.id as 'program_id', pro.acronym as 'program_acronym' ");
     query.append("FROM ip_elements e ");
     query.append("INNER JOIN ip_element_types et ON e.element_type_id = et.id ");
-    query.append("INNER JOIN ip_program_elements pel ON e.id = pel.element_id ");
-    query.append("INNER JOIN ip_programs pro ON pel.program_id = pro.id ");
-    query.append("WHERE pel.program_id = ");
+    query.append("INNER JOIN ip_programs pro ON e.ip_program_id = pro.id ");
+    query.append("WHERE pro.id = ");
     query.append(programID);
     query.append(" GROUP BY e.id");
     query.append(" ORDER BY et.id, pro.type_id ");
 
 
     LOG.debug("-- getIPElement() > Calling method executeQuery to get the results");
-    return getData(query.toString());
+    return this.getData(query.toString());
   }
 
   @Override
@@ -278,13 +307,12 @@ public class MySQLIPElementDAO implements IPElementDAO {
     int elementsCount = elementIds.length;
 
     StringBuilder query = new StringBuilder();
-    query.append("SELECT e.id, e.description, pel.id as 'program_element_id', ");
+    query.append("SELECT e.id, e.description, ");
     query.append("et.id as 'element_type_id', et.name as 'element_type_name', ");
     query.append("pro.id as 'program_id', pro.acronym as 'program_acronym' ");
     query.append("FROM ip_elements e ");
     query.append("INNER JOIN ip_element_types et ON e.element_type_id = et.id ");
-    query.append("INNER JOIN ip_program_elements pel ON e.id = pel.element_id ");
-    query.append("INNER JOIN ip_programs pro ON pel.program_id = pro.id ");
+    query.append("INNER JOIN ip_programs pro ON e.ip_program_id = pro.id ");
     query.append("WHERE e.id IN ( ");
 
     for (int c = 0; c < elementsCount; c++) {
@@ -293,11 +321,10 @@ public class MySQLIPElementDAO implements IPElementDAO {
         query.append(", ");
       }
     }
-    query.append(") AND pel.relation_type_id = ");
-    query.append(APConstants.PROGRAM_ELEMENT_RELATION_USE);
+    query.append("); ");
 
     LOG.debug("-- getIPElementList () > Calling method executeQuery to get the results");
-    return getData(query.toString());
+    return this.getData(query.toString());
   }
 
   @Override
@@ -307,14 +334,11 @@ public class MySQLIPElementDAO implements IPElementDAO {
     StringBuilder query = new StringBuilder();
     query.append("SELECT e.id, e.description,  ");
     query.append("et.id as 'element_type_id', et.name as 'element_type_name', ");
-    query.append("pro.id as 'program_id', pro.acronym as 'program_acronym', ");
-    query.append("pel.id as 'program_element_id' ");
+    query.append("pro.id as 'program_id', pro.acronym as 'program_acronym' ");
     query.append("FROM ip_elements e ");
     query.append("INNER JOIN ip_relationships r ON e.id = r.child_id ");
     query.append("INNER JOIN ip_element_types et ON e.element_type_id = et.id ");
-    query.append("INNER JOIN ip_program_elements pel ON e.id = pel.element_id AND pel.relation_type_id = "
-      + APConstants.PROGRAM_ELEMENT_RELATION_USE + " ");
-    query.append("INNER JOIN ip_programs pro ON pel.program_id = pro.id ");
+    query.append("INNER JOIN ip_programs pro ON e.ip_program_id = pro.id ");
     query.append("WHERE r.relation_type_id = ");
     query.append(relationTypeID);
     query.append(" AND r.parent_id = ");
@@ -322,7 +346,7 @@ public class MySQLIPElementDAO implements IPElementDAO {
     query.append(" GROUP BY e.id ");
 
     LOG.debug("-- getIPElementsRelated() > Calling method executeQuery to get the results");
-    return getData(query.toString());
+    return this.getData(query.toString());
   }
 
   @Override
@@ -338,17 +362,17 @@ public class MySQLIPElementDAO implements IPElementDAO {
     query.append("INNER JOIN ip_relationships r ON e.id = r.parent_id AND r.child_id = ");
     query.append(ipElementID + " ");
     query.append("INNER JOIN ip_element_types et ON e.element_type_id = et.id ");
-    query.append("INNER JOIN ip_program_elements pel ON e.id = pel.element_id ");
-    query.append("INNER JOIN ip_programs pro ON pel.program_id = pro.id ");
+    query.append("INNER JOIN ip_programs pro ON e.ip_program_id = pro.id ");
     query.append("WHERE r.relation_type_id = ");
     query.append(relationTypeID);
     query.append(" GROUP BY e.id ");
 
     LOG.debug("-- getIPElementsRelated() > Calling method executeQuery to get the results");
-    return getData(query.toString());
+    return this.getData(query.toString());
   }
 
   @Override
+  @Deprecated
   public int getProgramElementID(int ipElementID, int ipProgramID) {
     LOG.debug(">> getProgramElementID(ipElementID={}, ipProgramID={})", ipElementID, ipProgramID);
     int programElementID = -1;
@@ -379,6 +403,7 @@ public class MySQLIPElementDAO implements IPElementDAO {
   }
 
   @Override
+  @Deprecated
   public int relateIPElement(int elementID, int programID, int relationTypeID) {
     LOG.debug(">> relateIPElement(elementID={}, programID={}, relationTypeID={})", new int[] {elementID, programID,
       relationTypeID});
