@@ -55,22 +55,8 @@ public class IPElementManagerImpl implements IPElementManager {
   }
 
   @Override
-  public boolean deleteIPElement(IPElement element, IPProgram program) {
-    boolean deleted = false;
-    boolean isElementCreator = (element.getProgram().getId() == program.getId());
-
-    if (isElementCreator) {
-      // If the user is the creator, removes directly the ipElement.
-      // if the element has children, the foreign key will prohibit the
-      // deletion
-      deleted = ipElementDAO.deleteIPElement(element.getId());
-    } else {
-      // If the user is not the creator, then remove only the relation
-      // between the element and the program
-      deleted = ipElementDAO.deleteProgramElement(element.getId());
-    }
-
-    return deleted;
+  public boolean deleteIPElement(IPElement element) {
+    return ipElementDAO.deleteIPElement(element.getId());
   }
 
   @Override
@@ -81,7 +67,7 @@ public class IPElementManagerImpl implements IPElementManager {
   @Override
   public IPElement getIPElement(int elementID) {
     List<Map<String, String>> ipElementsDataList = ipElementDAO.getIPElements(new String[] {String.valueOf(elementID)});
-    List<IPElement> elements = setDataToIPElementObjects(ipElementsDataList);
+    List<IPElement> elements = this.setDataToIPElementObjects(ipElementsDataList);
     if (elements.size() == 1) {
       return elements.get(0);
     }
@@ -91,13 +77,13 @@ public class IPElementManagerImpl implements IPElementManager {
   @Override
   public List<IPElement> getIPElementList() {
     List<Map<String, String>> elementDataList = ipElementDAO.getAllIPElements();
-    return setDataToIPElementObjects(elementDataList);
+    return this.setDataToIPElementObjects(elementDataList);
   }
 
   @Override
   public List<IPElement> getIPElementList(String[] ids) {
     List<Map<String, String>> ipElementDataList = ipElementDAO.getIPElements(ids);
-    return setDataToIPElementObjects(ipElementDataList);
+    return this.setDataToIPElementObjects(ipElementDataList);
   }
 
   @Override
@@ -161,19 +147,19 @@ public class IPElementManagerImpl implements IPElementManager {
   @Override
   public List<IPElement> getIPElements(IPProgram program) {
     List<Map<String, String>> ipElementDataList = ipElementDAO.getIPElementByProgramID(program.getId());
-    return setDataToIPElementObjects(ipElementDataList);
+    return this.setDataToIPElementObjects(ipElementDataList);
   }
 
   @Override
   public List<IPElement> getIPElements(IPProgram program, IPElementType type) {
     List<Map<String, String>> ipElementDataList = ipElementDAO.getIPElement(program.getId(), type.getId());
-    return setDataToIPElementObjects(ipElementDataList);
+    return this.setDataToIPElementObjects(ipElementDataList);
   }
 
   @Override
   public List<IPElement> getIPElementsByParent(IPElement parent, int relationTypeID) {
     List<Map<String, String>> ipElementDataList = ipElementDAO.getIPElementsByParent(parent.getId(), relationTypeID);
-    return setDataToIPElementObjects(ipElementDataList);
+    return this.setDataToIPElementObjects(ipElementDataList);
   }
 
   @Override
@@ -252,7 +238,7 @@ public class IPElementManagerImpl implements IPElementManager {
         if (element.getTranslatedOf() != null) {
           for (IPElement parentElement : element.getTranslatedOf()) {
             ipRelationshipDAO
-            .saveIPRelation(parentElement.getId(), elementId, APConstants.ELEMENT_RELATION_TRANSLATION);
+              .saveIPRelation(parentElement.getId(), elementId, APConstants.ELEMENT_RELATION_TRANSLATION);
           }
         }
       } else {
@@ -268,7 +254,7 @@ public class IPElementManagerImpl implements IPElementManager {
   /**
    * This function takes the information of IPElements stored in a list of maps
    * to organize it in a list of IPElement objects
-   *
+   * 
    * @param ipElementDataList
    * @return
    */

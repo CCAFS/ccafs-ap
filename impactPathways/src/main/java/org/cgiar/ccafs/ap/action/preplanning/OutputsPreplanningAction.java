@@ -13,11 +13,6 @@
  *****************************************************************/
 package org.cgiar.ccafs.ap.action.preplanning;
 
-import java.util.ArrayList;
-import java.util.List;
-
-import com.google.inject.Inject;
-
 import org.cgiar.ccafs.ap.action.BaseAction;
 import org.cgiar.ccafs.ap.config.APConstants;
 import org.cgiar.ccafs.ap.data.manager.IPElementManager;
@@ -29,6 +24,10 @@ import org.cgiar.ccafs.ap.data.model.IPElementType;
 import org.cgiar.ccafs.ap.data.model.IPProgram;
 import org.cgiar.ccafs.utils.APConfig;
 
+import java.util.ArrayList;
+import java.util.List;
+
+import com.google.inject.Inject;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -83,7 +82,7 @@ public class OutputsPreplanningAction extends BaseAction {
 
   @Override
   public String next() {
-    String result = save();
+    String result = this.save();
     if (result.equals(BaseAction.SUCCESS)) {
       return BaseAction.NEXT;
     } else {
@@ -93,7 +92,7 @@ public class OutputsPreplanningAction extends BaseAction {
 
   @Override
   public void prepare() throws Exception {
-    IPProgram program = getCurrentUser().getCurrentInstitution().getProgram();
+    IPProgram program = this.getCurrentUser().getCurrentInstitution().getProgram();
 
     // Create an element type for midOutcomes
     IPElementType midOutcomesType = new IPElementType(APConstants.ELEMENT_TYPE_OUTCOME2019);
@@ -106,12 +105,12 @@ public class OutputsPreplanningAction extends BaseAction {
 
     // Fake flagship to add as a placeholder
     IPProgram flagship = new IPProgram(-1);
-    flagship.setName(getText("preplanning.midOutcomesRPL.selectFlagship"));
+    flagship.setName(this.getText("preplanning.midOutcomesRPL.selectFlagship"));
     flagshipsList.add(flagship);
 
     // Fake midOutcome to add as a placeholder if user is a FPL
     IPElement outcome = new IPElement(-1);
-    outcome.setDescription(getText("preplanning.midOutcomesRPL.selectMidOutcome"));
+    outcome.setDescription(this.getText("preplanning.midOutcomesRPL.selectMidOutcome"));
     midOutcomesList.add(outcome);
 
     flagshipsList.addAll(ipProgramManager.getProgramsByType(APConstants.FLAGSHIP_PROGRAM_TYPE));
@@ -134,7 +133,7 @@ public class OutputsPreplanningAction extends BaseAction {
     outputsFromDatabase = new ArrayList<>();
     outputsFromDatabase.addAll(outputs);
 
-    if (getRequest().getMethod().equalsIgnoreCase("post")) {
+    if (this.getRequest().getMethod().equalsIgnoreCase("post")) {
       // Clear out the list if it has some element
       if (outputs != null) {
         outputs.clear();
@@ -149,26 +148,26 @@ public class OutputsPreplanningAction extends BaseAction {
       // If user removed all the outputs in the interface
       // we should do the same in the database
       if (outputs.isEmpty()) {
-        ipElementManager.deleteIPElement(output, getCurrentUser().getCurrentInstitution().getProgram());
+        ipElementManager.deleteIPElement(output);
         continue;
       }
 
       // Check if the user delete an output in the interface
       if (!outputs.contains(output)) {
-        ipElementManager.deleteIPElement(output, getCurrentUser().getCurrentInstitution().getProgram());
+        ipElementManager.deleteIPElement(output);
       } else {
         // Remove the relations of the outputs that were not removed
-        ipIndicatorManager.removeElementIndicators(output, getCurrentUser().getCurrentInstitution().getProgram());
+        ipIndicatorManager.removeElementIndicators(output, this.getCurrentUser().getCurrentInstitution().getProgram());
         ipElementRelationManager.deleteRelationsByChildElement(output);
       }
     }
 
     // Remove records already present in the database
     if (ipElementManager.saveIPElements(outputs)) {
-      addActionMessage(getText("saving.success", new String[] {getText("preplanning.outputs.title")}));
+      this.addActionMessage(this.getText("saving.success", new String[] {this.getText("preplanning.outputs.title")}));
       return SUCCESS;
     } else {
-      addActionError(getText("saving.problem"));
+      this.addActionError(this.getText("saving.problem"));
       return INPUT;
     }
   }

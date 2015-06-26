@@ -98,7 +98,7 @@ public class OutcomesPreplanningAction extends BaseAction {
 
   @Override
   public String next() {
-    String result = save();
+    String result = this.save();
     if (result.equals(BaseAction.SUCCESS)) {
       return BaseAction.NEXT;
     } else {
@@ -120,7 +120,7 @@ public class OutcomesPreplanningAction extends BaseAction {
     consortiumIDOs = ipElementManager.getIPElements(systemProgram, idoType);
     ccafsIDOs = ipElementManager.getIPElements(ccafsProgram, idoType);
 
-    outcomes = ipElementManager.getIPElements(getCurrentUser().getCurrentInstitution().getProgram(), type);
+    outcomes = ipElementManager.getIPElements(this.getCurrentUser().getCurrentInstitution().getProgram(), type);
 
     // Keep the id of all outcomes which come from the database
     outcomesFromDatabase = new ArrayList<>();
@@ -161,7 +161,7 @@ public class OutcomesPreplanningAction extends BaseAction {
       }
     }
 
-    if (getRequest().getMethod().equalsIgnoreCase("post")) {
+    if (this.getRequest().getMethod().equalsIgnoreCase("post")) {
       // Clear out the list if it has some element
       if (outcomes != null) {
         for (IPElement outcome : outcomes) {
@@ -179,13 +179,13 @@ public class OutcomesPreplanningAction extends BaseAction {
       // If all the outcomes were removed, we should remove all the records
       // brought from the database
       if (outcomes.isEmpty()) {
-        ipElementManager.deleteIPElement(outcome, getCurrentUser().getCurrentInstitution().getProgram());
+        ipElementManager.deleteIPElement(outcome);
         continue;
       }
 
       // Check if the user delete a midOutcome in the interface
       if (!outcomes.contains(outcome)) {
-        ipElementManager.deleteIPElement(outcome, getCurrentUser().getCurrentInstitution().getProgram());
+        ipElementManager.deleteIPElement(outcome);
       } else {
         ipElementRelationManager.deleteRelationsByChildElement(outcome);
       }
@@ -193,13 +193,15 @@ public class OutcomesPreplanningAction extends BaseAction {
 
     if (ipElementManager.saveIPElements(outcomes)) {
       if (securityContext.isFPL()) {
-        addActionMessage(getText("saving.success", new String[] {getText("preplanning.outcomes.title")}));
+        this
+          .addActionMessage(this.getText("saving.success", new String[] {this.getText("preplanning.outcomes.title")}));
       } else if (securityContext.isRPL()) {
-        addActionMessage(getText("saving.success", new String[] {getText("preplanning.outcomes.titleRPL")}));
+        this.addActionMessage(this.getText("saving.success",
+          new String[] {this.getText("preplanning.outcomes.titleRPL")}));
       }
       return SUCCESS;
     } else {
-      addActionError(getText("saving.problem"));
+      this.addActionError(this.getText("saving.problem"));
       return INPUT;
     }
   }
