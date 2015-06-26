@@ -51,7 +51,6 @@ public class ActivityLocationsPlanningAction extends BaseAction {
   private List<Location> locationsOrganized;
   private int activityID;
   private Project project;
-
   // Variables needed to upload the excel file
   private File excelTemplate;
   private String excelTemplateContentType;
@@ -87,8 +86,9 @@ public class ActivityLocationsPlanningAction extends BaseAction {
 
     File[] matchingFiles = f.listFiles(new FilenameFilter() {
 
+      @Override
       public boolean accept(File dir, String name) {
-        return name.startsWith(getLocationsFileName());
+        return name.startsWith(ActivityLocationsPlanningAction.this.getLocationsFileName());
       }
     });
 
@@ -138,7 +138,7 @@ public class ActivityLocationsPlanningAction extends BaseAction {
 
 
   public String getLocationsFileURL() {
-    return config.getDownloadURL() + "/" + config.getLocationsTemplateFolder() + getUploadFileName();
+    return config.getDownloadURL() + "/" + config.getLocationsTemplateFolder() + this.getUploadFileName();
   }
 
 
@@ -169,7 +169,7 @@ public class ActivityLocationsPlanningAction extends BaseAction {
 
 
   public String getUploadFileName() {
-    File file = getActivityLocationsFile();
+    File file = this.getActivityLocationsFile();
     if (file == null) {
       return "";
     } else {
@@ -179,7 +179,7 @@ public class ActivityLocationsPlanningAction extends BaseAction {
 
   @Override
   public String next() {
-    String result = save();
+    String result = this.save();
     if (result.equals(BaseAction.SUCCESS)) {
       return BaseAction.NEXT;
     } else {
@@ -223,7 +223,7 @@ public class ActivityLocationsPlanningAction extends BaseAction {
     // parseActivityID();
     activityID = Integer.parseInt(StringUtils.trim(this.getRequest().getParameter(APConstants.ACTIVITY_REQUEST_ID)));
     activity = activityManager.getActivityById(activityID);
-    activity.setLocations(locationManager.getActivityLocations(activityID));
+    activity.setLocations(locationManager.getProjectLocations(activityID));
     previousLocations = new ArrayList<>();
     previousLocations.addAll(activity.getLocations());
 
@@ -240,7 +240,7 @@ public class ActivityLocationsPlanningAction extends BaseAction {
     otherLocationsSaved = new ArrayList<>();
     csvSaved = new ArrayList<>();
 
-    if (getRequest().getMethod().equalsIgnoreCase("post")) {
+    if (this.getRequest().getMethod().equalsIgnoreCase("post")) {
       // Clear out the list if it has some element
       if (activity.getLocations() != null) {
         activity.getLocations().clear();
@@ -259,8 +259,8 @@ public class ActivityLocationsPlanningAction extends BaseAction {
         success = false;
       }
 
-      // removing all previous added locations.
-      boolean removed = locationManager.removeActivityLocation(previousLocations, activityID);
+      // Updating all previous added locations.
+      boolean removed = locationManager.removeProjectLocation(previousLocations, activityID);
       if (removed == false) {
         success = false;
       }
@@ -297,7 +297,8 @@ public class ActivityLocationsPlanningAction extends BaseAction {
       locations.addAll(activity.getLocations());
 
       // Then, saving locations received
-      boolean added = locationManager.saveActivityLocations(locations, activityID);
+      boolean added =
+        locationManager.saveProjectLocation(locations, activityID, this.getCurrentUser(), this.getJustification());
       if (!added) {
         success = false;
       }
@@ -308,19 +309,20 @@ public class ActivityLocationsPlanningAction extends BaseAction {
         String fileExtension = FilenameUtils.getExtension(excelTemplateFileName);
 
         // First, move the uploaded file to the corresponding folder
-        FileManager.copyFile(excelTemplate, fileLocation + getLocationsFileName() + "." + fileExtension);
-        LOG.trace("The locations template uploaded was moved to: " + fileLocation + getLocationsFileName()
+        FileManager.copyFile(excelTemplate, fileLocation + this.getLocationsFileName() + "." + fileExtension);
+        LOG.trace("The locations template uploaded was moved to: " + fileLocation + this.getLocationsFileName()
           + fileExtension);
         // Send a message with the file received
-        sendNotificationMessage(fileLocation, excelTemplateFileName);
+        this.sendNotificationMessage(fileLocation, excelTemplateFileName);
       }
 
       // Displaying user messages.
       if (success == false) {
-        addActionError(getText("saving.problem"));
+        this.addActionError(this.getText("saving.problem"));
         return BaseAction.INPUT;
       }
-      addActionMessage(getText("saving.success", new String[] {getText("planning.activities.locations.title")}));
+      this.addActionMessage(this.getText("saving.success",
+        new String[] {this.getText("planning.activities.locations.title")}));
       return BaseAction.SUCCESS;
     } else {
       return BaseAction.NOT_AUTHORIZED;
@@ -334,8 +336,8 @@ public class ActivityLocationsPlanningAction extends BaseAction {
     recipients = "ccafsap@gmail.com";
 
     messageContent.append("User ");
-    messageContent.append(getCurrentUser().getFirstName() + " " + getCurrentUser().getLastName());
-    messageContent.append(" <" + getCurrentUser().getEmail() + "> ");
+    messageContent.append(this.getCurrentUser().getFirstName() + " " + this.getCurrentUser().getLastName());
+    messageContent.append(" <" + this.getCurrentUser().getEmail() + "> ");
     messageContent.append("has uploaded a file with locations to be saved into the database.");
 
     SendMail sendMail = new SendMail(config);
