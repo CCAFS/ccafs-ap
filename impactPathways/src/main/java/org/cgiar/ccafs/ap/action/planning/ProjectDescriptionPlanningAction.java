@@ -247,7 +247,7 @@ public class ProjectDescriptionPlanningAction extends BaseAction {
       previousProject.setLinkedCoreProjects(coreProjects);
     }
 
-    super.setHistory(historyManager.getLogHistory("projects", project.getId()));
+    super.setHistory(historyManager.getProjectDescriptionHistory(project.getId()));
 
     if (this.isHttpPost()) {
       if (project.getLinkedCoreProjects() != null) {
@@ -442,7 +442,7 @@ public class ProjectDescriptionPlanningAction extends BaseAction {
   @Override
   public void validate() {
     if (save) {
-      validator.validate(this, project, config.getCurrentPlanningStartDate());
+      validator.validate(this, project);
     }
   }
 }

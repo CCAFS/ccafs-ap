@@ -41,9 +41,11 @@ function attachEvents() {
   $('#excelTemplate').change(function() {
     $('#excelTemplate-text').text(this.value);
     $("#excelTemplate-file").show("slow");
-
   });
 
+  validateEvent('[name=save], [name=next]', [
+    "#justification"
+  ]);
 }
 
 function changeGlobalState(e) {

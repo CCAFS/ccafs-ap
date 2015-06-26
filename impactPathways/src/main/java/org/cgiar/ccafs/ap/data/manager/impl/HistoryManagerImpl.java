@@ -49,9 +49,7 @@ public class HistoryManagerImpl implements HistoryManager {
 
 
   @SuppressWarnings("rawtypes")
-  @Override
-  public List<LogHistory> getLogHistory(String tableName, int record_id) {
-    List<Map<String, String>> logHistoryData = historyDAO.getHistoryList(tableName, record_id);
+  private List<LogHistory> getData(List<Map<String, String>> logHistoryData) {
     DateFormat dateformatter = new SimpleDateFormat(APConstants.DATE_FORMAT + " HH:mm:ss");
     List historyList = new ArrayList<>();
 
@@ -78,5 +76,23 @@ public class HistoryManagerImpl implements HistoryManager {
       historyList.add(history);
     }
     return historyList;
+  }
+
+  @Override
+  public List<LogHistory> getProjectDescriptionHistory(int projectID) {
+    List<Map<String, String>> logHistoryData = historyDAO.getProjectDescriptionHistory(projectID);
+    return this.getData(logHistoryData);
+  }
+
+  @Override
+  public List<LogHistory> getProjectOutcomeHistory(int projectID) {
+    List<Map<String, String>> logHistoryData = historyDAO.getProjectOutcomeHistory(projectID);
+    return this.getData(logHistoryData);
+  }
+
+  @Override
+  public List<LogHistory> getProjectPartnersHistory(int projectID, String[] partnerTypes) {
+    List<Map<String, String>> logHistoryData = historyDAO.getProjectPartnerHistory(projectID, partnerTypes);
+    return this.getData(logHistoryData);
   }
 }

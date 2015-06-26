@@ -19,8 +19,10 @@
 [#include "/WEB-INF/global/pages/header.ftl" /]
 [#include "/WEB-INF/global/pages/main-menu.ftl" /]
 [#import "/WEB-INF/global/macros/forms.ftl" as customForm/]
+[#import "/WEB-INF/global/macros/logHistory.ftl" as log/]
 [#import "/WEB-INF/global/macros/usersPopup.ftl" as usersForm/]
 [#import "/WEB-INF/global/macros/projectPartnersTemplate.ftl" as partnersTemplate /]
+[#import "/WEB-INF/global/macros/logHistory.ftl" as log/]
 
 <section class="content">
   <div class="helpMessage">

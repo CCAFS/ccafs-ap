@@ -20,6 +20,7 @@
 [#import "/WEB-INF/global/macros/forms.ftl" as customForm/]
 [#import "/WEB-INF/global/macros/usersPopup.ftl" as usersForm/]
 [#import "/WEB-INF/global/macros/projectPartnersTemplate.ftl" as partnersTemplate /]
+[#import "/WEB-INF/global/macros/logHistory.ftl" as log/]
 
 <section class="content">
   <div class="helpMessage">
@@ -47,7 +48,7 @@
       [#-- Project Partners Sub-menu --]
       [#include "/WEB-INF/planning/projectPartners-sub-menu.ftl" /]
       <div id="partnerTables-partnerLead" class="partnerTable ui-tabs-panel ui-widget-content ui-corner-bottom clearfix">  
-        [#if (!editable && canEdit)]
+        [#if !editable]
           <div class="editButton"><a href="[@s.url includeParams='get'][@s.param name="edit"]true[/@s.param][/@s.url]">[@s.text name="form.buttons.edit" /]</a></div>
         [/#if]  
         [#-- Displaying partner leader from partnersTemplate.ftl --]  

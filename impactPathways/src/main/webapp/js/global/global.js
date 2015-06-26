@@ -54,6 +54,30 @@ $(document).ready(function() {
 
 });
 
+/**
+ * Validate fields length when click to any button
+ */
+
+function validateEvent(button,fields) {
+  var errorClass = 'fieldError';
+  $(button).on('click', function(e) {
+    $.each(fields, function(i,val) {
+      $(val).each(function() {
+        $(this).removeClass(errorClass);
+        if(!validateField($(this))) {
+          e.preventDefault();
+          $(this).addClass(errorClass);
+        }
+      });
+    });
+  });
+}
+
+function validateField($input) {
+  var valid = ($input.val().length > 0) ? true : false;
+  return valid;
+}
+
 /* Add a char counter to a specific text area */
 function applyCharCounter($textArea,charCount) {
   $textArea.parent().append("<p class='charCount'>(<span>" + charCount + "</span> characters remaining)</p>");
@@ -102,7 +126,6 @@ function word_count(field) {
 /**
  * Functions for selects
  */
-
 function setOption(val,name) {
   return "<option value='" + val + "'>" + name + "</option>";
 }

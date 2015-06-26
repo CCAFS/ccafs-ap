@@ -174,6 +174,11 @@ public class Permission {
    */
   public static final String PLANNING_PROJECT_OUTPUTS_UPDATE = "planning:projects:outputs:update";
 
+  /**
+   * Can update the planning project deliverables section
+   */
+  public static final String PLANNING_PROJECT_DELIVERABLES_UPDATE = "planning:projects:deliverables:update";
+
   // --------------------------- End of Project outputs ---------------------------------
 
   // --------------------------- Project activities list---------------------------------
@@ -303,6 +308,11 @@ public class Permission {
    * Can update the project outputs section of some specific project
    */
   public static final String PROJECT_OUTPUTS_UPDATE = "project:outputs:update";
+
+  /**
+   * Can update the project deliverables section of some specific project
+   */
+  public static final String PROJECT_DELIVERABLES_UPDATE = "project:deliverables:update";
 
   // --------------------------- End of Project outputs ---------------------------------
 
