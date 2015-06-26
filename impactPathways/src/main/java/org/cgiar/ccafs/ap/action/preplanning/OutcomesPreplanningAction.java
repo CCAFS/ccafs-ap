@@ -191,7 +191,7 @@ public class OutcomesPreplanningAction extends BaseAction {
       }
     }
 
-    if (ipElementManager.saveIPElements(outcomes)) {
+    if (ipElementManager.saveIPElements(outcomes, this.getCurrentUser(), this.getJustification())) {
       if (securityContext.isFPL()) {
         this
           .addActionMessage(this.getText("saving.success", new String[] {this.getText("preplanning.outcomes.title")}));

@@ -167,7 +167,7 @@ public class MidOutcomesPreplanningAction extends BaseAction {
     }
 
     // Save all the elements brougth from the user interface
-    if (ipElementManager.saveIPElements(midOutcomes)) {
+    if (ipElementManager.saveIPElements(midOutcomes, this.getCurrentUser(), this.getJustification())) {
       this
         .addActionMessage(this.getText("saving.success", new String[] {this.getText("preplanning.midOutcomes.title")}));
       return SUCCESS;

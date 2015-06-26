@@ -163,7 +163,7 @@ public class OutputsPreplanningAction extends BaseAction {
     }
 
     // Remove records already present in the database
-    if (ipElementManager.saveIPElements(outputs)) {
+    if (ipElementManager.saveIPElements(outputs, this.getCurrentUser(), this.getJustification())) {
       this.addActionMessage(this.getText("saving.success", new String[] {this.getText("preplanning.outputs.title")}));
       return SUCCESS;
     } else {

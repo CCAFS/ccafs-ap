@@ -17,6 +17,7 @@ import org.cgiar.ccafs.ap.data.manager.impl.IPElementManagerImpl;
 import org.cgiar.ccafs.ap.data.model.IPElement;
 import org.cgiar.ccafs.ap.data.model.IPElementType;
 import org.cgiar.ccafs.ap.data.model.IPProgram;
+import org.cgiar.ccafs.ap.data.model.User;
 
 import java.util.List;
 
@@ -127,5 +128,5 @@ public interface IPElementManager {
    * @param elements - List of objects to save
    * @return true if all the information was successfully saved, false otherwise.
    */
-  public boolean saveIPElements(List<IPElement> elements);
+  public boolean saveIPElements(List<IPElement> elements, User user, String justification);
 }
