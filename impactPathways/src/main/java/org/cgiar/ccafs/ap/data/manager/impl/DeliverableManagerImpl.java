@@ -19,7 +19,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import org.cgiar.ccafs.ap.config.APModule;
 import org.cgiar.ccafs.ap.data.dao.DeliverableDAO;
 import org.cgiar.ccafs.ap.data.manager.DeliverableManager;
 import org.cgiar.ccafs.ap.data.manager.DeliverableTypeManager;
@@ -29,9 +28,7 @@ import org.cgiar.ccafs.ap.data.model.IPElement;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import com.google.inject.Guice;
 import com.google.inject.Inject;
-import com.google.inject.Injector;
 
 /**
  * @author Javier Andrés Gallego
@@ -40,60 +37,6 @@ public class DeliverableManagerImpl implements DeliverableManager {
 
   // LOG
   private static Logger LOG = LoggerFactory.getLogger(DeliverableManagerImpl.class);
-
-  /**
-   * @param args
-   */
-  public static void main(String[] args) {
-    Injector in = Guice.createInjector(new APModule());
-    DeliverableDAO deliverableDAO = in.getInstance(DeliverableDAO.class);
-
-    // Test getDeliverableById
-    // System.out.println("Deliverable by id : " + deliverableDAO.getDeliverableById(573).toString());
-
-    // Test getDeliverablesByProject
-    // List<Map<String, String>> a = deliverableDAO.getDeliverablesByProject(53);
-    // System.out.println("Deliverables by project : " + a);
-
-
-    // TEST saveDeliverable
-    // java.util.Date date = new java.util.Date();
-    // Map<String, Object> b = new HashMap<String, Object>();
-    // b.put("title", "deliverable test 110");
-    // b.put("id", 1311);
-    // b.put("activity_id", 11);
-    // b.put("created_by", 90);
-    // b.put("modified_by", 90);
-    // b.put("modification_justification", "");
-    // b.put("year", 1880);
-    // b.put("type_id", 1);
-    // b.put("is_active", 1);
-    // b.put("active_since", new java.sql.Timestamp(date.getTime()));
-    // System.out.println("Save a deliverable : " + deliverableDAO.saveDeliverable(1, b));
-
-    // Test deleteDeriverable
-    // System.out.println("Delete a deliverable : " + deliverableDAO.deleteDeliverable(13));
-
-
-    // Test deleteDeliverablesByProject
-    // System.out.println("Delete a deliverable : " + deliverableDAO.deleteDeliverablesByProject(7));
-
-    // Test delete deleteDeliverableOutput
-    // System.out.println("Delete a deliverable output: " + deliverableDAO.deleteDeliverableOutput(677));
-
-    // Test delete getDeliverableOutput
-    // System.out.println("get a deliverable output: " + deliverableDAO.getDeliverableOutput(311).toString()); //
-    // QUEDAMOS ACA queda pendiemnte
-
-    // Test delete getDeliverableOutput
-    System.out.println("save a deliverable output: " + deliverableDAO.saveDeliverableOutput(311, 40, 90, "prueba 1"));
-
-
-    // Test
-    System.out.println("test");
-
-
-  }
 
   // DAO's
   private DeliverableDAO deliverableDAO;
@@ -135,7 +78,7 @@ public class DeliverableManagerImpl implements DeliverableManager {
       deliverable.setTitle(deliverableData.get("title"));
       deliverable.setYear(Integer.parseInt(deliverableData.get("year")));
       deliverable
-        .setType(deliverableTypeManager.getDeliverableTypeById(Integer.parseInt(deliverableData.get("type_id"))));
+      .setType(deliverableTypeManager.getDeliverableTypeById(Integer.parseInt(deliverableData.get("type_id"))));
       deliverable.setNextUsers(nextUserManager.getNextUsersByDeliverableId(deliverableID));
       deliverable.setOutput(this.getDeliverableOutput(deliverableID));
       return deliverable;
@@ -165,7 +108,7 @@ public class DeliverableManagerImpl implements DeliverableManager {
       deliverable.setTitle(deliverableData.get("title"));
       deliverable.setYear(Integer.parseInt(deliverableData.get("year")));
       deliverable
-        .setType(deliverableTypeManager.getDeliverableTypeById(Integer.parseInt(deliverableData.get("type_id"))));
+      .setType(deliverableTypeManager.getDeliverableTypeById(Integer.parseInt(deliverableData.get("type_id"))));
       deliverable.setNextUsers(nextUserManager.getNextUsersByDeliverableId(projectID));
       deliverable.setOutput(this.getDeliverableOutput(Integer.parseInt(deliverableData.get("id"))));
       // adding information of the object to the array
@@ -195,7 +138,7 @@ public class DeliverableManagerImpl implements DeliverableManager {
       LOG.debug("saveDeliverable > Deliverable with id={} was updated", deliverable.getId());
     } else {
       LOG
-      .error("saveDeliverable > There was an error trying to save/update a Deliverable from projectId={}", projectID);
+        .error("saveDeliverable > There was an error trying to save/update a Deliverable from projectId={}", projectID);
     }
 
     return result;
