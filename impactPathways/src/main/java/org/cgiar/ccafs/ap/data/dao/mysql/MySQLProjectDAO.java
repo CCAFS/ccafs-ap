@@ -863,12 +863,16 @@ public class MySQLProjectDAO implements ProjectDAO {
 
     Object[] values;
     // Insert new activity indicator record
-    query.append("INSERT IGNORE INTO ip_project_contributions (project_id, mog_id, midOutcome_id) ");
-    query.append("VALUES (?, ?, ?) ");
-    values = new Object[3];
+    query.append("INSERT IGNORE INTO ip_project_contributions ");
+    query.append("(project_id, mog_id, midOutcome_id, created_by, modified_by, modification_justification) ");
+    query.append("VALUES (?, ?, ?, ?, ?, ?) ");
+    values = new Object[6];
     values[0] = outputData.get("project_id");
     values[1] = outputData.get("mog_id");
     values[2] = outputData.get("midOutcome_id");
+    values[3] = outputData.get("user_id");
+    values[4] = outputData.get("user_id");
+    values[5] = outputData.get("justification");
 
     int newId = databaseManager.saveData(query.toString(), values);
     if (newId == -1) {

@@ -227,7 +227,9 @@ public interface ProjectManager {
    * 
    * @param outputs - A list of ipElmenet objects
    * @param projectID - project identifier
+   * @param user - the user who is making the change
+   * @param justification
    * @return true if ALL the relations were saved successfully. False otherwise.
    */
-  public boolean saveProjectOutputs(List<IPElement> outputs, int projectID);
+  public boolean saveProjectOutputs(List<IPElement> outputs, int projectID, User user, String justification);
 }
