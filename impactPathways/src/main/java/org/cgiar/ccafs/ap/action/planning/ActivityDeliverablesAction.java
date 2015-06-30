@@ -107,7 +107,7 @@ public class ActivityDeliverablesAction extends BaseAction {
 
   @Override
   public String next() {
-    String result = save();
+    String result = this.save();
     if (result.equals(BaseAction.SUCCESS)) {
       return BaseAction.NEXT;
     } else {
@@ -130,7 +130,7 @@ public class ActivityDeliverablesAction extends BaseAction {
     allYears = activity.getAllYears();
 
     // Getting the List of Expected Deliverables
-    List<Deliverable> deliverables = deliverableManager.getDeliverablesByActivity(activityID);
+    List<Deliverable> deliverables = deliverableManager.getDeliverablesByProject(activityID);
     activity.setDeliverables(deliverables);
 
     outputs = projectManager.getProjectOutputs(project.getId());
@@ -140,7 +140,7 @@ public class ActivityDeliverablesAction extends BaseAction {
       for (Deliverable deliverable : activity.getDeliverables()) {
         deliverable.setNextUsers(nextUserManager.getNextUsersByDeliverableId(deliverable.getId()));
       }
-      if (getRequest().getMethod().equalsIgnoreCase("post")) {
+      if (this.getRequest().getMethod().equalsIgnoreCase("post")) {
         // Clear out the list if it has some element
         if (activity.getDeliverables() != null) {
           activity.getDeliverables().clear();
@@ -156,7 +156,7 @@ public class ActivityDeliverablesAction extends BaseAction {
       boolean deleted;
 
       // Getting previous Deliverables.
-      List<Deliverable> previousDeliverables = deliverableManager.getDeliverablesByActivity(activityID);
+      List<Deliverable> previousDeliverables = deliverableManager.getDeliverablesByProject(activityID);
 
       // Identifying deleted deliverables in the interface to delete them from the database.
       for (Deliverable deliverable : previousDeliverables) {
@@ -185,7 +185,8 @@ public class ActivityDeliverablesAction extends BaseAction {
           }
 
           // saving output/MOG contribution.
-          deliverableManager.saveDeliverableOutput(deliverableID, deliverable.getOutput().getId(), project.getId());
+          deliverableManager.saveDeliverableOutput(deliverableID, project.getId(), this.getCurrentUser().getId(),
+            this.getJustification());
 
           // Saving next Users.
           if (deliverable.getNextUsers() != null) {
@@ -199,10 +200,10 @@ public class ActivityDeliverablesAction extends BaseAction {
       }
 
       if (success == false) {
-        addActionError(getText("saving.problem"));
+        this.addActionError(this.getText("saving.problem"));
         return BaseAction.INPUT;
       }
-      addActionMessage(getText("saving.success", new String[] {getText("planning.deliverables")}));
+      this.addActionMessage(this.getText("saving.success", new String[] {this.getText("planning.deliverables")}));
       return BaseAction.SUCCESS;
     } else {
       return BaseAction.ERROR;

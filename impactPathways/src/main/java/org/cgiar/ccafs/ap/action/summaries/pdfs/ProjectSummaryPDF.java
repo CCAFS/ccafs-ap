@@ -135,7 +135,7 @@ public class ProjectSummaryPDF extends BasePDF {
       activity.setCrossCuttings(ipCrossCuttingManager.getIPCrossCuttingByActivityID(activity.getId()));
       activity.setActivityPartners(activityPartnerManager.getActivityPartnersByActivity(activity.getId()));
       activity.setLocations(locationManager.getActivityLocations(activity.getId()));
-      activity.setDeliverables(deliverableManager.getDeliverablesByActivity(activity.getId()));
+      activity.setDeliverables(deliverableManager.getDeliverablesByProject(activity.getId()));
 
       this.addActivityMainInformation(activity);
       this.addActivityOutcome(activity);
@@ -419,13 +419,15 @@ public class ProjectSummaryPDF extends BasePDF {
         cellContent = new Paragraph(locationType, TABLE_BODY_FONT);
         this.addTableBodyCell(table, cellContent, Element.ALIGN_CENTER, c % 2);
 
-        text = (latitude == -999) ? this.getText("summaries.project.activities.location.notApplicable")
-          : String.valueOf(latitude);
+        text =
+          (latitude == -999) ? this.getText("summaries.project.activities.location.notApplicable") : String
+            .valueOf(latitude);
         cellContent = new Paragraph(text, TABLE_BODY_FONT);
         this.addTableBodyCell(table, cellContent, Element.ALIGN_CENTER, c % 2);
 
-        text = (longitude == -999) ? this.getText("summaries.project.activities.location.notApplicable")
-          : String.valueOf(longitude);
+        text =
+          (longitude == -999) ? this.getText("summaries.project.activities.location.notApplicable") : String
+            .valueOf(longitude);
         cellContent = new Paragraph(text, TABLE_BODY_FONT);
         this.addTableBodyCell(table, cellContent, Element.ALIGN_CENTER, c % 2);
 
@@ -860,8 +862,9 @@ public class ProjectSummaryPDF extends BasePDF {
       }
 
       // Leveraged
-      cell = new Paragraph(String.valueOf(BudgetType.LEVERAGED.name().toLowerCase().replace("_", " + ")),
-        TABLE_BODY_BOLD_FONT);
+      cell =
+        new Paragraph(String.valueOf(BudgetType.LEVERAGED.name().toLowerCase().replace("_", " + ")),
+          TABLE_BODY_BOLD_FONT);
       this.addTableBodyCell(table, cell, Element.ALIGN_LEFT, 1);
 
       for (int year = startYear; year <= endYear; year++) {
@@ -882,8 +885,9 @@ public class ProjectSummaryPDF extends BasePDF {
       for (int year = startYear; year <= endYear; year++) {
         amount =
           budgetManager.calculateProjectBudgetByTypeAndYear(project.getId(), BudgetType.W1_W2_GENDER.getValue(), year);
-        amount += budgetManager.calculateProjectBudgetByTypeAndYear(project.getId(),
-          BudgetType.W3_BILATERAL_GENDER.getValue(), year);
+        amount +=
+          budgetManager.calculateProjectBudgetByTypeAndYear(project.getId(), BudgetType.W3_BILATERAL_GENDER.getValue(),
+            year);
 
         cell = new Paragraph(currencyFormatter.format(amount), TABLE_BODY_FONT);
         this.addTableBodyCell(table, cell, Element.ALIGN_CENTER, 1);
