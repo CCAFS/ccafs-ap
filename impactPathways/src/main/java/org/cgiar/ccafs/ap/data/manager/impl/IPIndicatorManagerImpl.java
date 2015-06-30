@@ -13,7 +13,6 @@
  *****************************************************************/
 package org.cgiar.ccafs.ap.data.manager.impl;
 
-import org.cgiar.ccafs.ap.data.dao.IPElementDAO;
 import org.cgiar.ccafs.ap.data.dao.IPIndicatorDAO;
 import org.cgiar.ccafs.ap.data.manager.IPIndicatorManager;
 import org.cgiar.ccafs.ap.data.model.IPElement;
@@ -30,12 +29,10 @@ import com.google.inject.Inject;
 public class IPIndicatorManagerImpl implements IPIndicatorManager {
 
   private IPIndicatorDAO indicatorDAO;
-  private IPElementDAO elementDAO;
 
   @Inject
-  public IPIndicatorManagerImpl(IPIndicatorDAO indicatorDAO, IPElementDAO elementDAO) {
+  public IPIndicatorManagerImpl(IPIndicatorDAO indicatorDAO) {
     this.indicatorDAO = indicatorDAO;
-    this.elementDAO = elementDAO;
   }
 
   @Override
