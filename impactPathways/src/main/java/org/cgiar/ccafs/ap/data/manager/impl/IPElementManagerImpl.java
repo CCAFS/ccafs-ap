@@ -171,7 +171,7 @@ public class IPElementManagerImpl implements IPElementManager {
   public boolean saveIPElements(List<IPElement> elements, User user, String justification) {
     Map<String, Object> ipElementData;
     boolean allSaved = true;
-    int elementId, programElementID;
+    int elementId;
 
     for (IPElement element : elements) {
       ipElementData = new HashMap<String, Object>();
@@ -193,19 +193,6 @@ public class IPElementManagerImpl implements IPElementManager {
       // If the ip_element was updated, createIPElement method returns 0, update the value
       elementId = (elementId == 0) ? element.getId() : elementId;
 
-      // ------------------------ Delete this block ---------------------------------
-      // Add the relation of type creation
-      programElementID =
-        ipElementDAO.relateIPElement(elementId, element.getProgram().getId(), APConstants.PROGRAM_ELEMENT_CREATED_BY);
-
-      // Add the connection of type 'Used by'
-      programElementID =
-        ipElementDAO.relateIPElement(elementId, element.getProgram().getId(), APConstants.PROGRAM_ELEMENT_USED_BY);
-
-      if (programElementID == 0) {
-        programElementID = ipElementDAO.getProgramElementID(elementId, element.getProgram().getId());
-      }
-      // ------------------------ Delete this block until here ---------------------------------
 
       // If the result is 0 the element was updated and keep the same id
       elementId = (elementId == 0) ? element.getId() : elementId;
@@ -296,8 +283,7 @@ public class IPElementManagerImpl implements IPElementManager {
 
       // Set element indicators if exists
       List<IPIndicator> indicators = new ArrayList<>();
-      int programElementID = Integer.parseInt(elementData.get("program_element_id"));
-      List<Map<String, String>> indicatorsData = ipIndicatorDAO.getIndicatorsByIpProgramElementID(programElementID);
+      List<Map<String, String>> indicatorsData = ipIndicatorDAO.getIndicatorsByElementID(element.getId());
       for (Map<String, String> indicatorData : indicatorsData) {
         IPIndicator indicator = new IPIndicator();
         indicator.setId(Integer.parseInt(indicatorData.get("id")));

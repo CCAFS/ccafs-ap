@@ -46,14 +46,12 @@ public interface IPIndicatorDAO {
   public Map<String, String> getIndicator(int indicatorID);
 
   /**
-   * This function returns all the indicators corresponding to the given
-   * ip element
+   * This method returns all the indicators corresponding to the given ip Element
    * 
-   * @param ipProgramElementID - IP Program Element identifier
+   * @param elementID
    * @return a list of maps with the information.
    */
-  @Deprecated
-  public List<Map<String, String>> getIndicatorsByIpProgramElementID(int ipProgramElementID);
+  public List<Map<String, String>> getIndicatorsByElementID(int elementID);
 
   /**
    * This method returns a list of indicators which have as parent the

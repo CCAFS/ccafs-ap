@@ -41,8 +41,7 @@ public class IPIndicatorManagerImpl implements IPIndicatorManager {
   @Override
   public List<IPIndicator> getElementIndicators(IPElement element) {
     List<IPIndicator> indicators = new ArrayList<>();
-    int programElementID = elementDAO.getProgramElementID(element.getId(), element.getProgram().getId());
-    List<Map<String, String>> indicatorsDataList = indicatorDAO.getIndicatorsByIpProgramElementID(programElementID);
+    List<Map<String, String>> indicatorsDataList = indicatorDAO.getIndicatorsByElementID(element.getId());
 
     for (Map<String, String> iData : indicatorsDataList) {
       IPIndicator indicator = new IPIndicator();

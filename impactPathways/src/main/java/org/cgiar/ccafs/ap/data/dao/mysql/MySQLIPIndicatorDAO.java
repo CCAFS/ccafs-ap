@@ -91,17 +91,16 @@ public class MySQLIPIndicatorDAO implements IPIndicatorDAO {
   }
 
   @Override
-  @Deprecated
-  public List<Map<String, String>> getIndicatorsByIpProgramElementID(int ipProgramElementID) {
-    LOG.debug(">> getElementIndicators( ipProgramElementID = {} )", ipProgramElementID);
+  public List<Map<String, String>> getIndicatorsByElementID(int elementID) {
+    LOG.debug(">> getIndicatorsByElementID( ipProgramElementID = {} )", elementID);
     List<Map<String, String>> indicatorsList = new ArrayList<>();
     StringBuilder query = new StringBuilder();
 
     query.append("SELECT i.id, i.description, i.target, p.id as 'parent_id', p.description as 'parent_description' ");
     query.append("FROM ip_indicators i ");
     query.append("LEFT JOIN ip_indicators p ON i.parent_id = p.id ");
-    query.append("WHERE i.program_element_id = ");
-    query.append(ipProgramElementID);
+    query.append("WHERE i.ip_element_id = ");
+    query.append(elementID);
 
     try (Connection con = databaseManager.getConnection()) {
       ResultSet rs = databaseManager.makeQuery(query.toString(), con);
@@ -116,13 +115,13 @@ public class MySQLIPIndicatorDAO implements IPIndicatorDAO {
       }
       rs.close();
     } catch (SQLException e) {
-      String exceptionMessage = "-- getElementIndicators() > Exception raised trying ";
-      exceptionMessage += "to get the ip indicators corresponding to the ip program element " + ipProgramElementID;
+      String exceptionMessage = "-- getIndicatorsByElementID() > Exception raised trying ";
+      exceptionMessage += "to get the ip indicators corresponding to the ip element " + elementID;
 
       LOG.error(exceptionMessage, e);
     }
 
-    LOG.debug("<< getElementIndicators():ipIndicatorList.size={}", indicatorsList.size());
+    LOG.debug("<< getIndicatorsByElementID():ipIndicatorList.size={}", indicatorsList.size());
     return indicatorsList;
   }
 
