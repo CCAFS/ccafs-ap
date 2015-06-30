@@ -163,7 +163,7 @@
           [#if multiple]
             [@s.select name="${name}" list="${listName}" value="${customValue}" disabled="${disabled?string}" cssClass="${className}" multiple="true" tooltip="${helpText}" headerKey="-1" headerValue=placeholderText  /]
           [#else]
-            [@s.select name="${name}" list="${listName}" value="${customValue}" disabled="${disabled?string}" cssClass="${className}" tooltip="${helpText}" headerKey="-1" headerValue=headerValue=placeholderText  /]
+            [@s.select name="${name}" list="${listName}" value="${customValue}" disabled="${disabled?string}" cssClass="${className}" tooltip="${helpText}" headerKey="-1" headerValue=placeholderText  /]
           [/#if]
         [#else]
           [#if multiple]
