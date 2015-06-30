@@ -147,8 +147,7 @@ public class MidOutcomesPreplanningAction extends BaseAction {
         ipElementManager.deleteIPElement(midOutcome);
       } else {
         // Remove the relations and indicators of the midOutcome
-        ipIndicatorManager.removeElementIndicators(midOutcome, this.getCurrentUser().getCurrentInstitution()
-          .getProgram());
+        ipIndicatorManager.removeElementIndicators(midOutcome);
         ipElementRelationManager.deleteRelationsByChildElement(midOutcome);
       }
     }

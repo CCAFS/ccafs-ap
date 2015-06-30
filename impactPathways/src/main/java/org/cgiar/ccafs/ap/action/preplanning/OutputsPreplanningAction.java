@@ -157,7 +157,7 @@ public class OutputsPreplanningAction extends BaseAction {
         ipElementManager.deleteIPElement(output);
       } else {
         // Remove the relations of the outputs that were not removed
-        ipIndicatorManager.removeElementIndicators(output, this.getCurrentUser().getCurrentInstitution().getProgram());
+        ipIndicatorManager.removeElementIndicators(output);
         ipElementRelationManager.deleteRelationsByChildElement(output);
       }
     }

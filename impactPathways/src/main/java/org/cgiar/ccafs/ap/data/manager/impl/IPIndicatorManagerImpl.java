@@ -18,7 +18,6 @@ import org.cgiar.ccafs.ap.data.dao.IPIndicatorDAO;
 import org.cgiar.ccafs.ap.data.manager.IPIndicatorManager;
 import org.cgiar.ccafs.ap.data.model.IPElement;
 import org.cgiar.ccafs.ap.data.model.IPIndicator;
-import org.cgiar.ccafs.ap.data.model.IPProgram;
 import org.cgiar.ccafs.ap.data.model.Project;
 
 import java.util.ArrayList;
@@ -186,9 +185,7 @@ public class IPIndicatorManagerImpl implements IPIndicatorManager {
   }
 
   @Override
-  // TODO - Remove the program parameter and correct the references
-    public
-    boolean removeElementIndicators(IPElement element, IPProgram program) {
+  public boolean removeElementIndicators(IPElement element) {
     return indicatorDAO.deleteIpElementIndicators(element.getId());
   }
 
