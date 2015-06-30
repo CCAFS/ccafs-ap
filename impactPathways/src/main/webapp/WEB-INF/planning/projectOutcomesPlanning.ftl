@@ -42,11 +42,13 @@
         [/@s.text]
       </p>
     [/#if]
-    
+
     <div id="projectOutcomes-narrative" class="borderBox">
       [#if !editable]
         <div class="editButton"><a href="[@s.url includeParams='get'][@s.param name="edit"]true[/@s.param][/@s.url]">[@s.text name="form.buttons.edit" /]</a></div>
       [/#if] 
+
+      [#-- Project  outcome block --]
       <div class="fullPartBlock clearfix">
         <h1 class="contentTitle">[@s.text name="planning.projectOutcome.narrative" /] </h1> 
         [#-- Project Outcome statement --]
@@ -62,22 +64,28 @@
         [/#list]
         <input name="project.outcome[midOutcomeYear].id" type="hidden" value="${project.outcomes[midOutcomeYear+""].id?c}" />
       </div>
+
+      [#-- Gender contribution block --]
       <div class="fullPartBlock">
         <h1 class="contentTitle">[@s.text name="planning.projectOutcome.genderAndSocialNarrative" /] </h1> 
+
         [#-- Gender and Social Narrative --]
         <div class="fullPartBlock" id="projectOutcome-genderAndSocialNarrative">
-          [@customForm.textArea name="project.outcomes[${midOutcomeYear}].genderAndSocialStatement" i18nkey="planning.projectOutcome.genderAndSocialStatement" editable=editable /]
+          [@customForm.textArea name="project.outcomes[${midOutcomeYear}].genderDimension" i18nkey="planning.projectOutcome.genderAndSocialStatement" editable=editable /]
         </div>
+
         [#-- Annual for the expected Gender and Social contribution --]
         [#list currentPlanningYear?number..midOutcomeYear?number-1 as year]
           <div class="fullPartBlock">
             <h6>[@customForm.text name="planning.projectOutcome.genderAndSocialAnnualProgress" readText=!editable param="${year}" /]</h6>
-            [@customForm.textArea name="project.outcomes[${year?string}].genderAndSocialStatement" showTitle=false editable=editable /]
+            [@customForm.textArea name="project.outcomes[${year?string}].genderDimension" showTitle=false editable=editable /]
           </div>
         [/#list]
         <input name="project.outcome[midOutcomeYear].id" type="hidden" value="${project.outcomes[midOutcomeYear+""].id?c}" />
+
       </div>
     </div>
+    
     [#if editable] 
       [#-- Project identifier --]
       <div class="borderBox">

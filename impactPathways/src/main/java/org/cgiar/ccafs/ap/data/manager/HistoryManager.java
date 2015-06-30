@@ -30,13 +30,31 @@ import com.google.inject.ImplementedBy;
 public interface HistoryManager {
 
   /**
-   * This method return the list of changes recorded in the history table corresponding to the table received by
-   * parameter.
+   * This method return the last five changes made in the interface of
+   * project description to the project identified by the value received by parameter.
    * 
-   * @param tableName
+   * @param projectID - Project identifier
    * @return a list of logHistory objects that contains the information.
    */
-  public <T> List<LogHistory> getLogHistory(String tableName, int record_id);
+  public <T> List<LogHistory> getProjectDescriptionHistory(int projectID);
 
+  /**
+   * This method return the last five changes made in the interface of project outcomes to the project identified by the
+   * value received by parameter.
+   * 
+   * @param projectID - Project identifier
+   * @return a list of logHistory objects that contains the information.
+   */
+  public List<LogHistory> getProjectOutcomeHistory(int projectID);
+
+  /**
+   * This method return the last five changes made in the interface of project partners (Partner lead) to the project
+   * identified by the value received by parameter.
+   * 
+   * @param projectID - Project identifier
+   * @param partnerType - Array of string with the type of partners (ex. 'PL', 'PPA')
+   * @return a list of maps with the information
+   */
+  public List<LogHistory> getProjectPartnersHistory(int projectID, String[] partnerTypes);
 
 }

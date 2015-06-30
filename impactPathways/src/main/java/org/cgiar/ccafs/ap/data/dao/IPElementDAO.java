@@ -61,6 +61,7 @@ public interface IPElementDAO {
    * @param typeId
    * @return true if the elements were deleted successfully. False otherwise
    */
+  @Deprecated
   public boolean deleteIpElements(int programId, int typeId);
 
   /**
@@ -73,6 +74,13 @@ public interface IPElementDAO {
   public boolean deleteProgramElement(int programElementID);
 
   /**
+   * Get all the ipElements presents in the database
+   * 
+   * @return all list of maps with the information of all ipElements
+   */
+  public List<Map<String, String>> getAllIPElements();
+
+  /**
    * This method returns the information of the ipProgram that created
    * the ipElement
    * 
@@ -80,16 +88,6 @@ public interface IPElementDAO {
    * @return a Map with the information
    */
   public Map<String, String> getElementCreator(int ipElementID);
-
-  /**
-   * This method return a all the IP elements which belongs to the program
-   * indicated by parameter.
-   * 
-   * @param programID, identifier of the program
-   * @return a list of maps with the information of all IP elements returned.
-   */
-
-  public List<Map<String, String>> getIPElementByProgramID(int programID);
 
   /**
    * This method return all the IP elements of the type given and that correspond
@@ -102,6 +100,16 @@ public interface IPElementDAO {
   public List<Map<String, String>> getIPElement(int programID, int elementTypeID);
 
   /**
+   * This method return a all the IP elements which belongs to the program
+   * indicated by parameter.
+   * 
+   * @param programID, identifier of the program
+   * @return a list of maps with the information of all IP elements returned.
+   */
+
+  public List<Map<String, String>> getIPElementByProgramID(int programID);
+
+  /**
    * This method gets the ipElements identified by the values received by
    * parameter
    * 
@@ -109,13 +117,6 @@ public interface IPElementDAO {
    * @return a list of maps with the information
    */
   public List<Map<String, String>> getIPElements(String[] elementIds);
-
-  /**
-   * Get all the ipElements presents in the database
-   * 
-   * @return all list of maps with the information of all ipElements
-   */
-  public List<Map<String, String>> getAllIPElements();
 
   /**
    * This method gets all the ipElements that are children of the element

@@ -14,8 +14,8 @@
 package org.cgiar.ccafs.ap.data.manager;
 
 import org.cgiar.ccafs.ap.data.manager.impl.ProjectOutcomeManagerImpl;
-import org.cgiar.ccafs.ap.data.model.BudgetType;
 import org.cgiar.ccafs.ap.data.model.ProjectOutcome;
+import org.cgiar.ccafs.ap.data.model.User;
 
 import java.util.Map;
 
@@ -23,37 +23,40 @@ import com.google.inject.ImplementedBy;
 
 /**
  * @author Javier Andrés Gallego
+ * @author Hernán David Carvajal
  */
 @ImplementedBy(ProjectOutcomeManagerImpl.class)
 public interface ProjectOutcomeManager {
 
   /**
-   * This method gets all the budget information that belongs to a project in a specific year.
+   * This method gets all the projectOutcomes specified for the year received by parameter and that belongs to the
+   * project identified by the value received by parameter.
    * 
-   * @param projectID is the project identifier.
-   * @param year is the year.
-   * @return a List of Budget objects.
+   * @param projectID - Project identifier
+   * @param year
+   * @return a ProjectOutcome object
    */
   public ProjectOutcome getProjectOutcomeByYear(int projectID, int year);
 
   /**
-   * This method gets all the budget information that belongs to the same type of a specific project.
-   * Type can be Window 1, Window 2, Window 3, Bilateral or Leveraged.
+   * This method gets all the project outcomes linked with the project identified by the value received by parameter.
    * 
-   * @param projectID is the id that identifies the project.
-   * @param type is the type of budget see ({@link BudgetType}
-   * @return a list of Budget objects.
+   * @param projectID - Project identifier
+   * @return A map composed by <Year, ProjectOutcome Object>
    */
   public Map<String, ProjectOutcome> getProjectOutcomesByProject(int projectID);
 
   /**
-   * This method saves the information of the given budget that belong to a specific project into the database.
+   * This method save/update the project outcome received by parameter that belongs to the project received by
+   * parameter.
    * 
-   * @param projectID is the project identifier.
-   * @param budget is an object that represents a budget.
-   * @return true if the budget was saved successfully, false otherwise.
+   * @param projectID - Project identifier
+   * @param projectOutcomeData - Project outcome to save
+   * @param user - The user who call the method.
+   * @param justification - Why the insert/update is made.
+   * @return
    */
-  public boolean saveProjectOutcome(int projectID, ProjectOutcome projectOutcomeData);
+  public boolean saveProjectOutcome(int projectID, ProjectOutcome projectOutcomeData, User user, String justification);
 
 
 }

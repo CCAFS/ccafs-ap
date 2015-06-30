@@ -131,7 +131,8 @@ public class ActivityDeliverablesAction extends BaseAction {
     allYears = project.getAllYears();
 
     // Getting the List of Expected Deliverables
-    List<Deliverable> deliverables = deliverableManager.getDeliverablesByActivity(activityID);
+
+    List<Deliverable> deliverables = deliverableManager.getDeliverablesByProject(activityID);
     project.setDeliverables(deliverables);
 
     outputs = projectManager.getProjectOutputs(projectOld.getId());
@@ -157,7 +158,7 @@ public class ActivityDeliverablesAction extends BaseAction {
       boolean deleted;
 
       // Getting previous Deliverables.
-      List<Deliverable> previousDeliverables = deliverableManager.getDeliverablesByActivity(activityID);
+      List<Deliverable> previousDeliverables = deliverableManager.getDeliverablesByProject(activityID);
 
       // Identifying deleted deliverables in the interface to delete them from the database.
       for (Deliverable deliverable : previousDeliverables) {
@@ -186,7 +187,8 @@ public class ActivityDeliverablesAction extends BaseAction {
           }
 
           // saving output/MOG contribution.
-          deliverableManager.saveDeliverableOutput(deliverableID, deliverable.getOutput().getId(), projectOld.getId());
+          deliverableManager.saveDeliverableOutput(deliverableID, project.getId(), this.getCurrentUser().getId(),
+            this.getJustification());
 
           // Saving next Users.
           if (deliverable.getNextUsers() != null) {
