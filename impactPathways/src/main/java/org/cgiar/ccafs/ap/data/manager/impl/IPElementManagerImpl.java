@@ -23,6 +23,7 @@ import org.cgiar.ccafs.ap.data.model.IPElement;
 import org.cgiar.ccafs.ap.data.model.IPElementType;
 import org.cgiar.ccafs.ap.data.model.IPIndicator;
 import org.cgiar.ccafs.ap.data.model.IPProgram;
+import org.cgiar.ccafs.ap.data.model.User;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -60,7 +61,11 @@ public class IPElementManagerImpl implements IPElementManager {
   }
 
   @Override
-  public boolean deleteIPElements(IPProgram program, IPElementType type) {
+  // TODO - This method deletes ip_program_elements, we need to check where is it called in order to know if it is
+  // really
+  // required.
+    public
+    boolean deleteIPElements(IPProgram program, IPElementType type) {
     return ipElementDAO.deleteIpElements(program.getId(), type.getId());
   }
 
@@ -163,7 +168,7 @@ public class IPElementManagerImpl implements IPElementManager {
   }
 
   @Override
-  public boolean saveIPElements(List<IPElement> elements) {
+  public boolean saveIPElements(List<IPElement> elements, User user, String justification) {
     Map<String, Object> ipElementData;
     boolean allSaved = true;
     int elementId, programElementID;
@@ -180,10 +185,15 @@ public class IPElementManagerImpl implements IPElementManager {
       ipElementData.put("description", element.getDescription());
       ipElementData.put("creator_id", element.getProgram().getId());
       ipElementData.put("element_type_id", element.getType().getId());
+      ipElementData.put("created_by", user.getId());
+      ipElementData.put("modified_by", user.getId());
+      ipElementData.put("modification_justification", justification);
       elementId = ipElementDAO.createIPElement(ipElementData);
 
       // If the ip_element was updated, createIPElement method returns 0, update the value
       elementId = (elementId == 0) ? element.getId() : elementId;
+
+      // ------------------------ Delete this block ---------------------------------
       // Add the relation of type creation
       programElementID =
         ipElementDAO.relateIPElement(elementId, element.getProgram().getId(), APConstants.PROGRAM_ELEMENT_CREATED_BY);
@@ -195,10 +205,14 @@ public class IPElementManagerImpl implements IPElementManager {
       if (programElementID == 0) {
         programElementID = ipElementDAO.getProgramElementID(elementId, element.getProgram().getId());
       }
+      // ------------------------ Delete this block until here ---------------------------------
 
       // If the result is 0 the element was updated and keep the same id
       elementId = (elementId == 0) ? element.getId() : elementId;
 
+      //
+      // VAMOS POR ACA
+      //
       if (elementId != -1) {
         // Save the indicators of the element if any
         if (element.getIndicators() != null) {
@@ -215,7 +229,9 @@ public class IPElementManagerImpl implements IPElementManager {
 
             indicatorData.put("description", indicator.getDescription());
             indicatorData.put("target", indicator.getTarget());
-            indicatorData.put("program_element_id", programElementID);
+            indicatorData.put("ip_element_id", elementId);
+            indicatorData.put("user_id", user.getId());
+            indicatorData.put("justification", justification);
 
             if (indicator.getParent() != null) {
               indicatorData.put("parent_id", indicator.getParent().getId());

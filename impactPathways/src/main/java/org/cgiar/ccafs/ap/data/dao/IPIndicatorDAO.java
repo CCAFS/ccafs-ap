@@ -34,7 +34,7 @@ public interface IPIndicatorDAO {
    * @param ipElementID - ipElement identifier
    * @return true if the information was successfully removed, false otherwise.
    */
-  public boolean deleteIpElementIndicators(int ipElementID, int ipProgramID);
+  public boolean deleteIpElementIndicators(int ipElementID);
 
   /**
    * This method returns from the database the information of the indicator
@@ -52,6 +52,7 @@ public interface IPIndicatorDAO {
    * @param ipProgramElementID - IP Program Element identifier
    * @return a list of maps with the information.
    */
+  @Deprecated
   public List<Map<String, String>> getIndicatorsByIpProgramElementID(int ipProgramElementID);
 
   /**

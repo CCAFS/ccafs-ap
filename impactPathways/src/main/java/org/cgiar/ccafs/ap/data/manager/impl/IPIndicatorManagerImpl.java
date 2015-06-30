@@ -146,6 +146,7 @@ public class IPIndicatorManagerImpl implements IPIndicatorManager {
     return indicators;
   }
 
+  @Override
   public List<IPIndicator> getIndicatorsList() {
     List<IPIndicator> indicators = new ArrayList<>();
     List<Map<String, String>> indicatorsDataList = indicatorDAO.getIndicatorsList();
@@ -171,7 +172,7 @@ public class IPIndicatorManagerImpl implements IPIndicatorManager {
 
   @Override
   public List<IPIndicator> getIndicatorsList(String[] indicatorsIDs) {
-    List<IPIndicator> allIndicators = getIndicatorsList();
+    List<IPIndicator> allIndicators = this.getIndicatorsList();
     List<IPIndicator> indicators = new ArrayList<>();
 
     for (IPIndicator indicator : allIndicators) {
@@ -185,8 +186,10 @@ public class IPIndicatorManagerImpl implements IPIndicatorManager {
   }
 
   @Override
-  public boolean removeElementIndicators(IPElement element, IPProgram program) {
-    return indicatorDAO.deleteIpElementIndicators(element.getId(), program.getId());
+  // TODO - Remove the program parameter and correct the references
+    public
+    boolean removeElementIndicators(IPElement element, IPProgram program) {
+    return indicatorDAO.deleteIpElementIndicators(element.getId());
   }
 
 }

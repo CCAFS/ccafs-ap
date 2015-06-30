@@ -15,7 +15,6 @@
 package org.cgiar.ccafs.ap.data.dao.mysql;
 
 import org.cgiar.ccafs.ap.config.APConstants;
-import org.cgiar.ccafs.ap.config.APModule;
 import org.cgiar.ccafs.ap.data.dao.IPElementDAO;
 import org.cgiar.ccafs.utils.db.DAOManager;
 
@@ -28,9 +27,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import com.google.inject.Guice;
 import com.google.inject.Inject;
-import com.google.inject.Injector;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -48,25 +45,6 @@ public class MySQLIPElementDAO implements IPElementDAO {
   @Inject
   public MySQLIPElementDAO(DAOManager databaseManager) {
     this.databaseManager = databaseManager;
-  }
-
-  public static void main(String[] args) {
-    Injector in = Guice.createInjector(new APModule());
-    IPElementDAO elementDAO = in.getInstance(MySQLIPElementDAO.class);
-
-    Map<String, Object> data = new HashMap<>();
-    data.put("id", 193);
-    data.put("description", "Modifying IP Element");
-    data.put("element_type_id", "2");
-    data.put("ip_program_id", "2");
-    data.put("created_by", "2");
-    data.put("modified_by", "2");
-    data.put("modification_justification", "Updating");
-    // elementDAO.createIPElement(data);
-
-    List<Map<String, String>> a = elementDAO.getIPElementsByParent(38, 1);
-
-    System.out.println("Exit");
   }
 
   @Override
