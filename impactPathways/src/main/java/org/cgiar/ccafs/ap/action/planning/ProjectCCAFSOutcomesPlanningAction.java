@@ -374,7 +374,10 @@ public class ProjectCCAFSOutcomesPlanningAction extends BaseAction {
         }
       }
 
-      success = success && projectManager.saveProjectOutputs(project.getOutputs(), projectID);
+      success =
+        success
+          && projectManager.saveProjectOutputs(project.getOutputs(), projectID, this.getCurrentUser(),
+            this.getJustification());
 
       // Delete the indicators removed
       for (IPIndicator indicator : previousIndicators) {
