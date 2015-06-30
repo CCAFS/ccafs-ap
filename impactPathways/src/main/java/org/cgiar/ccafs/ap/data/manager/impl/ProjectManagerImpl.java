@@ -85,8 +85,8 @@ public class ProjectManagerImpl implements ProjectManager {
   }
 
   @Override
-  public boolean deleteProjectOutput(int projectID, int outputID) {
-    return projectDAO.deleteProjectOutput(projectID, outputID);
+  public boolean deleteProjectOutput(int projectID, int outputID, int outcomeID, int userID, String justification) {
+    return projectDAO.deleteProjectOutput(projectID, outputID, outcomeID, userID, justification);
   }
 
 
@@ -295,7 +295,9 @@ public class ProjectManagerImpl implements ProjectManager {
   }
 
   @Override
-  public List<IPIndicator> getProjectIndicators(int projectID) {
+  // TODO - Move this method to a class called projectIndicatorManager
+    public
+    List<IPIndicator> getProjectIndicators(int projectID) {
     List<IPIndicator> indicators = new ArrayList<>();
     List<Map<String, String>> indicatorsData = projectDAO.getProjectIndicators(projectID);
 
@@ -343,7 +345,9 @@ public class ProjectManagerImpl implements ProjectManager {
   }
 
   @Override
-  public List<IPElement> getProjectOutputs(int projectID) {
+  // TODO - Move this method to a class called projectOutputManager
+    public
+    List<IPElement> getProjectOutputs(int projectID) {
     List<IPElement> outputs = new ArrayList<>();
     List<Map<String, String>> outputsData = projectDAO.getProjectOutputs(projectID);
 
@@ -531,7 +535,9 @@ public class ProjectManagerImpl implements ProjectManager {
   }
 
   @Override
-  public boolean saveProjectIndicators(List<IPIndicator> indicators, int projectID) {
+  // TODO - Move this method to a class called projectIndicatorManager
+    public
+    boolean saveProjectIndicators(List<IPIndicator> indicators, int projectID) {
     Map<String, String> indicatorData;
     boolean saved = true;
 
@@ -560,7 +566,9 @@ public class ProjectManagerImpl implements ProjectManager {
   }
 
   @Override
-  public boolean saveProjectOutputs(List<IPElement> outputs, int projectID) {
+  // TODO - Move this method to a class called projectOutputManager
+    public
+    boolean saveProjectOutputs(List<IPElement> outputs, int projectID) {
     Map<String, String> outputData;
     boolean saved = true;
 

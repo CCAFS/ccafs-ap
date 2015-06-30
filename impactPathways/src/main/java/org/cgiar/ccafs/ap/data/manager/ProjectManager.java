@@ -51,9 +51,12 @@ public interface ProjectManager {
    * 
    * @param projectID - project identifier
    * @param outputID - output identifier
+   * @param outcomeID - identifier of the outcome to which the output belongs to.
+   * @param userID - identifier of the user who is deleting the output
+   * @param justification
    * @return true if the relation was successfully removed. False otherwise.
    */
-  public boolean deleteProjectOutput(int projectID, int outputID);
+  public boolean deleteProjectOutput(int projectID, int outputID, int outcomeID, int userID, String justification);
 
   /**
    * This method validate if the system has a project identified with the given parameter.

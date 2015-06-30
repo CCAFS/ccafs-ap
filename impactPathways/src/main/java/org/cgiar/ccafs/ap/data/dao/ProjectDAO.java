@@ -53,9 +53,10 @@ public interface ProjectDAO {
    * 
    * @param projectID - project identifier
    * @param outputID - output identifier
+   * @param outcomeID - outcome to which the output belongs to.
    * @return true if the relation was successfully removed. False otherwise.s
    */
-  public boolean deleteProjectOutput(int projectID, int outputID);
+  public boolean deleteProjectOutput(int projectID, int outputID, int outcomeID, int userID, String justification);
 
 
   /**
