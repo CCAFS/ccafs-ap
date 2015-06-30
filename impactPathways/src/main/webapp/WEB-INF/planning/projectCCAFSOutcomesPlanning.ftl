@@ -9,7 +9,9 @@
 
 [#assign breadCrumb = [
   {"label":"planning", "nameSpace":"planning", "action":"projectsList"},
-  {"label":"project", "nameSpace":"planning/projects", "action":"description", "param":"projectID=${project.id}"}
+  {"label":"projects", "nameSpace":"planning", "action":"projectsList"},
+  {"label":"projectOutcomes", "nameSpace":"planning/projects", "action":"outcomes", "param":"projectID=${project.id}"},
+  {"label":"projectCCAFSOutcomes", "nameSpace":"planning/projects", "action":"ccafsOutcomes", "param":"projectID=${project.id}"}
 ]/]
 
 [#assign years= [midOutcomeYear, currentPlanningYear, currentPlanningYear+1] /]

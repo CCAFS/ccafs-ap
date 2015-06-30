@@ -175,9 +175,14 @@ public class Permission {
   public static final String PLANNING_PROJECT_OUTPUTS_UPDATE = "planning:projects:outputs:update";
 
   /**
-   * Can update the planning project deliverables section
+   * Can update the planning project deliverables list section
    */
-  public static final String PLANNING_PROJECT_DELIVERABLES_UPDATE = "planning:projects:deliverables:update";
+  public static final String PLANNING_PROJECT_DELIVERABLES__LIST_UPDATE = "planning:projects:deliverablesList:update";
+
+  /**
+   * Can update the planning project deliverable section
+   */
+  public static final String PLANNING_PROJECT_DELIVERABLE_UPDATE = "planning:projects:deliverable:update";
 
   // --------------------------- End of Project outputs ---------------------------------
 
@@ -310,9 +315,14 @@ public class Permission {
   public static final String PROJECT_OUTPUTS_UPDATE = "project:outputs:update";
 
   /**
+   * Can update the project deliverables list section of some specific project
+   */
+  public static final String PROJECT_DELIVERABLES_LIST_UPDATE = "project:deliverablesList:update";
+
+  /**
    * Can update the project deliverables section of some specific project
    */
-  public static final String PROJECT_DELIVERABLES_UPDATE = "project:deliverables:update";
+  public static final String PROJECT_DELIVERABLE_UPDATE = "project:deliverable:update";
 
   // --------------------------- End of Project outputs ---------------------------------
 

@@ -12,7 +12,8 @@
 [#assign breadCrumb = [
   {"label":"planning", "nameSpace":"planning", "action":"projectsList"},
   {"label":"projects", "nameSpace":"planning", "action":"projectsList"},
-  {"label":"partners", "nameSpace":"planning/projects", "action":""}
+  {"label":"description", "nameSpace":"planning/projects", "action":"description", "param":"projectID=${project.id}"},
+  {"label":"partners", "nameSpace":"planning/projects", "action":"partnerLead", "param":"projectID=${project.id}"}
 ]/]
 
 [#include "/WEB-INF/global/pages/header.ftl" /]
@@ -34,7 +35,7 @@
     [#include "/WEB-INF/planning/projectDescription-planning-sub-menu.ftl" /]
     [#include "/WEB-INF/planning/planningDataSheet.ftl" /]
     
-    [#-- Informing user that he/she doesn't have enough privileges to edit. See GranProjectPlanningAccessInterceptor--]
+    [#-- Informing user that he/she doesn't have enough privileges to edit. See GranProjectPlanningAccessInterceptor --]
     [#if !canEdit]
       <p class="readPrivileges">
         [@s.text name="saving.read.privileges"]

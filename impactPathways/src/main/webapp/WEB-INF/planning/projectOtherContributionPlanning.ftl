@@ -7,12 +7,12 @@
 [#assign currentStage = "outcomes" /]
 [#assign currentSubStage = "otherContributions" /]
 
-
 [#assign breadCrumb = [
   {"label":"planning", "nameSpace":"planning", "action":"projectsList"},
   {"label":"projects", "nameSpace":"planning", "action":"projectsList"},
-  {"label":"description", "nameSpace":"planning/projects", "action":""}
-] /]
+  {"label":"projectOutcomes", "nameSpace":"planning/projects", "action":"outcomes", "param":"projectID=${project.id}"},
+  {"label":"projectOtherContributions", "nameSpace":"planning/projects", "action":"otherContributions", "param":"projectID=${project.id}"}
+]/]
 
 [#include "/WEB-INF/global/pages/header.ftl" /]
 [#include "/WEB-INF/global/pages/main-menu.ftl" /]

@@ -1,3 +1,5 @@
 $(document).ready(function() {
-  console.log('Project Outputs planning');
+  validateEvent('[name=save], [name=next]', [
+    "#justification"
+  ]);
 });

@@ -10,9 +10,9 @@
 [#assign breadCrumb = [
   {"label":"planning", "nameSpace":"planning", "action":"projectsList"},
   {"label":"projects", "nameSpace":"planning", "action":"projectsList"},
-  {"label":"description", "nameSpace":"planning/projects", "action":""}
-] /]
-
+  {"label":"projectOutputs", "nameSpace":"planning/projects", "action":"outputs", "param":"projectID=${project.id}"},
+  {"label":"projectMogs", "nameSpace":"planning/projects", "action":"outputs", "param":"projectID=${project.id}"}
+]/]
 
 [#include "/WEB-INF/global/pages/header.ftl" /]
 [#include "/WEB-INF/global/pages/main-menu.ftl" /]
@@ -39,12 +39,12 @@
       </p>
     [/#if]
     <div id="projectOutputs" class="borderBox">
-      <h1 class="contentTitle">${project.composedId} - [@s.text name="planning.projectOutputs.title" /]</h1> 
+      <h1 class="contentTitle">[@s.text name="planning.projectOutputs.title" /]</h1> 
       [#if (!editable && canEdit)]
         <div class="editButton"><a href="[@s.url includeParams='get'][@s.param name="edit"]true[/@s.param][/@s.url]">[@s.text name="form.buttons.edit" /]</a></div>
       [/#if]  
-      [#assign years= [midOutcomeYear, currentPlanningYear, currentPlanningYear+1] /]
       
+      [#assign years= [midOutcomeYear, currentPlanningYear, currentPlanningYear+1] /]
       [#list years as year]  
         [#-- Major Output Group list --]
         <div class="mogsBlock"> 
