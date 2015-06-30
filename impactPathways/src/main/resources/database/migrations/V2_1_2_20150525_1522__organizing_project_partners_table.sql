@@ -9,7 +9,7 @@ BEGIN
   -- -----------------------------------------------------------------------------
   -- Deleting trigger in Project Partners Table
   -- ----------------------------------------------------------------------------- 
-  IF EXISTS (SELECT * FROM information_schema.triggers WHERE trigger_name =  'organizing_project_partners_table') THEN
+  IF EXISTS (SELECT * FROM information_schema.triggers WHERE trigger_name =  'after_project_partners_update') THEN
     DROP TRIGGER after_project_partners_update;
   END IF;
 	
