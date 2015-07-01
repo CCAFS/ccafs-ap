@@ -23,6 +23,7 @@ import org.cgiar.ccafs.ap.data.model.LocationGeoposition;
 import org.cgiar.ccafs.ap.data.model.LocationType;
 import org.cgiar.ccafs.ap.data.model.OtherLocation;
 import org.cgiar.ccafs.ap.data.model.Region;
+import org.cgiar.ccafs.ap.data.model.User;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -39,8 +40,10 @@ import org.slf4j.LoggerFactory;
  */
 public class LocationManagerImpl implements LocationManager {
 
-  private LocationDAO locationDAO;
   public static Logger LOG = LoggerFactory.getLogger(LocationManagerImpl.class);
+
+
+  private LocationDAO locationDAO;
 
   @Inject
   public LocationManagerImpl(LocationDAO locationDAO) {
@@ -48,9 +51,207 @@ public class LocationManagerImpl implements LocationManager {
   }
 
   @Override
-  public List<Location> getActivityLocations(int activityID) {
+  public List<Country> getAllCountries() {
+    List<Country> countries = new ArrayList<>();
+    List<Map<String, String>> countriesDataList = locationDAO.getAllCountries();
+
+    for (Map<String, String> lData : countriesDataList) {
+      Country country = new Country();
+      country.setId(Integer.parseInt(lData.get("id")));
+      country.setName(lData.get("name"));
+      country.setCode(lData.get("code"));
+      // Region
+      Region region = new Region();
+      region.setId(Integer.parseInt(lData.get("region_id")));
+      region.setName(lData.get("region_name"));
+      region.setCode(lData.get("region_code"));
+      country.setRegion(region);
+
+      // Adding object to the array.
+      countries.add(country);
+    }
+    return countries;
+  }
+
+  @Override
+  public List<Region> getAllRegions() {
+    List<Region> regions = new ArrayList<>();
+    List<Map<String, String>> regionsDataList = locationDAO.getAllRegions();
+
+    for (Map<String, String> lData : regionsDataList) {
+      Region region = new Region();
+      region.setId(Integer.parseInt(lData.get("id")));
+      region.setName(lData.get("name"));
+      region.setCode(lData.get("code"));
+
+      // Adding object to the array.
+      regions.add(region);
+    }
+    return regions;
+  }
+
+  @Override
+  public Country getCountry(int countryID) {
+    Map<String, String> lData = locationDAO.getCountry(countryID);
+    if (!lData.isEmpty()) {
+      // Country
+      Country country = new Country();
+      country.setId(Integer.parseInt(lData.get("id")));
+      country.setName(lData.get("name"));
+      country.setCode(lData.get("code"));
+      // Region
+      Region region = new Region();
+      region.setId(Integer.parseInt(lData.get("region_id")));
+      region.setName(lData.get("region_name"));
+      region.setCode(lData.get("region_code"));
+      country.setRegion(region);
+      return country;
+    }
+    return null;
+  }
+
+
+  @Override
+  public Country getCountryByCode(String code) {
+    Map<String, String> lData = locationDAO.getCountryByCode(code);
+    if (!lData.isEmpty()) {
+      // Country
+      Country country = new Country();
+      country.setId(Integer.parseInt(lData.get("id")));
+      country.setName(lData.get("name"));
+      country.setCode(lData.get("code"));
+      // Region
+      Region region = new Region();
+      region.setId(Integer.parseInt(lData.get("region_id")));
+      region.setName(lData.get("region_name"));
+      region.setCode(lData.get("region_code"));
+      country.setRegion(region);
+      return country;
+    }
+    return null;
+  }
+
+  @Override
+  public List<Country> getInstitutionCountries() {
+    List<Country> countries = new ArrayList<>();
+    List<Map<String, String>> countriesDataList = locationDAO.getInstitutionCountries();
+
+    for (Map<String, String> lData : countriesDataList) {
+      Country country = new Country();
+      country.setId(Integer.parseInt(lData.get("id")));
+      country.setName(lData.get("name"));
+      country.setCode(lData.get("code"));
+      // Region
+      Region region = new Region();
+      region.setId(Integer.parseInt(lData.get("region_id")));
+      region.setName(lData.get("region_name"));
+      region.setCode(lData.get("region_code"));
+      country.setRegion(region);
+
+      // Adding object to the array.
+      countries.add(country);
+    }
+    return countries;
+  }
+
+
+  @Override
+  public Location getLocation(int typeID, int locationID) {
+    Map<String, String> lData = locationDAO.getLocation(typeID, locationID);
+    if (!lData.isEmpty()) {
+      Location location = new Country();
+      location.setId(Integer.parseInt(lData.get("id")));
+      location.setName(lData.get("name"));
+      location.setCode(lData.get("code"));
+      return location;
+    }
+    return null;
+  }
+
+
+  @Override
+  public List<Location> getLocationsByIDs(String[] locationsIDs) {
+    // TODO - It is necessary to fix this method because it's not working
     List<Location> locations = new ArrayList<>();
-    List<Map<String, String>> locationsData = locationDAO.getActivityLocations(activityID);
+    List<Map<String, String>> locationsData = locationDAO.getLocationsByIDs(locationsIDs);
+
+    for (Map<String, String> lData : locationsData) {
+      OtherLocation location = new OtherLocation();
+      location.setId(Integer.parseInt(lData.get("id")));
+      location.setName(lData.get("name"));
+
+      if (lData.get("code") != null) {
+        location.setCode(lData.get("code"));
+      }
+
+      LocationType type = new LocationType();
+      type.setId(Integer.parseInt(lData.get("type_id")));;
+      type.setName(lData.get("type_name"));
+      location.setType(type);
+
+      Country country = new Country();
+      country.setId(Integer.parseInt(lData.get("parent_id")));
+      country.setName(lData.get("parent_name"));
+      location.setCountry(country);
+
+      LocationGeoposition geoposition = new LocationGeoposition();
+      geoposition.setId(Integer.parseInt(lData.get("loc_geo_id")));
+      geoposition.setLatitude(Double.parseDouble(lData.get("loc_geo_latitude")));
+      geoposition.setLongitude(Double.parseDouble(lData.get("loc_geo_longitude")));
+      location.setGeoPosition(geoposition);
+
+      locations.add(location);
+    }
+    return locations;
+  }
+
+
+  @Override
+  public List<Location> getLocationsByType(int locationTypeID) {
+    // TODO - HC At this moment, this method only returns other locations
+    // This method should be able to return any type of location (Region, country, etc)
+    List<Location> locations = new ArrayList<>();
+    List<Map<String, String>> locationsData = locationDAO.getLocationsByType(locationTypeID);
+
+    for (Map<String, String> lData : locationsData) {
+      OtherLocation location = new OtherLocation();
+      location.setId(Integer.parseInt(lData.get("id")));
+      location.setName(lData.get("name"));
+
+      if (lData.get("code") != null) {
+        location.setCode(lData.get("code"));
+      }
+
+      LocationType type = new LocationType();
+      type.setId(Integer.parseInt(lData.get("type_id")));
+      type.setName(lData.get("type_name"));
+
+      location.setType(type);
+
+      if (lData.get("parent_id") != null) {
+        Country country = new Country();
+        country.setId(Integer.parseInt(lData.get("parent_id")));
+        country.setName(lData.get("parent_name"));
+        location.setCountry(country);
+      }
+
+      if (lData.get("loc_geo_id") != null) {
+        LocationGeoposition geoposition = new LocationGeoposition();
+        geoposition.setId(Integer.parseInt(lData.get("loc_geo_id")));
+        geoposition.setLatitude(Double.parseDouble(lData.get("loc_geo_latitude")));
+        geoposition.setLongitude(Double.parseDouble(lData.get("loc_geo_longitude")));
+        location.setGeoPosition(geoposition);
+      }
+
+      locations.add(location);
+    }
+    return locations;
+  }
+
+  @Override
+  public List<Location> getProjectLocations(int projectID) {
+    List<Location> locations = new ArrayList<>();
+    List<Map<String, String>> locationsData = locationDAO.getProjectLocations(projectID);
     int locationTypeID;
 
     for (Map<String, String> lData : locationsData) {
@@ -141,204 +342,6 @@ public class LocationManagerImpl implements LocationManager {
   }
 
   @Override
-  public List<Country> getAllCountries() {
-    List<Country> countries = new ArrayList<>();
-    List<Map<String, String>> countriesDataList = locationDAO.getAllCountries();
-
-    for (Map<String, String> lData : countriesDataList) {
-      Country country = new Country();
-      country.setId(Integer.parseInt(lData.get("id")));
-      country.setName(lData.get("name"));
-      country.setCode(lData.get("code"));
-      // Region
-      Region region = new Region();
-      region.setId(Integer.parseInt(lData.get("region_id")));
-      region.setName(lData.get("region_name"));
-      region.setCode(lData.get("region_code"));
-      country.setRegion(region);
-
-      // Adding object to the array.
-      countries.add(country);
-    }
-    return countries;
-  }
-
-  @Override
-  public List<Region> getAllRegions() {
-    List<Region> regions = new ArrayList<>();
-    List<Map<String, String>> regionsDataList = locationDAO.getAllRegions();
-
-    for (Map<String, String> lData : regionsDataList) {
-      Region region = new Region();
-      region.setId(Integer.parseInt(lData.get("id")));
-      region.setName(lData.get("name"));
-      region.setCode(lData.get("code"));
-
-      // Adding object to the array.
-      regions.add(region);
-    }
-    return regions;
-  }
-
-
-  @Override
-  public Country getCountry(int countryID) {
-    Map<String, String> lData = locationDAO.getCountry(countryID);
-    if (!lData.isEmpty()) {
-      // Country
-      Country country = new Country();
-      country.setId(Integer.parseInt(lData.get("id")));
-      country.setName(lData.get("name"));
-      country.setCode(lData.get("code"));
-      // Region
-      Region region = new Region();
-      region.setId(Integer.parseInt(lData.get("region_id")));
-      region.setName(lData.get("region_name"));
-      region.setCode(lData.get("region_code"));
-      country.setRegion(region);
-      return country;
-    }
-    return null;
-  }
-
-  @Override
-  public Country getCountryByCode(String code) {
-    Map<String, String> lData = locationDAO.getCountryByCode(code);
-    if (!lData.isEmpty()) {
-      // Country
-      Country country = new Country();
-      country.setId(Integer.parseInt(lData.get("id")));
-      country.setName(lData.get("name"));
-      country.setCode(lData.get("code"));
-      // Region
-      Region region = new Region();
-      region.setId(Integer.parseInt(lData.get("region_id")));
-      region.setName(lData.get("region_name"));
-      region.setCode(lData.get("region_code"));
-      country.setRegion(region);
-      return country;
-    }
-    return null;
-  }
-
-
-  @Override
-  public List<Country> getInstitutionCountries() {
-    List<Country> countries = new ArrayList<>();
-    List<Map<String, String>> countriesDataList = locationDAO.getInstitutionCountries();
-
-    for (Map<String, String> lData : countriesDataList) {
-      Country country = new Country();
-      country.setId(Integer.parseInt(lData.get("id")));
-      country.setName(lData.get("name"));
-      country.setCode(lData.get("code"));
-      // Region
-      Region region = new Region();
-      region.setId(Integer.parseInt(lData.get("region_id")));
-      region.setName(lData.get("region_name"));
-      region.setCode(lData.get("region_code"));
-      country.setRegion(region);
-
-      // Adding object to the array.
-      countries.add(country);
-    }
-    return countries;
-  }
-
-
-  @Override
-  public Location getLocation(int typeID, int locationID) {
-    Map<String, String> lData = locationDAO.getLocation(typeID, locationID);
-    if (!lData.isEmpty()) {
-      Location location = new Country();
-      location.setId(Integer.parseInt(lData.get("id")));
-      location.setName(lData.get("name"));
-      location.setCode(lData.get("code"));
-      return location;
-    }
-    return null;
-  }
-
-
-  @Override
-  public List<Location> getLocationsByIDs(String[] locationsIDs) {
-    List<Location> locations = new ArrayList<>();
-    List<Map<String, String>> locationsData = locationDAO.getLocationsByIDs(locationsIDs);
-
-    for (Map<String, String> lData : locationsData) {
-      OtherLocation location = new OtherLocation();
-      location.setId(Integer.parseInt(lData.get("id")));
-      location.setName(lData.get("name"));
-
-      if (lData.get("code") != null) {
-        location.setCode(lData.get("code"));
-      }
-
-      LocationType type = new LocationType();
-      type.setId(Integer.parseInt(lData.get("type_id")));
-      ;
-      type.setName(lData.get("type_name"));
-      location.setType(type);
-
-      Country country = new Country();
-      country.setId(Integer.parseInt(lData.get("parent_id")));
-      country.setName(lData.get("parent_name"));
-      location.setCountry(country);
-
-      LocationGeoposition geoposition = new LocationGeoposition();
-      geoposition.setId(Integer.parseInt(lData.get("loc_geo_id")));
-      geoposition.setLatitude(Double.parseDouble(lData.get("loc_geo_latitude")));
-      geoposition.setLongitude(Double.parseDouble(lData.get("loc_geo_longitude")));
-      location.setGeoPosition(geoposition);
-
-      locations.add(location);
-    }
-    return locations;
-  }
-
-  @Override
-  public List<Location> getLocationsByType(int locationTypeID) {
-    // TODO - HC At this moment, this method only returns other locations
-    // This method should be able to return any type of location (Region, country, etc)
-    List<Location> locations = new ArrayList<>();
-    List<Map<String, String>> locationsData = locationDAO.getLocationsByType(locationTypeID);
-
-    for (Map<String, String> lData : locationsData) {
-      OtherLocation location = new OtherLocation();
-      location.setId(Integer.parseInt(lData.get("id")));
-      location.setName(lData.get("name"));
-
-      if (lData.get("code") != null) {
-        location.setCode(lData.get("code"));
-      }
-
-      LocationType type = new LocationType();
-      type.setId(Integer.parseInt(lData.get("type_id")));
-      type.setName(lData.get("type_name"));
-
-      location.setType(type);
-
-      if (lData.get("parent_id") != null) {
-        Country country = new Country();
-        country.setId(Integer.parseInt(lData.get("parent_id")));
-        country.setName(lData.get("parent_name"));
-        location.setCountry(country);
-      }
-
-      if (lData.get("loc_geo_id") != null) {
-        LocationGeoposition geoposition = new LocationGeoposition();
-        geoposition.setId(Integer.parseInt(lData.get("loc_geo_id")));
-        geoposition.setLatitude(Double.parseDouble(lData.get("loc_geo_latitude")));
-        geoposition.setLongitude(Double.parseDouble(lData.get("loc_geo_longitude")));
-        location.setGeoPosition(geoposition);
-      }
-
-      locations.add(location);
-    }
-    return locations;
-  }
-
-  @Override
   public Region getRegion(int regionID) {
     Map<String, String> lData = locationDAO.getRegion(regionID);
     if (!lData.isEmpty()) {
@@ -353,11 +356,11 @@ public class LocationManagerImpl implements LocationManager {
   }
 
   @Override
-  public boolean removeActivityLocation(List<Location> activityLocations, int activityID) {
+  public boolean removeProjectLocation(List<Location> projectLocations, int projectID) {
     boolean allRemoved = true, removed;
-    allRemoved = locationDAO.removeActivityLocation(activityID);
+    allRemoved = locationDAO.removeProjectLocation(projectID);
 
-    for (Location location : activityLocations) {
+    for (Location location : projectLocations) {
       if (location.isOtherLocation()) {
         OtherLocation otherLocation = (OtherLocation) location;
         if (otherLocation.getType().getId() == APConstants.LOCATION_TYPE_CCAFS_SITE) {
@@ -370,32 +373,6 @@ public class LocationManagerImpl implements LocationManager {
     }
 
     return allRemoved;
-  }
-
-  @Override
-  public boolean saveActivityLocations(List<Location> locations, int activityID) {
-    boolean saved = true;
-
-    for (Location location : locations) {
-      Map<String, String> locationData = new HashMap<>();
-      locationData.put("activity_id", String.valueOf(activityID));
-
-      if (location.isRegion() || location.isCountry() || location.isClimateSmartVillage()) {
-        locationData.put("loc_element_id", String.valueOf(location.getId()));
-      } else {
-        OtherLocation oLocation = (OtherLocation) location;
-        int oLocationID = oLocation.getId();
-        if (oLocation.getType().getId() != APConstants.LOCATION_TYPE_CCAFS_SITE) {
-          oLocationID = saveLocation(oLocation);
-        }
-
-        locationData.put("loc_element_id", String.valueOf(oLocationID));
-      }
-
-      int recordSaved = locationDAO.saveActivityLocation(locationData);
-      saved = saved && (recordSaved != -1);
-    }
-    return saved;
   }
 
   private int saveLocation(OtherLocation location) {
@@ -419,7 +396,7 @@ public class LocationManagerImpl implements LocationManager {
 
     locationData.put("element_type_id", String.valueOf(location.getType().getId()));
 
-    int geoPositionID = saveLocationGeoposition(location);
+    int geoPositionID = this.saveLocationGeoposition(location);
     // If the geoPosition was updated and the returned value was 0, then
     // we have to get the geopositionId brought with the object
     geoPositionID = (geoPositionID == 0) ? location.getGeoPosition().getId() : geoPositionID;
@@ -457,5 +434,34 @@ public class LocationManagerImpl implements LocationManager {
       }
     }
     return geoPositionID;
+  }
+
+  @Override
+  public boolean saveProjectLocation(List<Location> locations, int projectID, User user, String justification) {
+    boolean saved = false;
+
+    for (Location location : locations) {
+      Map<String, String> locationData = new HashMap<>();
+      locationData.put("project_id", String.valueOf(projectID));
+
+      if (location.isRegion() || location.isCountry() || location.isClimateSmartVillage()) {
+        locationData.put("loc_element_id", String.valueOf(location.getId()));
+      } else {
+        OtherLocation oLocation = (OtherLocation) location;
+        int oLocationID = oLocation.getId();
+        if (oLocation.getType().getId() != APConstants.LOCATION_TYPE_CCAFS_SITE) {
+          oLocationID = this.saveLocation(oLocation);
+        }
+        locationData.put("loc_element_id", String.valueOf(oLocationID));
+      }
+      locationData.put("modified_by", String.valueOf(user.getId()));
+      locationData.put("created_by", String.valueOf(user.getId()));
+      locationData.put("modification_justification", justification);
+
+      int recordSaved = locationDAO.saveProjectLocation(locationData);
+      saved = saved && (recordSaved != -1);
+    }
+
+    return saved;
   }
 }

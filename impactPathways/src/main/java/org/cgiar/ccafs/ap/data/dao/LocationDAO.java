@@ -29,30 +29,21 @@ import com.google.inject.ImplementedBy;
 public interface LocationDAO {
 
   /**
-   * This method returns all the locations related with the activity
-   * identified by the value received as parameter.
-   * 
-   * @param activityID
-   * @return a list of maps with the information
-   */
-  public List<Map<String, String>> getActivityLocations(int activityID);
-
-  /**
-   * This method return all the information of the countries
+   * This method returns all the information of the countries
    * 
    * @return a list of maps with the information of all countries.
    */
   public List<Map<String, String>> getAllCountries();
 
   /**
-   * This method return all the information of the regions
+   * This method returns all the information of the regions
    * 
    * @return a list of maps with the information of all regions.
    */
   public List<Map<String, String>> getAllRegions();
 
   /**
-   * This method return the information of a Country by a given Country ID
+   * This method returns the information of a Country by a given Country ID
    * 
    * @param countryID - is the ID of a Country
    * @return a map with the country information.
@@ -67,7 +58,6 @@ public interface LocationDAO {
    */
   public Map<String, String> getCountryByCode(String code);
 
-
   /**
    * This method returns all the countries in which at least
    * one institution is located
@@ -76,8 +66,9 @@ public interface LocationDAO {
    */
   public List<Map<String, String>> getInstitutionCountries();
 
+
   /**
-   * This method return all the information of the location
+   * This method returns all the information of the location
    * identified by the value received as parameter
    * 
    * @param locationID - Location identifier
@@ -85,9 +76,8 @@ public interface LocationDAO {
    */
   public Map<String, String> getLocation(int locationID);
 
-
   /**
-   * This method return the information from an specific location given by the type, and the location
+   * This method returns the information from an specific location given by the type, and the location
    * 
    * @param typeID, identifier of the location element type
    * @param locationID, identifier of the location
@@ -98,16 +88,17 @@ public interface LocationDAO {
 
 
   /**
-   * This method get the list of location elements
-   * identified by the values recieved as parameter.
+   * This method gets the list of location elements
+   * identified by the values received as parameter.
    * 
    * @param locationsIDs - List of locations identifiers
    * @return a list of maps with the information
    */
   public List<Map<String, String>> getLocationsByIDs(String[] locationsIDs);
 
+
   /**
-   * This method return all the Locations given by a type
+   * This method returns all the Locations given by a type
    * 
    * @param typeID, identifier of the location element type
    * @return a list of maps with the information of all locations returned.
@@ -116,21 +107,21 @@ public interface LocationDAO {
   public List<Map<String, String>> getLocationsByType(int typeID);
 
   /**
-   * This method return the information of a Region by a given Region ID
+   * This method returns all the locations related with the project
+   * identified by the value received as parameter.
+   * 
+   * @param projectID
+   * @return a list of maps with the information
+   */
+  public List<Map<String, String>> getProjectLocations(int projectID);
+
+  /**
+   * This method returns the information of a Region by a given Region ID
    * 
    * @param regionID - is the ID of a Region
    * @return a map with the region information.
    */
   public Map<String, String> getRegion(int regionID);
-
-  /**
-   * This method return ALL the locations related with the activity
-   * received as parameter
-   * 
-   * @param activityID - activity identifier
-   * @return true if the relations were successfully removed. False otherwise.
-   */
-  public boolean removeActivityLocation(int activityID);
 
   /**
    * This method removes the location identified by the parameter given
@@ -141,16 +132,16 @@ public interface LocationDAO {
   public boolean removeLocation(int locationID);
 
   /**
-   * This method relates the location and the activity received into
-   * the database
+   * This method updates ALL the locations related with the project
+   * received as parameter
    * 
-   * @param activityLocationData
-   * @return the last inserted id or -1 if any error occurred.
+   * @param projectID - project identifier
+   * @return true if the relations were successfully updated. False otherwise.
    */
-  public int saveActivityLocation(Map<String, String> activityLocationData);
+  public boolean removeProjectLocation(int projectID);
 
   /**
-   * This method save the information of a new location
+   * This method saves the information of a new location
    * 
    * @param locationData - Data to be saved
    * @return The last inserted id, 0 if some record was updated or
@@ -159,7 +150,7 @@ public interface LocationDAO {
   public int saveLocation(Map<String, String> locationData);
 
   /**
-   * This method save the geo-coordinates of a location
+   * This method saves the geo-coordinates of a location
    * into the database.
    * 
    * @param geopositionData - data to be saved.
@@ -167,4 +158,13 @@ public interface LocationDAO {
    *         -1 if some error occurred
    */
   public int saveLocationGeoPosition(Map<String, String> geopositionData);
+
+  /**
+   * This method relates the location and the project received into
+   * the database
+   * 
+   * @param projectLocationData
+   * @return the last inserted id or -1 if any error occurred.
+   */
+  public int saveProjectLocation(Map<String, String> projectLocationData);
 }

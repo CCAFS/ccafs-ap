@@ -38,58 +38,13 @@ import org.slf4j.LoggerFactory;
 public class MySQLLocationDAO implements LocationDAO {
 
   public static Logger LOG = LoggerFactory.getLogger(MySQLLocationDAO.class);
+
   private DAOManager databaseManager;
 
   @Inject
   public MySQLLocationDAO(DAOManager databaseManager) {
     this.databaseManager = databaseManager;
-  }
 
-  @Override
-  public List<Map<String, String>> getActivityLocations(int activityID) {
-    LOG.debug(">> getActivityLocations( activityID={} )", activityID);
-    List<Map<String, String>> activityLocationsData = new ArrayList<>();
-
-    StringBuilder query = new StringBuilder();
-    query.append("SELECT le.id, le.name, le.code, ");
-    query.append("lp.id as 'location_parent_id',lp.name as 'location_parent_name', ");
-    query.append("lp.code as 'location_parent_code', let.id as 'type_id', let.name as 'type_name', ");
-    query.append("leg.id as 'loc_geo_id', leg.latitude as 'loc_geo_latitude', ");
-    query.append("leg.longitude as 'loc_geo_longitude' ");
-    query.append("FROM loc_elements le ");
-    query.append("LEFT JOIN loc_elements lp ON le.parent_id = lp.id  ");
-    query.append("INNER JOIN loc_element_types let ON let.id = le.element_type_id  ");
-    query.append("LEFT JOIN loc_geopositions leg ON le.geoposition_id = leg.id ");
-    query.append("INNER JOIN activity_locations al ON le.id = al.loc_element_id ");
-    query.append("WHERE al.activity_id = ");
-    query.append(activityID);
-
-    try (Connection con = databaseManager.getConnection()) {
-      ResultSet rs = databaseManager.makeQuery(query.toString(), con);
-      Map<String, String> locationData;
-      while (rs.next()) {
-        locationData = new HashMap<String, String>();
-        locationData.put("id", rs.getString("id"));
-        locationData.put("name", rs.getString("name"));
-        locationData.put("code", rs.getString("code"));
-        locationData.put("location_parent_id", rs.getString("location_parent_id"));
-        locationData.put("location_parent_code", rs.getString("location_parent_code"));
-        locationData.put("location_parent_name", rs.getString("location_parent_name"));
-        locationData.put("type_id", rs.getString("type_id"));
-        locationData.put("type_name", rs.getString("type_name"));
-        locationData.put("loc_geo_id", rs.getString("loc_geo_id"));
-        locationData.put("loc_geo_latitude", rs.getString("loc_geo_latitude"));
-        locationData.put("loc_geo_longitude", rs.getString("loc_geo_longitude"));
-        activityLocationsData.add(locationData);
-      }
-      rs.close();
-    } catch (SQLException e) {
-      String exceptionMessage = "-- getActivityLocations() > Exception raised trying ";
-      exceptionMessage += "to execute the following query " + query;
-      LOG.error(exceptionMessage, e);
-    }
-
-    return activityLocationsData;
   }
 
   @Override
@@ -148,7 +103,7 @@ public class MySQLLocationDAO implements LocationDAO {
     query.append(" ORDER BY le.name ");
 
     LOG.debug("-- getAllRegions() > Calling method executeQuery to get the results");
-    return getData(query.toString());
+    return this.getData(query.toString());
   }
 
   @Override
@@ -472,6 +427,54 @@ public class MySQLLocationDAO implements LocationDAO {
   }
 
   @Override
+  public List<Map<String, String>> getProjectLocations(int projectID) {
+    LOG.debug(">> getProjectLocations( projectID={} )", projectID);
+    List<Map<String, String>> projectLocationsData = new ArrayList<>();
+
+    StringBuilder query = new StringBuilder();
+    query.append("SELECT le.id, le.name, le.code, ");
+    query.append("lp.id as 'location_parent_id',lp.name as 'location_parent_name', ");
+    query.append("lp.code as 'location_parent_code', let.id as 'type_id', let.name as 'type_name', ");
+    query.append("leg.id as 'loc_geo_id', leg.latitude as 'loc_geo_latitude', ");
+    query.append("leg.longitude as 'loc_geo_longitude' ");
+    query.append("FROM loc_elements le ");
+    query.append("LEFT JOIN loc_elements lp ON le.parent_id = lp.id  ");
+    query.append("INNER JOIN loc_element_types let ON let.id = le.element_type_id  ");
+    query.append("LEFT JOIN loc_geopositions leg ON le.geoposition_id = leg.id ");
+    query.append("INNER JOIN project_locations al ON le.id = al.loc_element_id ");
+    query.append("WHERE al.project_id = ");
+    query.append(projectID);
+    query.append(" AND al.is_active = 1");
+
+    try (Connection con = databaseManager.getConnection()) {
+      ResultSet rs = databaseManager.makeQuery(query.toString(), con);
+      Map<String, String> locationData;
+      while (rs.next()) {
+        locationData = new HashMap<String, String>();
+        locationData.put("id", rs.getString("id"));
+        locationData.put("name", rs.getString("name"));
+        locationData.put("code", rs.getString("code"));
+        locationData.put("location_parent_id", rs.getString("location_parent_id"));
+        locationData.put("location_parent_code", rs.getString("location_parent_code"));
+        locationData.put("location_parent_name", rs.getString("location_parent_name"));
+        locationData.put("type_id", rs.getString("type_id"));
+        locationData.put("type_name", rs.getString("type_name"));
+        locationData.put("loc_geo_id", rs.getString("loc_geo_id"));
+        locationData.put("loc_geo_latitude", rs.getString("loc_geo_latitude"));
+        locationData.put("loc_geo_longitude", rs.getString("loc_geo_longitude"));
+        projectLocationsData.add(locationData);
+      }
+      rs.close();
+    } catch (SQLException e) {
+      String exceptionMessage = "-- getProjectLocations() > Exception raised trying ";
+      exceptionMessage += "to execute the following query " + query;
+      LOG.error(exceptionMessage, e);
+    }
+
+    return projectLocationsData;
+  }
+
+  @Override
   public Map<String, String> getRegion(int regionID) {
     LOG.debug(">> getLocationsByType( )");
 
@@ -505,24 +508,6 @@ public class MySQLLocationDAO implements LocationDAO {
   }
 
   @Override
-  public boolean removeActivityLocation(int activityID) {
-    LOG.debug(">> removeActivityLocation(activityID={})", activityID);
-
-    StringBuilder query = new StringBuilder();
-    query.append("DELETE FROM activity_locations ");
-    query.append("WHERE activity_id = ?");
-
-    int rowsDeleted = databaseManager.delete(query.toString(), new Object[] {activityID});
-    if (rowsDeleted >= 0) {
-      LOG.debug("<< removeActivityLocation():{}", true);
-      return true;
-    }
-
-    LOG.debug("<< removeActivityLocation():{}", false);
-    return false;
-  }
-
-  @Override
   public boolean removeLocation(int locationID) {
     LOG.debug(">> removeLocation(locationID={})", locationID);
 
@@ -541,21 +526,20 @@ public class MySQLLocationDAO implements LocationDAO {
   }
 
   @Override
-  public int saveActivityLocation(Map<String, String> activityLocationData) {
-    LOG.debug(">> saveActivityLocation(activityLocationData={})", activityLocationData);
+  public boolean removeProjectLocation(int projectID) {
+    LOG.debug(">> updateProjectLocation(projectID={})", projectID);
+
     StringBuilder query = new StringBuilder();
-    int result = -1;
+    query.append("UPDATE project_locations SET is_active=0 WHERE project_id= ? ");
 
-    query.append("INSERT IGNORE INTO activity_locations (activity_id, loc_element_id) ");
-    query.append("VALUES (?, ?) ");
+    int rowsDeleted = databaseManager.delete(query.toString(), new Object[] {projectID});
+    if (rowsDeleted >= 0) {
+      LOG.debug("<< updateProjectLocation():{}", true);
+      return true;
+    }
 
-    Object[] values = new Object[2];
-    values[0] = activityLocationData.get("activity_id");
-    values[1] = activityLocationData.get("loc_element_id");
-
-    result = databaseManager.saveData(query.toString(), values);
-    LOG.debug("<< saveActivityLocation():{}", result);
-    return result;
+    LOG.debug("<< updateProjectLocation():{}", false);
+    return false;
   }
 
   @Override
@@ -611,4 +595,27 @@ public class MySQLLocationDAO implements LocationDAO {
     LOG.debug("<< saveLocationGeoPosition():result", result);
     return result;
   }
+
+  @Override
+  public int saveProjectLocation(Map<String, String> projectLocationData) {
+    LOG.debug(">> saveProjectLocation(projectLocationData={})", projectLocationData);
+    StringBuilder query = new StringBuilder();
+    int result = -1;
+
+    query
+    .append("INSERT IGNORE INTO project_locations (project_id, loc_element_id, modified_by, created_by, modification_justification) ");
+    query.append("VALUES (?, ?, ?, ?, ?) ");
+
+    Object[] values = new Object[5];
+    values[0] = projectLocationData.get("project_id");
+    values[1] = projectLocationData.get("loc_element_id");
+    values[2] = projectLocationData.get("modified_by");
+    values[3] = projectLocationData.get("created_by");
+    values[4] = projectLocationData.get("modification_justification");
+
+    result = databaseManager.saveData(query.toString(), values);
+    LOG.debug("<< saveProjectLocation():{}", result);
+    return result;
+  }
+
 }
