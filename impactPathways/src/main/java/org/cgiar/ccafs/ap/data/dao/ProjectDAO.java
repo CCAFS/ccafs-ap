@@ -43,9 +43,11 @@ public interface ProjectDAO {
    * 
    * @param projectID - project identifier
    * @param indicatorID - indicator identifier
+   * @param userID - identifier of the user who is removing the project indicator
+   * @param justification - indicator identifier
    * @return true if the relation was successfully removed. False otherwise.
    */
-  public boolean deleteProjectIndicator(int projectID, int indicatorID);
+  public boolean deleteProjectIndicator(int projectID, int indicatorID, int userID, String justification);
 
   /**
    * This method deletes from the database the relation between the project and the output

@@ -65,12 +65,21 @@ public class MySQLProjectDAO implements ProjectDAO {
   }
 
   @Override
-  public boolean deleteProjectIndicator(int projectID, int indicatorID) {
+  public boolean deleteProjectIndicator(int projectID, int indicatorID, int userID, String justification) {
     LOG.debug(">> deleteProjectIndicator(projectID={}, indicatorID={})", projectID, indicatorID);
 
-    String query = "DELETE FROM ip_project_indicators WHERE project_id = ? AND id = ?";
+    StringBuilder query = new StringBuilder();
+    query.append("UPDATE ip_project_indicators SET is_active = FALSE, ");
+    query.append("modified_by = ? , modification_justification = ? ");
+    query.append("WHERE project_id = ? AND id = ? ");
 
-    int rowsDeleted = databaseManager.delete(query, new Object[] {projectID, indicatorID});
+    Object[] values = new Object[4];
+    values[0] = userID;
+    values[1] = justification;
+    values[2] = projectID;
+    values[3] = indicatorID;
+
+    int rowsDeleted = databaseManager.delete(query.toString(), values);
     if (rowsDeleted >= 0) {
       LOG.debug("<< deleteProjectIndicator():{}", true);
       return true;

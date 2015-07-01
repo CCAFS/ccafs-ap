@@ -74,8 +74,8 @@ public class ProjectManagerImpl implements ProjectManager {
   }
 
   @Override
-  public boolean deleteIndicator(int projectID, int indicatorID) {
-    return projectDAO.deleteProjectIndicator(projectID, indicatorID);
+  public boolean deleteIndicator(int projectID, int indicatorID, User user, String justification) {
+    return projectDAO.deleteProjectIndicator(projectID, indicatorID, user.getId(), justification);
   }
 
 

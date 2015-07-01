@@ -32,9 +32,11 @@ public interface ProjectManager {
    * 
    * @param projectID - project identifier
    * @param indicatorID - indicator identifier
+   * @param user - User who is deleting the indicator
+   * @param justification
    * @return true if the relation was successfully removed. False otherwise.
    */
-  public boolean deleteIndicator(int projectID, int indicatorID);
+  public boolean deleteIndicator(int projectID, int indicatorID, User user, String justification);
 
   /**
    * This method deletes the project identified by the value received by

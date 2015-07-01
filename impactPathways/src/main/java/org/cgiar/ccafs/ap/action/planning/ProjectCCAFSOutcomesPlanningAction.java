@@ -382,7 +382,9 @@ public class ProjectCCAFSOutcomesPlanningAction extends BaseAction {
       // Delete the indicators removed
       for (IPIndicator indicator : previousIndicators) {
         if (!project.getOutputs().contains(indicator)) {
-          boolean deleted = projectManager.deleteIndicator(projectID, indicator.getId());
+          boolean deleted =
+            projectManager
+              .deleteIndicator(projectID, indicator.getId(), this.getCurrentUser(), this.getJustification());
           if (!deleted) {
             success = false;
           }
