@@ -12,13 +12,14 @@ function init() {
 
 function attachEvents() {
   // Deliverables Events
-  $(".removeDeliverable, .removeNextUser").click(removeElementEvent);
-  $("select[id$='mainType']").each(function() {
-    console.log($(this).attr("id"));
-  });
+  $(".removeDeliverable, .removeNextUser, .removeElement").click(removeElementEvent);
   $("select[id$='mainType']").change(updateDeliverableSubTypeList);
+
   // Next users events
   $(".addNextUser").on("click", addNextUserEvent);
+
+  // Partnership contribution to deliverable
+  $(".addPartner").on("click", addPartnerEvent);
 }
 
 function addChosen() {
@@ -45,48 +46,45 @@ function addNextUserEvent(e) {
   setDeliverablesIndexes();
 }
 
+function addPartnerEvent(e) {
+  e.preventDefault();
+  var $newElement = $("#deliverablePartnerTemplate").clone(true).removeAttr("id");
+  $(e.target).parent().before($newElement);
+  $newElement.fadeIn("slow");
+  addChosen();
+  setDeliverablesIndexes();
+}
+
 function setDeliverablesIndexes() {
   $("#projectDeliverable .projectNextUser").each(function(i,nextUser) {
-    var elementName = "project.deliverables[0].nextUsers[" + i + "].";
-    $(nextUser).attr("id", "projectNextUser-" + index);
-    $(nextUser).find("span#index").html(i + 1);
-
+    var elementName = $('#nextUsersName').val() + "[" + i + "].";
+    $(nextUser).attr("id", "projectNextUser-" + i);
+    $(nextUser).find("span.index").html(i + 1);
     $(nextUser).find("[name$='].id']").attr("name", elementName + "id");
     $(nextUser).find("[name$='user']").attr("name", elementName + "user");
     $(nextUser).find("[name$='expectedChanges']").attr("name", elementName + "expectedChanges");
     $(nextUser).find("[name$='strategies']").attr("name", elementName + "strategies");
+  });
 
+  $('#projectDeliverable .deliverablePartner').each(function(i,element) {
+    var elementName = $('#partnersName').val() + "[" + i + "].";
+    $(element).find("span.index").html(i);
+    $(element).find(".institution").attr("name", elementName + "institution");
+    $(element).find(".type").attr("name", elementName + "type");
+    $(element).find(".userId").attr("name", elementName + "user");
   });
 }
 
 function updateDeliverableSubTypeList(event) {
   var $mainTypeSelect = $(event.target);
-  var blockIndex = $("select[id$='mainType']").index($mainTypeSelect);
-  var $subTypeSelect;
-
-  // Check that the select is not inside the template
-  if($mainTypeSelect.attr("id") != "none_mainType") {
-    $subTypeSelect = $("#projectDeliverable-" + blockIndex + " select[name$='type'] ");
-  } else {
-    // The template has index 999
-    $subTypeSelect = $("#projectDeliverable-999 select[name$='type'] ");
-  }
-
+  var $subTypeSelect = $("#projectDeliverable select[name$='type'] ");
   var source = baseURL + "/json/deliverablesByType.do?deliverableTypeID=" + $mainTypeSelect.val();
   $.getJSON(source).done(function(data) {
     // First delete all the options already present in the subtype select
-    $subTypeSelect.find("option").remove();
-
-    var selectedValue = $("#subTypeSelected_" + blockIndex).val();
-    var optionElement;
+    $subTypeSelect.empty();
     $.each(data.subTypes, function(index,subType) {
-      if(selectedValue == subType.id) {
-        optionElement = "<option value='" + subType.id + "' selected >" + subType.name + "</option>";
-      } else {
-        optionElement = "<option value='" + subType.id + "'>" + subType.name + "</option>";
-      }
-
-      $subTypeSelect.append(optionElement);
+      var isSelected = (($("#subTypeSelected").val() == subType.id) ? "selected" : "");
+      $subTypeSelect.append("<option value='" + subType.id + "' " + isSelected + ">" + subType.name + "</option>");
     });
     // Refresh the plugin in order to show the changes
     $subTypeSelect.trigger("liszt:updated");

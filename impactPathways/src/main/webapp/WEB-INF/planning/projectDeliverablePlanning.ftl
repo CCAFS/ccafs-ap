@@ -1,7 +1,7 @@
 [#ftl]
 [#assign title = "Project Deliverable" /]
 [#assign globalLibs = ["jquery", "noty", "autoSave", "chosen"] /]
-[#assign customJS = ["${baseUrl}/js/global/utils.js", "${baseUrl}/js/planning/projectDeliverablesPlanning.js"] /]
+[#assign customJS = ["${baseUrl}/js/global/utils.js", "${baseUrl}/js/global/usersManagement.js", "${baseUrl}/js/planning/projectDeliverablesPlanning.js"] /]
 [#assign currentSection = "planning" /]
 [#assign currentPlanningSection = "projects" /]
 [#assign currentStage = "outputs" /]
@@ -15,9 +15,19 @@
   {"label":"projectDeliverable", "nameSpace":"planning/projects", "action":"deliverable", "param":"projectID=${project.id}"}
 ]/]
 
+[#assign params = {
+  "nextUsers": {"id":"nextUsersName", "name":"project.deliberable.nextUsers"},
+  "partners": {"id":"partnersName", "name":"project.deliberable.partners"} 
+}
+/] 
+
+[#assign nextUsersName = "project.deliberable.nextUsers"]
+[#assign partnersName = "project.deliberable.partners"]
+
 [#include "/WEB-INF/global/pages/header.ftl" /]
 [#include "/WEB-INF/global/pages/main-menu.ftl" /]
 [#import "/WEB-INF/global/macros/forms.ftl" as customForm/]
+[#import "/WEB-INF/global/macros/usersPopup.ftl" as usersForm/]
 [#import "/WEB-INF/global/macros/logHistory.ftl" as log/]
 [#import "/WEB-INF/planning/macros/projectDeliverablesTemplate.ftl" as deliverableTemplate/]
     
@@ -46,20 +56,21 @@
       [/#if] 
       
       [#--  Deliverable Information --]
-      <h1 class="contentTitle">[@s.text name="planning.projectDeliverable.title" /] </h1> 
-      <input type="hidden" value="${project.deliverables[dl_index].id}" name="project.deliverables[${dl_index}].id">
+      [#assign dl_index = 2]
+      <h1 class="contentTitle">[@s.text name="planning.projectDeliverable.information" /] </h1> 
+      <input type="hidden" value="{project.deliverable.id}" name="project.deliverable.id">
       <div class="fullBlock">
         [#-- Title --] 
-        [@customForm.input name="project.deliverables[${dl_index}].title" type="text" i18nkey="planning.deliverables.title" required=true editable=editable /]
+        [@customForm.input name="project.deliverable.title" type="text" i18nkey="planning.deliverables.title" required=true editable=editable /]
       </div>
       <div class="fullBlock">
         [#-- MOG  --]
         <div class="halfPartBlock chosen">
-          [@customForm.select name="project.deliverables[${dl_index}].output" label=""  disabled=false i18nkey="planning.deliverables.mog" listName="outputs" keyFieldName="id"  displayFieldName="description" editable=editable /]
+          [@customForm.select name="project.deliverable.output" label=""  disabled=false i18nkey="planning.deliverables.mog" listName="outputs" keyFieldName="id"  displayFieldName="description" editable=editable /]
         </div> 
         [#-- Year  --]
         <div class="halfPartBlock chosen">
-          [@customForm.select name="project.deliverables[${dl_index}].year" label=""  disabled=false i18nkey="planning.deliverables.year" listName="allYears" editable=editable /]
+          [@customForm.select name="project.deliverable.year" label=""  disabled=false i18nkey="planning.deliverables.year" listName="allYears" editable=editable /]
         </div>
       </div> 
       <div class="fullBlock">
@@ -69,24 +80,17 @@
         </div> 
         [#-- Sub Type --]
         <div class="halfPartBlock chosen">
-          [@customForm.select name="project.deliverables[${dl_index}].type"  label="" i18nkey="planning.deliverables.subType" listName="" keyFieldName=""  displayFieldName="" editable=editable /]
-          <input type="hidden" id="subTypeSelected" value="${project.deliverables[dl_index].type.id}" />
-        </div>  
-        [#if editable && canEdit]
-        [#-- Sub Type --]
-        <div class="halfPartBlock chosen" style="display:none">
-          [@customForm.input name="project.deliverables[${dl_index}].type" i18nkey="planning.deliverables.subType" /]
-          <input type="hidden" id="" value="" />
-        </div>
-        [/#if]
+          [@customForm.select name="project.deliverable.type"  label="" i18nkey="planning.deliverables.subType" listName="" keyFieldName=""  displayFieldName="" editable=editable /]
+          <input type="hidden" id="subTypeSelected" value="{project.deliverable.type.id}" />
+        </div>          
       </div>
       
       [#-- Deliverable Next Users block  --] 
       <div class="fullBlock">
         <h1 class="contentTitle">[@s.text name="planning.projectDeliverable.nextUsers" /] </h1> 
-        [#if project.deliverables[0].nextUsers?has_content]
-          [#list project.deliverables[0].nextUsers as nu] 
-            [@deliverableTemplate.nextUserTemplate dl_index="0" nu_index="${nu_index}" nextUserValue="${nu.id}" editable=editable canEdit=canEdit /]
+        [#if project.deliverables[dl_index].nextUsers?has_content]
+          [#list project.deliverables[dl_index].nextUsers as nu] 
+            [@deliverableTemplate.nextUserTemplate nu_name=params.nextUsers.name dl_index="${dl_index}" nu_index="${nu_index}" nextUserValue="${nu.id}" editable=editable canEdit=canEdit /]
           [/#list]
         [/#if]
         [#if editable && canEdit]
@@ -96,7 +100,28 @@
       
       [#-- Deliverable partnership  --] 
       <div class="fullBlock">
-        <h1 class="contentTitle">[@s.text name="planning.projectDeliverable.partnership" /] </h1>  
+        <h1 class="contentTitle">[@s.text name="planning.projectDeliverable.partnership" /] </h1> 
+        
+        [#assign deliverablePartners = [
+          {"id":"1", "name":"Deliverable #1", "user":"Carvajal, Hernán <h.d.carvajal@cgiar.org>"},
+          {"id":"2", "name":"Deliverable #2", "user":"Tall, Arame <a.tall@cgiar.org>"},
+          {"id":"3", "name":"Deliverable #3", "user":"Hansen, James <jhansen@iri.columbia.edu>"}
+        ]/]
+        <div class="fullBlock">
+          <p>[@s.text name="planning.projectDeliverable.indicateResponsablePartner" /]</p>
+          [@deliverableTemplate.deliverablePartner dp=deliverablePartners[0] dp_name=params.partners.name dp_index=dp_index institutionList="deliverableTypes" isResponsable=true editable=editable /]
+        </div>
+        <div class="fullBlock">
+          <p>[@s.text name="planning.projectDeliverable.indicateOtherContact" /]</p>
+          [#if deliverablePartners?has_content]
+            [#list deliverablePartners as dp] 
+              [@deliverableTemplate.deliverablePartner dp=dp dp_name=params.partners.name dp_index=dp_index institutionList="deliverableTypes" editable=editable /]
+            [/#list]
+          [/#if]
+          [#if editable && canEdit]
+            <div id="addPartnerBlock" class="addLink"><a href=""  class="addPartner addButton">[@s.text name="planning.deliverables.addPartner" /]</a></div>
+          [/#if]
+        </div>
       </div>
     </div> 
     
@@ -118,10 +143,20 @@
   </article>
   [/@s.form] 
    
-</section>
+</section> 
 
+[#-- Internal parameters --]   
+[#list params?keys as prop]
+  <input id="${params[prop].id}" type="hidden" value="${params[prop].name}" /> 
+[/#list]
 
 [#-- Project deliverable Next user Template--]
 [@deliverableTemplate.nextUserTemplate template=true /]
+
+[#-- Deliverable Partner Template--]
+[@deliverableTemplate.deliverablePartner dp={} dp_name=params.partners.name dp_index=dp_index institutionList="deliverableTypes" template=true /]
+
+[#-- Search users Interface Popup --]
+[@usersForm.searchUsers isActive=false/]
 
 [#include "/WEB-INF/global/pages/footer.ftl"]

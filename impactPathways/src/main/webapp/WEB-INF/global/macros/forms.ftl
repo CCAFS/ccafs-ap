@@ -174,8 +174,8 @@
             ${customValue}
           [/#if]
         [#else] 
-          [#if value?has_content]   
-            ${value}
+          [#if value?has_content]
+            [@s.property value="${name}.${displayFieldName}"/]
           [#else]
             [@s.text name="form.values.fieldEmpty" /]
           [/#if] 

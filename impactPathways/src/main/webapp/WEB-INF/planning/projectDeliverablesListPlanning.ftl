@@ -1,7 +1,8 @@
 [#ftl]
-[#assign title = "Project Deliverables" /]
-[#assign globalLibs = ["jquery", "noty", "autoSave", "chosen"] /]
-[#assign customJS = ["${baseUrl}/js/global/utils.js", "${baseUrl}/js/planning/projectDeliverablesPlanning.js"] /]
+[#assign title = "Project Deliverables List" /]
+[#assign globalLibs = ["jquery", "noty", "dataTable", "autoSave", "chosen"] /]
+[#assign customCSS = ["${baseUrl}/css/libs/dataTables/jquery.dataTables-1.9.4.css", "${baseUrl}/css/global/customDataTable.css"] /]
+[#assign customJS = ["${baseUrl}/js/global/utils.js", "${baseUrl}/js/planning/projectDeliverablesListPlanning.js"] /]
 [#assign currentSection = "planning" /]
 [#assign currentPlanningSection = "projects" /]
 [#assign currentStage = "outputs" /]
@@ -39,10 +40,8 @@
         [/@s.text]
       </p>
     [/#if]
-    <div id="projectDeliverables" class="borderBox clearfix">
-      <h1 class="contentTitle">[@s.text name="planning.projectDeliverables.title" /]</h1>
-      
-      
+    <div id="projectDeliverables" class="clearfix">
+      <h1 class="contentTitle">[@s.text name="planning.projectDeliverables.title" /]</h1> 
       [#-- Planned Deliverables --]
       <div class="fullBlock clearfix">
         <h3 class="projectSubTitle">[@s.text name="planning.projectDeliverables.plannedDeliverables" /]</h3>
