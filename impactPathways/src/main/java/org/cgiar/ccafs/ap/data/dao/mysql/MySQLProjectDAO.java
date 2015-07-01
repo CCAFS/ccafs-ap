@@ -839,10 +839,10 @@ public class MySQLProjectDAO implements ProjectDAO {
 
     Object[] values;
     // Insert new activity indicator record
-    query
-      .append("INSERT INTO ip_project_indicators (id, description, target, year, project_id, parent_id, outcome_id) ");
-    query.append("VALUES (?, ?, ?, ?, ?, ?, ?) ");
-    values = new Object[7];
+    query.append("INSERT INTO ip_project_indicators (id, description, target, year, project_id, ");
+    query.append("parent_id, outcome_id, created_by, modified_by, modification_justification) ");
+    query.append("VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?) ");
+    values = new Object[10];
     values[0] = indicatorData.get("id");
     values[1] = indicatorData.get("description");
     values[2] = indicatorData.get("target");
@@ -850,6 +850,9 @@ public class MySQLProjectDAO implements ProjectDAO {
     values[4] = indicatorData.get("project_id");
     values[5] = indicatorData.get("parent_id");
     values[6] = indicatorData.get("outcome_id");
+    values[7] = indicatorData.get("user_id");
+    values[8] = indicatorData.get("user_id");
+    values[9] = indicatorData.get("justification");
 
     int newId = databaseManager.saveData(query.toString(), values);
     if (newId == -1) {

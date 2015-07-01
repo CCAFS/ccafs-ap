@@ -537,7 +537,7 @@ public class ProjectManagerImpl implements ProjectManager {
   @Override
   // TODO - Move this method to a class called projectIndicatorManager
     public
-    boolean saveProjectIndicators(List<IPIndicator> indicators, int projectID) {
+    boolean saveProjectIndicators(List<IPIndicator> indicators, int projectID, User user, String justification) {
     Map<String, String> indicatorData;
     boolean saved = true;
 
@@ -558,6 +558,8 @@ public class ProjectManagerImpl implements ProjectManager {
       indicatorData.put("parent_id", String.valueOf(indicator.getParent().getId()));
       indicatorData.put("project_id", String.valueOf(projectID));
       indicatorData.put("outcome_id", String.valueOf(indicator.getOutcome().getId()));
+      indicatorData.put("user_id", String.valueOf(user.getId()));
+      indicatorData.put("justification", justification);
 
       saved = projectDAO.saveProjectIndicators(indicatorData) && saved;
     }

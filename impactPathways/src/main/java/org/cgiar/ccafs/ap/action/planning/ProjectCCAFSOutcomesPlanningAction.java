@@ -391,7 +391,10 @@ public class ProjectCCAFSOutcomesPlanningAction extends BaseAction {
         }
       }
 
-      success = success && projectManager.saveProjectIndicators(project.getIndicators(), projectID);
+      success =
+        success
+          && projectManager.saveProjectIndicators(project.getIndicators(), projectID, this.getCurrentUser(),
+            this.getJustification());
       if (success) {
         this.addActionMessage(this.getText("saving.success",
           new String[] {this.getText("planning.projectOutcome.title")}));

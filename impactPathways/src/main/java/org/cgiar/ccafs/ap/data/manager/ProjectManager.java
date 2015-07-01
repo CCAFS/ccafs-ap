@@ -219,9 +219,11 @@ public interface ProjectManager {
    * 
    * @param indicators - List of indicators objects
    * @param projectID - project identifier
+   * @param user - the user who is making the change
+   * @param justification
    * @return true if ALL the indicators were saved successfully. False otherwise
    */
-  public boolean saveProjectIndicators(List<IPIndicator> indicators, int projectID);
+  public boolean saveProjectIndicators(List<IPIndicator> indicators, int projectID, User user, String justification);
 
   /**
    * This method save into the database the relation between a project and
