@@ -48,8 +48,10 @@ public class Project {
   private User owner;
   private List<ProjectPartner> projectPartners; // Project partners or 2-level partners.
   private List<ProjectPartner> ppaPartners; // PPA Partners or CCAFS Program Partners.
+  private List<Deliverable> deliverables; // Project research outputs - deliverables.
   private List<Budget> budgets;
   private Map<String, ProjectOutcome> outcomes;
+  private List<Location> locations; // Project locations.
   private List<Activity> activities;
   private List<IPElement> outputs;
   private List<IPIndicator> indicators;
@@ -206,6 +208,10 @@ public class Project {
     return crpContributionsNature;
   }
 
+  public List<Deliverable> getDeliverables() {
+    return deliverables;
+  }
+
   public Date getEndDate() {
     return endDate;
   }
@@ -310,6 +316,10 @@ public class Project {
     return linkedCoreProjects;
   }
 
+  public List<Location> getLocations() {
+    return locations;
+  }
+
   public Map<String, ProjectOutcome> getOutcomes() {
     return outcomes;
   }
@@ -318,6 +328,7 @@ public class Project {
     return outputs;
   }
 
+
   public User getOwner() {
     return owner;
   }
@@ -325,7 +336,6 @@ public class Project {
   public List<ProjectPartner> getPPAPartners() {
     return ppaPartners;
   }
-
 
   public List<ProjectPartner> getProjectPartners() {
     return projectPartners;
@@ -431,6 +441,10 @@ public class Project {
     this.crpContributionsNature = crpContributionsNature;
   }
 
+  public void setDeliverables(List<Deliverable> deliverables) {
+    this.deliverables = deliverables;
+  }
+
   public void setEndDate(Date endDate) {
     this.endDate = endDate;
   }
@@ -465,6 +479,10 @@ public class Project {
 
   public void setLinkedCoreProjects(List<Project> linkedCoreProjects) {
     this.linkedCoreProjects = linkedCoreProjects;
+  }
+
+  public void setLocations(List<Location> locations) {
+    this.locations = locations;
   }
 
   public void setOutcomes(Map<String, ProjectOutcome> outcomes) {
