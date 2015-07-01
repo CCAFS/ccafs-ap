@@ -134,7 +134,7 @@ public class ProjectSummaryPDF extends BasePDF {
       // Getting the information of the Cross Cutting Themes associated with the project
       activity.setCrossCuttings(ipCrossCuttingManager.getIPCrossCuttingByActivityID(activity.getId()));
       activity.setActivityPartners(activityPartnerManager.getActivityPartnersByActivity(activity.getId()));
-      activity.setLocations(locationManager.getActivityLocations(activity.getId()));
+      activity.setLocations(locationManager.getProjectLocations(activity.getId()));
       activity.setDeliverables(deliverableManager.getDeliverablesByProject(activity.getId()));
 
       this.addActivityMainInformation(activity);

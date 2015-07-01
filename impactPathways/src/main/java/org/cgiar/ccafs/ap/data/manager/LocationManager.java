@@ -18,6 +18,7 @@ import org.cgiar.ccafs.ap.data.manager.impl.LocationManagerImpl;
 import org.cgiar.ccafs.ap.data.model.Country;
 import org.cgiar.ccafs.ap.data.model.Location;
 import org.cgiar.ccafs.ap.data.model.Region;
+import org.cgiar.ccafs.ap.data.model.User;
 
 import java.util.List;
 
@@ -31,30 +32,21 @@ import com.google.inject.ImplementedBy;
 public interface LocationManager {
 
   /**
-   * This method returns all the locations related with the activity
-   * identified by the value passed as parameter.
-   * 
-   * @param activityID - activity identifier
-   * @return a list of Location objects with the information
-   */
-  public List<Location> getActivityLocations(int activityID);
-
-  /**
-   * This method return all the information of the countries
+   * This method returns all the information of the countries
    * 
    * @return a list of all countries with the information or null if there is none.
    */
   public List<Country> getAllCountries();
 
   /**
-   * This method return all the information of the regions
+   * This method returns all the information of the regions
    * 
    * @return a list of all regions with the information or null if there is none.
    */
   public List<Region> getAllRegions();
 
   /**
-   * This method return the information of a Country by a given Country ID
+   * This method returns the information of a Country by a given Country ID
    * 
    * @param countryID - is the ID of a Country
    * @return a Country Object with the information.
@@ -78,13 +70,22 @@ public interface LocationManager {
   public List<Country> getInstitutionCountries();
 
   /**
-   * Get a Location identified with the given type id and location id.
+   * Get a Location identified by the given type id and location id.
    * 
    * @param typeID is an integer that represents the id of the location element type .
    * @param locationID is an integer that represents the id of the location to search
    * @return an Location object or null if the id does not exist in the database.
    */
   public Location getLocation(int typeID, int locationID);
+
+  /**
+   * This method gets the list of location elements
+   * identified by the values received as parameters
+   * 
+   * @param locationsIDs - List of locations identifiers
+   * @return a list of Location objects with the information
+   */
+  public List<Location> getLocationsByIDs(String[] locationsIDs);
 
   /**
    * This method returns all the locations which have the type
@@ -96,16 +97,16 @@ public interface LocationManager {
   public List<Location> getLocationsByType(int locationTypeID);
 
   /**
-   * This method get the list of location elements
-   * identified by the values recieved as parameter
+   * This method returns all the locations related with the project
+   * identified by the value passed as parameter.
    * 
-   * @param locationsIDs - List of locations identifiers
+   * @param projectID -project identifier
    * @return a list of Location objects with the information
    */
-  public List<Location> getLocationsByIDs(String[] locationsIDs);
+  public List<Location> getProjectLocations(int projectID);
 
   /**
-   * This method return the information of a Region by a given Region ID
+   * This method returns the information of a Region by a given Region ID
    * 
    * @param regionID - is the ID of a Region
    * @return a Region Object with the information.
@@ -113,25 +114,23 @@ public interface LocationManager {
   public Region getRegion(int regionID);
 
   /**
-   * This method remove from the database all the locations related to
-   * the activity received by parameter.
-   * If the location element has some type different to Region or country,
-   * this method also remove the location record from the database.
-   * Otherwise only the relation between the activity and the location element
-   * is removed.
+   * This method updates from the database all the locations related to
+   * the projects received by parameter.
    * 
-   * @param activityLocations - list of locations
-   * @param activityID - activity identifier
-   * @return true if the relations were deleted. False otherwise.
+   * @param projectLocations - list of locations
+   * @param projectID - project identifier
+   * @return true if the relations were updated. False otherwise.
    */
-  public boolean removeActivityLocation(List<Location> activityLocations, int activityID);
+  public boolean removeProjectLocation(List<Location> projectLocations, int projectID);
 
   /**
-   * This method save all the locations corresponding to the activity received.
+   * This method saves all the locations corresponding to the activity received.
    * 
    * @param locations - The list of locations to be saved
-   * @param activityID - the activity identifier
+   * @param projectID - the project identifier
+   * @param user - the user executing the action
    * @return true if the information was successfully saved. False otherwise.
    */
-  public boolean saveActivityLocations(List<Location> locations, int activityID);
+  public boolean saveProjectLocation(List<Location> locations, int projectID, User user, String justification);
+
 }
