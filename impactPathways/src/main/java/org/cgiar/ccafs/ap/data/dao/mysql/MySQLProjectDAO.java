@@ -841,7 +841,7 @@ public class MySQLProjectDAO implements ProjectDAO {
 
     Object[] values;
     // Insert new activity indicator record
-    query.append("INSERT INTO ip_project_indicators (id, description, target, year, project_id, ");
+    query.append("INSERT IGNORE INTO ip_project_indicators (id, description, target, year, project_id, ");
     query.append("parent_id, outcome_id, created_by, modified_by, modification_justification) ");
     query.append("VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?) ");
     values = new Object[10];
