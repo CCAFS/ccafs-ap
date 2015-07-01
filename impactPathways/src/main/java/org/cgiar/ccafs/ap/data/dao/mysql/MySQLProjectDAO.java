@@ -523,6 +523,7 @@ public class MySQLProjectDAO implements ProjectDAO {
     query.append("INNER JOIN ip_elements ie ON ai.outcome_id = ie.id ");
     query.append("WHERE ai.project_id=  ");
     query.append(projectID);
+    query.append(" AND ai.is_active = TRUE ");
 
     try (Connection con = databaseManager.getConnection()) {
       ResultSet rs = databaseManager.makeQuery(query.toString(), con);
@@ -599,6 +600,7 @@ public class MySQLProjectDAO implements ProjectDAO {
     query.append("INNER JOIN ip_elements outcome ON ipc.`midOutcome_id` = outcome.id ");
     query.append("WHERE project_id =  ");
     query.append(projectID);
+    query.append(" AND ipc.is_active = TRUE ");
 
     try (Connection con = databaseManager.getConnection()) {
       ResultSet rs = databaseManager.makeQuery(query.toString(), con);

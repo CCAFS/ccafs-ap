@@ -151,8 +151,8 @@
         <param name="projectID">${project.id}</param>
       </result>
       <result name="cancel" type="redirectAction">
-        <param name="actionName">projects</param>
-        <param name="namespace">/planning</param>
+        <param name="actionName">outcomes</param>
+        <param name="projectID">${project.id}</param>
       </result>
     </action>
     
@@ -167,8 +167,8 @@
         <param name="projectID">${project.id}</param>
       </result>
       <result name="cancel" type="redirectAction">
-        <param name="actionName">projects</param>
-        <param name="namespace">/planning</param>
+        <param name="actionName">ccafsOutcomes</param>
+        <param name="projectID">${project.id}</param>
       </result>
     </action>
 
