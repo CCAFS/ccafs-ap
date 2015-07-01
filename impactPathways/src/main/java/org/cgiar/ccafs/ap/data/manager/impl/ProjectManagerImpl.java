@@ -74,8 +74,8 @@ public class ProjectManagerImpl implements ProjectManager {
   }
 
   @Override
-  public boolean deleteIndicator(int projectID, int indicatorID) {
-    return projectDAO.deleteProjectIndicator(projectID, indicatorID);
+  public boolean deleteIndicator(int projectID, int indicatorID, User user, String justification) {
+    return projectDAO.deleteProjectIndicator(projectID, indicatorID, user.getId(), justification);
   }
 
 
@@ -85,8 +85,8 @@ public class ProjectManagerImpl implements ProjectManager {
   }
 
   @Override
-  public boolean deleteProjectOutput(int projectID, int outputID) {
-    return projectDAO.deleteProjectOutput(projectID, outputID);
+  public boolean deleteProjectOutput(int projectID, int outputID, int outcomeID, int userID, String justification) {
+    return projectDAO.deleteProjectOutput(projectID, outputID, outcomeID, userID, justification);
   }
 
 
@@ -295,7 +295,9 @@ public class ProjectManagerImpl implements ProjectManager {
   }
 
   @Override
-  public List<IPIndicator> getProjectIndicators(int projectID) {
+  // TODO - Move this method to a class called projectIndicatorManager
+    public
+    List<IPIndicator> getProjectIndicators(int projectID) {
     List<IPIndicator> indicators = new ArrayList<>();
     List<Map<String, String>> indicatorsData = projectDAO.getProjectIndicators(projectID);
 
@@ -343,7 +345,9 @@ public class ProjectManagerImpl implements ProjectManager {
   }
 
   @Override
-  public List<IPElement> getProjectOutputs(int projectID) {
+  // TODO - Move this method to a class called projectOutputManager
+    public
+    List<IPElement> getProjectOutputs(int projectID) {
     List<IPElement> outputs = new ArrayList<>();
     List<Map<String, String>> outputsData = projectDAO.getProjectOutputs(projectID);
 
@@ -531,7 +535,9 @@ public class ProjectManagerImpl implements ProjectManager {
   }
 
   @Override
-  public boolean saveProjectIndicators(List<IPIndicator> indicators, int projectID) {
+  // TODO - Move this method to a class called projectIndicatorManager
+    public
+    boolean saveProjectIndicators(List<IPIndicator> indicators, int projectID, User user, String justification) {
     Map<String, String> indicatorData;
     boolean saved = true;
 
@@ -552,6 +558,8 @@ public class ProjectManagerImpl implements ProjectManager {
       indicatorData.put("parent_id", String.valueOf(indicator.getParent().getId()));
       indicatorData.put("project_id", String.valueOf(projectID));
       indicatorData.put("outcome_id", String.valueOf(indicator.getOutcome().getId()));
+      indicatorData.put("user_id", String.valueOf(user.getId()));
+      indicatorData.put("justification", justification);
 
       saved = projectDAO.saveProjectIndicators(indicatorData) && saved;
     }
@@ -560,7 +568,9 @@ public class ProjectManagerImpl implements ProjectManager {
   }
 
   @Override
-  public boolean saveProjectOutputs(List<IPElement> outputs, int projectID) {
+  // TODO - Move this method to a class called projectOutputManager
+    public
+    boolean saveProjectOutputs(List<IPElement> outputs, int projectID, User user, String justification) {
     Map<String, String> outputData;
     boolean saved = true;
 
@@ -572,6 +582,8 @@ public class ProjectManagerImpl implements ProjectManager {
       outputData.put("project_id", String.valueOf(projectID));
       outputData.put("mog_id", String.valueOf(output.getId()));
       outputData.put("midOutcome_id", String.valueOf(output.getContributesTo().get(0).getId()));
+      outputData.put("user_id", String.valueOf(user.getId()));
+      outputData.put("justification", justification);
 
       int relationID = projectDAO.saveProjectOutput(outputData);
       saved = (relationID != -1) && saved;

@@ -83,6 +83,35 @@ public class ProjectCCAFSOutcomesPlanningAction extends BaseAction {
     return activityID;
   }
 
+  /**
+   * This method return a string with the acronym of the impact pathways to which the project can contribute.
+   * The flagship programs appears only when the global region is selected.
+   * 
+   * @return
+   */
+  public String getContributingPrograms() {
+    boolean isGlobalRegionSelected = projectFocusList.contains(new IPProgram(APConstants.GLOBAL_PROGRAM));
+    StringBuilder programs = new StringBuilder();
+    boolean hasPrevious = false;
+
+    for (int c = 0; c < projectFocusList.size(); c++) {
+      IPProgram ipProgram = projectFocusList.get(c);
+
+      if (ipProgram.isFlagshipProgram() && !isGlobalRegionSelected) {
+        continue;
+      }
+
+      if (ipProgram.getId() == APConstants.GLOBAL_PROGRAM) {
+        continue;
+      }
+
+      programs.append((c > 0 && hasPrevious) ? ", " + ipProgram.getAcronym() : ipProgram.getAcronym());
+      hasPrevious = true;
+    }
+
+    return programs.toString();
+  }
+
   public List<IPElement> getMidOutcomeOutputs(int midOutcomeID) {
     List<IPElement> outputs = new ArrayList<>();
     IPElement midOutcome = ipElementManager.getIPElement(midOutcomeID);
@@ -170,11 +199,6 @@ public class ProjectCCAFSOutcomesPlanningAction extends BaseAction {
     boolean isGlobalProject;
     isGlobalProject = projectFocusList.contains(new IPProgram(APConstants.GLOBAL_PROGRAM));
 
-    IPElement placeHolder = new IPElement(-1);
-    placeHolder.setDescription(this.getText("planning.activityImpactPathways.outcome.placeholder"));
-
-    midOutcomes.add(placeHolder);
-
     IPElementType midOutcomeType = new IPElementType(APConstants.ELEMENT_TYPE_OUTCOME2019);
     for (IPProgram program : projectFocusList) {
 
@@ -199,6 +223,10 @@ public class ProjectCCAFSOutcomesPlanningAction extends BaseAction {
 
   public List<IPElement> getMidOutcomesSelected() {
     return midOutcomesSelected;
+  }
+
+  public int getMidOutcomeYear() {
+    return config.getMidOutcomeYear();
   }
 
   public int getMOGIndex(IPElement mog) {
@@ -337,26 +365,36 @@ public class ProjectCCAFSOutcomesPlanningAction extends BaseAction {
       // Delete the outputs removed
       for (IPElement output : previousOutputs) {
         if (!project.containsOutput(output)) {
-          boolean deleted = projectManager.deleteProjectOutput(projectID, output.getId());
+          boolean deleted =
+            projectManager.deleteProjectOutput(projectID, output.getId(), output.getContributesToIDs()[0], this
+              .getCurrentUser().getId(), this.getJustification());
           if (!deleted) {
             success = false;
           }
         }
       }
 
-      success = success && projectManager.saveProjectOutputs(project.getOutputs(), projectID);
+      success =
+        success
+          && projectManager.saveProjectOutputs(project.getOutputs(), projectID, this.getCurrentUser(),
+            this.getJustification());
 
       // Delete the indicators removed
       for (IPIndicator indicator : previousIndicators) {
         if (!project.getOutputs().contains(indicator)) {
-          boolean deleted = projectManager.deleteIndicator(projectID, indicator.getId());
+          boolean deleted =
+            projectManager
+              .deleteIndicator(projectID, indicator.getId(), this.getCurrentUser(), this.getJustification());
           if (!deleted) {
             success = false;
           }
         }
       }
 
-      success = success && projectManager.saveProjectIndicators(project.getIndicators(), projectID);
+      success =
+        success
+          && projectManager.saveProjectIndicators(project.getIndicators(), projectID, this.getCurrentUser(),
+            this.getJustification());
       if (success) {
         this.addActionMessage(this.getText("saving.success",
           new String[] {this.getText("planning.projectOutcome.title")}));

@@ -29,7 +29,7 @@
 
   [#include "/WEB-INF/planning/planningProjectsSubMenu.ftl" /]
 
-  [@s.form action="outcomes" cssClass="pure-form"]  
+  [@s.form action="ccafsOutcomes" cssClass="pure-form"]  
   <article class="halfContent" id="activityImpactPathway">
     [#include "/WEB-INF/planning/planningDataSheet.ftl" /]
     [#include "/WEB-INF/planning/projectIP-planning-sub-menu.ftl" /]
@@ -48,12 +48,11 @@
       [#if (!editable && canEdit)]
         <div class="editButton"><a href="[@s.url includeParams='get'][@s.param name="edit"]true[/@s.param][/@s.url]">[@s.text name="form.buttons.edit" /]</a></div>
       [/#if]
+
       <h1 class="contentTitle">[@s.text name="planning.projectOutcome.contribution" /] </h1> 
       <p>
         <b>[@s.text name="planning.projectImpactPathways.contributingTo" /]</b> 
-        [#list projectFocusList as program]
-          ${program.acronym}[#if program_has_next],[/#if]
-        [/#list]
+        ${contributingPrograms}
       </p>
       
       [#-- Contributions Block --]
