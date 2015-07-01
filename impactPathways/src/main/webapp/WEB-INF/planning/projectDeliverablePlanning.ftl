@@ -40,11 +40,81 @@
         [/@s.text]
       </p>
     [/#if]
-    <div id="projectDeliverables" class="borderBox clearfix"> 
-      [@deliverableTemplate.deliverable deliverable=project.deliverables[0] editable=true canEdit=true /]
-    </div>
+    <div id="projectDeliverable" class="borderBox clearfix"> 
+      [#if !editable]
+        <div class="editButton"><a href="[@s.url includeParams='get'][@s.param name="edit"]true[/@s.param][/@s.url]">[@s.text name="form.buttons.edit" /]</a></div>
+      [/#if] 
+      
+      [#--  Deliverable Information --]
+      <h1 class="contentTitle">[@s.text name="planning.projectDeliverable.title" /] </h1> 
+      <input type="hidden" value="${project.deliverables[dl_index].id}" name="project.deliverables[${dl_index}].id">
+      <div class="fullBlock">
+        [#-- Title --] 
+        [@customForm.input name="project.deliverables[${dl_index}].title" type="text" i18nkey="planning.deliverables.title" required=true editable=editable /]
+      </div>
+      <div class="fullBlock">
+        [#-- MOG  --]
+        <div class="halfPartBlock chosen">
+          [@customForm.select name="project.deliverables[${dl_index}].output" label=""  disabled=false i18nkey="planning.deliverables.mog" listName="outputs" keyFieldName="id"  displayFieldName="description" editable=editable /]
+        </div> 
+        [#-- Year  --]
+        <div class="halfPartBlock chosen">
+          [@customForm.select name="project.deliverables[${dl_index}].year" label=""  disabled=false i18nkey="planning.deliverables.year" listName="allYears" editable=editable /]
+        </div>
+      </div> 
+      <div class="fullBlock">
+        [#-- Main Type --]
+        <div class="halfPartBlock chosen"> 
+          [@customForm.select name="mainType" label=""  i18nkey="planning.deliverables.mainType" listName="deliverableTypes" keyFieldName="id"  displayFieldName="name" editable=editable /]
+        </div> 
+        [#-- Sub Type --]
+        <div class="halfPartBlock chosen">
+          [@customForm.select name="project.deliverables[${dl_index}].type"  label="" i18nkey="planning.deliverables.subType" listName="" keyFieldName=""  displayFieldName="" editable=editable /]
+          <input type="hidden" id="subTypeSelected" value="${project.deliverables[dl_index].type.id}" />
+        </div>  
+        [#if editable && canEdit]
+        [#-- Sub Type --]
+        <div class="halfPartBlock chosen" style="display:none">
+          [@customForm.input name="project.deliverables[${dl_index}].type" i18nkey="planning.deliverables.subType" /]
+          <input type="hidden" id="" value="" />
+        </div>
+        [/#if]
+      </div>
+      
+      [#-- Deliverable Next Users block  --] 
+      <div class="fullBlock">
+        <h1 class="contentTitle">[@s.text name="planning.projectDeliverable.nextUsers" /] </h1> 
+        [#if project.deliverables[0].nextUsers?has_content]
+          [#list project.deliverables[0].nextUsers as nu] 
+            [@deliverableTemplate.nextUserTemplate dl_index="0" nu_index="${nu_index}" nextUserValue="${nu.id}" editable=editable canEdit=canEdit /]
+          [/#list]
+        [/#if]
+        [#if editable && canEdit]
+          <div id="addNextUserBlock" class="addLink"><a href=""  class="addNextUser addButton">[@s.text name="planning.deliverables.addNewUser" /]</a></div>
+        [/#if] 
+      </div>
+      
+      [#-- Deliverable partnership  --] 
+      <div class="fullBlock">
+        <h1 class="contentTitle">[@s.text name="planning.projectDeliverable.partnership" /] </h1>  
+      </div>
+    </div> 
     
-    
+    [#if editable] 
+      [#-- Project identifier --]
+      <div class="borderBox">
+        <input name="projectID" type="hidden" value="${project.id?c}" />
+        [@customForm.textArea name="justification" i18nkey="saving.justification" required=true className="justification"/]
+        <div class="buttons">
+          [@s.submit type="button" name="save"][@s.text name="form.buttons.save" /][/@s.submit]
+          [@s.submit type="button" name="next"][@s.text name="form.buttons.next" /][/@s.submit]
+          [@s.submit type="button" name="cancel"][@s.text name="form.buttons.cancel" /][/@s.submit]
+        </div>
+      </div>
+    [#else]
+        [#-- Display Log History --]
+        [#if history??][@log.logList list=history /][/#if]   
+    [/#if]
   </article>
   [/@s.form] 
    

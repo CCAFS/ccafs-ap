@@ -498,7 +498,7 @@ span.logType.insert {
 
 .charCount {
   color: #888888;
-  font-size: 10px;
+  font-size: 0.9em !important;
   margin-right: 25px;
   text-align: right !important;
 }
