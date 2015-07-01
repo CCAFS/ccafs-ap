@@ -13,12 +13,10 @@
  *****************************************************************/
 package org.cgiar.ccafs.ap.data.manager.impl;
 
-import org.cgiar.ccafs.ap.data.dao.IPElementDAO;
 import org.cgiar.ccafs.ap.data.dao.IPIndicatorDAO;
 import org.cgiar.ccafs.ap.data.manager.IPIndicatorManager;
 import org.cgiar.ccafs.ap.data.model.IPElement;
 import org.cgiar.ccafs.ap.data.model.IPIndicator;
-import org.cgiar.ccafs.ap.data.model.IPProgram;
 import org.cgiar.ccafs.ap.data.model.Project;
 
 import java.util.ArrayList;
@@ -31,19 +29,16 @@ import com.google.inject.Inject;
 public class IPIndicatorManagerImpl implements IPIndicatorManager {
 
   private IPIndicatorDAO indicatorDAO;
-  private IPElementDAO elementDAO;
 
   @Inject
-  public IPIndicatorManagerImpl(IPIndicatorDAO indicatorDAO, IPElementDAO elementDAO) {
+  public IPIndicatorManagerImpl(IPIndicatorDAO indicatorDAO) {
     this.indicatorDAO = indicatorDAO;
-    this.elementDAO = elementDAO;
   }
 
   @Override
   public List<IPIndicator> getElementIndicators(IPElement element) {
     List<IPIndicator> indicators = new ArrayList<>();
-    int programElementID = elementDAO.getProgramElementID(element.getId(), element.getProgram().getId());
-    List<Map<String, String>> indicatorsDataList = indicatorDAO.getIndicatorsByIpProgramElementID(programElementID);
+    List<Map<String, String>> indicatorsDataList = indicatorDAO.getIndicatorsByElementID(element.getId());
 
     for (Map<String, String> iData : indicatorsDataList) {
       IPIndicator indicator = new IPIndicator();
@@ -146,6 +141,7 @@ public class IPIndicatorManagerImpl implements IPIndicatorManager {
     return indicators;
   }
 
+  @Override
   public List<IPIndicator> getIndicatorsList() {
     List<IPIndicator> indicators = new ArrayList<>();
     List<Map<String, String>> indicatorsDataList = indicatorDAO.getIndicatorsList();
@@ -171,7 +167,7 @@ public class IPIndicatorManagerImpl implements IPIndicatorManager {
 
   @Override
   public List<IPIndicator> getIndicatorsList(String[] indicatorsIDs) {
-    List<IPIndicator> allIndicators = getIndicatorsList();
+    List<IPIndicator> allIndicators = this.getIndicatorsList();
     List<IPIndicator> indicators = new ArrayList<>();
 
     for (IPIndicator indicator : allIndicators) {
@@ -185,8 +181,8 @@ public class IPIndicatorManagerImpl implements IPIndicatorManager {
   }
 
   @Override
-  public boolean removeElementIndicators(IPElement element, IPProgram program) {
-    return indicatorDAO.deleteIpElementIndicators(element.getId(), program.getId());
+  public boolean removeElementIndicators(IPElement element) {
+    return indicatorDAO.deleteIpElementIndicators(element.getId());
   }
 
 }

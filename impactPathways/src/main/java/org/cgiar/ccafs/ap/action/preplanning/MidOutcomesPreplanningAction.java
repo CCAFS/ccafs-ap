@@ -86,7 +86,7 @@ public class MidOutcomesPreplanningAction extends BaseAction {
 
   @Override
   public String next() {
-    String result = save();
+    String result = this.save();
     if (result.equals(BaseAction.SUCCESS)) {
       return BaseAction.NEXT;
     } else {
@@ -96,7 +96,7 @@ public class MidOutcomesPreplanningAction extends BaseAction {
 
   @Override
   public void prepare() throws Exception {
-    IPProgram program = getCurrentUser().getCurrentInstitution().getProgram();
+    IPProgram program = this.getCurrentUser().getCurrentInstitution().getProgram();
 
     // Create an ipElementType with the identifier of the outcomes 2019 type
     IPElementType outcomesType = new IPElementType(APConstants.ELEMENT_TYPE_OUTCOME2025);
@@ -109,7 +109,7 @@ public class MidOutcomesPreplanningAction extends BaseAction {
 
     // Fake flagship to add as a placeholder
     IPProgram flagship = new IPProgram(-1);
-    flagship.setName(getText("preplanning.midOutcomesRPL.selectFlagship"));
+    flagship.setName(this.getText("preplanning.midOutcomesRPL.selectFlagship"));
     flagshipsList.add(flagship);
 
     midOutcomes = ipElementManager.getIPElements(program, midOutcomesType);
@@ -119,7 +119,7 @@ public class MidOutcomesPreplanningAction extends BaseAction {
     midOutcomesFromDatabase = new ArrayList<>();
     midOutcomesFromDatabase.addAll(midOutcomes);
 
-    if (getRequest().getMethod().equalsIgnoreCase("post")) {
+    if (this.getRequest().getMethod().equalsIgnoreCase("post")) {
       // Clear out the list if it has some element
       if (midOutcomes != null) {
         midOutcomes.clear();
@@ -135,7 +135,7 @@ public class MidOutcomesPreplanningAction extends BaseAction {
       // If all the midOutcomes were removed, we should remove all the records
       // brought from the database
       if (midOutcomes.isEmpty()) {
-        ipElementManager.deleteIPElement(midOutcome, getCurrentUser().getCurrentInstitution().getProgram());
+        ipElementManager.deleteIPElement(midOutcome);
         continue;
       }
 
@@ -144,10 +144,10 @@ public class MidOutcomesPreplanningAction extends BaseAction {
         // Before delete the ipElement we should delete the child elements
         ipElementManager.deleteChildIPElements(midOutcome);
         // Delete the element
-        ipElementManager.deleteIPElement(midOutcome, getCurrentUser().getCurrentInstitution().getProgram());
+        ipElementManager.deleteIPElement(midOutcome);
       } else {
         // Remove the relations and indicators of the midOutcome
-        ipIndicatorManager.removeElementIndicators(midOutcome, getCurrentUser().getCurrentInstitution().getProgram());
+        ipIndicatorManager.removeElementIndicators(midOutcome);
         ipElementRelationManager.deleteRelationsByChildElement(midOutcome);
       }
     }
@@ -166,11 +166,12 @@ public class MidOutcomesPreplanningAction extends BaseAction {
     }
 
     // Save all the elements brougth from the user interface
-    if (ipElementManager.saveIPElements(midOutcomes)) {
-      addActionMessage(getText("saving.success", new String[] {getText("preplanning.midOutcomes.title")}));
+    if (ipElementManager.saveIPElements(midOutcomes, this.getCurrentUser(), this.getJustification())) {
+      this
+        .addActionMessage(this.getText("saving.success", new String[] {this.getText("preplanning.midOutcomes.title")}));
       return SUCCESS;
     } else {
-      addActionError(getText("saving.problem"));
+      this.addActionError(this.getText("saving.problem"));
       return INPUT;
     }
   }

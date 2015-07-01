@@ -45,21 +45,17 @@ public class MySQLIPIndicatorDAO implements IPIndicatorDAO {
   }
 
   @Override
-  public boolean deleteIpElementIndicators(int ipElementID, int ipProgramID) {
+  public boolean deleteIpElementIndicators(int ipElementID) {
     StringBuilder query = new StringBuilder();
-    query.append("DELETE ipi.* FROM ip_indicators ipi ");
-    query.append("INNER JOIN ip_program_elements ipe ON ipi.program_element_id = ipe.id ");
-    query.append("WHERE ipe.program_id = ? AND ipe.element_id = ? ");
+    query.append("UPDATE ip_indicators ");
+    query.append("SET is_active = FALSE ");
+    query.append("WHERE ip_element_id = ?");
 
-    int rowsDeleted = databaseManager.delete(query.toString(), new Object[] {ipProgramID, ipElementID});
-    if (rowsDeleted >= 0) {
-      LOG.debug("<< removeIpElementIndicators():{}", true);
-      return true;
-    }
+    int rowsDeleted = databaseManager.delete(query.toString(), new Object[] {ipElementID});
+    boolean deleted = (rowsDeleted >= 0) ? true : false;
 
-
-    LOG.debug("<< removeIpElementIndicators():{}", false);
-    return false;
+    LOG.debug("<< removeIpElementIndicators():{}", deleted);
+    return deleted;
   }
 
   @Override
@@ -95,16 +91,16 @@ public class MySQLIPIndicatorDAO implements IPIndicatorDAO {
   }
 
   @Override
-  public List<Map<String, String>> getIndicatorsByIpProgramElementID(int ipProgramElementID) {
-    LOG.debug(">> getElementIndicators( ipProgramElementID = {} )", ipProgramElementID);
+  public List<Map<String, String>> getIndicatorsByElementID(int elementID) {
+    LOG.debug(">> getIndicatorsByElementID( ipProgramElementID = {} )", elementID);
     List<Map<String, String>> indicatorsList = new ArrayList<>();
     StringBuilder query = new StringBuilder();
 
     query.append("SELECT i.id, i.description, i.target, p.id as 'parent_id', p.description as 'parent_description' ");
     query.append("FROM ip_indicators i ");
     query.append("LEFT JOIN ip_indicators p ON i.parent_id = p.id ");
-    query.append("WHERE i.program_element_id = ");
-    query.append(ipProgramElementID);
+    query.append("WHERE i.ip_element_id = ");
+    query.append(elementID);
 
     try (Connection con = databaseManager.getConnection()) {
       ResultSet rs = databaseManager.makeQuery(query.toString(), con);
@@ -119,13 +115,13 @@ public class MySQLIPIndicatorDAO implements IPIndicatorDAO {
       }
       rs.close();
     } catch (SQLException e) {
-      String exceptionMessage = "-- getElementIndicators() > Exception raised trying ";
-      exceptionMessage += "to get the ip indicators corresponding to the ip program element " + ipProgramElementID;
+      String exceptionMessage = "-- getIndicatorsByElementID() > Exception raised trying ";
+      exceptionMessage += "to get the ip indicators corresponding to the ip element " + elementID;
 
       LOG.error(exceptionMessage, e);
     }
 
-    LOG.debug("<< getElementIndicators():ipIndicatorList.size={}", indicatorsList.size());
+    LOG.debug("<< getIndicatorsByElementID():ipIndicatorList.size={}", indicatorsList.size());
     return indicatorsList;
   }
 
@@ -218,7 +214,6 @@ public class MySQLIPIndicatorDAO implements IPIndicatorDAO {
         indicatorData.put("id", rs.getString("id"));
         indicatorData.put("description", rs.getString("description"));
         indicatorData.put("target", rs.getString("target"));
-        indicatorData.put("program_element_id", rs.getString("program_element_id"));
         indicatorData.put("parent_id", rs.getString("parent_id"));
 
         indicatorsDataList.add(indicatorData);
@@ -237,17 +232,21 @@ public class MySQLIPIndicatorDAO implements IPIndicatorDAO {
     LOG.debug(">> saveIndicator(indicatorData={})", indicatorData);
 
     StringBuilder query = new StringBuilder();
-    query.append("INSERT INTO ip_indicators (id, description, target, program_element_id, parent_id) ");
-    query.append("VALUES (?, ?, ?, ?, ?) ");
+    query.append("INSERT INTO ip_indicators (id, description, target, ip_element_id, parent_id, created_by, ");
+    query.append("modified_by, modification_justification) ");
+    query.append("VALUES (?, ?, ?, ?, ?, ?, ?, ?) ");
     query.append("ON DUPLICATE KEY UPDATE description = VALUES(description), target = VALUES(target), ");
     query.append("parent_id = VALUES(parent_id) ");
 
-    Object[] values = new Object[5];
+    Object[] values = new Object[8];
     values[0] = indicatorData.get("id");
     values[1] = indicatorData.get("description");
     values[2] = indicatorData.get("target");
-    values[3] = indicatorData.get("program_element_id");
+    values[3] = indicatorData.get("ip_element_id");
     values[4] = indicatorData.get("parent_id");
+    values[5] = indicatorData.get("user_id");
+    values[6] = indicatorData.get("user_id");
+    values[7] = indicatorData.get("justification");
 
     int result = databaseManager.saveData(query.toString(), values);
     LOG.debug("<< saveIndicator():{}", result);

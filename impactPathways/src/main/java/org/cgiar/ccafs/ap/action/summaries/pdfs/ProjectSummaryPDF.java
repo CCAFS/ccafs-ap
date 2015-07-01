@@ -135,7 +135,7 @@ public class ProjectSummaryPDF extends BasePDF {
       activity.setCrossCuttings(ipCrossCuttingManager.getIPCrossCuttingByActivityID(activity.getId()));
       activity.setActivityPartners(activityPartnerManager.getActivityPartnersByActivity(activity.getId()));
       activity.setLocations(locationManager.getProjectLocations(activity.getId()));
-      activity.setDeliverables(deliverableManager.getDeliverablesByActivity(activity.getId()));
+      activity.setDeliverables(deliverableManager.getDeliverablesByProject(activity.getId()));
 
       this.addActivityMainInformation(activity);
       this.addActivityOutcome(activity);

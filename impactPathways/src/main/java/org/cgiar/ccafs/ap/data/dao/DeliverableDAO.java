@@ -17,10 +17,10 @@ package org.cgiar.ccafs.ap.data.dao;
 /**
  * @author Javier Andrés Gallego
  */
-import org.cgiar.ccafs.ap.data.dao.mysql.MySQLDeliverableDAO;
-
 import java.util.List;
 import java.util.Map;
+
+import org.cgiar.ccafs.ap.data.dao.mysql.MySQLDeliverableDAO;
 
 import com.google.inject.ImplementedBy;
 
@@ -45,12 +45,12 @@ public interface DeliverableDAO {
   public boolean deleteDeliverableOutput(int deliverableID);
 
   /**
-   * Deletes the information of the Deliverable related by a given Activity id
+   * Deletes the information of the Deliverable related by a given Project id
    * 
-   * @param activityID
+   * @param projectID
    * @return true if the elements were deleted successfully. False otherwise
    */
-  public boolean deleteDeliverablesByActivity(int activityID);
+  public boolean deleteDeliverablesByProject(int projectID);
 
   /**
    * This method gets all the Deliverable information by a given Id
@@ -69,12 +69,12 @@ public interface DeliverableDAO {
   public Map<String, String> getDeliverableOutput(int deliverableID);
 
   /**
-   * This method gets all the Deliverable information by a given Activity Id
+   * This method gets all the Deliverable information by a given Project Id
    * 
-   * @param activityID - is the Id of the Activity
-   * @return a List of Map of the Deliverables Information related with the activity
+   * @param projectID - is the Id of the Project
+   * @return a List of Map of the Deliverables Information related with the project
    */
-  public List<Map<String, String>> getDeliverablesByActivity(int activityID);
+  public List<Map<String, String>> getDeliverablesByProject(int projectID);
 
   /**
    * This method saves the Deliverable information
@@ -83,7 +83,7 @@ public interface DeliverableDAO {
    * @param activityID - is the Id of the project
    * @return The last inserted id if there was a new record, 0 if the record was updated or -1 if any error happened.
    */
-  public int saveDeliverable(int activityID, Map<String, Object> deliverableData);
+  public int saveDeliverable(int projectID, Map<String, Object> deliverableData);
 
   /**
    * This method saves the Deliverable Contribution relation
@@ -93,6 +93,6 @@ public interface DeliverableDAO {
    * @param projectID - is the Id of the project
    * @return true if the relation Deliverable Contribution is saved, false otherwise
    */
-  public boolean saveDeliverableOutput(int deliverableID, int ipElementID, int projectID);
+  public boolean saveDeliverableOutput(int deliverableID, int projectID, int userID, String justification);
 
 }

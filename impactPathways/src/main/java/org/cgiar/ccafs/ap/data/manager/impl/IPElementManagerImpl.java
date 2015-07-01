@@ -23,6 +23,7 @@ import org.cgiar.ccafs.ap.data.model.IPElement;
 import org.cgiar.ccafs.ap.data.model.IPElementType;
 import org.cgiar.ccafs.ap.data.model.IPIndicator;
 import org.cgiar.ccafs.ap.data.model.IPProgram;
+import org.cgiar.ccafs.ap.data.model.User;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -55,33 +56,23 @@ public class IPElementManagerImpl implements IPElementManager {
   }
 
   @Override
-  public boolean deleteIPElement(IPElement element, IPProgram program) {
-    boolean deleted = false;
-    boolean isElementCreator = (element.getProgram().getId() == program.getId());
-
-    if (isElementCreator) {
-      // If the user is the creator, removes directly the ipElement.
-      // if the element has children, the foreign key will prohibit the
-      // deletion
-      deleted = ipElementDAO.deleteIPElement(element.getId());
-    } else {
-      // If the user is not the creator, then remove only the relation
-      // between the element and the program
-      deleted = ipElementDAO.deleteProgramElement(element.getId());
-    }
-
-    return deleted;
+  public boolean deleteIPElement(IPElement element) {
+    return ipElementDAO.deleteIPElement(element.getId());
   }
 
   @Override
-  public boolean deleteIPElements(IPProgram program, IPElementType type) {
+  // TODO - This method deletes ip_program_elements, we need to check where is it called in order to know if it is
+  // really
+  // required.
+    public
+    boolean deleteIPElements(IPProgram program, IPElementType type) {
     return ipElementDAO.deleteIpElements(program.getId(), type.getId());
   }
 
   @Override
   public IPElement getIPElement(int elementID) {
     List<Map<String, String>> ipElementsDataList = ipElementDAO.getIPElements(new String[] {String.valueOf(elementID)});
-    List<IPElement> elements = setDataToIPElementObjects(ipElementsDataList);
+    List<IPElement> elements = this.setDataToIPElementObjects(ipElementsDataList);
     if (elements.size() == 1) {
       return elements.get(0);
     }
@@ -91,13 +82,13 @@ public class IPElementManagerImpl implements IPElementManager {
   @Override
   public List<IPElement> getIPElementList() {
     List<Map<String, String>> elementDataList = ipElementDAO.getAllIPElements();
-    return setDataToIPElementObjects(elementDataList);
+    return this.setDataToIPElementObjects(elementDataList);
   }
 
   @Override
   public List<IPElement> getIPElementList(String[] ids) {
     List<Map<String, String>> ipElementDataList = ipElementDAO.getIPElements(ids);
-    return setDataToIPElementObjects(ipElementDataList);
+    return this.setDataToIPElementObjects(ipElementDataList);
   }
 
   @Override
@@ -161,26 +152,26 @@ public class IPElementManagerImpl implements IPElementManager {
   @Override
   public List<IPElement> getIPElements(IPProgram program) {
     List<Map<String, String>> ipElementDataList = ipElementDAO.getIPElementByProgramID(program.getId());
-    return setDataToIPElementObjects(ipElementDataList);
+    return this.setDataToIPElementObjects(ipElementDataList);
   }
 
   @Override
   public List<IPElement> getIPElements(IPProgram program, IPElementType type) {
     List<Map<String, String>> ipElementDataList = ipElementDAO.getIPElement(program.getId(), type.getId());
-    return setDataToIPElementObjects(ipElementDataList);
+    return this.setDataToIPElementObjects(ipElementDataList);
   }
 
   @Override
   public List<IPElement> getIPElementsByParent(IPElement parent, int relationTypeID) {
     List<Map<String, String>> ipElementDataList = ipElementDAO.getIPElementsByParent(parent.getId(), relationTypeID);
-    return setDataToIPElementObjects(ipElementDataList);
+    return this.setDataToIPElementObjects(ipElementDataList);
   }
 
   @Override
-  public boolean saveIPElements(List<IPElement> elements) {
+  public boolean saveIPElements(List<IPElement> elements, User user, String justification) {
     Map<String, Object> ipElementData;
     boolean allSaved = true;
-    int elementId, programElementID;
+    int elementId;
 
     for (IPElement element : elements) {
       ipElementData = new HashMap<String, Object>();
@@ -194,25 +185,21 @@ public class IPElementManagerImpl implements IPElementManager {
       ipElementData.put("description", element.getDescription());
       ipElementData.put("creator_id", element.getProgram().getId());
       ipElementData.put("element_type_id", element.getType().getId());
+      ipElementData.put("created_by", user.getId());
+      ipElementData.put("modified_by", user.getId());
+      ipElementData.put("modification_justification", justification);
       elementId = ipElementDAO.createIPElement(ipElementData);
 
       // If the ip_element was updated, createIPElement method returns 0, update the value
       elementId = (elementId == 0) ? element.getId() : elementId;
-      // Add the relation of type creation
-      programElementID =
-        ipElementDAO.relateIPElement(elementId, element.getProgram().getId(), APConstants.PROGRAM_ELEMENT_CREATED_BY);
 
-      // Add the connection of type 'Used by'
-      programElementID =
-        ipElementDAO.relateIPElement(elementId, element.getProgram().getId(), APConstants.PROGRAM_ELEMENT_USED_BY);
-
-      if (programElementID == 0) {
-        programElementID = ipElementDAO.getProgramElementID(elementId, element.getProgram().getId());
-      }
 
       // If the result is 0 the element was updated and keep the same id
       elementId = (elementId == 0) ? element.getId() : elementId;
 
+      //
+      // VAMOS POR ACA
+      //
       if (elementId != -1) {
         // Save the indicators of the element if any
         if (element.getIndicators() != null) {
@@ -229,7 +216,9 @@ public class IPElementManagerImpl implements IPElementManager {
 
             indicatorData.put("description", indicator.getDescription());
             indicatorData.put("target", indicator.getTarget());
-            indicatorData.put("program_element_id", programElementID);
+            indicatorData.put("ip_element_id", elementId);
+            indicatorData.put("user_id", user.getId());
+            indicatorData.put("justification", justification);
 
             if (indicator.getParent() != null) {
               indicatorData.put("parent_id", indicator.getParent().getId());
@@ -252,7 +241,7 @@ public class IPElementManagerImpl implements IPElementManager {
         if (element.getTranslatedOf() != null) {
           for (IPElement parentElement : element.getTranslatedOf()) {
             ipRelationshipDAO
-            .saveIPRelation(parentElement.getId(), elementId, APConstants.ELEMENT_RELATION_TRANSLATION);
+              .saveIPRelation(parentElement.getId(), elementId, APConstants.ELEMENT_RELATION_TRANSLATION);
           }
         }
       } else {
@@ -268,7 +257,7 @@ public class IPElementManagerImpl implements IPElementManager {
   /**
    * This function takes the information of IPElements stored in a list of maps
    * to organize it in a list of IPElement objects
-   *
+   * 
    * @param ipElementDataList
    * @return
    */
@@ -294,8 +283,7 @@ public class IPElementManagerImpl implements IPElementManager {
 
       // Set element indicators if exists
       List<IPIndicator> indicators = new ArrayList<>();
-      int programElementID = Integer.parseInt(elementData.get("program_element_id"));
-      List<Map<String, String>> indicatorsData = ipIndicatorDAO.getIndicatorsByIpProgramElementID(programElementID);
+      List<Map<String, String>> indicatorsData = ipIndicatorDAO.getIndicatorsByElementID(element.getId());
       for (Map<String, String> indicatorData : indicatorsData) {
         IPIndicator indicator = new IPIndicator();
         indicator.setId(Integer.parseInt(indicatorData.get("id")));
