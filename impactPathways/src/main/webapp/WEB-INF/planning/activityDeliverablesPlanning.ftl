@@ -8,9 +8,9 @@
 
 [#assign breadCrumb = [
   {"label":"planning", "nameSpace":"planning", "action":"projectsList"},
-  {"label":"project", "nameSpace":"planning/projects", "action":"description", "param":"projectID=${project.id}"},
-  {"label":"activities", "nameSpace":"planning/projects", "action":"activities" ,"param":"projectID=${project.id}" },
-  {"label":"activityDeliverables", "nameSpace":"planning/activities", "action":"activityDeliverables" }
+  {"label":"projects", "nameSpace":"planning", "action":"projectsList"},
+  {"label":"projectOutputs", "nameSpace":"planning/projects", "action":"outputs", "param":"projectID=${project.id}"},
+  {"label":"projectDeliverables", "nameSpace":"planning/projects", "action":"deliverables", "param":"projectID=${project.id}"}
 ]/]
 
 [#include "/WEB-INF/global/pages/header.ftl" /]
@@ -84,6 +84,6 @@
   [@deliverableTemplate.activityDeliverableTemplate /]
   [#-- Activity Next user Template--]
   [@deliverableTemplate.nextUserTemplate template=true /]
-[/@s.form]  
+[/@s.form]
 
 [#include "/WEB-INF/global/pages/footer.ftl"]
