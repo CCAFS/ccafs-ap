@@ -1,10 +1,11 @@
+
 // Global vars
 var $midOutcomesList;
 
 $(document).ready(init);
 
 function init() {
-  $midOutcomesList = $('#outcomes_midOutcomesList');
+  $midOutcomesList = $('#ccafsOutcomes_midOutcomesList');
   setIndicatorIndexes();
   setMogsIndexes();
   attachEvents();

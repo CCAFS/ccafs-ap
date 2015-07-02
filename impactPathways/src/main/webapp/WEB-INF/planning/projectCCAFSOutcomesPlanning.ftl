@@ -14,7 +14,7 @@
   {"label":"projectCCAFSOutcomes", "nameSpace":"planning/projects", "action":"ccafsOutcomes", "param":"projectID=${project.id}"}
 ]/]
 
-[#assign years= [2019, 2015, 2015+1] /]
+[#assign years= [midOutcomeYear, currentPlanningYear, currentPlanningYear+1] /]
 
 [#include "/WEB-INF/global/pages/header.ftl" /]
 [#include "/WEB-INF/global/pages/main-menu.ftl" /]

@@ -112,6 +112,10 @@ public class ProjectCCAFSOutcomesPlanningAction extends BaseAction {
     return programs.toString();
   }
 
+  public int getCurrentPlanningYear() {
+    return config.getPlanningCurrentYear();
+  }
+
   public List<IPElement> getMidOutcomeOutputs(int midOutcomeID) {
     List<IPElement> outputs = new ArrayList<>();
     IPElement midOutcome = ipElementManager.getIPElement(midOutcomeID);
