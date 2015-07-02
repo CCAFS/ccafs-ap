@@ -56,6 +56,7 @@ function addPartnerEvent(e) {
 }
 
 function setDeliverablesIndexes() {
+  // Updating next users names
   $("#projectDeliverable .projectNextUser").each(function(i,nextUser) {
     var elementName = $('#nextUsersName').val() + "[" + i + "].";
     $(nextUser).attr("id", "projectNextUser-" + i);
@@ -66,6 +67,7 @@ function setDeliverablesIndexes() {
     $(nextUser).find("[name$='strategies']").attr("name", elementName + "strategies");
   });
 
+  // Updating partners contribution names
   $('#projectDeliverable .deliverablePartner').each(function(i,element) {
     var elementName = $('#partnersName').val() + "[" + i + "].";
     $(element).find("span.index").html(i);

@@ -63,8 +63,7 @@
               [#if editable]
                 [#-- Remove Contribution --]
                 <div id="removeContribution" class="removeContribution removeElement removeLink" title="[@s.text name="preplanning.midOutcomes.removeMidOutcome" /]"></div>
-              [/#if]
-  
+              [/#if] 
               [#-- Midoutcome title --]
               <div class="midOutcomeTitle">
                 <input id="midOutcomeID" value="${midOutcome.id}" type="hidden" />
@@ -72,8 +71,7 @@
                 <h6 class="title">${midOutcome.program.acronym} - [@s.text name="planning.projectImpactPathways.outcome2019" /]</h6>
                 
                 <p class="description"> ${midOutcome.description} </p>
-              </div>
-  
+              </div> 
               [#-- Indicators list --]
               <div class="indicators">
                 <h6>[@s.text name="planning.projectImpactPathways.indicators" /]</h6>
@@ -90,9 +88,9 @@
                     [#if projectIndicator.id != -1 || isUniqueIndicator]
   
                       <div class="midOutcomeIndicator" >
-                        <input type="hidden" disabled class="projectIndicatorID" name="project.indicators.id" value="${projectIndicator.id}" />
+                        <input type="hidden" class="projectIndicatorID" name="project.indicators.id" value="${projectIndicator.id}" [#if projectIndicator.id == -1 ]disabled="disabled"[/#if]/>
                         [#if editable] 
-                          <input type="checkbox" class="projectIndicatorCheckbox" id="indicatorIndex-${indicator_index}" [#if projectIndicator.id != -1 || isUniqueIndicator] checked [/#if] [#if isUniqueIndicator] disabled [/#if]  />
+                          <input type="checkbox" class="projectIndicatorCheckbox" id="indicatorIndex-${indicator_index}" [#if projectIndicator.id != -1 || isUniqueIndicator]checked="checked"[/#if] [#if isUniqueIndicator]disabled="disabled"[/#if]  />
                         [/#if]
                         [#if indicator.parent?has_content] 
                           <label class="indicatorDescription [#if !editable]checked[/#if]">${indicator.parent.description}</label>
@@ -146,10 +144,9 @@
                           [/#list] 
                         </div>   
                       </div>  
-                    [#else]
-  
+                    [#else] 
                       <div class="midOutcomeIndicator" >
-                        <input type="hidden" disabled name="indicators.id" value="-1" />
+                        <input type="hidden"  name="indicators.id" value="-1" disabled="disabled"/>
                         [#if editable]
                           <input type="checkbox" class="projectIndicatorCheckbox" id="indicatorIndex-${indicator_index}" />
                           [#if indicator.parent?has_content]
@@ -198,8 +195,7 @@
                   [/#list]  
                 </div>
                 [/#if]
-                </div>
-  
+                </div> 
               [#-- Major Output Group list --]
               <div class="mogs">
                 <h6>[@s.text name="planning.projectImpactPathways.mogs" /]</h6>
@@ -222,8 +218,7 @@
                   </div>
                 [/#if]
               </div>
-            </div>
-  
+            </div> 
           [/#list]
         [/#if]
       </div> <!-- End Contributions Block -->
@@ -274,7 +269,7 @@
     <div class="indicatorsBlock">
       <img class="ajax-loader" style="" src="${baseUrl}/images/global/loading.gif" alt="Loader ..." />
       <div class="midOutcomeIndicator" id="midOutcomeIndicatorTemplate">
-        <input type="hidden" disabled name="activity_indicator_id" value="-1" />
+        <input type="hidden" class="projectIndicatorID" name="activity_indicator_id" value="-1" disabled="disabled"/>
         <input type="checkbox" class="projectIndicatorCheckbox" />
         <label class="indicatorDescription"></label>
         <div class="indicatorTargetsTemplate" style="display:none">
