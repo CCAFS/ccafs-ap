@@ -31,11 +31,15 @@
         [@s.text name="planning.projects.title" /]
       </h1>
       [#if projects?size>0]
+        [#-- Projects List (My Projects) --]
         <h3 class="projectSubTitle">[@s.text name="preplanning.projects.yourProjects"/]</h3>
-        [@projectList.projectsList projects=projects canValidate=true namespace="/planning/projects" /]
+        <div class="loadingBlock"></div>
+        <div style="display:none">
+          [@projectList.projectsList projects=projects canValidate=true namespace="/planning/projects" /]
+        </div>
       [#else]
         <div class="borderBox center">
-          [#if saveable]
+          [#if canEdit]
             <p>[@s.text name="planning.projects.empty"][@s.param][@s.url namespace="/pre-planning" action='projects'/][/@s.param][/@s.text]</p>
           [#else]
             <p>[@s.text name="planning.projects.empty.PL" /]</p>
@@ -53,9 +57,12 @@
         </div>
       [/#if]
       <hr/>
+      [#-- Projects List (Other Projects) --]
       <h3 class="projectSubTitle">[@s.text name="preplanning.projects.otherProjects" /]</h3>
-      [@projectList.projectsList projects=allProjects canValidate=true namespace="/planning/projects" /]
-  
+      <div class="loadingBlock"></div>
+      <div style="display:none">
+        [@projectList.projectsList projects=allProjects canValidate=true namespace="/planning/projects" /]
+      </div>
     </article>
   [/@s.form]
   
