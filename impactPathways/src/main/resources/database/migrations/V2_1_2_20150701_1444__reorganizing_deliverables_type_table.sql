@@ -1,3 +1,7 @@
+------------------------------------------------
+-- Updating categories
+------------------------------------------------
+
 -- Updating names
 UPDATE `deliverable_types` SET `name`='Data and information outputs, including datasets, databases and models' WHERE `id`='1';
 UPDATE `deliverable_types` SET `name`='Peer reviewed Publications' WHERE `id`='3';
@@ -38,3 +42,11 @@ INSERT INTO `deliverable_types` (`name`, `parent_id`, `timeline`) VALUES ('Websi
 
 -- Capacity
 UPDATE `deliverable_types` SET `parent_id`='9' WHERE `id`='40';
+
+----------------------------------------------------------------------
+-- Updating deliverables table so user can define other category
+----------------------------------------------------------------------
+
+ALTER TABLE `deliverables` 
+ADD COLUMN `type_other` TEXT NULL COMMENT 'Other type defined by the user.' AFTER `type_id`;
+

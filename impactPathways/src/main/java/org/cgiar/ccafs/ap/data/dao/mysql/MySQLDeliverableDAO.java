@@ -14,6 +14,9 @@
  */
 package org.cgiar.ccafs.ap.data.dao.mysql;
 
+import org.cgiar.ccafs.ap.data.dao.DeliverableDAO;
+import org.cgiar.ccafs.utils.db.DAOManager;
+
 import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -22,12 +25,9 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import org.cgiar.ccafs.ap.data.dao.DeliverableDAO;
-import org.cgiar.ccafs.utils.db.DAOManager;
+import com.google.inject.Inject;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-
-import com.google.inject.Inject;
 
 /**
  * @author Javier Andrés Gallego B.
@@ -125,6 +125,7 @@ public class MySQLDeliverableDAO implements DeliverableDAO {
         deliverableData.put("activity_id", rs.getString("activity_id"));
         deliverableData.put("title", rs.getString("title"));
         deliverableData.put("type_id", rs.getString("type_id"));
+        deliverableData.put("type_other", rs.getString("type_other"));
         deliverableData.put("year", rs.getString("year"));
 
         deliverablesList.add(deliverableData);
@@ -159,8 +160,8 @@ public class MySQLDeliverableDAO implements DeliverableDAO {
         deliverableData.put("project_id", rs.getString("project_id"));
         deliverableData.put("title", rs.getString("title"));
         deliverableData.put("type_id", rs.getString("type_id"));
+        deliverableData.put("type_other", rs.getString("type_other"));
         deliverableData.put("year", rs.getString("year"));
-
       }
       con.close();
     } catch (SQLException e) {
@@ -223,35 +224,38 @@ public class MySQLDeliverableDAO implements DeliverableDAO {
     Object[] values;
     if (deliverableData.get("id") == null) {
       // Insert new deliverable record
-      query.append("INSERT INTO deliverables (id, project_id,  title, type_id, year, activity_id , created_by, ");
+      query.append(
+        "INSERT INTO deliverables (id, project_id,  title, type_id, type_other, year, activity_id , created_by, ");
       query.append("modified_by, modification_justification) ");
-      query.append("VALUES (?,?,?,?,?,?,?,?,?) ");
-      values = new Object[9];
+      query.append("VALUES (?,?,?,?,?,?,?,?,?,?) ");
+      values = new Object[10];
       values[0] = deliverableData.get("id");
       values[1] = projectID;
       values[2] = deliverableData.get("title");
       values[3] = deliverableData.get("type_id");
-      values[4] = deliverableData.get("year");
+      values[4] = deliverableData.get("type_other");
+      values[5] = deliverableData.get("year");
       // temporal
+      values[6] = deliverableData.get("activity_id");
+      values[7] = deliverableData.get("created_by");
+      values[8] = deliverableData.get("modified_by");
+      values[9] = deliverableData.get("modification_justification");
+    } else {
+      // Updating existing deliverable record
+      query.append(
+        "UPDATE deliverables SET project_id = ?, title = ?, type_id = ?, type_other = ?, year = ?, activity_id = ?, created_by = ?, modified_by = ?, modification_justification = ? ");
+      query.append("WHERE id = ? ");
+      values = new Object[10];
+      values[0] = projectID;
+      values[1] = deliverableData.get("title");
+      values[2] = deliverableData.get("type_id");
+      values[3] = deliverableData.get("type_other");
+      values[4] = deliverableData.get("year");
       values[5] = deliverableData.get("activity_id");
       values[6] = deliverableData.get("created_by");
       values[7] = deliverableData.get("modified_by");
       values[8] = deliverableData.get("modification_justification");
-    } else {
-      // Updating existing deliverable record
-      query
-        .append("UPDATE deliverables SET project_id = ?, title = ?, type_id = ?, year = ?, activity_id = ?, created_by = ?, modified_by = ?, modification_justification = ? ");
-      query.append("WHERE id = ? ");
-      values = new Object[9];
-      values[0] = projectID;
-      values[1] = deliverableData.get("title");
-      values[2] = deliverableData.get("type_id");
-      values[3] = deliverableData.get("year");
-      values[4] = deliverableData.get("activity_id");
-      values[5] = deliverableData.get("created_by");
-      values[6] = deliverableData.get("modified_by");
-      values[7] = deliverableData.get("modification_justification");
-      values[8] = deliverableData.get("id");
+      values[9] = deliverableData.get("id");
     }
     result = databaseManager.saveData(query.toString(), values);
 

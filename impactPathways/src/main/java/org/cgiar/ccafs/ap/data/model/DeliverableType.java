@@ -18,7 +18,7 @@ import org.apache.commons.lang3.builder.ToStringBuilder;
 
 /**
  * This class represents a CCAFS Product type.
- * Each deliverable will have to be relate to one deliverable type.
+ * Each deliverable will have to be related to one deliverable type.
  * The timeline is used in months and depends on the Open Access Policy implemented by the CGIAR.
  *
  * @author Héctor Fabio Tobón R.
