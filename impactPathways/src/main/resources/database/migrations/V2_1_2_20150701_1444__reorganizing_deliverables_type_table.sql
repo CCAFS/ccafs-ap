@@ -18,7 +18,7 @@ UPDATE `deliverable_types` SET `name`='Working paper' WHERE `id`='16';
 UPDATE `deliverable_types` SET `parent_id`='2' WHERE `id`='22';
 
 -- Peer reviewed Publications
--- TODO - To remove "Other" [id=25].
+-- TODO - To remove "Other" [id=25]. Will be done in another SQL as I'm waiting for Paola.
 
 -- Communication Products and Multimedia
 UPDATE `deliverable_types` SET `name`='Articles for media or news (radio, TV, newspapers, newsletters, etc.)' WHERE `id`='26';
