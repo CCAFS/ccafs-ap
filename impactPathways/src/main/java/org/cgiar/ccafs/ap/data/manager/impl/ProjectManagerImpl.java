@@ -499,6 +499,7 @@ public class ProjectManagerImpl implements ProjectManager {
       projectData.put("user_id", user.getId());
       projectData.put("liaison_institution_id", project.getLiaisonInstitution().getId());
       projectData.put("created_by", user.getId());
+      projectData.put("modified_by", user.getId());
       projectData.put("justification", justification);
 
       if (project.isCoreProject()) {
