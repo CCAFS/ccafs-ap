@@ -194,7 +194,7 @@
       <result name="input">/WEB-INF/planning/projectOutputsPlanning.ftl</result>
     </action>
     
-    <action name="deliverablesList" class="org.cgiar.ccafs.ap.action.planning.ActivityDeliverablesAction">
+    <action name="deliverablesList" class="org.cgiar.ccafs.ap.action.planning.ProjectDeliverablesAction">
       <result name="input">/WEB-INF/planning/projectDeliverablesListPlanning.ftl</result>
     </action>
     
