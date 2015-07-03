@@ -155,8 +155,8 @@
         <param name="projectID">${project.id}</param>
       </result>
       <result name="cancel" type="redirectAction">
-        <param name="actionName">projects</param>
-        <param name="namespace">/planning</param>
+        <param name="actionName">outcomes</param>
+        <param name="projectID">${project.id}</param>
       </result>
     </action>
     
@@ -171,8 +171,8 @@
         <param name="projectID">${project.id}</param>
       </result>
       <result name="cancel" type="redirectAction">
-        <param name="actionName">projects</param>
-        <param name="namespace">/planning</param>
+        <param name="actionName">ccafsOutcomes</param>
+        <param name="projectID">${project.id}</param>
       </result>
     </action>
 
@@ -195,11 +195,28 @@
     <!-- Project Outputs  -->
     
     <action name="outputs" class="org.cgiar.ccafs.ap.action.planning.ProjectOutcomeAction">
-      <result name="input">/WEB-INF/planning/projectOutputsPlanning.ftl</result>   
+      <result name="input">/WEB-INF/planning/projectOutputsPlanning.ftl</result>
     </action>
     
-    <action name="deliverables" class="org.cgiar.ccafs.ap.action.planning.ProjectOutcomeAction">
-      <result name="input">/WEB-INF/planning/projectDeliverablesPlanning.ftl</result>   
+    <action name="deliverablesList" class="org.cgiar.ccafs.ap.action.planning.ActivityDeliverablesAction">
+      <result name="input">/WEB-INF/planning/projectDeliverablesListPlanning.ftl</result>
+    </action>
+    
+    <action name="deliverable" class="org.cgiar.ccafs.ap.action.planning.ActivityDeliverablesAction">
+      <result name="input">/WEB-INF/planning/projectDeliverablePlanning.ftl</result>
+      <result name="success" type="redirectAction">
+        <param name="actionName">deliverable</param>
+        <param name="deliverableID">${deliverable.id}</param>
+      </result>
+      <result name="next" type="redirectAction">
+        <param name="actionName">deliverable</param>
+        <param name="deliverableID">${deliverable.id}</param>
+      </result>
+      <result name="cancel" type="redirectAction">
+        <param name="projectID">${project.id}</param>
+        <param name="actionName">deliverablesList</param>
+        <param name="namespace">/planning/projects</param>
+      </result>
     </action>
 
     <action name="impactPathway" class="org.cgiar.ccafs.ap.action.planning.ProjectImpactPathwayAction">

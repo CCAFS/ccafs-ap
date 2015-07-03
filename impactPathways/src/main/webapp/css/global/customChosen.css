@@ -95,7 +95,7 @@
 }
 
 .halfPartBlock .chzn-container-single .chzn-single {
-    width: 250px !important;
+    /* width: 94% !important; */
 }
 
 .halfPartBlock .chzn-drop .chzn-search input{
@@ -103,11 +103,11 @@
 }
 
 .halfPartBlock .chzn-container .chzn-results {
-  width: 250px !important;  
+  width: 357px !important;  
 }
 
 .halfPartBlock .chzn-container .chzn-drop {
-  width: 258px !important;  
+  width: 367px !important;  
 }
 
 /*-------------  third part block elements  ----------------*/

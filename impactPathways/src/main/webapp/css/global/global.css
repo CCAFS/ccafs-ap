@@ -95,6 +95,32 @@ textarea.fieldError, input.fieldError,textarea.fieldError:focus, input.fieldErro
   color: #EE1D1D !important;
 }
 
+/* Table default style*/
+table.default {
+    width: 100%;
+}
+
+table.default th{
+    color: #0F7296;
+    border-bottom: 1px solid #0F7296;
+    padding: 5px 0px 3px 8px;
+}
+table.default td{
+    padding: 6px 10px 0 10px;
+    border: 1px solid #f1f1f1;
+    font-size: 0.97em;
+}
+
+table.default tbody tr:hover{ 
+  background-color: #f9f9f9;
+}
+
+table.default a{
+    color: #444;
+ 
+    text-decoration: none;
+}
+
 p.fieldError{
   color: #F52626;
   font-weight: bold;
@@ -109,7 +135,7 @@ p.warning-info {
 }
 
 p.checked, label.checked {
-    background: url(../../images/global/icon-check.png) no-repeat 0;
+    background: url(../../images/global/icon-check.png) no-repeat 0 25%;
     padding: 3px 0  3px 23px;
 }
 
@@ -381,7 +407,7 @@ img.icon {
 }
 
 .removeElement {
-  padding: 11px 23px;
+  padding: 10px 22px;
   background: url(../../images/global/icon-remove.png) no-repeat center #D5504C;
   position: absolute;    top: 0;    right: 0;        border-radius: 0px 3px  0px 8px;
   cursor: pointer;
@@ -395,7 +421,7 @@ img.icon {
 
 .addLink{
   margin: 15px 5px 12px 0px;
-  text-align: right;
+  text-align: left;
 }
 
 .addLink img, .addLink a {
@@ -462,7 +488,7 @@ span.logType.insert {
 
 /* General Messages */
 #generalMessages {
-  margin-top: 20px;
+  /* margin-top: 20px; */
   text-align: center;
 }
 
@@ -472,7 +498,7 @@ span.logType.insert {
 
 .charCount {
   color: #888888;
-  font-size: 10px;
+  font-size: 0.85em !important;
   margin-right: 25px;
   text-align: right !important;
 }
@@ -892,10 +918,11 @@ nav#mainMenu ul a.disabled li{
 /*************** BREADCRUMB NAVIGATION ***********/
 
 #breadcrumb {
+  /* display: none; */
+  /* float: right; */
   list-style: none;
   display: inline-block;
-  margin-left: 4em;
-  margin-top: 1em;
+  margin: 1em 0 1em 0;
 }
 #breadcrumb .icon {
   font-size: 14px;
@@ -989,6 +1016,7 @@ nav#mainMenu ul a.disabled li{
   padding: 0px;
   width: 184px;
   
+  margin-top: 31px;
   font-family: 'Open Sans', sans-serif;
 }
 
@@ -996,7 +1024,7 @@ nav#mainMenu ul a.disabled li{
     font-size: 1.6em; 
     font-weight: lighter;
     color: #494949;
-    margin: 24px 0 14px 0;
+    /* margin: 24px 0 9px 0; */
     padding-left: 0px;
 }
 
@@ -1004,8 +1032,7 @@ nav#mainMenu ul a.disabled li{
   list-style-type: none;
   margin-left: 0;
   border: 1px solid #dbdbdb;
-  border-radius: 8px;
-  margin-top: 8px;
+  border-radius: 5px 5px 5px 5px;
   background: #fff;
 }
 
@@ -1100,13 +1127,16 @@ a.currentReportingSection li #i-additionalInformation{
 }
 
 #secondaryMenu a.goBack {
-  background: url("../../images/global/sub-menu-goback.png") no-repeat;
-  background-size: 62%;
-  width: 50px;  
+  background: url("../../images/global/sub-menu-goback.png") 0.2em no-repeat;
+  background-size: 46%;
+  width: 80%;  
   text-align: left;
-  padding: 5px 0 0 33px;
+  padding: 9px 0 9px 29px;
   text-decoration: none;
   color: #444;
+  display: block;
+  border-radius: 5px 5px 0 0;
+  font-size: 0.9em;
 }
 
 
@@ -1116,7 +1146,9 @@ a.currentReportingSection li #i-additionalInformation{
   background-repeat: no-repeat;
   width: 220px;
   margin-left: -12px;
+  padding: 10px 5px 9px 21px;
   border: none;
+  font-weight: bold;
 }
 
 #arrowDown {
@@ -1136,7 +1168,7 @@ a.currentReportingSection li #i-additionalInformation{
 
 /*************** BODY ****************/
 .content {
-  margin: 10px 34px; 
+  margin: 0px 34px 37px 0; 
 }
 .content:before,.content:after {
   content: "";
@@ -1157,8 +1189,8 @@ a.currentReportingSection li #i-additionalInformation{
 
 .halfContent {
   float: right;
-  padding: 17px 0;
-  width: 800px;
+  padding: 0px 0;
+  width: 845px;
   vertical-align: top;
   position: relative;
 }
@@ -1174,6 +1206,16 @@ a.currentReportingSection li #i-additionalInformation{
   font-size: 1.6em;
   font-weight: normal;
   margin-bottom: 10px;
+}
+
+h1.sectionTitle{
+    border: 0;
+  
+    /* color: #515151; */
+    border-bottom: 1px solid #818181;
+    font-size: 2em;
+    font-weight: lighter;
+    margin: 14px 0 16px 0;
 }
 
 h1#error{
@@ -1214,7 +1256,7 @@ a#backHome {
 
 
 .halfContent h1 {
-  border-bottom: 2px solid rgba(136, 72, 9, 1);
+  border-bottom: 1px solid #884809;
   color: #663300;
   font-size: 1.7em;
   padding-bottom: 2px;
@@ -1262,7 +1304,7 @@ h1.simpleTitle span {
 }
 
 .fullBlock .input input{
-  width: 98%;
+  width: 100%;
 }
 
 .fourthPartBlock { 
@@ -1301,7 +1343,7 @@ h1.simpleTitle span {
 }
 
 .fullPartBlock {
-  padding: 0 9px 10px 0;
+  padding: 2px 9px 8px 0;
   width: 100%;
   vertical-align: middle;
   position: relative;
@@ -1392,16 +1434,16 @@ h1.simpleTitle span {
 
 .helpMessage { 
   position: relative;
-  -webkit-box-shadow: 1px 2px 8px rgba(0, 0, 0, 0.3);
+  /* -webkit-box-shadow: 1px 2px 8px rgba(0, 0, 0, 0.3); */
   -moz-box-shadow: 1px 2px 8px rgba(0,0,0,.3);
-  box-shadow: 1px 2px 8px rgba(0, 0, 0, 0.3); 
+  box-shadow: 1px 2px 1px rgba(0, 0, 0, 0.1); 
   -webkit-border-radius:2px;
   -moz-border-radius:2px;
   border-radius:2px;
   padding: 10px;
   border: 1px solid #EEE;
   background: #F8F8F8;  
-  margin: 6px 0;
+  margin: 0 auto;
 }
 
 .helpMessage:before,.helpMessage:after {
@@ -1421,6 +1463,7 @@ h1.simpleTitle span {
 .helpMessage img {
   float: left;
   padding: 5px;
+  width: 27px;
 }
 
 .helpMessage p {
@@ -1445,7 +1488,7 @@ h1.simpleTitle span {
 
 .searchUser {
     width: 91px;
-    padding: 2px 0px;
+    padding: 2px 0px 4px 0;
     text-align: center;
     background: #668FDA;
     color: #fff;
@@ -1454,7 +1497,7 @@ h1.simpleTitle span {
     float: right;
     cursor: pointer;
     position: absolute;
-    bottom: 0.9em;
+    bottom: 0.65em;
     right: 0.8em;
 }
 
@@ -1728,14 +1771,14 @@ width:10px;
     position: relative;
 }
 
-#contributionsBlock .contribution .midOutcomeTitle h6 {
+.midOutcomeTitle h6 {
   color: #0F7296;
   font-size: 1.3em;
   font-weight: normal;
   border-bottom: 1px solid #0F7296;
-  margin: 0px 0 7px -2px;    
+  margin: 0px 0 12px -2px;    
   padding-top: 0px;
-  padding-bottom: 4px;
+  padding-bottom: 5px;
 }
 
 .contributions p#description {
@@ -1868,7 +1911,7 @@ button.ipGraph-btn{
 /* Project List */
 .content .projectSubTitle {
   text-align: center;
-  margin: 20px 0px 0px 0px;
+  margin: 15px 0px 10px 0px;
   color: #4C4C4C;
   font-size: 1.5em;
   font-family: 'Open Sans', sans-serif;
@@ -2213,14 +2256,24 @@ p.partnerTitle {
 #projectOutcomes textarea {
   height: 50px;
 }
+
 #projectOutcomes #projectOutcomeStatement textarea {
   height: 80px;
 }
 
-
 .indicatorTargets.ui-tabs {
   padding-top: 12px;
   margin-right: 12px;
+}
+
+/** Project Deliberables **/
+
+.projectNextUser textarea{
+    height: 60px;
+
+}
+.deliverablePartner {
+    font-size: 0.95em;
 }
 
 /*** Activities ***/
@@ -2456,7 +2509,7 @@ p#fileUploadText {
 #activityImpactPathway .indicatorsBlock {
   padding: 7px 0px 6px 12px;
   margin: 8px 3px 6px 0px;
-  border: 1px solid #E8E8E8;
+  /* border: 1px solid #E8E8E8; */
   border-radius: 6px;
 }
 
@@ -2469,9 +2522,9 @@ margin-bottom: 8px;
 }
 
 .mogsBlock {
-    padding: 7px 0px 6px 12px;
+    padding: 7px 12px 6px 16px;
   margin: 8px 3px 6px 0px !important;
-    border: 1px solid #E8E8E8;
+    /* border: 1px solid #E8E8E8; */
     border-radius: 6px;
 }
 
@@ -2479,6 +2532,12 @@ margin-bottom: 8px;
   margin-bottom: 7px;
 }
 
+.mogsBlock .mog label, .mogsBlock .mog h6 {
+    color: #5C5C5C;
+}
+.mogsBlock .mog textarea {
+  height:55px;
+}
 
 #activityImpactPathway .indicatorNarrative {
   padding: 5px 7px;
@@ -2491,7 +2550,7 @@ margin-bottom: 8px;
 /********* Activity Reporting Sub Menu **********/
 #stageMenu {
   display: block;
-  margin: 21px 30px 15px 0px;
+  margin: 39px 30px 15px 0px;
   text-align: center;
   position: relative;
 }
@@ -2792,7 +2851,7 @@ ul#deliverablesFilesMessages > li {
   border: 1px solid #D1D1D1;
   padding: 20px 15px 18px 15px;
   border-radius: 4px;
-  margin: 18px 0px;
+  margin: 10px 0 15px 0;
   position: relative;
   transition: box-shadow 0.3s cubic-bezier(0.18, 0.89, 0.32, 1.28);*
   
@@ -2801,7 +2860,7 @@ ul#deliverablesFilesMessages > li {
 }
 
 .borderBox:hover{
-  box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.25);
+  box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.15);
   border: 1px solid #C7C7C7;
 }
 
@@ -2824,7 +2883,7 @@ ul#deliverablesFilesMessages > li {
   color: #5A5A5A;
 }
 
-.borderBox >span#index {
+.borderBox >span.index {
 position: absolute;
 top: 0px;
 left: 0px;
@@ -2846,6 +2905,15 @@ border-radius: 3px 0px 3px 0px;
 
 .borderBox {
   *zoom: 1;
+}
+
+.simpleBox {
+    border: 1px solid #E7E7E7;    
+    padding: 13px 15px 10px 15px;    
+    border-radius: 3px;   
+    margin: 7px 0px;    
+    position: relative;
+    background: #FFF;
 }
 
 #publications .journalArticlesIndicators .checkbox h6{

@@ -65,12 +65,21 @@ public class MySQLProjectDAO implements ProjectDAO {
   }
 
   @Override
-  public boolean deleteProjectIndicator(int projectID, int indicatorID) {
+  public boolean deleteProjectIndicator(int projectID, int indicatorID, int userID, String justification) {
     LOG.debug(">> deleteProjectIndicator(projectID={}, indicatorID={})", projectID, indicatorID);
 
-    String query = "DELETE FROM ip_project_indicators WHERE project_id = ? AND id = ?";
+    StringBuilder query = new StringBuilder();
+    query.append("UPDATE ip_project_indicators SET is_active = FALSE, ");
+    query.append("modified_by = ? , modification_justification = ? ");
+    query.append("WHERE project_id = ? AND id = ? ");
 
-    int rowsDeleted = databaseManager.delete(query, new Object[] {projectID, indicatorID});
+    Object[] values = new Object[4];
+    values[0] = userID;
+    values[1] = justification;
+    values[2] = projectID;
+    values[3] = indicatorID;
+
+    int rowsDeleted = databaseManager.delete(query.toString(), values);
     if (rowsDeleted >= 0) {
       LOG.debug("<< deleteProjectIndicator():{}", true);
       return true;
@@ -82,12 +91,22 @@ public class MySQLProjectDAO implements ProjectDAO {
 
 
   @Override
-  public boolean deleteProjectOutput(int projectID, int outputID) {
+  public boolean deleteProjectOutput(int projectID, int outputID, int outcomeID, int userID, String justification) {
     LOG.debug(">> deleteProjectOutput(projectID={}, outputID={})", projectID, outputID);
 
-    String query = "DELETE FROM ip_project_contributions WHERE project_id = ? AND mog_id = ?";
+    StringBuilder query = new StringBuilder();
+    query.append("UPDATE ip_project_contributions SET is_active = FALSE, ");
+    query.append("modified_by = ?, modification_justification = ? ");
+    query.append("WHERE project_id = ? AND mog_id = ? AND midOutcome_id = ?; ");
 
-    int rowsDeleted = databaseManager.delete(query, new Object[] {projectID, outputID});
+    Object[] values = new Object[5];
+    values[0] = userID;
+    values[1] = justification;
+    values[2] = projectID;
+    values[3] = outputID;
+    values[4] = outcomeID;
+
+    int rowsDeleted = databaseManager.delete(query.toString(), values);
     if (rowsDeleted >= 0) {
       LOG.debug("<< deleteProjectOutput():{}", true);
       return true;
@@ -504,6 +523,7 @@ public class MySQLProjectDAO implements ProjectDAO {
     query.append("INNER JOIN ip_elements ie ON ai.outcome_id = ie.id ");
     query.append("WHERE ai.project_id=  ");
     query.append(projectID);
+    query.append(" AND ai.is_active = TRUE ");
 
     try (Connection con = databaseManager.getConnection()) {
       ResultSet rs = databaseManager.makeQuery(query.toString(), con);
@@ -580,6 +600,7 @@ public class MySQLProjectDAO implements ProjectDAO {
     query.append("INNER JOIN ip_elements outcome ON ipc.`midOutcome_id` = outcome.id ");
     query.append("WHERE project_id =  ");
     query.append(projectID);
+    query.append(" AND ipc.is_active = TRUE ");
 
     try (Connection con = databaseManager.getConnection()) {
       ResultSet rs = databaseManager.makeQuery(query.toString(), con);
@@ -820,10 +841,10 @@ public class MySQLProjectDAO implements ProjectDAO {
 
     Object[] values;
     // Insert new activity indicator record
-    query
-      .append("INSERT INTO ip_project_indicators (id, description, target, year, project_id, parent_id, outcome_id) ");
-    query.append("VALUES (?, ?, ?, ?, ?, ?, ?) ");
-    values = new Object[7];
+    query.append("INSERT IGNORE INTO ip_project_indicators (id, description, target, year, project_id, ");
+    query.append("parent_id, outcome_id, created_by, modified_by, modification_justification) ");
+    query.append("VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?) ");
+    values = new Object[10];
     values[0] = indicatorData.get("id");
     values[1] = indicatorData.get("description");
     values[2] = indicatorData.get("target");
@@ -831,6 +852,9 @@ public class MySQLProjectDAO implements ProjectDAO {
     values[4] = indicatorData.get("project_id");
     values[5] = indicatorData.get("parent_id");
     values[6] = indicatorData.get("outcome_id");
+    values[7] = indicatorData.get("user_id");
+    values[8] = indicatorData.get("user_id");
+    values[9] = indicatorData.get("justification");
 
     int newId = databaseManager.saveData(query.toString(), values);
     if (newId == -1) {
@@ -853,12 +877,16 @@ public class MySQLProjectDAO implements ProjectDAO {
 
     Object[] values;
     // Insert new activity indicator record
-    query.append("INSERT IGNORE INTO ip_project_contributions (project_id, mog_id, midOutcome_id) ");
-    query.append("VALUES (?, ?, ?) ");
-    values = new Object[3];
+    query.append("INSERT IGNORE INTO ip_project_contributions ");
+    query.append("(project_id, mog_id, midOutcome_id, created_by, modified_by, modification_justification) ");
+    query.append("VALUES (?, ?, ?, ?, ?, ?) ");
+    values = new Object[6];
     values[0] = outputData.get("project_id");
     values[1] = outputData.get("mog_id");
     values[2] = outputData.get("midOutcome_id");
+    values[3] = outputData.get("user_id");
+    values[4] = outputData.get("user_id");
+    values[5] = outputData.get("justification");
 
     int newId = databaseManager.saveData(query.toString(), values);
     if (newId == -1) {

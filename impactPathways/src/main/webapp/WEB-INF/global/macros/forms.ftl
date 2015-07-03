@@ -16,7 +16,7 @@
     [/#if]
     [#if errorField==""][@s.fielderror cssClass="fieldError" fieldName="${name}"/][#else][@s.fielderror cssClass="fieldError" fieldName="${errorfield}"/][/#if]
     [#if editable]
-      <input type="${type}" id="${name}" name="${name}" value="[#if value=="-NULL"][@s.property value="${name?string}"/][#else]${value}[/#if]"  [#if className != "-NULL"] class="${className}" [/#if][#if readOnly] readonly="readonly"[/#if] [#if disabled]disabled="disabled"[/#if] />
+      <input type="${type}" id="${name}" name="${name}" value="[#if value=="-NULL"][@s.property value="${name?string}"/][#else]${value}[/#if]"  [#if className != "-NULL"] class="${className}" [/#if][#if readOnly] readonly="readonly"[/#if] [#if disabled]disabled="disabled"[/#if] [#if required]required[/#if]/>
     [#else]
       <p>  
         [#if value=="-NULL"] 
@@ -50,22 +50,14 @@
     [/#if]
     [#if errorfield==""][@s.fielderror cssClass="fieldError" fieldName="${name}"/][#else][@s.fielderror cssClass="fieldError" fieldName="${errorfield}"/][/#if]
     [#if editable]
-      <textarea name="${name}" id="${name}" [#if disabled]disabled="disabled"[/#if] [#if className != "-NULL"] class="ckeditor ${className}" [/#if] />[#if value=="-NULL"][@s.property value="${name}"/][#else]${value}[/#if]</textarea>
+      <textarea name="${name}" id="${name}" [#if disabled]disabled="disabled"[/#if] [#if className != "-NULL"] class="ckeditor ${className}" [/#if] [#if required]required[/#if]/>[#if value=="-NULL"][@s.property value="${name}"/][#else]${value}[/#if]</textarea>
     [#else]
       <p>
         [#if value=="-NULL"] 
           [#assign customValue][@s.property value="${name?string}"/][/#assign] 
-          [#if !(customValue)?has_content] 
-            [@s.text name="form.values.fieldEmpty" /]
-          [#else]
-            ${customValue}
-          [/#if]
+          [#if !(customValue)?has_content] [@s.text name="form.values.fieldEmpty" /][#else]${customValue?html}[/#if]
         [#else]
-          [#if !value?has_content] 
-            [@s.text name="form.values.fieldEmpty" /]
-          [#else]
-            ${value}
-          [/#if] 
+          [#if !value?has_content] [@s.text name="form.values.fieldEmpty" /][#else]${value?html}[/#if] 
         [/#if]
       </p>
       
@@ -173,19 +165,19 @@
           [/#if]
         [/#if] 
       [#else] 
-        <p>
+        <p>  
         [#if value=="-NULL"] 
-          [#assign customValue][@s.property value="${name}.${displayFieldName}"/][/#assign] 
+          [#assign customValue][@s.property value="${name}.${displayFieldName}"/][/#assign]  
           [#if !(customValue)?has_content] 
             [@s.text name="form.values.fieldEmpty" /]
           [#else]
             ${customValue}
           [/#if]
         [#else] 
-          [#if !value?has_content] 
-            [@s.text name="form.values.fieldEmpty" /]
-          [#else]
+          [#if value?has_content]
             [@s.property value="${name}.${displayFieldName}"/]
+          [#else]
+            [@s.text name="form.values.fieldEmpty" /]
           [/#if] 
         [/#if]
         </p>

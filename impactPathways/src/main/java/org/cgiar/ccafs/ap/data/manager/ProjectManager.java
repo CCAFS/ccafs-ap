@@ -32,9 +32,11 @@ public interface ProjectManager {
    * 
    * @param projectID - project identifier
    * @param indicatorID - indicator identifier
+   * @param user - User who is deleting the indicator
+   * @param justification
    * @return true if the relation was successfully removed. False otherwise.
    */
-  public boolean deleteIndicator(int projectID, int indicatorID);
+  public boolean deleteIndicator(int projectID, int indicatorID, User user, String justification);
 
   /**
    * This method deletes the project identified by the value received by
@@ -51,9 +53,12 @@ public interface ProjectManager {
    * 
    * @param projectID - project identifier
    * @param outputID - output identifier
+   * @param outcomeID - identifier of the outcome to which the output belongs to.
+   * @param userID - identifier of the user who is deleting the output
+   * @param justification
    * @return true if the relation was successfully removed. False otherwise.
    */
-  public boolean deleteProjectOutput(int projectID, int outputID);
+  public boolean deleteProjectOutput(int projectID, int outputID, int outcomeID, int userID, String justification);
 
   /**
    * This method validate if the system has a project identified with the given parameter.
@@ -214,9 +219,11 @@ public interface ProjectManager {
    * 
    * @param indicators - List of indicators objects
    * @param projectID - project identifier
+   * @param user - the user who is making the change
+   * @param justification
    * @return true if ALL the indicators were saved successfully. False otherwise
    */
-  public boolean saveProjectIndicators(List<IPIndicator> indicators, int projectID);
+  public boolean saveProjectIndicators(List<IPIndicator> indicators, int projectID, User user, String justification);
 
   /**
    * This method save into the database the relation between a project and
@@ -224,7 +231,9 @@ public interface ProjectManager {
    * 
    * @param outputs - A list of ipElmenet objects
    * @param projectID - project identifier
+   * @param user - the user who is making the change
+   * @param justification
    * @return true if ALL the relations were saved successfully. False otherwise.
    */
-  public boolean saveProjectOutputs(List<IPElement> outputs, int projectID);
+  public boolean saveProjectOutputs(List<IPElement> outputs, int projectID, User user, String justification);
 }

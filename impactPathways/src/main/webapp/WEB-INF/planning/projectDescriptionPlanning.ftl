@@ -10,7 +10,8 @@
 [#assign breadCrumb = [
   {"label":"planning", "nameSpace":"planning", "action":"projectsList"},
   {"label":"projects", "nameSpace":"planning", "action":"projectsList"},
-  {"label":"description", "nameSpace":"planning/projects", "action":""}
+  {"label":"description", "nameSpace":"planning/projects", "action":"description", "param":"projectID=${project.id}"},
+  {"label":"information", "nameSpace":"planning/projects", "action":"description", "param":"projectID=${project.id}"}
 ] /]
 
 [#include "/WEB-INF/global/pages/header.ftl" /]
@@ -20,9 +21,8 @@
     
 <section class="content">
   <div class="helpMessage">
-    <img src="${baseUrl}/images/global/icon-help.png" />
-    <p> [@s.text name="planning.projectDescription.help" /] </p>
-  </div>
+    <img src="${baseUrl}/images/global/icon-help.png" /><p> [@s.text name="planning.projectDescription.help" /] </p>
+  </div> 
   [#include "/WEB-INF/planning/planningProjectsSubMenu.ftl" /]
   
   [@s.form action="description" method="POST" enctype="multipart/form-data" cssClass="pure-form"]
@@ -41,7 +41,7 @@
       [#if (!editable && canEdit)]
         <div class="editButton"><a href="[@s.url includeParams='get'][@s.param name="edit"]true[/@s.param][/@s.url]">[@s.text name="form.buttons.edit" /]</a></div>
       [/#if]
-      <h1 class="contentTitle"> P${project.id} -  [@s.text name="${project.type}" /]- [@s.text name="planning.projectDescription.title" /] </h1>  
+      <h1 class="contentTitle">[@s.text name="planning.projectDescription.title" /]</h1>  
       <fieldset class="fullBlock">
         [#-- Project Title --]
         <div class="fullBlock">

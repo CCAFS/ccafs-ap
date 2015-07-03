@@ -55,10 +55,10 @@ public class ActivityDeliverablesAction extends BaseAction {
   private ActivityManager activityManager;
 
   // Model for the back-end
-  private Activity activity;
+  private Activity project;
 
   // Model for the front-end
-  private Project project;
+  private Project projectOld;
   private int activityID;
   private List<DeliverableType> deliverableTypes;
   private List<DeliverableType> deliverableSubTypes;
@@ -75,10 +75,6 @@ public class ActivityDeliverablesAction extends BaseAction {
     this.nextUserManager = nextUserManager;
     this.projectManager = projectManager;
     this.activityManager = activityManager;
-  }
-
-  public Activity getActivity() {
-    return activity;
   }
 
   public int getActivityID() {
@@ -101,9 +97,14 @@ public class ActivityDeliverablesAction extends BaseAction {
     return outputs;
   }
 
-  public Project getProject() {
+  public Activity getProject() {
     return project;
   }
+
+  public Project getProjectOld() {
+    return projectOld;
+  }
+
 
   @Override
   public String next() {
@@ -119,31 +120,32 @@ public class ActivityDeliverablesAction extends BaseAction {
   public void prepare() throws Exception {
 
     activityID = Integer.parseInt(StringUtils.trim(this.getRequest().getParameter(APConstants.ACTIVITY_REQUEST_ID)));
-    activity = activityManager.getActivityById(activityID);
+    project = activityManager.getActivityById(activityID);
 
-    // Getting the project where this activity belongs to.
-    project = projectManager.getProjectFromActivityId(activityID);
+    // Getting the project where this project belongs to.
+    projectOld = projectManager.getProjectFromActivityId(activityID);
 
     // Getting the Deliverables Main Types.
     deliverableTypes = deliverableTypeManager.getDeliverableTypes();
 
-    allYears = activity.getAllYears();
+    allYears = project.getAllYears();
 
     // Getting the List of Expected Deliverables
-    List<Deliverable> deliverables = deliverableManager.getDeliverablesByProject(activityID);
-    activity.setDeliverables(deliverables);
 
-    outputs = projectManager.getProjectOutputs(project.getId());
+    List<Deliverable> deliverables = deliverableManager.getDeliverablesByProject(activityID);
+    project.setDeliverables(deliverables);
+
+    outputs = projectManager.getProjectOutputs(projectOld.getId());
 
     if (outputs.size() > 0) {
       // Getting the List of Next Users related to the expected Deliverable
-      for (Deliverable deliverable : activity.getDeliverables()) {
+      for (Deliverable deliverable : project.getDeliverables()) {
         deliverable.setNextUsers(nextUserManager.getNextUsersByDeliverableId(deliverable.getId()));
       }
       if (this.getRequest().getMethod().equalsIgnoreCase("post")) {
         // Clear out the list if it has some element
-        if (activity.getDeliverables() != null) {
-          activity.getDeliverables().clear();
+        if (project.getDeliverables() != null) {
+          project.getDeliverables().clear();
         }
       }
     }
@@ -160,7 +162,7 @@ public class ActivityDeliverablesAction extends BaseAction {
 
       // Identifying deleted deliverables in the interface to delete them from the database.
       for (Deliverable deliverable : previousDeliverables) {
-        if (!activity.getDeliverables().contains(deliverable) || activity.getDeliverables().isEmpty()) {
+        if (!project.getDeliverables().contains(deliverable) || project.getDeliverables().isEmpty()) {
           deleted = deliverableManager.deleteDeliverable(deliverable.getId());
           if (!deleted) {
             success = false;
@@ -173,7 +175,7 @@ public class ActivityDeliverablesAction extends BaseAction {
       }
 
       // Saving deliverables
-      for (Deliverable deliverable : activity.getDeliverables()) {
+      for (Deliverable deliverable : project.getDeliverables()) {
         int result = deliverableManager.saveDeliverable(activityID, deliverable);
         if (result != -1) {
           // Defining deliverable ID.
@@ -210,10 +212,6 @@ public class ActivityDeliverablesAction extends BaseAction {
     }
   }
 
-  public void setActivity(Activity activity) {
-    this.activity = activity;
-  }
-
   public void setActivityID(int activityID) {
     this.activityID = activityID;
   }
@@ -224,6 +222,10 @@ public class ActivityDeliverablesAction extends BaseAction {
 
   public void setDeliverableTypes(List<DeliverableType> deliverableTypes) {
     this.deliverableTypes = deliverableTypes;
+  }
+
+  public void setProject(Activity activity) {
+    this.project = activity;
   }
 
 }
