@@ -8,6 +8,18 @@ $(document).ready(function() {
   baseURL = $("#baseURL").val();
   showNotificationMessages();
 
+  // hash url animation
+  setTimeout(function() {
+    $(window.location.hash).animate({
+      opacity: 0.5
+    }, 400, function() {
+      // Animation complete.
+      $(this).animate({
+        opacity: 1
+      }, 300);
+    });
+  }, 200);
+
   function showNotificationMessages() {
     $('#generalMessages #messages').children("li").each(function(index) {
       // Validate if the notification is a warning checking if the text contains --warn--

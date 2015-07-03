@@ -2,7 +2,7 @@
 [#assign currCss= "class='currentSection'"]
 <nav id="secondaryMenu"> 
   <h3> 
-    <a class="goBack" href="[@s.url namespace='/planning' action='projectsList'][/@s.url]"> [@s.text name="planning.project" /] ${project.composedId} </a>
+    <a class="goBack" href="[@s.url namespace='/planning' action='projectsList'][/@s.url]"> [@s.text name="planning.project" /] [#if project??]${project.composedId}[/#if] </a>
   </h3> 
   <ul> 
     <li><a [#if currentStage == "description"]${currCss}[/#if] href="[@s.url action='description' includeParams='get'][/@s.url]">

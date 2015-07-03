@@ -16,7 +16,7 @@
     [/#if]
     [#if errorField==""][@s.fielderror cssClass="fieldError" fieldName="${name}"/][#else][@s.fielderror cssClass="fieldError" fieldName="${errorfield}"/][/#if]
     [#if editable]
-      <input type="${type}" id="${name}" name="${name}" value="[#if value=="-NULL"][@s.property value="${name?string}"/][#else]${value}[/#if]"  [#if className != "-NULL"] class="${className}" [/#if][#if readOnly] readonly="readonly"[/#if] [#if disabled]disabled="disabled"[/#if] [#if required]required[/#if]/>
+      <input type="${type}" id="${name}" name="${name}" value="[#if value=="-NULL"][@s.property value="${name?string}"/][#else]${value}[/#if]"  [#if className != "-NULL"] class="${className}" [/#if][#if readOnly] readonly="readonly"[/#if] [#if disabled]disabled="disabled"[/#if]/>
     [#else]
       <p>  
         [#if value=="-NULL"] 
@@ -50,7 +50,7 @@
     [/#if]
     [#if errorfield==""][@s.fielderror cssClass="fieldError" fieldName="${name}"/][#else][@s.fielderror cssClass="fieldError" fieldName="${errorfield}"/][/#if]
     [#if editable]
-      <textarea name="${name}" id="${name}" [#if disabled]disabled="disabled"[/#if] [#if className != "-NULL"] class="ckeditor ${className}" [/#if] [#if required]required[/#if]/>[#if value=="-NULL"][@s.property value="${name}"/][#else]${value}[/#if]</textarea>
+      <textarea name="${name}" id="${name}" [#if disabled]disabled="disabled"[/#if] [#if className != "-NULL"] class="ckeditor ${className}" [/#if]/>[#if value=="-NULL"][@s.property value="${name}"/][#else]${value}[/#if]</textarea>
     [#else]
       <p>
         [#if value=="-NULL"] 

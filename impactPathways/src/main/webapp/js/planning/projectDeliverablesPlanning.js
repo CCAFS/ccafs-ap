@@ -72,7 +72,7 @@ function setDeliverablesIndexes() {
     var elementName = $('#partnersName').val() + "[" + i + "].";
     $(element).find("span.index").html(i);
     $(element).find(".institution").attr("name", elementName + "institution");
-    $(element).find(".type").attr("name", elementName + "type");
+    $(element).find(".id").attr("name", elementName + "id");
     $(element).find(".userId").attr("name", elementName + "user");
   });
 }

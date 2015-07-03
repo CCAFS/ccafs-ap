@@ -39,7 +39,7 @@
   [#include "/WEB-INF/planning/planningProjectsSubMenu.ftl" /]
   
   [@s.form action="deliverables" cssClass="pure-form"]
-  <article class="halfContent" id="mainInformation"> 
+  <article class="halfContent" id="projectDeliverable"> 
     [#include "/WEB-INF/planning/projectOutputs-sub-menu.ftl" /]
     [#include "/WEB-INF/planning/planningDataSheet.ftl" /]
     [#-- Informing user that he/she doesn't have enough privileges to edit. See GrantProjectPlanningAccessInterceptor--]
@@ -50,12 +50,11 @@
         [/@s.text]
       </p>
     [/#if]
-    <div id="projectDeliverable" class="borderBox clearfix"> 
+    [#--  Deliverable Information --]
+    <div id="deliverable-information" class="borderBox clearfix"> 
       [#if !editable]
-        <div class="editButton"><a href="[@s.url includeParams='get'][@s.param name="edit"]true[/@s.param][/@s.url]">[@s.text name="form.buttons.edit" /]</a></div>
+        <div class="editButton"><a href="[@s.url includeParams='get'][@s.param name="edit"]true[/@s.param][/@s.url]#deliverable-information">[@s.text name="form.buttons.edit" /]</a></div>
       [/#if] 
-      
-      [#--  Deliverable Information --]
       [#assign dl_index = 2]
       <h1 class="contentTitle">[@s.text name="planning.projectDeliverable.information" /] </h1> 
       <input type="hidden" value="{project.deliverable.id}" name="project.deliverable.id">
@@ -84,8 +83,13 @@
           <input type="hidden" id="subTypeSelected" value="{project.deliverable.type.id}" />
         </div>          
       </div>
-      
-      [#-- Deliverable Next Users block  --] 
+    </div>  
+    
+    [#-- Deliverable Next Users block  --] 
+    <div id="deliverable-nextUsers" class="borderBox clearfix">
+      [#if !editable]
+        <div class="editButton"><a href="[@s.url includeParams='get'][@s.param name="edit"]true[/@s.param][/@s.url]#deliverable-nextUsers">[@s.text name="form.buttons.edit" /]</a></div>
+      [/#if]
       <div class="fullBlock">
         <h1 class="contentTitle">[@s.text name="planning.projectDeliverable.nextUsers" /] </h1> 
         [#if project.deliverables[dl_index].nextUsers?has_content]
@@ -97,8 +101,13 @@
           <div id="addNextUserBlock" class="addLink"><a href=""  class="addNextUser addButton">[@s.text name="planning.deliverables.addNewUser" /]</a></div>
         [/#if] 
       </div>
-      
-      [#-- Deliverable partnership  --] 
+    </div>  
+    
+    [#-- Deliverable partnership  --] 
+    <div id="deliverable-partnership" class="borderBox clearfix">
+      [#if !editable]
+        <div class="editButton"><a href="[@s.url includeParams='get'][@s.param name="edit"]true[/@s.param][/@s.url]#deliverable-partnership">[@s.text name="form.buttons.edit" /]</a></div>
+      [/#if]
       <div class="fullBlock">
         <h1 class="contentTitle">[@s.text name="planning.projectDeliverable.partnership" /] </h1> 
         
