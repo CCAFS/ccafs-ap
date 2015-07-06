@@ -129,8 +129,19 @@ public interface LocationManager {
    * @param locations - The list of locations to be saved
    * @param projectID - the project identifier
    * @param user - the user executing the action
+   * @param justification - the justification for the changes.
    * @return true if the information was successfully saved. False otherwise.
    */
   public boolean saveProjectLocation(List<Location> locations, int projectID, User user, String justification);
+
+  /**
+   * This method updates the is_global field corresponding to the project received.
+   * 
+   * @param projectID - the project identifier
+   * @param user - the user executing the action
+   * @param justification - the justification for the changes
+   * @return true if the information was successfully saved. False otherwise.
+   */
+  public boolean updateProjectGlobal(int projectID, User user, String justification);
 
 }

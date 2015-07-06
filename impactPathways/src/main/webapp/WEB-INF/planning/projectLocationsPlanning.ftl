@@ -27,8 +27,8 @@
   </div>
   [#include "/WEB-INF/planning/planningProjectsSubMenu.ftl" /]
   
-  [@s.form action="location" cssClass="pure-form"]
-  <article class="halfContent" id="activityLocations">
+  [@s.form action="locations" cssClass="pure-form"]
+  <article class="halfContent" id="projectLocations">
     [#include "/WEB-INF/planning/projectDescription-planning-sub-menu.ftl" /]
     [#include "/WEB-INF/planning/planningDataSheet.ftl" /]
     [#-- Informing user that he/she doesn't have enough privileges to edit. See GrantActivityPlanningAccessInterceptor--]
@@ -47,10 +47,10 @@
       [@s.text name="planning.project" /]: ${project.composedId} - [@s.text name="planning.project.locations.title" /] 
       </h1>  
       <div id="locationsGlobalBlock" class="clearfix">
-        [@customForm.checkbox className="globalCheck" name="activity.global" i18nkey="planning.project.locations.checkbox.isGlobal" checked=false editable=editable /]
-        [#-- [@customForm.checkbox name="activity.global" i18nkey="planning.project.locations.checkbox.isGlobal" checked=activity.global value="true" /]  --] 
+        [@customForm.checkbox className="globalCheck" name="project.global" i18nkey="planning.project.locations.checkbox.isGlobal" checked=false editable=editable /]
+        [#-- [@customForm.checkbox name="project.global" i18nkey="planning.project.locations.checkbox.isGlobal" checked=project.global value="true" /]  --] 
       </div>
-      <div id="activityLocations-map"></div> 
+      <div id="projectLocations-map"></div> 
       <div id="locationsBlock" class="clearfix">
         <div id="fields">
             [#assign notApplicableText] [@s.text name="planning.project.locations.notApplicable" /] [/#assign]
@@ -65,9 +65,9 @@
               [#-- Name --]
               <div id="locationName-head" class="locationName grid_3"><strong>[@s.text name="planning.project.locations.name" /]</strong></div>
             </div> 
-          [#if activity?has_content]
-            [#if activity.locations?has_content]
-              [#list activity.locations as location]
+          [#if project?has_content]
+            [#if project.locations?has_content]
+              [#list project.locations as location]
                 [#if location.otherLocation]
                   [#assign location=location.otherLocationInstance /]
                 [/#if]
@@ -130,7 +130,7 @@
                       [@customForm.select name="csvSaved[${location_index}].id" i18nkey="planning.project.locations.level" listName="climateSmartVillages" keyFieldName="id" showTitle=false  displayFieldName="name" value="${location.id}" /]
                     [#else]
                      [#if location.type.id == ccafsSiteTypeID] 
-                      [@customForm.select name="activity.locations" i18nkey="planning.project.locations.level" listName="ccafsSites" keyFieldName="id" showTitle=false  displayFieldName="name" value="${location.id}" /]
+                      [@customForm.select name="project.locations" i18nkey="planning.project.locations.level" listName="ccafsSites" keyFieldName="id" showTitle=false  displayFieldName="name" value="${location.id}" /]
                      [#else]
                       [@customForm.input name="otherLocationsSaved[${location_index}].name" value="${location.name}" type="text" i18nkey="planning.project.locations.notApplicable" required=true showTitle=false  /]                 
                       <input type="hidden" name="otherLocationsSaved[${location_index}].id" value="${location.id}">
@@ -170,7 +170,7 @@
         <hr>  
         <div class="halfPartBlock left">
           <div id="step1" class="step" title="Step 1">1</div>
-          <a href="${baseUrl}/resources/locationTemplate/Activity_Location_Template.xlsx">
+          <a href="${baseUrl}/resources/locationTemplate/Project_Location_Template.xlsx">
             <img id="icon" src="${baseUrl}/images/global/icon-excel.png" />
             <p id="downloadMessage">[@s.text name="planning.project.locations.templateMessage" /]</p>
           </a>
@@ -206,8 +206,6 @@
   </article>
   [/@s.form] 
   [#-- Hidden values used by js --]
-  <input id="minDateValue" value="${startYear?c}-01-01" type="hidden"/>
-  <input id="maxDateValue" value="${endYear?c}-12-31" type="hidden"/> 
   <input id="programID" value="" type="hidden"/>
 </section>
 
@@ -249,7 +247,7 @@
 
 [#-- List Template of CCAFS Sites with id: 11 --]
 <div id="selectTemplate-11" style="display:none">
-  [@customForm.select name="activity.locations" i18nkey="planning.locations.level" listName="ccafsSites" keyFieldName="id" showTitle=false  displayFieldName="name" /]
+  [@customForm.select name="project.locations" i18nkey="planning.locations.level" listName="ccafsSites" keyFieldName="id" showTitle=false  displayFieldName="name" /]
 </div>
 
 [#-- Input Template for name --]

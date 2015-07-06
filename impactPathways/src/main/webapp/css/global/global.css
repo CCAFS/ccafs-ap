@@ -2392,15 +2392,15 @@ div#gender .fullBlock,div#gender .halfPartBlock {
   display: none;
 }
 
-/* Activity Locations */
+/* Project Locations */
 
-#activityLocations-map{
+#projectLocations-map{
     width: 99%; 
     height: 280px;
     border: 4px solid #EBEBEB;
     position: relative;
 }
-#activityLocations-map p.global {
+#projectLocations-map p.global {
   position: absolute;
   top: 42%;
   left: 40%;
@@ -2410,7 +2410,7 @@ div#gender .fullBlock,div#gender .halfPartBlock {
   text-shadow: 1px 1px 7px #616161;
 }
 
-#activityLocations-map .infoWindow{
+#projectLocations-map .infoWindow{
   width: auto;
   height: 20px;
   text-align: center;
@@ -2430,29 +2430,29 @@ div#gender .fullBlock,div#gender .halfPartBlock {
 #locationsGlobalBlock label {
 }
 
-#activityLocations .location .select {
+#projectLocations .location .select {
 margin-bottom: 0px !important;
 }
 
-#activityLocations .uploadFileMessage .left {
+#projectLocations .uploadFileMessage .left {
   width: 30%;
 }
 
-#activityLocations .uploadFileMessage .right {
+#projectLocations .uploadFileMessage .right {
   margin-left: 8%;
   width: 58%;
 }
 
-#activityLocations .uploadFileMessage #icon {
+#projectLocations .uploadFileMessage #icon {
   float: left;
 }
 
-#activityLocations .uploadFileMessage #downloadMessage {
+#projectLocations .uploadFileMessage #downloadMessage {
   padding-left: 50px;
   text-align: center;
 }
 
-#activityLocations .uploadFileMessage {
+#projectLocations .uploadFileMessage {
   position: relative;
   -webkit-box-shadow: 1px 2px 8px rgba(0, 0, 0, 0.3);
   -moz-box-shadow: 1px 2px 8px rgba(0,0,0,.3);
