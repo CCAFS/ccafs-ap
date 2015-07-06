@@ -19,20 +19,12 @@
     [#if editable]
       <input type="${type}" id="${name}" name="${name}" value="[#if value=="-NULL"][@s.property value="${name?string}"/][#else]${value}[/#if]"  [#if className?has_content]class="${className}"[/#if][#if readOnly] readonly="readonly"[/#if] [#if disabled]disabled="disabled"[/#if] [#if !showTitle]placeholder="${labelTitle}"[/#if]/>
     [#else]
-      <p>  
+      <p>
         [#if value=="-NULL"] 
           [#assign customValue][@s.property value="${name?string}"/][/#assign] 
-          [#if !(customValue)?has_content] 
-            [@s.text name="form.values.fieldEmpty" /]
-          [#else]
-            ${customValue}
-          [/#if]
+          [#if !(customValue)?has_content][@s.text name="form.values.fieldEmpty" /][#else]${customValue}[/#if]
         [#else]
-          [#if !value?has_content] 
-            [@s.text name="form.values.fieldEmpty" /]
-          [#else]
-            ${value}
-          [/#if] 
+          [#if !value?has_content][@s.text name="form.values.fieldEmpty" /][#else]${value}[/#if] 
         [/#if]
       </p>
     [/#if]

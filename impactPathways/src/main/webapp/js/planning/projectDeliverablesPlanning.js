@@ -14,6 +14,13 @@ function attachEvents() {
   // Deliverables Events
   $(".removeDeliverable, .removeNextUser, .removeElement").click(removeElementEvent);
   $("select[id$='mainType']").change(updateDeliverableSubTypeList);
+  $("#deliverables_deliverable_type").change(function(e) {
+    if($(e.target).val() == 38) {
+      $(".input-otherType").show('slow');
+    } else {
+      $(".input-otherType").hide('slow');
+    }
+  });
 
   // Next users events
   $(".addNextUser").on("click", addNextUserEvent);

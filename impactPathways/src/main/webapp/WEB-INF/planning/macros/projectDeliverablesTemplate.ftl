@@ -13,7 +13,7 @@
       </thead>
       <tbody>
       [#list deliverables as dl]  
-        [#assign dlurl][@s.url namespace=namespace action='deliverable' ][@s.param name='projectID']${project.id?c}[/@s.param][/@s.url][/#assign]
+        [#assign dlurl][@s.url namespace=namespace action='deliverable' ][@s.param name='projectID']${project.id?c}[/@s.param][@s.param name='deliverableID']${dl.id}[/@s.param][/@s.url][/#assign]
         <tr>
           <td class="id" ><a href="${dlurl}">${dl.id}</a></td> 
           <td class="name"><a href="${dlurl}">${dl.title}</a></td>
@@ -70,7 +70,7 @@
   </div> 
 [/#macro] 
 
-[#macro nextUserTemplate nu_name=""  dl_index="0" nu_index="0" nextUserValue="-1" template=false editable=true canEdit=true ]
+[#macro nextUserTemplate nu_name="" nu_index="0" nextUserValue="-1" template=false editable=true canEdit=true ]
   [#if template]
     <div id="projectNextUserTemplate" class="borderBox" style="display:none">
       <div id="removeNextUser-${nu_index}"class="removeNextUser removeElement removeLink" title="[@s.text name="planning.deliverables.removeNewUser" /]"></div>
