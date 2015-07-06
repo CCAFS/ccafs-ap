@@ -63,6 +63,14 @@ public interface InstitutionManager {
   public List<Institution> getAllPPAInstitutions();
 
   /**
+   * This method gets the list of partners that are contributing to a specific deliverable.
+   * 
+   * @param deliverableID is the deliverable identifier.
+   * @return a list of Institution objects, an empty list if nothing found or null if some error occurred.
+   */
+  public List<Institution> getDeliverablePartnerships(int deliverableID);
+
+  /**
    * Get an institution identified with the given id.
    * 
    * @param institutionId is an integer that represents the id of some institution.

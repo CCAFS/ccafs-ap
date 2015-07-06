@@ -117,8 +117,12 @@
       </result>
     </action>
 
-    <action name="locations" class="org.cgiar.ccafs.ap.action.planning.ProjectDescriptionPlanningAction">
-      <result name="input">/WEB-INF/planning/projectlocationsPlanning.ftl</result>      
+    <action name="locations" class="org.cgiar.ccafs.ap.action.planning.ProjectLocationsPlanningAction">
+      <result name="input">/WEB-INF/planning/projectlocationsPlanning.ftl</result> 
+      <result name="success" type="redirectAction">
+        <param name="actionName">locations</param>
+        <param name="projectID">${project.id}</param>
+      </result>     
     </action>
     
     <action name="budget" class="org.cgiar.ccafs.ap.action.preplanning.ProjectBudgetPreplanningAction">
@@ -241,10 +245,10 @@
     
     <!-- Section: Activities  -->
     <action name="activities" class="org.cgiar.ccafs.ap.action.planning.ActivitiesListAction">
-      <result name="input">/WEB-INF/planning/activitiesListPlanning.ftl</result>
+      <result name="input">/WEB-INF/planning/projectActivitiesListPlanning.ftl</result>
       <result name="success" type="redirectAction">
         <param name="namespace">/planning/projects/activities</param>
-        <param name="actionName">activityDescription</param>
+        <param name="actionName">activities</param>
         <param name="activityID">${activityID}</param>
       </result>
     </action>

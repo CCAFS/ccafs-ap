@@ -99,7 +99,6 @@ public class ManageUsersAction extends BaseAction {
       // If email already exists.
       if (emailExists) {
         // If email already exists into our database.
-        // TODO We need to internationalize this message.
         message = this.getText("planning.manageUsers.email.existing");
         newUser = null;
         return SUCCESS; // Stop here!
@@ -113,7 +112,6 @@ public class ManageUsersAction extends BaseAction {
         newUser = this.validateOutlookUser(newUser.getEmail());
         // If user was not found in the Active Directory.
         if (newUser == null) {
-          // TODO We need to internationalize this message.
           message = this.getText("planning.manageUsers.email.doesNotExist");
           return SUCCESS; // Stop here!
         } else {
@@ -145,7 +143,6 @@ public class ManageUsersAction extends BaseAction {
           }
           return SUCCESS;
         } else {
-          // TODO We need to internationalize this message.
           message = this.getText("planning.manageUsers.email.validation");
           return SUCCESS;
         }

@@ -186,7 +186,7 @@ public interface ProjectManager {
    * @param indicators - List of indicators objects
    * @param projectID - project identifier
    * @param user - the user who is making the change
-   * @param justification
+   * @param justification - the justification for the changes made
    * @return true if ALL the indicators were saved successfully. False otherwise
    */
   public boolean saveProjectIndicators(List<IPIndicator> indicators, int projectID, User user, String justification);

@@ -17,6 +17,7 @@ import org.cgiar.ccafs.ap.config.APConstants;
 import org.cgiar.ccafs.ap.data.dao.ProjectDAO;
 import org.cgiar.ccafs.ap.data.manager.BudgetManager;
 import org.cgiar.ccafs.ap.data.manager.IPProgramManager;
+import org.cgiar.ccafs.ap.data.manager.InstitutionManager;
 import org.cgiar.ccafs.ap.data.manager.LiaisonInstitutionManager;
 import org.cgiar.ccafs.ap.data.manager.ProjectManager;
 import org.cgiar.ccafs.ap.data.manager.UserManager;
@@ -55,16 +56,18 @@ public class ProjectManagerImpl implements ProjectManager {
   private ProjectDAO projectDAO;
   // Managers
   private UserManager userManager;
+  private InstitutionManager institutionManager;
   private IPProgramManager ipProgramManager;
   private BudgetManager budgetManager;
   private LiaisonInstitutionManager liaisonInstitutionManager;
 
 
   @Inject
-  public ProjectManagerImpl(ProjectDAO projectDAO, UserManager userManager, IPProgramManager ipProgramManager,
-    BudgetManager budgetManager, LiaisonInstitutionManager liaisonInstitutionManager) {
+  public ProjectManagerImpl(ProjectDAO projectDAO, UserManager userManager, InstitutionManager institutionManager,
+    IPProgramManager ipProgramManager, BudgetManager budgetManager, LiaisonInstitutionManager liaisonInstitutionManager) {
     this.projectDAO = projectDAO;
     this.userManager = userManager;
+    this.institutionManager = institutionManager;
     this.ipProgramManager = ipProgramManager;
     this.budgetManager = budgetManager;
     this.liaisonInstitutionManager = liaisonInstitutionManager;
@@ -312,6 +315,7 @@ public class ProjectManagerImpl implements ProjectManager {
     return indicators;
   }
 
+
   @Override
   // TODO - Move this method to a class called projectOutputManager
   public List<IPElement> getProjectOutputs(int projectID) {
@@ -369,10 +373,10 @@ public class ProjectManagerImpl implements ProjectManager {
       // Setting creation date.
       project.setCreated(Long.parseLong(elementData.get("created")));
       // Getting Project Focuses - IPPrograms
-      project.setRegions(
-        ipProgramManager.getProjectFocuses(Integer.parseInt(elementData.get("id")), APConstants.REGION_PROGRAM_TYPE));
-      project.setFlagships(
-        ipProgramManager.getProjectFocuses(Integer.parseInt(elementData.get("id")), APConstants.FLAGSHIP_PROGRAM_TYPE));
+      project.setRegions(ipProgramManager.getProjectFocuses(Integer.parseInt(elementData.get("id")),
+        APConstants.REGION_PROGRAM_TYPE));
+      project.setFlagships(ipProgramManager.getProjectFocuses(Integer.parseInt(elementData.get("id")),
+        APConstants.FLAGSHIP_PROGRAM_TYPE));
       // Getting Budget.
       project.setBudgets(budgetManager.getCCAFSBudgets(Integer.parseInt(elementData.get("id"))));
 
@@ -396,6 +400,7 @@ public class ProjectManagerImpl implements ProjectManager {
     return projects;
   }
 
+
   @Override
   public int saveProjectDescription(Project project, User user, String justification) {
     Map<String, Object> projectData = new HashMap<>();
@@ -403,6 +408,7 @@ public class ProjectManagerImpl implements ProjectManager {
       projectData.put("user_id", user.getId());
       projectData.put("liaison_institution_id", project.getLiaisonInstitution().getId());
       projectData.put("created_by", user.getId());
+      projectData.put("modified_by", user.getId());
       projectData.put("justification", justification);
 
       if (project.isCoreProject()) {

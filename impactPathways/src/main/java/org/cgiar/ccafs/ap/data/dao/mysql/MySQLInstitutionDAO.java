@@ -164,6 +164,30 @@ public class MySQLInstitutionDAO implements InstitutionDAO {
   }
 
   @Override
+  public List<Map<String, String>> getDeliverablePartnerships(int deliverableID) {
+    LOG.debug(">> getDeliverablePartnerships( )");
+    StringBuilder query = new StringBuilder();
+
+    query.append("SELECT i.id, i.name, i.acronym, i.is_ppa, i.institution_type_id, i.program_id, ");
+    query.append("lc.id as loc_elements_id, lc.name as loc_elements_name,lc.code as loc_elements_code, ");
+    query.append("it.name as institution_type_name, it.acronym as institution_type_acronym, ");
+    query.append("ip.id as program_id, ip.name as program_name, ip.acronym as program_acronym ");
+    query.append("FROM deliverable_partnerships dp ");
+    query.append("INNER JOIN institutions i ON i.id = dp.institution_id ");
+    query.append("INNER JOIN institution_types it ON it.id = i.institution_type_id ");
+    query.append("LEFT JOIN loc_elements lc ON lc.id = i.country_id ");
+    query.append("LEFT JOIN ip_programs ip ON ip.id = i.program_id ");
+    query.append("WHERE dp.deliverable_id = ");
+    query.append(deliverableID);
+    query.append(" AND dp.is_active = 1 ");
+    query.append("ORDER BY i.acronym, i.name, loc_elements_name ASC ");
+
+    LOG.debug("-- getDeliverablePartnerships() > Calling method executeQuery to get the results");
+    return this.getData(query.toString());
+
+  }
+
+  @Override
   public Map<String, String> getInstitution(int institutionID) {
     Map<String, String> institutionData = new HashMap<String, String>();
     LOG.debug(">> getInstitution( institutionID = {} )", institutionID);
