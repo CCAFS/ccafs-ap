@@ -201,12 +201,8 @@ function setIndicatorIndexes() {
   $contributionsBlock.find(".midOutcomeIndicator").each(function(indicatorIndex,indicator) {
     $(indicator).find(".targetIndicator").each(function(targetIndex,target) {
 
-      // Hidden
-      $(indicator).find("input.projectIndicatorID").attr("id", "project.indicators-" + indicatorIndex);
-      $(indicator).find("input.projectIndicatorID").attr("name", indicatorsName + "[" + indicatorIndex + "].id");
-
       // Label
-      $(indicator).find("label").attr("for", "project.indicators-" + index);
+      $(indicator).find("label").attr("for", indicatorsName+"-" + index);
 
       // Checkbox
       $(indicator).find("input[type='checkbox']").attr("id", "indicatorIndex-" + indicatorIndex);
@@ -214,6 +210,8 @@ function setIndicatorIndexes() {
 
         $(target).find("input.projectIndicatorParent").attr("name", indicatorsName + "[" + index + "].parent.id");
         $(target).find("input[type='hidden']").attr("disabled", false);
+        $(target).find(".projectIndicatorID").attr("id", indicatorsName + "-" + indicatorIndex);
+        $(target).find(".projectIndicatorID").attr("name", indicatorsName + "[" + index + "].id");
         $(target).find(".projectIndicatorYear").attr("name", indicatorsName + "[" + index + "].year");
         $(target).find(".projectIndicatorOutcome").attr("name", indicatorsName + "[" + index + "].outcome.id");
         $(target).find(".projectIndicatorTarget").attr("name", indicatorsName + "[" + index + "].target");
@@ -257,20 +255,14 @@ function setMogsIndexes() {
 
 function toogleIndicatorInfo(event) {
   var $indicatorBlock = $(event.target).parent();
-  var indicatorIndex = $(event.target).attr("id").split("-")[1];
-  // var indicatorsName = "project.indicators[" + indicatorIndex + "]";
 
   if(event.target.checked) {
     $indicatorBlock.find("input[type='hidden']").attr("disabled", false);
-    // $indicatorBlock.find(".indicatorNarrative input").attr("name", indicatorsName + ".target");
-    // $indicatorBlock.find(".indicatorNarrative textarea").attr("name", indicatorsName + ".description");
 
     // Show the block
     $indicatorBlock.find(".indicatorNarrative, .indicatorTargets").show("slow");
   } else {
     $indicatorBlock.find("input[type='hidden']").attr("disabled", true);
-    // $indicatorBlock.find(".indicatorNarrative input").attr("name", "");
-    // $indicatorBlock.find(".indicatorNarrative textarea").attr("name", "");
 
     // Hide the block
     $indicatorBlock.find(".indicatorNarrative, .indicatorTargets").hide("slow");
