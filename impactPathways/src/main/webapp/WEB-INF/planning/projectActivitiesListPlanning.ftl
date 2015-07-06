@@ -38,7 +38,7 @@
   [#include "/WEB-INF/planning/planningProjectsSubMenu.ftl" /]
     <article class="halfContent" id="activities">
     [#if !canEdit]
-      <p class="readPrivileges">[@s.text name="saving.read.privileges"][@s.param][@s.text name="planning.project"/][/@s.param][/@s.text]</p>
+      <p class="readPrivileges">[@s.text name="saving.read.privileges"][@s.param][@s.text name=title/][/@s.param][/@s.text]</p>
     [/#if]
     [@s.form action="activities" cssClass="pure-form"]
     [#include "/WEB-INF/planning/planningDataSheet.ftl" /]

@@ -33,18 +33,14 @@
   <article class="halfContent" id="activityImpactPathway">
     [#include "/WEB-INF/planning/planningDataSheet.ftl" /]
     [#include "/WEB-INF/planning/projectIP-planning-sub-menu.ftl" /]
-    
     [#-- Informing user that he/she doesn't have enough privileges to edit. See GrantActivityPlanningAccessInterceptor--]
-    [#if !saveable]
+    [#if !canEdit]
       <p class="readPrivileges">
-        [@s.text name="saving.read.privileges"]
-          [@s.param][@s.text name="planning.projectImpactPathways.title"/][/@s.param]
-        [/@s.text]
+        [@s.text name="saving.read.privileges"][@s.param][@s.text name="planning.projectImpactPathways.title"/][/@s.param][/@s.text]
       </p>
     [/#if]
-
     <div id="projectOutcomes-narrative" class="borderBox">
-      [#if !editable]
+      [#if !editable && canEdit]
         <div class="editButton"><a href="[@s.url includeParams='get'][@s.param name="edit"]true[/@s.param][/@s.url]">[@s.text name="form.buttons.edit" /]</a></div>
       [/#if] 
 
