@@ -232,12 +232,12 @@ public class ProjectPartnersPreplanningAction extends BaseAction {
     // Getting current Partner Institutions
     List<Institution> partnerInstitutions = new ArrayList<>();
     if (isExpected) {
-      User expectedLeader = projectManager.getExpectedProjectLeader(project.getId());
-      if (expectedLeader != null) {
-        partnerInstitutions.add(expectedLeader.getCurrentInstitution());
-      }
+      // User expectedLeader = projectManager.getExpectedProjectLeader(project.getId());
+      // if (expectedLeader != null) {
+      // partnerInstitutions.add(expectedLeader.getCurrentInstitution());
+      // }
     } else {
-      partnerInstitutions.add(projectManager.getProjectLeader(project.getId()).getCurrentInstitution());
+      // partnerInstitutions.add(projectManager.getProjectLeader(project.getId()).getCurrentInstitution());
     }
     for (ProjectPartner projectPartner : project.getProjectPartners()) {
       partnerInstitutions.add(projectPartner.getInstitution());

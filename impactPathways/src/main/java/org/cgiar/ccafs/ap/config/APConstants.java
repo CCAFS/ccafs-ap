@@ -41,6 +41,7 @@ public final class APConstants {
   public static final String EMPLOYEE_REQUEST_ID = "employeeID";
   public static final String DELIVERABLE_TYPE_REQUEST_ID = "deliverableTypeID";
   public static final String EDITABLE_REQUEST = "edit";
+  public static final String DELIVERABLE_REQUEST_ID = "deliverableID";
 
   // Identifiers for element types which come from the database
   public static final int ELEMENT_TYPE_IDOS = 1;

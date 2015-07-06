@@ -43,19 +43,18 @@
       <!-- Custom interceptor to validate that the project parameter is correct and the project actually exists -->
       <interceptor name="validateProjectParameter" class="org.cgiar.ccafs.ap.interceptor.ValidateProjectParameterInterceptor" />
       
-      <!-- Custom interceptor to grant access to the users -->
-      <interceptor name="grantProjectPreplanningAccess" class="org.cgiar.ccafs.ap.interceptor.preplanning.project.GrantProjectPreplanningAccessInterceptor" />
-      
       <!-- ************************** Interceptors for Planning (Projects) ******************************** -->
       
       <!-- Custom interceptor to grant access to the users when accessing a specific project -->
       <interceptor name="grantProjectPlanningAccess" class="org.cgiar.ccafs.ap.interceptor.planning.GrantProjectPlanningAccessInterceptor" />
       <interceptor name="canEditProjectPlanning" class="org.cgiar.ccafs.ap.interceptor.planning.EditProjectPlanningInterceptor" />
       
-      <!-- ************************** Interceptors for Planning (Activities) ****************************** -->
+       <!-- ************************** Interceptors for Planning (Deliverables) ****************************** -->
       
-      <!-- Custom interceptor to grant access to the users when accessing a specific activity -->
-      <interceptor name="grantActivityPlanningAccess" class="org.cgiar.ccafs.ap.interceptor.planning.GrantActivityPlanningAccessInterceptor" />
+      <!-- Custom interceptor to validate that the deliverable parameter is correct and the deliverable actually exists -->
+      <interceptor name="validateDeliverableParameter" class="org.cgiar.ccafs.ap.interceptor.ValidateDeliverableParameterInterceptor" />
+      
+      <!-- ************************** Interceptors for Planning (Activities) ****************************** -->
       
       <!-- Custom interceptor to validate that the activity parameter is correct and the activity actually exists -->
       <interceptor name="validateActivityParameter" class="org.cgiar.ccafs.ap.interceptor.ValidateActivityParameterInterceptor" />
@@ -79,7 +78,6 @@
         <interceptor-ref name="accessibleStage" />
         <interceptor-ref name="preplanningProjectAccess" />
         <interceptor-ref name="validateProjectParameter" />
-        <interceptor-ref name="grantProjectPreplanningAccess" />
         <interceptor-ref name="trimInputs" />
         <interceptor-ref name="defaultStack" />
       </interceptor-stack>
@@ -92,7 +90,17 @@
         <interceptor-ref name="validateProjectParameter" />
         <interceptor-ref name="canEditProjectPlanning" />
         <interceptor-ref name="accessibleStage" />
-        <!-- interceptor-ref name="grantProjectPlanningAccess" / -->
+        <interceptor-ref name="trimInputs" />
+        <interceptor-ref name="defaultStack" />
+      </interceptor-stack>
+      
+      <interceptor-stack name="planningStackDeliverables">
+        <!-- Uncomment the following interceptor only for DEVELOPING purposes -->
+        <!-- interceptor-ref name="autoLogin" / -->
+        <interceptor-ref name="requireUser" />
+        <interceptor-ref name="keepRedirectMessages"/>
+        <interceptor-ref name="accessibleStage" />
+        <interceptor-ref name="validateDeliverableParameter" />
         <interceptor-ref name="trimInputs" />
         <interceptor-ref name="defaultStack" />
       </interceptor-stack>
@@ -104,7 +112,6 @@
         <interceptor-ref name="keepRedirectMessages"/>
         <interceptor-ref name="accessibleStage" />
         <interceptor-ref name="validateActivityParameter" />
-        <interceptor-ref name="grantActivityPlanningAccess" />
         <interceptor-ref name="trimInputs" />
         <interceptor-ref name="defaultStack" />
       </interceptor-stack>
