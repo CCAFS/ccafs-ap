@@ -86,7 +86,6 @@
                     [#if projectIndicator.id != -1 || isUniqueIndicator]
   
                       <div class="midOutcomeIndicator" >
-                        <input type="hidden" class="projectIndicatorID" name="project.indicators.id" value="${projectIndicator.id}" [#if projectIndicator.id == -1 ]disabled="disabled"[/#if]/>
                         [#if editable] 
                           <input type="checkbox" class="projectIndicatorCheckbox" id="indicatorIndex-${indicator_index}" [#if projectIndicator.id != -1 || isUniqueIndicator]checked="checked"[/#if] [#if isUniqueIndicator]disabled="disabled"[/#if]  />
                         [/#if]
@@ -116,6 +115,7 @@
                               [/#if]
                               
                               [#-- Hidden values --]
+                              <input type="hidden" class="projectIndicatorID" name="project.indicators.id" value="${projectIndicator.id}" [#if projectIndicator.id == -1 ]disabled="disabled"[/#if]/>
                               <input type="hidden" class="projectIndicatorYear" name="project.indicators.year"  value="${year}" /> 
                               <input type="hidden" class="projectIndicatorOutcome" name="project.indicators.outcome"  value="${midOutcome.id}" /> 
                               
@@ -167,6 +167,9 @@
                             [#else]
                               <input type="hidden" class="projectIndicatorParent" name="project.indicators.parent.id" value="${indicator.id}"  />
                             [/#if]
+                            
+                            [#-- Check if the value of this hidden input should be arbitrarily -1 --]
+                            <input type="hidden" class="projectIndicatorID" name="project.indicators.id" value="-1" />
                             <input type="hidden" class="projectIndicatorYear" name="project.indicators.year"  value="${year}" />
                             <input type="hidden" class="projectIndicatorOutcome" name="project.indicators.outcome"  value="${midOutcome.id}" /> 
                             
@@ -279,6 +282,7 @@
           [#list years as year]
           <div id="target-${year}" class="targetIndicator" >
             <input type="hidden" class="projectIndicatorParent" name="project.indicators.parent.id"   />
+            <input type="hidden" class="projectIndicatorID" name="project.indicators.id" value="-1"/>
             <input type="hidden" class="projectIndicatorYear" name="project_indicator_year"  value="${year}" />
             <input type="hidden" class="projectIndicatorOutcome" name="project.indicators.outcome" /> 
             <div class="checkboxGroup vertical indicatorNarrative">

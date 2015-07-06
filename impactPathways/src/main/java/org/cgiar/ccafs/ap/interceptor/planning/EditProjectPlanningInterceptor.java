@@ -42,8 +42,8 @@ public class EditProjectPlanningInterceptor extends AbstractInterceptor {
   private static Logger LOG = LoggerFactory.getLogger(EditProjectPlanningInterceptor.class);
   private static final long serialVersionUID = -6564226368433104079L;
 
-  private SecurityContext securityContext;
-  private ProjectManager projectManager;
+  private static SecurityContext securityContext;
+  private static ProjectManager projectManager;
 
   @Inject
   public EditProjectPlanningInterceptor(SecurityContext securityContext, ProjectManager projectManager) {
@@ -51,8 +51,8 @@ public class EditProjectPlanningInterceptor extends AbstractInterceptor {
     this.projectManager = projectManager;
   }
 
-  @Override
-  public String intercept(ActionInvocation invocation) throws Exception {
+  public static void setPermissionParameters(ActionInvocation invocation, SecurityContext securityContext,
+    ProjectManager projectManager) {
     BaseAction baseAction = (BaseAction) invocation.getAction();
     Map<String, Object> parameters = invocation.getInvocationContext().getParameters();
     String actionName = ServletActionContext.getActionMapping().getName();
@@ -80,7 +80,6 @@ public class EditProjectPlanningInterceptor extends AbstractInterceptor {
         // If the user is not asking for edition privileges we don't need to validate them.
         if (!editParameter) {
           baseAction.setEditableParameter(hasPermissionToEdit);
-          return invocation.invoke();
         }
       }
 
@@ -94,6 +93,11 @@ public class EditProjectPlanningInterceptor extends AbstractInterceptor {
     // Set the variable that indicates if the user can edit the section
     baseAction.setEditableParameter(hasPermissionToEdit && canEditProject);
     baseAction.setCanEdit(canEditProject);
+  }
+
+  @Override
+  public String intercept(ActionInvocation invocation) throws Exception {
+    setPermissionParameters(invocation, securityContext, projectManager);
     return invocation.invoke();
   }
 }
