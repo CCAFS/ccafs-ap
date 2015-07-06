@@ -43,7 +43,7 @@ public interface DeliverableTypeManager {
   public List<DeliverableType> getDeliverableSubTypes();
 
   /**
-   * This method gets all the deliverable information by a given deliverable type ID.
+   * This method gets all the deliverable type information by a given deliverable type ID.
    *
    * @param deliverableID is the deliverable type identifier.
    * @return a List of deliverables type objects.
