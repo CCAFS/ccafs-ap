@@ -249,7 +249,7 @@ a.addButton, a.addButton:active, a.addButton:visited, a.addButton:hover{
     color: #fff;
     background: #408088;
     padding: 6px;
-    border-radius: 4px;
+    border-radius: 4px 4px 0 0;
     cursor: pointer;
     margin-top: 4px;
 }
@@ -259,14 +259,13 @@ a.addButton, a.addButton:active, a.addButton:visited, a.addButton:hover{
 }
 
 .accordion-block {
-    padding: 16px 15px 0 15px;
+    padding: 12px 15px 5px 15px;
  
     margin-bottom: 14px;
     height: 220px;
     border: 1px solid #E5E5E5;
     border-top: 0;
     position: relative;
-    margin-top: -2px;
 }
 
 .create-button {
@@ -316,7 +315,7 @@ input.target {
 
 .checkboxGroup .checkboxLabel {
   display: inline-block;
-  font-size: 11px;
+  font-size: 0.9em;
   width: 88%; 
 }
 
@@ -1311,7 +1310,7 @@ h1.simpleTitle span {
 }
 
 .fullBlock .input input{
-  width: 100%;
+  width: 99.5%;
 }
 
 .fourthPartBlock { 
@@ -1506,7 +1505,7 @@ h1.simpleTitle span {
     cursor: pointer;
     position: absolute;
     bottom: 0.65em;
-    right: 0.8em;
+    right: 1.1em;
 }
 
 .searchUser:hover { 

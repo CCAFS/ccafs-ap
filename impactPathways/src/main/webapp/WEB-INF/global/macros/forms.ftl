@@ -4,11 +4,12 @@
   [@s.text name="${customName}"][@s.param]${param}[/@s.param][/@s.text]
 [/#macro]
 
-[#macro input name value="-NULL" type="text" i18nkey="" disabled=false required=false errorField="" help="" display=true className="-NULL" readOnly=false showTitle=true editable=true ]
-  <div class="input" [#if !display]style="display: none;"[/#if]>
+[#macro input name value="-NULL" type="text" i18nkey="" disabled=false required=false errorField="" help="" display=true className="" readOnly=false showTitle=true editable=true ]
+  <div class="input ${(className?has_content)?string('input-','')}${className}" style="display:${display?string('block','none')};">
+    [#assign labelTitle][#if i18nkey==""][@s.text name="${name}"/][#else][@s.text name="${i18nkey}"/][/#if][/#assign]
     [#if showTitle]
       <h6>
-        <label for="${name}">[#if i18nkey==""][@s.text name="${name}"/]:[#else][@s.text name="${i18nkey}"/]:[/#if]
+        <label for="${name}">${labelTitle}:
           [#if required]<span class="red">*</span>[/#if]
         </label>
         [#if help != ""]<img src="${baseUrl}/images/global/icon-help2.png" title="[@s.text name="${help}"/]" />[/#if]
@@ -16,7 +17,7 @@
     [/#if]
     [#if errorField==""][@s.fielderror cssClass="fieldError" fieldName="${name}"/][#else][@s.fielderror cssClass="fieldError" fieldName="${errorfield}"/][/#if]
     [#if editable]
-      <input type="${type}" id="${name}" name="${name}" value="[#if value=="-NULL"][@s.property value="${name?string}"/][#else]${value}[/#if]"  [#if className != "-NULL"] class="${className}" [/#if][#if readOnly] readonly="readonly"[/#if] [#if disabled]disabled="disabled"[/#if]/>
+      <input type="${type}" id="${name}" name="${name}" value="[#if value=="-NULL"][@s.property value="${name?string}"/][#else]${value}[/#if]"  [#if className?has_content]class="${className}"[/#if][#if readOnly] readonly="readonly"[/#if] [#if disabled]disabled="disabled"[/#if] [#if !showTitle]placeholder="${labelTitle}"[/#if]/>
     [#else]
       <p>  
         [#if value=="-NULL"] 
