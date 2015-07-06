@@ -144,9 +144,17 @@ public interface ProjectDAO {
    * this method returns the project id in which the given activity belongs to.
    * 
    * @param activityID is the activity identifier.
-   * @return an integer representing the project id, or -1 if the activityID does not belong to any project.
+   * @return an integer representing the project id, or -1 if the activity identifier does not belong to any project.
    */
   public int getProjectIdFromActivityId(int activityID);
+
+  /**
+   * this method returns the project id in which the given deliverable belongs to.
+   * 
+   * @param deliverableID is the deliverable identifier.
+   * @return an integer representing the project id, or -1 if the deliverable identifier does not belong to any project.
+   */
+  public int getProjectIdFromDeliverableId(int deliverableID);
 
   /**
    * This method returns a list of project identifiers that can be edited by the user identified with the value received

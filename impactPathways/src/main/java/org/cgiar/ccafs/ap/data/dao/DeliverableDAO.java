@@ -14,13 +14,13 @@
  */
 package org.cgiar.ccafs.ap.data.dao;
 
+import org.cgiar.ccafs.ap.data.dao.mysql.MySQLDeliverableDAO;
+
 /**
  * @author Javier Andrés Gallego
  */
 import java.util.List;
 import java.util.Map;
-
-import org.cgiar.ccafs.ap.data.dao.mysql.MySQLDeliverableDAO;
 
 import com.google.inject.ImplementedBy;
 
@@ -53,7 +53,15 @@ public interface DeliverableDAO {
   public boolean deleteDeliverablesByProject(int projectID);
 
   /**
-   * This method gets all the Deliverable information by a given Id
+   * This method validates if the a given deliverable exists in the database.
+   * 
+   * @param deliverableID is a deliverable identifier.
+   * @return true if a record was found, false otherwise.
+   */
+  public boolean existDeliverable(int deliverableID);
+
+  /**
+   * This method gets a deliverable information by a given Id
    * 
    * @param deliverableID - is the ID of the deliverable
    * @return a Map of the Deliverable Information related by the ID

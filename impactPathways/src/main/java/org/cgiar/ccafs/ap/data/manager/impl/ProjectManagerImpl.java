@@ -167,24 +167,6 @@ public class ProjectManagerImpl implements ProjectManager {
   }
 
   @Override
-  public User getExpectedProjectLeader(int projectId) {
-    Map<String, String> pData = projectDAO.getExpectedProjectLeader(projectId);
-    if (!pData.isEmpty()) {
-      User projectLeader = new User();
-      projectLeader.setId(Integer.parseInt(pData.get("id")));
-      projectLeader.setFirstName(pData.get("contact_first_name"));
-      projectLeader.setLastName(pData.get("contact_last_name"));
-      projectLeader.setEmail(pData.get("contact_email"));
-      // Getting Project leader institution and saving it in currentInstitution.
-      projectLeader.setCurrentInstitution(institutionManager.getInstitution(Integer.parseInt(pData
-        .get("institution_id"))));
-
-      return projectLeader;
-    }
-    return null;
-  }
-
-  @Override
   public List<Integer> getPLProjectIds(User user) {
     return projectDAO.getPLProjectIds(user.getId());
   }
@@ -290,14 +272,22 @@ public class ProjectManagerImpl implements ProjectManager {
   }
 
   @Override
+  public Project getProjectFromDeliverableId(int deliverableID) {
+    int projectID = projectDAO.getProjectIdFromDeliverableId(deliverableID);
+    if (projectID != -1) {
+      return this.getProject(projectID);
+    }
+    return null;
+  }
+
+  @Override
   public List<Integer> getProjectIdsEditables(User user) {
     return projectDAO.getProjectIdsEditables(user.getId());
   }
 
   @Override
   // TODO - Move this method to a class called projectIndicatorManager
-  public
-  List<IPIndicator> getProjectIndicators(int projectID) {
+  public List<IPIndicator> getProjectIndicators(int projectID) {
     List<IPIndicator> indicators = new ArrayList<>();
     List<Map<String, String>> indicatorsData = projectDAO.getProjectIndicators(projectID);
 
@@ -325,29 +315,10 @@ public class ProjectManagerImpl implements ProjectManager {
     return indicators;
   }
 
-  @Override
-  public User getProjectLeader(int projectId) {
-    Map<String, String> pData = projectDAO.getProjectLeader(projectId);
-    if (!pData.isEmpty()) {
-      User projectLeader = new User();
-      projectLeader.setId(Integer.parseInt(pData.get("id")));
-      projectLeader.setFirstName(pData.get("first_name"));
-      projectLeader.setLastName(pData.get("last_name"));
-      projectLeader.setEmail(pData.get("email"));
-      // projectLeader.setEmployeeId(Integer.parseInt(pData.get("employee_id"))); Not used anymore
-      // Getting Project leader institution and saving it in currentInstitution.
-      projectLeader.setCurrentInstitution(institutionManager.getInstitution(Integer.parseInt(pData
-        .get("institution_id"))));
-
-      return projectLeader;
-    }
-    return null;
-  }
 
   @Override
   // TODO - Move this method to a class called projectOutputManager
-  public
-  List<IPElement> getProjectOutputs(int projectID) {
+  public List<IPElement> getProjectOutputs(int projectID) {
     List<IPElement> outputs = new ArrayList<>();
     List<Map<String, String>> outputsData = projectDAO.getProjectOutputs(projectID);
 
@@ -429,72 +400,6 @@ public class ProjectManagerImpl implements ProjectManager {
     return projects;
   }
 
-  @Override
-  public List<Project> getProjectsOwning(User user) {
-    List<Project> projectsList = new ArrayList<>();
-    if (user.getCurrentInstitution().getId() > 0) {
-      List<Map<String, String>> projectDataList =
-        projectDAO.getProjectsOwning(user.getCurrentInstitution().getId(), user.getId());
-      DateFormat dateformatter = new SimpleDateFormat(APConstants.DATE_FORMAT);
-      for (Map<String, String> elementData : projectDataList) {
-
-        Project project = new Project(Integer.parseInt(elementData.get("id")));
-        project.setTitle(elementData.get("title"));
-        project.setSummary(elementData.get("summary"));
-        // Format to the Dates of the project
-        String sDate = elementData.get("start_date");
-        String eDate = elementData.get("end_date");
-        if (sDate != null && eDate != null) {
-          try {
-            Date startDate = dateformatter.parse(sDate);
-            Date endDate = dateformatter.parse(eDate);
-            project.setStartDate(startDate);
-            project.setEndDate(endDate);
-          } catch (ParseException e) {
-            LOG.error("There was an error formatting the dates", e);
-          }
-        }
-        int institutionID = Integer.parseInt(elementData.get("liaison_institution_id"));
-        project.setLiaisonInstitution(liaisonInstitutionManager.getLiaisonInstitution(institutionID));
-
-        project.setOwner(userManager.getUser(Integer.parseInt(elementData.get("project_owner_user_id"))));
-        project.getOwner().setCurrentInstitution(
-          institutionManager.getInstitution(Integer.parseInt(elementData.get("project_owner_institution_id"))));
-
-        project.setCreated(Long.parseLong(elementData.get("created")));
-        projectsList.add(project);
-      }
-    }
-
-    return projectsList;
-  }
-
-  @Override
-  public boolean saveExpectedProjectLeader(int projectId, User expectedLeader) {
-    boolean saved = true;
-    Map<String, Object> expectedProjectLeaderData = new HashMap<>();
-
-    if (expectedLeader.getId() > 0) {
-      expectedProjectLeaderData.put("id", expectedLeader.getId());
-    }
-    // First Name is used for the Contact Name.
-    expectedProjectLeaderData.put("contact_first_name", expectedLeader.getFirstName());
-    expectedProjectLeaderData.put("contact_last_name", expectedLeader.getLastName());
-    expectedProjectLeaderData.put("contact_email", expectedLeader.getEmail());
-    // Current institution is used for project leader institution.
-    expectedProjectLeaderData.put("institution_id", expectedLeader.getCurrentInstitution().getId());
-
-    int result = projectDAO.saveExpectedProjectLeader(projectId, expectedProjectLeaderData);
-    if (result == -1) {
-      saved = false;
-    } else if (result == 0) {
-      LOG.debug("saveExpectedProjectLeader > Expected project leader with id={} was updated", expectedLeader.getId());
-    } else {
-      LOG.debug("saveExpectedProjectLeader > Expected project leader with id={} was added", result);
-    }
-
-    return saved;
-  }
 
   @Override
   public int saveProjectDescription(Project project, User user, String justification) {
@@ -537,8 +442,7 @@ public class ProjectManagerImpl implements ProjectManager {
 
   @Override
   // TODO - Move this method to a class called projectIndicatorManager
-  public
-  boolean saveProjectIndicators(List<IPIndicator> indicators, int projectID, User user, String justification) {
+  public boolean saveProjectIndicators(List<IPIndicator> indicators, int projectID, User user, String justification) {
     Map<String, String> indicatorData;
     boolean saved = true;
 
@@ -570,8 +474,7 @@ public class ProjectManagerImpl implements ProjectManager {
 
   @Override
   // TODO - Move this method to a class called projectOutputManager
-  public
-  boolean saveProjectOutputs(List<IPElement> outputs, int projectID, User user, String justification) {
+  public boolean saveProjectOutputs(List<IPElement> outputs, int projectID, User user, String justification) {
     Map<String, String> outputData;
     boolean saved = true;
 

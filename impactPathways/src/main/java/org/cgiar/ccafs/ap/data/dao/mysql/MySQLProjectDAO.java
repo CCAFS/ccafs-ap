@@ -480,6 +480,27 @@ public class MySQLProjectDAO implements ProjectDAO {
   }
 
   @Override
+  public int getProjectIdFromDeliverableId(int deliverableID) {
+    LOG.debug(">> getProjectIdFromDeliverableId(deliverableID={})", new Object[] {deliverableID});
+    int projectID = -1;
+    try (Connection connection = databaseManager.getConnection()) {
+      StringBuilder query = new StringBuilder();
+      query.append("SELECT d.project_id FROM deliverables d WHERE d.id = ");
+      query.append(deliverableID);
+      ResultSet rs = databaseManager.makeQuery(query.toString(), connection);
+      while (rs.next()) {
+        projectID = rs.getInt(1);
+      }
+      rs.close();
+    } catch (SQLException e) {
+      LOG.error("-- getProjectIdFromDeliverableId() > There was an error getting the data for deliverableID={}.",
+        new Object[] {deliverableID}, e.getMessage());
+    }
+    LOG.debug("<< getProjectIdFromDeliverableId(): projectID={}", projectID);
+    return projectID;
+  }
+
+  @Override
   public List<Integer> getProjectIdsEditables(int userID) {
     LOG.debug(">> getProjectIdsEditables(projectID={}, ownerId={})", userID);
     List<Integer> projectIds = new ArrayList<>();

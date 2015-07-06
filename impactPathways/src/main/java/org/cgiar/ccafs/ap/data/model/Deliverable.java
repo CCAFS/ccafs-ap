@@ -31,6 +31,7 @@ public class Deliverable {
   private String title;
   private int year;
   private DeliverableType type;
+  private String typeOther; // Other specific type defined by the user.
   private List<NextUser> nextUsers;
   private IPElement output; // Now it is called MOG.
 
@@ -67,6 +68,10 @@ public class Deliverable {
     return type;
   }
 
+  public String getTypeOther() {
+    return typeOther;
+  }
+
   public int getYear() {
     return year;
   }
@@ -94,6 +99,10 @@ public class Deliverable {
 
   public void setType(DeliverableType type) {
     this.type = type;
+  }
+
+  public void setTypeOther(String typeOther) {
+    this.typeOther = typeOther;
   }
 
   public void setYear(int year) {
