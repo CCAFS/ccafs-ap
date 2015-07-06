@@ -440,7 +440,7 @@ public class LocationManagerImpl implements LocationManager {
 
   @Override
   public boolean saveProjectLocation(List<Location> locations, int projectID, User user, String justification) {
-    boolean saved = false;
+    boolean saved = true;
 
     for (Location location : locations) {
       Map<String, String> locationData = new HashMap<>();
@@ -465,5 +465,14 @@ public class LocationManagerImpl implements LocationManager {
     }
 
     return saved;
+  }
+
+  @Override
+  public boolean updateProjectGlobal(int projectID, User user, String justification) {
+    boolean updated = false;
+
+    int recordUpdated = locationDAO.updateProjectGlobal(projectID, user, justification);
+    updated = (recordUpdated != -1);
+    return updated;
   }
 }

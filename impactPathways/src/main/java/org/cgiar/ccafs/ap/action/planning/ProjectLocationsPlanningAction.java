@@ -245,11 +245,6 @@ public class ProjectLocationsPlanningAction extends BaseAction {
     if (this.isSaveable()) {
 
       boolean success = true;
-      // Saving the project information again (with the new global attribute on it).
-      int saved = projectManager.saveProjectDescription(project, project.getOwner(), "");
-      if (saved == -1) {
-        success = false;
-      }
 
       // Updating all previous added locations.
       boolean removed = locationManager.removeProjectLocation(previousLocations, projectID);
@@ -288,7 +283,12 @@ public class ProjectLocationsPlanningAction extends BaseAction {
 
       locations.addAll(project.getLocations());
 
-      // Then, saving locations received
+      // Then, updating projects received
+      boolean updated = locationManager.updateProjectGlobal(projectID, this.getCurrentUser(), this.getJustification());
+      if (!updated) {
+        success = false;
+      }
+
       boolean added =
         locationManager.saveProjectLocation(locations, projectID, this.getCurrentUser(), this.getJustification());
       if (!added) {
@@ -307,14 +307,14 @@ public class ProjectLocationsPlanningAction extends BaseAction {
         // Send a message with the file received
         this.sendNotificationMessage(fileLocation, excelTemplateFileName);
       }
-
       // Displaying user messages.
       if (success == false) {
-        this.addActionError(this.getText("saving.problem"));
+        this.addActionError(this.getText("planning.project.locations.saving.problem"));
         return BaseAction.INPUT;
       }
       this.addActionMessage(this.getText("saving.success",
-        new String[] {this.getText("planning.projects.locations.title")}));
+        new String[] {this.getText("planning.project.locations.title")}));
+
       return BaseAction.SUCCESS;
     } else {
       return BaseAction.NOT_AUTHORIZED;
@@ -324,13 +324,13 @@ public class ProjectLocationsPlanningAction extends BaseAction {
   private void sendNotificationMessage(String filePath, String fileName) {
     StringBuilder messageContent = new StringBuilder();
     String subject, recipients;
-    subject = "[CCAFS P&R] Project locations template to save into the database";
-    recipients = "ccafsap@gmail.com";
+    subject = this.getText("planning.project.locations.sendNotificationMessageSubject");
+    recipients = this.getText("planning.project.locations.sendNotificationMessageRecipient");
 
-    messageContent.append("User ");
+    messageContent.append(this.getText("planning.project.locations.locationsUploaded1"));
     messageContent.append(this.getCurrentUser().getFirstName() + " " + this.getCurrentUser().getLastName());
     messageContent.append(" <" + this.getCurrentUser().getEmail() + "> ");
-    messageContent.append("has uploaded a file with locations to be saved into the database.");
+    messageContent.append(this.getText("planning.project.locations.locationsUploaded2"));
 
     SendMail sendMail = new SendMail(config);
     sendMail.sendMailWithAttachment(recipients, subject, messageContent.toString(), filePath + fileName, fileName);

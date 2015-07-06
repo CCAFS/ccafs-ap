@@ -46,7 +46,6 @@ public class Project {
   private String leaderResponsabilities;
   private LiaisonInstitution liaisonInstitution; // Creator program. e.g. LAM, FP4, CU, etc.
   private User owner;
-  private List<Location> locations;
   private List<ProjectPartner> projectPartners; // Project partners or 2-level partners.
   private List<ProjectPartner> ppaPartners; // PPA Partners or CCAFS Program Partners.
   private List<Deliverable> deliverables; // Project research outputs - deliverables.
@@ -315,10 +314,6 @@ public class Project {
 
   public List<Project> getLinkedCoreProjects() {
     return linkedCoreProjects;
-  }
-
-  public List<Location> getLocations() {
-    return locations;
   }
 
   public List<Location> getLocations() {
