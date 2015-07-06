@@ -48,6 +48,12 @@ public class HistoryManagerImpl implements HistoryManager {
   }
 
 
+  @Override
+  public List<LogHistory> getCCAFSOutcomesHistory(int projectID) {
+    List<Map<String, String>> logHistoryData = historyDAO.getCCAFSOutcomesHistory(projectID);
+    return this.getData(logHistoryData);
+  }
+
   @SuppressWarnings("rawtypes")
   private List<LogHistory> getData(List<Map<String, String>> logHistoryData) {
     DateFormat dateformatter = new SimpleDateFormat(APConstants.DATE_FORMAT + " HH:mm:ss");
@@ -90,9 +96,11 @@ public class HistoryManagerImpl implements HistoryManager {
     return this.getData(logHistoryData);
   }
 
+
   @Override
   public List<LogHistory> getProjectPartnersHistory(int projectID, String[] partnerTypes) {
     List<Map<String, String>> logHistoryData = historyDAO.getProjectPartnerHistory(projectID, partnerTypes);
     return this.getData(logHistoryData);
   }
+
 }

@@ -44,6 +44,26 @@ public class MySQLHistoryDAO implements HistoryDAO {
     this.daoManager = daoManager;
   }
 
+  @Override
+  public List<Map<String, String>> getCCAFSOutcomesHistory(int projectID) {
+    String dbName = this.getDatabaseName();
+
+    StringBuilder query = new StringBuilder();
+    query.append("SELECT u.id as 'user_id', u.first_name, u.last_name, u.email, t.action, ");
+    query.append("t.active_since, t.modification_justification ");
+    query.append("FROM ");
+    query.append(dbName);
+    query.append("_history.ip_project_contributions t ");
+    query.append("INNER JOIN users u ON t.modified_by = u.id ");
+    query.append("WHERE project_id = ");
+    query.append(projectID);
+    query.append(" ORDER BY t.active_since DESC ");
+    query.append(" LIMIT 0, 5 ");
+
+    return this.getData(query.toString());
+
+  }
+
   private List<Map<String, String>> getData(String query) {
     List<Map<String, String>> historyData = new ArrayList<>();
     try (Connection con = daoManager.getConnection()) {

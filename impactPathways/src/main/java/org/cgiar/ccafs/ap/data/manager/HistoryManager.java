@@ -30,6 +30,15 @@ import com.google.inject.ImplementedBy;
 public interface HistoryManager {
 
   /**
+   * This method return the last five changes made in the interface of project CCAFS outcomes to the project identified
+   * by the value received by parameter.
+   * 
+   * @param projectID - Project identifier
+   * @return a list of logHistory objects that contains the information.
+   */
+  public List<LogHistory> getCCAFSOutcomesHistory(int projectID);
+
+  /**
    * This method return the last five changes made in the interface of
    * project description to the project identified by the value received by parameter.
    * 
@@ -56,5 +65,4 @@ public interface HistoryManager {
    * @return a list of maps with the information
    */
   public List<LogHistory> getProjectPartnersHistory(int projectID, String[] partnerTypes);
-
 }

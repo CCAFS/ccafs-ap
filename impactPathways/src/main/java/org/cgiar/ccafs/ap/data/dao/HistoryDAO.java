@@ -31,6 +31,15 @@ public interface HistoryDAO {
 
   /**
    * This method return the last five changes (only the user, date, action and justification) made in the interface of
+   * project CCAFS outcomes to the project identified by the value received by parameter.
+   * 
+   * @param projectID - Project identifier
+   * @return a list of maps with the information
+   */
+  public List<Map<String, String>> getCCAFSOutcomesHistory(int projectID);
+
+  /**
+   * This method return the last five changes (only the user, date, action and justification) made in the interface of
    * project description to the project identified by the value received by parameter.
    * 
    * @param projectID - Project identifier
