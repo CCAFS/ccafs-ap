@@ -270,7 +270,10 @@ public class ProjectManagerImpl implements ProjectManager {
 
   @Override
   public Project getProjectFromDeliverableId(int deliverableID) {
-    // TODO Auto-generated method stub
+    int projectID = projectDAO.getProjectIdFromDeliverableId(deliverableID);
+    if (projectID != -1) {
+      return this.getProject(projectID);
+    }
     return null;
   }
 

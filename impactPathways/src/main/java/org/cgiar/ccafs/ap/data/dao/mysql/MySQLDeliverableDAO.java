@@ -113,6 +113,27 @@ public class MySQLDeliverableDAO implements DeliverableDAO {
     return saved;
   }
 
+  @Override
+  public boolean existDeliverable(int deliverableID) {
+    LOG.debug(">> existDeliverable deliverableID = {} )", deliverableID);
+    StringBuilder query = new StringBuilder();
+    query.append("SELECT COUNT(id) FROM deliverables WHERE id = ");
+    query.append(deliverableID);
+    boolean exists = false;
+    try (Connection con = databaseManager.getConnection()) {
+      ResultSet rs = databaseManager.makeQuery(query.toString(), con);
+      if (rs.next()) {
+        if (rs.getInt(1) > 0) {
+          exists = true;
+        }
+      }
+      con.close();
+    } catch (SQLException e) {
+      LOG.error("Exception arised getting the deliverable id.", deliverableID, e.getMessage());
+    }
+    return exists;
+  }
+
   private List<Map<String, String>> getData(String query) {
     LOG.debug(">> executeQuery(query='{}')", query);
     List<Map<String, String>> deliverablesList = new ArrayList<>();
