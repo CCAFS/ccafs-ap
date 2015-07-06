@@ -87,17 +87,6 @@ public interface ProjectManager {
   public List<Project> getCoreProjects(int flagshipID, int regionID);
 
   /**
-   * This method finds the Expected Project Leader user from a specific Project.
-   * 
-   * @param projectId is the project id.
-   * @return a User object who represents an expected Project Leader. Or NULL if no user was found.
-   * @deprecated This method is deprecated as we do not have expected Project Leaders any more. Instead, all the PLs
-   *             will be created in the users table but some of them will be active or not.
-   */
-  @Deprecated
-  public User getExpectedProjectLeader(int projectId);
-
-  /**
    * This method returns the list of project identifiers where the given user is assigned as Project Leader.
    * 
    * @param user is the user object.
@@ -132,6 +121,14 @@ public interface ProjectManager {
   public Project getProjectFromActivityId(int activityID);
 
   /**
+   * Get the project where the given deliverable id belongs to.
+   * 
+   * @param deliverableID is a deliverable id.
+   * @return a Project object representing the project.
+   */
+  public Project getProjectFromDeliverableId(int deliverableID);
+
+  /**
    * This method returns the list of project identifiers that the given user is able to edit.
    * 
    * @param user is the user object.
@@ -146,17 +143,6 @@ public interface ProjectManager {
    * @return a list of IPIndicator objects
    */
   public List<IPIndicator> getProjectIndicators(int projectID);
-
-  /**
-   * This method finds the Project Leader user from a specific Project.
-   * 
-   * @param projectId is the project id.
-   * @return a User object who represents a Project Leader. Or NULL if no user was found.
-   * @deprecated Deprecated as of P&R v2.1, replaced by ProjectPartnerManager.getProjectPartners(int projectId, String
-   *             projectPartnerType).
-   */
-  @Deprecated
-  public User getProjectLeader(int projectId);
 
   /**
    * This method gets all the outputs related with the project identified by the value
@@ -181,26 +167,6 @@ public interface ProjectManager {
    * @return a list of Project objects.
    */
   public List<Project> getProjectsList(String[] values);
-
-  /**
-   * This method gets all the projects in which the given user is assigned as Project Owner
-   * 
-   * @param user is the user object.
-   * @return a List of projects.
-   */
-  public List<Project> getProjectsOwning(User user);
-
-  /**
-   * This method saves or update an expected project leader possibly added in Pre-Planning step.
-   * This expected project leader must belongs to a specific project.
-   * 
-   * @param projectId is the project identifier.
-   * @param expectedLeader is the project leader to be added/updated.
-   * @return true if the save process finalized successfully, false otherwise.
-   * @deprecated Please use ProjectPartnerManager.saveProjectPartner(...).
-   */
-  @Deprecated
-  public boolean saveExpectedProjectLeader(int projectId, User expectedLeader);
 
   /**
    * This method create or updates a project into the database.

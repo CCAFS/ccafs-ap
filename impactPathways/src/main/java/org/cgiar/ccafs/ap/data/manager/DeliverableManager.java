@@ -13,11 +13,11 @@
  *****************************************************************/
 package org.cgiar.ccafs.ap.data.manager;
 
-import java.util.List;
-
 import org.cgiar.ccafs.ap.data.manager.impl.DeliverableManagerImpl;
 import org.cgiar.ccafs.ap.data.model.Deliverable;
 import org.cgiar.ccafs.ap.data.model.IPElement;
+
+import java.util.List;
 
 import com.google.inject.ImplementedBy;
 
@@ -53,10 +53,10 @@ public interface DeliverableManager {
   public boolean deleteDeliverablesByProject(int projectID);
 
   /**
-   * This method gets all the deliverable information by a given deliverable ID.
+   * This method gets a deliverable object by a given deliverable ID.
    * 
    * @param deliverableID is the deliverable identifier.
-   * @return a List of deliverables objects.
+   * @return a Deliverable object.
    */
   public Deliverable getDeliverableById(int deliverableID);
 
