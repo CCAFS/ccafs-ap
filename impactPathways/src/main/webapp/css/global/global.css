@@ -2284,6 +2284,11 @@ p.partnerTitle {
     font-size: 0.95em;
 }
 
+.input-otherType {
+    margin-top: 3px;
+    padding-left: 2px;
+}
+
 /*** Activities ***/
 
 .activity {
