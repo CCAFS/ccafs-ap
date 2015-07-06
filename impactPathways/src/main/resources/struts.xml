@@ -53,6 +53,7 @@
       
       <!-- Custom interceptor to validate that the deliverable parameter is correct and the deliverable actually exists -->
       <interceptor name="validateDeliverableParameter" class="org.cgiar.ccafs.ap.interceptor.ValidateDeliverableParameterInterceptor" />
+      <interceptor name="canEditDeliverablePlanning" class="org.cgiar.ccafs.ap.interceptor.planning.EditDeliverablePlanningInterceptor" />
       
       <!-- ************************** Interceptors for Planning (Activities) ****************************** -->
       
@@ -101,6 +102,7 @@
         <interceptor-ref name="keepRedirectMessages"/>
         <interceptor-ref name="accessibleStage" />
         <interceptor-ref name="validateDeliverableParameter" />
+        <interceptor-ref name="canEditDeliverablePlanning" />
         <interceptor-ref name="trimInputs" />
         <interceptor-ref name="defaultStack" />
       </interceptor-stack>
