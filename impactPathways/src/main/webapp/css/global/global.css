@@ -178,8 +178,7 @@ textarea#justification {
     text-align: justify;
     width: 98%;
     font-size: 1.07em;
-    line-height: 1.3em;
-    padding-left: 1px;
+    margin-top: -1px;
 }
 
 input[type="radio"] {
@@ -227,8 +226,8 @@ a.addButton, a.addButton:active, a.addButton:visited, a.addButton:hover{
   right: 0;
   top: 0;
   background: url(../../images/global/icon-edit.png) #8B8B8B no-repeat 11px 5px;
-  background-size: 25%;
-  padding: 6px 0px 6px 0px;
+  background-size: 19%;
+  padding: 4px 0px 6px 0px;
   
   cursor:pointer;
   font-size: 1.1em;
@@ -239,7 +238,7 @@ a.addButton, a.addButton:active, a.addButton:visited, a.addButton:hover{
   font-weight: bold;
   text-shadow: 1px 1px 7px rgba(0, 0, 0, 0.1);
   text-decoration: none;
-  padding: 6px 11px 6px 33px; */;
+  padding: 8px 18px 6px 31px; */;
 }
 .editButton:hover{
   background-color: #6C6C6C;
@@ -250,7 +249,7 @@ a.addButton, a.addButton:active, a.addButton:visited, a.addButton:hover{
     color: #fff;
     background: #408088;
     padding: 6px;
-    border-radius: 4px;
+    border-radius: 4px 4px 0 0;
     cursor: pointer;
     margin-top: 4px;
 }
@@ -260,14 +259,13 @@ a.addButton, a.addButton:active, a.addButton:visited, a.addButton:hover{
 }
 
 .accordion-block {
-    padding: 16px 15px 0 15px;
+    padding: 12px 15px 5px 15px;
  
     margin-bottom: 14px;
     height: 220px;
     border: 1px solid #E5E5E5;
     border-top: 0;
     position: relative;
-    margin-top: -2px;
 }
 
 .create-button {
@@ -317,7 +315,7 @@ input.target {
 
 .checkboxGroup .checkboxLabel {
   display: inline-block;
-  font-size: 11px;
+  font-size: 0.9em;
   width: 88%; 
 }
 
@@ -445,6 +443,12 @@ img.icon {
   opacity: 0.3;
 }
 
+.loadingBlock {
+    width: 100%;        
+    min-height: 56px;
+    background: url(../../images/global/loading.gif) #FFF no-repeat 50%;        z-index: 99;    opacity: 0.3;
+}
+
 /* Log History */
 
 .log-table {
@@ -499,7 +503,7 @@ span.logType.insert {
 .charCount {
   color: #888888;
   font-size: 0.85em !important;
-  margin-right: 25px;
+  margin-right: 12px;
   text-align: right !important;
 }
 
@@ -721,7 +725,7 @@ header {
 .container { 
   background-repeat: no-repeat;
   display: inline-block;
-  width: 1100px; 
+  width: 1080px; 
   position: relative;
   text-align: left;
   display: inline-block; 
@@ -754,7 +758,7 @@ header {
   color: #fff;
   text-align: left;
   position: absolute;
-  right: 1em;
+  right: 0em;
   top: 0;
   background: #57A7B5;
   border-bottom: 6px solid #4C8D99;
@@ -853,7 +857,7 @@ a#userLogOut {
 
 #mainLogo {
   float: left;
-  padding: 31px 60px;
+  padding: 31px 0px;
   font-size: 2.5em;
   color: #444;
   font-weight: 200;
@@ -888,7 +892,7 @@ nav#mainMenu {
 nav#mainMenu ul{
   list-style-type: none;
   /* height: 40px; */
-  padding: 19px 20px;
+  padding: 19px 0px;
   /* margin: 0 auto; */
   /* text-align: center; */
 } 
@@ -1168,7 +1172,7 @@ a.currentReportingSection li #i-additionalInformation{
 
 /*************** BODY ****************/
 .content {
-  margin: 0px 34px 37px 0; 
+  margin: 0px 0px 40px 0; 
 }
 .content:before,.content:after {
   content: "";
@@ -1193,7 +1197,9 @@ a.currentReportingSection li #i-additionalInformation{
   width: 845px;
   vertical-align: top;
   position: relative;
+  margin-top: 39px;
 }
+
 
 .content a,.halfContent a, #footerContainer a, 
 .content a:hover,.halfContent a:hover, #footerContainer a{
@@ -1304,7 +1310,7 @@ h1.simpleTitle span {
 }
 
 .fullBlock .input input{
-  width: 100%;
+  width: 99.5%;
 }
 
 .fourthPartBlock { 
@@ -1474,6 +1480,7 @@ h1.simpleTitle span {
 
 .textArea textarea{
   width: 99%
+;
 }
 
 .readPrivileges {
@@ -1498,7 +1505,7 @@ h1.simpleTitle span {
     cursor: pointer;
     position: absolute;
     bottom: 0.65em;
-    right: 0.8em;
+    right: 1.1em;
 }
 
 .searchUser:hover { 
@@ -2217,6 +2224,7 @@ p.partnerTitle {
 }
 
 /* Project/Activities QUOTE */
+
 #top-quote {
   position: absolute;
   top: 9px;
@@ -2276,7 +2284,19 @@ p.partnerTitle {
     font-size: 0.95em;
 }
 
+.input-otherType {
+    margin-top: 3px;
+    padding-left: 2px;
+}
+
 /*** Activities ***/
+
+.activity {
+  font-size: 0.98em;
+  margin-top: 20px !important;
+  padding-bottom: 20px !important;
+}
+
 .location.row, #location-head {
   padding: 6px 11px;
   margin: 3px;
@@ -2550,7 +2570,7 @@ margin-bottom: 8px;
 /********* Activity Reporting Sub Menu **********/
 #stageMenu {
   display: block;
-  margin: 39px 30px 15px 0px;
+  margin: 0px 30px 15px 0px;
   text-align: center;
   position: relative;
 }
@@ -2883,15 +2903,16 @@ ul#deliverablesFilesMessages > li {
   color: #5A5A5A;
 }
 
-.borderBox >span.index {
+.borderBox >span.index, .simpleBox >span.index {
 position: absolute;
 top: 0px;
 left: 0px;
 background: #CECECE;
 color: #FFF;
-padding: 0px 6px;
+padding: 0px 12px;
 font-weight: bold;
 border-radius: 3px 0px 3px 0px;
+font-size: 1.05em;
 }
 
 .borderBox:before,.borderBox:after {
@@ -2909,9 +2930,9 @@ border-radius: 3px 0px 3px 0px;
 
 .simpleBox {
     border: 1px solid #E7E7E7;    
-    padding: 13px 15px 10px 15px;    
+    padding: 12px 15px 10px 15px;    
     border-radius: 3px;   
-    margin: 7px 0px;    
+    margin: 0 0px 17px 0;    
     position: relative;
     background: #FFF;
 }

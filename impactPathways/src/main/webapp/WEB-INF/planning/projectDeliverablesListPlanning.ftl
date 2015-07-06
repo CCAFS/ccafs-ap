@@ -55,18 +55,6 @@
             <a class="addButton" href="[@s.url namespace="/planning/projects" action='addNewDeliverable'/]">[@s.text name="planning.projectDeliverables.addNewDeliverable" /]</a>
         </div>
       </div>
-      
-      [#-- Completed Deliverables --]
-      <div class="fullBlock clearfix">
-        <h3 class="projectSubTitle">[@s.text name="planning.projectDeliverables.completedDeliverables" /]</h3>
-        [#if project.deliverables?has_content]
-          [@deliverableTemplate.deliverablesList deliverables=project.deliverables canEdit=canEdit /]
-        [#else]
-          [#-- Just show this empty message to those users who are not able to modify this section --]
-          [#if !canEdit]<p>[@s.text name="planning.deliverables.empty"/]</p>[/#if]
-        [/#if] 
-      </div>
-       
     </div>
     
     

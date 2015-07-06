@@ -37,9 +37,7 @@
     [#-- Informing user that he/she doesn't have enough privileges to edit. See GrantActivityPlanningAccessInterceptor--]
     [#if !canEdit]
       <p class="readPrivileges">
-        [@s.text name="saving.read.privileges"]
-          [@s.param][@s.text name="planning.projectImpactPathways.title"/][/@s.param]
-        [/@s.text]
+        [@s.text name="saving.read.privileges"][@s.param][@s.text name=title/][/@s.param][/@s.text]
       </p>
     [/#if] 
       

@@ -14,6 +14,13 @@ function attachEvents() {
   // Deliverables Events
   $(".removeDeliverable, .removeNextUser, .removeElement").click(removeElementEvent);
   $("select[id$='mainType']").change(updateDeliverableSubTypeList);
+  $("#deliverables_deliverable_type").change(function(e) {
+    if($(e.target).val() == 38) {
+      $(".input-otherType").show('slow');
+    } else {
+      $(".input-otherType").hide('slow');
+    }
+  });
 
   // Next users events
   $(".addNextUser").on("click", addNextUserEvent);
@@ -72,7 +79,7 @@ function setDeliverablesIndexes() {
     var elementName = $('#partnersName').val() + "[" + i + "].";
     $(element).find("span.index").html(i);
     $(element).find(".institution").attr("name", elementName + "institution");
-    $(element).find(".type").attr("name", elementName + "type");
+    $(element).find(".id").attr("name", elementName + "id");
     $(element).find(".userId").attr("name", elementName + "user");
   });
 }
