@@ -76,6 +76,14 @@ public class V2_1_2_20150706_0912__create_history_table_for_ccafs_outcomes imple
         // We don't need to validate if the table exists since we recently created the database
         tableManager.createLogTable(tableName);
       }
+
+      // Drop the unique key of the history tables to prevent errors.
+      dbManager.useHistoryDatabase();
+      Statement stmnt = connection.createStatement();
+      stmnt.addBatch("ALTER TABLE ip_project_indicators DROP INDEX  UK_ipProjectIndicator; ");
+      stmnt.addBatch("ALTER TABLE ip_project_contributions DROP INDEX  UK_project_contributions_unique; ");
+      stmnt.executeBatch();
+
     } catch (SQLException e) {
       LOG.error("There was an error running the migration.");
       throw e;
