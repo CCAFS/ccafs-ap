@@ -43,6 +43,7 @@ function setActivitiesIndexes() {
     var name = elementName + "[" + i + "].";
     $(element).attr("id", "activity-" + i);
     $(element).find("span.index").html(i + 1);
+    $(element).find(".id").attr("name", name + "id");
     $(element).find(".title").attr("name", name + "title");
     $(element).find(".description").attr("name", name + "description");
     $(element).find(".startDate").attr("name", name + "startDate").attr("id", name + "startDate");

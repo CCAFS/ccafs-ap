@@ -9,7 +9,8 @@
     [#if (editable && canEdit)]
       <div class="removeElement" title="[@s.text name="planning.activities.removeActivity" /]"></div> 
     [/#if]
-    <span class="index">${activity_index+1}</span>
+    <span class="index">${activity_index+1}</span> 
+      <input class="id" type="hidden" name="${activitiesName}.id" value="[#if activity.id??]${activity.id}[#else]-1[/#if]"> 
     [#-- Title --]
     <div class="fullPartBlock clearfix">
       [@customForm.input name="${activitiesName}.title" className="title" type="text" required=true i18nkey="planning.activityDescription.title" editable=editable/]
