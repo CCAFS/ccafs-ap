@@ -53,6 +53,14 @@ public interface DeliverableManager {
   public boolean deleteDeliverablesByProject(int projectID);
 
   /**
+   * This method validate if the deliverable identify with the given id exists in the system.
+   * 
+   * @param deliverableID is a deliverable identifier.
+   * @return true if the deliverable exists, false otherwise.
+   */
+  public boolean existDeliverable(int deliverableID);
+
+  /**
    * This method gets a deliverable object by a given deliverable ID.
    * 
    * @param deliverableID is the deliverable identifier.

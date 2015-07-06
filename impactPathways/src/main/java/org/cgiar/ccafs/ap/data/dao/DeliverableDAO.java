@@ -53,6 +53,14 @@ public interface DeliverableDAO {
   public boolean deleteDeliverablesByProject(int projectID);
 
   /**
+   * This method validates if the a given deliverable exists in the database.
+   * 
+   * @param deliverableID is a deliverable identifier.
+   * @return true if a record was found, false otherwise.
+   */
+  public boolean existDeliverable(int deliverableID);
+
+  /**
    * This method gets a deliverable information by a given Id
    * 
    * @param deliverableID - is the ID of the deliverable

@@ -198,7 +198,8 @@
       <result name="input">/WEB-INF/planning/projectDeliverablesListPlanning.ftl</result>
     </action>
     
-    <action name="deliverable" class="org.cgiar.ccafs.ap.action.planning.ProjectDeliverablesListAction">
+    <action name="deliverable" class="org.cgiar.ccafs.ap.action.planning.ProjectDeliverableAction">
+      <interceptor-ref name="planningStackDeliverables" />
       <result name="input">/WEB-INF/planning/projectDeliverablePlanning.ftl</result>
       <result name="success" type="redirectAction">
         <param name="actionName">deliverable</param>
