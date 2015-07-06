@@ -45,6 +45,7 @@ public class Project {
   private ProjectPartner coordinator; // Project Coordinator.
   private String leaderResponsabilities;
   private LiaisonInstitution liaisonInstitution; // Creator program. e.g. LAM, FP4, CU, etc.
+  private boolean isGlobal;
   private User owner;
   private List<ProjectPartner> projectPartners; // Project partners or 2-level partners.
   private List<ProjectPartner> ppaPartners; // PPA Partners or CCAFS Program Partners.
@@ -328,7 +329,6 @@ public class Project {
     return outputs;
   }
 
-
   public User getOwner() {
     return owner;
   }
@@ -336,6 +336,7 @@ public class Project {
   public List<ProjectPartner> getPPAPartners() {
     return ppaPartners;
   }
+
 
   public List<ProjectPartner> getProjectPartners() {
     return projectPartners;
@@ -398,6 +399,10 @@ public class Project {
     return (type != null) ? type.equals(APConstants.PROJECT_CORE) : false;
   }
 
+  public boolean isGlobal() {
+    return isGlobal;
+  }
+
   /**
    * Return if the is new.
    * A project is new when it was created in the planning phase for the current year
@@ -451,6 +456,10 @@ public class Project {
 
   public void setFlagships(List<IPProgram> flagships) {
     this.flagships = flagships;
+  }
+
+  public void setGlobal(boolean isGlobal) {
+    this.isGlobal = isGlobal;
   }
 
   public void setId(int id) {
