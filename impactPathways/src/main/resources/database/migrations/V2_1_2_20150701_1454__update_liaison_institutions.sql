@@ -17,3 +17,6 @@ UPDATE liaison_institutions SET institution_id='172' WHERE id='8';
 
 -- Update institution id South Asia Region to IWMI
 UPDATE liaison_institutions SET institution_id='5' WHERE id='9';
+
+-- Update institution id West Africa to ICRISAT
+UPDATE liaison_institutions SET institution_id='103' WHERE id='10';

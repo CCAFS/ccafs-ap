@@ -4,21 +4,21 @@
     <table id="projectDeliverables">
       <thead>
         <tr>
-          <th class="mogId" >MOG</th> 
+          <th class="id" >ID</th> 
           <th class="name">Deliverable Name</th>
           <th class="type">Type</th> 
-          <th class="date-added">Date Added</th> 
-          <th class="removeDeliverable"> </th> 
+          <th class="year">Year</th> 
+          <th class="removeDeliverable"></th> 
         </tr>
       </thead>
       <tbody>
       [#list deliverables as dl]  
         [#assign dlurl][@s.url namespace=namespace action='deliverable' ][@s.param name='projectID']${project.id?c}[/@s.param][/@s.url][/#assign]
         <tr>
-          <td class="mogId" ><a href="${dlurl}" title="${dl.output.description}">${dl.output.id}</a></td> 
-          <td class="name"><a href="${dlurl}">${dl.id}: ${dl.title}</a></td>
+          <td class="id" ><a href="${dlurl}">${dl.id}</a></td> 
+          <td class="name"><a href="${dlurl}">${dl.title}</a></td>
           <td class="type"><a href="${dlurl}">${dl.type.name}</a></td> 
-          <td class="date-added"><a href="${dlurl}">{dl.date}</a></td> 
+          <td class="year"><a href="${dlurl}">${dl.year}</a></td> 
           <td class="removeDeliverable">
             [#if true ]
               <a href="[@s.url action='deleteDeliverable' includeParams='get' namespace='/planning/projects' /]" title="" class="removeDeliverable">

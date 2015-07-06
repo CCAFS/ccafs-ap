@@ -14,21 +14,21 @@
 package org.cgiar.ccafs.ap.data.manager.impl;
 
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-
 import org.cgiar.ccafs.ap.data.dao.DeliverableDAO;
 import org.cgiar.ccafs.ap.data.manager.DeliverableManager;
 import org.cgiar.ccafs.ap.data.manager.DeliverableTypeManager;
 import org.cgiar.ccafs.ap.data.manager.NextUserManager;
 import org.cgiar.ccafs.ap.data.model.Deliverable;
 import org.cgiar.ccafs.ap.data.model.IPElement;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 import com.google.inject.Inject;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
  * @author Javier Andrés Gallego
@@ -79,6 +79,7 @@ public class DeliverableManagerImpl implements DeliverableManager {
       deliverable.setYear(Integer.parseInt(deliverableData.get("year")));
       deliverable
       .setType(deliverableTypeManager.getDeliverableTypeById(Integer.parseInt(deliverableData.get("type_id"))));
+      deliverable.setTypeOther(deliverableData.get("type_other"));
       deliverable.setNextUsers(nextUserManager.getNextUsersByDeliverableId(deliverableID));
       deliverable.setOutput(this.getDeliverableOutput(deliverableID));
       return deliverable;
@@ -109,6 +110,7 @@ public class DeliverableManagerImpl implements DeliverableManager {
       deliverable.setYear(Integer.parseInt(deliverableData.get("year")));
       deliverable
       .setType(deliverableTypeManager.getDeliverableTypeById(Integer.parseInt(deliverableData.get("type_id"))));
+      deliverable.setTypeOther(deliverableData.get("type_other"));
       deliverable.setNextUsers(nextUserManager.getNextUsersByDeliverableId(projectID));
       deliverable.setOutput(this.getDeliverableOutput(Integer.parseInt(deliverableData.get("id"))));
       // adding information of the object to the array
@@ -128,6 +130,7 @@ public class DeliverableManagerImpl implements DeliverableManager {
     deliverableData.put("project_id", projectID);
     deliverableData.put("title", deliverable.getTitle());
     deliverableData.put("type_id", deliverable.getType().getId());
+    deliverableData.put("type_other", deliverable.getTypeOther());
     deliverableData.put("year", deliverable.getYear());
 
     int result = deliverableDAO.saveDeliverable(projectID, deliverableData);
@@ -137,8 +140,8 @@ public class DeliverableManagerImpl implements DeliverableManager {
     } else if (result == 0) {
       LOG.debug("saveDeliverable > Deliverable with id={} was updated", deliverable.getId());
     } else {
-      LOG
-        .error("saveDeliverable > There was an error trying to save/update a Deliverable from projectId={}", projectID);
+      LOG.error("saveDeliverable > There was an error trying to save/update a Deliverable from projectId={}",
+        projectID);
     }
 
     return result;
@@ -147,7 +150,6 @@ public class DeliverableManagerImpl implements DeliverableManager {
 
   @Override
   public boolean saveDeliverableOutput(int deliverableID, int projectID, int userID, String justification) {
-    boolean saved = deliverableDAO.saveDeliverableOutput(deliverableID, projectID, userID, justification);
-    return saved;
+    return deliverableDAO.saveDeliverableOutput(deliverableID, projectID, userID, justification);
   }
 }
