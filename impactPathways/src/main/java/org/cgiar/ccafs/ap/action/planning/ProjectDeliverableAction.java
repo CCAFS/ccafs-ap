@@ -21,6 +21,7 @@ import org.cgiar.ccafs.ap.data.manager.NextUserManager;
 import org.cgiar.ccafs.ap.data.manager.ProjectManager;
 import org.cgiar.ccafs.ap.data.model.Deliverable;
 import org.cgiar.ccafs.ap.data.model.DeliverableType;
+import org.cgiar.ccafs.ap.data.model.IPElement;
 import org.cgiar.ccafs.ap.data.model.Project;
 import org.cgiar.ccafs.utils.APConfig;
 
@@ -57,6 +58,7 @@ public class ProjectDeliverableAction extends BaseAction {
   private List<DeliverableType> deliverableTypes;
   private List<DeliverableType> deliverableSubTypes;
   private List<Integer> allYears;
+  private List<IPElement> outputs;
 
   @Inject
   public ProjectDeliverableAction(APConfig config, ProjectManager projectManager, DeliverableManager deliverableManager,
@@ -73,6 +75,7 @@ public class ProjectDeliverableAction extends BaseAction {
     return allYears;
   }
 
+
   public Deliverable getDeliverable() {
     return deliverable;
   }
@@ -83,6 +86,10 @@ public class ProjectDeliverableAction extends BaseAction {
 
   public List<DeliverableType> getDeliverableTypes() {
     return deliverableTypes;
+  }
+
+  public List<IPElement> getOutputs() {
+    return outputs;
   }
 
 
@@ -108,6 +115,7 @@ public class ProjectDeliverableAction extends BaseAction {
     deliverableTypes = deliverableTypeManager.getDeliverableTypes();
     deliverableSubTypes = deliverableTypeManager.getDeliverableSubTypes();
     allYears = project.getAllYears();
+    outputs = projectManager.getProjectOutputs(project.getId());
 
     // Getting the deliverable information.
     deliverable = deliverableManager.getDeliverableById(deliverableID);
