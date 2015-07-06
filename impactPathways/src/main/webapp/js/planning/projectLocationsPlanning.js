@@ -27,8 +27,8 @@ function attachEvents() {
   // Change Location type
   $("[name$='type.id']").on("change", changeTypeEvent);
 
-  // isGlobale Change
-  $("#activity\\.global").on("change", changeGlobalState);
+  // isGlobal Change
+  $("#project\\.global").on("change", changeGlobalState);
 
   $("[name$='geoPosition.latitude'], [name$='geoPosition.longitude']").on("keyup", markerAction);
   $("[name$='geoPosition.latitude'], [name$='geoPosition.longitude']").on("focus", markerAction);
@@ -54,7 +54,7 @@ function changeGlobalState(e) {
     $(".uploadFileMessage").fadeOut("slow");
     disableLocations(true);
     clearMarkers();
-    $("#activityLocations-map").html(
+    $("#projectLocations-map").html(
         "<img id='global' src='" + baseURL + "/images/global/global-map.png'/>" + "<p class='global'>"
             + $("#isGlobalText").val() + "</p>");
 
@@ -294,7 +294,7 @@ function loadMap() {
           ]
       }
   ];
-  map = new google.maps.Map(document.getElementById("activityLocations-map"), {
+  map = new google.maps.Map(document.getElementById("projectLocations-map"), {
       center: new google.maps.LatLng(14.41, -12.52),
       zoom: 2,
       mapTypeId: 'roadmap',

@@ -177,7 +177,7 @@ public class Project {
    * The convention is going to be used depending on the creationg date of the project.
    * yyyy-project.id => e.g. 2014-46
    * 
-   * @return the composed indentifier or null if the created date is null.
+   * @return the composed identifier or null if the created date is null.
    */
   public String getComposedId() {
     if (created != 0) {
