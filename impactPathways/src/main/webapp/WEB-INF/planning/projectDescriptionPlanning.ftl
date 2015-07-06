@@ -49,7 +49,7 @@
         </div>
         <div class="fullBlock">
           [#-- Project Program Creator --]
-          <div class="halfPartBlock">  
+          <div class="halfPartBlock">
             [@customForm.select name="project.liaisonInstitution" label="" disabled=( !editable || !securityContext.canEditManagementLiaison() ) i18nkey="planning.projectDescription.programCreator" listName="liaisonInstitutions" keyFieldName="id"  displayFieldName="name" editable=editable/]
           </div>
           [#--  Project Owner Contact Person --]
@@ -67,6 +67,12 @@
             [@customForm.input name="project.endDate" type="text" disabled=( !editable || !securityContext.canEditEndDate() ) i18nkey="preplanning.projectDescription.endDate" required=true editable=editable /]
           </div>
         </div>
+        <div class="fullBlock">
+          [#-- Project Type --]
+          <div class="halfPartBlock">
+            [@customForm.select name="project.type" i18nkey="planning.projectDescription.projectType" listName="projectTypes" keyFieldName="id"  displayFieldName="name" editable=editable/]
+          </div>
+        </div> 
 
         [#-- Project upload work plan --]
         [#if project.coreProject]
