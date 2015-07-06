@@ -36,7 +36,7 @@ import org.slf4j.LoggerFactory;
 /**
  * @author Héctor Fabio Tobón R.
  * @author Hernán David Carvajal B.
- * @author Javier Andres Gallego B.
+ * @author Javier Andrés Gallego B.
  */
 public class InstitutionManagerImpl implements InstitutionManager {
 
@@ -157,6 +157,18 @@ public class InstitutionManagerImpl implements InstitutionManager {
 
 
   @Override
+  public List<Institution> getDeliverablePartnerships(int deliverableID) {
+    List<Institution> institutions = new ArrayList<>();
+    List<Map<String, String>> institutionDataList = institutionDAO.getDeliverablePartnerships(deliverableID);
+    for (Map<String, String> iData : institutionDataList) {
+      Institution institution = this.getInstitutionData(iData);
+      // Adding object to the array.
+      institutions.add(institution);
+    }
+    return institutions;
+  }
+
+  @Override
   public Institution getInstitution(int institutionId) {
     Map<String, String> iData = institutionDAO.getInstitution(institutionId);
     if (!iData.isEmpty()) {
@@ -193,6 +205,34 @@ public class InstitutionManagerImpl implements InstitutionManager {
       return institution;
     }
     return null;
+  }
+
+
+  private Institution getInstitutionData(Map<String, String> iData) {
+    Institution institution = new Institution();
+    institution.setId(Integer.parseInt(iData.get("id")));
+    institution.setName(iData.get("name"));
+    institution.setAcronym(iData.get("acronym"));
+    institution.setPPA(Boolean.parseBoolean(iData.get("is_ppa")));
+
+    // InstitutionType Object
+    InstitutionType type = new InstitutionType();
+    if (iData.get("institution_type_id") != null) {
+      type.setId(Integer.parseInt(iData.get("institution_type_id")));
+      type.setName(iData.get("institution_type_name"));
+      type.setAcronym(iData.get("institution_type_acronym"));
+      institution.setType(type);
+    }
+
+    // Location Object
+    Country country = new Country();
+    if (iData.get("loc_elements_id") != null) {
+      country.setId(Integer.parseInt(iData.get("loc_elements_id")));
+      country.setName(iData.get("loc_elements_name"));
+      country.setCode(iData.get("loc_elements_code"));
+      institution.setCountry(country);
+    }
+    return institution;
   }
 
 
@@ -286,36 +326,13 @@ public class InstitutionManagerImpl implements InstitutionManager {
     return null;
   }
 
-
   @Override
   public List<Institution> getProjectPartnerContributeInstitutions(ProjectPartner projectPartner) {
     List<Institution> institutions = new ArrayList<>();
     List<Map<String, String>> institutionDataList =
       institutionDAO.getProjectPartnerContributeInstitutions(projectPartner.getId());
     for (Map<String, String> iData : institutionDataList) {
-      Institution institution = new Institution();
-      institution.setId(Integer.parseInt(iData.get("id")));
-      institution.setName(iData.get("name"));
-      institution.setAcronym(iData.get("acronym"));
-      institution.setPPA(Boolean.parseBoolean(iData.get("is_ppa")));
-
-      // InstitutionType Object
-      InstitutionType type = new InstitutionType();
-      if (iData.get("institution_type_id") != null) {
-        type.setId(Integer.parseInt(iData.get("institution_type_id")));
-        type.setName(iData.get("institution_type_name"));
-        type.setAcronym(iData.get("institution_type_acronym"));
-        institution.setType(type);
-      }
-
-      // Location Object
-      Country country = new Country();
-      if (iData.get("loc_elements_id") != null) {
-        country.setId(Integer.parseInt(iData.get("loc_elements_id")));
-        country.setName(iData.get("loc_elements_name"));
-        country.setCode(iData.get("loc_elements_code"));
-        institution.setCountry(country);
-      }
+      Institution institution = this.getInstitutionData(iData);
 
       // Adding object to the array.
       institutions.add(institution);

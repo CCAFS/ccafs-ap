@@ -61,6 +61,15 @@ public interface InstitutionDAO {
   public List<Map<String, String>> getAllPPAInstitutions();
 
   /**
+   * This method gets the list of institutions that are contributing to a specific deliverable.
+   * 
+   * @param deliverableID is the deliverable identifier.
+   * @return a list of Map with the information of institutions, an empty list if nothing found or null if some error
+   *         occurred.
+   */
+  public List<Map<String, String>> getDeliverablePartnerships(int deliverableID);
+
+  /**
    * This method returns the information from Institution given by an institutionID
    * 
    * @param institutionID, identifier of the institution
