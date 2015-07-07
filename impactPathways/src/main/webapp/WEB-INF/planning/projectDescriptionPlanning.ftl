@@ -69,8 +69,9 @@
         </div>
         <div class="fullBlock">
           [#-- Project Type --]
-          <div class="halfPartBlock">
-            [@customForm.select name="project.type" i18nkey="planning.projectDescription.projectType" listName="projectTypes" keyFieldName="id"  displayFieldName="name" editable=editable/]
+          <div class="halfPartBlock"> 
+            [@customForm.select name="project.type" value="project.type" i18nkey="planning.projectDescription.projectType" listName="projectTypes" disabled=true /]
+            
           </div>
         </div> 
 
@@ -148,22 +149,21 @@
             </div>
           </div> 
         </div> 
-      </fieldset>
-      ${project.type}
+      </fieldset> 
       <h1 class="contentTitle"> [@s.text name="planning.projectDescription.bilateralProjects" /] </h1> 
       [#-- Bilateral contributing to CCAFS Project(s) --]
-      [#if project.coreProject]
-      <div id="projectCoreProjects" class="isLinked tickBox-wrapper fullBlock">  
-        [@customForm.checkbox name="project.isLinked" value=""  i18nkey="planning.projectDescription.isLinkedCoreProjects" disabled=!editable checked=true editable=editable/]  
+      [#if project.bilateralProject]
+      <div id="projectCoreProjects" class="isLinked tickBox-wrapper fullBlock">
+        [@customForm.checkbox name="project.isCofinancing" value=""  i18nkey="planning.projectDescription.isLinkedCoreProjects" disabled=!editable checked=true editable=editable/]  
       </div> 
       [/#if]
       [#-- Bilateral projects only for CCAFS Projects --]
-      [#if !project.coreProject]
+      [#if project.coreProject]
       <div class="panel tertiary">
-        <div class="panel-head">[@customForm.text name="planning.projectDescription.selectCoreProject" readText=!editable /]:</div>
-        <div id="bilateralProjectsList" class="panel-body"> 
+        <div class="panel-head">[@customForm.text name="planning.projectDescription.selectBilateralProject" readText=!editable /]:</div>
+        <div id="coreProjectsList" class="panel-body"> 
           <ul class="list">
-            [#list project.linkedCoreProjects as element]
+            [#list project.linkedProjects as element]
               <li class="clearfix [#if !element_has_next]last[/#if]">
                 <input class="id" type="hidden" name="project.linkedCoreProjects" value="${element.id?c}" />
                 <span class="name">${element.id} - ${element.title}</span> 
@@ -176,7 +176,7 @@
             [@customForm.select name="" label="" disabled=!canEdit i18nkey="" listName="" keyFieldName="id" displayFieldName="" className="" value="" /]
           [/#if] 
         </div>
-      </div>
+      </div> 
       [/#if]
       
       

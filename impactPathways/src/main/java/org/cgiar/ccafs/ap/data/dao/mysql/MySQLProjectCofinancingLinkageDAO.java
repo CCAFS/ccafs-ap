@@ -14,7 +14,7 @@
 
 package org.cgiar.ccafs.ap.data.dao.mysql;
 
-import org.cgiar.ccafs.ap.data.dao.LinkedCoreProjectDAO;
+import org.cgiar.ccafs.ap.data.dao.ProjectCofinancingLinkageDAO;
 import org.cgiar.ccafs.utils.db.DAOManager;
 
 import java.sql.Connection;
@@ -34,24 +34,26 @@ import org.slf4j.LoggerFactory;
  * @author Hernán David Carvajal B. - CIAT/CCAFS
  */
 
-public class MySQLLinkedCoreProjectDAO implements LinkedCoreProjectDAO {
+public class MySQLProjectCofinancingLinkageDAO implements ProjectCofinancingLinkageDAO {
 
-  private static Logger LOG = LoggerFactory.getLogger(MySQLLinkedCoreProjectDAO.class);
+  private static Logger LOG = LoggerFactory.getLogger(MySQLProjectCofinancingLinkageDAO.class);
   private DAOManager daoManager;
 
   @Inject
-  public MySQLLinkedCoreProjectDAO(DAOManager daoManager) {
+  public MySQLProjectCofinancingLinkageDAO(DAOManager daoManager) {
     this.daoManager = daoManager;
   }
 
   @Override
-  public List<Map<String, String>> getLinkedCoreProjects(int projectID) {
+  public List<Map<String, String>> getLinkedProjects(int projectID) {
     List<Map<String, String>> coreProjects = new ArrayList<>();
     StringBuilder query = new StringBuilder();
     query.append("SELECT p.id, p.title ");
     query.append("FROM projects p ");
-    query.append("INNER JOIN linked_core_projects lcp ON p.id = lcp.core_project_id ");
-    query.append("WHERE lcp.bilateral_project_id = ");
+    query.append("INNER JOIN project_cofinancing_linkages lcp ON p.id = lcp.core_project_id ");
+    query.append("WHERE lcp.core_project_id = ");
+    query.append(projectID);
+    query.append(" OR lcp.bilateral_project_id = ");
     query.append(projectID);
     query.append(" AND lcp.is_active = TRUE");
 
@@ -76,7 +78,7 @@ public class MySQLLinkedCoreProjectDAO implements LinkedCoreProjectDAO {
     String justification) {
     Object[] values = new Object[3 + coreProjects.size()];
     StringBuilder query = new StringBuilder();
-    query.append("UPDATE linked_core_projects ");
+    query.append("UPDATE project_cofinancing_linkages ");
     query.append("SET is_active = FALSE, modified_by = ?, modification_justification = ? ");
     query.append("WHERE bilateral_project_id = ? ");
     query.append("AND core_project_id IN (");
@@ -101,7 +103,7 @@ public class MySQLLinkedCoreProjectDAO implements LinkedCoreProjectDAO {
     boolean saved = false;
     Object[] values = new Object[listCoreProjectsIDs.size() * 5];
     StringBuilder query = new StringBuilder();
-    query.append("INSERT IGNORE INTO linked_core_projects ");
+    query.append("INSERT IGNORE INTO project_cofinancing_linkages ");
     query.append("(bilateral_project_id, core_project_id, created_by, modified_by, modification_justification) ");
     query.append("VALUES ");
 

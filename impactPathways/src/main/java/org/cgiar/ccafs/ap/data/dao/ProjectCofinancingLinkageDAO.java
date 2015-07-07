@@ -14,7 +14,7 @@
 
 package org.cgiar.ccafs.ap.data.dao;
 
-import org.cgiar.ccafs.ap.data.dao.mysql.MySQLLinkedCoreProjectDAO;
+import org.cgiar.ccafs.ap.data.dao.mysql.MySQLProjectCofinancingLinkageDAO;
 
 import java.util.List;
 import java.util.Map;
@@ -26,17 +26,17 @@ import com.google.inject.ImplementedBy;
  * @author Hernán David Carvajal B. - CIAT/CCAFS
  */
 
-@ImplementedBy(MySQLLinkedCoreProjectDAO.class)
-public interface LinkedCoreProjectDAO {
+@ImplementedBy(MySQLProjectCofinancingLinkageDAO.class)
+public interface ProjectCofinancingLinkageDAO {
 
   /**
-   * This method gets the basic information (id, title) of the projects that are linked to the bilateral project
+   * This method gets the basic information (id, title) of the projects that are linked to the project
    * identified by the value received by parameter.
    * 
    * @param projectID
    * @return a list of maps with the project information.
    */
-  public List<Map<String, String>> getLinkedCoreProjects(int projectID);
+  public List<Map<String, String>> getLinkedProjects(int projectID);
 
   /**
    * This method remove from the database the link between the bilateral projects and the core projects received by

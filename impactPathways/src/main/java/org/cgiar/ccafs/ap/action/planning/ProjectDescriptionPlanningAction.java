@@ -19,7 +19,7 @@ import org.cgiar.ccafs.ap.data.manager.BudgetManager;
 import org.cgiar.ccafs.ap.data.manager.HistoryManager;
 import org.cgiar.ccafs.ap.data.manager.IPProgramManager;
 import org.cgiar.ccafs.ap.data.manager.LiaisonInstitutionManager;
-import org.cgiar.ccafs.ap.data.manager.LinkedCoreProjectManager;
+import org.cgiar.ccafs.ap.data.manager.ProjectCofinancingLinkageManager;
 import org.cgiar.ccafs.ap.data.manager.ProjectManager;
 import org.cgiar.ccafs.ap.data.manager.UserManager;
 import org.cgiar.ccafs.ap.data.model.IPProgram;
@@ -31,7 +31,9 @@ import org.cgiar.ccafs.utils.APConfig;
 
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import com.google.inject.Inject;
 import org.apache.commons.lang3.StringUtils;
@@ -53,7 +55,7 @@ public class ProjectDescriptionPlanningAction extends BaseAction {
   private BudgetManager budgetManager;
   private HistoryManager historyManager;
 
-  private LinkedCoreProjectManager linkedCoreProjectManager;
+  private ProjectCofinancingLinkageManager linkedCoreProjectManager;
 
   // Model for the front-end
   private List<IPProgram> ipProgramRegions;
@@ -61,6 +63,7 @@ public class ProjectDescriptionPlanningAction extends BaseAction {
   private List<LiaisonInstitution> liaisonInstitutions;
   // private List<IPCrossCutting> ipCrossCuttings;
   private List<User> allOwners;
+  private Map<String, String> projectTypes;
 
   // Model for the back-end
   private Project previousProject;
@@ -72,7 +75,7 @@ public class ProjectDescriptionPlanningAction extends BaseAction {
   @Inject
   public ProjectDescriptionPlanningAction(APConfig config, ProjectManager projectManager,
     IPProgramManager ipProgramManager, UserManager userManager, BudgetManager budgetManager,
-    LiaisonInstitutionManager liaisonInstitutionManager, LinkedCoreProjectManager linkedCoreProjectManager,
+    LiaisonInstitutionManager liaisonInstitutionManager, ProjectCofinancingLinkageManager linkedCoreProjectManager,
     HistoryManager historyManager, ProjectDescriptionValidator validator) {
     super(config);
     this.projectManager = projectManager;
@@ -152,6 +155,10 @@ public class ProjectDescriptionPlanningAction extends BaseAction {
     return APConstants.PROJECT_REQUEST_ID;
   }
 
+  public Map<String, String> getProjectTypes() {
+    return projectTypes;
+  }
+
   /**
    * This method returns an array of region ids depending on the project.regions attribute.
    * 
@@ -171,6 +178,7 @@ public class ProjectDescriptionPlanningAction extends BaseAction {
   public int getStartYear() {
     return config.getStartYear();
   }
+
 
   @Override
   public String next() {
@@ -218,11 +226,16 @@ public class ProjectDescriptionPlanningAction extends BaseAction {
       // project.setCrossCuttings(ipCrossCuttingManager.getIPCrossCuttingByProject(projectID));
     }
 
-    // If project is bilateral cofounded, we should load the core projects linked to it.
-    if (!project.isCoreProject()) {
-      project.setLinkedCoreProjects(linkedCoreProjectManager.getLinkedCoreProjects(projectID));
-
+    // If project is CCAFS cofounded, we should load the core projects linked to it.
+    if (!project.isBilateralProject()) {
+      project.setLinkedProjects(linkedCoreProjectManager.getLinkedProjects(projectID));
     }
+
+    projectTypes = new HashMap<>();
+    projectTypes.put(APConstants.PROJECT_CORE, this.getText("planning.projectDescription.projectType.core"));
+    projectTypes.put(APConstants.PROJECT_BILATERAL_STANDALONE,
+      this.getText("planning.projectDescription.projectType.bilateral"));
+
     // If the user is not admin or the project owner, we should keep some information
     // unmutable
     previousProject = new Project();
@@ -238,20 +251,20 @@ public class ProjectDescriptionPlanningAction extends BaseAction {
     previousProject.setType(project.getType());
     previousProject.setWorkplanRequired(project.isWorkplanRequired());
 
-    if (project.getLinkedCoreProjects() != null) {
-      List<Project> coreProjects = new ArrayList<>();
-      for (Project p : project.getLinkedCoreProjects()) {
-        coreProjects.add(new Project(p.getId()));
+    if (project.getLinkedProjects() != null) {
+      List<Project> linkedProjects = new ArrayList<>();
+      for (Project p : project.getLinkedProjects()) {
+        linkedProjects.add(new Project(p.getId()));
       }
 
-      previousProject.setLinkedCoreProjects(coreProjects);
+      previousProject.setLinkedProjects(linkedProjects);
     }
 
     super.setHistory(historyManager.getProjectDescriptionHistory(project.getId()));
 
     if (this.isHttpPost()) {
-      if (project.getLinkedCoreProjects() != null) {
-        project.getLinkedCoreProjects().clear();
+      if (project.getLinkedProjects() != null) {
+        project.getLinkedProjects().clear();
       }
     }
   }
@@ -304,11 +317,11 @@ public class ProjectDescriptionPlanningAction extends BaseAction {
 
       previousProject.setType(project.getType());
 
-      // Bilateral project
-      if (!project.isCoreProject()) {
+      // Core projects can create linkages with some bilateral projects.
+      if (!project.isBilateralProject()) {
 
-        if (project.getLinkedCoreProjects() != null && !project.getLinkedCoreProjects().isEmpty()) {
-          previousProject.setType(APConstants.PROJECT_BILATERAL_COFUNDED);
+        if (project.getLinkedProjects() != null && !project.getLinkedProjects().isEmpty()) {
+          previousProject.setType(APConstants.PROJECT_CCAFS_COFUNDED);
         } else {
           previousProject.setType(APConstants.PROJECT_BILATERAL_STANDALONE);
         }
@@ -383,8 +396,8 @@ public class ProjectDescriptionPlanningAction extends BaseAction {
       if (!project.isCoreProject()) {
         // First delete the core projects un-selected
         List<Integer> coreProjectsToDelete = new ArrayList<>();
-        for (Project p : previousProject.getLinkedCoreProjects()) {
-          if (!project.getLinkedCoreProjects().contains(p)) {
+        for (Project p : previousProject.getLinkedProjects()) {
+          if (!project.getLinkedProjects().contains(p)) {
             coreProjectsToDelete.add(p.getId());
           }
         }
@@ -394,14 +407,14 @@ public class ProjectDescriptionPlanningAction extends BaseAction {
         }
 
         // Then save the new core projects linked
-        if (!project.getLinkedCoreProjects().isEmpty()) {
+        if (!project.getLinkedProjects().isEmpty()) {
           linkedCoreProjectManager.saveLinkedCoreProjects(project, this.getCurrentUser(), this.getJustification());
         }
       } else {
         // If the project is 'Core', it should not have relations to other core projects.
-        if (project.getLinkedCoreProjects() != null && !project.getLinkedCoreProjects().isEmpty()) {
+        if (project.getLinkedProjects() != null && !project.getLinkedProjects().isEmpty()) {
           List<Integer> coreProjectsToDelete = new ArrayList<>();
-          for (Project p : project.getLinkedCoreProjects()) {
+          for (Project p : project.getLinkedProjects()) {
             coreProjectsToDelete.add(p.getId());
           }
           linkedCoreProjectManager.deletedLinkedCoreProjects(project, coreProjectsToDelete, this.getCurrentUser(),

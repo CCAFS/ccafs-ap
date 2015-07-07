@@ -14,8 +14,8 @@
 
 package org.cgiar.ccafs.ap.data.manager.impl;
 
-import org.cgiar.ccafs.ap.data.dao.LinkedCoreProjectDAO;
-import org.cgiar.ccafs.ap.data.manager.LinkedCoreProjectManager;
+import org.cgiar.ccafs.ap.data.dao.ProjectCofinancingLinkageDAO;
+import org.cgiar.ccafs.ap.data.manager.ProjectCofinancingLinkageManager;
 import org.cgiar.ccafs.ap.data.model.Project;
 import org.cgiar.ccafs.ap.data.model.User;
 
@@ -30,12 +30,12 @@ import com.google.inject.Inject;
  * @author Hernán David Carvajal B. - CIAT/CCAFS
  */
 
-public class LinkedCoreProjectManagerImpl implements LinkedCoreProjectManager {
+public class ProjectCofinancingLinkageManagerImpl implements ProjectCofinancingLinkageManager {
 
-  private LinkedCoreProjectDAO linkedCoreProjectsDAO;
+  private ProjectCofinancingLinkageDAO linkedCoreProjectsDAO;
 
   @Inject
-  public LinkedCoreProjectManagerImpl(LinkedCoreProjectDAO linkedCoreProjectsDAO) {
+  public ProjectCofinancingLinkageManagerImpl(ProjectCofinancingLinkageDAO linkedCoreProjectsDAO) {
     this.linkedCoreProjectsDAO = linkedCoreProjectsDAO;
   }
 
@@ -46,9 +46,9 @@ public class LinkedCoreProjectManagerImpl implements LinkedCoreProjectManager {
   }
 
   @Override
-  public List<Project> getLinkedCoreProjects(int projectID) {
+  public List<Project> getLinkedProjects(int projectID) {
     List<Project> projects = new ArrayList<>();
-    List<Map<String, String>> projectsInfo = linkedCoreProjectsDAO.getLinkedCoreProjects(projectID);
+    List<Map<String, String>> projectsInfo = linkedCoreProjectsDAO.getLinkedProjects(projectID);
     for (Map<String, String> projectInfo : projectsInfo) {
       Project project = new Project();
       project.setId(Integer.parseInt(projectInfo.get("id")));
@@ -62,7 +62,7 @@ public class LinkedCoreProjectManagerImpl implements LinkedCoreProjectManager {
   @Override
   public boolean saveLinkedCoreProjects(Project project, User user, String justification) {
     List<Integer> coreProjectsIDs = new ArrayList<>();
-    for (Project coreProject : project.getLinkedCoreProjects()) {
+    for (Project coreProject : project.getLinkedProjects()) {
       coreProjectsIDs.add(coreProject.getId());
     }
 

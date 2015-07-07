@@ -46,6 +46,7 @@ public class Project {
   private String leaderResponsabilities;
   private LiaisonInstitution liaisonInstitution; // Creator program. e.g. LAM, FP4, CU, etc.
   private boolean isGlobal;
+  private boolean isCofinancing;
   private User owner;
   private List<ProjectPartner> projectPartners; // Project partners or 2-level partners.
   private List<ProjectPartner> ppaPartners; // PPA Partners or CCAFS Program Partners.
@@ -62,7 +63,7 @@ public class Project {
   private boolean workplanRequired;
   private String workplanName;
   private String bilateralContractProposalName;
-  private List<Project> linkedCoreProjects;
+  private List<Project> linkedProjects;
   private long created; // Timestamp number when the project was created
 
   public Project() {
@@ -313,8 +314,8 @@ public class Project {
     return liaisonInstitution;
   }
 
-  public List<Project> getLinkedCoreProjects() {
-    return linkedCoreProjects;
+  public List<Project> getLinkedProjects() {
+    return linkedProjects;
   }
 
   public List<Location> getLocations() {
@@ -337,7 +338,6 @@ public class Project {
     return ppaPartners;
   }
 
-
   public List<ProjectPartner> getProjectPartners() {
     return projectPartners;
   }
@@ -345,6 +345,7 @@ public class Project {
   public List<IPProgram> getRegions() {
     return regions;
   }
+
 
   public String getRegionsAcronym() {
     StringBuilder regionAcronym = new StringBuilder();
@@ -395,6 +396,14 @@ public class Project {
     return this.getId();
   }
 
+  public boolean isBilateralProject() {
+    return (type != null) ? type.equals(APConstants.PROJECT_BILATERAL_STANDALONE) : false;
+  }
+
+  public boolean isCofinancing() {
+    return isCofinancing;
+  }
+
   public boolean isCoreProject() {
     return (type != null) ? type.equals(APConstants.PROJECT_CORE) : false;
   }
@@ -428,6 +437,10 @@ public class Project {
 
   public void setBudgets(List<Budget> budgets) {
     this.budgets = budgets;
+  }
+
+  public void setCofinancing(boolean isCofinancing) {
+    this.isCofinancing = isCofinancing;
   }
 
   public void setCoordinator(ProjectPartner coordinator) {
@@ -486,8 +499,8 @@ public class Project {
     this.liaisonInstitution = liaisonInstitution;
   }
 
-  public void setLinkedCoreProjects(List<Project> linkedCoreProjects) {
-    this.linkedCoreProjects = linkedCoreProjects;
+  public void setLinkedProjects(List<Project> linkedProjects) {
+    this.linkedProjects = linkedProjects;
   }
 
   public void setLocations(List<Location> locations) {
