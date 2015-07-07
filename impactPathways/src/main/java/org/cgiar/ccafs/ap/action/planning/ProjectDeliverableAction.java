@@ -16,13 +16,17 @@ package org.cgiar.ccafs.ap.action.planning;
 import org.cgiar.ccafs.ap.action.BaseAction;
 import org.cgiar.ccafs.ap.config.APConstants;
 import org.cgiar.ccafs.ap.data.manager.DeliverableManager;
+import org.cgiar.ccafs.ap.data.manager.DeliverablePartnerManager;
 import org.cgiar.ccafs.ap.data.manager.DeliverableTypeManager;
 import org.cgiar.ccafs.ap.data.manager.NextUserManager;
 import org.cgiar.ccafs.ap.data.manager.ProjectManager;
 import org.cgiar.ccafs.ap.data.model.Deliverable;
+import org.cgiar.ccafs.ap.data.model.DeliverablePartner;
 import org.cgiar.ccafs.ap.data.model.DeliverableType;
 import org.cgiar.ccafs.ap.data.model.IPElement;
+import org.cgiar.ccafs.ap.data.model.Institution;
 import org.cgiar.ccafs.ap.data.model.Project;
+import org.cgiar.ccafs.ap.data.model.User;
 import org.cgiar.ccafs.utils.APConfig;
 
 import java.util.List;
@@ -47,6 +51,7 @@ public class ProjectDeliverableAction extends BaseAction {
   private ProjectManager projectManager;
   private DeliverableManager deliverableManager;
   private DeliverableTypeManager deliverableTypeManager;
+  private DeliverablePartnerManager deliverablePartnerManager;
   private NextUserManager nextUserManager;
 
   // Model for the back-end
@@ -59,22 +64,26 @@ public class ProjectDeliverableAction extends BaseAction {
   private List<DeliverableType> deliverableSubTypes;
   private List<Integer> allYears;
   private List<IPElement> outputs;
+  private DeliverablePartner responsiblePartner;
+  private List<DeliverablePartner> otherPartners;
+
 
   @Inject
   public ProjectDeliverableAction(APConfig config, ProjectManager projectManager, DeliverableManager deliverableManager,
-    DeliverableTypeManager deliverableTypeManager, NextUserManager nextUserManager) {
+    DeliverableTypeManager deliverableTypeManager, NextUserManager nextUserManager,
+    DeliverablePartnerManager deliverablePartnerManager) {
     super(config);
     this.projectManager = projectManager;
     this.deliverableManager = deliverableManager;
     this.deliverableTypeManager = deliverableTypeManager;
     this.nextUserManager = nextUserManager;
+    this.deliverablePartnerManager = deliverablePartnerManager;
   }
 
 
   public List<Integer> getAllYears() {
     return allYears;
   }
-
 
   public Deliverable getDeliverable() {
     return deliverable;
@@ -88,13 +97,20 @@ public class ProjectDeliverableAction extends BaseAction {
     return deliverableTypes;
   }
 
+  public List<DeliverablePartner> getOtherPartners() {
+    return otherPartners;
+  }
+
   public List<IPElement> getOutputs() {
     return outputs;
   }
 
-
   public Project getProject() {
     return project;
+  }
+
+  public DeliverablePartner getResponsiblePartner() {
+    return responsiblePartner;
   }
 
   @Override
@@ -123,18 +139,41 @@ public class ProjectDeliverableAction extends BaseAction {
     // Getting next users.
     deliverable.setNextUsers(nextUserManager.getNextUsersByDeliverableId(deliverable.getId()));
 
-    // TODO Getting the partnerships.
+    // Getting the responsible partner.
+    List<DeliverablePartner> partners =
+      deliverablePartnerManager.getDeliverablePartners(deliverableID, APConstants.DELIVERABLE_PARTNER_RESP);
+    if (partners.size() > 0) {
+      responsiblePartner = partners.get(0);
+    } else {
+      responsiblePartner = new DeliverablePartner(-1);
+      responsiblePartner.setInstitution(new Institution(-1));
+      responsiblePartner.setUser(new User(-1));
+      responsiblePartner.setType(APConstants.DELIVERABLE_PARTNER_RESP);
+    }
+
+    // Getting the other partners that are contributing to this deliverable.
+    otherPartners =
+      deliverablePartnerManager.getDeliverablePartners(deliverableID, APConstants.DELIVERABLE_PARTNER_OTHER);
 
   }
-
 
   @Override
   public String save() {
     return SUCCESS;
   }
 
+
   public void setDeliverable(Deliverable deliverable) {
     this.deliverable = deliverable;
+  }
+
+
+  public void setOtherPartners(List<DeliverablePartner> otherPartners) {
+    this.otherPartners = otherPartners;
+  }
+
+  public void setResponsiblePartner(DeliverablePartner responsiblePartner) {
+    this.responsiblePartner = responsiblePartner;
   }
 
 
