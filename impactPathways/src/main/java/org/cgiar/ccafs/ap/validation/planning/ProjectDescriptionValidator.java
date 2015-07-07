@@ -77,7 +77,7 @@ public class ProjectDescriptionValidator extends BaseValidator {
 
     // If project is bilateral co-founded, it should be linked to some core project(s)
     if (project.getType().equals(APConstants.PROJECT_CCAFS_COFUNDED)) {
-      this.validateLinkedCoreProjects(action, project.getLinkedCoreProjects());
+      this.validateLinkedCoreProjects(action, project.getLinkedProjects());
     }
   }
 

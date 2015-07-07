@@ -160,7 +160,7 @@
             <div class="panel-head">[@customForm.text name="planning.projectDescription.selectCoreProject" readText=!editable /]:</div>
             <div id="coreProjectsList" class="panel-body"> 
               <ul class="list">
-                [#list project.linkedCoreProjects as element]
+                [#list project.linkedProjects as element]
                   <li class="clearfix [#if !element_has_next]last[/#if]">
                     <input class="id" type="hidden" name="project.linkedCoreProjects" value="${element.id?c}" />
                     <span class="name">${element.id} - ${element.title}</span> 
