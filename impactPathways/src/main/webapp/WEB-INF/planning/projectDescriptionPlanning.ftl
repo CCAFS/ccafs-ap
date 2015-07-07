@@ -154,7 +154,7 @@
       [#-- Bilateral contributing to CCAFS Project(s) --]
       [#if project.bilateralProject]
       <div id="projectCoreProjects" class="isLinked tickBox-wrapper fullBlock">
-        [@customForm.checkbox name="project.isCofinancing" value=""  i18nkey="planning.projectDescription.isLinkedCoreProjects" disabled=!editable checked=true editable=editable/]  
+        [@customForm.checkbox name="project.cofinancing" checked=project.cofinancing value="true" i18nkey="planning.projectDescription.isLinkedCoreProjects" disabled=!editable editable=editable/]  
       </div> 
       [/#if]
       [#-- Bilateral projects only for CCAFS Projects --]
