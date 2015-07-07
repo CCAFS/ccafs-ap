@@ -451,11 +451,6 @@ public class ProjectManagerImpl implements ProjectManager {
         continue;
       }
       indicatorData = new HashMap<>();
-      if (indicator.getId() == -1) {
-        indicatorData.put("id", null);
-      } else {
-        indicatorData.put("id", String.valueOf(indicator.getId()));
-      }
 
       indicatorData.put("description", indicator.getDescription());
       indicatorData.put("target", indicator.getTarget());
@@ -466,7 +461,13 @@ public class ProjectManagerImpl implements ProjectManager {
       indicatorData.put("user_id", String.valueOf(user.getId()));
       indicatorData.put("justification", justification);
 
-      saved = projectDAO.saveProjectIndicators(indicatorData) && saved;
+      if (indicator.getId() == -1) {
+        indicatorData.put("id", null);
+        saved = projectDAO.saveProjectIndicators(indicatorData) && saved;
+      } else {
+        indicatorData.put("id", String.valueOf(indicator.getId()));
+        saved = projectDAO.updateProjectIndicators(indicatorData) && saved;
+      }
     }
 
     return saved;

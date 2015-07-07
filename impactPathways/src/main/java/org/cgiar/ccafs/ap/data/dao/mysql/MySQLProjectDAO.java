@@ -859,11 +859,17 @@ public class MySQLProjectDAO implements ProjectDAO {
     LOG.debug(">> saveProjectIndicators(indicatorData={})", indicatorData);
     StringBuilder query = new StringBuilder();
 
+
     Object[] values;
     // Insert new activity indicator record
-    query.append("INSERT IGNORE INTO ip_project_indicators (id, description, target, year, project_id, ");
+    query.append("INSERT INTO ip_project_indicators (id, description, target, year, project_id, ");
     query.append("parent_id, outcome_id, created_by, modified_by, modification_justification) ");
     query.append("VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?) ");
+    query.append("ON DUPLICATE KEY UPDATE is_active = TRUE, ");
+    query.append("description = VALUES(description), target = VALUES(target), ");
+    query.append("modified_by = VALUES(modified_by), ");
+    query.append("modification_justification = VALUES(modification_justification) ");
+
     values = new Object[10];
     values[0] = indicatorData.get("id");
     values[1] = indicatorData.get("description");
@@ -897,9 +903,13 @@ public class MySQLProjectDAO implements ProjectDAO {
 
     Object[] values;
     // Insert new activity indicator record
-    query.append("INSERT IGNORE INTO ip_project_contributions ");
+    query.append("INSERT INTO ip_project_contributions ");
     query.append("(project_id, mog_id, midOutcome_id, created_by, modified_by, modification_justification) ");
     query.append("VALUES (?, ?, ?, ?, ?, ?) ");
+    query.append("ON DUPLICATE KEY UPDATE is_active = TRUE, ");
+    query.append("project_id = VALUES(project_id), mog_id = VALUES(mog_id), midOutcome_id = VALUES(midOutcome_id), ");
+    query.append("modified_by = VALUES(modified_by), modification_justification = VALUES(modification_justification)");
+
     values = new Object[6];
     values[0] = outputData.get("project_id");
     values[1] = outputData.get("mog_id");
@@ -919,6 +929,38 @@ public class MySQLProjectDAO implements ProjectDAO {
 
     LOG.debug("<< saveProjectOutput(): {}", newId);
     return newId;
+  }
+
+  @Override
+  public boolean updateProjectIndicators(Map<String, String> indicatorData) {
+    LOG.debug(">> updateProjectIndicators(indicatorData={})", indicatorData);
+    StringBuilder query = new StringBuilder();
+    Object[] values;
+
+
+    // Insert new activity indicator record
+    query.append("UPDATE ip_project_indicators SET ");
+    query.append("modified_by = ? , modification_justification = ?, ");
+    query.append("description = ?, target = ? ");
+    query.append("WHERE id = ? ");
+
+    values = new Object[5];
+    values[0] = indicatorData.get("user_id");
+    values[1] = indicatorData.get("justification");
+    values[2] = indicatorData.get("description");
+    values[3] = indicatorData.get("target");
+    values[4] = indicatorData.get("id");
+
+    int newId = databaseManager.saveData(query.toString(), values);
+    if (newId == -1) {
+      LOG.warn("-- updateProjectIndicators() > A problem happened trying to update the project indicator {}.",
+        indicatorData.get("id"));
+      LOG.debug("<< updateProjectIndicators(): {}", false);
+      return false;
+    }
+
+    LOG.debug("<< updateProjectIndicators(): {}", true);
+    return true;
   }
 
 }

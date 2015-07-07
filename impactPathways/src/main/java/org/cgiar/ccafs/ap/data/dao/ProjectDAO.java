@@ -268,4 +268,12 @@ public interface ProjectDAO {
    * @return The last inserted id if there was a new record, 0 if the record was updated or -1 if any error happened.
    */
   public int saveProjectOutput(Map<String, String> outputData);
+
+  /**
+   * This method updates the project indicator with the information received by parameter.
+   * 
+   * @param indicatorData - map with the information to be updated
+   * @return true id the update process was successful. False otherwise.
+   */
+  public boolean updateProjectIndicators(Map<String, String> indicatorData);
 }

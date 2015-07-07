@@ -16,6 +16,7 @@ package org.cgiar.ccafs.ap.action.planning;
 
 import org.cgiar.ccafs.ap.action.BaseAction;
 import org.cgiar.ccafs.ap.config.APConstants;
+import org.cgiar.ccafs.ap.data.manager.HistoryManager;
 import org.cgiar.ccafs.ap.data.manager.IPElementManager;
 import org.cgiar.ccafs.ap.data.manager.IPProgramManager;
 import org.cgiar.ccafs.ap.data.manager.ProjectManager;
@@ -52,6 +53,7 @@ public class ProjectCCAFSOutcomesPlanningAction extends BaseAction {
   private IPProgramManager programManager;
   private IPElementManager ipElementManager;
   private ProjectManager projectManager;
+  private HistoryManager historyManager;
 
   // Model
   private List<IPElement> midOutcomes;
@@ -68,11 +70,12 @@ public class ProjectCCAFSOutcomesPlanningAction extends BaseAction {
 
   @Inject
   public ProjectCCAFSOutcomesPlanningAction(APConfig config, IPProgramManager programManager,
-    IPElementManager ipElementManager, ProjectManager projectManager) {
+    IPElementManager ipElementManager, ProjectManager projectManager, HistoryManager historyManager) {
     super(config);
     this.programManager = programManager;
     this.ipElementManager = ipElementManager;
     this.projectManager = projectManager;
+    this.historyManager = historyManager;
   }
 
   public Activity getActivity() {
@@ -340,6 +343,8 @@ public class ProjectCCAFSOutcomesPlanningAction extends BaseAction {
     previousIndicators = new ArrayList<>();
     previousIndicators.addAll(project.getIndicators());
 
+    super.setHistory(historyManager.getCCAFSOutcomesHistory(projectID));
+
     if (this.getRequest().getMethod().equalsIgnoreCase("post")) {
       // Clear out the list if it has some element
       if (project.getIndicators() != null) {
@@ -385,7 +390,7 @@ public class ProjectCCAFSOutcomesPlanningAction extends BaseAction {
 
       // Delete the indicators removed
       for (IPIndicator indicator : previousIndicators) {
-        if (!project.getOutputs().contains(indicator)) {
+        if (!project.getIndicators().contains(indicator)) {
           boolean deleted =
             projectManager
               .deleteIndicator(projectID, indicator.getId(), this.getCurrentUser(), this.getJustification());
