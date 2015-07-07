@@ -14,7 +14,7 @@
 
 package org.cgiar.ccafs.ap.data.dao.mysql;
 
-import org.cgiar.ccafs.ap.data.dao.LinkedCoreProjectDAO;
+import org.cgiar.ccafs.ap.data.dao.ProjectCofinancingLinkageDAO;
 import org.cgiar.ccafs.utils.db.DAOManager;
 
 import java.sql.Connection;
@@ -34,13 +34,13 @@ import org.slf4j.LoggerFactory;
  * @author Hernán David Carvajal B. - CIAT/CCAFS
  */
 
-public class MySQLLinkedCoreProjectDAO implements LinkedCoreProjectDAO {
+public class MySQLProjectCofinancingLinkageDAO implements ProjectCofinancingLinkageDAO {
 
-  private static Logger LOG = LoggerFactory.getLogger(MySQLLinkedCoreProjectDAO.class);
+  private static Logger LOG = LoggerFactory.getLogger(MySQLProjectCofinancingLinkageDAO.class);
   private DAOManager daoManager;
 
   @Inject
-  public MySQLLinkedCoreProjectDAO(DAOManager daoManager) {
+  public MySQLProjectCofinancingLinkageDAO(DAOManager daoManager) {
     this.daoManager = daoManager;
   }
 

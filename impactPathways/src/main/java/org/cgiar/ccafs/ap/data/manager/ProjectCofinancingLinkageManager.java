@@ -14,7 +14,7 @@
 
 package org.cgiar.ccafs.ap.data.manager;
 
-import org.cgiar.ccafs.ap.data.manager.impl.LinkedCoreProjectManagerImpl;
+import org.cgiar.ccafs.ap.data.manager.impl.ProjectCofinancingLinkageManagerImpl;
 import org.cgiar.ccafs.ap.data.model.Project;
 import org.cgiar.ccafs.ap.data.model.User;
 
@@ -27,8 +27,8 @@ import com.google.inject.ImplementedBy;
  * @author Hernán David Carvajal B. - CIAT/CCAFS
  */
 
-@ImplementedBy(LinkedCoreProjectManagerImpl.class)
-public interface LinkedCoreProjectManager {
+@ImplementedBy(ProjectCofinancingLinkageManagerImpl.class)
+public interface ProjectCofinancingLinkageManager {
 
   /**
    * This method remove from the database the link between the bilateral project and the core projects received by

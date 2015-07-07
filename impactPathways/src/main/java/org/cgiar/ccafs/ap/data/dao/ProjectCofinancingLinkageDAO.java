@@ -14,7 +14,7 @@
 
 package org.cgiar.ccafs.ap.data.dao;
 
-import org.cgiar.ccafs.ap.data.dao.mysql.MySQLLinkedCoreProjectDAO;
+import org.cgiar.ccafs.ap.data.dao.mysql.MySQLProjectCofinancingLinkageDAO;
 
 import java.util.List;
 import java.util.Map;
@@ -26,8 +26,8 @@ import com.google.inject.ImplementedBy;
  * @author Hernán David Carvajal B. - CIAT/CCAFS
  */
 
-@ImplementedBy(MySQLLinkedCoreProjectDAO.class)
-public interface LinkedCoreProjectDAO {
+@ImplementedBy(MySQLProjectCofinancingLinkageDAO.class)
+public interface ProjectCofinancingLinkageDAO {
 
   /**
    * This method gets the basic information (id, title) of the projects that are linked to the project

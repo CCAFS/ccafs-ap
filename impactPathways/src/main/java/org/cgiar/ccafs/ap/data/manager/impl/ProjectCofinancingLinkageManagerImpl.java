@@ -14,8 +14,8 @@
 
 package org.cgiar.ccafs.ap.data.manager.impl;
 
-import org.cgiar.ccafs.ap.data.dao.LinkedCoreProjectDAO;
-import org.cgiar.ccafs.ap.data.manager.LinkedCoreProjectManager;
+import org.cgiar.ccafs.ap.data.dao.ProjectCofinancingLinkageDAO;
+import org.cgiar.ccafs.ap.data.manager.ProjectCofinancingLinkageManager;
 import org.cgiar.ccafs.ap.data.model.Project;
 import org.cgiar.ccafs.ap.data.model.User;
 
@@ -30,12 +30,12 @@ import com.google.inject.Inject;
  * @author Hernán David Carvajal B. - CIAT/CCAFS
  */
 
-public class LinkedCoreProjectManagerImpl implements LinkedCoreProjectManager {
+public class ProjectCofinancingLinkageManagerImpl implements ProjectCofinancingLinkageManager {
 
-  private LinkedCoreProjectDAO linkedCoreProjectsDAO;
+  private ProjectCofinancingLinkageDAO linkedCoreProjectsDAO;
 
   @Inject
-  public LinkedCoreProjectManagerImpl(LinkedCoreProjectDAO linkedCoreProjectsDAO) {
+  public ProjectCofinancingLinkageManagerImpl(ProjectCofinancingLinkageDAO linkedCoreProjectsDAO) {
     this.linkedCoreProjectsDAO = linkedCoreProjectsDAO;
   }
 
