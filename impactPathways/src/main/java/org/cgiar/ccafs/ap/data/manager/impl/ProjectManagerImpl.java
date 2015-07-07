@@ -441,6 +441,7 @@ public class ProjectManagerImpl implements ProjectManager {
       projectData.put("title", project.getTitle());
       projectData.put("summary", project.getSummary());
       projectData.put("is_core", project.isCoreProject());
+      projectData.put("is_cofinancing", project.isCofinancing());
       SimpleDateFormat format = new SimpleDateFormat(APConstants.DATE_FORMAT);
       if (project.getStartDate() != null) {
         projectData.put("start_date", format.format(project.getStartDate()));

@@ -34,14 +34,13 @@ public interface ProjectCofinancingLinkageManager {
    * This method remove from the database the link between the bilateral project and the core projects received by
    * parameter.
    * 
-   * @param project - The bilateral project
-   * @param coreProjects - A list with the identifiers of the core projects to be un-linked of the bilateral project.
+   * @param project
+   * @param linkedProjects - A list with the identifiers of the projects to be un-linked of the project.
    * @param user
    * @param justification
    * @return
    */
-  public boolean
-    deletedLinkedCoreProjects(Project project, List<Integer> coreProjects, User user, String justification);
+  public boolean deletedLinkedProjects(Project project, List<Integer> linkedProjects, User user, String justification);
 
   /**
    * This method gets the basic information (id, title) of the projects that are linked to the project
@@ -53,12 +52,12 @@ public interface ProjectCofinancingLinkageManager {
   public List<Project> getLinkedProjects(int projectID);
 
   /**
-   * This method saves into the database the core projects linked to the project received by parameter.
+   * This method saves into the database the projects linked to the project received by parameter.
    * 
-   * @param project - Bilateral project that will be linked to some core project(s)
+   * @param project - Core project that will be linked to some bilateral project(s)
    * @param user - User who is making the change
    * @param justification
    * @return true if the information was saved successfully, false otherwise.
    */
-  public boolean saveLinkedCoreProjects(Project project, User user, String justification);
+  public boolean saveLinkedProjects(Project project, User user, String justification);
 }

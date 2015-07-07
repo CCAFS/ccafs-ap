@@ -305,17 +305,18 @@ public class ProjectDescriptionPlanningAction extends BaseAction {
         previousProject.setEndDate(project.getEndDate());
       }
 
-      if (securityContext.canAllowProjectWorkplanUpload()) {
+      if (securityContext.canAllowProjectWorkplanUpload() && project.isCoreProject()) {
         // TODO - Check if this permission changes when the checkbox is disabled.
         previousProject.setWorkplanRequired(project.isWorkplanRequired());
 
-        if (previousProject.isCoreProject() && previousProject.isWorkplanRequired()) {
+        if (previousProject.isWorkplanRequired()) {
           // TODO - Check if user attached a file, upload it and save the file name.
           // uploadFile();
         }
       }
 
-      previousProject.setType(project.getType());
+      // TODO - Update the type and all the implications
+      // previousProject.setType(project.getType());
 
       // Core projects can create linkages with some bilateral projects.
       if (!project.isBilateralProject()) {
@@ -330,6 +331,9 @@ public class ProjectDescriptionPlanningAction extends BaseAction {
           // TODO - Check if user attached a file, upload it and save the file name.
           // uploadFile();
         }
+      } else {
+        // The bilateral projects can co-finance some core projects
+        previousProject.setCofinancing(project.isCofinancing());
       }
 
       previousProject.setSummary(project.getSummary());
@@ -393,31 +397,31 @@ public class ProjectDescriptionPlanningAction extends BaseAction {
       }
 
       // Save the contributing core projects if any
-      if (!project.isCoreProject()) {
+      if (!project.isBilateralProject()) {
         // First delete the core projects un-selected
-        List<Integer> coreProjectsToDelete = new ArrayList<>();
+        List<Integer> linkedProjectsToDelete = new ArrayList<>();
         for (Project p : previousProject.getLinkedProjects()) {
           if (!project.getLinkedProjects().contains(p)) {
-            coreProjectsToDelete.add(p.getId());
+            linkedProjectsToDelete.add(p.getId());
           }
         }
-        if (!coreProjectsToDelete.isEmpty()) {
-          linkedCoreProjectManager.deletedLinkedCoreProjects(project, coreProjectsToDelete, this.getCurrentUser(),
+        if (!linkedProjectsToDelete.isEmpty()) {
+          linkedCoreProjectManager.deletedLinkedProjects(project, linkedProjectsToDelete, this.getCurrentUser(),
             this.getJustification());
         }
 
         // Then save the new core projects linked
         if (!project.getLinkedProjects().isEmpty()) {
-          linkedCoreProjectManager.saveLinkedCoreProjects(project, this.getCurrentUser(), this.getJustification());
+          linkedCoreProjectManager.saveLinkedProjects(project, this.getCurrentUser(), this.getJustification());
         }
       } else {
-        // If the project is 'Core', it should not have relations to other core projects.
+        // If the project is 'Bilateral', it should not have relations to other bilateral projects.
         if (project.getLinkedProjects() != null && !project.getLinkedProjects().isEmpty()) {
           List<Integer> coreProjectsToDelete = new ArrayList<>();
           for (Project p : project.getLinkedProjects()) {
             coreProjectsToDelete.add(p.getId());
           }
-          linkedCoreProjectManager.deletedLinkedCoreProjects(project, coreProjectsToDelete, this.getCurrentUser(),
+          linkedCoreProjectManager.deletedLinkedProjects(project, coreProjectsToDelete, this.getCurrentUser(),
             this.getJustification());
         }
       }
