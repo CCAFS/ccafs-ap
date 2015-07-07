@@ -46,7 +46,7 @@ public class Project {
   private String leaderResponsabilities;
   private LiaisonInstitution liaisonInstitution; // Creator program. e.g. LAM, FP4, CU, etc.
   private boolean isGlobal;
-  private boolean isCofinanced;
+  private boolean isCofinancing;
   private User owner;
   private List<ProjectPartner> projectPartners; // Project partners or 2-level partners.
   private List<ProjectPartner> ppaPartners; // PPA Partners or CCAFS Program Partners.
@@ -396,8 +396,8 @@ public class Project {
     return this.getId();
   }
 
-  public boolean isCofinanced() {
-    return isCofinanced;
+  public boolean isCofinancing() {
+    return isCofinancing;
   }
 
   public boolean isCoreProject() {
@@ -435,8 +435,8 @@ public class Project {
     this.budgets = budgets;
   }
 
-  public void setCofinanced(boolean isCofinanced) {
-    this.isCofinanced = isCofinanced;
+  public void setCofinancing(boolean isCofinancing) {
+    this.isCofinancing = isCofinancing;
   }
 
   public void setCoordinator(ProjectPartner coordinator) {

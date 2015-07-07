@@ -362,6 +362,7 @@ public class MySQLProjectDAO implements ProjectDAO {
         projectData.put("title", rs.getString("title"));
         projectData.put("type", rs.getString("type"));
         projectData.put("summary", rs.getString("summary"));
+        projectData.put("is_cofinancing", rs.getString("is_cofinancing"));
         if (rs.getDate("start_date") != null) {
           projectData.put("start_date", rs.getDate("start_date").toString());
         }
@@ -524,7 +525,7 @@ public class MySQLProjectDAO implements ProjectDAO {
       rs.close();
     } catch (SQLException e) {
       LOG
-      .error("-- getProjectIdsEditables() > Exception raised getting the projects editables for user {}.", userID, e);
+        .error("-- getProjectIdsEditables() > Exception raised getting the projects editables for user {}.", userID, e);
     }
     LOG.debug("<< getProjectIdsEditables():{}", projectIds);
     return projectIds;
@@ -758,7 +759,7 @@ public class MySQLProjectDAO implements ProjectDAO {
     if (expectedProjectLeaderData.get("id") == null) {
       // Add the record into the database and assign it to the projects table (column expected_project_leader_id).
       query
-      .append("INSERT INTO expected_project_leaders (contact_first_name, contact_last_name, contact_email, institution_id) ");
+        .append("INSERT INTO expected_project_leaders (contact_first_name, contact_last_name, contact_email, institution_id) ");
       query.append("VALUES (?, ?, ?, ?) ");
       Object[] values = new Object[4];
       values[0] = expectedProjectLeaderData.get("contact_first_name");
@@ -791,7 +792,7 @@ public class MySQLProjectDAO implements ProjectDAO {
     } else {
       // UPDATE the record into the database.
       query
-      .append("UPDATE expected_project_leaders SET contact_first_name = ?, contact_last_name = ?, contact_email = ?, institution_id = ? ");
+        .append("UPDATE expected_project_leaders SET contact_first_name = ?, contact_last_name = ?, contact_email = ?, institution_id = ? ");
       query.append("WHERE id = ?");
       Object[] values = new Object[5];
       values[0] = expectedProjectLeaderData.get("contact_first_name");
@@ -885,9 +886,9 @@ public class MySQLProjectDAO implements ProjectDAO {
     int newId = databaseManager.saveData(query.toString(), values);
     if (newId == -1) {
       LOG
-      .warn(
-        "-- saveProjectIndicators() > A problem happened trying to add a new project indicator. Data tried to save was: {}",
-        indicatorData);
+        .warn(
+          "-- saveProjectIndicators() > A problem happened trying to add a new project indicator. Data tried to save was: {}",
+          indicatorData);
       LOG.debug("<< saveProjectIndicators(): {}", false);
       return false;
     }
