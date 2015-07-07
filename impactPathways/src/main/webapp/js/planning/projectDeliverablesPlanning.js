@@ -1,24 +1,33 @@
 // Limits for textarea input
 var lWordsElemetDesc = 300;
+var $deliverablesTypes, $deliverablesSubTypes;
 
 $(document).ready(init);
 
 function init() {
+  $deliverablesTypes = $("#deliverables_mainType");
+  $deliverablesSubTypes = $("#deliverables_deliverable_type");
   attachEvents();
   addChosen();
   applyWordCounter($("textarea"), lWordsElemetDesc);
-  $("select[id$='mainType']").trigger('change');
+  $deliverablesTypes.trigger('change');
+
+  validateEvent('[name=save], [name=next]', [
+    "#justification"
+  ]);
 }
 
 function attachEvents() {
   // Deliverables Events
   $(".removeDeliverable, .removeNextUser, .removeElement").click(removeElementEvent);
-  $("select[id$='mainType']").change(updateDeliverableSubTypeList);
-  $("#deliverables_deliverable_type").change(function(e) {
+  $deliverablesTypes.on("change", updateDeliverableSubTypeList);
+
+  $deliverablesSubTypes.on("change", function(e) {
     if($(e.target).val() == 38) {
-      $(".input-otherType").show('slow');
+      $(".input-otherType").show('slow').find('input').attr('disabled', false);
     } else {
-      $(".input-otherType").hide('slow');
+      $(".input-otherType").hide('slow').find('input').attr('disabled', true);
+      ;
     }
   });
 
@@ -91,6 +100,7 @@ function updateDeliverableSubTypeList(event) {
   $.getJSON(source).done(function(data) {
     // First delete all the options already present in the subtype select
     $subTypeSelect.empty();
+    $subTypeSelect.append(setOption('-1', 'Select an option'));
     $.each(data.subTypes, function(index,subType) {
       var isSelected = (($("#subTypeSelected").val() == subType.id) ? "selected" : "");
       $subTypeSelect.append("<option value='" + subType.id + "' " + isSelected + ">" + subType.name + "</option>");
@@ -100,5 +110,5 @@ function updateDeliverableSubTypeList(event) {
   }).fail(function() {
     console.log("error");
   });
-
+  $deliverablesSubTypes.trigger('change');
 }
