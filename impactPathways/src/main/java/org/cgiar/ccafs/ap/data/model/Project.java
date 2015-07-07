@@ -63,7 +63,7 @@ public class Project {
   private boolean workplanRequired;
   private String workplanName;
   private String bilateralContractProposalName;
-  private List<Project> linkedCoreProjects;
+  private List<Project> linkedProjects;
   private long created; // Timestamp number when the project was created
 
   public Project() {
@@ -314,8 +314,8 @@ public class Project {
     return liaisonInstitution;
   }
 
-  public List<Project> getLinkedCoreProjects() {
-    return linkedCoreProjects;
+  public List<Project> getLinkedProjects() {
+    return linkedProjects;
   }
 
   public List<Location> getLocations() {
@@ -499,8 +499,8 @@ public class Project {
     this.liaisonInstitution = liaisonInstitution;
   }
 
-  public void setLinkedCoreProjects(List<Project> linkedCoreProjects) {
-    this.linkedCoreProjects = linkedCoreProjects;
+  public void setLinkedProjects(List<Project> linkedProjects) {
+    this.linkedProjects = linkedProjects;
   }
 
   public void setLocations(List<Location> locations) {
