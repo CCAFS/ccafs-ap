@@ -2298,13 +2298,18 @@ p.partnerTitle {
 }
 
 .location.row, #location-head {
-  padding: 6px 11px;
-  margin: 3px;
+  padding: 5px 11px;
+  margin: 6px 0;
   position: relative;
 }
 .location.row { 
   border: 1px solid #E7E7E7;
   border-radius: 5px;
+}
+
+.location input, .location select{  
+  padding-top: 3px !important;
+  padding-bottom: 3px !important;
 }
 
 .location.selected {

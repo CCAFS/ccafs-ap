@@ -56,8 +56,8 @@
     </div>  
     [#-- Responsabilities --]
     [#if responsabilities]  
-    <div class="fullPartBlock partnerResponsabilities chosen">        
-      [@customForm.textArea name="${ap_name}[${ap_index}].responsabilities" value="${ap.responsabilities}" i18nkey="preplanning.projectPartners.responsabilities" required=true editable=editable /]
+    <div class="fullPartBlock partnerResponsabilities chosen"> 
+      [@customForm.textArea name="${ap_name}[${ap_index}].responsabilities" i18nkey="preplanning.projectPartners.responsabilities" required=true editable=editable /]
     </div>
     [/#if]
     [#-- Indicate which PPA Partners for second level partners --]
