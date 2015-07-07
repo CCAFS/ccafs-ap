@@ -4,9 +4,9 @@
 }
 
 .chzn-disabled a.chzn-single{ 
-  border: 1px solid #E8E8E8;
+  /* border: 1px solid #E8E8E8; */
   background:none;
-  box-shadow: none;
+  /* box-shadow: none; */
 }
 
 .chzn-container-single .chzn-single abbr {

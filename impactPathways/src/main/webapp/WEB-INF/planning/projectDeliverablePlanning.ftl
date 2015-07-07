@@ -75,7 +75,7 @@
         </div> 
         [#-- Sub Type --]
         <div class="halfPartBlock chosen"> 
-          [@customForm.select name="${params.deliverable.name}.type" i18nkey="planning.deliverables.subType" listName="" keyFieldName=""  displayFieldName="" editable=editable /]
+          [@customForm.select name="${params.deliverable.name}.type" value="${deliverable.type.id}" i18nkey="planning.deliverables.subType" listName="" keyFieldName=""  displayFieldName="" editable=editable /]
           [#if !editable]${deliverable.type.name}[/#if]
           <input type="hidden" id="subTypeSelected" value="${deliverable.type.id}" />
           [#-- Specify other deliverable type--] 
