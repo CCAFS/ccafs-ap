@@ -18,7 +18,7 @@ $(document).ready(function() {
         opacity: 1
       }, 300);
     });
-  }, 200);
+  }, 500);
 
   function showNotificationMessages() {
     $('#generalMessages #messages').children("li").each(function(index) {

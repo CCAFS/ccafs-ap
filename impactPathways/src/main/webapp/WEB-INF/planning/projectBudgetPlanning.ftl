@@ -44,11 +44,9 @@
     <article class="halfContent" id="projectBudget">
     [#include "/WEB-INF/planning/planningDataSheet.ftl" /]
     [#-- Informing user that he/she doesn't have enough privileges to edit. See GranProjectAccessInterceptor--]
-    [#if !saveable]
+    [#if !canEdit]
       <p class="readPrivileges">
-        [@s.text name="saving.read.privileges"]
-          [@s.param][@s.text name="preplanning.project"/][/@s.param]
-        [/@s.text]
+        [@s.text name="saving.read.privileges"][@s.param][@s.text name="preplanning.project"/][/@s.param][/@s.text]
       </p>
     [/#if]
     
