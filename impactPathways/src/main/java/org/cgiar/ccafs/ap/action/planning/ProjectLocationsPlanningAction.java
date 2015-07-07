@@ -1,7 +1,21 @@
+/*****************************************************************
+ * This file is part of CCAFS Planning and Reporting Platform.
+ * CCAFS P&R is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * at your option) any later version.
+ * CCAFS P&R is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+ * GNU General Public License for more details.
+ * You should have received a copy of the GNU General Public License
+ * along with CCAFS P&R. If not, see <http://www.gnu.org/licenses/>.
+ *****************************************************************/
 package org.cgiar.ccafs.ap.action.planning;
 
 import org.cgiar.ccafs.ap.action.BaseAction;
 import org.cgiar.ccafs.ap.config.APConstants;
+import org.cgiar.ccafs.ap.data.manager.HistoryManager;
 import org.cgiar.ccafs.ap.data.manager.LocationManager;
 import org.cgiar.ccafs.ap.data.manager.LocationTypeManager;
 import org.cgiar.ccafs.ap.data.manager.ProjectManager;
@@ -37,6 +51,7 @@ public class ProjectLocationsPlanningAction extends BaseAction {
   private LocationManager locationManager;
   private LocationTypeManager locationTypeManager;
   private ProjectManager projectManager;
+  private HistoryManager historyManager;
 
   // Model
   private List<LocationType> locationTypes;
@@ -62,11 +77,12 @@ public class ProjectLocationsPlanningAction extends BaseAction {
 
   @Inject
   public ProjectLocationsPlanningAction(APConfig config, LocationManager locationManager,
-    LocationTypeManager locationTypeManager, ProjectManager projectManager) {
+    LocationTypeManager locationTypeManager, ProjectManager projectManager, HistoryManager historyManager) {
     super(config);
     this.locationManager = locationManager;
     this.locationTypeManager = locationTypeManager;
     this.projectManager = projectManager;
+    this.historyManager = historyManager;
   }
 
   public List<Location> getCcafsSites() {
@@ -237,6 +253,8 @@ public class ProjectLocationsPlanningAction extends BaseAction {
         project.getLocations().clear();
       }
     }
+
+    super.setHistory(historyManager.getProjectDescriptionHistory(project.getId()));
   }
 
   @Override
