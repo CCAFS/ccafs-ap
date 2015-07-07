@@ -209,8 +209,49 @@ public class MySQLProjectDAO implements ProjectDAO {
 
 
   @Override
+  public List<Map<String, String>> getBilateralCofinancingProjects(int flagshipID, int regionID) {
+    LOG.debug(">> getBilateralCofinancingProjects (flagshipID={}, regionID={})", flagshipID, regionID);
+    List<Map<String, String>> coreProjects = new ArrayList<>();
+
+    StringBuilder query = new StringBuilder();
+    query.append("SELECT p.id, p.title ");
+    query.append("FROM projects as p ");
+    query.append("WHERE p.type = '");
+    query.append(APConstants.PROJECT_BILATERAL_STANDALONE);
+    query.append("' AND is_cofinancing = TRUE ");
+
+    if (flagshipID != -1) {
+      query.append(" AND p.id IN (SELECT project_id FROM project_focuses WHERE program_id = ");
+      query.append(flagshipID);
+      query.append(") ");
+    }
+
+    if (regionID != -1) {
+      query.append(" AND p.id IN (SELECT project_id FROM project_focuses WHERE program_id = ");
+      query.append(regionID);
+      query.append(") ");
+    }
+
+    try (Connection con = databaseManager.getConnection()) {
+      ResultSet rs = databaseManager.makeQuery(query.toString(), con);
+      while (rs.next()) {
+        Map<String, String> projectData = new HashMap<>();
+        projectData.put("id", rs.getString("id"));
+        projectData.put("title", rs.getString("title"));
+
+        coreProjects.add(projectData);
+      }
+
+    } catch (SQLException e) {
+      LOG.error("getCoreProjects() > Exception raised trying to get the core projects.", e);
+    }
+
+    return coreProjects;
+  }
+
+  @Override
   public List<Map<String, String>> getCoreProjects(int flagshipID, int regionID) {
-    LOG.debug(">> getAllProjects )");
+    LOG.debug(">> getCoreProjects (flagshipID={}, regionID={})", flagshipID, regionID);
     List<Map<String, String>> coreProjects = new ArrayList<>();
 
     StringBuilder query = new StringBuilder();
@@ -609,6 +650,7 @@ public class MySQLProjectDAO implements ProjectDAO {
     return projectLeaderData;
   }
 
+
   @Override
   public List<Map<String, String>> getProjectOutputs(int projectID) {
     LOG.debug(">> getProjectOutputs( projectID = {} )", projectID);
@@ -683,7 +725,6 @@ public class MySQLProjectDAO implements ProjectDAO {
     LOG.debug("-- getProjectOwnerId() > Calling method executeQuery to get the results");
     return this.getData(query.toString());
   }
-
 
   @Override
   public List<Map<String, String>> getProjectsByProgram(int programID) {
