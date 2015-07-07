@@ -123,6 +123,8 @@ public class ProjectDeliverableAction extends BaseAction {
     // Getting next users.
     deliverable.setNextUsers(nextUserManager.getNextUsersByDeliverableId(deliverable.getId()));
 
+    // TODO Getting the partnerships.
+
   }
 
 

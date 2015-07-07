@@ -14,8 +14,8 @@
 
 package org.cgiar.ccafs.ap.data.manager.impl;
 
-import org.cgiar.ccafs.ap.data.dao.LinkedCoreProjectDAO;
-import org.cgiar.ccafs.ap.data.manager.LinkedCoreProjectManager;
+import org.cgiar.ccafs.ap.data.dao.ProjectCofinancingLinkageDAO;
+import org.cgiar.ccafs.ap.data.manager.ProjectCofinancingLinkageManager;
 import org.cgiar.ccafs.ap.data.model.Project;
 import org.cgiar.ccafs.ap.data.model.User;
 
@@ -30,25 +30,25 @@ import com.google.inject.Inject;
  * @author Hernán David Carvajal B. - CIAT/CCAFS
  */
 
-public class LinkedCoreProjectManagerImpl implements LinkedCoreProjectManager {
+public class ProjectCofinancingLinkageManagerImpl implements ProjectCofinancingLinkageManager {
 
-  private LinkedCoreProjectDAO linkedCoreProjectsDAO;
+  private ProjectCofinancingLinkageDAO linkedCoreProjectsDAO;
 
   @Inject
-  public LinkedCoreProjectManagerImpl(LinkedCoreProjectDAO linkedCoreProjectsDAO) {
+  public ProjectCofinancingLinkageManagerImpl(ProjectCofinancingLinkageDAO linkedCoreProjectsDAO) {
     this.linkedCoreProjectsDAO = linkedCoreProjectsDAO;
   }
 
   @Override
   public boolean
-    deletedLinkedCoreProjects(Project project, List<Integer> coreProjects, User user, String justification) {
-    return linkedCoreProjectsDAO.removeLinkedCoreProjects(project.getId(), coreProjects, user.getId(), justification);
+    deletedLinkedProjects(Project project, List<Integer> linkedProjects, User user, String justification) {
+    return linkedCoreProjectsDAO.removeLinkedProjects(project.getId(), linkedProjects, user.getId(), justification);
   }
 
   @Override
-  public List<Project> getLinkedCoreProjects(int projectID) {
+  public List<Project> getLinkedProjects(int projectID) {
     List<Project> projects = new ArrayList<>();
-    List<Map<String, String>> projectsInfo = linkedCoreProjectsDAO.getLinkedCoreProjects(projectID);
+    List<Map<String, String>> projectsInfo = linkedCoreProjectsDAO.getLinkedProjects(projectID);
     for (Map<String, String> projectInfo : projectsInfo) {
       Project project = new Project();
       project.setId(Integer.parseInt(projectInfo.get("id")));
@@ -60,13 +60,13 @@ public class LinkedCoreProjectManagerImpl implements LinkedCoreProjectManager {
   }
 
   @Override
-  public boolean saveLinkedCoreProjects(Project project, User user, String justification) {
-    List<Integer> coreProjectsIDs = new ArrayList<>();
-    for (Project coreProject : project.getLinkedCoreProjects()) {
-      coreProjectsIDs.add(coreProject.getId());
+  public boolean saveLinkedProjects(Project project, User user, String justification) {
+    List<Integer> bilateralProjectsIDs = new ArrayList<>();
+    for (Project bilateralProject : project.getLinkedProjects()) {
+      bilateralProjectsIDs.add(bilateralProject.getId());
     }
 
-    return linkedCoreProjectsDAO.saveLinkedCoreProjects(project.getId(), coreProjectsIDs, user.getId(), justification);
+    return linkedCoreProjectsDAO.saveLinkedProjects(project.getId(), bilateralProjectsIDs, user.getId(), justification);
   }
 
 }

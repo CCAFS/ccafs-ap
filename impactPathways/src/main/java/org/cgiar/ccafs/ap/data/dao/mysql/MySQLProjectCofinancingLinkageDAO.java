@@ -14,7 +14,7 @@
 
 package org.cgiar.ccafs.ap.data.dao.mysql;
 
-import org.cgiar.ccafs.ap.data.dao.LinkedCoreProjectDAO;
+import org.cgiar.ccafs.ap.data.dao.ProjectCofinancingLinkageDAO;
 import org.cgiar.ccafs.utils.db.DAOManager;
 
 import java.sql.Connection;
@@ -34,24 +34,26 @@ import org.slf4j.LoggerFactory;
  * @author Hernán David Carvajal B. - CIAT/CCAFS
  */
 
-public class MySQLLinkedCoreProjectDAO implements LinkedCoreProjectDAO {
+public class MySQLProjectCofinancingLinkageDAO implements ProjectCofinancingLinkageDAO {
 
-  private static Logger LOG = LoggerFactory.getLogger(MySQLLinkedCoreProjectDAO.class);
+  private static Logger LOG = LoggerFactory.getLogger(MySQLProjectCofinancingLinkageDAO.class);
   private DAOManager daoManager;
 
   @Inject
-  public MySQLLinkedCoreProjectDAO(DAOManager daoManager) {
+  public MySQLProjectCofinancingLinkageDAO(DAOManager daoManager) {
     this.daoManager = daoManager;
   }
 
   @Override
-  public List<Map<String, String>> getLinkedCoreProjects(int projectID) {
+  public List<Map<String, String>> getLinkedProjects(int projectID) {
     List<Map<String, String>> coreProjects = new ArrayList<>();
     StringBuilder query = new StringBuilder();
     query.append("SELECT p.id, p.title ");
     query.append("FROM projects p ");
-    query.append("INNER JOIN linked_core_projects lcp ON p.id = lcp.core_project_id ");
-    query.append("WHERE lcp.bilateral_project_id = ");
+    query.append("INNER JOIN project_cofinancing_linkages lcp ON p.id = lcp.core_project_id ");
+    query.append("WHERE lcp.core_project_id = ");
+    query.append(projectID);
+    query.append(" OR lcp.bilateral_project_id = ");
     query.append(projectID);
     query.append(" AND lcp.is_active = TRUE");
 
@@ -72,22 +74,21 @@ public class MySQLLinkedCoreProjectDAO implements LinkedCoreProjectDAO {
   }
 
   @Override
-  public boolean removeLinkedCoreProjects(int bilateralProjectID, List<Integer> coreProjects, int userID,
-    String justification) {
-    Object[] values = new Object[3 + coreProjects.size()];
+  public boolean removeLinkedProjects(int projectID, List<Integer> linkedProjects, int userID, String justification) {
+    Object[] values = new Object[3 + linkedProjects.size()];
     StringBuilder query = new StringBuilder();
-    query.append("UPDATE linked_core_projects ");
+    query.append("UPDATE project_cofinancing_linkages ");
     query.append("SET is_active = FALSE, modified_by = ?, modification_justification = ? ");
-    query.append("WHERE bilateral_project_id = ? ");
-    query.append("AND core_project_id IN (");
+    query.append("WHERE core_project_id = ? ");
+    query.append("AND bilateral_project_id IN (");
 
     values[0] = userID;
     values[1] = justification;
-    values[2] = bilateralProjectID;
+    values[2] = projectID;
 
-    for (int c = 0; c < coreProjects.size(); c++) {
+    for (int c = 0; c < linkedProjects.size(); c++) {
       query.append((c == 0) ? " ?" : ", ?");
-      values[3 + c] = coreProjects.get(c);
+      values[3 + c] = linkedProjects.get(c);
     }
     query.append("); ");
 
@@ -96,16 +97,16 @@ public class MySQLLinkedCoreProjectDAO implements LinkedCoreProjectDAO {
   }
 
   @Override
-  public boolean saveLinkedCoreProjects(int bilateralProjectID, List<Integer> listCoreProjectsIDs, int userID,
+  public boolean saveLinkedProjects(int coreProjectID, List<Integer> listBilateralProjectsIDs, int userID,
     String justification) {
     boolean saved = false;
-    Object[] values = new Object[listCoreProjectsIDs.size() * 5];
+    Object[] values = new Object[listBilateralProjectsIDs.size() * 5];
     StringBuilder query = new StringBuilder();
-    query.append("INSERT IGNORE INTO linked_core_projects ");
-    query.append("(bilateral_project_id, core_project_id, created_by, modified_by, modification_justification) ");
+    query.append("INSERT IGNORE INTO project_cofinancing_linkages ");
+    query.append("(core_project_id, bilateral_project_id, created_by, modified_by, modification_justification) ");
     query.append("VALUES ");
 
-    for (int i = 0; i < listCoreProjectsIDs.size(); i++) {
+    for (int i = 0; i < listBilateralProjectsIDs.size(); i++) {
       if (i == 0) {
         query.append(" (?, ?, ?, ?, ?) ");
       } else {
@@ -113,8 +114,8 @@ public class MySQLLinkedCoreProjectDAO implements LinkedCoreProjectDAO {
       }
 
       int c = i * 5;
-      values[c] = bilateralProjectID;
-      values[c + 1] = listCoreProjectsIDs.get(i);
+      values[c] = coreProjectID;
+      values[c + 1] = listBilateralProjectsIDs.get(i);
       values[c + 2] = userID;
       values[c + 3] = userID;
       values[c + 4] = justification;
