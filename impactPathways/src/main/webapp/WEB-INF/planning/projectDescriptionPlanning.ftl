@@ -149,34 +149,36 @@
           </div> 
         </div> 
       </fieldset>
-      
-      [#-- Core Projects for Bilateral project type --]
-      [#if !project.coreProject]
-      <h1 class="contentTitle"> [@s.text name="planning.projectDescription.coreProjects" /] </h1> 
+      ${project.type}
+      <h1 class="contentTitle"> [@s.text name="planning.projectDescription.bilateralProjects" /] </h1> 
+      [#-- Bilateral contributing to CCAFS Project(s) --]
+      [#if project.coreProject]
       <div id="projectCoreProjects" class="isLinked tickBox-wrapper fullBlock">  
-        [@customForm.checkbox name="project.isLinked" value=""  i18nkey="planning.projectDescription.isLinkedCoreProjects" disabled=!editable checked=true editable=editable/]
-        <div class="tickBox-toggle coreProjects fullBlock">
-          <div class="panel tertiary">
-            <div class="panel-head">[@customForm.text name="planning.projectDescription.selectCoreProject" readText=!editable /]:</div>
-            <div id="coreProjectsList" class="panel-body"> 
-              <ul class="list">
-                [#list project.linkedCoreProjects as element]
-                  <li class="clearfix [#if !element_has_next]last[/#if]">
-                    <input class="id" type="hidden" name="project.linkedCoreProjects" value="${element.id?c}" />
-                    <span class="name">${element.id} - ${element.title}</span> 
-                    [#if editable]<span class="listButton remove">[@s.text name="form.buttons.remove" /]</span>[/#if] 
-                  </li>
-                [/#list]
-              </ul>
-              [#if editable]
-                 [#-- The values of this list are loaded via ajax --]
-                [@customForm.select name="" label="" disabled=!canEdit i18nkey="" listName="" keyFieldName="id" displayFieldName="" className="" value="" /]
-              [/#if] 
-            </div>
-          </div> 
-        </div>   
+        [@customForm.checkbox name="project.isLinked" value=""  i18nkey="planning.projectDescription.isLinkedCoreProjects" disabled=!editable checked=true editable=editable/]  
       </div> 
       [/#if]
+      [#-- Bilateral projects only for CCAFS Projects --]
+      [#if !project.coreProject]
+      <div class="panel tertiary">
+        <div class="panel-head">[@customForm.text name="planning.projectDescription.selectCoreProject" readText=!editable /]:</div>
+        <div id="bilateralProjectsList" class="panel-body"> 
+          <ul class="list">
+            [#list project.linkedCoreProjects as element]
+              <li class="clearfix [#if !element_has_next]last[/#if]">
+                <input class="id" type="hidden" name="project.linkedCoreProjects" value="${element.id?c}" />
+                <span class="name">${element.id} - ${element.title}</span> 
+                [#if editable]<span class="listButton remove">[@s.text name="form.buttons.remove" /]</span>[/#if] 
+              </li>
+            [/#list]
+          </ul>
+          [#if editable]
+             [#-- The values of this list are loaded via ajax --]
+            [@customForm.select name="" label="" disabled=!canEdit i18nkey="" listName="" keyFieldName="id" displayFieldName="" className="" value="" /]
+          [/#if] 
+        </div>
+      </div>
+      [/#if]
+      
       
     </div> 
     [#if editable]
