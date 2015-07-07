@@ -159,16 +159,17 @@
         [/#if] 
       [#else] 
         <p>  
+        [#assign customValue][@s.property value="${name}.${displayFieldName}"/][/#assign]  
         [#if value=="-NULL"] 
-          [#assign customValue][@s.property value="${name}.${displayFieldName}"/][/#assign]  
           [#if !(customValue)?has_content] 
             [@s.text name="form.values.fieldEmpty" /]
           [#else]
             ${customValue}
           [/#if]
-        [#else] 
-          [#if value?has_content]
-            [@s.property value="${name}.${displayFieldName}"/]
+        [#else]  
+          [#if customValue?has_content]
+            ${customValue}
+          [#elseif value?has_content]
           [#else]
             [@s.text name="form.values.fieldEmpty" /]
           [/#if] 

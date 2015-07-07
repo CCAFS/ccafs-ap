@@ -161,7 +161,7 @@
       [#if project.coreProject]
       <div class="panel tertiary">
         <div class="panel-head">[@customForm.text name="planning.projectDescription.selectBilateralProject" readText=!editable /]:</div>
-        <div id="coreProjectsList" class="panel-body"> 
+        <div id="bilateralProjectsList" class="panel-body"> 
           <ul class="list">
             [#list project.linkedProjects as element]
               <li class="clearfix [#if !element_has_next]last[/#if]">

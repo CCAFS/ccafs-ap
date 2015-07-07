@@ -153,38 +153,7 @@
         [/#if]
       </div> 
     </div>
-    [#-- Only the user with enough privileges to save can upload the file --] 
-    [#if editable]
-      [#-- File upload --]
-      <div class="uploadFileMessage">
-        <p>
-          [#if uploadFileName?has_content ] 
-            [@s.text name="planning.project.locations.changeFileMessage" /]<br>
-            <div id="excelTemplate-file-uploaded">
-              <img class="icon-check" src="${baseUrl}/images/global/icon-check.png" /> <a href="${locationsFileURL}" >${uploadFileName} </a>
-            </div>  
-          [#else]
-            [@s.text name="planning.project.locations.uploadMessage" /]
-          [/#if]
-        </p>
-        <hr>  
-        <div class="halfPartBlock left">
-          <div id="step1" class="step" title="Step 1">1</div>
-          <a href="${baseUrl}/resources/locationTemplate/Project_Location_Template.xlsx">
-            <img id="icon" src="${baseUrl}/images/global/icon-excel.png" />
-            <p id="downloadMessage">[@s.text name="planning.project.locations.templateMessage" /]</p>
-          </a>
-        </div>
-        <div class="halfPartBlock right">
-          <div id="step2" class="step" title="Step 2">2</div>
-            [@customForm.input name="excelTemplate" type="file" i18nkey="planning.project.locations.attachTemplate" /] 
-            <div id="excelTemplate-file" style="position:relative;display:none">
-              <span id="excelTemplate-text"></span>
-              <img class="removeButton" src="${baseUrl}/images/global/icon-remove.png" />
-            </div>    
-        </div>
-      </div>
-    [/#if]
+    
     [#if editable] 
       <div class="borderBox">
         <!-- internal parameter --> 
@@ -193,7 +162,7 @@
         [#if project.global]
         <input type="hidden" id="isGlobal" value="${project.global?string}">
         [/#if] 
-        <input type="hidden" id="isGlobalText" value="[@s.text name="planning.project.locations.map.isGlobal" /]">
+        
         [@customForm.textArea name="justification" i18nkey="saving.justification" required=true className="justification"/]
         <div class="buttons">
           [@s.submit type="button" name="save"][@s.text name="form.buttons.save" /][/@s.submit]
@@ -208,7 +177,7 @@
   </article>
   [/@s.form] 
   [#-- Hidden values used by js --]
-  <input id="programID" value="" type="hidden"/>
+  <input type="hidden" id="isGlobalText" value="[@s.text name="planning.project.locations.map.isGlobal" /]">
   <input type="hidden" id="isEditable" value="${editable?string('1','0')}">
 </section>
 
