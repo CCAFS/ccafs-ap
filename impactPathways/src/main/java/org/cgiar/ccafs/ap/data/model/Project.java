@@ -396,6 +396,10 @@ public class Project {
     return this.getId();
   }
 
+  public boolean isBilateralProject() {
+    return (type != null) ? type.equals(APConstants.PROJECT_BILATERAL_STANDALONE) : false;
+  }
+
   public boolean isCofinancing() {
     return isCofinancing;
   }
