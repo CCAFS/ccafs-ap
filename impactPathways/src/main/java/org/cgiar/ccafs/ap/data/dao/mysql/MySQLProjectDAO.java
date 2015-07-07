@@ -875,7 +875,7 @@ public class MySQLProjectDAO implements ProjectDAO {
     } else {
       // Update project.
       query.append("UPDATE projects SET title = ?, summary = ?, start_date = ?, end_date = ?, ");
-      query.append("liaison_user_id = (SELECT id FROM liaison_users WHERE user_id = ?), is_cofinancing = ? ");
+      query.append("liaison_user_id = (SELECT id FROM liaison_users WHERE user_id = ?), is_cofinancing = ?, ");
       query.append("requires_workplan_upload = ?, liaison_institution_id = ?, type = ?, modified_by = ?, ");
       query.append("modification_justification = ? WHERE id = ?");
       Object[] values = new Object[12];

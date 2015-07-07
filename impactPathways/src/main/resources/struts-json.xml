@@ -96,7 +96,7 @@
       </result>
     </action>
     
-    <action name="bilateralCoFinancingProjects" class="org.cgiar.ccafs.ap.action.json.planning.CoreProjectsAction">
+    <action name="bilateralCoFinancingProjects" class="org.cgiar.ccafs.ap.action.json.planning.BilateralCofinancingProjectsAction">
       <result type="json">        
         <param name="noCache">true</param>
         <param name="excludeNullProperties">true</param>

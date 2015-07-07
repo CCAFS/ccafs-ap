@@ -305,18 +305,18 @@ public class ProjectDescriptionPlanningAction extends BaseAction {
         previousProject.setEndDate(project.getEndDate());
       }
 
-      if (securityContext.canAllowProjectWorkplanUpload()) {
+      if (securityContext.canAllowProjectWorkplanUpload() && project.isCoreProject()) {
         // TODO - Check if this permission changes when the checkbox is disabled.
         previousProject.setWorkplanRequired(project.isWorkplanRequired());
 
-        if (previousProject.isCoreProject() && previousProject.isWorkplanRequired()) {
+        if (previousProject.isWorkplanRequired()) {
           // TODO - Check if user attached a file, upload it and save the file name.
           // uploadFile();
         }
       }
 
       // TODO - Update the type and all the implications
-      previousProject.setType(project.getType());
+      // previousProject.setType(project.getType());
 
       // Core projects can create linkages with some bilateral projects.
       if (!project.isBilateralProject()) {
