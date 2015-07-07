@@ -89,9 +89,9 @@ public final class APConstants {
   public static final int LOCATION_TYPE_CCAFS_SITE = 11;
 
   // Types of project
-  public static final String PROJECT_CORE = "CORE";
-  public static final String PROJECT_BILATERAL_COFUNDED = "BILATERAL_COFUNDED";
-  public static final String PROJECT_BILATERAL_STANDALONE = "BILATERAL_STANDALONE";
+  public static final String PROJECT_CORE = "CCAFS_CORE";
+  public static final String PROJECT_CCAFS_COFUNDED = "CCAFS_COFUNDED";
+  public static final String PROJECT_BILATERAL_STANDALONE = "BILATERAL";
 
   // Types of Project Partners
   public static final String PROJECT_PARTNER_PL = "PL";

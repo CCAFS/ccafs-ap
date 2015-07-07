@@ -57,7 +57,6 @@ function changeGlobalState(e) {
     $("#projectLocations-map").html(
         "<img id='global' src='" + baseURL + "/images/global/global-map.png'/>" + "<p class='global'>"
             + $("#isGlobalText").val() + "</p>");
-
   } else {
     $("#locationsBlock").fadeIn("slow");
     $(".uploadFileMessage").fadeIn("slow");
@@ -347,7 +346,7 @@ function makeMarker(data) {
       map: map,
       position: point,
       icon: baseURL + '/images/global/otherSite-marker.png',
-      draggable: true,
+      draggable: ($('#isEditable').val() == 1),
       animation: google.maps.Animation.DROP
   });
   var html = "<div class='infoWindow'>" + data.name + "</div>";
@@ -367,10 +366,10 @@ function makeMarker(data) {
   });
   // Event when marker is dragged
   google.maps.event.addListener(marker, 'dragend', function() {
-    $("#location-" + marker.id).find("[name$='geoPosition.longitude']").val(marker.position.B);
-    $("#location-" + marker.id).find("[name$='geoPosition.latitude']").val(marker.position.k);
-
+    $("#location-" + marker.id).find("[name$='geoPosition.longitude']").val(marker.position.F);
+    $("#location-" + marker.id).find("[name$='geoPosition.latitude']").val(marker.position.A);
   });
+
   markers[data.id] = marker;
 }
 

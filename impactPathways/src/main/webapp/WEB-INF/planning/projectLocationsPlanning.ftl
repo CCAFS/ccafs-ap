@@ -32,9 +32,9 @@
     [#include "/WEB-INF/planning/projectDescription-planning-sub-menu.ftl" /]
     [#include "/WEB-INF/planning/planningDataSheet.ftl" /]
     [#-- Informing user that he/she doesn't have enough privileges to edit. See GrantActivityPlanningAccessInterceptor--]
-    [#if !saveable]
+    [#if !canEdit]
       <p class="readPrivileges">
-        [@s.text name="saving.read.privileges"][@s.param][@s.text name="planning.project.locations.title"/][/@s.param][/@s.text]
+        [@s.text name="saving.read.privileges"][@s.param][@s.text name=title/][/@s.param][/@s.text]
       </p>
     [/#if] 
     <div id="" class="borderBox"> 
@@ -101,7 +101,7 @@
                         [@customForm.input name="geoPosition.latitude" className="notApplicable" value="${location.geoPosition.latitude}" type="text" i18nkey="planning.project.locations.latitude" showTitle=false required=true disabled=true   /]                
                       [#else] 
                         <input type="hidden" name="otherLocationsSaved[${location_index}].geoPosition.id" value="${location.geoPosition.id?c}" >
-                        [@customForm.input name="otherLocationsSaved[${location_index}].geoPosition.latitude" value="${location.geoPosition.latitude}" type="text" i18nkey="planning.project.locations.latitude" showTitle=false required=true  /]
+                        [@customForm.input name="otherLocationsSaved[${location_index}].geoPosition.latitude" value="${location.geoPosition.latitude}" type="text" i18nkey="planning.project.locations.latitude" showTitle=false required=true disabled=!editable  /]
                       [/#if]
                     [/#if]
                   </div>
@@ -116,7 +116,7 @@
                       [#if location.type.id == ccafsSiteTypeID]
                         [@customForm.input name="geoPosition.longitude" className="notApplicable" value="${location.geoPosition.longitude}" type="text" i18nkey="planning.project.locations.longitude" showTitle=false required=true disabled=true   /]
                       [#else]
-                        [@customForm.input name="otherLocationsSaved[${location_index}].geoPosition.longitude" value="${location.geoPosition.longitude}" type="text" i18nkey="planning.project.locations.longitude" showTitle=false required=true  /]
+                        [@customForm.input name="otherLocationsSaved[${location_index}].geoPosition.longitude" value="${location.geoPosition.longitude}" type="text" i18nkey="planning.project.locations.longitude" showTitle=false required=true disabled=!editable  /]
                       [/#if] 
                     [/#if]
                   </div>
@@ -153,38 +153,7 @@
         [/#if]
       </div> 
     </div>
-    [#-- Only the user with enough privileges to save can upload the file --] 
-    [#if editable]
-      [#-- File upload --]
-      <div class="uploadFileMessage">
-        <p>
-          [#if uploadFileName?has_content ] 
-            [@s.text name="planning.project.locations.changeFileMessage" /]<br>
-            <div id="excelTemplate-file-uploaded">
-              <img class="icon-check" src="${baseUrl}/images/global/icon-check.png" /> <a href="${locationsFileURL}" >${uploadFileName} </a>
-            </div>  
-          [#else]
-            [@s.text name="planning.project.locations.uploadMessage" /]
-          [/#if]
-        </p>
-        <hr>  
-        <div class="halfPartBlock left">
-          <div id="step1" class="step" title="Step 1">1</div>
-          <a href="${baseUrl}/resources/locationTemplate/Project_Location_Template.xlsx">
-            <img id="icon" src="${baseUrl}/images/global/icon-excel.png" />
-            <p id="downloadMessage">[@s.text name="planning.project.locations.templateMessage" /]</p>
-          </a>
-        </div>
-        <div class="halfPartBlock right">
-          <div id="step2" class="step" title="Step 2">2</div>
-            [@customForm.input name="excelTemplate" type="file" i18nkey="planning.project.locations.attachTemplate" /] 
-            <div id="excelTemplate-file" style="position:relative;display:none">
-              <span id="excelTemplate-text"></span>
-              <img class="removeButton" src="${baseUrl}/images/global/icon-remove.png" />
-            </div>    
-        </div>
-      </div>
-    [/#if]
+    
     [#if editable] 
       <div class="borderBox">
         <!-- internal parameter --> 
@@ -192,8 +161,8 @@
         <input type="hidden" name="projectID" value="${project.id?c}">
         [#if project.global]
         <input type="hidden" id="isGlobal" value="${project.global?string}">
-        [/#if]
-        <input type="hidden" id="isGlobalText" value="[@s.text name="planning.project.locations.map.isGlobal" /]">
+        [/#if] 
+        
         [@customForm.textArea name="justification" i18nkey="saving.justification" required=true className="justification"/]
         <div class="buttons">
           [@s.submit type="button" name="save"][@s.text name="form.buttons.save" /][/@s.submit]
@@ -208,7 +177,8 @@
   </article>
   [/@s.form] 
   [#-- Hidden values used by js --]
-  <input id="programID" value="" type="hidden"/>
+  <input type="hidden" id="isGlobalText" value="[@s.text name="planning.project.locations.map.isGlobal" /]">
+  <input type="hidden" id="isEditable" value="${editable?string('1','0')}">
 </section>
 
 [#-- Location Existing Template --]
@@ -220,12 +190,12 @@
     [@customForm.select name="type.id" i18nkey="planning.locations.level" listName="locationTypes" keyFieldName="id"  displayFieldName="name" showTitle=false /] 
   </div>
   <div class="locationLatitude grid_2">
-      [#-- Geo position ID --]
-      <input type="hidden" name="geoPosition.id" value="-1" >
-      [@customForm.input name="geoPosition.latitude" className="notApplicable" value=notApplicableText type="text" i18nkey="planning.locations.longitude" showTitle=false disabled=true  /]
+    [#-- Geo position ID --]
+    <input type="hidden" name="geoPosition.id" value="-1" >
+    [@customForm.input name="geoPosition.latitude" className="notApplicable" value=notApplicableText type="text" i18nkey="planning.locations.longitude" showTitle=false disabled=true  /]
   </div>
   <div class="locationLongitude grid_2">
-      [@customForm.input name="geoPosition.longitude" className="notApplicable" value=notApplicableText type="text" i18nkey="planning.locations.longitude" showTitle=false disabled=true  /]
+    [@customForm.input name="geoPosition.longitude" className="notApplicable" value=notApplicableText type="text" i18nkey="planning.locations.longitude" showTitle=false disabled=true  /]
   </div>
   <div class="locationName grid_3">
     [@customForm.select name="].id" i18nkey="planning.locations.level" listName="regions" keyFieldName="id" showTitle=false  displayFieldName="name" value="-1" /]

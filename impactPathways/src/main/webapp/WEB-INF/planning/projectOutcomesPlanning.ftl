@@ -36,14 +36,13 @@
     [#-- Informing user that he/she doesn't have enough privileges to edit. See GrantActivityPlanningAccessInterceptor--]
     [#if !canEdit]
       <p class="readPrivileges">
-        [@s.text name="saving.read.privileges"][@s.param][@s.text name="planning.projectImpactPathways.title"/][/@s.param][/@s.text]
+        [@s.text name="saving.read.privileges"][@s.param][@s.text name=title/][/@s.param][/@s.text]
       </p>
     [/#if]
-    <div id="projectOutcomes-narrative" class="borderBox">
+    <div id="projectOutcomes" class="borderBox">
       [#if !editable && canEdit]
-        <div class="editButton"><a href="[@s.url includeParams='get'][@s.param name="edit"]true[/@s.param][/@s.url]">[@s.text name="form.buttons.edit" /]</a></div>
-      [/#if] 
-
+        <div class="editButton"><a href="[@s.url includeParams='get'][@s.param name="edit"]true[/@s.param][/@s.url]#projectOutcomes">[@s.text name="form.buttons.edit" /]</a></div>
+      [/#if]  
       [#-- Project  outcome block --]
       <div class="fullPartBlock clearfix">
         <h1 class="contentTitle">[@s.text name="planning.projectOutcome.narrative" /] </h1> 
@@ -60,16 +59,18 @@
         [/#list]
         <input name="project.outcome[midOutcomeYear].id" type="hidden" value="${project.outcomes[midOutcomeYear+""].id?c}" />
       </div>
-
+    </div>  
+    <div id="gender-contribution" class="borderBox">
+      [#if !editable && canEdit]
+        <div class="editButton"><a href="[@s.url includeParams='get'][@s.param name="edit"]true[/@s.param][/@s.url]#gender-contribution">[@s.text name="form.buttons.edit" /]</a></div>
+      [/#if] 
       [#-- Gender contribution block --]
       <div class="fullPartBlock">
         <h1 class="contentTitle">[@s.text name="planning.projectOutcome.genderAndSocialNarrative" /] </h1> 
-
         [#-- Gender and Social Narrative --]
         <div class="fullPartBlock" id="projectOutcome-genderAndSocialNarrative">
           [@customForm.textArea name="project.outcomes[${midOutcomeYear}].genderDimension" i18nkey="planning.projectOutcome.genderAndSocialStatement" editable=editable /]
         </div>
-
         [#-- Annual for the expected Gender and Social contribution --]
         [#list currentPlanningYear?number..midOutcomeYear?number-1 as year]
           <div class="fullPartBlock">
@@ -78,7 +79,6 @@
           </div>
         [/#list]
         <input name="project.outcome[midOutcomeYear].id" type="hidden" value="${project.outcomes[midOutcomeYear+""].id?c}" />
-
       </div>
     </div>
     

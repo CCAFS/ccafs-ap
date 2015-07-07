@@ -14,7 +14,7 @@
 
 package org.cgiar.ccafs.ap.data.dao;
 
-import org.cgiar.ccafs.ap.data.dao.mysql.MySQLLinkedCoreProjectDAO;
+import org.cgiar.ccafs.ap.data.dao.mysql.MySQLProjectCofinancingLinkageDAO;
 
 import java.util.List;
 import java.util.Map;
@@ -26,41 +26,40 @@ import com.google.inject.ImplementedBy;
  * @author Hernán David Carvajal B. - CIAT/CCAFS
  */
 
-@ImplementedBy(MySQLLinkedCoreProjectDAO.class)
-public interface LinkedCoreProjectDAO {
+@ImplementedBy(MySQLProjectCofinancingLinkageDAO.class)
+public interface ProjectCofinancingLinkageDAO {
 
   /**
-   * This method gets the basic information (id, title) of the projects that are linked to the bilateral project
+   * This method gets the basic information (id, title) of the projects that are linked to the project
    * identified by the value received by parameter.
    * 
    * @param projectID
    * @return a list of maps with the project information.
    */
-  public List<Map<String, String>> getLinkedCoreProjects(int projectID);
+  public List<Map<String, String>> getLinkedProjects(int projectID);
 
   /**
-   * This method remove from the database the link between the bilateral projects and the core projects received by
-   * parameter.
+   * This method remove from the database the link between the project identified by the first parameter and the
+   * projects listed in the second parameter.
    * 
-   * @param bilateralProjectID
-   * @param coreProjects
+   * @param projectID
+   * @param linkedProjects
    * @param userID
    * @param justification
    * @return true if all the core projects were removed successfully. False otherwise.
    */
-  public boolean removeLinkedCoreProjects(int bilateralProjectID, List<Integer> coreProjects, int userID,
-    String justification);
+  public boolean removeLinkedProjects(int projectID, List<Integer> linkedProjects, int userID, String justification);
 
   /**
-   * This method saves into the database the core projects linked to the bilateral project identified by the value
+   * This method saves into the database the bilateral projects linked to the core project identified by the value
    * received by parameter.
    * 
-   * @param bilateralProjectID
-   * @param listCoreProjectsIDs - a list of core projects' IDs
+   * @param coreProjectID
+   * @param listBilateralProjectsIDs - a list of bilateral projects' IDs
    * @param user - Identifier of the user who is making the change
    * @param justification
    * @return true if the information was saved successfully, false otherwise.
    */
-  public boolean saveLinkedCoreProjects(int bilateralProjectID, List<Integer> listCoreProjectsIDs, int userID,
+  public boolean saveLinkedProjects(int coreProjectID, List<Integer> listBilateralProjectsIDs, int userID,
     String justification);
 }
