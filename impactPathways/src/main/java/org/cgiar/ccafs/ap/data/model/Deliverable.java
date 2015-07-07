@@ -34,7 +34,7 @@ public class Deliverable {
   private String typeOther; // Other specific type defined by the user.
   private List<NextUser> nextUsers;
   private IPElement output; // Now it is called MOG.
-  private List<Institution> partnerships;
+  private List<DeliverablePartner> partnerships;
 
   public Deliverable() {
     super();
@@ -59,6 +59,10 @@ public class Deliverable {
 
   public IPElement getOutput() {
     return output;
+  }
+
+  public List<DeliverablePartner> getPartnerships() {
+    return partnerships;
   }
 
   public String getTitle() {
@@ -94,6 +98,10 @@ public class Deliverable {
     this.output = output;
   }
 
+  public void setPartnerships(List<DeliverablePartner> partnerships) {
+    this.partnerships = partnerships;
+  }
+
   public void setTitle(String title) {
     this.title = title;
   }
@@ -113,14 +121,6 @@ public class Deliverable {
   @Override
   public String toString() {
     return ToStringBuilder.reflectionToString(this);
-  }
-
-  public List<Institution> getPartnerships() {
-    return partnerships;
-  }
-
-  public void setPartnerships(List<Institution> partnerships) {
-    this.partnerships = partnerships;
   }
 
 }

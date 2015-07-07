@@ -85,7 +85,7 @@ public interface ProjectPartnerManager {
    * This method save the project partner of a specific project
    *
    * @param projectId is the project identifier in which these projects partners belong to.
-   * @param projectpartnerData is the information to be saved
+   * @param partners is the information to be saved
    * @param user is the user that is making the change.
    * @param justification is the justification for the change made.
    * @return true if all partners were successfully saved; or false otherwise.
