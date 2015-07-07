@@ -90,7 +90,7 @@ public final class APConstants {
 
   // Types of project
   public static final String PROJECT_CORE = "CCAFS_CORE";
-  public static final String PROJECT_BILATERAL_COFUNDED = "CCAFS_COFUNDED";
+  public static final String PROJECT_CCAFS_COFUNDED = "CCAFS_COFUNDED";
   public static final String PROJECT_BILATERAL_STANDALONE = "BILATERAL";
 
   // Types of Project Partners

@@ -70,7 +70,7 @@
         <div class="fullBlock">
           [#-- Project Type --]
           <div class="halfPartBlock">
-            [@customForm.select name="project.type" i18nkey="planning.projectDescription.projectType" listName="projectTypes" keyFieldName="id"  displayFieldName="name" editable=editable/]
+            [@customForm.select name="project.type" i18nkey="planning.projectDescription.projectType" listName="projectTypes" editable=editable/]
           </div>
         </div> 
 
