@@ -99,6 +99,10 @@ public final class APConstants {
   public static final String PROJECT_PARTNER_PPA = "PPA";
   public static final String PROJECT_PARTNER_PP = "PP";
 
+  // Types of Deliverable Partners
+  public static final String DELIVERABLE_PARTNER_RESP = "Resp";
+  public static final String DELIVERABLE_PARTNER_OTHER = "Other";
+
   // Query parameter
   public static final String QUERY_PARAMETER = "q";
 
