@@ -40,7 +40,7 @@
   <article class="halfContent" id="projectDeliverable"> 
     [#include "/WEB-INF/planning/projectOutputs-sub-menu.ftl" /]
     [#include "/WEB-INF/planning/planningDataSheet.ftl" /]
-    [#-- Informing user that he-she does not have enough privileges to edit. See GrantProjectPlanningAccessInterceptor --]
+    [#-- Informing user that he-she does not have enough privileges to edit. See GrantProjectPlanningAccessInterceptor --]  
     [#if !canEdit]
       <p class="readPrivileges">
         [@s.text name="saving.read.privileges"][@s.param][@s.text name=title /][/@s.param][/@s.text]
@@ -58,25 +58,28 @@
       </div>
       <div class="fullBlock">
         [#-- MOG  --]
-        <div class="halfPartBlock chosen"> 
+        <div class="${editable?string('halfPartBlock','fullBlock')} chosen"> 
           [@customForm.select name="${params.deliverable.name}.output" label=""  disabled=false i18nkey="planning.deliverables.mog" listName="outputs" keyFieldName="id"  displayFieldName="description" editable=editable /]
         </div> 
         [#-- Year  --]
         <div class="halfPartBlock chosen">
-          [@customForm.select name="${params.deliverable.name}.year" label=""  disabled=false i18nkey="planning.deliverables.year" listName="allYears" editable=editable /]
+          [@customForm.select name="${params.deliverable.name}.year" value="${deliverable.year}" label=""  disabled=false i18nkey="planning.deliverables.year" listName="allYears" editable=editable /]
+          [#if !editable]${deliverable.year}[/#if]
         </div>
       </div> 
       <div class="fullBlock">
         [#-- Main Type --]
         <div class="halfPartBlock chosen"> 
-          [@customForm.select name="mainType" label=""  i18nkey="planning.deliverables.mainType" listName="deliverableTypes" keyFieldName="id"  displayFieldName="name" editable=editable /]
+          [@customForm.select name="mainType" value="${deliverable.type.category.id}" i18nkey="planning.deliverables.mainType" listName="deliverableTypes" keyFieldName="id"  displayFieldName="name" editable=editable /]
+          [#if !editable]${deliverable.type.category.name}[/#if]
         </div> 
         [#-- Sub Type --]
         <div class="halfPartBlock chosen"> 
-          [@customForm.select name="${params.deliverable.name}.type" value="${deliverable.type.id}" i18nkey="planning.deliverables.subType" listName="" keyFieldName=""  displayFieldName="" editable=editable /]
+          [@customForm.select name="${params.deliverable.name}.type" i18nkey="planning.deliverables.subType" listName="" keyFieldName=""  displayFieldName="" editable=editable /]
+          [#if !editable]${deliverable.type.name}[/#if]
           <input type="hidden" id="subTypeSelected" value="${deliverable.type.id}" />
           [#-- Specify other deliverable type--] 
-          [@customForm.input name="${params.deliverable.name}.otherType" className="otherType" showTitle=false i18nkey="planning.deliverables.specify" display=false required=true editable=editable /]
+          [@customForm.input name="${params.deliverable.name}.otherType" className="otherType" showTitle=false i18nkey="planning.deliverables.specify" display=false required=true disabled=true editable=editable /]
         </div>
       </div>
     </div>
