@@ -46,6 +46,7 @@ public class Project {
   private String leaderResponsabilities;
   private LiaisonInstitution liaisonInstitution; // Creator program. e.g. LAM, FP4, CU, etc.
   private boolean isGlobal;
+  private boolean isCofinanced;
   private User owner;
   private List<ProjectPartner> projectPartners; // Project partners or 2-level partners.
   private List<ProjectPartner> ppaPartners; // PPA Partners or CCAFS Program Partners.
@@ -337,7 +338,6 @@ public class Project {
     return ppaPartners;
   }
 
-
   public List<ProjectPartner> getProjectPartners() {
     return projectPartners;
   }
@@ -345,6 +345,7 @@ public class Project {
   public List<IPProgram> getRegions() {
     return regions;
   }
+
 
   public String getRegionsAcronym() {
     StringBuilder regionAcronym = new StringBuilder();
@@ -395,6 +396,10 @@ public class Project {
     return this.getId();
   }
 
+  public boolean isCofinanced() {
+    return isCofinanced;
+  }
+
   public boolean isCoreProject() {
     return (type != null) ? type.equals(APConstants.PROJECT_CORE) : false;
   }
@@ -428,6 +433,10 @@ public class Project {
 
   public void setBudgets(List<Budget> budgets) {
     this.budgets = budgets;
+  }
+
+  public void setCofinanced(boolean isCofinanced) {
+    this.isCofinanced = isCofinanced;
   }
 
   public void setCoordinator(ProjectPartner coordinator) {
