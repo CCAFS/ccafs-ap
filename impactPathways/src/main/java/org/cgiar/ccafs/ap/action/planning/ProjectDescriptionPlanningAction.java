@@ -315,6 +315,7 @@ public class ProjectDescriptionPlanningAction extends BaseAction {
         }
       }
 
+      // TODO - Update the type and all the implications
       previousProject.setType(project.getType());
 
       // Core projects can create linkages with some bilateral projects.
@@ -330,6 +331,9 @@ public class ProjectDescriptionPlanningAction extends BaseAction {
           // TODO - Check if user attached a file, upload it and save the file name.
           // uploadFile();
         }
+      } else {
+        // The bilateral projects can co-finance some core projects
+        previousProject.setCofinancing(project.isCofinancing());
       }
 
       previousProject.setSummary(project.getSummary());
