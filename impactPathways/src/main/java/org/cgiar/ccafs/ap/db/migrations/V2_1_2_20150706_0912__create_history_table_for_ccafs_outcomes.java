@@ -82,6 +82,7 @@ public class V2_1_2_20150706_0912__create_history_table_for_ccafs_outcomes imple
       Statement stmnt = connection.createStatement();
       stmnt.addBatch("ALTER TABLE ip_project_indicators DROP INDEX  UK_ipProjectIndicator; ");
       stmnt.addBatch("ALTER TABLE ip_project_contributions DROP INDEX  UK_project_contributions_unique; ");
+      stmnt.addBatch("USE " + dbName);
       stmnt.executeBatch();
 
     } catch (SQLException e) {
