@@ -20,15 +20,18 @@ import org.cgiar.ccafs.ap.data.manager.DeliverablePartnerManager;
 import org.cgiar.ccafs.ap.data.manager.DeliverableTypeManager;
 import org.cgiar.ccafs.ap.data.manager.NextUserManager;
 import org.cgiar.ccafs.ap.data.manager.ProjectManager;
+import org.cgiar.ccafs.ap.data.manager.ProjectPartnerManager;
 import org.cgiar.ccafs.ap.data.model.Deliverable;
 import org.cgiar.ccafs.ap.data.model.DeliverablePartner;
 import org.cgiar.ccafs.ap.data.model.DeliverableType;
 import org.cgiar.ccafs.ap.data.model.IPElement;
 import org.cgiar.ccafs.ap.data.model.Institution;
 import org.cgiar.ccafs.ap.data.model.Project;
+import org.cgiar.ccafs.ap.data.model.ProjectPartner;
 import org.cgiar.ccafs.ap.data.model.User;
 import org.cgiar.ccafs.utils.APConfig;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import com.google.inject.Inject;
@@ -53,6 +56,7 @@ public class ProjectDeliverableAction extends BaseAction {
   private DeliverableTypeManager deliverableTypeManager;
   private DeliverablePartnerManager deliverablePartnerManager;
   private NextUserManager nextUserManager;
+  private ProjectPartnerManager projectPartnerManager;
 
   // Model for the back-end
   private Deliverable deliverable;
@@ -66,18 +70,20 @@ public class ProjectDeliverableAction extends BaseAction {
   private List<IPElement> outputs;
   private DeliverablePartner responsiblePartner;
   private List<DeliverablePartner> otherPartners;
+  private List<Institution> institutions;
 
 
   @Inject
   public ProjectDeliverableAction(APConfig config, ProjectManager projectManager, DeliverableManager deliverableManager,
     DeliverableTypeManager deliverableTypeManager, NextUserManager nextUserManager,
-    DeliverablePartnerManager deliverablePartnerManager) {
+    DeliverablePartnerManager deliverablePartnerManager, ProjectPartnerManager projectPartnerManager) {
     super(config);
     this.projectManager = projectManager;
     this.deliverableManager = deliverableManager;
     this.deliverableTypeManager = deliverableTypeManager;
     this.nextUserManager = nextUserManager;
     this.deliverablePartnerManager = deliverablePartnerManager;
+    this.projectPartnerManager = projectPartnerManager;
   }
 
 
@@ -132,6 +138,16 @@ public class ProjectDeliverableAction extends BaseAction {
     deliverableSubTypes = deliverableTypeManager.getDeliverableSubTypes();
     allYears = project.getAllYears();
     outputs = projectManager.getProjectOutputs(project.getId());
+
+    // Getting the list of institutions that will be showed in the lists.
+    institutions = new ArrayList<>();
+    for (ProjectPartner projectPartner : projectPartnerManager.getProjectPartners(project.getId())) {
+      if (!institutions.contains(projectPartner.getInstitution())) {
+        institutions.add(projectPartner.getInstitution());
+      }
+    }
+
+    System.out.println(institutions);
 
     // Getting the deliverable information.
     deliverable = deliverableManager.getDeliverableById(deliverableID);
