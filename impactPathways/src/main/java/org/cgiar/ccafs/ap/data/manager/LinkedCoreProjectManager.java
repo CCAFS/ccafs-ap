@@ -44,13 +44,13 @@ public interface LinkedCoreProjectManager {
     deletedLinkedCoreProjects(Project project, List<Integer> coreProjects, User user, String justification);
 
   /**
-   * This method gets the basic information (id, title) of the projects that are linked to the bilateral project
+   * This method gets the basic information (id, title) of the projects that are linked to the project
    * identified by the value received by parameter.
    * 
    * @param projectID
    * @return a list of projects with its basic information.
    */
-  public List<Project> getLinkedCoreProjects(int projectID);
+  public List<Project> getLinkedProjects(int projectID);
 
   /**
    * This method saves into the database the core projects linked to the project received by parameter.

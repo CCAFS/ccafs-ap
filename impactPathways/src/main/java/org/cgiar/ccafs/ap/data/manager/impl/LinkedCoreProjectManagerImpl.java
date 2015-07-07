@@ -46,9 +46,9 @@ public class LinkedCoreProjectManagerImpl implements LinkedCoreProjectManager {
   }
 
   @Override
-  public List<Project> getLinkedCoreProjects(int projectID) {
+  public List<Project> getLinkedProjects(int projectID) {
     List<Project> projects = new ArrayList<>();
-    List<Map<String, String>> projectsInfo = linkedCoreProjectsDAO.getLinkedCoreProjects(projectID);
+    List<Map<String, String>> projectsInfo = linkedCoreProjectsDAO.getLinkedProjects(projectID);
     for (Map<String, String> projectInfo : projectsInfo) {
       Project project = new Project();
       project.setId(Integer.parseInt(projectInfo.get("id")));
@@ -62,7 +62,7 @@ public class LinkedCoreProjectManagerImpl implements LinkedCoreProjectManager {
   @Override
   public boolean saveLinkedCoreProjects(Project project, User user, String justification) {
     List<Integer> coreProjectsIDs = new ArrayList<>();
-    for (Project coreProject : project.getLinkedCoreProjects()) {
+    for (Project coreProject : project.getLinkedProjects()) {
       coreProjectsIDs.add(coreProject.getId());
     }
 
