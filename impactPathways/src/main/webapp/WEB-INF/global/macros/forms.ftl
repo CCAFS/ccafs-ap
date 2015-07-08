@@ -169,8 +169,7 @@
         [#else]  
           [#if customValue?has_content]
             ${customValue}
-          [#elseif value?has_content]
-          [#else]
+          [#elseif value=="-1"]
             [@s.text name="form.values.fieldEmpty" /]
           [/#if] 
         [/#if]

@@ -74,9 +74,10 @@ public class ProjectDeliverableAction extends BaseAction {
 
 
   @Inject
-  public ProjectDeliverableAction(APConfig config, ProjectManager projectManager, DeliverableManager deliverableManager,
-    DeliverableTypeManager deliverableTypeManager, NextUserManager nextUserManager,
-    DeliverablePartnerManager deliverablePartnerManager, ProjectPartnerManager projectPartnerManager) {
+  public ProjectDeliverableAction(APConfig config, ProjectManager projectManager,
+    DeliverableManager deliverableManager, DeliverableTypeManager deliverableTypeManager,
+    NextUserManager nextUserManager, DeliverablePartnerManager deliverablePartnerManager,
+    ProjectPartnerManager projectPartnerManager) {
     super(config);
     this.projectManager = projectManager;
     this.deliverableManager = deliverableManager;
@@ -91,9 +92,11 @@ public class ProjectDeliverableAction extends BaseAction {
     return allYears;
   }
 
+
   public Deliverable getDeliverable() {
     return deliverable;
   }
+
 
   public List<DeliverableType> getDeliverableSubTypes() {
     return deliverableSubTypes;
@@ -101,6 +104,10 @@ public class ProjectDeliverableAction extends BaseAction {
 
   public List<DeliverableType> getDeliverableTypes() {
     return deliverableTypes;
+  }
+
+  public List<Institution> getInstitutions() {
+    return institutions;
   }
 
   public List<DeliverablePartner> getOtherPartners() {
@@ -123,7 +130,6 @@ public class ProjectDeliverableAction extends BaseAction {
   public String next() {
     return SUCCESS;
   }
-
 
   @Override
   public void prepare() throws Exception {
@@ -173,14 +179,19 @@ public class ProjectDeliverableAction extends BaseAction {
 
   }
 
+
   @Override
   public String save() {
     return SUCCESS;
   }
 
-
   public void setDeliverable(Deliverable deliverable) {
     this.deliverable = deliverable;
+  }
+
+
+  public void setInstitutions(List<Institution> institutions) {
+    this.institutions = institutions;
   }
 
 
