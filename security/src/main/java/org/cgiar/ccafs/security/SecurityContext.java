@@ -150,6 +150,15 @@ public class SecurityContext extends BaseSecurityContext {
   }
 
   /**
+   * Verify if can update the project description section
+   * 
+   * @return
+   */
+  public boolean canUpdateProjectDescription() {
+    return this.hasPermission(Permission.PLANNING_PROJECT_INFO_UPDATE);
+  }
+
+  /**
    * Verify if can update the project leader section
    * 
    * @return

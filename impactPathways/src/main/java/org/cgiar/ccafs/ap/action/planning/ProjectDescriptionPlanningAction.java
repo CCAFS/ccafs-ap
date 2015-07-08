@@ -271,7 +271,7 @@ public class ProjectDescriptionPlanningAction extends BaseAction {
 
   @Override
   public String save() {
-    if (this.isEditable()) {
+    if (securityContext.canUpdateProjectDescription()) {
 
       // If the user can edit the dates, delete the budgets that correspond to years that are not linked to the
       // project anymore to prevent errors in the project budget section.
