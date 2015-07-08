@@ -254,7 +254,7 @@ public class ProjectLocationsPlanningAction extends BaseAction {
       }
     }
 
-    super.setHistory(historyManager.getProjectDescriptionHistory(project.getId()));
+    super.setHistory(historyManager.getProjectLocationsHistory(project.getId()));
   }
 
   @Override
