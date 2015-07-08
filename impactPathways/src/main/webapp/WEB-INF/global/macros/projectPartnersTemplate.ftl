@@ -54,7 +54,7 @@
       <input class="userId" type="hidden" name="${ap_name}[${ap_index}].user" value="${ap.user.id}">   
       [#if editable]<div class="searchUser">[@s.text name="form.buttons.searchUser" /]</div>[/#if] 
     </div>  
-    [#-- Responsabilities --]
+    [#-- Responsibilities --]
     [#if responsabilities]  
     <div class="fullPartBlock partnerResponsabilities chosen"> 
       [@customForm.textArea name="${ap_name}[${ap_index}].responsabilities" i18nkey="preplanning.projectPartners.responsabilities" required=true editable=editable /]
