@@ -368,7 +368,8 @@ public class ProjectCCAFSOutcomesPlanningAction extends BaseAction {
 
   @Override
   public String save() {
-    if (this.isSaveable()) {
+
+    if (securityContext.canUpdateProjectCCAFSOutcomes()) {
       boolean success = true;
 
       // Delete the outputs removed
@@ -413,7 +414,7 @@ public class ProjectCCAFSOutcomesPlanningAction extends BaseAction {
         return INPUT;
       }
     } else {
-      return BaseAction.ERROR;
+      return BaseAction.NOT_AUTHORIZED;
     }
   }
 
