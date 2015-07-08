@@ -65,7 +65,7 @@
             <ul class="list">  
               [#list project.crpContributions as crp]
                 <li class="clearfix [#if !crp_has_next]last[/#if]">
-                  <input class="id" type="hidden" name=crpsName value="${crp.id}" />
+                  <input class="id" type="hidden" name="project.crpContributions" value="${crp.id}" />
                   <span class="name">${crp.name}</span> 
                   [#if editable]<span class="listButton remove">[@s.text name="form.buttons.remove" /]</span>[/#if]
                 </li>
@@ -89,7 +89,7 @@
       <input name="project.ipOtherContribution.id" type="hidden" value="${project.ipOtherContribution.id}"/>
     [/#if]
     [#if editable] 
-      <input type="hidden" id="crpsName" value="${crpsName}"/>
+      <input type="hidden" id="crpsName" value="project.crpContributions"/>
       [#-- Project identifier --]
       <input name="projectID" type="hidden" value="${project.id?c}" />
       <div class="borderBox">

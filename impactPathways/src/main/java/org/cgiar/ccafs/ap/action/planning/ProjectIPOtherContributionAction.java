@@ -118,9 +118,11 @@ public class ProjectIPOtherContributionAction extends BaseAction {
 
       // Delete the CRPs that were un-selected
       for (CRP crp : previousCRPs) {
-        if (project.getCrpContributions().contains(crp)) {
-          crpManager.removeCrpContribution(project.getId(), crp.getId(), this.getCurrentUser().getId(),
-            this.getJustification());
+        if (!project.getCrpContributions().contains(crp)) {
+          saved =
+            saved
+              && crpManager.removeCrpContribution(project.getId(), crp.getId(), this.getCurrentUser().getId(),
+                this.getJustification());
         }
       }
 

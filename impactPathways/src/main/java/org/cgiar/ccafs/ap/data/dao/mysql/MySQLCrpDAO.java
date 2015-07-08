@@ -115,7 +115,7 @@ public class MySQLCrpDAO implements CrpDAO {
 
     StringBuilder query = new StringBuilder();
     query.append("INSERT INTO project_crp_contributions (project_id, crp_id, created_by, modified_by, ");
-    query.append("modification_justification) VALUES (?,?,?,?,?,?) ");
+    query.append("modification_justification) VALUES (?,?,?,?,?) ");
     query.append("ON DUPLICATE KEY UPDATE is_active = TRUE, modified_by = VALUES(modified_by), ");
     query.append("modification_justification = VALUES(modification_justification) ");
 
