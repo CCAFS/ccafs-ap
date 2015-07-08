@@ -26,7 +26,7 @@
   </div>
   [#include "/WEB-INF/planning/planningProjectsSubMenu.ftl" /]
   
-  [@s.form action="ipOtherContributions" cssClass="pure-form"]  
+  [@s.form action="otherContributions" cssClass="pure-form"]  
   <article class="halfContent" id=""> 
     [#include "/WEB-INF/planning/planningDataSheet.ftl" /]
     [#include "/WEB-INF/planning/projectIP-planning-sub-menu.ftl" /]
@@ -82,9 +82,9 @@
         </div> 
       </div>
       
-      [#-- Lessons regarding other contributions and possible implications --]
+      [#-- CRP Collaboration nature --]
       <div class="fullPartBlock">
-        [@customForm.textArea name="project.ipOtherContribution.collaborationNature" i18nkey="planning.impactPathways.otherContributions.collaborationNature" editable=editable /]  
+        [@customForm.textArea name="project.ipOtherContribution.crpCollaborationNature" i18nkey="planning.impactPathways.otherContributions.collaborationNature" editable=editable /]  
       </div>
       
     </div> <!-- End otherContributions -->
