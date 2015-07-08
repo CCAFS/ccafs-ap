@@ -63,11 +63,7 @@
           <div class="panel-head">[@customForm.text name="planning.impactPathways.otherContributions.collaboratingCRPs" readText=!editable /]</div> 
           <div class="panel-body"> 
             <ul class="list">  
-              [#assign list = [
-                {"id":"1", "name":"Agriculture for Nutrition and Health"},
-                {"id":"2", "name":"Aquatic Agricultural Systems"}
-              ] /]
-              [#list list as crp]
+              [#list project.crpContributions as crp]
                 <li class="clearfix [#if !crp_has_next]last[/#if]">
                   <input class="id" type="hidden" name=crpsName value="${crp.id}" />
                   <span class="name">${crp.name}</span> 
