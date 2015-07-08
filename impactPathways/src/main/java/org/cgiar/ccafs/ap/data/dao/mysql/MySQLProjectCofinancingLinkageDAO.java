@@ -50,10 +50,8 @@ public class MySQLProjectCofinancingLinkageDAO implements ProjectCofinancingLink
     StringBuilder query = new StringBuilder();
     query.append("SELECT p.id, p.title ");
     query.append("FROM projects p ");
-    query.append("INNER JOIN project_cofinancing_linkages lcp ON p.id = lcp.core_project_id ");
+    query.append("INNER JOIN project_cofinancing_linkages lcp ON p.id = lcp.bilateral_project_id ");
     query.append("WHERE lcp.core_project_id = ");
-    query.append(projectID);
-    query.append(" OR lcp.bilateral_project_id = ");
     query.append(projectID);
     query.append(" AND lcp.is_active = TRUE");
 

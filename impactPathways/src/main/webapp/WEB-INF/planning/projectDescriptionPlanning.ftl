@@ -158,14 +158,14 @@
       </div> 
       [/#if]
       [#-- Bilateral projects only for CCAFS Projects --]
-      [#if project.coreProject]
+      [#if !project.bilateralProject]
       <div class="panel tertiary">
         <div class="panel-head">[@customForm.text name="planning.projectDescription.selectBilateralProject" readText=!editable /]:</div>
         <div id="bilateralProjectsList" class="panel-body"> 
           <ul class="list">
             [#list project.linkedProjects as element]
               <li class="clearfix [#if !element_has_next]last[/#if]">
-                <input class="id" type="hidden" name="project.linkedCoreProjects" value="${element.id?c}" />
+                <input class="id" type="hidden" name="project.linkedProjects" value="${element.id?c}" />
                 <span class="name">${element.id} - ${element.title}</span> 
                 [#if editable]<span class="listButton remove">[@s.text name="form.buttons.remove" /]</span>[/#if] 
               </li>
