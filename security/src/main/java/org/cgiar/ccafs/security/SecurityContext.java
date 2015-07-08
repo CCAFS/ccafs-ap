@@ -105,6 +105,114 @@ public class SecurityContext extends BaseSecurityContext {
   }
 
   /**
+   * Verify if can update the project activities section
+   * 
+   * @return
+   */
+  public boolean canUpdateProjectActivities() {
+    return this.hasPermission(Permission.PLANNING_PROJECT_ACTIVITIES_LIST_UPDATE);
+  }
+
+  /**
+   * Verify if can update the project budget section
+   * 
+   * @return
+   */
+  public boolean canUpdateProjectBudget() {
+    return this.hasPermission(Permission.PLANNING_PROJECT_BUDGET_UPDATE);
+  }
+
+  /**
+   * Verify if can update the project CCAFS outcomes section
+   * 
+   * @return
+   */
+  public boolean canUpdateProjectCCAFSOutcomes() {
+    return this.hasPermission(Permission.PLANNING_PROJECT_CCAFS_OUTCOMES_UPDATE);
+  }
+
+  /**
+   * Verify if can update the project deliverables section
+   * 
+   * @return
+   */
+  public boolean canUpdateProjectDeliverables() {
+    return this.hasPermission(Permission.PLANNING_PROJECT_DELIVERABLE_UPDATE);
+  }
+
+  /**
+   * Verify if can update the deliverables list section
+   * 
+   * @return
+   */
+  public boolean canUpdateProjectDeliverablesList() {
+    return this.hasPermission(Permission.PLANNING_PROJECT_DELIVERABLES__LIST_UPDATE);
+  }
+
+  /**
+   * Verify if can update the project leader section
+   * 
+   * @return
+   */
+  public boolean canUpdateProjectLeader() {
+    return this.hasPermission(Permission.PLANNING_PROJECT_LEAD_PARTNER_UPDATE);
+  }
+
+  /**
+   * Verify if can update the project locations section
+   * 
+   * @return
+   */
+  public boolean canUpdateProjectLocations() {
+    return this.hasPermission(Permission.PLANNING_PROJECT_LOCATIONS_UPDATE);
+  }
+
+  /**
+   * Verify if can update the project outcomes - Other contributions section
+   * 
+   * @return
+   */
+  public boolean canUpdateProjectOtherContributions() {
+    return this.hasPermission(Permission.PLANNING_PROJECT_OTHER_CONTRIBUTIONS_UPDATE);
+  }
+
+  /**
+   * Verify if can update the project outcomes section
+   * 
+   * @return
+   */
+  public boolean canUpdateProjectOutcomes() {
+    return this.hasPermission(Permission.PLANNING_PROJECT_OUTCOMES_UPDATE);
+  }
+
+  /**
+   * Verify if can update the project overview by MOGs section
+   * 
+   * @return
+   */
+  public boolean canUpdateProjectOverviewMOGs() {
+    return this.hasPermission(Permission.PLANNING_PROJECT_OUTPUTS_UPDATE);
+  }
+
+  /**
+   * Verify if can update the project partners section
+   * 
+   * @return
+   */
+  public boolean canUpdateProjectPartners() {
+    return this.hasPermission(Permission.PLANNING_PROJECT_PARTNER_UPDATE);
+  }
+
+  /**
+   * Verify if can update the project PPA partners section
+   * 
+   * @return
+   */
+  public boolean canUpdateProjectPPAPartner() {
+    return this.hasPermission(Permission.PLANNING_PROJECT_PPA_PARTNER_UPDATE);
+  }
+
+  /**
    * Verify if can upload a bilateral contract proposal in the planning section
    * 
    * @return
@@ -112,6 +220,7 @@ public class SecurityContext extends BaseSecurityContext {
   public boolean canUploadBilateralContract() {
     return this.hasPermission(Permission.PLANNING_PROJECT_BILATERAL_CONTRACT_UPDATE);
   }
+
 
   /**
    * Verify if the user has the administrator role
