@@ -21,6 +21,7 @@ import org.cgiar.ccafs.ap.data.model.Project;
 import org.cgiar.ccafs.ap.data.model.User;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -53,6 +54,20 @@ public class CRPManagerImpl implements CRPManager {
       crp.setAcronym(crpData.get("acronym"));
       crps.add(crp);
     }
+    return crps;
+  }
+
+  @Override
+  public List<CRP> getCRPs(String[] crpIDs) {
+    List<CRP> crps = new ArrayList<>();
+    List<String> ids = new ArrayList<String>(Arrays.asList(crpIDs));
+
+    for (CRP crp : this.getCRPsList()) {
+      if (ids.contains(String.valueOf(crp.getId()))) {
+        crps.add(crp);
+      }
+    }
+
     return crps;
   }
 
@@ -92,5 +107,4 @@ public class CRPManagerImpl implements CRPManager {
 
     return saved;
   }
-
 }

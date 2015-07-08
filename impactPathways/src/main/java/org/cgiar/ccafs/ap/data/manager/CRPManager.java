@@ -39,6 +39,14 @@ public interface CRPManager {
   public List<CRP> getCrpContributions(int projectID);
 
   /**
+   * This method gets the list of CRPs corresponding to the identifiers in the list received by parameter.
+   * 
+   * @param crpIDs - List of CRPs Identifiers
+   * @return a list of CRP objects
+   */
+  public List<CRP> getCRPs(String[] crpIDs);
+
+  /**
    * This method gets all the list of CRPs.
    * 
    * @return a list of CRP objects with the information.
