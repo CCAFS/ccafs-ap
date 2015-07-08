@@ -84,7 +84,7 @@
       
       [#-- Lessons regarding other contributions and possible implications --]
       <div class="fullPartBlock">
-        [@customForm.textArea name="project.ipOtherContribution.lessonsAndImplications" i18nkey="planning.impactPathways.otherContributions.lessonsAndImplications" editable=editable /]  
+        [@customForm.textArea name="project.ipOtherContribution.collaborationNature" i18nkey="planning.impactPathways.otherContributions.collaborationNature" editable=editable /]  
       </div>
       
     </div> <!-- End otherContributions -->
