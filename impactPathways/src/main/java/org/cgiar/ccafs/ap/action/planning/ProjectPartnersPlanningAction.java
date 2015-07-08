@@ -234,117 +234,30 @@ public class ProjectPartnersPlanningAction extends BaseAction {
 
   @Override
   public String save() {
-    if (actionName.equals("partnerLead")) {
-      return this.savePartnerLead();
-    } else if (actionName.equals("ppaPartners")) {
-      return this.savePartners(APConstants.PROJECT_PARTNER_PPA);
-    } else if (actionName.equals("partners")) {
-      return this.savePartners(APConstants.PROJECT_PARTNER_PP);
-    }
-    return BaseAction.INPUT;
+    switch (actionName) {
+      case "partnerLead":
+        if (securityContext.canUpdateProjectLeader()) {
+          return this.savePartnerLead();
+        } else {
+          return NOT_AUTHORIZED;
+        }
 
-    // if (this.isSaveable()) {
-    // if (this.isFullEditable()) {
-    // // If user is an Admin, FPL, RPL or PO, he has privileges to update anything.
-    // boolean success = true;
-    // boolean saved = true;
-    //
-    // // ----------------- PROJECT PARTNERS ----------------------
-    // // Getting previous Project Partners to identify those that need to be deleted.
-    // List<ProjectPartner> previousProjectPartners = projectPartnerManager.getProjectPartners(projectID);
-    //
-    // // Deleting project partners
-    // for (ProjectPartner projectPartner : previousProjectPartners) {
-    // if (!project.getProjectPartners().contains(projectPartner)) {
-    // boolean deleted =
-    // projectPartnerManager.deleteProjectPartner(projectPartner.getId(), this.getCurrentUser(), "");
-    // if (!deleted) {
-    // success = false;
-    // }
-    // }
-    // }
-    //
-    // // Saving Project leader
-    // // if (isExpected && project.getExpectedLeader().getCurrentInstitution() != null) {
-    // // saved = projectManager.saveExpectedProjectLeader(project.getId(), project.getExpectedLeader());
-    // // if (!saved) {
-    // // success = false;
-    // // }
-    // // }
-    //
-    // // Saving new and old project partners
-    // saved = projectPartnerManager.saveProjectPartners(project.getId(), project.getProjectPartners(),
-    // this.getCurrentUser(), "");
-    // if (!saved) {
-    // success = false;
-    // }
-    //
-    // // ----------------------------------------------------------
-    //
-    // // ----------------- PROJECT BUDGETS ------------------------
-    //
-    // // Getting all the current institutions in order to delete from the budget those that changed.
-    //
-    // // Getting current Partner Institutions
-    // List<Institution> partnerInstitutions = new ArrayList<>();
-    // // if (isExpected) {
-    // // User expectedLeader = projectManager.getExpectedProjectLeader(project.getId());
-    // // if (expectedLeader != null) {
-    // // partnerInstitutions.add(expectedLeader.getCurrentInstitution());
-    // // }
-    // // } else {
-    // partnerInstitutions.add(projectManager.getProjectLeader(project.getId()).getCurrentInstitution());
-    // // }
-    // for (ProjectPartner projectPartner : project.getProjectPartners()) {
-    // partnerInstitutions.add(projectPartner.getInstitution());
-    // }
-    //
-    // // Getting all the current budget institutions from W1, W2, W3 and Bilateral.
-    // List<Institution> budgetInstitutions = budgetManager.getW1Institutions(project.getId());
-    //
-    //
-    // // Deleting Institutions from budget section
-    // for (Institution institutionToDelete : budgetInstitutions) {
-    // if (!partnerInstitutions.contains(institutionToDelete)) {
-    // budgetManager.deleteBudgetsByInstitution(project.getId(), institutionToDelete.getId());
-    // }
-    // }
-    //
-    // // ----------------------------------------------------------
-    //
-    // if (success) {
-    // this.addActionMessage(this.getText("saving.saved"));
-    // return SUCCESS;
-    // } else {
-    // this.addActionError(this.getText("saving.problem"));
-    // return INPUT;
-    // }
-    // } else {
-    // // User is PL, thus, only partner's responsabilities.
-    //
-    // // We set the values that changed to the previous project
-    // // in order to prevent unauthorized changes.
-    // previousProject.setProjectPartners(projectPartnerManager.getProjectPartners(project.getId()));
-    // for (int c = 0; c < previousProject.getProjectPartners().size(); c++) {
-    // // Copying responsibilities.
-    // previousProject.getProjectPartners().get(c)
-    // .setResponsabilities(project.getProjectPartners().get(c).getResponsabilities());
-    // }
-    // boolean result = projectPartnerManager.saveProjectPartners(previousProject.getId(),
-    // previousProject.getProjectPartners(), this.getCurrentUser(), "");
-    // if (result) {
-    // this.addActionMessage(this.getText("saving.saved"));
-    // return SUCCESS;
-    // } else {
-    // this.addActionError(this.getText("saving.problem"));
-    // return BaseAction.INPUT;
-    // }
-    // }
-    // } else {
-    // LOG.warn("User {} tried to save information in Project Partners without having enough privileges!",
-    // this.getCurrentUser().getId());
-    // }
-    // return BaseAction.ERROR;
+      case "ppaPartners":
+        if (securityContext.canUpdateProjectPPAPartner()) {
+          return this.savePartners(APConstants.PROJECT_PARTNER_PPA);
+        } else {
+          return NOT_AUTHORIZED;
+        }
+
+      case "partners":
+        if (securityContext.canUpdateProjectPartners()) {
+          return this.savePartners(APConstants.PROJECT_PARTNER_PP);
+        } else {
+          return NOT_AUTHORIZED;
+        }
+    }
+
+    return NOT_AUTHORIZED;
 
   }
 
