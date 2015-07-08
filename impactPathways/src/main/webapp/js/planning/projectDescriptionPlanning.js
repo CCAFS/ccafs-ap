@@ -109,7 +109,7 @@ $(document).ready(function() {
 
   function setcoreProjectsIndexes() {
     $coreProjects.find('li').each(function(i,item) {
-      var elementName = "project.linkedCoreProjects";
+      var elementName = "project.linkedProjects";
       $(item).find('.id').attr('name', elementName);
     });
   }

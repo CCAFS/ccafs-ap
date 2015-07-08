@@ -71,12 +71,13 @@ public class ProjectPartnerManagerImpl implements ProjectPartnerManager {
       // Partner type (PPA, PL, PP, etc.)
       projectPartner.setType(pData.get("partner_type"));
       // User as user_id
-      projectPartner.setUser(userManager.getUser(Integer.parseInt(pData.get("user_id"))));
+      projectPartner
+        .setUser(userManager.getUser(pData.get("user_id") == null ? -1 : Integer.parseInt(pData.get("user_id"))));
       // Institution as partner_id
       projectPartner.setInstitution(institutionManager.getInstitution(Integer.parseInt(pData.get("partner_id"))));
       // Getting the institutions which this partner is contributing to.
       projectPartner
-        .setContributeInstitutions(institutionManager.getProjectPartnerContributeInstitutions(projectPartner));
+      .setContributeInstitutions(institutionManager.getProjectPartnerContributeInstitutions(projectPartner));
       // adding information of the object to the array
       projectPartners.add(projectPartner);
     }
@@ -108,7 +109,7 @@ public class ProjectPartnerManagerImpl implements ProjectPartnerManager {
 
       // Getting the institutions which this partner is contributing to.
       projectPartner
-        .setContributeInstitutions(institutionManager.getProjectPartnerContributeInstitutions(projectPartner));
+      .setContributeInstitutions(institutionManager.getProjectPartnerContributeInstitutions(projectPartner));
 
       // adding information of the object to the array
       projectPartners.add(projectPartner);

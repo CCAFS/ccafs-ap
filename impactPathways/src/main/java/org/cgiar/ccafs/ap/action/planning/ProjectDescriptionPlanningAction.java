@@ -324,16 +324,17 @@ public class ProjectDescriptionPlanningAction extends BaseAction {
         if (project.getLinkedProjects() != null && !project.getLinkedProjects().isEmpty()) {
           previousProject.setType(APConstants.PROJECT_CCAFS_COFUNDED);
         } else {
-          previousProject.setType(APConstants.PROJECT_BILATERAL_STANDALONE);
+          previousProject.setType(APConstants.PROJECT_CORE);
         }
+
+      } else {
+        // The bilateral projects can co-finance some core projects
+        previousProject.setCofinancing(project.isCofinancing());
 
         if (securityContext.canUploadBilateralContract()) {
           // TODO - Check if user attached a file, upload it and save the file name.
           // uploadFile();
         }
-      } else {
-        // The bilateral projects can co-finance some core projects
-        previousProject.setCofinancing(project.isCofinancing());
       }
 
       previousProject.setSummary(project.getSummary());
