@@ -46,6 +46,17 @@ public interface CRPManager {
   public List<CRP> getCRPsList();
 
   /**
+   * This method removes the project contribution to the CRP according to the values received by parameter.
+   * 
+   * @param projectID - Project identifier
+   * @param crpID - CRP Identifier
+   * @param userID - User identifier
+   * @param justification
+   * @return true if the information was saved succesfully. False otherwise.
+   */
+  public boolean removeCrpContribution(int projectID, int crpID, int userID, String justification);
+
+  /**
    * This method saved the list of CRPs that are linked to the project received by parameter.
    * 
    * @param project - Project object with the information to save

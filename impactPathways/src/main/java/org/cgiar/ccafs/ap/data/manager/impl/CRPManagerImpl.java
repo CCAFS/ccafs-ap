@@ -72,6 +72,11 @@ public class CRPManagerImpl implements CRPManager {
   }
 
   @Override
+  public boolean removeCrpContribution(int projectID, int crpID, int userID, String justification) {
+    return crpDAO.removeCrpContribution(projectID, crpID, userID, justification);
+  }
+
+  @Override
   public boolean saveCrpContributions(Project project, User user, String justification) {
     boolean saved = true;
 
