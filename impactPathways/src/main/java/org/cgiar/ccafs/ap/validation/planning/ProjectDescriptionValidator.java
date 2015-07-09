@@ -15,7 +15,6 @@
 package org.cgiar.ccafs.ap.validation.planning;
 
 import org.cgiar.ccafs.ap.action.BaseAction;
-import org.cgiar.ccafs.ap.config.APConstants;
 import org.cgiar.ccafs.ap.data.model.IPProgram;
 import org.cgiar.ccafs.ap.data.model.LiaisonInstitution;
 import org.cgiar.ccafs.ap.data.model.Project;
@@ -49,7 +48,7 @@ public class ProjectDescriptionValidator extends BaseValidator {
       this.validateProjectJustification(action, project);
 
       // The projects will be validated according to their type
-      if (project.getType().equals(APConstants.PROJECT_CORE)) {
+      if (project.isCoreProject()) {
         this.validateCoreProject(action, project);
       } else {
         this.validateBilateralProject(action, project);

@@ -93,4 +93,40 @@ public class MySQLCrpDAO implements CrpDAO {
     return crps;
   }
 
+  @Override
+  public boolean removeCrpContribution(int projectID, int crpID, int userID, String justification) {
+    StringBuilder query = new StringBuilder();
+    query.append("UPDATE project_crp_contributions SET is_active = FALSE, ");
+    query.append("modified_by = ?, modification_justification = ? ");
+    query.append("WHERE project_id = ? AND crp_id = ? ");
+
+    Object[] values = new Object[4];
+    values[0] = userID;
+    values[1] = justification;
+    values[2] = projectID;
+    values[3] = crpID;
+
+    int result = daoManager.delete(query.toString(), values);
+    return (result == -1) ? false : true;
+  }
+
+  @Override
+  public boolean saveCrpContributions(int projectID, Map<String, Object> contributionData) {
+
+    StringBuilder query = new StringBuilder();
+    query.append("INSERT INTO project_crp_contributions (project_id, crp_id, created_by, modified_by, ");
+    query.append("modification_justification) VALUES (?,?,?,?,?) ");
+    query.append("ON DUPLICATE KEY UPDATE is_active = TRUE, modified_by = VALUES(modified_by), ");
+    query.append("modification_justification = VALUES(modification_justification) ");
+
+    Object[] values = new Object[5];
+    values[0] = projectID;
+    values[1] = contributionData.get("crp_id");
+    values[2] = contributionData.get("user_id");
+    values[3] = contributionData.get("user_id");
+    values[4] = contributionData.get("justification");
+
+    int result = daoManager.saveData(query.toString(), values);
+    return (result == -1) ? false : true;
+  }
 }

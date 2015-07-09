@@ -12,61 +12,34 @@
  * along with CCAFS P&R. If not, see <http://www.gnu.org/licenses/>.
  *****************************************************************/
 
-package org.cgiar.ccafs.ap.data.model;
+package org.cgiar.ccafs.ap.validation.model;
 
-import org.apache.commons.lang3.builder.ToStringBuilder;
+import org.cgiar.ccafs.ap.validation.BaseValidator;
+
+import com.google.inject.Inject;
 
 
 /**
  * @author Hernán David Carvajal B. - CIAT/CCAFS
  */
 
-public class CRP {
+public class OtherContributionValidator extends BaseValidator {
 
-  private int id;
-  private String name;
-  private String acronym;
+  private static final long serialVersionUID = -8011893963360662852L;
 
-  @Override
-  public boolean equals(Object obj) {
-    if (obj instanceof CRP) {
-      CRP v = (CRP) obj;
-      return v.id == this.id;
-    }
-    return false;
+  @Inject
+  public OtherContributionValidator() {
   }
 
-  public String getAcronym() {
-    return acronym;
+  public boolean isValidAdditionalContribution(String contribution) {
+    return (this.isValidString(contribution)) ? true : false;
   }
 
-  public int getId() {
-    return id;
+  public boolean isValidContribution(String additionalContribution) {
+    return (this.isValidString(additionalContribution)) ? true : false;
   }
 
-  public String getName() {
-    return name;
-  }
-
-  @Override
-  public int hashCode() {
-    return this.id;
-  }
-
-  public void setAcronym(String acronym) {
-    this.acronym = acronym;
-  }
-
-  public void setId(int id) {
-    this.id = id;
-  }
-
-  public void setName(String name) {
-    this.name = name;
-  }
-
-  @Override
-  public String toString() {
-    return ToStringBuilder.reflectionToString(this);
+  public boolean isValidCrpCollaborationNature(String crpCollaborationNature) {
+    return (this.isValidString(crpCollaborationNature)) ? true : false;
   }
 }

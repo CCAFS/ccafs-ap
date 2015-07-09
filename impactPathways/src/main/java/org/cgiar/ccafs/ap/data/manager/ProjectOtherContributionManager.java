@@ -15,6 +15,7 @@ package org.cgiar.ccafs.ap.data.manager;
 
 import org.cgiar.ccafs.ap.data.manager.impl.ProjectOtherContributionManagerImpl;
 import org.cgiar.ccafs.ap.data.model.OtherContribution;
+import org.cgiar.ccafs.ap.data.model.User;
 
 import com.google.inject.ImplementedBy;
 
@@ -48,9 +49,12 @@ public interface ProjectOtherContributionManager {
    * 
    * @param projectID - is the Id of the project
    * @param ipOtherContribution
+   * @param user - the user who is making the change
+   * @param justification
    * @return true if the IP Other Contribution was saved successfully, false otherwise.
    */
-  public boolean saveIPOtherContribution(int projectID, OtherContribution ipOtherContribution);
+  public boolean saveIPOtherContribution(int projectID, OtherContribution ipOtherContribution, User user,
+    String justification);
 
 
 }

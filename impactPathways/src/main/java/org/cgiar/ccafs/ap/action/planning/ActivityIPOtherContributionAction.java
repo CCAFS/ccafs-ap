@@ -16,8 +16,8 @@ package org.cgiar.ccafs.ap.action.planning;
 import org.cgiar.ccafs.ap.action.BaseAction;
 import org.cgiar.ccafs.ap.config.APConstants;
 import org.cgiar.ccafs.ap.data.manager.ActivityManager;
-import org.cgiar.ccafs.ap.data.manager.ProjectOtherContributionManager;
 import org.cgiar.ccafs.ap.data.manager.ProjectManager;
+import org.cgiar.ccafs.ap.data.manager.ProjectOtherContributionManager;
 import org.cgiar.ccafs.ap.data.model.Activity;
 import org.cgiar.ccafs.ap.data.model.OtherContribution;
 import org.cgiar.ccafs.ap.data.model.Project;
@@ -79,7 +79,7 @@ public class ActivityIPOtherContributionAction extends BaseAction {
 
   @Override
   public String next() {
-    String result = save();
+    String result = this.save();
     if (result.equals(BaseAction.SUCCESS)) {
       return BaseAction.NEXT;
     } else {
@@ -108,14 +108,16 @@ public class ActivityIPOtherContributionAction extends BaseAction {
   public String save() {
     if (this.isSaveable()) {
       // Saving Activity IP Other Contribution
-      boolean saved = ipOtherContributionManager.saveIPOtherContribution(activityID, activity.getIpOtherContribution());
+      boolean saved =
+        ipOtherContributionManager.saveIPOtherContribution(activityID, activity.getIpOtherContribution(),
+          this.getCurrentUser(), this.getJustification());
 
       if (!saved) {
-        addActionError(getText("saving.problem"));
+        this.addActionError(this.getText("saving.problem"));
         return BaseAction.INPUT;
       } else {
-        addActionMessage(getText("saving.success",
-          new String[] {getText("planning.impactPathways.otherContributions.title")}));
+        this.addActionMessage(this.getText("saving.success",
+          new String[] {this.getText("planning.impactPathways.otherContributions.title")}));
         return BaseAction.SUCCESS;
       }
     }

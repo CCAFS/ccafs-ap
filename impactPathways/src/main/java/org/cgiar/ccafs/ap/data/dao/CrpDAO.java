@@ -42,4 +42,24 @@ public interface CrpDAO {
    */
   public List<Map<String, String>> getCRPsList();
 
+  /**
+   * This method removes the project contribution to the CRP according to the values received by parameter.
+   * 
+   * @param projectID - Project identifier
+   * @param crpID - CRP Identifier
+   * @param userID - User identifier
+   * @param justification
+   * @return true if the information was saved succesfully. False otherwise.
+   */
+  public boolean removeCrpContribution(int projectID, int crpID, int userID, String justification);
+
+  /**
+   * This method saves into the database the CRP contributions made by the project received by parameter.
+   * 
+   * @param projectID - Project identifier
+   * @param contributionData - Information to save
+   * @return True if the information was saved successfully. False otherwise.
+   */
+  public boolean saveCrpContributions(int projectID, Map<String, Object> contributionData);
+
 }
