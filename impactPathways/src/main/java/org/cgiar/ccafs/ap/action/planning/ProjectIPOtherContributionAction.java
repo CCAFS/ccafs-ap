@@ -21,6 +21,7 @@ import org.cgiar.ccafs.ap.data.manager.ProjectOtherContributionManager;
 import org.cgiar.ccafs.ap.data.model.CRP;
 import org.cgiar.ccafs.ap.data.model.OtherContribution;
 import org.cgiar.ccafs.ap.data.model.Project;
+import org.cgiar.ccafs.ap.validation.planning.ProjectIPOtherContributionValidator;
 import org.cgiar.ccafs.utils.APConfig;
 
 import java.util.List;
@@ -43,6 +44,7 @@ public class ProjectIPOtherContributionAction extends BaseAction {
   private ProjectOtherContributionManager ipOtherContributionManager;
   private CRPManager crpManager;
   private ProjectManager projectManager;
+  private ProjectIPOtherContributionValidator otherContributionValidator;
 
   // Model for the back-end
   private OtherContribution ipOtherContribution;
@@ -55,11 +57,12 @@ public class ProjectIPOtherContributionAction extends BaseAction {
 
   @Inject
   public ProjectIPOtherContributionAction(APConfig config, ProjectOtherContributionManager ipOtherContributionManager,
-    ProjectManager projectManager, CRPManager crpManager) {
+    ProjectManager projectManager, CRPManager crpManager, ProjectIPOtherContributionValidator otherContributionValidator) {
     super(config);
     this.ipOtherContributionManager = ipOtherContributionManager;
     this.projectManager = projectManager;
     this.crpManager = crpManager;
+    this.otherContributionValidator = otherContributionValidator;
   }
 
   public List<CRP> getCrps() {
@@ -152,5 +155,10 @@ public class ProjectIPOtherContributionAction extends BaseAction {
     this.projectID = projectID;
   }
 
-
+  @Override
+  public void validate() {
+    if (save) {
+      otherContributionValidator.validate(this, project);
+    }
+  }
 }

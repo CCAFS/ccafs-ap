@@ -16,11 +16,11 @@ package org.cgiar.ccafs.ap.validation.model;
 
 import org.cgiar.ccafs.ap.data.model.Activity;
 import org.cgiar.ccafs.ap.data.model.Budget;
+import org.cgiar.ccafs.ap.data.model.CRP;
 import org.cgiar.ccafs.ap.data.model.IPElement;
 import org.cgiar.ccafs.ap.data.model.IPIndicator;
 import org.cgiar.ccafs.ap.data.model.IPProgram;
 import org.cgiar.ccafs.ap.data.model.LiaisonInstitution;
-import org.cgiar.ccafs.ap.data.model.OtherContribution;
 import org.cgiar.ccafs.ap.data.model.Project;
 import org.cgiar.ccafs.ap.data.model.ProjectOutcome;
 import org.cgiar.ccafs.ap.data.model.ProjectPartner;
@@ -62,22 +62,19 @@ public class ProjectValidator extends BaseValidator {
     return false;
   }
 
+  public boolean isValidCrpContributions(List<CRP> crpContributions) {
+    return (crpContributions != null && !crpContributions.isEmpty());
+  }
+
   public boolean isValidEndDate(Date endDate) {
     return (endDate != null) ? true : false;
   }
 
   public boolean isValidFlagships(List<IPProgram> flagships) {
-    if (flagships != null && !flagships.isEmpty()) {
-      return true;
-    }
-    return false;
+    return (flagships != null && !flagships.isEmpty());
   }
 
   public boolean isValidIndicators(List<IPIndicator> indicators) {
-    return false;
-  }
-
-  public boolean isValidIPOtherContributions(OtherContribution ipOtherContribution) {
     return false;
   }
 
@@ -94,10 +91,7 @@ public class ProjectValidator extends BaseValidator {
   }
 
   public boolean isValidLinkedCoreProjects(List<Project> linkedCoreProjects) {
-    if (linkedCoreProjects != null && !linkedCoreProjects.isEmpty()) {
-      return true;
-    }
-    return false;
+    return (linkedCoreProjects != null && !linkedCoreProjects.isEmpty());
   }
 
   public boolean isValidOutcomeGenderDimension(Map<String, ProjectOutcome> outcomes, int year) {
