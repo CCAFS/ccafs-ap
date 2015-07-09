@@ -77,6 +77,14 @@ public class V2_1_2_20150709_1052__create_history_table_for_other_contributions 
         tableManager.createLogTable(tableName);
       }
 
+      // Drop the unique key of the history tables to prevent errors.
+      dbManager.useHistoryDatabase();
+      Statement stmnt = connection.createStatement();
+      stmnt.addBatch("ALTER TABLE project_crp_contributions DROP INDEX  UK_project_crp_contributions; ");
+      stmnt.addBatch("USE " + dbName);
+      stmnt.executeBatch();
+
+
     } catch (SQLException e) {
       LOG.error("There was an error running the migration.");
       throw e;
