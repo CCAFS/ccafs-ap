@@ -14,6 +14,7 @@
 package org.cgiar.ccafs.ap.data.model;
 
 import org.cgiar.ccafs.ap.config.APConstants;
+import org.cgiar.ccafs.ap.util.DualMap;
 
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -56,6 +57,7 @@ public class Project {
   private List<Location> locations; // Project locations.
   private List<Activity> activities;
   private List<IPElement> outputs;
+  private DualMap<Integer, IPElement, String> outpusOverview;
   private List<IPIndicator> indicators;
   private OtherContribution ipOtherContribution;
   private List<CRP> crpContributions;
@@ -326,6 +328,10 @@ public class Project {
     return outcomes;
   }
 
+  public DualMap<Integer, IPElement, String> getOutpusOverview() {
+    return outpusOverview;
+  }
+
   public List<IPElement> getOutputs() {
     return outputs;
   }
@@ -346,7 +352,6 @@ public class Project {
     return regions;
   }
 
-
   public String getRegionsAcronym() {
     StringBuilder regionAcronym = new StringBuilder();
 
@@ -360,6 +365,7 @@ public class Project {
     }
     return regionAcronym.toString();
   }
+
 
   public Date getStartDate() {
     return startDate;
@@ -509,6 +515,10 @@ public class Project {
 
   public void setOutcomes(Map<String, ProjectOutcome> outcomes) {
     this.outcomes = outcomes;
+  }
+
+  public void setOutpusOverview(DualMap<Integer, IPElement, String> outpusOverview) {
+    this.outpusOverview = outpusOverview;
   }
 
   public void setOutputs(List<IPElement> outputs) {

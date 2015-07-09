@@ -15,10 +15,13 @@
 package org.cgiar.ccafs.ap.action.planning;
 
 import org.cgiar.ccafs.ap.action.BaseAction;
+import org.cgiar.ccafs.ap.config.APConstants;
+import org.cgiar.ccafs.ap.data.manager.ProjectManager;
 import org.cgiar.ccafs.ap.data.model.Project;
 import org.cgiar.ccafs.utils.APConfig;
 
 import com.google.inject.Inject;
+import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -32,18 +35,29 @@ public class ProjectOutputsPlanningAction extends BaseAction {
   private static final long serialVersionUID = 5246876705706611499L;
   private static Logger LOG = LoggerFactory.getLogger(ProjectOutputsPlanningAction.class);
 
+  // Managers
+  private ProjectManager projectManager;
+
+  // Model
   private Project project;
+  private int projectID;
 
 
   @Inject
-  public ProjectOutputsPlanningAction(APConfig config) {
+  public ProjectOutputsPlanningAction(APConfig config, ProjectManager projectManager) {
     super(config);
+    this.projectManager = projectManager;
   }
 
   @Override
   public void prepare() throws Exception {
-    // TODO Auto-generated method stub
-    super.prepare();
+    projectID = Integer.parseInt(StringUtils.trim(this.getRequest().getParameter(APConstants.PROJECT_REQUEST_ID)));
+
+    // Getting the activity information
+    project = projectManager.getProject(projectID);
+
+    // Get the project outputs from database
+    project.setOutputs(projectManager.getProjectOutputs(projectID));
   }
 
 }
