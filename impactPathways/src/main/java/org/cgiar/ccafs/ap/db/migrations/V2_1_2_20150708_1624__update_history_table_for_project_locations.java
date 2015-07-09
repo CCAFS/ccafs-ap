@@ -78,7 +78,6 @@ public class V2_1_2_20150708_1624__update_history_table_for_project_locations im
       // Drop the unique key of the history table to prevent errors.
       dbManager.useHistoryDatabase();
       Statement stmnt = connection.createStatement();
-      stmnt.addBatch("ALTER TABLE project_locations DROP INDEX  UK_activity_locations_key; ");
       stmnt.addBatch("ALTER TABLE project_locations DROP INDEX  UK_projectID_locElementID; ");
       stmnt.addBatch("USE " + dbName);
       stmnt.executeBatch();
