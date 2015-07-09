@@ -27,17 +27,12 @@ import org.cgiar.ccafs.ap.data.model.LocationType;
 import org.cgiar.ccafs.ap.data.model.OtherLocation;
 import org.cgiar.ccafs.ap.data.model.Project;
 import org.cgiar.ccafs.ap.data.model.Region;
-import org.cgiar.ccafs.ap.util.FileManager;
-import org.cgiar.ccafs.ap.util.SendMail;
 import org.cgiar.ccafs.utils.APConfig;
 
-import java.io.File;
-import java.io.FilenameFilter;
 import java.util.ArrayList;
 import java.util.List;
 
 import com.google.inject.Inject;
-import org.apache.commons.io.FilenameUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -64,10 +59,6 @@ public class ProjectLocationsPlanningAction extends BaseAction {
   private List<Location> locationsOrganized;
   private int projectID;
   private Project project;
-  // Variables needed to upload the excel file
-  private File excelTemplate;
-  private String excelTemplateContentType;
-  private String excelTemplateFileName;
 
   // Temporal lists to save the locations
   private List<Region> regionsSaved;
@@ -117,14 +108,6 @@ public class ProjectLocationsPlanningAction extends BaseAction {
     return csvSaved;
   }
 
-  private String getLocationsFileName() {
-    return "ProjectLocationsTemplate-" + project.getComposedId();
-  }
-
-  public String getLocationsFileURL() {
-    return config.getDownloadURL() + "/" + config.getLocationsTemplateFolder() + this.getUploadFileName();
-  }
-
   public List<LocationType> getLocationTypes() {
     return locationTypes;
   }
@@ -144,24 +127,6 @@ public class ProjectLocationsPlanningAction extends BaseAction {
     return projectID;
   }
 
-  private File getProjectLocationsFile() {
-    String fileLocation = config.getUploadsBaseFolder() + config.getLocationsTemplateFolder();
-    File f = new File(fileLocation);
-
-    File[] matchingFiles = f.listFiles(new FilenameFilter() {
-
-      @Override
-      public boolean accept(File dir, String name) {
-        return name.startsWith(ProjectLocationsPlanningAction.this.getLocationsFileName());
-      }
-    });
-
-    if (matchingFiles.length > 0) {
-      return matchingFiles[0];
-    } else {
-      return null;
-    }
-  }
 
   public List<Region> getRegions() {
     return regions;
@@ -174,16 +139,6 @@ public class ProjectLocationsPlanningAction extends BaseAction {
 
   public int getRegionTypeID() {
     return APConstants.LOCATION_ELEMENT_TYPE_REGION;
-  }
-
-
-  public String getUploadFileName() {
-    File file = this.getProjectLocationsFile();
-    if (file == null) {
-      return "";
-    } else {
-      return file.getName();
-    }
   }
 
   @Override
@@ -312,18 +267,6 @@ public class ProjectLocationsPlanningAction extends BaseAction {
         success = false;
       }
 
-      // Check if user uploaded an excel file
-      if (excelTemplate != null) {
-        String fileLocation = config.getUploadsBaseFolder() + config.getLocationsTemplateFolder();
-        String fileExtension = FilenameUtils.getExtension(excelTemplateFileName);
-
-        // First, move the uploaded file to the corresponding folder
-        FileManager.copyFile(excelTemplate, fileLocation + this.getLocationsFileName() + "." + fileExtension);
-        LOG.trace("The locations template uploaded was moved to: " + fileLocation + this.getLocationsFileName()
-          + fileExtension);
-        // Send a message with the file received
-        this.sendNotificationMessage(fileLocation, excelTemplateFileName);
-      }
       // Displaying user messages.
       if (success == false) {
         this.addActionError(this.getText("planning.project.locations.saving.problem"));
@@ -338,21 +281,6 @@ public class ProjectLocationsPlanningAction extends BaseAction {
     }
   }
 
-  private void sendNotificationMessage(String filePath, String fileName) {
-    StringBuilder messageContent = new StringBuilder();
-    String subject, recipients;
-    subject = this.getText("planning.project.locations.sendNotificationMessageSubject");
-    recipients = this.getText("planning.project.locations.sendNotificationMessageRecipient");
-
-    messageContent.append(this.getText("planning.project.locations.locationsUploaded1"));
-    messageContent.append(this.getCurrentUser().getFirstName() + " " + this.getCurrentUser().getLastName());
-    messageContent.append(" <" + this.getCurrentUser().getEmail() + "> ");
-    messageContent.append(this.getText("planning.project.locations.locationsUploaded2"));
-
-    SendMail sendMail = new SendMail(config);
-    sendMail.sendMailWithAttachment(recipients, subject, messageContent.toString(), filePath + fileName, fileName);
-  }
-
   public void setCountries(List<Country> countries) {
     this.countries = countries;
   }
@@ -364,19 +292,6 @@ public class ProjectLocationsPlanningAction extends BaseAction {
   public void setCsvSaved(List<ClimateSmartVillage> csvSaved) {
     this.csvSaved = csvSaved;
   }
-
-  public void setExcelTemplate(File excelTemplate) {
-    this.excelTemplate = excelTemplate;
-  }
-
-  public void setExcelTemplateContentType(String excelTemplateContentType) {
-    this.excelTemplateContentType = excelTemplateContentType;
-  }
-
-  public void setExcelTemplateFileName(String excelTemplateFileName) {
-    this.excelTemplateFileName = excelTemplateFileName;
-  }
-
 
   public void setLocationTypes(List<LocationType> locationTypes) {
     this.locationTypes = locationTypes;

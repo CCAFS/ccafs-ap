@@ -32,13 +32,13 @@ import org.slf4j.LoggerFactory;
  * @author Carlos Alberto Martínez
  */
 
-public class V2_1_2_20150708_0940__update_history_table_for_project_locations implements JdbcMigration {
+public class V2_1_2_20150708_1624__update_history_table_for_project_locations implements JdbcMigration {
 
   private static Logger LOG = LoggerFactory
-    .getLogger(V2_1_2_20150708_0940__update_history_table_for_project_locations.class);
+    .getLogger(V2_1_2_20150708_1624__update_history_table_for_project_locations.class);
   private Flyway flyway;
 
-  public V2_1_2_20150708_0940__update_history_table_for_project_locations() {
+  public V2_1_2_20150708_1624__update_history_table_for_project_locations() {
     flyway = new Flyway();
   }
 
