@@ -71,7 +71,7 @@
           [#-- Project Type --]
           <div class="halfPartBlock"> 
             [@customForm.select name="project.type" value="project.type" i18nkey="planning.projectDescription.projectType" listName="projectTypes" disabled=true /]
-            
+            <input name="project.type" value="${project.type}" type="hidden"/>
           </div>
         </div> 
 

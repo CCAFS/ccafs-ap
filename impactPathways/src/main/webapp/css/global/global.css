@@ -82,6 +82,10 @@ a,a:active,a:visited,a:hover {
   border-radius: 15px 0px;
 }
 
+p.msj {
+    float: right;
+    padding-top: 9px;
+}
 
 ul.fieldError li {
   color: red;
