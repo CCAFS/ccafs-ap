@@ -24,6 +24,8 @@ import org.cgiar.ccafs.ap.data.model.Project;
 import org.cgiar.ccafs.ap.validation.planning.ProjectIPOtherContributionValidator;
 import org.cgiar.ccafs.utils.APConfig;
 
+import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 
 import com.google.inject.Inject;
@@ -107,7 +109,14 @@ public class ProjectIPOtherContributionAction extends BaseAction {
     project.setCrpContributions(crpManager.getCrpContributions(projectID));
     project.setIpOtherContribution(ipOtherContribution);
 
-    previousCRPs = project.getCrpContributions();
+    previousCRPs = new ArrayList<>();
+    for (CRP crp : project.getCrpContributions()) {
+      previousCRPs.add(new CRP(crp.getId()));
+    }
+
+    if (this.isHttpPost()) {
+      project.getCrpContributions().clear();
+    }
   }
 
   @Override
@@ -135,9 +144,17 @@ public class ProjectIPOtherContributionAction extends BaseAction {
         this.addActionError(this.getText("saving.problem"));
         return BaseAction.INPUT;
       } else {
-        this.addActionMessage(this.getText("saving.success",
-          new String[] {this.getText("planning.impactPathways.otherContributions.title")}));
-        return BaseAction.SUCCESS;
+        // Get the validation messages and append them to the save message if any
+        Collection<String> messages = this.getActionMessages();
+        if (!messages.isEmpty()) {
+          String validationMessage = messages.iterator().next();
+          this.setActionMessages(null);
+          this.addActionWarning(this.getText("saving.saved") + validationMessage);
+        } else {
+          this.addActionMessage(this.getText("saving.success",
+            new String[] {this.getText("planning.impactPathways.otherContributions.title")}));
+        }
+        return SUCCESS;
       }
     }
     return BaseAction.NOT_AUTHORIZED;
