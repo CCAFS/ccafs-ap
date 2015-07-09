@@ -16,6 +16,7 @@ package org.cgiar.ccafs.ap.data.manager.impl;
 import org.cgiar.ccafs.ap.data.dao.ProjectOtherContributionDAO;
 import org.cgiar.ccafs.ap.data.manager.ProjectOtherContributionManager;
 import org.cgiar.ccafs.ap.data.model.OtherContribution;
+import org.cgiar.ccafs.ap.data.model.User;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -74,16 +75,20 @@ public class ProjectOtherContributionManagerImpl implements ProjectOtherContribu
   }
 
   @Override
-  public boolean saveIPOtherContribution(int projectID, OtherContribution ipOtherContribution) {
+  public boolean saveIPOtherContribution(int projectID, OtherContribution ipOtherContribution, User user,
+    String justification) {
     boolean allSaved = true;
-    Map<String, Object> activityData = new HashMap<>();
+    Map<String, Object> contributionData = new HashMap<>();
     if (ipOtherContribution.getId() > 0) {
-      activityData.put("id", ipOtherContribution.getId());
+      contributionData.put("id", ipOtherContribution.getId());
     }
-    activityData.put("contribution", ipOtherContribution.getContribution());
-    activityData.put("additional_contribution", ipOtherContribution.getAdditionalContribution());
+    contributionData.put("contribution", ipOtherContribution.getContribution());
+    contributionData.put("additional_contribution", ipOtherContribution.getAdditionalContribution());
+    contributionData.put("crp_contributions_nature", ipOtherContribution.getCrpCollaborationNature());
+    contributionData.put("user_id", user.getId());
+    contributionData.put("justification", justification);
 
-    int result = ipOtherContributionDAO.saveIPOtherContribution(projectID, activityData);
+    int result = ipOtherContributionDAO.saveIPOtherContribution(projectID, contributionData);
 
     if (result > 0) {
       LOG.debug("saveIPOtherContribution > New IP Other Contribution added with id {}", result);

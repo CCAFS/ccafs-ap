@@ -27,6 +27,15 @@ public class CRP {
   private String name;
   private String acronym;
 
+  @Override
+  public boolean equals(Object obj) {
+    if (obj instanceof CRP) {
+      CRP v = (CRP) obj;
+      return v.id == this.id;
+    }
+    return false;
+  }
+
   public String getAcronym() {
     return acronym;
   }
@@ -37,6 +46,11 @@ public class CRP {
 
   public String getName() {
     return name;
+  }
+
+  @Override
+  public int hashCode() {
+    return this.id;
   }
 
   public void setAcronym(String acronym) {

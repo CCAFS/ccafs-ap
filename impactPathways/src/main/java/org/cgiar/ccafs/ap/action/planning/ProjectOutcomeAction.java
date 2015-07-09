@@ -116,7 +116,7 @@ public class ProjectOutcomeAction extends BaseAction {
 
   @Override
   public String save() {
-    if (this.isSaveable()) {
+    if (securityContext.canUpdateProjectOutcomes()) {
       boolean success = true;
 
       // Saving Project Outcome
@@ -146,7 +146,7 @@ public class ProjectOutcomeAction extends BaseAction {
         return INPUT;
       }
     } else {
-      return BaseAction.ERROR;
+      return BaseAction.NOT_AUTHORIZED;
     }
   }
 

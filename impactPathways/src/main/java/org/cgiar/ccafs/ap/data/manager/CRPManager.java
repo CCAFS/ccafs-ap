@@ -16,6 +16,8 @@ package org.cgiar.ccafs.ap.data.manager;
 
 import org.cgiar.ccafs.ap.data.manager.impl.CRPManagerImpl;
 import org.cgiar.ccafs.ap.data.model.CRP;
+import org.cgiar.ccafs.ap.data.model.Project;
+import org.cgiar.ccafs.ap.data.model.User;
 
 import java.util.List;
 
@@ -37,9 +39,38 @@ public interface CRPManager {
   public List<CRP> getCrpContributions(int projectID);
 
   /**
+   * This method gets the list of CRPs corresponding to the identifiers in the list received by parameter.
+   * 
+   * @param crpIDs - List of CRPs Identifiers
+   * @return a list of CRP objects
+   */
+  public List<CRP> getCRPs(String[] crpIDs);
+
+  /**
    * This method gets all the list of CRPs.
    * 
    * @return a list of CRP objects with the information.
    */
   public List<CRP> getCRPsList();
+
+  /**
+   * This method removes the project contribution to the CRP according to the values received by parameter.
+   * 
+   * @param projectID - Project identifier
+   * @param crpID - CRP Identifier
+   * @param userID - User identifier
+   * @param justification
+   * @return true if the information was saved succesfully. False otherwise.
+   */
+  public boolean removeCrpContribution(int projectID, int crpID, int userID, String justification);
+
+  /**
+   * This method saved the list of CRPs that are linked to the project received by parameter.
+   * 
+   * @param project - Project object with the information to save
+   * @param user - User who is making the change
+   * @param Justification
+   * @return
+   */
+  public boolean saveCrpContributions(Project project, User user, String Justification);
 }

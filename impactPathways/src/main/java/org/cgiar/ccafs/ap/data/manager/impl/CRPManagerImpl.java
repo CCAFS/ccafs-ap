@@ -17,8 +17,12 @@ package org.cgiar.ccafs.ap.data.manager.impl;
 import org.cgiar.ccafs.ap.data.dao.CrpDAO;
 import org.cgiar.ccafs.ap.data.manager.CRPManager;
 import org.cgiar.ccafs.ap.data.model.CRP;
+import org.cgiar.ccafs.ap.data.model.Project;
+import org.cgiar.ccafs.ap.data.model.User;
 
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -54,6 +58,20 @@ public class CRPManagerImpl implements CRPManager {
   }
 
   @Override
+  public List<CRP> getCRPs(String[] crpIDs) {
+    List<CRP> crps = new ArrayList<>();
+    List<String> ids = new ArrayList<String>(Arrays.asList(crpIDs));
+
+    for (CRP crp : this.getCRPsList()) {
+      if (ids.contains(String.valueOf(crp.getId()))) {
+        crps.add(crp);
+      }
+    }
+
+    return crps;
+  }
+
+  @Override
   public List<CRP> getCRPsList() {
     List<CRP> crps = new ArrayList<>();
     List<Map<String, String>> crpsData = crpDAO.getCRPsList();
@@ -68,4 +86,25 @@ public class CRPManagerImpl implements CRPManager {
     return crps;
   }
 
+  @Override
+  public boolean removeCrpContribution(int projectID, int crpID, int userID, String justification) {
+    return crpDAO.removeCrpContribution(projectID, crpID, userID, justification);
+  }
+
+  @Override
+  public boolean saveCrpContributions(Project project, User user, String justification) {
+    boolean saved = true;
+
+    for (CRP crp : project.getCrpContributions()) {
+      Map<String, Object> data = new HashMap<>();
+      data.put("projectID", project.getId());
+      data.put("crp_id", crp.getId());
+      data.put("user_id", user.getId());
+      data.put("justification", justification);
+
+      saved = saved && crpDAO.saveCrpContributions(project.getId(), data);
+    }
+
+    return saved;
+  }
 }

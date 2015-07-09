@@ -106,12 +106,17 @@ public class MySQLProjectOtherContributionDAO implements ProjectOtherContributio
     Object[] values;
     if (ipOtherContributionData.get("id") == null) {
       // Insert new IP Other Contribution record
-      query.append("INSERT INTO project_other_contributions (project_id, contribution, additional_contribution) ");
-      query.append("VALUES (?,?,?) ");
-      values = new Object[3];
+      query.append("INSERT INTO project_other_contributions (project_id, contribution, additional_contribution, ");
+      query.append("crp_contributions_nature, created_by, modified_by, modification_justification)  ");
+      query.append("VALUES (?,?,?,?,?,?,?) ");
+      values = new Object[7];
       values[0] = projectID;
       values[1] = ipOtherContributionData.get("contribution");
       values[2] = ipOtherContributionData.get("additional_contribution");
+      values[3] = ipOtherContributionData.get("crp_contributions_nature");
+      values[4] = ipOtherContributionData.get("user_id");
+      values[5] = ipOtherContributionData.get("user_id");
+      values[6] = ipOtherContributionData.get("justification");
       result = databaseManager.saveData(query.toString(), values);
       if (result <= 0) {
         LOG.error("A problem happened trying to add a new IP Other Contribution  with project id={}", projectID);
@@ -119,14 +124,17 @@ public class MySQLProjectOtherContributionDAO implements ProjectOtherContributio
       }
     } else {
       // update IP Other Contribution record
-      query
-        .append("UPDATE project_other_contributions SET project_id = ?, contribution = ?, additional_contribution = ? ");
-      query.append("WHERE id = ? ");
-      values = new Object[4];
+      query.append("UPDATE project_other_contributions SET project_id = ?, contribution = ?, ");
+      query.append("additional_contribution = ?, crp_contributions_nature = ?, modified_by = ?, ");
+      query.append("modification_justification = ? WHERE id = ? ");
+      values = new Object[7];
       values[0] = projectID;
       values[1] = ipOtherContributionData.get("contribution");
       values[2] = ipOtherContributionData.get("additional_contribution");
-      values[3] = ipOtherContributionData.get("id");
+      values[3] = ipOtherContributionData.get("crp_contributions_nature");
+      values[4] = ipOtherContributionData.get("user_id");
+      values[5] = ipOtherContributionData.get("justification");
+      values[6] = ipOtherContributionData.get("id");
       result = databaseManager.saveData(query.toString(), values);
       if (result == -1) {
         LOG.error("A problem happened trying to update the IP Other Contribution identified with the id = {}",

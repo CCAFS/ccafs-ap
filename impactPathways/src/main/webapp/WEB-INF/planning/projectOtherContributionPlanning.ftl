@@ -26,7 +26,7 @@
   </div>
   [#include "/WEB-INF/planning/planningProjectsSubMenu.ftl" /]
   
-  [@s.form action="ipOtherContributions" cssClass="pure-form"]  
+  [@s.form action="otherContributions" cssClass="pure-form"]  
   <article class="halfContent" id=""> 
     [#include "/WEB-INF/planning/planningDataSheet.ftl" /]
     [#include "/WEB-INF/planning/projectIP-planning-sub-menu.ftl" /]
@@ -63,13 +63,9 @@
           <div class="panel-head">[@customForm.text name="planning.impactPathways.otherContributions.collaboratingCRPs" readText=!editable /]</div> 
           <div class="panel-body"> 
             <ul class="list">  
-              [#assign list = [
-                {"id":"1", "name":"Agriculture for Nutrition and Health"},
-                {"id":"2", "name":"Aquatic Agricultural Systems"}
-              ] /]
-              [#list list as crp]
+              [#list project.crpContributions as crp]
                 <li class="clearfix [#if !crp_has_next]last[/#if]">
-                  <input class="id" type="hidden" name=crpsName value="${crp.id}" />
+                  <input class="id" type="hidden" name="project.crpContributions" value="${crp.id}" />
                   <span class="name">${crp.name}</span> 
                   [#if editable]<span class="listButton remove">[@s.text name="form.buttons.remove" /]</span>[/#if]
                 </li>
@@ -82,9 +78,9 @@
         </div> 
       </div>
       
-      [#-- Lessons regarding other contributions and possible implications --]
+      [#-- CRP Collaboration nature --]
       <div class="fullPartBlock">
-        [@customForm.textArea name="project.ipOtherContribution.lessonsAndImplications" i18nkey="planning.impactPathways.otherContributions.lessonsAndImplications" editable=editable /]  
+        [@customForm.textArea name="project.ipOtherContribution.crpCollaborationNature" i18nkey="planning.impactPathways.otherContributions.collaborationNature" editable=editable /]  
       </div>
       
     </div> <!-- End otherContributions -->
@@ -93,7 +89,7 @@
       <input name="project.ipOtherContribution.id" type="hidden" value="${project.ipOtherContribution.id}"/>
     [/#if]
     [#if editable] 
-      <input type="hidden" id="crpsName" value="${crpsName}"/>
+      <input type="hidden" id="crpsName" value="project.crpContributions"/>
       [#-- Project identifier --]
       <input name="projectID" type="hidden" value="${project.id?c}" />
       <div class="borderBox">

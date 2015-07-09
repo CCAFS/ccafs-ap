@@ -214,8 +214,7 @@ public class ProjectLocationsPlanningAction extends BaseAction {
 
   @Override
   public String save() {
-    LOG.debug(">> save");
-    if (this.isSaveable()) {
+    if (securityContext.canUpdateProjectLocations()) {
 
       boolean success = true;
 
