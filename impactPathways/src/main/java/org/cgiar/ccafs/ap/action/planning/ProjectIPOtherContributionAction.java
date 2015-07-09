@@ -16,6 +16,7 @@ package org.cgiar.ccafs.ap.action.planning;
 import org.cgiar.ccafs.ap.action.BaseAction;
 import org.cgiar.ccafs.ap.config.APConstants;
 import org.cgiar.ccafs.ap.data.manager.CRPManager;
+import org.cgiar.ccafs.ap.data.manager.HistoryManager;
 import org.cgiar.ccafs.ap.data.manager.ProjectManager;
 import org.cgiar.ccafs.ap.data.manager.ProjectOtherContributionManager;
 import org.cgiar.ccafs.ap.data.model.CRP;
@@ -47,6 +48,7 @@ public class ProjectIPOtherContributionAction extends BaseAction {
   private CRPManager crpManager;
   private ProjectManager projectManager;
   private ProjectIPOtherContributionValidator otherContributionValidator;
+  private HistoryManager historyManager;
 
   // Model for the back-end
   private OtherContribution ipOtherContribution;
@@ -59,12 +61,14 @@ public class ProjectIPOtherContributionAction extends BaseAction {
 
   @Inject
   public ProjectIPOtherContributionAction(APConfig config, ProjectOtherContributionManager ipOtherContributionManager,
-    ProjectManager projectManager, CRPManager crpManager, ProjectIPOtherContributionValidator otherContributionValidator) {
+    ProjectManager projectManager, CRPManager crpManager,
+    ProjectIPOtherContributionValidator otherContributionValidator, HistoryManager historyManager) {
     super(config);
     this.ipOtherContributionManager = ipOtherContributionManager;
     this.projectManager = projectManager;
     this.crpManager = crpManager;
     this.otherContributionValidator = otherContributionValidator;
+    this.historyManager = historyManager;
   }
 
   public List<CRP> getCrps() {
@@ -113,6 +117,8 @@ public class ProjectIPOtherContributionAction extends BaseAction {
     for (CRP crp : project.getCrpContributions()) {
       previousCRPs.add(new CRP(crp.getId()));
     }
+
+    super.setHistory(historyManager.getProjectIPOtherContributionHistory(project.getId()));
 
     if (this.isHttpPost()) {
       project.getCrpContributions().clear();
