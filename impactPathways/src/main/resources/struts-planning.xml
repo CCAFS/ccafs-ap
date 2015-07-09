@@ -144,7 +144,7 @@
     
     <!-- Project Outcomes  -->
     
-    <action name="outcomes" class="org.cgiar.ccafs.ap.action.planning.ProjectOutcomeAction">
+    <action name="outcomes" class="org.cgiar.ccafs.ap.action.planning.ProjectOutcomesPlanningAction">
       <result name="input">/WEB-INF/planning/projectOutcomesPlanning.ftl</result>		
       <result name="success" type="redirectAction">		
         <param name="actionName">outcomes</param>		
@@ -194,7 +194,7 @@
     
     <!-- Project Outputs  -->
     
-    <action name="outputs" class="org.cgiar.ccafs.ap.action.planning.ProjectOutcomeAction">
+    <action name="outputs" class="org.cgiar.ccafs.ap.action.planning.ProjectOutputsPlanningAction">
       <result name="input">/WEB-INF/planning/projectOutputsPlanning.ftl</result>
     </action>
     
