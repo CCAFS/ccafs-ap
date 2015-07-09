@@ -42,7 +42,7 @@ SELECT act.title, act.description, act.startDate, act.endDate, "BILATERAL",
        ELSE 24
        END)
        , 
-       -- Select craeted by, This is the contact point's user's id  
+       -- Select created by, This is the contact point's user's id  
 	   (SELECT CASE (pp.partner_id)
 	   WHEN 45 THEN 81
        WHEN 46 THEN 66
@@ -54,14 +54,33 @@ SELECT act.title, act.description, act.startDate, act.endDate, "BILATERAL",
        WHEN 115 THEN 119
        ELSE 88
        END)
-       , act.active_since, act.modified_by, act.modification_justification, act.is_global, act.id 
+       , act.active_since,    
+       
+       -- Select modified by, This is the contact point's user's id  
+       (SELECT CASE (pp.partner_id)
+	   WHEN 45 THEN 81
+       WHEN 46 THEN 66
+       WHEN 49 THEN 61
+       WHEN 66 THEN 82
+       WHEN 67 THEN 67
+       WHEN 88 THEN 83
+       WHEN 89 THEN 52
+       WHEN 115 THEN 119
+       ELSE 88
+       END), act.modification_justification, act.is_global, act.id 
        
 FROM   activities act INNER JOIN project_partners pp ON act.project_partner_id = pp.id
 	   INNER JOIN institutions i ON pp.partner_id = i.id
 WHERE  (act.title LIKE "%bilateral%" AND i.institution_type_id = 3) OR act.id = 164;
 
+-- Entering the relationship between new projects with bilateral project activities.
+INSERT INTO project_cofinancing_linkages (bilateral_project_id, core_project_id, is_active, active_since, created_by,
+modified_by, modification_justification)
+SELECT p.id, act.project_id, p.is_active, p.active_since, p.created_by, p.modified_by, p.modification_justification
+FROM projects p INNER JOIN activities act ON p.activity_temporal  = act.id;
+
 -- Entering project partners of bilateral projects. 
-INSERT INTO project_partners (project_id, partner_id, user_id, partner_type, activity_partner, responsabilities,  created_by, modified_by, 
+INSERT INTO project_partners (project_id, partner_id, user_id, partner_type, activity_partner, responsabilities, created_by, modified_by, 
  modification_justification, activity_temporal)
 SELECT p.id, pp.partner_id, pp.user_id, "PL", 0,  CONCAT("Activity 2014-", act.id), p.created_by, p.modified_by, p.modification_justification, p.activity_temporal
 FROM projects p INNER JOIN activities act ON p.activity_temporal = act.id
@@ -93,22 +112,22 @@ SELECT d.project_id, act.id, d.title, d.type_id, d.type_other, d.year, d.is_acti
 FROM activities act INNER JOIN deliverables d ON act.last_activity_id_temporal = d.activity_id;
 
 -- Entering activity_cross_cutting_themes of new activities
-INSERT INTO activity_cross_cutting_themes( activity_id, theme_id, is_active, active_since, created_by, modified_by, modification_justification)
+INSERT INTO activity_cross_cutting_themes (activity_id, theme_id, is_active, active_since, created_by, modified_by, modification_justification)
 SELECT act.id, d.theme_id, d.is_active, d.active_since, d.created_by, d.modified_by, d.modification_justification
 FROM activities act INNER JOIN activity_cross_cutting_themes d ON act.last_activity_id_temporal = d.activity_id;
 
 -- Entering activity_partners of new activities
-INSERT INTO activity_partners( institution_id, activity_id, contact_name, contact_email, user_id, contribution,  is_active, active_since, created_by, modified_by, modification_justification)
+INSERT INTO activity_partners (institution_id, activity_id, contact_name, contact_email, user_id, contribution,  is_active, active_since, created_by, modified_by, modification_justification)
 SELECT d.institution_id, act.id, d.contact_name, d.contact_email, d.user_id, d.contribution, d.is_active, d.active_since, d.created_by, d.modified_by, d.modification_justification
 FROM activities act INNER JOIN activity_partners d ON act.last_activity_id_temporal = d.activity_id;
 
 -- Entering ip_activity_contributions of new activities
-INSERT INTO ip_activity_contributions( activity_id, mog_id, midOutcome_id, is_active, active_since, created_by, modified_by, modification_justification)
+INSERT INTO ip_activity_contributions (activity_id, mog_id, midOutcome_id, is_active, active_since, created_by, modified_by, modification_justification)
 SELECT act.id, d.mog_id, d.midOutcome_id, d.is_active, d.active_since, d.created_by, d.modified_by, d.modification_justification
 FROM activities act INNER JOIN ip_activity_contributions d ON act.last_activity_id_temporal = d.activity_id;
 
 -- Entering ip_activity_indicators of new activities
-INSERT INTO ip_activity_indicators( description, target, activity_id, parent_id, is_active, active_since, created_by, modified_by, modification_justification)
+INSERT INTO ip_activity_indicators (description, target, activity_id, parent_id, is_active, active_since, created_by, modified_by, modification_justification)
 SELECT d.description, d.target, act.id, d.parent_id, d.is_active, d.active_since, d.created_by, d.modified_by, d.modification_justification
 FROM activities act INNER JOIN ip_activity_indicators d ON act.last_activity_id_temporal = d.activity_id;
 
