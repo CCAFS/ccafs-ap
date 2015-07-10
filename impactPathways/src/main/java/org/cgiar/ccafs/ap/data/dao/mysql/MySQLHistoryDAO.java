@@ -132,7 +132,7 @@ public class MySQLHistoryDAO implements HistoryDAO {
     query.append(dbName);
     query.append("_history.deliverables t ");
     query.append("  INNER JOIN users u ON t.modified_by = u.id ");
-    query.append("  WHERE id = ");
+    query.append("  WHERE t.record_id = ");
     query.append(deliverableID);
 
     query.append(" UNION ");

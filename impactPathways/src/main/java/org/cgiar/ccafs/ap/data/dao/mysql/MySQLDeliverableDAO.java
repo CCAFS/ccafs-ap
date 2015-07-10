@@ -143,7 +143,6 @@ public class MySQLDeliverableDAO implements DeliverableDAO {
       while (rs.next()) {
         Map<String, String> deliverableData = new HashMap<String, String>();
         deliverableData.put("id", rs.getString("id"));
-        deliverableData.put("activity_id", rs.getString("activity_id"));
         deliverableData.put("title", rs.getString("title"));
         deliverableData.put("type_id", rs.getString("type_id"));
         deliverableData.put("type_other", rs.getString("type_other"));
@@ -261,8 +260,8 @@ public class MySQLDeliverableDAO implements DeliverableDAO {
       values[8] = deliverableData.get("modification_justification");
     } else {
       // Updating existing deliverable record
-      query.append(
-        "UPDATE deliverables SET title = ?, type_id = ?, type_other = ?, year = ?, modified_by = ?, modification_justification = ? ");
+      query
+        .append("UPDATE deliverables SET title = ?, type_id = ?, type_other = ?, year = ?, modified_by = ?, modification_justification = ? ");
       query.append("WHERE id = ? ");
       values = new Object[7];
       values[0] = deliverableData.get("title");
