@@ -85,6 +85,12 @@ public class HistoryManagerImpl implements HistoryManager {
   }
 
   @Override
+  public List<LogHistory> getProjectDeliverablesHistory(int deliverableID) {
+    List<Map<String, String>> logHistoryData = historyDAO.getProjectDeliverablesHistory(deliverableID);
+    return this.getData(logHistoryData);
+  }
+
+  @Override
   public List<LogHistory> getProjectDescriptionHistory(int projectID) {
     List<Map<String, String>> logHistoryData = historyDAO.getProjectDescriptionHistory(projectID);
     return this.getData(logHistoryData);
@@ -113,4 +119,5 @@ public class HistoryManagerImpl implements HistoryManager {
     List<Map<String, String>> logHistoryData = historyDAO.getProjectPartnerHistory(projectID, partnerTypes);
     return this.getData(logHistoryData);
   }
+
 }
