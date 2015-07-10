@@ -31,19 +31,23 @@ public interface NextUserDAO {
   /**
    * Deletes the information of a Next User associated by a given id
    * 
-   * @param activityId - is the Id of an Activity
-   * @return true if the element were deleted successfully. False otherwise
+   * @param nextUserId - is the Id of a next user.
+   * @param userID is the user identifier who is making the change.
+   * @param justification is the justification statement.
+   * @return true if the next user was deleted successfully. False otherwise
    */
-  public boolean deleteNextUserById(int nextUserId);
+  public boolean deleteNextUserById(int nextUserId, int userID, String justification);
 
 
   /**
    * Deletes the information of the Next Users related by a given activity id
    * 
    * @param deliverableID - is the Id of the deliverable
+   * @param userID is the user identifier who is making the change.
+   * @param justification is the justification statement.
    * @return true if the elements were deleted successfully. False otherwise
    */
-  public boolean deleteNextUsersByDeliverableId(int deliverableID);
+  public boolean deleteNextUsersByDeliverableId(int deliverableID, int userID, String justification);
 
   /**
    * This method gets all the Next User information by a given Id

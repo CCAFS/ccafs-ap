@@ -26,6 +26,7 @@ import org.cgiar.ccafs.ap.data.model.DeliverablePartner;
 import org.cgiar.ccafs.ap.data.model.DeliverableType;
 import org.cgiar.ccafs.ap.data.model.IPElement;
 import org.cgiar.ccafs.ap.data.model.Institution;
+import org.cgiar.ccafs.ap.data.model.NextUser;
 import org.cgiar.ccafs.ap.data.model.Project;
 import org.cgiar.ccafs.ap.data.model.ProjectPartner;
 import org.cgiar.ccafs.ap.data.model.User;
@@ -68,16 +69,13 @@ public class ProjectDeliverableAction extends BaseAction {
   private List<DeliverableType> deliverableSubTypes;
   private List<Integer> allYears;
   private List<IPElement> outputs;
-  private DeliverablePartner responsiblePartner;
-  private List<DeliverablePartner> otherPartners;
   private List<Institution> institutions;
 
 
   @Inject
-  public ProjectDeliverableAction(APConfig config, ProjectManager projectManager,
-    DeliverableManager deliverableManager, DeliverableTypeManager deliverableTypeManager,
-    NextUserManager nextUserManager, DeliverablePartnerManager deliverablePartnerManager,
-    ProjectPartnerManager projectPartnerManager) {
+  public ProjectDeliverableAction(APConfig config, ProjectManager projectManager, DeliverableManager deliverableManager,
+    DeliverableTypeManager deliverableTypeManager, NextUserManager nextUserManager,
+    DeliverablePartnerManager deliverablePartnerManager, ProjectPartnerManager projectPartnerManager) {
     super(config);
     this.projectManager = projectManager;
     this.deliverableManager = deliverableManager;
@@ -110,20 +108,12 @@ public class ProjectDeliverableAction extends BaseAction {
     return institutions;
   }
 
-  public List<DeliverablePartner> getOtherPartners() {
-    return otherPartners;
-  }
-
   public List<IPElement> getOutputs() {
     return outputs;
   }
 
   public Project getProject() {
     return project;
-  }
-
-  public DeliverablePartner getResponsiblePartner() {
-    return responsiblePartner;
   }
 
   @Override
@@ -153,8 +143,6 @@ public class ProjectDeliverableAction extends BaseAction {
       }
     }
 
-    System.out.println(institutions);
-
     // Getting the deliverable information.
     deliverable = deliverableManager.getDeliverableById(deliverableID);
 
@@ -165,24 +153,135 @@ public class ProjectDeliverableAction extends BaseAction {
     List<DeliverablePartner> partners =
       deliverablePartnerManager.getDeliverablePartners(deliverableID, APConstants.DELIVERABLE_PARTNER_RESP);
     if (partners.size() > 0) {
-      responsiblePartner = partners.get(0);
+      deliverable.setResponsiblePartner(partners.get(0));
     } else {
-      responsiblePartner = new DeliverablePartner(-1);
+      DeliverablePartner responsiblePartner = new DeliverablePartner(-1);
       responsiblePartner.setInstitution(new Institution(-1));
       responsiblePartner.setUser(new User(-1));
       responsiblePartner.setType(APConstants.DELIVERABLE_PARTNER_RESP);
+      deliverable.setResponsiblePartner(responsiblePartner);
     }
 
     // Getting the other partners that are contributing to this deliverable.
-    otherPartners =
-      deliverablePartnerManager.getDeliverablePartners(deliverableID, APConstants.DELIVERABLE_PARTNER_OTHER);
+    deliverable.setOtherPartners(
+      deliverablePartnerManager.getDeliverablePartners(deliverableID, APConstants.DELIVERABLE_PARTNER_OTHER));
+
+    if (this.getRequest().getMethod().equalsIgnoreCase("post")) {
+      // Clear out the list if it has some element
+      if (deliverable.getNextUsers() != null) {
+        deliverable.getNextUsers().clear();
+      }
+      if (deliverable.getOtherPartners() != null) {
+        deliverable.getOtherPartners().clear();
+      }
+    }
 
   }
 
 
   @Override
   public String save() {
-    return SUCCESS;
+    boolean success = true;
+
+    // Getting the project
+    project = projectManager.getProjectFromDeliverableId(deliverableID);
+
+    // -------- Saving main information
+    int result =
+      deliverableManager.saveDeliverable(project.getId(), deliverable, this.getCurrentUser(), this.getJustification());
+    if (result != 0) {
+      success = false;
+    }
+
+    // -------- Saving next users.
+
+    // Getting previous next users in order to identify those that need to be deleted.
+    List<NextUser> previousNextUsers = nextUserManager.getNextUsersByDeliverableId(deliverableID);
+
+    // Deleting the next users coming from the front-end that are not part of the list.
+    for (NextUser previousNextUser : previousNextUsers) {
+      if (!deliverable.getNextUsers().contains(previousNextUser)) {
+        boolean deleted =
+          nextUserManager.deleteNextUserById(previousNextUser.getId(), this.getCurrentUser(), this.getJustification());
+        if (!deleted) {
+          success = false;
+        }
+      }
+    }
+
+    // Saving new and old Next Users
+    boolean saved = nextUserManager.saveNextUsers(deliverableID, deliverable.getNextUsers(), this.getCurrentUser(),
+      this.getJustification());
+
+    if (!saved) {
+      saved = false;
+    }
+
+
+    // ----------------- Responsible deliverable partner ----------------------
+
+
+    // ----------------- other partner contributions ----------------------
+    // Getting previous to identify those that need to be deleted.
+    // List<ProjectPartner> previousPartners = projectPartnerManager.getProjectPartners(projectID, partnerType);
+    //
+    // // Deleting project partners
+    // for (ProjectPartner previousPartner : previousPartners) {
+    // if (!partners.contains(previousPartner)) {
+    // boolean deleted =
+    // projectPartnerManager.deleteProjectPartner(previousPartner.getId(), this.getCurrentUser(),
+    // this.getJustification());
+    // if (!deleted) {
+    // success = false;
+    // }
+    // }
+    // }
+    //
+    // // Saving new and old PPA Partners
+    // boolean saved =
+    // projectPartnerManager.saveProjectPartners(projectID, partners, this.getCurrentUser(), this.getJustification());
+    // if (!saved) {
+    // saved = false;
+    // }
+    //
+    // // Saving project partner contributions
+    // if (partnerType.equals(APConstants.PROJECT_PARTNER_PP)) {
+    // // iterating each project partner
+    // for (ProjectPartner projectPartner : partners) {
+    // // Getting previous partner contributions to identify those that need to be deleted.
+    // List<Institution> previousPartnerContributions =
+    // institutionManager.getProjectPartnerContributeInstitutions(projectPartner);
+    // // Deleting project partner contributions
+    // for (Institution previousPartnerContribution : previousPartnerContributions) {
+    // if (projectPartner.getContributeInstitutions() == null
+    // || !projectPartner.getContributeInstitutions().contains(previousPartnerContribution)) {
+    // boolean deleted =
+    // institutionManager.deleteProjectPartnerContributeInstitution(projectPartner.getId(),
+    // previousPartnerContribution.getId());
+    // if (!deleted) {
+    // success = false;
+    // }
+    // }
+    // }
+    //
+    // // if the project partner has contribute institutions.
+    // if (projectPartner.getContributeInstitutions() != null) {
+    // // Saving new and old Project Partner Contributions
+    // saved =
+    // institutionManager.saveProjectPartnerContributeInstitutions(projectPartner.getId(),
+    // projectPartner.getContributeInstitutions());
+    // if (!saved) {
+    // saved = false;
+    // }
+    // }
+    // } // End loop
+    // }
+    //
+    if (success) {
+      this.addActionMessage(this.getText("saving.saved"));
+      return SUCCESS;
+    }
+    return INPUT;
   }
 
   public void setDeliverable(Deliverable deliverable) {
@@ -193,16 +292,6 @@ public class ProjectDeliverableAction extends BaseAction {
   public void setInstitutions(List<Institution> institutions) {
     this.institutions = institutions;
   }
-
-
-  public void setOtherPartners(List<DeliverablePartner> otherPartners) {
-    this.otherPartners = otherPartners;
-  }
-
-  public void setResponsiblePartner(DeliverablePartner responsiblePartner) {
-    this.responsiblePartner = responsiblePartner;
-  }
-
 
   @Override
   public void validate() {

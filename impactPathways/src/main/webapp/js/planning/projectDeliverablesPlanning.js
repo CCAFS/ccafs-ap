@@ -5,8 +5,8 @@ var $deliverablesTypes, $deliverablesSubTypes;
 $(document).ready(init);
 
 function init() {
-  $deliverablesTypes = $("#deliverables_mainType");
-  $deliverablesSubTypes = $("#deliverables_deliverable_type");
+  $deliverablesTypes = $("#deliverable_mainType");
+  $deliverablesSubTypes = $("#deliverable_deliverable_type");
   attachEvents();
   addChosen();
   applyWordCounter($("textarea"), lWordsElemetDesc);
