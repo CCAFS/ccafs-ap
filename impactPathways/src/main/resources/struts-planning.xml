@@ -125,7 +125,7 @@
       </result>     
     </action>
     
-    <action name="budget" class="org.cgiar.ccafs.ap.action.preplanning.ProjectBudgetPreplanningAction">
+    <action name="budget" class="org.cgiar.ccafs.ap.action.planning.ProjectPartnersPlanningAction">
       <result name="input">/WEB-INF/planning/projectBudgetPlanning.ftl</result>
       <result name="success" type="redirectAction">
         <param name="actionName">budget</param>
