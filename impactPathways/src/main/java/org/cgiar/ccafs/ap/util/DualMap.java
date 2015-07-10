@@ -18,6 +18,8 @@ import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
 
+import org.apache.commons.lang3.builder.ToStringBuilder;
+
 
 /**
  * @author Hernán David Carvajal B. - CIAT/CCAFS
@@ -47,5 +49,10 @@ public class DualMap<K1, K2, V> {
   public void put(K1 key1, K2 key2, V value) {
     map1.put(key1, value);
     map2.put(key2, value);
+  }
+
+  @Override
+  public String toString() {
+    return ToStringBuilder.reflectionToString(this);
   }
 }
