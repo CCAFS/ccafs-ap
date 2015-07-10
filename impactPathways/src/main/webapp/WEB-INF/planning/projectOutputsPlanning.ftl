@@ -43,35 +43,26 @@
       [/#if]  
       
       [#assign years= [midOutcomeYear, currentPlanningYear, currentPlanningYear+1] /]
-      [#if midOutcomesSelected?has_content]
+      [#if project.outputs?has_content]
         [#list years as year]  
           [#-- Major Output Group list --]
           <div class="mogsBlock"> 
             [#-- Title --]
             <div class="midOutcomeTitle"><h6 class="title">[@s.text name="planning.projectImpactPathways.mogs" /] - ${year}</h6></div>
-            [#if midOutcomesSelected?has_content]
-              [#list midOutcomesSelected as midOutcome]
-                [#if action.getMidOutcomeOutputs(midOutcome.id)?has_content]
-                  [#assign outputs = action.getMidOutcomeOutputs(midOutcome.id)] 
-                  [#list outputs as output]
-                    <div class="mog fullBlock clearfix">
-                      [#if project.containsOutput(output.id, midOutcome.id)] 
-                        <div class="fullPartBlock">
-                          <p class="checked">${output.program.acronym} - MOG #${action.getMOGIndex(output)}: ${output.description} </p>
-                        </div>
-                        <div class="fullBlock">
-                          <h6>[@customForm.text name="planning.projectOutputs.expectedBulletPoints" readText=!editable param="${year}" /]</h6>  
-                          [@customForm.textArea name="" i18nkey="planning.projectOutputs.expectedBulletPoints" required=true showTitle=false editable=editable /]
-                        </div>
-                        <div class="fullBlock">
-                          [@customForm.textArea name="" i18nkey="planning.projectOutputs.expectedSocialAndGenderPlan" required=true editable=editable /]
-                        </div> 
-                      [/#if] 
-                    </div>
-                  [/#list] [#-- End MOGs list --] 
-                [/#if] 
+              [#list project.outputs as output]
+                <div class="mog fullBlock clearfix">
+                  <div class="fullPartBlock">
+                    <p class="checked">${output.program.acronym} - MOG #${action.getMOGIndex(output)}: ${output.description} </p>
+                  </div>
+                  <div class="fullBlock">
+                    <h6>[@customForm.text name="planning.projectOutputs.expectedBulletPoints" readText=!editable param="${year}" /]</h6>  
+                    [@customForm.textArea name="" i18nkey="planning.projectOutputs.expectedBulletPoints" required=true showTitle=false editable=editable /]
+                  </div>
+                  <div class="fullBlock">
+                    [@customForm.textArea name="" i18nkey="planning.projectOutputs.expectedSocialAndGenderPlan" required=true editable=editable /]
+                  </div> 
+                </div>
               [/#list] [#-- End Outcomes 2019 list --] 
-            [/#if]
           </div> 
         [/#list] [#-- End years list --] 
       [#else]
