@@ -63,6 +63,7 @@
       [#-- Contact Person --] 
       <div class="fullPartBlock clearfix">
         <input class="id" type="hidden" name="${customName}.id" value="${dp.id}">
+        <input class="type" type="hidden" name="${customName}.type" value="${isResponsable?string('Resp','Other')}">
         <input class="userId" type="hidden" name="${customName}.user" value="${dp.user.id}">   
         [@customForm.input name="" value="${dp.user.composedName?html}" className="userName" type="text" disabled=!canEdit i18nkey="preplanning.projectPartners.contactPersonEmail" required=true readOnly=true editable=editable/]
         [#if editable]<div class="searchUser">[@s.text name="form.buttons.searchUser" /]</div>[/#if] 

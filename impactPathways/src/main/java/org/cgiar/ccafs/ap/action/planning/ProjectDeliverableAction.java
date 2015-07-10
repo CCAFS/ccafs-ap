@@ -247,63 +247,31 @@ public class ProjectDeliverableAction extends BaseAction {
       }
     }
 
+    // Saving other contributions
 
-    // ----------------- other partner contributions ----------------------
-    // Getting previous to identify those that need to be deleted.
-    // List<ProjectPartner> previousPartners = projectPartnerManager.getProjectPartners(projectID, partnerType);
-    //
-    // // Deleting project partners
-    // for (ProjectPartner previousPartner : previousPartners) {
-    // if (!partners.contains(previousPartner)) {
-    // boolean deleted =
-    // projectPartnerManager.deleteProjectPartner(previousPartner.getId(), this.getCurrentUser(),
-    // this.getJustification());
-    // if (!deleted) {
-    // success = false;
-    // }
-    // }
-    // }
-    //
-    // // Saving new and old PPA Partners
-    // boolean saved =
-    // projectPartnerManager.saveProjectPartners(projectID, partners, this.getCurrentUser(), this.getJustification());
-    // if (!saved) {
-    // saved = false;
-    // }
-    //
-    // // Saving project partner contributions
-    // if (partnerType.equals(APConstants.PROJECT_PARTNER_PP)) {
-    // // iterating each project partner
-    // for (ProjectPartner projectPartner : partners) {
-    // // Getting previous partner contributions to identify those that need to be deleted.
-    // List<Institution> previousPartnerContributions =
-    // institutionManager.getProjectPartnerContributeInstitutions(projectPartner);
-    // // Deleting project partner contributions
-    // for (Institution previousPartnerContribution : previousPartnerContributions) {
-    // if (projectPartner.getContributeInstitutions() == null
-    // || !projectPartner.getContributeInstitutions().contains(previousPartnerContribution)) {
-    // boolean deleted =
-    // institutionManager.deleteProjectPartnerContributeInstitution(projectPartner.getId(),
-    // previousPartnerContribution.getId());
-    // if (!deleted) {
-    // success = false;
-    // }
-    // }
-    // }
-    //
-    // // if the project partner has contribute institutions.
-    // if (projectPartner.getContributeInstitutions() != null) {
-    // // Saving new and old Project Partner Contributions
-    // saved =
-    // institutionManager.saveProjectPartnerContributeInstitutions(projectPartner.getId(),
-    // projectPartner.getContributeInstitutions());
-    // if (!saved) {
-    // saved = false;
-    // }
-    // }
-    // } // End loop
-    // }
-    //
+    // Getting previous other contributions in order to know those that need to be deleted.
+    List<DeliverablePartner> previousOtherPartners =
+      deliverablePartnerManager.getDeliverablePartners(deliverableID, APConstants.DELIVERABLE_PARTNER_OTHER);
+
+    // Deleting other contributions
+    for (DeliverablePartner previousOtherPartner : previousOtherPartners) {
+      if (!deliverable.getOtherPartners().contains(previousOtherPartner)) {
+        boolean deleted = deliverablePartnerManager.deleteDeliverablePartner(previousOtherPartner.getId(),
+          this.getCurrentUser(), this.getJustification());
+        if (!deleted) {
+          success = false;
+        }
+      }
+    }
+
+    // Saving new and old Other Deliverable Partners
+    saved = deliverablePartnerManager.saveDeliverablePartners(deliverableID, deliverable.getOtherPartners(),
+      this.getCurrentUser(), this.getJustification());
+    if (!saved) {
+      success = false;
+    }
+
+    // Validating whole procedure.
     if (success) {
       this.addActionMessage(this.getText("saving.saved"));
       return SUCCESS;
