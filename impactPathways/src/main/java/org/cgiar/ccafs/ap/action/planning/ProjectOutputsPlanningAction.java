@@ -98,8 +98,7 @@ public class ProjectOutputsPlanningAction extends BaseAction {
     project.setOutputs(ipElementManager.getProjectOutputs(projectID));
 
     // Remove the outputs duplicated
-    Set<IPElement> outputsTemp = new HashSet<>();
-    outputsTemp.addAll(project.getOutputs());
+    Set<IPElement> outputsTemp = new HashSet<>(project.getOutputs());
     project.getOutputs().clear();
     project.getOutputs().addAll(outputsTemp);
 
