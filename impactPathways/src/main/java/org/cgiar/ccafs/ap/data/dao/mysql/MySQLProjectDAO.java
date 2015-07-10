@@ -650,46 +650,6 @@ public class MySQLProjectDAO implements ProjectDAO {
     return projectLeaderData;
   }
 
-
-  @Override
-  public List<Map<String, String>> getProjectOutputs(int projectID) {
-    LOG.debug(">> getProjectOutputs( projectID = {} )", projectID);
-    List<Map<String, String>> outputsDataList = new ArrayList<>();
-
-    StringBuilder query = new StringBuilder();
-    query.append("SELECT mog.id, mog.description, outcome.id as 'parent_id', ");
-    query.append("outcome.description as 'parent_description'  ");
-    query.append("FROM `ip_project_contributions` ipc ");
-    query.append("INNER JOIN ip_elements mog ON ipc.mog_id = mog.id ");
-    query.append("INNER JOIN ip_elements outcome ON ipc.`midOutcome_id` = outcome.id ");
-    query.append("WHERE project_id =  ");
-    query.append(projectID);
-    query.append(" AND ipc.is_active = TRUE ");
-
-    try (Connection con = databaseManager.getConnection()) {
-      ResultSet rs = databaseManager.makeQuery(query.toString(), con);
-      while (rs.next()) {
-        Map<String, String> indicatorData = new HashMap<String, String>();
-        indicatorData.put("id", rs.getString("id"));
-        indicatorData.put("description", rs.getString("description"));
-        indicatorData.put("parent_id", rs.getString("parent_id"));
-        indicatorData.put("parent_description", rs.getString("parent_description"));
-
-        outputsDataList.add(indicatorData);
-      }
-      rs.close();
-    } catch (SQLException e) {
-      String exceptionMessage = "-- getProjectOutputs() > Exception raised trying ";
-      exceptionMessage += "to get the activity outputs for activity  " + projectID;
-
-      LOG.error(exceptionMessage, e);
-      return null;
-    }
-    LOG.debug("<< getProjectOutputs():outputsDataList.size={}", outputsDataList.size());
-    return outputsDataList;
-  }
-
-
   @Override
   public List<Map<String, String>> getProjectOwnerContact(int institutionId) {
     LOG.debug(">> getProjectOwnerContact( programID = {} )", institutionId);
@@ -707,7 +667,6 @@ public class MySQLProjectDAO implements ProjectDAO {
     LOG.debug("-- getProjectOwnerContact() > Calling method executeQuery to get the results");
     return this.getData(query.toString());
   }
-
 
   @Override
   public List<Map<String, String>> getProjectOwnerId(int programId) {

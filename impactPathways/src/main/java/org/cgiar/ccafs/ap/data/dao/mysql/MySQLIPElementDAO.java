@@ -380,6 +380,26 @@ public class MySQLIPElementDAO implements IPElementDAO {
   }
 
   @Override
+  public List<Map<String, String>> getProjectOutputs(int projectID) {
+    LOG.debug(">> getProjectOutputs( projectID = {} )", projectID);
+
+    StringBuilder query = new StringBuilder();
+    query.append("SELECT e.id, e.description, ");
+    query.append("et.id as 'element_type_id', et.name as 'element_type_name', ");
+    query.append("pro.id as 'program_id', pro.acronym as 'program_acronym' ");
+    query.append("FROM ip_elements e ");
+    query.append("INNER JOIN ip_element_types et ON e.element_type_id = et.id ");
+    query.append("INNER JOIN ip_programs pro ON e.ip_program_id = pro.id ");
+    query.append("INNER JOIN ip_project_contributions ipc ON e.id = ipc.mog_id ");
+    query.append("WHERE project_id =  ");
+    query.append(projectID);
+    query.append(" AND ipc.is_active = TRUE ");
+
+    LOG.debug("-- getProjectOutputs () > Calling method executeQuery to get the results");
+    return this.getData(query.toString());
+  }
+
+  @Override
   @Deprecated
   public int relateIPElement(int elementID, int programID, int relationTypeID) {
     LOG.debug(">> relateIPElement(elementID={}, programID={}, relationTypeID={})", new int[] {elementID, programID,

@@ -319,7 +319,7 @@ public class ProjectCCAFSOutcomesPlanningAction extends BaseAction {
     projectFocusList.addAll(programManager.getProjectFocuses(projectID, APConstants.REGION_PROGRAM_TYPE));
 
     // Get the project outputs from database
-    project.setOutputs(projectManager.getProjectOutputs(projectID));
+    project.setOutputs(ipElementManager.getProjectOutputs(projectID));
 
     // Get the project indicators from database
     project.setIndicators(projectManager.getProjectIndicators(projectID));

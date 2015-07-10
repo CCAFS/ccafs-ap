@@ -197,15 +197,6 @@ public interface ProjectDAO {
   public Map<String, String> getProjectLeader(int projectID);
 
   /**
-   * This method returns all the outputs related to the project identified
-   * by the value received as parameter.
-   * 
-   * @param projectID - Project identifier
-   * @return a list of maps with the information
-   */
-  public List<Map<String, String>> getProjectOutputs(int projectID);
-
-  /**
    * This method return a list with the employees that belongs to a program
    * indicated by parameter.
    * 
