@@ -45,13 +45,17 @@ public class MySQLNextUserDAO implements NextUserDAO {
   }
 
   @Override
-  public boolean deleteNextUserById(int nextUserId) {
-    LOG.debug(">> deleteNextUserById(id={})", nextUserId);
+  public boolean deleteNextUserById(int nextUserID, int userID, String justification) {
+    LOG.debug(">> deleteNextUserById(id={})", nextUserID);
 
-    String query = "DELETE FROM next_users WHERE id= ?";
+    String query = "UPDATE next_users SET is_active = 0, modified_by = ?, modification_justification = ? WHERE id = ?";
+    Object[] values = new Object[3];
+    values[0] = userID;
+    values[1] = justification;
+    values[2] = nextUserID;
 
-    int rowsDeleted = databaseManager.delete(query, new Object[] {nextUserId});
-    if (rowsDeleted >= 0) {
+    int rowsDeleted = databaseManager.saveData(query, values);
+    if (rowsDeleted == 0) {
       LOG.debug("<< deleteNextUserById():{}", true);
       return true;
     }
@@ -61,15 +65,19 @@ public class MySQLNextUserDAO implements NextUserDAO {
   }
 
   @Override
-  public boolean deleteNextUsersByDeliverableId(int deliverableID) {
+  public boolean deleteNextUsersByDeliverableId(int deliverableID, int userID, String justification) {
     LOG.debug(">> deleteNextUserByDeliverableId(deliverableID={})", deliverableID);
 
     StringBuilder query = new StringBuilder();
-    query.append("DELETE nu FROM next_users nu ");
-    query.append("WHERE nu.deliverable_id = ? ");
+    query.append("UPDATE next_users SET is_active = 0, modified_by = ?, modification_justification = ? ");
+    query.append("WHERE deliverable_id = ? ");
+    Object[] values = new Object[3];
+    values[0] = userID;
+    values[1] = justification;
+    values[2] = deliverableID;
 
-    int rowsDeleted = databaseManager.delete(query.toString(), new Object[] {deliverableID});
-    if (rowsDeleted >= 0) {
+    int rowsDeleted = databaseManager.saveData(query.toString(), values);
+    if (rowsDeleted == 0) {
       LOG.debug("<< deleteNextUserByDeliverableId():{}", true);
       return true;
     }
@@ -141,12 +149,13 @@ public class MySQLNextUserDAO implements NextUserDAO {
     query.append("SELECT nu.*   ");
     query.append("FROM next_users as nu ");
     query.append("INNER JOIN deliverables d ON nu.deliverable_id = d.id ");
-    query.append("WHERE nu.deliverable_id=  ");
+    query.append("WHERE nu.deliverable_id =  ");
     query.append(deliverableID);
+    query.append(" AND nu.is_active = 1");
 
 
     LOG.debug("-- getNextUsersByDeliverable() > Calling method executeQuery to get the results");
-    return getData(query.toString());
+    return this.getData(query.toString());
   }
 
   @Override
@@ -155,15 +164,35 @@ public class MySQLNextUserDAO implements NextUserDAO {
     StringBuilder query = new StringBuilder();
     int result = -1;
     Object[] values;
-    // Insert new next user record.
-    query.append("INSERT INTO next_users (id, deliverable_id, user, expected_changes, strategies) ");
-    query.append("VALUES (?, ?, ?, ?, ?) ");
-    values = new Object[5];
-    values[0] = nextUserData.get("id");
-    values[1] = deliverableID;
-    values[2] = nextUserData.get("user");
-    values[3] = nextUserData.get("expected_changes");
-    values[4] = nextUserData.get("strategies");
+    if (nextUserData.get("id") == null) {
+      // Insert new next user record.
+      query.append(
+        "INSERT INTO next_users (deliverable_id, user, expected_changes, strategies, created_by, modified_by, modification_justification) ");
+      query.append("VALUES (?, ?, ?, ?, ?, ?, ?) ");
+      values = new Object[7];
+      values[0] = deliverableID;
+      values[1] = nextUserData.get("user");
+      values[2] = nextUserData.get("expected_changes");
+      values[3] = nextUserData.get("strategies");
+      // Logs
+      values[4] = nextUserData.get("created_by");
+      values[5] = nextUserData.get("modified_by");
+      values[6] = nextUserData.get("modification_justification");
+    } else {
+      // Updating existing deliverable record
+      query.append(
+        "UPDATE next_users SET user = ?, expected_changes = ?, strategies = ?, modified_by = ?, modification_justification = ? ");
+      query.append("WHERE id = ? ");
+      values = new Object[6];
+      values[0] = nextUserData.get("user");
+      values[1] = nextUserData.get("expected_changes");
+      values[2] = nextUserData.get("strategies");
+      // Logs
+      values[3] = nextUserData.get("modified_by");
+      values[4] = nextUserData.get("modification_justification");
+
+      values[5] = nextUserData.get("id");
+    }
     result = databaseManager.saveData(query.toString(), values);
     if (result == -1) {
       LOG.error("A problem happened trying to add a new next user with deliverable id={}", deliverableID);

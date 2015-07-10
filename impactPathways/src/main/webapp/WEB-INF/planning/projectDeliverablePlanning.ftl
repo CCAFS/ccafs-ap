@@ -17,9 +17,9 @@
 
 [#assign params = {
   "deliverable":  {"id":"deliverableName", "name":"deliverable"},
-  "responsiblePartner":  {"id":"responsiblePartnerName", "name":"responsiblePartner"},
+  "responsiblePartner":  {"id":"responsiblePartnerName", "name":"deliverable.responsiblePartner"},
   "nextUsers":    {"id":"nextUsersName",   "name":"deliverable.nextUsers"},
-  "partners":     {"id":"partnersName",    "name":"otherPartners"} 
+  "partners":     {"id":"partnersName",    "name":"deliverable.otherPartners"} 
 }
 /] 
 
@@ -37,7 +37,7 @@
   </div>
   [#include "/WEB-INF/planning/planningProjectsSubMenu.ftl" /]
   
-  [@s.form action="deliverables" cssClass="pure-form"]
+  [@s.form action="deliverable" cssClass="pure-form"]
   <article class="halfContent" id="projectDeliverable"> 
     [#include "/WEB-INF/planning/projectOutputs-sub-menu.ftl" /]
     [#include "/WEB-INF/planning/planningDataSheet.ftl" /]
@@ -113,13 +113,13 @@
         [#-- Partner who is responsible --]
         <div class="fullBlock">
           <p>[@s.text name="planning.projectDeliverable.indicateResponsablePartner" /]</p>
-          [@deliverableTemplate.deliverablePartner dp=responsiblePartner dp_name=params.responsiblePartner.name dp_index=dp_index institutionList="institutions" isResponsable=true editable=editable /]
+          [@deliverableTemplate.deliverablePartner dp=deliverable.responsiblePartner dp_name=params.responsiblePartner.name dp_index=dp_index institutionList="institutions" isResponsable=true editable=editable /]
         </div>
         [#-- Other contact person that will contribute --]
         <div class="fullBlock">
           <p>[@s.text name="planning.projectDeliverable.indicateOtherContact" /]</p>
-          [#if otherPartners?has_content]
-            [#list otherPartners as dp]  
+          [#if deliverable.otherPartners?has_content]
+            [#list deliverable.otherPartners as dp]  
               [@deliverableTemplate.deliverablePartner dp=dp dp_name=params.partners.name dp_index=dp_index institutionList="institutions" editable=editable /]
             [/#list]
           [/#if]

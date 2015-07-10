@@ -15,6 +15,7 @@ package org.cgiar.ccafs.ap.data.manager;
 
 import org.cgiar.ccafs.ap.data.manager.impl.NextUserManagerImpl;
 import org.cgiar.ccafs.ap.data.model.NextUser;
+import org.cgiar.ccafs.ap.data.model.User;
 
 import java.util.List;
 
@@ -22,52 +23,70 @@ import com.google.inject.ImplementedBy;
 
 /**
  * @author Javier Andrés Gallego
+ * @author Héctor Fabio Tobón R. - CIAT/CCAFS
  */
 @ImplementedBy(NextUserManagerImpl.class)
 public interface NextUserManager {
 
 
   /**
-   * This method removes a set of activities that belongs to a specific Deliverable.
+   * This method removes a set of next users that belongs to a specific Deliverable.
    * 
    * @param deliverableID is the Deliverable identifier.
-   * @return true if the set of activities were successfully deleted, false otherwise.
+   * @param user is the user who is making the change.
+   * @param justification is the justification statement.
+   * @return true if the set of next users were successfully deleted, false otherwise.
    */
-  public boolean deleteNextUserByDeliverable(int deliverableID);
+  public boolean deleteNextUserByDeliverable(int deliverableID, User user, String justification);
 
   /**
    * This method removes a specific activity value from the database.
    * 
    * @param nextUserId is the activity identifier.
-   * @return true if the activity was successfully deleted, false otherwise.
+   * @param user is the user who is making the change.
+   * @param justification is the justification statement.
+   * @return true if the next user was successfully deleted, false otherwise.
    */
-  public boolean deleteNextUserById(int nextUserId);
+  public boolean deleteNextUserById(int nextUserId, User user, String justification);
 
   /**
-   * This method gets all the activity information by a given activity ID.
+   * This method gets all the next user information by a given identifier.
    * 
-   * @param nextUserID is the activity identifier.
-   * @return a List of activities objects.
+   * @param nextUserID is the next user identifier.
+   * @return a next user objects.
    */
   public NextUser getNextUserById(int nextUserID);
 
 
   /**
-   * This method gets all the activity information by a given Deliverable Id
+   * This method gets all the next users information which belongs to a given Deliverable Id
    * 
    * @param deliverableID - is the Id of the Deliverable
-   * @return a List of activities with the activity Information related with the Deliverable
+   * @return a List of next users with the information related with the Deliverable
    */
   public List<NextUser> getNextUsersByDeliverableId(int deliverableID);
 
   /**
-   * This method saves the information of the given activity that belong to a specific Deliverable into the database.
+   * This method saves the information of the given next user that belong to a specific Deliverable into the database.
    * 
-   * @param deliverableID
-   * @param nextUser
-   * @return true if the activity was saved successfully, false otherwise.
+   * @param deliverableID - deliverable identifier where the next user belongs.
+   * @param nextUser - is an object NextUser with the information to be added/updated.
+   * @param user - is the user who is making the change.
+   * @param justification - is the justification statement.
+   * @return true if the nextUser was saved successfully, false otherwise.
    */
-  public boolean saveNextUser(int deliverableID, NextUser nextUser);
+  public boolean saveNextUser(int deliverableID, NextUser nextUser, User user, String justification);
+
+  /**
+   * This method saves a set of next users that belong to a specific Deliverable.
+   * 
+   * @param deliverableID - deliverable identifier where the next user belongs.
+   * @param nextUsers - is a set of NextUser objects with the information to be added/updated.
+   * @param user - is the user who is making the change.
+   * @param justification - is the justification statement.
+   * @return true if the set of nextUsers were successfully saved, false otherwise.
+   */
+  public boolean saveNextUsers(int deliverableID, List<NextUser> nextUsers, User currentUser, String justification);
 
 
 }
