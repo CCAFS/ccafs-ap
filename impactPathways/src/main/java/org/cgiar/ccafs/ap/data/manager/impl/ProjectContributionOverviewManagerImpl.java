@@ -19,8 +19,8 @@ import org.cgiar.ccafs.ap.data.manager.ProjectContributionOverviewManager;
 import org.cgiar.ccafs.ap.data.model.IPElement;
 import org.cgiar.ccafs.ap.data.model.OutputOverview;
 import org.cgiar.ccafs.ap.data.model.Project;
-import org.cgiar.ccafs.ap.util.DualMap;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
@@ -41,26 +41,23 @@ public class ProjectContributionOverviewManagerImpl implements ProjectContributi
   }
 
   @Override
-  public DualMap<Integer, IPElement, OutputOverview> getProjectContributionOverviews(Project project) {
-    DualMap<Integer, IPElement, OutputOverview> outputOverviews = new DualMap();
+  public List<OutputOverview> getProjectContributionOverviews(Project project) {
+    List<OutputOverview> outputOverviews = new ArrayList<>();
     List<Map<String, String>> overviewsData = overviewDAO.getProjectContributionOverviews(project.getId());
 
     for (Map<String, String> overviewData : overviewsData) {
+      OutputOverview overview = new OutputOverview();
+      overview.setId(Integer.parseInt(overviewData.get("id")));
+      overview.setExpectedAnnualContribution(overviewData.get("annual_contribution"));
+      overview.setSocialInclusionDimmension(overviewData.get("gender_contribution"));
+
       IPElement output = new IPElement();
       output.setId(Integer.parseInt(overviewData.get("output_id")));
       output.setDescription(overviewData.get("output_description"));
+      overview.setOutput(output);
+      overview.setYear(Integer.parseInt(overviewData.get("year")));
 
-
-      OutputOverview overview = new OutputOverview(-1);
-      if (overviewData.get("id") != null) {
-        overview.setId(Integer.parseInt(overviewData.get("id")));
-        overview.setExpectedAnnualContribution(overviewData.get("annual_contribution"));
-        overview.setSocialInclusionDimmension(overviewData.get("gender_contribution"));
-      }
-
-      Integer year = new Integer(overviewData.get("year"));
-
-      outputOverviews.put(year, output, overview);
+      outputOverviews.add(overview);
     }
 
     return outputOverviews;

@@ -15,10 +15,10 @@
 package org.cgiar.ccafs.ap.data.manager;
 
 import org.cgiar.ccafs.ap.data.manager.impl.ProjectContributionOverviewManagerImpl;
-import org.cgiar.ccafs.ap.data.model.IPElement;
 import org.cgiar.ccafs.ap.data.model.OutputOverview;
 import org.cgiar.ccafs.ap.data.model.Project;
-import org.cgiar.ccafs.ap.util.DualMap;
+
+import java.util.List;
 
 import com.google.inject.ImplementedBy;
 
@@ -37,5 +37,5 @@ public interface ProjectContributionOverviewManager {
    * @param project - Project Identifier
    * @return a DualMap with the format <year, output, overview>
    */
-  public DualMap<Integer, IPElement, OutputOverview> getProjectContributionOverviews(Project project);
+  public List<OutputOverview> getProjectContributionOverviews(Project project);
 }

@@ -14,7 +14,6 @@
 package org.cgiar.ccafs.ap.data.model;
 
 import org.cgiar.ccafs.ap.config.APConstants;
-import org.cgiar.ccafs.ap.util.DualMap;
 
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -48,9 +47,7 @@ public class Project {
   private LiaisonInstitution liaisonInstitution; // Creator program. e.g. LAM, FP4, CU, etc.
   private boolean isGlobal;
   private boolean isCofinancing;
-
   private User owner;
-
   private List<ProjectPartner> projectPartners; // Project partners or 2-level partners.
   private List<ProjectPartner> ppaPartners; // PPA Partners or CCAFS Program Partners.
   private List<Deliverable> deliverables; // Project research outputs - deliverables.
@@ -59,7 +56,7 @@ public class Project {
   private List<Location> locations; // Project locations.
   private List<Activity> activities;
   private List<IPElement> outputs;
-  private DualMap<Integer, IPElement, OutputOverview> outputsOverview;
+  private List<OutputOverview> outputsOverview;
   private List<IPIndicator> indicators;
   private OtherContribution ipOtherContribution;
   private List<CRP> crpContributions;
@@ -334,7 +331,7 @@ public class Project {
     return outputs;
   }
 
-  public DualMap<Integer, IPElement, OutputOverview> getOutputsOverview() {
+  public List<OutputOverview> getOutputsOverview() {
     return outputsOverview;
   }
 
@@ -527,7 +524,7 @@ public class Project {
     this.outputs = outputs;
   }
 
-  public void setOutputsOverview(DualMap<Integer, IPElement, OutputOverview> outpusOverview) {
+  public void setOutputsOverview(List<OutputOverview> outpusOverview) {
     this.outputsOverview = outpusOverview;
   }
 

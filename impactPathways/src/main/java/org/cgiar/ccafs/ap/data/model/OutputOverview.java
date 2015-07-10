@@ -22,8 +22,13 @@ package org.cgiar.ccafs.ap.data.model;
 public class OutputOverview {
 
   private int id;
+  private int year;
+  private IPElement output;
   private String expectedAnnualContribution;
   private String socialInclusionDimmension;
+
+  public OutputOverview() {
+  }
 
   public OutputOverview(int id) {
     this.id = id;
@@ -37,8 +42,16 @@ public class OutputOverview {
     return id;
   }
 
+  public IPElement getOutput() {
+    return output;
+  }
+
   public String getSocialInclusionDimmension() {
     return socialInclusionDimmension;
+  }
+
+  public int getYear() {
+    return year;
   }
 
   public void setExpectedAnnualContribution(String expectedAnnualContribution) {
@@ -49,7 +62,15 @@ public class OutputOverview {
     this.id = id;
   }
 
+  public void setOutput(IPElement output) {
+    this.output = output;
+  }
+
   public void setSocialInclusionDimmension(String socialInclusionDimmension) {
     this.socialInclusionDimmension = socialInclusionDimmension;
+  }
+
+  public void setYear(int year) {
+    this.year = year;
   }
 }
