@@ -214,11 +214,27 @@ public class ProjectDeliverableAction extends BaseAction {
       this.getJustification());
 
     if (!saved) {
-      saved = false;
+      success = false;
     }
 
+    // ---------- Saving deliverable partners contribution
 
-    // ----------------- Responsible deliverable partner ----------------------
+    // Saving responsible deliverable partner
+    if (deliverable.getResponsiblePartner() != null && deliverable.getResponsiblePartner().getInstitution() != null) {
+      result = deliverablePartnerManager.saveDeliverablePartner(deliverableID, deliverable.getResponsiblePartner(),
+        this.getCurrentUser(), this.getJustification());
+      if (result < 0) {
+        success = false;
+      }
+    } else
+      if (deliverable.getResponsiblePartner().getInstitution() == null
+      && deliverable.getResponsiblePartner().getUser() == null) {
+        saved = deliverablePartnerManager.deleteDeliverablePartner(deliverable.getResponsiblePartner().getId(),
+          this.getCurrentUser(), this.getJustification());
+        if (!saved) {
+          success = false;
+        }
+      }
 
 
     // ----------------- other partner contributions ----------------------
