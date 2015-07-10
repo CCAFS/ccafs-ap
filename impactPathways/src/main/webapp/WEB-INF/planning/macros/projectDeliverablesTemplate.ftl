@@ -13,7 +13,7 @@
       </thead>
       <tbody>
       [#list deliverables as dl]  
-        [#assign dlurl][@s.url namespace=namespace action='deliverable' ][@s.param name='projectID']${project.id?c}[/@s.param][@s.param name='deliverableID']${dl.id}[/@s.param][/@s.url][/#assign]
+        [#assign dlurl][@s.url namespace=namespace action='deliverable' ][@s.param name='deliverableID']${dl.id}[/@s.param][/@s.url][/#assign]
         <tr>
           <td class="id" ><a href="${dlurl}">${dl.id}</a></td> 
           <td class="name"><a href="${dlurl}">${dl.title}</a></td>
@@ -37,33 +37,34 @@
 [/#macro] 
 
 [#macro deliverablePartner dp dp_name="" dp_index="" institutionList="" isResponsable=false template=false editable=true]
-  <div id="${template?string('deliverablePartnerTemplate','')}" class="deliverablePartner ${isResponsable?string('simpleBox','borderBox')}" style="${template?string('display:none','')}">
+  <div id="${template?string('deliverablePartnerTemplate','')}" class="${isResponsable?string('responsiblePartner','deliverablePartner')} ${isResponsable?string('simpleBox','borderBox')}" style="${template?string('display:none','')}">
     [#if editable && !isResponsable]
       <div class="removeElement removeLink" title="[@s.text name="planning.deliverables.removePartnerContribution" /]"></div> 
     [/#if]
     [#if !isResponsable]<span class="index">${dp_index+1}</span>[/#if]
-    [#if template]  
+    [#assign customName]${dp_name}[#if !isResponsable][${dp_index}][/#if][/#assign]
+    [#if template]
       [#-- Partner Institution Name --]
       <div class="fullPartBlock partnerName chosen"> 
-        [@customForm.select name="" className="institution" i18nkey="preplanning.projectPartners.partner.name" listName=institutionList keyFieldName="id"  displayFieldName="name" editable=editable /]
+        [@customForm.select name="" value="-1" className="institution" i18nkey="preplanning.projectPartners.partner.name" listName=institutionList keyFieldName="id"  displayFieldName="name" editable=editable /]
       </div>
-      [#-- Contact Person --] 
+      [#-- Contact Person --]
       <div class="fullPartBlock clearfix">
-        <input class="id" type="hidden" name="" value="">
+        <input class="id" type="hidden" name="" value="-1">
+        <input class="userId" type="hidden" name="" value="-1">   
         [@customForm.input name="" value="" className="userName" type="text" disabled=!canEdit i18nkey="preplanning.projectPartners.contactPersonEmail" required=true readOnly=true editable=editable/]
-        <input class="userId" type="hidden" name="" value="">   
         <div class="searchUser">[@s.text name="form.buttons.searchUser" /]</div>
       </div>
     [#else] 
       [#-- Partner Institution Name --]
-      <div class="fullPartBlock partnerName chosen"> 
-        [@customForm.select name="${dp_name}[${dp_index}].institution" label="" className="institution" i18nkey="preplanning.projectPartners.partner.name" listName=institutionList keyFieldName="id"  displayFieldName="name" editable=editable /]
+      <div class="fullPartBlock partnerName chosen">
+        [@customForm.select name="${customName}.institution" value="${dp.institution.id}" label="" className="institution" i18nkey="preplanning.projectPartners.partner.name" listName=institutionList keyFieldName="id"  displayFieldName="name" editable=editable /]
       </div>
       [#-- Contact Person --] 
       <div class="fullPartBlock clearfix">
-        <input class="id" type="hidden" name="${dp_name}[${dp_index}].id" value="${dp.id}">
-        [@customForm.input name="" value="${dp.user?html}" className="userName" type="text" disabled=!canEdit i18nkey="preplanning.projectPartners.contactPersonEmail" required=true readOnly=true editable=editable/]
-        <input class="userId" type="hidden" name="${dp_name}[${dp_index}].user" value="">   
+        <input class="id" type="hidden" name="${customName}.id" value="${dp.id}">
+        <input class="userId" type="hidden" name="${customName}.user" value="${dp.user.id}">   
+        [@customForm.input name="" value="${dp.user.composedName?html}" className="userName" type="text" disabled=!canEdit i18nkey="preplanning.projectPartners.contactPersonEmail" required=true readOnly=true editable=editable/]
         [#if editable]<div class="searchUser">[@s.text name="form.buttons.searchUser" /]</div>[/#if] 
       </div> 
     [/#if] 

@@ -2,13 +2,13 @@
 <nav id="stageMenu" class="clearfix"> 
   <ul> 
     <li [#if currentSubStage == "outcomes"] class="currentSection" [/#if]>
-      <a href="[@s.url action='outcomes' includeParams='get'][/@s.url]">[@s.text name="menu.planning.submenu.projectOutcomes" /]</a>
+      <a href="[@s.url action='outcomes' includeParams='get'][@s.param name='projectID']${project.id?c}[/@s.param][/@s.url]">[@s.text name="menu.planning.submenu.projectOutcomes" /]</a>
     </li>
     <li [#if currentSubStage == "ccafsOutcomes" ] class="currentSection" [/#if]>
-      <a href="[@s.url action='ccafsOutcomes' includeParams='get'][/@s.url]">[@s.text name="menu.planning.submenu.ccafsOutcomes" /]</a>
+      <a href="[@s.url action='ccafsOutcomes' includeParams='get'][@s.param name='projectID']${project.id?c}[/@s.param][/@s.url]">[@s.text name="menu.planning.submenu.ccafsOutcomes" /]</a>
     </li> 
     <li [#if currentSubStage == "otherContributions" ] class="currentSection" [/#if]>
-      <a href="[@s.url action='otherContributions' includeParams='get'][/@s.url]">[@s.text name="menu.planning.submenu.otherContributions" /]</a>
+      <a href="[@s.url action='otherContributions' includeParams='get'][@s.param name='projectID']${project.id?c}[/@s.param][/@s.url]">[@s.text name="menu.planning.submenu.otherContributions" /]</a>
     </li> 
   </ul>
   <div id="ipGraph-button" title="[@s.text name="menu.preplanning.submenu.ipGraph" /]"></div>

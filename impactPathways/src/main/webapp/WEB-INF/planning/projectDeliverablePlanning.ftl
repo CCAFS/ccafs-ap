@@ -17,8 +17,9 @@
 
 [#assign params = {
   "deliverable":  {"id":"deliverableName", "name":"deliverable"},
+  "responsiblePartner":  {"id":"responsiblePartnerName", "name":"responsiblePartner"},
   "nextUsers":    {"id":"nextUsersName",   "name":"deliverable.nextUsers"},
-  "partners":     {"id":"partnersName",    "name":"deliverable.partners"} 
+  "partners":     {"id":"partnersName",    "name":"otherPartners"} 
 }
 /] 
 
@@ -102,27 +103,24 @@
       </div>
     </div>  
     
-    [#-- Deliverable partnership  --] 
+    [#-- Deliverable partnership  --]
     <div id="deliverable-partnership" class="borderBox clearfix">
       [#if !editable && canEdit]
         <div class="editButton"><a href="[@s.url includeParams='get'][@s.param name="edit"]true[/@s.param][/@s.url]#deliverable-partnership">[@s.text name="form.buttons.edit" /]</a></div>
       [/#if]
+      <h1 class="contentTitle">[@s.text name="planning.projectDeliverable.partnership" /] </h1> 
       <div class="fullBlock">
-        <h1 class="contentTitle">[@s.text name="planning.projectDeliverable.partnership" /] </h1>
-        [#assign deliverablePartners = [
-          {"id":"1", "name":"Deliverable #1", "user":"Carvajal, Hernán <h.d.carvajal@cgiar.org>"},
-          {"id":"2", "name":"Deliverable #2", "user":"Tall, Arame <a.tall@cgiar.org>"},
-          {"id":"3", "name":"Deliverable #3", "user":"Hansen, James <jhansen@iri.columbia.edu>"}
-        ]/]
+        [#-- Partner who is responsible --]
         <div class="fullBlock">
           <p>[@s.text name="planning.projectDeliverable.indicateResponsablePartner" /]</p>
-          [@deliverableTemplate.deliverablePartner dp=deliverablePartners[0] dp_name=params.partners.name dp_index=dp_index institutionList="deliverableTypes" isResponsable=true editable=editable /]
+          [@deliverableTemplate.deliverablePartner dp=responsiblePartner dp_name=params.responsiblePartner.name dp_index=dp_index institutionList="institutions" isResponsable=true editable=editable /]
         </div>
+        [#-- Other contact person that will contribute --]
         <div class="fullBlock">
           <p>[@s.text name="planning.projectDeliverable.indicateOtherContact" /]</p>
-          [#if deliverablePartners?has_content]
-            [#list deliverablePartners as dp] 
-              [@deliverableTemplate.deliverablePartner dp=dp dp_name=params.partners.name dp_index=dp_index institutionList="deliverableTypes" editable=editable /]
+          [#if otherPartners?has_content]
+            [#list otherPartners as dp]  
+              [@deliverableTemplate.deliverablePartner dp=dp dp_name=params.partners.name dp_index=dp_index institutionList="institutions" editable=editable /]
             [/#list]
           [/#if]
           [#if editable && canEdit]
@@ -161,7 +159,7 @@
 [@deliverableTemplate.nextUserTemplate template=true /]
 
 [#-- Deliverable Partner Template--]
-[@deliverableTemplate.deliverablePartner dp={} dp_name=params.partners.name dp_index=dp_index institutionList="deliverableTypes" template=true /]
+[@deliverableTemplate.deliverablePartner dp={} dp_name=params.partners.name dp_index=dp_index institutionList="institutions" template=true /]
 
 [#-- Search users Interface Popup --]
 [@usersForm.searchUsers isActive=false/]
