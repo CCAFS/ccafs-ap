@@ -61,9 +61,23 @@
       </div><!-- End Activities list -->
       [#-- Add activity button --]
       [#if editable && canEdit]
-        <div class="buttons">[@s.submit type="button" name="add"][@s.text name="planning.activities.button.add" /][/@s.submit]</div>
+        <div id="activities_add" class="addLink"><a href="" class="addButton">[@s.text name="planning.activities.button.add"/]</a></div>
       [/#if]
-      <input name="projectID" type="hidden" value="${projectID?c}" />
+      [#if editable]
+      <div class="borderBox">
+        [#-- Project identifier --]
+        <input name="projectID" type="hidden" value="${projectID?c}" />
+        [@customForm.textArea name="justification" i18nkey="saving.justification" required=true className="justification"/]
+        <div class="buttons">
+          [@s.submit type="button" name="save"][@s.text name="form.buttons.save" /][/@s.submit]
+          [@s.submit type="button" name="next"][@s.text name="form.buttons.next" /][/@s.submit]
+          [@s.submit type="button" name="cancel"][@s.text name="form.buttons.cancel" /][/@s.submit]
+        </div>
+      </div>
+    [#else]
+      [#-- Display Log History --]
+      [#if history??][@log.logList list=history /][/#if] 
+    [/#if]
     [/@s.form]  
     </article>
 </section>

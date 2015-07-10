@@ -1782,7 +1782,7 @@ width:10px;
     position: relative;
 }
 
-.midOutcomeTitle h6 {
+.midOutcomeTitle h6, h6.title{
   color: #0F7296;
   font-size: 1.3em;
   font-weight: normal;
@@ -2166,11 +2166,11 @@ table tr.row:hover{
 }
 
 .partnerBudget.row {
-    margin-bottom: 5px;
-    padding: 4px 0px 1px 19px;
+    /* margin-bottom: 5px; */
+    /* padding: 4px 0px 1px 19px; */
     border: 1px solid #CCD;
-    border-radius: 4px;
-    box-shadow: 0px 0px 4px #E5E5E5;
+    /* border-radius: 4px; */
+    /* box-shadow: 0px 0px 4px #E5E5E5; */
 }
 
 .budgetPartnerTitle {
@@ -2747,11 +2747,11 @@ aside[id*="-control"] .slidr-control:after {
   background:url('../../images/global/sprite-icons-activities.png') 0 -45px; 
 }
 button#activities_save{ 
-  background: url('../../images/global/sprite-icons-activities.png') 0 -67px no-repeat; 
-  border:none;
-  width: 100%;
-  color: #630;
-  font-size: 13px;
+  /* background: url('../../images/global/sprite-icons-activities.png') 0 -67px no-repeat; */ 
+  /* border:none; */
+  /* width: 100%; */
+  /* color: #630; */
+  /* font-size: 13px; */
 }
 #i-neutralActivity{ 
   background:url('../../images/global/sprite-icons-activities.png') 0 -90px; 

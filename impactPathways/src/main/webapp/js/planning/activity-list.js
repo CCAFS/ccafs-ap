@@ -12,6 +12,10 @@ function init() {
   setDatadatePicker();
   // Add events for activities section
   attachEvents();
+
+  validateEvent('[name=save], [name=next]', [
+    "#justification"
+  ]);
 }
 
 function attachEvents() {

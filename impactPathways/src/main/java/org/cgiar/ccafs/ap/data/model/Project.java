@@ -48,7 +48,9 @@ public class Project {
   private LiaisonInstitution liaisonInstitution; // Creator program. e.g. LAM, FP4, CU, etc.
   private boolean isGlobal;
   private boolean isCofinancing;
+
   private User owner;
+
   private List<ProjectPartner> projectPartners; // Project partners or 2-level partners.
   private List<ProjectPartner> ppaPartners; // PPA Partners or CCAFS Program Partners.
   private List<Deliverable> deliverables; // Project research outputs - deliverables.
@@ -338,6 +340,10 @@ public class Project {
 
   public User getOwner() {
     return owner;
+  }
+
+  public List<ProjectPartner> getPpaPartners() {
+    return ppaPartners;
   }
 
   public List<ProjectPartner> getPPAPartners() {
