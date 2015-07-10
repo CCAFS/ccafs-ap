@@ -18,6 +18,7 @@ import org.cgiar.ccafs.ap.config.APConstants;
 import org.cgiar.ccafs.ap.data.manager.DeliverableManager;
 import org.cgiar.ccafs.ap.data.manager.DeliverablePartnerManager;
 import org.cgiar.ccafs.ap.data.manager.DeliverableTypeManager;
+import org.cgiar.ccafs.ap.data.manager.HistoryManager;
 import org.cgiar.ccafs.ap.data.manager.IPElementManager;
 import org.cgiar.ccafs.ap.data.manager.NextUserManager;
 import org.cgiar.ccafs.ap.data.manager.ProjectManager;
@@ -60,6 +61,7 @@ public class ProjectDeliverableAction extends BaseAction {
   private NextUserManager nextUserManager;
   private ProjectPartnerManager projectPartnerManager;
   private IPElementManager ipElementManager;
+  private HistoryManager historyManager;
 
   // Model for the back-end
   private Deliverable deliverable;
@@ -78,7 +80,7 @@ public class ProjectDeliverableAction extends BaseAction {
   public ProjectDeliverableAction(APConfig config, ProjectManager projectManager,
     DeliverableManager deliverableManager, DeliverableTypeManager deliverableTypeManager,
     NextUserManager nextUserManager, DeliverablePartnerManager deliverablePartnerManager,
-    ProjectPartnerManager projectPartnerManager, IPElementManager ipElementManager) {
+    ProjectPartnerManager projectPartnerManager, IPElementManager ipElementManager, HistoryManager historyManager) {
     super(config);
     this.projectManager = projectManager;
     this.deliverableManager = deliverableManager;
@@ -87,6 +89,7 @@ public class ProjectDeliverableAction extends BaseAction {
     this.deliverablePartnerManager = deliverablePartnerManager;
     this.projectPartnerManager = projectPartnerManager;
     this.ipElementManager = ipElementManager;
+    this.historyManager = historyManager;
   }
 
 
@@ -169,6 +172,8 @@ public class ProjectDeliverableAction extends BaseAction {
     // Getting the other partners that are contributing to this deliverable.
     deliverable.setOtherPartners(deliverablePartnerManager.getDeliverablePartners(deliverableID,
       APConstants.DELIVERABLE_PARTNER_OTHER));
+
+    super.setHistory(historyManager.getProjectDeliverablesHistory(deliverableID));
 
     if (this.getRequest().getMethod().equalsIgnoreCase("post")) {
       // Clear out the list if it has some element

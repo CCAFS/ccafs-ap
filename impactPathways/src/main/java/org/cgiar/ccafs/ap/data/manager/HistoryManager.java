@@ -39,6 +39,15 @@ public interface HistoryManager {
   public List<LogHistory> getCCAFSOutcomesHistory(int projectID);
 
   /**
+   * This method return the last five changes made in the interface of project deliverables to the deliverable
+   * identified by the value received by parameter.
+   * 
+   * @param deliverableID
+   * @return
+   */
+  public List<LogHistory> getProjectDeliverablesHistory(int deliverableID);
+
+  /**
    * This method return the last five changes made in the interface of
    * project description to the project identified by the value received by parameter.
    * 
