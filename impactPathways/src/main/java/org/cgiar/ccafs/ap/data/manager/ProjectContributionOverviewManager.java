@@ -49,4 +49,14 @@ public interface ProjectContributionOverviewManager {
    * @return a DualMap with the format <year, output, overview>
    */
   public List<OutputOverview> getProjectContributionOverviews(Project project);
+
+  /**
+   * This method saves the output overviews contained in the project received by parameter.
+   * 
+   * @param project - Project that contains the output overviews to save.
+   * @param currentUser - User who is making the changes
+   * @param justification
+   * @return True if the information was saved successfully. False otherwise.
+   */
+  public boolean saveProjectContribution(Project project, User currentUser, String justification);
 }

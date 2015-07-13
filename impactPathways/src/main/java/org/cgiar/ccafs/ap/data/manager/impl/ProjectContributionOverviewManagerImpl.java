@@ -22,6 +22,7 @@ import org.cgiar.ccafs.ap.data.model.Project;
 import org.cgiar.ccafs.ap.data.model.User;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -67,5 +68,27 @@ public class ProjectContributionOverviewManagerImpl implements ProjectContributi
     }
 
     return outputOverviews;
+  }
+
+  @Override
+  public boolean saveProjectContribution(Project project, User user, String justification) {
+    boolean saved = true;
+    for (OutputOverview overview : project.getOutputsOverview()) {
+      Map<String, Object> values = new HashMap<>();
+      if (overview.getId() != -1) {
+        values.put("id", overview.getId());
+      } else {
+        values.put("id", null);
+      }
+
+      values.put("output_id", overview.getOutput().getId());
+      values.put("year", overview.getYear());
+      values.put("annual_contribution", overview.getExpectedAnnualContribution());
+      values.put("gender_contribution", overview.getSocialInclusionDimmension());
+
+      overviewDAO.saveProjectContribution(project.getId(), values, user.getId(), justification);
+    }
+
+    return false;
   }
 }

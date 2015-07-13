@@ -47,4 +47,17 @@ public interface ProjectContributionOverivewDAO {
    * @return a list of maps with the information.
    */
   public List<Map<String, String>> getProjectContributionOverviews(int projectID);
+
+  /**
+   * This method save into the database the outputs overview contained into the project identified by the value received
+   * by parameter.
+   * 
+   * @param projectID - Project identifier
+   * @param overviewData - Data of the ouput overview to be saved.
+   * @param userID - User identifier
+   * @param justification
+   * @return true if the information was saved succesfully. False otherwise.
+   */
+  public boolean saveProjectContribution(int projectID, Map<String, Object> overviewData, int userID,
+    String justification);
 }
