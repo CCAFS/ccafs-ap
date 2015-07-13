@@ -328,9 +328,9 @@ public class Project {
   }
 
   public OutputOverview getOutputOverview(int outputID, int year) {
-    for (OutputOverview output : outputsOverview) {
-      if (output.getId() == outputID && output.getYear() == year) {
-        return output;
+    for (OutputOverview overview : outputsOverview) {
+      if (overview.getOutput().getId() == outputID && overview.getYear() == year) {
+        return overview;
       }
     }
     return null;

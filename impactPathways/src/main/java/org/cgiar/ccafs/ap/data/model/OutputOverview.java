@@ -36,6 +36,15 @@ public class OutputOverview {
     this.id = id;
   }
 
+  @Override
+  public boolean equals(Object obj) {
+    if (obj instanceof OutputOverview) {
+      OutputOverview v = (OutputOverview) obj;
+      return v.id == this.id;
+    }
+    return false;
+  }
+
   public String getExpectedAnnualContribution() {
     return expectedAnnualContribution;
   }
@@ -54,6 +63,11 @@ public class OutputOverview {
 
   public int getYear() {
     return year;
+  }
+
+  @Override
+  public int hashCode() {
+    return this.id;
   }
 
   public void setExpectedAnnualContribution(String expectedAnnualContribution) {
