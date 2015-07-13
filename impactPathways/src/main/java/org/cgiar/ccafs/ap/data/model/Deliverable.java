@@ -41,6 +41,10 @@ public class Deliverable {
     super();
   }
 
+  public Deliverable(int id) {
+    this.id = id;
+  }
+
   @Override
   public boolean equals(Object obj) {
     if (obj instanceof Deliverable) {

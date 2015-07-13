@@ -75,19 +75,15 @@
                   <div class="locationIndex "><strong>${location_index+1}.</strong></div>
                   [#-- Type/Level --]
                   <div class="locationLevel grid_2 "> 
-                    [#if location.region]
-                      [@customForm.select name="regionsSaved[${location_index}].type.id" i18nkey="planning.project.locations.level" listName="locationTypes" keyFieldName="id"  displayFieldName="name" showTitle=false value="${regionTypeID}" disabled=!editable/]
-                    [#elseif location.country]
-                      [@customForm.select name="countriesSaved[${location_index}].type.id" i18nkey="planning.project.locations.level" listName="locationTypes" keyFieldName="id"  displayFieldName="name" showTitle=false value="${countryTypeID}" disabled=!editable/]
-                    [#elseif location.climateSmartVillage]
-                      [@customForm.select name="csvSaved[${location_index}].type.id" i18nkey="planning.project.locations.level" listName="locationTypes" keyFieldName="id"  displayFieldName="name" showTitle=false value="${climateSmartVillageTypeID}" disabled=!editable/]   
+                  [#assign valueType]
+                    [#if location.region]${regionTypeID}
+                    [#elseif location.country]${countryTypeID}
+                    [#elseif location.climateSmartVillage]${climateSmartVillageTypeID}
                     [#else]
-                      [#if location.type.id == ccafsSiteTypeID] 
-                        [@customForm.select name="type.id" i18nkey="planning.project.locations.level" listName="locationTypes" keyFieldName="id"  displayFieldName="name" showTitle=false value="${location.type.id}" disabled=!editable/]               
-                      [#else]
-                        [@customForm.select name="otherLocationsSaved[${location_index}].type.id" i18nkey="planning.project.locations.level" listName="locationTypes" keyFieldName="id"  displayFieldName="name" showTitle=false value="${location.type.id?c}" disabled=!editable/]
-                      [/#if]
+                      [#if location.type.id == ccafsSiteTypeID] ${location.type.id}[#else]${location.type.id?c}[/#if]
                     [/#if]
+                    [/#assign]
+                    [@customForm.select name="" i18nkey="planning.project.locations.level" listName="locationTypes" showTitle=false value="${valueType}" disabled=!editable/]
                   </div> 
                   [#-- Latitude --]
                   <div class="locationLatitude grid_2">
