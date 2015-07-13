@@ -14,6 +14,8 @@
 
 package org.cgiar.ccafs.ap.data.model;
 
+import org.apache.commons.lang3.builder.ToStringBuilder;
+
 
 /**
  * @author Hernán David Carvajal B. - CIAT/CCAFS
@@ -72,5 +74,10 @@ public class OutputOverview {
 
   public void setYear(int year) {
     this.year = year;
+  }
+
+  @Override
+  public String toString() {
+    return ToStringBuilder.reflectionToString(this);
   }
 }

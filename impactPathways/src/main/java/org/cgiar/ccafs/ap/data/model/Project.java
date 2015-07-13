@@ -327,6 +327,15 @@ public class Project {
     return outcomes;
   }
 
+  public OutputOverview getOutputOverview(int outputID, int year) {
+    for (OutputOverview output : outputsOverview) {
+      if (output.getId() == outputID && output.getYear() == year) {
+        return output;
+      }
+    }
+    return null;
+  }
+
   public List<IPElement> getOutputs() {
     return outputs;
   }
