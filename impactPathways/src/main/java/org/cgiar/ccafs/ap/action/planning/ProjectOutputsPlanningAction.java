@@ -20,9 +20,11 @@ import org.cgiar.ccafs.ap.data.manager.IPElementManager;
 import org.cgiar.ccafs.ap.data.manager.ProjectContributionOverviewManager;
 import org.cgiar.ccafs.ap.data.manager.ProjectManager;
 import org.cgiar.ccafs.ap.data.model.IPElement;
+import org.cgiar.ccafs.ap.data.model.OutputOverview;
 import org.cgiar.ccafs.ap.data.model.Project;
 import org.cgiar.ccafs.utils.APConfig;
 
+import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -50,6 +52,7 @@ public class ProjectOutputsPlanningAction extends BaseAction {
   // Model
   private Project project;
   private int projectID;
+  private List<OutputOverview> previousOverviews;
 
   @Inject
   public ProjectOutputsPlanningAction(APConfig config, ProjectManager projectManager,
@@ -104,10 +107,36 @@ public class ProjectOutputsPlanningAction extends BaseAction {
 
     // Get the project outputs from database
     project.setOutputsOverview(overviewManager.getProjectContributionOverviews(project));
+
+    // save previous output overviews
+    previousOverviews = new ArrayList<>();
+    for (OutputOverview output : project.getOutputsOverview()) {
+      previousOverviews.add(new OutputOverview(output.getId()));
+    }
+  }
+
+  @Override
+  public String save() {
+    boolean success = true;
+    if (securityContext.canUpdateProjectOverviewMOGs()) {
+
+      // Check if there are output overviews to delete
+      for (OutputOverview overview : previousOverviews) {
+        if (!project.getOutputsOverview().contains(overview)) {
+          success =
+            overviewManager.deleteProjectContributionOverview(overview.getId(), this.getCurrentUser(),
+              this.getJustification());
+        }
+      }
+
+      success =
+        success && overviewManager.saveProjectContribution(project, this.getCurrentUser(), this.getJustification());
+    }
+
+    return INPUT;
   }
 
   public void setProject(Project project) {
     this.project = project;
   }
-
 }

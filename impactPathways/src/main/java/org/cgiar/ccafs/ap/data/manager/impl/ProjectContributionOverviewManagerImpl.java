@@ -86,9 +86,9 @@ public class ProjectContributionOverviewManagerImpl implements ProjectContributi
       values.put("annual_contribution", overview.getExpectedAnnualContribution());
       values.put("gender_contribution", overview.getSocialInclusionDimmension());
 
-      overviewDAO.saveProjectContribution(project.getId(), values, user.getId(), justification);
+      saved = saved && overviewDAO.saveProjectContribution(project.getId(), values, user.getId(), justification);
     }
 
-    return false;
+    return saved;
   }
 }

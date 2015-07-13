@@ -91,10 +91,9 @@ public class MySQLProjectContributionOverivewDAO implements ProjectContributionO
   @Override
   public boolean saveProjectContribution(int projectID, Map<String, Object> overviewData, int userID,
     String justification) {
-    boolean saved = false;
     StringBuilder query = new StringBuilder();
-    query.append("INSERT INTO ip_project_contributions (id, project_id, output_id, year, anual_contribution, ");
-    query.append("gender_contribution, created_by, modified_by, modification_justification) ");
+    query.append("INSERT INTO ip_project_contribution_overviews (id, project_id, output_id, year, ");
+    query.append("anual_contribution, gender_contribution, created_by, modified_by, modification_justification) ");
     query.append("VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?) ");
     query.append("ON DUPLICATE KEY UPDATE annual_contribution = VALUES(annual_contribution), ");
     query.append("gender_contribution = VALUES(gender_contribution), is_active = TRUE ");
