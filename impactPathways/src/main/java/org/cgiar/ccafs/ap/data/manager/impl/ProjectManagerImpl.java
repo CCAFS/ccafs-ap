@@ -17,7 +17,6 @@ import org.cgiar.ccafs.ap.config.APConstants;
 import org.cgiar.ccafs.ap.data.dao.ProjectDAO;
 import org.cgiar.ccafs.ap.data.manager.BudgetManager;
 import org.cgiar.ccafs.ap.data.manager.IPProgramManager;
-import org.cgiar.ccafs.ap.data.manager.InstitutionManager;
 import org.cgiar.ccafs.ap.data.manager.LiaisonInstitutionManager;
 import org.cgiar.ccafs.ap.data.manager.ProjectManager;
 import org.cgiar.ccafs.ap.data.manager.UserManager;
@@ -56,18 +55,16 @@ public class ProjectManagerImpl implements ProjectManager {
   private ProjectDAO projectDAO;
   // Managers
   private UserManager userManager;
-  private InstitutionManager institutionManager;
   private IPProgramManager ipProgramManager;
   private BudgetManager budgetManager;
   private LiaisonInstitutionManager liaisonInstitutionManager;
 
 
   @Inject
-  public ProjectManagerImpl(ProjectDAO projectDAO, UserManager userManager, InstitutionManager institutionManager,
-    IPProgramManager ipProgramManager, BudgetManager budgetManager, LiaisonInstitutionManager liaisonInstitutionManager) {
+  public ProjectManagerImpl(ProjectDAO projectDAO, UserManager userManager, IPProgramManager ipProgramManager,
+    BudgetManager budgetManager, LiaisonInstitutionManager liaisonInstitutionManager) {
     this.projectDAO = projectDAO;
     this.userManager = userManager;
-    this.institutionManager = institutionManager;
     this.ipProgramManager = ipProgramManager;
     this.budgetManager = budgetManager;
     this.liaisonInstitutionManager = liaisonInstitutionManager;
@@ -332,32 +329,6 @@ public class ProjectManagerImpl implements ProjectManager {
     }
 
     return indicators;
-  }
-
-  @Override
-  // TODO - Move this method to a class called projectOutputManager
-    public
-    List<IPElement> getProjectOutputs(int projectID) {
-    List<IPElement> outputs = new ArrayList<>();
-    List<Map<String, String>> outputsData = projectDAO.getProjectOutputs(projectID);
-
-    for (Map<String, String> oData : outputsData) {
-      IPElement output = new IPElement();
-      output.setId(Integer.parseInt(oData.get("id")));
-      output.setDescription(oData.get("description"));
-
-      IPElement parent = new IPElement();
-      parent.setId(Integer.parseInt(oData.get("parent_id")));
-      parent.setDescription(oData.get("parent_description"));
-
-      List<IPElement> parentList = new ArrayList<>();
-      parentList.add(parent);
-      output.setContributesTo(parentList);
-
-      outputs.add(output);
-    }
-
-    return outputs;
   }
 
   @Override

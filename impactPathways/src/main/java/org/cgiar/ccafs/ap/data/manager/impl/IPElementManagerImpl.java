@@ -168,6 +168,12 @@ public class IPElementManagerImpl implements IPElementManager {
   }
 
   @Override
+  public List<IPElement> getProjectOutputs(int projectID) {
+    List<Map<String, String>> elementDataList = ipElementDAO.getProjectOutputs(projectID);
+    return this.setDataToIPElementObjects(elementDataList);
+  }
+
+  @Override
   public boolean saveIPElements(List<IPElement> elements, User user, String justification) {
     Map<String, Object> ipElementData;
     boolean allSaved = true;

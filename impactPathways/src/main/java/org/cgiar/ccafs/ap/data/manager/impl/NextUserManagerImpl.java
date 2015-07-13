@@ -16,6 +16,7 @@ package org.cgiar.ccafs.ap.data.manager.impl;
 import org.cgiar.ccafs.ap.data.dao.NextUserDAO;
 import org.cgiar.ccafs.ap.data.manager.NextUserManager;
 import org.cgiar.ccafs.ap.data.model.NextUser;
+import org.cgiar.ccafs.ap.data.model.User;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -28,6 +29,7 @@ import org.slf4j.LoggerFactory;
 
 /**
  * @author Javier Andrés Gallego
+ * @author Héctor Fabio Tobón R. - CIAT/CCAFS
  */
 public class NextUserManagerImpl implements NextUserManager {
 
@@ -46,13 +48,13 @@ public class NextUserManagerImpl implements NextUserManager {
   }
 
   @Override
-  public boolean deleteNextUserByDeliverable(int deliverableID) {
-    return nextUserDAO.deleteNextUsersByDeliverableId(deliverableID);
+  public boolean deleteNextUserByDeliverable(int deliverableID, User user, String justification) {
+    return nextUserDAO.deleteNextUsersByDeliverableId(deliverableID, user.getId(), justification);
   }
 
   @Override
-  public boolean deleteNextUserById(int nextUserId) {
-    return nextUserDAO.deleteNextUserById(nextUserId);
+  public boolean deleteNextUserById(int nextUserId, User user, String justification) {
+    return nextUserDAO.deleteNextUserById(nextUserId, user.getId(), justification);
   }
 
   @Override
@@ -89,7 +91,7 @@ public class NextUserManagerImpl implements NextUserManager {
   }
 
   @Override
-  public boolean saveNextUser(int deliverableID, NextUser nextUser) {
+  public boolean saveNextUser(int deliverableID, NextUser nextUser, User user, String justification) {
 
     boolean allSaved = true;
     Map<String, Object> nextUserData = new HashMap<>();
@@ -97,10 +99,14 @@ public class NextUserManagerImpl implements NextUserManager {
       nextUserData.put("id", nextUser.getId());
     } else {
       nextUserData.put("id", null);
+      nextUserData.put("created_by", user.getId());
     }
     nextUserData.put("user", nextUser.getUser());
     nextUserData.put("expected_changes", nextUser.getExpectedChanges());
     nextUserData.put("strategies", nextUser.getStrategies());
+    // Logs
+    nextUserData.put("modified_by", user.getId());
+    nextUserData.put("modification_justification", justification);
 
     int result = nextUserDAO.saveNextUser(deliverableID, nextUserData);
 
@@ -116,6 +122,19 @@ public class NextUserManagerImpl implements NextUserManager {
 
     return allSaved;
 
+  }
+
+  @Override
+  public boolean saveNextUsers(int deliverableID, List<NextUser> nextUsers, User currentUser, String justification) {
+    boolean success = true;
+    boolean saved;
+    for (NextUser nextUser : nextUsers) {
+      saved = this.saveNextUser(deliverableID, nextUser, currentUser, justification);
+      if (!saved) {
+        success = false;
+      }
+    }
+    return success;
   }
 
 }
