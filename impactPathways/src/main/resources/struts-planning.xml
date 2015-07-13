@@ -202,6 +202,15 @@
       <result name="input">/WEB-INF/planning/projectDeliverablesListPlanning.ftl</result>
     </action>
     
+    <action name="addNewDeliverable" method="add" class="org.cgiar.ccafs.ap.action.planning.ProjectDeliverablesListAction">
+      <result name="input">/WEB-INF/planning/projectDeliverablesListPlanning.ftl</result>
+      <result name="success" type="redirectAction">
+        <param name="namespace">/planning/projects</param>
+        <param name="actionName">deliverable</param>
+        <param name="deliverableID">${deliverable.id}</param>
+      </result>
+    </action>
+    
     <action name="deliverable" class="org.cgiar.ccafs.ap.action.planning.ProjectDeliverableAction">
       <interceptor-ref name="planningStackDeliverables" />
       <result name="input">/WEB-INF/planning/projectDeliverablePlanning.ftl</result>
@@ -221,7 +230,7 @@
     </action>
 
     <action name="impactPathway" class="org.cgiar.ccafs.ap.action.planning.ProjectImpactPathwayAction">
-      <result name="input">/WEB-INF/planning/projectImpactPathwayPlanning.ftl</result>   
+      <result name="input">/WEB-INF/planning/projectImpactPathwayPlanning.ftl</result>
       <result name="success" type="redirectAction">   
         <param name="actionName">impactPathway</param>    
         <param name="projectID">${project.id}</param>   

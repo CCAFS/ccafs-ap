@@ -237,13 +237,13 @@ public class ProjectDeliverableAction extends BaseAction {
       }
     } else
       if (deliverable.getResponsiblePartner().getInstitution() == null
-        && deliverable.getResponsiblePartner().getUser() == null) {
-      saved = deliverablePartnerManager.deleteDeliverablePartner(deliverable.getResponsiblePartner().getId(),
-        this.getCurrentUser(), this.getJustification());
-      if (!saved) {
-        success = false;
+      && deliverable.getResponsiblePartner().getUser() == null) {
+        saved = deliverablePartnerManager.deleteDeliverablePartner(deliverable.getResponsiblePartner().getId(),
+          this.getCurrentUser(), this.getJustification());
+        if (!saved) {
+          success = false;
+        }
       }
-    }
 
     // Saving other contributions
 
@@ -319,6 +319,7 @@ public class ProjectDeliverableAction extends BaseAction {
       }
     }
 
+    // Adding general error.
     if (problem) {
       this.addActionError(this.getText("saving.fields.required"));
     }
