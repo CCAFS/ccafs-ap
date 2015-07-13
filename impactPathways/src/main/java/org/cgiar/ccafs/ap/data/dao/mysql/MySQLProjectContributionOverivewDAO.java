@@ -45,6 +45,16 @@ public class MySQLProjectContributionOverivewDAO implements ProjectContributionO
   }
 
   @Override
+  public boolean deleteProjectContributionOverview(int outputOverviewID, int userID, String justification) {
+    String query = "UPDATE ip_project_contribution_overviews SET is_active = FALSE, ";
+    query += "modified_by = ?, modification_justification = ? ";
+    query += "WHERE id = ?";
+
+    int result = daoManager.delete(query, new String[] {userID + "", justification, outputOverviewID + ""});
+    return (result != -1);
+  }
+
+  @Override
   public List<Map<String, String>> getProjectContributionOverviews(int projectID) {
     List<Map<String, String>> overviewsData = new ArrayList<>();
     StringBuilder query = new StringBuilder();

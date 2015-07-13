@@ -17,6 +17,7 @@ package org.cgiar.ccafs.ap.data.manager;
 import org.cgiar.ccafs.ap.data.manager.impl.ProjectContributionOverviewManagerImpl;
 import org.cgiar.ccafs.ap.data.model.OutputOverview;
 import org.cgiar.ccafs.ap.data.model.Project;
+import org.cgiar.ccafs.ap.data.model.User;
 
 import java.util.List;
 
@@ -29,6 +30,16 @@ import com.google.inject.ImplementedBy;
 
 @ImplementedBy(ProjectContributionOverviewManagerImpl.class)
 public interface ProjectContributionOverviewManager {
+
+  /**
+   * This method deletes a contribution overview made by a project to some output.
+   * 
+   * @param outputOverviewID - output overview identifier
+   * @param user - The user who is making the change
+   * @param justification - Justification of the change
+   * @return True if the relation was deleted successfully. False otherwise.
+   */
+  public boolean deleteProjectContributionOverview(int outputOverviewID, User user, String justification);
 
   /**
    * This method returns the description made for each output linked to the project identified by the value received

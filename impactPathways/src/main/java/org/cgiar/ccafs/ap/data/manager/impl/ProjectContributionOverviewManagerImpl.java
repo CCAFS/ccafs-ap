@@ -19,6 +19,7 @@ import org.cgiar.ccafs.ap.data.manager.ProjectContributionOverviewManager;
 import org.cgiar.ccafs.ap.data.model.IPElement;
 import org.cgiar.ccafs.ap.data.model.OutputOverview;
 import org.cgiar.ccafs.ap.data.model.Project;
+import org.cgiar.ccafs.ap.data.model.User;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -38,6 +39,11 @@ public class ProjectContributionOverviewManagerImpl implements ProjectContributi
   @Inject
   public ProjectContributionOverviewManagerImpl(ProjectContributionOverivewDAO overviewDAO) {
     this.overviewDAO = overviewDAO;
+  }
+
+  @Override
+  public boolean deleteProjectContributionOverview(int outputOverviewID, User user, String justification) {
+    return overviewDAO.deleteProjectContributionOverview(outputOverviewID, user.getId(), justification);
   }
 
   @Override
