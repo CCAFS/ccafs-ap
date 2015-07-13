@@ -41,7 +41,7 @@
       [#if (!editable && canEdit)]
         <div class="editButton"><a href="[@s.url includeParams='get'][@s.param name="edit"]true[/@s.param][/@s.url]">[@s.text name="form.buttons.edit" /]</a></div>
       [/#if]  
-      
+
       [#assign years= [midOutcomeYear, currentPlanningYear, currentPlanningYear+1] /]
       [#if project.outputs?has_content]
         [#list years as year]  
@@ -50,16 +50,22 @@
             [#-- Title --]
             <div class="midOutcomeTitle"><h6 class="title">[@s.text name="planning.projectImpactPathways.mogs" /] - ${year}</h6></div>
               [#list project.outputs as output]
+                [#assign index = (year_index * project.outputs?size)+output_index /] 
+                [#assign outputOverview = project.getOutputOverview(output.id, year)! /]
                 <div class="mog fullBlock clearfix">
+                  [#-- Hidden values --]
+                  <input type="hidden" name="project.outputsOverview[${index}].id" value="${outputOverview.id!"-1"}" />
+                  <input type="hidden" name="project.outputsOverview[${index}].year" value="${year}" />
+                  <input type="hidden" name="project.outputsOverview[${index}].output.id" value="${output.id}" />
                   <div class="fullPartBlock">
                     <p class="checked">${output.program.acronym} - MOG #${action.getMOGIndex(output)}: ${output.description} </p>
                   </div>
                   <div class="fullBlock">
                     <h6>[@customForm.text name="planning.projectOutputs.expectedBulletPoints" readText=!editable param="${year}" /]</h6>  
-                    [@customForm.textArea name="" i18nkey="planning.projectOutputs.expectedBulletPoints" required=true showTitle=false editable=editable /]
+                    [@customForm.textArea name="project.outputsOverview[${index}].expectedAnnualContribution" value=outputOverview.expectedAnnualContribution!"" i18nkey="planning.projectOutputs.expectedBulletPoints" required=true showTitle=false editable=editable /]
                   </div>
                   <div class="fullBlock">
-                    [@customForm.textArea name="" i18nkey="planning.projectOutputs.expectedSocialAndGenderPlan" required=true editable=editable /]
+                    [@customForm.textArea name="project.outputsOverview[${index}].socialInclusionDimmension" value=outputOverview.socialInclusionDimmension!"" i18nkey="planning.projectOutputs.expectedSocialAndGenderPlan" required=true editable=editable /]
                   </div> 
                 </div>
               [/#list] [#-- End Outcomes 2019 list --] 
