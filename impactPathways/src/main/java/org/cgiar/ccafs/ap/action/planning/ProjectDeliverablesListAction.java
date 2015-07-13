@@ -95,6 +95,10 @@ public class ProjectDeliverablesListAction extends BaseAction {
     return projectID;
   }
 
+  public String getProjectRequestID() {
+    return APConstants.PROJECT_REQUEST_ID;
+  }
+
   @Override
   public String next() {
     String result = this.save();
