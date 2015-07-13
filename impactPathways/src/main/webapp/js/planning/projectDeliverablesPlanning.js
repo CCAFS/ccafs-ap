@@ -1,6 +1,7 @@
 // Limits for textarea input
 var lWordsElemetDesc = 300;
 var $deliverablesTypes, $deliverablesSubTypes;
+var hashRegenerated = false;
 
 $(document).ready(init);
 
@@ -15,6 +16,7 @@ function init() {
   validateEvent('[name=save], [name=next]', [
     "#justification"
   ]);
+
 }
 
 function attachEvents() {
@@ -101,6 +103,11 @@ function updateDeliverableSubTypeList(event) {
     });
     // Refresh the plugin in order to show the changes
     $subTypeSelect.trigger("liszt:updated");
+    // Regenerating hash from form information
+    if(!hashRegenerated) {
+      formBefore = getHash($('form [id!="justification"]').serialize());
+      hashRegenerated = true;
+    }
   }).fail(function() {
     console.log("error");
   });

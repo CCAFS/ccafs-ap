@@ -57,15 +57,18 @@
         <div class="searchUser">[@s.text name="form.buttons.searchUser" /]</div>
       </div>
     [#else] 
+      [#assign institutionId][#if dp.institution??]${dp.institution.id}[#else]-1[/#if][/#assign]
       [#-- Partner Institution Name --]
       <div class="fullPartBlock partnerName chosen">
-        [@customForm.select name="${customName}.institution" value="${dp.institution.id}" label="" className="institution" i18nkey="preplanning.projectPartners.partner.name" listName=institutionList keyFieldName="id"  displayFieldName="name" editable=editable /]
+        [@customForm.select name="${customName}.institution" value="${institutionId}" label="" className="institution" i18nkey="preplanning.projectPartners.partner.name" listName=institutionList keyFieldName="id"  displayFieldName="name" editable=editable /]
       </div>
       [#-- Contact Person --] 
       <div class="fullPartBlock clearfix">
         <input class="id" type="hidden" name="${customName}.id" value="${dp.id}">
-        <input class="userId" type="hidden" name="${customName}.user" value="${dp.user.id}">   
-        [@customForm.input name="" value="${dp.user.composedName?html}" className="userName" type="text" disabled=!canEdit i18nkey="preplanning.projectPartners.contactPersonEmail" required=true readOnly=true editable=editable/]
+        [#assign userId][#if dp.user??]${dp.user.id}[#else]-1[/#if][/#assign]
+        <input class="userId" type="hidden" name="${customName}.user" value="${userId}">   
+        [#assign userName][#if dp.user??]${dp.user.composedName?html}[/#if][/#assign]
+        [@customForm.input name="" value="${userName}" className="userName" type="text" disabled=!canEdit i18nkey="preplanning.projectPartners.contactPersonEmail" required=true readOnly=true editable=editable/]
         [#if editable]<div class="searchUser">[@s.text name="form.buttons.searchUser" /]</div>[/#if] 
       </div> 
     [/#if] 

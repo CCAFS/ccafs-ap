@@ -416,6 +416,10 @@ public class Project {
     return isCofinancing;
   }
 
+  public boolean isCoFundedProject() {
+    return (type != null) ? type.equals(APConstants.PROJECT_CCAFS_COFUNDED) : false;
+  }
+
   public boolean isCoreProject() {
     return (type != null) ? type.equals(APConstants.PROJECT_CORE) : false;
   }
