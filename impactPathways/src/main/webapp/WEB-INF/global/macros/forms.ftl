@@ -124,7 +124,7 @@
   </div>
 [/#macro]
 
-[#macro select name listName label="" keyFieldName="id" displayFieldName="name" value="-NULL" i18nkey="" disabled=false required=false errorField="" selected=false className="" multiple=false help="" headerKey="" headerValue="" display=true showTitle=true addButton=false editable=true]
+[#macro select name listName label="" keyFieldName="" displayFieldName="" value="-NULL" i18nkey="" disabled=false required=false errorField="" selected=false className="" multiple=false help="" headerKey="" headerValue="" display=true showTitle=true addButton=false editable=true]
   <div class="select[#if addButton] button[/#if]" [#if !display]style="display: none;"[/#if]>
     [#assign placeholderText][@s.text name="form.select.placeholder" /][/#assign]
     [#if showTitle]
