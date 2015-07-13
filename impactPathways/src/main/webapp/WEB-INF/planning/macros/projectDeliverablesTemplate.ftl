@@ -43,6 +43,7 @@
     [/#if]
     [#if !isResponsable]<span class="index">${dp_index+1}</span>[/#if]
     [#assign customName]${dp_name}[#if !isResponsable][${dp_index}][/#if][/#assign]
+    <input class="type" type="hidden" name="${customName}.type" value="${isResponsable?string('Resp','Other')}">
     [#if template]
       [#-- Partner Institution Name --]
       <div class="fullPartBlock partnerName chosen"> 
@@ -63,7 +64,6 @@
       [#-- Contact Person --] 
       <div class="fullPartBlock clearfix">
         <input class="id" type="hidden" name="${customName}.id" value="${dp.id}">
-        <input class="type" type="hidden" name="${customName}.type" value="${isResponsable?string('Resp','Other')}">
         <input class="userId" type="hidden" name="${customName}.user" value="${dp.user.id}">   
         [@customForm.input name="" value="${dp.user.composedName?html}" className="userName" type="text" disabled=!canEdit i18nkey="preplanning.projectPartners.contactPersonEmail" required=true readOnly=true editable=editable/]
         [#if editable]<div class="searchUser">[@s.text name="form.buttons.searchUser" /]</div>[/#if] 

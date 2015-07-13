@@ -77,10 +77,10 @@ public class ProjectDeliverableAction extends BaseAction {
 
 
   @Inject
-  public ProjectDeliverableAction(APConfig config, ProjectManager projectManager,
-    DeliverableManager deliverableManager, DeliverableTypeManager deliverableTypeManager,
-    NextUserManager nextUserManager, DeliverablePartnerManager deliverablePartnerManager,
-    ProjectPartnerManager projectPartnerManager, IPElementManager ipElementManager, HistoryManager historyManager) {
+  public ProjectDeliverableAction(APConfig config, ProjectManager projectManager, DeliverableManager deliverableManager,
+    DeliverableTypeManager deliverableTypeManager, NextUserManager nextUserManager,
+    DeliverablePartnerManager deliverablePartnerManager, ProjectPartnerManager projectPartnerManager,
+    IPElementManager ipElementManager, HistoryManager historyManager) {
     super(config);
     this.projectManager = projectManager;
     this.deliverableManager = deliverableManager;
@@ -170,8 +170,8 @@ public class ProjectDeliverableAction extends BaseAction {
     }
 
     // Getting the other partners that are contributing to this deliverable.
-    deliverable.setOtherPartners(deliverablePartnerManager.getDeliverablePartners(deliverableID,
-      APConstants.DELIVERABLE_PARTNER_OTHER));
+    deliverable.setOtherPartners(
+      deliverablePartnerManager.getDeliverablePartners(deliverableID, APConstants.DELIVERABLE_PARTNER_OTHER));
 
     super.setHistory(historyManager.getProjectDeliverablesHistory(deliverableID));
 
@@ -219,9 +219,8 @@ public class ProjectDeliverableAction extends BaseAction {
     }
 
     // Saving new and old Next Users
-    boolean saved =
-      nextUserManager.saveNextUsers(deliverableID, deliverable.getNextUsers(), this.getCurrentUser(),
-        this.getJustification());
+    boolean saved = nextUserManager.saveNextUsers(deliverableID, deliverable.getNextUsers(), this.getCurrentUser(),
+      this.getJustification());
 
     if (!saved) {
       success = false;
@@ -231,17 +230,16 @@ public class ProjectDeliverableAction extends BaseAction {
 
     // Saving responsible deliverable partner
     if (deliverable.getResponsiblePartner() != null && deliverable.getResponsiblePartner().getInstitution() != null) {
-      result =
-        deliverablePartnerManager.saveDeliverablePartner(deliverableID, deliverable.getResponsiblePartner(),
-          this.getCurrentUser(), this.getJustification());
+      result = deliverablePartnerManager.saveDeliverablePartner(deliverableID, deliverable.getResponsiblePartner(),
+        this.getCurrentUser(), this.getJustification());
       if (result < 0) {
         success = false;
       }
-    } else if (deliverable.getResponsiblePartner().getInstitution() == null
-      && deliverable.getResponsiblePartner().getUser() == null) {
-      saved =
-        deliverablePartnerManager.deleteDeliverablePartner(deliverable.getResponsiblePartner().getId(),
-          this.getCurrentUser(), this.getJustification());
+    } else
+      if (deliverable.getResponsiblePartner().getInstitution() == null
+        && deliverable.getResponsiblePartner().getUser() == null) {
+      saved = deliverablePartnerManager.deleteDeliverablePartner(deliverable.getResponsiblePartner().getId(),
+        this.getCurrentUser(), this.getJustification());
       if (!saved) {
         success = false;
       }
@@ -291,5 +289,38 @@ public class ProjectDeliverableAction extends BaseAction {
   @Override
   public void validate() {
     super.validate();
+    boolean problem = false;
+
+    // Validating that some sub-type is selected.
+    if (deliverable.getType() == null) {
+      // Indicate problem in the missing field.
+      this.addFieldError("deliverable.type", this.getText("validation.field.required"));
+      problem = true;
+    }
+
+    // Validating that some year is selected.
+    if (deliverable.getYear() == -1) {
+      // Indicate problem in the missing field.
+      this.addFieldError("deliverable.year", this.getText("validation.field.required"));
+      problem = true;
+    }
+
+    // Validating institutions in the partnerships section as they are required.
+    if (deliverable.getResponsiblePartner() != null && deliverable.getResponsiblePartner().getInstitution() == null) {
+      this.addFieldError("deliverable.responsiblePartner.institution", this.getText("validation.field.required"));
+      problem = true;
+    }
+
+    for (int c = 0; c < deliverable.getOtherPartners().size(); c++) {
+      if (deliverable.getOtherPartners().get(c).getInstitution() == null) {
+        this.addFieldError("deliverable.otherPartners[" + c + "].institution",
+          this.getText("validation.field.required"));
+        problem = true;
+      }
+    }
+
+    if (problem) {
+      this.addActionError(this.getText("saving.fields.required"));
+    }
   }
 }
