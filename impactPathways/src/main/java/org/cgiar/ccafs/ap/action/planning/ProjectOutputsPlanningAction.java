@@ -16,6 +16,7 @@ package org.cgiar.ccafs.ap.action.planning;
 
 import org.cgiar.ccafs.ap.action.BaseAction;
 import org.cgiar.ccafs.ap.config.APConstants;
+import org.cgiar.ccafs.ap.data.manager.HistoryManager;
 import org.cgiar.ccafs.ap.data.manager.IPElementManager;
 import org.cgiar.ccafs.ap.data.manager.ProjectContributionOverviewManager;
 import org.cgiar.ccafs.ap.data.manager.ProjectManager;
@@ -26,6 +27,7 @@ import org.cgiar.ccafs.ap.validation.planning.ProjectOutputsPlanningValidator;
 import org.cgiar.ccafs.utils.APConfig;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -49,7 +51,7 @@ public class ProjectOutputsPlanningAction extends BaseAction {
   private ProjectManager projectManager;
   private ProjectContributionOverviewManager overviewManager;
   private IPElementManager ipElementManager;
-
+  private HistoryManager historyManager;
 
   // Model
   private Project project;
@@ -61,11 +63,12 @@ public class ProjectOutputsPlanningAction extends BaseAction {
   @Inject
   public ProjectOutputsPlanningAction(APConfig config, ProjectManager projectManager,
     ProjectContributionOverviewManager overviewManager, IPElementManager ipElementManager,
-    ProjectOutputsPlanningValidator validator) {
+    HistoryManager historyManager, ProjectOutputsPlanningValidator validator) {
     super(config);
     this.projectManager = projectManager;
     this.overviewManager = overviewManager;
     this.ipElementManager = ipElementManager;
+    this.historyManager = historyManager;
     this.validator = validator;
   }
 
@@ -119,6 +122,8 @@ public class ProjectOutputsPlanningAction extends BaseAction {
     for (OutputOverview output : project.getOutputsOverview()) {
       previousOverviews.add(new OutputOverview(output.getId()));
     }
+
+    this.setHistory(historyManager.getProjectOutputsHistory(projectID));
   }
 
   @Override
@@ -137,9 +142,26 @@ public class ProjectOutputsPlanningAction extends BaseAction {
 
       success =
         success && overviewManager.saveProjectContribution(project, this.getCurrentUser(), this.getJustification());
+
+      if (success) {
+        // Get the validation messages and append them to the save message
+        Collection<String> messages = this.getActionMessages();
+        if (!messages.isEmpty()) {
+          String validationMessage = messages.iterator().next();
+          this.setActionMessages(null);
+          this.addActionWarning(this.getText("saving.saved") + validationMessage);
+        } else {
+          this.addActionMessage(this.getText("saving.saved"));
+        }
+        return SUCCESS;
+      } else {
+        this.addActionError(this.getText("saving.problem"));
+        LOG.warn("There was a problem saving the project outputs planning.");
+        return BaseAction.INPUT;
+      }
     }
 
-    return SUCCESS;
+    return NOT_AUTHORIZED;
   }
 
   public void setProject(Project project) {
