@@ -22,6 +22,7 @@ import org.cgiar.ccafs.ap.data.manager.ProjectManager;
 import org.cgiar.ccafs.ap.data.model.IPElement;
 import org.cgiar.ccafs.ap.data.model.OutputOverview;
 import org.cgiar.ccafs.ap.data.model.Project;
+import org.cgiar.ccafs.ap.validation.planning.ProjectOutputsPlanningValidator;
 import org.cgiar.ccafs.utils.APConfig;
 
 import java.util.ArrayList;
@@ -49,18 +50,23 @@ public class ProjectOutputsPlanningAction extends BaseAction {
   private ProjectContributionOverviewManager overviewManager;
   private IPElementManager ipElementManager;
 
+
   // Model
   private Project project;
   private int projectID;
   private List<OutputOverview> previousOverviews;
 
+  private ProjectOutputsPlanningValidator validator;
+
   @Inject
   public ProjectOutputsPlanningAction(APConfig config, ProjectManager projectManager,
-    ProjectContributionOverviewManager overviewManager, IPElementManager ipElementManager) {
+    ProjectContributionOverviewManager overviewManager, IPElementManager ipElementManager,
+    ProjectOutputsPlanningValidator validator) {
     super(config);
     this.projectManager = projectManager;
     this.overviewManager = overviewManager;
     this.ipElementManager = ipElementManager;
+    this.validator = validator;
   }
 
   public int getCurrentPlanningYear() {
@@ -142,7 +148,8 @@ public class ProjectOutputsPlanningAction extends BaseAction {
 
   @Override
   public void validate() {
-    // TODO Auto-generated method stub
-    super.validate();
+    if (save) {
+      validator.validate(this, project);
+    }
   }
 }

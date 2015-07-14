@@ -327,6 +327,17 @@ public class Project {
     return outcomes;
   }
 
+  public IPElement getOutput(int outputID) {
+    if (outputs != null) {
+      for (IPElement output : outputs) {
+        if (output.getId() == outputID) {
+          return output;
+        }
+      }
+    }
+    return null;
+  }
+
   public OutputOverview getOutputOverview(int outputID, int year) {
     for (OutputOverview overview : outputsOverview) {
       if (overview.getOutput().getId() == outputID && overview.getYear() == year) {
