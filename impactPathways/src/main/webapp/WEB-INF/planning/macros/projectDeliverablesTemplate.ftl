@@ -16,16 +16,17 @@
         [#assign dlurl][@s.url namespace=namespace action='deliverable' ][@s.param name='deliverableID']${dl.id}[/@s.param][/@s.url][/#assign]
         <tr>
           <td class="id" ><a href="${dlurl}">${dl.id}</a></td> 
-          <td class="name"><a href="${dlurl}">${dl.title}</a></td>
+          <td class="name"><a href="${dlurl}">${dl.title!}</a></td>
           <td class="type"><a href="${dlurl}">${dl.type.name}</a></td> 
           <td class="year"><a href="${dlurl}">${dl.year}</a></td> 
           <td class="removeDeliverable">
-            [#if true ]
+            [#if action.canDelete(dl.id)]
               <a href="[@s.url action='deleteDeliverable' includeParams='get' namespace='/planning/projects' /]" title="" class="removeDeliverable">
                 <img src="${baseUrl}/images/global/trash.png" title="[@s.text name="preplanning.projects.deleteProject" /]" /> 
               </a>
-            [#else]
+            [#-- else]
               <img src="${baseUrl}/images/global/trash_disable.png" title="[@s.text name="preplanning.projects.cantDeleteDeliverable" /]" />
+            [/#if --]
             [/#if]
           </td> 
         </tr> 

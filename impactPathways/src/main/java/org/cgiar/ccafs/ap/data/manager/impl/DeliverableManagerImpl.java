@@ -33,6 +33,7 @@ import org.slf4j.LoggerFactory;
 
 /**
  * @author Javier Andrés Gallego
+ * @author Héctor Fabio Tobón R. - CIAT/CCAFS
  */
 public class DeliverableManagerImpl implements DeliverableManager {
 
@@ -83,10 +84,11 @@ public class DeliverableManagerImpl implements DeliverableManager {
       deliverable.setTitle(deliverableData.get("title"));
       deliverable.setYear(Integer.parseInt(deliverableData.get("year")));
       deliverable
-      .setType(deliverableTypeManager.getDeliverableTypeById(Integer.parseInt(deliverableData.get("type_id"))));
+        .setType(deliverableTypeManager.getDeliverableTypeById(Integer.parseInt(deliverableData.get("type_id"))));
       deliverable.setTypeOther(deliverableData.get("type_other"));
       deliverable.setNextUsers(nextUserManager.getNextUsersByDeliverableId(deliverableID));
       deliverable.setOutput(this.getDeliverableOutput(deliverableID));
+      deliverable.setCreated(Long.parseLong(deliverableData.get("active_since")));
       return deliverable;
     }
     return null;
@@ -114,10 +116,11 @@ public class DeliverableManagerImpl implements DeliverableManager {
       deliverable.setTitle(deliverableData.get("title"));
       deliverable.setYear(Integer.parseInt(deliverableData.get("year")));
       deliverable
-        .setType(deliverableTypeManager.getDeliverableTypeById(Integer.parseInt(deliverableData.get("type_id"))));
+      .setType(deliverableTypeManager.getDeliverableTypeById(Integer.parseInt(deliverableData.get("type_id"))));
       deliverable.setTypeOther(deliverableData.get("type_other"));
       deliverable.setNextUsers(nextUserManager.getNextUsersByDeliverableId(projectID));
       deliverable.setOutput(this.getDeliverableOutput(Integer.parseInt(deliverableData.get("id"))));
+      deliverable.setCreated(Long.parseLong(deliverableData.get("active_since")));
       // adding information of the object to the array
       deliverableList.add(deliverable);
     }
