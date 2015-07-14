@@ -19,8 +19,10 @@ import org.cgiar.ccafs.ap.data.manager.ProjectContributionOverviewManager;
 import org.cgiar.ccafs.ap.data.model.IPElement;
 import org.cgiar.ccafs.ap.data.model.OutputOverview;
 import org.cgiar.ccafs.ap.data.model.Project;
-import org.cgiar.ccafs.ap.util.DualMap;
+import org.cgiar.ccafs.ap.data.model.User;
 
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -41,28 +43,52 @@ public class ProjectContributionOverviewManagerImpl implements ProjectContributi
   }
 
   @Override
-  public DualMap<Integer, IPElement, OutputOverview> getProjectContributionOverviews(Project project) {
-    DualMap<Integer, IPElement, OutputOverview> outputOverviews = new DualMap();
+  public boolean deleteProjectContributionOverview(int outputOverviewID, User user, String justification) {
+    return overviewDAO.deleteProjectContributionOverview(outputOverviewID, user.getId(), justification);
+  }
+
+  @Override
+  public List<OutputOverview> getProjectContributionOverviews(Project project) {
+    List<OutputOverview> outputOverviews = new ArrayList<>();
     List<Map<String, String>> overviewsData = overviewDAO.getProjectContributionOverviews(project.getId());
 
     for (Map<String, String> overviewData : overviewsData) {
+      OutputOverview overview = new OutputOverview();
+      overview.setId(Integer.parseInt(overviewData.get("id")));
+      overview.setExpectedAnnualContribution(overviewData.get("annual_contribution"));
+      overview.setSocialInclusionDimmension(overviewData.get("gender_contribution"));
+
       IPElement output = new IPElement();
       output.setId(Integer.parseInt(overviewData.get("output_id")));
       output.setDescription(overviewData.get("output_description"));
+      overview.setOutput(output);
+      overview.setYear(Integer.parseInt(overviewData.get("year")));
 
-
-      OutputOverview overview = new OutputOverview(-1);
-      if (overviewData.get("id") != null) {
-        overview.setId(Integer.parseInt(overviewData.get("id")));
-        overview.setExpectedAnnualContribution(overviewData.get("annual_contribution"));
-        overview.setSocialInclusionDimmension(overviewData.get("gender_contribution"));
-      }
-
-      Integer year = new Integer(overviewData.get("year"));
-
-      outputOverviews.put(year, output, overview);
+      outputOverviews.add(overview);
     }
 
     return outputOverviews;
+  }
+
+  @Override
+  public boolean saveProjectContribution(Project project, User user, String justification) {
+    boolean saved = true;
+    for (OutputOverview overview : project.getOutputsOverview()) {
+      Map<String, Object> values = new HashMap<>();
+      if (overview.getId() != -1) {
+        values.put("id", overview.getId());
+      } else {
+        values.put("id", null);
+      }
+
+      values.put("output_id", overview.getOutput().getId());
+      values.put("year", overview.getYear());
+      values.put("annual_contribution", overview.getExpectedAnnualContribution());
+      values.put("gender_contribution", overview.getSocialInclusionDimmension());
+
+      saved = saved && overviewDAO.saveProjectContribution(project.getId(), values, user.getId(), justification);
+    }
+
+    return saved;
   }
 }

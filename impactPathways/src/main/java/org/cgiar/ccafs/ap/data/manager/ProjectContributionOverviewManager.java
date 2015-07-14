@@ -15,10 +15,11 @@
 package org.cgiar.ccafs.ap.data.manager;
 
 import org.cgiar.ccafs.ap.data.manager.impl.ProjectContributionOverviewManagerImpl;
-import org.cgiar.ccafs.ap.data.model.IPElement;
 import org.cgiar.ccafs.ap.data.model.OutputOverview;
 import org.cgiar.ccafs.ap.data.model.Project;
-import org.cgiar.ccafs.ap.util.DualMap;
+import org.cgiar.ccafs.ap.data.model.User;
+
+import java.util.List;
 
 import com.google.inject.ImplementedBy;
 
@@ -31,11 +32,31 @@ import com.google.inject.ImplementedBy;
 public interface ProjectContributionOverviewManager {
 
   /**
+   * This method deletes a contribution overview made by a project to some output.
+   * 
+   * @param outputOverviewID - output overview identifier
+   * @param user - The user who is making the change
+   * @param justification - Justification of the change
+   * @return True if the relation was deleted successfully. False otherwise.
+   */
+  public boolean deleteProjectContributionOverview(int outputOverviewID, User user, String justification);
+
+  /**
    * This method returns the description made for each output linked to the project identified by the value received
    * by parameter.
    * 
    * @param project - Project Identifier
    * @return a DualMap with the format <year, output, overview>
    */
-  public DualMap<Integer, IPElement, OutputOverview> getProjectContributionOverviews(Project project);
+  public List<OutputOverview> getProjectContributionOverviews(Project project);
+
+  /**
+   * This method saves the output overviews contained in the project received by parameter.
+   * 
+   * @param project - Project that contains the output overviews to save.
+   * @param currentUser - User who is making the changes
+   * @param justification
+   * @return True if the information was saved successfully. False otherwise.
+   */
+  public boolean saveProjectContribution(Project project, User currentUser, String justification);
 }

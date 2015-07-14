@@ -14,6 +14,8 @@
 
 package org.cgiar.ccafs.ap.data.model;
 
+import org.apache.commons.lang3.builder.ToStringBuilder;
+
 
 /**
  * @author Hernán David Carvajal B. - CIAT/CCAFS
@@ -22,11 +24,25 @@ package org.cgiar.ccafs.ap.data.model;
 public class OutputOverview {
 
   private int id;
+  private int year;
+  private IPElement output;
   private String expectedAnnualContribution;
   private String socialInclusionDimmension;
 
+  public OutputOverview() {
+  }
+
   public OutputOverview(int id) {
     this.id = id;
+  }
+
+  @Override
+  public boolean equals(Object obj) {
+    if (obj instanceof OutputOverview) {
+      OutputOverview v = (OutputOverview) obj;
+      return v.id == this.id;
+    }
+    return false;
   }
 
   public String getExpectedAnnualContribution() {
@@ -37,8 +53,21 @@ public class OutputOverview {
     return id;
   }
 
+  public IPElement getOutput() {
+    return output;
+  }
+
   public String getSocialInclusionDimmension() {
     return socialInclusionDimmension;
+  }
+
+  public int getYear() {
+    return year;
+  }
+
+  @Override
+  public int hashCode() {
+    return this.id;
   }
 
   public void setExpectedAnnualContribution(String expectedAnnualContribution) {
@@ -49,7 +78,20 @@ public class OutputOverview {
     this.id = id;
   }
 
+  public void setOutput(IPElement output) {
+    this.output = output;
+  }
+
   public void setSocialInclusionDimmension(String socialInclusionDimmension) {
     this.socialInclusionDimmension = socialInclusionDimmension;
+  }
+
+  public void setYear(int year) {
+    this.year = year;
+  }
+
+  @Override
+  public String toString() {
+    return ToStringBuilder.reflectionToString(this);
   }
 }
