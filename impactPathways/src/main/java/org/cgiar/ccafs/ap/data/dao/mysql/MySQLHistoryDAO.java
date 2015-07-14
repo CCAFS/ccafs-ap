@@ -292,7 +292,7 @@ public class MySQLHistoryDAO implements HistoryDAO {
     query.append("t.active_since, t.modification_justification ");
     query.append("FROM ");
     query.append(dbName);
-    query.append("_history.project_contribution_overviews t ");
+    query.append("_history.ip_project_contribution_overviews t ");
     query.append("INNER JOIN users u ON t.modified_by = u.id ");
     query.append("WHERE project_id = ");
     query.append(projectID);
