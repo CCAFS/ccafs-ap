@@ -3,7 +3,10 @@
 -- -----------------------------------------------------------------------------
 
 -- Changing name column type 
- ALTER TABLE project_budgets_temp CHANGE type budget_type BIGINT(20);
+ALTER TABLE `project_budgets_temp` DROP FOREIGN KEY `FK_project_bud_temp_budget_types` ;
+ALTER TABLE `project_budgets_temp` CHANGE COLUMN `type` `budget_type` BIGINT(20) NOT NULL, 
+  ADD CONSTRAINT `FK_project_bud_temp_budget_types` FOREIGN KEY (`budget_type` )
+  REFERENCES `budget_types_copy` (`id` ) ON DELETE CASCADE ON UPDATE CASCADE;
 
 -- Deleting foreign keys of table budgets
  ALTER TABLE activity_budgets DROP FOREIGN KEY FK_activity_budgets_budget_id;
