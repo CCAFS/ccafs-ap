@@ -125,23 +125,6 @@
       </result>     
     </action>
     
-    <action name="budget" class="org.cgiar.ccafs.ap.action.planning.ProjectPartnersPlanningAction">
-      <result name="input">/WEB-INF/planning/projectBudgetPlanning.ftl</result>
-      <result name="success" type="redirectAction">
-        <param name="actionName">budget</param>
-        <param name="projectID">${project.id}</param>
-        <param name="year">${targetYear}</param>
-      </result>
-      <result name="next" type="redirectAction">
-        <param name="actionName">outcomes</param>
-        <param name="projectID">${project.id}</param>
-      </result>
-      <result name="cancel" type="redirectAction">
-        <param name="actionName">projects</param>
-        <param name="namespace">/planning</param>
-      </result>
-    </action>
-    
     <!-- Project Outcomes  -->
     
     <action name="outcomes" class="org.cgiar.ccafs.ap.action.planning.ProjectOutcomesPlanningAction">
@@ -254,12 +237,57 @@
     </action>
     
     <!-- Section: Activities  -->
+    
     <action name="activities" class="org.cgiar.ccafs.ap.action.planning.ActivitiesListAction">
       <result name="input">/WEB-INF/planning/projectActivitiesListPlanning.ftl</result>
       <result name="success" type="redirectAction">
         <param name="namespace">/planning/projects/activities</param>
         <param name="actionName">activities</param>
         <param name="activityID">${activityID}</param>
+      </result>
+      <result name="next" type="redirectAction">
+        <param name="actionName">budget</param>
+        <param name="projectID">${project.id}</param>
+      </result>
+      <result name="cancel" type="redirectAction">
+        <param name="actionName">projects</param>
+        <param name="namespace">/planning</param>
+      </result>
+    </action>
+    
+    <!-- Project Budget  -->
+    
+    <action name="budget" class="org.cgiar.ccafs.ap.action.planning.ProjectPartnersPlanningAction">
+      <result name="input">/WEB-INF/planning/projectBudgetPlanning.ftl</result>
+      <result name="success" type="redirectAction">
+        <param name="actionName">budget</param>
+        <param name="projectID">${project.id}</param>
+        <param name="year">${targetYear}</param>
+      </result>
+      <result name="next" type="redirectAction">
+        <param name="actionName">budgetByMog</param>
+        <param name="projectID">${project.id}</param>
+      </result>
+      <result name="cancel" type="redirectAction">
+        <param name="actionName">projects</param>
+        <param name="namespace">/planning</param>
+      </result>
+    </action>
+    
+    <action name="budgetByMog" class="org.cgiar.ccafs.ap.action.planning.ProjectOutputsPlanningAction">
+      <result name="input">/WEB-INF/planning/projectBudgetByMogPlanning.ftl</result>
+      <result name="success" type="redirectAction">
+        <param name="actionName">budgetByMog</param>
+        <param name="projectID">${project.id}</param>
+        <param name="year">${targetYear}</param>
+      </result>
+      <result name="next" type="redirectAction">
+        <param name="actionName">projects</param>
+        <param name="namespace">/planning</param>
+      </result>
+      <result name="cancel" type="redirectAction">
+        <param name="actionName">projects</param>
+        <param name="namespace">/planning</param>
       </result>
     </action>
 

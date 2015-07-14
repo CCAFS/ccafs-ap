@@ -1,9 +1,10 @@
 [#ftl]
 [#assign title = "Project Budget" /]
 [#assign globalLibs = ["jquery", "noty","autoSave","chosen"] /]
-[#assign customJS = ["${baseUrl}/js/global/utils.js", "${baseUrl}/js/preplanning/projectBudget.js"] /]
+[#assign customJS = ["${baseUrl}/js/global/utils.js", "${baseUrl}/js/preplanning/projectBudgetByMog.js"] /]
 [#assign currentSection = "planning" /]
 [#assign currentStage = "budget" /]
+[#assign currentSubStage = "budgetByMog" /]
 
 [#assign breadCrumb = [
   {"label":"planning", "nameSpace":"planning", "action":"projectsList"},
@@ -43,82 +44,54 @@
   
   [@s.form action="budget" cssClass="pure-form"]
     <article class="halfContent" id="projectBudget">
-    [#include "/WEB-INF/planning/planningDataSheet.ftl" /]
-    [#-- Informing user that he/she doesn't have enough privileges to edit. See GranProjectAccessInterceptor--]
-    [#if !canEdit]
-      <p class="readPrivileges">[@s.text name="saving.read.privileges"][@s.param][@s.text name=title/][/@s.param][/@s.text]</p>
-    [/#if] 
-    [#-- Project Title --]
-    <h1 class="contentTitle">${project.type} [@s.text name="preplanning.projectBudget.title" /]</h1> 
-    [#assign allYears=2015..2017 /] 
-    [#assign year=2015 /]
-    [#if allYears?has_content]
-      [#if project.leader?has_content]
-        [#-- Accumulative Total W1 W2 Budget --]
-        <div id="totalBudget" class="thirdPartBlock">
-          <h6>[@s.text name="preplanning.projectBudget.totalBudget"][@s.param]${project.bilateralProject?string('W3/Bilateral', 'W1 W2')}[/@s.param][/@s.text]</h6>
-          <p id="projectTotalW1W2">US$ <span id="projectTotalW1W2Budget">{totalW1W2Budget?string(",##0.00")}</span></p>
-          <input type="hidden" id="projectTotalW1W2Budget" value="{totalW1W2Budget?c}" />
-          <input type="hidden" id="yearTotalW1W2Budget" value="{totalW1W2BudgetByYear?c}" />
-        </div> 
-        
-        [#if project.bilateralProject]
-          <div class="fullPartBlock">
-            Overhead here
-          </div>
-        [/#if]
-        <div id="budgetTables" class="ui-tabs ui-widget ui-widget-content ui-corner-all" style="display:none"> 
-          [#-- Tertiary Menu - All years --] 
-          <ul class="ui-tabs-nav ui-helper-reset ui-helper-clearfix ui-widget-header ui-corner-all">
-            [#list allYears as yearMenu]
-              <li id="year-${yearMenu}" class="yearTab ui-state-default ui-corner-top [#if yearMenu=year ]ui-tabs-active ui-state-active ui-state-hover[/#if]">
-                <a href="[@s.url action='budget' includeParams='get'][@s.param name='${projectRequest}']${project.id?c}[/@s.param][@s.param name='year']${yearMenu?c}[/@s.param][/@s.url]"> ${yearMenu?c} </a>
-              </li>
-            [/#list]
-          </ul>
-          [@s.set var="counter" value="0"/] 
-            [#-- Project budget content by year --]
-            <div id="partnerTables-${year?c}" class="partnerTable ui-tabs-panel ui-widget-content ui-corner-bottom clearfix"> 
-              [#if (!editable && canEdit)]
-                <div class="editButton"><a href="[@s.url includeParams='get'][@s.param name="edit"]true[/@s.param][/@s.url]">[@s.text name="form.buttons.edit" /]</a></div>
-              [/#if]
-              <div class="fieldset clearfix">
-                <div id="totalw1w2BudgetByYear" class="BudgetByYear"> 
-                  <p id="projectTotalByYear">
-                    <strong> [@s.text name="preplanning.projectBudget.totalYearBudget"][@s.param name="0"]${project.bilateralProject?string('W3/Bilateral', 'W1 W2')}[/@s.param][@s.param name="1"]${year}[/@s.param][/@s.text]</strong> 
-                    <br>US$ <span id="projectTotalW1W2BudgetByYear">{totalW1W2BudgetByYear?string(",##0.00")}</span>
-                  </p>
-                </div>
-              </div> 
-              <div class="ccafsBudget fullPartBlock clearfix">
-                [#-- Project Leader --]
-                [#if project.leader?has_content]
-                  [@projectBudget projectPartner=project.leader isBilateral=project.bilateralProject isCofunded=true isCofunded=project.coFundedProject editable=editable /]
-                [/#if]
-                [#-- Project Partners --]
-                [#if project.ppaPartners?has_content] 
-                  [#list project.ppaPartners as projectPartner ]
-                    [@projectBudget projectPartner=projectPartner pp_index="${projectPartner_index}" isBilateral=project.bilateralProject isCofunded=project.coFundedProject editable=editable /]
-                  [/#list]  
-                [/#if]
-              </div><!-- End partners list -->
-              <div class="partnerListMsj">
-                [@s.text name="preplanning.projectBudget.partnerNotList" /]
-                <a href="[@s.url action='partners' includeParams='get'][@s.param name='projectID']${project.id?c}[/@s.param][/@s.url]"> 
-                  [@s.text name="preplanning.projectBudget.partnersLink" /] 
-                </a>
-              </div>
-           </div>
-        </div> <!-- End budgetTables -->
-      [#else]
-        [#-- If project leader is not defined --]
-        <p>[@s.text name="preplanning.projectBudget.message.leaderUndefined" /]</p>
+      [#include "/WEB-INF/planning/projectBudget-sub-menu.ftl" /]
+      [#include "/WEB-INF/planning/planningDataSheet.ftl" /]
+      [#-- Informing user that he/she doesn't have enough privileges to edit. See GranProjectAccessInterceptor--]
+      [#if !canEdit]
+        <p class="readPrivileges">[@s.text name="saving.read.privileges"][@s.param][@s.text name=title/][/@s.param][/@s.text]</p>
       [/#if] 
-    [#else]
-      [#-- If the project has not an start date and/or end date defined --]
-      <p>[@s.text name="preplanning.projectBudget.message.dateUndefined" /]</p>
-    [/#if] 
-    
+      [#-- Project Title --]
+      <h1 class="contentTitle">${project.type} [@s.text name="preplanning.projectBudgetByMog.title" /]</h1> 
+      [#assign allYears=2015..2017 /] 
+      [#assign year=2015 /]
+      <div id="budgetTables" class="ui-tabs ui-widget ui-widget-content ui-corner-all" > 
+        [#-- Tertiary Menu - All years --] 
+        <ul class="ui-tabs-nav ui-helper-reset ui-helper-clearfix ui-widget-header ui-corner-all">
+          [#list allYears as yearMenu]
+            <li id="year-${yearMenu}" class="yearTab ui-state-default ui-corner-top [#if yearMenu=year ]ui-tabs-active ui-state-active ui-state-hover[/#if]">
+              <a href="[@s.url action='budget' includeParams='get'][@s.param name='projectID']${project.id?c}[/@s.param][@s.param name='year']${yearMenu?c}[/@s.param][/@s.url]"> ${yearMenu?c} </a>
+            </li>
+          [/#list]
+        </ul>
+        [#-- Project budget content by year and MOG --]
+        <div id="partnerTables-${year?c}" class="partnerTable ui-tabs-panel ui-widget-content ui-corner-bottom clearfix"> 
+          [#if (!editable && canEdit)]
+            <div class="editButton"><a href="[@s.url includeParams='get'][@s.param name="edit"]true[/@s.param][/@s.url]">[@s.text name="form.buttons.edit" /]</a></div>
+          [/#if]
+          [#-- Title --]
+          <div class="midOutcomeTitle"><h6 class="title">[@s.text name="planning.projectImpactPathways.mogs" /]</h6></div>
+            [#list project.outputs as output]
+            [#assign outputOverview = project.getOutputOverview(output.id, year)! /]
+            <div class="mog fullBlock clearfix">
+              <div class="fullPartBlock">
+                <div class="fullPartBlock">
+                  <p class="checked">${output.program.acronym} - MOG #${action.getMOGIndex(output)}: ${output.description} </p>
+                </div>
+                <div class="halfPartBlock">
+                  <h6>[@s.text name="preplanning.projectBudgetByMog.percentageOfTotalGenderBudget"][@s.param]${project.bilateralProject?string('W3/Bilateral', 'W1 W2')}[/@s.param][/@s.text]</h6>
+                  [@customForm.input name="project.budgets.amount" value="" showTitle=false i18nkey="preplanning.projectBudgetByMog.percentageOfTotalBudget" editable=editable/] 
+                </div>
+                <div class="halfPartBlock">
+                  <h6>[@s.text name="preplanning.projectBudgetByMog.percentageOfTotalGenderBudget"][@s.param]${project.bilateralProject?string('W3/Bilateral', 'W1 W2')}[/@s.param][/@s.text]</h6>
+                  [@customForm.input name="project.budgets.amount" value="" showTitle=false i18nkey="preplanning.projectBudgetByMog.percentageOfTotalGenderBudget" editable=editable/] 
+                </div>
+              </div>
+            </div>
+            [/#list]
+          </div>
+      </div>
+       
+      
     [#if editable]
       <div class="borderBox"> 
         [#-- Project identifier --]

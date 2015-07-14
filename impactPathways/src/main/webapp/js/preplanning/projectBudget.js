@@ -41,13 +41,6 @@ function attachEvents() {
   $("select.leveraged").change(addLeveragedEvent);
   $("#leveraged .leveragedPartner .removeButton").click(removeLeveragedEvent);
 
-  $W1W2Inputs.on("keyup", function(e) {
-    verifyBudgetExceeded(e, "W1W2");
-  });
-  $W3BilateralInputs.on("keyup", function(e) {
-    verifyBudgetExceeded(e, "W3BILATERAL");
-  });
-
   $allBudgetInputs.on("keyup", function(e) {
     calculateTotalBudgetByPartner();
     calculateCCAFSBudget(e);
@@ -57,7 +50,6 @@ function attachEvents() {
   });
   $allBudgetInputs.on("keydown", function(event) {
     isNumber(event);
-    // setCurrency(event);
   });
   $allBudgetInputs.on("focusout", setCurrency);
   $allBudgetInputs.on("focus", removeCurrency);
