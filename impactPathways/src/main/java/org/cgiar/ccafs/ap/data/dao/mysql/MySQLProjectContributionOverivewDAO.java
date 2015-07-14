@@ -65,7 +65,6 @@ public class MySQLProjectContributionOverivewDAO implements ProjectContributionO
     query.append("INNER JOIN ip_elements ie ON ipc.mog_id = ie.id ");
     query.append("WHERE ipc.project_id = ");
     query.append(projectID);
-    query.append(" GROUP BY ipc.mog_id ");
 
     try (Connection con = daoManager.getConnection()) {
       ResultSet rs = daoManager.makeQuery(query.toString(), con);
@@ -95,7 +94,7 @@ public class MySQLProjectContributionOverivewDAO implements ProjectContributionO
     query.append("INSERT INTO ip_project_contribution_overviews (id, project_id, output_id, year, ");
     query.append("anual_contribution, gender_contribution, created_by, modified_by, modification_justification) ");
     query.append("VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?) ");
-    query.append("ON DUPLICATE KEY UPDATE annual_contribution = VALUES(annual_contribution), ");
+    query.append("ON DUPLICATE KEY UPDATE anual_contribution = VALUES(anual_contribution), ");
     query.append("gender_contribution = VALUES(gender_contribution), is_active = TRUE ");
 
     Object[] values = new Object[9];

@@ -133,10 +133,16 @@ public class ProjectOutputsPlanningAction extends BaseAction {
         success && overviewManager.saveProjectContribution(project, this.getCurrentUser(), this.getJustification());
     }
 
-    return INPUT;
+    return SUCCESS;
   }
 
   public void setProject(Project project) {
     this.project = project;
+  }
+
+  @Override
+  public void validate() {
+    // TODO Auto-generated method stub
+    super.validate();
   }
 }
