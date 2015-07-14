@@ -70,13 +70,25 @@ public class ProjectDeliverablesListAction extends BaseAction {
   public String add() {
 
     Deliverable newDeliverable = new Deliverable(-1);
-    System.out.println("PROJECT:\n" + this.getProject());
+    newDeliverable.setType(deliverableTypeManager.getDeliverableSubTypes().get(0));
+    newDeliverable.setYear(project.getAllYears().get(0));
+
+    deliverableID = deliverableManager.saveDeliverable(project.getId(), newDeliverable, this.getCurrentUser(),
+      "New expected deliverable created");
+
+    if (deliverableID > 0) {
+      return SUCCESS;
+    }
 
     return INPUT;
   }
 
   public List<Integer> getAllYears() {
     return allYears;
+  }
+
+  public int getDeliverableID() {
+    return deliverableID;
   }
 
   public List<DeliverableType> getDeliverableSubTypes() {
