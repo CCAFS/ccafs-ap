@@ -4,6 +4,7 @@
 [#assign customJS = ["${baseUrl}/js/global/utils.js", "${baseUrl}/js/preplanning/projectBudget.js"] /]
 [#assign currentSection = "planning" /]
 [#assign currentStage = "budget" /]
+[#assign currentSubStage = "budgetByPartner" /]
 
 [#assign breadCrumb = [
   {"label":"planning", "nameSpace":"planning", "action":"projectsList"},
@@ -43,6 +44,7 @@
   
   [@s.form action="budget" cssClass="pure-form"]
     <article class="halfContent" id="projectBudget">
+    [#include "/WEB-INF/planning/projectBudget-sub-menu.ftl" /]
     [#include "/WEB-INF/planning/planningDataSheet.ftl" /]
     [#-- Informing user that he/she doesn't have enough privileges to edit. See GranProjectAccessInterceptor--]
     [#if !canEdit]

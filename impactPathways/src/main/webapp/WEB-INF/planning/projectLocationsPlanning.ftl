@@ -75,64 +75,65 @@
                   <div class="locationIndex "><strong>${location_index+1}.</strong></div>
                   [#-- Type/Level --]
                   <div class="locationLevel grid_2 "> 
-                  [#assign valueType]
-                    [#if location.region]${regionTypeID}
-                    [#elseif location.country]${countryTypeID}
-                    [#elseif location.climateSmartVillage]${climateSmartVillageTypeID}
-                    [#else]
-                      [#if location.type.id == ccafsSiteTypeID] ${location.type.id}[#else]${location.type.id?c}[/#if]
-                    [/#if]
+                    [#assign valueType]
+                      [#if location.region]${regionTypeID}
+                      [#elseif location.country]${countryTypeID}
+                      [#elseif location.climateSmartVillage]${climateSmartVillageTypeID}
+                      [#else]
+                        [#if location.type.id == ccafsSiteTypeID] ${location.type.id}[#else]${location.type.id?c}[/#if]
+                      [/#if]
                     [/#assign]
-                    [@customForm.select name="" i18nkey="planning.project.locations.level" listName="locationTypes" showTitle=false value="${valueType}" disabled=!editable/]
+                    [@customForm.select name="" className="locationType" i18nkey="planning.project.locations.level" listName="locationTypes"  keyFieldName="id"  displayFieldName="name" showTitle=false value="${valueType}" disabled=!editable/]
                   </div> 
                   [#-- Latitude --]
                   <div class="locationLatitude grid_2">
                     [#if location.country || location.region]
-                      [@customForm.input name="geoPosition.latitude" className="notApplicable" type="text" value=notApplicableText i18nkey="planning.project.locations.latitude" showTitle=false disabled=true  /]
+                      [@customForm.input name="" className="latitude notApplicable" type="text" value=notApplicableText i18nkey="planning.project.locations.latitude" showTitle=false disabled=true  /]
                     [#elseif location.climateSmartVillage] 
                       [#assign latitude] [#if location.geoPosition?has_content] ${location.geoPosition.latitude} [/#if] [/#assign]
-                      [@customForm.input name="geoPosition.latitude" className="notApplicable" value="${latitude}" type="text" i18nkey="planning.project.locations.latitude" showTitle=false required=true disabled=true   /]
+                      [@customForm.input name="" className="latitude notApplicable" value="${latitude}" type="text" i18nkey="planning.project.locations.latitude" showTitle=false required=true disabled=true   /]
                     [#else] 
                       [#if location.type.id == ccafsSiteTypeID]
-                        [@customForm.input name="geoPosition.latitude" className="notApplicable" value="${location.geoPosition.latitude}" type="text" i18nkey="planning.project.locations.latitude" showTitle=false required=true disabled=true   /]                
+                        [@customForm.input name="" className="latitude notApplicable" value="${location.geoPosition.latitude}" type="text" i18nkey="planning.project.locations.latitude" showTitle=false required=true disabled=true   /]                
                       [#else] 
-                        <input type="hidden" name="otherLocationsSaved[${location_index}].geoPosition.id" value="${location.geoPosition.id?c}" >
-                        [@customForm.input name="otherLocationsSaved[${location_index}].geoPosition.latitude" value="${location.geoPosition.latitude}" type="text" i18nkey="planning.project.locations.latitude" showTitle=false required=true disabled=!editable  /]
+                        [@customForm.input name="" className="latitude" value="${location.geoPosition.latitude}" type="text" i18nkey="planning.project.locations.latitude" showTitle=false required=true disabled=!editable  /]
                       [/#if]
                     [/#if]
                   </div>
                   [#-- Longitude --]
                   <div class="locationLongitude grid_2">
                     [#if location.country || location.region]
-                      [@customForm.input name="geoPosition.longitude" className="notApplicable" value=notApplicableText type="text" i18nkey="planning.project.locations.longitude" showTitle=false disabled=true  /]
+                      [@customForm.input name="" className="longitude notApplicable" value=notApplicableText type="text" i18nkey="planning.project.locations.longitude" showTitle=false disabled=true  /]
                     [#elseif location.climateSmartVillage]
                       [#assign longitude] [#if location.geoPosition?has_content] ${location.geoPosition.longitude} [/#if] [/#assign]
-                      [@customForm.input name="geoPosition.longitude" className="notApplicable" value="${longitude}" type="text" i18nkey="planning.project.locations.longitude" showTitle=false required=true disabled=true   /]
+                      [@customForm.input name="" className="longitude notApplicable" value="${longitude}" type="text" i18nkey="planning.project.locations.longitude" showTitle=false required=true disabled=true   /]
                     [#else]
                       [#if location.type.id == ccafsSiteTypeID]
-                        [@customForm.input name="geoPosition.longitude" className="notApplicable" value="${location.geoPosition.longitude}" type="text" i18nkey="planning.project.locations.longitude" showTitle=false required=true disabled=true   /]
+                        [@customForm.input name="" className="longitude notApplicable" value="${location.geoPosition.longitude}" type="text" i18nkey="planning.project.locations.longitude" showTitle=false required=true disabled=true   /]
                       [#else]
-                        [@customForm.input name="otherLocationsSaved[${location_index}].geoPosition.longitude" value="${location.geoPosition.longitude}" type="text" i18nkey="planning.project.locations.longitude" showTitle=false required=true disabled=!editable  /]
+                        [@customForm.input name="" className="longitude" value="${location.geoPosition.longitude}" type="text" i18nkey="planning.project.locations.longitude" showTitle=false required=true disabled=!editable  /]
                       [/#if] 
                     [/#if]
                   </div>
                   [#-- Name --]
                   <div class="locationName grid_3">
                     [#if location.country]
-                      [@customForm.select name="countriesSaved[${location_index}].id" i18nkey="planning.project.locations.level" listName="countries" keyFieldName="id" showTitle=false  displayFieldName="name" value="${location.id}" disabled=!editable/]
+                      [@customForm.select name="project.locations" className="locationName" i18nkey="planning.project.locations.level" listName="countries" keyFieldName="id" showTitle=false  displayFieldName="name" value="${location.id}" disabled=!editable/]
                     [#elseif location.region]
-                      [@customForm.select name="regionsSaved[${location_index}].id" i18nkey="planning.project.locations.level" listName="regions" keyFieldName="id" showTitle=false  displayFieldName="name" value="${location.id}" disabled=!editable/]
+                      [@customForm.select name="project.locations" className="locationName" i18nkey="planning.project.locations.level" listName="regions" keyFieldName="id" showTitle=false  displayFieldName="name" value="${location.id}" disabled=!editable/]
                     [#elseif location.climateSmartVillage]
-                      [@customForm.select name="csvSaved[${location_index}].id" i18nkey="planning.project.locations.level" listName="climateSmartVillages" keyFieldName="id" showTitle=false  displayFieldName="name" value="${location.id}" disabled=!editable/]
+                      [@customForm.select name="project.locations" className="locationName" i18nkey="planning.project.locations.level" listName="climateSmartVillages" keyFieldName="id" showTitle=false  displayFieldName="name" value="${location.id}" disabled=!editable/]
                     [#else]
                      [#if location.type.id == ccafsSiteTypeID] 
-                      [@customForm.select name="project.locations" i18nkey="planning.project.locations.level" listName="ccafsSites" keyFieldName="id" showTitle=false  displayFieldName="name" value="${location.id}" disabled=!editable/]
+                      [@customForm.select name="project.locations" className="locationName" i18nkey="planning.project.locations.level" listName="ccafsSites" keyFieldName="id" showTitle=false  displayFieldName="name" value="${location.id}" disabled=!editable/]
                      [#else]
-                      [@customForm.input name="otherLocationsSaved[${location_index}].name" value="${location.name}" type="text" i18nkey="planning.project.locations.notApplicable" required=true showTitle=false  disabled=!editable/]
-                      <input type="hidden" name="otherLocationsSaved[${location_index}].id" value="${location.id}">
+                      [@customForm.input name="" className="locationName" i18nkey="planning.project.locations.name" required=true showTitle=false value="${location.name}" disabled=!editable/]
+                      <input type="hidden" class="locationId" value="${location.id}"/>
+                      <input type="hidden" name="project.locations" value="${location.type.id}|s|${location.geoPosition.latitude}|s|${location.geoPosition.longitude}|s|${location.name}|s|${location.id}"/>
                      [/#if]
                     [/#if]
                   </div>
+                  [#-- Remove button --]
                   [#if editable]<img class="removeButton" src="${baseUrl}/images/global/icon-remove.png" />[/#if]
                 </div> 
               [/#list] 
@@ -183,45 +184,45 @@
     <strong>?.</strong>
   </div>
   <div class="locationLevel grid_2 ">
-    [@customForm.select name="type.id" i18nkey="planning.locations.level" listName="locationTypes" keyFieldName="id"  displayFieldName="name" showTitle=false /] 
+    [#-- Default value Regions : 1 --]
+    [@customForm.select name="" value="1" className="locationType" i18nkey="planning.locations.level" listName="locationTypes" keyFieldName="id"  displayFieldName="name" showTitle=false /] 
   </div>
-  <div class="locationLatitude grid_2">
-    [#-- Geo position ID --]
-    <input type="hidden" name="geoPosition.id" value="-1" >
-    [@customForm.input name="geoPosition.latitude" className="notApplicable" value=notApplicableText type="text" i18nkey="planning.locations.longitude" showTitle=false disabled=true  /]
+  <div class="locationLatitude grid_2"> 
+    [@customForm.input name="" className="latitude notApplicable" value=notApplicableText type="text" i18nkey="planning.locations.longitude" showTitle=false disabled=true  /]
   </div>
   <div class="locationLongitude grid_2">
-    [@customForm.input name="geoPosition.longitude" className="notApplicable" value=notApplicableText type="text" i18nkey="planning.locations.longitude" showTitle=false disabled=true  /]
+    [@customForm.input name="" className="longitude notApplicable" value=notApplicableText type="text" i18nkey="planning.locations.longitude" showTitle=false disabled=true  /]
   </div>
   <div class="locationName grid_3">
-    [@customForm.select name="].id" i18nkey="planning.locations.level" listName="regions" keyFieldName="id" showTitle=false  displayFieldName="name" value="-1" /]
+    [@customForm.select name="project.locations" className="locationName" i18nkey="planning.locations.name" listName="regions" keyFieldName="id" showTitle=false  displayFieldName="name" /]
   </div>
   <img class="removeButton" src="${baseUrl}/images/global/icon-remove.png">
 </div>
 
 [#-- List Template of Regions with id: 1 --]
 <div id="selectTemplate-1" style="display:none">
-  [@customForm.select name="].id" i18nkey="planning.locations.level" listName="regions" keyFieldName="id" showTitle=false  displayFieldName="name" /]
+  [@customForm.select name="project.locations" className="locationName" i18nkey="planning.locations.level" listName="regions" keyFieldName="id" showTitle=false  displayFieldName="name" /]
 </div>
 [#-- List Template of Countries with id: 2 --]
 <div id="selectTemplate-2" style="display:none">
-  [@customForm.select name="].id" i18nkey="planning.locations.level" listName="countries" keyFieldName="id" showTitle=false  displayFieldName="name" /]
+  [@customForm.select name="project.locations" className="locationName" i18nkey="planning.locations.level" listName="countries" keyFieldName="id" showTitle=false  displayFieldName="name" /]
 </div>
 
 [#-- List Template of Climate smart village with id: 10 --]
 <div id="selectTemplate-10" style="display:none">
-  [@customForm.select name="].id" i18nkey="planning.locations.level" listName="climateSmartVillages" keyFieldName="id" showTitle=false  displayFieldName="name" /]
+  [@customForm.select name="project.locations" className="locationName" i18nkey="planning.locations.level" listName="climateSmartVillages" keyFieldName="id" showTitle=false  displayFieldName="name" /]
 </div>
 
 [#-- List Template of CCAFS Sites with id: 11 --]
 <div id="selectTemplate-11" style="display:none">
-  [@customForm.select name="project.locations" i18nkey="planning.locations.level" listName="ccafsSites" keyFieldName="id" showTitle=false  displayFieldName="name" /]
+  [@customForm.select name="project.locations" className="locationName" i18nkey="planning.locations.level" listName="ccafsSites" keyFieldName="id" showTitle=false  displayFieldName="name" /]
 </div>
 
 [#-- Input Template for name --]
 <div id="inputNameTemplate" style="display:none">
-  <input type="hidden" name="].id" value="-1">
-  [@customForm.input name="name" type="text" i18nkey="planning.locations.notApplicable" required=true showTitle=false  /]
+  [@customForm.input name="" className="locationName" type="text" i18nkey="planning.locations.notApplicable" required=true showTitle=false  /]
+  <input type="hidden" class="locationId" value="-1"/>
+  <input type="hidden" name="project.locations" value="">
 </div>
 [#--  Not applicable Text --]
 <input type="hidden" id="notApplicableText" value="[@s.text name="planning.locations.notApplicable" /]">
