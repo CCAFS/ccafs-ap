@@ -196,6 +196,18 @@
     
     <action name="outputs" class="org.cgiar.ccafs.ap.action.planning.ProjectOutputsPlanningAction">
       <result name="input">/WEB-INF/planning/projectOutputsPlanning.ftl</result>
+      <result name="success" type="redirectAction">   
+        <param name="actionName">outputs</param>
+        <param name="projectID">${project.id}</param>   
+      </result>
+      <result name="next" type="redirectAction">
+        <param name="actionName">deliverablesList</param>
+        <param name="projectID">${project.id}</param>
+      </result>
+      <result name="cancel" type="redirectAction">
+        <param name="actionName">outputs</param>
+        <param name="projectID">${project.id}</param>
+      </result>
     </action>
     
     <action name="deliverablesList" class="org.cgiar.ccafs.ap.action.planning.ProjectDeliverablesListAction">
