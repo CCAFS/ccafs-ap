@@ -170,12 +170,11 @@ public class MySQLProjectDAO implements ProjectDAO {
         + "FROM ip_programs ipp INNER JOIN project_focuses pf ON ipp.id = pf.program_id "
         + "WHERE pf.project_id = p.id AND ipp.type_id = " + APConstants.FLAGSHIP_PROGRAM_TYPE;
 
-    query.append("SELECT p.id, p.title, p.type, p.active_since, SUM(b.amount) as 'total_budget_amount', ");
+    query.append("SELECT p.id, p.title, p.type, p.active_since, SUM(pb.amount) as 'total_budget_amount', ");
     query.append("( " + regionsSubquery + " )  as 'regions', ");
     query.append("( " + flagshipsSubquery + " )  as 'flagships' ");
     query.append("FROM projects as p ");
-    query.append("LEFT JOIN project_budgets pb ON p.id = pb.project_id ");
-    query.append("LEFT JOIN budgets b ON pb.budget_id = b.id AND b.budget_type IN ( ");
+    query.append("LEFT JOIN project_budgets pb ON p.id = pb.project_id AND pb.budget_type IN (  ");
     query.append(BudgetType.W1_W2.getValue() + ", ");
     query.append(BudgetType.W3_BILATERAL.getValue() + " ) ");
     query.append("WHERE p.is_active = TRUE ");
