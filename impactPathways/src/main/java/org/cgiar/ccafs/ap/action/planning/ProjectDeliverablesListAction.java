@@ -106,14 +106,18 @@ public class ProjectDeliverablesListAction extends BaseAction {
   @Override
   public String delete() {
     // Deleting deliverable.
-    boolean deleted = deliverableManager.deleteDeliverable(deliverableID, this.getCurrentUser(),
-      this.getJustification() == null ? "Deleting deliverable" : this.getJustification());
-    if (deleted) {
-      this.addActionMessage(
-        this.getText("deleting.success", new String[] {this.getText("planning.projectDeliverable").toLowerCase()}));
+    if (this.canDelete(deliverableID)) {
+      boolean deleted = deliverableManager.deleteDeliverable(deliverableID, this.getCurrentUser(),
+        this.getJustification() == null ? "Deleting deliverable" : this.getJustification());
+      if (deleted) {
+        this.addActionMessage(
+          this.getText("deleting.success", new String[] {this.getText("planning.projectDeliverable").toLowerCase()}));
+      } else {
+        this.addActionError(
+          this.getText("deleting.problem", new String[] {this.getText("planning.projectDeliverable").toLowerCase()}));
+      }
     } else {
-      this.addActionError(
-        this.getText("deleting.problem", new String[] {this.getText("planning.projectDeliverable").toLowerCase()}));
+      this.addActionError(this.getText("planning.projectDeliverable.cannotDelete"));
     }
     return SUCCESS;
   }
