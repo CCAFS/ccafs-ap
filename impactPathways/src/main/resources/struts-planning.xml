@@ -207,6 +207,14 @@
       </result>
     </action>
     
+    <action name="deleteDeliverable" method="delete" class="org.cgiar.ccafs.ap.action.planning.ProjectDeliverablesListAction">
+      <result name="success" type="redirectAction">
+        <param name="namespace">/planning/projects</param>
+        <param name="actionName">deliverablesList</param>
+        <param name="projectID">${projectID}</param>
+      </result>
+    </action>
+    
     <action name="deliverable" class="org.cgiar.ccafs.ap.action.planning.ProjectDeliverableAction">
       <interceptor-ref name="planningStackDeliverables" />
       <result name="input">/WEB-INF/planning/projectDeliverablePlanning.ftl</result>

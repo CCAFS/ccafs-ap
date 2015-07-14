@@ -45,7 +45,7 @@ public class MySQLDeliverableDAO implements DeliverableDAO {
   }
 
   @Override
-  public boolean deleteDeliverable(int deliverableId) {
+  public boolean deleteDeliverable(int deliverableId, int userID, String justification) {
 
     LOG.debug(">> deleteDeliverable(id={})", deliverableId);
     int result = -1;
@@ -53,10 +53,12 @@ public class MySQLDeliverableDAO implements DeliverableDAO {
     Object[] values;
 
     StringBuilder query = new StringBuilder();
-    query.append("UPDATE deliverables d SET d.is_active = 0 ");
+    query.append("UPDATE deliverables d SET d.is_active = 0, modified_by = ?, modification_justification = ? ");
     query.append("WHERE d.id = ? ");
-    values = new Object[1];
-    values[0] = deliverableId;
+    values = new Object[3];
+    values[0] = userID;
+    values[1] = justification;
+    values[2] = deliverableId;
     result = databaseManager.saveData(query.toString(), values);
 
     LOG.debug("<< deleteDeliverable():{}", result);

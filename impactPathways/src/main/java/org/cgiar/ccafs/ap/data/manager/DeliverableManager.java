@@ -33,9 +33,11 @@ public interface DeliverableManager {
    * This method removes a specific deliverable value from the database.
    * 
    * @param deliverableId is the deliverable identifier.
+   * @param user - the user that is deleting the deliverable.
+   * @param justification - the justification statement.
    * @return true if the deliverable was successfully deleted, false otherwise.
    */
-  public boolean deleteDeliverable(int deliverableId);
+  public boolean deleteDeliverable(int deliverableId, User user, String justification);
 
   /**
    * This method removes a specific deliverable contribution value from the database.

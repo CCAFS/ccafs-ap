@@ -68,7 +68,6 @@ public class ProjectDeliverablesListAction extends BaseAction {
 
   @Override
   public String add() {
-
     Deliverable newDeliverable = new Deliverable(-1);
     newDeliverable.setType(deliverableTypeManager.getDeliverableSubTypes().get(0));
     newDeliverable.setYear(project.getAllYears().get(0));
@@ -102,6 +101,21 @@ public class ProjectDeliverablesListAction extends BaseAction {
       }
     }
     return false;
+  }
+
+  @Override
+  public String delete() {
+    // Deleting deliverable.
+    boolean deleted = deliverableManager.deleteDeliverable(deliverableID, this.getCurrentUser(),
+      this.getJustification() == null ? "Deleting deliverable" : this.getJustification());
+    if (deleted) {
+      this.addActionMessage(
+        this.getText("deleting.success", new String[] {this.getText("planning.projectDeliverable").toLowerCase()}));
+    } else {
+      this.addActionError(
+        this.getText("deleting.problem", new String[] {this.getText("planning.projectDeliverable").toLowerCase()}));
+    }
+    return SUCCESS;
   }
 
   public List<Integer> getAllYears() {
@@ -158,6 +172,10 @@ public class ProjectDeliverablesListAction extends BaseAction {
     List<Deliverable> deliverables = deliverableManager.getDeliverablesByProject(projectID);
     project.setDeliverables(deliverables);
 
+  }
+
+  public void setDeliverableID(int deliverableID) {
+    this.deliverableID = deliverableID;
   }
 
   public void setDeliverableSubTypes(List<DeliverableType> deliverableSubTypes) {

@@ -16,6 +16,7 @@ package org.cgiar.ccafs.ap.data.manager.impl;
 
 import org.cgiar.ccafs.ap.data.dao.DeliverableDAO;
 import org.cgiar.ccafs.ap.data.manager.DeliverableManager;
+import org.cgiar.ccafs.ap.data.manager.DeliverablePartnerManager;
 import org.cgiar.ccafs.ap.data.manager.DeliverableTypeManager;
 import org.cgiar.ccafs.ap.data.manager.NextUserManager;
 import org.cgiar.ccafs.ap.data.model.Deliverable;
@@ -45,18 +46,40 @@ public class DeliverableManagerImpl implements DeliverableManager {
   // Managers
   private DeliverableTypeManager deliverableTypeManager;
   private NextUserManager nextUserManager;
+  private DeliverablePartnerManager partnerManager;
 
   @Inject
   public DeliverableManagerImpl(DeliverableDAO deliverableDAO, DeliverableTypeManager deliverableTypeManager,
-    NextUserManager nextUserManager) {
+    NextUserManager nextUserManager, DeliverablePartnerManager partnerManager) {
     this.deliverableDAO = deliverableDAO;
     this.deliverableTypeManager = deliverableTypeManager;
     this.nextUserManager = nextUserManager;
+    this.partnerManager = partnerManager;
   }
 
   @Override
-  public boolean deleteDeliverable(int deliverableId) {
-    return deliverableDAO.deleteDeliverable(deliverableId);
+  public boolean deleteDeliverable(int deliverableID, User user, String justification) {
+    boolean problem = false;
+    // Deleting deliverable.
+    boolean deleted = deliverableDAO.deleteDeliverable(deliverableID, user.getId(), justification);
+    if (!deleted) {
+      problem = true;
+    }
+
+    // Deleting next users.
+    deleted = nextUserManager.deleteNextUserByDeliverable(deliverableID, user, justification);
+    if (!deleted) {
+      problem = true;
+    }
+
+    // Deleting partners contribution
+    deleted = partnerManager.deleteDeliverablePartnerByDeliverable(deliverableID, user, justification);
+
+    if (!deleted) {
+      problem = true;
+    }
+
+    return !problem;
   }
 
   @Override
@@ -84,7 +107,7 @@ public class DeliverableManagerImpl implements DeliverableManager {
       deliverable.setTitle(deliverableData.get("title"));
       deliverable.setYear(Integer.parseInt(deliverableData.get("year")));
       deliverable
-        .setType(deliverableTypeManager.getDeliverableTypeById(Integer.parseInt(deliverableData.get("type_id"))));
+      .setType(deliverableTypeManager.getDeliverableTypeById(Integer.parseInt(deliverableData.get("type_id"))));
       deliverable.setTypeOther(deliverableData.get("type_other"));
       deliverable.setNextUsers(nextUserManager.getNextUsersByDeliverableId(deliverableID));
       deliverable.setOutput(this.getDeliverableOutput(deliverableID));
@@ -116,7 +139,7 @@ public class DeliverableManagerImpl implements DeliverableManager {
       deliverable.setTitle(deliverableData.get("title"));
       deliverable.setYear(Integer.parseInt(deliverableData.get("year")));
       deliverable
-      .setType(deliverableTypeManager.getDeliverableTypeById(Integer.parseInt(deliverableData.get("type_id"))));
+        .setType(deliverableTypeManager.getDeliverableTypeById(Integer.parseInt(deliverableData.get("type_id"))));
       deliverable.setTypeOther(deliverableData.get("type_other"));
       deliverable.setNextUsers(nextUserManager.getNextUsersByDeliverableId(projectID));
       deliverable.setOutput(this.getDeliverableOutput(Integer.parseInt(deliverableData.get("id"))));
