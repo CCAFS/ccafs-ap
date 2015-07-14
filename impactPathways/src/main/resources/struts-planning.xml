@@ -219,7 +219,8 @@
       <result name="success" type="redirectAction">
         <param name="namespace">/planning/projects</param>
         <param name="actionName">deliverable</param>
-        <param name="deliverableID">${deliverable.id}</param>
+        <param name="deliverableID">${deliverableID}</param>
+        <param name="edit">true</param>
       </result>
     </action>
     
