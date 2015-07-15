@@ -430,12 +430,11 @@ public class MySQLProjectDAO implements ProjectDAO {
     Map<String, String> projectData = new HashMap<String, String>();
     StringBuilder query = new StringBuilder();
 
-    query.append("SELECT p.id, p.title, p.active_since, SUM(b.amount) as 'total_budget_amount', ");
+    query.append("SELECT p.id, p.title, p.active_since, SUM(pb.amount) as 'total_budget_amount', ");
     query.append("GROUP_CONCAT( DISTINCT ipp1.acronym ) as 'regions', ");
     query.append("GROUP_CONCAT( DISTINCT ipp2.acronym ) as 'flagships' ");
     query.append("FROM projects as p ");
     query.append("LEFT JOIN project_budgets pb ON p.id = pb.project_id ");
-    query.append("LEFT JOIN budgets b ON pb.budget_id = b.id ");
     query.append("LEFT JOIN project_focuses pf ON p.id = pf.project_id ");
     query.append("LEFT JOIN ip_programs ipp1 ON pf.program_id = ipp1.id AND ipp1.type_id = ");
     query.append(APConstants.REGION_PROGRAM_TYPE);
