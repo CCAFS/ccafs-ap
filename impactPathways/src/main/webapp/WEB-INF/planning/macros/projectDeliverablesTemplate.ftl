@@ -21,8 +21,8 @@
           <td class="year"><a href="${dlurl}">${dl.year}</a></td> 
           <td class="removeDeliverable">
             [#if true ]
-              <a href="[@s.url action='deleteDeliverable' includeParams='get' namespace='/planning/projects' /]" title="" class="removeDeliverable">
-                <img src="${baseUrl}/images/global/trash.png" title="[@s.text name="preplanning.projects.deleteProject" /]" /> 
+              <a id="removeDeliverable-${dl.id}" class="removeDeliverable" href="#" title="" >
+                <img src="${baseUrl}/images/global/trash.png" title="[@s.text name="preplanning.projects.deleteDeliverable" /]" /> 
               </a>
             [#else]
               <img src="${baseUrl}/images/global/trash_disable.png" title="[@s.text name="preplanning.projects.cantDeleteDeliverable" /]" />
