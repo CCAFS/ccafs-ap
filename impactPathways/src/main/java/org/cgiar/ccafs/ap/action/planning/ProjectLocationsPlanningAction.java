@@ -27,6 +27,7 @@ import org.cgiar.ccafs.ap.data.model.LocationType;
 import org.cgiar.ccafs.ap.data.model.OtherLocation;
 import org.cgiar.ccafs.ap.data.model.Project;
 import org.cgiar.ccafs.ap.data.model.Region;
+import org.cgiar.ccafs.ap.validation.planning.ProjectLocationsValidator;
 import org.cgiar.ccafs.utils.APConfig;
 
 import java.util.ArrayList;
@@ -46,6 +47,7 @@ public class ProjectLocationsPlanningAction extends BaseAction {
   private LocationManager locationManager;
   private LocationTypeManager locationTypeManager;
   private ProjectManager projectManager;
+  private ProjectLocationsValidator validator;
   private HistoryManager historyManager;
 
   // Model
@@ -68,12 +70,14 @@ public class ProjectLocationsPlanningAction extends BaseAction {
 
   @Inject
   public ProjectLocationsPlanningAction(APConfig config, LocationManager locationManager,
-    LocationTypeManager locationTypeManager, ProjectManager projectManager, HistoryManager historyManager) {
+    LocationTypeManager locationTypeManager, ProjectManager projectManager, ProjectLocationsValidator validator,
+    HistoryManager historyManager) {
     super(config);
     this.locationManager = locationManager;
     this.locationTypeManager = locationTypeManager;
     this.projectManager = projectManager;
     this.historyManager = historyManager;
+    this.validator = validator;
   }
 
   public List<Location> getCcafsSites() {
@@ -224,46 +228,17 @@ public class ProjectLocationsPlanningAction extends BaseAction {
         success = false;
       }
 
-      // if Activity is not global.
-      List<Location> locations = new ArrayList<Location>();
-      // Grouping regions in the locations list.
-      for (Region region : regionsSaved) {
-        if (region != null) {
-          locations.add(region);
-        }
-      }
-      // Grouping countries in the locations list.
-      for (Country country : countriesSaved) {
-        if (country != null) {
-          locations.add(country);
-        }
+      boolean added =
+        locationManager.saveProjectLocation(project.getLocations(), projectID, this.getCurrentUser(),
+          this.getJustification());
+      if (!added) {
+        success = false;
       }
 
-      // Grouping other locations to the locations list.
-      for (OtherLocation location : otherLocationsSaved) {
-        if (location != null) {
-          locations.add(location);
-        }
-      }
-
-      // Grouping csv locations to the locations list.
-      for (ClimateSmartVillage location : csvSaved) {
-        if (location != null) {
-          locations.add(location);
-        }
-      }
-
-      locations.addAll(project.getLocations());
 
       // Then, updating projects received
       boolean updated = locationManager.updateProjectGlobal(projectID, this.getCurrentUser(), this.getJustification());
       if (!updated) {
-        success = false;
-      }
-
-      boolean added =
-        locationManager.saveProjectLocation(locations, projectID, this.getCurrentUser(), this.getJustification());
-      if (!added) {
         success = false;
       }
 
@@ -320,5 +295,8 @@ public class ProjectLocationsPlanningAction extends BaseAction {
   @Override
   public void validate() {
     LOG.debug(">> validate() ");
+    if (save) {
+      validator.validate(this, project);
+    }
   }
 }
