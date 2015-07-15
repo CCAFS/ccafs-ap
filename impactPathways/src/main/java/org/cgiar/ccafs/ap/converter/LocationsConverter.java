@@ -42,6 +42,15 @@ public class LocationsConverter extends StrutsTypeConverter {
   @Override
   public Object convertFromString(Map context, String[] values, Class toClass) {
     if (toClass == List.class) {
+      // HERE I WILL MODIFY THE STRING WITH LOCATIONS
+      for (String location : values) {
+        if (location.charAt(0) == ' ') {
+
+        }
+
+      }
+
+
       return locationManager.getLocationsByIDs(values);
     }
     return null;
