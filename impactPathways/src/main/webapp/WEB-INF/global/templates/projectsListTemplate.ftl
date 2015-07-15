@@ -100,11 +100,7 @@
           [#-- Delete Project--]
           <td>
               [#if securityContext.canDeleteProject() && project.isNew(currentPlanningStartDate) ]
-                <a href="
-                [@s.url action='deleteProject' includeParams='get' namespace='/planning/projects' ] 
-                  [@s.param name='${projectRequest}' ]${project.id?c}[/@s.param]
-                [/@s.url]
-                " title="" class="removeDeliverable">
+                <a id="removeProject-${project.id}" class="removeProject" href="[@s.url action='deleteProject' includeParams='get' namespace='/planning/projects'][@s.param name='${projectRequest}']${project.id?c}[/@s.param][/@s.url]" title="">
                   <img src="${baseUrl}/images/global/trash.png" title="[@s.text name="preplanning.projects.deleteProject" /]" /> 
                 </a>
               [#else]
