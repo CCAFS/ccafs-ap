@@ -154,15 +154,6 @@ public interface ProjectManager {
   public List<IPIndicator> getProjectIndicators(int projectID);
 
   /**
-   * This method gets all the outputs related with the project identified by the value
-   * received as parameter.
-   * 
-   * @param projectID - project identifer
-   * @return a list of IPElement objects
-   */
-  public List<IPElement> getProjectOutputs(int projectID);
-
-  /**
    * This method returns the list of all CCAFS projects that belongs to a specific program.
    * 
    * @return a list with Project objects.

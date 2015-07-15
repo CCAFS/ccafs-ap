@@ -21,7 +21,7 @@ import org.cgiar.ccafs.ap.data.model.IPElement;
 import org.cgiar.ccafs.ap.data.model.IPIndicator;
 import org.cgiar.ccafs.ap.data.model.IPProgram;
 import org.cgiar.ccafs.ap.data.model.LiaisonInstitution;
-import org.cgiar.ccafs.ap.data.model.Location;
+import org.cgiar.ccafs.ap.data.model.OutputOverview;
 import org.cgiar.ccafs.ap.data.model.Project;
 import org.cgiar.ccafs.ap.data.model.ProjectOutcome;
 import org.cgiar.ccafs.ap.data.model.ProjectPartner;
@@ -95,10 +95,6 @@ public class ProjectValidator extends BaseValidator {
     return (linkedCoreProjects != null && !linkedCoreProjects.isEmpty());
   }
 
-  public boolean isValidLocation(List<Location> locations) {
-    return (locations != null && !locations.isEmpty());
-  }
-
   public boolean isValidOutcomeGenderDimension(Map<String, ProjectOutcome> outcomes, int year) {
     if (outcomes != null && !outcomes.isEmpty()) {
       ProjectOutcome outcome = outcomes.get(String.valueOf(year));
@@ -121,6 +117,10 @@ public class ProjectValidator extends BaseValidator {
       }
     }
     return false;
+  }
+
+  public boolean isValidOutputOverviews(List<OutputOverview> outputOverviews) {
+    return (outputOverviews != null && !outputOverviews.isEmpty());
   }
 
   public boolean isValidOutputs(List<IPElement> outputs) {

@@ -52,7 +52,9 @@
           [#if !canEdit]<p>[@s.text name="planning.deliverables.empty"/]</p>[/#if]
         [/#if]   
         <div class="buttons"> 
-            <a class="addButton" href="[@s.url namespace="/planning/projects" action='addNewDeliverable'/]">[@s.text name="planning.projectDeliverables.addNewDeliverable" /]</a>
+          <a class="addButton" href="[@s.url namespace="/planning/projects" action='addNewDeliverable'] [@s.param name="${projectRequestID}"]${projectID}[/@s.param][/@s.url]">
+            [@s.text name="planning.projectDeliverables.addNewDeliverable" /]
+          </a>
         </div>
       </div>
     </div>

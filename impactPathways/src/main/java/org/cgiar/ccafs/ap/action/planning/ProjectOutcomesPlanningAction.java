@@ -35,10 +35,10 @@ import org.slf4j.LoggerFactory;
 /**
  * @author Hernán David Carvajal B.
  */
-public class ProjectOutcomeAction extends BaseAction {
+public class ProjectOutcomesPlanningAction extends BaseAction {
 
   // LOG
-  private static Logger LOG = LoggerFactory.getLogger(ProjectOutcomeAction.class);
+  private static Logger LOG = LoggerFactory.getLogger(ProjectOutcomesPlanningAction.class);
   private static final long serialVersionUID = -3179251766947184219L;
 
   // Manager
@@ -53,7 +53,7 @@ public class ProjectOutcomeAction extends BaseAction {
   private Project project;
 
   @Inject
-  public ProjectOutcomeAction(APConfig config, ProjectManager projectManager,
+  public ProjectOutcomesPlanningAction(APConfig config, ProjectManager projectManager,
     ProjectOutcomeManager projectOutcomeManager, ProjectOutcomeValidator validator, HistoryManager historyManager) {
     super(config);
     this.projectManager = projectManager;

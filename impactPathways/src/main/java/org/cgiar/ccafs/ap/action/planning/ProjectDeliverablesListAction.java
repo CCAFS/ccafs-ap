@@ -51,8 +51,8 @@ public class ProjectDeliverablesListAction extends BaseAction {
   private Project project;
 
   // Model for the front-end
-  private Project projectOld;
   private int projectID;
+  private int deliverableID;
   private List<DeliverableType> deliverableTypes;
   private List<DeliverableType> deliverableSubTypes;
   private List<Integer> allYears;
@@ -66,8 +66,68 @@ public class ProjectDeliverablesListAction extends BaseAction {
     this.projectManager = projectManager;
   }
 
+  @Override
+  public String add() {
+    Deliverable newDeliverable = new Deliverable(-1);
+    newDeliverable.setType(deliverableTypeManager.getDeliverableSubTypes().get(0));
+    newDeliverable.setYear(project.getAllYears().get(0));
+
+    deliverableID = deliverableManager.saveDeliverable(project.getId(), newDeliverable, this.getCurrentUser(),
+      "New expected deliverable created");
+
+    if (deliverableID > 0) {
+      return SUCCESS;
+    }
+
+    return INPUT;
+  }
+
+  /**
+   * This method validates if a deliverable can be deleted or not.
+   * Keep in mind that a deliverable can be deleted if it was created in the current planning cycle.
+   * 
+   * @param deliverableID is the deliverable identifier.
+   * @return true if the deliverable can be deleted, false otherwise.
+   */
+  public boolean canDelete(int deliverableID) {
+    // Loop all the deliverables that are in the interface.
+    for (Deliverable deliverable : project.getDeliverables()) {
+      if (deliverable.getId() == deliverableID) {
+        if (deliverable.getCreated() >= this.config.getCurrentPlanningStartDate().getTime()) {
+          return true;
+        } else {
+          return false;
+        }
+      }
+    }
+    return false;
+  }
+
+  @Override
+  public String delete() {
+    // Deleting deliverable.
+    if (this.canDelete(deliverableID)) {
+      boolean deleted = deliverableManager.deleteDeliverable(deliverableID, this.getCurrentUser(),
+        this.getJustification() == null ? "Deleting deliverable" : this.getJustification());
+      if (deleted) {
+        this.addActionMessage(
+          this.getText("deleting.success", new String[] {this.getText("planning.projectDeliverable").toLowerCase()}));
+      } else {
+        this.addActionError(
+          this.getText("deleting.problem", new String[] {this.getText("planning.projectDeliverable").toLowerCase()}));
+      }
+    } else {
+      this.addActionError(this.getText("planning.projectDeliverable.cannotDelete"));
+    }
+    return SUCCESS;
+  }
+
   public List<Integer> getAllYears() {
     return allYears;
+  }
+
+  public int getDeliverableID() {
+    return deliverableID;
   }
 
   public List<DeliverableType> getDeliverableSubTypes() {
@@ -86,10 +146,9 @@ public class ProjectDeliverablesListAction extends BaseAction {
     return projectID;
   }
 
-  public Project getProjectOld() {
-    return projectOld;
+  public String getProjectRequestID() {
+    return APConstants.PROJECT_REQUEST_ID;
   }
-
 
   @Override
   public String next() {
@@ -119,66 +178,8 @@ public class ProjectDeliverablesListAction extends BaseAction {
 
   }
 
-  @Override
-  public String save() {
-    return SUCCESS;
-    // if (this.isSaveable()) {
-    // boolean success = true;
-    // boolean deleted;
-    //
-    // // Getting previous Deliverables.
-    // List<Deliverable> previousDeliverables = deliverableManager.getDeliverablesByProject(projectID);
-    //
-    // // Identifying deleted deliverables in the interface to delete them from the database.
-    // for (Deliverable deliverable : previousDeliverables) {
-    // if (!project.getDeliverables().contains(deliverable) || project.getDeliverables().isEmpty()) {
-    // deleted = deliverableManager.deleteDeliverable(deliverable.getId());
-    // if (!deleted) {
-    // success = false;
-    // }
-    // } else {
-    // // If the deliverable was not deleted we should remove the next users and the outputs
-    // nextUserManager.deleteNextUserByDeliverable(deliverable.getId());
-    // deliverableManager.deleteDeliverableOutput(deliverable.getId());
-    // }
-    // }
-    //
-    // // Saving deliverables
-    // for (Deliverable deliverable : project.getDeliverables()) {
-    // int result = deliverableManager.saveDeliverable(projectID, deliverable);
-    // if (result != -1) {
-    // // Defining deliverable ID.
-    // int deliverableID;
-    // if (result > 0) {
-    // deliverableID = result;
-    // } else {
-    // deliverableID = deliverable.getId();
-    // }
-    //
-    // // saving output/MOG contribution.
-    // deliverableManager.saveDeliverableOutput(deliverableID, project.getId(), this.getCurrentUser().getId(),
-    // this.getJustification());
-    //
-    // // Saving next Users.
-    // if (deliverable.getNextUsers() != null) {
-    // for (NextUser nextUser : deliverable.getNextUsers()) {
-    // if (!nextUserManager.saveNextUser(deliverableID, nextUser)) {
-    // success = false;
-    // }
-    // }
-    // }
-    // }
-    // }
-
-    // if (success == false) {
-    // this.addActionError(this.getText("saving.problem"));
-    // return BaseAction.INPUT;
-    // }
-    // this.addActionMessage(this.getText("saving.success", new String[] {this.getText("planning.deliverables")}));
-    // return BaseAction.SUCCESS;
-    // } else {
-    // return BaseAction.ERROR;
-    // }
+  public void setDeliverableID(int deliverableID) {
+    this.deliverableID = deliverableID;
   }
 
   public void setDeliverableSubTypes(List<DeliverableType> deliverableSubTypes) {

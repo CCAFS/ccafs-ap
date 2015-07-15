@@ -39,6 +39,15 @@ public interface HistoryDAO {
   public List<Map<String, String>> getCCAFSOutcomesHistory(int projectID);
 
   /**
+   * This method return the last five changes made in the interface of project deliverables to the deliverable
+   * identified by the value received by parameter.
+   * 
+   * @param deliverableID
+   * @return
+   */
+  public List<Map<String, String>> getProjectDeliverablesHistory(int deliverableID);
+
+  /**
    * This method return the last five changes (only the user, date, action and justification) made in the interface of
    * project description to the project identified by the value received by parameter.
    * 
@@ -49,12 +58,22 @@ public interface HistoryDAO {
 
   /**
    * This method return the last five changes (only the user, date, action and justification) made in the interface of
+   * project Other contributions to the project identified by the value received by parameter.
+   * 
+   * @param projectID - Project identifier
+   * @return a list of maps with the information
+   */
+  public List<Map<String, String>> getProjectIPOtherContributionHistory(int projectID);
+
+  /**
+   * This method return the last five changes (only the user, date, action and justification) made in the interface of
    * project locations to the project identified by the value received by parameter.
    * 
    * @param projectID - Project identifier
    * @return a list of maps with the information
    */
   public List<Map<String, String>> getProjectLocationsHistory(int projectID);
+
 
   /**
    * This method return the last five changes (only the user, date, action and justification) made in the interface of
@@ -64,6 +83,15 @@ public interface HistoryDAO {
    * @return a list of maps with the information
    */
   public List<Map<String, String>> getProjectOutcomeHistory(int projectID);
+
+  /**
+   * This method return the last five changes (only the user, date, action and justification) made in the interface of
+   * project outputs (overview by MOGs) to the project identified by the value received by parameter.
+   * 
+   * @param projectID - Project identifier
+   * @return a list of maps with the information
+   */
+  public List<Map<String, String>> getProjectOutputsHistory(int projectID);
 
   /**
    * This method return the last five changes (only the user, date, action and justification) made in the interface of

@@ -34,10 +34,16 @@ public class Deliverable {
   private String typeOther; // Other specific type defined by the user.
   private List<NextUser> nextUsers;
   private IPElement output; // Now it is called MOG.
-  private List<DeliverablePartner> partnerships;
+  private DeliverablePartner responsiblePartner;
+  private List<DeliverablePartner> otherPartners;
+  private long created;
 
   public Deliverable() {
     super();
+  }
+
+  public Deliverable(int id) {
+    this.id = id;
   }
 
   @Override
@@ -49,6 +55,10 @@ public class Deliverable {
     return false;
   }
 
+  public long getCreated() {
+    return created;
+  }
+
   public int getId() {
     return id;
   }
@@ -57,12 +67,16 @@ public class Deliverable {
     return nextUsers;
   }
 
+  public List<DeliverablePartner> getOtherPartners() {
+    return otherPartners;
+  }
+
   public IPElement getOutput() {
     return output;
   }
 
-  public List<DeliverablePartner> getPartnerships() {
-    return partnerships;
+  public DeliverablePartner getResponsiblePartner() {
+    return responsiblePartner;
   }
 
   public String getTitle() {
@@ -86,6 +100,10 @@ public class Deliverable {
     return this.id;
   }
 
+  public void setCreated(long created) {
+    this.created = created;
+  }
+
   public void setId(int id) {
     this.id = id;
   }
@@ -94,12 +112,16 @@ public class Deliverable {
     this.nextUsers = nextUsers;
   }
 
+  public void setOtherPartners(List<DeliverablePartner> otherPartners) {
+    this.otherPartners = otherPartners;
+  }
+
   public void setOutput(IPElement output) {
     this.output = output;
   }
 
-  public void setPartnerships(List<DeliverablePartner> partnerships) {
-    this.partnerships = partnerships;
+  public void setResponsiblePartner(DeliverablePartner responsiblePartner) {
+    this.responsiblePartner = responsiblePartner;
   }
 
   public void setTitle(String title) {

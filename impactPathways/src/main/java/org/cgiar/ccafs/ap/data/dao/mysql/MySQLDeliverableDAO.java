@@ -45,7 +45,7 @@ public class MySQLDeliverableDAO implements DeliverableDAO {
   }
 
   @Override
-  public boolean deleteDeliverable(int deliverableId) {
+  public boolean deleteDeliverable(int deliverableId, int userID, String justification) {
 
     LOG.debug(">> deleteDeliverable(id={})", deliverableId);
     int result = -1;
@@ -53,10 +53,12 @@ public class MySQLDeliverableDAO implements DeliverableDAO {
     Object[] values;
 
     StringBuilder query = new StringBuilder();
-    query.append("UPDATE deliverables d SET d.is_active = 0 ");
+    query.append("UPDATE deliverables d SET d.is_active = 0, modified_by = ?, modification_justification = ? ");
     query.append("WHERE d.id = ? ");
-    values = new Object[1];
-    values[0] = deliverableId;
+    values = new Object[3];
+    values[0] = userID;
+    values[1] = justification;
+    values[2] = deliverableId;
     result = databaseManager.saveData(query.toString(), values);
 
     LOG.debug("<< deleteDeliverable():{}", result);
@@ -143,11 +145,11 @@ public class MySQLDeliverableDAO implements DeliverableDAO {
       while (rs.next()) {
         Map<String, String> deliverableData = new HashMap<String, String>();
         deliverableData.put("id", rs.getString("id"));
-        deliverableData.put("activity_id", rs.getString("activity_id"));
         deliverableData.put("title", rs.getString("title"));
         deliverableData.put("type_id", rs.getString("type_id"));
         deliverableData.put("type_other", rs.getString("type_other"));
         deliverableData.put("year", rs.getString("year"));
+        deliverableData.put("active_since", String.valueOf(rs.getTimestamp("active_since").getTime()));
 
         deliverablesList.add(deliverableData);
       }
@@ -171,7 +173,7 @@ public class MySQLDeliverableDAO implements DeliverableDAO {
     StringBuilder query = new StringBuilder();
     query.append("SELECT d.*   ");
     query.append("FROM deliverables as d ");
-    query.append("WHERE d.id=  ");
+    query.append("WHERE d.id =  ");
     query.append(deliverableID);
     query.append(" AND d.is_active = 1");
     try (Connection con = databaseManager.getConnection()) {
@@ -183,6 +185,7 @@ public class MySQLDeliverableDAO implements DeliverableDAO {
         deliverableData.put("type_id", rs.getString("type_id"));
         deliverableData.put("type_other", rs.getString("type_other"));
         deliverableData.put("year", rs.getString("year"));
+        deliverableData.put("active_since", String.valueOf(rs.getTimestamp("active_since").getTime()));
       }
       con.close();
     } catch (SQLException e) {
@@ -229,7 +232,7 @@ public class MySQLDeliverableDAO implements DeliverableDAO {
     query.append("SELECT d.*   ");
     query.append("FROM deliverables as d ");
     query.append("INNER JOIN projects a ON d.project_id = a.id ");
-    query.append("WHERE d.project_id=  ");
+    query.append("WHERE d.project_id =  ");
     query.append(projectID);
     query.append(" AND d.is_active = 1");
 
@@ -238,45 +241,40 @@ public class MySQLDeliverableDAO implements DeliverableDAO {
   }
 
   @Override
-  public int saveDeliverable(int projectID, Map<String, Object> deliverableData) {
+  public int saveDeliverable(Map<String, Object> deliverableData) {
     LOG.debug(">> saveDeliverable(deliverableData={})", deliverableData);
     StringBuilder query = new StringBuilder();
     int result = -1;
     Object[] values;
     if (deliverableData.get("id") == null) {
       // Insert new deliverable record
-      query.append(
-        "INSERT INTO deliverables (id, project_id,  title, type_id, type_other, year, activity_id , created_by, ");
+      query.append("INSERT INTO deliverables (id, project_id,  title, type_id, type_other, year, created_by, ");
       query.append("modified_by, modification_justification) ");
-      query.append("VALUES (?,?,?,?,?,?,?,?,?,?) ");
-      values = new Object[10];
+      query.append("VALUES (?,?,?,?,?,?,?,?,?) ");
+      values = new Object[9];
       values[0] = deliverableData.get("id");
-      values[1] = projectID;
+      values[1] = deliverableData.get("project_id");;
       values[2] = deliverableData.get("title");
       values[3] = deliverableData.get("type_id");
       values[4] = deliverableData.get("type_other");
       values[5] = deliverableData.get("year");
-      // temporal
-      values[6] = deliverableData.get("activity_id");
-      values[7] = deliverableData.get("created_by");
-      values[8] = deliverableData.get("modified_by");
-      values[9] = deliverableData.get("modification_justification");
-    } else {
-      // Updating existing deliverable record
-      query.append(
-        "UPDATE deliverables SET project_id = ?, title = ?, type_id = ?, type_other = ?, year = ?, activity_id = ?, created_by = ?, modified_by = ?, modification_justification = ? ");
-      query.append("WHERE id = ? ");
-      values = new Object[10];
-      values[0] = projectID;
-      values[1] = deliverableData.get("title");
-      values[2] = deliverableData.get("type_id");
-      values[3] = deliverableData.get("type_other");
-      values[4] = deliverableData.get("year");
-      values[5] = deliverableData.get("activity_id");
+      // Logs
       values[6] = deliverableData.get("created_by");
       values[7] = deliverableData.get("modified_by");
       values[8] = deliverableData.get("modification_justification");
-      values[9] = deliverableData.get("id");
+    } else {
+      // Updating existing deliverable record
+      query.append(
+        "UPDATE deliverables SET title = ?, type_id = ?, type_other = ?, year = ?, modified_by = ?, modification_justification = ? ");
+      query.append("WHERE id = ? ");
+      values = new Object[7];
+      values[0] = deliverableData.get("title");
+      values[1] = deliverableData.get("type_id");
+      values[2] = deliverableData.get("type_other");
+      values[3] = deliverableData.get("year");
+      values[4] = deliverableData.get("modified_by");
+      values[5] = deliverableData.get("modification_justification");
+      values[6] = deliverableData.get("id");
     }
     result = databaseManager.saveData(query.toString(), values);
 

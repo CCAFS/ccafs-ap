@@ -39,6 +39,15 @@ public interface HistoryManager {
   public List<LogHistory> getCCAFSOutcomesHistory(int projectID);
 
   /**
+   * This method return the last five changes made in the interface of project deliverables to the deliverable
+   * identified by the value received by parameter.
+   * 
+   * @param deliverableID
+   * @return
+   */
+  public List<LogHistory> getProjectDeliverablesHistory(int deliverableID);
+
+  /**
    * This method return the last five changes made in the interface of
    * project description to the project identified by the value received by parameter.
    * 
@@ -46,6 +55,15 @@ public interface HistoryManager {
    * @return a list of logHistory objects that contains the information.
    */
   public <T> List<LogHistory> getProjectDescriptionHistory(int projectID);
+
+  /**
+   * This method return the last five changes made in the interface of project other contribution to the project
+   * identified by the value received by parameter.
+   * 
+   * @param projectID
+   * @return
+   */
+  public List<LogHistory> getProjectIPOtherContributionHistory(int projectID);
 
   /**
    * This method return the last five changes made in the interface of
@@ -64,6 +82,15 @@ public interface HistoryManager {
    * @return a list of logHistory objects that contains the information.
    */
   public List<LogHistory> getProjectOutcomeHistory(int projectID);
+
+  /**
+   * This method return the last five changes made in the interface of project outputs (overviewByMOGs) to the project
+   * identified by the value received by parameter.
+   * 
+   * @param projectID - Project identifier
+   * @return a list of logHistory objects that contains the information.
+   */
+  public List<LogHistory> getProjectOutputsHistory(int projectID);
 
   /**
    * This method return the last five changes made in the interface of project partners (Partner lead) to the project

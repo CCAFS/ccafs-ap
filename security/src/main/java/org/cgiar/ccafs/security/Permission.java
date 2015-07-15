@@ -204,6 +204,11 @@ public class Permission {
    */
   public static final String PLANNING_PROJECT_BUDGET_UPDATE = "planning:projects:budget:update";
 
+  /**
+   * Can update the planning project budget by MOG section
+   */
+  public static final String PLANNING_PROJECT_BUDGET_BY_MOG_UPDATE = "planning:projects:budgetByMog:update";
+
   // --------------------------- End of project Budget ---------------------------------
 
 
@@ -343,6 +348,11 @@ public class Permission {
    * Can update the project budget section of some specific project
    */
   public static final String PROJECT_BUDGET_UPDATE = "project:budget:update";
+
+  /**
+   * Can update the project budget section of some specific project
+   */
+  public static final String PROJECT_BUDGET_BY_MOG_UPDATE = "project:budgetByMog:update";
 
   // --------------------------- End of project Budget ---------------------------------
 

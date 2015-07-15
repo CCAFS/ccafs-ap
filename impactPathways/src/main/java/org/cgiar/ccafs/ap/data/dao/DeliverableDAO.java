@@ -32,9 +32,11 @@ public interface DeliverableDAO {
    * Deletes the information of a Deliverable associated by a given id
    * 
    * @param deliverableId - is the Id of an Deliverable
+   * @param userID - is the user identifier who is deleting the deliverable.
+   * @param justification - is the justification statement.
    * @return true if the elements were deleted successfully. False otherwise
    */
-  public boolean deleteDeliverable(int deliverableId);
+  public boolean deleteDeliverable(int deliverableId, int userID, String justification);
 
   /**
    * Deletes the information of a Deliverable contribution by a given deliverable id
@@ -88,18 +90,18 @@ public interface DeliverableDAO {
    * This method saves the Deliverable information
    * 
    * @param deliverableData - is a Map with the information of the deliverable to be saved
-   * @param activityID - is the Id of the project
    * @return The last inserted id if there was a new record, 0 if the record was updated or -1 if any error happened.
    */
-  public int saveDeliverable(int projectID, Map<String, Object> deliverableData);
+  public int saveDeliverable(Map<String, Object> deliverableData);
 
   /**
    * This method saves the Deliverable Contribution relation
    * 
    * @param deliverableID - is the Id of the deliverable
-   * @param ipElementID - is the Id of the IP Element
    * @param projectID - is the Id of the project
-   * @return true if the relation Deliverable Contribution is saved, false otherwise
+   * @param userID - is the user who is making the change.
+   * @param justification - is the justification statement.
+   * @return true if the relation Deliverable Contribution is successfully saved, false otherwise
    */
   public boolean saveDeliverableOutput(int deliverableID, int projectID, int userID, String justification);
 

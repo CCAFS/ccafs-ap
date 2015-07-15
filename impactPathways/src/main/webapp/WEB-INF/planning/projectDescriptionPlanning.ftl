@@ -31,9 +31,7 @@
     [#-- Informing user that he/she doesn't have enough privileges to edit. See GrantProjectPlanningAccessInterceptor--]
     [#if !canEdit ]
       <p class="readPrivileges">
-        [@s.text name="saving.read.privileges"]
-          [@s.param][@s.text name="planning.project"/][/@s.param]
-        [/@s.text]
+        [@s.text name="saving.read.privileges"][@s.param][@s.text name="planning.project"/][/@s.param][/@s.text]
       </p>
     [/#if] 
     <div id="projectDescription" class="borderBox">
@@ -71,7 +69,7 @@
           [#-- Project Type --]
           <div class="halfPartBlock"> 
             [@customForm.select name="project.type" value="project.type" i18nkey="planning.projectDescription.projectType" listName="projectTypes" disabled=true /]
-            
+            <input name="project.type" value="${project.type}" type="hidden"/>
           </div>
         </div> 
 

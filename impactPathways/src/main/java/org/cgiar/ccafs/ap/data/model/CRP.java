@@ -27,6 +27,13 @@ public class CRP {
   private String name;
   private String acronym;
 
+  public CRP() {
+  }
+
+  public CRP(int id) {
+    this.id = id;
+  }
+
   @Override
   public boolean equals(Object obj) {
     if (obj instanceof CRP) {

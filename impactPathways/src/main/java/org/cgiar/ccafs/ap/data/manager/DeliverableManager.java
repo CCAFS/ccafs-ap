@@ -16,6 +16,7 @@ package org.cgiar.ccafs.ap.data.manager;
 import org.cgiar.ccafs.ap.data.manager.impl.DeliverableManagerImpl;
 import org.cgiar.ccafs.ap.data.model.Deliverable;
 import org.cgiar.ccafs.ap.data.model.IPElement;
+import org.cgiar.ccafs.ap.data.model.User;
 
 import java.util.List;
 
@@ -32,9 +33,11 @@ public interface DeliverableManager {
    * This method removes a specific deliverable value from the database.
    * 
    * @param deliverableId is the deliverable identifier.
+   * @param user - the user that is deleting the deliverable.
+   * @param justification - the justification statement.
    * @return true if the deliverable was successfully deleted, false otherwise.
    */
-  public boolean deleteDeliverable(int deliverableId);
+  public boolean deleteDeliverable(int deliverableId, User user, String justification);
 
   /**
    * This method removes a specific deliverable contribution value from the database.
@@ -45,10 +48,10 @@ public interface DeliverableManager {
   public boolean deleteDeliverableOutput(int deliverableID);
 
   /**
-   * This method removes a set of deliverables that belongs to a specific activity.
+   * This method removes a set of deliverables that belongs to a specific project.
    * 
-   * @param projectID is the activity identifier.
-   * @return true if the set of activities were successfully deleted, false otherwise.
+   * @param projectID is the project identifier.
+   * @return true if the set of deliverables were successfully deleted, false otherwise.
    */
   public boolean deleteDeliverablesByProject(int projectID);
 
@@ -61,7 +64,7 @@ public interface DeliverableManager {
   public boolean existDeliverable(int deliverableID);
 
   /**
-   * This method gets a deliverable object by a given deliverable ID.
+   * This method gets a deliverable object by a given deliverable identifier.
    * 
    * @param deliverableID is the deliverable identifier.
    * @return a Deliverable object.
@@ -69,6 +72,7 @@ public interface DeliverableManager {
   public Deliverable getDeliverableById(int deliverableID);
 
   /**
+   * TODO this method should be moved to IPElementManager.
    * This method gets the information of IP Element related with the MOG in which this deliverable contributes to.
    * 
    * @param deliverableID - is the id of the Deliverable
@@ -77,31 +81,35 @@ public interface DeliverableManager {
   public IPElement getDeliverableOutput(int deliverableID);
 
   /**
-   * This method gets all the deliverables information by a given activity Id
+   * This method gets all the deliverables information by a given project identifier.
    * 
-   * @param activityID - is the Id of the activity
-   * @return a List of deliverables with the Information related with the activity
+   * @param projectID - is the Id of the project
+   * @return a List of deliverables with the Information related with the project
    */
   public List<Deliverable> getDeliverablesByProject(int projectID);
 
   /**
-   * This method saves the information of the given deliverable that belong to a specific activity into the database.
+   * This method saves the information of the given deliverable that belong to a specific project into the database.
    * 
-   * @param projectID
-   * @param deliverable
-   * @return a number greater than 0 representing the new ID assigned by the databse, 0 if the deliverable was updated
+   * @param projectID is the project id where the deliverable belongs to.
+   * @param deliverable - is the deliverable object with the new information to be added/updated.
+   * @param user - is the user that is making the change.
+   * @param justification - is the justification statement.
+   * @return a number greater than 0 representing the new ID assigned by the database, 0 if the deliverable was updated
    *         or -1 is some error occurred.
    */
-  public int saveDeliverable(int projectID, Deliverable deliverable);
+  public int saveDeliverable(int projectID, Deliverable deliverable, User user, String justification);
 
   /**
    * This method saves the Deliverable Contribution relation
    * 
    * @param deliverableID - is the Id of the deliverable
    * @param projectID - is the Id of the project
-   * @return true if the relation Deliverable Contribution is saved,
+   * @param user - is the user that is making the change.
+   * @param justification - is the justification statement.
+   * @return true if the relation Deliverable Contribution is successfully saved,
    *         false otherwise
    */
-  public boolean saveDeliverableOutput(int deliverableID, int projectID, int userID, String justification);
+  public boolean saveDeliverableOutput(int deliverableID, int projectID, User user, String justification);
 
 }

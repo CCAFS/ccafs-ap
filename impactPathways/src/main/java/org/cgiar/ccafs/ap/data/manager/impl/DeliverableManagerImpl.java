@@ -16,10 +16,12 @@ package org.cgiar.ccafs.ap.data.manager.impl;
 
 import org.cgiar.ccafs.ap.data.dao.DeliverableDAO;
 import org.cgiar.ccafs.ap.data.manager.DeliverableManager;
+import org.cgiar.ccafs.ap.data.manager.DeliverablePartnerManager;
 import org.cgiar.ccafs.ap.data.manager.DeliverableTypeManager;
 import org.cgiar.ccafs.ap.data.manager.NextUserManager;
 import org.cgiar.ccafs.ap.data.model.Deliverable;
 import org.cgiar.ccafs.ap.data.model.IPElement;
+import org.cgiar.ccafs.ap.data.model.User;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -32,6 +34,7 @@ import org.slf4j.LoggerFactory;
 
 /**
  * @author Javier Andrés Gallego
+ * @author Héctor Fabio Tobón R. - CIAT/CCAFS
  */
 public class DeliverableManagerImpl implements DeliverableManager {
 
@@ -42,20 +45,41 @@ public class DeliverableManagerImpl implements DeliverableManager {
   private DeliverableDAO deliverableDAO;
   // Managers
   private DeliverableTypeManager deliverableTypeManager;
-
   private NextUserManager nextUserManager;
+  private DeliverablePartnerManager partnerManager;
 
   @Inject
   public DeliverableManagerImpl(DeliverableDAO deliverableDAO, DeliverableTypeManager deliverableTypeManager,
-    NextUserManager nextUserManager) {
+    NextUserManager nextUserManager, DeliverablePartnerManager partnerManager) {
     this.deliverableDAO = deliverableDAO;
     this.deliverableTypeManager = deliverableTypeManager;
     this.nextUserManager = nextUserManager;
+    this.partnerManager = partnerManager;
   }
 
   @Override
-  public boolean deleteDeliverable(int deliverableId) {
-    return deliverableDAO.deleteDeliverable(deliverableId);
+  public boolean deleteDeliverable(int deliverableID, User user, String justification) {
+    boolean problem = false;
+    // Deleting deliverable.
+    boolean deleted = deliverableDAO.deleteDeliverable(deliverableID, user.getId(), justification);
+    if (!deleted) {
+      problem = true;
+    }
+
+    // Deleting next users.
+    deleted = nextUserManager.deleteNextUserByDeliverable(deliverableID, user, justification);
+    if (!deleted) {
+      problem = true;
+    }
+
+    // Deleting partners contribution
+    deleted = partnerManager.deleteDeliverablePartnerByDeliverable(deliverableID, user, justification);
+
+    if (!deleted) {
+      problem = true;
+    }
+
+    return !problem;
   }
 
   @Override
@@ -87,6 +111,7 @@ public class DeliverableManagerImpl implements DeliverableManager {
       deliverable.setTypeOther(deliverableData.get("type_other"));
       deliverable.setNextUsers(nextUserManager.getNextUsersByDeliverableId(deliverableID));
       deliverable.setOutput(this.getDeliverableOutput(deliverableID));
+      deliverable.setCreated(Long.parseLong(deliverableData.get("active_since")));
       return deliverable;
     }
     return null;
@@ -118,6 +143,7 @@ public class DeliverableManagerImpl implements DeliverableManager {
       deliverable.setTypeOther(deliverableData.get("type_other"));
       deliverable.setNextUsers(nextUserManager.getNextUsersByDeliverableId(projectID));
       deliverable.setOutput(this.getDeliverableOutput(Integer.parseInt(deliverableData.get("id"))));
+      deliverable.setCreated(Long.parseLong(deliverableData.get("active_since")));
       // adding information of the object to the array
       deliverableList.add(deliverable);
     }
@@ -125,20 +151,25 @@ public class DeliverableManagerImpl implements DeliverableManager {
   }
 
   @Override
-  public int saveDeliverable(int projectID, Deliverable deliverable) {
+  public int saveDeliverable(int projectID, Deliverable deliverable, User user, String justification) {
     Map<String, Object> deliverableData = new HashMap<>();
     if (deliverable.getId() != -1) {
       deliverableData.put("id", deliverable.getId());
     } else {
       deliverableData.put("id", null);
+      deliverableData.put("created_by", user.getId());
     }
     deliverableData.put("project_id", projectID);
     deliverableData.put("title", deliverable.getTitle());
     deliverableData.put("type_id", deliverable.getType().getId());
     deliverableData.put("type_other", deliverable.getTypeOther());
     deliverableData.put("year", deliverable.getYear());
+    // Logs
+    deliverableData.put("modified_by", user.getId());
+    deliverableData.put("modification_justification", justification);
 
-    int result = deliverableDAO.saveDeliverable(projectID, deliverableData);
+
+    int result = deliverableDAO.saveDeliverable(deliverableData);
 
     if (result > 0) {
       LOG.debug("saveDeliverable > New Deliverable added with id {}", result);
@@ -154,7 +185,7 @@ public class DeliverableManagerImpl implements DeliverableManager {
   }
 
   @Override
-  public boolean saveDeliverableOutput(int deliverableID, int projectID, int userID, String justification) {
-    return deliverableDAO.saveDeliverableOutput(deliverableID, projectID, userID, justification);
+  public boolean saveDeliverableOutput(int deliverableID, int projectID, User user, String justification) {
+    return deliverableDAO.saveDeliverableOutput(deliverableID, projectID, user.getId(), justification);
   }
 }

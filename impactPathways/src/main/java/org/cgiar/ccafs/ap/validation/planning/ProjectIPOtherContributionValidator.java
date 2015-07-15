@@ -55,6 +55,11 @@ public class ProjectIPOtherContributionValidator extends BaseValidator {
         this.validateCrpCollaborationNature(action, project.getIpOtherContribution().getCrpCollaborationNature());
         this.validateCrpContributions(action, project.getCrpContributions());
       }
+
+      if (validationMessage.length() > 0) {
+        String msg = " " + this.getText("saving.missingFields", new String[] {validationMessage.toString()});
+        action.addActionMessage(msg);
+      }
     }
   }
 

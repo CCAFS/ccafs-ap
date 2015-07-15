@@ -16,6 +16,7 @@ package org.cgiar.ccafs.ap.action.planning;
 import org.cgiar.ccafs.ap.action.BaseAction;
 import org.cgiar.ccafs.ap.config.APConstants;
 import org.cgiar.ccafs.ap.data.manager.CRPManager;
+import org.cgiar.ccafs.ap.data.manager.HistoryManager;
 import org.cgiar.ccafs.ap.data.manager.ProjectManager;
 import org.cgiar.ccafs.ap.data.manager.ProjectOtherContributionManager;
 import org.cgiar.ccafs.ap.data.model.CRP;
@@ -24,6 +25,8 @@ import org.cgiar.ccafs.ap.data.model.Project;
 import org.cgiar.ccafs.ap.validation.planning.ProjectIPOtherContributionValidator;
 import org.cgiar.ccafs.utils.APConfig;
 
+import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 
 import com.google.inject.Inject;
@@ -45,6 +48,7 @@ public class ProjectIPOtherContributionAction extends BaseAction {
   private CRPManager crpManager;
   private ProjectManager projectManager;
   private ProjectIPOtherContributionValidator otherContributionValidator;
+  private HistoryManager historyManager;
 
   // Model for the back-end
   private OtherContribution ipOtherContribution;
@@ -57,12 +61,14 @@ public class ProjectIPOtherContributionAction extends BaseAction {
 
   @Inject
   public ProjectIPOtherContributionAction(APConfig config, ProjectOtherContributionManager ipOtherContributionManager,
-    ProjectManager projectManager, CRPManager crpManager, ProjectIPOtherContributionValidator otherContributionValidator) {
+    ProjectManager projectManager, CRPManager crpManager,
+    ProjectIPOtherContributionValidator otherContributionValidator, HistoryManager historyManager) {
     super(config);
     this.ipOtherContributionManager = ipOtherContributionManager;
     this.projectManager = projectManager;
     this.crpManager = crpManager;
     this.otherContributionValidator = otherContributionValidator;
+    this.historyManager = historyManager;
   }
 
   public List<CRP> getCrps() {
@@ -107,7 +113,16 @@ public class ProjectIPOtherContributionAction extends BaseAction {
     project.setCrpContributions(crpManager.getCrpContributions(projectID));
     project.setIpOtherContribution(ipOtherContribution);
 
-    previousCRPs = project.getCrpContributions();
+    previousCRPs = new ArrayList<>();
+    for (CRP crp : project.getCrpContributions()) {
+      previousCRPs.add(new CRP(crp.getId()));
+    }
+
+    super.setHistory(historyManager.getProjectIPOtherContributionHistory(project.getId()));
+
+    if (this.isHttpPost()) {
+      project.getCrpContributions().clear();
+    }
   }
 
   @Override
@@ -135,9 +150,17 @@ public class ProjectIPOtherContributionAction extends BaseAction {
         this.addActionError(this.getText("saving.problem"));
         return BaseAction.INPUT;
       } else {
-        this.addActionMessage(this.getText("saving.success",
-          new String[] {this.getText("planning.impactPathways.otherContributions.title")}));
-        return BaseAction.SUCCESS;
+        // Get the validation messages and append them to the save message if any
+        Collection<String> messages = this.getActionMessages();
+        if (!messages.isEmpty()) {
+          String validationMessage = messages.iterator().next();
+          this.setActionMessages(null);
+          this.addActionWarning(this.getText("saving.saved") + validationMessage);
+        } else {
+          this.addActionMessage(this.getText("saving.success",
+            new String[] {this.getText("planning.impactPathways.otherContributions.title")}));
+        }
+        return SUCCESS;
       }
     }
     return BaseAction.NOT_AUTHORIZED;

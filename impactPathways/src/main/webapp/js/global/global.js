@@ -1,4 +1,5 @@
 var baseURL;
+var formBefore;
 jQuery.fn.exists = function() {
   return this.length > 0;
 };
@@ -18,7 +19,7 @@ $(document).ready(function() {
         opacity: 1
       }, 300);
     });
-  }, 200);
+  }, 500);
 
   function showNotificationMessages() {
     $('#generalMessages #messages').children("li").each(function(index) {
@@ -64,30 +65,59 @@ $(document).ready(function() {
     $(this).parent().parent().parent().find('.tickBox-toggle').slideToggle($(e.target).is(':checked'));
   }
 
+  // Generating hash from form information
+  formBefore = getHash($('form [id!="justification"]').serialize());
 });
 
 /**
  * Validate fields length when click to any button
  */
-
 function validateEvent(button,fields) {
   var errorClass = 'fieldError';
   $(button).on('click', function(e) {
     $.each(fields, function(i,val) {
       $(val).each(function() {
         $(this).removeClass(errorClass);
-        if(!validateField($(this))) {
+        if(isChanged()) {
+          if(!validateField($(this))) {
+            e.preventDefault();
+            $(this).addClass(errorClass);
+          }
+        } else {
           e.preventDefault();
-          $(this).addClass(errorClass);
+          var $msj = $('<p class="msj">Nothing changed</p>');
+          $(button).parent().after($msj.hide());
+          $msj.fadeIn(1000, function() {
+            $msj.fadeOut(1000, "easeInExpo", function() {
+              $(this).remove();
+            });
+          });
         }
       });
     });
   });
 }
 
+function isChanged() {
+  return(formBefore != getHash($('form [id!="justification"]').serialize()));
+}
+
 function validateField($input) {
   var valid = ($input.val().length > 0) ? true : false;
   return valid;
+}
+
+function getHash(str) {
+  var hash = 0, i, chr, len;
+  if(str.length == 0) {
+    return hash;
+  }
+  for(i = 0, len = str.length; i < len; i++) {
+    chr = str.charCodeAt(i);
+    hash = ((hash << 5) - hash) + chr;
+    hash |= 0; // Convert to 32bit integer
+  }
+  return hash;
 }
 
 /* Add a char counter to a specific text area */

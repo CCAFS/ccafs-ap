@@ -4,7 +4,7 @@
   [@s.text name="${customName}"][@s.param]${param}[/@s.param][/@s.text]
 [/#macro]
 
-[#macro input name value="-NULL" type="text" i18nkey="" disabled=false required=false errorField="" help="" display=true className="" readOnly=false showTitle=true editable=true ]
+[#macro input name value="-NULL" type="text" i18nkey="" disabled=false required=false errorField="" help="" display=true className="" readOnly=false showTitle=true editable=true placeholder=false]
   <div class="input ${(className?has_content)?string('input-','')}${className}" style="display:${display?string('block','none')};">
     [#assign labelTitle][#if i18nkey==""][@s.text name="${name}"/][#else][@s.text name="${i18nkey}"/][/#if][/#assign]
     [#if showTitle]
@@ -17,7 +17,7 @@
     [/#if]
     [#if errorField==""][@s.fielderror cssClass="fieldError" fieldName="${name}"/][#else][@s.fielderror cssClass="fieldError" fieldName="${errorfield}"/][/#if]
     [#if editable]
-      <input type="${type}" id="${name}" name="${name}" value="[#if value=="-NULL"][@s.property value="${name?string}"/][#else]${value}[/#if]"  [#if className?has_content]class="${className}"[/#if][#if readOnly] readonly="readonly"[/#if] [#if disabled]disabled="disabled"[/#if] [#if !showTitle]placeholder="${labelTitle}"[/#if]/>
+      <input type="${type}" id="${name}" name="${name}" value="[#if value=="-NULL"][@s.property value="${name?string}"/][#else]${value}[/#if]"  [#if className?has_content]class="${className}"[/#if][#if readOnly] readonly="readonly"[/#if] [#if disabled]disabled="disabled"[/#if] [#if !showTitle && placeholder]placeholder="${labelTitle}"[/#if]/>
     [#else]
       <p>
         [#if value=="-NULL"] 
@@ -169,8 +169,7 @@
         [#else]  
           [#if customValue?has_content]
             ${customValue}
-          [#elseif value?has_content]
-          [#else]
+          [#elseif value=="-1"]
             [@s.text name="form.values.fieldEmpty" /]
           [/#if] 
         [/#if]

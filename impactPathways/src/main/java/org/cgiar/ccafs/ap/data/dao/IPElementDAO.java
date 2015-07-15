@@ -148,6 +148,14 @@ public interface IPElementDAO {
   public int getProgramElementID(int ipElementID, int ipProgramID);
 
   /**
+   * Get all the ipElements (outputs) presents in the database and linked to the project identified by the value
+   * received by parameter.
+   * 
+   * @return all list of maps with the information of all ipElements
+   */
+  public List<Map<String, String>> getProjectOutputs(int projectID);
+
+  /**
    * This method relates an existent ip element with the program given.
    * 
    * @param elementID - IPElement identifier

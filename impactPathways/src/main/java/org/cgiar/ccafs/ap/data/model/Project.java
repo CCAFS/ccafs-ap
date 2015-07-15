@@ -56,6 +56,7 @@ public class Project {
   private List<Location> locations; // Project locations.
   private List<Activity> activities;
   private List<IPElement> outputs;
+  private List<OutputOverview> outputsOverview;
   private List<IPIndicator> indicators;
   private OtherContribution ipOtherContribution;
   private List<CRP> crpContributions;
@@ -326,12 +327,40 @@ public class Project {
     return outcomes;
   }
 
+  public IPElement getOutput(int outputID) {
+    if (outputs != null) {
+      for (IPElement output : outputs) {
+        if (output.getId() == outputID) {
+          return output;
+        }
+      }
+    }
+    return null;
+  }
+
+  public OutputOverview getOutputOverview(int outputID, int year) {
+    for (OutputOverview overview : outputsOverview) {
+      if (overview.getOutput().getId() == outputID && overview.getYear() == year) {
+        return overview;
+      }
+    }
+    return null;
+  }
+
   public List<IPElement> getOutputs() {
     return outputs;
   }
 
+  public List<OutputOverview> getOutputsOverview() {
+    return outputsOverview;
+  }
+
   public User getOwner() {
     return owner;
+  }
+
+  public List<ProjectPartner> getPpaPartners() {
+    return ppaPartners;
   }
 
   public List<ProjectPartner> getPPAPartners() {
@@ -402,6 +431,10 @@ public class Project {
 
   public boolean isCofinancing() {
     return isCofinancing;
+  }
+
+  public boolean isCoFundedProject() {
+    return (type != null) ? type.equals(APConstants.PROJECT_CCAFS_COFUNDED) : false;
   }
 
   public boolean isCoreProject() {
@@ -513,6 +546,10 @@ public class Project {
 
   public void setOutputs(List<IPElement> outputs) {
     this.outputs = outputs;
+  }
+
+  public void setOutputsOverview(List<OutputOverview> outpusOverview) {
+    this.outputsOverview = outpusOverview;
   }
 
   public void setOwner(User owner) {

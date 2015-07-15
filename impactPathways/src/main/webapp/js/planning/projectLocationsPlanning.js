@@ -7,7 +7,6 @@ $(document).ready(init);
 
 function init() {
   countID = $("#locationsBlock .location").length;
-  excelTemplate = $("#excelTemplate");
   attachEvents();
   if($("#isGlobal").exists()) {
     $("input.globalCheck").trigger("change");
@@ -15,7 +14,6 @@ function init() {
     loadMap();
     setLocationsMarkers();
   }
-
 }
 
 function attachEvents() {
@@ -23,35 +21,43 @@ function attachEvents() {
   $("#addLocationLink").on("click", addLocationEvent);
   $("#locationsBlock .removeButton").on("click", removeLocationEvent);
 
-  $("#excelTemplate-file .removeButton").on("click", removeFileEvent);
   // Change Location type
-  $("[name$='type.id']").on("change", changeTypeEvent);
+  $("select.locationType").on("change", changeTypeEvent);
 
   // isGlobal Change
   $("#project\\.global").on("change", changeGlobalState);
 
-  $("[name$='geoPosition.latitude'], [name$='geoPosition.longitude']").on("keyup", markerAction);
-  $("[name$='geoPosition.latitude'], [name$='geoPosition.longitude']").on("focus", markerAction);
+  // Validate if coordinate is valid then take actions
+  $("input.latitude, input.longitude").on("keyup", markerAction);
+  $("input.latitude, input.longitude").on("focus", markerAction);
 
-  $("#fileBrowserLauncher").click(function(event) {
-    event.preventDefault();
-    $("#excelTemplate").trigger("click");
-  });
+  // Updating project.locations input when his fields changes
+  $(".locationType, .latitude, .longitude, .locationName").on("change", updateLocationInput);
 
-  $('#excelTemplate').change(function() {
-    $('#excelTemplate-text').text(this.value);
-    $("#excelTemplate-file").show("slow");
-  });
-
+  // Validate changes in form information
   validateEvent('[name=save], [name=next]', [
     "#justification"
   ]);
 }
 
+function updateLocationInput(e) {
+  var $location = $(e.target).parents('.location');
+  var loc =
+      [
+          $location.find('.locationType').val(), $location.find('input.latitude').val(),
+          $location.find('input.longitude').val(), $location.find('input.locationName').val(),
+          $location.find('input.locationId').val()
+      ];
+  if($location.find('select.locationName').val()) {
+    $location.find('select[name$=locations]').val($location.find('select.locationName').val());
+  } else {
+    $location.find('input[name$=locations]').val(loc.join('|s|'));
+  }
+}
+
 function changeGlobalState(e) {
   if($(e.target).is(':checked')) {
     $("#locationsBlock").fadeOut("slow");
-    $(".uploadFileMessage").fadeOut("slow");
     disableLocations(true);
     clearMarkers();
     $("#projectLocations-map").html(
@@ -59,7 +65,6 @@ function changeGlobalState(e) {
             + $("#isGlobalText").val() + "</p>");
   } else {
     $("#locationsBlock").fadeIn("slow");
-    $(".uploadFileMessage").fadeIn("slow");
     disableLocations(false);
     loadMap();
     showMarkers();
@@ -97,75 +102,17 @@ function removeLocationEvent(e) {
   });
 }
 
-function removeFileEvent(e) {
-  e.preventDefault();
-  $(e.target).parent().hide("slow", function() {
-    excelTemplate.replaceWith(excelTemplate = excelTemplate.clone(true));
-  });
-}
-
 function setLocationIndex() {
-  var elementName;
-  $("#locationsBlock .location").each(
-      function(index,location) {
-
-        var locationTypeID = $(location).find("[name$='type.id']").val();
-        $(location).find(".locationIndex strong").text((index + 1) + ".");
-        // $(location).attr("id", "location-" + index);
-
-        if(locationTypeID == 1) {
-          // If Location is of type region
-
-          elementName = "regionsSaved[" + index + "].";
-          $(location).find("[name$='].id']").attr("name", elementName + "id");
-          $(location).find("[name$='name']").attr("name", "name");
-          $(location).find("[name$='type.id']").attr("name", "type.id");
-          $(location).find("[name$='geoPosition.id']").attr("name", "geoPosition.id");
-          $(location).find("[name$='geoPosition.latitude']").attr("name", "geoPosition.latitude").attr("placeholder",
-              "Latitude");
-          $(location).find("[name$='geoPosition.longitude']").attr("name", "geoPosition.longitude").attr("placeholder",
-              "Longitude");
-
-        } else if(locationTypeID == 2) {
-          // If location is of type country
-
-          elementName = "countriesSaved[" + index + "].";
-          $(location).find("[name$='].id']").attr("name", elementName + "id");
-          $(location).find("[name$='name']").attr("name", "name");
-          $(location).find("[name$='type.id']").attr("name", "type.id");
-          $(location).find("[name$='geoPosition.id']").attr("name", "geoPosition.id");
-          $(location).find("[name$='geoPosition.latitude']").attr("name", "geoPosition.latitude").attr("placeholder",
-              "Latitude");
-          $(location).find("[name$='geoPosition.longitude']").attr("name", "geoPosition.longitude").attr("placeholder",
-              "Longitude");
-
-        } else if((locationTypeID == 10) || (locationTypeID == 11)) {
-          // If location is of type CCAFS Site
-          elementName = "csvSaved[" + index + "].";
-          $(location).find("[name$='].id']").attr("name", elementName + "id");
-          $(location).find("[name$='name']").attr("name", "name");
-          $(location).find("[name$='type.id']").attr("name", "type.id");
-          $(location).find("[name$='geoPosition.id']").attr("name", "geoPosition.id");
-          $(location).find("[name$='geoPosition.latitude']").attr("name", "geoPosition.latitude").attr("placeholder",
-              "Latitude");
-          $(location).find("[name$='geoPosition.longitude']").attr("name", "geoPosition.longitude").attr("placeholder",
-              "Longitude");
-
-        } else {
-          // If location is of other type
-
-          elementName = "otherLocationsSaved[" + index + "].";
-          $(location).find("[name$='].id']").attr("name", elementName + "id");
-          $(location).find("[name$='name']").attr("name", elementName + "name");
-          $(location).find("[name$='type.id']").attr("name", elementName + "type.id");
-          $(location).find("[name$='geoPosition.id']").attr("name", elementName + "geoPosition.id");
-          $(location).find("[name$='geoPosition.latitude']").attr("name", elementName + "geoPosition.latitude").attr(
-              "placeholder", "Latitude");
-          $(location).find("[name$='geoPosition.longitude']").attr("name", elementName + "geoPosition.longitude").attr(
-              "placeholder", "Longitude");
-        }
-
-      });
+  // var elementName;
+  $("#locationsBlock .location").each(function(index,location) {
+    $(location).find(".locationIndex strong").text((index + 1) + ".");
+/*
+ * var locationTypeID = $(location).find("[name$='type.id']").val(); $(location).attr("id", "location-" + index);
+ * if(locationTypeID == 1) { // If Location is of type region } else if(locationTypeID == 2) { // If location is of type
+ * country } else if((locationTypeID == 10) || (locationTypeID == 11)) { // If location is of type CCAFS Site } else { //
+ * If location is of other type }
+ */
+  });
 }
 
 function changeTypeEvent(e) {
@@ -173,14 +120,17 @@ function changeTypeEvent(e) {
   var $parent = $(e.target).parent().parent().parent().parent();
   var locationId = $parent.attr("id").split("-")[1];
   var $selectType = $("#selectTemplate-" + valId);
-  var $latitudeField = $parent.find("[name$='geoPosition.latitude']");
-  var $longitudeField = $parent.find("[name$='geoPosition.longitude']");
+  var $latitudeField = $parent.find("input.latitude");
+  var $longitudeField = $parent.find("input.longitude");
 
-  if($selectType.exists()) {
+  if($selectType.exists() || (valId == "-1")) {
     var $newSelectType = $selectType.clone(true);
+    if(valId == "-1") {
+      $newSelectType = $("#inputNameTemplate").clone(true);
+    }
     $parent.find(".locationName").empty().html($newSelectType.html());
-    $parent.find("[name$='geoPosition.latitude'], [name$='geoPosition.longitude']").addClass("notApplicable").attr(
-        "disabled", true).val($("#notApplicableText").val());
+    $parent.find("input.latitude, input.longitude").addClass("notApplicable").attr("disabled", true).val(
+        $("#notApplicableText").val());
     // If marker exist, remove the marker
     if(typeof markers[locationId] !== 'undefined') {
       removeMarker(locationId);
@@ -188,9 +138,8 @@ function changeTypeEvent(e) {
   } else {
     var $newInputType = $("#inputNameTemplate").clone(true);
     $parent.find(".locationName").empty().html($newInputType.html());
-    $parent.find("[name$='geoPosition.latitude'], [name$='geoPosition.longitude']").removeClass("notApplicable").attr(
-        "disabled", false);
-    $parent.find("[name$='name']").attr("placeholder", "Name");
+    $parent.find("input.latitude, input.longitude").removeClass("notApplicable").attr("disabled", false);
+    $parent.find("input.locationName").attr("placeholder", "Name");
     $latitudeField.val(map.getCenter().k);
     $longitudeField.val(map.getCenter().B);
 
@@ -204,7 +153,7 @@ function changeTypeEvent(e) {
         makeMarker({
             latitude: latitude,
             longitude: longitude,
-            name: $parent.find("[name$='name']").val(),
+            name: $parent.find("input.locationName").val(),
             id: locationId
         });
       }
@@ -303,14 +252,14 @@ function loadMap() {
 
 function setLocationsMarkers() {
   $("#locationsBlock .location").each(function(index,location) {
-    var latitude = $(location).find("[name$='geoPosition.latitude']").val();
-    var longitude = $(location).find("[name$='geoPosition.longitude']").val();
+    var latitude = $(location).find("input.latitude").val();
+    var longitude = $(location).find("input.longitude").val();
     // checks whether a coordinate is valid
     if(isCoordinateValid(latitude, longitude)) {
       makeMarker({
           latitude: latitude,
           longitude: longitude,
-          name: $(location).find("[name$='name']").val(),
+          name: $(location).find("input.locationName").val(),
           id: $(location).attr("id").split("-")[1]
       });
     }
@@ -320,9 +269,9 @@ function setLocationsMarkers() {
 function markerAction(e) {
   var $parent = $(e.target).parent().parent().parent();
   var locationId = $parent.attr("id").split("-")[1];
-  var $coordinatesFields = $parent.find("[name$='geoPosition.longitude'],[name$='geoPosition.latitude']");
-  var latitude = $parent.find("[name$='geoPosition.latitude']").val();
-  var longitude = $parent.find("[name$='geoPosition.longitude']").val();
+  var $coordinatesFields = $parent.find("input.longitude, input.latitude");
+  var latitude = $parent.find("input.latitude").val();
+  var longitude = $parent.find("input.longitude").val();
   var marker = markers[locationId];
   if(isCoordinateValid(latitude, longitude)) {
     if(e.type == "keyup") {
@@ -366,8 +315,8 @@ function makeMarker(data) {
   });
   // Event when marker is dragged
   google.maps.event.addListener(marker, 'dragend', function() {
-    $("#location-" + marker.id).find("[name$='geoPosition.longitude']").val(marker.position.F);
-    $("#location-" + marker.id).find("[name$='geoPosition.latitude']").val(marker.position.A);
+    $("#location-" + marker.id).find("input.longitude").val(marker.position.F).trigger("change");
+    $("#location-" + marker.id).find("input.latitude").val(marker.position.A).trigger("change");
   });
 
   markers[data.id] = marker;
