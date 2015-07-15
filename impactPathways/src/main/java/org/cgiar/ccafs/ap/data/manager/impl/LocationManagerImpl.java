@@ -515,6 +515,7 @@ public class LocationManagerImpl implements LocationManager {
       saved = saved && (recordSaved != -1);
     }
 
+
     return saved;
   }
 

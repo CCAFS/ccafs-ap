@@ -47,7 +47,7 @@ public class ProjectLocationsValidator extends BaseValidator {
 
       if (validationMessage.length() > 0) {
         action
-          .addActionMessage(" " + this.getText("saving.missingFields", new String[] {validationMessage.toString()}));
+        .addActionMessage(" " + this.getText("saving.missingFields", new String[] {validationMessage.toString()}));
       }
     }
   }

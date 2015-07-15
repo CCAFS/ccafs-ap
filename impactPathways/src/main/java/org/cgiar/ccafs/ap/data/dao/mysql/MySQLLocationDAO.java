@@ -332,7 +332,7 @@ public class MySQLLocationDAO implements LocationDAO {
     query.append("leg.id as 'loc_geo_id', leg.latitude as 'loc_geo_latitude', ");
     query.append("leg.longitude as 'loc_geo_longitude' ");
     query.append("FROM loc_elements lo ");
-    query.append("LEFT JOIN loc_elements lp ON lo.parent_id = lp.id   ");
+    query.append("LEFT JOIN loc_elements lp ON lo.parent_id = lp.id  ");
     query.append("INNER JOIN loc_element_types lt ON lt.id = lo.element_type_id  ");
     query.append("LEFT JOIN loc_geopositions leg ON lo.geoposition_id = leg.id ");
     query.append("WHERE lo.id IN ( ");
@@ -344,7 +344,7 @@ public class MySQLLocationDAO implements LocationDAO {
       }
     }
 
-    query.append(" ) ORDER BY lo.name ");
+    query.append(") ORDER BY lo.name ");
 
     List<Map<String, String>> locationsList = new ArrayList<>();
 

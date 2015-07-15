@@ -228,46 +228,17 @@ public class ProjectLocationsPlanningAction extends BaseAction {
         success = false;
       }
 
-      // if Activity is not global.
-      List<Location> locations = new ArrayList<Location>();
-      // Grouping regions in the locations list.
-      for (Region region : regionsSaved) {
-        if (region != null) {
-          locations.add(region);
-        }
-      }
-      // Grouping countries in the locations list.
-      for (Country country : countriesSaved) {
-        if (country != null) {
-          locations.add(country);
-        }
+      boolean added =
+        locationManager.saveProjectLocation(project.getLocations(), projectID, this.getCurrentUser(),
+          this.getJustification());
+      if (!added) {
+        success = false;
       }
 
-      // Grouping other locations to the locations list.
-      for (OtherLocation location : otherLocationsSaved) {
-        if (location != null) {
-          locations.add(location);
-        }
-      }
-
-      // Grouping csv locations to the locations list.
-      for (ClimateSmartVillage location : csvSaved) {
-        if (location != null) {
-          locations.add(location);
-        }
-      }
-
-      locations.addAll(project.getLocations());
 
       // Then, updating projects received
       boolean updated = locationManager.updateProjectGlobal(projectID, this.getCurrentUser(), this.getJustification());
       if (!updated) {
-        success = false;
-      }
-
-      boolean added =
-        locationManager.saveProjectLocation(locations, projectID, this.getCurrentUser(), this.getJustification());
-      if (!added) {
         success = false;
       }
 

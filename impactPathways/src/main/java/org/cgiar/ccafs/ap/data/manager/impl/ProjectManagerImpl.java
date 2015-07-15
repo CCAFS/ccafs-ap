@@ -195,6 +195,7 @@ public class ProjectManagerImpl implements ProjectManager {
       project.setSummary(projectData.get("summary"));
       project.setWorkplanRequired(projectData.get("requires_workplan_upload").equals("1"));
       project.setCofinancing(projectData.get("is_cofinancing").equals("1"));
+      project.setGlobal(projectData.get("is_global").equals("1"));
       // Format to the Dates of the project
       if (projectData.get("start_date") != null) {
         try {
@@ -302,8 +303,8 @@ public class ProjectManagerImpl implements ProjectManager {
 
   @Override
   // TODO - Move this method to a class called projectIndicatorManager
-    public
-    List<IPIndicator> getProjectIndicators(int projectID) {
+  public
+  List<IPIndicator> getProjectIndicators(int projectID) {
     List<IPIndicator> indicators = new ArrayList<>();
     List<Map<String, String>> indicatorsData = projectDAO.getProjectIndicators(projectID);
 
@@ -433,8 +434,8 @@ public class ProjectManagerImpl implements ProjectManager {
 
   @Override
   // TODO - Move this method to a class called projectIndicatorManager
-    public
-    boolean saveProjectIndicators(List<IPIndicator> indicators, int projectID, User user, String justification) {
+  public
+  boolean saveProjectIndicators(List<IPIndicator> indicators, int projectID, User user, String justification) {
     Map<String, String> indicatorData;
     boolean saved = true;
 
@@ -467,8 +468,8 @@ public class ProjectManagerImpl implements ProjectManager {
 
   @Override
   // TODO - Move this method to a class called projectOutputManager
-    public
-    boolean saveProjectOutputs(List<IPElement> outputs, int projectID, User user, String justification) {
+  public
+  boolean saveProjectOutputs(List<IPElement> outputs, int projectID, User user, String justification) {
     Map<String, String> outputData;
     boolean saved = true;
 

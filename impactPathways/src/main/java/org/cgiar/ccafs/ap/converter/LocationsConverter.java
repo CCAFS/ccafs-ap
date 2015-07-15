@@ -55,12 +55,6 @@ public class LocationsConverter extends StrutsTypeConverter {
           // If the location already exists we are going to get its information using the location manager.
           existingLocations.add(id);
         } else {
-          // The values sent by the interface should have the following format
-          // [0] -> locationTypeID
-          // [1] -> latitude
-          // [2] -> longitude
-          // [3] -> name
-          // [4] -> locationID
 
           String[] tokens = id.split("\\|s\\|");
           String typeID = tokens[0];
@@ -72,7 +66,6 @@ public class LocationsConverter extends StrutsTypeConverter {
           if (typeID.isEmpty() || latitude.isEmpty() || longitude.isEmpty() || name.isEmpty()) {
             continue;
           }
-
           OtherLocation newLocation = new OtherLocation();
           newLocation.setId(Integer.parseInt(locationID));
           newLocation.setName(name);
@@ -93,9 +86,11 @@ public class LocationsConverter extends StrutsTypeConverter {
 
       allLocations.addAll(newLocations);
 
-      List<Location> temp =
-        locationManager.getLocationsByIDs(existingLocations.toArray(new String[existingLocations.size()]));
-      allLocations.addAll(temp);
+      if (!existingLocations.isEmpty()) {
+        List<Location> temp =
+          locationManager.getLocationsByIDs(existingLocations.toArray(new String[existingLocations.size()]));
+        allLocations.addAll(temp);
+      }
       return allLocations;
     }
     return null;
