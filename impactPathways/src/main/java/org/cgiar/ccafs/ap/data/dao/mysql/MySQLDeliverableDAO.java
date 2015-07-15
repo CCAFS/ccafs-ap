@@ -45,7 +45,7 @@ public class MySQLDeliverableDAO implements DeliverableDAO {
   }
 
   @Override
-  public boolean deleteDeliverable(int deliverableId) {
+  public boolean deleteDeliverable(int deliverableId, int userID, String justification) {
 
     LOG.debug(">> deleteDeliverable(id={})", deliverableId);
     int result = -1;
@@ -53,10 +53,12 @@ public class MySQLDeliverableDAO implements DeliverableDAO {
     Object[] values;
 
     StringBuilder query = new StringBuilder();
-    query.append("UPDATE deliverables d SET d.is_active = 0 ");
+    query.append("UPDATE deliverables d SET d.is_active = 0, modified_by = ?, modification_justification = ? ");
     query.append("WHERE d.id = ? ");
-    values = new Object[1];
-    values[0] = deliverableId;
+    values = new Object[3];
+    values[0] = userID;
+    values[1] = justification;
+    values[2] = deliverableId;
     result = databaseManager.saveData(query.toString(), values);
 
     LOG.debug("<< deleteDeliverable():{}", result);
@@ -147,6 +149,7 @@ public class MySQLDeliverableDAO implements DeliverableDAO {
         deliverableData.put("type_id", rs.getString("type_id"));
         deliverableData.put("type_other", rs.getString("type_other"));
         deliverableData.put("year", rs.getString("year"));
+        deliverableData.put("active_since", String.valueOf(rs.getTimestamp("active_since").getTime()));
 
         deliverablesList.add(deliverableData);
       }
@@ -170,7 +173,7 @@ public class MySQLDeliverableDAO implements DeliverableDAO {
     StringBuilder query = new StringBuilder();
     query.append("SELECT d.*   ");
     query.append("FROM deliverables as d ");
-    query.append("WHERE d.id=  ");
+    query.append("WHERE d.id =  ");
     query.append(deliverableID);
     query.append(" AND d.is_active = 1");
     try (Connection con = databaseManager.getConnection()) {
@@ -182,6 +185,7 @@ public class MySQLDeliverableDAO implements DeliverableDAO {
         deliverableData.put("type_id", rs.getString("type_id"));
         deliverableData.put("type_other", rs.getString("type_other"));
         deliverableData.put("year", rs.getString("year"));
+        deliverableData.put("active_since", String.valueOf(rs.getTimestamp("active_since").getTime()));
       }
       con.close();
     } catch (SQLException e) {
@@ -228,7 +232,7 @@ public class MySQLDeliverableDAO implements DeliverableDAO {
     query.append("SELECT d.*   ");
     query.append("FROM deliverables as d ");
     query.append("INNER JOIN projects a ON d.project_id = a.id ");
-    query.append("WHERE d.project_id=  ");
+    query.append("WHERE d.project_id =  ");
     query.append(projectID);
     query.append(" AND d.is_active = 1");
 
@@ -260,8 +264,8 @@ public class MySQLDeliverableDAO implements DeliverableDAO {
       values[8] = deliverableData.get("modification_justification");
     } else {
       // Updating existing deliverable record
-      query
-        .append("UPDATE deliverables SET title = ?, type_id = ?, type_other = ?, year = ?, modified_by = ?, modification_justification = ? ");
+      query.append(
+        "UPDATE deliverables SET title = ?, type_id = ?, type_other = ?, year = ?, modified_by = ?, modification_justification = ? ");
       query.append("WHERE id = ? ");
       values = new Object[7];
       values[0] = deliverableData.get("title");
