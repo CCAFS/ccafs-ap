@@ -41,13 +41,14 @@ public class ProjectLocationsValidator extends BaseValidator {
     if (project != null) {
 
       this.validateProjectJustification(action, project);
+      // Projects are validated checking if they are not global and their locations are valid ones.
       if ((!project.isGlobal()) && (!projectValidator.isValidLocation(project.getLocations()))) {
         this.addMessage(this.getText("planning.projectLocations.type").toLowerCase());
       }
 
       if (validationMessage.length() > 0) {
         action
-        .addActionMessage(" " + this.getText("saving.missingFields", new String[] {validationMessage.toString()}));
+          .addActionMessage(" " + this.getText("saving.missingFields", new String[] {validationMessage.toString()}));
       }
     }
   }
