@@ -22,6 +22,7 @@ import org.cgiar.ccafs.ap.data.model.Budget;
 import org.cgiar.ccafs.ap.data.model.BudgetType;
 import org.cgiar.ccafs.ap.data.model.Institution;
 import org.cgiar.ccafs.ap.data.model.Project;
+import org.cgiar.ccafs.ap.data.model.User;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -377,7 +378,7 @@ public class BudgetManagerImpl implements BudgetManager {
 
 
   @Override
-  public boolean saveBudget(int projectID, Budget budget) {
+  public boolean saveBudget(int projectID, Budget budget, User user, String justification) {
     boolean allSaved = true;
     Map<String, Object> budgetData = new HashMap<>();
     if (budget.getId() > 0) {
@@ -387,6 +388,8 @@ public class BudgetManagerImpl implements BudgetManager {
     budgetData.put("budget_type", budget.getType().getValue());
     budgetData.put("institution_id", budget.getInstitution().getId());
     budgetData.put("amount", budget.getAmount());
+    budgetData.put("user_id", user.getId());
+    budgetData.put("justification", justification);
 
     int result = budgetDAO.saveBudget(projectID, budgetData);
 

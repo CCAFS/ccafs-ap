@@ -162,10 +162,12 @@ public class Project {
   }
 
   public Budget getBudget(int institutionID, int budgetType, int year) {
-    for (Budget budget : budgets) {
-      if (budget.getInstitution().getId() == institutionID && budget.getType().getValue() == budgetType
-        && budget.getYear() == year) {
-        return budget;
+    if (budgets != null) {
+      for (Budget budget : budgets) {
+        if (budget.getInstitution().getId() == institutionID && budget.getType().getValue() == budgetType
+          && budget.getYear() == year) {
+          return budget;
+        }
       }
     }
     return null;
@@ -177,9 +179,11 @@ public class Project {
 
   public List<Budget> getCofinancingBudgets() {
     List<Budget> budgets = new ArrayList<>();
-    for (Budget budget : this.getBudgets()) {
-      if (budget.getCofinancingProject() != null) {
-        budgets.add(budget);
+    if (this.getBudgets() != null) {
+      for (Budget budget : this.getBudgets()) {
+        if (budget.getCofinancingProject() != null) {
+          budgets.add(budget);
+        }
       }
     }
     return budgets;

@@ -95,6 +95,14 @@ public class ProjectBudgetsPlanningAction extends BaseAction {
     return APConstants.PROJECT_REQUEST_ID;
   }
 
+  public String getW1W2BudgetLabel() {
+    return this.getText("planning.projectBudget.W1W2");
+  }
+
+  public String getW3BilateralBudgetLabel() {
+    return this.getText("planning.projectBudget.W3Bilateral");
+  }
+
   public int getYear() {
     return year;
   }
@@ -177,7 +185,7 @@ public class ProjectBudgetsPlanningAction extends BaseAction {
     if (securityContext.canUpdateProjectBudget()) {
       boolean success = true;
       for (Budget budget : project.getBudgets()) {
-        boolean saved = budgetManager.saveBudget(projectID, budget);
+        boolean saved = budgetManager.saveBudget(projectID, budget, this.getCurrentUser(), this.getJustification());
 
         if (!saved) {
           success = false;
