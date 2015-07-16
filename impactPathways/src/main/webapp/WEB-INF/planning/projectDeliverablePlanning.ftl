@@ -86,7 +86,7 @@
           [#if !editable]${deliverable.type.name}[/#if]
           <input type="hidden" id="subTypeSelected" value="${deliverableSubType}" />
           [#-- Specify other deliverable type--] 
-          [@customForm.input name="${params.deliverable.name}.otherType" className="otherType" showTitle=false i18nkey="planning.deliverables.specify" display=false required=true disabled=true editable=editable /]
+          [@customForm.input name="${params.deliverable.name}.typeOther" className="otherType" showTitle=false i18nkey="planning.deliverables.specify" display=false required=true disabled=true editable=editable /]
         </div> 
       </div>
       <div class="note left"><p>[@s.text name="planning.deliverables.disclaimerMessage" /]</p></div>

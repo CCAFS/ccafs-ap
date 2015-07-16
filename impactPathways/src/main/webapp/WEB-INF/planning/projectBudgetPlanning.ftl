@@ -165,7 +165,7 @@
   <input type="hidden" name="project.budgets[${pp_index}].institution.id" value="${(budget.institution.id)!institution.id}" />
   <input type="hidden" name="project.budgets[${pp_index}].type" value="${(!bilateralProject)?string("W1_W2", "W3_BILATERAL")}" />
   [#-- Project Budget --]
-  <div class="budget clearfix">
+  <div class="halfPartBlock budget clearfix">
     <div class="title"><h6>[@s.text name="planning.projectBudget.annualBudget" /]:</h6></div>
     <div class="content">
       <p>[@s.text name="planning.projectBudget.totalAmount"][@s.param]${(!bilateralProject)?string(w1W2BudgetLabel, w3BilateralBudgetLabel)}[/@s.param][/@s.text]:</p> 
@@ -174,7 +174,7 @@
   </div><!-- End budget -->
   [#-- Project budget per bilateral --]
   [#if cofinancing_projects?has_content]
-  <div class="budget clearfix">
+  <div class="halfPartBlock budget clearfix">
     <div class="title"><h6>[@s.text name="planning.projectBudget.annualBudgetPerBilateral" /]:</h6></div>
     <div class="content">  
     
@@ -182,7 +182,7 @@
   </div><!-- End budget -->
   [/#if]
   [#-- Project Gender Budget --]
-  <div class="budget clearfix">
+  <div class="halfPartBlock budget clearfix">
     <div class="title"><h6>[@s.text name="planning.projectBudget.genderPercentage" /]</h6></div>
     <div class="content"> 
       <p>[@s.text name="planning.projectBudget.totalGendePercentage"][@s.param]${(!bilateralProject)?string(w1W2BudgetLabel, w3BilateralBudgetLabel)}[/@s.param][/@s.text]:</p>

@@ -105,7 +105,7 @@ function updateDeliverableSubTypeList(event) {
     $subTypeSelect.trigger("liszt:updated");
     // Regenerating hash from form information
     if(!hashRegenerated) {
-      formBefore = getHash($('form [id!="justification"]').serialize());
+      setFormHash();
       hashRegenerated = true;
     }
   }).fail(function() {
