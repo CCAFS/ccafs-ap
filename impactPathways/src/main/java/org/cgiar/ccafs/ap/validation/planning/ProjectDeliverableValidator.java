@@ -15,6 +15,7 @@
 package org.cgiar.ccafs.ap.validation.planning;
 
 import org.cgiar.ccafs.ap.action.BaseAction;
+import org.cgiar.ccafs.ap.config.APConstants;
 import org.cgiar.ccafs.ap.data.model.Deliverable;
 import org.cgiar.ccafs.ap.validation.BaseValidator;
 
@@ -87,6 +88,13 @@ public class ProjectDeliverableValidator extends BaseValidator {
     if (deliverable.getType() == null) {
       // Indicate problem in the missing field.
       action.addFieldError("deliverable.type", this.getText("validation.field.required"));
+      problem = true;
+    }
+
+    if (deliverable.getType() != null && deliverable.getType().getId() == APConstants.DELIVERABLE_SUBTYPE_OTHER_ID
+      && !this.isValidString(deliverable.getTypeOther())) {
+      // Indicate problem in the missing field.
+      action.addFieldError("deliverable.typeOther", this.getText("validation.field.required"));
       problem = true;
     }
 

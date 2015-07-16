@@ -103,6 +103,9 @@ public final class APConstants {
   public static final String DELIVERABLE_PARTNER_RESP = "Resp";
   public static final String DELIVERABLE_PARTNER_OTHER = "Other";
 
+  // Deliverable Sub-type Other
+  public static final int DELIVERABLE_SUBTYPE_OTHER_ID = 38;
+
   // Query parameter
   public static final String QUERY_PARAMETER = "q";
 

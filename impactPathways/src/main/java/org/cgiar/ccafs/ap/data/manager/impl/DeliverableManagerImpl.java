@@ -107,7 +107,7 @@ public class DeliverableManagerImpl implements DeliverableManager {
       deliverable.setTitle(deliverableData.get("title"));
       deliverable.setYear(Integer.parseInt(deliverableData.get("year")));
       deliverable
-      .setType(deliverableTypeManager.getDeliverableTypeById(Integer.parseInt(deliverableData.get("type_id"))));
+        .setType(deliverableTypeManager.getDeliverableTypeById(Integer.parseInt(deliverableData.get("type_id"))));
       deliverable.setTypeOther(deliverableData.get("type_other"));
       deliverable.setNextUsers(nextUserManager.getNextUsersByDeliverableId(deliverableID));
       deliverable.setOutput(this.getDeliverableOutput(deliverableID));
@@ -139,7 +139,7 @@ public class DeliverableManagerImpl implements DeliverableManager {
       deliverable.setTitle(deliverableData.get("title"));
       deliverable.setYear(Integer.parseInt(deliverableData.get("year")));
       deliverable
-        .setType(deliverableTypeManager.getDeliverableTypeById(Integer.parseInt(deliverableData.get("type_id"))));
+      .setType(deliverableTypeManager.getDeliverableTypeById(Integer.parseInt(deliverableData.get("type_id"))));
       deliverable.setTypeOther(deliverableData.get("type_other"));
       deliverable.setNextUsers(nextUserManager.getNextUsersByDeliverableId(projectID));
       deliverable.setOutput(this.getDeliverableOutput(Integer.parseInt(deliverableData.get("id"))));
