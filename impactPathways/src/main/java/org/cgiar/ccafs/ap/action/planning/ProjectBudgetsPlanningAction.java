@@ -21,6 +21,7 @@ import org.cgiar.ccafs.ap.data.manager.HistoryManager;
 import org.cgiar.ccafs.ap.data.manager.ProjectManager;
 import org.cgiar.ccafs.ap.data.manager.ProjectPartnerManager;
 import org.cgiar.ccafs.ap.data.model.Budget;
+import org.cgiar.ccafs.ap.data.model.BudgetType;
 import org.cgiar.ccafs.ap.data.model.Institution;
 import org.cgiar.ccafs.ap.data.model.Project;
 import org.cgiar.ccafs.ap.data.model.ProjectPartner;
@@ -99,8 +100,16 @@ public class ProjectBudgetsPlanningAction extends BaseAction {
     return this.getText("planning.projectBudget.W1W2");
   }
 
+  public String getW1W2BudgetType() {
+    return BudgetType.W1_W2.toString();
+  }
+
   public String getW3BilateralBudgetLabel() {
     return this.getText("planning.projectBudget.W3Bilateral");
+  }
+
+  public String getW3BilateralBudgetType() {
+    return BudgetType.W3_BILATERAL.toString();
   }
 
   public int getYear() {

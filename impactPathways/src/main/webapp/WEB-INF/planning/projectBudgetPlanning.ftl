@@ -163,6 +163,7 @@
   <input type="hidden" name="project.budgets[${pp_index}].id" value="${budget.id!"-1"}" />
   <input type="hidden" name="project.budgets[${pp_index}].year" value="${(budget.year)!year}" />
   <input type="hidden" name="project.budgets[${pp_index}].institution.id" value="${(budget.institution.id)!institution.id}" />
+  <input type="hidden" name="project.budgets[${pp_index}].type" value="${(!bilateralProject)?string("W1_W2", "W3_BILATERAL")}" />
   [#-- Project Budget --]
   <div class="budget clearfix">
     <div class="title"><h6>[@s.text name="planning.projectBudget.annualBudget" /]:</h6></div>
