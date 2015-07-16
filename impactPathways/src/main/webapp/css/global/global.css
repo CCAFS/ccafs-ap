@@ -2132,19 +2132,17 @@ textarea[id$='summary'] {
   background-color: #f1f1f1;
 }
 .budget .title {
-    width: 24%;
-    padding: 0px 1%;
-    margin-right: 1%;
+    width: 70%;
+    padding: 9px 0;
     float: left;
-    font-size: 1.1em;
     /* height: 56px; */
-    line-height: 54px;
+    line-height: 7px;
     border-radius: 2px;
     position: relative;
 }
 
 .budget .content {
-    width: 72%;
+    width: 70%;
     float: left;
     margin: 5px 0;
 }

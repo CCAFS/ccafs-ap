@@ -160,7 +160,7 @@
 <div id="partnerBudget-${pp_index}" class="partnerBudget simpleBox row clearfix">
   <h6 class="title">${type} - ${institution.composedName}</h6>
   [#-- Project Budget --]
-  <div class="budget clearfix">
+  <div class="halfPartBlock budget clearfix">
     <div class="title"><h6>[@s.text name="planning.projectBudget.annualBudget" /]:</h6></div>
     <div class="content">
       <p>[@s.text name="planning.projectBudget.totalAmount"][@s.param]${budget.type.bilateral?string('W3/Bilateral', 'W1 W2')}[/@s.param][/@s.text]:</p> 
@@ -169,7 +169,7 @@
   </div><!-- End budget -->
   [#-- Project budget per bilateral --]
   [#if cofinancing_projects?has_content]
-  <div class="budget clearfix">
+  <div class="halfPartBlock budget clearfix">
     <div class="title"><h6>[@s.text name="planning.projectBudget.annualBudgetPerBilateral" /]:</h6></div>
     <div class="content">  
     
@@ -177,7 +177,7 @@
   </div><!-- End budget -->
   [/#if]
   [#-- Project Gender Budget --]
-  <div class="budget clearfix">
+  <div class="halfPartBlock budget clearfix">
     <div class="title"><h6>[@s.text name="planning.projectBudget.genderPercentage" /]</h6></div>
     <div class="content"> 
       <p>[@s.text name="planning.projectBudget.totalGendePercentage"][@s.param]${budget.type.bilateral?string('W3/Bilateral', 'W1 W2')}[/@s.param][/@s.text]:</p>
