@@ -22,10 +22,10 @@
           <td class="removeDeliverable">
             [#if true ]
               <a id="removeDeliverable-${dl.id}" class="removeDeliverable" href="#" title="" >
-                <img src="${baseUrl}/images/global/trash.png" title="[@s.text name="preplanning.projects.deleteDeliverable" /]" /> 
+                <img src="${baseUrl}/images/global/trash.png" title="[@s.text name="planning.deliverables.removeDeliverable" /]" /> 
               </a>
             [#else]
-              <img src="${baseUrl}/images/global/trash_disable.png" title="[@s.text name="preplanning.projects.cantDeleteDeliverable" /]" />
+              <img src="${baseUrl}/images/global/trash_disable.png" title="[@s.text name="planning.deliverables.cantDeleteDeliverable" /]" />
             [/#if]
           </td> 
         </tr> 
