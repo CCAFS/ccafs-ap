@@ -94,7 +94,7 @@ function selectMidOutcomeEvent(event) {
 
   // Remove the id, because is *template
   $newContribution.removeAttr("id");
-  $("#contributionsBlock").append($newContribution);
+  $("#contributionsBlock").append($newContribution).find('.emptyText').hide();
 
   $newContribution.show("slow", function() {
     $newContribution.find(".indicatorTargetsTemplate").removeClass().addClass("indicatorTargets").tabs();
@@ -202,7 +202,7 @@ function setIndicatorIndexes() {
     $(indicator).find(".targetIndicator").each(function(targetIndex,target) {
 
       // Label
-      $(indicator).find("label").attr("for", indicatorsName+"-" + index);
+      $(indicator).find("label").attr("for", indicatorsName + "-" + index);
 
       // Checkbox
       $(indicator).find("input[type='checkbox']").attr("id", "indicatorIndex-" + indicatorIndex);

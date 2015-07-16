@@ -48,64 +48,116 @@
       [/#if]
 
       <h1 class="contentTitle">[@s.text name="planning.projectOutcome.contribution" /] </h1> 
-      <p>
-        <b>[@s.text name="planning.projectImpactPathways.contributingTo" /]</b> 
-        ${contributingPrograms}
-      </p>
+      [#if contributingPrograms?has_content]
+        <p><b>[@s.text name="planning.projectImpactPathways.contributingTo" /]</b> ${contributingPrograms}</p>
       
-      [#-- Contributions Block --]
-      <div id="contributionsBlock" class="">  
-        [#if midOutcomesSelected?has_content]
-          [#list midOutcomesSelected as midOutcome]
-            <div class="contribution ">
-              [#if editable]
-                [#-- Remove Contribution --]
-                <div id="removeContribution" class="removeContribution removeElement removeLink" title="[@s.text name="preplanning.midOutcomes.removeMidOutcome" /]"></div>
-              [/#if] 
-              [#-- Midoutcome title --]
-              <div class="midOutcomeTitle">
-                <input id="midOutcomeID" value="${midOutcome.id}" type="hidden" />
-                <input id="programID" value="${midOutcome.program.id}" type="hidden" /> 
-                <h6 class="title">${midOutcome.program.acronym} - [@s.text name="planning.projectImpactPathways.outcome2019" /]</h6>
-                
-                <p class="description"> ${midOutcome.description} </p>
-              </div> 
-              [#-- Indicators list --]
-              <div class="indicators">
-                <h6>[@s.text name="planning.projectImpactPathways.indicators" /]</h6>
-                [#if midOutcome.indicators?has_content]
-                <div class="indicatorsBlock">
-                  [#list midOutcome.indicators as indicator]
-  
-                    [#if indicator.parent?has_content ]
-                      [#assign projectIndicator = project.getIndicator(indicator.parent.id, midOutcome.id,  midOutcomeYear) /]
-                    [#else]
-                      [#assign projectIndicator = project.getIndicator(indicator.id, midOutcome.id,  midOutcomeYear) /]
-                    [/#if]
-                    [#assign isUniqueIndicator = (indicator_index == 0 && !indicator_has_next)]
-                    [#if projectIndicator.id != -1 || isUniqueIndicator]
-  
-                      <div class="midOutcomeIndicator" >
-                        [#if editable] 
-                          <input type="checkbox" class="projectIndicatorCheckbox" id="indicatorIndex-${indicator_index}" [#if projectIndicator.id != -1 || isUniqueIndicator]checked="checked"[/#if] [#if isUniqueIndicator]disabled="disabled"[/#if]  />
-                        [/#if]
-                        [#if indicator.parent?has_content] 
-                          <label class="indicatorDescription [#if !editable]checked[/#if]">${indicator.parent.description}</label>
-                        [#else]
-                          <label class="indicatorDescription [#if !editable]checked[/#if]">${indicator.description}</label>
-                        [/#if]
-                        <div class="indicatorTargets">
-                           <ul class="">
+        [#-- Contributions Block --]
+        <div id="contributionsBlock" class="">  
+          [#if midOutcomesSelected?has_content]
+            [#list midOutcomesSelected as midOutcome]
+              <div class="contribution ">
+                [#if editable]
+                  [#-- Remove Contribution --]
+                  <div id="removeContribution" class="removeContribution removeElement removeLink" title="[@s.text name="preplanning.midOutcomes.removeMidOutcome" /]"></div>
+                [/#if] 
+                [#-- Midoutcome title --]
+                <div class="midOutcomeTitle">
+                  <input id="midOutcomeID" value="${midOutcome.id}" type="hidden" />
+                  <input id="programID" value="${midOutcome.program.id}" type="hidden" /> 
+                  <h6 class="title">${midOutcome.program.acronym} - [@s.text name="planning.projectImpactPathways.outcome2019" /]</h6>
+                  
+                  <p class="description"> ${midOutcome.description} </p>
+                </div> 
+                [#-- Indicators list --]
+                <div class="indicators">
+                  <h6>[@s.text name="planning.projectImpactPathways.indicators" /]</h6>
+                  [#if midOutcome.indicators?has_content]
+                  <div class="indicatorsBlock">
+                    [#list midOutcome.indicators as indicator]
+    
+                      [#if indicator.parent?has_content ]
+                        [#assign projectIndicator = project.getIndicator(indicator.parent.id, midOutcome.id,  midOutcomeYear) /]
+                      [#else]
+                        [#assign projectIndicator = project.getIndicator(indicator.id, midOutcome.id,  midOutcomeYear) /]
+                      [/#if]
+                      [#assign isUniqueIndicator = (indicator_index == 0 && !indicator_has_next)]
+                      [#if projectIndicator.id != -1 || isUniqueIndicator]
+    
+                        <div class="midOutcomeIndicator" >
+                          [#if editable] 
+                            <input type="checkbox" class="projectIndicatorCheckbox" id="indicatorIndex-${indicator_index}" [#if projectIndicator.id != -1 || isUniqueIndicator]checked="checked"[/#if] [#if isUniqueIndicator]disabled="disabled"[/#if]  />
+                          [/#if]
+                          [#if indicator.parent?has_content] 
+                            <label class="indicatorDescription [#if !editable]checked[/#if]">${indicator.parent.description}</label>
+                          [#else]
+                            <label class="indicatorDescription [#if !editable]checked[/#if]">${indicator.description}</label>
+                          [/#if]
+                          <div class="indicatorTargets">
+                             <ul class="">
+                              [#list years as year]
+                                <li class=""><a href="#target-${year}">${year}</a></li> 
+                              [/#list]   
+                            </ul>
                             [#list years as year]
-                              <li class=""><a href="#target-${year}">${year}</a></li> 
-                            [/#list]   
-                          </ul>
-                          [#list years as year]
+                              [#if indicator.parent?has_content]
+                                [#assign projectIndicator = project.getIndicator(indicator.parent.id, midOutcome.id, year) /]
+                              [#else]
+                                [#assign projectIndicator = project.getIndicator(indicator.id, midOutcome.id,  year) /]
+                              [/#if]
+                              <div id="target-${year}" class="targetIndicator"> 
+                                [#-- Indicator ID --]
+                                [#if indicator.parent?has_content]
+                                  <input type="hidden" class="projectIndicatorParent" name="project.indicators.parent.id" value="${indicator.parent.id}"  />
+                                [#else]
+                                  <input type="hidden" class="projectIndicatorParent" name="project.indicators.parent.id" value="${indicator.id}"  />
+                                [/#if]
+                                
+                                [#-- Hidden values --]
+                                <input type="hidden" class="projectIndicatorID" name="project.indicators.id" value="${projectIndicator.id}" [#if projectIndicator.id == -1 ]disabled="disabled"[/#if]/>
+                                <input type="hidden" class="projectIndicatorYear" name="project.indicators.year"  value="${year}" /> 
+                                <input type="hidden" class="projectIndicatorOutcome" name="project.indicators.outcome"  value="${midOutcome.id}" /> 
+                                
+                                [#-- Indicator target value --]
+                                <div class="checkboxGroup vertical indicatorNarrative" >
+                                  <label> <h6>[@s.text name="planning.projectImpactPathways.targetValue" /]</h6></label>
+                                  [#if editable]
+                                    <textarea class="projectIndicatorTarget" name="project.indicators.target" >${projectIndicator.target!}</textarea>
+                                  [#else]
+                                    <p>${projectIndicator.target!}</p>
+                                  [/#if]
+                                </div> 
+                                
+                                [#-- Indicator target description --]
+                                <div class="checkboxGroup vertical indicatorNarrative" >
+                                  <label> <h6>[@s.text name="planning.projectImpactPathways.targetNarrative" /]</h6></label>
+                                  [#if editable]
+                                    <textarea class="projectIndicatorDescription" name="project.indicators.description" >${projectIndicator.description!}</textarea>
+                                  [#else]
+                                    ${projectIndicator.description!}
+                                  [/#if] 
+                                </div>
+                              </div>  
+                            [/#list] 
+                          </div>   
+                        </div>  
+                      [#else] 
+                        <div class="midOutcomeIndicator" >
+                          <input type="hidden"  name="indicators.id" value="-1" disabled="disabled"/>
+                          [#if editable]
+                            <input type="checkbox" class="projectIndicatorCheckbox" id="indicatorIndex-${indicator_index}" />
                             [#if indicator.parent?has_content]
-                              [#assign projectIndicator = project.getIndicator(indicator.parent.id, midOutcome.id, year) /]
+                              <label class="indicatorDescription">${indicator.parent.description}</label> 
                             [#else]
-                              [#assign projectIndicator = project.getIndicator(indicator.id, midOutcome.id,  year) /]
+                              <label class="indicatorDescription">${indicator.description}</label> 
                             [/#if]
+                          [/#if]
+                          <div class="indicatorTargets" style="display:none">
+                             <ul class="">
+                              [#list years as year]
+                                <li class=""><a href="#target-${year}">${year}</a></li> 
+                              [/#list]   
+                            </ul>
+                            [#list years as year]
                             <div id="target-${year}" class="targetIndicator"> 
                               [#-- Indicator ID --]
                               [#if indicator.parent?has_content]
@@ -114,121 +166,72 @@
                                 <input type="hidden" class="projectIndicatorParent" name="project.indicators.parent.id" value="${indicator.id}"  />
                               [/#if]
                               
-                              [#-- Hidden values --]
-                              <input type="hidden" class="projectIndicatorID" name="project.indicators.id" value="${projectIndicator.id}" [#if projectIndicator.id == -1 ]disabled="disabled"[/#if]/>
-                              <input type="hidden" class="projectIndicatorYear" name="project.indicators.year"  value="${year}" /> 
+                              [#-- Check if the value of this hidden input should be arbitrarily -1 --]
+                              <input type="hidden" class="projectIndicatorID" name="project.indicators.id" value="-1" />
+                              <input type="hidden" class="projectIndicatorYear" name="project.indicators.year"  value="${year}" />
                               <input type="hidden" class="projectIndicatorOutcome" name="project.indicators.outcome"  value="${midOutcome.id}" /> 
                               
-                              [#-- Indicator target value --]
-                              <div class="checkboxGroup vertical indicatorNarrative" >
-                                <label> <h6>[@s.text name="planning.projectImpactPathways.targetValue" /]</h6></label>
+                              [#-- Target value --]
+                              <div class="checkboxGroup vertical indicatorNarrative">
+                                <label>  <h6>[@s.text name="planning.projectImpactPathways.targetValue" /]</h6></label>
                                 [#if editable]
-                                  <textarea class="projectIndicatorTarget" name="project.indicators.target" >${projectIndicator.target!}</textarea>
-                                [#else]
-                                  <p>${projectIndicator.target!}</p>
+                                  <textarea class="projectIndicatorTarget" name="project.indicators.target" ></textarea>                              
                                 [/#if]
-                              </div> 
-                              
-                              [#-- Indicator target description --]
-                              <div class="checkboxGroup vertical indicatorNarrative" >
-                                <label> <h6>[@s.text name="planning.projectImpactPathways.targetNarrative" /]</h6></label>
-                                [#if editable]
-                                  <textarea class="projectIndicatorDescription" name="project.indicators.description" >${projectIndicator.description!}</textarea>
-                                [#else]
-                                  ${projectIndicator.description!}
-                                [/#if] 
                               </div>
-                            </div>  
-                          [/#list] 
-                        </div>   
-                      </div>  
-                    [#else] 
-                      <div class="midOutcomeIndicator" >
-                        <input type="hidden"  name="indicators.id" value="-1" disabled="disabled"/>
-                        [#if editable]
-                          <input type="checkbox" class="projectIndicatorCheckbox" id="indicatorIndex-${indicator_index}" />
-                          [#if indicator.parent?has_content]
-                            <label class="indicatorDescription">${indicator.parent.description}</label> 
-                          [#else]
-                            <label class="indicatorDescription">${indicator.description}</label> 
-                          [/#if]
-                        [/#if]
-                        <div class="indicatorTargets" style="display:none">
-                           <ul class="">
-                            [#list years as year]
-                              <li class=""><a href="#target-${year}">${year}</a></li> 
-                            [/#list]   
-                          </ul>
-                          [#list years as year]
-                          <div id="target-${year}" class="targetIndicator"> 
-                            [#-- Indicator ID --]
-                            [#if indicator.parent?has_content]
-                              <input type="hidden" class="projectIndicatorParent" name="project.indicators.parent.id" value="${indicator.parent.id}"  />
-                            [#else]
-                              <input type="hidden" class="projectIndicatorParent" name="project.indicators.parent.id" value="${indicator.id}"  />
-                            [/#if]
-                            
-                            [#-- Check if the value of this hidden input should be arbitrarily -1 --]
-                            <input type="hidden" class="projectIndicatorID" name="project.indicators.id" value="-1" />
-                            <input type="hidden" class="projectIndicatorYear" name="project.indicators.year"  value="${year}" />
-                            <input type="hidden" class="projectIndicatorOutcome" name="project.indicators.outcome"  value="${midOutcome.id}" /> 
-                            
-                            [#-- Target value --]
-                            <div class="checkboxGroup vertical indicatorNarrative">
-                              <label>  <h6>[@s.text name="planning.projectImpactPathways.targetValue" /]</h6></label>
-                              [#if editable]
-                                <textarea class="projectIndicatorTarget" name="project.indicators.target" ></textarea>                              
-                              [/#if]
-                            </div>
-                            
-                            [#-- Target description --]
-                            <div class="checkboxGroup vertical indicatorNarrative">
-                              <label>  <h6>[@s.text name="planning.projectImpactPathways.targetNarrative" /]</h6></label>
-                              [#if editable]
-                                <textarea class="projectIndicatorDescription" name="project.indicators.description" ></textarea>
-                              [/#if]
-                            </div>
-                          </div>   
-                          [/#list]
-                        </div> 
-                      </div>
-                    [/#if]
-                  [/#list]  
-                </div>
-                [/#if]
-                </div> 
-              [#-- Major Output Group list --]
-              <div class="mogs">
-                <h6>[@s.text name="planning.projectImpactPathways.mogs" /]</h6>
-                [#if action.getMidOutcomeOutputs(midOutcome.id)?has_content]
-                  [#assign outputs = action.getMidOutcomeOutputs(midOutcome.id)]
-                  <div class="mogsBlock">
-                    [#list outputs as output]
-                        <div class="mog">
-                          [#if editable]
-                            <input name="project.outputs.contributesTo[0].id" value="${midOutcome.id}"  type="hidden" />
-                            <input type="checkbox" name="outputs.id" value="${output.id}" [#if project.containsOutput(output.id, midOutcome.id)] checked [/#if] />
-                            <label class=""> ${output.program.acronym} - MOG #${action.getMOGIndex(output)}: ${output.description} </label>
-                          [#else]
-                             [#if project.containsOutput(output.id, midOutcome.id)] 
-                             <label class="checked"> ${output.program.acronym} - MOG #${action.getMOGIndex(output)}: ${output.description} </label>
-                             [/#if] 
-                          [/#if]
+                              
+                              [#-- Target description --]
+                              <div class="checkboxGroup vertical indicatorNarrative">
+                                <label>  <h6>[@s.text name="planning.projectImpactPathways.targetNarrative" /]</h6></label>
+                                [#if editable]
+                                  <textarea class="projectIndicatorDescription" name="project.indicators.description" ></textarea>
+                                [/#if]
+                              </div>
+                            </div>   
+                            [/#list]
+                          </div> 
                         </div>
-                    [/#list]
+                      [/#if]
+                    [/#list]  
                   </div>
-                [/#if]
-              </div>
-            </div> 
-          [/#list]
-        [/#if]
-      </div> <!-- End Contributions Block -->
-      [#-- Outcomes 2019 select list --]
-      [#if editable]
-        <div id="midOutcomesSelect">
-          [@customForm.select name="midOutcomesList" i18nkey="planning.projectImpactPathways.outcome" listName="midOutcomes" className="midOutcomeSelect" /]
-        </div>
-      [/#if]  
+                  [/#if]
+                  </div> 
+                [#-- Major Output Group list --]
+                <div class="mogs">
+                  <h6>[@s.text name="planning.projectImpactPathways.mogs" /]</h6>
+                  [#if action.getMidOutcomeOutputs(midOutcome.id)?has_content]
+                    [#assign outputs = action.getMidOutcomeOutputs(midOutcome.id)]
+                    <div class="mogsBlock">
+                      [#list outputs as output]
+                          <div class="mog">
+                            [#if editable]
+                              <input name="project.outputs.contributesTo[0].id" value="${midOutcome.id}"  type="hidden" />
+                              <input type="checkbox" name="outputs.id" value="${output.id}" [#if project.containsOutput(output.id, midOutcome.id)] checked [/#if] />
+                              <label class=""> ${output.program.acronym} - MOG #${action.getMOGIndex(output)}: ${output.description} </label>
+                            [#else]
+                               [#if project.containsOutput(output.id, midOutcome.id)] 
+                               <label class="checked"> ${output.program.acronym} - MOG #${action.getMOGIndex(output)}: ${output.description} </label>
+                               [/#if] 
+                            [/#if]
+                          </div>
+                      [/#list]
+                    </div>
+                  [/#if]
+                </div>
+              </div> 
+            [/#list]
+          [#else]
+            <p class="emptyText">[@s.text name="planning.projectImpactPathways.outcomesEmpty" /]</p>
+          [/#if]
+        </div> <!-- End Contributions Block -->
+        [#-- Outcomes 2019 select list --]
+        [#if editable]
+          <div id="midOutcomesSelect">
+            [@customForm.select name="midOutcomesList" i18nkey="planning.projectImpactPathways.outcome" listName="midOutcomes" className="midOutcomeSelect" /]
+          </div>
+        [/#if] 
+      [#else]
+        <p class="emptyText">[@s.text name="planning.projectImpactPathways.contributionsEmpty" /]</p> 
+      [/#if]   
     </div>
     
     [#if editable] 

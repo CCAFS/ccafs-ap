@@ -276,9 +276,19 @@ public class BudgetManagerImpl implements BudgetManager {
       budget.setYear(Integer.parseInt(budgetData.get("year")));
       budget.setType(BudgetType.getBudgetType(Integer.parseInt(budgetData.get("budget_type"))));
       budget.setAmount(Double.parseDouble(budgetData.get("amount")));
+      if (budgetData.get("gender_percentage") != null) {
+        budget.setGenderPercentage(Integer.parseInt(budgetData.get("gender_percentage")));
+      }
 
       // Institution as institution_id
       budget.setInstitution(institutionManager.getInstitution(Integer.parseInt(budgetData.get("institution_id"))));
+
+      if (budgetData.get("cofinance_project_id") != null) {
+        Project project = new Project();
+        project.setId(Integer.parseInt(budgetData.get("cofinance_project_id")));
+        project.setTitle(budgetData.get("cofinance_project_title"));
+        budget.setCofinancingProject(project);
+      }
 
       // adding information of the object to the array
       budgets.add(budget);

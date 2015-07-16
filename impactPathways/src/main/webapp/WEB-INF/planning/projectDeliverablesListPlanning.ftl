@@ -28,16 +28,13 @@
   </div>
   [#include "/WEB-INF/planning/planningProjectsSubMenu.ftl" /]
   
-  [@s.form action="deliverables" cssClass="pure-form"]
   <article class="halfContent" id="mainInformation"> 
     [#include "/WEB-INF/planning/projectOutputs-sub-menu.ftl" /]
     [#include "/WEB-INF/planning/planningDataSheet.ftl" /]
     [#-- Informing user that he/she doesn't have enough privileges to edit. See GrantProjectPlanningAccessInterceptor--]
     [#if !canEdit]
       <p class="readPrivileges">
-        [@s.text name="saving.read.privileges"]
-          [@s.param][@s.text name="planning.project"/][/@s.param]
-        [/@s.text]
+        [@s.text name="saving.read.privileges"][@s.param][@s.text name=title/][/@s.param][/@s.text]
       </p>
     [/#if]
     <div id="projectDeliverables" class="clearfix">
@@ -57,11 +54,10 @@
           </a>
         </div>
       </div>
-    </div>
-    
-    
+    </div>     
   </article>
-  [/@s.form] 
-   
+  
 </section>
+[@customForm.confirmJustification action="removeDeliverable" namespace="/planning/projects" nameId="deliverableID" title="Remove Deliverable" /]
+ 
 [#include "/WEB-INF/global/pages/footer.ftl"]

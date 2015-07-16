@@ -23,7 +23,6 @@ import org.cgiar.ccafs.ap.data.manager.ProjectManager;
 import org.cgiar.ccafs.ap.data.model.Activity;
 import org.cgiar.ccafs.ap.data.model.ActivityPartner;
 import org.cgiar.ccafs.ap.data.model.Budget;
-import org.cgiar.ccafs.ap.data.model.BudgetType;
 import org.cgiar.ccafs.ap.data.model.Institution;
 import org.cgiar.ccafs.ap.data.model.Project;
 import org.cgiar.ccafs.ap.data.model.User;
@@ -98,88 +97,89 @@ public class ActivityBudgetAction extends BaseAction {
    * 
    * @return a Map of budgets as was described above.
    */
+  @Deprecated
   private Map<String, Budget> generateMapBudgets(int year) {
     Map<String, Budget> budgetsMap = new HashMap<String, Budget>();
 
     // activity partners
-    for (ActivityPartner activityPartner : activityPartners) {
-      boolean w1_w2 = false;
-      boolean w3_bilateral = false;
-      for (Budget budget : activity.getBudgets()) {
-        if (budget.getInstitution().getId() == activityPartner.getPartner().getId() && budget.getYear() == year) {
-          if (budget.getType().getValue() == BudgetType.ACTIVITY_W1_W2.getValue()) {
-            w1_w2 = true;
-            budgetsMap.put(year + "-" + activityPartner.getPartner().getId() + "-" + BudgetType.ACTIVITY_W1_W2.name(),
-              budget);
-          }
-          if (budget.getType().getValue() == BudgetType.ACTIVITY_W3_BILATERAL.getValue()) {
-            w3_bilateral = true;
-            budgetsMap
-              .put(year + "-" + activityPartner.getPartner().getId() + "-" + BudgetType.ACTIVITY_W3_BILATERAL.name(),
-                budget);
-          }
-        }
-      }
-      if (w1_w2 == false) {
-        Budget newBudget = new Budget();
-        newBudget.setId(-1);
-        newBudget.setInstitution(activityPartner.getPartner());
-        newBudget.setType(BudgetType.ACTIVITY_W1_W2);
-        newBudget.setAmount(0);
-        newBudget.setYear(year);
-        budgetsMap.put(year + "-" + activityPartner.getPartner().getId() + "-" + BudgetType.ACTIVITY_W1_W2.name(),
-          newBudget);
-      }
-      if (w3_bilateral == false) {
-        Budget newBudget = new Budget();
-        newBudget.setId(-1);
-        newBudget.setInstitution(activityPartner.getPartner());
-        newBudget.setType(BudgetType.ACTIVITY_W3_BILATERAL);
-        newBudget.setAmount(0);
-        newBudget.setYear(year);
-        budgetsMap.put(
-          year + "-" + activityPartner.getPartner().getId() + "-" + BudgetType.ACTIVITY_W3_BILATERAL.name(), newBudget);
-      }
-
-    }
-    // Activity leader
-    boolean w1_w2 = false;
-    boolean w3_bilateral = false;
-    for (Budget budget : activity.getBudgets()) {
-      if (budget.getInstitution().getId() == activity.getLeader().getCurrentInstitution().getId()
-        && budget.getYear() == year) {
-        if (budget.getType().getValue() == BudgetType.ACTIVITY_W1_W2.getValue()) {
-          w1_w2 = true;
-          budgetsMap.put(year + "-" + activity.getLeader().getCurrentInstitution().getId() + "-"
-            + BudgetType.ACTIVITY_W1_W2.name(), budget);
-        }
-        if (budget.getType().getValue() == BudgetType.ACTIVITY_W3_BILATERAL.getValue()) {
-          w3_bilateral = true;
-          budgetsMap.put(year + "-" + activity.getLeader().getCurrentInstitution().getId() + "-"
-            + BudgetType.ACTIVITY_W3_BILATERAL.name(), budget);
-        }
-      }
-    }
-    if (w1_w2 == false) {
-      Budget newBudget = new Budget();
-      newBudget.setId(-1);
-      newBudget.setInstitution(activity.getLeader().getCurrentInstitution());
-      newBudget.setType(BudgetType.ACTIVITY_W1_W2);
-      newBudget.setAmount(0);
-      newBudget.setYear(year);
-      budgetsMap.put(year + "-" + activity.getLeader().getCurrentInstitution().getId() + "-"
-        + BudgetType.ACTIVITY_W1_W2.name(), newBudget);
-    }
-    if (w3_bilateral == false) {
-      Budget newBudget = new Budget();
-      newBudget.setId(-1);
-      newBudget.setInstitution(activity.getLeader().getCurrentInstitution());
-      newBudget.setType(BudgetType.ACTIVITY_W3_BILATERAL);
-      newBudget.setAmount(0);
-      newBudget.setYear(year);
-      budgetsMap.put(year + "-" + activity.getLeader().getCurrentInstitution().getId() + "-"
-        + BudgetType.ACTIVITY_W3_BILATERAL.name(), newBudget);
-    }
+    // for (ActivityPartner activityPartner : activityPartners) {
+    // boolean w1_w2 = false;
+    // boolean w3_bilateral = false;
+    // for (Budget budget : activity.getBudgets()) {
+    // if (budget.getInstitution().getId() == activityPartner.getPartner().getId() && budget.getYear() == year) {
+    // if (budget.getType().getValue() == BudgetType.ACTIVITY_W1_W2.getValue()) {
+    // w1_w2 = true;
+    // budgetsMap.put(year + "-" + activityPartner.getPartner().getId() + "-" + BudgetType.ACTIVITY_W1_W2.name(),
+    // budget);
+    // }
+    // if (budget.getType().getValue() == BudgetType.ACTIVITY_W3_BILATERAL.getValue()) {
+    // w3_bilateral = true;
+    // budgetsMap
+    // .put(year + "-" + activityPartner.getPartner().getId() + "-" + BudgetType.ACTIVITY_W3_BILATERAL.name(),
+    // budget);
+    // }
+    // }
+    // }
+    // if (w1_w2 == false) {
+    // Budget newBudget = new Budget();
+    // newBudget.setId(-1);
+    // newBudget.setInstitution(activityPartner.getPartner());
+    // newBudget.setType(BudgetType.ACTIVITY_W1_W2);
+    // newBudget.setAmount(0);
+    // newBudget.setYear(year);
+    // budgetsMap.put(year + "-" + activityPartner.getPartner().getId() + "-" + BudgetType.ACTIVITY_W1_W2.name(),
+    // newBudget);
+    // }
+    // if (w3_bilateral == false) {
+    // Budget newBudget = new Budget();
+    // newBudget.setId(-1);
+    // newBudget.setInstitution(activityPartner.getPartner());
+    // newBudget.setType(BudgetType.ACTIVITY_W3_BILATERAL);
+    // newBudget.setAmount(0);
+    // newBudget.setYear(year);
+    // budgetsMap.put(
+    // year + "-" + activityPartner.getPartner().getId() + "-" + BudgetType.ACTIVITY_W3_BILATERAL.name(), newBudget);
+    // }
+    //
+    // }
+    // // Activity leader
+    // boolean w1_w2 = false;
+    // boolean w3_bilateral = false;
+    // for (Budget budget : activity.getBudgets()) {
+    // if (budget.getInstitution().getId() == activity.getLeader().getCurrentInstitution().getId()
+    // && budget.getYear() == year) {
+    // if (budget.getType().getValue() == BudgetType.ACTIVITY_W1_W2.getValue()) {
+    // w1_w2 = true;
+    // budgetsMap.put(year + "-" + activity.getLeader().getCurrentInstitution().getId() + "-"
+    // + BudgetType.ACTIVITY_W1_W2.name(), budget);
+    // }
+    // if (budget.getType().getValue() == BudgetType.ACTIVITY_W3_BILATERAL.getValue()) {
+    // w3_bilateral = true;
+    // budgetsMap.put(year + "-" + activity.getLeader().getCurrentInstitution().getId() + "-"
+    // + BudgetType.ACTIVITY_W3_BILATERAL.name(), budget);
+    // }
+    // }
+    // }
+    // if (w1_w2 == false) {
+    // Budget newBudget = new Budget();
+    // newBudget.setId(-1);
+    // newBudget.setInstitution(activity.getLeader().getCurrentInstitution());
+    // newBudget.setType(BudgetType.ACTIVITY_W1_W2);
+    // newBudget.setAmount(0);
+    // newBudget.setYear(year);
+    // budgetsMap.put(year + "-" + activity.getLeader().getCurrentInstitution().getId() + "-"
+    // + BudgetType.ACTIVITY_W1_W2.name(), newBudget);
+    // }
+    // if (w3_bilateral == false) {
+    // Budget newBudget = new Budget();
+    // newBudget.setId(-1);
+    // newBudget.setInstitution(activity.getLeader().getCurrentInstitution());
+    // newBudget.setType(BudgetType.ACTIVITY_W3_BILATERAL);
+    // newBudget.setAmount(0);
+    // newBudget.setYear(year);
+    // budgetsMap.put(year + "-" + activity.getLeader().getCurrentInstitution().getId() + "-"
+    // + BudgetType.ACTIVITY_W3_BILATERAL.name(), newBudget);
+    // }
     return budgetsMap;
   }
 
@@ -245,7 +245,7 @@ public class ActivityBudgetAction extends BaseAction {
 
   @Override
   public String next() {
-    String result = save();
+    String result = this.save();
     if (result.equals(BaseAction.SUCCESS)) {
       return BaseAction.NEXT;
     } else {
@@ -311,7 +311,7 @@ public class ActivityBudgetAction extends BaseAction {
           // Adding header - place holder.
           Institution headerInstitution = new Institution();
           headerInstitution.setId(-1);
-          headerInstitution.setName(getText("preplanning.projectBudget.institutionList.header"));
+          headerInstitution.setName(this.getText("preplanning.projectBudget.institutionList.header"));
           allInstitutions.add(0, headerInstitution);
 
           // Removing the institution that is already added as project partner:
@@ -324,9 +324,9 @@ public class ActivityBudgetAction extends BaseAction {
           // Getting the list of budgets.
           activity.setBudgets(budgetManager.getActivityBudgetsByYear(activity.getId(), year));
           // Creating budgets that do not exist.
-          mapBudgets = generateMapBudgets(year);
+          mapBudgets = this.generateMapBudgets(year);
 
-          if (getRequest().getMethod().equalsIgnoreCase("post")) {
+          if (this.getRequest().getMethod().equalsIgnoreCase("post")) {
             // Clear out the list if it has some element
             if (activity.getBudgets() != null) {
               activity.getBudgets().clear();
@@ -356,10 +356,11 @@ public class ActivityBudgetAction extends BaseAction {
       }
 
       if (!success) {
-        addActionError(getText("saving.problem"));
+        this.addActionError(this.getText("saving.problem"));
         return BaseAction.INPUT;
       } else {
-        addActionMessage(getText("saving.success", new String[] {getText("planning.activityBudget.title")}));
+        this.addActionMessage(this.getText("saving.success",
+          new String[] {this.getText("planning.activityBudget.title")}));
         return BaseAction.SUCCESS;
       }
     } else {
