@@ -45,9 +45,11 @@ function attachEvents() {
   });
 
   $("form").submit(function(event) {
-    $("input[name$='amount']").each(function() {
-      $(this).attr("readonly", true);
-      $(this).val(removeCurrencyFormat($(this).val()));
+    $allBudgetInputs.each(function() {
+      $(this).val(removeCurrencyFormat($(this).val())).attr("readonly", true);
+    });
+    $genderBudgetInputs.each(function() {
+      $(this).val(removeCurrencyFormat($(this).val())).attr("readonly", true);
     });
     return;
   });
