@@ -9,7 +9,7 @@
     </div>
   [/#if]
   [#if deliverable?has_content]
-    <div id="deliverableID-quote" class="quote-id" title="[#if project.title?has_content][@s.text name="planning.deliverable" /]: ${deliverable.title}[/#if]">
+    <div id="deliverableID-quote" class="quote-id" title="[#if deliverable.title?has_content][@s.text name="planning.deliverable" /]: ${deliverable.title}[/#if]">
       <a href="[@s.url namespace="/planning/projects" action='deliverable' includeParams='get'][@s.param name='deliverableID']${deliverable.id?c}[/@s.param][/@s.url]"> 
         <p>ID: <span>${deliverable.id}</span></p> 
       </a>
