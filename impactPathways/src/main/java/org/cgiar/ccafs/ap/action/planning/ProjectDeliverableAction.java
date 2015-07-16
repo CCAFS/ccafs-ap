@@ -32,6 +32,7 @@ import org.cgiar.ccafs.ap.data.model.NextUser;
 import org.cgiar.ccafs.ap.data.model.Project;
 import org.cgiar.ccafs.ap.data.model.ProjectPartner;
 import org.cgiar.ccafs.ap.data.model.User;
+import org.cgiar.ccafs.ap.validation.planning.ProjectDeliverableValidator;
 import org.cgiar.ccafs.utils.APConfig;
 
 import java.util.ArrayList;
@@ -62,6 +63,7 @@ public class ProjectDeliverableAction extends BaseAction {
   private ProjectPartnerManager projectPartnerManager;
   private IPElementManager ipElementManager;
   private HistoryManager historyManager;
+  private ProjectDeliverableValidator validator;
 
   // Model for the back-end
   private Deliverable deliverable;
@@ -80,7 +82,7 @@ public class ProjectDeliverableAction extends BaseAction {
   public ProjectDeliverableAction(APConfig config, ProjectManager projectManager, DeliverableManager deliverableManager,
     DeliverableTypeManager deliverableTypeManager, NextUserManager nextUserManager,
     DeliverablePartnerManager deliverablePartnerManager, ProjectPartnerManager projectPartnerManager,
-    IPElementManager ipElementManager, HistoryManager historyManager) {
+    IPElementManager ipElementManager, HistoryManager historyManager, ProjectDeliverableValidator validator) {
     super(config);
     this.projectManager = projectManager;
     this.deliverableManager = deliverableManager;
@@ -90,6 +92,7 @@ public class ProjectDeliverableAction extends BaseAction {
     this.projectPartnerManager = projectPartnerManager;
     this.ipElementManager = ipElementManager;
     this.historyManager = historyManager;
+    this.validator = validator;
   }
 
 
@@ -237,13 +240,13 @@ public class ProjectDeliverableAction extends BaseAction {
       }
     } else
       if (deliverable.getResponsiblePartner().getInstitution() == null
-      && deliverable.getResponsiblePartner().getUser() == null) {
-        saved = deliverablePartnerManager.deleteDeliverablePartner(deliverable.getResponsiblePartner().getId(),
-          this.getCurrentUser(), this.getJustification());
-        if (!saved) {
-          success = false;
-        }
+        && deliverable.getResponsiblePartner().getUser() == null) {
+      saved = deliverablePartnerManager.deleteDeliverablePartner(deliverable.getResponsiblePartner().getId(),
+        this.getCurrentUser(), this.getJustification());
+      if (!saved) {
+        success = false;
       }
+    }
 
     // Saving other contributions
 
@@ -289,39 +292,10 @@ public class ProjectDeliverableAction extends BaseAction {
   @Override
   public void validate() {
     super.validate();
-    boolean problem = false;
-
-    // Validating that some sub-type is selected.
-    if (deliverable.getType() == null) {
-      // Indicate problem in the missing field.
-      this.addFieldError("deliverable.type", this.getText("validation.field.required"));
-      problem = true;
+    if (save) {
+      validator.validate(this, deliverable);
     }
 
-    // Validating that some year is selected.
-    if (deliverable.getYear() == -1) {
-      // Indicate problem in the missing field.
-      this.addFieldError("deliverable.year", this.getText("validation.field.required"));
-      problem = true;
-    }
 
-    // Validating institutions in the partnerships section as they are required.
-    if (deliverable.getResponsiblePartner() != null && deliverable.getResponsiblePartner().getInstitution() == null) {
-      this.addFieldError("deliverable.responsiblePartner.institution", this.getText("validation.field.required"));
-      problem = true;
-    }
-
-    for (int c = 0; c < deliverable.getOtherPartners().size(); c++) {
-      if (deliverable.getOtherPartners().get(c).getInstitution() == null) {
-        this.addFieldError("deliverable.otherPartners[" + c + "].institution",
-          this.getText("validation.field.required"));
-        problem = true;
-      }
-    }
-
-    // Adding general error.
-    if (problem) {
-      this.addActionError(this.getText("saving.fields.required"));
-    }
   }
 }
