@@ -20,11 +20,13 @@ import org.cgiar.ccafs.ap.data.manager.BudgetManager;
 import org.cgiar.ccafs.ap.data.manager.HistoryManager;
 import org.cgiar.ccafs.ap.data.manager.ProjectManager;
 import org.cgiar.ccafs.ap.data.manager.ProjectPartnerManager;
+import org.cgiar.ccafs.ap.data.model.Budget;
 import org.cgiar.ccafs.ap.data.model.Institution;
 import org.cgiar.ccafs.ap.data.model.Project;
 import org.cgiar.ccafs.ap.data.model.ProjectPartner;
 import org.cgiar.ccafs.utils.APConfig;
 
+import java.util.Collection;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -168,6 +170,37 @@ public class ProjectBudgetsPlanningAction extends BaseAction {
         project.getBudgets().clear();
       }
     }
+  }
+
+  @Override
+  public String save() {
+    if (securityContext.canUpdateProjectBudget()) {
+      boolean success = true;
+      for (Budget budget : project.getBudgets()) {
+        boolean saved = budgetManager.saveBudget(projectID, budget);
+
+        if (!saved) {
+          success = false;
+        }
+      }
+
+      if (!success) {
+        this.addActionError(this.getText("saving.problem"));
+        return BaseAction.INPUT;
+      } else {
+        // Get the validation messages and append them to the save message
+        Collection<String> messages = this.getActionMessages();
+        if (!messages.isEmpty()) {
+          String validationMessage = messages.iterator().next();
+          this.setActionMessages(null);
+          this.addActionWarning(this.getText("saving.saved") + validationMessage);
+        } else {
+          this.addActionMessage(this.getText("saving.saved"));
+        }
+        return SUCCESS;
+      }
+    }
+    return NOT_AUTHORIZED;
   }
 
   public void setProject(Project project) {

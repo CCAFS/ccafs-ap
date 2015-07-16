@@ -143,6 +143,10 @@
 [#macro projectBudget institution budget type="PPA" pp_index="0" cofinancing_budgets="" editable=true]
 <div id="partnerBudget-${pp_index}" class="partnerBudget simpleBox row clearfix">
   <h6 class="title">${type} - ${institution.composedName}</h6>
+  [#-- Hidden values --]
+  <input type="hidden" name="project.budgets[${pp_index}].id" value="${budget.id}" />
+  <input type="hidden" name="project.budgets[${pp_index}].year" value="${budget.year}" />
+  <input type="hidden" name="project.budgets[${pp_index}].institution.id" value="${budget.institution.id}" />
   [#-- Project Budget --]
   <div class="budget clearfix">
     <div class="title"><h6>[@s.text name="planning.projectBudget.annualBudget" /]:</h6></div>
