@@ -34,6 +34,14 @@ public interface DeliverablePartnerManager {
 
 
   /**
+   * @param deliverableID is the id of the deliverable
+   * @param user is the user that is deleting the deliverable partners.
+   * @param justification is the justification statement.
+   * @return true if all the deliverable partners could be successfully deleted, false otherwise.
+   */
+  public boolean deleteDeliverablePartnerByDeliverable(int deliverableID, User user, String justification);
+
+  /**
    * This method is used to get the list of Partners that belongs to a specific deliverable.
    *
    * @param deliverableID is the id of the deliverable.
@@ -64,6 +72,7 @@ public interface DeliverablePartnerManager {
    * @return the id of the deliverable partner inserted, 0 if the record was updated and -1 if some error occurred.
    */
   public int saveDeliverablePartner(int deliverableID, DeliverablePartner partner, User user, String justification);
+
 
   /**
    * This method save the deliverable partner of a specific deliverable

@@ -403,6 +403,7 @@ public class MySQLProjectDAO implements ProjectDAO {
         projectData.put("type", rs.getString("type"));
         projectData.put("summary", rs.getString("summary"));
         projectData.put("is_cofinancing", rs.getString("is_cofinancing"));
+        projectData.put("is_global", rs.getString("is_global"));
         if (rs.getDate("start_date") != null) {
           projectData.put("start_date", rs.getDate("start_date").toString());
         }

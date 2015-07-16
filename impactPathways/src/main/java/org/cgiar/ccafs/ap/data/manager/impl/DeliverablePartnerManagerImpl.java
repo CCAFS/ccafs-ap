@@ -54,6 +54,19 @@ public class DeliverablePartnerManagerImpl implements DeliverablePartnerManager 
   }
 
   @Override
+  public boolean deleteDeliverablePartnerByDeliverable(int deliverableID, User user, String justification) {
+    boolean problem = false;
+    boolean deleted;
+    for (DeliverablePartner partner : this.getDeliverablePartners(deliverableID)) {
+      deleted = deliverablePartnerDAO.deleteDeliverablePartner(partner.getId(), user.getId(), justification);
+      if (!deleted) {
+        problem = true;
+      }
+    }
+    return !problem;
+  }
+
+  @Override
   public List<DeliverablePartner> getDeliverablePartners(int deliverableID) {
     List<DeliverablePartner> deliverablePartners = new ArrayList<>();
     List<Map<String, String>> deliverablePartnerDataList = deliverablePartnerDAO.getDeliverablePartners(deliverableID);
@@ -66,7 +79,7 @@ public class DeliverablePartnerManagerImpl implements DeliverablePartnerManager 
       deliverablePartner.setUser(userManager.getUser(Integer.parseInt(dData.get("user_id"))));
       // Institution as partner_id
       deliverablePartner
-        .setInstitution(institutionManager.getInstitution(Integer.parseInt(dData.get("institution_id"))));
+      .setInstitution(institutionManager.getInstitution(Integer.parseInt(dData.get("institution_id"))));
       // adding information of the object to the array
       deliverablePartners.add(deliverablePartner);
     }
@@ -94,7 +107,7 @@ public class DeliverablePartnerManagerImpl implements DeliverablePartnerManager 
 
       // Institution as partner_id
       deliverablePartner
-      .setInstitution(institutionManager.getInstitution(Integer.parseInt(dData.get("institution_id"))));
+        .setInstitution(institutionManager.getInstitution(Integer.parseInt(dData.get("institution_id"))));
 
       // adding information of the object to the array
       deliverablePartners.add(deliverablePartner);

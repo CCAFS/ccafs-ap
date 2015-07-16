@@ -52,8 +52,6 @@
     [/#if] 
     [#-- Project Title --]
     <h1 class="contentTitle">${project.type} [@s.text name="preplanning.projectBudget.title" /]</h1> 
-    [#assign allYears=2015..2017 /] 
-    [#assign year=2015 /]
     [#if allYears?has_content]
       [#if project.leader?has_content]
         [#-- Accumulative Total W1 W2 Budget --]
@@ -89,7 +87,7 @@
           [#-- Tertiary Menu - All years --] 
           <ul class="ui-tabs-nav ui-helper-reset ui-helper-clearfix ui-widget-header ui-corner-all">
             [#list allYears as yearMenu]
-              <li id="year-${yearMenu}" class="yearTab ui-state-default ui-corner-top [#if yearMenu=year ]ui-tabs-active ui-state-active ui-state-hover[/#if]">
+              <li id="year-${yearMenu}" class="yearTab ui-state-default ui-corner-top [#if yearMenu == year ]ui-tabs-active ui-state-active ui-state-hover[/#if]">
                 <a href="[@s.url action='budget' includeParams='get'][@s.param name='${projectRequest}']${project.id?c}[/@s.param][@s.param name='year']${yearMenu?c}[/@s.param][/@s.url]"> ${yearMenu?c} </a>
               </li>
             [/#list]
@@ -111,12 +109,12 @@
               <div class="ccafsBudget fullPartBlock clearfix">
                 [#-- Project Leader --]
                 [#if project.leader?has_content]
-                  [@projectBudget projectPartner=project.leader isBilateral=project.bilateralProject isCofunded=true isCofunded=project.coFundedProject editable=editable /]
+                  [@projectBudget institution=project.leader.institution budget=project.getBudget(project.leader.institution.id, project.bilateralProject?string(2, 1)?number, year )! type="PL" cofinancing_budgets=project.getCofinancingBudgets()! editable=editable /]
                 [/#if]
                 [#-- Project Partners --]
-                [#if project.ppaPartners?has_content] 
-                  [#list project.ppaPartners as projectPartner ]
-                    [@projectBudget projectPartner=projectPartner pp_index="${projectPartner_index}" isBilateral=project.bilateralProject isCofunded=project.coFundedProject editable=editable /]
+                [#if projectPPAPartners?has_content] 
+                  [#list projectPPAPartners as partnerInstitution ]
+                    [@projectBudget institution=partnerInstitution budget=project.getBudget(projectPartner.institution.id, project.bilateralProject?string(2, 1)?number, year )! pp_index="${projectPartner_index+1}" editable=editable /]
                   [/#list]  
                 [/#if]
               </div><!-- End partners list -->
@@ -158,19 +156,19 @@
   [/@s.form]
 </section>
 
-[#macro projectBudget projectPartner pp_index="0" isBilateral=true isCofunded=true editable=true]
+[#macro projectBudget institution budget type="PPA" pp_index="0" cofinancing_budgets="" editable=true]
 <div id="partnerBudget-${pp_index}" class="partnerBudget simpleBox row clearfix">
-  <h6 class="title">${projectPartner.type} - ${projectPartner.institution.composedName}</h6>
+  <h6 class="title">${type} - ${institution.composedName}</h6>
   [#-- Project Budget --]
   <div class="budget clearfix">
     <div class="title"><h6>[@s.text name="planning.projectBudget.annualBudget" /]:</h6></div>
     <div class="content">
-      <p>[@s.text name="planning.projectBudget.totalAmount"][@s.param]${isBilateral?string('W3/Bilateral', 'W1 W2')}[/@s.param][/@s.text]:</p> 
-      [@customForm.input name="project.budgets[${pp_index}].amount" className="projectBudget" showTitle=false value="" editable=editable/] 
+      <p>[@s.text name="planning.projectBudget.totalAmount"][@s.param]${budget.type.bilateral?string('W3/Bilateral', 'W1 W2')}[/@s.param][/@s.text]:</p> 
+      [@customForm.input name="project.budgets[${pp_index}].amount" className="projectBudget" showTitle=false value="${budget.amount}" editable=editable/] 
     </div>
   </div><!-- End budget -->
   [#-- Project budget per bilateral --]
-  [#if isCofunded]
+  [#if cofinancing_projects?has_content]
   <div class="budget clearfix">
     <div class="title"><h6>[@s.text name="planning.projectBudget.annualBudgetPerBilateral" /]:</h6></div>
     <div class="content">  
@@ -182,8 +180,8 @@
   <div class="budget clearfix">
     <div class="title"><h6>[@s.text name="planning.projectBudget.genderPercentage" /]</h6></div>
     <div class="content"> 
-      <p>[@s.text name="planning.projectBudget.totalGendePercentage"][@s.param]${isBilateral?string('W3/Bilateral', 'W1 W2')}[/@s.param][/@s.text]:</p>
-      [@customForm.input name="project.budgets[${pp_index}].amount" className="projectGenderBudget" showTitle=false value="" editable=editable/] 
+      <p>[@s.text name="planning.projectBudget.totalGendePercentage"][@s.param]${budget.type.bilateral?string('W3/Bilateral', 'W1 W2')}[/@s.param][/@s.text]:</p>
+      [@customForm.input name="project.budgets[${pp_index}].genderPercentage" className="projectGenderBudget" showTitle=false value="${budget.genderPercentage}" editable=editable/] 
     </div>
   </div><!-- End budget -->
 </div>

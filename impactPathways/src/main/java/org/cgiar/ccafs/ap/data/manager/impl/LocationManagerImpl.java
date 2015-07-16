@@ -171,36 +171,87 @@ public class LocationManagerImpl implements LocationManager {
 
   @Override
   public List<Location> getLocationsByIDs(String[] locationsIDs) {
-    // TODO - It is necessary to fix this method because it's not working
+
     List<Location> locations = new ArrayList<>();
     List<Map<String, String>> locationsData = locationDAO.getLocationsByIDs(locationsIDs);
 
     for (Map<String, String> lData : locationsData) {
-      OtherLocation location = new OtherLocation();
-      location.setId(Integer.parseInt(lData.get("id")));
-      location.setName(lData.get("name"));
+      // Evaluating different cases depending on the type of location
+      switch (Integer.parseInt(lData.get("type_id"))) {
 
-      if (lData.get("code") != null) {
-        location.setCode(lData.get("code"));
+        case APConstants.LOCATION_ELEMENT_TYPE_REGION:
+          Region region = new Region();
+          region.setId(Integer.parseInt(lData.get("id")));
+          region.setName(lData.get("name"));
+          region.setCode(lData.get("code"));
+          locations.add(region);
+          break;
+
+        case APConstants.LOCATION_ELEMENT_TYPE_COUNTRY:
+          Country country = new Country();
+          country.setId(Integer.parseInt(lData.get("id")));
+          country.setName(lData.get("name"));
+
+          if (lData.get("code") != null) {
+            country.setCode(lData.get("code"));
+          }
+          Region reg = new Region();
+          reg.setId(Integer.parseInt(lData.get("parent_id")));
+          reg.setName(lData.get("parent_name"));
+          country.setRegion(reg);
+
+          locations.add(country);
+          break;
+
+        case APConstants.LOCATION_TYPE_CLIMATE_SMART_VILLAGE:
+          ClimateSmartVillage csv = new ClimateSmartVillage();
+          csv.setId(Integer.parseInt(lData.get("id")));
+          csv.setName(lData.get("name"));
+
+          if (lData.get("code") != null) {
+            csv.setCode(lData.get("code"));
+          }
+
+          OtherLocation loc = new OtherLocation();
+          loc.setId(Integer.parseInt(lData.get("parent_id")));
+          loc.setName(lData.get("parent_name"));
+          csv.setCcafsSite(loc);
+
+          locations.add(csv);
+          break;
+
+        default:
+          OtherLocation location = new OtherLocation();
+          location.setId(Integer.parseInt(lData.get("id")));
+          location.setName(lData.get("name"));
+
+          if (lData.get("code") != null) {
+            location.setCode(lData.get("code"));
+          }
+
+          LocationType type = new LocationType();
+          type.setId(Integer.parseInt(lData.get("type_id")));
+          ;
+          type.setName(lData.get("type_name"));
+          location.setType(type);
+
+          Country count = new Country();
+          count.setId(Integer.parseInt(lData.get("parent_id")));
+          count.setName(lData.get("parent_name"));
+          location.setCountry(count);
+
+          LocationGeoposition geoposition = new LocationGeoposition();
+          geoposition.setId(Integer.parseInt(lData.get("loc_geo_id")));
+          geoposition.setLatitude(Double.parseDouble(lData.get("loc_geo_latitude")));
+          geoposition.setLongitude(Double.parseDouble(lData.get("loc_geo_longitude")));
+          location.setGeoPosition(geoposition);
+
+          locations.add(location);
+          break;
+
       }
 
-      LocationType type = new LocationType();
-      type.setId(Integer.parseInt(lData.get("type_id")));;
-      type.setName(lData.get("type_name"));
-      location.setType(type);
 
-      Country country = new Country();
-      country.setId(Integer.parseInt(lData.get("parent_id")));
-      country.setName(lData.get("parent_name"));
-      location.setCountry(country);
-
-      LocationGeoposition geoposition = new LocationGeoposition();
-      geoposition.setId(Integer.parseInt(lData.get("loc_geo_id")));
-      geoposition.setLatitude(Double.parseDouble(lData.get("loc_geo_latitude")));
-      geoposition.setLongitude(Double.parseDouble(lData.get("loc_geo_longitude")));
-      location.setGeoPosition(geoposition);
-
-      locations.add(location);
     }
     return locations;
   }
@@ -463,6 +514,7 @@ public class LocationManagerImpl implements LocationManager {
       int recordSaved = locationDAO.saveProjectLocation(locationData);
       saved = saved && (recordSaved != -1);
     }
+
 
     return saved;
   }

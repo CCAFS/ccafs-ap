@@ -68,7 +68,6 @@ public class ProjectDeliverablesListAction extends BaseAction {
 
   @Override
   public String add() {
-
     Deliverable newDeliverable = new Deliverable(-1);
     newDeliverable.setType(deliverableTypeManager.getDeliverableSubTypes().get(0));
     newDeliverable.setYear(project.getAllYears().get(0));
@@ -81,6 +80,46 @@ public class ProjectDeliverablesListAction extends BaseAction {
     }
 
     return INPUT;
+  }
+
+  /**
+   * This method validates if a deliverable can be deleted or not.
+   * Keep in mind that a deliverable can be deleted if it was created in the current planning cycle.
+   * 
+   * @param deliverableID is the deliverable identifier.
+   * @return true if the deliverable can be deleted, false otherwise.
+   */
+  public boolean canDelete(int deliverableID) {
+    // Loop all the deliverables that are in the interface.
+    for (Deliverable deliverable : project.getDeliverables()) {
+      if (deliverable.getId() == deliverableID) {
+        if (deliverable.getCreated() >= this.config.getCurrentPlanningStartDate().getTime()) {
+          return true;
+        } else {
+          return false;
+        }
+      }
+    }
+    return false;
+  }
+
+  @Override
+  public String delete() {
+    // Deleting deliverable.
+    if (this.canDelete(deliverableID)) {
+      boolean deleted = deliverableManager.deleteDeliverable(deliverableID, this.getCurrentUser(),
+        this.getJustification() == null ? "Deleting deliverable" : this.getJustification());
+      if (deleted) {
+        this.addActionMessage(
+          this.getText("deleting.success", new String[] {this.getText("planning.projectDeliverable").toLowerCase()}));
+      } else {
+        this.addActionError(
+          this.getText("deleting.problem", new String[] {this.getText("planning.projectDeliverable").toLowerCase()}));
+      }
+    } else {
+      this.addActionError(this.getText("planning.projectDeliverable.cannotDelete"));
+    }
+    return SUCCESS;
   }
 
   public List<Integer> getAllYears() {
@@ -137,6 +176,10 @@ public class ProjectDeliverablesListAction extends BaseAction {
     List<Deliverable> deliverables = deliverableManager.getDeliverablesByProject(projectID);
     project.setDeliverables(deliverables);
 
+  }
+
+  public void setDeliverableID(int deliverableID) {
+    this.deliverableID = deliverableID;
   }
 
   public void setDeliverableSubTypes(List<DeliverableType> deliverableSubTypes) {

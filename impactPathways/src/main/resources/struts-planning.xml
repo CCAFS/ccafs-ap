@@ -58,7 +58,7 @@
         <param name="projectID">${project.id}</param>
       </result>
       <result name="next" type="redirectAction">
-        <param name="actionName">partners</param>
+        <param name="actionName">partnerLead</param>
         <param name="projectID">${project.id}</param>
       </result>
       <result name="cancel" type="redirectAction">
@@ -108,7 +108,7 @@
         <param name="projectID">${project.id}</param>
       </result>
       <result name="next" type="redirectAction">
-        <param name="actionName">budget</param>
+        <param name="actionName">locations</param>
         <param name="projectID">${project.id}</param>
       </result>
       <result name="cancel" type="redirectAction">
@@ -122,7 +122,15 @@
       <result name="success" type="redirectAction">
         <param name="actionName">locations</param>
         <param name="projectID">${project.id}</param>
-      </result>     
+      </result>
+      <result name="next" type="redirectAction">
+        <param name="actionName">outcomes</param>
+        <param name="projectID">${project.id}</param>
+      </result>
+      <result name="cancel" type="redirectAction">
+        <param name="actionName">locations</param>
+        <param name="projectID">${project.id}</param>
+      </result>
     </action>
     
     <!-- Project Outcomes  -->
@@ -166,12 +174,12 @@
         <param name="projectID">${project.id}</param>   
       </result>
       <result name="next" type="redirectAction">
-        <param name="actionName">activities</param>
+        <param name="actionName">outputs</param>
         <param name="projectID">${project.id}</param>
       </result>
       <result name="cancel" type="redirectAction">
-        <param name="actionName">projects</param>
-        <param name="namespace">/planning</param>
+        <param name="actionName">otherContributions</param>
+        <param name="projectID">${project.id}</param>
       </result>
     </action>
     
@@ -207,6 +215,14 @@
       </result>
     </action>
     
+    <action name="deleteDeliverable" method="delete" class="org.cgiar.ccafs.ap.action.planning.ProjectDeliverablesListAction">
+      <result name="success" type="redirectAction">
+        <param name="namespace">/planning/projects</param>
+        <param name="actionName">deliverablesList</param>
+        <param name="projectID">${projectID}</param>
+      </result>
+    </action>
+    
     <action name="deliverable" class="org.cgiar.ccafs.ap.action.planning.ProjectDeliverableAction">
       <interceptor-ref name="planningStackDeliverables" />
       <result name="input">/WEB-INF/planning/projectDeliverablePlanning.ftl</result>
@@ -215,13 +231,12 @@
         <param name="deliverableID">${deliverable.id}</param>
       </result>
       <result name="next" type="redirectAction">
-        <param name="actionName">deliverable</param>
+        <param name="actionName">impactPathway</param>
         <param name="deliverableID">${deliverable.id}</param>
       </result>
       <result name="cancel" type="redirectAction">
+        <param name="actionName">deliverable</param>
         <param name="projectID">${project.id}</param>
-        <param name="actionName">deliverablesList</param>
-        <param name="namespace">/planning/projects</param>
       </result>
     </action>
 
@@ -236,8 +251,8 @@
         <param name="projectID">${project.id}</param>
       </result>
       <result name="cancel" type="redirectAction">
-        <param name="actionName">projects</param>
-        <param name="namespace">/planning</param>
+        <param name="actionName">impactPathway</param>
+        <param name="projectID">${project.id}</param>
       </result>
     </action>
     
@@ -262,14 +277,14 @@
         <param name="projectID">${project.id}</param>
       </result>
       <result name="cancel" type="redirectAction">
-        <param name="actionName">projects</param>
-        <param name="namespace">/planning</param>
+        <param name="actionName">activities</param>
+        <param name="projectID">${project.id}</param>
       </result>
     </action>
     
     <!-- Project Budget  -->
     
-    <action name="budget" class="org.cgiar.ccafs.ap.action.planning.ProjectPartnersPlanningAction">
+    <action name="budget" class="org.cgiar.ccafs.ap.action.planning.ProjectBudgetsPlanningAction">
       <result name="input">/WEB-INF/planning/projectBudgetPlanning.ftl</result>
       <result name="success" type="redirectAction">
         <param name="actionName">budget</param>
@@ -281,8 +296,8 @@
         <param name="projectID">${project.id}</param>
       </result>
       <result name="cancel" type="redirectAction">
-        <param name="actionName">projects</param>
-        <param name="namespace">/planning</param>
+        <param name="actionName">budget</param>
+        <param name="projectID">${project.id}</param>
       </result>
     </action>
     
@@ -294,12 +309,12 @@
         <param name="year">${targetYear}</param>
       </result>
       <result name="next" type="redirectAction">
-        <param name="actionName">projects</param>
+        <param name="actionName">projectsList</param>
         <param name="namespace">/planning</param>
       </result>
       <result name="cancel" type="redirectAction">
-        <param name="actionName">projects</param>
-        <param name="namespace">/planning</param>
+        <param name="actionName">budgetByMog</param>
+        <param name="projectID">${project.id}</param>
       </result>
     </action>
 

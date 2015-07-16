@@ -175,6 +175,16 @@ public class Project {
     return budgets;
   }
 
+  public List<Budget> getCofinancingBudgets() {
+    List<Budget> budgets = new ArrayList<>();
+    for (Budget budget : this.getBudgets()) {
+      if (budget.getCofinancingProject() != null) {
+        budgets.add(budget);
+      }
+    }
+    return budgets;
+  }
+
   /**
    * This method returns a composed Identifier that is going to be used in the front-end.
    * The convention is going to be used depending on the creationg date of the project.

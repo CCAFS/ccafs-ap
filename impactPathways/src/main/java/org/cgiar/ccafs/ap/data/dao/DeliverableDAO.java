@@ -32,9 +32,11 @@ public interface DeliverableDAO {
    * Deletes the information of a Deliverable associated by a given id
    * 
    * @param deliverableId - is the Id of an Deliverable
+   * @param userID - is the user identifier who is deleting the deliverable.
+   * @param justification - is the justification statement.
    * @return true if the elements were deleted successfully. False otherwise
    */
-  public boolean deleteDeliverable(int deliverableId);
+  public boolean deleteDeliverable(int deliverableId, int userID, String justification);
 
   /**
    * Deletes the information of a Deliverable contribution by a given deliverable id

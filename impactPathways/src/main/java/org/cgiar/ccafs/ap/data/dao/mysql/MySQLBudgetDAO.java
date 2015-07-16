@@ -129,6 +129,7 @@ public class MySQLBudgetDAO implements BudgetDAO {
 
 
   @Override
+  @Deprecated
   public double calculateProjectLeveragedBudgetByYear(int projectID, int year) {
     Double total = 0.0;
     StringBuilder query = new StringBuilder();
@@ -137,10 +138,12 @@ public class MySQLBudgetDAO implements BudgetDAO {
     query.append("INNER JOIN project_budgets pb ON b.id = pb.budget_id ");
     query.append(" WHERE pb.project_id = ");
     query.append(projectID);
-    query.append(" AND b.budget_type = ");
-    query.append(BudgetType.LEVERAGED.getValue());
-    query.append(" AND b.year = ");
-    query.append(year);
+
+    // TODO - This method is not valid anymore since we have not leveraged budgets anymore.
+    // query.append(" AND b.budget_type = ");
+    // query.append(BudgetType.LEVERAGED.getValue());
+    // query.append(" AND b.year = ");
+    // query.append(year);
 
     try (Connection con = databaseManager.getConnection()) {
       ResultSet rs = databaseManager.makeQuery(query.toString(), con);
@@ -166,8 +169,9 @@ public class MySQLBudgetDAO implements BudgetDAO {
     query.append("INNER JOIN project_budgets pb ON b.id = pb.budget_id ");
     query.append(" WHERE pb.project_id = ");
     query.append(projectID);
-    query.append(" AND b.budget_type = ");
-    query.append(BudgetType.LEVERAGED.getValue());
+    // TODO - This method is not valid anymore since we have not leveraged budgets anymore.
+    // query.append(" AND b.budget_type = ");
+    // query.append(BudgetType.LEVERAGED.getValue());
 
     try (Connection con = databaseManager.getConnection()) {
       ResultSet rs = databaseManager.makeQuery(query.toString(), con);
@@ -594,7 +598,7 @@ public class MySQLBudgetDAO implements BudgetDAO {
 
 
     LOG.debug("-- getActivityBudgetsByType() > Calling method executeQuery to get the results");
-    return getData(query.toString());
+    return this.getData(query.toString());
   }
 
 
@@ -615,11 +619,12 @@ public class MySQLBudgetDAO implements BudgetDAO {
 
 
     LOG.debug("-- getBudgetsByYear() > Calling method executeQuery to get the results");
-    return getData(query.toString());
+    return this.getData(query.toString());
   }
 
 
   @Override
+  @Deprecated
   public List<Map<String, String>> getActivityInstitutions(int activityID) {
     LOG.debug(">> getActivityInstitutions activityID = {} )", activityID);
     List<Map<String, String>> institutionDataList = new ArrayList<>();
@@ -631,11 +636,13 @@ public class MySQLBudgetDAO implements BudgetDAO {
     query.append("INNER JOIN budget_types bt ON b.budget_type = bt.id ");
     query.append("WHERE pb.activity_id = ");
     query.append(activityID);
-    query.append(" AND (b.budget_type = ");
-    query.append(BudgetType.ACTIVITY_W1_W2.getValue());
-    query.append(" OR b.budget_type = ");
-    query.append(BudgetType.ACTIVITY_W3_BILATERAL.getValue());
-    query.append(" )");
+
+    // TODO - This method is not valid anymore since we have not activity budgets.
+    // query.append(" AND (b.budget_type = ");
+    // query.append(BudgetType.ACTIVITY_W1_W2.getValue());
+    // query.append(" OR b.budget_type = ");
+    // query.append(BudgetType.ACTIVITY_W3_BILATERAL.getValue());
+    // query.append(" )");
 
     try (Connection con = databaseManager.getConnection()) {
       ResultSet rs = databaseManager.makeQuery(query.toString(), con);
@@ -677,7 +684,7 @@ public class MySQLBudgetDAO implements BudgetDAO {
 
 
     LOG.debug("-- getBudgetsByProject() > Calling method executeQuery to get the results");
-    return getData(query.toString());
+    return this.getData(query.toString());
   }
 
 
@@ -698,28 +705,51 @@ public class MySQLBudgetDAO implements BudgetDAO {
 
 
     LOG.debug("-- getBudgetsByType() > Calling method executeQuery to get the results");
-    return getData(query.toString());
+    return this.getData(query.toString());
   }
 
 
   @Override
   public List<Map<String, String>> getBudgetsByYear(int projectID, int year) {
     LOG.debug(">> getBudgetsByYear projectID = {}, year={} )", new Object[] {projectID, year});
+    List<Map<String, String>> budgetList = new ArrayList<>();
 
     StringBuilder query = new StringBuilder();
-    query.append("SELECT b.*   ");
-    query.append("FROM budgets as b ");
-    query.append("INNER JOIN project_budgets pb ON b.id = pb.budget_id ");
-    query.append("INNER JOIN budget_types bt ON b.budget_type = bt.id ");
-    query.append("INNER JOIN institutions i ON b.institution_id = i.id ");
+    query.append("SELECT pb.*, p.id as 'cofinancing_project_id', p.title as 'cofinancing_project_title'");
+    query.append("FROM project_budgets as pb ");
+    query.append("INNER JOIN budget_types bt ON pb.budget_type = bt.id ");
+    query.append("INNER JOIN institutions i ON pb.institution_id = i.id ");
+    query.append("LEFT JOIN projects p ON pb.cofinance_project_id = p.id ");
     query.append("WHERE pb.project_id=  ");
     query.append(projectID);
-    query.append(" AND b.year=  ");
+    query.append(" AND pb.year=  ");
     query.append(year);
 
+    try (Connection con = databaseManager.getConnection()) {
+      ResultSet rs = databaseManager.makeQuery(query.toString(), con);
+      while (rs.next()) {
+        Map<String, String> budgetData = new HashMap<String, String>();
+        budgetData.put("id", rs.getString("id"));
+        budgetData.put("year", rs.getString("year"));
+        budgetData.put("budget_type", rs.getString("budget_type"));
+        budgetData.put("institution_id", rs.getString("institution_id"));
+        budgetData.put("amount", rs.getString("amount"));
+        budgetData.put("gender_percentage", rs.getString("gender_percentage"));
+        budgetData.put("cofinancing_project_id", rs.getString("cofinancing_project_id"));
+        budgetData.put("cofinancing_project_title", rs.getString("cofinancing_project_title"));
 
-    LOG.debug("-- getBudgetsByYear() > Calling method executeQuery to get the results");
-    return getData(query.toString());
+        budgetList.add(budgetData);
+      }
+      rs.close();
+    } catch (SQLException e) {
+      String exceptionMessage = "-- getBudgetsByYear() > Exception raised trying ";
+      exceptionMessage += "to execute the following query " + query;
+
+      LOG.error(exceptionMessage, e);
+      return null;
+    }
+    LOG.debug("<< getBudgetsByYear():budgetList.size={}", budgetList.size());
+    return budgetList;
   }
 
   @Override
@@ -736,7 +766,7 @@ public class MySQLBudgetDAO implements BudgetDAO {
     query.append(projectID);
 
     LOG.debug("-- getCCAFSBudgets() > Calling method executeQuery to get the results");
-    return getData(query.toString());
+    return this.getData(query.toString());
   }
 
   private List<Map<String, String>> getData(String query) {

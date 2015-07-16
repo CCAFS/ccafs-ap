@@ -15,6 +15,10 @@ package org.cgiar.ccafs.ap.converter;
 
 import org.cgiar.ccafs.ap.data.manager.LocationManager;
 import org.cgiar.ccafs.ap.data.model.IPIndicator;
+import org.cgiar.ccafs.ap.data.model.Location;
+import org.cgiar.ccafs.ap.data.model.LocationGeoposition;
+import org.cgiar.ccafs.ap.data.model.LocationType;
+import org.cgiar.ccafs.ap.data.model.OtherLocation;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -42,7 +46,52 @@ public class LocationsConverter extends StrutsTypeConverter {
   @Override
   public Object convertFromString(Map context, String[] values, Class toClass) {
     if (toClass == List.class) {
-      return locationManager.getLocationsByIDs(values);
+      List<String> existingLocations = new ArrayList<>();
+      List<OtherLocation> newLocations = new ArrayList<>();
+      List<Location> allLocations = new ArrayList<>();
+
+      for (String id : values) {
+        if (!id.contains("|s|")) {
+          // If the location already exists we are going to get its information using the location manager.
+          existingLocations.add(id);
+        } else {
+
+          String[] tokens = id.split("\\|s\\|");
+          String typeID = tokens[0];
+          String latitude = tokens[1];
+          String longitude = tokens[2];
+          String name = tokens[3];
+          String locationID = tokens[4];
+
+          if (typeID.isEmpty() || latitude.isEmpty() || longitude.isEmpty() || name.isEmpty()) {
+            continue;
+          }
+          OtherLocation newLocation = new OtherLocation();
+          newLocation.setId(Integer.parseInt(locationID));
+          newLocation.setName(name);
+
+          LocationGeoposition geoposition = new LocationGeoposition();
+          geoposition.setId(-1);
+          geoposition.setLatitude(Double.parseDouble(latitude));
+          geoposition.setLongitude(Double.parseDouble(longitude));
+          newLocation.setGeoPosition(geoposition);
+
+          LocationType type = new LocationType(Integer.parseInt(typeID));
+          newLocation.setType(type);
+
+          newLocations.add(newLocation);
+        }
+      }
+
+
+      allLocations.addAll(newLocations);
+
+      if (!existingLocations.isEmpty()) {
+        List<Location> temp =
+          locationManager.getLocationsByIDs(existingLocations.toArray(new String[existingLocations.size()]));
+        allLocations.addAll(temp);
+      }
+      return allLocations;
     }
     return null;
   }

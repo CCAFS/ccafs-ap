@@ -36,6 +36,7 @@ public class Deliverable {
   private IPElement output; // Now it is called MOG.
   private DeliverablePartner responsiblePartner;
   private List<DeliverablePartner> otherPartners;
+  private long created;
 
   public Deliverable() {
     super();
@@ -52,6 +53,10 @@ public class Deliverable {
       return v.id == this.id;
     }
     return false;
+  }
+
+  public long getCreated() {
+    return created;
   }
 
   public int getId() {
@@ -93,6 +98,10 @@ public class Deliverable {
   @Override
   public int hashCode() {
     return this.id;
+  }
+
+  public void setCreated(long created) {
+    this.created = created;
   }
 
   public void setId(int id) {

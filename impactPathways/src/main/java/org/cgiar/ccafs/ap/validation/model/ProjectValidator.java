@@ -21,6 +21,7 @@ import org.cgiar.ccafs.ap.data.model.IPElement;
 import org.cgiar.ccafs.ap.data.model.IPIndicator;
 import org.cgiar.ccafs.ap.data.model.IPProgram;
 import org.cgiar.ccafs.ap.data.model.LiaisonInstitution;
+import org.cgiar.ccafs.ap.data.model.Location;
 import org.cgiar.ccafs.ap.data.model.OutputOverview;
 import org.cgiar.ccafs.ap.data.model.Project;
 import org.cgiar.ccafs.ap.data.model.ProjectOutcome;
@@ -95,6 +96,14 @@ public class ProjectValidator extends BaseValidator {
     return (linkedCoreProjects != null && !linkedCoreProjects.isEmpty());
   }
 
+  // This method validates if the list of locations given as parameter is not empty and different from null
+  // If so, it returns true
+  public boolean isValidLocation(List<Location> locations) {
+    return (!locations.isEmpty() && (locations != null));
+  }
+
+  // This method validates if the Gender dimension outcomes given as parameter are not empty and different from null
+  // If so, it returns true
   public boolean isValidOutcomeGenderDimension(Map<String, ProjectOutcome> outcomes, int year) {
     if (outcomes != null && !outcomes.isEmpty()) {
       ProjectOutcome outcome = outcomes.get(String.valueOf(year));
@@ -107,6 +116,8 @@ public class ProjectValidator extends BaseValidator {
     return false;
   }
 
+  // This method validates if the outcome statement given as parameter is not empty and different from null
+  // If so, it returns true
   public boolean isValidOutcomeStatement(Map<String, ProjectOutcome> outcomes, int year) {
     if (outcomes != null && !outcomes.isEmpty()) {
       ProjectOutcome outcome = outcomes.get(String.valueOf(year));
@@ -119,6 +130,8 @@ public class ProjectValidator extends BaseValidator {
     return false;
   }
 
+  // This method validates if the output overview given as parameter is not empty and different from null
+  // If so, it returns true
   public boolean isValidOutputOverviews(List<OutputOverview> outputOverviews) {
     return (outputOverviews != null && !outputOverviews.isEmpty());
   }
