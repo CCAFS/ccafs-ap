@@ -120,7 +120,7 @@ public class ProjectSummaryPDF extends BasePDF {
 
       document.newPage();
       document.add(paragraph);
-      document.add(new Chunk().NEWLINE);
+      document.add(Chunk.NEWLINE);
     } catch (DocumentException e) {
       LOG.error("There was an error trying to add the project activities to the project summary pdf of project {} ", e,
         project.getId());
@@ -173,7 +173,7 @@ public class ProjectSummaryPDF extends BasePDF {
 
     try {
       document.add(crossCutting);
-      document.add(new Chunk().NEWLINE);
+      document.add(Chunk.NEWLINE);
     } catch (DocumentException e) {
       LOG.error("There was an error trying to add the activity cross cutting themes to the summary pdf of project {}",
         e, project.getId());
@@ -189,14 +189,14 @@ public class ProjectSummaryPDF extends BasePDF {
     try {
       deliverableBlock.add(this.getText("summaries.project.activities.deliverables"));
       document.add(deliverableBlock);
-      document.add(new Chunk().NEWLINE);
+      document.add(Chunk.NEWLINE);
 
       if (activity.getDeliverables().isEmpty()) {
         deliverableBlock.setFont(BODY_TEXT_FONT);
         deliverableBlock.add(this.getText("summaries.project.empty"));
 
         document.add(deliverableBlock);
-        document.add(new Chunk().NEWLINE);
+        document.add(Chunk.NEWLINE);
         return;
       }
 
@@ -211,9 +211,9 @@ public class ProjectSummaryPDF extends BasePDF {
 
         deliverableBlock.setFont(BODY_TEXT_FONT);
         deliverableBlock.add(deliverable.getTitle());
-        deliverableBlock.add(new Chunk().NEWLINE);
+        deliverableBlock.add(Chunk.NEWLINE);
         document.add(deliverableBlock);
-        document.add(new Chunk().NEWLINE);
+        document.add(Chunk.NEWLINE);
 
         // Add content
         PdfPTable table = new PdfPTable(3);
@@ -249,7 +249,7 @@ public class ProjectSummaryPDF extends BasePDF {
         this.addTableBodyCell(table, cellContent, Element.ALIGN_JUSTIFIED, 1);
 
         document.add(table);
-        document.add(new Chunk().NEWLINE);
+        document.add(Chunk.NEWLINE);
 
         Paragraph nextUserBlock = new Paragraph();
         nextUserBlock.setFirstLineIndent(0);
@@ -266,24 +266,24 @@ public class ProjectSummaryPDF extends BasePDF {
 
           nextUserBlock.setFont(BODY_TEXT_FONT);
           nextUserBlock.add(nextUser.getUser());
-          nextUserBlock.add(new Chunk().NEWLINE);
-          nextUserBlock.add(new Chunk().NEWLINE);
+          nextUserBlock.add(Chunk.NEWLINE);
+          nextUserBlock.add(Chunk.NEWLINE);
 
           nextUserBlock.setFont(BODY_TEXT_BOLD_FONT);
           nextUserBlock.add(this.getText("summaries.project.activities.knowledge"));
 
           nextUserBlock.setFont(BODY_TEXT_FONT);
           nextUserBlock.add(nextUser.getExpectedChanges());
-          nextUserBlock.add(new Chunk().NEWLINE);
-          nextUserBlock.add(new Chunk().NEWLINE);
+          nextUserBlock.add(Chunk.NEWLINE);
+          nextUserBlock.add(Chunk.NEWLINE);
 
           nextUserBlock.setFont(BODY_TEXT_BOLD_FONT);
           nextUserBlock.add(this.getText("summaries.project.activities.strategies"));
 
           nextUserBlock.setFont(BODY_TEXT_FONT);
           nextUserBlock.add(nextUser.getStrategies());
-          nextUserBlock.add(new Chunk().NEWLINE);
-          nextUserBlock.add(new Chunk().NEWLINE);
+          nextUserBlock.add(Chunk.NEWLINE);
+          nextUserBlock.add(Chunk.NEWLINE);
 
           z++;
         }
@@ -316,7 +316,7 @@ public class ProjectSummaryPDF extends BasePDF {
 
     Paragraph genderOutcomes = new Paragraph();
     genderOutcomes.setAlignment(Element.ALIGN_JUSTIFIED);
-    genderOutcomes.add(new Chunk().NEWLINE);
+    genderOutcomes.add(Chunk.NEWLINE);
     genderOutcomes.setFont(HEADING4_FONT);
     genderOutcomes.add(this.getText("summaries.project.activities.genderOutcome"));
 
@@ -327,12 +327,12 @@ public class ProjectSummaryPDF extends BasePDF {
     }
     genderOutcomes.setFont(BODY_TEXT_FONT);
     genderOutcomes.add(text);
-    genderOutcomes.add(new Chunk().NEWLINE);
+    genderOutcomes.add(Chunk.NEWLINE);
 
     try {
       document.add(researchOutputs);
       document.add(genderOutcomes);
-      document.add(new Chunk().NEWLINE);
+      document.add(Chunk.NEWLINE);
     } catch (DocumentException e) {
       LOG.error("There was an error trying to add the activity gender to the summary pdf of project {}", e,
         project.getId());
@@ -350,7 +350,7 @@ public class ProjectSummaryPDF extends BasePDF {
     activityLocation.add(this.getText("summaries.project.activities.locations"));
 
     if (activity.getLocations().isEmpty()) {
-      activityLocation.add(new Chunk().NEWLINE);
+      activityLocation.add(Chunk.NEWLINE);
       activityLocation.setFont(BODY_TEXT_FONT);
 
       if (activity.isGlobal()) {
@@ -361,7 +361,7 @@ public class ProjectSummaryPDF extends BasePDF {
 
       try {
         document.add(activityLocation);
-        document.add(new Chunk().NEWLINE);
+        document.add(Chunk.NEWLINE);
       } catch (DocumentException e) {
         LOG.error("There was an error trying to add the activity locations to the summary pdf of project {}", e,
           project.getId());
@@ -438,10 +438,10 @@ public class ProjectSummaryPDF extends BasePDF {
       }
 
       document.add(activityLocation);
-      document.add(new Chunk().NEWLINE);
+      document.add(Chunk.NEWLINE);
 
       document.add(table);
-      document.add(new Chunk().NEWLINE);
+      document.add(Chunk.NEWLINE);
     } catch (DocumentException e) {
       LOG.error("There was an error trying to add the activity locations to the summary pdf of project {}", e,
         project.getId());
@@ -473,13 +473,13 @@ public class ProjectSummaryPDF extends BasePDF {
 
     try {
       document.add(activityTitle);
-      document.add(new Chunk().NEWLINE);
+      document.add(Chunk.NEWLINE);
 
       this.addActivityMainInformationTable(activity);
-      document.add(new Chunk().NEWLINE);
+      document.add(Chunk.NEWLINE);
 
       document.add(activityDescription);
-      document.add(new Chunk().NEWLINE);
+      document.add(Chunk.NEWLINE);
     } catch (DocumentException e) {
       LOG.error("There was an error trying to add the activity main information to the project summary pdf", e);
     }
@@ -559,20 +559,22 @@ public class ProjectSummaryPDF extends BasePDF {
       cellContent = new Paragraph(this.getText("summaries.project.activities.budgetw1w2"), TABLE_BODY_BOLD_FONT);
       this.addTableBodyCell(table, cellContent, Element.ALIGN_RIGHT, 0);
 
-      amount = budgetManager.calculateActivityBudgetByType(activity.getId(), BudgetType.ACTIVITY_W1_W2.getValue());
+      // TODO - Remove this line as we have not information about the activity budget anymore
+      amount = 0; // budgetManager.calculateActivityBudgetByType(activity.getId(),
+                  // BudgetType.ACTIVITY_W1_W2.getValue());
       cellContent = new Paragraph(currencyFormatter.format(amount), TABLE_BODY_FONT);
       this.addTableBodyCell(table, cellContent, Element.ALIGN_LEFT, 0);
 
       cellContent = new Paragraph(this.getText("summaries.project.activities.budgetw3bil"), TABLE_BODY_BOLD_FONT);
       this.addTableBodyCell(table, cellContent, Element.ALIGN_RIGHT, 0);
 
-      amount =
-        budgetManager.calculateActivityBudgetByType(activity.getId(), BudgetType.ACTIVITY_W3_BILATERAL.getValue());
+      amount = 0;
+      // budgetManager.calculateActivityBudgetByType(activity.getId(), BudgetType.ACTIVITY_W3_BILATERAL.getValue());
       cellContent = new Paragraph(currencyFormatter.format(amount), TABLE_BODY_FONT);
       this.addTableBodyCell(table, cellContent, Element.ALIGN_LEFT, 0);
 
       document.add(table);
-      document.add(new Chunk().NEWLINE);
+      document.add(Chunk.NEWLINE);
     } catch (DocumentException e) {
       LOG.error("-- generatePdf() > There was an error adding the table with content for case study summary. ", e);
     }
@@ -593,7 +595,7 @@ public class ProjectSummaryPDF extends BasePDF {
 
     try {
       document.add(activityOutcome);
-      document.add(new Chunk().NEWLINE);
+      document.add(Chunk.NEWLINE);
     } catch (DocumentException e) {
       LOG.error("There was an error trying to add the activity outcome to the project summary pdf", e);
     }
@@ -606,7 +608,7 @@ public class ProjectSummaryPDF extends BasePDF {
     Paragraph title = new Paragraph(this.getText("summaries.project.activities.activityPartners"), HEADING4_FONT);
     title.setAlignment(Element.ALIGN_JUSTIFIED);
     partnersBlock.add(title);
-    partnersBlock.add(new Chunk().NEWLINE);
+    partnersBlock.add(Chunk.NEWLINE);
 
     int c = 1;
     for (ActivityPartner partner : activity.getActivityPartners()) {
@@ -621,7 +623,7 @@ public class ProjectSummaryPDF extends BasePDF {
 
       partnerInfo.setFont(BODY_TEXT_FONT);
       partnerInfo.add(partner.getComposedName());
-      partnerInfo.add(new Chunk().NEWLINE);
+      partnerInfo.add(Chunk.NEWLINE);
 
       // Organization
       partnerInfo.setFont(BODY_TEXT_BOLD_FONT);
@@ -629,7 +631,7 @@ public class ProjectSummaryPDF extends BasePDF {
 
       partnerInfo.setFont(BODY_TEXT_FONT);
       partnerInfo.add(partner.getPartner().getName());
-      partnerInfo.add(new Chunk().NEWLINE);
+      partnerInfo.add(Chunk.NEWLINE);
 
       // Responsibilities
       partnerInfo.setFont(BODY_TEXT_BOLD_FONT);
@@ -642,7 +644,7 @@ public class ProjectSummaryPDF extends BasePDF {
         partnerInfo.add(this.getText("summaries.project.empty"));
       }
 
-      partnerInfo.add(new Chunk().NEWLINE);
+      partnerInfo.add(Chunk.NEWLINE);
       partnersBlock.add(partnerInfo);
 
       c++;
@@ -712,7 +714,7 @@ public class ProjectSummaryPDF extends BasePDF {
       this.addTableBodyCell(table, cellContent, Element.ALIGN_LEFT, 0);
 
       document.add(table);
-      document.add(new Chunk().NEWLINE);
+      document.add(Chunk.NEWLINE);
     } catch (DocumentException e) {
       LOG.error("-- generatePdf() > There was an error adding the table with content for case study summary. ", e);
     }
@@ -796,10 +798,10 @@ public class ProjectSummaryPDF extends BasePDF {
           }
         }
 
-        document.add(new Chunk().NEWLINE);
+        document.add(Chunk.NEWLINE);
         document.add(table);
-        document.add(new Chunk().NEWLINE);
-        document.add(new Chunk().NEWLINE);
+        document.add(Chunk.NEWLINE);
+        document.add(Chunk.NEWLINE);
       }
 
 
@@ -862,39 +864,40 @@ public class ProjectSummaryPDF extends BasePDF {
       }
 
       // Leveraged
-      cell =
-        new Paragraph(String.valueOf(BudgetType.LEVERAGED.name().toLowerCase().replace("_", " + ")),
-          TABLE_BODY_BOLD_FONT);
-      this.addTableBodyCell(table, cell, Element.ALIGN_LEFT, 1);
-
-      for (int year = startYear; year <= endYear; year++) {
-        amount =
-          budgetManager.calculateProjectBudgetByTypeAndYear(project.getId(), BudgetType.LEVERAGED.getValue(), year);
-        cell = new Paragraph(currencyFormatter.format(amount), TABLE_BODY_FONT);
-
-        this.addTableBodyCell(table, cell, Element.ALIGN_CENTER, 1);
-      }
-
-      // Gender
-      text = String.valueOf(BudgetType.W1_W2_GENDER.name().toLowerCase().replace("_", " + "));
-      text += " + " + String.valueOf(BudgetType.W3_BILATERAL_GENDER.name().toLowerCase().replace("_", " + "));
-
-      cell = new Paragraph(text, TABLE_BODY_BOLD_FONT);
-      this.addTableBodyCell(table, cell, Element.ALIGN_LEFT, 1);
-
-      for (int year = startYear; year <= endYear; year++) {
-        amount =
-          budgetManager.calculateProjectBudgetByTypeAndYear(project.getId(), BudgetType.W1_W2_GENDER.getValue(), year);
-        amount +=
-          budgetManager.calculateProjectBudgetByTypeAndYear(project.getId(), BudgetType.W3_BILATERAL_GENDER.getValue(),
-            year);
-
-        cell = new Paragraph(currencyFormatter.format(amount), TABLE_BODY_FONT);
-        this.addTableBodyCell(table, cell, Element.ALIGN_CENTER, 1);
-      }
+      // TODO - This cell should be removed since we have not leveraged budgets anymore.
+      // cell =
+      // new Paragraph(String.valueOf(BudgetType.LEVERAGED.name().toLowerCase().replace("_", " + ")),
+      // TABLE_BODY_BOLD_FONT);
+      // this.addTableBodyCell(table, cell, Element.ALIGN_LEFT, 1);
+      //
+      // for (int year = startYear; year <= endYear; year++) {
+      // amount =
+      // budgetManager.calculateProjectBudgetByTypeAndYear(project.getId(), BudgetType.LEVERAGED.getValue(), year);
+      // cell = new Paragraph(currencyFormatter.format(amount), TABLE_BODY_FONT);
+      //
+      // this.addTableBodyCell(table, cell, Element.ALIGN_CENTER, 1);
+      // }
+      //
+      // // Gender
+      // text = String.valueOf(BudgetType.W1_W2_GENDER.name().toLowerCase().replace("_", " + "));
+      // text += " + " + String.valueOf(BudgetType.W3_BILATERAL_GENDER.name().toLowerCase().replace("_", " + "));
+      //
+      // cell = new Paragraph(text, TABLE_BODY_BOLD_FONT);
+      // this.addTableBodyCell(table, cell, Element.ALIGN_LEFT, 1);
+      //
+      // for (int year = startYear; year <= endYear; year++) {
+      // amount =
+      // budgetManager.calculateProjectBudgetByTypeAndYear(project.getId(), BudgetType.W1_W2_GENDER.getValue(), year);
+      // amount +=
+      // budgetManager.calculateProjectBudgetByTypeAndYear(project.getId(), BudgetType.W3_BILATERAL_GENDER.getValue(),
+      // year);
+      //
+      // cell = new Paragraph(currencyFormatter.format(amount), TABLE_BODY_FONT);
+      // this.addTableBodyCell(table, cell, Element.ALIGN_CENTER, 1);
+      // }
 
       document.add(table);
-      document.add(new Chunk().NEWLINE);
+      document.add(Chunk.NEWLINE);
     } catch (DocumentException e) {
       LOG.error("-- generatePdf() > There was an error adding the table with content for case study summary. ", e);
     }
@@ -922,7 +925,7 @@ public class ProjectSummaryPDF extends BasePDF {
 
     try {
       document.add(paragraph);
-      document.add(new Chunk().NEWLINE);
+      document.add(Chunk.NEWLINE);
     } catch (DocumentException e) {
       LOG.error("There was an error trying to add the project focuses to the project summary pdf", e);
     }
@@ -938,7 +941,7 @@ public class ProjectSummaryPDF extends BasePDF {
 
     Paragraph title = new Paragraph("5. " + this.getText("summaries.project.indicatorsContribution"), HEADING3_FONT);
     indicatorsBlock.add(title);
-    indicatorsBlock.add(new Chunk().NEWLINE);
+    indicatorsBlock.add(Chunk.NEWLINE);
 
     try {
       document.add(indicatorsBlock);
@@ -953,13 +956,13 @@ public class ProjectSummaryPDF extends BasePDF {
 
         outcomeBlock.setFont(BODY_TEXT_FONT);
         outcomeBlock.add(outcome.getDescription());
-        outcomeBlock.add(new Chunk().NEWLINE);
-        outcomeBlock.add(new Chunk().NEWLINE);
+        outcomeBlock.add(Chunk.NEWLINE);
+        outcomeBlock.add(Chunk.NEWLINE);
 
         outcomeBlock.setFont(BODY_TEXT_BOLD_FONT);
         outcomeBlock.add(this.getText("summaries.project.indicators"));
         document.add(outcomeBlock);
-        document.add(new Chunk().NEWLINE);
+        document.add(Chunk.NEWLINE);
 
         for (IPIndicator outcomeIndicator : outcome.getIndicators()) {
           outcomeIndicator = (outcomeIndicator.getParent() != null) ? outcomeIndicator.getParent() : outcomeIndicator;
@@ -971,7 +974,7 @@ public class ProjectSummaryPDF extends BasePDF {
           Paragraph indicatorDescription =
             new Paragraph(indicatorIndex + ". " + outcomeIndicator.getDescription(), BODY_TEXT_FONT);
           document.add(indicatorDescription);
-          document.add(new Chunk().NEWLINE);
+          document.add(Chunk.NEWLINE);
 
           table = new PdfPTable(3);
           table.setLockedWidth(true);
@@ -1005,7 +1008,7 @@ public class ProjectSummaryPDF extends BasePDF {
 
           indicatorIndex++;
           document.add(table);
-          document.add(new Chunk().NEWLINE);
+          document.add(Chunk.NEWLINE);
         }
 
       }
@@ -1023,13 +1026,13 @@ public class ProjectSummaryPDF extends BasePDF {
 
     Paragraph title = new Paragraph("4. " + this.getText("summaries.project.outcomeNarrative"), HEADING3_FONT);
     outcomesBlock.add(title);
-    outcomesBlock.add(new Chunk().NEWLINE);
+    outcomesBlock.add(Chunk.NEWLINE);
 
     // Project outcome statement
     Paragraph body = new Paragraph();
     body.setFont(BODY_TEXT_BOLD_FONT);
     body.add(this.getText("summaries.project.outcomeStatement"));
-    body.add(new Chunk().NEWLINE);
+    body.add(Chunk.NEWLINE);
 
     body.setFont(BODY_TEXT_FONT);
     if (project.getOutcomes() != null && project.getOutcomes().get(String.valueOf(midOutcomeYear)) != null) {
@@ -1037,7 +1040,7 @@ public class ProjectSummaryPDF extends BasePDF {
     } else {
       body.add(this.getText("summaries.project.empty"));
     }
-    body.add(new Chunk().NEWLINE);
+    body.add(Chunk.NEWLINE);
     outcomesBlock.add(body);
 
     try {
@@ -1053,7 +1056,7 @@ public class ProjectSummaryPDF extends BasePDF {
 
       outcomesBlock.setFont(BODY_TEXT_BOLD_FONT);
       outcomesBlock.add(this.getText("summaries.project.outcomeAnnualProgress", new String[] {String.valueOf(year)}));
-      outcomesBlock.add(new Chunk().NEWLINE);
+      outcomesBlock.add(Chunk.NEWLINE);
 
       if (project.getOutcomes().get(String.valueOf(year)) == null) {
         outcomeProgress = this.getText("summaries.project.empty");
@@ -1064,11 +1067,11 @@ public class ProjectSummaryPDF extends BasePDF {
 
       outcomesBlock.setFont(BODY_TEXT_FONT);
       outcomesBlock.add(outcomeProgress);
-      outcomesBlock.add(new Chunk().NEWLINE);
+      outcomesBlock.add(Chunk.NEWLINE);
 
       try {
         document.add(outcomesBlock);
-        document.add(new Chunk().NEWLINE);
+        document.add(Chunk.NEWLINE);
       } catch (DocumentException e) {
         LOG.error("There was an error trying to add the project focuses to the project summary pdf", e);
       }
@@ -1082,7 +1085,7 @@ public class ProjectSummaryPDF extends BasePDF {
 
     Paragraph title = new Paragraph(32, "2. " + this.getText("summaries.project.projectPartners"), HEADING3_FONT);
     partnersBlock.add(title);
-    partnersBlock.add(new Chunk().NEWLINE);
+    partnersBlock.add(Chunk.NEWLINE);
 
     int c = 1;
     for (ProjectPartner partner : project.getProjectPartners()) {
@@ -1098,7 +1101,7 @@ public class ProjectSummaryPDF extends BasePDF {
 
       paragraph.setFont(BODY_TEXT_FONT);
       paragraph.add(partner.getUser().getComposedName());
-      paragraph.add(new Chunk().NEWLINE);
+      paragraph.add(Chunk.NEWLINE);
 
       // Organization
       paragraph.setFont(BODY_TEXT_BOLD_FONT);
@@ -1114,7 +1117,7 @@ public class ProjectSummaryPDF extends BasePDF {
 
       paragraph.setFont(BODY_TEXT_FONT);
       paragraph.add(partner.getResponsabilities());
-      paragraph.add(new Chunk().NEWLINE);
+      paragraph.add(Chunk.NEWLINE);
 
       partnersBlock.add(paragraph);
 
@@ -1123,7 +1126,7 @@ public class ProjectSummaryPDF extends BasePDF {
 
     try {
       document.add(partnersBlock);
-      document.add(new Chunk().NEWLINE);
+      document.add(Chunk.NEWLINE);
     } catch (DocumentException e) {
       LOG.error("There was an error trying to add the project focuses to the project summary pdf", e);
     }
@@ -1139,7 +1142,7 @@ public class ProjectSummaryPDF extends BasePDF {
     paragraph.setFont(HEADING3_FONT);
 
     paragraph.add(this.getProjectID());
-    paragraph.add(new Chunk().NEWLINE);
+    paragraph.add(Chunk.NEWLINE);
 
     paragraph.setFont(BODY_TEXT_FONT);
     paragraph.add(project.getTitle());
@@ -1147,7 +1150,7 @@ public class ProjectSummaryPDF extends BasePDF {
 
     try {
       document.add(paragraph);
-      document.add(new Chunk().NEWLINE);
+      document.add(Chunk.NEWLINE);
     } catch (DocumentException e) {
       LOG.error("There was an error trying to add the project title to the project summary pdf", e);
     }
@@ -1160,16 +1163,16 @@ public class ProjectSummaryPDF extends BasePDF {
     Phrase title = new Phrase("1. " + this.getText("summaries.project.summary"), HEADING3_FONT);
     paragraph.add(title);
 
-    paragraph.add(new Chunk().NEWLINE);
-    paragraph.add(new Chunk().NEWLINE);
+    paragraph.add(Chunk.NEWLINE);
+    paragraph.add(Chunk.NEWLINE);
 
     Phrase body = new Phrase(project.getSummary(), BODY_TEXT_FONT);
     paragraph.add(body);
 
     try {
       document.add(paragraph);
-      document.add(new Chunk().NEWLINE);
-      document.add(new Chunk().NEWLINE);
+      document.add(Chunk.NEWLINE);
+      document.add(Chunk.NEWLINE);
     } catch (DocumentException e) {
       LOG.error("There was an error trying to add the project summary to the project summary pdf", e);
     }
