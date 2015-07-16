@@ -25,7 +25,6 @@
   </div>
 
   [#include "/WEB-INF/global/pages/planning-secondary-menu.ftl"/]
-  [@s.form action="projects"]
     <article class="halfContent" id="mainInformation">
       <h1 class="contentTitle">
         [@s.text name="planning.projects.title" /]
@@ -64,8 +63,6 @@
         [@projectList.projectsList projects=allProjects canValidate=true namespace="/planning/projects" /]
       </div>
     </article>
-  [/@s.form]
-  
-  
 </section>
+[@customForm.confirmJustification action="deleteProject" namespace="/planning/projects" nameId="projectID" title="Remove Project" /]
 [#include "/WEB-INF/global/pages/footer.ftl"]
