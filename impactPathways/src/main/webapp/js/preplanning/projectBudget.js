@@ -1,5 +1,5 @@
 // Global VARS
-var $allBudgetInputs, $CCAFSBudgetInputs;
+var $allBudgetInputs, $overallInputs, $CCAFSBudgetInputs;
 var editable = true;
 
 $(document).ready(init);
@@ -7,7 +7,8 @@ $(document).ready(init);
 function init() {
   // Setting vars
   $allBudgetInputs = $("input.projectBudget");
-
+  $genderBudgetInputs = $('input.projectGenderBudget');
+  $overallInputs = $("input[name$=isfullyInstitutionalCost]");
   // This function enables launch the pop up window
   popups();
 
@@ -54,12 +55,23 @@ function attachEvents() {
   $allBudgetInputs.on("focusout", setCurrency);
   $allBudgetInputs.on("focus", removeCurrency);
 
+  $genderBudgetInputs.on("focusout", setPercentage).on("focus", removePercentage);
+
   $("form").submit(function(event) {
     $("input[name$='amount']").each(function() {
       $(this).attr("readonly", true);
       $(this).val(removeCurrencyFormat($(this).val()));
     });
     return;
+  });
+
+  $overallInputs.on("change", function(e) {
+    var $content = $(e.target).parents('.budget').find('.overhead-block');
+    if($(e.target).val() === "1") {
+      $content.slideDown('slow');
+    } else {
+      $content.slideUp('slow');
+    }
   });
 
   $(".handlediv").on("click", function(e) {
@@ -220,6 +232,22 @@ function setCurrency(event) {
 }
 
 function removeCurrency(event) {
+  $input = $(event.target);
+  $input.val(removeCurrencyFormat($input.val()));
+  if($input.val() == "0") {
+    $input.val("");
+  }
+}
+
+function setPercentage(event) {
+  $input = $(event.target);
+  if($input.val().length == 0) {
+    $input.val("0%");
+  }
+  $input.val(setCurrencyFormat($input.val()));
+}
+
+function removePercentage(event) {
   $input = $(event.target);
   $input.val(removeCurrencyFormat($input.val()));
   if($input.val() == "0") {
