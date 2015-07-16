@@ -28,6 +28,7 @@
   [@s.form action="description" method="POST" enctype="multipart/form-data" cssClass="pure-form"]
   <article class="halfContent" id="mainInformation"> 
     [#include "/WEB-INF/planning/projectDescription-planning-sub-menu.ftl" /]
+    [#include "/WEB-INF/planning/planningDataSheet.ftl" /]
     [#-- Informing user that he/she doesn't have enough privileges to edit. See GrantProjectPlanningAccessInterceptor--]
     [#if !canEdit ]
       <p class="readPrivileges">

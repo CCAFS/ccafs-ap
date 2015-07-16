@@ -37,11 +37,11 @@
   </div>
   [#include "/WEB-INF/planning/planningProjectsSubMenu.ftl" /]
     <article class="halfContent" id="activities">
-    [#if !canEdit]
-      <p class="readPrivileges">[@s.text name="saving.read.privileges"][@s.param][@s.text name=title/][/@s.param][/@s.text]</p>
-    [/#if]
-    [@s.form action="activities" cssClass="pure-form"]
-    [#include "/WEB-INF/planning/planningDataSheet.ftl" /]
+      [#include "/WEB-INF/planning/planningDataSheet.ftl" /]
+      [#if !canEdit]
+        <p class="readPrivileges">[@s.text name="saving.read.privileges"][@s.param][@s.text name=title/][/@s.param][/@s.text]</p>
+      [/#if]
+      [@s.form action="activities" cssClass="pure-form"]
       <div id="activitiesList" class="">
         <h1 class="contentTitle">[@s.text name="planning.activities.title" /]</h1> 
         [#-- Validating amount of activities to be listed --]

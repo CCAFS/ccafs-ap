@@ -60,3 +60,11 @@ function setCurrencyFormat(stringNumber) {
 function removeCurrencyFormat(stringNumber) {
   return parseFloat(stringNumber.replace(/,/g, ''));
 }
+
+function setPercentageFormat(stringNumber) {
+  return stringNumber + "%";
+}
+
+function removePercentageFormat(stringNumber) {
+  return stringNumber.replace(/%/g, '');
+}
