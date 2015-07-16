@@ -27,8 +27,7 @@ import org.apache.commons.lang3.builder.ToStringBuilder;
  */
 public enum BudgetType {
 
-  W1_W2(7), W3_BILATERAL(8), LEVERAGED(9), W1_W2_PARTNERS(10), W1_W2_OTHER(11), W3_BILATERAL_PARTNERS(12),
-  W3_BILATERAL_OTHERS(13), W1_W2_GENDER(14), W3_BILATERAL_GENDER(15), ACTIVITY_W1_W2(16), ACTIVITY_W3_BILATERAL(17);
+  W1_W2(1), W3_BILATERAL(2);
 
   private int value;
 
@@ -38,28 +37,10 @@ public enum BudgetType {
 
   static public BudgetType getBudgetType(int id) {
     switch (id) {
-      case 7:
+      case 1:
         return BudgetType.W1_W2;
-      case 8:
+      case 2:
         return BudgetType.W3_BILATERAL;
-      case 9:
-        return BudgetType.LEVERAGED;
-      case 10:
-        return BudgetType.W1_W2_PARTNERS;
-      case 11:
-        return BudgetType.W1_W2_OTHER;
-      case 12:
-        return BudgetType.W3_BILATERAL_PARTNERS;
-      case 13:
-        return BudgetType.W3_BILATERAL_OTHERS;
-      case 14:
-        return BudgetType.W1_W2_GENDER;
-      case 15:
-        return BudgetType.W3_BILATERAL_GENDER;
-      case 16:
-        return BudgetType.ACTIVITY_W1_W2;
-      case 17:
-        return BudgetType.ACTIVITY_W3_BILATERAL;
     }
     return BudgetType.W1_W2;
   }
@@ -67,9 +48,7 @@ public enum BudgetType {
   public static BudgetType[] getProjectBudgetTypes() {
     List<BudgetType> budgetTypes = new ArrayList<>();
     for (BudgetType bt : BudgetType.values()) {
-      if (!bt.name().toLowerCase().contains("activity")) {
-        budgetTypes.add(bt);
-      }
+      budgetTypes.add(bt);
     }
 
     return budgetTypes.toArray(new BudgetType[] {});
@@ -77,6 +56,10 @@ public enum BudgetType {
 
   public int getValue() {
     return value;
+  }
+
+  public boolean isBilateral() {
+    return this.getValue() == BudgetType.W3_BILATERAL.getValue();
   }
 
   @Override

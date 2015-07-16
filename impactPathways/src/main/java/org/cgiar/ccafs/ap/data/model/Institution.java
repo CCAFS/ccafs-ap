@@ -24,12 +24,8 @@ import org.apache.commons.lang3.builder.ToStringBuilder;
  */
 public class Institution {
 
-
   private int id;
-
-
   private String name;
-
   private String acronym;
   private IPProgram program;
   private InstitutionType type;
@@ -104,6 +100,10 @@ public class Institution {
     return this.getId();
   }
 
+  public boolean isPPA() {
+    return isPPA;
+  }
+
   public void setAcronym(String acronym) {
     this.acronym = acronym;
   }
@@ -124,6 +124,10 @@ public class Institution {
     this.name = name;
   }
 
+  public void setPPA(boolean isPPA) {
+    this.isPPA = isPPA;
+  }
+
   public void setProgram(IPProgram program) {
     this.program = program;
   }
@@ -136,14 +140,4 @@ public class Institution {
   public String toString() {
     return ToStringBuilder.reflectionToString(this);
   }
-
-public boolean isPPA() {
-	return isPPA;
-}
-
-public void setPPA(boolean isPPA) {
-	this.isPPA = isPPA;
-}
-
-
 }

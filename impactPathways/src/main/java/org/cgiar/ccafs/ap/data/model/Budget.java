@@ -19,6 +19,7 @@ import org.apache.commons.lang3.builder.ToStringBuilder;
  * This class represents a specific Budget value within the system.
  * 
  * @author Héctor Fabio Tobón R.
+ * @author Hernán David Carvajal B.
  */
 public class Budget {
 
@@ -27,9 +28,10 @@ public class Budget {
   private Institution institution;
   private double amount;
   private BudgetType type;
+  private int genderPercentage;
+  private Project cofinancingProject;
 
   public Budget() {
-
   }
 
   @Override
@@ -41,9 +43,16 @@ public class Budget {
     return false;
   }
 
-
   public double getAmount() {
     return amount;
+  }
+
+  public Project getCofinancingProject() {
+    return cofinancingProject;
+  }
+
+  public int getGenderPercentage() {
+    return genderPercentage;
   }
 
   public int getId() {
@@ -71,6 +80,14 @@ public class Budget {
     this.amount = amount;
   }
 
+  public void setCofinancingProject(Project cofinancingProject) {
+    this.cofinancingProject = cofinancingProject;
+  }
+
+  public void setGenderPercentage(int genderPercentage) {
+    this.genderPercentage = genderPercentage;
+  }
+
   public void setId(int id) {
     this.id = id;
   }
@@ -91,6 +108,4 @@ public class Budget {
   public String toString() {
     return ToStringBuilder.reflectionToString(this);
   }
-
-
 }
