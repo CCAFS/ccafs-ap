@@ -87,10 +87,29 @@ p.msj {
     padding-top: 9px;
 }
 
+p.emptyText {
+    margin: 10px 0;    padding: 5px;
+    border-left: 3px solid #eee;
+}
+
 ul.fieldError li {
   color: red;
   list-style-type: none;
   text-align: left;
+}
+
+.radios {
+    margin: 9px 0;
+}
+
+.radios input {
+    margin: 1px 4px;
+    vertical-align: middle;
+}
+
+.radios label {
+    margin-right: 4px;
+    text-transform: capitalize;
 }
 
 textarea.fieldError, input.fieldError,textarea.fieldError:focus, input.fieldError:focus{
@@ -467,7 +486,6 @@ img.icon {
 
 .log-table tr td {
     padding: 4px;
- 
 }
 
 .log-table tr{ 
@@ -492,6 +510,18 @@ span.logType.delete {
 span.logType.insert {
     background-color: #5BA55B;
  
+}
+
+/* Data Sheet*/
+
+#projectID-quote {
+  background-image: url(../../images/global/project-icon.png);
+}
+#deliverableID-quote {
+  background-image: url(../../images/global/deliverable-icon.png);
+}
+#deliverableID-quote p{
+  line-height: 31px;
 }
 
 /* General Messages */
@@ -1881,9 +1911,11 @@ button.ipGraph-btn{
   border:1px solid #ccc;
   width: 45px;
   height: 45px;
-  position: absolute;
-  bottom: -6px;
-  right: -20px;
+  /* position: absolute; */
+  /* bottom: -6px; */
+  /* right: -20px; */
+  float: left;
+  margin-right: 1em;
   cursor:pointer;
   border-radius: 50%;
   background: url(../../images/global/ipGraph.png) no-repeat center;
@@ -1896,10 +1928,13 @@ button.ipGraph-btn{
 
 .note {
   background-color: #FFF7CF;
-  padding: 5px;
+  padding: 11px;
   text-align: center;
   border-bottom: 2px solid #fff;
   font-style: italic;
+}
+.note.left { 
+  text-align: left;
 }
 
 .note span {
@@ -2259,13 +2294,12 @@ p.partnerTitle {
 /* Project/Activities QUOTE */
 
 #top-quote {
-  position: absolute;
-  top: 9px;
-  right: 6px;
-  color: #838383;
-  font-weight: lighter;
+  /* font-weight: lighter; */
   font-size: 1.1em;
   cursor: pointer;
+  position: absolute;
+  right: 0;
+  top: 0;
 }
 
 #top-quote img { 
@@ -2276,15 +2310,22 @@ p.partnerTitle {
 #top-quote a{
     text-decoration: none;
   
-    color: #818181;
+    color: #5F5F5F;
 }
 
 .quote-id { 
  float:left;
- padding: 0px 5px;
- margin: 0 2px;
- border: 1px dotted#ccc;
+ padding: 2px 7px;
+ margin-left: 0.5em;
+ border: 1px dotted #BEBEBE;
+ box-shadow: 1px 1px 4px rgba(0, 0, 0, 0.1);
  border-radius: 5px;
+ padding-left: 35px;
+ font-size: 0.9em;
+ background-size: 27px;
+ background-repeat: no-repeat;
+ background-position: 4px;
+ min-height: 33px;
 }
 
 /***************** PLANNING ******************/
