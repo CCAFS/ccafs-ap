@@ -5,7 +5,7 @@
 -- Update the partner type to PPA when that atributte is outdated.
 UPDATE project_partners pp INNER JOIN institutions i ON i.id = pp.partner_id
 SET pp.partner_type = 'PPA' 
-WHERE i.is_ppa = 1;
+WHERE i.is_ppa = 1 AND pp.partner_type <> "PL";
 
 -- Deleting empty activities that were created in the system by mistake.
 DELETE FROM `activities` WHERE `id`='294';
