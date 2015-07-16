@@ -57,7 +57,7 @@ public class ProjectValidator extends BaseValidator {
   }
 
   public boolean isValidBudget(List<Budget> budgets) {
-    return false;
+    return (budgets != null && !budgets.isEmpty());
   }
 
   public boolean isValidCoordinator(ProjectPartner coordinator) {

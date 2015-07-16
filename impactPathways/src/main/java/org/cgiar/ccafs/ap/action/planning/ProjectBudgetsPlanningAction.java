@@ -50,6 +50,8 @@ public class ProjectBudgetsPlanningAction extends BaseAction {
   private ProjectManager projectManager;
   private HistoryManager historyManager;
 
+  private ProjectBudgetPlanningValidator validator;
+
   // Model for the back-end
   private int projectID;
   private Project project;
@@ -61,12 +63,14 @@ public class ProjectBudgetsPlanningAction extends BaseAction {
 
   @Inject
   public ProjectBudgetsPlanningAction(APConfig config, BudgetManager budgetManager,
-    ProjectPartnerManager projectPartnerManager, ProjectManager projectManager, HistoryManager historyManager) {
+    ProjectBudgetPlanningValidator validator, ProjectPartnerManager projectPartnerManager,
+    ProjectManager projectManager, HistoryManager historyManager) {
     super(config);
     this.budgetManager = budgetManager;
     this.projectPartnerManager = projectPartnerManager;
     this.projectManager = projectManager;
     this.historyManager = historyManager;
+    this.validator = validator;
   }
 
   public List<Integer> getAllYears() {
@@ -172,5 +176,12 @@ public class ProjectBudgetsPlanningAction extends BaseAction {
 
   public void setProjectID(int projectID) {
     this.projectID = projectID;
+  }
+
+  @Override
+  public void validate() {
+    if (save) {
+      validator.validate(this, project);
+    }
   }
 }
