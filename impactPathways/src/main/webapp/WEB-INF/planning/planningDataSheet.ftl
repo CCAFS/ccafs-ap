@@ -3,7 +3,15 @@
   [#if project?has_content]
     <div id="projectID-quote" class="quote-id" title="[#if project.title?has_content][@s.text name="planning.project" /]: ${project.title}[/#if]">
       <a href="[@s.url namespace="/planning/projects" action='description' includeParams='get'][@s.param name='projectID']${project.id?c}[/@s.param][/@s.url]"> 
-        <img class="icon" src="${baseUrl}/images/global/project-icon.png"> ID: <span>${project.composedId}</span>
+        <p>ID: <span>${project.composedId}</span></p>
+        <p>${project.type}</p>
+      </a>
+    </div>
+  [/#if]
+  [#if deliverable?has_content]
+    <div id="deliverableID-quote" class="quote-id" title="[#if project.title?has_content][@s.text name="planning.deliverable" /]: ${deliverable.title}[/#if]">
+      <a href="[@s.url namespace="/planning/projects" action='deliverable' includeParams='get'][@s.param name='deliverableID']${deliverable.id?c}[/@s.param][/@s.url]"> 
+        <p>ID: <span>${deliverable.id}</span></p> 
       </a>
     </div>
   [/#if]
