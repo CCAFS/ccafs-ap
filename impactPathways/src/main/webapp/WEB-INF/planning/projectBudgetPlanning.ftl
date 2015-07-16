@@ -114,7 +114,7 @@
                 [#-- Project Partners --]
                 [#if projectPPAPartners?has_content] 
                   [#list projectPPAPartners as partnerInstitution ]
-                    [@projectBudget institution=partnerInstitution budget=project.getBudget(projectPartner.institution.id, project.bilateralProject?string(2, 1)?number, year )! pp_index="${projectPartner_index+1}" editable=editable /]
+                    [@projectBudget institution=partnerInstitution budget=project.getBudget(partnerInstitution.id, project.bilateralProject?string(2, 1)?number, year )! pp_index="${partnerInstitution_index+1}" editable=editable /]
                   [/#list]  
                 [/#if]
               </div><!-- End partners list -->
@@ -181,7 +181,7 @@
     <div class="title"><h6>[@s.text name="planning.projectBudget.genderPercentage" /]</h6></div>
     <div class="content"> 
       <p>[@s.text name="planning.projectBudget.totalGendePercentage"][@s.param]${budget.type.bilateral?string('W3/Bilateral', 'W1 W2')}[/@s.param][/@s.text]:</p>
-      [@customForm.input name="project.budgets[${pp_index}].genderPercentage" className="projectGenderBudget" showTitle=false value="${budget.genderPercentage}" editable=editable/] 
+      [@customForm.input name="project.budgets[${pp_index}].genderPercentage" className="projectGenderBudget" showTitle=false value="${budget.genderPercentage}" editable=editable/]
     </div>
   </div><!-- End budget -->
 </div>
