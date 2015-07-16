@@ -18,6 +18,7 @@ import org.cgiar.ccafs.ap.data.model.Budget;
 import org.cgiar.ccafs.ap.data.model.BudgetType;
 import org.cgiar.ccafs.ap.data.model.Institution;
 import org.cgiar.ccafs.ap.data.model.Project;
+import org.cgiar.ccafs.ap.data.model.User;
 
 import java.util.List;
 
@@ -311,9 +312,11 @@ public interface BudgetManager {
    * 
    * @param projectID is the project identifier.
    * @param budget is an object that represents a budget.
+   * @param user - The use who is making the change
+   * @param justification
    * @return true if the budget was saved successfully, false otherwise.
    */
-  public boolean saveBudget(int projectID, Budget budget);
+  public boolean saveBudget(int projectID, Budget budget, User user, String justification);
 
 
 }

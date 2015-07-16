@@ -593,7 +593,7 @@ public class ProjectBudgetPreplanningAction extends BaseAction {
 
     // Saving project budgets
     for (Budget budget : project.getBudgets()) {
-      boolean saved = budgetManager.saveBudget(projectID, budget);
+      boolean saved = budgetManager.saveBudget(projectID, budget, this.getCurrentUser(), this.getJustification());
 
       if (!saved) {
         success = false;

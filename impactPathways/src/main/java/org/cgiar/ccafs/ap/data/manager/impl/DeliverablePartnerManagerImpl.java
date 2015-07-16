@@ -79,7 +79,7 @@ public class DeliverablePartnerManagerImpl implements DeliverablePartnerManager 
       deliverablePartner.setUser(userManager.getUser(Integer.parseInt(dData.get("user_id"))));
       // Institution as partner_id
       deliverablePartner
-      .setInstitution(institutionManager.getInstitution(Integer.parseInt(dData.get("institution_id"))));
+        .setInstitution(institutionManager.getInstitution(Integer.parseInt(dData.get("institution_id"))));
       // adding information of the object to the array
       deliverablePartners.add(deliverablePartner);
     }
@@ -107,7 +107,7 @@ public class DeliverablePartnerManagerImpl implements DeliverablePartnerManager 
 
       // Institution as partner_id
       deliverablePartner
-        .setInstitution(institutionManager.getInstitution(Integer.parseInt(dData.get("institution_id"))));
+      .setInstitution(institutionManager.getInstitution(Integer.parseInt(dData.get("institution_id"))));
 
       // adding information of the object to the array
       deliverablePartners.add(deliverablePartner);
@@ -134,8 +134,9 @@ public class DeliverablePartnerManagerImpl implements DeliverablePartnerManager 
     }
     deliverablePartnerData.put("deliverable_id", deliverableID);
     deliverablePartnerData.put("institution_id", deliverablePartner.getInstitution().getId());
-    deliverablePartnerData.put("user_id",
-      deliverablePartner.getUser().getId() == -1 ? null : deliverablePartner.getUser().getId());
+    if (deliverablePartner.getUser() != null && deliverablePartner.getUser().getId() != -1) {
+      deliverablePartnerData.put("user_id", deliverablePartner.getUser().getId());
+    }
     deliverablePartnerData.put("partner_type", deliverablePartner.getType());
     // Logs data
     deliverablePartnerData.put("modified_by", user.getId());
@@ -151,7 +152,6 @@ public class DeliverablePartnerManagerImpl implements DeliverablePartnerManager 
         "saveDeliverablePartner > There was an error trying to save/update a deliverable partner from deliverableID={}",
         deliverableID);
     }
-
     return result;
   }
 

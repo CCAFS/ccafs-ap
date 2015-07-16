@@ -20,11 +20,14 @@ import org.cgiar.ccafs.ap.data.manager.BudgetManager;
 import org.cgiar.ccafs.ap.data.manager.HistoryManager;
 import org.cgiar.ccafs.ap.data.manager.ProjectManager;
 import org.cgiar.ccafs.ap.data.manager.ProjectPartnerManager;
+import org.cgiar.ccafs.ap.data.model.Budget;
+import org.cgiar.ccafs.ap.data.model.BudgetType;
 import org.cgiar.ccafs.ap.data.model.Institution;
 import org.cgiar.ccafs.ap.data.model.Project;
 import org.cgiar.ccafs.ap.data.model.ProjectPartner;
 import org.cgiar.ccafs.utils.APConfig;
 
+import java.util.Collection;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -50,6 +53,8 @@ public class ProjectBudgetsPlanningAction extends BaseAction {
   private ProjectManager projectManager;
   private HistoryManager historyManager;
 
+  private ProjectBudgetPlanningValidator validator;
+
   // Model for the back-end
   private int projectID;
   private Project project;
@@ -61,12 +66,14 @@ public class ProjectBudgetsPlanningAction extends BaseAction {
 
   @Inject
   public ProjectBudgetsPlanningAction(APConfig config, BudgetManager budgetManager,
-    ProjectPartnerManager projectPartnerManager, ProjectManager projectManager, HistoryManager historyManager) {
+    ProjectBudgetPlanningValidator validator, ProjectPartnerManager projectPartnerManager,
+    ProjectManager projectManager, HistoryManager historyManager) {
     super(config);
     this.budgetManager = budgetManager;
     this.projectPartnerManager = projectPartnerManager;
     this.projectManager = projectManager;
     this.historyManager = historyManager;
+    this.validator = validator;
   }
 
   public List<Integer> getAllYears() {
@@ -87,6 +94,22 @@ public class ProjectBudgetsPlanningAction extends BaseAction {
 
   public String getProjectRequest() {
     return APConstants.PROJECT_REQUEST_ID;
+  }
+
+  public String getW1W2BudgetLabel() {
+    return this.getText("planning.projectBudget.W1W2");
+  }
+
+  public String getW1W2BudgetType() {
+    return BudgetType.W1_W2.toString();
+  }
+
+  public String getW3BilateralBudgetLabel() {
+    return this.getText("planning.projectBudget.W3Bilateral");
+  }
+
+  public String getW3BilateralBudgetType() {
+    return BudgetType.W3_BILATERAL.toString();
   }
 
   public int getYear() {
@@ -166,11 +189,49 @@ public class ProjectBudgetsPlanningAction extends BaseAction {
     }
   }
 
+  @Override
+  public String save() {
+    if (securityContext.canUpdateProjectBudget()) {
+      boolean success = true;
+      for (Budget budget : project.getBudgets()) {
+        boolean saved = budgetManager.saveBudget(projectID, budget, this.getCurrentUser(), this.getJustification());
+
+        if (!saved) {
+          success = false;
+        }
+      }
+
+      if (!success) {
+        this.addActionError(this.getText("saving.problem"));
+        return BaseAction.INPUT;
+      } else {
+        // Get the validation messages and append them to the save message
+        Collection<String> messages = this.getActionMessages();
+        if (!messages.isEmpty()) {
+          String validationMessage = messages.iterator().next();
+          this.setActionMessages(null);
+          this.addActionWarning(this.getText("saving.saved") + validationMessage);
+        } else {
+          this.addActionMessage(this.getText("saving.saved"));
+        }
+        return SUCCESS;
+      }
+    }
+    return NOT_AUTHORIZED;
+  }
+
   public void setProject(Project project) {
     this.project = project;
   }
 
   public void setProjectID(int projectID) {
     this.projectID = projectID;
+  }
+
+  @Override
+  public void validate() {
+    if (save) {
+      validator.validate(this, project);
+    }
   }
 }

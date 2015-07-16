@@ -28,12 +28,10 @@ public class BaseValidator extends ActionSupport {
   }
 
   protected void addMessage(String message) {
-    if (validationMessage.length() == 0) {
-      validationMessage.append(message);
-    } else {
+    if (validationMessage.length() != 0) {
       validationMessage.append(", ");
-      validationMessage.append(message);
     }
+    validationMessage.append(message);
   }
 
   protected boolean isValidEmail(String email) {
@@ -46,6 +44,19 @@ public class BaseValidator extends ActionSupport {
         email = (email == null) ? "" : email;
         LOG.debug("Email address was invalid: " + email);
       }
+    }
+    return false;
+  }
+
+  /**
+   * This method validates that the string received is not null and is not empty.
+   * 
+   * @param string
+   * @return true if the string is valid. False otherwise.
+   */
+  protected boolean isValidString(String string) {
+    if (string != null) {
+      return !string.trim().isEmpty();
     }
     return false;
   }
@@ -64,18 +75,5 @@ public class BaseValidator extends ActionSupport {
         action.addFieldError("justification", this.getText("validation.field.required"));
       }
     }
-  }
-
-  /**
-   * This method validates that the string received is not null and is not empty.
-   * 
-   * @param string
-   * @return true if the string is valid. False otherwise.
-   */
-  protected boolean isValidString(String string) {
-    if (string != null) {
-      return !string.trim().isEmpty();
-    }
-    return false;
   }
 }
