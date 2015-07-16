@@ -134,8 +134,9 @@ public class DeliverablePartnerManagerImpl implements DeliverablePartnerManager 
     }
     deliverablePartnerData.put("deliverable_id", deliverableID);
     deliverablePartnerData.put("institution_id", deliverablePartner.getInstitution().getId());
-    deliverablePartnerData.put("user_id",
-      deliverablePartner.getUser().getId() == -1 ? null : deliverablePartner.getUser().getId());
+    if (deliverablePartner.getUser() != null && deliverablePartner.getUser().getId() != -1) {
+      deliverablePartnerData.put("user_id", deliverablePartner.getUser().getId());
+    }
     deliverablePartnerData.put("partner_type", deliverablePartner.getType());
     // Logs data
     deliverablePartnerData.put("modified_by", user.getId());
