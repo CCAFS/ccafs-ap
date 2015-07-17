@@ -136,7 +136,7 @@ public class ActivityDescriptionAction extends BaseAction {
 
   @Override
   public String next() {
-    String result = save();
+    String result = this.save();
     if (result.equals(BaseAction.SUCCESS)) {
       return BaseAction.NEXT;
     }
@@ -194,7 +194,7 @@ public class ActivityDescriptionAction extends BaseAction {
       // Deleting unused years from activity budget.
       for (Integer previousYear : previousYears) {
         if (!currentYears.contains(previousYear)) {
-          budgetManager.deleteActivityBudgetByYear(activityID, previousYear.intValue());
+          // budgetManager.deleteActivityBudgetByYear(activityID, previousYear.intValue());
         }
       }
 
@@ -216,7 +216,7 @@ public class ActivityDescriptionAction extends BaseAction {
           currentLeadInstitution = activity.getLeader().getCurrentInstitution();
         }
         if (!currentLeadInstitution.equals(previousLeadInstitution)) {
-          budgetManager.deleteActivityBudgetsByInstitution(activity.getId(), previousLeadInstitution.getId());
+          // budgetManager.deleteActivityBudgetsByInstitution(activity.getId(), previousLeadInstitution.getId());
         }
       }
 
@@ -246,10 +246,11 @@ public class ActivityDescriptionAction extends BaseAction {
       }
 
       if (success == false) {
-        addActionError(getText("saving.problem"));
+        this.addActionError(this.getText("saving.problem"));
         return BaseAction.INPUT;
       }
-      addActionMessage(getText("saving.success", new String[] {getText("planning.activityDescription")}));
+      this
+        .addActionMessage(this.getText("saving.success", new String[] {this.getText("planning.activityDescription")}));
       return BaseAction.SUCCESS;
 
     } else {
@@ -298,14 +299,14 @@ public class ActivityDescriptionAction extends BaseAction {
       for (ActivityPartner partner : activityPartnerManager.getActivityPartnersByActivity(activity.getId())) {
         if (partner.getPartner().equals(ledIntitution)) {
           problem = true;
-          addFieldError("activity.expectedLeader.currentInstitution",
-            getText("preplanning.projectPartners.duplicatedInstitution.field"));
+          this.addFieldError("activity.expectedLeader.currentInstitution",
+            this.getText("preplanning.projectPartners.duplicatedInstitution.field"));
         }
       }
     }
 
     if (problem) {
-      addActionError(getText("planning.activityDescription.duplicatedInstitution",
+      this.addActionError(this.getText("planning.activityDescription.duplicatedInstitution",
         new String[] {ledIntitution.getName()}));
     }
 
