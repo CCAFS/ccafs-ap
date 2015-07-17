@@ -71,24 +71,23 @@
           [#-- Title --]
           <div class="midOutcomeTitle"><h6 class="title">[@s.text name="planning.projectImpactPathways.mogs" /]</h6></div>
             [#list project.outputs as output]
-            [#assign outputOverview = project.getOutputOverview(output.id, year)! /]
-            <div class="simpleBox clearfix"> 
-              <div class="fullPartBlock">
-                <p class="checked">${output.program.acronym} - MOG #${action.getMOGIndex(output)}: ${output.description} </p>
+              <div class="simpleBox clearfix"> 
+                <div class="fullPartBlock">
+                  <p class="checked">${output.program.acronym} - MOG #${action.getMOGIndex(output)}: ${output.description} </p>
+                </div>
+                <div class="halfPartBlock budget clearfix">
+                  <div class="title"><h6>[@s.text name="preplanning.projectBudgetByMog.percentageOfTotalBudget"][@s.param]${project.bilateralProject?string('W3/Bilateral', 'W1 W2')}[/@s.param][/@s.text]</h6></div>
+                  <div class="content">
+                    [@customForm.input name="project.budgets.amount" className="percentage" value="" showTitle=false i18nkey="preplanning.projectBudgetByMog.percentageOfTotalBudget" editable=editable/] 
+                  </div>
+                </div><!-- End budget -->
+                <div class="halfPartBlock budget clearfix">
+                  <div class="title"><h6>[@s.text name="preplanning.projectBudgetByMog.percentageOfTotalGenderBudget"][@s.param]${project.bilateralProject?string('W3/Bilateral', 'W1 W2')}[/@s.param][/@s.text]</h6></div>
+                  <div class="content">
+                    [@customForm.input name="project.budgets.amount" className="percentage" value="" showTitle=false i18nkey="preplanning.projectBudgetByMog.percentageOfTotalGenderBudget" editable=editable/] 
+                  </div>
+                </div><!-- End budget --> 
               </div>
-              <div class="halfPartBlock budget clearfix">
-                <div class="title"><h6>[@s.text name="preplanning.projectBudgetByMog.percentageOfTotalBudget"][@s.param]${project.bilateralProject?string('W3/Bilateral', 'W1 W2')}[/@s.param][/@s.text]</h6></div>
-                <div class="content">
-                  [@customForm.input name="project.budgets.amount" className="percentage" value="" showTitle=false i18nkey="preplanning.projectBudgetByMog.percentageOfTotalBudget" editable=editable/] 
-                </div>
-              </div><!-- End budget -->
-              <div class="halfPartBlock budget clearfix">
-                <div class="title"><h6>[@s.text name="preplanning.projectBudgetByMog.percentageOfTotalGenderBudget"][@s.param]${project.bilateralProject?string('W3/Bilateral', 'W1 W2')}[/@s.param][/@s.text]</h6></div>
-                <div class="content">
-                  [@customForm.input name="project.budgets.amount" className="percentage" value="" showTitle=false i18nkey="preplanning.projectBudgetByMog.percentageOfTotalGenderBudget" editable=editable/] 
-                </div>
-              </div><!-- End budget --> 
-            </div>
             [/#list]
           </div>
       </div>
