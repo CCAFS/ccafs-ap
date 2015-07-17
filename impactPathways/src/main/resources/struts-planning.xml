@@ -236,7 +236,7 @@
       </result>
       <result name="cancel" type="redirectAction">
         <param name="actionName">deliverable</param>
-        <param name="projectID">${project.id}</param>
+        <param name="deliverableID">${deliverable.id}</param>
       </result>
     </action>
 

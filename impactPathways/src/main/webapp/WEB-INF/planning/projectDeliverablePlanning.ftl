@@ -12,7 +12,7 @@
   {"label":"projects", "nameSpace":"planning", "action":"projectsList"},
   {"label":"projectOutputs", "nameSpace":"planning/projects", "action":"outputs", "param":"projectID=${project.id}"},
   {"label":"projectDeliverables", "nameSpace":"planning/projects", "action":"deliverablesList", "param":"projectID=${project.id}"}
-  {"label":"projectDeliverable", "nameSpace":"planning/projects", "action":"deliverable", "param":"projectID=${project.id}"}
+  {"label":"projectDeliverable", "nameSpace":"planning/projects", "action":"deliverable", "param":"deliverableID=${deliverable.id}"}
 ]/]
 
 [#assign params = {
@@ -69,12 +69,8 @@
         </div>
       </div> 
       <div class="fullBlock">
-        [#assign deliverableType]
-          [#if deliverable.type??]${deliverable.type.category.id}[#else]-1[/#if]
-        [/#assign]
-        [#assign deliverableSubType]
-          [#if deliverable.type??]${deliverable.type.id}[#else]-1[/#if]
-        [/#assign]
+        [#assign deliverableType][#if deliverable.type??]${deliverable.type.category.id}[#else]-1[/#if][/#assign]
+        [#assign deliverableSubType][#if deliverable.type??]${deliverable.type.id}[#else]-1[/#if][/#assign]
         [#-- Main Type --]
         <div class="halfPartBlock chosen"> 
           [@customForm.select name="mainType" value="${deliverableType}" i18nkey="planning.deliverables.mainType" listName="deliverableTypes" keyFieldName="id"  displayFieldName="name" editable=editable /]
@@ -83,10 +79,10 @@
         [#-- Sub Type --]
         <div class="halfPartBlock chosen"> 
           [@customForm.select name="${params.deliverable.name}.type" value="${deliverableSubType}" i18nkey="planning.deliverables.subType" listName="" keyFieldName=""  displayFieldName="" editable=editable /]
-          [#if !editable]${deliverable.type.name}[/#if]
+          [#if !editable][#if deliverable.typeOther??]${(deliverable.typeOther)!}[#else]${deliverable.type.name}[/#if][/#if]
           <input type="hidden" id="subTypeSelected" value="${deliverableSubType}" />
           [#-- Specify other deliverable type--] 
-          [@customForm.input name="${params.deliverable.name}.typeOther" className="otherType" showTitle=false i18nkey="planning.deliverables.specify" display=false required=true disabled=true editable=editable /]
+          [@customForm.input name="${params.deliverable.name}.typeOther" value="${(deliverable.typeOther)!}" className="otherType" display=false showTitle=false i18nkey="planning.deliverables.specify" required=true disabled=true editable=editable /]          
         </div> 
       </div>
       <div class="note left"><p>[@s.text name="planning.deliverables.disclaimerMessage" /]</p></div>
