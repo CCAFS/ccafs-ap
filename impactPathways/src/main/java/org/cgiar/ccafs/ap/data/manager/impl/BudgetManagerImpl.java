@@ -95,6 +95,11 @@ public class BudgetManagerImpl implements BudgetManager {
   }
 
   @Override
+  public double calculateTotalProjectBudgetByType(int projectID, int budgetTypeID) {
+    return budgetDAO.calculateTotalProjectBudgetByType(projectID, budgetTypeID);
+  }
+
+  @Override
   public double calculateTotalProjectW1W2(int projectID) {
     return budgetDAO.calculateTotalProjectW1W2(projectID);
   }
@@ -118,6 +123,7 @@ public class BudgetManagerImpl implements BudgetManager {
   public boolean deleteBudgetsByYear(int projectID, int year) {
     return budgetDAO.deleteBudgetsByYear(projectID, year);
   }
+
 
   @Override
   public List<Budget> getBudgetsByProject(Project project) {
@@ -203,7 +209,6 @@ public class BudgetManagerImpl implements BudgetManager {
     }
     return budgets;
   }
-
 
   @Override
   public List<Institution> getW1Institutions(int projectID) {

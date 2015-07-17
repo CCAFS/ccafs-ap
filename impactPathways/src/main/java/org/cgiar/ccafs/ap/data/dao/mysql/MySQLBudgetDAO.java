@@ -246,6 +246,33 @@ public class MySQLBudgetDAO implements BudgetDAO {
 
 
   @Override
+  public double calculateTotalProjectBudgetByType(int projectID, int budgetTypeID) {
+    Double total = 0.0;
+    StringBuilder query = new StringBuilder();
+    query.append("SELECT SUM(pb.amount) as TOTAL ");
+    query.append("FROM project_budgets pb ");
+    query.append("WHERE pb.project_id = ");
+    query.append(projectID);
+    query.append(" AND pb.budget_type = ");
+    query.append(budgetTypeID);
+
+    try (Connection con = databaseManager.getConnection()) {
+      ResultSet rs = databaseManager.makeQuery(query.toString(), con);
+      if (rs.next()) {
+        if (rs.getString("total") != null) {
+          total = Double.parseDouble(rs.getString("total"));
+        }
+      }
+      con.close();
+    } catch (SQLException e) {
+      LOG.error("Exception arised calculating the total project budget W1+W2 {}.", projectID, e.getMessage());
+      total = -1.0;
+    }
+    return total;
+  }
+
+
+  @Override
   public double calculateTotalProjectW1W2(int projectID) {
     Double total = 0.0;
     StringBuilder query = new StringBuilder();
@@ -271,7 +298,6 @@ public class MySQLBudgetDAO implements BudgetDAO {
     }
     return total;
   }
-
 
   @Override
   public double calculateTotalProjectW1W2ByYear(int projectID, int year) {
@@ -301,6 +327,7 @@ public class MySQLBudgetDAO implements BudgetDAO {
     }
     return total;
   }
+
 
   @Override
   public boolean deleteBudget(int budgetId) {
@@ -337,7 +364,6 @@ public class MySQLBudgetDAO implements BudgetDAO {
     return false;
   }
 
-
   @Override
   public boolean deleteBudgetsByYear(int projectID, int year) {
     LOG.debug(">> deleteBudgetsByYear(projectId={}, eyar={})", projectID, year);
@@ -355,6 +381,7 @@ public class MySQLBudgetDAO implements BudgetDAO {
     LOG.debug("<< deleteBudgetsByYear():{}", false);
     return false;
   }
+
 
   @Override
   public List<Map<String, String>> getBudgetsByProject(int projectID) {
@@ -394,7 +421,6 @@ public class MySQLBudgetDAO implements BudgetDAO {
     LOG.debug("-- getBudgetsByType() > Calling method executeQuery to get the results");
     return this.getData(query.toString());
   }
-
 
   @Override
   public List<Map<String, String>> getBudgetsByYear(int projectID, int year) {

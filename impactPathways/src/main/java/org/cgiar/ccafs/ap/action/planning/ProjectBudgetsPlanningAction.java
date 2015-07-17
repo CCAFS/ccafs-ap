@@ -63,6 +63,8 @@ public class ProjectBudgetsPlanningAction extends BaseAction {
   private int year;
   private boolean hasLeader;
   private boolean invalidYear;
+  private double totalCCAFSBudget;
+  private double totalBilateralBudget;
 
   @Inject
   public ProjectBudgetsPlanningAction(APConfig config, BudgetManager budgetManager,
@@ -96,6 +98,14 @@ public class ProjectBudgetsPlanningAction extends BaseAction {
     return APConstants.PROJECT_REQUEST_ID;
   }
 
+  public double getTotalBilateralBudget() {
+    return totalBilateralBudget;
+  }
+
+  public double getTotalCCAFSBudget() {
+    return totalCCAFSBudget;
+  }
+
   public String getW1W2BudgetLabel() {
     return this.getText("planning.projectBudget.W1W2");
   }
@@ -120,9 +130,11 @@ public class ProjectBudgetsPlanningAction extends BaseAction {
     return hasLeader;
   }
 
+
   public boolean isInvalidYear() {
     return invalidYear;
   }
+
 
   @Override
   public void prepare() throws Exception {
@@ -142,6 +154,10 @@ public class ProjectBudgetsPlanningAction extends BaseAction {
     } else {
       hasLeader = false;
     }
+
+    totalCCAFSBudget = budgetManager.calculateTotalProjectBudgetByType(projectID, BudgetType.W1_W2.getValue());
+    totalBilateralBudget =
+      budgetManager.calculateTotalProjectBudgetByType(projectID, BudgetType.W3_BILATERAL.getValue());
 
     // Getting PPA Partners
     project.setPPAPartners(projectPartnerManager.getProjectPartners(project.getId(), APConstants.PROJECT_PARTNER_PPA));
@@ -195,6 +211,7 @@ public class ProjectBudgetsPlanningAction extends BaseAction {
     }
   }
 
+
   @Override
   public String save() {
     if (securityContext.canUpdateProjectBudget()) {
@@ -226,12 +243,21 @@ public class ProjectBudgetsPlanningAction extends BaseAction {
     return NOT_AUTHORIZED;
   }
 
+
   public void setProject(Project project) {
     this.project = project;
   }
 
   public void setProjectID(int projectID) {
     this.projectID = projectID;
+  }
+
+  public void setTotalBilateralBudget(double totalBilateralBudget) {
+    this.totalBilateralBudget = totalBilateralBudget;
+  }
+
+  public void setTotalCCAFSBudget(double totalCCAFSBudget) {
+    this.totalCCAFSBudget = totalCCAFSBudget;
   }
 
   @Override
