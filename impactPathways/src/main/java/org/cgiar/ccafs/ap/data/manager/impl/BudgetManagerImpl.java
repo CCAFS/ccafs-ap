@@ -388,6 +388,7 @@ public class BudgetManagerImpl implements BudgetManager {
     budgetData.put("budget_type", budget.getType().getValue());
     budgetData.put("institution_id", budget.getInstitution().getId());
     budgetData.put("amount", budget.getAmount());
+    budgetData.put("gender_percentage", budget.getGenderPercentage());
     budgetData.put("user_id", user.getId());
     budgetData.put("justification", justification);
 

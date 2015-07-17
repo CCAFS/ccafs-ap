@@ -416,11 +416,31 @@ public class Project {
     return title;
   }
 
-  public double getTotalCcafsBudget() {
+  public double getTotalBilateralBudget() {
+    double totalBudget = 0.0;
+    if (budgets != null) {
+      for (Budget budget : this.getBudgets()) {
+        totalBudget += (budget.getType().isBilateral()) ? budget.getAmount() : 0;
+      }
+    }
+    return totalBudget;
+  }
+
+  public double getTotalBudget() {
     double totalBudget = 0.0;
     if (budgets != null) {
       for (Budget budget : this.getBudgets()) {
         totalBudget += budget.getAmount();
+      }
+    }
+    return totalBudget;
+  }
+
+  public double getTotalCcafsBudget() {
+    double totalBudget = 0.0;
+    if (budgets != null) {
+      for (Budget budget : this.getBudgets()) {
+        totalBudget += (budget.getType().isCCAFSBudget()) ? budget.getAmount() : 0;
       }
     }
     return totalBudget;

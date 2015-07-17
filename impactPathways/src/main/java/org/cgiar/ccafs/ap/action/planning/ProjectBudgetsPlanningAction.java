@@ -164,21 +164,27 @@ public class ProjectBudgetsPlanningAction extends BaseAction {
         String parameter = this.getRequest().getParameter(APConstants.YEAR_REQUEST);
         year = (parameter != null) ? Integer.parseInt(StringUtils.trim(parameter)) : allYears.get(0);
       } catch (NumberFormatException e) {
-        LOG.error("-- prepare() > There was an error parsing the year '{}'.", year);
-        return; // Stop here and go to the execute method.
+        LOG.warn("-- prepare() > There was an error parsing the year '{}'.", year);
+        // Set the first year of the project as current
+        year = allYears.get(0);
       }
 
-      if (allYears.contains(new Integer(year))) {
+      if (!allYears.contains(new Integer(year))) {
+        year = allYears.get(0);
+      }
 
-        if (project.getLeader() != null) {
-          // Getting the list of budgets.
-          project.setBudgets(budgetManager.getBudgetsByYear(project.getId(), year));
-        } else {
-          hasLeader = false;
-        }
+      if (project.getLeader() != null) {
+        // Getting the list of budgets.
+        project.setBudgets(budgetManager.getBudgetsByYear(project.getId(), year));
       } else {
-        invalidYear = true;
+        hasLeader = false;
       }
+
+
+      super.setHistory(historyManager.getProjectBudgetHistory(projectID));
+
+    } else {
+      invalidYear = true;
     }
 
     if (this.getRequest().getMethod().equalsIgnoreCase("post")) {
