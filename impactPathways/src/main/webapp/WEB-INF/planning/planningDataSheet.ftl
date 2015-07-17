@@ -9,10 +9,8 @@
     </div>
   [/#if]
   [#if deliverable?has_content]
-    <div id="deliverableID-quote" class="quote-id" title="[#if deliverable.title?has_content][@s.text name="planning.deliverable" /]: ${deliverable.title}[/#if]">
-      <a href="[@s.url namespace="/planning/projects" action='deliverable' includeParams='get'][@s.param name='deliverableID']${deliverable.id?c}[/@s.param][/@s.url]"> 
-        <p>ID: <span>${deliverable.id}</span></p> 
-      </a>
+    <div id="deliverableID-quote" class="quote-id" title="[#if deliverable.title?has_content]${deliverable.title}[/#if]">
+      <p>ID: <span>${deliverable.id}</span></p>
     </div>
   [/#if]
   [#if activity?has_content]
