@@ -71,11 +71,26 @@ function attachEvents() {
 
   // Enable save with tabs when is saveable and exist an target
   if($("#targetYear").exists()) {
-    $("li.yearTab").click(function(e) {
-      e.preventDefault();
-      var yearTarget = $(this).attr("id").split("-")[1];
-      $("input[name$='targetYear']").val(yearTarget);
-      $("#budget_save").trigger("click");
+    $("li.yearTab").on("click", function(e) {
+      var $yearTab = $(this);
+      if(isChanged()) {
+        e.preventDefault();
+        $("#dialog-confirm").dialog({
+          buttons: {
+              "Save": function() {
+                var yearTarget = $yearTab.attr("id").split("-")[1];
+                $("input[name$='targetYear']").val(yearTarget);
+                $("#budget_save").trigger("click");
+                $(this).dialog("close");
+              },
+              "Not Save": function() { 
+                window.location.href = $yearTab.find('a').attr('href');
+              }
+          }
+        });
+      } else {
+        return
+      }
     });
   }
 

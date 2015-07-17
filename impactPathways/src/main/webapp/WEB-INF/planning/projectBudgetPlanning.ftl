@@ -163,6 +163,10 @@
   </article>
   [/@s.form]
 </section>
+[#-- Dialog save confirmation --]
+<div id="dialog-confirm" title="You want to save the information?" style="display:none">
+  <p>There are some changes in this section, you want to save?</p>
+</div>
 
 [#macro projectBudget institution budget bilateralProject type="PPA" pp_index="0" cofinancing_budgets="" editable=true]
 <div id="partnerBudget-${pp_index}" class="partnerBudget simpleBox row clearfix">
@@ -185,7 +189,7 @@
   <div class="halfPartBlock budget clearfix">
     <div class="title"><h6>[@s.text name="planning.projectBudget.annualBudgetPerBilateral" /]:</h6></div>
     <div class="content">  
-    
+     
     </div>
   </div><!-- End budget -->
   [/#if]
