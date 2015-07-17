@@ -99,6 +99,8 @@
           [#list deliverable.nextUsers as nu] 
             [@deliverableTemplate.nextUserTemplate nu_name=params.nextUsers.name nu_index="${nu_index}" nextUserValue="${nu.id}" editable=editable canEdit=canEdit /]
           [/#list]
+        [#else]
+          <p class="emptyText">[@s.text name="planning.projectDeliverable.nextUsers.emptyText" /]</p>  
         [/#if]
         [#if editable && canEdit]
           <div id="addNextUserBlock" class="addLink"><a href=""  class="addNextUser addButton">[@s.text name="planning.deliverables.addNewUser" /]</a></div>
@@ -115,12 +117,12 @@
       <div class="fullBlock">
         [#-- Partner who is responsible --]
         <div class="fullBlock">
-          <p>[@s.text name="planning.projectDeliverable.indicateResponsablePartner" /]</p>
+          <p>[@customForm.text name="planning.projectDeliverable.indicateResponsablePartner" readText=!editable/]</p>
           [@deliverableTemplate.deliverablePartner dp=deliverable.responsiblePartner dp_name=params.responsiblePartner.name dp_index=dp_index institutionList="institutions" isResponsable=true editable=editable /]
         </div>
         [#-- Other contact person that will contribute --]
         <div class="fullBlock">
-          <p>[@s.text name="planning.projectDeliverable.indicateOtherContact" /]</p>
+          <p>[@customForm.text name="planning.projectDeliverable.indicateOtherContact" readText=!editable/]</p>
           [#if deliverable.otherPartners?has_content]
             [#list deliverable.otherPartners as dp]  
               [@deliverableTemplate.deliverablePartner dp=dp dp_name=params.partners.name dp_index=dp_index institutionList="institutions" editable=editable /]
