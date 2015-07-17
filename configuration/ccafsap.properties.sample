@@ -1,0 +1,77 @@
+# ------------------------------------------------ 
+#             Database connection
+# ------------------------------------------------
+
+# LocalHost
+mysql.host=localhost
+mysql.user=root
+mysql.password=123
+mysql.database=database_name
+mysql.url=jdbc:mysql://localhost:3306/database_name
+
+mysql.port=3306
+
+# ------------------------------------------------
+#             Platform variables
+# ------------------------------------------------
+
+# This variable should be configured in each WAR project
+ccafsap.baseUrl=localhost:8443/impactPathways/
+
+# Application properties
+ccafsap.planning.currentYear=2015
+ccafsap.planning.startDate=YYYY-MM-DD
+ccafsap.reporting.currentYear=2014
+ccafsap.reporting.startDate=YYYY-MM-DD
+ccafsap.startYear=2010
+ccafsap.endYear=2015
+ccafsap.midOutcome.revisionYear=2019
+
+# Is planning active?
+ccafsap.planning.future.years.active=true
+ccafsap.planning.future.years=3
+ccafsap.preplanning.active=true
+# Is reporting active?
+ccafsap.planning.active=true
+ccafsap.reporting.active=true
+ccafsap.summaries.active=false
+
+# ------------------------------------------------
+#             Files upload configuration
+# ------------------------------------------------
+
+# Maximum size allowed
+file.maxSizeAllowed.bytes=3145728
+
+# Base folder where files will be moved
+file.uploads.baseFolder=D:/DESARROLLO/XAMPP/htdocs/ccafspr_ip/
+
+# folder to upload case studies (this folder will be inside the base folder)
+file.uploads.caseStudiesImagesFolder=caseStudies/
+
+# folder to upload locations templates (this folder will be inside the base folder)
+file.uploads.locationsTemplateFolder=locationsTemplate/
+
+# URL where the files uploaded can be downloaded
+file.downloads=localhost/ccafspr_ip/
+
+# ------------------------------------------------
+#             Email account
+# ------------------------------------------------
+
+# Mail configuration
+gmail.user=
+gmail.password=
+
+
+# ------------------------------------------------
+#             Logger properties
+# ------------------------------------------------
+
+log.folder=D:/Hernan/Desarrollo/ccafs-ap/ccafsap-logs/
+log.console=true
+log.file=false
+!Production log only shows logs of type info, warn and error 
+log.production=true
+!Test log shows logs of all types trace, debug, info, warn and error 
+log.test=false

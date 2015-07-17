@@ -1,0 +1,106 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE struts PUBLIC "-//Apache Software Foundation//DTD Struts Configuration 2.3//EN" "http://struts.apache.org/dtds/struts-2.3.dtd">
+<struts>
+
+  <!-- Add addition packages and configuration here. -->
+  <package name="json" namespace="/" extends="json-default">
+
+    <action name="ipElementsByProgramAndType" class="org.cgiar.ccafs.ap.action.json.preplanning.IPElementsByProgramAndTypeAction">
+      <result type="json">        
+        <param name="noCache">true</param>
+        <param name="excludeNullProperties">true</param>
+      </result>
+    </action>
+    
+    <action name="ipElementsByParent" class="org.cgiar.ccafs.ap.action.json.preplanning.IPElementsByParentElementAction">
+      <result type="json">        
+        <param name="noCache">true</param>
+        <param name="excludeNullProperties">true</param>
+      </result>
+    </action>
+
+    <action name="ipIndicators" class="org.cgiar.ccafs.ap.action.json.preplanning.IPIndicatorsByElementAndProgramAction">
+      <result type="json">        
+        <param name="noCache">true</param>
+        <param name="excludeNullProperties">true</param>
+      </result>
+    </action>
+    
+    <action name="ipIndicatorsByParent" class="org.cgiar.ccafs.ap.action.json.preplanning.IPIndicatorsByParentAction">
+      <result type="json">        
+        <param name="noCache">true</param>
+        <param name="excludeNullProperties">true</param>
+      </result>
+    </action>
+    
+    <action name="ipIndicatorsByProject" class="org.cgiar.ccafs.ap.action.json.planning.IPIndicatorsByProjectAction">
+      <result type="json">        
+        <param name="noCache">true</param>
+        <param name="excludeNullProperties">true</param>
+      </result>
+    </action>
+
+    <action name="institutionsByTypeAndCountry" class="org.cgiar.ccafs.ap.action.json.global.InstitutionsByFilterAction">
+      <result type="json">        
+        <param name="noCache">true</param>
+        <param name="excludeNullProperties">true</param>
+      </result>
+    </action>
+    
+    <action name="prePlanningIpGraph" class="org.cgiar.ccafs.ap.action.json.preplanning.ImpactPathwayComponentsAction">
+      <result type="json"> 
+        <param name="noCache">true</param>
+        <param name="excludeNullProperties">true</param>
+      </result>
+    </action>
+    
+    <action name="planningIpGraph" class="org.cgiar.ccafs.ap.action.json.planning.ImpactPathwayComponentsAction">
+      <result type="json">
+        <param name="noCache">true</param>
+        <param name="excludeNullProperties">true</param>
+      </result>
+    </action>
+    
+    <action name="deliverablesByType" class="org.cgiar.ccafs.ap.action.json.planning.DeliverablesSubTypeByTypeAction">
+      <result type="json">
+        <param name="noCache">true</param>
+        <param name="excludeNullProperties">true</param>
+      </result>
+    </action>
+    
+    <action name="mogsByOutcome" class="org.cgiar.ccafs.ap.action.json.planning.MogsByOutcomeAction">
+      <result type="json">
+        <param name="noCache">true</param>
+        <param name="excludeNullProperties">true</param>
+      </result>
+    </action>
+    
+    <action name="searchUsers" class="org.cgiar.ccafs.ap.action.json.global.ManageUsersAction" method="search">
+      <result type="json">
+        <param name="noCache">true</param>
+        <param name="excludeNullProperties">true</param>
+      </result>
+    </action>
+    
+    <action name="createUser" class="org.cgiar.ccafs.ap.action.json.global.ManageUsersAction" method="create">
+      <result type="json">
+        <param name="noCache">true</param>
+        <param name="excludeNullProperties">true</param>
+      </result>
+    </action>
+    
+    <action name="coreProjects" class="org.cgiar.ccafs.ap.action.json.planning.CoreProjectsAction">
+      <result type="json">        
+        <param name="noCache">true</param>
+        <param name="excludeNullProperties">true</param>
+      </result>
+    </action>
+    
+    <action name="bilateralCoFinancingProjects" class="org.cgiar.ccafs.ap.action.json.planning.BilateralCofinancingProjectsAction">
+      <result type="json">        
+        <param name="noCache">true</param>
+        <param name="excludeNullProperties">true</param>
+      </result>
+    </action>
+  </package>
+</struts>

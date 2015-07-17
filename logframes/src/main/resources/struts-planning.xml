@@ -1,0 +1,129 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE struts PUBLIC "-//Apache Software Foundation//DTD Struts Configuration 2.3//EN" "http://struts.apache.org/dtds/struts-2.3.dtd">
+<struts>
+
+  <!-- Add addition packages and configuration here. -->
+  <package name="planning" namespace="/planning" extends="ccafsap-default">    
+    <default-action-ref name="activities" />
+
+    <!-- Sections -->
+    
+    <action name="activities" class="org.cgiar.ccafs.ap.action.planning.ActivitiesPlanningAction">
+      <interceptor-ref name="planningStack" />
+      <result name="input">/WEB-INF/planning/activities.ftl</result>
+    </action>
+    
+    <action name="addActivity" class="org.cgiar.ccafs.ap.action.planning.AddActivityPlanningAction">
+      <interceptor-ref name="planningStack" />
+      <result name="cancel" type="redirectAction">activities</result>
+      <result name="input">/WEB-INF/planning/addActivity.ftl</result>
+      <result name="success" type="redirectAction">activities</result>
+    </action>
+
+    <action name="deliverables" class="org.cgiar.ccafs.ap.action.planning.DeliverablesPlanningAction">
+      <interceptor-ref name="planningStack" />
+      <interceptor-ref name="accessibleActivity" />
+      <result name="cancel" type="redirectAction">activities</result>
+      <result name="input">/WEB-INF/planning/deliverablesPlanning.ftl</result>
+      <result name="success" type="redirectAction">
+        <param name="actionName">deliverables</param>
+        <param name="activityID">${activity.id}</param>
+      </result>
+      <result name="next" type="redirectAction">
+        <param name="actionName">partners</param>
+        <param name="activityID">${activity.id}</param>
+      </result>
+    </action>
+    
+    <action name="mainInformation" class="org.cgiar.ccafs.ap.action.planning.MainInformationPlanningAction">
+      <interceptor-ref name="planningStack" />
+      <interceptor-ref name="accessibleActivity" />
+      <result name="cancel" type="redirectAction">activities</result>
+      <result name="input">/WEB-INF/planning/mainInformation.ftl</result>
+      <result name="success" type="redirectAction">
+        <param name="actionName">mainInformation</param>
+        <param name="activityID">${activity.id}</param>
+      </result>
+      <result name="next" type="redirectAction">
+        <param name="actionName">objectives</param>
+        <param name="activityID">${activity.id}</param>
+      </result>
+    </action>
+    
+    <action name="objectives" class="org.cgiar.ccafs.ap.action.planning.ObjectivesPlanningAction">
+      <interceptor-ref name="planningStack" />
+      <interceptor-ref name="accessibleActivity" />
+      <result name="cancel" type="redirectAction">activities</result>
+      <result name="input">/WEB-INF/planning/objectivesPlanning.ftl</result>
+      <result name="success" type="redirectAction">
+        <param name="actionName">objectives</param>
+        <param name="activityID">${activity.id}</param>
+      </result>
+      <result name="next" type="redirectAction">
+        <param name="actionName">deliverables</param>
+        <param name="activityID">${activity.id}</param>
+      </result>
+    </action>
+    
+    <action name="partners" class="org.cgiar.ccafs.ap.action.planning.PartnersPlanningAction">
+      <interceptor-ref name="planningStack" />
+      <interceptor-ref name="accessibleActivity" />
+      <result name="cancel" type="redirectAction">activities</result>
+      <result name="input">/WEB-INF/planning/partnersPlanning.ftl</result>
+      <result name="success" type="redirectAction">
+        <param name="actionName">partners</param>
+        <param name="activityID">${activity.id}</param>
+      </result>
+      <result name="next" type="redirectAction">
+        <param name="actionName">locations</param>
+        <param name="activityID">${activity.id}</param>
+      </result>
+    </action>
+    
+    <action name="locations" class="org.cgiar.ccafs.ap.action.planning.LocationsPlanningAction">
+      <interceptor-ref name="planningStack" />
+      <interceptor-ref name="accessibleActivity" />
+      <result name="cancel" type="redirectAction">activities</result>
+      <result name="input">/WEB-INF/planning/locationsPlanning.ftl</result>
+      <result name="success" type="redirectAction">
+        <param name="actionName">locations</param>
+        <param name="activityID">${activity.id}</param>
+      </result>
+      <result name="next" type="redirectAction">
+        <param name="actionName">additionalInformation</param>
+        <param name="activityID">${activity.id}</param>
+      </result>
+    </action>
+
+    <action name="selectLocation" class="org.cgiar.ccafs.ap.action.BaseAction">
+      <interceptor-ref name="planningStack" />
+      <result name="input">/WEB-INF/planning/selectLocation.ftl</result>
+    </action>
+    
+    <action name="additionalInformation" class="org.cgiar.ccafs.ap.action.planning.AdditionalInformationPlanningAction">
+      <interceptor-ref name="planningStack" />
+      <interceptor-ref name="accessibleActivity" />
+      <result name="cancel" type="redirectAction">activities</result>
+      <result name="input">/WEB-INF/planning/additionalInformationPlanning.ftl</result>
+      <result name="success" type="redirectAction">
+        <param name="actionName">additionalInformation</param>
+        <param name="activityID">${activity.id}</param>
+      </result>
+      <result name="next" type="redirectAction">activities</result>
+    </action>
+    
+    <action name="partnerSave" class="org.cgiar.ccafs.ap.action.reporting.activities.PartnersSaveReportingAction"  method="save">
+      <interceptor-ref name="reportingStack" />
+      <result name="input">/WEB-INF/reporting/partnersSaveReporting.ftl</result>
+      <result name="success" type="redirectAction">
+        <param name="actionName">requestPartner</param>
+      </result>
+    </action>
+    
+    <action name="requestPartner" class="org.cgiar.ccafs.ap.action.reporting.activities.PartnersSaveReportingAction">
+      <interceptor-ref name="reportingStack" />
+      <result name="input">/WEB-INF/reporting/partnersSaveReporting.ftl</result>
+    </action>
+    
+  </package>
+</struts>
