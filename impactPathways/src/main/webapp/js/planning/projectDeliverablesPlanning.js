@@ -53,6 +53,7 @@ function addNextUserEvent(e) {
   e.preventDefault();
   var $newElement = $("#projectNextUserTemplate").clone(true).removeAttr("id").addClass("projectNextUser");
   $(e.target).parent().before($newElement);
+  $('#deliverable-nextUsers').find('.emptyText').hide();
   $newElement.fadeIn("slow");
   setDeliverablesIndexes();
 }

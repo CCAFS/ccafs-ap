@@ -33,12 +33,6 @@
       <p><strong>[@s.text name="preplanning.projectBudget.leveraged" /]: </strong> [@s.text name="preplanning.projectBudget.leveraged.tooltip" /]</p>
       <p><strong>[@s.text name="preplanning.projectBudget.partnership" /]: </strong> [@s.text name="preplanning.projectBudget.partnership.tooltip" /]</p>
     </div>
-    <div id="downloadGuidelineMessage">
-      <a  href="${baseUrl}/resources/guidelines/FP_Guidelines_Budget_20141007_to Liaison.pptx">  
-        <img class="icon" src="${baseUrl}/images/global/download-icon_636368.png" />
-        <p>[@s.text name="preplanning.projectBudget.guideline.title" /]</p>
-      </a>
-    </div>
   </div>
   [#include "/WEB-INF/planning/planningProjectsSubMenu.ftl" /]
   
@@ -57,10 +51,15 @@
         [#-- Accumulative Total W1 W2 Budget --]
         <div id="totalBudget" class="thirdPartBlock">
           <h6>[@s.text name="preplanning.projectBudget.totalBudget"][@s.param]${(!project.bilateralProject)?string(w1W2BudgetLabel, w3BilateralBudgetLabel)}[/@s.param][/@s.text]</h6>
-          <p id="projectTotalW1W2">US$ <span id="projectTotalW1W2Budget">{totalW1W2Budget?string(",##0.00")}</span></p>
-          <input type="hidden" id="projectTotalW1W2Budget" value="{totalW1W2Budget?c}" />
-          <input type="hidden" id="yearTotalW1W2Budget" value="{totalW1W2BudgetByYear?c}" />
+          <p id="projectTotalW1W2">US$ <span id="projectTotalW1W2Budget">${(!project.bilateralProject)?string(totalCCAFSBudget!0, totalBilateralBudget)!0?string(",##0.00")}</span></p>
         </div> 
+        [#if project.coFundedProject]
+          [#-- The co-founded projects are CCAFS core, then we should show the bilateral budget --]
+          <div id="totalBudget" class="thirdPartBlock">
+            <h6>[@s.text name="preplanning.projectBudget.totalBudget"][@s.param] ${w3BilateralBudgetLabel}[/@s.param][/@s.text]</h6>
+            <p id="projectTotalW1W2">US$ <span id="projectTotalW1W2Budget">${totalBilateralBudget!0?string(",##0.00")}</span></p>
+          </div> 
+        [/#if]
         
         [#-- Project Overhead (Only for bilateral projects) --]
         [#if project.bilateralProject]
@@ -102,9 +101,18 @@
                 <div id="totalw1w2BudgetByYear" class="BudgetByYear"> 
                   <p id="projectTotalByYear">
                     <strong> [@s.text name="preplanning.projectBudget.totalYearBudget"][@s.param name="0"]${(!project.bilateralProject)?string(w1W2BudgetLabel, w3BilateralBudgetLabel)}[/@s.param][@s.param name="1"]${year}[/@s.param][/@s.text]</strong> 
-                    <br>US$ <span id="projectTotalW1W2BudgetByYear">{totalW1W2BudgetByYear?string(",##0.00")}</span>
+                    <br>US$ <span id="projectTotalW1W2BudgetByYear">${(!project.bilateralProject)?string((project.totalCcafsBudget)!0, (totalBilateralBudget)!0)?number?string(",##0.00")}</span>
                   </p>
                 </div>
+                [#if project.coFundedProject]
+                  [#-- The co-founded projects are CCAFS core, then we should show the bilateral budget --]
+                  <div id="totalw1w2BudgetByYear" class="BudgetByYear"> 
+                    <p id="projectTotalByYear">
+                      <strong> [@s.text name="preplanning.projectBudget.totalYearBudget"][@s.param name="0"]${(!project.bilateralProject)?string(w1W2BudgetLabel, w3BilateralBudgetLabel)}[/@s.param][@s.param name="1"]${year}[/@s.param][/@s.text]</strong> 
+                      <br>US$ <span id="projectTotalW1W2BudgetByYear">${totalBilateralBudget!0?string(",##0.00")}</span>
+                    </p>
+                  </div>
+                [/#if]
               </div> 
               <div class="ccafsBudget fullPartBlock clearfix">
                 [#-- Project Leader --]
