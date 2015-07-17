@@ -76,10 +76,12 @@ public class DeliverablePartnerManagerImpl implements DeliverablePartnerManager 
       // Partner type (PPA, PL, PP, etc.)
       deliverablePartner.setType(dData.get("partner_type"));
       // User as user_id
-      deliverablePartner.setUser(userManager.getUser(Integer.parseInt(dData.get("user_id"))));
+      if (dData.get("user_id") != null) {
+        deliverablePartner.setUser(userManager.getUser(Integer.parseInt(dData.get("user_id"))));
+      }
       // Institution as partner_id
       deliverablePartner
-        .setInstitution(institutionManager.getInstitution(Integer.parseInt(dData.get("institution_id"))));
+      .setInstitution(institutionManager.getInstitution(Integer.parseInt(dData.get("institution_id"))));
       // adding information of the object to the array
       deliverablePartners.add(deliverablePartner);
     }
@@ -107,7 +109,7 @@ public class DeliverablePartnerManagerImpl implements DeliverablePartnerManager 
 
       // Institution as partner_id
       deliverablePartner
-      .setInstitution(institutionManager.getInstitution(Integer.parseInt(dData.get("institution_id"))));
+        .setInstitution(institutionManager.getInstitution(Integer.parseInt(dData.get("institution_id"))));
 
       // adding information of the object to the array
       deliverablePartners.add(deliverablePartner);
