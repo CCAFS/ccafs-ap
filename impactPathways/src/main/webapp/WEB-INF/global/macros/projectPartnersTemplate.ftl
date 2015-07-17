@@ -5,7 +5,7 @@
         [@partner ap ap_index ap_name editable ppaPartner isBilateral responsabilities=responsabilities  /]
     [/#list]
   [#else]  
-    [#if !editable]This project not has partners[/#if]
+    [#if !editable][@s.text name="planning.projectPartners.emptyPartners" /][/#if]
   [/#if]  
 [/#macro]
 
