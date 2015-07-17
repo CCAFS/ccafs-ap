@@ -18,6 +18,7 @@ import org.cgiar.ccafs.ap.action.BaseAction;
 import org.cgiar.ccafs.ap.config.APConstants;
 import org.cgiar.ccafs.ap.data.manager.BudgetManager;
 import org.cgiar.ccafs.ap.data.manager.HistoryManager;
+import org.cgiar.ccafs.ap.data.manager.ProjectCofinancingLinkageManager;
 import org.cgiar.ccafs.ap.data.manager.ProjectManager;
 import org.cgiar.ccafs.ap.data.manager.ProjectPartnerManager;
 import org.cgiar.ccafs.ap.data.model.Budget;
@@ -51,6 +52,7 @@ public class ProjectBudgetsPlanningAction extends BaseAction {
   private BudgetManager budgetManager;
   private ProjectPartnerManager projectPartnerManager;
   private ProjectManager projectManager;
+  private ProjectCofinancingLinkageManager linkedCoreProjectManager;
   private HistoryManager historyManager;
 
   private ProjectBudgetPlanningValidator validator;
@@ -69,11 +71,13 @@ public class ProjectBudgetsPlanningAction extends BaseAction {
   @Inject
   public ProjectBudgetsPlanningAction(APConfig config, BudgetManager budgetManager,
     ProjectBudgetPlanningValidator validator, ProjectPartnerManager projectPartnerManager,
-    ProjectManager projectManager, HistoryManager historyManager) {
+    ProjectCofinancingLinkageManager linkedCoreProjectManager, ProjectManager projectManager,
+    HistoryManager historyManager) {
     super(config);
     this.budgetManager = budgetManager;
     this.projectPartnerManager = projectPartnerManager;
     this.projectManager = projectManager;
+    this.linkedCoreProjectManager = linkedCoreProjectManager;
     this.historyManager = historyManager;
     this.validator = validator;
   }
@@ -144,6 +148,11 @@ public class ProjectBudgetsPlanningAction extends BaseAction {
 
     // Getting the project identified with the id parameter.
     project = projectManager.getProject(projectID);
+
+    // If project is CCAFS cofounded, we should load the core projects linked to it.
+    if (!project.isBilateralProject()) {
+      project.setLinkedProjects(linkedCoreProjectManager.getLinkedProjects(projectID));
+    }
 
     // Getting the Project Leader.
     List<ProjectPartner> ppArray =
