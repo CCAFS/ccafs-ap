@@ -179,6 +179,10 @@ public class ProjectBudgetsPlanningAction extends BaseAction {
       } else {
         hasLeader = false;
       }
+
+
+      super.setHistory(historyManager.getProjectBudgetHistory(projectID));
+
     } else {
       invalidYear = true;
     }

@@ -62,6 +62,10 @@ public enum BudgetType {
     return this.getValue() == BudgetType.W3_BILATERAL.getValue();
   }
 
+  public boolean isCCAFSBudget() {
+    return this.getValue() == BudgetType.W1_W2.getValue();
+  }
+
   @Override
   public String toString() {
     return ToStringBuilder.reflectionToString(this);
