@@ -22,6 +22,11 @@ a,a:active,a:visited,a:hover {
   color: #A9A9A9;
 }
 
+a.disabled {
+  color: #ccc !important;
+  cursor: context-menu;
+}
+
 .select, .input {
   margin-bottom: 0px;
 }
@@ -90,6 +95,10 @@ p.msj {
 p.emptyText {
     margin: 10px 0;    padding: 5px;
     border-left: 3px solid #eee;
+}
+
+ul.fieldError {
+  margin: 0;
 }
 
 ul.fieldError li {

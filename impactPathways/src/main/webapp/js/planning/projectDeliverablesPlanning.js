@@ -103,6 +103,8 @@ function updateDeliverableSubTypeList(event) {
     });
     // Refresh the plugin in order to show the changes
     $subTypeSelect.trigger("liszt:updated");
+    // Check if other specify is selected
+    checkOtherType();
     // Regenerating hash from form information
     if(!hashRegenerated) {
       setFormHash();
@@ -111,7 +113,6 @@ function updateDeliverableSubTypeList(event) {
   }).fail(function() {
     console.log("error");
   });
-  checkOtherType();
 }
 
 function checkOtherType() {
