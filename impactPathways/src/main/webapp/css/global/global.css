@@ -1880,7 +1880,7 @@ padding-left: 11px;
 
 #ipGraph-content {
   height: 250px;
-  margin-top: 10px; 
+  /* margin-top: 10px; */ 
 }
 
 #ipGraph-buttonsGroup{
@@ -2794,6 +2794,7 @@ aside[id*="-control"] .slidr-control:after {
 .wordDefinition{
   padding: 0px 0px 5px 0px;
   text-align: justify;
+  font-size: 1.1em;
 }
 
 .lastUpdate{
