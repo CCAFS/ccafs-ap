@@ -30,27 +30,6 @@ import com.google.inject.ImplementedBy;
 public interface BudgetDAO {
 
   /**
-   * This method return the total budget amount the type received as parameter for
-   * the activity identified by the value received as paarmeter.
-   * 
-   * @param activityID - Activity identifier
-   * @param budgetTypeID - Budget type identifier
-   * @return budget amount
-   */
-  public double calculateActivityBudgetByType(int activityID, int budgetTypeID);
-
-  /**
-   * This method return the budget amount of the activity of the type received as
-   * parameter and for the year received as parameter.
-   * 
-   * @param activityID - Activity identifier
-   * @param budgetTypeID - Budget type identifier
-   * @param year
-   * @return budget amount
-   */
-  public double calculateActivityBudgetByTypeAndYear(int activityID, int budgetTypeID, int year);
-
-  /**
    * This method return the budget amount of the project of the type received as
    * parameter and for the year received as parameter.
    * 
@@ -60,25 +39,6 @@ public interface BudgetDAO {
    * @return budget amount
    */
   public double calculateProjectBudgetByTypeAndYear(int projectID, int budgetTypeID, int year);
-
-  /**
-   * This method returns the total leveraged Budget for the given year
-   * 
-   * @param projectID is the project id.
-   * @param year
-   * @return a decimal number representing the amount, if no data found the method
-   *         will return 0.0 and if some error happen a -1.0 will be returned.
-   */
-  public double calculateProjectLeveragedBudgetByYear(int projectID, int year);
-
-  /**
-   * This method returns the total leveraged Budget for all years of the project
-   * 
-   * @param projectID is the project id.
-   * @return a decimal number representing the amount, if no data found the method
-   *         will return 0.0 and if some error happen a -1.0 will be returned.
-   */
-  public double calculateProjectTotalLeveragedBudget(int projectID);
 
   /**
    * This method returns the sum of the budgets with type W1W2 + W3_bilateral.
@@ -98,22 +58,6 @@ public interface BudgetDAO {
    *         will return 0.0 and if some error happen a -1.0 will be returned.
    */
   public double calculateProjectW1W2W3BilateralBudgetByYear(int projectID, int year);
-
-  /**
-   * This method calculates the total of the Activity Budget
-   * 
-   * @param activityID is the Id of the activity
-   * @return a decimal number representing the amount of the total Activity Budget for that specific project, if no data
-   *         found the method will return 0.0 and if some error happen a -1.0 will be returned.
-   */
-  public double calculateTotalActivityBudget(int activityID);
-
-  /**
-   * @param activityID
-   * @param year
-   * @return
-   */
-  public double calculateTotalActivityBudgetByYear(int activityID, int year);
 
   /**
    * This method calculates the total of the CCAFS Budget which is the addition of W1+W2+W3+BILATERAL
@@ -156,6 +100,15 @@ public interface BudgetDAO {
   public double calculateTotalOverallBudgetByYear(int projectID, int year);
 
   /**
+   * This method calculates the total budget of some type for a given project.
+   * 
+   * @param projectID is the project identifier.
+   * @param budgetTypeID budget type identifier.
+   * @return a double representing this value, or -1 if some error found.
+   */
+  public double calculateTotalProjectBudgetByType(int projectID, int budgetTypeID);
+
+  /**
    * This method calculates the total W1 + W2 budget from a given project.
    * 
    * @param projectID is the project identifier.
@@ -171,32 +124,6 @@ public interface BudgetDAO {
    * @return a double representing this value, or -1 if some error found.
    */
   public double calculateTotalProjectW1W2ByYear(int projectID, int year);
-
-  /**
-   * This method removes all the Activity budgets identified with the given activity ID and year.
-   * 
-   * @param activityID is the activity identifier
-   * @param year is a year
-   * @return true if the elements were deleted successfully. False otherwise.
-   */
-  public boolean deleteActivityBudgetByYear(int activityID, int year);
-
-  /**
-   * This method removes all the Activity Budgets associated by a given activity ID
-   * 
-   * @param activityID is the ID of the activity
-   * @return true if the elements were deleted successfully. False otherwise
-   */
-  public boolean deleteActivityBudgetsByActivityID(int activityID);
-
-  /**
-   * Deletes the information of the Budgets related by a given activity id and an institution id
-   * 
-   * @param activityID is the id of an activity
-   * @param institutionID is the id of an institution
-   * @return true if the elements were deleted successfully. False otherwise
-   */
-  public boolean deleteActivityBudgetsByInstitution(int activityID, int institutionID);
 
   /**
    * Deletes the information of a Budget associated by a given id
@@ -223,32 +150,6 @@ public interface BudgetDAO {
    * @return true if the elements were deleted successfully. False otherwise.
    */
   public boolean deleteBudgetsByYear(int projectID, int year);
-
-  /**
-   * This method gets all the budget information by a given activity ID and a Budget Type
-   * 
-   * @param activityID - is the Id of the activity
-   * @param budgetType - is the id of a Budget Type
-   * @return a list of Map of the Budgets related with the activity and the budget type
-   */
-  public List<Map<String, String>> getActivityBudgetsByType(int activityID, int budgetType);
-
-  /**
-   * This method gets all the Budget information by a given activity Id and a year
-   * 
-   * @param activityID - is the id of the activity
-   * @param year - is the year of the budget
-   * @return a list of Map of the Budgets related with the year and the activity id
-   */
-  public List<Map<String, String>> getActivityBudgetsByYear(int activityID, int year);
-
-  /**
-   * This method gets all the budget institutions that belong to a specific activity.
-   * 
-   * @param activityID is the activity identifier.
-   * @return a list of Maps with the information of institutions.
-   */
-  public List<Map<String, String>> getActivityInstitutions(int activityID);
 
   /**
    * This method gets all the budget information by a given Project Id
@@ -291,13 +192,6 @@ public interface BudgetDAO {
    * @return a list of Maps with the information of institutions.
    */
   public List<Map<String, String>> getW1Institutions(int projectID);
-
-  /**
-   * @param activityID
-   * @param activityBudgetData
-   * @return
-   */
-  public int saveActivityBudget(int activityID, Map<String, Object> activityBudgetData);
 
   /**
    * This method saves the Budget and the Project Budget relation

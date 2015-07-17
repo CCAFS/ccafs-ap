@@ -110,7 +110,7 @@ public class ActivityPartnersAction extends BaseAction {
 
   @Override
   public String next() {
-    String result = save();
+    String result = this.save();
     if (result.equals(BaseAction.SUCCESS)) {
       return BaseAction.NEXT;
     } else {
@@ -142,7 +142,7 @@ public class ActivityPartnersAction extends BaseAction {
     // Getting all partner types
     partnerTypes = institutionManager.getAllInstitutionTypes();
 
-    if (getRequest().getMethod().equalsIgnoreCase("post")) {
+    if (this.getRequest().getMethod().equalsIgnoreCase("post")) {
       // Clear out the list if it has some element
       if (activity.getActivityPartners() != null) {
         activity.getActivityPartners().clear();
@@ -199,23 +199,24 @@ public class ActivityPartnersAction extends BaseAction {
       }
 
       // Getting all the current budget institutions for the activity.
-      List<Institution> budgetInstitutions = budgetManager.getActivityInstitutionsBudgets(activity.getId());
+      // List<Institution> budgetInstitutions = budgetManager.getActivityInstitutionsBudgets(activity.getId());
 
       // Deleting Institutions from budget section
-      for (Institution institutionToDelete : budgetInstitutions) {
-        if (!activityInstitutions.contains(institutionToDelete)) {
-          budgetManager.deleteActivityBudgetsByInstitution(activity.getId(), institutionToDelete.getId());
-        }
-      }
+      // for (Institution institutionToDelete : budgetInstitutions) {
+      // if (!activityInstitutions.contains(institutionToDelete)) {
+      // budgetManager.deleteActivityBudgetsByInstitution(activity.getId(), institutionToDelete.getId());
+      // }
+      // }
 
       // -----------------------------------------------------------
 
 
       if (success == false) {
-        addActionError(getText("saving.problem"));
+        this.addActionError(this.getText("saving.problem"));
         return BaseAction.INPUT;
       }
-      addActionMessage(getText("saving.success", new String[] {getText("planning.activityPartner.title")}));
+      this.addActionMessage(this.getText("saving.success",
+        new String[] {this.getText("planning.activityPartner.title")}));
       return BaseAction.SUCCESS;
     } else {
       return BaseAction.NOT_AUTHORIZED;
@@ -246,14 +247,14 @@ public class ActivityPartnersAction extends BaseAction {
     }
     for (int c = 0; c < activity.getActivityPartners().size(); c++) {
       if (!institutions.add(activity.getActivityPartners().get(c).getPartner())) {
-        addFieldError("activity.activityPartners[" + c + "].partner",
-          getText("planning.activityPartner.duplicatedInstitution.field"));
+        this.addFieldError("activity.activityPartners[" + c + "].partner",
+          this.getText("planning.activityPartner.duplicatedInstitution.field"));
         problem = true;
       }
     }
 
     if (problem) {
-      addActionError(getText("planning.activityPartner.duplicatedInstitution.general"));
+      this.addActionError(this.getText("planning.activityPartner.duplicatedInstitution.general"));
     }
 
     super.validate();

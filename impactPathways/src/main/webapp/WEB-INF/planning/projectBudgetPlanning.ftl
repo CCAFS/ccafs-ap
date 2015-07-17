@@ -51,7 +51,7 @@
         [#-- Accumulative Total W1 W2 Budget --]
         <div id="totalBudget" class="thirdPartBlock">
           <h6>[@s.text name="preplanning.projectBudget.totalBudget"][@s.param]${(!project.bilateralProject)?string(w1W2BudgetLabel, w3BilateralBudgetLabel)}[/@s.param][/@s.text]</h6>
-          <p id="projectTotalW1W2">US$ <span id="projectTotalW1W2Budget">${(!project.bilateralProject)?string((project.totalCcafsBudget)!0, (totalBilateralBudget)!0)?number?string(",##0.00")}</span></p>
+          <p id="projectTotalW1W2">US$ <span id="projectTotalW1W2Budget">${(!project.bilateralProject)?string(totalCCAFSBudget!0, totalBilateralBudget)!0?string(",##0.00")}</span></p>
         </div> 
         [#if project.coFundedProject]
           [#-- The co-founded projects are CCAFS core, then we should show the bilateral budget --]

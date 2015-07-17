@@ -149,15 +149,16 @@
           </div> 
         </div> 
       </fieldset> 
-      <h1 class="contentTitle"> [@s.text name="planning.projectDescription.bilateralProjects" /] </h1> 
       [#-- Bilateral contributing to CCAFS Project(s) --]
       [#if project.bilateralProject]
-      <div id="projectCoreProjects" class="isLinked tickBox-wrapper fullBlock">
-        [@customForm.checkbox name="project.cofinancing" checked=project.cofinancing value="true" i18nkey="planning.projectDescription.isLinkedCoreProjects" disabled=!editable editable=editable/]  
-      </div> 
+        <h1 class="contentTitle"> [@s.text name="planning.projectDescription.cofinancingProject" /] </h1> 
+        <div id="projectCoreProjects" class="isLinked tickBox-wrapper fullBlock">
+          [@customForm.checkbox name="project.cofinancing" checked=project.cofinancing value="true" i18nkey="planning.projectDescription.isLinkedCoreProjects" disabled=!editable editable=editable/]  
+        </div> 
       [/#if]
       [#-- Bilateral projects only for CCAFS Projects --]
       [#if !project.bilateralProject]
+      <h1 class="contentTitle"> [@s.text name="planning.projectDescription.bilateralProjects" /] </h1> 
       <div class="panel tertiary">
         <div class="panel-head">[@customForm.text name="planning.projectDescription.selectBilateralProject" readText=!editable /]:</div>
         <div id="bilateralProjectsList" class="panel-body"> 
