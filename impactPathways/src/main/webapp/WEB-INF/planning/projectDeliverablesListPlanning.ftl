@@ -24,7 +24,7 @@
 <section class="content">
   <div class="helpMessage">
     <img src="${baseUrl}/images/global/icon-help.png" />
-    <p> [@s.text name="planning.projectDeliverables.help" /] </p>
+    <p> [@s.text name="planning.deliverables.list.help" /] </p>
   </div>
   [#include "/WEB-INF/planning/planningProjectsSubMenu.ftl" /]
   
@@ -58,6 +58,6 @@
   </article>
   
 </section>
-[@customForm.confirmJustification action="removeDeliverable" namespace="/planning/projects" nameId="deliverableID" title="Remove Deliverable" /]
+[@customForm.confirmJustification action="deleteDeliverable" namespace="/planning/projects" nameId="deliverableID" projectID="${projectID}" title="Remove Deliverable" /]
  
 [#include "/WEB-INF/global/pages/footer.ftl"]
