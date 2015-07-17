@@ -89,8 +89,8 @@ public class LogTriggersManager {
       newColumns = newColumns.replace(", NEW.`modified_by`, NEW.`modification_justification`", "");
 
       query.append("DECLARE old_concat, new_concat text; ");
-      query.append("SET old_concat = CONCAT_WS(',', " + oldColumns + "); ");
-      query.append("SET new_concat = CONCAT_WS(',', " + newColumns + "); ");
+      query.append("SET old_concat = MD5(CONCAT_WS(',', " + oldColumns + ")); ");
+      query.append("SET new_concat = MD5(CONCAT_WS(',', " + newColumns + ")); ");
 
       query.append("IF old_concat <> new_concat THEN ");
 
