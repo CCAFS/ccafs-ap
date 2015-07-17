@@ -117,6 +117,7 @@
                 [/#if]
               </div> 
               <div class="ccafsBudget fullPartBlock clearfix">
+                [@s.set var="counter" value="0"/]
                 [#-- Project Leader --]
                 [#if project.leader?has_content]
                   [@projectBudget institution=project.leader.institution budget=project.getBudget(project.leader.institution.id, project.bilateralProject?string(2, 1)?number, year )! project=project isPL=true cofinancing_budgets=project.getCofinancingBudgets()! editable=editable /]
@@ -175,36 +176,44 @@
 <div id="partnerBudget-${pp_index}" class="partnerBudget simpleBox row clearfix">
   <h6 class="title">${isPL?string('PL','PPA')} - ${institution.composedName}</h6>
   [#-- Hidden values --]
-  <input type="hidden" name="project.budgets[${pp_index}].id" value="${budget.id!"-1"}" />
-  <input type="hidden" name="project.budgets[${pp_index}].year" value="${(budget.year)!year}" />
-  <input type="hidden" name="project.budgets[${pp_index}].institution.id" value="${(budget.institution.id)!institution.id}" />
-  <input type="hidden" name="project.budgets[${pp_index}].type" value="${(!project.bilateralProject)?string("W1_W2", "W3_BILATERAL")}" />
+  <input type="hidden" name="project.budgets[${counter}].id" value="${budget.id!"-1"}" />
+  <input type="hidden" name="project.budgets[${counter}].year" value="${(budget.year)!year}" />
+  <input type="hidden" name="project.budgets[${counter}].institution.id" value="${(budget.institution.id)!institution.id}" />
+  <input type="hidden" name="project.budgets[${counter}].type" value="${(!project.bilateralProject)?string("W1_W2", "W3_BILATERAL")}" />
   [#-- Project Budget --]
   <div class="halfPartBlock budget clearfix">
     <div class="title"><h6>[@s.text name="planning.projectBudget.annualBudget" /]:</h6></div>
     <div class="content">
       <p>[@s.text name="planning.projectBudget.totalAmount"][@s.param]${(!project.bilateralProject)?string(w1W2BudgetLabel, w3BilateralBudgetLabel)}[/@s.param][/@s.text]:</p> 
-      [@customForm.input name="project.budgets[${pp_index}].amount" className="projectBudget" showTitle=false value="${(budget.amount)!0}" editable=editable/] 
+      [@customForm.input name="project.budgets[${counter}].amount" className="projectBudget" showTitle=false value="${(budget.amount)!0}" editable=editable/] 
     </div>
   </div><!-- End budget -->
   [#-- Project Gender Budget --]
   <div class="halfPartBlock budget clearfix">
     <div class="title"><h6>[@s.text name="planning.projectBudget.genderPercentage" /]</h6></div>
-    <div class="content"> 
+    <div class="content">
       <p>[@s.text name="planning.projectBudget.totalGendePercentage"][@s.param]${(!project.bilateralProject)?string(w1W2BudgetLabel, w3BilateralBudgetLabel)}[/@s.param][/@s.text]:</p>
-      [@customForm.input name="project.budgets[${pp_index}].genderPercentage" className="projectGenderBudget" showTitle=false value="${(budget.genderPercentage)!0}" editable=editable/]
+      [@customForm.input name="project.budgets[${counter}].genderPercentage" className="projectGenderBudget" showTitle=false value="${(budget.genderPercentage)!0}" editable=editable/]
+      [@s.set var="counter" value="${counter+1}"/]
     </div>
   </div><!-- End budget -->
   [#-- Project budget per bilateral --]
   [#if project.linkedProjects?has_content && isPL ]
+    <hr />
+    <h6>Annual Budget per bilateral Project Component:</h6>
     [#list project.linkedProjects as bilateralProject]
     <div class="fullPartBlock budget clearfix">
       <p>${bilateralProject.title}</p>
-      <input type="hidden" name="project.budgets[${pp_index}].id" value="${budget.id!"-1"}" />
-      <input type="hidden" name="project.budgets[${pp_index}].year" value="${(budget.year)!year}" />
-      <input type="hidden" name="project.budgets[${pp_index}].institution.id" value="${(budget.institution.id)!institution.id}" />
-      <input type="hidden" name="project.budgets[${pp_index}].type" value="${(!project.bilateralProject)?string("W1_W2", "W3_BILATERAL")}" />
-      [@customForm.input name="project.budgets[${pp_index}].amount" className="projectBudget" showTitle=false value="${(budget.amount)!0}" editable=editable/] 
+      <input type="hidden" name="project.budgets[${counter}].id" value="${budget.id!"-1"}" />
+      <input type="hidden" name="project.budgets[${counter}].year" value="${(budget.year)!year}" />
+      <input type="hidden" name="project.budgets[${counter}].institution.id" value="${(budget.institution.id)!institution.id}" />
+      <input type="hidden" name="project.budgets[${counter}].type" value="W3_BILATERAL" />
+      <div class="halfPartBlock">
+        <div class="content"> 
+        [@customForm.input name="project.budgets[${counter}].amount" value="" className="projectBudget" showTitle=false  editable=editable/]
+        [@s.set var="counter" value="${counter+1}"/]
+        </div>
+      </div>
     </div><!-- End budget -->
     [/#list]
   [/#if]
