@@ -23,6 +23,7 @@ import org.cgiar.ccafs.ap.data.model.IPElement;
 import org.cgiar.ccafs.ap.data.model.Project;
 import org.cgiar.ccafs.utils.APConfig;
 
+import java.util.Collection;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -37,10 +38,10 @@ import org.slf4j.LoggerFactory;
  * @author Hernán David Carvajal B. - CIAT/CCAFS
  */
 
-public class ProjectBudgetByMOG extends BaseAction {
+public class ProjectBudgetByMOGPlanningAction extends BaseAction {
 
   private static final long serialVersionUID = 4022245671803576328L;
-  private static Logger LOG = LoggerFactory.getLogger(ProjectBudgetByMOG.class);
+  private static Logger LOG = LoggerFactory.getLogger(ProjectBudgetByMOGPlanningAction.class);
 
   // Managers
   private ProjectManager projectManager;
@@ -52,7 +53,7 @@ public class ProjectBudgetByMOG extends BaseAction {
   private int projectID;
 
   @Inject
-  public ProjectBudgetByMOG(APConfig config, ProjectManager projectManager, IPElementManager ipElementManager,
+  public ProjectBudgetByMOGPlanningAction(APConfig config, ProjectManager projectManager, IPElementManager ipElementManager,
     HistoryManager historyManager) {
     super(config);
     this.projectManager = projectManager;
@@ -103,6 +104,32 @@ public class ProjectBudgetByMOG extends BaseAction {
     project.getOutputs().addAll(outputsTemp);
 
     this.setHistory(historyManager.getProjectOutputsHistory(projectID));
+  }
+
+  @Override
+  public String save() {
+    boolean success = false;
+    if (securityContext.canUpdateProjectBudgetByMOG()) {
+
+      if (success) {
+        // Get the validation messages and append them to the save message
+        Collection<String> messages = this.getActionMessages();
+        if (!messages.isEmpty()) {
+          String validationMessage = messages.iterator().next();
+          this.setActionMessages(null);
+          this.addActionWarning(this.getText("saving.saved") + validationMessage);
+        } else {
+          this.addActionMessage(this.getText("saving.saved"));
+        }
+        return SUCCESS;
+      } else {
+        this.addActionError(this.getText("saving.problem"));
+        LOG.warn("There was a problem saving the project outputs planning.");
+        return BaseAction.INPUT;
+      }
+    } else {
+      return NOT_AUTHORIZED;
+    }
   }
 
   public void setProjectID(int projectID) {
