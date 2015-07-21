@@ -12,12 +12,14 @@
  * along with CCAFS P&R. If not, see <http://www.gnu.org/licenses/>.
  *****************************************************************/
 
-package org.cgiar.ccafs.ap.data.dao;
+package org.cgiar.ccafs.ap.data.manager;
 
-import org.cgiar.ccafs.ap.data.dao.mysql.MySQLBudgetByMogDAO;
+import org.cgiar.ccafs.ap.data.manager.impl.BudgetByMogManagerImpl;
+import org.cgiar.ccafs.ap.data.model.OutputBudget;
+import org.cgiar.ccafs.ap.data.model.Project;
+import org.cgiar.ccafs.ap.data.model.User;
 
 import java.util.List;
-import java.util.Map;
 
 import com.google.inject.ImplementedBy;
 
@@ -25,17 +27,16 @@ import com.google.inject.ImplementedBy;
 /**
  * @author Hernán David Carvajal B. - CIAT/CCAFS
  */
-
-@ImplementedBy(MySQLBudgetByMogDAO.class)
-public interface BudgetByMogDAO {
+@ImplementedBy(BudgetByMogManagerImpl.class)
+public interface BudgetByMogManager {
 
   /**
    * This method returns the budget contributions assigned for each project's output
    * 
    * @param projectID - Project identifier
-   * @return a list maps with the information to save.
+   * @return a list of projectBudget objects.
    */
-  public List<Map<String, String>> getProjectOutputsBudget(int projectID);
+  public List<OutputBudget> getProjectOutputsBudget(int projectID);
 
   /**
    * This method saves the budget contributions assigned to each project's output.
@@ -45,5 +46,5 @@ public interface BudgetByMogDAO {
    * @param justification
    * @return true if all the information was saved successfully. False otherwise.
    */
-  public boolean saveProjectOutputsBudget(Map<String, String> budgetByMOGData, int userID, String justification);
+  public boolean saveProjectOutputsBudget(Project project, User user, String justification);
 }

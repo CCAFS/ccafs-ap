@@ -15,8 +15,6 @@
 package org.cgiar.ccafs.ap.data.dao.mysql;
 
 import org.cgiar.ccafs.ap.data.dao.BudgetByMogDAO;
-import org.cgiar.ccafs.ap.data.model.Project;
-import org.cgiar.ccafs.ap.data.model.User;
 import org.cgiar.ccafs.utils.db.DAOManager;
 
 import java.sql.Connection;
@@ -79,7 +77,7 @@ public class MySQLBudgetByMogDAO implements BudgetByMogDAO {
   }
 
   @Override
-  public boolean saveProjectOutputsBudget(Project project, User user, String justification) {
+  public boolean saveProjectOutputsBudget(Map<String, String> budgetByMOGData, int userID, String justification) {
     boolean saved = false;
     return saved;
   }
