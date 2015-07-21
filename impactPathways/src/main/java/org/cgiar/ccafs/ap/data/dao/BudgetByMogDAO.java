@@ -45,5 +45,5 @@ public interface BudgetByMogDAO {
    * @param justification
    * @return true if all the information was saved successfully. False otherwise.
    */
-  public boolean saveProjectOutputsBudget(Map<String, String> budgetByMOGData, int userID, String justification);
+  public boolean saveProjectOutputsBudget(Map<String, Object> budgetByMOGData, int userID, String justification);
 }

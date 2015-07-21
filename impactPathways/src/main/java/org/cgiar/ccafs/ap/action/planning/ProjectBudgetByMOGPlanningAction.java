@@ -126,6 +126,8 @@ public class ProjectBudgetByMOGPlanningAction extends BaseAction {
     boolean success = false;
     if (securityContext.canUpdateProjectBudgetByMOG()) {
 
+      success = budgetByMogManager.saveProjectOutputsBudget(project, this.getCurrentUser(), this.getJustification());
+
       if (success) {
         // Get the validation messages and append them to the save message
         Collection<String> messages = this.getActionMessages();

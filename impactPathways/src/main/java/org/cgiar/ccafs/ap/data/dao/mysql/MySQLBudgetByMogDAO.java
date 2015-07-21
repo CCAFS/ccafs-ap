@@ -77,9 +77,25 @@ public class MySQLBudgetByMogDAO implements BudgetByMogDAO {
   }
 
   @Override
-  public boolean saveProjectOutputsBudget(Map<String, String> budgetByMOGData, int userID, String justification) {
-    boolean saved = false;
-    return saved;
-  }
+  public boolean saveProjectOutputsBudget(Map<String, Object> budgetByMOGData, int userID, String justification) {
+    StringBuilder query = new StringBuilder();
+    query.append("INSERT INTO project_mog_budgets (project_id, mog_id, total_contribution, gender_contribution,  ");
+    query.append("created_by, modified_by, modification_justification) ");
+    query.append("VALUES (?, ?, ?, ?, ?, ?, ?) ");
+    query.append("ON DUPLICATE KEY UPDATE is_active=TRUE, total_contribution=VALUES(total_contribution), ");
+    query.append("gender_contribution=VALUES(gender_contribution), modified_by=VALUES(modified_by),  ");
+    query.append("modification_justification=VALUES(modification_justification) ");
 
+    Object[] values = new Object[7];
+    values[0] = budgetByMOGData.get("project_id");
+    values[1] = budgetByMOGData.get("mog_id");
+    values[2] = budgetByMOGData.get("total_contribution");
+    values[3] = budgetByMOGData.get("gender_contribution");
+    values[4] = userID;
+    values[5] = userID;
+    values[6] = justification;
+
+    int result = daoManager.saveData(query.toString(), values);
+    return (result != -1);
+  }
 }

@@ -22,6 +22,7 @@ import org.cgiar.ccafs.ap.data.model.Project;
 import org.cgiar.ccafs.ap.data.model.User;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -65,8 +66,18 @@ public class BudgetByMogManagerImpl implements BudgetByMogManager {
 
   @Override
   public boolean saveProjectOutputsBudget(Project project, User user, String justification) {
-    boolean saved = false;
+    boolean saved = true;
+
+    for (OutputBudget ob : project.getOutputsBudgets()) {
+      Map<String, Object> data = new HashMap<>();
+      data.put("project_id", project.getId());
+      data.put("mog_id", ob.getOutput().getId());
+      data.put("total_contribution", ob.getTotalContribution());
+      data.put("gender_contribution", ob.getGenderContribution());
+
+      saved = saved && budgetByMogDAO.saveProjectOutputsBudget(data, user.getId(), justification);
+    }
+
     return saved;
   }
-
 }
