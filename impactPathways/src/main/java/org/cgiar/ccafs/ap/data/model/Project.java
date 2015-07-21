@@ -630,4 +630,12 @@ public class Project {
   public String toString() {
     return ToStringBuilder.reflectionToString(this);
   }
+
+  public List<OutputBudget> getOutputsBudgets() {
+    return outputsBudgets;
+  }
+
+  public void setOutputsBudgets(List<OutputBudget> outputsBudgets) {
+    this.outputsBudgets = outputsBudgets;
+  }
 }

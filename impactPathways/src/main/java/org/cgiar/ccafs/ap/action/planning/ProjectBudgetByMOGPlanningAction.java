@@ -16,6 +16,7 @@ package org.cgiar.ccafs.ap.action.planning;
 
 import org.cgiar.ccafs.ap.action.BaseAction;
 import org.cgiar.ccafs.ap.config.APConstants;
+import org.cgiar.ccafs.ap.data.manager.BudgetByMogManager;
 import org.cgiar.ccafs.ap.data.manager.HistoryManager;
 import org.cgiar.ccafs.ap.data.manager.IPElementManager;
 import org.cgiar.ccafs.ap.data.manager.ProjectManager;
@@ -46,6 +47,7 @@ public class ProjectBudgetByMOGPlanningAction extends BaseAction {
   // Managers
   private ProjectManager projectManager;
   private IPElementManager ipElementManager;
+  private BudgetByMogManager budgetByMogManager;
   private HistoryManager historyManager;
 
   // Model
@@ -53,11 +55,12 @@ public class ProjectBudgetByMOGPlanningAction extends BaseAction {
   private int projectID;
 
   @Inject
-  public ProjectBudgetByMOGPlanningAction(APConfig config, ProjectManager projectManager, IPElementManager ipElementManager,
-    HistoryManager historyManager) {
+  public ProjectBudgetByMOGPlanningAction(APConfig config, ProjectManager projectManager,
+    IPElementManager ipElementManager, BudgetByMogManager budgetByMogManager, HistoryManager historyManager) {
     super(config);
     this.projectManager = projectManager;
     this.ipElementManager = ipElementManager;
+    this.budgetByMogManager = budgetByMogManager;
     this.historyManager = historyManager;
   }
 
@@ -97,6 +100,8 @@ public class ProjectBudgetByMOGPlanningAction extends BaseAction {
     // Getting the project information
     project = projectManager.getProject(projectID);
     project.setOutputs(ipElementManager.getProjectOutputs(projectID));
+    project.setOutputsBudgets(budgetByMogManager.getProjectOutputsBudget(projectID));
+
 
     // Remove the outputs duplicated
     Set<IPElement> outputsTemp = new HashSet<>(project.getOutputs());
