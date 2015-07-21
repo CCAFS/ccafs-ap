@@ -21,6 +21,7 @@ import org.cgiar.ccafs.ap.data.manager.HistoryManager;
 import org.cgiar.ccafs.ap.data.manager.IPElementManager;
 import org.cgiar.ccafs.ap.data.manager.ProjectManager;
 import org.cgiar.ccafs.ap.data.model.IPElement;
+import org.cgiar.ccafs.ap.data.model.OutputBudget;
 import org.cgiar.ccafs.ap.data.model.Project;
 import org.cgiar.ccafs.utils.APConfig;
 
@@ -85,6 +86,15 @@ public class ProjectBudgetByMOGPlanningAction extends BaseAction {
     return index;
   }
 
+  public OutputBudget getOutputBudget(int outputID) {
+    for (OutputBudget ob : project.getOutputsBudgets()) {
+      if (ob.getOutput().getId() == outputID) {
+        return ob;
+      }
+    }
+    return null;
+  }
+
   public Project getProject() {
     return project;
   }
@@ -139,5 +149,12 @@ public class ProjectBudgetByMOGPlanningAction extends BaseAction {
 
   public void setProjectID(int projectID) {
     this.projectID = projectID;
+  }
+
+  @Override
+  public void validate() {
+    if (save) {
+
+    }
   }
 }

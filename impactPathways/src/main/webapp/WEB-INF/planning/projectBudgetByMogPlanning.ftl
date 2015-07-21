@@ -42,7 +42,7 @@
   </div>
   [#include "/WEB-INF/planning/planningProjectsSubMenu.ftl" /]
   
-  [@s.form action="budget" cssClass="pure-form"]
+  [@s.form action="budgetByMog" cssClass="pure-form"]
     <article class="halfContent" id="projectBudget">
       [#include "/WEB-INF/planning/projectBudget-sub-menu.ftl" /]
       [#include "/WEB-INF/planning/planningDataSheet.ftl" /]
@@ -71,22 +71,30 @@
           [#-- Title --]
           <div class="midOutcomeTitle"><h6 class="title">[@s.text name="planning.projectImpactPathways.mogs" /]</h6></div>
             [#list project.outputs as output]
+              [#assign mogBudget = action.getOutputBudget(output.id)!]
               <div class="simpleBox clearfix"> 
                 <div class="fullPartBlock">
                   <p class="checked">${output.program.acronym} - MOG #${action.getMOGIndex(output)}: ${output.description} </p>
                 </div>
+                [#-- Hidden inputs --]
+                <input type="hidden" name="project.outputsBudgets[${output_index}].id" value="${mogBudget.id!"-1"}" />
+                <input type="hidden" name="project.outputsBudgets[${output_index}].output.id" value="${output.id}" />
+
+                [#-- Total contribution --]
                 <div class="halfPartBlock budget clearfix">
                   <div class="title"><h6>[@s.text name="preplanning.projectBudgetByMog.percentageOfTotalBudget"][@s.param]${project.bilateralProject?string('W3/Bilateral', 'W1 W2')}[/@s.param][/@s.text]</h6></div>
                   <div class="content">
-                    [@customForm.input name="project.budgets.amount" className="percentage" value="" showTitle=false i18nkey="preplanning.projectBudgetByMog.percentageOfTotalBudget" editable=editable/] 
+                    [@customForm.input name="project.outputsBudgets[${output_index}].totalContribution" className="percentage" value="${mogBudget.totalContribution!'0'}" showTitle=false i18nkey="preplanning.projectBudgetByMog.percentageOfTotalBudget" editable=editable/] 
                   </div>
-                </div><!-- End budget -->
+                </div>
+
+                [#-- Gender contribution --]
                 <div class="halfPartBlock budget clearfix">
                   <div class="title"><h6>[@s.text name="preplanning.projectBudgetByMog.percentageOfTotalGenderBudget"][@s.param]${project.bilateralProject?string('W3/Bilateral', 'W1 W2')}[/@s.param][/@s.text]</h6></div>
                   <div class="content">
-                    [@customForm.input name="project.budgets.amount" className="percentage" value="" showTitle=false i18nkey="preplanning.projectBudgetByMog.percentageOfTotalGenderBudget" editable=editable/] 
+                    [@customForm.input name="project.outputsBudgets[${output_index}].genderContribution" className="percentage" value="${mogBudget.genderContribution!'0'}" showTitle=false i18nkey="preplanning.projectBudgetByMog.percentageOfTotalGenderBudget" editable=editable/] 
                   </div>
-                </div><!-- End budget --> 
+                </div>
               </div>
             [/#list]
           </div>
