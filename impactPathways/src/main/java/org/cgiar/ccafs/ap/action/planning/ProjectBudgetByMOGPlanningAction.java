@@ -118,7 +118,7 @@ public class ProjectBudgetByMOGPlanningAction extends BaseAction {
     project.getOutputs().clear();
     project.getOutputs().addAll(outputsTemp);
 
-    this.setHistory(historyManager.getProjectOutputsHistory(projectID));
+    this.setHistory(historyManager.getProjectBudgetByMogHistory(projectID));
   }
 
   @Override
