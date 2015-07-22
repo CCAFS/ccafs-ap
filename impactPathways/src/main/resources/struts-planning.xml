@@ -10,6 +10,13 @@
       <result name="input">/WEB-INF/planning/projectsListPlanning.ftl</result>
     </action>
     
+    <action name="deleteProject" method="delete" class="org.cgiar.ccafs.ap.action.planning.ProjectsListPlanningAction">
+      <result name="success" type="redirectAction">
+        <param name="actionName">projectsList</param>
+        <param name="namespace">/planning</param>
+      </result>
+    </action>
+    
     <action name="addNewCoreProject" method="addCoreProject" class="org.cgiar.ccafs.ap.action.planning.ProjectsListPlanningAction">
       <result name="input">/WEB-INF/planning/projectsListPlanning.ftl</result>
       <result name="success" type="redirectAction">
@@ -39,18 +46,7 @@
     <!-- Sections -->
     
     <!-- Section: Projects  -->
-    
-    <action name="deleteProject" class="org.cgiar.ccafs.ap.action.planning.ProjectDeletionPlanningAction">
-      <result name="input" type="redirectAction">
-        <param name="actionName">projectsList</param>
-        <param name="namespace">/planning</param>
-      </result>
-      <result name="success" type="redirectAction">
-        <param name="actionName">projectsList</param>
-        <param name="namespace">/planning</param>
-      </result>
-    </action>
-    
+   
     <action name="description" class="org.cgiar.ccafs.ap.action.planning.ProjectDescriptionPlanningAction">
       <result name="input">/WEB-INF/planning/projectDescriptionPlanning.ftl</result>
       <result name="success" type="redirectAction">
