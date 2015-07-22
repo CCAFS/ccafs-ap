@@ -132,8 +132,6 @@ public class MySQLHistoryDAO implements HistoryDAO {
     query.append("INNER JOIN users u ON t.modified_by = u.id ");
     query.append("WHERE project_id = ");
     query.append(projectID);
-
-    query.append(" ) ");
     query.append(" GROUP BY u.email, t.action, t.modification_justification, ");
     // This line group the results that have the value of active_since in a range of +/- 2 seconds
     query.append(" UNIX_TIMESTAMP(t.active_since) DIV 2 ");
