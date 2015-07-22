@@ -86,7 +86,7 @@
                 <p> ${project.workplanName}  [#if editable]<span id="remove-projectWorkplan" class="ui-icon ui-icon-closethick remove"></span>[/#if] </p>
               [#else]
                 [#if (editable && !project.workplanRequired )]
-                  [@customForm.inputFile name="project.projectWorkplan"  /]
+                  [@customForm.inputFile name="file"  /]
                 [/#if] 
               [/#if] 
             </div> 
@@ -103,7 +103,7 @@
               <p>${project.bilateralContractProposalName}  [#if editable]<span id="remove-bilateralContract" class="ui-icon ui-icon-closethick remove"></span>[/#if] </p>
             [#else]
               [#if editable] 
-                [@customForm.inputFile name="project.bilateralContract"  /]
+                [@customForm.inputFile name="file"  /]
               [#else]  
                 [@s.text name="form.values.notFileUploaded" /]
               [/#if] 

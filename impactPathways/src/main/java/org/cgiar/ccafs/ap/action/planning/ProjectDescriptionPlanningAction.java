@@ -26,9 +26,11 @@ import org.cgiar.ccafs.ap.data.model.IPProgram;
 import org.cgiar.ccafs.ap.data.model.LiaisonInstitution;
 import org.cgiar.ccafs.ap.data.model.Project;
 import org.cgiar.ccafs.ap.data.model.User;
+import org.cgiar.ccafs.ap.util.FileManager;
 import org.cgiar.ccafs.ap.validation.planning.ProjectDescriptionValidator;
 import org.cgiar.ccafs.utils.APConfig;
 
+import java.io.File;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
@@ -43,10 +45,9 @@ import org.slf4j.LoggerFactory;
 
 public class ProjectDescriptionPlanningAction extends BaseAction {
 
-
+  private static Logger LOG = LoggerFactory.getLogger(ProjectDescriptionPlanningAction.class);
   private static final long serialVersionUID = 2845669913596494699L;
 
-  private static Logger LOG = LoggerFactory.getLogger(ProjectDescriptionPlanningAction.class);
   // Manager
   private ProjectManager projectManager;
   private IPProgramManager ipProgramManager;
@@ -69,6 +70,11 @@ public class ProjectDescriptionPlanningAction extends BaseAction {
   private Project previousProject;
   private Project project;
   private int projectID;
+
+  // These variables can contain either the information of the project workplan or the bilateral contract proposal
+  private File file;
+  private String fileContentType;
+  private String fileFileName;
 
   private ProjectDescriptionValidator validator;
 
@@ -93,6 +99,18 @@ public class ProjectDescriptionPlanningAction extends BaseAction {
   }
 
   /**
+   * Return the absolute path where the work plan is or should be located.
+   * 
+   * @param workplan name
+   * @return complete path where the image is stored
+   */
+  private String getBilateralProposalAbsolutePath(String workplanName) {
+    return config.getUploadsBaseFolder() + File.separator + config.getProjectsBaseFolder() + File.separator
+      + project.getId() + File.separator + config.getBilateralProjectContractProposalFolder() + File.separator
+      + workplanName;
+  }
+
+  /**
    * This method returns a composed name with the Acronym and Name.
    * e.g. FP4: Policies and Institutions for Climate-Resilient Food Systems
    * 
@@ -112,6 +130,17 @@ public class ProjectDescriptionPlanningAction extends BaseAction {
     return config.getEndYear();
   }
 
+  public File getFile() {
+    return file;
+  }
+
+  public String getFileContentType() {
+    return fileContentType;
+  }
+
+  public String getFileFileName() {
+    return fileFileName;
+  }
 
   /**
    * This method returns an array of flagship ids depending on the project.flagships attribute.
@@ -133,11 +162,9 @@ public class ProjectDescriptionPlanningAction extends BaseAction {
     return ipProgramFlagships;
   }
 
-
   public List<IPProgram> getIpProgramRegions() {
     return ipProgramRegions;
   }
-
 
   public List<LiaisonInstitution> getLiaisonInstitutions() {
     return liaisonInstitutions;
@@ -179,6 +206,16 @@ public class ProjectDescriptionPlanningAction extends BaseAction {
     return config.getStartYear();
   }
 
+  /**
+   * Return the absolute path where the work plan is or should be located.
+   * 
+   * @param workplan name
+   * @return complete path where the image is stored
+   */
+  private String getWorplansAbsolutePath(String workplanName) {
+    return config.getUploadsBaseFolder() + File.separator + config.getProjectsBaseFolder() + File.separator
+      + project.getId() + File.separator + config.getProjectWorkplanFolder() + File.separator + workplanName;
+  }
 
   @Override
   public String next() {
@@ -189,7 +226,6 @@ public class ProjectDescriptionPlanningAction extends BaseAction {
       return result;
     }
   }
-
 
   @Override
   public void prepare() throws Exception {
@@ -250,6 +286,8 @@ public class ProjectDescriptionPlanningAction extends BaseAction {
     previousProject.setRegions(project.getRegions());
     previousProject.setType(project.getType());
     previousProject.setWorkplanRequired(project.isWorkplanRequired());
+    previousProject.setWorkplanName(project.getWorkplanName());
+    previousProject.setBilateralContractProposalName(project.getBilateralContractProposalName());
 
     if (project.getLinkedProjects() != null) {
       List<Project> linkedProjects = new ArrayList<>();
@@ -310,8 +348,11 @@ public class ProjectDescriptionPlanningAction extends BaseAction {
         previousProject.setWorkplanRequired(project.isWorkplanRequired());
 
         if (previousProject.isWorkplanRequired()) {
-          // TODO - Check if user attached a file, upload it and save the file name.
-          // uploadFile();
+          if (file != null) {
+            FileManager.deleteFile(this.getWorplansAbsolutePath(previousProject.getWorkplanName()));
+            FileManager.copyFile(file, this.getWorplansAbsolutePath(previousProject.getWorkplanName()));
+            previousProject.setWorkplanName(fileFileName);
+          }
         }
       }
 
@@ -332,12 +373,16 @@ public class ProjectDescriptionPlanningAction extends BaseAction {
         previousProject.setCofinancing(project.isCofinancing());
 
         if (securityContext.canUploadBilateralContract()) {
-          // TODO - Check if user attached a file, upload it and save the file name.
-          // uploadFile();
+          if (file != null) {
+            FileManager.deleteFile(this.getBilateralProposalAbsolutePath(previousProject.getWorkplanName()));
+            FileManager.copyFile(file, this.getBilateralProposalAbsolutePath(previousProject.getWorkplanName()));
+            previousProject.setWorkplanName(fileFileName);
+          }
         }
       }
 
       previousProject.setSummary(project.getSummary());
+
 
       // Save the information
       int result =
@@ -439,6 +484,18 @@ public class ProjectDescriptionPlanningAction extends BaseAction {
       return SUCCESS;
     }
     return NOT_AUTHORIZED;
+  }
+
+  public void setFile(File file) {
+    this.file = file;
+  }
+
+  public void setFileContentType(String fileContentType) {
+    this.fileContentType = fileContentType;
+  }
+
+  public void setFileFileName(String fileFileName) {
+    this.fileFileName = fileFileName;
   }
 
   public void setIpProgramFlagships(List<IPProgram> ipProgramFlagships) {
